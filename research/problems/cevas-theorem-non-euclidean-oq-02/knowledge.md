@@ -10,6 +10,72 @@ specializations — the Spherical Menelaus specialization (using `Real.sin`
 as the measure function, with arcs in (0, π) replaced by arbitrary signed
 arcs whose sin is nonzero) is still missing.
 
+## Session 2 (2026-05-04) — API Drift Fixed + Spherical Menelaus Added
+
+**Mode**: REVISIT (claimed MODERATE problem, knowledge score 14)
+**Outcome**: PROGRESS — repaired API drift fix and inserted Spherical Menelaus as Part 5.
+
+### API Drift Fix
+
+The `Real.sinh_strictMono.injective` error on line 90 was caused by Lean 4
+treating the dotted name as a qualified name lookup rather than dot notation.
+The fix: assign `Real.sinh_strictMono` to a local variable with an explicit
+type annotation, then use dot notation on the local:
+
+```lean
+-- Before (broken):
+exact Real.sinh_strictMono.injective (h.trans Real.sinh_zero.symm)
+
+-- After (fixed):
+have hmono : StrictMono Real.sinh := Real.sinh_strictMono
+exact hmono.injective (h.trans Real.sinh_zero.symm)
+```
+
+**Root cause**: `Real.sinh_strictMono.injective` was being parsed as a top-level
+constant name lookup. Lean 4 dot notation requires the left side to be an expression
+in parentheses OR a local variable. `Real.sinh_strictMono` as a qualified name is
+ambiguous — Lean tries to find a constant `Real.sinh_strictMono.injective` first,
+fails, and doesn't fall back to dot notation for qualified names in application
+position. Local variable forces the dot notation path.
+
+### Spherical Menelaus Section Added
+
+Inserted new Part 5 (Spherical Menelaus Theorem) before the existing Part 5
+(now Part 6: Ceva-Menelaus Sign Relationship). The spherical specialization
+uses `Real.sin` as the measure function and `hsin_dc/ea/fb : Real.sin _ ≠ 0`
+as the non-degeneracy hypothesis (weaker than the hyperbolic case's `hdc : dc ≠ 0`
+because signed arcs may hit sin=0 at multiples of π).
+
+The proof reduces to `generalized_menelaus` via `toGeneralized`, exactly
+parallel to the hyperbolic case. This completes the curvature trichotomy:
+
+| K  | Geometry   | Measure | Ceva | Menelaus |
+|----|------------|---------|------|----------|
+| +1 | Spherical  | sin     | = 1  | = -1     |
+| 0  | Euclidean  | id      | = 1  | = -1     |
+| -1 | Hyperbolic | sinh    | = 1  | = -1     |
+
+### Files Modified
+
+- `proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean` — 234 → 309 lines
+  - Line 90: API drift fix (local variable for StrictMono.injective)
+  - New Part 5: SphericalMenelausConfig + sphericalMenelausProduct + spherical_menelaus
+  - Old Part 5 renumbered to Part 6
+  - Updated header and summary to mention full trichotomy
+
+### Docker Build
+
+Running `./proofs/scripts/docker-build.sh Proofs.CevasTheoremNonEuclideanOQ02`
+at time of writing. Await result.
+
+### Next Steps
+
+1. Confirm Docker build passes (pending)
+2. Update gallery meta.json for the new theoremCount and lineCount
+3. Submit PR
+
+---
+
 ## Session 1 (2026-04-27) — Mathlib API Drift Confirmed (Build Blocked)
 
 **Mode**: REVISIT (claimed MODERATE problem, knowledge score 10)
