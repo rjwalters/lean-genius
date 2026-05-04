@@ -1,0 +1,107 @@
+[
+  {
+    "id": "chebotarev-overview",
+    "proofId": "abel-ruffini-oq-10",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Chebotarev Density: Frobenius Classes and Prime Distribution",
+    "content": "Chebotarev's 1922 theorem is the analytic-number-theoretic complement to Galois theory: the Galois group of an extension is encoded in the statistical distribution of primes. For any Galois extension L/ℚ with group G and conjugacy class C ⊆ G, the natural density of primes whose Frobenius element lies in C is exactly |C|/|G|. This generalizes Dirichlet's theorem (special case: G = (ℤ/nℤ)×, C = {a}) and provides the link between abstract Galois groups and concrete prime arithmetic.",
+    "mathContext": "For a Galois extension $L/\\mathbb{Q}$ with group $G \\cong \\text{Gal}(L/\\mathbb{Q})$ and conjugacy class $C \\subseteq G$: $\\delta(\\{p \\text{ prime} : \\text{Frob}_p \\in C\\}) = |C|/|G|$, where $\\delta$ denotes natural density.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Frobenius element",
+      "natural density",
+      "Galois group",
+      "Dirichlet density"
+    ],
+    "prerequisites": [
+      "Galois extensions (IsGalois)",
+      "Frobenius element theory (Dedekind domains)",
+      "L-functions and analytic continuation"
+    ]
+  },
+  {
+    "id": "prime-density-definition",
+    "proofId": "abel-ruffini-oq-10",
+    "range": {
+      "startLine": 56,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "PrimeDensity: Natural Density of a Prime Predicate",
+    "content": "PrimeDensity P δ formalizes: the fraction of primes satisfying predicate P converges to δ as we look at all primes up to N. Uses Filter.Tendsto from Mathlib. The denominator Nat.primeCounting N counts primes ≤ N; the numerator counts P-primes ≤ N. The if-guard handles the edge case N < 2 where primeCounting N = 0.",
+    "mathContext": "$$\\text{PrimeDensity}(P, \\delta) \\iff \\frac{|\\{p \\leq N : p \\text{ prime}, P(p)\\}|}{|\\{p \\leq N : p \\text{ prime}\\}|} \\xrightarrow{N \\to \\infty} \\delta$$",
+    "significance": "key"
+  },
+  {
+    "id": "chebotarev-axiom",
+    "proofId": "abel-ruffini-oq-10",
+    "range": {
+      "startLine": 81,
+      "endLine": 110
+    },
+    "type": "axiom",
+    "title": "Chebotarev Density Axiom",
+    "content": "The central axiom: for a Galois extension L/ℚ with group G and conjugacy-class C (stable under conjugation), there exists a set of primes with natural density |C|/|G|. The hypotheses require G ≃ Gal(L/ℚ) (via the IsGalois instance) and C to be closed under conjugation. The axiom is stated existentially (∃ frobIn : ℕ → Prop) to avoid formalizing the Frobenius element directly.",
+    "mathContext": "Requires: (1) Dedekind domain theory for the ring of integers $\\mathcal{O}_L$, (2) the Frobenius element $\\text{Frob}_p \\in G$ for unramified primes (well-defined up to conjugacy), (3) L-functions $L(s, \\chi)$ and their analytic continuation to $\\Re(s) = 1$, (4) Chebotarev's topological density argument.",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius element", "Dedekind domain", "L-function"]
+  },
+  {
+    "id": "split-completely",
+    "proofId": "abel-ruffini-oq-10",
+    "range": {
+      "startLine": 111,
+      "endLine": 145
+    },
+    "type": "theorem",
+    "title": "Completely Split Primes Have Density 1/|G|",
+    "content": "Applies Chebotarev with C = {identity}. The identity is a valid conjugacy class (h·1·h⁻¹ = 1 for all h). By Finset.card_singleton, {1}.card = 1, giving density 1/|G|. A prime p splits completely in L iff every prime ideal above p has inertia degree 1, which corresponds to Frob_p = id. For [L:ℚ] = |G| = n, completely split primes form a set of density 1/n.",
+    "mathContext": "For $[L:\\mathbb{Q}] = n$, the set $\\{p \\text{ prime} : p \\text{ splits completely in } L\\}$ has density $1/n$.",
+    "significance": "high"
+  },
+  {
+    "id": "s5-class-structure",
+    "proofId": "abel-ruffini-oq-10",
+    "range": {
+      "startLine": 155,
+      "endLine": 240
+    },
+    "type": "insight",
+    "title": "S₅ Conjugacy Class Sizes (Verified by native_decide)",
+    "content": "All 7 conjugacy classes of S₅ = Equiv.Perm(Fin 5) are verified computationally. Important: Mathlib's Equiv.Perm.cycleType omits fixed points (cycles of length 1). So a 4-cycle fixing 1 element has cycleType = {4}, not {4,1}. The 7 classes are: ∅ (id, 1 element), {2} (transpositions, 10), {2,2} (double transpositions, 15), {3} (3-cycles, 20), {3,2} (3+2-cycles, 20), {4} (4-cycles, 30), {5} (5-cycles, 24). Sum: 120 = |S₅|.",
+    "mathContext": "The 7 conjugacy classes of $S_5$ with sizes: $1 + 10 + 15 + 20 + 20 + 30 + 24 = 120 = 5!$.",
+    "significance": "key",
+    "relatedConcepts": ["Equiv.Perm.cycleType", "conjugacy class", "cycle type partition"]
+  },
+  {
+    "id": "a5-class-structure",
+    "proofId": "abel-ruffini-oq-10",
+    "range": {
+      "startLine": 241,
+      "endLine": 270
+    },
+    "type": "insight",
+    "title": "A₅ Conjugacy Classes: 5-Cycles Split in Two",
+    "content": "A key difference between S₅ and A₅: in S₅, all 24 five-cycles form one conjugacy class. In A₅ (being a smaller group), these 24 five-cycles split into TWO conjugacy classes of 12 elements each. This occurs because the centralizer of a 5-cycle in A₅ has order 5 (giving orbit size 60/5 = 12), while in S₅ the centralizer has order 5 too but A₅ has fewer conjugates available. The 5 conjugacy classes of A₅: 1 + 15 + 20 + 12 + 12 = 60.",
+    "mathContext": "In $A_5$, the 5-cycles form two conjugacy classes of size 12 each, unlike $S_5$ where they form one class of size 24. This reflects $|\\text{C}_{A_5}(\\sigma)| = 5$ for a 5-cycle $\\sigma$.",
+    "significance": "key"
+  },
+  {
+    "id": "density-solvability-detection",
+    "proofId": "abel-ruffini-oq-10",
+    "range": {
+      "startLine": 310,
+      "endLine": 370
+    },
+    "type": "insight",
+    "title": "Chebotarev as Solvability Detector",
+    "content": "For a degree-5 polynomial f, the density of primes making f irreducible mod p is |{5-cycles in G}|/|G|. This statistic differs between solvable and non-solvable groups: ℤ/5ℤ gives 4/5, D₅ gives 2/5, A₅ gives 2/5, S₅ gives 1/5. Importantly, A₅ (non-solvable) and D₅ (solvable) have the SAME irreducibility density — showing that a single Chebotarev density statistic doesn't always detect solvability. The FULL density profile (all 7 S₅ fractions, or all 5 A₅ fractions) uniquely identifies the group.",
+    "mathContext": "The irreducibility density equals $|\\{g \\in G : g \\text{ is an } n\\text{-cycle}\\}|/|G|$. For $n=5$: $4/5$ ($\\mathbb{Z}/5\\mathbb{Z}$), $2/5$ ($D_5$ or $A_5$), $1/5$ ($S_5$). The full Frobenius density signature uniquely determines $\\text{Gal}(f/\\mathbb{Q})$.",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius density theorem", "Hilbert irreducibility", "polynomial Galois group detection"]
+  }
+]
