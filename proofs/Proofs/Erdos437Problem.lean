@@ -236,15 +236,21 @@ theorem L_growth_rate :
   intro ε hε
   obtain ⟨N₁, hL₁⟩ := L_lower_bound ε hε
   obtain ⟨N₂, hL₂⟩ := L_upper_bound ε hε
-  use max N₁ N₂
+  use max (max N₁ N₂) 1
   intro x hx
-  have hx₁ : x ≥ N₁ := le_of_max_le_left hx
-  have hx₂ : x ≥ N₂ := le_of_max_le_right hx
+  have hx₁ : x ≥ N₁ := le_trans (le_trans (le_max_left N₁ N₂) (le_max_left _ 1)) hx
+  have hx₂ : x ≥ N₂ := le_trans (le_trans (le_max_right N₁ N₂) (le_max_left _ 1)) hx
+  have hxpos : (x : ℝ) > 0 := by
+    have h1 : x ≥ 1 := le_trans (le_max_right _ _) hx
+    have : (1 : ℝ) ≤ (x : ℝ) := by exact_mod_cast h1
+    linarith
   constructor
   · have h := hL₁ x hx₁
-    sorry -- Division by x
+    rw [ge_iff_le, le_div_iff hxpos]
+    linarith [mul_comm (x : ℝ) (Real.exp (-(Real.sqrt 2 + ε) * u x))]
   · have h := hL₂ x hx₂
-    sorry -- Division by x
+    rw [div_le_iff hxpos]
+    linarith [mul_comm (x : ℝ) (Real.exp (-(1 / Real.sqrt 2 - ε) * u x))]
 
 /--
 **Comparison to x^(1-ε):**
