@@ -1,5 +1,6 @@
 import Mathlib
 import Proofs.CayleyHamiltonOQ01
+import Proofs.CayleyHamiltonReductionOQ02OQ01
 
 /-
 # Matrix Exponential as Polynomial in M via Minimal Polynomial Reduction
@@ -21,11 +22,12 @@ where  p_k(t) = ∑_{m≥0} (t^m/m!) · coeff_k(X^m mod μ_M).
    ∑_m f_m · ∑_k c_{m,k} · v_k = ∑_k (∑_m f_m · c_{m,k}) · v_k (tsum_sum in ℝ)
 4. **Identification**: p_k(t) = ∑_{m≥0} t^m/m! · c_{m,k}
 
-## Axiom
+## Key Summability Proof
 
-`expPolyCoeff_summable`: For each k and t, the series ∑_{m≥0} t^m/m! · c_{m,k} converges.
-Justification: c_{m,k} = coeff_k(X^m mod μ_M) satisfies a linear recurrence of order d
-(companion matrix of μ_M), so |c_{m,k}| ≤ C·r^m. Then ∑_m |t|^m r^m/m! = e^{|t|r} < ∞.
+`expPolyCoeff_summable` is proved (without axioms) via the companion matrix C of μ_M:
+  - c_{m,k} = (C^m)_{k,0} (KEY IDENTITY, proved via aeval + orbit structure)
+  - |c_{m,k}| ≤ ‖C^m‖ ≤ ‖C‖^m (matrix norm bound)
+  - ∑_m |t|^m ‖C‖^m/m! = exp(|t|‖C‖) < ∞ (summable by comparison with exp series)
 -/
 
 open Matrix Polynomial BigOperators NormedSpace Finset
@@ -36,6 +38,19 @@ variable {n : Type*} [DecidableEq n] [Fintype n] [Nontrivial (Matrix n n ℝ)]
 variable (M : Matrix n n ℝ)
 
 -- ============================================================
+-- Helper lemmas (needed throughout)
+-- ============================================================
+
+private lemma minpoly_natDegree_pos : 0 < (minpoly ℝ M).natDegree :=
+  CayleyHamiltonOQ01.minpoly_degree_pos M
+
+private lemma modByMonic_natDegree_lt (m : ℕ) :
+    ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).natDegree < (minpoly ℝ M).natDegree := by
+  rcases eq_or_ne ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M) 0 with h | h
+  · simp only [h, Polynomial.natDegree_zero]; exact minpoly_natDegree_pos M
+  · exact CayleyHamiltonOQ01.degree_mod_minpoly_lt M (X ^ m) h
+
+-- ============================================================
 -- Section 1: The Coefficient Functions p_k(t)
 -- ============================================================
 
@@ -44,12 +59,99 @@ variable (M : Matrix n n ℝ)
 noncomputable def expPolyCoeff (k : ℕ) (t : ℝ) : ℝ :=
   ∑' m : ℕ, (t ^ m / (m.factorial : ℝ)) * ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k
 
+-- ============================================================
+-- Section 1b: Summability Proof via Companion Matrix
+-- ============================================================
+
+-- KEY IDENTITY: coeff k (X^m %ₘ μ) = (companionMatrix μ)^m ⟨k,hk⟩ ⟨0,hd⟩
+-- Proof: The companion matrix C of μ satisfies minpoly ℝ C = μ, so
+--   C^m = aeval C (X^m) = aeval C (X^m %ₘ μ) = ∑_{j<d} c_{m,j} C^j
+-- Taking entry (k,0) and using (C^j)_{k,0} = δ_{k,j} (from companionMatrix_pow_basis):
+--   C^m ⟨k,hk⟩ ⟨0,hd⟩ = ∑_{j<d} c_{m,j} * δ_{k,j} = c_{m,k} ✓
+private lemma coeff_pow_X_eq_companion (m k : ℕ) (hk : k < (minpoly ℝ M).natDegree) :
+    ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k =
+    (CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := (minpoly ℝ M).natDegree)
+      (minpoly ℝ M)) ^ m ⟨k, hk⟩ ⟨0, minpoly_natDegree_pos M⟩ := by
+  set μ := minpoly ℝ M
+  set d := μ.natDegree
+  have hd : 0 < d := minpoly_natDegree_pos M
+  have hμ_monic : μ.Monic := minpoly.monic (Matrix.isIntegral M)
+  set C := CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := d) μ
+  -- Establish [NeZero d] for minpoly_companionMatrix
+  haveI : NeZero d := ⟨by omega⟩
+  -- The companion matrix satisfies minpoly ℝ C = μ
+  have hminpoly_C : minpoly ℝ C = μ :=
+    CayleyHamiltonReductionOQ02OQ01.minpoly_companionMatrix hμ_monic rfl
+  -- C^m = aeval C (X^m) = aeval C (X^m %ₘ μ)  [since minpoly C = μ]
+  have hC_aeval : C ^ m = aeval C ((X : ℝ[X]) ^ m %ₘ μ) := by
+    have heq := CayleyHamiltonOQ01.aeval_eq_aeval_mod_minpoly C ((X : ℝ[X]) ^ m)
+    rwa [hminpoly_C, map_pow, aeval_X] at heq
+  -- Basis expansion: aeval C (X^m %ₘ μ) = ∑_{j<d} c_{m,j} · C^j
+  have hbasis : C ^ m = ∑ j ∈ Finset.range d,
+      ((X : ℝ[X]) ^ m %ₘ μ).coeff j • C ^ j := by
+    rw [hC_aeval, aeval_def, eval₂_eq_sum_range' (modByMonic_natDegree_lt M m)]
+    simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+  -- Take entry (k, 0): C^m ⟨k,hk⟩ ⟨0,hd⟩ = ∑_{j<d} c_{m,j} * C^j ⟨k,hk⟩ ⟨0,hd⟩
+  have h_entry : C ^ m ⟨k, hk⟩ ⟨0, hd⟩ =
+      ∑ j ∈ Finset.range d,
+        ((X : ℝ[X]) ^ m %ₘ μ).coeff j * C ^ j ⟨k, hk⟩ ⟨0, hd⟩ := by
+    have := congr_arg (· ⟨k, hk⟩ ⟨0, hd⟩) hbasis
+    simp only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul] at this
+    exact this
+  -- Entry formula: C^j ⟨k,hk⟩ ⟨0,hd⟩ = δ_{j,k}  [companionMatrix_pow_basis]
+  -- Using Pi.single i a applied at ⟨k,hk⟩ gives if i = ⟨k,hk⟩ then a else 0
+  have hC_pow_entry : ∀ j : ℕ, ∀ hj : j < d,
+      C ^ j ⟨k, hk⟩ ⟨0, hd⟩ = if j = k then 1 else 0 := by
+    intro j hj
+    have horbit := CayleyHamiltonReductionOQ02OQ01.companionMatrix_pow_basis μ j hj
+    have h2 := congr_fun horbit ⟨k, hk⟩
+    simp only [Matrix.mulVec, Matrix.dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
+               Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.mk.injEq] at h2
+    exact h2
+  -- Collapse the sum using sum_eq_single
+  rw [h_entry, Finset.sum_eq_single k]
+  · rw [hC_pow_entry k hk, if_pos rfl, mul_one]
+  · intro j hj hjk
+    rw [hC_pow_entry j (Finset.mem_range.mp hj), if_neg hjk, mul_zero]
+  · intro h
+    exact absurd (Finset.mem_range.mpr hk) h
+
 /-- The series defining p_k(t) converges.
-    Justification: |coeff_k(X^m mod μ_M)| ≤ C·r^m by linear recurrence bound;
-    ∑_m |t|^m r^m/m! = e^{|t|r} < ∞ by exp convergence. -/
-axiom expPolyCoeff_summable (k : ℕ) (t : ℝ) :
+    Proof: coeff_k(X^m mod μ) = (C^m)_{k,0} where C is the companion matrix of μ_M.
+    Since |c_{m,k}| ≤ ‖C‖^m (matrix norm bound), the comparison test gives convergence:
+    ∑_m |t^m/m!| · |c_{m,k}| ≤ ∑_m (|t|‖C‖)^m/m! = exp(|t|‖C‖) < ∞. -/
+theorem expPolyCoeff_summable (k : ℕ) (t : ℝ) :
     Summable (fun m : ℕ =>
-      (t ^ m / (m.factorial : ℝ)) * ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k)
+      (t ^ m / (m.factorial : ℝ)) * ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k) := by
+  by_cases hk : k < (minpoly ℝ M).natDegree
+  · -- Case k < d: use companion matrix identity + norm bound
+    have hd : 0 < (minpoly ℝ M).natDegree := minpoly_natDegree_pos M
+    set C := CayleyHamiltonReductionOQ02OQ01.companionMatrix
+      (d := (minpoly ℝ M).natDegree) (minpoly ℝ M)
+    -- Rewrite the coefficient using the key identity
+    have hkey : ∀ m, ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k =
+        C ^ m ⟨k, hk⟩ ⟨0, hd⟩ := fun m => coeff_pow_X_eq_companion M m k hk
+    simp_rw [hkey]
+    -- The entry series follows from the matrix exp series via norm bound
+    apply Summable.of_norm_bounded (fun m => (|t| * ‖C‖) ^ m / m.factorial)
+    · exact summable_pow_div_factorial _
+    · intro m
+      have hfact_pos : (0 : ℝ) < (m.factorial : ℝ) := Nat.cast_pos.mpr m.factorial_pos
+      rw [Real.norm_eq_abs, abs_mul, abs_div, abs_pow, abs_of_pos hfact_pos,
+          div_mul_eq_mul_div, div_le_div_right hfact_pos, mul_pow]
+      apply mul_le_mul_of_nonneg_left _ (pow_nonneg (abs_nonneg t) m)
+      calc |C ^ m ⟨k, hk⟩ ⟨0, hd⟩|
+          = ‖C ^ m ⟨k, hk⟩ ⟨0, hd⟩‖ := (Real.norm_eq_abs _).symm
+        _ ≤ ‖C ^ m ⟨k, hk⟩‖ := norm_le_pi_norm _ _
+        _ ≤ ‖C ^ m‖ := norm_le_pi_norm _ _
+        _ ≤ ‖C‖ ^ m := norm_pow_le C m
+  · -- Case k ≥ d: the remainder polynomial has degree < d ≤ k, so coefficient k is 0
+    push_neg at hk
+    have hzero : ∀ m, ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k = 0 := fun m =>
+      Polynomial.coeff_eq_zero_of_natDegree_lt
+        (Nat.lt_of_lt_of_le (modByMonic_natDegree_lt M m) hk)
+    simp_rw [hzero, mul_zero]
+    exact summable_zero
 
 -- ============================================================
 -- Section 2: Power Series for Matrix Exponential
@@ -66,15 +168,6 @@ theorem matrixExp_eq_tsum (t : ℝ) :
 -- ============================================================
 -- Section 3: Basis Expansion of Matrix Powers
 -- ============================================================
-
-private lemma minpoly_natDegree_pos : 0 < (minpoly ℝ M).natDegree :=
-  CayleyHamiltonOQ01.minpoly_degree_pos M
-
-private lemma modByMonic_natDegree_lt (m : ℕ) :
-    ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).natDegree < (minpoly ℝ M).natDegree := by
-  rcases eq_or_ne ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M) 0 with h | h
-  · simp only [h, Polynomial.natDegree_zero]; exact minpoly_natDegree_pos M
-  · exact CayleyHamiltonOQ01.degree_mod_minpoly_lt M (X ^ m) h
 
 /-- Matrix power M^m equals the basis expansion ∑_{k<d} c_{m,k}·M^k. -/
 theorem power_eq_basis_sum (m : ℕ) :

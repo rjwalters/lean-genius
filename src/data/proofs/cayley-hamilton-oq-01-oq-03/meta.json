@@ -2,11 +2,11 @@
   "id": "cayley-hamilton-oq-01-oq-03",
   "title": "Matrix Exponential as Polynomial via Minimal Polynomial Reduction",
   "slug": "cayley-hamilton-oq-01-oq-03",
-  "description": "Proves that the matrix exponential exp(t·M) equals a polynomial in M of degree less than d = deg(minpoly ℝ M): exp(t·M) = ∑_{k=0}^{d-1} p_k(t)·M^k, where p_k(t) = ∑_{m≥0} (t^m/m!)·coeff_k(X^m mod μ_M). Builds on CayleyHamiltonOQ01 (power_eq_aeval_mod_minpoly) and uses NormedSpace.exp_eq_tsum for the series expansion. 10 theorems, 1 definition, 1 axiom.",
+  "description": "Proves that the matrix exponential exp(t·M) equals a polynomial in M of degree less than d = deg(minpoly ℝ M): exp(t·M) = ∑_{k=0}^{d-1} p_k(t)·M^k. Fully machine-verified with 0 axioms and 0 sorries. The summability of coefficient series is proved via the companion matrix orbit identity coeff_k(X^m mod μ) = (C^m)_{k,0}.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-04",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonOQ01OQ03.lean",
     "tags": [
       "linear-algebra",
@@ -17,13 +17,13 @@
       "matrix-functions",
       "analysis"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-05-04",
-    "axiomCount": 1,
-    "assumptions": "expPolyCoeff_summable: the series ∑_{m≥0} t^m/m! · coeff_k(X^m mod μ_M) converges for each k < d and t : ℝ. Justified by: coefficients satisfy a linear recurrence of order d (companion matrix bound), giving |c_{m,k}| ≤ C·r^m; then ∑_m |t|^m r^m/m! = e^{|t|r} < ∞.",
-    "lineCount": 173,
-    "theoremCount": 10,
+    "axiomCount": 0,
+    "assumptions": "",
+    "lineCount": 266,
+    "theoremCount": 9,
     "definitionCount": 1,
     "originalContributions": [
       "expPolyCoeff: defines p_k(t) = ∑_{m≥0} t^m/m! · coeff_k(X^m mod μ_M)",
@@ -55,18 +55,17 @@
     ]
   },
   "conclusion": {
-    "summary": "A 173-line, 10-theorem formalization that matrix exp(t·M) is a polynomial in M of degree < d = deg(minpoly ℝ M). The proof uses NormedSpace.exp_eq_tsum for the series expansion, CayleyHamiltonOQ01.power_eq_aeval_mod_minpoly + eval₂_eq_sum_range' for the basis reduction, and tsum_sum with entry-wise reasoning for the interchange. One axiom encodes the summability of the coefficient series, justified by linear recurrence bounds.",
-    "implications": "This result is the theoretical foundation for: (1) Putzer's algorithm for matrix exponentials — compute the p_k by solving a system of scalar ODEs instead of matrix arithmetic; (2) efficient matrix function evaluation — f(M) = ∑_{k<d} g_k·M^k for any analytic function f, where g_k are determined by reducing the Taylor series of f modulo μ_M; (3) stability analysis in ODEs — exp(t·M) polynomial form enables exact closed-form solutions for linear systems with repeated eigenvalues; (4) spectral projections — the p_k evaluated at t=1 give the coefficients of the Lagrange-Sylvester interpolation f(M) = ∑ f(λ_i)·Z_i.",
+    "summary": "A 265-line, axiom-free formalization that matrix exp(t·M) is a polynomial in M of degree < d = deg(minpoly ℝ M). The summability of coefficient series p_k(t) = ∑_m (t^m/m!)·c_{m,k} is proved via the companion matrix identity coeff_k(X^m mod μ) = (C^m)_{k,0}, using minpoly_companionMatrix + aeval + companionMatrix_pow_basis + norm_pow_le.",
+    "implications": "This result is the theoretical foundation for: (1) Putzer's algorithm for matrix exponentials — compute the p_k by solving a system of scalar ODEs instead of matrix arithmetic; (2) efficient matrix function evaluation — f(M) = ∑_{k<d} g_k·M^k for any analytic function f; (3) stability analysis in ODEs — exp(t·M) polynomial form enables exact closed-form solutions; (4) spectral projections — the p_k give Lagrange-Sylvester interpolation coefficients.",
     "openQuestions": [
-      "Prove the Putzer algorithm: given eigenvalues λ₁,...,λ_d of M, the p_k satisfy ṗ_k = λ_k p_k + p_{k-1} with p_0(t) = e^{λ₁t}",
-      "Remove the expPolyCoeff_summable axiom: formalize the linear recurrence bound |coeff_k(X^m mod μ)| ≤ C·r^m in Lean 4"
+      "Prove the Putzer algorithm: given eigenvalues λ₁,...,λ_d of M, the p_k satisfy ṗ_k = λ_k p_k + p_{k-1} with p_0(t) = e^{λ₁t}"
     ]
   },
   "leanFile": {
     "namespace": "CayleyHamiltonOQ01OQ03",
-    "lineCount": 173,
-    "axiomCount": 1,
-    "theoremCount": 10,
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/CayleyHamiltonOQ01OQ03.lean",
     "sorries": 0
