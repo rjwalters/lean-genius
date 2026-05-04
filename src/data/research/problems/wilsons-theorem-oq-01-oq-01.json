@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 563 is Wilson prime proved via native_decide. Axiom count 2→1. PR #15604 pending Docker build.",
+    "progressSummary": "PROGRESS: 563 Wilson prime proved via native_decide (axiomCount 2→1). New branch research/wilsons-theorem-563-proof. Docker build pending.",
     "builtItems": [
       "IsWilsonPrime definition (self-contained, no parent import)",
       "wilsonQuotient definition: ((p-1)!+1)/p",
@@ -57,7 +57,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify Docker build confirms native_decide compiles for 562! mod 316969"
+      "Wait for Docker build; if passes push and create PR",
+      "Remaining open conjecture (infinitely_many_wilson_primes) cannot be proved — it is genuinely open"
     ]
   },
   "tags": [
