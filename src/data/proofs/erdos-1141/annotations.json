@@ -129,19 +129,20 @@
     "id": "ann-e1141-conjecture",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 113,
-      "endLine": 114
+      "startLine": 121,
+      "endLine": 128
     },
     "type": "concept",
-    "title": "The Open Conjecture",
-    "content": "**Erdős Problem #1141 (OPEN)**: For every $N$, there exists $n \\ge N$ with `IsErdos1141Good n`.\n\nThis is the **infinitude statement**: the set of good values is unbounded. Equivalently, `{n : IsErdos1141Good n}` is infinite.\n\nStated as an axiom since the problem is open. The evidence is ambiguous:\n- **For infinitude**: The sequence extends to 1722 and has 41 known terms, suggesting a rich structure\n- **Against infinitude**: No new terms between 1722 and $10^{10}$; the density bound $O(N^{1/2+o(1)})$ is consistent with a finite sequence\n\nThe formalization uses the standard Lean pattern for infinitude: $\\forall N, \\exists n \\ge N$ satisfying the property.",
-    "mathContext": "$\\forall N \\in \\mathbb{N},\\; \\exists n \\ge N : \\text{IsErdos1141Good}(n)$",
+    "title": "Finiteness Theorem (Alexeev et al. 2026)",
+    "content": "**Erdős Problem #1141 (SOLVED 2026)**: There are only finitely many $n$ satisfying the Erdős-1141 property.\n\nAxiom `erdos_1141_finitely_many` encodes the theorem of **Alexeev, Putterman, Sawhney, Sellke, and Valiant** (arXiv:2604.06609, 2026): there exists $N$ such that for all $n \\ge N$, $n$ is not Erdős-1141 good. The result holds more generally — for each fixed $a \\ge 1$, only finitely many $n$ satisfy '$n - ak^2$ is prime for all $k$ with $\\gcd(k,n)=1$ and $ak^2 < n$'.\n\n**Proof sketch**: By **Pollack's theorem** (2017), for sufficiently large $n$ there exists a small prime $p$ such that $ax^2 \\equiv n \\pmod{p}$ is solvable. The solutions produce multiple coprime $k$-values for which $n - ak^2 \\equiv 0 \\pmod{p}$, forcing $n - ak^2 = p$ for several $k$ simultaneously — a contradiction since distinct $k$ give distinct values.\n\n**Ineffectivity**: The proof uses Siegel's theorem on $L$-functions (via Pollack), making it **ineffective** — no explicit bound on $N$ is known from the proof. Computationally, 1722 appears to be the largest good value for $a=1$.\n\nStated as an axiom because the 2026 paper has not yet been formalized in Mathlib.",
+    "mathContext": "`erdos_1141_finitely_many : ∃ N : ℕ, ∀ n : ℕ, n ≥ N → ¬ IsErdos1141Good n`",
     "significance": "key",
     "relatedConcepts": [
-      "infinitude",
+      "finiteness",
+      "Pollack's theorem",
+      "Siegel's theorem",
       "axiom",
-      "open problem",
-      "unbounded sequence"
+      "quadratic residues"
     ],
     "prerequisites": [
       "ann-e1141-definition"
@@ -151,8 +152,8 @@
     "id": "ann-e1141-oeis",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 119,
-      "endLine": 125
+      "startLine": 130,
+      "endLine": 139
     },
     "type": "concept",
     "title": "OEIS A214583 Enumeration",
@@ -173,8 +174,8 @@
     "id": "ann-e1141-large-examples",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 130,
-      "endLine": 154
+      "startLine": 141,
+      "endLine": 168
     },
     "type": "concept",
     "title": "Larger Verified Examples (24–1722)",
@@ -189,6 +190,75 @@
     ],
     "prerequisites": [
       "ann-e1141-definition"
+    ]
+  },
+  {
+    "id": "ann-e1141-unified",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 170,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Unified Verification of All 41 OEIS Values",
+    "content": "Theorem `all_known_good` verifies **all 41** OEIS A214583 values in a single statement using `native_decide`.\n\nThis is more than a convenience — it is a **formal certificate** that every element of `knownGoodValues` satisfies the Erdős-1141 property. The `native_decide` tactic compiles the combined check (iterating over all 41 values and for each checking all coprime $k$ with $k^2 < n$) into a native binary and executes it, confirming the result in the kernel.\n\nThe power of `native_decide` here is that it handles a computation that would be infeasible by hand: for $n = 1722$, we need to check $\\lfloor \\sqrt{1722} \\rfloor = 41$ potential $k$-values, each filtered by $\\gcd(1722, k) = 1$, then verify primality of $1722 - k^2$. Doing this for all 41 OEIS values simultaneously demonstrates that formal verification can certify complex combinatorial facts.",
+    "mathContext": "`all_known_good : ∀ n ∈ knownGoodValues, IsErdos1141Good n`",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "formal certificate",
+      "OEIS A214583",
+      "list membership"
+    ],
+    "prerequisites": [
+      "ann-e1141-oeis",
+      "ann-e1141-large-examples"
+    ]
+  },
+  {
+    "id": "ann-e1141-classification",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 175,
+      "endLine": 187
+    },
+    "type": "concept",
+    "title": "Complete Classification up to n = 100",
+    "content": "A complete, machine-verified classification: the Erdős-1141 good values in $\\{0, \\ldots, 100\\}$ are exactly $\\{0, 3, 4, 6, 8, 12, 14, 18, 20, 24, 30, 32, 38, 42, 48, 54, 60, 62, 68, 72, 80, 84, 90, 98\\}$.\n\nThe proof uses `native_decide` to evaluate `(Finset.range 101).filter IsErdos1141Good` and compare it to the explicit `goodValuesUpTo100` list. This is a **complete enumeration** — not just a list of known good values, but a proof that no other values in $\\{0, \\ldots, 100\\}$ qualify.\n\n**Key facts**:\n- There are exactly **24** good values in $\\{0, \\ldots, 100\\}$ (theorem `good_count_100`)\n- All good values except 0 and 3 are even (consistent with `good_ge4_even`)\n- The known good values 32, 38, 42, ..., 98 all appear, and no values between them are missed\n\nThis exhaustive check demonstrates the decidability infrastructure: the `Decidable` instance on `IsErdos1141Good` enables `Finset.filter` to work computationally, and `native_decide` scales this to all 101 cases simultaneously.",
+    "mathContext": "`(Finset.range 101).filter IsErdos1141Good = goodValuesUpTo100.toFinset` and `card = 24`",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "native_decide",
+      "exhaustive classification",
+      "Decidable"
+    ],
+    "prerequisites": [
+      "ann-e1141-definition",
+      "ann-e1141-structural"
+    ]
+  },
+  {
+    "id": "ann-e1141-corollaries",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 189,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Structural Corollaries",
+    "content": "Three structural corollaries proved without computation:\n\n1. **`good_not_prime_ge5`**: No prime $p \\ge 5$ is Erdős-1141 good. Proof: primes $\\ge 5$ are odd, but by `good_ge4_even`, all good $n \\ge 4$ must be even. Since only the even prime is 2, no odd prime $\\ge 5$ can be good.\n\n2. **`good_odd_eq_three`**: The only odd good value $\\ge 3$ is $n = 3$. Proof: any odd good $n \\ge 4$ would contradict `good_ge4_even`; the hypothesis $4 \\le n$ follows from $n \\ge 3$ and $n \\ne 3$ via `omega`. So $n = 3$ is the unique odd outlier.\n\n3. **`good_coprime3_sub9_prime`**: If $n \\ge 10$ is good and $\\gcd(n, 3) = 1$, then $n - 9$ is prime. Proof: $k = 3$ satisfies $3^2 = 9 < n$ (since $n \\ge 10$) and $\\gcd(n, 3) = 1$ by hypothesis, so `IsErdos1141Good n` applied to $k = 3$ gives $(n - 9).\\text{Prime}$.\n\nThese results show that good values $\\ge 4$ are constrained: even, one above a prime ($n-1$ prime), and when coprime to 3, also with $n-9$ prime. The simultaneous primality of $n-1$ and $n-9$ (when applicable) forces $n \\equiv 0 \\pmod{2}$ and creates additional arithmetic constraints on the prime gaps involved.",
+    "mathContext": "No prime $\\ge 5$ is good; 3 is the unique odd good value; $\\gcd(n,3)=1$ and good $\\Rightarrow$ $(n-9)$ prime",
+    "significance": "key",
+    "relatedConcepts": [
+      "good_ge4_even",
+      "good_implies_pred_prime",
+      "Nat.Prime",
+      "Nat.Coprime"
+    ],
+    "prerequisites": [
+      "ann-e1141-structural",
+      "ann-e1141-conjecture"
     ]
   }
 ]

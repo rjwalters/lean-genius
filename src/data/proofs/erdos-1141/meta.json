@@ -62,19 +62,19 @@
     ],
     "axiomCount": 1,
     "lineCount": 210,
-    "assumptions": "1 axiom (open conjecture: infinitely many good values). All verifiable results are fully proved.",
+    "assumptions": "1 axiom (finiteness theorem by Alexeev-Putterman-Sawhney-Sellke-Valiant 2026, arXiv:2604.06609; proved via Pollack's theorem but not yet formalized in Mathlib). All structural results are fully proved.",
     "theoremCount": 35
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10, suggesting the sequence may be finite. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), a density bound consistent with finiteness but insufficient to prove it. The sparse distribution and gap beyond 1722 make this one of the more enigmatic Erdős problems — the answer 'finitely many' seems likely but is unproved.",
+    "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), providing a density bound consistent with finiteness. The problem was **SOLVED in 2026** by Alexeev, Putterman, Sawhney, Sellke, and Valiant (arXiv:2604.06609), who proved that for each fixed a ≥ 1, only finitely many n satisfy the analogous property for n - ak². Their proof is a short deduction from Pollack's 2017 theorem on small prime quadratic residues; the result is ineffective (no explicit bound on the largest good n) due to Siegel's theorem.",
     "problemStatement": "**Erdős Problem #1141**:\n\nAre there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\n**Formally**: Does the set $\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k) = 1 \\wedge k^2 < n \\Rightarrow (n - k^2) \\text{ is prime}\\}$ have infinitely many elements?",
     "text": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n?",
-    "proofStrategy": "The formalization defines the Erdős-1141 property using bounded quantification over Finset.range for decidability, proves equivalence with the unbounded formulation, verifies all 41 known OEIS A214583 values via `all_known_good`, provides a complete classification of good values up to 100, and proves structural constraints: good n ≥ 4 are even, n-1 must be prime, no prime ≥ 5 is good, 3 is the unique odd good value, and good n coprime to 3 forces n-9 prime. The open conjecture (infinitude) is axiomatized.",
+    "proofStrategy": "The formalization defines the Erdős-1141 property using bounded quantification over Finset.range for decidability, proves equivalence with the unbounded formulation, verifies all 41 known OEIS A214583 values via `all_known_good`, provides a complete classification of good values up to 100, and proves structural constraints: good n ≥ 4 are even, n-1 must be prime, no prime ≥ 5 is good, 3 is the unique odd good value, and good n coprime to 3 forces n-9 prime. The finiteness theorem (the 2026 solution by Alexeev et al.) is axiomatized as `erdos_1141_finitely_many`, since the underlying proof via Pollack's theorem has not yet been formalized in Mathlib.",
     "keyInsights": [
       "**Highly composite advantage**: Good values cluster among highly composite numbers because these have the fewest coprime residues (low φ(n)/n ratio), minimizing the number of independent primality conditions n - k² must satisfy.",
       "**Necessary condition: n - 1 prime**: Every good n ≥ 2 must have n - 1 prime (from k = 1). This immediately excludes most n and explains why good values are always one more than a prime.",
       "**Decidability via Finset.range**: The bounded quantifier formulation makes IsErdos1141Good decidable, enabling Lean's `decide` and `native_decide` tactics to computationally verify or refute the property for specific n — a powerful technique for concrete number theory.",
-      "**The 1722 gap**: No good values exist between 1722 and 10^10 (a ratio of ~6 million). This enormous gap strongly suggests the sequence is finite, but proving this would require showing that the primality constraints become unsatisfiable for all sufficiently large n.",
+      "**The 1722 gap (now resolved)**: No good values exist between 1722 and 10^10 (a ratio of ~6 million). This enormous gap strongly suggested finiteness, which was confirmed by Alexeev et al. (2026): the sequence is provably finite, and 1722 is computationally the largest known good value for a=1.",
       "**Density bound O(N^{1/2+o(1)})**: ChatGPT-Tang's result bounds the counting function, showing good values are very sparse. This is the best theoretical evidence toward finiteness, though it does not rule out infinitely many extremely sparse terms."
     ],
     "prerequisites": [
@@ -136,11 +136,11 @@
     },
     {
       "id": "conjecture",
-      "title": "The Open Conjecture",
-      "startLine": 109,
-      "endLine": 114,
-      "summary": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values).",
-      "mathContext": "OPEN: $\\\\forall N, \\\\exists n \\\\geq N$ with $n$ good. Infinitely many good values exist?"
+      "title": "Finiteness Theorem (Alexeev et al. 2026)",
+      "startLine": 121,
+      "endLine": 128,
+      "summary": "Axiomatizes the finiteness theorem proved by Alexeev-Putterman-Sawhney-Sellke-Valiant (2026, arXiv:2604.06609): there exists N such that all n ≥ N are not Erdős-1141 good. Proved via Pollack's theorem; not yet in Mathlib.",
+      "mathContext": "SOLVED: $\\\\exists N, \\\\forall n \\\\ge N : \\\\neg\\\\text{IsErdos1141Good}(n)$ (Alexeev et al. 2026)"
     },
     {
       "id": "large-examples",
