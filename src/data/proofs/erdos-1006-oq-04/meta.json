@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1006",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 163,
-    "theoremCount": 11,
-    "assumptions": "None. All 11 theorems are fully proved. Builds on coloringOrientation definition and acyclicity results from OQ03.",
+    "lineCount": 193,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems are fully proved. Builds on coloringOrientation definition and acyclicity results from OQ03.",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Coloring",
@@ -117,9 +117,9 @@
     ],
     "opens": ["SimpleGraph"],
     "namespace": "Erdos1006OQ04",
-    "lineCount": 163,
+    "lineCount": 193,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 15,
     "definitionCount": 0,
     "path": "Proofs/Erdos1006OQ04.lean",
     "sorries": 0
