@@ -16,36 +16,42 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-03T11:41:44.691Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "COMPLETED",
+    "since": "2026-05-04T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "COMPLETE: 0 sorries, 2 axioms. chebyshevPsi_upper_bound proved (3→2 axioms).",
+    "blockers": [
+      "chebyshevPsi_asymptotic requires PNT — not Mathlib-provable",
+      "pnt_equivalence requires PNT equivalence — not Mathlib-provable"
+    ],
+    "nextAction": "No further axiom elimination possible. Submit PR.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 3 axioms (upper bound + PNT equivalence). PR #15464.",
+    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (PNT equivalences). chebyshevPsi_upper_bound proved (3→2 axioms).",
     "builtItems": [
-      "ChebyshevBoundsOQ04.lean:186 lines, 0 sorries, 4 axioms",
-      "chebyshevPsi_doubling_le: converted from axiom to theorem in ChebyshevBoundsOQ04.lean:124 — axiomCount 4->3",
-      "log_factorial_vonMangoldt at ChebyshevBoundsOQ04.lean:111 — Fubini sum-exchange expressing log(m!) in vonMangoldt terms",
-      "psi_doubling_le_log_centralBinom at ChebyshevBoundsOQ04.lean:146 — key upper bound step, eliminates the last sorry"
+      "ChebyshevBoundsOQ04.lean:386 lines, 0 sorries, 2 axioms",
+      "chebyshevPsi_doubling_le: converted from axiom to theorem — axiomCount 4->3",
+      "log_factorial_vonMangoldt at ChebyshevBoundsOQ04.lean:111 — Fubini sum-exchange for log(m!)",
+      "psi_doubling_le_log_centralBinom: proved via von Mangoldt Fubini — eliminates sorry",
+      "psi_odd_le_log_choose: proved ψ(2m+1)−ψ(m+1) ≤ log C(2m+1,m) via Hermite floor argument",
+      "chebyshevPsi_upper_bound: proved via strong induction — axiomCount 3→2"
     ],
     "insights": [
       "Proved θ(n) ≤ ψ(n) via vonMangoldt_apply_prime + Finset.sum_le_sum_of_subset_of_nonneg",
       "Proved ψ(2n)−ψ(n) ≥ log(n+1) using Bertrand prime as Finset.single_le_sum witness",
-      "psi_doubling_le proved structurally: chain through psi_doubling_le_log_centralBinom (log C(2n,n) >= psi(2n)-psi(n)) + centralBinom_le_four_pow. Outer structure fully proved; inner sorry needs vonMangoldt_sum Fubini argument.",
-      "psi_doubling_le_log_centralBinom proved via von Mangoldt Fubini (log_factorial_vonMangoldt lemma): ψ(2n)−ψ(n) ≤ log C(2n,n) using Hermite floor inequality for d≤n and coefficient=1 for d∈Ioc(n,2n]"
+      "psi_doubling_le_log_centralBinom proved via von Mangoldt Fubini: ψ(2n)−ψ(n) ≤ log C(2n,n)",
+      "chebyshevPsi_upper_bound proved via strong induction: even case uses doubling lemma, odd case uses C(2m+1,m) ≤ 4^m = Nat.choose_middle_le_pow",
+      "choose_succ_le_two_pow does not exist in Mathlib; use Nat.choose_middle_le_pow instead",
+      "Nat.choose_middle_le_pow is in Mathlib.Data.Nat.Choose.Sum (imported via Mathlib.NumberTheory.Primorial)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove chebyshevPsi_upper_bound via geometric series telescoping of doubling lemma",
-      "Submit psi_doubling_le_log_centralBinom (ChebyshevBoundsOQ04.lean:115) to Aristotle — HARD sorry encoding vonMangoldt_sum Fubini argument for log(C(2n,n)) >= psi(2n)-psi(n)"
+      "chebyshevPsi_asymptotic and pnt_equivalence require PNT — not Mathlib-provable"
     ]
   },
   "tags": [
@@ -84,9 +90,9 @@
     {
       "path": "Proofs/ChebyshevBoundsOQ04.lean",
       "filename": "ChebyshevBoundsOQ04.lean",
-      "lineCount": 317,
-      "theoremCount": 9,
-      "axiomCount": 3,
+      "lineCount": 386,
+      "theoremCount": 10,
+      "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -95,11 +101,11 @@
     {
       "path": "Proofs/ChebyshevBoundsOQ04Aristotle.lean",
       "filename": "ChebyshevBoundsOQ04Aristotle.lean",
-      "lineCount": 30,
+      "lineCount": 222,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04Aristotle.lean"
     }

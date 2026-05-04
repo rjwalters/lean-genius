@@ -194,7 +194,8 @@ private theorem chebyshevPsi_odd_step (m : ℕ) :
   have h1 : (chebyshevPsi (2 * m + 1) - chebyshevPsi (m + 1)) ≤ Real.log (Nat.choose (2 * m + 1) m) := by
     exact psi_odd_le_log_choose m
   have h2 : Nat.choose (2 * m + 1) m ≤ 2 ^ (2 * m) := by
-    exact choose_succ_le_two_pow (2 * m) m
+    calc Nat.choose (2 * m + 1) m ≤ 4 ^ m := Nat.choose_middle_le_pow m
+      _ = 2 ^ (2 * m) := by ring
   exact h1.trans ( by simpa using Real.log_le_log ( Nat.cast_pos.mpr <| Nat.choose_pos <| by linarith ) <| Nat.cast_le.mpr h2 )
 
 /-

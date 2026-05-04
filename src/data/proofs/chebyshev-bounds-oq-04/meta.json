@@ -19,10 +19,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-03",
-    "axiomCount": 3,
-    "assumptions": "3 axioms: (1) chebyshevPsi_upper_bound \u2014 \u03c8(n) \u2264 2n\u00b7log 2 by telescoping the doubling lemma; (2) chebyshevPsi_asymptotic \u2014 \u03c8(n)/n \u2192 1, the Prime Number Theorem for \u03c8; (3) pnt_equivalence \u2014 \u03c8(n)/n \u2192 1 \u2194 \u03c0(n) ~ n/log n, the equivalence of PNT forms.",
-    "lineCount": 316,
-    "theoremCount": 9,
+    "axiomCount": 2,
+    "assumptions": "2 axioms: (1) chebyshevPsi_asymptotic \u2014 \u03c8(n)/n \u2192 1, the Prime Number Theorem for \u03c8; (2) pnt_equivalence \u2014 \u03c8(n)/n \u2192 1 \u2194 \u03c0(n) ~ n/log n. chebyshevPsi_upper_bound is now proved (strong induction via psi_odd_le_log_choose + Nat.choose_middle_le_pow).",
+    "lineCount": 386,
+    "theoremCount": 10,
     "definitionCount": 2,
     "originalContributions": [
       "Definition of the second Chebyshev function \u03c8(n) = \u03a3_{k \u2264 n} \u039b(k) using Mathlib's vonMangoldt function",
@@ -31,7 +31,9 @@
       "Summary theorem chebyshevPsi_bounds combining \u03b8 \u2264 \u03c8 and the Bertrand lower bound",
       "Proof of log_factorial_vonMangoldt (Fubini step): log(m!) = \u03a3_{d \u2208 range(m+1)} \u039b(d)\u00b7\u230am/d\u230b via vonMangoldt_sum, Finset.sum_comm', and Nat.card_multiples'",
       "Proof of psi_doubling_le_log_centralBinom: \u03c8(2n)\u2212\u03c8(n) \u2264 log C(2n,n) via Fubini identity on log factorials, floor coefficients 1 for d \u2208 (n,2n] (Nat.div_eq_of_lt_le), and Hermite inequality for d \u2264 n (Nat.mul_div_le_mul_div_assoc)",
-      "Proof of chebyshevPsi_doubling_le: chains psi_doubling_le_log_centralBinom with log C(2n,n) \u2264 2n\u00b7log 2 via Nat.centralBinom_le_four_pow + Real.log_pow"
+      "Proof of chebyshevPsi_doubling_le: chains psi_doubling_le_log_centralBinom with log C(2n,n) \u2264 2n\u00b7log 2 via Nat.centralBinom_le_four_pow + Real.log_pow",
+      "Proof of psi_odd_le_log_choose: \u03c8(2m+1)\u2212\u03c8(m+1) \u2264 log C(2m+1,m) via Hermite floor inequality \u2014 for d \u2208 (m+1,2m+1], \u230a(2m+1)/d\u230b=1 and \u230am/d\u230b=\u230a(m+1)/d\u230b=0",
+      "Proof of chebyshevPsi_upper_bound: strong induction with even case via chebyshevPsi_doubling_le and odd case via Nat.choose_middle_le_pow (C(2m+1,m) \u2264 4^m) \u2014 axiomCount 3\u21922"
     ]
   },
   "overview": {
@@ -56,7 +58,6 @@
     "summary": "This entry defines the second Chebyshev function \u03c8(n) in Lean 4 using Mathlib's von Mangoldt function, proves the key inequality \u03b8(n) \u2264 \u03c8(n) from the subset structure of the defining sums, and establishes the Bertrand lower bound \u03c8(2n) \u2212 \u03c8(n) \u2265 log(n+1). The Chebyshev upper bound and PNT equivalence are axiomatized with proof sketches.",
     "implications": "The second Chebyshev function \u03c8 is the most analytically tractable of the prime-counting functions: its explicit formula connects it directly to zeros of the Riemann zeta function. Proving \u03c8(n) ~ n is equivalent to proving the Prime Number Theorem, and the Riemann Hypothesis is equivalent to the error term |\u03c8(n) \u2212 n| = O(\u221an \u00b7 log\u00b2n).",
     "openQuestions": [
-      "Prove chebyshevPsi_upper_bound in Lean via the geometric series telescoping argument: formalize \u03c8(n) = \u03a3_{k=0}^{K} [\u03c8(n/2^k) \u2212 \u03c8(n/2^{k+1})] + \u03c8(n/2^K) where n/2^K \u2264 1",
       "Prove the full PNT \u03c8(n)/n \u2192 1 from scratch in Lean 4 \u2014 currently requires either complex analysis of \u03b6(s) or an elementary proof (Selberg/Erd\u0151s 1949 style)",
       "Formalize the explicit formula \u03c8(x) = x \u2212 \u03a3_\u03c1 x^\u03c1/\u03c1 \u2212 log(2\u03c0) connecting \u03c8 to nontrivial zeros of \u03b6(s)"
     ]
@@ -117,10 +118,10 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevBoundsOQ04",
-    "lineCount": 316,
+    "lineCount": 386,
     "path": "Proofs/ChebyshevBoundsOQ04.lean",
-    "axiomCount": 3,
-    "theoremCount": 9,
+    "axiomCount": 2,
+    "theoremCount": 10,
     "definitionCount": 2,
     "sorries": 0,
     "imports": [
