@@ -1427,14 +1427,73 @@ theorem erdos_1201_strong_iff_smooth_decay :
         _ ≤ ((Finset.Icc 1 N).filter (fun n => n ∈ smooth_bad)).card + ({1} : Finset ℕ).card :=
               Finset.card_union_le _ _
         _ = ((Finset.Icc 1 N).filter (fun n => n ∈ smooth_bad)).card + 1 := by simp
-    -- Step 4: Derive density bound and conclude via limsup arithmetic
-    -- densityFun(goodᶜ, N) ≤ densityFun(smooth_bad, N) + 1/N for N ≥ 1
-    -- upperDensity goodᶜ = limsup densityFun(goodᶜ)
-    --   ≤ limsup (densityFun smooth_bad + 1/N)   [limsup_le_limsup + counting]
-    --   ≤ limsup densityFun smooth_bad + limsup(1/N)   [limsup subadditivity]
-    --   = upperDensity smooth_bad + 0   [1/N → 0]
-    --   ≤ η   [by hk]
-    -- (The limsup arithmetic is standard; all steps have appropriate boundedness conditions.)
-    sorry
+    -- Step 4: Limsup arithmetic to conclude upperDensity goodᶜ ≤ η
+    simp only [upperDensity, Set.mem_compl_iff, Set.mem_setOf_eq]
+    set dgc := fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∉ good)).card : ℝ) / N
+    set dbad := fun N : ℕ =>
+      (((Finset.Icc 1 N).filter (fun n => n ∈ smooth_bad)).card : ℝ) / N
+    -- Pointwise: dgc N ≤ dbad N + 1/N for N ≥ 1
+    have h_card : ∀ N : ℕ, 0 < N → dgc N ≤ dbad N + 1 / N := by
+      intro N hN
+      simp only [dgc, dbad]
+      rw [div_add_div_same]
+      apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg N)
+      norm_cast
+      exact hcard_bound N (by omega)
+    -- limsup dgc ≤ limsup (dbad + 1/N)
+    have h_limsup_le : Filter.limsup dgc Filter.atTop ≤
+        Filter.limsup (fun N => dbad N + 1 / N) Filter.atTop :=
+      Filter.limsup_le_limsup
+        (Filter.eventually_atTop.mpr ⟨1, fun N hN => h_card N (by omega)⟩)
+        ⟨0, fun a ha => by
+          by_contra hlt; push_neg at hlt
+          obtain ⟨N, hN⟩ := ha.exists
+          have h0 : (0 : ℝ) ≤ dgc N := by
+            simp only [dgc]; rcases Nat.eq_zero_or_pos N with rfl | hNpos
+            · simp
+            · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+          linarith⟩
+        ⟨2, Filter.Eventually.of_forall fun N => by
+          simp only [dbad]; rcases Nat.eq_zero_or_pos N with rfl | hN
+          · simp
+          · apply add_le_add
+            · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+              have hcard : (Finset.Icc 1 N).card = N := by rw [Finset.Nat.card_Icc]; omega
+              exact_mod_cast (Finset.card_filter_le _ _).trans hcard.le
+            · exact div_le_one_of_le (by exact_mod_cast hN) (Nat.cast_nonneg N)⟩
+    -- limsup (dbad + 1/N) ≤ limsup dbad + limsup(1/N)
+    have h_subadd : Filter.limsup (fun N => dbad N + 1 / (N : ℝ)) Filter.atTop ≤
+        Filter.limsup dbad Filter.atTop +
+        Filter.limsup (fun N : ℕ => (1 : ℝ) / N) Filter.atTop :=
+      limsup_add_le
+        ⟨0, Filter.Eventually.of_forall fun N => by
+          simp only [dbad]; rcases Nat.eq_zero_or_pos N with rfl | hN
+          · simp
+          · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)⟩
+        ⟨1, Filter.Eventually.of_forall fun N => by
+          simp only [dbad]; rcases Nat.eq_zero_or_pos N with rfl | hN
+          · simp
+          · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+            have hcard : (Finset.Icc 1 N).card = N := by rw [Finset.Nat.card_Icc]; omega
+            exact_mod_cast (Finset.card_filter_le _ _).trans hcard.le⟩
+        ⟨0, fun b hb => by
+          by_contra hlt; push_neg at hlt
+          obtain ⟨N, hN⟩ := hb.exists
+          linarith [div_nonneg zero_le_one (Nat.cast_nonneg N)]⟩
+        ⟨1, Filter.Eventually.of_forall fun N => by
+          rcases Nat.eq_zero_or_pos N with rfl | hN
+          · simp
+          · exact div_le_one_of_le (by exact_mod_cast hN) (Nat.cast_nonneg N)⟩
+    -- limsup(1/N) = 0 since 1/N → 0
+    have h_1N_zero : Filter.limsup (fun N : ℕ => (1 : ℝ) / N) Filter.atTop = 0 := by
+      have htend : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / N) Filter.atTop (nhds 0) := by
+        simp_rw [one_div]
+        exact tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+      exact htend.limsup_eq
+    -- limsup dbad ≤ η (from hk)
+    have h_dbad_le : Filter.limsup dbad Filter.atTop ≤ η := by
+      have := hk; simp only [upperDensity] at this; exact this
+    -- Combine: limsup dgc ≤ limsup(dbad + 1/N) ≤ limsup dbad + 0 ≤ η
+    exact h_limsup_le.trans (h_subadd.trans (by linarith [h_1N_zero, h_dbad_le]))
 
 end Erdos1201
