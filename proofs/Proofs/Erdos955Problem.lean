@@ -117,6 +117,7 @@ There exist sets A with positive density such that s⁻¹(A) = ∅. -/
 /-- **Untouchable Numbers:**
 k is "untouchable" if s(n) = k has no solutions. Examples: 2, 5, 52, 88, 96, ... -/
 def IsUntouchable (k : ℕ) : Prop :=
+  ¬∃ n : ℕ, n > 0 ∧ s n = k
 
 /-
 ## Part VII: Partial Results
