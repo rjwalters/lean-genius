@@ -165,7 +165,7 @@ theorem q2_implies_q1 (h : Question2) : Question1 := by
 /-- Chebyshev nodes: x_k = cos((2k-1)π / 2n). -/
 noncomputable def chebyshevNodes (n : ℕ) : InterpolationPoints n where
   points := fun k => Real.cos ((2 * k.val + 1) * Real.pi / (2 * n))
-  in_interval := by sorry
+  in_interval := fun k => Real.cos_mem_Icc _
   distinct := by sorry
 
 /-- Equidistant nodes: x_k = -1 + 2k/(n-1). -/
