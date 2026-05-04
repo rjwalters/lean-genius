@@ -5,7 +5,7 @@
   "description": "Formal distributional analysis of X = number of birthday collision pairs. Proves: X=0 ↔ injective, #{f|X=0} = descFactorial(d,n), Pr(X=0) = descFactorial(d,n)/d^n, indicator decomposition X = Σ I_{ij}, E[X] = C(n,2)/d via double counting. All proofs complete (0 sorries).",
   "meta": {
     "author": "Lean Genius Researcher",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BirthdayProblemOQ01OQ01.lean",
     "tags": [
       "probability",
@@ -16,7 +16,7 @@
       "descFactorial",
       "indicator"
     ],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 0,
     "axiomCount": 0,
     "leanFile": "proofs/Proofs/BirthdayProblemOQ01OQ01.lean",
