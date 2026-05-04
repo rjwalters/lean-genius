@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 614,
     "erdosUrl": "https://erdosproblems.com/614",
     "erdosProblemStatus": "open",
@@ -59,9 +59,9 @@
       "erdos_614_summary theorem: combines existence, complete-graph upper bound, and partial-star tight bound"
     ],
     "axiomCount": 2,
-    "sorryCount": 1,
-    "lineCount": 604,
-    "assumptions": "2 axioms: f_lower_bound, f_mono_k. f_case_k_eq_1 converted to theorem (1 sorry: type transport). f_upper_bound proved via complete graph construction. New: f_n_minus_2_upper_bound proved via partial-star construction (tight, vs complete-graph bound n*(n-1)/2).",
+    "sorryCount": 0,
+    "lineCount": 594,
+    "assumptions": "2 axioms: f_lower_bound, f_mono_k. f_case_k_eq_1 fully proved (no sorry: existsGraphWithPropertyP uses Fin n canonically, transport-free). f_upper_bound proved via complete graph construction. f_n_minus_2_upper_bound proved via partial-star construction (tight, vs complete-graph bound n*(n-1)/2).",
     "theoremCount": 17
   },
   "overview": {
@@ -187,12 +187,12 @@
       "Finset"
     ],
     "namespace": "Erdos614",
-    "lineCount": 604,
+    "lineCount": 594,
     "axiomCount": 2,
     "theoremCount": 17,
     "definitionCount": 8,
     "path": "Proofs/Erdos614Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
