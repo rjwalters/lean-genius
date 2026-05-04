@@ -1,0 +1,112 @@
+{
+  "id": "cauchy-schwarz-oq-01-oq-01-oq-02",
+  "title": "Heisenberg Uncertainty Principle via Cauchy-Schwarz",
+  "slug": "cauchy-schwarz-oq-01-oq-01-oq-02",
+  "description": "Robertson's 1929 generalization of the Heisenberg uncertainty principle: for any two self-adjoint operators A, B on a complex Hilbert space and any vector u, the product ‖Au‖·‖Bu‖ ≥ ½‖⟪(AB-BA)u, u⟫‖. Derived from Cauchy-Schwarz plus self-adjoint algebra.",
+  "meta": {
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "inner-product-spaces",
+      "functional-analysis",
+      "quantum-mechanics",
+      "cauchy-schwarz",
+      "uncertainty-principle"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 92,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Heisenberg (1927) discovered the uncertainty principle relating position and momentum measurements in quantum mechanics. Robertson (1929) generalized this to any pair of self-adjoint operators on a Hilbert space, showing the bound ‖Au‖·‖Bu‖ ≥ ½|⟨[A,B]u, u⟩| follows from abstract inner product geometry. The key algebraic insight is that self-adjoint operators make the commutator inner product ⟪(AB-BA)u, u⟫ equal to conj(⟪Au, Bu⟫) - ⟪Au, Bu⟫, a purely imaginary quantity whose norm is bounded by 2|⟪Au, Bu⟫|.",
+    "problemStatement": "For self-adjoint operators A, B on a complex Hilbert space E and any vector u ∈ E, prove ‖Au‖ · ‖Bu‖ ≥ ½‖⟪(AB-BA)u, u⟫_ℂ‖.",
+    "text": "The Robertson-Schrödinger uncertainty inequality states that for any self-adjoint A, B and any state u: ‖Au‖·‖Bu‖ ≥ ½|⟨[A,B]u,u⟩|. The Cauchy-Schwarz inequality ‖⟪Au, Bu⟫‖ ≤ ‖Au‖·‖Bu‖ is combined with the algebraic identity ⟪[A,B]u,u⟫ = conj(⟪Au,Bu⟫) - ⟪Au,Bu⟫ to give the bound.",
+    "proofStrategy": "Two steps: (1) Algebraic identity: for self-adjoint A, B, the self-adjointness property ⟪Ax,y⟫ = ⟪x,Ay⟫ implies ⟪ABu,u⟫ = ⟪Bu,Au⟫ = conj(⟪Au,Bu⟫) and ⟪BAu,u⟫ = ⟪Au,Bu⟫, so their difference is conj(z) - z where z = ⟪Au,Bu⟫. (2) Norm bound: ‖conj(z) - z‖ ≤ 2‖z‖ by triangle inequality, and ‖z‖ ≤ ‖Au‖·‖Bu‖ by Cauchy-Schwarz.",
+    "keyInsights": [
+      "Self-adjointness of A makes ⟪Au, v⟫ = ⟪u, Av⟫, enabling the swap ⟪ABu, u⟫ = ⟪Bu, Au⟫",
+      "The commutator inner product ⟪(AB-BA)u, u⟫ = conj(⟪Au,Bu⟫) - ⟪Au,Bu⟫ is always purely imaginary",
+      "‖conj(z) - z‖ ≤ 2‖z‖ by triangle inequality plus ‖conj(z)‖ = ‖z‖",
+      "Cauchy-Schwarz ‖⟪Au,Bu⟫‖ ≤ ‖Au‖·‖Bu‖ completes the chain"
+    ],
+    "prerequisites": [
+      "Complex inner product spaces",
+      "Self-adjoint operators",
+      "Cauchy-Schwarz inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "self-adjoint-symmetry",
+      "title": "Self-Adjoint Inner Product Symmetry",
+      "startLine": 27,
+      "endLine": 34,
+      "summary": "selfadj_inner: ⟪Ax, y⟫ = ⟪x, Ay⟫ for self-adjoint A. Uses A.adjoint = A and adjoint_inner_right.",
+      "mathContext": "For self-adjoint $A$ (i.e., $A^* = A$): $\\langle Ax, y\\rangle = \\langle x, A^* y\\rangle = \\langle x, Ay\\rangle$. This follows from the adjoint definition $\\langle A^* y, x\\rangle = \\langle y, Ax\\rangle$."
+    },
+    {
+      "id": "commutator-identity",
+      "title": "Commutator Inner Product Identity",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "inner_commutator: ⟪(AB-BA)u, u⟫ = conj(⟪Au, Bu⟫) - ⟪Au, Bu⟫ for self-adjoint A, B.",
+      "mathContext": "Setting $z = \\langle Au, Bu\\rangle$: $\\langle ABu, u\\rangle = \\langle Bu, Au\\rangle = \\overline{z}$ and $\\langle BAu, u\\rangle = \\langle Au, Bu\\rangle = z$. So $\\langle [A,B]u, u\\rangle = \\bar{z} - z = -2i\\,\\mathrm{Im}(z)$, which is purely imaginary."
+    },
+    {
+      "id": "norm-bound",
+      "title": "Conjugate Subtraction Norm Bound",
+      "startLine": 46,
+      "endLine": 52,
+      "summary": "norm_conj_sub_self_le: ‖conj(z) - z‖ ≤ 2‖z‖ by triangle inequality.",
+      "mathContext": "$\\|\\bar{z} - z\\| \\leq \\|\\bar{z}\\| + \\|z\\| = 2\\|z\\|$ since $\\|\\bar{z}\\| = \\|z\\|$ for complex numbers."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Robertson-Schrödinger Uncertainty Inequality",
+      "startLine": 54,
+      "endLine": 92,
+      "summary": "heisenberg_norm_bound: ‖⟪[A,B]u,u⟫‖ ≤ 2‖Au‖·‖Bu‖. heisenberg_uncertainty: ‖Au‖·‖Bu‖ ≥ ½‖⟪[A,B]u,u⟫‖. heisenberg_uncertainty_commute: trivial when [A,B]=0. heisenberg_uncertainty_symm: symmetric in A,B. heisenberg_uncertainty_unit: form for unit vectors.",
+      "mathContext": "Chain: $\\|\\langle[A,B]u,u\\rangle\\| \\leq 2\\|\\langle Au,Bu\\rangle\\| \\leq 2\\|Au\\|\\cdot\\|Bu\\|$ by the commutator identity + norm bound + Cauchy-Schwarz. Dividing by 2: $\\|Au\\|\\cdot\\|Bu\\| \\geq \\frac{1}{2}\\|\\langle[A,B]u,u\\rangle\\|$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Robertson-Schrödinger uncertainty inequality is proved in 7 theorems, 0 sorries, 0 axioms. The proof reduces to Cauchy-Schwarz plus two elementary facts: self-adjoint symmetry and the norm of a conjugate difference.",
+    "implications": "The abstract form covers all quantum mechanical observables simultaneously. Setting A = position operator X and B = momentum operator P with [X,P] = iℏ gives the standard Heisenberg relation ΔX·ΔP ≥ ℏ/2.",
+    "openQuestions": [
+      "Can the Schrödinger improvement ‖Au‖²·‖Bu‖² ≥ ¼|⟪[A,B]u,u⟫|² + ¼|⟪{A,B}u,u⟫ - 2⟪Au,u⟫⟪Bu,u⟫|² be formalized?",
+      "Can the equality condition (when the bound is achieved) be characterized in terms of eigenvectors of A + iλB?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Adjoint",
+      "Mathlib.Analysis.RCLike.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CauchySchwarzOQ01OQ01OQ02",
+    "lineCount": 92,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "proofId": "cauchy-schwarz-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Parent: Cauchy-Schwarz equality characterization for complex inner product spaces"
+    },
+    {
+      "proofId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz inequality ‖⟪x,y⟫‖ ≤ ‖x‖·‖y‖ is the core tool"
+    }
+  ],
+  "sorries": 0
+}
