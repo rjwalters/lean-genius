@@ -1,0 +1,41 @@
+{
+  "slug": "cube-root-3-irrational-oq-02-oq-01",
+  "title": "[ℚ(∛3):ℚ] = 3 as Corollary of Eisenstein Approach",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "significance": 6,
+  "tractability": 8,
+  "currentState": {
+    "sorryCount": 0,
+    "axiomCount": 0,
+    "iteration": 1,
+    "phase": "COMPLETED"
+  },
+  "problemStatement": {
+    "informal": "Can [ℚ(∛3):ℚ] = 3 be derived as a corollary of the Eisenstein criterion proof for ∛3 irrationality?",
+    "formal": "Module.finrank ℚ ℚ⟮(3:ℝ)^((1:ℝ)/3)⟯ = 3"
+  },
+  "knowledge": {
+    "insights": [
+      "adjoin_nthRoot_finrank from CubeRoot2IrrationalOQ03 provides a one-line proof: specializing n=3, m=3, p=3 gives [ℚ(∛3):ℚ] = 3 immediately",
+      "minpoly.eq_X_sub_C gives: if α = algebraMap K L a, then minpoly K α = X - C a (degree 1)",
+      "IntermediateField.adjoin.finrank connects Module.finrank with natDegree(minpoly)",
+      "Irrationality follows from degree > 1: q ∈ ℚ implies minpoly = X - C q (degree 1), contradicting minpoly degree 3",
+      "General principle: algebraic α has [ℚ(α):ℚ] > 1 iff α ∉ ℚ"
+    ],
+    "builtItems": [
+      "cbrt3_fieldExtDegree: Module.finrank ℚ ℚ⟮(3:ℝ)^(1/3)⟯ = 3 (CubeRoot3IrrationalOQ02OQ01.lean:40)",
+      "minpoly_cbrt3_natDeg: natDegree(minpoly ℚ ∛3) = 3 (CubeRoot3IrrationalOQ02OQ01.lean:52)",
+      "cbrt3_irrational_from_degree: Irrational ((3:ℝ)^(1/3)) via degree argument (CubeRoot3IrrationalOQ02OQ01.lean:67)",
+      "irrational_of_degree_gt_one: general principle for algebraic elements (CubeRoot3IrrationalOQ02OQ01.lean:82)",
+      "cbrt3_irrational_via_principle: applies the general principle to ∛3 (CubeRoot3IrrationalOQ02OQ01.lean:90)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "OQ-02: prove {1, ∛3, (∛3)²} linearly independent over ℚ (follows from [ℚ(∛3):ℚ] = 3)"
+    ],
+    "progressSummary": "COMPLETE: 5 theorems, 0 sorries, 0 axioms. Field degree = 3 proved in one line, general irrationality principle established, PR submitted."
+  }
+}
