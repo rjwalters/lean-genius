@@ -7,7 +7,7 @@
     "author": "Hadamard–de la Vallée Poussin (1896)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Prime_number_theorem",
     "date": "1896",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
     "tags": [
       "number-theory",
@@ -19,7 +19,7 @@
       "filter-algebra",
       "asymptotics"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -60,9 +60,9 @@
       "pnt_density_gap_summary: Theorem explicitly documenting the gap between proved long-interval and open short-interval density"
     ],
     "dateAdded": "2026-04-14",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 1338,
-    "assumptions": "0 axioms, 0 sorries. The proof is fully verified from PrimeNumberTheorem (which carries 1 axiom for the PNT itself) and Mathlib's filter analysis library.",
+    "assumptions": "Relies on `axiom primeNumberTheorem : PrimeNumberTheorem_Ratio` declared in `Proofs.PrimeNumberTheorem`. All three main theorems (pnt_at_scaled_point, pnt_density_long_interval, pnt_density_gap_summary) depend on this axiom. 0 sorries.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
@@ -186,7 +186,7 @@
     ],
     "namespace": "BertrandsPostulateOQ03OQ04OQ03",
     "lineCount": 1338,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "sorries": 0,
     "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
     "theoremCount": 4,
