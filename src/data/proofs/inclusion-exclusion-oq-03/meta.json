@@ -2,7 +2,7 @@
   "id": "inclusion-exclusion-oq-03",
   "title": "Efficient Inclusion-Exclusion: Zeta and Möbius Transforms",
   "slug": "inclusion-exclusion-oq-03",
-  "description": "Formalizes the Zeta and Möbius transforms on the Boolean subset lattice, proving Möbius inversion (μ ∘ ζ = id) via a Fubini-type sum exchange and signed cancellation identity. Also defines the O(n·2ⁿ) fast subset sum (SOS) DP step and proves odd-even subset balance. 11 theorems, 3 definitions, 0 axioms.",
+  "description": "Formalizes the Zeta and Möbius transforms on the Boolean subset lattice, proving Möbius inversion (μ ∘ ζ = id) via a Fubini-type sum exchange and signed cancellation identity. Also defines the O(n·2ⁿ) fast subset sum (SOS) DP step and proves odd-even subset balance. 12 theorems, 4 definitions, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-03-22",
@@ -23,8 +23,8 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified using Mathlib's Finset combinatorics.",
     "lineCount": 337,
-    "theoremCount": 11,
-    "definitionCount": 3,
+    "theoremCount": 12,
+    "definitionCount": 4,
     "originalContributions": [
       "signed_sum_subsets: ∑_{T⊆S} (-1)^|S\\T| = [S=∅] — the core cancellation via prod_add expansion",
       "inner_sum_eq: ∑_{T:U⊆T⊆S} (-1)^|S\\T| = [U=S] — Fubini reduction to signed_sum_subsets",
@@ -114,7 +114,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proves 11 theorems and 3 definitions (0 axioms, 0 sorries) formalizing: the zeta/Möbius transforms on the Boolean subset lattice, the core signed cancellation identity (via prod_add), Möbius inversion (via Fubini sum exchange), odd-even subset balance (via parity involution), and the O(n·2ⁿ) SOS DP step.",
+    "summary": "Proves 12 theorems and 4 definitions (0 axioms, 0 sorries) formalizing: the zeta/Möbius transforms on the Boolean subset lattice, the core signed cancellation identity (via prod_add), Möbius inversion (via Fubini sum exchange), odd-even subset balance (via parity involution), and the O(n·2ⁿ) SOS DP step.",
     "implications": "**Significance**\n\n1. **Algebraic IE**: Möbius inversion provides a cleaner algebraic proof of the IE principle than direct combinatorial arguments — no case analysis on which sets are included.\n\n2. **Algorithmic insight**: The SOS DP (O(n·2ⁿ)) is 1.5^n times faster than naive O(3ⁿ) enumeration for large n. For n=20, this is 2.7× faster (1,048,576 vs 3,486,784,401 operations).\n\n3. **Foundation for Möbius function**: The Boolean lattice Möbius function (-1)^{|S\\T|} is the simplest case of the general Möbius function on posets (Rota, 1964), which also explains the classical number-theoretic Möbius function μ(n).",
     "openQuestions": [
       "Can zetaStep be composed n times to prove zetaTransform_fold_eq, i.e., that folding zetaStep over Fintype.elems gives zetaTransform?",
