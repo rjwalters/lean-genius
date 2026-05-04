@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 19,
+    "sorries": 7,
     "erdosNumber": 671,
     "erdosUrl": "https://erdosproblems.com/671",
     "erdosProblemStatus": "open",
@@ -51,20 +51,25 @@
       "InterpolationPoints structure: n distinct points in [-1,1]",
       "lagrangeBasis definition: Lagrange basis polynomials p_i^n",
       "lagrangeInterp definition: interpolation operator L^n f",
+      "lagrangeBasis_sum_one (proved): partition of unity via root counting",
       "lebesgueFunction definition: lambda_n(x) = sum |p_i(x)|",
       "lebesgueConstant definition: Lambda_n = max lambda_n(x)",
+      "lebesgueFunction_ge_one (proved): lambda_n(x) >= 1 for n >= 1",
+      "lagrangeInterp_degree (proved): interpolant has degree <= n-1",
+      "chebyshevNodes.distinct (proved): cos strict anti-monotonicity",
+      "equidistantNodes.in_interval and distinct (proved): arithmetic bounds",
       "bernstein theorem: divergence at some point (sorry)",
       "erdos_vertesi theorem: a.e. divergence for some f (sorry)",
-      "Question1 definition: convergence despite local divergence",
-      "Question2 definition: convergence despite universal divergence",
-      "chebyshevNodes definition: optimal point sequence",
-      "equidistantNodes definition: bad point sequence",
-      "faber theorem: no uniform convergence for all C^0",
+      "Question1 definition: convergence despite local divergence (subtype formulation)",
+      "Question2 definition: convergence despite universal divergence (subtype formulation)",
+      "q2_implies_q1 (proved): Question2 implies Question1",
+      "q2_fails_implies (proved): negation gives explicit divergence",
+      "faber theorem: no universal convergent sequence (sorry)",
       "MainConjecture definition: Q1 iff Q2?"
     ],
     "axiomCount": 3,
-    "lineCount": 259,
-    "assumptions": "3 axiom(s) and 19 sorry(s). See the Lean source for details.",
+    "lineCount": 396,
+    "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details.",
     "theoremCount": 14
   },
   "overview": {
@@ -145,11 +150,11 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 259,
+    "lineCount": 396,
     "axiomCount": 3,
-    "theoremCount": 14,
-    "definitionCount": 10,
-    "sorries": 19,
+    "theoremCount": 18,
+    "definitionCount": 11,
+    "sorries": 7,
     "path": "Proofs/Erdos671Problem.lean"
   },
   "crossReferences": [
@@ -169,5 +174,5 @@
       "description": "Related Erd\u0151s problem sharing themes: approximation-theory, interpolation, open"
     }
   ],
-  "sorries": 19
+  "sorries": 7
 }
