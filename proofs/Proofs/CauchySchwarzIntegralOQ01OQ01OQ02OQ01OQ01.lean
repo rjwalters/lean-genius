@@ -55,6 +55,7 @@ its proof uses tendsto_Lp_of_tendsto_ae (Vitali's theorem) + unifIntegrable_of +
 -/
 
 import Mathlib
+import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01
 
 noncomputable section
 
@@ -112,12 +113,8 @@ theorem lp_truncation_tendsto_zero [SigmaFinite μ]
     Tendsto
       (fun n : ℕ =>
         eLpNorm (fun a => f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a) p μ)
-      atTop (nhds 0) := by
-  -- Apply Vitali's convergence theorem (tendsto_Lp_of_tendsto_ae):
-  -- UnifIntegrable follows from unifIntegrable_of + |Δₙ| ≤ 2|f| ∈ Lp.
-  -- UnifTight follows from unifTight_const (2f) + eLpNorm_mono.
-  -- a.e. convergence from pointwise_mul_indicator_tendsto.
-  sorry
+      atTop (nhds 0) :=
+  RieszSigmaFiniteComplete.lp_truncation_tendsto_zero p hp hptop hf
 
 -- ============================================================================
 -- § 2. Localization construction (Step A — HARD sorry)
@@ -151,8 +148,8 @@ theorem localization_existence
     ∃ g : α → ℝ, MemLp g q μ ∧
       ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
         φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
-        ∫ a in E, g a ∂μ := by
-  sorry
+        ∫ a in E, g a ∂μ :=
+  RieszSigmaFiniteComplete.localization_existence p q hp1 hptop hpq φ
 
 -- ============================================================================
 -- § 3. Main theorem (Step C — assembly, HARD sorry for density extension)
@@ -179,17 +176,8 @@ theorem riesz_lp_surjective_sigma_finite
     [SigmaFinite μ] [Fact (1 ≤ p)] :
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
     ∃ g : α → ℝ, MemLp g q μ ∧
-      ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
-  intro φ
-  obtain ⟨g, hg_lq, hagree⟩ := localization_existence p q hp1 hptop hpq φ
-  refine ⟨g, hg_lq, fun f => ?_⟩
-  -- Extend from indicator agreement to all f via Lp density:
-  -- φ - (f ↦ ∫ fg) is a CLM vanishing on all {1_E : E measurable, μ(E) < ∞}.
-  -- These span a dense subspace of Lp(μ) (simple functions with finite-measure support),
-  -- so by continuity the CLM is identically zero.
-  -- This is the content of integral_representation from the parent, which only uses
-  -- Lp.induction and integrationCLM (both valid for [SigmaFinite μ] without IsFiniteMeasure).
-  sorry
+      ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ :=
+  RieszSigmaFiniteComplete.riesz_lp_surjective_sigma_finite p q hp1 hptop hpq
 
 /-
 ## Sorries Summary
