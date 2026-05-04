@@ -44,7 +44,7 @@
     "theoremCount": 6
   },
   "overview": {
-    "historicalContext": "The parent proof CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean uses nlinarith with explicit hints such as sq_nonneg (a - b) to close the key inequality steps. This raises the question: can modern proof automation (polyrith, positivity) eliminate these manual witnesses? This file answers the question affirmatively for positivity, showing that ring + positivity is a complete automation strategy for the power mean chain.",
+    "historicalContext": "The power mean chain HM ≤ GM ≤ AM ≤ QM is a cornerstone of classical analysis. The AM-GM inequality appears in Euclid (geometric construction proof) and was first stated algebraically by Cauchy in 1821. Hardy, Littlewood, and Pólya systematized the theory of power means in their landmark 1934 book *Inequalities*, establishing the complete hierarchy of power means $M_r(a,b) = ((a^r + b^r)/2)^{1/r}$ and proving that $M_r$ is monotone increasing in $r$. The HM-GM-AM-QM chain is the special case $r \\in \\{-1, 0, 1, 2\\}$ (with GM as the $r \\to 0$ limit).\n\nFrom a **proof automation perspective**, each link in the chain is a quadratic or quartic polynomial inequality. The parent file (OQ02) used `nlinarith` with explicit `sq_nonneg` hints — a manually-guided approach that works but is fragile. This file answers the automation open question: the `ring + positivity` pattern completely eliminates manual witnesses. `ring` finds the sum-of-squares certificate algebraically; `positivity` closes the nonnegativity goal by structural recognition. This demonstrates a general principle: for polynomial inequalities that reduce to perfect squares or products of non-negatives, `ring + positivity` provides a complete and clean automation.",
     "problemStatement": "Can polyrith or positivity close the power mean inequality goals hint-free, yielding a fully automated proof of HM ≤ GM ≤ AM ≤ QM?",
     "text": "Re-proves the power mean chain using ring algebraic normalization followed by positivity for nonnegativity. The key insight: each inequality gap B - A = ((a-b)/c)^2 for some constant c. ring verifies this mechanically; positivity closes 0 ≤ ((a-b)/c)^2 by recognizing perfect squares.",
     "proofStrategy": "For each inequality A ≤ B: (1) suffices h : 0 ≤ B - A by linarith, (2) have key : B - A = square_form := by ring, (3) rw [key]; positivity. The ring tactic finds the algebraic identity; positivity closes the square nonnegativity.",
@@ -114,6 +114,29 @@
       "For the n-variable power mean chain, does positivity scale or does degree growth require more elaborate automation?"
     ]
   },
+  "references": [
+    {
+      "authors": ["G. H. Hardy", "J. E. Littlewood", "G. Pólya"],
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Seminal reference establishing the theory of power means; proves the complete monotone chain M_r(a,b) for r ∈ ℝ and the general AM-GM inequality."
+    },
+    {
+      "authors": ["A.-L. Cauchy"],
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "École Polytechnique",
+      "note": "First algebraic proof of the AM-GM inequality; also contains the Cauchy-Schwarz inequality in its original form."
+    },
+    {
+      "authors": ["J. M. Steele"],
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press",
+      "note": "Modern treatment of inequality methods including power means; discusses the role of SOS (sum-of-squares) certificates in inequality proofs."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
