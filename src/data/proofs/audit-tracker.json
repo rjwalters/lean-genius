@@ -13961,10 +13961,12 @@
       "result": "clean"
     },
     "erdos-1201": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-05-03T12:00:00Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "meta.lf.sorries=1 but Lean file has 0 sorries; lf.lineCount=1241 but file has 1270 lines. Fix in-flight: PR #15504"
+      ],
+      "lastAudited": "2026-05-04T04:55:09Z",
+      "result": "issues-found"
     },
     "cantor-diagonalization-oq-01-oq-02": {
       "auditCount": 1,
