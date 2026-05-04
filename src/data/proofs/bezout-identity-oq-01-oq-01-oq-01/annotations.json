@@ -1,0 +1,142 @@
+[
+  {
+    "id": "step-counter-design",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Mirroring the Algorithm to Count Its Steps",
+    "content": "binaryGcdSteps is defined with exactly the same seven if-then-else branches as binaryGcd. This is deliberate: the step counter must mirror the algorithm's control flow so that the inductive proof can match each algorithm step to a corresponding decrease in the log measure. Any discrepancy between the step counter and the algorithm would make the bound unprovable. Termination uses the same a+b measure as the algorithm, automated by omega.",
+    "mathContext": "$\\text{binaryGcdSteps}(a,b)$ counts the number of recursive calls. Its definition mirrors all 7 branches of Stein's algorithm: base cases (a=0 or b=0), both-even, a-even-b-odd, a-odd-b-even, both-odd with $a \\leq b$, both-odd with $a > b$.",
+    "significance": "key",
+    "prerequisites": [
+      "Stein's binary GCD algorithm (BezoutIdentityOQ01OQ01)",
+      "well-founded recursion in Lean 4",
+      "termination_by and decreasing_by tactics"
+    ],
+    "relatedConcepts": [
+      "step counting in algorithm analysis",
+      "mirror induction",
+      "well-founded recursion on natural numbers"
+    ]
+  },
+  {
+    "id": "log-helper-log-div-two",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "technique",
+    "title": "log₂(n/2) = log₂ n − 1: Stripping One Bit",
+    "content": "The lemma log_div_two proves Nat.log 2 (n/2) = Nat.log 2 n − 1 for n ≥ 2. This is the fundamental bit-stripping step: halving n removes exactly one bit from its binary representation. In the context of the complexity proof, it says that whenever the algorithm takes a branch that halves one of its arguments, the log measure strictly decreases. Mathlib's Nat.log_div_two handles this directly.",
+    "mathContext": "$\\lfloor \\log_2(n/2) \\rfloor = \\lfloor \\log_2 n \\rfloor - 1$ for $n \\geq 2$. In binary: if $n$ has $k+1$ bits, then $\\lfloor n/2 \\rfloor$ has $k$ bits.",
+    "significance": "key",
+    "prerequisites": [
+      "Nat.log in Mathlib",
+      "integer division",
+      "binary representation"
+    ],
+    "relatedConcepts": [
+      "bit-length of a number",
+      "Nat.log_div_two in Mathlib",
+      "right shift as halving"
+    ]
+  },
+  {
+    "id": "log-odd-sub-half",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 103
+    },
+    "type": "technique",
+    "title": "The Delicate Case: Odd-Minus-Odd Drops log₂ b",
+    "content": "When both a and b are odd with a < b, the algorithm sets the new b to (b−a)/2. The lemma log_odd_sub_half proves log₂((b−a)/2) + 1 ≤ log₂ b. Why? Because b is odd and a ≥ 1, we have b−a ≤ b−1 < b. Since b−a is even (odd minus odd is even), (b−a)/2 ≤ (b−1)/2 < b/2. So (b−a)/2 < b/2, giving log₂((b−a)/2) ≤ log₂(b/2) = log₂ b − 1. This is the most subtle case in the complexity proof: the argument is not just that we halved b, but that the subtraction also shrinks the value before halving.",
+    "mathContext": "Let $b$ be odd, $0 < a < b$. Then $b - a$ is even (odd − odd), so $(b-a)/2 \\in \\mathbb{N}$. We have $(b-a)/2 \\leq (b-1)/2 < b/2$, so $\\lfloor\\log_2((b-a)/2)\\rfloor \\leq \\lfloor\\log_2(b/2)\\rfloor = \\lfloor\\log_2 b\\rfloor - 1$.",
+    "significance": "key",
+    "prerequisites": [
+      "odd minus odd is even",
+      "Nat.log monotonicity",
+      "log_div_two"
+    ],
+    "relatedConcepts": [
+      "subtraction before halving",
+      "integer subtraction bounds",
+      "symmetric case log_odd_sub_half_left"
+    ]
+  },
+  {
+    "id": "main-induction",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 188
+    },
+    "type": "technique",
+    "title": "Strong Induction Over All Seven Algorithm Branches",
+    "content": "binaryGcdSteps_le_log is proved by strong induction on a+b (the same measure used for termination). The proof sets la = Nat.log 2 a and lb = Nat.log 2 b, then proceeds by cases over the algorithm's seven branches. Each case shows that the step count for the recursive call is bounded by 2·(la' + lb') + 2 (induction hypothesis), where la' and lb' are the logs of the new arguments. The key calculation in each branch: the new logs are at most la−1 and lb (or la and lb−1), so la' + lb' ≤ la + lb − 1. Adding 1 for the current step gives ≤ 2·(la + lb) + 2. The base cases (a=0 or b=0) are trivially 0.",
+    "mathContext": "Strong induction on $a+b$: assume $\\forall a' < a, b' < b, \\text{steps}(a',b') \\leq 2(\\log_2 a' + \\log_2 b') + 2$. In each branch, the recursive call has smaller $a+b$, so IH applies. The log measure drops by $\\geq 1$, giving $\\text{steps}(a,b) \\leq 1 + 2((\\log_2 a + \\log_2 b - 1)) + 2 = 2(\\log_2 a + \\log_2 b) + 1 \\leq 2(\\log_2 a + \\log_2 b) + 2$.",
+    "significance": "key",
+    "prerequisites": [
+      "strong induction in Lean 4 (Nat.rec with ih)",
+      "log_div_two",
+      "log_odd_sub_half",
+      "log_odd_sub_half_left"
+    ],
+    "relatedConcepts": [
+      "Lyapunov function for algorithm termination",
+      "seven-case analysis of binary GCD",
+      "logarithm measure decrease"
+    ]
+  },
+  {
+    "id": "bit-cost-axiom",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 190,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Axiomatizing the Per-Step Bit Cost",
+    "content": "The two axioms stepBitOps and stepBitOps_le model the bit-RAM cost of each algorithm step. Each step performs: (1) one comparison of a and b (O(log n) bits), (2) one subtraction or right-shift (O(log n) bits), (3) one parity test — LSB check (O(1)). The constant C=3 is conservative. This axiomatization is standard in algorithm analysis: the combinatorial step-count argument is independent of the machine model, so separating the two makes the formalization modular. The step count is fully proved; only the machine-level cost model is axiomatized.",
+    "mathContext": "Axioms: $\\text{stepBitOps}(a,b) : \\mathbb{N}$ and $\\text{stepBitOps}(a,b) \\leq 3(\\lfloor\\log_2(\\max a b)\\rfloor + 1)$. This models the bit-RAM cost where word operations (comparison, subtraction, parity test) each cost $O(\\log n)$ bit operations when $n = \\max(a,b)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "bit-RAM vs word-RAM models",
+      "logarithmic cost of word operations",
+      "Lean 4 axiom declarations"
+    ],
+    "relatedConcepts": [
+      "bit complexity model",
+      "word-RAM vs bit-RAM",
+      "machine model in algorithm analysis"
+    ]
+  },
+  {
+    "id": "log-sq-bound",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 199,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "O(log² n) Total Bit Complexity",
+    "content": "totalBitOps combines the step count and per-step cost: binaryGcdSteps × 3·(log₂(max a b)+1). The main theorem binaryGcd_log_sq_complexity gives the explicit bound (2·(log₂ a + log₂ b) + 2)·(3·(log₂(max a b)+1)). The corollary binaryGcd_log_sq_bound simplifies using log₂ a + log₂ b ≤ 2·log₂(max a b) to obtain ≤ 6·(log₂(max a b)+1)², which is O(log²(max a b)). Three worked examples with native_decide verify the step counter on specific inputs.",
+    "mathContext": "$\\text{totalBitOps}(a,b) \\leq (2(\\log_2 a + \\log_2 b) + 2) \\cdot 3(\\log_2(\\max a b)+1) \\leq 6(\\log_2(\\max a b)+1)^2 = O(\\log^2 n)$ where $n = \\max(a,b)$. The simplification uses $\\log_2 a + \\log_2 b \\leq 2\\log_2(\\max a b)$.",
+    "significance": "key",
+    "prerequisites": [
+      "binaryGcdSteps_le_log",
+      "stepBitOps_le axiom",
+      "Nat.log monotonicity",
+      "Nat.mul_le_mul"
+    ],
+    "relatedConcepts": [
+      "big-O notation",
+      "product of logarithms",
+      "native_decide for ground-truth verification"
+    ]
+  }
+]
