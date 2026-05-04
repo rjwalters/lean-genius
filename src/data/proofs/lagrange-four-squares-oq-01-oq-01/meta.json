@@ -117,5 +117,20 @@
       "difficulty": "research",
       "status": "open"
     }
-  ]
+  ],
+  "leanFile": {
+    "path": "Proofs/LagrangeFourSquaresOQ01OQ01.lean",
+    "imports": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Mathlib.Data.Nat.Sqrt",
+      "Mathlib.Topology.Algebra.InfiniteSum.Ring",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "RabinShallit",
+    "lineCount": 213,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 3,
+    "sorries": 0
+  }
 }
