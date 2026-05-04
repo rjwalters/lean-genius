@@ -15,16 +15,16 @@
     ],
     "proofRepoPath": "Proofs/Erdos700Problem.lean",
     "sorries": 0,
-    "badge": "wip",
+    "badge": "axiom",
     "sourceUrl": "https://erdosproblems.com/700",
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 2,
     "sorryCount": 0,
-    "lineCount": 419,
+    "lineCount": 427,
     "theoremCount": 14,
     "definitionCount": 3,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "2 axioms: (1) erdos_700_question2 — there are infinitely many composite n with f(n) > √n (open; n=30 is a known example); (2) erdos_700_question3 — f(n) ≪_A n/(log n)^A for every A > 0 (open; connects to Hardy-Ramanujan). 14 theorems proved: bounds, f(pq)=p, f(30)=6, f(p²)≥p. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -80,17 +80,17 @@
       "id": "question2",
       "title": "Question 2: Large Values of f(n)",
       "startLine": 397,
-      "endLine": 414,
-      "summary": "PROVES `f_prime_square`: $f(p^2) \\ge p = \\sqrt{p^2}$ from `f_lower_bound` and `minFac_prime_sq`. documents in source comments `erdos_700_question2` (no Lean declaration exists): infinitely many composite $n$ with $f(n) > \\sqrt{n}$. Prime squares give equality ($f(p^2) \\ge p = \\sqrt{p^2}$), so strict inequality is the open part.",
-      "mathContext": "Proved: $f(p^2) \\ge p$, since $p(p^2) = \\text{minFac}(p^2) = p$ and $p(n) \\le f(n)$. Open: are there infinitely many composite $n$ with $f(n) > \\sqrt{n}$ strictly? Prime squares are sparse ($\\sim \\sqrt{x}/\\log x$ up to $x$), and they only achieve $f(p^2) \\ge \\sqrt{n}$, not strict inequality."
+      "endLine": 417,
+      "summary": "PROVES `f_prime_square`: $f(p^2) \\ge p = \\sqrt{p^2}$ from `f_lower_bound` and `minFac_prime_sq`. AXIOMATIZES `erdos_700_question2`: $\\{n \\text{ composite} : f(n) > \\lfloor\\sqrt{n}\\rfloor\\}$ is infinite. Witness: $n = 30$ satisfies $f(30) = 6 > 5 = \\lfloor\\sqrt{30}\\rfloor$.",
+      "mathContext": "Proved: $f(p^2) \\ge p$, since $p(p^2) = \\text{minFac}(p^2) = p$ and $p(n) \\le f(n)$. Axiom: infinitely many composite $n$ with $\\text{Nat.sqrt}(n) < f(n)$. Example: $n = 30$, $f(30) = 6$, $\\lfloor\\sqrt{30}\\rfloor = 5$."
     },
     {
       "id": "question3",
       "title": "Question 3: Upper Bound Conjecture",
-      "startLine": 415,
-      "endLine": 419,
-      "summary": "documents in source comments `erdos_700_question3` (no Lean declaration exists): for every $A > 0$, $\\exists C > 0$ such that $f(n) \\le C \\cdot n / (\\log n)^A$ for all composite $n \\ge 4$. This would show $f(n)$ is much smaller than $n/P(n)$ for typical $n$, since $P(n) \\sim \\log n$ by Hardy-Ramanujan.",
-      "mathContext": "Open conjecture: $f(n) \\ll_A n/(\\log n)^A$ for every fixed $A > 0$. This would imply $f(n)/n \\to 0$ faster than any power of $1/\\log n$. The connection to the Hardy-Ramanujan theorem: $P(n) \\sim \\log n$ for typical $n$, so $n/P(n) \\sim n/\\log n$, and the conjecture asks whether $f(n)$ is typically much smaller than even this."
+      "startLine": 419,
+      "endLine": 427,
+      "summary": "AXIOMATIZES `erdos_700_question3`: for every $A > 0$, $\\exists C > 0$ such that $f(n) \\le C \\cdot n / (\\log n)^A$ for all composite $n \\ge 4$. This would show $f(n)$ is much smaller than $n/P(n)$ for typical $n$, since $P(n) \\sim \\log n$ by Hardy-Ramanujan.",
+      "mathContext": "Axiom: $f(n) \\ll_A n/(\\log n)^A$ for every fixed $A > 0$. Formalized via `Real.log` from `Mathlib.Analysis.SpecialFunctions.Log.Basic`. Connection: Hardy-Ramanujan gives $P(n) \\sim \\log n$ for typical $n$, so $n/P(n) \\sim n/\\log n$."
     }
   ],
   "overview": {
@@ -145,12 +145,14 @@
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Nat.GCD.Basic",
       "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Data.Nat.Prime.Basic"
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Multiplicity",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 419,
-    "axiomCount": 0,
+    "lineCount": 427,
+    "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 3,
     "path": "Proofs/Erdos700Problem.lean",
