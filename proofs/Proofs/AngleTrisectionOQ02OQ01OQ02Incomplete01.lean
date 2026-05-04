@@ -270,14 +270,26 @@ private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
       IsScalarTower.of_algebraMap_eq (fun r =>
         Subtype.ext (by simp [RingHom.algebraMap_toAlgebra,
           IntermediateField.coe_inclusion]))
-    -- Tower law K → Ka → Kaβ → Kaβ ⊔ ℚ⟮b⟯
-    have htower_KKa := Module.finrank_mul_finrank ℚ ↥K ↥Ka
-    have htower_KaKaβ := Module.finrank_mul_finrank ↥K ↥Ka ↥Kaβ
+    -- Additional algebra instances for K → Ka → (Kaβ ⊔ ℚ⟮b⟯) tower
+    haveI hAlg_KaJoin : Algebra ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      (IntermediateField.inclusion (le_sup_left.trans le_sup_left)).toAlgebra
+    haveI hAlg_KJoin : Algebra ↥K ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      (IntermediateField.inclusion
+        (le_sup_left.trans (le_sup_left.trans le_sup_left))).toAlgebra
+    haveI hST_KKaJoin : IsScalarTower ↥K ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      IsScalarTower.of_algebraMap_eq (fun r =>
+        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra,
+          IntermediateField.coe_inclusion]))
+    -- Tower laws
     have htower_KaβJoin := Module.finrank_mul_finrank ↥Ka ↥Kaβ ↥(Kaβ ⊔ ℚ⟮b⟯)
+    have htower_KJoin := Module.finrank_mul_finrank ↥K ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯)
     -- finrank K (Kaβ ⊔ ℚ⟮b⟯) ∣ 2^(n₁ + 1 + n₂)
     have h_tower_dvd : Module.finrank ↥K ↥(Kaβ ⊔ ℚ⟮b⟯) ∣ 2 ^ (n₁ + 1 + n₂) := by
-      rw [← htower_KaβJoin, pow_add, pow_add, pow_one]
-      exact Nat.mul_dvd_mul (Nat.mul_dvd_mul hn₁ h_step2) hn₂
+      have h_Ka_dvd : Module.finrank ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯) ∣ 2 ^ (1 + n₂) := by
+        rw [← htower_KaβJoin, pow_add, pow_one]
+        exact Nat.mul_dvd_mul h_step2 hn₂
+      rw [show n₁ + 1 + n₂ = n₁ + (1 + n₂) from by ring, pow_add, ← htower_KJoin]
+      exact Nat.mul_dvd_mul hn₁ h_Ka_dvd
     -- finrank K (K ⊔ ℚ⟮b+β⟯) ∣ finrank K (Kaβ ⊔ ℚ⟮b⟯)
     have h_dvd_le : Module.finrank ↥K ↥(K ⊔ ℚ⟮(b + β)⟯) ∣
         Module.finrank ↥K ↥(Kaβ ⊔ ℚ⟮b⟯) := by
