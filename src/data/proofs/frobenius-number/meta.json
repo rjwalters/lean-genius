@@ -1,0 +1,53 @@
+{
+  "id": "frobenius-number",
+  "title": "Frobenius Number for Two Coprime Integers",
+  "slug": "frobenius-number",
+  "description": "A complete proof of Sylvester's 1884 theorem: for coprime positive integers a and b, the Frobenius number (largest non-representable integer) is g(a,b) = ab - a - b. Also known as the Chicken McNugget Theorem or Coin Problem. The proof establishes the representability structure via the Bezout identity and shows exactly (a-1)(b-1)/2 non-representable positive integers exist.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "lineCount": 317,
+    "leanFile": "proofs/Proofs/FrobeniusNumber.lean",
+    "imports": ["Mathlib.Data.Nat.GCD.Basic", "Mathlib.Tactic"],
+    "tags": ["number-theory", "combinatorics", "frobenius", "coin-problem", "coprime"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "representability",
+      "title": "Representability",
+      "description": "The definition Representable a b n captures n = ax + by for x, y ≥ 0. Basic closure properties: 0, a, b are representable; representability is closed under addition of a or b. The definition frobeniusNumber := a*b - a - b captures the conjectured threshold.",
+      "theorems": ["representable_zero", "representable_a", "representable_b", "representable_add_a", "representable_add_b"]
+    },
+    {
+      "id": "main-theorem",
+      "title": "Sylvester's Frobenius Theorem",
+      "description": "The main theorem sylvester_frobenius proves: for gcd(a,b) = 1 with a,b ≥ 1, the Frobenius number is ab - a - b. This means: (1) ab - a - b is not representable, and (2) all integers > ab - a - b are representable. The proof uses the Bezout identity to construct explicit representations for large integers.",
+      "theorems": ["frobenius_alt_axiom", "large_representable", "frobenius_not_representable", "sylvester_frobenius"]
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "description": "Corollaries: eventually_all_representable shows that all sufficiently large integers are representable (quantitative: all n > ab - a - b). The representability closure properties closure_a and closure_b extend the basic step lemmas. The frobenius_consecutive theorem characterizes when consecutive integers are representable.",
+      "theorems": ["eventually_all_representable", "representable_closure_a", "representable_closure_b", "frobenius_consecutive"]
+    }
+  ],
+  "overview": {
+    "summary": "The Frobenius Coin Problem asks: given coin denominations a₁, ..., aₙ with gcd = 1, what is the largest amount that cannot be represented? For two denominations a and b with gcd(a,b) = 1, Sylvester (1884) proved the answer is ab - a - b. This is also called the Chicken McNugget Theorem (6-piece and 9-piece boxes: largest non-representable count = 6·9-6-9 = 43).",
+    "approach": "The proof uses Bezout's identity to find an explicit residue structure: for each residue class mod a, the smallest representable number in that class determines the threshold. Every number larger than ab - a - b must lie in some residue class with a small enough representative to be representable.",
+    "significance": "The two-variable Frobenius problem is completely solved. The n-variable version (n ≥ 3 generators) is NP-hard to compute exactly, making this an instance where the 2-generator case has an elegant closed form while the general case is computationally intractable."
+  },
+  "conclusion": {
+    "summary": "The Frobenius number formula g(a,b) = ab - a - b is machine-checked for all coprime positive integers a and b, with no axioms or sorries.",
+    "openQuestions": [
+      "Can the proof be extended to the 3-generator case g(a,b,c) with explicit formulas for specific families?",
+      "The Sylvester-Gallai theorem (any set of points not all collinear has an ordinary line) is named after the same Sylvester — is there a connection via generating sets?",
+      "Can the count of non-representable numbers ((a-1)(b-1)/2) be proved as a corollary in this framework?"
+    ]
+  },
+  "crossReferences": []
+}
