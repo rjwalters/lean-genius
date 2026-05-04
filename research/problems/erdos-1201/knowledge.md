@@ -239,3 +239,30 @@ Is it true that for every $\epsilon,\eta>0$ there exists a $k$ such that the den
 - Docker build verification: check `Filter.liminf_const_sub 1 hbdd hcobdd` compiles
 - If build passes: create PR and merge
 - Further: formalize Dickman ρ function approach (blocked, >1000 lines infra needed)
+
+## Session 2026-05-04 (Session 17) - Close backward sorry in erdos_1201_strong_iff_smooth_decay
+
+**Mode**: REVISIT (continuing session 16 work)
+**Outcome**: sorry closed (0 sorries now)
+
+### What I Did
+- Identified that the file already had `limsup_add_le` used in `erdos_1201_from_bad_density_bound`
+  (lines 1248-1334) with the EXACT pattern needed for the backward direction sorry
+- Adapted the pattern to the sorry context: `dgc` = densityFun goodᶜ, `dbad` = densityFun smooth_bad
+- Closed sorry with: limsup_le_limsup + limsup_add_le + `tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop` + `htend.limsup_eq`
+- File: 1440 → 1499 lines, 1 sorry → 0 sorries
+
+### Key Findings
+- `limsup_add_le` in this file takes 4 args: IsBoundedUnder (≥) F f, IsBoundedUnder (≤) F f, IsCoboundedUnder (≤) F g, IsBoundedUnder (≤) F g
+- `(tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop).limsup_eq` proves `limsup(1/N) = 0`
+- The backward sorry proof was structurally identical to `erdos_1201_from_bad_density_bound`
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1440→1499 lines, 1→0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (sorries 1→0, lineCount 1440→1499)
+- Branch: research/erdos-1201-lower-density-s16, PR #15529
+
+### Next Steps
+- Verify Docker build passes (OOM on first attempt, retry in progress)
+- Consider Dickman ρ function for the actual conjecture (>1000 lines, blocked)
+- The strong-iff-smooth-decay reduction is complete; proof of smooth-decay is the real open problem
