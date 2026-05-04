@@ -1,0 +1,59 @@
+{
+  "id": "gauss-wilson-non-cyclic",
+  "title": "Non-Cyclic 2-Torsion in (ZMod n)×",
+  "slug": "gauss-wilson-non-cyclic",
+  "description": "For n ≥ 3 with (ZMod n)× non-cyclic, there exists an element x with x² = 1, x ≠ ±1—a 'third square root of unity'. This proves the contrapositive of the Gauss-Wilson theorem's group-theoretic core: if (ZMod n)× is cyclic, it cannot have more than two solutions to x² = 1. The proof handles two cases: n has an odd prime factor (CRT gives the third root) and n = 2^k with k ≥ 3.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "lineCount": 324,
+    "leanFile": "proofs/Proofs/GaussWilsonNonCyclic.lean",
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.FieldTheory.Finite.Basic"
+    ],
+    "tags": ["number-theory", "group-theory", "cyclic-groups", "zmod", "wilson-gauss"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "unit-lifting",
+      "title": "Unit Lifting from Square Roots",
+      "description": "The definition unitOfSqEqOne constructs a unit in (ZMod n)× from any x with x² = 1. The companion theorems verify the unit value, its square, and that it is neither 1 nor -1.",
+      "theorems": ["unitOfSqEqOne_val", "unitOfSqEqOne_sq", "unitOfSqEqOne_ne_one", "unitOfSqEqOne_ne_neg_one"]
+    },
+    {
+      "id": "third-root",
+      "title": "Third Square Root via CRT and Power-of-Two Cases",
+      "description": "The main construction exists_third_sqrt_of_not_cyclic: when (ZMod n)× is non-cyclic (n ≥ 3), find a third solution to x² = 1. Two cases: (1) n has an odd prime factor — CRT gives a non-trivial element; (2) n = 2^k with k ≥ 3 — explicit construction using the non-cyclic structure of (ZMod 2^k)×.",
+      "theorems": ["exists_third_sqrt_coprime", "exists_third_sqrt_pow2", "exists_third_sqrt_of_not_cyclic"]
+    },
+    {
+      "id": "card-bound",
+      "title": "Cardinality Bound on 2-Torsion",
+      "description": "The theorem card_sq_eq_one_ge_three shows the 2-torsion {x : (ZMod n)× | x² = 1} has cardinality ≥ 3 when (ZMod n)× is non-cyclic. Together with the cyclic case (at most 2 solutions), this gives a group-theoretic characterization: (ZMod n)× is cyclic iff the 2-torsion has size ≤ 2.",
+      "theorems": ["card_sq_eq_one_ge_three"]
+    }
+  ],
+  "overview": {
+    "summary": "Wilson's theorem and Gauss's generalization both rely on the structure of (ZMod n)×. The group is cyclic precisely when n ∈ {1, 2, 4, p^k, 2p^k} for odd primes p. This file proves the 2-torsion characterization: (ZMod n)× is non-cyclic iff it contains an element x² = 1 with x ≠ ±1.",
+    "approach": "The proof uses Mathlib's ZMod.isCyclic_units_iff characterization, which decomposes non-cyclicity into structural conditions on n. For the case with an odd prime factor, CRT gives the element. For n = 2^k with k ≥ 3, an explicit construction exploits the non-cyclic structure (ZMod 2^k)× ≅ ℤ/2 × ℤ/2^(k-2).",
+    "significance": "The Gauss-Wilson theorem completely characterizes when the product of all units in ZMod n equals -1. The non-cyclic case arises precisely when the 2-torsion has more than 2 elements. This connects abstract group theory (cyclic classification) to elementary number theory (products of residues)."
+  },
+  "conclusion": {
+    "summary": "The non-cyclic 2-torsion bound for (ZMod n)× is machine-checked, connecting Mathlib's cyclic group classification to elementary properties of square roots of unity in ZMod.",
+    "openQuestions": [
+      "Can the full Gauss-Wilson theorem (product formula) be derived from this framework?",
+      "Does the 2-torsion bound extend to characterize when the Sylow 2-subgroup is elementary abelian vs. cyclic?",
+      "Can these results give a Lean 4 proof of quadratic reciprocity via the structure of (ZMod p)×?"
+    ]
+  },
+  "crossReferences": []
+}

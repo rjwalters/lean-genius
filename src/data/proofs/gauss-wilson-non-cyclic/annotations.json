@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-unit-of-sq",
+    "type": "definition",
+    "label": "unitOfSqEqOne",
+    "title": "Construct a Unit from a Square Root of 1",
+    "body": "unitOfSqEqOne x hx : (ZMod n)ˣ converts any x : ZMod n with x² = 1 into a unit. The inverse of x is x itself (since x·x = 1). Needed because the natural domain for square roots of 1 is ZMod n, but the group-theoretic 2-torsion lives in (ZMod n)ˣ.",
+    "location": { "line": 23 },
+    "tags": ["definition", "unit", "zmod", "2-torsion"]
+  },
+  {
+    "id": "ann-third-sqrt-coprime",
+    "type": "theorem",
+    "label": "exists_third_sqrt_coprime",
+    "title": "Third Square Root via CRT",
+    "body": "For coprime a, b ≥ 2, ZMod(a*b) has x with x² = 1, x ≠ 1, x ≠ -1. Construction: x ≡ 1 (mod a) and x ≡ -1 (mod b) via CRT. x squares to 1 by CRT, and x ≠ ±1 since a,b ≥ 2 prevents both conditions from holding simultaneously.",
+    "location": { "line": 0 },
+    "tags": ["CRT", "square-root", "coprime"]
+  },
+  {
+    "id": "ann-third-sqrt-pow2",
+    "type": "theorem",
+    "label": "exists_third_sqrt_pow2",
+    "title": "Third Square Root for Powers of 2",
+    "body": "For k ≥ 3, ZMod(2^k) has x with x² = 1, x ≠ 1, x ≠ -1. The group (ZMod 2^k)ˣ ≅ ℤ/2 × ℤ/2^(k-2) for k ≥ 3 is non-cyclic and has multiple order-2 elements.",
+    "location": { "line": 0 },
+    "tags": ["power-of-two", "square-root", "2-torsion"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "type": "theorem",
+    "label": "exists_third_sqrt_of_not_cyclic",
+    "title": "Non-Cyclic Units Have a Third Square Root of 1",
+    "body": "For n ≥ 3 with (ZMod n)ˣ non-cyclic: ∃ x : ZMod n, x² = 1 ∧ x ≠ 1 ∧ x ≠ -1. Uses ZMod.isCyclic_units_iff to decompose non-cyclicity into structural conditions, then applies the CRT or power-of-2 construction.",
+    "location": { "line": 0 },
+    "tags": ["main-theorem", "non-cyclic"]
+  },
+  {
+    "id": "ann-card-bound",
+    "type": "theorem",
+    "label": "card_sq_eq_one_ge_three",
+    "title": "Non-Cyclic Implies 2-Torsion Has Size ≥ 3",
+    "body": "For n ≥ 3 with (ZMod n)ˣ non-cyclic: the set {x : (ZMod n)ˣ | x² = 1} has cardinality ≥ 3. Exhibits three distinct elements: 1, -1, and the third root from exists_third_sqrt_of_not_cyclic.",
+    "location": { "line": 0 },
+    "tags": ["cardinality", "2-torsion", "non-cyclic"]
+  }
+]
