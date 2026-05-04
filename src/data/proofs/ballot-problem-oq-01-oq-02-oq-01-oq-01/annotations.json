@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-gap-analysis",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "context",
+    "title": "Identifying the Mathlib Gap",
+    "content": "The header documents a precise gap in Mathlib4: Set.ncard_biUnion gives |union i in I, s i| = sum i in I.toFinset, |s i| for pairwise disjoint finite sets, but there is no corollary for the uniform case where every |s i| = k. The gap is small (10-line proof) but the result is ubiquitous. This file answers the open question from ballot-problem-oq-01-oq-02-oq-01: yes, the lemma extracted from the ballot fiber analysis is Mathlib-ready.",
+    "mathContext": "Mathlib has: $\\left|\\bigcup_{i \\in I} s_i\\right| = \\sum_{i \\in I} |s_i|$ (when pairwise disjoint, finite). Missing: the corollary $\\forall i.\\, |s_i| = k \\Rightarrow \\left|\\bigcup_{i \\in I} s_i\\right| = k \\cdot |I|$.",
+    "significance": "context",
+    "relatedConcepts": ["Set.ncard_biUnion", "Finset.sum_const", "PairwiseDisjoint", "uniform fiber"],
+    "prerequisites": ["Lean 4 set cardinality (Set.ncard)", "Mathlib BigOperators"]
+  },
+  {
+    "id": "ann-core-lemma",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 60, "endLine": 78 },
+    "type": "technique",
+    "title": "Core Proof: sum_congr + sum_const Collapse",
+    "content": "The proof reduces in two steps. First, Set.ncard_biUnion rewrites the union cardinality as a Finset sum over I.toFinset. Second, Finset.sum_congr replaces each summand (s i).ncard by the constant k, and Finset.sum_const collapses the sum to I.toFinset.card * k. A final mul_comm and hI.toFinset_card yield k * I.ncard. The use of Set.PairwiseDisjoint instead of the nested forall form makes the lemma directly composable with Mathlib infrastructure.",
+    "mathContext": "$$\\left|\\bigcup_{i \\in I} s_i\\right| \\xrightarrow{\\text{ncard\\_biUnion}} \\sum_{i \\in I} |s_i| \\xrightarrow{\\text{sum\\_congr}} \\sum_{i \\in I} k \\xrightarrow{\\text{sum\\_const}} |I| \\cdot k$$",
+    "significance": "key",
+    "relatedConcepts": ["Set.ncard_biUnion", "Finset.sum_congr", "Finset.sum_const", "Set.PairwiseDisjoint"],
+    "prerequisites": ["Finset sum algebra", "Set.ncard vs Finset.card coercions"]
+  },
+  {
+    "id": "ann-finset-variant",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 93 },
+    "type": "technique",
+    "title": "Finset Index: Cleaner Membership Coercion",
+    "content": "When the index set is a Finset rather than a Set.Finite, membership coercion via Finset.mem_coe bridges between the membership hypotheses. The Set.ncard_coe_Finset lemma identifies |(I : Set ι).ncard| = I.card, keeping the conclusion in terms of Finset.card which is more natural for discrete combinatorics.",
+    "mathContext": "Coercion chain: $I : \\text{Finset}\\,\\iota \\to (I : \\text{Set}\\,\\iota)$, with $|(I : \\text{Set}\\,\\iota)| = |I|$ via `Set.ncard_coe_Finset`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.mem_coe", "Set.ncard_coe_Finset", "Set.Finite coercion"],
+    "prerequisites": ["Lean 4 coercion", "Finset vs Set distinction"]
+  },
+  {
+    "id": "ann-fintype-version",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 109 },
+    "type": "technique",
+    "title": "Fintype Version: Universe Union via biUnion_univ",
+    "content": "When the index type ι is Fintype, the union covers all elements with no index set restriction. The proof rewrites the unindexed union as a biUnion over Set.univ via Set.biUnion_univ, applies the core lemma, then uses Set.ncard_univ to identify the index set size as Fintype.card ι. The hypothesis Pairwise (Disjoint on s) with no membership condition is equivalent to Set.univ.PairwiseDisjoint s.",
+    "mathContext": "$\\left|\\bigcup_{i : \\iota} s_i\\right| = \\left|\\bigcup_{i \\in \\text{univ}} s_i\\right| = k \\cdot |\\text{univ}| = k \\cdot \\text{Fintype.card}\\,\\iota$",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.biUnion_univ", "Fintype.card", "Pairwise Disjoint", "Set.ncard_univ"],
+    "prerequisites": ["Lean 4 Fintype typeclass", "Set.univ"]
+  },
+  {
+    "id": "ann-fiber-consequence",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 115, "endLine": 131 },
+    "type": "insight",
+    "title": "Fiber Decomposition: |A| = k × |f(A)| for Uniform Surjections",
+    "content": "This theorem is the combinatorial heart of the ballot probability transfer. If a set A decomposes as a disjoint union of fibers f⁻¹{b} ∩ A over values b in B, and every fiber has size k, then |A| = k × |B|. This is the discrete analogue of the fiber integral formula from measure theory. In the ballot problem, A is the set of all multi-candidate sequences and B is the set of election outcomes, with k being the number of orderings within each outcome.",
+    "mathContext": "$A = \\bigsqcup_{b \\in B} (f^{-1}\\{b\\} \\cap A), \\quad |f^{-1}\\{b\\} \\cap A| = k \\;\\forall b \\Rightarrow |A| = k \\cdot |B|$",
+    "significance": "key",
+    "relatedConcepts": ["preimage fiber", "uniform surjection", "ballot fiber transfer", "discrete fiber integral"],
+    "prerequisites": ["function preimage", "ncard_biUnion_eq_of_uniform", "set decomposition"]
+  },
+  {
+    "id": "ann-compatibility",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 137, "endLine": 145 },
+    "type": "technique",
+    "title": "API Compatibility: PairwiseDisjoint from Explicit Forall",
+    "content": "The parent file BallotProblemOQ01OQ02OQ01.lean used the explicit forall-forall form for disjointness. This compatibility lemma shows that the PairwiseDisjoint reformulation is strictly more general: the explicit form follows by simple eta-expansion. The result validates that upgrading the API to PairwiseDisjoint is purely additive with no loss of coverage.",
+    "mathContext": "$(\\forall i \\in I,\\, \\forall j \\in I,\\, i \\neq j \\to \\text{Disjoint}\\, s_i\\, s_j) \\Rightarrow I.\\text{PairwiseDisjoint}\\, s$",
+    "significance": "technical",
+    "relatedConcepts": ["Set.PairwiseDisjoint", "Disjoint predicate", "API design"],
+    "prerequisites": ["Set.PairwiseDisjoint definition", "Lean 4 function application"]
+  },
+  {
+    "id": "ann-concrete-example",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 150, "endLine": 169 },
+    "type": "insight",
+    "title": "Verification: Three Disjoint Pairs by omega",
+    "content": "The example proves that {0,1} union {2,3} union {4,5} has 6 elements using the Finset variant. The disjointness of {2i, 2i+1} for distinct i is established by omega reasoning over set membership: when i ≠ j, the arithmetic ranges [2i, 2i+1] and [2j, 2j+1] do not overlap. The size-2 claim uses Set.ncard_pair which requires proving 2i ≠ 2i+1 (trivially by omega). This demonstrates that omega handles both combinatorial and arithmetic parts of concrete finite set reasoning.",
+    "mathContext": "For $i \\in \\{0,1,2\\}$: $|\\{2i, 2i+1\\}| = 2$, sets pairwise disjoint $\\Rightarrow \\left|\\bigcup_{i=0}^{2}\\{2i,2i+1\\}\\right| = 2 \\times 3 = 6$.",
+    "significance": "context",
+    "relatedConcepts": ["Set.ncard_pair", "omega tactic", "Finset.PairwiseDisjoint", "concrete verification"],
+    "prerequisites": ["Lean 4 omega tactic", "Set.ncard_pair lemma"]
+  }
+]
