@@ -1,7 +1,7 @@
 {
   "slug": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
   "title": "Does the theorem extend beyond CharZero",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Branch pushed, PR #15667 created. 5 theorems, 0 sorries, 1 axiom. Docker build pending (infrastructure congestion).",
+    "builtItems": [
+      "Added import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01 to Proofs.lean",
+      "Fixed lineCount 155→165 in meta.json (both meta and leanFile sections)"
+    ],
+    "insights": [
+      "Branch was never pushed from session 1 — always push immediately after commit",
+      "Proofs.lean import is required for Lake to compile the new file",
+      "Docker builds can queue/hang when daemon is busy with many concurrent builds"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Await Docker build for PR #15667 (AngleTrisectionOQ02OQ01OQ01OQ01)",
+      "Optional: prove insep_gal_trivial using RatFunc/FractionRing over ZMod p"
+    ]
   },
   "tags": [
     "challenging",
