@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Berend, Freud",
     "sourceUrl": "https://erdosproblems.com/863",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos863Problem.lean",
     "tags": [
       "erdos",
@@ -14,14 +14,14 @@
       "sidon-sets",
       "number-theory"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 863,
     "erdosUrl": "https://erdosproblems.com/863",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 201,
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "assumptions": "None. 0 axioms, 0 sorries. All 13 theorems proved from Lean primitives. The open conjecture (cᵣ ≠ c'ᵣ for r ≥ 2) is described in comments — not stated as an axiom or theorem.",
     "mathlib_version": "4.26.0",
     "theoremCount": 13
   },
@@ -77,21 +77,21 @@
       "title": "Classical Sidon Case (r = 1)",
       "startLine": 64,
       "endLine": 75,
-      "summary": "Axiom sidon_classical recording that both sum and difference B₂[1] set sizes converge to √N, formalized as ε-δ convergence via Filter.atTop. Gives c₁ = c'₁ = 1."
+      "summary": "Comment section stating the classical r=1 baseline: both sum and difference B₂[1] (Sidon) set sizes grow as ~√N with equal constants c₁ = c'₁ = 1. Not formalized as a theorem (open asymptotic problem); documented as background."
     },
     {
       "id": "sec-863-main-conjecture",
       "title": "Main Conjecture: c'ᵣ < cᵣ",
       "startLine": 76,
       "endLine": 88,
-      "summary": "Axiom ErdosProblem863: for all r ≥ 2, there exist c, c' > 0 with c' < c such that maxB2rSize(r,N)/√N → c and maxDiffB2rSize(r,N)/√N → c'."
+      "summary": "Comment section stating the main open conjecture (Erdős Problem 863): for all r ≥ 2, the asymptotic density constants cᵣ (sums) and c'ᵣ (differences) are unequal, with c'ᵣ < cᵣ. Not formalized as a theorem or axiom (problem is open); documented as background context."
     },
     {
       "id": "sec-863-weak-conjecture",
       "title": "Weak Conjecture: cᵣ ≠ c'ᵣ",
       "startLine": 89,
       "endLine": 97,
-      "summary": "Axiom erdos_863_weak: there exists r ≥ 2 with c_r ≠ c'_r. A stepping stone that avoids specifying the direction of the inequality."
+      "summary": "Comment section stating the weak open conjecture: there exists r ≥ 2 with cᵣ ≠ c'ᵣ. Not formalized as a theorem or axiom; documented as a stepping stone toward the full conjecture."
     },
     {
       "id": "sec-863-basic-properties",
