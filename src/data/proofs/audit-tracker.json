@@ -6054,9 +6054,9 @@
     },
     "erdos-311": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:04:36Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-05-04T15:55:20Z",
+      "result": "issues-found"
     },
     "erdos-312": {
       "agentId": "auditor-cycle-20-batch",
@@ -8806,9 +8806,9 @@
     },
     "erdos-668": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-04T03:55:03Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-05-04T15:55:20Z",
+      "result": "issues-found"
     },
     "erdos-669": {
       "agentId": "auditor-loop-2026-05-01",
@@ -14363,6 +14363,126 @@
     "frobenius-number": {
       "auditCount": 1,
       "lastAudited": "2026-05-04T14:09:49Z",
+      "result": "clean",
+      "issues": []
+    },
+    "birthday-problem-oq-01-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-05-04T16:04:49Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "abel-ruffini-galois-extensions-oq-05": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:05:54Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "algebraic-numbers-countable-oq-02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:06:27Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ballot-problem-oq-01-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:06:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ballot-problem-oq-01-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:07:18Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "ballot-problem-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:08:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:08:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bertrands-postulate-oq-03-oq-04-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:08:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:10:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:10:36Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "cantors-theorem-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:10:36Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "binomial-theorem-oq-04-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:10:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "borsuk-ulam-oq-03-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:10:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:16:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:16:33Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "circumference-via-differentiation": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:16:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-31-primes-density": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:16:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "gauss-wilson-non-cyclic": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:16:34Z",
+      "result": "clean",
+      "issues": []
+    },
+    "mean-value-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:16:34Z",
+      "result": "clean",
+      "issues": []
+    },
+    "minkowski-theorem-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T16:16:34Z",
       "result": "clean",
       "issues": []
     }
