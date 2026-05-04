@@ -767,7 +767,7 @@ private lemma cot_ge_inv_two_mul {t : ℝ} (ht : 0 < t) (ht_le : t ≤ Real.pi /
   have hpi_pos := Real.pi_pos
   have hsin_pos : 0 < Real.sin t :=
     Real.sin_pos_of_pos_of_lt_pi ht (by linarith)
-  rw [div_le_div_iff (by positivity) hsin_pos]
+  rw [div_le_div_iff₀ (by positivity) hsin_pos]
   -- Goal: 1 * Real.sin t ≤ Real.cos t * (2 * t)
   have hsin_le : Real.sin t ≤ t := (Real.sin_lt ht).le
   have hcos_ge : (1 : ℝ) / 2 ≤ Real.cos t :=
@@ -871,7 +871,7 @@ private lemma tan_eq_cot_complement (n : ℕ) (hn : 0 < n) (k : Fin n)
   have hu_pos : 0 < u := by unfold_let u; positivity
   have hu_le : u ≤ Real.pi / 3 := by
     unfold_let u
-    rw [div_le_div_iff (by positivity : (0 : ℝ) < 4 * ↑n) (by positivity : (0 : ℝ) < 3)]
+    rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < 4 * ↑n) (by positivity : (0 : ℝ) < 3)]
     -- Need (2j+1)·π·3 ≤ π·(4n), i.e., 3(2j+1) ≤ 4n
     have hj_bound : j < n / 2 + 1 := by omega
     nlinarith [Real.pi_pos, hj_bound]
@@ -902,24 +902,27 @@ private lemma odd_harmonic_sum_lb (m : ℕ) (hm : 0 < m) :
   have h_compare : ∀ j ∈ Finset.range m,
       (1 : ℝ) / (2 * (↑j + 1)) ≤ 1 / (2 * ↑j + 1) := by
     intro j _
-    rw [div_le_div_iff (by positivity) (by positivity : (0 : ℝ) < 2 * ↑j + 1)]
+    rw [div_le_div_iff₀ (by positivity) (by positivity : (0 : ℝ) < 2 * ↑j + 1)]
     nlinarith [(show (0 : ℝ) ≤ j from Nat.cast_nonneg)]
   -- Step 2: ∑ 1/(2(j+1)) = (1/2) · ∑ 1/(j+1) = (1/2) · H_m
   have hsum_half : ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * (↑j + 1)) =
       (1 : ℝ) / 2 * ∑ j ∈ Finset.range m, (1 : ℝ) / (↑j + 1) := by
     rw [Finset.mul_sum]; congr 1; ext j; ring
   -- Step 3: ∑_{j=0}^{m-1} 1/(j+1) = H_m (harmonic number)
-  have hharmonic : ∑ j ∈ Finset.range m, (1 : ℝ) / (↑j + 1) = (harmonic m : ℝ) := by
-    rw [harmonic_eq_sum_range]
-    congr 1; ext j
-    simp [div_eq_iff (show (0 : ℝ) < ↑j + 1 from by positivity).ne']
+  have hharmonic : ∑ j ∈ Finset.range m, (1 : ℝ) / (↑j + 1) = (Nat.harmonic m : ℝ) := by
+    induction m with
+    | zero => simp [Nat.harmonic]
+    | succ n ih =>
+      rw [Finset.sum_range_succ, Nat.harmonic_succ]
+      push_cast [ih]
+      ring
   -- Step 4: log(m+1) ≤ H_m
-  have hlog_harmonic : Real.log (↑m + 1) ≤ (harmonic m : ℝ) := by
+  have hlog_harmonic : Real.log (↑m + 1) ≤ (Nat.harmonic m : ℝ) := by
     have := log_add_one_le_harmonic m
     exact_mod_cast this
   -- Combine: (1/2)·log(m+1) ≤ (1/2)·H_m = ∑ 1/(2(j+1)) ≤ ∑ 1/(2j+1)
   calc (1 : ℝ) / 2 * Real.log (↑m + 1)
-      ≤ 1 / 2 * (harmonic m : ℝ) := by
+      ≤ 1 / 2 * (Nat.harmonic m : ℝ) := by
           apply mul_le_mul_of_nonneg_left hlog_harmonic (by norm_num)
     _ = ∑ j ∈ Finset.range m, 1 / (2 * (↑j + 1)) := by rw [hsum_half, hharmonic]
     _ ≤ ∑ j ∈ Finset.range m, 1 / (2 * ↑j + 1) := Finset.sum_le_sum h_compare
@@ -960,7 +963,7 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     Finset.sum_congr rfl (fun k _ => sum_term_eq_tan_half_angle n hn k)
   rw [hS_eq]
   -- Step 2: Handle n = 1 separately (sum = tan(π/4) = 1, target < 1)
-  rcases Nat.eq_or_gt_of_le hn with rfl | hn_ge_2
+  rcases eq_or_lt_of_le hn with rfl | hn_ge_2
   · -- n = 1: target = (1/(2π))·log(2) ≤ 1 = sum
     simp only [Fin.sum_univ_one, Nat.cast_one, mul_one]
     have hlog2_le : Real.log 2 ≤ 1 := by
@@ -1157,13 +1160,17 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
       have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
       have hpR : (p : ℝ) = k * (2 * q) := by field_simp at hk; linarith
       have hpZ : (p : ℤ) = k * (2 * q) := by exact_mod_cast hpR
-      exact (Int.even_iff_not_odd.mp ⟨k * q, by linarith⟩) (by exact_mod_cast hp)
+      exact (Even.not_odd (⟨k * q, by linarith⟩ : Even (p : ℤ))) (by exact_mod_cast hp)
     -- Step 2: arccos gives canonical angle θ₀ ∈ (0, π) with cos θ₀ = cos(πp/q)
     set x := Real.cos ((↑p : ℝ) * Real.pi / ↑q) with hx_def
     set θ₀ := Real.arccos x with hθ₀_def
     have hcos_eq : Real.cos θ₀ = x := Real.cos_arccos (neg_one_le_cos _) (Real.cos_le_one _)
     have hθ₀_pos : 0 < θ₀ := Real.arccos_pos.mpr hx_lt
-    have hθ₀_lt_pi : θ₀ < Real.pi := Real.arccos_lt_pi.mpr hx_gt
+    have hθ₀_lt_pi : θ₀ < Real.pi := by
+      apply lt_of_le_of_ne (Real.arccos_le_pi x)
+      intro heq
+      rw [← heq, Real.cos_pi] at hcos_eq
+      linarith
     -- Step 3: Each sum term is positive
     have hterm_pos : ∀ (n : ℕ) (hn : 0 < n) (k : Fin n),
         0 < Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
