@@ -16,11 +16,11 @@
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
     "badge": "wip",
-    "sorries": 7,
+    "sorries": 5,
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 247,
-    "assumptions": "No axioms. 7 sorries for: Fintype instance, ENNReal normalization, support characterization, marginal distributions, mean, covariance, and concrete example.",
+    "lineCount": 264,
+    "assumptions": "No axioms. 5 sorries for: ENNReal normalization, support characterization, marginal distributions, mean, and covariance. The Fintype instance and concrete dice example are fully proved.",
     "originalContributions": [
       "Composition type as support of multinomial distribution",
       "PMF construction via multinomialPMFVal in ENNReal",
@@ -160,14 +160,14 @@
       "MeasureTheory"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01",
-    "lineCount": 247,
+    "lineCount": 264,
     "axiomCount": 0,
     "theoremCount": 7,
     "substantiveTheoremCount": 6,
     "duplicateTheorems": 0,
     "definitionCount": 2,
     "path": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
-    "sorries": 7
+    "sorries": 5
   },
   "mainTheorems": [
     {
@@ -189,5 +189,5 @@
       "leanType": "covariance_sum = -n*pi*pj"
     }
   ],
-  "sorries": 7
+  "sorries": 5
 }
