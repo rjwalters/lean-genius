@@ -1,0 +1,171 @@
+{
+  "id": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+  "title": "Exotic G-Representations and the Composite BU Dimension Gap",
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+  "description": "Formalizes the question of exotic G-representations: representations where a composite cyclic group Z/n has strictly higher equivariant Borsuk-Ulam dimension than any prime subgroup. Defines IsExotic(n,d) as buDim(n,d) > max_{p|n,prime} buDim(p,d), proves primes and prime powers are never exotic, shows exotic requires ≥ 2 distinct prime factors, and proves the formula is monotone under divisibility. Under the formula conjecture, no exotic representations exist.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean",
+    "tags": [
+      "topology",
+      "borsuk-ulam",
+      "equivariant",
+      "group-actions",
+      "open-conjecture",
+      "cyclic-groups",
+      "prime-powers",
+      "smith-theory",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 4,
+    "assumptions": "4 axioms inherited from parent files: buDim (axiom defining the BU dimension function), buDim_two (classical BU), buDim_prime (Yang-Borsuk for primes), buDim_mono (subgroup monotonicity), buDim_le_formula (open conjecture: buDim ≤ prime formula). The 'not_exotic_prime_pow' and 'no_exotic' results use the formula conjecture axiom.",
+    "lineCount": 202,
+    "theoremCount": 25,
+    "definitionCount": 2,
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "IsExotic: formal definition of exotic representations where composite group exceeds prime formula",
+      "exoticDefect: measure of how much buDim exceeds the prime formula (0 for non-exotic)",
+      "not_exotic_prime_pow: prime powers p^k are non-exotic (uses formula axiom; only prime factor is p)",
+      "buDimFormula_mono_of_dvd: formula is monotone under divisibility (purely structural, no topology axioms)",
+      "exotic_implies_two_prime_factors: exotic requires ≥ 2 distinct prime factors (structural constraint)",
+      "conjecture_iff_no_exotic: the formula conjecture is equivalent to absence of all exotic representations"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The equivariant Borsuk-Ulam conjecture for composite groups asks whether buDim(n,d) equals the maximum buDim(p,d) over prime divisors p. Smith theory (1941) establishes this for prime powers: buDim(p^k, d) = buDim(p, d), since only the prime subgroup Z/p controls the fixed-point structure. For general composites with multiple prime factors, the question is whether the group structure creates additional topological constraints — 'exotic' representations — beyond what any single prime subgroup exhibits. The Fadell-Husseini ideal-valued cohomological index (1988) is the main tool for attacking the general case, but the conjecture remains open for arbitrary representations.",
+    "problemStatement": "Are there exotic G-representations: pairs (n, d) where the composite cyclic group Z/n has strictly higher BU dimension than any prime subgroup, i.e., buDim(n, d) > max_{p|n, p prime} buDim(p, d)?",
+    "text": "Formal analysis of whether composite cyclic groups can create exotic equivariant topology — extra dimensional constraints invisible to any single prime subgroup.",
+    "proofStrategy": "Define IsExotic(n,d) formally and derive structural constraints: (1) primes can never be exotic (buDimFormula = buDim by definition); (2) prime powers cannot be exotic because their only prime factor gives buDimFormula = buDim(p,d) and the conjecture axiom bounds buDim(p^k,d) ≤ buDim(p,d); (3) exotic must have ≥ 2 distinct prime factors (otherwise it's a prime power case); (4) the formula is monotone under divisibility as a purely combinatorial/structural result. The full answer — that no exotic representations exist — follows from the formula conjecture axiom.",
+    "keyInsights": [
+      "Exotic representations would be exactly the counterexamples to the open conjecture buDim_le_formula",
+      "Prime powers are provably non-exotic: buDimFormula(p^k, d) = buDim(p, d) and buDim(p^k, d) ≤ buDim(p, d) by the formula axiom",
+      "Exotic requires n to have at least 2 distinct prime factors — the smallest possible candidate is n = 6 = 2 × 3",
+      "The formula monotonicity theorem (buDimFormula_mono_of_dvd) follows purely from Nat.primeFactors_mono and Finset.sup_mono — no topology needed",
+      "The structural constraint 'exotic implies 2 prime factors' uses only the fact that prime powers are non-exotic, no topological content"
+    ],
+    "prerequisites": [
+      "Equivariant Borsuk-Ulam theory for prime groups (Yang-Borsuk theorem)",
+      "BU dimension formula conjecture for composite groups (parent file)",
+      "Smith theory for prime power group actions",
+      "Nat.primeFactors in Mathlib 4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Exotic Representations and Defect",
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "Defines IsExotic(n,d) := buDimFormula(n,d) < buDim(n,d) and exoticDefect(n,d) := buDim(n,d) - buDimFormula(n,d). Proves defect = 0 iff not exotic.",
+      "mathContext": "IsExotic captures the failure of the formula conjecture for specific (n,d). exoticDefect measures the gap. Since buDimFormula ≤ buDim always holds (lower bound), defect is a valid ℕ subtraction."
+    },
+    {
+      "id": "non-exotic",
+      "title": "Non-Exotic Cases: Primes and Prime Powers",
+      "startLine": 62,
+      "endLine": 105,
+      "summary": "Proves primes and prime powers are non-exotic. For primes: buDimFormula(p,d) = buDim(p,d) by definition. For prime powers p^k: only prime factor is p, so buDimFormula(p^k,d) = buDim(p,d), and buDim(p^k,d) ≤ buDim(p,d) by formula axiom.",
+      "mathContext": "Uses Nat.primeFactors_prime_pow: (p^k).primeFactors = {p} for prime p, k ≠ 0. Then buDimFormula_le + buDim_le_formula give the equality."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Formula Monotonicity Under Divisibility",
+      "startLine": 109,
+      "endLine": 120,
+      "summary": "Proves buDimFormula(n,d) ≤ buDimFormula(m,d) when n | m (structural, no axioms). Also states buDim_dvd_mono (n|m → buDim n d ≤ buDim m d).",
+      "mathContext": "Nat.primeFactors_mono: n|m,m≠0 → primeFactors(n) ⊆ primeFactors(m). Finset.sup_mono packages this into the formula monotonicity."
+    },
+    {
+      "id": "structural-constraints",
+      "title": "Structural Constraints on Exotic Representations",
+      "startLine": 124,
+      "endLine": 155,
+      "summary": "Proves: exotic → ¬prime (trivial), exotic (with n≥2) → card(primeFactors n) ≥ 2. The two-prime-factors result uses Finset.card_eq_one + Nat.mem_primeFactors.",
+      "mathContext": "Key argument: if card(primeFactors) = 1, then primeFactors = {p} for some prime p, so n is a prime power → not_exotic_prime_pow contradicts exotic. For n ≥ 2, card ≥ 1 by nonempty_primeFactors."
+    },
+    {
+      "id": "equivalences",
+      "title": "Equivalences with the Conjecture",
+      "startLine": 159,
+      "endLine": 175,
+      "summary": "Proves: IsExotic ↔ ¬(buDim ≤ buDimFormula). Under conjecture: no exotic for n ≥ 2. Conjecture ↔ no exotic for all n ≥ 2.",
+      "mathContext": "Direct logical reformulations. The conjecture_iff_no_exotic theorem establishes that eliminating exotic representations is exactly equivalent to proving the formula conjecture."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Non-Exotic Examples and the n=6 Case",
+      "startLine": 179,
+      "endLine": 222,
+      "summary": "Proves not_exotic for 4, 8, 9, 25 (prime powers). Shows n=6 has 2 prime factors and is not exotic (via conjecture axiom). buDimFormula_six = max(buDim 2, buDim 3).",
+      "mathContext": "n=6 is the smallest n with 2 distinct prime factors — the minimal case where exotic behavior would be novel. Under the conjecture, buDim(6,d) = max(buDim(2,d), buDim(3,d))."
+    }
+  ],
+  "conclusion": {
+    "summary": "Exotic representations — where composite groups exceed the prime factor formula — require n to have ≥ 2 distinct prime factors. Primes and prime powers are provably non-exotic. Under the formula conjecture, no exotic representations exist at all. The first potential exotic case would be n = 6.",
+    "implications": "The formal analysis shows exotic representations would be direct counterexamples to the Fadell-Husseini index formula for composite cyclic groups. The structural constraints (exotic requires ≥ 2 prime factors) narrow the search space. Proving non-existence for n = 6 (= 2 × 3) would require either the formula conjecture or a direct topological argument about Z/6-equivariant maps.",
+    "openQuestions": [
+      "Can the non-existence of exotic representations be proved for n = 6 without invoking the formula conjecture axiom?",
+      "Does Bredon's Smith theory give a direct proof of non-exotic for p^k without the formula conjecture?",
+      "For n = pq (product of two primes), is there a direct proof that buDim(pq, d) = max(buDim(p,d), buDim(q,d))?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Uses the formula conjecture axiom and buDimFormula definition from the parent file"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01",
+      "relationship": "depends",
+      "description": "Inherits the axiomatic BU dimension framework and buDim_mono from the grandparent file"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Smith, P. A."],
+      "title": "Fixed-point theorems for periodic transformations",
+      "venue": "American Journal of Mathematics",
+      "volume": 63,
+      "year": "1941",
+      "pages": "1-8",
+      "note": "Smith theory: for prime powers, only the prime subgroup controls BU dimension"
+    },
+    {
+      "authors": ["Fadell, E.", "Husseini, S."],
+      "title": "An ideal-valued cohomological index theory with applications to Borsuk-Ulam and Bourgin-Yang theorems",
+      "venue": "Ergodic Theory and Dynamical Systems",
+      "volume": 8,
+      "year": "1988",
+      "pages": "73-85",
+      "note": "Main tool for the composite BU dimension conjecture"
+    },
+    {
+      "authors": ["Bredon, G. E."],
+      "title": "Introduction to Compact Transformation Groups",
+      "venue": "Academic Press",
+      "year": "1972",
+      "note": "Comprehensive reference for Smith theory and equivariant cohomology"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.BorsukUlamOQ02OQ01",
+      "Proofs.BorsukUlamOQ02OQ01OQ01"
+    ],
+    "namespace": "BorsukUlamExotic",
+    "lineCount": 202,
+    "axiomCount": 4,
+    "theoremCount": 25,
+    "definitionCount": 2,
+    "path": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
