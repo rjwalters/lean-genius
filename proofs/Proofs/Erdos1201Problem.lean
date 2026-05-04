@@ -954,16 +954,13 @@ theorem gpfConsecutive_eq_term_gpf (n k : ℕ) (hn : 2 ≤ n) (hk : k < gpfConse
 /-- The consecutive product n(n+1)···(n+k) equals the descending factorial (n+k)↓(k+1). -/
 private lemma consecutiveProduct_eq_descFactorial (n k : ℕ) :
     consecutiveProduct n k = (n + k).descFactorial (k + 1) := by
-  induction k with
-  | zero => simp [consecutiveProduct_zero, Nat.descFactorial_one]
-  | succ k ih =>
-    have hright : consecutiveProduct n (k + 1) = consecutiveProduct n k * (n + k + 1) := by
-      simp only [consecutiveProduct, Finset.prod_range_succ]; ring
-    have hstep : (n + (k + 1)).descFactorial (k + 2) =
-        (n + k + 1) * (n + k).descFactorial (k + 1) := by
-      rw [show n + (k + 1) = n + k + 1 from by ring, Nat.descFactorial_succ]
-      congr 1; omega
-    rw [hright, ih, hstep]; ring
+  simp only [consecutiveProduct]
+  rw [Nat.descFactorial_eq_prod_range]
+  rw [← Finset.prod_range_reflect (fun j => n + j) (k + 1)]
+  apply Finset.prod_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  omega
 
 /-- **(k+1)! divides every product of k+1 consecutive integers**, for any starting point n.
     This is the identity n(n+1)···(n+k) = C(n+k, k+1) · (k+1)!, which follows from
@@ -1000,7 +997,10 @@ theorem gpfConsecutive_gt_half_k (n k : ℕ) (hn : 1 ≤ n) (hk : 2 ≤ k) :
     le_trans (by omega) (Nat.self_le_factorial (k + 1))
   have hcp_ge2 : 2 ≤ consecutiveProduct n k :=
     Nat.le_trans hfact_ge2 (Nat.le_of_dvd (consecutiveProduct_pos n k hn) hfact_dvd)
-  linarith [gpf_ge_prime_dvd _ _ hcp_ge2 hp_prime hp_dvd_cp, show k < 2 * p from by omega]
+  have hge : p ≤ gpfConsecutive n k := by
+    unfold gpfConsecutive; exact gpf_ge_prime_dvd _ _ hcp_ge2 hp_prime hp_dvd_cp
+  have hlt : k < 2 * p := by omega
+  linarith
 
 /-- **Threshold Bound**: If n^(1-ε) < k/2, then P(n,k) > n^(1-ε).
     Combining `gpfConsecutive_gt_half_k` (P > k/2) with the hypothesis n^(1-ε) < k/2
