@@ -2,7 +2,7 @@
   "id": "elementary-quadratic-reciprocity-oq-01-oq-02",
   "title": "Cubic and Quartic Characters as Higher Reciprocity Pathway",
   "slug": "elementary-quadratic-reciprocity-oq-01-oq-02",
-  "description": "Generalizes the Zolotarev character uniqueness argument (OQ-01) to cubic and quartic residue characters. For primes p ≡ 1 (mod 3), constructs the cubic character χ₃ = (· ^ ((p-1)/3)) as a group homomorphism (ZMod p)ˣ →* (ZMod p)ˣ and proves the complete Euler criterion: χ₃(a) = 1 ↔ a is a cubic residue. The kernel cardinality |ker χ₃| = (p-1)/3 is proved via IsCyclic.card_pow_eq_one_le + injectivity argument. The quartic character χ₄ is constructed in parallel. Cubic reciprocity (Eisenstein 1844) is axiomatized with a Jacobi sum proof strategy. 24 theorems, 0 sorries, 2 axioms.",
+  "description": "Generalizes the Zolotarev character uniqueness argument (OQ-01) to cubic and quartic residue characters. For primes p ≡ 1 (mod 3), constructs the cubic character χ₃ = (· ^ ((p-1)/3)) as a group homomorphism (ZMod p)ˣ →* (ZMod p)ˣ and proves the complete Euler criterion: χ₃(a) = 1 ↔ a is a cubic residue. The kernel cardinality |ker χ₃| = (p-1)/3 is proved via IsCyclic.card_pow_eq_one_le + injectivity argument. The quartic character χ₄ is constructed in parallel with full quartic Euler criterion proved. Cubic reciprocity (Eisenstein 1844) is axiomatized with a Jacobi sum proof strategy. 27 theorems, 0 sorries, 2 axioms.",
   "meta": {
     "author": "Eisenstein (1844), Ireland-Rosen (1990)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cubic_reciprocity",
@@ -21,10 +21,10 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 463,
-    "theoremCount": 24,
+    "lineCount": 562,
+    "theoremCount": 27,
     "defCount": 6,
-    "assumptions": "Two axioms (both require Eisenstein integers ℤ[ω] not in Mathlib): (1) cubicResidueSymbol — definition of the cubic residue symbol (ρ/π)₃ for Eisenstein primes. (2) cubic_reciprocity — (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via Jacobi sums. All 24 theorems proved; 0 sorries remain. Key: cubicChar_kernel_card (|ker χ₃| = (p-1)/3, proved via IsCyclic.card_pow_eq_one_le + Finset.le_card_of_inj_on_range) and cubicEuler_hard (hard direction of Euler criterion via discrete log).",
+    "assumptions": "Two axioms (both require Eisenstein integers ℤ[ω] not in Mathlib): (1) cubicResidueSymbol — definition of the cubic residue symbol (ρ/π)₃ for Eisenstein primes. (2) cubic_reciprocity — (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via Jacobi sums. All 27 theorems proved; 0 sorries remain. Key: cubicChar_kernel_card and quarticChar_kernel_card (|ker χ| = (p-1)/3 and (p-1)/4 via IsCyclic.card_pow_eq_one_le), cubicEuler_hard and quarticEuler_hard (both Euler criterion hard directions via discrete log).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -101,8 +101,7 @@
     "implications": "This file provides the foundation for cubic and quartic reciprocity formalization once Mathlib gains Eisenstein integer support. The character construction technique (powMonoidHom + Fermat's little theorem for units) extends naturally to any prime power character.",
     "openQuestions": [
       "Can the Eisenstein integers ℤ[ω] be added to Mathlib 4? (This is the key blocker for cubic reciprocity)",
-      "Can the Eisenstein integers ℤ[ω] be added to Mathlib 4? This is the key blocker for cubic_reciprocity.",
-      "Can the quartic Euler criterion hard direction be proved by the same discrete log method?",
+      "Can the quartic reciprocity law (biquadratic reciprocity) be axiomatized with Gaussian integers ℤ[i] as the coefficient ring?",
       "Can the Jacobi sum J(χ₃, χ₃) computation be formalized once ℤ[ω] is in Mathlib?"
     ]
   },
@@ -167,9 +166,9 @@
       "ZMod"
     ],
     "namespace": "CubicCharacter",
-    "lineCount": 463,
+    "lineCount": 562,
     "axiomCount": 2,
-    "theoremCount": 24,
+    "theoremCount": 27,
     "definitionCount": 6,
     "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
     "sorries": 0
