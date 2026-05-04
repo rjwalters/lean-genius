@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "id": "cs-rob-01",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 22,
+      "endLine": 43
+    },
+    "type": "technique",
+    "title": "CS Antisymmetric Bound: Triangle Inequality + norm_conj",
+    "content": "The core analytic lemma is `cs_antisymmetric_bound`: (1/2)|⟪u,v⟫ − ⟪v,u⟫| ≤ ‖u‖·‖v‖. The two-step proof first rewrites ⟪v,u⟫ = star(⟪u,v⟫) using `inner_conj_symm`, then applies the private helper `norm_sub_conj_le z : ‖z − star(z)‖ ≤ 2‖z‖` (proved by triangle inequality + `RCLike.norm_conj`), and finally divides by 2 and applies Cauchy-Schwarz `norm_inner_le_norm`. This gives a bound on the antisymmetric part purely from CS without any complex-number structure beyond ‖star(z)‖ = ‖z‖.",
+    "mathContext": "Private: $\\|z - \\overline{z}\\| \\leq \\|z\\| + \\|\\overline{z}\\| = 2\\|z\\|$ (triangle + norm_conj). Public: $\\frac{1}{2}\\|\\langle u,v\\rangle - \\langle v,u\\rangle\\| \\leq \\frac{1}{2}\\cdot 2\\|\\langle u,v\\rangle\\| \\leq \\|u\\|\\cdot\\|v\\|$. The factor of $\\frac{1}{2}$ comes from the Robertson bound — the full antisymmetric norm gives a factor of 2 that cancels.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "antisymmetric part of inner product",
+      "complex conjugation norm invariance",
+      "norm_inner_le_norm"
+    ],
+    "prerequisites": [
+      "norm_inner_le_norm: ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖ from Mathlib.Analysis.InnerProductSpace.Basic",
+      "inner_conj_symm: ⟪v,u⟫ = star(⟪u,v⟫) — conjugate symmetry of inner products",
+      "RCLike.norm_conj: ‖star z‖ = ‖z‖ for complex numbers"
+    ]
+  },
+  {
+    "id": "cs-rob-02",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Real Expectation Values: Self-Adjointness Forces Im(⟨A⟩) = 0",
+    "content": "`expVal_im_zero` proves that for a symmetric operator A (satisfying `A.IsSymmetric : ⟪Ax,y⟫ = ⟪x,Ay⟫`), the expectation value expVal A ψ = ⟪ψ,Aψ⟫_ℂ has zero imaginary part. The proof uses the fact that ⟪ψ,Aψ⟫ equals its own conjugate: star(⟪ψ,Aψ⟫) = ⟪Aψ,ψ⟫ (by conjugate symmetry) = ⟪ψ,Aψ⟫ (by symmetry of A). A complex number equal to its conjugate must be real. `expVal_self_conj` packages this as starRingEnd ℂ (expVal A ψ) = expVal A ψ, enabling ring-lemma rewrites in downstream proofs.",
+    "mathContext": "$\\overline{\\langle\\psi, A\\psi\\rangle} = \\langle A\\psi, \\psi\\rangle = \\langle\\psi, A\\psi\\rangle$ (using A.IsSymmetric). So $\\langle A\\rangle_\\psi \\in \\mathbb{R}$. This is the defining property of symmetric (self-adjoint) operators: observables have real eigenvalues, and expectation values in any state are real.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LinearMap.IsSymmetric: ⟪Ax,y⟫ = ⟪x,Ay⟫ for all x,y",
+      "self-adjoint operators in quantum mechanics",
+      "complex conjugation and reality condition",
+      "expVal definition"
+    ],
+    "prerequisites": [
+      "inner_conj_symm: star⟪x,y⟫ = ⟪y,x⟫ in complex inner product spaces",
+      "LinearMap.IsSymmetric: A.IsSymmetric iff ⟪Ax,y⟫ = ⟪x,Ay⟫ for all x,y",
+      "Complex.ext: two complex numbers equal iff real and imaginary parts equal"
+    ]
+  },
+  {
+    "id": "cs-rob-03",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 110
+    },
+    "type": "insight",
+    "title": "The Commutator Identity: Cross Terms Cancel by Reality of Expectation Values",
+    "content": "The key algebraic identity, proved in `centered_antisymmetric_eq_commutator`, states that for unit ψ and symmetric A, B:\n⟪Aψ − ⟨A⟩ψ, Bψ − ⟨B⟩ψ⟫ − ⟪Bψ − ⟨B⟩ψ, Aψ − ⟨A⟩ψ⟫ = ⟪ψ, (AB−BA)ψ⟫\n\nThe private helper `inner_centered_eq` handles one centered product: ⟪Xψ − c·ψ, Yψ − d·ψ⟫ = ⟪ψ,X(Yψ)⟫ − c*d. It uses: (1) X.IsSymmetric to rewrite ⟪Xψ,ψ⟫ = ⟪ψ,Xψ⟫; (2) star(c) = c (reality of ⟨X⟩) to simplify star(c)*d and c*d terms; (3) ⟪ψ,ψ⟫ = 1. The final subtraction cancels the c*d terms: (⟪ψ,ABψ⟫ − ⟨A⟩·⟨B⟩) − (⟪ψ,BAψ⟫ − ⟨B⟩·⟨A⟩) = ⟪ψ,(AB−BA)ψ⟫.",
+    "mathContext": "Key identity: $\\langle u,v\\rangle - \\langle v,u\\rangle = \\langle\\psi,ABψ\\rangle - \\langle A\\rangle\\langle B\\rangle - (\\langle\\psi,BAψ\\rangle - \\langle B\\rangle\\langle A\\rangle) = \\langle\\psi,(AB-BA)\\psi\\rangle$. The cross terms $\\langle A\\rangle\\langle B\\rangle$ cancel because $\\langle A\\rangle,\\langle B\\rangle \\in \\mathbb{R}$ (commutativity of real multiplication).",
+    "significance": "key",
+    "relatedConcepts": [
+      "commutator [A,B] = AB − BA",
+      "inner product bilinearity and sesquilinearity",
+      "reality of expectation values (expVal_self_conj)",
+      "inner_centered_eq private helper"
+    ],
+    "prerequisites": [
+      "inner_smul_left/right: ⟪c·x,y⟫ = star(c)·⟪x,y⟫ and ⟪x,c·y⟫ = c·⟪x,y⟫",
+      "inner_sub_left/right: bilinearity of inner products",
+      "expVal_self_conj: star(⟨A⟩) = ⟨A⟩ — expectation value is its own conjugate",
+      "inner_self_eq_norm_sq_to_K: ⟪ψ,ψ⟫ = ‖ψ‖² = 1 for unit states"
+    ]
+  },
+  {
+    "id": "cs-rob-04",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Robertson's Inequality: Three-Line Assembly via linarith",
+    "content": "`robertson_inequality` is the culmination: stdDev A ψ · stdDev B ψ ≥ (1/2)‖commutatorEV A B ψ‖. The proof is three lines: (1) `hcs := cs_antisymmetric_bound u v` gives ‖u‖·‖v‖ ≥ (1/2)|⟪u,v⟫ − ⟪v,u⟫|; (2) `hcomm := centered_antisymmetric_eq_commutator A B hA hB ψ hψ` gives ⟪u,v⟫ − ⟪v,u⟫ = commutatorEV A B ψ; (3) `rw [hcomm] at hcs; linarith` closes the goal since stdDev = ‖u‖ and stdDev B = ‖v‖ by definition. The modularity is striking: Parts I–III are completely independent results that compose immediately.",
+    "mathContext": "$\\Delta A \\cdot \\Delta B = \\|u\\|\\cdot\\|v\\| \\geq \\frac{1}{2}|\\langle u,v\\rangle - \\langle v,u\\rangle| = \\frac{1}{2}|\\text{commutatorEV}| = \\frac{1}{2}|\\langle\\psi,[A,B]\\psi\\rangle|$. All three steps close by definition unfolding + `linarith`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Robertson uncertainty principle",
+      "Cauchy-Schwarz equality condition",
+      "coherent states (minimum uncertainty states)",
+      "linarith for linear arithmetic in Lean 4"
+    ],
+    "prerequisites": [
+      "cs_antisymmetric_bound: Part I result",
+      "centered_antisymmetric_eq_commutator: Part III result",
+      "stdDev A ψ = ‖A ψ − (expVal A ψ) • ψ‖ by definition"
+    ]
+  },
+  {
+    "id": "cs-rob-05",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 130,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Heisenberg as Special Case: [A,B] = c·id Simplifies commutatorEV to c",
+    "content": "`heisenberg_constant_commutator` proves ΔA·ΔB ≥ |c|/2 for operators with constant commutator [A,B] = c·id. The proof first computes commutatorEV A B ψ = c: from hcomm (∀ ψ, A(Bψ) − B(Aψ) = c·ψ), unfold commutatorEV to ⟪ψ, A(Bψ) − B(Aψ)⟫_ℂ = ⟪ψ, c·ψ⟫ = c·⟪ψ,ψ⟫ = c·1 = c (using ‖ψ‖=1). Then `robertson_inequality` gives the result directly. The Heisenberg relation ΔxΔp ≥ ħ/2 is the instance with c = iħ (so |c| = ħ).",
+    "mathContext": "commutatorEV $A B \\psi = \\langle\\psi, A(B\\psi) - B(A\\psi)\\rangle = \\langle\\psi, c\\psi\\rangle = c\\cdot\\langle\\psi,\\psi\\rangle = c\\cdot 1 = c$. Robertson then gives $\\Delta A \\cdot \\Delta B \\geq |c|/2$. For $[\\hat{x},\\hat{p}] = i\\hbar$: $\\Delta x \\cdot \\Delta p \\geq |i\\hbar|/2 = \\hbar/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Heisenberg uncertainty principle",
+      "position-momentum commutator [x̂,p̂] = iħ",
+      "inner_smul_right: ⟪ψ, c·ψ⟫ = c·⟪ψ,ψ⟫",
+      "minimum uncertainty states (coherent states)"
+    ],
+    "prerequisites": [
+      "robertson_inequality: general Robertson bound",
+      "inner_smul_right: ⟪x, c•y⟫ = c • ⟪x,y⟫",
+      "inner_self_eq_norm_sq_to_K: ⟪ψ,ψ⟫ = ‖ψ‖² = 1 for unit ψ",
+      "mul_one: c * 1 = c"
+    ]
+  }
+]
