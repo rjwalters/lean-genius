@@ -6,9 +6,9 @@
       "startLine": 66,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Triangle Inequality (Absolute Value)",
-    "content": "**The fundamental triangle inequality for real numbers: |x + y| ≤ |x| + |y|.**\n\nThis is the core result from which all other forms derive. The proof is a direct application of Mathlib's `abs_add` theorem.",
+    "content": "**The fundamental triangle inequality for real numbers: |x + y| \u2264 |x| + |y|.**\n\nThis is the core result from which all other forms derive. The proof is a direct application of Mathlib's `abs_add` theorem.",
     "mathContext": "$|x + y| \\leq |x| + |y|$",
     "significance": "key",
     "relatedConcepts": [
@@ -23,9 +23,9 @@
       "startLine": 81,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Reverse Triangle Inequality",
-    "content": "**The reverse triangle inequality: | |x| - |y| | ≤ |x - y|.**\n\nWhile the standard triangle inequality gives an upper bound on |x + y|, this provides a lower bound. It shows that the absolute value function is Lipschitz continuous with constant 1.\n\nGeometrically: the difference in distances to the origin is at most the distance between the points.",
+    "content": "**The reverse triangle inequality: | |x| - |y| | \u2264 |x - y|.**\n\nWhile the standard triangle inequality gives an upper bound on |x + y|, this provides a lower bound. It shows that the absolute value function is Lipschitz continuous with constant 1.\n\nGeometrically: the difference in distances to the origin is at most the distance between the points.",
     "mathContext": "$\\big||x| - |y|\\big| \\leq |x - y|$",
     "significance": "key",
     "relatedConcepts": [
@@ -40,9 +40,9 @@
       "startLine": 110,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Triangle Inequality (Normed Spaces)",
-    "content": "**Generalization to normed vector spaces: ‖x + y‖ ≤ ‖x‖ + ‖y‖.**\n\nThis is actually an axiom in the definition of a norm. The formalization uses Mathlib's `norm_add_le` which provides this for any seminormed additive commutative group.",
+    "content": "**Generalization to normed vector spaces: \u2016x + y\u2016 \u2264 \u2016x\u2016 + \u2016y\u2016.**\n\nThis is actually an axiom in the definition of a norm. The formalization uses Mathlib's `norm_add_le` which provides this for any seminormed additive commutative group.",
     "mathContext": "$\\|x + y\\| \\leq \\|x\\| + \\|y\\|$",
     "significance": "key",
     "relatedConcepts": [
@@ -57,9 +57,9 @@
       "startLine": 139,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Triangle Inequality (Metric Spaces)",
-    "content": "**The most general form: dist(x, z) ≤ dist(x, y) + dist(y, z).**\n\nThis is one of the three axioms defining a metric space (along with non-negativity and symmetry). It captures the intuition that the direct path is never longer than a detour.\n\nMathlib's `dist_triangle` provides this for any PseudoMetricSpace.",
+    "content": "**The most general form: dist(x, z) \u2264 dist(x, y) + dist(y, z).**\n\nThis is one of the three axioms defining a metric space (along with non-negativity and symmetry). It captures the intuition that the direct path is never longer than a detour.\n\nMathlib's `dist_triangle` provides this for any PseudoMetricSpace.",
     "mathContext": "$d(x, z) \\leq d(x, y) + d(y, z)$",
     "significance": "key",
     "relatedConcepts": [
@@ -74,9 +74,9 @@
       "startLine": 149,
       "endLine": 153
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Four-Point Triangle Inequality",
-    "content": "**Extension to four points: d(x, w) ≤ d(x, y) + d(y, z) + d(z, w).**\n\nThis is derived by applying the triangle inequality twice. It shows that any path through intermediate points is at least as long as the direct path.",
+    "content": "**Extension to four points: d(x, w) \u2264 d(x, y) + d(y, z) + d(z, w).**\n\nThis is derived by applying the triangle inequality twice. It shows that any path through intermediate points is at least as long as the direct path.",
     "mathContext": "$d(x, w) \\leq d(x, y) + d(y, z) + d(z, w)$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -91,7 +91,7 @@
       "startLine": 173,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strict Triangle Inequality",
     "content": "**When does equality hold? Strict inequality occurs when x and y have opposite signs.**\n\nIf x > 0 and y < 0 (or vice versa), then |x + y| < |x| + |y| strictly. Equality holds only when x and y have the same sign (or one is zero).\n\nGeometrically: the triangle inequality becomes equality when the points are collinear.",
     "mathContext": "$xy < 0 \\Rightarrow |x + y| < |x| + |y|$",
@@ -110,7 +110,7 @@
     },
     "type": "insight",
     "title": "Absolute Value is Lipschitz",
-    "content": "**Application: The absolute value function is Lipschitz continuous with constant 1.**\n\nThe reverse triangle inequality | |x| - |y| | ≤ |x - y| is exactly the statement that |·| is 1-Lipschitz. This means small changes in input lead to at most equally small changes in output.",
+    "content": "**Application: The absolute value function is Lipschitz continuous with constant 1.**\n\nThe reverse triangle inequality | |x| - |y| | \u2264 |x - y| is exactly the statement that |\u00b7| is 1-Lipschitz. This means small changes in input lead to at most equally small changes in output.",
     "mathContext": "Lip$(|\\cdot|) = 1$",
     "significance": "key",
     "relatedConcepts": [
@@ -127,7 +127,7 @@
     },
     "type": "insight",
     "title": "Norm is Lipschitz",
-    "content": "**The norm function ‖·‖ is Lipschitz continuous with constant 1.**\n\nThis generalizes the absolute value case to arbitrary normed spaces. It's essential for proving that norms are continuous functions, which is fundamental in functional analysis.",
+    "content": "**The norm function \u2016\u00b7\u2016 is Lipschitz continuous with constant 1.**\n\nThis generalizes the absolute value case to arbitrary normed spaces. It's essential for proving that norms are continuous functions, which is fundamental in functional analysis.",
     "mathContext": "$\\big|\\|x\\| - \\|y\\|\\big| \\leq \\|x - y\\|$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -142,9 +142,9 @@
       "startLine": 232,
       "endLine": 236
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Triangle Inequality for Sums",
-    "content": "**Iterated triangle inequality: ‖∑ xᵢ‖ ≤ ∑ ‖xᵢ‖.**\n\nThe triangle inequality extends by induction to finite sums. This is crucial for bounding errors in numerical computations and proving convergence of series.",
+    "content": "**Iterated triangle inequality: \u2016\u2211 x\u1d62\u2016 \u2264 \u2211 \u2016x\u1d62\u2016.**\n\nThe triangle inequality extends by induction to finite sums. This is crucial for bounding errors in numerical computations and proving convergence of series.",
     "mathContext": "$\\left\\|\\sum_i x_i\\right\\| \\leq \\sum_i \\|x_i\\|$",
     "significance": "supporting",
     "relatedConcepts": [
