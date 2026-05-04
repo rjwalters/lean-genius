@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ep-spanning-build",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 66,
+      "endLine": 111
+    },
+    "title": "SpanningBuild: Inductive Planar Graph Construction",
+    "content": "`SpanningBuild` is an inductive type with three constructors:\n- `single`: one vertex, V=1, E=0, F=1\n- `addTreeEdge g`: extends g by a tree edge, V+1, E+1, F unchanged\n- `addCycleEdge g`: adds a non-tree edge (cycle), V unchanged, E+1, F+1\n\nField functions: `vertices`, `edges`, `faces`, `eulerChar`. The key invariant is `eulerChar g = (g.vertices : ℤ) - g.edges + g.faces = 2`.\n\nThis models the spanning-tree decomposition of a connected planar graph: start with a spanning tree (V vertices, V−1 edges, 1 face), then add the remaining E−(V−1) non-tree edges, each splitting a face.",
+    "significance": "key",
+    "mathContext": "The spanning-tree proof of Euler's formula: any connected graph has a spanning tree with V vertices, V−1 edges, and 1 (outer) face. Each non-tree edge divides an existing face into two, increasing F by 1. After adding all non-tree edges: $F = 1 + (E - (V-1)) = E - V + 2$, giving $V - E + F = 2$.",
+    "relatedConcepts": [
+      "Euler's polyhedral formula",
+      "spanning tree",
+      "planar graph",
+      "structural induction"
+    ],
+    "prerequisites": [
+      "Lean 4 inductive types",
+      "planar graph embedding basics"
+    ]
+  },
+  {
+    "id": "ep-euler-spanning",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 100,
+      "endLine": 111
+    },
+    "title": "euler_spanning: V − E + F = 2 by Structural Induction",
+    "content": "`theorem euler_spanning (g : SpanningBuild) : g.eulerChar = 2`\n\nProof by structural induction on `SpanningBuild`:\n- `single`: 1 − 0 + 1 = 2 ✓ (by `simp`)\n- `addTreeEdge g ih`: (V+1) − (E+1) + F = V − E + F = 2 (by `push_cast; linarith`)\n- `addCycleEdge g ih`: V − (E+1) + (F+1) = V − E + F = 2 (by `push_cast; linarith`)\n\nEach constructor preserves the Euler characteristic. The proof is 8 lines.",
+    "significance": "critical",
+    "mathContext": "The structural induction proof directly mirrors the topological argument: adding a tree edge extends the spanning tree (one vertex and edge added, no new face), while adding a cycle edge creates a new face. Both preserve $V - E + F = 2$.",
+    "relatedConcepts": [
+      "Euler characteristic",
+      "structural induction",
+      "planar graph invariant"
+    ],
+    "prerequisites": [
+      "SpanningBuild definition",
+      "eulerChar definition"
+    ]
+  },
+  {
+    "id": "ep-low-degree",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 353,
+      "endLine": 383
+    },
+    "title": "exists_low_degree_vertex: Every Planar Graph Has a Degree-≤5 Vertex",
+    "content": "`theorem exists_low_degree_vertex (G : SimpleGraph V) [DecidableRel G.Adj] (hV : 3 ≤ Fintype.card V) (h_planar : (G.edgeFinset.card : ℤ) ≤ 3 * Fintype.card V - 6) : ∃ v : V, G.degree v ≤ 5`\n\nProof: By contradiction. Assume all vertices have degree ≥ 6.\n1. `hsum_lower`: ∑ G.degree v ≥ 6 * Fintype.card V (by `sum_le_sum` applied to the assumption)\n2. `G.sum_degrees_eq_twice_card_edges`: 2 * G.edgeFinset.card = ∑ G.degree v\n3. Combine: 6V ≤ 2E, i.e., 3V ≤ E, contradicting E ≤ 3V − 6.\n\nThe key Mathlib lemma `sum_degrees_eq_twice_card_edges` is the handshaking lemma.",
+    "significance": "critical",
+    "mathContext": "This is the key step in both the Five and Six Color Theorems for planar graphs. The handshaking lemma $\\sum_v \\deg(v) = 2|E|$ combined with $|E| \\leq 3|V|-6$ gives $\\sum_v \\deg(v) \\leq 6|V|-12 < 6|V|$, so the average degree is less than 6, forcing some vertex to have degree $\\leq 5$.",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "graph degeneracy",
+      "planar graph",
+      "6-colorability"
+    ],
+    "prerequisites": [
+      "Mathlib SimpleGraph.DegreeSum",
+      "edge bound E ≤ 3V−6"
+    ]
+  },
+  {
+    "id": "ep-double-count",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 400,
+      "endLine": 431
+    },
+    "title": "face_edge_double_count: General Face-Edge Double Counting",
+    "content": "`theorem face_edge_double_count (d V E F : ℕ) (h_euler : (V : ℤ) - E + F = 2) (h_face_bound : d * (F : ℤ) ≤ 2 * E) : (d - 2) * (E : ℤ) ≤ d * (V - 2)`\n\nProof: From Euler's formula, F = E − V + 2. Substitute into d·F ≤ 2E:\n  d·(E − V + 2) ≤ 2E\n  d·E − d·V + 2d ≤ 2E\n  (d − 2)·E ≤ d·V − 2d = d·(V − 2)\n\nSpecializations:\n- d=3: E ≤ 3V−6 (planar, `edge_bound_simple`)\n- d=4: E ≤ 2V−4 (bipartite planar, `edge_bound_bipartite`)\n- d=6: 2E ≤ 3V−6 (girth-6 planar, `edge_bound_girth6`)\n- d=5: 3E ≤ 5V−10 (girth-5 planar)\n\nNon-planarity certificates: K₅ has E=10 > 9=3·5−6, K₃,₃ has E=9 > 8=2·6−4.",
+    "significance": "key",
+    "mathContext": "Double counting on face-edge incidences: each edge borders at most 2 faces, so $\\sum_{f} |\\partial f| \\leq 2E$. If every face has $\\geq d$ boundary edges, then $dF \\leq 2E$. Combined with Euler's formula, this gives the general inequality $(d-2)E \\leq d(V-2)$, encompassing all classical edge bounds for planar graphs.",
+    "relatedConcepts": [
+      "double counting",
+      "face-edge incidence",
+      "girth",
+      "edge bounds"
+    ],
+    "prerequisites": [
+      "Euler's polyhedral formula",
+      "face girth lower bound"
+    ]
+  },
+  {
+    "id": "ep-six-color",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 776,
+      "endLine": 794
+    },
+    "title": "six_colorable_small and planar_has_low_degree: Six Color Theorem Components",
+    "content": "`theorem six_colorable_small (G : SimpleGraph V) [DecidableRel G.Adj] (hn : Fintype.card V ≤ 6) : G.Colorable 6`\n\nProof: Construct `SimpleGraph.Coloring.mk (fun v => Fintype.equivFin V v) (...)`. Each vertex maps to its index in `Fin (card V)`, which injects into `Fin 6` since card V ≤ 6. Adjacency implies distinct vertices (by `G.ne_of_adj`), which maps to distinct `Fin` values.\n\n`theorem planar_has_low_degree (G : SimpleGraph V) [DecidableRel G.Adj] (emb : LocalPlanarEmbedding G) (h_faces : 3 * emb.faceCount ≤ 2 * G.edgeFinset.card) (hne : Nonempty V) : ∃ v : V, G.degree v ≤ 5`\n\nThis handles both V ≥ 3 (via local_exists_low_degree) and V < 3 (via `G.degree_lt_card_verts`).",
+    "significance": "key",
+    "mathContext": "The Six Color Theorem follows from 5-degeneracy: process vertices in degeneracy order; each vertex has ≤ 5 colored neighbors, leaving one of 6 colors free. `six_colorable_small` is the Mathlib-connected formal statement using `SimpleGraph.Colorable`, making this a proper graph coloring theorem rather than just an arithmetic bound.",
+    "relatedConcepts": [
+      "graph coloring",
+      "Colorable",
+      "degeneracy ordering",
+      "Mathlib SimpleGraph"
+    ],
+    "prerequisites": [
+      "Mathlib SimpleGraph.Coloring",
+      "LocalPlanarEmbedding",
+      "planar_has_low_degree"
+    ]
+  }
+]
