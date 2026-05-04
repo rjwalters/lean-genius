@@ -182,11 +182,65 @@ theorem multinomialEntropy_n1_eq_source {α : Type*} [DecidableEq α]
     (hp_nonneg : ∀ i ∈ s, 0 ≤ p i) (hp_sum : ∑ i ∈ s, p i = 1) :
     multinomialEntropy s p 1 =
     -∑ i ∈ s, (if p i = 0 then 0 else p i * Real.log (p i)) := by
-  unfold multinomialEntropy
-  -- Reindex: piAntidiag s 1 ↔ s via indicator functions
-  -- Each k ∈ piAntidiag s 1 is δ_j for unique j ∈ s
-  -- multinomialProb s p 1 δ_j = p j (proved in multinomialProb_n1_indicator)
-  sorry
+  simp only [multinomialEntropy]
+  congr 1
+  -- Reindex piAntidiag s 1 ↔ s via j ↦ δ_j = (fun i => if i = j then 1 else 0)
+  apply Finset.sum_nbij (fun j => fun i => if i = j then 1 else 0)
+  · -- Membership: δ_j ∈ s.piAntidiag 1 for j ∈ s
+    intro j hj
+    rw [Finset.mem_piAntidiag]
+    constructor
+    · simp [Finset.sum_ite_eq, hj]
+    · intro i hi
+      by_cases h : i = j
+      · exact h ▸ hj
+      · simp [h] at hi
+  · -- Injectivity: δ_{j₁} = δ_{j₂} → j₁ = j₂
+    intro j1 hj1 j2 hj2 heq
+    have h := congr_fun heq j1
+    simp only [if_pos rfl] at h
+    split_ifs at h with h12
+    · exact h12
+    · exact absurd h one_ne_zero
+  · -- Surjectivity: every k ∈ piAntidiag s 1 equals some δ_j
+    intro k hk
+    rw [Finset.mem_piAntidiag] at hk
+    obtain ⟨hksum, hksupp⟩ := hk
+    -- Find j ∈ s with k j ≥ 1
+    have hpos : ∃ j ∈ s, 0 < k j := by
+      by_contra h
+      push_neg at h
+      have : ∑ i ∈ s, k i = 0 :=
+        Finset.sum_eq_zero (fun i hi => Nat.le_zero.mp (h i hi))
+      omega
+    obtain ⟨j, hj, hjpos⟩ := hpos
+    refine ⟨j, hj, funext fun i => ?_⟩
+    by_cases h : i = j
+    · -- i = j: show k j = 1
+      subst h
+      simp only [if_pos rfl]
+      have hle : k j ≤ 1 :=
+        (Finset.single_le_sum (fun l _ => Nat.zero_le _) _ hj).trans hksum.le
+      exact (Nat.le_antisymm hle hjpos).symm
+    · -- i ≠ j: show k i = 0
+      simp only [h, if_false]
+      by_contra hne
+      have hkpos : 0 < k i := Nat.pos_of_ne_zero (Ne.symm hne)
+      have his : i ∈ s := hksupp i (Ne.symm hne)
+      have h2 : k j + k i ≤ ∑ l ∈ s, k l :=
+        calc k j + k i = ∑ l ∈ ({j, i} : Finset α), k l := by
+              rw [Finset.sum_pair (Ne.symm h)]
+          _ ≤ ∑ l ∈ s, k l :=
+              Finset.sum_le_sum_of_subset_of_nonneg
+                (fun l hl => by
+                  simp only [Finset.mem_insert, Finset.mem_singleton] at hl
+                  rcases hl with rfl | rfl <;> assumption)
+                (fun _ _ _ => Nat.zero_le _)
+      rw [hksum] at h2
+      omega
+  · -- Term equality: multinomialProb at δ_j = p j
+    intro j hj
+    rw [multinomialProb_n1_indicator s p j hj]
 
 -- ============================================================
 -- PART 5: Upper Bound via Gibbs Inequality
