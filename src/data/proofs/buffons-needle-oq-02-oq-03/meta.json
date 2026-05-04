@@ -82,7 +82,8 @@
       "The Fubini exchange (integrating over hyperplane offsets then directions) is the measure-theoretic core; it requires σ-finiteness and measurability of the crossing count",
       "O(n)-invariance of the sphere measure forces the integral to depend only on |B-A|, yielding a dimension-specific constant α_n",
       "α₂ = 2/π comes from ∫₀^π |cos θ| dθ/π; α₃ = 1/2 from the sphere average E[|u₁|] on S²",
-      "The noodle theorem (polygonal additivity) follows from linearity of the inner product integral over segments"
+      "The noodle theorem (polygonal additivity) follows from linearity of the inner product integral over segments",
+      "High-dimensional behavior: α_n → 0 as n → ∞. In high dimensions, for u uniform on S^{n-1}, the coordinate u₁ concentrates near 0 by measure concentration (E[u₁²] = 1/n by symmetry, so E[|u₁|] ≤ √(1/n) → 0). This is the integral-geometry signature of the Johnson-Lindenstrauss phenomenon: hyperplanes become increasingly tangent to segments in high dimension"
     ],
     "prerequisites": [
       "Inner product spaces (EuclideanSpace, inner product properties)",
