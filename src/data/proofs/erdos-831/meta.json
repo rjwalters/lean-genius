@@ -161,7 +161,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #831 asks for the asymptotics of h(n), where h(n) is the minimum number of distinct circumradii achievable by n points in general position. The answer is UNKNOWN. We know h(3) = 1, h(4) ≥ 2, and h(n) ≤ C(n,3), but the exact growth rate remains open.",
+    "summary": "Erdős Problem #831 asks for the asymptotics of h(n), where h(n) is the minimum number of distinct circumradii achievable by n points in general position. The answer is UNKNOWN. We know h(3) = 1, h(4) = 1, and h(n) ≤ C(n,3), but the exact growth rate remains open.",
     "implications": "**Theoretical Significance**: **Discrete Geometry Connections**\n\n1. **Incidence Geometry:** Related to point-circle incidence problems\n\n2. **Extremal Combinatorics:** Finding configurations that minimize diversity\n\n**3. Unit Distance Problem:** Similar questions about repeated distances (#506)\n\n4. **Orchard Problem:** Similar questions about collinear triples (#104)\n\n5. **Algebraic Geometry:** Connections to algebraic curves through points.",
     "openQuestions": [
       "What is the exact asymptotic growth rate of h(n)?",
