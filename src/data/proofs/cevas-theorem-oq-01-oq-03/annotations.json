@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-setup",
+    "proofId": "cevas-theorem-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "title": "Module Setup: Coordinate Geometry in the Standard Triangle",
+    "content": "The file imports `CevasTheoremOQ01`, which provides `routhRatio`, `signedArea`, and the affine invariance theorem used in the final corollary. The namespace `RouthTheorem` scopes all definitions. The entire proof works in the 'standard triangle' A=(0,0), B=(1,0), C=(0,1) — a fixed reference triangle in ℝ². The general result for arbitrary triangles follows from affine invariance (proved in the parent file): any non-degenerate triangle is an affine image of the standard one, and signed-area ratios are affine invariants. Variables d, e, f represent the cevian division parameters: D = (1-d)B + dC divides BC at fraction d from B, and similarly E on CA, F on AB.",
+    "mathContext": "Standard triangle: $A=(0,0)$, $B=(1,0)$, $C=(0,1)$, area $=\\frac{1}{2}$. Cevians: $AD$ from $A$ to $D=(1-d,d)$; $BE$ from $B=(1,0)$ to $E=(0,1-e)$; $CF$ from $C=(0,1)$ to $F=(f,0)$. Affine invariance: for any non-degenerate triangle $ABC$, $\\text{Area}(PQR)/\\text{Area}(ABC) = \\text{routhRatio}(d,e,f)$ by the standard-triangle result plus affine equivariance of signed area.",
+    "significance": "context",
+    "relatedConcepts": ["standard triangle", "affine invariance", "CevasTheoremOQ01", "signed area", "cevian parametrization"],
+    "prerequisites": ["real-valued coordinates in Lean 4", "Mathlib.Analysis.InnerProductSpace.Basic", "CevasTheoremOQ01 definitions"]
+  },
+  {
     "id": "ann-w1-positivity",
     "proofId": "cevas-theorem-oq-01-oq-03",
     "range": { "startLine": 37, "endLine": 38 },
@@ -60,12 +72,24 @@
     "prerequisites": ["field_simp in Mathlib", "ring tactic", "nonzero denominators"]
   },
   {
+    "id": "ann-membership-remaining",
+    "proofId": "cevas-theorem-oq-01-oq-03",
+    "range": { "startLine": 80, "endLine": 128 },
+    "type": "technique",
+    "title": "Remaining Five Cevian Membership Proofs",
+    "content": "After proving P ∈ AD (lines 73-80), five more membership theorems complete the six-cevian membership proof obligation: P ∈ BE, Q ∈ BE, Q ∈ CF, R ∈ CF, R ∈ AD. Each follows the same proof template: `refine ⟨witness, ?_, ?_⟩` provides the explicit affine parameter, then `field_simp [hw.ne']` clears the denominator wᵢ (using the nonvanishing hypothesis), then `ring` closes the resulting polynomial identity. The six parameter witnesses are: P on AD: (1-e)/w₁; P on BE: d/w₁; Q on BE: (1-f)/w₂; Q on CF: (1-e)/w₂ (not a typo — it uses a different parameterization of CF); R on CF: (1-d)/w₃; R on AD: f/w₃. Together these establish P = AD∩BE, Q = BE∩CF, R = CF∩AD, the intersection structure required by the main Routh theorem.",
+    "mathContext": "Six witnesses: $P\\in AD$: $t=(1-e)/w_1$; $P\\in BE$: $s=d/w_1$; $Q\\in BE$: $s=(1-f)/w_2$; $Q\\in CF$: $u=(1-e)/w_2$; $R\\in CF$: $u=(1-d)/w_3$; $R\\in AD$: $t=f/w_3$. Verify $P\\in BE$: need $P = B + s(E-B)$, i.e., $((1-d)(1-e)/w_1, d(1-e)/w_1) = (1,0)+s(-1,1-e)$; so $s(1-e)=d(1-e)/w_1 \\Rightarrow s=d/w_1$. ✓",
+    "significance": "technical",
+    "relatedConcepts": ["field_simp + ring pattern", "parametric line membership", "affine combination witness", "nonzero denominator hypothesis"],
+    "prerequisites": ["ann-membership-P-AD pattern (lines 73-80)", "field_simp with hw.ne'", "ring tactic for degree-2 polynomial identities"]
+  },
+  {
     "id": "ann-main-theorem",
     "proofId": "cevas-theorem-oq-01-oq-03",
     "range": { "startLine": 148, "endLine": 168 },
     "type": "insight",
     "title": "Routh's Theorem: The Key Polynomial Identity",
-    "content": "After unfolding all definitions, the proof goal is a rational function equality in d, e, f. Three nonvanishing hypotheses (hw1, hw2, hw3) are provided to field_simp. The tactic clears all denominators (multiplying through by w₁·w₂·w₃), reducing to a polynomial identity in d, e, f of degree ~6. The ring tactic verifies this automatically. The result formalizes Routh's theorem (1896): the ratio of the inner triangle's area to the outer triangle's area equals (def - (1-d)(1-e)(1-f))² / ((1-de+d)(1-ef+e)(1-fd+f)).",
+    "content": "After unfolding all definitions, the proof goal is a rational function equality in d, e, f. Three nonvanishing hypotheses (hw1, hw2, hw3) are provided to field_simp. The tactic clears all denominators (multiplying through by w₁·w₂·w₃), reducing to a polynomial identity in d, e, f of degree ~6. The ring tactic verifies this automatically. The result formalizes Routh's theorem (1891): the ratio of the inner triangle's area to the outer triangle's area equals (def - (1-d)(1-e)(1-f))² / ((1-de+d)(1-ef+e)(1-fd+f)).",
     "mathContext": "Routh's theorem: $\\frac{[PQR]}{[ABC]} = \\frac{(def - (1-d)(1-e)(1-f))^2}{w_1 w_2 w_3}$ where $w_i$ are the denominators. The signed area $[PQR]$ from the cross product formula: $\\frac{1}{2}|(Q-P) \\times (R-P)|$.",
     "significance": "key",
     "relatedConcepts": ["Routh's theorem", "cross product area formula", "field_simp", "ring tactic", "polynomial identities"],
