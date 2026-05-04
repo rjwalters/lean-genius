@@ -40,7 +40,7 @@
     "lineCount": 296,
     "assumptions": "2 axioms: erdos_960_disproof (APSSV 2026 — quadratic lower bound F ≥ n²/12 - 10n/3 for r≥3, k≥4), erdos_960_littleo_false (negation of little-o conjecture). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "Erdős Problem #960 originates from Erdős's 1984 paper [Er84] and concerns the interplay between ordinary lines and Ramsey-type phenomena in discrete geometry. An ordinary line is one passing through exactly two points of a configuration. The Sylvester-Gallai theorem (1893) guarantees at least one ordinary line for any non-collinear finite point set, and the Green-Tao theorem (2013) strengthened this to at least n/2 ordinary lines when no three points are collinear.\n\nThe problem asks about a higher-order structure: given many ordinary lines, must there exist r points whose C(r,2) connecting lines are all ordinary? The threshold f_{r,k}(n) measures the minimum number of ordinary lines needed to force such an 'all-ordinary' r-subset, among n-point configurations with no k collinear. Turán's theorem from extremal graph theory provides an upper bound by viewing the ordinary line relation as a graph.\n\nThe central conjecture that f_{r,k}(n) = o(n²) was DISPROVED in 2026 by Alexeev, Putterman, Sawhney, Sellke, and Valiant (arXiv:2604.06609). Their construction uses a cyclic subgroup of the real elliptic curve E: y^2 = x^3 - x + 1 with the zero residue class mod 7 removed, yielding a point set with no 4 collinear points and Omega(n^2) ordinary lines but no r-point all-ordinary subset. The AI-generated proof demonstrates that current AI systems can produce novel combinatorial geometry constructions.",
