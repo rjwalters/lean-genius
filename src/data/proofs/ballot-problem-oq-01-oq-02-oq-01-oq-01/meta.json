@@ -31,26 +31,104 @@
       "ncard_eq_mul_of_uniform_fibers: consequence for function fibers over image",
       "ncard_biUnion_eq_of_uniform_compat: compatibility with parent file's explicit ∀ form",
       "Disjoint-pairs example: three pairs {2i, 2i+1} for i=0,1,2"
-    ],
-    "proofStrategy": "All lemmas reduce to Set.ncard_biUnion + Finset.sum_const + sum_congr. The PairwiseDisjoint form matches Mathlib conventions. The Fintype version uses biUnion_univ + ncard_univ to reduce to the Set case.",
-    "openQuestions": [
-      "What is the Mathlib PR process for contributing Set.ncard lemmas?",
-      "Should the lemma be stated for ncard or for Nat.card (more general)?",
-      "Is there a version for Multiset or Finsupp fibers?"
-    ],
-    "sections": [
-      {
-        "title": "Core Lemma (Mathlib-Ready)",
-        "content": "ncard_biUnion_eq_of_uniform uses Set.PairwiseDisjoint (Mathlib standard) instead of the explicit ∀∀ form. The proof is 6 lines from Set.ncard_biUnion + Finset.sum_congr + sum_const.",
-        "theorems": ["ncard_biUnion_eq_of_uniform"]
-      },
-      {
-        "title": "Specializations",
-        "content": "Three variants: Finset-indexed (cleaner for discrete problems), Fintype-indexed (universal union via biUnion_univ), and function-fiber version (connects to preimage counting). All reduce to the core lemma.",
-        "theorems": ["ncard_biUnion_eq_of_uniform_finset", "ncard_iUnion_eq_of_uniform", "ncard_eq_mul_of_uniform_fibers"]
-      }
     ]
   },
+  "overview": {
+    "historicalContext": "The problem of counting a disjoint union of uniform sets arises across combinatorics, group theory, and probability. The classical result that a group $G$ has order $|G| = k \\cdot |G/H|$ when every coset $gH$ has exactly $k$ elements is the prototypical example. In Lean 4's Mathlib, `Set.ncard_biUnion` gives the general sum formula for disjoint unions, but as of Mathlib4 there is no direct corollary for the *uniform* case — the gap this entry fills. The ballot problem chain (initiated in this gallery) provided the immediate motivation: fiber counting under a multi-candidate permutation map reduces exactly to this uniform-union structure, and the extracted lemma is clean enough to stand on its own in Mathlib.",
+    "problemStatement": "Given a finite index set $I$, a family of sets $s : \\iota \\to \\mathrm{Set}\\,\\alpha$ that is pairwise disjoint on $I$, with each $s(i)$ finite and $|s(i)| = k$, prove that $\\left|\\bigcup_{i \\in I} s(i)\\right| = k \\cdot |I|$. Equivalently: a disjoint union of $n$ sets each of size $k$ has total size $kn$.",
+    "proofStrategy": "All lemmas reduce to two Mathlib primitives: `Set.ncard_biUnion` (which expresses |⋃ i ∈ I, s i| as ∑ i ∈ I.toFinset, |s i|) and `Finset.sum_const` (which collapses a constant sum ∑ i ∈ I, k to |I| • k). The key step is `Finset.sum_congr` to replace each `(s i).ncard` by the uniform value `k`. The PairwiseDisjoint form converts the nested ∀∀ disjointness hypothesis to Mathlib's standard predicate, while the specializations (Finset index, Fintype index, fiber version) each peel off one layer of coercion.",
+    "keyInsights": [
+      "The lemma closes a gap in Mathlib: `Set.ncard_biUnion` gives a sum formula but offers no constant-fiber shortcut. This entry provides exactly that shortcut, following the Mathlib naming convention `*_of_uniform`.",
+      "Three index-set variants (Set with Finite, Finset, Fintype) cover the three common programming patterns in Lean 4 proofs. The Fintype form is the cleanest for algorithmic contexts since `biUnion_univ` reduces it to a full-universe union.",
+      "`Set.PairwiseDisjoint` is strictly cleaner than the nested `∀ i ∈ I, ∀ j ∈ I, i ≠ j → Disjoint` form in Lean 4: it composes with `Function.Injective.pairwiseDisjoint` and other Mathlib infrastructure. The compatibility lemma shows both forms are interchangeable.",
+      "The fiber version `ncard_eq_mul_of_uniform_fibers` is the abstract spine of ballot-problem fiber transfer: it says |A| = k × |B| whenever A decomposes as a disjoint union of B-indexed fibers of uniform size k. This is the combinatorial engine behind the probability-preserving surjection result.",
+      "The concrete example (three disjoint pairs $\\{2i, 2i+1\\}$ for $i = 0, 1, 2$) is non-trivial to prove in Lean 4 because `omega` must reason about set membership for specific numeric cases. The example validates that the lemma is usable, not just provable."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Mathlib Gap Analysis",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports Mathlib set cardinality and big-operator machinery, then documents the gap in Mathlib4: Set.ncard_biUnion exists but the uniform-fiber specialization does not. Explains the relationship to the parent ballot problem file."
+    },
+    {
+      "id": "core-lemma",
+      "title": "Core Lemma: ncard_biUnion_eq_of_uniform (Mathlib-Ready)",
+      "startLine": 52,
+      "endLine": 78,
+      "summary": "Proves the main theorem: a pairwise-disjoint family of finite sets indexed by a finite set I, all of cardinality k, has union cardinality k * |I|. Uses Set.PairwiseDisjoint (Mathlib standard). Proof: ncard_biUnion then sum_congr + sum_const then mul_comm."
+    },
+    {
+      "id": "finset-specialization",
+      "title": "Finset Index Specialization",
+      "startLine": 80,
+      "endLine": 93,
+      "summary": "Derives the Finset-indexed variant where the index is a Finset rather than a Set.Finite. Reduces to the core lemma via Set.ncard_coe_Finset and coercion of membership."
+    },
+    {
+      "id": "fintype-version",
+      "title": "Fintype Universe Version",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "The strongest form: when the index type is Fintype, the union over all elements satisfies |union i, s i| = k * Fintype.card ι. Uses biUnion_univ to reduce to the Set version, then ncard_univ to identify the index set size."
+    },
+    {
+      "id": "fiber-consequence",
+      "title": "Fiber Consequence: Domain Size via Image",
+      "startLine": 111,
+      "endLine": 131,
+      "summary": "Applies the core lemma to function fibers: if A decomposes as a disjoint union of fibers of uniform size k over B, then |A| = k * |B|. This is the combinatorial engine of the ballot probability transfer."
+    },
+    {
+      "id": "compatibility",
+      "title": "Compatibility with Parent File's Explicit Form",
+      "startLine": 133,
+      "endLine": 145,
+      "summary": "Shows the explicit forall-forall disjointness form (used in BallotProblemOQ01OQ02OQ01.lean) follows from PairwiseDisjoint by lambda wrapping. Validates that upgrading the API to PairwiseDisjoint is purely additive."
+    },
+    {
+      "id": "concrete-example",
+      "title": "Concrete Example: Disjoint Pairs {2i, 2i+1}",
+      "startLine": 147,
+      "endLine": 169,
+      "summary": "Verifies the lemma on three disjoint pairs {0,1}, {2,3}, {4,5}. Disjointness proved by omega over set membership; uniform size 2 proved by Set.ncard_pair; result confirms 2 * 3 = 6 elements total."
+    },
+    {
+      "id": "mathlib-assessment",
+      "title": "Mathlib Contribution Assessment",
+      "startLine": 171,
+      "endLine": 200,
+      "summary": "Documents why the lemma is Mathlib-ready: not in Mathlib4, proof is ~10 lines, naming follows Mathlib conventions. Lists four use-case categories (ballot, cosets, graphs, probability) and recommends submission as Set.ncard_biUnion_of_uniform."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry extracts and generalizes the uniform-fiber cardinality lemma from the ballot problem chain into a Mathlib-ready standalone result. The six theorems collectively cover all natural index-set flavors (Set with Finite, Finset, Fintype, fiber decomposition) and are verified with 0 axioms and 0 sorries.",
+    "implications": "The ncard_biUnion_eq_of_uniform family is a low-hanging Mathlib contribution: short proofs, clear naming, no new typeclasses, and immediate applications in combinatorics, group theory, and probability. The fiber version ncard_eq_mul_of_uniform_fibers reframes uniform-fiber surjections as a pure cardinality identity, enabling cleaner probability transfer proofs like those in the ballot problem chain.",
+    "openQuestions": [
+      "What is the Mathlib PR process for contributing Set.ncard lemmas, and should the name be ncard_biUnion_of_uniform or ncard_biUnion_const?",
+      "Should the lemma be stated for Set.ncard or for Nat.card (more general, works for infinite types with the right finiteness hypothesis)?",
+      "Is there an analogous uniform version of Set.ncard_iUnion_of_disjoint for countably infinite index sets with the right summability condition?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "ballot-problem-oq-01-oq-02-oq-01",
+      "title": "Uniform Fiber Transfer for Multi-Candidate Ballot Theorem",
+      "relationship": "Parent proof where ncard_biUnion_eq_of_uniform was first developed for ballot fiber counting"
+    },
+    {
+      "id": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
+      "title": "General Uniform Fiber Transfer: uniformOn Preserved for All Events",
+      "relationship": "Sibling that uses uniform fiber cardinality to prove probability preservation for all events simultaneously"
+    },
+    {
+      "id": "ballot-problem-oq-01-oq-02",
+      "title": "Multi-Candidate Ballot Theorem",
+      "relationship": "Grandparent: the multi-candidate ballot result whose fiber structure motivated the uniform cardinality lemma"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
     "axiomCount": 0,
