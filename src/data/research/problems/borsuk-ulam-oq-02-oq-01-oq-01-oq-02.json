@@ -1,7 +1,7 @@
 {
   "slug": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
   "title": "Exotic G-Representations with Strictly Higher Equivariant Borsuk-Ulam Dimension",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,24 +16,40 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-12T16:19:52-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-05-04T00:00:00Z",
+    "iteration": 2,
+    "focus": "Formalized IsExotic definition, proved prime powers non-exotic, structural constraint (2+ prime factors), divisibility monotonicity, conjecture equivalence",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — gallery entry created. If buDim_le_formula is proved, update to verified.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Gallery entry created with 25 theorems, 2 definitions, 0 sorries. Proved primes/prime-powers non-exotic, exotic requires 2+ prime factors, buDimFormula monotone under divisibility.",
+    "builtItems": [
+      "IsExotic (n d : ℕ) : Prop := buDimFormula n d < buDim n d — definition of exotic representation",
+      "exoticDefect (n d : ℕ) : ℕ := buDim n d - buDimFormula n d — integer measure of exoticness",
+      "not_exotic_prime (p d) : ¬IsExotic p d — in proofs/Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean",
+      "not_exotic_prime_pow (p k d) : ¬IsExotic (p^k) d — in BorsukUlamOQ02OQ01OQ01OQ02.lean",
+      "exotic_implies_two_prime_factors (n d) : IsExotic n d → 2 ≤ n.primeFactors.card",
+      "buDimFormula_mono_of_dvd (n m d) : n ∣ m → m ≠ 0 → buDimFormula n d ≤ buDimFormula m d",
+      "conjecture_iff_no_exotic : (∀ n d, 2≤n → buDim n d ≤ buDimFormula n d) ↔ (∀ n d, 2≤n → ¬IsExotic n d)"
+    ],
+    "insights": [
+      "IsExotic is never witnessed for prime n (trivial from buDimFormula_prime)",
+      "Prime powers p^k are non-exotic: primeFactors(p^k) = {p} reduces to prime case",
+      "Exotic representations require ≥ 2 distinct prime factors (proved via Finset.card argument)",
+      "buDimFormula is monotone under divisibility: n ∣ m ∧ m ≠ 0 → buDimFormula n d ≤ buDimFormula m d",
+      "The open conjecture buDim ≤ buDimFormula is equivalent to the statement that no exotic representations exist"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "If buDim_le_formula is proved, update gallery entry status from axiomatized to verified"
+    ],
     "markdown": "# Knowledge Base: borsuk-ulam-oq-02-oq-01-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -65,7 +81,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.650Z",
-  "lastUpdate": "2026-04-26T08:56:57.668Z",
+  "lastUpdate": "2026-05-04T00:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/BorsukUlam.lean",
