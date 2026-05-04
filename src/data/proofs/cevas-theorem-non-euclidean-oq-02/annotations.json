@@ -3,7 +3,7 @@
     "id": "ann-generalized-menelaus",
     "proofId": "cevas-theorem-non-euclidean-oq-02",
     "range": {
-      "startLine": 39,
+      "startLine": 44,
       "endLine": 80
     },
     "type": "definition",
@@ -28,8 +28,8 @@
     "id": "ann-sinh-properties",
     "proofId": "cevas-theorem-non-euclidean-oq-02",
     "range": {
-      "startLine": 85,
-      "endLine": 94
+      "startLine": 87,
+      "endLine": 95
     },
     "type": "concept",
     "title": "sinh = 0 ↔ x = 0: Signed Distance Well-Definedness via Strict Monotonicity",
@@ -53,8 +53,8 @@
     "id": "ann-hyperbolic-menelaus",
     "proofId": "cevas-theorem-non-euclidean-oq-02",
     "range": {
-      "startLine": 100,
-      "endLine": 155
+      "startLine": 105,
+      "endLine": 157
     },
     "type": "insight",
     "title": "Hyperbolic Menelaus via toGeneralized Conversion",
@@ -78,8 +78,8 @@
     "id": "ann-ceva-menelaus-relationship",
     "proofId": "cevas-theorem-non-euclidean-oq-02",
     "range": {
-      "startLine": 172,
-      "endLine": 192
+      "startLine": 243,
+      "endLine": 262
     },
     "type": "concept",
     "title": "Ceva-Menelaus Duality: Product = 1 vs Product = -1",
@@ -100,11 +100,36 @@
     ]
   },
   {
+    "id": "ann-spherical-menelaus",
+    "proofId": "cevas-theorem-non-euclidean-oq-02",
+    "range": {
+      "startLine": 180,
+      "endLine": 231
+    },
+    "type": "insight",
+    "title": "Spherical Menelaus via sin Measure Function",
+    "content": "The `SphericalMenelausConfig` mirrors the hyperbolic config but uses `Real.sin` as the measure function. The key difference: where the hyperbolic case requires `hdc : dc ≠ 0` (signed distance zero only at the vertex), the spherical case requires `hsin_dc : Real.sin dc ≠ 0` (sin = 0 at multiples of π, where the arc degenerates). The `toGeneralized` conversion maps each arc through sin. The main theorem `spherical_menelaus` reduces to `generalized_menelaus` in two steps: `rw [sphericalMenelausProduct_eq_generalized]` then `exact generalized_menelaus cfg.toGeneralized`.",
+    "mathContext": "The spherical Menelaus theorem: For triangle $ABC$ on a unit sphere with a great-circle transversal meeting the extensions of sides at $D, E, F$: $D, E, F$ are collinear (on a great circle) $\\iff \\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1$ where arcs are signed. This completes the curvature trichotomy: $K=+1$ (spherical, $\\sin$), $K=0$ (Euclidean, identity), $K=-1$ (hyperbolic, $\\sinh$). Unlike $\\sinh$ (injective on all $\\mathbb{R}$), $\\sin$ is not globally injective, which is why the non-degeneracy hypothesis is on $\\sin(\\text{arc}) \\ne 0$ rather than $\\text{arc} \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SphericalMenelausConfig",
+      "toGeneralized conversion",
+      "sin odd function",
+      "spherical geometry",
+      "great circle transversal"
+    ],
+    "prerequisites": [
+      "spherical geometry (great circles, arc lengths)",
+      "generalized_menelaus algebraic core",
+      "sin properties (Real.sin in Mathlib)"
+    ]
+  },
+  {
     "id": "ann-midpoint-example",
     "proofId": "cevas-theorem-non-euclidean-oq-02",
     "range": {
-      "startLine": 194,
-      "endLine": 209
+      "startLine": 263,
+      "endLine": 281
     },
     "type": "concept",
     "title": "Midpoint Specialization: sinh(BD)/sinh(DC) = 1 When D is Midpoint",
