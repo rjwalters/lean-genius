@@ -806,9 +806,9 @@
       "result": "clean"
     },
     "bezout-identity-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-24T12:27:46Z",
+      "lastAudited": "2026-05-04T09:09:50Z",
       "result": "clean"
     },
     "bezout-identity-oq-02": {
@@ -1100,12 +1100,12 @@
       "result": "clean"
     },
     "birch-swinnerton-dyer": {
-      "auditCount": 6,
+      "auditCount": 7,
       "issues": [
         "True-stub defs (p_adic_L_function, HeegnerPointExists, p_adic_height_pairing) added to meta.assumptions"
       ],
-      "lastAudited": "2026-04-24T00:00:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-04T09:09:43Z",
+      "result": "clean"
     },
     "birch-swinnerton-dyer-oq-06": {
       "auditCount": 2,
@@ -1605,9 +1605,9 @@
       "result": "clean"
     },
     "cauchy-schwarz-integral-oq-01-oq-03-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-24T04:27:46Z",
+      "lastAudited": "2026-05-04T09:09:44Z",
       "result": "clean"
     },
     "cauchy-schwarz-integral-oq-02": {
@@ -7601,14 +7601,14 @@
     },
     "erdos-512": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
+      "auditCount": 4,
       "issuesFixed": [
         "stale originalContributions items (#12149)",
         "annotation L1norm_upper_bound incorrectly labelled (sorry) \u2014 proved",
         "annotation L2_norm incorrectly labelled (sorry) \u2014 proved pending expSumNorm_sq_double; range updated to 257-295"
       ],
-      "lastAudited": "2026-04-24T05:03:47Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-04T09:09:49Z",
+      "result": "clean"
     },
     "erdos-513": {
       "agentId": "auditor-cycle-20-batch",
@@ -8340,12 +8340,12 @@
       "result": "clean"
     },
     "erdos-606-oq-03": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
         "badge axiom->wip (fixed by PR #11028)"
       ],
-      "lastAudited": "2026-04-24T00:00:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-04T09:09:44Z",
+      "result": "clean"
     },
     "erdos-606-oq-03-oq-03": {
       "auditCount": 2,
@@ -11254,9 +11254,9 @@
       "result": "clean"
     },
     "fair-games-theorem-oq-02-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-24T04:27:46Z",
+      "lastAudited": "2026-05-04T09:09:45Z",
       "result": "clean"
     },
     "fair-games-theorem-oq-02-oq-04": {
@@ -12030,10 +12030,10 @@
       "result": "clean"
     },
     "konigsberg-oq-02-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-24T09:11:12Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-04T09:09:49Z",
+      "result": "clean"
     },
     "konigsberg-oq-03": {
       "auditCount": 5,
@@ -12374,9 +12374,9 @@
       "result": "clean"
     },
     "minkowski-fundamental-theorem-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-24T04:27:46Z",
+      "lastAudited": "2026-05-04T09:09:46Z",
       "result": "clean"
     },
     "minkowski-theorem": {
@@ -13196,9 +13196,9 @@
       "result": "clean"
     },
     "sqrt2-minpoly-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:35Z",
+      "lastAudited": "2026-05-04T09:09:39Z",
       "result": "clean"
     },
     "sqrt2-plus-sqrt3-irrational": {
@@ -13208,9 +13208,9 @@
       "result": "clean"
     },
     "sqrt2-plus-sqrt3-irrational-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:35Z",
+      "lastAudited": "2026-05-04T09:09:39Z",
       "result": "clean"
     },
     "stirling-formula": {
@@ -13261,9 +13261,9 @@
       "result": "clean"
     },
     "subset-count-oq-02-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:35Z",
+      "lastAudited": "2026-05-04T09:09:40Z",
       "result": "clean"
     },
     "sum-of-divisors": {
@@ -13435,9 +13435,9 @@
       "result": "clean"
     },
     "taylor-sincos-convergence-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:36Z",
+      "lastAudited": "2026-05-04T09:09:40Z",
       "result": "clean"
     },
     "taylor-theorem": {
@@ -13447,9 +13447,9 @@
       "result": "clean"
     },
     "taylor-theorem-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:36Z",
+      "lastAudited": "2026-05-04T09:09:41Z",
       "result": "clean"
     },
     "taylor-theorem-oq-03": {
@@ -13471,9 +13471,9 @@
       "result": "clean"
     },
     "tractatus-ontology": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:36Z",
+      "lastAudited": "2026-05-04T09:09:41Z",
       "result": "clean"
     },
     "triangle-angle-sum": {
@@ -13489,15 +13489,15 @@
       "result": "clean"
     },
     "triangle-angle-sum-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:37Z",
+      "lastAudited": "2026-05-04T09:09:42Z",
       "result": "clean"
     },
     "triangle-angle-sum-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:37Z",
+      "lastAudited": "2026-05-04T09:09:42Z",
       "result": "clean"
     },
     "triangle-inequality": {
@@ -13566,9 +13566,9 @@
       "result": "clean"
     },
     "vietas-formulas-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:37Z",
+      "lastAudited": "2026-05-04T09:09:42Z",
       "result": "clean"
     },
     "vietas-formulas-oq-03": {
@@ -13590,9 +13590,9 @@
       "result": "clean"
     },
     "weak-goldbach": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-24T00:00:00Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-05-04T09:09:44Z",
+      "result": "clean"
     },
     "wilsons-theorem": {
       "auditCount": 3,
@@ -13688,9 +13688,9 @@
       "result": "clean"
     },
     "yang-mills-lattice-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:37Z",
+      "lastAudited": "2026-05-04T09:09:43Z",
       "result": "clean"
     },
     "yang-mills-transfer-matrix": {
@@ -13702,9 +13702,9 @@
       "result": "issues-fixed"
     },
     "yang-mills-transfer-matrix-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-24T04:27:46Z",
+      "lastAudited": "2026-05-04T09:09:48Z",
       "result": "clean"
     },
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03": {
