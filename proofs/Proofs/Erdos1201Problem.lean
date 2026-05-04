@@ -1091,4 +1091,63 @@ theorem erdos_1201_equiv_small_eps :
     · push_neg at hε_half
       exact h ε η hε₀ hε_half hη
 
+/-
+## Smooth-Window Characterization and Conditional Reduction
+-/
+
+/-- **Smooth-Window Duality**: n is NOT good for the Erdős problem iff every term n+i (i ≤ k)
+    has greatest prime factor ≤ n^(1-ε), i.e., the window [n, n+k] is n^(1-ε)-smooth.
+    Equivalently: n is bad iff the consecutive product n(n+1)···(n+k) is n^(1-ε)-smooth. -/
+theorem erdos_1201_not_good_smooth_window (n k : ℕ) (ε : ℝ) (hn : 2 ≤ n) :
+    ¬((n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)) ↔
+    ∀ i ≤ k, (greatestPrimeFactor (n + i) : ℝ) ≤ (n : ℝ) ^ (1 - ε) := by
+  rw [not_lt]
+  constructor
+  · intro hle i hi
+    have hle_i : greatestPrimeFactor (n + i) ≤ gpfConsecutive n k := by
+      rw [gpfConsecutive_eq_sup_range n k hn]
+      exact Finset.le_sup (f := fun j => greatestPrimeFactor (n + j))
+                          (Finset.mem_range.mpr (by omega))
+    exact (Nat.cast_le.mpr hle_i).trans hle
+  · intro hall
+    have hnn : 0 ≤ (n : ℝ) ^ (1 - ε) := by positivity
+    have hle : gpfConsecutive n k ≤ ⌊(n : ℝ) ^ (1 - ε)⌋₊ :=
+      (gpfConsecutive_le_iff n k hn _).mpr fun i hi => Nat.le_floor (hall i hi)
+    exact le_trans (Nat.cast_le.mpr hle) (Nat.floor_le hnn)
+
+/-- **Rough-Term Characterization**: n is good for the Erdős problem iff some term n+i in the
+    window [n, n+k] has greatest prime factor exceeding n^(1-ε).
+    Negation of `erdos_1201_not_good_smooth_window`: good ↔ the window is NOT fully smooth. -/
+theorem erdos_1201_good_iff_rough_term (n k : ℕ) (ε : ℝ) (hn : 2 ≤ n) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) ↔
+    ∃ i ≤ k, (n : ℝ) ^ (1 - ε) < (greatestPrimeFactor (n + i) : ℝ) := by
+  constructor
+  · intro h
+    by_contra hall
+    push_neg at hall
+    exact absurd h ((erdos_1201_not_good_smooth_window n k ε hn).mpr hall)
+  · intro ⟨i, hi, hlt⟩
+    have hge : greatestPrimeFactor (n + i) ≤ gpfConsecutive n k := by
+      rw [gpfConsecutive_eq_sup_range n k hn]
+      exact Finset.le_sup (f := fun j => greatestPrimeFactor (n + j))
+                          (Finset.mem_range.mpr (by omega))
+    exact lt_of_lt_of_le hlt (Nat.cast_le.mpr hge)
+
+/-- **Prime-Window Conditional**: ErdosProblem1201 follows from a prime gap hypothesis.
+    If for each ε, η > 0 there exists k such that almost all n ≥ 2 have a prime in [n, n+k]
+    exceeding n^(1-ε), then ErdosProblem1201 holds.
+    Formally reduces the open conjecture to a prime distribution statement (Cramér-type). -/
+theorem erdos_1201_conditional_proof
+    (hprime : ∀ (ε η : ℝ), 0 < ε → ε < 1 → 0 < η →
+      ∃ k : ℕ, upperDensity {n : ℕ | 2 ≤ n ∧ ∃ i ≤ k, (n + i).Prime ∧
+                (n : ℝ) ^ (1 - ε) < (n + i : ℝ)} ≥ 1 - η) :
+    ErdosProblem1201 := by
+  intro ε η hε₀ hε₁ hη
+  obtain ⟨k, hk⟩ := hprime ε η hε₀ hε₁ hη
+  refine ⟨k, le_trans hk (upperDensity_mono ?_)⟩
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn ⊢
+  obtain ⟨hn2, i, hi, hprime_i, hlt⟩ := hn
+  exact erdos_1201_good_of_prime_in_window n k i ε hn2 hi hprime_i hlt
+
 end Erdos1201
