@@ -161,15 +161,11 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Factors",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic",
-      "Mathlib.NumberTheory.Bertrand"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": "Erdos1201",
-    "lineCount": 1480,
+    "lineCount": 1473,
     "axiomCount": 1,
     "theoremCount": 97,
     "definitionCount": 6,
