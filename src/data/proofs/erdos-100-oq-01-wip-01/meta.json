@@ -1,0 +1,132 @@
+{
+  "id": "erdos-100-oq-01-wip-01",
+  "title": "Anning–Erdős Finiteness: Circle Intersection Proof",
+  "slug": "erdos-100-oq-01-wip-01",
+  "description": "Formalizes the Anning–Erdős theorem (1945): any non-collinear planar point set with all pairwise integer distances bounded by d has at most 2d²+2 points. Proves four theorems: algebraic root bound for quadratics, circle intersection bound, fiber counting cardinality, and the main finiteness theorem.",
+  "meta": {
+    "author": "Anning–Erdős (1945); formalized 2026",
+    "sourceUrl": "https://erdosproblems.com/100",
+    "date": "1945",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos100OQ01WIP01.lean",
+    "tags": [
+      "discrete-geometry",
+      "erdos",
+      "distance-sets",
+      "circle-geometry",
+      "quadratic-polynomials"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 274,
+    "assumptions": "None. Fully machine-verified.",
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Anning–Erdős theorem (1945) is a fundamental result in discrete geometry: any infinite set of points in the plane with all pairwise distances being integers must be collinear. Equivalently, for any bound d, every non-collinear planar integer-distance set with all distances ≤ d is finite. The proof rests on two key observations: (1) two distinct circles intersect in at most 2 points, and (2) for fixed anchor points P₁, P₂, any other point Q in the set is determined by the pair (dist(Q,P₁), dist(Q,P₂)) up to a 2-fold ambiguity. Since there are at most d² distance pairs, the set has at most 2+2d² points.",
+    "problemStatement": "For any d > 0, every non-collinear planar point set with all pairwise integer distances bounded by d has at most 2d² + 2 points.",
+    "text": "Proves the Anning–Erdős finiteness theorem completely: every non-collinear planar set with all pairwise integer distances ≤ d has at most 2d²+2 points. Zero sorries, zero axioms.",
+    "proofStrategy": "The proof proceeds in three stages: (1) **Algebraic root bound** — `quadratic_at_most_two_roots` proves that a nonzero quadratic polynomial has at most 2 roots using only ring arithmetic (via `linear_combination`), avoiding the Polynomial API entirely. (2) **Circle intersection** — `three_pts_two_circles_contra` proves that three distinct points cannot simultaneously lie on two circles with distinct centers. The proof subtracts the two circle equations to obtain the radical axis (a linear equation), then splits on whether the center-difference dx is zero or not: in the dx=0 case, all points share the same y-coordinate and a quadratic in x applies; in the dx≠0 case, x is expressed as a linear function of y via the radical axis, and substituting into one circle equation yields a quadratic in y. In both cases, three distinct roots of a degree-2 polynomial give a contradiction via `quadratic_at_most_two_roots`. (3) **Fiber counting** — `int_dist_card_le` covers S∖{P₁,P₂} by distance-pair fibers indexed by (k₁,k₂) ∈ {1..d}², shows each fiber has ≤ 2 elements via `three_pts_two_circles_contra`, and concludes |S| ≤ 2d²+2 via `Finset.card_biUnion_le`.",
+    "prerequisites": [
+      "Circle geometry: two circles with distinct centers intersect in at most 2 points",
+      "Radical axis: subtracting two circle equations yields a linear equation",
+      "Quadratic polynomials: degree 2 over ℝ has at most 2 roots",
+      "Finset cardinality: fiber counting in Lean 4 via Finset.card_biUnion_le"
+    ],
+    "keyInsights": [
+      "The `linear_combination` tactic cleanly handles the polynomial algebra: proving that substituting the radical axis expression into a circle equation yields a quadratic, and proving the quadratic root bound, both reduce to ring identities that `linear_combination` dispatches instantly.",
+      "The radical axis approach unifies the two cases of the circle intersection proof: subtracting circle equations always gives a linear constraint, regardless of whether dx or dy is zero. The case split on dx=0 vs dx≠0 then determines whether x or y can be used as the free variable.",
+      "Three distinct points on a degree-2 algebraic curve is impossible over ℝ — this is the `quadratic_at_most_two_roots` lemma, which needs only basic ring arithmetic and the fact that a nonzero polynomial has no repeated factor (proven via the `mul_eq_zero` split on the difference-of-squares factorization).",
+      "The fiber counting proof uses `Finset.card_biUnion_le` to bound |S∖{P₁,P₂}| ≤ 2d² by covering with distance-pair fibers, each of size ≤ 2 by `three_pts_two_circles_contra`. Together with |{P₁,P₂}| = 2, this gives |S| ≤ 2d²+2. The key step uses `Finset.two_lt_card` to extract three witnesses when a fiber has more than 2 elements, then derives a contradiction via `three_pts_two_circles_contra`."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Proof Sketch",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Imports (Mathlib.Tactic, Mathlib.Analysis.SpecialFunctions.Log.Basic), namespace Erdos100OQ01WIP01, and a docstring sketching the proof strategy: fix two anchor points, count distance-pair fibers, apply circle intersection bound.",
+      "mathContext": "The core insight: every point Q ∈ S lies on two circles (dist(Q,P₁)=k₁, dist(Q,P₂)=k₂). Two distinct circles intersect in at most 2 points, so each (k₁,k₂) fiber has ≤ 2 elements. With d² distance pairs, |S| ≤ 2+2d²."
+    },
+    {
+      "id": "quadratic-root-bound",
+      "title": "Algebraic Root Bound: Quadratic Has ≤ 2 Roots",
+      "startLine": 22,
+      "endLine": 56,
+      "summary": "Lemma quadratic_at_most_two_roots: given roots p ≠ q of ax²+bx+c=0 (a≠0), any third root r equals p or q. Proved via ring arithmetic: (p-q)*(a*(p+q)+b) = 0 shows a*(p+q)+b=0; then (r-p)*(a*(r+p)+b)=0 with r≠p gives a*(r+p)+b=0, so p+q=r+p, hence r=q.",
+      "mathContext": "The key ring identity: $(x-y)(a(x+y)+b) = (ax^2+bx+c) - (ay^2+by+c)$. When both sides equal 0, and $x \\neq y$, we get $a(x+y)+b=0$. Applying to the pair $(r,p)$ gives $a(r+p)+b=0$. Combined with $a(p+q)+b=0$: $a(p+q) = a(r+p)$, so $q=r$ by `mul_left_cancel₀`."
+    },
+    {
+      "id": "circle-intersection",
+      "title": "Circle Intersection: Three Points on Two Circles Gives Contradiction",
+      "startLine": 58,
+      "endLine": 176,
+      "summary": "Theorem three_pts_two_circles_contra: three distinct points p, q, s lying on two circles with distinct centers c₁, c₂ is impossible. Proved by: (1) subtracting circle equations to get the radical axis 2*dx*x + 2*dy*y = K; (2) case split on dx=0 vs dx≠0; (3) in each case, substituting the linear constraint into one circle equation yields a quadratic with the three distinct coordinates as roots; (4) contradiction by quadratic_at_most_two_roots.",
+      "mathContext": "The radical axis formula: subtracting the two circle equations gives $2(c_{2,x}-c_{1,x})x + 2(c_{2,y}-c_{1,y})y = r_1^2 - r_2^2 + |c_2|^2 - |c_1|^2$. When $dx = c_{2,x} - c_{1,x} \\neq 0$, multiply the circle equation by $(2dx)^2$ and substitute $x \\cdot 2dx = K - 2dy \\cdot y$ to get the quadratic $Ay^2 + By + C = 0$ with $A = (2dy)^2 + (2dx)^2 \\neq 0$. The key step uses `linear_combination` to prove the quadratic identity."
+    },
+    {
+      "id": "cardinality-bound",
+      "title": "Fiber Counting: Cardinality Bound |S| ≤ 2d²+2",
+      "startLine": 178,
+      "endLine": 254,
+      "summary": "Theorem int_dist_card_le: a non-collinear integer-distance set S with all pairwise distances ≤ d satisfies |S| ≤ 2d²+2. Proof: extract anchor points P₁, P₂ from non-collinearity; let T = S∖{P₁,P₂}; cover T by distance-pair fibers over (k₁,k₂) ∈ {1..d}²; each fiber has ≤ 2 elements by three_pts_two_circles_contra; conclude via Finset.card_biUnion_le.",
+      "mathContext": "The fiber bound: if a fiber had 3 elements Q₁, Q₂, Q₃ all at distance k₁ from P₁ and k₂ from P₂, then `three_pts_two_circles_contra P₁ P₂ k₁ k₂ hP₁₂ Q₁ Q₂ Q₃ ...` gives False. The Finset chain: |T| ≤ |biUnion| ≤ ∑ |fiber| ≤ ∑ 2 = d² · 2 = 2d², hence |S| ≤ 2d²+2."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Anning–Erdős Finiteness",
+      "startLine": 256,
+      "endLine": 274,
+      "summary": "Theorem anning_erdos_finiteness: for any d : ℕ, there exists N such that no non-collinear integer-distance set with distances ≤ d has more than N points. Proved by taking N = 2d²+2 and applying int_dist_card_le.",
+      "mathContext": "The statement quantifies: $\\forall d, \\exists N, \\forall n > N$, no non-collinear $n$-point integer distance set with all distances $\\leq d$ exists. The Lean proof takes $N = 2d^2+2$, then applies `int_dist_card_le` to get $|S| \\leq 2d^2+2 < n$, contradicting $|S| = n$. The cast from $k^2$ (Nat) to $(k : \\mathbb{R})^2$ is handled via `push_cast`."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Anning–Erdős finiteness theorem is completely formalized with 0 sorries and 0 axioms: `quadratic_at_most_two_roots`, `three_pts_two_circles_contra`, `int_dist_card_le`, and `anning_erdos_finiteness` are all fully proved.",
+    "implications": "The fiber counting argument uses `Finset.card_biUnion_le` to bound |S∖{P₁,P₂}| ≤ 2d² by covering with distance-pair fibers, each of size ≤ 2 by `three_pts_two_circles_contra`. Together with |{P₁,P₂}| = 2, this gives |S| ≤ 2d²+2. This formal proof closes the `anning_erdos_finiteness` sorry that appeared in the parent file `Erdos100OQ01.lean`.",
+    "openQuestions": [
+      "Can `piepmeyer_upper` in the parent file Erdos100OQ01.lean be proved by supplying an explicit 9-point witness? This would eliminate the remaining sorry in the parent file.",
+      "Can the Anning–Erdős bound 2d²+2 be tightened? The true maximum is conjectured to be around d+√(2d)+O(1).",
+      "Can the collinearity assumption be dropped? Are there non-trivial bounds on integer distance sets without the non-collinearity constraint?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-100-oq-01",
+      "relationship": "implements",
+      "description": "Parent open question file — this WIP proves the core lemmas and closes the `anning_erdos_finiteness` sorry that appeared in Erdos100OQ01.lean."
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "extends",
+      "description": "Root entry for Erdős Problem #100 on integer distance sets in the plane."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Anning, N. H. and Erdős, P.",
+      "title": "Integral distances",
+      "year": "1945",
+      "venue": "Bulletin of the American Mathematical Society 51(8):598–600"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "namespace": "Erdos100OQ01WIP01",
+    "lineCount": 274,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "path": "Proofs/Erdos100OQ01WIP01.lean",
+    "sorries": 0,
+    "definitionCount": 0
+  },
+  "sorries": 0
+}
