@@ -880,11 +880,45 @@ theorem localization_existence
       φ ((memLp_indicator_const p (hE.inter (measurableSet_spanningSets μ n)) 1
           (Or.inr (hfin_n n))).toLp _))
       atTop (nhds (φ (hind.toLp _))) := by
-    -- SORRY: 1_{E∩Sₙ}^Lp → 1_E^Lp in Lp(μ), proved via:
-    -- ‖h_n - h_Lp‖ = (eLpNorm (1_E - 1_E * 1_{Sₙ}) p μ).toReal (since 1_{E∩Sₙ} = 1_E * 1_{Sₙ})
-    -- which → 0 by lp_truncation_tendsto_zero + ENNReal.tendsto_toReal.
     apply (φ.continuous.tendsto _).comp
-    sorry
+    -- Need: Tendsto (fun n => h_n n) atTop (nhds (hind.toLp _)) in Lp(μ)
+    -- Key: dist (hind.toLp _) (h_n n) = (eLpNorm (1_E - 1_E * 1_{Sₙ}) p μ).toReal → 0
+    -- via lp_truncation_tendsto_zero applied to hind = 1_E^MemLp.
+    rw [Metric.tendsto_atTop]
+    intro ε hε
+    -- Convert eLpNorm convergence to toReal convergence
+    have hlim : Tendsto (fun n => (eLpNorm (fun a => (hind : α → ℝ) a -
+        (hind : α → ℝ) a * (spanningSets μ n).indicator (1 : α → ℝ) a) p μ).toReal)
+        atTop (nhds 0) := by
+      have h := (ENNReal.continuousAt_toReal (by norm_num : (0 : ℝ≥0∞) ≠ ⊤)).tendsto
+      have h2 := lp_truncation_tendsto_zero p (le_of_lt hp1) hptop hind
+      have h3 := h.comp h2
+      simp only [Function.comp, ENNReal.toReal_zero] at h3
+      exact h3
+    rw [Metric.tendsto_atTop] at hlim
+    obtain ⟨N, hN⟩ := hlim ε hε
+    refine ⟨N, fun n hn => ?_⟩
+    -- Compute dist (h_n n) (hind.toLp _) = (eLpNorm (1_E - 1_E * 1_{Sₙ}) p μ).toReal
+    have hdist : dist ((memLp_indicator_const p (hE.inter (measurableSet_spanningSets μ n)) 1
+        (Or.inr (hfin_n n))).toLp _) (hind.toLp _) =
+        (eLpNorm (fun a => (hind : α → ℝ) a - (hind : α → ℝ) a *
+            (spanningSets μ n).indicator (1 : α → ℝ) a) p μ).toReal := by
+      rw [dist_comm, dist_eq_norm, Lp.norm_def]
+      apply congr_arg ENNReal.toReal
+      apply eLpNorm_congr_ae
+      -- hind.toLp _ - h_n n =ᵐ 1_E - 1_{E∩Sₙ} = 1_E - 1_E * 1_{Sₙ}
+      filter_upwards [hind.coeFn_toLp,
+        (memLp_indicator_const p (hE.inter (measurableSet_spanningSets μ n)) 1
+          (Or.inr (hfin_n n))).coeFn_toLp,
+        Lp.coeFn_sub (hind.toLp _) ((memLp_indicator_const p
+          (hE.inter (measurableSet_spanningSets μ n)) 1 (Or.inr (hfin_n n))).toLp _)] with a h1 h2 h3
+      rw [h3, h1, h2]
+      -- 1_E a - 1_{E∩Sₙ} a = 1_E a - 1_E a * 1_{Sₙ} a
+      simp only [Set.indicator_apply, Set.mem_inter_iff]
+      by_cases hEa : a ∈ E <;> by_cases hSa : a ∈ spanningSets μ n <;> simp [hEa, hSa]
+    rw [hdist]
+    have h := hN n hn
+    rwa [Real.dist_zero_right, abs_of_nonneg ENNReal.toReal_nonneg] at h
   -- ── Conclude by tendsto_nhds_unique ──────────────────────────────────────────
   -- Both φ(h_n) → φ(1_E) and φ(h_n) = ∫_{E∩Sₙ} g → ∫_E g, so the limits agree.
   have hseq_eq : (fun n => φ ((memLp_indicator_const p
