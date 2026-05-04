@@ -78,7 +78,7 @@ theorem valid_splitter_exists (n : ℕ) : ∃ x : ℕ, IsValidSplitter n x := by
 /-- The valid splitter x satisfies x ≤ √n. -/
 theorem splitter_le_sqrt (n : ℕ) : ∃ x : ℕ, IsValidSplitter n x ∧ x ≤ Nat.sqrt n := by
   obtain ⟨x, hx⟩ := valid_splitter_exists n
-  exact ⟨x, hx, Nat.le_sqrt.mpr hx.1⟩
+  exact ⟨x, hx, Nat.le_sqrt.mpr (by rw [← sq]; exact hx.1)⟩
 
 /-- The algorithm always terminates: ∃ x ≤ √n and a, b, c with x²+a²+b²+c² = n. -/
 theorem rabin_shallit_terminates (n : ℕ) :
@@ -158,12 +158,13 @@ theorem only_excluded_lt_8 (n : ℕ) (hn : n < 8) : IsObstructed n ↔ n = 7 := 
 /-- Partial geometric sum approximates 1/6. -/
 theorem density_geometric_sum :
     ∑ k : Fin 5, (1 : ℝ) / 8 * (1 / 4) ^ (k : ℕ) > 1 / 6 - 1 / 256 := by
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero]
   norm_num
 
 /-- The excluded forms have exact limiting density 1/6. -/
 theorem density_limit_one_sixth :
     ∑' k : ℕ, (1 : ℝ) / 8 * (1 / 4) ^ k = 1 / 6 := by
-  rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+  rw [tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
   norm_num
 
 /-- The non-excluded forms have density 5/6. -/
