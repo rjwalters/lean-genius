@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-26T08:56:57.651Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: 2D angular averaging proved axiom-free; product formula c_n·c_{n+1}=2/(nπ) derived; PR #15812",
+    "builtItems": [
+      "integral_abs_cos_zero_pi: ∫_0^π |cos θ| dθ = 2 (rotation of sin integral)",
+      "angularAverageData2D: AngularAverageData 2 instance with 0 axioms",
+      "cauchyCrofton_product: c_n·c_{n+1} = 2/(nπ) for n≥2",
+      "cauchyCroftonConst_pos: positivity for n≥1",
+      "File: proofs/Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean, ~165 lines, 11 theorems, 1 axiom"
+    ],
+    "insights": [
+      "sin(θ+π/2)=cos θ reduces 2D angular average to known sin integral immediately",
+      "AngularAverageData 2 can be constructed from ∫_0^π |cos θ| dθ = 2 with 0 axioms",
+      "Product formula c_n·c_{n+1}=2/(nπ) follows from sphere area recurrence by cancellation",
+      "For n≥3: Beta integral ∫_0^{π/2} cos(θ)sin^{n-2}(θ)dθ = 1/(n-1) is the key missing piece"
+    ],
+    "mathlibGaps": [
+      "Polar coordinate decomposition of sphere integral S^{n-1} not available in Mathlib",
+      "Beta integral ∫_0^{π/2} cos(θ)sin^{n-2}(θ)dθ = 1/(n-1) would need MeasureTheory.integral_rpow_norm or similar"
+    ],
+    "nextSteps": [
+      "Prove Beta integral using intervalIntegral + substitution u=sin(θ): ∫_0^1 u^{n-2} du = 1/(n-1)",
+      "Connect Beta integral to sphere measure via polar coordinate decomposition",
+      "Replace angularAvg_ndim axiom with actual proof for n≥3"
+    ]
   },
   "tags": [
     "challenging",
