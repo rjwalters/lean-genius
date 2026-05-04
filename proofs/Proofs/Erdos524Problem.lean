@@ -315,3 +315,8 @@ theorem polyMax_two (t : ℝ) : polyMax t 2 = 2 := by
     · -- ε₁=-1, ε₂=-1: P₂(t,1) = -2
       suffices h : |randSignPoly t 2 1| = 2 by linarith [polyMax_ge_eval t 2 h1_mem]
       simp [randSignPoly, Finset.sum_range_succ, Finset.sum_range_one, h1, h2]; norm_num
+
+/-- **Erdős Problem #524 (OPEN)**: The correct order of magnitude of M_n(t) for
+    almost all t ∈ (0,1) is √n, i.e. erdos_524_order_of_magnitude holds with f n = √n.
+    This is the Salem–Zygmund question for random sign polynomials. [OPEN] -/
+axiom erdos_524_main : erdos_524_order_of_magnitude
