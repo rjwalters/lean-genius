@@ -66,6 +66,40 @@ theorem power_sum_count_mono (k m x : ℕ) (hk : 1 ≤ k) :
       rw [hxs, Fin.sum_univ_castSucc]
       simp [Fin.snoc_castSucc, Fin.snoc_last, zero_pow (show k ≠ 0 by omega)]⟩⟩
 
+/- ## Special case: sums of exactly 1 k-th power -/
+
+/-- IsSumOfPowers n k 1 iff n is a perfect k-th power. -/
+theorem IsSumOfPowers_one_iff (n k : ℕ) :
+    IsSumOfPowers n k 1 ↔ ∃ a : ℕ, n = a ^ k := by
+  simp only [IsSumOfPowers, Fin.sum_univ_one]
+  constructor
+  · rintro ⟨xs, h⟩; exact ⟨xs 0, h⟩
+  · rintro ⟨a, h⟩; exact ⟨fun _ => a, h⟩
+
+/-- Every perfect k-th power is a sum of 1 k-th power. -/
+lemma isSumOfPowers_pow_self (a k : ℕ) : IsSumOfPowers (a ^ k) k 1 :=
+  IsSumOfPowers_one_iff.mpr ⟨a, rfl⟩
+
+/-- Lower bound for 1-sum count: f_{k,1}(n^k) ≥ n+1, since the n+1 values
+    {0^k, 1^k, ..., n^k} are distinct elements of [0, n^k].
+    This is the m=1 case of Conjecture 2 (up to integrality). -/
+theorem powerSumCount_one_lb (k n : ℕ) (hk : 1 ≤ k) :
+    n + 1 ≤ powerSumCount k 1 (n ^ k) := by
+  unfold powerSumCount
+  have hMono : StrictMono (fun a : ℕ => a ^ k) := fun a b hab =>
+    Nat.pow_lt_pow_left hab (by omega)
+  have hcard : ((Finset.range (n + 1)).image (· ^ k)).card = n + 1 := by
+    rw [Finset.card_image_of_injective _ hMono.injective, Finset.card_range]
+  have hsubset : (Finset.range (n + 1)).image (· ^ k) ⊆
+      (Finset.range (n ^ k + 1)).filter (fun m => IsSumOfPowers m k 1) := by
+    intro m hm
+    simp only [Finset.mem_image, Finset.mem_range] at hm
+    obtain ⟨a, ha, rfl⟩ := hm
+    simp only [Finset.mem_filter, Finset.mem_range]
+    exact ⟨Nat.lt_succ_of_le (Nat.pow_le_pow_left (by omega) k),
+           isSumOfPowers_pow_self a k⟩
+  linarith [Finset.card_le_card hsubset, hcard.symm.le]
+
 /- ## Landau's theorem for sums of two squares -/
 
 /-- Landau: f_{2,2}(x) ~ c·x/√(log x). Formally: for every ε > 0,
