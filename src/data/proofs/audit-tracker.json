@@ -14184,8 +14184,10 @@
     "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-04T01:26:32Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [],
+      "notes": "theoremCount 7→6, section line ranges corrected. Fixed in PR #15428 (pushed to enricher branch by lean-mechanic).",
+      "lastFixed": "2026-05-04T03:40:00Z"
     }
   },
   "erdos-1097-oq-01": {
