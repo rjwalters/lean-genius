@@ -717,8 +717,12 @@ theorem gpfConsecutive_one_coprime (n : ℕ) (hn : 2 ≤ n) :
   have hcop : Nat.Coprime n (n + 1) := by
     rw [Nat.Coprime]
     apply Nat.dvd_one.mp
-    have h := dvd_sub' (Nat.gcd_dvd_right n (n + 1)) (Nat.gcd_dvd_left n (n + 1))
-    rwa [show n + 1 - n = 1 from by omega] at h
+    have h1 : (Nat.gcd n (n + 1) : ℤ) ∣ n := by exact_mod_cast Nat.gcd_dvd_left n (n + 1)
+    have h2 : (Nat.gcd n (n + 1) : ℤ) ∣ n + 1 := by exact_mod_cast Nat.gcd_dvd_right n (n + 1)
+    have h3 : (Nat.gcd n (n + 1) : ℤ) ∣ 1 := by
+      have h := dvd_add (dvd_neg.mpr h1) h2
+      simpa using h
+    exact_mod_cast h3
   exact (hcop.coprime_dvd_left (gpf_dvd n hn)).coprime_dvd_right (gpf_dvd (n + 1) (by omega))
 
 /-- For n ≥ 2, greatestPrimeFactor n ≠ greatestPrimeFactor (n + 1).
@@ -960,8 +964,8 @@ private lemma consecutiveProduct_eq_descFactorial (n k : ℕ) :
       simp only [consecutiveProduct, Finset.prod_range_succ]; ring
     have hstep : (n + (k + 1)).descFactorial (k + 2) =
         (n + k + 1) * (n + k).descFactorial (k + 1) := by
-      rw [show n + (k + 1) = n + k + 1 from by ring, Nat.descFactorial_succ]
-      congr 1; omega
+      rw [show n + (k + 1) = n + k + 1 from by ring, Nat.descFactorial_succ,
+          show n + k + 1 - 1 = n + k from by omega]
     rw [hright, ih, hstep]; ring
 
 /-- **(k+1)! divides every product of k+1 consecutive integers**, for any starting point n.
