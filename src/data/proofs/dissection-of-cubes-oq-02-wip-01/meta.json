@@ -46,7 +46,7 @@
       "Proves tetra_dehn_ne_zero: D(tetrahedron) = 6 ⊗ [arccos(1/3)] ≠ 0 since arccos(1/3) ∉ πℚ",
       "Proves dehn_invariants_differ: the cube and regular tetrahedron have distinct tensor product Dehn invariants"
     ],
-    "lineCount": 103,
+    "lineCount": 482,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. The proof uses Classical.choice (standard Lean axiom) via Module.Free.chooseBasis to construct a separating ℚ-linear functional; this is not a mathematical axiom but a foundational logic axiom present in all Lean proofs. The irrationality of arccos(1/3)/π is inherited from tetrahedron_angle_irrational_pi in the parent file (DissectionOfCubesOQ02.lean), which is fully proved via Chebyshev recurrence.",
     "mathlib_version": "4.26.0",
@@ -142,7 +142,7 @@
       "Proofs.DissectionOfCubesOQ02"
     ],
     "namespace": "DissectionOfCubesOQ02WIP01",
-    "lineCount": 103,
+    "lineCount": 482,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 3,

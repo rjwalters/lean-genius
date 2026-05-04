@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 1,
-    "lineCount": 948,
+    "lineCount": 1617,
     "assumptions": "1 axiom: bdry_all_even_of_no_fc_walks — when all boundary-door walks fail to reach FC, the boundary-door set B has even cardinality (used for parity contradiction in kuhn_path_existential). Mathematical proof: under hfail, τ: B→B defined by τ(s₀,Fin.last d) = (kuhnPathStart s₀, Fin.last d) is a FPF involution; hMem and hNe proved; hInv (τ∘τ=id, walkTrace_reversal) requires ~150-line kuhnWalkSeq infrastructure and is axiomatized after 9+ sessions BLOCKED.",
     "mathlib_version": "4.26.0",
     "theoremCount": 18
@@ -249,7 +249,7 @@
     ],
     "path": "Proofs/SpernerNDimOQ04.lean",
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 948,
+    "lineCount": 1617,
     "axiomCount": 1,
     "theoremCount": 18,
     "definitionCount": 6,
