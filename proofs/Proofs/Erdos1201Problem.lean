@@ -379,6 +379,12 @@ theorem gpfConsecutive_succ_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
   exact gpfConsecutive_gt_k_of_prime_in_window (k + 3) k (by omega) p hp_prime
     (by omega) (by omega)
 
+/-- **Sylvester-Schur (prime start)**: When n is prime and k < n, P(n,k) > k.
+    Since n is prime, gpf(n) = n ≥ P(n,k); combined with k < n this gives k < P(n,k). -/
+theorem gpfConsecutive_prime_gt_k (n k : ℕ) (hn_prime : n.Prime) (hnk : k < n) :
+    k < gpfConsecutive n k :=
+  lt_of_lt_of_le hnk (gpfConsecutive_ge_self_of_prime n k hn_prime)
+
 /-
 ## Infinitely Many n with Large GPF
 -/
@@ -1042,5 +1048,27 @@ theorem erdos_1201_conjecture_large_eps (ε η : ℝ) (hε_lb : 1 / 2 ≤ ε) (h
   · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn_pos
     rw [Real.sqrt_eq_rpow] at hn
     exact (Real.rpow_le_rpow_of_exponent_le hn1 (by linarith)).trans_lt hn
+
+/-- **Individual Threshold**: For each n ≥ 2 and ε ∈ (0,1), some finite window makes n "good".
+    Specifically window k = n works: P(n,n) > n > n^(1-ε) by Bertrand's postulate.
+    The CONJECTURE asks for a FIXED window working for density-1 of all n simultaneously. -/
+theorem erdos_1201_individual_threshold (n : ℕ) (hn : 2 ≤ n) (ε : ℝ)
+    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    ∃ k : ℕ, (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  refine ⟨n, ?_⟩
+  have h_gt : n < gpfConsecutive n n := gpfConsecutive_self_gt n (by omega)
+  have h_ncast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast (show 1 < n from by omega)
+  have h_bound : (n : ℝ) ^ (1 - ε) < (n : ℝ) :=
+    calc (n : ℝ) ^ (1 - ε) < (n : ℝ) ^ (1 : ℝ) :=
+          Real.rpow_lt_rpow_of_exponent_lt h_ncast (by linarith)
+      _ = (n : ℝ) := Real.rpow_one _
+  linarith [show (n : ℝ) ≤ gpfConsecutive n n from by exact_mod_cast h_gt.le]
+
+/-- **Good Set Monotonicity (pointwise)**: if n is good for window k₁, it's good for all k₂ ≥ k₁.
+    Generalization of `erdos_1201_good_set_mono_k` from k → k+1 to arbitrary k₁ ≤ k₂. -/
+theorem erdos_1201_good_set_mono (ε : ℝ) {k₁ k₂ : ℕ} (hk : k₁ ≤ k₂) (n : ℕ) (hn : 2 ≤ n)
+    (h : (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₁ : ℝ)) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₂ : ℝ) :=
+  h.trans_le (by exact_mod_cast gpfConsecutive_le_of_le_k n hn hk)
 
 end Erdos1201
