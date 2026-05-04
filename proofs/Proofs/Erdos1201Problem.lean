@@ -714,9 +714,13 @@ theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
 /-- For n ≥ 2, the greatest prime factors of n and n+1 are coprime.
     Since gcd(n, n+1) = 1 and gpf(n) ∣ n, gpf(n+1) ∣ n+1, the gcd of the gpfs divides 1. -/
 theorem gpfConsecutive_one_coprime (n : ℕ) (hn : 2 ≤ n) :
-    Nat.Coprime (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) :=
-  (Nat.coprime_succ_self n).coprime_dvd_left (gpf_dvd n hn) |>.coprime_dvd_right
-    (gpf_dvd (n + 1) (by omega))
+    Nat.Coprime (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
+  have hcop : Nat.Coprime n (n + 1) := by
+    rw [Nat.Coprime]
+    apply Nat.dvd_one.mp
+    have h := Nat.dvd_sub' (Nat.gcd_dvd_right n (n + 1)) (Nat.gcd_dvd_left n (n + 1))
+    rwa [show n + 1 - n = 1 from by omega] at h
+  exact (hcop.coprime_dvd_left (gpf_dvd n hn)).coprime_dvd_right (gpf_dvd (n + 1) (by omega))
 
 /-- For n ≥ 2, greatestPrimeFactor n ≠ greatestPrimeFactor (n + 1).
     If equal to p ≥ 2, then gcd(p, p) = p ≥ 2 contradicts the coprimality above. -/
