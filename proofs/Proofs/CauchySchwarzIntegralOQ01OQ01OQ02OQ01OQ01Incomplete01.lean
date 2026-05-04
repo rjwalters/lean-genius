@@ -416,14 +416,74 @@ theorem localization_existence
     simp_rw [Set.indicator_apply, Pi.one_apply, ite_mul, one_mul, zero_mul]
     rw [integral_indicator hE, Measure.restrict_restrict hE,
       Set.inter_comm, Set.inter_eq_left.mpr hEn]
-  -- Remaining: consistency + MCT + global g ∈ Lq(μ) + indicator agreement for all E
-  -- HARD SORRY: construct g via a.e. limit of g_seq, prove MemLp g q μ via MCT,
-  -- prove indicator agreement using hagree_n + tendsto_setIntegral_of_monotone
-  -- Key tools:
-  --   ae_eq_restrict_of_forall_setIntegral_eq: for consistency (g_seq m = g_seq n a.e. on Sₘ)
-  --   lintegral_iUnion (+ monotone): for MCT bound ‖g‖_Lq ≤ ‖φ‖
-  --   tendsto_setIntegral_of_monotone: ∫_{E∩Sₙ} g dμ → ∫_E g dμ
-  --   lp_truncation_tendsto_zero (proved): ‖1_{E∩Sₙ} - 1_E‖_Lp → 0, so φ(1_{E∩Sₙ}) → φ(1_E)
+  -- ── Step A1: Norm bound ─────────────────────────────────────────────────────
+  -- HARD sorry: ‖g_seq n‖_{Lq(μ.restrict Sₙ)} ≤ ‖φ‖
+  -- Proof sketch: let φₙ := φ ∘ extByZeroCLM(Sₙ); then ‖φₙ‖ ≤ ‖φ‖.
+  -- riesz_lp_surjective_from_rn gives g_seq n with ‖g_seq n‖_Lq = ‖φₙ‖ ≤ ‖φ‖.
+  -- The equality uses the Hölder extremizer (cf. holder_extremizer_lq_bound in parent).
+  have hgnorm : ∀ n, eLpNorm (g_seq n) q (μ.restrict (spanningSets μ n)) ≤
+      ENNReal.ofReal ‖φ‖ := by
+    intro n
+    sorry
+  -- ── Step A2: Consistency ────────────────────────────────────────────────────
+  -- g_seq m =ᵐ[μ.restrict Sₘ] g_seq n for m ≤ n, via set-integral uniqueness.
+  -- Key: ∫_s gₘ ∂(μ.restrict Sₘ) = ∫_{s∩Sₘ} gₘ ∂μ = φ(1_{s∩Sₘ}) = ∫_{s∩Sₘ} gₙ ∂μ
+  --    = ∫_s gₙ ∂(μ.restrict Sₘ)  [for all measurable s].
+  have hconsist : ∀ m n : ℕ, m ≤ n →
+      g_seq m =ᵐ[μ.restrict (spanningSets μ m)] g_seq n := by
+    intro m n hmn
+    haveI hfin_m : IsFiniteMeasure (μ.restrict (spanningSets μ m)) :=
+      { measure_univ_lt_top := by
+          rw [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter]
+          exact measure_spanningSets_lt_top μ m }
+    -- Integrability on (μ.restrict Sm) for both sides (needs 1 ≤ q from hpq.symm)
+    have hgm_int : Integrable (g_seq m) (μ.restrict (spanningSets μ m)) := by
+      sorry
+    have hgn_int : Integrable (g_seq n) (μ.restrict (spanningSets μ m)) := by
+      sorry
+    apply ae_eq_of_forall_setIntegral_eq_of_sigmaFinite
+        (fun s _ _ => hgm_int.integrableOn)
+        (fun s _ _ => hgn_int.integrableOn)
+    intro s hs _
+    -- ∫_s f ∂(μ.restrict Sm) = ∫_{s ∩ Sm} f ∂μ  (Measure.restrict_restrict)
+    have to_mu : ∀ f : α → ℝ,
+        ∫ a in s, f a ∂(μ.restrict (spanningSets μ m)) =
+        ∫ a in s ∩ spanningSets μ m, f a ∂μ := fun f => by
+      rw [show (μ.restrict (spanningSets μ m)).restrict s = μ.restrict (s ∩ spanningSets μ m)
+            from Measure.restrict_restrict (measurableSet_spanningSets μ m)]
+    simp_rw [to_mu]
+    have hfin_int : μ (s ∩ spanningSets μ m) ≠ ⊤ :=
+      ((measure_mono Set.inter_subset_right).trans_lt (measure_spanningSets_lt_top μ m)).ne
+    have hEn_m : s ∩ spanningSets μ m ⊆ spanningSets μ m := Set.inter_subset_right
+    have hEn_n : s ∩ spanningSets μ m ⊆ spanningSets μ n :=
+      hEn_m.trans (spanningSets_mono μ hmn)
+    exact (hagree_n m _ (hs.inter (measurableSet_spanningSets μ m)) hEn_m hfin_int).symm.trans
+          (hagree_n n _ (hs.inter (measurableSet_spanningSets μ m)) hEn_n hfin_int)
+  -- ── Step A3: Construct global g ─────────────────────────────────────────────
+  -- g(a) := g_seq n₀(a) a, where n₀(a) = first n with a ∈ Sₙ.
+  -- By hconsist this is a.e. equal to g_seq n on every Sₙ.
+  have hcover : ∀ a : α, ∃ n, a ∈ spanningSets μ n := fun a => by
+    have := (iUnion_spanningSets μ).symm ▸ mem_univ a
+    exact mem_iUnion.mp this
+  let idx : α → ℕ := fun a => Nat.find (hcover a)
+  let g : α → ℝ := fun a => g_seq (idx a) a
+  -- ── Step A4: MemLp g q μ (via MCT + hgnorm) ─────────────────────────────────
+  -- eLpNorm(g, q, μ)^q = ∫⁻ |g|^q dμ = ⨆_n ∫⁻_{Sₙ} |g|^q dμ [MCT, Sₙ ↑ univ]
+  --                     = ⨆_n ∫⁻_{Sₙ} |g_seq n|^q dμ       [g = g_seq n a.e. on Sₙ]
+  --                     ≤ ⨆_n ‖φ‖^q = ‖φ‖^q                 [by hgnorm]
+  -- AEStronglyMeasurable g: each g_seq n is AEStronglyMeasurable on μ.restrict Sₙ;
+  -- since Sₙ ↑ univ, g is AEStronglyMeasurable on μ.
+  have hg_lq : MemLp g q μ := by
+    sorry
+  -- ── Step A5: Indicator agreement for all E ───────────────────────────────────
+  -- For E with μ(E) < ∞:
+  --   φ(1_E) = lim_n φ(1_{E∩Sₙ})          [by lp_truncation_tendsto_zero + CLM continuity]
+  --          = lim_n ∫_{E∩Sₙ} g dμ         [by hagree_n + g =ᵐ g_seq n on Sₙ]
+  --          = ∫_E g dμ                     [by tendsto_setIntegral_of_monotone + DCT]
+  refine ⟨g, hg_lq, ?_⟩
+  intro E hE hfin
+  -- Use lp_truncation_tendsto_zero for 1_{E\Sₙ} → 0 in Lp,
+  -- then CLM continuity and hagree_n + MCT on the integral side.
   sorry
 
 -- ============================================================================
