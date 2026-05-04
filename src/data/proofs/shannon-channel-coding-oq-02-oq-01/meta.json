@@ -40,7 +40,7 @@
     "assumptions": "0 axioms in this file. Removed the unused `axiom import_shannon_entropy_blocked : False` placeholder (asserting False is logically unsound — even an unused declaration is a footgun). The blocker explanation is preserved as a comment block. The target axiom `fano_inequality` lives in ShannonChannelCoding.lean (a different file); this bridge file's `fano_from_oq03` theorem would discharge it once ShannonEntropy.lean's strong_subadditivity is fixed (line 811 sum-order issue, fix sketched in this file).",
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 1069,
+    "lineCount": 181,
     "prerequisites": [
       "Fano's inequality (OQ-03): H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
       "Binary entropy function and concavity (OQ-04)",
@@ -71,14 +71,14 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 37,
       "summary": "Module header with imports, docstring, and namespace setup."
     },
     {
       "id": "definition-compatibility",
       "title": "Definition Compatibility",
-      "startLine": 35,
-      "endLine": 50,
+      "startLine": 39,
+      "endLine": 55,
       "summary": "Proves FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy by rfl. Both expand to the same formula with 0·log(0)=0 convention.",
       "mathContext": "$H_{\\text{OQ03}}(X|Y) = H_{\\text{std}}(X|Y)$ definitionally"
     },
@@ -86,24 +86,24 @@
       "id": "fano-corollary",
       "title": "Fano's Inequality (from OQ-03)",
       "startLine": 56,
-      "endLine": 69,
+      "endLine": 74,
       "summary": "Derives Fano's inequality as a direct corollary of OQ-03's fano_theorem, using definition compatibility.",
       "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$ for formula $P_e$"
     },
     {
       "id": "axiom-reduction",
       "title": "Axiom Reduction (Blocked)",
-      "startLine": 73,
-      "endLine": 120,
+      "startLine": 75,
+      "endLine": 134,
       "summary": "Documents the strategy to eliminate fano_inequality axiom from ShannonChannelCoding.lean. Blocked by ShannonEntropy.lean line 811 bug. Root cause and fix identified.",
       "mathContext": "Axiom $\\texttt{fano\\_inequality}$ in ShannonChannelCoding.lean follows from fano\\_from\\_oq03 by definitional equality"
     },
     {
       "id": "trivial-case",
       "title": "Trivial Case |X|=1",
-      "startLine": 126,
-      "endLine": 141,
-      "summary": "States Fano bound for |X|=1 (Unit type). In this case (|X|-1)=0 and H(X|Y)=0, so both sides are trivially 0. Sorry pending cleanup of Unit-sum simp tactics.",
+      "startLine": 135,
+      "endLine": 181,
+      "summary": "Proves Fano bound for |X|=1 (Unit type). In this case (|X|-1)=0 so log(0)=0 and the RHS reduces to h(P_e); P_e=0 by hsum; conditionalEntropy=0 since log(1)=0; concluded by h_nonneg.",
       "mathContext": "For $|\\mathcal{X}|=1$: $H(X|Y) = 0 = h(P_e)$ since $P_e \\cdot \\log(0) = 0$"
     }
   ],
@@ -148,7 +148,7 @@
       "FanoInequality"
     ],
     "namespace": "FanoFromConditionalEntropy",
-    "lineCount": 1069,
+    "lineCount": 181,
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
