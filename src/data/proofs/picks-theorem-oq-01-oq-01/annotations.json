@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-exists-primitive-triangulation",
+    "type": "theorem",
+    "label": "exists_primitive_triangulation",
+    "title": "Primitive Triangulation Existence",
+    "body": "exists_primitive_triangulation: for any n>0, any lattice triangle with |det|=n has a primitive triangulation of exactly n triangles. Proved by strong induction on n: base n=1 is immediate (already primitive); step n>1 applies exists_reduction to split and recurse. The proof uses List (not Finset) to allow concatenation of triangulations from sub-triangles.",
+    "location": { "line": 153 },
+    "tags": ["main-theorem", "induction", "triangulation"]
+  },
+  {
+    "id": "ann-exists-reduction",
+    "type": "theorem",
+    "label": "exists_reduction",
+    "title": "GCD-Based Triangle Reduction",
+    "body": "exists_reduction: for any lattice triangle T with |det(T)|>1, there exists an edge with gcd>1 and a midpoint M such that splitting T into left and right sub-triangles gives |det(left)|+|det(right)|=|det(T)| with both sub-determinants < |det(T)|. The key: if |det|>1, then some edge vector (v2-v1, v3-v1, or v3-v2) has gcd dividing det but gcd>1, allowing a proper split.",
+    "location": { "line": 118 },
+    "tags": ["reduction", "gcd", "euclidean-algorithm"]
+  },
+  {
+    "id": "ann-det-additivity",
+    "type": "theorem",
+    "label": "edge_split_det_natAbs_sum",
+    "title": "Det Additivity Under Edge Splitting",
+    "body": "edge_split_det_natAbs_sum: when M divides edge v1-v2 with ratio g=gcd(v2-v1), splitting T at M gives |det(left)|+|det(right)|=|det(T)|. This is the key invariant ensuring the total number of primitive triangles is preserved across splits. Signed version: edge_split_det_add (always holds); unsigned version requires g | det (which the GCD condition ensures).",
+    "location": { "line": 100 },
+    "tags": ["determinant", "additivity", "splitting"]
+  },
+  {
+    "id": "ann-lattice-triangle",
+    "type": "definition",
+    "label": "LatticeTriangle",
+    "title": "Lattice Triangle and Determinant",
+    "body": "LatticeTriangle is a structure with three vertices v1, v2, v3 : ℤ². The determinant det(T) = (v2-v1) × (v3-v1) (2D cross product) equals twice the signed area by the shoelace formula. IsPrimitive means |det|=1 (area = 1/2, the smallest possible non-degenerate lattice triangle). NonDegenerate means det ≠ 0.",
+    "location": { "line": 35 },
+    "tags": ["definition", "lattice", "determinant", "area"]
+  }
+]

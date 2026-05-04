@@ -1,0 +1,69 @@
+{
+  "id": "picks-theorem-oq-01-oq-01",
+  "title": "Primitive Triangulation of Lattice Triangles",
+  "slug": "picks-theorem-oq-01-oq-01",
+  "description": "Every non-degenerate lattice triangle can be decomposed into exactly |det| primitive lattice triangles (each with |det| = 1, area = 1/2). This is the central ingredient for the constructive proof of Pick's theorem via triangulation: Area = (# primitive triangles)/2 = |det|/2.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "lineCount": 215,
+    "leanFile": "proofs/Proofs/PicksTheoremOQ01OQ01.lean",
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Tactic"
+    ],
+    "tags": ["number-theory", "geometry", "lattice", "picks-theorem", "triangulation"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Lattice Triangle Definitions",
+      "description": "LatticeTriangle (three ℤ² vertices), LatticeTriangle.det (signed determinant = twice signed area), LatticeTriangle.IsPrimitive (|det|=1), LatticeTriangle.NonDegenerate (det≠0), splitLeft and splitRight (subdivide a triangle by introducing a midpoint on an edge).",
+      "theorems": ["LatticeTriangle", "LatticeTriangle.det", "LatticeTriangle.IsPrimitive", "LatticeTriangle.NonDegenerate", "splitLeft", "splitRight"]
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties and Concrete Examples",
+      "description": "Primitivity implies non-degeneracy (IsPrimitive.nonDegenerate), verification that the standard unit triangle {(0,0),(1,0),(0,1)} and the other unit triangle {(0,0),(1,0),(1,1)} are primitive (unit_triangle_primitive, second_unit_triangle_primitive), plus concrete examples for triangles with det=2 and det=12.",
+      "theorems": ["IsPrimitive.nonDegenerate", "unit_triangle_primitive", "second_unit_triangle_primitive", "det2_split_correct", "det12_two_splits", "det_add_example"]
+    },
+    {
+      "id": "det-additivity",
+      "title": "Edge-Splitting Det Additivity",
+      "description": "When a triangle is split by a midpoint M on edge v1-v2 with gcd(v2-v1)=g: det(left)+det(right) = det(original) (edge_split_det_add), and natAbs(det(left))+natAbs(det(right)) = natAbs(det(original)) when g divides det (edge_split_det_natAbs_sum). This additivity is the key invariant for the inductive step.",
+      "theorems": ["edge_split_det_add", "edge_split_det_natAbs_sum"]
+    },
+    {
+      "id": "main-theorem",
+      "title": "Primitive Triangulation Existence",
+      "description": "The main results: exists_reduction (for |det|>1, one edge-split reduces |det| strictly — proved via the Euclidean algorithm on edge GCDs), exists_primitive_triangulation (strong induction on |det|: a triangle with |det|=n has a primitive triangulation of size n), and has_primitive_triangulation (any non-degenerate lattice triangle has a primitive triangulation).",
+      "theorems": ["exists_reduction", "exists_primitive_triangulation", "has_primitive_triangulation"]
+    }
+  ],
+  "overview": {
+    "summary": "Pick's theorem (1899) states that the area of a lattice polygon equals I + B/2 - 1, where I is the number of interior lattice points and B is the number of boundary lattice points. One natural proof triangulates the polygon into primitive triangles (area 1/2 each) and counts. This file proves the key ingredient: any non-degenerate lattice triangle decomposes into exactly |det| primitive triangles.",
+    "approach": "The proof uses strong induction on |det|. The base case |det|=1 is immediate (the triangle is already primitive). For |det|>1, the reduction step exists_reduction finds an edge with gcd>1 and introduces a midpoint that strictly reduces |det|. The signed determinant is additive under edge-splitting, and the reduction is strict because the edge GCD divides det. The induction hypothesis then triangulates each sub-triangle recursively.",
+    "significance": "Primitive triangulation is the constructive heart of Pick's theorem. It connects the arithmetic of the determinant (GCD-based reduction) to the geometry of lattice area. The proof mirrors the Euclidean algorithm: repeatedly reduce the GCD of edge vectors until all edges have GCD 1 (primitive triangle). This elementary approach avoids measure theory and works over ℤ rather than ℝ."
+  },
+  "conclusion": {
+    "summary": "Primitive lattice triangulation is machine-checked: any lattice triangle with |det|=n decomposes into exactly n primitive triangles (area 1/2 each), with the reduction step proved via the Euclidean algorithm on edge GCDs.",
+    "openQuestions": [
+      "Can Pick's theorem I + B/2 - 1 = Area be derived from primitive triangulation plus a boundary-point count?",
+      "Does the primitive triangulation extend to convex lattice polygons via fan triangulation?",
+      "Can this approach be used to prove the higher-dimensional Ehrhart polynomial formula?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem-oq-01",
+      "relationship": "supports",
+      "description": "Provides the primitive triangulation ingredient for the constructive proof of Pick's theorem"
+    }
+  ]
+}
