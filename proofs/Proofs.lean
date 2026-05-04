@@ -55,6 +55,7 @@ import Proofs.AngleTrisectionOQ01
 import Proofs.AngleTrisectionOQ02
 import Proofs.AngleTrisectionOQ02OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01
+import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ02
 import Proofs.AngleTrisectionOQ02OQ01OQ02Aristotle
 import Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01
@@ -336,6 +337,7 @@ import Proofs.CauchySchwarzIntegralOQ03
 import Proofs.CauchySchwarzOQ01
 import Proofs.CauchySchwarzOQ01OQ01
 import Proofs.CauchySchwarzOQ01OQ01OQ01
+import Proofs.CauchySchwarzOQ01OQ01OQ02
 import Proofs.CauchySchwarzOQ01OQ02
 import Proofs.CauchySchwarzOQ01OQ03
 import Proofs.CauchySchwarzOQ01OQ04
@@ -374,6 +376,7 @@ import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05
 import Proofs.CayleyHamiltonMinpolyOQ05OQ02
 import Proofs.CayleyHamiltonOQ01
 import Proofs.CayleyHamiltonOQ01OQ01
+import Proofs.CayleyHamiltonOQ01OQ03
 import Proofs.CayleyHamiltonOQ02
 import Proofs.CayleyHamiltonReductionOQ01
 import Proofs.CayleyHamiltonReductionOQ01OQ02
