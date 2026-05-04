@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-dirichlet-main",
+    "type": "theorem",
+    "label": "dirichlet_from_minkowski_axiom_free",
+    "title": "Dirichlet's Approximation Theorem (Axiom-Free)",
+    "body": "dirichlet_from_minkowski_axiom_free: for any α : ℝ and Q : ℕ with Q ≥ 1, ∃ p q : ℤ, 0 < q ∧ q ≤ Q ∧ |q*α - p| < 1/Q. Proved fully from first principles: the Dirichlet parallelogram S is open (measurable), convex, has volume 4(Q+1)/Q > 4, so Minkowski's theorem gives a nonzero lattice point (p,q) ∈ S, which exactly witnesses the approximation.",
+    "location": { "line": 260 },
+    "tags": ["main-theorem", "dirichlet", "approximation", "axiom-free"]
+  },
+  {
+    "id": "ann-volume-computation",
+    "type": "theorem",
+    "label": "dirichletSet_volume",
+    "title": "Volume of the Dirichlet Parallelogram",
+    "body": "dirichletSet_volume: volume(dirichletSet α Q) = 4*(Q+1)/Q. Proved via the shear map T(x,y) = (x, αx-y), which has |det T| = 1 (the matrix [[1,0],[α,-1]] has det = -1). T maps the parallelogram S to the axis-aligned rectangle (-Q-1,Q+1)×(-1/Q,1/Q) (area = 2(Q+1)×2/Q = 4(Q+1)/Q). Since T is a measure-preserving bijection, vol(S) = vol(rectangle).",
+    "location": { "line": 170 },
+    "tags": ["volume", "measure-theory", "shear-map"]
+  },
+  {
+    "id": "ann-convexity",
+    "type": "theorem",
+    "label": "dirichletSet_convex",
+    "title": "Convexity of the Dirichlet Parallelogram",
+    "body": "dirichletSet_convex: the set {(x,y) : |x| < Q+1 ∧ |αx-y| < 1/Q} is convex. Proved by showing each of the two conditions defines a convex set: |f(v)| < c is the preimage of Ioo(-c,c) under the continuous linear functional f, and intersections of convex sets are convex.",
+    "location": { "line": 130 },
+    "tags": ["convexity", "geometry", "linear-functional"]
+  },
+  {
+    "id": "ann-dirichlet-set",
+    "type": "definition",
+    "label": "dirichletSet",
+    "title": "The Dirichlet Parallelogram",
+    "body": "dirichletSet α Q = {v : Fin 2 → ℝ | |v 0| < Q+1 ∧ |α*(v 0) - v 1| < 1/Q}. This is the set of real pairs (x,y) satisfying both: x is within Q+1 of the origin, and y is within 1/Q of αx. Geometrically, it is a parallelogram (a sheared rectangle) symmetric about the origin with area 4(Q+1)/Q.",
+    "location": { "line": 42 },
+    "tags": ["definition", "dirichlet", "parallelogram"]
+  }
+]
