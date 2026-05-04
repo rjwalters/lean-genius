@@ -1,47 +1,74 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "gauss-wilson-non-cyclic",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "context",
+    "title": "The Gauss-Wilson Group-Theoretic Core",
+    "content": "Wilson's theorem (product of nonzero residues mod p equals -1) and Gauss's generalization (product of all units in ZMod n) both hinge on whether the 2-torsion {x : x² = 1} contains just {1, -1} or more elements. When (ZMod n)× is cyclic, it has exactly one element of order 2 (namely -1), so the product equals -1. When it is non-cyclic, extra square roots of unity cancel in pairs, giving product 1. This file proves the key lemma: non-cyclic (ZMod n)× always has a third square root of 1.",
+    "mathContext": "$(\\mathbb{Z}/n\\mathbb{Z})^\\times$ cyclic $\\iff$ $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ (odd prime $p$). Non-cyclic $\\Rightarrow$ $|\\{x : x^2=1\\}| \\geq 3$.",
+    "significance": "context",
+    "relatedConcepts": ["Wilson's theorem", "Gauss-Wilson theorem", "2-torsion", "ZMod.isCyclic_units_iff"],
+    "prerequisites": ["Mathlib.RingTheory.ZMod.UnitsCyclic", "Group theory in Lean 4"]
+  },
+  {
     "id": "ann-unit-of-sq",
+    "proofId": "gauss-wilson-non-cyclic",
+    "range": { "startLine": 23, "endLine": 43 },
     "type": "definition",
-    "label": "unitOfSqEqOne",
-    "title": "Construct a Unit from a Square Root of 1",
-    "body": "unitOfSqEqOne x hx : (ZMod n)ˣ converts any x : ZMod n with x² = 1 into a unit. The inverse of x is x itself (since x·x = 1). Needed because the natural domain for square roots of 1 is ZMod n, but the group-theoretic 2-torsion lives in (ZMod n)ˣ.",
-    "location": { "line": 23 },
-    "tags": ["definition", "unit", "zmod", "2-torsion"]
+    "title": "unitOfSqEqOne: Self-Inverse Unit from x² = 1",
+    "content": "The definition `unitOfSqEqOne x hx := ⟨x, x, by rw [← sq]; exact hx, ...⟩` constructs a unit in (ZMod n)ˣ from any x : ZMod n satisfying x² = 1. Since x·x = x² = 1, x is its own inverse: both the mul-right and mul-left inverses are x. The companion theorems show the unit's `.val` is x (by `rfl`), its square is 1, and it differs from 1 and -1 whenever x does (proved by `congr_arg Units.val`).",
+    "mathContext": "If $x^2 = 1$ then $x \\cdot x = 1$, so $x^{-1} = x$ and $x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Units in Lean 4", "Units.val", "congr_arg Units.val", "self-inverse"],
+    "prerequisites": ["ZMod units API", "sq definition in Lean 4"]
   },
   {
-    "id": "ann-third-sqrt-coprime",
-    "type": "theorem",
-    "label": "exists_third_sqrt_coprime",
-    "title": "Third Square Root via CRT",
-    "body": "For coprime a, b ≥ 2, ZMod(a*b) has x with x² = 1, x ≠ 1, x ≠ -1. Construction: x ≡ 1 (mod a) and x ≡ -1 (mod b) via CRT. x squares to 1 by CRT, and x ≠ ±1 since a,b ≥ 2 prevents both conditions from holding simultaneously.",
-    "location": { "line": 0 },
-    "tags": ["CRT", "square-root", "coprime"]
+    "id": "ann-crt-construction",
+    "proofId": "gauss-wilson-non-cyclic",
+    "range": { "startLine": 69, "endLine": 96 },
+    "type": "insight",
+    "title": "CRT Third Root: Mixed ±1 via Chinese Remainder Theorem",
+    "content": "For coprime a, b ≥ 3, the Chinese Remainder Theorem isomorphism `e : ZMod(a*b) ≃+* ZMod a × ZMod b` gives the witness x = e.symm (1, -1). This squares to 1 because (1, -1)² = (1², (-1)²) = (1, 1) = 1 in ZMod a × ZMod b, and then e.symm preserves this. Distinctness from 1: if e.symm (1,-1) = 1, then applying e gives (1,-1) = e(1) = (1,1), but the second components show -1 = 1 in ZMod b, contradicting b ≥ 3. Distinctness from -1: similarly by the first component.",
+    "mathContext": "CRT: $x = \\text{CRT}^{-1}(1, -1)$. Then $x^2 = \\text{CRT}^{-1}(1,-1)^2 = \\text{CRT}^{-1}(1,1) = 1$. And $x \\neq \\pm 1$ since projections are mixed.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.chineseRemainder", "RingEquiv", "Prod.fst", "Prod.snd", "neg_one_ne_one_zmod'"],
+    "prerequisites": ["Chinese Remainder Theorem in Mathlib", "ZMod ring isomorphism"]
   },
   {
-    "id": "ann-third-sqrt-pow2",
-    "type": "theorem",
-    "label": "exists_third_sqrt_pow2",
-    "title": "Third Square Root for Powers of 2",
-    "body": "For k ≥ 3, ZMod(2^k) has x with x² = 1, x ≠ 1, x ≠ -1. The group (ZMod 2^k)ˣ ≅ ℤ/2 × ℤ/2^(k-2) for k ≥ 3 is non-cyclic and has multiple order-2 elements.",
-    "location": { "line": 0 },
-    "tags": ["power-of-two", "square-root", "2-torsion"]
+    "id": "ann-pow2-sq-dvd",
+    "proofId": "gauss-wilson-non-cyclic",
+    "range": { "startLine": 122, "endLine": 152 },
+    "type": "technique",
+    "title": "Power-of-2 Witness: 2^(k-1)+1 via Explicit Divisibility",
+    "content": "The private theorem `pow2_sq_sub_one_dvd` proves 2^k | (2^(k-1)+1)² - 1 by explicit division: (2^(k-1)+1)² - 1 = 2^k·(2^(k-2)+1). The proof sets a = 2^(k-2), expresses 2^(k-1) = 2a and 2^k = 4a, then does ring arithmetic to verify the factoring. This divisibility makes 2^(k-1)+1 ≡ ±1 mod 2^k impossible (checked separately by comparing ZMod.val), and shows it is a unit in ZMod(2^k).",
+    "mathContext": "$(2^{k-1}+1)^2 - 1 = 2^{k-1}(2^{k-1}+2) = 2^k \\cdot (2^{k-2}+1)$, so $2^k \\mid (2^{k-1}+1)^2 - 1$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.natCast_eq_zero_iff", "pow2_sq_sub_one_dvd", "ZMod.val_natCast", "Nat.mod_eq_of_lt"],
+    "prerequisites": ["nat subtraction care in Lean 4", "ZMod.val API", "ZMod.val_neg_one"]
   },
   {
-    "id": "ann-main-theorem",
-    "type": "theorem",
-    "label": "exists_third_sqrt_of_not_cyclic",
-    "title": "Non-Cyclic Units Have a Third Square Root of 1",
-    "body": "For n ≥ 3 with (ZMod n)ˣ non-cyclic: ∃ x : ZMod n, x² = 1 ∧ x ≠ 1 ∧ x ≠ -1. Uses ZMod.isCyclic_units_iff to decompose non-cyclicity into structural conditions, then applies the CRT or power-of-2 construction.",
-    "location": { "line": 0 },
-    "tags": ["main-theorem", "non-cyclic"]
+    "id": "ann-main-dispatch",
+    "proofId": "gauss-wilson-non-cyclic",
+    "range": { "startLine": 274, "endLine": 288 },
+    "type": "insight",
+    "title": "Main Theorem: Structural Dispatch via isCyclic_units_iff",
+    "content": "The main theorem `exists_third_sqrt_of_not_cyclic` uses `ZMod.isCyclic_units_iff` to convert ¬IsCyclic (ZMod n)ˣ into structural conditions on n. The push_neg obtains: n has two distinct prime factors or n = 2^k with k ≥ 3. A `by_cases` on whether n has an odd prime factor dispatches to the two constructions: CRT for the coprime-factor case and the explicit 2^(k-1)+1 for the power-of-2 case.",
+    "mathContext": "$\\neg$IsCyclic$(\\mathbb{Z}/n\\mathbb{Z})^\\times$ $\\Rightarrow$ two cases: ($\\exists$ odd prime $p \\mid n$) or ($n = 2^k$, $k \\geq 3$).",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.isCyclic_units_iff", "is_pow2_of_no_odd_prime_factor", "coprime_split_of_odd_factor"],
+    "prerequisites": ["Mathlib.RingTheory.ZMod.UnitsCyclic", "by_cases pattern in Lean 4"]
   },
   {
-    "id": "ann-card-bound",
-    "type": "theorem",
-    "label": "card_sq_eq_one_ge_three",
-    "title": "Non-Cyclic Implies 2-Torsion Has Size ≥ 3",
-    "body": "For n ≥ 3 with (ZMod n)ˣ non-cyclic: the set {x : (ZMod n)ˣ | x² = 1} has cardinality ≥ 3. Exhibits three distinct elements: 1, -1, and the third root from exists_third_sqrt_of_not_cyclic.",
-    "location": { "line": 0 },
-    "tags": ["cardinality", "2-torsion", "non-cyclic"]
+    "id": "ann-cardinality",
+    "proofId": "gauss-wilson-non-cyclic",
+    "range": { "startLine": 294, "endLine": 318 },
+    "type": "insight",
+    "title": "Cardinality: 2-Torsion ≥ 3 via Subset Witness",
+    "content": "The cardinality bound `card_sq_eq_one_ge_three` proves the 2-torsion has ≥ 3 elements by constructing the subset {1, -1, u} where u = unitOfSqEqOne x hx. All three are in the 2-torsion (1²=1, (-1)²=1, u²=1). The set has size exactly 3 because 1 ≠ -1 (n ≥ 3 → char ≠ 2), u ≠ 1, and u ≠ -1. Then `Finset.card_le_card hsub` gives 3 ≤ |2-torsion|.",
+    "mathContext": "$\\{1, -1, u\\} \\subseteq \\{x : x^2 = 1\\}$ with $|\\{1,-1,u\\}| = 3$ (by distinctness), so $|\\{x : x^2 = 1\\}| \\geq 3$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_le_card", "Finset.card_insert_of_notMem", "Finset.card_singleton", "2-torsion"],
+    "prerequisites": ["Finset API in Lean 4", "unitOfSqEqOne_ne_one", "neg_one_ne_one_units'"]
   }
 ]

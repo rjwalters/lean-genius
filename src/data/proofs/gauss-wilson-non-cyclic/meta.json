@@ -4,58 +4,104 @@
   "slug": "gauss-wilson-non-cyclic",
   "description": "For n ≥ 3 with (ZMod n)× non-cyclic, there exists an element x with x² = 1, x ≠ ±1—a 'third square root of unity'. This proves the contrapositive of the Gauss-Wilson theorem's group-theoretic core: if (ZMod n)× is cyclic, it cannot have more than two solutions to x² = 1. The proof handles two cases: n has an odd prime factor (CRT gives the third root) and n = 2^k with k ≥ 3.",
   "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
     "status": "verified",
+    "proofRepoPath": "Proofs/GaussWilsonNonCyclic.lean",
+    "tags": ["number-theory", "group-theory", "cyclic-groups", "zmod", "wilson-gauss"],
     "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "sorryCount": 0,
+    "lineCount": 323,
     "theoremCount": 8,
     "definitionCount": 1,
-    "lineCount": 323,
-    "leanFile": "proofs/Proofs/GaussWilsonNonCyclic.lean",
-    "imports": [
-      "Mathlib.Data.ZMod.Basic",
-      "Mathlib.Data.Nat.Factorization.Basic",
-      "Mathlib.RingTheory.ZMod.UnitsCyclic",
-      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
-      "Mathlib.FieldTheory.Finite.Basic"
-    ],
-    "tags": ["number-theory", "group-theory", "cyclic-groups", "zmod", "wilson-gauss"],
-    "assumptions": [],
-    "sorries": 0
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Wilson's theorem (1770, proved by Lagrange 1771) states that $(p-1)! \\equiv -1 \\pmod{p}$ for primes $p$. Gauss's generalization (1801, Disquisitiones Arithmeticae, Art. 78) identifies the product of all units in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$: it equals $-1$ if $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd primes $p$, and $1$ otherwise. The key is the group structure: $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic exactly in the same cases. When it is non-cyclic, the 2-torsion $\\{x : x^2 = 1\\}$ has more than 2 elements — which causes the product to cancel to 1 instead of $-1$. This file formalizes the 2-torsion bound, the group-theoretic core of the Gauss-Wilson theorem.",
+    "problemStatement": "For $n \\geq 3$ with $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ non-cyclic, prove there exists $x \\in \\mathbb{Z}/n\\mathbb{Z}$ with $x^2 = 1$, $x \\neq 1$, and $x \\neq -1$. Equivalently, the 2-torsion $\\{x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times : x^2 = 1\\}$ has cardinality $\\geq 3$.",
+    "proofStrategy": "The proof splits into two cases based on Mathlib's `ZMod.isCyclic_units_iff` characterization of when (ZMod n)× is non-cyclic: (1) n has an odd prime factor — then n = a·b for coprime a, b ≥ 3, and the Chinese Remainder Theorem gives x via x ≡ 1 (mod a), x ≡ -1 (mod b); (2) n = 2^k for k ≥ 3 — the explicit element is 2^(k-1) + 1, proved to square to 1 via divisibility of (2^(k-1)+1)^2 - 1 = 2^k·(2^(k-2)+1) by 2^k. Distinctness from ±1 is checked by comparing ZMod.val.",
+    "keyInsights": [
+      "The Chinese Remainder Theorem gives a 'mixed' square root: x ≡ 1 (mod a) and x ≡ -1 (mod b) squares to 1 mod ab (since 1²≡1 and (-1)²≡1), yet is neither 1 (because b≥3 prevents x≡1 mod b from forcing -1≡1) nor -1 (similarly for a). This is the simplest way to construct a third square root of unity when two coprime factors are both ≥ 3.",
+      "For n = 2^k with k ≥ 3, the explicit witness 2^(k-1) + 1 works because (2^(k-1)+1)^2 - 1 = 2^(k-1)(2^(k-1)+2) = 2^k·(2^(k-2)+1). The divisibility argument is formalized as `pow2_sq_sub_one_dvd`, which constructs the quotient explicitly to avoid nat subtraction issues.",
+      "`ZMod.isCyclic_units_iff` is Mathlib's complete characterization: (ZMod n)× is cyclic iff n ∈ {1, 2, 4, p^k, 2p^k} for odd primes p. The negation decomposes into: n ≥ 3, n ≠ 4, and n is not of the form q^m or 2·q^m for odd prime q. This structural information drives the case split.",
+      "The `unitOfSqEqOne` definition bridges between the ring element x ∈ ZMod n satisfying x²=1 and the group element u ∈ (ZMod n)× needed for the cardinality count. Since x·x = 1 and x is its own inverse, the unit structure is immediate: (x, x, hx, hx).",
+      "The cardinality bound `card_sq_eq_one_ge_three` uses a subset argument: the 2-torsion contains the explicitly constructed set {1, -1, u} of size 3, so the 2-torsion has size ≥ 3. The distinctness proof requires that 1 ≠ -1 (true when n ≥ 3 since char ≠ 2), u ≠ 1, and u ≠ -1 — all verified by value comparison."
+    ]
   },
   "sections": [
     {
       "id": "unit-lifting",
-      "title": "Unit Lifting from Square Roots",
-      "description": "The definition unitOfSqEqOne constructs a unit in (ZMod n)× from any x with x² = 1. The companion theorems verify the unit value, its square, and that it is neither 1 nor -1.",
-      "theorems": ["unitOfSqEqOne_val", "unitOfSqEqOne_sq", "unitOfSqEqOne_ne_one", "unitOfSqEqOne_ne_neg_one"]
+      "title": "Unit Lifting: From x² = 1 to (ZMod n)×",
+      "startLine": 19,
+      "endLine": 43,
+      "summary": "Defines `unitOfSqEqOne x hx : (ZMod n)ˣ` from any x : ZMod n with x² = 1 (since x is self-inverse). Proves the unit's value is x (by rfl), its square is 1, and it is distinct from 1 and -1 whenever x is."
     },
     {
-      "id": "third-root",
-      "title": "Third Square Root via CRT and Power-of-Two Cases",
-      "description": "The main construction exists_third_sqrt_of_not_cyclic: when (ZMod n)× is non-cyclic (n ≥ 3), find a third solution to x² = 1. Two cases: (1) n has an odd prime factor — CRT gives a non-trivial element; (2) n = 2^k with k ≥ 3 — explicit construction using the non-cyclic structure of (ZMod 2^k)×.",
-      "theorems": ["exists_third_sqrt_coprime", "exists_third_sqrt_pow2", "exists_third_sqrt_of_not_cyclic"]
+      "id": "utility-lemmas",
+      "title": "Utility: -1 ≠ 1 in ZMod n for n ≥ 3",
+      "startLine": 44,
+      "endLine": 64,
+      "summary": "Private lemmas proving -1 ≠ 1 in ZMod n when n ≥ 3: if -1 = 1 then 2 = 0, so n | 2, contradicting n ≥ 3. The units version follows by applying `Units.val`."
     },
     {
-      "id": "card-bound",
-      "title": "Cardinality Bound on 2-Torsion",
-      "description": "The theorem card_sq_eq_one_ge_three shows the 2-torsion {x : (ZMod n)× | x² = 1} has cardinality ≥ 3 when (ZMod n)× is non-cyclic. Together with the cyclic case (at most 2 solutions), this gives a group-theoretic characterization: (ZMod n)× is cyclic iff the 2-torsion has size ≤ 2.",
-      "theorems": ["card_sq_eq_one_ge_three"]
+      "id": "crt-construction",
+      "title": "CRT Construction: Third Root for Coprime Factors",
+      "startLine": 65,
+      "endLine": 97,
+      "summary": "For coprime a, b ≥ 3, proves existence of x in ZMod(a*b) with x² = 1, x ≠ 1, x ≠ -1. Constructs x = chineseRemainder.symm (1, -1), which squares to 1 by CRT, and is not 1 (since second component is -1 ≠ 1) or -1 (since first component is 1 ≠ -1)."
+    },
+    {
+      "id": "pow2-construction",
+      "title": "Power-of-2 Construction: Third Root for 2^k (k ≥ 3)",
+      "startLine": 98,
+      "endLine": 192,
+      "summary": "Constructs the witness 2^(k-1)+1 in ZMod(2^k): proves it squares to 1 via divisibility `pow2_sq_sub_one_dvd`, is not 1 (value too large), and is not -1 (value 2^(k-1)+1 ≠ 2^k-1 when k ≥ 3). Multiple private helper lemmas handle nat arithmetic carefully."
+    },
+    {
+      "id": "number-theory",
+      "title": "Number Theory: Non-Cyclic Structure Decomposition",
+      "startLine": 194,
+      "endLine": 269,
+      "summary": "Private lemmas decomposing the non-cyclic case: `is_pow2_of_no_odd_prime_factor` shows that if n has no odd prime factor it must be 2^k with k ≥ 3. `coprime_split_of_odd_factor` shows that if n has an odd prime factor and n is not p^m or 2p^m, it splits as n = a*b with coprime a, b ≥ 3."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: exists_third_sqrt_of_not_cyclic",
+      "startLine": 270,
+      "endLine": 288,
+      "summary": "Applies `ZMod.isCyclic_units_iff` to decompose non-cyclicity, then dispatches: odd prime factor → `coprime_split_of_odd_factor` + `exists_third_sqrt_coprime`; pure power of 2 → `is_pow2_of_no_odd_prime_factor` + `exists_third_sqrt_pow2`."
+    },
+    {
+      "id": "cardinality-bound",
+      "title": "Cardinality Bound: 2-Torsion Has Size ≥ 3",
+      "startLine": 290,
+      "endLine": 318,
+      "summary": "Proves the 2-torsion Finset has card ≥ 3 by exhibiting three distinct elements {1, -1, u} and using Finset.card_le_card. Distinctness: 1 ≠ -1 (n ≥ 3), u ≠ 1 and u ≠ -1 (by unitOfSqEqOne lemmas)."
     }
   ],
-  "overview": {
-    "summary": "Wilson's theorem and Gauss's generalization both rely on the structure of (ZMod n)×. The group is cyclic precisely when n ∈ {1, 2, 4, p^k, 2p^k} for odd primes p. This file proves the 2-torsion characterization: (ZMod n)× is non-cyclic iff it contains an element x² = 1 with x ≠ ±1.",
-    "approach": "The proof uses Mathlib's ZMod.isCyclic_units_iff characterization, which decomposes non-cyclicity into structural conditions on n. For the case with an odd prime factor, CRT gives the element. For n = 2^k with k ≥ 3, an explicit construction exploits the non-cyclic structure (ZMod 2^k)× ≅ ℤ/2 × ℤ/2^(k-2).",
-    "significance": "The Gauss-Wilson theorem completely characterizes when the product of all units in ZMod n equals -1. The non-cyclic case arises precisely when the 2-torsion has more than 2 elements. This connects abstract group theory (cyclic classification) to elementary number theory (products of residues)."
-  },
   "conclusion": {
-    "summary": "The non-cyclic 2-torsion bound for (ZMod n)× is machine-checked, connecting Mathlib's cyclic group classification to elementary properties of square roots of unity in ZMod.",
+    "summary": "The non-cyclic 2-torsion bound for (ZMod n)× is machine-checked: when (ZMod n)× is non-cyclic, the 2-torsion has size ≥ 3, providing the group-theoretic foundation of the Gauss-Wilson theorem.",
+    "implications": "This result gives the complete group-theoretic explanation for why the product of all units in (ZMod n)× equals 1 (not -1) when (ZMod n)× is non-cyclic: the extra square roots of unity pair up in the product, causing cancellation beyond the ±1 pair. The converse is equally important: when (ZMod n)× is cyclic, it has a unique element of order 2 (namely -1), so the product equals -1. Together, these give the Gauss-Wilson theorem's complete characterization.",
     "openQuestions": [
-      "Can the full Gauss-Wilson theorem (product formula) be derived from this framework?",
-      "Does the 2-torsion bound extend to characterize when the Sylow 2-subgroup is elementary abelian vs. cyclic?",
-      "Can these results give a Lean 4 proof of quadratic reciprocity via the structure of (ZMod p)×?"
+      "Can the full Gauss-Wilson product formula be derived from this 2-torsion characterization in a Lean 4 gallery entry?",
+      "Does the 2-torsion bound extend to characterize when the Sylow 2-subgroup of (ZMod n)× is elementary abelian versus cyclic?",
+      "Can the CRT construction be generalized to give a formula for the number of square roots of unity in (ZMod n)× for any n?"
     ]
   },
-  "crossReferences": [],
-  "sorries": 0
+  "crossReferences": [
+    {
+      "proofId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity also relies on the structure of (ZMod p)× and its relationship to the Legendre symbol"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/GaussWilsonNonCyclic.lean",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "lineCount": 323,
+    "theoremCount": 8,
+    "definitionCount": 1
+  }
 }
