@@ -1,0 +1,119 @@
+[
+  {
+    "id": "si-triangulation-struct",
+    "proofId": "sperner-simplicial-instance",
+    "type": "definition",
+    "range": {
+      "startLine": 81,
+      "endLine": 110
+    },
+    "title": "Triangulation V n: Pseudomanifold Simplicial Complex",
+    "content": "`structure Triangulation (V : Type*) [DecidableEq V] (n : ℕ)` with fields:\n- `Cell`: the type of n-simplices\n- `vertex : Cell → Fin (n+1) → V`: ordered vertex map\n- `vertex_injective`: vertices within each cell are distinct\n- `adj : Cell → Fin (n+1) → Option (Cell × Fin (n+1))`: pseudomanifold adjacency\n- `adj_symm`, `adj_vertex`, `adj_ne`: adjacency axioms\n\nKey design: `Triangulation` has exactly the same fields as `CellComplex` plus `vertex_injective`. The bridge `toCellComplex` simply forgets the extra field — a one-liner.\n\n`adj s k = some (s', k')` means: opposite face k of cell s is shared with cell s', where k' is the face position in s' (the vertex of s' not on the shared face).",
+    "significance": "key",
+    "mathContext": "A pseudomanifold: a pure simplicial complex where each codimension-1 face belongs to at most 2 top simplices. For a triangulation of a simplex, boundary faces belong to exactly 1 top simplex (adj = none) and interior faces to exactly 2 (adj = some (...)).",
+    "relatedConcepts": [
+      "CellComplex",
+      "pseudomanifold",
+      "simplicial complex",
+      "adjacency structure"
+    ],
+    "prerequisites": [
+      "SpernerMathlib4.lean CellComplex structure",
+      "simplicial complex basics"
+    ]
+  },
+  {
+    "id": "si-to-cell-complex",
+    "proofId": "sperner-simplicial-instance",
+    "type": "definition",
+    "range": {
+      "startLine": 122,
+      "endLine": 132
+    },
+    "title": "toCellComplex: Trivial Bridge from Triangulation to CellComplex",
+    "content": "`def toCellComplex (T : Triangulation V n) : CellComplex V n where ...`\n\nEach field of CellComplex is filled by the corresponding Triangulation field: `Cell := T.Cell`, `vertex := T.vertex`, `adj := T.adj`, `adj_symm := T.adj_symm`, `adj_vertex := T.adj_vertex`, `adj_ne := T.adj_ne`.\n\nThe `vertex_injective` field of Triangulation is simply omitted — CellComplex doesn't need it. The bridge is a pure projection, requiring no additional proof.\n\nThis design was intentional: by making Triangulation a strict extension of CellComplex, the bridge is automatic.",
+    "significance": "key",
+    "mathContext": "The bridge pattern: define an abstract interface (CellComplex) that captures the combinatorial essence of Sperner's lemma. Then show that concrete mathematical objects (Triangulation) satisfy the interface. The trivial bridge means any theorem proved for CellComplex automatically applies to Triangulation.",
+    "relatedConcepts": [
+      "structure extension",
+      "bridge construction",
+      "interface design",
+      "CellComplex"
+    ],
+    "prerequisites": [
+      "Triangulation structure",
+      "CellComplex from SpernerMathlib4"
+    ]
+  },
+  {
+    "id": "si-boundary-doors-odd",
+    "proofId": "sperner-simplicial-instance",
+    "type": "theorem",
+    "range": {
+      "startLine": 173,
+      "endLine": 254
+    },
+    "title": "boundary_doors_odd: Sperner Colorings Give Odd Boundary Doors",
+    "content": "`theorem boundary_doors_odd (T : Triangulation V n) (c : V → Fin (n+1)) (onFace : V → Fin (n+1) → Prop) (_hSperner : IsSpernerColoring c onFace) (_hBoundaryOnFace ...) (_hLowerDim ...) (_hLastFace : Odd (...).card) : Odd (...boundary doors...).card`\n\nProof strategy: Show that the total boundary door set equals the boundary doors on the 'last face' (face index n):\n\n1. **S ⊆ S_n**: If door (s,k) is on face faceIdx with faceIdx.val < n, then:\n   - `IsDoor` gives a vertex i ≠ k with color = castSucc(faceIdx) = faceIdx\n   - `hBoundaryOnFace` gives that vertex i is on face faceIdx (since i ≠ k)\n   - Sperner condition: c(vertex i) ≠ faceIdx\n   - Contradiction!\n   So all boundary doors must be on face ⟨n, _⟩.\n\n2. **S_n ⊆ S**: Immediate (drop the extra condition).\n\nSince S = S_n and |S_n| is odd by _hLastFace, |S| is odd.",
+    "significance": "critical",
+    "mathContext": "The boundary door parity is the key lemma for Sperner's lemma: if boundary doors are odd, then interior cells contribute even net door-swaps (0 or 2 per interior cell), so panchromatic cells (1 door each) must exist to make the total odd. `boundary_doors_odd` establishes the 'odd boundary' hypothesis from the Sperner condition.",
+    "relatedConcepts": [
+      "Sperner coloring",
+      "boundary doors",
+      "parity argument",
+      "IsDoor predicate"
+    ],
+    "prerequisites": [
+      "CellComplex.IsDoor definition",
+      "IsSpernerColoring",
+      "pseudomanifold boundary"
+    ]
+  },
+  {
+    "id": "si-abstract-simplicial",
+    "proofId": "sperner-simplicial-instance",
+    "type": "definition",
+    "range": {
+      "startLine": 265,
+      "endLine": 300
+    },
+    "title": "AbstractSimplicialData: Unordered Simplicial Complex Interface",
+    "content": "`structure AbstractSimplicialData (V : Type*) [DecidableEq V] [LinearOrder V] (n : ℕ)` with:\n- `topSimplices : Finset (Finset V)`: the collection of n-simplices\n- `card_eq`: each simplex has exactly n+1 vertices\n- `pseudomanifold`: each codim-1 face (n elements) is in ≤ 2 top simplices\n\nKey derived infrastructure:\n- `vertexEnum s hs k`: the k-th vertex of simplex s in sorted order (`Finset.sort (· ≤ ·)`)\n- `faceOf s hs k`: the codim-1 face obtained by erasing vertex k\n- `containersOf f`: top simplices containing face f\n- `findOppositeIdx t ht f hf hfc`: index of the unique vertex in t \\ f\n- `erase_opposite_eq`: erasing the opposite vertex from t gives back f\n\nThis matches the `Geometry.SimplicialComplex` representation in Mathlib (which uses `Finset V` for simplices).",
+    "significance": "key",
+    "mathContext": "Mathlib's `Geometry.SimplicialComplex` uses unordered `Finset V` simplices. `AbstractSimplicialData` axiomatizes exactly the minimal properties needed: cardinality (pure complex) and pseudomanifold. The `LinearOrder V` is needed to canonically order vertices via `Finset.sort`.",
+    "relatedConcepts": [
+      "Mathlib SimplicialComplex",
+      "Finset.sort",
+      "pseudomanifold condition",
+      "ordered vertex enumeration"
+    ],
+    "prerequisites": [
+      "Finset and LinearOrder in Lean 4",
+      "Finset.sort API"
+    ]
+  },
+  {
+    "id": "si-interval-triangulation",
+    "proofId": "sperner-simplicial-instance",
+    "type": "definition",
+    "range": {
+      "startLine": 957,
+      "endLine": 992
+    },
+    "title": "intervalTriangulation: Verified 1-D Example",
+    "content": "`def intervalTriangulation (m : ℕ) (hm : 0 < m) : Triangulation ℕ 1` with:\n- `Cell := Fin m` (m unit intervals)\n- `vertex := ivtx hm`: `ivtx hm i k = if k.val=0 then i.val else i.val+1` (cell i has vertices {i, i+1})\n- `adj := iadj m`: `iadj m i 0 = some (i+1, 1)` if i+1 < m, else none; `iadj m i 1 = some (i-1, 0)` if i > 0, else none\n\nAll axioms verified:\n- `vertex_injective`: by `fin_cases a <;> fin_cases b <;> simp_all`\n- `adj_symm`: via `iadj_symm'` (case split on iadj_cases)\n- `adj_vertex`: via `iadj_vertex'` (checks that opposite faces match)\n- `adj_ne`: via `iadj_ne'` (adjacent cells have different indices)\n\n`interval_sperner`: 1-d Sperner's lemma is a one-line application of `Triangulation.sperner`.",
+    "significance": "key",
+    "mathContext": "The 1-dimensional Sperner lemma: if a coloring of {0,...,m} assigns 0 to endpoint 0 and 1 to endpoint m (Sperner condition), then some unit interval [i, i+1] is panchromatic (has one endpoint colored 0, one colored 1). This is equivalent to the intermediate value theorem for discrete colorings.",
+    "relatedConcepts": [
+      "1-d Sperner lemma",
+      "interval triangulation",
+      "concrete Triangulation instance",
+      "Fin type in Lean 4"
+    ],
+    "prerequisites": [
+      "Triangulation structure",
+      "iadj_cases lemma",
+      "Triangulation.sperner"
+    ]
+  }
+]
