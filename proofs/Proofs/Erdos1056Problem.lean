@@ -192,7 +192,9 @@ theorem wilson_constraint (p : ℕ) (hp : p.Prime) :
 
 /-- **Erdős Problem #1056:** For every k ≥ 2, there exists a solution.
     That is, for every k there is a prime p and k consecutive intervals
-    whose products are all ≡ 1 (mod p). -/
+    whose products are all ≡ 1 (mod p). [OPEN] -/
+axiom erdos_1056_conjecture : ∀ k : ℕ, k ≥ 2 → HasSolution k
+
 /- ## Part VI: Noll–Simmons Generalization -/
 
 /-- The Noll–Simmons question: For arbitrarily large k, do there exist

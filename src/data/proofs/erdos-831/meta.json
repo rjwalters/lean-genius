@@ -15,7 +15,7 @@
       "extremal-geometry",
       "open-problem"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 831,
     "erdosUrl": "https://erdosproblems.com/831",
@@ -53,9 +53,9 @@
       "areCollinear_perm12, areConcyclic_perm: symmetry lemmas (proved)",
       "erdos_831_summary, erdos_831_open_question: summary theorems"
     ],
-    "axiomCount": 0,
-    "lineCount": 712,
-    "assumptions": "Fully verified: 0 axioms, 0 sorries. h(4)=1 (corrected — h(4)≥2 was false), h_upper_bound, and h_three all proved. Open conjecture; supporting lemmas fully verified.",
+    "axiomCount": 1,
+    "lineCount": 717,
+    "assumptions": "1 axiom: erdos_831_growing (h(n) → ∞ as n → ∞ — the central open question). h(4)=1 (corrected), h_upper_bound, and h_three all proved. 23 theorems, 0 sorries.",
     "theoremCount": 23
   },
   "overview": {
@@ -185,8 +185,8 @@
       "Finset"
     ],
     "namespace": "Erdos831",
-    "lineCount": 712,
-    "axiomCount": 0,
+    "lineCount": 717,
+    "axiomCount": 1,
     "theoremCount": 23,
     "definitionCount": 13,
     "path": "Proofs/Erdos831Problem.lean",
