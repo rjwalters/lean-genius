@@ -55,7 +55,7 @@
       "Moon-Moser theorem (fully proved): tournament_cycle_extendable (SC contradiction forces cycle growth) + grow_cycle_to_hamiltonian (well-founded induction with termination measure |V|-|cycle|)",
       "directed_hamiltonian_threshold (fully proved): arc count > (n-1)² + SC implies Hamiltonicity via probabilistic union bound over n! permutations (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le)"
     ],
-    "theoremCount": 27
+    "theoremCount": 9
   },
   "overview": {
     "prerequisites": [
@@ -261,7 +261,7 @@
     "axiomCount": 1,
     "sorries": 4,
     "path": "Proofs/Erdos1012OQ03.lean",
-    "theoremCount": 27,
+    "theoremCount": 9,
     "definitionCount": 9
   },
   "sorries": 4
