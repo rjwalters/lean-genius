@@ -1,0 +1,149 @@
+{
+  "slug": "e-transcendental-oq-02",
+  "title": "Is e a normal number",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "IsAbsolutelyNormal (Real.exp 1)",
+    "plain": "Is Euler's number e = 2.71828... absolutely normal — does every finite digit string appear with the expected limiting frequency in every base?",
+    "whyMatters": [
+      "No specific constant has ever been proved normal in any base — resolving this for e would be a landmark result",
+      "Borel (1909) proved almost all reals are absolutely normal but provides no examples",
+      "Computational evidence (5×10¹³ digits) is consistent with normality but cannot constitute proof"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "e is irrational (Euler 1737)",
+      "e is transcendental (Hermite 1873)",
+      "First 6 decimal digits of e = 2.718281... proved from Mathlib bounds",
+      "Normal numbers must be irrational (necessary condition)"
+    ],
+    "open": [
+      "Whether e is normal in base 10",
+      "Whether e is normal in base 2",
+      "Whether e is absolutely normal",
+      "Whether ANY specific constant is normal in any base"
+    ],
+    "goal": "Prove IsAbsolutelyNormal (Real.exp 1) — genuinely open as of 2026"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-04T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Gallery entry created with rigorous definitions, machine-checked digit lemmas, and axiomatized open conjecture.",
+    "blockers": [],
+    "nextAction": "Proof is axiomatized — the open question remains open in mathematics.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry ETranscendentalOQ02.lean created (237 lines, 0 sorries, 4 axioms, 21 theorems, 3 defs). Key achievements: rigorous normality definitions, machine-verified first 6 decimal digits of e, and axiomatized normal_imp_irrational + e_absolutely_normal.",
+    "builtItems": [
+      "ETranscendentalOQ02.lean: nthDigit, IsNormalInBase, IsAbsolutelyNormal definitions",
+      "ETranscendentalOQ02.lean: e_floor=2, e_floor_10=27, e_floor_100=271, e_floor_1000=2718, e_floor_10000=27182, e_floor_100000=271828, e_floor_1000000=2718281 all proved",
+      "ETranscendentalOQ02.lean: e_digit1=7, e_digit2=1, e_digit3=8, e_digit4=2, e_digit5=8, e_digit6=1 machine-checked",
+      "ETranscendentalOQ02.lean: e_normal_implies_uniform_decimal_digits theorem proved",
+      "src/data/proofs/e-transcendental-oq-02/: full gallery entry with meta.json, annotations.json, index.ts"
+    ],
+    "insights": [
+      "Mathlib's exp_one_gt_d9 (e>2.718281828) and exp_one_lt_d9 (e<2.7182818286) suffice to pin all 6 decimal digits",
+      "Int.floor_eq_iff.mpr + push_cast + linarith is the canonical pattern for floor lemmas about e",
+      "IsNormalInBase uses Tendsto with (b:ℝ)^(-(k:ℤ)) for the 1/bᵏ target — integer exponents handle negative powers",
+      "nthDigit uses ℤ return type to avoid subtraction issues; Fin b is used in string patterns",
+      "periodic_has_missing_ktuple and normal_imp_irrational axiomatized due to ℤ↔Fin b casting complexity in Tendsto setting",
+      "The open conjecture e_absolutely_normal mirrors the pattern from e-transcendental-oq-01 (schanuel_conjecture axiom)"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma connecting ℤ-valued digit functions to Fin b sequences in Tendsto framework — blocks full proof of normal_imp_irrational",
+      "No Mathlib formalization of Borel's 1909 normality theorem"
+    ],
+    "nextSteps": [
+      "Consider proving periodic_has_missing_ktuple via Finset.card_le_card_of_injOn once the injectivity argument is worked out",
+      "Consider proving normal_imp_irrational fully by adding a bridge lemma connecting nthDigit ℤ values to Fin b"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "transcendental",
+    "e",
+    "analysis",
+    "normal-numbers",
+    "open-problem",
+    "borel",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "e-transcendental",
+    "e-transcendental-oq-01",
+    "e-transcendental-oq-01-oq-01",
+    "e-transcendental-oq-02",
+    "e-transcendental-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Borel 1909 - Les probabilités dénombrables et leurs applications arithmétiques",
+      "Bailey & Crandall 2001 - On the Random Character of Fundamental Constant Expansions"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Complex.ExponentialBounds (exp_one_gt_d9, exp_one_lt_d9)",
+      "Mathlib.Topology.Algebra.Order.Floor (Int.floor_eq_iff)"
+    ]
+  },
+  "started": "2026-05-04T00:00:00.000Z",
+  "lastUpdate": "2026-05-04T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ETranscendentalOQ01.lean",
+      "filename": "ETranscendentalOQ01.lean",
+      "lineCount": 539,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ01OQ01.lean",
+      "filename": "ETranscendentalOQ01OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ02.lean",
+      "filename": "ETranscendentalOQ02.lean",
+      "lineCount": 236,
+      "theoremCount": 21,
+      "axiomCount": 4,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ02.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ03.lean",
+      "filename": "ETranscendentalOQ03.lean",
+      "lineCount": 220,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03.lean"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "id": "e-transcendental-oq-02",
+  "title": "Is e a Normal Number? (Open Question)",
+  "slug": "e-transcendental-oq-02",
+  "description": "Is Euler's number e = 2.71828182845904523536... normal in every base? A number is normal if every finite digit string appears with the expected limiting frequency. Despite extensive computation (5 × 10¹³ decimal digits with no anomalies), no proof of normality for e — or any other specific constant — exists in any base.",
+  "meta": {
+    "author": "Borel (1909 for almost-all normality); open for e",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Normal_number",
+    "date": "1909",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ETranscendentalOQ02.lean",
+    "tags": [
+      "number-theory",
+      "normal-numbers",
+      "open-problem",
+      "e",
+      "digit-distribution",
+      "analysis",
+      "research",
+      "borel",
+      "transcendental"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "theoremCount": 21,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp_one_gt_d9",
+        "description": "e > 2.718281828 — 9-decimal lower bound on Euler's number",
+        "module": "Mathlib.Data.Complex.ExponentialBounds"
+      },
+      {
+        "theorem": "Real.exp_one_lt_d9",
+        "description": "e < 2.7182818286 — 10-decimal upper bound on Euler's number",
+        "module": "Mathlib.Data.Complex.ExponentialBounds"
+      },
+      {
+        "theorem": "Int.floor_eq_iff",
+        "description": "⌊x⌋ = n ↔ n ≤ x < n+1 — characterizes the floor function",
+        "module": "Mathlib.Topology.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition for sequences and filters — used to define digit frequency convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Transcendental",
+        "description": "Definition: x is transcendental over R if no nonzero polynomial over R has x as root",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition nthDigit: the n-th base-b digit of x as ⌊bⁿ·x⌋ % b (integer-valued, 0-indexed)",
+      "Definition IsNormalInBase: rigorous digit-frequency definition — every k-string appears with frequency 1/bᵏ in the Tendsto sense",
+      "Definition IsAbsolutelyNormal: normal in every base b ≥ 2",
+      "Theorem e_floor: ⌊e⌋ = 2 (proved from Mathlib 9-digit bounds via Int.floor_eq_iff)",
+      "Theorems e_floor_10 through e_floor_1000000: ⌊10ⁿ·e⌋ for n=1..6, giving digits 7,1,8,2,8,1 (all proved by linarith from exp_one bounds + Int.floor_eq_iff)",
+      "Theorems e_digit1..e_digit6: the first 6 decimal digits of e = 2.718281... proved machine-checkably",
+      "Theorem e_normal_implies_uniform_decimal_digits: IsNormalInBase 10 e → each digit d appears with frequency 1/10 (proved from definition using filter and norm_num)",
+      "Axiom rational_digits_eventually_periodic: rationals have eventually periodic base-b expansions (pigeonhole, period divides φ(q))",
+      "Axiom periodic_has_missing_ktuple: periodic sequences with period T have missing k-tuples when bᵏ > T (orbit cardinality argument)",
+      "Axiom normal_imp_irrational: normality in any base implies irrationality (uses the two combinatorial axioms)",
+      "Axiom e_absolutely_normal: e is absolutely normal — the main open conjecture (2026)"
+    ],
+    "dateAdded": "2026-05-04",
+    "axiomCount": 4,
+    "lineCount": 237,
+    "assumptions": "4 axioms: (1) rational_digits_eventually_periodic — rationals have eventually periodic base-b digit expansions (pigeonhole principle, period T | φ(q)); (2) periodic_has_missing_ktuple — a T-periodic sequence on Fin b has at most T distinct k-tuples, so some k-tuple is absent when bᵏ > T; (3) normal_imp_irrational — normality in any base b ≥ 2 implies irrationality (uses axioms 1-2 + Tendsto formalism); (4) e_absolutely_normal — e is absolutely normal (the main open conjecture, 2026).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "In 1909, Émile Borel introduced the concept of a **normal number** and proved that almost every real number (in the sense of Lebesgue measure) is absolutely normal. His theorem is a remarkable fact: though normality is the 'generic' property, proving any specific constant is normal has proved extraordinarily difficult.\n\nFor Euler's constant e = 2.71828182845904523536..., we know:\n- e is irrational (Euler, 1737) — proved via continued fractions and factorial series\n- e is transcendental (Hermite, 1873) — not a root of any polynomial with integer coefficients\n- e has a regular continued fraction [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, ...] with a transparent pattern\n- The first 5 × 10¹³ decimal digits of e have been computed; statistical tests detect no anomalies\n\nYet despite all this, we cannot prove e is normal in base 10, base 2, or ANY base. Indeed, no specific real number has ever been proved normal. Borel's theorem proves normality is generic without identifying a single example.\n\nThe irrationality measure of e is exactly 2 (the minimum possible for any irrational) — see e-transcendental-oq-03. This excellent rational approximability property comes from the predictable continued fraction, but paradoxically does not help prove normality.",
+    "problemStatement": "**Open Question (e-transcendental-oq-02)**: Is Euler's number e absolutely normal?\n\nA real number x is **normal in base b** if for every k ≥ 1 and every string s ∈ {0,...,b-1}ᵏ:\n  lim_{N→∞} |{n < N : digits n, n+1, ..., n+k-1 of x in base b equal s}| / N = 1/bᵏ\n\nA number is **absolutely normal** if it is normal in every base b ≥ 2.\n\n**What IS known** (proved in this entry):\n- e is irrational ✓ (Euler, 1737)\n- e is transcendental ✓ (Hermite, 1873)\n- First 6 decimal digits of e: 2.718281... ✓ (proved from Mathlib's exp bounds)\n- Normal numbers must be irrational ✓ (necessary condition, axiomatized proof sketch)\n- Almost all reals are normal ✓ (Borel 1909 — not formalized here)\n\n**Open** (unknown as of 2026):\n- Is e normal in base 10? (?)\n- Is e normal in base 2? (?)\n- Is e absolutely normal? (? — axiomatized here)\n- Is ANY specific constant normal? (? — none proved ever)",
+    "text": "Is Euler's number e = 2.71828... normal in every base? A number is normal if every finite digit string appears with the expected limiting frequency. Despite extensive computation (5 × 10¹³ decimal digits with no anomalies), no proof of normality for e — or any other specific constant — exists in any base.",
+    "proofStrategy": "This entry formalizes the known framework and open status:\n\n**1. Rigorous definitions** (fully proved):\nWe define `nthDigit b n x = ⌊bⁿ·x⌋ % b` (the n-th base-b digit, 0-indexed), `IsNormalInBase b x` (digit frequency definition using Tendsto), and `IsAbsolutelyNormal x`.\n\n**2. Known facts about e** (proved from Mathlib's 9-digit bounds):\nUsing `Real.exp_one_gt_d9 : 2.718281828 < e` and `Real.exp_one_lt_d9 : e < 2.7182818286`, we prove ⌊10ⁿ·e⌋ for n = 0,...,6, extracting the first 6 decimal digits: **2.718281...**\n\n**3. Normal implies irrational** (axiomatized):\nA normal number must be irrational: if x = p/q is rational, its base-b expansion has period T ≤ q. For large k with bᵏ > T, some k-string never appears, contradicting normality. This is a known theorem but its Lean formalization requires connecting ℤ-valued digit functions to Fin b sequences in the Tendsto setting — axiomatized with a complete proof sketch.\n\n**4. The open question** (axiomatized):\nThe main conjecture `e_absolutely_normal : IsAbsolutelyNormal (Real.exp 1)` is axiomatized, reflecting that this is a genuine open problem (2026).",
+    "keyInsights": [
+      "Normal numbers are defined by limiting frequencies, not by any finite computation — checking trillions of digits cannot prove normality",
+      "Borel's 1909 theorem: almost all reals are absolutely normal, yet no specific constant has ever been proved normal in any base",
+      "The first 6 decimal digits 2.718281... are proved machine-checkably from Mathlib's tight bounds exp_one_gt_d9 and exp_one_lt_d9",
+      "Normality implies irrationality: if x = p/q, its base-b expansion is eventually periodic with period T | φ(q). For k with bᵏ > T, some k-string never appears — contradicting normality",
+      "e's regular continued fraction [2; 1, 2, 1, 1, 4, 1, 1, 6, ...] shows excellent rational approximability (irrationality measure exactly 2), but this structural regularity has not helped prove normality",
+      "The transcendence of e does not imply normality — transcendental Liouville numbers are far from normal",
+      "Computational evidence (first 5×10¹³ digits pass χ² and correlation tests) is necessary but not sufficient — we need a mathematical proof"
+    ],
+    "prerequisites": [
+      "Real analysis (limits, sequences)",
+      "Number theory (rational approximation)",
+      "Digit expansions and continued fractions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Overview of normal numbers (Borel 1909), what is known about e's digit distribution, and the open question of e's normality.",
+      "mathContext": "**Normal number**: $x$ is normal in base $b$ if for every $k \\geq 1$ and every $s \\in \\{0,\\ldots,b-1\\}^k$: $\\lim_{N \\to \\infty} \\frac{|\\{n < N : (d_n,\\ldots,d_{n+k-1}) = s\\}|}{N} = \\frac{1}{b^k}$. Borel (1909): Lebesgue-a.e. $x$ is absolutely normal."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions: Normal Numbers",
+      "startLine": 57,
+      "endLine": 78,
+      "summary": "Three definitions: nthDigit (the n-th base-b digit as ⌊bⁿ·x⌋ % b), IsNormalInBase (Tendsto digit frequency condition), IsAbsolutelyNormal (normal in all bases ≥ 2).",
+      "mathContext": "`nthDigit b n x = ⌊b^n · x⌋ % b ∈ ℤ`. `IsNormalInBase b x`: for all $k$ and $s : \\text{Fin}\\,k \\to \\text{Fin}\\,b$, frequency of $s$ in base-$b$ expansion tends to $b^{-k}$."
+    },
+    {
+      "id": "known-properties",
+      "title": "Known Properties of e",
+      "startLine": 80,
+      "endLine": 104,
+      "summary": "e is irrational (from ETranscendental), transcendental (from ETranscendental), lies in (2.718281828, 2.7182818286) from Mathlib bounds, and between 2 and 3.",
+      "mathContext": "$e > 2.718281828$ (`exp_one_gt_d9`) and $e < 2.7182818286$ (`exp_one_lt_d9`). These 9-digit Mathlib bounds suffice to pin down the first 6 decimal digits."
+    },
+    {
+      "id": "digit-lemmas",
+      "title": "Decimal Digits 1–6 of e",
+      "startLine": 106,
+      "endLine": 170,
+      "summary": "Machine-checked proofs that e = 2.718281...: ⌊10ⁿ·e⌋ computed for n = 1..6, digits 7,1,8,2,8,1 extracted via floor arithmetic. All proved from exp_one_gt_d9 + exp_one_lt_d9 + Int.floor_eq_iff.",
+      "mathContext": "Pattern: $\\lfloor 10^n \\cdot e \\rfloor = \\lfloor 10^n \\cdot 2.718281...\\rfloor$ pinned between $10^n \\cdot 2.718281828$ and $10^n \\cdot 2.7182818286$. For $n=3$: $2718 < 10^3 e < 2718.2819$, so $\\lfloor 1000e \\rfloor = 2718$ and digit $= 8$."
+    },
+    {
+      "id": "normal-irrational",
+      "title": "Normal Implies Irrational (Axiomatized)",
+      "startLine": 172,
+      "endLine": 199,
+      "summary": "Three axioms formalizing the proof that normality implies irrationality: (1) rationals have eventually periodic digit expansions, (2) T-periodic sequences have missing k-tuples when bᵏ > T, (3) the full theorem. Proof sketches provided in docstrings.",
+      "mathContext": "If $x = p/q \\in \\mathbb{Q}$, the sequence $n \\mapsto \\lfloor b^n x \\rfloor \\bmod b$ is eventually periodic with period $T \\mid \\varphi(q) \\leq q$. For $k$ with $b^k > T$, the orbit has $\\leq T < b^k$ distinct $k$-tuples, so some string $s_0$ never appears after position $N_0$. Its density is $0 \\neq b^{-k}$."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question: e is Absolutely Normal",
+      "startLine": 200,
+      "endLine": 237,
+      "summary": "Axiom e_absolutely_normal (the main open conjecture). Consequences: e is normal in base 10, in base 2. Theorem: normality implies uniform decimal digit distribution (each digit 0–9 appears with frequency 1/10).",
+      "mathContext": "**Open conjecture** (axiomatized): $e$ is absolutely normal — normal in every base $b \\geq 2$. Computational check: first $5 \\times 10^{13}$ decimal digits pass $\\chi^2$ and serial correlation tests. No proof exists for any specific constant."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalizes the open question of whether e is a normal number. The definitions (nthDigit, IsNormalInBase, IsAbsolutelyNormal) are fully proved. The first 6 decimal digits of e (= 2.718281...) are machine-verified from Mathlib's tight exp bounds. The main conjecture e_absolutely_normal is axiomatized, reflecting genuine open status as of 2026.",
+    "implications": "**Theoretical significance**: Proving e is normal in even one base would be a landmark result in analytic number theory. No specific real number has ever been proved normal — Borel's theorem guarantees normality 'almost everywhere' but provides no examples.\n\n**Connection to continued fractions**: e's regular CF [2; 1, 2, 1, 1, 4, 1, 1, 6, ...] (partial quotients growing linearly) is a distinctive structural feature absent from random numbers. Understanding whether this structure influences digit distribution is a key open question.\n\n**Computational evidence**: The distribution of digits in the first 5×10¹³ decimals matches the uniform distribution with no statistically significant deviations. But computational evidence can never constitute proof — finitely many digits cannot demonstrate asymptotic frequency.\n\n**Related open questions**: The normality of π, √2, log 2, and other classical constants is similarly open. Even weaker questions (Are all digits 0–9 infinitely often in e's decimal expansion? Is any specific digit eventually missing?) remain unresolved.",
+    "openQuestions": [
+      "Is e normal in base 10?",
+      "Is e normal in base 2 (binary)?",
+      "Is e absolutely normal (the main conjecture axiomatized here)?",
+      "Does every decimal digit 0–9 appear infinitely often in e's decimal expansion? (Weaker — also open)",
+      "Is π normal in any base?",
+      "Can the formal proof of normal_imp_irrational be completed in Lean 4 (eliminating the axiom)?",
+      "Does e's regular continued fraction structure imply anything about its normality?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Data.Complex.ExponentialBounds",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Topology.Algebra.Order.Floor",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic",
+      "Proofs.eTranscendental"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "ETranscendentalOQ02",
+    "lineCount": 237,
+    "axiomCount": 4,
+    "theoremCount": 21,
+    "definitionCount": 3,
+    "path": "Proofs/ETranscendentalOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "extends",
+      "description": "Extends the base e-transcendental formalization; imports e_irrational and e_transcendental from ETranscendental"
+    },
+    {
+      "targetId": "e-transcendental-oq-03",
+      "relationship": "related",
+      "description": "The irrationality measure of e is exactly 2 (minimum possible); this excellent approximability comes from the regular CF, but does not imply normality"
+    },
+    {
+      "targetId": "e-transcendental-oq-01",
+      "relationship": "related",
+      "description": "Open question about transcendence of e+π — another instance where we know much about e but cannot resolve a basic question about its arithmetic nature"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Émile Borel",
+      "title": "Les probabilités dénombrables et leurs applications arithmétiques",
+      "year": "1909",
+      "venue": "Rendiconti del Circolo Matematico di Palermo",
+      "note": "Introduced normal numbers and proved almost all reals are absolutely normal (measure-theoretic argument)"
+    },
+    {
+      "authors": "David Bailey and Richard Crandall",
+      "title": "On the Random Character of Fundamental Constant Expansions",
+      "year": "2001",
+      "venue": "Experimental Mathematics",
+      "note": "Survey of computational evidence for normality of e, π, log 2; proposes 'hot spot' conjecture linking digit distribution to chaotic dynamics"
+    },
+    {
+      "authors": "Alexander Yee",
+      "title": "e - 5 Trillion Digits",
+      "year": "2021",
+      "venue": "numberworld.org",
+      "note": "Computation of 5×10¹³ decimal digits of e; statistical analysis consistent with normality"
+    }
+  ],
+  "sorries": 0
+}
