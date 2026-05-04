@@ -1,0 +1,179 @@
+{
+  "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+  "title": "The Cauchy–Crofton Constant Decays to Zero",
+  "slug": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+  "description": "Proves that the Cauchy–Crofton constant c_n = 2σ_{n-2}/((n-1)σ_{n-1}) satisfies c_n → 0 as n → ∞. The proof uses a two-step recurrence c_{n+2} = c_n · n/(n+1) derived from the sphere area recurrence, an inductive upper bound c_n ≤ 2/√(nπ) via the AM-GM inequality n(n+2) ≤ (n+1)², and the squeeze theorem. Zero sorries, zero axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Crofton_formula",
+    "date": "2026-05-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean",
+    "tags": [
+      "integral-geometry",
+      "cauchy-crofton",
+      "buffon",
+      "sphere-area",
+      "gamma-function",
+      "analysis",
+      "limits",
+      "squeeze-theorem",
+      "am-gm"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 153,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. The proof is fully constructive: the two-step recurrence follows from the sphere area recurrence (proved in parent), the upper bound by induction, and squeeze via Mathlib's tendsto_of_tendsto_of_tendsts_of_le_of_le.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.tendsto_sqrt_atTop",
+        "description": "sqrt(x) → ∞ as x → ∞, used to show 1/sqrt(nπ) → 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "tendsto_inv_atTop_zero",
+        "description": "x⁻¹ → 0 as x → ∞, used in composing the limit of 2/sqrt(nπ)",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "tendsto_of_tendsto_of_tendsto_of_le_of_le",
+        "description": "Squeeze theorem: if f → L, h → L, f ≤ g ≤ h eventually, then g → L",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of sqrt, used to compare squared bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "cauchyCrofton_step: Two-step recurrence c_{n+2} = c_n · n/(n+1) from sphereArea_recurrence",
+      "sqrt_ratio_bound: Geometric inequality n·√((n+2)π) ≤ (n+1)·√(nπ) via AM-GM n(n+2)≤(n+1)²",
+      "cauchyCrofton_upper_bound: Inductive upper bound c_n ≤ 2/√(nπ) for all n ≥ 2",
+      "cauchyCroftonConst_tendsto_zero: Main theorem c_n → 0 via squeeze theorem"
+    ],
+    "relatedProblems": [
+      {
+        "id": "buffons-needle-oq-01-oq-01-oq-04",
+        "relationship": "parent",
+        "description": "Parent entry defines c_n, proves sphere area recurrence, and states the limit as a sorry"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Cauchy–Crofton formula (Cauchy 1832, Crofton 1868) relates the expected number of crossings between a curve and a random hyperplane grid. In n dimensions, the crossing constant is c_n = 2σ_{n-2}/((n-1)σ_{n-1}) where σ_k is the surface area of S^k. Santaló (1976) discusses the geometry in his classical treatise on integral geometry. The fact that c_n → 0 reflects the geometric phenomenon that in high dimensions, randomly oriented hyperplanes become increasingly unlikely to intersect a fixed curve.",
+    "problemStatement": "**Open Question (OQ-01 of OQ-04)**: Does the Cauchy–Crofton constant c_n → 0 as n → ∞?\n\n**Answer**: YES — proved in this entry via the AM-GM inequality and squeeze theorem.",
+    "text": "A 153-line proof that the dimension-dependent crossing constant c_n decays to zero. The key insight is a two-step recurrence c_{n+2} = c_n · n/(n+1) derived from the sphere area recurrence σ_n = 2π/(n-1)·σ_{n-2}. Combined with the AM-GM estimate n(n+2) ≤ (n+1)², this gives the upper bound c_n ≤ 2/√(nπ), which tends to zero by the squeeze theorem.",
+    "proofStrategy": "Step 1: Derive c_{n+2} = c_n · n/(n+1) from the sphere area recurrence. Step 2: Prove 2/√(nπ) is an upper bound for c_n by induction on even and odd subsequences, using the key geometric inequality n · √((n+2)π) ≤ (n+1) · √(nπ). This reduces (by squaring) to n(n+2) ≤ (n+1)², which is AM-GM. Step 3: Apply the squeeze theorem: 0 ≤ c_n ≤ 2/√(nπ) → 0.",
+    "keyInsights": [
+      "The two-step recurrence c_{n+2} = c_n · n/(n+1) follows algebraically from two applications of the sphere area recurrence σ_n = 2π/(n-1)·σ_{n-2}",
+      "The AM-GM inequality n(n+2) ≤ (n+1)² is the arithmetic heart: it bounds n/(n+1) ≤ √(n/(n+2))",
+      "The inductive bound c_n ≤ 2/√(nπ) is tight at n=2 (where c_2 = 2/π and 2/√(2π) ≈ 0.798)",
+      "The squeeze theorem requires showing 2/√(nπ) → 0, which follows from sqrt(nπ) → ∞ and inv_tendsto_atTop_zero"
+    ],
+    "prerequisites": [
+      "Sphere area recurrence σ_n = 2π/(n-1)·σ_{n-2} (proved in parent BuffonsNeedleOQ01OQ01OQ04.lean)",
+      "cauchyCroftonConst definition: c_n = 2σ_{n-2}/((n-1)σ_{n-1}) (defined in parent)",
+      "AM-GM inequality: n(n+2) ≤ (n+1)² (proved inline by nlinarith)",
+      "Squeeze theorem for real sequences (Mathlib: tendsto_of_tendsto_of_tendsts_of_le_of_le)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "step-recurrence",
+      "title": "Two-Step Recurrence",
+      "startLine": 28,
+      "endLine": 60,
+      "summary": "Proves c_{n+2} = c_n · n/(n+1) for n ≥ 2. Uses sphereArea_recurrence at n and n+1 to eliminate sphere area terms via field_simp and ring.",
+      "mathContext": "c_{n+2} = 2σ_n/((n+1)σ_{n+1}). Substituting σ_n = 2π/(n-1)·σ_{n-2} and σ_{n+1} = 2π/n·σ_{n-1}: factors cancel to give c_n · n/(n+1)."
+    },
+    {
+      "id": "geometric-inequality",
+      "title": "Key Geometric Inequality",
+      "startLine": 62,
+      "endLine": 77,
+      "summary": "Proves n·√((n+2)π) ≤ (n+1)·√(nπ) by squaring: reduces to n(n+2) ≤ (n+1)² (AM-GM).",
+      "mathContext": "Squaring both sides: n²·(n+2)π ≤ (n+1)²·nπ, i.e., n(n+2) ≤ (n+1)². This holds since (n+1)² - n(n+2) = 1 > 0."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Inductive Upper Bound",
+      "startLine": 80,
+      "endLine": 127,
+      "summary": "Proves c_n ≤ 2/√(nπ) for n ≥ 2 by simultaneous induction on even (2+2k) and odd (3+2k) subsequences. Base cases c_2 = 2/π and c_3 = 1/2 verified by nlinarith with sq_sqrt hints.",
+      "mathContext": "Inductive step: c_{n+2} = c_n·n/(n+1) ≤ (2/√(nπ))·n/(n+1) ≤ 2/√((n+2)π). The last step uses div_mul_div_comm and div_le_div_iff to reduce to the geometric inequality."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem via Squeeze",
+      "startLine": 129,
+      "endLine": 153,
+      "summary": "Proves Tendsto cauchyCroftonConst atTop (nhds 0) via squeeze: 0 ≤ c_n ≤ 2/√(nπ) and 2/√(nπ) → 0.",
+      "mathContext": "2/√(nπ) = 2·(sqrt(nπ))⁻¹. Since nπ → ∞, sqrt(nπ) → ∞ (Real.tendsto_sqrt_atTop), hence (sqrt(nπ))⁻¹ → 0 (tendsto_inv_atTop_zero). Multiplying by 2 and applying squeeze gives the result."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Cauchy–Crofton constant c_n → 0 as n → ∞, proved using the two-step recurrence c_{n+2} = c_n·n/(n+1), the AM-GM bound c_n ≤ 2/√(nπ), and the squeeze theorem. This resolves the sorry in the parent entry (buffons-needle-oq-01-oq-01-oq-04).",
+    "implications": "In high dimensions, random hyperplane crossings become increasingly rare for a fixed-length curve. This has implications for probabilistic geometry in high-dimensional spaces, where phenomena analogous to the curse of dimensionality appear in integral geometry."
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-01-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Parent entry defining c_n and the sphere area recurrence; the sorry in that file is resolved here"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "foundational",
+      "description": "Original Buffon needle problem setting the probabilistic context"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cauchy, A.",
+      "title": "Mémoire sur la rectification des courbes et la quadrature des surfaces courbes",
+      "year": "1832",
+      "venue": "Mémoires de l'Académie des Sciences",
+      "note": "Original paper establishing the angular averaging formula"
+    },
+    {
+      "authors": "Crofton, M.W.",
+      "title": "On the theory of local probability",
+      "year": "1868",
+      "venue": "Philosophical Transactions of the Royal Society",
+      "note": "Extension to higher dimensions via integral geometry"
+    },
+    {
+      "authors": "Santaló, L.A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Encyclopedia of Mathematics and Its Applications",
+      "note": "Chapter 14: Cauchy-Crofton formula in n dimensions"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BuffonsNeedleOQ01OQ01OQ04"
+    ],
+    "opens": [
+      "Real",
+      "CauchyCrofton",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "CauchyCroftonDecay",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "sorries": 0
+}
