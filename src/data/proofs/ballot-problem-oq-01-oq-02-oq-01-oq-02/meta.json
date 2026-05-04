@@ -39,7 +39,6 @@
   "overview": {
     "historicalContext": "The ballot problem OQ-01-OQ-02-OQ-01 proved that the multi-candidate ballot theorem follows from uniform fiber transfer: when a surjection has equal fiber sizes, it preserves the uniformOn probability of a specific event (ballot staysPositive). The natural follow-up question is whether this holds for ALL events simultaneously — this would give a single general theorem rather than a problem-specific one.",
     "problemStatement": "Can the uniformOn_fiber_transfer pattern be generalized: if a surjective map between finite probability spaces has uniform fibers, does it preserve all event probabilities (not just uniformOn)?",
-    "text": "YES — uniform fiber surjections preserve uniformOn for ALL events. For any finite sets A, T, any surjection f : A → T with uniform fiber size k, and any event P ⊆ T: uniformOn A (f⁻¹'P) = uniformOn T P.",
     "proofStrategy": "Fiber decomposition gives A = ⋃_{t∈T} (A ∩ f⁻¹'{t}) (using surjectivity) and A ∩ f⁻¹'P = ⋃_{t∈P} (A ∩ f⁻¹'{t}). Uniform counting (ncard_biUnion_eq_of_uniform) gives ncard(A) = k·ncard(T) and ncard(A ∩ f⁻¹'P) = k·ncard(P). The factor k cancels in the ENNReal ratio.",
     "keyInsights": [
       "The fiber decomposition argument works for ANY P ⊆ T, not just the specific ballot event — the key is that uniform fiber sizes allow the cancellation of k in numerator and denominator",
@@ -49,12 +48,6 @@
       "The proof works for ANY α, β types with Finite hypotheses — it is fully type-parametric",
       "The cancellation of k is the conceptual heart: ncard(A∩f⁻¹'P)/ncard(A) = k·|P|/k·|T| = |P|/|T|. This telescoping makes the equal-fiber condition precisely the right hypothesis — not stronger, not weaker.",
       "This is the discrete analog of a measure-preserving map: uniform-fiber surjections are probability-algebra homomorphisms that preserve all event probabilities, just as measure-preserving maps between probability spaces preserve all measure values."
-    ],
-    "prerequisites": [
-      "BallotProblemOQ01OQ02OQ01: ncard_biUnion_eq_of_uniform — the fiber counting lemma",
-      "ProbabilityTheory.uniformOn: the conditional uniform distribution on finite sets",
-      "Set.SurjOn: surjectivity from A onto T",
-      "ENNReal.div_eq_div_iff: cross-multiplication for ENNReal fractions"
     ]
   },
   "sections": [
@@ -99,36 +92,22 @@
       "For non-uniform fiber sizes, is there a characterization of which events P have their probability preserved?"
     ]
   },
-  "leanFile": {
-    "namespace": "BallotGeneralFiberTransfer",
-    "lineCount": 198,
-    "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 0,
-    "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
-      "targetId": "ballot-problem-oq-01-oq-02-oq-01",
-      "relationship": "parent",
-      "description": "Uniform Fiber Transfer — proves this for ONE specific ballot event; this file generalizes to ALL events"
+      "proofId": "ballot-problem-oq-01-oq-02-oq-01",
+      "relationship": "parent — proves uniform fiber transfer for one specific ballot event; this file generalizes to ALL events"
     },
     {
-      "targetId": "ballot-problem-oq-01-oq-02",
-      "relationship": "ancestor",
-      "description": "Multi-Candidate Ballot Theorem — the application that motivated the fiber transfer pattern"
+      "proofId": "ballot-problem-oq-01-oq-02",
+      "relationship": "ancestor — multi-candidate ballot theorem; the application that motivated the fiber transfer pattern"
     },
     {
-      "targetId": "ballot-problem-oq-01",
-      "relationship": "ancestor",
-      "description": "Ballot Problem OQ-01 — the original ballot theorem whose proof motivated the fiber-based approach"
+      "proofId": "ballot-problem-oq-01",
+      "relationship": "ancestor — ballot theorem OQ-01; the original ballot theorem whose proof motivated the fiber-based approach"
     },
     {
-      "targetId": "ballot-problem",
-      "relationship": "ancestor",
-      "description": "Ballot Problem — the classical result that a candidate leading throughout the count wins with probability (a-b)/(a+b)"
+      "proofId": "ballot-problem",
+      "relationship": "ancestor — classical ballot problem: candidate leading throughout wins with probability (a-b)/(a+b)"
     }
-  ],
-  "sorries": 0
+  ]
 }
