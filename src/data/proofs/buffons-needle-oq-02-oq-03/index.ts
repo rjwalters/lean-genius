@@ -33,4 +33,5 @@ export const buffonsNeedleOq02Oq03Annotations: Annotation[] = annotationsJson as
 export const buffonsNeedleOq02Oq03Data: ProofData = {
   proof: buffonsNeedleOq02Oq03Proof,
   annotations: buffonsNeedleOq02Oq03Annotations,
+  tacticStates: [],
 }
