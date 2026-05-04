@@ -455,3 +455,30 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 1. Try `IntermediateField.map_injective ι` approach with explicit Ka-AlgHom ι : ↥(Ka⊔ℚ⟮β⟯) →ₐ[↥Ka] ℂ
 2. Submit h_top_Ka to Aristotle (clear algebraic statement, might be provable by automation)
 3. After h_top_Ka: proof of isConstructible_sup_degree is complete, enabling isConstructible_algebraic_degree finrank part
+
+## Session 2026-05-04 (Session 39) - Prove h_top_Ka sorry — 0 sorries achieved
+
+**Mode**: REVISIT
+**Outcome**: completed — h_top_Ka proved; 0 sorries in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean
+
+### What I Did
+- Identified h_top_Ka sorry (line 202 in main repo) introduced in Session 38 (PR #15460)
+- Found complete proof in Session 33 (PR #15128) version using: `IntermediateField.restrict`,
+  `restrict_algEquiv`, `restrictScalars_adjoin_of_algEquiv`, `lift_injective`, `lift_top`, `lift_adjoin`
+- Ported proof: `Ka_im := restrict le_sup_left`, `σ := restrict_algEquiv le_sup_left`,
+  `hAlg_Ka_amb` via `inclusion.toAlgebra`
+- Core: restrict_adjoin_of_algEquiv + restrictScalars_adjoin → lift_injective reduces to
+  `adjoin ℚ (↑Ka ∪ {β}) = Ka ⊔ ℚ⟮β⟯` in IF ℚ ℂ (proved by sup_le + adjoin.mono)
+- PR #15582 created
+
+### Key Findings
+- lift_injective technique: injects IF ℚ ↥K into IF ℚ ℂ via K.val, enabling ℂ-level proofs
+- restrictScalars_adjoin_of_algEquiv: changes adjoin base field via AlgEquiv + algebraMap factoring
+- No API drift: lemmas from PR #15128 (Lean v4.26.0) still available in current Mathlib
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — proved h_top_Ka
+- `src/data/research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01.json` — updated progress
+
+### Current Sorries (0 total)
+All three classical impossibility results machine-verified.

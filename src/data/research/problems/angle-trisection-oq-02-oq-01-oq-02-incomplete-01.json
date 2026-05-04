@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 sorry remains (wantzel_galois_iff, out-of-scope FTGT+Galois). New lemma isConstructible_map proved (Session 36). Detailed proof strategy documented for both → and ← directions.",
+    "progressSummary": "COMPLETE: 0 sorries — h_top_Ka proved via restrict/restrict_algEquiv/lift_injective (Session 39). All three impossibility results machine-checked.",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -85,7 +85,8 @@
       "Session 36: isConstructible_map: IsConstructible preserved by ℚ-algebra maps ℂ→ℂ (induction on sqrt_ext: σ(β·β)=σ(a) gives sqrt_ext (σβ) (σa) (σb)). Key for wantzel_galois_iff → direction.",
       "isConstructible_irred_degree_pow2 is the positive form of not_constructible_of_bad_degree: constructibility forces natDeg p to be a power of 2",
       "IsAlgClosed.lift gap: extending ℚ(α)→ℂ maps to ℂ→ℂ endomorphisms requires Zorns lemma infrastructure not available in Mathlib for this purpose",
-      "Nat.dvd_prime_pow pattern: (Nat.dvd_prime_pow hprime).mp hdvd gives ⟨m, _, hm⟩ extracting 2-power witnesses"
+      "Nat.dvd_prime_pow pattern: (Nat.dvd_prime_pow hprime).mp hdvd gives ⟨m, _, hm⟩ extracting 2-power witnesses",
+      "h_top_Ka proved: Ka_im=restrict+restrict_algEquiv, restrictScalars_adjoin_of_algEquiv+lift_injective reduces to adjoin ℚ (↑Ka ∪ {β}) = Ka⊔ℚ⟮β⟯ in IF ℚ ℂ"
     ],
     "mathlibGaps": [
       "isConstructible_algebraic_degree: tower degree induction — IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",
