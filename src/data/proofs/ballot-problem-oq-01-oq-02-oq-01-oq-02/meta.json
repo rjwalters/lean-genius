@@ -37,8 +37,9 @@
     ]
   },
   "overview": {
-    "historicalContext": "The ballot problem OQ-01-OQ-02-OQ-01 proved that the multi-candidate ballot theorem follows from uniform fiber transfer: when a surjection has equal fiber sizes, it preserves the uniformOn probability of a specific event (ballot staysPositive). The natural follow-up question is whether this holds for ALL events simultaneously — this would give a single general theorem rather than a problem-specific one.",
+    "historicalContext": "The classical ballot problem (Bertrand 1887, Désiré André 1887) asks for the probability that candidate A stays strictly ahead of B throughout the counting of a ballot. The modern treatment via Mathlib's `ProbabilityTheory.uniformOn` reformulates this combinatorially: ballot sequences form a finite set with a uniform measure, and the ballot theorem follows from a fiber-transfer argument showing that the projection onto final tallies preserves conditional probabilities.\n\nThe OQ chain ballot-problem-oq-01 through oq-01-oq-02-oq-01 progressively abstracted this argument: OQ-01 proved the classical result, OQ-01-OQ-02 proved the multi-candidate generalization, and OQ-01-OQ-02-OQ-01 extracted the key mechanism as `uniformOn_fiber_transfer` — showing that the ballot projection preserves uniformOn for one specific event. This final OQ-01-OQ-02-OQ-01-OQ-02 asks the natural mathematical question: is the fiber-transfer result for one event actually a *universal* property?\n\nThe answer YES places the ballot probability argument in the general theory of probability-preserving maps. In measure theory, a measure-preserving map between probability spaces satisfies $\\mu(f^{-1}(E)) = \\nu(E)$ for ALL measurable events E — not just some special one. The equal-fiber surjection condition is precisely the discrete-finite analog: $|A \\cap f^{-1}(\\{t\\})| = k$ for all $t \\in T$ is the condition that makes $f$ an isomorphism of discrete probability spaces (under `uniformOn`). The passage from singleton events to all events is enabled by Finset sum additivity: $|A \\cap f^{-1}(P)| = \\sum_{t \\in P} |A \\cap f^{-1}(\\{t\\})| = k|P|$, and dividing by $|A| = k|T|$ cancels the fiber-size factor $k$. This theorem is the discrete-finite-set instance of the general pushforward measure identity $f_* \\mu = \\nu$.",
     "problemStatement": "Can the uniformOn_fiber_transfer pattern be generalized: if a surjective map between finite probability spaces has uniform fibers, does it preserve all event probabilities (not just uniformOn)?",
+    "text": "YES — uniform fiber surjections preserve uniformOn for ALL events. For any finite sets A, T, any surjection f : A → T with uniform fiber size k, and any event P ⊆ T: uniformOn A (f⁻¹'P) = uniformOn T P.",
     "proofStrategy": "Fiber decomposition gives A = ⋃_{t∈T} (A ∩ f⁻¹'{t}) (using surjectivity) and A ∩ f⁻¹'P = ⋃_{t∈P} (A ∩ f⁻¹'{t}). Uniform counting (ncard_biUnion_eq_of_uniform) gives ncard(A) = k·ncard(T) and ncard(A ∩ f⁻¹'P) = k·ncard(P). The factor k cancels in the ENNReal ratio.",
     "keyInsights": [
       "The fiber decomposition argument works for ANY P ⊆ T, not just the specific ballot event — the key is that uniform fiber sizes allow the cancellation of k in numerator and denominator",
@@ -48,6 +49,12 @@
       "The proof works for ANY α, β types with Finite hypotheses — it is fully type-parametric",
       "The cancellation of k is the conceptual heart: ncard(A∩f⁻¹'P)/ncard(A) = k·|P|/k·|T| = |P|/|T|. This telescoping makes the equal-fiber condition precisely the right hypothesis — not stronger, not weaker.",
       "This is the discrete analog of a measure-preserving map: uniform-fiber surjections are probability-algebra homomorphisms that preserve all event probabilities, just as measure-preserving maps between probability spaces preserve all measure values."
+    ],
+    "prerequisites": [
+      "BallotProblemOQ01OQ02OQ01: ncard_biUnion_eq_of_uniform — the fiber counting lemma",
+      "ProbabilityTheory.uniformOn: the conditional uniform distribution on finite sets",
+      "Set.SurjOn: surjectivity from A onto T",
+      "ENNReal.div_eq_div_iff: cross-multiplication for ENNReal fractions"
     ]
   },
   "sections": [
@@ -86,28 +93,43 @@
   ],
   "conclusion": {
     "summary": "Proves the general uniform fiber transfer theorem: any surjection with equal fiber sizes preserves uniformOn for all events simultaneously. This answers OQ-01-OQ-02-OQ-01-OQ-02 with YES. Machine-verified with 0 axioms and 0 sorries.",
-    "implications": "This result shows that equal-fiber surjections are probability-preserving maps for the discrete uniform distribution. Combined with the ballot OQ-01 result, this gives a complete picture: the ballot projection preserves ALL conditional probabilities, not just the ones used in the ballot theorem. The proof technique (fiber decomposition + uniform counting + ENNReal ratio) is a general template applicable to any combinatorial probability argument involving equal-sized preimages.",
+    "implications": "This result establishes that equal-fiber surjections are the discrete-finite-set analogue of measure-preserving maps: they are isomorphisms of discrete probability spaces. Combined with the ballot OQ-01 result, the full OQ chain gives a complete modular picture — the ballot theorem is an instance of a universal structural property rather than a combinatorial coincidence. The proof technique (fiber decomposition → uniform counting → ENNReal ratio cancellation) is a reusable template for any combinatorial probability argument whose events have equal-sized preimages: card-shuffles, random projection arguments in coding theory, symmetric group actions on labeled objects. The Boolean closure (complements, unions) confirms the map is a probability-algebra homomorphism on the full power-set algebra, which in ergodic theory language means f is a factor map between discrete probability spaces.",
     "openQuestions": [
-      "Can this be lifted to MeasureTheory.Measure.map: does a measurable equal-fiber map push the discrete uniform measure to the discrete uniform measure on the codomain?",
-      "For non-uniform fiber sizes, is there a characterization of which events P have their probability preserved?"
+      "Can this be lifted to MeasureTheory.Measure.map: does a Measurable equal-fiber surjection push `Measure.count` restricted to A to `Measure.count` restricted to T, formalized as `(Measure.count.restrict A).map f = Measure.count.restrict T`?",
+      "For non-uniform fiber sizes, is there a characterization of exactly which events P ⊆ T have their uniformOn probability preserved? (Intuition: P must be a union of 'equi-weighted' cosets of the fiber-size partition.)",
+      "Does the result extend to infinite sets under a suitable density notion? For sequences with natural density, an equal-density fiber condition might give an analogous Cesàro-mean probability preservation."
     ]
+  },
+  "leanFile": {
+    "namespace": "BallotGeneralFiberTransfer",
+    "lineCount": 198,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
       "proofId": "ballot-problem-oq-01-oq-02-oq-01",
-      "relationship": "parent — proves uniform fiber transfer for one specific ballot event; this file generalizes to ALL events"
+      "relationship": "parent",
+      "description": "Uniform Fiber Transfer — proves this for ONE specific ballot event; this file generalizes to ALL events"
     },
     {
       "proofId": "ballot-problem-oq-01-oq-02",
-      "relationship": "ancestor — multi-candidate ballot theorem; the application that motivated the fiber transfer pattern"
+      "relationship": "ancestor",
+      "description": "Multi-Candidate Ballot Theorem — the application that motivated the fiber transfer pattern"
     },
     {
       "proofId": "ballot-problem-oq-01",
-      "relationship": "ancestor — ballot theorem OQ-01; the original ballot theorem whose proof motivated the fiber-based approach"
+      "relationship": "ancestor",
+      "description": "Ballot Problem OQ-01 — the original ballot theorem whose proof motivated the fiber-based approach"
     },
     {
       "proofId": "ballot-problem",
-      "relationship": "ancestor — classical ballot problem: candidate leading throughout wins with probability (a-b)/(a+b)"
+      "relationship": "ancestor",
+      "description": "Ballot Problem — the classical result that a candidate leading throughout the count wins with probability (a-b)/(a+b)"
     }
-  ]
+  ],
+  "sorries": 0
 }
