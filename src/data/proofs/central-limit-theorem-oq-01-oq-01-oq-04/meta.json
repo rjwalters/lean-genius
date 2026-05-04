@@ -22,8 +22,8 @@
     "dateAdded": "2026-05-04",
     "axiomCount": 2,
     "assumptions": "eigenvalue_ge_half (Hudson-Mason 1982): Re(eigenvalues of exponent matrix E) ≥ 1/2; meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation",
-    "lineCount": 303,
-    "theoremCount": 18,
+    "lineCount": 357,
+    "theoremCount": 15,
     "originalContributions": [
       "gaussian_operator_stable: N(0,Σ) is operator-stable — (φ_Σ(ξ/√n))^n = φ_Σ(ξ) proved via exp_neg_div_pow",
       "quadForm_scale_inv_sqrt: quadratic form scaling quadForm(ξ/√n) = (1/n)·quadForm(ξ)",
@@ -120,8 +120,8 @@
     "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
     "namespace": "OperatorStable",
     "axiomCount": 2,
-    "lineCount": 303,
-    "theoremCount": 18,
+    "lineCount": 357,
+    "theoremCount": 15,
     "definitionCount": 7,
     "sorries": 0
   },
