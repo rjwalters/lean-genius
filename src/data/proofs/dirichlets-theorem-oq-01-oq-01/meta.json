@@ -8,7 +8,7 @@
     "difficulty": "research",
     "status": "axiomatized",
     "badge": "axiom",
-    "axiomCount": 2,
+    "axiomCount": 7,
     "openProblems": [
       "Whether the SiegelZeroConjecture holds",
       "Whether Linnik's exponent L = 2 is achievable unconditionally",
@@ -16,7 +16,12 @@
     ],
     "assumptions": [
       "linnik_bound: Linnik's theorem (L exists, not in Mathlib)",
-      "effective_linnik_no_siegel: No Siegel zeros implies L = 2 (not in Mathlib)"
+      "effective_linnik_no_siegel: No Siegel zeros implies L = 2 (not in Mathlib)",
+      "siegel_theorem: Siegel's ineffective lower bound (from DirichletsTheoremOQ01)",
+      "grh_implies_no_siegel_zeros: GRH eliminates Siegel zeros (from DirichletsTheoremOQ01)",
+      "landau_page_theorem: Landau-Page uniqueness of exceptional conductor (from DirichletsTheoremOQ01)",
+      "deuring_heilbronn_repulsion: Deuring-Heilbronn repulsion (from DirichletsTheoremOQ01)",
+      "tatuzawa_theorem: Tatuzawa single-exception theorem (from DirichletsTheoremOQ01)"
     ],
     "tags": ["dirichlet", "l-functions", "siegel-zeros", "linnik", "analytic-number-theory", "open-question"]
   },
