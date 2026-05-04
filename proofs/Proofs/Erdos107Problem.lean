@@ -198,7 +198,13 @@ lemma cardSet_three_lower_bound : ∀ m ∈ CardSet 3, 3 ≤ m := by
     This follows from the fact that the convex hull of 2 points is a line segment, and
     a non-collinear third point cannot lie in this segment. -/
 theorem f_3_value : f 3 = 3 := by
-  sorry
+  apply Nat.le_antisymm
+  · -- f 3 ≤ 3: from Erdős-Szekeres upper bound C(2,1)+1 = 3
+    have h := ersz_upper_bound 3 (by norm_num)
+    norm_num at h; exact h
+  · -- 3 ≤ f 3: from Erdős-Szekeres lower bound 2^1+1 = 3
+    have h := ersz_lower_bound 3 (by norm_num)
+    norm_num at h; exact h
 
 /-- Lower bound for f(4): f(4) > 4.
     Proof: Immediate from Klein's theorem f(4) = 5. -/
