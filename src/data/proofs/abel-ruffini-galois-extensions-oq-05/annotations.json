@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "context",
+    "title": "Shafarevich's Theorem: The Converse of Abel-Ruffini",
+    "content": "This module formalizes the converse direction of the Abel-Ruffini framework. The parent file `AbelRuffiniGaloisExtensions.lean` shows that solvability by radicals *requires* the Galois group to be solvable (Abel-Ruffini's theorem). Shafarevich's theorem (1954) proves the converse: every finite solvable group actually *arises* as a Galois group over ℚ.\n\nTogether, these give a sharp characterization: a finite group G is the Galois group of a radical extension over ℚ if and only if G is solvable. The theorem is axiomatized because its proof requires class field theory, cohomological embedding problem theory, and Brauer groups — deep tools not yet in Mathlib.\n\nThe 7 corollaries (cyclic, abelian, S₃, S₄, subgroups, quotients, S₅ obstruction) are all *proved* from the axiom using Mathlib's existing group theory infrastructure.",
+    "mathContext": "Shafarevich (1954): $\\forall G$ finite solvable, $\\exists L/\\mathbb{Q}$ Galois with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$.\n\nWith Abel-Ruffini: $G$ is a radical Galois group over $\\mathbb{Q}$ $\\iff$ $G$ is solvable.\n\nThe proof uses the derived series $G = G^{(0)} \\supset G^{(1)} \\supset \\cdots \\supset G^{(k)} = 1$, building the extension inductively using class field theory for each abelian quotient $G^{(i)}/G^{(i+1)}$.",
+    "significance": "key",
+    "relatedConcepts": ["Galois theory", "solvable groups", "inverse Galois problem", "Abel-Ruffini theorem"],
+    "prerequisites": ["Galois extensions", "solvable groups", "AbelRuffiniGaloisExtensions.lean"]
+  },
+  {
+    "id": "ann-axiom",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 72, "endLine": 83 },
+    "type": "definition",
+    "title": "The Core Axiom: Shafarevich's Inverse Galois Theorem",
+    "content": "The `shafarevich_inverse_galois` axiom states that for any finite solvable group G, there exists a Galois extension L of ℚ and an isomorphism G ≃* Gal(L/ℚ). In Lean, `Gal(L/ℚ)` is represented as `L ≃ₐ[ℚ] L` (the type of ℚ-algebra automorphisms of L), which forms a group under composition.\n\nThe proof of Shafarevich's theorem (Neukirch-Schmidt-Wingberg §9.5) requires:\n1. Local class field theory for the abelian base case\n2. Cohomological embedding problems to lift from abelian to solvable groups\n3. Brauer group and local-global principles\n\nThis is estimated to require ~500+ pages of algebraic number theory, making it a realistic target for Lean formalization only after substantial Mathlib development.",
+    "mathContext": "$\\text{axiom: }\\forall G$ [finite solvable], $\\exists L/\\mathbb{Q}$ Galois, $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$.\n\nIn Lean: `L ≃ₐ[ℚ] L` is the group of $\\mathbb{Q}$-algebra automorphisms, forming $\\mathrm{Gal}(L/\\mathbb{Q})$ when $L/\\mathbb{Q}$ is Galois.",
+    "significance": "key",
+    "relatedConcepts": ["Galois group", "AlgEquiv", "IsGalois", "class field theory"],
+    "prerequisites": ["IsGalois in Mathlib", "AlgEquiv group structure", "IsSolvable"]
+  },
+  {
+    "id": "ann-cyclic-abelian",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 94, "endLine": 111 },
+    "type": "insight",
+    "title": "Cyclic and Abelian Groups via inferInstance",
+    "content": "The two most classical corollaries use Lean's typeclass inference directly:\n\n- **Cyclic groups**: `IsSolvable (ZMod n)` is inferred by `inferInstance` — Mathlib knows all abelian groups are solvable via `CommGroup.isSolvable`. The `NeZero n` typeclass is needed to give `ZMod n` the correct group structure for `n > 0`.\n\n- **Abelian groups**: `IsSolvable G` for a `CommGroup G` is again `inferInstance`. The proof is literally two lines: construct the `IsSolvable` instance, then apply Shafarevich.\n\nThese corollaries have concrete classical counterparts: ℤ/nℤ arises as `Gal(ℚ(ζₙ)/ℚ)` via cyclotomic extensions, but Shafarevich gives a more general existential that works without constructing the field explicitly.",
+    "mathContext": "For abelian $G$: $G^{(1)} = [G,G] = 1$, so $G$ is solvable of length 1. Shafarevich applies.\n\nClassically: $\\mathbb{Z}/n\\mathbb{Z} \\cong \\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ for $n \\geq 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["CommGroup.isSolvable", "ZMod", "NeZero", "cyclotomic extensions"],
+    "prerequisites": ["ZMod group structure", "abelian implies solvable", "inferInstance typeclass search"]
+  },
+  {
+    "id": "ann-symmetric-groups",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 113, "endLine": 131 },
+    "type": "insight",
+    "title": "S₃ and S₄: Solvable Symmetric Groups",
+    "content": "The S₃ and S₄ corollaries both use `symmetric_solvable_of_le_four` from the parent file, which proves `Equiv.Perm (Fin n)` is solvable when `n ≤ 4`. The proofs are essentially identical: invoke the parent lemma with `norm_num`, then apply Shafarevich.\n\nThese cases are historically important:\n- S₃ ≅ Gal(x³ + px + q over ℚ) for discriminant-related cubics\n- S₄ ≅ Gal(x⁴ + px² + qx + r over ℚ) for generic quartics\n\nThe sharp threshold at n=4 vs n=5 is precisely the Abel-Ruffini boundary: S₅ is the first symmetric group that is NOT solvable, so Shafarevich's theorem does not apply to it (though S₅ IS realizable over ℚ by other means — e.g., as Gal(x⁵ - 2x - 5)).",
+    "mathContext": "$S_n = \\text{Sym}(n)$ is solvable $\\iff n \\leq 4$.\n\n$S_3$ has derived series $S_3 \\supset A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\supset 1$.\n$S_4$ has derived series $S_4 \\supset A_4 \\supset V_4 \\supset 1$, where $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["symmetric group", "symmetric_solvable_of_le_four", "Equiv.Perm", "derived series"],
+    "prerequisites": ["AbelRuffiniGaloisExtensions.lean", "Equiv.Perm Fin n", "IsSolvable"]
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 145, "endLine": 163 },
+    "type": "technique",
+    "title": "Closure Under Subgroups and Quotients",
+    "content": "The two closure theorems show that the class of Shafarevich-realizable groups is closed under subgroups and quotients. Both proofs follow the same pattern: use `subgroup_solvable_of_solvable` (resp. `quotient_solvable_of_solvable`) from the parent file to show the subgroup (resp. quotient) is solvable, then apply `shafarevich_inverse_galois`.\n\nIn Galois-theoretic terms, these correspond to the fundamental correspondence:\n- Subgroups of Gal(L/K) correspond to intermediate fields\n- Quotients correspond to Galois sub-extensions\n\nHowever, the Lean statements are purely group-theoretic: they guarantee *some* Galois extension realizing the subgroup/quotient, not necessarily a subextension of L.",
+    "mathContext": "If $G$ is solvable and $H \\leq G$: $H$ is solvable (subgroup of solvable is solvable) $\\Rightarrow$ $H$ is realizable.\n\nIf $N \\trianglelefteq G$ and $G$ is solvable: $G/N$ is solvable $\\Rightarrow$ $G/N$ is realizable.",
+    "significance": "supporting",
+    "relatedConcepts": ["subgroup_solvable_of_solvable", "quotient_solvable_of_solvable", "Subgroup", "Group quotient"],
+    "prerequisites": ["Subgroup in Lean 4", "Normal subgroup", "quotient group G ⧸ N"]
+  },
+  {
+    "id": "ann-s5-obstruction",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 178, "endLine": 184 },
+    "type": "insight",
+    "title": "S₅: Non-Solvability as Obstruction",
+    "content": "The `s5_not_solvable_obstruction` theorem is just `s5_not_solvable` from the parent file, renamed to emphasize its role as an obstruction to Shafarevich's theorem.\n\nCrucially, S₅ NOT being solvable does not mean S₅ is not realizable over ℚ. S₅ IS in fact realizable — for example, as the Galois group of the splitting field of x⁵ - 2x - 5 over ℚ (a result of Hilbert). The point is that this realization cannot use Shafarevich's theorem; it requires different methods.\n\nThis is a subtle but important distinction for the inverse Galois problem: Shafarevich solves it for all solvable groups, but the full problem (every finite group is realizable over ℚ) remains open.",
+    "mathContext": "$S_5 = \\text{Sym}(5)$ is not solvable: $A_5 = [S_5, S_5]$ is simple and non-abelian, so the derived series does not reach 1.\n\n$S_5 \\cong \\mathrm{Gal}(x^5 - 2x - 5 / \\mathbb{Q})$ (Hilbert, explicitly computable), but this is outside Shafarevich's scope.",
+    "significance": "key",
+    "relatedConcepts": ["s5_not_solvable", "simple group", "A₅", "inverse Galois problem"],
+    "prerequisites": ["IsSolvable definition", "A₅ simplicity", "AbelRuffiniGaloisExtensions.lean"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 190, "endLine": 214 },
+    "type": "context",
+    "title": "Proof Status and Mathematical Significance",
+    "content": "The summary comment in the file highlights the key achievement: 7 theorems proved with 0 sorries, relying on exactly 1 axiom (Shafarevich's theorem). All the logical work — applying solvability closure properties, invoking Shafarevich, destructuring the existential — is fully formalized.\n\nThe connection to Abel-Ruffini is precise: this file completes the 'if and only if' characterization. Abel-Ruffini shows solvability is *necessary*; Shafarevich shows it is *sufficient*. The combination gives a complete group-theoretic characterization of which groups arise as Galois groups of radical extensions.",
+    "mathContext": "The full characterization:\n\n$G$ is solvable $\\iff$ $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$ for some radical extension $L/\\mathbb{Q}$\n\n$\\Leftarrow$: Abel-Ruffini (parent file)\n$\\Rightarrow$: Shafarevich (this file, axiomatized)",
+    "significance": "supporting",
+    "relatedConcepts": ["Abel-Ruffini theorem", "radical extensions", "Galois correspondence"],
+    "prerequisites": ["AbelRuffiniGaloisExtensions.lean", "shafarevich_inverse_galois"]
+  }
+]
