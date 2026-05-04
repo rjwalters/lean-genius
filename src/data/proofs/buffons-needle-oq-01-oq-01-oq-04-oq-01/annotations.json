@@ -1,0 +1,46 @@
+{
+  "annotations": [
+    {
+      "id": "ann-001",
+      "type": "key_insight",
+      "title": "Rotation reduces cos to sin",
+      "body": "The identity sin(θ + π/2) = cos θ means ∫_0^π |cos θ| dθ is exactly a phase-shifted version of ∫_0^π |sin θ| dθ = 2. This elegantly connects the 2D angular average to the already-proved sin integral.",
+      "lean_ref": "integral_abs_cos_zero_pi"
+    },
+    {
+      "id": "ann-002",
+      "type": "definition",
+      "title": "Angular average as actual integral",
+      "body": "sphereAngularAvg2D(r) = r · ∫_0^π |cos θ| dθ represents the half-sphere angular average: (1/2) ∫_{S^1} |⟨(r,0), ω⟩| dσ(ω). The factor 1/2 comes from identifying antipodal points (RP^1 = S^1/±), so each direction is counted once.",
+      "lean_ref": "sphereAngularAvg2D"
+    },
+    {
+      "id": "ann-003",
+      "type": "main_theorem",
+      "title": "2D angular averaging — axiom-free",
+      "body": "The AngularAverageData 2 instance is constructed entirely from interval integration: angularAvg r = r · 2 = 2r matches sphereArea(0)/(2-1) · r = 2 · r. This eliminates all axioms for the 2D Cauchy-Crofton formula.",
+      "lean_ref": "angularAverageData2D"
+    },
+    {
+      "id": "ann-004",
+      "type": "proof_technique",
+      "title": "Product formula via recurrence",
+      "body": "c_n · c_{n+1} = 2/(n·π) uses the sphere area recurrence σ_n = 2π/(n-1) · σ_{n-2} to cancel σ_{n-1} and σ_{n-2} terms. The cancellation is: 4σ_{n-2} / ((n-1)·n·σ_n) = 4σ_{n-2} / ((n-1)·n·(2π/(n-1))·σ_{n-2}) = 2/(n·π).",
+      "lean_ref": "cauchyCrofton_product"
+    },
+    {
+      "id": "ann-005",
+      "type": "open_problem",
+      "title": "Beta integral for n ≥ 3",
+      "body": "For n ≥ 3, the angular averaging identity requires ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ = 1/(n-1). This follows from the substitution u = sin(θ): ∫_0^1 u^{n-2} du = 1/(n-1). The challenge is connecting this to the sphere integral via polar coordinates in Mathlib.",
+      "lean_ref": "angularAvg_ndim"
+    },
+    {
+      "id": "ann-006",
+      "type": "consistency_check",
+      "title": "Recovery of c_2 = 2/π",
+      "body": "E[crossings] = 2/(σ_1·d) · angularAvg2D(L) = 2/(2πd) · 2L = 2L/(πd). This verifies that the axiom-free 2D instance correctly recovers the Buffon-Barbier formula E = 2L/(πd) for curves in the plane.",
+      "lean_ref": "angularAverageData2D_expectedCrossings"
+    }
+  ]
+}

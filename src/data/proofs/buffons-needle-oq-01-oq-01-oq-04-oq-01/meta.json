@@ -1,0 +1,61 @@
+{
+  "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+  "title": "Angular Averaging Identity from Sphere Measure Theory",
+  "slug": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+  "description": "Proves the 2D angular averaging identity ∫_0^π |cos θ| dθ = 2 from first principles, constructing an axiom-free AngularAverageData 2 instance. Derives the product formula c_n · c_{n+1} = 2/(n·π) for Cauchy-Crofton constants using the sphere area recurrence. The 2D case confirms that E[crossings] = 2L/(πd) requires no measure-theoretic axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Crofton_formula",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean",
+    "tags": [
+      "integral-geometry",
+      "sphere-measure",
+      "buffon",
+      "cauchy-crofton",
+      "angular-averaging",
+      "trigonometric-integrals",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 165,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "leanFile": {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean",
+      "axiomCount": 1,
+      "sorryCount": 0,
+      "lineCount": 165,
+      "theoremCount": 11,
+      "definitionCount": 2
+    }
+  },
+  "openQuestion": {
+    "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "parentId": "buffons-needle-oq-01-oq-01-oq-04",
+    "question": "Can the angular averaging identity ∫_{S^{n-1}} |⟨v, ω⟩| dσ(ω) = 2σ_{n-2}/(n-1) · ‖v‖ be proved from Mathlib's sphere measure theory?",
+    "answer": "Yes for n=2: proved via ∫_0^π |cos θ| dθ = 2 (rotation of the known ∫_0^π |sin θ| dθ = 2). For n ≥ 3: requires the Beta integral ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ = 1/(n-1), which is axiomatized."
+  },
+  "highlights": [
+    "2D angular averaging proved axiom-free: AngularAverageData 2 from interval integration",
+    "Product formula c_n · c_{n+1} = 2/(n·π) derived from sphere area recurrence",
+    "The 2D Cauchy-Crofton constant c_2 = 2/π verified from first principles",
+    "General n-dim case axiomatized with clear Beta integral proof path"
+  ],
+  "implications": [
+    {
+      "statement": "E[crossings] = 2L/(πd) requires no axioms for n=2",
+      "type": "corollary"
+    },
+    {
+      "statement": "c_n · c_{n+1} is strictly decreasing: the constants tend to 0",
+      "type": "corollary"
+    }
+  ],
+  "assumptions": [
+    "angularAvg_ndim: for n ≥ 3, the sphere integral ∫_{S^{n-1}} |ω₁| dσ = 2σ_{n-2}/(n-1) (requires Beta integral via polar coordinates on S^{n-1})"
+  ]
+}
