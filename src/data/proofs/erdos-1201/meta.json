@@ -2,9 +2,9 @@
   "id": "erdos-1201",
   "title": "Greatest Prime Factor of Consecutive Products",
   "slug": "erdos-1201",
-  "description": "Let P(n,k) be the greatest prime factor of n(n+1)···(n+k). Erdős conjectured that for every ε,η>0 there exists k such that P(n,k) > n^(1-ε) for a set of n of upper density ≥ 1-η. The ε=1/2 case (P(n,k) > √n) was proved by Erdős.",
+  "description": "Let P(n,k) be the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k). Erd\u0151s conjectured that for every \u03b5,\u03b7>0 there exists k such that P(n,k) > n^(1-\u03b5) for a set of n of upper density \u2265 1-\u03b7. The \u03b5=1/2 case (P(n,k) > \u221an) was proved by Erd\u0151s.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1201",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1201Problem.lean",
@@ -22,21 +22,21 @@
     "erdosUrl": "https://erdosproblems.com/1201",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_1201_half_case (the ε=1/2 partial result, proved by Erdős). The main conjecture ErdosProblem1201 is open. All 69 structural theorems are fully proved.",
-    "lineCount": 978,
+    "assumptions": "1 axiom: erdos_1201_half_case (the \u03b5=1/2 partial result, proved by Erd\u0151s). The main conjecture ErdosProblem1201 is open. All 75 structural theorems are fully proved. Session 11: fixed Nat.coprime_succ_self API, removed duplicate epsilon-monotonicity declarations, added gpfConsecutive_ge_succ_k_of_prime (Sylvester-Schur for prime window sizes: P(n,k) \u2265 k+1 when k+1 prime) and gpfConsecutive_gt_k_of_prime_succ (strict corollary). Covers k=1,2,4,6,10,12,... (all prime-predecessor values).",
+    "lineCount": 1043,
     "mathlib_version": "4.26.0",
-    "theoremCount": 69
+    "theoremCount": 75
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) → ∞ as n → ∞, but its distribution among products of consecutive integers is much subtler. The ε=1/2 case was established by Erdős: there exist arbitrarily long windows of consecutive integers containing a prime exceeding √n. The full conjecture—that large prime factors dominate for almost all starting points n, for any threshold n^(1-ε)—remains open.",
-    "problemStatement": "For every ε,η > 0 there exists k such that the upper density of {n | P(n,k) > n^(1-ε)} is at least 1-η, where P(n,k) is the greatest prime factor of n(n+1)···(n+k).",
-    "text": "Let P(n,k) be the greatest prime factor of n(n+1)···(n+k). The main conjecture says for every ε,η>0 there exists k such that {n | P(n,k) > n^(1-ε)} has upper density ≥ 1-η. Erdős proved the ε=1/2 case.",
-    "proofStrategy": "We define greatestPrimeFactor using Nat.primeFactors.max', consecutiveProduct as a Finset.prod, and upperDensity via Filter.limsup. The main conjecture and known partial result (ε=1/2) are formalized. The ε=1/2 result is an axiom; all structural properties are proved.",
+    "historicalContext": "Erd\u0151s posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) \u2192 \u221e as n \u2192 \u221e, but its distribution among products of consecutive integers is much subtler. The \u03b5=1/2 case was established by Erd\u0151s: there exist arbitrarily long windows of consecutive integers containing a prime exceeding \u221an. The full conjecture\u2014that large prime factors dominate for almost all starting points n, for any threshold n^(1-\u03b5)\u2014remains open.",
+    "problemStatement": "For every \u03b5,\u03b7 > 0 there exists k such that the upper density of {n | P(n,k) > n^(1-\u03b5)} is at least 1-\u03b7, where P(n,k) is the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k).",
+    "text": "Let P(n,k) be the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k). The main conjecture says for every \u03b5,\u03b7>0 there exists k such that {n | P(n,k) > n^(1-\u03b5)} has upper density \u2265 1-\u03b7. Erd\u0151s proved the \u03b5=1/2 case.",
+    "proofStrategy": "We define greatestPrimeFactor using Nat.primeFactors.max', consecutiveProduct as a Finset.prod, and upperDensity via Filter.limsup. The main conjecture and known partial result (\u03b5=1/2) are formalized. The \u03b5=1/2 result is an axiom; all structural properties are proved.",
     "keyInsights": [
-      "greatestPrimeFactor n ∈ n.primeFactors and divides n whenever n ≥ 2",
+      "greatestPrimeFactor n \u2208 n.primeFactors and divides n whenever n \u2265 2",
       "gpfConsecutive is monotone in k: increasing window length can only increase the greatest prime factor",
-      "The ε=1/2 case P(n,k) > √n is equivalent to P(n,k)² > n",
-      "gpfConsecutive_large_of_prime_dvd gives a sufficient criterion: any prime p in the window with p > n^(1-ε) witnesses the condition",
+      "The \u03b5=1/2 case P(n,k) > \u221an is equivalent to P(n,k)\u00b2 > n",
+      "gpfConsecutive_large_of_prime_dvd gives a sufficient criterion: any prime p in the window with p > n^(1-\u03b5) witnesses the condition",
       "The full conjecture requires analytic number theory; no elementary proof is known"
     ],
     "prerequisites": [
@@ -58,7 +58,7 @@
       "title": "Main Conjecture and Partial Result",
       "startLine": 54,
       "endLine": 69,
-      "summary": "ErdosProblem1201 (open) and erdos_1201_half_case axiom (ε=1/2 proved by Erdős).",
+      "summary": "ErdosProblem1201 (open) and erdos_1201_half_case axiom (\u03b5=1/2 proved by Erd\u0151s).",
       "mathContext": "$\\forall\\varepsilon,\\eta>0\\,\\exists k: \\overline{d}(\\{n : P(n,k)>n^{1-\\varepsilon}\\})\\geq 1-\\eta$. Axiomatized: $\\forall\\eta>0\\,\\exists k: \\overline{d}(\\{n : P(n,k)>\\sqrt{n}\\})\\geq 1-\\eta$."
     },
     {
@@ -87,18 +87,18 @@
     },
     {
       "id": "half-case",
-      "title": "The ε=1/2 Case",
+      "title": "The \u03b5=1/2 Case",
       "startLine": 231,
       "endLine": 266,
       "summary": "Equivalence of sqrt condition and squared GPF condition; specialization of partial result.",
-      "mathContext": "$P(n,k) > \\sqrt{n} \\iff P(n,k)^2 > n$. The ε=1/2 axiom specializes to: $\\forall\\eta>0\\,\\exists k: \\overline{d}(\\{n: n < P(n,k)^2\\}) \\geq 1-\\eta$."
+      "mathContext": "$P(n,k) > \\sqrt{n} \\iff P(n,k)^2 > n$. The \u03b5=1/2 axiom specializes to: $\\forall\\eta>0\\,\\exists k: \\overline{d}(\\{n: n < P(n,k)^2\\}) \\geq 1-\\eta$."
     },
     {
       "id": "bounds",
       "title": "Upper Bounds and Tight Estimates",
       "startLine": 342,
       "endLine": 395,
-      "summary": "gpfConsecutive_zero (base case), prime_dvd_consecutive_range (induction helper), gpfConsecutive_upper_bound (P(n,k) ≤ n+k), le_gpfConsecutive_of_prime_dvd_term (lower bound from divisibility), gpfConsecutive_between (Bertrand tight bound n < P(n,n) ≤ 2n).",
+      "summary": "gpfConsecutive_zero (base case), prime_dvd_consecutive_range (induction helper), gpfConsecutive_upper_bound (P(n,k) \u2264 n+k), le_gpfConsecutive_of_prime_dvd_term (lower bound from divisibility), gpfConsecutive_between (Bertrand tight bound n < P(n,n) \u2264 2n).",
       "mathContext": "$P(n,0) = \\mathrm{gpf}(n)$. $P(n,k) \\leq n+k$ (every prime factor of any term $n+i$ is $\\leq n+i \\leq n+k$). If prime $p \\mid n+i$ for $i \\leq k$, then $p \\leq P(n,k)$. By Bertrand: $n < P(n,n) \\leq 2n$."
     },
     {
@@ -106,15 +106,15 @@
       "title": "Max Formula and Smooth-Window Reformulation",
       "startLine": 472,
       "endLine": 514,
-      "summary": "gpfConsecutive_eq_sup_range: P(n,k) = sup of individual GPFs. gpfConsecutive_le_iff: P(n,k) ≤ t iff all terms in window are t-smooth.",
-      "mathContext": "$P(n,k) = \\sup_{0 \\leq i \\leq k} P(n+i)$. Equivalently, $P(n,k) \\leq t \\iff \\forall i \\leq k,\\, P(n+i) \\leq t$ (all terms are $t$-smooth). This connects the Erdős conjecture to Dickman's $\\rho$ function: density of $t$-smooth numbers in $[n, n+k]$."
+      "summary": "gpfConsecutive_eq_sup_range: P(n,k) = sup of individual GPFs. gpfConsecutive_le_iff: P(n,k) \u2264 t iff all terms in window are t-smooth.",
+      "mathContext": "$P(n,k) = \\sup_{0 \\leq i \\leq k} P(n+i)$. Equivalently, $P(n,k) \\leq t \\iff \\forall i \\leq k,\\, P(n+i) \\leq t$ (all terms are $t$-smooth). This connects the Erd\u0151s conjecture to Dickman's $\\rho$ function: density of $t$-smooth numbers in $[n, n+k]$."
     },
     {
       "id": "prime-gpf",
       "title": "GPF for Primes and Short Windows",
       "startLine": 515,
       "endLine": 575,
-      "summary": "greatestPrimeFactor_prime: P(n)=n for prime n. gpfConsecutive_prime_start: P(n,0)=n for prime n. gpfConsecutive_one_eq_max: P(n,1)=max(P(n),P(n+1)). gpfConsecutive_one_coprime: gpf(n) and gpf(n+1) are coprime. gpfConsecutive_one_ne: gpf(n) ≠ gpf(n+1). gpfConsecutive_ge_left/right: window GPF bounds from endpoints.",
+      "summary": "greatestPrimeFactor_prime: P(n)=n for prime n. gpfConsecutive_prime_start: P(n,0)=n for prime n. gpfConsecutive_one_eq_max: P(n,1)=max(P(n),P(n+1)). gpfConsecutive_one_coprime: gpf(n) and gpf(n+1) are coprime. gpfConsecutive_one_ne: gpf(n) \u2260 gpf(n+1). gpfConsecutive_ge_left/right: window GPF bounds from endpoints.",
       "mathContext": "For prime $n$: $P(n) = n$. Length-2 window: $P(n,1) = \\max(P(n), P(n+1))$. Coprimality: $\\gcd(P(n), P(n+1)) = 1$ (since $\\gcd(n, n+1)=1$ and both gpfs divide their respective terms). Distinctness: $P(n) \\neq P(n+1)$."
     },
     {
@@ -130,7 +130,7 @@
       "title": "Right-Endpoint Biconditional and Infinite Sets",
       "startLine": 606,
       "endLine": 648,
-      "summary": "gpfConsecutive_eq_right_iff: P(n,k) = n+k ↔ (n+k).Prime (sharp biconditional). erdos_1201_prime_right_infinite: {n | (n+k).Prime} is infinite. erdos_1201_eq_right_infinite: {n | P(n,k)=n+k} is infinite for k≥1.",
+      "summary": "gpfConsecutive_eq_right_iff: P(n,k) = n+k \u2194 (n+k).Prime (sharp biconditional). erdos_1201_prime_right_infinite: {n | (n+k).Prime} is infinite. erdos_1201_eq_right_infinite: {n | P(n,k)=n+k} is infinite for k\u22651.",
       "mathContext": "The upper bound $P(n,k) \\leq n+k$ is achieved exactly at prime right endpoints. $\\{n : P(n,k) = n+k\\}$ is infinite by Dirichlet/Euclid: for any $N$, find prime $p \\geq N+k$ and set $n = p-k$. Complements the prime-start infinite-set result from earlier sessions."
     },
     {
@@ -138,17 +138,17 @@
       "title": "Window Extension, Concatenation, and Prime Term Bounds",
       "startLine": 649,
       "endLine": 762,
-      "summary": "gpfConsecutive_succ_left: left-endpoint extension P(n,k+1)=max(gpf(n),P(n+1,k)). gpfConsecutive_window_concat: window splitting P(n,j+k+1)=max(P(n,j),P(n+j+1,k)). gpfConsecutive_ge_prime_term: prime term gives lower bound n+i ≤ P(n,k). erdos_1201_good_of_prime_in_window: sufficient condition for good n. gpfConsecutive_eq_term_gpf: GPF localization when k < P(n,k).",
+      "summary": "gpfConsecutive_succ_left: left-endpoint extension P(n,k+1)=max(gpf(n),P(n+1,k)). gpfConsecutive_window_concat: window splitting P(n,j+k+1)=max(P(n,j),P(n+j+1,k)). gpfConsecutive_ge_prime_term: prime term gives lower bound n+i \u2264 P(n,k). erdos_1201_good_of_prime_in_window: sufficient condition for good n. gpfConsecutive_eq_term_gpf: GPF localization when k < P(n,k).",
       "mathContext": "Left extension: $P(n,k+1) = \\max(P(n), P(n+1,k))$ (symmetric to succ_right). Window concat: $P(n,j+k+1) = \\max(P(n,j), P(n+j+1,k))$ (split at position $j$). Prime term: if $(n+i)$ prime and $i \\leq k$ then $n+i \\leq P(n,k)$ (since $P(n+i) = n+i$ and $P(n+i) \\leq P(n,k)$). Good n: if $\\exists i \\leq k$ with $n+i$ prime and $n+i > n^{1-\\varepsilon}$, then $P(n,k) > n^{1-\\varepsilon}$."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 1201 on greatest prime factors of consecutive products, the partial ε=1/2 result, and 55 structural theorems. 0 sorries, 1 axiom (the partial result). Sessions 5-9 add: greatestPrimeFactor_mul (product formula), gpfConsecutive_le_of_le_k (general monotonicity), gpfConsecutive_succ_right (recursive formula), gpfConsecutive_eq_right_iff (biconditional), erdos_1201_prime_right_infinite, erdos_1201_eq_right_infinite, gpfConsecutive_succ_left (left-endpoint extension), gpfConsecutive_window_concat (window concatenation), gpfConsecutive_ge_prime_term, erdos_1201_good_of_prime_in_window, consecutiveProduct_one, gpfConsecutive_one_coprime, gpfConsecutive_one_ne, gpfConsecutive_eq_term_gpf.",
+    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 55 structural theorems. 0 sorries, 1 axiom (the partial result). Sessions 5-9 add: greatestPrimeFactor_mul (product formula), gpfConsecutive_le_of_le_k (general monotonicity), gpfConsecutive_succ_right (recursive formula), gpfConsecutive_eq_right_iff (biconditional), erdos_1201_prime_right_infinite, erdos_1201_eq_right_infinite, gpfConsecutive_succ_left (left-endpoint extension), gpfConsecutive_window_concat (window concatenation), gpfConsecutive_ge_prime_term, erdos_1201_good_of_prime_in_window, consecutiveProduct_one, gpfConsecutive_one_coprime, gpfConsecutive_one_ne, gpfConsecutive_eq_term_gpf.",
     "implications": "Resolution would advance our understanding of the distribution of prime factors in consecutive integer products and connect to the Sylvester-Schur theorem and smooth number theory.",
     "openQuestions": [
-      "Does the full conjecture hold for all ε > 0?",
-      "What is the optimal window size k needed for density 1-η?",
-      "Is there a connection to Bertrand's postulate for the ε=1 case?"
+      "Does the full conjecture hold for all \u03b5 > 0?",
+      "What is the optimal window size k needed for density 1-\u03b7?",
+      "Is there a connection to Bertrand's postulate for the \u03b5=1 case?"
     ]
   },
   "leanFile": {
@@ -161,9 +161,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1201",
-    "lineCount": 779,
+    "lineCount": 1043,
     "axiomCount": 1,
-    "theoremCount": 55,
+    "theoremCount": 75,
     "definitionCount": 5,
     "path": "Proofs/Erdos1201Problem.lean",
     "sorries": 0
@@ -172,12 +172,12 @@
     {
       "targetId": "erdos-677",
       "relationship": "related",
-      "description": "Related Erdős problem on LCM of consecutive integers — both study multiplicative structure of consecutive integer blocks"
+      "description": "Related Erd\u0151s problem on LCM of consecutive integers \u2014 both study multiplicative structure of consecutive integer blocks"
     },
     {
       "targetId": "erdos-1083-oq-02",
       "relationship": "related",
-      "description": "Related problem on distinct distances — both involve upper density arguments and structural results about infinite sets"
+      "description": "Related problem on distinct distances \u2014 both involve upper density arguments and structural results about infinite sets"
     }
   ],
   "sorries": 0
