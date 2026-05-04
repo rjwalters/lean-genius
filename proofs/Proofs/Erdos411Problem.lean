@@ -183,7 +183,94 @@ private theorem ratio3_738_aux :
 theorem cambie_ratio3 : GeneralRatioRelation 738 4 3 :=
   ⟨0, fun k _ => (ratio3_738_aux k).2⟩
 
-/-- Cambie found ratio-4 solutions as well. -/
+/-- g(4m) = 4·g(m) when 4|m > 0: self-similar ratio-4 property.
+    Derived by applying the p=2 totient identity twice: φ(4m)=2φ(2m)=4φ(m). -/
+theorem totientStep_quadruple {m : ℕ} (hm : 4 ∣ m) (hm_pos : 0 < m) :
+    totientStep (4 * m) = 4 * totientStep m := by
+  have h2m : 2 ∣ m := dvd_trans (by norm_num) hm
+  unfold totientStep
+  rw [show 4 * m = 2 * (2 * m) from by ring]
+  rw [Nat.totient_mul_of_prime_of_dvd Nat.prime_two (dvd_mul_right 2 m)]
+  rw [Nat.totient_mul_of_prime_of_dvd Nat.prime_two h2m]
+  ring
+
+private theorem ratio4_148646_aux :
+    ∀ k, 1 ≤ k →
+      4 ∣ iteratedTotientStep k 148646 ∧
+      iteratedTotientStep (k + 4) 148646 = 4 * iteratedTotientStep k 148646 := by
+  intro k
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    intro hk
+    refine ⟨?_, ?_⟩
+    · rcases Nat.lt_or_ge k 5 with hlt | hge
+      · interval_cases k <;> native_decide
+      · have h := (ih (k - 4) (by omega) (by omega)).2
+        rw [show k - 4 + 4 = k from by omega] at h
+        rw [h]; exact dvd_mul_right 4 _
+    · rcases Nat.lt_or_ge k 5 with hlt | hge
+      · interval_cases k <;> native_decide
+      · have ih_prev := ih (k - 1) (by omega) (by omega)
+        have h_ratio : iteratedTotientStep (k + 3) 148646 =
+            4 * iteratedTotientStep (k - 1) 148646 := by
+          have h := ih_prev.2
+          rwa [show k - 1 + 4 = k + 3 from by omega] at h
+        have h_pos : 0 < iteratedTotientStep (k - 1) 148646 := by
+          have := iteratedTotientStep_ge_start 148646 (k - 1); omega
+        have h_ak : iteratedTotientStep k 148646 =
+            totientStep (iteratedTotientStep (k - 1) 148646) := by
+          conv_lhs => rw [show k = (k - 1) + 1 from by omega]
+        calc iteratedTotientStep (k + 4) 148646
+            = totientStep (iteratedTotientStep (k + 3) 148646) := rfl
+          _ = totientStep (4 * iteratedTotientStep (k - 1) 148646) := by rw [h_ratio]
+          _ = 4 * totientStep (iteratedTotientStep (k - 1) 148646) :=
+              totientStep_quadruple ih_prev.1 h_pos
+          _ = 4 * iteratedTotientStep k 148646 := by rw [← h_ak]
+
+/-- PROVED: g_{k+4}(148646) = 4·g_k(148646) for all k ≥ 1.
+    Cambie's first ratio-4 solution, proved via structural induction
+    using g(4m) = 4·g(m) for 4|m and 4-divisibility of all iterates from k=1. -/
+theorem cambie_ratio4_148646 : GeneralRatioRelation 148646 4 4 :=
+  ⟨1, fun k hk => (ratio4_148646_aux k hk).2⟩
+
+private theorem ratio4_4325798_aux :
+    ∀ k, 1 ≤ k →
+      4 ∣ iteratedTotientStep k 4325798 ∧
+      iteratedTotientStep (k + 4) 4325798 = 4 * iteratedTotientStep k 4325798 := by
+  intro k
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    intro hk
+    refine ⟨?_, ?_⟩
+    · rcases Nat.lt_or_ge k 5 with hlt | hge
+      · interval_cases k <;> native_decide
+      · have h := (ih (k - 4) (by omega) (by omega)).2
+        rw [show k - 4 + 4 = k from by omega] at h
+        rw [h]; exact dvd_mul_right 4 _
+    · rcases Nat.lt_or_ge k 5 with hlt | hge
+      · interval_cases k <;> native_decide
+      · have ih_prev := ih (k - 1) (by omega) (by omega)
+        have h_ratio : iteratedTotientStep (k + 3) 4325798 =
+            4 * iteratedTotientStep (k - 1) 4325798 := by
+          have h := ih_prev.2
+          rwa [show k - 1 + 4 = k + 3 from by omega] at h
+        have h_pos : 0 < iteratedTotientStep (k - 1) 4325798 := by
+          have := iteratedTotientStep_ge_start 4325798 (k - 1); omega
+        have h_ak : iteratedTotientStep k 4325798 =
+            totientStep (iteratedTotientStep (k - 1) 4325798) := by
+          conv_lhs => rw [show k = (k - 1) + 1 from by omega]
+        calc iteratedTotientStep (k + 4) 4325798
+            = totientStep (iteratedTotientStep (k + 3) 4325798) := rfl
+          _ = totientStep (4 * iteratedTotientStep (k - 1) 4325798) := by rw [h_ratio]
+          _ = 4 * totientStep (iteratedTotientStep (k - 1) 4325798) :=
+              totientStep_quadruple ih_prev.1 h_pos
+          _ = 4 * iteratedTotientStep k 4325798 := by rw [← h_ak]
+
+/-- PROVED: g_{k+4}(4325798) = 4·g_k(4325798) for all k ≥ 1.
+    Cambie's second ratio-4 solution. Same proof structure as cambie_ratio4_148646. -/
+theorem cambie_ratio4_4325798 : GeneralRatioRelation 4325798 4 4 :=
+  ⟨1, fun k hk => (ratio4_4325798_aux k hk).2⟩
+
 /-
 ## Section V: Steinerberger's Reduction
 -/
