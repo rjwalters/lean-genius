@@ -1,44 +1,74 @@
 [
   {
     "id": "siegel-zero-existence-question",
-    "line": 45,
-    "type": "insight",
-    "title": "The Central Question",
-    "body": "The SiegelZeroConjecture asks whether every real primitive Dirichlet character \u03c7 of conductor q has L(s,\u03c7) \u2260 0 in the region (1 - c/log(q), 1). This is equivalent to asking whether the effective Siegel theorem holds for ALL conductors without a single exception. The consensus (under GRH) is yes, but it is genuinely open unconditionally."
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "The Central Open Question: Do Siegel Zeros Exist?",
+    "content": "The `SiegelZeroConjecture` asks whether every real primitive Dirichlet character χ of conductor q has L(s,χ) ≠ 0 in the region (1 - c/log(q), 1). This is equivalent to asking whether the effective Siegel theorem holds for ALL conductors without a single exception. The consensus (under GRH) is yes, but it is genuinely open unconditionally. The file organizes results into 'World A' (Siegel zeros exist: ¬SZC) and 'World B' (no Siegel zeros: SZC), proving consequences of each world without resolving the open question.",
+    "mathContext": "$L(s, \\chi)$ for real primitive $\\chi$ of conductor $q$. `SiegelZeroConjecture`: $\\forall q, \\forall \\beta \\in (1 - c/\\log q, 1)$: $L(\\beta, \\chi) \\neq 0$. Equivalently: $L(1, \\chi) \\gg q^{-\\varepsilon}$ for all $\\varepsilon > 0$ with an effective constant. Contrast with Siegel's theorem: $L(1, \\chi) \\gg_{\\varepsilon} q^{-\\varepsilon}$ (ineffective — constant depends on $\\varepsilon$ non-explicitly).",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet L-functions", "SiegelZeroConjecture", "real primitive characters", "zero-free regions", "open conjecture"],
+    "prerequisites": ["Dirichlet L-functions", "characters mod q", "zero-free regions in analytic number theory", "Siegel's theorem"]
   },
   {
     "id": "two-worlds-structure",
-    "line": 55,
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 95 },
     "type": "insight",
-    "title": "World A vs World B Dichotomy",
-    "body": "The file organizes results around two worlds. In World A (\u00acSZC), a Siegel zero exists: L(1,\u03c7) can be exponentially small (smaller than any q^{-\u03b5}), but the Deuring-Heilbronn repulsion makes that conductor unique per region. In World B (SZC), all conductors are 'generic': effective bounds, Linnik L=2, extended Siegel-Walfisz all follow. The key tool for each world is different \u2014 Tatuzawa for World A, the effective zero-free region for World B."
+    "title": "World A: Siegel Zero Consequences — Nonvanishing Persists But Bound Is Ineffective",
+    "content": "In World A (¬SZC), a Siegel zero exists at some β ∈ (1 - c/log(q), 1) for some conductor N. Four theorems prove constraints on this world. `siegel_zero_positive_gap` shows 1 - β > 0, i.e., the zero is genuinely to the left of 1. `siegel_zero_distance_lower_bound` uses the MVT bound and Siegel's theorem to constrain (1-β) from below: even in World A, Siegel's ineffective C(ε)·q^{-ε} lower bound holds. `tatuzawa_single_exception` shows the effective Siegel bound fails for at most ONE conductor. `world_a_nonvanishing_persists` proves L(1,χ) > 0 even in World A (nonvanishing is unconditional). The World A theorems are consequences not proofs of Siegel zeros existing.",
+    "mathContext": "`siegel_zero_positive_gap`: $1 - \\beta > 0$ (from definition of Siegel zero). `siegel_zero_distance_lower_bound`: $1 - \\beta > C(\\varepsilon)/q^\\varepsilon$ (ineffective). `world_a_nonvanishing_persists`: $L(1, \\chi) > 0$ unconditionally. In World A: $L(1, \\chi)$ for the exceptional conductor can be as small as $\\exp(-c\\sqrt{\\log q})$, smaller than any power of $1/\\log q$ but still positive.",
+    "significance": "key",
+    "relatedConcepts": ["Siegel's theorem", "Tatuzawa single exception", "nonvanishing of L(1,χ)", "MVT bound", "ineffective constants"],
+    "prerequisites": ["Siegel's ineffective lower bound", "MVT for L-functions", "Tatuzawa theorem", "prime number theorem for arithmetic progressions"]
   },
   {
     "id": "linnik-siegel-connection",
-    "line": 115,
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 97, "endLine": 143 },
     "type": "insight",
-    "title": "Linnik's Theorem and Siegel Zeros",
-    "body": "Linnik's 1944 theorem states the smallest prime p \u2261 a (mod q) satisfies p \u2264 C\u00b7q^L for some absolute L. The exponent L is controlled by how bad Siegel zeros can be: current best is L \u2264 5 (Xylouris 2011). If no Siegel zeros exist (World B), then the effective zero-free region for all moduli gives L = 2, matching what GRH would give. The axiom effective_linnik_no_siegel captures this connection."
+    "title": "Linnik's Theorem: Siegel Zeros Control the Exponent L",
+    "content": "Linnik's 1944 theorem states the smallest prime p ≡ a (mod q) satisfies p ≤ C·q^L for some absolute L. The exponent L is controlled by how bad Siegel zeros can be: current best is L ≤ 5 (Xylouris 2011). If no Siegel zeros exist (World B), then the effective zero-free region for all moduli gives L = 2, matching what GRH would give. The file proves: `linnik_bound` (axiom for Linnik's theorem), `effective_linnik_no_siegel` (World B gives L=2), `linnik_implies_dirichlet_existence` (smallest prime in every AP gives Dirichlet's theorem), and `world_b_linnik_exponent_two` (collecting the L=2 improvement). The Siegel zero problem and the Linnik exponent are intimately connected.",
+    "mathContext": "Linnik (1944): $\\exists L, C > 0, \\forall q \\geq 2, \\forall a$ with $\\gcd(a,q)=1$: the smallest prime $p \\equiv a \\pmod{q}$ satisfies $p \\leq C \\cdot q^L$. Current best: $L \\leq 5$ (Xylouris 2011). World B gives: $L = 2$ (same as GRH). The axiom `effective_linnik_no_siegel` encodes the implication $\\neg\\text{Siegel zeros} \\Rightarrow L = 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Linnik's theorem", "smallest prime in AP", "Linnik constant", "Xylouris 2011", "arithmetic progressions"],
+    "prerequisites": ["Dirichlet's theorem on primes in APs", "Linnik's theorem", "zero-free region argument", "Heath-Brown 1992 connection"]
   },
   {
     "id": "landau-page-uniqueness",
-    "line": 155,
-    "type": "insight",
-    "title": "Landau-Page: At Most One Exception Per Region",
-    "body": "The Landau-Page theorem (axiomatized in the parent file) says at most one conductor N \u2264 Q can have a zero in (1 - c/log(Q), 1). This uniqueness result, proved here as unique_exceptional_conductor_per_region and other_conductors_zero_free_near_one, shows Siegel zeros are 'self-limiting': if one exists, all other L-functions near that region get pushed to a wider zero-free band."
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 145, "endLine": 200 },
+    "type": "technique",
+    "title": "Landau-Page: At Most One Exceptional Conductor Per Region",
+    "content": "The Landau-Page theorem says at most one conductor N ≤ Q can have L(s,χ) with a zero in (1 - c/log(Q), 1). This uniqueness is proved as `unique_exceptional_conductor_per_region` (from the axiomatized `landau_page_theorem`). `other_conductors_zero_free_near_one` then shows: given the one exceptional N, all OTHER conductors ≤ Q are zero-free in that region. `exceptional_conductor_siegel_floor` gives the effective lower bound for the exceptional conductor itself. Finally `siegel_zero_creates_repulsion_region` formalizes Deuring-Heilbronn repulsion: a Siegel zero at β₁ forces ALL other L-function zeros ρ to satisfy Re(ρ) < 1 - c₀·(1-β₁)/log(Q), creating a wider zero-free band for other characters.",
+    "mathContext": "Landau-Page: $\\#\\{N \\leq Q : \\exists \\beta \\in (1-c/\\log Q, 1), L(\\beta,\\chi_N)=0\\} \\leq 1$. Deuring-Heilbronn: if $L(\\beta_1, \\chi_1) = 0$ then all other $L$-function zeros $\\rho$ satisfy $\\operatorname{Re}(\\rho) \\leq 1 - c_0(1-\\beta_1)/\\log Q$. As $\\beta_1 \\to 1$, this creates a repulsion region of width $\\sim c_0/\\log Q$ for all other characters.",
+    "significance": "key",
+    "relatedConcepts": ["Landau-Page theorem", "Deuring-Heilbronn repulsion", "exceptional conductor", "zero-free regions", "repulsion phenomenon"],
+    "prerequisites": ["Landau-Page theorem (1914/1934)", "Deuring-Heilbronn 1933/1934", "zero-free regions for families of L-functions"]
   },
   {
     "id": "deuring-heilbronn-consequence",
-    "line": 190,
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 202, "endLine": 247 },
     "type": "insight",
-    "title": "Deuring-Heilbronn Repulsion",
-    "body": "The theorem siegel_zero_creates_repulsion_region formalizes a key property of Siegel zeros: a zero at \u03b2\u2081 for conductor N\u2081 forces ALL other L-function zeros \u03c1 to satisfy Re(\u03c1) < 1 - c\u2080\u00b7(1-\u03b2\u2081)/log(Q). The closer \u03b2\u2081 is to 1, the wider this zero-free region for other characters. This 'repulsion' phenomenon, due to Deuring (1933) and Heilbronn (1934), is why having one Siegel zero actually HELPS some analytic estimates."
+    "title": "GRH → SZC: The Logical Hierarchy and Three-Tier Implication Chain",
+    "content": "Four theorems establish the logical chain between hypothesis strength. `grh_implies_no_siegel_zeros_standard` proves: if GRH holds (no zeros with Re(s) ∈ (1/2, 1)), then SZC holds for the standard c < log(N)/2 range, since any Siegel zero there would lie in (1/2, 1) — excluded by GRH. `szc_implies_L_one_pos` proves: SZC → L(1,χ) > 0 (World B gives positive values). `nonvanishing_in_both_worlds` proves: L(1,χ) > 0 unconditionally (both worlds agree on nonvanishing). `three_tier_hierarchy` collects: GRH ⊃ SZC ⊃ L(1,χ) > 0. The Siegel zero question sits exactly at the gap between GRH and unconditional nonvanishing.",
+    "mathContext": "Hierarchy: GRH $\\Rightarrow$ SZC $\\Rightarrow$ $L(1,\\chi) > 0$. GRH is the strongest (unproved); $L(1,\\chi) > 0$ is the weakest (proved by Dirichlet/Siegel). SZC occupies the middle ground. `grh_implies_no_siegel_zeros_standard`: GRH rules out zeros in $(1/2, 1) \\supseteq (1 - c/\\log N, 1)$ for $c < \\log(N)/2$.",
+    "significance": "key",
+    "relatedConcepts": ["Generalized Riemann Hypothesis", "implication chain", "GRH implies SZC", "L(1,χ) positivity", "three-tier hierarchy"],
+    "prerequisites": ["GRH formulation", "zero-free region theory", "Siegel's lower bound on L(1,χ)"]
   },
   {
     "id": "three-tier-hierarchy",
-    "line": 230,
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 248, "endLine": 335 },
     "type": "insight",
-    "title": "The Hierarchy: GRH \u2192 SZC \u2192 Nonvanishing",
-    "body": "The three_tier_hierarchy theorem captures the logical chain: GRH (no zeros with Re(s) \u2208 (1/2,1)) implies SiegelZeroConjecture for the standard c < log(N)/2 range, because any Siegel zero in that range would lie in (1/2, 1) where GRH prohibits zeros. And SZC implies positive L-values via the proved nonvanishing theorem. The Siegel zero question is exactly the gap between GRH and unconditional nonvanishing."
+    "title": "World B, Open Question, and Summary: The State of Knowledge",
+    "content": "The final section proves World B structural properties and the formal open question. `world_b_primeCountAP_mono` shows the prime counting function in APs inherits monotonicity. `world_b_siegel_bound_effective` shows: in World B, Siegel's theorem becomes effective (the constant C(ε) can be made explicit). `siegel_zero_in_critical_strip` shows: Siegel zeros (if any) lie in (1/2, 1) — the critical strip, not outside it. `SiegelZeroExistenceQuestion` is defined as SZC ∨ ¬SZC (tautology), and `siegel_zero_question_classical` proves this using classical logic. `state_of_knowledge` collects what IS known: nonvanishing, Siegel's ineffective bound, World B improvements — without resolving the conjecture. `grh_world_summary` then proves the much stronger effective bound C/log²(q) under GRH.",
+    "mathContext": "`SiegelZeroExistenceQuestion := SZC ∨ ¬SZC` (tautological in classical logic). Under GRH: $L(1,\\chi) \\gg 1/\\log^2(q)$ (effective, squared log). Under Siegel (unconditional): $L(1,\\chi) \\gg_{\\varepsilon} q^{-\\varepsilon}$ (ineffective, any power). The gap between these is the Siegel zero problem. In World B: $L(1,\\chi) \\gg 1/\\log q$ (effective, single log) from zero-free region.",
+    "significance": "key",
+    "relatedConcepts": ["open question formalization", "state of knowledge theorem", "GRH effective bound", "classical logic tautology", "effective vs ineffective bounds"],
+    "prerequisites": ["Lean 4 classical logic (Classical.em)", "Siegel's theorem vs GRH", "zero-free region strength comparison"]
   }
 ]
