@@ -1,122 +1,86 @@
 [
   {
-    "id": "annotation-area-fn",
+    "id": "ann-definitions",
+    "proofId": "circumference-via-differentiation",
+    "range": { "startLine": 38, "endLine": 46 },
     "type": "definition",
-    "label": "areaFn",
-    "body": "areaFn r = π · r²",
-    "note": "The area of a disk of radius r. Defined as a real-valued function so that differentiation is well-defined everywhere.",
-    "location": { "section": "area-function" }
+    "title": "Noncomputable Circle Functions",
+    "content": "Both `areaFn` and `circumferenceFn` are declared `noncomputable` because they involve `Real.pi` (π), which is transcendental and has no computable representation in Lean 4. The `noncomputable` annotation is purely a kernel bookkeeping tag — it does not affect provability or the strength of theorems proved about these functions.",
+    "mathContext": "$A(r) = \\pi r^2$, $\\quad C(r) = 2\\pi r$",
+    "significance": "context",
+    "relatedConcepts": ["noncomputable", "Real.pi", "pi_pos", "circle area"],
+    "prerequisites": ["Lean 4 noncomputable declarations", "Real arithmetic"]
   },
   {
-    "id": "annotation-circumference-fn",
-    "type": "definition",
-    "label": "circumferenceFn",
-    "body": "circumferenceFn r = 2 · π · r",
-    "note": "The circumference of a circle of radius r. The main theorem shows this equals the derivative of areaFn.",
-    "location": { "section": "area-function" }
+    "id": "ann-has-deriv-at",
+    "proofId": "circumference-via-differentiation",
+    "range": { "startLine": 55, "endLine": 67 },
+    "type": "technique",
+    "title": "HasDerivAt: Pointwise Derivative Predicate",
+    "content": "The proof of `area_hasDerivAt` uses two steps: (1) `hasDerivAt_pow 2 r` gives `HasDerivAt (x ↦ x²) (2·r) r`, and (2) `HasDerivAt.const_mul π` scales the derivative by π to get `HasDerivAt (x ↦ π·x²) (π·(2·r)) r`. A `ring_nf` tidy-up then matches `π·2·r = 2·π·r = circumferenceFn r`. `HasDerivAt` is preferred over `Differentiable` here because it specifies the exact derivative value at each point, not just existence.",
+    "mathContext": "$$\\frac{d}{dr}(\\pi r^2) = \\pi \\cdot \\frac{d}{dr}(r^2) = \\pi \\cdot 2r = 2\\pi r = C(r)$$",
+    "significance": "key",
+    "relatedConcepts": ["HasDerivAt", "hasDerivAt_pow", "HasDerivAt.const_mul", "ring_nf"],
+    "prerequisites": ["Mathlib.Analysis.Calculus.Deriv.Polynomial", "HasDerivAt API"]
   },
   {
-    "id": "annotation-area-has-deriv-at",
-    "type": "theorem",
-    "label": "area_hasDerivAt",
-    "body": "HasDerivAt areaFn (2 * π * r) r",
-    "note": "The derivative of πr² at each point r is 2πr. Proved using Mathlib's HasDerivAt framework for polynomial differentiation: d/dr(π·r²) = π·(2r) = 2πr.",
-    "location": { "section": "area-function" }
+    "id": "ann-deriv-connection",
+    "proofId": "circumference-via-differentiation",
+    "range": { "startLine": 69, "endLine": 76 },
+    "type": "technique",
+    "title": "From HasDerivAt to deriv: One-Line Bridge",
+    "content": "`HasDerivAt.deriv` extracts the Mathlib `deriv` value from a `HasDerivAt` proof. Since `HasDerivAt areaFn (circumferenceFn r) r` holds, `deriv areaFn r = circumferenceFn r` is immediate. The `Differentiable ℝ areaFn` proof also follows in one line: for each r, `(area_hasDerivAt r).differentiableAt` gives local differentiability, and `Differentiable` is just the universal version.",
+    "mathContext": "$(\\text{HasDerivAt}\\, f\\, v\\, x) \\Rightarrow \\text{deriv}\\, f\\, x = v$",
+    "significance": "supporting",
+    "relatedConcepts": ["HasDerivAt.deriv", "Differentiable", "DifferentiableAt"],
+    "prerequisites": ["HasDerivAt vs deriv distinction", "Lean 4 fun r => pattern"]
   },
   {
-    "id": "annotation-deriv-area",
-    "type": "theorem",
-    "label": "deriv_area",
-    "body": "deriv areaFn r = 2 * π * r",
-    "note": "Connects HasDerivAt to Mathlib's deriv function: since areaFn has a derivative at r, deriv areaFn r equals 2πr.",
-    "location": { "section": "area-function" }
+    "id": "ann-measure-theory",
+    "proofId": "circumference-via-differentiation",
+    "range": { "startLine": 85, "endLine": 93 },
+    "type": "insight",
+    "title": "Measure-Theoretic Area via Complex.volume_ball",
+    "content": "The theorem `measure_disk_eq_areaFn` connects the calculus definition πr² to Mathlib's Lebesgue measure. The key step is `Complex.volume_ball` which gives the measure of a ball in ℂ (≅ ℝ²) involving `NNReal.pi` (the non-negative real version of π). The cast `NNReal.coe_real_pi` converts to `Real.pi`. The hypothesis `hr : 0 ≤ r` is needed for `ENNReal.toReal_ofReal`. This validates that both definitions of 'area of a disk' agree.",
+    "mathContext": "$\\lambda^2(\\{x \\in \\mathbb{R}^2 : \\|x\\| \\leq r\\}) = \\pi r^2 = A(r)$",
+    "significance": "key",
+    "relatedConcepts": ["Complex.volume_ball", "NNReal.pi", "ENNReal.toReal", "MeasureTheory.volume"],
+    "prerequisites": ["Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls", "ENNReal to Real coercion"]
   },
   {
-    "id": "annotation-area-fn-differentiable",
-    "type": "theorem",
-    "label": "areaFn_differentiable",
-    "body": "Differentiable ℝ areaFn",
-    "note": "areaFn = π·r² is differentiable everywhere on ℝ, needed to apply FTC and other calculus theorems.",
-    "location": { "section": "area-function" }
+    "id": "ann-circumference-eq",
+    "proofId": "circumference-via-differentiation",
+    "range": { "startLine": 111, "endLine": 120 },
+    "type": "insight",
+    "title": "Circumference as Derivative: The Core Result",
+    "content": "The theorem `circumference_eq` states `circumferenceFn r = 2 · π · r`, which is true by definition (`ring`). But this is paired with `area_hasDerivAt` to give the real content: the derivative of A(r) = πr² is C(r) = 2πr. The geometric meaning is fundamental: as a disk grows by dr, it adds an annular strip of width dr and perimeter C(r), so dA = C(r)·dr. This makes the circumference the instantaneous rate of area growth.",
+    "mathContext": "Geometric interpretation: $dA = C(r)\\,dr \\Rightarrow C(r) = \\frac{dA}{dr} = \\frac{d}{dr}(\\pi r^2) = 2\\pi r$.",
+    "significance": "key",
+    "relatedConcepts": ["dA/dr", "geometric differentiation", "annular strip", "area growth rate"],
+    "prerequisites": ["areaFn", "circumferenceFn", "area_hasDerivAt"]
   },
   {
-    "id": "annotation-measure-disk",
-    "type": "theorem",
-    "label": "measure_disk_eq_areaFn",
-    "body": "MeasureTheory.volume {x : ℝ × ℝ | ‖x‖ ≤ r} = ENNReal.ofReal (areaFn r)",
-    "note": "Mathlib's Lebesgue measure of the closed disk of radius r in ℝ² equals πr². Uses MeasureTheory.Measure.Lebesgue.VolumeOfBalls which establishes the volume of Euclidean balls.",
-    "location": { "section": "main-theorems" }
+    "id": "ann-second-deriv",
+    "proofId": "circumference-via-differentiation",
+    "range": { "startLine": 143, "endLine": 157 },
+    "type": "technique",
+    "title": "Second Derivative A'' = 2π: Constant Curvature of Area Growth",
+    "content": "The second derivative `deriv (deriv areaFn) r = 2 * π` is proved by first identifying `deriv areaFn = circumferenceFn` (using `ext x; exact deriv_area x`), then differentiating `2πr` using `hasDerivAt_id` scaled by 2π. The constant second derivative means area grows at an accelerating rate — the circumference grows linearly with radius, making the area a quadratic function (the highest polynomial with constant second derivative).",
+    "mathContext": "$A''(r) = (2\\pi r)' = 2\\pi$ — area is quadratic in radius, confirming $A(r) = \\pi r^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["HasDerivAt.const_mul", "hasDerivAt_id", "second derivative", "convexity"],
+    "prerequisites": ["deriv_area", "hasDerivAt_id", "ext tactic"]
   },
   {
-    "id": "annotation-circumference-eq",
-    "type": "theorem",
-    "label": "circumference_eq",
-    "body": "circumferenceFn r = deriv areaFn r",
-    "note": "The central result: C(r) = dA/dr. The circumference formula 2πr is exactly the derivative of the area formula πr². This formalizes the geometric intuition that a thin annular shell of width dr has area ≈ C(r)·dr.",
-    "location": { "section": "main-theorems" }
-  },
-  {
-    "id": "annotation-circumference-unit",
-    "type": "theorem",
-    "label": "circumference_unit_circle",
-    "body": "circumferenceFn 1 = 2 * π",
-    "note": "The unit circle has circumference 2π. A direct computation from the definition circumferenceFn 1 = 2·π·1 = 2π.",
-    "location": { "section": "main-theorems" }
-  },
-  {
-    "id": "annotation-circumference-scaling",
-    "type": "theorem",
-    "label": "circumference_scaling",
-    "body": "∀ λ ≥ 0, circumferenceFn (λ * r) = λ * circumferenceFn r",
-    "note": "Circumference scales linearly: C(λr) = λ·C(r). Follows immediately from linearity of 2πr. This is the 1-dimensional scaling law for 1-dimensional boundary.",
-    "location": { "section": "geometric-properties" }
-  },
-  {
-    "id": "annotation-circumference-zero",
-    "type": "theorem",
-    "label": "circumference_zero",
-    "body": "circumferenceFn 0 = 0",
-    "note": "A degenerate circle of radius 0 has circumference 0.",
-    "location": { "section": "geometric-properties" }
-  },
-  {
-    "id": "annotation-area-second-deriv",
-    "type": "theorem",
-    "label": "area_second_deriv",
-    "body": "deriv (deriv areaFn) r = 2 * π",
-    "note": "The second derivative of area with respect to radius is the constant 2π. Since C(r) = 2πr is linear, its derivative is constant. This means area grows quadratically and circumference grows linearly.",
-    "location": { "section": "geometric-properties" }
-  },
-  {
-    "id": "annotation-area-fn-mono",
-    "type": "theorem",
-    "label": "areaFn_mono",
-    "body": "∀ r₁ r₂ > 0, r₁ < r₂ → areaFn r₁ < areaFn r₂",
-    "note": "Area is strictly increasing for positive radii: larger disks have larger area.",
-    "location": { "section": "geometric-properties" }
-  },
-  {
-    "id": "annotation-area-fn-zero",
-    "type": "theorem",
-    "label": "areaFn_eq_zero_iff",
-    "body": "areaFn r = 0 ↔ r = 0",
-    "note": "Area is zero if and only if the radius is zero. Since πr² = 0 ↔ r = 0 (as π > 0).",
-    "location": { "section": "geometric-properties" }
-  },
-  {
-    "id": "annotation-measure-disk-scaling",
-    "type": "theorem",
-    "label": "measure_disk_scaling",
-    "body": "volume {x : ℝ × ℝ | ‖x‖ ≤ λ * r} = λ² * volume {x | ‖x‖ ≤ r}",
-    "note": "Scaling a disk by λ scales its area by λ². This is the 2D scaling law: area is a 2-homogeneous function of radius.",
-    "location": { "section": "geometric-properties" }
-  },
-  {
-    "id": "annotation-duality",
-    "type": "theorem",
-    "label": "area_circumference_duality",
-    "body": "areaFn r = ∫ t in Set.Icc 0 r, circumferenceFn t",
-    "note": "Area equals the integral of circumference: A(r) = ∫₀ʳ C(t) dt. This is the inverse relationship to C = dA/dr, proved via the Fundamental Theorem of Calculus. Geometrically: the disk of radius r is filled by concentric circles of all radii from 0 to r.",
-    "location": { "section": "geometric-properties" }
+    "id": "ann-duality",
+    "proofId": "circumference-via-differentiation",
+    "range": { "startLine": 189, "endLine": 197 },
+    "type": "insight",
+    "title": "Area-Circumference Duality: The Fundamental Relationship",
+    "content": "The final theorem `area_circumference_duality` is simply `deriv_area r`, but it is given its own name to emphasize the duality: C is the derivative of A, and A is the antiderivative (integral) of C. Geometrically, the disk is a union of infinitely thin concentric circles, each of circumference C(ρ) at radius ρ. Integrating C from 0 to r gives the total area: A(r) = ∫₀ʳ C(ρ)dρ = ∫₀ʳ 2πρ dρ = πr². This is Cavalieri's principle applied radially.",
+    "mathContext": "$$A(r) = \\int_0^r C(\\rho)\\,d\\rho = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$$",
+    "significance": "key",
+    "relatedConcepts": ["Cavalieri principle", "FTC", "antiderivative", "concentric circles"],
+    "prerequisites": ["deriv_area", "area_hasDerivAt", "FTC in Mathlib"]
   }
 ]
