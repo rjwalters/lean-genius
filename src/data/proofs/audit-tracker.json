@@ -518,10 +518,10 @@
       "result": "issues-fixed"
     },
     "area-of-circle-oq-05-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:42:47Z",
-      "result": "clean"
+      "lastAudited": "2026-05-04T07:20:00Z",
+      "result": "issues-found"
     },
     "arithmetic-series": {
       "auditCount": 3,
@@ -8404,8 +8404,8 @@
     },
     "erdos-614": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-04T03:55:36Z",
+      "auditCount": 5,
+      "lastAudited": "2026-05-04T07:33:28Z",
       "result": "clean"
     },
     "erdos-615": {
@@ -11248,10 +11248,10 @@
       "result": "clean"
     },
     "fair-games-theorem-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 1,
       "issues": [],
-      "lastAudited": "2026-05-04T07:07:07Z",
-      "result": "issues-found"
+      "lastAudited": "2026-04-23T18:42:52Z",
+      "result": "clean"
     },
     "fair-games-theorem-oq-02-oq-01-oq-01": {
       "auditCount": 1,
@@ -11260,9 +11260,9 @@
       "result": "clean"
     },
     "fair-games-theorem-oq-02-oq-04": {
-      "auditCount": 2,
+      "auditCount": 1,
       "issues": [],
-      "lastAudited": "2026-05-04T07:09:00Z",
+      "lastAudited": "2026-04-23T18:42:52Z",
       "result": "clean"
     },
     "fair-games-theorem-oq-03": {
@@ -11308,9 +11308,9 @@
       "result": "clean"
     },
     "feuerbachs-theorem-defs-oq-04": {
-      "auditCount": 2,
+      "auditCount": 1,
       "issues": [],
-      "lastAudited": "2026-05-04T07:09:00Z",
+      "lastAudited": "2026-04-23T18:42:52Z",
       "result": "clean"
     },
     "feuerbachs-theorem-oq-01": {
@@ -11376,15 +11376,15 @@
       "result": "clean"
     },
     "fourier-series-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 1,
       "issues": [],
-      "lastAudited": "2026-05-04T07:08:59Z",
+      "lastAudited": "2026-04-23T18:42:52Z",
       "result": "clean"
     },
     "fourier-series-oq-02-oq-02": {
       "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-05-04T07:08:58Z",
+      "lastAudited": "2026-05-04T07:28:04Z",
       "result": "clean"
     },
     "fourier-series-oq-02-oq-03": {
@@ -14219,6 +14219,12 @@
     "ramsey-r4k-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-05-04T06:17:31Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ballot-problem-oq-03-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T07:27:21Z",
       "result": "clean",
       "issues": []
     }
