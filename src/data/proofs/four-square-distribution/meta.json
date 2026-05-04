@@ -40,7 +40,8 @@
       "**Type contributions**: (0,0,0,a): 8 (sign of a). (0,0,a,a): 24 (6 perms × 4 signs). (0,a,a,a): 32 (4 perms × 8 signs). (a,a,a,a): 8 (1 perm × 8 signs). (0,0,a,b): 48. (a,b,c,d) all distinct: 384.",
       "**Bound**: contribution(t) ≤ 384 for all types, with equality when all four components are distinct and nonzero.",
       "**Completeness**: distribution_complete_1 through _10 verifies r₄(n) for n=1..7,9,10 via type enumeration.",
-      "**Growth and trivial types**: Every perfect square k² has trivial type (0,0,0,k) contributing exactly 8. Since r₄(n) ~ (π²/2)n on average and each type contributes at most 384, the average number of representation types per n grows linearly — the 24:1 symmetry ratio (= |S₄|) measures how much symmetry collapses the count."
+      "**Growth and trivial types**: Every perfect square k² has trivial type (0,0,0,k) contributing exactly 8. Since r₄(n) ~ (π²/2)n on average and each type contributes at most 384, the average number of representation types per n grows linearly — the 24:1 symmetry ratio (= |S₄|) measures how much symmetry collapses the count.",
+      "**Theta function connection**: The generating function $\\theta(q)^4 = \\sum_{n=0}^\\infty r_4(n) q^n$ where $\\theta(q) = \\sum_{k=-\\infty}^\\infty q^{k^2}$. Jacobi's proof that $\\theta(q)^4 = 1 + 8\\sum_{n=1}^\\infty \\sigma^*(n) q^n$ uses the fact that $\\theta^4$ is a weight-2 modular form, expressible in terms of Eisenstein series. The contribution formula in this file is the combinatorial *shadow* of this analytic identity: the 24-fold symmetry group $S_4$ acts on ordered 4-tuples, and the orbit sizes are exactly the contributions defined here."
     ]
   },
   "sections": [
@@ -107,6 +108,16 @@
       "targetId": "lagrange-four-squares-waring-g2",
       "relationship": "related",
       "description": "Distribution of four-square representations extends Waring g(2)=4 theory"
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "parent",
+      "description": "Lagrange's four-square theorem proves r₄(n) > 0 for all n; this file analyzes the distribution of those representations"
+    },
+    {
+      "targetId": "infinitude-primes-4k3",
+      "relationship": "related",
+      "description": "Both use mod-4 arithmetic: primes ≡ 1 (mod 4) are sums of two squares; 4∤d condition in σ*(n) mirrors this mod-4 selection"
     }
   ],
   "mainTheorems": [
