@@ -131,6 +131,37 @@ theorem limitPointSet_isClosed {seq : ℕ → ℝ}
   -- Reverse triangle: |seq n - z| ≥ |seq n - y| - |y - z| ≥ ε - ε/2
   linarith [hN n hn, abs_sub_le (seq n) z y]
 
+/-- If a sequence converges to y, its only limit point is y. -/
+theorem limitPointSet_of_tendsto {seq : ℕ → ℝ} {y : ℝ}
+    (h : Filter.Tendsto seq Filter.atTop (nhds y)) :
+    limitPointSet seq = {y} := by
+  ext z
+  simp only [limitPointSet, Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · intro hz
+    by_contra hzy
+    have hzy_pos : 0 < |z - y| := abs_pos.mpr (sub_ne_zero.mpr hzy)
+    set ε := |z - y| / 2 with hε_def
+    have hε : 0 < ε := by linarith
+    rw [Metric.tendsto_atTop] at h
+    obtain ⟨N, hN⟩ := h ε hε
+    obtain ⟨n, hn, hn_close⟩ := hz ε hε N
+    have hny : |seq n - y| < ε := by
+      have := hN n hn; rwa [Real.dist_eq] at this
+    have htri : |z - y| ≤ |z - seq n| + |seq n - y| := abs_sub_le z (seq n) y
+    have hzn : |z - seq n| < ε := by rwa [abs_sub_comm] at hn_close
+    linarith
+  · rintro rfl
+    intro ε hε N
+    rw [Metric.tendsto_atTop] at h
+    obtain ⟨N', hN'⟩ := h ε hε
+    exact ⟨max N N', le_max_left _ _, by
+      have := hN' (max N N') (le_max_right _ _); rwa [Real.dist_eq] at this⟩
+
+/-- The constant sequence has exactly one limit point (itself). -/
+theorem limitPointSet_const (c : ℝ) : limitPointSet (fun _ => c) = {c} :=
+  limitPointSet_of_tendsto tendsto_const_nhds
+
 /-! ## Part IV: The Main Conjecture -/
 
 /-- For a continuous function f and a point x, the sequence of Chebyshev
