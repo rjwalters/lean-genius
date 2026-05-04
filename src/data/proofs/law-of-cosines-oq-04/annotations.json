@@ -6,9 +6,9 @@
       "startLine": 43,
       "endLine": 47
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Algebraic Identity: Stewart's Theorem as a Ring Fact",
-    "content": "stewarts_algebraic is a pure algebraic theorem: it verifies that b²m + c²n - a(d²+mn) = m(b²-d²-n²) + n(c²-d²-m²) for any reals with m+n=a. The proof is just ring after substituting a = m+n. This separates the algebraic skeleton of the proof from its geometric meaning — the geometric content is the identification of b²-d²-n² as -2dnt (from the law of cosines in triangle ACD).",
+    "content": "stewarts_algebraic is a pure algebraic theorem: it verifies that b\u00b2m + c\u00b2n - a(d\u00b2+mn) = m(b\u00b2-d\u00b2-n\u00b2) + n(c\u00b2-d\u00b2-m\u00b2) for any reals with m+n=a. The proof is just ring after substituting a = m+n. This separates the algebraic skeleton of the proof from its geometric meaning \u2014 the geometric content is the identification of b\u00b2-d\u00b2-n\u00b2 as -2dnt (from the law of cosines in triangle ACD).",
     "mathContext": "Substituting $a = m+n$: LHS $= b^2 m + c^2 n - (m+n)(d^2 + mn)$. RHS $= m(b^2 - d^2 - n^2) + n(c^2 - d^2 - m^2) = b^2 m - md^2 - mn^2 + c^2 n - nd^2 - nm^2 = b^2 m + c^2 n - (m+n)d^2 - mn(m+n)$. LHS equals RHS since $mn + (m+n)d^2 = (m+n)(d^2 + mn)$... wait, that's $d^2(m+n) + mn(m+n)$, not equal to LHS unless we factor. Actually: $(m+n)(d^2+mn) = md^2+nd^2+m^2 n+mn^2 = (m+n)d^2+mn(m+n)$. RHS $= b^2m+c^2n - (m+n)d^2 - mn^2 - m^2 n = b^2m+c^2n-(m+n)d^2 - mn(m+n)$. Equal. \\texttt{ring} verifies this automatically.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -28,9 +28,9 @@
       "startLine": 79,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Stewart's from Cosines: Supplementary Angle Trick",
-    "content": "stewarts_from_cosines is the geometric core: it shows that given the two law-of-cosines equations for sub-triangles ABD and ACD (with supplementary angle variable t = cos(∠BDA)), the identity b²m + c²n = (m+n)(d²+mn) follows by ring. The key design decision is abstracting the angle relationship into a single variable t — instead of formalizing that ∠BDA + ∠CDA = π (which would require trigonometry infrastructure), the proof simply takes two hypotheses where one uses +2dnt and the other -2dmt, and ring eliminates t automatically.",
+    "content": "stewarts_from_cosines is the geometric core: it shows that given the two law-of-cosines equations for sub-triangles ABD and ACD (with supplementary angle variable t = cos(\u2220BDA)), the identity b\u00b2m + c\u00b2n = (m+n)(d\u00b2+mn) follows by ring. The key design decision is abstracting the angle relationship into a single variable t \u2014 instead of formalizing that \u2220BDA + \u2220CDA = \u03c0 (which would require trigonometry infrastructure), the proof simply takes two hypotheses where one uses +2dnt and the other -2dmt, and ring eliminates t automatically.",
     "mathContext": "Triangle ABD: $c^2 = d^2 + m^2 - 2dm \\cdot t$. Triangle ACD: $b^2 = d^2 + n^2 + 2dn \\cdot t$ (note $+$ from $\\cos(\\pi - \\theta) = -\\cos(\\theta)$). Multiply first by $n$: $c^2 n = n d^2 + nm^2 - 2dmnt$. Multiply second by $m$: $b^2 m = md^2 + mn^2 + 2dmnt$. Add: $b^2m + c^2n = (m+n)d^2 + nm^2 + mn^2 = (m+n)d^2 + mn(n+m) = (m+n)(d^2+mn)$. Lean proof: \\texttt{rw [h\\_ABD, h\\_ACD]; ring}.",
     "significance": "key",
     "relatedConcepts": [
@@ -40,7 +40,7 @@
       "t-abstraction"
     ],
     "prerequisites": [
-      "cos(π-θ) = -cos(θ)",
+      "cos(\u03c0-\u03b8) = -cos(\u03b8)",
       "ring tactic",
       "rewriting with hypotheses"
     ]
@@ -52,9 +52,9 @@
       "startLine": 109,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Median Length Formula: Stewart's Theorem Specialized",
-    "content": "median_length_formula specializes Stewart's theorem to the case m = n = a/2 (midpoint). The proof applies stewarts_theorem with these values, then uses field_simp to clear the 1/4 and 1/2 denominators, and nlinarith to handle the resulting nonlinear arithmetic. The fact that a ≠ 0 is required because the median formula divides by a (implicit in field_simp), even though the geometric case a=0 would be degenerate anyway.",
+    "content": "median_length_formula specializes Stewart's theorem to the case m = n = a/2 (midpoint). The proof applies stewarts_theorem with these values, then uses field_simp to clear the 1/4 and 1/2 denominators, and nlinarith to handle the resulting nonlinear arithmetic. The fact that a \u2260 0 is required because the median formula divides by a (implicit in field_simp), even though the geometric case a=0 would be degenerate anyway.",
     "mathContext": "Substituting $m = n = a/2$ in $b^2 m + c^2 n = a(d^2+mn)$: $(b^2+c^2)(a/2) = a(d^2 + a^2/4)$. Divide by $a$ (nonzero): $(b^2+c^2)/2 = d^2 + a^2/4$, so $d^2 = (b^2+c^2)/2 - a^2/4 = (2b^2+2c^2-a^2)/4$. After \\texttt{field\\_simp}: Lean gets $4d^2 = 2b^2+2c^2-a^2$ as a polynomial equation, then \\texttt{nlinarith} closes it from the hypothesis (which after field_simp has the form $(b^2+c^2)a/2 = a(d^2+a^2/4)$ expanded).",
     "significance": "key",
     "relatedConcepts": [
@@ -76,9 +76,9 @@
       "startLine": 135,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Verification: Median to Hypotenuse of 3-4-5 Triangle",
-    "content": "The right_triangle_median theorem verifies the specific case: in a 3-4-5 right triangle, the median to the hypotenuse has length 5/2. This is the classical result that the median to the hypotenuse of a right triangle equals half the hypotenuse — geometrically, because the right angle inscribes in a semicircle. The Lean proof is purely computational: norm_num verifies (2·16 + 2·9 - 25)/4 = 25/4 by arithmetic.",
+    "content": "The right_triangle_median theorem verifies the specific case: in a 3-4-5 right triangle, the median to the hypotenuse has length 5/2. This is the classical result that the median to the hypotenuse of a right triangle equals half the hypotenuse \u2014 geometrically, because the right angle inscribes in a semicircle. The Lean proof is purely computational: norm_num verifies (2\u00b716 + 2\u00b79 - 25)/4 = 25/4 by arithmetic.",
     "mathContext": "$(2 \\cdot 4^2 + 2 \\cdot 3^2 - 5^2)/4 = (32 + 18 - 25)/4 = 25/4$. The geometric interpretation: in a right triangle with hypotenuse $a$, the median to the hypotenuse has length $a/2$ because the right triangle inscribes in a semicircle of diameter $a$, and the median from the right angle vertex to the hypotenuse equals the circumradius = $a/2$. This can also be seen from: $d^2 = (2b^2+2c^2-a^2)/4 = (2(b^2+c^2)-a^2)/4 = (2a^2-a^2)/4 = a^2/4$ using $b^2+c^2=a^2$ (Pythagorean theorem).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -102,7 +102,7 @@
     },
     "type": "insight",
     "title": "Angle Bisector Length via Stewart's Theorem",
-    "content": "Stewart's theorem specializes further: when the cevian is the angle bisector, the angle bisector theorem gives m/n = c/b, so m = ca/(b+c) and n = ba/(b+c). Substituting into Stewart's formula yields the angle bisector length d² = bc[(b+c)² - a²]/(b+c)². This is the classical angle bisector length formula, derived purely algebraically from the law of cosines without trigonometry.",
+    "content": "Stewart's theorem specializes further: when the cevian is the angle bisector, the angle bisector theorem gives m/n = c/b, so m = ca/(b+c) and n = ba/(b+c). Substituting into Stewart's formula yields the angle bisector length d\u00b2 = bc[(b+c)\u00b2 - a\u00b2]/(b+c)\u00b2. This is the classical angle bisector length formula, derived purely algebraically from the law of cosines without trigonometry.",
     "mathContext": "The angle bisector from vertex $A$ to side $BC$ of length $a$ has length $d$ satisfying $d^2 = bc\\left[1 - \\left(\\frac{a}{b+c}\\right)^2\\right] = \\frac{bc[(b+c)^2 - a^2]}{(b+c)^2}$. This follows from Stewart's theorem with $m = \\frac{ca}{b+c}$, $n = \\frac{ba}{b+c}$ (from the angle bisector theorem $m:n = c:b$). The formula shows $d \\leq \\sqrt{bc}$ with equality iff $a = 0$.",
     "significance": "supporting",
     "relatedConcepts": [

@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #1181: Upper Bound on q(n, log n)**\n\nLet q(n,k) denote the least prime which does not divide ∏_{1≤i≤k}(n+i). Is there c > 0 such that q(n, ⌊log n⌋) < (1-c)(log n)² for all large n?\n\n**Status:** OPEN\n\n**Known:** q(n, log n) ≤ (1+o(1))(log n)² via the primorial argument.\n\n**Origin:** Erdős [Er79d, p.78]\n\n**Related:** Problem #457 (lower bound question for q(n, log n))",
-    "mathContext": "The function q(n,k) measures how far the divisibility of ∏(n+i) extends beyond the trivial primes ≤ k. The upper bound question asks whether this extension is strictly bounded below (log n)².",
+    "content": "**Erd\u0151s Problem #1181: Upper Bound on q(n, log n)**\n\nLet q(n,k) denote the least prime which does not divide \u220f_{1\u2264i\u2264k}(n+i). Is there c > 0 such that q(n, \u230alog n\u230b) < (1-c)(log n)\u00b2 for all large n?\n\n**Status:** OPEN\n\n**Known:** q(n, log n) \u2264 (1+o(1))(log n)\u00b2 via the primorial argument.\n\n**Origin:** Erd\u0151s [Er79d, p.78]\n\n**Related:** Problem #457 (lower bound question for q(n, log n))",
+    "mathContext": "The function q(n,k) measures how far the divisibility of \u220f(n+i) extends beyond the trivial primes \u2264 k. The upper bound question asks whether this extension is strictly bounded below (log n)\u00b2.",
     "significance": "key",
     "relatedConcepts": [
       "Prime divisors",
@@ -28,8 +28,8 @@
     },
     "type": "definition",
     "title": "Consecutive Product",
-    "content": "**consecutiveProduct(n, k) = ∏_{i=1}^{k} (n + i)**\n\nThe product of k consecutive integers starting from n+1. This is the central object: we study which primes divide this product.\n\n**Key property:** Every prime p ≤ k divides consecutiveProduct(n, k), since among k consecutive integers there must be a multiple of p.",
-    "mathContext": "The consecutive product equals (n+k)!/n! = k! · C(n+k, k), connecting to binomial coefficients.",
+    "content": "**consecutiveProduct(n, k) = \u220f_{i=1}^{k} (n + i)**\n\nThe product of k consecutive integers starting from n+1. This is the central object: we study which primes divide this product.\n\n**Key property:** Every prime p \u2264 k divides consecutiveProduct(n, k), since among k consecutive integers there must be a multiple of p.",
+    "mathContext": "The consecutive product equals (n+k)!/n! = k! \u00b7 C(n+k, k), connecting to binomial coefficients.",
     "significance": "key",
     "relatedConcepts": [
       "Binomial coefficients",
@@ -46,7 +46,7 @@
     },
     "type": "definition",
     "title": "q(n,k): Smallest Non-Dividing Prime",
-    "content": "**q(n, k)** is the smallest prime p such that p does not divide ∏_{i=1}^k (n+i).\n\n**Constructive definition:** Existence is proved using Nat.exists_infinite_primes — there are always primes larger than the product, which certainly don't divide it. Then Nat.find selects the smallest such prime.\n\nThis avoids any axioms for the definition itself.",
+    "content": "**q(n, k)** is the smallest prime p such that p does not divide \u220f_{i=1}^k (n+i).\n\n**Constructive definition:** Existence is proved using Nat.exists_infinite_primes \u2014 there are always primes larger than the product, which certainly don't divide it. Then Nat.find selects the smallest such prime.\n\nThis avoids any axioms for the definition itself.",
     "mathContext": "The function q is well-defined because the set of primes not dividing any finite number is infinite. Nat.find gives us the minimum constructively.",
     "significance": "key",
     "relatedConcepts": [
@@ -62,10 +62,10 @@
       "startLine": 83,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Trivial Upper Bound via Primorials",
-    "content": "**q(n, log n) ≤ (1+o(1))(log n)²**\n\n**Argument:** All primes p < q(n,k) divide ∏(n+i). Their product (the primorial) satisfies:\n- primorial(q) ≤ ∏(n+i) ≤ (n+k)^k\n- log(primorial(q)) = θ(q) ~ q (by PNT)\n- So q ~ k · log(n+k)\n\nFor k = ⌊log n⌋: q ≤ (1+o(1)) · log n · log(n + log n) ≈ (1+o(1))(log n)².",
-    "mathContext": "This uses the Prime Number Theorem in the form θ(x) ~ x, where θ is the Chebyshev function.",
+    "content": "**q(n, log n) \u2264 (1+o(1))(log n)\u00b2**\n\n**Argument:** All primes p < q(n,k) divide \u220f(n+i). Their product (the primorial) satisfies:\n- primorial(q) \u2264 \u220f(n+i) \u2264 (n+k)^k\n- log(primorial(q)) = \u03b8(q) ~ q (by PNT)\n- So q ~ k \u00b7 log(n+k)\n\nFor k = \u230alog n\u230b: q \u2264 (1+o(1)) \u00b7 log n \u00b7 log(n + log n) \u2248 (1+o(1))(log n)\u00b2.",
+    "mathContext": "This uses the Prime Number Theorem in the form \u03b8(x) ~ x, where \u03b8 is the Chebyshev function.",
     "significance": "key",
     "relatedConcepts": [
       "Chebyshev function",
@@ -83,9 +83,9 @@
       "startLine": 109,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Conjecture (OPEN)",
-    "content": "**erdos1181_conjecture:** ∃ c > 0 such that q(n, ⌊log n⌋) < (1-c)(log n)² eventually.\n\nThe key distinction from the trivial bound: (1+o(1)) approaches 1 from ABOVE, while the conjecture asks for a constant strictly BELOW 1. This is a genuine improvement, not just tightening the error term.\n\nAxiomatized since the problem remains open.",
+    "content": "**erdos1181_conjecture:** \u2203 c > 0 such that q(n, \u230alog n\u230b) < (1-c)(log n)\u00b2 eventually.\n\nThe key distinction from the trivial bound: (1+o(1)) approaches 1 from ABOVE, while the conjecture asks for a constant strictly BELOW 1. This is a genuine improvement, not just tightening the error term.\n\nAxiomatized since the problem remains open.",
     "mathContext": "Using Filter.atTop for 'eventually' (for all sufficiently large n) is the standard Lean/Mathlib idiom for asymptotic statements.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,7 +103,7 @@
     },
     "type": "concept",
     "title": "Tao's Heuristic Bound",
-    "content": "**Tao's heuristic:** q(n, log n) ≪ (log log n / log log log n) · log n.\n\nThis probabilistic prediction, if true, would be dramatically stronger than the (1-c)(log n)² conjecture, since (log log n / log log log n) · log n grows much slower than (log n)².\n\nThe tao_implies_erdos1181 theorem demonstrates this implication (with a sorry for the asymptotic comparison).",
+    "content": "**Tao's heuristic:** q(n, log n) \u226a (log log n / log log log n) \u00b7 log n.\n\nThis probabilistic prediction, if true, would be dramatically stronger than the (1-c)(log n)\u00b2 conjecture, since (log log n / log log log n) \u00b7 log n grows much slower than (log n)\u00b2.\n\nThe tao_implies_erdos1181 theorem demonstrates this implication (with a sorry for the asymptotic comparison).",
     "mathContext": "The heuristic comes from modeling the divisibility of consecutive products by random model arguments.",
     "significance": "key",
     "relatedConcepts": [
@@ -121,8 +121,8 @@
     },
     "type": "definition",
     "title": "Chebyshev Theta Function",
-    "content": "**θ(x) = ∑_{p ≤ x, p prime} log p**\n\nThe Chebyshev theta function sums log p over all primes up to x. By the Prime Number Theorem, θ(x)/x → 1 as x → ∞.\n\nThis function connects primorials to the consecutive product: log(primorial(q)) = θ(q), and θ(q) ~ q by PNT.",
-    "mathContext": "Defined using Finset.Icc 2 ⌊x⌋₊ filtered by primality, summing Real.log.",
+    "content": "**\u03b8(x) = \u2211_{p \u2264 x, p prime} log p**\n\nThe Chebyshev theta function sums log p over all primes up to x. By the Prime Number Theorem, \u03b8(x)/x \u2192 1 as x \u2192 \u221e.\n\nThis function connects primorials to the consecutive product: log(primorial(q)) = \u03b8(q), and \u03b8(q) ~ q by PNT.",
+    "mathContext": "Defined using Finset.Icc 2 \u230ax\u230b\u208a filtered by primality, summing Real.log.",
     "significance": "key",
     "relatedConcepts": [
       "Prime Number Theorem",

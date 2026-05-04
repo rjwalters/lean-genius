@@ -6,9 +6,9 @@
       "startLine": 33,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "derangements_rate_scaled: Scaled Rate Bound",
-    "content": "The alternating series rate bound from DerangementsConvergence is scaled by multiplying both sides by n!. Starting from |D(n)/n! - e⁻¹| ≤ 1/(n+1)!, we use the identity D(n) - n!/e = n! · (D(n)/n! - 1/e) to obtain |D(n) - n!/e| ≤ n!/(n+1)! = 1/(n+1). The key algebraic step uses field_simp + ring to establish the factoring identity, then mul_le_mul_of_nonneg_left to scale the bound.",
+    "content": "The alternating series rate bound from DerangementsConvergence is scaled by multiplying both sides by n!. Starting from |D(n)/n! - e\u207b\u00b9| \u2264 1/(n+1)!, we use the identity D(n) - n!/e = n! \u00b7 (D(n)/n! - 1/e) to obtain |D(n) - n!/e| \u2264 n!/(n+1)! = 1/(n+1). The key algebraic step uses field_simp + ring to establish the factoring identity, then mul_le_mul_of_nonneg_left to scale the bound.",
     "mathContext": "$|D(n) - n!/e| = n! \\cdot |D(n)/n! - e^{-1}| \\leq n! \\cdot \\frac{1}{(n+1)!} = \\frac{1}{n+1}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -28,9 +28,9 @@
       "startLine": 62,
       "endLine": 73
     },
-    "type": "theorem",
-    "title": "derangements_nearest_integer: Main Rounding Theorem (n ≥ 2)",
-    "content": "For n ≥ 2, the scaled bound gives 1/(n+1) ≤ 1/3 < 1/2. The proof is a simple calc chain: apply the rate bound, then one_div_le_one_div_of_le to get 1/(n+1) ≤ 1/3 (using 3 ≤ n+1), then norm_num for 1/3 < 1/2.",
+    "type": "insight",
+    "title": "derangements_nearest_integer: Main Rounding Theorem (n \u2265 2)",
+    "content": "For n \u2265 2, the scaled bound gives 1/(n+1) \u2264 1/3 < 1/2. The proof is a simple calc chain: apply the rate bound, then one_div_le_one_div_of_le to get 1/(n+1) \u2264 1/3 (using 3 \u2264 n+1), then norm_num for 1/3 < 1/2.",
     "mathContext": "For $n \\geq 2$: $|D(n) - n!/e| \\leq \\frac{1}{n+1} \\leq \\frac{1}{3} < \\frac{1}{2}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -49,9 +49,9 @@
       "startLine": 76,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "derangements_nearest_integer_n1: The n=1 Special Case",
-    "content": "For n=1, the rate bound gives only ≤ 1/2 (not strict), so a separate argument is needed. D(1) = 0 by decide, and the goal reduces to 1/e < 1/2, equivalently 2 < e. This is proved via Real.add_one_lt_exp (strict convexity of exp): applying the strict inequality 1 + x < exp(x) for x ≠ 0 at x=1 gives 2 < exp(1) = e.",
+    "content": "For n=1, the rate bound gives only \u2264 1/2 (not strict), so a separate argument is needed. D(1) = 0 by decide, and the goal reduces to 1/e < 1/2, equivalently 2 < e. This is proved via Real.add_one_lt_exp (strict convexity of exp): applying the strict inequality 1 + x < exp(x) for x \u2260 0 at x=1 gives 2 < exp(1) = e.",
     "mathContext": "$D(1) = 0$, so $|D(1) - 1/e| = 1/e < 1/2 \\iff e > 2$. Follows from the strict inequality $1 + x < e^x$ for $x \\neq 0$ (applied at $x = 1$).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -71,9 +71,9 @@
       "startLine": 103,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "derangements_unique_nearest: Uniqueness of the Nearest Integer",
-    "content": "If m is any natural number with |m - n!/e| < 1/2, then m = D(n). The proof uses the triangle inequality to show |m - D(n)| ≤ |m - n!/e| + |D(n) - n!/e| < 1, then casts to integers and applies omega: an integer strictly between -1 and 1 must be 0, giving m = D(n). The integer gap lemma is a powerful technique: cast the real bound to integers, then use omega for the linear arithmetic conclusion.",
+    "content": "If m is any natural number with |m - n!/e| < 1/2, then m = D(n). The proof uses the triangle inequality to show |m - D(n)| \u2264 |m - n!/e| + |D(n) - n!/e| < 1, then casts to integers and applies omega: an integer strictly between -1 and 1 must be 0, giving m = D(n). The integer gap lemma is a powerful technique: cast the real bound to integers, then use omega for the linear arithmetic conclusion.",
     "mathContext": "$|m - D(n)| < 1$ and $m, D(n) \\in \\mathbb{Z}$ implies $m = D(n)$. This is because no nonzero integer has absolute value $< 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -94,9 +94,9 @@
       "startLine": 125,
       "endLine": 147
     },
-    "type": "theorem",
-    "title": "Tighter Bounds: 1/4 for n≥3 and the Parametric Bound 1/k",
-    "content": "Section 4 provides two refinements of the main rate bound:\n\n**`derangements_quarter_bound`** (n ≥ 3): `|D(n) - n!/e| ≤ 1/4`. The proof reuses `derangements_rate_scaled` (giving ≤ 1/(n+1)) and `one_div_le_one_div_of_le` with `4 ≤ n+1`. This gives the best constant bound for 'small' n where 1/3 is not sharp enough.\n\n**`derangements_parametric_bound`** (k ≤ n+1, k > 0): `|D(n) - n!/e| ≤ 1/k`. This generalizes both the main theorem (k=3, n≥2) and the quarter bound (k=4, n≥3): for any k, as long as k ≤ n+1, the bound holds. The parametric form makes it easy to apply the theorem at a specific precision: to get error ≤ 0.01, take k=101 and n ≥ 100.\n\nThe chain is: `derangements_rate_scaled` (base, ≤ 1/(n+1)) → `derangements_nearest_integer` (k=3, n≥2, <1/2) → `derangements_quarter_bound` (k=4, n≥3, ≤1/4) → `derangements_parametric_bound` (general). Each is a 3-5 line `calc` proof via `one_div_le_one_div_of_le`.",
+    "type": "insight",
+    "title": "Tighter Bounds: 1/4 for n\u22653 and the Parametric Bound 1/k",
+    "content": "Section 4 provides two refinements of the main rate bound:\n\n**`derangements_quarter_bound`** (n \u2265 3): `|D(n) - n!/e| \u2264 1/4`. The proof reuses `derangements_rate_scaled` (giving \u2264 1/(n+1)) and `one_div_le_one_div_of_le` with `4 \u2264 n+1`. This gives the best constant bound for 'small' n where 1/3 is not sharp enough.\n\n**`derangements_parametric_bound`** (k \u2264 n+1, k > 0): `|D(n) - n!/e| \u2264 1/k`. This generalizes both the main theorem (k=3, n\u22652) and the quarter bound (k=4, n\u22653): for any k, as long as k \u2264 n+1, the bound holds. The parametric form makes it easy to apply the theorem at a specific precision: to get error \u2264 0.01, take k=101 and n \u2265 100.\n\nThe chain is: `derangements_rate_scaled` (base, \u2264 1/(n+1)) \u2192 `derangements_nearest_integer` (k=3, n\u22652, <1/2) \u2192 `derangements_quarter_bound` (k=4, n\u22653, \u22641/4) \u2192 `derangements_parametric_bound` (general). Each is a 3-5 line `calc` proof via `one_div_le_one_div_of_le`.",
     "mathContext": "Parametric bound: $k \\leq n+1 \\implies |D(n) - n!/e| \\leq 1/(n+1) \\leq 1/k$. Taking $k \\to \\infty$ gives $|D(n) - n!/e| \\to 0$, consistent with the convergence $D(n)/n! \\to e^{-1}$. At $n = 10$: error $\\leq 1/11 \\approx 0.091$; at $n = 100$: error $\\leq 1/101 \\approx 0.0099$.",
     "significance": "supporting",
     "relatedConcepts": [

@@ -8,16 +8,16 @@
     },
     "type": "concept",
     "title": "Motivation: Why EuclideanDomain, Not UFD",
-    "content": "The header explains the key mathematical insight: the correct generalization of Bézout's identity from ℤ to abstract rings requires EuclideanDomain, not UniqueFactorizationDomain.\n\nThe counterexample ℤ[X] is a UFD, gcd(2, X) = 1, yet 1 ∉ {2f + Xg} because any element 2f + Xg has even constant term if X | g, and otherwise the X-term dominates. This shows UFD is insufficient.\n\nEuclidean domains have the extended GCD algorithm, which gives explicit Bézout coefficients — this is what's needed.",
-    "mathContext": "ℤ[X] is a Noetherian UFD. gcd(2, X) = 1 in ℤ[X] (no common factors). But 2f(X) + Xg(X) ≡ 0 (mod 2) when X=0, so constant term is even — 1 is not achievable.",
+    "content": "The header explains the key mathematical insight: the correct generalization of B\u00e9zout's identity from \u2124 to abstract rings requires EuclideanDomain, not UniqueFactorizationDomain.\n\nThe counterexample \u2124[X] is a UFD, gcd(2, X) = 1, yet 1 \u2209 {2f + Xg} because any element 2f + Xg has even constant term if X | g, and otherwise the X-term dominates. This shows UFD is insufficient.\n\nEuclidean domains have the extended GCD algorithm, which gives explicit B\u00e9zout coefficients \u2014 this is what's needed.",
+    "mathContext": "\u2124[X] is a Noetherian UFD. gcd(2, X) = 1 in \u2124[X] (no common factors). But 2f(X) + Xg(X) \u2261 0 (mod 2) when X=0, so constant term is even \u2014 1 is not achievable.",
     "significance": "supporting",
     "relatedConcepts": [
-      "UFD vs Bézout domain",
+      "UFD vs B\u00e9zout domain",
       "Euclidean algorithm",
       "ideal generation"
     ],
     "prerequisites": [
-      "gcd in ℤ[X]",
+      "gcd in \u2124[X]",
       "Euclidean domain"
     ]
   },
@@ -28,10 +28,10 @@
       "startLine": 32,
       "endLine": 43
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Core Lemmas: gcd Divides, gcd Achievable",
-    "content": "Two foundational lemmas:\n\n**gcd_dvd_linear_combination**: `gcd(a,b) | ax + by` follows directly from gcd dividing both a and b.\n\n**gcd_achievable_ED**: `∃ x y, ax + by = gcd(a,b)` — the Bézout coefficients `gcdA a b` and `gcdB a b` from Mathlib's EuclideanDomain satisfy `a·gcdA + b·gcdB = gcd(a,b)`. The key Mathlib lemma is `EuclideanDomain.gcd_eq_gcd_ab : gcd a b = a * gcdA a b + b * gcdB a b`.",
-    "mathContext": "EuclideanDomain.gcdA and gcdB are computable coefficients from the extended Euclidean algorithm. They satisfy gcd_eq_gcd_ab, which is the abstract Bézout identity.",
+    "content": "Two foundational lemmas:\n\n**gcd_dvd_linear_combination**: `gcd(a,b) | ax + by` follows directly from gcd dividing both a and b.\n\n**gcd_achievable_ED**: `\u2203 x y, ax + by = gcd(a,b)` \u2014 the B\u00e9zout coefficients `gcdA a b` and `gcdB a b` from Mathlib's EuclideanDomain satisfy `a\u00b7gcdA + b\u00b7gcdB = gcd(a,b)`. The key Mathlib lemma is `EuclideanDomain.gcd_eq_gcd_ab : gcd a b = a * gcdA a b + b * gcdB a b`.",
+    "mathContext": "EuclideanDomain.gcdA and gcdB are computable coefficients from the extended Euclidean algorithm. They satisfy gcd_eq_gcd_ab, which is the abstract B\u00e9zout identity.",
     "significance": "key",
     "relatedConcepts": [
       "EuclideanDomain.gcd_eq_gcd_ab",
@@ -51,10 +51,10 @@
       "startLine": 51,
       "endLine": 63
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "linear_combination_iff_gcd_dvd: The Core Equivalence",
-    "content": "The main result: `∃ x y, ax + by = c ↔ gcd(a,b) | c`.\n\n**Forward**: immediate from `gcd_dvd_linear_combination`.\n\n**Backward**: Given `c = gcd(a,b) · k`, write `c = a·(gcdA·k) + b·(gcdB·k)` using Bézout: `a·gcdA + b·gcdB = gcd`. The `calc` chain makes this explicit:\n```\na·(gcdA·k) + b·(gcdB·k) = (a·gcdA + b·gcdB)·k = gcd·k = c\n```\nThe algebraic step uses `gcd_eq_gcd_ab` and `ring`.",
-    "mathContext": "The proof is elegant: 4 lines for each direction. The backward direction is the interesting one — it shows the abstract Bézout identity does the work.",
+    "content": "The main result: `\u2203 x y, ax + by = c \u2194 gcd(a,b) | c`.\n\n**Forward**: immediate from `gcd_dvd_linear_combination`.\n\n**Backward**: Given `c = gcd(a,b) \u00b7 k`, write `c = a\u00b7(gcdA\u00b7k) + b\u00b7(gcdB\u00b7k)` using B\u00e9zout: `a\u00b7gcdA + b\u00b7gcdB = gcd`. The `calc` chain makes this explicit:\n```\na\u00b7(gcdA\u00b7k) + b\u00b7(gcdB\u00b7k) = (a\u00b7gcdA + b\u00b7gcdB)\u00b7k = gcd\u00b7k = c\n```\nThe algebraic step uses `gcd_eq_gcd_ab` and `ring`.",
+    "mathContext": "The proof is elegant: 4 lines for each direction. The backward direction is the interesting one \u2014 it shows the abstract B\u00e9zout identity does the work.",
     "significance": "key",
     "relatedConcepts": [
       "gcd_eq_gcd_ab",
@@ -74,10 +74,10 @@
       "startLine": 65,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "gcd_complete_characterization_ED: Full GCD Characterization",
     "content": "The complete characterization: d satisfies achievability AND universality iff d and gcd(a,b) divide each other.\n\nProof structure: `simp_rw [linear_combination_iff_gcd_dvd]` converts both achievability conditions to divisibility, then a simple rearrangement of dvd statements completes the proof.\n\nThis generalizes the integer version from `BezoutIdentityOQ04.lean` to all Euclidean domains.",
-    "mathContext": "In ℤ, d | gcd(a,b) ∧ gcd(a,b) | d iff d = ±gcd(a,b). In a general domain, this is the 'associate' relation. The characterization says d is a Bézout generator iff d is associate to gcd.",
+    "mathContext": "In \u2124, d | gcd(a,b) \u2227 gcd(a,b) | d iff d = \u00b1gcd(a,b). In a general domain, this is the 'associate' relation. The characterization says d is a B\u00e9zout generator iff d is associate to gcd.",
     "significance": "key",
     "relatedConcepts": [
       "associates",
@@ -99,15 +99,15 @@
     },
     "type": "concept",
     "title": "Part IV Examples: Witnesses, Non-Achievability, and Coprimality",
-    "content": "Four ℤ examples verify the theory concretely:\n\n1. **gcd(6,15)=3**: Bézout witness `6·(-2) + 15·1 = 3` by `norm_num`.\n2. **6 is achievable**: `6·1 + 15·0 = 6` by `norm_num`.\n3. **4 is NOT achievable**: `¬∃ x y : ℤ, 6x+15y=4` proved by `omega` — omega's Presburger arithmetic recognizes 6x+15y ≡ 0 (mod 3) but 4 ≢ 0 (mod 3).\n4. **Coprimality**: `gcd(7,5)=1` so every integer c is achievable via `(3c, -4c)`, verified by `ring`: 7·(3c)+5·(-4c) = c.\n\nA Polynomial ℤ example confirms (X²-1)·0+(X-1)·1 = X-1 by ring — illustrating the abstract theorem in the polynomial setting.",
-    "mathContext": "The `omega` tactic solves linear integer arithmetic (Presburger arithmetic) automatically. `norm_num` handles concrete numerical computations. The coprimality example is the cleanest illustration of the abstract theorem: when gcd(a,b)=1, the ideal {ax+by | x,y ∈ R} = R, so every element is achievable.",
+    "content": "Four \u2124 examples verify the theory concretely:\n\n1. **gcd(6,15)=3**: B\u00e9zout witness `6\u00b7(-2) + 15\u00b71 = 3` by `norm_num`.\n2. **6 is achievable**: `6\u00b71 + 15\u00b70 = 6` by `norm_num`.\n3. **4 is NOT achievable**: `\u00ac\u2203 x y : \u2124, 6x+15y=4` proved by `omega` \u2014 omega's Presburger arithmetic recognizes 6x+15y \u2261 0 (mod 3) but 4 \u2262 0 (mod 3).\n4. **Coprimality**: `gcd(7,5)=1` so every integer c is achievable via `(3c, -4c)`, verified by `ring`: 7\u00b7(3c)+5\u00b7(-4c) = c.\n\nA Polynomial \u2124 example confirms (X\u00b2-1)\u00b70+(X-1)\u00b71 = X-1 by ring \u2014 illustrating the abstract theorem in the polynomial setting.",
+    "mathContext": "The `omega` tactic solves linear integer arithmetic (Presburger arithmetic) automatically. `norm_num` handles concrete numerical computations. The coprimality example is the cleanest illustration of the abstract theorem: when gcd(a,b)=1, the ideal {ax+by | x,y \u2208 R} = R, so every element is achievable.",
     "significance": "supporting",
     "relatedConcepts": [
       "norm_num",
       "omega tactic",
-      "Bézout witnesses",
+      "B\u00e9zout witnesses",
       "coprimality",
-      "Polynomial ℤ",
+      "Polynomial \u2124",
       "Presburger arithmetic"
     ],
     "prerequisites": [

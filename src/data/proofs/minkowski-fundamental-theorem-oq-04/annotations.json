@@ -8,11 +8,11 @@
     },
     "type": "insight",
     "title": "Setup: Custom Lattice Type Definition",
-    "content": "The file imports Mathlib's ZLattice, PiL2, Matrix.Basis, and Matrix.Determinant libraries, then defines the custom Lattice n structure: a record containing an n×n real matrix (the basis) together with a proof that its determinant is nonzero. This bare-bones definition is deliberately minimal — no topology, no inner product, just the algebraic skeleton needed to represent a full-rank sublattice of ℝⁿ. The entire file lives in namespace MinkowskiFundamentalTheoremOQ04 under the hypothesis n : ℕ [NeZero n] (n is a positive natural number).",
+    "content": "The file imports Mathlib's ZLattice, PiL2, Matrix.Basis, and Matrix.Determinant libraries, then defines the custom Lattice n structure: a record containing an n\u00d7n real matrix (the basis) together with a proof that its determinant is nonzero. This bare-bones definition is deliberately minimal \u2014 no topology, no inner product, just the algebraic skeleton needed to represent a full-rank sublattice of \u211d\u207f. The entire file lives in namespace MinkowskiFundamentalTheoremOQ04 under the hypothesis n : \u2115 [NeZero n] (n is a positive natural number).",
     "mathContext": "The custom lattice: $\\mathtt{Lattice}\\,n = \\{\\mathtt{basis} : \\mathbf{M}_{n\\times n}(\\mathbb{R}),\\ \\mathtt{basis\\_invertible} : \\det(\\mathtt{basis}) \\neq 0\\}$. The condition $\\det(A) \\neq 0$ is precisely invertibility in $\\mathrm{GL}_n(\\mathbb{R})$, so $\\mathtt{Lattice}\\,n$ is in bijection with $\\mathrm{GL}_n(\\mathbb{R})$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "GL_n(ℝ)",
+      "GL_n(\u211d)",
       "full-rank matrix",
       "basis matrix",
       "Module.Basis",
@@ -33,7 +33,7 @@
     },
     "type": "concept",
     "title": "Pi Standard Basis Transpose Identity",
-    "content": "The theorem piBasicFun_toMatrix_eq_transpose proves that e.toMatrix(b) = (Matrix.of b)ᵀ, where e = Pi.basisFun ℝ (Fin n) is the standard coordinate basis (eᵢ(j) = δᵢⱼ). The proof is a single simp tactic: Basis.toMatrix_apply unfolds e.toMatrix(b)ᵢⱼ to e.repr(b(j))(i), Pi.basisFun_repr simplifies e.repr(v)(i) to v(i), and Matrix.of_apply gives (Matrix.of b)(j)(i) — matching the transpose entry. This one-liner hides a crucial conceptual step: the 'matrix of a basis change from e to b' is the transpose of the 'matrix whose rows are the basis vectors b(i)'.",
+    "content": "The theorem piBasicFun_toMatrix_eq_transpose proves that e.toMatrix(b) = (Matrix.of b)\u1d40, where e = Pi.basisFun \u211d (Fin n) is the standard coordinate basis (e\u1d62(j) = \u03b4\u1d62\u2c7c). The proof is a single simp tactic: Basis.toMatrix_apply unfolds e.toMatrix(b)\u1d62\u2c7c to e.repr(b(j))(i), Pi.basisFun_repr simplifies e.repr(v)(i) to v(i), and Matrix.of_apply gives (Matrix.of b)(j)(i) \u2014 matching the transpose entry. This one-liner hides a crucial conceptual step: the 'matrix of a basis change from e to b' is the transpose of the 'matrix whose rows are the basis vectors b(i)'.",
     "mathContext": "$(e.\\mathrm{toMatrix}\\,b)_{ij} = e.\\mathrm{repr}(b(j))(i) = b(j)(i) = (\\mathbf{M}(b))_{ji} = (\\mathbf{M}(b)^\\top)_{ij}$, where $\\mathbf{M}(b)_{ij} := b(i)(j)$ is the matrix whose $i$-th row lists the coordinates of the $i$-th basis vector.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -58,7 +58,7 @@
     },
     "type": "insight",
     "title": "Key Lemma: Any Basis Matrix has Nonzero Determinant",
-    "content": "The theorem basis_matrix_det_ne_zero proves det(Matrix.of b) ≠ 0 for any Module.Basis b of Fin n → ℝ. The proof chains four facts: (1) Basis.toMatrix_mul_toMatrix_flip gives b.toMatrix(e) · e.toMatrix(b) = 1; (2) piBasicFun_toMatrix_eq_transpose gives e.toMatrix(b) = (Matrix.of b)ᵀ; (3) det is multiplicative and det(1) = 1, so det(b.toMatrix e) · det(Matrix.of b) = 1 (using det_transpose to remove the ᵀ); (4) if det(Matrix.of b) = 0 then the product is 0, contradicting 1 = 0. This is the 'backward direction' enabler: it produces the invertibility proof needed to wrap a Module.Basis into a Lattice n.",
+    "content": "The theorem basis_matrix_det_ne_zero proves det(Matrix.of b) \u2260 0 for any Module.Basis b of Fin n \u2192 \u211d. The proof chains four facts: (1) Basis.toMatrix_mul_toMatrix_flip gives b.toMatrix(e) \u00b7 e.toMatrix(b) = 1; (2) piBasicFun_toMatrix_eq_transpose gives e.toMatrix(b) = (Matrix.of b)\u1d40; (3) det is multiplicative and det(1) = 1, so det(b.toMatrix e) \u00b7 det(Matrix.of b) = 1 (using det_transpose to remove the \u1d40); (4) if det(Matrix.of b) = 0 then the product is 0, contradicting 1 = 0. This is the 'backward direction' enabler: it produces the invertibility proof needed to wrap a Module.Basis into a Lattice n.",
     "mathContext": "Let $e$ be the standard basis. Then $b.\\mathrm{toMatrix}(e) \\cdot e.\\mathrm{toMatrix}(b) = I$ (change-of-basis product identity). Substituting $e.\\mathrm{toMatrix}(b) = \\mathbf{M}(b)^\\top$: $\\det(b.\\mathrm{toMatrix}\\,e) \\cdot \\det(\\mathbf{M}(b)^\\top) = 1$. Since $\\det(A^\\top) = \\det(A)$: $\\det(b.\\mathrm{toMatrix}\\,e) \\cdot \\det(\\mathbf{M}(b)) = 1 \\neq 0$, so $\\det(\\mathbf{M}(b)) \\neq 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -83,8 +83,8 @@
       "endLine": 85
     },
     "type": "concept",
-    "title": "Backward Map: Module.Basis → Lattice",
-    "content": "The function latticeOfBasis wraps any Module.Basis b into a Lattice n by taking basis = Matrix.of b and basis_invertible = basis_matrix_det_ne_zero n b. It is marked noncomputable because extracting an Invertible instance from a det ≠ 0 proof requires Classical logic (going through the isUnit/Invertible bridge nonconstructively). This is the invFun of the final Equiv.",
+    "title": "Backward Map: Module.Basis \u2192 Lattice",
+    "content": "The function latticeOfBasis wraps any Module.Basis b into a Lattice n by taking basis = Matrix.of b and basis_invertible = basis_matrix_det_ne_zero n b. It is marked noncomputable because extracting an Invertible instance from a det \u2260 0 proof requires Classical logic (going through the isUnit/Invertible bridge nonconstructively). This is the invFun of the final Equiv.",
     "mathContext": "$\\mathtt{latticeOfBasis}(b) : \\mathtt{Lattice}\\,n = (\\mathbf{M}(b),\\ \\delta \\neq 0)$ where $\\delta = \\det(\\mathbf{M}(b))$ and $\\mathbf{M}(b)_{ij} = b(i)(j)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -108,7 +108,7 @@
     },
     "type": "concept",
     "title": "Forward Map: Lattice to Linear Equivalence and Module.Basis",
-    "content": "Lattice.toLinearEquiv constructs a linear isomorphism Fin n → ℝ ≃ₗ[ℝ] Fin n → ℝ by applying LinearEquiv.ofBijective to the map v ↦ L.basisᵀ · v (multiplication by the transpose of the lattice basis). Bijectivity follows from invertibility of L.basisᵀ (since det(L.basisᵀ) = det(L.basis) ≠ 0). Then Lattice.toModuleBasis pushes the Pi.basisFun standard basis through this equivalence via Basis.map, producing a Module.Basis whose i-th vector is L.basisᵀ · eᵢ — the i-th column of L.basis, which is the i-th row viewed as a coordinate function.",
+    "content": "Lattice.toLinearEquiv constructs a linear isomorphism Fin n \u2192 \u211d \u2243\u2097[\u211d] Fin n \u2192 \u211d by applying LinearEquiv.ofBijective to the map v \u21a6 L.basis\u1d40 \u00b7 v (multiplication by the transpose of the lattice basis). Bijectivity follows from invertibility of L.basis\u1d40 (since det(L.basis\u1d40) = det(L.basis) \u2260 0). Then Lattice.toModuleBasis pushes the Pi.basisFun standard basis through this equivalence via Basis.map, producing a Module.Basis whose i-th vector is L.basis\u1d40 \u00b7 e\u1d62 \u2014 the i-th column of L.basis, which is the i-th row viewed as a coordinate function.",
     "mathContext": "$L.\\mathtt{toLinearEquiv}\\,n : v \\mapsto L.\\mathtt{basis}^\\top \\cdot v$, an $\\mathbb{R}$-linear isomorphism. $L.\\mathtt{toModuleBasis}\\,n = e.\\mathtt{map}(L.\\mathtt{toLinearEquiv}\\,n)$ where $e = \\mathrm{Pi.basisFun}\\,\\mathbb{R}\\,(\\mathrm{Fin}\\,n)$. The $i$-th basis vector: $(L.\\mathtt{toModuleBasis}\\,n)(i) = L.\\mathtt{basis}^\\top \\cdot e_i = L.\\mathtt{basis}[*, i]$ (the $i$-th column of $L.\\mathtt{basis}$).",
     "significance": "key",
     "relatedConcepts": [
@@ -133,7 +133,7 @@
     },
     "type": "insight",
     "title": "Matrix Representation Preserved Under Conversion",
-    "content": "The theorem Lattice.toModuleBasis_matrix_eq proves that Matrix.of(L.toModuleBasis n) = L.basis — the matrix of the derived Module.Basis equals the original lattice basis matrix. The proof uses a sequence of definitional reductions: Matrix.of_apply and Basis.map_apply unfold the goal to showing that the toLinearEquiv applied to the i-th standard basis vector at coordinate j equals L.basis(i)(j). Unfolding toLinearEquiv to its mulVecLin definition and applying simp completes the computation. This theorem is the key to proving the round-trip identities.",
+    "content": "The theorem Lattice.toModuleBasis_matrix_eq proves that Matrix.of(L.toModuleBasis n) = L.basis \u2014 the matrix of the derived Module.Basis equals the original lattice basis matrix. The proof uses a sequence of definitional reductions: Matrix.of_apply and Basis.map_apply unfold the goal to showing that the toLinearEquiv applied to the i-th standard basis vector at coordinate j equals L.basis(i)(j). Unfolding toLinearEquiv to its mulVecLin definition and applying simp completes the computation. This theorem is the key to proving the round-trip identities.",
     "mathContext": "$\\mathbf{M}(L.\\mathtt{toModuleBasis}\\,n)_{ij} = (L.\\mathtt{toLinearEquiv}\\,n(e_i))(j) = (L.\\mathtt{basis}^\\top \\cdot e_i)(j) = L.\\mathtt{basis}_{ij}$, so $\\mathbf{M}(L.\\mathtt{toModuleBasis}\\,n) = L.\\mathtt{basis}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -157,7 +157,7 @@
     },
     "type": "concept",
     "title": "Round-Trip Identities Prove the Bijection",
-    "content": "Two round-trip theorems complete the equivalence proof. Round-trip 1 (toModuleBasis_latticeOfBasis): given L : Lattice n, applying latticeOfBasis to L.toModuleBasis recovers L. The proof destructs L = ⟨basis, h⟩ and uses toModuleBasis_matrix_eq to equate the matrices. Round-trip 2 (latticeOfBasis_toModuleBasis): given b : Module.Basis, applying toModuleBasis to latticeOfBasis(b) recovers b. The proof first shows the underlying matrices agree (using toModuleBasis_matrix_eq + latticeOfBasis unfolding), then uses DFunLike.ext + funext to reduce basis equality to pointwise coordinate equality. Both proofs exemplify the Lean 4 pattern of reducing high-level algebraic equality to matrix/coordinate equality.",
+    "content": "Two round-trip theorems complete the equivalence proof. Round-trip 1 (toModuleBasis_latticeOfBasis): given L : Lattice n, applying latticeOfBasis to L.toModuleBasis recovers L. The proof destructs L = \u27e8basis, h\u27e9 and uses toModuleBasis_matrix_eq to equate the matrices. Round-trip 2 (latticeOfBasis_toModuleBasis): given b : Module.Basis, applying toModuleBasis to latticeOfBasis(b) recovers b. The proof first shows the underlying matrices agree (using toModuleBasis_matrix_eq + latticeOfBasis unfolding), then uses DFunLike.ext + funext to reduce basis equality to pointwise coordinate equality. Both proofs exemplify the Lean 4 pattern of reducing high-level algebraic equality to matrix/coordinate equality.",
     "mathContext": "Round-trip 1: $\\mathtt{latticeOfBasis}\\,n\\,(L.\\mathtt{toModuleBasis}\\,n) = L$ since $\\mathbf{M}(L.\\mathtt{toModuleBasis}\\,n) = L.\\mathtt{basis}$ (by \\texttt{toModuleBasis\\_matrix\\_eq}). Round-trip 2: $(\\mathtt{latticeOfBasis}\\,n\\,b).\\mathtt{toModuleBasis}\\,n = b$ since their matrices agree: $\\mathbf{M}(\\mathtt{result}) = \\mathbf{M}(\\mathtt{latticeOfBasis}\\,n\\,b) = \\mathbf{M}(b)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -206,7 +206,7 @@
       "startLine": 163,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Bridge Theorem: Custom API Backed by ZSpan-Native Minkowski",
     "content": "The theorem `minkowski_custom_via_zlattice` is the architectural culmination of OQ-04: it shows the custom Minkowski API is not a parallel universe but a **convenient wrapper** over the ZSpan-native proof `minkowski_general_lattice_proved`.\n\nThe proof chain:\n1. Convert the volume hypothesis via `custom_vol_to_ennreal`\n2. Apply `minkowski_general_lattice_proved` with `L.toModuleBasis n` and the convex body's carrier\n3. Translate back: ZSpan lattice points (`ZSpan.latticePoints`) become custom lattice points via `latticePoints_eq_span`\n\nThis demonstrates that the custom Lattice n infrastructure is *sound*: every theorem provable in the custom API is derivable from Mathlib's ZLattice theory.",
     "mathContext": "The bridge closes the logical loop: if $\\mathrm{vol}(S) > 2^n \\cdot |\\det(L)|$, then:\n1. `custom_vol_to_ennreal` gives $\\mathrm{ENNReal.ofReal}(|\\det(L.\\mathrm{toModuleBasis})|) \\cdot 2^n < \\mathrm{vol}(S.\\mathrm{carrier})$\n2. `minkowski_general_lattice_proved` yields $\\exists x \\in S \\cap \\mathbb{Z}^n_{L},\\ x \\neq 0$\n3. `latticePoints_eq_span` translates $\\mathbb{Z}^n_L$ (ZSpan form) to `latticePoints n L` (custom form)",
@@ -235,8 +235,8 @@
     },
     "type": "insight",
     "title": "Extensional Equality: Two Proof Routes Are Interchangeable",
-    "content": "The theorem `minkowski_custom_via_zlattice_iff_fundamental` is proved by `Iff.rfl` — the two sides of the biconditional are definitionally equal (the same proposition). This is a **sanity check** rather than a deep result: both `minkowski_fundamental` and `minkowski_custom_via_zlattice` prove exactly the same statement.\n\nThe triviality of the proof (`Iff.rfl`) confirms that the two routes are *extensionally identical*: they prove the same proposition, just via different proof terms (one using the custom API machinery, one using the ZSpan bridge). In Lean 4's type theory, propositional proof irrelevance makes them equal as proofs too.",
-    "mathContext": "Proof irrelevance in Lean 4: for any proposition $P$, all proofs of $P$ are definitionally equal. So if $h_1 : P$ and $h_2 : P$, then `h_1 = h_2` holds by `rfl`. The `Iff.rfl` here reflects that `(P → Q) ↔ (P → Q)` is definitionally true for any $P, Q$ — no computation needed.",
+    "content": "The theorem `minkowski_custom_via_zlattice_iff_fundamental` is proved by `Iff.rfl` \u2014 the two sides of the biconditional are definitionally equal (the same proposition). This is a **sanity check** rather than a deep result: both `minkowski_fundamental` and `minkowski_custom_via_zlattice` prove exactly the same statement.\n\nThe triviality of the proof (`Iff.rfl`) confirms that the two routes are *extensionally identical*: they prove the same proposition, just via different proof terms (one using the custom API machinery, one using the ZSpan bridge). In Lean 4's type theory, propositional proof irrelevance makes them equal as proofs too.",
+    "mathContext": "Proof irrelevance in Lean 4: for any proposition $P$, all proofs of $P$ are definitionally equal. So if $h_1 : P$ and $h_2 : P$, then `h_1 = h_2` holds by `rfl`. The `Iff.rfl` here reflects that `(P \u2192 Q) \u2194 (P \u2192 Q)` is definitionally true for any $P, Q$ \u2014 no computation needed.",
     "significance": "context",
     "relatedConcepts": [
       "proof-irrelevance",

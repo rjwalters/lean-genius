@@ -2,97 +2,194 @@
   {
     "id": "ann-module-structure",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 1, "endLine": 25 },
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
     "type": "context",
-    "title": "Module Structure: 6 Parts Building on the 2×2 LGV Lemma",
-    "content": "This file imports `BallotProblemOQ03`, which fully proves the 2×2 LGV (Lindström-Gessel-Viennot) lemma: the count of non-intersecting lattice path pairs equals the 2×2 determinant of path-count matrices. `LGVCorollaries` then builds six parts on top of that infrastructure: (I) Concrete applications via specific source/target configurations, (II) Ballot-Catalan connection, (III) Symmetry properties of the LGV determinant, (IV) Verified computations with `native_decide`, (V) The n×n LGV matrix and its 2×2 reduction, and (VI) The Hook-Length Formula for rectangular 2-row Young tableaux. All 8 theorems use 0 sorries and 0 axioms — the file is entirely deduced from Mathlib and the BallotProblemOQ03 infrastructure.",
-    "mathContext": "The Lindström-Gessel-Viennot lemma (1973 for the lattice path version; Lindström 1973, Gessel-Viennot 1985) states: for sources $A_1, \\ldots, A_n$ and targets $B_1, \\ldots, B_n$, the signed count of $n$-tuples of non-intersecting paths is $\\det[e(A_i, B_j)]$ where $e(A_i, B_j)$ counts paths from $A_i$ to $B_j$. This file's `lgvDet m a₁ b₁ a₂ b₂` is the $n=2$ case: $\\binom{m+b_1-a_1}{m}\\binom{m+b_2-a_2}{m} - \\binom{m+b_1-a_2}{m}\\binom{m+b_2-a_1}{m}$, where lattice paths take $m$ East steps and $b_j - a_i$ North steps.",
+    "title": "Module Structure: 6 Parts Building on the 2\u00d72 LGV Lemma",
+    "content": "This file imports `BallotProblemOQ03`, which fully proves the 2\u00d72 LGV (Lindstr\u00f6m-Gessel-Viennot) lemma: the count of non-intersecting lattice path pairs equals the 2\u00d72 determinant of path-count matrices. `LGVCorollaries` then builds six parts on top of that infrastructure: (I) Concrete applications via specific source/target configurations, (II) Ballot-Catalan connection, (III) Symmetry properties of the LGV determinant, (IV) Verified computations with `native_decide`, (V) The n\u00d7n LGV matrix and its 2\u00d72 reduction, and (VI) The Hook-Length Formula for rectangular 2-row Young tableaux. All 8 theorems use 0 sorries and 0 axioms \u2014 the file is entirely deduced from Mathlib and the BallotProblemOQ03 infrastructure.",
+    "mathContext": "The Lindstr\u00f6m-Gessel-Viennot lemma (1973 for the lattice path version; Lindstr\u00f6m 1973, Gessel-Viennot 1985) states: for sources $A_1, \\ldots, A_n$ and targets $B_1, \\ldots, B_n$, the signed count of $n$-tuples of non-intersecting paths is $\\det[e(A_i, B_j)]$ where $e(A_i, B_j)$ counts paths from $A_i$ to $B_j$. This file's `lgvDet m a\u2081 b\u2081 a\u2082 b\u2082` is the $n=2$ case: $\\binom{m+b_1-a_1}{m}\\binom{m+b_2-a_2}{m} - \\binom{m+b_1-a_2}{m}\\binom{m+b_2-a_1}{m}$, where lattice paths take $m$ East steps and $b_j - a_i$ North steps.",
     "significance": "context",
-    "relatedConcepts": ["LGV lemma", "lattice paths", "non-intersecting paths", "Young tableaux", "Catalan numbers"],
-    "prerequisites": ["BallotProblemOQ03 (2×2 LGV lemma, lgvDet definition, Catalan numbers)"]
+    "relatedConcepts": [
+      "LGV lemma",
+      "lattice paths",
+      "non-intersecting paths",
+      "Young tableaux",
+      "Catalan numbers"
+    ],
+    "prerequisites": [
+      "BallotProblemOQ03 (2\u00d72 LGV lemma, lgvDet definition, Catalan numbers)"
+    ]
   },
   {
     "id": "ann-lgv-dyck-pair",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 27, "endLine": 44 },
-    "type": "theorem",
+    "range": {
+      "startLine": 27,
+      "endLine": 44
+    },
+    "type": "insight",
     "title": "Dyck Path Pairs via the LGV Formula",
-    "content": "`lgv_dyck_pair_count` instantiates the LGV formula for Dyck-adjacent sources and targets: sources $(0,0)$ and $(0,1)$ (adjacent vertical start points), targets $(n,n)$ and $(n,n+1)$ (adjacent vertical end points). The LGV determinant evaluates to $\\binom{2n}{n}^2 - \\binom{2n+1}{n}\\binom{2n-1}{n}$. The proof unfolds `lgvDet` and calls `ring` — the determinant formula is a polynomial identity in binomial coefficients that holds by algebraic manipulation alone, requiring no combinatorial reasoning in Lean.",
-    "mathContext": "For paths from $(0, a_i)$ to $(n, b_j)$ taking $n$ East steps, the path count is $\\binom{n + (b_j - a_i)}{n}$. With $a_1=0, b_1=n$: $\\binom{2n}{n}$; with $a_1=0, b_2=n+1$: $\\binom{2n+1}{n}$; with $a_2=1, b_1=n$: $\\binom{2n-1}{n}$; with $a_2=1, b_2=n+1$: $\\binom{2n}{n}$. The 2×2 determinant is $\\binom{2n}{n}^2 - \\binom{2n+1}{n}\\binom{2n-1}{n}$. For $n=2$: $36 - 10 \\cdot 3 = 6$, confirmed by `native_decide`. This counts the number of non-intersecting path pairs from those sources to those targets.",
+    "content": "`lgv_dyck_pair_count` instantiates the LGV formula for Dyck-adjacent sources and targets: sources $(0,0)$ and $(0,1)$ (adjacent vertical start points), targets $(n,n)$ and $(n,n+1)$ (adjacent vertical end points). The LGV determinant evaluates to $\\binom{2n}{n}^2 - \\binom{2n+1}{n}\\binom{2n-1}{n}$. The proof unfolds `lgvDet` and calls `ring` \u2014 the determinant formula is a polynomial identity in binomial coefficients that holds by algebraic manipulation alone, requiring no combinatorial reasoning in Lean.",
+    "mathContext": "For paths from $(0, a_i)$ to $(n, b_j)$ taking $n$ East steps, the path count is $\\binom{n + (b_j - a_i)}{n}$. With $a_1=0, b_1=n$: $\\binom{2n}{n}$; with $a_1=0, b_2=n+1$: $\\binom{2n+1}{n}$; with $a_2=1, b_1=n$: $\\binom{2n-1}{n}$; with $a_2=1, b_2=n+1$: $\\binom{2n}{n}$. The 2\u00d72 determinant is $\\binom{2n}{n}^2 - \\binom{2n+1}{n}\\binom{2n-1}{n}$. For $n=2$: $36 - 10 \\cdot 3 = 6$, confirmed by `native_decide`. This counts the number of non-intersecting path pairs from those sources to those targets.",
     "significance": "supporting",
-    "relatedConcepts": ["lgvDet", "Dyck paths", "lattice path counting", "binomial coefficients", "ring tactic"],
-    "prerequisites": ["lgvDet definition", "lattice path = binomial coefficient"]
+    "relatedConcepts": [
+      "lgvDet",
+      "Dyck paths",
+      "lattice path counting",
+      "binomial coefficients",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "lgvDet definition",
+      "lattice path = binomial coefficient"
+    ]
   },
   {
     "id": "ann-lgv-nonneg",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 47, "endLine": 55 },
+    "range": {
+      "startLine": 47,
+      "endLine": 55
+    },
     "type": "technique",
     "title": "Non-Negativity of LGV Determinant via Monotone Ordering",
-    "content": "`lgv_nonneg_standard` states that when sources and targets respect the same ordering — $a_1 \\leq a_2$ (sources ordered from bottom to top) and $b_1 \\leq b_2$ (targets ordered similarly) — the LGV determinant is non-negative: $0 \\leq \\text{lgvDet}(m, a_1, b_1, a_2, b_2)$. The proof is a one-liner delegating to `lgvDet_nonneg` from the parent file, where the bound follows from the LGV combinatorial interpretation: the determinant counts signed non-intersecting tuples, and under consistent ordering, the positive term dominates (no path pair with positive sign can intersect after swapping endpoints).",
-    "mathContext": "The non-negativity $\\binom{m+b_1-a_1}{m}\\binom{m+b_2-a_2}{m} \\geq \\binom{m+b_1-a_2}{m}\\binom{m+b_2-a_1}{m}$ under $a_1 \\leq a_2$, $b_1 \\leq b_2$ is an instance of the FKG inequality / log-supermodularity of binomial coefficients. Equivalently, it follows from the identity-permutation term dominating the transposition term in the Lindström involution argument: when source/target orderings align, the transposition path pair necessarily intersects, while the identity pair may be non-intersecting.",
+    "content": "`lgv_nonneg_standard` states that when sources and targets respect the same ordering \u2014 $a_1 \\leq a_2$ (sources ordered from bottom to top) and $b_1 \\leq b_2$ (targets ordered similarly) \u2014 the LGV determinant is non-negative: $0 \\leq \\text{lgvDet}(m, a_1, b_1, a_2, b_2)$. The proof is a one-liner delegating to `lgvDet_nonneg` from the parent file, where the bound follows from the LGV combinatorial interpretation: the determinant counts signed non-intersecting tuples, and under consistent ordering, the positive term dominates (no path pair with positive sign can intersect after swapping endpoints).",
+    "mathContext": "The non-negativity $\\binom{m+b_1-a_1}{m}\\binom{m+b_2-a_2}{m} \\geq \\binom{m+b_1-a_2}{m}\\binom{m+b_2-a_1}{m}$ under $a_1 \\leq a_2$, $b_1 \\leq b_2$ is an instance of the FKG inequality / log-supermodularity of binomial coefficients. Equivalently, it follows from the identity-permutation term dominating the transposition term in the Lindstr\u00f6m involution argument: when source/target orderings align, the transposition path pair necessarily intersects, while the identity pair may be non-intersecting.",
     "significance": "supporting",
-    "relatedConcepts": ["lgvDet_nonneg", "FKG inequality", "log-supermodularity", "monotone path counting"],
-    "prerequisites": ["lgvDet definition", "lgvDet_nonneg (from BallotProblemOQ03)"]
+    "relatedConcepts": [
+      "lgvDet_nonneg",
+      "FKG inequality",
+      "log-supermodularity",
+      "monotone path counting"
+    ],
+    "prerequisites": [
+      "lgvDet definition",
+      "lgvDet_nonneg (from BallotProblemOQ03)"
+    ]
   },
   {
     "id": "ann-catalan-ballot",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 57, "endLine": 70 },
+    "range": {
+      "startLine": 57,
+      "endLine": 70
+    },
     "type": "insight",
     "title": "Catalan = Ballot: The RSK Bridge Between Tableaux and Paths",
-    "content": "`catalan_eq_ballot_extended` re-exports `catalan_eq_ballot` from BallotProblemOQ03: the $n$-th Catalan number $C_n$ equals `ballotSeqCount(n+1, n)` — the number of ballot sequences where candidate 1 (with $n+1$ votes) always leads candidate 2 (with $n$ votes) throughout the counting. This three-way identity — $C_n = \\text{ballotSeqCount}(n+1, n) = $ SYT count of shape $(n,n)$ — is the key RSK/ballot connection underlying the hook-length formula proof. The equality is proved by delegation to the parent, which establishes it via the ballot formula and Catalan difference formula.",
-    "mathContext": "The Catalan number $C_n = \\frac{1}{n+1}\\binom{2n}{n}$ counts: (a) ballot sequences where one candidate always leads with $n+1$ vs $n$ votes; (b) Dyck paths of length $2n$; (c) standard Young tableaux of rectangular shape $(n, n)$ (via the RSK correspondence and hook-length formula $f^{(n,n)} = (2n)!/((n+1)!n!) = C_n$). The `ballotSeqCount` definition in the parent file uses $\\binom{p+q-1}{p-1} - \\binom{p+q-1}{p}$ — the ballot formula due to Bertrand (1887). For $n=3$: $C_3 = 5$ and `ballotSeqCount(4,3) = \\binom{6}{3} - \\binom{6}{4} = 20 - 15 = 5$.",
+    "content": "`catalan_eq_ballot_extended` re-exports `catalan_eq_ballot` from BallotProblemOQ03: the $n$-th Catalan number $C_n$ equals `ballotSeqCount(n+1, n)` \u2014 the number of ballot sequences where candidate 1 (with $n+1$ votes) always leads candidate 2 (with $n$ votes) throughout the counting. This three-way identity \u2014 $C_n = \\text{ballotSeqCount}(n+1, n) = $ SYT count of shape $(n,n)$ \u2014 is the key RSK/ballot connection underlying the hook-length formula proof. The equality is proved by delegation to the parent, which establishes it via the ballot formula and Catalan difference formula.",
+    "mathContext": "The Catalan number $C_n = \\frac{1}{n+1}\\binom{2n}{n}$ counts: (a) ballot sequences where one candidate always leads with $n+1$ vs $n$ votes; (b) Dyck paths of length $2n$; (c) standard Young tableaux of rectangular shape $(n, n)$ (via the RSK correspondence and hook-length formula $f^{(n,n)} = (2n)!/((n+1)!n!) = C_n$). The `ballotSeqCount` definition in the parent file uses $\\binom{p+q-1}{p-1} - \\binom{p+q-1}{p}$ \u2014 the ballot formula due to Bertrand (1887). For $n=3$: $C_3 = 5$ and `ballotSeqCount(4,3) = \\binom{6}{3} - \\binom{6}{4} = 20 - 15 = 5$.",
     "significance": "key",
-    "relatedConcepts": ["Catalan numbers", "ballot sequences", "RSK correspondence", "standard Young tableaux", "Dyck paths"],
-    "prerequisites": ["catalan_eq_ballot (from BallotProblemOQ03)", "ballotSeqCount definition", "Cn definition"]
+    "relatedConcepts": [
+      "Catalan numbers",
+      "ballot sequences",
+      "RSK correspondence",
+      "standard Young tableaux",
+      "Dyck paths"
+    ],
+    "prerequisites": [
+      "catalan_eq_ballot (from BallotProblemOQ03)",
+      "ballotSeqCount definition",
+      "Cn definition"
+    ]
   },
   {
     "id": "ann-symmetry",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 71, "endLine": 92 },
-    "type": "proof",
+    "range": {
+      "startLine": 71,
+      "endLine": 92
+    },
+    "type": "technique",
     "title": "Determinant Symmetry: Swapping Sources and Targets",
     "content": "Three symmetry theorems about `lgvDet`: (1) `lgv_swap_sources`: swapping $a_1 \\leftrightarrow a_2$ negates the determinant; (2) `lgv_swap_targets`: swapping $b_1 \\leftrightarrow b_2$ negates the determinant; (3) `lgv_swap_both`: swapping both $a_1 \\leftrightarrow a_2$ and $b_1 \\leftrightarrow b_2$ simultaneously preserves the determinant (double negation). All three are proved by delegating to the corresponding lemmas in BallotProblemOQ03 (`lgvDet_swap_sources`, `lgvDet_swap_targets`, `lgvDet_swap_both`), where the proofs use `unfold lgvDet; ring`. These are concrete instances of the general principle that the determinant is alternating in rows (sources) and columns (targets).",
     "mathContext": "For a $2 \\times 2$ determinant $\\det\\begin{pmatrix}a & b \\\\ c & d\\end{pmatrix} = ad - bc$, swapping rows gives $\\det\\begin{pmatrix}c & d \\\\ a & b\\end{pmatrix} = cb - da = -(ad-bc)$: sign flip. The `lgvDet` formula is $(e_{11}e_{22} - e_{12}e_{21})$ in terms of path counts $e_{ij} = \\binom{m+b_j-a_i}{m}$. Swapping $a_1 \\leftrightarrow a_2$ permutes the rows: $e_{11} \\leftrightarrow e_{21}$ and $e_{12} \\leftrightarrow e_{22}$, giving $(e_{21}e_{12} - e_{22}e_{11}) = -(e_{11}e_{22}-e_{12}e_{21})$. The Lean proof uses `ring` because the identity is purely polynomial.",
     "significance": "supporting",
-    "relatedConcepts": ["determinant anti-symmetry", "alternating multilinear forms", "LGV determinant", "ring tactic"],
-    "prerequisites": ["lgvDet definition", "lgvDet_swap_sources/targets/both (from BallotProblemOQ03)"]
+    "relatedConcepts": [
+      "determinant anti-symmetry",
+      "alternating multilinear forms",
+      "LGV determinant",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "lgvDet definition",
+      "lgvDet_swap_sources/targets/both (from BallotProblemOQ03)"
+    ]
   },
   {
     "id": "ann-native-decide",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 93, "endLine": 106 },
+    "range": {
+      "startLine": 93,
+      "endLine": 106
+    },
     "type": "technique",
     "title": "Kernel Verification with native_decide: Four Concrete Cases",
-    "content": "Four `example` statements verify specific LGV determinant values using `native_decide` — Lean's kernel-level computation checker. (1) `lgvDet 1 0 1 1 2 = 1`: paths from $(0,0),(0,1)$ to $(1,1),(1,2)$ yield exactly 1 non-intersecting pair. (2) `lgvDet 2 0 2 1 3 = 6`: the Catalan number $C_2 = 2$ squared interpretation gives 6. (3) `lgvDet 3 2 5 2 7 = 0`: $a_1 = a_2 = 2$ (same sources) forces determinant zero. (4) `lgvDet 3 0 4 1 4 = 0`: $b_1 = b_2 = 4$ (same targets) forces determinant zero. Cases (3) and (4) are the two zero-determinant conditions proved algebraically as `lgvDet_same_start` and `lgvDet_same_end` in the parent — here confirmed computationally.",
-    "mathContext": "For case (2): sources $(0,0), (0,1)$, targets $(2,2), (2,3)$. Path counts: $\\binom{2+2}{2}=6$, $\\binom{2+3}{2}=10$, $\\binom{2+2-1}{2}=\\binom{3}{2}=3$, $\\binom{2+3-1}{2}=\\binom{4}{2}=6$. Determinant: $6 \\cdot 6 - 10 \\cdot 3 = 36 - 30 = 6$. `native_decide` evaluates the Lean kernel's computable `Nat.choose` function, giving machine-verified certification. Unlike `decide` which runs in the proof checker (slow), `native_decide` compiles to native code — safe because the kernel still type-checks the produced proof term.",
+    "content": "Four `example` statements verify specific LGV determinant values using `native_decide` \u2014 Lean's kernel-level computation checker. (1) `lgvDet 1 0 1 1 2 = 1`: paths from $(0,0),(0,1)$ to $(1,1),(1,2)$ yield exactly 1 non-intersecting pair. (2) `lgvDet 2 0 2 1 3 = 6`: the Catalan number $C_2 = 2$ squared interpretation gives 6. (3) `lgvDet 3 2 5 2 7 = 0`: $a_1 = a_2 = 2$ (same sources) forces determinant zero. (4) `lgvDet 3 0 4 1 4 = 0`: $b_1 = b_2 = 4$ (same targets) forces determinant zero. Cases (3) and (4) are the two zero-determinant conditions proved algebraically as `lgvDet_same_start` and `lgvDet_same_end` in the parent \u2014 here confirmed computationally.",
+    "mathContext": "For case (2): sources $(0,0), (0,1)$, targets $(2,2), (2,3)$. Path counts: $\\binom{2+2}{2}=6$, $\\binom{2+3}{2}=10$, $\\binom{2+2-1}{2}=\\binom{3}{2}=3$, $\\binom{2+3-1}{2}=\\binom{4}{2}=6$. Determinant: $6 \\cdot 6 - 10 \\cdot 3 = 36 - 30 = 6$. `native_decide` evaluates the Lean kernel's computable `Nat.choose` function, giving machine-verified certification. Unlike `decide` which runs in the proof checker (slow), `native_decide` compiles to native code \u2014 safe because the kernel still type-checks the produced proof term.",
     "significance": "technical",
-    "relatedConcepts": ["native_decide", "kernel computation", "lgvDet_same_start/end", "verified computation"],
-    "prerequisites": ["lgvDet definition", "Nat.choose computability", "Lean 4 native_decide tactic"]
+    "relatedConcepts": [
+      "native_decide",
+      "kernel computation",
+      "lgvDet_same_start/end",
+      "verified computation"
+    ],
+    "prerequisites": [
+      "lgvDet definition",
+      "Nat.choose computability",
+      "Lean 4 native_decide tactic"
+    ]
   },
   {
     "id": "ann-lgv-matrix",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 107, "endLine": 140 },
+    "range": {
+      "startLine": 107,
+      "endLine": 140
+    },
     "type": "definition",
-    "title": "lgvMatrix: The n×n Path-Count Matrix and 2×2 Reduction",
-    "content": "`lgvMatrix m a b : Matrix (Fin n) (Fin n) ℤ` defines the general $n \\times n$ path-counting matrix: entry $(i,j)$ is the number of lattice paths from $(0, a_i)$ to $(m, b_j)$, given by $\\binom{m + (b_j - a_i)}{m}$. The matrix is over `Fin n` (a type-theoretic finite type) using a function `a b : Fin n → ℕ` to represent source/target vertical offsets. `lgvMatrix_2x2` proves that for $n=2$, the Lean `Matrix.det` equals `lgvDet`: `(lgvMatrix m a b).det = lgvDet m (a 0) (b 0) (a 1) (b 1)`. The proof uses `simp [lgvMatrix, lgvDet, Matrix.det_fin_two]; ring`.",
-    "mathContext": "The general LGV lemma states $\\det[\\text{lgvMatrix}] = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma) \\prod_i e(A_i, B_{\\sigma(i)})$ equals the signed count of non-intersecting $n$-tuples. For $n=2$, `Matrix.det_fin_two` reduces `(lgvMatrix m a b).det` to $M_{00} \\cdot M_{11} - M_{01} \\cdot M_{10}$ — the standard $2 \\times 2$ formula. The connection `lgvMatrix_2x2` provides the bridge between the matrix abstraction (needed for $n > 2$) and the concrete `lgvDet` (proved in BallotProblemOQ03). The missing ingredient for $n > 2$ is the sign-reversing Lindström involution on intersecting $n$-tuples.",
+    "title": "lgvMatrix: The n\u00d7n Path-Count Matrix and 2\u00d72 Reduction",
+    "content": "`lgvMatrix m a b : Matrix (Fin n) (Fin n) \u2124` defines the general $n \\times n$ path-counting matrix: entry $(i,j)$ is the number of lattice paths from $(0, a_i)$ to $(m, b_j)$, given by $\\binom{m + (b_j - a_i)}{m}$. The matrix is over `Fin n` (a type-theoretic finite type) using a function `a b : Fin n \u2192 \u2115` to represent source/target vertical offsets. `lgvMatrix_2x2` proves that for $n=2$, the Lean `Matrix.det` equals `lgvDet`: `(lgvMatrix m a b).det = lgvDet m (a 0) (b 0) (a 1) (b 1)`. The proof uses `simp [lgvMatrix, lgvDet, Matrix.det_fin_two]; ring`.",
+    "mathContext": "The general LGV lemma states $\\det[\\text{lgvMatrix}] = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma) \\prod_i e(A_i, B_{\\sigma(i)})$ equals the signed count of non-intersecting $n$-tuples. For $n=2$, `Matrix.det_fin_two` reduces `(lgvMatrix m a b).det` to $M_{00} \\cdot M_{11} - M_{01} \\cdot M_{10}$ \u2014 the standard $2 \\times 2$ formula. The connection `lgvMatrix_2x2` provides the bridge between the matrix abstraction (needed for $n > 2$) and the concrete `lgvDet` (proved in BallotProblemOQ03). The missing ingredient for $n > 2$ is the sign-reversing Lindstr\u00f6m involution on intersecting $n$-tuples.",
     "significance": "key",
-    "relatedConcepts": ["Matrix.det_fin_two", "Fin n type", "LGV lemma n×n", "Lindström involution", "sign-reversing involution"],
-    "prerequisites": ["Mathlib.Data.Matrix.Basic (Matrix.det)", "lgvDet definition", "BallotProblemOQ03 (lgv_lemma_2x2)"]
+    "relatedConcepts": [
+      "Matrix.det_fin_two",
+      "Fin n type",
+      "LGV lemma n\u00d7n",
+      "Lindstr\u00f6m involution",
+      "sign-reversing involution"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Matrix.Basic (Matrix.det)",
+      "lgvDet definition",
+      "BallotProblemOQ03 (lgv_lemma_2x2)"
+    ]
   },
   {
     "id": "ann-hook-length",
     "proofId": "ballot-problem-oq-03-oq-03",
-    "range": { "startLine": 141, "endLine": 186 },
-    "type": "proof",
-    "title": "Hook-Length Formula: C_m · (m+1)! · m! = (2m)! via Catalan Arithmetic",
+    "range": {
+      "startLine": 141,
+      "endLine": 186
+    },
+    "type": "technique",
+    "title": "Hook-Length Formula: C_m \u00b7 (m+1)! \u00b7 m! = (2m)! via Catalan Arithmetic",
     "content": "`hook_length_formula_two_row` proves the Frame-Robinson-Thrall formula for the rectangular 2-row Young diagram: $C_m \\cdot (m+1)! \\cdot m! = (2m)!$. The proof is a four-step `calc` chain: (1) Rewrite $(m+1)! = (m+1) \\cdot m!$ using `Nat.factorial_succ`. (2) Factor out to get $C_m \\cdot (m+1) \\cdot (m! \\cdot m!)$ via `ring`. (3) Apply `catalan_formula` (from BallotProblemOQ03): $C_m \\cdot (m+1) = \\binom{2m}{m}$. (4) Apply Mathlib's `Nat.choose_mul_factorial_mul_factorial`: $\\binom{2m}{m} \\cdot m! \\cdot m! = (2m)!$. The three `example` statements at the end verify the formula for $m=1,2,3$ via `native_decide`.",
-    "mathContext": "The hook-length formula for shape $(m,m)$ states $f^{(m,m)} = (2m)! / \\prod_{u} h(u)$. Computing hook products: row 0 has hooks $(m+1, m, \\ldots, 2)$ with product $(m+1)!$; row 1 has hooks $(m, m-1, \\ldots, 1)$ with product $m!$. So $f^{(m,m)} = (2m)!/((m+1)! \\cdot m!) = C_m$ (the $m$-th Catalan number). The identity $C_m \\cdot (m+1)! \\cdot m! = (2m)!$ is a restatement. The two key ingredients: $C_m \\cdot (m+1) = \\binom{2m}{m}$ (`catalan_formula`) and $\\binom{2m}{m} \\cdot m! \\cdot m! = (2m)!$ (`choose_mul_factorial_mul_factorial`). Verification: $m=2$: $C_2=2$, $2 \\cdot 6 \\cdot 2 = 24 = 4!$ ✓. $m=3$: $C_3=5$, $5 \\cdot 24 \\cdot 6 = 720 = 6!$ ✓.",
+    "mathContext": "The hook-length formula for shape $(m,m)$ states $f^{(m,m)} = (2m)! / \\prod_{u} h(u)$. Computing hook products: row 0 has hooks $(m+1, m, \\ldots, 2)$ with product $(m+1)!$; row 1 has hooks $(m, m-1, \\ldots, 1)$ with product $m!$. So $f^{(m,m)} = (2m)!/((m+1)! \\cdot m!) = C_m$ (the $m$-th Catalan number). The identity $C_m \\cdot (m+1)! \\cdot m! = (2m)!$ is a restatement. The two key ingredients: $C_m \\cdot (m+1) = \\binom{2m}{m}$ (`catalan_formula`) and $\\binom{2m}{m} \\cdot m! \\cdot m! = (2m)!$ (`choose_mul_factorial_mul_factorial`). Verification: $m=2$: $C_2=2$, $2 \\cdot 6 \\cdot 2 = 24 = 4!$ \u2713. $m=3$: $C_3=5$, $5 \\cdot 24 \\cdot 6 = 720 = 6!$ \u2713.",
     "significance": "key",
-    "relatedConcepts": ["Frame-Robinson-Thrall hook-length formula", "catalan_formula", "Nat.choose_mul_factorial_mul_factorial", "Nat.factorial_succ", "calc tactic", "Young tableaux"],
-    "prerequisites": ["catalan_formula (from BallotProblemOQ03)", "Mathlib.Data.Nat.Choose.Basic", "Catalan number definition Cn"]
+    "relatedConcepts": [
+      "Frame-Robinson-Thrall hook-length formula",
+      "catalan_formula",
+      "Nat.choose_mul_factorial_mul_factorial",
+      "Nat.factorial_succ",
+      "calc tactic",
+      "Young tableaux"
+    ],
+    "prerequisites": [
+      "catalan_formula (from BallotProblemOQ03)",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Catalan number definition Cn"
+    ]
   }
 ]

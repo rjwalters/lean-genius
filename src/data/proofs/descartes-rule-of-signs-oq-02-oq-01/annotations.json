@@ -41,7 +41,7 @@
       "endLine": 70
     },
     "id": "ann-descartes-oq02oq01-constant-roots",
-    "type": "theorem",
+    "type": "insight",
     "title": "constant_no_roots proves that if natDegree(p) = 0 and p \u2260 0, then p(x) \u2260 0 for a"
   },
   {
@@ -65,7 +65,7 @@
       "endLine": 95
     },
     "id": "ann-descartes-oq02oq01-linear-root",
-    "type": "theorem",
+    "type": "insight",
     "title": "linear_at_most_one_root proves #{x \u2208 (a,b] : p(x) = 0} \u2264 1 when natDegree(p) = 1"
   },
   {
@@ -89,7 +89,7 @@
       "endLine": 107
     },
     "id": "ann-descartes-oq02oq01-rolle-bridge",
-    "type": "lemma",
+    "type": "technique",
     "title": "rolle_polynomial bridges Mathlib's analytic Rolle theorem (exists_deriv_eq_zero "
   },
   {
@@ -113,7 +113,7 @@
       "endLine": 134
     },
     "id": "ann-descartes-oq02oq01-sign-change",
-    "type": "theorem",
+    "type": "insight",
     "title": "root_of_sign_change proves that if p(a) < 0 < p(b), there exists c \u2208 (a,b) with "
   },
   {

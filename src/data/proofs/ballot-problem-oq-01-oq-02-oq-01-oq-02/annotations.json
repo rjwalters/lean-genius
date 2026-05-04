@@ -2,85 +2,168 @@
   {
     "id": "ann-ballot-gft-preamble",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
-    "range": { "startLine": 1, "endLine": 44 },
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
     "type": "concept",
     "title": "Module Overview: Answering the 'All Events' Generalization",
-    "content": "The module docstring poses and immediately answers the open question from the parent file: YES, uniform-fiber surjections preserve uniformOn for ALL events, not just the specific ballot event. The four-step proof strategy is described in the docstring itself — decompose via surjectivity, decompose the P-fiber, count uniformly, cancel k in the ratio — which serves as a roadmap for the entire file. The distinction from OQ-01 is sharpened: OQ-01 proved the result for one function (ballot projection) and one event (staysPositive); this file proves it for ANY f and ANY P. The import `Proofs.BallotProblemOQ01OQ02OQ01` brings in `BallotFiberTransfer.ncard_biUnion_eq_of_uniform`, the parent's key counting lemma that will be reused directly in Part II.",
+    "content": "The module docstring poses and immediately answers the open question from the parent file: YES, uniform-fiber surjections preserve uniformOn for ALL events, not just the specific ballot event. The four-step proof strategy is described in the docstring itself \u2014 decompose via surjectivity, decompose the P-fiber, count uniformly, cancel k in the ratio \u2014 which serves as a roadmap for the entire file. The distinction from OQ-01 is sharpened: OQ-01 proved the result for one function (ballot projection) and one event (staysPositive); this file proves it for ANY f and ANY P. The import `Proofs.BallotProblemOQ01OQ02OQ01` brings in `BallotFiberTransfer.ncard_biUnion_eq_of_uniform`, the parent's key counting lemma that will be reused directly in Part II.",
     "mathContext": "The generalization gap: OQ-01 proved $\\text{uniformOn}(S)(\\text{staysPositive})$; this file proves $\\forall P \\subseteq T,\\; \\text{uniformOn}(S)(f^{-1}(P)) = \\text{uniformOn}(T)(P)$ for any $f$ with uniform fibers. Same formula, maximal generality.",
     "significance": "supporting",
-    "relatedConcepts": ["uniformOn", "fiber transfer", "all-events preservation", "open question answer"],
-    "prerequisites": ["BallotProblemOQ01OQ02OQ01 (parent)", "ProbabilityTheory.uniformOn", "fiber decomposition pattern"]
+    "relatedConcepts": [
+      "uniformOn",
+      "fiber transfer",
+      "all-events preservation",
+      "open question answer"
+    ],
+    "prerequisites": [
+      "BallotProblemOQ01OQ02OQ01 (parent)",
+      "ProbabilityTheory.uniformOn",
+      "fiber decomposition pattern"
+    ]
   },
   {
     "id": "ann-ballot-fiber-preimage-decomp",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
-    "range": { "startLine": 46, "endLine": 56 },
-    "type": "lemma",
-    "title": "Fiber Decomposition: A ∩ f⁻¹'P = ⋃_{t∈P} (A ∩ f⁻¹'{t})",
-    "content": "The theorem `preimage_inter_eq_iUnion` captures the fundamental set-theoretic identity: the preimage of a set P intersected with the domain A decomposes into a disjoint union of singleton fiber intersections. The proof is a clean `ext` argument using `simp` to unfold `mem_inter_iff`, `mem_preimage`, `mem_iUnion`, and `mem_singleton_iff`. This is a purely set-theoretic result requiring no finiteness or surjectivity assumptions — it holds for any function between any types.",
+    "range": {
+      "startLine": 46,
+      "endLine": 56
+    },
+    "type": "technique",
+    "title": "Fiber Decomposition: A \u2229 f\u207b\u00b9'P = \u22c3_{t\u2208P} (A \u2229 f\u207b\u00b9'{t})",
+    "content": "The theorem `preimage_inter_eq_iUnion` captures the fundamental set-theoretic identity: the preimage of a set P intersected with the domain A decomposes into a disjoint union of singleton fiber intersections. The proof is a clean `ext` argument using `simp` to unfold `mem_inter_iff`, `mem_preimage`, `mem_iUnion`, and `mem_singleton_iff`. This is a purely set-theoretic result requiring no finiteness or surjectivity assumptions \u2014 it holds for any function between any types.",
     "mathContext": "$A \\cap f^{-1}(P) = \\bigcup_{t \\in P} (A \\cap f^{-1}(\\{t\\}))$. Proof: $x \\in \\text{LHS} \\iff (x \\in A) \\land (f(x) \\in P) \\iff \\exists t \\in P,\\, x \\in A \\land f(x) = t$.",
     "significance": "supporting",
-    "relatedConcepts": ["preimage decomposition", "fiber of a function", "Set.preimage", "Set.iUnion"],
-    "prerequisites": ["set theory", "Lean 4 Set.ext", "simp lemmas for Set membership"]
+    "relatedConcepts": [
+      "preimage decomposition",
+      "fiber of a function",
+      "Set.preimage",
+      "Set.iUnion"
+    ],
+    "prerequisites": [
+      "set theory",
+      "Lean 4 Set.ext",
+      "simp lemmas for Set membership"
+    ]
   },
   {
     "id": "ann-ballot-fiber-surjon-decomp",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
-    "range": { "startLine": 58, "endLine": 68 },
-    "type": "lemma",
-    "title": "Surjectivity Decomposition: A = ⋃_{t∈T} (A ∩ f⁻¹'{t})",
-    "content": "The theorem `surjOn_fiber_decomp` proves that when f is surjective from A onto T, the entire set A decomposes as a union of fibers over T. This uses `SurjOn f A T`: for any x ∈ A, surjectivity gives t = f(x) ∈ T (via `mem_image_of_mem`), placing x in the fiber over t. The key difference from `preimage_inter_eq_iUnion` is that surjectivity (`SurjOn`) is needed to guarantee coverage — without it, the union would only cover the image of f restricted to A, which might miss elements of T.",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "type": "technique",
+    "title": "Surjectivity Decomposition: A = \u22c3_{t\u2208T} (A \u2229 f\u207b\u00b9'{t})",
+    "content": "The theorem `surjOn_fiber_decomp` proves that when f is surjective from A onto T, the entire set A decomposes as a union of fibers over T. This uses `SurjOn f A T`: for any x \u2208 A, surjectivity gives t = f(x) \u2208 T (via `mem_image_of_mem`), placing x in the fiber over t. The key difference from `preimage_inter_eq_iUnion` is that surjectivity (`SurjOn`) is needed to guarantee coverage \u2014 without it, the union would only cover the image of f restricted to A, which might miss elements of T.",
     "mathContext": "$\\text{SurjOn}(f, A, T) \\implies A = \\bigcup_{t \\in T} (A \\cap f^{-1}(\\{t\\}))$. This is the cover: every $x \\in A$ lands in fiber over $f(x) \\in T$.",
     "significance": "supporting",
-    "relatedConcepts": ["Set.SurjOn", "surjective function", "fiber cover", "preimage singleton"],
-    "prerequisites": ["surjective functions", "Set.SurjOn definition", "mem_image_of_mem"]
+    "relatedConcepts": [
+      "Set.SurjOn",
+      "surjective function",
+      "fiber cover",
+      "preimage singleton"
+    ],
+    "prerequisites": [
+      "surjective functions",
+      "Set.SurjOn definition",
+      "mem_image_of_mem"
+    ]
   },
   {
     "id": "ann-ballot-fiber-disjoint",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
-    "range": { "startLine": 70, "endLine": 76 },
-    "type": "lemma",
+    "range": {
+      "startLine": 70,
+      "endLine": 76
+    },
+    "type": "technique",
     "title": "Disjointness of Distinct Fibers",
-    "content": "The theorem `singleton_fiber_disjoint` proves that fibers over distinct points are disjoint: if t₁ ≠ t₂ then (A ∩ f⁻¹'{t₁}) ∩ (A ∩ f⁻¹'{t₂}) = ∅. The proof is a direct contradiction: if x is in both fibers, then f(x) = t₁ and f(x) = t₂, so t₁ = t₂, contradicting t₁ ≠ t₂. This is essential for the counting argument: the fiber decomposition is into DISJOINT pieces, so ncard of the union equals the sum of ncards.",
+    "content": "The theorem `singleton_fiber_disjoint` proves that fibers over distinct points are disjoint: if t\u2081 \u2260 t\u2082 then (A \u2229 f\u207b\u00b9'{t\u2081}) \u2229 (A \u2229 f\u207b\u00b9'{t\u2082}) = \u2205. The proof is a direct contradiction: if x is in both fibers, then f(x) = t\u2081 and f(x) = t\u2082, so t\u2081 = t\u2082, contradicting t\u2081 \u2260 t\u2082. This is essential for the counting argument: the fiber decomposition is into DISJOINT pieces, so ncard of the union equals the sum of ncards.",
     "mathContext": "$t_1 \\neq t_2 \\implies (A \\cap f^{-1}(\\{t_1\\})) \\cap (A \\cap f^{-1}(\\{t_2\\})) = \\emptyset$. Without disjointness, $|\\bigcup_t F_t| \\neq \\sum_t |F_t|$.",
     "significance": "supporting",
-    "relatedConcepts": ["fiber disjointness", "disjoint sets", "Set.Disjoint", "inclusion-exclusion"],
-    "prerequisites": ["set disjointness", "Lean 4 disjoint_left"]
+    "relatedConcepts": [
+      "fiber disjointness",
+      "disjoint sets",
+      "Set.Disjoint",
+      "inclusion-exclusion"
+    ],
+    "prerequisites": [
+      "set disjointness",
+      "Lean 4 disjoint_left"
+    ]
   },
   {
     "id": "ann-ballot-uniform-counting",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
-    "range": { "startLine": 83, "endLine": 98 },
+    "range": {
+      "startLine": 83,
+      "endLine": 98
+    },
     "type": "insight",
-    "title": "Uniform Fiber Counting: |A ∩ f⁻¹'P| = k · |P|",
-    "content": "The theorem `uniform_fiber_count` is the quantitative heart of the density argument. It combines three ingredients: (1) the preimage decomposition (from Part I), (2) `BallotFiberTransfer.ncard_biUnion_eq_of_uniform` (the parent file's key lemma that counts a union of k-sized disjoint pieces), and (3) the disjointness of fibers. The result: if every fiber over T has exactly k elements, then the fiber over ANY subset P ⊆ T has exactly k·|P| elements. The proof delegates entirely to the parent module, making this a one-step application.",
+    "title": "Uniform Fiber Counting: |A \u2229 f\u207b\u00b9'P| = k \u00b7 |P|",
+    "content": "The theorem `uniform_fiber_count` is the quantitative heart of the density argument. It combines three ingredients: (1) the preimage decomposition (from Part I), (2) `BallotFiberTransfer.ncard_biUnion_eq_of_uniform` (the parent file's key lemma that counts a union of k-sized disjoint pieces), and (3) the disjointness of fibers. The result: if every fiber over T has exactly k elements, then the fiber over ANY subset P \u2286 T has exactly k\u00b7|P| elements. The proof delegates entirely to the parent module, making this a one-step application.",
     "mathContext": "If $|A \\cap f^{-1}(\\{t\\})| = k$ for all $t \\in T$ and $P \\subseteq T$: $|A \\cap f^{-1}(P)| = \\sum_{t \\in P} |A \\cap f^{-1}(\\{t\\})| = k \\cdot |P|$.",
     "significance": "key",
-    "relatedConcepts": ["ncard of disjoint union", "uniform partition", "counting lemma", "BallotFiberTransfer"],
-    "prerequisites": ["Set.ncard", "finite sets", "BallotFiberTransfer.ncard_biUnion_eq_of_uniform"]
+    "relatedConcepts": [
+      "ncard of disjoint union",
+      "uniform partition",
+      "counting lemma",
+      "BallotFiberTransfer"
+    ],
+    "prerequisites": [
+      "Set.ncard",
+      "finite sets",
+      "BallotFiberTransfer.ncard_biUnion_eq_of_uniform"
+    ]
   },
   {
     "id": "ann-ballot-main-theorem",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
-    "range": { "startLine": 105, "endLine": 153 },
+    "range": {
+      "startLine": 105,
+      "endLine": 153
+    },
     "type": "insight",
     "title": "Main Theorem: Uniform Fibers Preserve uniformOn for All Events",
-    "content": "The proof of `uniformOn_fiber_transfer_all` assembles the four previous lemmas into a clean five-step argument. Steps 1–2 establish the ncard counts (A has k·|T| elements; A∩f⁻¹'P has k·|P| elements). Step 3 notes T∩P = P since P ⊆ T. Steps 4–5 handle positivity for ENNReal division and then apply `ENNReal.div_eq_div_iff` to reduce the equality `uniformOn A (f⁻¹'P) = uniformOn T P` to the purely numerical identity `k|P|·|T| = |P|·k|T|`, which follows by `ring`. The cancellation of k is the conceptual crux.",
+    "content": "The proof of `uniformOn_fiber_transfer_all` assembles the four previous lemmas into a clean five-step argument. Steps 1\u20132 establish the ncard counts (A has k\u00b7|T| elements; A\u2229f\u207b\u00b9'P has k\u00b7|P| elements). Step 3 notes T\u2229P = P since P \u2286 T. Steps 4\u20135 handle positivity for ENNReal division and then apply `ENNReal.div_eq_div_iff` to reduce the equality `uniformOn A (f\u207b\u00b9'P) = uniformOn T P` to the purely numerical identity `k|P|\u00b7|T| = |P|\u00b7k|T|`, which follows by `ring`. The cancellation of k is the conceptual crux.",
     "mathContext": "$\\text{uniformOn}(A)(f^{-1}(P)) = \\frac{|A \\cap f^{-1}(P)|}{|A|} = \\frac{k|P|}{k|T|} = \\frac{|P|}{|T|} = \\text{uniformOn}(T)(P)$. The factor $k$ cancels in numerator and denominator.",
     "significance": "key",
-    "relatedConcepts": ["ProbabilityTheory.uniformOn", "ENNReal.div_eq_div_iff", "probability measure pushforward", "measure-preserving maps"],
-    "prerequisites": ["ProbabilityTheory.uniformOn definition", "ENNReal arithmetic", "finite probability spaces"]
+    "relatedConcepts": [
+      "ProbabilityTheory.uniformOn",
+      "ENNReal.div_eq_div_iff",
+      "probability measure pushforward",
+      "measure-preserving maps"
+    ],
+    "prerequisites": [
+      "ProbabilityTheory.uniformOn definition",
+      "ENNReal arithmetic",
+      "finite probability spaces"
+    ]
   },
   {
     "id": "ann-ballot-corollaries",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
-    "range": { "startLine": 160, "endLine": 198 },
+    "range": {
+      "startLine": 160,
+      "endLine": 198
+    },
     "type": "concept",
-    "title": "Corollaries: All Events, Complement, Union — Immediate from Main Theorem",
-    "content": "The three corollaries `uniformOn_preserves_all_events`, `uniformOn_complement_transfer`, and `uniformOn_union_transfer` follow immediately from `uniformOn_fiber_transfer_all` with one-line proofs. Each is simply a specialization: complements apply with `diff_subset`, unions apply with `union_subset`. These corollaries are mathematically trivial but pedagogically important: they show that uniform-fiber surjections are probability-algebra homomorphisms — they preserve all Boolean combinations of events, not just individual events. This is the discrete analog of a measure-preserving map.",
+    "title": "Corollaries: All Events, Complement, Union \u2014 Immediate from Main Theorem",
+    "content": "The three corollaries `uniformOn_preserves_all_events`, `uniformOn_complement_transfer`, and `uniformOn_union_transfer` follow immediately from `uniformOn_fiber_transfer_all` with one-line proofs. Each is simply a specialization: complements apply with `diff_subset`, unions apply with `union_subset`. These corollaries are mathematically trivial but pedagogically important: they show that uniform-fiber surjections are probability-algebra homomorphisms \u2014 they preserve all Boolean combinations of events, not just individual events. This is the discrete analog of a measure-preserving map.",
     "mathContext": "If $f$ has uniform fibers: $\\text{uniformOn}(A)(f^{-1}(T \\setminus P)) = \\text{uniformOn}(T)(T \\setminus P)$ and $\\text{uniformOn}(A)(f^{-1}(P \\cup Q)) = \\text{uniformOn}(T)(P \\cup Q)$.",
     "significance": "supporting",
-    "relatedConcepts": ["Boolean algebra of events", "probability-preserving map", "σ-algebra homomorphism", "measure-preserving transformation"],
-    "prerequisites": ["uniformOn_fiber_transfer_all", "diff_subset", "union_subset"]
+    "relatedConcepts": [
+      "Boolean algebra of events",
+      "probability-preserving map",
+      "\u03c3-algebra homomorphism",
+      "measure-preserving transformation"
+    ],
+    "prerequisites": [
+      "uniformOn_fiber_transfer_all",
+      "diff_subset",
+      "union_subset"
+    ]
   }
 ]

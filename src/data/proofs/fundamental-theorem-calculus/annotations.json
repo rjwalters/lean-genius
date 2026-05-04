@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "The Integral Function F(x)",
-    "content": "We define **F(x) = ∫ₐˣ f(t) dt**, the cumulative integral from a fixed starting point $a$ to a variable endpoint $x$.\n\nThis function measures the 'accumulated area' under $f$ from $a$ to $x$. As $x$ increases, more area is accumulated (if $f$ is positive).\n\nThe key insight: F is constructed from f via integration, and we'll prove F' = f.",
+    "content": "We define **F(x) = \u222b\u2090\u02e3 f(t) dt**, the cumulative integral from a fixed starting point $a$ to a variable endpoint $x$.\n\nThis function measures the 'accumulated area' under $f$ from $a$ to $x$. As $x$ increases, more area is accumulated (if $f$ is positive).\n\nThe key insight: F is constructed from f via integration, and we'll prove F' = f.",
     "mathContext": "$F : \\mathbb{R} \\to \\mathbb{R}$\n\n$F(x) = \\int_a^x f(t)\\,dt$\n\nF(a) = 0 (integral over an empty interval)",
     "significance": "key",
     "relatedConcepts": [
@@ -24,9 +24,9 @@
       "startLine": 8,
       "endLine": 43
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "FTC Part 1: Derivative of an Integral",
-    "content": "**The derivative of the integral function equals the integrand.**\n\nIf $F(x) = \\int_a^x f(t)\\,dt$, then $F'(x) = f(x)$.\n\nThis is profound: integration 'builds' an antiderivative of any continuous function. Even if we can't write ∫f in closed form, the integral function exists and has f as its derivative.",
+    "content": "**The derivative of the integral function equals the integrand.**\n\nIf $F(x) = \\int_a^x f(t)\\,dt$, then $F'(x) = f(x)$.\n\nThis is profound: integration 'builds' an antiderivative of any continuous function. Even if we can't write \u222bf in closed form, the integral function exists and has f as its derivative.",
     "mathContext": "$\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$\n\nIn Leibniz notation: $\\frac{d}{dx}F(x) = f(x)$",
     "significance": "key",
     "relatedConcepts": [
@@ -60,7 +60,7 @@
       "startLine": 65,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "FTC Part 2: Evaluation Theorem",
     "content": "**The integral of a derivative equals the net change.**\n\n$\\int_a^b F'(x)\\,dx = F(b) - F(a)$\n\nThis is the 'computational' part of FTC: it reduces the problem of integration (infinite sums) to simple evaluation at two points.\n\nEvery integral table and integration technique is ultimately about finding antiderivatives to apply this theorem.",
     "mathContext": "$\\int_a^b f(x)\\,dx = F(b) - F(a)$\n\nwhere $F' = f$ on $[a, b]$\n\nOften written: $\\left[F(x)\\right]_a^b = F(b) - F(a)$",
@@ -80,7 +80,7 @@
     },
     "type": "concept",
     "title": "Conditions for FTC Part 2",
-    "content": "The theorem requires:\n\n1. **F is differentiable** on [a, b]\n2. **F' is continuous** on [a, b] (or at least integrable)\n3. **a ≤ b** (the integration bounds are in order)\n\nThe continuity of F' is crucial: if F' has 'bad' discontinuities, the integral may not equal F(b) - F(a).\n\nCounterexamples exist for merely differentiable F with discontinuous derivative.",
+    "content": "The theorem requires:\n\n1. **F is differentiable** on [a, b]\n2. **F' is continuous** on [a, b] (or at least integrable)\n3. **a \u2264 b** (the integration bounds are in order)\n\nThe continuity of F' is crucial: if F' has 'bad' discontinuities, the integral may not equal F(b) - F(a).\n\nCounterexamples exist for merely differentiable F with discontinuous derivative.",
     "mathContext": "We need:\n- $\\forall x \\in [a,b], \\text{HasDerivAt } F (F'(x)) x$\n- $F' \\in C([a,b])$ (continuous on closed interval)",
     "significance": "key",
     "relatedConcepts": [
@@ -114,7 +114,7 @@
       "startLine": 107,
       "endLine": 117
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Antiderivatives Differ by Constants",
     "content": "**If F and G are both antiderivatives of f, then F - G is constant.**\n\nThis explains the '+C' in indefinite integrals:\n- F and G both satisfy F' = f and G' = f\n- So (F - G)' = 0\n- A function with zero derivative is constant (by MVT)\n- Therefore F = G + C\n\nThis means antiderivatives are 'unique up to a constant'.",
     "mathContext": "$F' = G' = f \\Rightarrow (F - G)' = 0$\n\n$\\Rightarrow F - G = C$ (constant)\n\nSo $\\int f\\,dx$ represents a *family* of functions differing by constants.",
@@ -132,7 +132,7 @@
       "startLine": 124,
       "endLine": 128
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Zero Derivative Implies Constant",
     "content": "**If F'(x) = 0 for all x, then F is constant.**\n\nThis is a consequence of the Mean Value Theorem:\n\nFor any two points x and y, there exists c between them with\n$F(y) - F(x) = F'(c)(y - x) = 0 \\cdot (y - x) = 0$\n\nSo F(y) = F(x) for all x, y.\n\nThis lemma is essential for proving uniqueness of antiderivatives.",
     "mathContext": "Mean Value Theorem: $F(y) - F(x) = F'(c)(y - x)$ for some $c \\in (x, y)$\n\nIf $F' \\equiv 0$, then $F(y) = F(x)$ for all $x, y$.",

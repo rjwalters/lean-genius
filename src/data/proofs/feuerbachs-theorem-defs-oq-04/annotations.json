@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Motivation: Bridging Two Geometry Formalisms",
-    "content": "This file addresses a formalization design question: the earlier `FeuerbachsTheoremDefs.lean` uses a bespoke coordinate API (`Point = ℝ × ℝ`, custom `dist2`), while Mathlib's geometry infrastructure uses `EuclideanSpace ℝ (Fin 2)` and `Metric.sphere`. The file is a bridge: it proves the two formalisms agree and restates all nine-point circle membership results in Mathlib-native terms. The `noncomputable section` is required because `EuclideanSpace` involves classical choice and real number computations.",
+    "content": "This file addresses a formalization design question: the earlier `FeuerbachsTheoremDefs.lean` uses a bespoke coordinate API (`Point = \u211d \u00d7 \u211d`, custom `dist2`), while Mathlib's geometry infrastructure uses `EuclideanSpace \u211d (Fin 2)` and `Metric.sphere`. The file is a bridge: it proves the two formalisms agree and restates all nine-point circle membership results in Mathlib-native terms. The `noncomputable section` is required because `EuclideanSpace` involves classical choice and real number computations.",
     "mathContext": "Two equivalent formulations of circle membership: (1) gallery API: $\\text{dist2}(N, P) = r$ where $\\text{dist2}(P,Q) = \\sqrt{(Q_x-P_x)^2 + (Q_y-P_y)^2}$; (2) Mathlib: $\\text{toEuclidean}(P) \\in \\text{Metric.sphere}(\\text{toEuclidean}(N), r)$ where $\\text{Metric.sphere}(c,r) = \\{x \\mid \\text{dist}(x,c) = r\\}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -33,13 +33,13 @@
     },
     "type": "definition",
     "title": "toEuclidean: Embedding into Mathlib's 2D Space",
-    "content": "The function `toEuclidean` maps a `Point = ℝ × ℝ` to `EuclideanSpace ℝ (Fin 2)` (which is definitionally `Fin 2 → ℝ`) via the vector notation `![P.1, P.2]`. This creates the vector $\\begin{pmatrix} P_x \\\\ P_y \\end{pmatrix}$. The map is essentially an identity: it just repackages coordinates into Mathlib's preferred representation. Being `def` (not `abbrev`), Lean treats it as an opaque definition, so the bridge lemma is needed to make the distance identity available.",
-    "mathContext": "`EuclideanSpace ℝ (Fin 2) = PiLp 2 (fun _ : Fin 2 => ℝ)`. The notation `![x, y] : Fin 2 → ℝ` creates the vector with `(![x,y]) 0 = x` and `(![x,y]) 1 = y`. The map $\\text{toEuclidean} : \\mathbb{R}^2 \\to \\text{EuclideanSpace}(\\mathbb{R}, \\text{Fin }2)$ is injective (in fact bijective).",
+    "content": "The function `toEuclidean` maps a `Point = \u211d \u00d7 \u211d` to `EuclideanSpace \u211d (Fin 2)` (which is definitionally `Fin 2 \u2192 \u211d`) via the vector notation `![P.1, P.2]`. This creates the vector $\\begin{pmatrix} P_x \\\\ P_y \\end{pmatrix}$. The map is essentially an identity: it just repackages coordinates into Mathlib's preferred representation. Being `def` (not `abbrev`), Lean treats it as an opaque definition, so the bridge lemma is needed to make the distance identity available.",
+    "mathContext": "`EuclideanSpace \u211d (Fin 2) = PiLp 2 (fun _ : Fin 2 => \u211d)`. The notation `![x, y] : Fin 2 \u2192 \u211d` creates the vector with `(![x,y]) 0 = x` and `(![x,y]) 1 = y`. The map $\\text{toEuclidean} : \\mathbb{R}^2 \\to \\text{EuclideanSpace}(\\mathbb{R}, \\text{Fin }2)$ is injective (in fact bijective).",
     "significance": "key",
     "relatedConcepts": [
       "EuclideanSpace",
       "PiLp",
-      "Fin 2 → ℝ",
+      "Fin 2 \u2192 \u211d",
       "Matrix.cons notation",
       "coordinate embedding"
     ],
@@ -58,7 +58,7 @@
     },
     "type": "concept",
     "title": "Bridge Lemma: Mathlib dist = Custom dist2",
-    "content": "The key theorem `toEuclidean_dist` proves that `dist (toEuclidean P) (toEuclidean Q) = dist2 P Q`. The proof chain is: (1) `dist_eq_norm` reduces `dist` to `‖·‖`; (2) `EuclideanSpace.norm_eq` expands `‖v‖` to `Real.sqrt (∑ i, ‖v i‖²)`; (3) `Fin.sum_univ_two` splits the sum over `Fin 2` into two terms; (4) `simp` with `Pi.sub_apply`, `Matrix.cons_val_zero/one` reduces vector subtractions to coordinate differences; (5) `ring` closes using `(a - b)² = (b - a)²` to match the dist2 formula's sign convention.",
+    "content": "The key theorem `toEuclidean_dist` proves that `dist (toEuclidean P) (toEuclidean Q) = dist2 P Q`. The proof chain is: (1) `dist_eq_norm` reduces `dist` to `\u2016\u00b7\u2016`; (2) `EuclideanSpace.norm_eq` expands `\u2016v\u2016` to `Real.sqrt (\u2211 i, \u2016v i\u2016\u00b2)`; (3) `Fin.sum_univ_two` splits the sum over `Fin 2` into two terms; (4) `simp` with `Pi.sub_apply`, `Matrix.cons_val_zero/one` reduces vector subtractions to coordinate differences; (5) `ring` closes using `(a - b)\u00b2 = (b - a)\u00b2` to match the dist2 formula's sign convention.",
     "mathContext": "The EuclideanSpace norm: $\\|v\\|_{\\text{EuclideanSpace}} = \\sqrt{\\sum_{i < 2} |v_i|^2} = \\sqrt{|v_0|^2 + |v_1|^2}$. For $v = \\text{toEuclidean}(P) - \\text{toEuclidean}(Q) = ![P_x - Q_x, P_y - Q_y]$, this becomes $\\sqrt{(P_x - Q_x)^2 + (P_y - Q_y)^2} = \\text{dist2}(P, Q)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -83,8 +83,8 @@
       "endLine": 88
     },
     "type": "concept",
-    "title": "Membership Reformulation: Metric.sphere ↔ dist2 Condition",
-    "content": "The corollary `mem_sphere_iff_dist2` provides the main rewriting tool for all nine membership theorems. It states that `toEuclidean P ∈ Metric.sphere (toEuclidean C) r ↔ dist2 C P = r`. The proof: (1) `Metric.mem_sphere` unfolds sphere membership to `dist (toEuclidean P) (toEuclidean C) = r`; (2) `dist_comm` commutes the arguments; (3) `toEuclidean_dist` replaces the Mathlib dist with dist2. The `simp` tactic closes all three steps automatically.",
+    "title": "Membership Reformulation: Metric.sphere \u2194 dist2 Condition",
+    "content": "The corollary `mem_sphere_iff_dist2` provides the main rewriting tool for all nine membership theorems. It states that `toEuclidean P \u2208 Metric.sphere (toEuclidean C) r \u2194 dist2 C P = r`. The proof: (1) `Metric.mem_sphere` unfolds sphere membership to `dist (toEuclidean P) (toEuclidean C) = r`; (2) `dist_comm` commutes the arguments; (3) `toEuclidean_dist` replaces the Mathlib dist with dist2. The `simp` tactic closes all three steps automatically.",
     "mathContext": "$P \\in \\text{Metric.sphere}(C, r) \\iff \\text{dist}(P, C) = r \\iff \\text{dist2}(\\text{toEuclidean}^{-1}(C), \\text{toEuclidean}^{-1}(P)) = r$. This biconditional is the key interface: once it is proved, all nine circle membership results follow by rewriting.",
     "significance": "key",
     "relatedConcepts": [
@@ -106,9 +106,9 @@
       "startLine": 93,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Side Midpoints on the Nine-Point Sphere",
-    "content": "The first three of the nine special points are the midpoints of the triangle's sides: `midpoint_a` (midpoint of $BC$), `midpoint_b` (midpoint of $CA$), `midpoint_c` (midpoint of $AB$). Each proof is the same two-line pattern:\n```lean\nrw [mem_sphere_iff_dist2]   -- translate sphere ∈ to dist2 condition\nexact midpoint_X_on_ninePointCircle T  -- invoke coordinate proof\n```\nOnce `mem_sphere_iff_dist2` is available, the reformulation is entirely mechanical — no new mathematics is needed.",
+    "content": "The first three of the nine special points are the midpoints of the triangle's sides: `midpoint_a` (midpoint of $BC$), `midpoint_b` (midpoint of $CA$), `midpoint_c` (midpoint of $AB$). Each proof is the same two-line pattern:\n```lean\nrw [mem_sphere_iff_dist2]   -- translate sphere \u2208 to dist2 condition\nexact midpoint_X_on_ninePointCircle T  -- invoke coordinate proof\n```\nOnce `mem_sphere_iff_dist2` is available, the reformulation is entirely mechanical \u2014 no new mathematics is needed.",
     "mathContext": "Euler (1765) first described these three points as lying on a circle. In coordinates, $M_a = \\frac{B+C}{2}$, $M_b = \\frac{C+A}{2}$, $M_c = \\frac{A+B}{2}$. The nine-point center is $N = \\frac{O+H}{2}$ (midpoint of circumcenter $O$ and orthocenter $H$) and the radius is $R_9 = R/2$ where $R$ is the circumradius.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -130,9 +130,9 @@
       "startLine": 114,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Orthocenter Midpoints on the Nine-Point Sphere",
-    "content": "The next three special points are the midpoints of segments from each vertex to the orthocenter $H$: `midpoint_AH`, `midpoint_BH`, `midpoint_CH`. These are sometimes called the **Euler midpoints**.\n\nHistorically, these three points were discovered by Brianchon and Poncelet (1820) as part of their independent rediscovery of the nine-point circle — two years before Feuerbach's tangency result (1822). The same two-line proof pattern applies: `rw [mem_sphere_iff_dist2]; exact midpoint_XH_on_ninePointCircle T`.",
+    "content": "The next three special points are the midpoints of segments from each vertex to the orthocenter $H$: `midpoint_AH`, `midpoint_BH`, `midpoint_CH`. These are sometimes called the **Euler midpoints**.\n\nHistorically, these three points were discovered by Brianchon and Poncelet (1820) as part of their independent rediscovery of the nine-point circle \u2014 two years before Feuerbach's tangency result (1822). The same two-line proof pattern applies: `rw [mem_sphere_iff_dist2]; exact midpoint_XH_on_ninePointCircle T`.",
     "mathContext": "The midpoints $M_{AH} = \\frac{A+H}{2}$, $M_{BH} = \\frac{B+H}{2}$, $M_{CH} = \\frac{C+H}{2}$ satisfy: reflecting $H$ across the nine-point center $N$ gives the circumcenter $O$, and reflecting each vertex across $N$ gives the corresponding side midpoint. This symmetry about $N$ is why all nine points are equidistant from $N$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -154,10 +154,10 @@
       "startLine": 135,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Altitude Feet on the Nine-Point Sphere",
-    "content": "The final three of the nine special points are the feet of the altitudes: `foot_a` (foot from $A$ to $BC$), `foot_b` (foot from $B$ to $CA$), `foot_c` (foot from $C$ to $AB$). These are the points where the three altitudes meet the opposite sides.\n\nThe nine-point circle is also called the **Feuerbach circle** because Feuerbach (1822) proved that this circle is internally tangent to the incircle — the result formalised elsewhere in this gallery. The altitude feet have a key role: the orthocentric system $(A, B, C, H)$ means each vertex is the orthocenter of the triangle formed by the other three.",
-    "mathContext": "The altitude foot $F_a$ is the orthogonal projection of $A$ onto line $BC$: $F_a = B + \\frac{(A-B)\\cdot(C-B)}{|C-B|^2}(C-B)$. Equivalently, $\\angle AF_aC = 90°$ and $F_a \\in BC$. The nine-point circle passes through all three altitude feet because $\\angle F_aF_bF_c$ is the orthic triangle, and the nine-point circle is the circumcircle of the orthic triangle.",
+    "content": "The final three of the nine special points are the feet of the altitudes: `foot_a` (foot from $A$ to $BC$), `foot_b` (foot from $B$ to $CA$), `foot_c` (foot from $C$ to $AB$). These are the points where the three altitudes meet the opposite sides.\n\nThe nine-point circle is also called the **Feuerbach circle** because Feuerbach (1822) proved that this circle is internally tangent to the incircle \u2014 the result formalised elsewhere in this gallery. The altitude feet have a key role: the orthocentric system $(A, B, C, H)$ means each vertex is the orthocenter of the triangle formed by the other three.",
+    "mathContext": "The altitude foot $F_a$ is the orthogonal projection of $A$ onto line $BC$: $F_a = B + \\frac{(A-B)\\cdot(C-B)}{|C-B|^2}(C-B)$. Equivalently, $\\angle AF_aC = 90\u00b0$ and $F_a \\in BC$. The nine-point circle passes through all three altitude feet because $\\angle F_aF_bF_c$ is the orthic triangle, and the nine-point circle is the circumcircle of the orthic triangle.",
     "significance": "supporting",
     "relatedConcepts": [
       "altitude",
@@ -182,7 +182,7 @@
     "type": "insight",
     "title": "Combined Theorem: All Nine Points on Mathlib Sphere",
     "content": "The capstone theorem `ninePoints_all_on_sphere` packages all nine membership results into a single universal statement: for every element of the nine-point list, it lies on the Mathlib `Metric.sphere`. The proof uses `simp only [List.mem_cons, List.mem_singleton, ...]` to turn the list membership hypothesis `hp` into a disjunction, then `rcases hp with rfl | rfl | ...` pattern-matches on each case (using `rfl` since equality holds), delegating to the corresponding individual membership theorem. The nine `| rfl` arms correspond exactly to the nine list elements.",
-    "mathContext": "The Lean list `[e₁, ..., e₉]` desugars to `e₁ :: e₂ :: ... :: e₉ :: []`. The `List.mem_cons` lemma states $x \\in a :: l \\iff x = a \\vee x \\in l$, and `List.mem_singleton` handles $x \\in [y] \\iff x = y$. The `rcases` tactic with nine `| rfl` branches performs a 9-way case split, one for each point.",
+    "mathContext": "The Lean list `[e\u2081, ..., e\u2089]` desugars to `e\u2081 :: e\u2082 :: ... :: e\u2089 :: []`. The `List.mem_cons` lemma states $x \\in a :: l \\iff x = a \\vee x \\in l$, and `List.mem_singleton` handles $x \\in [y] \\iff x = y$. The `rcases` tactic with nine `| rfl` branches performs a 9-way case split, one for each point.",
     "significance": "key",
     "relatedConcepts": [
       "List.mem_cons",

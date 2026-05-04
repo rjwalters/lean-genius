@@ -8,14 +8,14 @@
     },
     "type": "concept",
     "title": "Common Subgraphs of Graphs with Chromatic Number Aleph-1",
-    "content": "Module docstring for Erdős Problem #62: if $G_1, G_2$ are graphs with chromatic number $\\aleph_1$, must they share a common subgraph $G$ with $\\chi(G) = 4$ (or even $\\chi(G) = \\aleph_0$)? This problem sits at the intersection of infinite combinatorics and graph theory. The Erdős-Hajnal-Shelah theorem shows graphs with $\\chi = \\aleph_1$ contain all large odd cycles, providing partial evidence.",
-    "mathContext": "Erdős #62: $\\chi(G_1) = \\chi(G_2) = \\aleph_1 \\Rightarrow \\exists H \\subseteq G_1 \\cap G_2$ with $\\chi(H) \\geq 4$?",
+    "content": "Module docstring for Erd\u0151s Problem #62: if $G_1, G_2$ are graphs with chromatic number $\\aleph_1$, must they share a common subgraph $G$ with $\\chi(G) = 4$ (or even $\\chi(G) = \\aleph_0$)? This problem sits at the intersection of infinite combinatorics and graph theory. The Erd\u0151s-Hajnal-Shelah theorem shows graphs with $\\chi = \\aleph_1$ contain all large odd cycles, providing partial evidence.",
+    "mathContext": "Erd\u0151s #62: $\\chi(G_1) = \\chi(G_2) = \\aleph_1 \\Rightarrow \\exists H \\subseteq G_1 \\cap G_2$ with $\\chi(H) \\geq 4$?",
     "significance": "key",
     "relatedConcepts": [
       "infinite chromatic number",
       "common subgraphs",
       "uncountable graphs",
-      "Erdős-Hajnal-Shelah"
+      "Erd\u0151s-Hajnal-Shelah"
     ],
     "prerequisites": [
       "infinite graph theory",
@@ -33,7 +33,7 @@
     "type": "definition",
     "title": "InfGraph, Colorings, Chromatic Classes, and Embeddings",
     "content": "**InfGraph V**: simple graph on arbitrary type V with symmetric adjacency and no self-loops. Uses a custom structure rather than Mathlib's `SimpleGraph` to handle uncountable vertex sets cleanly.\n\n**IsColoring G C f**: proper C-coloring. **IsColorable G k**: k-colorable via Fin k. **IsCountablyColorable G**: colorable via $\\mathbb{N}$.\n\n**HasChromaticNumber G k**: exactly k-colorable. **HasChromaticAleph0 G**: countably but not finitely colorable. **HasChromaticAleph1 G**: not countably colorable ($\\neg$IsCountablyColorable).\n\n**EmbedsInto H G**: injective homomorphism from H into G preserving edges.",
-    "mathContext": "The chromatic hierarchy $\\chi = k < \\chi = \\aleph_0 < \\chi = \\aleph_1$ partitions graphs by coloring complexity. For finite graphs $\\chi$ is always a natural number. For infinite graphs the situation is richer: De Bruijn-Erdos (1951) shows a graph is $k$-colorable iff every finite subgraph is, so uncountable chromatic number requires genuinely infinite obstructions. The definition $\\chi = \\aleph_1$ as $\\neg$IsCountablyColorable is clean but slightly informal — in ZFC, $\\neg$countably colorable means $\\chi \\geq \\aleph_1$, but it could be larger. Under GCH or for the graphs in this problem, $\\chi = \\aleph_1$ suffices. EmbedsInto is a weak subgraph notion (injective homomorphism, not necessarily induced) which is appropriate here since the conjecture concerns the existence of any embedding.",
+    "mathContext": "The chromatic hierarchy $\\chi = k < \\chi = \\aleph_0 < \\chi = \\aleph_1$ partitions graphs by coloring complexity. For finite graphs $\\chi$ is always a natural number. For infinite graphs the situation is richer: De Bruijn-Erdos (1951) shows a graph is $k$-colorable iff every finite subgraph is, so uncountable chromatic number requires genuinely infinite obstructions. The definition $\\chi = \\aleph_1$ as $\\neg$IsCountablyColorable is clean but slightly informal \u2014 in ZFC, $\\neg$countably colorable means $\\chi \\geq \\aleph_1$, but it could be larger. Under GCH or for the graphs in this problem, $\\chi = \\aleph_1$ suffices. EmbedsInto is a weak subgraph notion (injective homomorphism, not necessarily induced) which is appropriate here since the conjecture concerns the existence of any embedding.",
     "significance": "key",
     "relatedConcepts": [
       "De Bruijn-Erdos theorem",
@@ -57,7 +57,7 @@
     "type": "concept",
     "title": "The Two Conjectures and Generalization to Finite Collections",
     "content": "**erdos_62_conjecture_strong**: $\\forall G_1, G_2$ with $\\chi = \\aleph_1$, $\\exists H$ with $\\chi(H) = 4$ embedding into both. OPEN.\n\n**erdos_62_conjecture_weak**: same but $\\chi(H) = \\aleph_0$ instead. OPEN.\n\n**erdos_62_generalized** (Erdos 1987): for any finite collection $G_1, \\ldots, G_n$ with $\\chi = \\aleph_1$, $\\exists H$ with $\\chi(H) = 4$ or $\\chi(H) = \\aleph_0$ embedding into all $G_i$. Uses `Fin n -> Type` for the family.",
-    "mathContext": "The strong conjecture asks for $\\chi = 4$ specifically because $\\chi = 3$ is already known (via odd cycles, see EHS below). The choice of 4 is the next step in the chromatic hierarchy for non-bipartite graphs. Why not $\\chi = 3$? Because that's trivially achieved. Why $\\aleph_0$? Because it would mean graphs with uncountable chromatic number share a 'rich' common structure, not just finitely complex subgraphs. The weak conjecture is strictly weaker: $\\chi = 4 \\Rightarrow$ finite chromatic $\\Rightarrow$ countably colorable, so a common $\\chi = 4$ subgraph implies a common countably-colorable subgraph (though not conversely with $\\chi = \\aleph_0$). The generalization from pairs to finite collections uses `Fin n`-indexed families — if even the pair version is open, the general version is certainly open. Both conjectures are formalized as Prop-valued definitions (not axioms), reflecting their open status.",
+    "mathContext": "The strong conjecture asks for $\\chi = 4$ specifically because $\\chi = 3$ is already known (via odd cycles, see EHS below). The choice of 4 is the next step in the chromatic hierarchy for non-bipartite graphs. Why not $\\chi = 3$? Because that's trivially achieved. Why $\\aleph_0$? Because it would mean graphs with uncountable chromatic number share a 'rich' common structure, not just finitely complex subgraphs. The weak conjecture is strictly weaker: $\\chi = 4 \\Rightarrow$ finite chromatic $\\Rightarrow$ countably colorable, so a common $\\chi = 4$ subgraph implies a common countably-colorable subgraph (though not conversely with $\\chi = \\aleph_0$). The generalization from pairs to finite collections uses `Fin n`-indexed families \u2014 if even the pair version is open, the general version is certainly open. Both conjectures are formalized as Prop-valued definitions (not axioms), reflecting their open status.",
     "significance": "key",
     "relatedConcepts": [
       "common subgraph problem",
@@ -80,7 +80,7 @@
     "type": "concept",
     "title": "Erdos-Hajnal-Shelah Theorem and odd_cycles_are_common (Fully Proved)",
     "content": "**oddCycle k hk** (axiom): the odd cycle $C_{2k+1}$ on `Fin (2k+1)`. **oddCycle_chromatic** (axiom): $\\chi(C_{2k+1}) = 3$.\n\n**erdos_hajnal_shelah** (axiom): if $\\chi(G) = \\aleph_1$, then $\\exists N$ s.t. $\\forall k \\geq N$, $C_{2k+1}$ embeds into $G$.\n\n**odd_cycles_are_common** (FULLY PROVED): given $G_1, G_2$ with $\\chi = \\aleph_1$, take $k = \\max(N_1, N_2) + 1$ to get a common odd cycle embedding into both. The proof uses `obtain` to extract the EHS witnesses, `let k := max N_1 N_2 + 1`, shows `1 \\leq k` by `omega`, then applies both EHS instances with `omega` for the $\\geq$ conditions.",
-    "mathContext": "The Erdos-Hajnal-Shelah theorem (1974) is a deep result in infinite combinatorics. The proof uses Ramsey-type arguments: partition the edges of a graph with $\\chi = \\aleph_1$ and use the uncountable chromatic number to force long odd paths that close into cycles. The key insight is that uncountable chromatic number provides an inexhaustible supply of vertices that cannot be separated by finitely many colors, and Ramsey's theorem for pairs then forces the cycle structure. The `odd_cycles_are_common` theorem is the file's main non-trivial proof: it's a clean application of EHS to two graphs simultaneously. The trick of taking $k = \\max(N_1, N_2) + 1$ ensures the chosen odd cycle is large enough for both EHS instances. This is the best known partial result toward Problem #62 — common subgraphs with $\\chi = 3$.",
+    "mathContext": "The Erdos-Hajnal-Shelah theorem (1974) is a deep result in infinite combinatorics. The proof uses Ramsey-type arguments: partition the edges of a graph with $\\chi = \\aleph_1$ and use the uncountable chromatic number to force long odd paths that close into cycles. The key insight is that uncountable chromatic number provides an inexhaustible supply of vertices that cannot be separated by finitely many colors, and Ramsey's theorem for pairs then forces the cycle structure. The `odd_cycles_are_common` theorem is the file's main non-trivial proof: it's a clean application of EHS to two graphs simultaneously. The trick of taking $k = \\max(N_1, N_2) + 1$ ensures the chosen odd cycle is large enough for both EHS instances. This is the best known partial result toward Problem #62 \u2014 common subgraphs with $\\chi = 3$.",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
@@ -104,7 +104,7 @@
     "type": "concept",
     "title": "The $\\chi = 3$ to $\\chi = 4$ Gap: The Core Open Problem",
     "content": "**chi_gap_problem**: $\\forall G_1, G_2$ with $\\chi = \\aleph_1$, $\\exists H$ with $\\chi(H) > 3$ embedding into both. The $\\chi > 3$ condition is formalized as $\\forall k \\leq 3, \\neg$HasChromaticNumber $H$ $k$.\n\nThis captures the exact frontier of current knowledge: we have $\\chi = 3$ (odd cycles), we want $\\chi \\geq 4$.",
-    "mathContext": "The gap between $\\chi = 3$ and $\\chi = 4$ for common subgraphs is where the problem's difficulty lies. Odd cycles are the 'simplest' graphs with $\\chi = 3$, and the EHS theorem hands them to us for free. But graphs with $\\chi = 4$ are fundamentally more complex — they require the Hales-Jewett / topological methods to construct (e.g., Mycielski's construction, Kneser graphs). No known technique forces a common $\\chi = 4$ subgraph in two arbitrary graphs with $\\chi = \\aleph_1$. The formalization's condition $\\forall k \\leq 3, \\neg\\text{HasChromaticNumber}\\ H\\ k$ is equivalent to $\\chi(H) \\geq 4$ for graphs with well-defined finite chromatic number; for infinite chromatic number it also holds vacuously. Bridging this gap would require either new structural results about $\\chi = \\aleph_1$ graphs or a clever construction argument.",
+    "mathContext": "The gap between $\\chi = 3$ and $\\chi = 4$ for common subgraphs is where the problem's difficulty lies. Odd cycles are the 'simplest' graphs with $\\chi = 3$, and the EHS theorem hands them to us for free. But graphs with $\\chi = 4$ are fundamentally more complex \u2014 they require the Hales-Jewett / topological methods to construct (e.g., Mycielski's construction, Kneser graphs). No known technique forces a common $\\chi = 4$ subgraph in two arbitrary graphs with $\\chi = \\aleph_1$. The formalization's condition $\\forall k \\leq 3, \\neg\\text{HasChromaticNumber}\\ H\\ k$ is equivalent to $\\chi(H) \\geq 4$ for graphs with well-defined finite chromatic number; for infinite chromatic number it also holds vacuously. Bridging this gap would require either new structural results about $\\chi = \\aleph_1$ graphs or a clever construction argument.",
     "significance": "key",
     "relatedConcepts": [
       "Mycielski construction",
@@ -128,7 +128,7 @@
     "type": "concept",
     "title": "Auxiliary Properties and Summary",
     "content": "**finite_implies_countable** (PROVED): $\\chi = k \\Rightarrow$ countably colorable. Lifts `Fin k`-coloring to $\\mathbb{N}$-coloring via `Fin.val`.\n\n**embed_colorable** (PROVED): if $H$ embeds into $G$ and $G$ is $k$-colorable, then $H$ is $k$-colorable. Composes the coloring with the embedding function.\n\n**Summary**: OPEN. Best partial result: common $\\chi = 3$ subgraphs (odd cycles) via EHS. The $\\chi = 4$ and $\\chi = \\aleph_0$ versions are wide open.",
-    "mathContext": "The two proved auxiliary results establish monotonicity properties essential for the chromatic hierarchy. `finite_implies_countable` ensures the chain $\\chi = k \\Rightarrow \\chi \\leq \\aleph_0$, so HasChromaticAleph1 (not countably colorable) implies not finitely colorable. `embed_colorable` is the pullback property: colorings pull back along embeddings. This means if $H$ embeds into $G$, then $\\chi(H) \\leq \\chi(G)$, which is the standard monotonicity of chromatic number under subgraph inclusion. Both proofs are constructive and short — the coloring composition works directly. These are the only fully proved results besides `odd_cycles_are_common`, giving this file 0 sorries: all definitions are complete and all axioms are intentional (EHS, oddCycle).",
+    "mathContext": "The two proved auxiliary results establish monotonicity properties essential for the chromatic hierarchy. `finite_implies_countable` ensures the chain $\\chi = k \\Rightarrow \\chi \\leq \\aleph_0$, so HasChromaticAleph1 (not countably colorable) implies not finitely colorable. `embed_colorable` is the pullback property: colorings pull back along embeddings. This means if $H$ embeds into $G$, then $\\chi(H) \\leq \\chi(G)$, which is the standard monotonicity of chromatic number under subgraph inclusion. Both proofs are constructive and short \u2014 the coloring composition works directly. These are the only fully proved results besides `odd_cycles_are_common`, giving this file 0 sorries: all definitions are complete and all axioms are intentional (EHS, oddCycle).",
     "significance": "supporting",
     "relatedConcepts": [
       "chromatic monotonicity",
@@ -194,7 +194,7 @@
       "startLine": 127,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "odd_cycles_are_common: Proved via EHS (Max of Thresholds)",
     "content": "`odd_cycles_are_common` is the main proved theorem: if $G_1$ and $G_2$ both have $\\chi \\geq \\aleph_1$, they share a common subgraph with $\\chi = 3$ (an odd cycle). The proof applies the Erd\\u0151s-Hajnal-Shelah axiom to each graph, obtaining thresholds $N_1$ and $N_2$ such that $G_i$ contains all odd cycles of length $\\geq 2N_i + 1$. Taking $k = \\max(N_1, N_2) + 1$, the odd cycle $C_{2k+1}$ embeds into both $G_1$ and $G_2$, and has $\\chi = 3$ by `oddCycle_chromatic`.",
     "mathContext": "Take $k = \\max(N_1, N_2) + 1$. Then $k \\geq N_1$ and $k \\geq N_2$, so $C_{2k+1}$ embeds into both $G_1$ and $G_2$. Since $\\chi(C_{2k+1}) = 3$, this is a common subgraph with $\\chi = 3$.",
@@ -217,7 +217,7 @@
       "startLine": 165,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Chromatic Monotonicity Under Embedding (Proved)",
     "content": "`finite_implies_countable` proves that finite colorability implies countable colorability: if $G$ is $k$-colorable for some $k \\in \\mathbb{N}$, then $G$ is countably colorable (via `Fin.val : Fin k \\to \\mathbb{N}`, which is injective by `Fin.val_injective`). `embed_colorable` proves that colorability transfers to subgraphs: if $H$ embeds into $G$ and $G$ is $k$-colorable, then $H$ is $k$-colorable (compose the coloring with the embedding). Both are fully proved with no axioms.",
     "mathContext": "Finite $\\Rightarrow$ countable: $f: V \\to \\text{Fin}\\;k$ proper $\\Rightarrow$ $\\text{val} \\circ f: V \\to \\mathbb{N}$ proper (val is injective). Embedding: $H \\hookrightarrow G$, $G$ $k$-colorable $\\Rightarrow$ $H$ $k$-colorable (pull back the coloring).",

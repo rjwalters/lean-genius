@@ -2,97 +2,199 @@
   {
     "id": "ann-collatz-def",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 30, "endLine": 51 },
+    "range": {
+      "startLine": 30,
+      "endLine": 51
+    },
     "type": "definition",
     "title": "Collatz Function and Iteration: Core Definitions",
-    "content": "`collatz` is defined by the standard parity split: `if n % 2 = 0 then n / 2 else 3 * n + 1`. Three helper theorems are immediately derived: `collatz_even` and `collatz_odd` provide simp lemmas for the two branches, while `collatz_two_mul n` gives the closed form `collatz(2n) = n`. The iteration `collatzIter k n = collatz^[k] n` uses Lean's function iteration `^[k]` (the k-fold composition). `IsPeriodic n k` bundles the two conditions: period ≥ 1 (`k ≥ 1`) and `collatzIter k n = n`. The `k ≥ 1` guard rules out the trivial 0-period.",
+    "content": "`collatz` is defined by the standard parity split: `if n % 2 = 0 then n / 2 else 3 * n + 1`. Three helper theorems are immediately derived: `collatz_even` and `collatz_odd` provide simp lemmas for the two branches, while `collatz_two_mul n` gives the closed form `collatz(2n) = n`. The iteration `collatzIter k n = collatz^[k] n` uses Lean's function iteration `^[k]` (the k-fold composition). `IsPeriodic n k` bundles the two conditions: period \u2265 1 (`k \u2265 1`) and `collatzIter k n = n`. The `k \u2265 1` guard rules out the trivial 0-period.",
     "mathContext": "$f(n) = \\begin{cases} n/2 & n \\text{ even} \\\\ 3n+1 & n \\text{ odd} \\end{cases}$. The Collatz conjecture asserts $\\forall n \\geq 1, \\exists k: f^k(n) = 1$. A cycle (periodic orbit) is $n > 0$ with $f^k(n) = n$ for some $k \\geq 1$. The known cycle is $\\{1, 2, 4\\}$ with period 3. The 3x+1 map was studied by Collatz (1937) under the name 'Syracuse problem'; it was popularized by Kakutani and appeared on chalkboards at Chicago in the 1950s.",
     "significance": "key",
-    "relatedConcepts": ["collatz_even", "collatz_odd", "collatzIter", "IsPeriodic", "Function.iterate"],
-    "prerequisites": ["Nat.even_or_odd", "Nat.mod in Lean 4", "function iteration ^[k]"]
+    "relatedConcepts": [
+      "collatz_even",
+      "collatz_odd",
+      "collatzIter",
+      "IsPeriodic",
+      "Function.iterate"
+    ],
+    "prerequisites": [
+      "Nat.even_or_odd",
+      "Nat.mod in Lean 4",
+      "function iteration ^[k]"
+    ]
   },
   {
     "id": "ann-collatz-no-fixpoint",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 56, "endLine": 64 },
-    "type": "theorem",
+    "range": {
+      "startLine": 56,
+      "endLine": 64
+    },
+    "type": "insight",
     "title": "No Fixed Points: collatz(n) = n Implies n = 0",
-    "content": "`collatz_no_fixpoint` proves by contradiction: assume `collatz n = n` with `n ≠ 0`. For even `n = 2m`: `collatz(2m) = m`, so `m = 2m`, giving `m = 0`, hence `n = 0` — contradiction. For odd `n`: `collatz(n) = 3n+1 > n`, so `3n+1 = n` gives `2n = -1`, impossible in `ℕ`. The proof uses `Nat.even_or_odd` to split into cases, `collatz_even`/`collatz_odd` to simplify, and `omega` to close each arithmetic contradiction. The `by_contra hne` + `rcases` + `omega` pattern is idiomatic Lean 4 for parity arguments.",
+    "content": "`collatz_no_fixpoint` proves by contradiction: assume `collatz n = n` with `n \u2260 0`. For even `n = 2m`: `collatz(2m) = m`, so `m = 2m`, giving `m = 0`, hence `n = 0` \u2014 contradiction. For odd `n`: `collatz(n) = 3n+1 > n`, so `3n+1 = n` gives `2n = -1`, impossible in `\u2115`. The proof uses `Nat.even_or_odd` to split into cases, `collatz_even`/`collatz_odd` to simplify, and `omega` to close each arithmetic contradiction. The `by_contra hne` + `rcases` + `omega` pattern is idiomatic Lean 4 for parity arguments.",
     "mathContext": "**Why no positive fixed points**: For even $n > 0$: $f(n) = n/2 < n$. For odd $n$: $f(n) = 3n+1 > n$. In neither case can $f(n) = n$. The proof is trivially sharp: $f(0) = 0/2 = 0$ is the unique fixed point (in $\\mathbb{N}$; over $\\mathbb{Z}$ there are also the fixed points $-1$ and $-5/7$, corresponding to the two other known cycles of the negative integer Collatz map).",
     "significance": "key",
-    "relatedConcepts": ["collatz_even", "collatz_odd", "Nat.even_or_odd", "omega tactic"],
-    "prerequisites": ["collatz definition", "Lean 4 by_contra + rcases", "Natural number arithmetic"]
+    "relatedConcepts": [
+      "collatz_even",
+      "collatz_odd",
+      "Nat.even_or_odd",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "collatz definition",
+      "Lean 4 by_contra + rcases",
+      "Natural number arithmetic"
+    ]
   },
   {
     "id": "ann-collatz-no-two-cycle",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 69, "endLine": 88 },
-    "type": "theorem",
-    "title": "No 2-Cycles: collatz²(n) = n Implies n = 0 via Nested Parity Case Analysis",
-    "content": "`collatz_no_two_cycle` proves no 2-cycles exist in `ℕ` by exhaustive 3-case analysis: (A) `n` even, `n/2` even: collatz²(n) = n/4 = n → n = 0; (B) `n` even, `n/2` odd: collatz²(n) = 3(n/2)+1 = n → 3n/2+1 = n → n = -2, impossible; (C) `n` odd: collatz(n) = 3n+1 (always even, since 3·odd+1 is even), so collatz²(n) = (3n+1)/2 = n → 3n+1 = 2n → n = -1, impossible. Case C is the key one: an odd number can never return to itself in 2 steps because odd → (3n+1) even → (3n+1)/2, and (3n+1)/2 = n requires n = -1.",
+    "range": {
+      "startLine": 69,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "No 2-Cycles: collatz\u00b2(n) = n Implies n = 0 via Nested Parity Case Analysis",
+    "content": "`collatz_no_two_cycle` proves no 2-cycles exist in `\u2115` by exhaustive 3-case analysis: (A) `n` even, `n/2` even: collatz\u00b2(n) = n/4 = n \u2192 n = 0; (B) `n` even, `n/2` odd: collatz\u00b2(n) = 3(n/2)+1 = n \u2192 3n/2+1 = n \u2192 n = -2, impossible; (C) `n` odd: collatz(n) = 3n+1 (always even, since 3\u00b7odd+1 is even), so collatz\u00b2(n) = (3n+1)/2 = n \u2192 3n+1 = 2n \u2192 n = -1, impossible. Case C is the key one: an odd number can never return to itself in 2 steps because odd \u2192 (3n+1) even \u2192 (3n+1)/2, and (3n+1)/2 = n requires n = -1.",
     "mathContext": "Algebraically: in a 2-cycle, if $n$ is odd, then $f(n) = 3n+1$ (even), $f^2(n) = (3n+1)/2 = n$ requires $n = -1 \\notin \\mathbb{N}$. If $n$ is even, $f(n) = n/2$; for the pair $(n, n/2)$ to be a 2-cycle: $f(n/2) = n$. If $n/2$ is odd: $3(n/2)+1 = n \\Rightarrow n = -2$. If $n/2$ is even: $(n/2)/2 = n \\Rightarrow n/4 = n \\Rightarrow n = 0$. All cases lead to $n \\leq 0$, so no positive 2-cycles exist. The systematic nested parity analysis is the standard technique for low-period cycle non-existence.",
     "significance": "key",
-    "relatedConcepts": ["collatz_no_fixpoint", "Nat.even_or_odd", "parity case analysis", "collatz_even", "collatz_odd"],
-    "prerequisites": ["collatz_no_fixpoint", "collatz definition", "omega for integer arithmetic in ℕ"]
+    "relatedConcepts": [
+      "collatz_no_fixpoint",
+      "Nat.even_or_odd",
+      "parity case analysis",
+      "collatz_even",
+      "collatz_odd"
+    ],
+    "prerequisites": [
+      "collatz_no_fixpoint",
+      "collatz definition",
+      "omega for integer arithmetic in \u2115"
+    ]
   },
   {
     "id": "ann-collatz-period-three",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 93, "endLine": 112 },
-    "type": "theorem",
-    "title": "Unique Period-3 Cycle: 1 → 4 → 2 → 1 is the Minimal Period of 1",
-    "content": "`orbit_of_one` verifies `collatz^[3](1) = 1` by `native_decide` (the kernel computes 1→4→2→1). `one_period_is_three` proves minimality by combining: (1) `orbit_of_one` for the existence of period 3; (2) `interval_cases k` for k ∈ {1, 2} to verify `collatz^[1](1) ≠ 1` (trivial: `collatz(1) = 4 ≠ 1`) and `collatz^[2](1) ≠ 1` (`collatz(collatz(1)) = collatz(4) = 2 ≠ 1`). `orbit_one_elements` records all three steps explicitly: `collatz(1) = 4`, `collatz(4) = 2`, `collatz(2) = 1`, each by `simp [collatz]`. The `interval_cases` approach scales poorly for large periods but is clean for proving minimality within a small range.",
+    "range": {
+      "startLine": 93,
+      "endLine": 112
+    },
+    "type": "insight",
+    "title": "Unique Period-3 Cycle: 1 \u2192 4 \u2192 2 \u2192 1 is the Minimal Period of 1",
+    "content": "`orbit_of_one` verifies `collatz^[3](1) = 1` by `native_decide` (the kernel computes 1\u21924\u21922\u21921). `one_period_is_three` proves minimality by combining: (1) `orbit_of_one` for the existence of period 3; (2) `interval_cases k` for k \u2208 {1, 2} to verify `collatz^[1](1) \u2260 1` (trivial: `collatz(1) = 4 \u2260 1`) and `collatz^[2](1) \u2260 1` (`collatz(collatz(1)) = collatz(4) = 2 \u2260 1`). `orbit_one_elements` records all three steps explicitly: `collatz(1) = 4`, `collatz(4) = 2`, `collatz(2) = 1`, each by `simp [collatz]`. The `interval_cases` approach scales poorly for large periods but is clean for proving minimality within a small range.",
     "mathContext": "The orbit $\\{1, 2, 4\\}$ (equivalently $\\{4, 2, 1\\}$) is the **unique known positive cycle** of the Collatz map. Its period is 3 because: $f(1) = 4$, $f(4) = 2$, $f(2) = 1$. The cycle passes through the ratio $1 : 2 : 4 = 1 : 2 : 4$, which balances the two odd steps (at $n=1$: multiplied by ~3) with the single doubling step. Empirically, no other cycle has been found for $n \\leq 2.95 \\times 10^{20}$ (Betz-Peters-Rajasekharan, 2020). Any second cycle would have to have $j \\geq 1$ odd steps and period $j + M \\geq 2.585j$.",
     "significance": "key",
-    "relatedConcepts": ["native_decide", "interval_cases", "IsPeriodic", "collatz_no_fixpoint", "one_not_two_cycle"],
-    "prerequisites": ["IsPeriodic definition", "native_decide for concrete computations", "interval_cases tactic"]
+    "relatedConcepts": [
+      "native_decide",
+      "interval_cases",
+      "IsPeriodic",
+      "collatz_no_fixpoint",
+      "one_not_two_cycle"
+    ],
+    "prerequisites": [
+      "IsPeriodic definition",
+      "native_decide for concrete computations",
+      "interval_cases tactic"
+    ]
   },
   {
     "id": "ann-collatz-structural",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 117, "endLine": 152 },
+    "range": {
+      "startLine": 117,
+      "endLine": 152
+    },
     "type": "concept",
     "title": "Monotonicity and 3/4 Contraction: Structural Constraints on Cycles",
-    "content": "`collatz_odd_growth` (odd n ≥ 1 → collatz(n) > n) and `collatz_even_decrease` (even n ≥ 2 → collatz(n) < n) establish the fundamental asymmetry: odd steps always increase, even steps always decrease. In a cycle, these effects must exactly cancel. The 3/4 contraction theorem `three_quarter_contraction` deepens this: for $n \\equiv 1 \\pmod{4}$ with $n \\geq 2$, three consecutive Collatz steps produce $(3n+1)/4 < n$. The proof: `n` odd (since $n \\equiv 1 \\pmod{4}$) → $3n+1 \\equiv 0 \\pmod{4}$ → the next two steps are halvings → result is $(3n+1)/4$. `three_steps_mod4_eq1` computes the three-step composition explicitly using `rw [collatz_odd/even]`, with `omega` for all divisibility facts.",
-    "mathContext": "The 3/4 contraction is significant: for $n \\equiv 1 \\pmod{4}$, after one odd step and two halvings, $n \\mapsto \\frac{3n+1}{4} < n$ (since $3n+1 < 4n \\iff n > 1$). Numbers $\\equiv 3 \\pmod{4}$ behave differently: $f^3$ maps $n \\mapsto \\frac{3(3n+1)+1}{2} = \\frac{9n+4}{2}$ (one odd step, then an odd result, then a halving) — not necessarily contracting. The mod-4 residue determines the local behavior. More generally, for $n \\equiv 2^k \\cdot m + (2^k - 1)$, one can compute $k+1$ steps explicitly.",
+    "content": "`collatz_odd_growth` (odd n \u2265 1 \u2192 collatz(n) > n) and `collatz_even_decrease` (even n \u2265 2 \u2192 collatz(n) < n) establish the fundamental asymmetry: odd steps always increase, even steps always decrease. In a cycle, these effects must exactly cancel. The 3/4 contraction theorem `three_quarter_contraction` deepens this: for $n \\equiv 1 \\pmod{4}$ with $n \\geq 2$, three consecutive Collatz steps produce $(3n+1)/4 < n$. The proof: `n` odd (since $n \\equiv 1 \\pmod{4}$) \u2192 $3n+1 \\equiv 0 \\pmod{4}$ \u2192 the next two steps are halvings \u2192 result is $(3n+1)/4$. `three_steps_mod4_eq1` computes the three-step composition explicitly using `rw [collatz_odd/even]`, with `omega` for all divisibility facts.",
+    "mathContext": "The 3/4 contraction is significant: for $n \\equiv 1 \\pmod{4}$, after one odd step and two halvings, $n \\mapsto \\frac{3n+1}{4} < n$ (since $3n+1 < 4n \\iff n > 1$). Numbers $\\equiv 3 \\pmod{4}$ behave differently: $f^3$ maps $n \\mapsto \\frac{3(3n+1)+1}{2} = \\frac{9n+4}{2}$ (one odd step, then an odd result, then a halving) \u2014 not necessarily contracting. The mod-4 residue determines the local behavior. More generally, for $n \\equiv 2^k \\cdot m + (2^k - 1)$, one can compute $k+1$ steps explicitly.",
     "significance": "key",
-    "relatedConcepts": ["three_steps_mod4_eq1", "three_quarter_value_lt", "odd_step_halve_le", "Nat.mod arithmetic"],
-    "prerequisites": ["collatz_even/odd", "Nat.div and mod properties", "omega for modular arithmetic"]
+    "relatedConcepts": [
+      "three_steps_mod4_eq1",
+      "three_quarter_value_lt",
+      "odd_step_halve_le",
+      "Nat.mod arithmetic"
+    ],
+    "prerequisites": [
+      "collatz_even/odd",
+      "Nat.div and mod properties",
+      "omega for modular arithmetic"
+    ]
   },
   {
     "id": "ann-collatz-halving",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 159, "endLine": 189 },
+    "range": {
+      "startLine": 159,
+      "endLine": 189
+    },
     "type": "concept",
     "title": "Cycle Halving Constraints: 2^M > 3^j and Minimum Cycle Lengths",
     "content": "For a Collatz cycle with $j$ odd steps and $M$ total halvings (even steps), the cycle must multiply by $3^j \\cdot \\frac{1}{2^M}$ overall and return to start, requiring $2^M = 3^j \\cdot \\prod (1 + 1/(3a_i))$ where $a_i$ are the odd elements. Since each $(1 + 1/(3a_i)) > 1$, we need $2^M > 3^j$. The four theorems `min_halvings_one_odd` through `min_halvings_four_odd` prove this for $j = 1,2,3,4$ by `interval_cases`: check all $M < $ threshold and find $2^M \\leq 3^j$. The `min_cycle_length_j*` theorems then add: minimum cycle length $= j + M \\geq j + \\lceil j \\log_2 3 \\rceil$. For $j=1$: length $\\geq 3$; $j=2$: $\\geq 6$; $j=3$: $\\geq 8$; $j=4$: $\\geq 11$.",
     "mathContext": "**The $2^M > 3^j$ constraint** (Lagarias 1985, Eliahou 1993): in a cycle $n_0 \\to n_1 \\to \\ldots \\to n_{k-1} \\to n_0$ with $j$ odd terms, the product formula gives $\\prod_{i: n_i \\text{ odd}} (3 + \\frac{1}{n_i}) = 2^M$. Since each factor $> 3$, $2^M > 3^j$. The bound $M \\geq \\lceil j \\log_2 3 \\rceil = \\lceil 1.585j \\rceil$ follows. This means: $j=1 \\Rightarrow M \\geq 2$ (min length 3, matching $\\{1,4,2\\}$); $j=2 \\Rightarrow M \\geq 4$ (min length 6); $j=3 \\Rightarrow M \\geq 5$ (min length 8). **Eliahou's result** (1993): any non-trivial cycle other than $\\{1,2,4\\}$ has length $\\geq 17,087,915$ (requires $j \\geq 76$).",
     "significance": "key",
-    "relatedConcepts": ["interval_cases", "Nat.pow", "Lagarias 1985", "Eliahou 1993", "min_halvings_j_odd"],
-    "prerequisites": ["Collatz cycle structure", "2^M > 3^j constraint derivation", "interval_cases for bounded ℕ"]
+    "relatedConcepts": [
+      "interval_cases",
+      "Nat.pow",
+      "Lagarias 1985",
+      "Eliahou 1993",
+      "min_halvings_j_odd"
+    ],
+    "prerequisites": [
+      "Collatz cycle structure",
+      "2^M > 3^j constraint derivation",
+      "interval_cases for bounded \u2115"
+    ]
   },
   {
     "id": "ann-collatz-verified-small",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 198, "endLine": 221 },
-    "type": "theorem",
-    "title": "Computational Verification: All n ≤ 20 Reach 1 via native_decide",
-    "content": "`small_numbers_reach_one` proves that for each $n \\in \\{1,\\ldots,20\\}$, there exists a step count $k$ such that `collatzIter k n = 1`. The proof uses `interval_cases n` to produce 20 subgoals, each resolved by providing the exact step count and `native_decide` to verify. The step counts encode the Collatz sequence lengths: $n=3$ needs $k=7$ (sequence: 3→10→5→16→8→4→2→1), $n=9$ needs $k=19$, $n=18$ and $n=19$ both need $k=20$ steps. The `ReachesOne` predicate is existential — it only requires reaching 1 at some step, not that 1 is the eventual minimum.",
-    "mathContext": "The Collatz stopping times (number of steps to reach 1) for $n = 1,\\ldots,20$: $(0,1,7,2,5,8,16,3,19,6,14,9,9,17,17,4,12,20,20,7)$. The maximum stopping time in $[1,20]$ is $n=18$ or $n=19$ (20 steps). The formalization explicitly witnesses these by providing the stopping time $k$ — not just asserting existence. This is more informative than a pure existence proof and serves as a computational sanity check for the `collatz` definition. Larger computations (all $n \\leq 2.95 \\times 10^{20}$) confirm the Collatz conjecture but are not formalized here.",
+    "range": {
+      "startLine": 198,
+      "endLine": 221
+    },
+    "type": "insight",
+    "title": "Computational Verification: All n \u2264 20 Reach 1 via native_decide",
+    "content": "`small_numbers_reach_one` proves that for each $n \\in \\{1,\\ldots,20\\}$, there exists a step count $k$ such that `collatzIter k n = 1`. The proof uses `interval_cases n` to produce 20 subgoals, each resolved by providing the exact step count and `native_decide` to verify. The step counts encode the Collatz sequence lengths: $n=3$ needs $k=7$ (sequence: 3\u219210\u21925\u219216\u21928\u21924\u21922\u21921), $n=9$ needs $k=19$, $n=18$ and $n=19$ both need $k=20$ steps. The `ReachesOne` predicate is existential \u2014 it only requires reaching 1 at some step, not that 1 is the eventual minimum.",
+    "mathContext": "The Collatz stopping times (number of steps to reach 1) for $n = 1,\\ldots,20$: $(0,1,7,2,5,8,16,3,19,6,14,9,9,17,17,4,12,20,20,7)$. The maximum stopping time in $[1,20]$ is $n=18$ or $n=19$ (20 steps). The formalization explicitly witnesses these by providing the stopping time $k$ \u2014 not just asserting existence. This is more informative than a pure existence proof and serves as a computational sanity check for the `collatz` definition. Larger computations (all $n \\leq 2.95 \\times 10^{20}$) confirm the Collatz conjecture but are not formalized here.",
     "significance": "supporting",
-    "relatedConcepts": ["native_decide", "interval_cases", "ReachesOne", "Collatz stopping time", "small_numbers_reach_one"],
-    "prerequisites": ["ReachesOne definition", "collatzIter", "native_decide for concrete computations"]
+    "relatedConcepts": [
+      "native_decide",
+      "interval_cases",
+      "ReachesOne",
+      "Collatz stopping time",
+      "small_numbers_reach_one"
+    ],
+    "prerequisites": [
+      "ReachesOne definition",
+      "collatzIter",
+      "native_decide for concrete computations"
+    ]
   },
   {
     "id": "ann-collatz-iter-periodic",
     "proofId": "collatz-cycles",
-    "range": { "startLine": 47, "endLine": 51 },
+    "range": {
+      "startLine": 47,
+      "endLine": 51
+    },
     "type": "definition",
     "title": "collatzIter and IsPeriodic: Formalizing Orbits and Cycles",
-    "content": "`collatzIter k n = collatz^[k] n` uses Lean 4's built-in function iteration `f^[k]` (the k-fold composition `f ∘ f ∘ … ∘ f`). This avoids defining a recursive function explicitly — `Function.iterate` in Mathlib handles the base cases and the inductive step. `IsPeriodic n k` bundles two conditions as a `Prop`: `k ≥ 1` (to exclude the trivial 0-period) and `collatzIter k n = n` (exact periodicity). The `IsPeriodic` structure is used in `one_period_is_three` — the statement `IsPeriodic 1 3 ∧ ∀ k, 1 ≤ k → k < 3 → ¬ IsPeriodic 1 k` cleanly separates existence (period 3) from minimality (no shorter period).",
+    "content": "`collatzIter k n = collatz^[k] n` uses Lean 4's built-in function iteration `f^[k]` (the k-fold composition `f \u2218 f \u2218 \u2026 \u2218 f`). This avoids defining a recursive function explicitly \u2014 `Function.iterate` in Mathlib handles the base cases and the inductive step. `IsPeriodic n k` bundles two conditions as a `Prop`: `k \u2265 1` (to exclude the trivial 0-period) and `collatzIter k n = n` (exact periodicity). The `IsPeriodic` structure is used in `one_period_is_three` \u2014 the statement `IsPeriodic 1 3 \u2227 \u2200 k, 1 \u2264 k \u2192 k < 3 \u2192 \u00ac IsPeriodic 1 k` cleanly separates existence (period 3) from minimality (no shorter period).",
     "mathContext": "**Periodic orbits** in discrete dynamical systems: $n$ has minimal period $p$ if $f^p(n) = n$ and $p$ is the smallest positive integer with this property. The Collatz known cycle $\\{1, 2, 4\\}$ has minimal period 3. In formal proofs, using `Function.iterate` (written `f^[k]`) rather than a custom recursive definition makes Lean's simp lemmas for iteration (`Function.iterate_succ`, `Function.iterate_zero`) available directly.",
     "significance": "supporting",
-    "relatedConcepts": ["Function.iterate", "IsPeriodic", "collatzIter", "one_period_is_three", "orbit"],
-    "prerequisites": ["Function.iterate in Lean 4/Mathlib", "Lean 4 structure syntax", "minimal period definition"]
+    "relatedConcepts": [
+      "Function.iterate",
+      "IsPeriodic",
+      "collatzIter",
+      "one_period_is_three",
+      "orbit"
+    ],
+    "prerequisites": [
+      "Function.iterate in Lean 4/Mathlib",
+      "Lean 4 structure syntax",
+      "minimal period definition"
+    ]
   }
 ]

@@ -28,7 +28,7 @@
     "type": "definition",
     "title": "Complex Numbers",
     "content": "A **complex number** is a pair of real numbers $(a, b)$ written as $a + bi$, where $i = \\sqrt{-1}$.\n\n- $a$ is the **real part** (Re)\n- $b$ is the **imaginary part** (Im)\n\nComplex numbers extend the reals to solve equations like $x^2 + 1 = 0$ (solution: $x = \\pm i$). They form a field, meaning we can add, subtract, multiply, and divide them (except by zero).",
-    "mathContext": "$z = a + bi$ where $a, b \\in \\mathbb{R}$; in Lean: `Complex.mk a b : ℂ` with `Complex.re` and `Complex.im` projections",
+    "mathContext": "$z = a + bi$ where $a, b \\in \\mathbb{R}$; in Lean: `Complex.mk a b : \u2102` with `Complex.re` and `Complex.im` projections",
     "significance": "key",
     "prerequisites": [],
     "relatedConcepts": [
@@ -36,7 +36,7 @@
       "complex plane",
       "Argand diagram",
       "field axioms",
-      "ℂ as ℝ²"
+      "\u2102 as \u211d\u00b2"
     ]
   },
   {
@@ -48,7 +48,7 @@
     },
     "type": "definition",
     "title": "The Imaginary Unit i",
-    "content": "The **imaginary unit** $i$ is defined as a number satisfying $i^2 = -1$. In our formalization:\n\n$$i = (0, 1) = 0 + 1 \\cdot i$$\n\nDespite the name 'imaginary', complex numbers are just as 'real' as real numbers—they're simply points in a 2D plane. The term 'imaginary' is a historical artifact from when mathematicians were skeptical of these numbers.\n\nGauss preferred 'lateral' to 'imaginary', and Descartes actually coined the term disparagingly.",
+    "content": "The **imaginary unit** $i$ is defined as a number satisfying $i^2 = -1$. In our formalization:\n\n$$i = (0, 1) = 0 + 1 \\cdot i$$\n\nDespite the name 'imaginary', complex numbers are just as 'real' as real numbers\u2014they're simply points in a 2D plane. The term 'imaginary' is a historical artifact from when mathematicians were skeptical of these numbers.\n\nGauss preferred 'lateral' to 'imaginary', and Descartes actually coined the term disparagingly.",
     "mathContext": "$i^2 = -1$; in Lean: `Complex.I_sq : Complex.I ^ 2 = -1`",
     "significance": "key",
     "prerequisites": [
@@ -59,7 +59,7 @@
       "powers of i",
       "Gaussian integers",
       "algebraic extension",
-      "ℝ[x]/(x²+1)"
+      "\u211d[x]/(x\u00b2+1)"
     ]
   },
   {
@@ -69,10 +69,10 @@
       "startLine": 86,
       "endLine": 92
     },
-    "type": "lemma",
-    "title": "Key Values at π",
-    "content": "The proof hinges on two fundamental facts about trigonometric functions at $\\pi$ radians (180°):\n\n$$\\cos(\\pi) = -1$$\n$$\\sin(\\pi) = 0$$\n\nGeometrically: at angle $\\pi$, we're at the leftmost point of the unit circle, which is $(-1, 0)$.\n\nThese values follow from the unit circle definition of sine and cosine, where $\\cos(\\theta)$ is the x-coordinate and $\\sin(\\theta)$ is the y-coordinate.",
-    "mathContext": "$(\\cos \\pi, \\sin \\pi) = (-1, 0)$; Lean: `Real.cos_pi : cos π = -1`, `Real.sin_pi : sin π = 0` from `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`",
+    "type": "technique",
+    "title": "Key Values at \u03c0",
+    "content": "The proof hinges on two fundamental facts about trigonometric functions at $\\pi$ radians (180\u00b0):\n\n$$\\cos(\\pi) = -1$$\n$$\\sin(\\pi) = 0$$\n\nGeometrically: at angle $\\pi$, we're at the leftmost point of the unit circle, which is $(-1, 0)$.\n\nThese values follow from the unit circle definition of sine and cosine, where $\\cos(\\theta)$ is the x-coordinate and $\\sin(\\theta)$ is the y-coordinate.",
+    "mathContext": "$(\\cos \\pi, \\sin \\pi) = (-1, 0)$; Lean: `Real.cos_pi : cos \u03c0 = -1`, `Real.sin_pi : sin \u03c0 = 0` from `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`",
     "significance": "key",
     "prerequisites": [],
     "relatedConcepts": [
@@ -90,10 +90,10 @@
       "startLine": 64,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euler's Formula",
-    "content": "**Euler's Formula** states that for any real $x$:\n\n$$e^{ix} = \\cos(x) + i\\sin(x)$$\n\nThis is the real hero—Euler's Identity is just the special case $x = \\pi$.\n\n**Three proof approaches:**\n1. **Taylor series**: Compare $e^{ix} = 1 + ix + (ix)^2/2! + ...$ with cosine and sine series\n2. **Differential equations**: Both $e^{ix}$ and $\\cos x + i\\sin x$ satisfy $y' = iy$ with $y(0) = 1$\n3. **Geometry**: Show that $e^{ix}$ traces the unit circle\n\n**Significance**: This formula unifies exponentials and trigonometry, explaining why $e^{i\\theta}$ appears in oscillations, waves, and rotations throughout physics.",
-    "mathContext": "$e^{ix} = \\cos x + i \\sin x$ for $x \\in \\mathbb{R}$; Lean: `Complex.exp_mul_I : exp (↑x * I) = ↑(cos x) + ↑(sin x) * I`",
+    "content": "**Euler's Formula** states that for any real $x$:\n\n$$e^{ix} = \\cos(x) + i\\sin(x)$$\n\nThis is the real hero\u2014Euler's Identity is just the special case $x = \\pi$.\n\n**Three proof approaches:**\n1. **Taylor series**: Compare $e^{ix} = 1 + ix + (ix)^2/2! + ...$ with cosine and sine series\n2. **Differential equations**: Both $e^{ix}$ and $\\cos x + i\\sin x$ satisfy $y' = iy$ with $y(0) = 1$\n3. **Geometry**: Show that $e^{ix}$ traces the unit circle\n\n**Significance**: This formula unifies exponentials and trigonometry, explaining why $e^{i\\theta}$ appears in oscillations, waves, and rotations throughout physics.",
+    "mathContext": "$e^{ix} = \\cos x + i \\sin x$ for $x \\in \\mathbb{R}$; Lean: `Complex.exp_mul_I : exp (\u2191x * I) = \u2191(cos x) + \u2191(sin x) * I`",
     "significance": "key",
     "prerequisites": [
       "ann-complex-def",
@@ -116,9 +116,9 @@
       "startLine": 138,
       "endLine": 147
     },
-    "type": "theorem",
-    "title": "The Heart: e^(iπ) = -1",
-    "content": "The key step is showing $e^{i\\pi} = -1$:\n\n1. Apply Euler's formula: $e^{i\\pi} = \\cos(\\pi) + i\\sin(\\pi)$\n2. Substitute known values: $= -1 + i \\cdot 0$\n3. Simplify: $= -1$\n\nThis is often called the **exponential form** of Euler's Identity. Adding 1 to both sides gives the standard form $e^{i\\pi} + 1 = 0$.\n\nGeometrically: rotating by $\\pi$ radians (180°) takes you to the opposite point on the unit circle, which is $-1$.",
+    "type": "insight",
+    "title": "The Heart: e^(i\u03c0) = -1",
+    "content": "The key step is showing $e^{i\\pi} = -1$:\n\n1. Apply Euler's formula: $e^{i\\pi} = \\cos(\\pi) + i\\sin(\\pi)$\n2. Substitute known values: $= -1 + i \\cdot 0$\n3. Simplify: $= -1$\n\nThis is often called the **exponential form** of Euler's Identity. Adding 1 to both sides gives the standard form $e^{i\\pi} + 1 = 0$.\n\nGeometrically: rotating by $\\pi$ radians (180\u00b0) takes you to the opposite point on the unit circle, which is $-1$.",
     "mathContext": "$e^{i\\pi} = -1$",
     "significance": "key",
     "prerequisites": [
@@ -126,7 +126,7 @@
       "ann-trig-values"
     ],
     "relatedConcepts": [
-      "rotation by π",
+      "rotation by \u03c0",
       "unit circle",
       "complex plane"
     ]
@@ -138,9 +138,9 @@
       "startLine": 156,
       "endLine": 157
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euler's Identity: The Final Step",
-    "content": "With $e^{i\\pi} = -1$ established, the identity follows immediately:\n\n$$e^{i\\pi} + 1 = -1 + 1 = 0$$\n\nIn Lean, we:\n1. Rewrite using `exp_i_pi_eq_neg_one`\n2. Unfold the complex number definitions\n3. Apply the arithmetic fact $-1 + 1 = 0$\n\nThe proof is almost anticlimactic—the real work was in Euler's Formula.",
+    "content": "With $e^{i\\pi} = -1$ established, the identity follows immediately:\n\n$$e^{i\\pi} + 1 = -1 + 1 = 0$$\n\nIn Lean, we:\n1. Rewrite using `exp_i_pi_eq_neg_one`\n2. Unfold the complex number definitions\n3. Apply the arithmetic fact $-1 + 1 = 0$\n\nThe proof is almost anticlimactic\u2014the real work was in Euler's Formula.",
     "mathContext": "$e^{i\\pi} + 1 = 0$; in Lean: `theorem eulers_identity : Complex.exp (Real.pi * Complex.I) + 1 = 0` proved by `rw [exp_i_pi_eq_neg_one]; ring`",
     "significance": "key",
     "prerequisites": [
@@ -160,7 +160,7 @@
       "startLine": 183,
       "endLine": 185
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "The Taylor Series Proof",
     "content": "The classical proof of Euler's formula compares Taylor series:\n\n$$e^{ix} = 1 + ix + \\frac{(ix)^2}{2!} + \\frac{(ix)^3}{3!} + ...$$\n\nUsing $i^2 = -1$, $i^3 = -i$, $i^4 = 1$, etc.:\n\n$$= \\underbrace{1 - \\frac{x^2}{2!} + \\frac{x^4}{4!} - ...}_{\\cos x} + i\\underbrace{\\left(x - \\frac{x^3}{3!} + \\frac{x^5}{5!} - ...\\right)}_{\\sin x}$$\n\nThe series magically separate into the Taylor series for cosine (even powers) and sine (odd powers)!\n\nThis 'coincidence' reflects deep structural connections between $e$, $\\sin$, and $\\cos$.",
     "mathContext": "$e^{ix} = \\sum_{n=0}^\\infty \\frac{(ix)^n}{n!}$; even-power terms give $\\cos x = \\sum \\frac{(-1)^n x^{2n}}{(2n)!}$, odd-power terms give $\\sin x = \\sum \\frac{(-1)^n x^{2n+1}}{(2n+1)!}$",
@@ -187,7 +187,7 @@
     "type": "concept",
     "title": "Geometry: Exponentials as Rotation",
     "content": "$e^{i\\theta}$ traces the **unit circle** in the complex plane as $\\theta$ varies:\n\n- $e^{i \\cdot 0} = 1$ (rightmost)\n- $e^{i\\pi/2} = i$ (topmost)\n- $e^{i\\pi} = -1$ (leftmost)\n- $e^{i \\cdot 3\\pi/2} = -i$ (bottommost)\n\n**Key insight**: Multiplying any complex number by $e^{i\\theta}$ **rotates** it by angle $\\theta$!\n\nThis is why complex exponentials appear in:\n- **Physics**: Wave functions $\\psi = Ae^{i(kx - \\omega t)}$\n- **Engineering**: Phasors in AC circuits\n- **Signal processing**: Fourier transforms\n\nRotation = multiplication by $e^{i\\theta}$ is one of the most powerful ideas in applied mathematics.",
-    "mathContext": "$|e^{i\\theta}| = 1$ for all $\\theta \\in \\mathbb{R}$; Lean: `theorem exp_on_unit_circle (θ : ℝ) : Complex.abs (Complex.exp (θ * Complex.I)) = 1`",
+    "mathContext": "$|e^{i\\theta}| = 1$ for all $\\theta \\in \\mathbb{R}$; Lean: `theorem exp_on_unit_circle (\u03b8 : \u211d) : Complex.abs (Complex.exp (\u03b8 * Complex.I)) = 1`",
     "significance": "key",
     "prerequisites": [
       "ann-eulers-formula"
@@ -196,7 +196,7 @@
       "polar form",
       "Argand diagram",
       "rotation matrix",
-      "unit circle S¹",
+      "unit circle S\u00b9",
       "Lie group U(1)"
     ]
   },
@@ -207,9 +207,9 @@
       "startLine": 233,
       "endLine": 251
     },
-    "type": "lemma",
-    "title": "Quarter Turn: e^(iπ/2) = i",
-    "content": "At $\\theta = \\pi/2$ (90°), we get:\n\n$$e^{i\\pi/2} = \\cos(\\pi/2) + i\\sin(\\pi/2) = 0 + i \\cdot 1 = i$$\n\nThis confirms the geometric interpretation: rotating 1 by 90° gives $i$ (the 'up' direction in the complex plane).\n\nSimilarly:\n- $e^{i\\pi} = -1$ (180° rotation)\n- $e^{i \\cdot 3\\pi/2} = -i$ (270° rotation)\n- $e^{2\\pi i} = 1$ (360° = back to start)",
+    "type": "technique",
+    "title": "Quarter Turn: e^(i\u03c0/2) = i",
+    "content": "At $\\theta = \\pi/2$ (90\u00b0), we get:\n\n$$e^{i\\pi/2} = \\cos(\\pi/2) + i\\sin(\\pi/2) = 0 + i \\cdot 1 = i$$\n\nThis confirms the geometric interpretation: rotating 1 by 90\u00b0 gives $i$ (the 'up' direction in the complex plane).\n\nSimilarly:\n- $e^{i\\pi} = -1$ (180\u00b0 rotation)\n- $e^{i \\cdot 3\\pi/2} = -i$ (270\u00b0 rotation)\n- $e^{2\\pi i} = 1$ (360\u00b0 = back to start)",
     "mathContext": "$e^{i\\pi/2} = i$; Lean: `theorem quarter_rotation : Complex.exp (Real.pi / 2 * Complex.I) = Complex.I` proved with `Real.cos_pi_div_two` and `Real.sin_pi_div_two`",
     "significance": "supporting",
     "prerequisites": [
@@ -233,7 +233,7 @@
     },
     "type": "concept",
     "title": "Why This Matters",
-    "content": "Euler's Identity is the tip of an iceberg—the practical power lies in the full formula $e^{ix} = \\cos x + i \\sin x$:\n\n**Quantum Mechanics**: Wave functions are complex exponentials. Schrödinger's equation involves $i$ essentially.\n\n**Signal Processing**: The Fourier transform decomposes signals into complex exponentials, enabling everything from MP3s to medical imaging.\n\n**Electrical Engineering**: AC circuits use 'phasors'—complex numbers representing oscillating voltages and currents.\n\n**Differential Equations**: Solutions to $y'' + y = 0$ are $e^{\\pm ix} = \\cos x \\pm i \\sin x$.\n\nWithout Euler's Formula, modern physics and engineering would be vastly more complicated.",
+    "content": "Euler's Identity is the tip of an iceberg\u2014the practical power lies in the full formula $e^{ix} = \\cos x + i \\sin x$:\n\n**Quantum Mechanics**: Wave functions are complex exponentials. Schr\u00f6dinger's equation involves $i$ essentially.\n\n**Signal Processing**: The Fourier transform decomposes signals into complex exponentials, enabling everything from MP3s to medical imaging.\n\n**Electrical Engineering**: AC circuits use 'phasors'\u2014complex numbers representing oscillating voltages and currents.\n\n**Differential Equations**: Solutions to $y'' + y = 0$ are $e^{\\pm ix} = \\cos x \\pm i \\sin x$.\n\nWithout Euler's Formula, modern physics and engineering would be vastly more complicated.",
     "mathContext": "$\\hat{f}(\\xi) = \\int_{-\\infty}^\\infty f(x)\\,e^{-2\\pi i \\xi x}\\,dx$; the complex exponential $e^{i\\omega t}$ is the eigenfunction of $d/dt$ with eigenvalue $i\\omega$",
     "significance": "key",
     "prerequisites": [

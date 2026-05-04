@@ -7,15 +7,15 @@
       "endLine": 52
     },
     "type": "concept",
-    "title": "Module Header: Kronecker Symbol Multiplicativity — Proof Strategy Overview",
-    "content": "The file header (lines 1-38) states the two open questions: prove $(ab/n) = (a/n)(b/n)$ for $ab \\neq 0$, and $(a/mn) = (a/m)(a/n)$ for $mn \\neq 0$. Lines 39-43 set up the module (`namespace KroneckerSymbol`, `open Nat Int`). Lines 44-51 open Part 1 with the section comment explaining `kronecker0 a = if |a| = 1 then 1 else 0` and the key observation that units in ℤ are exactly ±1. The proof strategy is case analysis: handle $n = 0$, $n = -1$, $n = 1$ as special cases, then apply `jacobiSym.mul_left` for general $n$.",
+    "title": "Module Header: Kronecker Symbol Multiplicativity \u2014 Proof Strategy Overview",
+    "content": "The file header (lines 1-38) states the two open questions: prove $(ab/n) = (a/n)(b/n)$ for $ab \\neq 0$, and $(a/mn) = (a/m)(a/n)$ for $mn \\neq 0$. Lines 39-43 set up the module (`namespace KroneckerSymbol`, `open Nat Int`). Lines 44-51 open Part 1 with the section comment explaining `kronecker0 a = if |a| = 1 then 1 else 0` and the key observation that units in \u2124 are exactly \u00b11. The proof strategy is case analysis: handle $n = 0$, $n = -1$, $n = 1$ as special cases, then apply `jacobiSym.mul_left` for general $n$.",
     "mathContext": "The Kronecker symbol $\\left(\\frac{a}{n}\\right)_K$ is defined by: $\\left(\\frac{a}{0}\\right) = [|a|=1]$ (unit indicator), $\\left(\\frac{a}{-1}\\right) = \\text{sgn}(a)$, $\\left(\\frac{a}{2}\\right)$ via 2-adic supplement, and $\\left(\\frac{a}{p^k}\\right) = $ Legendre for odd primes; extended multiplicatively. The hypothesis $ab \\neq 0$ is necessary: `kroneckerNeg1 0 = 1` but $(-3) \\cdot 0 = 0$ gives `kroneckerNeg1(-3) * kroneckerNeg1(0) = -1 \\neq 1`.",
     "significance": "supporting",
     "relatedConcepts": [
       "Kronecker symbol",
       "Jacobi symbol",
       "Legendre symbol",
-      "units in ℤ",
+      "units in \u2124",
       "sign character"
     ],
     "prerequisites": [
@@ -31,20 +31,20 @@
       "startLine": 53,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "kronecker0 Multiplicativity: (ab/0) = (a/0)(b/0)",
-    "content": "`kronecker0_mul_of_ne_zero` proves that `kronecker0 (a*b) = kronecker0 a * kronecker0 b` for $ab \\neq 0$. `kronecker0 a` is the unit indicator: 1 if $|a| = 1$ (i.e., $a = \\pm 1$), else 0. Multiplicativity says: $|ab| = 1$ iff $|a| = |b| = 1$ — exactly when both factors are units. The proof uses `by_cases` on whether $a$ and $b$ are $\\pm 1$, with `simp_all` handling the case arithmetic. The `a ≠ 0` and `b ≠ 0` hypotheses prevent the degenerate case where `kronecker0 0 = 1` would break the product rule.",
-    "mathContext": "`kronecker0` is the Kronecker symbol at modulus 0: $\\left(\\frac{a}{0}\\right) = [|a| = 1]$ (1 if $a$ is a unit in $\\mathbb{Z}$, else 0). The units in $\\mathbb{Z}$ are $\\{\\pm 1\\}$, so `kronecker0 a = 1` iff `a = 1 ∨ a = -1`. Multiplicativity: $[|ab|=1] = [|a|=1] \\cdot [|b|=1]$ since $|ab|=1 \\iff |a|=1 \\wedge |b|=1$ (product of integers can have absolute value 1 only if both factors have absolute value 1).",
+    "content": "`kronecker0_mul_of_ne_zero` proves that `kronecker0 (a*b) = kronecker0 a * kronecker0 b` for $ab \\neq 0$. `kronecker0 a` is the unit indicator: 1 if $|a| = 1$ (i.e., $a = \\pm 1$), else 0. Multiplicativity says: $|ab| = 1$ iff $|a| = |b| = 1$ \u2014 exactly when both factors are units. The proof uses `by_cases` on whether $a$ and $b$ are $\\pm 1$, with `simp_all` handling the case arithmetic. The `a \u2260 0` and `b \u2260 0` hypotheses prevent the degenerate case where `kronecker0 0 = 1` would break the product rule.",
+    "mathContext": "`kronecker0` is the Kronecker symbol at modulus 0: $\\left(\\frac{a}{0}\\right) = [|a| = 1]$ (1 if $a$ is a unit in $\\mathbb{Z}$, else 0). The units in $\\mathbb{Z}$ are $\\{\\pm 1\\}$, so `kronecker0 a = 1` iff `a = 1 \u2228 a = -1`. Multiplicativity: $[|ab|=1] = [|a|=1] \\cdot [|b|=1]$ since $|ab|=1 \\iff |a|=1 \\wedge |b|=1$ (product of integers can have absolute value 1 only if both factors have absolute value 1).",
     "significance": "supporting",
     "relatedConcepts": [
       "kronecker0",
       "unit-indicator",
       "kronecker_mul_left_proved",
-      "units in ℤ"
+      "units in \u2124"
     ],
     "prerequisites": [
       "kronecker0 definition",
-      "units in ℤ",
+      "units in \u2124",
       "simp_all",
       "by_cases"
     ]
@@ -56,9 +56,9 @@
       "startLine": 89,
       "endLine": 125
     },
-    "type": "theorem",
-    "title": "Sign Character Multiplicativity: sgn(ab) = sgn(a)·sgn(b)",
-    "content": "`kroneckerNeg1_mul_of_ne_zero` proves $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ for $ab \\neq 0$, where `kroneckerNeg1` is the sign character ($-1$ if $a < 0$, $1$ if $a > 0$). The proof uses four cases: (neg × neg = pos), (neg × pos = neg), (pos × neg = neg), (pos × pos = pos), with `linarith` and `Int.mul_pos_of_neg_of_neg` handling each. This is the sign homomorphism property of $\\text{sgn}: \\mathbb{Z}^* \\to \\{\\pm 1\\}$.",
+    "type": "insight",
+    "title": "Sign Character Multiplicativity: sgn(ab) = sgn(a)\u00b7sgn(b)",
+    "content": "`kroneckerNeg1_mul_of_ne_zero` proves $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ for $ab \\neq 0$, where `kroneckerNeg1` is the sign character ($-1$ if $a < 0$, $1$ if $a > 0$). The proof uses four cases: (neg \u00d7 neg = pos), (neg \u00d7 pos = neg), (pos \u00d7 neg = neg), (pos \u00d7 pos = pos), with `linarith` and `Int.mul_pos_of_neg_of_neg` handling each. This is the sign homomorphism property of $\\text{sgn}: \\mathbb{Z}^* \\to \\{\\pm 1\\}$.",
     "mathContext": "`kroneckerNeg1` corresponds to the Kronecker symbol at modulus $-1$: $\\left(\\frac{a}{-1}\\right) = \\text{sgn}(a)$. For nonzero $a, b$: $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ since the product of two negatives is positive, one negative and one positive is negative, and two positives is positive. The four-case proof in Lean handles each quadrant: `(ha0 : a < 0)` combined with `(hb0 : b < 0)` gives `Int.mul_pos_of_neg_of_neg ha0 hb0 : 0 < a*b`.",
     "significance": "key",
     "relatedConcepts": [
@@ -81,10 +81,10 @@
       "startLine": 126,
       "endLine": 193
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "First-Argument Multiplicativity: (ab/n) = (a/n)(b/n)",
-    "content": "`kronecker_mul_left_proved` proves `kronecker (a*b) n = kronecker a n * kronecker b n` for `a*b ≠ 0`. The proof unfolds the `kronecker` definition and does `split_ifs` on `n`: (1) `n = 0`: uses `kronecker0_mul_of_ne_zero`; (2) `n = -1`: uses `kroneckerNeg1_mul_of_ne_zero`; (3) `n = 1`: both sides are 1 (trivial); (4) general `n`: unfolds to `kroneckerNeg1 (sign n) * jacobiSym a |n| * ...` and applies `jacobiSym.mul_left` for the Jacobi part + `kroneckerNeg1_mul_of_ne_zero` for the sign part. This proves the axiom `kronecker_mul_left` from the parent proof OQ03OQ02.",
-    "mathContext": "The Kronecker symbol definition in Mathlib: for general $n \\neq 0, \\pm 1$, `kronecker a n = kroneckerNeg1 (sign n) * jacobiSym a |n|`. So `kronecker (ab) n = kroneckerNeg1(sign n) * jacobiSym(ab, |n|) = kroneckerNeg1(sign n) * jacobiSym(a,|n|) * jacobiSym(b,|n|)` (using `jacobiSym.mul_left`) $= $ `kronecker a n * kronecker b n`. The sign factor `kroneckerNeg1(sign n)` cancels correctly — it appears once in the product (not twice) because it multiplies the Jacobi parts.",
+    "content": "`kronecker_mul_left_proved` proves `kronecker (a*b) n = kronecker a n * kronecker b n` for `a*b \u2260 0`. The proof unfolds the `kronecker` definition and does `split_ifs` on `n`: (1) `n = 0`: uses `kronecker0_mul_of_ne_zero`; (2) `n = -1`: uses `kroneckerNeg1_mul_of_ne_zero`; (3) `n = 1`: both sides are 1 (trivial); (4) general `n`: unfolds to `kroneckerNeg1 (sign n) * jacobiSym a |n| * ...` and applies `jacobiSym.mul_left` for the Jacobi part + `kroneckerNeg1_mul_of_ne_zero` for the sign part. This proves the axiom `kronecker_mul_left` from the parent proof OQ03OQ02.",
+    "mathContext": "The Kronecker symbol definition in Mathlib: for general $n \\neq 0, \\pm 1$, `kronecker a n = kroneckerNeg1 (sign n) * jacobiSym a |n|`. So `kronecker (ab) n = kroneckerNeg1(sign n) * jacobiSym(ab, |n|) = kroneckerNeg1(sign n) * jacobiSym(a,|n|) * jacobiSym(b,|n|)` (using `jacobiSym.mul_left`) $= $ `kronecker a n * kronecker b n`. The sign factor `kroneckerNeg1(sign n)` cancels correctly \u2014 it appears once in the product (not twice) because it multiplies the Jacobi parts.",
     "significance": "key",
     "relatedConcepts": [
       "jacobiSym.mul_left",
@@ -106,9 +106,9 @@
       "startLine": 194,
       "endLine": 267
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Second-Argument Multiplicativity: (a/mn) = (a/m)(a/n)",
-    "content": "`kronecker_mul_right_proved` proves `kronecker a (m*n) = kronecker a m * kronecker a n` for `m*n ≠ 0`. This is harder than first-argument multiplicativity because the sign factor $\\text{sgn}(m \\cdot n) = \\text{sgn}(m) \\cdot \\text{sgn}(n)$ must be correctly distributed. The proof cases on `m = 1`, `m = -1`, `n = 1`, `n = -1`, then general $m, n$. For the general case, it uses `kronecker_neg_modulus` (which says `kronecker a (-n) = kroneckerNeg1 a * kronecker a n`) and `jacobiSym.mul_right` for the Jacobi part, then handles the four sign quadrants ($m > 0, n > 0$), etc.",
+    "content": "`kronecker_mul_right_proved` proves `kronecker a (m*n) = kronecker a m * kronecker a n` for `m*n \u2260 0`. This is harder than first-argument multiplicativity because the sign factor $\\text{sgn}(m \\cdot n) = \\text{sgn}(m) \\cdot \\text{sgn}(n)$ must be correctly distributed. The proof cases on `m = 1`, `m = -1`, `n = 1`, `n = -1`, then general $m, n$. For the general case, it uses `kronecker_neg_modulus` (which says `kronecker a (-n) = kroneckerNeg1 a * kronecker a n`) and `jacobiSym.mul_right` for the Jacobi part, then handles the four sign quadrants ($m > 0, n > 0$), etc.",
     "mathContext": "For odd positive $m$ and $n$ (the Jacobi case), second-argument multiplicativity is `jacobiSym.mul_right` in Mathlib. The Kronecker extension requires handling the signs: $\\left(\\frac{a}{-n}\\right) = \\text{sgn}(a) \\cdot \\left(\\frac{a}{n}\\right)$ (from `kronecker_neg_modulus`). So for $m < 0$, $n < 0$: $\\left(\\frac{a}{mn}\\right) = \\left(\\frac{a}{|m||n|}\\right) = \\left(\\frac{a}{|m|}\\right)\\left(\\frac{a}{|n|}\\right)$, and the two sign factors for $m < 0$ and $n < 0$ cancel: $\\text{sgn}(a)^2 = 1$.",
     "significance": "key",
     "relatedConcepts": [

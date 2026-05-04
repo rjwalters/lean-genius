@@ -2,11 +2,14 @@
   {
     "id": "ann-r4k-opaque-axioms",
     "proofId": "ramsey-r4k-oq-01",
-    "range": { "startLine": 35, "endLine": 57 },
+    "range": {
+      "startLine": 35,
+      "endLine": 57
+    },
     "type": "definition",
     "title": "opaque ramseyR4k and Three Bounding Axioms",
-    "content": "The file uses `opaque ramseyR4k (k : ℕ) : ℕ` — an opaque constant declaring R(4,k) exists without specifying how to compute it. Three axioms pin down its magnitude: (1) ramseyR4k_classical_upper: R(4,k) ≤ C(k+2,3), the binomial upper bound provable by Pascal recursion (proved in parent file ramsey-r4k); (2) aks_r4k_upper: ∃ C > 0, R(4,k) ≤ C·k³/(log k)², the AKS probabilistic deletion bound; (3) mv_r4k_lower: ∃ c > 0, c·k³/(log k)⁴ ≤ R(4,k), the Mattheus-Verstraëte algebraic geometry bound. The existential quantifiers over C and c are necessary because the exact constants are unknown.",
-    "mathContext": "An `opaque` definition in Lean 4 introduces a constant with a specified type but no reduction rule — the kernel cannot unfold it. This is the correct choice for $R(4,k)$ since no computable formula is known. The three axioms effectively state: $\\frac{ck^3}{(\\log k)^4} \\leq R(4,k) \\leq \\frac{Ck^3}{(\\log k)^2}$ for large $k$ (specifically $k \\geq 4$). This is a formal rendering of $R(4,k) = \\Theta(k^3/(\\log k)^c)$ for some $c \\in [2,4]$.",
+    "content": "The file uses `opaque ramseyR4k (k : \u2115) : \u2115` \u2014 an opaque constant declaring R(4,k) exists without specifying how to compute it. Three axioms pin down its magnitude: (1) ramseyR4k_classical_upper: R(4,k) \u2264 C(k+2,3), the binomial upper bound provable by Pascal recursion (proved in parent file ramsey-r4k); (2) aks_r4k_upper: \u2203 C > 0, R(4,k) \u2264 C\u00b7k\u00b3/(log k)\u00b2, the AKS probabilistic deletion bound; (3) mv_r4k_lower: \u2203 c > 0, c\u00b7k\u00b3/(log k)\u2074 \u2264 R(4,k), the Mattheus-Verstra\u00ebte algebraic geometry bound. The existential quantifiers over C and c are necessary because the exact constants are unknown.",
+    "mathContext": "An `opaque` definition in Lean 4 introduces a constant with a specified type but no reduction rule \u2014 the kernel cannot unfold it. This is the correct choice for $R(4,k)$ since no computable formula is known. The three axioms effectively state: $\\frac{ck^3}{(\\log k)^4} \\leq R(4,k) \\leq \\frac{Ck^3}{(\\log k)^2}$ for large $k$ (specifically $k \\geq 4$). This is a formal rendering of $R(4,k) = \\Theta(k^3/(\\log k)^c)$ for some $c \\in [2,4]$.",
     "significance": "key",
     "relatedConcepts": [
       "opaque in Lean 4",
@@ -24,11 +27,14 @@
   {
     "id": "ann-log-gt-one",
     "proofId": "ramsey-r4k-oq-01",
-    "range": { "startLine": 68, "endLine": 87 },
+    "range": {
+      "startLine": 68,
+      "endLine": 87
+    },
     "type": "technique",
-    "title": "Log k > 1 for k ≥ 4: Using exp_one_lt_d9",
-    "content": "log_k_gt_one is the key numerical lemma enabling everything else. The proof: rewrite 1 = log(exp 1) via Real.log_exp (a definitional identity), then apply Real.log_lt_log (strict monotonicity) with exp 1 < 4 ≤ k. The bound exp 1 < 4 follows from Real.exp_one_lt_d9 (e < 2.7182... < 4). The three corollaries are: log_k_pos (log k > 0, from log k > 1 > 0 by lt_trans), log_k_sq_gt_one ((log k)² > 1, via nlinarith on the square), log_k_pow_four_pos ((log k)⁴ > 0, from pow_pos).",
-    "mathContext": "The key mathematical fact: $e \\approx 2.718 < 4 \\leq k$, so $\\log k > \\log 4 > \\log e = 1$. In Lean, `Real.exp_one_lt_d9` provides the numerical bound $e < 2.718...$, which gives $e < 4$ by `linarith`. The proof `rw [show (1:ℝ) = Real.log (Real.exp 1) from ...]` uses the identity $\\log(e) = 1$ to convert the goal from `1 < log k` to `log(exp 1) < log k`, then applies strict monotonicity of log.",
+    "title": "Log k > 1 for k \u2265 4: Using exp_one_lt_d9",
+    "content": "log_k_gt_one is the key numerical lemma enabling everything else. The proof: rewrite 1 = log(exp 1) via Real.log_exp (a definitional identity), then apply Real.log_lt_log (strict monotonicity) with exp 1 < 4 \u2264 k. The bound exp 1 < 4 follows from Real.exp_one_lt_d9 (e < 2.7182... < 4). The three corollaries are: log_k_pos (log k > 0, from log k > 1 > 0 by lt_trans), log_k_sq_gt_one ((log k)\u00b2 > 1, via nlinarith on the square), log_k_pow_four_pos ((log k)\u2074 > 0, from pow_pos).",
+    "mathContext": "The key mathematical fact: $e \\approx 2.718 < 4 \\leq k$, so $\\log k > \\log 4 > \\log e = 1$. In Lean, `Real.exp_one_lt_d9` provides the numerical bound $e < 2.718...$, which gives $e < 4$ by `linarith`. The proof `rw [show (1:\u211d) = Real.log (Real.exp 1) from ...]` uses the identity $\\log(e) = 1$ to convert the goal from `1 < log k` to `log(exp 1) < log k`, then applies strict monotonicity of log.",
     "significance": "key",
     "relatedConcepts": [
       "Real.log_exp",
@@ -46,11 +52,14 @@
   {
     "id": "ann-aks-vs-cubic",
     "proofId": "ramsey-r4k-oq-01",
-    "range": { "startLine": 98, "endLine": 109 },
-    "type": "theorem",
+    "range": {
+      "startLine": 98,
+      "endLine": 109
+    },
+    "type": "insight",
     "title": "AKS Bound Strictly Beats the Plain Cubic",
-    "content": "aks_bound_lt_cubic proves C·k³/(log k)² < C·k³ for k ≥ 4. The proof applies div_lt_self: a positive real x divided by something > 1 is strictly less than x. Here x = C·k³ (positive by positivity) and the divisor is (log k)² > 1 by log_k_sq_gt_one. The companion aks_bound_pos proves the AKS bound itself is positive (div_pos of two positives).",
-    "mathContext": "For any $x > 0$ and $d > 1$: $x/d < x$ (since $d > 1$ implies $x/d = x \\cdot (1/d) < x \\cdot 1 = x$). Applied here: $\\frac{Ck^3}{(\\log k)^2} < Ck^3$ iff $(\\log k)^2 > 1$ iff $\\log k > 1$ (since $\\log k > 0$). This is the formal statement that the AKS bound is a *genuine* improvement over the plain cubic $O(k^3)$ bound from Erdős-Szekeres.",
+    "content": "aks_bound_lt_cubic proves C\u00b7k\u00b3/(log k)\u00b2 < C\u00b7k\u00b3 for k \u2265 4. The proof applies div_lt_self: a positive real x divided by something > 1 is strictly less than x. Here x = C\u00b7k\u00b3 (positive by positivity) and the divisor is (log k)\u00b2 > 1 by log_k_sq_gt_one. The companion aks_bound_pos proves the AKS bound itself is positive (div_pos of two positives).",
+    "mathContext": "For any $x > 0$ and $d > 1$: $x/d < x$ (since $d > 1$ implies $x/d = x \\cdot (1/d) < x \\cdot 1 = x$). Applied here: $\\frac{Ck^3}{(\\log k)^2} < Ck^3$ iff $(\\log k)^2 > 1$ iff $\\log k > 1$ (since $\\log k > 0$). This is the formal statement that the AKS bound is a *genuine* improvement over the plain cubic $O(k^3)$ bound from Erd\u0151s-Szekeres.",
     "significance": "supporting",
     "relatedConcepts": [
       "div_lt_self",
@@ -67,11 +76,14 @@
   {
     "id": "ann-gap-ratio",
     "proofId": "ramsey-r4k-oq-01",
-    "range": { "startLine": 121, "endLine": 138 },
+    "range": {
+      "startLine": 121,
+      "endLine": 138
+    },
     "type": "insight",
-    "title": "Gap Ratio = C/c · (log k)²: Polylogarithmic Separation",
-    "content": "r4k_gap_ratio is the central structural theorem: (C·k³/log²k) / (c·k³/log⁴k) = C/c·(log k)². The proof uses field_simp to clear denominators (needing ne_of_gt for log_pos and k > 0), then ring for the algebraic identity. The k³ cancels exactly, and the log powers simplify: log⁴k / log²k = log²k. The companion r4k_polylog_gap is an alias. r4k_log_exponent_gap (lines 130: 4-2=2) is a trivial norm_num fact formally stating the difference in log exponents.",
-    "mathContext": "The algebraic identity: $\\frac{Ck^3/(\\log k)^2}{ck^3/(\\log k)^4} = \\frac{Ck^3}{(\\log k)^2} \\cdot \\frac{(\\log k)^4}{ck^3} = \\frac{C}{c} \\cdot (\\log k)^2$. The $k^3$ factor cancels; the log ratio simplifies to $(\\log k)^{4-2} = (\\log k)^2$. This shows the gap is *polylogarithmic* in $k$ — much smaller than any polynomial. Concretely: for $k = 10^6$, the gap is $\\sim (\\log 10^6)^2 = (6\\ln 10)^2 \\approx 191$, so the upper and lower bounds differ by a factor of only ~191·(C/c).",
+    "title": "Gap Ratio = C/c \u00b7 (log k)\u00b2: Polylogarithmic Separation",
+    "content": "r4k_gap_ratio is the central structural theorem: (C\u00b7k\u00b3/log\u00b2k) / (c\u00b7k\u00b3/log\u2074k) = C/c\u00b7(log k)\u00b2. The proof uses field_simp to clear denominators (needing ne_of_gt for log_pos and k > 0), then ring for the algebraic identity. The k\u00b3 cancels exactly, and the log powers simplify: log\u2074k / log\u00b2k = log\u00b2k. The companion r4k_polylog_gap is an alias. r4k_log_exponent_gap (lines 130: 4-2=2) is a trivial norm_num fact formally stating the difference in log exponents.",
+    "mathContext": "The algebraic identity: $\\frac{Ck^3/(\\log k)^2}{ck^3/(\\log k)^4} = \\frac{Ck^3}{(\\log k)^2} \\cdot \\frac{(\\log k)^4}{ck^3} = \\frac{C}{c} \\cdot (\\log k)^2$. The $k^3$ factor cancels; the log ratio simplifies to $(\\log k)^{4-2} = (\\log k)^2$. This shows the gap is *polylogarithmic* in $k$ \u2014 much smaller than any polynomial. Concretely: for $k = 10^6$, the gap is $\\sim (\\log 10^6)^2 = (6\\ln 10)^2 \\approx 191$, so the upper and lower bounds differ by a factor of only ~191\u00b7(C/c).",
     "significance": "key",
     "relatedConcepts": [
       "field_simp for field arithmetic",
@@ -88,31 +100,37 @@
   {
     "id": "ann-log-witnesses",
     "proofId": "ramsey-r4k-oq-01",
-    "range": { "startLine": 148, "endLine": 157 },
+    "range": {
+      "startLine": 148,
+      "endLine": 157
+    },
     "type": "context",
     "title": "Log Exponent Witnesses: Formal Statement of the Open Problem",
-    "content": "r4k_upper_log_exp_le_two and r4k_lower_log_exp_ge_four are existential witnesses formally packaging the AKS and MV axioms in a uniform format: ∃ α : ℕ, α = c ∧ ∃ C : ℝ, C > 0 ∧ ∀ k ≥ 4, R(4,k) ≤ C·k³/(log k)^α. The proofs are trivial — just ⟨2, rfl, aks_r4k_upper⟩ and ⟨4, rfl, mv_r4k_lower⟩. Their value is documentation: they make it explicit in the formal record that the current best log exponent bounds are α = 2 (upper) and β = 4 (lower), so c ∈ {2,3,4}.",
+    "content": "r4k_upper_log_exp_le_two and r4k_lower_log_exp_ge_four are existential witnesses formally packaging the AKS and MV axioms in a uniform format: \u2203 \u03b1 : \u2115, \u03b1 = c \u2227 \u2203 C : \u211d, C > 0 \u2227 \u2200 k \u2265 4, R(4,k) \u2264 C\u00b7k\u00b3/(log k)^\u03b1. The proofs are trivial \u2014 just \u27e82, rfl, aks_r4k_upper\u27e9 and \u27e84, rfl, mv_r4k_lower\u27e9. Their value is documentation: they make it explicit in the formal record that the current best log exponent bounds are \u03b1 = 2 (upper) and \u03b2 = 4 (lower), so c \u2208 {2,3,4}.",
     "mathContext": "The formal statement captures the open problem: determine the unique $c$ such that $R(4,k) = \\Theta(k^3/(\\log k)^c)$. Current state: $\\alpha = 2$ (AKS upper: 1980) and $\\beta = 4$ (MV lower: 2024). For comparison, for $R(3,k)$: Kim (1995) proved $R(3,k) = \\Theta(k^2/\\log k)$, i.e., $c = 1$ exactly. The $R(4,k)$ analogue is open. If $c = 2$ (AKS tight), the probabilistic deletion method gives the right answer; if $c = 4$ (MV tight), algebraic geometry gives the right picture.",
     "significance": "supporting",
     "relatedConcepts": [
       "existential witness pattern in Lean 4",
-      "R(3,k) = Θ(k²/log k) — Kim 1995 (resolved)",
+      "R(3,k) = \u0398(k\u00b2/log k) \u2014 Kim 1995 (resolved)",
       "log exponent open problem",
       "AKS 1980 vs MV 2024 historical context"
     ],
     "prerequisites": [
-      "Lean 4 existential introduction ⟨...⟩",
+      "Lean 4 existential introduction \u27e8...\u27e9",
       "aks_r4k_upper and mv_r4k_lower axioms"
     ]
   },
   {
     "id": "ann-concrete-bounds",
     "proofId": "ramsey-r4k-oq-01",
-    "range": { "startLine": 168, "endLine": 185 },
+    "range": {
+      "startLine": 168,
+      "endLine": 185
+    },
     "type": "technique",
     "title": "Concrete Classical Bounds and native_decide Verification",
-    "content": "Four theorems compute C(k+2,3) for k=4,10,20,50 via native_decide: C(6,3)=20, C(12,3)=220, C(22,3)=1540, C(52,3)=22100. The actual Ramsey number R(4,4)=18 is known but this file only proves R(4,4) ≤ 20 from the classical bound. r4_4_le_20 chains ramseyR4k_classical_upper (giving ramseyR4k 4 ≤ Nat.choose 6 3) with native_decide (giving Nat.choose 6 3 = 20 → ≤ 20). The formula C(k+2,3) = k(k+1)(k+2)/6 grows cubically: C(12,3) = 220, C(52,3) = 22100 ≈ 52³/6.",
-    "mathContext": "$\\binom{k+2}{3} = \\frac{(k+2)(k+1)k}{6}$, which grows as $k^3/6$ for large $k$. Concrete values: $k=4 \\Rightarrow \\binom{6}{3}=20$, $k=10 \\Rightarrow \\binom{12}{3}=220$, $k=50 \\Rightarrow \\binom{52}{3}=22100$. The AKS bound $Ck^3/(\\log k)^2$ improves on this by roughly $(\\log k)^2/6$. For $k=10$: $(\\log 10)^2/6 \\approx 5.3/6 \\approx 0.88$ (less than 1 for small $k$, but grows for large $k$). For $k=1000$: $(\\log 1000)^2/6 = (6.9)^2/6 \\approx 8$ — so AKS is $8\\times$ better than classical for $k=1000$.",
+    "content": "Four theorems compute C(k+2,3) for k=4,10,20,50 via native_decide: C(6,3)=20, C(12,3)=220, C(22,3)=1540, C(52,3)=22100. The actual Ramsey number R(4,4)=18 is known but this file only proves R(4,4) \u2264 20 from the classical bound. r4_4_le_20 chains ramseyR4k_classical_upper (giving ramseyR4k 4 \u2264 Nat.choose 6 3) with native_decide (giving Nat.choose 6 3 = 20 \u2192 \u2264 20). The formula C(k+2,3) = k(k+1)(k+2)/6 grows cubically: C(12,3) = 220, C(52,3) = 22100 \u2248 52\u00b3/6.",
+    "mathContext": "$\\binom{k+2}{3} = \\frac{(k+2)(k+1)k}{6}$, which grows as $k^3/6$ for large $k$. Concrete values: $k=4 \\Rightarrow \\binom{6}{3}=20$, $k=10 \\Rightarrow \\binom{12}{3}=220$, $k=50 \\Rightarrow \\binom{52}{3}=22100$. The AKS bound $Ck^3/(\\log k)^2$ improves on this by roughly $(\\log k)^2/6$. For $k=10$: $(\\log 10)^2/6 \\approx 5.3/6 \\approx 0.88$ (less than 1 for small $k$, but grows for large $k$). For $k=1000$: $(\\log 1000)^2/6 = (6.9)^2/6 \\approx 8$ \u2014 so AKS is $8\\times$ better than classical for $k=1000$.",
     "significance": "technical",
     "relatedConcepts": [
       "native_decide for computable arithmetic",

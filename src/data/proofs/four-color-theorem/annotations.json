@@ -62,8 +62,8 @@
     },
     "type": "definition",
     "title": "Planar Graphs",
-    "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'—every non-planar graph contains one of these as a substructure.\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors.",
-    "mathContext": "**Kuratowski (1930)**: $G$ is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$. **Wagner (1937)**: equivalently, no $K_5$ or $K_{3,3}$ minor. The Euler characteristic: a planar graph satisfies $V - E + F = 2$ (connected case), which gives the edge bound $E \\leq 3V - 6$ (using $F \\leq 2E/3$). This bound implies every planar graph has a vertex of degree $\\leq 5$ — the key structural fact for the Four Color proof. Non-planar graphs: $\\chi(K_n) = n$, so no finite color bound suffices without planarity.",
+    "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'\u2014every non-planar graph contains one of these as a substructure.\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors.",
+    "mathContext": "**Kuratowski (1930)**: $G$ is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$. **Wagner (1937)**: equivalently, no $K_5$ or $K_{3,3}$ minor. The Euler characteristic: a planar graph satisfies $V - E + F = 2$ (connected case), which gives the edge bound $E \\leq 3V - 6$ (using $F \\leq 2E/3$). This bound implies every planar graph has a vertex of degree $\\leq 5$ \u2014 the key structural fact for the Four Color proof. Non-planar graphs: $\\chi(K_n) = n$, so no finite color bound suffices without planarity.",
     "significance": "key",
     "relatedConcepts": [
       "planar embedding",
@@ -78,7 +78,7 @@
       "startLine": 62,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euler's Formula: The Fundamental Constraint",
     "content": "For any connected planar graph embedded in the plane:\n\n$$V - E + F = 2$$\n\nwhere V = vertices, E = edges, F = faces (including the unbounded outer face).\n\nThis remarkable formula constrains planar graph structure. Combined with the handshaking lemma (sum of degrees = 2E), it implies every planar graph has a vertex of degree at most 5.\n\nThis 'low-degree vertex' existence is the entry point for inductive proofs of coloring theorems.",
     "mathContext": "$V - E + F = 2$ for connected planar graphs",
@@ -99,7 +99,7 @@
       "startLine": 76,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Every Planar Graph Has a Low-Degree Vertex",
     "content": "Every planar graph with at least one vertex has a vertex of degree at most 5.\n\n**Proof sketch:** By Euler's formula and handshaking, the average degree in a planar graph is less than 6. Therefore, some vertex must have degree at most 5.\n\nThis result is crucial: it guarantees we can always find a 'removable' vertex for inductive arguments. It's why the Five Color Theorem is easy (6 colors would be trivial, 5 requires one trick, 4 requires computer assistance).",
     "mathContext": "$\\forall G$ planar, $\\exists v \\in V(G)$ with $\\deg(v) \\leq 5$",
@@ -119,9 +119,9 @@
       "startLine": 88,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Five Color Theorem",
-    "content": "Every planar graph is 5-colorable. This is much easier than Four Color!\n\n**Proof by induction:**\n1. Find a vertex v of degree ≤ 5\n2. Remove v to get smaller graph G'\n3. By induction, G' is 5-colorable\n4. Restore v: it has ≤ 5 neighbors using ≤ 5 colors\n5. If all 5 colors appear among neighbors, use Kempe chains to free one\n6. Color v with the freed color\n\nThe key insight: with 5 colors and ≤ 5 neighbors, we can always make room. With 4 colors, this argument fails—hence the difficulty of the Four Color Theorem.",
+    "content": "Every planar graph is 5-colorable. This is much easier than Four Color!\n\n**Proof by induction:**\n1. Find a vertex v of degree \u2264 5\n2. Remove v to get smaller graph G'\n3. By induction, G' is 5-colorable\n4. Restore v: it has \u2264 5 neighbors using \u2264 5 colors\n5. If all 5 colors appear among neighbors, use Kempe chains to free one\n6. Color v with the freed color\n\nThe key insight: with 5 colors and \u2264 5 neighbors, we can always make room. With 4 colors, this argument fails\u2014hence the difficulty of the Four Color Theorem.",
     "mathContext": "$\\chi(G) \\leq 5$ for all planar graphs G",
     "significance": "key",
     "prerequisites": [
@@ -141,8 +141,8 @@
     },
     "type": "concept",
     "title": "Kempe Chains: The Color-Swapping Trick",
-    "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a ↔ b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed, but the technique is correct and essential. The flaw was in handling cases where multiple Kempe chains interact.",
-    "mathContext": "Given a proper $k$-coloring $c : V \\to [k]$ and colors $a, b \\in [k]$, the **Kempe $(a,b)$-chain** through vertex $v$ is the connected component of the induced subgraph $G[c^{-1}(\\{a,b\\})]$ containing $v$. Swapping $a \\leftrightarrow b$ on this component preserves properness. Kempe's flaw (1879): he claimed that for a vertex $v$ of degree 5 using all 5 colors, one could simultaneously swap two independent Kempe chains to free a color — but the chains may share vertices, making the swaps non-independent. This was exposed by Heawood (1890).",
+    "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a \u2194 b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed, but the technique is correct and essential. The flaw was in handling cases where multiple Kempe chains interact.",
+    "mathContext": "Given a proper $k$-coloring $c : V \\to [k]$ and colors $a, b \\in [k]$, the **Kempe $(a,b)$-chain** through vertex $v$ is the connected component of the induced subgraph $G[c^{-1}(\\{a,b\\})]$ containing $v$. Swapping $a \\leftrightarrow b$ on this component preserves properness. Kempe's flaw (1879): he claimed that for a vertex $v$ of degree 5 using all 5 colors, one could simultaneously swap two independent Kempe chains to free a color \u2014 but the chains may share vertices, making the swaps non-independent. This was exposed by Heawood (1890).",
     "significance": "key",
     "relatedConcepts": [
       "color swapping",
@@ -157,7 +157,7 @@
       "startLine": 104,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Kempe Chain Swapping Preserves Validity",
     "content": "If we have a proper coloring and swap colors along a Kempe chain, the result is still a proper coloring.\n\n**Why it works:**\n- Any edge with both endpoints in the chain: before, one was color a, one was b; after, they're swapped but still different\n- Any edge with one endpoint in, one out: the outside endpoint keeps its original color (not a or b), so still different from the inside endpoint\n- Any edge with both endpoints outside: unchanged\n\nThis lets us 'free up' a color at a specific vertex by pushing conflicting colors elsewhere.",
     "mathContext": "Swapping on Kempe chain preserves $\\forall(u,v) \\in E: c(u) \\neq c(v)$",
@@ -179,7 +179,7 @@
     },
     "type": "concept",
     "title": "Reducibility: Configurations That Can't Block Coloring",
-    "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. This is where computers become essential.",
+    "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex\u2014too many cases for human verification. This is where computers become essential.",
     "mathContext": "A configuration $C$ with ring of size $r$ is **D-reducible** if every proper 4-coloring of the ring extends to the interior. Checking D-reducibility requires examining at most $3 \\cdot 4^r$ colorings (since one color is fixed on the ring). For $r \\leq 14$ (the largest in Appel-Haken's set), this is computationally feasible. A weaker form, **C-reducibility**, allows Kempe chain swaps on the ring before extending: $C$ is C-reducible if after at most one Kempe swap on the ring coloring, the result extends. Appel-Haken (1976) proved an unavoidable set of 1,936 configurations, all C-reducible. Robertson et al. (1997) found a smaller unavoidable set of 633, all D-reducible.",
     "significance": "key",
     "relatedConcepts": [
@@ -197,8 +197,8 @@
     },
     "type": "concept",
     "title": "Computer-Assisted Proof",
-    "content": "The Appel-Haken proof (1976) required:\n- 1,200 hours of computer time\n- Verification of 1,936 configurations\n- 400+ pages of hand-written supporting proofs\n\nInitial reception was skeptical. How can we trust a proof no human can check? What if there's a bug in the program?\n\nGeorges Gonthier's 2005 Coq formalization addressed these concerns by reducing trust to a small, verified proof-checking kernel. The proof certificate is machine-checkable, and the checker itself is tiny enough to be human-verified.\n\nThis paradigm shift—from 'trust the program' to 'trust the proof checker'—has become foundational in formal methods.",
-    "mathContext": "The Appel-Haken proof structure: (1) prove every planar graph has a **discharging procedure** that forces some configuration from the unavoidable set to appear; (2) for each of 1,936 configurations, computer-check D- or C-reducibility. The discharging method: assign charge $c(v) = 6 - \\deg(v)$ to each vertex (Euler gives $\\sum c(v) = 12$). Redistribute charge by local rules; show that after redistribution, if no configuration appears, all vertices have non-positive charge — contradicting $\\sum c(v) = 12 > 0$. In Lean 4, this part is axiomatized as `unavoidability_axiom` and `reducibility_axiom`.",
+    "content": "The Appel-Haken proof (1976) required:\n- 1,200 hours of computer time\n- Verification of 1,936 configurations\n- 400+ pages of hand-written supporting proofs\n\nInitial reception was skeptical. How can we trust a proof no human can check? What if there's a bug in the program?\n\nGeorges Gonthier's 2005 Coq formalization addressed these concerns by reducing trust to a small, verified proof-checking kernel. The proof certificate is machine-checkable, and the checker itself is tiny enough to be human-verified.\n\nThis paradigm shift\u2014from 'trust the program' to 'trust the proof checker'\u2014has become foundational in formal methods.",
+    "mathContext": "The Appel-Haken proof structure: (1) prove every planar graph has a **discharging procedure** that forces some configuration from the unavoidable set to appear; (2) for each of 1,936 configurations, computer-check D- or C-reducibility. The discharging method: assign charge $c(v) = 6 - \\deg(v)$ to each vertex (Euler gives $\\sum c(v) = 12$). Redistribute charge by local rules; show that after redistribution, if no configuration appears, all vertices have non-positive charge \u2014 contradicting $\\sum c(v) = 12 > 0$. In Lean 4, this part is axiomatized as `unavoidability_axiom` and `reducibility_axiom`.",
     "significance": "key",
     "relatedConcepts": [
       "Coq",

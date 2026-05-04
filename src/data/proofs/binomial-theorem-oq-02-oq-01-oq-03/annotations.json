@@ -33,7 +33,7 @@
     },
     "type": "definition",
     "title": "multinomialProb and Normalization",
-    "content": "Redefines multinomialProb locally (definitionally equal to BinomialTheoremOQ02OQ01OQ02.multinomialProb) and proves the normalization ∑ P(k) = 1 by delegation. The local redefinition avoids namespace issues while keeping proofs readable. multinomialProb_eq establishes the definitional equality enabling simp_rw rewrites between namespaces.",
+    "content": "Redefines multinomialProb locally (definitionally equal to BinomialTheoremOQ02OQ01OQ02.multinomialProb) and proves the normalization \u2211 P(k) = 1 by delegation. The local redefinition avoids namespace issues while keeping proofs readable. multinomialProb_eq establishes the definitional equality enabling simp_rw rewrites between namespaces.",
     "mathContext": "$\\text{multinomialProb}(s, p, n, k) = \\binom{n}{k_1, \\ldots} \\prod_{i \\in s} p_i^{k_i}$. Normalization: $\\sum_{k \\in \\text{piAntidiag}(s,n)} P(k) = 1$ when $\\sum_{i \\in s} p_i = 1$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -57,8 +57,8 @@
       "endLine": 132
     },
     "type": "concept",
-    "title": "Mean E[Xᵢ] = n·pᵢ via Fiber Grouping",
-    "content": "multinomial_mean proves ∑_k k(i₀)·P(k) = n·p(i₀) in three steps. (1) sum_fiberwise_of_maps_to groups the double sum: ∑_k f(k) = ∑_j ∑_{k:k(i₀)=j} f(k). The mapping k ↦ k(i₀) hits range(n+1) since k(i₀) ≤ ∑_s k(l) = n. (2) On each fiber, step1 replaces k(i₀) : ℝ with j : ℝ (using exact_mod_cast via the filter membership proof), then step2 factors out j and applies multinomial_marginal_pmf to get the binomial PMF. (3) The resulting sum ∑_j j·binomPMF(n,p,j) = n·p is handled by binomial_mean_all.",
+    "title": "Mean E[X\u1d62] = n\u00b7p\u1d62 via Fiber Grouping",
+    "content": "multinomial_mean proves \u2211_k k(i\u2080)\u00b7P(k) = n\u00b7p(i\u2080) in three steps. (1) sum_fiberwise_of_maps_to groups the double sum: \u2211_k f(k) = \u2211_j \u2211_{k:k(i\u2080)=j} f(k). The mapping k \u21a6 k(i\u2080) hits range(n+1) since k(i\u2080) \u2264 \u2211_s k(l) = n. (2) On each fiber, step1 replaces k(i\u2080) : \u211d with j : \u211d (using exact_mod_cast via the filter membership proof), then step2 factors out j and applies multinomial_marginal_pmf to get the binomial PMF. (3) The resulting sum \u2211_j j\u00b7binomPMF(n,p,j) = n\u00b7p is handled by binomial_mean_all.",
     "mathContext": "Fiber grouping: $\\sum_{k} k(i_0) \\cdot P(k) = \\sum_{j=0}^{n} j \\cdot \\underbrace{\\sum_{k: k(i_0)=j} P(k)}_{= \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j}} = \\sum_{j=0}^{n} j \\cdot \\text{binomPMF}(n, p_{i_0}, j) = n p_{i_0}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -82,8 +82,8 @@
       "endLine": 166
     },
     "type": "insight",
-    "title": "Cross-Moment Sorry: E[XᵢXⱼ] = n(n-1)pᵢpⱼ",
-    "content": "multinomial_cross_moment is stated with a detailed proof sketch in the docstring. The proof uses the joint MGF identity (from multinomial_mgf_real with g(l) = 1+a for l=i, 1+b for l=j, 1 otherwise): ∑_k P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n. Differentiating w.r.t. a at 0 (HasDerivAt.sum) gives ∑_k P(k)·k(i)·(1+b)^{k(j)} = n·pᵢ·(1+pⱼb)^{n-1}. Differentiating w.r.t. b at 0 gives E[XᵢXⱼ] = n(n-1)pᵢpⱼ. The quantity n(n-1) is a factorial moment: it counts ordered pairs of distinct trials, both from category i and j respectively.",
+    "title": "Cross-Moment Sorry: E[X\u1d62X\u2c7c] = n(n-1)p\u1d62p\u2c7c",
+    "content": "multinomial_cross_moment is stated with a detailed proof sketch in the docstring. The proof uses the joint MGF identity (from multinomial_mgf_real with g(l) = 1+a for l=i, 1+b for l=j, 1 otherwise): \u2211_k P(k)\u00b7(1+a)^{k(i)}\u00b7(1+b)^{k(j)} = (1+p\u1d62a+p\u2c7cb)^n. Differentiating w.r.t. a at 0 (HasDerivAt.sum) gives \u2211_k P(k)\u00b7k(i)\u00b7(1+b)^{k(j)} = n\u00b7p\u1d62\u00b7(1+p\u2c7cb)^{n-1}. Differentiating w.r.t. b at 0 gives E[X\u1d62X\u2c7c] = n(n-1)p\u1d62p\u2c7c. The quantity n(n-1) is a factorial moment: it counts ordered pairs of distinct trials, both from category i and j respectively.",
     "mathContext": "Joint MGF: $\\sum_k P(k) (1+a)^{k(i)} (1+b)^{k(j)} = (1 + p_i a + p_j b)^n$. Cross-moment via mixed partial: $E[X_i X_j] = \\frac{\\partial^2}{\\partial a \\partial b}\\Big|_{a=b=0} (1+p_i a + p_j b)^n = n(n-1) p_i p_j$.",
     "significance": "key",
     "relatedConcepts": [
@@ -107,9 +107,9 @@
       "startLine": 168,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Theorem: Multinomial Covariance",
-    "content": "multinomial_covariance reduces the covariance formula to the cross-moment and mean. The proof: (1) rewrites the raw multinomial coefficient form as multinomialProb, (2) expands (k(i)·k(j) - n·p(i)·n·p(j))·P via sub_mul and sum_sub_distrib, splitting into two sums, (3) the second sum (constant × normalization) is evaluated by multinomialProb_sum_one, (4) the first sum is the cross-moment, (5) closes by ring arithmetic. The key computation is n(n-1)pᵢpⱼ - n²pᵢpⱼ = -npᵢpⱼ. This algebraic reduction is complete and sorry-free; only the cross-moment lemma carries a sorry.",
+    "content": "multinomial_covariance reduces the covariance formula to the cross-moment and mean. The proof: (1) rewrites the raw multinomial coefficient form as multinomialProb, (2) expands (k(i)\u00b7k(j) - n\u00b7p(i)\u00b7n\u00b7p(j))\u00b7P via sub_mul and sum_sub_distrib, splitting into two sums, (3) the second sum (constant \u00d7 normalization) is evaluated by multinomialProb_sum_one, (4) the first sum is the cross-moment, (5) closes by ring arithmetic. The key computation is n(n-1)p\u1d62p\u2c7c - n\u00b2p\u1d62p\u2c7c = -np\u1d62p\u2c7c. This algebraic reduction is complete and sorry-free; only the cross-moment lemma carries a sorry.",
     "mathContext": "$\\text{Cov}(X_i, X_j) = E[X_i X_j] - E[X_i] E[X_j] = n(n-1)p_ip_j - n^2 p_i p_j = -n p_i p_j$.",
     "significance": "key",
     "relatedConcepts": [

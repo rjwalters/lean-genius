@@ -5,16 +5,16 @@
     "type": "concept",
     "startLine": 30,
     "endLine": 38,
-    "mathContext": "The file extends Bryan-Elek-Manners-Salafatinos-Vakil (2025) from complete flags to partial flags. The chain: q-number [n]_L = [P^{n-1}] in K₀(Var) → q-factorial [n]_L! = [Fl_n] (complete flag) → Gaussian binomial [n choose d]_L = [Gr(d,n)] (Grassmannian) → partial flags [Fl(d₁,...,dₖ; n)] = ∏ [Gr(dᵢ₊₁-dᵢ, n-dᵢ)] → extension conjecture for based maps to partial flags.",
+    "mathContext": "The file extends Bryan-Elek-Manners-Salafatinos-Vakil (2025) from complete flags to partial flags. The chain: q-number [n]_L = [P^{n-1}] in K\u2080(Var) \u2192 q-factorial [n]_L! = [Fl_n] (complete flag) \u2192 Gaussian binomial [n choose d]_L = [Gr(d,n)] (Grassmannian) \u2192 partial flags [Fl(d\u2081,...,d\u2096; n)] = \u220f [Gr(d\u1d62\u208a\u2081-d\u1d62, n-d\u1d62)] \u2192 extension conjecture for based maps to partial flags.",
     "significance": "supporting",
     "relatedConcepts": [
-      "K₀(Var)",
+      "K\u2080(Var)",
       "Grothendieck ring",
       "Lefschetz motive",
       "Bryan et al. 2025",
       "based maps"
     ],
-    "content": "Addresses OQ-02: does the Bryan et al. motivic class formula extend beyond complete flags to partial flag varieties? The answer: yes, the q-analog infrastructure extends, and the Gaussian binomial identity [Gr(d,n)] · [d]! · [n-d]! = [n]! serves as the bridge. The extension conjecture states the map-space class involves Levi subgroups and unipotent radicals, generalizing GL_n to block-diagonal subgroups.",
+    "content": "Addresses OQ-02: does the Bryan et al. motivic class formula extend beyond complete flags to partial flag varieties? The answer: yes, the q-analog infrastructure extends, and the Gaussian binomial identity [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]! serves as the bridge. The extension conjecture states the map-space class involves Levi subgroups and unipotent radicals, generalizing GL_n to block-diagonal subgroups.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 476,
@@ -23,11 +23,11 @@
   },
   {
     "id": "ann-k0var-structure",
-    "title": "K₀(Var) Infrastructure: Grothendieck Ring and Motivic Classes",
+    "title": "K\u2080(Var) Infrastructure: Grothendieck Ring and Motivic Classes",
     "type": "concept",
     "startLine": 39,
     "endLine": 67,
-    "mathContext": "K0Var k is a structure with carrier (a CommRing) and L : carrier (the Lefschetz motive [A¹]). Key definitions: affineClass n = L^n ([A^n] = L^n), projectiveClass n = ∑_{i≤n} L^i ([P^n] = 1+L+...+L^n), GLnClass n = (∏_{i=1}^{n}(L^i - 1)) · L^{n(n-1)/2} ([GL_n] class via Schubert cells), completeFlagClass n = ∏_{i<n} projectiveClass K i ([Fl_n] = [P^0]·[P^1]·...·[P^{n-1}]). The triangular number n(n-1)/2 counts the dimension of the unipotent radical of the Borel.",
+    "mathContext": "K0Var k is a structure with carrier (a CommRing) and L : carrier (the Lefschetz motive [A\u00b9]). Key definitions: affineClass n = L^n ([A^n] = L^n), projectiveClass n = \u2211_{i\u2264n} L^i ([P^n] = 1+L+...+L^n), GLnClass n = (\u220f_{i=1}^{n}(L^i - 1)) \u00b7 L^{n(n-1)/2} ([GL_n] class via Schubert cells), completeFlagClass n = \u220f_{i<n} projectiveClass K i ([Fl_n] = [P^0]\u00b7[P^1]\u00b7...\u00b7[P^{n-1}]). The triangular number n(n-1)/2 counts the dimension of the unipotent radical of the Borel.",
     "significance": "supporting",
     "relatedConcepts": [
       "Lefschetz motive",
@@ -36,7 +36,7 @@
       "triangular numbers",
       "CommRing abstraction"
     ],
-    "content": "The K0Var structure is an abstraction over any commutative ring, not tied to a specific K₀(Var). This enables the duality proof strategy: work in Polynomial ℤ (an integral domain for cancellation), then transfer to any K via ring homomorphism. The GLnClass formula encodes the Schubert cell decomposition of GL_n/B: the cells are indexed by permutations with area equal to their inversion count.",
+    "content": "The K0Var structure is an abstraction over any commutative ring, not tied to a specific K\u2080(Var). This enables the duality proof strategy: work in Polynomial \u2124 (an integral domain for cancellation), then transfer to any K via ring homomorphism. The GLnClass formula encodes the Schubert cell decomposition of GL_n/B: the cells are indexed by permutations with area equal to their inversion count.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 39,
@@ -49,7 +49,7 @@
     "type": "definition",
     "startLine": 79,
     "endLine": 133,
-    "mathContext": "qNumber K n = ∑_{i<n} L^i (geometric sum). Key theorem: qNumber_succ_eq_projective — qNumber K (n+1) = projectiveClass K n, since both are 1+L+...+L^n. qFactorial K n = ∏_{i<n} qNumber K (i+1) = [1]_L·[2]_L·...·[n]_L. Main theorem qFactorial_eq_completeFlagClass: qFactorial K n = completeFlagClass K n = ∏_{i<n} [P^i]. In motivic K₀, [P^i] is the class of i-dimensional projective space, and the complete flag variety fibers over lower flags with projective fibers.",
+    "mathContext": "qNumber K n = \u2211_{i<n} L^i (geometric sum). Key theorem: qNumber_succ_eq_projective \u2014 qNumber K (n+1) = projectiveClass K n, since both are 1+L+...+L^n. qFactorial K n = \u220f_{i<n} qNumber K (i+1) = [1]_L\u00b7[2]_L\u00b7...\u00b7[n]_L. Main theorem qFactorial_eq_completeFlagClass: qFactorial K n = completeFlagClass K n = \u220f_{i<n} [P^i]. In motivic K\u2080, [P^i] is the class of i-dimensional projective space, and the complete flag variety fibers over lower flags with projective fibers.",
     "significance": "supporting",
     "relatedConcepts": [
       "projective space class",
@@ -58,7 +58,7 @@
       "geometric sum",
       "fibration"
     ],
-    "content": "The identity qFactorial = completeFlagClass is the first major theorem: the q-factorial product is not just an algebraic coincidence but has geometric content — it equals the motivic class of the complete flag variety Fl_n. The proof is a one-liner (congr 1; ext; exact (qNumber_succ_eq_projective).symm), showing that the two definitions match term-by-term. This is the motivic lift of n! = |GL_n(𝔽_q)| / q^{n(n-1)/2}.",
+    "content": "The identity qFactorial = completeFlagClass is the first major theorem: the q-factorial product is not just an algebraic coincidence but has geometric content \u2014 it equals the motivic class of the complete flag variety Fl_n. The proof is a one-liner (congr 1; ext; exact (qNumber_succ_eq_projective).symm), showing that the two definitions match term-by-term. This is the motivic lift of n! = |GL_n(\ud835\udd3d_q)| / q^{n(n-1)/2}.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 104,
@@ -71,7 +71,7 @@
     "type": "definition",
     "startLine": 157,
     "endLine": 227,
-    "mathContext": "grassmannianClass K d n : K.carrier defined by q-Pascal: grassmannianClass K (d+1) (n+1) = L^{d+1} · grassmannianClass K (d+1) n + grassmannianClass K d n, with boundary cases Gr(0,n)=1, Gr(d+1,0)=0, Gr(d,d)=1. This mirrors Pascal's triangle with L-weighted terms from Schubert cell stratification. Key theorems: grassmannianClass_lines (Gr(1,n+1) = [P^n]), grassmannianClass_2_4 ([Gr(2,4)] = 1+L+2L²+L³+L⁴), qNumber_split ([d]_L + L^d·[n-d]_L = [n]_L used in grassmannianClass_lines).",
+    "mathContext": "grassmannianClass K d n : K.carrier defined by q-Pascal: grassmannianClass K (d+1) (n+1) = L^{d+1} \u00b7 grassmannianClass K (d+1) n + grassmannianClass K d n, with boundary cases Gr(0,n)=1, Gr(d+1,0)=0, Gr(d,d)=1. This mirrors Pascal's triangle with L-weighted terms from Schubert cell stratification. Key theorems: grassmannianClass_lines (Gr(1,n+1) = [P^n]), grassmannianClass_2_4 ([Gr(2,4)] = 1+L+2L\u00b2+L\u00b3+L\u2074), qNumber_split ([d]_L + L^d\u00b7[n-d]_L = [n]_L used in grassmannianClass_lines).",
     "significance": "supporting",
     "relatedConcepts": [
       "q-Pascal identity",
@@ -80,7 +80,7 @@
       "Young diagrams",
       "L-weighting"
     ],
-    "content": "The coefficient 2 on L² in [Gr(2,4)] reflects the two Schubert cells of dimension 2 in the 2×2 box: the partitions (2,0) and (1,1). Each partition λ contributes L^|λ| to the Grassmannian class. The q-Pascal recurrence mirrors the Schubert cell decomposition: Gr(d+1, n+1) is the union of an A^{d+1}-bundle over Gr(d+1, n) and a copy of Gr(d, n), matching the structure constants in Schubert calculus.",
+    "content": "The coefficient 2 on L\u00b2 in [Gr(2,4)] reflects the two Schubert cells of dimension 2 in the 2\u00d72 box: the partitions (2,0) and (1,1). Each partition \u03bb contributes L^|\u03bb| to the Grassmannian class. The q-Pascal recurrence mirrors the Schubert cell decomposition: Gr(d+1, n+1) is the union of an A^{d+1}-bundle over Gr(d+1, n) and a copy of Gr(d, n), matching the structure constants in Schubert calculus.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 147,
@@ -89,11 +89,11 @@
   },
   {
     "id": "ann-gaussian-binomial-identity",
-    "title": "Gaussian Binomial Identity: [Gr(d,n)] · [d]! · [n-d]! = [n]!",
-    "type": "theorem",
+    "title": "Gaussian Binomial Identity: [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]!",
+    "type": "insight",
     "startLine": 294,
     "endLine": 363,
-    "mathContext": "gaussian_binomial_identity: for d ≤ n, grassmannianClass K d n * qFactorial K d * qFactorial K (n-d) = qFactorial K n. Proved by induction on n with subcases on d. The inductive step applies q-Pascal to unfold Gr(d+1, n+1), produces two terms using two IH instantiations, expands qFactorial via qFactorial_succ, then combines using qNumber_split ([d+1]_L + L^{d+1}·[n-d]_L = [n+1]_L). The final combination uses ring manipulations to match qFactorial (n+1) = qFactorial n * qNumber (n+1).",
+    "mathContext": "gaussian_binomial_identity: for d \u2264 n, grassmannianClass K d n * qFactorial K d * qFactorial K (n-d) = qFactorial K n. Proved by induction on n with subcases on d. The inductive step applies q-Pascal to unfold Gr(d+1, n+1), produces two terms using two IH instantiations, expands qFactorial via qFactorial_succ, then combines using qNumber_split ([d+1]_L + L^{d+1}\u00b7[n-d]_L = [n+1]_L). The final combination uses ring manipulations to match qFactorial (n+1) = qFactorial n * qNumber (n+1).",
     "significance": "key",
     "relatedConcepts": [
       "flag variety fibration",
@@ -102,7 +102,7 @@
       "geom_sum_split",
       "ring manipulations"
     ],
-    "content": "The motivic lifting of C(n,d) · d! · (n-d)! = n!. Geometrically: the complete flag variety Fl_n fibers over the Grassmannian Gr(d,n) with fiber Fl_d × Fl_{n-d}. The q-analog encodes this fibration in K₀(Var). The proof requires the q-number splitting identity geom_sum_split (∑_{i<a}q^i + q^a·∑_{i<b}q^i = ∑_{i<a+b}q^i), which is proved by induction on b.",
+    "content": "The motivic lifting of C(n,d) \u00b7 d! \u00b7 (n-d)! = n!. Geometrically: the complete flag variety Fl_n fibers over the Grassmannian Gr(d,n) with fiber Fl_d \u00d7 Fl_{n-d}. The q-analog encodes this fibration in K\u2080(Var). The proof requires the q-number splitting identity geom_sum_split (\u2211_{i<a}q^i + q^a\u00b7\u2211_{i<b}q^i = \u2211_{i<a+b}q^i), which is proved by induction on b.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 294,
@@ -112,19 +112,19 @@
   {
     "id": "ann-grassmannian-duality",
     "title": "Grassmannian Duality [Gr(d,n)] = [Gr(n-d,n)] via Integral Domain",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 440,
     "endLine": 466,
-    "mathContext": "grassmannianClass_duality: for d ≤ n, grassmannianClass K d n = grassmannianClass K (n-d) n. The proof lifts to Polynomial ℤ (an integral domain): (1) both Gr(d,n) and Gr(n-d,n) satisfy the Gaussian binomial identity with the same RHS [n]!. (2) Gr(d,n) · [d]!·[n-d]! = Gr(n-d,n) · [d]!·[n-d]!. (3) Cancel by mul_right_cancel₀ (valid in Polynomial ℤ since [d]!·[n-d]! ≠ 0 via qNumber_polyK₀_ne_zero). (4) Transfer to K.carrier via eval_grassmannianClass (ring homomorphism Polynomial ℤ → K.carrier evaluating X ↦ K.L).",
+    "mathContext": "grassmannianClass_duality: for d \u2264 n, grassmannianClass K d n = grassmannianClass K (n-d) n. The proof lifts to Polynomial \u2124 (an integral domain): (1) both Gr(d,n) and Gr(n-d,n) satisfy the Gaussian binomial identity with the same RHS [n]!. (2) Gr(d,n) \u00b7 [d]!\u00b7[n-d]! = Gr(n-d,n) \u00b7 [d]!\u00b7[n-d]!. (3) Cancel by mul_right_cancel\u2080 (valid in Polynomial \u2124 since [d]!\u00b7[n-d]! \u2260 0 via qNumber_polyK\u2080_ne_zero). (4) Transfer to K.carrier via eval_grassmannianClass (ring homomorphism Polynomial \u2124 \u2192 K.carrier evaluating X \u21a6 K.L).",
     "significance": "key",
     "relatedConcepts": [
       "integral domain cancellation",
-      "Polynomial ℤ",
-      "eval₂RingHom",
+      "Polynomial \u2124",
+      "eval\u2082RingHom",
       "ring homomorphism transfer",
       "symmetric Gaussian binomials"
     ],
-    "content": "The duality proof cannot be done in a general CommRing (no cancellation). The strategy — lift to Polynomial ℤ, cancel there, transfer back — is a template for motivic identities requiring integral domain properties. The private polyK₀ structure (Polynomial ℤ with X as L) and evalAtL ring homomorphism provide the transfer mechanism. This is the motivic analog of the combinatorial identity C(n,d) = C(n,n-d).",
+    "content": "The duality proof cannot be done in a general CommRing (no cancellation). The strategy \u2014 lift to Polynomial \u2124, cancel there, transfer back \u2014 is a template for motivic identities requiring integral domain properties. The private polyK\u2080 structure (Polynomial \u2124 with X as L) and evalAtL ring homomorphism provide the transfer mechanism. This is the motivic analog of the combinatorial identity C(n,d) = C(n,n-d).",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 147,
@@ -137,7 +137,7 @@
     "type": "concept",
     "startLine": 476,
     "endLine": 511,
-    "mathContext": "PartialFlag n dims: a structure for chains of subspaces V_{d₁} ⊂ ... ⊂ V_{dₖ} ⊂ kⁿ with dim V_{dᵢ} = dᵢ, dim_correct, and nested ordering. partialFlagClass K n dims computes the motivic class: by iterated fibration, Fl(d₁,...,dₖ; n) → Fl(d₂,...,dₖ; n) with fiber Gr(d₁, d₂), giving [Fl(d₁,...,dₖ; n)] = ∏ᵢ [Gr(dᵢ₊₁-dᵢ, n-dᵢ)]. Special cases: partialFlag_single ([d; n] = Gr(d,n)), complete_flag_is_partial_flag (Fl(1,...,n;n) = [n]!).",
+    "mathContext": "PartialFlag n dims: a structure for chains of subspaces V_{d\u2081} \u2282 ... \u2282 V_{d\u2096} \u2282 k\u207f with dim V_{d\u1d62} = d\u1d62, dim_correct, and nested ordering. partialFlagClass K n dims computes the motivic class: by iterated fibration, Fl(d\u2081,...,d\u2096; n) \u2192 Fl(d\u2082,...,d\u2096; n) with fiber Gr(d\u2081, d\u2082), giving [Fl(d\u2081,...,d\u2096; n)] = \u220f\u1d62 [Gr(d\u1d62\u208a\u2081-d\u1d62, n-d\u1d62)]. Special cases: partialFlag_single ([d; n] = Gr(d,n)), complete_flag_is_partial_flag (Fl(1,...,n;n) = [n]!).",
     "significance": "supporting",
     "relatedConcepts": [
       "flag variety fibration",
@@ -146,7 +146,7 @@
       "iterated fibration",
       "tower of varieties"
     ],
-    "content": "The partial flag class is defined recursively via List pattern matching with `termination_by l => l.length`. The formula [Fl(d₁,...,dₖ; n)] = ∏ Gr factors mirrors the tower of fibrations: at each level, forget the innermost subspace to get a Grassmannian fiber. This is the geometric content of the motivic factorization. The complete flag is Fl(1,2,...,n-1; n), and complete_flag_is_partial_flag shows this gives [n]!.",
+    "content": "The partial flag class is defined recursively via List pattern matching with `termination_by l => l.length`. The formula [Fl(d\u2081,...,d\u2096; n)] = \u220f Gr factors mirrors the tower of fibrations: at each level, forget the innermost subspace to get a Grassmannian fiber. This is the geometric content of the motivic factorization. The complete flag is Fl(1,2,...,n-1; n), and complete_flag_is_partial_flag shows this gives [n]!.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 476,
@@ -155,11 +155,11 @@
   },
   {
     "id": "ann-extension-conjecture",
-    "title": "Levi–Unipotent Structure and Extension Conjecture for Partial Flags",
+    "title": "Levi\u2013Unipotent Structure and Extension Conjecture for Partial Flags",
     "type": "definition",
     "startLine": 534,
     "endLine": 566,
-    "mathContext": "leviClass K n dims computes ∏ᵢ [GL_{nᵢ}] where nᵢ are the block sizes (differences of consecutive dimensions). unipotentDim computes dim U = ∑_{i<j} nᵢ·nⱼ (dimension of the unipotent radical of the corresponding parabolic subgroup). The extension conjecture (partial_flag_extension, axiomatized): for based maps Ω²_β(Fl(d₁,...,dₖ; n+1)) with positive β, [Ω²_β] = [Levi] · L^{dim U + a} for some a depending on β. This extends Bryan et al.'s GL_n × A^a formula (complete flags) to Levi subgroups (partial flags).",
+    "mathContext": "leviClass K n dims computes \u220f\u1d62 [GL_{n\u1d62}] where n\u1d62 are the block sizes (differences of consecutive dimensions). unipotentDim computes dim U = \u2211_{i<j} n\u1d62\u00b7n\u2c7c (dimension of the unipotent radical of the corresponding parabolic subgroup). The extension conjecture (partial_flag_extension, axiomatized): for based maps \u03a9\u00b2_\u03b2(Fl(d\u2081,...,d\u2096; n+1)) with positive \u03b2, [\u03a9\u00b2_\u03b2] = [Levi] \u00b7 L^{dim U + a} for some a depending on \u03b2. This extends Bryan et al.'s GL_n \u00d7 A^a formula (complete flags) to Levi subgroups (partial flags).",
     "significance": "supporting",
     "relatedConcepts": [
       "Levi subgroup",
@@ -168,7 +168,7 @@
       "based maps",
       "Bryan et al. extension"
     ],
-    "content": "The extension conjecture is the open part of this file (marked as axiom). For complete flags, the Levi is GL_n and dim U = 0 (Borel = parabolic for complete flags), recovering Bryan et al. For a Grassmannian Fl(d; n+1) = Gr(d, n+1), the Levi is GL_d × GL_{n+1-d} and dim U = d(n+1-d). The conjecture says the space of maps [S², Gr(d,n+1)]_β has motivic class [GL_d × GL_{n+1-d} × A^{a''}], geometrically counting maps by Levi × affine structure.",
+    "content": "The extension conjecture is the open part of this file (marked as axiom). For complete flags, the Levi is GL_n and dim U = 0 (Borel = parabolic for complete flags), recovering Bryan et al. For a Grassmannian Fl(d; n+1) = Gr(d, n+1), the Levi is GL_d \u00d7 GL_{n+1-d} and dim U = d(n+1-d). The conjecture says the space of maps [S\u00b2, Gr(d,n+1)]_\u03b2 has motivic class [GL_d \u00d7 GL_{n+1-d} \u00d7 A^{a''}], geometrically counting maps by Levi \u00d7 affine structure.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
       "startLine": 476,

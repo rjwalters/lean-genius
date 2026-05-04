@@ -28,7 +28,7 @@
       "name": "birthday_problem_formula",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Birthday Formula",
     "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
     "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
@@ -73,7 +73,7 @@
       "name": "prob_certain",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Pigeonhole Case",
     "content": "**When $n > 365$**: By the pigeonhole principle, at least two people MUST share a birthday.\n\nWith 366+ people and only 365 possible birthdays, there's no way to assign distinct birthdays to everyone.\n\nMathematically: `descFactorial 365 n = 0` when $n > 365$, so:\n$$P(n) = 1 - \\frac{0}{365^n} = 1$$\n\nThe probability is exactly 1 (certain).",
     "mathContext": "If $n > 365$, then $365^{\\underline{n}} = 0$ (the falling factorial includes a factor of 0), so $P(n) = 1 - 0/365^n = 1$.",
@@ -95,7 +95,7 @@
       "name": "birthday_23_exceeds_half",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The 23-Person Threshold",
     "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
     "mathContext": "$P(23) = 1 - \\frac{365!}{365^{23} \\cdot 342!} \\approx 0.5073 > 0.5$. The exact computation involves $365^{23} \\approx 8.6 \\times 10^{58}$.",
@@ -139,7 +139,7 @@
       "name": "prob_two",
       "kind": "theorem"
     },
-    "type": "example",
+    "type": "context",
     "title": "Two People: P = 1/365",
     "content": "With 2 people, the probability they share a birthday is:\n\n$$P(2) = 1 - \\frac{365 \\times 364}{365^2} = 1 - \\frac{364}{365} = \\frac{1}{365}$$\n\nThis makes intuitive sense: once person 1's birthday is fixed, person 2 has a 1/365 chance of matching.\n\nIn Lean: `prob_shared_birthday 2 = 1 / 365`",
     "mathContext": "$P(2) = 1/365 \\approx 0.27\\%$",

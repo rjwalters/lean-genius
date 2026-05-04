@@ -8,13 +8,13 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #374: For $m \\in \\mathbb{N}$, define $F(m)$ as the minimal $k \\geq 2$ such that there exist integers $2 \\leq a_1 < a_2 < \\cdots < a_k = m$ with $a_1! \\cdot a_2! \\cdots a_k!$ a perfect square. Then $D_k = \\{m : F(m) = k\\}$. It is known that $D_2$ is the set of perfect squares (minus singletons), $D_k$ is finite for $k \\geq 3$, and $D_k = \\emptyset$ for $k \\geq 7$. The open question concerns the growth rate of $|D_k|$.",
+    "content": "Erd\u0151s Problem #374: For $m \\in \\mathbb{N}$, define $F(m)$ as the minimal $k \\geq 2$ such that there exist integers $2 \\leq a_1 < a_2 < \\cdots < a_k = m$ with $a_1! \\cdot a_2! \\cdots a_k!$ a perfect square. Then $D_k = \\{m : F(m) = k\\}$. It is known that $D_2$ is the set of perfect squares (minus singletons), $D_k$ is finite for $k \\geq 3$, and $D_k = \\emptyset$ for $k \\geq 7$. The open question concerns the growth rate of $|D_k|$.",
     "mathContext": "$F(m) = \\min\\{k \\geq 2 : \\exists\\, 2 \\leq a_1 < \\cdots < a_k = m,\\; \\prod a_i! \\in \\square\\}$. Then $D_k = F^{-1}(k)$.",
     "significance": "key",
     "relatedConcepts": [
       "factorial products",
       "perfect squares",
-      "Erdős problems",
+      "Erd\u0151s problems",
       "partition into sets"
     ],
     "prerequisites": [
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Factorial Product Definitions",
-    "content": "Five core definitions: `IsPerfectSquare n` (exists $k$ with $n = k^2$), `factorialProduct seq` (product of factorials along a list), `HasSquareFactorialProduct m k` (existence of a valid sequence of length $k$ ending at $m$ whose factorial product is a perfect square), `bigF m` (the minimum such $k$, or 0 if none exists — a noncomputable `Nat.find`), and `inDk k m` (membership in $D_k$, i.e., $F(m) = k$).",
+    "content": "Five core definitions: `IsPerfectSquare n` (exists $k$ with $n = k^2$), `factorialProduct seq` (product of factorials along a list), `HasSquareFactorialProduct m k` (existence of a valid sequence of length $k$ ending at $m$ whose factorial product is a perfect square), `bigF m` (the minimum such $k$, or 0 if none exists \u2014 a noncomputable `Nat.find`), and `inDk k m` (membership in $D_k$, i.e., $F(m) = k$).",
     "mathContext": "$\\text{factorialProduct}([a_1,\\ldots,a_k]) = \\prod_{i=1}^k a_i!$. $F(m) = \\text{Nat.find}(\\exists k \\geq 2,\\, \\text{HasSquareFactorialProduct}\\,m\\,k)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -54,7 +54,7 @@
       "startLine": 56,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Basic Properties",
     "content": "Two basic results: `bigF_ge_two` proves $F(m) \\geq 2$ whenever $F(m)$ is defined, using `split_ifs` to handle the conditional definition. `factorialProduct_pair` computes the factorial product of a two-element list $[a,b]$ as $a! \\cdot b!$.",
     "mathContext": "$F(m) \\neq 0 \\Rightarrow F(m) \\geq 2$. $\\text{factorialProduct}([a,b]) = a! \\cdot b!$.",
@@ -99,11 +99,11 @@
     },
     "type": "concept",
     "title": "Known Results (Axiomatized)",
-    "content": "Four deep results from Erdős-Graham (1976) axiomatized: (1) `D2_eq_squares`: $D_2$ = perfect squares; (2) `no_square_factorial_product_for_primes`: primes excluded from $D_2$; (3) `Dk_empty_above_6`: $D_k = \\emptyset$ for $k \\geq 7$; (4) `D6_smallest`: 527 is the smallest element of $D_6$.",
+    "content": "Four deep results from Erd\u0151s-Graham (1976) axiomatized: (1) `D2_eq_squares`: $D_2$ = perfect squares; (2) `no_square_factorial_product_for_primes`: primes excluded from $D_2$; (3) `Dk_empty_above_6`: $D_k = \\emptyset$ for $k \\geq 7$; (4) `D6_smallest`: 527 is the smallest element of $D_6$.",
     "mathContext": "$D_2 = \\{m^2 : m \\geq 2\\}$, $p$ prime $\\Rightarrow p \\notin D_2$, $D_k = \\emptyset$ for $k \\geq 7$, $\\min D_6 = 527$.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős-Graham 1976",
+      "Erd\u0151s-Graham 1976",
       "axiomatized results",
       "prime exclusion"
     ],
@@ -119,7 +119,7 @@
       "startLine": 123,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Derived Theorems",
     "content": "`bigF_prime_zero` shows $F(p) = 0$ for primes (undefined), and `no_prime_in_Dk` shows primes belong to no $D_k$. Both derived from the axioms by case analysis.",
     "mathContext": "$p$ prime $\\Rightarrow F(p) = 0$ (undefined) $\\Rightarrow p \\notin D_k$ for all $k \\geq 2$.",
@@ -142,7 +142,7 @@
     },
     "type": "concept",
     "title": "Growth Rate Question (OPEN)",
-    "content": "The open question: how does $|D_k|$ grow for $3 \\leq k \\leq 6$? Erdős and Graham showed each $D_k$ is finite but did not determine the growth rate. The axiom `erdos_374_growth_rate` encodes this as the existence of bounds on $|D_k \\cap [1,N]|$.",
+    "content": "The open question: how does $|D_k|$ grow for $3 \\leq k \\leq 6$? Erd\u0151s and Graham showed each $D_k$ is finite but did not determine the growth rate. The axiom `erdos_374_growth_rate` encodes this as the existence of bounds on $|D_k \\cap [1,N]|$.",
     "mathContext": "Open: determine $|D_k|$ for $3 \\leq k \\leq 6$, or the counting function $|D_k \\cap [1,N]|$ as $N \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": [

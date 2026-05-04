@@ -2,7 +2,10 @@
   {
     "id": "binom-pmf",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 28, "endLine": 43 },
+    "range": {
+      "startLine": 28,
+      "endLine": 43
+    },
     "type": "definition",
     "title": "binomPMF: Algebraic PMF Avoiding Measure Theory",
     "content": "`binomPMF`: The binomial probability mass function $P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}$. Defined as a real-valued function on $\\mathbb{N}$, not a measure-theoretic probability. This algebraic approach avoids sigma-algebras while capturing all combinatorial identities. Returns 0 for $k > n$ since $\\binom{n}{k} = 0$.",
@@ -22,9 +25,12 @@
   {
     "id": "binomial-expansion",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 48, "endLine": 63 },
-    "type": "theorem",
-    "title": "binomial_expansion: (p+q)^n = Σ C(n,k) p^k q^(n−k)",
+    "range": {
+      "startLine": 48,
+      "endLine": 63
+    },
+    "type": "insight",
+    "title": "binomial_expansion: (p+q)^n = \u03a3 C(n,k) p^k q^(n\u2212k)",
     "content": "`binomial_expansion`: The algebraic binomial theorem $(p+q)^n = \\sum_{k=0}^{n} \\binom{n}{k} p^k q^{n-k}$, proved by rewriting Mathlib's `add_pow`. This is the foundational identity from which every property of the binomial distribution follows.",
     "mathContext": "Mathlib's `add_pow` gives $(p+q)^n = \\sum_k \\binom{n}{k} p^k q^{n-k}$ using `Commute.add_pow`. The proof rewrites this into the desired summation form with a `congr` and `ring` step.",
     "significance": "key",
@@ -41,10 +47,13 @@
   {
     "id": "normalization",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 53, "endLine": 63 },
-    "type": "theorem",
-    "title": "binomPMF_sum_eq_one: The OQ-03 Answer — Binomial Theorem IS Normalization",
-    "content": "`binomPMF_sum_eq_one`: The PMF sums to 1. The proof is a one-line consequence of the binomial theorem: substitute $q = 1-p$ to get $(p + (1-p))^n = 1^n = 1$. This is the heart of the OQ-03 answer — the binomial theorem IS normalization.",
+    "range": {
+      "startLine": 53,
+      "endLine": 63
+    },
+    "type": "insight",
+    "title": "binomPMF_sum_eq_one: The OQ-03 Answer \u2014 Binomial Theorem IS Normalization",
+    "content": "`binomPMF_sum_eq_one`: The PMF sums to 1. The proof is a one-line consequence of the binomial theorem: substitute $q = 1-p$ to get $(p + (1-p))^n = 1^n = 1$. This is the heart of the OQ-03 answer \u2014 the binomial theorem IS normalization.",
     "mathContext": "Setting $q = 1-p$ in $(p+q)^n = \\sum \\binom{n}{k} p^k q^{n-k}$: $1^n = \\sum_{k=0}^{n} \\binom{n}{k} p^k (1-p)^{n-k} = \\sum_{k=0}^{n} \\text{PMF}(k)$. The `add_sub_cancel` lemma gives $p + (1-p) = 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -60,9 +69,12 @@
   {
     "id": "absorption",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 77, "endLine": 82 },
-    "type": "theorem",
-    "title": "absorption: (k+1)·C(n+1,k+1) = (n+1)·C(n,k)",
+    "range": {
+      "startLine": 77,
+      "endLine": 82
+    },
+    "type": "insight",
+    "title": "absorption: (k+1)\u00b7C(n+1,k+1) = (n+1)\u00b7C(n,k)",
     "content": "`absorption`: The absorption identity $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. This is the key algebraic tool for computing the mean: it converts each weighted term $k \\cdot \\text{PMF}(k)$ into $(n+1)p$ times a degree-$(n-1)$ binomial term, reducing the moment calculation to normalization.",
     "mathContext": "The absorption identity is equivalent to $k\\binom{n}{k} = n\\binom{n-1}{k-1}$ (shift indices by 1). It arises from the factorial representation: $k \\cdot \\frac{n!}{k!(n-k)!} = n \\cdot \\frac{(n-1)!}{(k-1)!(n-k)!}$. Proved from Mathlib's `Nat.add_one_mul_choose_eq` with `linarith`.",
     "significance": "key",
@@ -79,8 +91,11 @@
   {
     "id": "binomial-mean",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 83, "endLine": 127 },
-    "type": "theorem",
+    "range": {
+      "startLine": 83,
+      "endLine": 127
+    },
+    "type": "insight",
     "title": "binomial_mean: E[X] = np via Absorption + Normalization",
     "content": "`binomial_mean`: $E[X] = np$ for $n \\geq 1$. The proof strips the $k=0$ term (which vanishes), applies absorption to convert each $(k+1) \\cdot \\text{PMF}(k+1)$ into $(n+1)p \\cdot [\\text{degree-}(n-1) \\text{ binomial term}]$, factors out $np$, and uses normalization on the remaining sum.",
     "mathContext": "$E[X] = \\sum_{k=0}^{n} k \\cdot \\binom{n}{k} p^k (1-p)^{n-k} = np \\sum_{j=0}^{n-1} \\binom{n-1}{j} p^j (1-p)^{n-1-j} = np \\cdot 1 = np$. The index shift $j = k-1$ and absorption $k\\binom{n}{k} = n\\binom{n-1}{k-1}$ are the two key steps.",
@@ -99,8 +114,11 @@
   {
     "id": "fair-coin",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 132, "endLine": 162 },
-    "type": "theorem",
+    "range": {
+      "startLine": 132,
+      "endLine": 162
+    },
+    "type": "insight",
     "title": "binomPMF_fair_coin: P(X=k) = C(n,k)/2^n for p = 1/2",
     "content": "`binomPMF_fair_coin`: When $p = 1/2$, $P(k) = \\binom{n}{k}/2^n$. The proof uses $(1/2)^k \\cdot (1/2)^{n-k} = (1/2)^n = 1/2^n$. This is the classical equi-probable model: each of the $2^n$ binary sequences has equal probability, and $\\binom{n}{k}$ of them have exactly $k$ ones.",
     "mathContext": "For the fair coin: $P(X=k) = \\binom{n}{k} (1/2)^k (1/2)^{n-k} = \\binom{n}{k} / 2^n$. The $2^n$ denominator appears because there are $2^n$ equally likely outcomes in $n$ tosses, and $\\binom{n}{k}$ of these have exactly $k$ heads.",
@@ -118,10 +136,13 @@
   {
     "id": "binomial-pgf",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 181, "endLine": 197 },
-    "type": "theorem",
-    "title": "binomial_pgf: E[t^X] = (pt + 1−p)^n via Binomial Theorem",
-    "content": "`binomial_pgf`: The probability generating function $E[t^X] = (pt + 1-p)^n$. Proved by replacing $p$ with $pt$ in the binomial expansion — each term $t^k \\cdot \\text{PMF}(k) = \\binom{n}{k} (pt)^k (1-p)^{n-k}$. The PGF encodes the entire distribution: setting $t=1$ gives normalization, differentiating at $t=1$ gives the mean.",
+    "range": {
+      "startLine": 181,
+      "endLine": 197
+    },
+    "type": "insight",
+    "title": "binomial_pgf: E[t^X] = (pt + 1\u2212p)^n via Binomial Theorem",
+    "content": "`binomial_pgf`: The probability generating function $E[t^X] = (pt + 1-p)^n$. Proved by replacing $p$ with $pt$ in the binomial expansion \u2014 each term $t^k \\cdot \\text{PMF}(k) = \\binom{n}{k} (pt)^k (1-p)^{n-k}$. The PGF encodes the entire distribution: setting $t=1$ gives normalization, differentiating at $t=1$ gives the mean.",
     "mathContext": "The PGF $G(t) = E[t^X] = \\sum_{k=0}^{n} t^k \\binom{n}{k} p^k (1-p)^{n-k} = (pt + (1-p))^n$ by the binomial theorem. $G(1) = 1$ (normalization), $G'(1) = np$ (mean), $G''(1) + G'(1) - (G'(1))^2 = np(1-p)$ (variance). The PGF completely characterizes any distribution on $\\mathbb{N}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -137,9 +158,12 @@
   {
     "id": "double-absorption",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 203, "endLine": 253 },
-    "type": "theorem",
-    "title": "double_absorption: (k+2)(k+1)·C(n+2,k+2) = (n+2)(n+1)·C(n,k)",
+    "range": {
+      "startLine": 203,
+      "endLine": 253
+    },
+    "type": "insight",
+    "title": "double_absorption: (k+2)(k+1)\u00b7C(n+2,k+2) = (n+2)(n+1)\u00b7C(n,k)",
     "content": "`double_absorption`: $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$. Two applications of the absorption identity. This gives the second factorial moment $E[X(X-1)] = n(n-1)p^2$, from which the variance formula $\\text{Var}(X) = np(1-p)$ follows algebraically.",
     "mathContext": "Apply absorption twice: $(k+2)\\binom{n+2}{k+2} = (n+2)\\binom{n+1}{k+1}$, then $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. Multiplying: $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$. Proved via `nlinarith` from two instances of the single absorption identity.",
     "significance": "key",
@@ -156,9 +180,12 @@
   {
     "id": "binomial-variance",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 255, "endLine": 268 },
-    "type": "theorem",
-    "title": "binomial_variance: Var(X) = np(1−p) via Falling Factorial Moments",
+    "range": {
+      "startLine": 255,
+      "endLine": 268
+    },
+    "type": "insight",
+    "title": "binomial_variance: Var(X) = np(1\u2212p) via Falling Factorial Moments",
     "content": "`binomial_variance`: $\\text{Var}(X) = np(1-p)$ for $n \\geq 2$. Uses the identity $\\text{Var}(X) = E[X^2] - (E[X])^2 = (E[X(X-1)] + E[X]) - (E[X])^2 = n(n-1)p^2 + np - n^2p^2 = np(1-p)$. The second factorial moment avoids the $E[X^2]$ computation directly.",
     "mathContext": "$\\text{Var}(X) = E[X(X-1)] + E[X] - (E[X])^2 = n(n-1)p^2 + np - (np)^2 = np - np^2 = np(1-p)$. The detour through $E[X(X-1)]$ instead of $E[X^2]$ is standard because the falling factorial $k(k-1)$ pairs naturally with the double absorption identity.",
     "significance": "key",
@@ -176,8 +203,11 @@
   {
     "id": "vandermonde-convolution",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 273, "endLine": 328 },
-    "type": "theorem",
+    "range": {
+      "startLine": 273,
+      "endLine": 328
+    },
+    "type": "insight",
     "title": "binomPMF_convolution: Reproductive Property via Vandermonde's Identity",
     "content": "`binomPMF_convolution`: The reproductive property $\\sum_j \\text{PMF}_n(j) \\cdot \\text{PMF}_m(k-j) = \\text{PMF}_{n+m}(k)$. The sum of independent $\\text{Bin}(n,p)$ and $\\text{Bin}(m,p)$ has distribution $\\text{Bin}(n+m,p)$. Proved by factoring out $p^k(1-p)^{n+m-k}$ and applying Vandermonde's identity.",
     "mathContext": "Vandermonde: $\\binom{n+m}{k} = \\sum_{j=0}^{k} \\binom{n}{j}\\binom{m}{k-j}$. Each convolution term: $\\binom{n}{j}p^j(1-p)^{n-j} \\cdot \\binom{m}{k-j}p^{k-j}(1-p)^{m-k+j} = \\binom{n}{j}\\binom{m}{k-j} \\cdot p^k(1-p)^{n+m-k}$. Summing over $j$ gives $\\binom{n+m}{k} p^k (1-p)^{n+m-k}$.",
@@ -197,9 +227,12 @@
   {
     "id": "compound-interest-limit",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 335, "endLine": 409 },
-    "type": "theorem",
-    "title": "tendsto_one_plus_div_pow_exp: (1 + x/n)^n → e^x (First Principles)",
+    "range": {
+      "startLine": 335,
+      "endLine": 409
+    },
+    "type": "insight",
+    "title": "tendsto_one_plus_div_pow_exp: (1 + x/n)^n \u2192 e^x (First Principles)",
     "content": "`tendsto_one_plus_div_pow_exp`: The classical limit $(1 + x/n)^n \\to e^x$, proved from first principles. Strategy: (A) `HasDerivAt(log(1+t), 1, 0)` gives $\\log(1+h)/h \\to 1$ as $h \\to 0$; (B) compose with $h = x/n \\to 0$ to get $n\\log(1+x/n) \\to x$; (C) continuity of `exp` gives $\\exp(n\\log(1+x/n)) = (1+x/n)^n \\to e^x$. This result was not in Mathlib v4.26.0.",
     "mathContext": "The limit $(1+x/n)^n \\to e^x$ is the foundation of compound interest ($x > 0$) and the Poisson limit ($x = -r < 0$). The proof uses the characterization $e^x = \\lim_{n\\to\\infty}(1+x/n)^n$, equivalent to $\\exp = $ the unique solution of $f' = f$, $f(0) = 1$. Key analytic inputs: `Real.hasDerivAt_log` and `Real.continuous_exp`.",
     "significance": "key",
@@ -219,9 +252,12 @@
   {
     "id": "poisson-pmf",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 411, "endLine": 428 },
+    "range": {
+      "startLine": 411,
+      "endLine": 428
+    },
     "type": "definition",
-    "title": "poissonPMF: P(X=k) = e^{−r} r^k / k! as Limiting Distribution",
+    "title": "poissonPMF: P(X=k) = e^{\u2212r} r^k / k! as Limiting Distribution",
     "content": "`poissonPMF`: The Poisson probability mass function $P(X=k) = e^{-r} r^k / k!$. This is the limiting distribution of $\\text{Bin}(n, r/n)$ as $n \\to \\infty$, modeling the count of rare events occurring at rate $r$.",
     "mathContext": "For $X \\sim \\text{Poi}(r)$: $P(X=k) = e^{-r} r^k / k!$ for $k = 0, 1, 2, \\ldots$. The Poisson family is reproductive ($\\text{Poi}(r_1) * \\text{Poi}(r_2) = \\text{Poi}(r_1+r_2)$) and is the unique distribution whose PGF is $e^{r(t-1)}$. The recurrence $P(k+1) = P(k) \\cdot r/(k+1)$ is used in the inductive proof of the Poisson limit.",
     "significance": "key",
@@ -239,9 +275,12 @@
   {
     "id": "poisson-limit",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 527, "endLine": 558 },
-    "type": "theorem",
-    "title": "poisson_limit: Bin(n, r/n)(k) → Poi(r)(k) as n → ∞",
+    "range": {
+      "startLine": 527,
+      "endLine": 558
+    },
+    "type": "insight",
+    "title": "poisson_limit: Bin(n, r/n)(k) \u2192 Poi(r)(k) as n \u2192 \u221e",
     "content": "`poisson_limit`: For each fixed $k$ and $r > 0$, $\\text{Bin}(n, r/n)(k) \\to \\text{Poi}(r)(k)$ as $n \\to \\infty$. Proved by induction on $k$: the base case $(1-r/n)^n \\to e^{-r}$ is the compound interest limit; the inductive step uses the PMF ratio $\\text{PMF}(k+1)/\\text{PMF}(k) = (n-k)(r/n)/((k+1)(1-r/n)) \\to r/(k+1)$, matching the Poisson recurrence.",
     "mathContext": "The Poisson limit theorem: if $n \\to \\infty$ and $np_n \\to r$, then $\\binom{n}{k}p_n^k(1-p_n)^{n-k} \\to e^{-r}r^k/k!$ for each fixed $k$. Here $p_n = r/n$. The inductive proof avoids Stirling's approximation by using the ratio $P(k+1)/P(k) = (n-k)p/((k+1)(1-p))$, which converges to $r/(k+1)$ by `poisson_ratio_tendsto`.",
     "significance": "key",
@@ -261,11 +300,14 @@
   {
     "id": "summary-theorem",
     "proofId": "binomial-theorem-oq-03",
-    "range": { "startLine": 564, "endLine": 580 },
-    "type": "theorem",
+    "range": {
+      "startLine": 564,
+      "endLine": 580
+    },
+    "type": "insight",
     "title": "binomial_oq03_extended_summary: All 7 Properties as a Single Conjunction",
     "content": "`binomial_oq03_extended_summary`: A single conjunction theorem packaging all seven main results: normalization ($\\sum \\text{PMF} = 1$), mean ($np$), variance ($np(1-p)$), PGF ($(pt+1-p)^n$), fair coin ($\\binom{n}{k}/2^n$), convolution (Vandermonde), and the Poisson limit. This serves as the machine-checkable answer to OQ-03.",
-    "mathContext": "The theorem statement is a 7-tuple conjunction, proved by applying each individual theorem. It demonstrates that every listed property of $\\text{Bin}(n,p)$ follows from the algebraic binomial theorem with 0 sorries and 0 axioms. The conjunction type in Lean is `And` (right-associative `∧`).",
+    "mathContext": "The theorem statement is a 7-tuple conjunction, proved by applying each individual theorem. It demonstrates that every listed property of $\\text{Bin}(n,p)$ follows from the algebraic binomial theorem with 0 sorries and 0 axioms. The conjunction type in Lean is `And` (right-associative `\u2227`).",
     "significance": "key",
     "relatedConcepts": [
       "conjunction",

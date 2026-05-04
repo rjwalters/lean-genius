@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Newton's Inequality: Log-Concavity of Elementary Symmetric Means",
     "content": "**Newton's inequality** (1707): for nonneg reals $x_1, \\ldots, x_n$ with elementary symmetric polynomials $e_k = \\sum_{|S|=k} \\prod_{i \\in S} x_i$, the normalized means $\\bar{e}_k = e_k / \\binom{n}{k}$ form a **log-concave sequence**: $\\bar{e}_k^2 \\geq \\bar{e}_{k-1} \\cdot \\bar{e}_{k+1}$. This file formalizes the recurrence definition of $e_k$ on lists, proves log-concavity of binomial coefficients, proves explicit small cases ($n=2,3$), and derives Maclaurin's first inequality and the AM-GM connection. 1 sorry (the general inductive step).",
-    "mathContext": "Newton stated this in **Arithmetica Universalis** (1707) for polynomials with positive roots. Equivalent form: $\\binom{n}{k}^2 e_k^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1} e_{k-1} e_{k+1}$. The **Maclaurin inequality chain** $\\bar{e}_1 \\geq \\bar{e}_2^{1/2} \\geq \\cdots \\geq \\bar{e}_n^{1/n}$ follows. Special case $k=1, n$ gives **AM-GM**. The **log-concavity of binomial coefficients** is Newton's inequality for the all-ones sequence. Hardy–Littlewood–Pólya (1952), Ch. 2 covers this; Niculescu (2000) gives a modern elementary proof.",
+    "mathContext": "Newton stated this in **Arithmetica Universalis** (1707) for polynomials with positive roots. Equivalent form: $\\binom{n}{k}^2 e_k^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1} e_{k-1} e_{k+1}$. The **Maclaurin inequality chain** $\\bar{e}_1 \\geq \\bar{e}_2^{1/2} \\geq \\cdots \\geq \\bar{e}_n^{1/n}$ follows. Special case $k=1, n$ gives **AM-GM**. The **log-concavity of binomial coefficients** is Newton's inequality for the all-ones sequence. Hardy\u2013Littlewood\u2013P\u00f3lya (1952), Ch. 2 covers this; Niculescu (2000) gives a modern elementary proof.",
     "significance": "supporting",
     "relatedConcepts": [
       "Newton's inequalities (1707)",
@@ -33,13 +33,13 @@
     },
     "type": "definition",
     "title": "esymm: Elementary Symmetric Polynomial on Lists via Recurrence",
-    "content": "**esymm : List ℝ → ℕ → ℝ** — the $k$-th elementary symmetric polynomial of a list, defined by structural recursion: $e_k([]) = [k=0]$; $e_k(x :: xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$. **simp lemmas**: `esymm_cons_zero` and `esymm_cons_succ` expose the recurrence for use by other proofs. The definition is `noncomputable` due to ℝ.",
-    "mathContext": "The recurrence $e_k(x :: xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$ partitions size-$k$ subsets of $(x, x_1, \\ldots, x_{n-1})$ into those **not containing** $x$ (contributing $e_k(xs)$) and those **containing** $x$ (contributing $x \\cdot e_{k-1}(xs)$). This is the standard inclusion–exclusion for symmetric polynomials and makes induction on list length natural in Lean 4. The `List ℝ → ℕ → ℝ` signature takes the list as the primary induction variable.",
+    "content": "**esymm : List \u211d \u2192 \u2115 \u2192 \u211d** \u2014 the $k$-th elementary symmetric polynomial of a list, defined by structural recursion: $e_k([]) = [k=0]$; $e_k(x :: xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$. **simp lemmas**: `esymm_cons_zero` and `esymm_cons_succ` expose the recurrence for use by other proofs. The definition is `noncomputable` due to \u211d.",
+    "mathContext": "The recurrence $e_k(x :: xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$ partitions size-$k$ subsets of $(x, x_1, \\ldots, x_{n-1})$ into those **not containing** $x$ (contributing $e_k(xs)$) and those **containing** $x$ (contributing $x \\cdot e_{k-1}(xs)$). This is the standard inclusion\u2013exclusion for symmetric polynomials and makes induction on list length natural in Lean 4. The `List \u211d \u2192 \u2115 \u2192 \u211d` signature takes the list as the primary induction variable.",
     "significance": "key",
     "relatedConcepts": [
       "structural recursion on List",
       "inclusion-exclusion partition",
-      "noncomputable for ℝ",
+      "noncomputable for \u211d",
       "esymm_cons_succ simp lemma",
       "elementary symmetric polynomial recurrence"
     ],
@@ -56,8 +56,8 @@
       "startLine": 61,
       "endLine": 113
     },
-    "type": "theorem",
-    "title": "Basic Properties: e₀=1, Vanishing, Product, Nonnegativity",
+    "type": "insight",
+    "title": "Basic Properties: e\u2080=1, Vanishing, Product, Nonnegativity",
     "content": "Four key properties: (1) **esymm_zero**: $e_0(xs) = 1$ for any list (proved by induction using `esymm_cons_zero`); (2) **esymm_eq_zero_of_gt**: $e_k(xs) = 0$ when $k > |xs|$ (induction with `omega` for edge cases); (3) **esymm_length**: $e_n(xs) = \\prod xs$ when $|xs| = n$; (4) **esymm_nonneg**: $e_k(xs) \\geq 0$ when all elements $\\geq 0$ (by induction using `add_nonneg` and `mul_nonneg`).",
     "mathContext": "**esymm_length** uses `esymm_eq_zero_of_gt` to show $e_{n+1}(xs) = 0$, then the recurrence gives $e_n(x::xs) = e_n(xs) + x \\cdot e_{n-1}(xs) = \\prod xs + x \\cdot \\prod xs$ (??). Actually: $e_n(x::xs) = e_n(xs) + x \\cdot e_{n-1}(xs)$. Since $|x::xs| = n+1$, we want $e_{n+1}(x::xs) = x \\cdot \\prod xs$. **esymm_nonneg** is the foundational nonnegativity: each term of $e_k$ is a product of nonneg reals, so their sum is nonneg. Proved by induction using `add_nonneg` and `mul_nonneg`.",
     "significance": "supporting",
@@ -81,10 +81,10 @@
       "startLine": 129,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "newton_inequality_binomial: The General Case (1 sorry)",
-    "content": "**newton_inequality_binomial**: the full general Newton inequality $\\binom{n}{k-1}\\binom{n}{k+1} e_k^2 \\geq \\binom{n}{k}^2 e_{k-1} e_{k+1}$ for all nonneg lists and $1 \\leq k \\leq n-1$. The proof is **stated** with its inductive structure: write $F_k = e_k(x::xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$; expand $F_k^2$ and use the IH and Cauchy–Schwarz on the cross term. The expansion is outlined in comments but the final `nlinarith` call is replaced by `sorry`.",
-    "mathContext": "The inductive step: let $E_k = e_k(xs)$, $F_k = e_k(x::xs) = E_k + x E_{k-1}$. Then $F_k^2 = E_k^2 + 2x E_k E_{k-1} + x^2 E_{k-1}^2$. The bound $\\binom{n+1}{k-1}\\binom{n+1}{k+1} F_k^2 \\geq \\binom{n+1}{k}^2 F_{k-1} F_{k+1}$ expands via the Pascal identity $\\binom{n+1}{k} = \\binom{n}{k} + \\binom{n}{k-1}$ into four terms bounded by the IH. The cross term requires **Cauchy–Schwarz**: $(AC + BD)^2 \\leq (A^2+B^2)(C^2+D^2)$ or a similar AM-GM estimate. This is the classical Cauchy–Schwarz application at the heart of Newton's inequality.",
+    "content": "**newton_inequality_binomial**: the full general Newton inequality $\\binom{n}{k-1}\\binom{n}{k+1} e_k^2 \\geq \\binom{n}{k}^2 e_{k-1} e_{k+1}$ for all nonneg lists and $1 \\leq k \\leq n-1$. The proof is **stated** with its inductive structure: write $F_k = e_k(x::xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$; expand $F_k^2$ and use the IH and Cauchy\u2013Schwarz on the cross term. The expansion is outlined in comments but the final `nlinarith` call is replaced by `sorry`.",
+    "mathContext": "The inductive step: let $E_k = e_k(xs)$, $F_k = e_k(x::xs) = E_k + x E_{k-1}$. Then $F_k^2 = E_k^2 + 2x E_k E_{k-1} + x^2 E_{k-1}^2$. The bound $\\binom{n+1}{k-1}\\binom{n+1}{k+1} F_k^2 \\geq \\binom{n+1}{k}^2 F_{k-1} F_{k+1}$ expands via the Pascal identity $\\binom{n+1}{k} = \\binom{n}{k} + \\binom{n}{k-1}$ into four terms bounded by the IH. The cross term requires **Cauchy\u2013Schwarz**: $(AC + BD)^2 \\leq (A^2+B^2)(C^2+D^2)$ or a similar AM-GM estimate. This is the classical Cauchy\u2013Schwarz application at the heart of Newton's inequality.",
     "significance": "key",
     "relatedConcepts": [
       "sorry for inductive Cauchy-Schwarz step",
@@ -106,10 +106,10 @@
       "startLine": 161,
       "endLine": 249
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "binom_log_concave and binom_ultra_log_concave: Proven via Absorption Identities",
     "content": "**binom_log_concave**: $\\binom{n}{k}^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1}$ (0 sorries). Proof via **absorption identities**: $k\\binom{n}{k} = (n-k+1)\\binom{n}{k-1}$ (from `Nat.choose_succ_right_eq`) and $(k+1)\\binom{n}{k+1} = (n-k)\\binom{n}{k}$. These give $\\binom{n}{k-1}\\binom{n}{k+1} = \\frac{k(n-k)}{(n-k+1)(k+1)} \\binom{n}{k}^2$, and $k(n-k) \\leq (n-k+1)(k+1) \\Leftrightarrow 0 \\leq n+1$. **binom_ultra_log_concave**: $\\binom{n}{k}^4 \\geq \\binom{n}{k-1}^2 \\binom{n}{k+1}^2$ by squaring.",
-    "mathContext": "The **calc proof** structure: multiply both sides of the inequality by $(n-k+1)(k+1)$, then expand LHS using absorption to get $k(n-k)\\binom{n}{k}^2$ and compare with RHS $(n-k+1)(k+1)\\binom{n}{k}^2$. The key inequality $k(n-k) \\leq (n-k+1)(k+1)$ expands to $nk - k^2 \\leq nk - k^2 + n + 1$, i.e., $0 \\leq n+1$ — trivially true. Closed by `nlinarith [sq_nonneg (Nat.choose n k), sq_nonneg (n+1)]`. **binom_log_concave** is Newton's inequality for the all-ones sequence $[1, 1, \\ldots, 1]$.",
+    "mathContext": "The **calc proof** structure: multiply both sides of the inequality by $(n-k+1)(k+1)$, then expand LHS using absorption to get $k(n-k)\\binom{n}{k}^2$ and compare with RHS $(n-k+1)(k+1)\\binom{n}{k}^2$. The key inequality $k(n-k) \\leq (n-k+1)(k+1)$ expands to $nk - k^2 \\leq nk - k^2 + n + 1$, i.e., $0 \\leq n+1$ \u2014 trivially true. Closed by `nlinarith [sq_nonneg (Nat.choose n k), sq_nonneg (n+1)]`. **binom_log_concave** is Newton's inequality for the all-ones sequence $[1, 1, \\ldots, 1]$.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.choose_succ_right_eq (absorption identity)",
@@ -120,7 +120,7 @@
     ],
     "prerequisites": [
       "Nat.choose_succ_right_eq from Mathlib.Data.Nat.Choose.Basic",
-      "Nat.cast_sub for casting ℕ subtraction to ℝ",
+      "Nat.cast_sub for casting \u2115 subtraction to \u211d",
       "positivity for positive products"
     ]
   },
@@ -133,7 +133,7 @@
     },
     "type": "definition",
     "title": "esymmMean, newton_inequality_means, and maclaurin_first_step",
-    "content": "**esymmMean xs k** = $e_k(xs) / \\binom{|xs|}{k}$ — the normalized elementary symmetric mean. **newton_inequality_means**: $\\bar{e}_k^2 \\geq \\bar{e}_{k-1} \\cdot \\bar{e}_{k+1}$ — derived from `newton_inequality_binomial` by clearing denominators via `div_le_div_iff`. **maclaurin_first_step**: $\\bar{e}_1^2 \\geq \\bar{e}_2$ — the first Maclaurin inequality, proved from Newton with $k=1$ using `esymm_zero` ($\\bar{e}_0 = 1$).",
+    "content": "**esymmMean xs k** = $e_k(xs) / \\binom{|xs|}{k}$ \u2014 the normalized elementary symmetric mean. **newton_inequality_means**: $\\bar{e}_k^2 \\geq \\bar{e}_{k-1} \\cdot \\bar{e}_{k+1}$ \u2014 derived from `newton_inequality_binomial` by clearing denominators via `div_le_div_iff`. **maclaurin_first_step**: $\\bar{e}_1^2 \\geq \\bar{e}_2$ \u2014 the first Maclaurin inequality, proved from Newton with $k=1$ using `esymm_zero` ($\\bar{e}_0 = 1$).",
     "mathContext": "`newton_inequality_means` proof: unfold `esymmMean`, use `div_pow` and `div_mul_div_comm` to rewrite the goal, then `div_le_div_iff` with positivity of binomial coefficients to clear denominators. The resulting goal is exactly `newton_inequality_binomial`'s conclusion (after a `linarith`). For `maclaurin_first_step`: specialize Newton at $k=1$: $\\bar{e}_1^2 \\geq \\bar{e}_0 \\cdot \\bar{e}_2$. Since $\\bar{e}_0 = e_0 / \\binom{n}{0} = 1/1 = 1$ (from `esymm_zero` and `Nat.choose_zero_right`), this gives $\\bar{e}_1^2 \\geq \\bar{e}_2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -145,7 +145,7 @@
     ],
     "prerequisites": [
       "newton_inequality_binomial",
-      "esymm_zero for ē_0 = 1",
+      "esymm_zero for \u0113_0 = 1",
       "Nat.cast_pos.mpr (Nat.choose_pos) for positivity"
     ]
   },
@@ -156,16 +156,16 @@
       "startLine": 299,
       "endLine": 353
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Small Cases and AM-GM: Explicit Sum-of-Squares Witnesses",
-    "content": "**amgm_from_newton**: $(\\sum x_i / n)^2 \\geq (\\sum_{i<j} x_i x_j) / \\binom{n}{2}$ — AM-GM connection via `maclaurin_first_step`. **newton_two**: $(x+y)^2 \\geq 4xy$ via `nlinarith [sq_nonneg (x-y)]`. **newton_three_k1**: $(x+y+z)^2 \\geq 3(xy+xz+yz)$ via `nlinarith [sq_nonneg (x-y), sq_nonneg (x-z), sq_nonneg (y-z)]`. **newton_three_k2**: $(xy+xz+yz)^2 \\geq 3xyz(x+y+z)$ via `nlinarith [sq_nonneg (xy-xz), sq_nonneg (xy-yz), sq_nonneg (xz-yz)]`. **esymm_one_eq_sum**: $e_1(xs) = \\sum xs$.",
+    "content": "**amgm_from_newton**: $(\\sum x_i / n)^2 \\geq (\\sum_{i<j} x_i x_j) / \\binom{n}{2}$ \u2014 AM-GM connection via `maclaurin_first_step`. **newton_two**: $(x+y)^2 \\geq 4xy$ via `nlinarith [sq_nonneg (x-y)]`. **newton_three_k1**: $(x+y+z)^2 \\geq 3(xy+xz+yz)$ via `nlinarith [sq_nonneg (x-y), sq_nonneg (x-z), sq_nonneg (y-z)]`. **newton_three_k2**: $(xy+xz+yz)^2 \\geq 3xyz(x+y+z)$ via `nlinarith [sq_nonneg (xy-xz), sq_nonneg (xy-yz), sq_nonneg (xz-yz)]`. **esymm_one_eq_sum**: $e_1(xs) = \\sum xs$.",
     "mathContext": "The small cases are proved by first unfolding `esymm` on explicit lists with `simp only [esymm_cons_succ, ...]`, reducing to polynomial inequalities, then providing explicit **sum-of-squares witnesses** to `nlinarith`. For $n=2$: $x^2-2xy+y^2=(x-y)^2\\geq 0$. For $n=3,k=1$: $x^2+y^2+z^2-xy-xz-yz = \\frac{1}{2}[(x-y)^2+(x-z)^2+(y-z)^2] \\geq 0$. For $n=3,k=2$: $(xy-xz)^2+(xy-yz)^2+(xz-yz)^2 \\geq 0$. These witnesses are exactly the Newton inequality certificate for small cases.",
     "significance": "supporting",
     "relatedConcepts": [
       "nlinarith with sum-of-squares witnesses",
       "simp for esymm on explicit lists",
       "AM-GM from Maclaurin first step",
-      "esymm_one_eq_sum : e₁ = sum",
+      "esymm_one_eq_sum : e\u2081 = sum",
       "explicit certificate proofs for small n"
     ],
     "prerequisites": [

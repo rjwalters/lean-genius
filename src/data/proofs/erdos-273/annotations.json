@@ -8,7 +8,7 @@
       "endLine": 21
     },
     "title": "Module Documentation and Imports",
-    "content": "The module docstring introduces Erdős Problem #273: is there a covering system all of whose moduli are of the form $p - 1$ for primes $p \\geq 5$? A covering system is a finite collection of residue classes $a_i \\pmod{m_i}$ that covers all of $\\mathbb{Z}$. The constraint $m_i = p_i - 1$ with $p_i \\geq 5$ means moduli must be of the form 4, 6, 10, 12, 16, 18, 22, ... (one less than a prime $\\geq 5$). Selfridge found a covering system with moduli dividing 360 when $p = 3$ is allowed. The problem is OPEN. Imports the full Mathlib library and increases `maxRecDepth` to 1024 for the verification proofs.",
+    "content": "The module docstring introduces Erd\u0151s Problem #273: is there a covering system all of whose moduli are of the form $p - 1$ for primes $p \\geq 5$? A covering system is a finite collection of residue classes $a_i \\pmod{m_i}$ that covers all of $\\mathbb{Z}$. The constraint $m_i = p_i - 1$ with $p_i \\geq 5$ means moduli must be of the form 4, 6, 10, 12, 16, 18, 22, ... (one less than a prime $\\geq 5$). Selfridge found a covering system with moduli dividing 360 when $p = 3$ is allowed. The problem is OPEN. Imports the full Mathlib library and increases `maxRecDepth` to 1024 for the verification proofs.",
     "mathContext": "A covering system $\\{a_i \\pmod{m_i}\\}_{i=1}^n$ satisfies $\\bigcup_{i=1}^n \\{z \\in \\mathbb{Z} : z \\equiv a_i \\pmod{m_i}\\} = \\mathbb{Z}$. The constraint: each $m_i = p_i - 1$ for some prime $p_i \\geq 5$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -31,17 +31,17 @@
     },
     "title": "Covering System",
     "content": "A **covering system** is a finite collection of residue classes $a_i \\pmod{m_i}$ (with $m_i \\geq 2$) whose union is all of $\\mathbb{Z}$. Formalized as a structure with `Fin n`-indexed moduli, residues, and the covering property: $\\forall z \\in \\mathbb{Z},\\, \\exists i,\\, z \\equiv r_i \\pmod{m_i}$.",
-    "mathContext": "Covering systems were introduced by Erdős in the 1950s. The definition uses $\\mathbb{Z}$ modular arithmetic (`z % (m_i : ℤ)`) rather than `ZMod`, which is more natural for stating the covering property as a single universal statement. The constraint $m_i \\geq 2$ excludes trivial moduli. The existence of covering systems with all moduli distinct and $> N$ for any fixed $N$ was a major open problem until Hough's 2015 resolution.",
+    "mathContext": "Covering systems were introduced by Erd\u0151s in the 1950s. The definition uses $\\mathbb{Z}$ modular arithmetic (`z % (m_i : \u2124)`) rather than `ZMod`, which is more natural for stating the covering property as a single universal statement. The constraint $m_i \\geq 2$ excludes trivial moduli. The existence of covering systems with all moduli distinct and $> N$ for any fixed $N$ was a major open problem until Hough's 2015 resolution.",
     "significance": "key",
     "relatedConcepts": [
       "covering system",
       "residue class",
       "Chinese Remainder Theorem",
       "Hough's theorem",
-      "Erdős minimum modulus conjecture"
+      "Erd\u0151s minimum modulus conjecture"
     ],
     "prerequisites": [
-      "modular arithmetic over ℤ",
+      "modular arithmetic over \u2124",
       "structure definition in Lean 4",
       "Fin type",
       "existential quantification"
@@ -56,8 +56,8 @@
       "endLine": 46
     },
     "title": "Prime-Minus-One Moduli",
-    "content": "**IsPrimeMinusOne k m** holds when $m = p - 1$ for some prime $p \\geq k$. **AllModuliPrimeMinusOne k cs** lifts this to all moduli. The parameter $k$ unifies Selfridge's solved case ($k = 3$) and Erdős's open question ($k = 5$).",
-    "mathContext": "The parameterization by $k$ is an elegant design choice: a single definition captures both the $p \\geq 3$ case (where Selfridge found a solution) and the $p \\geq 5$ case (Erdős's open problem). For $k = 5$, the allowed moduli form the set $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\} = \\{p - 1 : p \\text{ prime}, p \\geq 5\\}$. The existential formulation $\\exists p, p.\\text{Prime} \\wedge k \\leq p \\wedge m = p - 1$ cleanly encodes the constraint.",
+    "content": "**IsPrimeMinusOne k m** holds when $m = p - 1$ for some prime $p \\geq k$. **AllModuliPrimeMinusOne k cs** lifts this to all moduli. The parameter $k$ unifies Selfridge's solved case ($k = 3$) and Erd\u0151s's open question ($k = 5$).",
+    "mathContext": "The parameterization by $k$ is an elegant design choice: a single definition captures both the $p \\geq 3$ case (where Selfridge found a solution) and the $p \\geq 5$ case (Erd\u0151s's open problem). For $k = 5$, the allowed moduli form the set $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\} = \\{p - 1 : p \\text{ prime}, p \\geq 5\\}$. The existential formulation $\\exists p, p.\\text{Prime} \\wedge k \\leq p \\wedge m = p - 1$ cleanly encodes the constraint.",
     "significance": "key",
     "relatedConcepts": [
       "prime numbers",
@@ -79,13 +79,13 @@
       "startLine": 52,
       "endLine": 58
     },
-    "title": "Erdős Problem 273 (OPEN)",
+    "title": "Erd\u0151s Problem 273 (OPEN)",
     "content": "**ErdosProblem273**: $\\exists cs,\\, \\text{AllModuliPrimeMinusOne}\\, 5\\, cs$. Does there exist a covering system with all moduli of the form $p - 1$ for primes $p \\geq 5$? Since modulus $2 = 3 - 1$ is excluded, covering all residues modulo 2 requires careful use of even moduli $\\geq 4$.",
-    "mathContext": "Formalized as a pure existence statement `∃ cs, ...` rather than exhibiting a specific system, since the problem is open and may have a negative answer. The problem appears on p.24 of Erdős–Graham (1980). The allowed moduli $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$ are a sparse subset of the positive integers, but their reciprocal sum diverges (since $\\sum 1/p$ diverges by Mertens' theorem), so the density condition for covering is satisfiable in principle.",
+    "mathContext": "Formalized as a pure existence statement `\u2203 cs, ...` rather than exhibiting a specific system, since the problem is open and may have a negative answer. The problem appears on p.24 of Erd\u0151s\u2013Graham (1980). The allowed moduli $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$ are a sparse subset of the positive integers, but their reciprocal sum diverges (since $\\sum 1/p$ diverges by Mertens' theorem), so the density condition for covering is satisfiable in principle.",
     "significance": "key",
     "relatedConcepts": [
       "open problem",
-      "Erdős–Selfridge conjecture",
+      "Erd\u0151s\u2013Selfridge conjecture",
       "covering congruences",
       "existence statement"
     ],
@@ -152,7 +152,7 @@
       "endLine": 137
     },
     "title": "Residue Class Counting and System Non-Degeneracy",
-    "content": "Two key supporting theorems. `card_residue_class_nat` proves that among $\\{0, \\ldots, N-1\\}$, the residue class $\\{z : z \\equiv r \\pmod{m}\\}$ has exactly $N/m$ elements when $m \\mid N$. The proof constructs an explicit bijection $j \\mapsto r + jm$ from $\\{0, \\ldots, N/m - 1\\}$ to the residue class, with injectivity from `mul_right_cancel₀` and surjectivity via `Nat.div_add_mod`. This counting lemma is essential for the reciprocal sum theorem: it converts the covering condition into a cardinality bound via double-counting. `CoveringSystem.n_pos` proves $n \\geq 1$ for any covering system by contradiction: if $n = 0$, the index type `Fin 0` is empty, so no class covers $0$.",
+    "content": "Two key supporting theorems. `card_residue_class_nat` proves that among $\\{0, \\ldots, N-1\\}$, the residue class $\\{z : z \\equiv r \\pmod{m}\\}$ has exactly $N/m$ elements when $m \\mid N$. The proof constructs an explicit bijection $j \\mapsto r + jm$ from $\\{0, \\ldots, N/m - 1\\}$ to the residue class, with injectivity from `mul_right_cancel\u2080` and surjectivity via `Nat.div_add_mod`. This counting lemma is essential for the reciprocal sum theorem: it converts the covering condition into a cardinality bound via double-counting. `CoveringSystem.n_pos` proves $n \\geq 1$ for any covering system by contradiction: if $n = 0$, the index type `Fin 0` is empty, so no class covers $0$.",
     "mathContext": "$|\\{z \\in [0, N) : z \\equiv r \\pmod{m}\\}| = N/m$ when $m \\mid N$. The bijection $j \\mapsto r + jm$ maps $[0, N/m)$ to the residue class. For covering systems: $n \\geq 1$ since $\\bigcup_{i=1}^0 = \\emptyset \\neq \\mathbb{Z}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -165,7 +165,7 @@
       "Finset.range",
       "Finset.filter",
       "Nat.mod_eq_of_lt",
-      "mul_right_cancel₀"
+      "mul_right_cancel\u2080"
     ]
   },
   {
@@ -184,7 +184,7 @@
       "natural density",
       "inclusion-exclusion",
       "exact covering system",
-      "Znám's problem"
+      "Zn\u00e1m's problem"
     ],
     "prerequisites": [
       "rational arithmetic",
@@ -201,14 +201,14 @@
       "endLine": 217
     },
     "title": "Distinct Covering Systems and Hough's Theorem",
-    "content": "**IsDistinct cs** holds when all moduli are different (`Function.Injective cs.moduli`). Erdős conjectured that every distinct covering system must include an even modulus. **Hough (2015)** proved the stronger result: there exists $N_0$ such that no distinct covering system has all moduli $> N_0$.",
-    "mathContext": "Hough's proof of the minimum modulus conjecture (Annals of Mathematics, 2015) used a variant of the Lovász Local Lemma and probabilistic methods. It implies that Problem 273, if solvable with distinct moduli, must use small moduli from $\\{4, 6, 10, 12, \\ldots\\}$. The interaction between Hough's bound and the sparsity of prime-minus-one moduli adds a significant constraint.",
+    "content": "**IsDistinct cs** holds when all moduli are different (`Function.Injective cs.moduli`). Erd\u0151s conjectured that every distinct covering system must include an even modulus. **Hough (2015)** proved the stronger result: there exists $N_0$ such that no distinct covering system has all moduli $> N_0$.",
+    "mathContext": "Hough's proof of the minimum modulus conjecture (Annals of Mathematics, 2015) used a variant of the Lov\u00e1sz Local Lemma and probabilistic methods. It implies that Problem 273, if solvable with distinct moduli, must use small moduli from $\\{4, 6, 10, 12, \\ldots\\}$. The interaction between Hough's bound and the sparsity of prime-minus-one moduli adds a significant constraint.",
     "significance": "supporting",
     "relatedConcepts": [
       "Hough's theorem",
       "minimum modulus conjecture",
       "Function.Injective",
-      "Lovász Local Lemma"
+      "Lov\u00e1sz Local Lemma"
     ],
     "prerequisites": [
       "Function.Injective",
@@ -225,8 +225,8 @@
       "endLine": 227
     },
     "title": "Easy Primes for 360-Based Constructions",
-    "content": "**easyPrimes** $= \\{5, 7, 13, 19, 37, 61, 181\\}$: the primes $p \\geq 5$ with $(p-1) \\mid 360$. These give moduli $\\{4, 6, 12, 18, 36, 60, 180\\}$ — the building blocks for any 360-based covering attempt without modulus 2.",
-    "mathContext": "The number $360 = 2^3 \\cdot 3^2 \\cdot 5$ has 24 divisors, of which exactly 7 are of the form $p - 1$ for primes $p \\geq 5$. Defined as an explicit `Finset ℕ`. These are 'easy' because they all divide a single LCM (360), making the covering pattern periodic with period 360. The question is whether residue classes with these moduli (or extensions beyond 360) can cover all of $\\{0, 1, \\ldots, 359\\}$.",
+    "content": "**easyPrimes** $= \\{5, 7, 13, 19, 37, 61, 181\\}$: the primes $p \\geq 5$ with $(p-1) \\mid 360$. These give moduli $\\{4, 6, 12, 18, 36, 60, 180\\}$ \u2014 the building blocks for any 360-based covering attempt without modulus 2.",
+    "mathContext": "The number $360 = 2^3 \\cdot 3^2 \\cdot 5$ has 24 divisors, of which exactly 7 are of the form $p - 1$ for primes $p \\geq 5$. Defined as an explicit `Finset \u2115`. These are 'easy' because they all divide a single LCM (360), making the covering pattern periodic with period 360. The question is whether residue classes with these moduli (or extensions beyond 360) can cover all of $\\{0, 1, \\ldots, 359\\}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "highly composite numbers",
@@ -267,7 +267,7 @@
   {
     "id": "erdos-273-obstacles",
     "proofId": "erdos-273",
-    "type": "theorem",
+    "type": "insight",
     "range": {
       "startLine": 238,
       "endLine": 244
@@ -293,9 +293,9 @@
       "startLine": 246,
       "endLine": 258
     },
-    "type": "theorem",
-    "title": "All Moduli in p≥5 Systems Are Even (Proved)",
-    "content": "Proves `moduli_even`: every modulus in a covering system with all moduli of the form $p-1$ ($p \\geq 5$ prime) is even. The proof: $p \\geq 5$ and $p$ prime implies $p$ is odd (using `Nat.Prime.eq_two_or_odd` — if $p = 2$ then $p \\geq 5$ gives contradiction). Then $p - 1 = m_i$ is even since $p$ odd and 1 odd gives even difference (`Nat.Odd.sub_odd`). This structural constraint means modulus 2 is never available, making coverage of both parities fundamentally harder — the densest single class covers only $1/4$ of integers.",
+    "type": "insight",
+    "title": "All Moduli in p\u22655 Systems Are Even (Proved)",
+    "content": "Proves `moduli_even`: every modulus in a covering system with all moduli of the form $p-1$ ($p \\geq 5$ prime) is even. The proof: $p \\geq 5$ and $p$ prime implies $p$ is odd (using `Nat.Prime.eq_two_or_odd` \u2014 if $p = 2$ then $p \\geq 5$ gives contradiction). Then $p - 1 = m_i$ is even since $p$ odd and 1 odd gives even difference (`Nat.Odd.sub_odd`). This structural constraint means modulus 2 is never available, making coverage of both parities fundamentally harder \u2014 the densest single class covers only $1/4$ of integers.",
     "mathContext": "$p \\geq 5$ prime $\\Rightarrow$ $p$ odd $\\Rightarrow$ $p - 1$ even. All moduli $m_i \\in \\{4, 6, 10, 12, 16, 18, \\ldots\\}$ are even. Without modulus 2, covering all integers requires at least 4 classes (since $1/4$ is the maximum density of any single class).",
     "significance": "key",
     "relatedConcepts": [
@@ -344,7 +344,7 @@
     },
     "type": "insight",
     "title": "The 109/180 Reciprocal Sum Obstruction",
-    "content": "Two `norm_num` proofs establish the reciprocal sum obstruction:\n\n`easyPrimes_reciprocal_sum_lt_one`: $\\sum 1/(p_i - 1) = 1/4 + 1/6 + 1/12 + 1/18 + 1/36 + 1/60 + 1/180 < 1$\n\n`reciprocal_sum_109_over_180`: the exact value is $109/180$\n\nSince a covering system needs $\\sum 1/m_i \\geq 1$ (each integer must be covered at least once), and the easy primes give only $109/180 \\approx 0.606$, at least $\\lceil 180/109 \\rceil = 2$ copies of the modulus set — or additional larger primes — are required.",
+    "content": "Two `norm_num` proofs establish the reciprocal sum obstruction:\n\n`easyPrimes_reciprocal_sum_lt_one`: $\\sum 1/(p_i - 1) = 1/4 + 1/6 + 1/12 + 1/18 + 1/36 + 1/60 + 1/180 < 1$\n\n`reciprocal_sum_109_over_180`: the exact value is $109/180$\n\nSince a covering system needs $\\sum 1/m_i \\geq 1$ (each integer must be covered at least once), and the easy primes give only $109/180 \\approx 0.606$, at least $\\lceil 180/109 \\rceil = 2$ copies of the modulus set \u2014 or additional larger primes \u2014 are required.",
     "mathContext": "The necessary condition $\\sum 1/m_i \\geq 1$ for covering is elementary: the density of integers $\\equiv a_i \\pmod{m_i}$ is $1/m_i$, and covering requires total density $\\geq 1$. The shortfall $1 - 109/180 = 71/180 \\approx 0.394$ quantifies how far the easy primes fall short.",
     "significance": "key",
     "relatedConcepts": [

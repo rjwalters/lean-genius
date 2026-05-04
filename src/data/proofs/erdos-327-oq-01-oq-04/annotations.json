@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Overview and Imports",
-    "content": "Establishes context: OQ-01 parametrized all sum-divides-product pairs (a,b) with (a+b)|ab. This file proves a linear lower bound D(N) ≥ ⌊N/6⌋ using the explicit witness family {(3k, 6k)}. Imports the parent proof Erdos327OQ01 for the sumDvdProdPairs definition.",
+    "content": "Establishes context: OQ-01 parametrized all sum-divides-product pairs (a,b) with (a+b)|ab. This file proves a linear lower bound D(N) \u2265 \u230aN/6\u230b using the explicit witness family {(3k, 6k)}. Imports the parent proof Erdos327OQ01 for the sumDvdProdPairs definition.",
     "mathContext": "$D(N) = |\\{(a,b) : 1 \\leq a < b \\leq N,\\ (a+b) \\mid ab\\}|$. The parametrization from OQ-01 shows these pairs arise from coprime factorizations. This file proves $D(N) \\geq \\lfloor N/6 \\rfloor$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -28,15 +28,15 @@
       "startLine": 26,
       "endLine": 34
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Witness Family (3k, 6k)",
-    "content": "Proves that (3k, 6k) satisfies the sum-divides-product condition for any k ≥ 1. The key computation: 3k + 6k = 9k, and 3k · 6k = 18k² = 9k · 2k, so 9k | 18k². The witness is simply 2k, given via the anonymous constructor.",
+    "content": "Proves that (3k, 6k) satisfies the sum-divides-product condition for any k \u2265 1. The key computation: 3k + 6k = 9k, and 3k \u00b7 6k = 18k\u00b2 = 9k \u00b7 2k, so 9k | 18k\u00b2. The witness is simply 2k, given via the anonymous constructor.",
     "mathContext": "$3k + 6k = 9k$ divides $3k \\cdot 6k = 18k^2 = 9k \\cdot 2k$. This is the simplest nontrivial parametric family, arising from $a' = 1, b' = 2, s = 3, m = k$ in the OQ-01 parametrization.",
     "significance": "key",
     "relatedConcepts": [
       "parametric family",
       "divisibility witness",
-      "Erdős 327 parametrization"
+      "Erd\u0151s 327 parametrization"
     ],
     "prerequisites": [
       "ring arithmetic",
@@ -52,7 +52,7 @@
     },
     "type": "definition",
     "title": "witnessFamily: The Finset of Witness Pairs",
-    "content": "Defines witnessFamily N as the image of [1, ⌊N/6⌋] under the map k ↦ (3k, 6k). This is a Finset of pairs, all of which will be shown to lie in sumDvdProdPairs N.",
+    "content": "Defines witnessFamily N as the image of [1, \u230aN/6\u230b] under the map k \u21a6 (3k, 6k). This is a Finset of pairs, all of which will be shown to lie in sumDvdProdPairs N.",
     "mathContext": "$\\text{witnessFamily}(N) = \\{(3k, 6k) : 1 \\leq k \\leq \\lfloor N/6 \\rfloor\\}$. The bound $k \\leq \\lfloor N/6 \\rfloor$ ensures $6k \\leq N$.",
     "significance": "key",
     "relatedConcepts": [
@@ -72,9 +72,9 @@
       "startLine": 37,
       "endLine": 40
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Witness Map Is Injective",
-    "content": "Proves the map k ↦ (3k, 6k) is injective, which is needed to compute the cardinality of witnessFamily. If (3a, 6a) = (3b, 6b), then a = b by omega.",
+    "content": "Proves the map k \u21a6 (3k, 6k) is injective, which is needed to compute the cardinality of witnessFamily. If (3a, 6a) = (3b, 6b), then a = b by omega.",
     "mathContext": "Injectivity of $k \\mapsto (3k, 6k)$: if $3a = 3b$ and $6a = 6b$ then $a = b$. This ensures $|\\text{witnessFamily}(N)| = \\lfloor N/6 \\rfloor$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -92,9 +92,9 @@
       "startLine": 43,
       "endLine": 55
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Witness Pairs Are Valid Sum-Divides-Product Pairs",
-    "content": "Proves every pair in witnessFamily N lies in sumDvdProdPairs N. For each (3k, 6k): (1) 1 ≤ 3k < 6k (ordering), (2) 6k ≤ N (bound from k ≤ N/6), (3) 9k | 18k² (divisibility from threeK_sixK_dvd).",
+    "content": "Proves every pair in witnessFamily N lies in sumDvdProdPairs N. For each (3k, 6k): (1) 1 \u2264 3k < 6k (ordering), (2) 6k \u2264 N (bound from k \u2264 N/6), (3) 9k | 18k\u00b2 (divisibility from threeK_sixK_dvd).",
     "mathContext": "For $k \\in [1, \\lfloor N/6 \\rfloor]$: $1 \\leq 3k < 6k \\leq 6 \\cdot \\lfloor N/6 \\rfloor \\leq N$, and $(3k + 6k) \\mid (3k \\cdot 6k)$. The bound $6 \\cdot \\lfloor N/6 \\rfloor \\leq N$ uses `Nat.div_mul_le_self`.",
     "significance": "key",
     "relatedConcepts": [
@@ -115,8 +115,8 @@
       "startLine": 57,
       "endLine": 62
     },
-    "type": "theorem",
-    "title": "Witness Family Has Exactly ⌊N/6⌋ Elements",
+    "type": "insight",
+    "title": "Witness Family Has Exactly \u230aN/6\u230b Elements",
     "content": "Computes |witnessFamily N| = N/6 using card_image_of_injective (since the map is injective) and the cardinality of Finset.Icc 1 (N/6).",
     "mathContext": "$|\\text{witnessFamily}(N)| = |\\{1, \\ldots, \\lfloor N/6 \\rfloor\\}| = \\lfloor N/6 \\rfloor$ by injectivity of $k \\mapsto (3k, 6k)$.",
     "significance": "key",
@@ -136,9 +136,9 @@
       "startLine": 66,
       "endLine": 77
     },
-    "type": "theorem",
-    "title": "Main Theorem: D(N) ≥ ⌊N/6⌋",
-    "content": "The main lower bound: numSumDvdProdPairs N ≥ N/6. The proof chains: N/6 = |witnessFamily N| ≤ |sumDvdProdPairs N| using the cardinality computation and subset inclusion. This is a clean calc proof.",
+    "type": "insight",
+    "title": "Main Theorem: D(N) \u2265 \u230aN/6\u230b",
+    "content": "The main lower bound: numSumDvdProdPairs N \u2265 N/6. The proof chains: N/6 = |witnessFamily N| \u2264 |sumDvdProdPairs N| using the cardinality computation and subset inclusion. This is a clean calc proof.",
     "mathContext": "$D(N) \\geq |\\text{witnessFamily}(N)| = \\lfloor N/6 \\rfloor$. By `Finset.card_le_card` from the subset inclusion $\\text{witnessFamily}(N) \\subseteq \\text{sumDvdProdPairs}(N)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -158,9 +158,9 @@
       "startLine": 79,
       "endLine": 87
     },
-    "type": "theorem",
-    "title": "Corollary: D(N) → ∞",
-    "content": "Proves D(N) is unbounded: for any M, taking N = 6M gives D(6M) ≥ ⌊6M/6⌋ = M. This is the first formal proof that the count of sum-divides-product pairs grows without bound.",
+    "type": "insight",
+    "title": "Corollary: D(N) \u2192 \u221e",
+    "content": "Proves D(N) is unbounded: for any M, taking N = 6M gives D(6M) \u2265 \u230a6M/6\u230b = M. This is the first formal proof that the count of sum-divides-product pairs grows without bound.",
     "mathContext": "$\\forall M, \\exists N,\\ D(N) \\geq M$. Take $N = 6M$: $D(6M) \\geq \\lfloor 6M/6 \\rfloor = M$.",
     "significance": "key",
     "relatedConcepts": [

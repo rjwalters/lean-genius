@@ -2,11 +2,14 @@
   {
     "id": "ann-module-header",
     "proofId": "erdos-1006-oq-01-oq-02",
-    "range": { "startLine": 1, "endLine": 43 },
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
     "type": "concept",
     "title": "Cover Graphs vs Comparability Graphs: The Algorithmic Gap",
-    "content": "This file investigates a central open problem in algorithmic order theory: is cover graph recognition in polynomial time?\n\nTwo natural graph classes arise from a partial order $P$:\n- **Comparability graph**: $u \\sim v$ iff $u < v$ or $v < u$ (related pairs). Contains all edges between comparable elements.\n- **Cover graph (Hasse diagram)**: $u \\sim v$ iff $u \\lessdot v$ or $v \\lessdot u$ (covering pairs only). Contains only edges for direct covers — no intermediate element.\n\nThe containment is strict: for a 3-chain $a < b < c$, the comparability graph includes the edge $\\{a,c\\}$ while the cover graph is just the path $\\{a,b\\} \\cup \\{b,c\\}$. This file proves $K_3$ is comparability but not cover, giving the strict inclusion `cover ⊊ comparability`.\n\nComplexity gap:\n- Comparability recognition: **P** (Golumbic 1977, via modular decomposition)\n- Cover recognition: **NP** (certificate = the poset) — open whether P or NP-hard",
-    "mathContext": "The structural characterization (Pretzel 1985, Brightwell 1988): $G$ is a cover graph iff $G$ has a **Hasse orientation** — an acyclic orientation with no shortcuts ($u \\to v$ has no alternative path $u \\to w \\to v$). This is equivalent to the orientation equaling its own transitive reduction. The Hasse orientation condition is what separates cover recognition from comparability recognition algorithmically.",
+    "content": "This file investigates a central open problem in algorithmic order theory: is cover graph recognition in polynomial time?\n\nTwo natural graph classes arise from a partial order $P$:\n- **Comparability graph**: $u \\sim v$ iff $u < v$ or $v < u$ (related pairs). Contains all edges between comparable elements.\n- **Cover graph (Hasse diagram)**: $u \\sim v$ iff $u \\lessdot v$ or $v \\lessdot u$ (covering pairs only). Contains only edges for direct covers \u2014 no intermediate element.\n\nThe containment is strict: for a 3-chain $a < b < c$, the comparability graph includes the edge $\\{a,c\\}$ while the cover graph is just the path $\\{a,b\\} \\cup \\{b,c\\}$. This file proves $K_3$ is comparability but not cover, giving the strict inclusion `cover \u228a comparability`.\n\nComplexity gap:\n- Comparability recognition: **P** (Golumbic 1977, via modular decomposition)\n- Cover recognition: **NP** (certificate = the poset) \u2014 open whether P or NP-hard",
+    "mathContext": "The structural characterization (Pretzel 1985, Brightwell 1988): $G$ is a cover graph iff $G$ has a **Hasse orientation** \u2014 an acyclic orientation with no shortcuts ($u \\to v$ has no alternative path $u \\to w \\to v$). This is equivalent to the orientation equaling its own transitive reduction. The Hasse orientation condition is what separates cover recognition from comparability recognition algorithmically.",
     "significance": "key",
     "relatedConcepts": [
       "Hasse diagram",
@@ -25,11 +28,14 @@
   {
     "id": "ann-shortcut-free-def",
     "proofId": "erdos-1006-oq-01-oq-02",
-    "range": { "startLine": 44, "endLine": 68 },
+    "range": {
+      "startLine": 44,
+      "endLine": 68
+    },
     "type": "definition",
     "title": "Shortcut-Free Orientations: The Hasse Property",
-    "content": "Three definitions formalize the Hasse diagram condition:\n\n**`GraphOrientation.hasShortcut O`**: There exist $u, v$ such that $O$ has arc $u \\to v$ AND a directed path $u \\to w \\to v$ via some intermediate $w$. The arc $u \\to v$ is 'redundant' — it bypasses the path.\n\n**`GraphOrientation.isHasse O`**: $O$ is acyclic AND shortcut-free ($\\neg\\text{hasShortcut}$). This is the formal Hasse diagram property.\n\n**`isHasseOrientable G`**: $G$ admits some Hasse orientation $O$.\n\nThe shortcut-free condition is equivalent to: the orientation is its own transitive reduction. In a Hasse diagram, every arc $u \\to v$ is irreducible — removing it would lose coverage of the covering pair $u \\lessdot v$. The shortcut $u \\to w \\to v$ would mean $u < w < v$, contradicting $u \\lessdot v$.",
-    "mathContext": "`hasShortcut O := ∃ u v, O.arc u v ∧ ∃ w, w ≠ u ∧ w ≠ v ∧ O.arc u w ∧ O.arc w v`. The conditions $w \\neq u$ and $w \\neq v$ ensure the intermediate vertex is distinct (avoiding trivial cases). `isHasse O := O.isAcyclic ∧ ¬O.hasShortcut`. Together: the orientation is a DAG with no length-2 path 'shortcutting' any direct arc.",
+    "content": "Three definitions formalize the Hasse diagram condition:\n\n**`GraphOrientation.hasShortcut O`**: There exist $u, v$ such that $O$ has arc $u \\to v$ AND a directed path $u \\to w \\to v$ via some intermediate $w$. The arc $u \\to v$ is 'redundant' \u2014 it bypasses the path.\n\n**`GraphOrientation.isHasse O`**: $O$ is acyclic AND shortcut-free ($\\neg\\text{hasShortcut}$). This is the formal Hasse diagram property.\n\n**`isHasseOrientable G`**: $G$ admits some Hasse orientation $O$.\n\nThe shortcut-free condition is equivalent to: the orientation is its own transitive reduction. In a Hasse diagram, every arc $u \\to v$ is irreducible \u2014 removing it would lose coverage of the covering pair $u \\lessdot v$. The shortcut $u \\to w \\to v$ would mean $u < w < v$, contradicting $u \\lessdot v$.",
+    "mathContext": "`hasShortcut O := \u2203 u v, O.arc u v \u2227 \u2203 w, w \u2260 u \u2227 w \u2260 v \u2227 O.arc u w \u2227 O.arc w v`. The conditions $w \\neq u$ and $w \\neq v$ ensure the intermediate vertex is distinct (avoiding trivial cases). `isHasse O := O.isAcyclic \u2227 \u00acO.hasShortcut`. Together: the orientation is a DAG with no length-2 path 'shortcutting' any direct arc.",
     "significance": "key",
     "relatedConcepts": [
       "transitive reduction",
@@ -46,11 +52,14 @@
   {
     "id": "ann-no-shortcut",
     "proofId": "erdos-1006-oq-01-oq-02",
-    "range": { "startLine": 69, "endLine": 88 },
-    "type": "theorem",
+    "range": {
+      "startLine": 69,
+      "endLine": 88
+    },
+    "type": "insight",
     "title": "Cover Orientations are Shortcut-Free: Covering Axiom at Work",
-    "content": "Theorem `coverOrientation_no_shortcut`: the covering orientation of any cover graph has no shortcuts.\n\n**Proof** (2 lines): Suppose arc $u \\to v$ has shortcut via $w$ — so $u \\lessdot v$, $u \\lessdot w$, and $w \\lessdot v$. Then $w \\lessdot v$ gives $w < v$, and $u \\lessdot w$ gives $u < w$. So $u < w < v$, contradicting $u \\lessdot v$ (which forbids any element strictly between $u$ and $v$).\n\nThe Lean proof: `exact absurd hwv.lt (huv.2 huw.lt)` — the covering axiom `huv.2 : ¬∃ w, u < w ∧ w < v` applied to `u < w` (from `huw.lt : u < w`) and `w < v` (from `hwv.lt : w < v`). The `.2` field is the 'no intermediate' condition of `CovBy`.\n\n**Why this is key**: This theorem directly shows covering orientations are Hasse orientations — the hardest direction in proving cover graphs = Hasse-orientable graphs.",
-    "mathContext": "`CovBy u v` in Mathlib: `u ⋖ v := u < v ∧ ∀ w, u < w → ¬w < v`. The `.2` field is `∀ w, u < w → ¬w < v`. `huw.lt : u < w` (from `u ⋖ w`), `hwv.lt : w < v` (from `w ⋖ v`). The application `huv.2 huw.lt hwv.lt` gives `False` directly.",
+    "content": "Theorem `coverOrientation_no_shortcut`: the covering orientation of any cover graph has no shortcuts.\n\n**Proof** (2 lines): Suppose arc $u \\to v$ has shortcut via $w$ \u2014 so $u \\lessdot v$, $u \\lessdot w$, and $w \\lessdot v$. Then $w \\lessdot v$ gives $w < v$, and $u \\lessdot w$ gives $u < w$. So $u < w < v$, contradicting $u \\lessdot v$ (which forbids any element strictly between $u$ and $v$).\n\nThe Lean proof: `exact absurd hwv.lt (huv.2 huw.lt)` \u2014 the covering axiom `huv.2 : \u00ac\u2203 w, u < w \u2227 w < v` applied to `u < w` (from `huw.lt : u < w`) and `w < v` (from `hwv.lt : w < v`). The `.2` field is the 'no intermediate' condition of `CovBy`.\n\n**Why this is key**: This theorem directly shows covering orientations are Hasse orientations \u2014 the hardest direction in proving cover graphs = Hasse-orientable graphs.",
+    "mathContext": "`CovBy u v` in Mathlib: `u \u22d6 v := u < v \u2227 \u2200 w, u < w \u2192 \u00acw < v`. The `.2` field is `\u2200 w, u < w \u2192 \u00acw < v`. `huw.lt : u < w` (from `u \u22d6 w`), `hwv.lt : w < v` (from `w \u22d6 v`). The application `huv.2 huw.lt hwv.lt` gives `False` directly.",
     "significance": "key",
     "relatedConcepts": [
       "CovBy (covering relation) in Mathlib",
@@ -67,11 +76,14 @@
   {
     "id": "ann-np-certificate",
     "proofId": "erdos-1006-oq-01-oq-02",
-    "range": { "startLine": 89, "endLine": 140 },
+    "range": {
+      "startLine": 89,
+      "endLine": 140
+    },
     "type": "insight",
     "title": "NP Membership: The Partial Order as Certificate",
-    "content": "The NP membership of cover graph recognition follows immediately from the definition: the partial order $P$ is a polynomial-time verifiable certificate that $G = \\text{Cover}(P)$.\n\n**`cover_graph_in_np`**: Given `[PartialOrder V]` and `hcover : isCoverGraphOf G`, the pair `(inferInstance, hcover)` witnesses `isCoverGraph G`. One line: `⟨inferInstance, hcover⟩`.\n\n**`isCoverGraphOf_decidable`**: For finite types with decidable adjacency and covering relation, `isCoverGraphOf G` is decidable — this is what makes certificate verification polynomial-time. The instance uses `Fintype.decidableForallFintype`.\n\n**`cover_search_space_bound`**: The space of Boolean relations on $V$ (all potential cover structures) has size $2^{|V|^2}$. This is the brute-force search space for cover recognition: check all $2^{n^2}$ partial orders. The open question is whether a subexponential (polynomial) algorithm exists.",
-    "mathContext": "`isCoverGraph G := ∃ (_ : PartialOrder V), isCoverGraphOf G`. The `inferInstance` in `cover_graph_in_np` automatically infers the `PartialOrder V` instance from the type context. `cover_search_space_bound`: `Fintype.card (V → V → Bool) = 2^(|V| * |V|)` via `Fintype.card_fun` and `Fintype.card_bool`.",
+    "content": "The NP membership of cover graph recognition follows immediately from the definition: the partial order $P$ is a polynomial-time verifiable certificate that $G = \\text{Cover}(P)$.\n\n**`cover_graph_in_np`**: Given `[PartialOrder V]` and `hcover : isCoverGraphOf G`, the pair `(inferInstance, hcover)` witnesses `isCoverGraph G`. One line: `\u27e8inferInstance, hcover\u27e9`.\n\n**`isCoverGraphOf_decidable`**: For finite types with decidable adjacency and covering relation, `isCoverGraphOf G` is decidable \u2014 this is what makes certificate verification polynomial-time. The instance uses `Fintype.decidableForallFintype`.\n\n**`cover_search_space_bound`**: The space of Boolean relations on $V$ (all potential cover structures) has size $2^{|V|^2}$. This is the brute-force search space for cover recognition: check all $2^{n^2}$ partial orders. The open question is whether a subexponential (polynomial) algorithm exists.",
+    "mathContext": "`isCoverGraph G := \u2203 (_ : PartialOrder V), isCoverGraphOf G`. The `inferInstance` in `cover_graph_in_np` automatically infers the `PartialOrder V` instance from the type context. `cover_search_space_bound`: `Fintype.card (V \u2192 V \u2192 Bool) = 2^(|V| * |V|)` via `Fintype.card_fun` and `Fintype.card_bool`.",
     "significance": "key",
     "relatedConcepts": [
       "NP complexity class",
@@ -88,11 +100,14 @@
   {
     "id": "ann-axioms",
     "proofId": "erdos-1006-oq-01-oq-02",
-    "range": { "startLine": 141, "endLine": 195 },
+    "range": {
+      "startLine": 141,
+      "endLine": 195
+    },
     "type": "context",
     "title": "Two Axioms: Golumbic's Theorem and the Open Conjecture",
-    "content": "Two `axiom` declarations formalize mathematical claims that are not proved in this file:\n\n**`comparability_recognition_in_p`** (Golumbic 1977): There exists a polynomial-time Boolean function that correctly recognizes comparability graphs. This is a **proved theorem** in the literature — Golumbic's algorithm uses modular decomposition to check for transitive orientability in $O(|V| + |E|)$ time. It is axiomatized here because formalizing the full Golumbic algorithm would require significant effort.\n\n**`cover_graph_recognition_in_p`**: There exists a polynomial-time Boolean function correctly recognizing cover graphs. This is the **open conjecture** of Erdős #1006 OQ-02. It is axiomatized to state the open problem formally.\n\nBoth axioms have the same type: $\\exists (f : \\text{SimpleGraph}\\;V \\to \\text{Bool}), \\forall G, f\\;G = \\text{true} \\leftrightarrow \\text{[property]}$. The comment in the Lean file describes a plausible algorithm for cover recognition: (1) find a transitive orientation (P-time), then (2) check shortcut-freeness.",
-    "mathContext": "Golumbic (1977): a graph is a comparability graph iff it has a transitive orientation, and transitive orientability can be checked in $O(|V| + |E|)$ using implication classes (a variant of 2-SAT). The shortcut-checking step for cover recognition — given a transitive orientation, remove all 'shortcut' arcs and check if the remaining graph still covers the original — is the suspected bottleneck. Whether this can be done in polynomial time is the open question.",
+    "content": "Two `axiom` declarations formalize mathematical claims that are not proved in this file:\n\n**`comparability_recognition_in_p`** (Golumbic 1977): There exists a polynomial-time Boolean function that correctly recognizes comparability graphs. This is a **proved theorem** in the literature \u2014 Golumbic's algorithm uses modular decomposition to check for transitive orientability in $O(|V| + |E|)$ time. It is axiomatized here because formalizing the full Golumbic algorithm would require significant effort.\n\n**`cover_graph_recognition_in_p`**: There exists a polynomial-time Boolean function correctly recognizing cover graphs. This is the **open conjecture** of Erd\u0151s #1006 OQ-02. It is axiomatized to state the open problem formally.\n\nBoth axioms have the same type: $\\exists (f : \\text{SimpleGraph}\\;V \\to \\text{Bool}), \\forall G, f\\;G = \\text{true} \\leftrightarrow \\text{[property]}$. The comment in the Lean file describes a plausible algorithm for cover recognition: (1) find a transitive orientation (P-time), then (2) check shortcut-freeness.",
+    "mathContext": "Golumbic (1977): a graph is a comparability graph iff it has a transitive orientation, and transitive orientability can be checked in $O(|V| + |E|)$ using implication classes (a variant of 2-SAT). The shortcut-checking step for cover recognition \u2014 given a transitive orientation, remove all 'shortcut' arcs and check if the remaining graph still covers the original \u2014 is the suspected bottleneck. Whether this can be done in polynomial time is the open question.",
     "significance": "key",
     "relatedConcepts": [
       "Golumbic's comparability recognition",
@@ -109,14 +124,17 @@
   {
     "id": "ann-k3-separation",
     "proofId": "erdos-1006-oq-01-oq-02",
-    "range": { "startLine": 196, "endLine": 256 },
-    "type": "theorem",
-    "title": "K₃ is Comparability but Not Cover: Strict Separation",
-    "content": "Three theorems establish strict containment `cover ⊊ comparability`:\n\n**`k3_is_comparability_graph`**: $K_3$ (complete graph on $\\text{Fin}\\;3$) is a comparability graph. Proof: the standard order $0 < 1 < 2$ on $\\text{Fin}\\;3$ makes all pairs $(0,1)$, $(0,2)$, $(1,2)$ comparable. Uses `lt_or_gt_of_ne` and `ne_of_lt`.\n\n**`k3_not_cover_graph`**: $K_3$ is NOT a cover graph. The proof is an **8-case exhaustion** over orientations of the 3 covering edges $\\{0,1\\}$, $\\{0,2\\}$, $\\{1,2\\}$: each of the $2^3 = 8$ cases leads to a contradiction. The key lemma `no_chain`: if $x \\lessdot y$ and $y \\lessdot z$, then $\\neg(x \\lessdot z)$ (since $y$ lies strictly between $x$ and $z$). For each orientation, either a 3-chain arises (forbidding the 'long' edge from being a cover) or a directed cycle (impossible in a partial order).\n\n**`cover_strictly_subset_comparability`**: Packages the above as an existential witness: $\\exists W, \\exists H,$ `isComparabilityGraph H ∧ ¬isCoverGraph H`.",
-    "mathContext": "The 8 cases for $K_3$ cover non-existence:\n1. $0 \\lessdot 1, 0 \\lessdot 2, 1 \\lessdot 2$: chain $0 < 1 < 2$ violates $0 \\lessdot 2$ (via `no_chain 0 1 2 h01 h12 h02`)\n2. $0 \\lessdot 1, 0 \\lessdot 2, 2 \\lessdot 1$: chain $0 < 2 < 1$ violates $0 \\lessdot 1$\n3. $0 \\lessdot 1, 2 \\lessdot 0, 1 \\lessdot 2$: cycle $2 < 0 < 1 < 2$ gives $2 < 2$ (via `lt_irrefl`)\n4–8: symmetric cases. In cases 3 and 6, the cycle is handled by `lt_irrefl` after composing the three strict inequalities.",
+    "range": {
+      "startLine": 196,
+      "endLine": 256
+    },
+    "type": "insight",
+    "title": "K\u2083 is Comparability but Not Cover: Strict Separation",
+    "content": "Three theorems establish strict containment `cover \u228a comparability`:\n\n**`k3_is_comparability_graph`**: $K_3$ (complete graph on $\\text{Fin}\\;3$) is a comparability graph. Proof: the standard order $0 < 1 < 2$ on $\\text{Fin}\\;3$ makes all pairs $(0,1)$, $(0,2)$, $(1,2)$ comparable. Uses `lt_or_gt_of_ne` and `ne_of_lt`.\n\n**`k3_not_cover_graph`**: $K_3$ is NOT a cover graph. The proof is an **8-case exhaustion** over orientations of the 3 covering edges $\\{0,1\\}$, $\\{0,2\\}$, $\\{1,2\\}$: each of the $2^3 = 8$ cases leads to a contradiction. The key lemma `no_chain`: if $x \\lessdot y$ and $y \\lessdot z$, then $\\neg(x \\lessdot z)$ (since $y$ lies strictly between $x$ and $z$). For each orientation, either a 3-chain arises (forbidding the 'long' edge from being a cover) or a directed cycle (impossible in a partial order).\n\n**`cover_strictly_subset_comparability`**: Packages the above as an existential witness: $\\exists W, \\exists H,$ `isComparabilityGraph H \u2227 \u00acisCoverGraph H`.",
+    "mathContext": "The 8 cases for $K_3$ cover non-existence:\n1. $0 \\lessdot 1, 0 \\lessdot 2, 1 \\lessdot 2$: chain $0 < 1 < 2$ violates $0 \\lessdot 2$ (via `no_chain 0 1 2 h01 h12 h02`)\n2. $0 \\lessdot 1, 0 \\lessdot 2, 2 \\lessdot 1$: chain $0 < 2 < 1$ violates $0 \\lessdot 1$\n3. $0 \\lessdot 1, 2 \\lessdot 0, 1 \\lessdot 2$: cycle $2 < 0 < 1 < 2$ gives $2 < 2$ (via `lt_irrefl`)\n4\u20138: symmetric cases. In cases 3 and 6, the cycle is handled by `lt_irrefl` after composing the three strict inequalities.",
     "significance": "key",
     "relatedConcepts": [
-      "K₃ (complete graph on 3 vertices)",
+      "K\u2083 (complete graph on 3 vertices)",
       "case exhaustion proof",
       "no_chain lemma",
       "lt_irrefl for cycle detection",

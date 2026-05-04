@@ -7,12 +7,12 @@
       "endLine": 55
     },
     "type": "definition",
-    "title": "Hölder Continuity on the Circle",
-    "content": "Defines $\\alpha$-Hölder continuity on $\\text{AddCircle}\\,T$ as a wrapper around Mathlib's `HolderWith`. A function $f$ is $(C, \\alpha)$-Hölder if $\\text{edist}(f(x), f(y)) \\leq C \\cdot \\text{edist}(x,y)^\\alpha$ for all $x, y$. This is the extended metric space formulation, using `ℝ≥0` for both the constant and exponent.",
-    "mathContext": "$f$ is $\\alpha$-Hölder with constant $C$ iff $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$ for all $x, y \\in \\mathbb{R}/T\\mathbb{Z}$.",
+    "title": "H\u00f6lder Continuity on the Circle",
+    "content": "Defines $\\alpha$-H\u00f6lder continuity on $\\text{AddCircle}\\,T$ as a wrapper around Mathlib's `HolderWith`. A function $f$ is $(C, \\alpha)$-H\u00f6lder if $\\text{edist}(f(x), f(y)) \\leq C \\cdot \\text{edist}(x,y)^\\alpha$ for all $x, y$. This is the extended metric space formulation, using `\u211d\u22650` for both the constant and exponent.",
+    "mathContext": "$f$ is $\\alpha$-H\u00f6lder with constant $C$ iff $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$ for all $x, y \\in \\mathbb{R}/T\\mathbb{Z}$.",
     "significance": "key",
     "relatedConcepts": [
-      "Hölder continuity",
+      "H\u00f6lder continuity",
       "metric spaces",
       "AddCircle"
     ],
@@ -29,13 +29,13 @@
       "endLine": 61
     },
     "type": "definition",
-    "title": "Hölder Implies Continuous",
-    "content": "Any $\\alpha$-Hölder function with $\\alpha > 0$ is continuous. This is immediate from Mathlib's `HolderWith.continuous`, since $d(x,y)^\\alpha \\to 0$ as $d(x,y) \\to 0$ when $\\alpha > 0$. The case $\\alpha = 0$ is excluded because $d(x,y)^0 = 1$, which gives only a boundedness condition.",
+    "title": "H\u00f6lder Implies Continuous",
+    "content": "Any $\\alpha$-H\u00f6lder function with $\\alpha > 0$ is continuous. This is immediate from Mathlib's `HolderWith.continuous`, since $d(x,y)^\\alpha \\to 0$ as $d(x,y) \\to 0$ when $\\alpha > 0$. The case $\\alpha = 0$ is excluded because $d(x,y)^0 = 1$, which gives only a boundedness condition.",
     "mathContext": "If $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$ and $\\alpha > 0$, then $f$ is continuous.",
     "significance": "supporting",
     "relatedConcepts": [
       "continuity",
-      "Hölder exponent"
+      "H\u00f6lder exponent"
     ],
     "prerequisites": [
       "HolderWith.continuous"
@@ -49,13 +49,13 @@
       "endLine": 69
     },
     "type": "insight",
-    "title": "Lipschitz as Hölder with Exponent 1",
-    "content": "Lipschitz continuity is precisely Hölder continuity with $\\alpha = 1$. The proof uses `rpow_one` to simplify $d(x,y)^1 = d(x,y)$. This embedding Lipschitz $\\subset$ Hölder(1) allows the main decay theorem to recover the classical $O(1/|n|)$ estimate for Lipschitz functions as a special case.",
-    "mathContext": "$|f(x) - f(y)| \\leq C \\cdot d(x,y) \\iff f \\text{ is } (C, 1)\\text{-Hölder}$. The classical integration-by-parts decay $\\hat{c}_n = O(1/|n|)$ for $C^1$ functions follows.",
+    "title": "Lipschitz as H\u00f6lder with Exponent 1",
+    "content": "Lipschitz continuity is precisely H\u00f6lder continuity with $\\alpha = 1$. The proof uses `rpow_one` to simplify $d(x,y)^1 = d(x,y)$. This embedding Lipschitz $\\subset$ H\u00f6lder(1) allows the main decay theorem to recover the classical $O(1/|n|)$ estimate for Lipschitz functions as a special case.",
+    "mathContext": "$|f(x) - f(y)| \\leq C \\cdot d(x,y) \\iff f \\text{ is } (C, 1)\\text{-H\u00f6lder}$. The classical integration-by-parts decay $\\hat{c}_n = O(1/|n|)$ for $C^1$ functions follows.",
     "significance": "supporting",
     "relatedConcepts": [
       "Lipschitz continuity",
-      "Hölder hierarchy"
+      "H\u00f6lder hierarchy"
     ],
     "prerequisites": [
       "LipschitzWith",
@@ -71,7 +71,7 @@
     },
     "type": "definition",
     "title": "Circle Translation and Half-Period",
-    "content": "Two infrastructure definitions: `circleTranslate` shifts a point on $\\text{AddCircle}\\,T$ by a real number $s$, and `halfPeriod` computes $T/(2n)$ — the key translation amount for the half-period trick. The guard `if n = 0 then 0` avoids division by zero.",
+    "content": "Two infrastructure definitions: `circleTranslate` shifts a point on $\\text{AddCircle}\\,T$ by a real number $s$, and `halfPeriod` computes $T/(2n)$ \u2014 the key translation amount for the half-period trick. The guard `if n = 0 then 0` avoids division by zero.",
     "mathContext": "For the $n$-th Fourier mode $e_n(x) = e^{2\\pi i n x/T}$, the half-period is $h = T/(2n)$, satisfying $e_{-n}(x + h) = e^{-\\pi i} \\cdot e_{-n}(x) = -e_{-n}(x)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -114,7 +114,7 @@
     },
     "type": "concept",
     "title": "Axiom: Half-Period Translation Flips Sign",
-    "content": "The central identity of the proof: translating by $T/(2n)$ negates the $n$-th Fourier monomial. This is because $e^{2\\pi i(-n)(x + T/(2n))/T} = e^{2\\pi i(-n)x/T} \\cdot e^{-\\pi i} = -e_{-n}(x)$. The sign flip is what transforms the Fourier integral into a difference integral, enabling the Hölder bound.",
+    "content": "The central identity of the proof: translating by $T/(2n)$ negates the $n$-th Fourier monomial. This is because $e^{2\\pi i(-n)(x + T/(2n))/T} = e^{2\\pi i(-n)x/T} \\cdot e^{-\\pi i} = -e_{-n}(x)$. The sign flip is what transforms the Fourier integral into a difference integral, enabling the H\u00f6lder bound.",
     "mathContext": "$e_{-n}(x + T/(2n)) = e^{-\\pi i} \\cdot e_{-n}(x) = -e_{-n}(x)$ because $e^{-\\pi i} = -1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -136,7 +136,7 @@
     },
     "type": "concept",
     "title": "Axiom: Difference Formula for Fourier Coefficients",
-    "content": "Axiomatizes the key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$. Derived by writing $\\hat{c}_n$ as an integral, applying translation invariance of Haar measure to the second copy, and using the half-period sign flip. This converts the oscillatory integral into one controlled by the Hölder modulus of continuity.",
+    "content": "Axiomatizes the key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$. Derived by writing $\\hat{c}_n$ as an integral, applying translation invariance of Haar measure to the second copy, and using the half-period sign flip. This converts the oscillatory integral into one controlled by the H\u00f6lder modulus of continuity.",
     "mathContext": "$2\\hat{c}_n(f) = \\int_{\\mathbb{R}/T\\mathbb{Z}} (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, d\\mu(x)$ where $\\mu$ is the Haar probability measure.",
     "significance": "key",
     "relatedConcepts": [
@@ -158,16 +158,16 @@
       "endLine": 116
     },
     "type": "concept",
-    "title": "Axiom: Hölder Translation Bound",
-    "content": "Axiomatizes the pointwise bound: $\\|f(x) - f(x + T/(2n))\\| \\leq C \\cdot (T/(2|n|))^\\alpha$. This follows directly from the Hölder condition with $d(x, x+h) = |h|$ where $h = T/(2n)$. The absolute value $|n|$ handles both positive and negative frequencies.",
-    "mathContext": "By $\\alpha$-Hölder continuity: $\\|f(x) - f(x + h)\\| \\leq C |h|^\\alpha$ with $h = T/(2n)$, giving $C \\cdot (T/(2|n|))^\\alpha$.",
+    "title": "Axiom: H\u00f6lder Translation Bound",
+    "content": "Axiomatizes the pointwise bound: $\\|f(x) - f(x + T/(2n))\\| \\leq C \\cdot (T/(2|n|))^\\alpha$. This follows directly from the H\u00f6lder condition with $d(x, x+h) = |h|$ where $h = T/(2n)$. The absolute value $|n|$ handles both positive and negative frequencies.",
+    "mathContext": "By $\\alpha$-H\u00f6lder continuity: $\\|f(x) - f(x + h)\\| \\leq C |h|^\\alpha$ with $h = T/(2n)$, giving $C \\cdot (T/(2|n|))^\\alpha$.",
     "significance": "supporting",
     "relatedConcepts": [
       "modulus of continuity",
-      "Hölder condition"
+      "H\u00f6lder condition"
     ],
     "prerequisites": [
-      "Hölder continuity",
+      "H\u00f6lder continuity",
       "metric on AddCircle"
     ]
   },
@@ -180,7 +180,7 @@
     },
     "type": "concept",
     "title": "Axiom: Integral Product Bound",
-    "content": "Axiomatizes the integral estimate: $\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, dx\\| \\leq C(T/(2|n|))^\\alpha$. This combines: (1) norm-integral inequality $\\|\\int g\\| \\leq \\int \\|g\\|$, (2) $\\|e_{-n}(x)\\| = 1$, (3) the Hölder pointwise bound, and (4) the Haar measure being a probability measure ($\\mu(\\mathbb{R}/T\\mathbb{Z}) = 1$).",
+    "content": "Axiomatizes the integral estimate: $\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, dx\\| \\leq C(T/(2|n|))^\\alpha$. This combines: (1) norm-integral inequality $\\|\\int g\\| \\leq \\int \\|g\\|$, (2) $\\|e_{-n}(x)\\| = 1$, (3) the H\u00f6lder pointwise bound, and (4) the Haar measure being a probability measure ($\\mu(\\mathbb{R}/T\\mathbb{Z}) = 1$).",
     "mathContext": "$\\left\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, d\\mu \\right\\| \\leq \\int \\|f(x) - f(x+h)\\| \\cdot 1\\, d\\mu \\leq C(T/(2|n|))^\\alpha \\cdot 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -202,7 +202,7 @@
     },
     "type": "concept",
     "title": "Main Theorem: Fourier Coefficient Decay",
-    "content": "The central result, proved (not axiomatized): $\\|\\hat{c}_n(f)\\| \\leq (C/2)(T/(2|n|))^\\alpha$ for $\\alpha$-Hölder $f$. The proof chains three steps: (1) apply the difference formula to get $2\\hat{c}_n$, (2) bound the resulting integral using `integral_product_bound`, (3) extract the factor of 2 from the norm using `norm_mul` and `norm_ofNat`, then conclude by `linarith`. This is the only fully-proved theorem beyond the Hölder setup.",
+    "content": "The central result, proved (not axiomatized): $\\|\\hat{c}_n(f)\\| \\leq (C/2)(T/(2|n|))^\\alpha$ for $\\alpha$-H\u00f6lder $f$. The proof chains three steps: (1) apply the difference formula to get $2\\hat{c}_n$, (2) bound the resulting integral using `integral_product_bound`, (3) extract the factor of 2 from the norm using `norm_mul` and `norm_ofNat`, then conclude by `linarith`. This is the only fully-proved theorem beyond the H\u00f6lder setup.",
     "mathContext": "$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha$. Proof: $\\|2\\hat{c}_n\\| \\leq C(T/(2|n|))^\\alpha$ by the integral bound, then divide by 2.",
     "significance": "key",
     "relatedConcepts": [
@@ -225,7 +225,7 @@
     },
     "type": "concept",
     "title": "Lipschitz Decay Corollary",
-    "content": "Derives the Lipschitz decay rate $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$ as the $\\alpha = 1$ specialization of the main theorem. Uses `lipschitz_is_holder_one` to embed the Lipschitz hypothesis into the Hölder framework, then simplifies $x^1 = x$ via `rpow_one`. This recovers the classical integration-by-parts estimate without differentiation.",
+    "content": "Derives the Lipschitz decay rate $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$ as the $\\alpha = 1$ specialization of the main theorem. Uses `lipschitz_is_holder_one` to embed the Lipschitz hypothesis into the H\u00f6lder framework, then simplifies $x^1 = x$ via `rpow_one`. This recovers the classical integration-by-parts estimate without differentiation.",
     "mathContext": "For Lipschitz $f$ with constant $C$: $\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\cdot \\frac{T}{2|n|} = \\frac{CT}{4|n|}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -247,7 +247,7 @@
     },
     "type": "insight",
     "title": "Axiom: Square-Summability Threshold at alpha = 1/2",
-    "content": "Axiomatizes that for $\\alpha > 1/2$, the Fourier coefficients are square-summable: $\\sum |\\hat{c}_n|^2 < \\infty$. This follows because $|\\hat{c}_n|^2 = O(1/|n|^{2\\alpha})$ and the series $\\sum 1/|n|^{2\\alpha}$ converges when $2\\alpha > 1$. The threshold $\\alpha = 1/2$ is critical — below it, Parseval-type energy control may fail.",
+    "content": "Axiomatizes that for $\\alpha > 1/2$, the Fourier coefficients are square-summable: $\\sum |\\hat{c}_n|^2 < \\infty$. This follows because $|\\hat{c}_n|^2 = O(1/|n|^{2\\alpha})$ and the series $\\sum 1/|n|^{2\\alpha}$ converges when $2\\alpha > 1$. The threshold $\\alpha = 1/2$ is critical \u2014 below it, Parseval-type energy control may fail.",
     "mathContext": "For $\\alpha > 1/2$: $\\sum_{n \\in \\mathbb{Z}} |\\hat{c}_n(f)|^2 < \\infty$ because $2\\alpha > 1$ makes the comparison series converge.",
     "significance": "key",
     "relatedConcepts": [
@@ -269,8 +269,8 @@
     },
     "type": "insight",
     "title": "Axiom: Optimality via Weierstrass Functions",
-    "content": "Axiomatizes that the $O(1/|n|^\\alpha)$ decay rate is optimal: for each $0 < \\alpha < 1$, there exists an $\\alpha$-Hölder function with Fourier coefficients decaying at exactly this rate. The construction uses Weierstrass-type lacunary series $f(x) = \\sum_{k \\geq 0} b^{-k\\alpha} e^{ib^k x}$, where the coefficients at frequencies $n = b^k$ satisfy $|\\hat{c}_{b^k}| = b^{-k\\alpha} = 1/|n|^\\alpha$.",
-    "mathContext": "For each $\\alpha \\in (0,1)$, $\\exists f$ that is $\\alpha$-Hölder with $|\\hat{c}_n| \\geq c/|n|^\\alpha$ for infinitely many $n$. The Weierstrass function $\\sum b^{-k\\alpha} e^{ib^k x}$ achieves this.",
+    "content": "Axiomatizes that the $O(1/|n|^\\alpha)$ decay rate is optimal: for each $0 < \\alpha < 1$, there exists an $\\alpha$-H\u00f6lder function with Fourier coefficients decaying at exactly this rate. The construction uses Weierstrass-type lacunary series $f(x) = \\sum_{k \\geq 0} b^{-k\\alpha} e^{ib^k x}$, where the coefficients at frequencies $n = b^k$ satisfy $|\\hat{c}_{b^k}| = b^{-k\\alpha} = 1/|n|^\\alpha$.",
+    "mathContext": "For each $\\alpha \\in (0,1)$, $\\exists f$ that is $\\alpha$-H\u00f6lder with $|\\hat{c}_n| \\geq c/|n|^\\alpha$ for infinitely many $n$. The Weierstrass function $\\sum b^{-k\\alpha} e^{ib^k x}$ achieves this.",
     "significance": "key",
     "relatedConcepts": [
       "Weierstrass function",
@@ -278,7 +278,7 @@
       "sharp bounds"
     ],
     "prerequisites": [
-      "Hölder continuity of lacunary series"
+      "H\u00f6lder continuity of lacunary series"
     ]
   },
   {
@@ -290,8 +290,8 @@
     },
     "type": "insight",
     "title": "Axiom: Partial Converse via Sobolev Embedding",
-    "content": "Axiomatizes the partial converse: if $\\|\\hat{c}_n\\| = O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1/2$, then $f$ is $\\alpha$-Hölder. The gap of $1/2$ comes from the Sobolev embedding theorem on the circle — reconstructing pointwise regularity from frequency decay requires extra summability margin. This gap is sharp.",
-    "mathContext": "If $\\|\\hat{c}_n(f)\\| \\leq C/|n|^\\beta$ with $\\beta > \\alpha + 1/2$, then $f$ is $\\alpha$-Hölder. The Sobolev gap $1/2$ is necessary and sufficient.",
+    "content": "Axiomatizes the partial converse: if $\\|\\hat{c}_n\\| = O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1/2$, then $f$ is $\\alpha$-H\u00f6lder. The gap of $1/2$ comes from the Sobolev embedding theorem on the circle \u2014 reconstructing pointwise regularity from frequency decay requires extra summability margin. This gap is sharp.",
+    "mathContext": "If $\\|\\hat{c}_n(f)\\| \\leq C/|n|^\\beta$ with $\\beta > \\alpha + 1/2$, then $f$ is $\\alpha$-H\u00f6lder. The Sobolev gap $1/2$ is necessary and sufficient.",
     "significance": "key",
     "relatedConcepts": [
       "Sobolev embedding",
@@ -312,8 +312,8 @@
     },
     "type": "concept",
     "title": "Regularity-Decay Hierarchy: C^k to Analytic",
-    "content": "Three axioms establishing the full regularity-decay spectrum: (1) $C^k$ smoothness gives $O(1/|n|^k)$ decay via iterated integration by parts. (2) $C^\\infty$ gives rapid decay (faster than any polynomial) — the Schwartz class on the circle. (3) Analyticity on a strip of width $\\delta$ gives exponential decay $O(e^{-2\\pi\\delta|n|/T})$ — Fourier coefficients of analytic functions decay geometrically. Together these axioms formalize the fundamental principle: regularity $\\leftrightarrow$ spectral decay.",
-    "mathContext": "$C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow O(1/|n|^k)$ for all $k$, analytic $\\Rightarrow O(e^{-c|n|})$. The Hölder case $O(1/|n|^\\alpha)$ interpolates between $L^2$ and $C^1$.",
+    "content": "Three axioms establishing the full regularity-decay spectrum: (1) $C^k$ smoothness gives $O(1/|n|^k)$ decay via iterated integration by parts. (2) $C^\\infty$ gives rapid decay (faster than any polynomial) \u2014 the Schwartz class on the circle. (3) Analyticity on a strip of width $\\delta$ gives exponential decay $O(e^{-2\\pi\\delta|n|/T})$ \u2014 Fourier coefficients of analytic functions decay geometrically. Together these axioms formalize the fundamental principle: regularity $\\leftrightarrow$ spectral decay.",
+    "mathContext": "$C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow O(1/|n|^k)$ for all $k$, analytic $\\Rightarrow O(e^{-c|n|})$. The H\u00f6lder case $O(1/|n|^\\alpha)$ interpolates between $L^2$ and $C^1$.",
     "significance": "key",
     "relatedConcepts": [
       "Paley-Wiener theorem",
@@ -336,8 +336,8 @@
     },
     "type": "concept",
     "title": "Arithmetic Consequences and Quantitative Riemann-Lebesgue",
-    "content": "Three proved results: (1) $\\alpha > 1/2 \\Rightarrow 2\\alpha > 1$ (the square-summability threshold). (2) For $\\alpha \\in (1/2, 1]$, the decay exponent $2\\alpha \\in (1, 2]$ (Parseval range). (3) `quantitative_riemannLebesgue` — a synonym for the main theorem, emphasizing that it provides an explicit decay rate for the classical Riemann-Lebesgue lemma.",
-    "mathContext": "The quantitative Riemann-Lebesgue lemma: $\\hat{c}_n(f) \\to 0$ with explicit rate $O(1/|n|^\\alpha)$ for $\\alpha$-Hölder $f$.",
+    "content": "Three proved results: (1) $\\alpha > 1/2 \\Rightarrow 2\\alpha > 1$ (the square-summability threshold). (2) For $\\alpha \\in (1/2, 1]$, the decay exponent $2\\alpha \\in (1, 2]$ (Parseval range). (3) `quantitative_riemannLebesgue` \u2014 a synonym for the main theorem, emphasizing that it provides an explicit decay rate for the classical Riemann-Lebesgue lemma.",
+    "mathContext": "The quantitative Riemann-Lebesgue lemma: $\\hat{c}_n(f) \\to 0$ with explicit rate $O(1/|n|^\\alpha)$ for $\\alpha$-H\u00f6lder $f$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Riemann-Lebesgue lemma",
@@ -355,10 +355,10 @@
       "startLine": 256,
       "endLine": 263
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Lipschitz Case: O(1/|n|) Decay",
     "content": "`fourierCoeff_lipschitz_decay` specializes the main theorem to $\\alpha = 1$: Lipschitz functions have $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$. The proof is a one-liner: apply `fourierCoeff_holder_decay` with $\\alpha = 1$, then simplify via `rpow_one`. This recovers the classical integration-by-parts estimate for $C^1$ functions.",
-    "mathContext": "Lipschitz($C$) $\\subset$ Hölder($C$, 1): setting $\\alpha = 1$ in $\\frac{C}{2}(\\frac{T}{2|n|})^\\alpha$ gives $\\frac{CT}{4|n|}$. For $C^1$ functions with bounded derivative $|f'| \\leq M$: integration by parts gives $|\\hat{c}_n| \\leq \\frac{M}{2\\pi|n|/T}$, consistent with $C = M$ and $T = 2\\pi$.",
+    "mathContext": "Lipschitz($C$) $\\subset$ H\u00f6lder($C$, 1): setting $\\alpha = 1$ in $\\frac{C}{2}(\\frac{T}{2|n|})^\\alpha$ gives $\\frac{CT}{4|n|}$. For $C^1$ functions with bounded derivative $|f'| \\leq M$: integration by parts gives $|\\hat{c}_n| \\leq \\frac{M}{2\\pi|n|/T}$, consistent with $C = M$ and $T = 2\\pi$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Lipschitz continuity",
@@ -377,10 +377,10 @@
       "startLine": 281,
       "endLine": 336
     },
-    "type": "theorem",
-    "title": "Riemann-Lebesgue for Hölder Functions (58-Line Proof)",
-    "content": "`riemannLebesgue_of_holder` proves $\\hat{c}_n(f) \\to 0$ as $|n| \\to \\infty$ for $\\alpha$-Hölder functions ($\\alpha > 0$). This is the longest proof in the file (58 lines). The strategy:\n\n1. Rewrite the cofinite limit condition as finiteness of $\\{n : \\|\\hat{c}_n\\| \\geq \\varepsilon\\}$\n2. **Case $C = 0$**: bad set $\\subseteq \\{0\\}$ (trivial)\n3. **Case $C > 0$**: Show the bound sequence $a(k) = (C/2)(T/(2(k+1)))^\\alpha \\to 0$:\n   - $T/(2(k+1)) \\to 0$ via `Filter.Tendsto.div_atTop`\n   - $x^\\alpha$ continuous at 0 via `rpow_const`\n   - Multiply by constant $C/2$\n4. Extract $N_0$ with $a(N_0) < \\varepsilon$\n5. Show bad set $\\subseteq [-N_0-1, N_0+1]$ via monotonicity of the bound",
-    "mathContext": "The Riemann-Lebesgue lemma: $\\hat{f}(n) \\to 0$ for $f \\in L^1$. Here the quantitative rate $O(1/|n|^\\alpha)$ from Hölder continuity gives an *explicit* $N_0$ depending on $\\varepsilon$, $C$, $\\alpha$, and $T$. The `cofinite` filter formulation means: for every neighborhood of 0, the complement is finite.",
+    "type": "insight",
+    "title": "Riemann-Lebesgue for H\u00f6lder Functions (58-Line Proof)",
+    "content": "`riemannLebesgue_of_holder` proves $\\hat{c}_n(f) \\to 0$ as $|n| \\to \\infty$ for $\\alpha$-H\u00f6lder functions ($\\alpha > 0$). This is the longest proof in the file (58 lines). The strategy:\n\n1. Rewrite the cofinite limit condition as finiteness of $\\{n : \\|\\hat{c}_n\\| \\geq \\varepsilon\\}$\n2. **Case $C = 0$**: bad set $\\subseteq \\{0\\}$ (trivial)\n3. **Case $C > 0$**: Show the bound sequence $a(k) = (C/2)(T/(2(k+1)))^\\alpha \\to 0$:\n   - $T/(2(k+1)) \\to 0$ via `Filter.Tendsto.div_atTop`\n   - $x^\\alpha$ continuous at 0 via `rpow_const`\n   - Multiply by constant $C/2$\n4. Extract $N_0$ with $a(N_0) < \\varepsilon$\n5. Show bad set $\\subseteq [-N_0-1, N_0+1]$ via monotonicity of the bound",
+    "mathContext": "The Riemann-Lebesgue lemma: $\\hat{f}(n) \\to 0$ for $f \\in L^1$. Here the quantitative rate $O(1/|n|^\\alpha)$ from H\u00f6lder continuity gives an *explicit* $N_0$ depending on $\\varepsilon$, $C$, $\\alpha$, and $T$. The `cofinite` filter formulation means: for every neighborhood of 0, the complement is finite.",
     "significance": "key",
     "relatedConcepts": [
       "Riemann-Lebesgue lemma",
@@ -402,9 +402,9 @@
       "endLine": 389
     },
     "type": "concept",
-    "title": "C^k, C^∞, and Analytic Decay",
-    "content": "Three axioms completing the regularity-decay hierarchy:\n\n- `fourierCoeff_smooth_decay`: $C^k \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ (iterated integration by parts)\n- `fourierCoeff_Cinfty_rapid_decay` (**proved**): $C^\\infty \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ for all $k$ — follows immediately from smooth decay\n- `fourierCoeff_analytic_decay`: holomorphic on strip of width $\\delta \\Rightarrow |\\hat{c}_n| \\leq C e^{-2\\pi\\delta|n|/T}$\n\nThe $C^\\infty$ case is the only proved result: it applies the $C^k$ axiom for each $k$.",
-    "mathContext": "The hierarchy: $\\text{Hölder}(\\alpha) \\Rightarrow O(1/|n|^\\alpha)$ (proved) $\\subset C^k \\Rightarrow O(1/|n|^k)$ (axiom) $\\subset C^\\infty \\Rightarrow$ rapid (proved from axiom) $\\subset$ analytic $\\Rightarrow O(e^{-c|n|})$ (axiom). The exponential decay for analytic functions follows from contour shifting in the complex strip.",
+    "title": "C^k, C^\u221e, and Analytic Decay",
+    "content": "Three axioms completing the regularity-decay hierarchy:\n\n- `fourierCoeff_smooth_decay`: $C^k \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ (iterated integration by parts)\n- `fourierCoeff_Cinfty_rapid_decay` (**proved**): $C^\\infty \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ for all $k$ \u2014 follows immediately from smooth decay\n- `fourierCoeff_analytic_decay`: holomorphic on strip of width $\\delta \\Rightarrow |\\hat{c}_n| \\leq C e^{-2\\pi\\delta|n|/T}$\n\nThe $C^\\infty$ case is the only proved result: it applies the $C^k$ axiom for each $k$.",
+    "mathContext": "The hierarchy: $\\text{H\u00f6lder}(\\alpha) \\Rightarrow O(1/|n|^\\alpha)$ (proved) $\\subset C^k \\Rightarrow O(1/|n|^k)$ (axiom) $\\subset C^\\infty \\Rightarrow$ rapid (proved from axiom) $\\subset$ analytic $\\Rightarrow O(e^{-c|n|})$ (axiom). The exponential decay for analytic functions follows from contour shifting in the complex strip.",
     "significance": "key",
     "relatedConcepts": [
       "integration by parts",

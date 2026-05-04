@@ -7,8 +7,8 @@
       "endLine": 62
     },
     "type": "concept",
-    "title": "Myhill's Isomorphism Theorem: Computable Analogue of Schröder-Bernstein",
-    "content": "The module docstring presents Myhill's 1955 theorem as the computable version of Cantor-Schröder-Bernstein: classical CBS gives any bijection from two injections; Myhill's theorem gives a computable bijection from two computable injections. The key distinction is between many-one reducibility (≤ₘ, function need not be injective) and one-one reducibility (≤₁, function must be injective). The back-and-forth construction classifies each n by its backward orbit type (A: chain exits range(g), B: chain exits range(f), C: infinite). References to Myhill (1955, creative sets), Rogers (1967, §7.4), and Soare (2016, Chapter 3) establish the classical literature context.",
+    "title": "Myhill's Isomorphism Theorem: Computable Analogue of Schr\u00f6der-Bernstein",
+    "content": "The module docstring presents Myhill's 1955 theorem as the computable version of Cantor-Schr\u00f6der-Bernstein: classical CBS gives any bijection from two injections; Myhill's theorem gives a computable bijection from two computable injections. The key distinction is between many-one reducibility (\u2264\u2098, function need not be injective) and one-one reducibility (\u2264\u2081, function must be injective). The back-and-forth construction classifies each n by its backward orbit type (A: chain exits range(g), B: chain exits range(f), C: infinite). References to Myhill (1955, creative sets), Rogers (1967, \u00a77.4), and Soare (2016, Chapter 3) establish the classical literature context.",
     "mathContext": "One-one reducibility: $p \\leq_1 q$ iff $\\exists$ computable injective $f$ with $\\forall n, p(n) \\leftrightarrow q(f(n))$. One-one equivalence: $p \\equiv_1 q$ iff $p \\leq_1 q$ and $q \\leq_1 p$. Myhill: $p \\equiv_1 q \\iff \\exists$ computable permutation $e : \\mathbb{N} \\simeq \\mathbb{N}$ with $\\forall n, p(n) \\leftrightarrow q(e(n))$. Back-and-forth: orbit $n \\leftarrow g^{-1}(n) \\leftarrow f^{-1}(g^{-1}(n)) \\leftarrow \\cdots$ determines which injection to use for $\\sigma(n)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -16,7 +16,7 @@
       "many-one reducibility",
       "creative sets",
       "back-and-forth argument",
-      "Cantor-Schröder-Bernstein"
+      "Cantor-Schr\u00f6der-Bernstein"
     ],
     "prerequisites": [
       "computability theory basics",
@@ -54,9 +54,9 @@
       "startLine": 73,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Easy Direction: Computable Bijection Implies One-One Equivalence",
-    "content": "The easy direction is fully proved. Given a computable bijection e with Corresponds p e q, construct: (1) e witnesses p ≤₁ q — e is computable (he.1), injective (e.injective), and maps p to q (hpq). (2) e.symm witnesses q ≤₁ p — e.symm is computable (he.2), injective, and the iff q n ↔ p (e.symm n) follows by applying hpq at e.symm(n) and using e(e.symm(n)) = n. The simp/Equiv.apply_symm_apply lemma handles the cancellation. The variant one_one_equiv_of_computable_perm takes explicit Computable hypotheses rather than e.Computable.",
+    "content": "The easy direction is fully proved. Given a computable bijection e with Corresponds p e q, construct: (1) e witnesses p \u2264\u2081 q \u2014 e is computable (he.1), injective (e.injective), and maps p to q (hpq). (2) e.symm witnesses q \u2264\u2081 p \u2014 e.symm is computable (he.2), injective, and the iff q n \u2194 p (e.symm n) follows by applying hpq at e.symm(n) and using e(e.symm(n)) = n. The simp/Equiv.apply_symm_apply lemma handles the cancellation. The variant one_one_equiv_of_computable_perm takes explicit Computable hypotheses rather than e.Computable.",
     "mathContext": "Proof of $q(n) \\leftrightarrow p(e^{-1}(n))$: by hypothesis, $p(e^{-1}(n)) \\leftrightarrow q(e(e^{-1}(n))) = q(n)$. So the iff holds by symmetry. This uses the key identity $e \\circ e^{-1} = \\text{id}$, i.e., $e(e^{-1}(n)) = n$ for all $n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -79,8 +79,8 @@
       "endLine": 134
     },
     "type": "concept",
-    "title": "Partial Inverse via Nat.rfind — Infrastructure for the Hard Direction",
-    "content": "The partial inverse partialInverse(g)(m) = Nat.rfind(n ↦ decide(g(n) = m)) searches for a preimage of m under g using unbounded search. Three key lemmas are stated (with sorry): (1) partialInverse_partrec: if g is computable, the partial inverse is Partrec. (2) partialInverse_spec: if n ∈ partialInverse(g)(m), then g(n) = m. (3) partialInverse_dom: elements in range(g) have a defined partial inverse. The forward orbit fwdOrbit(f,g,n,k) = (g∘f)^k(n) is defined by recursion. isGFree(g)(n) captures that n ∉ range(g), the condition for Type A orbit classification.",
+    "title": "Partial Inverse via Nat.rfind \u2014 Infrastructure for the Hard Direction",
+    "content": "The partial inverse partialInverse(g)(m) = Nat.rfind(n \u21a6 decide(g(n) = m)) searches for a preimage of m under g using unbounded search. Three key lemmas are stated (with sorry): (1) partialInverse_partrec: if g is computable, the partial inverse is Partrec. (2) partialInverse_spec: if n \u2208 partialInverse(g)(m), then g(n) = m. (3) partialInverse_dom: elements in range(g) have a defined partial inverse. The forward orbit fwdOrbit(f,g,n,k) = (g\u2218f)^k(n) is defined by recursion. isGFree(g)(n) captures that n \u2209 range(g), the condition for Type A orbit classification.",
     "mathContext": "Partial inverse: $g^{-1}(m) := \\mu n[g(n) = m]$ (least $n$ with $g(n) = m$ if one exists, undefined otherwise). By `Nat.rfind_mem`: $n \\in \\text{Nat.rfind}(P) \\iff P(n) = \\text{true} \\wedge \\forall m < n, P(m) = \\text{false}$. `Partrec.rfind` states: if $P : \\mathbb{N} \\to \\mathbb{N}$ is partial recursive, then $\\mu n[P(n) = 0]$ is partial recursive. Applied here: $(m, n) \\mapsto \\text{decide}(g(n) = m)$ is computable (as $g$ is computable), so $g^{-1}$ is `Partrec`.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,9 +103,9 @@
       "startLine": 136,
       "endLine": 183
     },
-    "type": "theorem",
-    "title": "Myhill's Isomorphism Theorem — Full Statement with Hard Direction (sorry'd)",
-    "content": "The main theorem myhill_isomorphism states the full biconditional. The easy direction (←) immediately applies myhill_easy. The hard direction (→) is sorry'd with a detailed comment explaining the back-and-forth construction: at stage 2k, ensure k ∈ dom(σ); at stage 2k+1, ensure k ∈ range(σ). The priority argument uses: (a) each stage terminates by injectivity of f and g; (b) domain/range exhaustion covers all of ℕ; (c) the membership condition p(n) ↔ q(σ(n)) is preserved; (d) computability from partialInverse_partrec. The sorry covers approximately 200 lines of Partrec-based formalization.",
+    "type": "insight",
+    "title": "Myhill's Isomorphism Theorem \u2014 Full Statement with Hard Direction (sorry'd)",
+    "content": "The main theorem myhill_isomorphism states the full biconditional. The easy direction (\u2190) immediately applies myhill_easy. The hard direction (\u2192) is sorry'd with a detailed comment explaining the back-and-forth construction: at stage 2k, ensure k \u2208 dom(\u03c3); at stage 2k+1, ensure k \u2208 range(\u03c3). The priority argument uses: (a) each stage terminates by injectivity of f and g; (b) domain/range exhaustion covers all of \u2115; (c) the membership condition p(n) \u2194 q(\u03c3(n)) is preserved; (d) computability from partialInverse_partrec. The sorry covers approximately 200 lines of Partrec-based formalization.",
     "mathContext": "Hard direction strategy: define $\\sigma$ via stage-by-stage extension. At each stage, either extend $\\sigma$'s domain (using $f$) or ensure an element is in $\\sigma$'s range (using $g^{-1}$). Orbit classification: for $n$, let $n_0 = n$, $n_1 = g^{-1}(n_0)$, $n_2 = f^{-1}(n_1)$, $n_3 = g^{-1}(n_2), \\ldots$ If the chain terminates because $n_k \\notin \\text{range}(g)$ (Type A) or $n_k \\notin \\text{range}(f)$ (Type B), or runs forever (Type C): use $\\sigma(n) = f(n)$ for Type A and C, $\\sigma(n) = g^{-1}(n)$ for Type B.",
     "significance": "key",
     "relatedConcepts": [
@@ -131,8 +131,8 @@
     },
     "type": "insight",
     "title": "Computable Isomorphism is an Equivalence Relation",
-    "content": "Six theorems establish the equivalence-relation structure. myhill_self: use the identity permutation (Equiv.refl ℕ, trivially computable, trivially maps p to p). myhill_symm: if e witnesses p ≃_c q, then e.symm witnesses q ≃_c p (using the same Computable pair with .symm). myhill_trans: if e₁ witnesses p ≃_c q and e₂ witnesses q ≃_c r, then e₁.trans e₂ witnesses p ≃_c r (using Computable.trans, and (hpq n).trans (hqr (e₁ n)) for the correspondence). computable_iso_is_equivalence packages these into the Mathlib Equivalence structure.",
-    "mathContext": "Reflexivity: $e = \\text{id}$, $p(n) \\leftrightarrow p(\\text{id}(n)) = p(n)$ by `Iff.rfl`. Symmetry: $p(n) \\leftrightarrow q(e(n)) \\Rightarrow q(m) \\leftrightarrow p(e^{-1}(m))$ by substituting $n = e^{-1}(m)$. Transitivity: $p(n) \\leftrightarrow q(e_1(n)) \\leftrightarrow r(e_2(e_1(n))) = r((e_1 \\circ e_2)(n))$ using `Iff.trans`. Composition of computable functions is computable: `he₁.trans he₂`.",
+    "content": "Six theorems establish the equivalence-relation structure. myhill_self: use the identity permutation (Equiv.refl \u2115, trivially computable, trivially maps p to p). myhill_symm: if e witnesses p \u2243_c q, then e.symm witnesses q \u2243_c p (using the same Computable pair with .symm). myhill_trans: if e\u2081 witnesses p \u2243_c q and e\u2082 witnesses q \u2243_c r, then e\u2081.trans e\u2082 witnesses p \u2243_c r (using Computable.trans, and (hpq n).trans (hqr (e\u2081 n)) for the correspondence). computable_iso_is_equivalence packages these into the Mathlib Equivalence structure.",
+    "mathContext": "Reflexivity: $e = \\text{id}$, $p(n) \\leftrightarrow p(\\text{id}(n)) = p(n)$ by `Iff.rfl`. Symmetry: $p(n) \\leftrightarrow q(e(n)) \\Rightarrow q(m) \\leftrightarrow p(e^{-1}(m))$ by substituting $n = e^{-1}(m)$. Transitivity: $p(n) \\leftrightarrow q(e_1(n)) \\leftrightarrow r(e_2(e_1(n))) = r((e_1 \\circ e_2)(n))$ using `Iff.trans`. Composition of computable functions is computable: `he\u2081.trans he\u2082`.",
     "significance": "supporting",
     "relatedConcepts": [
       "Equivalence in Lean 4",
@@ -155,8 +155,8 @@
       "endLine": 257
     },
     "type": "insight",
-    "title": "Fixed Points: ∅ and ℕ Are the Extreme One-One Degree Classes",
-    "content": "The empty predicate (⊥) and universal predicate (⊤) are fixed points of computable isomorphism: any computable permutation maps ∅ to ∅ and ℕ to ℕ. Proof for ∅: if e maps ⊥ to p (meaning False ↔ p(e(n)) for all n), then for any m, surjectivity gives m = e(k) for some k, so p(m) = p(e(k)) ↔ False is False. Proof for ⊤: dual argument. These are the minimum and maximum in the one-one degree hierarchy, and they cannot be computably isomorphic to any other predicate.",
+    "title": "Fixed Points: \u2205 and \u2115 Are the Extreme One-One Degree Classes",
+    "content": "The empty predicate (\u22a5) and universal predicate (\u22a4) are fixed points of computable isomorphism: any computable permutation maps \u2205 to \u2205 and \u2115 to \u2115. Proof for \u2205: if e maps \u22a5 to p (meaning False \u2194 p(e(n)) for all n), then for any m, surjectivity gives m = e(k) for some k, so p(m) = p(e(k)) \u2194 False is False. Proof for \u22a4: dual argument. These are the minimum and maximum in the one-one degree hierarchy, and they cannot be computably isomorphic to any other predicate.",
     "mathContext": "Surjectivity of $e : \\mathbb{N} \\simeq \\mathbb{N}$: $\\forall m, \\exists k, e(k) = m$ (used as `e.surjective`). For the empty case: $\\text{False} \\leftrightarrow p(e(k))$ means $p(e(k)) = \\text{False}$; with $e(k) = m$ arbitrary, $p(m) = \\text{False}$. The one-one degrees form a partially ordered set (under $\\leq_1$) with $[\\emptyset]_1$ as minimum and $[\\mathbb{N}]_1$ as maximum.",
     "significance": "supporting",
     "relatedConcepts": [

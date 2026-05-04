@@ -2,97 +2,192 @@
   {
     "id": "ann-chcvaf-v2-header",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 1, "endLine": 47 },
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
     "type": "concept",
     "title": "V2 Architecture: Primary Decomposition Replaces the RCF Axiom",
-    "content": "The module header describes a V1→V2 upgrade that eliminates the RCF similarity axiom entirely. V1 axiomatized `nonderogatory_similar_companion` (M similar to C(minpoly M)) and derived the theorem from it. V2 replaces this with a direct primary decomposition argument from WIP04.\n\nThe three-step V2 proof structure:\n1. **[Proved, WIP04]** Primary decomposition: for each prime power $p_i^{e_i}$ of minpoly, construct a primary vector $v_i$ in the $p_i^{e_i}$-primary component via minimality of minpoly.\n2. **[Proved, WIP04]** CRT combination: $v = \\sum v_i$ is cyclic via Bezout projections.\n3. **[Proved in this file, Section II]** Factorization bridge: every monic polynomial of positive degree over a field factors into coprime monic irreducible prime powers.\n\nThe header quantifies the upgrade: V1's axiom required ~800 lines of Smith normal form and PID structure theory; V2's factorization bridge required ~50–150 lines of Mathlib UFD/multiset API.",
+    "content": "The module header describes a V1\u2192V2 upgrade that eliminates the RCF similarity axiom entirely. V1 axiomatized `nonderogatory_similar_companion` (M similar to C(minpoly M)) and derived the theorem from it. V2 replaces this with a direct primary decomposition argument from WIP04.\n\nThe three-step V2 proof structure:\n1. **[Proved, WIP04]** Primary decomposition: for each prime power $p_i^{e_i}$ of minpoly, construct a primary vector $v_i$ in the $p_i^{e_i}$-primary component via minimality of minpoly.\n2. **[Proved, WIP04]** CRT combination: $v = \\sum v_i$ is cyclic via Bezout projections.\n3. **[Proved in this file, Section II]** Factorization bridge: every monic polynomial of positive degree over a field factors into coprime monic irreducible prime powers.\n\nThe header quantifies the upgrade: V1's axiom required ~800 lines of Smith normal form and PID structure theory; V2's factorization bridge required ~50\u2013150 lines of Mathlib UFD/multiset API.",
     "mathContext": "The V2 proof bypasses companion matrices entirely. It works at the level of polynomial annihilator ideals: $v$ is cyclic iff its annihilator $\\mathrm{Ann}(v) = \\{r \\in K[X] : r(M)v = 0\\}$ satisfies $\\deg(\\mathrm{Ann}(v)) \\geq n$. Primary decomposition constructs $v_i$ with $\\mathrm{Ann}(v_i) = (p_i^{e_i})$; CRT shows $\\mathrm{Ann}(\\sum v_i) = \\mathrm{lcm}(p_i^{e_i}) = \\prod p_i^{e_i} = \\mathrm{minpoly}$, giving degree $n$.",
     "significance": "key",
-    "relatedConcepts": ["primary decomposition", "CRT combination", "Bezout projections", "V1 vs V2 axiom elimination", "WIP04"],
-    "prerequisites": ["rational canonical form overview", "primary decomposition for modules over a PID"]
+    "relatedConcepts": [
+      "primary decomposition",
+      "CRT combination",
+      "Bezout projections",
+      "V1 vs V2 axiom elimination",
+      "WIP04"
+    ],
+    "prerequisites": [
+      "rational canonical form overview",
+      "primary decomposition for modules over a PID"
+    ]
   },
   {
     "id": "ann-chcvaf-abbrev-design",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 48, "endLine": 68 },
+    "range": {
+      "startLine": 48,
+      "endLine": 68
+    },
     "type": "concept",
     "title": "Definition Aliasing via abbrev for Cross-File Compatibility",
-    "content": "`IsCyclicVector` and `IsNonderogatory` are declared as `abbrev` (reducible definitions) aliasing the `GeneralCyclicVector` namespace versions from `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04`. Using `abbrev` rather than `def` is critical: `abbrev` is `@[reducible] def` in Lean 4, meaning it is definitionally transparent. This allows the kernel to unify `IsCyclicVector M v` (this namespace) with `GeneralCyclicVector.IsCyclicVector M v` (WIP04) without explicit coercions.\n\nThe main theorem delegates to `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector`, which uses WIP04-namespaced types in its conclusion. Without `abbrev`, the result type `∃ v, GeneralCyclicVector.IsCyclicVector M v` would not typecheck against the goal `∃ v, IsCyclicVector M v` — even though both unfold to the same proposition.",
-    "mathContext": "In Lean 4, `@[reducible]` makes a definition transparent during *elaboration*: `simp`, `rw`, `exact`, and typeclass synthesis all see through it. A `@[semireducible] def` (the default) is only transparent during *kernel* type-checking but not elaboration — causing 'motive is not type correct' or 'type mismatch' errors in tactic proofs. The `abbrev` pattern is the idiomatic Lean 4 solution for namespace-local renaming when cross-namespace type compatibility is needed.",
+    "content": "`IsCyclicVector` and `IsNonderogatory` are declared as `abbrev` (reducible definitions) aliasing the `GeneralCyclicVector` namespace versions from `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04`. Using `abbrev` rather than `def` is critical: `abbrev` is `@[reducible] def` in Lean 4, meaning it is definitionally transparent. This allows the kernel to unify `IsCyclicVector M v` (this namespace) with `GeneralCyclicVector.IsCyclicVector M v` (WIP04) without explicit coercions.\n\nThe main theorem delegates to `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector`, which uses WIP04-namespaced types in its conclusion. Without `abbrev`, the result type `\u2203 v, GeneralCyclicVector.IsCyclicVector M v` would not typecheck against the goal `\u2203 v, IsCyclicVector M v` \u2014 even though both unfold to the same proposition.",
+    "mathContext": "In Lean 4, `@[reducible]` makes a definition transparent during *elaboration*: `simp`, `rw`, `exact`, and typeclass synthesis all see through it. A `@[semireducible] def` (the default) is only transparent during *kernel* type-checking but not elaboration \u2014 causing 'motive is not type correct' or 'type mismatch' errors in tactic proofs. The `abbrev` pattern is the idiomatic Lean 4 solution for namespace-local renaming when cross-namespace type compatibility is needed.",
     "significance": "supporting",
-    "relatedConcepts": ["abbrev vs def in Lean 4", "reducible definitions", "GeneralCyclicVector (WIP04)", "cross-namespace type compatibility"],
-    "prerequisites": ["Lean 4 elaboration vs kernel type-checking", "GeneralCyclicVector namespace from WIP04"]
+    "relatedConcepts": [
+      "abbrev vs def in Lean 4",
+      "reducible definitions",
+      "GeneralCyclicVector (WIP04)",
+      "cross-namespace type compatibility"
+    ],
+    "prerequisites": [
+      "Lean 4 elaboration vs kernel type-checking",
+      "GeneralCyclicVector namespace from WIP04"
+    ]
   },
   {
     "id": "ann-chcvaf-factorization-private-chain",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 73, "endLine": 151 },
+    "range": {
+      "startLine": 73,
+      "endLine": 151
+    },
     "type": "technique",
     "title": "Private UFD Infrastructure: Four Lemmas Building to monic_factored_form",
-    "content": "Section II is an API translation layer: WIP04's `nonderogatory_general_has_cyclic_vector` needs a `Fin k`-indexed factorization, but Mathlib's UFD API delivers a `Multiset`. Four private theorems bridge this gap:\n\n1. **`monic_irreducible_multiset_factorization`** (73–98): Given monic $\\mu$ of positive degree, produces a nonempty `Multiset` of monic irreducibles with product $\\mu$. Extracts from `UniqueFactorizationMonoid.exists_prime_factors` using unit normalization (scaling by leading coefficient inverse).\n\n2. **`coprime_of_distinct_monic_irreducible`** (100–109): Distinct monic irreducibles are coprime. Proof: if $p | q$ with $p, q$ monic irreducible, then $q = p \\cdot u$ with $u$ a unit, forcing $q = p$ by monic normalization — contradiction.\n\n3. **`coprime_pow_of_coprime_irreducible`** (111–115): Coprimality lifts to prime powers. One-liner: `IsCoprime.pow`.\n\n4. **`finset_factorization_from_multiset`** (117–151): The main API bridge. Given a multiset of monic irreducibles, produces `Fin k`-indexed distinct representatives with exponents. Proof by `Multiset.induction`: at each step, check if the new irreducible already appears (increment its exponent) or is new (extend the Fin array). The case split uses `Fin.cons` and matrix update via `if-then-else`.",
-    "mathContext": "The factorization challenge: `exists_prime_factors` gives `∃ f : Multiset K[X], (∀ p ∈ f, Irreducible p) ∧ f.prod = μ`. But WIP04 needs `∃ k : ℕ, ∃ p : Fin k → K[X], ∃ e : Fin k → ℕ, (∀ i, Irreducible (p i)) ∧ ... ∧ (∀ i j, i ≠ j → IsCoprime (p i ^ e i) (p j ^ e j)) ∧ μ = ∏ i, p i ^ e i`. The `finset_factorization_from_multiset` theorem performs the conversion, grouping repeated irreducibles by multiplicity and using `Fin.cons` to build the index type inductively.",
+    "content": "Section II is an API translation layer: WIP04's `nonderogatory_general_has_cyclic_vector` needs a `Fin k`-indexed factorization, but Mathlib's UFD API delivers a `Multiset`. Four private theorems bridge this gap:\n\n1. **`monic_irreducible_multiset_factorization`** (73\u201398): Given monic $\\mu$ of positive degree, produces a nonempty `Multiset` of monic irreducibles with product $\\mu$. Extracts from `UniqueFactorizationMonoid.exists_prime_factors` using unit normalization (scaling by leading coefficient inverse).\n\n2. **`coprime_of_distinct_monic_irreducible`** (100\u2013109): Distinct monic irreducibles are coprime. Proof: if $p | q$ with $p, q$ monic irreducible, then $q = p \\cdot u$ with $u$ a unit, forcing $q = p$ by monic normalization \u2014 contradiction.\n\n3. **`coprime_pow_of_coprime_irreducible`** (111\u2013115): Coprimality lifts to prime powers. One-liner: `IsCoprime.pow`.\n\n4. **`finset_factorization_from_multiset`** (117\u2013151): The main API bridge. Given a multiset of monic irreducibles, produces `Fin k`-indexed distinct representatives with exponents. Proof by `Multiset.induction`: at each step, check if the new irreducible already appears (increment its exponent) or is new (extend the Fin array). The case split uses `Fin.cons` and matrix update via `if-then-else`.",
+    "mathContext": "The factorization challenge: `exists_prime_factors` gives `\u2203 f : Multiset K[X], (\u2200 p \u2208 f, Irreducible p) \u2227 f.prod = \u03bc`. But WIP04 needs `\u2203 k : \u2115, \u2203 p : Fin k \u2192 K[X], \u2203 e : Fin k \u2192 \u2115, (\u2200 i, Irreducible (p i)) \u2227 ... \u2227 (\u2200 i j, i \u2260 j \u2192 IsCoprime (p i ^ e i) (p j ^ e j)) \u2227 \u03bc = \u220f i, p i ^ e i`. The `finset_factorization_from_multiset` theorem performs the conversion, grouping repeated irreducibles by multiplicity and using `Fin.cons` to build the index type inductively.",
     "significance": "technical",
-    "relatedConcepts": ["UniqueFactorizationMonoid.exists_prime_factors", "Multiset to Fin k conversion", "IsCoprime.pow", "Fin.cons"],
-    "prerequisites": ["UFD prime factorization", "Multiset.induction in Lean 4", "Fin array construction"]
+    "relatedConcepts": [
+      "UniqueFactorizationMonoid.exists_prime_factors",
+      "Multiset to Fin k conversion",
+      "IsCoprime.pow",
+      "Fin.cons"
+    ],
+    "prerequisites": [
+      "UFD prime factorization",
+      "Multiset.induction in Lean 4",
+      "Fin array construction"
+    ]
   },
   {
     "id": "ann-chcvaf-monic-factored-form",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 153, "endLine": 170 },
-    "type": "theorem",
+    "range": {
+      "startLine": 153,
+      "endLine": 170
+    },
+    "type": "insight",
     "title": "monic_factored_form: The Factorization Bridge (Proved via UFD)",
-    "content": "```lean\nprivate theorem monic_factored_form {K : Type*} [Field K]\n    (μ : K[X]) (hμ_monic : μ.Monic) (hμ_deg : 0 < μ.natDegree) :\n    ∃ (k : ℕ) (_ : 0 < k) (p : Fin k → K[X]) (e : Fin k → ℕ),\n      (∀ i, Irreducible (p i)) ∧\n      (∀ i, (p i).Monic) ∧\n      (∀ i, 0 < e i) ∧\n      (∀ i j : Fin k, i ≠ j → IsCoprime (p i ^ e i) (p j ^ e j)) ∧\n      μ = ∏ i : Fin k, p i ^ e i\n```\n\nThis is the factorization bridge: every monic polynomial of positive degree over a field factors into $k \\geq 1$ coprime monic irreducible prime powers. The proof assembles the four private helpers in sequence: `monic_irreducible_multiset_factorization` → `finset_factorization_from_multiset` → `coprime_of_distinct_monic_irreducible` → `coprime_pow_of_coprime_irreducible`.\n\n**The output type matches WIP04's interface exactly**: $k$ distinct irreducible factors with positive exponents satisfying pairwise coprimality at the prime-power level — this is precisely the signature `nonderogatory_general_has_cyclic_vector` requires for its Bezout decomposition.",
+    "content": "```lean\nprivate theorem monic_factored_form {K : Type*} [Field K]\n    (\u03bc : K[X]) (h\u03bc_monic : \u03bc.Monic) (h\u03bc_deg : 0 < \u03bc.natDegree) :\n    \u2203 (k : \u2115) (_ : 0 < k) (p : Fin k \u2192 K[X]) (e : Fin k \u2192 \u2115),\n      (\u2200 i, Irreducible (p i)) \u2227\n      (\u2200 i, (p i).Monic) \u2227\n      (\u2200 i, 0 < e i) \u2227\n      (\u2200 i j : Fin k, i \u2260 j \u2192 IsCoprime (p i ^ e i) (p j ^ e j)) \u2227\n      \u03bc = \u220f i : Fin k, p i ^ e i\n```\n\nThis is the factorization bridge: every monic polynomial of positive degree over a field factors into $k \\geq 1$ coprime monic irreducible prime powers. The proof assembles the four private helpers in sequence: `monic_irreducible_multiset_factorization` \u2192 `finset_factorization_from_multiset` \u2192 `coprime_of_distinct_monic_irreducible` \u2192 `coprime_pow_of_coprime_irreducible`.\n\n**The output type matches WIP04's interface exactly**: $k$ distinct irreducible factors with positive exponents satisfying pairwise coprimality at the prime-power level \u2014 this is precisely the signature `nonderogatory_general_has_cyclic_vector` requires for its Bezout decomposition.",
     "mathContext": "In $K[X]$ (a PID and UFD), the unique factorization theorem gives $\\mu = u \\cdot \\prod_{i=1}^k p_i^{e_i}$ with $u$ a unit, $p_i$ monic irreducible, $e_i \\geq 1$, and $p_i \\neq p_j$ for $i \\neq j$. Since $\\mu$ is monic, $u = 1$. Distinct monic irreducibles in $K[X]$ are coprime (proved by `coprime_of_distinct_monic_irreducible`), and coprimality extends to prime powers (by `IsCoprime.pow`). The pairwise coprimality of distinct prime powers is exactly the condition needed for the Chinese Remainder Theorem in WIP04's Bezout projection construction.",
     "significance": "key",
-    "relatedConcepts": ["monic_factored_form", "UFD factorization in K[X]", "coprime prime powers", "WIP04 interface contract"],
-    "prerequisites": ["UFD prime factorization theorem", "K[X] is a PID and UFD", "coprimality of distinct monic irreducibles"]
+    "relatedConcepts": [
+      "monic_factored_form",
+      "UFD factorization in K[X]",
+      "coprime prime powers",
+      "WIP04 interface contract"
+    ],
+    "prerequisites": [
+      "UFD prime factorization theorem",
+      "K[X] is a PID and UFD",
+      "coprimality of distinct monic irreducibles"
+    ]
   },
   {
     "id": "ann-chcvaf-main-theorem-v2",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 176, "endLine": 205 },
-    "type": "theorem",
+    "range": {
+      "startLine": 176,
+      "endLine": 205
+    },
+    "type": "insight",
     "title": "Main Theorem: Two-Case Proof Delegating to WIP04",
-    "content": "The proof of `nonderogatory_has_cyclic_vector` has two cases:\n\n**Case n = 0**: `Fin.elim0` is a function of type `Fin 0 → K`, serving as the trivially-cyclic empty vector. The cyclic condition `∀ p, p ≠ 0 → natDegree p < 0 → ...` is vacuously satisfied since `natDegree p < 0` is never true.\n\n**Case n > 0**: Four sequential steps:\n1. `hμ_monic` from `minpoly.monic (Matrix.isIntegral M)`\n2. `hμ_deg : (minpoly K M).natDegree = n` via nonderogatory `h` and `Matrix.charpoly_natDegree_eq_dim`\n3. `monic_factored_form (minpoly K M) hμ_monic (by omega)` produces `k, p, e, hp_irr, hp_monic, he_pos, hcop, hprod`\n4. `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector hk M h p e hp_irr hp_monic he_pos hcop hprod` closes the goal\n\nAll the algebraic work — primary decomposition, CRT Bezout projections, cyclic vector assembly — is encapsulated in WIP04's theorem. This file only supplies the factorization and the nonderogatory hypothesis.",
-    "mathContext": "The nonderogatory hypothesis `h : IsNonderogatory M` unfolds (via the `abbrev`) to `GeneralCyclicVector.IsNonderogatory M`, which is `minpoly K M = M.charpoly`. Combined with `Matrix.charpoly_natDegree_eq_dim` (the characteristic polynomial of an $n \\times n$ matrix has degree $n$), this gives `(minpoly K M).natDegree = n`. The factorization `minpoly = ∏ p_i^{e_i}` then provides exactly the input WIP04 needs: $k$ coprime irreducible prime powers spanning the eigenvalue structure of $M$.",
+    "content": "The proof of `nonderogatory_has_cyclic_vector` has two cases:\n\n**Case n = 0**: `Fin.elim0` is a function of type `Fin 0 \u2192 K`, serving as the trivially-cyclic empty vector. The cyclic condition `\u2200 p, p \u2260 0 \u2192 natDegree p < 0 \u2192 ...` is vacuously satisfied since `natDegree p < 0` is never true.\n\n**Case n > 0**: Four sequential steps:\n1. `h\u03bc_monic` from `minpoly.monic (Matrix.isIntegral M)`\n2. `h\u03bc_deg : (minpoly K M).natDegree = n` via nonderogatory `h` and `Matrix.charpoly_natDegree_eq_dim`\n3. `monic_factored_form (minpoly K M) h\u03bc_monic (by omega)` produces `k, p, e, hp_irr, hp_monic, he_pos, hcop, hprod`\n4. `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector hk M h p e hp_irr hp_monic he_pos hcop hprod` closes the goal\n\nAll the algebraic work \u2014 primary decomposition, CRT Bezout projections, cyclic vector assembly \u2014 is encapsulated in WIP04's theorem. This file only supplies the factorization and the nonderogatory hypothesis.",
+    "mathContext": "The nonderogatory hypothesis `h : IsNonderogatory M` unfolds (via the `abbrev`) to `GeneralCyclicVector.IsNonderogatory M`, which is `minpoly K M = M.charpoly`. Combined with `Matrix.charpoly_natDegree_eq_dim` (the characteristic polynomial of an $n \\times n$ matrix has degree $n$), this gives `(minpoly K M).natDegree = n`. The factorization `minpoly = \u220f p_i^{e_i}` then provides exactly the input WIP04 needs: $k$ coprime irreducible prime powers spanning the eigenvalue structure of $M$.",
     "significance": "key",
-    "relatedConcepts": ["nonderogatory_general_has_cyclic_vector (WIP04)", "GeneralCyclicVector", "minpoly.monic", "Matrix.isIntegral"],
-    "prerequisites": ["monic_factored_form", "IsNonderogatory as abbrev for GeneralCyclicVector.IsNonderogatory", "WIP04 theorem signature"]
+    "relatedConcepts": [
+      "nonderogatory_general_has_cyclic_vector (WIP04)",
+      "GeneralCyclicVector",
+      "minpoly.monic",
+      "Matrix.isIntegral"
+    ],
+    "prerequisites": [
+      "monic_factored_form",
+      "IsNonderogatory as abbrev for GeneralCyclicVector.IsNonderogatory",
+      "WIP04 theorem signature"
+    ]
   },
   {
     "id": "ann-chcvaf-finite-field",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 211, "endLine": 217 },
+    "range": {
+      "startLine": 211,
+      "endLine": 217
+    },
     "type": "insight",
     "title": "Finite Fields: Why Union Avoidance Fails but the Theorem Holds",
-    "content": "`nonderogatory_has_cyclic_vector_finite` specializes the main theorem to `[Fintype K]`. The proof is one line — apply the main theorem — but the conceptual significance is substantial. The union avoidance argument (used for infinite fields in `cayley-hamilton-minpoly-oq-05-oq-01`) works by observing that the non-cyclic vectors form finitely many proper subspaces; over an infinite field these cannot cover $K^n$. Over $\\mathbb{F}_2$ with $n = 2$: the 3 nonzero vectors are each covered by 3 proper 1-dimensional subspaces — the union IS all of $\\mathbb{F}_2^2 \\setminus \\{0\\}$. Union avoidance fails.\n\nThe primary decomposition proof bypasses cardinality entirely. The cyclic vector $v = \\sum v_i$ is constructed algebraically from the annihilator structure. The field $K$ appears only as `[Field K]` with no cardinality hypothesis.",
-    "mathContext": "The annihilator-based argument: the CRT combination $v = \\sum_i (b_i F_i)(M) w_i$ (Bezout terms $b_i$, complementary factors $F_i$) satisfies $\\mathrm{Ann}(v) = (\\prod_i p_i^{e_i}) = (\\mathrm{minpoly})$. This holds in any $K[X]$-module, regardless of whether $K$ is finite or infinite. The only cardinality-sensitive step in the union avoidance argument — finding $v \\notin \\bigcup_p \\ker(p(M))$ — is completely bypassed.",
+    "content": "`nonderogatory_has_cyclic_vector_finite` specializes the main theorem to `[Fintype K]`. The proof is one line \u2014 apply the main theorem \u2014 but the conceptual significance is substantial. The union avoidance argument (used for infinite fields in `cayley-hamilton-minpoly-oq-05-oq-01`) works by observing that the non-cyclic vectors form finitely many proper subspaces; over an infinite field these cannot cover $K^n$. Over $\\mathbb{F}_2$ with $n = 2$: the 3 nonzero vectors are each covered by 3 proper 1-dimensional subspaces \u2014 the union IS all of $\\mathbb{F}_2^2 \\setminus \\{0\\}$. Union avoidance fails.\n\nThe primary decomposition proof bypasses cardinality entirely. The cyclic vector $v = \\sum v_i$ is constructed algebraically from the annihilator structure. The field $K$ appears only as `[Field K]` with no cardinality hypothesis.",
+    "mathContext": "The annihilator-based argument: the CRT combination $v = \\sum_i (b_i F_i)(M) w_i$ (Bezout terms $b_i$, complementary factors $F_i$) satisfies $\\mathrm{Ann}(v) = (\\prod_i p_i^{e_i}) = (\\mathrm{minpoly})$. This holds in any $K[X]$-module, regardless of whether $K$ is finite or infinite. The only cardinality-sensitive step in the union avoidance argument \u2014 finding $v \\notin \\bigcup_p \\ker(p(M))$ \u2014 is completely bypassed.",
     "significance": "supporting",
-    "relatedConcepts": ["union avoidance", "finite fields", "F_2 failure case", "cardinality independence of primary decomposition"],
-    "prerequisites": ["nonderogatory_has_cyclic_vector", "union avoidance argument (OQ-01)", "primary decomposition approach"]
+    "relatedConcepts": [
+      "union avoidance",
+      "finite fields",
+      "F_2 failure case",
+      "cardinality independence of primary decomposition"
+    ],
+    "prerequisites": [
+      "nonderogatory_has_cyclic_vector",
+      "union avoidance argument (OQ-01)",
+      "primary decomposition approach"
+    ]
   },
   {
     "id": "ann-chcvaf-cyclic-characterization",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 219, "endLine": 230 },
+    "range": {
+      "startLine": 219,
+      "endLine": 230
+    },
     "type": "insight",
     "title": "Polynomial Annihilator Characterization: IFF Statement",
-    "content": "`cyclic_iff_not_killed_below_degree` gives the polynomial annihilator characterization: $v$ is cyclic for $M$ iff no nonzero polynomial $p$ of degree $< n$ annihilates $v$ under $M$.\n\nThe proof is a logic exercise. `constructor` splits into two implications:\n- Forward: if `v` is cyclic and `p ≠ 0, deg(p) < n, p(M)v = 0`, then `hcyc p hdeg hann` gives `p = 0` — contradicting `hne`.\n- Backward: to show `IsCyclicVector M v`, unfold to `∀ p ≠ 0, deg(p) < n → p(M)v ≠ 0`, which is exactly the hypothesis `h'`.\n\nThe `IsNonderogatory M` hypothesis in the signature is unused in the proof body. It documents intended use (nonderogatory matrices where `deg(minpoly) = n` makes the bound tight) without restricting the logic.",
-    "mathContext": "Formally: $v$ cyclic $\\iff$ $\\mathrm{Ann}(v) \\cap \\{p : \\deg(p) < n\\} = \\{0\\}$. Since $\\mathrm{Ann}(v)$ is an ideal of $K[X]$ (a PID), $\\mathrm{Ann}(v) = (q)$ for some $q$. The cyclic condition says $\\deg(q) \\geq n$ — i.e., the minimal polynomial of $v$ (under the $K[X]$-module action $X \\cdot v = Mv$) has degree $\\geq n = \\dim K^n$. For nonderogatory $M$, this forces $q = \\mathrm{minpoly}(M)$ and $K[X]/(q) \\cong K^n$ as $K[X]$-modules.",
+    "content": "`cyclic_iff_not_killed_below_degree` gives the polynomial annihilator characterization: $v$ is cyclic for $M$ iff no nonzero polynomial $p$ of degree $< n$ annihilates $v$ under $M$.\n\nThe proof is a logic exercise. `constructor` splits into two implications:\n- Forward: if `v` is cyclic and `p \u2260 0, deg(p) < n, p(M)v = 0`, then `hcyc p hdeg hann` gives `p = 0` \u2014 contradicting `hne`.\n- Backward: to show `IsCyclicVector M v`, unfold to `\u2200 p \u2260 0, deg(p) < n \u2192 p(M)v \u2260 0`, which is exactly the hypothesis `h'`.\n\nThe `IsNonderogatory M` hypothesis in the signature is unused in the proof body. It documents intended use (nonderogatory matrices where `deg(minpoly) = n` makes the bound tight) without restricting the logic.",
+    "mathContext": "Formally: $v$ cyclic $\\iff$ $\\mathrm{Ann}(v) \\cap \\{p : \\deg(p) < n\\} = \\{0\\}$. Since $\\mathrm{Ann}(v)$ is an ideal of $K[X]$ (a PID), $\\mathrm{Ann}(v) = (q)$ for some $q$. The cyclic condition says $\\deg(q) \\geq n$ \u2014 i.e., the minimal polynomial of $v$ (under the $K[X]$-module action $X \\cdot v = Mv$) has degree $\\geq n = \\dim K^n$. For nonderogatory $M$, this forces $q = \\mathrm{minpoly}(M)$ and $K[X]/(q) \\cong K^n$ as $K[X]$-modules.",
     "significance": "supporting",
-    "relatedConcepts": ["aeval (polynomial evaluation at a matrix)", "mulVec", "annihilator ideal", "K[X]-module structure"],
-    "prerequisites": ["polynomial evaluation via aeval in Lean 4", "IsCyclicVector definition", "K[X]-module structure on K^n"]
+    "relatedConcepts": [
+      "aeval (polynomial evaluation at a matrix)",
+      "mulVec",
+      "annihilator ideal",
+      "K[X]-module structure"
+    ],
+    "prerequisites": [
+      "polynomial evaluation via aeval in Lean 4",
+      "IsCyclicVector definition",
+      "K[X]-module structure on K^n"
+    ]
   },
   {
     "id": "ann-chcvaf-v2-upgrade-summary",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
-    "range": { "startLine": 236, "endLine": 264 },
+    "range": {
+      "startLine": 236,
+      "endLine": 264
+    },
     "type": "context",
     "title": "V2 Upgrade Summary: RCF Axiom Eliminated, Factorization Bridge Proved",
-    "content": "The closing docstring documents the V1→V2 upgrade with a precise mathematical delta:\n\n**V1 → V2 delta** (per docstring, lines 260–263):\n- Removed: `axiom nonderogatory_similar_companion` — the single-block RCF similarity theorem, requiring ~800 lines of Smith normal form + PID structure theory\n- Added: a `sorry` in `monic_factored_form` (~50 lines of normalizedFactors API)\n- Net: deep mathematical axiom → routine API exercise\n\n**Current state (V2-final)**: The `sorry` described in lines 253–258 has been filled by the four private theorems in Section II (`monic_irreducible_multiset_factorization`, `coprime_of_distinct_monic_irreducible`, `coprime_pow_of_coprime_irreducible`, `finset_factorization_from_multiset`). The docstring is stale relative to the current code.\n\nThe five proved results listed (lines 246–251) are accurate: primary decomposition and Bezout projections (WIP04), plus the three theorems in this file.",
+    "content": "The closing docstring documents the V1\u2192V2 upgrade with a precise mathematical delta:\n\n**V1 \u2192 V2 delta** (per docstring, lines 260\u2013263):\n- Removed: `axiom nonderogatory_similar_companion` \u2014 the single-block RCF similarity theorem, requiring ~800 lines of Smith normal form + PID structure theory\n- Added: a `sorry` in `monic_factored_form` (~50 lines of normalizedFactors API)\n- Net: deep mathematical axiom \u2192 routine API exercise\n\n**Current state (V2-final)**: The `sorry` described in lines 253\u2013258 has been filled by the four private theorems in Section II (`monic_irreducible_multiset_factorization`, `coprime_of_distinct_monic_irreducible`, `coprime_pow_of_coprime_irreducible`, `finset_factorization_from_multiset`). The docstring is stale relative to the current code.\n\nThe five proved results listed (lines 246\u2013251) are accurate: primary decomposition and Bezout projections (WIP04), plus the three theorems in this file.",
     "mathContext": "V1's axiom encoded the PID structure theorem for $K[X]$-modules: $K^n \\cong \\bigoplus_i K[X]/(d_i)$ with $d_1 \\mid \\cdots \\mid d_r$ the invariant factors. For nonderogatory $M$, this gives $K^n \\cong K[X]/(\\mathrm{minpoly})$, hence $M \\sim C(\\mathrm{minpoly})$. The proof requires Smith normal form for polynomial matrices ($\\sim$400 lines) + elementary divisor theory ($\\sim$200 lines) + the RCF reduction ($\\sim$200 lines). V2 needs none of this: the primary decomposition proof uses only $K[X]$ UFD structure (already in Mathlib) and the Bezout identity.",
     "significance": "context",
-    "relatedConcepts": ["V1 vs V2 architecture", "RCF similarity axiom", "monic_factored_form", "Smith normal form (not needed in V2)"],
-    "prerequisites": ["Smith normal form context (V1)", "PID structure theorem (V1)", "UFD factorization (V2)"]
+    "relatedConcepts": [
+      "V1 vs V2 architecture",
+      "RCF similarity axiom",
+      "monic_factored_form",
+      "Smith normal form (not needed in V2)"
+    ],
+    "prerequisites": [
+      "Smith normal form context (V1)",
+      "PID structure theorem (V1)",
+      "UFD factorization (V2)"
+    ]
   }
 ]

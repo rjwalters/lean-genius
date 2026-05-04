@@ -2,61 +2,123 @@
   {
     "id": "ann-cs-oq02-oq02-oq01-cancel",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
-    "range": { "startLine": 52, "endLine": 75 },
-    "type": "theorem",
-    "title": "ENNReal rpow Cancellation: X ≤ C·X^q Implies X^{1-q} ≤ C",
+    "range": {
+      "startLine": 52,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "ENNReal rpow Cancellation: X \u2264 C\u00b7X^q Implies X^{1-q} \u2264 C",
     "content": "The core lemma proves that if $X \\leq C \\cdot X^q$ with $0 \\leq q < 1$ and $X \\neq \\top$, then $X^{1-q} \\leq C$. The proof handles two cases: (1) $X = 0$: $0^{1-q} = 0 \\leq C$ since $1-q > 0$, discharged by `ENNReal.zero_rpow_of_pos`. (2) $0 < X < \\top$: factor $X = X^{1-q} \\cdot X^q$ using `ENNReal.rpow_add` with the ring identity $(1-q)+q = 1$; substitute into the hypothesis to get $X^{1-q} \\cdot X^q \\leq C \\cdot X^q$; cancel $X^q$ using `ENNReal.mul_le_mul_iff_left`, which requires $X^q$ to be both nonzero (`rpow_pos`) and finite (`rpow_eq_top_iff` negation). The positivity and finiteness of $X^q$ follow from the hypotheses $0 < X$ and $X \\neq \\top$. The `have key` intermediate step makes the factoring explicit: `X ^ (1 - q) * X ^ q = X` via `rpow_add` and `rpow_one`, then `calc` chains key and h to get the step inequality for cancellation.",
-    "mathContext": "$X^{1-q} \\cdot X^q = X^{(1-q)+q} = X^1 = X \\leq C \\cdot X^q$. Divide by $X^q > 0$: $X^{1-q} \\leq C$. Key ENNReal lemma: `mul_le_mul_iff_left` — for $0 < a < \\top$: $a \\cdot b \\leq a \\cdot c \\iff b \\leq c$. ENNReal differs from $\\mathbb{R}_{\\geq 0}$: requires explicit finiteness ($X \\neq \\top$) for `rpow_add` and cancellation, and the $X = 0$ case must be handled separately since $0 \\cdot \\top$ is indeterminate.",
+    "mathContext": "$X^{1-q} \\cdot X^q = X^{(1-q)+q} = X^1 = X \\leq C \\cdot X^q$. Divide by $X^q > 0$: $X^{1-q} \\leq C$. Key ENNReal lemma: `mul_le_mul_iff_left` \u2014 for $0 < a < \\top$: $a \\cdot b \\leq a \\cdot c \\iff b \\leq c$. ENNReal differs from $\\mathbb{R}_{\\geq 0}$: requires explicit finiteness ($X \\neq \\top$) for `rpow_add` and cancellation, and the $X = 0$ case must be handled separately since $0 \\cdot \\top$ is indeterminate.",
     "significance": "key",
-    "relatedConcepts": ["ENNReal.rpow_add", "ENNReal.mul_le_mul_iff_left", "ENNReal.rpow_pos", "ENNReal.rpow_eq_top_iff", "zero_rpow_of_pos"],
-    "prerequisites": ["ENNReal.rpow properties", "Lean 4 case splitting with rcases", "ENNReal finiteness conditions"]
+    "relatedConcepts": [
+      "ENNReal.rpow_add",
+      "ENNReal.mul_le_mul_iff_left",
+      "ENNReal.rpow_pos",
+      "ENNReal.rpow_eq_top_iff",
+      "zero_rpow_of_pos"
+    ],
+    "prerequisites": [
+      "ENNReal.rpow properties",
+      "Lean 4 case splitting with rcases",
+      "ENNReal finiteness conditions"
+    ]
   },
   {
     "id": "ann-cs-oq02-oq02-oq01-minkowski",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
-    "range": { "startLine": 87, "endLine": 99 },
-    "type": "theorem",
-    "title": "Minkowski Division Step: From ‖f+g‖_p^p ≤ (A+B)·‖f+g‖_p^{p-1} to ‖f+g‖_p ≤ A+B",
-    "content": "`minkowski_cancellation_step` instantiates the abstract cancellation at $q = (p-1)/p$. Given $X \\leq (A+B) \\cdot X^{(p-1)/p}$ (the Hölder bound on the $L^p$ norm), the theorem concludes $X^{1/p} \\leq A + B$. The proof has three steps: (1) verify $0 \\leq (p-1)/p$ from $p > 1$; (2) verify $(p-1)/p < 1$ via `div_lt_one`; (3) apply `ennreal_rpow_cancel` after rewriting the exponent $1 - (p-1)/p = 1/p$ using `field_simp; ring`. The exponent rewriting is the key arithmetic step: it converts the abstract $X^{1-q}$ into the concrete $X^{1/p} = \\|f+g\\|_p$. The design pattern — prove abstract lemma, then rewrite to match — is the cleanest way to handle the impedance mismatch between the abstract form ($1-q$) and the concrete goal ($1/p$).",
-    "mathContext": "$q = \\frac{p-1}{p}$, so $1 - q = 1 - \\frac{p-1}{p} = \\frac{p - (p-1)}{p} = \\frac{1}{p}$. The theorem converts: from $\\int(f+g)^p \\leq (\\|f\\|_p + \\|g\\|_p) \\cdot (\\int(f+g)^p)^{(p-1)/p}$ conclude $(\\int(f+g)^p)^{1/p} \\leq \\|f\\|_p + \\|g\\|_p$. The standard Minkowski proof (Lieb-Loss §2.3): apply Hölder to $|f+g|^p = |f+g|^{p-1} \\cdot (|f|+|g|)$, integrate, then divide by $\\|f+g\\|_p^{p-1}$. This file formalizes that final division.",
+    "range": {
+      "startLine": 87,
+      "endLine": 99
+    },
+    "type": "insight",
+    "title": "Minkowski Division Step: From \u2016f+g\u2016_p^p \u2264 (A+B)\u00b7\u2016f+g\u2016_p^{p-1} to \u2016f+g\u2016_p \u2264 A+B",
+    "content": "`minkowski_cancellation_step` instantiates the abstract cancellation at $q = (p-1)/p$. Given $X \\leq (A+B) \\cdot X^{(p-1)/p}$ (the H\u00f6lder bound on the $L^p$ norm), the theorem concludes $X^{1/p} \\leq A + B$. The proof has three steps: (1) verify $0 \\leq (p-1)/p$ from $p > 1$; (2) verify $(p-1)/p < 1$ via `div_lt_one`; (3) apply `ennreal_rpow_cancel` after rewriting the exponent $1 - (p-1)/p = 1/p$ using `field_simp; ring`. The exponent rewriting is the key arithmetic step: it converts the abstract $X^{1-q}$ into the concrete $X^{1/p} = \\|f+g\\|_p$. The design pattern \u2014 prove abstract lemma, then rewrite to match \u2014 is the cleanest way to handle the impedance mismatch between the abstract form ($1-q$) and the concrete goal ($1/p$).",
+    "mathContext": "$q = \\frac{p-1}{p}$, so $1 - q = 1 - \\frac{p-1}{p} = \\frac{p - (p-1)}{p} = \\frac{1}{p}$. The theorem converts: from $\\int(f+g)^p \\leq (\\|f\\|_p + \\|g\\|_p) \\cdot (\\int(f+g)^p)^{(p-1)/p}$ conclude $(\\int(f+g)^p)^{1/p} \\leq \\|f\\|_p + \\|g\\|_p$. The standard Minkowski proof (Lieb-Loss \u00a72.3): apply H\u00f6lder to $|f+g|^p = |f+g|^{p-1} \\cdot (|f|+|g|)$, integrate, then divide by $\\|f+g\\|_p^{p-1}$. This file formalizes that final division.",
     "significance": "key",
-    "relatedConcepts": ["Minkowski inequality", "Hölder inequality", "Lp spaces", "div_lt_one", "field_simp"],
-    "prerequisites": ["ennreal_rpow_cancel", "ENNReal norm as rpow of integral", "Hölder inequality for integrals"]
+    "relatedConcepts": [
+      "Minkowski inequality",
+      "H\u00f6lder inequality",
+      "Lp spaces",
+      "div_lt_one",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "ennreal_rpow_cancel",
+      "ENNReal norm as rpow of integral",
+      "H\u00f6lder inequality for integrals"
+    ]
   },
   {
     "id": "ann-cs-oq02-oq02-oq01-expid",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
-    "range": { "startLine": 105, "endLine": 107 },
+    "range": {
+      "startLine": 105,
+      "endLine": 107
+    },
     "type": "insight",
-    "title": "Exponent Identity: 1 - (p-1)/p = 1/p Connects Hölder and Minkowski Exponents",
-    "content": "`minkowski_exponent_identity` isolates the key exponent arithmetic as a named lemma: for $p \\neq 0$, $1 - (p-1)/p = 1/p$. This is proved by `field_simp [hp]; ring`. The separating out of this identity as a standalone theorem is pedagogically important: it is the single arithmetic fact that connects the Hölder exponent $(p-1)/p$ (dual exponent $1/q$ for conjugate $q = p/(p-1)$) to the final Minkowski exponent $1/p$. In the standard proof, this identity is used implicitly when 'dividing $\\|f+g\\|_p^p$ by $\\|f+g\\|_p^{p-1}$' — formally, it ensures the abstract cancellation parameter $1-q$ equals $1/p$ at $q = (p-1)/p$.",
-    "mathContext": "$1 - \\frac{p-1}{p} = \\frac{p}{p} - \\frac{p-1}{p} = \\frac{p-(p-1)}{p} = \\frac{1}{p}$. The identity connects two perspectives on the Hölder conjugate pair $(p, q)$ with $\\frac{1}{p} + \\frac{1}{q} = 1$: from the conjugate equation, $\\frac{1}{q} = 1 - \\frac{1}{p} = \\frac{p-1}{p}$, so $q = \\frac{p}{p-1}$ and the exponent in Hölder's bound is $\\frac{1}{q} = \\frac{p-1}{p}$. Canceling $\\|f+g\\|^{1/q}$ leaves $\\|f+g\\|^{1 - 1/q} = \\|f+g\\|^{1/p}$.",
+    "title": "Exponent Identity: 1 - (p-1)/p = 1/p Connects H\u00f6lder and Minkowski Exponents",
+    "content": "`minkowski_exponent_identity` isolates the key exponent arithmetic as a named lemma: for $p \\neq 0$, $1 - (p-1)/p = 1/p$. This is proved by `field_simp [hp]; ring`. The separating out of this identity as a standalone theorem is pedagogically important: it is the single arithmetic fact that connects the H\u00f6lder exponent $(p-1)/p$ (dual exponent $1/q$ for conjugate $q = p/(p-1)$) to the final Minkowski exponent $1/p$. In the standard proof, this identity is used implicitly when 'dividing $\\|f+g\\|_p^p$ by $\\|f+g\\|_p^{p-1}$' \u2014 formally, it ensures the abstract cancellation parameter $1-q$ equals $1/p$ at $q = (p-1)/p$.",
+    "mathContext": "$1 - \\frac{p-1}{p} = \\frac{p}{p} - \\frac{p-1}{p} = \\frac{p-(p-1)}{p} = \\frac{1}{p}$. The identity connects two perspectives on the H\u00f6lder conjugate pair $(p, q)$ with $\\frac{1}{p} + \\frac{1}{q} = 1$: from the conjugate equation, $\\frac{1}{q} = 1 - \\frac{1}{p} = \\frac{p-1}{p}$, so $q = \\frac{p}{p-1}$ and the exponent in H\u00f6lder's bound is $\\frac{1}{q} = \\frac{p-1}{p}$. Canceling $\\|f+g\\|^{1/q}$ leaves $\\|f+g\\|^{1 - 1/q} = \\|f+g\\|^{1/p}$.",
     "significance": "supporting",
-    "relatedConcepts": ["Hölder conjugate", "Lp exponent arithmetic", "field_simp", "ring tactic"],
-    "prerequisites": ["real field arithmetic", "Lp space exponent conventions", "Hölder conjugate pair identity"]
+    "relatedConcepts": [
+      "H\u00f6lder conjugate",
+      "Lp exponent arithmetic",
+      "field_simp",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "real field arithmetic",
+      "Lp space exponent conventions",
+      "H\u00f6lder conjugate pair identity"
+    ]
   },
   {
     "id": "ann-cs-oq02-oq02-oq01-pattern",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
-    "range": { "startLine": 52, "endLine": 99 },
+    "range": {
+      "startLine": 52,
+      "endLine": 99
+    },
     "type": "concept",
     "title": "Abstract-Then-Instantiate: The ENNReal Inequality Proof Pattern",
-    "content": "The two-theorem structure of this file — `ennreal_rpow_cancel` (abstract, arbitrary $q < 1$) followed by `minkowski_cancellation_step` (concrete, $q = (p-1)/p$) — exemplifies the 'abstract-then-instantiate' pattern for ENNReal inequalities. This pattern is valuable because: (1) the abstract form can be reused for other ENNReal rpow inequalities without reproving the $0/\\top$ casework; (2) the instantiation is a pure arithmetic rewrite (`field_simp; ring`), cleanly separating algebraic manipulation from analytic content; (3) the abstract theorem exposes the minimal hypotheses ($0 \\leq q < 1$, $X \\neq \\top$), making it clear which conditions are essential and which are artifacts of the Minkowski setting. The pattern contrasts with the alternative of proving the concrete Minkowski step directly, which would intermingle the algebra with the ENNReal case analysis.",
+    "content": "The two-theorem structure of this file \u2014 `ennreal_rpow_cancel` (abstract, arbitrary $q < 1$) followed by `minkowski_cancellation_step` (concrete, $q = (p-1)/p$) \u2014 exemplifies the 'abstract-then-instantiate' pattern for ENNReal inequalities. This pattern is valuable because: (1) the abstract form can be reused for other ENNReal rpow inequalities without reproving the $0/\\top$ casework; (2) the instantiation is a pure arithmetic rewrite (`field_simp; ring`), cleanly separating algebraic manipulation from analytic content; (3) the abstract theorem exposes the minimal hypotheses ($0 \\leq q < 1$, $X \\neq \\top$), making it clear which conditions are essential and which are artifacts of the Minkowski setting. The pattern contrasts with the alternative of proving the concrete Minkowski step directly, which would intermingle the algebra with the ENNReal case analysis.",
     "mathContext": "The abstract cancellation generalizes: for any $0 \\leq q < 1$ and $X, C \\in [0,\\infty]$ with $X < \\infty$, $X \\leq C \\cdot X^q \\Rightarrow X^{1-q} \\leq C$. Special cases: $q = 0$ gives $X \\leq C$ directly; $q \\to 1^-$ gives $X^{1-q} \\to 1$ so $C \\geq 1$ is required; $q = (p-1)/p$ for $p > 1$ is the Minkowski case. The condition $q < 1$ (rather than $q \\leq 1$) is essential: at $q = 1$, the inequality $X \\leq C \\cdot X$ imposes only $C \\geq 1$ without any constraint on $X$, so $X^{1-q} = X^0 = 1 \\leq C$ does not follow.",
     "significance": "key",
-    "relatedConcepts": ["separation of concerns", "ENNReal rpow reuse", "abstract algebra vs analysis", "Minkowski inequality"],
-    "prerequisites": ["ennreal_rpow_cancel theorem", "minkowski_cancellation_step", "ENNReal arithmetic"]
+    "relatedConcepts": [
+      "separation of concerns",
+      "ENNReal rpow reuse",
+      "abstract algebra vs analysis",
+      "Minkowski inequality"
+    ],
+    "prerequisites": [
+      "ennreal_rpow_cancel theorem",
+      "minkowski_cancellation_step",
+      "ENNReal arithmetic"
+    ]
   },
   {
     "id": "ann-cs-oq02-oq02-oq01-examples",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
-    "range": { "startLine": 110, "endLine": 113 },
+    "range": {
+      "startLine": 110,
+      "endLine": 113
+    },
     "type": "insight",
     "title": "Concrete Verification Examples for p = 2 and p = 3",
-    "content": "The two `example` theorems at lines 110 and 113 verify the exponent identity $1 - (p-1)/p = 1/p$ for $p = 2$ ($1 - 1/2 = 1/2$) and $p = 3$ ($1 - 2/3 = 1/3$), both proved by `norm_num`. These serve as machine-checked sanity checks: they confirm that `minkowski_exponent_identity` gives the expected values at the most common Lp space parameters ($p = 2$ is the Hilbert space $L^2$; $p = 3$ is the simplest non-Hilbert case). In formal proof developments, such `norm_num` examples are a lightweight way to catch off-by-one exponent errors or sign mistakes in general formulas. They also serve a documentation function: a reader unfamiliar with Hölder conjugates can verify the formula at concrete values before engaging with the general proof.",
-    "mathContext": "For $p = 2$: $\\frac{1}{p} = \\frac{1}{2}$, Hölder exponent $\\frac{p-1}{p} = \\frac{1}{2}$, conjugate $q = 2$ (self-dual). The Minkowski inequality for $p = 2$ is the triangle inequality for $L^2$: $\\|f+g\\|_2 \\leq \\|f\\|_2 + \\|g\\|_2$, equivalent to the Cauchy-Schwarz inequality. For $p = 3$: $\\frac{1}{p} = \\frac{1}{3}$, Hölder exponent $\\frac{2}{3}$, conjugate $q = 3/2$. These are the two standard examples when explaining Hölder conjugates.",
+    "content": "The two `example` theorems at lines 110 and 113 verify the exponent identity $1 - (p-1)/p = 1/p$ for $p = 2$ ($1 - 1/2 = 1/2$) and $p = 3$ ($1 - 2/3 = 1/3$), both proved by `norm_num`. These serve as machine-checked sanity checks: they confirm that `minkowski_exponent_identity` gives the expected values at the most common Lp space parameters ($p = 2$ is the Hilbert space $L^2$; $p = 3$ is the simplest non-Hilbert case). In formal proof developments, such `norm_num` examples are a lightweight way to catch off-by-one exponent errors or sign mistakes in general formulas. They also serve a documentation function: a reader unfamiliar with H\u00f6lder conjugates can verify the formula at concrete values before engaging with the general proof.",
+    "mathContext": "For $p = 2$: $\\frac{1}{p} = \\frac{1}{2}$, H\u00f6lder exponent $\\frac{p-1}{p} = \\frac{1}{2}$, conjugate $q = 2$ (self-dual). The Minkowski inequality for $p = 2$ is the triangle inequality for $L^2$: $\\|f+g\\|_2 \\leq \\|f\\|_2 + \\|g\\|_2$, equivalent to the Cauchy-Schwarz inequality. For $p = 3$: $\\frac{1}{p} = \\frac{1}{3}$, H\u00f6lder exponent $\\frac{2}{3}$, conjugate $q = 3/2$. These are the two standard examples when explaining H\u00f6lder conjugates.",
     "significance": "supporting",
-    "relatedConcepts": ["norm_num tactic", "L2 space", "Cauchy-Schwarz inequality", "Hölder conjugates p=2"],
-    "prerequisites": ["minkowski_exponent_identity", "Lp spaces for p=2 and p=3", "norm_num for rational arithmetic"]
+    "relatedConcepts": [
+      "norm_num tactic",
+      "L2 space",
+      "Cauchy-Schwarz inequality",
+      "H\u00f6lder conjugates p=2"
+    ],
+    "prerequisites": [
+      "minkowski_exponent_identity",
+      "Lp spaces for p=2 and p=3",
+      "norm_num for rational arithmetic"
+    ]
   }
 ]

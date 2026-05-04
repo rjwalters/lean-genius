@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Circle Area and Circumference Definitions",
-    "content": "Two core definitions: `circleArea r = π·r²` and `circumference ρ = 2π·ρ`. These are the antiderivative/integrand pair at the heart of the FTC proof. The relationship A'(r) = C(r) is precisely what the Fundamental Theorem of Calculus exploits. Separating them as named definitions makes the proof structure clear and allows the derivative theorem to state exactly `HasDerivAt circleArea (circumference r) r`. The `noncomputable section` wrapping is required because `Real.pi` is not computable — Lean cannot reduce it to a numeral, only reason about it symbolically.",
+    "content": "Two core definitions: `circleArea r = \u03c0\u00b7r\u00b2` and `circumference \u03c1 = 2\u03c0\u00b7\u03c1`. These are the antiderivative/integrand pair at the heart of the FTC proof. The relationship A'(r) = C(r) is precisely what the Fundamental Theorem of Calculus exploits. Separating them as named definitions makes the proof structure clear and allows the derivative theorem to state exactly `HasDerivAt circleArea (circumference r) r`. The `noncomputable section` wrapping is required because `Real.pi` is not computable \u2014 Lean cannot reduce it to a numeral, only reason about it symbolically.",
     "mathContext": "$A(r) = \\pi r^2$, $\\quad C(\\rho) = 2\\pi\\rho$, $\\quad A'(r) = C(r)$. The circumference is the integrand; the circle area is the antiderivative. The FTC then gives $\\int_0^r C(\\rho)\\,d\\rho = A(r) - A(0) = \\pi r^2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -30,9 +30,9 @@
       "startLine": 53,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Differentiating Circle Area via hasDerivAt_pow",
-    "content": "The theorem `hasDerivAt_circleArea` proves that `d/dr[πr²] = 2πr` using Mathlib's `hasDerivAt_pow` for `x^2`, combined with `const_mul` for the factor π. The `convert ... using 1; ring` idiom bridges the syntactic gap between `π * (2 * r)` (what `hasDerivAt_pow + const_mul` produces) and `2 * π * r` (what `circumference r` unfolds to). This is a standard Lean pattern: let Mathlib compute the derivative, then reconcile by `ring`.",
+    "content": "The theorem `hasDerivAt_circleArea` proves that `d/dr[\u03c0r\u00b2] = 2\u03c0r` using Mathlib's `hasDerivAt_pow` for `x^2`, combined with `const_mul` for the factor \u03c0. The `convert ... using 1; ring` idiom bridges the syntactic gap between `\u03c0 * (2 * r)` (what `hasDerivAt_pow + const_mul` produces) and `2 * \u03c0 * r` (what `circumference r` unfolds to). This is a standard Lean pattern: let Mathlib compute the derivative, then reconcile by `ring`.",
     "mathContext": "$(\\pi \\cdot x^2)' = \\pi \\cdot 2x = 2\\pi x$. Formally: `hasDerivAt_pow 2 r` gives $\\frac{d}{dx}[x^2] = 2x$; `const_mul` lifts it to $\\frac{d}{dx}[\\pi x^2] = \\pi \\cdot 2x$.",
     "significance": "key",
     "relatedConcepts": [
@@ -54,9 +54,9 @@
       "startLine": 62,
       "endLine": 69
     },
-    "type": "theorem",
-    "title": "FTC Proof: ∫₀ʳ 2πρ dρ = πr²",
-    "content": "This is Part I's main result. The proof assembles three Mathlib ingredients: (1) `h_deriv` — `hasDerivAt_circleArea` instantiated on the interval `[0, r]`; (2) `h_int` — `circumference` is continuous (hence integrable) via `fun_prop`; (3) `integral_eq_sub_of_hasDerivAt` — FTC Part 2. The `simp [circleArea]` at the end simplifies `πr² - π·0² = πr²`. The proof is remarkably short precisely because Mathlib's FTC statement matches our setup perfectly.",
+    "type": "insight",
+    "title": "FTC Proof: \u222b\u2080\u02b3 2\u03c0\u03c1 d\u03c1 = \u03c0r\u00b2",
+    "content": "This is Part I's main result. The proof assembles three Mathlib ingredients: (1) `h_deriv` \u2014 `hasDerivAt_circleArea` instantiated on the interval `[0, r]`; (2) `h_int` \u2014 `circumference` is continuous (hence integrable) via `fun_prop`; (3) `integral_eq_sub_of_hasDerivAt` \u2014 FTC Part 2. The `simp [circleArea]` at the end simplifies `\u03c0r\u00b2 - \u03c0\u00b70\u00b2 = \u03c0r\u00b2`. The proof is remarkably short precisely because Mathlib's FTC statement matches our setup perfectly.",
     "mathContext": "FTC Part 2: if $F'(x) = f(x)$ on $[a,b]$ and $f$ is integrable, then $\\int_a^b f(x)\\,dx = F(b) - F(a)$. Here $F = $ `circleArea`, $f = $ `circumference`, $a = 0$, $b = r$: $\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2 - \\pi \\cdot 0^2 = \\pi r^2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -81,7 +81,7 @@
     },
     "type": "definition",
     "title": "Inscribed Regular n-gon Area Formula",
-    "content": "A regular n-gon inscribed in a circle of radius r consists of n isosceles triangles meeting at the center, each with two sides of length r and an apex angle of 2π/n. The area of each triangle is (1/2)·r²·sin(2π/n), so the total inscribed area is `n/2 · r² · sin(2π/n)`. This is the formula Archimedes implicitly used (for n = 96 in his bound) and which converges to πr² as n → ∞.",
+    "content": "A regular n-gon inscribed in a circle of radius r consists of n isosceles triangles meeting at the center, each with two sides of length r and an apex angle of 2\u03c0/n. The area of each triangle is (1/2)\u00b7r\u00b2\u00b7sin(2\u03c0/n), so the total inscribed area is `n/2 \u00b7 r\u00b2 \u00b7 sin(2\u03c0/n)`. This is the formula Archimedes implicitly used (for n = 96 in his bound) and which converges to \u03c0r\u00b2 as n \u2192 \u221e.",
     "mathContext": "Regular $n$-gon inscribed in circle of radius $r$: $\\text{inscribedArea}(n, r) = \\frac{n}{2} r^2 \\sin\\!\\left(\\frac{2\\pi}{n}\\right)$. As $n \\to \\infty$: $\\frac{n}{2} r^2 \\sin\\!\\left(\\frac{2\\pi}{n}\\right) \\to \\frac{r^2}{2} \\cdot 2\\pi = \\pi r^2$, since $\\lim_{h \\to 0} \\frac{\\sin h}{h} = 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -104,8 +104,8 @@
       "endLine": 88
     },
     "type": "concept",
-    "title": "Helper: c/n → 0 via tendsto_inv_atTop_zero",
-    "content": "This helper proves that c/n → 0 in ℝ as n → ∞ over ℕ. The key ingredients are: (1) `tendsto_inv_atTop_zero`: 1/x → 0 as x → +∞; (2) `tendsto_natCast_atTop_atTop`: the cast ℕ → ℝ diverges to +∞; (3) `Filter.Tendsto.const_mul`: multiplying a convergent sequence by a constant. Note that `tendsto_const_div_atTop_nhds_0_nat` was removed from Mathlib 4.26, making this composition the current idiomatic approach.",
+    "title": "Helper: c/n \u2192 0 via tendsto_inv_atTop_zero",
+    "content": "This helper proves that c/n \u2192 0 in \u211d as n \u2192 \u221e over \u2115. The key ingredients are: (1) `tendsto_inv_atTop_zero`: 1/x \u2192 0 as x \u2192 +\u221e; (2) `tendsto_natCast_atTop_atTop`: the cast \u2115 \u2192 \u211d diverges to +\u221e; (3) `Filter.Tendsto.const_mul`: multiplying a convergent sequence by a constant. Note that `tendsto_const_div_atTop_nhds_0_nat` was removed from Mathlib 4.26, making this composition the current idiomatic approach.",
     "mathContext": "$\\frac{c}{n} = c \\cdot \\frac{1}{n} \\to c \\cdot 0 = 0$ as $n \\to +\\infty$. Uses $\\frac{1}{n} \\to 0$ via the composition $\\mathbb{N} \\xrightarrow{\\text{cast}} \\mathbb{R} \\xrightarrow{x^{-1}} 0$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -118,7 +118,7 @@
       "Filter.Tendsto",
       "nhds filter",
       "atTop filter",
-      "Nat.cast in ℝ"
+      "Nat.cast in \u211d"
     ]
   },
   {
@@ -129,8 +129,8 @@
       "endLine": 99
     },
     "type": "concept",
-    "title": "sin(h)/h → 1 via the Derivative Characterization",
-    "content": "This is the analytically subtle lemma underlying Archimedes' convergence. Rather than using L'Hôpital's rule or series expansions, the proof derives sin(h)/h → 1 directly from the definition of derivative: sin'(0) = cos(0) = 1, and the derivative is the limit of the difference quotient (sin(h) - sin(0))/(h - 0) = sin(h)/h. Mathlib's `hasDerivAt_iff_tendsto_slope` converts HasDerivAt to this exact limit. The `slope_def_field` and `sin_zero` simplifications then match the form of sin(h)/h.",
+    "title": "sin(h)/h \u2192 1 via the Derivative Characterization",
+    "content": "This is the analytically subtle lemma underlying Archimedes' convergence. Rather than using L'H\u00f4pital's rule or series expansions, the proof derives sin(h)/h \u2192 1 directly from the definition of derivative: sin'(0) = cos(0) = 1, and the derivative is the limit of the difference quotient (sin(h) - sin(0))/(h - 0) = sin(h)/h. Mathlib's `hasDerivAt_iff_tendsto_slope` converts HasDerivAt to this exact limit. The `slope_def_field` and `sin_zero` simplifications then match the form of sin(h)/h.",
     "mathContext": "$\\lim_{h \\to 0,\\, h \\neq 0} \\frac{\\sin h}{h} = \\lim_{h \\to 0,\\, h \\neq 0} \\frac{\\sin h - \\sin 0}{h - 0} = (\\sin)'(0) = \\cos(0) = 1$. This avoids circularity: the derivative of sin is derived in Mathlib from the power series, so no geometric reasoning is smuggled in.",
     "significance": "key",
     "relatedConcepts": [
@@ -141,7 +141,7 @@
     ],
     "prerequisites": [
       "Real.hasDerivAt_sin",
-      "HasDerivAt → Tendsto conversion",
+      "HasDerivAt \u2192 Tendsto conversion",
       "nhdsWithin",
       "slope_def_field"
     ]
@@ -154,8 +154,8 @@
       "endLine": 110
     },
     "type": "concept",
-    "title": "2π/n → 0 Through Nonzero Values",
-    "content": "This lemma establishes that 2π/n converges to 0 in `nhdsWithin 0 {0}ᶜ` — the punctured neighborhood of 0. The `nhdsWithin` is needed because `tendsto_sin_div_nhds_zero` requires the input to avoid 0 (to avoid division by zero). The proof splits into (1) 2π/n → 0 (from `tendsto_const_div_nat`) and (2) 2π/n ≠ 0 for n ≥ 1 (from positivity and cast). The `filter_upwards` tactic makes the eventual membership argument clean.",
+    "title": "2\u03c0/n \u2192 0 Through Nonzero Values",
+    "content": "This lemma establishes that 2\u03c0/n converges to 0 in `nhdsWithin 0 {0}\u1d9c` \u2014 the punctured neighborhood of 0. The `nhdsWithin` is needed because `tendsto_sin_div_nhds_zero` requires the input to avoid 0 (to avoid division by zero). The proof splits into (1) 2\u03c0/n \u2192 0 (from `tendsto_const_div_nat`) and (2) 2\u03c0/n \u2260 0 for n \u2265 1 (from positivity and cast). The `filter_upwards` tactic makes the eventual membership argument clean.",
     "mathContext": "We need $\\frac{2\\pi}{n} \\to 0$ through values $\\neq 0$, i.e., $\\frac{2\\pi}{n} \\in \\{0\\}^c$ eventually. For $n \\geq 1$: $\\frac{2\\pi}{n} > 0$ since $2\\pi > 0$ and $n > 0$. The `nhdsWithin` filter is exactly the right tool: convergence while staying in a set.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -178,8 +178,8 @@
       "endLine": 131
     },
     "type": "insight",
-    "title": "n·sin(2π/n) → 2π: Composing the Key Limits",
-    "content": "This is the analytical heart of Archimedes' proof. The key algebraic insight is writing n·sin(2π/n) = 2π·[sin(2π/n)/(2π/n)] — factoring out 2π and reducing to the sin(h)/h → 1 form with h = 2π/n. The `filter_upwards` with `field_simp` closes the algebraic equivalence, and then the composition `tendsto_sin_div_nhds_zero.comp tendsto_two_pi_div_atTop` assembles the limit chain. A subtlety: `key.symm` fails because `Filter.Eventually.symm` doesn't exist — instead, `key.mono (fun _ h => h.symm)` propagates the `EventuallyEq` symmetry correctly.",
+    "title": "n\u00b7sin(2\u03c0/n) \u2192 2\u03c0: Composing the Key Limits",
+    "content": "This is the analytical heart of Archimedes' proof. The key algebraic insight is writing n\u00b7sin(2\u03c0/n) = 2\u03c0\u00b7[sin(2\u03c0/n)/(2\u03c0/n)] \u2014 factoring out 2\u03c0 and reducing to the sin(h)/h \u2192 1 form with h = 2\u03c0/n. The `filter_upwards` with `field_simp` closes the algebraic equivalence, and then the composition `tendsto_sin_div_nhds_zero.comp tendsto_two_pi_div_atTop` assembles the limit chain. A subtlety: `key.symm` fails because `Filter.Eventually.symm` doesn't exist \u2014 instead, `key.mono (fun _ h => h.symm)` propagates the `EventuallyEq` symmetry correctly.",
     "mathContext": "$n \\sin\\!\\left(\\frac{2\\pi}{n}\\right) = 2\\pi \\cdot \\frac{\\sin(2\\pi/n)}{2\\pi/n} \\xrightarrow{n \\to \\infty} 2\\pi \\cdot 1 = 2\\pi$. The substitution $h = 2\\pi/n \\to 0$ reduces this to $\\lim_{h \\to 0} \\frac{\\sin h}{h} = 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -202,9 +202,9 @@
       "startLine": 134,
       "endLine": 145
     },
-    "type": "theorem",
-    "title": "Archimedes' Main Theorem: inscribedArea n r → πr²",
-    "content": "This theorem is Archimedes' exhaustion result in modern dress. The proof rewrites inscribedArea as (r²/2) · (n · sin(2π/n)) and applies `tendsto_const_nhds.mul tendsto_n_sin_two_pi_div_n` — the limit of a product is the product of limits. The goal `πr²` is rewritten as `r²/2 · 2π` by ring to match, then `congr'` with a filter_upwards closes the final algebraic identity.",
+    "type": "insight",
+    "title": "Archimedes' Main Theorem: inscribedArea n r \u2192 \u03c0r\u00b2",
+    "content": "This theorem is Archimedes' exhaustion result in modern dress. The proof rewrites inscribedArea as (r\u00b2/2) \u00b7 (n \u00b7 sin(2\u03c0/n)) and applies `tendsto_const_nhds.mul tendsto_n_sin_two_pi_div_n` \u2014 the limit of a product is the product of limits. The goal `\u03c0r\u00b2` is rewritten as `r\u00b2/2 \u00b7 2\u03c0` by ring to match, then `congr'` with a filter_upwards closes the final algebraic identity.",
     "mathContext": "$\\text{inscribedArea}(n, r) = \\frac{n}{2} r^2 \\sin\\!\\left(\\frac{2\\pi}{n}\\right) = \\frac{r^2}{2} \\cdot \\underbrace{n \\sin\\!\\left(\\frac{2\\pi}{n}\\right)}_{\\to 2\\pi} \\to \\frac{r^2}{2} \\cdot 2\\pi = \\pi r^2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -226,20 +226,20 @@
       "startLine": 155,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Central Connection: Archimedes Limit = FTC Integral",
-    "content": "This is the theorem that answers OQ-01-OQ-02-OQ-03. The proof is just three lines: rewrite the integral as `circleArea r` (using `circumference_integral_eq`), unfold `circleArea` to `π·r²`, and cite `tendsto_inscribed_to_pi_r_sq`. The conceptual content is deep: two 2000-year-apart limiting processes converge to the same value, and in Lean this reduces to two lines of term rewriting. The connection is made rigorous by working in the same metric space ℝ with its unique Hausdorff topology.",
+    "content": "This is the theorem that answers OQ-01-OQ-02-OQ-03. The proof is just three lines: rewrite the integral as `circleArea r` (using `circumference_integral_eq`), unfold `circleArea` to `\u03c0\u00b7r\u00b2`, and cite `tendsto_inscribed_to_pi_r_sq`. The conceptual content is deep: two 2000-year-apart limiting processes converge to the same value, and in Lean this reduces to two lines of term rewriting. The connection is made rigorous by working in the same metric space \u211d with its unique Hausdorff topology.",
     "mathContext": "$\\lim_{n\\to\\infty} \\text{inscribedArea}(n, r) = \\pi r^2 = \\int_0^r 2\\pi\\rho\\,d\\rho$. Formally: the Archimedes sequence has limit `circleArea r`, which is also the FTC integral value. Both limits live in $\\mathbb{R}$ and equal the same expression.",
     "significance": "key",
     "relatedConcepts": [
-      "limit uniqueness in ℝ",
+      "limit uniqueness in \u211d",
       "Hausdorff topology",
       "circumference_integral_eq",
       "tendsto_inscribed_to_pi_r_sq"
     ],
     "prerequisites": [
       "Filter.Tendsto",
-      "nhds in ℝ",
+      "nhds in \u211d",
       "Hausdorff property",
       "circumference_integral_eq"
     ]
@@ -251,9 +251,9 @@
       "startLine": 170,
       "endLine": 182
     },
-    "type": "theorem",
-    "title": "Inscribed Polygon ≤ πr² via sin(x) < x",
-    "content": "This theorem proves the upper bound inscribedArea(n, r) ≤ πr² for all n and r ≥ 0, using Mathlib's `Real.sin_lt`: sin(x) < x for x > 0. The proof handles n = 0 separately (0-gon has area 0), then for n ≥ 1 constructs the chain: `n/2 · r² · sin(2π/n) ≤ n/2 · r² · (2π/n) = πr²`. Notably, `field_simp [ne_of_gt hn']` closes the algebraic simplification completely — adding `; ring` after it would cause a failure.",
+    "type": "insight",
+    "title": "Inscribed Polygon \u2264 \u03c0r\u00b2 via sin(x) < x",
+    "content": "This theorem proves the upper bound inscribedArea(n, r) \u2264 \u03c0r\u00b2 for all n and r \u2265 0, using Mathlib's `Real.sin_lt`: sin(x) < x for x > 0. The proof handles n = 0 separately (0-gon has area 0), then for n \u2265 1 constructs the chain: `n/2 \u00b7 r\u00b2 \u00b7 sin(2\u03c0/n) \u2264 n/2 \u00b7 r\u00b2 \u00b7 (2\u03c0/n) = \u03c0r\u00b2`. Notably, `field_simp [ne_of_gt hn']` closes the algebraic simplification completely \u2014 adding `; ring` after it would cause a failure.",
     "mathContext": "For $x > 0$: $\\sin x < x$, so $\\frac{n}{2}r^2\\sin\\!\\left(\\frac{2\\pi}{n}\\right) \\leq \\frac{n}{2}r^2 \\cdot \\frac{2\\pi}{n} = \\pi r^2$. This is the classical upper bound in Archimedes' double exhaustion: inscribed polygons never overshoot the circle's area.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -276,14 +276,14 @@
       "startLine": 190,
       "endLine": 200
     },
-    "type": "theorem",
-    "title": "ε-N Formulation of Archimedes' Approximation",
-    "content": "This theorem restates the Archimedes convergence in classical ε-N form: for any ε > 0, there exists N such that for all n ≥ N, |inscribedArea(n, r) - πr²| < ε. The proof extracts this directly from the Filter.Tendsto result via `Metric.tendsto_atTop`, which converts topological filter convergence into the metric ε-N definition. This bridge between filter-style and metric convergence is a standard Mathlib pattern.",
+    "type": "insight",
+    "title": "\u03b5-N Formulation of Archimedes' Approximation",
+    "content": "This theorem restates the Archimedes convergence in classical \u03b5-N form: for any \u03b5 > 0, there exists N such that for all n \u2265 N, |inscribedArea(n, r) - \u03c0r\u00b2| < \u03b5. The proof extracts this directly from the Filter.Tendsto result via `Metric.tendsto_atTop`, which converts topological filter convergence into the metric \u03b5-N definition. This bridge between filter-style and metric convergence is a standard Mathlib pattern.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N \\in \\mathbb{N},\\; \\forall n \\geq N,\\; |\\text{inscribedArea}(n,r) - \\pi r^2| < \\varepsilon$. Equivalent to the filter formulation via `Metric.tendsto_atTop`.",
     "significance": "supporting",
     "relatedConcepts": [
       "Metric.tendsto_atTop",
-      "ε-N convergence",
+      "\u03b5-N convergence",
       "Real.dist_eq as absolute value",
       "filter-to-metric bridge"
     ],
@@ -300,16 +300,16 @@
       "startLine": 203,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Uniqueness: Hausdorff Identifies the Two Methods",
-    "content": "This one-line proof is the philosophical core of the file. `tendsto_nhds_unique` states that if a sequence has two limits in a Hausdorff space, they must be equal. Here: if inscribedArea(n, r) → A for any A, then A = the FTC integral. The proof is literally `tendsto_nhds_unique h_exhaust (exhaustion_equals_ftc r)`. This formalizes exactly what Archimedes was implicitly assuming: that the circle has a unique area, and any consistent approximation scheme converges to it.",
+    "content": "This one-line proof is the philosophical core of the file. `tendsto_nhds_unique` states that if a sequence has two limits in a Hausdorff space, they must be equal. Here: if inscribedArea(n, r) \u2192 A for any A, then A = the FTC integral. The proof is literally `tendsto_nhds_unique h_exhaust (exhaustion_equals_ftc r)`. This formalizes exactly what Archimedes was implicitly assuming: that the circle has a unique area, and any consistent approximation scheme converges to it.",
     "mathContext": "In a Hausdorff topological space, limits are unique: if $x_n \\to L_1$ and $x_n \\to L_2$, then $L_1 = L_2$. Here $\\mathbb{R}$ is Hausdorff (T2), so $\\lim_n \\text{inscribedArea}(n,r) = \\int_0^r 2\\pi\\rho\\,d\\rho$ regardless of which path gives the limit.",
     "significance": "key",
     "relatedConcepts": [
       "Hausdorff uniqueness of limits",
       "tendsto_nhds_unique",
       "T2Space",
-      "limit uniqueness in ℝ"
+      "limit uniqueness in \u211d"
     ],
     "prerequisites": [
       "Filter.tendsto_nhds_unique",
@@ -324,10 +324,10 @@
       "startLine": 162,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Conjunction: FTC Integral and Exhaustion Both Equal circleArea",
-    "content": "`ftc_equals_exhaustion_limit` bundles both core facts into a single conjunction: (1) the FTC integral equals `circleArea r`; (2) the Archimedes sequence converges to `circleArea r`. The proof is a pair `⟨circumference_integral_eq r, ...⟩` where the second component uses `simp [circleArea]` to unfold the definition before applying `tendsto_inscribed_to_pi_r_sq`. This conjunction theorem is useful as a single witness: any downstream result needing both facts can destructure `ftc_equals_exhaustion_limit r` rather than citing the two theorems separately. In Lean, conjunction proofs like `⟨h1, h2⟩` are anonymous constructors for `And`.",
-    "mathContext": "$\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$ (FTC, Part I) $\\wedge$ $\\lim_{n\\to\\infty}\\text{inscribedArea}(n,r) = \\pi r^2$ (Archimedes, Part II). Together: the common limit value is `circleArea r = πr²`.",
+    "content": "`ftc_equals_exhaustion_limit` bundles both core facts into a single conjunction: (1) the FTC integral equals `circleArea r`; (2) the Archimedes sequence converges to `circleArea r`. The proof is a pair `\u27e8circumference_integral_eq r, ...\u27e9` where the second component uses `simp [circleArea]` to unfold the definition before applying `tendsto_inscribed_to_pi_r_sq`. This conjunction theorem is useful as a single witness: any downstream result needing both facts can destructure `ftc_equals_exhaustion_limit r` rather than citing the two theorems separately. In Lean, conjunction proofs like `\u27e8h1, h2\u27e9` are anonymous constructors for `And`.",
+    "mathContext": "$\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$ (FTC, Part I) $\\wedge$ $\\lim_{n\\to\\infty}\\text{inscribedArea}(n,r) = \\pi r^2$ (Archimedes, Part II). Together: the common limit value is `circleArea r = \u03c0r\u00b2`.",
     "significance": "supporting",
     "relatedConcepts": [
       "And introduction",
@@ -348,10 +348,10 @@
       "startLine": 184,
       "endLine": 187
     },
-    "type": "theorem",
-    "title": "Archimedes' Squeeze from Below: Inscribed ≤ circleArea",
-    "content": "`archimedes_squeeze_from_below` reframes `inscribed_area_le_pi_r_sq` using the `circleArea` definition: for any n and r ≥ 0, `inscribedArea n r ≤ circleArea r`. The proof is one line: `simp [circleArea]; exact inscribed_area_le_pi_r_sq n r hr`. This phrasing matches Archimedes' geometric intuition: inscribed polygons are strictly inside the circle, so their area never exceeds the true circle area. Combined with convergence from below, this is the lower half of Archimedes' double exhaustion squeeze. In Archimedes' original proof, he used both inscribed (lower bound) and circumscribed (upper bound) polygons to trap the true area by a two-sided argument; this theorem formalizes the lower bound.",
-    "mathContext": "$\\forall n \\in \\mathbb{N},\\; r \\geq 0 \\implies \\text{inscribedArea}(n,r) \\leq \\pi r^2 = \\text{circleArea}(r)$. The sequence is monotone-eventually and bounded above by the limit — a sufficient condition for convergence in ℝ.",
+    "type": "insight",
+    "title": "Archimedes' Squeeze from Below: Inscribed \u2264 circleArea",
+    "content": "`archimedes_squeeze_from_below` reframes `inscribed_area_le_pi_r_sq` using the `circleArea` definition: for any n and r \u2265 0, `inscribedArea n r \u2264 circleArea r`. The proof is one line: `simp [circleArea]; exact inscribed_area_le_pi_r_sq n r hr`. This phrasing matches Archimedes' geometric intuition: inscribed polygons are strictly inside the circle, so their area never exceeds the true circle area. Combined with convergence from below, this is the lower half of Archimedes' double exhaustion squeeze. In Archimedes' original proof, he used both inscribed (lower bound) and circumscribed (upper bound) polygons to trap the true area by a two-sided argument; this theorem formalizes the lower bound.",
+    "mathContext": "$\\forall n \\in \\mathbb{N},\\; r \\geq 0 \\implies \\text{inscribedArea}(n,r) \\leq \\pi r^2 = \\text{circleArea}(r)$. The sequence is monotone-eventually and bounded above by the limit \u2014 a sufficient condition for convergence in \u211d.",
     "significance": "supporting",
     "relatedConcepts": [
       "Archimedes double exhaustion",
@@ -372,9 +372,9 @@
       "startLine": 208,
       "endLine": 213
     },
-    "type": "theorem",
-    "title": "Consistency Check: πr² Equals the FTC Integral",
-    "content": "`exhaustion_consistent` proves the equality `πr² = ∫₀ʳ 2πρ dρ` — the direction opposite to `circumference_integral_eq`. The proof uses `circumference_integral_eq` and then reverses with `.symm`. This seemingly trivial theorem serves as a sanity check and an explicitly named entry point for downstream proofs that need the equality in the form `Real.pi * r ^ 2 = ∫ ρ ...`. In Lean, equality is symmetric but not definitionally, so having both directions as named theorems avoids repeated `rw [← circumference_integral_eq]` patterns.",
+    "type": "insight",
+    "title": "Consistency Check: \u03c0r\u00b2 Equals the FTC Integral",
+    "content": "`exhaustion_consistent` proves the equality `\u03c0r\u00b2 = \u222b\u2080\u02b3 2\u03c0\u03c1 d\u03c1` \u2014 the direction opposite to `circumference_integral_eq`. The proof uses `circumference_integral_eq` and then reverses with `.symm`. This seemingly trivial theorem serves as a sanity check and an explicitly named entry point for downstream proofs that need the equality in the form `Real.pi * r ^ 2 = \u222b \u03c1 ...`. In Lean, equality is symmetric but not definitionally, so having both directions as named theorems avoids repeated `rw [\u2190 circumference_integral_eq]` patterns.",
     "mathContext": "$\\pi r^2 = \\int_0^r 2\\pi\\rho\\,d\\rho$. This is the converse of the FTC direction `circumference_integral_eq`: the FTC gives $\\int = \\pi r^2$; this theorem gives $\\pi r^2 = \\int$.",
     "significance": "supporting",
     "relatedConcepts": [

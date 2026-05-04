@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Preamble: The Impossibility of Infinite-Dimensional Lebesgue Measure",
-    "content": "The module docstring (lines 3-20) frames the open question: there is NO translation-invariant σ-finite measure on an infinite-dimensional separable Banach space other than the zero measure. The proof strategy is sketched in lines 30-43: take an orthonormal sequence {eₙ}, note that B(eₙ, 1/3) are pairwise disjoint (since ‖eₙ - eₘ‖ = √2 > 2/3), and all have equal measure by translation invariance. Their countable union fits in a bounded set, so σ-finiteness forces each ball to have measure 0, hence the full measure is 0. Three alternatives to Lebesgue measure in infinite dimensions are listed: Gaussian measures (covariance-determined), cylinder set measures (not σ-additive in general), and abstract Wiener spaces (Gross 1967).",
+    "content": "The module docstring (lines 3-20) frames the open question: there is NO translation-invariant \u03c3-finite measure on an infinite-dimensional separable Banach space other than the zero measure. The proof strategy is sketched in lines 30-43: take an orthonormal sequence {e\u2099}, note that B(e\u2099, 1/3) are pairwise disjoint (since \u2016e\u2099 - e\u2098\u2016 = \u221a2 > 2/3), and all have equal measure by translation invariance. Their countable union fits in a bounded set, so \u03c3-finiteness forces each ball to have measure 0, hence the full measure is 0. Three alternatives to Lebesgue measure in infinite dimensions are listed: Gaussian measures (covariance-determined), cylinder set measures (not \u03c3-additive in general), and abstract Wiener spaces (Gross 1967).",
     "mathContext": "The key obstruction: if $\\mu$ is a nonzero translation-invariant $\\sigma$-finite Borel measure on an infinite-dimensional Hilbert space $H$, and $\\{e_n\\}$ is an orthonormal sequence, then the balls $B(e_n, 1/3)$ are pairwise disjoint (since $\\|e_n - e_m\\| = \\sqrt{2} > 2/3$), contained in $B(0, 1 + 1/3)$, and each has the same measure by translation invariance. The $\\sigma$-finite covering $H = \\bigcup_k A_k$ with $\\mu(A_k) < \\infty$ means countably many disjoint equal-measure balls fit in a finite-measure set, so each ball has measure 0. This contradicts $\\mu \\neq 0$. Gaussian measures escape this: they are not translation-invariant (they have a center and decay away from it).",
     "significance": "key",
     "relatedConcepts": [
@@ -21,7 +21,7 @@
     "prerequisites": [
       "Hilbert space structure (NormedAddCommGroup + InnerProductSpace)",
       "MeasureTheory.MeasureSpace",
-      "σ-finiteness definition"
+      "\u03c3-finiteness definition"
     ]
   },
   {
@@ -31,9 +31,9 @@
       "startLine": 45,
       "endLine": 55
     },
-    "type": "theorem",
-    "title": "Orthonormal Distance is √2: The Core Geometric Fact",
-    "content": "This theorem proves the key geometric fact underlying the impossibility of translation-invariant measures in infinite dimensions: orthonormal vectors are exactly √2 apart. The proof uses the bilinearity of the inner product and the orthonormality conditions directly. The algebraic path: expand ‖e₁ - e₂‖² using inner_sub_left/right, substitute ⟪e₁,e₂⟫ = 0 and ‖eᵢ‖² = 1, get 2, take √2.",
+    "type": "insight",
+    "title": "Orthonormal Distance is \u221a2: The Core Geometric Fact",
+    "content": "This theorem proves the key geometric fact underlying the impossibility of translation-invariant measures in infinite dimensions: orthonormal vectors are exactly \u221a2 apart. The proof uses the bilinearity of the inner product and the orthonormality conditions directly. The algebraic path: expand \u2016e\u2081 - e\u2082\u2016\u00b2 using inner_sub_left/right, substitute \u27eae\u2081,e\u2082\u27eb = 0 and \u2016e\u1d62\u2016\u00b2 = 1, get 2, take \u221a2.",
     "mathContext": "$\\|e_1 - e_2\\|^2 = \\langle e_1 - e_2, e_1 - e_2 \\rangle = \\|e_1\\|^2 - 2\\langle e_1, e_2 \\rangle + \\|e_2\\|^2 = 1 - 0 + 1 = 2$. This is the Hilbert space analogue of $\\|(1,0) - (0,1)\\| = \\|(1,-1)\\| = \\sqrt{2}$ in $\\mathbb{R}^2$. The Lean proof navigates: \\texttt{Real.sqrt\\_sq} (to convert from $\\|\\cdot\\|^2$), \\texttt{inner\\_self\\_eq\\_norm\\_mul\\_norm} (connecting $\\langle x, x \\rangle$ to $\\|x\\|^2$), and \\texttt{ring} for the final arithmetic.",
     "significance": "key",
     "relatedConcepts": [
@@ -43,7 +43,7 @@
       "Pythagorean theorem"
     ],
     "prerequisites": [
-      "InnerProductSpace ℝ H",
+      "InnerProductSpace \u211d H",
       "inner_sub_left/inner_sub_right",
       "inner_self_eq_norm_mul_norm"
     ]
@@ -55,9 +55,9 @@
       "startLine": 61,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Balls of Radius 1/3 Around Orthonormal Vectors Are Disjoint",
-    "content": "This theorem proves √2 > 2/3, the numerical condition that makes the balls B(eₙ, 1/3) disjoint. Combined with orthonormal_dist, this completes the geometric half of the impossibility argument: infinitely many disjoint equal-measure balls exist in any bounded region. The proof is short: show √2 > 1 first (by comparing √2 to √1 = 1), then conclude √2 > 2/3 by linarith since 1 > 2/3.",
+    "content": "This theorem proves \u221a2 > 2/3, the numerical condition that makes the balls B(e\u2099, 1/3) disjoint. Combined with orthonormal_dist, this completes the geometric half of the impossibility argument: infinitely many disjoint equal-measure balls exist in any bounded region. The proof is short: show \u221a2 > 1 first (by comparing \u221a2 to \u221a1 = 1), then conclude \u221a2 > 2/3 by linarith since 1 > 2/3.",
     "mathContext": "Two balls $B(x, r)$ and $B(y, r)$ are disjoint iff $\\|x - y\\| > 2r$. With $\\|e_n - e_m\\| = \\sqrt{2}$ and $r = 1/3$, the condition is $\\sqrt{2} > 2/3$. The broader context: any $r < \\sqrt{2}/2 \\approx 0.707$ works; choosing $r = 1/3 \\approx 0.333$ gives generous margin. In the impossibility proof: the balls $\\{B(e_n, 1/3)\\}_{n=1}^{\\infty}$ are pairwise disjoint and each has the same measure by translation invariance. Their countable union fits in $B(0, 1 + 1/3)$, so $\\sigma$-finiteness forces measure 0.",
     "significance": "key",
     "relatedConcepts": [
@@ -79,9 +79,9 @@
       "startLine": 100,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Ball Volume Vanishes: True-Stub for Finite-Dimensional Preview",
-    "content": "The ball_volume_vanishes theorem is a True-stub placeholder for a result that is provable from Gamma function asymptotics but requires significant Mathlib infrastructure. The formula vol(Bⁿ) = π^(n/2)/Γ(n/2+1) → 0 is a finite-dimensional preview of the infinite-dimensional pathology: in high dimensions, a unit ball has vanishing volume while its surface area (the sphere Sⁿ⁻¹) retains all the 'mass'. This concentration of measure phenomenon is the geometric intuition behind why infinite-dimensional spaces resist Lebesgue-like measures.",
+    "content": "The ball_volume_vanishes theorem is a True-stub placeholder for a result that is provable from Gamma function asymptotics but requires significant Mathlib infrastructure. The formula vol(B\u207f) = \u03c0^(n/2)/\u0393(n/2+1) \u2192 0 is a finite-dimensional preview of the infinite-dimensional pathology: in high dimensions, a unit ball has vanishing volume while its surface area (the sphere S\u207f\u207b\u00b9) retains all the 'mass'. This concentration of measure phenomenon is the geometric intuition behind why infinite-dimensional spaces resist Lebesgue-like measures.",
     "mathContext": "$\\text{vol}(B^n) = \\frac{\\pi^{n/2}}{\\Gamma(n/2 + 1)}$. Using Stirling: $\\Gamma(n/2 + 1) \\approx \\sqrt{\\pi n} \\cdot (n/2e)^{n/2}$, so $\\text{vol}(B^n) \\approx (2\\pi e/n)^{n/2} \\cdot \\sqrt{2/n} \\to 0$ superexponentially. Maximum volume occurs around $n = 5$: $\\text{vol}(B^5) \\approx 5.26$. For $n \\geq 10$, the ball volume is less than 3 and decreasing rapidly.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -103,16 +103,16 @@
       "startLine": 111,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Concentration of Measure: True-Stub for High-Dimensional Phenomenon",
-    "content": "concentration_sketch is a True-stub for the concentration of measure phenomenon: in high dimensions, any Lipschitz function on the sphere Sⁿ⁻¹ is approximately constant on most of the sphere. This connects to the impossibility result conceptually: if Lebesgue measure existed in infinite dimensions, translations could spread any concentration of mass uniformly over all translates, creating the contradiction with σ-finiteness. The phenomenon was formalized by Lévy (1951) and is central to modern functional analysis and high-dimensional statistics.",
-    "mathContext": "Lévy's concentration theorem: if $f: S^{n-1} \\to \\mathbb{R}$ is Lipschitz with constant 1 and $M_f$ is the median, then $\\text{Pr}[|f(x) - M_f| > \\varepsilon] \\leq 2e^{-(n-2)\\varepsilon^2/2}$ (exponential concentration). Equivalently, for any measurable $A \\subseteq S^{n-1}$ with $\\sigma(A) \\geq 1/2$, the $\\varepsilon$-neighborhood satisfies $\\sigma(A_\\varepsilon) \\geq 1 - 2e^{-(n-2)\\varepsilon^2/2}$. As $n \\to \\infty$, all mass concentrates in a thin equatorial strip.",
+    "content": "concentration_sketch is a True-stub for the concentration of measure phenomenon: in high dimensions, any Lipschitz function on the sphere S\u207f\u207b\u00b9 is approximately constant on most of the sphere. This connects to the impossibility result conceptually: if Lebesgue measure existed in infinite dimensions, translations could spread any concentration of mass uniformly over all translates, creating the contradiction with \u03c3-finiteness. The phenomenon was formalized by L\u00e9vy (1951) and is central to modern functional analysis and high-dimensional statistics.",
+    "mathContext": "L\u00e9vy's concentration theorem: if $f: S^{n-1} \\to \\mathbb{R}$ is Lipschitz with constant 1 and $M_f$ is the median, then $\\text{Pr}[|f(x) - M_f| > \\varepsilon] \\leq 2e^{-(n-2)\\varepsilon^2/2}$ (exponential concentration). Equivalently, for any measurable $A \\subseteq S^{n-1}$ with $\\sigma(A) \\geq 1/2$, the $\\varepsilon$-neighborhood satisfies $\\sigma(A_\\varepsilon) \\geq 1 - 2e^{-(n-2)\\varepsilon^2/2}$. As $n \\to \\infty$, all mass concentrates in a thin equatorial strip.",
     "significance": "supporting",
     "relatedConcepts": [
       "Levy's concentration theorem",
       "isoperimetric inequality on spheres",
       "high-dimensional probability",
-      "ε-nets"
+      "\u03b5-nets"
     ],
     "prerequisites": [
       "Riemannian measure on spheres",

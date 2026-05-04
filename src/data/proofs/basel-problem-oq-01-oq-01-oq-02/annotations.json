@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Zeta Value Definition",
-    "content": "Defines $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ as a `tsum` over $\\mathbb{N}$. For Apéry's proof, the target is $\\zeta(3) = 1 + 1/8 + 1/27 + 1/64 + \\cdots \\approx 1.202$. The irrationality of $\\zeta(3)$ was open for over 200 years before Apéry's breakthrough.",
+    "content": "Defines $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ as a `tsum` over $\\mathbb{N}$. For Ap\u00e9ry's proof, the target is $\\zeta(3) = 1 + 1/8 + 1/27 + 1/64 + \\cdots \\approx 1.202$. The irrationality of $\\zeta(3)$ was open for over 200 years before Ap\u00e9ry's breakthrough.",
     "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s}$",
     "significance": "key",
     "relatedConcepts": [
@@ -51,12 +51,12 @@
       "endLine": 79
     },
     "type": "definition",
-    "title": "The Apéry Number Sequence",
-    "content": "Defines $b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$ as a computable natural number. These are the Apéry numbers (OEIS A005259), which arise in the theory of modular forms, K3 surfaces, and Picard-Fuchs equations. The double-squared binomial product ensures all terms are positive integers.",
+    "title": "The Ap\u00e9ry Number Sequence",
+    "content": "Defines $b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$ as a computable natural number. These are the Ap\u00e9ry numbers (OEIS A005259), which arise in the theory of modular forms, K3 surfaces, and Picard-Fuchs equations. The double-squared binomial product ensures all terms are positive integers.",
     "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$",
     "significance": "key",
     "relatedConcepts": [
-      "Apéry numbers",
+      "Ap\u00e9ry numbers",
       "OEIS A005259",
       "modular forms",
       "K3 surfaces"
@@ -75,7 +75,7 @@
     },
     "type": "concept",
     "title": "Verified Initial Values",
-    "content": "Computes $b_0 = 1$, $b_1 = 5$, $b_2 = 73$, $b_3 = 1445$ using `norm_num`. These match OEIS A005259 and the values in Apéry's original paper. The rapid growth ($1, 5, 73, 1445, \\ldots$) foreshadows the exponential growth rate $(1+\\sqrt{2})^4 \\approx 33.97$.",
+    "content": "Computes $b_0 = 1$, $b_1 = 5$, $b_2 = 73$, $b_3 = 1445$ using `norm_num`. These match OEIS A005259 and the values in Ap\u00e9ry's original paper. The rapid growth ($1, 5, 73, 1445, \\ldots$) foreshadows the exponential growth rate $(1+\\sqrt{2})^4 \\approx 33.97$.",
     "mathContext": "$b_0 = 1,\\ b_1 = 5,\\ b_2 = 73,\\ b_3 = 1445$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -95,7 +95,7 @@
       "endLine": 108
     },
     "type": "concept",
-    "title": "Apéry Numbers Are Positive",
+    "title": "Ap\u00e9ry Numbers Are Positive",
     "content": "Proves $b_n > 0$ for all $n$ using `Finset.sum_pos`: each term $\\binom{n}{k}^2 \\binom{n+k}{k}^2$ is a product of squares of positive integers (binomial coefficients $\\binom{n}{k} > 0$ for $k \\leq n$), and the sum has at least one term ($k = 0$). Positivity is essential for the irrationality argument.",
     "mathContext": "$b_n > 0$ since each $\\binom{n}{k}^2 \\binom{n+k}{k}^2 > 0$",
     "significance": "supporting",
@@ -117,8 +117,8 @@
       "endLine": 118
     },
     "type": "concept",
-    "title": "The Apéry Recurrence Coefficient",
-    "content": "Defines the coefficient $(2n+1)(17n^2+17n+5)$ appearing in the 3-term Apéry recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5) u_n - n^3 u_{n-1}$. This recurrence was discovered by Apéry and proved by Zeilberger's creative telescoping algorithm (1982). Its characteristic polynomial $t^2 - 34t + 1$ has roots $(1 \\pm \\sqrt{2})^4$.",
+    "title": "The Ap\u00e9ry Recurrence Coefficient",
+    "content": "Defines the coefficient $(2n+1)(17n^2+17n+5)$ appearing in the 3-term Ap\u00e9ry recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5) u_n - n^3 u_{n-1}$. This recurrence was discovered by Ap\u00e9ry and proved by Zeilberger's creative telescoping algorithm (1982). Its characteristic polynomial $t^2 - 34t + 1$ has roots $(1 \\pm \\sqrt{2})^4$.",
     "mathContext": "$(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5) u_n - n^3 u_{n-1}$",
     "significance": "key",
     "relatedConcepts": [
@@ -139,7 +139,7 @@
     },
     "type": "concept",
     "title": "Recurrence Verification and Coefficient Bound",
-    "content": "This section verifies the Apéry recurrence numerically for small cases and establishes the key algebraic inequality needed for the growth bound.\n\n**Numerical checks** (lines 121–145): `aperyRecCoeff_zero` and `aperyRecCoeff_one` confirm the polynomial evaluates to 5 and 117 respectively. The two recurrence checks `aperyB_rec_check_1` and `aperyB_rec_check_2` verify 8·73 = 117·5 - 1 (n=1) and 27·1445 = 535·73 - 8·5 (n=2) by `norm_num` — providing numerical confidence before the axiom is used.\n\n**Coefficient bound** (lines 147–154): `aperyRecCoeff_le_34_mul_cubeSucc` proves $(2n+1)(17n^2+17n+5) \\leq 34(n+1)^3$ by noting the difference $34(n+1)^3 - (2n+1)(17n^2+17n+5) = 51n^2 + 75n + 29 > 0$, proved by `nlinarith`.",
+    "content": "This section verifies the Ap\u00e9ry recurrence numerically for small cases and establishes the key algebraic inequality needed for the growth bound.\n\n**Numerical checks** (lines 121\u2013145): `aperyRecCoeff_zero` and `aperyRecCoeff_one` confirm the polynomial evaluates to 5 and 117 respectively. The two recurrence checks `aperyB_rec_check_1` and `aperyB_rec_check_2` verify 8\u00b773 = 117\u00b75 - 1 (n=1) and 27\u00b71445 = 535\u00b773 - 8\u00b75 (n=2) by `norm_num` \u2014 providing numerical confidence before the axiom is used.\n\n**Coefficient bound** (lines 147\u2013154): `aperyRecCoeff_le_34_mul_cubeSucc` proves $(2n+1)(17n^2+17n+5) \\leq 34(n+1)^3$ by noting the difference $34(n+1)^3 - (2n+1)(17n^2+17n+5) = 51n^2 + 75n + 29 > 0$, proved by `nlinarith`.",
     "mathContext": "$34(n+1)^3 - (2n+1)(17n^2+17n+5) = 51n^2 + 75n + 29 > 0$, establishing the coefficient dominance that makes $b_{n+1} \\leq 34 b_n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -162,9 +162,9 @@
       "endLine": 221
     },
     "type": "concept",
-    "title": "Growth Bound bₙ ≤ 34^n (Fully Proved)",
-    "content": "Proves $b_n \\leq 34^n$ by two-step induction. Step lemma `aperyB_le_34_mul_pred`: from the recurrence (n+1)³b_{n+1} = coeff·b_n - n³·b_{n-1}, since n³·b_{n-1} ≥ 0, we get (n+1)³b_{n+1} ≤ coeff·b_n ≤ 34·(n+1)³·b_n, then cancel (n+1)³ > 0. Inductive lemma `aperyB_growth_upper_aux`: b_{n+1} ≤ 34^{n+1} from b₁=5≤34 (base) and the step bound. The proof works in ℤ (to handle subtraction), then casts back to ℕ.",
-    "mathContext": "$b_{n+1} \\leq 34 b_n$ from the recurrence. By induction: $b_n \\leq 34^n$. The bound $34 \\approx (1+\\sqrt{2})^4 = 17+12\\sqrt{2}$ is tight — the true growth rate.",
+    "title": "Growth Bound b\u2099 \u2264 34^n (Fully Proved)",
+    "content": "Proves $b_n \\leq 34^n$ by two-step induction. Step lemma `aperyB_le_34_mul_pred`: from the recurrence (n+1)\u00b3b_{n+1} = coeff\u00b7b_n - n\u00b3\u00b7b_{n-1}, since n\u00b3\u00b7b_{n-1} \u2265 0, we get (n+1)\u00b3b_{n+1} \u2264 coeff\u00b7b_n \u2264 34\u00b7(n+1)\u00b3\u00b7b_n, then cancel (n+1)\u00b3 > 0. Inductive lemma `aperyB_growth_upper_aux`: b_{n+1} \u2264 34^{n+1} from b\u2081=5\u226434 (base) and the step bound. The proof works in \u2124 (to handle subtraction), then casts back to \u2115.",
+    "mathContext": "$b_{n+1} \\leq 34 b_n$ from the recurrence. By induction: $b_n \\leq 34^n$. The bound $34 \\approx (1+\\sqrt{2})^4 = 17+12\\sqrt{2}$ is tight \u2014 the true growth rate.",
     "significance": "key",
     "relatedConcepts": [
       "aperyB_le_34_mul_pred",
@@ -186,14 +186,14 @@
       "endLine": 329
     },
     "type": "definition",
-    "title": "The Apéry a-Sequence and Harmonic Numbers",
-    "content": "**Apéry a-sequence** (261–281): `aperyA` is defined noncomputably via the same 3-term recurrence as `aperyB` but with initial values $a_0 = 0$, $a_1 = 6$. Since the recurrence divides by $(n+2)^3$, the values are rational — hence `noncomputable`. The initial values $a_0=0$, $a_1=6$, $a_2 = 351/4$ are proved by `rfl` and `norm_num`. The asymptotic formula gives $a_n/b_n \\to \\zeta(3)$, which is the content of the irrationality proof.\n\n**Harmonic numbers** (286–320): `harmonicNumber n = ∑_{k<n} 1/(k+1)` and its generalization `genHarmonicNumber n s = ∑_{k<n} 1/(k+1)^s` are defined. Values $H_0=0$, $H_1=1$, $H_2=3/2$, $H_3=11/6$ are verified. Nonnegativity and monotonicity are proved. These appear in the explicit closed form for the a-sequence: $a_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2 (H_k + H_n^{(3)})$, though this formula is not yet formalized.",
+    "title": "The Ap\u00e9ry a-Sequence and Harmonic Numbers",
+    "content": "**Ap\u00e9ry a-sequence** (261\u2013281): `aperyA` is defined noncomputably via the same 3-term recurrence as `aperyB` but with initial values $a_0 = 0$, $a_1 = 6$. Since the recurrence divides by $(n+2)^3$, the values are rational \u2014 hence `noncomputable`. The initial values $a_0=0$, $a_1=6$, $a_2 = 351/4$ are proved by `rfl` and `norm_num`. The asymptotic formula gives $a_n/b_n \\to \\zeta(3)$, which is the content of the irrationality proof.\n\n**Harmonic numbers** (286\u2013320): `harmonicNumber n = \u2211_{k<n} 1/(k+1)` and its generalization `genHarmonicNumber n s = \u2211_{k<n} 1/(k+1)^s` are defined. Values $H_0=0$, $H_1=1$, $H_2=3/2$, $H_3=11/6$ are verified. Nonnegativity and monotonicity are proved. These appear in the explicit closed form for the a-sequence: $a_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2 (H_k + H_n^{(3)})$, though this formula is not yet formalized.",
     "mathContext": "$a_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2 \\left(2H_k - H_k^{(3)}\\right)$. The initial slope $a_1/b_1 = 6/5$ gives the first rational approximation to $\\zeta(3) \\approx 1.202$.",
     "significance": "key",
     "relatedConcepts": [
       "rational approximations",
       "harmonic numbers",
-      "Apéry a-sequence",
+      "Ap\u00e9ry a-sequence",
       "genHarmonicNumber"
     ],
     "prerequisites": [
@@ -211,7 +211,7 @@
     },
     "type": "concept",
     "title": "LCM Infrastructure and the Linear Form",
-    "content": "**lcmUpTo** (335–373): `lcmUpTo n = lcm over Finset.range n of (· + 1)`, the LCM of 1, 2, ..., n. Key proved properties: positivity (`lcmUpTo_pos`), monotone divisibility (`lcmUpTo_dvd_of_le`: $n \\leq m \\Rightarrow \\text{lcm}(n) \\mid \\text{lcm}(m)$), and concrete values lcm(3) = 6, lcm(4) = 12. The `Finset.lcm` API makes divisibility arguments clean: membership in `Finset.range` immediately gives divisibility.\n\n**Linear form and denominator axiom** (379–394): `linearForm n = aperyB n · ζ(3) - aperyA n` (real-valued, the quantity converging to 0). The denominator control axiom `denominator_control` asserts $\\exists m \\in \\mathbb{Z},\\ \\text{lcm}(n)^3 \\cdot a_n = m$. This is the key arithmetic fact: the denominators of $a_n$ divide $\\text{lcm}(1,...,n)^3$.",
+    "content": "**lcmUpTo** (335\u2013373): `lcmUpTo n = lcm over Finset.range n of (\u00b7 + 1)`, the LCM of 1, 2, ..., n. Key proved properties: positivity (`lcmUpTo_pos`), monotone divisibility (`lcmUpTo_dvd_of_le`: $n \\leq m \\Rightarrow \\text{lcm}(n) \\mid \\text{lcm}(m)$), and concrete values lcm(3) = 6, lcm(4) = 12. The `Finset.lcm` API makes divisibility arguments clean: membership in `Finset.range` immediately gives divisibility.\n\n**Linear form and denominator axiom** (379\u2013394): `linearForm n = aperyB n \u00b7 \u03b6(3) - aperyA n` (real-valued, the quantity converging to 0). The denominator control axiom `denominator_control` asserts $\\exists m \\in \\mathbb{Z},\\ \\text{lcm}(n)^3 \\cdot a_n = m$. This is the key arithmetic fact: the denominators of $a_n$ divide $\\text{lcm}(1,...,n)^3$.",
     "mathContext": "$\\text{lcm}(1,\\ldots,n) \\leq e^{n+o(n)}$ by the prime number theorem. Hanson (1974) sharped this to $\\text{lcm}(n) \\leq 3^n$, giving $\\text{lcm}(n)^3 \\leq 27^n$, which just barely beats the decay rate $1/(17-12\\sqrt{2}) \\approx 34$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -236,7 +236,7 @@
     },
     "type": "concept",
     "title": "Divisibility Infrastructure and the Rational Linear Form",
-    "content": "**Core divisibility lemmas** (431–461): `dvd_lcmUpTo` proves $k \\mid \\text{lcm}(n)$ whenever $0 < k \\leq n$ by reducing to Finset membership. `rat_den_dvd_lcmUpTo` extends this to rational denominators: $r.\\text{den} \\mid \\text{lcm}(n)$ when $r.\\text{den} \\leq n$. `apery_bterm_int` uses this to show $\\text{lcm}(n)^3 \\cdot b_n \\cdot r \\in \\mathbb{Z}$: writing $\\text{lcm}(n) = q \\cdot r.\\text{den}$, the product becomes $q^3 \\cdot r.\\text{den}^2 \\cdot b_n \\cdot r.\\text{num} \\in \\mathbb{Z}$, proved by `field_simp` and `ring`.\n\n**Rational linear form** (488–499): `rationalLinearForm r n = aperyB n · r - aperyA n` (ℚ-valued). When $(r : \\mathbb{R}) = \\zeta(3)$, this casts to `linearForm n`. These two versions — one rational, one real — are needed because integrality arguments work over ℚ while analytic bounds work over ℝ.",
+    "content": "**Core divisibility lemmas** (431\u2013461): `dvd_lcmUpTo` proves $k \\mid \\text{lcm}(n)$ whenever $0 < k \\leq n$ by reducing to Finset membership. `rat_den_dvd_lcmUpTo` extends this to rational denominators: $r.\\text{den} \\mid \\text{lcm}(n)$ when $r.\\text{den} \\leq n$. `apery_bterm_int` uses this to show $\\text{lcm}(n)^3 \\cdot b_n \\cdot r \\in \\mathbb{Z}$: writing $\\text{lcm}(n) = q \\cdot r.\\text{den}$, the product becomes $q^3 \\cdot r.\\text{den}^2 \\cdot b_n \\cdot r.\\text{num} \\in \\mathbb{Z}$, proved by `field_simp` and `ring`.\n\n**Rational linear form** (488\u2013499): `rationalLinearForm r n = aperyB n \u00b7 r - aperyA n` (\u211a-valued). When $(r : \\mathbb{R}) = \\zeta(3)$, this casts to `linearForm n`. These two versions \u2014 one rational, one real \u2014 are needed because integrality arguments work over \u211a while analytic bounds work over \u211d.",
     "mathContext": "$\\text{lcm}(n)^3 \\cdot Q_n(r) = \\text{lcm}(n)^3 \\cdot b_n \\cdot r - \\text{lcm}(n)^3 \\cdot a_n \\in \\mathbb{Z}$ when $r.\\text{den} \\leq n$, since both summands are integers by `apery_bterm_int` and `denominator_control`.",
     "significance": "key",
     "relatedConcepts": [
@@ -261,8 +261,8 @@
     },
     "type": "insight",
     "title": "Conditional Irrationality Theorem (Integer-Squeeze)",
-    "content": "The core of Apéry's argument, formalized as `apery_irrationality_conditional`: IF (1) $\\text{lcm}(1,\\ldots,n)^3 \\cdot |L_n| \\to 0$, (2) $L_n \\neq 0$ for $n \\geq 1$, and (3) $\\text{lcm}^3 \\cdot a_n \\in \\mathbb{Z}$, THEN $\\zeta(3)$ is irrational. The proof uses the integer-squeeze: choose $N_0$ large enough for (a) decay $< 1$ and (b) $r.\\text{den} \\leq N_0$ for divisibility. Then $\\text{lcm}(N_0)^3 \\cdot Q_{N_0}(r) = M \\in \\mathbb{Z} \\setminus \\{0\\}$, so $|M| \\geq 1$, but the decay gives $|M| < 1$ — contradiction.",
-    "mathContext": "$|q b_n \\zeta(3) - q a_n| \\to 0$ but $q b_n \\zeta(3) - q a_n \\in \\mathbb{Z} \\setminus \\{0\\}$ for large $n$ — contradiction. The rational linear form $Q_n(r) = b_n r - a_n$ casts to $L_n$ when $r = \\zeta(3)$.",
+    "content": "The core of Ap\u00e9ry's argument, formalized as `apery_irrationality_conditional`: IF (1) $\\text{lcm}(1,\\ldots,n)^3 \\cdot |L_n| \\to 0$, (2) $L_n \\neq 0$ for $n \\geq 1$, and (3) $\\text{lcm}^3 \\cdot a_n \\in \\mathbb{Z}$, THEN $\\zeta(3)$ is irrational. The proof uses the integer-squeeze: choose $N_0$ large enough for (a) decay $< 1$ and (b) $r.\\text{den} \\leq N_0$ for divisibility. Then $\\text{lcm}(N_0)^3 \\cdot Q_{N_0}(r) = M \\in \\mathbb{Z} \\setminus \\{0\\}$, so $|M| \\geq 1$, but the decay gives $|M| < 1$ \u2014 contradiction.",
+    "mathContext": "$|q b_n \\zeta(3) - q a_n| \\to 0$ but $q b_n \\zeta(3) - q a_n \\in \\mathbb{Z} \\setminus \\{0\\}$ for large $n$ \u2014 contradiction. The rational linear form $Q_n(r) = b_n r - a_n$ casts to $L_n$ when $r = \\zeta(3)$.",
     "significance": "key",
     "relatedConcepts": [
       "irrationality proof",
@@ -273,7 +273,7 @@
     "prerequisites": [
       "growth/decay estimates",
       "lcm denominator control",
-      "Apéry recurrence",
+      "Ap\u00e9ry recurrence",
       "apery_bterm_int"
     ]
   },
@@ -285,9 +285,9 @@
       "endLine": 626
     },
     "type": "insight",
-    "title": "Quantitative Bounds: Decay Rate and the Critical Inequality 27·(17–12√2) < 1",
-    "content": "**apery_decay_rate_pos** (587–590): Proves $0 < 17 - 12\\sqrt{2}$ via `nlinarith` exploiting $(\\sqrt{2} - 17/12)^2 \\geq 0$, which gives $\\sqrt{2} \\leq 17/12 + \\varepsilon$. Combined with $\\sqrt{2} > 17/12$ (from $(17/12)^2 = 289/144 > 2$? — actually the proof uses the negation: $(229/162)^2 < 2$), the positivity follows cleanly.\n\n**apery_product_lt_one** (595–602): The critical inequality $27(17-12\\sqrt{2}) < 1$. Proved by showing $229/162 < \\sqrt{2}$ (i.e., $(229/162)^2 = 52441/26244 < 2$), giving $12\\sqrt{2} > 12 \\cdot 229/162 = 458/27$, so $27(17 - 12\\sqrt{2}) < 27(17 - 458/27) = 459 - 458 = 1$.\n\n**Remaining axioms** (607–617): `lcm_hanson_bound` ($\\text{lcm}(n) \\leq 3^n$, Hanson 1974), `apery_linearForm_decay` ($|L_n| \\leq C(17-12\\sqrt{2})^n$), and `apery_linearForm_nonzero` ($L_n \\neq 0$ for $n \\geq 1$). These are the three analytic inputs whose proofs would require Chebyshev theta estimates and the Beukers integral representation respectively.",
-    "mathContext": "The product $27 \\cdot (17 - 12\\sqrt{2}) \\approx 27 \\times 0.0294 \\approx 0.794 < 1$ is the threshold: $3^3 = 27$ (Hanson) times the decay rate $(17-12\\sqrt{2})$ (Apéry recurrence root). Both factors are individually greater than what Nair's bound $4^n$ would give ($4^3 = 64$, too large).",
+    "title": "Quantitative Bounds: Decay Rate and the Critical Inequality 27\u00b7(17\u201312\u221a2) < 1",
+    "content": "**apery_decay_rate_pos** (587\u2013590): Proves $0 < 17 - 12\\sqrt{2}$ via `nlinarith` exploiting $(\\sqrt{2} - 17/12)^2 \\geq 0$, which gives $\\sqrt{2} \\leq 17/12 + \\varepsilon$. Combined with $\\sqrt{2} > 17/12$ (from $(17/12)^2 = 289/144 > 2$? \u2014 actually the proof uses the negation: $(229/162)^2 < 2$), the positivity follows cleanly.\n\n**apery_product_lt_one** (595\u2013602): The critical inequality $27(17-12\\sqrt{2}) < 1$. Proved by showing $229/162 < \\sqrt{2}$ (i.e., $(229/162)^2 = 52441/26244 < 2$), giving $12\\sqrt{2} > 12 \\cdot 229/162 = 458/27$, so $27(17 - 12\\sqrt{2}) < 27(17 - 458/27) = 459 - 458 = 1$.\n\n**Remaining axioms** (607\u2013617): `lcm_hanson_bound` ($\\text{lcm}(n) \\leq 3^n$, Hanson 1974), `apery_linearForm_decay` ($|L_n| \\leq C(17-12\\sqrt{2})^n$), and `apery_linearForm_nonzero` ($L_n \\neq 0$ for $n \\geq 1$). These are the three analytic inputs whose proofs would require Chebyshev theta estimates and the Beukers integral representation respectively.",
+    "mathContext": "The product $27 \\cdot (17 - 12\\sqrt{2}) \\approx 27 \\times 0.0294 \\approx 0.794 < 1$ is the threshold: $3^3 = 27$ (Hanson) times the decay rate $(17-12\\sqrt{2})$ (Ap\u00e9ry recurrence root). Both factors are individually greater than what Nair's bound $4^n$ would give ($4^3 = 64$, too large).",
     "significance": "key",
     "relatedConcepts": [
       "apery_decay_rate_pos",
@@ -310,9 +310,9 @@
       "startLine": 627,
       "endLine": 663
     },
-    "type": "theorem",
-    "title": "Apéry's Theorem: ζ(3) is Irrational (Proved)",
-    "content": "The main result `apery_theorem : Irrational (zetaValue 3)` is proved by applying `apery_irrationality_conditional` with: (1) decay from Hanson's bound lcm(n) ≤ 3^n and the axiom |L_n| ≤ C·(17-12√2)^n — key is 27·(17-12√2) < 1 (`apery_product_lt_one`); (2) nonzero via `apery_linearForm_nonzero` axiom; (3) denominator control via `denominator_control` axiom. The calc chain uses `tendsto_pow_atTop_nhds_zero_of_lt_one` to show (27·(17-12√2))^n → 0.",
+    "type": "insight",
+    "title": "Ap\u00e9ry's Theorem: \u03b6(3) is Irrational (Proved)",
+    "content": "The main result `apery_theorem : Irrational (zetaValue 3)` is proved by applying `apery_irrationality_conditional` with: (1) decay from Hanson's bound lcm(n) \u2264 3^n and the axiom |L_n| \u2264 C\u00b7(17-12\u221a2)^n \u2014 key is 27\u00b7(17-12\u221a2) < 1 (`apery_product_lt_one`); (2) nonzero via `apery_linearForm_nonzero` axiom; (3) denominator control via `denominator_control` axiom. The calc chain uses `tendsto_pow_atTop_nhds_zero_of_lt_one` to show (27\u00b7(17-12\u221a2))^n \u2192 0.",
     "mathContext": "$(\\text{lcm}(1,\\ldots,n))^3 \\cdot |L_n| \\leq (3^n)^3 \\cdot C \\cdot (17-12\\sqrt{2})^n = C \\cdot (27(17-12\\sqrt{2}))^n \\to 0$ since $27(17-12\\sqrt{2}) < 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -335,21 +335,21 @@
       "startLine": 666,
       "endLine": 760
     },
-    "type": "theorem",
-    "title": "Factorial Denominator Control: (n!)³·aₙ ∈ ℤ (Completely Proved, No Axioms)",
-    "content": "The theorem `denominator_control_factorial` proves (n!)³·aₙ ∈ ℤ by strong induction using the 3-term recurrence. Base cases: 0!³·a₀ = 0 and 1!³·a₁ = 6. Inductive step: given (n+2)³·a_{n+2} = c_{n+1}·a_{n+1} - (n+1)³·a_n, multiply by ((n+2)!)³ and apply the factorial identity (n+2)! = (n+2)·(n+1)!. This rewrites the product as c_{n+1}·((n+1)!)³·a_{n+1} - (n+1)⁶·(n!)³·a_n, both integral by induction. The proof works entirely in ℚ and pushes back to ℤ. This is weaker than `denominator_control` — lcm(1,...,n) ≤ n! but the LCM grows much more slowly (exponential vs super-exponential), and only the LCM bound is tight enough for the integer-squeeze.",
-    "mathContext": "$(n!)^3 \\cdot a_n \\in \\mathbb{Z}$. Comparison: $n!^3 \\approx (n/e)^{3n}$ (super-exponential) while $\\text{lcm}(1,\\ldots,n)^3 \\leq 27^n$ (Hanson). The squeeze requires the denominator bound to grow at most exponentially — $(n!)^3$ grows too fast, but $\\text{lcm}^3 \\leq 27^n$ just barely works since $27(17-12\\sqrt{2}) < 1$.",
+    "type": "insight",
+    "title": "Factorial Denominator Control: (n!)\u00b3\u00b7a\u2099 \u2208 \u2124 (Completely Proved, No Axioms)",
+    "content": "The theorem `denominator_control_factorial` proves (n!)\u00b3\u00b7a\u2099 \u2208 \u2124 by strong induction using the 3-term recurrence. Base cases: 0!\u00b3\u00b7a\u2080 = 0 and 1!\u00b3\u00b7a\u2081 = 6. Inductive step: given (n+2)\u00b3\u00b7a_{n+2} = c_{n+1}\u00b7a_{n+1} - (n+1)\u00b3\u00b7a_n, multiply by ((n+2)!)\u00b3 and apply the factorial identity (n+2)! = (n+2)\u00b7(n+1)!. This rewrites the product as c_{n+1}\u00b7((n+1)!)\u00b3\u00b7a_{n+1} - (n+1)\u2076\u00b7(n!)\u00b3\u00b7a_n, both integral by induction. The proof works entirely in \u211a and pushes back to \u2124. This is weaker than `denominator_control` \u2014 lcm(1,...,n) \u2264 n! but the LCM grows much more slowly (exponential vs super-exponential), and only the LCM bound is tight enough for the integer-squeeze.",
+    "mathContext": "$(n!)^3 \\cdot a_n \\in \\mathbb{Z}$. Comparison: $n!^3 \\approx (n/e)^{3n}$ (super-exponential) while $\\text{lcm}(1,\\ldots,n)^3 \\leq 27^n$ (Hanson). The squeeze requires the denominator bound to grow at most exponentially \u2014 $(n!)^3$ grows too fast, but $\\text{lcm}^3 \\leq 27^n$ just barely works since $27(17-12\\sqrt{2}) < 1$.",
     "significance": "supporting",
     "relatedConcepts": [
       "denominator_control axiom",
       "factorial vs LCM growth",
       "Nat.factorial_succ",
-      "strong induction in ℚ"
+      "strong induction in \u211a"
     ],
     "prerequisites": [
       "aperyA recurrence",
       "Nat.factorial_succ",
-      "field_simp and ring in ℚ"
+      "field_simp and ring in \u211a"
     ]
   },
   {
@@ -360,8 +360,8 @@
       "endLine": 791
     },
     "type": "insight",
-    "title": "Concrete Lower Bound ζ(3) > 6/5 and Axiom-Free L₁ > 0",
-    "content": "Two completely proved theorems provide a concrete axiom-free verification. `zetaValue_three_gt_6_5` proves ζ(3) > 6/5 by bounding from below via a 16-term partial sum computed by `norm_num` and justified by `sum_le_tsum`. `linearForm_one_pos` proves L₁ = 5ζ(3) - 6 > 0 by substituting b₁=5, a₁=6, and applying the lower bound. These are significant because they prove the n=1 instance of the nonzero axiom from first principles — no Beukers integrals needed. The lower bound ζ(3) > 6/5 = a₁/b₁ has a natural interpretation: the first Apéry rational approximant 6/5 = 1.2 underestimates the true value ζ(3) ≈ 1.202.",
+    "title": "Concrete Lower Bound \u03b6(3) > 6/5 and Axiom-Free L\u2081 > 0",
+    "content": "Two completely proved theorems provide a concrete axiom-free verification. `zetaValue_three_gt_6_5` proves \u03b6(3) > 6/5 by bounding from below via a 16-term partial sum computed by `norm_num` and justified by `sum_le_tsum`. `linearForm_one_pos` proves L\u2081 = 5\u03b6(3) - 6 > 0 by substituting b\u2081=5, a\u2081=6, and applying the lower bound. These are significant because they prove the n=1 instance of the nonzero axiom from first principles \u2014 no Beukers integrals needed. The lower bound \u03b6(3) > 6/5 = a\u2081/b\u2081 has a natural interpretation: the first Ap\u00e9ry rational approximant 6/5 = 1.2 underestimates the true value \u03b6(3) \u2248 1.202.",
     "mathContext": "$L_1 = 5\\zeta(3) - 6 > 5 \\cdot \\frac{6}{5} - 6 = 0$. Partial sum bound: $\\zeta(3) \\geq \\sum_{n=1}^{16} 1/n^3 > 6/5$ by `sum_le_tsum` and `norm_num`. These are the only theorems in the file using no axioms beyond the `zetaValue` definition itself.",
     "significance": "supporting",
     "relatedConcepts": [

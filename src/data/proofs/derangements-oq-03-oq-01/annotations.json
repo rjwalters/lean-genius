@@ -8,8 +8,8 @@
     },
     "type": "insight",
     "title": "Header: Two-Term Asymptotic for the Derangement Ratio",
-    "content": "The module header establishes the precise theorem being proved: D(n)/n! = 1/e + (-1)^n/(n+1)! + O(1/(n+2)!), or equivalently, the residual after removing the two leading terms satisfies |D(n)/n! - 1/e - (-1)^n/(n+1)!| ≤ 1/(n+2)!. This is a refinement of the first-order rate from DerangementsOQ03.\n\nThe 5 imports supply: `Derangements.Finite` (numDerangements counting, the core combinatorial object), `Derangements.Basic` (derangement counting formula D(n) = n! · ∑ (-1)^k/k!), `SpecificLimits.Normed` (summable_pow_div_factorial, ensuring the factorial series converges), `ExpDeriv` (exp(-1) = 1/e), and `InfiniteSum.Basic` (tsum, HasSum for manipulating infinite series tails).\n\nThe key design choice is `namespace DerangementsOQ03`: this file reopens the parent namespace rather than creating a new one. This means all definitions and lemmas from DerangementsOQ03 (including `altFactTerm`, `alternating_tail_bound`, and the first-order rate) are available without qualification. The second-order proof is a direct extension — peel off one more alternating term, then apply the existing machinery to the shifted residual.",
-    "mathContext": "The Taylor series for e^{-1} = ∑_{k=0}^∞ (-1)^k/k! is an alternating decreasing series. The Leibniz alternating series theorem says the error after n+1 terms is bounded by the (n+2)-th term: |∑_{k=0}^n (-1)^k/k! - e^{-1}| ≤ 1/(n+1)!. Since D(n)/n! = ∑_{k=0}^n (-1)^k/k!, this gives the first-order rate. The second-order rate peels off one more term from the remainder: the remainder ∑_{k=n+1}^∞ (-1)^k/k! has leading term (-1)^{n+1}/(n+1)! = -(-1)^n/(n+1)!, so D(n)/n! - e^{-1} = -(-1)^n/(n+1)! + (residual), i.e., D(n)/n! - e^{-1} - (-1)^n/(n+1)! = residual with |residual| ≤ 1/(n+2)!.",
+    "content": "The module header establishes the precise theorem being proved: D(n)/n! = 1/e + (-1)^n/(n+1)! + O(1/(n+2)!), or equivalently, the residual after removing the two leading terms satisfies |D(n)/n! - 1/e - (-1)^n/(n+1)!| \u2264 1/(n+2)!. This is a refinement of the first-order rate from DerangementsOQ03.\n\nThe 5 imports supply: `Derangements.Finite` (numDerangements counting, the core combinatorial object), `Derangements.Basic` (derangement counting formula D(n) = n! \u00b7 \u2211 (-1)^k/k!), `SpecificLimits.Normed` (summable_pow_div_factorial, ensuring the factorial series converges), `ExpDeriv` (exp(-1) = 1/e), and `InfiniteSum.Basic` (tsum, HasSum for manipulating infinite series tails).\n\nThe key design choice is `namespace DerangementsOQ03`: this file reopens the parent namespace rather than creating a new one. This means all definitions and lemmas from DerangementsOQ03 (including `altFactTerm`, `alternating_tail_bound`, and the first-order rate) are available without qualification. The second-order proof is a direct extension \u2014 peel off one more alternating term, then apply the existing machinery to the shifted residual.",
+    "mathContext": "The Taylor series for e^{-1} = \u2211_{k=0}^\u221e (-1)^k/k! is an alternating decreasing series. The Leibniz alternating series theorem says the error after n+1 terms is bounded by the (n+2)-th term: |\u2211_{k=0}^n (-1)^k/k! - e^{-1}| \u2264 1/(n+1)!. Since D(n)/n! = \u2211_{k=0}^n (-1)^k/k!, this gives the first-order rate. The second-order rate peels off one more term from the remainder: the remainder \u2211_{k=n+1}^\u221e (-1)^k/k! has leading term (-1)^{n+1}/(n+1)! = -(-1)^n/(n+1)!, so D(n)/n! - e^{-1} = -(-1)^n/(n+1)! + (residual), i.e., D(n)/n! - e^{-1} - (-1)^n/(n+1)! = residual with |residual| \u2264 1/(n+2)!.",
     "significance": "supporting",
     "relatedConcepts": [
       "derangement ratio",
@@ -53,7 +53,7 @@
       "startLine": 90,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Second-Order Convergence Rate",
     "content": "The main result: $D(n)/n!$ approximates $1/e$ with correction term $(-1)^n/(n+1)!$ and residual at most $1/(n+2)!$. The proof splits the tail series at one additional term beyond the first-order bound, then applies the existing alternating series estimation to the shifted residual.",
     "mathContext": "$\\left|\\frac{D_n}{n!} - e^{-1} - \\frac{(-1)^n}{(n+1)!}\\right| \\le \\frac{1}{(n+2)!}$",
@@ -77,7 +77,7 @@
       "startLine": 130,
       "endLine": 158
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Tightness Lower Bound",
     "content": "Shows the first-order error bound is essentially tight: $|D(n)/n! - 1/e| \\ge 1/(n+1)! - 1/(n+2)!$. Combined with the upper bound $1/(n+1)!$, this pins down the error to within a factor of $1 - 1/(n+2) = (n+1)/(n+2)$ of the leading term.",
     "mathContext": "$\\frac{1}{(n+1)!} - \\frac{1}{(n+2)!} \\le \\left|\\frac{D_n}{n!} - e^{-1}\\right|$",
@@ -100,8 +100,8 @@
     },
     "type": "concept",
     "title": "Error Ratio Formula: Super-Exponential Convergence",
-    "content": "The `error_ratio_bound` theorem states 1/(n+2)! = 1/(n+1)! · 1/(n+2), directly from the factorial recurrence (n+2)! = (n+1)! · (n+2). This makes explicit that each additional element in the permutation reduces the approximation error by a factor of 1/(n+2) — super-exponential decay.\n\nThe practical significance: for n=5, the second-order residual is 1/7! = 1/5040, while the first-order error is at most 1/6! = 1/720. Each step improves accuracy by another factor of n+2. Compare with geometric series convergence (constant factor) or polynomial convergence (constant exponent): factorial convergence makes even the first-order approximation D(n)/n! ≈ 1/e highly accurate for moderately large n.\n\nIn Lean, the proof uses `factorial_succ` (which gives (n+2)! = (n+1)! · (n+2)) and `field_simp` to convert between the factorial and the reciprocal product form.",
-    "mathContext": "Factorial growth: $n! = \\Theta(\\sqrt{2\\pi n}(n/e)^n)$ by Stirling's approximation. So $1/n!$ decays super-exponentially — much faster than $e^{-cn}$ for any constant $c$. The error ratio $1/(n+2)$ means the $k$-th order approximation has error $O(1/(n+k+1)!)$, which vanishes faster than any fixed exponential as $k \\to \\infty$.",
+    "content": "The `error_ratio_bound` theorem states 1/(n+2)! = 1/(n+1)! \u00b7 1/(n+2), directly from the factorial recurrence (n+2)! = (n+1)! \u00b7 (n+2). This makes explicit that each additional element in the permutation reduces the approximation error by a factor of 1/(n+2) \u2014 super-exponential decay.\n\nThe practical significance: for n=5, the second-order residual is 1/7! = 1/5040, while the first-order error is at most 1/6! = 1/720. Each step improves accuracy by another factor of n+2. Compare with geometric series convergence (constant factor) or polynomial convergence (constant exponent): factorial convergence makes even the first-order approximation D(n)/n! \u2248 1/e highly accurate for moderately large n.\n\nIn Lean, the proof uses `factorial_succ` (which gives (n+2)! = (n+1)! \u00b7 (n+2)) and `field_simp` to convert between the factorial and the reciprocal product form.",
+    "mathContext": "Factorial growth: $n! = \\Theta(\\sqrt{2\\pi n}(n/e)^n)$ by Stirling's approximation. So $1/n!$ decays super-exponentially \u2014 much faster than $e^{-cn}$ for any constant $c$. The error ratio $1/(n+2)$ means the $k$-th order approximation has error $O(1/(n+k+1)!)$, which vanishes faster than any fixed exponential as $k \\to \\infty$.",
     "significance": "supporting",
     "relatedConcepts": [
       "factorial decay",
@@ -123,7 +123,7 @@
     },
     "type": "insight",
     "title": "Sign Alternation of the Correction Term",
-    "content": "The correction term (-1)^n/(n+1)! alternates sign: for even n (n = 2m), (-1)^{2m} = 1 so the term is positive and D(n)/n! > 1/e (overshoot); for odd n (n = 2m+1), (-1)^{2m+1} = -1 so the term is negative and D(n)/n! < 1/e (undershoot). Lean proves this via two theorems: `correction_term_sign_even` ((-1)^{2m}/(2m+1)! ≥ 0) and `correction_term_sign_odd` ((-1)^{2m+1}/(2m+2)! ≤ 0), both using `pow_nonneg` and parity arithmetic.",
+    "content": "The correction term (-1)^n/(n+1)! alternates sign: for even n (n = 2m), (-1)^{2m} = 1 so the term is positive and D(n)/n! > 1/e (overshoot); for odd n (n = 2m+1), (-1)^{2m+1} = -1 so the term is negative and D(n)/n! < 1/e (undershoot). Lean proves this via two theorems: `correction_term_sign_even` ((-1)^{2m}/(2m+1)! \u2265 0) and `correction_term_sign_odd` ((-1)^{2m+1}/(2m+2)! \u2264 0), both using `pow_nonneg` and parity arithmetic.",
     "mathContext": "Even $n = 2m$: $\\frac{(-1)^{2m}}{(2m+1)!} = \\frac{1}{(2m+1)!} > 0$, so $D(2m)/(2m)! > 1/e$. Odd $n = 2m+1$: $\\frac{(-1)^{2m+1}}{(2m+2)!} = \\frac{-1}{(2m+2)!} < 0$, so $D(2m+1)/(2m+1)! < 1/e$. This alternating over/under-shooting is the hallmark of alternating series estimation.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -146,8 +146,8 @@
     },
     "type": "concept",
     "title": "Concrete Second-Order Bounds for n = 0, 1, 2",
-    "content": "The final section instantiates the second-order bound at three specific values to give fully explicit numerical guarantees:\n\n- **n=0**: |D(0)/0! - 1/e - 1/1!| ≤ 1/2! = 1/2. (D(0) = 1 since the empty permutation is a derangement; D(0)/0! - 1/e ≈ 1 - 0.368 = 0.632, and the correction 1/1! = 1 reduces it to 0.368 - 0.368 = 0.)\n- **n=1**: |D(1)/1! - 1/e - (-1)/2!| ≤ 1/3! = 1/6. (D(1) = 0; error in first-order: 1/e ≈ 0.368; second-order correction: -1/2 = -0.5; so 0 - 0.368 + 0.5 = 0.132, bounded by 1/6 ≈ 0.167.)\n- **n=2**: |D(2)/2! - 1/e - 1/3!| ≤ 1/4! = 1/24. (D(2) = 1; D(2)/2! = 0.5; 1/e ≈ 0.368; correction 1/6 ≈ 0.167; residual ≈ 0.5 - 0.368 - 0.167 = -0.035, bounded by 1/24 ≈ 0.042.)\n\nEach bound is proved by `norm_num` evaluating the explicit factorial values and combining with the abstract second-order theorem. These serve as a sanity check: the abstract machinery produces numerically correct bounds for the first few cases.",
-    "mathContext": "For the probability interpretation: if a random permutation of n elements is chosen uniformly, P(derangement) = D(n)/n!. The bounds say: for n=2, P(derangement) is within 1/24 of the limiting probability 1/e ≈ 0.368. The true value P = 1/2 = 0.5 > 1/e (since n=2 is even, we overshoot), and |0.5 - 0.368 - 0.167| = 0.035 < 0.042 = 1/24, confirming the bound.",
+    "content": "The final section instantiates the second-order bound at three specific values to give fully explicit numerical guarantees:\n\n- **n=0**: |D(0)/0! - 1/e - 1/1!| \u2264 1/2! = 1/2. (D(0) = 1 since the empty permutation is a derangement; D(0)/0! - 1/e \u2248 1 - 0.368 = 0.632, and the correction 1/1! = 1 reduces it to 0.368 - 0.368 = 0.)\n- **n=1**: |D(1)/1! - 1/e - (-1)/2!| \u2264 1/3! = 1/6. (D(1) = 0; error in first-order: 1/e \u2248 0.368; second-order correction: -1/2 = -0.5; so 0 - 0.368 + 0.5 = 0.132, bounded by 1/6 \u2248 0.167.)\n- **n=2**: |D(2)/2! - 1/e - 1/3!| \u2264 1/4! = 1/24. (D(2) = 1; D(2)/2! = 0.5; 1/e \u2248 0.368; correction 1/6 \u2248 0.167; residual \u2248 0.5 - 0.368 - 0.167 = -0.035, bounded by 1/24 \u2248 0.042.)\n\nEach bound is proved by `norm_num` evaluating the explicit factorial values and combining with the abstract second-order theorem. These serve as a sanity check: the abstract machinery produces numerically correct bounds for the first few cases.",
+    "mathContext": "For the probability interpretation: if a random permutation of n elements is chosen uniformly, P(derangement) = D(n)/n!. The bounds say: for n=2, P(derangement) is within 1/24 of the limiting probability 1/e \u2248 0.368. The true value P = 1/2 = 0.5 > 1/e (since n=2 is even, we overshoot), and |0.5 - 0.368 - 0.167| = 0.035 < 0.042 = 1/24, confirming the bound.",
     "significance": "supporting",
     "relatedConcepts": [
       "norm_num",

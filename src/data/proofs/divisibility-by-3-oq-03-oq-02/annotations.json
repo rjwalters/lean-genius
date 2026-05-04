@@ -54,8 +54,8 @@
       "startLine": 66,
       "endLine": 81
     },
-    "type": "theorem",
-    "title": "Core Congruence: n ≡ dr_b(n) (mod b-1)",
+    "type": "insight",
+    "title": "Core Congruence: n \u2261 dr_b(n) (mod b-1)",
     "content": "The central theorem: $n \\equiv \\text{dr}_b(n) \\pmod{b-1}$ for $b \\geq 3$. Two proofs: (1) `digitSum_mod_base_pred` delegates to Mathlib's `Nat.modEq_digits_sum` for the digit sum version, and (2) `congruence` proves the closed-form version directly by rewriting $n = (n-1) + 1$ and applying `Nat.add_mod`. The `conv_lhs` tactic targets the left-hand side for rewriting.",
     "mathContext": "$n \\bmod (b-1) = \\text{dr}_b(n) \\bmod (b-1)$. Since $\\text{dr}_b(n) \\in \\{0, 1, \\ldots, b-1\\}$ and $b-1 \\geq 2$, this means $\\text{dr}_b(n)$ is the canonical representative of $n$ in $\\mathbb{Z}/(b-1)\\mathbb{Z}$ (with 0 mapped to $b-1$ for positive $n$).",
     "significance": "key",
@@ -78,7 +78,7 @@
       "startLine": 87,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Range, Fixed Points, and Idempotence",
     "content": "Three properties forming a logical chain: (1) **Range**: $1 \\leq \\text{dr}_b(n) \\leq b-1$ for $n > 0$, from `Nat.mod_lt`. (2) **Fixed point**: single-digit numbers are fixed ($\\text{dr}_b(n) = n$ for $1 \\leq n \\leq b-1$), from `Nat.mod_eq_of_lt`. (3) **Idempotence**: $\\text{dr}_b(\\text{dr}_b(n)) = \\text{dr}_b(n)$, by composing range with fixed point. This chain illustrates how range analysis implies algebraic properties.",
     "mathContext": "$\\text{dr}_b$ is an idempotent function (a retraction). The image $\\{0, 1, \\ldots, b-1\\}$ is the set of fixed points. Algebraically, $\\text{dr}_b$ is a projection from $(\\mathbb{N}, +)$ onto $\\mathbb{Z}/(b-1)\\mathbb{Z}$ (shifted by 1 to avoid 0 for positive inputs).",
@@ -102,7 +102,7 @@
       "startLine": 116,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Divisibility by (b-1) via Digital Root",
     "content": "Proves $(b-1) \\mid n \\iff \\text{dr}_b(n) = b-1$ for $n > 0, b \\geq 3$. The forward direction: if $n = k(b-1)$ with $k \\geq 1$, then $n - 1 = (b-2) + (b-1)(k-1)$, so $(n-1) \\bmod (b-1) = b-2$ and $\\text{dr}_b(n) = b-1$. The reverse: if $\\text{dr}_b(n) = b-1$, then $n \\bmod (b-1) = (b-1) \\bmod (b-1) = 0$ by the congruence theorem.",
     "mathContext": "$(b-1) \\mid n \\iff \\text{dr}_b(n) = b-1$ for $n > 0$. In base 10: $9 \\mid n \\iff \\text{dr}_{10}(n) = 9$. In base 16: $15 \\mid n \\iff \\text{dr}_{16}(n) = 15$.",
@@ -126,14 +126,14 @@
       "startLine": 143,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "General Factor Divisibility Rule",
     "content": "The most powerful result: for any divisor $d \\geq 2$ of $b-1$, we have $d \\mid n \\iff d \\mid \\text{digitSum}_b(n)$. The proof shows $b \\bmod d = 1$ (since $d \\mid (b-1)$ implies $b = dk + 1$ for some $k$), then applies Mathlib's `Nat.dvd_iff_dvd_digits_sum`. This subsumes all classical divisibility-by-digit-sum tests.",
     "mathContext": "If $d \\mid (b-1)$, then $b \\equiv 1 \\pmod{d}$, so $n = \\sum d_i b^i \\equiv \\sum d_i \\pmod{d}$. Special cases: in base 10, $3 \\mid 9$ gives div-by-3; in base 16, $3 \\mid 15$ and $5 \\mid 15$ give div-by-3 and div-by-5 for hex.",
     "significance": "key",
     "prerequisites": [
       "Nat.dvd_iff_dvd_digits_sum",
-      "divisor of b-1 implies b ≡ 1 mod d",
+      "divisor of b-1 implies b \u2261 1 mod d",
       "Nat.add_mul_mod_self_left"
     ],
     "relatedConcepts": [

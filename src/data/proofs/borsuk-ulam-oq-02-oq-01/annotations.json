@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "buDim: Equivariant BU Dimension Function",
-    "content": "The axiom buDim (n d : ℕ) : ℕ introduces the equivariant Borsuk-Ulam dimension for the cyclic group Z/n acting on a d-dimensional representation space. This integer-valued invariant captures the minimum sphere dimension where any Z/n-equivariant continuous map to the representation must have a zero. By axiomatizing buDim as an abstract function rather than defining it topologically, the file can study its algebraic properties (monotonicity, prime-factor behavior) purely in terms of group order and representation dimension, without requiring Lean's topological infrastructure.",
+    "content": "The axiom buDim (n d : \u2115) : \u2115 introduces the equivariant Borsuk-Ulam dimension for the cyclic group Z/n acting on a d-dimensional representation space. This integer-valued invariant captures the minimum sphere dimension where any Z/n-equivariant continuous map to the representation must have a zero. By axiomatizing buDim as an abstract function rather than defining it topologically, the file can study its algebraic properties (monotonicity, prime-factor behavior) purely in terms of group order and representation dimension, without requiring Lean's topological infrastructure.",
     "mathContext": "$$\\text{buDim}(n, d) = \\min\\{k \\mid \\forall f: S^k \\to V_d \\text{ Z/n-equivariant continuous}, \\exists x, f(x) = 0\\}$$ where $V_d$ is a $d$-dimensional real representation of $\\mathbb{Z}/n\\mathbb{Z}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Classical Borsuk-Ulam: Z/2 Base Case",
-    "content": "buDim_two axiomatizes the classical Borsuk-Ulam theorem in terms of buDim: every Z/2-equivariant (odd) continuous map f : S^n → R^{n+1} must vanish somewhere, giving buDim(2, n+1) = n. This is Borsuk's 1933 result, equivalently stated by Lyusternik and Schnirelmann as: there is no odd map S^n → S^{n-1}. In the buDim framework, it says the n-sphere is the minimal domain that forces a zero in an (n+1)-dimensional target under the antipodal action. This axiom is the Z/2 anchor from which z4_lower_bound and z6_lower_bound_z2 are derived via monotonicity.",
+    "content": "buDim_two axiomatizes the classical Borsuk-Ulam theorem in terms of buDim: every Z/2-equivariant (odd) continuous map f : S^n \u2192 R^{n+1} must vanish somewhere, giving buDim(2, n+1) = n. This is Borsuk's 1933 result, equivalently stated by Lyusternik and Schnirelmann as: there is no odd map S^n \u2192 S^{n-1}. In the buDim framework, it says the n-sphere is the minimal domain that forces a zero in an (n+1)-dimensional target under the antipodal action. This axiom is the Z/2 anchor from which z4_lower_bound and z6_lower_bound_z2 are derived via monotonicity.",
     "mathContext": "$$\\text{buDim}(2, n+1) = n$$ encoding: every odd map $f : S^n \\to \\mathbb{R}^{n+1}$ satisfies $f(x_0) = 0$ for some $x_0 \\in S^n$, or equivalently $f(-x) = -f(x) \\implies \\exists x, f(x) = 0$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -55,7 +55,7 @@
     },
     "type": "concept",
     "title": "Yang-Borsuk Theorem for Prime-Order Groups",
-    "content": "buDim_prime axiomatizes Yang's 1954 generalization: for any prime p, the equivariant BU dimension for the standard complex representation of Z/p of complex dimension n equals 2n-1. The Z/p action rotates each complex coordinate by e^{2πi/p}. This is the definitive result for prime-order groups, proved by Yang using Smith theory and the Serre spectral sequence. The axiom provides the prime-case baseline for all derived composite group bounds: zpq_lower_bound uses this to get buDim(pq, 2n) ≥ 2n-1.",
+    "content": "buDim_prime axiomatizes Yang's 1954 generalization: for any prime p, the equivariant BU dimension for the standard complex representation of Z/p of complex dimension n equals 2n-1. The Z/p action rotates each complex coordinate by e^{2\u03c0i/p}. This is the definitive result for prime-order groups, proved by Yang using Smith theory and the Serre spectral sequence. The axiom provides the prime-case baseline for all derived composite group bounds: zpq_lower_bound uses this to get buDim(pq, 2n) \u2265 2n-1.",
     "mathContext": "$$\\text{buDim}(p, 2n) = 2n - 1 \\quad \\text{for prime } p,\\; n \\geq 1$$ where the representation is $\\mathbb{C}^n$ with $g \\cdot (z_1, \\ldots, z_n) = (e^{2\\pi i/p} z_1, \\ldots, e^{2\\pi i/p} z_n)$ for a generator $g \\in \\mathbb{Z}/p$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -79,7 +79,7 @@
     },
     "type": "concept",
     "title": "Monotonicity: Divisibility Implies Stronger Equivariant Constraint",
-    "content": "buDim_mono axiomatizes the restriction principle: if p divides n, then Z/p embeds in Z/n as a subgroup, and every Z/n-equivariant map restricts to a Z/p-equivariant map. A map that must vanish for Z/p-equivariant reasons must also vanish when viewed as Z/n-equivariant, so the constraint from p propagates to n: buDim(p, d) ≤ buDim(n, d). This monotonicity axiom is the engine driving every composite group lower bound: z4_lower_bound uses p=2, n=4; z6_lower_bound_z2 uses p=2, n=6; z6_lower_bound_z3 uses p=3, n=6; zpq_lower_bound uses the prime factor of pq.",
+    "content": "buDim_mono axiomatizes the restriction principle: if p divides n, then Z/p embeds in Z/n as a subgroup, and every Z/n-equivariant map restricts to a Z/p-equivariant map. A map that must vanish for Z/p-equivariant reasons must also vanish when viewed as Z/n-equivariant, so the constraint from p propagates to n: buDim(p, d) \u2264 buDim(n, d). This monotonicity axiom is the engine driving every composite group lower bound: z4_lower_bound uses p=2, n=4; z6_lower_bound_z2 uses p=2, n=6; z6_lower_bound_z3 uses p=3, n=6; zpq_lower_bound uses the prime factor of pq.",
     "mathContext": "$$p \\mid n \\implies \\text{buDim}(p, d) \\leq \\text{buDim}(n, d)$$ reflecting the inclusion $\\mathbb{Z}/p \\hookrightarrow \\mathbb{Z}/n$ and the restriction functor on equivariant maps: $f$ is $\\mathbb{Z}/n$-equivariant $\\implies$ $f$ is $\\mathbb{Z}/p$-equivariant.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -89,7 +89,7 @@
       "subgroup inclusion"
     ],
     "prerequisites": [
-      "Subgroups of cyclic groups: Z/p ≤ Z/n when p | n",
+      "Subgroups of cyclic groups: Z/p \u2264 Z/n when p | n",
       "Restriction of group actions to subgroups"
     ]
   },
@@ -100,9 +100,9 @@
       "startLine": 79,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Every Composite Group Has a Prime-Derived Lower Bound",
-    "content": "buDim_composite_has_prime_bound proves: for any n ≥ 2, there exists a prime p with p | n and buDim(p, d) ≤ buDim(n, d). The proof is two lines: first apply Nat.exists_prime_and_dvd (since n ≥ 2 implies n ≠ 1, so n has a prime factor), then apply buDim_mono with the extracted prime divisor. This existential theorem establishes that no composite group can be 'easier' than all its prime subgroups simultaneously — there is always a prime subgroup whose constraint propagates upward.",
+    "content": "buDim_composite_has_prime_bound proves: for any n \u2265 2, there exists a prime p with p | n and buDim(p, d) \u2264 buDim(n, d). The proof is two lines: first apply Nat.exists_prime_and_dvd (since n \u2265 2 implies n \u2260 1, so n has a prime factor), then apply buDim_mono with the extracted prime divisor. This existential theorem establishes that no composite group can be 'easier' than all its prime subgroups simultaneously \u2014 there is always a prime subgroup whose constraint propagates upward.",
     "mathContext": "$$\\forall n \\geq 2,\\; \\forall d:\\; \\exists p \\text{ prime},\\; p \\mid n \\text{ and } \\text{buDim}(p, d) \\leq \\text{buDim}(n, d)$$ proved using \\texttt{Nat.exists\\_prime\\_and\\_dvd}: $n \\geq 2 \\iff n \\neq 1 \\implies \\exists p \\text{ prime}, p \\mid n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -112,7 +112,7 @@
       "prime subgroups"
     ],
     "prerequisites": [
-      "Every integer ≥ 2 has a prime factor",
+      "Every integer \u2265 2 has a prime factor",
       "buDim_mono axiom"
     ]
   },
@@ -123,15 +123,15 @@
       "startLine": 111,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Z/pq Lower Bound: Yang-Borsuk Meets Monotonicity",
-    "content": "zpq_lower_bound proves: for primes p, q and any n ≥ 1, buDim(pq, 2n) ≥ 2n-1. The proof chains two steps: buDim_mono with p | pq gives buDim(p, 2n) ≤ buDim(pq, 2n), and buDim_prime gives buDim(p, 2n) = 2n-1, so by transitivity the bound 2n-1 ≤ buDim(pq, 2n) follows. Note that p and q need not be distinct — the proof works for p = q, covering Z/p² as well as semiprimes. This generalizes z6_lower_bound_z3 and covers Z/15, Z/21, Z/35, Z/p² for any prime p.",
+    "content": "zpq_lower_bound proves: for primes p, q and any n \u2265 1, buDim(pq, 2n) \u2265 2n-1. The proof chains two steps: buDim_mono with p | pq gives buDim(p, 2n) \u2264 buDim(pq, 2n), and buDim_prime gives buDim(p, 2n) = 2n-1, so by transitivity the bound 2n-1 \u2264 buDim(pq, 2n) follows. Note that p and q need not be distinct \u2014 the proof works for p = q, covering Z/p\u00b2 as well as semiprimes. This generalizes z6_lower_bound_z3 and covers Z/15, Z/21, Z/35, Z/p\u00b2 for any prime p.",
     "mathContext": "$$\\text{buDim}(pq, 2n) \\geq 2n - 1 \\quad \\text{for primes } p, q,\\; n \\geq 1$$ via the chain: $\\text{buDim}(pq, 2n) \\stackrel{\\text{mono}}{\\geq} \\text{buDim}(p, 2n) \\stackrel{\\text{Yang}}{=} 2n - 1$.",
     "significance": "key",
     "relatedConcepts": [
       "semiprimes",
       "Yang-Borsuk theorem",
-      "prime squares Z/p²",
+      "prime squares Z/p\u00b2",
       "monotonicity chain"
     ],
     "prerequisites": [

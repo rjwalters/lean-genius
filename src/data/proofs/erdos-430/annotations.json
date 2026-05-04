@@ -279,7 +279,7 @@
     },
     "type": "concept",
     "title": "Admissibility Invariant for the Greedy Sequence",
-    "content": "Two private lemmas establish the admissibility invariant:\n\n`greedyNext_admissible`: If `greedyNext n prev > 0`, the returned value is admissible. The proof uses `Finset.sup`/`max'` equivalence for nonempty natural-number Finsets: `sup S id > 0` implies `S` is nonempty, and `max'` (= `sup` for nonempty ℕ Finsets) is a member of `S`, so the filter condition `IsAdmissible` holds.\n\n`greedySeq_admissible`: Every positive element of the greedy sequence is admissible. Proved by induction on the step $k$. Base case ($k = 0$): $a_0 = n - 1$ has $n - a_0 = 1$, so any prime $p \\geq 2 > 1$ satisfies the bound. Inductive case: delegates to `greedyNext_admissible`.",
+    "content": "Two private lemmas establish the admissibility invariant:\n\n`greedyNext_admissible`: If `greedyNext n prev > 0`, the returned value is admissible. The proof uses `Finset.sup`/`max'` equivalence for nonempty natural-number Finsets: `sup S id > 0` implies `S` is nonempty, and `max'` (= `sup` for nonempty \u2115 Finsets) is a member of `S`, so the filter condition `IsAdmissible` holds.\n\n`greedySeq_admissible`: Every positive element of the greedy sequence is admissible. Proved by induction on the step $k$. Base case ($k = 0$): $a_0 = n - 1$ has $n - a_0 = 1$, so any prime $p \\geq 2 > 1$ satisfies the bound. Inductive case: delegates to `greedyNext_admissible`.",
     "mathContext": "The invariant $\\forall k, a_k > 0 \\Rightarrow \\texttt{IsAdmissible}(n, a_k)$ ensures every non-terminal term satisfies the coprimality-distance condition. This is essential for the forward direction of `erdos_385_equivalence`: extracting an admissible composite from the greedy sequence.",
     "significance": "key",
     "relatedConcepts": [
@@ -302,8 +302,8 @@
       "startLine": 129,
       "endLine": 156
     },
-    "type": "theorem",
-    "title": "Erdős #385 Equivalence: Forward and Backward",
+    "type": "insight",
+    "title": "Erd\u0151s #385 Equivalence: Forward and Backward",
     "content": "`erdos_385_equivalence` proves the biconditional connecting Problems #430 and #385.\n\n**Forward** ($\\Rightarrow$): Given `hasComposite n`, extract the composite term $a_k$ from the greedy sequence. By `greedySeq_admissible`, $a_k$ is admissible, providing the required composite $m < n$ with all prime factors exceeding $n - m$.\n\n**Backward** ($\\Leftarrow$, sorry): Given a composite admissible $m$, argue that the greedy sequence must reach $m$ (or pass through it). The key insight is that the greedy process selects the maximum admissible element at each step, so if $m$ is admissible, the sequence is bounded below by $m$ at every step where the current term exceeds $m$. The `sorry` here is the main proof gap.",
     "mathContext": "The forward direction is constructive: $(\\texttt{hasComposite}(n), \\texttt{greedySeq\\_admissible}) \\Rightarrow \\exists m < n,$ composite and admissible. The backward direction requires the monotonicity argument: the greedy maximum-first strategy visits all admissible values.",
     "significance": "key",

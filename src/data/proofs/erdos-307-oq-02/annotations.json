@@ -8,14 +8,14 @@
     },
     "type": "definition",
     "title": "Core Definitions: reciprocalSum, reciprocalProduct, IsSetOfPrimes",
-    "content": "Three basic predicates for Erdős #307: `reciprocalSum S = Σ_{n ∈ S} 1/n` (over rationals), `reciprocalProduct P Q = reciprocalSum P * reciprocalSum Q`, and `IsSetOfPrimes S` asserting all elements are prime. The problem asks: can two prime sets P, Q satisfy `reciprocalProduct P Q = 1`?",
-    "mathContext": "$\\text{reciprocalSum}(S) = \\sum_{n \\in S} \\frac{1}{n} \\in \\mathbb{Q}$. Erdős #307: does $\\left(\\sum_{p \\in P} \\frac{1}{p}\\right)\\left(\\sum_{q \\in Q} \\frac{1}{q}\\right) = 1$ have a solution in finite prime sets? Note $\\sum_{p \\leq x} 1/p \\sim \\log\\log x \\to \\infty$, so the reciprocal sum over all primes diverges — but any finite sub-sum is rational.",
+    "content": "Three basic predicates for Erd\u0151s #307: `reciprocalSum S = \u03a3_{n \u2208 S} 1/n` (over rationals), `reciprocalProduct P Q = reciprocalSum P * reciprocalSum Q`, and `IsSetOfPrimes S` asserting all elements are prime. The problem asks: can two prime sets P, Q satisfy `reciprocalProduct P Q = 1`?",
+    "mathContext": "$\\text{reciprocalSum}(S) = \\sum_{n \\in S} \\frac{1}{n} \\in \\mathbb{Q}$. Erd\u0151s #307: does $\\left(\\sum_{p \\in P} \\frac{1}{p}\\right)\\left(\\sum_{q \\in Q} \\frac{1}{q}\\right) = 1$ have a solution in finite prime sets? Note $\\sum_{p \\leq x} 1/p \\sim \\log\\log x \\to \\infty$, so the reciprocal sum over all primes diverges \u2014 but any finite sub-sum is rational.",
     "significance": "key",
     "relatedConcepts": [
       "reciprocal sum",
       "Egyptian fractions",
       "prime sets",
-      "Erdős #307"
+      "Erd\u0151s #307"
     ],
     "prerequisites": [
       "rational arithmetic",
@@ -31,8 +31,8 @@
       "endLine": 74
     },
     "type": "concept",
-    "title": "Two-Prime Bound: reciprocalSum ≤ 5/6",
-    "content": "For any 2 distinct primes {p, q}: 1/p + 1/q ≤ 1/2 + 1/3 = 5/6. The maximum is achieved at {2, 3}. Proof: both p, q ≥ 2; they cannot both equal 2 (distinct), so one is ≥ 3. This gives reciprocals ≤ 1/2 and ≤ 1/3.",
+    "title": "Two-Prime Bound: reciprocalSum \u2264 5/6",
+    "content": "For any 2 distinct primes {p, q}: 1/p + 1/q \u2264 1/2 + 1/3 = 5/6. The maximum is achieved at {2, 3}. Proof: both p, q \u2265 2; they cannot both equal 2 (distinct), so one is \u2265 3. This gives reciprocals \u2264 1/2 and \u2264 1/3.",
     "mathContext": "For distinct primes $p < q$: $p \\geq 2$ and $q \\geq 3$, giving $\\frac{1}{p} + \\frac{1}{q} \\leq \\frac{1}{2} + \\frac{1}{3} = \\frac{5}{6}$. The Lean proof uses `Finset.card_eq_two` to destructure the 2-element set, then `inv_le_inv_of_le` for the bound on each reciprocal.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -54,8 +54,8 @@
       "endLine": 149
     },
     "type": "concept",
-    "title": "Three-Prime Bound: reciprocalSum ≤ 31/30 (Pigeonhole)",
-    "content": "For any 3 distinct primes: 1/p₁ + 1/p₂ + 1/p₃ ≤ 1/2 + 1/3 + 1/5 = 31/30. Proof by pigeonhole: the only primes < 5 are {2, 3}, so among 3 distinct primes at least one is ≥ 5 (reciprocal ≤ 1/5). Among the remaining two distinct primes, at least one is ≥ 3 (reciprocal ≤ 1/3). Total ≤ 1/2 + 1/3 + 1/5 = 31/30. The `interval_cases` tactic handles case analysis over primes < 5.",
+    "title": "Three-Prime Bound: reciprocalSum \u2264 31/30 (Pigeonhole)",
+    "content": "For any 3 distinct primes: 1/p\u2081 + 1/p\u2082 + 1/p\u2083 \u2264 1/2 + 1/3 + 1/5 = 31/30. Proof by pigeonhole: the only primes < 5 are {2, 3}, so among 3 distinct primes at least one is \u2265 5 (reciprocal \u2264 1/5). Among the remaining two distinct primes, at least one is \u2265 3 (reciprocal \u2264 1/3). Total \u2264 1/2 + 1/3 + 1/5 = 31/30. The `interval_cases` tactic handles case analysis over primes < 5.",
     "mathContext": "Pigeonhole: only $2, 3 < 5$ are prime, so 3 distinct primes cannot all be $< 5$. Formally: $\\neg(a < 5 \\land b < 5 \\land c < 5)$ when $a, b, c$ are distinct primes; `interval_cases` resolves this by exhausting all combinations. Result: $\\Sigma_{1/Q} \\leq \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} = \\frac{31}{30}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -76,10 +76,10 @@
       "startLine": 157,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No |P|=2, |Q|=3 Solution",
-    "content": "There is no solution to (Σ 1/P)(Σ 1/Q) = 1 with |P| = 2 and |Q| = 3 prime sets. Proof: product ≤ (5/6)(31/30) = 31/36 ≈ 0.861 < 1. The key step is `mul_le_mul` combining the two bounds, then `norm_num` to compute 31/36 < 1.",
-    "mathContext": "$|P|=2 \\Rightarrow \\Sigma_{1/P} \\leq 5/6$ and $|Q|=3 \\Rightarrow \\Sigma_{1/Q} \\leq 31/30$. Product: $\\frac{5}{6} \\cdot \\frac{31}{30} = \\frac{155}{180} = \\frac{31}{36} < 1$. This eliminates one infinite family of candidate solutions to Erdős #307. Note the bound is tight: the maximum product for these sizes approaches 31/36.",
+    "content": "There is no solution to (\u03a3 1/P)(\u03a3 1/Q) = 1 with |P| = 2 and |Q| = 3 prime sets. Proof: product \u2264 (5/6)(31/30) = 31/36 \u2248 0.861 < 1. The key step is `mul_le_mul` combining the two bounds, then `norm_num` to compute 31/36 < 1.",
+    "mathContext": "$|P|=2 \\Rightarrow \\Sigma_{1/P} \\leq 5/6$ and $|Q|=3 \\Rightarrow \\Sigma_{1/Q} \\leq 31/30$. Product: $\\frac{5}{6} \\cdot \\frac{31}{30} = \\frac{155}{180} = \\frac{31}{36} < 1$. This eliminates one infinite family of candidate solutions to Erd\u0151s #307. Note the bound is tight: the maximum product for these sizes approaches 31/36.",
     "significance": "key",
     "relatedConcepts": [
       "case elimination",
@@ -100,9 +100,9 @@
       "startLine": 181,
       "endLine": 208
     },
-    "type": "theorem",
-    "title": "One Helps Balance: 1 ∈ P Forces reciprocalSum P > 1",
-    "content": "If 1 ∈ P and |P| > 1 and (Σ 1/P)(Σ 1/Q) = 1, then Σ 1/P > 1. Splitting P = {1} ∪ (P \\ {1}): reciprocalSum P = 1/1 + Σ_{P∖{1}} 1/n > 1 since the remaining terms are positive. This forces reciprocalSum Q < 1 (as their product is 1).",
+    "type": "insight",
+    "title": "One Helps Balance: 1 \u2208 P Forces reciprocalSum P > 1",
+    "content": "If 1 \u2208 P and |P| > 1 and (\u03a3 1/P)(\u03a3 1/Q) = 1, then \u03a3 1/P > 1. Splitting P = {1} \u222a (P \\ {1}): reciprocalSum P = 1/1 + \u03a3_{P\u2216{1}} 1/n > 1 since the remaining terms are positive. This forces reciprocalSum Q < 1 (as their product is 1).",
     "mathContext": "$\\Sigma_{1/P} = \\frac{1}{1} + \\sum_{n \\in P \\setminus \\{1\\}} \\frac{1}{n} > 1$ since all terms $\\frac{1}{n} > 0$. The proof uses `Finset.add_sum_erase` to split at the element 1, then `Finset.sum_pos` for positivity of the remainder. Note: 1 is not prime, so this applies to the generalized problem where non-prime naturals are allowed in P.",
     "significance": "key",
     "relatedConcepts": [
@@ -124,10 +124,10 @@
       "startLine": 218,
       "endLine": 246
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Product Rigidity: Axiom Eliminated",
-    "content": "The statement '∃ Q prime set with reciprocalProduct P Q = 1 ↔ ∃ Q with reciprocalSum Q = (reciprocalSum P)⁻¹' was an axiom in the parent Erdős 307 formalization. It is a trivial algebraic identity: a · b = 1 ↔ b = 1/a for a > 0. Since reciprocalSum P > 0 (nonempty prime set), `field_simp` and `mul_inv_cancel` prove it directly.",
-    "mathContext": "For $a > 0$: $a \\cdot b = 1 \\iff b = a^{-1} = 1/a$. The positivity $\\Sigma_{1/P} > 0$ follows from `Finset.sum_pos` (each $1/p > 0$ for prime $p$). This axiom was unnecessary — the parent formalization axiomatized a consequence of field arithmetic that `field_simp` handles automatically.",
+    "content": "The statement '\u2203 Q prime set with reciprocalProduct P Q = 1 \u2194 \u2203 Q with reciprocalSum Q = (reciprocalSum P)\u207b\u00b9' was an axiom in the parent Erd\u0151s 307 formalization. It is a trivial algebraic identity: a \u00b7 b = 1 \u2194 b = 1/a for a > 0. Since reciprocalSum P > 0 (nonempty prime set), `field_simp` and `mul_inv_cancel` prove it directly.",
+    "mathContext": "For $a > 0$: $a \\cdot b = 1 \\iff b = a^{-1} = 1/a$. The positivity $\\Sigma_{1/P} > 0$ follows from `Finset.sum_pos` (each $1/p > 0$ for prime $p$). This axiom was unnecessary \u2014 the parent formalization axiomatized a consequence of field arithmetic that `field_simp` handles automatically.",
     "significance": "key",
     "relatedConcepts": [
       "axiom elimination",
@@ -150,8 +150,8 @@
     },
     "type": "concept",
     "title": "Remaining Open Goals: p-adic Disjointness and Size Bound",
-    "content": "Two goals from the parent formalization remain unproven: (1) prime_sets_disjoint — if P ∩ Q ≠ ∅ then the product cannot equal 1 (requires p-adic valuation theory); (2) prime_set_size_lower_bound — |P ∪ Q| ≥ 60 (requires verified computation that Σ_{p≤281} 1/p ≈ 2.009 > 2). Both are honest markers of where new Mathlib infrastructure is needed.",
-    "mathContext": "**Disjointness**: If $p_0 \\in P \\cap Q$, the $p_0$-adic valuation $v_{p_0}(\\Sigma_{1/P} \\cdot \\Sigma_{1/Q})$ would be $< 0$ (because $1/p_0$ appears in both factors, contributing $v_{p_0} = -1$ to the product), but $v_{p_0}(1) = 0$. Requires Mathlib's `padicValRat`. **Size bound**: $\\sum_{p \\leq 281} 1/p \\approx 2.009$ (first 60 primes); if $|P \\cup Q| < 60$ then both $\\Sigma_{1/P}, \\Sigma_{1/Q} < 2$, making their product $< 4$ but also $< 1$ — formal computation needed.",
+    "content": "Two goals from the parent formalization remain unproven: (1) prime_sets_disjoint \u2014 if P \u2229 Q \u2260 \u2205 then the product cannot equal 1 (requires p-adic valuation theory); (2) prime_set_size_lower_bound \u2014 |P \u222a Q| \u2265 60 (requires verified computation that \u03a3_{p\u2264281} 1/p \u2248 2.009 > 2). Both are honest markers of where new Mathlib infrastructure is needed.",
+    "mathContext": "**Disjointness**: If $p_0 \\in P \\cap Q$, the $p_0$-adic valuation $v_{p_0}(\\Sigma_{1/P} \\cdot \\Sigma_{1/Q})$ would be $< 0$ (because $1/p_0$ appears in both factors, contributing $v_{p_0} = -1$ to the product), but $v_{p_0}(1) = 0$. Requires Mathlib's `padicValRat`. **Size bound**: $\\sum_{p \\leq 281} 1/p \\approx 2.009$ (first 60 primes); if $|P \\cup Q| < 60$ then both $\\Sigma_{1/P}, \\Sigma_{1/Q} < 2$, making their product $< 4$ but also $< 1$ \u2014 formal computation needed.",
     "significance": "supporting",
     "relatedConcepts": [
       "p-adic valuation",

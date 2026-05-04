@@ -2,73 +2,148 @@
   {
     "id": "ann-diffent-definitions",
     "proofId": "shannon-entropy-oq-01",
-    "range": { "startLine": 43, "endLine": 48 },
+    "range": {
+      "startLine": 43,
+      "endLine": 48
+    },
     "type": "definition",
     "title": "differentialEntropy and klDivergenceCts: Lean Definitions via Bochner Integral",
-    "content": "differentialEntropy f = -∫ x, f(x)·log(f(x)) and klDivergenceCts f g = ∫ x, f(x)·log(f(x)/g(x)) are defined using Mathlib's Bochner integral. The 0·log(0) = 0 convention is automatic: Real.log 0 = 0 in Lean, so 0 * Real.log 0 = 0 by mul_zero. The Bochner integral returns 0 for non-integrable functions, making both definitions total (always well-typed). The mathematical content is in the theorems, which assert hypotheses h_int to ensure genuine integration. Unlike discrete entropy (which requires finite support), differential entropy requires integrability hypotheses and can be negative — Uniform[0,a] has h = ln a < 0 for a < 1.",
-    "mathContext": "$h(f) = -\\int f(x) \\ln f(x)\\, dx$, $D(f\\|g) = \\int f(x) \\ln(f(x)/g(x))\\, dx$. Convention: $0 \\ln 0 = 0$. Both are Bochner integrals in the Lebesgue sense. Differential entropy satisfies $h(f) \\in (-\\infty, \\infty)$ — in particular, it can be negative.",
+    "content": "differentialEntropy f = -\u222b x, f(x)\u00b7log(f(x)) and klDivergenceCts f g = \u222b x, f(x)\u00b7log(f(x)/g(x)) are defined using Mathlib's Bochner integral. The 0\u00b7log(0) = 0 convention is automatic: Real.log 0 = 0 in Lean, so 0 * Real.log 0 = 0 by mul_zero. The Bochner integral returns 0 for non-integrable functions, making both definitions total (always well-typed). The mathematical content is in the theorems, which assert hypotheses h_int to ensure genuine integration. Unlike discrete entropy (which requires finite support), differential entropy requires integrability hypotheses and can be negative \u2014 Uniform[0,a] has h = ln a < 0 for a < 1.",
+    "mathContext": "$h(f) = -\\int f(x) \\ln f(x)\\, dx$, $D(f\\|g) = \\int f(x) \\ln(f(x)/g(x))\\, dx$. Convention: $0 \\ln 0 = 0$. Both are Bochner integrals in the Lebesgue sense. Differential entropy satisfies $h(f) \\in (-\\infty, \\infty)$ \u2014 in particular, it can be negative.",
     "significance": "supporting",
-    "relatedConcepts": ["Bochner integral", "Real.log 0 = 0", "KL divergence", "MeasureTheory.integral"],
-    "prerequisites": ["MeasureTheory.integral", "Real.log", "Integrable"]
+    "relatedConcepts": [
+      "Bochner integral",
+      "Real.log 0 = 0",
+      "KL divergence",
+      "MeasureTheory.integral"
+    ],
+    "prerequisites": [
+      "MeasureTheory.integral",
+      "Real.log",
+      "Integrable"
+    ]
   },
   {
     "id": "ann-diffent-kl-nonneg",
     "proofId": "shannon-entropy-oq-01",
-    "range": { "startLine": 90, "endLine": 112 },
-    "type": "theorem",
-    "title": "kl_divergence_continuous_nonneg: D(f||g) ≥ 0 via Pointwise log Inequality",
-    "content": "kl_divergence_continuous_nonneg proves the continuous Gibbs inequality: D(f||g) = ∫ f·log(f/g) ≥ 0. The proof mirrors the discrete case exactly. The key tool is kl_term_bound_cts: f·log(f/g) ≥ f - g pointwise (when g > 0), derived from the standard inequality log(t) ≤ t - 1 applied to t = q/p. Integrating gives ∫f·log(f/g) ≥ ∫(f-g) = 1 - 1 = 0 using ∫f = ∫g = 1. The by_cases on f x = 0 handles the degenerate term: when f(x) = 0, the pointwise bound becomes 0 - g(x) ≤ 0, which holds since g > 0. The Lean proof uses integral_mono to apply the pointwise bound.",
+    "range": {
+      "startLine": 90,
+      "endLine": 112
+    },
+    "type": "insight",
+    "title": "kl_divergence_continuous_nonneg: D(f||g) \u2265 0 via Pointwise log Inequality",
+    "content": "kl_divergence_continuous_nonneg proves the continuous Gibbs inequality: D(f||g) = \u222b f\u00b7log(f/g) \u2265 0. The proof mirrors the discrete case exactly. The key tool is kl_term_bound_cts: f\u00b7log(f/g) \u2265 f - g pointwise (when g > 0), derived from the standard inequality log(t) \u2264 t - 1 applied to t = q/p. Integrating gives \u222bf\u00b7log(f/g) \u2265 \u222b(f-g) = 1 - 1 = 0 using \u222bf = \u222bg = 1. The by_cases on f x = 0 handles the degenerate term: when f(x) = 0, the pointwise bound becomes 0 - g(x) \u2264 0, which holds since g > 0. The Lean proof uses integral_mono to apply the pointwise bound.",
     "mathContext": "$\\ln t \\leq t - 1$ (equivalently $\\ln(q/p) \\leq q/p - 1$) implies $p\\ln(p/q) \\geq p - q$. Integrating: $D(f\\|g) = \\int f \\ln(f/g) \\geq \\int(f - g) = \\int f - \\int g = 1 - 1 = 0$.",
     "significance": "key",
-    "relatedConcepts": ["log inequality ln(t) ≤ t-1", "integral_mono", "probability density", "KL divergence"],
-    "prerequisites": ["kl_term_bound_cts", "integral_mono", "integral_sub", "Real.log_le_sub_one_of_pos"]
+    "relatedConcepts": [
+      "log inequality ln(t) \u2264 t-1",
+      "integral_mono",
+      "probability density",
+      "KL divergence"
+    ],
+    "prerequisites": [
+      "kl_term_bound_cts",
+      "integral_mono",
+      "integral_sub",
+      "Real.log_le_sub_one_of_pos"
+    ]
   },
   {
     "id": "ann-diffent-gibbs",
     "proofId": "shannon-entropy-oq-01",
-    "range": { "startLine": 117, "endLine": 154 },
-    "type": "theorem",
-    "title": "gibbs_inequality_continuous: h(f) ≤ -∫ f·ln g via KL Non-negativity",
-    "content": "gibbs_inequality_continuous derives the main form of the Gibbs inequality from KL non-negativity: for any probability densities f and g (with g > 0), h(f) ≤ -∫ f·ln g. The algebraic identity log(f/g) = log f - log g allows splitting the KL integral: 0 ≤ D(f||g) = ∫f·log f - ∫f·log g. Rearranging: -∫f·log f ≤ -∫f·log g, i.e., h(f) ≤ -∫f·log g. The Lean proof handles the f(x) = 0 case separately (log(0/g) = log 0 = 0 so the split is 0 = 0 - 0) and uses integral_sub to split the integral. This theorem is the foundation for the maximum entropy proof: applying it with g = gaussianPDF immediately gives the Gaussian bound.",
+    "range": {
+      "startLine": 117,
+      "endLine": 154
+    },
+    "type": "insight",
+    "title": "gibbs_inequality_continuous: h(f) \u2264 -\u222b f\u00b7ln g via KL Non-negativity",
+    "content": "gibbs_inequality_continuous derives the main form of the Gibbs inequality from KL non-negativity: for any probability densities f and g (with g > 0), h(f) \u2264 -\u222b f\u00b7ln g. The algebraic identity log(f/g) = log f - log g allows splitting the KL integral: 0 \u2264 D(f||g) = \u222bf\u00b7log f - \u222bf\u00b7log g. Rearranging: -\u222bf\u00b7log f \u2264 -\u222bf\u00b7log g, i.e., h(f) \u2264 -\u222bf\u00b7log g. The Lean proof handles the f(x) = 0 case separately (log(0/g) = log 0 = 0 so the split is 0 = 0 - 0) and uses integral_sub to split the integral. This theorem is the foundation for the maximum entropy proof: applying it with g = gaussianPDF immediately gives the Gaussian bound.",
     "mathContext": "$0 \\leq D(f\\|g) = \\int f \\ln f - \\int f \\ln g$, so $h(f) = -\\int f \\ln f \\leq -\\int f \\ln g$. The bound is tight iff $f = g$ a.e.",
     "significance": "key",
-    "relatedConcepts": ["kl_divergence_continuous_nonneg", "log(f/g) = log f - log g", "cross-entropy", "maximum entropy"],
-    "prerequisites": ["kl_divergence_continuous_nonneg", "Real.log_div", "integral_sub"]
+    "relatedConcepts": [
+      "kl_divergence_continuous_nonneg",
+      "log(f/g) = log f - log g",
+      "cross-entropy",
+      "maximum entropy"
+    ],
+    "prerequisites": [
+      "kl_divergence_continuous_nonneg",
+      "Real.log_div",
+      "integral_sub"
+    ]
   },
   {
     "id": "ann-diffent-invariance",
     "proofId": "shannon-entropy-oq-01",
-    "range": { "startLine": 167, "endLine": 248 },
-    "type": "theorem",
+    "range": {
+      "startLine": 167,
+      "endLine": 248
+    },
+    "type": "insight",
     "title": "Translation Invariance and Scale Equivariance via Lebesgue Measure",
-    "content": "differentialEntropy_translation_invariant proves h(f(·-c)) = h(f): differential entropy is unchanged by location shifts. The proof uses integral_add_right_eq_self from Mathlib — the Lebesgue measure on ℝ is translation invariant: ∫ φ(x + a) dx = ∫ φ(x) dx. The substitution y = x - c (x = y + c) is handled abstractly without explicit change of variables.\n\ndifferentialEntropy_scale_equivariant proves h((1/|a|)f(·/a)) = h(f) + ln|a|: scaling by a multiplies entropy by ln|a|. The key is Measure.integral_comp_div from Mathlib: ∫ f(x/a) dx = |a| * ∫ f(x) dx. The log splits as log((1/|a|)f) = -log|a| + log f, giving h = -∫(1/|a|)f(-log|a| + log f) = log|a|·∫f + h(f)·1 = log|a| + h(f) after normalization.",
+    "content": "differentialEntropy_translation_invariant proves h(f(\u00b7-c)) = h(f): differential entropy is unchanged by location shifts. The proof uses integral_add_right_eq_self from Mathlib \u2014 the Lebesgue measure on \u211d is translation invariant: \u222b \u03c6(x + a) dx = \u222b \u03c6(x) dx. The substitution y = x - c (x = y + c) is handled abstractly without explicit change of variables.\n\ndifferentialEntropy_scale_equivariant proves h((1/|a|)f(\u00b7/a)) = h(f) + ln|a|: scaling by a multiplies entropy by ln|a|. The key is Measure.integral_comp_div from Mathlib: \u222b f(x/a) dx = |a| * \u222b f(x) dx. The log splits as log((1/|a|)f) = -log|a| + log f, giving h = -\u222b(1/|a|)f(-log|a| + log f) = log|a|\u00b7\u222bf + h(f)\u00b71 = log|a| + h(f) after normalization.",
     "mathContext": "$h(f(\\cdot - c)) = h(f)$ (Lebesgue measure shift-invariance). $h((1/|a|)f(\\cdot/a)) = h(f) + \\ln|a|$ (change of variables $y = x/a$: Jacobian $|a|$, and $\\ln(|a|^{-1} f) = -\\ln|a| + \\ln f$).",
     "significance": "key",
-    "relatedConcepts": ["integral_add_right_eq_self", "Measure.integral_comp_div", "Lebesgue measure", "change of variables"],
-    "prerequisites": ["integral_add_right_eq_self", "Measure.integral_comp_div", "integral_const_mul"]
+    "relatedConcepts": [
+      "integral_add_right_eq_self",
+      "Measure.integral_comp_div",
+      "Lebesgue measure",
+      "change of variables"
+    ],
+    "prerequisites": [
+      "integral_add_right_eq_self",
+      "Measure.integral_comp_div",
+      "integral_const_mul"
+    ]
   },
   {
     "id": "ann-diffent-gaussian",
     "proofId": "shannon-entropy-oq-01",
-    "range": { "startLine": 489, "endLine": 516 },
-    "type": "theorem",
-    "title": "gaussianDifferentialEntropy: h(N(μ,σ²)) = ½ ln(2πeσ²)",
-    "content": "gaussianDifferentialEntropy computes the entropy of the Gaussian PDF directly. The log of the Gaussian: log(φ(x)) = -½ log(2πσ²) - (x-μ)²/(2σ²). So h(φ) = -∫φ·log φ = ½ log(2πσ²)·∫φ + (1/2σ²)·∫(x-μ)²·φ. By normalization ∫φ = 1 and by the second moment ∫(x-μ)²·φ = σ², this becomes ½ log(2πσ²) + 1/2 = ½ log(2πeσ²) since ½ log(2πeσ²) = ½(log(2πσ²) + log e) = ½ log(2πσ²) + ½. The proof unfolds differentialEntropy and rewrites the integrand as a linear combination using gaussianPDF_log, then applies integral_add and the second moment lemma gaussian_second_moment.",
+    "range": {
+      "startLine": 489,
+      "endLine": 516
+    },
+    "type": "insight",
+    "title": "gaussianDifferentialEntropy: h(N(\u03bc,\u03c3\u00b2)) = \u00bd ln(2\u03c0e\u03c3\u00b2)",
+    "content": "gaussianDifferentialEntropy computes the entropy of the Gaussian PDF directly. The log of the Gaussian: log(\u03c6(x)) = -\u00bd log(2\u03c0\u03c3\u00b2) - (x-\u03bc)\u00b2/(2\u03c3\u00b2). So h(\u03c6) = -\u222b\u03c6\u00b7log \u03c6 = \u00bd log(2\u03c0\u03c3\u00b2)\u00b7\u222b\u03c6 + (1/2\u03c3\u00b2)\u00b7\u222b(x-\u03bc)\u00b2\u00b7\u03c6. By normalization \u222b\u03c6 = 1 and by the second moment \u222b(x-\u03bc)\u00b2\u00b7\u03c6 = \u03c3\u00b2, this becomes \u00bd log(2\u03c0\u03c3\u00b2) + 1/2 = \u00bd log(2\u03c0e\u03c3\u00b2) since \u00bd log(2\u03c0e\u03c3\u00b2) = \u00bd(log(2\u03c0\u03c3\u00b2) + log e) = \u00bd log(2\u03c0\u03c3\u00b2) + \u00bd. The proof unfolds differentialEntropy and rewrites the integrand as a linear combination using gaussianPDF_log, then applies integral_add and the second moment lemma gaussian_second_moment.",
     "mathContext": "$h(\\mathcal{N}(\\mu, \\sigma^2)) = -\\int \\varphi \\ln \\varphi \\, dx = \\frac{1}{2}\\ln(2\\pi\\sigma^2) \\cdot 1 + \\frac{1}{2\\sigma^2} \\cdot \\sigma^2 = \\frac{1}{2}\\ln(2\\pi\\sigma^2) + \\frac{1}{2} = \\frac{1}{2}\\ln(2\\pi e \\sigma^2)$.",
     "significance": "key",
-    "relatedConcepts": ["gaussianPDF", "Gaussian second moment", "gaussian_second_moment", "Real.log_exp"],
-    "prerequisites": ["gaussianPDF_log", "gaussian_second_moment", "gaussianPDF_integral_eq_one", "integral_add"]
+    "relatedConcepts": [
+      "gaussianPDF",
+      "Gaussian second moment",
+      "gaussian_second_moment",
+      "Real.log_exp"
+    ],
+    "prerequisites": [
+      "gaussianPDF_log",
+      "gaussian_second_moment",
+      "gaussianPDF_integral_eq_one",
+      "integral_add"
+    ]
   },
   {
     "id": "ann-diffent-max-entropy",
     "proofId": "shannon-entropy-oq-01",
-    "range": { "startLine": 532, "endLine": 622 },
-    "type": "theorem",
+    "range": {
+      "startLine": 532,
+      "endLine": 622
+    },
+    "type": "insight",
     "title": "gaussian_max_entropy: Gaussian Maximizes Differential Entropy at Fixed Variance",
-    "content": "gaussian_max_entropy is the cornerstone of maximum entropy inference: among all probability densities f with ∫x²f ≤ σ², the Gaussian N(0,σ²) maximizes differential entropy, achieving h = ½ ln(2πeσ²). The proof applies gibbs_inequality_continuous with the Gaussian as reference density g: h(f) ≤ -∫f·log(gaussianPDF 0 σ). Since log(gaussianPDF 0 σ)(x) = -½ log(2πσ²) - x²/(2σ²), the right-hand side expands to ½ log(2πσ²)·∫f + (1/2σ²)·∫x²f ≤ ½ log(2πσ²) + ½ = ½ log(2πeσ²) using ∫f = 1 and ∫x²f ≤ σ². This is the 'maximum entropy with constraints' principle formalized.",
+    "content": "gaussian_max_entropy is the cornerstone of maximum entropy inference: among all probability densities f with \u222bx\u00b2f \u2264 \u03c3\u00b2, the Gaussian N(0,\u03c3\u00b2) maximizes differential entropy, achieving h = \u00bd ln(2\u03c0e\u03c3\u00b2). The proof applies gibbs_inequality_continuous with the Gaussian as reference density g: h(f) \u2264 -\u222bf\u00b7log(gaussianPDF 0 \u03c3). Since log(gaussianPDF 0 \u03c3)(x) = -\u00bd log(2\u03c0\u03c3\u00b2) - x\u00b2/(2\u03c3\u00b2), the right-hand side expands to \u00bd log(2\u03c0\u03c3\u00b2)\u00b7\u222bf + (1/2\u03c3\u00b2)\u00b7\u222bx\u00b2f \u2264 \u00bd log(2\u03c0\u03c3\u00b2) + \u00bd = \u00bd log(2\u03c0e\u03c3\u00b2) using \u222bf = 1 and \u222bx\u00b2f \u2264 \u03c3\u00b2. This is the 'maximum entropy with constraints' principle formalized.",
     "mathContext": "Among densities with $\\int f = 1$ and $\\int x^2 f \\leq \\sigma^2$: by Gibbs, $h(f) \\leq -\\int f \\ln \\varphi_{\\sigma}$ where $\\varphi_{\\sigma} = \\mathcal{N}(0, \\sigma^2)$. Expanding $\\ln \\varphi_{\\sigma}$ and using the constraints gives $h(f) \\leq \\frac{1}{2}\\ln(2\\pi e \\sigma^2) = h(\\mathcal{N}(0,\\sigma^2))$.",
     "significance": "key",
-    "relatedConcepts": ["gibbs_inequality_continuous", "maximum entropy principle", "Gaussian optimality", "variance constraint"],
-    "prerequisites": ["gibbs_inequality_continuous", "gaussianDifferentialEntropy", "integral_const_mul", "Real.log_mul"]
+    "relatedConcepts": [
+      "gibbs_inequality_continuous",
+      "maximum entropy principle",
+      "Gaussian optimality",
+      "variance constraint"
+    ],
+    "prerequisites": [
+      "gibbs_inequality_continuous",
+      "gaussianDifferentialEntropy",
+      "integral_const_mul",
+      "Real.log_mul"
+    ]
   }
 ]

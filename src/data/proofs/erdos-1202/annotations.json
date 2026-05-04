@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Source Corruption and Problem Reconstruction",
-    "content": "The file header documents both the problem's solved status and the data quality issue: the LaTeX encoding was corrupted during scraping from erdosproblems.com. The recoverable fragments are: parameters ε, η > 0; a set of k primes p₁ < p₂ < ... < pₖ; a growth condition m > √(n log n); and the asymptotic bound k ≫_c m²/(n log n). The precise structural condition on the prime subset cannot be recovered, so the formalization is labeled as 'axiomatized' with explicit acknowledgment of this limitation.",
+    "content": "The file header documents both the problem's solved status and the data quality issue: the LaTeX encoding was corrupted during scraping from erdosproblems.com. The recoverable fragments are: parameters \u03b5, \u03b7 > 0; a set of k primes p\u2081 < p\u2082 < ... < p\u2096; a growth condition m > \u221a(n log n); and the asymptotic bound k \u226b_c m\u00b2/(n log n). The precise structural condition on the prime subset cannot be recovered, so the formalization is labeled as 'axiomatized' with explicit acknowledgment of this limitation.",
     "mathContext": "Legible fragments reconstruct to: $\\exists c > 0$, $\\forall k$ primes with $k \\gg_c m^2/(n \\log n)$ where $m > \\sqrt{n \\log n}$, $\\exists$ structured subset of size $\\gg c \\cdot m^2/(n \\log n)$. The asymptotic $\\gg_c$ means 'at least $c$ times' for an absolute constant $c > 0$ that does not depend on $m$ or $n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -18,7 +18,7 @@
       "problem reconstruction"
     ],
     "prerequisites": [
-      "asymptotic notation (≫)",
+      "asymptotic notation (\u226b)",
       "prime number basics"
     ]
   },
@@ -31,8 +31,8 @@
     },
     "type": "concept",
     "title": "IsPrimeSet: Finite Collections of Primes",
-    "content": "The predicate `IsPrimeSet S` requires every element of the finite set S to be a prime number. In Lean 4, `Nat.Prime p` is Mathlib's standard primality predicate: p is prime iff p ≥ 2 and its only divisors are 1 and itself. Using a `Finset ℕ` (finite set of natural numbers) as the ambient type lets us count elements with `Finset.card` and use Mathlib's rich Finset API for subset operations. This definition is the starting point for the problem's prime set structure.",
-    "mathContext": "$\\mathtt{IsPrimeSet}(S) \\iff \\forall p \\in S, \\mathrm{Nat.Prime}(p)$. The Lean `Nat.Prime` predicate satisfies: `Nat.Prime p ↔ 2 ≤ p ∧ ∀ m, m ∣ p → m = 1 ∨ m = p`. The problem asks about properties of sets satisfying this predicate with cardinality at least $m^2/(n \\log n)$.",
+    "content": "The predicate `IsPrimeSet S` requires every element of the finite set S to be a prime number. In Lean 4, `Nat.Prime p` is Mathlib's standard primality predicate: p is prime iff p \u2265 2 and its only divisors are 1 and itself. Using a `Finset \u2115` (finite set of natural numbers) as the ambient type lets us count elements with `Finset.card` and use Mathlib's rich Finset API for subset operations. This definition is the starting point for the problem's prime set structure.",
+    "mathContext": "$\\mathtt{IsPrimeSet}(S) \\iff \\forall p \\in S, \\mathrm{Nat.Prime}(p)$. The Lean `Nat.Prime` predicate satisfies: `Nat.Prime p \u2194 2 \u2264 p \u2227 \u2200 m, m \u2223 p \u2192 m = 1 \u2228 m = p`. The problem asks about properties of sets satisfying this predicate with cardinality at least $m^2/(n \\log n)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.Prime",
@@ -54,7 +54,7 @@
     },
     "type": "concept",
     "title": "asympThreshold and growthCondition: The Core Quantitative Structure",
-    "content": "Two definitions capture the quantitative framework of the problem. `asympThreshold m n = m²/(n log n)` is the threshold size that governs the prime subset problem: a prime set of this size must contain a large structured subset. `growthCondition m n` captures the constraint m > √(n log n), which places m in the regime where the threshold is non-trivial (between 1 and m). Together, these two definitions encode the problem's key parameter constraints from the legible fragments.",
+    "content": "Two definitions capture the quantitative framework of the problem. `asympThreshold m n = m\u00b2/(n log n)` is the threshold size that governs the prime subset problem: a prime set of this size must contain a large structured subset. `growthCondition m n` captures the constraint m > \u221a(n log n), which places m in the regime where the threshold is non-trivial (between 1 and m). Together, these two definitions encode the problem's key parameter constraints from the legible fragments.",
     "mathContext": "$\\mathtt{asympThreshold}(m, n) = \\frac{m^2}{n \\log n}$ and $\\mathtt{growthCondition}(m, n) \\iff m > \\sqrt{n \\log n}$. Under the growth condition: $1 < \\frac{m^2}{n \\log n} < m$ (when $n > e$). The lower bound follows from $m > \\sqrt{n \\log n} \\Rightarrow m^2 > n \\log n$. The upper bound follows from $\\frac{m^2}{n \\log n} < m \\iff m < n \\log n$, which holds when $m$ is polynomial in $n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -76,10 +76,10 @@
       "startLine": 46,
       "endLine": 72
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Structural Lemmas: Positivity and Comparison for the Threshold",
-    "content": "Two lemmas establish that `asympThreshold m n` is well-behaved under the problem's parameter constraints. `asympThreshold_pos` proves the threshold is strictly positive when m > 0 and n > 1, using that m² > 0 and n log n > 0. `asympThreshold_lt_m` proves the stronger bound: the threshold is strictly less than m when the growth condition holds, using the equivalence m²/(n log n) < m ↔ m < n log n. These lemmas are pedagogically useful: they confirm that the threshold m²/(n log n) sits strictly between 0 and m in the interesting regime.",
-    "mathContext": "$\\mathtt{asympThreshold\\_pos}$: $m > 0, n > 1 \\Rightarrow m^2/(n \\log n) > 0$. Proof: $m^2 > 0$ by `pow_pos`; $n \\log n > 0$ by $n > 1 \\Rightarrow \\log n > 0$ (`Real.log_pos`). $\\mathtt{asympThreshold\\_lt\\_m}$: $m > 0, n > 1, m > \\sqrt{n \\log n} \\Rightarrow m^2/(n \\log n) < m$. Proof: equivalent to $m^2 < m \\cdot n \\log n$, i.e., $m < n \\log n$, which follows from $m^2 > n \\log n$ and $m^2 < (n \\log n)^2$ when $n \\log n > m$ — this requires $n \\log n > \\sqrt{n \\log n}$, i.e., $n \\log n > 1$.",
+    "content": "Two lemmas establish that `asympThreshold m n` is well-behaved under the problem's parameter constraints. `asympThreshold_pos` proves the threshold is strictly positive when m > 0 and n > 1, using that m\u00b2 > 0 and n log n > 0. `asympThreshold_lt_m` proves the stronger bound: the threshold is strictly less than m when the growth condition holds, using the equivalence m\u00b2/(n log n) < m \u2194 m < n log n. These lemmas are pedagogically useful: they confirm that the threshold m\u00b2/(n log n) sits strictly between 0 and m in the interesting regime.",
+    "mathContext": "$\\mathtt{asympThreshold\\_pos}$: $m > 0, n > 1 \\Rightarrow m^2/(n \\log n) > 0$. Proof: $m^2 > 0$ by `pow_pos`; $n \\log n > 0$ by $n > 1 \\Rightarrow \\log n > 0$ (`Real.log_pos`). $\\mathtt{asympThreshold\\_lt\\_m}$: $m > 0, n > 1, m > \\sqrt{n \\log n} \\Rightarrow m^2/(n \\log n) < m$. Proof: equivalent to $m^2 < m \\cdot n \\log n$, i.e., $m < n \\log n$, which follows from $m^2 > n \\log n$ and $m^2 < (n \\log n)^2$ when $n \\log n > m$ \u2014 this requires $n \\log n > \\sqrt{n \\log n}$, i.e., $n \\log n > 1$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Real.log_pos",
@@ -99,9 +99,9 @@
       "startLine": 74,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Axiom: The Threshold Result (Axiomatized)",
-    "content": "The axiom `erdos_1202_threshold` encodes the solved result of Erdős Problem #1202: there exists an absolute constant c > 0 such that for any prime set S with |S| ≥ m²/(n log n) (under the growth condition), a structured subset T ⊆ S of size ≥ c · m²/(n log n) must exist. The result is axiomatized for two reasons: (1) the precise structural property of T cannot be recovered from the corrupted source statement; (2) the proof requires deep analytic number theory (sieve methods, prime number theorem estimates) not currently available in Mathlib in the required form.",
+    "content": "The axiom `erdos_1202_threshold` encodes the solved result of Erd\u0151s Problem #1202: there exists an absolute constant c > 0 such that for any prime set S with |S| \u2265 m\u00b2/(n log n) (under the growth condition), a structured subset T \u2286 S of size \u2265 c \u00b7 m\u00b2/(n log n) must exist. The result is axiomatized for two reasons: (1) the precise structural property of T cannot be recovered from the corrupted source statement; (2) the proof requires deep analytic number theory (sieve methods, prime number theorem estimates) not currently available in Mathlib in the required form.",
     "mathContext": "Formally: $\\exists c > 0, \\forall n > 1, \\forall m$ with $m > \\sqrt{n \\log n}, \\forall S$ with $S$ a prime set and $|S| \\ge m^2/(n \\log n)$: $\\exists T \\subseteq S$ prime set with $|T| \\ge c \\cdot m^2/(n \\log n)$. The value $m^2/(n \\log n)$ appears naturally in sieve theory: by the prime number theorem, the number of primes up to $n$ is $\\sim n/\\log n$, so among $n$ random integers, approximately $m^2/(n \\log n)$ pairs fall within distance $m$ of each other in prime distribution contexts.",
     "significance": "key",
     "relatedConcepts": [
@@ -123,9 +123,9 @@
       "startLine": 90,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Theorem erdos_1202: The Prime Set Threshold",
-    "content": "The main theorem `erdos_1202` follows directly from the axiom by identity: the theorem statement is exactly `erdos_1202_threshold`. In this proof architecture, the axiom does the mathematical heavy lifting while the named theorem provides a clean top-level reference point. The proof term is simply `erdos_1202_threshold` — the theorem is literally the axiom. This pattern (axiom + immediate restatement as theorem) is standard in the gallery for results where the mathematical content is known but the Lean proof requires more infrastructure than currently available in Mathlib.",
+    "content": "The main theorem `erdos_1202` follows directly from the axiom by identity: the theorem statement is exactly `erdos_1202_threshold`. In this proof architecture, the axiom does the mathematical heavy lifting while the named theorem provides a clean top-level reference point. The proof term is simply `erdos_1202_threshold` \u2014 the theorem is literally the axiom. This pattern (axiom + immediate restatement as theorem) is standard in the gallery for results where the mathematical content is known but the Lean proof requires more infrastructure than currently available in Mathlib.",
     "mathContext": "The Lean proof term `theorem erdos_1202 ... := erdos_1202_threshold` is a definitional equality: both have the same type. The type expresses: $\\exists c > 0$, the prime set threshold property holds for all valid $(m, n, S)$. Under the growth condition, $c \\cdot m^2/(n \\log n)$ is both a lower bound on $|T|$ and strictly positive (by `asympThreshold_pos`), confirming T is non-empty.",
     "significance": "key",
     "relatedConcepts": [
@@ -147,12 +147,12 @@
       "endLine": 97
     },
     "type": "concept",
-    "title": "Sieve Theory and the m²/(n log n) Threshold",
-    "content": "The asymptotic m²/(n log n) is characteristic of second-moment arguments in sieve theory. To understand why: if we choose a random subset R of primes up to n by including each prime p with probability proportional to some weight, the expected size is a sum of weights. The condition k ≫ m²/(n log n) arises when we want the expected number of pairs from R satisfying some proximity condition to exceed m² — the factor n log n in the denominator comes from the prime number theorem density (primes have density 1/log n near n). This is the same scale appearing in Goldston-Pintz-Yıldırım's work on small prime gaps (2005): showing infinitely often pₙ₊₁ - pₙ = o(log pₙ) required counting prime pairs within o(log n) of each other.",
+    "title": "Sieve Theory and the m\u00b2/(n log n) Threshold",
+    "content": "The asymptotic m\u00b2/(n log n) is characteristic of second-moment arguments in sieve theory. To understand why: if we choose a random subset R of primes up to n by including each prime p with probability proportional to some weight, the expected size is a sum of weights. The condition k \u226b m\u00b2/(n log n) arises when we want the expected number of pairs from R satisfying some proximity condition to exceed m\u00b2 \u2014 the factor n log n in the denominator comes from the prime number theorem density (primes have density 1/log n near n). This is the same scale appearing in Goldston-Pintz-Y\u0131ld\u0131r\u0131m's work on small prime gaps (2005): showing infinitely often p\u2099\u208a\u2081 - p\u2099 = o(log p\u2099) required counting prime pairs within o(log n) of each other.",
     "mathContext": "By PNT: $\\pi(n) \\sim n/\\log n$. For prime pairs $(p, p+m)$ with $p \\le n$: expected count $\\sim m \\cdot (n/\\log n) \\cdot (1/\\log n) = mn/\\log^2 n$. When $m \\sim \\sqrt{n \\log n}$: count $\\sim \\sqrt{n \\log n} \\cdot n / \\log^2 n = n^{3/2} / (\\log n)^{3/2}$. The threshold $m^2/(n \\log n) \\sim (n \\log n)/(n \\log n) = 1$ at $m = \\sqrt{n \\log n}$, confirming this is the natural scale boundary.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Goldston-Pintz-Yıldırım theorem",
+      "Goldston-Pintz-Y\u0131ld\u0131r\u0131m theorem",
       "prime gaps",
       "second moment method",
       "prime pair counting"

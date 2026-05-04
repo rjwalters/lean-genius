@@ -29,7 +29,7 @@
       "type": "doc-comment",
       "contains": "Cantor's Theorem (Wiedijk #63)**: For any type A, "
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No Surjection to Power Set",
     "content": "**Cantor's Theorem (Wiedijk #63)**:\n\n$$\\neg \\exists f: A \\to \\mathcal{P}(A), \\text{Surjective}(f)$$\n\nIn Lean, the power set is represented as `A -> Prop` (the type of predicates on A). Each predicate corresponds to a subset: the set of elements satisfying that predicate.\n\nMathlib's `Function.cantor_surjective` provides this directly:\n```lean\ntheorem cantor_no_surjection (A : Type*) :\n    not exists f : A -> (A -> Prop), Function.Surjective f\n```",
     "mathContext": "$\\neg \\exists f: A \\to (A \\to \\text{Prop}),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is `A \\to Prop`. Mathlib's `Function.cantor_surjective` proves this via the diagonal predicate $p(x) := \\neg f(x)(x)$, which cannot equal $f(b)$ for any $b$.",
@@ -75,7 +75,7 @@
       "type": "doc-comment",
       "contains": "Cantor's Theorem (Set formulation)**: No function "
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Set Formulation Proof",
     "content": "The proof using `Set A` instead of `(A -> Prop)`:\n\n1. **Assume** f : A -> Set A is surjective\n2. **Define** D = {x | x not in f x}\n3. **By surjectivity**, exists b with f(b) = D\n4. **Consider**: Is b in D?\n   - **If b in D**: By definition, b not in f(b) = D. Contradiction!\n   - **If b not in D**: By definition, b in f(b) = D. Contradiction!\n5. **Conclude**: No such surjection exists\n\nThe `by_cases` tactic handles the case split, and `simp only [hb]` substitutes f(b) = D to reach the contradiction.",
     "significance": "key",
@@ -99,7 +99,7 @@
       "type": "section-doc",
       "contains": "The Core Lemma: Diagonal Paradox -/"
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "The Self-Reference Paradox",
     "content": "The **diagonal paradox** is the heart of the argument:\n\nIf f(b) = D where D = {x | x not in f(x)}, then:\n$$b \\in D \\iff b \\notin D$$\n\nThis is a **self-referential contradiction** - b's membership in D depends on whether b is in D.\n\nThis paradox is closely related to:\n- **Russell's Paradox**: Consider R = {x | x not in x}. Is R in R?\n- **The Liar Paradox**: 'This statement is false'\n- **Godel's Incompleteness**: Self-referential sentences about provability\n\nIn type theory, we avoid Russell's paradox by stratifying types into universes.",
     "mathContext": "$b \\in D \\iff b \\notin D$",
@@ -122,7 +122,7 @@
       "type": "section-doc",
       "contains": "Corollaries -/"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strict Cardinality Inequality",
     "content": "Cantor's theorem implies the **strict inequality**:\n$$|A| < |\\mathcal{P}(A)|$$\n\nThe inequality has two parts:\n1. $|A| \\leq |\\mathcal{P}(A)|$ : The injection $a \\mapsto \\{a\\}$ (singleton sets)\n2. $|A| \\neq |\\mathcal{P}(A)|$ : No bijection exists (Cantor's theorem)\n\nFor the natural numbers:\n$$|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}| = \\mathfrak{c}$$\n\nThe symbol $\\mathfrak{c}$ denotes the **cardinality of the continuum**.",
     "mathContext": "$|A| < 2^{|A|}$",
@@ -145,7 +145,7 @@
       "type": "doc-comment",
       "contains": "No set can be put in bijection with its power set."
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No Bijection Corollary",
     "content": "A direct corollary: no set can be put in **bijection** with its power set.\n\n$$\\neg \\exists f: A \\to \\mathcal{P}(A), \\text{Bijective}(f)$$\n\nProof: A bijection is in particular a surjection, which we just showed cannot exist.\n\nThis means:\n- N and P(N) have different cardinalities\n- R and P(R) have different cardinalities\n- For any set, its power set is strictly larger",
     "mathContext": "$A \\not\\cong \\mathcal{P}(A)$",

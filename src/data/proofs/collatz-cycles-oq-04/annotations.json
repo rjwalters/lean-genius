@@ -2,73 +2,138 @@
   {
     "id": "ann-collatz-oq04-config",
     "proofId": "collatz-cycles-oq-04",
-    "range": { "startLine": 43, "endLine": 53 },
+    "range": {
+      "startLine": 43,
+      "endLine": 53
+    },
     "type": "definition",
     "title": "Collatz Cycle Configuration",
-    "content": "`CycleConfig j hj` encodes a hypothetical Collatz cycle with exactly `j` odd steps. The fields `odds : Fin j → ℕ` and `halvings : Fin j → ℕ` represent the odd elements and halving counts respectively. The key constraint `cycle_prop` says: for each index i, the Collatz step relation `2^{halvings i} * odds ((i+1) mod j) = 3 * odds i + 1` holds. This encodes the fact that starting from the odd number `odds i`, applying one odd step gives `3 * odds i + 1`, which must be even; dividing by 2^{halvings i} gives the next odd element `odds ((i+1) mod j)`. The total halvings `M = Σᵢ halvings i` counts all even steps in one full cycle.",
-    "mathContext": "A Collatz cycle alternates between odd and even steps. An 'odd step' takes n ↦ 3n+1, followed by as many halvings as needed to reach the next odd number. For a j-step cycle, n₀ →^{m₀ halvings} n₁ →^{m₁ halvings} ··· →^{m_{j-1} halvings} n₀. The total halvings M = Σmᵢ. The only known cycle is {1,2,4} with j=1, m₀=2, M=2: 3·1+1 = 4 = 2² · 1.",
+    "content": "`CycleConfig j hj` encodes a hypothetical Collatz cycle with exactly `j` odd steps. The fields `odds : Fin j \u2192 \u2115` and `halvings : Fin j \u2192 \u2115` represent the odd elements and halving counts respectively. The key constraint `cycle_prop` says: for each index i, the Collatz step relation `2^{halvings i} * odds ((i+1) mod j) = 3 * odds i + 1` holds. This encodes the fact that starting from the odd number `odds i`, applying one odd step gives `3 * odds i + 1`, which must be even; dividing by 2^{halvings i} gives the next odd element `odds ((i+1) mod j)`. The total halvings `M = \u03a3\u1d62 halvings i` counts all even steps in one full cycle.",
+    "mathContext": "A Collatz cycle alternates between odd and even steps. An 'odd step' takes n \u21a6 3n+1, followed by as many halvings as needed to reach the next odd number. For a j-step cycle, n\u2080 \u2192^{m\u2080 halvings} n\u2081 \u2192^{m\u2081 halvings} \u00b7\u00b7\u00b7 \u2192^{m_{j-1} halvings} n\u2080. The total halvings M = \u03a3m\u1d62. The only known cycle is {1,2,4} with j=1, m\u2080=2, M=2: 3\u00b71+1 = 4 = 2\u00b2 \u00b7 1.",
     "significance": "key",
-    "relatedConcepts": ["CycleConfig", "CycleConfig.M", "cyclicSucc"],
-    "prerequisites": ["Fin j as index type", "cyclic arithmetic mod j", "Collatz step relation"]
+    "relatedConcepts": [
+      "CycleConfig",
+      "CycleConfig.M",
+      "cyclicSucc"
+    ],
+    "prerequisites": [
+      "Fin j as index type",
+      "cyclic arithmetic mod j",
+      "Collatz step relation"
+    ]
   },
   {
     "id": "ann-collatz-oq04-prod-eq",
     "proofId": "collatz-cycles-oq-04",
-    "range": { "startLine": 85, "endLine": 98 },
-    "type": "theorem",
-    "title": "Product Equation: ∏(3nᵢ+1) = 2^M · ∏nᵢ",
-    "content": "`cycle_product_equation` proves the fundamental algebraic identity of Collatz cycle theory: the product of all (3nᵢ+1) equals 2^M times the product of all nᵢ. The proof has three steps:\n\n1. Rewrite each factor: 3nᵢ+1 = 2^{halvings i} · n_{σ(i)} (from `cycle_prop`)\n2. Split the product: ∏(2^{mᵢ} · n_{σ(i)}) = (∏ 2^{mᵢ}) · (∏ n_{σ(i)})\n3. Simplify: ∏ 2^{mᵢ} = 2^M (by `prod_two_pow`); ∏ n_{σ(i)} = ∏ nᵢ (since σ is a bijection, by `prod_perm_eq`)\n\nThe key insight: `cyclicSucc j hj` (i ↦ (i+1) mod j) is an `Equiv.Perm (Fin j)`, so `Equiv.Perm.prod_comp` applies directly.",
-    "mathContext": "Taking the product over all i ∈ {0,...,j-1} of the step relation 2^{mᵢ}·n_{i+1} = 3nᵢ+1: LHS = ∏ 2^{mᵢ} · ∏ n_{σ(i)} = 2^M · ∏ nᵢ (bijection invariance), RHS = ∏(3nᵢ+1). This algebraic fact appears in Lagarias (1985) as the basis for cycle constraints.",
+    "range": {
+      "startLine": 85,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "Product Equation: \u220f(3n\u1d62+1) = 2^M \u00b7 \u220fn\u1d62",
+    "content": "`cycle_product_equation` proves the fundamental algebraic identity of Collatz cycle theory: the product of all (3n\u1d62+1) equals 2^M times the product of all n\u1d62. The proof has three steps:\n\n1. Rewrite each factor: 3n\u1d62+1 = 2^{halvings i} \u00b7 n_{\u03c3(i)} (from `cycle_prop`)\n2. Split the product: \u220f(2^{m\u1d62} \u00b7 n_{\u03c3(i)}) = (\u220f 2^{m\u1d62}) \u00b7 (\u220f n_{\u03c3(i)})\n3. Simplify: \u220f 2^{m\u1d62} = 2^M (by `prod_two_pow`); \u220f n_{\u03c3(i)} = \u220f n\u1d62 (since \u03c3 is a bijection, by `prod_perm_eq`)\n\nThe key insight: `cyclicSucc j hj` (i \u21a6 (i+1) mod j) is an `Equiv.Perm (Fin j)`, so `Equiv.Perm.prod_comp` applies directly.",
+    "mathContext": "Taking the product over all i \u2208 {0,...,j-1} of the step relation 2^{m\u1d62}\u00b7n_{i+1} = 3n\u1d62+1: LHS = \u220f 2^{m\u1d62} \u00b7 \u220f n_{\u03c3(i)} = 2^M \u00b7 \u220f n\u1d62 (bijection invariance), RHS = \u220f(3n\u1d62+1). This algebraic fact appears in Lagarias (1985) as the basis for cycle constraints.",
     "significance": "key",
-    "relatedConcepts": ["cycle_product_equation", "prod_perm_eq", "prod_two_pow", "cyclicSucc"],
-    "prerequisites": ["Equiv.Perm.prod_comp", "Finset.prod_mul_distrib", "Finset.prod_pow_eq_pow_sum"]
+    "relatedConcepts": [
+      "cycle_product_equation",
+      "prod_perm_eq",
+      "prod_two_pow",
+      "cyclicSucc"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.prod_comp",
+      "Finset.prod_mul_distrib",
+      "Finset.prod_pow_eq_pow_sum"
+    ]
   },
   {
     "id": "ann-collatz-oq04-step-gt",
     "proofId": "collatz-cycles-oq-04",
-    "range": { "startLine": 107, "endLine": 136 },
-    "type": "theorem",
-    "title": "Strict Inequality: ∏(3nᵢ+1) > 3^j · ∏nᵢ",
-    "content": "`prod_step_gt` proves by induction on j that ∏ᵢ(3nᵢ+1) > 3^j · ∏nᵢ for any sequence of positive nᵢ. The base case (j'=0 in the successor induction) is trivial by `omega`. The inductive step peels off the first factor: if IH gives 3^{j'}·P < Q (where P = ∏_tail nᵢ, Q = ∏_tail(3nᵢ+1)), then:\n\n  3^{j'+1} · (n₀ · P) = 3n₀ · (3^{j'} · P) < 3n₀ · Q ≤ (3n₀+1) · Q\n\nThe first inequality is `mul_lt_mul_of_pos_left ih' (by linarith)`. The second is `Nat.mul_le_mul_right _ (by omega)`. The `calc` proof makes the chain explicit.",
-    "mathContext": "Since 3nᵢ+1 > 3nᵢ for all i, we have ∏(3nᵢ+1) > ∏ 3nᵢ = 3^j · ∏nᵢ. But this naïve argument works for ≥, not >. The strict inequality comes from the +1: even though each factor only exceeds 3nᵢ by 1, the product is strictly larger. The inductive proof handles this carefully by factoring out n₀ at each step.",
+    "range": {
+      "startLine": 107,
+      "endLine": 136
+    },
+    "type": "insight",
+    "title": "Strict Inequality: \u220f(3n\u1d62+1) > 3^j \u00b7 \u220fn\u1d62",
+    "content": "`prod_step_gt` proves by induction on j that \u220f\u1d62(3n\u1d62+1) > 3^j \u00b7 \u220fn\u1d62 for any sequence of positive n\u1d62. The base case (j'=0 in the successor induction) is trivial by `omega`. The inductive step peels off the first factor: if IH gives 3^{j'}\u00b7P < Q (where P = \u220f_tail n\u1d62, Q = \u220f_tail(3n\u1d62+1)), then:\n\n  3^{j'+1} \u00b7 (n\u2080 \u00b7 P) = 3n\u2080 \u00b7 (3^{j'} \u00b7 P) < 3n\u2080 \u00b7 Q \u2264 (3n\u2080+1) \u00b7 Q\n\nThe first inequality is `mul_lt_mul_of_pos_left ih' (by linarith)`. The second is `Nat.mul_le_mul_right _ (by omega)`. The `calc` proof makes the chain explicit.",
+    "mathContext": "Since 3n\u1d62+1 > 3n\u1d62 for all i, we have \u220f(3n\u1d62+1) > \u220f 3n\u1d62 = 3^j \u00b7 \u220fn\u1d62. But this na\u00efve argument works for \u2265, not >. The strict inequality comes from the +1: even though each factor only exceeds 3n\u1d62 by 1, the product is strictly larger. The inductive proof handles this carefully by factoring out n\u2080 at each step.",
     "significance": "key",
-    "relatedConcepts": ["prod_step_gt", "halving_constraint"],
-    "prerequisites": ["induction on j", "Nat.mul_le_mul_right", "mul_lt_mul_of_pos_left"]
+    "relatedConcepts": [
+      "prod_step_gt",
+      "halving_constraint"
+    ],
+    "prerequisites": [
+      "induction on j",
+      "Nat.mul_le_mul_right",
+      "mul_lt_mul_of_pos_left"
+    ]
   },
   {
     "id": "ann-collatz-oq04-halving",
     "proofId": "collatz-cycles-oq-04",
-    "range": { "startLine": 138, "endLine": 147 },
-    "type": "theorem",
+    "range": {
+      "startLine": 138,
+      "endLine": 147
+    },
+    "type": "insight",
     "title": "Halving Constraint: 3^j < 2^M",
-    "content": "`halving_constraint` combines the two previous theorems in two lines: from `cycle_product_equation`, we have 2^M · ∏nᵢ = ∏(3nᵢ+1). From `prod_step_gt`, we have 3^j · ∏nᵢ < ∏(3nᵢ+1). Substituting: 3^j · ∏nᵢ < 2^M · ∏nᵢ. Cancelling ∏nᵢ > 0 via `Nat.lt_of_mul_lt_mul_right` gives 3^j < 2^M.\n\nThis is the general version of the constraint that CollatzCycles.lean proves for j = 1, 2, 3, 4 by interval_cases. Here it holds for ALL j ≥ 1 by the algebraic argument.",
-    "mathContext": "The constraint 3^j < 2^M means that the number of even steps M must exceed j·log₂(3) ≈ 1.585j. This grows faster than j, so any hypothetical cycle must be at least (1 + 1.585)j ≈ 2.585j steps long — growing linearly with the number of odd steps.",
+    "content": "`halving_constraint` combines the two previous theorems in two lines: from `cycle_product_equation`, we have 2^M \u00b7 \u220fn\u1d62 = \u220f(3n\u1d62+1). From `prod_step_gt`, we have 3^j \u00b7 \u220fn\u1d62 < \u220f(3n\u1d62+1). Substituting: 3^j \u00b7 \u220fn\u1d62 < 2^M \u00b7 \u220fn\u1d62. Cancelling \u220fn\u1d62 > 0 via `Nat.lt_of_mul_lt_mul_right` gives 3^j < 2^M.\n\nThis is the general version of the constraint that CollatzCycles.lean proves for j = 1, 2, 3, 4 by interval_cases. Here it holds for ALL j \u2265 1 by the algebraic argument.",
+    "mathContext": "The constraint 3^j < 2^M means that the number of even steps M must exceed j\u00b7log\u2082(3) \u2248 1.585j. This grows faster than j, so any hypothetical cycle must be at least (1 + 1.585)j \u2248 2.585j steps long \u2014 growing linearly with the number of odd steps.",
     "significance": "key",
-    "relatedConcepts": ["halving_constraint", "cycle_M_gt_j", "no_power_eq"],
-    "prerequisites": ["cycle_product_equation", "prod_step_gt", "Nat.lt_of_mul_lt_mul_right"]
+    "relatedConcepts": [
+      "halving_constraint",
+      "cycle_M_gt_j",
+      "no_power_eq"
+    ],
+    "prerequisites": [
+      "cycle_product_equation",
+      "prod_step_gt",
+      "Nat.lt_of_mul_lt_mul_right"
+    ]
   },
   {
     "id": "ann-collatz-oq04-parity",
     "proofId": "collatz-cycles-oq-04",
-    "range": { "startLine": 157, "endLine": 165 },
-    "type": "theorem",
-    "title": "No Power Equality: 2^M ≠ 3^j",
-    "content": "`no_power_eq` proves that 2^M ≠ 3^j for M ≥ 1 by a simple parity argument. `dvd_pow_self 2 (Nat.pos_iff_ne_zero.mp hM)` gives 2 ∣ 2^M, so `2^M % 2 = 0`. But `odd_three_pow j` proves by induction that `3^j % 2 = 1` (since 3 ≡ 1 mod 2). These two congruences are incompatible, so `omega` closes the goal.\n\nThis is why the Collatz halving constraint is strict (3^j < 2^M, not ≤): if 3^j = 2^M, then M = 0 (trivially), but for positive M, it's impossible.",
-    "mathContext": "2^M is always even for M ≥ 1 (it has 2 as a factor). 3^j is always odd (3 ≡ 1 mod 2, so 3^j ≡ 1^j = 1 mod 2). These congruences together imply 2^M ≠ 3^j. This is a Diophantine fact: the equation 2^M = 3^j has no positive integer solutions (which can also be proved by unique factorization).",
+    "range": {
+      "startLine": 157,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "No Power Equality: 2^M \u2260 3^j",
+    "content": "`no_power_eq` proves that 2^M \u2260 3^j for M \u2265 1 by a simple parity argument. `dvd_pow_self 2 (Nat.pos_iff_ne_zero.mp hM)` gives 2 \u2223 2^M, so `2^M % 2 = 0`. But `odd_three_pow j` proves by induction that `3^j % 2 = 1` (since 3 \u2261 1 mod 2). These two congruences are incompatible, so `omega` closes the goal.\n\nThis is why the Collatz halving constraint is strict (3^j < 2^M, not \u2264): if 3^j = 2^M, then M = 0 (trivially), but for positive M, it's impossible.",
+    "mathContext": "2^M is always even for M \u2265 1 (it has 2 as a factor). 3^j is always odd (3 \u2261 1 mod 2, so 3^j \u2261 1^j = 1 mod 2). These congruences together imply 2^M \u2260 3^j. This is a Diophantine fact: the equation 2^M = 3^j has no positive integer solutions (which can also be proved by unique factorization).",
     "significance": "supporting",
-    "relatedConcepts": ["no_power_eq", "odd_three_pow"],
-    "prerequisites": ["parity mod 2", "dvd_pow_self", "Nat.pos_iff_ne_zero"]
+    "relatedConcepts": [
+      "no_power_eq",
+      "odd_three_pow"
+    ],
+    "prerequisites": [
+      "parity mod 2",
+      "dvd_pow_self",
+      "Nat.pos_iff_ne_zero"
+    ]
   },
   {
     "id": "ann-collatz-oq04-length",
     "proofId": "collatz-cycles-oq-04",
-    "range": { "startLine": 174, "endLine": 182 },
-    "type": "theorem",
-    "title": "Minimum Cycle Length: M ≥ j+1",
-    "content": "`cycle_M_gt_j` proves M ≥ j+1 by chaining two inequalities: `two_pow_lt_three_pow` gives 2^j < 3^j (for j ≥ 1), and `halving_constraint` gives 3^j < 2^M. Combined: 2^j < 2^M. Monotonicity of 2^· (via contrapositive: if M ≤ j then 2^M ≤ 2^j) gives M > j, hence M ≥ j+1.\n\nThis gives a weak lower bound on cycle length. The full cycle has j odd steps plus M even steps, so total length ≥ j + (j+1) = 2j+1. The sharp bound M ≥ ⌈j·log₂(3)⌉ ≈ 1.585j gives total length ≥ j + ⌈1.585j⌉, but deriving this from the product equation requires Diophantine approximation techniques not available here.",
-    "mathContext": "The minimum cycle length theorem: any hypothetical Collatz cycle with j odd steps has at least 2j+1 total steps (j odd + at least j+1 even). For j=1: ≥ 3 steps (the known cycle {1,4,2} has exactly 3). For j=10: ≥ 21 steps. Eliahou (1993) showed M ≥ 17,087,915 total halvings, ruling out cycles with up to about 10 million odd steps.",
+    "range": {
+      "startLine": 174,
+      "endLine": 182
+    },
+    "type": "insight",
+    "title": "Minimum Cycle Length: M \u2265 j+1",
+    "content": "`cycle_M_gt_j` proves M \u2265 j+1 by chaining two inequalities: `two_pow_lt_three_pow` gives 2^j < 3^j (for j \u2265 1), and `halving_constraint` gives 3^j < 2^M. Combined: 2^j < 2^M. Monotonicity of 2^\u00b7 (via contrapositive: if M \u2264 j then 2^M \u2264 2^j) gives M > j, hence M \u2265 j+1.\n\nThis gives a weak lower bound on cycle length. The full cycle has j odd steps plus M even steps, so total length \u2265 j + (j+1) = 2j+1. The sharp bound M \u2265 \u2308j\u00b7log\u2082(3)\u2309 \u2248 1.585j gives total length \u2265 j + \u23081.585j\u2309, but deriving this from the product equation requires Diophantine approximation techniques not available here.",
+    "mathContext": "The minimum cycle length theorem: any hypothetical Collatz cycle with j odd steps has at least 2j+1 total steps (j odd + at least j+1 even). For j=1: \u2265 3 steps (the known cycle {1,4,2} has exactly 3). For j=10: \u2265 21 steps. Eliahou (1993) showed M \u2265 17,087,915 total halvings, ruling out cycles with up to about 10 million odd steps.",
     "significance": "supporting",
-    "relatedConcepts": ["cycle_M_gt_j", "two_pow_lt_three_pow", "halving_constraint"],
-    "prerequisites": ["Nat.pow_lt_pow_left", "Nat.pow_le_pow_right", "monotonicity of 2^·"]
+    "relatedConcepts": [
+      "cycle_M_gt_j",
+      "two_pow_lt_three_pow",
+      "halving_constraint"
+    ],
+    "prerequisites": [
+      "Nat.pow_lt_pow_left",
+      "Nat.pow_le_pow_right",
+      "monotonicity of 2^\u00b7"
+    ]
   }
 ]

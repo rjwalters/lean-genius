@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "F(x): Maximum Multi-Covering by Congruence Classes",
-    "content": "F(x) is the largest value such that there exist residue classes a_n ∈ {0,...,n-1} (one for each n ≤ x) with the property that every m ≤ x satisfies at least F(x) of the congruences m ≡ a_n (mod n) simultaneously.\n\nIn Lean: `CoveringAssignment x` is the type of functions mapping each `n : Fin x` to a residue `a : Fin n.val.succ`. The `coverageCount x m a` counts how many n ≤ x cover m under assignment a. F(x) is then the maximum over all assignments of the minimum coverageCount.\n\nThis is a max-min problem: we maximize the worst-case coverage. The `harmonicSum x = ∑_{n≤x} 1/(n+1)` is the theoretical ceiling, since the average coverage per integer is at most this.",
+    "content": "F(x) is the largest value such that there exist residue classes a_n \u2208 {0,...,n-1} (one for each n \u2264 x) with the property that every m \u2264 x satisfies at least F(x) of the congruences m \u2261 a_n (mod n) simultaneously.\n\nIn Lean: `CoveringAssignment x` is the type of functions mapping each `n : Fin x` to a residue `a : Fin n.val.succ`. The `coverageCount x m a` counts how many n \u2264 x cover m under assignment a. F(x) is then the maximum over all assignments of the minimum coverageCount.\n\nThis is a max-min problem: we maximize the worst-case coverage. The `harmonicSum x = \u2211_{n\u2264x} 1/(n+1)` is the theoretical ceiling, since the average coverage per integer is at most this.",
     "mathContext": "$F(x) = \\max_a \\min_{m \\le x} C_a(m)$, where $C_a(m) = |\\{n \\le x : m \\equiv a_n \\pmod{n}\\}|$. The average: $\\frac{1}{x}\\sum_{m \\le x} C_a(m) = \\frac{1}{x}\\sum_{n \\le x} \\lfloor x/n \\rfloor \\approx \\sum_{n \\le x} 1/n \\approx \\ln x$.",
     "significance": "key",
     "relatedConcepts": [
@@ -32,12 +32,12 @@
       "endLine": 17
     },
     "type": "insight",
-    "title": "Why F(x) = Θ(log x): The Harmonic Sum Connection",
-    "content": "The central insight is that the harmonic sum $H(x) = \\sum_{n=1}^{x} 1/n \\approx \\ln x$ controls F(x) from both sides:\n\n**Upper bound**: For any assignment a, the total coverage ∑_{m≤x} C_a(m) = ∑_{n≤x} #{m≤x : n|m-a_n} = ∑_{n≤x} ⌊x/n⌋ ≈ x·ln(x). So the average coverage per m ≈ ln(x). Since F(x) = minimum coverage, F(x) ≤ average ≈ ln(x).\n\n**Lower bound**: The probabilistic method — random independent a_n gives E[C(m)] = ∑ 1/n ≈ ln(x), and concentration (Chernoff/LLL) shows min_m C(m) ≥ c·ln(x) with positive probability. So an optimal assignment exists with F(x) ≥ c·ln(x).",
+    "title": "Why F(x) = \u0398(log x): The Harmonic Sum Connection",
+    "content": "The central insight is that the harmonic sum $H(x) = \\sum_{n=1}^{x} 1/n \\approx \\ln x$ controls F(x) from both sides:\n\n**Upper bound**: For any assignment a, the total coverage \u2211_{m\u2264x} C_a(m) = \u2211_{n\u2264x} #{m\u2264x : n|m-a_n} = \u2211_{n\u2264x} \u230ax/n\u230b \u2248 x\u00b7ln(x). So the average coverage per m \u2248 ln(x). Since F(x) = minimum coverage, F(x) \u2264 average \u2248 ln(x).\n\n**Lower bound**: The probabilistic method \u2014 random independent a_n gives E[C(m)] = \u2211 1/n \u2248 ln(x), and concentration (Chernoff/LLL) shows min_m C(m) \u2265 c\u00b7ln(x) with positive probability. So an optimal assignment exists with F(x) \u2265 c\u00b7ln(x).",
     "mathContext": "Upper: $\\frac{1}{x}\\sum_m C_a(m) = \\frac{1}{x}\\sum_n \\lfloor x/n\\rfloor \\le \\sum_n 1/n \\approx \\ln x$, so $F(x) \\le \\ln x$. Lower: Random $a_n \\sim \\text{Uniform}(\\mathbb{Z}/n)$: $E[C(m)] = \\sum_n P(n | m - a_n) = \\sum_n 1/n \\approx \\ln x$. Chernoff with $\\mu = \\ln x$: $P[C(m) < \\mu/2] \\le e^{-\\mu/8} = x^{-1/8}$. Union bound: $P[\\exists m: C(m) < \\mu/2] \\le x \\cdot x^{-1/8} = x^{7/8} \\to 0$.",
     "significance": "key",
     "relatedConcepts": [
-      "harmonic sum H(x) ≈ ln(x)",
+      "harmonic sum H(x) \u2248 ln(x)",
       "averaging argument",
       "Chernoff bound",
       "probabilistic method existence"
@@ -56,19 +56,19 @@
       "endLine": 9
     },
     "type": "concept",
-    "title": "Historical Context: Covering Systems and Erdős",
-    "content": "A **covering system** is a finite set of congruences {a_i (mod n_i)} such that every integer satisfies at least one. Erdős introduced covering systems in the 1950s, showing that for any k, there exists a covering system with minimum modulus k. The classic example: {0(2), 0(3), 1(4), 3(8), 7(12), 23(24)}.\n\nProblem #1205 is a multi-covering variant: instead of every integer covered once (F ≥ 1), we want maximum simultaneous multi-coverage. The constraint that all moduli {1,...,x} must be used (not a subset) gives F(x) = Θ(log x) rather than the 1-coverage case.\n\nRelated: Erdős's minimum modulus conjecture was resolved by Hough (2015): every covering system with distinct moduli has a modulus ≤ 10^16.",
-    "mathContext": "Covering system condition: $\\sum 1/n_i \\ge 1$. Multi-covering condition for F-fold: $\\sum 1/n_i \\ge F$. With all $n \\le x$: $\\sum_{n=1}^{x} 1/n \\approx \\ln x$, giving the optimal F \\approx \\ln x$. Hough (2015): Every covering system with distinct moduli contains a modulus $\\le 10^{16}$ (resolving Erdős's conjecture).",
+    "title": "Historical Context: Covering Systems and Erd\u0151s",
+    "content": "A **covering system** is a finite set of congruences {a_i (mod n_i)} such that every integer satisfies at least one. Erd\u0151s introduced covering systems in the 1950s, showing that for any k, there exists a covering system with minimum modulus k. The classic example: {0(2), 0(3), 1(4), 3(8), 7(12), 23(24)}.\n\nProblem #1205 is a multi-covering variant: instead of every integer covered once (F \u2265 1), we want maximum simultaneous multi-coverage. The constraint that all moduli {1,...,x} must be used (not a subset) gives F(x) = \u0398(log x) rather than the 1-coverage case.\n\nRelated: Erd\u0151s's minimum modulus conjecture was resolved by Hough (2015): every covering system with distinct moduli has a modulus \u2264 10^16.",
+    "mathContext": "Covering system condition: $\\sum 1/n_i \\ge 1$. Multi-covering condition for F-fold: $\\sum 1/n_i \\ge F$. With all $n \\le x$: $\\sum_{n=1}^{x} 1/n \\approx \\ln x$, giving the optimal F \\approx \\ln x$. Hough (2015): Every covering system with distinct moduli contains a modulus $\\le 10^{16}$ (resolving Erd\u0151s's conjecture).",
     "significance": "supporting",
     "relatedConcepts": [
       "covering systems",
       "Hough's theorem 2015",
-      "Erdős minimum modulus conjecture",
-      "Lovász Local Lemma"
+      "Erd\u0151s minimum modulus conjecture",
+      "Lov\u00e1sz Local Lemma"
     ],
     "prerequisites": [
       "modular arithmetic",
-      "covering density condition ∑ 1/n ≥ 1"
+      "covering density condition \u2211 1/n \u2265 1"
     ]
   },
   {
@@ -80,15 +80,15 @@
     },
     "type": "insight",
     "title": "Probabilistic Method: fx_lower_bound Axiom",
-    "content": "The lower bound axiom `fx_lower_bound` encodes the probabilistic existence argument. The strategy: choose each a_n uniformly at random from {0,...,n-1}, independently. For fixed m, the probability that n covers m is Prob[m ≡ a_n (mod n)] = 1/n. So:\n\nE[C(m)] = ∑_{n≤x} 1/n = H(x) ≈ ln(x).\n\nThe indicators I_n(m) = 1[n covers m] are independent (different moduli). By the Chernoff bound, P[C(m) < μ/2] ≤ exp(-μ/8) = exp(-ln(x)/8) = x^{-1/8}. A union bound over all x integers m gives P[min C(m) < μ/2] ≤ x·x^{-1/8} → 0. So some assignment achieves min C(m) ≥ c·ln(x).\n\nThis is not yet in Lean because Chernoff bounds for arbitrary distributions require measure theory work.",
-    "mathContext": "Formal: $\\exists a: \\forall m \\le x, C_a(m) \\ge c\\ln x$. Proof uses: (1) independence of indicators across moduli; (2) Chernoff: $P[\\sum X_i < (1-\\delta)\\mu] \\le e^{-\\delta^2\\mu/2}$; (3) union bound over $x$ events. The axiom `fx_lower_bound` in Lean asserts this for `c > 0` with `∀ x ≥ 2`.",
+    "content": "The lower bound axiom `fx_lower_bound` encodes the probabilistic existence argument. The strategy: choose each a_n uniformly at random from {0,...,n-1}, independently. For fixed m, the probability that n covers m is Prob[m \u2261 a_n (mod n)] = 1/n. So:\n\nE[C(m)] = \u2211_{n\u2264x} 1/n = H(x) \u2248 ln(x).\n\nThe indicators I_n(m) = 1[n covers m] are independent (different moduli). By the Chernoff bound, P[C(m) < \u03bc/2] \u2264 exp(-\u03bc/8) = exp(-ln(x)/8) = x^{-1/8}. A union bound over all x integers m gives P[min C(m) < \u03bc/2] \u2264 x\u00b7x^{-1/8} \u2192 0. So some assignment achieves min C(m) \u2265 c\u00b7ln(x).\n\nThis is not yet in Lean because Chernoff bounds for arbitrary distributions require measure theory work.",
+    "mathContext": "Formal: $\\exists a: \\forall m \\le x, C_a(m) \\ge c\\ln x$. Proof uses: (1) independence of indicators across moduli; (2) Chernoff: $P[\\sum X_i < (1-\\delta)\\mu] \\le e^{-\\delta^2\\mu/2}$; (3) union bound over $x$ events. The axiom `fx_lower_bound` in Lean asserts this for `c > 0` with `\u2200 x \u2265 2`.",
     "significance": "key",
     "relatedConcepts": [
       "Chernoff bound",
       "independent Bernoulli variables",
       "union bound over x events",
-      "Lovász Local Lemma",
-      "probabilistic method (Erdős)"
+      "Lov\u00e1sz Local Lemma",
+      "probabilistic method (Erd\u0151s)"
     ],
     "prerequisites": [
       "probability theory and Chernoff bounds",
@@ -103,9 +103,9 @@
       "startLine": 72,
       "endLine": 87
     },
-    "type": "theorem",
-    "title": "Main Theorem: erdos_1205 (F(x) = Θ(log x))",
-    "content": "The main theorem `erdos_1205` bundles both bounds into a single conjunction: the lower bound ∃ c > 0 and the upper bound ∃ C > 0, establishing F(x) = Θ(log x). The proof is a one-line pair introduction: `⟨fx_lower_bound, fx_upper_bound⟩`.\n\nThis confirms that the optimal multi-coverage grows logarithmically — neither faster (bounded by the average) nor slower (the probabilistic method guarantees at least Ω(log x)). The `#check` lines confirm `harmonicSum`, `coverageCount`, and `erdos_1205` are well-typed and accessible.",
+    "type": "insight",
+    "title": "Main Theorem: erdos_1205 (F(x) = \u0398(log x))",
+    "content": "The main theorem `erdos_1205` bundles both bounds into a single conjunction: the lower bound \u2203 c > 0 and the upper bound \u2203 C > 0, establishing F(x) = \u0398(log x). The proof is a one-line pair introduction: `\u27e8fx_lower_bound, fx_upper_bound\u27e9`.\n\nThis confirms that the optimal multi-coverage grows logarithmically \u2014 neither faster (bounded by the average) nor slower (the probabilistic method guarantees at least \u03a9(log x)). The `#check` lines confirm `harmonicSum`, `coverageCount`, and `erdos_1205` are well-typed and accessible.",
     "mathContext": "Statement: $(\\exists c > 0, \\forall x \\ge 2, \\exists a, \\forall m \\le x: C_a(m) \\ge c\\ln x) \\wedge (\\exists C > 0, \\forall x \\ge 2, \\forall a, \\exists m \\le x: C_a(m) \\le C\\ln x)$. The conjunction of `fx_lower_bound` and `fx_upper_bound` gives $F(x) = \\Theta(\\log x)$.",
     "significance": "key",
     "relatedConcepts": [

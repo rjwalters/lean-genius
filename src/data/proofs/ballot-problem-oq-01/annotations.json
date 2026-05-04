@@ -143,7 +143,7 @@
       "startLine": 185,
       "endLine": 218
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Cyclic Rotation and Membership Preservation",
     "content": "Defines cyclic rotation as $\\text{rotate}(l, i) = \\text{drop}\\,i\\,l \\mathbin{\\|}\\, \\text{take}\\,i\\,l$ and proves key invariants: rotation preserves the sum ($\\sum \\text{rotate}(l,i) = \\sum l$), the length, and membership in kCountedSequence. The membership proof uses `List.take_append_drop` to show that counts are additive over the split.\n\nComposition of rotations satisfies $\\text{rotate}(\\text{rotate}(l, i), j) = \\text{rotate}(l, i+j)$ when indices don't exceed the boundary.",
     "mathContext": "$$\\text{rotate}(l, i) = l[i:] \\mathbin{\\|} l[:i], \\qquad \\sum \\text{rotate}(l,i) = \\sum l$$",
@@ -190,7 +190,7 @@
       "startLine": 289,
       "endLine": 304
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Good Rotations and Decidability",
     "content": "A rotation is **good** if all prefix sums of the rotated sequence are strictly positive \u2014 equivalently, if the corresponding vote counting always has A leading with more than $k$ times B's votes. The `isGoodRotation` predicate is made `Decidable` by reducing to a finite conjunction over $j \\in [1, n]$, enabling `native_decide` verification of concrete examples.\n\n`goodRotations l` collects all good starting positions as a `Finset \u2115`.",
     "mathContext": "$$\\text{goodRotations}(l) = \\{i < |l| \\mid \\forall\\, 0 < j \\leq |l|,\\; \\sigma_{\\text{rot}(i)}(j) > 0\\}$$",
@@ -213,7 +213,7 @@
       "startLine": 337,
       "endLine": 413
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Rightmost Minimum Infrastructure",
     "content": "Defines `rightmostMinPos l` as the **rightmost** position where the prefix sum achieves its global minimum, and proves it is a good rotation when $S > 0$. The key insight: after the rightmost minimum, all prefix sums are strictly above the minimum (by maximality), so the non-wrapping part of the rotated prefix sums is positive. The wrapping part uses $\\sigma(j) \\geq \\min + 0$ and the positive sum $S > 0$ to stay positive.\n\nThis gives the existence of at least one good rotation, which is needed to start the counting argument.",
     "mathContext": "$$m = \\max\\{i \\leq n : \\sigma(i) = \\min_{0 \\leq j \\leq n} \\sigma(j)\\}, \\qquad \\text{rotation } m \\text{ is good}$$",

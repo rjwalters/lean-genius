@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Parent Module: The Triangle Removal Base Case",
-    "content": "This file imports `Proofs.Erdos1155Problem`, which contains the r=3 case — the original triangle removal process. The import establishes the inheritance relationship: all definitions here generalize the r=3 constructs from the parent. The BFL (2015) result f_3(n) = n^{3/2+o(1)} lives in the parent; this file builds the conjecture for r ≥ 4 and proves that the r=3 special case (`kRemovalExponent 3 = 3/2`) matches the parent's theorem. The dependency is not just architectural — `kRemoval_conjecture` at r=3 is a formalization of the conjectured version of BFL.",
-    "mathContext": "The parent module `Erdos1155Problem.lean` handles the specific case $r = 3$: $f_3(n) = $ expected edges after triangle removal from $K_n$. BFL (Bohman, Fonoberova, Lladó, 2015) proved $f_3(n) = n^{3/2 + o(1)}$, which in our notation is the BFL-type bound `kRemoval_bfl_type 3`. The current module conjectures $f_r(n) \\asymp n^{2 - 2/(r+1)}$ for general $r \\geq 3$, with the $r = 3$ case ($\\alpha = 3/2$) matching BFL.",
+    "content": "This file imports `Proofs.Erdos1155Problem`, which contains the r=3 case \u2014 the original triangle removal process. The import establishes the inheritance relationship: all definitions here generalize the r=3 constructs from the parent. The BFL (2015) result f_3(n) = n^{3/2+o(1)} lives in the parent; this file builds the conjecture for r \u2265 4 and proves that the r=3 special case (`kRemovalExponent 3 = 3/2`) matches the parent's theorem. The dependency is not just architectural \u2014 `kRemoval_conjecture` at r=3 is a formalization of the conjectured version of BFL.",
+    "mathContext": "The parent module `Erdos1155Problem.lean` handles the specific case $r = 3$: $f_3(n) = $ expected edges after triangle removal from $K_n$. BFL (Bohman, Fonoberova, Llad\u00f3, 2015) proved $f_3(n) = n^{3/2 + o(1)}$, which in our notation is the BFL-type bound `kRemoval_bfl_type 3`. The current module conjectures $f_r(n) \\asymp n^{2 - 2/(r+1)}$ for general $r \\geq 3$, with the $r = 3$ case ($\\alpha = 3/2$) matching BFL.",
     "significance": "supporting",
     "relatedConcepts": [
       "triangle removal process",
@@ -33,8 +33,8 @@
     },
     "type": "concept",
     "title": "kCliqueRemovalEdges: Axiomatizing a Stochastic Process",
-    "content": "The axiom `kCliqueRemovalEdges : ℕ → ℕ → ℝ` declares the existence of a function giving the expected remaining edges after K_r-removal on K_n. This is not a definition but an axiom because the random process itself has no closed-form expression — it is defined implicitly by an expectation over all possible removal orderings. Two companion axioms establish the only properties we use: non-negativity and the complete graph upper bound f_r(n) ≤ n²/2. All theorems in this file follow from these three axioms alone.",
-    "mathContext": "Formally, $f_r(n)$ is the expectation $\\mathbb{E}[|E(G)|]$ where $G$ is the (random) $K_r$-free graph obtained by the removal process on $K_n$. This expectation exists and is well-defined, but computing it requires tracking all possible trajectories of the Markov chain. The axiom `kCliqueRemovalEdges : ℕ → ℕ → ℝ` asserts this function exists without specifying its values. The conjecture then asserts $f_r(n) \\asymp n^{2-2/(r+1)}$.",
+    "content": "The axiom `kCliqueRemovalEdges : \u2115 \u2192 \u2115 \u2192 \u211d` declares the existence of a function giving the expected remaining edges after K_r-removal on K_n. This is not a definition but an axiom because the random process itself has no closed-form expression \u2014 it is defined implicitly by an expectation over all possible removal orderings. Two companion axioms establish the only properties we use: non-negativity and the complete graph upper bound f_r(n) \u2264 n\u00b2/2. All theorems in this file follow from these three axioms alone.",
+    "mathContext": "Formally, $f_r(n)$ is the expectation $\\mathbb{E}[|E(G)|]$ where $G$ is the (random) $K_r$-free graph obtained by the removal process on $K_n$. This expectation exists and is well-defined, but computing it requires tracking all possible trajectories of the Markov chain. The axiom `kCliqueRemovalEdges : \u2115 \u2192 \u2115 \u2192 \u211d` asserts this function exists without specifying its values. The conjecture then asserts $f_r(n) \\asymp n^{2-2/(r+1)}$.",
     "significance": "key",
     "relatedConcepts": [
       "random graph process",
@@ -58,21 +58,21 @@
       "endLine": 72
     },
     "type": "definition",
-    "title": "Turán Density: The Extremal Edge Density of K_r-Free Graphs",
-    "content": "The function `turanDensity r = 1 - 1/(r-1)` gives the Turán density — the maximum fraction of edges in a K_r-free graph on n vertices, as n → ∞. For r=3, this is 1/2 (Mantel's theorem: a triangle-free graph has at most n²/4 edges). For r=4, this is 2/3. Turán's theorem (1941) is one of the foundational results of extremal graph theory, characterizing the exact maximum edge count. The removal process terminal graphs are K_r-free but also random, so they are typically much sparser than the Turán bound — this sparsity is quantified by the exponent 2-2/(r+1) < 2.",
-    "mathContext": "Turán's theorem: the maximum number of edges in a $K_r$-free graph on $n$ vertices is $\\left(1 - \\frac{1}{r-1}\\right)\\frac{n^2}{2}$, achieved by the complete $(r-1)$-partite graph $T(n, r-1)$ (Turán graph). The edge density is $\\tau(r) = 1 - 1/(r-1)$: $\\tau(3) = 1/2$, $\\tau(4) = 2/3$, $\\tau(5) = 3/4$, and $\\tau(r) \\to 1$ as $r \\to \\infty$. Compare to the removal exponent $\\alpha(r) = 2 - 2/(r+1) \\to 2$: both approach their respective limits as $r \\to \\infty$, but the removal process leaves graphs far below Turán density.",
+    "title": "Tur\u00e1n Density: The Extremal Edge Density of K_r-Free Graphs",
+    "content": "The function `turanDensity r = 1 - 1/(r-1)` gives the Tur\u00e1n density \u2014 the maximum fraction of edges in a K_r-free graph on n vertices, as n \u2192 \u221e. For r=3, this is 1/2 (Mantel's theorem: a triangle-free graph has at most n\u00b2/4 edges). For r=4, this is 2/3. Tur\u00e1n's theorem (1941) is one of the foundational results of extremal graph theory, characterizing the exact maximum edge count. The removal process terminal graphs are K_r-free but also random, so they are typically much sparser than the Tur\u00e1n bound \u2014 this sparsity is quantified by the exponent 2-2/(r+1) < 2.",
+    "mathContext": "Tur\u00e1n's theorem: the maximum number of edges in a $K_r$-free graph on $n$ vertices is $\\left(1 - \\frac{1}{r-1}\\right)\\frac{n^2}{2}$, achieved by the complete $(r-1)$-partite graph $T(n, r-1)$ (Tur\u00e1n graph). The edge density is $\\tau(r) = 1 - 1/(r-1)$: $\\tau(3) = 1/2$, $\\tau(4) = 2/3$, $\\tau(5) = 3/4$, and $\\tau(r) \\to 1$ as $r \\to \\infty$. Compare to the removal exponent $\\alpha(r) = 2 - 2/(r+1) \\to 2$: both approach their respective limits as $r \\to \\infty$, but the removal process leaves graphs far below Tur\u00e1n density.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "extremal graph theory",
       "K_r-free graphs",
       "Mantel's theorem",
-      "Turán graph"
+      "Tur\u00e1n graph"
     ],
     "prerequisites": [
       "complete multipartite graph",
       "edge density",
-      "Turán's theorem (1941)"
+      "Tur\u00e1n's theorem (1941)"
     ]
   },
   {
@@ -84,18 +84,18 @@
     },
     "type": "definition",
     "title": "kRemovalExponent: The Conjectured Exponent 2 - 2/(r+1)",
-    "content": "The definition `kRemovalExponent r = 2 - 2 / (r + 1)` is the heart of the module. The formula 2 - 2/(r+1) is a computable real number for each r. The file proves specific values: r=3 gives 3/2, r=4 gives 8/5, r=5 gives 5/3. The sequence is strictly increasing (more verified), bounded in [1,2), and converges to 2. The formula appears across random process theory as a 'balance point' exponent — where the rate at which cliques are found equals the rate at which cliques are destroyed.",
-    "mathContext": "The exponent $\\alpha(r) = 2 - 2/(r+1)$ satisfies: $\\alpha(3) = 3/2$, $\\alpha(4) = 8/5$, $\\alpha(5) = 5/3$, $\\alpha(6) = 12/7$, and $\\alpha(r) \\to 2$ as $r \\to \\infty$. The gap from the Turán exponent 2 is $2 - \\alpha(r) = 2/(r+1)$, shrinking as $r$ grows. The formula arises from a heuristic balance: in a graph with edge density $n^{\\alpha-2}$, the number of $r$-cliques is $\\approx n^r \\cdot (n^{\\alpha-2})^{\\binom{r}{2}}$. Setting this equal to the clique-removal rate (one clique per step, each removing $\\binom{r}{2}$ edges) yields $\\alpha = 2 - 2/(r+1)$.",
+    "content": "The definition `kRemovalExponent r = 2 - 2 / (r + 1)` is the heart of the module. The formula 2 - 2/(r+1) is a computable real number for each r. The file proves specific values: r=3 gives 3/2, r=4 gives 8/5, r=5 gives 5/3. The sequence is strictly increasing (more verified), bounded in [1,2), and converges to 2. The formula appears across random process theory as a 'balance point' exponent \u2014 where the rate at which cliques are found equals the rate at which cliques are destroyed.",
+    "mathContext": "The exponent $\\alpha(r) = 2 - 2/(r+1)$ satisfies: $\\alpha(3) = 3/2$, $\\alpha(4) = 8/5$, $\\alpha(5) = 5/3$, $\\alpha(6) = 12/7$, and $\\alpha(r) \\to 2$ as $r \\to \\infty$. The gap from the Tur\u00e1n exponent 2 is $2 - \\alpha(r) = 2/(r+1)$, shrinking as $r$ grows. The formula arises from a heuristic balance: in a graph with edge density $n^{\\alpha-2}$, the number of $r$-cliques is $\\approx n^r \\cdot (n^{\\alpha-2})^{\\binom{r}{2}}$. Setting this equal to the clique-removal rate (one clique per step, each removing $\\binom{r}{2}$ edges) yields $\\alpha = 2 - 2/(r+1)$.",
     "significance": "key",
     "relatedConcepts": [
       "random clique removal",
       "edge density exponent",
-      "Turán density",
+      "Tur\u00e1n density",
       "asymptotic exponent",
       "norm_num verification"
     ],
     "prerequisites": [
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "clique density",
       "K_r-free graphs",
       "real arithmetic in Lean"
@@ -110,7 +110,7 @@
     },
     "type": "concept",
     "title": "Exponent Monotonicity: Larger r Means More Remaining Edges",
-    "content": "The theorem `kRemovalExponent_strictMono` proves that r₁ < r₂ implies α(r₁) < α(r₂): the conjectured exponent strictly increases with r. The proof reduces to showing 2/(r₂+1) < 2/(r₁+1) when r₁+1 < r₂+1, using `div_lt_div_of_pos_left` (dividing a positive constant 2 by a larger denominator gives a smaller result). The interpretation: larger cliques are rarer and harder to find, so the removal process terminates with more edges remaining, giving a larger exponent.",
+    "content": "The theorem `kRemovalExponent_strictMono` proves that r\u2081 < r\u2082 implies \u03b1(r\u2081) < \u03b1(r\u2082): the conjectured exponent strictly increases with r. The proof reduces to showing 2/(r\u2082+1) < 2/(r\u2081+1) when r\u2081+1 < r\u2082+1, using `div_lt_div_of_pos_left` (dividing a positive constant 2 by a larger denominator gives a smaller result). The interpretation: larger cliques are rarer and harder to find, so the removal process terminates with more edges remaining, giving a larger exponent.",
     "mathContext": "The strict inequality $\\alpha(r_1) < \\alpha(r_2)$ for $r_1 < r_2$ follows from $\\frac{2}{r_1+1} > \\frac{2}{r_2+1}$ (since $r_1+1 < r_2+1$, both positive). Therefore $2 - \\frac{2}{r_1+1} < 2 - \\frac{2}{r_2+1}$. The Lean proof uses `exact_mod_cast` to coerce the natural number inequality $r_1 + 1 < r_2 + 1$ to a real inequality, then `div_lt_div_of_pos_left` from Mathlib's ordered field lemmas.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -132,10 +132,10 @@
       "startLine": 116,
       "endLine": 150
     },
-    "type": "theorem",
-    "title": "Exponent Bounds and Convergence: 1 ≤ α(r) < 2 and α(r) → 2",
-    "content": "Two structural theorems characterize the full range of the exponent sequence. `kRemovalExponent_bounds` proves 1 ≤ α(r) < 2 for r ≥ 1: the lower bound comes from r ≥ 1 ⟹ r+1 ≥ 2 ⟹ 2/(r+1) ≤ 1 ⟹ α = 2 - 2/(r+1) ≥ 1; the upper bound from 2/(r+1) > 0. `kRemovalExponent_near_two` is the convergence theorem: for any target gap δ > 0, all r ≥ ⌈2/δ⌉ satisfy α(r) > 2-δ. The explicit threshold N = ⌈2/δ⌉ is computed by ceiling, using `Nat.le_ceil` and `Real.rpow` arithmetic.",
-    "mathContext": "The bounds $1 \\leq \\alpha(r) < 2$ reflect that the terminal graph of the removal process always has between $\\Omega(n)$ and $o(n^2)$ edges: at least linear (one removal step cannot empty the graph for $n \\geq r$), at most subquadratic. The convergence $\\alpha(r) \\to 2$: given $\\delta > 0$, choose $N = \\lceil 2/\\delta \\rceil$. Then $r \\geq N$ implies $r+1 \\geq 2/\\delta$, so $2/(r+1) \\leq \\delta$, hence $\\alpha(r) = 2 - 2/(r+1) \\geq 2 - \\delta$. The Lean proof uses `div_lt_iff₀` and `mul_le_mul_of_nonneg_left` to formalize this chain.",
+    "type": "insight",
+    "title": "Exponent Bounds and Convergence: 1 \u2264 \u03b1(r) < 2 and \u03b1(r) \u2192 2",
+    "content": "Two structural theorems characterize the full range of the exponent sequence. `kRemovalExponent_bounds` proves 1 \u2264 \u03b1(r) < 2 for r \u2265 1: the lower bound comes from r \u2265 1 \u27f9 r+1 \u2265 2 \u27f9 2/(r+1) \u2264 1 \u27f9 \u03b1 = 2 - 2/(r+1) \u2265 1; the upper bound from 2/(r+1) > 0. `kRemovalExponent_near_two` is the convergence theorem: for any target gap \u03b4 > 0, all r \u2265 \u23082/\u03b4\u2309 satisfy \u03b1(r) > 2-\u03b4. The explicit threshold N = \u23082/\u03b4\u2309 is computed by ceiling, using `Nat.le_ceil` and `Real.rpow` arithmetic.",
+    "mathContext": "The bounds $1 \\leq \\alpha(r) < 2$ reflect that the terminal graph of the removal process always has between $\\Omega(n)$ and $o(n^2)$ edges: at least linear (one removal step cannot empty the graph for $n \\geq r$), at most subquadratic. The convergence $\\alpha(r) \\to 2$: given $\\delta > 0$, choose $N = \\lceil 2/\\delta \\rceil$. Then $r \\geq N$ implies $r+1 \\geq 2/\\delta$, so $2/(r+1) \\leq \\delta$, hence $\\alpha(r) = 2 - 2/(r+1) \\geq 2 - \\delta$. The Lean proof uses `div_lt_iff\u2080` and `mul_le_mul_of_nonneg_left` to formalize this chain.",
     "significance": "supporting",
     "relatedConcepts": [
       "sequence convergence",
@@ -160,8 +160,8 @@
     },
     "type": "definition",
     "title": "kRemoval_conjecture: Formalizing an Open Problem as a Lean Prop",
-    "content": "The definition `kRemoval_conjecture r` encodes the open conjecture as a precise Lean Prop: there exist real constants c₁ ≤ c₂ with c₁ > 0 such that c₁·nᵅ ≤ f_r(n) ≤ c₂·nᵅ holds for all sufficiently large n (expressed using `∀ᶠ n in atTop`). This Θ-notation (asymptotic tight bound) is the standard formulation of 'the process leaves Θ(nᵅ) edges'. The companion theorem `kRemoval_conjecture_three_exponent` links the r=3 conjecture to the BFL result by noting its exponent equals 3/2.",
-    "mathContext": "The $\\Theta$-bound $f_r(n) \\asymp n^\\alpha$ is defined as: $\\exists c_1, c_2 > 0$ such that $\\forall^\\infty n,\\; c_1 n^\\alpha \\leq f_r(n) \\leq c_2 n^\\alpha$. In Lean this is `∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧ ∀ᶠ (n : ℕ) in atTop, c₁ * n^α ≤ f_r(n) ∧ f_r(n) ≤ c₂ * n^α`. The `∀ᶠ` (Filter.eventually) idiom captures 'for all sufficiently large n'. The conjecture is currently open for all $r \\geq 4$; only the $r=3$ case is proved (BFL 2015, but without full Lean formalization of BFL itself).",
+    "content": "The definition `kRemoval_conjecture r` encodes the open conjecture as a precise Lean Prop: there exist real constants c\u2081 \u2264 c\u2082 with c\u2081 > 0 such that c\u2081\u00b7n\u1d45 \u2264 f_r(n) \u2264 c\u2082\u00b7n\u1d45 holds for all sufficiently large n (expressed using `\u2200\u1da0 n in atTop`). This \u0398-notation (asymptotic tight bound) is the standard formulation of 'the process leaves \u0398(n\u1d45) edges'. The companion theorem `kRemoval_conjecture_three_exponent` links the r=3 conjecture to the BFL result by noting its exponent equals 3/2.",
+    "mathContext": "The $\\Theta$-bound $f_r(n) \\asymp n^\\alpha$ is defined as: $\\exists c_1, c_2 > 0$ such that $\\forall^\\infty n,\\; c_1 n^\\alpha \\leq f_r(n) \\leq c_2 n^\\alpha$. In Lean this is `\u2203 c\u2081 c\u2082 : \u211d, 0 < c\u2081 \u2227 c\u2081 \u2264 c\u2082 \u2227 \u2200\u1da0 (n : \u2115) in atTop, c\u2081 * n^\u03b1 \u2264 f_r(n) \u2227 f_r(n) \u2264 c\u2082 * n^\u03b1`. The `\u2200\u1da0` (Filter.eventually) idiom captures 'for all sufficiently large n'. The conjecture is currently open for all $r \\geq 4$; only the $r=3$ case is proved (BFL 2015, but without full Lean formalization of BFL itself).",
     "significance": "key",
     "relatedConcepts": [
       "Theta-notation",
@@ -185,8 +185,8 @@
       "endLine": 237
     },
     "type": "concept",
-    "title": "Conjecture Implies BFL Bound: Absorbing Constants into n^ε",
-    "content": "The 50-line proof of `kRemoval_conjecture_implies_bfl` is the deepest theorem in the file. Starting from constants c₁·nᵅ ≤ f_r(n) ≤ c₂·nᵅ (the conjecture), it derives n^{α-ε} ≤ f_r(n) ≤ n^{α+ε} for every ε > 0. The key step: for large n, n^ε ≥ c₂ (upper) and n^ε ≥ c₁⁻¹ (lower), so the constants are absorbed. Two `eventually_atTop` witnesses are constructed explicitly using ceiling functions, and the final multiplication uses `rpow_add` to combine n^α · n^{±ε} = n^{α±ε}.",
+    "title": "Conjecture Implies BFL Bound: Absorbing Constants into n^\u03b5",
+    "content": "The 50-line proof of `kRemoval_conjecture_implies_bfl` is the deepest theorem in the file. Starting from constants c\u2081\u00b7n\u1d45 \u2264 f_r(n) \u2264 c\u2082\u00b7n\u1d45 (the conjecture), it derives n^{\u03b1-\u03b5} \u2264 f_r(n) \u2264 n^{\u03b1+\u03b5} for every \u03b5 > 0. The key step: for large n, n^\u03b5 \u2265 c\u2082 (upper) and n^\u03b5 \u2265 c\u2081\u207b\u00b9 (lower), so the constants are absorbed. Two `eventually_atTop` witnesses are constructed explicitly using ceiling functions, and the final multiplication uses `rpow_add` to combine n^\u03b1 \u00b7 n^{\u00b1\u03b5} = n^{\u03b1\u00b1\u03b5}.",
     "mathContext": "The absorption argument: given $c_2 > 0$, choose $N \\geq \\lceil c_2^{1/\\varepsilon} \\rceil + 1$. Then for $n \\geq N$: $n^\\varepsilon \\geq c_2$. Therefore $f_r(n) \\leq c_2 \\cdot n^\\alpha \\leq n^\\varepsilon \\cdot n^\\alpha = n^{\\alpha+\\varepsilon}$. The lower bound uses $c_1^{-1}$ similarly. The Lean proof uses `Real.rpow_mul` to derive $c_2 = (c_2^{1/\\varepsilon})^\\varepsilon$, then `Real.rpow_le_rpow` for the bound, and `Real.rpow_add` to combine exponents. The $o(1)$ in the BFL formulation $n^{\\alpha+o(1)}$ is captured by making the exponent perturbation $\\pm\\varepsilon$ arbitrarily small.",
     "significance": "key",
     "relatedConcepts": [
@@ -211,19 +211,19 @@
       "endLine": 271
     },
     "type": "insight",
-    "title": "Exponent Hierarchy and Turán Gap: Structure of the Conjecture Sequence",
-    "content": "Sections §§6-7 collect structural facts relating the exponents across different r and to the Turán bound. `exponent_hierarchy` re-expresses `kRemovalExponent_strictMono` for r ≥ 3 specifically. `exponent_table` packages the three computed values r=3,4,5 as a Lean conjunction. `removal_exponent_below_turan` notes that α(r) < 2 always, meaning random K_r-removal always terminates with fewer edges than the Turán maximum. `turan_removal_gap` computes the exact gap: 2 - α(r) = 2/(r+1), proved by unfolding the definition and using `ring`.",
-    "mathContext": "The gap $2 - \\alpha(r) = 2/(r+1)$ shrinks as $r$ grows: gap at $r=3$ is $1/2$, at $r=4$ is $2/5$, at $r=5$ is $1/3$, and gap $\\to 0$ as $r \\to \\infty$. This means the removal process becomes increasingly 'efficient' at large $r$ — the terminal graph approaches Turán density. Combinatorially: when $r$ is large, $r$-cliques are rare, each removal step destroys relatively few edges, and the process runs for longer before halting. The Turán graph itself is $K_r$-free, so the removal process always terminates before reaching Turán density — but the gap closes as $r$ increases.",
+    "title": "Exponent Hierarchy and Tur\u00e1n Gap: Structure of the Conjecture Sequence",
+    "content": "Sections \u00a7\u00a76-7 collect structural facts relating the exponents across different r and to the Tur\u00e1n bound. `exponent_hierarchy` re-expresses `kRemovalExponent_strictMono` for r \u2265 3 specifically. `exponent_table` packages the three computed values r=3,4,5 as a Lean conjunction. `removal_exponent_below_turan` notes that \u03b1(r) < 2 always, meaning random K_r-removal always terminates with fewer edges than the Tur\u00e1n maximum. `turan_removal_gap` computes the exact gap: 2 - \u03b1(r) = 2/(r+1), proved by unfolding the definition and using `ring`.",
+    "mathContext": "The gap $2 - \\alpha(r) = 2/(r+1)$ shrinks as $r$ grows: gap at $r=3$ is $1/2$, at $r=4$ is $2/5$, at $r=5$ is $1/3$, and gap $\\to 0$ as $r \\to \\infty$. This means the removal process becomes increasingly 'efficient' at large $r$ \u2014 the terminal graph approaches Tur\u00e1n density. Combinatorially: when $r$ is large, $r$-cliques are rare, each removal step destroys relatively few edges, and the process runs for longer before halting. The Tur\u00e1n graph itself is $K_r$-free, so the removal process always terminates before reaching Tur\u00e1n density \u2014 but the gap closes as $r$ increases.",
     "significance": "supporting",
     "relatedConcepts": [
       "exponent hierarchy",
-      "Turán density",
-      "Turán gap",
+      "Tur\u00e1n density",
+      "Tur\u00e1n gap",
       "extremal graph theory",
       "K_r-free graphs"
     ],
     "prerequisites": [
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "kRemovalExponent",
       "ring tactic in Lean"
     ]
@@ -235,9 +235,9 @@
       "startLine": 272,
       "endLine": 309
     },
-    "type": "theorem",
-    "title": "Conjecture Iff Both Bounds: Decomposing Θ into Upper and Lower",
-    "content": "The theorem `conjecture_iff_both_bounds_r` proves the conjecture is logically equivalent to the conjunction of a one-sided upper bound (`upper_theta_bound_r`) and a one-sided lower bound (`lower_theta_bound_r`). The forward direction is easy: extract c₂ for the upper and c₁ for the lower. The reverse direction requires verifying c₁ ≤ c₂; if c₁ > c₂, we derive a contradiction using a single large-n witness where the lower and upper bounds are both active but c₁·nᵅ > c₂·nᵅ. The proof uses `by_contra` and `push_neg` to extract this contradiction, then `mul_lt_mul_of_pos_right` to derive the absurdity.",
+    "type": "insight",
+    "title": "Conjecture Iff Both Bounds: Decomposing \u0398 into Upper and Lower",
+    "content": "The theorem `conjecture_iff_both_bounds_r` proves the conjecture is logically equivalent to the conjunction of a one-sided upper bound (`upper_theta_bound_r`) and a one-sided lower bound (`lower_theta_bound_r`). The forward direction is easy: extract c\u2082 for the upper and c\u2081 for the lower. The reverse direction requires verifying c\u2081 \u2264 c\u2082; if c\u2081 > c\u2082, we derive a contradiction using a single large-n witness where the lower and upper bounds are both active but c\u2081\u00b7n\u1d45 > c\u2082\u00b7n\u1d45. The proof uses `by_contra` and `push_neg` to extract this contradiction, then `mul_lt_mul_of_pos_right` to derive the absurdity.",
     "mathContext": "The equivalence $f_r(n) \\asymp n^\\alpha \\iff f_r(n) = O(n^\\alpha) \\text{ and } f_r(n) = \\Omega(n^\\alpha)$ is standard in asymptotic analysis but requires care in formal proof: the constants $c_1 \\leq c_2$ in the $\\Theta$-definition must be shown consistent. When $c$ (lower) and $C$ (upper) come from separate hypotheses, one must verify $c \\leq C$ using a concrete witness. The Lean proof extracts a witness $n$ where both bounds are active, then applies: $c \\cdot n^\\alpha \\leq f_r(n) \\leq C \\cdot n^\\alpha$, so if $C < c$ then $C \\cdot n^\\alpha < c \\cdot n^\\alpha \\leq f_r(n) \\leq C \\cdot n^\\alpha$, a contradiction.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -260,9 +260,9 @@
       "startLine": 309,
       "endLine": 327
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Limit Implies Conjecture: Convergence Gives Explicit Constants",
-    "content": "The theorem `limit_implies_conjecture_r` provides the strongest sufficient condition: if f_r(n)/n^α → L for some L > 0, then the conjecture holds with c₁ = L/2 and c₂ = 3L/2. The proof uses `Icc_mem_nhds` to find a neighborhood [L/2, 3L/2] of L in nhds L, then `htends.eventually` to get the ratio eventually landing in this interval. The explicit constants (L/2 and 3L/2) are computable from the limit, making this a constructive proof.",
+    "content": "The theorem `limit_implies_conjecture_r` provides the strongest sufficient condition: if f_r(n)/n^\u03b1 \u2192 L for some L > 0, then the conjecture holds with c\u2081 = L/2 and c\u2082 = 3L/2. The proof uses `Icc_mem_nhds` to find a neighborhood [L/2, 3L/2] of L in nhds L, then `htends.eventually` to get the ratio eventually landing in this interval. The explicit constants (L/2 and 3L/2) are computable from the limit, making this a constructive proof.",
     "mathContext": "If $\\lim_{n\\to\\infty} f_r(n)/n^\\alpha = L > 0$, then eventually $L/2 \\leq f_r(n)/n^\\alpha \\leq 3L/2$, hence $(L/2) \\cdot n^\\alpha \\leq f_r(n) \\leq (3L/2) \\cdot n^\\alpha$. The Lean proof uses `Filter.Tendsto` to `nhds L`, then `Icc_mem_nhds (by linarith) (by linarith)` to extract the open interval containing $L$, producing the eventual bound via `htends.eventually hIcc`. This constructive form (explicit constants from limit) is useful for future proof attempts: compute $L$ via differential equation methods, then read off the constants.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -287,8 +287,8 @@
       "endLine": 355
     },
     "type": "concept",
-    "title": "§10: Exponent Arithmetic Sanity Checks via norm_num",
-    "content": "The final section collects concrete numerical verifications: gap_three/four/five compute the exact Turán-removal gaps 1/2, 2/5, 1/3 for r=3,4,5 respectively; `exponent_three_range` confirms 1 < 3/2 < 2; `exponent_strict_order` confirms the ordering 3/2 < 8/5 < 5/3. Every theorem in this section is proved by `norm_num` after rewriting with the previously established exponent values. These theorems serve as integration tests: if the exponent definition or the value theorems were wrong, these would fail.",
+    "title": "\u00a710: Exponent Arithmetic Sanity Checks via norm_num",
+    "content": "The final section collects concrete numerical verifications: gap_three/four/five compute the exact Tur\u00e1n-removal gaps 1/2, 2/5, 1/3 for r=3,4,5 respectively; `exponent_three_range` confirms 1 < 3/2 < 2; `exponent_strict_order` confirms the ordering 3/2 < 8/5 < 5/3. Every theorem in this section is proved by `norm_num` after rewriting with the previously established exponent values. These theorems serve as integration tests: if the exponent definition or the value theorems were wrong, these would fail.",
     "mathContext": "The numerical values are exact rational numbers: $\\alpha(3) = 3/2$, $\\alpha(4) = 8/5$, $\\alpha(5) = 5/3$. The gaps are $2 - 3/2 = 1/2$, $2 - 8/5 = 2/5$, $2 - 5/3 = 1/3 = 2/6$. In general, $2/(r+1)$ evaluated at $r = 3, 4, 5$ gives $1/2, 2/5, 1/3$. These fractions form a decreasing sequence: $1/2 > 2/5 > 1/3$, consistent with monotone convergence to 0. The `norm_num` tactic handles all rational arithmetic automatically after unfolding the definitions.",
     "significance": "supporting",
     "relatedConcepts": [

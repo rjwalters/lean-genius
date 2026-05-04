@@ -2,97 +2,194 @@
   {
     "id": "ann-napoq02-header",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 8, "endLine": 63 },
+    "range": {
+      "startLine": 8,
+      "endLine": 63
+    },
     "type": "concept",
     "title": "Napoleon's Theorem as a DFT Filter: Overview",
-    "content": "The module docstring introduces the central insight: the Napoleon triangle construction is equivalent to applying the 3-point Discrete Fourier Transform to triangle vertices and then filtering specific frequency components.\n\n**DFT of triangle (z₁, z₂, z₃)**:\n- X₀ = z₁ + z₂ + z₃  (DC / centroid component)\n- X₁ = z₁ + ω·z₂ + ω²·z₃  (frequency-1 component)\n- X₂ = z₁ + ω²·z₂ + ω·z₃  (frequency-2 component)\n\n**Outer Napoleon DFT**:\n- Y₀ = X₀ (centroid preserved)\n- Y₁ = -X₁ (frequency-1 negated)\n- Y₂ = 0 (frequency-2 eliminated)\n\n**Inner Napoleon DFT**:\n- Y₀' = X₀ (centroid preserved)\n- Y₁' = 0 (frequency-1 eliminated)\n- Y₂' = -X₂ (frequency-2 negated)\n\nSince an equilateral triangle is characterized by X₂ = 0, the outer Napoleon triangle is ALWAYS equilateral — this algebraic identity is the mathematical heart of Napoleon's theorem.",
+    "content": "The module docstring introduces the central insight: the Napoleon triangle construction is equivalent to applying the 3-point Discrete Fourier Transform to triangle vertices and then filtering specific frequency components.\n\n**DFT of triangle (z\u2081, z\u2082, z\u2083)**:\n- X\u2080 = z\u2081 + z\u2082 + z\u2083  (DC / centroid component)\n- X\u2081 = z\u2081 + \u03c9\u00b7z\u2082 + \u03c9\u00b2\u00b7z\u2083  (frequency-1 component)\n- X\u2082 = z\u2081 + \u03c9\u00b2\u00b7z\u2082 + \u03c9\u00b7z\u2083  (frequency-2 component)\n\n**Outer Napoleon DFT**:\n- Y\u2080 = X\u2080 (centroid preserved)\n- Y\u2081 = -X\u2081 (frequency-1 negated)\n- Y\u2082 = 0 (frequency-2 eliminated)\n\n**Inner Napoleon DFT**:\n- Y\u2080' = X\u2080 (centroid preserved)\n- Y\u2081' = 0 (frequency-1 eliminated)\n- Y\u2082' = -X\u2082 (frequency-2 negated)\n\nSince an equilateral triangle is characterized by X\u2082 = 0, the outer Napoleon triangle is ALWAYS equilateral \u2014 this algebraic identity is the mathematical heart of Napoleon's theorem.",
     "mathContext": "The 3-point DFT is defined by $X_k = \\sum_{j=1}^{3} z_j \\cdot \\omega^{(j-1)k}$ where $\\omega = e^{2\\pi i/3}$. The outer Napoleon map acts diagonally: $(X_0, X_1, X_2) \\mapsto (X_0, -X_1, 0)$. Equilateral triangles satisfy $X_2 = 0$, so $Y_2 = 0$ immediately implies equilaterality.",
     "significance": "supporting",
-    "relatedConcepts": ["discrete Fourier transform", "Napoleon's theorem", "equilateral triangles", "frequency components"],
-    "prerequisites": ["Napoleon's theorem (parent proof)", "complex numbers", "cube roots of unity", "DFT basics"]
+    "relatedConcepts": [
+      "discrete Fourier transform",
+      "Napoleon's theorem",
+      "equilateral triangles",
+      "frequency components"
+    ],
+    "prerequisites": [
+      "Napoleon's theorem (parent proof)",
+      "complex numbers",
+      "cube roots of unity",
+      "DFT basics"
+    ]
   },
   {
     "id": "ann-napoq02-omega-def",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 65, "endLine": 83 },
+    "range": {
+      "startLine": 65,
+      "endLine": 83
+    },
     "type": "definition",
     "title": "omega and omegaSq: Primitive Cube Root of Unity",
-    "content": "Defines the primitive cube root of unity and its key algebraic properties:\n\n- `omega : ℂ = (-1 + I·√3) / 2` — the standard formula for e^{2πi/3}\n- `omegaSq : ℂ = (-1 - I·√3) / 2` — equals ω² (complex conjugate of ω)\n- `sqrt3_sq_real` (private lemma): √3 · √3 = 3, proved via `Real.mul_self_sqrt`\n\nThe use of `(-1 + I·√3)/2` rather than a trigonometric definition (`exp (2πi/3)`) allows algebraic proof strategies using `nlinarith` after expanding real and imaginary parts. The key challenge is that Lean's `Real.sqrt` requires explicit squaring lemmas rather than computing with `sqrt 3 = 3^{1/2}` directly.",
+    "content": "Defines the primitive cube root of unity and its key algebraic properties:\n\n- `omega : \u2102 = (-1 + I\u00b7\u221a3) / 2` \u2014 the standard formula for e^{2\u03c0i/3}\n- `omegaSq : \u2102 = (-1 - I\u00b7\u221a3) / 2` \u2014 equals \u03c9\u00b2 (complex conjugate of \u03c9)\n- `sqrt3_sq_real` (private lemma): \u221a3 \u00b7 \u221a3 = 3, proved via `Real.mul_self_sqrt`\n\nThe use of `(-1 + I\u00b7\u221a3)/2` rather than a trigonometric definition (`exp (2\u03c0i/3)`) allows algebraic proof strategies using `nlinarith` after expanding real and imaginary parts. The key challenge is that Lean's `Real.sqrt` requires explicit squaring lemmas rather than computing with `sqrt 3 = 3^{1/2}` directly.",
     "mathContext": "$\\omega = e^{2\\pi i/3} = -\\frac{1}{2} + \\frac{\\sqrt{3}}{2}i$. Both $\\omega$ and $\\omega^2$ are declared `noncomputable` because they involve `Real.sqrt 3`. The private lemma `sqrt3_sq_real : Real.sqrt 3 * Real.sqrt 3 = 3` is used in every subsequent proof to discharge `nlinarith` goals involving $\\sqrt{3}^2$.",
     "significance": "key",
-    "relatedConcepts": ["primitive cube root of unity", "Real.sqrt", "Complex.I", "noncomputable definition"],
-    "prerequisites": ["complex number arithmetic", "Real.mul_self_sqrt", "Lean noncomputable declarations"]
+    "relatedConcepts": [
+      "primitive cube root of unity",
+      "Real.sqrt",
+      "Complex.I",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "complex number arithmetic",
+      "Real.mul_self_sqrt",
+      "Lean noncomputable declarations"
+    ]
   },
   {
     "id": "ann-napoq02-cube-identity",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 86, "endLine": 116 },
-    "type": "theorem",
-    "title": "Cube Root Identities: ω² = ω^2, 1+ω+ω²=0, ω³=1",
-    "content": "Three foundational theorems establishing the algebraic properties of ω:\n\n1. **`omegaSq_eq_sq`**: omegaSq = omega^2. Proved by `Complex.ext` (separating real/imaginary parts) then `nlinarith` using `sqrt3_sq_real`. The `ring_nf; nlinarith [h3]` pattern handles nonlinear arithmetic involving √3.\n\n2. **`one_add_omega_add_omegaSq`**: 1 + ω + ω² = 0. Direct computation by `simp + ring`. This is the key identity used throughout all four main DFT theorems.\n\n3. **`omega_cube`**: ω³ = 1. Similarly proved by expanding and using nlinarith.\n\nAll three proofs follow the pattern: `apply Complex.ext`, `simp` to reduce to real/imaginary arithmetic, then `ring_nf; nlinarith [sqrt3_sq_real]`.",
+    "range": {
+      "startLine": 86,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "Cube Root Identities: \u03c9\u00b2 = \u03c9^2, 1+\u03c9+\u03c9\u00b2=0, \u03c9\u00b3=1",
+    "content": "Three foundational theorems establishing the algebraic properties of \u03c9:\n\n1. **`omegaSq_eq_sq`**: omegaSq = omega^2. Proved by `Complex.ext` (separating real/imaginary parts) then `nlinarith` using `sqrt3_sq_real`. The `ring_nf; nlinarith [h3]` pattern handles nonlinear arithmetic involving \u221a3.\n\n2. **`one_add_omega_add_omegaSq`**: 1 + \u03c9 + \u03c9\u00b2 = 0. Direct computation by `simp + ring`. This is the key identity used throughout all four main DFT theorems.\n\n3. **`omega_cube`**: \u03c9\u00b3 = 1. Similarly proved by expanding and using nlinarith.\n\nAll three proofs follow the pattern: `apply Complex.ext`, `simp` to reduce to real/imaginary arithmetic, then `ring_nf; nlinarith [sqrt3_sq_real]`.",
     "mathContext": "The three identities follow from $\\omega = e^{2\\pi i/3}$: $1 + e^{2\\pi i/3} + e^{4\\pi i/3} = 0$ (sum of 3rd roots of unity) and $e^{2\\pi i} = 1$. In Lean, these are proved purely algebraically without invoking exponential/trigonometric identities.",
     "significance": "key",
-    "relatedConcepts": ["cube roots of unity", "Complex.ext", "nlinarith", "ring_nf"],
-    "prerequisites": ["complex number arithmetic", "omega definition", "sqrt3_sq_real lemma"]
+    "relatedConcepts": [
+      "cube roots of unity",
+      "Complex.ext",
+      "nlinarith",
+      "ring_nf"
+    ],
+    "prerequisites": [
+      "complex number arithmetic",
+      "omega definition",
+      "sqrt3_sq_real lemma"
+    ]
   },
   {
     "id": "ann-napoq02-outer-dft1",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 122, "endLine": 156 },
-    "type": "theorem",
-    "title": "napoleon_outer_dft1: Outer Napoleon Negates Frequency-1 (Y₁ = -X₁)",
-    "content": "**Main theorem**: G₁ + ω·G₂ + ω²·G₃ = -(z₁ + ω·z₂ + ω²·z₃)\n\nThe frequency-1 DFT component of the outer Napoleon triangle equals the negation of the original triangle's frequency-1 component. This is the 'frequency-1 negation' part of the Napoleon filter.\n\n**Proof technique**: Expand G₁, G₂, G₃ via `napoleonCenter`, substitute ω = (-1+I√3)/2 and ω² = (-1-I√3)/2, then apply `Complex.ext` to separate real and imaginary parts. Each part is a polynomial identity in z₁.re, z₁.im, ..., √3, proved by `ring_nf; nlinarith [sqrt3_sq_real, ...]`.\n\nThe `nlinarith` call requires 8 hint terms: the squaring lemma h3, `sq_nonneg (Real.sqrt 3)`, and 6 commutativity hints `mul_comm (Real.sqrt 3) zₖ.re/im` to guide the nonlinear arithmetic.",
+    "range": {
+      "startLine": 122,
+      "endLine": 156
+    },
+    "type": "insight",
+    "title": "napoleon_outer_dft1: Outer Napoleon Negates Frequency-1 (Y\u2081 = -X\u2081)",
+    "content": "**Main theorem**: G\u2081 + \u03c9\u00b7G\u2082 + \u03c9\u00b2\u00b7G\u2083 = -(z\u2081 + \u03c9\u00b7z\u2082 + \u03c9\u00b2\u00b7z\u2083)\n\nThe frequency-1 DFT component of the outer Napoleon triangle equals the negation of the original triangle's frequency-1 component. This is the 'frequency-1 negation' part of the Napoleon filter.\n\n**Proof technique**: Expand G\u2081, G\u2082, G\u2083 via `napoleonCenter`, substitute \u03c9 = (-1+I\u221a3)/2 and \u03c9\u00b2 = (-1-I\u221a3)/2, then apply `Complex.ext` to separate real and imaginary parts. Each part is a polynomial identity in z\u2081.re, z\u2081.im, ..., \u221a3, proved by `ring_nf; nlinarith [sqrt3_sq_real, ...]`.\n\nThe `nlinarith` call requires 8 hint terms: the squaring lemma h3, `sq_nonneg (Real.sqrt 3)`, and 6 commutativity hints `mul_comm (Real.sqrt 3) z\u2096.re/im` to guide the nonlinear arithmetic.",
     "mathContext": "Coefficient computation for the $z_1$ term in $Y_1 = G_1 + \\omega G_2 + \\omega^2 G_3$:\n$$\\text{coeff}(z_1) = \\frac{\\omega(1-\\omega^2) + \\omega^2(1-\\omega)}{3} = \\frac{\\omega+\\omega^2-2\\omega^3}{3} = \\frac{-1-2}{3} = -1$$\nSimilarly $\\text{coeff}(z_2) = -\\omega$ and $\\text{coeff}(z_3) = -\\omega^2$, giving $Y_1 = -(z_1 + \\omega z_2 + \\omega^2 z_3) = -X_1$.",
     "significance": "critical",
-    "relatedConcepts": ["napoleon_outer_dft2", "napoleonCenter", "G₁ G₂ G₃", "Complex.ext"],
-    "prerequisites": ["NapoleonsTheorem.lean (G₁, G₂, G₃, napoleonCenter)", "omega definition", "cube root identities"]
+    "relatedConcepts": [
+      "napoleon_outer_dft2",
+      "napoleonCenter",
+      "G\u2081 G\u2082 G\u2083",
+      "Complex.ext"
+    ],
+    "prerequisites": [
+      "NapoleonsTheorem.lean (G\u2081, G\u2082, G\u2083, napoleonCenter)",
+      "omega definition",
+      "cube root identities"
+    ]
   },
   {
     "id": "ann-napoq02-outer-dft2",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 158, "endLine": 191 },
-    "type": "theorem",
-    "title": "napoleon_outer_dft2: Outer Napoleon Kills Frequency-2 (Y₂ = 0)",
-    "content": "**Main theorem**: G₁ + ω²·G₂ + ω·G₃ = 0\n\nThe frequency-2 DFT component of the outer Napoleon triangle is identically zero. This is the **deepest** result in the file: since equilateral triangles are precisely those with vanishing frequency-2 DFT component, this immediately explains why the outer Napoleon triangle is ALWAYS equilateral.\n\n**Mathematical insight**: The coefficient of z₁ in Y₂ is (ω²(1-ω²)+ω(1-ω))/3. Using 1+ω+ω²=0 (so ω+ω²=-1 and ω²·ω=ω³=1), this simplifies to (ω²-ω⁴+ω-ω²)/3 = (ω-ω)/3 = 0. The same holds for z₂ and z₃ by symmetry, giving Y₂ = 0.\n\n**Proof structure**: Identical to napoleon_outer_dft1 — Complex.ext, simp, ring_nf, nlinarith.",
-    "mathContext": "$Y_2 = G_1 + \\omega^2 G_2 + \\omega G_3 = 0$. Mechanically: expand via `napoleonCenter`, distribute $\\omega, \\omega^2$, and use $\\sqrt{3}^2 = 3$ to eliminate all radicals. The result is 0 by polynomial identity. **Consequence**: the outer Napoleon triangle $G$ has DFT $(X_0, -X_1, 0)$, so it has zero $X_2$ component — the necessary and sufficient condition for equilaterality.",
+    "range": {
+      "startLine": 158,
+      "endLine": 191
+    },
+    "type": "insight",
+    "title": "napoleon_outer_dft2: Outer Napoleon Kills Frequency-2 (Y\u2082 = 0)",
+    "content": "**Main theorem**: G\u2081 + \u03c9\u00b2\u00b7G\u2082 + \u03c9\u00b7G\u2083 = 0\n\nThe frequency-2 DFT component of the outer Napoleon triangle is identically zero. This is the **deepest** result in the file: since equilateral triangles are precisely those with vanishing frequency-2 DFT component, this immediately explains why the outer Napoleon triangle is ALWAYS equilateral.\n\n**Mathematical insight**: The coefficient of z\u2081 in Y\u2082 is (\u03c9\u00b2(1-\u03c9\u00b2)+\u03c9(1-\u03c9))/3. Using 1+\u03c9+\u03c9\u00b2=0 (so \u03c9+\u03c9\u00b2=-1 and \u03c9\u00b2\u00b7\u03c9=\u03c9\u00b3=1), this simplifies to (\u03c9\u00b2-\u03c9\u2074+\u03c9-\u03c9\u00b2)/3 = (\u03c9-\u03c9)/3 = 0. The same holds for z\u2082 and z\u2083 by symmetry, giving Y\u2082 = 0.\n\n**Proof structure**: Identical to napoleon_outer_dft1 \u2014 Complex.ext, simp, ring_nf, nlinarith.",
+    "mathContext": "$Y_2 = G_1 + \\omega^2 G_2 + \\omega G_3 = 0$. Mechanically: expand via `napoleonCenter`, distribute $\\omega, \\omega^2$, and use $\\sqrt{3}^2 = 3$ to eliminate all radicals. The result is 0 by polynomial identity. **Consequence**: the outer Napoleon triangle $G$ has DFT $(X_0, -X_1, 0)$, so it has zero $X_2$ component \u2014 the necessary and sufficient condition for equilaterality.",
     "significance": "critical",
-    "relatedConcepts": ["napoleon_outer_dft1", "equilateral triangle characterization", "frequency-2 component"],
-    "prerequisites": ["napoleon_outer_dft1", "cube root identities", "napoleonCenter formula"]
+    "relatedConcepts": [
+      "napoleon_outer_dft1",
+      "equilateral triangle characterization",
+      "frequency-2 component"
+    ],
+    "prerequisites": [
+      "napoleon_outer_dft1",
+      "cube root identities",
+      "napoleonCenter formula"
+    ]
   },
   {
     "id": "ann-napoq02-inner-dft",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 197, "endLine": 265 },
-    "type": "theorem",
-    "title": "Inner Napoleon DFT: Outer/Inner Symmetry (Y₁'=0, Y₂'=-X₂)",
-    "content": "Two theorems establishing the inner Napoleon triangle's DFT action:\n\n**`napoleon_inner_dft1`**: G₁' + ω·G₂' + ω²·G₃' = 0 (frequency-1 is eliminated)\n\n**`napoleon_inner_dft2`**: G₁' + ω²·G₂' + ω·G₃' = -(z₁ + ω²·z₂ + ω·z₃) (frequency-2 is negated)\n\nThis reveals the outer/inner symmetry: the outer Napoleon construction kills X₂ while preserving X₁ (negated), while the inner kills X₁ while preserving X₂ (negated). The two constructions are 'complex conjugates' of each other in the DFT domain — outer uses +I√3, inner uses -I√3 in the napoleonCenter formula.\n\n**Proof**: Uses `innerNapoleonCenter` and `G₁', G₂', G₃'` from NapoleonsTheorem.lean (the inner construction uses -I√3/6 instead of +I√3/6). Same nlinarith strategy.",
+    "range": {
+      "startLine": 197,
+      "endLine": 265
+    },
+    "type": "insight",
+    "title": "Inner Napoleon DFT: Outer/Inner Symmetry (Y\u2081'=0, Y\u2082'=-X\u2082)",
+    "content": "Two theorems establishing the inner Napoleon triangle's DFT action:\n\n**`napoleon_inner_dft1`**: G\u2081' + \u03c9\u00b7G\u2082' + \u03c9\u00b2\u00b7G\u2083' = 0 (frequency-1 is eliminated)\n\n**`napoleon_inner_dft2`**: G\u2081' + \u03c9\u00b2\u00b7G\u2082' + \u03c9\u00b7G\u2083' = -(z\u2081 + \u03c9\u00b2\u00b7z\u2082 + \u03c9\u00b7z\u2083) (frequency-2 is negated)\n\nThis reveals the outer/inner symmetry: the outer Napoleon construction kills X\u2082 while preserving X\u2081 (negated), while the inner kills X\u2081 while preserving X\u2082 (negated). The two constructions are 'complex conjugates' of each other in the DFT domain \u2014 outer uses +I\u221a3, inner uses -I\u221a3 in the napoleonCenter formula.\n\n**Proof**: Uses `innerNapoleonCenter` and `G\u2081', G\u2082', G\u2083'` from NapoleonsTheorem.lean (the inner construction uses -I\u221a3/6 instead of +I\u221a3/6). Same nlinarith strategy.",
     "mathContext": "Inner Napoleon center: $G_k' = \\frac{z_{k-1}+z_{k+1}}{2} - \\frac{i\\sqrt{3}}{6}(z_{k+1}-z_{k-1})$. In the DFT basis: $(X_0, X_1, X_2) \\mapsto (X_0, 0, -X_2)$. Outer/inner symmetry: conjugating $i \\to -i$ swaps $X_1 \\leftrightarrow X_2$ in the filter action.",
     "significance": "key",
-    "relatedConcepts": ["innerNapoleonCenter", "G₁' G₂' G₃'", "outer/inner Napoleon symmetry", "complex conjugation"],
-    "prerequisites": ["napoleon_outer_dft1", "napoleon_outer_dft2", "NapoleonsTheorem.lean inner construction"]
+    "relatedConcepts": [
+      "innerNapoleonCenter",
+      "G\u2081' G\u2082' G\u2083'",
+      "outer/inner Napoleon symmetry",
+      "complex conjugation"
+    ],
+    "prerequisites": [
+      "napoleon_outer_dft1",
+      "napoleon_outer_dft2",
+      "NapoleonsTheorem.lean inner construction"
+    ]
   },
   {
     "id": "ann-napoq02-filter",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 271, "endLine": 311 },
-    "type": "theorem",
+    "range": {
+      "startLine": 271,
+      "endLine": 311
+    },
+    "type": "insight",
     "title": "napoleon_as_dft_filter: Complete Filter Characterization",
-    "content": "**`napoleon_as_dft_filter`** bundles all three outer Napoleon DFT actions into one conjunction:\n- (G₁+G₂+G₃)/3 = (z₁+z₂+z₃)/3  (Y₀ = X₀: centroid preserved)\n- G₁+ω·G₂+ω²·G₃ = -(z₁+ω·z₂+ω²·z₃)  (Y₁ = -X₁)\n- G₁+ω²·G₂+ω·G₃ = 0  (Y₂ = 0)\n\nProof is trivial: `⟨napoleon_centroid_eq_original, napoleon_outer_dft1, napoleon_outer_dft2⟩`.\n\n**`inner_napoleon_as_dft_filter`**: Same for inner — bundles the inner centroid, Y₁'=0, Y₂'=-X₂ theorems. Both bundle theorems are purely propositional consequences of the four main DFT theorems.",
+    "content": "**`napoleon_as_dft_filter`** bundles all three outer Napoleon DFT actions into one conjunction:\n- (G\u2081+G\u2082+G\u2083)/3 = (z\u2081+z\u2082+z\u2083)/3  (Y\u2080 = X\u2080: centroid preserved)\n- G\u2081+\u03c9\u00b7G\u2082+\u03c9\u00b2\u00b7G\u2083 = -(z\u2081+\u03c9\u00b7z\u2082+\u03c9\u00b2\u00b7z\u2083)  (Y\u2081 = -X\u2081)\n- G\u2081+\u03c9\u00b2\u00b7G\u2082+\u03c9\u00b7G\u2083 = 0  (Y\u2082 = 0)\n\nProof is trivial: `\u27e8napoleon_centroid_eq_original, napoleon_outer_dft1, napoleon_outer_dft2\u27e9`.\n\n**`inner_napoleon_as_dft_filter`**: Same for inner \u2014 bundles the inner centroid, Y\u2081'=0, Y\u2082'=-X\u2082 theorems. Both bundle theorems are purely propositional consequences of the four main DFT theorems.",
     "mathContext": "The outer Napoleon map is a *circulant* linear operator on $(z_1, z_2, z_3) \\in \\mathbb{C}^3$. Circulant matrices are diagonalized by the DFT, with eigenvalues being the DFT of the first row. The eigenvalues here are $(1, -1, 0)$, confirming the filter interpretation.",
     "significance": "critical",
-    "relatedConcepts": ["napoleon_centroid_eq_original", "circulant matrix", "DFT diagonalization", "eigenvalues"],
-    "prerequisites": ["napoleon_outer_dft1", "napoleon_outer_dft2", "napoleon_inner_dft1", "napoleon_inner_dft2"]
+    "relatedConcepts": [
+      "napoleon_centroid_eq_original",
+      "circulant matrix",
+      "DFT diagonalization",
+      "eigenvalues"
+    ],
+    "prerequisites": [
+      "napoleon_outer_dft1",
+      "napoleon_outer_dft2",
+      "napoleon_inner_dft1",
+      "napoleon_inner_dft2"
+    ]
   },
   {
     "id": "ann-napoq02-idft",
     "proofId": "napoleons-theorem-oq-02",
-    "range": { "startLine": 313, "endLine": 336 },
-    "type": "theorem",
-    "title": "napoleon_center_idft_recovery: Explicit DFT Formula for G₁",
-    "content": "**`napoleon_center_idft_recovery`**: G₁(z₁,z₂,z₃) = ((z₁+z₂+z₃) - (z₁+ω·z₂+ω²·z₃)) / 3\n\nThis is the inverse DFT (IDFT) formula: given the filter output (X₀, -X₁, 0), the k=0 frequency component (index 1 in the DFT) yields G₁ directly. The formula simplifies to G₁ = (z₂·(1-ω) + z₃·(1-ω²))/3, which matches the napoleonCenter definition.\n\n**Significance**: This provides an alternative algebraic derivation of the napoleonCenter formula itself — it says G₁ IS the IDFT recovery from the filtered DFT. The proof is a straightforward `ring_nf; nlinarith` computation.",
+    "range": {
+      "startLine": 313,
+      "endLine": 336
+    },
+    "type": "insight",
+    "title": "napoleon_center_idft_recovery: Explicit DFT Formula for G\u2081",
+    "content": "**`napoleon_center_idft_recovery`**: G\u2081(z\u2081,z\u2082,z\u2083) = ((z\u2081+z\u2082+z\u2083) - (z\u2081+\u03c9\u00b7z\u2082+\u03c9\u00b2\u00b7z\u2083)) / 3\n\nThis is the inverse DFT (IDFT) formula: given the filter output (X\u2080, -X\u2081, 0), the k=0 frequency component (index 1 in the DFT) yields G\u2081 directly. The formula simplifies to G\u2081 = (z\u2082\u00b7(1-\u03c9) + z\u2083\u00b7(1-\u03c9\u00b2))/3, which matches the napoleonCenter definition.\n\n**Significance**: This provides an alternative algebraic derivation of the napoleonCenter formula itself \u2014 it says G\u2081 IS the IDFT recovery from the filtered DFT. The proof is a straightforward `ring_nf; nlinarith` computation.",
     "mathContext": "IDFT at index 1: $G_1 = \\frac{1}{3}(Y_0 + Y_1 + Y_2) = \\frac{X_0 + (-X_1) + 0}{3} = \\frac{(z_1+z_2+z_3)-(z_1+\\omega z_2 + \\omega^2 z_3)}{3} = \\frac{z_2(1-\\omega) + z_3(1-\\omega^2)}{3}$. Since $1-\\omega = (3+i\\sqrt{3})/2$ and $1-\\omega^2 = (3-i\\sqrt{3})/2$, this recovers the napoleonCenter formula exactly.",
     "significance": "key",
-    "relatedConcepts": ["inverse DFT", "napoleonCenter", "IDFT recovery", "G₁ formula"],
-    "prerequisites": ["napoleon_as_dft_filter", "napoleonCenter definition", "cube root identities"]
+    "relatedConcepts": [
+      "inverse DFT",
+      "napoleonCenter",
+      "IDFT recovery",
+      "G\u2081 formula"
+    ],
+    "prerequisites": [
+      "napoleon_as_dft_filter",
+      "napoleonCenter definition",
+      "cube root identities"
+    ]
   }
 ]

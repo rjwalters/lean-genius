@@ -7,8 +7,8 @@
       "endLine": 20
     },
     "type": "concept",
-    "title": "Problem Context: Second-Order Term in g_ε(N)",
-    "content": "Erdős Problem #1179 asks about uniform subset sum representations in abelian groups. The main asymptotic $g_\\varepsilon(N) \\sim \\log_2 N$ was established by Erdős and Hall (1976), building on the Erdős-Rényi (1965) second-moment method. This open question focuses on the precise second-order correction: how fast does $g_\\varepsilon(N) - \\log_2 N$ grow?\n\nThe known bounds leave a gap: the lower bound is trivial ($g_\\varepsilon(N) \\geq \\log_2 N$), while the upper bound from Erdős-Hall is $g_\\varepsilon(N) \\leq \\log_2 N \\cdot (1 + O_\\varepsilon(\\log\\log\\log N / \\log\\log N))$. Three candidate rates are formalized: $O(1)$ (strongest), $\\Theta(\\log\\log N)$ (conjectured by analogy with Problem #543), and $o(\\log_2 N)$ (weakest, already known).",
+    "title": "Problem Context: Second-Order Term in g_\u03b5(N)",
+    "content": "Erd\u0151s Problem #1179 asks about uniform subset sum representations in abelian groups. The main asymptotic $g_\\varepsilon(N) \\sim \\log_2 N$ was established by Erd\u0151s and Hall (1976), building on the Erd\u0151s-R\u00e9nyi (1965) second-moment method. This open question focuses on the precise second-order correction: how fast does $g_\\varepsilon(N) - \\log_2 N$ grow?\n\nThe known bounds leave a gap: the lower bound is trivial ($g_\\varepsilon(N) \\geq \\log_2 N$), while the upper bound from Erd\u0151s-Hall is $g_\\varepsilon(N) \\leq \\log_2 N \\cdot (1 + O_\\varepsilon(\\log\\log\\log N / \\log\\log N))$. Three candidate rates are formalized: $O(1)$ (strongest), $\\Theta(\\log\\log N)$ (conjectured by analogy with Problem #543), and $o(\\log_2 N)$ (weakest, already known).",
     "mathContext": "$g_\\varepsilon(N)$ = minimum $k$ such that a random $k$-subset $A$ of an abelian group of order $N$ satisfies $|F_A(g) - 2^k/N| < \\varepsilon \\cdot 2^k/N$ for all $g$, with high probability. The second-order term is $g_\\varepsilon(N) - \\log_2 N$.",
     "significance": "key",
     "prerequisites": [
@@ -17,7 +17,7 @@
       "asymptotic analysis"
     ],
     "relatedConcepts": [
-      "Erdős-Rényi method",
+      "Erd\u0151s-R\u00e9nyi method",
       "representation counts",
       "uniform distribution in groups"
     ]
@@ -75,7 +75,7 @@
       "startLine": 45,
       "endLine": 53
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Partition Identity: Total Representations = 2^|A|",
     "content": "The fundamental identity $\\sum_{g \\in \\mathbb{Z}/N\\mathbb{Z}} F_A(g) = 2^{|A|}$ says that representation counts partition the powerset. Every subset of $A$ sums to exactly one element of $\\mathbb{Z}/N\\mathbb{Z}$, so summing $F_A(g)$ over all group elements recovers the total number of subsets.\n\nThe Lean proof uses `card_eq_sum_card_fiberwise`: the powerset $\\mathcal{P}(A)$ fibers over $\\mathbb{Z}/N\\mathbb{Z}$ via the sum map $S \\mapsto \\sum_{s \\in S} s$, so $|\\mathcal{P}(A)| = \\sum_{g} |\\text{fiber}(g)|$. The `mem_univ` side condition confirms the sum map lands in the universal finite set.",
     "mathContext": "$\\sum_{g \\in \\mathbb{Z}/N\\mathbb{Z}} F_A(g) = |\\mathcal{P}(A)| = 2^{|A|}$\n\nThis is a counting identity: the fibers $\\{S \\subseteq A : \\sigma(S) = g\\}$ for $g \\in \\mathbb{Z}/N\\mathbb{Z}$ partition $\\mathcal{P}(A)$. For uniform $F_A$, each fiber has size $2^{|A|}/N$.",
@@ -99,7 +99,7 @@
       "startLine": 55,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Base Cases: Empty Set Representations",
     "content": "Two base cases for inductive arguments: the empty set has exactly one representation of $0$ (the empty sum) and no representations of any nonzero element. These establish the base of the monotonicity chain in Part II.\n\n`reprCount_empty_zero`: $F_\\emptyset(0) = 1$ because $\\mathcal{P}(\\emptyset) = \\{\\emptyset\\}$ and $\\sum_{\\emptyset} = 0$.\n`reprCount_empty_nonzero`: $F_\\emptyset(g) = 0$ for $g \\neq 0$ because the only subset $\\emptyset$ sums to $0$.",
     "mathContext": "$F_\\emptyset(0) = 1$ and $F_\\emptyset(g) = 0$ for $g \\neq 0$. The empty sum convention: $\\sum_{s \\in \\emptyset} s = 0$ (the identity element of the group).",
@@ -122,7 +122,7 @@
       "startLine": 66,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Monotonicity: Inserting Elements Cannot Decrease Representations",
     "content": "`reprCount_insert_ge` proves that $F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ for any $g$: adding an element to $A$ only creates new subsets (those containing $b$), so every subset of $A$ summing to $g$ is also a subset of $A \\cup \\{b\\}$ summing to $g$.\n\nThe proof uses `card_le_card` after showing the filter set inclusion: if $S \\subseteq A$ and $\\sigma(S) = g$, then $S \\subseteq A \\cup \\{b\\}$ (by `subset_insert`) and $\\sigma(S) = g$ (unchanged). The companion `reprCount_nonneg` is trivially $0 \\leq F_A(g)$ since representation counts are natural numbers.",
     "mathContext": "$F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ because $\\{S \\subseteq A : \\sigma(S) = g\\} \\subseteq \\{S \\subseteq A \\cup \\{b\\} : \\sigma(S) = g\\}$.\n\nStrictly, $F_{A \\cup \\{b\\}}(g) = F_A(g) + F_A(g - b)$ when $b \\notin A$: the new subsets containing $b$ biject with subsets of $A$ summing to $g - b$.",
@@ -146,8 +146,8 @@
       "startLine": 85,
       "endLine": 99
     },
-    "type": "theorem",
-    "title": "Singleton Bound: reprCount {a} g ≤ 2",
+    "type": "insight",
+    "title": "Singleton Bound: reprCount {a} g \u2264 2",
     "content": "`reprCount_singleton_le_two` bounds the representation count of a singleton set: $F_{\\{a\\}}(g) \\leq 2$. The powerset of $\\{a\\}$ has only two elements ($\\emptyset$ and $\\{a\\}$), so at most two subsets can sum to any given $g$. The bound is tight when $a = 0$ (both $\\emptyset$ and $\\{0\\}$ sum to $0$) and when $g = 0 = a$.\n\nThe proof chains: $|\\text{filter}| \\leq |\\mathcal{P}(\\{a\\})| = 2^{|\\{a\\}|} = 2^1 = 2$.",
     "mathContext": "$F_{\\{a\\}}(g) \\leq |\\mathcal{P}(\\{a\\})| = 2^1 = 2$. Exactly: $F_{\\{a\\}}(g) = [g = 0] + [g = a]$ where $[P]$ is the Iverson bracket.",
     "significance": "supporting",
@@ -168,7 +168,7 @@
       "startLine": 101,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Coverage Monotonicity: Larger Sets Represent More Elements",
     "content": "`coverage_mono` proves that the number of group elements with nonzero representation grows monotonically as $A$ grows: $|\\{g : F_A(g) > 0\\}| \\leq |\\{g : F_{A \\cup \\{b\\}}(g) > 0\\}|$. This follows directly from the monotonicity of `reprCount`: if $F_A(g) > 0$ then $F_{A \\cup \\{b\\}}(g) \\geq F_A(g) > 0$.\n\nThis result underpins the study of $g_\\varepsilon(N)$: as $k = |A|$ increases, the representation counts become more spread across $\\mathbb{Z}/N\\mathbb{Z}$, eventually covering all elements uniformly.",
     "mathContext": "$|\\text{supp}(F_A)| \\leq |\\text{supp}(F_{A \\cup \\{b\\}})| $ where $\\text{supp}(F_A) = \\{g \\in \\mathbb{Z}/N\\mathbb{Z} : F_A(g) > 0\\}$.\n\nThe coverage function $g \\mapsto |\\text{supp}(F_A)|$ tracks how many group elements are reachable by subset sums from $A$. Full coverage ($|\\text{supp}| = N$) is a prerequisite for uniformity.",
@@ -193,13 +193,13 @@
       "endLine": 137
     },
     "type": "definition",
-    "title": "The Correction Term Hierarchy: O(1), Θ(log log N), o(log N)",
-    "content": "Three definitions formalize candidate rates for the second-order term $g_\\varepsilon(N) - \\log_2 N$:\n\n1. `correctionTerm gEps ε N` = $g_\\varepsilon(N) - \\log_2 N$ — the basic quantity\n2. `CorrectionIsBounded` = $|g_\\varepsilon(N) - \\log_2 N| \\leq C$ — the $O(1)$ hypothesis (strongest, open)\n3. `CorrectionIsLogLog` = $c_1 \\log\\log N \\leq g_\\varepsilon(N) - \\log_2 N \\leq c_2 \\log\\log N$ — the $\\Theta(\\log\\log N)$ hypothesis (conjectured by analogy with Problem #543)\n4. `CorrectionIsSublinearInLog` = $|g_\\varepsilon(N) - \\log_2 N| < \\delta \\cdot \\log_2 N$ for all $\\delta > 0$ — the $o(\\log_2 N)$ hypothesis (weakest, known)\n\nThese form a strict hierarchy: $O(1) \\Rightarrow \\Theta(\\log\\log N) \\Rightarrow o(\\log_2 N)$. The file proves the first implication; the second is straightforward but not formalized.",
+    "title": "The Correction Term Hierarchy: O(1), \u0398(log log N), o(log N)",
+    "content": "Three definitions formalize candidate rates for the second-order term $g_\\varepsilon(N) - \\log_2 N$:\n\n1. `correctionTerm gEps \u03b5 N` = $g_\\varepsilon(N) - \\log_2 N$ \u2014 the basic quantity\n2. `CorrectionIsBounded` = $|g_\\varepsilon(N) - \\log_2 N| \\leq C$ \u2014 the $O(1)$ hypothesis (strongest, open)\n3. `CorrectionIsLogLog` = $c_1 \\log\\log N \\leq g_\\varepsilon(N) - \\log_2 N \\leq c_2 \\log\\log N$ \u2014 the $\\Theta(\\log\\log N)$ hypothesis (conjectured by analogy with Problem #543)\n4. `CorrectionIsSublinearInLog` = $|g_\\varepsilon(N) - \\log_2 N| < \\delta \\cdot \\log_2 N$ for all $\\delta > 0$ \u2014 the $o(\\log_2 N)$ hypothesis (weakest, known)\n\nThese form a strict hierarchy: $O(1) \\Rightarrow \\Theta(\\log\\log N) \\Rightarrow o(\\log_2 N)$. The file proves the first implication; the second is straightforward but not formalized.",
     "mathContext": "The correction term $\\delta_\\varepsilon(N) := g_\\varepsilon(N) - \\log_2 N$ measures how far the threshold deviates from the leading term. The three hypotheses correspond to:\n- $\\delta_\\varepsilon(N) = O(1)$: the deviation stabilizes\n- $\\delta_\\varepsilon(N) = \\Theta(\\log\\log N)$: slow logarithmic growth (matches Problem #543's answer)\n- $\\delta_\\varepsilon(N) = o(\\log_2 N)$: the deviation is negligible compared to the leading term",
     "significance": "key",
     "prerequisites": [
       "Real.logb",
-      "asymptotic notation (O, Θ, o)",
+      "asymptotic notation (O, \u0398, o)",
       "Archimedean property"
     ],
     "relatedConcepts": [
@@ -216,7 +216,7 @@
       "startLine": 139,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Hierarchy Proof: O(1) Implies o(log N)",
     "content": "`bounded_implies_sublinear` is the main proof: if the correction term is bounded by $C$, then it is $o(\\log_2 N)$. The argument: given $\\delta > 0$, choose $N_0 = 2^m$ where $m = \\lceil C/\\delta \\rceil + 2$. For $N \\geq 2^m$, we have $\\log_2 N \\geq m > C/\\delta + 1$, so $C < \\delta \\cdot \\log_2 N$.\n\nThe proof is a substantial 30-line calculation that bridges between natural number arithmetic ($N \\geq 2^m$) and real-valued inequalities ($|\\text{correction}| < \\delta \\cdot \\log_2 N$). Key steps: (1) `Nat.ceil` converts $C/\\delta$ to a natural number, (2) the `Real.logb` monotonicity chain transfers the bound $N \\geq 2^m$ to $\\log_2 N \\geq m$, (3) a `calc` block chains $|\\text{correction}| \\leq C < \\delta m \\leq \\delta \\log_2 N$.",
     "mathContext": "Proof that $O(1) \\Rightarrow o(\\log N)$: If $|\\delta_\\varepsilon(N)| \\leq C$ for all $N \\geq 2$, then for any $\\eta > 0$, choosing $N \\geq 2^{\\lceil C/\\eta \\rceil + 2}$ gives $\\log_2 N \\geq \\lceil C/\\eta \\rceil + 2 > C/\\eta$, so $|\\delta_\\varepsilon(N)| \\leq C < \\eta \\cdot \\log_2 N$.\n\nThe key analytic ingredients: $\\log_2$ is monotone increasing, and $\\log_2(2^m) = m$ (used via `Real.logb_rpow`).",
@@ -243,7 +243,7 @@
     },
     "type": "concept",
     "title": "Fourier Analysis Connection (Axiomatized)",
-    "content": "Two axioms capture the Fourier-analytic core of the Erdős-Rényi method:\n\n1. `fourier_error_bound`: In $\\mathbb{Z}/p\\mathbb{Z}$ ($p$ prime), the character sum expansion gives $F_A(g) = \\frac{1}{p} \\sum_\\chi \\chi(-g) \\prod_{a \\in A}(1 + \\chi(a))$. The non-trivial character terms contribute at most $(p-1) \\cdot |\\cos(\\pi/p)|^k$.\n\n2. `erdos_renyi_decay`: For $k \\approx 2\\log_2 p$, the Fourier error decays to $O(1/p)$, meaning $F_A(g) \\approx 2^k/p$ uniformly. This is the quantitative heart of the Erdős-Rényi (1965) approach.\n\nThese are axiomatized because formalizing discrete Fourier analysis over $\\mathbb{Z}/p\\mathbb{Z}$ in Lean requires substantial infrastructure not yet available in Mathlib (character groups, Pontryagin duality for finite abelian groups, character orthogonality).",
+    "content": "Two axioms capture the Fourier-analytic core of the Erd\u0151s-R\u00e9nyi method:\n\n1. `fourier_error_bound`: In $\\mathbb{Z}/p\\mathbb{Z}$ ($p$ prime), the character sum expansion gives $F_A(g) = \\frac{1}{p} \\sum_\\chi \\chi(-g) \\prod_{a \\in A}(1 + \\chi(a))$. The non-trivial character terms contribute at most $(p-1) \\cdot |\\cos(\\pi/p)|^k$.\n\n2. `erdos_renyi_decay`: For $k \\approx 2\\log_2 p$, the Fourier error decays to $O(1/p)$, meaning $F_A(g) \\approx 2^k/p$ uniformly. This is the quantitative heart of the Erd\u0151s-R\u00e9nyi (1965) approach.\n\nThese are axiomatized because formalizing discrete Fourier analysis over $\\mathbb{Z}/p\\mathbb{Z}$ in Lean requires substantial infrastructure not yet available in Mathlib (character groups, Pontryagin duality for finite abelian groups, character orthogonality).",
     "mathContext": "For $A \\subseteq \\mathbb{Z}/p\\mathbb{Z}$ with $|A| = k$: $F_A(g) = \\frac{1}{p} \\sum_{\\chi \\in \\widehat{\\mathbb{Z}/p\\mathbb{Z}}} \\chi(-g) \\prod_{a \\in A}(1 + \\chi(a))$.\n\nThe trivial character $\\chi_0$ contributes $2^k/p$. Each non-trivial character $\\chi_j$ (for $j = 1, \\ldots, p-1$) contributes $\\frac{1}{p}|\\prod_{a \\in A}(1 + \\chi_j(a))| \\leq \\frac{1}{p}|1 + e^{2\\pi i j/p}|^k = \\frac{1}{p}(2|\\cos(\\pi j/p)|)^k$.\n\nSumming: $|F_A(g) - 2^k/p| \\leq \\frac{p-1}{p} \\cdot (2|\\cos(\\pi/p)|)^k$. For $k \\geq 2\\log_2 p + C$, this is $O(\\varepsilon \\cdot 2^k/p)$.",
     "significance": "key",
     "prerequisites": [
@@ -255,7 +255,7 @@
       "character sums",
       "Fourier transform on finite groups",
       "exponential sum bounds",
-      "Erdős-Rényi method"
+      "Erd\u0151s-R\u00e9nyi method"
     ]
   },
   {
@@ -277,7 +277,7 @@
     "relatedConcepts": [
       "open question",
       "correction term",
-      "Erdős Problem #543 analogy"
+      "Erd\u0151s Problem #543 analogy"
     ]
   }
 ]

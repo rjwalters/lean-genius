@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Abstract Uniform Fiber Counting Lemma",
-    "content": "States and partially proves the general counting principle: if a collection of pairwise disjoint finite sets all have the same ncard k, then the ncard of their union equals k times the number of sets. This is the combinatorial backbone of the transfer theorem — it converts uniform fiber sizes into a multiplicative relationship on cardinalities. The proof uses Set.ncard_biUnion (Mathlib's additivity for disjoint unions) then rewrites each summand to k, reducing to a constant sum. Two sorries remain for Mathlib API navigation: extracting hk inside conv and simplifying the constant Finset sum.",
+    "content": "States and partially proves the general counting principle: if a collection of pairwise disjoint finite sets all have the same ncard k, then the ncard of their union equals k times the number of sets. This is the combinatorial backbone of the transfer theorem \u2014 it converts uniform fiber sizes into a multiplicative relationship on cardinalities. The proof uses Set.ncard_biUnion (Mathlib's additivity for disjoint unions) then rewrites each summand to k, reducing to a constant sum. Two sorries remain for Mathlib API navigation: extracting hk inside conv and simplifying the constant Finset sum.",
     "mathContext": "If $\\{S_i\\}_{i \\in I}$ are pairwise disjoint finite sets with $|S_i| = k$ for all $i$, then $\\left|\\bigcup_{i \\in I} S_i\\right| = k \\cdot |I|$. The proof rewrites via $\\sum_{i \\in I^{\\text{fin}}} |S_i| = \\sum_{i \\in I^{\\text{fin}}} k = k \\cdot |I^{\\text{fin}}| = k \\cdot |I|$.",
     "significance": "key",
     "relatedConcepts": [
@@ -56,7 +56,7 @@
     },
     "type": "concept",
     "title": "Fiber Partition Variables",
-    "content": "Sets up the section variables for the fiber partition lemmas: m ≥ 1 candidates (with the stronger hm : 2 ≤ m for multi-candidate), vote counts a and b with b < a (candidate 0 has strictly more votes). These parameters thread through all three partition lemmas.",
+    "content": "Sets up the section variables for the fiber partition lemmas: m \u2265 1 candidates (with the stronger hm : 2 \u2264 m for multi-candidate), vote counts a and b with b < a (candidate 0 has strictly more votes). These parameters thread through all three partition lemmas.",
     "mathContext": "Variables: $m \\geq 2$ candidates, $a$ votes for candidate 0, $b$ total opponent votes, $b < a$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -76,9 +76,9 @@
       "startLine": 71,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fiber Decomposition of Multi-Candidate Sequences",
-    "content": "Proves multiCountedSequence_eq_biUnion: the set of all multi-candidate counted sequences is exactly the disjoint union of fibers over classical ±1 targets. The forward direction maps each multi-candidate sequence s to the fiber over its projection (using project_multi_to_counted to verify the target is in countedSequence). The reverse direction is immediate: any element of a fiber is in multiCountedSequence by definition. This is the partition lemma that enables counting via fibers.",
+    "content": "Proves multiCountedSequence_eq_biUnion: the set of all multi-candidate counted sequences is exactly the disjoint union of fibers over classical \u00b11 targets. The forward direction maps each multi-candidate sequence s to the fiber over its projection (using project_multi_to_counted to verify the target is in countedSequence). The reverse direction is immediate: any element of a fiber is in multiCountedSequence by definition. This is the partition lemma that enables counting via fibers.",
     "mathContext": "$\\text{MCS}(m, a, b) = \\bigsqcup_{t \\in \\text{CS}(a,b)} \\text{fiber}(t)$ where $\\text{fiber}(t) = \\{s \\in \\text{MCS} \\mid \\text{project}(s) = t\\}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -99,9 +99,9 @@
       "startLine": 85,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Pairwise Disjointness of Fibers",
-    "content": "Proves multiProjectionFiber_pairwise_disjoint: fibers over distinct targets are disjoint sets. The proof is elegantly simple — if a sequence s were in both fiber(t1) and fiber(t2), then project(s) = t1 and project(s) = t2, contradicting t1 ≠ t2. This uses Set.disjoint_iff to reduce to showing the intersection is empty, then derives a contradiction from the functional nature of projection.",
+    "content": "Proves multiProjectionFiber_pairwise_disjoint: fibers over distinct targets are disjoint sets. The proof is elegantly simple \u2014 if a sequence s were in both fiber(t1) and fiber(t2), then project(s) = t1 and project(s) = t2, contradicting t1 \u2260 t2. This uses Set.disjoint_iff to reduce to showing the intersection is empty, then derives a contradiction from the functional nature of projection.",
     "mathContext": "For $t_1 \\neq t_2$: $\\text{fiber}(t_1) \\cap \\text{fiber}(t_2) = \\emptyset$. Proof: if $s \\in \\text{fiber}(t_1) \\cap \\text{fiber}(t_2)$, then $\\text{project}(s) = t_1 = t_2$, contradiction.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -121,9 +121,9 @@
       "startLine": 95,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Positive Fiber Decomposition",
-    "content": "Proves multiStaysPositive_eq_biUnion: the intersection of multiCountedSequence with multiStaysPositive decomposes as the union of fibers over targets that are both in countedSequence AND staysPositive. This is the numerator analog of multiCountedSequence_eq_biUnion — it decomposes S ∩ P (the 'winning' sequences) rather than just S (all sequences). The key insight: multiStaysPositive is defined as the preimage of staysPositive under projection, so intersecting with a fiber over t restricts to checking whether t ∈ staysPositive.",
+    "content": "Proves multiStaysPositive_eq_biUnion: the intersection of multiCountedSequence with multiStaysPositive decomposes as the union of fibers over targets that are both in countedSequence AND staysPositive. This is the numerator analog of multiCountedSequence_eq_biUnion \u2014 it decomposes S \u2229 P (the 'winning' sequences) rather than just S (all sequences). The key insight: multiStaysPositive is defined as the preimage of staysPositive under projection, so intersecting with a fiber over t restricts to checking whether t \u2208 staysPositive.",
     "mathContext": "$\\text{MCS} \\cap \\text{MSP} = \\bigsqcup_{t \\in \\text{CS} \\cap \\text{SP}} \\text{fiber}(t)$. Since $\\text{MSP} = \\text{project}^{-1}(\\text{SP})$, fiber$(t) \\subseteq \\text{MSP}$ iff $t \\in \\text{SP}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -147,7 +147,7 @@
     },
     "type": "concept",
     "title": "ENNReal Ratio Cancellation",
-    "content": "Proves ENNReal.div_eq_div_of_mul_eq: if both numerator and denominator are k times the respective values with k > 0, the ENNReal ratio is preserved. The proof rewrites both sides using the multiplied forms, then applies ENNReal.mul_div_mul_left to cancel the common factor k. The two side conditions (k ≠ ⊤ and k ≠ 0) are discharged using natCast_ne_top and Nat.cast_ne_zero with omega. This bridges the gap between the combinatorial counting (in ℕ) and the probability computation (in ENNReal).",
+    "content": "Proves ENNReal.div_eq_div_of_mul_eq: if both numerator and denominator are k times the respective values with k > 0, the ENNReal ratio is preserved. The proof rewrites both sides using the multiplied forms, then applies ENNReal.mul_div_mul_left to cancel the common factor k. The two side conditions (k \u2260 \u22a4 and k \u2260 0) are discharged using natCast_ne_top and Nat.cast_ne_zero with omega. This bridges the gap between the combinatorial counting (in \u2115) and the probability computation (in ENNReal).",
     "mathContext": "For $k > 0$: $\\frac{k \\cdot c}{k \\cdot d} = \\frac{c}{d}$ in $\\overline{\\mathbb{R}_{\\geq 0}}$. Requires $k \\neq \\top$ (always true for $\\mathbb{N}$ casts) and $k \\neq 0$ (from $k > 0$).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -158,8 +158,8 @@
     ],
     "prerequisites": [
       "ENNReal arithmetic in Mathlib",
-      "Nat → ENNReal coercion",
-      "omega tactic for ℕ goals"
+      "Nat \u2192 ENNReal coercion",
+      "omega tactic for \u2115 goals"
     ]
   },
   {
@@ -169,9 +169,9 @@
       "startLine": 129,
       "endLine": 176
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Uniform Fiber Transfer Theorem (Main Result)",
-    "content": "States uniformOn_fiber_transfer': the uniformOn probability of multiStaysPositive over multiCountedSequence equals the uniformOn probability of staysPositive over countedSequence. The proof strategy is outlined in comments: pick a reference target t0, let k = ncard(fiber(t0)), then both ncard(MCS) = k · ncard(CS) and ncard(MCS ∩ MSP) = k · ncard(CS ∩ SP) by the partition lemmas and uniform fiber sizes (fiber_card_uniform). The k cancels via ENNReal.div_eq_div_of_mul_eq. One sorry remains for the final assembly, requiring specific Mathlib API for connecting ncard computations to the uniformOn definition.",
+    "content": "States uniformOn_fiber_transfer': the uniformOn probability of multiStaysPositive over multiCountedSequence equals the uniformOn probability of staysPositive over countedSequence. The proof strategy is outlined in comments: pick a reference target t0, let k = ncard(fiber(t0)), then both ncard(MCS) = k \u00b7 ncard(CS) and ncard(MCS \u2229 MSP) = k \u00b7 ncard(CS \u2229 SP) by the partition lemmas and uniform fiber sizes (fiber_card_uniform). The k cancels via ENNReal.div_eq_div_of_mul_eq. One sorry remains for the final assembly, requiring specific Mathlib API for connecting ncard computations to the uniformOn definition.",
     "mathContext": "$\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\frac{|\\text{MCS} \\cap \\text{MSP}|}{|\\text{MCS}|} = \\frac{k \\cdot |\\text{CS} \\cap \\text{SP}|}{k \\cdot |\\text{CS}|} = \\frac{|\\text{CS} \\cap \\text{SP}|}{|\\text{CS}|} = \\text{uniformOn}(\\text{CS}, \\text{SP})$.",
     "significance": "key",
     "relatedConcepts": [
@@ -195,7 +195,7 @@
     },
     "type": "concept",
     "title": "Summary and Status Documentation",
-    "content": "Documents the proof status: 4 lemmas fully proved (fiber decomposition, disjointness, positive decomposition, ENNReal ratio cancellation) with 0 axioms. The infrastructure gap consists of 2 theorems with 3 total sorries, all requiring Mathlib API navigation rather than new mathematical ideas. The key insight emphasized: the mathematical content is complete via fiber_card_uniform, and the remaining work is translating between Set.ncard (ℕ) and ENNReal via Mathlib's measure-theoretic API. Completing these sorries would eliminate the sole axiom in BallotProblemOQ01OQ02.lean.",
+    "content": "Documents the proof status: 4 lemmas fully proved (fiber decomposition, disjointness, positive decomposition, ENNReal ratio cancellation) with 0 axioms. The infrastructure gap consists of 2 theorems with 3 total sorries, all requiring Mathlib API navigation rather than new mathematical ideas. The key insight emphasized: the mathematical content is complete via fiber_card_uniform, and the remaining work is translating between Set.ncard (\u2115) and ENNReal via Mathlib's measure-theoretic API. Completing these sorries would eliminate the sole axiom in BallotProblemOQ01OQ02.lean.",
     "mathContext": "The mathematical pipeline: $\\text{fiber\\_card\\_uniform} \\xrightarrow{\\text{ncard\\_biUnion}} |\\text{MCS}| = k|\\text{CS}| \\xrightarrow{\\text{ENNReal}} \\text{uniformOn equality}$.",
     "significance": "supporting",
     "relatedConcepts": [

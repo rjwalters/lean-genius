@@ -8,11 +8,19 @@
     },
     "type": "concept",
     "title": "Module Overview: Liouville's Integration Theorem",
-    "content": "This module formalizes the algebraic core of Liouville's 1835 theorem that ∫e^(-x²)dx cannot be expressed in elementary terms. The Gaussian integral has long been known to equal √π/2 over all reals (computable via contour integration or probability), but the impossibility of an elementary antiderivative required an entirely new framework — what we now call differential algebra.\n\n**The Risch ODE**: ∫R(x)·e^(g(x))dx is elementary iff Q' + Q·g' = R has a rational solution Q. For g = -x² this becomes Q' - 2xQ = 1. The polynomial case (proved here) uses a degree-raising argument. The rational case (axiomatized) requires partial fraction analysis.\n\nImports: `Polynomial.Derivative` (formal derivative), `Polynomial.Basic` (coeff, funext), `Polynomial.Degree.Definitions` (natDegree, leadingCoeff), `Analysis.SpecialFunctions.ExpDeriv` (for the Gaussian axiom statement).",
+    "content": "This module formalizes the algebraic core of Liouville's 1835 theorem that \u222be^(-x\u00b2)dx cannot be expressed in elementary terms. The Gaussian integral has long been known to equal \u221a\u03c0/2 over all reals (computable via contour integration or probability), but the impossibility of an elementary antiderivative required an entirely new framework \u2014 what we now call differential algebra.\n\n**The Risch ODE**: \u222bR(x)\u00b7e^(g(x))dx is elementary iff Q' + Q\u00b7g' = R has a rational solution Q. For g = -x\u00b2 this becomes Q' - 2xQ = 1. The polynomial case (proved here) uses a degree-raising argument. The rational case (axiomatized) requires partial fraction analysis.\n\nImports: `Polynomial.Derivative` (formal derivative), `Polynomial.Basic` (coeff, funext), `Polynomial.Degree.Definitions` (natDegree, leadingCoeff), `Analysis.SpecialFunctions.ExpDeriv` (for the Gaussian axiom statement).",
     "mathContext": "Liouville's theorem (1835): an elementary antiderivative has the form $g = v_0 + \\sum c_i \\ln(v_i)$. The Risch criterion (1969): $\\int e^{-x^2}dx$ is elementary iff $\\exists$ rational $Q$ with $Q' - 2xQ = 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["differential algebra", "Risch algorithm", "Liouville's theorem"],
-    "prerequisites": ["integration theory", "polynomial algebra", "Lean 4"]
+    "relatedConcepts": [
+      "differential algebra",
+      "Risch algorithm",
+      "Liouville's theorem"
+    ],
+    "prerequisites": [
+      "integration theory",
+      "polynomial algebra",
+      "Lean 4"
+    ]
   },
   {
     "id": "ann-diff-field-class",
@@ -23,11 +31,19 @@
     },
     "type": "definition",
     "title": "DiffField Typeclass",
-    "content": "A **differential field** is a field F equipped with a derivation D : F → F satisfying:\n1. **Additivity**: D(f + g) = D(f) + D(g)\n2. **Leibniz rule**: D(f·g) = D(f)·g + f·D(g)\n\nThis abstracts the familiar derivative on ℝ(x). In Lean 4, this is encoded as a typeclass extending `Field F`, with `deriv` as the derivation. The constants of F are {f : D(f) = 0} — this forms a subfield (proved in `constants_add`, `constants_mul`).\n\n**Why this structure?** Liouville's theorem characterizes when f ∈ F has an elementary antiderivative in terms of the differential field structure. The theorem holds for arbitrary differential fields, not just ℝ(x).",
+    "content": "A **differential field** is a field F equipped with a derivation D : F \u2192 F satisfying:\n1. **Additivity**: D(f + g) = D(f) + D(g)\n2. **Leibniz rule**: D(f\u00b7g) = D(f)\u00b7g + f\u00b7D(g)\n\nThis abstracts the familiar derivative on \u211d(x). In Lean 4, this is encoded as a typeclass extending `Field F`, with `deriv` as the derivation. The constants of F are {f : D(f) = 0} \u2014 this forms a subfield (proved in `constants_add`, `constants_mul`).\n\n**Why this structure?** Liouville's theorem characterizes when f \u2208 F has an elementary antiderivative in terms of the differential field structure. The theorem holds for arbitrary differential fields, not just \u211d(x).",
     "mathContext": "A derivation $D$ on a ring satisfies $D(f+g) = D(f) + D(g)$ and $D(fg) = D(f)g + fD(g)$. The constants $C = \\ker D$ form a subfield of $F$.",
     "significance": "key",
-    "relatedConcepts": ["differential field", "derivation", "Leibniz rule", "constants subfield"],
-    "prerequisites": ["field theory", "ring derivations"]
+    "relatedConcepts": [
+      "differential field",
+      "derivation",
+      "Leibniz rule",
+      "constants subfield"
+    ],
+    "prerequisites": [
+      "field theory",
+      "ring derivations"
+    ]
   },
   {
     "id": "ann-constants-proofs",
@@ -36,13 +52,18 @@
       "startLine": 89,
       "endLine": 129
     },
-    "type": "proof-technique",
+    "type": "technique",
     "title": "Constants Form a Subfield",
-    "content": "Six lemmas prove that constants (elements with zero derivative) are closed under the field operations:\n\n- **constants_zero**: D(0) = 0. Proof: D(0+0) = D(0)+D(0) by additivity; cancel to get D(0) = 0.\n- **constants_one**: D(1) = 0. Proof: D(1·1) = D(1)·1 + 1·D(1) = 2D(1) by Leibniz; so D(1) = 0.\n- **constants_add/mul**: Closure under + and ×.\n- **deriv_neg**: D(-f) = -D(f). Proof: D(f) + D(-f) = D(f + (-f)) = D(0) = 0.\n- **deriv_sub**: D(f-g) = D(f) - D(g) by sub_eq_add_neg and deriv_neg.\n\nAll proofs use only the two axioms of DiffField. This demonstrates the power of the abstract setting: we get all basic derivative identities for free.",
+    "content": "Six lemmas prove that constants (elements with zero derivative) are closed under the field operations:\n\n- **constants_zero**: D(0) = 0. Proof: D(0+0) = D(0)+D(0) by additivity; cancel to get D(0) = 0.\n- **constants_one**: D(1) = 0. Proof: D(1\u00b71) = D(1)\u00b71 + 1\u00b7D(1) = 2D(1) by Leibniz; so D(1) = 0.\n- **constants_add/mul**: Closure under + and \u00d7.\n- **deriv_neg**: D(-f) = -D(f). Proof: D(f) + D(-f) = D(f + (-f)) = D(0) = 0.\n- **deriv_sub**: D(f-g) = D(f) - D(g) by sub_eq_add_neg and deriv_neg.\n\nAll proofs use only the two axioms of DiffField. This demonstrates the power of the abstract setting: we get all basic derivative identities for free.",
     "mathContext": "These are elementary consequences of the two axioms. They hold in any differential ring, not just fields.",
     "significance": "supporting",
-    "relatedConcepts": ["differential ring axioms", "basic derivation identities"],
-    "prerequisites": ["DiffField typeclass"]
+    "relatedConcepts": [
+      "differential ring axioms",
+      "basic derivation identities"
+    ],
+    "prerequisites": [
+      "DiffField typeclass"
+    ]
   },
   {
     "id": "ann-liouville-axiom-statement",
@@ -53,11 +74,19 @@
     },
     "type": "concept",
     "title": "Liouville's Structural Theorem (Axiom)",
-    "content": "**Liouville's Integration Theorem** (1835): If f ∈ F has an elementary antiderivative g (D(g) = f), then g has the **Liouville form**:\n\n  g = v₀ + c₁·ln(v₁) + ··· + cₙ·ln(vₙ)\n\nwhere v₀, vᵢ ∈ F and cᵢ are constants of F.\n\nThis structural theorem is axiomatized here because its proof requires **Picard-Vessiot theory** — the differential analog of Galois theory. A Picard-Vessiot extension of F is the differential field analogue of a splitting field. The key result is that if an ODE system has a solution in an elementary extension, then that solution must come from a tower of algebraic/logarithmic/exponential extensions of a specific form.\n\nMathlib currently has no formalization of Picard-Vessiot theory. The gap is estimated at >1000 lines of foundational Lean code.",
+    "content": "**Liouville's Integration Theorem** (1835): If f \u2208 F has an elementary antiderivative g (D(g) = f), then g has the **Liouville form**:\n\n  g = v\u2080 + c\u2081\u00b7ln(v\u2081) + \u00b7\u00b7\u00b7 + c\u2099\u00b7ln(v\u2099)\n\nwhere v\u2080, v\u1d62 \u2208 F and c\u1d62 are constants of F.\n\nThis structural theorem is axiomatized here because its proof requires **Picard-Vessiot theory** \u2014 the differential analog of Galois theory. A Picard-Vessiot extension of F is the differential field analogue of a splitting field. The key result is that if an ODE system has a solution in an elementary extension, then that solution must come from a tower of algebraic/logarithmic/exponential extensions of a specific form.\n\nMathlib currently has no formalization of Picard-Vessiot theory. The gap is estimated at >1000 lines of foundational Lean code.",
     "mathContext": "**Picard-Vessiot theory** (Picard 1887, Vessiot 1891): The differential Galois group of an ODE controls whether its solutions are elementary. An ODE is solvable by elementary functions iff its Picard-Vessiot group has solvable identity component.",
     "significance": "key",
-    "relatedConcepts": ["Picard-Vessiot theory", "differential Galois group", "tower of extensions"],
-    "prerequisites": ["differential field", "elementary functions", "Galois theory"]
+    "relatedConcepts": [
+      "Picard-Vessiot theory",
+      "differential Galois group",
+      "tower of extensions"
+    ],
+    "prerequisites": [
+      "differential field",
+      "elementary functions",
+      "Galois theory"
+    ]
   },
   {
     "id": "ann-risch-criterion-axiom",
@@ -68,11 +97,18 @@
     },
     "type": "concept",
     "title": "Risch Criterion and Gaussian Non-Elementarity (Axioms)",
-    "content": "Two more axioms:\n\n**risch_exp_criterion_gaussian**: ∫e^(-x²)dx is elementary iff ∃ rational Q (with nowhere-zero denominator) satisfying Q' - 2xQ = 1 pointwise.\n\nThis is the Risch criterion applied to ∫e^g where g = -x², so g' = -2x and the ODE becomes Q' + Q·(-2x) = 1, i.e., Q' - 2xQ = 1.\n\n**gaussian_not_elementary**: The antiderivative of e^(-x²) is not a rational function. This axiomatizes the conclusion of the Risch criterion applied to the polynomial case result below — the polynomial obstruction shows no polynomial Q works, and the rational case is axiomatized here.\n\nThe gap from polynomial to rational: if Q = p/q (lowest terms, q ≠ 0), partial fractions show the poles of Q' and 2xQ must cancel perfectly. Analysis of pole orders shows this forces q = 1 (Q is actually polynomial), reducing to the proved case.",
+    "content": "Two more axioms:\n\n**risch_exp_criterion_gaussian**: \u222be^(-x\u00b2)dx is elementary iff \u2203 rational Q (with nowhere-zero denominator) satisfying Q' - 2xQ = 1 pointwise.\n\nThis is the Risch criterion applied to \u222be^g where g = -x\u00b2, so g' = -2x and the ODE becomes Q' + Q\u00b7(-2x) = 1, i.e., Q' - 2xQ = 1.\n\n**gaussian_not_elementary**: The antiderivative of e^(-x\u00b2) is not a rational function. This axiomatizes the conclusion of the Risch criterion applied to the polynomial case result below \u2014 the polynomial obstruction shows no polynomial Q works, and the rational case is axiomatized here.\n\nThe gap from polynomial to rational: if Q = p/q (lowest terms, q \u2260 0), partial fractions show the poles of Q' and 2xQ must cancel perfectly. Analysis of pole orders shows this forces q = 1 (Q is actually polynomial), reducing to the proved case.",
     "mathContext": "**Risch criterion** (1969): $\\int R(x)e^{g(x)}dx$ is elementary iff $\\exists$ rational $Q$ with $Q' + Qg' = R$. For $g = -x^2$, $g' = -2x$, giving $Q' - 2xQ = 1$.",
     "significance": "key",
-    "relatedConcepts": ["Risch algorithm", "partial fractions", "rational function"],
-    "prerequisites": ["Risch criterion", "partial fraction decomposition"]
+    "relatedConcepts": [
+      "Risch algorithm",
+      "partial fractions",
+      "rational function"
+    ],
+    "prerequisites": [
+      "Risch criterion",
+      "partial fraction decomposition"
+    ]
   },
   {
     "id": "ann-risch-ode-coeff-top",
@@ -81,13 +117,21 @@
       "startLine": 208,
       "endLine": 219
     },
-    "type": "proof-technique",
+    "type": "technique",
     "title": "Key Lemma: Degree-Raising Coefficient Identity",
-    "content": "**risch_ode_coeff_top** is the algebraic heart of the entire proof.\n\n**Statement**: For any p : Polynomial ℝ,\n  coeff(p' - C(2)·X·p, natDeg p + 1) = -2 · leadingCoeff(p)\n\n**Proof sketch**:\n- coeff(p', natDeg+1) = (natDeg+2) · coeff(p, natDeg+2) = 0 (above degree)\n- coeff(C(2)·X·p, natDeg+1) = 2 · coeff(X·p, natDeg+1) = 2 · coeff(p, natDeg) = 2·leadingCoeff(p)\n- Net: 0 - 2·leadingCoeff(p)\n\n**Lean proof strategy**: `simp` to expand coeff of sub/mul/derivative, then `push_cast` to handle Nat.cast, `rw [h0, mul_zero, zero_sub]` using the above-degree zero, then `ring` for the final arithmetic.\n\nThis identity says: the leading term of L[p] = p' - 2xp sits at degree natDeg(p)+1, with coefficient -2·leadingCoeff(p). For p ≠ 0 this is nonzero, proving L raises degree by exactly 1.",
+    "content": "**risch_ode_coeff_top** is the algebraic heart of the entire proof.\n\n**Statement**: For any p : Polynomial \u211d,\n  coeff(p' - C(2)\u00b7X\u00b7p, natDeg p + 1) = -2 \u00b7 leadingCoeff(p)\n\n**Proof sketch**:\n- coeff(p', natDeg+1) = (natDeg+2) \u00b7 coeff(p, natDeg+2) = 0 (above degree)\n- coeff(C(2)\u00b7X\u00b7p, natDeg+1) = 2 \u00b7 coeff(X\u00b7p, natDeg+1) = 2 \u00b7 coeff(p, natDeg) = 2\u00b7leadingCoeff(p)\n- Net: 0 - 2\u00b7leadingCoeff(p)\n\n**Lean proof strategy**: `simp` to expand coeff of sub/mul/derivative, then `push_cast` to handle Nat.cast, `rw [h0, mul_zero, zero_sub]` using the above-degree zero, then `ring` for the final arithmetic.\n\nThis identity says: the leading term of L[p] = p' - 2xp sits at degree natDeg(p)+1, with coefficient -2\u00b7leadingCoeff(p). For p \u2260 0 this is nonzero, proving L raises degree by exactly 1.",
     "mathContext": "If $p = a_n X^n + \\ldots$, then $p' - 2xp = -2a_n X^{n+1} + (\\text{lower terms})$. The key: $-2xp$ contributes a degree-$(n+1)$ term while $p'$ has degree at most $n-1$.",
     "significance": "central",
-    "relatedConcepts": ["polynomial derivative", "leading coefficient", "natDegree"],
-    "prerequisites": ["Polynomial.coeff", "Polynomial.derivative", "Polynomial.leadingCoeff"]
+    "relatedConcepts": [
+      "polynomial derivative",
+      "leading coefficient",
+      "natDegree"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff",
+      "Polynomial.derivative",
+      "Polynomial.leadingCoeff"
+    ]
   },
   {
     "id": "ann-no-poly-risch-soln",
@@ -96,13 +140,21 @@
       "startLine": 236,
       "endLine": 244
     },
-    "type": "proof-technique",
+    "type": "technique",
     "title": "Main Theorem: No Polynomial Risch Solution",
-    "content": "**no_poly_risch_soln**: ∀ p : Polynomial ℝ, p' - C(2)·X·p ≠ 1.\n\n**Proof by contradiction**:\n1. **p = 0 case**: L[0] = 0 - 0 = 0 ≠ 1. Handled by `simp [hp] at h`.\n2. **p ≠ 0 case**: `leadingCoeff(p) ≠ 0` by `Polynomial.leadingCoeff_ne_zero`.\n   - Extract coefficient at natDeg(p)+1 from both sides of the assumed equality L[p] = 1.\n   - LHS: -2·leadingCoeff(p) (by `risch_ode_coeff_top`)\n   - RHS: 0 (by `poly_one_coeff_pos`, since natDeg+1 ≥ 1)\n   - So -2·leadingCoeff(p) = 0, hence leadingCoeff(p) = 0 — contradicts p ≠ 0.\n\nThe proof uses `congr_arg` to extract the coefficient function applied to both sides, then rewrites with the two coefficient lemmas. The final contradiction is `mul_ne_zero (by norm_num : (-2:ℝ) ≠ 0) hlc`.",
+    "content": "**no_poly_risch_soln**: \u2200 p : Polynomial \u211d, p' - C(2)\u00b7X\u00b7p \u2260 1.\n\n**Proof by contradiction**:\n1. **p = 0 case**: L[0] = 0 - 0 = 0 \u2260 1. Handled by `simp [hp] at h`.\n2. **p \u2260 0 case**: `leadingCoeff(p) \u2260 0` by `Polynomial.leadingCoeff_ne_zero`.\n   - Extract coefficient at natDeg(p)+1 from both sides of the assumed equality L[p] = 1.\n   - LHS: -2\u00b7leadingCoeff(p) (by `risch_ode_coeff_top`)\n   - RHS: 0 (by `poly_one_coeff_pos`, since natDeg+1 \u2265 1)\n   - So -2\u00b7leadingCoeff(p) = 0, hence leadingCoeff(p) = 0 \u2014 contradicts p \u2260 0.\n\nThe proof uses `congr_arg` to extract the coefficient function applied to both sides, then rewrites with the two coefficient lemmas. The final contradiction is `mul_ne_zero (by norm_num : (-2:\u211d) \u2260 0) hlc`.",
     "mathContext": "The degree-raising argument in one line: $\\deg(p' - 2xp) = \\deg(p) + 1 > \\deg(1) = 0$ for $p \\neq 0$, so they cannot be equal.",
     "significance": "central",
-    "relatedConcepts": ["proof by contradiction", "leading coefficient", "degree raising"],
-    "prerequisites": ["risch_ode_coeff_top", "poly_one_coeff_pos", "leadingCoeff_ne_zero"]
+    "relatedConcepts": [
+      "proof by contradiction",
+      "leading coefficient",
+      "degree raising"
+    ],
+    "prerequisites": [
+      "risch_ode_coeff_top",
+      "poly_one_coeff_pos",
+      "leadingCoeff_ne_zero"
+    ]
   },
   {
     "id": "ann-degree-raising",
@@ -113,11 +165,18 @@
     },
     "type": "concept",
     "title": "The Degree-Raising Operator",
-    "content": "**risch_ode_raises_degree**: For p ≠ 0, natDegree(L[p]) > natDegree(p).\n\nThis makes the degree-raising phenomenon explicit as a standalone theorem. The proof exhibits a nonzero coefficient at degree natDeg(p)+1 (using `risch_ode_coeff_top` and the nonzero leading coefficient), then applies `Polynomial.le_natDegree_of_ne_zero` to bound natDegree from below.\n\n**Structural insight**: The operator L₂[Q] = Q' - 2xQ is degree-raising because the term -2xQ contributes degree natDeg(Q)+1, which dominates Q' (degree ≤ natDeg(Q)-1). This means the image of L₂ consists only of polynomials of degree ≥ 1, excluding all constants — in particular, excluding the constant 1 (the RHS of the Risch ODE).",
+    "content": "**risch_ode_raises_degree**: For p \u2260 0, natDegree(L[p]) > natDegree(p).\n\nThis makes the degree-raising phenomenon explicit as a standalone theorem. The proof exhibits a nonzero coefficient at degree natDeg(p)+1 (using `risch_ode_coeff_top` and the nonzero leading coefficient), then applies `Polynomial.le_natDegree_of_ne_zero` to bound natDegree from below.\n\n**Structural insight**: The operator L\u2082[Q] = Q' - 2xQ is degree-raising because the term -2xQ contributes degree natDeg(Q)+1, which dominates Q' (degree \u2264 natDeg(Q)-1). This means the image of L\u2082 consists only of polynomials of degree \u2265 1, excluding all constants \u2014 in particular, excluding the constant 1 (the RHS of the Risch ODE).",
     "mathContext": "$\\deg(Q' - 2xQ) = \\deg(-2xQ) = \\deg(Q) + 1$ for $Q \\neq 0$, since $\\deg(Q') = \\deg(Q) - 1 < \\deg(Q) + 1$.",
     "significance": "key",
-    "relatedConcepts": ["polynomial degree", "operator theory", "image of operator"],
-    "prerequisites": ["risch_ode_coeff_top", "Polynomial.le_natDegree_of_ne_zero"]
+    "relatedConcepts": [
+      "polynomial degree",
+      "operator theory",
+      "image of operator"
+    ],
+    "prerequisites": [
+      "risch_ode_coeff_top",
+      "Polynomial.le_natDegree_of_ne_zero"
+    ]
   },
   {
     "id": "ann-funext",
@@ -126,13 +185,20 @@
       "startLine": 282,
       "endLine": 295
     },
-    "type": "proof-technique",
+    "type": "technique",
     "title": "Polynomial.funext: Pointwise to Polynomial Equality",
-    "content": "**risch_pointwise_to_poly**: If ∀ x : ℝ, p'(x) - 2x·p(x) = 1, then p' - C(2)·X·p = 1 as polynomials.\n\n**Polynomial.funext** (Mathlib): Two polynomials f, g : Polynomial R are equal iff f.eval x = g.eval x for all x : R, provided R is an infinite integral domain. This uses the fact that a nonzero polynomial over an infinite field has finitely many roots — so if f - g has infinitely many roots, it must be zero.\n\nThe proof `apply Polynomial.funext; intro x; simp [...]; linarith [h x]` converts the pointwise hypothesis into a polynomial identity via simp to expand `eval` of sub/mul/C/X.\n\nThis lemma is used to connect the natural 'calculus' formulation (pointwise ODE) to the algebraic formulation (polynomial ring equation).",
+    "content": "**risch_pointwise_to_poly**: If \u2200 x : \u211d, p'(x) - 2x\u00b7p(x) = 1, then p' - C(2)\u00b7X\u00b7p = 1 as polynomials.\n\n**Polynomial.funext** (Mathlib): Two polynomials f, g : Polynomial R are equal iff f.eval x = g.eval x for all x : R, provided R is an infinite integral domain. This uses the fact that a nonzero polynomial over an infinite field has finitely many roots \u2014 so if f - g has infinitely many roots, it must be zero.\n\nThe proof `apply Polynomial.funext; intro x; simp [...]; linarith [h x]` converts the pointwise hypothesis into a polynomial identity via simp to expand `eval` of sub/mul/C/X.\n\nThis lemma is used to connect the natural 'calculus' formulation (pointwise ODE) to the algebraic formulation (polynomial ring equation).",
     "mathContext": "**Polynomial.funext**: If $R$ is infinite and $f(x) = g(x)$ for all $x \\in R$, then $f = g$ in $R[X]$. Over $\\mathbb{R}$ (which is infinite), pointwise equality implies polynomial equality.",
     "significance": "supporting",
-    "relatedConcepts": ["Polynomial.funext", "polynomial evaluation", "infinite integral domain"],
-    "prerequisites": ["Polynomial.eval", "Polynomial.funext"]
+    "relatedConcepts": [
+      "Polynomial.funext",
+      "polynomial evaluation",
+      "infinite integral domain"
+    ],
+    "prerequisites": [
+      "Polynomial.eval",
+      "Polynomial.funext"
+    ]
   },
   {
     "id": "ann-linear-exponent-contrast",
@@ -142,12 +208,21 @@
       "endLine": 346
     },
     "type": "concept",
-    "title": "The Degree-Preserving Contrast: ∫eˣ IS Elementary",
-    "content": "Four theorems contrast L₁[Q] = Q' + Q (the Risch ODE for ∫e^x·R(x)dx) with L₂[Q] = Q' - 2xQ (for ∫e^(-x²)·R(x)dx):\n\n- **risch_g_linear_const**: Q = 1 solves L₁[Q] = 1. (So ∫eˣ = eˣ + C)\n- **risch_g_linear_degree1**: Q = X - 1 solves L₁[Q] = X. (So ∫xeˣ = (x-1)eˣ + C)\n- **risch_g_linear_constant_solvable**: Q = C(c) solves L₁[Q] = C(c) for any constant c. (Since C(c)' = 0)\n- **gaussian_vs_linear_contrast**: Packages both sides: L₁ can solve L₁[Q] = C(c) (proved), L₂ cannot solve L₂[Q] = C(c) for c ≠ 0 (proved).\n\n**Why L₁ is degree-preserving**: Q' has degree natDeg(Q)-1, but Q has degree natDeg(Q), so Q dominates and natDeg(Q' + Q) = natDeg(Q). The image of L₁ contains all degrees including 0 (constants).\n\n**Why L₂ is degree-raising**: -2xQ has degree natDeg(Q)+1 > natDeg(Q') ≤ natDeg(Q)-1, so L₂[Q] always has degree natDeg(Q)+1.",
+    "title": "The Degree-Preserving Contrast: \u222be\u02e3 IS Elementary",
+    "content": "Four theorems contrast L\u2081[Q] = Q' + Q (the Risch ODE for \u222be^x\u00b7R(x)dx) with L\u2082[Q] = Q' - 2xQ (for \u222be^(-x\u00b2)\u00b7R(x)dx):\n\n- **risch_g_linear_const**: Q = 1 solves L\u2081[Q] = 1. (So \u222be\u02e3 = e\u02e3 + C)\n- **risch_g_linear_degree1**: Q = X - 1 solves L\u2081[Q] = X. (So \u222bxe\u02e3 = (x-1)e\u02e3 + C)\n- **risch_g_linear_constant_solvable**: Q = C(c) solves L\u2081[Q] = C(c) for any constant c. (Since C(c)' = 0)\n- **gaussian_vs_linear_contrast**: Packages both sides: L\u2081 can solve L\u2081[Q] = C(c) (proved), L\u2082 cannot solve L\u2082[Q] = C(c) for c \u2260 0 (proved).\n\n**Why L\u2081 is degree-preserving**: Q' has degree natDeg(Q)-1, but Q has degree natDeg(Q), so Q dominates and natDeg(Q' + Q) = natDeg(Q). The image of L\u2081 contains all degrees including 0 (constants).\n\n**Why L\u2082 is degree-raising**: -2xQ has degree natDeg(Q)+1 > natDeg(Q') \u2264 natDeg(Q)-1, so L\u2082[Q] always has degree natDeg(Q)+1.",
     "mathContext": "For $L_1[Q] = Q' + Q$: $\\deg(Q' + Q) = \\deg(Q)$ (the $Q$ term dominates). For $L_2[Q] = Q' - 2xQ$: $\\deg(Q' - 2xQ) = \\deg(Q) + 1$ (the $-2xQ$ term dominates).",
     "significance": "key",
-    "relatedConcepts": ["degree-preserving operator", "degree-raising operator", "Risch criterion", "elementary functions"],
-    "prerequisites": ["risch_ode_coeff_top", "no_poly_risch_constant", "Polynomial.derivative_C"]
+    "relatedConcepts": [
+      "degree-preserving operator",
+      "degree-raising operator",
+      "Risch criterion",
+      "elementary functions"
+    ],
+    "prerequisites": [
+      "risch_ode_coeff_top",
+      "no_poly_risch_constant",
+      "Polynomial.derivative_C"
+    ]
   },
   {
     "id": "ann-abel-ruffini-analogy",
@@ -158,10 +233,19 @@
     },
     "type": "concept",
     "title": "The Abel-Ruffini Analogy: Two Galois Theories",
-    "content": "The module closes by making the structural analogy explicit:\n\n| Feature | Abel-Ruffini | Liouville |\n|---------|--------------|----------|\n| Question | Solvable by radicals? | Elementary integral? |\n| Framework | Algebraic Galois theory | Differential Galois theory |\n| Yes condition | Galois group solvable | Picard-Vessiot group solvable |\n| No example | x⁵ - x - 1 (Galois = S₅) | e^(-x²) (Risch obstruction) |\n| Obstruction | A₅ is simple | L₂ raises degree |\n| Polynomial proof | A₅ has no normal series | p' - 2xp avoids constants |\n\nBoth impossibility proofs ultimately reduce to a polynomial algebra fact:\n- **Abel-Ruffini**: A₅ has no composition series with abelian factors\n- **Liouville**: L₂ = p' - 2xp maps polynomials strictly up in degree\n\nBoth are proved by contradiction from a structural property (simplicity of A₅ vs degree-raising of L₂), with the polynomial computation serving as the formal verification.",
+    "content": "The module closes by making the structural analogy explicit:\n\n| Feature | Abel-Ruffini | Liouville |\n|---------|--------------|----------|\n| Question | Solvable by radicals? | Elementary integral? |\n| Framework | Algebraic Galois theory | Differential Galois theory |\n| Yes condition | Galois group solvable | Picard-Vessiot group solvable |\n| No example | x\u2075 - x - 1 (Galois = S\u2085) | e^(-x\u00b2) (Risch obstruction) |\n| Obstruction | A\u2085 is simple | L\u2082 raises degree |\n| Polynomial proof | A\u2085 has no normal series | p' - 2xp avoids constants |\n\nBoth impossibility proofs ultimately reduce to a polynomial algebra fact:\n- **Abel-Ruffini**: A\u2085 has no composition series with abelian factors\n- **Liouville**: L\u2082 = p' - 2xp maps polynomials strictly up in degree\n\nBoth are proved by contradiction from a structural property (simplicity of A\u2085 vs degree-raising of L\u2082), with the polynomial computation serving as the formal verification.",
     "mathContext": "The parallel is precise: algebraic Galois theory (Galois groups, solvable groups) corresponds bijectively to differential Galois theory (Picard-Vessiot groups, solvable algebraic groups). The same group-theoretic obstruction machinery applies in both settings.",
     "significance": "key",
-    "relatedConcepts": ["differential Galois theory", "algebraic Galois theory", "Picard-Vessiot theory", "solvable groups"],
-    "prerequisites": ["abel-ruffini-oq-04", "DiffField", "Risch criterion"]
+    "relatedConcepts": [
+      "differential Galois theory",
+      "algebraic Galois theory",
+      "Picard-Vessiot theory",
+      "solvable groups"
+    ],
+    "prerequisites": [
+      "abel-ruffini-oq-04",
+      "DiffField",
+      "Risch criterion"
+    ]
   }
 ]

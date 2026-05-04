@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview and History",
-    "content": "Erdős Problem #138 asks whether the van der Waerden numbers W(k) grow faster than any exponential function — specifically, whether W(k)^{1/k} → ∞ as k → ∞.\n\nVan der Waerden proved in 1927 that W(k) is finite for all k: for any red-blue coloring of a sufficiently long string of integers, some k consecutive terms in arithmetic progression all have the same color. The number W(k) is the minimum length needed. The $500 prize reflects the difficulty: despite decades of work, the precise growth rate of W(k) remains a central open problem in Ramsey theory.",
-    "mathContext": "Known bounds:\n- Lower: W(k) ≥ c · 2^k (Kozik–Shabanov 2016)\n- Upper: W(k) ≤ 2^{2^{2^{2^{2^{k+9}}}}} (Gowers 2001)\n- At primes: W(p+1) ≥ p · 2^p (Berlekamp 1968)\n\nExact values: W(3)=9, W(4)=35, W(5)=178, W(6)=1132",
+    "content": "Erd\u0151s Problem #138 asks whether the van der Waerden numbers W(k) grow faster than any exponential function \u2014 specifically, whether W(k)^{1/k} \u2192 \u221e as k \u2192 \u221e.\n\nVan der Waerden proved in 1927 that W(k) is finite for all k: for any red-blue coloring of a sufficiently long string of integers, some k consecutive terms in arithmetic progression all have the same color. The number W(k) is the minimum length needed. The $500 prize reflects the difficulty: despite decades of work, the precise growth rate of W(k) remains a central open problem in Ramsey theory.",
+    "mathContext": "Known bounds:\n- Lower: W(k) \u2265 c \u00b7 2^k (Kozik\u2013Shabanov 2016)\n- Upper: W(k) \u2264 2^{2^{2^{2^{2^{k+9}}}}} (Gowers 2001)\n- At primes: W(p+1) \u2265 p \u00b7 2^p (Berlekamp 1968)\n\nExact values: W(3)=9, W(4)=35, W(5)=178, W(6)=1132",
     "significance": "key",
     "relatedConcepts": [
       "van der Waerden's theorem",
@@ -28,7 +28,7 @@
     "type": "definition",
     "title": "Coloring Definition",
     "content": "A coloring of {1,...,N} using r colors assigns one of r colors to each integer in the range. This captures the Ramsey-theoretic setup for van der Waerden's theorem.\n\nFor the main problem we use r=2 (two colors, e.g. red/blue), but the definition works for any number of colors.",
-    "mathContext": "def Coloring (N r : ℕ) := Finset.Icc 1 N → Fin r\n\nFinset.Icc 1 N is the interval {1,...,N} as a finite set. Fin r is the type of integers in {0,...,r-1}, representing colors.",
+    "mathContext": "def Coloring (N r : \u2115) := Finset.Icc 1 N \u2192 Fin r\n\nFinset.Icc 1 N is the interval {1,...,N} as a finite set. Fin r is the type of integers in {0,...,r-1}, representing colors.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.Icc",
@@ -46,11 +46,11 @@
     "type": "definition",
     "title": "Monochromatic Arithmetic Progression",
     "content": "A monochromatic k-term arithmetic progression is a sequence a, a+d, a+2d, ..., a+(k-1)d where all terms lie in {1,...,N} and all receive the same color. The common difference d must be positive to exclude degenerate single-point sequences.\n\nExample: In a 2-coloring of {1,...,9}, the sequence 1, 4, 7 is a 3-term AP with d=3. Van der Waerden's theorem says any such coloring must have some 3-term AP with all terms the same color.",
-    "mathContext": "def HasMonochromaticAP {N r : ℕ} (c : Coloring N r) (k : ℕ) : Prop :=\n  ∃ (a d : ℕ) (col : Fin r), 0 < d ∧\n  ∀ (i : Fin k) (h : a + i.val * d ∈ Finset.Icc 1 N),\n    c ⟨a + i.val * d, h⟩ = col\n\nThe membership proof h is threaded through so the coloring function can be applied.",
+    "mathContext": "def HasMonochromaticAP {N r : \u2115} (c : Coloring N r) (k : \u2115) : Prop :=\n  \u2203 (a d : \u2115) (col : Fin r), 0 < d \u2227\n  \u2200 (i : Fin k) (h : a + i.val * d \u2208 Finset.Icc 1 N),\n    c \u27e8a + i.val * d, h\u27e9 = col\n\nThe membership proof h is threaded through so the coloring function can be applied.",
     "significance": "key",
     "relatedConcepts": [
       "arithmetic progression",
-      "Szemerédi's theorem",
+      "Szemer\u00e9di's theorem",
       "Ramsey theory"
     ]
   },
@@ -64,7 +64,7 @@
     "type": "concept",
     "title": "Van der Waerden's Theorem (Axiomatized)",
     "content": "Van der Waerden's theorem (1927) is the bedrock: for any r colors and progression length k, there exists N large enough that every r-coloring of {1,...,N} contains a monochromatic k-term AP.\n\nThe proof uses double induction on (r, k). We axiomatize it here because formalizing the induction argument would require substantial additional infrastructure, while the theorem itself is well-established and not in doubt.",
-    "mathContext": "axiom van_der_waerden_theorem :\n  ∀ r k : ℕ, 1 ≤ r → 1 ≤ k →\n  ∃ N : ℕ, ∀ c : Coloring N r, HasMonochromaticAP c k\n\nThis guarantees that GuaranteeSet(r,k) is nonempty, which is needed to define W(r,k) = sInf GuaranteeSet(r,k).",
+    "mathContext": "axiom van_der_waerden_theorem :\n  \u2200 r k : \u2115, 1 \u2264 r \u2192 1 \u2264 k \u2192\n  \u2203 N : \u2115, \u2200 c : Coloring N r, HasMonochromaticAP c k\n\nThis guarantees that GuaranteeSet(r,k) is nonempty, which is needed to define W(r,k) = sInf GuaranteeSet(r,k).",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
@@ -81,8 +81,8 @@
     },
     "type": "definition",
     "title": "Guarantee Set and Its Nonemptiness",
-    "content": "The guarantee set GuaranteeSet(r,k) collects all N that are large enough: every r-coloring of {1,...,N} must contain a monochromatic k-AP. Van der Waerden's theorem says this set is nonempty for r,k ≥ 1.\n\nThe guarantee set is upward-closed: if N works, then N+1 also works (any coloring of {1,...,N+1} induces one on {1,...,N}). The van der Waerden number is the threshold — the minimum element.",
-    "mathContext": "def GuaranteeSet (r k : ℕ) : Set ℕ :=\n  { N | ∀ c : Coloring N r, HasMonochromaticAP c k }\n\ntheorem guaranteeSet_nonempty (r k : ℕ) (hr : 1 ≤ r) (hk : 1 ≤ k) :\n    (GuaranteeSet r k).Nonempty :=\n  van_der_waerden_theorem r k hr hk",
+    "content": "The guarantee set GuaranteeSet(r,k) collects all N that are large enough: every r-coloring of {1,...,N} must contain a monochromatic k-AP. Van der Waerden's theorem says this set is nonempty for r,k \u2265 1.\n\nThe guarantee set is upward-closed: if N works, then N+1 also works (any coloring of {1,...,N+1} induces one on {1,...,N}). The van der Waerden number is the threshold \u2014 the minimum element.",
+    "mathContext": "def GuaranteeSet (r k : \u2115) : Set \u2115 :=\n  { N | \u2200 c : Coloring N r, HasMonochromaticAP c k }\n\ntheorem guaranteeSet_nonempty (r k : \u2115) (hr : 1 \u2264 r) (hk : 1 \u2264 k) :\n    (GuaranteeSet r k).Nonempty :=\n  van_der_waerden_theorem r k hr hk",
     "significance": "supporting",
     "relatedConcepts": [
       "sInf",
@@ -99,8 +99,8 @@
     },
     "type": "definition",
     "title": "Van der Waerden Number W(k)",
-    "content": "The van der Waerden number W(k) is the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term AP. It is defined as the infimum of the guarantee set for 2 colors and k terms.\n\nThe function is noncomputable: computing W(k) for given k requires searching exponentially many colorings, and for k ≥ 7 the exact value is unknown. The function is defined mathematically as a minimum but cannot be computed by a finite algorithm for arbitrary k.",
-    "mathContext": "noncomputable def vanDerWaerden (r k : ℕ) : ℕ := sInf (GuaranteeSet r k)\nnoncomputable abbrev W (k : ℕ) : ℕ := vanDerWaerden 2 k\n\nKnown values: W(3)=9, W(4)=35, W(5)=178, W(6)=1132. Beyond k=6, exact values are unknown.",
+    "content": "The van der Waerden number W(k) is the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term AP. It is defined as the infimum of the guarantee set for 2 colors and k terms.\n\nThe function is noncomputable: computing W(k) for given k requires searching exponentially many colorings, and for k \u2265 7 the exact value is unknown. The function is defined mathematically as a minimum but cannot be computed by a finite algorithm for arbitrary k.",
+    "mathContext": "noncomputable def vanDerWaerden (r k : \u2115) : \u2115 := sInf (GuaranteeSet r k)\nnoncomputable abbrev W (k : \u2115) : \u2115 := vanDerWaerden 2 k\n\nKnown values: W(3)=9, W(4)=35, W(5)=178, W(6)=1132. Beyond k=6, exact values are unknown.",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey number",
@@ -117,8 +117,8 @@
     },
     "type": "concept",
     "title": "Berlekamp's Lower Bound (1968)",
-    "content": "Berlekamp proved that for prime p, W(p+1) ≥ p · 2^p. The construction colors integers {1,...,p·2^p} by writing each integer n as n = a · 2^b mod p (roughly), using the structure of GF(p) × Z/2Z. This coloring avoids any monochromatic (p+1)-term AP.\n\nThis gives strong bounds at prime values: W(3) ≥ 8, W(4) ≥ 24, W(6) ≥ 160. The actual values W(3)=9, W(4)=35, W(6)=1132 show Berlekamp's bound is often quite close at p=2,3 but loose for larger primes.",
-    "mathContext": "axiom berlekamp_lower_bound (p : ℕ) (hp : p.Prime) :\n  p * 2 ^ p ≤ W (p + 1)\n\nSample bounds:\n- p=2: W(3) ≥ 8  (actual: W(3) = 9)  ← tight!\n- p=3: W(4) ≥ 24 (actual: W(4) = 35)\n- p=5: W(6) ≥ 160 (actual: W(6) = 1132)",
+    "content": "Berlekamp proved that for prime p, W(p+1) \u2265 p \u00b7 2^p. The construction colors integers {1,...,p\u00b72^p} by writing each integer n as n = a \u00b7 2^b mod p (roughly), using the structure of GF(p) \u00d7 Z/2Z. This coloring avoids any monochromatic (p+1)-term AP.\n\nThis gives strong bounds at prime values: W(3) \u2265 8, W(4) \u2265 24, W(6) \u2265 160. The actual values W(3)=9, W(4)=35, W(6)=1132 show Berlekamp's bound is often quite close at p=2,3 but loose for larger primes.",
+    "mathContext": "axiom berlekamp_lower_bound (p : \u2115) (hp : p.Prime) :\n  p * 2 ^ p \u2264 W (p + 1)\n\nSample bounds:\n- p=2: W(3) \u2265 8  (actual: W(3) = 9)  \u2190 tight!\n- p=3: W(4) \u2265 24 (actual: W(4) = 35)\n- p=5: W(6) \u2265 160 (actual: W(6) = 1132)",
     "significance": "key",
     "relatedConcepts": [
       "finite field",
@@ -136,12 +136,12 @@
     },
     "type": "concept",
     "title": "Gowers' Upper Bound (2001)",
-    "content": "Gowers proved the best known upper bound: W(k) ≤ 2^{2^{2^{2^{2^{k+9}}}}}, a tower of five exponentials. This follows from his analytic proof of Szemerédi's theorem using Gowers uniformity norms.\n\nEarlier upper bounds used Ackermann-type functions (van der Waerden 1927) or primitive recursive but still enormous bounds (Shelah 1988). Gowers' breakthrough was the first elementary tower bound. He received a Fields Medal partly for this work.",
-    "mathContext": "axiom gowers_upper_bound (k : ℕ) :\n  W k ≤ 2 ^ (2 ^ (2 ^ (2 ^ (2 ^ (k + 9)))))\n\nEven for k=3 this gives an astronomically large bound, dwarfing the true value W(3)=9.",
+    "content": "Gowers proved the best known upper bound: W(k) \u2264 2^{2^{2^{2^{2^{k+9}}}}}, a tower of five exponentials. This follows from his analytic proof of Szemer\u00e9di's theorem using Gowers uniformity norms.\n\nEarlier upper bounds used Ackermann-type functions (van der Waerden 1927) or primitive recursive but still enormous bounds (Shelah 1988). Gowers' breakthrough was the first elementary tower bound. He received a Fields Medal partly for this work.",
+    "mathContext": "axiom gowers_upper_bound (k : \u2115) :\n  W k \u2264 2 ^ (2 ^ (2 ^ (2 ^ (2 ^ (k + 9)))))\n\nEven for k=3 this gives an astronomically large bound, dwarfing the true value W(3)=9.",
     "significance": "key",
     "relatedConcepts": [
       "Gowers uniformity norms",
-      "Szemerédi's theorem",
+      "Szemer\u00e9di's theorem",
       "tower function",
       "Fields Medal"
     ]
@@ -154,12 +154,12 @@
       "endLine": 133
     },
     "type": "concept",
-    "title": "Kozik–Shabanov Lower Bound (2016)",
-    "content": "Kozik and Shabanov proved the best known general lower bound: W(k) ≥ c · 2^k for some absolute constant c > 0, valid for all k ≥ 1. The proof uses the Lovász Local Lemma to show that a random coloring, after suitable conditioning, avoids long monochromatic APs.\n\nThis tells us W(k) is at least exponential. But the main conjecture asks whether W(k) grows faster than ANY exponential, i.e., super-exponentially.",
-    "mathContext": "axiom kozik_shabanov_lower_bound :\n  ∃ c : ℝ, 0 < c ∧ ∀ k : ℕ, 1 ≤ k → c * 2 ^ k ≤ (W k : ℝ)\n\nContrast: this says W(k)/2^k ≥ c (bounded below), while ExponentialDiverges asks W(k)/2^k → ∞.",
+    "title": "Kozik\u2013Shabanov Lower Bound (2016)",
+    "content": "Kozik and Shabanov proved the best known general lower bound: W(k) \u2265 c \u00b7 2^k for some absolute constant c > 0, valid for all k \u2265 1. The proof uses the Lov\u00e1sz Local Lemma to show that a random coloring, after suitable conditioning, avoids long monochromatic APs.\n\nThis tells us W(k) is at least exponential. But the main conjecture asks whether W(k) grows faster than ANY exponential, i.e., super-exponentially.",
+    "mathContext": "axiom kozik_shabanov_lower_bound :\n  \u2203 c : \u211d, 0 < c \u2227 \u2200 k : \u2115, 1 \u2264 k \u2192 c * 2 ^ k \u2264 (W k : \u211d)\n\nContrast: this says W(k)/2^k \u2265 c (bounded below), while ExponentialDiverges asks W(k)/2^k \u2192 \u221e.",
     "significance": "key",
     "relatedConcepts": [
-      "Lovász Local Lemma",
+      "Lov\u00e1sz Local Lemma",
       "probabilistic method",
       "hypergraph coloring"
     ]
@@ -173,8 +173,8 @@
     },
     "type": "concept",
     "title": "Exact Small Values",
-    "content": "Exact values of W(k) are known for k ≤ 6:\n- W(3) = 9: proved by elementary arguments\n- W(4) = 35: verified by exhaustive search\n- W(5) = 178: computed by Landman and Robertson (2014)\n- W(6) = 1132: computed by Kouril and Paul (2008) using SAT solvers\n\nThe growth ratios 3.9×, 5.1×, 6.4× suggest acceleration consistent with the conjecture. Beyond k=6, exact values are unknown — the computation is believed to be intractable.",
-    "mathContext": "axiom W_three : W 3 = 9\naxiom W_four  : W 4 = 35\naxiom W_five  : W 5 = 178\naxiom W_six   : W 6 = 1132\n\nGrowth ratios: W(4)/W(3) ≈ 3.9, W(5)/W(4) ≈ 5.1, W(6)/W(5) ≈ 6.4",
+    "content": "Exact values of W(k) are known for k \u2264 6:\n- W(3) = 9: proved by elementary arguments\n- W(4) = 35: verified by exhaustive search\n- W(5) = 178: computed by Landman and Robertson (2014)\n- W(6) = 1132: computed by Kouril and Paul (2008) using SAT solvers\n\nThe growth ratios 3.9\u00d7, 5.1\u00d7, 6.4\u00d7 suggest acceleration consistent with the conjecture. Beyond k=6, exact values are unknown \u2014 the computation is believed to be intractable.",
+    "mathContext": "axiom W_three : W 3 = 9\naxiom W_four  : W 4 = 35\naxiom W_five  : W 5 = 178\naxiom W_six   : W 6 = 1132\n\nGrowth ratios: W(4)/W(3) \u2248 3.9, W(5)/W(4) \u2248 5.1, W(6)/W(5) \u2248 6.4",
     "significance": "supporting",
     "relatedConcepts": [
       "SAT solver",
@@ -189,10 +189,10 @@
       "startLine": 157,
       "endLine": 172
     },
-    "type": "theorem",
-    "title": "Erdős Problem #138 — Main Conjecture",
-    "content": "The main open question: does W(k)^{1/k} → ∞? This asks whether van der Waerden numbers grow faster than any exponential. For any constant base c > 0 (no matter how large), eventually W(k) > c^k.\n\nThe Kozik–Shabanov bound shows W(k) ≥ c_0 · 2^k (so W(k)^{1/k} ≥ c_0^{1/k} · 2), which tends to 2 — not to infinity. The gap between the known exponential lower bound and the conjecture's super-exponential claim is the heart of the open problem.",
-    "mathContext": "def Erdos138Conjecture : Prop :=\n  Tendsto (fun k => (W k : ℝ) ^ ((k : ℝ)⁻¹)) atTop atTop\n\nFilter.Tendsto f atTop atTop means: for every M > 0, eventually f(k) > M.\nHere f(k) = W(k)^{1/k}, the k-th root of W(k).",
+    "type": "insight",
+    "title": "Erd\u0151s Problem #138 \u2014 Main Conjecture",
+    "content": "The main open question: does W(k)^{1/k} \u2192 \u221e? This asks whether van der Waerden numbers grow faster than any exponential. For any constant base c > 0 (no matter how large), eventually W(k) > c^k.\n\nThe Kozik\u2013Shabanov bound shows W(k) \u2265 c_0 \u00b7 2^k (so W(k)^{1/k} \u2265 c_0^{1/k} \u00b7 2), which tends to 2 \u2014 not to infinity. The gap between the known exponential lower bound and the conjecture's super-exponential claim is the heart of the open problem.",
+    "mathContext": "def Erdos138Conjecture : Prop :=\n  Tendsto (fun k => (W k : \u211d) ^ ((k : \u211d)\u207b\u00b9)) atTop atTop\n\nFilter.Tendsto f atTop atTop means: for every M > 0, eventually f(k) > M.\nHere f(k) = W(k)^{1/k}, the k-th root of W(k).",
     "significance": "critical",
     "relatedConcepts": [
       "Filter.Tendsto",
@@ -209,9 +209,9 @@
       "endLine": 188
     },
     "type": "concept",
-    "title": "Related Questions from Erdős (1980–1981)",
-    "content": "Erdős posed several related questions about how rapidly W(k) grows:\n\n1. **QuotientDiverges**: Does W(k+1)/W(k) → ∞? (Consecutive van der Waerden numbers have unbounded ratio)\n2. **DifferenceDiverges**: Does W(k+1) − W(k) → ∞? (Consecutive gaps grow unboundedly)\n3. **ExponentialDiverges**: Does W(k)/2^k → ∞? (Growth faster than 2^k)\n\nThese are all open. The main conjecture (W(k)^{1/k} → ∞) implies ExponentialDiverges.",
-    "mathContext": "def QuotientDiverges : Prop :=\n  Tendsto (fun k => (W (k + 1) : ℝ) / (W k : ℝ)) atTop atTop\n\ndef DifferenceDiverges : Prop :=\n  Tendsto (fun k => ((W (k + 1) : ℤ) - (W k : ℤ))) atTop atTop\n\ndef ExponentialDiverges : Prop :=\n  Tendsto (fun k => (W k : ℝ) / 2 ^ k) atTop atTop",
+    "title": "Related Questions from Erd\u0151s (1980\u20131981)",
+    "content": "Erd\u0151s posed several related questions about how rapidly W(k) grows:\n\n1. **QuotientDiverges**: Does W(k+1)/W(k) \u2192 \u221e? (Consecutive van der Waerden numbers have unbounded ratio)\n2. **DifferenceDiverges**: Does W(k+1) \u2212 W(k) \u2192 \u221e? (Consecutive gaps grow unboundedly)\n3. **ExponentialDiverges**: Does W(k)/2^k \u2192 \u221e? (Growth faster than 2^k)\n\nThese are all open. The main conjecture (W(k)^{1/k} \u2192 \u221e) implies ExponentialDiverges.",
+    "mathContext": "def QuotientDiverges : Prop :=\n  Tendsto (fun k => (W (k + 1) : \u211d) / (W k : \u211d)) atTop atTop\n\ndef DifferenceDiverges : Prop :=\n  Tendsto (fun k => ((W (k + 1) : \u2124) - (W k : \u2124))) atTop atTop\n\ndef ExponentialDiverges : Prop :=\n  Tendsto (fun k => (W k : \u211d) / 2 ^ k) atTop atTop",
     "significance": "supporting",
     "relatedConcepts": [
       "growth comparison",
@@ -227,9 +227,9 @@
       "endLine": 196
     },
     "type": "concept",
-    "title": "Implication Chain: Main Conjecture → ExponentialDiverges",
-    "content": "The main conjecture implies ExponentialDiverges: if W(k)^{1/k} → ∞, then for any M > 0, eventually W(k)^{1/k} > M, so W(k) > M^k. Taking M > 2 gives W(k) > 2^k · (M/2)^k → ∞, hence W(k)/2^k → ∞.\n\nThis shows the main conjecture is strictly stronger than ExponentialDiverges. The sorry in the Lean proof marks that formalizing this limit argument (using Mathlib's filter machinery) is incomplete, though the mathematics is clear.",
-    "mathContext": "theorem main_conjecture_implies_exponential :\n    Erdos138Conjecture → ExponentialDiverges := by\n  intro _hconj\n  sorry  -- Requires filter composition and rpow/pow monotonicity\n\nThe logical chain:\n  W(k)^{1/k} → ∞  ⟹  W(k)/2^k → ∞  (by comparing k-th roots)",
+    "title": "Implication Chain: Main Conjecture \u2192 ExponentialDiverges",
+    "content": "The main conjecture implies ExponentialDiverges: if W(k)^{1/k} \u2192 \u221e, then for any M > 0, eventually W(k)^{1/k} > M, so W(k) > M^k. Taking M > 2 gives W(k) > 2^k \u00b7 (M/2)^k \u2192 \u221e, hence W(k)/2^k \u2192 \u221e.\n\nThis shows the main conjecture is strictly stronger than ExponentialDiverges. The sorry in the Lean proof marks that formalizing this limit argument (using Mathlib's filter machinery) is incomplete, though the mathematics is clear.",
+    "mathContext": "theorem main_conjecture_implies_exponential :\n    Erdos138Conjecture \u2192 ExponentialDiverges := by\n  intro _hconj\n  sorry  -- Requires filter composition and rpow/pow monotonicity\n\nThe logical chain:\n  W(k)^{1/k} \u2192 \u221e  \u27f9  W(k)/2^k \u2192 \u221e  (by comparing k-th roots)",
     "significance": "supporting",
     "relatedConcepts": [
       "Filter.Tendsto",

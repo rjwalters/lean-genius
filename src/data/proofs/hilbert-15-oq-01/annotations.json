@@ -8,7 +8,7 @@
       "startLine": 1,
       "endLine": 62
     },
-    "content": "The module docstring (lines 1–60) is itself a mathematical reference document: it gives the complete Chow ring structure as a table with geometric interpretations for each basis class, displays the full 5×5 multiplication table, traces the four-lines computation σ₁² → σ₁³ → σ₁⁴ = 2 step by step, and explains the proof strategy (native_decide from the explicit LR table). This is the only file in the Lean Genius gallery where the docstring includes a complete multiplication table.\n\nThe relationship to the parent file `Hilbert15SchubertCalculus.lean` is explicit: the parent provides Grassmannian definitions and the axiomatized statement `σ₁⁴ = 2`; this file proves it computationally, eliminating the axiom. This is a demonstration of the refinement methodology: Lean allows working axiomatically first (assuming the hard part), then improving to a proved version.",
+    "content": "The module docstring (lines 1\u201360) is itself a mathematical reference document: it gives the complete Chow ring structure as a table with geometric interpretations for each basis class, displays the full 5\u00d75 multiplication table, traces the four-lines computation \u03c3\u2081\u00b2 \u2192 \u03c3\u2081\u00b3 \u2192 \u03c3\u2081\u2074 = 2 step by step, and explains the proof strategy (native_decide from the explicit LR table). This is the only file in the Lean Genius gallery where the docstring includes a complete multiplication table.\n\nThe relationship to the parent file `Hilbert15SchubertCalculus.lean` is explicit: the parent provides Grassmannian definitions and the axiomatized statement `\u03c3\u2081\u2074 = 2`; this file proves it computationally, eliminating the axiom. This is a demonstration of the refinement methodology: Lean allows working axiomatically first (assuming the hard part), then improving to a proved version.",
     "mathContext": "The grading: $A^0(\\mathrm{Gr}(2,4)) = \\mathbb{Z}\\sigma_\\emptyset$ (degree 0, fundamental class), $A^1 = \\mathbb{Z}\\sigma_1$ (lines meeting a fixed line), $A^2 = \\mathbb{Z}\\sigma_2 \\oplus \\mathbb{Z}\\sigma_{11}$ (lines in a plane / through a point), $A^3 = \\mathbb{Z}\\sigma_{21}$ (lines in a plane through a point), $A^4 = \\mathbb{Z}\\sigma_{22}$ (a specific line, the 'point class'). The product $\\sigma_1 \\cdot \\sigma_{22} = 0$ (no line meets 4 fixed lines + 1 point class in general position) reflects the dimension count: $1 + 4 > 4 = \\dim A^*(\\mathrm{Gr}(2,4))$.",
     "significance": "context",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
     "type": "concept",
     "startLine": 64,
     "endLine": 71,
-    "mathContext": "The Chow ring A*(Gr(2,4)) is a graded Z-algebra with rank 6 over Z. Basis: σ_∅ (degree 0), σ₁ (degree 1), σ₂, σ₁₁ (degree 2), σ₂₁ (degree 3), σ₂₂ (degree 4). The four-lines computation: σ₁² = σ₂ + σ₁₁ → σ₁³ = 2σ₂₁ → σ₁⁴ = 2σ₂₂, proving that exactly 2 lines meet 4 general lines in P³. All 22 theorems proved by native_decide from the explicit LR multiplication table, 0 axioms.",
+    "mathContext": "The Chow ring A*(Gr(2,4)) is a graded Z-algebra with rank 6 over Z. Basis: \u03c3_\u2205 (degree 0), \u03c3\u2081 (degree 1), \u03c3\u2082, \u03c3\u2081\u2081 (degree 2), \u03c3\u2082\u2081 (degree 3), \u03c3\u2082\u2082 (degree 4). The four-lines computation: \u03c3\u2081\u00b2 = \u03c3\u2082 + \u03c3\u2081\u2081 \u2192 \u03c3\u2081\u00b3 = 2\u03c3\u2082\u2081 \u2192 \u03c3\u2081\u2074 = 2\u03c3\u2082\u2082, proving that exactly 2 lines meet 4 general lines in P\u00b3. All 22 theorems proved by native_decide from the explicit LR multiplication table, 0 axioms.",
     "significance": "supporting",
     "relatedConcepts": [
       "Hilbert's 15th problem",
@@ -41,7 +41,7 @@
       "Chow ring",
       "intersection theory"
     ],
-    "content": "This file directly answers Hilbert's 15th problem (1900) for the case Gr(2,4): Schubert's enumerative calculus is fully rigorous because the Chow ring is an explicit finitely-presented Z-algebra with decidable multiplication. The key insight — encode the ring as a struct with 6 integer fields and the LR table as a pattern-matching function — makes all enumerative geometry into verified finite computation.",
+    "content": "This file directly answers Hilbert's 15th problem (1900) for the case Gr(2,4): Schubert's enumerative calculus is fully rigorous because the Chow ring is an explicit finitely-presented Z-algebra with decidable multiplication. The key insight \u2014 encode the ring as a struct with 6 integer fields and the LR table as a pattern-matching function \u2014 makes all enumerative geometry into verified finite computation.",
     "proofId": "hilbert-15-oq-01",
     "range": {
       "startLine": 64,
@@ -54,7 +54,7 @@
     "type": "concept",
     "startLine": 74,
     "endLine": 101,
-    "mathContext": "ChowGr24 is a structure with 6 integer fields (c0, c1, c2, c11, c21, c22) representing coefficients of the Schubert basis (σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂). Derives DecidableEq and Repr, enabling decide/native_decide for all ring equations. Ring instances: Zero (all zeros), One (c0=1), Add (componentwise), Neg (componentwise), SMul Z (componentwise scalar). Grading: degrees 0+0=0, 1+1=2, 2+2=4 (the multiplication maps degree k × degree l to degree k+l, annihilating beyond degree 4).",
+    "mathContext": "ChowGr24 is a structure with 6 integer fields (c0, c1, c2, c11, c21, c22) representing coefficients of the Schubert basis (\u03c3_\u2205, \u03c3\u2081, \u03c3\u2082, \u03c3\u2081\u2081, \u03c3\u2082\u2081, \u03c3\u2082\u2082). Derives DecidableEq and Repr, enabling decide/native_decide for all ring equations. Ring instances: Zero (all zeros), One (c0=1), Add (componentwise), Neg (componentwise), SMul Z (componentwise scalar). Grading: degrees 0+0=0, 1+1=2, 2+2=4 (the multiplication maps degree k \u00d7 degree l to degree k+l, annihilating beyond degree 4).",
     "significance": "supporting",
     "relatedConcepts": [
       "DecidableEq",
@@ -63,7 +63,7 @@
       "Z-module",
       "Schubert class"
     ],
-    "content": "The DecidableEq derivation is what makes native_decide work throughout the file. Every theorem of the form 'σ_λ · σ_μ = X' is proved by native_decide, which runs a compiled decision procedure. This is the fundamental trick: encode the ring concretely enough that all equations become decidable propositions. The structure encoding respects the grading implicitly through the multiplication table.",
+    "content": "The DecidableEq derivation is what makes native_decide work throughout the file. Every theorem of the form '\u03c3_\u03bb \u00b7 \u03c3_\u03bc = X' is proved by native_decide, which runs a compiled decision procedure. This is the fundamental trick: encode the ring concretely enough that all equations become decidable propositions. The structure encoding respects the grading implicitly through the multiplication table.",
     "proofId": "hilbert-15-oq-01",
     "range": {
       "startLine": 74,
@@ -76,7 +76,7 @@
     "type": "definition",
     "startLine": 105,
     "endLine": 120,
-    "mathContext": "Six definitions as ChowGr24 values: σ₀ = ⟨1,0,0,0,0,0⟩ (identity, degree 0), σ₁ = ⟨0,1,0,0,0,0⟩ (degree 1: lines meeting a fixed line), σ₂ = ⟨0,0,1,0,0,0⟩ (degree 2: lines in a fixed plane), σ₁₁ = ⟨0,0,0,1,0,0⟩ (degree 2: lines through a fixed point), σ₂₁ = ⟨0,0,0,0,1,0⟩ (degree 3: lines in a plane through a point), σ₂₂ = ⟨0,0,0,0,0,1⟩ (degree 4: the point class — a specific line). The partition index λ = (λ₁,λ₂) fits in a 2×2 box with λ₁ ≥ λ₂ ≥ 0.",
+    "mathContext": "Six definitions as ChowGr24 values: \u03c3\u2080 = \u27e81,0,0,0,0,0\u27e9 (identity, degree 0), \u03c3\u2081 = \u27e80,1,0,0,0,0\u27e9 (degree 1: lines meeting a fixed line), \u03c3\u2082 = \u27e80,0,1,0,0,0\u27e9 (degree 2: lines in a fixed plane), \u03c3\u2081\u2081 = \u27e80,0,0,1,0,0\u27e9 (degree 2: lines through a fixed point), \u03c3\u2082\u2081 = \u27e80,0,0,0,1,0\u27e9 (degree 3: lines in a plane through a point), \u03c3\u2082\u2082 = \u27e80,0,0,0,0,1\u27e9 (degree 4: the point class \u2014 a specific line). The partition index \u03bb = (\u03bb\u2081,\u03bb\u2082) fits in a 2\u00d72 box with \u03bb\u2081 \u2265 \u03bb\u2082 \u2265 0.",
     "significance": "supporting",
     "relatedConcepts": [
       "Schubert variety",
@@ -85,7 +85,7 @@
       "degree map",
       "flag variety"
     ],
-    "content": "Each Schubert class σ_λ corresponds geometrically to the cycle of lines satisfying a Schubert condition: meeting a flag in a specific way. σ₂₂ is the point class — its coefficient in a product gives the intersection number. The six classes σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂ exhaust the partitions fitting in the 2×2 box (k=2, n-k=2 box for Gr(2,4)).",
+    "content": "Each Schubert class \u03c3_\u03bb corresponds geometrically to the cycle of lines satisfying a Schubert condition: meeting a flag in a specific way. \u03c3\u2082\u2082 is the point class \u2014 its coefficient in a product gives the intersection number. The six classes \u03c3_\u2205, \u03c3\u2081, \u03c3\u2082, \u03c3\u2081\u2081, \u03c3\u2082\u2081, \u03c3\u2082\u2082 exhaust the partitions fitting in the 2\u00d72 box (k=2, n-k=2 box for Gr(2,4)).",
     "proofId": "hilbert-15-oq-01",
     "range": {
       "startLine": 105,
@@ -98,7 +98,7 @@
     "type": "definition",
     "startLine": 140,
     "endLine": 203,
-    "mathContext": "basisMul : Fin 6 → Fin 6 → ChowGr24 encodes all 36 basis products. Key entries: (1,1)↦σ₂+σ₁₁, (1,2)↦σ₂₁, (1,3)↦σ₂₁, (1,4)↦σ₂₂, (2,2)↦σ₂₂, (3,3)↦σ₂₂, (2,3)↦0. The Mul instance extends to all elements by bilinear extension: for a = Σ aᵢσᵢ and b = Σ bⱼσⱼ, (a·b)_k = Σᵢ,ⱼ aᵢbⱼ·(basisMul i j)_k. Uses Fin 6 matrix of products with coefficients aᵢ·bⱼ summed componentwise.",
+    "mathContext": "basisMul : Fin 6 \u2192 Fin 6 \u2192 ChowGr24 encodes all 36 basis products. Key entries: (1,1)\u21a6\u03c3\u2082+\u03c3\u2081\u2081, (1,2)\u21a6\u03c3\u2082\u2081, (1,3)\u21a6\u03c3\u2082\u2081, (1,4)\u21a6\u03c3\u2082\u2082, (2,2)\u21a6\u03c3\u2082\u2082, (3,3)\u21a6\u03c3\u2082\u2082, (2,3)\u21a60. The Mul instance extends to all elements by bilinear extension: for a = \u03a3 a\u1d62\u03c3\u1d62 and b = \u03a3 b\u2c7c\u03c3\u2c7c, (a\u00b7b)_k = \u03a3\u1d62,\u2c7c a\u1d62b\u2c7c\u00b7(basisMul i j)_k. Uses Fin 6 matrix of products with coefficients a\u1d62\u00b7b\u2c7c summed componentwise.",
     "significance": "supporting",
     "relatedConcepts": [
       "Littlewood-Richardson rule",
@@ -107,7 +107,7 @@
       "Young tableau",
       "bilinear extension"
     ],
-    "content": "The entry (2,3)↦0 (σ₂·σ₁₁ = 0) is the key nontrivial fact from Schubert calculus. The LR rule says c^{22}_{2,11} = 0 because no semistandard Young tableau with content (2,11) and shape 22 satisfies the lattice word condition. This vanishing encodes a genuine geometric fact: in P³, the Schubert varieties for σ₂ (lines in a plane) and σ₁₁ (lines through a point) in general position do not intersect in any line that also lies in a fixed plane through a fixed point.",
+    "content": "The entry (2,3)\u21a60 (\u03c3\u2082\u00b7\u03c3\u2081\u2081 = 0) is the key nontrivial fact from Schubert calculus. The LR rule says c^{22}_{2,11} = 0 because no semistandard Young tableau with content (2,11) and shape 22 satisfies the lattice word condition. This vanishing encodes a genuine geometric fact: in P\u00b3, the Schubert varieties for \u03c3\u2082 (lines in a plane) and \u03c3\u2081\u2081 (lines through a point) in general position do not intersect in any line that also lies in a fixed plane through a fixed point.",
     "proofId": "hilbert-15-oq-01",
     "range": {
       "startLine": 140,
@@ -116,20 +116,20 @@
   },
   {
     "id": "ann-four-lines-theorem",
-    "title": "Four Lines Theorem: σ₁⁴ = 2 by native_decide",
-    "type": "theorem",
+    "title": "Four Lines Theorem: \u03c3\u2081\u2074 = 2 by native_decide",
+    "type": "insight",
     "startLine": 210,
     "endLine": 255,
-    "mathContext": "Seven key product theorems proved by native_decide: sigma1_sq (σ₁² = σ₂+σ₁₁), sigma1_sigma2 (σ₁·σ₂ = σ₂₁), sigma1_sigma11 (σ₁·σ₁₁ = σ₂₁), sigma1_sigma21 (σ₁·σ₂₁ = σ₂₂), sigma2_sq (σ₂² = σ₂₂), sigma11_sq (σ₁₁² = σ₂₂), sigma2_sigma11 (σ₂·σ₁₁ = 0). Main theorem sigma1_fourth: (σ₁*σ₁*σ₁*σ₁).c22 = 2. The computation: σ₁⁴ = ⟨0,0,0,0,0,2⟩. four_lines_number extracts the degree: (σ₁⁴).c22 = 2.",
+    "mathContext": "Seven key product theorems proved by native_decide: sigma1_sq (\u03c3\u2081\u00b2 = \u03c3\u2082+\u03c3\u2081\u2081), sigma1_sigma2 (\u03c3\u2081\u00b7\u03c3\u2082 = \u03c3\u2082\u2081), sigma1_sigma11 (\u03c3\u2081\u00b7\u03c3\u2081\u2081 = \u03c3\u2082\u2081), sigma1_sigma21 (\u03c3\u2081\u00b7\u03c3\u2082\u2081 = \u03c3\u2082\u2082), sigma2_sq (\u03c3\u2082\u00b2 = \u03c3\u2082\u2082), sigma11_sq (\u03c3\u2081\u2081\u00b2 = \u03c3\u2082\u2082), sigma2_sigma11 (\u03c3\u2082\u00b7\u03c3\u2081\u2081 = 0). Main theorem sigma1_fourth: (\u03c3\u2081*\u03c3\u2081*\u03c3\u2081*\u03c3\u2081).c22 = 2. The computation: \u03c3\u2081\u2074 = \u27e80,0,0,0,0,2\u27e9. four_lines_number extracts the degree: (\u03c3\u2081\u2074).c22 = 2.",
     "significance": "key",
     "relatedConcepts": [
       "four lines problem",
       "native_decide",
       "enumerative geometry",
       "intersection number",
-      "P³ lines"
+      "P\u00b3 lines"
     ],
-    "content": "The four lines theorem — exactly 2 lines meet 4 general lines in P³ — is one of the oldest results in enumerative geometry, conjectured by Schubert in 1879. Here it is reduced to a computation: native_decide runs a compiled checker that verifies σ₁*σ₁*σ₁*σ₁ = ⟨0,0,0,0,0,2⟩ by evaluating the bilinear extension of basisMul. The result is kernel-verified, not just proof-checked.",
+    "content": "The four lines theorem \u2014 exactly 2 lines meet 4 general lines in P\u00b3 \u2014 is one of the oldest results in enumerative geometry, conjectured by Schubert in 1879. Here it is reduced to a computation: native_decide runs a compiled checker that verifies \u03c3\u2081*\u03c3\u2081*\u03c3\u2081*\u03c3\u2081 = \u27e80,0,0,0,0,2\u27e9 by evaluating the bilinear extension of basisMul. The result is kernel-verified, not just proof-checked.",
     "proofId": "hilbert-15-oq-01",
     "range": {
       "startLine": 210,
@@ -138,20 +138,20 @@
   },
   {
     "id": "ann-poincare-giambelli",
-    "title": "Poincaré Duality and Giambelli's Formula",
-    "type": "theorem",
+    "title": "Poincar\u00e9 Duality and Giambelli's Formula",
+    "type": "insight",
     "startLine": 267,
     "endLine": 301,
-    "mathContext": "Poincaré duality: five theorems showing degree(σ_λ·σ_{λ*}) = 1 for dual pairs. The dual of λ = (λ₁,λ₂) is λ* = (2-λ₂, 2-λ₁). Pairs: (∅,22), (1,21), (2,2 self-dual!), (11,11 self-dual!). Non-dual: degree(σ₂·σ₁₁) = 0. Giambelli's formula: giambelli_11 shows -σ₂ + σ₁² = σ₁₁ (equivalently σ₁₁ = σ₁² - σ₂). General Giambelli: σ_{λ₁λ₂} = det[σ_{λ₁} σ_{λ₁+1}; σ_{λ₂-1} σ_{λ₂}]; for λ=(1,1): det[σ₁,σ₂;1,σ₁] = σ₁²-σ₂.",
+    "mathContext": "Poincar\u00e9 duality: five theorems showing degree(\u03c3_\u03bb\u00b7\u03c3_{\u03bb*}) = 1 for dual pairs. The dual of \u03bb = (\u03bb\u2081,\u03bb\u2082) is \u03bb* = (2-\u03bb\u2082, 2-\u03bb\u2081). Pairs: (\u2205,22), (1,21), (2,2 self-dual!), (11,11 self-dual!). Non-dual: degree(\u03c3\u2082\u00b7\u03c3\u2081\u2081) = 0. Giambelli's formula: giambelli_11 shows -\u03c3\u2082 + \u03c3\u2081\u00b2 = \u03c3\u2081\u2081 (equivalently \u03c3\u2081\u2081 = \u03c3\u2081\u00b2 - \u03c3\u2082). General Giambelli: \u03c3_{\u03bb\u2081\u03bb\u2082} = det[\u03c3_{\u03bb\u2081} \u03c3_{\u03bb\u2081+1}; \u03c3_{\u03bb\u2082-1} \u03c3_{\u03bb\u2082}]; for \u03bb=(1,1): det[\u03c3\u2081,\u03c3\u2082;1,\u03c3\u2081] = \u03c3\u2081\u00b2-\u03c3\u2082.",
     "significance": "key",
     "relatedConcepts": [
-      "Poincaré duality",
+      "Poincar\u00e9 duality",
       "complement partition",
       "Giambelli formula",
       "Schur polynomial",
       "ring generators"
     ],
-    "content": "Self-duality of σ₂ and σ₁₁ reflects the symmetric geometry of Gr(2,4): the dual partition of (2) under the 2×2 complement is (2-0, 2-2) = (2,0) = (2) itself, and similarly for (1,1). Giambelli's formula shows that σ₁₁ is determined by σ₁ and σ₂ — the special Schubert classes generate the full ring. All proved by native_decide: these classical theorems become trivially decidable once the ring is explicit.",
+    "content": "Self-duality of \u03c3\u2082 and \u03c3\u2081\u2081 reflects the symmetric geometry of Gr(2,4): the dual partition of (2) under the 2\u00d72 complement is (2-0, 2-2) = (2,0) = (2) itself, and similarly for (1,1). Giambelli's formula shows that \u03c3\u2081\u2081 is determined by \u03c3\u2081 and \u03c3\u2082 \u2014 the special Schubert classes generate the full ring. All proved by native_decide: these classical theorems become trivially decidable once the ring is explicit.",
     "proofId": "hilbert-15-oq-01",
     "range": {
       "startLine": 267,
@@ -161,10 +161,10 @@
   {
     "id": "ann-enumerative-applications",
     "title": "Classical Enumerative Geometry Results",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 311,
     "endLine": 335,
-    "mathContext": "Three enumerative theorems: (1) one_line_through_point_meeting_two: degree(σ₁²·σ₁₁) = degree((σ₂+σ₁₁)·σ₁₁) = degree(σ₂₂) = 1 — exactly 1 line passes through a fixed point and meets 2 general lines. (2) one_line_in_plane_meeting_two: degree(σ₁²·σ₂) = 1 — exactly 1 line in a fixed plane meets 2 general lines. (3) overdetermined_three_lines_point: degree(σ₁³·σ₁₁) = 0 — meeting 3 lines and passing through a point is overdetermined. Ring properties: mul_comm_basis (commutativity on basis, by decide) and sigma0_left_identity.",
+    "mathContext": "Three enumerative theorems: (1) one_line_through_point_meeting_two: degree(\u03c3\u2081\u00b2\u00b7\u03c3\u2081\u2081) = degree((\u03c3\u2082+\u03c3\u2081\u2081)\u00b7\u03c3\u2081\u2081) = degree(\u03c3\u2082\u2082) = 1 \u2014 exactly 1 line passes through a fixed point and meets 2 general lines. (2) one_line_in_plane_meeting_two: degree(\u03c3\u2081\u00b2\u00b7\u03c3\u2082) = 1 \u2014 exactly 1 line in a fixed plane meets 2 general lines. (3) overdetermined_three_lines_point: degree(\u03c3\u2081\u00b3\u00b7\u03c3\u2081\u2081) = 0 \u2014 meeting 3 lines and passing through a point is overdetermined. Ring properties: mul_comm_basis (commutativity on basis, by decide) and sigma0_left_identity.",
     "significance": "key",
     "relatedConcepts": [
       "enumerative geometry",

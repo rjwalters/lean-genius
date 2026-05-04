@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "carryCount: Number of Base-p Carries in k + (n-k)",
-    "content": "`carryCount p n k b` counts the positions $i \\in \\{1, \\ldots, b-1\\}$ where a carry occurs when adding $k$ and $n-k$ in base $p$. The predicate `p^i ≤ k % p^i + (n-k) % p^i` captures a carry at position $i$: the sum of the $i$-th digit contributions of $k$ and $n-k$ overflows the $p^i$ threshold. The bound `b = Nat.log p n + 1` is sufficient since carries above the top digit are impossible. The `noncomputable` qualifier is needed since `Finset.card` of a `filter` over `Ico` requires decidability of the predicate — in Lean 4 with `ENNReal`-like real arithmetic this is classical. This definition is the discrete encoding of Kummer's 1852 carry count.",
+    "content": "`carryCount p n k b` counts the positions $i \\in \\{1, \\ldots, b-1\\}$ where a carry occurs when adding $k$ and $n-k$ in base $p$. The predicate `p^i \u2264 k % p^i + (n-k) % p^i` captures a carry at position $i$: the sum of the $i$-th digit contributions of $k$ and $n-k$ overflows the $p^i$ threshold. The bound `b = Nat.log p n + 1` is sufficient since carries above the top digit are impossible. The `noncomputable` qualifier is needed since `Finset.card` of a `filter` over `Ico` requires decidability of the predicate \u2014 in Lean 4 with `ENNReal`-like real arithmetic this is classical. This definition is the discrete encoding of Kummer's 1852 carry count.",
     "mathContext": "A carry occurs at position $i$ when $\\lfloor k/p^i \\rfloor + \\lfloor (n-k)/p^i \\rfloor > \\lfloor n/p^i \\rfloor$, equivalently when $(k \\bmod p^i) + ((n-k) \\bmod p^i) \\geq p^i$. The carryCount is $|\\{i : 1 \\leq i < b,\\; p^i \\leq (k \\bmod p^i) + ((n-k) \\bmod p^i)\\}|$.",
     "significance": "key",
     "relatedConcepts": [
@@ -32,9 +32,9 @@
       "startLine": 38,
       "endLine": 44
     },
-    "type": "theorem",
-    "title": "Kummer's Criterion for p^m: Divisibility ↔ Carry Count ≥ m",
-    "content": "`choose_dvd_prime_pow_iff` is the main theorem: $m \\leq \\text{carryCount}(p,n,k,b)$ iff $p^m \\mid \\binom{n}{k}$. The proof bridges three levels: (1) unfold `carryCount` to expose the Finset definition; (2) use `PartENat.coe_le_coe` to convert the ℕ inequality $m \\leq |\\{\\text{carries}\\}|$ to a PartENat inequality $m \\leq v_p(\\binom{n}{k})$ via the parent's `kummer` theorem; (3) apply `multiplicity.pow_dvd_iff_le_multiplicity` to convert $p^m \\mid \\binom{n}{k}$ into $m \\leq v_p(\\binom{n}{k})$. The `.symm` at the end reverses the direction. The hypothesis `hnb : Nat.log p n < b` ensures the carry bound is sufficient.",
+    "type": "insight",
+    "title": "Kummer's Criterion for p^m: Divisibility \u2194 Carry Count \u2265 m",
+    "content": "`choose_dvd_prime_pow_iff` is the main theorem: $m \\leq \\text{carryCount}(p,n,k,b)$ iff $p^m \\mid \\binom{n}{k}$. The proof bridges three levels: (1) unfold `carryCount` to expose the Finset definition; (2) use `PartENat.coe_le_coe` to convert the \u2115 inequality $m \\leq |\\{\\text{carries}\\}|$ to a PartENat inequality $m \\leq v_p(\\binom{n}{k})$ via the parent's `kummer` theorem; (3) apply `multiplicity.pow_dvd_iff_le_multiplicity` to convert $p^m \\mid \\binom{n}{k}$ into $m \\leq v_p(\\binom{n}{k})$. The `.symm` at the end reverses the direction. The hypothesis `hnb : Nat.log p n < b` ensures the carry bound is sufficient.",
     "mathContext": "$v_p(\\binom{n}{k}) = \\text{carryCount}(p,n,k)$ (Kummer 1852). Then: $p^m \\mid \\binom{n}{k} \\iff m \\leq v_p(\\binom{n}{k}) \\iff m \\leq \\text{carryCount}(p,n,k)$. Key Mathlib bridge: `multiplicity.pow_dvd_iff_le_multiplicity`: $p^m \\mid n \\iff m \\leq \\text{multiplicity}(p, n)$ (as PartENat values).",
     "significance": "key",
     "relatedConcepts": [
@@ -56,14 +56,14 @@
       "startLine": 55,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Pascal's p^n-th Row: All Interior Entries Divisible by p",
-    "content": "`pascal_row_prime_power_div` proves $p \\mid \\binom{p^n}{k}$ for all $0 < k < p^n$. The proof is a one-line delegation to `prime_dvd_choose_prime_pow` from the parent file (`Proofs.KummerTheorem`). The key geometric insight, proved in the parent, is that when the top index is a pure prime power $p^n$, adding any interior $k$ and $p^n - k$ in base $p$ must produce at least one carry — because $p^n$ has a single non-zero base-$p$ digit (a 1 in position $n$), so the $n$-th digit sum must overflow. This is the Kummer-based proof of the classical 'prime row' property that underlies the primality test $p \\mid \\binom{p}{k}$ for all $0 < k < p$.",
+    "content": "`pascal_row_prime_power_div` proves $p \\mid \\binom{p^n}{k}$ for all $0 < k < p^n$. The proof is a one-line delegation to `prime_dvd_choose_prime_pow` from the parent file (`Proofs.KummerTheorem`). The key geometric insight, proved in the parent, is that when the top index is a pure prime power $p^n$, adding any interior $k$ and $p^n - k$ in base $p$ must produce at least one carry \u2014 because $p^n$ has a single non-zero base-$p$ digit (a 1 in position $n$), so the $n$-th digit sum must overflow. This is the Kummer-based proof of the classical 'prime row' property that underlies the primality test $p \\mid \\binom{p}{k}$ for all $0 < k < p$.",
     "mathContext": "$p^n$ in base $p$ is $1\\underbrace{00\\cdots0}_{n}$. For $0 < k < p^n$, the base-$p$ addition $k + (p^n - k)$ must produce a carry at position $n$ (since $k$ has nonzero contribution at some position $< n$ while $p^n - k$ must supply the complementary digits to reach $p^n$). Hence carryCount $\\geq 1$ and $p \\mid \\binom{p^n}{k}$.",
     "significance": "key",
     "relatedConcepts": [
       "prime_dvd_choose_prime_pow",
-      "Sierpiński triangle",
+      "Sierpi\u0144ski triangle",
       "Pascal triangle fractal",
       "carry at pure power"
     ],
@@ -102,8 +102,8 @@
       "startLine": 83,
       "endLine": 90
     },
-    "type": "theorem",
-    "title": "Carry-Free ↔ Coprime to p (Lucas' Criterion)",
+    "type": "insight",
+    "title": "Carry-Free \u2194 Coprime to p (Lucas' Criterion)",
     "content": "`choose_coprime_of_no_carries` proves the contrapositive: if carryCount = 0 (no carries), then $p \\nmid \\binom{n}{k}$. The proof: assume $p \\mid \\binom{n}{k}$; by `choose_dvd_prime_pow_iff` (with $m = 1$), $1 \\leq \\text{carryCount}$; but carryCount = 0 by hypothesis, contradiction via `omega`. This is the carry-free direction of Lucas' theorem: $k$ and $n-k$ written in base $p$ have no position where their digits sum to $\\geq p$ (no carry), which by Kummer means $v_p(\\binom{n}{k}) = 0$, i.e., $\\gcd(\\binom{n}{k}, p) = 1$. Lucas' theorem further says $\\binom{n}{k} \\equiv \\prod_i \\binom{n_i}{k_i} \\pmod{p}$, which is nonzero mod $p$ precisely when no digit of $k$ exceeds the corresponding digit of $n$.",
     "mathContext": "carryCount = 0 $\\Rightarrow$ $v_p(\\binom{n}{k}) = 0$ (Kummer) $\\Rightarrow$ $p \\nmid \\binom{n}{k}$. Lucas' theorem (congruence version): $\\binom{n}{k} \\equiv \\prod_{i=0}^r \\binom{n_i}{k_i} \\pmod{p}$ where $n = \\sum n_i p^i$, $k = \\sum k_i p^i$. No carries iff $k_i \\leq n_i$ for all $i$, iff each factor is nonzero mod $p$.",
     "significance": "key",
