@@ -9,6 +9,7 @@
     "date": "1868",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+    "parentProofId": "buffons-needle-oq-02",
     "tags": [
       "probability",
       "geometric-probability",
@@ -142,35 +143,26 @@
   ],
   "conclusion": {
     "summary": "The Cauchy-Crofton formula for arbitrary measures on S^{n-1} is formalized in n-dimensional EuclideanSpace. The crossing-measure computation is fully proved; the Fubini exchange and isotropy reduction are axiomatized with clear statements of the required measure-theoretic hypotheses. Classical 2D and 3D Buffon formulas are recovered as special cases.",
-    "significance": "This provides the abstract framework unifying all Buffon-type results: the 2D needle, 3D noodle, and their higher-dimensional analogues follow from a single integral geometry identity. The key crossing-measure lemma demonstrates that Mathlib's real analysis infrastructure is sufficient for non-trivial integral geometry computations.",
+    "implications": "This provides the abstract framework unifying all Buffon-type results: the 2D needle, 3D noodle, and their higher-dimensional analogues follow from a single integral geometry identity. The key crossing-measure lemma demonstrates that Mathlib's real analysis infrastructure is sufficient for non-trivial integral geometry computations. The formalization also clarifies which steps require genuine measure theory infrastructure (Fubini, isotropy) vs. which are purely real-analytic.",
     "openQuestions": [
-      {
-        "id": "oq-01",
-        "text": "Can the Fubini exchange axiom be proved using Mathlib's MeasureTheory.MeasurePreserving and Fubini-Tonelli infrastructure?",
-        "difficulty": "hard",
-        "area": "measure-theory"
-      },
-      {
-        "id": "oq-02",
-        "text": "Can isotropy_yields_alpha be proved using the O(n) Haar measure and change-of-variables in Mathlib?",
-        "difficulty": "hard",
-        "area": "representation-theory"
-      }
+      "Can the Fubini exchange axiom be proved using Mathlib's MeasureTheory.MeasurePreserving and Fubini-Tonelli infrastructure?",
+      "Can isotropy_yields_alpha be proved using the O(n) Haar measure and change-of-variables in Mathlib?",
+      "Can the full kinematic formula (for the measure of intersecting convex bodies, not just hyperplanes and segments) be formalized in Mathlib? This would require the Grassmannian measure and the Blaschke-Santaló kinematic formula."
     ]
   },
   "crossReferences": [
     {
-      "id": "buffons-needle",
+      "proofId": "buffons-needle",
       "relationship": "special-case",
       "description": "2D Buffon formula E = 2L/(πd); α₂ = 2/π recovered as a special case"
     },
     {
-      "id": "buffons-needle-oq-02",
+      "proofId": "buffons-needle-oq-02",
       "relationship": "special-case",
       "description": "3D noodle formula E = L/(2d); α₃ = 1/2 recovered as a special case"
     },
     {
-      "id": "buffons-needle-oq-02-oq-02",
+      "proofId": "buffons-needle-oq-02-oq-02",
       "relationship": "related",
       "description": "Smooth 3D Buffon-Barbier for C¹ curves; Cauchy-Crofton framework applies"
     }
