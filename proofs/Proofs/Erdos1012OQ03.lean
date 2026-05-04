@@ -570,20 +570,63 @@ private lemma sc_walk_to_simple_path (D : Digraph V) (walk : List V)
         exact harcs k (by omega)
       · push_neg at hki
         by_cases hki2 : k + 1 = i
-        · -- Splice point: walk'[k] = walk[i-1], walk'[k+1] = walk[j]
-          -- Arc: harcs (i-1) gives arc(walk[i-1], walk[i])
-          -- walk[i] = walk[j] = heq, so arc(walk[i-1], walk[j])
-          sorry  -- splice arc: walk'[i-1] → walk'[i] via walk[i] = walk[j]
-        · -- Both indices in the drop portion (shifted by j - i)
-          sorry  -- arcs from drop portion of walk
+        · -- Splice point: walk'[k] = walk[k], walk'[k+1] = walk[j]
+          -- k + 1 = i, so walk'[k] is the last element of take, walk'[i] is walk.drop(j)[0]
+          have htlen : (walk.take i).length = i := List.length_take_of_le (by omega)
+          have hk_lt : k < (walk.take i).length := htlen ▸ (by omega : k < i)
+          have hk1_ge : (walk.take i).length ≤ k + 1 := htlen ▸ (by omega : i ≤ k + 1)
+          -- walk'[k] = walk[k]
+          have step1 : walk'[k]'(by simp [hwalk', htlen]; omega) = walk[k]'(by omega) :=
+            (List.getElem_append_left hk_lt).trans List.getElem_take
+          -- walk'[k+1] = walk'[i] = walk.drop(j)[0] = walk[j]
+          have step2 : walk'[k+1]'hk = walk[j]'hjlen := by
+            trans (walk.drop j)[k + 1 - (walk.take i).length]'(by rw [List.length_drop]; omega)
+            · exact List.getElem_append_right hk1_ge
+            · simp only [List.getElem_drop, htlen, show j + (k + 1 - i) = j from by omega]
+          rw [step1, step2, ← heq]
+          exact harcs k (by omega)
+        · -- Both indices in the drop portion (k ≥ i)
+          have htlen : (walk.take i).length = i := List.length_take_of_le (by omega)
+          have hk_ge : (walk.take i).length ≤ k := htlen ▸ (by omega : i ≤ k)
+          have hk1_ge : (walk.take i).length ≤ k + 1 := htlen ▸ (by omega : i ≤ k + 1)
+          -- walk'[k] = walk[j + (k - i)], walk'[k+1] = walk[j + (k + 1 - i)]
+          have step1 : walk'[k]'(by simp [hwalk', htlen]; omega) = walk[j + (k - i)]'(by omega) := by
+            trans (walk.drop j)[k - (walk.take i).length]'(by rw [List.length_drop]; omega)
+            · exact List.getElem_append_right hk_ge
+            · simp only [List.getElem_drop, htlen]
+          have step2 : walk'[k+1]'hk = walk[j + (k + 1 - i)]'(by omega) := by
+            trans (walk.drop j)[k + 1 - (walk.take i).length]'(by rw [List.length_drop]; omega)
+            · exact List.getElem_append_right hk1_ge
+            · simp only [List.getElem_drop, htlen]
+          rw [step1, step2]
+          have h := harcs (j + (k - i)) (by omega)
+          convert h using 2; omega
     have hhead' : walk'.head? = walk.head? := by
-      -- Case i > 0: (take i).head? = walk.head?; (take ++ drop).head? = (take).head?
-      -- Case i = 0: walk' = drop j; head of drop j = walk[j] = walk[0] = walk.head?
-      sorry
+      rcases Nat.eq_zero_or_pos i with hi0 | hi_pos
+      · -- i = 0: walk' = [] ++ walk.drop j = walk.drop j; head is walk[j] = walk[0]
+        subst hi0
+        simp only [hwalk', List.take_zero, List.nil_append, List.head?_drop,
+                   List.getElem?_eq_getElem hjlen, List.getElem?_eq_getElem hlen]
+        exact congrArg some heq.symm
+      · -- i > 0: walk.take i is nonempty; (take ++ drop).head? = take.head? = walk.head?
+        have htlen : (walk.take i).length = i := List.length_take_of_le (by omega)
+        rw [hwalk', List.head?_append, List.head?_take,
+            if_neg (show i ≠ 0 from Nat.pos_iff_ne_zero.mp hi_pos)]
+        -- Goal: walk.head?.or (walk.drop j).head? = walk.head?
+        cases h : walk.head? with
+        | none =>
+          have := List.head?_eq_none_iff.mp h
+          simp [this] at hlen
+        | some v => simp [h]
     have hlast' : walk'.getLast? = walk.getLast? := by
-      -- drop j is nonempty (j < walk.length); (take ++ drop).getLast? = (drop).getLast?
-      -- (drop j).getLast? = walk.getLast? since drop is a suffix containing the last element
-      sorry
+      rw [hwalk', List.getLast?_append, List.getLast?_drop,
+          if_neg (show ¬ walk.length ≤ j from by omega)]
+      -- Goal: walk.getLast?.or (walk.take i).getLast? = walk.getLast?
+      cases h : walk.getLast? with
+      | none =>
+        have := List.getLast?_eq_none_iff.mp h
+        simp [this] at hlen
+      | some v => simp [h]
     -- Recurse on shorter walk
     obtain ⟨path, hpath_nd, hpath_head, hpath_last, hpath_arcs⟩ :=
       sc_walk_to_simple_path D walk' hlen' harcs'
