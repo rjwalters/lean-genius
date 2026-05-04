@@ -1041,4 +1041,50 @@ theorem erdos_1201_conjecture_large_eps (ε η : ℝ) (hε_lb : 1 / 2 ≤ ε) (h
     rw [Real.sqrt_eq_rpow] at hn
     exact (Real.rpow_le_rpow_of_exponent_le hn1 (by linarith)).trans_lt hn
 
+/-
+## Sylvester-Schur Theorem: Cases via Factorial Divisibility
+-/
+
+/-- **Sylvester-Schur (k+1 prime)**: When k+1 is prime, P(n,k) ≥ k+1 for all n ≥ 1.
+    Since k+1 divides (k+1)!, which divides every product of k+1 consecutive integers,
+    the greatest prime factor is at least k+1. Holds for ALL n ≥ 1 — no n > k required. -/
+theorem gpfConsecutive_ge_k_add_one_of_prime (n k : ℕ) (hn : 1 ≤ n) (hkp : (k + 1).Prime) :
+    k + 1 ≤ gpfConsecutive n k := by
+  have hfact_dvd : (k + 1).factorial ∣ consecutiveProduct n k :=
+    factorial_dvd_consecutiveProduct n k
+  have hkp1_dvd : k + 1 ∣ consecutiveProduct n k :=
+    dvd_trans (hkp.dvd_factorial.mpr le_rfl) hfact_dvd
+  have hfact_ge2 : 2 ≤ (k + 1).factorial :=
+    le_trans hkp.two_le (Nat.self_le_factorial _)
+  have hcp_ge2 : 2 ≤ consecutiveProduct n k :=
+    Nat.le_trans hfact_ge2 (Nat.le_of_dvd (consecutiveProduct_pos n k hn) hfact_dvd)
+  exact gpf_ge_prime_dvd _ _ hcp_ge2 hkp hkp1_dvd
+
+/-- When k+1 is prime, P(n,k) > k for all n ≥ 1.
+    Covers k ∈ {1, 2, 4, 6, 10, 12, ...} (k such that k+1 is prime) universally,
+    with no n > k condition needed. -/
+theorem gpfConsecutive_gt_k_of_succ_prime (n k : ℕ) (hn : 1 ≤ n) (hkp : (k + 1).Prime) :
+    k < gpfConsecutive n k :=
+  Nat.lt_of_lt_of_le (Nat.lt_succ_self k) (gpfConsecutive_ge_k_add_one_of_prime n k hn hkp)
+
+/-- **Universal Sylvester-Schur for k=2**: P(n,2) > 2 for all n ≥ 1.
+    Any product of 3 consecutive integers has an odd prime factor. No n > k = 2 required. -/
+theorem gpfConsecutive_two_gt_two (n : ℕ) (hn : 1 ≤ n) : 2 < gpfConsecutive n 2 :=
+  gpfConsecutive_gt_k_of_succ_prime n 2 hn (by norm_num)
+
+/-- **Formal reduction to ε < 1/2**: ErdosProblem1201 is equivalent to its restriction to
+    ε ∈ (0, 1/2), since ε ∈ [1/2, 1) is already settled by `erdos_1201_conjecture_large_eps`. -/
+theorem erdos_1201_equiv_small_eps :
+    ErdosProblem1201 ↔
+    ∀ (ε η : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1 / 2) (hη : 0 < η),
+      ∃ k : ℕ, upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η := by
+  constructor
+  · intro h ε η hε₀ hε₁ hη
+    exact h ε η hε₀ (by linarith) hη
+  · intro h ε η hε₀ hε₁ hη
+    by_cases hε_half : 1 / 2 ≤ ε
+    · exact erdos_1201_conjecture_large_eps ε η hε_half hε₁ hη
+    · push_neg at hε_half
+      exact h ε η hε₀ hε_half hη
+
 end Erdos1201

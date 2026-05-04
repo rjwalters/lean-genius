@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "69 theorems, 0 sorries, 1 axiom. Session 10: +8 theorems (factorial divisibility + epsilon-monotonicity). Open problem reduced to e in (0,1/2).",
+    "progressSummary": "73 theorems, 0 sorries, 1 axiom. Session 11: +4 theorems. ErdosProblem1201 formally reduced to ε∈(0,1/2). Sylvester-Schur via factorial: universal when k+1 prime.",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -95,7 +95,11 @@
       "erdos_1201_good_set_mono_eps: e <= e prime implies good(e) subset good(e prime)",
       "erdos_1201_density_mono_eps: density non-decreasing in e",
       "erdos_1201_trivially_good_of_large_eps: e >= 1 implies automatically good",
-      "erdos_1201_conjecture_large_eps: conjecture for e >= 1/2 follows from axiom; open problem reduces to e in (0,1/2)"
+      "erdos_1201_conjecture_large_eps: conjecture for e >= 1/2 follows from axiom; open problem reduces to e in (0,1/2)",
+      "gpfConsecutive_ge_k_add_one_of_prime: P(n,k) ≥ k+1 when k+1 is prime, all n≥1 (Erdos1201Problem.lean:1051)",
+      "gpfConsecutive_gt_k_of_succ_prime: P(n,k) > k when k+1 is prime, covers k∈{1,2,4,6,10,...} universally (Erdos1201Problem.lean:1066)",
+      "gpfConsecutive_two_gt_two: P(n,2) > 2 for all n≥1, universal Sylvester-Schur for k=2 (Erdos1201Problem.lean:1072)",
+      "erdos_1201_equiv_small_eps: ErdosProblem1201 ↔ restriction to ε∈(0,1/2), formal reduction (Erdos1201Problem.lean:1077)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
@@ -134,15 +138,18 @@
       "Factorial divisibility approach: (k+1)! | product gives UNIVERSAL bound P(n,k) > k/2 without n>k restriction",
       "Sylvester-Schur general case follows from factorial approach: among any k+1 consecutive ints, one has prime factor via (k+1)! divisibility",
       "Epsilon-monotonicity: The open problem needs only be proved for e in (0,1/2); the e >= 1/2 case follows from Erdos known result",
-      "Threshold sufficient condition: n^(1-e) < k/2 is a sufficient condition for n to be good, giving an explicit parameter range"
+      "Threshold sufficient condition: n^(1-e) < k/2 is a sufficient condition for n to be good, giving an explicit parameter range",
+      "ErdosProblem1201 is equivalent to its restriction to ε∈(0,1/2): ε∈[1/2,1) is settled by axiom+monotonicity",
+      "Sylvester-Schur holds universally (all n≥1, no n>k) when k+1 is prime via (k+1)!∣product; covers k∈{1,2,4,6,10,...}",
+      "gpfConsecutive_two_gt_two: all products of 3 consecutive integers have an odd prime factor; follows from 3∣(k+1)!"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
       "Smooth number theory (Dickman's function ρ(u)) not formalized in Mathlib — needed for quantitative density estimates"
     ],
     "nextSteps": [
-      "Prove Sylvester-Schur general case: P(n,k) > k for all n > k",
-      "Density lower bounds blocked: needs Dickman rho function (>1000 lines infra)"
+      "Density lower bounds for ε<1/2: requires Dickman rho function (>1000 lines infra, truly blocked)",
+      "General Sylvester-Schur for all n>k: requires Chebyshev/Hanson theorem beyond Bertrand, estimated 200+ lines"
     ],
     "markdown": "# Erdős #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erdős wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },

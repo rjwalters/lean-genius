@@ -494,3 +494,30 @@ The latter connects to the well-studied Dickman function and smooth number densi
 ---
 
 *Generated from erdosproblems.com on 2026-04-16*
+
+## Session 2026-05-04 (Session 11) - Sylvester-Schur via Factorial + Formal ε-Reduction
+
+**Mode**: REVISIT
+**Outcome**: progress — 4 new theorems proved (69→73), formal reduction established
+
+### What I Did
+- Proved `gpfConsecutive_ge_k_add_one_of_prime`: When k+1 is prime, P(n,k) ≥ k+1 for ALL n≥1
+  - Key: k+1 ∣ (k+1)! → (k+1)! ∣ consecutiveProduct → gpf_ge_prime_dvd gives k+1 ≤ P(n,k)
+  - Covers k ∈ {1, 2, 4, 6, 10, 12, ...} universally, no n > k condition
+- Proved `gpfConsecutive_gt_k_of_succ_prime`: immediate corollary, k < P(n,k) universally
+- Proved `gpfConsecutive_two_gt_two`: P(n,2) > 2 for all n≥1 (k=2 instance, k+1=3 prime)
+- Proved `erdos_1201_equiv_small_eps`: ErdosProblem1201 ↔ restriction to ε∈(0,1/2)
+
+### Key Findings
+- Factorial-based Sylvester-Schur: clean proof for all k with k+1 prime
+- Formal reduction: the open frontier is exactly ε∈(0,1/2)
+- Density lower bounds remain blocked by Dickman ρ function infra
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1044→1090 lines, 69→73 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (lineCount, theoremCount updated)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+
+### Next Steps
+1. Density lower bounds for ε<1/2: requires Dickman ρ function (>1000 lines infra, truly blocked)
+2. General Sylvester-Schur (all n>k): requires Chebyshev/Hanson, estimated 200+ lines
