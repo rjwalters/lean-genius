@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
   "title": "Jacobi-Trudi Identity: Schur Polynomials as Determinants of Complete Homogeneous Symmetric Polynomials",
   "slug": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves k=0,1,2 SSYT bijections (k=2 via row-decomp Equiv + JDT partition argument). Session 9: ssytFin_two_row_eq_sum_colstrict proved (explicit bijection SSYTFin n 2 sh ≃ col-strict Sym pairs); 3 sorries remain (jdt_weight_sum_b_one, jdt_weight_sum b≥2 case, jacobi_trudi_ssyt_eq k≥3).",
+  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves k=0,1,2 SSYT bijections (k=2 via row-decomp Equiv + JDT partition argument). Session 17: jdt_weight_sum_b_one proved via Aristotle (job 9ddf3174). 2 sorries remain (jdt_weight_sum b≥2 seam bijection, jacobi_trudi_ssyt_eq k≥3 via LGV+RSK).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
@@ -19,12 +19,12 @@
       "ssyt"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 2,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "3 sorries remain: (1) jdt_weight_sum_b_one — weight-preserving bijection helper for the b=1 case ({non-col-strict (a,1)} ≃ {all (a+1,0)}, ~100-130 lines using Sym.cons_erase / Sym.erase_cons_head / Multiset.sort_cons); (2) jdt_weight_sum b≥2 case — the general JDT seam bijection (~150-200 lines); (3) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). ssytFin_two_row_eq_sum_colstrict proved (row-decomp bijection, no sorry). ssytSchurFin_two_row main theorem proved. k=0,1,2 proved.",
-    "lineCount": 714,
-    "theoremCount": 14,
+    "assumptions": "2 sorries remain: (1) jdt_weight_sum b≥2 case — the general JDT seam bijection (~300-500 lines, requires RSK/JDT seam construction); (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). jdt_weight_sum_b_one proved (companion Aristotle job 9ddf3174, 2026-05-02). ssytFin_two_row_eq_sum_colstrict proved (row-decomp bijection, no sorry). ssytSchurFin_two_row main theorem proved. k=0,1,2 proved.",
+    "lineCount": 859,
+    "theoremCount": 19,
     "definitionCount": 8,
     "originalContributions": [
       "jacobiTrudiMatrix: the k×k matrix with entries h_{sh_i + j - i} (or 0 for negative index) — first Lean 4 Jacobi-Trudi matrix definition",
@@ -78,12 +78,12 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 714,
+    "lineCount": 859,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 19,
     "definitionCount": 6,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   },
   "crossReferences": [
     {
