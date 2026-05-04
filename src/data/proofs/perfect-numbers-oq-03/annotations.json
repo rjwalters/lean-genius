@@ -1,0 +1,138 @@
+[
+  {
+    "id": "perfect-numbers-oq-03-mersenne-def",
+    "proofId": "perfect-numbers-oq-03",
+    "type": "definition",
+    "range": {
+      "startLine": 45,
+      "endLine": 49
+    },
+    "title": "Mersenne Numbers and IsMersennePrime",
+    "content": "`M n = 2^n - 1` is the $n$-th Mersenne number. The notation `abbrev` makes it definitionally transparent — Lean unfolds it automatically in proofs. `IsMersennePrime n` asserts that $M(n)$ is a prime number.\n\nThe small cases below use `norm_num` for computation: $M(2) = 3$, $M(3) = 7$, $M(5) = 31$, $M(7) = 127$ (all prime); $M(1) = 1$, $M(4) = 15$ (not prime).",
+    "significance": "key",
+    "mathContext": "$M(n) = 2^n - 1$. Mersenne primes are primes of this form. Known: $M(2)=3$, $M(3)=7$, $M(5)=31$, $M(7)=127$, $M(13)=8191$, ... As of 2024, only 51 Mersenne primes are known.",
+    "relatedConcepts": [
+      "Mersenne primes",
+      "perfect numbers",
+      "Euclid-Euler theorem"
+    ],
+    "prerequisites": [
+      "natural number subtraction in Lean 4",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "perfect-numbers-oq-03-dvd-lemma",
+    "proofId": "perfect-numbers-oq-03",
+    "type": "lemma",
+    "range": {
+      "startLine": 70,
+      "endLine": 78
+    },
+    "title": "Divisibility: a ∣ b → M(a) ∣ M(b)",
+    "content": "The key algebraic identity: if $a \\mid b$, then $2^a - 1 \\mid 2^b - 1$. Writing $b = ak$, we get $2^b - 1 = (2^a)^k - 1 = (2^a - 1)(1 + 2^a + \\cdots + 2^{a(k-1)})$.\n\nIn Lean, this is proved via `Nat.sub_one_dvd_pow_sub_one`: for any $x$ and $k$, $(x-1) \\mid (x^k - 1)$, applied with $x = 2^a$. The `ring_nf` tactic rewrites $2^{ak} = (2^a)^k$.",
+    "significance": "key",
+    "mathContext": "The factorization $x^k - 1 = (x-1)(x^{k-1} + \\cdots + 1)$ is the source of the divisibility $M(a) \\mid M(b)$ when $a \\mid b$.",
+    "relatedConcepts": [
+      "polynomial factorization",
+      "geometric series",
+      "Nat.sub_one_dvd_pow_sub_one"
+    ],
+    "prerequisites": [
+      "divisibility in natural numbers",
+      "exponent rules"
+    ]
+  },
+  {
+    "id": "perfect-numbers-oq-03-necessity",
+    "proofId": "perfect-numbers-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 80,
+      "endLine": 114
+    },
+    "title": "Necessity: M(n) prime → n prime",
+    "content": "`mersenne_prime_exp_prime` is the fundamental necessary condition for Mersenne primality. The proof is by contrapositive: if $n$ is composite, find a prime $a \\mid n$ with $1 < a < n$. Then $M(a) \\mid M(n)$ (by `mersenne_dvd_of_dvd`) and $1 < M(a) < M(n)$, contradicting primality of $M(n)$.\n\nThe size bounds use `Nat.pow_lt_pow_right`: since $a < n$, we get $2^a < 2^n$, hence $M(a) < M(n)$. The lower bound $1 < M(a)$ requires $a \\geq 2$ (from $a$ being prime), giving $2^a \\geq 4$.\n\nThe contradiction is resolved by `Nat.Prime.eq_one_or_self_of_dvd`: a prime can only be divided by 1 or itself.",
+    "significance": "critical",
+    "mathContext": "**Theorem** (Classical): If $2^n - 1$ is prime, then $n$ is prime. Proof: if $a \\mid n$ with $1 < a < n$, then $2^a - 1 \\mid 2^n - 1$ and $1 < 2^a - 1 < 2^n - 1$.",
+    "relatedConcepts": [
+      "prime numbers",
+      "contrapositive proof",
+      "Nat.Prime.eq_one_or_self_of_dvd"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "perfect-numbers-oq-03-lucas-congruence",
+    "proofId": "perfect-numbers-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 120,
+      "endLine": 165
+    },
+    "title": "Lucas Factor Congruence: prime q ∣ M(p) → p ∣ q-1",
+    "content": "`factor_cong_one_mod_p` is the Lucas (1876) congruence for prime factors of Mersenne numbers. The proof uses multiplicative order in `ZMod q`:\n\n1. Since $q \\mid 2^p - 1$, we have $(2 : \\text{ZMod } q)^p = 1$ (proved via `ZMod.natCast_zmod_eq_zero_iff_dvd` and `sub_eq_zero`).\n2. Therefore $\\text{ord}_q(2) \\mid p$ (from `orderOf_dvd_of_pow_eq_one`).\n3. Since $p$ is prime: $\\text{ord}_q(2) = 1$ or $p$.\n4. If $\\text{ord}_q(2) = 1$: then $(2 : \\text{ZMod } q) = 1$, so $(1 : \\text{ZMod } q) = 0$, contradicting `one_ne_zero`.\n5. So $\\text{ord}_q(2) = p$. By Fermat's little theorem (`ZMod.pow_card_sub_one_eq_one`): $(2 : \\text{ZMod } q)^{q-1} = 1$, giving $\\text{ord}_q(2) \\mid q-1$, i.e., $p \\mid q-1$.\n\nThe auxiliary lemma `h2_ne` shows $(2 : \\text{ZMod } q) \\neq 0$ by proving $q \\neq 2$ (since $q \\mid 2^p - 1$ which is odd).",
+    "significance": "critical",
+    "mathContext": "**Theorem** (Lucas 1876): If $q$ is prime and $q \\mid 2^p - 1$ (with $p$ prime), then $q \\equiv 1 \\pmod{p}$. This is the basis of the Lucas-Lehmer primality test.",
+    "relatedConcepts": [
+      "multiplicative order",
+      "ZMod",
+      "Fermat's little theorem",
+      "Lucas-Lehmer test"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "group order theory",
+      "ZMod in Mathlib"
+    ]
+  },
+  {
+    "id": "perfect-numbers-oq-03-lpw",
+    "proofId": "perfect-numbers-oq-03",
+    "type": "definition",
+    "range": {
+      "startLine": 176,
+      "endLine": 195
+    },
+    "title": "The LPW Conjecture as a Lean Proposition",
+    "content": "`LPWConjecture` formalizes the Lenstra-Pomerance-Wagstaff density conjecture as a Lean `Prop` (not an `axiom`). It asserts: there exists $C > 0$ such that $\\text{mersennePrimeCount}(N) / \\log\\log N \\to C$ as $N \\to \\infty$, formalized via `Filter.Tendsto ... Filter.atTop (nhds C)`.\n\nThe predicted value is $C = e^\\gamma / \\log 2 \\approx 2.5695$ (where $\\gamma$ is the Euler-Mascheroni constant), computed as `lpwConstant`. Since the conjecture is not proved, it is stated as a `def : Prop` — this gives `axiomCount = 0`.\n\n`mersennePrimeCount N` counts prime exponents $p \\leq N$ with $M(p)$ prime, using `Finset.Icc 1 N` filtered by primality conditions.",
+    "significance": "key",
+    "mathContext": "The LPW heuristic (1980s): $|\\{p \\leq N : 2^p - 1 \\text{ prime}\\}| \\sim \\frac{e^\\gamma}{\\log 2} \\cdot \\log\\log N \\approx 2.57 \\log\\log N$. Only 51 Mersenne primes known; largest: $2^{136279841} - 1$ (GIMPS, 2024).",
+    "relatedConcepts": [
+      "Euler-Mascheroni constant",
+      "Filter.atTop",
+      "Filter.Tendsto",
+      "open conjecture formalization"
+    ],
+    "prerequisites": [
+      "Mathlib filter theory",
+      "asymptotic density",
+      "logarithmic functions"
+    ]
+  },
+  {
+    "id": "perfect-numbers-oq-03-m11",
+    "proofId": "perfect-numbers-oq-03",
+    "type": "lemma",
+    "range": {
+      "startLine": 235,
+      "endLine": 239
+    },
+    "title": "M(11) = 2047 = 23 × 89 is Composite",
+    "content": "`M_eleven_composite` demonstrates that even when $p = 11$ is prime, $M(11) = 2047$ need not be prime. The proof uses `decide` after `norm_num [M]` normalizes the expression. Note that $23 = 2 \\cdot 11 + 1 \\equiv 1 \\pmod{11}$, confirming the Lucas congruence: $23 \\mid 2047$ and $11 \\mid 23 - 1 = 22$.\n\nThis illustrates the 'sparsity' of Mersenne primes: primality of the exponent is necessary but not sufficient.",
+    "significance": "supporting",
+    "mathContext": "$M(11) = 2^{11} - 1 = 2047 = 23 \\times 89$. Both factors satisfy the Lucas congruence: $23 \\equiv 1 \\pmod{11}$ and $89 \\equiv 1 \\pmod{11}$.",
+    "relatedConcepts": [
+      "decision procedures",
+      "norm_num",
+      "Lucas congruence verification"
+    ],
+    "prerequisites": [
+      "primality testing",
+      "Lean decide tactic"
+    ]
+  }
+]
