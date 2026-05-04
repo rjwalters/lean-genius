@@ -1,56 +1,62 @@
 [
   {
     "id": "ann-club",
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 39, "endLine": 86 },
     "type": "definition",
-    "label": "IsClubBelow",
-    "title": "Club Set Below an Ordinal",
-    "body": "A club (closed unbounded) set below ordinal o is S ⊆ Iio o that is closed (every limit ordinal below o that is a limit point of S belongs to S) and unbounded (S is cofinal in Iio o). Clubs form a filter that is countably complete for uncountable regular cardinals.",
-    "location": { "line": 53 },
-    "tags": ["definition", "club", "ordinal", "set-theory"]
-  },
-  {
-    "id": "ann-stationary",
-    "type": "definition",
-    "label": "IsStationaryBelow",
-    "title": "Stationary Set",
-    "body": "S is stationary below o if it meets every club below o. Stationary sets cannot be 'avoided' by a club — they are the natural domain of regressive functions in Fodor's lemma.",
-    "location": { "line": 59 },
-    "tags": ["definition", "stationary", "ordinal"]
+    "title": "Club and Stationary Sets: Set-Theoretic Infrastructure",
+    "content": "IsClubBelow S o is a structure with two fields: mem_lt (S ⊆ Iio o — bounded below o) and mem_of_isAcc (S is closed: every accumulation point of S below o is in S). IsUnboundedBelow S o says S is cofinal below o. IsClubBelow requires both closedness AND unboundedness. IsStationaryBelow S o says S meets every club below o. These definitions formalize concepts missing from Mathlib's set theory library.",
+    "mathContext": "$S$ is a **club** (closed unbounded set) below $o$ if: (1) $S \\subseteq \\{\\alpha < o\\}$, (2) every limit ordinal $\\gamma < o$ with $\\sup(S \\cap \\gamma) = \\gamma$ satisfies $\\gamma \\in S$, (3) $S$ is cofinal in $o$. $S$ is **stationary** below $o$ if $S \\cap C \\neq \\emptyset$ for every club $C$ below $o$.",
+    "significance": "key",
+    "relatedConcepts": ["club filter", "stationary set", "closed unbounded", "ordinal accumulation point"],
+    "prerequisites": ["Ordinal.IsAcc", "Set.Iio", "Ordinal.IsSuccLimit"]
   },
   {
     "id": "ann-diag-inter",
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 87, "endLine": 107 },
     "type": "definition",
-    "label": "diagInter",
-    "title": "Diagonal Intersection",
-    "body": "Δ_{α<o}(f α) = {γ < o | ∀ α < γ, γ ∈ f α}. Unlike ordinary intersection which demands membership for all α, the diagonal intersection only requires membership in f(α) for those α BELOW γ, respecting the ordinal structure.",
-    "location": { "line": 0 },
-    "tags": ["definition", "diagonal-intersection", "ordinal"]
+    "title": "Diagonal Intersection: The Key Tool",
+    "content": "diagInter f o = {γ ∈ Iio o | ∀ α < γ, γ ∈ f α}. Unlike ordinary intersection which requires γ ∈ f(α) for ALL α, the diagonal intersection only requires γ ∈ f(α) for those α BELOW γ — this respects the ordinal order. Intuitively, γ 'knows' about f(α) only for α that came before it. The iff characterization mem_diagInter and the subset lemma diagInter_subset_Iio are proved first.",
+    "mathContext": "$\\Delta_{\\alpha < o}(f(\\alpha)) = \\{\\gamma < o \\mid \\forall \\alpha < \\gamma,\\ \\gamma \\in f(\\alpha)\\}$. Compare: $\\bigcap_{\\alpha < o} f(\\alpha) = \\{\\gamma \\mid \\forall \\alpha,\\ \\gamma \\in f(\\alpha)\\}$ (ordinary intersection, stronger).",
+    "significance": "key",
+    "relatedConcepts": ["diagonal intersection", "normal filter", "ordinal membership", "set comprehension"],
+    "prerequisites": ["Set.sep_def", "Ordinal.lt_iff_le_and_ne"]
   },
   {
     "id": "ann-diag-club",
-    "type": "theorem",
-    "label": "diagInter_isClubBelow",
-    "title": "Diagonal Intersection of Clubs Is a Club",
-    "body": "If f(α) is a club below κ for every α < κ (κ regular uncountable), then diagInter f is a club. The two-part proof: (1) diagInter_isClosedBelow via closure of each f(α); (2) diagInter_isUnboundedBelow via a zipper argument interleaving elements from each f(α).",
-    "location": { "line": 0 },
-    "tags": ["diagonal-intersection", "club", "key-lemma"]
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 108, "endLine": 258 },
+    "type": "technique",
+    "title": "Diagonal Intersection of Clubs Is a Club: Zipper Construction",
+    "content": "diagInter_isClubBelow proves the key set-theoretic fact: if f(α) is a club below κ for every α < κ (κ regular uncountable), then diagInter f κ is a club. Two-part proof: (1) diagInter_isClosedBelow: if γ is an accumulation point of Δ(f) below κ, then for each α < γ, γ is also an accumulation point of f(α), so γ ∈ f(α) by closedness of f(α). (2) diagInter_isUnboundedBelow: the 'zipper' argument — given any δ < κ, build an increasing sequence δ < γ_0 < γ_1 < ... where γ_{n+1} is the least element of f(γ_n) above γ_n. By regularity of κ, this sequence is bounded, and the supremum γ_ω lies in every f(α) for α < γ_ω.",
+    "mathContext": "Zipper: $\\delta < \\gamma_0 \\in f(\\delta)$, $\\gamma_n < \\gamma_{n+1} \\in f(\\gamma_n)$. By regularity: $\\gamma_\\omega = \\sup_n \\gamma_n < \\kappa$. For $\\alpha < \\gamma_\\omega$: $\\alpha < \\gamma_n$ for some $n$, so $\\gamma_\\omega$ is an acc. pt. of $f(\\alpha) \\ni \\gamma_n$, hence $\\gamma_\\omega \\in f(\\alpha)$.",
+    "significance": "key",
+    "relatedConcepts": ["club filter normality", "diagonal intersection", "zipper construction", "regular cardinals"],
+    "prerequisites": ["Cardinal.IsRegular", "diagInter_isClosedBelow", "diagInter_isUnboundedBelow", "Ordinal.iSup"]
   },
   {
     "id": "ann-fodor",
-    "type": "theorem",
-    "label": "fodor",
-    "title": "Fodor's Pressing-Down Lemma",
-    "body": "For regular uncountable κ, stationary S ⊆ κ.ord, and regressive f : S → κ.ord (f(α) < α): ∃ β, ∃ T ⊆ S stationary, ∀ α ∈ T, f(α) = β. Proof by contradiction: choose clubs C_β avoiding each fiber, form their diagonal intersection D (a club), derive a contradiction from any γ ∈ S ∩ D.",
-    "location": { "line": 0 },
-    "tags": ["fodor", "pressing-down", "main-theorem"]
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 259, "endLine": 333 },
+    "type": "insight",
+    "title": "Fodor's Lemma: Proof by Diagonal Intersection",
+    "content": "fodor proves: for regular uncountable κ, stationary S ⊆ κ.ord, and regressive f (f(α) < α for α ∈ S): ∃ β, f⁻¹(β) ∩ S is stationary. By contradiction: if no f⁻¹(β) ∩ S is stationary, choose clubs C_β with C_β ∩ f⁻¹(β) ∩ S = ∅. Form D = Δ_{β<κ}(C_β) (a club by diagInter_isClubBelow). Take γ ∈ S ∩ D (nonempty since S is stationary and D is a club). Since f is regressive, β = f(γ) < γ, so γ ∈ C_β (because γ ∈ D = Δ C and β < γ). But then f(γ) = β ∈ C_β ∩ f⁻¹(β) ∩ S — contradiction.",
+    "mathContext": "Proof structure: assume $\\forall \\beta,\\ f^{-1}(\\beta) \\cap S$ non-stationary. Choose clubs $C_\\beta$ with $C_\\beta \\cap S \\cap f^{-1}(\\beta) = \\emptyset$. Form $D = \\Delta_{\\beta<\\kappa}(C_\\beta)$ (club). Take $\\gamma \\in S \\cap D$. Then $f(\\gamma) = \\beta < \\gamma$, so $\\gamma \\in C_\\beta$. But $C_\\beta \\cap S \\cap f^{-1}(\\beta) = \\emptyset$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Fodor's lemma", "regressive function", "diagonal intersection", "proof by contradiction"],
+    "prerequisites": ["diagInter_isClubBelow", "IsStationaryBelow", "IsRegular", "fodor_aleph1"]
   },
   {
     "id": "ann-aleph1",
-    "type": "theorem",
-    "label": "fodor_aleph1",
-    "title": "Fodor's Lemma for ℵ₁",
-    "body": "The ℵ₁ specialization: any regressive function on a stationary subset of ω₁ is constant on some stationary subset. The most commonly used instance in combinatorial and descriptive set theory.",
-    "location": { "line": 0 },
-    "tags": ["fodor", "aleph1", "corollary"]
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 320, "endLine": 333 },
+    "type": "context",
+    "title": "Fodor's Lemma for ℵ₁: The Canonical Application",
+    "content": "fodor_aleph1 specializes to κ = ℵ₁: any regressive function on a stationary subset of ω₁ is constant on some stationary subset. This is the most commonly used instance in descriptive set theory, forcing arguments, and the study of ω₁-trees. The ℵ₁ corollary is what most textbooks call 'Fodor's Lemma' without qualification.",
+    "mathContext": "Specialization of `fodor` to $\\kappa = \\aleph_1$ (the first uncountable cardinal). $\\aleph_1$ is regular (every countable union of countable sets is countable), and $|\\aleph_1|$ is uncountable by definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["ℵ₁", "ω₁", "Aronszajn trees", "regressive function", "countable cofinality"],
+    "prerequisites": ["Cardinal.aleph_regularCard", "Cardinal.aleph_pos", "fodor"]
   }
 ]
