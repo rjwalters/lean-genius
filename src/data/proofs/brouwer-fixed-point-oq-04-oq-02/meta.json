@@ -36,7 +36,7 @@
     "proofStrategy": "Define Nash's deviation map: for each player i and pure strategy k, compute the excess payoff from deviating to pure strategy k; shift weight toward strategies with positive excess, then normalize. This map is continuous (polynomial in strategy profiles) and maps the product simplex to itself. Brouwer FPT gives a fixed point, and the algebra of the fixed-point equation shows all excesses are zero — i.e., no player can improve by deviating.",
     "assumptions": "1 axiom: brouwer_pi_compact_convex (in BrouwerFixedPointOQ04.lean — general Brouwer FPT for products of compact convex sets in finite-dimensional Euclidean spaces). This file has 0 direct axioms; brouwer_product_simplex is now a theorem proved from the general axiom using mixed_strategy_nonempty, mixed_strategy_compact, and mixed_strategy_convex.",
     "axiomCount": 1,
-    "lineCount": 519,
+    "lineCount": 1024,
     "theoremCount": 15,
     "definitionCount": 8
   },

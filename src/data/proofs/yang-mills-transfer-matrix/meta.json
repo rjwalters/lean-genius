@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 12,
     "assumptions": "1 explicit axiom (`gaugeTransform`, YangMills/Classical.lean) plus 11 structure-encoded assumptions of type `True` in Exploration.lean: Slavnov-Taylor/BRST Ward identity (`SlavnovTaylorIdentity.ward_identity_holds`, line 2454), regulator IR/UV behavior (`RegulatorProperties.suppresses_ir`, `RegulatorProperties.grows_at_uv`, lines 12746-12748), gauge invariance of observables (`GaugeInvariantObs.gaugeInvariant`, line 15986), Fradkin-Shenker analyticity (`FradkinShenker.analytic`, line 16035), Coleman-Mandula finite spectrum/non-trivial scattering/S-matrix analyticity (`CMHypotheses.finiteSpectrum`, `CMHypotheses.nontrivialScattering`, `CMHypotheses.analyticity`, lines 16760-16764), BRST charge conservation and nilpotency (`BRSTChargeCohom.conservation`, `BRSTChargeCohom.nilpotent`, lines 17248-17250), and asymptotic-safety beta-function vanishing (`AsymptoticSafety.beta_vanishes`, line 17606). Each `: True` field is satisfied by `trivial`, stipulating a substantive QFT property as a hypothesis without proof obligation.",
-    "lineCount": 28074,
+    "lineCount": 28477,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pos",

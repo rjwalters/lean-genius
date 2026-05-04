@@ -22,7 +22,7 @@
     "sorries": 0,
     "axiomCount": 2,
     "assumptions": "2 axioms: (1) os_reconstruction — the GNS construction from reflection-positive lattice OS data producing a WightmanQFT; this is mathematically proven (Osterwalder-Schrader 1973, Osterwalder-Seiler 1978) but requires functional analysis (Bochner's theorem, GNS construction) beyond current Mathlib. (2) os_mass_gap_transfer — that exponential decay of Schwinger functions implies a spectral gap in the reconstructed Hilbert space via the Kallen-Lehmann representation; similarly proven but requires the full OS machinery. The 2D results (Migdal formula, string tension, SU(2) computation) are fully proved with 0 axioms.",
-    "lineCount": 500,
+    "lineCount": 624,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_neg",
