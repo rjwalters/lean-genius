@@ -1,0 +1,119 @@
+{
+  "id": "erdos101-problem",
+  "title": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
+  "slug": "erdos101-problem",
+  "description": "Formalizes the study of lines containing exactly four points from a planar set of n points with no five collinear. Proves the trivial upper bound n(n-1)/2, an improved bound n(n-1)/12 (via pair-packing), and a per-point bound of (n-1)/3 four-point lines through any single point. The main Erdős conjecture — o(n²) four-point lines — remains open ($100 prize). All 23 theorems are proved with 0 sorries and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/101",
+    "date": "Open problem (Erdős); partial results formalized 2026",
+    "status": "verified",
+    "tags": [
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "four-point-lines",
+      "collinearity",
+      "erdos-problems",
+      "open-problem",
+      "extremal-combinatorics"
+    ],
+    "proofRepoPath": "Proofs/Erdos101Problem.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 23 theorems are proved with 0 sorries. The Erdős conjecture (o(n²) bound) is not assumed — only partial upper bounds are proved.",
+    "originalContributions": [
+      "PlanarPointSet and NoFiveCollinear: formal definitions of the point set and no-five-collinear condition",
+      "fourPointLineCount: formal count of lines containing exactly 4 points (as powerset filter)",
+      "collinear_trans, collinear_any_triple: collinearity transitivity proofs",
+      "noFiveCollinear_line_bound: at most 4 points of P on any line under the no-5-collinear condition",
+      "four_collinear_unique: two distinct 4-element collinear subsets with 2 shared points must be equal",
+      "four_collinear_overlap_small: distinct 4-collinear subsets share at most 1 element",
+      "trivial_upper_bound: fourPointLineCount(P) ≤ n(n-1)/2",
+      "improved_upper_bound: fourPointLineCount(P) ≤ n(n-1)/12 (each 4-subset has 6 pairs, pairs are disjoint)",
+      "fourCollinearThrough_bound: at most (n-1)/3 four-point lines through any single point",
+      "fourCollinearThrough_sub_family: four-collinear-through is a subset of fourCollinearFamily"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 757,
+    "theoremCount": 23,
+    "definitionCount": 6,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #101 ($100 prize): Given n points in ℝ² with no five collinear, what is the maximum number of lines containing exactly 4 of the points? Erdős conjectured the true order is Θ(n^{3/2}), based on constructions achieving ≫ n^{3/2} four-point lines (Grünbaum). However, Solymosi and Stojaković disproved this by constructing sets with n^{2−O(1/√(log n))} four-point lines, much larger than n^{3/2}. The true maximum order is unknown; proving o(n²) remains open.\n\nThe Szemerédi-Trotter theorem gives |I(P,L)| ≤ C(|P|^{2/3}|L|^{2/3} + |P| + |L|) for incidences between points and lines, but doesn't directly bound four-point lines.",
+    "problemStatement": "**Erdős Problem #101**: Let P be a set of n points in ℝ² with no 5 collinear. Let f(P) = |{lines containing exactly 4 points of P}|. Is f(P) = o(n²)?\n\n**Formalized bounds**:\n- `trivial_upper_bound`: f(P) ≤ n(n-1)/2 (trivial)\n- `improved_upper_bound`: f(P) ≤ n(n-1)/12 (pair-packing argument)\n- `fourCollinearThrough_bound`: at most (n-1)/3 four-point lines through any single point",
+    "text": "A 757-line formalization of partial results on Erdős Problem #101. The key structural insight: distinct 4-collinear subsets share at most 1 point (four_collinear_overlap_small), so their 2-element subsets are disjoint. Packing into the n(n-1)/2 pairs gives a 6× improvement over the trivial bound. All results are proved from first principles using Mathlib's Finset API.",
+    "proofStrategy": "**Step 1 (Collinearity basics)**: Define `collinear p q r` via the signed area determinant. Prove symmetry, transitivity (collinear_trans via case split on vertical vs. non-vertical), and four-point transitivity (collinear_any_triple).\n\n**Step 2 (Line bound)**: `noFiveCollinear_line_bound` proves that under NoFiveCollinear, at most 4 points of P lie on any line. Proof: if ≥ 5 points are collinear, extract 5 via successive Finset.erase operations and apply the no-5-collinear hypothesis.\n\n**Step 3 (Uniqueness)**: `four_collinear_unique` proves that two 4-element collinear subsets sharing 2 points must be equal (both are contained in the line through those 2 points, which has ≤ 4 points in P).\n\n**Step 4 (Overlap)**: `four_collinear_overlap_small` proves distinct 4-collinear subsets share ≤ 1 point, by contradiction (2 shared points → unique subset → contradiction with 'distinct').\n\n**Step 5 (Improved bound)**: Map each 4-collinear subset to its 6 pairs (powersetCard 2). Disjointness of overlap → disjointness of pair-sets. Total pair count ≤ n(n-1)/2, so 6·|F| ≤ n(n-1)/2, giving |F| ≤ n(n-1)/12.\n\n**Step 6 (Per-point)**: Map each 4-collinear subset through p to its 3 'other' points (erase p). Disjointness of these 3-element parts (from overlap_small) gives a packing into P \\ {p}, bounding the count by (n-1)/3.",
+    "keyInsights": [
+      "**Overlap ≤ 1 via uniqueness**: The key combinatorial lemma is that distinct 4-collinear subsets share at most 1 point. If they shared 2 points, they'd both be the unique maximal collinear set containing those 2 points (by noFiveCollinear_line_bound + Finset.eq_of_subset_of_card_le), contradicting distinctness.",
+      "**Pair-packing argument**: Each 4-collinear subset contributes C(4,2)=6 pairs. Disjoint overlaps → disjoint pair-sets. Packing into the C(n,2) total pairs gives the 6× improvement: |F| ≤ n(n-1)/12.",
+      "**fourCollinearThrough per-point bound**: By erasing p from each 4-subset through p, we get disjoint 3-element subsets of P \\ {p}. Packing into n-1 points gives at most (n-1)/3 four-collinear subsets through p.",
+      "**Lean's Finset API in action**: The proof uses Finset.powerset, Finset.filter, Finset.biUnion, Finset.card_biUnion (for disjoint unions), and Finset.powersetCard — a comprehensive workout of Lean 4's combinatorics library."
+    ],
+    "prerequisites": [
+      "Combinatorial geometry and point-line incidences",
+      "Finset and Finset.card in Lean 4",
+      "Szemerédi-Trotter theorem (not formally proved here)"
+    ]
+  },
+  "crossReferences": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": null,
+    "lineCount": 757,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos101Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-definitions",
+      "title": "Definitions: Collinearity and Four-Point Line Count (L22–48)",
+      "startLine": 22,
+      "endLine": 48,
+      "summary": "PlanarPointSet: finite set of ℝ² points with positive card. collinear p q r: signed area determinant (q.1-p.1)*(r.2-p.2) = (r.1-p.1)*(q.2-p.2). NoFiveCollinear P: no 5 distinct collinear points. fourPointLineCount P: Finset.powerset.filter for 4-element collinear subsets.",
+      "mathContext": "Three points are collinear iff the $2 \\times 2$ determinant $\\begin{vmatrix} q_1-p_1 & r_1-p_1 \\\\ q_2-p_2 & r_2-p_2 \\end{vmatrix} = 0$. The no-five-collinear condition restricts our point sets to avoid degenerate configurations."
+    },
+    {
+      "id": "sec-collinearity",
+      "title": "Collinearity Properties (L50–127)",
+      "startLine": 50,
+      "endLine": 127,
+      "summary": "collinear_self, collinear_refl, collinear_self_right: trivial cases. collinear_swap23, collinear_swap12, collinear_rotate, collinear_cycle: symmetry. collinear_trans: transitivity (case split on vertical vs non-vertical lines). collinear_four, collinear_any_triple: full transitivity for ≥4 collinear points.",
+      "mathContext": "Collinearity transitivity: if $p,q,r$ are collinear and $p,q,s$ are collinear with $p \\neq q$, then $p,r,s$ are collinear. The proof splits on whether the line is vertical ($q_1 = p_1$) or not, using `nlinarith` for the algebraic verification."
+    },
+    {
+      "id": "sec-bounds",
+      "title": "Upper Bounds: Trivial and Improved (L130–590)",
+      "startLine": 130,
+      "endLine": 590,
+      "summary": "noFiveCollinear_small: empty constraint for ≤4 points. noFiveCollinear_line_bound: ≤4 points per line. four_collinear_unique: two 4-subsets sharing 2 points are equal. four_collinear_overlap_small: distinct 4-subsets share ≤1 point. trivial_upper_bound: |F| ≤ n(n-1)/2. improved_upper_bound: |F| ≤ n(n-1)/12 (6-pair packing argument).",
+      "mathContext": "The improved bound uses a double-counting / packing argument: each 4-collinear subset has $\\binom{4}{2}=6$ pairs. By the overlap lemma, distinct 4-subsets have disjoint pair-sets. Packing into $\\binom{n}{2}$ total pairs gives $6|F| \\leq \\binom{n}{2}$, so $|F| \\leq n(n-1)/12$."
+    },
+    {
+      "id": "sec-per-point",
+      "title": "Per-Point Bound (L590–757)",
+      "startLine": 590,
+      "endLine": 757,
+      "summary": "fourCollinearFamily: the full family F of 4-element collinear subsets. fourCollinearThrough P p: 4-subsets containing point p. fourCollinearThrough_bound: at most (n-1)/3 such subsets. fourCollinearThrough_sub_family, mem_fourCollinearThrough_of_mem_family: membership characterization.",
+      "mathContext": "Per-point bound: each 4-collinear subset through $p$ contributes 3 'other' points. By the overlap lemma, these 3-element parts are pairwise disjoint within $P \\setminus \\{p\\}$ (size $n-1$). Packing gives $3|F_p| \\leq n-1$, so $|F_p| \\leq (n-1)/3$."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified 757-line formalization of partial results on Erdős Problem #101. The pair-packing argument gives fourPointLineCount(P) ≤ n(n-1)/12, and the per-point bound gives at most (n-1)/3 four-point lines through any single point. The main conjecture (o(n²) upper bound, $100 prize) remains open.",
+    "implications": "The gap between the current best upper bound n(n-1)/12 = O(n²) and the conjectured o(n²) remains wide. The disjoint-pair-packing argument is a clean elementary approach that could potentially be improved by incorporating the Szemerédi-Trotter incidence bound or double-counting via the number of four-point lines incident to each point.",
+    "openQuestions": [
+      "Erdős Problem #101 ($100): Is fourPointLineCount(P) = o(n²) for any n-point set with no 5 collinear?",
+      "Formalize the Szemerédi-Trotter bound I(P,L) ≤ C(|P|^{2/3}|L|^{2/3}+|P|+|L|) to obtain a subquadratic incidence bound",
+      "Prove the lower bound: construct sets achieving ≫ n^{3/2} four-point lines (Grünbaum's construction)"
+    ]
+  },
+  "sorries": 0
+}

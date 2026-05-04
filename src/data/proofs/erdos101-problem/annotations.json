@@ -1,0 +1,117 @@
+[
+  {
+    "id": "e101-collinear-trans",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 87,
+      "endLine": 108
+    },
+    "title": "collinear_trans: Collinearity Transitivity",
+    "content": "`theorem collinear_trans {p q r s : ℝ × ℝ} (hpq : p ≠ q) (hpqr : collinear p q r) (hpqs : collinear p q s) : collinear p r s`\n\nProof: Case split on `q.1 - p.1 = 0` (vertical line):\n- **Vertical**: q.1 = p.1 forces r.1 = p.1 and s.1 = p.1 (by `mul_eq_zero`), so collinear p r s by ring.\n- **Non-vertical**: multiply both sides of the collinearity equations, factor out (q.1 - p.1) ≠ 0, cancel via `mul_left_cancel₀`.\n\nKey: `collinear_any_triple` uses this to prove transitivity for arbitrary triples on the same line.",
+    "significance": "key",
+    "mathContext": "Collinearity transitivity: if $p, q, r$ and $p, q, s$ are collinear with $p \\neq q$, then $p, r, s$ are collinear (all three lie on the unique line through $p$ and $q$). The signed-area definition requires a case split on whether the line is vertical, since the slope is undefined for vertical lines.",
+    "relatedConcepts": [
+      "collinear definition",
+      "signed area determinant",
+      "vertical lines",
+      "mul_left_cancel₀"
+    ],
+    "prerequisites": [
+      "collinear definition via signed area",
+      "Lean 4 nlinarith / ring"
+    ]
+  },
+  {
+    "id": "e101-line-bound",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 167,
+      "endLine": 217
+    },
+    "title": "noFiveCollinear_line_bound: At Most 4 Points per Line",
+    "content": "`theorem noFiveCollinear_line_bound (P : PlanarPointSet) (hP : NoFiveCollinear P) (a b : ℝ × ℝ) (ha : a ∈ P.points) (hb : b ∈ P.points) (hab : a ≠ b) : (P.points.filter (fun p => collinear a b p)).card ≤ 4`\n\nProof: By contradiction. Let L = {p ∈ P | collinear a b p} and suppose |L| ≥ 5. Since a, b ∈ L, let L' = L.erase a, L'' = L'.erase b. Then |L''| ≥ 3.\n\nExtract 3 distinct points c, d, e from L'' by `Finset.card_pos` + `obtain`. These 5 points a,b,c,d,e ∈ P.points are all collinear and pairwise distinct — contradicting `NoFiveCollinear P`.\n\nThe extraction uses repeated `Finset.mem_erase` to verify all distinctness hypotheses.",
+    "significance": "critical",
+    "mathContext": "The no-five-collinear condition forces every line to contain at most 4 points of $P$. This is the key constraint that makes the upper bound argument work: if lines could contain more points, a single 5-point collinear set would give infinitely many near-linear configurations.",
+    "relatedConcepts": [
+      "NoFiveCollinear",
+      "Finset.erase",
+      "Finset.card_pos",
+      "Finset.mem_filter"
+    ],
+    "prerequisites": [
+      "NoFiveCollinear definition",
+      "Finset.card_erase_of_mem"
+    ]
+  },
+  {
+    "id": "e101-overlap-small",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 250,
+      "endLine": 295
+    },
+    "title": "four_collinear_overlap_small: Distinct 4-Subsets Share ≤1 Point",
+    "content": "`theorem four_collinear_overlap_small (P : PlanarPointSet) (hP : NoFiveCollinear P) (S₁ S₂ : ...) (hne : S₁ ≠ S₂) ... : (S₁ ∩ S₂).card ≤ 1`\n\nProof: By contradiction. If |S₁ ∩ S₂| ≥ 2, extract two shared points x, y ∈ S₁ ∩ S₂ with x ≠ y.\n\nSince x, y ∈ S₁ and S₁ is collinear, all of S₁ lies on line(x,y). Similarly all of S₂ lies on line(x,y).\n\nBy `four_collinear_unique` (both S₁ and S₂ are the unique 4-subset on line(x,y)), S₁ = S₂ — contradicting hne.\n\nThis is the structural heart of the pair-packing argument.",
+    "significance": "critical",
+    "mathContext": "Two distinct four-point lines can share at most one point. If they shared two points $x, y$, both lines would be the line through $x$ and $y$, making them identical — contradiction. This is the combinatorial key enabling the packing argument.",
+    "relatedConcepts": [
+      "four_collinear_unique",
+      "noFiveCollinear_line_bound",
+      "Finset.inter",
+      "pair-packing"
+    ],
+    "prerequisites": [
+      "four_collinear_unique theorem",
+      "collinear_any_triple"
+    ]
+  },
+  {
+    "id": "e101-improved-bound",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 517,
+      "endLine": 588
+    },
+    "title": "improved_upper_bound: fourPointLineCount ≤ n(n-1)/12",
+    "content": "`theorem improved_upper_bound (P : PlanarPointSet) (hP : NoFiveCollinear P) : fourPointLineCount P ≤ P.points.card * (P.points.card - 1) / 12`\n\nProof: Let F be the family of 4-collinear subsets. Map each S ∈ F to its 6 pairs (pairSet S = S.powersetCard 2).\n\n1. `hpair_card`: each pairSet has card = C(4,2) = 6 (by Finset.card_powersetCard + decide)\n2. `hpair_disj`: distinct 4-subsets have disjoint pair-sets (from four_collinear_overlap_small + powersetCard2_disjoint)\n3. `hbU_card`: |F.biUnion pairSet| = ∑_{S∈F} 6 = 6|F| (by Finset.card_biUnion on disjoint sets)\n4. `hbU_le`: biUnion ⊆ P.points.powersetCard 2 of size n.choose 2 = n(n-1)/2\n5. Combine: 6|F| ≤ n(n-1)/2 → |F| ≤ n(n-1)/12",
+    "significance": "critical",
+    "mathContext": "The pair-packing argument: each of the $|F|$ four-point lines contributes $\\binom{4}{2}=6$ pairs of points. Since distinct four-point lines share at most 1 point, their pair-sets are disjoint. Packing into $\\binom{n}{2}$ total pairs gives $6|F| \\leq \\binom{n}{2} = n(n-1)/2$, so $|F| \\leq n(n-1)/12$.",
+    "relatedConcepts": [
+      "four_collinear_overlap_small",
+      "powersetCard2_disjoint",
+      "Finset.card_biUnion",
+      "packing argument"
+    ],
+    "prerequisites": [
+      "four_collinear_overlap_small",
+      "Finset.powersetCard and Finset.biUnion"
+    ]
+  },
+  {
+    "id": "e101-per-point-bound",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 631,
+      "endLine": 757
+    },
+    "title": "fourCollinearThrough_bound: At Most (n-1)/3 Four-Point Lines Through One Point",
+    "content": "`theorem fourCollinearThrough_bound (P : PlanarPointSet) (hP : NoFiveCollinear P) (p : ℝ × ℝ) (hp : p ∈ P.points) : (fourCollinearThrough P p).card ≤ (P.points.card - 1) / 3`\n\nLet FP = fourCollinearThrough P p. Map each S ∈ FP to S.erase p (3-element subset of P.points.erase p).\n\n1. Each eraseMap S has card 3 (from |S|=4, p∈S, Finset.card_erase_of_mem)\n2. eraseMap S ⊆ P.points.erase p (from S ⊆ P.points, p ∉ eraseMap S)\n3. eraseMap is injective: S = (eraseMap S) ∪ {p} for S ∈ FP\n4. eraseMap images are pairwise disjoint (from four_collinear_overlap_small: distinct S₁, S₂ ∈ FP share only p)\n5. Packing: 3|FP| ≤ |P.points.erase p| = n-1, so |FP| ≤ (n-1)/3",
+    "significance": "key",
+    "mathContext": "The per-point bound: at most $(n-1)/3$ four-point lines pass through any fixed point $p$. The key: erase $p$ from each four-point line through $p$ to get a 3-element set. By the overlap lemma, distinct four-point lines through $p$ share only $p$, so these 3-element sets are pairwise disjoint within $P \\setminus \\{p\\}$ (of size $n-1$), giving the $n-1 \\geq 3|F_p|$ packing.",
+    "relatedConcepts": [
+      "fourCollinearThrough",
+      "four_collinear_overlap_small",
+      "Finset.erase",
+      "packing argument"
+    ],
+    "prerequisites": [
+      "four_collinear_overlap_small",
+      "Finset.card_erase_of_mem"
+    ]
+  }
+]
