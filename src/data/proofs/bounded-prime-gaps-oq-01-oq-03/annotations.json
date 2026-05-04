@@ -1,0 +1,50 @@
+[
+  {
+    "id": "engelsma-tuple-def",
+    "type": "definition",
+    "line": 52,
+    "title": "The Engelsma 50-Tuple",
+    "body": "The 50 elements of the Engelsma tuple are all even and span [0, 246]. The construction ensures that for every prime p, the residues {h mod p : h ∈ H} do not cover all p classes. Engelsma identified this tuple in 2005 as the narrowest admissible 50-constellation.",
+    "significance": 9
+  },
+  {
+    "id": "admissibility-strategy",
+    "type": "proof-strategy",
+    "line": 99,
+    "title": "Admissibility Proof Strategy",
+    "body": "The proof splits into two regimes: (1) small primes p ≤ 47 checked computationally by native_decide, and (2) large primes p ≥ 53 handled automatically since |image mod p| ≤ |H| = 50 < 53 ≤ p. The threshold 47 is the largest prime below the tuple size 50; all primes between 48 and 52 are non-prime, and 53 is the next prime.",
+    "significance": 8
+  },
+  {
+    "id": "large-prime-case",
+    "type": "key-lemma",
+    "line": 132,
+    "title": "Large Prime Automatic Admissibility",
+    "body": "For any prime p > |H|, admissibility is free: the image {h mod p : h ∈ H} has at most |H| < p elements, so it cannot cover all p residue classes. This is why we only need to check primes up to 47 (the largest prime ≤ 50).",
+    "significance": 7
+  },
+  {
+    "id": "engelsma-lower-bound",
+    "type": "axiom",
+    "line": 166,
+    "title": "Engelsma Lower Bound (2005)",
+    "body": "Every admissible 50-tuple has diameter ≥ 246. This is from Tom Engelsma's 2005 exhaustive computation enumerating all admissible 50-tuples (modulo translation) up to diameter 245 — finding none. The computation is tabulated at opertech.com/primes/k-tuples.html. Formalizing it in Lean would require a machine-checked certificate.",
+    "significance": 9
+  },
+  {
+    "id": "diameter-exactness",
+    "type": "key-result",
+    "line": 196,
+    "title": "Exact Minimum Diameter",
+    "body": "The minimum diameter of an admissible 50-tuple is exactly 246. Upper bound: the Engelsma tuple has diameter 246 - 0 = 246 (max = 246, min = 0, both proved by native_decide). Lower bound: the Engelsma axiom states every admissible 50-tuple has diameter ≥ 246. Together: 246 is the exact minimum.",
+    "significance": 9
+  },
+  {
+    "id": "maynard-tao-connection",
+    "type": "application",
+    "line": 218,
+    "title": "Connection to H ≤ 246",
+    "body": "The Engelsma tuple feeds directly into the Maynard-Tao sieve: since it is admissible, has ≥ 50 elements, and all elements ≤ 246, the axiom `maynard_tao_sieve` yields infinitely many prime gaps ≤ 246. This recovers the Polymath 8b result from the explicitly defined public tuple.",
+    "significance": 8
+  }
+]

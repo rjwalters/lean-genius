@@ -1,0 +1,168 @@
+{
+  "id": "bounded-prime-gaps-oq-01-oq-03",
+  "title": "Minimum Admissible 50-Tuple Diameter: The Engelsma 50-Tuple",
+  "slug": "bounded-prime-gaps-oq-01-oq-03",
+  "description": "Proves that the minimum diameter of an admissible 50-tuple is exactly 246, exhibited by the Engelsma/Polymath tuple {0, 4, 6, ..., 246}. Engelsma's 2005 exhaustive computation established the lower bound; this file formalizes the tuple, its admissibility, and the connection to the Maynard-Tao sieve.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+    "lineCount": 245,
+    "theoremCount": 14,
+    "defCount": 1,
+    "axiomCount": 1,
+    "sorries": 0,
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "admissible-tuples",
+      "sieve-theory",
+      "engelsma",
+      "polymath"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_image_le",
+        "description": "Card of image ≤ card of domain",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.max'_mem",
+        "description": "The max' element is in the Finset",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Finset.min'_mem",
+        "description": "The min' element is in the Finset",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Finset.min'_le",
+        "description": "min' ≤ any element",
+        "module": "Mathlib.Data.Finset.Lattice"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The minimum admissible k-tuple diameter problem connects to the bounded prime gaps theorem. In 2013, Zhang proved infinitely many prime gaps ≤ 70,000,000. Maynard and Tao independently improved this to ≤ 600 (2015), and the Polymath 8b project further refined it to ≤ 246 (2014). The key ingredient in the Polymath bound is an admissible 50-tuple with diameter 246, originally identified by Tom Engelsma in his 2005 exhaustive search for narrow admissible constellations.",
+    "problemStatement": "**Open Question (OQ-01-OQ-03)**: What is the minimum diameter of an admissible 50-tuple, and what is the specific tuple that achieves it?\n\n**Answer**: The minimum diameter is exactly 246, achieved by the Engelsma/Polymath tuple {0, 4, 6, 16, 30, 34, 36, 46, 48, 58, 60, 64, 70, 78, 84, 88, 90, 94, 100, 106, 108, 114, 118, 126, 130, 136, 144, 148, 150, 156, 160, 168, 174, 178, 184, 190, 196, 198, 204, 210, 214, 216, 220, 226, 228, 234, 238, 240, 244, 246}.\n\n- **Upper bound**: The tuple is admissible (verified by checking all primes ≤ 47; for p ≥ 53, admissibility is automatic since card = 50 < p), has exactly 50 elements, and has diameter 246 - 0 = 246.\n- **Lower bound** (axiomatized): Engelsma's 2005 exhaustive computer search verified no admissible 50-tuple has diameter < 246.",
+    "text": "The Engelsma 50-tuple is the canonical witness connecting the Maynard-Tao sieve to the H ≤ 246 bounded prime gap bound. This file makes the private `polymath50Tuple` from `BoundedPrimeGaps.lean` public and explicit, adds the Engelsma lower bound as an axiom, and proves that 246 is the exact minimum diameter.",
+    "proofStrategy": "**Admissibility proof**: Check all primes p ≤ 47 by `native_decide`. For p ≥ 53, the image has ≤ 50 < 53 ≤ p elements, so admissibility is automatic by cardinality.\n\n**Diameter proof**: Prove max = 246 and min = 0 by `native_decide`, then subtract.\n\n**Lower bound**: Axiomatize Engelsma's computation. For any admissible H with |H| = 50, the max minus min is ≥ 246.\n\n**Connection to gaps**: Feed the tuple into `maynard_tao_sieve` to recover H ≤ 246.",
+    "keyInsights": [
+      "The admissibility check reduces to 15 small primes (2,3,5,...,47): for larger primes p > 50, the 50-element image is automatically smaller than p",
+      "Engelsma's 2005 exhaustive search establishes the lower bound 246 computationally; no theoretical proof is currently known for k = 50",
+      "The parent file `BoundedPrimeGaps.lean` defined this tuple privately; making it public enables direct reference in the sieve literature",
+      "All 50 elements are even — the parity constraint (any admissible set containing 0 must be all-even) is satisfied",
+      "The diameter formula max - min = 246 - 0 = 246 is exact; no admissible 50-tuple achieves a smaller span"
+    ],
+    "prerequisites": [
+      "BoundedPrimeGaps.lean — IsAdmissible definition, maynard_tao_sieve axiom",
+      "BoundedPrimeGapsOQ01.lean — parity constraints, minimum diameter results for smaller k",
+      "Engelsma (2005), 'Narrow Admissible Constellations'",
+      "Polymath 8b (2014), 'Variants of the Selberg Sieve'"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Engelsma 50-Tuple Definition",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "Defines `engelsma50Tuple : Finset ℕ` — the public explicit definition of the optimal 50-element admissible set with minimum diameter 246.",
+      "mathContext": "The 50 elements are all even, in increasing order from 0 to 246. The tuple is also called the 'Polymath 50-tuple' in the bounded prime gaps literature."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties: Card, Min, Max, Diameter",
+      "startLine": 60,
+      "endLine": 86,
+      "summary": "Proves card = 50, nonempty, zero_mem, le_246, min = 0, max = 246, diameter = 246 — all by native_decide except diameter which follows by rewriting min and max.",
+      "mathContext": "The min/max proofs use `Finset.min'` and `Finset.max'` which require a `Nonempty` hypothesis. The diameter (max - min) = 246 - 0 = 246."
+    },
+    {
+      "id": "admissibility",
+      "title": "Admissibility Proof",
+      "startLine": 89,
+      "endLine": 148,
+      "summary": "Proves `IsAdmissible engelsma50Tuple`. The proof checks all primes ≤ 47 by native_decide and handles p ≥ 53 by the automatic cardinality bound (50 < 53 ≤ p).",
+      "mathContext": "IsAdmissible H requires: for every prime p, the image {h % p : h ∈ H} has < p elements. For p > card(H) = 50, this is automatic. The 15 small prime cases (2,3,...,47) are each verified by native_decide."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Engelsma Lower Bound (Axiom)",
+      "startLine": 151,
+      "endLine": 168,
+      "summary": "Axiomatizes the Engelsma lower bound: every admissible 50-tuple has diameter ≥ 246. This is from Engelsma's 2005 exhaustive computer search.",
+      "mathContext": "The axiom states: for all H with |H| = 50 and H admissible, and for any a,b ∈ H with b ≤ a, we have 246 ≤ a - b. Formalizing this would require a machine-checked certificate for the exhaustive search."
+    },
+    {
+      "id": "minimum-diameter",
+      "title": "Exact Minimum Diameter Theorems",
+      "startLine": 171,
+      "endLine": 215,
+      "summary": "Combines upper bound (Engelsma tuple) and lower bound (Engelsma axiom) to prove: 246 is the exact minimum diameter of admissible 50-tuples. Key theorem: `engelsma_attains_minimum_diameter`.",
+      "mathContext": "Upper bound: the Engelsma tuple is admissible with 50 elements and diameter 246. Lower bound: under the axiom, any admissible 50-tuple has diameter ≥ 246. Together: 246 is the minimum."
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Connection to Bounded Prime Gaps",
+      "startLine": 218,
+      "endLine": 232,
+      "summary": "Shows the Engelsma tuple feeds into the Maynard-Tao sieve to give H ≤ 246, reproducing the Polymath 8b result from the explicit public tuple.",
+      "mathContext": "Uses `maynard_tao_sieve engelsma50Tuple 246` with the proved admissibility and bound. The same gap bound was originally proved using the private tuple in BoundedPrimeGaps.lean."
+    },
+    {
+      "id": "summary",
+      "title": "Complete Summary Theorem",
+      "startLine": 235,
+      "endLine": 245,
+      "summary": "A single conjunction collecting all key properties: admissible, card=50, max=246, min=0, and bounded gaps H ≤ 246.",
+      "mathContext": "Packages the five main results for easy reference."
+    }
+  ],
+  "conclusion": {
+    "text": "The minimum admissible 50-tuple diameter is exactly 246. The Engelsma/Polymath tuple {0, 4, 6, ..., 246} achieves this minimum and simultaneously witnesses the unconditional prime gap bound H ≤ 246. Under Engelsma's lower bound axiom, no 50-element admissible set has a smaller span.",
+    "openQuestions": [
+      {
+        "id": "oq-01",
+        "question": "Can Engelsma's lower bound (no admissible 50-tuple has diameter < 246) be formally verified in Lean via a machine-checked certificate for the exhaustive search?",
+        "difficulty": "hard",
+        "significance": "This would eliminate the only remaining axiom and give a fully machine-verified characterization of the minimum admissible 50-tuple diameter."
+      },
+      {
+        "id": "oq-02",
+        "question": "Can the same approach (exhibit specific tuple, axiomatize minimality) be applied to find minimum admissible k-tuple diameters for other values of k (e.g., k = 105 for the EH-conditional improvement)?",
+        "difficulty": "medium",
+        "significance": "Would give a complete Lean formalization of the diameter table from Engelsma's computations."
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "parent",
+      "description": "Parent proof defining IsAdmissible, maynard_tao_sieve, and the private polymath50Tuple"
+    },
+    {
+      "id": "bounded-prime-gaps-oq-01",
+      "relationship": "sibling",
+      "description": "Minimum diameter results for k=2 (diameter 2), k=3 (diameter 6), and k=5 (EH-conditional, diameter 12)"
+    },
+    {
+      "id": "bounded-prime-gaps-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "EH-conditional H ≤ 12 using the admissible 5-tuple {0,2,6,8,12}"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+    "lineCount": 245,
+    "theoremCount": 14,
+    "defCount": 1,
+    "axiomCount": 1,
+    "sorryCount": 0
+  },
+  "sorries": []
+}
