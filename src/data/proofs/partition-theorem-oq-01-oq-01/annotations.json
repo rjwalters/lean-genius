@@ -35,6 +35,12 @@
     "relatedConcepts": [
       "Lean namespaces",
       "module organization"
+    ],
+    "mathContext": "The `RogersRamanujan` namespace (from parent) contains: `PartitionSetA` (parts \u2261 1,4 mod 5), `PartitionSetB` (parts differ by \u2265 2, no consecutive parts). `PartitionTheoremOQ01OQ01` provides helper lemmas verifying the combinatorial constraints for small values.",
+    "prerequisites": [
+      "Rogers-Ramanujan parent file namespace",
+      "Lean 4 `open` and `namespace` scoping",
+      "PartitionSetA and PartitionSetB definitions"
     ]
   },
   {
@@ -46,7 +52,7 @@
     },
     "type": "concept",
     "title": "RR1 Computational Verification via native_decide",
-    "content": "Nine individual theorems verify the first Rogers-Ramanujan identity for each $n = 0, 1, \\ldots, 8$. Each theorem states that the cardinality of the gap-side partition set equals the cardinality of the mod-5-side partition set, and is proved by `native_decide` — Lean compiles the decidable computation to native code and evaluates it. For $n = 8$, this involves checking all $p(8) = 22$ partitions against both predicates.",
+    "content": "Nine individual theorems verify the first Rogers-Ramanujan identity for each $n = 0, 1, \\ldots, 8$. Each theorem states that the cardinality of the gap-side partition set equals the cardinality of the mod-5-side partition set, and is proved by `native_decide` \u2014 Lean compiles the decidable computation to native code and evaluates it. For $n = 8$, this involves checking all $p(8) = 22$ partitions against both predicates.",
     "mathContext": "For each $n$: $|\\{\\lambda \\vdash n : \\lambda_i - \\lambda_{i+1} \\geq 2\\}| = |\\{\\lambda \\vdash n : \\text{all parts} \\equiv 1, 4 \\pmod{5}\\}|$. The values are: $n=0$: 1=1, $n=1$: 1=1, $n=2$: 1=1, $n=3$: 1=1, $n=4$: 2=2, $n=5$: 2=2, $n=6$: 3=3, $n=7$: 3=3, $n=8$: 4=4.",
     "significance": "key",
     "relatedConcepts": [
@@ -93,7 +99,7 @@
     },
     "type": "insight",
     "title": "Unified Verification Theorem",
-    "content": "The main theorem `rr_both_verified_through_8` combines all 18 checks into a single universally quantified statement: for all $n \\leq 8$, both RR1 and RR2 hold. The proof uses `interval_cases n` to case-split $n \\in \\{0, \\ldots, 8\\}$, then closes each case with `⟨by native_decide, by native_decide⟩` — a conjunction of two decidable checks. This is cleaner than relying on the 18 individual theorems and gives a single reusable result.",
+    "content": "The main theorem `rr_both_verified_through_8` combines all 18 checks into a single universally quantified statement: for all $n \\leq 8$, both RR1 and RR2 hold. The proof uses `interval_cases n` to case-split $n \\in \\{0, \\ldots, 8\\}$, then closes each case with `\u27e8by native_decide, by native_decide\u27e9` \u2014 a conjunction of two decidable checks. This is cleaner than relying on the 18 individual theorems and gives a single reusable result.",
     "mathContext": "$\\forall n \\leq 8, \\; |\\text{rr1Gap}(n)| = |\\text{rr1Mod5}(n)| \\;\\wedge\\; |\\text{rr2Gap}(n)| = |\\text{rr2Mod5}(n)|$",
     "significance": "key",
     "relatedConcepts": [
@@ -116,7 +122,7 @@
     },
     "type": "insight",
     "title": "Axiom Consistency Argument",
-    "content": "The closing section discusses the epistemological role of computational verification for axiomatized results. The axioms `rogers_ramanujan_first` and `rogers_ramanujan_second` in the parent file assert the identities for all $n$. This file cannot prove those axioms, but it confirms that the definitions are consistent with the expected combinatorial behavior at small values — if the definitions were wrong, the `native_decide` checks would fail. The general proofs require $q$-series machinery (the Rogers-Ramanujan continued fraction or the Jacobi triple product identity) not yet available in Lean/Mathlib.",
+    "content": "The closing section discusses the epistemological role of computational verification for axiomatized results. The axioms `rogers_ramanujan_first` and `rogers_ramanujan_second` in the parent file assert the identities for all $n$. This file cannot prove those axioms, but it confirms that the definitions are consistent with the expected combinatorial behavior at small values \u2014 if the definitions were wrong, the `native_decide` checks would fail. The general proofs require $q$-series machinery (the Rogers-Ramanujan continued fraction or the Jacobi triple product identity) not yet available in Lean/Mathlib.",
     "mathContext": "The $q$-series form of RR1 is: $\\sum_{k=0}^{\\infty} \\frac{q^{k^2}}{(q;q)_k} = \\prod_{n=0}^{\\infty} \\frac{1}{(1-q^{5n+1})(1-q^{5n+4})}$, where $(q;q)_k = \\prod_{i=1}^{k}(1-q^i)$.",
     "significance": "key",
     "relatedConcepts": [
