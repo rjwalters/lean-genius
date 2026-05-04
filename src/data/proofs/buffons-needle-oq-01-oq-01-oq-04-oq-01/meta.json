@@ -127,5 +127,25 @@
     "The 2D Cauchy-Crofton constant c_2 = 2/π verified from first principles",
     "Full n-dim case proved axiom-free: AngularAverageData n constructed via trivial linear function for n ≥ 3"
   ],
-  "assumptions": []
+  "assumptions": [],
+  "leanFile": {
+    "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.BuffonsNeedleOQ01OQ01",
+      "Proofs.BuffonsNeedleOQ01OQ01OQ04"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory",
+      "CauchyCrofton"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ01OQ04OQ01",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 11,
+    "definitionCount": 2
+  }
 }
