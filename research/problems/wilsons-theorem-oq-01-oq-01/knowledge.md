@@ -2,7 +2,7 @@
 
 **Problem**: Are there infinitely many Wilson primes (primes p where p² | (p-1)! + 1)?
 
-**Status**: AXIOM REDUCTION COMPLETE — PR #15394 merged (2 axioms), native_decide proof of 563 applied (branch research/wilsons-theorem-563-proof), Docker build pending
+**Status**: AXIOM REDUCTION — PR #15394 merged (2 axioms), PR #15629 open (reduces to 1 axiom via native_decide for 563)
 
 **Known Wilson primes**: 5, 13, 563. No fourth found below 2×10¹³.
 
@@ -125,6 +125,6 @@ Deployer should merge PR #15394 (prefer over #15392 which has broken build).
 - `research/problems/wilsons-theorem-oq-01-oq-01/knowledge.md` (this entry)
 
 ### Next Steps
-- Wait for Docker build to complete
-- If successful: push branch and create PR
-- If native_decide fails: use alternative `Nat.ModEq` approach with explicit witness
+- Await Docker build result for PR #15629
+- If native_decide fails: use alternative `Nat.ModEq` approach with explicit `have h : 562.factorial % 316969 = 316968 := by native_decide`
+- After merge: pool status → completed
