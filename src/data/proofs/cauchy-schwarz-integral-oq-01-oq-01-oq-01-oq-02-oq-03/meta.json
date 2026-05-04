@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 176,
+    "lineCount": 210,
     "assumptions": "No axioms or sorries. All results proved from first principles using Mathlib's weighted AM-GM.",
     "dateAdded": "2026-05-04",
     "mathlib_version": "4.26.0",
@@ -48,7 +48,7 @@
       "WHM ≤ WGM: applies WGM ≤ WAM to (1/a, 1/b) then uses inv_le_comm₀ (inversion reverses order)",
       "Shows unweighted chain HM ≤ GM ≤ AM ≤ QM is the special case w₁ = w₂ = 1/2"
     ],
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 4
   },
   "overview": {
@@ -115,7 +115,7 @@
       "title": "Unweighted Chain as Special Case",
       "summary": "w₁ = w₂ = 1/2 recovers HM ≤ GM ≤ AM ≤ QM",
       "startLine": 159,
-      "endLine": 176,
+      "endLine": 210,
       "mathContext": "At $w_1 = w_2 = 1/2$: $\\text{WHM} = 2ab/(a+b)$, $\\text{WGM} = \\sqrt{ab}$, $\\text{WAM} = (a+b)/2$, $\\text{WQM} = \\sqrt{(a^2+b^2)/2}$."
     }
   ],
@@ -160,9 +160,9 @@
     "imports": ["Mathlib"],
     "opens": ["Real"],
     "namespace": "WeightedPowerMeanChain",
-    "lineCount": 176,
+    "lineCount": 210,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 4,
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean",
     "sorries": 0

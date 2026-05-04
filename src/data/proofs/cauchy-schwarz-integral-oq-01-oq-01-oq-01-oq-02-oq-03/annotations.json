@@ -1,0 +1,168 @@
+[
+  {
+    "id": "ann-wpm-defs",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Four Weighted Mean Definitions",
+    "content": "Defines the four weighted means parameterized by weights w₁, w₂ ≥ 0 with w₁ + w₂ = 1. Each is declared noncomputable because it involves Real.rpow or Real.sqrt. The weight parameters appear as explicit arguments rather than implicit, making the specialization theorems (w₁ = w₂ = 1/2) straightforward to state. The WGM definition uses Real.rpow (written `a ^ w₁`) to handle non-rational exponents — this is the key difference from the unweighted case where `Real.sqrt` suffices.",
+    "mathContext": "$\\text{WHM}(a,b) = (w_1/a + w_2/b)^{-1}$, $\\text{WGM}(a,b) = a^{w_1} b^{w_2}$, $\\text{WAM}(a,b) = w_1 a + w_2 b$, $\\text{WQM}(a,b) = \\sqrt{w_1 a^2 + w_2 b^2}$. These are the $p = -1, 0, 1, 2$ instances of the weighted power mean $M_p^w(a,b) = (w_1 a^p + w_2 b^p)^{1/p}$ (with WGM as the $p \\to 0$ limit).",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted power mean",
+      "Real.rpow",
+      "noncomputable definition",
+      "Hölder mean"
+    ],
+    "prerequisites": [
+      "real exponentiation (rpow)",
+      "square root",
+      "Lean noncomputable functions"
+    ]
+  },
+  {
+    "id": "ann-positivity-lemmas",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 63,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Positivity Lemmas via the positivity Tactic",
+    "content": "Establishes that WHM, WGM, WAM are strictly positive and WQM is nonneg for positive inputs and positive weights. The `positivity` tactic closes all four goals automatically. For WHM, positivity must first be applied to the inverted form: `inv_pos.mpr` converts `0 < (⋯)⁻¹` to `0 < ⋯`, then positivity handles the fraction sum. The WHM lemma requires strict positivity of the weights (0 < w₁, 0 < w₂); the WQM lemma only needs 0 ≤ w₁, 0 ≤ w₂ since the sqrt is always nonneg.",
+    "mathContext": "For $a, b > 0$ and $w_1, w_2 > 0$: WHM, WGM, WAM are all strictly positive. WQM is nonneg (strictly positive when $a > 0$ or $b > 0$ and at least one weight is positive). These positivity facts underpin the inversion trick in the WHM ≤ WGM proof.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity tactic",
+      "inv_pos",
+      "Real.rpow positivity",
+      "strict positivity"
+    ],
+    "prerequisites": [
+      "Lean 4 positivity tactic",
+      "inv_pos lemma"
+    ]
+  },
+  {
+    "id": "ann-wgm-le-wam",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 88,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "Weighted AM-GM: One-Line Corollary from Mathlib",
+    "content": "Proves WGM ≤ WAM (the weighted AM-GM inequality) as a single-line call to Mathlib's `Real.geom_mean_le_arith_mean2_weighted`. This theorem states: for a, b ≥ 0 and weights w₁, w₂ ≥ 0 with w₁ + w₂ = 1, we have a^w₁ · b^w₂ ≤ w₁·a + w₂·b. Mathlib handles all the bookkeeping for `Real.rpow` (which requires nonneg base for real exponents). The proof delegation to Mathlib here is the central step of the whole chain.",
+    "mathContext": "$a^{w_1} b^{w_2} \\le w_1 a + w_2 b$ for $a,b \\ge 0$, $w_1, w_2 \\ge 0$, $w_1 + w_2 = 1$. Equivalently, $\\exp(w_1 \\ln a + w_2 \\ln b) \\le w_1 a + w_2 b$, which is Jensen's inequality for the convex function $f(x) = e^x$ (or equivalently $-\\ln$ is convex). The Mathlib proof uses `Real.add_pow_le_pow_mul_pow_of_sq_le_sq` internally.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.geom_mean_le_arith_mean2_weighted",
+      "Jensen's inequality",
+      "log-convexity",
+      "weighted AM-GM"
+    ],
+    "prerequisites": [
+      "Real.rpow for nonneg base",
+      "Mathlib.Analysis.MeanInequalities"
+    ]
+  },
+  {
+    "id": "ann-wam-le-wqm",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 99,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "WAM ≤ WQM via the Weighted Variance Identity",
+    "content": "Proves WAM ≤ WQM in two stages. First, `weighted_variance_nonneg` establishes (WAM)² ≤ (WQM)² using the algebraic identity: w₁a² + w₂b² − (w₁a + w₂b)² = w₁w₂(a−b)². The proof substitutes w₂ = 1 − w₁ (from w₁ + w₂ = 1) and calls `ring` to verify the identity, then `linarith` with the witness w₁(1−w₁)(a−b)² ≥ 0. Second, since WAM ≥ 0, writing WAM = sqrt(WAM²) and applying `Real.sqrt_le_sqrt` closes the goal. The variance identity is the discrete case of Jensen's inequality for f(x) = x².",
+    "mathContext": "$w_1 a^2 + w_2 b^2 - (w_1 a + w_2 b)^2 = w_1 w_2 (a-b)^2 \\ge 0$. This is the weighted variance formula: $\\mathbb{E}[X^2] - (\\mathbb{E}[X])^2 = \\text{Var}(X) \\ge 0$ for a two-point distribution on $\\{a, b\\}$ with probabilities $\\{w_1, w_2\\}$. The inequality $WAM \\le WQM$ is the Cauchy–Schwarz inequality in the form $|\\langle f, g \\rangle|^2 \\le \\|f\\|^2 \\|g\\|^2$ with $f = (w_1^{1/2}, w_2^{1/2})$ and $g = (w_1^{1/2} a, w_2^{1/2} b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted variance",
+      "Jensen's inequality for x²",
+      "sqrt_le_sqrt",
+      "Cauchy–Schwarz inequality",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "algebraic identity verification via ring",
+      "Real.sqrt monotonicity",
+      "linarith with sq_nonneg"
+    ]
+  },
+  {
+    "id": "ann-whm-le-wgm",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 122,
+      "endLine": 153
+    },
+    "type": "insight",
+    "title": "WHM ≤ WGM via Reciprocal Inversion (inv_le_comm₀)",
+    "content": "The most interesting Lean-specific proof in the file. Strategy: apply the already-proved WGM ≤ WAM to the pair (1/a, 1/b) with the same weights to obtain (1/a)^w₁ · (1/b)^w₂ ≤ w₁/a + w₂/b. The left side equals WGM(a,b)⁻¹ (proved by the auxiliary `inv_wgm_eq` using `Real.div_rpow`) and the right side equals WHM(a,b)⁻¹. So WGM(a,b)⁻¹ ≤ WHM(a,b)⁻¹. Since both are positive, `inv_le_comm₀` (which states x⁻¹ ≤ y ↔ y⁻¹ ≤ x for positives) flips the inequality to WHM ≤ WGM. The `rwa` (rewrite-then-assumption) closes the goal cleanly.",
+    "mathContext": "$(1/a)^{w_1}(1/b)^{w_2} = (a^{w_1} b^{w_2})^{-1} = \\text{WGM}^{-1}$ and $w_1/a + w_2/b = \\text{WHM}^{-1}$. So WGM $\\le$ WAM applied to $(1/a, 1/b)$ gives $\\text{WGM}^{-1} \\le \\text{WHM}^{-1}$. Since inversion is order-reversing on $(0, \\infty)$: $x^{-1} \\le y^{-1} \\implies y \\le x$, so WHM $\\le$ WGM. Formally: `inv_le_comm₀ : 0 < x → 0 < y → (x⁻¹ ≤ y ↔ y⁻¹ ≤ x)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inv_le_comm₀",
+      "inversion antitonicity",
+      "Real.div_rpow",
+      "reciprocal trick",
+      "HM-GM via AM-GM duality"
+    ],
+    "prerequisites": [
+      "Real.rpow division rule",
+      "inv_le_comm₀ for ordered fields",
+      "rwa tactic"
+    ]
+  },
+  {
+    "id": "ann-main-chain",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 159,
+      "endLine": 168
+    },
+    "type": "insight",
+    "title": "The Complete Weighted Power Mean Chain",
+    "content": "Assembles all three step theorems into a single conjunction WHM ≤ WGM ∧ WGM ≤ WAM ∧ WAM ≤ WQM. The proof term is a pure anonymous constructor applying the three lemmas: `whm_le_wgm`, `wgm_le_wam`, `wam_le_wqm`. Note the hypotheses require strict positivity of the weights (0 < w₁, 0 < w₂) to support the WHM ≤ WGM step; the inner lemmas accept the weaker 0 ≤ w₁ via `.le`. This is the main theorem of the file.",
+    "mathContext": "For $a, b > 0$ and $w_1, w_2 > 0$ with $w_1 + w_2 = 1$: $\\text{WHM}(a,b) \\le \\text{WGM}(a,b) \\le \\text{WAM}(a,b) \\le \\text{WQM}(a,b)$. This is the $p \\in \\{-1, 0, 1, 2\\}$ special case of the general monotonicity $M_p^w \\le M_q^w$ for $p \\le q$, proved for all real $p, q$ by Hardy–Littlewood–Pólya (1934).",
+    "significance": "key",
+    "relatedConcepts": [
+      "power mean inequality",
+      "Hardy–Littlewood–Pólya",
+      "conjunction introduction",
+      "hypothesis weakening (.le)"
+    ],
+    "prerequisites": [
+      "all three step theorems",
+      "conjunction introduction in Lean"
+    ]
+  },
+  {
+    "id": "ann-specialization",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 173,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Unweighted Chain as a Corollary at w₁ = w₂ = 1/2",
+    "content": "Proves that setting w₁ = w₂ = 1/2 recovers the classical unweighted means. Four specialization theorems confirm: WHM(1/2,1/2,a,b) = 2ab/(a+b), WGM(1/2,1/2,a,b) = √(ab), WAM(1/2,1/2,a,b) = (a+b)/2, WQM(1/2,1/2,a,b) = √((a²+b²)/2). The `unweighted_chain_from_weighted` theorem applies `weighted_mean_chain` at w₁ = w₂ = 1/2 (norm_num closes 0 < 1/2 and 1/2 + 1/2 = 1), then rewrites using the four specialization lemmas to state the chain in the standard unweighted form. The parent proof (OQ02) proved this chain directly; here it follows as a one-line corollary.",
+    "mathContext": "At $w_1 = w_2 = 1/2$: $M_{-1}^{1/2}(a,b) = \\frac{2ab}{a+b}$ (HM), $M_0^{1/2}(a,b) = \\sqrt{ab}$ (GM), $M_1^{1/2}(a,b) = \\frac{a+b}{2}$ (AM), $M_2^{1/2}(a,b) = \\sqrt{\\frac{a^2+b^2}{2}}$ (QM). The chain $HM \\le GM \\le AM \\le QM$ is derived without re-proof from the weighted case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unweighted power means",
+      "specialization",
+      "norm_num for rational arithmetic",
+      "algebraic simplification at equal weights"
+    ],
+    "prerequisites": [
+      "weighted_mean_chain theorem",
+      "Real.mul_rpow for the WGM specialization"
+    ]
+  }
+]
