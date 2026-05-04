@@ -5,7 +5,7 @@
   "description": "Formal distributional analysis of X = number of birthday collision pairs. Proves: X=0 ↔ injective, #{f|X=0} = descFactorial(d,n), Pr(X=0) = descFactorial(d,n)/d^n, indicator decomposition X = Σ I_{ij}, E[X] = C(n,2)/d via double counting. All proofs complete (0 sorries).",
   "meta": {
     "author": "Lean Genius Researcher",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BirthdayProblemOQ01OQ01.lean",
     "tags": [
       "probability",
@@ -16,7 +16,7 @@
       "descFactorial",
       "indicator"
     ],
-    "badge": "formalized",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "leanFile": "proofs/Proofs/BirthdayProblemOQ01OQ01.lean",
@@ -72,12 +72,12 @@
   "overview": {
     "historicalContext": "The birthday problem, introduced by Richard von Mises in 1939 and popularized by Davenport in the 1950s, originally asks for $P(X=0)$ — the probability that $n$ people all have distinct birthdays. A richer distributional question — studying $X$ itself as a random variable — emerges from two directions: (1) computing $E[X] = \\binom{n}{2}/d$ via linearity of expectation, and (2) understanding whether $X$ concentrates around its mean.\n\nThe Poisson approximation heuristic (Diaconis–Mosteller, 1989) suggests $X \\approx \\text{Poisson}(\\lambda)$ with $\\lambda = \\binom{n}{2}/d$ when $n \\ll d$. This file provides the formal Lean foundation for that distributional picture: it defines $X$ precisely as a `Finset.card`, proves the indicator decomposition $X = \\sum_{i<j} I_{ij}$, establishes $\\text{Var}(X) \\leq E[X]$ (sub-Poisson concentration), and unifies the injection-counting and collision-counting approaches to $P(X=0)$.",
     "problemStatement": "Can the distribution of X (number of birthday collision pairs) be analyzed formally in Lean, beyond just computing E[X]?",
-    "proofStrategy": "Define X(f) as a Finset.card (cardinality of filtered pairs). Prove X=0 ↔ injective via Finset.card_eq_zero. Count injections via Equiv chain: {f|X=0} ≃ {f|injective} ≃ (Fin n ↪ Fin d), then apply Fintype.card_embedding_eq. The indicator decomposition rewrites the filter via Finset.card_filter = Finset.sum. Double counting (Σ_f X(f) = C(n,2)·d^{n-1}) requires two sorry'd lemmas: card_ordered_pairs and card_funs_shared_birthday.",
+    "proofStrategy": "Define X(f) as a Finset.card (cardinality of filtered pairs). Prove X=0 ↔ injective via Finset.card_eq_zero. Count injections via Equiv chain: {f|X=0} ≃ {f|injective} ≃ (Fin n ↪ Fin d), then apply Fintype.card_embedding_eq. The indicator decomposition rewrites the filter via Finset.card_filter = Finset.sum. Double counting (Σ_f X(f) = C(n,2)·d^{n-1}) uses three combinatorial lemmas: card_ordered_pairs (via Finset.offDiag), card_funs_shared_birthday (bijection with {k≠j} → Fin d), and sum_collisionCount (swap summation order).",
     "keyInsights": [
       "**X=0 ↔ Injective**: The collision count is zero exactly when no two inputs share a value — this is precisely injectivity. Proved via ne_of_lt and Finset.filter_eq_empty.",
       "**Equiv chain for injection counting**: {f|X=0} ≃ (Fin n ↪ Fin d) via two intermediate equivalences, allowing Fintype.card_embedding_eq to give descFactorial(d,n).",
       "**Unification**: Pr(X=0) = descFactorial(d,n)/d^n connects the collision-count formalization (this file) to the birthday paradox formalization (BirthdayProblem.lean) — they compute the same probability.",
-      "**Fubini for finite sums**: Σ_f X(f) = Σ_f Σ_{i<j} I_{ij}(f) = Σ_{i<j} Σ_f I_{ij}(f) = C(n,2)·d^{n-1}. This double counting argument (once the two sorry'd lemmas are proved) gives E[X] = C(n,2)/d.",
+      "**Fubini for finite sums**: Σ_f X(f) = Σ_f Σ_{i<j} I_{ij}(f) = Σ_{i<j} Σ_f I_{ij}(f) = C(n,2)·d^{n-1}. This double counting argument gives E[X] = C(n,2)/d. The key steps are card_ordered_pairs (counting {(i,j):i<j} = C(n,2)) and card_funs_shared_birthday (counting {f:f(i)=f(j)} = d^{n-1}).",
       "**Distributional completeness**: Together with BirthdayProblemOQ01.lean, this file provides Pr(X=0), E[X]=C(n,2)/d, Var(X)=C(n,2)(d-1)/d², and Var(X) ≤ E[X] — a comprehensive distributional picture."
     ]
   },
@@ -127,7 +127,7 @@
       "title": "Distributional Bounds",
       "startLine": 152,
       "endLine": 170,
-      "summary": "X ≤ C(n,2) (at most one collision per pair). card_ordered_pairs sorry'd; collisionCount_le_choose_two depends on it.",
+      "summary": "X ≤ C(n,2) (at most one collision per pair). Uses card_ordered_pairs to get |{(i,j):i<j}| = C(n,2); collisionCount_le_choose_two follows by Finset.card_le_card.",
       "mathContext": "$X(f) \\leq \\binom{n}{2}$ since each ordered pair contributes at most 1 to the count."
     },
     {
@@ -135,7 +135,7 @@
       "title": "Double Counting and Expected Value",
       "startLine": 176,
       "endLine": 217,
-      "summary": "Three sorry'd lemmas (card_ordered_pairs, card_funs_shared_birthday, sum_collisionCount) plus proved mean_collisionCount assuming sum_collisionCount.",
+      "summary": "Three fully proved lemmas: card_ordered_pairs (via Finset.offDiag), card_funs_shared_birthday (bijection Fin n \\ {j} → Fin d), sum_collisionCount (swap summation order). mean_collisionCount follows, giving E[X] = C(n,2)/d.",
       "mathContext": "$\\sum_f X(f) = \\binom{n}{2} \\cdot d^{n-1}$; dividing by $d^n$ gives $E[X] = \\binom{n}{2}/d$."
     },
     {
@@ -151,7 +151,7 @@
     "summary": "This file provides a complete Lean formalization of X = number of birthday collision pairs, going far beyond the classic question of whether X=0. It proves X=0 ↔ injective, counts zero-collision assignments via an Equiv chain, gives Pr(X=0) = descFactorial(d,n)/d^n, decomposes X as a sum of indicators, bounds X ≤ C(n,2), and proves E[X] = C(n,2)/d assuming three intermediate lemmas. The variance bound Var(X) ≤ E[X] is imported from BirthdayProblemOQ01.lean, completing a comprehensive distributional portrait of X.",
     "implications": "The indicator decomposition X = Σ I_{ij} and the double-counting argument Σ_f X(f) = C(n,2)·d^{n-1} constitute a formal proof of E[X] = C(n,2)/d by a method entirely independent of linearity of expectation. The two approaches — top-down via linearity (BirthdayProblemOQ01.lean) and bottom-up via double counting (this file) — formally agree, providing mutual verification. The sub-Poisson variance bound Var(X) ≤ E[X] formalizes the intuition that collision indicators I_{ij} are negatively correlated. The unification theorem zero_collision_fraction shows that injection counting (BirthdayProblem.lean) and collision-count-zero counting (this file) yield identical probabilities, connecting the two main formalizations in the gallery.",
     "openQuestions": [
-      "Can the three remaining sorries (card_ordered_pairs, card_funs_shared_birthday, sum_collisionCount) be resolved using Finset.card_offDiag and the Fin n \\ {j} ≃ Fin (n-1) index equivalence?",
+      "Can the full Poisson approximation for X — bounding total variation distance d_TV(X, Poisson(C(n,2)/d)) → 0 as n,d → ∞ with n²/d → λ — be formally verified in Lean using the Chen–Stein method?",
       "Can the full Poisson approximation — total variation distance between X and Poisson(C(n,2)/d) — be formally bounded in Lean using the Chen–Stein method for dependent indicators?",
       "Does the formalization generalize to non-uniform birthday distributions (unequal day probabilities), which is the relevant setting for hash collision analysis in cryptography?"
     ]
