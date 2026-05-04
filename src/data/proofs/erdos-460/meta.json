@@ -55,8 +55,8 @@
       "Splitting into smallPrimeDivisibleSum and largePrimeSum with Erdős's question about individual divergence"
     ],
     "axiomCount": 1,
-    "lineCount": 291,
-    "assumptions": "2 axioms: eggleton_erdos_selfridge (deep result), filtered_sum_implies_full. sieve_greedy proved from constructive definition (with hactive guard for sentinel case). sieve_conjectured_bound demoted to def. filtered_sum_implies_full converted from axiom to theorem-with-sorry (axiom integrity)."
+    "lineCount": 327,
+    "assumptions": "1 axiom: eggleton_erdos_selfridge (Eggleton-Erdős-Selfridge bound). 1 sorry: filtered_sum_implies_full (reduction; converted from axiom for axiom integrity). New theorems: sieve_at_zero/one, smallPrimeDivisibleSum_nonneg, largePrimeSum_nonneg, leastPrimeFactor_prime_eq."
   },
   "leanFile": {
     "imports": [
@@ -69,9 +69,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 291,
+    "lineCount": 327,
     "axiomCount": 1,
-    "theoremCount": 10,
+    "theoremCount": 15,
     "definitionCount": 9,
     "path": "Proofs/Erdos460Problem.lean",
     "sorries": 1
