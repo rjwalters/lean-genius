@@ -167,6 +167,37 @@ theorem e_floor_1000000 : ⌊(1000000 : ℝ) * Real.exp 1⌋ = 2718281 := by
 theorem e_digit6 : (⌊(1000000 : ℝ) * Real.exp 1⌋ : ℤ) % 10 = 1 := by
   rw [e_floor_1000000]; decide
 
+/-- ⌊10000000 · e⌋ = 27182818, so the seventh decimal digit of e is 8. -/
+theorem e_floor_10000000 : ⌊(10000000 : ℝ) * Real.exp 1⌋ = 27182818 := by
+  apply Int.floor_eq_iff.mpr
+  exact ⟨by push_cast; linarith [Real.exp_one_gt_d9],
+         by push_cast; linarith [Real.exp_one_lt_d9]⟩
+
+/-- The seventh decimal digit of e is 8. -/
+theorem e_digit7 : (⌊(10000000 : ℝ) * Real.exp 1⌋ : ℤ) % 10 = 8 := by
+  rw [e_floor_10000000]; decide
+
+/-- ⌊100000000 · e⌋ = 271828182, so the eighth decimal digit of e is 2. -/
+theorem e_floor_100000000 : ⌊(100000000 : ℝ) * Real.exp 1⌋ = 271828182 := by
+  apply Int.floor_eq_iff.mpr
+  exact ⟨by push_cast; linarith [Real.exp_one_gt_d9],
+         by push_cast; linarith [Real.exp_one_lt_d9]⟩
+
+/-- The eighth decimal digit of e is 2. -/
+theorem e_digit8 : (⌊(100000000 : ℝ) * Real.exp 1⌋ : ℤ) % 10 = 2 := by
+  rw [e_floor_100000000]; decide
+
+/-- ⌊1000000000 · e⌋ = 2718281828, so the ninth decimal digit of e is 8.
+    This saturates the Mathlib lower bound exp_one_gt_d9 : 2.718281828 < e. -/
+theorem e_floor_1000000000 : ⌊(1000000000 : ℝ) * Real.exp 1⌋ = 2718281828 := by
+  apply Int.floor_eq_iff.mpr
+  exact ⟨by push_cast; linarith [Real.exp_one_gt_d9],
+         by push_cast; linarith [Real.exp_one_lt_d9]⟩
+
+/-- The ninth decimal digit of e is 8. -/
+theorem e_digit9 : (⌊(1000000000 : ℝ) * Real.exp 1⌋ : ℤ) % 10 = 8 := by
+  rw [e_floor_1000000000]; decide
+
 -- ============================================================
 -- PART IV: NORMAL IMPLIES IRRATIONAL
 -- ============================================================
