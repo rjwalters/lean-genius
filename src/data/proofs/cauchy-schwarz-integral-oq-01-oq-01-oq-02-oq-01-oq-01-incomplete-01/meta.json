@@ -2,15 +2,15 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
-  "description": "Advances the sigma-finite Lp Riesz representation from 3 sorries to 1 by proving Step C (density extension, Session 1) and Step B (Lp truncation convergence via Vitali, Session 2). Only localization_existence (Step A, ~150 lines of Lp restriction map infrastructure) remains as a sorry.",
+  "description": "Sigma-finite Lp Riesz representation theorem fully formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) are proved with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction.",
   "leanFile": {
     "namespace": "RieszSigmaFiniteComplete",
-    "lineCount": 452,
+    "lineCount": 952,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 2,
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "meta": {
     "status": "formalized",
@@ -24,10 +24,10 @@
       "density-argument"
     ],
     "badge": "formalized",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 452,
-    "assumptions": "1 HARD sorry remaining (down from 3): localization_existence (~150 lines, Lp restriction map infrastructure). Step C (density extension) and Step B (lp_truncation_tendsto_zero via Vitali) are both fully proved.",
+    "lineCount": 952,
+    "assumptions": "All three sorries eliminated: Step A (localization_existence) was proved in PR #15581 via the Hölder extremizer construction (g_seq truncations + MCT for hgnorm, ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for indicator agreement). Steps B (lp_truncation_tendsto_zero via Vitali) and C (integral_representation_sf via Lp.induction) were proved earlier. The proof depends on lemmas in the parent file Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean — assess parent's status independently.",
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
