@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ann-01",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "Separability as the Exact Hypothesis: Why CharZero Can Be Dropped",
+    "content": "The key rewrite is `Gal.card_of_separable p_sep` — this converts |Gal(p)| to Module.finrank F (SplittingField p). The signature of `Gal.card_of_separable` takes `p.Separable`, not `[CharZero F]`. Over CharZero, `Irreducible.separable` derives p.Separable automatically; here we ask the caller to supply it directly. Every subsequent step in the tower-law proof is characteristic-free.",
+    "mathContext": "Gal.card_of_separable : p.Separable → Nat.card p.Gal = Module.finrank F p.SplittingField. This is the only place where characteristic information was needed — and it only needed Separable, not CharZero.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.Gal.card_of_separable",
+      "separability vs CharZero",
+      "tower law"
+    ],
+    "prerequisites": [
+      "Polynomial.Gal",
+      "Polynomial.Separable",
+      "splitting fields"
+    ]
+  },
+  {
+    "id": "ann-02",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 88
+    },
+    "type": "technique",
+    "title": "One-Line CharZero Corollary via Irreducible.separable",
+    "content": "The CharZero version is now a one-line corollary: `natDegree_dvd_card_gal_of_sep p_irr p_irr.separable`. The `Irreducible.separable` instance (requiring [CharZero F]) automatically produces p.Separable, which is forwarded to the general theorem. This demonstrates the standard pattern for combining instance-based hypotheses with explicit hypotheses.",
+    "mathContext": "Irreducible.separable : [CharZero F] → Irreducible p → p.Separable. Once separability is an explicit argument, CharZero becomes just one way to provide it.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Irreducible.separable",
+      "CharZero",
+      "corollary pattern"
+    ],
+    "prerequisites": [
+      "Polynomial.Irreducible.separable",
+      "CharZero typeclass"
+    ]
+  },
+  {
+    "id": "ann-03",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "The Inseparable Counterexample: Why Separability Is Necessary",
+    "content": "Over F = F_p(t) (rational functions in characteristic p), the polynomial X^p - t is irreducible by Eisenstein's criterion (it's Eisenstein at the prime t in F_p[t]). Its derivative is 0, so it is inseparable. The splitting field is F_p(t^{1/p}), a purely inseparable extension of degree p. The Galois group Gal(X^p - t) consists of field automorphisms of F_p(t^{1/p}) fixing F_p(t). Since (t^{1/p})^p = t, any automorphism must send t^{1/p} to a root of X^p - t in F_p(t^{1/p}), which has only one root t^{1/p}. So the only automorphism is the identity: |Gal| = 1, natDegree = p, p ∤ 1.",
+    "mathContext": "X^p - t ∈ F_p(t)[X]: irreducible (Eisenstein), inseparable (derivative = 0), Gal = {id} (only one root t^{1/p} in purely inseparable extension), |Gal| = 1 but natDegree = p.",
+    "significance": "key",
+    "relatedConcepts": [
+      "purely inseparable extensions",
+      "Eisenstein criterion",
+      "Frobenius endomorphism",
+      "characteristic p fields"
+    ],
+    "prerequisites": [
+      "Polynomial.Separable",
+      "function fields",
+      "purely inseparable extensions"
+    ]
+  }
+]
