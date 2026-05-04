@@ -1,0 +1,124 @@
+{
+  "id": "amgm-inequality-oq-02-oq-02",
+  "title": "Newton's Log-Concavity: Complete Proof of Maclaurin's Step",
+  "slug": "amgm-inequality-oq-02-oq-02",
+  "description": "Proves Newton's log-concavity for elementary symmetric polynomials and derives the Maclaurin step Mₖ ≥ Mₖ₊₁ as theorems (eliminating 2 axioms from the parent). The central result is `newton_log_concavity_proved`: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)) for non-negative inputs. From this, `maclaurin_step_derived` shows consecutive Maclaurin means satisfy Mₖ ≥ Mₖ₊₁. The proof uses an 8-part architecture: zero-tail properties, unnormalized Newton inequality by induction on n, binomial log-concavity, cleared-denominator inductive step, cleared-denominator main induction, normalization, and power/rpow transfer.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_inequalities",
+    "date": "Classical results (Newton 1707, Maclaurin 1729); formalized 2026",
+    "status": "verified",
+    "tags": [
+      "inequalities",
+      "elementary-symmetric-polynomials",
+      "maclaurin-inequalities",
+      "newton-inequalities",
+      "log-concavity",
+      "am-gm"
+    ],
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 12 theorems verified with 0 sorries and 0 axioms. Imports AmgmInequalityOQ02.lean (parent) and NewtonInductiveStep.lean (helper). Standard Lean axioms only.",
+    "originalContributions": [
+      "elemSymm_zero_implies_higher_zero: if eⱼ(x)=0 for non-negative x, then eₖ=0 for all k≥j",
+      "cross_product_of_log_concave: a·d ≥ b·c and b·c ≥ a·d implies log-concavity chain",
+      "elemSymm_log_concave: eₖ² ≥ eₖ₋₁·eₖ₊₁ (unnormalized Newton inequality, proved by induction on n)",
+      "binom_log_concave: C(n,k)² ≥ C(n,k-1)·C(n,k+1) (binomial coefficients are log-concave)",
+      "newton_cleared_denom_inductive_step: cleared-denominator form of Newton step via absorption + discriminant lemma",
+      "newton_cleared_denom: cleared-denominator Newton inequality by induction",
+      "newton_log_concavity_proved: normalized Newton (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1))",
+      "power_ineq_of_log_concave: aₖ^(k+1) ≥ aₖ₊₁^k from log-concavity",
+      "rpow_ineq_of_pow_ineq: transfers nat-power inequality to real-power (rpow) inequality",
+      "maclaurin_step_derived: Mₖ ≥ Mₖ₊₁ where Mⱼ = (eⱼ/C(n,j))^(1/j) — the Maclaurin chain step"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 959,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Newton's inequalities (Newton 1707) state that the elementary symmetric polynomials eₖ(x₁,...,xₙ) satisfy eₖ² ≥ eₖ₋₁·eₖ₊₁ for non-negative inputs. Maclaurin's inequalities (Maclaurin 1729) extend this: the normalized means Mₖ = (eₖ/C(n,k))^(1/k) form a decreasing chain M₁ ≥ M₂ ≥ ... ≥ Mₙ, where M₁ is the arithmetic mean and Mₙ^(1/n) approaches the geometric mean.\n\nThe normalized Newton inequality (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)) is the key step that makes the Maclaurin chain work. The standard proof proceeds by induction on n: adding a new variable x_{n+1} and using the recurrence eₖ(x₁,...,x_{n+1}) = eₖ(x₁,...,xₙ) + x_{n+1}·eₖ₋₁(x₁,...,xₙ).\n\nThis file eliminates the two axioms `newton_log_concavity` and `maclaurin_step` from the parent `AmgmInequalityOQ02.lean`, completing the proof chain from first principles.",
+    "problemStatement": "**Newton's log-concavity**: For non-negative x₁,...,xₙ and 1 ≤ k ≤ n-1:\n(eₖ(x)/C(n,k))² ≥ (eₖ₋₁(x)/C(n,k-1)) · (eₖ₊₁(x)/C(n,k+1))\n\n**Maclaurin step**: Mₖ(x) ≥ Mₖ₊₁(x) where Mⱼ(x) = (eⱼ(x)/C(n,j))^(1/j).",
+    "text": "A 959-line proof of Newton's log-concavity and the Maclaurin step inequality, eliminating both axioms from the parent formalization. The 8-part architecture progresses from zero-tail structural properties through unnormalized Newton inequality, binomial log-concavity, cleared-denominator forms, to the final normalized Newton and Maclaurin results.",
+    "proofStrategy": "**Part I (Zero-tail)**: If eⱼ(x)=0 for non-negative x then eₖ(x)=0 for k≥j — since 0 entries in x prevent any k-element product from being non-zero.\n\n**Part II (Unnormalized Newton)**: `elemSymm_log_concave`: eₖ² ≥ eₖ₋₁·eₖ₊₁. Proved by induction on n: the base case n=1 is trivial; the inductive step uses the recurrence eₖ(x₁,...,xₙ₊₁) = eₖ(x₁,...,xₙ) + xₙ₊₁·eₖ₋₁(x₁,...,xₙ) and the cross-product lemma.\n\n**Part III (Binomial log-concavity)**: `binom_log_concave`: C(n,k)² ≥ C(n,k-1)·C(n,k+1). Follows from the identity C(n,k)² - C(n,k-1)·C(n,k+1) = C(n,k)²·(1 - (k+1)(n-k+1)/(k·(n-k))) ≥ 0.\n\n**Part IV–V (Cleared denominator)**: The normalized Newton inequality is equivalent (after clearing denominators via C(n,k)²·(n/k)·(n/(n-k))) to the cleared-denominator form. The inductive step (`newton_cleared_denom_inductive_step`) uses an absorption argument and a discriminant bound.\n\n**Part VI–VIII (Normalization and power transfer)**: `newton_log_concavity_proved` assembles the cleared-denominator form into the normalized version. `power_ineq_of_log_concave` converts to aₖ^(k+1) ≥ aₖ₊₁^k. `rpow_ineq_of_pow_ineq` transfers to real exponents. `maclaurin_step_derived` takes k-th roots to get Mₖ ≥ Mₖ₊₁.",
+    "keyInsights": [
+      "**Cleared-denominator form avoids division**: Newton's inequality (eₖ/C)² ≥ (eₖ₋₁/C)(eₖ₊₁/C) involves divisions by binomial coefficients. The cleared-denominator form multiplies through by C(n,k-1)·C(n,k+1)/C(n,k)², giving an equivalent natural-number inequality. This avoids division-by-zero edge cases and makes the induction cleaner.",
+      "**Absorption argument for inductive step**: When adding variable xₙ₊₁, the recurrence eₖ(x,t) = eₖ(x) + t·eₖ₋₁(x) leads to a quadratic in t. The inductive hypothesis gives eₖ₋₁² ≥ eₖ₋₂·eₖ and eₖ² ≥ eₖ₋₁·eₖ₊₁. The new inequality eₖ(x,t)² ≥ eₖ₋₁(x,t)·eₖ₊₁(x,t) follows by combining these with the discriminant of the quadratic (the discriminant is ≤ 0).",
+      "**Binomial log-concavity as a key lemma**: The normalized Newton inequality differs from the unnormalized one by the binomial coefficients. The fact that binomial coefficients themselves are log-concave (Part III) ensures the normalized form follows from the unnormalized one, without additional complications.",
+      "**rpow transfer for Maclaurin**: The Maclaurin step requires taking k-th and (k+1)-th roots. The proof first establishes aₖ^(k+1) ≥ aₖ₊₁^k in ℕ (nat powers), then transfers to real powers via `rpow_ineq_of_pow_ineq`, which uses `Real.rpow_natCast` and `Real.rpow_le_rpow` monotonicity."
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials",
+      "Newton's inequalities",
+      "Maclaurin's inequalities",
+      "Binomial coefficients"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "extends",
+      "description": "Eliminates both axioms (newton_log_concavity and maclaurin_step) from the parent Maclaurin inequalities formalization"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.AmgmInequalityOQ02",
+      "Proofs.NewtonInductiveStep"
+    ],
+    "namespace": "NewtonLogConcavity",
+    "lineCount": 959,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-amgm-oq02-oq02-structure",
+      "title": "Parts I–II: Structural Properties and Unnormalized Newton",
+      "startLine": 44,
+      "endLine": 165,
+      "summary": "elemSymm_zero_implies_higher_zero: zero-tail property for elementary symmetric polynomials. elemSymm_log_concave: eₖ² ≥ eₖ₋₁·eₖ₊₁ proved by induction on n using the recurrence eₖ(x,t) = eₖ(x) + t·eₖ₋₁(x).",
+      "mathContext": "Newton's inequality (unnormalized): $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ for elementary symmetric polynomials of non-negative reals."
+    },
+    {
+      "id": "sec-amgm-oq02-oq02-binomial",
+      "title": "Part III: Binomial Log-Concavity",
+      "startLine": 301,
+      "endLine": 395,
+      "summary": "binom_log_concave: C(n,k)² ≥ C(n,k-1)·C(n,k+1). Proved via the identity C(n,k)² - C(n,k-1)·C(n,k+1) = C(n,k)² · k(n-k)/((k-1)(n-k-1)·...).",
+      "mathContext": "$\\binom{n}{k}^2 \\geq \\binom{n}{k-1} \\binom{n}{k+1}$ — binomial coefficients are log-concave in $k$."
+    },
+    {
+      "id": "sec-amgm-oq02-oq02-cleared",
+      "title": "Parts IV–V: Cleared-Denominator Induction",
+      "startLine": 395,
+      "endLine": 810,
+      "summary": "newton_cleared_denom_inductive_step: the key inductive step (520-line proof) via absorption + discriminant argument. newton_cleared_denom: full cleared-denominator Newton inequality by induction on n.",
+      "mathContext": "Cleared-denominator form: $C(n,k-1)\\cdot C(n,k+1) \\cdot e_k^2 \\geq C(n,k)^2 \\cdot e_{k-1} \\cdot e_{k+1}$. This is equivalent to the normalized Newton inequality without divisions."
+    },
+    {
+      "id": "sec-amgm-oq02-oq02-normalized",
+      "title": "Parts VI–VIII: Normalized Newton and Maclaurin Step",
+      "startLine": 811,
+      "endLine": 959,
+      "summary": "newton_log_concavity_proved: normalized Newton (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). power_ineq_of_log_concave and rpow_ineq_of_pow_ineq: transfer to real exponents. maclaurin_step_derived: Mₖ ≥ Mₖ₊₁.",
+      "mathContext": "Maclaurin's step: $M_k = \\left(\\frac{e_k}{\\binom{n}{k}}\\right)^{1/k} \\geq M_{k+1}$. The decreasing chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ connects AM to GM."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified proof (0 sorries, 0 axioms) of Newton's log-concavity and the Maclaurin step, eliminating both axioms from AmgmInequalityOQ02.lean. The 8-part proof uses: zero-tail structure, unnormalized Newton by induction, binomial log-concavity, cleared-denominator forms, normalization, and power transfer.",
+    "implications": "With both axioms eliminated, the full Maclaurin chain M₁ ≥ M₂ ≥ ... ≥ Mₙ is now a complete theorem (transitivity from AmgmInequalityOQ02.lean's existing chain proof). This closes the main gap in the Maclaurin formalization.",
+    "openQuestions": [
+      "Prove Newton's inequality for general signed inputs (requires different methods — the non-negative assumption is essential here)",
+      "Formalize the equality case: Mₖ = Mₖ₊₁ iff all non-zero inputs are equal",
+      "Extend to Muirhead's inequalities (generalization of Maclaurin to power-sum symmetric functions)"
+    ]
+  },
+  "sorries": 0
+}
