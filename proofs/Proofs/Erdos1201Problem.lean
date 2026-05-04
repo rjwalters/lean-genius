@@ -126,8 +126,8 @@ theorem consecutiveProduct_zero (n : ℕ) : consecutiveProduct n 0 = n := by
 
 /-- consecutiveProduct n 1 = n * (n + 1). -/
 theorem consecutiveProduct_one (n : ℕ) : consecutiveProduct n 1 = n * (n + 1) := by
-  have := consecutiveProduct_succ n 0
-  rwa [consecutiveProduct_zero] at this
+  simp only [consecutiveProduct, Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
+  ring
 
 /-- consecutiveProduct n k is positive when n ≥ 1. -/
 theorem consecutiveProduct_pos (n k : ℕ) (hn : 1 ≤ n) : 0 < consecutiveProduct n k := by
@@ -424,12 +424,16 @@ theorem upperDensity_mono {S T : Set ℕ} (hST : S ⊆ T) :
     upperDensity S ≤ upperDensity T := by
   simp only [upperDensity]
   apply Filter.limsup_le_limsup
-  · apply Filter.eventually_of_forall
+  · apply Filter.Eventually.of_forall
     intro N
     rcases Nat.eq_zero_or_pos N with rfl | hN
     · simp
-    · rw [div_le_div_right (Nat.cast_pos.mpr hN)]
-      exact_mod_cast Finset.card_le_card (Finset.filter_subset_filter _ hST)
+    · apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg N)
+      have hsub : (Finset.Icc 1 N).filter (· ∈ S) ⊆ (Finset.Icc 1 N).filter (· ∈ T) := by
+        intro x hx
+        simp only [Finset.mem_filter] at *
+        exact ⟨hx.1, hST hx.2⟩
+      exact_mod_cast Finset.card_le_card hsub
   · -- IsCoboundedUnder: density_S ≥ 0, so any eventual upper bound is ≥ 0
     use 0
     intro a ha
@@ -440,7 +444,7 @@ theorem upperDensity_mono {S T : Set ℕ} (hST : S ⊆ T) :
       div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
     linarith
   · -- IsBoundedUnder: density_T ≤ 1
-    exact ⟨1, Filter.eventually_of_forall fun N => by
+    exact ⟨1, Filter.Eventually.of_forall fun (N : ℕ) => by
       rcases Nat.eq_zero_or_pos N with rfl | hN
       · simp
       · apply div_le_one_of_le _ (Nat.cast_nonneg N)
@@ -455,6 +459,68 @@ theorem erdos_1201_density_mono_k (ε : ℝ) (k : ℕ) :
     upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n k} ≤
     upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n (k + 1)} :=
   upperDensity_mono (erdos_1201_good_set_mono_k ε k)
+
+/-
+## Epsilon-Monotonicity and Partial Conjecture Proof
+-/
+
+/-- For n ≥ 1 and ε ≥ 1/2 with ε < 1, the rpow threshold n^(1-ε) is at most √n.
+    This is because 1-ε ≤ 1/2 when ε ≥ 1/2, so n^(1-ε) ≤ n^(1/2) = √n for n ≥ 1. -/
+theorem erdos_1201_sqrt_le_rpow_of_large_eps (n : ℕ) (ε : ℝ) (hε_half : 1 / 2 ≤ ε)
+    (hε_lt1 : ε < 1) :
+    (n : ℝ) ^ (1 - ε) ≤ Real.sqrt n := by
+  rw [Real.sqrt_eq_rpow]
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp [Real.zero_rpow (show (1 - ε) ≠ 0 by linarith),
+          Real.zero_rpow (show (1 / 2 : ℝ) ≠ 0 by norm_num)]
+  · exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) (by linarith)
+
+/-- **ε-Monotonicity (pointwise)**: The good-set condition gets easier as ε increases.
+    For ε₁ < ε₂ and n ≥ 2: if P(n,k) > n^(1-ε₁) then P(n,k) > n^(1-ε₂).
+    This holds because n > 1 and 1-ε₂ < 1-ε₁ imply n^(1-ε₂) < n^(1-ε₁). -/
+theorem erdos_1201_good_implies_larger_eps (n k : ℕ) (ε₁ ε₂ : ℝ) (hn : 2 ≤ n)
+    (hε12 : ε₁ < ε₂) (hgood : (n : ℝ) ^ (1 - ε₁) < gpfConsecutive n k) :
+    (n : ℝ) ^ (1 - ε₂) < gpfConsecutive n k :=
+  calc (n : ℝ) ^ (1 - ε₂)
+      < (n : ℝ) ^ (1 - ε₁) :=
+        Real.rpow_lt_rpow_of_exponent_lt (by exact_mod_cast show 1 < n from by omega)
+          (by linarith)
+    _ < _ := hgood
+
+/-- **Good-set containment in ε**: For ε₁ < ε₂, the ε₁-good set ⊆ the ε₂-good set.
+    Larger ε gives a smaller threshold n^(1-ε), making the condition easier to satisfy. -/
+theorem erdos_1201_good_set_mono_eps (k : ℕ) (ε₁ ε₂ : ℝ) (hε12 : ε₁ < ε₂) :
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε₁) < gpfConsecutive n k} ⊆
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε₂) < gpfConsecutive n k} := fun n ⟨hn2, hgood⟩ =>
+  ⟨hn2, erdos_1201_good_implies_larger_eps n k ε₁ ε₂ hn2 hε12 hgood⟩
+
+/-- **Density monotonicity in ε**: upper density of the good set is non-decreasing in ε. -/
+theorem erdos_1201_density_mono_eps (k : ℕ) (ε₁ ε₂ : ℝ) (hε12 : ε₁ < ε₂) :
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε₁) < gpfConsecutive n k} ≤
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε₂) < gpfConsecutive n k} :=
+  upperDensity_mono (erdos_1201_good_set_mono_eps k ε₁ ε₂ hε12)
+
+/-- **Half-case implies conjecture for ε ≥ 1/2**: Erdős's ε = 1/2 result implies
+    ErdosProblem1201 for all ε ∈ [1/2, 1). Since n^(1-ε) ≤ √n for ε ≥ 1/2 and n ≥ 1,
+    the set {n | √n < P(n,k)} ⊆ {n | n^(1-ε) < P(n,k)}, so density passes through. -/
+theorem erdos_1201_half_case_implies (ε η : ℝ) (hε_half : 1 / 2 ≤ ε) (hε_lt1 : ε < 1)
+    (hη : 0 < η) :
+    ∃ k : ℕ, upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η := by
+  obtain ⟨k, hk⟩ := erdos_1201_half_case η hη
+  refine ⟨k, le_trans hk (upperDensity_mono ?_)⟩
+  intro n hn
+  simp only [Set.mem_setOf_eq] at *
+  exact lt_of_le_of_lt (erdos_1201_sqrt_le_rpow_of_large_eps n ε hε_half hε_lt1) hn
+
+/-- **Partial conjecture (proved)**: ErdosProblem1201 holds for all ε ≥ 1/2.
+    This is the first unconditional theorem about the conjecture: the "easy half" (ε ≥ 1/2)
+    follows from Erdős's result via the ε-monotonicity of the good set. -/
+theorem erdos_1201_partial_conjecture :
+    ∀ (ε η : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) (hη : 0 < η), 1 / 2 ≤ ε →
+    ∃ k : ℕ,
+      upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η :=
+  fun ε η _ hε₁ hη hε_half => erdos_1201_half_case_implies ε η hε_half hε₁ hη
+
 
 /-
 ## Upper Bounds and Tight Estimates
@@ -626,7 +692,7 @@ theorem gpfConsecutive_one_coprime (n : ℕ) (hn : 2 ≤ n) :
     Nat.Coprime (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
   have hdn : greatestPrimeFactor n ∣ n := gpf_dvd n hn
   have hdn1 : greatestPrimeFactor (n + 1) ∣ n + 1 := gpf_dvd (n + 1) (by omega)
-  have hcop : Nat.Coprime n (n + 1) := Nat.coprime_succ_self n
+  have hcop : Nat.Coprime n (n + 1) := Nat.coprime_succ_self_right n
   have h1 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n :=
     dvd_trans (Nat.gcd_dvd_left _ _) hdn
   have h2 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n + 1 :=
@@ -693,7 +759,7 @@ theorem gpfConsecutive_le_of_le_k (n : ℕ) (hn : 2 ≤ n) {k₁ k₂ : ℕ} (hk
   rw [gpfConsecutive_eq_sup_range n k₁ hn, gpfConsecutive_eq_sup_range n k₂ hn]
   apply Finset.sup_le
   intro i hi
-  apply Finset.le_sup
+  refine Finset.le_sup (f := fun j => greatestPrimeFactor (n + j)) ?_
   rw [Finset.mem_range] at hi ⊢
   omega
 
