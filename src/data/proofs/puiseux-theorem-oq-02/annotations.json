@@ -1,47 +1,122 @@
 [
   {
+    "id": "puiseux-oq02-context",
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 5, "endLine": 46 },
+    "type": "context",
+    "title": "Multivariate Puiseux: Iteration Handles the Ordering Problem",
+    "content": "The natural question after the univariate Puiseux theorem is: what is the algebraic closure of K((x₁,...,xₙ)), the Laurent series field in n variables? The naive answer — Hahn series over ℚⁿ — fails: not every Hahn series over an arbitrary ordered abelian group is algebraically closed. The correct answer (McDonald 1995, Aroca-Cano-Jung 2003) is the iterated construction K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄...⦃⦃xₙ⦄⦄, where the lexicographic ordering on the nested HahnSeries automatically gives a well-ordered support for the composite object. The key subtlety documented in this file is that order matters: each step applies Puiseux's theorem to the previous stage, and the resulting field is algebraically closed.",
+    "mathContext": "Goal: identify $\\overline{K((x_1,\\ldots,x_n))}$. Answer: $K\\{\\{x_1\\}\\}\\{\\{x_2\\}\\}\\cdots\\{\\{x_n\\}\\} := \\text{MultiHahnSeries}(n, K)$, defined by $\\text{MultiHahnSeries}(0, K) = K$ and $\\text{MultiHahnSeries}(n+1, K) = \\text{HahnSeries}(\\mathbb{Q}, \\text{MultiHahnSeries}(n, K))$.",
+    "significance": "context",
+    "relatedConcepts": ["Puiseux series", "Hahn series", "algebraic closure", "multivariate formal power series", "lexicographic ordering"],
+    "prerequisites": ["univariate Puiseux theorem", "formal Laurent series", "Hahn series definition", "algebraically closed fields"]
+  },
+  {
     "id": "ann-multihahn-def",
-    "line": 78,
-    "endLine": 80,
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 70, "endLine": 80 },
     "type": "definition",
     "title": "MultiHahnSeries: Iterated Puiseux Construction",
-    "body": "The iterated Hahn series type defined by recursion on depth n. At depth 0, the type is K itself (the coefficient field). At each successor depth, we wrap in HahnSeries ℚ — adding one more variable. This models the tower K ⊂ K⦃⦃x₁⦄⦄ ⊂ K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄ ⊂ ... of iterated Puiseux series fields. The ℚ exponents in HahnSeries ℚ provide the rational-power structure that characterizes Puiseux series.",
-    "math": "\\text{MultiHahnSeries}(0, K) = K, \\quad \\text{MultiHahnSeries}(n+1, K) = \\text{HahnSeries}(\\mathbb{Q}, \\text{MultiHahnSeries}(n, K))"
+    "content": "The iterated Hahn series type defined by recursion on depth n. At depth 0, the type is K itself (the coefficient field). At each successor depth, we wrap in HahnSeries ℚ — adding one more variable. This models the tower K ⊂ K⦃⦃x₁⦄⦄ ⊂ K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄ ⊂ ... of iterated Puiseux series fields. The ℚ exponents in HahnSeries ℚ provide the rational-power structure that characterizes Puiseux series.",
+    "mathContext": "$\\text{MultiHahnSeries}(0, K) = K$, $\\quad \\text{MultiHahnSeries}(n+1, K) = \\text{HahnSeries}(\\mathbb{Q}, \\text{MultiHahnSeries}(n, K))$. Models the tower $K \\subset K\\{\\{x_1\\}\\} \\subset K\\{\\{x_1\\}\\}\\{\\{x_2\\}\\} \\subset \\cdots$",
+    "significance": "key",
+    "relatedConcepts": ["Hahn series", "iterated construction", "type-level recursion in Lean 4", "Puiseux series tower"],
+    "prerequisites": ["HahnSeries ℚ in Mathlib", "Lean 4 def by recursion on ℕ", "Type* universe polymorphism"]
+  },
+  {
+    "id": "puiseux-dimensional-facts",
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 82, "endLine": 90 },
+    "type": "technique",
+    "title": "Dimensional Facts: Base, Single-Variable, and Successor Cases",
+    "content": "Three definitional equality theorems establish the concrete values of MultiHahnSeries. All three are proved by `rfl` — they are true by definition, so Lean's kernel verifies them without any proof terms. multiHahn_zero: MultiHahnSeries 0 K = K. multiHahn_one: MultiHahnSeries 1 K = HahnSeries ℚ K. multiHahn_succ: MultiHahnSeries (n+1) K = HahnSeries ℚ (MultiHahnSeries n K). The rfl proofs succeed because MultiHahnSeries is defined by pattern matching, and each case reduces to the right-hand side definitionally. These theorems serve as helper lemmas for rewriting in later proofs.",
+    "mathContext": "$\\text{MultiHahnSeries}(0, K) = K$ (base), $\\text{MultiHahnSeries}(1, K) = \\text{HahnSeries}(\\mathbb{Q}, K)$ (single-variable), $\\text{MultiHahnSeries}(n+1, K) = \\text{HahnSeries}(\\mathbb{Q}, \\text{MultiHahnSeries}(n, K))$ (successor). All proved by `rfl`.",
+    "significance": "supporting",
+    "relatedConcepts": ["definitional equality", "rfl tactic", "recursive type definition", "Lean 4 pattern matching"],
+    "prerequisites": ["Lean 4 definitional equality", "rfl tactic", "MultiHahnSeries definition"]
+  },
+  {
+    "id": "puiseux-zero-instance",
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 103, "endLine": 113 },
+    "type": "technique",
+    "title": "Zero Instance by Depth Induction",
+    "content": "The Zero instance for MultiHahnSeries n K is proved by induction on n. Base case: MultiHahnSeries 0 K = K (which has Zero by hypothesis `‹Zero K›`). Inductive step: assume Zero (MultiHahnSeries n K) via `ih`; add it as a local instance via `haveI : Zero (MultiHahnSeries n K) := ih`; then `exact inferInstance` — Mathlib's Zero instance for HahnSeries is found by typeclass inference. The `haveI` pattern is essential: Lean cannot automatically apply the induction hypothesis as a typeclass instance without this explicit local introduction.",
+    "mathContext": "Zero structure propagates: if $R$ has Zero, then $\\text{HahnSeries}(\\mathbb{Q}, R)$ has Zero (the zero Hahn series with empty support). By induction: $\\text{MultiHahnSeries}(n, K)$ has Zero for all $n$ when $K$ has Zero.",
+    "significance": "supporting",
+    "relatedConcepts": ["Zero typeclass", "haveI pattern in Lean 4", "typeclass inference", "inductive instance proofs"],
+    "prerequisites": ["Lean 4 instance proofs", "haveI tactic", "HahnSeries.instZero in Mathlib", "induction on ℕ"]
   },
   {
     "id": "ann-commring-induction",
-    "line": 123,
-    "endLine": 129,
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 115, "endLine": 129 },
     "type": "technique",
     "title": "CommRing Instance by Depth Induction",
-    "body": "The CommRing instance for MultiHahnSeries n K is proved by induction on n. The base case is K (already a CommRing by hypothesis). The inductive step works as follows: given the inductive hypothesis ih : CommRing (MultiHahnSeries n K), we add it as a local instance via `haveI`, then `exact inferInstance` — Lean's typeclass system automatically finds CommRing (HahnSeries ℚ (MultiHahnSeries n K)) from Mathlib's CommRing instance for HahnSeries. The pattern `haveI : CommRing ... := ih; exact inferInstance` is the canonical Lean 4 idiom for propagating instances through type-level recursion.",
-    "math": "R \\text{ CommRing} \\implies \\text{HahnSeries}(\\mathbb{Q}, R) \\text{ CommRing}"
+    "content": "The CommRing instance for MultiHahnSeries n K is proved by induction on n. The base case is K (already a CommRing by hypothesis). The inductive step works as follows: given the inductive hypothesis ih : CommRing (MultiHahnSeries n K), we add it as a local instance via `haveI`, then `exact inferInstance` — Lean's typeclass system automatically finds CommRing (HahnSeries ℚ (MultiHahnSeries n K)) from Mathlib's CommRing instance for HahnSeries. The pattern `haveI : CommRing ... := ih; exact inferInstance` is the canonical Lean 4 idiom for propagating instances through type-level recursion.",
+    "mathContext": "$R$ CommRing $\\Rightarrow \\text{HahnSeries}(\\mathbb{Q}, R)$ CommRing. By induction: $\\text{MultiHahnSeries}(n, K)$ is a CommRing for all $n \\geq 0$ when $K$ is a CommRing. The tower $K \\subset K\\{\\{x_1\\}\\} \\subset \\cdots$ consists of commutative rings at every level.",
+    "significance": "key",
+    "relatedConcepts": ["CommRing typeclass", "haveI in Lean 4", "HahnSeries.instCommRing", "typeclass propagation through iteration"],
+    "prerequisites": ["CommRing definition", "Lean 4 inductive proofs", "haveI pattern", "HahnSeries.instCommRing in Mathlib"]
   },
   {
     "id": "ann-ismulti-predicate",
-    "line": 148,
-    "endLine": 156,
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 145, "endLine": 156 },
     "type": "definition",
     "title": "IsMultiPuiseuxSeries: Levelwise Common-Denominator Condition",
-    "body": "The IsMultiPuiseuxSeries predicate characterizes which elements of MultiHahnSeries n K are genuine Puiseux series (as opposed to general Hahn series). At level 0 the condition is vacuous (True). At level n+1, two conditions must hold: (1) the outer exponents have a common denominator d — all elements of f.support are of the form k/d for integer k; (2) every coefficient f.coeff q is recursively a multi-Puiseux series at level n. This mirrors the mathematical definition: a multivariate Puiseux series is one where you can substitute xᵢ = tᵢ^(1/dᵢ) for suitable integers dᵢ to get a formal Laurent series.",
-    "math": "\\text{IsMultiPuiseux}(n+1, f) \\iff (\\exists d, \\forall q \\in \\text{supp}(f), q \\in d^{-1}\\mathbb{Z}) \\wedge (\\forall q, \\text{IsMultiPuiseux}(n, f_q))"
+    "content": "The IsMultiPuiseuxSeries predicate characterizes which elements of MultiHahnSeries n K are genuine Puiseux series (as opposed to general Hahn series). At level 0 the condition is vacuous (True). At level n+1, two conditions must hold: (1) the outer exponents have a common denominator d — all elements of f.support are of the form k/d for integer k; (2) every coefficient f.coeff q is recursively a multi-Puiseux series at level n. This mirrors the mathematical definition: a multivariate Puiseux series is one where you can substitute xᵢ = tᵢ^(1/dᵢ) for suitable integers dᵢ to get a formal Laurent series.",
+    "mathContext": "$\\text{IsMultiPuiseux}(n+1, f) \\iff \\left(\\exists d \\in \\mathbb{N}^+,\\, \\forall q \\in \\text{supp}(f),\\, q \\in d^{-1}\\mathbb{Z}\\right) \\wedge \\left(\\forall q \\in \\mathbb{Q},\\, \\text{IsMultiPuiseux}(n, f_q)\\right)$.",
+    "significance": "key",
+    "relatedConcepts": ["Puiseux series support condition", "common denominator", "Hahn series coefficients", "recursive predicate in Lean 4"],
+    "prerequisites": ["HahnSeries.support", "HahnSeries.coeff", "PNat (positive naturals)", "recursive def in Lean 4"]
+  },
+  {
+    "id": "puiseux-base-case",
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "technique",
+    "title": "isMultiPuiseux_base: Base Field Elements Are Trivially Puiseux",
+    "content": "At level 0, IsMultiPuiseuxSeries 0 a = True for any a : K. The proof is simply `trivial`. This is the degenerate case: elements of the base field K have no series structure, no support conditions to satisfy, and no recursive levels. The theorem establishes the foundation of the inductive predicate — without it, the recursion would have no base case. In a practical formalization, this trivial case is important because it allows the predicate to terminate cleanly when propagated down through all levels of the iteration.",
+    "mathContext": "Base field elements $a \\in K = \\text{MultiHahnSeries}(0, K)$ satisfy $\\text{IsMultiPuiseux}(0, a) = \\top$ (vacuously true). No support condition applies at depth 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial tactic", "inductive predicate base cases", "True proposition in Lean 4"],
+    "prerequisites": ["IsMultiPuiseuxSeries definition", "Lean 4 trivial tactic", "recursive predicate base cases"]
   },
   {
     "id": "ann-zero-proof",
-    "line": 166,
-    "endLine": 179,
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 163, "endLine": 179 },
     "type": "technique",
     "title": "Proving Zero is Multi-Puiseux: Empty Support Vacuity",
-    "body": "The proof that 0 is a multi-Puiseux series at every level uses induction on n. The base case is trivial. For the inductive step, we construct the pair: (1) the common-denominator witness d = 1, with the proof that f.support is empty (since f = 0, `simp at hq` closes this); (2) the recursive condition: each coefficient of 0 is also 0, and `HahnSeries.coeff_zero` rewrites it, then `exact ih` applies the inductive hypothesis. This pattern — `simp at hq` for empty support vacuity and `HahnSeries.coeff_zero` for zero coefficients — recurs throughout Hahn series proofs.",
-    "math": "\\text{IsMultiPuiseux}(n, 0) \\text{ for all } n, \\text{ since } \\text{supp}(0) = \\emptyset"
+    "content": "The proof that 0 is a multi-Puiseux series at every level uses induction on n. The base case is trivial. For the inductive step, we construct the pair: (1) the common-denominator witness d = 1, with the proof that f.support is empty (since f = 0, `simp at hq` closes this); (2) the recursive condition: each coefficient of 0 is also 0, and `HahnSeries.coeff_zero` rewrites it, then `exact ih` applies the inductive hypothesis. This pattern — `simp at hq` for empty support vacuity and `HahnSeries.coeff_zero` for zero coefficients — recurs throughout Hahn series proofs.",
+    "mathContext": "$\\text{IsMultiPuiseux}(n, 0) $ for all $n$: the zero Hahn series has empty support $\\text{supp}(0) = \\emptyset$, so the common-denominator condition holds vacuously with $d = 1$; each coefficient $0_q = 0$ satisfies the inner condition by induction.",
+    "significance": "supporting",
+    "relatedConcepts": ["HahnSeries.coeff_zero", "empty support", "simp at hypothesis", "PNat witness d=1"],
+    "prerequisites": ["HahnSeries.support_zero", "HahnSeries.coeff_zero", "refine tactic", "letI for local instances"]
   },
   {
     "id": "ann-mathlib-gap",
-    "line": 197,
-    "endLine": 213,
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 181, "endLine": 213 },
     "type": "context",
     "title": "Mathlib Gap: IsAlgClosed for HahnSeries",
-    "body": "The main algebraic closure theorem — if K is algebraically closed and has characteristic 0, then MultiHahnSeries n K is algebraically closed — is described in comments rather than formalized. The proof by induction on n is mathematically clear: the base case is K (algebraically closed by hypothesis); the inductive step needs Puiseux's theorem in the form 'HahnSeries ℚ K is algebraically closed when K is algebraically closed and CharZero'. This instance does not yet exist in Mathlib 4.26. The full Puiseux theorem formalization would require >1000 lines of Newton polygon analysis, ramification theory, and Hensel's lemma variants. This file records the inductive structure so that adding the Mathlib instance will immediately complete the theorem.",
-    "math": "K \\text{ algebraically closed, char } 0 \\implies \\text{MultiHahnSeries}(n, K) \\text{ algebraically closed}"
+    "content": "The main algebraic closure theorem — if K is algebraically closed and has characteristic 0, then MultiHahnSeries n K is algebraically closed — is described in comments rather than formalized. The proof by induction on n is mathematically clear: the base case is K (algebraically closed by hypothesis); the inductive step needs Puiseux's theorem in the form 'HahnSeries ℚ K is algebraically closed when K is algebraically closed and CharZero'. This instance does not yet exist in Mathlib 4.26. The full Puiseux theorem formalization would require Newton polygon analysis, ramification theory, and Hensel's lemma variants. This file records the inductive structure so that adding the Mathlib instance will immediately complete the theorem.",
+    "mathContext": "Conjecture (open in Mathlib 4.26): $K$ alg. closed, $\\text{char}(K) = 0 \\Rightarrow \\text{HahnSeries}(\\mathbb{Q}, K)$ alg. closed. By induction: $K$ alg. closed $\\Rightarrow \\text{MultiHahnSeries}(n, K)$ alg. closed for all $n$. Proof blocked by missing Mathlib instance.",
+    "significance": "context",
+    "relatedConcepts": ["IsAlgClosed typeclass", "CharZero", "Puiseux's theorem", "Mathlib roadmap", "Hensel's lemma"],
+    "prerequisites": ["IsAlgClosed definition", "CharZero typeclass", "Newton polygon theory", "Hensel's lemma"]
+  },
+  {
+    "id": "puiseux-part5-properties",
+    "proofId": "puiseux-theorem-oq-02",
+    "range": { "startLine": 215, "endLine": 238 },
+    "type": "insight",
+    "title": "Single-Variable Recovery and Double-Iteration Stability",
+    "content": "Two structural properties of the iterated construction are stated in Part V. single_variable_is_univariate shows MultiHahnSeries 1 K = HahnSeries ℚ K — proved by rfl, confirming that the n=1 case recovers exactly the parent theorem's setting. The double-iteration stability — HahnSeries ℚ (HahnSeries ℚ K) ≅ HahnSeries ℚ K as algebraically closed fields — is documented in a comment. This is a non-trivial fact following from algebraic closure uniqueness: if HahnSeries ℚ K is algebraically closed, then applying Puiseux again gives an isomorphic field. It is NOT true as valued fields (the valuations are different), only as abstract algebraically closed fields. This is an important subtlety: the iterated construction is not redundant as a valued field tower, only as a bare algebraically closed field.",
+    "mathContext": "$\\text{MultiHahnSeries}(1, K) = \\text{HahnSeries}(\\mathbb{Q}, K)$ (definitional, proved by rfl). Stability: $\\text{HahnSeries}(\\mathbb{Q}, \\text{HahnSeries}(\\mathbb{Q}, K)) \\cong \\text{HahnSeries}(\\mathbb{Q}, K)$ as alg. closed fields (not as valued fields). Follows from uniqueness of algebraic closures.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic closure uniqueness", "valued fields vs abstract fields", "isomorphism of algebraically closed fields", "stability under iteration"],
+    "prerequisites": ["algebraic closure uniqueness theorem", "IsAlgClosed", "single-variable Puiseux theorem", "valued field structure"]
   }
 ]
