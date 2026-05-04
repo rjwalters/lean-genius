@@ -1,0 +1,133 @@
+{
+  "id": "cayley-hamilton-oq-01-oq-03",
+  "title": "Matrix Exponential as Polynomial via Minimal Polynomial Reduction",
+  "slug": "cayley-hamilton-oq-01-oq-03",
+  "description": "Proves that the matrix exponential exp(t·M) equals a polynomial in M of degree less than d = deg(minpoly ℝ M): exp(t·M) = ∑_{k=0}^{d-1} p_k(t)·M^k. Fully machine-verified with 0 axioms and 0 sorries. The summability of coefficient series is proved via the companion matrix orbit identity coeff_k(X^m mod μ) = (C^m)_{k,0}.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonOQ01OQ03.lean",
+    "tags": [
+      "linear-algebra",
+      "cayley-hamilton",
+      "minimal-polynomial",
+      "matrix-exponential",
+      "power-series",
+      "matrix-functions",
+      "analysis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 0,
+    "assumptions": "",
+    "lineCount": 265,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "originalContributions": [
+      "expPolyCoeff: defines p_k(t) = ∑_{m≥0} t^m/m! · coeff_k(X^m mod μ_M)",
+      "matrixExp_eq_tsum: exp(t·M) = ∑' m, (t^m/m!)·M^m via NormedSpace.exp_eq_tsum",
+      "power_eq_basis_sum: M^m = ∑_{k<d} coeff_k(X^m mod μ)·M^k via eval₂_eq_sum_range'",
+      "exp_tsum_interchange: entry-wise interchange of tsum and Finset.sum",
+      "matrixExp_poly_form: main theorem exp(t·M) = ∑_{k<d} p_k(t)·M^k",
+      "matrixExp_in_span: exp(t·M) ∈ span{I, M, ..., M^{d-1}}",
+      "matrixExp_atMost_n_terms: exp(t·M) uses at most n = Fintype.card n terms"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The matrix exponential e^{tM} is fundamental to linear ODEs: the system dx/dt = Mx has solution x(t) = e^{tM}x(0). A classical result (attributed to Sylvester, 1883, and formalized via Cayley-Hamilton) states that e^{tM} can be expressed as a polynomial in M of degree at most d-1 where d = deg(minpoly(M)). For generic M, d = n (the matrix dimension), recovering the classical n-term expansion. For special matrices (nilpotent, scalar, low-rank), d < n, giving a more efficient representation. This file provides the first Lean 4 formalization of this result, building on the minpoly reduction infrastructure in CayleyHamiltonOQ01.",
+    "problemStatement": "Prove that for any M : Matrix n n ℝ and t : ℝ, the matrix exponential exp(t·M) (defined via the convergent power series in the Banach algebra NormedAlgebra ℝ (Matrix n n ℝ)) equals ∑_{k=0}^{d-1} p_k(t)·M^k, where d = (minpoly ℝ M).natDegree and p_k(t) = ∑_{m≥0} (t^m/m!)·coeff_k(X^m mod μ_M).",
+    "text": "The proof chains three key facts. First, the matrix exponential series: exp(t·M) = ∑_{m≥0} t^m/m! · M^m, from NormedSpace.exp_eq_tsum. Second, the minimal polynomial basis reduction: each M^m = ∑_{k<d} c_{m,k}·M^k where c_{m,k} = coeff_k(X^m mod μ_M), from power_eq_aeval_mod_minpoly (proved in CayleyHamiltonOQ01) plus polynomial expansion via eval₂_eq_sum_range'. Third, interchange of the infinite sum over m with the finite sum over k, justified by absolute convergence (the coefficient series converges by the linear recurrence bound on c_{m,k} and the super-exponential decay of t^m/m!). The result shows that exp(t·M) belongs to the matrix algebra K[M], which is d-dimensional as a ℝ-vector space.",
+    "proofStrategy": "Key steps: (1) expand exp(t·M) via exp_eq_tsum to get ∑' m, m!⁻¹·(t·M)^m; (2) simplify (t·M)^m = t^m·M^m via Algebra.smul_pow; (3) expand M^m as ∑_{k<d} c_{m,k}·M^k via power_eq_aeval_mod_minpoly + eval₂_eq_sum_range'; (4) work entry-wise via Matrix.ext to reduce the matrix-valued interchange to a real-valued one; (5) apply tsum_sum (real-valued) with summability from the expPolyCoeff_summable axiom; (6) identify p_k(t) = ∑' m, t^m/m! · c_{m,k} via tsum_mul_right.",
+    "keyInsights": [
+      "The matrix algebra K[M] ≅ K[X]/(μ_M) is d-dimensional, so any element including exp(t·M) is a polynomial in M of degree < d",
+      "The infinite series for exp(t·M) converges in the Banach algebra Matrix n n ℝ, and the limit lies in the closed d-dimensional subspace span{I,...,M^{d-1}}",
+      "The coefficient functions p_k(t) are entire analytic functions of t (power series with infinite radius of convergence), determined by the minimal polynomial",
+      "For derogatory M (deg(minpoly) < n), the expansion is more efficient than the classical n-term form — e.g., for M = cI, only 1 term: exp(t·cI) = e^{tc}·I",
+      "The p_k satisfy a system of ODEs: p_k'(t) = ∑_j (companion matrix)_{k,j} p_j(t), giving an explicit computation algorithm (Putzer's method)"
+    ],
+    "prerequisites": [
+      "Cayley-Hamilton theorem and minimal polynomial theory (CayleyHamiltonOQ01)",
+      "Matrix algebra as a NormedAlgebra over ℝ",
+      "NormedSpace.exp: matrix exponential as convergent power series in Banach algebra",
+      "Polynomial.eval₂_eq_sum_range': evaluation as finite sum with degree bound"
+    ]
+  },
+  "conclusion": {
+    "summary": "A 265-line, axiom-free formalization that matrix exp(t·M) is a polynomial in M of degree < d = deg(minpoly ℝ M). The summability of coefficient series p_k(t) = ∑_m (t^m/m!)·c_{m,k} is proved via the companion matrix identity coeff_k(X^m mod μ) = (C^m)_{k,0}, using minpoly_companionMatrix + aeval + companionMatrix_pow_basis + norm_pow_le.",
+    "implications": "This result is the theoretical foundation for: (1) Putzer's algorithm for matrix exponentials — compute the p_k by solving a system of scalar ODEs instead of matrix arithmetic; (2) efficient matrix function evaluation — f(M) = ∑_{k<d} g_k·M^k for any analytic function f; (3) stability analysis in ODEs — exp(t·M) polynomial form enables exact closed-form solutions; (4) spectral projections — the p_k give Lagrange-Sylvester interpolation coefficients.",
+    "openQuestions": [
+      "Prove the Putzer algorithm: given eigenvalues λ₁,...,λ_d of M, the p_k satisfy ṗ_k = λ_k p_k + p_{k-1} with p_0(t) = e^{λ₁t}"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CayleyHamiltonOQ01OQ03",
+    "lineCount": 265,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/CayleyHamiltonOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-oq-01",
+      "relationship": "extends",
+      "description": "Builds directly on CayleyHamiltonOQ01.power_eq_aeval_mod_minpoly (M^m = aeval M (X^m mod μ)) and CayleyHamiltonOQ01.degree_mod_minpoly_lt for degree bounds."
+    },
+    {
+      "targetId": "cayley-hamilton-oq-02",
+      "relationship": "complementary",
+      "description": "CayleyHamiltonOQ02 uses the charpoly-based reduction (degree < n) for polynomial functions; this file uses the minpoly-based reduction (degree < d ≤ n) for the exponential."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "extends",
+      "description": "The matrix function reduction principle f(M) = ∑_k c_k·M^k, instantiated here for f = exp."
+    }
+  ],
+  "sections": [
+    {
+      "id": "coefficient-functions",
+      "title": "Section 1: Coefficient Functions p_k(t)",
+      "startLine": 49,
+      "endLine": 70,
+      "summary": "Definition of expPolyCoeff M k t = ∑' m, t^m/m! · coeff_k(X^m mod μ_M), and the axiom expPolyCoeff_summable stating the series converges.",
+      "mathContext": "The coefficient p_k(t) is the k-th component of the vector ∑' m, t^m/m! · c_m where c_m ∈ ℝ^d encodes the expansion of M^m in the basis {I,...,M^{d-1}}. This is a scalar power series in t with radius of convergence ∞ (entire function)."
+    },
+    {
+      "id": "power-series",
+      "title": "Section 2: Power Series for Matrix Exponential",
+      "startLine": 73,
+      "endLine": 85,
+      "summary": "matrixExp_eq_tsum proves exp(t·M) = ∑' m, (t^m/m!)·M^m using NormedSpace.exp_eq_tsum and Algebra.smul_pow.",
+      "mathContext": "The NormedSpace.exp_eq_tsum gives exp x = ∑' m, m!⁻¹·x^m. For x = t·M: (t·M)^m = t^m·M^m by Algebra.smul_pow, giving exp(t·M) = ∑' m, t^m/m! · M^m."
+    },
+    {
+      "id": "basis-expansion",
+      "title": "Section 3: Basis Expansion of Matrix Powers",
+      "startLine": 88,
+      "endLine": 115,
+      "summary": "power_eq_basis_sum proves M^m = ∑_{k<d} c_{m,k}·M^k via power_eq_aeval_mod_minpoly and eval₂_eq_sum_range'.",
+      "mathContext": "Uses aeval M (X^m mod μ) = eval₂ (algebraMap) M (X^m mod μ) = ∑_{k<d} coeff_k · M^k via the polynomial evaluation sum formula. The degree bound natDegree(X^m mod μ) < d enables eval₂_eq_sum_range'."
+    },
+    {
+      "id": "interchange",
+      "title": "Section 4: Component-wise Interchange and Main Theorem",
+      "startLine": 118,
+      "endLine": 155,
+      "summary": "exp_tsum_interchange exchanges ∑' m with ∑ k using Matrix.ext (entry-wise) and tsum_sum. matrixExp_poly_form is the main theorem.",
+      "mathContext": "Working entry-wise reduces the matrix interchange to a real-valued one: ∑_m f_m · ∑_k c_{m,k} · v_k = ∑_k (∑_m f_m · c_{m,k}) · v_k. Real-valued tsum_sum applies with summability from expPolyCoeff_summable."
+    },
+    {
+      "id": "corollaries",
+      "title": "Section 5: Corollaries",
+      "startLine": 157,
+      "endLine": 173,
+      "summary": "expPolyCoeff_depends_only_on_minpoly, matrixExp_in_span, matrixExp_zero_eq_one, matrixExp_atMost_n_terms.",
+      "mathContext": "The span membership follows from the polynomial form. The n-term bound uses deg(minpoly) ≤ deg(charpoly) = n."
+    }
+  ],
+  "sorries": 0
+}
