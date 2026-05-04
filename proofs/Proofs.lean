@@ -336,6 +336,7 @@ import Proofs.CauchySchwarzIntegralOQ03
 import Proofs.CauchySchwarzOQ01
 import Proofs.CauchySchwarzOQ01OQ01
 import Proofs.CauchySchwarzOQ01OQ01OQ01
+import Proofs.CauchySchwarzOQ01OQ01OQ02
 import Proofs.CauchySchwarzOQ01OQ02
 import Proofs.CauchySchwarzOQ01OQ03
 import Proofs.CauchySchwarzOQ01OQ04
