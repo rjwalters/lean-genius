@@ -1,71 +1,73 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-03T20:13:11+02:00
-**Iteration**: 3
+**Since**: 2026-05-04T00:00:00Z
+**Iteration**: 4
 
 ## Current Focus
 
-Proving `gnwProb_key` (GNW 1979 KEY theorem) — the SOLE remaining sorry in
-`BallotProblemOQ03OQ01OQ02Helpers.lean` (line 13872). This sorry blocks
-`hook_walk_identity_gnw`, which is needed for the ≥10×10 non-rectangular case of the
-Hook-Length Formula.
+Proving `gnwProb_key` (GNW 1979 KEY theorem) — sole remaining sorry in
+`BallotProblemOQ03OQ01OQ02Helpers.lean`. Two sorrys remain after this session's work.
 
-## State of origin/main (as of 2026-05-03, commit c538eb09968)
+## Session 39 Progress (2026-05-04)
 
-All supporting lemmas now proved (PR #15288, merged):
-- `strictHookCells` definition (Finset.Ico + image)
-- `strictHookCells_mem`, `strictHookCells_card`, `strictHookCells_nonempty`, `strictHookCells_hookLen_lt`
-- `gnwProb`: noncomputable definition
-- `gnwProb_sum_corners`: Sigma_c gnwProb(c,K,x) = 1 for x in mu, K >= hookLen(x) **PROVED**
-- `hookLength_isCorner_one`: corners have hookLength = 1 **PROVED**
-- `gnwProb_step`: gnwProb(K+1,x) = gnwProb(K,x) for K >= hookLen(x) **PROVED**
-- `gnwProb_stable`: gnwProb(K,x) = gnwProb(hookLen(x),x) for K >= hookLen(x) **PROVED**
-- `hook_walk_identity_gnw`: complete (calls gnwProb_key) **PROVED modulo gnwProb_key**
+Partial proof written in PR `fix/ballot-gnw-key`. Split gnwProb_key into two cases:
 
-**File**: BallotProblemOQ03OQ01OQ02Helpers.lean, 13,898 lines
+### Single-Corner Case (rectangle): PARTIALLY PROVED
+- **gnwProb = 1 everywhere**: PROVED via gnwProb_sum_corners
+  - corners(mu) = {c} → Finset.sum_eq_single_of_mem + Subtype.ext gives gnwProb = 1
+  - Sum = mu.card: proved via sum_congr + sum_const_one
+- **Hook ratio = mu.card**: SORRY with detailed sketch
+  - By hookProd_ratio_formula: ratio = arm_prod * leg_prod
+  - Single-corner implies rowLen(r) = c.2+1 (r ≤ c.1) and colLen(s) = c.1+1 (s ≤ c.2)
+  - Proof sketch: strict decrease in rowLen before c.1 → second corner (contradiction)
+  - Then hookLength(c.1, s) = c.2-s+1, hookLength(r, c.2) = c.1-r+1
+  - prod_div_telescope gives arm_prod = c.2+1, leg_prod = c.1+1
+  - (c.2+1)*(c.1+1) = mu.card (counting rectangle cells)
+  - Estimated: ~70 Lean lines
 
-## Mathematical Analysis of gnwProb_key
+### Multi-Corner Case: SORRY
+- Requires GNW 1979 exchange argument
+- Key insight: H(mu)/H(mu\c) = H(mu\c')/H(mu\{c,c'}) for any corner c'≠c
+  (proved above as hookProd ratio invariance)
+- Exchange implies F(mu,c) relates to F(mu\c',c) via induction
+- Estimated: ~150-200 Lean lines
 
-Statement: `Sigma_{x in mu} gnwProb mu c (hookLength x) x = hookProd(mu) / hookProd(mu\c)`
+## State of origin/main (as of 2026-05-04, commit e5282f6792c)
 
-### Base Case (|mu|=1): hookLen(c)=1, gnwProb=1, ratio=1. TRIVIAL.
+All supporting lemmas proved (previous sessions):
+- strictHookCells, gnwProb, gnwProb_sum_corners, gnwProb_step, gnwProb_stable: **PROVED**
+- hook_walk_identity_gnw: **PROVED modulo gnwProb_key**
 
-### Rectangle Case (single corner c):
-- gnwProb_sum_corners with corners(mu)={c} gives gnwProb(mu,c,K,x) = 1 for all x
-- Sum = |mu|
-- hookProd(mu)/hookProd(mu\c) = |mu| by hook_walk_identity_rectYD
-
-### Non-Rectangle Case (multiple corners, |mu|>=3):
-Non-rectangular Young diagrams have >=2 corners.
-Requires the GNW 1979 exchange argument.
-
-**Key observation**: The naive exchange identity is FALSE:
-gnwProb_mu(c,K,x) ≠ gnwProb_{mu\c'}(c,K,x) in general.
-Counterexample: mu={(0,0),(0,1),(1,0)}, c=(1,0), c'=(0,1), x=(0,0):
-  - mu: gnwProb = 1/2 (H*(0,0)={(0,1),(1,0)}, uniform)
-  - mu\c': gnwProb = 1 (H*(0,0)={(1,0)}, forced)
-
-The actual GNW 1979 proof is more subtle. Required infrastructure:
-1. preHook(c) = arm-row + leg-col cells of c in mu
-2. hookProd ratio = Pi_{y in preHook(c)} hookLen(y)/(hookLen(y)-1)
-3. Induction on |mu| with exchange argument (~200-300 Lean lines)
+**File**: BallotProblemOQ03OQ01OQ02Helpers.lean, 13,935 lines (after this session)
 
 ## Blockers
 
-- GNW 1979 exchange argument: requires reading the paper carefully
-- No shortcut: hook_walk_identity cannot be proved independently (it IS the HLF)
-- Estimated effort: 200-300 lines of non-trivial Lean formalization
+**Sorry 1** (h_ratio_card, single-corner case):
+- Need: single-corner → rowLen/colLen const → hookLength formula → telescoping product
+- Available tools: rowLen_anti, colLen_anti (from YoungDiagram), prod_div_telescope
+- Obstacle: rectangle lemmas (arm_prod_rectYD etc.) are private in main file, not accessible
+- Solution: prove rectangle characterization from scratch in Helpers (~70 lines)
+
+**Sorry 2** (multi-corner case):
+- GNW 1979 exchange argument: ~150-200 lines
+- Key step: relate F(mu,c) to F(mu\c',c) via hook weight changes
+- The pointwise exchange F_x(mu,c) = F_x(mu\c',c) is FALSE (verified by counterexample)
+- Need the TOTAL sum exchange, which uses the hookProd ratio invariance
 
 ## Next Action
 
-1. Read GNW 1979 paper to understand the exchange argument
-2. Consider Aristotle submission (HARD sorry with known proof)
-3. Alternatively: prove rectangle case via gnwProb_sum_corners + hook_walk_identity_rectYD
-   as a partial contribution before tackling non-rectangle case
+1. **h_ratio_card proof** (~70 lines): prove single-corner → rectangle structure + telescoping
+   - Lemma: no strict decrease in rowLen/colLen before c.1/c.2 in single-corner mu
+   - Use prod_div_telescope (available in Helpers) to telescope the arm/leg products
+   - Counting argument for mu.card = (c.1+1)*(c.2+1)
+
+2. **Multi-corner case** (~150-200 lines): GNW 1979 exchange
+   - Consider submitting to Aristotle (HARD sorry, known proof)
+   - Or prove directly using the hookProd ratio invariance as a lemma
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 2
-- Approaches tried: 2 (GNW induction sketch, direct exchange identity -- FALSE)
+- Total attempts: 4
+- Current approach attempts: 4
+- Approaches tried: 4 (GNW sketch, direct exchange FALSE, partial proof structure, current)
