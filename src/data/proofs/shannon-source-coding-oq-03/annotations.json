@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 1, "endLine": 54 },
+    "type": "context",
+    "title": "Module Header: AEP Problem Statement and Development History",
+    "content": "The module opens with the open question from `shannon-source-coding-oq-03`: can the AEP be formalized using Mathlib's probability infrastructure? It defines empirical entropy empEnt(x) = -(1/n)∑log p(xᵢ) = -(1/n)log P(x₁,...,xₙ) and states the McMillan (1953) theorem: P(|empEnt - H| > ε) ≤ Var[-log p]/nε². The 'Mathematical Status' section at lines 36-40 is a historical artifact recording the original sorry structure — noting that `expVal_marginal` and `empEnt_variance` were unproved when the file was first committed. These sorries were subsequently eliminated in PR #15161. The module header connects AEP to source coding: the typical set T_ε^(n) has |T_ε| ≤ exp(n(H+ε)), enabling compression to rate H(p).",
+    "mathContext": "AEP: $\\Pr\\left(\\left|\\frac{-\\log P(\\mathbf{X}_1^n)}{n} - H(p)\\right| > \\varepsilon\\right) \\leq \\frac{\\mathrm{Var}_p[-\\log p(X)]}{n\\varepsilon^2}$. Empirical entropy: $\\mathrm{empEnt}(\\mathbf{x}) = -\\frac{1}{n}\\sum_{i=1}^n \\log p(x_i)$. McMillan's theorem (1953) first proved this almost surely; the Chebyshev approach here gives explicit finite-$n$ rates.",
+    "significance": "context",
+    "relatedConcepts": ["Asymptotic Equipartition Property", "McMillan theorem", "typical sequences", "source coding theorem", "empirical entropy"],
+    "prerequisites": ["Shannon entropy H(p) = -∑ p log p", "discrete memoryless source model", "Chebyshev concentration inequality"]
+  },
+  {
     "id": "ann-discrete-dist",
     "proofId": "shannon-source-coding-oq-03",
     "range": { "startLine": 59, "endLine": 80 },
@@ -178,5 +190,17 @@
     "significance": "context",
     "relatedConcepts": ["binary entropy", "bits vs nats", "uniform distribution", "maximum entropy"],
     "prerequisites": ["Fin.sum_univ_two", "Real.log_one_div", "uniformBin structure"]
+  },
+  {
+    "id": "ann-aep-summary",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 446, "endLine": 476 },
+    "type": "insight",
+    "title": "Section VIII: Bug Fix Record — Variance vs Mean in Chebyshev",
+    "content": "The closing summary documents a subtle proof repair that reveals a common pitfall in formalizing concentration inequalities. The original `aep_concentration` proof used `rw [expVal_empEnt]`, which rewrites E[empEnt] = H(p) — the mean identity. But Chebyshev's inequality bounds P(|X - μ| > ε) ≤ Var[X]/ε² — it needs the variance, not the mean. The fix was `rw [empEnt_variance]`, which rewrites E[(empEnt - H)²] = logVar/n. The original rewrite would have introduced H into the expression without actually bounding the fluctuations. This is a pedagogically important bug: the mean and variance are both correct equalities, but only the variance is relevant for the Chebyshev application.",
+    "mathContext": "Wrong: `rw [expVal_empEnt]` uses $\\mathbb{E}[\\mathrm{empEnt}] = H$ — this rewrites $H$ in the expression but does not bound $\\mathrm{Var}[\\mathrm{empEnt}]$. Correct: `rw [empEnt_variance]` uses $\\mathbb{E}[(\\mathrm{empEnt}-H)^2] = \\mathrm{logVar}/n$, which IS the numerator in Chebyshev: $\\Pr(|\\mathrm{empEnt}-H| > \\varepsilon) \\leq \\mathbb{E}[(\\mathrm{empEnt}-H)^2]/\\varepsilon^2 = \\mathrm{logVar}/(n\\varepsilon^2)$.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev's inequality", "variance vs mean", "empEnt_variance", "expVal_empEnt", "concentration proof patterns"],
+    "prerequisites": ["chebyshev_finite (variance bound)", "empEnt_variance (E[(empEnt-H)²]=logVar/n)", "expVal_empEnt (E[empEnt]=H)"]
   }
 ]

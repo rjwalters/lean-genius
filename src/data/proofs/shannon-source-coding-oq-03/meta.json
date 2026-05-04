@@ -64,7 +64,8 @@
       "The `Fintype.prod_sum` identity is the algebraic core: it converts a sum over all n-length sequences into a product of independent per-symbol sums, formalizing the i.i.d. assumption",
       "empEnt is a sum of n i.i.d. random variables Zᵢ = -log p(Xᵢ), each with E[Zᵢ] = H(p). The LLN character of empEnt → H follows immediately from this representation",
       "The Chebyshev approach gives explicit finite-n bounds (not just asymptotic convergence), making it ideal for source coding applications where blocklength matters",
-      "The typical set size bound |T_ε^(n)| ≤ exp(n(H+ε)) is the achievability half of Shannon's source coding theorem: sequences outside T_ε have vanishing probability, so compressing only typical sequences suffices"
+      "The typical set size bound |T_ε^(n)| ≤ exp(n(H+ε)) is the achievability half of Shannon's source coding theorem: sequences outside T_ε have vanishing probability, so compressing only typical sequences suffices",
+      "**Variance not mean drives Chebyshev**: The crucial proof repair was that `aep_concentration` requires `empEnt_variance` (rewriting E[(empEnt−H)²] = logVar/n) rather than `expVal_empEnt` (which rewrites E[empEnt] = H). Chebyshev bounds variance — using the mean rewrite produces a tautology that never establishes concentration"
     ],
     "prerequisites": [
       "Shannon entropy H(X) = -∑ p(x) log p(x)",
@@ -74,6 +75,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Problem Statement and Proof Architecture",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring states OQ-03, defines AEP and empirical entropy, outlines Chebyshev proof strategy, and explains connection to source coding. Historical note: Mathematical Status section records the original sorry structure before variance proof was completed.",
+      "mathContext": "AEP: $P\\left(\\left|\\frac{-\\log P(\\mathbf{X})}{n} - H(p)\\right| > \\varepsilon\\right) \\leq \\frac{\\mathrm{Var}_p[-\\log p(X)]}{n\\varepsilon^2} \\to 0$. Typical set: $T_\\varepsilon^{(n)} = \\{\\mathbf{x} : |\\mathrm{empEnt}(\\mathbf{x}) - H| \\leq \\varepsilon\\}$, $|T_\\varepsilon^{(n)}| \\leq e^{n(H+\\varepsilon)}$."
+    },
     {
       "id": "distributions",
       "title": "Probability Distributions",
@@ -129,6 +138,14 @@
       "endLine": 445,
       "summary": "uniformBin (fair Bernoulli), uniformBin_entropy: H(uniformBin) = log 2. Concrete instance confirming abstract definitions.",
       "mathContext": "The fair coin distribution $p(0) = p(1) = 1/2$ on $\\text{Fin}\\,2$ satisfies $H = -2 \\cdot (1/2) \\log(1/2) = \\log 2 \\approx 0.693$. The $\\texttt{native\\_decide}$ verification confirms the discrete probability axioms and gives a sanity check that the abstract AEP applies to the simplest non-trivial example."
+    },
+    {
+      "id": "aep-summary",
+      "title": "Section VIII: AEP Summary and Bug Fix Record",
+      "startLine": 446,
+      "endLine": 476,
+      "summary": "Closing summary enumerates all 7 proved theorems. Records key bug fix: aep_concentration originally used rw [expVal_empEnt] (wrong — rewrites E[empEnt]=H) but required rw [empEnt_variance] (correct — rewrites E[(empEnt-H)²]=logVar/n).",
+      "mathContext": "Bug: `rw [expVal_empEnt]` rewrites $\\mathbb{E}[\\mathrm{empEnt}] = H$ (the mean). Fix: `rw [empEnt_variance]` rewrites $\\mathbb{E}[(\\mathrm{empEnt}-H)^2] = \\mathrm{logVar}/n$ (the variance). Chebyshev's inequality requires the variance, not the mean."
     }
   ],
   "crossReferences": [
