@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ann-weierstrass-equation",
+    "type": "insight",
+    "title": "The Weierstrass Equation of Curve 389a",
+    "content": "Curve 389a has the Weierstrass equation y² + y = x³ + x² - 2x, corresponding to Weierstrass coefficients [a₁,a₂,a₃,a₄,a₆] = [0,1,1,-2,0]. This is the smallest-conductor elliptic curve of rank 2 (conductor N = 389, a prime). The equation is not in short Weierstrass form (y² = x³ + ax + b) because the a₂ and a₃ coefficients are nonzero.",
+    "tags": ["weierstrass-model", "curve-389a", "conductor"]
+  },
+  {
+    "id": "ann-group-law-verification",
+    "type": "technique",
+    "title": "Exact Group Law Computation via Weierstrass Formulas",
+    "content": "The group law on curve 389a is computed using the exact Weierstrass formulas. For the doubling formula with slope λ = (3x₁² + 2x₁ - 2)/(2y₁+1), the x-coordinate of [2]P is x₂ = λ² - 1 - 2x₁, and the y-coordinate is y₂ = λ(x₁-x₂) - y₁ - 1. All computations are over ℚ and verified by norm_num — giving machine-checked rational arithmetic.",
+    "tags": ["group-law", "weierstrass-formula", "norm_num", "rational-arithmetic"]
+  },
+  {
+    "id": "ann-generators",
+    "type": "insight",
+    "title": "The Rank-2 Generators P₁ = (0,0) and P₂ = (-1,1)",
+    "content": "The two generators P₁ = (0,0) and P₂ = (-1,1) of E(ℚ) ≅ ℤ² are verified to lie on the curve 389a by checking the Weierstrass equation: 0² + 0 = 0 and 1² + 1 = 2 = (-1)³ + 1 + 2. Their linear independence over ℤ is encoded in the positive definiteness of the height pairing matrix (det H > 0, proved in OQ-06).",
+    "tags": ["generators", "rational-points", "linear-independence"]
+  },
+  {
+    "id": "ann-first-doublings",
+    "type": "result",
+    "title": "First Doublings: [2]P₁ = (3,5) and [2]P₂ = (10/9, -35/27)",
+    "content": "The first doublings of the generators are computed exactly using the Weierstrass doubling formula. [2]P₁ = (3,5): slope λ = -2, x₂ = (-2)² - 1 - 0 = 3, y₂ = (-2)(0-3) - 0 - 1 = 5. [2]P₂ = (10/9, -35/27): slope λ = -1/3, x₂ = 1/9 - 1 + 2 = 10/9, y₂ = (-1/3)((-1) - 10/9) - 1 - 1 = -35/27. Both results verified by norm_num.",
+    "tags": ["doubling", "rational-coordinates", "explicit-computation"]
+  },
+  {
+    "id": "ann-fourth-doubling",
+    "type": "result",
+    "title": "[4]P₁ = (114/121, -267/1331) via Iterated Doubling",
+    "content": "Applying the doubling formula to [2]P₁ = (3,5) gives [4]P₁ = (114/121, -267/1331). The slope at (3,5) is λ = (27+6-2)/11 = 31/11. Then x₂ = (31/11)² - 1 - 6 = 961/121 - 7 = 114/121, and y₂ = (31/11)(3 - 114/121) - 5 - 1 = (31/11)(249/121) - 6 = -267/1331. Note that 114 < 121 so the x-denominator 121 = 11² drives the naive height: h_x([4]P₁) = log(121).",
+    "tags": ["iterated-doubling", "height-growth", "rational-arithmetic"]
+  },
+  {
+    "id": "ann-height-approximations",
+    "type": "insight",
+    "title": "Naive Height Approximations vs. Néron-Tate Canonical Height",
+    "content": "The canonical height ĥ(P) is the limit ĥ(P) = lim_{n→∞} h_x([2^n]P)/4^n where h_x(P) = log(max(|x_num|, x_den)). The first two approximations for P₁ are: h_x([2]P₁)/4 = log(3)/4 ≈ 0.275 and h_x([4]P₁)/16 = log(121)/16 ≈ 0.300. The axiomatized value h₁₁ ≈ 0.7622 is much larger. The slow convergence arises from large local height corrections at p = 389 (the conductor prime), which the naive x-coordinate height does not capture.",
+    "tags": ["canonical-height", "neron-tate-height", "local-corrections", "convergence"]
+  },
+  {
+    "id": "ann-height-gap",
+    "type": "insight",
+    "title": "Why the Naive Height Approximations Undershoot",
+    "content": "For curve 389a with conductor 389, the Néron-Tate height function decomposes as ĥ(P) = h_x(P) + Σ_v λ_v(P) where the sum is over all places v (including the archimedean place and all primes). For P₁ = (0,0), the local height contribution at p = 389 is large and positive, making ĥ(P₁) ≈ 0.7622 much larger than the naive approximations near 0.275-0.300. Computing the exact canonical height requires Néron function theory or the AGM algorithm.",
+    "tags": ["local-heights", "neron-functions", "archimedean-place", "p-adic-heights"]
+  },
+  {
+    "id": "ann-addition-formula",
+    "type": "technique",
+    "title": "P₁ + P₂ = (1,0) via the Weierstrass Addition Formula",
+    "content": "For distinct points P₁ = (0,0) and P₂ = (-1,1), the addition formula gives slope λ = (1-0)/(-1-0) = -1, then x₃ = (-1)² - 1 - 0 - (-1) = 1, and y₃ = (-1)(0-1) - 0 - 1 = 0. Thus P₁ + P₂ = (1,0). Verification: 0² + 0 = 0 = 1³ + 1² - 2. This shows the generators are not negatives of each other (which would require y₃ = -y₁ - 1 = -1 for x₃ = 0).",
+    "tags": ["addition-formula", "rational-points", "group-law"]
+  }
+]
