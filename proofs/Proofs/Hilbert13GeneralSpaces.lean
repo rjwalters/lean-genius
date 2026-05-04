@@ -36,7 +36,8 @@ The answer involves **covering dimension**:
 | Component | Status |
 |-----------|--------|
 | Covering dimension definition | Defined |
-| Dimension of [0,1]^n = n | Axiomatized (deep topological result) |
+| Dimension of singleton spaces (n=0) | Proved (covDimLE_of_unique) |
+| Dimension of [0,1]^n = n for n ≥ 1 | Axiomatized (deep topological result) |
 | Generalized KA for compact metric spaces | Axiomatized |
 | Sternfeld's characterization | Axiomatized |
 | Dimension monotonicity under embedding | Proved |
@@ -143,20 +144,56 @@ PART III: DIMENSION OF STANDARD SPACES
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-!
+### Dimension of Singleton Spaces
+
+A space with a unique element has covering dimension 0. This is the base case
+for the dimension calculation, and covers [0,1]^0 = {*}.
+-/
+
+/-- A space with a unique element has covering dimension ≤ 0.
+
+This is the base case: for any finite open cover of a singleton space,
+we can use a single open set as a refinement of order 1 = 0 + 1. -/
+theorem covDimLE_of_unique {X : Type*} [TopologicalSpace X] [Unique X] :
+    covDimLE X 0 := by
+  intro ι _ cover hopen hcovers
+  obtain ⟨i₀, hi₀⟩ := hcovers default
+  exact ⟨Unit, inferInstance, fun _ => Set.univ,
+    fun _ => isOpen_univ,
+    fun x => ⟨(), Set.mem_univ x⟩,
+    fun () => ⟨i₀, fun x _ => Unique.eq_default x ▸ hi₀⟩,
+    fun x => by
+      show Finset.card (Finset.univ.filter (fun _ : Unit => x ∈ Set.univ)) ≤ 0 + 1
+      calc Finset.card (Finset.univ.filter (fun _ : Unit => x ∈ Set.univ))
+          ≤ Finset.card (Finset.univ (α := Unit)) := Finset.card_filter_le _ _
+        _ = 1 := by simp [Finset.card_univ]⟩
+
+/-!
 ### Dimension of [0,1]^n
 
 The unit cube [0,1]^n has covering dimension exactly n. This is a deep result
-in dimension theory, requiring the Lebesgue covering theorem (for the lower bound)
-and explicit construction of refinements (for the upper bound).
+in dimension theory. The n = 0 case is proved above (singleton space).
+For n ≥ 1, we axiomatize the upper bound.
 -/
 
-/-- The unit cube [0,1]^n has covering dimension ≤ n.
+/-- The unit cube [0,1]^n has covering dimension ≤ n for n ≥ 1.
 
 **Why axiomatized**: The upper bound requires an explicit construction of
 refinements using coordinate hyperplane decompositions, and careful control
 of the combinatorics of overlapping open sets. The full proof spans
-several pages in Engelking's "Dimension Theory". -/
-axiom unitCube_covDimLE (n : ℕ) : covDimLE (Fin n → Set.Icc (0 : ℝ) 1) n
+several pages in Engelking's "Dimension Theory".
+
+The n = 0 case is handled by `covDimLE_of_unique` since [0,1]^0 is a singleton. -/
+axiom unitCube_covDimLE_pos (n : ℕ) (hn : 0 < n) : covDimLE (Fin n → Set.Icc (0 : ℝ) 1) n
+
+/-- The unit cube [0,1]^n has covering dimension ≤ n.
+
+The n = 0 case is proved directly (singleton space). For n ≥ 1, this follows
+from `unitCube_covDimLE_pos`. -/
+theorem unitCube_covDimLE (n : ℕ) : covDimLE (Fin n → Set.Icc (0 : ℝ) 1) n :=
+  match n with
+  | 0 => covDimLE_of_unique
+  | n + 1 => unitCube_covDimLE_pos (n + 1) (Nat.succ_pos n)
 
 /-- The unit cube [0,1]^n does NOT have covering dimension ≤ n-1 for n ≥ 1.
 
