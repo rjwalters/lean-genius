@@ -1,0 +1,44 @@
+[
+  {
+    "id": "annotation-aks-axiom",
+    "line": 42,
+    "type": "insight",
+    "body": "The AKS bound C·k³/(log k)² improves on the classical C(k+2,3) ≈ k³/6 by a (log k)²/6 factor. For k=100: classical bound is 171700; AKS bound is ≈ 100³/(log 100)² = 10⁶/21.2 ≈ 47,170·C. The log factor makes a significant difference for large k.",
+    "tags": ["probabilistic-method", "upper-bound", "asymptotic"]
+  },
+  {
+    "id": "annotation-mv-axiom",
+    "line": 52,
+    "type": "insight",
+    "body": "The Mattheus-Verstraëte 2024 result used Hermitian varieties over F_q — a construction from algebraic geometry — to build graphs with no K_4 and large clique number. This was a breakthrough: previous lower bounds used probabilistic (Bohman-Keevash triangle-free process) or algebraic (Paley graphs) constructions that gave only k^(5/2)/polylog.",
+    "tags": ["algebraic-geometry", "lower-bound", "finite-fields", "breakthrough"]
+  },
+  {
+    "id": "annotation-log-gt-one",
+    "line": 69,
+    "type": "technique",
+    "body": "Key technique: to prove log k > 1 for k ≥ 4, rewrite 1 = log(exp 1) using Real.log_exp, then apply Real.log_lt_log with exp 1 < 4 ≤ k. The bound exp 1 < 4 follows from Real.exp_one_lt_d9 (exp 1 < 2.7182...) via linarith.",
+    "tags": ["real-analysis", "log-bounds", "api-pattern"]
+  },
+  {
+    "id": "annotation-gap-ratio",
+    "line": 127,
+    "type": "mathematical",
+    "body": "The gap ratio formula (C·k³/log²k) / (c·k³/log⁴k) = C/c·log²k is a clean algebraic identity. The k³ cancels exactly, leaving only the ratio of log denominators: log⁴k / log²k = log²k. This is why both bounds being k³·(log k)^{-c} is the right framing — the polynomial part is settled.",
+    "tags": ["algebra", "gap-analysis", "polylog"]
+  },
+  {
+    "id": "annotation-open-problem",
+    "line": 168,
+    "body": "The log exponent problem: is c=2 (AKS tight), c=4 (MV tight), or some c ∈ (2,4)? For comparison, R(3,k) = Θ(k²/log k) was resolved by Kim 1995. The analogous result for R(4,k) remains open and is considered one of the central problems in extremal combinatorics.",
+    "type": "context",
+    "tags": ["open-problem", "log-exponent", "ramsey-theory"]
+  },
+  {
+    "id": "annotation-mv-polynomial-degree",
+    "line": 42,
+    "type": "mathematical",
+    "body": "Before Mattheus-Verstraëte, the best lower bound was R(4,k) = Ω(k^(5/2)/log²k), leaving a polynomial gap: the exponent was 5/2 lower vs 3 upper. MV's achievement was raising the exponent from 5/2 to 3 — confirming that the polynomial degree of R(4,k) is exactly 3. This is the deepest part of what MV proved.",
+    "tags": ["breakthrough", "polynomial-degree", "lower-bound"]
+  }
+]
