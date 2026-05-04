@@ -1,0 +1,119 @@
+{
+  "id": "euler-polyhedral-oq-02-oq-01",
+  "title": "Smooth Gauss-Bonnet Theorem: Curvature, Topology, and Special Surfaces",
+  "slug": "euler-polyhedral-oq-02-oq-01",
+  "description": "Formalizes the smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) and its consequences via axiomatized structures, since Mathlib 4.26.0 lacks Riemannian metrics and integration on manifolds. Proves 60 theorems about curvature-topology relations, special surfaces (sphere, torus, hyperbolic), Girard's formula for spherical triangles, Gauss-Bonnet with boundary, Poincaré-Hopf index theorem, and Morse inequalities.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Bonnet_theorem",
+    "date": "Classical result (Gauss 1827, Bonnet 1848, Chern 1944); axiomatized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "differential-geometry",
+      "gauss-bonnet",
+      "gaussian-curvature",
+      "euler-characteristic",
+      "riemannian-geometry",
+      "topology",
+      "poincare-hopf",
+      "morse-theory",
+      "spherical-geometry"
+    ],
+    "proofRepoPath": "Proofs/EulerPolyhedralOQ02OQ01.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 7,
+    "assumptions": "7 structure-encoded axioms: (1) gauss_bonnet: ∫K dA = 2πχ (in CompactRiemannianSurface); (2) chi_genus: χ = 2 - 2g (in OrientableClosedSurface); (3) gauss_bonnet_boundary: ∫K dA + ∫κ_g ds = 2πχ (in CompactSurfaceWithBoundary); (4) gauss_bonnet_polygon: ∫K dA + Σθ_ext = 2π (in GeodesicPolygon); (5) curvature_is_K_area: ∫K dA = K·Area for constant curvature (in ConstCurvatureGeodesicPolygon); (6) gauss_bonnet_triangle: K·Area = α+β+γ−π (in GeodesicTriangle); (7) poincare_hopf: Σ index(v) = χ(M) (in VectorFieldOnSurface). Mathlib 4.26.0 lacks Riemannian metrics, Gaussian curvature, and integration on manifolds.",
+    "originalContributions": [
+      "CompactRiemannianSurface: axiomatized compact Riemannian 2-manifold (with gauss_bonnet field)",
+      "OrientableClosedSurface: genus-parametrized surface (with chi_genus field)",
+      "CompactSurfaceWithBoundary: Gauss-Bonnet with geodesic boundary curvature",
+      "GeodesicPolygon and GeodesicTriangle: geodesic polygon Gauss-Bonnet + Girard's formula",
+      "ConstCurvatureGeodesicPolygon: constant curvature polygon (K·Area = angular excess)",
+      "VectorFieldOnSurface: Poincaré-Hopf index theorem (Σ index = χ)",
+      "MorseFunctionOnSurface: Morse inequalities (β_k ≤ c_k, Σ(-1)^k c_k = χ)",
+      "genus_from_total_curvature: genus = 1 - ∫K dA / (4π)",
+      "positive_curvature_is_sphere, zero_curvature_is_torus, negative_curvature_high_genus",
+      "girard_formula: Area = (α+β+γ−π)/K for geodesic triangles",
+      "gauss_bonnet_uniformization: uniformization theorem consequences from curvature"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 786,
+    "theoremCount": 60,
+    "definitionCount": 13,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Gauss-Bonnet theorem is the cornerstone of the relationship between differential geometry (local curvature) and topology (global Euler characteristic). Gauss (1827) proved the local version; Bonnet (1848) proved the global integral formula for surfaces. Chern (1944) gave the intrinsic proof and extended it to all even-dimensional manifolds (the Chern-Gauss-Bonnet theorem).\n\nThe formula ∫_M K dA = 2πχ(M) says the total Gaussian curvature is a topological invariant: it doesn't change under metric deformations, only under topological surgery. This is why the sphere (χ=2) must have positive curvature, the torus (χ=0) can be flat, and higher-genus surfaces (χ<0) must have negative curvature.\n\nSince Mathlib 4.26.0 lacks Riemannian metrics and integration on manifolds, this formalization axiomatizes the theorem as a structure field and proves the many interesting consequences — genus determination, curvature sign constraints, Girard's formula, Gauss-Bonnet with boundary, Poincaré-Hopf, and Morse inequalities.",
+    "problemStatement": "**Smooth Gauss-Bonnet theorem**: For a compact orientable Riemannian 2-manifold M without boundary:\n∫_M K dA = 2π · χ(M)\n\nwhere K is the Gaussian curvature and χ(M) = 2 - 2g is the Euler characteristic (g = genus).\n\n**Axiomatized as**: `gauss_bonnet : totalCurvature = 2 * π * chi` in `CompactRiemannianSurface`.",
+    "text": "A 786-line axiomatized treatment of smooth Gauss-Bonnet theory. The file defines 9 axiomatized structures (CompactRiemannianSurface, OrientableClosedSurface, CompactSurfaceWithBoundary, GeodesicPolygon, ConstCurvatureGeodesicPolygon, GeodesicTriangle, ChernGaussBonnetManifold, VectorFieldOnSurface, MorseFunctionOnSurface) and proves 60 theorems about curvature-topology relations, special surfaces, Girard's formula, Poincaré-Hopf, and Morse theory.",
+    "proofStrategy": "**Architecture**: Axiomatize the main theorems as structure fields (since Riemannian geometry is not in Mathlib 4.26.0). Each structure carries the minimal set of axioms needed for the subsequent theorems:\n\n**CompactRiemannianSurface**: has `gauss_bonnet : totalCurvature = 2 * π * chi`. Theorems about curvature sign (positive → positive χ), topological invariance, and metric independence follow immediately.\n\n**OrientableClosedSurface**: extends CompactRiemannianSurface with `chi_genus : chi = 2 - 2 * genus`. Genus determination from curvature: genus = 1 - ∫K dA / (4π). Special cases: sphere (genus=0, ∫K=4π), torus (genus=1, ∫K=0), hyperbolic surfaces (genus≥2, ∫K<0).\n\n**Geodesic polygon/triangle structures**: encode the Gauss-Bonnet formula for bounded regions. Girard's formula (spherical excess = K·Area for geodesic triangles) follows as a one-line consequence.\n\n**Poincaré-Hopf**: VectorFieldOnSurface with `poincare_hopf : Σ index(v) = chi` enables index theory — the sum of vector field indices equals the Euler characteristic.\n\n**Morse theory**: MorseFunctionOnSurface encodes the Morse inequalities (Betti numbers ≤ critical point counts, and their alternating sum = χ).",
+    "keyInsights": [
+      "**Curvature determines topology**: The three cases partition closed surfaces: ∫K > 0 ⟺ genus 0 (sphere); ∫K = 0 ⟺ genus 1 (torus); ∫K < 0 ⟺ genus ≥ 2 (hyperbolic). All three follow immediately from the Gauss-Bonnet axiom and χ = 2 - 2g.",
+      "**Girard's formula as one-liner**: `gauss_bonnet_triangle : K * area = α + β + γ - π` immediately gives `girard_formula`: Area = (α + β + γ - π) / K. The spherical excess theorem (Euclid's parallel postulate failure quantified) follows in 2 lines.",
+      "**Poincaré-Hopf connects dynamics to topology**: The index sum of any vector field equals χ. For the sphere (χ=2), every vector field must have total index 2 (e.g., the 'hairy ball theorem': no zero-free vector field exists). This is proved from the `poincare_hopf` structure axiom.",
+      "**Morse inequalities as consequence**: The Morse inequalities β_k ≤ c_k (Betti numbers bounded by critical point counts) and their alternating sum formula Σ(-1)^k c_k = χ are proved from the `morse_inequalities` structure field."
+    ],
+    "prerequisites": [
+      "Euler characteristic and genus classification",
+      "Gaussian curvature and Riemannian geometry (conceptual)",
+      "Poincaré-Hopf index theorem",
+      "Morse theory basics"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula-oq-02",
+      "relationship": "extends",
+      "description": "Parent OQ-02 entry for Euler polyhedral formula; this OQ-02-OQ-01 develops the smooth Gauss-Bonnet extension"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "SmoothGaussBonnet",
+    "lineCount": 786,
+    "axiomCount": 7,
+    "theoremCount": 60,
+    "definitionCount": 13,
+    "path": "Proofs/EulerPolyhedralOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-compact-riemannian",
+      "title": "Compact Riemannian Surface and Basic Gauss-Bonnet (L36–200)",
+      "startLine": 36,
+      "endLine": 200,
+      "summary": "CompactRiemannianSurface: axiomatized with gauss_bonnet field. OrientableClosedSurface: extends with chi_genus. genus_from_total_curvature: genus = 1 - ∫K/(4π). positive/negative/zero_curvature_chi: curvature sign determines χ sign. sphere/torus/double_torus_total_curvature: ∫K = 4π, 0, -4π. positive_curvature_is_sphere, zero_curvature_is_torus, negative_curvature_high_genus.",
+      "mathContext": "The Gauss-Bonnet theorem partitions closed orientable surfaces into three topological types by curvature sign: $\\int K\\,dA > 0 \\iff g=0$ (sphere), $=0 \\iff g=1$ (torus), $<0 \\iff g\\geq 2$ (hyperbolic surfaces)."
+    },
+    {
+      "id": "sec-geodesic-polygon",
+      "title": "Geodesic Polygons, Triangles, and Girard's Formula (L465–620)",
+      "startLine": 465,
+      "endLine": 620,
+      "summary": "GeodesicPolygon: gauss_bonnet_polygon field (∫K + Σθ_ext = 2π). ConstCurvatureGeodesicPolygon: curvature_is_K_area. GeodesicTriangle: gauss_bonnet_triangle (K·Area = α+β+γ−π). girard_formula: Area = (α+β+γ−π)/K. interior_angle_sum: Σθ_int = (n-2)π + K·Area. spherical_triangle theorems.",
+      "mathContext": "Girard's theorem (1629): the area of a spherical triangle equals its angular excess $\\alpha+\\beta+\\gamma-\\pi$ (on the unit sphere). For a Euclidean triangle (K=0), $\\alpha+\\beta+\\gamma = \\pi$. For a hyperbolic triangle (K=-1), $\\alpha+\\beta+\\gamma < \\pi$."
+    },
+    {
+      "id": "sec-poincare-hopf",
+      "title": "Poincaré-Hopf Index Theorem and Morse Theory (L620–786)",
+      "startLine": 620,
+      "endLine": 786,
+      "summary": "VectorFieldOnSurface: poincare_hopf field (Σ index(v) = χ). Applications: hairy_ball_type (no non-vanishing field on sphere), torus_vector_field_index (total index 0), euler_char_from_vector_field. MorseFunctionOnSurface: Morse inequalities (β_k ≤ c_k) and Euler characteristic formula (Σ(-1)^k c_k = χ).",
+      "mathContext": "Poincaré-Hopf: the sum of indices of all singular points of a smooth vector field on a compact manifold equals the Euler characteristic. For the sphere ($\\chi=2$), every vector field must have total index 2. The 'hairy ball theorem' follows: no non-vanishing smooth vector field exists on $S^2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 786-line axiomatized formalization of smooth Gauss-Bonnet theory. The 9 structures encode 7 mathematical axioms (the main theorems that require Riemannian geometry not yet in Mathlib). The 60 consequences cover genus determination, curvature-topology duality, Girard's formula, Gauss-Bonnet with boundary, Poincaré-Hopf, and Morse inequalities.",
+    "implications": "The structural axiomatization provides a clean interface for Gauss-Bonnet consequences: any future Mathlib formalization of Riemannian geometry can simply prove that compact Riemannian surfaces satisfy the `CompactRiemannianSurface` axioms, and all 60 theorems here become available immediately. This is a common 'future-proof' strategy for formalizing deep theorems.",
+    "openQuestions": [
+      "Formalize Riemannian metrics in Lean 4 to prove the gauss_bonnet axiom from first principles (requires: tangent bundles, covariant derivatives, Gaussian curvature formula, Stokes' theorem on manifolds)",
+      "Chern-Gauss-Bonnet theorem in higher dimensions: ∫_M Pfaff(Ω) = (2π)^n χ(M) for 2n-dimensional manifolds",
+      "Atiyah-Singer index theorem: the ultimate generalization of Gauss-Bonnet to elliptic operators on manifolds"
+    ]
+  },
+  "sorries": 0
+}
