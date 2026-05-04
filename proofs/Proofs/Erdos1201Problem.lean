@@ -1612,4 +1612,40 @@ theorem erdos_1201_strong_iff_smooth_decay :
       simp only [upperDensity] at hk; exact hk
     linarith [h_limsup_le, h_subadd, h_1N_zero, h_dbad_le]
 
+/-
+## Prime-Window Automatic Goodness
+-/
+
+/-- **Automatic Goodness**: If the window [n, n+k] contains any prime n+i (i ≤ k),
+    then n is automatically good for any ε ∈ (0,1).
+    Unlike `erdos_1201_good_of_prime_in_window`, no condition on the prime's size is needed:
+    since n ≥ 2, every prime in the window satisfies n+i ≥ n > n^(1-ε). -/
+theorem erdos_1201_good_of_any_prime_in_window (n k i : ℕ) (ε : ℝ)
+    (hn : 2 ≤ n) (hi : i ≤ k) (hprime : (n + i).Prime)
+    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  apply erdos_1201_good_of_prime_in_window n k i ε hn hi hprime
+  have hn1 : (1 : ℝ) < n := by exact_mod_cast show 1 < n from by omega
+  calc (n : ℝ) ^ (1 - ε)
+      < (n : ℝ) ^ (1 : ℝ) := Real.rpow_lt_rpow_of_exponent_lt hn1 (by linarith)
+    _ = (n : ℝ) := Real.rpow_one _
+    _ ≤ (n : ℝ) + (i : ℝ) := le_add_of_nonneg_right (Nat.cast_nonneg i)
+
+/-- **Prime Start → Good (any k)**: If n is prime, then n is good for any window width k
+    and any ε ∈ (0,1). Generalizes `erdos_1201_good_prime_k0` from k=0 to all k ≥ 0.
+    Proof: n is a prime in the window [n, n+k] at position i=0. -/
+theorem erdos_1201_good_prime_any_k (n k : ℕ) (hn_prime : n.Prime) (ε : ℝ)
+    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) :=
+  erdos_1201_good_of_any_prime_in_window n k 0 ε hn_prime.two_le (Nat.zero_le k)
+    (by simpa using hn_prime) hε₀ hε₁
+
+/-- **Prime Right Endpoint → Good**: If n+k is prime, then n is good for window k
+    and any ε ∈ (0,1). When the right endpoint of the window is prime, P(n,k) = n+k ≥ n > n^(1-ε).
+    Proof: n+k is a prime in the window at position i=k. -/
+theorem erdos_1201_good_prime_endpoint (n k : ℕ) (hn : 2 ≤ n)
+    (hprime : (n + k).Prime) (ε : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) :=
+  erdos_1201_good_of_any_prime_in_window n k k ε hn le_rfl hprime hε₀ hε₁
+
 end Erdos1201
