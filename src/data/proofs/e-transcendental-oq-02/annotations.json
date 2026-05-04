@@ -11,7 +11,13 @@
     "content": "A real number x is normal in base b if every finite string of base-b digits appears with the expected asymptotic frequency: k-digit strings appear with frequency 1/bᵏ. Absolute normality means normality in every base b ≥ 2. Borel (1909) proved that Lebesgue-almost-every real is absolutely normal — a measure-theoretic result showing normality is the 'generic' property. Yet despite this, no specific mathematical constant has ever been proved normal in any base. The problem for e is compounded by its very structured nature: unlike a random number, e arises from a specific mathematical definition (e = Σ 1/n!) and has a highly patterned continued fraction. The 'almost all' proof is existential — it cannot be adapted to prove any particular number is normal.",
     "mathContext": "Normal in base $b$: $\\forall k \\geq 1, \\forall s \\in \\{0,\\ldots,b-1\\}^k$: $\\lim_{N\\to\\infty} \\frac{|\\{n < N : (d_n,\\ldots,d_{n+k-1}) = s\\}|}{N} = b^{-k}$. Borel (1909): $\\lambda(\\{x \\in [0,1] : x \\text{ not absolutely normal}\\}) = 0$. Status of $e$: computationally consistent with normality for $5 \\times 10^{13}$ digits; mathematically unresolved.",
     "significance": "key",
-    "relatedConcepts": ["normal numbers", "Borel 1909", "absolutely normal", "digit frequency", "e"]
+    "relatedConcepts": [
+      "normal numbers",
+      "Borel 1909",
+      "absolutely normal",
+      "digit frequency",
+      "e"
+    ]
   },
   {
     "id": "ann-oq02-nthdigit",
@@ -20,12 +26,16 @@
       "startLine": 62,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "concept",
     "title": "nthDigit Definition: ⌊bⁿ·x⌋ % b",
     "content": "The n-th base-b digit is defined as `⌊bⁿ·x⌋ % b`. This is an integer-valued definition: bⁿ·x scales x so that the integer part captures the first n+1 digits in base b, and the floor-then-mod operation extracts just the n-th digit. For example, with b=10 and x=e≈2.71828...: nthDigit 10 0 e = ⌊e⌋ % 10 = 2 % 10 = 2 (integer part); nthDigit 10 1 e = ⌊10e⌋ % 10 = 27 % 10 = 7 (first decimal digit). Using ℤ (rather than ℕ) avoids subtraction issues and works for negative reals.",
     "mathContext": "`nthDigit b n x = ⌊b^n \\cdot x⌋ \\bmod b \\in \\mathbb{Z}`. For $x \\geq 0$: the sequence $(\\text{nthDigit}\\,b\\,n\\,x)_{n \\geq 0}$ gives the base-$b$ expansion. For $n=0$: integer part digit. For $n \\geq 1$: fractional part digits. The $\\bmod$ ensures the result is in $\\{0,\\ldots,b-1\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["digit extraction", "floor function", "base-b expansion"]
+    "relatedConcepts": [
+      "digit extraction",
+      "floor function",
+      "base-b expansion"
+    ]
   },
   {
     "id": "ann-oq02-isnormalinbase",
@@ -34,12 +44,17 @@
       "startLine": 66,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "concept",
     "title": "IsNormalInBase: Tendsto Formalization of Digit Frequency",
     "content": "The definition of normality uses Lean 4's Filter.Tendsto to express limiting frequency. For each k and each k-string s : Fin k → Fin b, we require that the proportion of starting positions n < N where the k consecutive digits match s converges to 1/bᵏ. The Finset.filter operation counts positions where ALL k digits match simultaneously. Note the Fin b type for string characters (automatically bounded in {0,...,b-1}) vs the ℤ return type of nthDigit — the filter condition casts (s i : ℤ) for comparison. The limit target 1/bᵏ is expressed as (b : ℝ) ^ (-(k : ℤ)), using integer exponents to handle the negative power cleanly.",
     "mathContext": "`IsNormalInBase b x`: $\\forall k, s: (\\text{Fin}\\,k \\to \\text{Fin}\\,b)$, $\\text{Tendsto}\\left(N \\mapsto \\frac{|\\{n < N : \\forall i, d_{n+i} = s(i)\\}|}{N}\\right) \\text{atTop}\\; (\\mathcal{N}(b^{-k}))$. Uses `(b : ℝ) ^ (-(k : ℤ))` for $b^{-k}$.",
     "significance": "key",
-    "relatedConcepts": ["Tendsto", "Filter.atTop", "digit frequency", "Finset.filter"]
+    "relatedConcepts": [
+      "Tendsto",
+      "Filter.atTop",
+      "digit frequency",
+      "Finset.filter"
+    ]
   },
   {
     "id": "ann-oq02-e-digits",
@@ -48,12 +63,18 @@
       "startLine": 106,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Machine-Verified Decimal Digits of e via Tight Mathlib Bounds",
     "content": "A uniform pattern proves each decimal digit of e. The two Mathlib lemmas `Real.exp_one_gt_d9 : 2.718281828 < exp 1` and `Real.exp_one_lt_d9 : exp 1 < 2.7182818286` provide a 9-digit window. For each digit position, we show ⌊10ⁿ·e⌋ = k by proving k ≤ 10ⁿ·e < k+1 via linarith from the bounds. The digit itself is then k % 10, proved by `decide` after rewriting with the floor theorem. All 6 digits 7,1,8,2,8,1 are individually machine-checked. This approach generalizes: with tighter Mathlib bounds, more digits could be proved the same way.",
     "mathContext": "Pattern: `Int.floor_eq_iff.mpr ⟨by push_cast; linarith [exp_one_gt_d9], by push_cast; linarith [exp_one_lt_d9]⟩` proves $\\lfloor 10^n e \\rfloor = k$ when $10^n \\cdot 2.718281828 \\leq k$ and $k + 1 > 10^n \\cdot 2.7182818286$. For $n=6$: $2718281.828 < 10^6 e < 2718281.86$, so $\\lfloor 10^6 e \\rfloor = 2718281$ and digit $= 1$.",
     "significance": "key",
-    "relatedConcepts": ["exp_one_gt_d9", "exp_one_lt_d9", "Int.floor_eq_iff", "linarith", "decide"]
+    "relatedConcepts": [
+      "exp_one_gt_d9",
+      "exp_one_lt_d9",
+      "Int.floor_eq_iff",
+      "linarith",
+      "decide"
+    ]
   },
   {
     "id": "ann-oq02-rational-periodic",
@@ -67,7 +88,12 @@
     "content": "The axiom `rational_digits_eventually_periodic` captures a classical number-theoretic fact: if x = p/q, then ⌊bⁿ·p/q⌋ % b depends only on bⁿ mod q (by the division algorithm). Since there are only q residues, the sequence bⁿ mod q is eventually periodic by pigeonhole, with period dividing φ(q) ≤ q. This is why all long division representations of fractions eventually repeat. The axiom is stated for the ℤ-valued nthDigit function with ℚ input (not ℝ), allowing the period argument to work over the integers.",
     "mathContext": "For $x = p/q \\in \\mathbb{Q}$: $\\lfloor b^n \\cdot (p/q) \\rfloor \\bmod b = f(b^n \\bmod q)$ for some function $f$. By pigeonhole on $\\{0,\\ldots,q-1\\}$, the sequence $b^n \\bmod q$ repeats with period $T$ dividing $\\text{ord}_q(b)$ which divides $\\varphi(q) \\leq q$.",
     "significance": "supporting",
-    "relatedConcepts": ["eventually periodic", "pigeonhole principle", "rational numbers", "period"]
+    "relatedConcepts": [
+      "eventually periodic",
+      "pigeonhole principle",
+      "rational numbers",
+      "period"
+    ]
   },
   {
     "id": "ann-oq02-normal-irrational",
@@ -81,7 +107,12 @@
     "content": "The theorem `normal_imp_irrational` is a classical result: every normal number is irrational. The proof idea: if x = p/q is rational, its base-b expansion has period T ≤ q (rational_digits_eventually_periodic). For any k with bᵏ > T, the orbit map n ↦ (digit_n, ..., digit_{n+k-1}) is T-periodic, so its image has at most T distinct k-tuples. Since there are bᵏ > T possible k-tuples, some string s₀ is never seen after position N₀. The count of s₀ in [0,N) is bounded by N₀, so count/N → 0. But normality requires count/N → 1/bᵏ > 0 — a contradiction. The axiomatization is needed because connecting the ℤ-valued nthDigit definition to the Fin b setting in the Tendsto framework requires careful casting.",
     "mathContext": "If $x = p/q$ and expansion has period $T$, then for $k$ with $b^k > T$: the image $\\{(d_n,\\ldots,d_{n+k-1}) : n \\geq N_0\\}$ has cardinality $\\leq T < b^k$. Some $s_0$ never appears: $|\\{n < N : \\text{matches}\\}| \\leq N_0$ for all $N$. So frequency $\\to 0 \\neq b^{-k}$.",
     "significance": "supporting",
-    "relatedConcepts": ["normality", "irrationality", "periodic expansion", "orbit cardinality"]
+    "relatedConcepts": [
+      "normality",
+      "irrationality",
+      "periodic expansion",
+      "orbit cardinality"
+    ]
   },
   {
     "id": "ann-oq02-uniform-digits",
@@ -90,11 +121,16 @@
       "startLine": 219,
       "endLine": 231
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consequence of Normality: Uniform Decimal Digit Distribution",
     "content": "The theorem `e_normal_implies_uniform_decimal_digits` shows that if e is normal in base 10, then each digit 0-9 appears with frequency exactly 1/10. This follows immediately from the k=1 case of IsNormalInBase 10: for each d : Fin 10, the frequency of single-digit strings (d) tends to 10⁻¹ = 1/10. The proof extracts this from the normality hypothesis via `simp`, a `congr` to align the filter condition, and `norm_num` for 1/10 = (10 : ℝ)^(-(1 : ℤ)). This demonstrates the gallery's approach: conditional theorems assuming the open axiom, showing what would follow.",
     "mathContext": "From `IsNormalInBase 10 e` with $k=1$, $s = (d)$: $\\lim_{N\\to\\infty} \\frac{|\\{n < N : \\text{nthDigit}\\,10\\,n\\,e = d\\}|}{N} = 10^{-1} = 1/10$.",
     "significance": "supporting",
-    "relatedConcepts": ["uniform distribution", "decimal digits", "Tendsto", "normality consequence"]
+    "relatedConcepts": [
+      "uniform distribution",
+      "decimal digits",
+      "Tendsto",
+      "normality consequence"
+    ]
   }
 ]

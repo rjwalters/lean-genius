@@ -2,73 +2,144 @@
   {
     "id": "ann-ie-oq03-zeta-def",
     "proofId": "inclusion-exclusion-oq-03",
-    "range": { "startLine": 63, "endLine": 76 },
+    "range": {
+      "startLine": 63,
+      "endLine": 76
+    },
     "type": "definition",
     "title": "Zeta and Möbius Transform Definitions",
     "content": "The zeta transform ζf(S) = ∑_{T⊆S}f(T) sums f over all subsets. The Möbius transform μg(S) = ∑_{T⊆S}(-1)^{|S\\T|}g(T) is the signed inverse. Both are defined noncomputably (since Fintype enumeration is noncomputable in Lean). SubsetFn is a type alias for Finset α → ℤ, giving uniform notation throughout.",
     "mathContext": "$(\\zeta f)(S) = \\sum_{T \\subseteq S} f(T)$\n$(\\mu g)(S) = \\sum_{T \\subseteq S} (-1)^{|S \\setminus T|} g(T)$\n\nFor $\\alpha$ with $|\\alpha| = n$, these transforms act on $\\mathbb{Z}^{2^n}$.",
     "significance": "key",
-    "relatedConcepts": ["zeta transform", "Möbius function", "subset lattice", "Finset.powerset"],
-    "prerequisites": ["Finset.powerset", "Finset.card", "Finset.sdiff"]
+    "relatedConcepts": [
+      "zeta transform",
+      "Möbius function",
+      "subset lattice",
+      "Finset.powerset"
+    ],
+    "prerequisites": [
+      "Finset.powerset",
+      "Finset.card",
+      "Finset.sdiff"
+    ]
   },
   {
     "id": "ann-ie-oq03-signed-cancel",
     "proofId": "inclusion-exclusion-oq-03",
-    "range": { "startLine": 101, "endLine": 123 },
+    "range": {
+      "startLine": 101,
+      "endLine": 123
+    },
     "type": "insight",
     "title": "Signed Cancellation via prod_add",
     "content": "The key identity signed_sum_subsets proves ∑_{T⊆S}(-1)^{|S\\T|} = [S=∅]. For nonempty S, the proof uses Finset.prod_add: the multinomial expansion ∏_{i∈S}(1+(-1)) = ∑_{T⊆S}(∏_{i∈T}1)(∏_{i∈S\\T}(-1)) = ∑_{T⊆S}(-1)^{|S\\T|}. Since 1+(-1)=0 and S≠∅, the product is 0. The prod_add lemma is the Finset analog of the binomial theorem ∏(f_i+g_i) = ∑_{T⊆S}(∏_{i∈T}f_i)(∏_{i∈S\\T}g_i).",
     "mathContext": "$\\sum_{T \\subseteq S} (-1)^{|S \\setminus T|} = \\prod_{i \\in S}(1 + (-1)) = \\prod_{i \\in S} 0 = 0 \\quad (S \\neq \\emptyset)$\n\nThis is the Boolean lattice specialization of the identity $\\sum_{k=0}^n \\binom{n}{k}(-1)^k = (1-1)^n = 0$.",
     "significance": "key",
-    "relatedConcepts": ["inclusion-exclusion", "Finset.prod_add", "binomial theorem", "alternating sum"],
-    "prerequisites": ["Finset.prod_add", "Finset.prod_eq_zero", "Finset.nonempty_iff_ne_empty"]
+    "relatedConcepts": [
+      "inclusion-exclusion",
+      "Finset.prod_add",
+      "binomial theorem",
+      "alternating sum"
+    ],
+    "prerequisites": [
+      "Finset.prod_add",
+      "Finset.prod_eq_zero",
+      "Finset.nonempty_iff_ne_empty"
+    ]
   },
   {
     "id": "ann-ie-oq03-inner-sum",
     "proofId": "inclusion-exclusion-oq-03",
-    "range": { "startLine": 127, "endLine": 169 },
-    "type": "technique",
+    "range": {
+      "startLine": 127,
+      "endLine": 169
+    },
+    "type": "concept",
     "title": "inner_sum_eq: Bijection Reduction to signed_sum_subsets",
     "content": "inner_sum_eq proves ∑_{T:U⊆T⊆S}(-1)^{|S\\T|} = [U=S]. The proof uses Finset.sum_nbij to biject {T: U⊆T⊆S} → (S\\U).powerset via T ↦ T\\U. The key observation: under this bijection, |S\\T| = |(S\\U)\\(T\\U)|, so the signed sum over {T: U⊆T⊆S} equals signed_sum_subsets(S\\U). The case S\\U=∅ iff U=S bridges the two formulations. Injectivity proof handles the case analysis: when a∈U, both T₁ and T₂ contain a (by U⊆T), so T₁\\U and T₂\\U agree on a. When a∉U, the sdiff equality determines a's membership.",
     "mathContext": "$\\sum_{\\substack{T \\subseteq S \\\\ U \\subseteq T}} (-1)^{|S \\setminus T|} = \\sum_{W \\in (S\\setminus U).\\text{powerset}} (-1)^{|(S\\setminus U) \\setminus W|} = [S\\setminus U = \\emptyset] = [U = S]$\n\nThe bijection $T \\mapsto T \\setminus U$ sends $\\{T: U \\subseteq T \\subseteq S\\} \\to (S\\setminus U).\\text{powerset}$.",
     "significance": "key",
-    "relatedConcepts": ["Finset.sum_nbij", "signed_sum_subsets", "Fubini for Finsets"],
-    "prerequisites": ["Finset.sum_nbij", "Finset.sdiff_subset_sdiff_left", "signed_sum_subsets"]
+    "relatedConcepts": [
+      "Finset.sum_nbij",
+      "signed_sum_subsets",
+      "Fubini for Finsets"
+    ],
+    "prerequisites": [
+      "Finset.sum_nbij",
+      "Finset.sdiff_subset_sdiff_left",
+      "signed_sum_subsets"
+    ]
   },
   {
     "id": "ann-ie-oq03-mobius-inversion",
     "proofId": "inclusion-exclusion-oq-03",
-    "range": { "startLine": 170, "endLine": 189 },
+    "range": {
+      "startLine": 170,
+      "endLine": 189
+    },
     "type": "insight",
     "title": "Möbius Inversion: Fubini Sum Exchange",
     "content": "mobius_inverts_zeta proves μ∘ζ=id. The proof unfolds (μ∘ζ)(f)(S), then swaps the double sum order using Finset.sum_comm'. The membership condition T⊆S and U⊆T combined give: T⊆S is the outer condition, U⊆T is the inner. After the exchange: for each U⊆S, we have f(U)·(∑_{T:U⊆T⊆S}(-1)^{|S\\T|}). By inner_sum_eq, this is f(U)·[U=S]. Summing over U⊆S isolates the U=S term, giving f(S). The sum_congr+sum_ite_eq' step finishes: ∑_{U⊆S}f(U)·[U=S] = f(S).",
     "mathContext": "$(\\mu \\circ \\zeta)(f)(S) = \\sum_{T \\subseteq S} (-1)^{|S\\setminus T|} \\sum_{U \\subseteq T} f(U)$\n$\\underset{\\text{Fubini}}{=} \\sum_{U \\subseteq S} f(U) \\underbrace{\\sum_{\\substack{T \\subseteq S\\\\U \\subseteq T}} (-1)^{|S \\setminus T|}}_{= [U=S]} = f(S)$",
     "significance": "key",
-    "relatedConcepts": ["Möbius inversion", "Finset.sum_comm'", "Fubini's theorem", "inner_sum_eq"],
-    "prerequisites": ["Finset.sum_comm'", "Finset.mul_sum", "inner_sum_eq", "Finset.sum_ite_eq'"]
+    "relatedConcepts": [
+      "Möbius inversion",
+      "Finset.sum_comm'",
+      "Fubini's theorem",
+      "inner_sum_eq"
+    ],
+    "prerequisites": [
+      "Finset.sum_comm'",
+      "Finset.mul_sum",
+      "inner_sum_eq",
+      "Finset.sum_ite_eq'"
+    ]
   },
   {
     "id": "ann-ie-oq03-sos-dp",
     "proofId": "inclusion-exclusion-oq-03",
-    "range": { "startLine": 215, "endLine": 238 },
-    "type": "technique",
+    "range": {
+      "startLine": 215,
+      "endLine": 238
+    },
+    "type": "concept",
     "title": "Fast SOS DP Step",
     "content": "zetaStep(a,f) computes one element's contribution: for S∋a, add f(S\\{a}); otherwise leave f unchanged. After processing all n elements via fold over Fintype.elems, f(S) = ∑_{T⊆S}f_original(T). This O(n·2ⁿ) algorithm vs naive O(3ⁿ) is a significant speedup. For n=30: 3^30 ≈ 205 billion vs 30·2^30 ≈ 32 billion operations. zetaStep_not_mem and zetaStep_mem formalize the two cases of the DP update.",
     "mathContext": "DP update: $f_k(S) = \\begin{cases} f_{k-1}(S) + f_{k-1}(S \\setminus \\{a_k\\}) & a_k \\in S \\\\ f_{k-1}(S) & a_k \\notin S \\end{cases}$\n\nAfter all $n$ steps: $f_n(S) = (\\zeta f_0)(S) = \\sum_{T \\subseteq S} f_0(T)$.\n\nRuntime: $n$ passes × $2^n$ subsets = $O(n \\cdot 2^n)$.",
-    "significance": "medium",
-    "relatedConcepts": ["fast subset convolution", "SOS DP", "zeta transform", "algorithm"],
-    "prerequisites": ["Finset.erase", "if-then-else in Lean"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fast subset convolution",
+      "SOS DP",
+      "zeta transform",
+      "algorithm"
+    ],
+    "prerequisites": [
+      "Finset.erase",
+      "if-then-else in Lean"
+    ]
   },
   {
     "id": "ann-ie-oq03-odd-even",
     "proofId": "inclusion-exclusion-oq-03",
-    "range": { "startLine": 259, "endLine": 319 },
-    "type": "technique",
+    "range": {
+      "startLine": 259,
+      "endLine": 319
+    },
+    "type": "concept",
     "title": "Odd-Even Balance via Parity Involution",
     "content": "odd_even_subset_balance proves |{T⊆S:|T| odd}| = |{T⊆S:|T| even}| for nonempty S. The proof uses Finset.card_bij with the involution T↦(if a∈T then T.erase a else T.insert a) for fixed a∈S. This involution flips parity (card_erase_of_mem subtracts 1; card_insert_of_notMem adds 1) and is its own inverse. The four injectivity cases correspond to: both T₁,T₂ contain a (erase-erase), T₁ contains a but T₂ doesn't (erase-insert, gives membership contradiction), and symmetrically.",
     "mathContext": "For nonempty $S$, fix $a \\in S$. The involution $\\phi: T \\mapsto T \\triangle \\{a\\}$ satisfies:\n- $|\\phi(T)| = |T| \\pm 1$ (always changes parity)\n- $\\phi \\circ \\phi = \\mathrm{id}$\n- $\\phi$ maps subsets of $S$ to subsets of $S$\n\nThus $\\phi$ gives a bijection $\\{T \\subseteq S : |T| \\text{ odd}\\} \\leftrightarrow \\{T \\subseteq S : |T| \\text{ even}\\}$.",
-    "significance": "medium",
-    "relatedConcepts": ["parity involution", "Finset.card_bij", "symmetric difference", "alternating sum"],
-    "prerequisites": ["Finset.card_erase_of_mem", "Finset.card_insert_of_notMem", "Finset.card_bij"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity involution",
+      "Finset.card_bij",
+      "symmetric difference",
+      "alternating sum"
+    ],
+    "prerequisites": [
+      "Finset.card_erase_of_mem",
+      "Finset.card_insert_of_notMem",
+      "Finset.card_bij"
+    ]
   }
 ]

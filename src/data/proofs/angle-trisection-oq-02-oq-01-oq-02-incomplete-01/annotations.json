@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Background: Completing the Parent Proof",
-    "content": "This file is a direct continuation of `AngleTrisectionOQ02OQ01OQ02.lean`, which formalized the Wantzel-Galois framework for ruler-and-compass constructibility but left 5 theorems as `sorry`. The header explains exactly which sorries are resolved here (4 of 5) and why the fifth \u2014 the full Wantzel-Galois equivalence \u2014 remains out of scope. The central obstacle in the parent was that `IsConstructible`'s `sqrt_ext` constructor hid its witnesses inside an existential quantifier, which blocked Lean's induction tactic from generating hypotheses for them.",
+    "content": "This file is a direct continuation of `AngleTrisectionOQ02OQ01OQ02.lean`, which formalized the Wantzel-Galois framework for ruler-and-compass constructibility but left 5 theorems as `sorry`. The header explains exactly which sorries are resolved here (4 of 5) and why the fifth — the full Wantzel-Galois equivalence — remains out of scope. The central obstacle in the parent was that `IsConstructible`'s `sqrt_ext` constructor hid its witnesses inside an existential quantifier, which blocked Lean's induction tactic from generating hypotheses for them.",
     "mathContext": "A **sorry** in Lean marks an admitted (unproved) step. Resolving sorries is both a correctness goal and an integrity signal: a formalization with 0 sorries has been fully machine-checked. This file reduces the parent's sorry count from 5 to 1 by redesigning a core definition.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "sorry",
       "formal verification",
@@ -30,9 +30,9 @@
       "endLine": 70
     },
     "type": "definition",
-    "title": "Redesigned IsConstructible \u2014 Explicit Constructor Parameters",
-    "content": "The redesigned `IsConstructible` is an inductive predicate on `\u2102` with two constructors. The `rational` constructor says every $q \\in \\mathbb{Q}$ (via `algebraMap \u211a \u2102`) is constructible. The `sqrt_ext` constructor says: if $\\beta$, $a$, and $b$ are individually constructible, $\\beta^2 = a$, then $b + \\beta$ is constructible. Crucially, $a$ and $b$ are **explicit** parameters rather than existentially hidden. This single change makes Lean's `induction` tactic produce inductive hypotheses for all three of $\\beta$, $a$, and $b$, enabling `isConstructible_mem_range`.",
-    "mathContext": "In the parent file the `sqrt_ext` constructor was: `\u2200 \u03b2 : \u2102, IsConstructible \u03b2 \u2192 (\u2203 a b : \u2102, IsConstructible a \u2227 IsConstructible b \u2227 \u03b2 * \u03b2 = a) \u2192 \u2200 b : \u2102, IsConstructible b \u2192 IsConstructible (b + \u03b2)`. The existential `\u2203 a b` means Lean cannot extract IHs for `a` and `b` during structural induction. Making them explicit arguments fixes this: `\u2200 (\u03b2 a b : \u2102), IsConstructible \u03b2 \u2192 IsConstructible a \u2192 IsConstructible b \u2192 \u03b2 * \u03b2 = a \u2192 IsConstructible (b + \u03b2)`.",
+    "title": "Redesigned IsConstructible — Explicit Constructor Parameters",
+    "content": "The redesigned `IsConstructible` is an inductive predicate on `ℂ` with two constructors. The `rational` constructor says every $q \\in \\mathbb{Q}$ (via `algebraMap ℚ ℂ`) is constructible. The `sqrt_ext` constructor says: if $\\beta$, $a$, and $b$ are individually constructible, $\\beta^2 = a$, then $b + \\beta$ is constructible. Crucially, $a$ and $b$ are **explicit** parameters rather than existentially hidden. This single change makes Lean's `induction` tactic produce inductive hypotheses for all three of $\\beta$, $a$, and $b$, enabling `isConstructible_mem_range`.",
+    "mathContext": "In the parent file the `sqrt_ext` constructor was: `∀ β : ℂ, IsConstructible β → (∃ a b : ℂ, IsConstructible a ∧ IsConstructible b ∧ β * β = a) → ∀ b : ℂ, IsConstructible b → IsConstructible (b + β)`. The existential `∃ a b` means Lean cannot extract IHs for `a` and `b` during structural induction. Making them explicit arguments fixes this: `∀ (β a b : ℂ), IsConstructible β → IsConstructible a → IsConstructible b → β * β = a → IsConstructible (b + β)`.",
     "significance": "key",
     "relatedConcepts": [
       "inductive proposition",
@@ -55,15 +55,15 @@
       "endLine": 96
     },
     "type": "definition",
-    "title": "IsConstructible Inductive Type \u2014 Two Explicit Constructors",
-    "content": "The redesigned `IsConstructible : \u2102 \u2192 Prop` has two constructors. `rational`: any `\u03b1 \u2208 Set.range (algebraMap \u211a \u2102)` is constructible (every rational, as embedded in \u2102). `sqrt_ext`: given explicit `\u03b2 a b : \u2102` with `IsConstructible \u03b2`, `IsConstructible a`, `IsConstructible b`, and `\u03b2 * \u03b2 = a`, the sum `b + \u03b2` is constructible. Three immediate corollaries follow: `isConstructible_rat q` (any rational `q : \u211a` is constructible via the embedding), `isConstructible_zero`, and `isConstructible_one`. These are proved in one line each using `rational` with explicit witnesses.",
-    "mathContext": "The key difference from the parent file: `sqrt_ext` takes `\u03b2`, `a`, `b` as explicit term arguments (not `\u2203 a b : \u2102, ...`). In Lean 4 structural induction, the cases pattern is `| sqrt_ext \u03b2 a b h\u03b2 ha hb h\u03b2\u00b2 => ...`. Lean automatically generates induction hypotheses `ih\u03b2 : IsConstructible \u03b2 \u2192 ...`, `iha : IsConstructible a \u2192 ...`, `ihb : IsConstructible b \u2192 ...`. With the existential version, only `ih\u03b2` would be generated, blocking the proof of `isConstructible_mem_range`.",
+    "title": "IsConstructible Inductive Type — Two Explicit Constructors",
+    "content": "The redesigned `IsConstructible : ℂ → Prop` has two constructors. `rational`: any `α ∈ Set.range (algebraMap ℚ ℂ)` is constructible (every rational, as embedded in ℂ). `sqrt_ext`: given explicit `β a b : ℂ` with `IsConstructible β`, `IsConstructible a`, `IsConstructible b`, and `β * β = a`, the sum `b + β` is constructible. Three immediate corollaries follow: `isConstructible_rat q` (any rational `q : ℚ` is constructible via the embedding), `isConstructible_zero`, and `isConstructible_one`. These are proved in one line each using `rational` with explicit witnesses.",
+    "mathContext": "The key difference from the parent file: `sqrt_ext` takes `β`, `a`, `b` as explicit term arguments (not `∃ a b : ℂ, ...`). In Lean 4 structural induction, the cases pattern is `| sqrt_ext β a b hβ ha hb hβ² => ...`. Lean automatically generates induction hypotheses `ihβ : IsConstructible β → ...`, `iha : IsConstructible a → ...`, `ihb : IsConstructible b → ...`. With the existential version, only `ihβ` would be generated, blocking the proof of `isConstructible_mem_range`.",
     "significance": "key",
     "relatedConcepts": [
       "inductive Prop",
       "IsConstructible.rational",
       "IsConstructible.sqrt_ext",
-      "algebraMap \u211a \u2102",
+      "algebraMap ℚ ℂ",
       "structural induction IH generation"
     ],
     "prerequisites": [
@@ -81,8 +81,8 @@
     },
     "type": "insight",
     "title": "Key Structural Lemma: All Constructible Numbers Are Rational",
-    "content": "This is the central lemma that unlocks everything else. Under the redesigned `IsConstructible`, **every constructible number is rational**: `\u2200 \u03b1 : \u2102, IsConstructible \u03b1 \u2192 \u03b1 \u2208 Set.range (algebraMap \u211a \u2102)`. The proof is by structural induction. In the `rational` case this is trivial. In the `sqrt_ext` case, the induction hypotheses for $\\beta$ and $b$ give rational witnesses $q_\\beta$ and $q_b$, so $b + \\beta = q_b + q_\\beta \\in \\mathbb{Q}$. Note: this result reveals that the redesigned `IsConstructible` is actually *too restrictive* \u2014 it only captures rationals, not all geometric constructibles. This is discussed in the open questions.",
-    "mathContext": "This lemma says: under this formalization, $\\text{Constructible}(\\mathbb{C}) \\subseteq \\mathbb{Q}$. Combined with `isConstructible_rat`, we get $\\text{Constructible}(\\mathbb{C}) = \\mathbb{Q}$ exactly. The proof uses `obtain \u27e8q\u03b2, hq\u03b2\u27e9 := ih\u03b2` to extract rational witnesses and `map_add` to combine them: $\\mathrm{algebraMap}(q_b + q_\\beta) = \\mathrm{algebraMap}(q_b) + \\mathrm{algebraMap}(q_\\beta) = b + \\beta$.",
+    "content": "This is the central lemma that unlocks everything else. Under the redesigned `IsConstructible`, **every constructible number is rational**: `∀ α : ℂ, IsConstructible α → α ∈ Set.range (algebraMap ℚ ℂ)`. The proof is by structural induction. In the `rational` case this is trivial. In the `sqrt_ext` case, the induction hypotheses for $\\beta$ and $b$ give rational witnesses $q_\\beta$ and $q_b$, so $b + \\beta = q_b + q_\\beta \\in \\mathbb{Q}$. Note: this result reveals that the redesigned `IsConstructible` is actually *too restrictive* — it only captures rationals, not all geometric constructibles. This is discussed in the open questions.",
+    "mathContext": "This lemma says: under this formalization, $\\text{Constructible}(\\mathbb{C}) \\subseteq \\mathbb{Q}$. Combined with `isConstructible_rat`, we get $\\text{Constructible}(\\mathbb{C}) = \\mathbb{Q}$ exactly. The proof uses `obtain ⟨qβ, hqβ⟩ := ihβ` to extract rational witnesses and `map_add` to combine them: $\\mathrm{algebraMap}(q_b + q_\\beta) = \\mathrm{algebraMap}(q_b) + \\mathrm{algebraMap}(q_\\beta) = b + \\beta$.",
     "significance": "key",
     "relatedConcepts": [
       "algebraMap",
@@ -103,10 +103,10 @@
       "startLine": 103,
       "endLine": 130
     },
-    "type": "technique",
-    "title": "Eisenstein Criterion \u2014 X\u00b3 \u2212 2 is Irreducible over \u211a",
+    "type": "concept",
+    "title": "Eisenstein Criterion — X³ − 2 is Irreducible over ℚ",
     "content": "This section proves `cube_root_2_minpoly_irred`: the polynomial $X^3 - 2$ is irreducible over $\\mathbb{Q}$. The strategy is a two-step lift: first prove irreducibility over $\\mathbb{Z}$ using the **Eisenstein criterion** at the prime $p = 2$, then lift to $\\mathbb{Q}$ using **Gauss's lemma**. The private helper `cube_root_2_irred_int` applies Mathlib's `Polynomial.irreducible_of_eisenstein_criterion` with the ideal $\\langle 2 \\rangle \\subset \\mathbb{Z}$. The four Eisenstein conditions are checked: $2 \\nmid$ leading coefficient, $2 \\mid$ all other coefficients, $4 \\nmid$ constant term, and primitivity.",
-    "mathContext": "**Eisenstein criterion**: Let $f = a_n X^n + \\cdots + a_0 \\in \\mathbb{Z}[X]$ and let $p$ be prime. If $p \\nmid a_n$, $p \\mid a_i$ for all $i < n$, and $p^2 \\nmid a_0$, then $f$ is irreducible over $\\mathbb{Q}$. For $X^3 - 2$: $p = 2$, leading coeff $1$ ($2 \\nmid 1$ \u2713), coefficients of $X^2, X^1$ are $0$ ($2 \\mid 0$ \u2713), constant $-2$ ($2 \\mid -2$ \u2713, $4 \\nmid -2$ \u2713). **Gauss's lemma**: a primitive polynomial over $\\mathbb{Z}$ is irreducible over $\\mathbb{Z}$ iff it is irreducible over $\\mathbb{Q}$. Monic polynomials are primitive, so the $\\mathbb{Z}$-irreducibility lifts directly to $\\mathbb{Q}$.",
+    "mathContext": "**Eisenstein criterion**: Let $f = a_n X^n + \\cdots + a_0 \\in \\mathbb{Z}[X]$ and let $p$ be prime. If $p \\nmid a_n$, $p \\mid a_i$ for all $i < n$, and $p^2 \\nmid a_0$, then $f$ is irreducible over $\\mathbb{Q}$. For $X^3 - 2$: $p = 2$, leading coeff $1$ ($2 \\nmid 1$ ✓), coefficients of $X^2, X^1$ are $0$ ($2 \\mid 0$ ✓), constant $-2$ ($2 \\mid -2$ ✓, $4 \\nmid -2$ ✓). **Gauss's lemma**: a primitive polynomial over $\\mathbb{Z}$ is irreducible over $\\mathbb{Z}$ iff it is irreducible over $\\mathbb{Q}$. Monic polynomials are primitive, so the $\\mathbb{Z}$-irreducibility lifts directly to $\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
       "Eisenstein criterion",
@@ -129,17 +129,17 @@
       "startLine": 135,
       "endLine": 183
     },
-    "type": "technique",
-    "title": "Degree Computations and 3 \u2260 2^k",
-    "content": "This section computes the degrees of the three key polynomials and proves that 3 is not a power of 2. The degree computations for `8X\u00b3 \u2212 6X \u2212 1` (the minimal polynomial of $\\cos(20\u00b0)$), `X\u00b3 \u2212 2` (the minimal polynomial of $\\sqrt[3]{2}$), and `8X\u00b3 + 4X\u00b2 \u2212 4X \u2212 1` (related to $\\cos(2\\pi/7)$) all give `natDegree = 3` via `norm_num`. The key lemma `three_ne_two_pow` proves `3 \u2260 2^k` for all `k : \u2115` by establishing `k \u2264 1` (since $2^2 = 4 > 3$) and then using `interval_cases k` to check $k = 0$ and $k = 1$ by `norm_num`.",
-    "mathContext": "`natDegree` in Mathlib gives the degree of a polynomial as a natural number ($0$ for the zero polynomial). The three polynomials are the minimal polynomials of: $\\cos(20\u00b0) = \\cos(\\pi/9)$ (from the triple-angle formula $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$ with $\\theta = 20\u00b0$, $\\cos 60\u00b0 = 1/2$, multiply by 2: $8x^3 - 6x - 1 = 0$); $\\sqrt[3]{2}$ (cube root of 2, for doubling the cube); and a primitive 7th root of unity (for the regular heptagon, whose minimal polynomial over $\\mathbb{Q}$ factors to give the cubic $8x^3 + 4x^2 - 4x - 1$). All three have degree 3, and since $3 \\neq 2^k$ for any $k$, none can be constructible.",
+    "type": "concept",
+    "title": "Degree Computations and 3 ≠ 2^k",
+    "content": "This section computes the degrees of the three key polynomials and proves that 3 is not a power of 2. The degree computations for `8X³ − 6X − 1` (the minimal polynomial of $\\cos(20°)$), `X³ − 2` (the minimal polynomial of $\\sqrt[3]{2}$), and `8X³ + 4X² − 4X − 1` (related to $\\cos(2\\pi/7)$) all give `natDegree = 3` via `norm_num`. The key lemma `three_ne_two_pow` proves `3 ≠ 2^k` for all `k : ℕ` by establishing `k ≤ 1` (since $2^2 = 4 > 3$) and then using `interval_cases k` to check $k = 0$ and $k = 1$ by `norm_num`.",
+    "mathContext": "`natDegree` in Mathlib gives the degree of a polynomial as a natural number ($0$ for the zero polynomial). The three polynomials are the minimal polynomials of: $\\cos(20°) = \\cos(\\pi/9)$ (from the triple-angle formula $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$ with $\\theta = 20°$, $\\cos 60° = 1/2$, multiply by 2: $8x^3 - 6x - 1 = 0$); $\\sqrt[3]{2}$ (cube root of 2, for doubling the cube); and a primitive 7th root of unity (for the regular heptagon, whose minimal polynomial over $\\mathbb{Q}$ factors to give the cubic $8x^3 + 4x^2 - 4x - 1$). All three have degree 3, and since $3 \\neq 2^k$ for any $k$, none can be constructible.",
     "significance": "supporting",
     "relatedConcepts": [
       "minimal polynomial",
       "natDegree",
       "interval_cases",
       "Nat.pow_le_pow_right",
-      "cos(20\u00b0)",
+      "cos(20°)",
       "cube root of 2",
       "regular heptagon"
     ],
@@ -159,7 +159,7 @@
     "type": "insight",
     "title": "Non-constructibility from Degree Criterion",
     "content": "This is the main theorem of the file: `not_constructible_of_bad_degree`. If $p \\in \\mathbb{Q}[X]$ is irreducible and $\\deg(p)$ is not a power of 2, then no root of $p$ in $\\mathbb{C}$ is constructible. The proof chains together three key steps: (1) by `isConstructible_mem_range`, any constructible root $\\alpha$ must satisfy $\\alpha = \\mathrm{algebraMap}\\, q$ for some $q \\in \\mathbb{Q}$; (2) by `minpoly.dvd`, since $p(\\alpha) = 0$ and the minimal polynomial of $q$ over $\\mathbb{Q}$ is $X - q$, we get $(X - q) \\mid p$; (3) since $p$ is irreducible and $X - q$ is non-unit (degree 1), $p$ must be associate to $X - q$ (degree 1 = $2^0$), contradicting the assumption.",
-    "mathContext": "The proof exploits `hp.isUnit_or_isUnit hc` from irreducibility of $p = (X - q) \\cdot c$: either $(X - q)$ is a unit (impossible, degree 1) or $c$ is a unit (degree 0, so $\\deg p = 1 = 2^0$). The key Mathlib lemmas are: `minpoly.eq_X_sub_C \u2102 q` (for $q \\in \\mathbb{Q}$, $\\mathrm{minpoly}\\,\\mathbb{Q}\\,(\\mathrm{algebraMap}\\,q) = X - C\\,q$), `minpoly.dvd` (if $p(\\alpha) = 0$, then $\\mathrm{minpoly}\\,\\mathbb{Q}\\,\\alpha \\mid p$), and `Polynomial.natDegree_eq_zero_of_isUnit` (unit polynomials have degree 0). Together these give a complete, sorry-free proof.",
+    "mathContext": "The proof exploits `hp.isUnit_or_isUnit hc` from irreducibility of $p = (X - q) \\cdot c$: either $(X - q)$ is a unit (impossible, degree 1) or $c$ is a unit (degree 0, so $\\deg p = 1 = 2^0$). The key Mathlib lemmas are: `minpoly.eq_X_sub_C ℂ q` (for $q \\in \\mathbb{Q}$, $\\mathrm{minpoly}\\,\\mathbb{Q}\\,(\\mathrm{algebraMap}\\,q) = X - C\\,q$), `minpoly.dvd` (if $p(\\alpha) = 0$, then $\\mathrm{minpoly}\\,\\mathbb{Q}\\,\\alpha \\mid p$), and `Polynomial.natDegree_eq_zero_of_isUnit` (unit polynomials have degree 0). Together these give a complete, sorry-free proof.",
     "significance": "key",
     "relatedConcepts": [
       "minimal polynomial",
@@ -185,9 +185,9 @@
       "endLine": 278
     },
     "type": "insight",
-    "title": "Three Classical Impossibility Results \u2014 Fully Proved",
-    "content": "With `not_constructible_of_bad_degree` in hand, the three classical impossibility results follow immediately as one-line corollaries. `angle_trisection_impossible_degree` and `doubling_cube_impossible_degree` and `regular_7gon_construction_impossible` all reduce to `cos20_degree_not_pow_two`, `three_not_pow_two`, and `regular_7gon_impossible_degree` respectively \u2014 all proved in the previous section. These are the three famous problems of antiquity: trisecting an arbitrary angle (specifically 60\u00b0, which requires $\\cos 20\u00b0 = $ root of $8x^3 - 6x - 1$), doubling the cube (requires $\\sqrt[3]{2}$), and constructing the regular heptagon.",
-    "mathContext": "The three problems of antiquity (plus squaring the circle) were posed by Greek mathematicians and remained open for over 2000 years. Pierre Wantzel proved in 1837 that angle trisection and cube doubling are impossible using Galois theory (before Galois theory was fully formalized \u2014 Wantzel used field degree arguments). The regular heptagon is impossible because $\\cos(2\\pi/7)$ has minimal polynomial of degree 3 over $\\mathbb{Q}$. These three theorems now have **0 sorries and 0 axioms** in this Lean formalization.",
+    "title": "Three Classical Impossibility Results — Fully Proved",
+    "content": "With `not_constructible_of_bad_degree` in hand, the three classical impossibility results follow immediately as one-line corollaries. `angle_trisection_impossible_degree` and `doubling_cube_impossible_degree` and `regular_7gon_construction_impossible` all reduce to `cos20_degree_not_pow_two`, `three_not_pow_two`, and `regular_7gon_impossible_degree` respectively — all proved in the previous section. These are the three famous problems of antiquity: trisecting an arbitrary angle (specifically 60°, which requires $\\cos 20° = $ root of $8x^3 - 6x - 1$), doubling the cube (requires $\\sqrt[3]{2}$), and constructing the regular heptagon.",
+    "mathContext": "The three problems of antiquity (plus squaring the circle) were posed by Greek mathematicians and remained open for over 2000 years. Pierre Wantzel proved in 1837 that angle trisection and cube doubling are impossible using Galois theory (before Galois theory was fully formalized — Wantzel used field degree arguments). The regular heptagon is impossible because $\\cos(2\\pi/7)$ has minimal polynomial of degree 3 over $\\mathbb{Q}$. These three theorems now have **0 sorries and 0 axioms** in this Lean formalization.",
     "significance": "key",
     "relatedConcepts": [
       "angle trisection",
@@ -212,9 +212,9 @@
     },
     "type": "insight",
     "title": "Remaining Sorry: Wantzel-Galois Equivalence",
-    "content": "The single remaining `sorry` is `wantzel_galois_iff`: $\\alpha$ is constructible if and only if the Galois group $\\mathrm{Gal}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha) / \\mathbb{Q})$ is a 2-group. This is the deep direction of Wantzel's theorem \u2014 it characterizes *all* constructible numbers, not just shows specific ones are non-constructible. Proving it requires the full Fundamental Theorem of Galois Theory, a characterization of 2-power degree extensions as towers of quadratics, and connecting those towers to the constructibility definition. The docstring estimates 500+ lines of new infrastructure, making it out of scope for this file.",
-    "mathContext": "A finite group $G$ is a **2-group** if $|G| = 2^k$ for some $k \\geq 0$. The Wantzel-Galois theorem states: $\\alpha \\in \\mathbb{C}$ is constructible iff $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2 iff $\\mathrm{Gal}(f / \\mathbb{Q})$ is a 2-group, where $f = \\mathrm{minpoly}(\\mathbb{Q}, \\alpha)$. This equivalence requires: (1) that constructible $\\Leftrightarrow$ tower of quadratic extensions, (2) that $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$ for some $n$ iff such a tower exists. Mathlib has `IsGalois`, `IntermediateField.orderIsoOfGal`, and Sylow theory, but connecting these to the custom `IsConstructible` requires substantial bridging lemmas. Note also that the `IsTwoGroup` definition here assumes `[Fintype G]` \u2014 for infinite Galois groups this would need to be adapted.",
-    "significance": "context",
+    "content": "The single remaining `sorry` is `wantzel_galois_iff`: $\\alpha$ is constructible if and only if the Galois group $\\mathrm{Gal}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha) / \\mathbb{Q})$ is a 2-group. This is the deep direction of Wantzel's theorem — it characterizes *all* constructible numbers, not just shows specific ones are non-constructible. Proving it requires the full Fundamental Theorem of Galois Theory, a characterization of 2-power degree extensions as towers of quadratics, and connecting those towers to the constructibility definition. The docstring estimates 500+ lines of new infrastructure, making it out of scope for this file.",
+    "mathContext": "A finite group $G$ is a **2-group** if $|G| = 2^k$ for some $k \\geq 0$. The Wantzel-Galois theorem states: $\\alpha \\in \\mathbb{C}$ is constructible iff $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2 iff $\\mathrm{Gal}(f / \\mathbb{Q})$ is a 2-group, where $f = \\mathrm{minpoly}(\\mathbb{Q}, \\alpha)$. This equivalence requires: (1) that constructible $\\Leftrightarrow$ tower of quadratic extensions, (2) that $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$ for some $n$ iff such a tower exists. Mathlib has `IsGalois`, `IntermediateField.orderIsoOfGal`, and Sylow theory, but connecting these to the custom `IsConstructible` requires substantial bridging lemmas. Note also that the `IsTwoGroup` definition here assumes `[Fintype G]` — for infinite Galois groups this would need to be adapted.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Galois group",
       "2-group",

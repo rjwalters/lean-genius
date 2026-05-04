@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 21
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mathematical Setting: Euler Product and Riemann Zeta at s=2",
     "content": "The module docstring states the core identity ∏_p (1-p⁻²)⁻¹ = π²/6 and identifies the two Mathlib theorems that make it a two-line proof: `riemannZeta_eulerProduct_tprod` (Euler product for ζ(s)) and `riemannZeta_two` (ζ(2) = π²/6). The references cite Euler's 1737 paper 'Variae observationes circa series infinitas', the first appearance of the product formula.\n\nThis entry is one of a sibling family: `basel-problem` proves the sum ∑ 1/n² = π²/6, `geometric-series-oq-03` derives the Euler product via geometric series, and this entry (`oq-04`) combines them at s=2. Together they cover Euler's complete 1737 argument.\n\nThe proof is stated over ℂ (not ℝ) because Mathlib's `riemannZeta` function is defined as a meromorphic function on all of ℂ, and the Euler product theorem is proved in that generality. The specialization to s=2 is then a corollary. This generality connects this entry to the Riemann hypothesis: ζ(s) has non-trivial zeros only for 0 < Re(s) < 1 (conjectured to all lie on Re(s) = 1/2), and the Euler product ∏_p (1-p⁻ˢ)⁻¹ = ζ(s) holds only for Re(s) > 1 (where ζ(s) ≠ 0). The zeros of ζ(s) are exactly where the product formula breaks down.",
     "mathContext": "The Riemann zeta function: $\\zeta(s) = \\sum_{n=1}^\\infty n^{-s}$ for $\\text{Re}(s) > 1$, extended meromorphically to $\\mathbb{C} \\setminus \\{1\\}$. Euler product: $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ for $\\text{Re}(s) > 1$ (absolute convergence region). At $s = 2$: $\\zeta(2) = \\pi^2/6$ (Basel). The Riemann Hypothesis asserts the non-trivial zeros of $\\zeta(s)$ all satisfy $\\text{Re}(s) = 1/2$. Mathlib: `riemannZeta : ℂ → ℂ` (module `Mathlib.NumberTheory.ZetaFunctions.RiemannZeta`).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Riemann zeta function",
       "Euler product",

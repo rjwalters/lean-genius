@@ -2,85 +2,165 @@
   {
     "id": "ann-1056-definitions",
     "proofId": "erdos-1056-oq-01",
-    "range": { "startLine": 36, "endLine": 77 },
+    "range": {
+      "startLine": 36,
+      "endLine": 77
+    },
     "type": "definition",
     "title": "Core Definitions: intervalProd and Parameterized Solution Predicates",
     "content": "`intervalProd a b` computes the product of all integers in the half-open interval [a, b) as a Finset.Ico product. The `HasSolution_k` predicates encode exactly what a witness must satisfy: a prime p, strictly increasing boundary points b₀ < b₁ < ··· < bₖ, and the product condition intervalProd(bᵢ, bᵢ₊₁) ≡ 1 (mod p) for each consecutive pair. Each is defined separately (HasSolution2 through HasSolution6) rather than parametrically because the arity of the boundary sequence varies with k. `ExistsSolution k` wraps each with existential quantifiers, providing the clean existence statement used in the main theorems.",
     "mathContext": "$\\text{intervalProd}(a,b) = \\prod_{n=a}^{b-1} n = \\frac{(b-1)!}{(a-1)!}$ for $a \\geq 1$. $\\text{HasSolution}_k(p, b_0,\\ldots,b_k)$: $p$ prime, $b_0 < \\cdots < b_k$, and $\\prod_{n=b_{i-1}}^{b_i - 1} n \\equiv 1 \\pmod{p}$ for $i = 1,\\ldots,k$.",
     "significance": "key",
-    "relatedConcepts": ["Finset.Ico", "modular arithmetic", "interval products", "Erdős problems"],
-    "prerequisites": ["Finset.prod in Lean 4", "modular arithmetic", "Nat.Prime"]
+    "relatedConcepts": [
+      "Finset.Ico",
+      "modular arithmetic",
+      "interval products",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "Finset.prod in Lean 4",
+      "modular arithmetic",
+      "Nat.Prime"
+    ]
   },
   {
     "id": "ann-1056-wilson",
     "proofId": "erdos-1056-oq-01",
-    "range": { "startLine": 82, "endLine": 91 },
+    "range": {
+      "startLine": 82,
+      "endLine": 91
+    },
     "type": "insight",
     "title": "Wilson's Theorem as a Structural Constraint",
     "content": "Wilson's theorem states (p-1)! ≡ -1 (mod p) for every prime p. These four theorems verify this as `(p-1)! % p = p-1`, i.e., the product of integers in [1, p) is ≡ -1 (not 1). This is critical context: the problem asks for the product of a sub-interval to equal 1, so the intervals cannot simply partition [1, p). The boundary points must be chosen so that products of sub-intervals balance to give +1, despite the full product being -1. Wilson's theorem constrains which sub-interval structures are possible.",
     "mathContext": "Wilson (1770): for prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$. Equivalently, $\\prod_{n=1}^{p-1} n \\equiv p-1 \\pmod{p}$. The product of ALL integers in $[1,p)$ is $-1 \\not\\equiv 1$, so intervals must cover a strict sub-range of $[1,p)$.",
     "significance": "supporting",
-    "relatedConcepts": ["Wilson's theorem", "group theory of (Z/pZ)*", "quadratic residues"],
-    "prerequisites": ["Wilson's theorem", "modular arithmetic", "group of units mod p"]
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "group theory of (Z/pZ)*",
+      "quadratic residues"
+    ],
+    "prerequisites": [
+      "Wilson's theorem",
+      "modular arithmetic",
+      "group of units mod p"
+    ]
   },
   {
     "id": "ann-1056-factorial-key-insight",
     "proofId": "erdos-1056-oq-01",
-    "range": { "startLine": 95, "endLine": 135 },
+    "range": {
+      "startLine": 95,
+      "endLine": 135
+    },
     "type": "insight",
     "title": "Factorial Congruence Reformulation: Finding Solutions via Repeated Factorial Values",
     "content": "The fundamental observation connecting interval products to factorials: intervalProd(a, b) = (b-1)!/(a-1)!, so intervalProd(a, b) ≡ 1 (mod p) if and only if (b-1)! ≡ (a-1)! (mod p). Therefore, a k-interval solution with boundaries b₀ < ··· < bₖ exists if and only if all the values (b₀-1)!, (b₁-1)!, ..., (bₖ-1)! are mutually congruent mod p. Finding solutions reduces to finding primes p with many repeated values in the sequence 0!, 1!, 2!, ..., (p-2)! (mod p). For p=23: 1!, 4!, 8!, 11!, 21! are all ≡ 1 (mod 23). For p=71: 7!, 9!, 19!, 51!, 61!, 63!, 70! are all congruent mod 71.",
     "mathContext": "$\\text{intervalProd}(a,b) \\equiv 1 \\pmod{p} \\iff \\frac{(b-1)!}{(a-1)!} \\equiv 1 \\pmod{p} \\iff (b-1)! \\equiv (a-1)! \\pmod{p}$. For $p=23$: $1 \\equiv 24 \\equiv 40320 \\equiv \\cdots \\equiv 1 \\pmod{23}$ at positions $1!, 4!, 8!, 11!, 21!$.",
     "significance": "key",
-    "relatedConcepts": ["factorial function mod p", "Wilson's theorem", "modular inverses", "group theory"],
-    "prerequisites": ["modular arithmetic", "factorial function", "basic group theory"]
+    "relatedConcepts": [
+      "factorial function mod p",
+      "Wilson's theorem",
+      "modular inverses",
+      "group theory"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "factorial function",
+      "basic group theory"
+    ]
   },
   {
     "id": "ann-1056-k4-solution",
     "proofId": "erdos-1056-oq-01",
-    "range": { "startLine": 147, "endLine": 170 },
-    "type": "context",
+    "range": {
+      "startLine": 147,
+      "endLine": 170
+    },
+    "type": "concept",
     "title": "New Solutions: k=4 (p=23) and k=5,6 (p=71)",
     "content": "The three new theorems `erdos_k4`, `erdos_k5`, `erdos_k6` extend the known catalog. For k=4 with p=23, the explicit products are 2·3·4=24≡1, 5·6·7·8=1680≡1, 9·10·11=990≡1, and 12·13·...·21≡1 (all mod 23). The k=5 and k=6 solutions share the prime p=71 — uniquely, the same boundary set {8,10,20,52,62,64,71} supports both by taking the first 5 or all 6 intervals. This reveals that a rich prime like p=71 can simultaneously host multiple solution structures. All three proofs use `native_decide` to verify the modular arithmetic.",
     "mathContext": "$k=4,\\, p=23$: $[2,5),[5,9),[9,12),[12,22)$, products $24, 1680, 990, \\ldots \\equiv 1 \\pmod{23}$. $k=5,\\, p=71$: $[8,10),[10,20),[20,52),[52,62),[62,64)$: products $72, \\ldots \\equiv 1 \\pmod{71}$. $k=6,\\, p=71$: adds $[64,71)$: $64 \\cdot 65 \\cdots 70 \\equiv 1 \\pmod{71}$.",
     "significance": "key",
-    "relatedConcepts": ["computational number theory", "native_decide tactic", "modular products"],
-    "prerequisites": ["modular arithmetic", "Lean 4 native_decide", "HasSolution definitions"]
+    "relatedConcepts": [
+      "computational number theory",
+      "native_decide tactic",
+      "modular products"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Lean 4 native_decide",
+      "HasSolution definitions"
+    ]
   },
   {
     "id": "ann-1056-existence",
     "proofId": "erdos-1056-oq-01",
-    "range": { "startLine": 174, "endLine": 185 },
-    "type": "technique",
+    "range": {
+      "startLine": 174,
+      "endLine": 185
+    },
+    "type": "concept",
     "title": "Existential Packaging: From Witnesses to ExistsSolution",
     "content": "The existence theorems `exists_k2` through `exists_k6` wrap the explicit witness theorems in existential quantifiers. The pattern is straightforward: supply all boundary values explicitly, using angle-bracket notation for anonymous constructors. `all_solutions_2_to_6` then combines all five existence results into a single conjunction. This two-layer design — first prove `HasSolution_k` with explicit witnesses, then existentially quantify — keeps the computational proof obligations in the witness layer while the existence layer stays lightweight. The design also mirrors the mathematical structure: Erdős's question asks for existence, so `ExistsSolution` is the natural statement.",
     "mathContext": "$\\exists p, b_0, \\ldots, b_k : \\text{HasSolution}_k(p, b_0,\\ldots,b_k)$ proved by giving $p, b_0, \\ldots, b_k$ explicitly. `all_solutions_2_to_6`: $\\bigwedge_{k=2}^{6} \\text{ExistsSolution}(k)$.",
-    "significance": "technical",
-    "relatedConcepts": ["existential introduction", "anonymous constructors in Lean 4", "conjunction"],
-    "prerequisites": ["Lean 4 exists introduction", "And constructor"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existential introduction",
+      "anonymous constructors in Lean 4",
+      "conjunction"
+    ],
+    "prerequisites": [
+      "Lean 4 exists introduction",
+      "And constructor"
+    ]
   },
   {
     "id": "ann-1056-factorial-pattern",
     "proofId": "erdos-1056-oq-01",
-    "range": { "startLine": 189, "endLine": 208 },
+    "range": {
+      "startLine": 189,
+      "endLine": 208
+    },
     "type": "insight",
     "title": "Factorial Congruence Chains: The Combinatorial Signature of Each Solution",
     "content": "`factorial_pattern_23` and `factorial_pattern_71` explicitly verify the factorial congruence chains that underlie the solutions. For p=23: 1! ≡ 4! ≡ 8! ≡ 11! ≡ 21! (mod 23) — these are precisely the factorials at positions bᵢ - 1 for the k=4 boundaries. For p=71: the chain has 7 congruent factorial values, supporting both the k=5 and k=6 solutions. These theorems are mathematically richer than the solution theorems themselves: they reveal the algebraic structure behind the interval decomposition and suggest a computational search strategy for larger k: enumerate factorials mod p and look for long chains of equal values.",
     "mathContext": "$p=23$: $1! \\equiv 4! \\equiv 8! \\equiv 11! \\equiv 21! \\pmod{23}$ (all $\\equiv 1 \\pmod{23}$). $p=71$: $7! \\equiv 9! \\equiv 19! \\equiv 51! \\equiv 61! \\equiv 63! \\equiv 70! \\pmod{71}$. A length-$(k+1)$ factorial chain at positions $c_0 < \\cdots < c_k$ gives a $k$-interval solution with boundaries $c_i + 1$.",
     "significance": "key",
-    "relatedConcepts": ["factorial sequences mod p", "collision search", "birthday paradox", "computational search"],
-    "prerequisites": ["Nat.factorial", "modular arithmetic", "native_decide"]
+    "relatedConcepts": [
+      "factorial sequences mod p",
+      "collision search",
+      "birthday paradox",
+      "computational search"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "modular arithmetic",
+      "native_decide"
+    ]
   },
   {
     "id": "ann-1056-summary",
     "proofId": "erdos-1056-oq-01",
-    "range": { "startLine": 212, "endLine": 226 },
-    "type": "context",
+    "range": {
+      "startLine": 212,
+      "endLine": 226
+    },
+    "type": "concept",
     "title": "Main Results: Solutions Extended to k=4,5,6; Open Questions Remain",
     "content": "`erdos_1056_new_solutions` and `all_solutions_2_to_6` are the top-level theorems. The open problem — do solutions exist for ALL k? — remains fully open. The computational approach scales: to find a k=7 solution, one would search for a prime p where the factorial sequence mod p has at least 8 equal values. The expected prime needed grows with k (a birthday-paradox argument: factorials mod p ≈ uniform in (Z/pZ)*, so a chain of length k+1 requires p ≈ (k+1)^2 by the birthday bound). For k=7, a prime near 64 might suffice; for large k, the needed prime grows quadratically. Whether this pattern continues indefinitely is the core open question.",
     "mathContext": "Birthday bound: with $k+1$ uniform samples from $(\\mathbb{Z}/p\\mathbb{Z})^*$ (size $p-1$), a collision requires $p \\gtrsim (k+1)^2$. Solution primes: $11, 17, 23, 71$ for $k=2,3,4,5/6$ — growth slower than $(k+1)^2$ so far. Open: $\\forall k \\geq 2, \\exists$ solution.",
     "significance": "supporting",
-    "relatedConcepts": ["birthday paradox", "open problems", "computational number theory", "Chinese remainder theorem"],
-    "prerequisites": ["birthday paradox", "natural density", "group theory of (Z/pZ)*"]
+    "relatedConcepts": [
+      "birthday paradox",
+      "open problems",
+      "computational number theory",
+      "Chinese remainder theorem"
+    ],
+    "prerequisites": [
+      "birthday paradox",
+      "natural density",
+      "group theory of (Z/pZ)*"
+    ]
   }
 ]

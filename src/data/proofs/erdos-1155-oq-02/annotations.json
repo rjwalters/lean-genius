@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Problem Setup and Axiom Declarations",
     "content": "The module docstring frames the question: given the triangle removal process output has $f(n) = n^{3/2+o(1)}$ edges (BFL 2015) and Turán's theorem gives $n^2/4$ as the triangle-free maximum, how large is the gap $n^2/4 \\, / \\, f(n)$? The file imports Mathlib's `Combinatorics.SimpleGraph.Extremal.Turan` (containing `CliqueFree.card_edgeFinset_le`) and `Analysis.SpecialFunctions.Pow.Real` (rpow arithmetic), then imports `Proofs.Erdos1155OQ01` to inherit the BFL axioms and `triangleRemovalEdges` definition.\n\nLines 40–50 contain the docstring for Part I, explaining Mathlib's formulation of Turán's theorem: `CliqueFree.card_edgeFinset_le` with `r=2` gives a bound with residue correction terms (`(n%2)^2/4 + C(n%2, 2)`), which simplify to $\\lfloor n^2/4 \\rfloor$ for `n%2 ∈ {0,1}`.",
     "mathContext": "$\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ (Turán 1941). In Lean: `CliqueFree.card_edgeFinset_le (r := 2)` gives $|E| \\leq (n^2 - (n \\mod 2)^2)/4 + \\binom{n \\mod 2}{2}$. For $n \\mod 2 \\in \\{0,1\\}$: $\\binom{n \\mod 2}{2} = 0$ and $(n \\mod 2)^2 \\leq n^2$, so the bound reduces to $\\lfloor n^2/4 \\rfloor \\leq n^2/4$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "CliqueFree.card_edgeFinset_le",
       "triangleRemovalEdges",
@@ -153,7 +153,7 @@
       "startLine": 271,
       "endLine": 314
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The ε/2 Trick for Sharp BFL Bounds",
     "content": "`turan_bfl_exponent_gap` proves $n^2/4 / f(n) > n^{1/2-\\varepsilon}$ for all $\\varepsilon > 0$. The key is using BFL at $\\varepsilon/2$ (not $\\varepsilon$): `bfl_upper_bound (ε/2)` gives $f(n) \\leq n^{3/2+\\varepsilon/2}$ eventually. Then: $n^{1/2-\\varepsilon} \\cdot f(n) \\leq n^{1/2-\\varepsilon} \\cdot n^{3/2+\\varepsilon/2} = n^{2-\\varepsilon/2}$. Since `eventually_gt_atTop` gives $n^{\\varepsilon/2} > 4$ for large $n$, we get $n^{2-\\varepsilon/2} \\cdot n^{\\varepsilon/2} = n^2 < n^2 \\cdot n^{\\varepsilon/2}/4$, which is $n^{2-\\varepsilon/2} < n^2/4$. The `nlinarith` tactic closes the final comparison.",
     "mathContext": "To show $A > B$ strictly when both depend on $n$, apply BFL at $\\varepsilon/2$ to get a tighter bound on $f(n)$, leaving room for a strict inequality. This technique applies whenever the goal requires showing a polynomial gap is strictly positive.",
@@ -176,7 +176,7 @@
       "startLine": 152,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Converting rpow Arithmetic to ℕ^2",
     "content": "The standard pattern for combining real exponents and collapsing to an integer power is: `rw [← Real.rpow_add hn', show a + b = 2 from by ring]; exact Real.rpow_natCast (n : ℝ) 2`. This uses the `rpow_add` law $n^a \\cdot n^b = n^{a+b}$ and `ring` to verify the exponent sum equals 2, then `rpow_natCast` to convert $n^2$ (as rpow) to the natural number power $n^2$. This pattern appears multiple times when combining BFL exponents.",
     "mathContext": "$n^{7/4} \\cdot n^{1/4} = n^{7/4 + 1/4} = n^2$. In Lean with `Real.rpow`: `rpow_add hn' (7/4) (1/4)` gives the combination, then `show (7/4 : ℝ) + 1/4 = 2 from by norm_num` and `rpow_natCast` finish.",

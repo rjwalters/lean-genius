@@ -2,85 +2,185 @@
   {
     "id": "ann-hyperplane-parameterization",
     "proofId": "buffons-needle-oq-02-oq-03",
-    "range": { "startLine": 51, "endLine": 76 },
+    "range": {
+      "startLine": 51,
+      "endLine": 76
+    },
     "type": "definition",
     "title": "Hyperplane Parameterization: Normal Vector and Offset",
     "content": "Part I defines the key geometric objects. Hyperplane(n) is parameterized by a unit normal u ∈ EuclideanSpace ℝ (Fin n) and scalar offset t ∈ ℝ: the hyperplane H(u,t) = {x : ⟪u,x⟫ = t}. Segment(n) has start and finish in EuclideanSpace. The crossing predicate captures when H(u,t) intersects the closed segment [A,B]: the offset t is between min(⟪u,A⟫, ⟪u,B⟫) and max(⟪u,A⟫, ⟪u,B⟫). A Decidable instance is provided for the crossing predicate via And.decidable. The Segment.length is ‖finish - start‖ (using the EuclideanSpace norm).",
     "mathContext": "$H(u,t) = \\{x \\in \\mathbb{R}^n : \\langle u, x\\rangle = t\\}$. Crossing condition: $\\min(\\langle u, A\\rangle, \\langle u, B\\rangle) \\leq t \\leq \\max(\\langle u, A\\rangle, \\langle u, B\\rangle)$. Length: $L = \\|B - A\\|$.",
     "significance": "supporting",
-    "relatedConcepts": ["Hyperplane structure", "EuclideanSpace", "inner product", "crossing predicate", "Segment.length"],
-    "prerequisites": ["EuclideanSpace ℝ (Fin n)", "inner product spaces", "Decidable instances in Lean 4"]
+    "relatedConcepts": [
+      "Hyperplane structure",
+      "EuclideanSpace",
+      "inner product",
+      "crossing predicate",
+      "Segment.length"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin n)",
+      "inner product spaces",
+      "Decidable instances in Lean 4"
+    ]
   },
   {
     "id": "ann-crossing-measure-lemma",
     "proofId": "buffons-needle-oq-02-oq-03",
-    "range": { "startLine": 85, "endLine": 116 },
-    "type": "technique",
+    "range": {
+      "startLine": 85,
+      "endLine": 116
+    },
+    "type": "concept",
     "title": "Crossing Measure Lemma: The Computational Heart of Cauchy-Crofton",
     "content": "crossing_measure_eq_inner is the key proved lemma: the Lebesgue measure of {t : H(u,t) crosses [A,B]} equals ENNReal.ofReal |⟪u,B⟫ - ⟪u,A⟫|. The crossing set is an interval [min(u·A, u·B), max(u·A, u·B)] of Lebesgue measure max - min. The proof uses Real.volume_Icc (Lebesgue measure of closed interval [a,b] = b - a, when a ≤ b) and max_sub_min_eq_abs (max(a,b) - min(a,b) = |a - b|). crossing_measure_eq_inner_diff reformulates in terms of ⟪u, B-A⟫ using inner_sub_right linearity. These are pure real-analysis calculations requiring no measure theory infrastructure beyond Mathlib.",
     "mathContext": "$\\lambda(\\{t : H(u,t) \\text{ crosses } [A,B]\\}) = \\max(u \\cdot A, u \\cdot B) - \\min(u \\cdot A, u \\cdot B) = |u \\cdot B - u \\cdot A| = |\\langle u, B-A\\rangle|$. Proof: \\texttt{Real.volume\\_Icc}: $\\lambda([a,b]) = b-a$. \\texttt{max\\_sub\\_min\\_eq\\_abs}: $\\max(a,b)-\\min(a,b) = |a-b|$.",
     "significance": "key",
-    "relatedConcepts": ["Real.volume_Icc", "max_sub_min_eq_abs", "inner_sub_right", "ENNReal.ofReal", "Lebesgue measure"],
-    "prerequisites": ["Real.volume_Icc from Mathlib.MeasureTheory.Measure.Lebesgue.Basic", "max_sub_min_eq_abs from Mathlib.Order.MinMax", "inner product linearity"]
+    "relatedConcepts": [
+      "Real.volume_Icc",
+      "max_sub_min_eq_abs",
+      "inner_sub_right",
+      "ENNReal.ofReal",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "Real.volume_Icc from Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "max_sub_min_eq_abs from Mathlib.Order.MinMax",
+      "inner product linearity"
+    ]
   },
   {
     "id": "ann-crossing-integral-def",
     "proofId": "buffons-needle-oq-02-oq-03",
-    "range": { "startLine": 126, "endLine": 149 },
+    "range": {
+      "startLine": 126,
+      "endLine": 149
+    },
     "type": "definition",
     "title": "crossingIntegral: The Key Quantity and Fubini Axiom",
     "content": "crossingIntegral σ A B is the integral of |⟪u, B-A⟫| over the unit sphere S^{n-1} with respect to measure σ. The definition directly encodes the right-hand side of the Cauchy-Crofton formula: for each direction u on the sphere, integrate the absolute inner product with B-A. The Fubini axiom (cauchy_crofton_fubini) equates this to the double integral of crossing_count over S^{n-1} × ℝ: it asserts that the integral-over-directions of the crossing measure equals the crossingIntegral. This Fubini exchange is axiomatized because it requires σ-finiteness, measurability of the crossing count function, and the Fubini-Tonelli theorem infrastructure not yet fully available in Mathlib.",
     "mathContext": "$\\text{crossingIntegral}(\\sigma, A, B) = \\int_{S^{n-1}} |\\langle u, B-A\\rangle|\\, d\\sigma(u)$. Fubini axiom: $\\text{crossingIntegral}(\\sigma, A, B) = \\int_{S^{n-1}} \\lambda(\\{t : H(u,t) \\text{ crosses } [A,B]\\})\\, d\\sigma(u)$, justified by Fubini-Tonelli with $\\sigma$-finite $\\sigma$.",
     "significance": "key",
-    "relatedConcepts": ["crossingIntegral", "cauchy_crofton_fubini", "Fubini-Tonelli theorem", "SigmaFinite", "Metric.sphere"],
-    "prerequisites": ["MeasureTheory.integral", "Metric.sphere in EuclideanSpace", "SigmaFinite typeclass", "Fubini's theorem in Mathlib"]
+    "relatedConcepts": [
+      "crossingIntegral",
+      "cauchy_crofton_fubini",
+      "Fubini-Tonelli theorem",
+      "SigmaFinite",
+      "Metric.sphere"
+    ],
+    "prerequisites": [
+      "MeasureTheory.integral",
+      "Metric.sphere in EuclideanSpace",
+      "SigmaFinite typeclass",
+      "Fubini's theorem in Mathlib"
+    ]
   },
   {
     "id": "ann-noodle-theorem",
     "proofId": "buffons-needle-oq-02-oq-03",
-    "range": { "startLine": 152, "endLine": 185 },
+    "range": {
+      "startLine": 152,
+      "endLine": 185
+    },
     "type": "insight",
     "title": "Noodle Theorem: Polygonal Additivity and Scaling",
     "content": "Part IV proves three properties of crossingIntegral showing it behaves linearly with respect to the segment geometry. crossingIntegral_smul: scaling the segment [A, A+c(B-A)] by factor c multiplies the integral by |c| (proved by simp + abs_mul). crossingIntegral_symm: [A,B] and [B,A] give the same integral (proved by showing B-A = -(A-B), using inner_neg_right and abs_neg). crossingIntegral_polygonal is stated as a tautology (rfl) — the noodle theorem says the sum of crossing integrals over a polygonal path equals the sum, which holds trivially from the definition. The mathematical content of the noodle theorem is that the total crossing count for a polygonal curve equals the sum of crossing counts for each segment, which follows from linearity of the integration.",
     "mathContext": "$\\text{crossingIntegral}(\\sigma, A, A+c(B-A)) = |c| \\cdot \\text{crossingIntegral}(\\sigma, A, B)$. Symmetry: $\\text{crossingIntegral}(\\sigma, A, B) = \\text{crossingIntegral}(\\sigma, B, A)$. Noodle: $\\sum_i \\text{crossingIntegral}(\\sigma, P_i, P_{i+1}) = $ total crossings for the polygonal path.",
     "significance": "supporting",
-    "relatedConcepts": ["crossingIntegral_smul", "crossingIntegral_symm", "crossingIntegral_polygonal", "noodle theorem", "inner_neg_right"],
-    "prerequisites": ["inner product linearity", "abs_mul", "abs_neg", "Buffon's noodle 3D (BuffonsNeedleOQ02)"]
+    "relatedConcepts": [
+      "crossingIntegral_smul",
+      "crossingIntegral_symm",
+      "crossingIntegral_polygonal",
+      "noodle theorem",
+      "inner_neg_right"
+    ],
+    "prerequisites": [
+      "inner product linearity",
+      "abs_mul",
+      "abs_neg",
+      "Buffon's noodle 3D (BuffonsNeedleOQ02)"
+    ]
   },
   {
     "id": "ann-isotropy-alpha",
     "proofId": "buffons-needle-oq-02-oq-03",
-    "range": { "startLine": 187, "endLine": 220 },
+    "range": {
+      "startLine": 187,
+      "endLine": 220
+    },
     "type": "concept",
     "title": "Isotropy Factor α_n: Dimensional Reduction via O(n)-Invariance",
     "content": "Part V introduces the isotropy factor. The alpha function is defined by cases: α₁=1, α₂=2/π, α₃=1/2, with α_n=0 for n≥4 (placeholder). The isotropy axiom (isotropy_yields_alpha) states that for an O(n)-invariant probability measure σ (i.e., σ is invariant under all isometric linear maps of EuclideanSpace), the crossingIntegral equals alpha(n+1) × ‖B-A‖. This encodes the fact that rotational symmetry forces the crossing integral to depend only on the segment length: crossingIntegral σ A B = α_n × ‖B-A‖. The factor α_n = E_{u∼σ}[|u₁|] is the expected value of |u₁| (the first coordinate) for a uniformly distributed unit vector in ℝ^n.",
     "mathContext": "$\\alpha_n = \\mathbb{E}_{u \\sim \\sigma}[|u_1|]$ for uniform $\\sigma$ on $S^{n-1}$. Values: $\\alpha_2 = \\frac{2}{\\pi}$ (from $\\int_0^\\pi |\\cos\\theta| \\frac{d\\theta}{\\pi} = \\frac{2}{\\pi}$), $\\alpha_3 = \\frac{1}{2}$ (from sphere average $\\mathbb{E}[|u_1|]$ on $S^2$). For O(n)-invariant $\\sigma$: $\\int_{S^{n-1}} |\\langle u, v\\rangle| \\, d\\sigma(u) = \\alpha_n \\|v\\|$.",
     "significance": "key",
-    "relatedConcepts": ["alpha function", "isotropy_yields_alpha", "O(n)-invariance", "IsProbabilityMeasure", "kinematic measure"],
-    "prerequisites": ["O(n) isometry group", "IsProbabilityMeasure typeclass", "IsometryEquiv", "sphere average calculation"]
+    "relatedConcepts": [
+      "alpha function",
+      "isotropy_yields_alpha",
+      "O(n)-invariance",
+      "IsProbabilityMeasure",
+      "kinematic measure"
+    ],
+    "prerequisites": [
+      "O(n) isometry group",
+      "IsProbabilityMeasure typeclass",
+      "IsometryEquiv",
+      "sphere average calculation"
+    ]
   },
   {
     "id": "ann-classical-cases",
     "proofId": "buffons-needle-oq-02-oq-03",
-    "range": { "startLine": 222, "endLine": 255 },
+    "range": {
+      "startLine": 222,
+      "endLine": 255
+    },
     "type": "insight",
     "title": "Classical Cases: α₂ = 2/π and α₃ = 1/2 as Definitional Equalities",
     "content": "Part VI recovers the classical Buffon (2D) and 3D noodle results. alpha_two (α₂ = 2/π) and alpha_three (α₃ = 1/2) are proved by rfl — they are literally definitional equalities from the match expression in alpha. buffon_2d_crossing_factor and buffon_3d_crossing_factor are identical to alpha_two and alpha_three (duplication is intentional for exposition). alpha_decreasing proves α₂ > α₃ (i.e., 2/π > 1/2) by norm_num. The summary theorem cauchy_crofton_summary (n : ℕ) : True := trivial is a placeholder — its name declares the intent but the proof is trivial. The meaningful content is in the other theorems.",
     "mathContext": "$\\alpha_2 = \\frac{2}{\\pi} \\approx 0.637 > \\frac{1}{2} = \\alpha_3$. Classical 2D Buffon: $E[\\text{crossings}] = \\frac{2L}{\\pi d}$. 3D noodle: $E[\\text{crossings}] = \\frac{L}{2d}$. Decreasing: $\\frac{2}{\\pi} > \\frac{1}{2}$ since $\\pi < 4$, proved by \\texttt{norm\\_num}.",
     "significance": "supporting",
-    "relatedConcepts": ["alpha_two", "alpha_three", "alpha_decreasing", "norm_num", "Buffon 2D", "3D noodle"],
-    "prerequisites": ["Buffon's needle (BuffonsNeedle.lean)", "3D noodle (BuffonsNeedleOQ02.lean)", "norm_num tactic", "Real.pi"]
+    "relatedConcepts": [
+      "alpha_two",
+      "alpha_three",
+      "alpha_decreasing",
+      "norm_num",
+      "Buffon 2D",
+      "3D noodle"
+    ],
+    "prerequisites": [
+      "Buffon's needle (BuffonsNeedle.lean)",
+      "3D noodle (BuffonsNeedleOQ02.lean)",
+      "norm_num tactic",
+      "Real.pi"
+    ]
   },
   {
     "id": "ann-historical-context",
     "proofId": "buffons-needle-oq-02-oq-03",
-    "range": { "startLine": 1, "endLine": 41 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 41
+    },
+    "type": "concept",
     "title": "Historical Context: From Buffon to Crofton to Blaschke-Santaló",
     "content": "Buffon's needle problem (1777) asked for the probability that a needle of length L dropped on a floor with parallel lines spaced distance d apart crosses a line. The answer 2L/(πd) (for L ≤ d) was the first probabilistic formula involving π. Crofton (1868) vastly generalized this: his formula states that for any rectifiable curve of length L in the plane, the expected number of crossings with a random line (drawn from the kinematic measure) is 2L/π. The key insight is that this depends only on the length, not the shape of the curve — this is the 'noodle theorem'. Cauchy (1832) had earlier proved the related result that the mean width of a convex body determines its surface area. Together, these results became the foundation of integral geometry.\n\nThe modern framework traces to **Blaschke** (1935, Vorlesungen über Integralgeometrie) who systematized kinematic formulas: the kinematic integral ∫ (χ(K ∩ gL)) dg over the motion group O(n) ⋉ ℝⁿ decomposes into intrinsic volumes via Steiner's formula. **Hadwiger's theorem** (1957) is the culmination: the only continuous, motion-invariant valuations on convex bodies are linear combinations of the n+1 intrinsic volumes V₀,...,Vₙ (the quermassintegrals). The Cauchy-Crofton formula is the k=1 case of the kinematic formula for intrinsic volumes. **Santaló** (1976) gave the definitive synthesis in 'Integral Geometry and Geometric Probability', extending to all dimensions and establishing the connection to the Minkowski mixed volume via Kubota's formula: Vₖ(K) = c_{n,k} ∫_{G(n,k)} vol_k(K|E) dE (intrinsic volume as average projection onto k-planes).\n\nThis formalization proves the crossing-measure lemma — the computational core of all Cauchy-Crofton variants — in full Lean 4 rigor, while axiomatizing the Fubini exchange and isotropy reduction that depend on Blaschke-Santaló's measure-theoretic infrastructure.",
     "mathContext": "Crofton (1868): For any curve of length $L$ in $\\mathbb{R}^2$, $\\mathbb{E}[\\text{crossings}] = \\frac{2L}{\\pi}$ for the kinematic (O(2)-invariant) line measure. In $\\mathbb{R}^n$: $\\mathbb{E}[\\text{crossings}] = \\alpha_n \\cdot \\frac{L}{d}$ with $\\alpha_n = \\mathbb{E}_{u \\sim \\text{uniform}}[|u_1|]$. **Hadwiger**: Every continuous, motion-invariant valuation $V: \\mathcal{K}^n \\to \\mathbb{R}$ is $V = \\sum_{k=0}^n c_k V_k$. **Kinematic formula**: $\\int_{G_n} \\chi(K \\cap gL)\\, dg = \\sum_k c_{n,k} V_k(K)V_{n-k}(L)$.",
-    "significance": "context",
-    "relatedConcepts": ["Buffon's needle", "Crofton formula", "kinematic measure", "integral geometry", "Blaschke-Santaló", "Hadwiger's theorem", "intrinsic volumes", "Minkowski mixed volumes"],
-    "prerequisites": ["Buffon's needle/noodle 2D and 3D results", "measure theory basics", "integral geometry", "convex geometry"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Buffon's needle",
+      "Crofton formula",
+      "kinematic measure",
+      "integral geometry",
+      "Blaschke-Santaló",
+      "Hadwiger's theorem",
+      "intrinsic volumes",
+      "Minkowski mixed volumes"
+    ],
+    "prerequisites": [
+      "Buffon's needle/noodle 2D and 3D results",
+      "measure theory basics",
+      "integral geometry",
+      "convex geometry"
+    ]
   }
 ]

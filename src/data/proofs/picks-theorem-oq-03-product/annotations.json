@@ -6,11 +6,11 @@
       "startLine": 22,
       "endLine": 43
     },
-    "type": "context",
+    "type": "concept",
     "title": "Ehrhart Theory Extensions: Products, Quasipolynomials, and Valuations",
-    "content": "Ehrhart theory counts lattice points in dilated polytopes: L(P, n) = |nP \u2229 \u2124\u1d48|. For lattice polytopes (integer vertices), L(P, n) is a polynomial in n of degree dim(P) with leading coefficient Vol(P). This file extends the basic theory in three directions: (1) Product polytopes: L(P\u00d7Q, n) = L(P, n)\u00b7L(Q, n), since (nP)\u00d7(nQ) = n(P\u00d7Q) and integer points factor. (2) Rational polytopes: when vertices have denominator q, L(P, n) is a quasipolynomial \u2014 periodic with period dividing q, agreeing with a polynomial on each residue class mod q. (3) Valuation property: L is additive, L(P\u222aQ) + L(P\u2229Q) = L(P) + L(Q), enabling inclusion-exclusion arguments. The file also covers zonotopes (Minkowski sums of segments) and h*-vector theory under products. References: Beck-Robins (2007) for Ehrhart theory, Barvinok (2008) for integer points, Stanley (1997) for h*-vectors.",
+    "content": "Ehrhart theory counts lattice points in dilated polytopes: L(P, n) = |nP ∩ ℤᵈ|. For lattice polytopes (integer vertices), L(P, n) is a polynomial in n of degree dim(P) with leading coefficient Vol(P). This file extends the basic theory in three directions: (1) Product polytopes: L(P×Q, n) = L(P, n)·L(Q, n), since (nP)×(nQ) = n(P×Q) and integer points factor. (2) Rational polytopes: when vertices have denominator q, L(P, n) is a quasipolynomial — periodic with period dividing q, agreeing with a polynomial on each residue class mod q. (3) Valuation property: L is additive, L(P∪Q) + L(P∩Q) = L(P) + L(Q), enabling inclusion-exclusion arguments. The file also covers zonotopes (Minkowski sums of segments) and h*-vector theory under products. References: Beck-Robins (2007) for Ehrhart theory, Barvinok (2008) for integer points, Stanley (1997) for h*-vectors.",
     "mathContext": "For lattice polytope $P \\subset \\mathbb{R}^d$: $L(P, n) = \\sum_{k=0}^d c_k \\binom{n+k}{k}$ with $c_d = \\text{Vol}(P)$, $c_0 = 1$. Product: $L(P \\times Q, n) = L(P,n) \\cdot L(Q,n)$. Rational polytope: $L(P, n)$ is quasiperiodic with period $q = \\text{lcm}$ of vertex denominators.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ehrhart polynomial",
       "lattice polytopes",
@@ -34,7 +34,7 @@
     },
     "type": "definition",
     "title": "cube_ehrhart and cube_product: The Core Product Formula",
-    "content": "The Ehrhart polynomial of the d-dimensional unit cube [0,1]^d is L(n) = (n+1)^d: there are (n+1) choices for each coordinate among 0, 1, ..., n when counting lattice points in n\u00b7[0,1]^d = [0,n]^d. The product formula `cube_product` states cube_ehrhart(a+b) = cube_ehrhart(a) * cube_ehrhart(b), proved by `pow_add`. This is the archetype of the Ehrhart product formula: [0,1]^a \u00d7 [0,1]^b = [0,1]^(a+b), so lattice points factor. The special cases line_times_line (line\u00b2=square), square_times_line (square\u00d7line=cube), and line_cubed (line\u00b3=cube) demonstrate the formula concretely at small dimensions. The simplex Ehrhart polynomials simplex_ehrhart_2 = (n+1)(n+2)/2 = C(n+2,2) and simplex_ehrhart_3 = C(n+3,3) encode the standard simplex counting formula L(\u0394_d, n) = C(n+d, d).",
+    "content": "The Ehrhart polynomial of the d-dimensional unit cube [0,1]^d is L(n) = (n+1)^d: there are (n+1) choices for each coordinate among 0, 1, ..., n when counting lattice points in n·[0,1]^d = [0,n]^d. The product formula `cube_product` states cube_ehrhart(a+b) = cube_ehrhart(a) * cube_ehrhart(b), proved by `pow_add`. This is the archetype of the Ehrhart product formula: [0,1]^a × [0,1]^b = [0,1]^(a+b), so lattice points factor. The special cases line_times_line (line²=square), square_times_line (square×line=cube), and line_cubed (line³=cube) demonstrate the formula concretely at small dimensions. The simplex Ehrhart polynomials simplex_ehrhart_2 = (n+1)(n+2)/2 = C(n+2,2) and simplex_ehrhart_3 = C(n+3,3) encode the standard simplex counting formula L(Δ_d, n) = C(n+d, d).",
     "mathContext": "$L([0,1]^d, n) = (n+1)^d$. Product: $(n+1)^{a+b} = (n+1)^a \\cdot (n+1)^b$. Simplex: $L(\\Delta_d, n) = \\binom{n+d}{d}$. Mixed: $L(\\Delta_2 \\times [0,1], n) = \\binom{n+2}{2}(n+1) = \\frac{(n+1)^2(n+2)}{2}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -58,7 +58,7 @@
     },
     "type": "insight",
     "title": "Volume Multiplicativity: Leading Coefficient of Ehrhart Products",
-    "content": "The simplex_volume definition encodes Vol(\u0394_d) = 1/d! \u2014 the standard simplex has volume 1/d! in d dimensions (it is 1/d! of the unit cube). The volume multiplicativity theorem `volume_product_simplices` states Vol(\u0394_a \u00d7 \u0394_b) = 1/(a!\u00b7b!), verified by `field_simp`. This is consistent with the Ehrhart product formula: the leading coefficient of L(P\u00d7Q, n) is Vol(P\u00d7Q) = Vol(P)\u00b7Vol(Q), so the leading coefficient of the product polynomial is the product of leading coefficients. Concretely: \u0394\u2082\u00d7\u0394\u2082 has volume 1/4, and \u0394\u2082\u00d7\u0394\u2083 has volume 1/12 (verified by `norm_num`). These computations verify that the leading-order Ehrhart asymptotics L(P,n)/n^d \u2192 Vol(P) is consistent with multiplicativity.",
+    "content": "The simplex_volume definition encodes Vol(Δ_d) = 1/d! — the standard simplex has volume 1/d! in d dimensions (it is 1/d! of the unit cube). The volume multiplicativity theorem `volume_product_simplices` states Vol(Δ_a × Δ_b) = 1/(a!·b!), verified by `field_simp`. This is consistent with the Ehrhart product formula: the leading coefficient of L(P×Q, n) is Vol(P×Q) = Vol(P)·Vol(Q), so the leading coefficient of the product polynomial is the product of leading coefficients. Concretely: Δ₂×Δ₂ has volume 1/4, and Δ₂×Δ₃ has volume 1/12 (verified by `norm_num`). These computations verify that the leading-order Ehrhart asymptotics L(P,n)/n^d → Vol(P) is consistent with multiplicativity.",
     "mathContext": "$\\text{Vol}(\\Delta_d) = 1/d!$. Product: $\\text{Vol}(P \\times Q) = \\text{Vol}(P) \\cdot \\text{Vol}(Q)$. Leading coeff of $L$: $c_d(P) = \\text{Vol}(P)$, so $c_{a+b}(P \\times Q) = c_a(P) \\cdot c_b(Q)$. Examples: $\\text{Vol}(\\Delta_2 \\times \\Delta_2) = 1/4$, $\\text{Vol}(\\Delta_2 \\times \\Delta_3) = 1/12$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -82,7 +82,7 @@
     },
     "type": "definition",
     "title": "QuasiPoly Structure: Modeling Periodic Ehrhart Functions",
-    "content": "The `QuasiPoly` structure models the periodic nature of Ehrhart counting for rational polytopes. It has three fields: `period` (the periodicity q, equal to the LCM of vertex denominators), `period_pos` (a proof that q > 0), and `eval` (the evaluation function \u2115 \u2192 \u211a). The key example is `half_segment_quasi`: the half-integer segment [0, 1/2] has Ehrhart quasipolynomial L(n) = n/2 + 1. The lattice points of n\u00b7[0, 1/2] = [0, n/2] are {0, 1, ..., \u230an/2\u230b}, giving \u230an/2\u230b + 1 points. For even n=2k: L(2k) = k+1 (verified at n=0,2,4). The `poly_as_quasi` constructor wraps an ordinary polynomial as a period-1 quasipolynomial (a genuine polynomial), and `lattice_segment_is_poly` verifies the unit segment [0,1] has L(n) = n+1 as expected.",
+    "content": "The `QuasiPoly` structure models the periodic nature of Ehrhart counting for rational polytopes. It has three fields: `period` (the periodicity q, equal to the LCM of vertex denominators), `period_pos` (a proof that q > 0), and `eval` (the evaluation function ℕ → ℚ). The key example is `half_segment_quasi`: the half-integer segment [0, 1/2] has Ehrhart quasipolynomial L(n) = n/2 + 1. The lattice points of n·[0, 1/2] = [0, n/2] are {0, 1, ..., ⌊n/2⌋}, giving ⌊n/2⌋ + 1 points. For even n=2k: L(2k) = k+1 (verified at n=0,2,4). The `poly_as_quasi` constructor wraps an ordinary polynomial as a period-1 quasipolynomial (a genuine polynomial), and `lattice_segment_is_poly` verifies the unit segment [0,1] has L(n) = n+1 as expected.",
     "mathContext": "Half-segment $[0, 1/2]$: $L(n) = \\lfloor n/2 \\rfloor + 1 = \\begin{cases} n/2 + 1 & n \\text{ even} \\\\ (n+1)/2 & n \\text{ odd} \\end{cases}$. Period $q=2$ (vertex denominator). General: rational polytope with denominator $q$ gives period-$q$ quasipolynomial.",
     "significance": "key",
     "relatedConcepts": [
@@ -108,14 +108,14 @@
     },
     "type": "insight",
     "title": "Ehrhart as a Valuation: Inclusion-Exclusion for Lattice Points",
-    "content": "The valuation property L(P\u222aQ) + L(P\u2229Q) = L(P) + L(Q) is the lattice-point version of inclusion-exclusion. The file proves this for integer intervals. `interval_count(m) = m+1` counts lattice points {0,1,...,m} in [0,m]. `interval_valuation` shows the formal identity counts b+a+2 = a+b+2 on both sides (when a\u2264b, union=[0,b] and intersection=[0,a]); this reduces to `ring`, which is almost a tautology since both sides equal a+b+2. More interesting is `interval_disjoint_union`: the disjoint union [0,a] \u222a [a+1, a+b+1] has a+1+b+1 = a+b+2 points. This models the inclusion-exclusion additive structure that makes Ehrhart counting a valuation on the polytope ring. The general statement for polytopes (not just intervals) would use M\u00f6bius inversion on the lattice of faces.",
+    "content": "The valuation property L(P∪Q) + L(P∩Q) = L(P) + L(Q) is the lattice-point version of inclusion-exclusion. The file proves this for integer intervals. `interval_count(m) = m+1` counts lattice points {0,1,...,m} in [0,m]. `interval_valuation` shows the formal identity counts b+a+2 = a+b+2 on both sides (when a≤b, union=[0,b] and intersection=[0,a]); this reduces to `ring`, which is almost a tautology since both sides equal a+b+2. More interesting is `interval_disjoint_union`: the disjoint union [0,a] ∪ [a+1, a+b+1] has a+1+b+1 = a+b+2 points. This models the inclusion-exclusion additive structure that makes Ehrhart counting a valuation on the polytope ring. The general statement for polytopes (not just intervals) would use Möbius inversion on the lattice of faces.",
     "mathContext": "$|\\{0,\\ldots,a\\} \\cup \\{a+1,\\ldots,a+b+1\\}| = (a+1) + (b+1) = a+b+2$. Valuation: $L(P \\cup Q, n) + L(P \\cap Q, n) = L(P, n) + L(Q, n)$ for polytopes where the union is a polytope. Ehrhart is a valuation on the algebra of polytopal sets.",
     "significance": "key",
     "relatedConcepts": [
       "valuation on polytopes",
       "inclusion-exclusion principle",
       "polytope ring / algebra",
-      "M\u00f6bius inversion on face lattice",
+      "Möbius inversion on face lattice",
       "Euler characteristic analogy"
     ],
     "prerequisites": [
@@ -132,11 +132,11 @@
       "startLine": 316,
       "endLine": 342
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Verifications: norm_num as a Proof Strategy",
-    "content": "The concrete verification theorems (square_at_3, cube3_at_2, etc.) serve as sanity checks: L([0,1]\u00b2, 3) = (3+1)\u00b2 = 16, L([0,1]\u00b3, 2) = (2+1)\u00b3 = 27. These are proved entirely by `norm_num [cube_ehrhart]` \u2014 Lean's numeric normalization tactic evaluates the polynomial definitions at specific n values. The interior Ehrhart polynomial `cube_interior_ehrhart` computes L*(P, n) = |int(nP) \u2229 \u2124\u1d48|, with L*([0,1]\u00b3, 2) = (2-1)\u00b3 = 1 and L*([0,1]\u00b3, 3) = (3-1)\u00b3 = 8. The interior formula L*(C_d, n) = (n-1)^d follows from Ehrhart-Macdonald reciprocity: L*(P, n) = (-1)^d L(P, -n), giving L*(C_d, n) = (-1)^d (\u2212n+1)^d = (n-1)^d for the cube. These norm_num proofs demonstrate that Lean can handle concrete Ehrhart computations efficiently without requiring any specialized lattice-point machinery.",
+    "content": "The concrete verification theorems (square_at_3, cube3_at_2, etc.) serve as sanity checks: L([0,1]², 3) = (3+1)² = 16, L([0,1]³, 2) = (2+1)³ = 27. These are proved entirely by `norm_num [cube_ehrhart]` — Lean's numeric normalization tactic evaluates the polynomial definitions at specific n values. The interior Ehrhart polynomial `cube_interior_ehrhart` computes L*(P, n) = |int(nP) ∩ ℤᵈ|, with L*([0,1]³, 2) = (2-1)³ = 1 and L*([0,1]³, 3) = (3-1)³ = 8. The interior formula L*(C_d, n) = (n-1)^d follows from Ehrhart-Macdonald reciprocity: L*(P, n) = (-1)^d L(P, -n), giving L*(C_d, n) = (-1)^d (−n+1)^d = (n-1)^d for the cube. These norm_num proofs demonstrate that Lean can handle concrete Ehrhart computations efficiently without requiring any specialized lattice-point machinery.",
     "mathContext": "Cube: $L([0,1]^d, n) = (n+1)^d$, $L^*([0,1]^d, n) = (n-1)^d$. Ehrhart-Macdonald: $(-1)^d L(P, -n) = L^*(P, n)$. Verification: $L([0,1]^3, 2) = 27$, $L^*([0,1]^3, 3) = 8$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "interior Ehrhart polynomial",
       "Ehrhart-Macdonald reciprocity",
@@ -146,7 +146,7 @@
     "prerequisites": [
       "Ehrhart-Macdonald reciprocity",
       "interior lattice points",
-      "Lean 4: norm_num for \u211a arithmetic"
+      "Lean 4: norm_num for ℚ arithmetic"
     ]
   },
   {
@@ -158,9 +158,9 @@
     },
     "type": "insight",
     "title": "Zonotope Ehrhart Theory: Minkowski Sums of Segments",
-    "content": "Zonotopes are polytopes expressible as Minkowski sums of line segments: Z = v\u2081 + [0,1]\u00b7e\u2081 + ... + v_k\u00b7[0,1]\u00b7e_k. The most familiar zonotope is the cube [0,1]^d (Minkowski sum of d unit coordinate segments). The centered segment [-1,1] has L(n) = 2n+1 (there are 2n+1 integers in [-n, n]). Zonotopes have rich combinatorial structure: their h*-vector (Ehrhart numerator polynomial) is palindromic due to central symmetry, and the number of lattice points in each shell is determined by the matroid of the defining vectors. For the cube as a zonotope, L([0,1]^d, n) = (n+1)^d connects to the product formula: the cube is the product of d unit segments, so its Ehrhart polynomial is the d-th power of L([0,1], n) = n+1.",
+    "content": "Zonotopes are polytopes expressible as Minkowski sums of line segments: Z = v₁ + [0,1]·e₁ + ... + v_k·[0,1]·e_k. The most familiar zonotope is the cube [0,1]^d (Minkowski sum of d unit coordinate segments). The centered segment [-1,1] has L(n) = 2n+1 (there are 2n+1 integers in [-n, n]). Zonotopes have rich combinatorial structure: their h*-vector (Ehrhart numerator polynomial) is palindromic due to central symmetry, and the number of lattice points in each shell is determined by the matroid of the defining vectors. For the cube as a zonotope, L([0,1]^d, n) = (n+1)^d connects to the product formula: the cube is the product of d unit segments, so its Ehrhart polynomial is the d-th power of L([0,1], n) = n+1.",
     "mathContext": "Centered segment $[-1,1]$: $L(n) = 2n+1$. Cube: $L([0,1]^d, n) = (n+1)^d$ (product of $d$ unit segments). General zonotope $Z = \\sum_{i=1}^k [0,v_i]$: $L(Z, n)$ determined by the matroid of $\\{v_i\\}$ via Stanley's formula. h*-palindromy for centrally symmetric polytopes.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "zonotope",
       "Minkowski sum",
@@ -173,7 +173,7 @@
       "Minkowski sum of polytopes",
       "Ehrhart h*-vector (numerator polynomial)",
       "zonotope combinatorics",
-      "Lean 4: def for \u211a-valued functions"
+      "Lean 4: def for ℚ-valued functions"
     ]
   }
 ]

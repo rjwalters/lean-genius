@@ -2,85 +2,177 @@
   {
     "id": "ann-eqr-oq02-cubic-char-construction",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 59, "endLine": 110 },
+    "range": {
+      "startLine": 59,
+      "endLine": 110
+    },
     "type": "definition",
     "title": "Cubic Character as powMonoidHom: Generalizing the Legendre Symbol",
     "content": "The cubic character χ₃ is defined as `cubicChar = powMonoidHom cubExp` where `cubExp = (p-1)/3`. This is a group homomorphism `(ZMod p)ˣ →* (ZMod p)ˣ` because `(ZMod p)ˣ` is cyclic of order p-1, and when p ≡ 1 (mod 3), 3 | (p-1) so the exponent (p-1)/3 makes sense. The key property: `χ₃(a)³ = a^(p-1) = 1` by Fermat's little theorem for units (`units_pow_card_sub_one_eq_one`). This construction directly generalizes the Legendre symbol: for the quadratic case, χ₂ = powMonoidHom((p-1)/2) gives the Legendre symbol.",
     "mathContext": "For $p \\equiv 1 \\pmod{3}$: $\\chi_3 : (\\mathbb{Z}/p)^\\times \\to (\\mathbb{Z}/p)^\\times$ defined by $\\chi_3(a) = a^{(p-1)/3}$. Key: $\\chi_3(a)^3 = a^{p-1} = 1$ (Fermat), so $\\text{im}(\\chi_3) \\subseteq \\{\\zeta : \\zeta^3 = 1\\}$. Since $(\\mathbb{Z}/p)^\\times$ is cyclic of order $p-1$, the image has exactly 3 elements: $\\{1, g^{(p-1)/3}, g^{2(p-1)/3}\\}$ for any generator $g$.",
     "significance": "key",
-    "relatedConcepts": ["powMonoidHom", "ZMod.units cyclic group", "Fermat's little theorem for units", "Legendre symbol generalization"],
-    "prerequisites": ["cyclic group theory", "ZMod in Mathlib", "MonoidHom API", "Fermat's little theorem"]
+    "relatedConcepts": [
+      "powMonoidHom",
+      "ZMod.units cyclic group",
+      "Fermat's little theorem for units",
+      "Legendre symbol generalization"
+    ],
+    "prerequisites": [
+      "cyclic group theory",
+      "ZMod in Mathlib",
+      "MonoidHom API",
+      "Fermat's little theorem"
+    ]
   },
   {
     "id": "ann-eqr-oq02-closure-properties",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 110, "endLine": 145 },
-    "type": "technique",
+    "range": {
+      "startLine": 110,
+      "endLine": 145
+    },
+    "type": "concept",
     "title": "Closure Properties of Cubic Residues",
     "content": "The proof establishes that cubic residues are closed under the standard ring operations: 0 is trivially a cubic residue (0 = 0³), 1 = 1³ is a cubic residue, a³ is always a cubic residue, if a and b are cubic residues so is ab (via (xy)³ = x³y³), if a is a cubic residue so is a² (a² = a·a, product of cubes), and if a is a cubic residue so is a⁻¹ (via (x⁻¹)³ = (x³)⁻¹). These closure properties establish that cubic residues form a subgroup of (ZMod p)ˣ of index 3 (when p ≡ 1 mod 3).",
     "mathContext": "The cubic residues $\\{a^3 : a \\in (\\mathbb{Z}/p)^\\times\\}$ form a subgroup of index 3. Index formula: $[(\\mathbb{Z}/p)^\\times : \\text{Cubes}] = 3$ when $3 \\mid (p-1)$. Subgroup cardinality: $|\\text{Cubes}| = (p-1)/3$. The quotient $(\\mathbb{Z}/p)^\\times/\\text{Cubes} \\cong \\mathbb{Z}/3$.",
     "significance": "supporting",
-    "relatedConcepts": ["IsCubicResidue", "subgroup of cubic residues", "cyclic group quotient", "index of a subgroup"],
-    "prerequisites": ["group theory", "cyclic groups", "ZMod units API"]
+    "relatedConcepts": [
+      "IsCubicResidue",
+      "subgroup of cubic residues",
+      "cyclic group quotient",
+      "index of a subgroup"
+    ],
+    "prerequisites": [
+      "group theory",
+      "cyclic groups",
+      "ZMod units API"
+    ]
   },
   {
     "id": "ann-eqr-oq02-euler-criterion",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 156, "endLine": 200 },
+    "range": {
+      "startLine": 156,
+      "endLine": 200
+    },
     "type": "insight",
     "title": "Cubic Euler Criterion: Easy Direction Proved, Hard Direction Axiomatized",
     "content": "The easy direction: if a = x³ (i.e., a is a cubic residue), then χ₃(a) = a^((p-1)/3) = (x³)^((p-1)/3) = x^(p-1) = 1. In Lean, this requires lifting x to a unit via `Units.mk0` and using `pow_mul`. The hard direction — χ₃(a) = 1 implies a is a cube — is axiomatized as `cubicEuler_hard`. The hard direction requires knowing that ker(χ₃) equals the cubic residues, which needs the cyclic group isomorphism theorem: ker(χ₃) = {a : a^((p-1)/3) = 1} has cardinality (p-1)/3 (as a subgroup of the cyclic group of order p-1), and this equals the number of cubic residues.",
     "mathContext": "Easy: $a = x^3 \\Rightarrow a^{(p-1)/3} = x^{p-1} = 1$. Hard: $a^{(p-1)/3} = 1 \\Rightarrow a \\in \\ker(\\chi_3)$. Since $|\\ker(\\chi_3)| = (p-1)/3$ and $\\ker(\\chi_3) = \\{a^3 : a \\in (\\mathbb{Z}/p)^\\times\\}$ (the unique subgroup of index 3 in a cyclic group of order $p-1$), the hard direction follows from this characterization.",
     "significance": "key",
-    "relatedConcepts": ["Euler's criterion", "kernel of group homomorphism", "cyclic group kernel", "Units.mk0", "pow_mul"],
-    "prerequisites": ["group homomorphism kernel", "cyclic group theory", "Fermat's little theorem", "Units in Mathlib"]
+    "relatedConcepts": [
+      "Euler's criterion",
+      "kernel of group homomorphism",
+      "cyclic group kernel",
+      "Units.mk0",
+      "pow_mul"
+    ],
+    "prerequisites": [
+      "group homomorphism kernel",
+      "cyclic group theory",
+      "Fermat's little theorem",
+      "Units in Mathlib"
+    ]
   },
   {
     "id": "ann-eqr-oq02-quartic",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 239, "endLine": 295 },
-    "type": "context",
+    "range": {
+      "startLine": 239,
+      "endLine": 295
+    },
+    "type": "concept",
     "title": "Quartic Character: Parallel Construction for p ≡ 1 (mod 4)",
     "content": "The quartic character χ₄ = powMonoidHom((p-1)/4) for primes p ≡ 1 (mod 4) is constructed by an identical argument. For the quartic case, the image of χ₄ consists of 4th roots of unity in (ZMod p)ˣ, and the Euler criterion says a is a quartic residue iff a^((p-1)/4) = 1. Quartic reciprocity (proved by Gauss, 1832) is analogous to cubic reciprocity and requires the Gaussian integers ℤ[i] (where -1 = i² is a square). The parallel structure makes it clear that both cubic and quartic reciprocity are instances of a general theory of higher-power residue symbols.",
     "mathContext": "Quartic character: $\\chi_4(a) = a^{(p-1)/4}$ for $p \\equiv 1 \\pmod{4}$. Quartic Euler criterion: $a$ is a quartic residue mod $p$ iff $a^{(p-1)/4} = 1$. Quartic reciprocity: for Gaussian primary primes $\\pi, \\rho$ in $\\mathbb{Z}[i]$, $(\\rho/\\pi)_4 = (\\pi/\\rho)_4 \\cdot (-1)^{\\frac{N(\\pi)-1}{4} \\cdot \\frac{N(\\rho)-1}{4}}$ (Gauss).",
     "significance": "supporting",
-    "relatedConcepts": ["quartic residue", "Gaussian integers", "quartic reciprocity", "Gauss 1832", "higher power residue symbols"],
-    "prerequisites": ["cubic character construction", "group homomorphisms", "Gaussian integers ℤ[i]"]
+    "relatedConcepts": [
+      "quartic residue",
+      "Gaussian integers",
+      "quartic reciprocity",
+      "Gauss 1832",
+      "higher power residue symbols"
+    ],
+    "prerequisites": [
+      "cubic character construction",
+      "group homomorphisms",
+      "Gaussian integers ℤ[i]"
+    ]
   },
   {
     "id": "ann-eqr-oq02-eisenstein-primes",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 298, "endLine": 374 },
+    "range": {
+      "startLine": 298,
+      "endLine": 374
+    },
     "type": "concept",
     "title": "Eisenstein Integers ℤ[ω] and the Mathlib Gap",
     "content": "The `EisensteinPrime` structure defines what it means to be a primary Eisenstein prime: an element π of ℤ[ω] (ω = e^{2πi/3}) with positive norm, satisfying the 'primary' condition (π ≡ 2 mod 3). The cubic residue symbol (ρ/π)₃ is axiomatized as returning a cube root of unity, with the cubic reciprocity law (ρ/π)₃ = (π/ρ)₃ as a second axiom. The docstring explains the Jacobi sum proof strategy: J(χ₃, χ₃) ∈ ℤ[ω] provides the connecting element. The key Mathlib gap: ℤ[ω] (Eisenstein integers) and ℤ[i] (Gaussian integers) are absent from Mathlib 4.26, making cubic and quartic reciprocity currently beyond reach.",
     "mathContext": "Eisenstein integers: $\\mathbb{Z}[\\omega] = \\{a + b\\omega : a, b \\in \\mathbb{Z}\\}$ where $\\omega = e^{2\\pi i/3} = (-1 + \\sqrt{-3})/2$. A prime $\\pi \\in \\mathbb{Z}[\\omega]$ is 'primary' if $\\pi \\equiv 2 \\pmod{3}$. Cubic residue symbol: $(\\rho/\\pi)_3 \\in \\{1, \\omega, \\omega^2\\}$ where $(\\rho/\\pi)_3 \\equiv \\rho^{(N(\\pi)-1)/3} \\pmod{\\pi}$.",
     "significance": "key",
-    "relatedConcepts": ["Eisenstein integers ℤ[ω]", "Jacobi sums", "cubic residue symbol", "primary Eisenstein primes", "Mathlib infrastructure gaps"],
-    "prerequisites": ["algebraic number theory", "Eisenstein integers", "Jacobi sums", "cubic reciprocity history"]
+    "relatedConcepts": [
+      "Eisenstein integers ℤ[ω]",
+      "Jacobi sums",
+      "cubic residue symbol",
+      "primary Eisenstein primes",
+      "Mathlib infrastructure gaps"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "Eisenstein integers",
+      "Jacobi sums",
+      "cubic reciprocity history"
+    ]
   },
   {
     "id": "ann-eqr-oq02-jacobi-strategy",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 330, "endLine": 374 },
-    "type": "technique",
+    "range": {
+      "startLine": 330,
+      "endLine": 374
+    },
+    "type": "concept",
     "title": "Jacobi Sum Proof Strategy for Cubic Reciprocity",
     "content": "The detailed proof sketch in the docstring follows Ireland-Rosen Chapter 9. The Jacobi sum J(χ, ψ) = Σ_{a+b=1} χ(a)ψ(b) over (ZMod p)ˣ is the key technical tool. For χ = ψ = χ₃ (the cubic character), J(χ₃, χ₃) ∈ ℤ[ω] and |J|² = p. The cubic reciprocity law then follows by showing J(χ₃, χ₃) / J(χ₃, χ₃) (under automorphism) gives the reciprocity ratio. This is a landmark example of algebraic number theory: a law about integers (mod p) is proved using complex number theory (ℤ[ω] valued Jacobi sums). This 'lifting' technique recurs throughout algebraic number theory.",
     "mathContext": "Jacobi sum: $J(\\chi, \\psi) = \\sum_{a+b=1} \\chi(a)\\psi(b)$ for characters $\\chi, \\psi : (\\mathbb{Z}/p)^\\times \\to \\mathbb{C}^\\times$. Key: $J(\\chi_3, \\chi_3) = \\pi \\in \\mathbb{Z}[\\omega]$ with $|\\pi|^2 = N(\\pi) = p$. Cubic reciprocity follows from the action of Galois automorphisms on $J(\\chi_3, \\chi_3)$.",
     "significance": "key",
-    "relatedConcepts": ["Jacobi sums", "Ireland-Rosen Chapter 9", "Gauss sums", "algebraic number theory technique", "complex multiplication"],
-    "prerequisites": ["character sums", "algebraic number theory", "Galois theory", "Eisenstein integers"]
+    "relatedConcepts": [
+      "Jacobi sums",
+      "Ireland-Rosen Chapter 9",
+      "Gauss sums",
+      "algebraic number theory technique",
+      "complex multiplication"
+    ],
+    "prerequisites": [
+      "character sums",
+      "algebraic number theory",
+      "Galois theory",
+      "Eisenstein integers"
+    ]
   },
   {
     "id": "ann-eqr-oq02-summary-packages",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 376, "endLine": 391 },
-    "type": "context",
+    "range": {
+      "startLine": 376,
+      "endLine": 391
+    },
+    "type": "concept",
     "title": "Character Package Summary: Assembling the Full Results",
     "content": "`cubic_character_package` and `quartic_character_package` are summary theorems bundling all proved properties for p ≡ 1 (mod 3) and p ≡ 1 (mod 4) respectively. Each package states: (1) the character is a group homomorphism, (2) the character cubed/quarted equals 1, and (3) the Euler criterion iff (modulo the hard direction axiom). These packages make the results easy to apply without knowing the internal structure. The pattern of 'packing theorems' is a good Lean 4 design choice: it provides a clean API for downstream proofs.",
     "mathContext": "For $p \\equiv 1 \\pmod{3}$: (1) $\\chi_3 : (\\mathbb{Z}/p)^\\times \\to^{\\text{hom}} (\\mathbb{Z}/p)^\\times$; (2) $\\chi_3(a)^3 = 1$; (3) $\\chi_3(a) = 1 \\iff a$ is a cubic residue. Analogous for $\\chi_4$ with $p \\equiv 1 \\pmod 4$.",
     "significance": "supporting",
-    "relatedConcepts": ["theorem packaging in Lean 4", "API design", "cubic character summary", "quartic character summary"],
-    "prerequisites": ["cubicChar definition", "cubicEuler_hard axiom", "MonoidHom"]
+    "relatedConcepts": [
+      "theorem packaging in Lean 4",
+      "API design",
+      "cubic character summary",
+      "quartic character summary"
+    ],
+    "prerequisites": [
+      "cubicChar definition",
+      "cubicEuler_hard axiom",
+      "MonoidHom"
+    ]
   }
 ]

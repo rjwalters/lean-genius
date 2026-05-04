@@ -31,7 +31,7 @@
     },
     "type": "insight",
     "title": "Symmetric Version",
-    "content": "**The IVT also works when f(b) \u2264 f(a).**\n\nThis version handles the case where the function values are in the opposite order: $[f(b), f(a)] \\subseteq f([a, b])$.\n\nTogether with the main theorem, this covers all cases regardless of which endpoint has the larger value.",
+    "content": "**The IVT also works when f(b) ≤ f(a).**\n\nThis version handles the case where the function values are in the opposite order: $[f(b), f(a)] \\subseteq f([a, b])$.\n\nTogether with the main theorem, this covers all cases regardless of which endpoint has the larger value.",
     "mathContext": "If $f(b) \\leq f(a)$:\n\n$[f(b), f(a)] \\subseteq f([a, b])$",
     "significance": "key",
     "prerequisites": [
@@ -96,9 +96,9 @@
       "startLine": 114,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bolzano Proof Strategy",
-    "content": "The proof has two parts:\n\n1. **Get existence in [a, b]**: Since 0 is between f(a) and f(b), IVT gives us some x in [a, b] with f(x) = 0.\n\n2. **Show x is in (a, b)**: We prove x \u2260 a because f(a) < 0 \u2260 f(x) = 0, and similarly x \u2260 b because f(b) > 0 \u2260 f(x) = 0.\n\nThis is a common pattern: use IVT for the closed interval, then refine to the open interval using the hypothesis values.",
+    "content": "The proof has two parts:\n\n1. **Get existence in [a, b]**: Since 0 is between f(a) and f(b), IVT gives us some x in [a, b] with f(x) = 0.\n\n2. **Show x is in (a, b)**: We prove x ≠ a because f(a) < 0 ≠ f(x) = 0, and similarly x ≠ b because f(b) > 0 ≠ f(x) = 0.\n\nThis is a common pattern: use IVT for the closed interval, then refine to the open interval using the hypothesis values.",
     "mathContext": "Strategy:\n1. $0 \\in [f(a), f(b)]$ since $f(a) < 0 < f(b)$\n2. Apply IVT to get $x \\in [a, b]$\n3. $x \\neq a$ since $f(x) = 0 \\neq f(a)$\n4. $x \\neq b$ since $f(x) = 0 \\neq f(b)$",
     "significance": "key",
     "prerequisites": [
@@ -120,7 +120,7 @@
     },
     "type": "insight",
     "title": "Root from Opposite Signs",
-    "content": "**If f(a) \u00b7 f(b) < 0, then f has a root in (a, b).**\n\nThis generalizes Bolzano's theorem: instead of specifying which endpoint is positive and which is negative, we just require that they have opposite signs (their product is negative).\n\nThe proof splits into cases: either f(a) > 0 and f(b) < 0, or f(a) < 0 and f(b) > 0.",
+    "content": "**If f(a) · f(b) < 0, then f has a root in (a, b).**\n\nThis generalizes Bolzano's theorem: instead of specifying which endpoint is positive and which is negative, we just require that they have opposite signs (their product is negative).\n\nThe proof splits into cases: either f(a) > 0 and f(b) < 0, or f(a) < 0 and f(b) > 0.",
     "mathContext": "$f(a) \\cdot f(b) < 0 \\Leftrightarrow $ opposite signs\n\n$\\Rightarrow \\exists x \\in (a, b), f(x) = 0$",
     "significance": "key",
     "prerequisites": [
@@ -188,7 +188,7 @@
     },
     "type": "insight",
     "title": "Fixed Point Theorem for Intervals",
-    "content": "**If f : [a,b] \u2192 [a,b] is continuous, it has a fixed point.**\n\nA fixed point is a value $x$ where $f(x) = x$. The proof applies IVT to the function $g(x) = f(x) - x$:\n- At $x = a$: $g(a) = f(a) - a \\geq 0$ (since $f(a) \\geq a$)\n- At $x = b$: $g(b) = f(b) - b \\leq 0$ (since $f(b) \\leq b$)\n\nBy IVT, $g$ has a zero, which is a fixed point of $f$.\n\nThis is the 1-dimensional case of Brouwer's fixed point theorem.",
+    "content": "**If f : [a,b] → [a,b] is continuous, it has a fixed point.**\n\nA fixed point is a value $x$ where $f(x) = x$. The proof applies IVT to the function $g(x) = f(x) - x$:\n- At $x = a$: $g(a) = f(a) - a \\geq 0$ (since $f(a) \\geq a$)\n- At $x = b$: $g(b) = f(b) - b \\leq 0$ (since $f(b) \\leq b$)\n\nBy IVT, $g$ has a zero, which is a fixed point of $f$.\n\nThis is the 1-dimensional case of Brouwer's fixed point theorem.",
     "mathContext": "$f : [a, b] \\to [a, b]$ continuous\n\n$\\Rightarrow \\exists x \\in [a, b], f(x) = x$",
     "significance": "key",
     "prerequisites": [

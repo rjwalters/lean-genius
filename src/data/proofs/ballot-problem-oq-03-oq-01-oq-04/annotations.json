@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Catalan Recurrence from Ballot Theorem: Proof Architecture",
-    "content": "This file answers the open question from `ballot-problem-oq-03-oq-01` (LGV 2\u00d72): prove the Catalan convolution recurrence using the ballot theorem. The proof has five parts:\n\n1. **Cn Definition** (`def Cn`): Ballot-formula Catalan numbers via binomial coefficients\n2. **Catalan Formula** (`catalan_formula`): The key identity Cn n * (n+1) = C(2n,n)\n3. **Bridge** (`Cn_eq_catalan`): Shows `Cn n = catalan n` (Mathlib root namespace)\n4. **Recurrence** (`Cn_recurrence`): C\u2099\u208a\u2081 = \u2211C\u2096\u00b7C\u2099\u208b\u2096 via Mathlib's `catalan_succ'`\n5. **Characterization** (`Cn_characterization`): C\u2080 = 1 and the recurrence uniquely determine the Catalan sequence\n\nThe proof is organized in namespace `BallotCatalanRecurrence`, opening `Nat`, `Finset`, and `BigOperators`.",
+    "content": "This file answers the open question from `ballot-problem-oq-03-oq-01` (LGV 2×2): prove the Catalan convolution recurrence using the ballot theorem. The proof has five parts:\n\n1. **Cn Definition** (`def Cn`): Ballot-formula Catalan numbers via binomial coefficients\n2. **Catalan Formula** (`catalan_formula`): The key identity Cn n * (n+1) = C(2n,n)\n3. **Bridge** (`Cn_eq_catalan`): Shows `Cn n = catalan n` (Mathlib root namespace)\n4. **Recurrence** (`Cn_recurrence`): Cₙ₊₁ = ∑Cₖ·Cₙ₋ₖ via Mathlib's `catalan_succ'`\n5. **Characterization** (`Cn_characterization`): C₀ = 1 and the recurrence uniquely determine the Catalan sequence\n\nThe proof is organized in namespace `BallotCatalanRecurrence`, opening `Nat`, `Finset`, and `BigOperators`.",
     "mathContext": "The central identity: $C_{n+1} = \\sum_{k=0}^{n} C_k C_{n-k}$ where $C_n = \\binom{2n}{n} - \\binom{2n}{n+1} = \\frac{1}{n+1}\\binom{2n}{n}$ is the ballot Catalan number. The proof proceeds by bridging to Mathlib's `catalan` function via the shared characterization $C_n \\cdot (n+1) = \\binom{2n}{n}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -33,7 +33,7 @@
     },
     "type": "definition",
     "title": "Cn Definition and Catalan Formula",
-    "content": "The ballot-formula Catalan number `Cn n = C(2n,n) - C(2n,n+1)` counts monotone lattice paths from (0,0) to (2n,0) that stay non-negative (Dyck paths / ballot sequences). The private lemma `choose_2n_succ` proves `C(2n,n+1)*(n+1) = C(2n,n)*n` via Nat's absorption identity twice and row symmetry. From this, `catalan_formula` derives:\n\n- `Cn n * (n+1) = C(2n,n)*(n+1) - C(2n,n+1)*(n+1)`\n- `= C(2n,n)*(n+1) - C(2n,n)*n` (by choose_2n_succ)\n- `= C(2n,n)` \u2713\n\nThe proof uses `zify` to convert natural number arithmetic to integers, then `linear_combination` to close.",
+    "content": "The ballot-formula Catalan number `Cn n = C(2n,n) - C(2n,n+1)` counts monotone lattice paths from (0,0) to (2n,0) that stay non-negative (Dyck paths / ballot sequences). The private lemma `choose_2n_succ` proves `C(2n,n+1)*(n+1) = C(2n,n)*n` via Nat's absorption identity twice and row symmetry. From this, `catalan_formula` derives:\n\n- `Cn n * (n+1) = C(2n,n)*(n+1) - C(2n,n+1)*(n+1)`\n- `= C(2n,n)*(n+1) - C(2n,n)*n` (by choose_2n_succ)\n- `= C(2n,n)` ✓\n\nThe proof uses `zify` to convert natural number arithmetic to integers, then `linear_combination` to close.",
     "mathContext": "The formula $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ is the ballot-counting derivation: out of all $\\binom{2n}{n}$ paths, those that touch the x-axis are in bijection with unrestricted paths to $(2n,2)$ (reflection principle), giving $\\binom{2n}{n+1}$ bad paths. The key algebraic identity $\\binom{2n}{n+1} \\cdot (n+1) = \\binom{2n}{n} \\cdot n$ follows from the absorption identity $\\binom{m}{k} \\cdot k = \\binom{m}{k-1} \\cdot (m-k+1)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -83,16 +83,16 @@
       "startLine": 107,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Catalan Recurrence via Mathlib catalan_succ'",
-    "content": "The recurrence proof `Cn_recurrence` is a 3-step rewrite chain using `simp_rw [Cn_eq_catalan]` to replace all `Cn` with `catalan`, then:\n\n1. `catalan_succ'` rewrites `catalan (n+1)` to the antidiagonal form: `\u2211 p \u2208 antidiagonal n, catalan p.1 * catalan p.2`\n2. `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts to the range-sum form `\u2211 k \u2208 range (n+1), catalan k * catalan (n-k)`\n3. The goal closes because `Cn = catalan` everywhere (via `simp_rw`).\n\nThe proof is remarkably short (3 lines) because the heavy lifting is done by the bridge `Cn_eq_catalan` and Mathlib's `catalan_succ'`.",
+    "content": "The recurrence proof `Cn_recurrence` is a 3-step rewrite chain using `simp_rw [Cn_eq_catalan]` to replace all `Cn` with `catalan`, then:\n\n1. `catalan_succ'` rewrites `catalan (n+1)` to the antidiagonal form: `∑ p ∈ antidiagonal n, catalan p.1 * catalan p.2`\n2. `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts to the range-sum form `∑ k ∈ range (n+1), catalan k * catalan (n-k)`\n3. The goal closes because `Cn = catalan` everywhere (via `simp_rw`).\n\nThe proof is remarkably short (3 lines) because the heavy lifting is done by the bridge `Cn_eq_catalan` and Mathlib's `catalan_succ'`.",
     "mathContext": "`catalan_succ'` is Mathlib's antidiagonal form: $C_{n+1} = \\sum_{(a,b) \\in \\text{antidiag}(n)} C_a \\cdot C_b$ where $\\text{antidiag}(n) = \\{(a,b) : a+b=n\\}$. After `sum_antidiagonal_eq_sum_range_succ`: $= \\sum_{k=0}^{n} C_k \\cdot C_{n-k}$, which is the standard range-indexed convolution.",
     "significance": "key",
     "relatedConcepts": [
       "antidiagonal Finset",
       "convolution recurrence",
       "Dyck path decomposition",
-      "Catalan generating function C(x) = 1 + x\u00b7C(x)\u00b2"
+      "Catalan generating function C(x) = 1 + x·C(x)²"
     ],
     "prerequisites": [
       "Cn_eq_catalan",
@@ -110,7 +110,7 @@
     },
     "type": "concept",
     "title": "Verifications, Base Cases, and Symmetry",
-    "content": "Part IV establishes several consequences of the recurrence:\n\n**Numerical verifications**: `native_decide` checks Cn 1 = Cn 0 * Cn 0, Cn 2 = ..., Cn 3 = ..., Cn 4 = ... These serve as sanity checks on the definition and recurrence.\n\n**Cn_pos**: Every Catalan number is strictly positive. Proof: from `catalan_formula`, `Cn n * (n+1) = C(2n,n) > 0`, so `Cn n \u2260 0`, so `Cn n > 0`.\n\n**Base cases**: `Cn_zero : Cn 0 = 1`, `Cn_one : Cn 1 = 1`, `Cn_two : Cn 2 = 2` \u2014 proved by `simp` or `native_decide`.\n\n**Symmetry**: `Cn_recurrence_sym` notes that the convolution sum is symmetric: `\u2211 C\u2096 \u00b7 C\u2099\u208b\u2096 = \u2211 C\u2099\u208b\u2096 \u00b7 C\u2096`, proved by `ring` on each summand.",
+    "content": "Part IV establishes several consequences of the recurrence:\n\n**Numerical verifications**: `native_decide` checks Cn 1 = Cn 0 * Cn 0, Cn 2 = ..., Cn 3 = ..., Cn 4 = ... These serve as sanity checks on the definition and recurrence.\n\n**Cn_pos**: Every Catalan number is strictly positive. Proof: from `catalan_formula`, `Cn n * (n+1) = C(2n,n) > 0`, so `Cn n ≠ 0`, so `Cn n > 0`.\n\n**Base cases**: `Cn_zero : Cn 0 = 1`, `Cn_one : Cn 1 = 1`, `Cn_two : Cn 2 = 2` — proved by `simp` or `native_decide`.\n\n**Symmetry**: `Cn_recurrence_sym` notes that the convolution sum is symmetric: `∑ Cₖ · Cₙ₋ₖ = ∑ Cₙ₋ₖ · Cₖ`, proved by `ring` on each summand.",
     "mathContext": "The Catalan sequence begins $C_0=1, C_1=1, C_2=2, C_3=5, C_4=14, C_5=42, \\ldots$ (OEIS A000108). Positivity $C_n > 0$ follows from $C_n \\cdot (n+1) = \\binom{2n}{n} \\geq 1$ and $n+1 \\geq 1$. The symmetry $\\sum_{k=0}^n C_k C_{n-k} = \\sum_{k=0}^n C_{n-k} C_k$ is trivial but useful for identifying alternate forms in the literature.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -135,8 +135,8 @@
     },
     "type": "concept",
     "title": "Ballot Interpretation and Characterization Theorem",
-    "content": "Part V provides two concluding results:\n\n**Cn_ballot_recurrence_interpretation**: The algebraic `Cn_recurrence` is restated with an attached docstring explaining the combinatorial meaning. A Dyck path of length 2(n+1) returns to 0 for the first time at step 2(k+1) for some k \u2208 {0,...,n}, splitting into a prefix (length 2k) and suffix (length 2(n-k)), counted by `Cn k` and `Cn (n-k)` respectively. The convolution recurrence is thus a formal encoding of this bijection.\n\n**Cn_characterization**: Packages the initial condition `Cn 0 = 1` and the recurrence as an `And` proposition, providing the complete characterization: any sequence satisfying these two conditions is the Catalan sequence.",
-    "mathContext": "The characterization $C_0 = 1$, $C_{n+1} = \\sum_{k=0}^n C_k C_{n-k}$ uniquely determines the sequence $1, 1, 2, 5, 14, 42, \\ldots$ This is equivalent to the generating function equation $C(x) = 1 + x \\cdot C(x)^2$, whose solution is $C(x) = \\frac{1 - \\sqrt{1-4x}}{2x}$. In Lean, `Cn_characterization : Cn 0 = 1 \u2227 \u2200 n, Cn (n+1) = \u2211 k \u2208 range (n+1), Cn k * Cn (n-k)`.",
+    "content": "Part V provides two concluding results:\n\n**Cn_ballot_recurrence_interpretation**: The algebraic `Cn_recurrence` is restated with an attached docstring explaining the combinatorial meaning. A Dyck path of length 2(n+1) returns to 0 for the first time at step 2(k+1) for some k ∈ {0,...,n}, splitting into a prefix (length 2k) and suffix (length 2(n-k)), counted by `Cn k` and `Cn (n-k)` respectively. The convolution recurrence is thus a formal encoding of this bijection.\n\n**Cn_characterization**: Packages the initial condition `Cn 0 = 1` and the recurrence as an `And` proposition, providing the complete characterization: any sequence satisfying these two conditions is the Catalan sequence.",
+    "mathContext": "The characterization $C_0 = 1$, $C_{n+1} = \\sum_{k=0}^n C_k C_{n-k}$ uniquely determines the sequence $1, 1, 2, 5, 14, 42, \\ldots$ This is equivalent to the generating function equation $C(x) = 1 + x \\cdot C(x)^2$, whose solution is $C(x) = \\frac{1 - \\sqrt{1-4x}}{2x}$. In Lean, `Cn_characterization : Cn 0 = 1 ∧ ∀ n, Cn (n+1) = ∑ k ∈ range (n+1), Cn k * Cn (n-k)`.",
     "significance": "key",
     "relatedConcepts": [
       "Dyck path first-return decomposition",

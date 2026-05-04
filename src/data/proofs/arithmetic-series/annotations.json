@@ -42,7 +42,7 @@
     },
     "type": "insight",
     "title": "The Pairing Argument",
-    "content": "**Gauss's brilliant insight: pair terms from opposite ends.**\n\nWrite S = 1 + 2 + ... + n twice (forwards and backwards). Each pair sums to (n+1), and there are n pairs:\n\n```\n  S = 1 + 2 + ... + n\n  S = n + (n-1) + ... + 1\n \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n 2S = (n+1) + (n+1) + ... = n(n+1)\n```\n\nTherefore S = n(n+1)/2.",
+    "content": "**Gauss's brilliant insight: pair terms from opposite ends.**\n\nWrite S = 1 + 2 + ... + n twice (forwards and backwards). Each pair sums to (n+1), and there are n pairs:\n\n```\n  S = 1 + 2 + ... + n\n  S = n + (n-1) + ... + 1\n ───────────────────────\n 2S = (n+1) + (n+1) + ... = n(n+1)\n```\n\nTherefore S = n(n+1)/2.",
     "mathContext": "$2S = n \\times (n+1) \\Rightarrow S = \\frac{n(n+1)}{2}$",
     "significance": "key",
     "relatedConcepts": [
@@ -74,9 +74,9 @@
       "startLine": 112,
       "endLine": 113
     },
-    "type": "context",
+    "type": "concept",
     "title": "Gauss's Original Problem",
-    "content": "**Sum of 1 to 100 = 5050.**\n\nThis is the famous problem Gauss allegedly solved as a schoolboy. The proof uses `native_decide` for computational verification.\n\n50 pairs \u00d7 101 = 5050.",
+    "content": "**Sum of 1 to 100 = 5050.**\n\nThis is the famous problem Gauss allegedly solved as a schoolboy. The proof uses `native_decide` for computational verification.\n\n50 pairs × 101 = 5050.",
     "mathContext": "$1 + 2 + \\cdots + 100 = 5050$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -92,8 +92,8 @@
       "endLine": 128
     },
     "type": "insight",
-    "title": "Sum of Odd Numbers = n\u00b2",
-    "content": "**The sum of the first n odd numbers equals n squared.**\n\n1 + 3 + 5 + ... + (2n-1) = n\u00b2\n\nThis beautiful identity has a lovely visual proof: each odd number adds an 'L-shaped' layer to a growing square. The proof uses induction.",
+    "title": "Sum of Odd Numbers = n²",
+    "content": "**The sum of the first n odd numbers equals n squared.**\n\n1 + 3 + 5 + ... + (2n-1) = n²\n\nThis beautiful identity has a lovely visual proof: each odd number adds an 'L-shaped' layer to a growing square. The proof uses induction.",
     "mathContext": "$\\sum_{k=0}^{n-1} (2k+1) = n^2$",
     "significance": "key",
     "relatedConcepts": [

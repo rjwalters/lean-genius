@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 59
     },
-    "type": "context",
+    "type": "concept",
     "title": "Schönhage's HGCD: Scope and Mathematical Setting",
     "content": "This file formalizes **Schönhage's recursive half-GCD (HGCD)** algorithm — the standard method for computing GCDs of large integers (thousands of bits, as in RSA key generation and elliptic curve cryptography).\n\nThe mathematical challenge: Euclid's algorithm requires $O(n^2)$ bit operations for $n$-bit integers. Knuth–Schönhage reduces this to $O(M(n) \\log n)$ by replacing Euclid steps with matrix multiplications. The key idea: instead of reducing one pair $(a,b)$ to $(b, a \\bmod b)$ per Euclidean step, compute a *cofactor matrix* $M$ that performs $\\Theta(n)$ Euclidean steps at once, then evaluate $M \\cdot (a,b)^T$ with one $O(M(n))$ matrix-vector product.\n\nSchönhage's recursion amplifies this: recurse on the top half of the bits to get $M_1$, apply $M_1$ to the full inputs, then recurse again. Two levels give $O(n)$ steps per call; $O(\\log n)$ recursion depth gives the $O(M(n) \\log n)$ total.\n\n**This file's scope**: GCD-preservation correctness (Parts I–IV) and size-reduction infrastructure (Parts V–IX). The bit-complexity $O(M(n) \\log n)$ is deferred (requires Mathlib fast-multiplication model not yet formalized).",
     "mathContext": "Let $M(n)$ be the cost of multiplying two $n$-bit integers. Using Schönhage-Strassen FFT multiplication, $M(n) = O(n \\log n \\log \\log n)$. Knuth's Lehmer algorithm reduces GCD cost to $O(M(n) \\log n)$; with $M(n) = O(n \\log n \\log\\log n)$, total GCD cost is $O(n \\log^2 n \\log\\log n)$. For RSA key sizes ($n \\approx 4096$ bits), this is orders of magnitude faster than $O(n^2)$ Euclidean GCD.",
@@ -32,7 +32,7 @@
       "startLine": 61,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Composition Law: cofactor_mul_apply",
     "content": "**`cofactor_mul_apply`** establishes that `CofactorMatrix.mul` is compatible with the `apply` action on pairs: $(M \\cdot N)(a,b) = M(N(a,b))$.\n\nThis is the algebraic foundation that makes the HGCD recursion structurally valid: when the algorithm computes $M_2 \\cdot M_1$ as the combined reduction, the pair output equals $M_2$ applied to the output of $M_1$. Without this law, the compositional correctness argument would have no algebraic basis.\n\nThe proof is a single line by `ring` over the four matrix entries, confirming that `CofactorMatrix.mul` is defined as standard matrix multiplication and `apply` as standard matrix-vector multiplication.\n\n**Why this matters for GCD preservation**: if each of $M_1$ and $M_2$ preserves GCD, their composition $M_2 \\cdot M_1$ also preserves GCD — but only because the action on pairs is exactly matrix composition.",
     "mathContext": "Explicitly: $(M \\cdot N)(a,b)^T = M \\cdot (N \\cdot (a,b)^T)$, the associativity of matrix multiplication. The `ring` proof verifies $(M.\\alpha \\cdot (N.\\alpha \\cdot a + N.\\beta \\cdot b) + M.\\beta \\cdot (N.\\gamma \\cdot a + N.\\delta \\cdot b) = (M.\\alpha N.\\alpha + M.\\beta N.\\gamma) a + (M.\\alpha N.\\beta + M.\\beta N.\\delta) b,\\; \\ldots)$.",
@@ -104,7 +104,7 @@
       "startLine": 246,
       "endLine": 622
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Size-Reduction Infrastructure: Row Convention and Entry Bounds",
     "content": "Parts V.5 and VI build infrastructure for the size-reduction proof.\n\n**Row-convention invariant** (lines 246–438): The Lehmer step maintains $(a_0, b_0) \\cdot M = (\\hat{a}, \\hat{b})$ in the row convention. `lehmerCofactors_invariant` proves this is preserved across all Lehmer inner steps. `lehmerCofactors_id_apply_le` adds residue monotonicity: $\\max(\\hat{a}', \\hat{b}') \\leq \\max(\\hat{a}, \\hat{b})$.\n\n**The convention dichotomy**: the column convention $(M \\cdot (a,b)^T)$ tracks the current pair for GCD preservation; the row convention $((a_0,b_0) \\cdot M)$ tracks the initial pair for size reduction. They agree on determinant-based theorems but diverge on state tracking — this is a genuine obstruction in the formalization.\n\n**Cramer identity and entry bounds** (lines 439–622): `row_vec_cramer` derives $a_0 = \\pm(\\hat{a} \\cdot M.\\delta - \\hat{b} \\cdot M.\\gamma)$ from the row invariant. Combined with the EvenPattern/OddPattern alternating signs from Lehmer steps, all entries satisfy $|M_{ij}| \\leq \\max(a_0, b_0)$.",
     "mathContext": "Row-convention: right-multiplying the accumulation matrix by the step matrix $S_q = \\begin{pmatrix}0&1\\\\1&-q\\end{pmatrix}$ shifts $(a_0,b_0) \\cdot M$ to the next pair. Cramer: if $(a_0,b_0) \\cdot M = (\\hat a,\\hat b)$ and $\\det M = \\delta\\alpha - \\gamma\\beta = \\pm 1$, then $a_0(\\pm 1) = \\hat a \\delta - \\hat b \\gamma$, so $|\\alpha|,|\\beta|,|\\gamma|,|\\delta| \\leq \\max(a_0,b_0)$ (since $|\\hat a|,|\\hat b| \\leq \\max(a_0,b_0)$ by residue monotonicity).",

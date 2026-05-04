@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 33
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Resolving the Fintype Sorry via piAntidiag Bijection",
     "content": "This file answers the open question from `BinomialTheoremOQ02OQ01OQ01.lean`: can the `Fintype` instance for the `Composition` type be proved efficiently using `piAntidiag`? The answer is yes — in approximately 15 lines, far fewer than the parent's estimate of ~50 lines.\n\nThe **key insight** is that `Finset.mem_piAntidiag` exactly characterizes the membership conditions for `Composition`: a function $f : \\alpha \\to \\mathbb{N}$ lies in `s.piAntidiag n` if and only if $\\sum_{i \\in s} f(i) = n$ and $f(i) \\neq 0 \\Rightarrow i \\in s$ (equivalently, $i \\notin s \\Rightarrow f(i) = 0$). These are precisely the `sum_eq` and `counts_outside` fields of `Composition`, making the bijection trivial.\n\nThe import `Mathlib.Data.Nat.Choose.Multinomial` provides `piAntidiag` and `mem_piAntidiag`; `Mathlib.Tactic` provides the automation needed for the proofs.",
     "mathContext": "The `Composition` type is the support type for the multinomial distribution: for $n$ trials with outcome space $s$, a composition assigns a nonnegative integer to each element of $s$, summing to $n$. The **piAntidiag** (anti-diagonal) $s.\\text{piAntidiag}\\, n$ is the `Finset` of all functions $f : \\alpha \\to \\mathbb{N}$ summing to $n$ on $s$ with support in $s$: $\\{f : \\alpha \\to \\mathbb{N} \\mid \\sum_{i \\in s} f(i) = n,\\, f(i) \\neq 0 \\Rightarrow i \\in s\\}$. The bijection `Composition α s n ≃ ↥(s.piAntidiag n)` is therefore definitionally trivial.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "piAntidiag",
       "Finset.mem_piAntidiag",
@@ -137,7 +137,7 @@
       "startLine": 139,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sum Transfer via Bijection: Bridge to the Multinomial Theorem",
     "content": "**`sum_composition_eq_piAntidiag_sum`** (lines 145–153): Any sum $\\sum_{c : \\text{Composition}} f(c.\\text{counts})$ over compositions can be rewritten as $\\sum_{k \\in s.\\text{piAntidiag}\\, n} f(k)$ over the finite set. The proof uses `Finset.sum_coe_sort` to convert the fintype sum to a Finset sum over the coercion, then `Fintype.sum_equiv` to apply the bijection.\n\nThis is the **key tool** for applying Mathlib's multinomial theorem `Finset.sum_pow_eq_sum_piAntidiag`:\n$$\\left(\\sum_{i \\in s} x_i\\right)^n = \\sum_{k \\in s.\\text{piAntidiag}\\, n} \\binom{n}{k} \\cdot \\prod_{i \\in s} x_i^{k(i)}$$\nWith `sum_composition_eq_piAntidiag_sum`, the right-hand side can be rewritten as a sum over `Composition α s n`, giving the Lean-native form of the multinomial theorem for the `Composition` type.\n\nThe module summary (lines 156–185) documents all 7 results, their proof efficiency (2 lines for the instance, ~10 for the bijection vs the parent's estimate of ~50), and the relationship to the parent entry `BinomialTheoremOQ02OQ01OQ01.lean`.",
     "mathContext": "`Fintype.sum_equiv (e : α ≃ β) (f : α → M) (g : β → M) (h : ∀ x, f x = g (e x)) : ∑ x, f x = ∑ x, g x` — transfers sums along equivalences. Here `e = compositionEquiv` and `h : ∀ c, f c.counts = f (compositionEquiv c).1` holds by `rfl` since the bijection preserves the underlying function. The multinomial theorem `Finset.sum_pow_eq_sum_piAntidiag` is Mathlib's formalization of $(\\sum_{i \\in s} x_i)^n = \\sum_{f \\in s.\\text{piAntidiag}\\, n} \\binom{n}{f} \\prod_{i \\in s} x_i^{f(i)}$.",

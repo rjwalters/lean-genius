@@ -2,61 +2,121 @@
   {
     "id": "ann-setup",
     "proofId": "pac-learning-bounds-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 18 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
     "title": "Setup — Extending the VC Hierarchy from Thresholds to Intervals",
     "content": "This file imports `Proofs.PACLearningOQ01` to reuse the `Shatters` predicate and opens the `LearningTheory.VCDimension` namespace. The hierarchy is: threshold classifiers (VC dim 1) → interval classifiers (VC dim 2) → axis-aligned rectangles (VC dim 4) → ... Each step adds one parameter and increases VC dimension. The `Shatters` predicate (`C shatters S` means `∀ T ⊆ S, ∃ h ∈ C, h ∩ S = T`) is defined in OQ-01 and reused here without redefinition.",
     "mathContext": "VC dimension hierarchy: $\\text{VCdim}(\\text{thresholds}) = 1 < \\text{VCdim}(\\text{intervals}) = 2 < \\text{VCdim}(\\text{rectangles}) = 4 < \\ldots$ Adding one parameter increases VC dimension by (at least) 1.",
-    "significance": "context",
-    "relatedConcepts": ["Shatters predicate", "LearningTheory.VCDimension namespace", "hypothesis class hierarchy"],
-    "prerequisites": ["VC dimension definition", "pac-learning-bounds-oq-01 (thresholds)", "Lean 4 namespace and import"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Shatters predicate",
+      "LearningTheory.VCDimension namespace",
+      "hypothesis class hierarchy"
+    ],
+    "prerequisites": [
+      "VC dimension definition",
+      "pac-learning-bounds-oq-01 (thresholds)",
+      "Lean 4 namespace and import"
+    ]
   },
   {
     "id": "ann-interval-def",
     "proofId": "pac-learning-bounds-oq-01-oq-01",
-    "range": { "startLine": 19, "endLine": 24 },
+    "range": {
+      "startLine": 19,
+      "endLine": 24
+    },
     "type": "definition",
     "title": "intervalClassifiers — Intervals as a Hypothesis Class",
     "content": "An interval classifier on ℕ is parameterized by two endpoints $a \\leq b$ and classifies $x$ as positive iff $a \\leq x \\leq b$. The definition allows 'empty' intervals where $a > b$ (which classify no point as positive), providing the all-negative witness for the ∅ subset in the shattering argument. Without this convention, the pair-shattering proof would need a separate case for the all-negative labeling.",
     "mathContext": "$H_{\\text{int}} = \\{h \\mid \\exists a,b \\in \\mathbb{N},\\, h = \\{x : a \\leq x \\leq b\\}\\}$. Empty interval: when $a > b$, $\\{x : a \\leq x \\leq b\\} = \\emptyset$.",
     "significance": "key",
-    "relatedConcepts": ["intervalClassifiers", "thresholdClassifiers", "VC dimension hierarchy", "empty interval convention"],
-    "prerequisites": ["set comprehension in Lean", "VC dimension definition", "Set.mem_setOf_eq"]
+    "relatedConcepts": [
+      "intervalClassifiers",
+      "thresholdClassifiers",
+      "VC dimension hierarchy",
+      "empty interval convention"
+    ],
+    "prerequisites": [
+      "set comprehension in Lean",
+      "VC dimension definition",
+      "Set.mem_setOf_eq"
+    ]
   },
   {
     "id": "ann-pair-shattering",
     "proofId": "pac-learning-bounds-oq-01-oq-01",
-    "range": { "startLine": 25, "endLine": 59 },
-    "type": "technique",
+    "range": {
+      "startLine": 25,
+      "endLine": 59
+    },
+    "type": "concept",
     "title": "Four-Witness Lower Bound — Every Pair is Shattered",
     "content": "The proof case-splits on the four possible labelings of $\\{a,b\\}$ (all subsets), providing an interval witness for each. The four cases are handled by `rcases ht with rfl | rfl | rfl | rfl` after the shattering unfolding. The empty interval $[b+1, b]$ handles the all-negative case: since $b+1 > b$, no integer satisfies $b+1 \\leq x \\leq b$, so the interval is empty. This is the standard trick for making interval classifiers a 'complete' hypothesis class that can realize all $2^k$ labelings of $k \\leq 2$ points.",
     "mathContext": "$\\forall a < b$, $H_{\\text{int}}$ shatters $\\{a,b\\}$: witnesses are $[a,b]$ for $\\{a,b\\}$, $[a,a]$ for $\\{a\\}$, $[b,b]$ for $\\{b\\}$, $[b+1,b]$ (empty) for $\\emptyset$.",
     "significance": "key",
-    "relatedConcepts": ["interval_shatters_pair", "shattering lower bound", "empty interval trick", "rcases tactic"],
-    "prerequisites": ["Lean rcases tactic", "Finset.mem_insert", "Finset.mem_singleton", "shattering definition"]
+    "relatedConcepts": [
+      "interval_shatters_pair",
+      "shattering lower bound",
+      "empty interval trick",
+      "rcases tactic"
+    ],
+    "prerequisites": [
+      "Lean rcases tactic",
+      "Finset.mem_insert",
+      "Finset.mem_singleton",
+      "shattering definition"
+    ]
   },
   {
     "id": "ann-convexity-obstruction",
     "proofId": "pac-learning-bounds-oq-01-oq-01",
-    "range": { "startLine": 60, "endLine": 96 },
+    "range": {
+      "startLine": 60,
+      "endLine": 96
+    },
     "type": "insight",
     "title": "Convexity Obstruction — No Triple is Shattered",
     "content": "The upper bound uses the adversarial labeling $T = \\{a, c\\}$ (endpoints included, middle $b$ excluded). If any interval $[l,r]$ realizes this labeling on $\\{a,b,c\\}$: $a \\in [l,r]$ forces $l \\leq a$, $c \\in [l,r]$ forces $r \\geq c$. Since $a < b < c$, we get $l \\leq a < b < c \\leq r$, so $l \\leq b \\leq r$, meaning $b \\in [l,r]$. But $b \\notin T$, contradiction. This is the *convexity obstruction*: any interval is convex in $\\mathbb{N}$ (contains all integers between its endpoints), so it cannot separate $\\{a,c\\}$ from $\\{b\\}$ when $a < b < c$.",
     "mathContext": "$l \\leq a < b < c \\leq r \\Rightarrow l \\leq b \\wedge b \\leq r$ — interval convexity forces $b \\in [l,r]$. The labeling $\\{a,c\\}$ (skip middle) is unrealizable by any interval when $a < b < c$.",
     "significance": "key",
-    "relatedConcepts": ["interval_not_shatters_triple", "convexity obstruction", "adversarial labeling", "Nat.le_of_lt"],
-    "prerequisites": ["VC dimension upper bound argument", "interval convexity", "Lean omega tactic"]
+    "relatedConcepts": [
+      "interval_not_shatters_triple",
+      "convexity obstruction",
+      "adversarial labeling",
+      "Nat.le_of_lt"
+    ],
+    "prerequisites": [
+      "VC dimension upper bound argument",
+      "interval convexity",
+      "Lean omega tactic"
+    ]
   },
   {
     "id": "ann-combined",
     "proofId": "pac-learning-bounds-oq-01-oq-01",
-    "range": { "startLine": 97, "endLine": 104 },
-    "type": "context",
+    "range": {
+      "startLine": 97,
+      "endLine": 104
+    },
+    "type": "concept",
     "title": "Combined Bound — VCdim(intervals) = 2",
     "content": "`interval_vcdim_two` packages both halves into a single statement: (1) every pair is shattered (VC dim ≥ 2) and (2) no triple is shattered (VC dim ≤ 2). The theorem is stated as a conjunction to avoid formalizing a general `VCdim` function, letting the pair of theorems serve as the definition of 'VC dimension equals 2'. This pattern (separate lower and upper bound, combined by `And.intro`) is used throughout the OQ-01 series.",
     "mathContext": "$\\text{VCdim}(H_{\\text{int}}) = 2$: formally, $\\forall a < b: H_{\\text{int}} \\text{ shatters } \\{a,b\\}$ and $\\forall a < b < c: H_{\\text{int}} \\text{ does not shatter } \\{a,b,c\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["interval_vcdim_two", "VC dimension 2", "And.intro", "lower and upper bound pattern"],
-    "prerequisites": ["Lean And.intro", "shattering predicate", "VC dimension characterization"]
+    "relatedConcepts": [
+      "interval_vcdim_two",
+      "VC dimension 2",
+      "And.intro",
+      "lower and upper bound pattern"
+    ],
+    "prerequisites": [
+      "Lean And.intro",
+      "shattering predicate",
+      "VC dimension characterization"
+    ]
   }
 ]

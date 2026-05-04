@@ -2,14 +2,27 @@
   {
     "id": "ann-imports",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 30 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
     "title": "Dependencies: PMF Framework and Multinomial Arithmetic",
     "content": "The proof draws on four distinct Mathlib modules. `ProbabilityMassFunction.Basic` provides the `PMF` type (a function `α → ℝ≥0∞` with `tsum = 1`) and its API. `Nat.Choose.Multinomial` provides `Nat.multinomial` coefficients and `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem as a Finset sum). `Nat.Choose.Sum` covers binomial sums. `BigOperators.Ring.Finset` enables the `∏` and `∑` notation over finite sets. The namespace opens `MeasureTheory` for PMF-related typeclasses. The header describes the four-step construction: Composition type → PMF value function → normalization → properties.",
     "mathContext": "Mathlib's `PMF α` is defined as `{f : α → ℝ≥0∞ // ∑' a, f a = 1}`. The key theorem from `Nat.Choose.Multinomial`: `Finset.sum_pow_eq_sum_piAntidiag s n (fun i => p i)` gives $(\\sum_i p_i)^n = \\sum_{k \\in \\text{piAntidiag}(s,n)} \\binom{n}{k} \\prod_i p_i^{k_i}$.",
-    "significance": "context",
-    "relatedConcepts": ["PMF (Mathlib)", "Nat.multinomial", "piAntidiag", "ENNReal", "BigOperators"],
-    "prerequisites": ["Lean 4 imports", "Mathlib PMF framework", "ENNReal arithmetic"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "PMF (Mathlib)",
+      "Nat.multinomial",
+      "piAntidiag",
+      "ENNReal",
+      "BigOperators"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib PMF framework",
+      "ENNReal arithmetic"
+    ]
   },
   {
     "id": "ann-multinomial-context",
@@ -87,14 +100,27 @@
   {
     "id": "ann-pmf-constructor",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
-    "range": { "startLine": 91, "endLine": 99 },
+    "range": {
+      "startLine": 91,
+      "endLine": 99
+    },
     "type": "definition",
     "title": "The PMF Constructor: Lean Anonymous Constructor Syntax",
     "content": "`multinomialPMF` is defined using Lean's anonymous constructor syntax `⟨f, proof⟩` for the `PMF` structure. The first field `fun k => multinomialPMFVal s p n k` provides the mass function; the second field `multinomialPMF_sum_eq_one s p n hp` (the sorry) provides the normalization proof. This is the cleanest way to build a `PMF` instance when you already have both pieces separately — no need for `PMF.ofFinset` or `PMF.ofFintype`, which add additional API surface. The `noncomputable` annotation is required because `ℝ≥0∞` arithmetic is noncomputable in Lean 4.",
     "mathContext": "In Lean 4, `PMF α` is a subtype: `{f : α → ℝ≥0∞ // ∑' a, f a = 1}`. The anonymous constructor `⟨f, hf⟩` directly builds an element of this subtype. For `multinomialPMF s p n hp`, we have:\n- $f = $ `multinomialPMFVal s p n` (the multinomial mass function)\n- $hf = $ `multinomialPMF_sum_eq_one s p n hp` (the sorry normalization proof)",
     "significance": "key",
-    "relatedConcepts": ["PMF.mk", "anonymous constructor", "noncomputable", "subtype", "normalization"],
-    "prerequisites": ["multinomialPMFVal", "multinomialPMF_sum_eq_one", "Lean 4 structure syntax"]
+    "relatedConcepts": [
+      "PMF.mk",
+      "anonymous constructor",
+      "noncomputable",
+      "subtype",
+      "normalization"
+    ],
+    "prerequisites": [
+      "multinomialPMFVal",
+      "multinomialPMF_sum_eq_one",
+      "Lean 4 structure syntax"
+    ]
   },
   {
     "id": "ann-pmf-apply-support",

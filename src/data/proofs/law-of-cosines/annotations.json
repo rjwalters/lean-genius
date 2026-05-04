@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Generalizing Pythagoras",
-    "content": "The **Law of Cosines** generalizes the Pythagorean theorem to all triangles, not just right triangles:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\nWhen $C = 90\u00b0$, we have $\\cos(90\u00b0) = 0$, so:\n$$c^2 = a^2 + b^2$$\n\nThis is precisely the Pythagorean theorem! The Law of Cosines adds a correction term $-2ab\\cos(C)$ that accounts for non-right angles.",
+    "content": "The **Law of Cosines** generalizes the Pythagorean theorem to all triangles, not just right triangles:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\nWhen $C = 90°$, we have $\\cos(90°) = 0$, so:\n$$c^2 = a^2 + b^2$$\n\nThis is precisely the Pythagorean theorem! The Law of Cosines adds a correction term $-2ab\\cos(C)$ that accounts for non-right angles.",
     "mathContext": "The Law of Cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ interpolates continuously between the degenerate case ($C = 0$, $c = |a-b|$), the right-angle case ($C = \\pi/2$, $c = \\sqrt{a^2+b^2}$), and the collinear case ($C = \\pi$, $c = a+b$). In Lean, this is formalized via inner product spaces: $c^2 = \\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$, with the cosine connection given by $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$.",
     "significance": "key",
     "prerequisites": [
@@ -43,7 +43,7 @@
       "real inner product spaces (InnerProductSpace)",
       "Mathlib.Analysis.InnerProductSpace.Basic",
       "bilinearity and symmetry of inner product",
-      "norm-squared as inner product: \u2016v\u2016\u00b2 = \u27e8v,v\u27e9",
+      "norm-squared as inner product: ‖v‖² = ⟨v,v⟩",
       "inner_sub_left, inner_sub_right lemmas"
     ],
     "relatedConcepts": [
@@ -52,7 +52,7 @@
       "vector spaces",
       "bilinearity",
       "real_inner_comm",
-      "EuclideanSpace \u211d (Fin 2)"
+      "EuclideanSpace ℝ (Fin 2)"
     ]
   },
   {
@@ -64,12 +64,12 @@
     },
     "type": "insight",
     "title": "The Pythagorean Special Case",
-    "content": "**Pythagorean Theorem from Law of Cosines**:\n\nWhen vectors $v$ and $w$ are **perpendicular** (orthogonal), their inner product is zero:\n$$\\langle v, w \\rangle = 0$$\n\nSubstituting into the Law of Cosines:\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2 \\cdot 0 = \\|v\\|^2 + \\|w\\|^2$$\n\nThis is exactly the Pythagorean theorem! The '- 2ab cos(C)' term vanishes when C = 90\u00b0.",
+    "content": "**Pythagorean Theorem from Law of Cosines**:\n\nWhen vectors $v$ and $w$ are **perpendicular** (orthogonal), their inner product is zero:\n$$\\langle v, w \\rangle = 0$$\n\nSubstituting into the Law of Cosines:\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2 \\cdot 0 = \\|v\\|^2 + \\|w\\|^2$$\n\nThis is exactly the Pythagorean theorem! The '- 2ab cos(C)' term vanishes when C = 90°.",
     "mathContext": "$v \\perp w \\Rightarrow \\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2$",
     "significance": "key",
     "prerequisites": [
       "inner product spaces",
-      "definition of perpendicularity: \u27e8v,w\u27e9 = 0",
+      "definition of perpendicularity: ⟨v,w⟩ = 0",
       "law_of_cosines_inner theorem",
       "Pythagorean theorem"
     ],
@@ -78,7 +78,7 @@
       "orthogonality",
       "Pythagorean theorem",
       "inner product zero",
-      "angle 90\u00b0"
+      "angle 90°"
     ]
   },
   {
@@ -140,14 +140,14 @@
       "startLine": 179,
       "endLine": 185
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Examples",
-    "content": "**60\u00b0 angle (equilateral triangle)**:\n- $a = b = 1$, $\\cos(60\u00b0) = 1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(1/2) = 1$\n- So $c = 1$ (equilateral!)\n\n**90\u00b0 angle (Pythagorean)**:\n- $a = 3$, $b = 4$, $\\cos(90\u00b0) = 0$\n- $c^2 = 9 + 16 - 0 = 25$\n- So $c = 5$ (the 3-4-5 triangle)\n\n**120\u00b0 angle (obtuse)**:\n- $a = b = 1$, $\\cos(120\u00b0) = -1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(-1/2) = 3$\n- So $c = \\sqrt{3}$",
-    "mathContext": "The four examples in the Lean file cover the full range: equilateral ($C = 60\u00b0$, $c = 1$), right-angle (3-4-5, $C = 90\u00b0$), obtuse ($C = 120\u00b0$, $c = \\sqrt{3}$), and degenerate ($C = 0\u00b0$, $c = |a-b|$, proved by `ring`). The degenerate case shows $c^2 = a^2 + b^2 - 2ab = (a-b)^2$ algebraically without needing numerical values \u2014 the only example requiring a general parameter proof.",
+    "content": "**60° angle (equilateral triangle)**:\n- $a = b = 1$, $\\cos(60°) = 1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(1/2) = 1$\n- So $c = 1$ (equilateral!)\n\n**90° angle (Pythagorean)**:\n- $a = 3$, $b = 4$, $\\cos(90°) = 0$\n- $c^2 = 9 + 16 - 0 = 25$\n- So $c = 5$ (the 3-4-5 triangle)\n\n**120° angle (obtuse)**:\n- $a = b = 1$, $\\cos(120°) = -1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(-1/2) = 3$\n- So $c = \\sqrt{3}$",
+    "mathContext": "The four examples in the Lean file cover the full range: equilateral ($C = 60°$, $c = 1$), right-angle (3-4-5, $C = 90°$), obtuse ($C = 120°$, $c = \\sqrt{3}$), and degenerate ($C = 0°$, $c = |a-b|$, proved by `ring`). The degenerate case shows $c^2 = a^2 + b^2 - 2ab = (a-b)^2$ algebraically without needing numerical values — the only example requiring a general parameter proof.",
     "significance": "supporting",
     "prerequisites": [
-      "Law of Cosines: c\u00b2 = a\u00b2 + b\u00b2 - 2ab cos C",
-      "cosine values: cos(0\u00b0)=1, cos(60\u00b0)=1/2, cos(90\u00b0)=0, cos(120\u00b0)=-1/2",
+      "Law of Cosines: c² = a² + b² - 2ab cos C",
+      "cosine values: cos(0°)=1, cos(60°)=1/2, cos(90°)=0, cos(120°)=-1/2",
       "norm_num tactic for numerical verification",
       "ring tactic for algebraic identity"
     ],

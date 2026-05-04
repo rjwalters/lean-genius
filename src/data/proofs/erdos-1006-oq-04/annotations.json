@@ -2,73 +2,147 @@
   {
     "id": "ann-setup-import",
     "proofId": "erdos-1006-oq-04",
-    "range": { "startLine": 1, "endLine": 30 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
     "title": "Module Setup — Building on OQ03",
     "content": "This module imports `Proofs.Erdos1006OQ03` to reuse the `coloringOrientation` construction and its robust acyclicity theorems. OQ03 defined the core orientation and proved it acyclic; OQ04 extends that work to characterize the full internal structure as a graded DAG. The `open SimpleGraph` directive makes graph predicates like `Adj` and `arc` available without qualification.",
     "mathContext": "The coloring orientation: given proper $k$-coloring $\\text{col}: V \\to \\text{Fin}(k)$, orient $u \\to v$ iff $\\text{col}(u) < \\text{col}(v)$. Defined in OQ03; OQ04 analyzes its structure.",
-    "significance": "context",
-    "relatedConcepts": ["SimpleGraph", "graph coloring", "Fin k", "module imports"],
-    "prerequisites": ["Lean module imports", "SimpleGraph.Coloring", "Proofs.Erdos1006OQ03"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "graph coloring",
+      "Fin k",
+      "module imports"
+    ],
+    "prerequisites": [
+      "Lean module imports",
+      "SimpleGraph.Coloring",
+      "Proofs.Erdos1006OQ03"
+    ]
   },
   {
     "id": "ann-rank-strict",
     "proofId": "erdos-1006-oq-04",
-    "range": { "startLine": 31, "endLine": 50 },
+    "range": {
+      "startLine": 31,
+      "endLine": 50
+    },
     "type": "insight",
     "title": "Graded DAG: Color as Strict Rank Function",
     "content": "Three theorems establish the rank structure. `coloringOrientation_rank_strict` is a one-liner: `harc.2` extracts the color-ordering component from the arc definition. `coloringOrientation_has_rank` packages this as an existential: the color function itself is the rank witness. `coloringOrientation_rank_lt_k` bounds all ranks by $k$ via `Fin.isLt`. Together they establish the orientation as a *graded poset* — a much richer structure than plain acyclicity.",
     "mathContext": "A DAG is **graded** if $\\exists\\, \\text{rank}: V \\to \\mathbb{N}$ with $u \\to v \\Rightarrow \\text{rank}(u) < \\text{rank}(v)$. Here $\\text{rank}(v) = \\text{col}(v).\\text{val} \\in \\{0, \\ldots, k-1\\}$. Every graded DAG is acyclic: an increasing path cannot cycle.",
     "significance": "key",
-    "relatedConcepts": ["graded DAG", "rank function", "Fin.isLt", "topological ordering", "graded poset"],
-    "prerequisites": ["DAG theory", "Fin k in Lean", "Hasse diagrams"]
+    "relatedConcepts": [
+      "graded DAG",
+      "rank function",
+      "Fin.isLt",
+      "topological ordering",
+      "graded poset"
+    ],
+    "prerequisites": [
+      "DAG theory",
+      "Fin k in Lean",
+      "Hasse diagrams"
+    ]
   },
   {
     "id": "ann-source-sink",
     "proofId": "erdos-1006-oq-04",
-    "range": { "startLine": 51, "endLine": 71 },
+    "range": {
+      "startLine": 51,
+      "endLine": 71
+    },
     "type": "insight",
     "title": "Color-0 Sources and Color-(k-1) Sinks",
     "content": "Both proofs use contradiction via `omega`. For `color_zero_no_in_arc`: an in-arc $(u \\to v)$ with $\\text{col}(v)=0$ would require $\\text{col}(u) < 0$ by rank strictness — impossible in $\\mathbb{N}$. For `color_max_no_out_arc`: an out-arc $(v \\to u)$ with $\\text{col}(v) = k-1$ would require $\\text{col}(u) > k-1$, but `Fin.isLt` gives $\\text{col}(u) < k$, so `omega` finds a contradiction. The `omega` tactic fully automates these linear arithmetic arguments.",
     "mathContext": "Source layer: $S_0 = \\{v : \\text{col}(v) = 0\\}$ has in-degree 0 (arc $u \\to v$ requires $\\text{col}(u) < 0$, impossible). Sink layer: $S_{k-1} = \\{v : \\text{col}(v) = k-1\\}$ has out-degree 0. This stratifies $V$ into $k$ levels $S_0, S_1, \\ldots, S_{k-1}$.",
     "significance": "key",
-    "relatedConcepts": ["source vertex", "sink vertex", "omega tactic", "topological stratification", "chromatic layers"],
-    "prerequisites": ["graph in-degree/out-degree", "Lean omega tactic", "natural number bounds"]
+    "relatedConcepts": [
+      "source vertex",
+      "sink vertex",
+      "omega tactic",
+      "topological stratification",
+      "chromatic layers"
+    ],
+    "prerequisites": [
+      "graph in-degree/out-degree",
+      "Lean omega tactic",
+      "natural number bounds"
+    ]
   },
   {
     "id": "ann-arc-iff",
     "proofId": "erdos-1006-oq-04",
-    "range": { "startLine": 72, "endLine": 101 },
+    "range": {
+      "startLine": 72,
+      "endLine": 101
+    },
     "type": "insight",
     "title": "Arc Characterization — Orientation Fully Determined by Color",
     "content": "Three theorems fully characterize arc directions. `coloringOrientation_arc_iff` is the key iff for adjacent $u, v$. The backward direction proves the arc by the constructor `⟨hadj, h⟩` — showing the orientation definition is exactly the color ordering. `coloringOrientation_no_back_arc` rules out 2-cycles: both $(u \\to v)$ and $(v \\to u)$ would give $\\text{col}(u) < \\text{col}(v) < \\text{col}(u)$, which `omega` rejects. `coloringOrientation_exactly_one_arc` uses `covers` from OQ03 — since $\\text{col}(u) \\neq \\text{col}(v)$ by properness, linear order gives exactly one of $<$ or $>$.",
     "mathContext": "For adjacent $u \\sim v$: $(u \\to v) \\iff \\text{col}(u) < \\text{col}(v)$. No back-arc: both $(u \\to v)$ and $(v \\to u)$ require $\\text{col}(u) < \\text{col}(v) < \\text{col}(u)$. Exactly one direction: since $\\text{col}(u) \\neq \\text{col}(v)$ (proper coloring), trichotomy gives exactly one.",
     "significance": "key",
-    "relatedConcepts": ["iff characterization", "proper coloring", "back-arc", "linear order trichotomy", "orientation totality"],
-    "prerequisites": ["graph adjacency", "proper coloring definition", "linear order on Fin k"]
+    "relatedConcepts": [
+      "iff characterization",
+      "proper coloring",
+      "back-arc",
+      "linear order trichotomy",
+      "orientation totality"
+    ],
+    "prerequisites": [
+      "graph adjacency",
+      "proper coloring definition",
+      "linear order on Fin k"
+    ]
   },
   {
     "id": "ann-different-colors",
     "proofId": "erdos-1006-oq-04",
-    "range": { "startLine": 102, "endLine": 115 },
-    "type": "technique",
+    "range": {
+      "startLine": 102,
+      "endLine": 115
+    },
+    "type": "concept",
     "title": "No Horizontal Arcs — All Arcs Cross Color Levels",
     "content": "`coloringOrientation_different_colors` proves that any arc $(u \\to v)$ forces $\\text{col}(u) \\neq \\text{col}(v)$. Proof: rank strictness gives $\\text{col}(u) < \\text{col}(v)$; if equality held, we'd get $\\text{col}(v) < \\text{col}(v)$, which `Nat.lt_irrefl` rejects. This is the 'no horizontal arcs' property — all arcs are ascending (cross level boundaries). It is logically redundant given rank strictness, but makes explicit that the orientation has no same-color arcs, complementing the properness guarantee on the coloring.",
     "mathContext": "$(u \\to v) \\Rightarrow \\text{col}(u) < \\text{col}(v) \\Rightarrow \\text{col}(u) \\neq \\text{col}(v)$. In graded DAG terminology: all arcs are 'ascending' — they strictly cross from one level to a higher one, never staying within a level.",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.lt_irrefl", "proper coloring", "horizontal arcs", "graded poset levels"],
-    "prerequisites": ["irreflexivity of strict order", "Nat.lt_irrefl"]
+    "relatedConcepts": [
+      "Nat.lt_irrefl",
+      "proper coloring",
+      "horizontal arcs",
+      "graded poset levels"
+    ],
+    "prerequisites": [
+      "irreflexivity of strict order",
+      "Nat.lt_irrefl"
+    ]
   },
   {
     "id": "ann-oq03-consistency",
     "proofId": "erdos-1006-oq-04",
-    "range": { "startLine": 116, "endLine": 163 },
-    "type": "context",
+    "range": {
+      "startLine": 116,
+      "endLine": 163
+    },
+    "type": "concept",
     "title": "Consistency with OQ03 — Acyclicity Follows from Rank",
     "content": "The final section re-derives OQ03's acyclicity result through the rank lens. `coloringOrientation_acyclic_via_rank` simply delegates to `coloringOrientation_acyclic G col` from OQ03 — demonstrating compatibility. `every_graph_has_robust` restates OQ03's existence theorem. The block comment summarizes all 10 theorems and states the key insight: color value = rank, making the orientation a graded DAG with a natural layered structure. These delegation proofs show OQ04 is a genuine extension, not a reimplementation.",
     "mathContext": "Acyclicity from rank: any directed path $v_0 \\to v_1 \\to \\cdots \\to v_n$ satisfies $\\text{col}(v_0) < \\text{col}(v_1) < \\cdots < \\text{col}(v_n)$, so all vertices are distinct and no cycle forms. Robust acyclicity: this holds even after reversing any single arc, since a reversed arc $v \\to u$ creates a path-length-1 back-edge that cannot close a cycle in a DAG.",
-    "significance": "context",
-    "relatedConcepts": ["acyclic orientation", "robust acyclicity", "OQ03 delegation", "modular proof design"],
-    "prerequisites": ["Proofs.Erdos1006OQ03 results", "DAG acyclicity", "robust orientation theory"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "acyclic orientation",
+      "robust acyclicity",
+      "OQ03 delegation",
+      "modular proof design"
+    ],
+    "prerequisites": [
+      "Proofs.Erdos1006OQ03 results",
+      "DAG acyclicity",
+      "robust orientation theory"
+    ]
   }
 ]

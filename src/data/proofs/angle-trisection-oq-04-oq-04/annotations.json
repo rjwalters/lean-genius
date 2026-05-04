@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "Constructibility Hierarchy: From Compass to Multi-Fold Origami",
     "content": "This file sits at the top of the angle-trisection gallery's constructibility tower: compass ⊊ marked ruler ⊊ 2-fold origami ⊊ 3-fold ⊊ ⋯. The prior entries established each level; this entry proves the **marked-ruler/2-fold gap is strict**.\n\nThe algebraic translations (using Euler totient φ):\n\n| Tool | Condition on φ(n) | Examples of constructible n-gons |\n|------|--------------------|----------------------------------|\n| Compass-and-straightedge | φ(n) = 2^k (2-smooth) | 3, 4, 5, 6, 15, 17, 257, 65537 |\n| Marked ruler = 1-fold origami | φ(n) \\| 2^a·3^b (3-smooth) | 7, 9, 13, 14, 18, 19, 21 |\n| 2-fold origami | φ(n) is 5-smooth | **11**, 23, 25, 31, 33 |\n| 3-fold origami | φ(n) is 7-smooth | some n with 7 \\| φ(n) |\n| 4-fold origami | φ(n) is 11-smooth | **23**, others with 11 \\| φ(n) |\n\nThe 11-gon is the **minimal prime** regular polygon in the 2-fold/not-neusis class: φ(11) = 10 = 2·5, which is 5-smooth (fits 2-fold) but not 3-smooth (blocked for marked ruler). The 23-gon similarly witnesses the 4-fold/not-neusis gap.\n\n**Alperin-Lang 2006** established that single-fold origami (Huzita-Hatori axiom O6, the simultaneous tangent construction) is exactly as powerful as a marked ruler (neusis), so `IsTwoThreeNumber` captures both characterizations simultaneously.",
     "mathContext": "$\\text{IsKFoldConstructible}(d, k) \\iff d \\text{ is } p_k\\text{-smooth}$, where $p_k = \\text{foldPrimeBound}(k) = \\text{Nat.nth Prime}(k)$ (the $k$-th prime with 1-indexing: $p_1=3, p_2=5, p_3=7, p_4=11,\\ldots$). Then $\\text{IsTwoThreeNumber}(d) \\iff d \\text{ is } 3\\text{-smooth} \\iff \\text{IsKFoldConstructible}(d, 1)$.",
@@ -32,7 +32,7 @@
       "startLine": 48,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "General Non-Neusis Criterion: Large Prime Factor Blocks Marked-Ruler",
     "content": "**`not_twoThree_of_large_prime_dvd`** (lines 59–68) gives the fundamental obstruction: if a prime $q > 3$ divides $d$, then $d \\notin \\text{IsTwoThreeNumber}$.\n\nThe proof is a two-branch contradiction:\n1. Unfold `IsTwoThreeNumber d` to get $d \\mid 2^a \\cdot 3^b$ for some $a, b$\n2. Since $q \\mid d$, transitivity gives $q \\mid 2^a \\cdot 3^b$\n3. By `Nat.Prime.dvd_mul`: either $q \\mid 2^a$ or $q \\mid 3^b$\n4. In the first branch: $q \\mid 2^a$ and $q$ prime → $q \\mid 2$ → $q \\leq 2$ → contradiction with $q > 3$\n5. In the second branch: similarly $q \\leq 3$ → contradiction\n\nThis template is efficient: a single application of `dvd_trans` and `Prime.dvd_mul` plus `omega` closes both branches. The Lean code uses `rintro ⟨-, a, b, hdvd⟩` to destructure the IsTwoThreeNumber witness in one step.",
     "mathContext": "The key Mathlib lemma chain: $q \\mid 2^a \\Rightarrow q \\mid 2$ (via `Nat.Prime.dvd_of_dvd_pow`) $\\Rightarrow q \\leq 2$ (via `Nat.le_of_dvd`). For `IsTwoThreeNumber`: $d \\mid n \\cdot (2^a \\cdot 3^b)$ for some $n$ (or $d \\mid 2^a \\cdot 3^b$ directly depending on the definition) — the existential $\\exists a b, d \\mid 2^a \\cdot 3^b$ means the leading divisibility step goes through `dvd_trans`.",

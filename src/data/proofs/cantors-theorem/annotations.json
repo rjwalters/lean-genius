@@ -100,7 +100,7 @@
       "startLine": 96,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Self-Reference Paradox",
     "content": "The **diagonal paradox** is the heart of the argument:\n\nIf f(b) = D where D = {x | x not in f(x)}, then:\n$$b \\in D \\iff b \\notin D$$\n\nThis is a **self-referential contradiction** - b's membership in D depends on whether b is in D.\n\nThis paradox is closely related to:\n- **Russell's Paradox**: Consider R = {x | x not in x}. Is R in R?\n- **The Liar Paradox**: 'This statement is false'\n- **Godel's Incompleteness**: Self-referential sentences about provability\n\nIn type theory, we avoid Russell's paradox by stratifying types into universes.",
     "mathContext": "$b \\in D \\iff b \\notin D$",

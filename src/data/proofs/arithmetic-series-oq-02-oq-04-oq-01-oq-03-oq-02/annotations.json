@@ -28,14 +28,26 @@
   {
     "id": "ann-section-docstrings",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
-    "range": { "startLine": 33, "endLine": 59 },
-    "type": "context",
+    "range": {
+      "startLine": 33,
+      "endLine": 59
+    },
+    "type": "concept",
     "title": "Section Headers and Lemma Documentation",
     "content": "The proof is organized into three sections with explicit headers. Section 1 (lines 33-35) groups the base case lemma `sum_zero_left`. Section 2 (lines 48-59) introduces `sum_succ_left` with an inline docstring explaining the proof strategy: (a) apply `sum_range_succ'` to split j=0 terms from both sides; (b) note the j=0 terms cancel (both equal mc(n,r+1)); (c) for j≥1, expand mc(m+1)(j+1) via the Pascal recurrence; (d) separate the resulting sums via `sum_add_distrib`. The documentation correctly identifies that the index alignment issue (`r+1-(j+1) = r-j`) must be resolved before the Pascal recurrence expansion — foreshadowing the `have hsub + simp_rw` tactic sequence in the proof body.",
     "mathContext": "`sum_zero_left n r`: $\\sum_{j=0}^r \\text{mc}(0,j)\\cdot\\text{mc}(n,r-j) = \\text{mc}(n,r)$. `sum_succ_left m n r`: $\\sum_{j=0}^{r+1} \\text{mc}(m+1,j)\\cdot\\text{mc}(n,r+1-j) = \\sum_{j=0}^{r+1} \\text{mc}(m,j)\\cdot\\text{mc}(n,r+1-j) + \\sum_{j=0}^r \\text{mc}(m+1,j)\\cdot\\text{mc}(n,r-j)$.",
-    "significance": "context",
-    "relatedConcepts": ["proof organization", "sum_range_succ'", "Pascal recurrence", "index alignment"],
-    "prerequisites": ["Nat.multichoose_zero_right", "Nat.multichoose_succ_succ", "Finset.sum_range_succ'"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof organization",
+      "sum_range_succ'",
+      "Pascal recurrence",
+      "index alignment"
+    ],
+    "prerequisites": [
+      "Nat.multichoose_zero_right",
+      "Nat.multichoose_succ_succ",
+      "Finset.sum_range_succ'"
+    ]
   },
   {
     "id": "ann-sum-zero-left",
@@ -63,14 +75,27 @@
   {
     "id": "ann-hsum-trick",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
-    "range": { "startLine": 79, "endLine": 116 },
-    "type": "technique",
+    "range": {
+      "startLine": 79,
+      "endLine": 116
+    },
+    "type": "concept",
     "title": "hsum Ring Lemma: Bridging m+1+n and (m+n)+1 for multichoose_succ_succ",
     "content": "A subtle but critical Lean 4 detail in the main inductive step (lines 106-116): the have `hsum : m + 1 + n = (m + n) + 1 := by ring`. This rewrite is needed because `Nat.multichoose_succ_succ` has signature `multichoose (n+1) (k+1) = multichoose n (k+1) + multichoose (n+1) k`, which expects `(m+n)+1` as first argument. But the goal has `m+1+n` (from the induction variable arrangement). The `rw [hsum, Nat.multichoose_succ_succ]` transforms the LHS, then `rw [ih_m (r+1)]` and `rw [← hsum]; rw [ih_r]` carefully restore the original variable order for applying the IHs, and `rw [← sum_succ_left m n r]` reassembles using the decomposition lemma in reverse.\n\nThe proof `theorem multiset_vandermonde` has 0 sorries and closes in 28 lines. The `induction m generalizing r` pattern is essential: without `generalizing r`, the inner IH `ih_r` would only apply at the specific `r` value fixed by the outer induction, not at `r` for arbitrary `m`. Lean 4's `induction` tactic respects the context — variables not in `generalizing` become fixed.",
     "mathContext": "The identity `m + 1 + n = (m + n) + 1` holds in $\\mathbb{N}$ by commutativity and associativity of addition. In Lean 4, `ring` closes such goals. `Nat.multichoose_succ_succ n k : Nat.multichoose (n+1) (k+1) = Nat.multichoose n (k+1) + Nat.multichoose (n+1) k` — the Pascal-like identity. Applied at $n = m+n$ and $k = r$: $\\text{mc}(m+n+1)(r+1) = \\text{mc}(m+n)(r+1) + \\text{mc}(m+n+1)(r)$.",
     "significance": "key",
-    "relatedConcepts": ["Nat.multichoose_succ_succ", "induction generalizing", "ring tactic", "rw rewrite"],
-    "prerequisites": ["sum_zero_left", "sum_succ_left", "Nat.multichoose_succ_succ", "induction generalizing"]
+    "relatedConcepts": [
+      "Nat.multichoose_succ_succ",
+      "induction generalizing",
+      "ring tactic",
+      "rw rewrite"
+    ],
+    "prerequisites": [
+      "sum_zero_left",
+      "sum_succ_left",
+      "Nat.multichoose_succ_succ",
+      "induction generalizing"
+    ]
   },
   {
     "id": "ann-sum-zero-right",

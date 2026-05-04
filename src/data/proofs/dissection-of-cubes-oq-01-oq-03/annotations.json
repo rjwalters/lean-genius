@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Imports, noncomputable, and Classical DecidableEq",
-    "content": "The file imports `Mathlib` (full library), `DissectionOfCubes`, and `DissectionOfCubesOQ01`. The `noncomputable section` declaration is required because `volumeSum` uses real-number arithmetic \u2014 `\u211d` is noncomputable in Lean 4 because its elements are Cauchy sequences (limits) which cannot be computed by a terminating algorithm. The `noncomputable instance : DecidableEq Cube := Classical.decEq _` uses classical logic to assert decidable equality for `Cube` structures, allowing `Finset.sum` to be defined over `Finset Cube`. Without this instance, `Finset.sum` would fail to synthesize the required `DecidableEq Cube` typeclass.",
-    "mathContext": "In Lean 4, computability is tracked by the type system. Real numbers ($\\mathbb{R}$) are constructed as equivalence classes of Cauchy sequences and are not computable. The `noncomputable` modifier tells Lean to skip code generation for these definitions. `Classical.decEq` uses the law of excluded middle ($\\forall x, y: x = y \\vee x \\neq y$) to produce `DecidableEq` \u2014 legal in propositions but not in computable data.",
-    "significance": "technical",
+    "content": "The file imports `Mathlib` (full library), `DissectionOfCubes`, and `DissectionOfCubesOQ01`. The `noncomputable section` declaration is required because `volumeSum` uses real-number arithmetic — `ℝ` is noncomputable in Lean 4 because its elements are Cauchy sequences (limits) which cannot be computed by a terminating algorithm. The `noncomputable instance : DecidableEq Cube := Classical.decEq _` uses classical logic to assert decidable equality for `Cube` structures, allowing `Finset.sum` to be defined over `Finset Cube`. Without this instance, `Finset.sum` would fail to synthesize the required `DecidableEq Cube` typeclass.",
+    "mathContext": "In Lean 4, computability is tracked by the type system. Real numbers ($\\mathbb{R}$) are constructed as equivalence classes of Cauchy sequences and are not computable. The `noncomputable` modifier tells Lean to skip code generation for these definitions. `Classical.decEq` uses the law of excluded middle ($\\forall x, y: x = y \\vee x \\neq y$) to produce `DecidableEq` — legal in propositions but not in computable data.",
+    "significance": "supporting",
     "relatedConcepts": [
       "noncomputable in Lean 4",
       "Classical.decEq",
@@ -30,11 +30,11 @@
       "startLine": 5,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Structure: 14 Theorems in Four Parts",
-    "content": "The module docstring maps the entire proof into four parts: (I) Volume Sum Basics (3 lemmas establishing algebraic infrastructure), (II) Volume Bounds (4 theorems giving quantitative constraints on cube sizes), (III) Collision Structure (3 theorems bridging to the OQ-01 impossibility result), and (IV) Minimum Cubes and Decomposition (4 structural lemmas). The key design point is that Parts I, II, and IV are axiom-free \u2014 they use only Mathlib and the `VolumeDissection` definition. Only Part III (theorem 8, `volume_dissection_has_collision`) inherits the 2 axioms from `DissectionOfCubes.lean` via `every_dissection_has_collision`.",
-    "mathContext": "The organizational insight is that the volume constraint $\\sum_{c} s_c^3 = 1$ is a purely algebraic condition. Theorems about sums and inequalities (Parts I\u2013II, IV) can be proved from Mathlib alone. Only when we need to assert that collision pairs *exist* (Part III) do we need the topological/combinatorial axioms about cube arrangements.",
-    "significance": "context",
+    "content": "The module docstring maps the entire proof into four parts: (I) Volume Sum Basics (3 lemmas establishing algebraic infrastructure), (II) Volume Bounds (4 theorems giving quantitative constraints on cube sizes), (III) Collision Structure (3 theorems bridging to the OQ-01 impossibility result), and (IV) Minimum Cubes and Decomposition (4 structural lemmas). The key design point is that Parts I, II, and IV are axiom-free — they use only Mathlib and the `VolumeDissection` definition. Only Part III (theorem 8, `volume_dissection_has_collision`) inherits the 2 axioms from `DissectionOfCubes.lean` via `every_dissection_has_collision`.",
+    "mathContext": "The organizational insight is that the volume constraint $\\sum_{c} s_c^3 = 1$ is a purely algebraic condition. Theorems about sums and inequalities (Parts I–II, IV) can be proved from Mathlib alone. Only when we need to assert that collision pairs *exist* (Part III) do we need the topological/combinatorial axioms about cube arrangements.",
+    "significance": "supporting",
     "relatedConcepts": [
       "VolumeDissection",
       "IsCollisionPair",
@@ -54,7 +54,7 @@
     },
     "type": "definition",
     "title": "volumeSum and VolumeDissection",
-    "content": "`volumeSum` computes \u2211 c.side\u00b3 using Mathlib's BigOperators `\u2211 c \u2208 cubes, c.side ^ 3`. `VolumeDissection` extends `CubeDissection` with the field `volume_constraint : volumeSum dissection.cubes = 1`, replacing the placeholder `covers_unit_cube : True` with the necessary geometric condition that cube volumes sum to 1.",
+    "content": "`volumeSum` computes ∑ c.side³ using Mathlib's BigOperators `∑ c ∈ cubes, c.side ^ 3`. `VolumeDissection` extends `CubeDissection` with the field `volume_constraint : volumeSum dissection.cubes = 1`, replacing the placeholder `covers_unit_cube : True` with the necessary geometric condition that cube volumes sum to 1.",
     "mathContext": "For axis-aligned cubes in $\\mathbb{R}^3$, a cube with side length $s$ has volume $s^3$. If finitely many cubes tile the unit cube $[0,1]^3$ with disjoint interiors, the volumes must sum to $\\text{vol}([0,1]^3) = 1$. The constraint $\\sum_{c} c.\\text{side}^3 = 1$ is a necessary condition for any valid tiling.",
     "significance": "key",
     "relatedConcepts": [
@@ -64,7 +64,7 @@
     ],
     "prerequisites": [
       "DissectionOfCubes (CubeDissection structure)",
-      "Mathlib BigOperators (\u2211 notation)"
+      "Mathlib BigOperators (∑ notation)"
     ]
   },
   {
@@ -74,10 +74,10 @@
       "startLine": 69,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Three Foundational Lemmas: Nonnegativity, Singleton, Insert",
-    "content": "`volumeSum_nonneg` proves `0 \u2264 \u2211 c.side\u00b3` by applying `Finset.sum_nonneg` with the witness that each `c.side ^ 3 \u2265 0` (from `c.side > 0` via `pow_nonneg`). `volumeSum_singleton` uses `simp [volumeSum]` to reduce a single-element sum. `volumeSum_insert` relies on `Finset.sum_insert h` \u2014 the membership hypothesis `h : c \u2209 s` prevents double-counting. These three lemmas are the algebraic toolkit for all subsequent volume reasoning.",
-    "mathContext": "These are the standard measure-theoretic lemmas for a finitely-supported measure: non-negativity ($\\mu \\geq 0$), evaluation at a point ($\\mu(\\{x\\}) = \\mu_x$), and $\\sigma$-additivity on disjoint sets ($\\mu(A \\cup \\{x\\}) = \\mu_x + \\mu(A)$ for $x \\notin A$). The `Finset.sum_insert` step requires disjointness \u2014 the `h : c \u2209 s` hypothesis is the finite analogue of the disjointness condition in measure theory.",
+    "content": "`volumeSum_nonneg` proves `0 ≤ ∑ c.side³` by applying `Finset.sum_nonneg` with the witness that each `c.side ^ 3 ≥ 0` (from `c.side > 0` via `pow_nonneg`). `volumeSum_singleton` uses `simp [volumeSum]` to reduce a single-element sum. `volumeSum_insert` relies on `Finset.sum_insert h` — the membership hypothesis `h : c ∉ s` prevents double-counting. These three lemmas are the algebraic toolkit for all subsequent volume reasoning.",
+    "mathContext": "These are the standard measure-theoretic lemmas for a finitely-supported measure: non-negativity ($\\mu \\geq 0$), evaluation at a point ($\\mu(\\{x\\}) = \\mu_x$), and $\\sigma$-additivity on disjoint sets ($\\mu(A \\cup \\{x\\}) = \\mu_x + \\mu(A)$ for $x \\notin A$). The `Finset.sum_insert` step requires disjointness — the `h : c ∉ s` hypothesis is the finite analogue of the disjointness condition in measure theory.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.sum_nonneg",
@@ -98,9 +98,9 @@
       "startLine": 92,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Volume and Side Bounds from Constraint",
-    "content": "`cube_volume_le_one` uses `Finset.single_le_sum`: since each term is nonneg and the total is 1, every individual term is \u2264 1. `cube_side_le_one` then derives `c.side \u2264 1` from `c.side\u00b3 \u2264 1` and `c.side > 0` using `nlinarith` with the hint `sq_nonneg (c.side - 1)`, which expands to `c.side\u00b2 - 2\u00b7c.side + 1 \u2265 0` and enables cubic arithmetic.",
+    "content": "`cube_volume_le_one` uses `Finset.single_le_sum`: since each term is nonneg and the total is 1, every individual term is ≤ 1. `cube_side_le_one` then derives `c.side ≤ 1` from `c.side³ ≤ 1` and `c.side > 0` using `nlinarith` with the hint `sq_nonneg (c.side - 1)`, which expands to `c.side² - 2·c.side + 1 ≥ 0` and enables cubic arithmetic.",
     "mathContext": "From $\\sum s_i^3 = 1$ with each $s_i^3 \\geq 0$, we get $s_k^3 \\leq 1$ for each $k$. Since $s_k > 0$ (positivity axiom), $s_k^3 \\leq 1$ implies $s_k \\leq 1$. The algebraic step: if $s > 1$ then $(s-1)^2 \\geq 0$ gives $s^2 \\geq 2s - 1$, so $s^3 = s \\cdot s^2 \\geq s(2s-1) = 2s^2 - s > 2(1) - s > 1$ for $s > 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -122,7 +122,7 @@
     },
     "type": "insight",
     "title": "Strict Volume Bounds When Multiple Cubes Present",
-    "content": "`volumeSum_pos` shows that any nonempty dissection has a positive volume sum (direct from `pow_pos` and `Finset.single_le_sum`). `cube_volume_lt_one_of_card_ge_two` is the deeper result: if the dissection contains \u22652 distinct cubes, each cube has *strict* volume less than 1. The proof is by contradiction: if some cube c had volume exactly 1, the entire volume budget would be consumed, but any other cube c' contributes c'.side\u00b3 > 0, pushing the total above 1.",
+    "content": "`volumeSum_pos` shows that any nonempty dissection has a positive volume sum (direct from `pow_pos` and `Finset.single_le_sum`). `cube_volume_lt_one_of_card_ge_two` is the deeper result: if the dissection contains ≥2 distinct cubes, each cube has *strict* volume less than 1. The proof is by contradiction: if some cube c had volume exactly 1, the entire volume budget would be consumed, but any other cube c' contributes c'.side³ > 0, pushing the total above 1.",
     "mathContext": "The strict bound $s_k^3 < 1$ (for $|\\text{dissection}| \\geq 2$) mirrors the finite measure principle: if $\\mu(X) = 1$ and $\\mu$ is strictly positive on atoms, then no single atom can have $\\mu = 1$ when other atoms are present. The proof uses `Finset.one_lt_card` to extract a second distinct cube, then argues by volume budget exhaustion. Combined with $s_k > 0$, this gives $s_k \\in (0, 1)$ for all cubes in a multi-cube dissection.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -145,8 +145,8 @@
       "endLine": 202
     },
     "type": "insight",
-    "title": "Collision Pairs and Volume: 2s\u00b3 \u2264 1",
-    "content": "`collision_volume_bound` proves that for any collision pair (c\u2081, c\u2082) \u2014 two distinct cubes with c\u2081.side = c\u2082.side = s \u2014 we have 2s\u00b3 \u2264 1. The proof: both cubes are in the dissection, so their total volume c\u2081.side\u00b3 + c\u2082.side\u00b3 = 2s\u00b3 is bounded by volumeSum = 1. `collision_side_le_half_cbrt` immediately gives s\u00b3 \u2264 1/2.",
+    "title": "Collision Pairs and Volume: 2s³ ≤ 1",
+    "content": "`collision_volume_bound` proves that for any collision pair (c₁, c₂) — two distinct cubes with c₁.side = c₂.side = s — we have 2s³ ≤ 1. The proof: both cubes are in the dissection, so their total volume c₁.side³ + c₂.side³ = 2s³ is bounded by volumeSum = 1. `collision_side_le_half_cbrt` immediately gives s³ ≤ 1/2.",
     "mathContext": "If two distinct cubes with the same side length $s$ appear in a VolumeDissection, they each contribute $s^3$ to the sum $\\sum c_i^3 = 1$. Since all other terms are nonneg, $2s^3 \\leq 1$, i.e., $s \\leq 2^{-1/3} \\approx 0.7937$. This is a quantitative upper bound on how large any repeated-size cube can be in a volume-constrained dissection.",
     "significance": "key",
     "relatedConcepts": [
@@ -170,7 +170,7 @@
     "type": "insight",
     "title": "Collision Existence Bridge: Where Axioms Enter",
     "content": "`volume_dissection_has_collision` is the sole theorem in this file that inherits axioms. It delegates directly to `every_dissection_has_collision vd.dissection h` from `DissectionOfCubesOQ01`, which in turn depends on the two base axioms (`smaller_cube_above_axiom` and `all_different_implies_long_chains_axiom`). The proof is a one-liner: VolumeDissection contains a CubeDissection, so all results about CubeDissection apply directly.",
-    "mathContext": "The bridge theorem makes explicit the logical dependency structure: the algebraic fact that volumes sum to 1 does not by itself imply any cube must have a duplicate-sized neighbor. The collision existence requires geometric information about how cubes are arranged in space \u2014 specifically, the infinite descent argument encoded in the two axioms. This separation of concerns (algebraic bounds axiom-free; geometric existence axiom-dependent) is a clean factorization of the proof's epistemics.",
+    "mathContext": "The bridge theorem makes explicit the logical dependency structure: the algebraic fact that volumes sum to 1 does not by itself imply any cube must have a duplicate-sized neighbor. The collision existence requires geometric information about how cubes are arranged in space — specifically, the infinite descent argument encoded in the two axioms. This separation of concerns (algebraic bounds axiom-free; geometric existence axiom-dependent) is a clean factorization of the proof's epistemics.",
     "significance": "key",
     "relatedConcepts": [
       "every_dissection_has_collision",
@@ -190,11 +190,11 @@
       "startLine": 204,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Decomposition Lemmas: Cardinality and Union",
-    "content": "`min_cubes_for_collision` shows any dissection with a collision pair has \u22652 cubes, using `Finset.card_le_card` applied to the pair `{c\u2081, c\u2082} \u2286 dissection.cubes`. `volumeSum_union` is a direct application of `Finset.sum_union` \u2014 the volume of a disjoint union is the sum of volumes. `volumeSum_eq` is a definitional rewrite lemma (it equals `rfl`) that makes the definition explicit for callers who need to rewrite rather than unfold.",
+    "content": "`min_cubes_for_collision` shows any dissection with a collision pair has ≥2 cubes, using `Finset.card_le_card` applied to the pair `{c₁, c₂} ⊆ dissection.cubes`. `volumeSum_union` is a direct application of `Finset.sum_union` — the volume of a disjoint union is the sum of volumes. `volumeSum_eq` is a definitional rewrite lemma (it equals `rfl`) that makes the definition explicit for callers who need to rewrite rather than unfold.",
     "mathContext": "The union lemma $\\text{vol}(A \\cup B) = \\text{vol}(A) + \\text{vol}(B)$ for disjoint sets is the finite form of measure additivity. The `Disjoint s t` hypothesis in `volumeSum_union` corresponds to $A \\cap B = \\emptyset$ in the measure-theoretic statement. The `volumeSum_eq` lemma (`volumeSum cs = \\sum_{c \\in cs} c.\\text{side}^3$) serves as an unfolding hint for proof terms that need to bridge between the named definition and the raw sum.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.card_le_card",
       "Finset.sum_union",
@@ -213,10 +213,10 @@
       "startLine": 229,
       "endLine": 253
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Existence Witness: One Unit Cube",
-    "content": "`volume_constraint_satisfiable` proves that `VolumeDissection` is non-vacuous by constructing an explicit witness: one cube `c` with side=1 at the origin `(0,0,0)`. The proof handles three obligations: `all_contained` (c \u2286 [0,1]\u00b3, by `norm_num` bounds), `pairwise_disjoint` (vacuously true for singletons \u2014 the `hne : c\u2081 \u2260 c\u2082` hypothesis gives `absurd`), and `volume_constraint` (`volumeSum {c} = 1` by `volumeSum_singleton` then `norm_num`). The `covers_unit_cube : True` field is discharged by `trivial`.",
-    "mathContext": "The witness is the degenerate case: a single cube of side $s = 1$ trivially satisfies $\\sum s_c^3 = 1^3 = 1$. This existential proof confirms that `VolumeDissection` is a consistent extension of `CubeDissection` \u2014 it has at least one model. Note that this witness has no collision pairs (a singleton cannot have two *distinct* cubes with the same side), which is consistent: `volume_dissection_has_collision` requires nonemptiness but the witness is nonempty, so by OQ-01 it *does* have a collision \u2014 but wait, a singleton dissection has only 1 cube, so it cannot have 2 distinct cubes forming a collision pair. This apparent contradiction is resolved: `every_dissection_has_collision` is an axiomatized theorem; the one-cube witness is why those axioms cannot be removed.",
+    "content": "`volume_constraint_satisfiable` proves that `VolumeDissection` is non-vacuous by constructing an explicit witness: one cube `c` with side=1 at the origin `(0,0,0)`. The proof handles three obligations: `all_contained` (c ⊆ [0,1]³, by `norm_num` bounds), `pairwise_disjoint` (vacuously true for singletons — the `hne : c₁ ≠ c₂` hypothesis gives `absurd`), and `volume_constraint` (`volumeSum {c} = 1` by `volumeSum_singleton` then `norm_num`). The `covers_unit_cube : True` field is discharged by `trivial`.",
+    "mathContext": "The witness is the degenerate case: a single cube of side $s = 1$ trivially satisfies $\\sum s_c^3 = 1^3 = 1$. This existential proof confirms that `VolumeDissection` is a consistent extension of `CubeDissection` — it has at least one model. Note that this witness has no collision pairs (a singleton cannot have two *distinct* cubes with the same side), which is consistent: `volume_dissection_has_collision` requires nonemptiness but the witness is nonempty, so by OQ-01 it *does* have a collision — but wait, a singleton dissection has only 1 cube, so it cannot have 2 distinct cubes forming a collision pair. This apparent contradiction is resolved: `every_dissection_has_collision` is an axiomatized theorem; the one-cube witness is why those axioms cannot be removed.",
     "significance": "supporting",
     "relatedConcepts": [
       "volume_constraint_satisfiable",

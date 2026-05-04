@@ -6,10 +6,10 @@
       "startLine": 30,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "factorization_finset_prod: Distributivity Lemma",
-    "content": "This private helper lemma proves that Nat.factorization distributes over Finset products of nonzero naturals: `(\u220f m \u2208 s, m).factorization = \u2211 m \u2208 s, m.factorization`. The proof is by `Finset.induction_on`: the empty case is `Nat.factorization_one` (factorization of 1 is 0); the insert step uses `Nat.factorization_mul` (for nonzero arguments) plus the induction hypothesis. The nonzero condition is propagated carefully: for the product, `Finset.prod_ne_zero` ensures `\u220f m \u2208 s, m \u2260 0` when all members are nonzero. This lemma is the workhorse that enables the indicator-sum proof in `finsupp_prime_prod_factorization`.",
-    "mathContext": "$\\left(\\prod_{m \\in s} m\\right).\\text{fact} = \\sum_{m \\in s} m.\\text{fact}$ \u2014 factorization is a monoid homomorphism from $(\\mathbb{N}^\\times, \\cdot)$ to $(\\mathbb{N} \\to_0 \\mathbb{N}, +)$. Proof by induction on $s$: base $\\text{fact}(1) = 0$; step uses $\\text{fact}(a \\cdot b) = \\text{fact}(a) + \\text{fact}(b)$.",
+    "content": "This private helper lemma proves that Nat.factorization distributes over Finset products of nonzero naturals: `(∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization`. The proof is by `Finset.induction_on`: the empty case is `Nat.factorization_one` (factorization of 1 is 0); the insert step uses `Nat.factorization_mul` (for nonzero arguments) plus the induction hypothesis. The nonzero condition is propagated carefully: for the product, `Finset.prod_ne_zero` ensures `∏ m ∈ s, m ≠ 0` when all members are nonzero. This lemma is the workhorse that enables the indicator-sum proof in `finsupp_prime_prod_factorization`.",
+    "mathContext": "$\\left(\\prod_{m \\in s} m\\right).\\text{fact} = \\sum_{m \\in s} m.\\text{fact}$ — factorization is a monoid homomorphism from $(\\mathbb{N}^\\times, \\cdot)$ to $(\\mathbb{N} \\to_0 \\mathbb{N}, +)$. Proof by induction on $s$: base $\\text{fact}(1) = 0$; step uses $\\text{fact}(a \\cdot b) = \\text{fact}(a) + \\text{fact}(b)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.factorization_mul",
@@ -30,10 +30,10 @@
       "startLine": 62,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part II: Support Equals Prime Factors",
-    "content": "Three theorems characterize the support of `n.factorization`. `fta_support_eq_primeFactors`: the support equals `n.primeFactors` \u2014 a direct delegation to `Nat.support_factorization`. `fta_support_prime`: every p in the support is prime \u2014 proved by rewriting support as primeFactors, then using `Nat.prime_of_mem_primeFactors`. `fta_mem_support_iff_dvd`: p is prime and divides n iff p \u2208 the support \u2014 proved by expanding `Nat.mem_primeFactors`. Together, these three theorems make the Finsupp support explicit: it's exactly the set of prime divisors, no more.",
-    "mathContext": "$\\text{support}(n.\\text{fact}) = \\{p \\text{ prime}: p \\mid n\\}$. Equivalent characterizations: $p \\in \\text{support} \\iff n.\\text{fact}(p) > 0 \\iff p$ prime and $p \\mid n$. The support is always finite (since $n$ has finitely many prime divisors) \u2014 this is what makes Finsupp the right type for factorization.",
+    "content": "Three theorems characterize the support of `n.factorization`. `fta_support_eq_primeFactors`: the support equals `n.primeFactors` — a direct delegation to `Nat.support_factorization`. `fta_support_prime`: every p in the support is prime — proved by rewriting support as primeFactors, then using `Nat.prime_of_mem_primeFactors`. `fta_mem_support_iff_dvd`: p is prime and divides n iff p ∈ the support — proved by expanding `Nat.mem_primeFactors`. Together, these three theorems make the Finsupp support explicit: it's exactly the set of prime divisors, no more.",
+    "mathContext": "$\\text{support}(n.\\text{fact}) = \\{p \\text{ prime}: p \\mid n\\}$. Equivalent characterizations: $p \\in \\text{support} \\iff n.\\text{fact}(p) > 0 \\iff p$ prime and $p \\mid n$. The support is always finite (since $n$ has finitely many prime divisors) — this is what makes Finsupp the right type for factorization.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.support_factorization",
@@ -45,7 +45,7 @@
     "prerequisites": [
       "Nat.primeFactors definition",
       "Nat.mem_primeFactors iff prime and divides",
-      "Finsupp support = {x | f x \u2260 0}"
+      "Finsupp support = {x | f x ≠ 0}"
     ]
   },
   {
@@ -56,9 +56,9 @@
       "endLine": 60
     },
     "type": "concept",
-    "title": "Finsupp Encoding: Prime Exponent Maps as Functions \u2115 \u2192\u2080 \u2115",
-    "content": "The Finsupp (finite support function) encodes a number's factorization algebraically: `n.factorization : \u2115 \u2192\u2080 \u2115` maps each prime p to its exponent in n, with finite support (only finitely many primes divide n). The reconstruction formula `fta_reconstruction` recovers n from this map via `n.factorization.prod (\u00b7 ^ \u00b7)` \u2014 the Finsupp product of all prime powers. This delegates entirely to Mathlib's `Nat.factorization_prod_pow_eq_self`. The Finsupp approach contrasts with the sorted-list FTA: here the representation is a function, not a list, enabling cleaner algebraic reasoning (Finsupp forms a commutative monoid under addition).",
-    "mathContext": "$n = \\prod_{p \\in \\text{support}(f)} p^{f(p)}$ where $f = n.\\text{factorization} : \\mathbb{N} \\to_0 \\mathbb{N}$ and $\\text{support}(f) = \\{p \\text{ prime}: p \\mid n\\}$. Lean: `n.factorization.prod (\u00b7 ^ \u00b7) = n` for $n \\neq 0$.",
+    "title": "Finsupp Encoding: Prime Exponent Maps as Functions ℕ →₀ ℕ",
+    "content": "The Finsupp (finite support function) encodes a number's factorization algebraically: `n.factorization : ℕ →₀ ℕ` maps each prime p to its exponent in n, with finite support (only finitely many primes divide n). The reconstruction formula `fta_reconstruction` recovers n from this map via `n.factorization.prod (· ^ ·)` — the Finsupp product of all prime powers. This delegates entirely to Mathlib's `Nat.factorization_prod_pow_eq_self`. The Finsupp approach contrasts with the sorted-list FTA: here the representation is a function, not a list, enabling cleaner algebraic reasoning (Finsupp forms a commutative monoid under addition).",
+    "mathContext": "$n = \\prod_{p \\in \\text{support}(f)} p^{f(p)}$ where $f = n.\\text{factorization} : \\mathbb{N} \\to_0 \\mathbb{N}$ and $\\text{support}(f) = \\{p \\text{ prime}: p \\mid n\\}$. Lean: `n.factorization.prod (· ^ ·) = n` for $n \\neq 0$.",
     "significance": "key",
     "relatedConcepts": [
       "Finsupp (finite support functions)",
@@ -79,9 +79,9 @@
       "startLine": 87,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Uniqueness via p-adic Valuation: finsupp_prime_prod_factorization",
-    "content": "The algebraic heart of the proof is `finsupp_prime_prod_factorization`: if f has prime support then `(f.prod (\u00b7^\u00b7)).factorization = f`. The proof works pointwise at each prime a. After distributing factorization over the Finset product (via `factorization_finset_prod`), the key step computes `(p ^ f p).factorization a` for each p in the support: it equals f(p) if p=a and 0 otherwise (since primes are coprime). This indicator-function collapse is executed by `Finset.sum_ite_eq` followed by checking the support membership. The chain `g = (g.prod (\u00b7^\u00b7)).factorization = n.factorization` then gives uniqueness in `fta_uniqueness`.",
+    "content": "The algebraic heart of the proof is `finsupp_prime_prod_factorization`: if f has prime support then `(f.prod (·^·)).factorization = f`. The proof works pointwise at each prime a. After distributing factorization over the Finset product (via `factorization_finset_prod`), the key step computes `(p ^ f p).factorization a` for each p in the support: it equals f(p) if p=a and 0 otherwise (since primes are coprime). This indicator-function collapse is executed by `Finset.sum_ite_eq` followed by checking the support membership. The chain `g = (g.prod (·^·)).factorization = n.factorization` then gives uniqueness in `fta_uniqueness`.",
     "mathContext": "For prime-support $f$: $\\left(\\prod_p p^{f(p)}\\right).\\text{factorization}(a) = \\sum_p (p^{f(p)}).\\text{factorization}(a) = \\sum_p [p=a]\\cdot f(p) = f(a)$. Hence $(f.\\text{prod}(\\cdot^{\\cdot})).\\text{factorization} = f$.",
     "significance": "key",
     "relatedConcepts": [
@@ -106,14 +106,14 @@
       "endLine": 154
     },
     "type": "concept",
-    "title": "FTA as Unique Existence: \u2203! f with Prime Support and f.prod (\u00b7^\u00b7) = n",
-    "content": "The main theorem `fundamental_theorem_of_arithmetic` states the FTA in its purest algebraic form: for n \u2260 0, there exists a unique f : \u2115 \u2192\u2080 \u2115 with prime support satisfying f.prod (\u00b7^\u00b7) = n. The canonical witness is n.factorization. Existence is `fta_reconstruction`. Uniqueness follows immediately from `fta_uniqueness`, which uses `finsupp_prime_prod_factorization` to show any such g must equal n.factorization. The proof of `fta_uniqueness` is a two-step calculation: g = (g.prod (\u00b7^\u00b7)).factorization (by finsupp_prime_prod_factorization), and that product equals n by hypothesis.",
+    "title": "FTA as Unique Existence: ∃! f with Prime Support and f.prod (·^·) = n",
+    "content": "The main theorem `fundamental_theorem_of_arithmetic` states the FTA in its purest algebraic form: for n ≠ 0, there exists a unique f : ℕ →₀ ℕ with prime support satisfying f.prod (·^·) = n. The canonical witness is n.factorization. Existence is `fta_reconstruction`. Uniqueness follows immediately from `fta_uniqueness`, which uses `finsupp_prime_prod_factorization` to show any such g must equal n.factorization. The proof of `fta_uniqueness` is a two-step calculation: g = (g.prod (·^·)).factorization (by finsupp_prime_prod_factorization), and that product equals n by hypothesis.",
     "mathContext": "$\\forall n \\neq 0,\\ \\exists! f: \\mathbb{N}\\to_0\\mathbb{N}$, $[\\text{support}(f) \\subseteq \\text{Primes}]$ and $f.\\text{prod}(\\cdot^{\\cdot}) = n$. Uniqueness: if $g.\\text{prod}(\\cdot^{\\cdot}) = n$ with prime support, then $g = (g.\\text{prod}(\\cdot^{\\cdot})).\\text{factorization} = n.\\text{factorization}$.",
     "significance": "key",
     "relatedConcepts": [
       "fundamental theorem of arithmetic",
       "unique factorization domain",
-      "\u2203! in Lean 4",
+      "∃! in Lean 4",
       "Finsupp canonical form"
     ],
     "prerequisites": [
@@ -129,7 +129,7 @@
       "startLine": 1,
       "endLine": 28
     },
-    "type": "context",
+    "type": "concept",
     "title": "Two FTA Formalizations: Sorted List vs Finsupp Exponent Map",
     "content": "This file represents one of two complementary FTA formalizations in the gallery. `FundamentalArithmetic.lean` uses sorted prime lists with repetition; this file uses Finsupp prime exponent maps. The approaches have different strengths: sorted lists are closer to elementary proofs and easier to visualize; Finsupp maps integrate better with algebraic structures like unique factorization domains (UFDs) and ring theory. The Finsupp form directly supports: (1) multiplying factorizations via Finsupp addition, (2) checking divisibility via pointwise inequality, (3) GCD/LCM via pointwise min/max. The file imports only `Mathlib.Data.Nat.Factorization.Basic`, deliberately avoiding the list-based FTA.",
     "mathContext": "List FTA: $n \\mapsto$ sorted list $[p_1, p_1, \\ldots, p_2, p_2, \\ldots]$. Finsupp FTA: $n \\mapsto f = \\{p_1 \\mapsto e_1, p_2 \\mapsto e_2, \\ldots\\}$. Product of lists = Product $\\prod p_i^{e_i}$ of Finsupp. Algebraic operations: $\\text{fact}(mn) = \\text{fact}(m) + \\text{fact}(n)$; $\\text{fact}(\\gcd(m,n)) = \\min(\\text{fact}(m),\\text{fact}(n))$.",

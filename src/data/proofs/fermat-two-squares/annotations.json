@@ -45,7 +45,7 @@
     },
     "type": "insight",
     "title": "Zagier's One-Sentence Proof",
-    "content": "In 1990, Don Zagier published a proof that fits in a single sentence (though understanding it takes considerably longer):\n\n\"The involution on the finite set S = {(x,y,z) \u2208 N\u00b3 : x\u00b2 + 4yz = p} defined by (x,y,z) \u2192 (x+2z, z, y-x-z) if x < y-z, (2y-x, y, x-y+z) if y-z < x < 2y, (x-2y, x-y+z, y) if x > 2y, has exactly one fixed point, so |S| is odd and the involution (x,y,z) \u2192 (x,z,y) also has a fixed point.\"\n\nThe genius is in choosing the right set S and the right involutions.",
+    "content": "In 1990, Don Zagier published a proof that fits in a single sentence (though understanding it takes considerably longer):\n\n\"The involution on the finite set S = {(x,y,z) ∈ N³ : x² + 4yz = p} defined by (x,y,z) → (x+2z, z, y-x-z) if x < y-z, (2y-x, y, x-y+z) if y-z < x < 2y, (x-2y, x-y+z, y) if x > 2y, has exactly one fixed point, so |S| is odd and the involution (x,y,z) → (x,z,y) also has a fixed point.\"\n\nThe genius is in choosing the right set S and the right involutions.",
     "mathContext": "Zagier's proof exploits: (1) |S| is odd since p is odd, (2) an involution on a set of odd cardinality must have a fixed point.",
     "significance": "key",
     "relatedConcepts": [
@@ -63,7 +63,7 @@
     },
     "type": "insight",
     "title": "The Complete Characterization",
-    "content": "**A prime p is a sum of two squares iff p % 4 \u2260 3**\n\nThe proof has two directions:\n\n1. **If p = a\u00b2 + b\u00b2, then p % 4 \u2260 3**: Squares mod 4 are 0 or 1, so their sum is 0, 1, or 2 - never 3.\n\n2. **If p % 4 \u2260 3, then p = a\u00b2 + b\u00b2**: This is the hard direction, proved by Zagier's involution argument in Mathlib.",
+    "content": "**A prime p is a sum of two squares iff p % 4 ≠ 3**\n\nThe proof has two directions:\n\n1. **If p = a² + b², then p % 4 ≠ 3**: Squares mod 4 are 0 or 1, so their sum is 0, 1, or 2 - never 3.\n\n2. **If p % 4 ≠ 3, then p = a² + b²**: This is the hard direction, proved by Zagier's involution argument in Mathlib.",
     "mathContext": "$(2k)^2 = 4k^2 \\equiv 0 \\pmod 4$\n$(2k+1)^2 = 4k^2 + 4k + 1 \\equiv 1 \\pmod 4$\n\nSo $a^2 + b^2 \\mod 4 \\in \\{0+0, 0+1, 1+0, 1+1\\} = \\{0, 1, 2\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -79,9 +79,9 @@
       "endLine": 87
     },
     "type": "insight",
-    "title": "The Classic Statement: p \u2261 1 (mod 4)",
-    "content": "This is the form Fermat originally stated: every prime congruent to 1 modulo 4 is a sum of two squares.\n\nExamples:\n- 5 = 1 + 4 = 1\u00b2 + 2\u00b2\n- 13 = 4 + 9 = 2\u00b2 + 3\u00b2\n- 17 = 1 + 16 = 1\u00b2 + 4\u00b2\n- 29 = 4 + 25 = 2\u00b2 + 5\u00b2",
-    "mathContext": "The first few primes \u2261 1 (mod 4): 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97...",
+    "title": "The Classic Statement: p ≡ 1 (mod 4)",
+    "content": "This is the form Fermat originally stated: every prime congruent to 1 modulo 4 is a sum of two squares.\n\nExamples:\n- 5 = 1 + 4 = 1² + 2²\n- 13 = 4 + 9 = 2² + 3²\n- 17 = 1 + 16 = 1² + 4²\n- 29 = 4 + 25 = 2² + 5²",
+    "mathContext": "The first few primes ≡ 1 (mod 4): 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97...",
     "significance": "key",
     "relatedConcepts": [
       "Fermat's original statement",
@@ -95,9 +95,9 @@
       "startLine": 55,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Prime 2: A Special Case",
-    "content": "2 = 1\u00b2 + 1\u00b2 is trivially a sum of two squares.\n\nNote that 2 \u2261 2 (mod 4), so it's neither in the \"1 mod 4\" nor the \"3 mod 4\" category. The theorem correctly handles this edge case.",
+    "content": "2 = 1² + 1² is trivially a sum of two squares.\n\nNote that 2 ≡ 2 (mod 4), so it's neither in the \"1 mod 4\" nor the \"3 mod 4\" category. The theorem correctly handles this edge case.",
     "mathContext": "2 is the only even prime, making it unique in many ways.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -114,8 +114,8 @@
     },
     "type": "insight",
     "title": "The Negative Result: 3 mod 4 Primes",
-    "content": "**No prime p \u2261 3 (mod 4) can be a sum of two squares.**\n\nThis is purely a modular arithmetic argument:\n1. Squares mod 4 are only 0 or 1\n2. Sum of two values from {0,1} gives {0,1,2}\n3. The value 3 is impossible\n\nExamples of primes that are NOT sums of two squares: 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83...",
-    "mathContext": "Primes \u2261 3 (mod 4): 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103...\n\nNone of these can be written as a\u00b2 + b\u00b2.",
+    "content": "**No prime p ≡ 3 (mod 4) can be a sum of two squares.**\n\nThis is purely a modular arithmetic argument:\n1. Squares mod 4 are only 0 or 1\n2. Sum of two values from {0,1} gives {0,1,2}\n3. The value 3 is impossible\n\nExamples of primes that are NOT sums of two squares: 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83...",
+    "mathContext": "Primes ≡ 3 (mod 4): 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103...\n\nNone of these can be written as a² + b².",
     "significance": "key",
     "relatedConcepts": [
       "impossibility proof",
@@ -131,8 +131,8 @@
     },
     "type": "insight",
     "title": "Concrete Examples",
-    "content": "These examples verify the theorem for small primes \u2261 1 (mod 4):\n\n- 5 = 1\u00b2 + 2\u00b2 (5 = 4\u00b71 + 1)\n- 13 = 2\u00b2 + 3\u00b2 (13 = 4\u00b73 + 1)\n- 17 = 1\u00b2 + 4\u00b2 (17 = 4\u00b74 + 1)\n- 29 = 2\u00b2 + 5\u00b2 (29 = 4\u00b77 + 1)\n- 37 = 1\u00b2 + 6\u00b2 (37 = 4\u00b79 + 1)\n- 41 = 4\u00b2 + 5\u00b2 (41 = 4\u00b710 + 1)\n\nIn Lean, these are proved by `rfl` - the equality is definitionally true.",
-    "mathContext": "The representations are unique up to order and signs (for primes \u2261 1 mod 4).",
+    "content": "These examples verify the theorem for small primes ≡ 1 (mod 4):\n\n- 5 = 1² + 2² (5 = 4·1 + 1)\n- 13 = 2² + 3² (13 = 4·3 + 1)\n- 17 = 1² + 4² (17 = 4·4 + 1)\n- 29 = 2² + 5² (29 = 4·7 + 1)\n- 37 = 1² + 6² (37 = 4·9 + 1)\n- 41 = 4² + 5² (41 = 4·10 + 1)\n\nIn Lean, these are proved by `rfl` - the equality is definitionally true.",
+    "mathContext": "The representations are unique up to order and signs (for primes ≡ 1 mod 4).",
     "significance": "supporting",
     "relatedConcepts": [
       "examples",
@@ -148,7 +148,7 @@
     },
     "type": "insight",
     "title": "Complete Prime Classification",
-    "content": "Every prime falls into exactly one of three categories:\n\n1. **p = 2**: The unique even prime. 2 = 1\u00b2 + 1\u00b2.\n2. **p \u2261 1 (mod 4)**: Odd primes of the form 4k+1. Always sums of two squares.\n3. **p \u2261 3 (mod 4)**: Odd primes of the form 4k+3. Never sums of two squares.\n\nNote: p \u2261 0 (mod 4) is impossible for primes > 2 (would be divisible by 4).",
+    "content": "Every prime falls into exactly one of three categories:\n\n1. **p = 2**: The unique even prime. 2 = 1² + 1².\n2. **p ≡ 1 (mod 4)**: Odd primes of the form 4k+1. Always sums of two squares.\n3. **p ≡ 3 (mod 4)**: Odd primes of the form 4k+3. Never sums of two squares.\n\nNote: p ≡ 0 (mod 4) is impossible for primes > 2 (would be divisible by 4).",
     "mathContext": "The three categories partition all primes:\n$\\{2\\} \\cup \\{5,13,17,29,...\\} \\cup \\{3,7,11,19,...\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -165,8 +165,8 @@
     },
     "type": "insight",
     "title": "Connection to Gaussian Integers",
-    "content": "There's a deep algebraic explanation for this theorem. In the Gaussian integers \u2124[i] = {a + bi : a,b \u2208 \u2124}:\n\n- p = a\u00b2 + b\u00b2 \u27fa p = (a+bi)(a-bi) \u27fa p *splits* in \u2124[i]\n- A prime p splits in \u2124[i] \u27fa -1 is a quadratic residue mod p \u27fa p = 2 or p \u2261 1 (mod 4)\n\nThis connects the theorem to quadratic reciprocity and algebraic number theory.",
-    "mathContext": "In \u2124[i], the norm is N(a+bi) = a\u00b2 + b\u00b2. Primes in \u2124[i] are: (1+i), primes p \u2261 3 (mod 4), and \u03c0,\u03c0\u0304 for primes p \u2261 1 (mod 4).",
+    "content": "There's a deep algebraic explanation for this theorem. In the Gaussian integers ℤ[i] = {a + bi : a,b ∈ ℤ}:\n\n- p = a² + b² ⟺ p = (a+bi)(a-bi) ⟺ p *splits* in ℤ[i]\n- A prime p splits in ℤ[i] ⟺ -1 is a quadratic residue mod p ⟺ p = 2 or p ≡ 1 (mod 4)\n\nThis connects the theorem to quadratic reciprocity and algebraic number theory.",
+    "mathContext": "In ℤ[i], the norm is N(a+bi) = a² + b². Primes in ℤ[i] are: (1+i), primes p ≡ 3 (mod 4), and π,π̄ for primes p ≡ 1 (mod 4).",
     "significance": "key",
     "relatedConcepts": [
       "Gaussian integers",
