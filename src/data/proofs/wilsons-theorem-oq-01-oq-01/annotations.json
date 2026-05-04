@@ -62,7 +62,7 @@
   {
     "id": "ann-wieferich-analogy",
     "proofId": "wilsons-theorem-oq-01-oq-01",
-    "range": { "startLine": 107, "endLine": 128 },
+    "range": { "startLine": 102, "endLine": 123 },
     "type": "insight",
     "title": "Wieferich Primes: The Parallel Open Problem",
     "content": "The file closes with a definition and two theorems for Wieferich primes, making the structural analogy with Wilson primes explicit and formal. A Wieferich prime satisfies p² | 2^(p-1) - 1 — the same second-power strengthening pattern, applied to Fermat's little theorem (2^(p-1) ≡ 1 mod p) instead of Wilson's theorem. The only known Wieferich primes are 1093 (Meissner 1913) and 3511 (Beeger 1922). Both `wieferich_1093` and `wieferich_3511` are proved by `native_decide` (unlike 563 for Wilson, which required an axiom) because 2^1092 mod 1093² is a manageable computation. The structural parallel: (1) definition as p² | X where X ≡ 0 (mod p) by a classical theorem, (2) finitely many known examples, (3) ln ln N expected count, (4) open conjecture of infinitude, (5) connection to deeper number theory (Wieferich primes ↔ ABC conjecture and Fermat's Last Theorem).",

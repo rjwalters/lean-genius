@@ -95,24 +95,27 @@
     {
       "id": "wieferich-analogy",
       "title": "Wieferich Primes: Structural Analogy",
-      "startLine": 107,
-      "endLine": 128,
+      "startLine": 102,
+      "endLine": 123,
       "summary": "IsWieferichPrime definition (p² | 2^(p-1) - 1) and verification of 1093 and 3511 by native_decide. Formalizes the parallel open problem structure: two known examples, ln ln N expected count, no proof of infinitude.",
       "mathContext": "Wieferich: $p^2 \\mid 2^{p-1}-1$ (second-power strengthening of Fermat). Known: $\\{1093, 3511\\}$. Both verifiable by native_decide (unlike 563 for Wilson). Expected count to $N$: $\\ln\\ln N$. Connection: Wieferich primes obstruct the first case of Fermat's Last Theorem."
     }
   ],
   "crossReferences": [
     {
-      "id": "wilsons-theorem",
-      "relationship": "parent — establishes Wilson's theorem (p-1)! ≡ -1 (mod p) for primes p"
+      "targetId": "wilsons-theorem",
+      "relationship": "extends",
+      "description": "Builds on Wilson's theorem (p-1)! ≡ -1 (mod p); Wilson primes are the second-power strengthening"
     },
     {
-      "id": "wilsons-theorem-oq-01",
-      "relationship": "parent — defines IsWilsonPrime, proves 5 and 13 are Wilson primes, provides structural tools"
+      "targetId": "wilsons-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent file defines IsWilsonPrime, proves 5 and 13 are Wilson primes, and provides structural tools used here"
     },
     {
-      "id": "prime-number-theorem-oq-01",
-      "relationship": "related — prime distribution; density arguments for Wilson prime counts"
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Prime distribution background; the density heuristic for Wilson primes relies on the divergence of Σ 1/p (Mertens' theorem)"
     }
   ]
 }
