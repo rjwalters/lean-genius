@@ -23,9 +23,9 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "assumptions": "1 axiom: erdos_1201_half_case (the \u03b5=1/2 partial result, proved by Erd\u0151s). The main conjecture ErdosProblem1201 is open. Includes: Bertrand window bounds, Sylvester-Schur (prime window sizes and special cases), factorial divisibility, \u03b5/k-monotonicity, individual threshold, density-monotonicity, smooth-window duality, rough-term characterization, conditional reduction to prime gaps, formal reduction ErdosProblem1201 \u2190 smooth-decay conjecture, lowerDensity with exact complement duality, full equivalence ErdosProblem1201Strong \u2194 smooth-decay (session 17, 0 sorries).",
-    "lineCount": 1608,
+    "lineCount": 1615,
     "mathlib_version": "4.26.0",
-    "theoremCount": 99
+    "theoremCount": 100
   },
   "overview": {
     "historicalContext": "Erd\u0151s posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) \u2192 \u221e as n \u2192 \u221e, but its distribution among products of consecutive integers is much subtler. The \u03b5=1/2 case was established by Erd\u0151s himself: there exist arbitrarily long windows of consecutive integers containing a prime exceeding \u221an. This connects to the Sylvester-Schur theorem (1892), which implies P(n,k) \u2265 n+k when k < n \u2014 a stronger statement than Bertrand's postulate. The full conjecture \u2014 that large prime factors dominate for almost all starting points n, for any threshold n^(1-\u03b5) \u2014 remains open and is believed to require new tools from analytic number theory, likely Dickman's \u03c1-function for smooth number counts in intervals.",
@@ -165,9 +165,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1201",
-    "lineCount": 1608,
+    "lineCount": 1615,
     "axiomCount": 1,
-    "theoremCount": 99,
+    "theoremCount": 100,
     "definitionCount": 7,
     "path": "Proofs/Erdos1201Problem.lean",
     "sorries": 0
