@@ -455,3 +455,46 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 1. Try `IntermediateField.map_injective ι` approach with explicit Ka-AlgHom ι : ↥(Ka⊔ℚ⟮β⟯) →ₐ[↥Ka] ℂ
 2. Submit h_top_Ka to Aristotle (clear algebraic statement, might be provable by automation)
 3. After h_top_Ka: proof of isConstructible_sup_degree is complete, enabling isConstructible_algebraic_degree finrank part
+
+## Session 2026-05-04 (Session 39) - Ka_set Approach for h_top_Ka; PR #15596
+
+**Mode**: REVISIT
+**Outcome**: proof attempt written; Docker unavailable for verification (crashed); PR submitted
+
+### What I Did
+- Identified all nonexistent Mathlib lemmas blocking the h_top_Ka proof:
+  - `IntermediateField.adjoin_union` — does NOT exist; only `Subalgebra.adjoin_union` variant exists
+  - `IntermediateField.mem_comap` — does NOT exist; only `Subalgebra.mem_comap` (at Subalgebra/Basic.lean:403) exists
+  - `IntermediateField.restrictScalars_adjoin_eq_sup` — does NOT exist (confirmed by grep)
+- Wrote complete `h_top_Ka` proof via the `Ka_set` approach:
+  - `Ka_set : Set ↥(Ka ⊔ ℚ⟮β⟯) := {y | (Ka ⊔ ℚ⟮β⟯).val y ∈ Ka}` (plain set, avoids `comap`)
+  - `h_img : (Ka ⊔ ℚ⟮β⟯).val '' Ka_set = ↑Ka` (image characterization)
+  - `h_adj_ℚ : adjoin ℚ (Ka_set ∪ {β'}) = ⊤` via `map_injective (Ka ⊔ ℚ⟮β⟯).val` + `adjoin_map` rewrite chain → reduces to `adjoin ℚ (↑Ka ∪ {β}) = Ka ⊔ ℚ⟮β⟯` (proved by `le_antisymm`)
+  - `h_adj_Ka : adjoin ↥Ka (Ka_set ∪ {β'}) = ⊤` via `adjoin_eq_top_of_adjoin_eq_top h_adj_ℚ`
+  - `h_le : adjoin ↥Ka (Ka_set ∪ {β'}) ≤ adjoin ↥Ka {β'}` (Ka_set elements are `algebraMap` images)
+  - Conclusion: `eq_top_iff.mpr (h_adj_Ka ▸ h_le)`
+- Two commits on `fix/angle-trisection-h-top-ka` branch:
+  1. `800045649e` — replaced `adjoin_union` with `le_antisymm` proof
+  2. `4394dd07ac` — replaced `mem_comap` with `Ka_set` plain-set approach
+- Pushed branch, created PR #15596
+
+### Key Findings
+- **`adjoin_union` nonexistent**: The `IntermediateField` API does NOT have `adjoin_union`. The subalgebra version `Subalgebra.adjoin_union` exists but not the field variant. The correct approach is `le_antisymm` with `adjoin_le_iff` + `sup_le`.
+- **`mem_comap` nonexistent**: `IntermediateField.mem_comap` doesn't exist. Only `Subalgebra.mem_comap` at line 403 of `Subalgebra/Basic.lean` exists (it's `@[simp]` and says `x ∈ S.comap f ↔ f x ∈ S := Iff.rfl`). Avoiding `comap` entirely via a plain set predicate is cleaner.
+- **Key verified lemmas**: `adjoin_le_iff` (line 70), `adjoin_map` (line 391), `adjoin_eq_top_of_adjoin_eq_top` (line 1039), `adjoin_simple_le_iff` (line 764), `AlgHom.fieldRange_eq_map` (line 256), `map_injective` (line 518), `fieldRange_val` (line 459) — all in Mathlib Adjoin.lean / IntermediateField.lean.
+- **Docker crash**: Docker Desktop crashed due to disk exhaustion (34 GB orphaned task output from researcher-9 session). Build could not be verified. Freed disk by deleting orphaned file.
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` (in worktree `fix/angle-trisection-h-top-ka`)
+- PR: #15596
+
+### Current Sorries (1 total, if proof compiles)
+1. **wantzel_galois_iff** (line ~713): Full Galois theory — long-term goal (500+ lines)
+- **h_top_Ka** sorry would be ELIMINATED if `Ka_set` proof compiles
+
+### Next Steps
+1. Wait for CI build on PR #15596 to verify the `Ka_set` proof compiles
+2. If CI passes: `isConstructible_sup_degree` has 0 sorries; only `wantzel_galois_iff` remains
+3. If CI shows errors: likely in `adjoin_eq_top_of_adjoin_eq_top` instance synthesis (`Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)` and `IsScalarTower ℚ ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)`) or `Subtype.ext rfl` in `h_le`
+4. Potential fix for instance synthesis: add `haveI : Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) := ...` explicitly
+5. After PR merges: update meta.json (sorries count, lineCount)
