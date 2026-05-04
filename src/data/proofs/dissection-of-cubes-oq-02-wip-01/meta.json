@@ -51,7 +51,8 @@
     "assumptions": "0 axioms, 0 sorries. The proof uses Classical.choice (standard Lean axiom) via Module.Free.chooseBasis to construct a separating ℚ-linear functional; this is not a mathematical axiom but a foundational logic axiom present in all Lean proofs. The irrationality of arccos(1/3)/π is inherited from tetrahedron_angle_irrational_pi in the parent file (DissectionOfCubesOQ02.lean), which is fully proved via Chebyshev recurrence.",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "parentProofId": "dissection-of-cubes-oq-02"
   },
   "overview": {
     "historicalContext": "Max Dehn (1900) defined his invariant as D(P) = Σ_e ℓ(e) ⊗ [θ(e)] ∈ ℝ ⊗_ℤ (ℝ/πℤ), where the sum is over all edges e of polyhedron P, ℓ(e) is the edge length, and [θ(e)] is the dihedral angle mod πℤ. The key property is that scissors-congruent polyhedra have equal Dehn invariants. The cube has all dihedral angles π/2 = (1/2)π ∈ πℚ, so its invariant is zero. The regular tetrahedron has dihedral angle arccos(1/3) ∉ πℚ (by Niven's theorem), giving a nonzero invariant. This formalization replaces ℤ with ℚ as the scalar ring — equivalent for polyhedra with rational edge lengths — enabling use of ℚ-vector space structure (in particular, existence of separating functionals) to prove the tetrahedron's invariant is nonzero.",
@@ -62,7 +63,8 @@
       "The correct algebraic home for the Dehn invariant is ℝ ⊗_ℤ (ℝ/πℤ), but working over ℚ (ℝ ⊗_ℚ (ℝ/πℚ)) is equivalent for polyhedra with rational edge lengths and gives access to ℚ-vector space theory",
       "The hardest step is proving 1 ⊗ m ≠ 0 for m ≠ 0 in ℝ ⊗_ℚ M — this requires the axiom of choice (to find a separating functional) and reflects the faithfully flat extension ℚ → ℝ",
       "The angle class [θ] = 0 in ℝ/πℚ iff θ is a rational multiple of π — precisely the distinction between cube (π/2 = (1/2)π) and tetrahedron (arccos(1/3)/π irrational by Niven)",
-      "Using Mathlib's TensorProduct.mk and Submodule.mkQ enables clean proof of both cube_dehn_zero (via simp after rewriting the class to 0) and tetra_dehn_ne_zero (via smul_ne_zero and one_tmul_ne_zero)"
+      "Using Mathlib's TensorProduct.mk and Submodule.mkQ enables clean proof of both cube_dehn_zero (via simp after rewriting the class to 0) and tetra_dehn_ne_zero (via smul_ne_zero and one_tmul_ne_zero)",
+      "The use of Module.Free.chooseBasis to extract a separating ℚ-linear functional is an instance of a general principle: over a field (or PID), any nonzero element of a free module can be distinguished from zero by a coordinate functional — this is precisely the content of faithful flatness of ℚ → ℝ as an extension of commutative rings"
     ],
     "prerequisites": [
       "Tensor products over commutative rings (ℚ-bilinear maps)",
@@ -72,6 +74,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "module-preamble",
+      "title": "Module Setup and Imports",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Imports Mathlib and the parent proof DissectionOfCubesOQ02 (which contains tetrahedron_angle_irrational_pi via Chebyshev recurrence). Opens the Real and DissectionOfCubesOQ02 namespaces. The module docstring states the OQ-02-WIP-01 goal: formalize the proper algebraic tensor product Dehn invariant in ℝ ⊗_ℚ (ℝ/πℚ), completing what the parent entry proves with a simplified boolean predicate.",
+      "mathContext": "Key import: `Proofs.DissectionOfCubesOQ02` provides `tetrahedron_angle_irrational_pi : ¬∃ q : ℚ, arccos (1/3) = q * π`, the Niven-type irrationality result proved via Chebyshev polynomial recurrence in the parent file. This is the sole dependency bridging analysis (irrationality) to algebra (tensor products)."
+    },
     {
       "id": "tensor-setup",
       "title": "Tensor Product Setup",
@@ -118,12 +128,12 @@
     {
       "relationship": "extends",
       "description": "Upgrades the simplified boolean Dehn invariant to the proper tensor product setting. Imports and reuses tetrahedron_angle_irrational_pi from this parent.",
-      "targetId": "dissection-of-cubes-oq-02"
+      "proofId": "dissection-of-cubes-oq-02"
     },
     {
       "relationship": "related",
       "description": "The Hilbert 3rd problem main entry — this provides the algebraic invariant that separates cube from tetrahedron.",
-      "targetId": "hilbert-3"
+      "proofId": "hilbert-3"
     }
   ],
   "leanFile": {
