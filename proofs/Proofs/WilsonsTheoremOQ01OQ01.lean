@@ -57,7 +57,7 @@ theorem thirteen_is_wilson_prime : IsWilsonPrime 13 := by
     Crandall, Dilcher, and Pomerance (1997) as part of their extended search
     to 5 × 10⁸.
 
-    Lean 4 native_decide evaluates 562! mod 563² = 316969 via native code. -/
+    Lean 4 native_decide evaluates 562! mod 563² = 316968 (≡ -1 mod 563²) via native code. -/
 theorem fiveHundredSixtyThree_is_wilson_prime : IsWilsonPrime 563 := by
   refine ⟨by norm_num, ?_⟩
   native_decide
