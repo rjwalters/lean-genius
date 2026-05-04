@@ -122,9 +122,14 @@ In fact g(n) = o(n), which follows from density Hales-Jewett.
 -/
 theorem erdos_belief_false : ¬ErdosBelief := by
   intro ⟨c, hc, hBound⟩
-  -- The density Hales-Jewett theorem implies g(n) = o(n)
-  -- This contradicts the linear lower bound
-  sorry
+  obtain ⟨N, hN⟩ := furedi_upper_bound (c / 2) (by linarith)
+  let n := max N 1
+  have hn_ge1 : n ≥ 1 := le_max_right N 1
+  have hn_geN : n ≥ N := le_max_left N 1
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero (by omega)
+  have hlb : c * (n : ℝ) ≤ (g n : ℝ) := hBound n hn_ge1
+  have hub : (g n : ℝ) < c / 2 * (n : ℝ) := hN n hn_geN
+  nlinarith
 
 /-
 ## Part IV: The Trivial Lower Bound
