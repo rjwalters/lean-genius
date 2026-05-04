@@ -16,7 +16,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 17,
-    "assumptions": "17 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) regulator positivity. Previously 21 axioms; reductions: BSD_CM_rank_zero subsumed by Kolyvagin general result, gross_zagier_formula_detail dead code, one_not_congruent proved as theorem (BSD_rank_zero_axiom + curveMinusX_L_nonzero with curveMinusX = congruentNumberCurve 1 by coefficient equality + EllipticCurveQ.ext), and most recently greenberg_stevens converted from axiom to theorem since both conjuncts (q_E > 0, L_invariant ≠ 0) are already encoded as ExceptionalZero structure fields hq_pos and hL_ne_zero. 0 sorries. Also: 3 definitions vacuously return Prop := True as stubs pending rigorous formalization: p_adic_L_function (line 5626), HeegnerPointExists (line 5642), p_adic_height_pairing (line 5676). Additionally, sha_is_square := True appears in 4 data record fields (lines 4484, 4495, 4506, 4518). Note: ExceptionalZero structure fields (hq_pos, hL_ne_zero) constitute structural assumptions; the elimination removes a duplicate axiom but the structural data remains.",
+    "assumptions": "17 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) regulator positivity. Previously 21 axioms; reductions: BSD_CM_rank_zero subsumed by Kolyvagin general result, gross_zagier_formula_detail dead code, one_not_congruent proved as theorem (BSD_rank_zero_axiom + curveMinusX_L_nonzero with curveMinusX = congruentNumberCurve 1 by coefficient equality + EllipticCurveQ.ext), and most recently greenberg_stevens converted from axiom to theorem since both conjuncts (q_E > 0, L_invariant \u2260 0) are already encoded as ExceptionalZero structure fields hq_pos and hL_ne_zero. 0 sorries. Also: 3 definitions vacuously return Prop := True as stubs pending rigorous formalization: p_adic_L_function (line 5626), HeegnerPointExists (line 5642), p_adic_height_pairing (line 5676). Additionally, sha_is_square := True appears in 4 data record fields (lines 4484, 4495, 4506, 4518). Note: ExceptionalZero structure fields (hq_pos, hL_ne_zero) constitute structural assumptions; the elimination removes a duplicate axiom but the structural data remains.",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
@@ -73,7 +73,7 @@
       "Langlands program connection via automorphic L-functions",
       "Goldfeld conjecture and rank distribution framework",
       "BSD over totally real fields: TotallyRealBSD structure, Yuan-Zhang-Zhang generalization, Jacquet-Langlands correspondence",
-      "Nekovář's Selmer complexes: SelmerComplex with Euler characteristic, PadicHeightPairing, Tamagawa Number Conjecture hierarchy",
+      "Nekov\u00e1\u0159's Selmer complexes: SelmerComplex with Euler characteristic, PadicHeightPairing, Tamagawa Number Conjecture hierarchy",
       "Anticyclotomic Iwasawa theory: AnticyclotomicData, Bertolini-Darmon rank 0, Cornut-Vatsal non-vanishing, Castella IMC, BigHeegnerPoint",
       "BSD algorithms: DokchitserAlgorithm, TateAlgorithm, CremonaEntry with 3M+ curves, Heegner point computation, LMFDB"
     ],
@@ -104,7 +104,7 @@
     "prerequisites": [
       "Algebraic number theory (elliptic curves, Mordell-Weil theorem, heights)",
       "Analytic number theory ($L$-functions, Euler products, analytic continuation)",
-      "Algebraic geometry (Weierstrass models, group law, Néron models)",
+      "Algebraic geometry (Weierstrass models, group law, N\u00e9ron models)",
       "Galois cohomology (Selmer groups, Shafarevich-Tate group, descent)"
     ]
   },
@@ -122,12 +122,12 @@
     {
       "targetId": "p-vs-np",
       "relationship": "related",
-      "description": "Fellow Millennium Prize Problem — both remain open and carry a $1,000,000 prize from the Clay Mathematics Institute. While P vs NP concerns computational complexity, BSD concerns the arithmetic of elliptic curves — two very different mathematical domains united by the Clay Prize's recognition of their fundamental importance"
+      "description": "Fellow Millennium Prize Problem \u2014 both remain open and carry a $1,000,000 prize from the Clay Mathematics Institute. While P vs NP concerns computational complexity, BSD concerns the arithmetic of elliptic curves \u2014 two very different mathematical domains united by the Clay Prize's recognition of their fundamental importance"
     },
     {
       "targetId": "continuum-hypothesis",
       "relationship": "related",
-      "description": "Both are famous mathematical problems whose resolution has required fundamentally new ideas. CH was proved independent of ZFC by Gödel (consistency, 1940) and Cohen (independence, 1963), while BSD remains open with only partial results (ranks 0 and 1 proved by Kolyvagin and Gross-Zagier)"
+      "description": "Both are famous mathematical problems whose resolution has required fundamentally new ideas. CH was proved independent of ZFC by G\u00f6del (consistency, 1940) and Cohen (independence, 1963), while BSD remains open with only partial results (ranks 0 and 1 proved by Kolyvagin and Gross-Zagier)"
     },
     {
       "targetId": "e-transcendental",
@@ -137,12 +137,12 @@
     {
       "targetId": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Wiles's proof of FLT (1995) established the modularity of semistable elliptic curves over $\\mathbb{Q}$ — the same modularity that is essential for BSD. The Taniyama-Shimura-Weil conjecture (now the modularity theorem, proved in full by Breuil-Conrad-Diamond-Taylor 2001) ensures that the L-function $L(E,s)$ in BSD has the analytic properties needed for the conjecture to make sense. FLT and BSD are thus siblings in the modularity framework"
+      "description": "Wiles's proof of FLT (1995) established the modularity of semistable elliptic curves over $\\mathbb{Q}$ \u2014 the same modularity that is essential for BSD. The Taniyama-Shimura-Weil conjecture (now the modularity theorem, proved in full by Breuil-Conrad-Diamond-Taylor 2001) ensures that the L-function $L(E,s)$ in BSD has the analytic properties needed for the conjecture to make sense. FLT and BSD are thus siblings in the modularity framework"
     },
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "foundational",
-      "description": "Quadratic reciprocity is the simplest case of Artin reciprocity, which in turn is the abelian case of the Langlands program. The L-function $L(E,s)$ in BSD is a degree-2 automorphic L-function, and the Langlands program predicts deep connections between such L-functions and automorphic forms — generalizing the quadratic reciprocity law from $\\text{GL}_1$ to $\\text{GL}_2$"
+      "description": "Quadratic reciprocity is the simplest case of Artin reciprocity, which in turn is the abelian case of the Langlands program. The L-function $L(E,s)$ in BSD is a degree-2 automorphic L-function, and the Langlands program predicts deep connections between such L-functions and automorphic forms \u2014 generalizing the quadratic reciprocity law from $\\text{GL}_1$ to $\\text{GL}_2$"
     },
     {
       "targetId": "hodge-conjecture",
@@ -152,7 +152,7 @@
     {
       "targetId": "poincare-conjecture",
       "relationship": "related",
-      "description": "Fellow Millennium Prize Problem, uniquely among the seven to have been solved (by Perelman, 2003). The Poincaré conjecture (every simply connected closed 3-manifold is homeomorphic to $S^3$) was proved using Ricci flow, a geometric analysis technique — illustrating how the deepest problems in different areas of mathematics require fundamentally different approaches"
+      "description": "Fellow Millennium Prize Problem, uniquely among the seven to have been solved (by Perelman, 2003). The Poincar\u00e9 conjecture (every simply connected closed 3-manifold is homeomorphic to $S^3$) was proved using Ricci flow, a geometric analysis technique \u2014 illustrating how the deepest problems in different areas of mathematics require fundamentally different approaches"
     },
     {
       "targetId": "navier-stokes",
@@ -167,12 +167,12 @@
     {
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The Prime Number Theorem is the prototype for analytic number theory results about the distribution of primes — the same Euler product and L-function machinery that underpins PNT (via the Riemann zeta function $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$) generalizes to the elliptic curve L-function $L(E,s) = \\prod_p L_p(E,s)^{-1}$ at the heart of BSD"
+      "description": "The Prime Number Theorem is the prototype for analytic number theory results about the distribution of primes \u2014 the same Euler product and L-function machinery that underpins PNT (via the Riemann zeta function $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$) generalizes to the elliptic curve L-function $L(E,s) = \\prod_p L_p(E,s)^{-1}$ at the heart of BSD"
     },
     {
       "targetId": "dirichlets-theorem",
       "relationship": "foundational",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions introduced Dirichlet L-functions $L(s, \\chi)$ — the first generalization of the Riemann zeta function to 'twisted' L-functions. The elliptic curve L-function $L(E,s)$ in BSD is a further generalization to degree-2 L-functions, and the Langlands program unifies both as automorphic L-functions"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions introduced Dirichlet L-functions $L(s, \\chi)$ \u2014 the first generalization of the Riemann zeta function to 'twisted' L-functions. The elliptic curve L-function $L(E,s)$ in BSD is a further generalization to degree-2 L-functions, and the Langlands program unifies both as automorphic L-functions"
     }
   ],
   "sections": [
@@ -227,7 +227,7 @@
       "startLine": 425,
       "endLine": 558,
       "summary": "Formal statement of weak BSD (`algebraicRank E = analyticRank E`) and strong BSD (leading coefficient formula with $\\Omega, R, |\\text{III}|, c_p, |E(\\mathbb{Q})_{\\text{tors}}|$). `BSDConstant` defined from five axiomatized arithmetic invariants.",
-      "mathContext": "Weak: $\\text{rank}\\,E(\\mathbb{Q}) = \\text{ord}_{s=1} L(E,s)$. Strong: $\\lim_{s \\to 1} L(E,s)/(s-1)^r = \\Omega_E \\cdot R_E \\cdot |\\text{Ш}| \\cdot \\prod c_p / |E(\\mathbb{Q})_{\\text{tors}}|^2$."
+      "mathContext": "Weak: $\\text{rank}\\,E(\\mathbb{Q}) = \\text{ord}_{s=1} L(E,s)$. Strong: $\\lim_{s \\to 1} L(E,s)/(s-1)^r = \\Omega_E \\cdot R_E \\cdot |\\text{\u0428}| \\cdot \\prod c_p / |E(\\mathbb{Q})_{\\text{tors}}|^2$."
     },
     {
       "id": "proven-cases",
@@ -242,7 +242,7 @@
       "startLine": 630,
       "endLine": 669,
       "summary": "`HeegnerPoint` structure with discriminant field. `NeronTateHeight` axiomatized as bilinear form. `gross_zagier_formula` relates $L'(E,1)$ to height of Heegner point (placeholder proof).",
-      "mathContext": "Gross-Zagier: $L'(E, 1) = c \\cdot \\hat{h}(P_K)$ where $P_K$ is a Heegner point and $\\hat{h}$ is the Néron-Tate height."
+      "mathContext": "Gross-Zagier: $L'(E, 1) = c \\cdot \\hat{h}(P_K)$ where $P_K$ is a Heegner point and $\\hat{h}$ is the N\u00e9ron-Tate height."
     },
     {
       "id": "computational-evidence",
@@ -284,7 +284,7 @@
       "title": "Part XIV: Height Functions and the Regulator",
       "startLine": 1576,
       "endLine": 1653,
-      "summary": "`CanonicalHeight` structure with Néron-Tate height as limit of naive heights. `RegulatorComputation` for rank-1 and rank-2 curves. Height decomposition into local heights."
+      "summary": "`CanonicalHeight` structure with N\u00e9ron-Tate height as limit of naive heights. `RegulatorComputation` for rank-1 and rank-2 curves. Height decomposition into local heights."
     },
     {
       "id": "local-factors",
@@ -330,7 +330,7 @@
     },
     {
       "id": "bsd-37a",
-      "title": "Part XXII: BSD Verification — Rank-1 Curve 37a",
+      "title": "Part XXII: BSD Verification \u2014 Rank-1 Curve 37a",
       "startLine": 2186,
       "endLine": 2271,
       "summary": "Full BSD verification for cremona 37a: rank 1, generator $(0,0)$, root number $-1$, regulator $\\approx 0.051$. Gross-Zagier-Kolyvagin approach with axiomatized rank and root number."
@@ -344,7 +344,7 @@
     },
     {
       "id": "bsd-389a",
-      "title": "Part XXV: BSD Verification — Rank-2 Curve 389a",
+      "title": "Part XXV: BSD Verification \u2014 Rank-2 Curve 389a",
       "startLine": 2290,
       "endLine": 2423,
       "summary": "First elliptic curve of rank 2 (conductor 389). Axiomatized rank 2, two independent generators, $2 \\times 2$ height matrix, regulator as Gram determinant."
@@ -393,7 +393,7 @@
     },
     {
       "id": "rank-records",
-      "title": "Part XXXII: Ranks of Elliptic Curves — Records",
+      "title": "Part XXXII: Ranks of Elliptic Curves \u2014 Records",
       "startLine": 3219,
       "endLine": 3273,
       "summary": "Elkies' rank $\\geq 28$ record. Mestre's construction for rank $\\leq 11$. Rank distribution statistics."
@@ -414,7 +414,7 @@
     },
     {
       "id": "euler-system-tech",
-      "title": "Part XXXVI: Euler Systems — The Proof Technology",
+      "title": "Part XXXVI: Euler Systems \u2014 The Proof Technology",
       "startLine": 3576,
       "endLine": 3695,
       "summary": "Abstract `EulerSystemElement` structure with norm compatibility. Kolyvagin derivative operators. Bound on Selmer group from Euler system."
@@ -459,7 +459,7 @@
       "title": "Parts XLIII-XLIV: Height Pairing and BSD Constant Analysis",
       "startLine": 4662,
       "endLine": 5139,
-      "summary": "Néron-Tate height pairing bilinearity and positivity. Regulator bounds. BSD constant analysis with height-conductor inequalities. Rank-2 Gram matrix determinant."
+      "summary": "N\u00e9ron-Tate height pairing bilinearity and positivity. Regulator bounds. BSD constant analysis with height-conductor inequalities. Rank-2 Gram matrix determinant."
     },
     {
       "id": "j-invariant-cm",
@@ -501,7 +501,7 @@
       "title": "Parts LII-LIII: Iwasawa Theory and Kolyvagin's Euler System",
       "startLine": 5783,
       "endLine": 5914,
-      "summary": "Iwasawa main conjecture for elliptic curves (Kato, Skinner-Urban). Good ordinary reduction. p-adic L-function interpolation. Kolyvagin's Euler system for BSD rank ≤ 1: norm-compatible classes, rank bound, Sha finiteness."
+      "summary": "Iwasawa main conjecture for elliptic curves (Kato, Skinner-Urban). Good ordinary reduction. p-adic L-function interpolation. Kolyvagin's Euler system for BSD rank \u2264 1: norm-compatible classes, rank bound, Sha finiteness."
     },
     {
       "id": "padic-recent",
@@ -515,7 +515,7 @@
       "title": "Parts LVI-LVII: Modularity and Arithmetic Statistics",
       "startLine": 6054,
       "endLine": 6506,
-      "summary": "Modularity theorem (Wiles-BCDT): every E/Q is modular. Manin constant, functional equation, conductor bounds, Fermat connection. Arithmetic statistics: Bhargava-Shankar avg|Sel_n| = σ(n), Goldfeld conjecture, Katz-Sarnak symmetry, BSD verified for ≥66-87% of curves."
+      "summary": "Modularity theorem (Wiles-BCDT): every E/Q is modular. Manin constant, functional equation, conductor bounds, Fermat connection. Arithmetic statistics: Bhargava-Shankar avg|Sel_n| = \u03c3(n), Goldfeld conjecture, Katz-Sarnak symmetry, BSD verified for \u226566-87% of curves."
     },
     {
       "id": "padic-bsd-euler",
@@ -529,56 +529,56 @@
       "title": "Part LIX: Euler Systems and Kolyvagin's Theorem",
       "startLine": 6571,
       "endLine": 6636,
-      "summary": "Euler systems (Kolyvagin-Rubin-Kato): most powerful tool for BSD. Norm compatibility, Kolyvagin's theorem for rank ≤ 1, the rank 2 barrier. Gross-Zagier formula with three ingredients. Beilinson-Flach elements (Kings-Loeffler-Zerbes 2017)."
+      "summary": "Euler systems (Kolyvagin-Rubin-Kato): most powerful tool for BSD. Norm compatibility, Kolyvagin's theorem for rank \u2264 1, the rank 2 barrier. Gross-Zagier formula with three ingredients. Beilinson-Flach elements (Kings-Loeffler-Zerbes 2017)."
     },
     {
       "id": "sha-visibility",
       "title": "Part LX: Congruences and Visibility of Sha",
       "startLine": 6642,
       "endLine": 6701,
-      "summary": "Sha(E/K) as locally trivial torsors. Visibility (Cremona-Mazur): rational points on other abelian varieties create Sha elements via congruences. Manin constant: Cesnavičius (2022) proved c_E = 1 for semistable curves. BSD formula components."
+      "summary": "Sha(E/K) as locally trivial torsors. Visibility (Cremona-Mazur): rational points on other abelian varieties create Sha elements via congruences. Manin constant: Cesnavi\u010dius (2022) proved c_E = 1 for semistable curves. BSD formula components."
     },
     {
       "id": "congruent-bsd",
       "title": "Part LXI: Congruent Number Problem and BSD",
       "startLine": 6702,
       "endLine": 6747,
-      "summary": "Congruent number problem (>1000 years old) equivalent to BSD for E_n: y² = x³ - n²x. Tunnell's algorithm (polynomial time, conditional on BSD). Examples: n = 5,6,7 congruent; n = 1,2,3 not congruent. CM by ℤ[i]. Pythagorean triple verification."
+      "summary": "Congruent number problem (>1000 years old) equivalent to BSD for E_n: y\u00b2 = x\u00b3 - n\u00b2x. Tunnell's algorithm (polynomial time, conditional on BSD). Examples: n = 5,6,7 congruent; n = 1,2,3 not congruent. CM by \u2124[i]. Pythagorean triple verification."
     },
     {
       "id": "iwasawa-mc",
       "title": "Part LXII: Iwasawa Main Conjecture and BSD",
       "startLine": 6748,
       "endLine": 6791,
-      "summary": "Iwasawa main conjecture char_Λ(Sel(E/ℚ_∞)^∨) = (L_p(E)). Kato (2004): analytic divides algebraic. Skinner-Urban (2014): algebraic divides analytic. Wan (2014): supersingular case. μ = 0 conjecture proved by Kato."
+      "summary": "Iwasawa main conjecture char_\u039b(Sel(E/\u211a_\u221e)^\u2228) = (L_p(E)). Kato (2004): analytic divides algebraic. Skinner-Urban (2014): algebraic divides analytic. Wan (2014): supersingular case. \u03bc = 0 conjecture proved by Kato."
     },
     {
       "id": "function-field-bsd",
       "title": "Part LXIII: BSD over Function Fields",
       "startLine": 6792,
       "endLine": 6905,
-      "summary": "Function field BSD: L-function is a polynomial (trivial analytic continuation). FunctionFieldBSD structure. Tate (1966): proved for constant curves. Ulmer (2002): arbitrarily large rank over 𝔽_p(t). Artin-Tate conjecture as surface analogue. PPVW tension with number field behavior."
+      "summary": "Function field BSD: L-function is a polynomial (trivial analytic continuation). FunctionFieldBSD structure. Tate (1966): proved for constant curves. Ulmer (2002): arbitrarily large rank over \ud835\udd3d_p(t). Artin-Tate conjecture as surface analogue. PPVW tension with number field behavior."
     },
     {
       "id": "descent-2selmer",
       "title": "Part LXIV: Descent Theory and 2-Selmer Groups",
       "startLine": 6906,
       "endLine": 7041,
-      "summary": "Classical descent theory from Fermat. TwoDescentData structure with rank bounds. Bhargava-Shankar parametrization: avg |Sel_n| = σ(n) for n = 2,3,4,5 via binary quartic forms. 2-descent for congruent number curves. Average rank < 0.885."
+      "summary": "Classical descent theory from Fermat. TwoDescentData structure with rank bounds. Bhargava-Shankar parametrization: avg |Sel_n| = \u03c3(n) for n = 2,3,4,5 via binary quartic forms. 2-descent for congruent number curves. Average rank < 0.885."
     },
     {
       "id": "hida-theory",
       "title": "Part LXV: Hida Theory and p-adic Variation of BSD",
       "startLine": 7042,
       "endLine": 7155,
-      "summary": "HidaFamily structure: p-adic interpolation of modular forms across weights. Greenberg's μ = 0 conjecture for Hida families. Weight specialization to classical BSD. Two-variable main conjecture (Ochiai 2006). Emerton's completed cohomology."
+      "summary": "HidaFamily structure: p-adic interpolation of modular forms across weights. Greenberg's \u03bc = 0 conjecture for Hida families. Weight specialization to classical BSD. Two-variable main conjecture (Ochiai 2006). Emerton's completed cohomology."
     },
     {
       "id": "rmt-bsd",
       "title": "Part LXVI: BSD and Random Matrix Theory",
       "startLine": 7156,
       "endLine": 7312,
-      "summary": "RMTSymmetryType inductive (SO_even/SO_odd). Katz-Sarnak density conjecture: 50% rank 0, 50% rank 1, avg rank = 1/2. Keating-Snaith moment exponents k(k-1)/2. PPVW heuristic: ranks bounded over ℚ with transition at r₀ ≈ 21-22."
+      "summary": "RMTSymmetryType inductive (SO_even/SO_odd). Katz-Sarnak density conjecture: 50% rank 0, 50% rank 1, avg rank = 1/2. Keating-Snaith moment exponents k(k-1)/2. PPVW heuristic: ranks bounded over \u211a with transition at r\u2080 \u2248 21-22."
     },
     {
       "id": "totally-real-bsd",
@@ -589,32 +589,32 @@
     },
     {
       "id": "nekovar-selmer",
-      "title": "Part LXVIII: Nekovář's Selmer Complexes and p-adic Heights",
+      "title": "Part LXVIII: Nekov\u00e1\u0159's Selmer Complexes and p-adic Heights",
       "startLine": 7069,
       "endLine": 7177,
-      "summary": "SelmerComplex structure: derived-category formulation of BSD. BSD formula = Euler characteristic. PadicHeightPairing: non-degeneracy ↔ p-adic BSD. Tamagawa Number Conjecture (Bloch-Kato-Fontaine-Perrin-Riou) as ultimate BSD generalization. Hierarchy: class number formula ⊂ BSD ⊂ Bloch-Kato ⊂ equivariant TNC."
+      "summary": "SelmerComplex structure: derived-category formulation of BSD. BSD formula = Euler characteristic. PadicHeightPairing: non-degeneracy \u2194 p-adic BSD. Tamagawa Number Conjecture (Bloch-Kato-Fontaine-Perrin-Riou) as ultimate BSD generalization. Hierarchy: class number formula \u2282 BSD \u2282 Bloch-Kato \u2282 equivariant TNC."
     },
     {
       "id": "anticyclotomic",
       "title": "Part LXIX: Anticyclotomic Iwasawa Theory and Heegner Points",
       "startLine": 7178,
       "endLine": 7264,
-      "summary": "AnticyclotomicData structure. Bertolini-Darmon (2005): anticyclotomic p-adic L-functions, rank 0. Cornut-Vatsal non-vanishing: Heegner points non-torsion for most characters. Castella (2022): anticyclotomic IMC. BigHeegnerPoint structure (Howard 2004). ± decomposition of Selmer."
+      "summary": "AnticyclotomicData structure. Bertolini-Darmon (2005): anticyclotomic p-adic L-functions, rank 0. Cornut-Vatsal non-vanishing: Heegner points non-torsion for most characters. Castella (2022): anticyclotomic IMC. BigHeegnerPoint structure (Howard 2004). \u00b1 decomposition of Selmer."
     },
     {
       "id": "bsd-algorithms",
       "title": "Part LXX: BSD Algorithms and Effective Methods",
       "startLine": 7265,
       "endLine": 7422,
-      "summary": "DokchitserAlgorithm: L(E,s) to arbitrary precision in Õ(N^{1/2}). TateAlgorithm: Kodaira types and Tamagawa numbers (exact). CremonaEntry: database of 3+ million curves verified. LMFDB scope. Heegner point algorithm for rank 1 generators. 9 imaginary quadratic fields with class number 1."
+      "summary": "DokchitserAlgorithm: L(E,s) to arbitrary precision in \u00d5(N^{1/2}). TateAlgorithm: Kodaira types and Tamagawa numbers (exact). CremonaEntry: database of 3+ million curves verified. LMFDB scope. Heegner point algorithm for rank 1 generators. 9 imaginary quadratic fields with class number 1."
     }
   ],
   "conclusion": {
-    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 7894 lines across 70 parts with 248 theorems/lemmas, 143 definitions, 96 structures, and 102 axiom declarations (+ 3 structure-encoded assumptions = 105 total). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), function field BSD (Tate), descent theory, Hida families, random matrix theory, BSD over totally real fields (Yuan-Zhang-Zhang), Nekovář's Selmer complexes, anticyclotomic Iwasawa theory (Castella), and computational algorithms (Cremona database). The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
-    "implications": "A proof of BSD would have profound consequences across number theory and beyond.\n\n**1. Algorithmic rank computation**: BSD would yield an algorithm for computing the rank of any elliptic curve $E/\\mathbb{Q}$: compute $L(E,s)$ numerically near $s=1$ and determine the order of vanishing. Currently, descent methods give upper bounds but not exact ranks, and the rank problem is not known to be decidable.\n\n**2. Congruent number problem**: A positive integer $n$ is a congruent number (area of a right triangle with rational sides) iff the curve $E_n: y^2 = x^3 - n^2 x$ has positive rank. BSD combined with Tunnell's theorem (1983) would give a complete characterization: $n$ is congruent iff $n$ is not a counterexample to a simple parity condition on the number of representations by ternary quadratic forms. This would resolve a problem studied since antiquity.\n\n**3. Finiteness of Sha**: Strong BSD implies the Shafarevich-Tate group $\\text{III}(E/\\mathbb{Q})$ is always finite — a foundational question in arithmetic geometry. The order of $\\text{III}$ appears in the leading term of $L(E,s)$ at $s=1$.\n\n**4. Langlands program**: BSD is a key instance of the broader Langlands philosophy connecting automorphic forms to Galois representations. The modularity theorem (Wiles-BCDT) establishes that $L(E,s)$ equals the L-function of a modular form, confirming one direction of this connection. A proof of BSD would demonstrate that this link extends to controlling arithmetic invariants (rank, $\\text{III}$) purely from automorphic data.\n\n**5. Bloch-Kato generalization**: BSD is the motivic weight-1 case of the Bloch-Kato conjecture, which predicts $\\text{ord}_{s=n} L(M,s)$ for general motives $M$ and integer points $n$. Progress on BSD would illuminate the general conjecture.\n\n**6. Arithmetic statistics**: Bhargava-Shankar (2015) proved that the average rank of elliptic curves over $\\mathbb{Q}$ is bounded (at most $7/6$), and Bhargava-Skinner-Zhang (2014) showed a positive proportion satisfy BSD. These results, axiomatized in this formalization, represent the strongest statistical evidence for the conjecture.",
+    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 7894 lines across 70 parts with 248 theorems/lemmas, 143 definitions, 96 structures, and 102 axiom declarations (+ 3 structure-encoded assumptions = 105 total). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), function field BSD (Tate), descent theory, Hida families, random matrix theory, BSD over totally real fields (Yuan-Zhang-Zhang), Nekov\u00e1\u0159's Selmer complexes, anticyclotomic Iwasawa theory (Castella), and computational algorithms (Cremona database). The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
+    "implications": "A proof of BSD would have profound consequences across number theory and beyond.\n\n**1. Algorithmic rank computation**: BSD would yield an algorithm for computing the rank of any elliptic curve $E/\\mathbb{Q}$: compute $L(E,s)$ numerically near $s=1$ and determine the order of vanishing. Currently, descent methods give upper bounds but not exact ranks, and the rank problem is not known to be decidable.\n\n**2. Congruent number problem**: A positive integer $n$ is a congruent number (area of a right triangle with rational sides) iff the curve $E_n: y^2 = x^3 - n^2 x$ has positive rank. BSD combined with Tunnell's theorem (1983) would give a complete characterization: $n$ is congruent iff $n$ is not a counterexample to a simple parity condition on the number of representations by ternary quadratic forms. This would resolve a problem studied since antiquity.\n\n**3. Finiteness of Sha**: Strong BSD implies the Shafarevich-Tate group $\\text{III}(E/\\mathbb{Q})$ is always finite \u2014 a foundational question in arithmetic geometry. The order of $\\text{III}$ appears in the leading term of $L(E,s)$ at $s=1$.\n\n**4. Langlands program**: BSD is a key instance of the broader Langlands philosophy connecting automorphic forms to Galois representations. The modularity theorem (Wiles-BCDT) establishes that $L(E,s)$ equals the L-function of a modular form, confirming one direction of this connection. A proof of BSD would demonstrate that this link extends to controlling arithmetic invariants (rank, $\\text{III}$) purely from automorphic data.\n\n**5. Bloch-Kato generalization**: BSD is the motivic weight-1 case of the Bloch-Kato conjecture, which predicts $\\text{ord}_{s=n} L(M,s)$ for general motives $M$ and integer points $n$. Progress on BSD would illuminate the general conjecture.\n\n**6. Arithmetic statistics**: Bhargava-Shankar (2015) proved that the average rank of elliptic curves over $\\mathbb{Q}$ is bounded (at most $7/6$), and Bhargava-Skinner-Zhang (2014) showed a positive proportion satisfy BSD. These results, axiomatized in this formalization, represent the strongest statistical evidence for the conjecture.",
     "openQuestions": [
       "Is the Shafarevich-Tate group $\\text{III}(E/\\mathbb{Q})$ always finite? This is implied by strong BSD but remains wide open in general. Finiteness is known for rank $\\leq 1$ (Kolyvagin). Can Lean formalize the known finiteness results?",
-      "Can Kolyvagin's Euler system method be extended beyond rank 1? The Euler system approach proves BSD for $\\text{ord}_{s=1} L(E,s) \\leq 1$ but breaks down for higher ranks. Kato's Euler system and the Skinner-Urban approach offer partial extensions — can these be axiomatized?",
+      "Can Kolyvagin's Euler system method be extended beyond rank 1? The Euler system approach proves BSD for $\\text{ord}_{s=1} L(E,s) \\leq 1$ but breaks down for higher ranks. Kato's Euler system and the Skinner-Urban approach offer partial extensions \u2014 can these be axiomatized?",
       "Can the 21 axioms be reduced? The Mordell-Weil theorem is being formalized in Mathlib (`FintypeRatPoint`), and the Hasse bound may become a Mathlib theorem. Which axioms are closest to elimination via ongoing Mathlib development?",
       "Can p-adic BSD (Mazur-Tate-Teitelbaum) be formalized? The $p$-adic L-function $L_p(E,s)$ satisfies an analog of BSD where the $p$-adic regulator replaces the classical regulator. The exceptional zero phenomenon at supersingular primes connects to Iwasawa theory",
       "The average rank question: Bhargava-Shankar proved $\\text{avg}(\\text{rank}) \\leq 7/6$ and conjectured $\\text{avg}(\\text{rank}) = 1/2$. Can the Bhargava-Shankar counting methods (parametrizing 2-Selmer elements by binary quartic forms) be formalized?",
@@ -626,7 +626,7 @@
       "authors": "Birch, Bryan J.; Swinnerton-Dyer, H.P.F.",
       "title": "Notes on Elliptic Curves. II",
       "year": "1965",
-      "venue": "Journal für die reine und angewandte Mathematik 218, 79–108",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik 218, 79\u2013108",
       "note": "Original conjecture relating the rank of an elliptic curve to the order of vanishing of its L-function at s=1"
     },
     {
@@ -647,63 +647,63 @@
       "authors": "Gross, Benedict H.; Zagier, Don B.",
       "title": "Heegner points and derivatives of L-series",
       "year": "1986",
-      "venue": "Inventiones Mathematicae 84, 225–320",
-      "note": "The celebrated formula $L'(E,1) = c \\cdot \\hat{h}(P_K)$ relating the L-function derivative to the height of Heegner points — a cornerstone of the rank 1 case of BSD"
+      "venue": "Inventiones Mathematicae 84, 225\u2013320",
+      "note": "The celebrated formula $L'(E,1) = c \\cdot \\hat{h}(P_K)$ relating the L-function derivative to the height of Heegner points \u2014 a cornerstone of the rank 1 case of BSD"
     },
     {
       "authors": "Kolyvagin, Victor A.",
       "title": "Euler systems",
       "year": "1990",
-      "venue": "The Grothendieck Festschrift, vol. II, Birkhäuser, 435–483",
+      "venue": "The Grothendieck Festschrift, vol. II, Birkh\u00e4user, 435\u2013483",
       "note": "Introduced Euler systems to prove BSD for rank 0 and rank 1: if $L(E,1) \\neq 0$ then rank = 0 and III is finite; combined with Gross-Zagier, if $L'(E,1) \\neq 0$ then rank = 1"
     },
     {
       "authors": "Coates, John; Wiles, Andrew",
       "title": "On the conjecture of Birch and Swinnerton-Dyer",
       "year": "1977",
-      "venue": "Inventiones Mathematicae 39, 223–251",
+      "venue": "Inventiones Mathematicae 39, 223\u2013251",
       "note": "First major progress on BSD: proved the rank 0 case for elliptic curves with complex multiplication when $L(E,1) \\neq 0$"
     },
     {
       "authors": "Breuil, Christophe; Conrad, Brian; Diamond, Fred; Taylor, Richard",
       "title": "On the modularity of elliptic curves over Q",
       "year": "2001",
-      "venue": "Journal of the American Mathematical Society 14(4), 843–939",
+      "venue": "Journal of the American Mathematical Society 14(4), 843\u2013939",
       "note": "Completed the modularity theorem for all elliptic curves over $\\mathbb{Q}$, extending Wiles's semistable case. Essential for BSD: ensures $L(E,s)$ has analytic continuation"
     },
     {
       "authors": "Bhargava, Manjul; Shankar, Arul",
       "title": "Binary quartic forms having bounded invariants, and the boundedness of the average rank of elliptic curves",
       "year": "2015",
-      "venue": "Annals of Mathematics 181(1), 191–242",
+      "venue": "Annals of Mathematics 181(1), 191\u2013242",
       "note": "Proved the average rank of elliptic curves over $\\mathbb{Q}$ is at most 7/6, providing strong statistical evidence for BSD. Used parametrization of 2-Selmer elements by binary quartic forms"
     },
     {
       "authors": "Tunnell, Jerrold B.",
       "title": "A classical Diophantine problem and modular forms of weight 3/2",
       "year": "1983",
-      "venue": "Inventiones Mathematicae 72, 323–334",
+      "venue": "Inventiones Mathematicae 72, 323\u2013334",
       "note": "Reduced the ancient congruent number problem to counting representations by ternary quadratic forms, conditional on BSD. Forward direction unconditional via theta series and Shimura correspondence"
     },
     {
       "authors": "Wiles, Andrew",
       "title": "Modular elliptic curves and Fermat's Last Theorem",
       "year": "1995",
-      "venue": "Annals of Mathematics 141(3), 443–551",
+      "venue": "Annals of Mathematics 141(3), 443\u2013551",
       "note": "Proved the modularity of semistable elliptic curves over $\\mathbb{Q}$, famously establishing Fermat's Last Theorem as a corollary. The modularity theorem is a prerequisite for BSD: it ensures $L(E,s)$ has analytic continuation to $s = 1$"
     },
     {
       "authors": "Kato, Kazuya",
       "title": "p-adic Hodge theory and values of zeta functions of modular forms",
       "year": "2004",
-      "venue": "Astérisque 295, 117–290",
+      "venue": "Ast\u00e9risque 295, 117\u2013290",
       "note": "Proved one divisibility of the Iwasawa Main Conjecture for elliptic curves (analytic divides algebraic), providing a p-adic approach to BSD independent of Kolyvagin's Euler systems"
     },
     {
       "authors": "Skinner, Christopher; Urban, Eric",
-      "title": "The Iwasawa Main Conjectures for GL₂",
+      "title": "The Iwasawa Main Conjectures for GL\u2082",
       "year": "2014",
-      "venue": "Inventiones Mathematicae 195(1), 1–277",
+      "venue": "Inventiones Mathematicae 195(1), 1\u2013277",
       "note": "Proved the other divisibility of the Iwasawa Main Conjecture for elliptic curves with good ordinary reduction, completing the p-adic approach to BSD rank 0/1"
     }
   ],
@@ -722,6 +722,9 @@
     "sorries": 0,
     "path": "Proofs/BirchSwinnertonDyer.lean",
     "definitionCount": 143,
-    "theoremCount": 254
+    "theoremCount": 254,
+    "additionalFiles": [
+      "Proofs/BirchSwinnertonDyerAristotle.lean"
+    ]
   }
 }

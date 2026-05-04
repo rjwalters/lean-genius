@@ -2,9 +2,9 @@
   "id": "arithmetic-series-oq-02-oq-03",
   "title": "Simplicial Numbers as Face Counts of Simplicial Complexes",
   "slug": "arithmetic-series-oq-02-oq-03",
-  "description": "Connects simplicial numbers S_k(n) = C(n+k,k) to the f-vector of the standard k-simplex. The number of j-faces of Δ^k equals C(k+1,j+1) = S_{j+1}(k-j), bridging combinatorics and algebraic topology.",
+  "description": "Connects simplicial numbers S_k(n) = C(n+k,k) to the f-vector of the standard k-simplex. The number of j-faces of \u0394^k equals C(k+1,j+1) = S_{j+1}(k-j), bridging combinatorics and algebraic topology.",
   "meta": {
-    "author": "Classical (Schläfli / Euler)",
+    "author": "Classical (Schl\u00e4fli / Euler)",
     "status": "verified",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ03.lean",
     "tags": [
@@ -23,16 +23,16 @@
     "theoremCount": 10
   },
   "overview": {
-    "historicalContext": "The connection between simplicial numbers and face counts of simplices is classical. The f-vector (f₀, f₁, ..., f_k) of a simplicial complex records the number of faces in each dimension. For the standard k-simplex Δ^k (the convex hull of k+1 vertices), each j-face is a (j+1)-element subset of the vertex set, giving f_j = C(k+1, j+1). The simplicial numbers S_m(n) = C(n+m, m), introduced as higher-dimensional analogues of triangular numbers, are precisely these face counts under appropriate reindexing.",
+    "historicalContext": "The connection between simplicial numbers and face counts of simplices is classical. The f-vector (f\u2080, f\u2081, ..., f_k) of a simplicial complex records the number of faces in each dimension. For the standard k-simplex \u0394^k (the convex hull of k+1 vertices), each j-face is a (j+1)-element subset of the vertex set, giving f_j = C(k+1, j+1). The simplicial numbers S_m(n) = C(n+m, m), introduced as higher-dimensional analogues of triangular numbers, are precisely these face counts under appropriate reindexing.",
     "problemStatement": "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?",
-    "text": "Yes. The face count f_j(Δ^k) = C(k+1, j+1) equals the simplicial number S_{j+1}(k-j). The total face count is 2^(k+1) - 1, and the Euler characteristic is 1.",
+    "text": "Yes. The face count f_j(\u0394^k) = C(k+1, j+1) equals the simplicial number S_{j+1}(k-j). The total face count is 2^(k+1) - 1, and the Euler characteristic is 1.",
     "proofStrategy": "Direct computation: faceCount k j = C(k+1, j+1) and simplicial (j+1) (k-j) = C((k-j)+(j+1), j+1) = C(k+1, j+1). The total faces sum uses Nat.sum_range_choose (binomial theorem) with the i=0 term removed.",
     "keyInsights": [
-      "The face count f_j(Δ^k) = C(k+1, j+1) equals simplicial (j+1) (k-j), connecting combinatorial geometry to number sequences",
-      "Triangular numbers count edges of simplices: S_2(n) = f_1(Δ^{n+1}). Tetrahedral numbers count triangular faces: S_3(n) = f_2(Δ^{n+2})",
-      "The total face count 2^(k+1) - 1 follows from the binomial theorem ∑ C(n,i) = 2^n with the empty face removed",
-      "The Euler characteristic χ(Δ^k) = 1 is proved via the alternating binomial sum ∑_{i=0}^{k+1} (-1)^i C(k+1,i) = 0, which gives χ = -(0-1) = 1 after extracting the i=0 term; the proof uses Int.alternating_sum_range_choose_of_ne from Mathlib.",
-      "**native_decide for concrete verification**: The f-vectors of specific simplices (triangle {3,3,1} for Δ², tetrahedron {4,6,4,1} for Δ³) are verified via `native_decide` rather than `decide`. This is because the computation involves Nat.choose values that, while finite, are too large for the standard kernel `decide` but fast for the compiled native evaluator. The `native_decide` tactic is the idiomatic Lean 4 choice for computationally intensive decidable propositions."
+      "The face count f_j(\u0394^k) = C(k+1, j+1) equals simplicial (j+1) (k-j), connecting combinatorial geometry to number sequences",
+      "Triangular numbers count edges of simplices: S_2(n) = f_1(\u0394^{n+1}). Tetrahedral numbers count triangular faces: S_3(n) = f_2(\u0394^{n+2})",
+      "The total face count 2^(k+1) - 1 follows from the binomial theorem \u2211 C(n,i) = 2^n with the empty face removed",
+      "The Euler characteristic \u03c7(\u0394^k) = 1 is proved via the alternating binomial sum \u2211_{i=0}^{k+1} (-1)^i C(k+1,i) = 0, which gives \u03c7 = -(0-1) = 1 after extracting the i=0 term; the proof uses Int.alternating_sum_range_choose_of_ne from Mathlib.",
+      "**native_decide for concrete verification**: The f-vectors of specific simplices (triangle {3,3,1} for \u0394\u00b2, tetrahedron {4,6,4,1} for \u0394\u00b3) are verified via `native_decide` rather than `decide`. This is because the computation involves Nat.choose values that, while finite, are too large for the standard kernel `decide` but fast for the compiled native evaluator. The `native_decide` tactic is the idiomatic Lean 4 choice for computationally intensive decidable propositions."
     ],
     "prerequisites": [
       "Binomial coefficients (Nat.choose)",
@@ -44,27 +44,27 @@
     {
       "targetId": "arithmetic-series-oq-02",
       "relationship": "extends",
-      "description": "Parent entry: defines simplicial numbers S_k(n) = C(n+k,k) via the hockey stick identity ∑_{i=0}^n S_k(i) = S_{k+1}(n). The current entry imports this definition and shows that S_{j+1}(k-j) equals the face count f_j(Δ^k) = C(k+1, j+1), connecting the number-theoretic hockey stick to the combinatorial topology of simplices"
+      "description": "Parent entry: defines simplicial numbers S_k(n) = C(n+k,k) via the hockey stick identity \u2211_{i=0}^n S_k(i) = S_{k+1}(n). The current entry imports this definition and shows that S_{j+1}(k-j) equals the face count f_j(\u0394^k) = C(k+1, j+1), connecting the number-theoretic hockey stick to the combinatorial topology of simplices"
     },
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "related",
-      "description": "Both entries prove Euler characteristic formulas via alternating face sums. Euler's polyhedral formula V-E+F=2 for convex polyhedra corresponds to χ = 1 for the simplex Δ^k (proved here via Int.alternating_sum_range_choose_of_ne from Mathlib). The sign pattern ∑(-1)^j C(k+1, j+1) = 0 is the same algebraic identity underlying both results, with the polyhedral case adding one dimension for the outer face"
+      "description": "Both entries prove Euler characteristic formulas via alternating face sums. Euler's polyhedral formula V-E+F=2 for convex polyhedra corresponds to \u03c7 = 1 for the simplex \u0394^k (proved here via Int.alternating_sum_range_choose_of_ne from Mathlib). The sign pattern \u2211(-1)^j C(k+1, j+1) = 0 is the same algebraic identity underlying both results, with the polyhedral case adding one dimension for the outer face"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial theorem ∑_{i=0}^n C(n,i) = 2^n (via Nat.sum_range_choose) is the key identity for computing the total face count 2^{k+1} - 1 of Δ^k: summing f_j(Δ^k) = C(k+1, j+1) over j gives ∑_{j=0}^k C(k+1,j+1) = 2^{k+1} - 1 (excluding the empty face). Every combinatorial verification in this file — the triangle {3,3,1} and tetrahedron {4,6,4,1} f-vectors — reduces to binomial coefficient arithmetic"
+      "description": "The binomial theorem \u2211_{i=0}^n C(n,i) = 2^n (via Nat.sum_range_choose) is the key identity for computing the total face count 2^{k+1} - 1 of \u0394^k: summing f_j(\u0394^k) = C(k+1, j+1) over j gives \u2211_{j=0}^k C(k+1,j+1) = 2^{k+1} - 1 (excluding the empty face). Every combinatorial verification in this file \u2014 the triangle {3,3,1} and tetrahedron {4,6,4,1} f-vectors \u2014 reduces to binomial coefficient arithmetic"
     },
     {
       "targetId": "combinations-formula",
       "relationship": "foundational",
-      "description": "The formula C(n,k) = n!/(k!(n-k)!) is the direct computational content of this entry: the face count f_j(Δ^k) = C(k+1,j+1) and the simplicial number S_{j+1}(k-j) = C(k+1,j+1) are both binomial coefficients, and their equality is a reindexing identity. The Lean proofs reduce to `Nat.choose` lemmas, making the combinations formula the algebraic foundation of the simplicial f-vector theory"
+      "description": "The formula C(n,k) = n!/(k!(n-k)!) is the direct computational content of this entry: the face count f_j(\u0394^k) = C(k+1,j+1) and the simplicial number S_{j+1}(k-j) = C(k+1,j+1) are both binomial coefficients, and their equality is a reindexing identity. The Lean proofs reduce to `Nat.choose` lemmas, making the combinations formula the algebraic foundation of the simplicial f-vector theory"
     },
     {
       "targetId": "arithmetic-series-oq-02-oq-02",
       "relationship": "related",
-      "description": "The 2D hockey stick identity sums products of simplicial numbers over triangular regions: ∑_{j=0}^n S_a(j)·S_b(n-j) = S_{a+b+1}(n). The face count formula f_j(Δ^k) = C(k+1,j+1) = S_{j+1}(k-j) shows that products of simplicial numbers correspond geometrically to counting pairs of faces in different dimensions, connecting the algebraic 2D hockey stick to the bigraded face structure of products of simplices"
+      "description": "The 2D hockey stick identity sums products of simplicial numbers over triangular regions: \u2211_{j=0}^n S_a(j)\u00b7S_b(n-j) = S_{a+b+1}(n). The face count formula f_j(\u0394^k) = C(k+1,j+1) = S_{j+1}(k-j) shows that products of simplicial numbers correspond geometrically to counting pairs of faces in different dimensions, connecting the algebraic 2D hockey stick to the bigraded face structure of products of simplices"
     }
   ],
   "sections": [
@@ -73,7 +73,7 @@
       "title": "Imports, Documentation, and Module Setup",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Imports ArithmeticSeriesOQ02 (for simplicial numbers), Mathlib choose modules, and Mathlib.Tactic. The module header documents the open question (connecting simplicial numbers to f-vectors) and its affirmative answer: f_j(Δ^k) = C(k+1,j+1) = S_{j+1}(k-j).",
+      "summary": "Imports ArithmeticSeriesOQ02 (for simplicial numbers), Mathlib choose modules, and Mathlib.Tactic. The module header documents the open question (connecting simplicial numbers to f-vectors) and its affirmative answer: f_j(\u0394^k) = C(k+1,j+1) = S_{j+1}(k-j).",
       "mathContext": "Key imports: `Mathlib.Data.Nat.Choose.Basic` (Nat.choose, binomial identities), `Mathlib.Data.Nat.Choose.Sum` (Nat.sum_range_choose for 2^n, Int.alternating_sum_range_choose for Euler characteristic)."
     },
     {
@@ -81,7 +81,7 @@
       "title": "Standard Simplex and f-Vector",
       "startLine": 30,
       "endLine": 60,
-      "summary": "Defines the f-vector (face count by dimension) and proves the standard simplex Δ^k has C(k+1,j+1) faces of dimension j."
+      "summary": "Defines the f-vector (face count by dimension) and proves the standard simplex \u0394^k has C(k+1,j+1) faces of dimension j."
     },
     {
       "id": "simplicial-connection",
@@ -95,7 +95,7 @@
       "title": "Euler Characteristic and f-Vector Sum",
       "startLine": 102,
       "endLine": 130,
-      "summary": "Proves the Euler characteristic of Δ^k equals 1, and the alternating f-vector sum gives χ = 1."
+      "summary": "Proves the Euler characteristic of \u0394^k equals 1, and the alternating f-vector sum gives \u03c7 = 1."
     },
     {
       "id": "verifications",
@@ -132,7 +132,10 @@
     "theoremCount": 10,
     "definitionCount": 1,
     "path": "Proofs/ArithmeticSeriesOQ02OQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean"
+    ]
   },
   "sorries": 0
 }

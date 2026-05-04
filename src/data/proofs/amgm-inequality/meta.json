@@ -2,7 +2,7 @@
   "id": "amgm-inequality",
   "title": "Arithmetic Mean - Geometric Mean Inequality",
   "slug": "amgm-inequality",
-  "description": "The AM-GM inequality (Wiedijk #38): $(a+b)/2 \\geq \\sqrt{ab}$ with equality iff $a=b$. A dual-path formalization in Lean 4 — the elementary two-variable proof via $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0$ is an original construction, while the general weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ delegates to Mathlib's Jensen-based `geom_mean_le_arith_mean_weighted`. Includes equality characterization, product-sum corollary, QM-AM-GM chain, and three-variable specialization.",
+  "description": "The AM-GM inequality (Wiedijk #38): $(a+b)/2 \\geq \\sqrt{ab}$ with equality iff $a=b$. A dual-path formalization in Lean 4 \u2014 the elementary two-variable proof via $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0$ is an original construction, while the general weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ delegates to Mathlib's Jensen-based `geom_mean_le_arith_mean_weighted`. Includes equality characterization, product-sum corollary, QM-AM-GM chain, and three-variable specialization.",
   "meta": {
     "author": "Euclid / Cauchy (formalized via Mathlib)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
@@ -41,7 +41,7 @@
       },
       {
         "theorem": "Real.sq_sqrt",
-        "description": "For x >= 0, (sqrt x)^2 = x — critical to both the elementary proof and equality characterization",
+        "description": "For x >= 0, (sqrt x)^2 = x \u2014 critical to both the elementary proof and equality characterization",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
@@ -75,7 +75,7 @@
     "relatedProblems": [
       {
         "id": "amgm-inequality-oq-02",
-        "relationship": "Proves Maclaurin's inequalities via elementary symmetric polynomials: M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ strictly refining AM-GM"
+        "relationship": "Proves Maclaurin's inequalities via elementary symmetric polynomials: M\u2081 \u2265 M\u2082 \u2265 \u22ef \u2265 M\u2099 strictly refining AM-GM"
       },
       {
         "id": "amgm-inequality-oq-03",
@@ -85,13 +85,13 @@
     "theoremCount": 8
   },
   "overview": {
-    "historicalContext": "The AM-GM inequality has ancient origins. Euclid implicitly used it in Book VI of the *Elements* (~300 BCE): if you inscribe a right triangle in a semicircle and drop an altitude from the right angle to the hypotenuse, the altitude's length is the geometric mean of the two segments of the hypotenuse. Since the altitude can be no longer than the radius (the arithmetic mean of the two segments), this gives AM ≥ GM geometrically.\n\nThe first general n-variable proof was given by Augustin-Louis Cauchy in his 1821 *Cours d'analyse*. Cauchy's elegant method uses **forward-backward induction**: he first proves the inequality for powers of 2 (by repeatedly applying the two-variable case), then shows that if AM-GM holds for n numbers, it holds for n-1 numbers as well (by setting one variable equal to the mean). This backward step is the clever insight that makes the induction work without needing $n$ to increase by 1 each time.\n\nIndependently, Colin Maclaurin (1729) discovered a hierarchy of symmetric inequalities that imply AM-GM as a special case. His *Maclaurin inequalities* relate the elementary symmetric polynomial means and strictly strengthen AM-GM for distinct values.\n\nGeorge Pólya later gave what many consider the most elegant proof: the exponential inequality $e^{x-1} \\geq x$ (with equality iff $x=1$) applied to each ratio $a_i / G$ (where $G$ is the geometric mean) immediately yields $e^{A/G - 1} \\geq A/G \\geq 1$, hence $A \\geq G$. This proof, featured in Steele's *Cauchy-Schwarz Master Class*, reveals AM-GM as a consequence of the convexity of $e^x$.\n\nToday AM-GM is one of the most ubiquitous tools in mathematical analysis, combinatorics, and optimization. It appears in proofs of the Cauchy-Schwarz inequality, bounds on entropy in information theory, and the isoperimetric inequality. It is #38 on Wiedijk's landmark list of 100 theorems deemed important to formalize in proof assistants.",
+    "historicalContext": "The AM-GM inequality has ancient origins. Euclid implicitly used it in Book VI of the *Elements* (~300 BCE): if you inscribe a right triangle in a semicircle and drop an altitude from the right angle to the hypotenuse, the altitude's length is the geometric mean of the two segments of the hypotenuse. Since the altitude can be no longer than the radius (the arithmetic mean of the two segments), this gives AM \u2265 GM geometrically.\n\nThe first general n-variable proof was given by Augustin-Louis Cauchy in his 1821 *Cours d'analyse*. Cauchy's elegant method uses **forward-backward induction**: he first proves the inequality for powers of 2 (by repeatedly applying the two-variable case), then shows that if AM-GM holds for n numbers, it holds for n-1 numbers as well (by setting one variable equal to the mean). This backward step is the clever insight that makes the induction work without needing $n$ to increase by 1 each time.\n\nIndependently, Colin Maclaurin (1729) discovered a hierarchy of symmetric inequalities that imply AM-GM as a special case. His *Maclaurin inequalities* relate the elementary symmetric polynomial means and strictly strengthen AM-GM for distinct values.\n\nGeorge P\u00f3lya later gave what many consider the most elegant proof: the exponential inequality $e^{x-1} \\geq x$ (with equality iff $x=1$) applied to each ratio $a_i / G$ (where $G$ is the geometric mean) immediately yields $e^{A/G - 1} \\geq A/G \\geq 1$, hence $A \\geq G$. This proof, featured in Steele's *Cauchy-Schwarz Master Class*, reveals AM-GM as a consequence of the convexity of $e^x$.\n\nToday AM-GM is one of the most ubiquitous tools in mathematical analysis, combinatorics, and optimization. It appears in proofs of the Cauchy-Schwarz inequality, bounds on entropy in information theory, and the isoperimetric inequality. It is #38 on Wiedijk's landmark list of 100 theorems deemed important to formalize in proof assistants.",
     "problemStatement": "**Theorem (Wiedijk #38)**: For non-negative real numbers $a$ and $b$:\n\n$$(a + b) / 2 \\geq \\sqrt{ab}$$\n\n**General Weighted Form**: For a finite index set $\\iota$, weights $w_i \\geq 0$ with $\\sum_i w_i = 1$, and values $z_i \\geq 0$:\n\n$$\\prod_{i} z_i^{w_i} \\leq \\sum_{i} w_i z_i$$\n\n**Classical n-variable Form**: For $n$ non-negative reals:\n\n$$\\frac{a_1 + \\cdots + a_n}{n} \\geq \\sqrt[n]{a_1 \\cdots a_n}$$\n\n(Formalized in weighted Finset-based form via Mathlib; the classical unweighted case follows by setting all weights to $1/n$.)\n\n**Equality Condition**: Equality holds if and only if all the $a_i$ are equal. (Proved explicitly for the two-variable case via `am_gm_two_eq_iff`; the general $n$-variable condition follows from strict concavity of $\\log$ in the weighted form.)",
     "text": "A dual-path formalization of AM-GM (Wiedijk #38) in 225 lines with eight theorems, zero sorries, zero axioms. Two are original multi-step proofs: `am_gm_two` via $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$ (using `sq_nonneg`, `Real.sq_sqrt`, `linarith`) and `am_gm_two_eq_iff` (equality iff $a = b$, via a `calc` chain and `pow_eq_zero`). Five are Mathlib-based: the general weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ (delegated to `Real.geom_mean_le_arith_mean_weighted`), the two-variable weighted specialization, the three-variable specialization, the QM-AM-GM chain alias, and the rescaled form. One is a derived corollary: the product-sum inequality $ab \\leq ((a+b)/2)^2$. Three concrete verification examples use `norm_num` and `Real.sqrt_sq`.",
     "proofStrategy": "**Elementary Proof (Two Variables):**\n\nThe key insight is that any square is non-negative:\n1. $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$\n2. Expanding: $a - 2\\sqrt{ab} + b \\geq 0$\n3. Rearranging: $a + b \\geq 2\\sqrt{ab}$\n4. Dividing by 2: $(a + b)/2 \\geq \\sqrt{ab}$\n\n**Lean Proof Techniques Used:**\n- `sq_nonneg` to assert $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$\n- `Real.sq_sqrt` to rewrite $(\\sqrt{x})^2 = x$ for $x \\geq 0$\n- `Real.sqrt_mul` to merge $\\sqrt{a} \\cdot \\sqrt{b} = \\sqrt{ab}$\n- `linarith` to close the resulting linear arithmetic goal\n- `calc` chains for the equality characterization\n- `convert` to adapt Mathlib's general Finset-based statements to specific instances\n\n**Mathlib Approach (General Case):**\nThe formalization delegates the weighted general form to `Real.geom_mean_le_arith_mean_weighted`, which is proved in Mathlib via convexity of $-\\log$ (Jensen's inequality). This reduces all n-variable cases to the Mathlib theorem.",
     "keyInsights": [
       "The entire inequality reduces to the single algebraic fact that squares are non-negative: $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$. This transforms a statement about means into pure linear arithmetic after expansion.",
-      "Equality holds if and only if all numbers are equal—this makes AM-GM the foundation of constrained optimization: to maximize a product with fixed sum (or minimize sum with fixed product), set all variables equal.",
+      "Equality holds if and only if all numbers are equal\u2014this makes AM-GM the foundation of constrained optimization: to maximize a product with fixed sum (or minimize sum with fixed product), set all variables equal.",
       "The weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ is precisely Jensen's inequality applied to the concave function $\\log$: since $\\log$ is concave, $\\log(\\sum w_i z_i) \\geq \\sum w_i \\log(z_i) = \\log(\\prod z_i^{w_i})$, and then exponentiate.",
       "Cauchy's forward-backward induction is a rare proof technique: induction that goes forward (by doubling) and backward (by reducing $n$ to $n-1$), allowing the result to transfer from powers of 2 to all natural numbers.",
       "The AM-GM inequality sits at the center of a web of classical inequalities: it implies the Cauchy-Schwarz inequality (via $2ab \\leq a^2 + b^2$), is implied by Jensen's inequality, and specializes to the isoperimetric inequality in two dimensions.",
@@ -112,7 +112,7 @@
     {
       "targetId": "isoperimetric-theorem",
       "relationship": "supports",
-      "description": "The product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that among rectangles with fixed perimeter, the square maximizes area — a special case of the isoperimetric principle."
+      "description": "The product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that among rectangles with fixed perimeter, the square maximizes area \u2014 a special case of the isoperimetric principle."
     },
     {
       "targetId": "amgm-inequality-oq-02",
@@ -152,7 +152,7 @@
     {
       "targetId": "hilbert-17",
       "relationship": "supports",
-      "description": "The Motzkin polynomial $x^4y^2 + x^2y^4 - 3x^2y^2 + 1 \\geq 0$ is proved non-negative via AM-GM, yet famously cannot be written as a sum of squares of polynomials — a key example in Hilbert's 17th problem on positive semidefinite forms."
+      "description": "The Motzkin polynomial $x^4y^2 + x^2y^4 - 3x^2y^2 + 1 \\geq 0$ is proved non-negative via AM-GM, yet famously cannot be written as a sum of squares of polynomials \u2014 a key example in Hilbert's 17th problem on positive semidefinite forms."
     },
     {
       "targetId": "erdos-742",
@@ -233,7 +233,7 @@
   ],
   "conclusion": {
     "summary": "The AM-GM inequality is one of the most useful inequalities in mathematics. This formalization provides both the elementary algebraic proof for two variables (exploiting square non-negativity) and the general weighted form from Mathlib (via Jensen's inequality / convexity of $-\\log$). The equality characterization enables applications to optimization.",
-    "implications": "**Theoretical Significance:**\n\n**1. Optimization Principle**\nWhen maximizing a product with fixed sum—or minimizing sum with fixed product—the optimum occurs when all variables are equal. This is why the square maximizes area among rectangles with fixed perimeter, and why equal portfolio weights arise in certain utility maximization problems.\n\n**2. Information Theory**\nAM-GM underlies the log-sum inequality used in bounding Kullback-Leibler divergence and mutual information. The inequality $-\\sum p_i \\log p_i \\leq \\log n$ (maximum entropy of $n$ outcomes is achieved by uniform distribution) follows from AM-GM applied to $\\log$.\n\n**3. Gateway to Deeper Inequalities**\nAM-GM implies the Cauchy-Schwarz inequality ($\\sum a_i b_i \\leq \\sqrt{(\\sum a_i^2)(\\sum b_i^2)}$) and is implied by Jensen's inequality. It is the simplest non-trivial member of the chain: HM ≤ GM ≤ AM ≤ QM (harmonic ≤ geometric ≤ arithmetic ≤ quadratic mean).\n\n**4. Competition Mathematics**\nA fundamental tool for olympiad problems; most competition inequality proofs reduce to an application of AM-GM or Cauchy-Schwarz at some step.",
+    "implications": "**Theoretical Significance:**\n\n**1. Optimization Principle**\nWhen maximizing a product with fixed sum\u2014or minimizing sum with fixed product\u2014the optimum occurs when all variables are equal. This is why the square maximizes area among rectangles with fixed perimeter, and why equal portfolio weights arise in certain utility maximization problems.\n\n**2. Information Theory**\nAM-GM underlies the log-sum inequality used in bounding Kullback-Leibler divergence and mutual information. The inequality $-\\sum p_i \\log p_i \\leq \\log n$ (maximum entropy of $n$ outcomes is achieved by uniform distribution) follows from AM-GM applied to $\\log$.\n\n**3. Gateway to Deeper Inequalities**\nAM-GM implies the Cauchy-Schwarz inequality ($\\sum a_i b_i \\leq \\sqrt{(\\sum a_i^2)(\\sum b_i^2)}$) and is implied by Jensen's inequality. It is the simplest non-trivial member of the chain: HM \u2264 GM \u2264 AM \u2264 QM (harmonic \u2264 geometric \u2264 arithmetic \u2264 quadratic mean).\n\n**4. Competition Mathematics**\nA fundamental tool for olympiad problems; most competition inequality proofs reduce to an application of AM-GM or Cauchy-Schwarz at some step.",
     "openQuestions": [
       "How does AM-GM generalize to operator means in matrix analysis? The matrix AM-GM inequality $A \\# B \\leq (A+B)/2$ (where $\\#$ is the geometric mean of positive-definite matrices) requires substantially deeper machinery.",
       "**[Addressed in `amgm-inequality-oq-02`]** Maclaurin's inequalities $e_1/\\binom{n}{1} \\geq (e_2/\\binom{n}{2})^{1/2} \\geq \\cdots \\geq (e_n/\\binom{n}{n})^{1/n}$ (where $e_k$ are elementary symmetric polynomials) strictly refine AM-GM. The gallery sub-entry `amgm-inequality-oq-02` formalizes these for the normalized means $M_k = (e_k/\\binom{n}{k})^{1/k}$, proving $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ with $M_1 = \\text{AM}$ and $M_n = \\text{GM}$. The open question for Mathlib is whether the full strict inequality chain is captured in a single general theorem rather than specific small cases.",
@@ -244,10 +244,10 @@
   "references": [
     {
       "authors": "Cauchy, Augustin-Louis",
-      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "title": "Cours d'analyse de l'\u00c9cole Royale Polytechnique",
       "year": "1821",
       "venue": "Paris: Debure",
-      "note": "Contains Cauchy's proof of AM-GM by forward-backward induction — one of the most elegant proof techniques in mathematics"
+      "note": "Contains Cauchy's proof of AM-GM by forward-backward induction \u2014 one of the most elegant proof techniques in mathematics"
     },
     {
       "authors": "Maclaurin, Colin",
@@ -268,17 +268,17 @@
       "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
       "year": "2004",
       "venue": "Cambridge University Press / MAA Problem Books",
-      "note": "Chapter 2 develops AM-GM from first principles with 12 proof exercises, including Pólya's proof via the exponential function ($e^{x-1} \\geq x$) and connections to Schur convexity"
+      "note": "Chapter 2 develops AM-GM from first principles with 12 proof exercises, including P\u00f3lya's proof via the exponential function ($e^{x-1} \\geq x$) and connections to Schur convexity"
     },
     {
       "authors": "Bullen, P. S.",
       "title": "Handbook of Means and Their Inequalities",
       "year": "2003",
       "venue": "Kluwer Academic Publishers (Mathematics and Its Applications, vol. 560)",
-      "note": "Encyclopedic reference cataloging over 50 types of means and their ordering properties. Chapter III covers the AM-GM inequality with 15 distinct proofs including Cauchy's forward-backward induction, Pólya's exponential proof, and proofs via Schur convexity and majorization"
+      "note": "Encyclopedic reference cataloging over 50 types of means and their ordering properties. Chapter III covers the AM-GM inequality with 15 distinct proofs including Cauchy's forward-backward induction, P\u00f3lya's exponential proof, and proofs via Schur convexity and majorization"
     },
     {
-      "authors": "Pólya, George; Szegő, Gábor",
+      "authors": "P\u00f3lya, George; Szeg\u0151, G\u00e1bor",
       "title": "Problems and Theorems in Analysis I: Series, Integral Calculus, Theory of Functions",
       "year": "1925",
       "venue": "Springer (English edition: Grundlehren der mathematischen Wissenschaften, vol. 193, 1972)",
@@ -288,8 +288,8 @@
       "authors": "Cox, David A.",
       "title": "The Arithmetic-Geometric Mean of Gauss",
       "year": "1984",
-      "venue": "L'Enseignement Mathématique, vol. 30, pp. 275–330",
-      "note": "Definitive account of Gauss's arithmetic-geometric mean iteration and its connection to elliptic integrals — the most beautiful computational application of the AM-GM inequality, achieving quadratic convergence for computing π and elliptic functions"
+      "venue": "L'Enseignement Math\u00e9matique, vol. 30, pp. 275\u2013330",
+      "note": "Definitive account of Gauss's arithmetic-geometric mean iteration and its connection to elliptic integrals \u2014 the most beautiful computational application of the AM-GM inequality, achieving quadratic convergence for computing \u03c0 and elliptic functions"
     }
   ],
   "leanFile": {
@@ -308,26 +308,29 @@
     "mathlibWrappers": 5,
     "definitionCount": 0,
     "path": "Proofs/AMGMInequality.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/AMGMInequalityAristotle.lean"
+    ]
   },
   "mainTheorems": [
     {
       "name": "am_gm_two",
       "type": "core",
-      "description": "Elementary two-variable AM-GM: (a + b) / 2 ≥ √(ab) via (√a - √b)² ≥ 0",
-      "leanType": "(a b : ℝ) → 0 ≤ a → 0 ≤ b → (a + b) / 2 ≥ Real.sqrt (a * b)"
+      "description": "Elementary two-variable AM-GM: (a + b) / 2 \u2265 \u221a(ab) via (\u221aa - \u221ab)\u00b2 \u2265 0",
+      "leanType": "(a b : \u211d) \u2192 0 \u2264 a \u2192 0 \u2264 b \u2192 (a + b) / 2 \u2265 Real.sqrt (a * b)"
     },
     {
       "name": "am_gm_two_eq_iff",
       "type": "key",
-      "description": "Equality characterization: (a + b) / 2 = √(ab) iff a = b",
-      "leanType": "(a b : ℝ) → 0 ≤ a → 0 ≤ b → ((a + b) / 2 = Real.sqrt (a * b) ↔ a = b)"
+      "description": "Equality characterization: (a + b) / 2 = \u221a(ab) iff a = b",
+      "leanType": "(a b : \u211d) \u2192 0 \u2264 a \u2192 0 \u2264 b \u2192 ((a + b) / 2 = Real.sqrt (a * b) \u2194 a = b)"
     },
     {
       "name": "am_gm_weighted",
       "type": "key",
-      "description": "General weighted AM-GM via Mathlib: ∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ for weights summing to 1",
-      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 ≤ w i) → ∑ i ∈ s, w i = 1 → (∀ i ∈ s, 0 ≤ z i) → ∏ i ∈ s, z i ^ w i ≤ ∑ i ∈ s, w i * z i"
+      "description": "General weighted AM-GM via Mathlib: \u220f z\u1d62^w\u1d62 \u2264 \u2211 w\u1d62z\u1d62 for weights summing to 1",
+      "leanType": "{\u03b9 : Type*} \u2192 (s : Finset \u03b9) \u2192 (w z : \u03b9 \u2192 \u211d) \u2192 (\u2200 i \u2208 s, 0 \u2264 w i) \u2192 \u2211 i \u2208 s, w i = 1 \u2192 (\u2200 i \u2208 s, 0 \u2264 z i) \u2192 \u220f i \u2208 s, z i ^ w i \u2264 \u2211 i \u2208 s, w i * z i"
     }
   ],
   "sorries": 0

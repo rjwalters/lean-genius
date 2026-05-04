@@ -22,24 +22,24 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.tendsto_sum_pi_div_four",
-        "description": "Leibniz series converges to π/4",
+        "description": "Leibniz series converges to \u03c0/4",
         "module": "Mathlib.Data.Real.Pi.Leibniz"
       },
       {
         "theorem": "Real.arctan_one",
-        "description": "arctan(1) = π/4",
+        "description": "arctan(1) = \u03c0/4",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
       }
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
     "lineCount": 318,
-    "assumptions": "1 axiom: eta-zeta relation η(s) = (1-2^{1-s})ζ(s). 9 sorries for series convergence results requiring analytic tools (alternating series test, Fourier analysis, Abel summation).",
+    "assumptions": "1 axiom: eta-zeta relation \u03b7(s) = (1-2^{1-s})\u03b6(s). 9 sorries for series convergence results requiring analytic tools (alternating series test, Fourier analysis, Abel summation).",
     "originalContributions": [
-      "Unified framework: Dirichlet beta (β) and eta (η) functions as Leibniz-type series",
-      "Definitions of Catalan's constant G = β(2) and Dirichlet character mod 4",
-      "Proved algebraic properties: partial sum recurrences, χ₄ periodicity",
-      "Complete table of Leibniz-type formulas: β(1)=π/4, β(2)=G, β(3)=π³/32, η(1)=ln2, η(2)=π²/12",
+      "Unified framework: Dirichlet beta (\u03b2) and eta (\u03b7) functions as Leibniz-type series",
+      "Definitions of Catalan's constant G = \u03b2(2) and Dirichlet character mod 4",
+      "Proved algebraic properties: partial sum recurrences, \u03c7\u2084 periodicity",
+      "Complete table of Leibniz-type formulas: \u03b2(1)=\u03c0/4, \u03b2(2)=G, \u03b2(3)=\u03c0\u00b3/32, \u03b7(1)=ln2, \u03b7(2)=\u03c0\u00b2/12",
       "Documented irrationality status of each constant"
     ],
     "theoremCount": 14
@@ -47,17 +47,17 @@
   "overview": {
     "historicalContext": "Leibniz discovered $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ in 1676 (though the Kerala school knew equivalent results centuries earlier via Gregory's series). The alternating harmonic series $\\ln 2 = 1 - 1/2 + 1/3 - \\cdots$ was known to Mercator (1668). Euler systematically evaluated these series in the 1730s-40s, connecting $\\beta(3) = \\pi^3/32$ to Fourier-type expansions. Dirichlet (1837) revealed the deeper structure: $\\beta(s) = L(s, \\chi_4)$, a Dirichlet $L$-function for the non-principal character mod 4, whose non-vanishing at $s=1$ proves infinitely many primes $\\equiv 1 \\pmod{4}$. Catalan introduced $G = \\beta(2) \\approx 0.9159$ in 1865; its irrationality remains open despite partial results by Zudilin (2001, at least one of $\\beta(2)$, $\\beta(4)$ is irrational) and Rivoal. The eta-zeta relation $\\eta(s) = (1-2^{1-s})\\zeta(s)$ was known to Euler and provides the bridge between alternating and non-alternating series.",
     "problemStatement": "How do generalized Leibniz-type formulas extend to other constants?",
-    "text": "The Dirichlet beta and eta functions unify all Leibniz-type alternating series: β(s) = Σ(-1)^n/(2n+1)^s captures π-related constants, while η(s) = Σ(-1)^{n-1}/n^s captures ζ-related constants",
-    "proofStrategy": "Define the Dirichlet beta and eta functions via partial sums, state convergence results for specific values (s=1,2,3), prove algebraic properties of partial sums, and connect to the underlying L-function structure via the character χ₄.",
+    "text": "The Dirichlet beta and eta functions unify all Leibniz-type alternating series: \u03b2(s) = \u03a3(-1)^n/(2n+1)^s captures \u03c0-related constants, while \u03b7(s) = \u03a3(-1)^{n-1}/n^s captures \u03b6-related constants",
+    "proofStrategy": "Define the Dirichlet beta and eta functions via partial sums, state convergence results for specific values (s=1,2,3), prove algebraic properties of partial sums, and connect to the underlying L-function structure via the character \u03c7\u2084.",
     "keyInsights": [
-      "β(s) captures odd-denominator series (π-related), η(s) captures all-denominator series (ζ-related)",
-      "The eta-zeta relation η(s) = (1-2^{1-s})ζ(s) converts between alternating and non-alternating sums",
-      "Catalan's constant G = β(2) is perhaps the most important constant whose irrationality is unknown",
-      "All these series arise from Dirichlet L-functions: β(s) = L(s,χ₄) for the non-principal character mod 4",
-      "All Leibniz-type alternating series arise as evaluations of Dirichlet L-functions: the Leibniz formula gives L(1,χ₄) = π/4 and the alternating harmonic series gives L(1,χ₁) = log 2 via the eta function η(s) = (1-2^{1-s})ζ(s). This L-function perspective unifies seemingly disparate constants through the arithmetic of Dirichlet characters."
+      "\u03b2(s) captures odd-denominator series (\u03c0-related), \u03b7(s) captures all-denominator series (\u03b6-related)",
+      "The eta-zeta relation \u03b7(s) = (1-2^{1-s})\u03b6(s) converts between alternating and non-alternating sums",
+      "Catalan's constant G = \u03b2(2) is perhaps the most important constant whose irrationality is unknown",
+      "All these series arise from Dirichlet L-functions: \u03b2(s) = L(s,\u03c7\u2084) for the non-principal character mod 4",
+      "All Leibniz-type alternating series arise as evaluations of Dirichlet L-functions: the Leibniz formula gives L(1,\u03c7\u2084) = \u03c0/4 and the alternating harmonic series gives L(1,\u03c7\u2081) = log 2 via the eta function \u03b7(s) = (1-2^{1-s})\u03b6(s). This L-function perspective unifies seemingly disparate constants through the arithmetic of Dirichlet characters."
     ],
     "prerequisites": [
-      "Leibniz series for π (parent proof)",
+      "Leibniz series for \u03c0 (parent proof)",
       "Infinite series and convergence",
       "Dirichlet characters and L-functions"
     ]
@@ -133,7 +133,7 @@
       "startLine": 242,
       "endLine": 276,
       "summary": "Documents irrationality status of all constants, bounds $0.91 < G < 0.92$, and the Leibniz error bound $|\\beta_n(1) - \\pi/4| \\leq 1/(2n+1)$.",
-      "mathContext": "All constants transcendental except $G = \\beta(2)$ — irrationality unknown."
+      "mathContext": "All constants transcendental except $G = \\beta(2)$ \u2014 irrationality unknown."
     }
   ],
   "crossReferences": [
@@ -144,8 +144,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Leibniz-type alternating series form a unified family through the Dirichlet beta and eta functions. The beta function captures odd-denominator series (yielding π, Catalan's G, π³/32) while the eta function captures all-denominator series (yielding ln 2, π²/12). The underlying structure is L-functions for Dirichlet characters.",
-    "implications": "The framework reveals that Leibniz's π/4 formula is not isolated but is the first member of an infinite family of series converging to important constants. The irrationality of Catalan's constant G = β(2) remains a major open problem.",
+    "summary": "Leibniz-type alternating series form a unified family through the Dirichlet beta and eta functions. The beta function captures odd-denominator series (yielding \u03c0, Catalan's G, \u03c0\u00b3/32) while the eta function captures all-denominator series (yielding ln 2, \u03c0\u00b2/12). The underlying structure is L-functions for Dirichlet characters.",
+    "implications": "The framework reveals that Leibniz's \u03c0/4 formula is not isolated but is the first member of an infinite family of series converging to important constants. The irrationality of Catalan's constant G = \u03b2(2) remains a major open problem.",
     "openQuestions": [
       "Can the irrationality of Catalan's constant be proved or disproved?",
       "Can these series convergence results be proved in Lean using Mathlib's analysis infrastructure?"
@@ -174,7 +174,10 @@
     "duplicateTheorems": 0,
     "definitionCount": 5,
     "path": "Proofs/LeibnizPiOQ02.lean",
-    "sorries": 9
+    "sorries": 9,
+    "additionalFiles": [
+      "Proofs/LeibnizPiOQ02Aristotle.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -192,14 +195,14 @@
     {
       "name": "dirichlet_eta_two",
       "type": "core",
-      "description": "The alternating Basel series equals π²/12",
-      "leanType": "Tendsto (dirichletEtaPartialSum 2) atTop (nhds (π²/12))"
+      "description": "The alternating Basel series equals \u03c0\u00b2/12",
+      "leanType": "Tendsto (dirichletEtaPartialSum 2) atTop (nhds (\u03c0\u00b2/12))"
     },
     {
       "name": "eta_zeta_relation",
       "type": "supporting",
-      "description": "η(s) = (1-2^{1-s})ζ(s) for s > 1",
-      "leanType": "(s : ℝ) → s > 1 → tsum η = (1-2^{1-s}) * tsum ζ"
+      "description": "\u03b7(s) = (1-2^{1-s})\u03b6(s) for s > 1",
+      "leanType": "(s : \u211d) \u2192 s > 1 \u2192 tsum \u03b7 = (1-2^{1-s}) * tsum \u03b6"
     }
   ],
   "sorries": 9

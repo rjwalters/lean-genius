@@ -1,8 +1,8 @@
 {
   "id": "chebyshev-pnt-bridge-oq-01",
-  "title": "Factorization Bound p^{v_p(C(2n,n))} ≤ 2n via Kummer's Theorem",
+  "title": "Factorization Bound p^{v_p(C(2n,n))} \u2264 2n via Kummer's Theorem",
   "slug": "chebyshev-pnt-bridge-oq-01",
-  "description": "Proves the prime power factorization bound for central binomial coefficients: p^{v_p(C(2n,n))} ≤ 2n. Key ingredient in Chebyshev's proof of Bertrand's postulate. Uses the carry-counting interpretation of Kummer's theorem.",
+  "description": "Proves the prime power factorization bound for central binomial coefficients: p^{v_p(C(2n,n))} \u2264 2n. Key ingredient in Chebyshev's proof of Bertrand's postulate. Uses the carry-counting interpretation of Kummer's theorem.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ01.lean",
@@ -17,27 +17,27 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 210,
-    "assumptions": "0 axioms, 0 sorries. Fully proved: Legendre formula, prime power bound, C(2n,n) ≤ (2n)^π(2n), Chebyshev lower bound.",
+    "assumptions": "0 axioms, 0 sorries. Fully proved: Legendre formula, prime power bound, C(2n,n) \u2264 (2n)^\u03c0(2n), Chebyshev lower bound.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Legendre formula for (n!).factorization p via multiplicity bridge (proved)",
-      "C(2n,n) ≤ (2n)^π(2n) via prime factorization product decomposition (proved)",
-      "Chebyshev lower bound: 4^n ≤ (2n+1)·(2n)^π(2n) (proved)",
-      "Carry term bound: ⌊2n/p^i⌋ - 2⌊n/p^i⌋ ≤ 1 (proved)",
-      "Fixed primeCounting' → primeCounting bug in central binom bound"
+      "C(2n,n) \u2264 (2n)^\u03c0(2n) via prime factorization product decomposition (proved)",
+      "Chebyshev lower bound: 4^n \u2264 (2n+1)\u00b7(2n)^\u03c0(2n) (proved)",
+      "Carry term bound: \u230a2n/p^i\u230b - 2\u230an/p^i\u230b \u2264 1 (proved)",
+      "Fixed primeCounting' \u2192 primeCounting bug in central binom bound"
     ],
     "theoremCount": 11
   },
   "overview": {
-    "historicalContext": "Chebyshev (1852) used the factorization of C(2n,n) to bound the prime counting function π(x), predating the Prime Number Theorem by 44 years. His motivation was to prove Bertrand's postulate (stated by Bertrand in 1845): that for every n > 1 there exists a prime p with n < p ≤ 2n. The key observation — that each prime p contributes at most p^{⌊log_p(2n)⌋} ≤ 2n to C(2n,n) — was clarified by Kummer's 1852 theorem, which interprets v_p(C(2n,n)) as the number of carries in the base-p addition of n + n. Combining C(2n,n) ≤ (2n)^{π(2n)} with 4^n ≤ (2n+1)·C(2n,n) gives π(2n) ≥ n·log(4)/log(2n) — achievable without any analytic machinery. Erdős (1932) later gave an elegant proof of Bertrand's postulate refining the same bound.",
-    "problemStatement": "Prove that for any prime p and n ≥ 1: p^{v_p(C(2n,n))} ≤ 2n, where v_p denotes the p-adic valuation. Use this to derive Chebyshev's lower bound on π(2n).",
-    "proofStrategy": "1. Show each carry term ⌊2n/p^i⌋ - 2⌊n/p^i⌋ ∈ {0,1}. 2. Count nonzero terms ≤ log_p(2n). 3. Therefore v_p(C(2n,n)) ≤ log_p(2n), giving p^{v_p} ≤ 2n.",
+    "historicalContext": "Chebyshev (1852) used the factorization of C(2n,n) to bound the prime counting function \u03c0(x), predating the Prime Number Theorem by 44 years. His motivation was to prove Bertrand's postulate (stated by Bertrand in 1845): that for every n > 1 there exists a prime p with n < p \u2264 2n. The key observation \u2014 that each prime p contributes at most p^{\u230alog_p(2n)\u230b} \u2264 2n to C(2n,n) \u2014 was clarified by Kummer's 1852 theorem, which interprets v_p(C(2n,n)) as the number of carries in the base-p addition of n + n. Combining C(2n,n) \u2264 (2n)^{\u03c0(2n)} with 4^n \u2264 (2n+1)\u00b7C(2n,n) gives \u03c0(2n) \u2265 n\u00b7log(4)/log(2n) \u2014 achievable without any analytic machinery. Erd\u0151s (1932) later gave an elegant proof of Bertrand's postulate refining the same bound.",
+    "problemStatement": "Prove that for any prime p and n \u2265 1: p^{v_p(C(2n,n))} \u2264 2n, where v_p denotes the p-adic valuation. Use this to derive Chebyshev's lower bound on \u03c0(2n).",
+    "proofStrategy": "1. Show each carry term \u230a2n/p^i\u230b - 2\u230an/p^i\u230b \u2208 {0,1}. 2. Count nonzero terms \u2264 log_p(2n). 3. Therefore v_p(C(2n,n)) \u2264 log_p(2n), giving p^{v_p} \u2264 2n.",
     "keyInsights": [
-      "**Carries in base-$p$ addition**: each position in the addition $n + n$ in base $p$ generates a carry of 0 or 1, and $v_p\\binom{2n}{n} = \\sum_i \\text{carry}_i$ by Kummer's theorem — the $p$-adic valuation counts carries, not just digit sums.",
-      "**Logarithmic truncation**: carry terms vanish when $p^i > 2n$, so $v_p\\binom{2n}{n} \\leq \\lfloor\\log_p(2n)\\rfloor$, giving $p^{v_p\\binom{2n}{n}} \\leq 2n$ — the main bound needed for Chebyshev's argument.",
+      "**Carries in base-$p$ addition**: each position in the addition $n + n$ in base $p$ generates a carry of 0 or 1, and $v_p\\binom{2n}{n} = \\sum_i \\text{carry}_i$ by Kummer's theorem \u2014 the $p$-adic valuation counts carries, not just digit sums.",
+      "**Logarithmic truncation**: carry terms vanish when $p^i > 2n$, so $v_p\\binom{2n}{n} \\leq \\lfloor\\log_p(2n)\\rfloor$, giving $p^{v_p\\binom{2n}{n}} \\leq 2n$ \u2014 the main bound needed for Chebyshev's argument.",
       "**Mathlib shortcut**: the main theorem `prime_pow_val_central_binom_le` is proved in one line using `Nat.pow_factorization_choose_le` from Mathlib, demonstrating how library lemmas can collapse pages of textbook arguments.",
-      "**Elementary implies powerful**: the carry-counting argument is purely combinatorial (no analysis, no complex variables), yet it yields Chebyshev's $\\pi(x) \\geq c \\cdot x/\\ln x$ — the best lower bound on $\\pi(x)$ achievable without the Prime Number Theorem.",
+      "**Elementary implies powerful**: the carry-counting argument is purely combinatorial (no analysis, no complex variables), yet it yields Chebyshev's $\\pi(x) \\geq c \\cdot x/\\ln x$ \u2014 the best lower bound on $\\pi(x)$ achievable without the Prime Number Theorem.",
       "**The sandwich structure**: the proof combines a lower bound ($4^n \\leq (2n+1)\\binom{2n}{n}$ from the binomial theorem) with an upper bound ($\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$ from the factorization bound) to trap $\\pi(2n)$."
     ]
   },
@@ -80,7 +80,7 @@
   ],
   "conclusion": {
     "summary": "Establishes the key factorization bound $p^{v_p\\binom{2n}{n}} \\leq 2n$ for Chebyshev's argument, proved in one line via Mathlib's `Nat.pow_factorization_choose_le`. Also proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ and synthesizes Chebyshev's combined inequality. The carry-counting infrastructure (carry bound, vanishing for large powers, digit count bound) is fully proved, though 2 sorries remain in the Legendre formula connection and the product bound corollary.",
-    "implications": "This factorization bound is the combinatorial core of Chebyshev's elementary approach to prime distribution. Combined with the central binomial lower bound, it gives $\\pi(x) \\geq c \\cdot x/\\ln x$ without any analytic machinery — a remarkable result that predated the Prime Number Theorem by nearly 50 years. Closing the 2 remaining sorries would complete the formal chain from Kummer's theorem to Chebyshev's bound.",
+    "implications": "This factorization bound is the combinatorial core of Chebyshev's elementary approach to prime distribution. Combined with the central binomial lower bound, it gives $\\pi(x) \\geq c \\cdot x/\\ln x$ without any analytic machinery \u2014 a remarkable result that predated the Prime Number Theorem by nearly 50 years. Closing the 2 remaining sorries would complete the formal chain from Kummer's theorem to Chebyshev's bound.",
     "openQuestions": [
       "Can the sorry in `legendre_factorial_val` be closed by connecting `Nat.factorization` to the floor-sum representation, possibly via `Nat.Prime.factorization_factorial`?",
       "Can the product bound `central_binom_le_pow_prime_counting` be proved using `Nat.factorization_prod_pow_eq_self` to reconstruct the central binomial from its prime factorization?",
@@ -90,15 +90,15 @@
   "references": [
     {
       "authors": "P. L. Chebyshev",
-      "title": "Mémoire sur les nombres premiers",
+      "title": "M\u00e9moire sur les nombres premiers",
       "year": "1852",
-      "venue": "Journal de mathématiques pures et appliquées"
+      "venue": "Journal de math\u00e9matiques pures et appliqu\u00e9es"
     },
     {
       "authors": "E. E. Kummer",
-      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "title": "\u00dcber die Erg\u00e4nzungss\u00e4tze zu den allgemeinen Reciprocit\u00e4tsgesetzen",
       "year": "1852",
-      "venue": "Journal für die reine und angewandte Mathematik",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik",
       "note": "Contains Kummer's theorem on p-adic valuations of binomial coefficients."
     },
     {
@@ -106,28 +106,28 @@
       "title": "Proofs from THE BOOK, Chapter 2: Bertrand's Postulate",
       "year": "2018",
       "venue": "Springer",
-      "note": "Presents Erdős's elementary proof of Bertrand's postulate using the factorization bound."
+      "note": "Presents Erd\u0151s's elementary proof of Bertrand's postulate using the factorization bound."
     }
   ],
   "theorems": [
     {
       "name": "prime_pow_val_central_binom_le",
-      "statement": "p ^ ((2 * n).choose n).factorization p ≤ 2 * n",
-      "description": "Main bound: p^{v_p(C(2n,n))} ≤ 2n for any prime p and n ≥ 1"
+      "statement": "p ^ ((2 * n).choose n).factorization p \u2264 2 * n",
+      "description": "Main bound: p^{v_p(C(2n,n))} \u2264 2n for any prime p and n \u2265 1"
     },
     {
       "name": "central_binom_val_terms",
-      "statement": "2 * n / p ^ i - 2 * (n / p ^ i) ≤ 1",
+      "statement": "2 * n / p ^ i - 2 * (n / p ^ i) \u2264 1",
       "description": "Each carry term in the base-p addition contributes at most 1"
     },
     {
       "name": "central_binom_lower",
-      "statement": "(2 * n + 1) * (2 * n).choose n ≥ 4 ^ n",
+      "statement": "(2 * n + 1) * (2 * n).choose n \u2265 4 ^ n",
       "description": "Central binomial lower bound from the binomial theorem"
     },
     {
       "name": "chebyshev_lower_via_kummer",
-      "statement": "4 ^ n ≤ (2 * n + 1) * (2 * n) ^ (2 * n).primeCounting'",
+      "statement": "4 ^ n \u2264 (2 * n + 1) * (2 * n) ^ (2 * n).primeCounting'",
       "description": "Chebyshev's combined inequality for the prime counting function"
     }
   ],
@@ -140,17 +140,17 @@
     {
       "targetId": "chebyshev-bounds",
       "relationship": "related",
-      "description": "Related: Chebyshev's bounds on π(x) via the theta and psi functions."
+      "description": "Related: Chebyshev's bounds on \u03c0(x) via the theta and psi functions."
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's Postulate: the existence result (∃ prime between n and 2n) that Chebyshev's factorization bound was designed to prove; this file provides the quantitative ingredient used in the postulate's proof"
+      "description": "Bertrand's Postulate: the existence result (\u2203 prime between n and 2n) that Chebyshev's factorization bound was designed to prove; this file provides the quantitative ingredient used in the postulate's proof"
     },
     {
       "targetId": "chebyshev-pnt-bridge-oq-02",
       "relationship": "sibling",
-      "description": "Sibling OQ-02: derives the real-valued lower bound π(2n) ≥ (n·log 4 − log(2n+1))/log(2n) from the same Chebyshev inequality; together OQ-01 and OQ-02 complete the combinatorial PNT-bridge"
+      "description": "Sibling OQ-02: derives the real-valued lower bound \u03c0(2n) \u2265 (n\u00b7log 4 \u2212 log(2n+1))/log(2n) from the same Chebyshev inequality; together OQ-01 and OQ-02 complete the combinatorial PNT-bridge"
     }
   ],
   "leanFile": {
@@ -163,7 +163,10 @@
     "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/ChebyshevPNTBridgeOQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/ChebyshevPNTBridgeOQ01Aristotle.lean"
+    ]
   },
   "sorries": 0
 }

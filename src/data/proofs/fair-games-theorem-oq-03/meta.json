@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 330,
-    "assumptions": "0 sorries, 0 axioms. All 9 theorems fully proved: martingale time-invariance (via setIntegral_eq), Gambler's Ruin formula (algebra), betting systems fail (sub/supermartingale sandwich via expected_stoppedValue_mono), option pricing neutrality, submartingale characterization (Mathlib iff), Doob's maximal inequality (conversion from Mathlib maximal_ineq). Note: FairGamesTheorem.lean has pre-existing build failures in Mathlib 4.26.0 due to IsStoppingTime API change from τ:Ω→ι to τ:Ω→WithTop ι.",
+    "assumptions": "0 sorries, 0 axioms. All 9 theorems fully proved: martingale time-invariance (via setIntegral_eq), Gambler's Ruin formula (algebra), betting systems fail (sub/supermartingale sandwich via expected_stoppedValue_mono), option pricing neutrality, submartingale characterization (Mathlib iff), Doob's maximal inequality (conversion from Mathlib maximal_ineq). Note: FairGamesTheorem.lean has pre-existing build failures in Mathlib 4.26.0 due to IsStoppingTime API change from \u03c4:\u03a9\u2192\u03b9 to \u03c4:\u03a9\u2192WithTop \u03b9.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9
   },
@@ -37,7 +37,10 @@
     "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/FairGamesTheoremOQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FairGamesTheoremOQ03Aristotle.lean"
+    ]
   },
   "crossReferences": [
     {
@@ -52,14 +55,14 @@
     }
   ],
   "overview": {
-    "historicalContext": "The Optional Stopping Theorem was proved by Joseph Doob in 1953 and forms the cornerstone of modern martingale theory. Doob's martingale theory unified previously disparate results in probability: the ballot problem (Bertrand 1887), the ruin probability formula (Laplace 1812), and sequential hypothesis testing (Wald 1947) all become special cases of one theorem: if you stop a martingale at a bounded stopping time, the expected value is unchanged from the start.\n\nIn Lean 4 / Mathlib 4.26.0, the stopping time API was updated to use τ : Ω → WithTop ℕ (extended naturals ℕ∞) instead of τ : Ω → ℕ. This represents a conceptually richer formalization — ⊤ represents 'never stop', which is the correct mathematical type — but breaks code written against the older API. This file navigates that API change, documenting the workarounds and the four theorems that remain as sorries pending stabilization of the stoppedValue/WithTop.untopA simp lemmas.",
-    "problemStatement": "The main FairGamesTheorem.lean file contained several application theorems left as trivial placeholders (returning `(1:ℕ)+1=2` or `True`). Can these be given substantive, mathematically meaningful proofs? Additionally, can the single axiom in the main file be eliminated using Mathlib's bidirectional characterization theorem?",
+    "historicalContext": "The Optional Stopping Theorem was proved by Joseph Doob in 1953 and forms the cornerstone of modern martingale theory. Doob's martingale theory unified previously disparate results in probability: the ballot problem (Bertrand 1887), the ruin probability formula (Laplace 1812), and sequential hypothesis testing (Wald 1947) all become special cases of one theorem: if you stop a martingale at a bounded stopping time, the expected value is unchanged from the start.\n\nIn Lean 4 / Mathlib 4.26.0, the stopping time API was updated to use \u03c4 : \u03a9 \u2192 WithTop \u2115 (extended naturals \u2115\u221e) instead of \u03c4 : \u03a9 \u2192 \u2115. This represents a conceptually richer formalization \u2014 \u22a4 represents 'never stop', which is the correct mathematical type \u2014 but breaks code written against the older API. This file navigates that API change, documenting the workarounds and the four theorems that remain as sorries pending stabilization of the stoppedValue/WithTop.untopA simp lemmas.",
+    "problemStatement": "The main FairGamesTheorem.lean file contained several application theorems left as trivial placeholders (returning `(1:\u2115)+1=2` or `True`). Can these be given substantive, mathematically meaningful proofs? Additionally, can the single axiom in the main file be eliminated using Mathlib's bidirectional characterization theorem?",
     "proofStrategy": "Standalone file (no import of FairGamesTheorem). Each stub is given a proper mathematical statement and proof. The Gambler's Ruin formula is derived algebraically from the fair game condition. Martingale time-invariance uses Martingale.setIntegral_eq directly. The submartingale characterization axiom is proved using submartingale_iff_expected_stoppedValue_mono. Four theorems remain as sorry pending Mathlib 4.26.0 stoppedValue/untopA simp API resolution.",
     "keyInsights": [
-      "Martingale time-invariance (E[f_n] = E[f_0]) is proved via Martingale.setIntegral_eq with s=Set.univ — a clean path that avoids stopping time machinery entirely.",
-      "The Gambler's Ruin probability formula P(win) = W₀/(W₀+a) is a pure algebraic consequence of E[final wealth] = initial wealth. Once the fair game property is established, the stochastic problem reduces to a linear equation solved by rw [eq_div_iff] and linarith.",
+      "Martingale time-invariance (E[f_n] = E[f_0]) is proved via Martingale.setIntegral_eq with s=Set.univ \u2014 a clean path that avoids stopping time machinery entirely.",
+      "The Gambler's Ruin probability formula P(win) = W\u2080/(W\u2080+a) is a pure algebraic consequence of E[final wealth] = initial wealth. Once the fair game property is established, the stochastic problem reduces to a linear equation solved by rw [eq_div_iff] and linarith.",
       "The submartingale characterization axiom in FairGamesTheorem.lean is directly eliminated: rw [submartingale_iff_expected_stoppedValue_mono hadapt hint] rewrites the goal, then exact h closes it in one step.",
-      "Mathlib 4.26.0 changed IsStoppingTime from τ:Ω→ι to τ:Ω→WithTop ι. This is a breaking change affecting FairGamesTheorem.lean. The OQ03 file is standalone and uses the correct τ:Ω→ℕ∞ type.",
+      "Mathlib 4.26.0 changed IsStoppingTime from \u03c4:\u03a9\u2192\u03b9 to \u03c4:\u03a9\u2192WithTop \u03b9. This is a breaking change affecting FairGamesTheorem.lean. The OQ03 file is standalone and uses the correct \u03c4:\u03a9\u2192\u2115\u221e type.",
       "Doob's maximal inequality and three stopping-time theorems remain as honest sorries. The stoppedValue unfolding via WithTop.untopA requires identifying the correct Mathlib 4.26.0 simp lemmas."
     ]
   },
@@ -71,7 +74,7 @@
       "theorems": [
         {
           "name": "martingale_time_invariance",
-          "statement": "∀ n, ∫ ω, f n ω ∂μ = ∫ ω, f 0 ω ∂μ",
+          "statement": "\u2200 n, \u222b \u03c9, f n \u03c9 \u2202\u03bc = \u222b \u03c9, f 0 \u03c9 \u2202\u03bc",
           "status": "proved",
           "description": "Expected value of a martingale is constant across time"
         }
@@ -84,15 +87,15 @@
       "theorems": [
         {
           "name": "gamblers_ruin_win_prob",
-          "statement": "p * (W₀ + a) = W₀ → p = W₀ / (W₀ + a)",
+          "statement": "p * (W\u2080 + a) = W\u2080 \u2192 p = W\u2080 / (W\u2080 + a)",
           "status": "proved",
-          "description": "Win probability is W₀/(W₀+a) in a two-outcome fair game"
+          "description": "Win probability is W\u2080/(W\u2080+a) in a two-outcome fair game"
         },
         {
           "name": "gamblers_ruin_lose_prob",
-          "statement": "1 - p = a / (W₀ + a)",
+          "statement": "1 - p = a / (W\u2080 + a)",
           "status": "proved",
-          "description": "Ruin probability is a/(W₀+a)"
+          "description": "Ruin probability is a/(W\u2080+a)"
         },
         {
           "name": "gamblers_ruin_probs_sum_one",
@@ -109,13 +112,13 @@
       "theorems": [
         {
           "name": "any_bounded_strategy_preserves_expectation",
-          "statement": "∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ",
+          "statement": "\u222b \u03c9, stoppedValue f \u03c4 \u03c9 \u2202\u03bc = \u222b \u03c9, f 0 \u03c9 \u2202\u03bc",
           "status": "proved",
           "description": "No bounded stopping strategy can improve expected returns. Proved via Submartingale.expected_stoppedValue_mono with constant stopping time 0, combined with supermartingale (negation) direction."
         },
         {
           "name": "two_strategies_same_expectation",
-          "statement": "∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, stoppedValue f π ω ∂μ for τ ≤ π",
+          "statement": "\u222b \u03c9, stoppedValue f \u03c4 \u03c9 \u2202\u03bc = \u222b \u03c9, stoppedValue f \u03c0 \u03c9 \u2202\u03bc for \u03c4 \u2264 \u03c0",
           "status": "proved",
           "description": "Two bounded strategies yield equal expected payoffs. Proved via le_antisymm of submartingale and supermartingale (negation) directions."
         }
@@ -128,7 +131,7 @@
       "theorems": [
         {
           "name": "risk_neutral_pricing_neutrality",
-          "statement": "∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ",
+          "statement": "\u222b \u03c9, stoppedValue f \u03c4 \u03c9 \u2202\u03bc = \u222b \u03c9, f 0 \u03c9 \u2202\u03bc",
           "status": "proved",
           "description": "Under risk-neutral measure, exercise timing doesn't matter. Identical to any_bounded_strategy_preserves_expectation."
         }
@@ -141,7 +144,7 @@
       "theorems": [
         {
           "name": "submartingale_of_stoppedValue_mono_proved",
-          "statement": "Monotone stopped expectations (for ℕ∞ stopping times) → Submartingale",
+          "statement": "Monotone stopped expectations (for \u2115\u221e stopping times) \u2192 Submartingale",
           "status": "proved",
           "description": "Backward direction of submartingale_iff_expected_stoppedValue_mono"
         }
@@ -150,11 +153,11 @@
     {
       "id": "doobs-inequality",
       "title": "Part VI: Doob's Maximal Inequality",
-      "description": "P(max f_n ≥ thresh) ≤ E[f_N]/thresh for submartingales",
+      "description": "P(max f_n \u2265 thresh) \u2264 E[f_N]/thresh for submartingales",
       "theorems": [
         {
           "name": "doobs_maximal_inequality",
-          "statement": "thresh * μ{ω | ∃ n ≤ N, thresh ≤ f n ω}.toReal ≤ ∫ ω, f N ω ∂μ",
+          "statement": "thresh * \u03bc{\u03c9 | \u2203 n \u2264 N, thresh \u2264 f n \u03c9}.toReal \u2264 \u222b \u03c9, f N \u03c9 \u2202\u03bc",
           "status": "proved",
           "description": "Doob's maximal inequality. Proved by converting from Mathlib's maximal_ineq (ENNReal/NNReal) to real-valued form, using set equality via le_sup'_iff and bounding restricted integral by full integral."
         }
@@ -162,11 +165,11 @@
     }
   ],
   "conclusion": {
-    "summary": "All 9 application theorems of the Optional Stopping Theorem are fully proved with 0 axioms and 0 sorries. The core technique for the stopping-time theorems is the sub/supermartingale sandwich: a martingale is both a submartingale (E[f_τ] ≤ E[f_π]) and a supermartingale (reverse via negation), forcing equality. Doob's maximal inequality is proved by converting from Mathlib's ENNReal/NNReal formulation to a real-valued statement.",
-    "implications": "The Gambler's Ruin formalization illustrates a general pattern: once a stochastic invariant (E[f_τ] = E[f_0]) is established, the application reduces to pure algebra. The sub/supermartingale sandwich technique shows that Mathlib's expected_stoppedValue_mono is sufficient to derive the full Optional Stopping equality for martingales. The martingale time-invariance proof via setIntegral_eq with s=Set.univ shows that Mathlib's measure theory API is rich enough to bypass complex stopping-time machinery when simpler paths exist.",
+    "summary": "All 9 application theorems of the Optional Stopping Theorem are fully proved with 0 axioms and 0 sorries. The core technique for the stopping-time theorems is the sub/supermartingale sandwich: a martingale is both a submartingale (E[f_\u03c4] \u2264 E[f_\u03c0]) and a supermartingale (reverse via negation), forcing equality. Doob's maximal inequality is proved by converting from Mathlib's ENNReal/NNReal formulation to a real-valued statement.",
+    "implications": "The Gambler's Ruin formalization illustrates a general pattern: once a stochastic invariant (E[f_\u03c4] = E[f_0]) is established, the application reduces to pure algebra. The sub/supermartingale sandwich technique shows that Mathlib's expected_stoppedValue_mono is sufficient to derive the full Optional Stopping equality for martingales. The martingale time-invariance proof via setIntegral_eq with s=Set.univ shows that Mathlib's measure theory API is rich enough to bypass complex stopping-time machinery when simpler paths exist.",
     "openQuestions": [
       "Can the continuous-time version (Doob's Optional Stopping for Brownian motion) be formalized using Mathlib's continuous-time martingale infrastructure?",
-      "Can Wald's identity (E[S_τ] = E[X₁] · E[τ] for random sums stopped at τ) be derived as a corollary of martingale_time_invariance?"
+      "Can Wald's identity (E[S_\u03c4] = E[X\u2081] \u00b7 E[\u03c4] for random sums stopped at \u03c4) be derived as a corollary of martingale_time_invariance?"
     ]
   },
   "sorries": 0

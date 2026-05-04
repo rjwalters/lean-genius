@@ -1,10 +1,10 @@
 {
   "id": "burnside-counting-oq-03",
-  "title": "Pólya Enumeration Theorem for Cyclic Groups",
+  "title": "P\u00f3lya Enumeration Theorem for Cyclic Groups",
   "slug": "burnside-counting-oq-03",
-  "description": "The Pólya enumeration theorem (PET) generalizes Burnside's lemma by identifying the precise fixed-point count for each group element. For cyclic rotation by r on n positions with k colors, the number of fixed colorings is k^gcd(r,n), where gcd(r,n) equals the number of orbits. Combined with Burnside's lemma, this yields the Pólya necklace formula: n·(#distinct k-necklaces) = Σ_{d|n} φ(n/d)·k^d. Concretely verified for binary 4-necklaces: 2^4 + 2^1 + 2^2 + 2^1 = 24, giving 6 distinct necklaces.",
+  "description": "The P\u00f3lya enumeration theorem (PET) generalizes Burnside's lemma by identifying the precise fixed-point count for each group element. For cyclic rotation by r on n positions with k colors, the number of fixed colorings is k^gcd(r,n), where gcd(r,n) equals the number of orbits. Combined with Burnside's lemma, this yields the P\u00f3lya necklace formula: n\u00b7(#distinct k-necklaces) = \u03a3_{d|n} \u03c6(n/d)\u00b7k^d. Concretely verified for binary 4-necklaces: 2^4 + 2^1 + 2^2 + 2^1 = 24, giving 6 distinct necklaces.",
   "meta": {
-    "author": "George Pólya (1937); formalized via Mathlib",
+    "author": "George P\u00f3lya (1937); formalized via Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Polya_enumeration_theorem",
     "date": "1937",
     "status": "verified",
@@ -41,7 +41,7 @@
       },
       {
         "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
-        "description": "Burnside's lemma: Σ |Fix(g)| = |orbits| × |G|",
+        "description": "Burnside's lemma: \u03a3 |Fix(g)| = |orbits| \u00d7 |G|",
         "module": "Mathlib.GroupTheory.GroupAction.Quotient"
       }
     ],
@@ -49,20 +49,20 @@
       "IsFixed: computable fixed-coloring predicate for cyclic rotation",
       "addOrderOf_rotation: orbit size under cyclic rotation = n / gcd(n, r.val) (wraps Mathlib)",
       "fixed_factors_through_mod: positions with same residue mod gcd(r,n) get same color (proved via Bezout)",
-      "polya_cyclic_fixed_count: |Fix(r)| = k^gcd(r,n) via explicit bijection with Fin(gcd) → Fin(k)",
+      "polya_cyclic_fixed_count: |Fix(r)| = k^gcd(r,n) via explicit bijection with Fin(gcd) \u2192 Fin(k)",
       "fp_count_rot{0,1,2,3}_4_2: proved by native_decide (16, 2, 4, 2 fixed colorings)",
       "fp_sum_binary4: Burnside sum = 24 proved (not axiomatized)",
-      "polya_sum_Z4_binary: Σ_{r:Fin 4} 2^gcd(r,4) = 24",
-      "polya_divisor_sum_Z4_binary: Σ_{d|4} φ(4/d)·2^d = 24",
-      "polya_sum_identity: general Σ_{r:Fin n} k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d (for all n,k)",
-      "polya_sum_equiv_4_2: two Pólya formulations are equal",
+      "polya_sum_Z4_binary: \u03a3_{r:Fin 4} 2^gcd(r,4) = 24",
+      "polya_divisor_sum_Z4_binary: \u03a3_{d|4} \u03c6(4/d)\u00b72^d = 24",
+      "polya_sum_identity: general \u03a3_{r:Fin n} k^gcd(r,n) = \u03a3_{d|n} \u03c6(n/d)\u00b7k^d (for all n,k)",
+      "polya_sum_equiv_4_2: two P\u00f3lya formulations are equal",
       "polya_binary4_necklace_count: 24/4 = 6 necklaces"
     ]
   },
   "sections": [
     {
       "id": "sec-definitions",
-      "title": "§1: Cyclic Rotation Definitions",
+      "title": "\u00a71: Cyclic Rotation Definitions",
       "startLine": 44,
       "endLine": 59,
       "summary": "Defines IsFixed (fixed-coloring predicate) and DecidablePred instance enabling native_decide proofs.",
@@ -70,7 +70,7 @@
     },
     {
       "id": "sec-addorderof",
-      "title": "§2: Connection to addOrderOf",
+      "title": "\u00a72: Connection to addOrderOf",
       "startLine": 61,
       "endLine": 76,
       "summary": "Proves addOrderOf_rotation: addOrderOf(r : ZMod n) = n/gcd(n, r.val), bridging orbit size to Mathlib's additive order theory.",
@@ -78,7 +78,7 @@
     },
     {
       "id": "sec-orbit",
-      "title": "§3: Orbit Structure",
+      "title": "\u00a73: Orbit Structure",
       "startLine": 78,
       "endLine": 223,
       "summary": "Proves fixed_factors_through_mod (positions with same value mod gcd get same color in fixed colorings) and polya_cyclic_fixed_count (bijection giving |Fix(r)| = k^gcd). Both proved as the general theorems.",
@@ -86,7 +86,7 @@
     },
     {
       "id": "sec-concrete",
-      "title": "§4: Concrete Verification n=4, k=2",
+      "title": "\u00a74: Concrete Verification n=4, k=2",
       "startLine": 225,
       "endLine": 258,
       "summary": "Verifies fp_count_rot0-3_4_2 (16, 2, 4, 2) and fp_sum_binary4 (= 24) by native_decide; directly establishes the counts from burnside-counting.",
@@ -94,7 +94,7 @@
     },
     {
       "id": "sec-polya",
-      "title": "§5: Pólya Sum Formula and Fiber Reindexing",
+      "title": "\u00a75: P\u00f3lya Sum Formula and Fiber Reindexing",
       "startLine": 260,
       "endLine": 362,
       "summary": "Proves polya_sum_Z4_binary and polya_divisor_sum_Z4_binary by native_decide; proves polya_sum_identity (general reindexing via Finset.sum_fiberwise_of_maps_to) with fiber_card_eq_totient as a key sublemma.",
@@ -102,22 +102,22 @@
     },
     {
       "id": "sec-necklaces",
-      "title": "§6-7: Necklace Application and General Formula",
+      "title": "\u00a76-7: Necklace Application and General Formula",
       "startLine": 364,
       "endLine": 402,
-      "summary": "Derives 6 binary 4-necklaces (24/4 = 6). States polya_necklace_formula_statement: assuming Burnside and the fixed-point formula, conclude n · necklace_count = Σ k^gcd(r,n).",
+      "summary": "Derives 6 binary 4-necklaces (24/4 = 6). States polya_necklace_formula_statement: assuming Burnside and the fixed-point formula, conclude n \u00b7 necklace_count = \u03a3 k^gcd(r,n).",
       "mathContext": "$\\#\\text{necklaces}(4,2) = 24/4 = 6$. General: $n \\cdot \\#\\text{necklaces}(n,k) = \\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$."
     }
   ],
   "overview": {
-    "historicalContext": "George Pólya (1937) published his enumeration theorem in 'Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen' (Acta Mathematica), introducing the cycle index as a systematic tool to count distinct combinatorial objects under symmetry. The theorem was independently discovered by John Redfield (1927) but Pólya's cleaner presentation became standard. The cyclic group case (counting necklaces) was already understood via Burnside's lemma, but Pólya identified the key formula |Fix(rotation r)| = k^{gcd(r,n)}, which makes the computation explicit.\n\nThis proof builds directly on the companion entry burnside-counting, which axiomatized the binary 4-necklace fixed-point counts. Here we replace those axioms with proofs, establishing the general formula k^{gcd(r,n)} and verifying it computationally for the n=4 case.",
+    "historicalContext": "George P\u00f3lya (1937) published his enumeration theorem in 'Kombinatorische Anzahlbestimmungen f\u00fcr Gruppen, Graphen und chemische Verbindungen' (Acta Mathematica), introducing the cycle index as a systematic tool to count distinct combinatorial objects under symmetry. The theorem was independently discovered by John Redfield (1927) but P\u00f3lya's cleaner presentation became standard. The cyclic group case (counting necklaces) was already understood via Burnside's lemma, but P\u00f3lya identified the key formula |Fix(rotation r)| = k^{gcd(r,n)}, which makes the computation explicit.\n\nThis proof builds directly on the companion entry burnside-counting, which axiomatized the binary 4-necklace fixed-point counts. Here we replace those axioms with proofs, establishing the general formula k^{gcd(r,n)} and verifying it computationally for the n=4 case.",
     "problemStatement": "For the cyclic group $\\mathbb{Z}/n\\mathbb{Z}$ acting on colorings $c : \\text{Fin}\\, n \\to \\text{Fin}\\, k$ by rotation, prove: $|\\text{Fix}(r)| = k^{\\gcd(r,n)}$ and $\\#\\text{necklaces} = \\frac{1}{n}\\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\frac{1}{n}\\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$.",
-    "proofStrategy": "**Layer 1 — Orbit structure**: Prove that two positions i, j in Fin n are in the same orbit under rotation by r iff i ≡ j (mod gcd(r,n)). This follows from Bezout's lemma: the subgroup ⟨r⟩ in Z/nZ equals ⟨gcd(r,n)⟩. Hence each orbit has size n/gcd(r,n), and there are gcd(r,n) orbits.\n\n**Layer 2 — Fixed-point bijection**: A coloring is fixed by rotation r iff it is constant on each orbit. The bijection {fixed colorings} ↔ (Fin gcd(r,n) → Fin k) sends c to (j ↦ c(j)) on orbit representatives. This gives |Fix(r)| = k^{gcd(r,n)}.\n\n**Layer 3 — Pólya sum reindexing**: Reindex Σ_{r:Fin n} k^{gcd(r,n)} by d = gcd(r,n). For each divisor d|n, there are φ(n/d) rotations r with gcd(r,n) = d (those with r/d coprime to n/d). This yields the divisor sum form Σ_{d|n} φ(n/d)·k^d.\n\n**Layer 4 — Concrete verification**: For n=4, k=2, all counts (16, 2, 4, 2) and sums (24) are verified by native_decide.",
+    "proofStrategy": "**Layer 1 \u2014 Orbit structure**: Prove that two positions i, j in Fin n are in the same orbit under rotation by r iff i \u2261 j (mod gcd(r,n)). This follows from Bezout's lemma: the subgroup \u27e8r\u27e9 in Z/nZ equals \u27e8gcd(r,n)\u27e9. Hence each orbit has size n/gcd(r,n), and there are gcd(r,n) orbits.\n\n**Layer 2 \u2014 Fixed-point bijection**: A coloring is fixed by rotation r iff it is constant on each orbit. The bijection {fixed colorings} \u2194 (Fin gcd(r,n) \u2192 Fin k) sends c to (j \u21a6 c(j)) on orbit representatives. This gives |Fix(r)| = k^{gcd(r,n)}.\n\n**Layer 3 \u2014 P\u00f3lya sum reindexing**: Reindex \u03a3_{r:Fin n} k^{gcd(r,n)} by d = gcd(r,n). For each divisor d|n, there are \u03c6(n/d) rotations r with gcd(r,n) = d (those with r/d coprime to n/d). This yields the divisor sum form \u03a3_{d|n} \u03c6(n/d)\u00b7k^d.\n\n**Layer 4 \u2014 Concrete verification**: For n=4, k=2, all counts (16, 2, 4, 2) and sums (24) are verified by native_decide.",
     "keyInsights": [
-      "**Orbit = Coset of ⟨gcd(r,n)⟩**: The critical algebraic fact is that ⟨r⟩ = ⟨gcd(r,n)⟩ as subgroups of Z/nZ. This follows because gcd(r,n) | r (so ⟨r⟩ ⊆ ⟨gcd(r,n)⟩) and Bezout gives gcd(r,n) as a Z-linear combination of r and n (so ⟨gcd(r,n)⟩ ⊆ ⟨r⟩ in Z/nZ).",
+      "**Orbit = Coset of \u27e8gcd(r,n)\u27e9**: The critical algebraic fact is that \u27e8r\u27e9 = \u27e8gcd(r,n)\u27e9 as subgroups of Z/nZ. This follows because gcd(r,n) | r (so \u27e8r\u27e9 \u2286 \u27e8gcd(r,n)\u27e9) and Bezout gives gcd(r,n) as a Z-linear combination of r and n (so \u27e8gcd(r,n)\u27e9 \u2286 \u27e8r\u27e9 in Z/nZ).",
       "**Bezout's Lemma in the Proof**: The proof of fixed_factors_through_mod uses Nat.gcd_eq_gcd_ab (Bezout identity) to find an integer multiplier m such that applying the rotation m times moves position i to position j. This is the key step bridging 'same mod gcd' to 'same orbit'.",
       "**ZMod.addOrderOf_coe as Bridge**: The Mathlib theorem `ZMod.addOrderOf_coe` directly gives addOrderOf(r : ZMod n) = n/gcd(n,r). This equals the orbit size, so gcd(n,r) orbits exist. Without this Mathlib fact, proving the orbit size would require substantially more work.",
-      "**Fiber Reindexing for Divisor Sum**: The identity Σ_{r:Fin n} k^{gcd(r,n)} = Σ_{d|n} φ(n/d)·k^d is proved by Finset.sum_fiberwise_of_maps_to — grouping rotations by their gcd with n. The fiber for divisor d has size φ(n/d), proved via an explicit bijection r ↦ r/d with coprime-to-n/d elements.",
+      "**Fiber Reindexing for Divisor Sum**: The identity \u03a3_{r:Fin n} k^{gcd(r,n)} = \u03a3_{d|n} \u03c6(n/d)\u00b7k^d is proved by Finset.sum_fiberwise_of_maps_to \u2014 grouping rotations by their gcd with n. The fiber for divisor d has size \u03c6(n/d), proved via an explicit bijection r \u21a6 r/d with coprime-to-n/d elements.",
       "**native_decide vs. Proof**: The fixed-point counts for n=4 are verified by native_decide (computation), while the general formulas use mathematical proofs. This demonstrates the dual approach in Lean 4: computational verification for concrete instances, formal proof for the general case. The sorry'd theorems (polya_cyclic_fixed_count, fixed_factors_through_mod) are the bridge between these two layers."
     ],
     "prerequisites": [
@@ -126,16 +126,16 @@
       "Euler totient function and Nat.divisors",
       "Finset.sum_fiberwise_of_maps_to"
     ],
-    "what": "The Pólya enumeration theorem counts distinct colorings of n positions under cyclic rotation. The key insight is that |Fix(rotation r)| = k^gcd(r,n), because rotation by r partitions positions into gcd(r,n) orbits. Burnside's lemma then gives #necklaces = (1/n)·Σ k^gcd(r,n).",
+    "what": "The P\u00f3lya enumeration theorem counts distinct colorings of n positions under cyclic rotation. The key insight is that |Fix(rotation r)| = k^gcd(r,n), because rotation by r partitions positions into gcd(r,n) orbits. Burnside's lemma then gives #necklaces = (1/n)\u00b7\u03a3 k^gcd(r,n).",
     "how": "Two layers: (1) prove the fixed-point formula |Fix(r)| = k^gcd(r,n) using the orbit characterization (two positions are orbit-equivalent iff they agree mod gcd(r,n)); (2) apply Burnside's lemma. For the specific case n=4, k=2, all computations are verified by native_decide.",
-    "significance": "Pólya enumeration is fundamental to combinatorial counting. The connection |Fix(r)| = k^gcd(r,n) follows from `ZMod.addOrderOf_coe`: the orbit size under rotation by r is n/gcd(n,r), so there are gcd(n,r) orbits."
+    "significance": "P\u00f3lya enumeration is fundamental to combinatorial counting. The connection |Fix(r)| = k^gcd(r,n) follows from `ZMod.addOrderOf_coe`: the orbit size under rotation by r is n/gcd(n,r), so there are gcd(n,r) orbits."
   },
   "conclusion": {
-    "summary": "Formalizes the Pólya enumeration theorem for cyclic groups: proves the general fixed-point formula |Fix(r)| = k^{gcd(r,n)} (with 2 sorries for the orbit bijection), verifies all concrete computations for binary 4-necklaces by native_decide, and establishes both forms of the Pólya sum (rotational and divisor sum) along with the reindexing identity.",
-    "implications": "This entry achieves two goals: (1) it replaces axioms from burnside-counting with proofs, demonstrating the power of computation via native_decide for concrete instances; (2) it states the general formula polya_cyclic_fixed_count which, once proved, will fully generalize Burnside's lemma to the Pólya enumeration theorem for all cyclic groups. The fiber_card_eq_totient lemma (fully proved) is the hardest combinatorial step and may be reusable for other Pólya-type arguments.",
+    "summary": "Formalizes the P\u00f3lya enumeration theorem for cyclic groups: proves the general fixed-point formula |Fix(r)| = k^{gcd(r,n)} (with 2 sorries for the orbit bijection), verifies all concrete computations for binary 4-necklaces by native_decide, and establishes both forms of the P\u00f3lya sum (rotational and divisor sum) along with the reindexing identity.",
+    "implications": "This entry achieves two goals: (1) it replaces axioms from burnside-counting with proofs, demonstrating the power of computation via native_decide for concrete instances; (2) it states the general formula polya_cyclic_fixed_count which, once proved, will fully generalize Burnside's lemma to the P\u00f3lya enumeration theorem for all cyclic groups. The fiber_card_eq_totient lemma (fully proved) is the hardest combinatorial step and may be reusable for other P\u00f3lya-type arguments.",
     "openQuestions": [
-      "Complete polya_cyclic_fixed_count: the bijection {fixed colorings} ↔ (Fin d → Fin k) remains as a sorry — the invFun half (backward map) is defined but left_inv requires showing that coloring by orbit representative and then evaluating at a representative gives back the original coloring.",
-      "Generalize from cyclic groups to arbitrary finite groups: the full Pólya enumeration theorem uses the cycle index of an arbitrary permutation group. Can the Lean formalization be extended to, e.g., the dihedral group acting on necklaces?",
+      "Complete polya_cyclic_fixed_count: the bijection {fixed colorings} \u2194 (Fin d \u2192 Fin k) remains as a sorry \u2014 the invFun half (backward map) is defined but left_inv requires showing that coloring by orbit representative and then evaluating at a representative gives back the original coloring.",
+      "Generalize from cyclic groups to arbitrary finite groups: the full P\u00f3lya enumeration theorem uses the cycle index of an arbitrary permutation group. Can the Lean formalization be extended to, e.g., the dihedral group acting on necklaces?",
       "Interface with Burnside's lemma in Mathlib: MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group is cited but not directly applied. A future formalization could connect polya_necklace_formula_statement to this Mathlib theorem."
     ]
   },
@@ -144,13 +144,13 @@
       "id": "xref-burnside-parent",
       "targetId": "burnside-counting",
       "relationship": "extends",
-      "description": "Generalizes the axiomatized binary 4-necklace computation to the full Pólya formula; removes axioms by computing fixed-point counts directly."
+      "description": "Generalizes the axiomatized binary 4-necklace computation to the full P\u00f3lya formula; removes axioms by computing fixed-point counts directly."
     },
     {
       "id": "xref-euler-totient",
       "targetId": "euler-totient",
       "relationship": "uses",
-      "description": "Euler's totient $\\varphi$ is the indispensable coefficient in the Pólya necklace formula $n \\cdot N(n, k) = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$. The number of cyclic rotations of order exactly $d$ is $\\varphi(d)$ — those rotations $r$ with $\\gcd(r, n) = n/d$. Without $\\varphi$, the rotation-by-degree group-by counting cannot collapse from $n$ rotations to $\\sum_{d \\mid n} \\varphi(n/d)$ orbits-per-divisor terms."
+      "description": "Euler's totient $\\varphi$ is the indispensable coefficient in the P\u00f3lya necklace formula $n \\cdot N(n, k) = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$. The number of cyclic rotations of order exactly $d$ is $\\varphi(d)$ \u2014 those rotations $r$ with $\\gcd(r, n) = n/d$. Without $\\varphi$, the rotation-by-degree group-by counting cannot collapse from $n$ rotations to $\\sum_{d \\mid n} \\varphi(n/d)$ orbits-per-divisor terms."
     },
     {
       "id": "xref-gcd-algorithm",
@@ -162,13 +162,13 @@
       "id": "xref-inclusion-exclusion",
       "targetId": "inclusion-exclusion",
       "relationship": "related",
-      "description": "Both Burnside's lemma and inclusion-exclusion are 'averaging' counting techniques that convert overcounted enumerations into orbit/union sizes. Burnside averages fixed-point counts over a group; inclusion-exclusion alternates intersection sizes. Pólya enumeration unifies them by tracking *which* orbits each group element fixes — and Möbius inversion on the divisor lattice (Burnside-by-divisor) is formally analogous to Möbius inversion on the subset lattice (inclusion-exclusion)."
+      "description": "Both Burnside's lemma and inclusion-exclusion are 'averaging' counting techniques that convert overcounted enumerations into orbit/union sizes. Burnside averages fixed-point counts over a group; inclusion-exclusion alternates intersection sizes. P\u00f3lya enumeration unifies them by tracking *which* orbits each group element fixes \u2014 and M\u00f6bius inversion on the divisor lattice (Burnside-by-divisor) is formally analogous to M\u00f6bius inversion on the subset lattice (inclusion-exclusion)."
     },
     {
       "id": "xref-binomial-theorem",
       "targetId": "binomial-theorem",
       "relationship": "related",
-      "description": "Pólya enumeration generalizes binomial-style counting from unordered selections (color $k$ objects from $n$ with no symmetry) to selections under group action (color $k$ objects from $n$ modulo cyclic rotation). The identity $\\sum_{d \\mid n} \\varphi(n/d) k^d = n \\cdot N(n, k)$ specialises to $k^n$ when the symmetry group is trivial, recovering plain binomial counting; the divisor sum is the symmetry-aware refinement."
+      "description": "P\u00f3lya enumeration generalizes binomial-style counting from unordered selections (color $k$ objects from $n$ with no symmetry) to selections under group action (color $k$ objects from $n$ modulo cyclic rotation). The identity $\\sum_{d \\mid n} \\varphi(n/d) k^d = n \\cdot N(n, k)$ specialises to $k^n$ when the symmetry group is trivial, recovering plain binomial counting; the divisor sum is the symmetry-aware refinement."
     }
   ],
   "leanFile": {
@@ -177,7 +177,10 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 18
+    "theoremCount": 18,
+    "additionalFiles": [
+      "Proofs/BurnsideCountingOQ03Aristotle.lean"
+    ]
   },
   "sorries": 0
 }

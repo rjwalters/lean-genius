@@ -2,7 +2,7 @@
   "id": "erdos-1012-oq-03",
   "title": "Directed Graph Hamiltonian Cycle Thresholds",
   "slug": "erdos-1012-oq-03",
-  "description": "Directed analogues of Hamiltonian cycle conditions: Ghouila-Houri, Moon-Moser, and Rédei theorems for digraphs and tournaments.",
+  "description": "Directed analogues of Hamiltonian cycle conditions: Ghouila-Houri, Moon-Moser, and R\u00e9dei theorems for digraphs and tournaments.",
   "meta": {
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1012OQ03.lean",
@@ -22,11 +22,11 @@
     "axiomCount": 1,
     "lineCount": 1781,
     "dateUpdated": "2026-05-04",
-    "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (Ghouila-Houri path surgery: under GH degree conditions, the longest directed cycle in a SC digraph is Hamiltonian — standard result from Ghouila-Houri 1960, Diestel §10). 0 sorries: removed dead sc_walk_to_simple_path and sc_simple_path_exists lemmas (never referenced by any theorem). Rédei, Moon-Moser, directed_hamiltonian_threshold, and ghouila_houri all fully proved.",
+    "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (Ghouila-Houri path surgery: under GH degree conditions, the longest directed cycle in a SC digraph is Hamiltonian \u2014 standard result from Ghouila-Houri 1960, Diestel \u00a710). 0 sorries: removed dead sc_walk_to_simple_path and sc_simple_path_exists lemmas (never referenced by any theorem). R\u00e9dei, Moon-Moser, directed_hamiltonian_threshold, and ghouila_houri all fully proved.",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
-    "date": "Rédei 1934, Ghouila-Houri 1960, Moon-Moser 1963; formalized 2026",
+    "date": "R\u00e9dei 1934, Ghouila-Houri 1960, Moon-Moser 1963; formalized 2026",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -35,7 +35,7 @@
       },
       {
         "theorem": "Equiv.Perm",
-        "description": "Used to encode Hamiltonian cycles and paths as bijections on Fin n — the core representation for HasHamiltonianCycle and HasHamiltonianPath",
+        "description": "Used to encode Hamiltonian cycles and paths as bijections on Fin n \u2014 the core representation for HasHamiltonianCycle and HasHamiltonianPath",
         "module": "Mathlib.Logic.Equiv.Basic"
       },
       {
@@ -52,32 +52,32 @@
     "originalContributions": [
       "Digraph structure and degree definitions: loopless arc predicate, noncomputable outDegree/inDegree as Finset cardinalities, IsTournament, IsStronglyConnected",
       "HasHamiltonianCycle / HasHamiltonianPath: Equiv.Perm (Fin n) encoding of directed Hamiltonian cycles and paths with all arcs verified",
-      "Rédei's theorem (fully proved): tournament_path_insert (vertex insertion into directed path) + tournament_full_path_list (inductive construction) + list_path_to_hamiltonian (representation conversion)",
+      "R\u00e9dei's theorem (fully proved): tournament_path_insert (vertex insertion into directed path) + tournament_full_path_list (inductive construction) + list_path_to_hamiltonian (representation conversion)",
       "Moon-Moser theorem (fully proved): tournament_cycle_extendable (SC contradiction forces cycle growth) + grow_cycle_to_hamiltonian (well-founded induction with termination measure |V|-|cycle|)",
-      "directed_hamiltonian_threshold (fully proved): arc count > (n-1)² + SC implies Hamiltonicity via probabilistic union bound over n! permutations (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le)"
+      "directed_hamiltonian_threshold (fully proved): arc count > (n-1)\u00b2 + SC implies Hamiltonicity via probabilistic union bound over n! permutations (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le)"
     ],
     "theoremCount": 9
   },
   "overview": {
     "prerequisites": [
       "Directed graph theory (arcs, in-degree, out-degree, strong connectivity)",
-      "Tournament theory (complete directed graphs, Rédei's theorem)",
+      "Tournament theory (complete directed graphs, R\u00e9dei's theorem)",
       "Hamiltonian cycle/path definitions and Equiv.Perm encoding in Lean 4",
       "Well-founded recursion and termination proofs in Lean 4",
       "Probabilistic method / counting argument (union bound over permutations)"
     ],
-    "historicalContext": "The theory of directed Hamiltonian cycles developed in the 1930s–1970s as a directed counterpart to the celebrated undirected results of Dirac (1952) and others. Rédei (1934) proved that every tournament (complete directed graph) has a Hamiltonian path — a result with a clean inductive proof via vertex insertion. Moon and Moser (1963) strengthened this: strongly connected tournaments always have Hamiltonian cycles, not just paths. Ghouila-Houri (1960) gave the directed analogue of Dirac's theorem: a strongly connected digraph in which every vertex has both in-degree and out-degree $\\geq n/2$ has a Hamiltonian cycle. Meyniel (1973) gave a weaker sufficient condition (sum of degrees $\\geq 2n-1$ for non-adjacent pairs), matching the degree-sum form of Ore's undirected theorem. Erdős Problem 1012 (undirected) asks about long cycle thresholds; this OQ explores the directed analogues.",
-    "problemStatement": "For directed graphs: (1) What minimum degree condition on a strongly connected digraph guarantees a Hamiltonian cycle? (Ghouila-Houri, 1960: $\\delta^+(v) \\geq n/2$ and $\\delta^-(v) \\geq n/2$ for all $v$.) (2) Do all strongly connected tournaments have Hamiltonian cycles? (Moon-Moser, 1963: yes.) (3) Do all tournaments have Hamiltonian paths? (Rédei, 1934: yes.) (4) What arc-count threshold forces Hamiltonicity in a strongly connected digraph?",
-    "proofStrategy": "The file builds up from scratch: Digraph structure, degree definitions, Tournament and StronglyConnected predicates, Hamiltonian cycle/path definitions. Rédei's theorem is fully proved by induction: `tournament_path_insert` extends a Hamiltonian path by inserting a new vertex into an existing path (always possible in a tournament), and `tournament_full_path_list` builds the full path by induction; `list_path_to_hamiltonian` converts the list representation to the `Equiv`-based definition. Moon-Moser's theorem is fully proved. Ghouila-Houri uses `gh_longest_cycle_is_hamiltonian` (axiom) for the path surgery step. Arc threshold proved via probabilistic counting.",
+    "historicalContext": "The theory of directed Hamiltonian cycles developed in the 1930s\u20131970s as a directed counterpart to the celebrated undirected results of Dirac (1952) and others. R\u00e9dei (1934) proved that every tournament (complete directed graph) has a Hamiltonian path \u2014 a result with a clean inductive proof via vertex insertion. Moon and Moser (1963) strengthened this: strongly connected tournaments always have Hamiltonian cycles, not just paths. Ghouila-Houri (1960) gave the directed analogue of Dirac's theorem: a strongly connected digraph in which every vertex has both in-degree and out-degree $\\geq n/2$ has a Hamiltonian cycle. Meyniel (1973) gave a weaker sufficient condition (sum of degrees $\\geq 2n-1$ for non-adjacent pairs), matching the degree-sum form of Ore's undirected theorem. Erd\u0151s Problem 1012 (undirected) asks about long cycle thresholds; this OQ explores the directed analogues.",
+    "problemStatement": "For directed graphs: (1) What minimum degree condition on a strongly connected digraph guarantees a Hamiltonian cycle? (Ghouila-Houri, 1960: $\\delta^+(v) \\geq n/2$ and $\\delta^-(v) \\geq n/2$ for all $v$.) (2) Do all strongly connected tournaments have Hamiltonian cycles? (Moon-Moser, 1963: yes.) (3) Do all tournaments have Hamiltonian paths? (R\u00e9dei, 1934: yes.) (4) What arc-count threshold forces Hamiltonicity in a strongly connected digraph?",
+    "proofStrategy": "The file builds up from scratch: Digraph structure, degree definitions, Tournament and StronglyConnected predicates, Hamiltonian cycle/path definitions. R\u00e9dei's theorem is fully proved by induction: `tournament_path_insert` extends a Hamiltonian path by inserting a new vertex into an existing path (always possible in a tournament), and `tournament_full_path_list` builds the full path by induction; `list_path_to_hamiltonian` converts the list representation to the `Equiv`-based definition. Moon-Moser's theorem is fully proved. Ghouila-Houri uses `gh_longest_cycle_is_hamiltonian` (axiom) for the path surgery step. Arc threshold proved via probabilistic counting.",
     "keyInsights": [
-      "Rédei's 1934 theorem (every tournament has a Hamiltonian path) has a beautiful constructive proof: start with a single vertex, and inductively insert each new vertex $v$ into the existing Hamiltonian path. Since $v$ beats some vertices and loses to others in the tournament, there always exists a position to insert $v$ maintaining the directed path property. This is formalized via `tournament_path_insert` — a pure induction argument.",
-      "The Moon-Moser theorem requires strong connectivity, unlike Rédei's path result. The proof strategy is a 'longest cycle' argument: take a longest directed cycle $C$ in the tournament; if $|C| < n$, take a vertex $v \\notin C$; partition $C$ into $S^+ = \\{\\text{successors of } v \\text{ in } C\\}$ and $S^- = \\{\\text{predecessors of } v \\text{ in } C\\}$; strong connectivity forces the cycle to be extendable, contradicting maximality.",
+      "R\u00e9dei's 1934 theorem (every tournament has a Hamiltonian path) has a beautiful constructive proof: start with a single vertex, and inductively insert each new vertex $v$ into the existing Hamiltonian path. Since $v$ beats some vertices and loses to others in the tournament, there always exists a position to insert $v$ maintaining the directed path property. This is formalized via `tournament_path_insert` \u2014 a pure induction argument.",
+      "The Moon-Moser theorem requires strong connectivity, unlike R\u00e9dei's path result. The proof strategy is a 'longest cycle' argument: take a longest directed cycle $C$ in the tournament; if $|C| < n$, take a vertex $v \\notin C$; partition $C$ into $S^+ = \\{\\text{successors of } v \\text{ in } C\\}$ and $S^- = \\{\\text{predecessors of } v \\text{ in } C\\}$; strong connectivity forces the cycle to be extendable, contradicting maximality.",
       "The key infrastructure lemma `tournament_path_insert` (lines 151-220) requires careful case analysis: given a Hamiltonian path $p_1 \\to p_2 \\to \\cdots \\to p_k$ and a new vertex $v$, either $v \\to p_1$ (insert at front), or $p_k \\to v$ (append at back), or there exists $i$ with $p_i \\to v \\to p_{i+1}$ (insert in middle). In a tournament, one of these must hold since for consecutive pairs, the direction is determined.",
       "The `HasHamiltonianCycle` definition uses `Equiv.Perm (Fin n)` to encode the cycle as a bijection on vertex indices, requiring arc $(\\sigma(i), \\sigma(i+1))$ for all $i$ (mod $n$). This is the cleanest algebraic encoding: the permutation gives the cyclic ordering, and all $n$ arcs must be present. The `HasHamiltonianPath` similarly uses a bijection on $\\{0, \\ldots, n-1\\}$.",
       "Ghouila-Houri's theorem is the directed Dirac: $\\delta^+(v), \\delta^-(v) \\geq n/2$ for all $v$ in a strongly connected $n$-vertex digraph implies Hamiltonicity. The proof follows the undirected argument but requires tracking both in- and out-degrees: take a longest directed path $P = v_0 \\to \\cdots \\to v_k$; the out-neighbors of $v_k$ and in-neighbors of $v_0$ form large sets in $P$, and by pigeonhole there exists a vertex $v_i$ where closing the path into a cycle is possible.",
-      "**P vs NP boundary within tournaments**: Rédei's path theorem and Moon-Moser's cycle theorem are both polynomial-time results for the *restricted* class of SC tournaments. In contrast, the general digraph Hamiltonian cycle problem is NP-complete (established via Cook-Levin, 1971-1972). This file formalizes the polynomial-time side — the special structure of tournaments (one arc between every pair) makes greedy insertion and cycle-growth arguments work, bypassing the combinatorial explosion that makes general Hamiltonicity hard. The arc threshold result (Part V) also gives a polynomial test: if $|E| > (n-1)^2$, check this inequality and you have Hamiltonicity without any NP-complete search.",
-      "**Well-founded recursion in Lean 4**: `grow_cycle_to_hamiltonian` exemplifies Lean 4's `termination_by / decreasing_by` machinery. The termination measure $|V| - |l|$ (cycle deficit) is a natural number that strictly decreases because `tournament_cycle_extendable` guarantees the extended cycle is strictly longer. Lean's well-foundedness checker verifies this automatically given the `omega` proof that `l'.length > l.length`. This pattern — 'find a witness that improves the measure, recurse, base case is complete' — recurs throughout computational combinatorics formalizations (see also `grow_cycle_gh` for the GH analogue).",
-      "**The Meyniel spectrum**: The Ghouila-Houri condition ($\\delta^+, \\delta^- \\geq n/2$) is sufficient but far from necessary. Meyniel (1973) proved the weakest known sufficient condition: if $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n - 1$ for every pair of non-adjacent vertices $u, v$, then the digraph is Hamiltonian. No simpler degree condition (involving only individual degree bounds) can achieve this. Between Meyniel and the necessary conditions (SC + positive degree) lies a 'gap' — the exact threshold for directed Hamiltonicity remains open. This gap is the directed analogue of the Ore-Dirac-Meyniel spectrum for undirected graphs, and formalizing even Meyniel's condition in Lean would require substantially more degree-sum infrastructure than the existing `ghouila_houri` proof."
+      "**P vs NP boundary within tournaments**: R\u00e9dei's path theorem and Moon-Moser's cycle theorem are both polynomial-time results for the *restricted* class of SC tournaments. In contrast, the general digraph Hamiltonian cycle problem is NP-complete (established via Cook-Levin, 1971-1972). This file formalizes the polynomial-time side \u2014 the special structure of tournaments (one arc between every pair) makes greedy insertion and cycle-growth arguments work, bypassing the combinatorial explosion that makes general Hamiltonicity hard. The arc threshold result (Part V) also gives a polynomial test: if $|E| > (n-1)^2$, check this inequality and you have Hamiltonicity without any NP-complete search.",
+      "**Well-founded recursion in Lean 4**: `grow_cycle_to_hamiltonian` exemplifies Lean 4's `termination_by / decreasing_by` machinery. The termination measure $|V| - |l|$ (cycle deficit) is a natural number that strictly decreases because `tournament_cycle_extendable` guarantees the extended cycle is strictly longer. Lean's well-foundedness checker verifies this automatically given the `omega` proof that `l'.length > l.length`. This pattern \u2014 'find a witness that improves the measure, recurse, base case is complete' \u2014 recurs throughout computational combinatorics formalizations (see also `grow_cycle_gh` for the GH analogue).",
+      "**The Meyniel spectrum**: The Ghouila-Houri condition ($\\delta^+, \\delta^- \\geq n/2$) is sufficient but far from necessary. Meyniel (1973) proved the weakest known sufficient condition: if $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n - 1$ for every pair of non-adjacent vertices $u, v$, then the digraph is Hamiltonian. No simpler degree condition (involving only individual degree bounds) can achieve this. Between Meyniel and the necessary conditions (SC + positive degree) lies a 'gap' \u2014 the exact threshold for directed Hamiltonicity remains open. This gap is the directed analogue of the Ore-Dirac-Meyniel spectrum for undirected graphs, and formalizing even Meyniel's condition in Lean would require substantially more degree-sum infrastructure than the existing `ghouila_houri` proof."
     ]
   },
   "sections": [
@@ -86,8 +86,8 @@
       "title": "Imports, Background, and Status",
       "startLine": 1,
       "endLine": 64,
-      "summary": "Imports Mathlib combinatorics and tactic modules. Module docstring covers key results (Ghouila-Houri, Moon-Moser, Rédei) and a checklist showing which components are proved vs. remaining sorries.",
-      "mathContext": "Three classical results on directed Hamiltonicity: **Rédei (1934)**: every tournament ($n$-vertex, complete directed graph) has a Hamiltonian path. **Moon-Moser (1963)**: every strongly connected tournament has a Hamiltonian cycle. **Ghouila-Houri (1960)**: a strongly connected digraph with $\\delta^+(v), \\delta^-(v) \\geq n/2$ for all $v$ has a Hamiltonian cycle. Status: Rédei, Moon-Moser, Ghouila-Houri, and directed_hamiltonian_threshold all fully proved (0 sorries). Ghouila-Houri uses 1 axiom (`gh_longest_cycle_is_hamiltonian`)."
+      "summary": "Imports Mathlib combinatorics and tactic modules. Module docstring covers key results (Ghouila-Houri, Moon-Moser, R\u00e9dei) and a checklist showing which components are proved vs. remaining sorries.",
+      "mathContext": "Three classical results on directed Hamiltonicity: **R\u00e9dei (1934)**: every tournament ($n$-vertex, complete directed graph) has a Hamiltonian path. **Moon-Moser (1963)**: every strongly connected tournament has a Hamiltonian cycle. **Ghouila-Houri (1960)**: a strongly connected digraph with $\\delta^+(v), \\delta^-(v) \\geq n/2$ for all $v$ has a Hamiltonian cycle. Status: R\u00e9dei, Moon-Moser, Ghouila-Houri, and directed_hamiltonian_threshold all fully proved (0 sorries). Ghouila-Houri uses 1 axiom (`gh_longest_cycle_is_hamiltonian`)."
     },
     {
       "id": "part-i-definitions",
@@ -95,7 +95,7 @@
       "startLine": 65,
       "endLine": 100,
       "summary": "Defines Digraph structure (arc predicate, loopless), outDegree and inDegree as noncomputable cardinalities, IsTournament (exactly one arc between each pair), and IsStronglyConnected (directed paths between all pairs).",
-      "mathContext": "`Digraph (n : ℕ) : Type` with `arc : Fin n → Fin n → Prop` and `loopless : ∀ v, ¬arc v v`. `outDegree G v = (Finset.univ.filter (G.arc v)).card`, `inDegree G v = (Finset.univ.filter (fun u => G.arc u v)).card` — both noncomputable since `arc` is a `Prop`-valued predicate. `IsTournament G : Prop := ∀ u v, u ≠ v → (G.arc u v ↔ ¬G.arc v u)` — exactly one arc between each pair. `IsStronglyConnected G : Prop := ∀ u v, ∃ path, IsDirectedPathList G path ∧ path.head = u ∧ path.getLast = v`."
+      "mathContext": "`Digraph (n : \u2115) : Type` with `arc : Fin n \u2192 Fin n \u2192 Prop` and `loopless : \u2200 v, \u00acarc v v`. `outDegree G v = (Finset.univ.filter (G.arc v)).card`, `inDegree G v = (Finset.univ.filter (fun u => G.arc u v)).card` \u2014 both noncomputable since `arc` is a `Prop`-valued predicate. `IsTournament G : Prop := \u2200 u v, u \u2260 v \u2192 (G.arc u v \u2194 \u00acG.arc v u)` \u2014 exactly one arc between each pair. `IsStronglyConnected G : Prop := \u2200 u v, \u2203 path, IsDirectedPathList G path \u2227 path.head = u \u2227 path.getLast = v`."
     },
     {
       "id": "part-ii-hamiltonian",
@@ -103,48 +103,48 @@
       "startLine": 101,
       "endLine": 133,
       "summary": "Defines HasHamiltonianCycle (Equiv.Perm encoding all arcs in cyclic order) and HasHamiltonianPath (Equiv.Perm encoding directed path). Proves arc_or_arc (tournament: one arc between any pair) and arc_of_not_arc (converse: absence of one arc implies the other).",
-      "mathContext": "`HasHamiltonianCycle G σ : Prop := ∀ i : Fin n, G.arc (σ i) (σ (Fin.cycle i))` where `σ : Equiv.Perm (Fin n)` encodes the cyclic ordering. `HasHamiltonianPath G σ : Prop := ∀ i : Fin (n-1), G.arc (σ i.castSucc) (σ i.succ)` — the permutation gives the linear ordering of the path. `arc_or_arc`: in a tournament, for $u \\neq v$, either `G.arc u v` or `G.arc v u` (not both). The `Equiv.Perm` encoding is algebraically cleaner than list-based paths: the composition $\\sigma^k$ gives the $k$-th vertex in the cycle, and `Fin.cycle` handles the wrap-around."
+      "mathContext": "`HasHamiltonianCycle G \u03c3 : Prop := \u2200 i : Fin n, G.arc (\u03c3 i) (\u03c3 (Fin.cycle i))` where `\u03c3 : Equiv.Perm (Fin n)` encodes the cyclic ordering. `HasHamiltonianPath G \u03c3 : Prop := \u2200 i : Fin (n-1), G.arc (\u03c3 i.castSucc) (\u03c3 i.succ)` \u2014 the permutation gives the linear ordering of the path. `arc_or_arc`: in a tournament, for $u \\neq v$, either `G.arc u v` or `G.arc v u` (not both). The `Equiv.Perm` encoding is algebraically cleaner than list-based paths: the composition $\\sigma^k$ gives the $k$-th vertex in the cycle, and `Fin.cycle` handles the wrap-around."
     },
     {
       "id": "part-ii-redei-infrastructure",
-      "title": "Part II.C: List-Based Path Infrastructure (Rédei)",
+      "title": "Part II.C: List-Based Path Infrastructure (R\u00e9dei)",
       "startLine": 134,
       "endLine": 333,
-      "summary": "Defines IsDirectedPathList (list-based directed path). Proves tournament_path_insert (insert new vertex into existing Hamiltonian path), tournament_full_path_list (build full Hamiltonian path by induction), and list_path_to_hamiltonian (convert list path to Equiv-based definition). Also defines IsDirectedCycleList and proves list_cycle_to_hamiltonian (cycle list → Equiv), bridging to Part III.",
-      "mathContext": "`tournament_path_insert (G : Digraph n) (p : List (Fin n)) (v : Fin n) (hT : IsTournament G) (hp : IsDirectedPathList G p) (hv : v ∉ p) : ∃ q, IsDirectedPathList G q ∧ q.toFinset = p.toFinset ∪ {v}`. Proof: scan for position $i$ with $p[i] \\to v \\to p[i+1]$; if none, then either $v \\to p[0]$ (insert at front) or $p[k] \\to v$ (append). In a tournament, one case must hold since consecutive pairs are determined. `tournament_full_path_list`: induction — start with $[v_0]$, repeatedly insert $v_1, \\ldots, v_{n-1}$. `list_path_to_hamiltonian`: given `hperm : p.toFinset = Finset.univ`, extract the permutation $\\sigma$ from the list ordering."
+      "summary": "Defines IsDirectedPathList (list-based directed path). Proves tournament_path_insert (insert new vertex into existing Hamiltonian path), tournament_full_path_list (build full Hamiltonian path by induction), and list_path_to_hamiltonian (convert list path to Equiv-based definition). Also defines IsDirectedCycleList and proves list_cycle_to_hamiltonian (cycle list \u2192 Equiv), bridging to Part III.",
+      "mathContext": "`tournament_path_insert (G : Digraph n) (p : List (Fin n)) (v : Fin n) (hT : IsTournament G) (hp : IsDirectedPathList G p) (hv : v \u2209 p) : \u2203 q, IsDirectedPathList G q \u2227 q.toFinset = p.toFinset \u222a {v}`. Proof: scan for position $i$ with $p[i] \\to v \\to p[i+1]$; if none, then either $v \\to p[0]$ (insert at front) or $p[k] \\to v$ (append). In a tournament, one case must hold since consecutive pairs are determined. `tournament_full_path_list`: induction \u2014 start with $[v_0]$, repeatedly insert $v_1, \\ldots, v_{n-1}$. `list_path_to_hamiltonian`: given `hperm : p.toFinset = Finset.univ`, extract the permutation $\\sigma$ from the list ordering."
     },
     {
       "id": "part-iii-ghouila-houri",
       "title": "Part III: Ghouila-Houri Theorem",
       "startLine": 334,
       "endLine": 945,
-      "summary": "Fully proves ghouila_houri: strongly connected digraph with δ⁺(v), δ⁻(v) ≥ n/2 for all v has a Hamiltonian cycle. Includes sc_degree_has_cycle (greedy path + back-arc), ghouila_houri_cycle_extendable (cycle extension under GH conditions), grow_cycle_gh (well-founded recursion), and GH sorry stubs (sc_digraph_has_directed_cycle, exists_longest_directed_cycle, gh_insertion_point, insertNth_directed_cycle).",
-      "mathContext": "**Ghouila-Houri theorem**: if $\\delta^+(v) \\geq n/2$ and $\\delta^-(v) \\geq n/2$ for all $v$ in a strongly connected $n$-vertex digraph, then the digraph has a Hamiltonian cycle. The directed analogue of Dirac's theorem. Key step: take a longest directed path $P = v_0 \\to \\cdots \\to v_k$; the out-neighbors of $v_k$ (in $P$) and in-neighbors of $v_0$ (in $P$) have sizes $\\geq n/2$ each, so they intersect at some $v_i$ — close $v_k \\to v_i$ and $v_{i-1} \\to v_0$ to form a long cycle. The axiom `gh_longest_cycle_is_hamiltonian` captures the surgery step: the longest directed cycle in a SC digraph satisfying GH conditions must be Hamiltonian (if shorter, it can be extended by SC). 0 sorries."
+      "summary": "Fully proves ghouila_houri: strongly connected digraph with \u03b4\u207a(v), \u03b4\u207b(v) \u2265 n/2 for all v has a Hamiltonian cycle. Includes sc_degree_has_cycle (greedy path + back-arc), ghouila_houri_cycle_extendable (cycle extension under GH conditions), grow_cycle_gh (well-founded recursion), and GH sorry stubs (sc_digraph_has_directed_cycle, exists_longest_directed_cycle, gh_insertion_point, insertNth_directed_cycle).",
+      "mathContext": "**Ghouila-Houri theorem**: if $\\delta^+(v) \\geq n/2$ and $\\delta^-(v) \\geq n/2$ for all $v$ in a strongly connected $n$-vertex digraph, then the digraph has a Hamiltonian cycle. The directed analogue of Dirac's theorem. Key step: take a longest directed path $P = v_0 \\to \\cdots \\to v_k$; the out-neighbors of $v_k$ (in $P$) and in-neighbors of $v_0$ (in $P$) have sizes $\\geq n/2$ each, so they intersect at some $v_i$ \u2014 close $v_k \\to v_i$ and $v_{i-1} \\to v_0$ to form a long cycle. The axiom `gh_longest_cycle_is_hamiltonian` captures the surgery step: the longest directed cycle in a SC digraph satisfying GH conditions must be Hamiltonian (if shorter, it can be extended by SC). 0 sorries."
     },
     {
       "id": "part-iv-moon-moser",
       "title": "Part IV: Moon-Moser Theorem and Infrastructure",
       "startLine": 946,
       "endLine": 1538,
-      "summary": "Extensive infrastructure: sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S⁺/S⁻ partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with Rédei's theorem: fully proved by induction.",
-      "mathContext": "**Moon-Moser theorem** (fully proved): every strongly connected tournament has a Hamiltonian cycle. Key infrastructure: `sc_tournament_has_cycle` — a tournament has a Hamiltonian path (Rédei); use strong connectivity to find a back-arc closing a cycle. `tournament_cycle_extendable` — given a directed cycle $C$ in a tournament that isn't Hamiltonian, take $v \\notin C$; partition $C$ into $S^+ = \\{w \\in C : v \\to w\\}$ and $S^- = \\{w \\in C : w \\to v\\}$. Since $C$ is a cycle, if $|C| < n$, strong connectivity forces a position between consecutive $S^+$/$S^-$ vertices where $v$ can be inserted. `grow_cycle_to_hamiltonian`: termination via `decreasing_by omega` on measure $n - |\\text{cycle}|$. **Rédei** at end: fully proved by induction using `tournament_path_insert`."
+      "summary": "Extensive infrastructure: sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S\u207a/S\u207b partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with R\u00e9dei's theorem: fully proved by induction.",
+      "mathContext": "**Moon-Moser theorem** (fully proved): every strongly connected tournament has a Hamiltonian cycle. Key infrastructure: `sc_tournament_has_cycle` \u2014 a tournament has a Hamiltonian path (R\u00e9dei); use strong connectivity to find a back-arc closing a cycle. `tournament_cycle_extendable` \u2014 given a directed cycle $C$ in a tournament that isn't Hamiltonian, take $v \\notin C$; partition $C$ into $S^+ = \\{w \\in C : v \\to w\\}$ and $S^- = \\{w \\in C : w \\to v\\}$. Since $C$ is a cycle, if $|C| < n$, strong connectivity forces a position between consecutive $S^+$/$S^-$ vertices where $v$ can be inserted. `grow_cycle_to_hamiltonian`: termination via `decreasing_by omega` on measure $n - |\\text{cycle}|$. **R\u00e9dei** at end: fully proved by induction using `tournament_path_insert`."
     },
     {
       "id": "part-v-threshold",
       "title": "Part V: Arc Threshold + Verification",
       "startLine": 1539,
       "endLine": 1884,
-      "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le, missing_arcs_le). Closes with #check commands verifying all four main theorems.",
-      "mathContext": "`arcCount G = (Finset.univ.filter (fun p : Fin n × Fin n => G.arc p.1 p.2)).card`. `directed_hamiltonian_threshold`: if $(n-1)^2 < \\text{arcCount}(G)$ and $G$ is strongly connected, then $G$ is Hamiltonian. Proof via **probabilistic counting**: a random permutation $\\sigma$ is 'bad' (not a Hamiltonian cycle) only if some arc $(\\sigma(i), \\sigma(i+1))$ is missing. By union bound over $n$ arc positions and $n!$ total permutations: $\\Pr[\\text{bad}] \\leq n \\cdot (n!/n) \\cdot (\\text{missingArcs}/n(n-1)) < 1$ when missingArcs $< (n-1)^2/n$. Key lemma: `perm_arc_bad_card_le` bounds the number of bad permutations. This gives a polynomial-time Hamiltonicity certificate: check if $|E| > (n-1)^2$ and SC, and we're done."
+      "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)\u00b2 < arcCount \u2227 strongly connected \u2192 Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le, missing_arcs_le). Closes with #check commands verifying all four main theorems.",
+      "mathContext": "`arcCount G = (Finset.univ.filter (fun p : Fin n \u00d7 Fin n => G.arc p.1 p.2)).card`. `directed_hamiltonian_threshold`: if $(n-1)^2 < \\text{arcCount}(G)$ and $G$ is strongly connected, then $G$ is Hamiltonian. Proof via **probabilistic counting**: a random permutation $\\sigma$ is 'bad' (not a Hamiltonian cycle) only if some arc $(\\sigma(i), \\sigma(i+1))$ is missing. By union bound over $n$ arc positions and $n!$ total permutations: $\\Pr[\\text{bad}] \\leq n \\cdot (n!/n) \\cdot (\\text{missingArcs}/n(n-1)) < 1$ when missingArcs $< (n-1)^2/n$. Key lemma: `perm_arc_bad_card_le` bounds the number of bad permutations. This gives a polynomial-time Hamiltonicity certificate: check if $|E| > (n-1)^2$ and SC, and we're done."
     }
   ],
   "conclusion": {
-    "summary": "Rédei (Hamiltonian path in tournaments), Moon-Moser (Hamiltonian cycles in SC tournaments), directed_hamiltonian_threshold, and ghouila_houri are all fully proved. Ghouila-Houri uses 1 axiom (gh_longest_cycle_is_hamiltonian: path surgery step), 0 sorries. The 1781-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
-    "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. Rédei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles — a stronger consistency property.",
+    "summary": "R\u00e9dei (Hamiltonian path in tournaments), Moon-Moser (Hamiltonian cycles in SC tournaments), directed_hamiltonian_threshold, and ghouila_houri are all fully proved. Ghouila-Houri uses 1 axiom (gh_longest_cycle_is_hamiltonian: path surgery step), 0 sorries. The 1781-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
+    "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. R\u00e9dei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles \u2014 a stronger consistency property.",
     "openQuestions": [
       "Meyniel's condition (weaker than Ghouila-Houri: $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n-1$ for non-adjacent pairs) implies Hamiltonicity. Can this stronger result be formalized, or would it require substantially more tournament infrastructure?",
-      "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` — is this the tight bound? What is the densest non-Hamiltonian strongly connected tournament on $n$ vertices, and can a tight threshold be proved in Lean?",
-      "Meyniel's conjecture (1973) — the weakest known sufficient condition for Hamiltonicity — states that if $\\delta^+(v) + \\delta^-(v) \\geq n-1$ for all non-adjacent pairs $u, v$ in a strongly connected digraph, then the graph has a Hamiltonian cycle. Can Meyniel's condition be formalized in Lean, and what additional infrastructure beyond Ghouila-Houri's proof would be required? The key difficulty is that Meyniel allows vertices with very low individual in- or out-degree, requiring a more refined longest-path argument than the pigeonhole step in Ghouila-Houri."
+      "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` \u2014 is this the tight bound? What is the densest non-Hamiltonian strongly connected tournament on $n$ vertices, and can a tight threshold be proved in Lean?",
+      "Meyniel's conjecture (1973) \u2014 the weakest known sufficient condition for Hamiltonicity \u2014 states that if $\\delta^+(v) + \\delta^-(v) \\geq n-1$ for all non-adjacent pairs $u, v$ in a strongly connected digraph, then the graph has a Hamiltonian cycle. Can Meyniel's condition be formalized in Lean, and what additional infrastructure beyond Ghouila-Houri's proof would be required? The key difficulty is that Meyniel allows vertices with very low individual in- or out-degree, requiring a more refined longest-path argument than the pigeonhole step in Ghouila-Houri."
     ]
   },
   "crossReferences": [
@@ -166,64 +166,64 @@
     {
       "targetId": "konigsberg-oq-02",
       "relationship": "related",
-      "description": "Directed Euler Paths — the directed traversal problem for edges (visit all edges once) versus this entry's Hamiltonian problem (visit all vertices once). Both use in-degree/out-degree conditions on directed graphs, but the Euler path condition (in-deg = out-deg everywhere) is polynomial-time checkable while Hamiltonian cycle is NP-complete in general digraphs. The two traversal paradigms — Eulerian and Hamiltonian — are the defining duality of directed graph combinatorics."
+      "description": "Directed Euler Paths \u2014 the directed traversal problem for edges (visit all edges once) versus this entry's Hamiltonian problem (visit all vertices once). Both use in-degree/out-degree conditions on directed graphs, but the Euler path condition (in-deg = out-deg everywhere) is polynomial-time checkable while Hamiltonian cycle is NP-complete in general digraphs. The two traversal paradigms \u2014 Eulerian and Hamiltonian \u2014 are the defining duality of directed graph combinatorics."
     },
     {
       "targetId": "konigsberg-oq-04",
       "relationship": "related",
-      "description": "The BEST Theorem (counting directed Eulerian circuits) — while this entry asks whether a Hamiltonian cycle exists in a tournament, the BEST theorem counts the number of Eulerian circuits in a directed graph via a matrix-tree formula. The contrast illustrates a deep asymmetry: counting Eulerian circuits is polynomial (BEST theorem), but counting Hamiltonian cycles is #P-complete even in tournaments. Decision complexity also diverges: Eulerian circuit (P) vs. Hamiltonian cycle (NP-complete for general digraphs, polynomial for tournaments by Rédei/Moon-Moser)."
+      "description": "The BEST Theorem (counting directed Eulerian circuits) \u2014 while this entry asks whether a Hamiltonian cycle exists in a tournament, the BEST theorem counts the number of Eulerian circuits in a directed graph via a matrix-tree formula. The contrast illustrates a deep asymmetry: counting Eulerian circuits is polynomial (BEST theorem), but counting Hamiltonian cycles is #P-complete even in tournaments. Decision complexity also diverges: Eulerian circuit (P) vs. Hamiltonian cycle (NP-complete for general digraphs, polynomial for tournaments by R\u00e9dei/Moon-Moser)."
     },
     {
       "targetId": "randomized-maxcut",
       "relationship": "related",
-      "description": "The arc threshold proof in Part V uses the probabilistic method via union bound over $n!$ permutations: the expected number of 'bad' permutations (using a missing arc) is bounded, so a 'good' permutation (Hamiltonian cycle) must exist. This is the same union-bound technique as the probabilistic max-cut argument. Both are instances of the Erdős probabilistic method: prove existence by showing the probability of a 'bad' outcome is strictly less than 1. The `hamiltonian_of_few_missing_arcs` lemma captures this precisely in Lean 4."
+      "description": "The arc threshold proof in Part V uses the probabilistic method via union bound over $n!$ permutations: the expected number of 'bad' permutations (using a missing arc) is bounded, so a 'good' permutation (Hamiltonian cycle) must exist. This is the same union-bound technique as the probabilistic max-cut argument. Both are instances of the Erd\u0151s probabilistic method: prove existence by showing the probability of a 'bad' outcome is strictly less than 1. The `hamiltonian_of_few_missing_arcs` lemma captures this precisely in Lean 4."
     },
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory and Hamiltonian cycle theory are both fundamental extremal graph results. Ramsey's theorem guarantees monochromatic cliques in edge-colorings; Rédei's theorem guarantees directed Hamiltonian paths in tournaments. Both have clean inductive proofs (insert a new vertex into an existing structure) and both extend to ordered/directed settings with interesting new phenomena. The study of Ramsey numbers for tournaments — the smallest $n$ such that every tournament on $n$ vertices contains a particular sub-tournament — parallels the Hamiltonian cycle threshold question."
+      "description": "Ramsey theory and Hamiltonian cycle theory are both fundamental extremal graph results. Ramsey's theorem guarantees monochromatic cliques in edge-colorings; R\u00e9dei's theorem guarantees directed Hamiltonian paths in tournaments. Both have clean inductive proofs (insert a new vertex into an existing structure) and both extend to ordered/directed settings with interesting new phenomena. The study of Ramsey numbers for tournaments \u2014 the smallest $n$ such that every tournament on $n$ vertices contains a particular sub-tournament \u2014 parallels the Hamiltonian cycle threshold question."
     }
   ],
   "mainTheorems": [
     {
       "name": "redei_theorem",
       "type": "core",
-      "description": "Every tournament on n vertices has a Hamiltonian path (Rédei 1934) — fully proved",
-      "leanType": "IsTournament G → ∃ σ : Equiv.Perm (Fin n), HasHamiltonianPath G σ"
+      "description": "Every tournament on n vertices has a Hamiltonian path (R\u00e9dei 1934) \u2014 fully proved",
+      "leanType": "IsTournament G \u2192 \u2203 \u03c3 : Equiv.Perm (Fin n), HasHamiltonianPath G \u03c3"
     },
     {
       "name": "moon_moser",
       "type": "core",
-      "description": "Every strongly connected tournament has a Hamiltonian cycle (Moon-Moser 1963) — fully proved",
-      "leanType": "IsTournament G → IsStronglyConnected G → ∃ σ : Equiv.Perm (Fin n), HasHamiltonianCycle G σ"
+      "description": "Every strongly connected tournament has a Hamiltonian cycle (Moon-Moser 1963) \u2014 fully proved",
+      "leanType": "IsTournament G \u2192 IsStronglyConnected G \u2192 \u2203 \u03c3 : Equiv.Perm (Fin n), HasHamiltonianCycle G \u03c3"
     },
     {
       "name": "ghouila_houri",
       "type": "core",
-      "description": "Strongly connected digraph with δ⁺(v), δ⁻(v) ≥ n/2 for all v has a Hamiltonian cycle (Ghouila-Houri 1960) — proved with 1 axiom (gh_longest_cycle_is_hamiltonian), 0 sorries",
-      "leanType": "IsStronglyConnected G → (∀ v, n/2 ≤ outDegree G v) → (∀ v, n/2 ≤ inDegree G v) → ∃ σ : Equiv.Perm (Fin n), HasHamiltonianCycle G σ"
+      "description": "Strongly connected digraph with \u03b4\u207a(v), \u03b4\u207b(v) \u2265 n/2 for all v has a Hamiltonian cycle (Ghouila-Houri 1960) \u2014 proved with 1 axiom (gh_longest_cycle_is_hamiltonian), 0 sorries",
+      "leanType": "IsStronglyConnected G \u2192 (\u2200 v, n/2 \u2264 outDegree G v) \u2192 (\u2200 v, n/2 \u2264 inDegree G v) \u2192 \u2203 \u03c3 : Equiv.Perm (Fin n), HasHamiltonianCycle G \u03c3"
     },
     {
       "name": "directed_hamiltonian_threshold",
       "type": "core",
-      "description": "Arc count > (n-1)² and strongly connected implies Hamiltonian cycle — fully proved via probabilistic method",
-      "leanType": "(n - 1)^2 < arcCount G → IsStronglyConnected G → ∃ σ : Equiv.Perm (Fin n), HasHamiltonianCycle G σ"
+      "description": "Arc count > (n-1)\u00b2 and strongly connected implies Hamiltonian cycle \u2014 fully proved via probabilistic method",
+      "leanType": "(n - 1)^2 < arcCount G \u2192 IsStronglyConnected G \u2192 \u2203 \u03c3 : Equiv.Perm (Fin n), HasHamiltonianCycle G \u03c3"
     }
   ],
   "references": [
     {
-      "authors": "Rédei, L.",
+      "authors": "R\u00e9dei, L.",
       "title": "Ein kombinatorischer Satz",
       "year": "1934",
       "venue": "Acta Litterarum ac Scientiarum Regiae Universitatis Hungaricae Francisco-Josephinae, 7, 39-43",
-      "note": "Proves every tournament has a Hamiltonian path by a vertex-insertion argument — one of the earliest results in tournament theory"
+      "note": "Proves every tournament has a Hamiltonian path by a vertex-insertion argument \u2014 one of the earliest results in tournament theory"
     },
     {
       "authors": "Ghouila-Houri, A.",
       "title": "Une condition suffisante d'existence d'un circuit hamiltonien",
       "year": "1960",
-      "venue": "Comptes Rendus de l'Académie des Sciences, 251, 495-497",
-      "note": "Directed analogue of Dirac's theorem: δ⁺(v), δ⁻(v) ≥ n/2 for all v in a strongly connected digraph implies Hamiltonicity"
+      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, 251, 495-497",
+      "note": "Directed analogue of Dirac's theorem: \u03b4\u207a(v), \u03b4\u207b(v) \u2265 n/2 for all v in a strongly connected digraph implies Hamiltonicity"
     },
     {
       "authors": "Moon, J. W.; Moser, L.",
@@ -234,17 +234,17 @@
     },
     {
       "authors": "Meyniel, M.",
-      "title": "Une condition suffisante d'existence d'un circuit hamiltonien dans un graphe orienté",
+      "title": "Une condition suffisante d'existence d'un circuit hamiltonien dans un graphe orient\u00e9",
       "year": "1973",
       "venue": "Journal of Combinatorial Theory, Series B, 14(2), 137-147",
-      "note": "Weakest known sufficient degree condition for directed Hamiltonicity: δ⁺(u)+δ⁻(u)+δ⁺(v)+δ⁻(v) ≥ 2n-1 for non-adjacent pairs; cited in openQuestions as unformalized extension"
+      "note": "Weakest known sufficient degree condition for directed Hamiltonicity: \u03b4\u207a(u)+\u03b4\u207b(u)+\u03b4\u207a(v)+\u03b4\u207b(v) \u2265 2n-1 for non-adjacent pairs; cited in openQuestions as unformalized extension"
     },
     {
       "authors": "Diestel, R.",
       "title": "Graph Theory",
       "year": "2017",
       "venue": "Springer GTM 173, 5th edition, Chapter 10",
-      "note": "Standard reference for Ghouila-Houri theorem and directed Hamiltonicity; the gh_longest_cycle_is_hamiltonian axiom references §10"
+      "note": "Standard reference for Ghouila-Houri theorem and directed Hamiltonicity; the gh_longest_cycle_is_hamiltonian axiom references \u00a710"
     }
   ],
   "leanFile": {
@@ -263,7 +263,10 @@
     "sorries": 0,
     "path": "Proofs/Erdos1012OQ03.lean",
     "theoremCount": 9,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "additionalFiles": [
+      "Proofs/Erdos1012OQ03Aristotle.lean"
+    ]
   },
   "sorries": 0
 }

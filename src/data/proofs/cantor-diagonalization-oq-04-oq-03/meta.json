@@ -33,21 +33,21 @@
       }
     ],
     "lineCount": 299,
-    "assumptions": "None. OmegaContinuous.monotone proved via chain construction: c 0 = a, c (n+1) = b gives f(a) ≤ ⊔ₙ f(cₙ) = f(b) by ω-continuity."
+    "assumptions": "None. OmegaContinuous.monotone proved via chain construction: c 0 = a, c (n+1) = b gives f(a) \u2264 \u2294\u2099 f(c\u2099) = f(b) by \u03c9-continuity."
   },
   "parent": "cantor-diagonalization-oq-04",
   "openQuestion": "How does Lawvere's categorical fixed-point theorem connect to domain-theoretic fixed points (Kleene chain, Scott's theorem, Y combinator)?",
   "significance": "Reveals that Lawvere's abstract categorical construction and Kleene's order-theoretic construction are two manifestations of the same self-referential principle. The type-theoretic Y combinator Y(f) = (lx.f(x x))(lx.f(x x)) is exactly the Lawvere fixed point specialized to the identity retraction. In Scott's D-infinity where D = (D -> D), both constructions produce the same least fixed point.",
   "overview": {
-    "historicalContext": "F. William Lawvere's 1969 paper 'Diagonal arguments and cartesian closed categories' showed that Cantor's diagonal argument, Gödel's incompleteness theorem, and Tarski's undefinability theorem are all instances of a single categorical fixed-point theorem. Dana Scott's domain theory (1972) provided a separate route to fixed points via complete lattices and $\\omega$-continuous functions, enabling the denotational semantics of recursive programs. The Kleene fixed-point theorem (ascending chain $\\bot \\leq f(\\bot) \\leq f^2(\\bot) \\leq \\cdots$) gives the constructive, order-theoretic version. The Y combinator of untyped $\\lambda$-calculus, $Y(f) = (\\lambda x.\\, f(x\\,x))(\\lambda x.\\, f(x\\,x))$, is the type-theoretic incarnation of Lawvere's diagonal. This file reveals all three as manifestations of the same self-referential principle.",
+    "historicalContext": "F. William Lawvere's 1969 paper 'Diagonal arguments and cartesian closed categories' showed that Cantor's diagonal argument, G\u00f6del's incompleteness theorem, and Tarski's undefinability theorem are all instances of a single categorical fixed-point theorem. Dana Scott's domain theory (1972) provided a separate route to fixed points via complete lattices and $\\omega$-continuous functions, enabling the denotational semantics of recursive programs. The Kleene fixed-point theorem (ascending chain $\\bot \\leq f(\\bot) \\leq f^2(\\bot) \\leq \\cdots$) gives the constructive, order-theoretic version. The Y combinator of untyped $\\lambda$-calculus, $Y(f) = (\\lambda x.\\, f(x\\,x))(\\lambda x.\\, f(x\\,x))$, is the type-theoretic incarnation of Lawvere's diagonal. This file reveals all three as manifestations of the same self-referential principle.",
     "problemStatement": "How does Lawvere's categorical fixed-point theorem (via retractions in cartesian closed categories) connect to Kleene's domain-theoretic fixed-point theorem (via $\\omega$-continuous functions on complete lattices) and the Y combinator of $\\lambda$-calculus?",
     "proofStrategy": "The file builds three constructions and connects them: (1) Lawvere's theorem via retraction ($\\mathrm{decode} \\circ \\mathrm{encode} = \\mathrm{id}$) producing a fixed point via self-application; (2) Kleene's chain $\\bot, f(\\bot), f^2(\\bot), \\ldots$ with its ascending property, $\\omega$-continuity yielding the fixed-point equation, and the least-fixed-point property; (3) the bridge showing these coincide when the Lawvere retraction comes from a reflexive domain $D \\cong (D \\to D)$, and the Y combinator is definitionally equal to `lawvereFixpoint`.",
     "keyInsights": [
-      "Lawvere's diagonal $\\delta(y) = \\mathrm{decode}(y)(y)$ is the abstract version of self-application $x(x)$ in the Y combinator — both exploit the ability to apply an object to itself",
-      "The Kleene chain is fully constructive: $f^n(\\bot)$ is computable for each $n$, and the supremum gives the least fixed point — this is why denotational semantics works for recursive programs",
-      "The $\\omega$-continuity condition ($f(\\bigsqcup c_n) = \\bigsqcup f(c_n)$) is exactly what bridges the finite approximations $f^n(\\bot)$ to the infinite fixed point — it is the order-theoretic version of topological continuity on Scott domains",
+      "Lawvere's diagonal $\\delta(y) = \\mathrm{decode}(y)(y)$ is the abstract version of self-application $x(x)$ in the Y combinator \u2014 both exploit the ability to apply an object to itself",
+      "The Kleene chain is fully constructive: $f^n(\\bot)$ is computable for each $n$, and the supremum gives the least fixed point \u2014 this is why denotational semantics works for recursive programs",
+      "The $\\omega$-continuity condition ($f(\\bigsqcup c_n) = \\bigsqcup f(c_n)$) is exactly what bridges the finite approximations $f^n(\\bot)$ to the infinite fixed point \u2014 it is the order-theoretic version of topological continuity on Scott domains",
       "The shift lemma $\\bigsqcup_n c_{n+1} = \\bigsqcup_n c_n$ for ascending chains is the key step: it equates $f(\\bigsqcup f^n(\\bot)) = \\bigsqcup f^{n+1}(\\bot) = \\bigsqcup f^n(\\bot)$, making the fixed-point equation a one-line computation",
-      "The Y combinator equals `lawvereFixpoint` by `rfl` — they are not just analogous but definitionally identical, proving the type-theoretic and categorical perspectives are the same construction"
+      "The Y combinator equals `lawvereFixpoint` by `rfl` \u2014 they are not just analogous but definitionally identical, proving the type-theoretic and categorical perspectives are the same construction"
     ]
   },
   "sections": [
@@ -56,28 +56,28 @@
       "title": "Lawvere's Fixed-Point Theorem",
       "startLine": 44,
       "endLine": 76,
-      "summary": "Proves that if (Y → Y) retracts onto Y, every endomorphism f : Y → Y has a fixed point, via the diagonal construction g(y) = f(decode(y)(y))."
+      "summary": "Proves that if (Y \u2192 Y) retracts onto Y, every endomorphism f : Y \u2192 Y has a fixed point, via the diagonal construction g(y) = f(decode(y)(y))."
     },
     {
       "id": "kleene-chain",
       "title": "Kleene Chain and Ascending Property",
       "startLine": 77,
       "endLine": 110,
-      "summary": "Defines the Kleene chain f^n(⊥), proves it is ascending for monotone f, and shows every chain element is below any fixed point."
+      "summary": "Defines the Kleene chain f^n(\u22a5), proves it is ascending for monotone f, and shows every chain element is below any fixed point."
     },
     {
       "id": "omega-continuity",
-      "title": "ω-Continuity and Chain Shifting",
+      "title": "\u03c9-Continuity and Chain Shifting",
       "startLine": 112,
       "endLine": 139,
-      "summary": "Defines ω-continuity and proves the shift lemma: the supremum of a shifted ascending chain equals the original supremum."
+      "summary": "Defines \u03c9-continuity and proves the shift lemma: the supremum of a shifted ascending chain equals the original supremum."
     },
     {
       "id": "kleene-theorem",
       "title": "Kleene's Fixed-Point Theorem",
       "startLine": 141,
       "endLine": 161,
-      "summary": "Proves the Kleene fixed point is a fixed point (via ω-continuity + shift) and is the least fixed point (via chain bound)."
+      "summary": "Proves the Kleene fixed point is a fixed point (via \u03c9-continuity + shift) and is the least fixed point (via chain bound)."
     },
     {
       "id": "connection",
@@ -91,16 +91,16 @@
       "title": "Y Combinator as Lawvere's Diagonal",
       "startLine": 204,
       "endLine": 246,
-      "summary": "Proves the typed Y combinator is definitionally equal to lawvereFixpoint (by rfl), establishing the λ-calculus/category theory connection."
+      "summary": "Proves the typed Y combinator is definitionally equal to lawvereFixpoint (by rfl), establishing the \u03bb-calculus/category theory connection."
     }
   ],
   "conclusion": {
-    "summary": "This formalization reveals that Lawvere's categorical fixed-point theorem, Kleene's domain-theoretic fixed-point theorem, and the Y combinator of λ-calculus are three incarnations of the same self-referential principle. The Kleene chain construction is fully proved with the least-fixed-point property. The Y combinator is shown to be definitionally equal to Lawvere's diagonal construction. The one remaining sorry connects the Lawvere and Kleene constructions in the general lattice setting.",
-    "implications": "The unification of these three perspectives — categorical (Lawvere), order-theoretic (Kleene/Scott), and type-theoretic (Y combinator) — provides a foundation for formalizing denotational semantics in Lean 4. The insight that self-application and diagonalization are the same operation connects Cantor's theorem, Gödel's incompleteness, recursive function theory, and domain theory into a single framework.",
+    "summary": "This formalization reveals that Lawvere's categorical fixed-point theorem, Kleene's domain-theoretic fixed-point theorem, and the Y combinator of \u03bb-calculus are three incarnations of the same self-referential principle. The Kleene chain construction is fully proved with the least-fixed-point property. The Y combinator is shown to be definitionally equal to Lawvere's diagonal construction. The one remaining sorry connects the Lawvere and Kleene constructions in the general lattice setting.",
+    "implications": "The unification of these three perspectives \u2014 categorical (Lawvere), order-theoretic (Kleene/Scott), and type-theoretic (Y combinator) \u2014 provides a foundation for formalizing denotational semantics in Lean 4. The insight that self-application and diagonalization are the same operation connects Cantor's theorem, G\u00f6del's incompleteness, recursive function theory, and domain theory into a single framework.",
     "openQuestions": [
-      "Can the remaining sorry (Lawvere-Kleene coincidence in general lattices) be proved by showing the Lawvere construction is ω-continuous when the retraction maps are continuous?",
-      "Can Scott's D∞ construction (the inverse limit D_0 ← D_1 ← ... where D_{n+1} = [D_n → D_n]) be formalized in Lean 4 with Mathlib's category theory?",
-      "Can the connection to Gödel's incompleteness theorem be made formal — using Lawvere's theorem to derive the diagonal lemma?"
+      "Can the remaining sorry (Lawvere-Kleene coincidence in general lattices) be proved by showing the Lawvere construction is \u03c9-continuous when the retraction maps are continuous?",
+      "Can Scott's D\u221e construction (the inverse limit D_0 \u2190 D_1 \u2190 ... where D_{n+1} = [D_n \u2192 D_n]) be formalized in Lean 4 with Mathlib's category theory?",
+      "Can the connection to G\u00f6del's incompleteness theorem be made formal \u2014 using Lawvere's theorem to derive the diagonal lemma?"
     ]
   },
   "crossReferences": [
@@ -112,7 +112,7 @@
     {
       "targetId": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Root: Cantor's diagonalization — the original diagonal argument that Lawvere generalized"
+      "description": "Root: Cantor's diagonalization \u2014 the original diagonal argument that Lawvere generalized"
     }
   ],
   "leanFile": {
@@ -122,7 +122,10 @@
     "theoremCount": 12,
     "definitionCount": 6,
     "path": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean"
+    ]
   },
   "sorries": 0
 }

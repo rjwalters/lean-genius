@@ -1,10 +1,10 @@
 {
   "id": "erdos-1039",
-  "title": "Erdős Problem #1039: Polynomial Lemniscate Disc Radius",
+  "title": "Erd\u0151s Problem #1039: Polynomial Lemniscate Disc Radius",
   "slug": "erdos-1039",
-  "description": "Let f(z) = ∏(z-zᵢ) with |zᵢ| ≤ 1. Let ρ(f) = radius of largest disc in {z: |f(z)| < 1}. Is ρ(f) ≫ 1/n? OPEN. Known: 1/(2en²) ≤ ρ(f) (Pommerenke), ρ(f) ≫ 1/(n√log n) (KLR 2025). Upper: ρ(zⁿ-1) ≤ π/(2n).",
+  "description": "Let f(z) = \u220f(z-z\u1d62) with |z\u1d62| \u2264 1. Let \u03c1(f) = radius of largest disc in {z: |f(z)| < 1}. Is \u03c1(f) \u226b 1/n? OPEN. Known: 1/(2en\u00b2) \u2264 \u03c1(f) (Pommerenke), \u03c1(f) \u226b 1/(n\u221alog n) (KLR 2025). Upper: \u03c1(z\u207f-1) \u2264 \u03c0/(2n).",
   "meta": {
-    "author": "Erdős-Herzog-Piranian (problem), Pommerenke (1961), KLR (2025)",
+    "author": "Erd\u0151s-Herzog-Piranian (problem), Pommerenke (1961), KLR (2025)",
     "sourceUrl": "https://erdosproblems.com/1039",
     "date": "",
     "status": "axiomatized",
@@ -24,11 +24,11 @@
     "relatedProblems": [],
     "axiomCount": 5,
     "lineCount": 303,
-    "assumptions": "5 axioms: benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound, random_polynomial_expected. 3 sorries remain (area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc). Fixed sublevelArea type (ENNReal→ℝ via toReal).",
+    "assumptions": "5 axioms: benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound, random_polynomial_expected. 3 sorries remain (area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc). Fixed sublevelArea type (ENNReal\u2192\u211d via toReal).",
     "mathlib_version": "4.29.0",
     "mathlibDependencies": [
       {
-        "theorem": "Polynomial.eval₂",
+        "theorem": "Polynomial.eval\u2082",
         "description": "Complex polynomial evaluation, used for defining |f(z)| in the sublevel set",
         "module": "Mathlib.RingTheory.Polynomial.Basic"
       },
@@ -44,35 +44,35 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Natural logarithm for the KLR bound ρ(f) ≥ c/(n√log n)",
+        "description": "Natural logarithm for the KLR bound \u03c1(f) \u2265 c/(n\u221alog n)",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
     "originalContributions": [
       "UnitDiscPolynomial: structure bundling degree, roots list, and unit-disc-roots constraint",
-      "sublevelSet: {z : |f(z)| < 1} formalized as a set in ℂ",
-      "sublevelArea: Lebesgue measure of the sublevel set (ENNReal → ℝ via toReal)",
+      "sublevelSet: {z : |f(z)| < 1} formalized as a set in \u2102",
+      "sublevelArea: Lebesgue measure of the sublevel set (ENNReal \u2192 \u211d via toReal)",
       "isInscribedDisc / inscribedDiscRadius: largest open disc contained in the sublevel set",
-      "benchmark_upper axiom: ρ(zⁿ-1) ≤ π/(2n) (unit roots polynomial worst case)",
-      "pommerenke_lower axiom: ρ(f) ≥ 1/(2en²) for any UnitDiscPolynomial (Pommerenke 1961)",
-      "klr_lower axiom: ρ(f) ≥ c/(n√log n) (Krishnapur-Lundberg-Ramachandran 2025)",
-      "klr_area_bound axiom: sublevelArea ≥ c/n² (area lower bound driving the KLR result)",
-      "random_polynomial_expected axiom: expected inscribed disc radius for random roots ≫ 1/n"
+      "benchmark_upper axiom: \u03c1(z\u207f-1) \u2264 \u03c0/(2n) (unit roots polynomial worst case)",
+      "pommerenke_lower axiom: \u03c1(f) \u2265 1/(2en\u00b2) for any UnitDiscPolynomial (Pommerenke 1961)",
+      "klr_lower axiom: \u03c1(f) \u2265 c/(n\u221alog n) (Krishnapur-Lundberg-Ramachandran 2025)",
+      "klr_area_bound axiom: sublevelArea \u2265 c/n\u00b2 (area lower bound driving the KLR result)",
+      "random_polynomial_expected axiom: expected inscribed disc radius for random roots \u226b 1/n"
     ],
     "theoremCount": 9
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian around 1958, motivated by the geometry of polynomial lemniscates — the level curves {z : |f(z)| = c} of complex polynomials. For a monic polynomial f(z) = ∏(z - zᵢ) with all roots in the closed unit disc, the sublevel set {z : |f(z)| < 1} is a bounded open region in the complex plane. The problem asks how large a disc can be inscribed in this sublevel set. The benchmark is the polynomial zⁿ - 1, whose n roots are equally spaced on the unit circle: its sublevel set consists of n thin petals, and the largest inscribed disc has radius at most π/(2n). Pommerenke (1961) proved the first general lower bound ρ(f) ≥ 1/(2en²) using potential theory and properties of Green's functions, establishing that the inscribed disc radius is at least quadratically small. This left a large gap between the O(1/n²) lower bound and the conjectured O(1/n) behavior. The problem attracted attention from researchers in potential theory, approximation theory, and complex dynamics. After decades of incremental progress, Krishnapur, Lundberg, and Ramachandran (2025) achieved a major breakthrough, proving ρ(f) ≥ c/(n√(log n)) using area bounds for sublevel sets derived from potential-theoretic estimates on logarithmic capacity. This nearly closes the gap, leaving only a √(log n) factor between the best known lower bound and the conjectured 1/n rate. The problem connects to transfinite diameter (Problem 1040), sublevel set measure (Problem 1038), and the broader study of polynomial inequalities in complex analysis.",
-    "problemStatement": "Let f(z) = ∏(z - zᵢ) be a monic polynomial of degree n with all roots in the closed unit disc |zᵢ| ≤ 1. Let ρ(f) be the radius of the largest disc contained in the sublevel set {z : |f(z)| < 1}. Is it always true that ρ(f) ≫ 1/n? Status: OPEN. Known bounds: 1/(2en²) ≤ ρ(f) (Pommerenke 1961), ρ(f) ≥ c/(n√log n) (KLR 2025). Upper bound: ρ(zⁿ - 1) ≤ π/(2n).",
-    "text": "Let f(z) = ∏(z-zᵢ) with |zᵢ| ≤ 1. Let ρ(f) = radius of largest disc in {z: |f(z)| < 1}. Is ρ(f) ≫ 1/n? OPEN. Known: 1/(2en²) ≤ ρ(f) (Pommerenke), ρ(f) ≫ 1/(n√log n) (KLR 2025). Upper: ρ(zⁿ-1) ≤ π/(2n).",
-    "proofStrategy": "The formalization defines UnitDiscPolynomial as a structure with degree, roots, and the constraint that all roots lie in the closed unit disc. The sublevel set {z : |f(z)| < 1} and its inscribed disc radius ρ(f) are formalized via isInscribedDisc and inscribedDiscRadius. The benchmark polynomial zⁿ - 1 (rootsOfUnity) provides the upper bound π/(2n). Pommerenke's lower bound 1/(2en²) and the KLR bound c/(n√(log n)) are axiomatized. The area approach — bounding sublevelArea and converting via area_implies_disc_bound — captures the KLR methodology. Special cases (degree 1, clustered roots) and random polynomial behavior are also formalized.",
+    "historicalContext": "This problem was posed by Erd\u0151s, Herzog, and Piranian around 1958, motivated by the geometry of polynomial lemniscates \u2014 the level curves {z : |f(z)| = c} of complex polynomials. For a monic polynomial f(z) = \u220f(z - z\u1d62) with all roots in the closed unit disc, the sublevel set {z : |f(z)| < 1} is a bounded open region in the complex plane. The problem asks how large a disc can be inscribed in this sublevel set. The benchmark is the polynomial z\u207f - 1, whose n roots are equally spaced on the unit circle: its sublevel set consists of n thin petals, and the largest inscribed disc has radius at most \u03c0/(2n). Pommerenke (1961) proved the first general lower bound \u03c1(f) \u2265 1/(2en\u00b2) using potential theory and properties of Green's functions, establishing that the inscribed disc radius is at least quadratically small. This left a large gap between the O(1/n\u00b2) lower bound and the conjectured O(1/n) behavior. The problem attracted attention from researchers in potential theory, approximation theory, and complex dynamics. After decades of incremental progress, Krishnapur, Lundberg, and Ramachandran (2025) achieved a major breakthrough, proving \u03c1(f) \u2265 c/(n\u221a(log n)) using area bounds for sublevel sets derived from potential-theoretic estimates on logarithmic capacity. This nearly closes the gap, leaving only a \u221a(log n) factor between the best known lower bound and the conjectured 1/n rate. The problem connects to transfinite diameter (Problem 1040), sublevel set measure (Problem 1038), and the broader study of polynomial inequalities in complex analysis.",
+    "problemStatement": "Let f(z) = \u220f(z - z\u1d62) be a monic polynomial of degree n with all roots in the closed unit disc |z\u1d62| \u2264 1. Let \u03c1(f) be the radius of the largest disc contained in the sublevel set {z : |f(z)| < 1}. Is it always true that \u03c1(f) \u226b 1/n? Status: OPEN. Known bounds: 1/(2en\u00b2) \u2264 \u03c1(f) (Pommerenke 1961), \u03c1(f) \u2265 c/(n\u221alog n) (KLR 2025). Upper bound: \u03c1(z\u207f - 1) \u2264 \u03c0/(2n).",
+    "text": "Let f(z) = \u220f(z-z\u1d62) with |z\u1d62| \u2264 1. Let \u03c1(f) = radius of largest disc in {z: |f(z)| < 1}. Is \u03c1(f) \u226b 1/n? OPEN. Known: 1/(2en\u00b2) \u2264 \u03c1(f) (Pommerenke), \u03c1(f) \u226b 1/(n\u221alog n) (KLR 2025). Upper: \u03c1(z\u207f-1) \u2264 \u03c0/(2n).",
+    "proofStrategy": "The formalization defines UnitDiscPolynomial as a structure with degree, roots, and the constraint that all roots lie in the closed unit disc. The sublevel set {z : |f(z)| < 1} and its inscribed disc radius \u03c1(f) are formalized via isInscribedDisc and inscribedDiscRadius. The benchmark polynomial z\u207f - 1 (rootsOfUnity) provides the upper bound \u03c0/(2n). Pommerenke's lower bound 1/(2en\u00b2) and the KLR bound c/(n\u221a(log n)) are axiomatized. The area approach \u2014 bounding sublevelArea and converting via area_implies_disc_bound \u2014 captures the KLR methodology. Special cases (degree 1, clustered roots) and random polynomial behavior are also formalized.",
     "keyInsights": [
-      "**Lemniscate Geometry:** The sublevel set {z : |f(z)| < 1} for a degree-n polynomial with roots in the unit disc is bounded by the lemniscate {z : |f(z)| = 1}, a real algebraic curve of degree 2n whose geometry determines the inscribed disc radius ρ(f)",
-      "**Roots of Unity Benchmark:** The polynomial zⁿ - 1 has ρ ≤ π/(2n), giving the best known upper bound. Its sublevel set consists of n thin petals near the roots, each with width ~2π/n, establishing that ρ = O(1/n) is the correct target rate",
-      "**Pommerenke's Potential-Theoretic Bound:** Using Green's functions and Koebe's theorem, Pommerenke (1961) proved ρ(f) ≥ 1/(2en²), the first general lower bound — quadratic in n, leaving a linear-to-quadratic gap with the conjecture",
-      "**KLR Area Method Breakthrough:** Krishnapur-Lundberg-Ramachandran (2025) proved area(Ωf) ≥ π/(n² log n), then converted to ρ(f) ≥ c/(n√(log n)) via the isoperimetric bound area ≥ πρ², nearly closing the gap to a √(log n) factor",
-      "**Random vs Worst Case:** Random polynomials have E[ρ] ~ 1/√n, far from the worst-case Θ(1/n), showing that extremal configurations (like roots of unity) are atypical — the problem is about worst-case geometry, not typical behavior",
-      "**Open Gap:** The remaining obstacle is eliminating the √(log n) factor: proving ρ(f) ≥ c/n from the current ρ(f) ≥ c/(n√(log n)). This may require new ideas beyond the area approach, perhaps direct conformal mapping estimates"
+      "**Lemniscate Geometry:** The sublevel set {z : |f(z)| < 1} for a degree-n polynomial with roots in the unit disc is bounded by the lemniscate {z : |f(z)| = 1}, a real algebraic curve of degree 2n whose geometry determines the inscribed disc radius \u03c1(f)",
+      "**Roots of Unity Benchmark:** The polynomial z\u207f - 1 has \u03c1 \u2264 \u03c0/(2n), giving the best known upper bound. Its sublevel set consists of n thin petals near the roots, each with width ~2\u03c0/n, establishing that \u03c1 = O(1/n) is the correct target rate",
+      "**Pommerenke's Potential-Theoretic Bound:** Using Green's functions and Koebe's theorem, Pommerenke (1961) proved \u03c1(f) \u2265 1/(2en\u00b2), the first general lower bound \u2014 quadratic in n, leaving a linear-to-quadratic gap with the conjecture",
+      "**KLR Area Method Breakthrough:** Krishnapur-Lundberg-Ramachandran (2025) proved area(\u03a9f) \u2265 \u03c0/(n\u00b2 log n), then converted to \u03c1(f) \u2265 c/(n\u221a(log n)) via the isoperimetric bound area \u2265 \u03c0\u03c1\u00b2, nearly closing the gap to a \u221a(log n) factor",
+      "**Random vs Worst Case:** Random polynomials have E[\u03c1] ~ 1/\u221an, far from the worst-case \u0398(1/n), showing that extremal configurations (like roots of unity) are atypical \u2014 the problem is about worst-case geometry, not typical behavior",
+      "**Open Gap:** The remaining obstacle is eliminating the \u221a(log n) factor: proving \u03c1(f) \u2265 c/n from the current \u03c1(f) \u2265 c/(n\u221a(log n)). This may require new ideas beyond the area approach, perhaps direct conformal mapping estimates"
     ],
     "prerequisites": [
       "Complex analysis (polynomial lemniscates, sublevel sets)",
@@ -86,7 +86,7 @@
     {
       "id": "imports",
       "title": "Imports and Problem Overview",
-      "summary": "Module documentation on the Erdős-Herzog-Piranian problem (#1039), the known bounds hierarchy (Pommerenke 1961, KLR 2025), and imports for Mathlib complex analysis",
+      "summary": "Module documentation on the Erd\u0151s-Herzog-Piranian problem (#1039), the known bounds hierarchy (Pommerenke 1961, KLR 2025), and imports for Mathlib complex analysis",
       "startLine": 1,
       "endLine": 24,
       "mathContext": "Problem #1039 (Erdos-Herzog-Piranian): for monic $f(z) = \\\\prod(z-z_i)$ with $|z_i| \\\\leq 1$, what is $\\\\rho(f)$ = radius of largest disc inside $\\\\{|f(z)| < 1\\\\}$?"
@@ -102,15 +102,15 @@
     {
       "id": "inscribed-disc",
       "title": "Inscribed Disc Radius",
-      "summary": "isInscribedDisc (disc B(c,r) ⊆ S), inscribedDiscRadius (supremum of radii), and rho (ρ(f) = inscribedDiscRadius of sublevel set)",
+      "summary": "isInscribedDisc (disc B(c,r) \u2286 S), inscribedDiscRadius (supremum of radii), and rho (\u03c1(f) = inscribedDiscRadius of sublevel set)",
       "startLine": 48,
       "endLine": 62,
       "mathContext": "$\\\\rho(f) = \\\\sup\\\\{r : \\\\exists c, B(c,r) \\\\subseteq \\\\{|f(z)|<1\\\\}\\\\}$. Measures flatness of the lemniscate near its nodes."
     },
     {
       "id": "benchmark",
-      "title": "The Benchmark: zⁿ - 1",
-      "summary": "rootsOfUnity construction (roots at e^{2πik/n}) and benchmark_upper axiom: ρ(zⁿ - 1) ≤ π/(2n)",
+      "title": "The Benchmark: z\u207f - 1",
+      "summary": "rootsOfUnity construction (roots at e^{2\u03c0ik/n}) and benchmark_upper axiom: \u03c1(z\u207f - 1) \u2264 \u03c0/(2n)",
       "startLine": 63,
       "endLine": 79,
       "mathContext": "Roots of unity $z_k = e^{2\\\\pi ik/n}$: $\\\\rho = (2/n)\\\\sin(\\\\pi/n) \\\\sim 2\\\\pi/n^2$. This worst-case benchmark has $\\\\rho \\\\sim C/n^2$."
@@ -118,15 +118,15 @@
     {
       "id": "pommerenke",
       "title": "Pommerenke's Lower Bound (1961)",
-      "summary": "pommerenke_lower axiom (ρ(f) ≥ 1/(2en²)) and pommerenkeExponent constant (= 2, recording the quadratic rate)",
+      "summary": "pommerenke_lower axiom (\u03c1(f) \u2265 1/(2en\u00b2)) and pommerenkeExponent constant (= 2, recording the quadratic rate)",
       "startLine": 80,
       "endLine": 90,
-      "mathContext": "Pommerenke: $\\\\rho(f) \\\\geq 1/(2en^2)$. Quadratic in $n$ — not sharp. The conjecture is $\\\\rho \\\\geq c/n$."
+      "mathContext": "Pommerenke: $\\\\rho(f) \\\\geq 1/(2en^2)$. Quadratic in $n$ \u2014 not sharp. The conjecture is $\\\\rho \\\\geq c/n$."
     },
     {
       "id": "klr",
       "title": "KLR Bound (2025)",
-      "summary": "klr_lower axiom (ρ(f) ≥ c/(n√log n) for n ≥ 3) and klr_better_than_pommerenke theorem (KLR eventually dominates)",
+      "summary": "klr_lower axiom (\u03c1(f) \u2265 c/(n\u221alog n) for n \u2265 3) and klr_better_than_pommerenke theorem (KLR eventually dominates)",
       "startLine": 91,
       "endLine": 105,
       "mathContext": "Komarov-Lachand-Robert: $\\\\rho(f) \\\\geq c/(n\\\\sqrt{\\\\log n})$. Improves $1/n^2$ to nearly $1/n$ with a $\\\\sqrt{\\\\log n}$ gap."
@@ -134,7 +134,7 @@
     {
       "id": "conjecture",
       "title": "The EHP Conjecture",
-      "summary": "ehpConjecture definition (∃ c > 0, ρ(f) ≥ c/n for all unit disc polynomials) and ehp_open placeholder axiom",
+      "summary": "ehpConjecture definition (\u2203 c > 0, \u03c1(f) \u2265 c/n for all unit disc polynomials) and ehp_open placeholder axiom",
       "startLine": 106,
       "endLine": 118,
       "mathContext": "OPEN: $\\\\exists c > 0$ such that $\\\\rho(f) \\\\geq c/n$ for all unit-disc polynomials of degree $n$. Sharp up to constants."
@@ -158,7 +158,7 @@
     {
       "id": "area",
       "title": "Area Bounds",
-      "summary": "sublevelArea (Lebesgue measure of sublevel set), area_implies_disc_bound (area ≥ πρ²), and klr_area_bound axiom (area ≥ π/(n² log n))",
+      "summary": "sublevelArea (Lebesgue measure of sublevel set), area_implies_disc_bound (area \u2265 \u03c0\u03c1\u00b2), and klr_area_bound axiom (area \u2265 \u03c0/(n\u00b2 log n))",
       "startLine": 166,
       "endLine": 181,
       "mathContext": "Area bound: $|\\\\{|f(z)|<1\\\\}| \\\\geq \\\\pi/n^2$. Large area implies large inscribed disc (isoperimetric reasoning)."
@@ -166,7 +166,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "degree_one_optimal (ρ = 1 for degree 1), hasClusteredRoots definition, and clustered_implies_large_disc (clustered roots → ρ ≥ 1 - ε)",
+      "summary": "degree_one_optimal (\u03c1 = 1 for degree 1), hasClusteredRoots definition, and clustered_implies_large_disc (clustered roots \u2192 \u03c1 \u2265 1 - \u03b5)",
       "startLine": 182,
       "endLine": 200,
       "mathContext": "Degree 1: $\\\\rho = 1$ always. Clustered roots ($z_i \\\\approx z_0$): $\\\\rho \\\\approx 1$."
@@ -174,7 +174,7 @@
     {
       "id": "random",
       "title": "Random Polynomials",
-      "summary": "random_polynomial_expected axiom: E[ρ] ~ 1/√n for random unit disc polynomials, showing worst-case is atypical",
+      "summary": "random_polynomial_expected axiom: E[\u03c1] ~ 1/\u221an for random unit disc polynomials, showing worst-case is atypical",
       "startLine": 201,
       "endLine": 210,
       "mathContext": "Random polynomials: $\\\\mathbb{E}[\\\\rho] \\\\sim 1/\\\\sqrt{n}$ for i.i.d. uniform roots on $\\\\overline{\\\\mathbb{D}}$. Much better than worst case."
@@ -189,45 +189,45 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1039 asks whether monic polynomials with roots in the unit disc always have sublevel sets containing a disc of radius at least c/n. The best known lower bound is c/(n√(log n)) by Krishnapur-Lundberg-Ramachandran (2025), dramatically improving Pommerenke's 1/(2en²) from 1961. The benchmark upper bound π/(2n) from roots of unity shows the conjectured 1/n rate cannot be improved. The formalization captures the full hierarchy of bounds, the area approach of KLR, special cases, and random polynomial behavior.",
+    "summary": "Erd\u0151s Problem #1039 asks whether monic polynomials with roots in the unit disc always have sublevel sets containing a disc of radius at least c/n. The best known lower bound is c/(n\u221a(log n)) by Krishnapur-Lundberg-Ramachandran (2025), dramatically improving Pommerenke's 1/(2en\u00b2) from 1961. The benchmark upper bound \u03c0/(2n) from roots of unity shows the conjectured 1/n rate cannot be improved. The formalization captures the full hierarchy of bounds, the area approach of KLR, special cases, and random polynomial behavior.",
     "implications": "**Theoretical Significance**: The EHP conjecture sits at the intersection of complex analysis, potential theory, and geometric function theory.\n\nA resolution would advance understanding of polynomial sublevel set geometry, with applications to approximation theory (how well can polynomials approximate on irregular domains?), numerical analysis (stability of polynomial root-finding), and complex dynamics (Julia sets of polynomial iterates). The area approach of KLR connects to isoperimetric problems and logarithmic capacity estimates that have independent interest in potential theory.",
     "openQuestions": [
-      "Is ρ(f) ≫ 1/n for all monic polynomials with roots in the unit disc? Can the √(log n) factor in the KLR bound be eliminated?",
-      "What is the extremal polynomial configuration minimizing ρ(f) for each degree n? Is it always the roots of unity polynomial zⁿ - 1?",
-      "Can direct conformal mapping estimates (bypassing the area approach) give a sharper bound on ρ(f)?",
-      "What is the analogous problem in higher dimensions — for polynomials in ℂᵈ or for systems of polynomials?",
-      "How does ρ(f) relate to the transfinite diameter of the root set and to the logarithmic capacity of the lemniscate complement?"
+      "Is \u03c1(f) \u226b 1/n for all monic polynomials with roots in the unit disc? Can the \u221a(log n) factor in the KLR bound be eliminated?",
+      "What is the extremal polynomial configuration minimizing \u03c1(f) for each degree n? Is it always the roots of unity polynomial z\u207f - 1?",
+      "Can direct conformal mapping estimates (bypassing the area approach) give a sharper bound on \u03c1(f)?",
+      "What is the analogous problem in higher dimensions \u2014 for polynomials in \u2102\u1d48 or for systems of polynomials?",
+      "How does \u03c1(f) relate to the transfinite diameter of the root set and to the logarithmic capacity of the lemniscate complement?"
     ]
   },
   "crossReferences": [
     {
       "relationship": "related",
-      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies the measure-theoretic properties of the same sublevel sets whose inscribed disc radius is the subject of Problem 1039. The KLR 2025 area bound area({|f|<1}) ≥ π/(n² log n) in #1039 is derived from the measure estimates investigated in #1038.",
+      "description": "Erd\u0151s #1038 (sublevel sets of monic polynomials) studies the measure-theoretic properties of the same sublevel sets whose inscribed disc radius is the subject of Problem 1039. The KLR 2025 area bound area({|f|<1}) \u2265 \u03c0/(n\u00b2 log n) in #1039 is derived from the measure estimates investigated in #1038.",
       "targetId": "erdos-1038"
     },
     {
       "relationship": "related",
-      "description": "Erdős #1040 (transfinite diameter and sublevel set measure) connects to Problem 1039 through potential theory: the transfinite diameter controls the Green's function, which in turn bounds both the sublevel set measure (via Pommerenke's capacity estimates) and the inscribed disc radius ρ(f).",
+      "description": "Erd\u0151s #1040 (transfinite diameter and sublevel set measure) connects to Problem 1039 through potential theory: the transfinite diameter controls the Green's function, which in turn bounds both the sublevel set measure (via Pommerenke's capacity estimates) and the inscribed disc radius \u03c1(f).",
       "targetId": "erdos-1040"
     },
     {
       "relationship": "related",
-      "description": "Erdős #1041 (paths in polynomial level sets) asks whether the sublevel set {z : |f(z)| < 1} always contains a short path of length < 2 connecting any two points. The geometry of these paths is related to the inscribed disc radius ρ(f): a large inscribed disc (ρ ≫ 1/n) would directly yield short paths within the disc.",
+      "description": "Erd\u0151s #1041 (paths in polynomial level sets) asks whether the sublevel set {z : |f(z)| < 1} always contains a short path of length < 2 connecting any two points. The geometry of these paths is related to the inscribed disc radius \u03c1(f): a large inscribed disc (\u03c1 \u226b 1/n) would directly yield short paths within the disc.",
       "targetId": "erdos-1041"
     },
     {
       "relationship": "related",
-      "description": "Erdős #1042 (connected components of polynomial lemniscates) studies how many connected components the sublevel set {z : |f(z)| < 1} can have — at most n for degree-n polynomials. The inscribed disc radius ρ(f) in Problem 1039 depends critically on whether the sublevel set has thin petals (many components, small ρ, like zⁿ-1) or one fat component (large ρ).",
+      "description": "Erd\u0151s #1042 (connected components of polynomial lemniscates) studies how many connected components the sublevel set {z : |f(z)| < 1} can have \u2014 at most n for degree-n polynomials. The inscribed disc radius \u03c1(f) in Problem 1039 depends critically on whether the sublevel set has thin petals (many components, small \u03c1, like z\u207f-1) or one fat component (large \u03c1).",
       "targetId": "erdos-1042"
     },
     {
       "relationship": "related",
-      "description": "Erdős #1048 (polynomial lemniscate diameter) studies the diameter of connected components of {z : |f(z)| < 1}. Problem 1039's inscribed disc radius ρ(f) and Problem 1048's diameter are complementary measures of component geometry: large diameter with small inscribed disc radius means the component is elongated (like a thin petal), while ρ(f) ~ 1/n measures flatness at lemniscate nodes.",
+      "description": "Erd\u0151s #1048 (polynomial lemniscate diameter) studies the diameter of connected components of {z : |f(z)| < 1}. Problem 1039's inscribed disc radius \u03c1(f) and Problem 1048's diameter are complementary measures of component geometry: large diameter with small inscribed disc radius means the component is elongated (like a thin petal), while \u03c1(f) ~ 1/n measures flatness at lemniscate nodes.",
       "targetId": "erdos-1048"
     },
     {
       "relationship": "related",
-      "description": "Erdős #1046 (lemniscate containment in a disc) shows that if {z : |f(z)| < 1} is connected, it fits in a disc of radius 2 (Pommerenke 1959). Pommerenke's 1959 containment result and his 1961 lower bound ρ(f) ≥ 1/(2en²) for Problem 1039 use the same potential-theoretic methods — Green's functions, logarithmic capacity, and the Koebe distortion theorem.",
+      "description": "Erd\u0151s #1046 (lemniscate containment in a disc) shows that if {z : |f(z)| < 1} is connected, it fits in a disc of radius 2 (Pommerenke 1959). Pommerenke's 1959 containment result and his 1961 lower bound \u03c1(f) \u2265 1/(2en\u00b2) for Problem 1039 use the same potential-theoretic methods \u2014 Green's functions, logarithmic capacity, and the Koebe distortion theorem.",
       "targetId": "erdos-1046"
     }
   ],
@@ -242,7 +242,10 @@
     "theoremCount": 9,
     "definitionCount": 16,
     "path": "Proofs/Erdos1039Problem.lean",
-    "sorries": 3
+    "sorries": 3,
+    "additionalFiles": [
+      "Proofs/Erdos1039ProblemAristotle.lean"
+    ]
   },
   "sorries": 3
 }

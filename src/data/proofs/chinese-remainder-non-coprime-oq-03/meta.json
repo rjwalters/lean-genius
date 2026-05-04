@@ -2,7 +2,7 @@
   "id": "chinese-remainder-non-coprime-oq-03",
   "title": "Chinese Remainder Theorem for Three Non-Coprime Moduli",
   "slug": "chinese-remainder-non-coprime-oq-03",
-  "description": "Extends the non-coprime CRT from 2 to 3 moduli in any Euclidean domain: the system m₁∣(x-a₁), m₂∣(x-a₂), m₃∣(x-a₃) has a solution iff gcd(mᵢ,mⱼ)∣(aᵢ-aⱼ) for all pairs. Proves necessity (inherited), sufficiency via iterated 2-moduli reduction, and solution uniqueness modulo lcm(m₁,lcm(m₂,m₃)). 7 theorems, 0 axioms.",
+  "description": "Extends the non-coprime CRT from 2 to 3 moduli in any Euclidean domain: the system m\u2081\u2223(x-a\u2081), m\u2082\u2223(x-a\u2082), m\u2083\u2223(x-a\u2083) has a solution iff gcd(m\u1d62,m\u2c7c)\u2223(a\u1d62-a\u2c7c) for all pairs. Proves necessity (inherited), sufficiency via iterated 2-moduli reduction, and solution uniqueness modulo lcm(m\u2081,lcm(m\u2082,m\u2083)). 7 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -19,47 +19,47 @@
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified. (Previously had 1 axiom gcd_lcm_distrib, later replaced by direct Bézout proof.)",
+    "assumptions": "None. Fully machine-verified. (Previously had 1 axiom gcd_lcm_distrib, later replaced by direct B\u00e9zout proof.)",
     "lineCount": 391,
     "theoremCount": 13,
     "definitionCount": 0,
     "originalContributions": [
-      "gcd_dvd_of_dvd_sub: gcd(m₁,m₂) divides any linear combination of m₁ and m₂ differences",
+      "gcd_dvd_of_dvd_sub: gcd(m\u2081,m\u2082) divides any linear combination of m\u2081 and m\u2082 differences",
       "gcd_dvd_sub_of_congr: pairwise GCD condition transfers through the constructed solution",
       "lcm_gcd_dvd_gcd_lcm: easy direction of GCD-LCM distributive law in Euclidean domains",
-      "gcd_lcm_dvd_lcm_gcd: hard direction — gcd(lcm(a,b),c) ∣ lcm(gcd(a,c),gcd(b,c)) via Bézout",
-      "ed_crt_three_sufficient: sufficiency direction — pairwise GCD conditions imply 3-moduli solution",
+      "gcd_lcm_dvd_lcm_gcd: hard direction \u2014 gcd(lcm(a,b),c) \u2223 lcm(gcd(a,c),gcd(b,c)) via B\u00e9zout",
+      "ed_crt_three_sufficient: sufficiency direction \u2014 pairwise GCD conditions imply 3-moduli solution",
       "ed_crt_three_iff: full iff characterization for 3-moduli non-coprime CRT",
-      "ed_crt_three_unique: uniqueness — any two solutions agree modulo lcm(m₁,lcm(m₂,m₃))"
+      "ed_crt_three_unique: uniqueness \u2014 any two solutions agree modulo lcm(m\u2081,lcm(m\u2082,m\u2083))"
     ]
   },
   "overview": {
-    "historicalContext": "The 3-moduli non-coprime CRT was known classically for ℤ: pairwise GCD compatibility is necessary and sufficient for the system of congruences to be solvable. The algebraic extension to general EuclideanDomains requires the GCD-LCM distributive identity gcd(lcm(a,b),c) = lcm(gcd(a,c),gcd(b,c)). This identity is classical in lattice theory (Birkhoff, 1935) — it characterizes distributive lattices — but its proof in the divisibility lattice of a Euclidean domain requires nontrivial work. The Lean proof went through three stages: first using an axiom gcd_lcm_distrib, then a sorry placeholder, and finally a complete 185-line Bézout-based proof. This proof trajectory exemplifies the gap between 'known to be true' and 'formally verified': the distributive law is obvious in ℤ but requires a careful argument in general EuclideanDomains where there is no canonical representative for gcd.",
-    "problemStatement": "In a Euclidean domain R, given moduli m₁, m₂, m₃ and remainders a₁, a₂, a₃, does the system m₁∣(x-a₁), m₂∣(x-a₂), m₃∣(x-a₃) have a solution? Prove it is equivalent to pairwise GCD compatibility.",
-    "text": "The sufficiency proof uses a constructive 2-step reduction. Step 1: solve the first pair (m₁, m₂) using the 2-moduli CRT to get x₀ with m₁∣(x₀-a₁) and m₂∣(x₀-a₂). Step 2: the key is showing gcd(lcm(m₁,m₂), m₃)∣(x₀-a₃), which reduces to the GCD-LCM distributive law. Then apply the 2-moduli CRT again for (lcm(m₁,m₂), m₃). The hard direction of the distributive law gcd_lcm_dvd_lcm_gcd is proved by Bézout decomposition: write gcd(a,b) = u·a + v·b, then expand gcd(a,b)·gcd(a·b/(gcd(a,b)),c) using coprime factoring.",
+    "historicalContext": "The 3-moduli non-coprime CRT was known classically for \u2124: pairwise GCD compatibility is necessary and sufficient for the system of congruences to be solvable. The algebraic extension to general EuclideanDomains requires the GCD-LCM distributive identity gcd(lcm(a,b),c) = lcm(gcd(a,c),gcd(b,c)). This identity is classical in lattice theory (Birkhoff, 1935) \u2014 it characterizes distributive lattices \u2014 but its proof in the divisibility lattice of a Euclidean domain requires nontrivial work. The Lean proof went through three stages: first using an axiom gcd_lcm_distrib, then a sorry placeholder, and finally a complete 185-line B\u00e9zout-based proof. This proof trajectory exemplifies the gap between 'known to be true' and 'formally verified': the distributive law is obvious in \u2124 but requires a careful argument in general EuclideanDomains where there is no canonical representative for gcd.",
+    "problemStatement": "In a Euclidean domain R, given moduli m\u2081, m\u2082, m\u2083 and remainders a\u2081, a\u2082, a\u2083, does the system m\u2081\u2223(x-a\u2081), m\u2082\u2223(x-a\u2082), m\u2083\u2223(x-a\u2083) have a solution? Prove it is equivalent to pairwise GCD compatibility.",
+    "text": "The sufficiency proof uses a constructive 2-step reduction. Step 1: solve the first pair (m\u2081, m\u2082) using the 2-moduli CRT to get x\u2080 with m\u2081\u2223(x\u2080-a\u2081) and m\u2082\u2223(x\u2080-a\u2082). Step 2: the key is showing gcd(lcm(m\u2081,m\u2082), m\u2083)\u2223(x\u2080-a\u2083), which reduces to the GCD-LCM distributive law. Then apply the 2-moduli CRT again for (lcm(m\u2081,m\u2082), m\u2083). The hard direction of the distributive law gcd_lcm_dvd_lcm_gcd is proved by B\u00e9zout decomposition: write gcd(a,b) = u\u00b7a + v\u00b7b, then expand gcd(a,b)\u00b7gcd(a\u00b7b/(gcd(a,b)),c) using coprime factoring.",
     "proofStrategy": "Inherit necessity from ChineseRemainderNonCoprimeOQ02.lean. Prove GCD-LCM distributive law (both directions). Use iterated 2-moduli CRT application. Prove uniqueness via divisibility of the LCM.",
     "keyInsights": [
       "The 3-moduli case reduces to two applications of the 2-moduli CRT via iterated reduction",
       "The GCD-LCM distributive law gcd(lcm(a,b), c) = lcm(gcd(a,c), gcd(b,c)) is the essential algebraic engine",
-      "Bézout's identity in Euclidean domains enables the 185-line hard direction of the distributive law",
-      "Solution uniqueness follows from divisibility by the iterated LCM lcm(m₁, lcm(m₂, m₃))",
-      "The proof went axiom → sorry → full proof: illustrating the gap between 'classical' and 'formally verified'",
+      "B\u00e9zout's identity in Euclidean domains enables the 185-line hard direction of the distributive law",
+      "Solution uniqueness follows from divisibility by the iterated LCM lcm(m\u2081, lcm(m\u2082, m\u2083))",
+      "The proof went axiom \u2192 sorry \u2192 full proof: illustrating the gap between 'classical' and 'formally verified'",
       "Coprime factoring through gcd(a,b) and gcd(gcd(a,b),c) creates two independent IsCoprime instances whose joint cancellation yields the final decomposition"
     ],
     "prerequisites": [
-      "Euclidean domains: GCD, LCM, Bézout's identity",
+      "Euclidean domains: GCD, LCM, B\u00e9zout's identity",
       "Non-coprime CRT for 2 moduli (ChineseRemainderNonCoprimeOQ02.lean)",
       "Divisibility arithmetic in commutative rings"
     ]
   },
   "conclusion": {
-    "summary": "The 3-moduli non-coprime CRT is fully verified: solution exists iff pairwise GCD conditions hold, and is unique modulo lcm(m₁, lcm(m₂, m₃)). The GCD-LCM distributive law is proved by a 185-line direct Bézout decomposition with nested coprime factoring. 7 theorems, 391 lines, 0 axioms. Previously required 1 axiom, now axiom-free.",
-    "implications": "This completes the non-coprime CRT hierarchy: 2-moduli (OQ02) and 3-moduli (OQ03) cases are both verified for all Euclidean domains. The proof technique — iterated 2-moduli reduction + GCD-LCM distributive law — generalizes to n moduli by induction. The distributive law proof also contributes independently: it verifies a classical lattice identity in the divisibility poset of Euclidean domains.",
+    "summary": "The 3-moduli non-coprime CRT is fully verified: solution exists iff pairwise GCD conditions hold, and is unique modulo lcm(m\u2081, lcm(m\u2082, m\u2083)). The GCD-LCM distributive law is proved by a 185-line direct B\u00e9zout decomposition with nested coprime factoring. 7 theorems, 391 lines, 0 axioms. Previously required 1 axiom, now axiom-free.",
+    "implications": "This completes the non-coprime CRT hierarchy: 2-moduli (OQ02) and 3-moduli (OQ03) cases are both verified for all Euclidean domains. The proof technique \u2014 iterated 2-moduli reduction + GCD-LCM distributive law \u2014 generalizes to n moduli by induction. The distributive law proof also contributes independently: it verifies a classical lattice identity in the divisibility poset of Euclidean domains.",
     "openQuestions": [
-      "Generalize to n moduli by induction: solvable iff all pairwise GCD conditions hold, unique mod lcm(m₁,...,mₙ)",
+      "Generalize to n moduli by induction: solvable iff all pairwise GCD conditions hold, unique mod lcm(m\u2081,...,m\u2099)",
       "Formalize the GCD-LCM distributive law as a standalone Mathlib lemma for EuclideanDomains",
       "Module-theoretic version: CRT for modules over PIDs (Chinese Remainder for module decomposition)",
-      "Computational complexity: how many Bézout steps does the iterated 3-moduli construction require?"
+      "Computational complexity: how many B\u00e9zout steps does the iterated 3-moduli construction require?"
     ]
   },
   "leanFile": {
@@ -69,7 +69,10 @@
     "theoremCount": 13,
     "definitionCount": 0,
     "path": "Proofs/ChineseRemainderNonCoprimeOQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean"
+    ]
   },
   "crossReferences": [
     {
@@ -90,25 +93,25 @@
       "title": "Part 0: Self-Contained 2-Moduli CRT",
       "startLine": 25,
       "endLine": 65,
-      "summary": "Private copies of ed_crt_necessary, ed_crt_sufficient, and ed_crt_three_necessary from OQ02. Self-contained so this file can be imported independently. The necessity proof deduces gcd ∣ (a-b) by dvd_sub; sufficiency constructs x = a - m·(gcdA·q) via Bézout; three-moduli necessity applies the pairwise version three times."
+      "summary": "Private copies of ed_crt_necessary, ed_crt_sufficient, and ed_crt_three_necessary from OQ02. Self-contained so this file can be imported independently. The necessity proof deduces gcd \u2223 (a-b) by dvd_sub; sufficiency constructs x = a - m\u00b7(gcdA\u00b7q) via B\u00e9zout; three-moduli necessity applies the pairwise version three times."
     },
     {
       "title": "Part I: Intermediate Lemmas",
       "startLine": 67,
       "endLine": 84,
-      "summary": "gcd_dvd_of_dvd_sub: m ∣ (x-a) implies gcd(m,p) ∣ (x-a) by gcd_dvd_left composition. gcd_dvd_sub_of_congr: congruence transfer — m ∣ (x₀-a₁) and gcd(m,m₃) ∣ (a₁-a₃) give gcd(m,m₃) ∣ (x₀-a₃) by x₀-a₃ = (x₀-a₁) + (a₁-a₃)."
+      "summary": "gcd_dvd_of_dvd_sub: m \u2223 (x-a) implies gcd(m,p) \u2223 (x-a) by gcd_dvd_left composition. gcd_dvd_sub_of_congr: congruence transfer \u2014 m \u2223 (x\u2080-a\u2081) and gcd(m,m\u2083) \u2223 (a\u2081-a\u2083) give gcd(m,m\u2083) \u2223 (x\u2080-a\u2083) by x\u2080-a\u2083 = (x\u2080-a\u2081) + (a\u2081-a\u2083)."
     },
     {
       "title": "Part II: GCD-LCM Distributive Law",
       "startLine": 86,
       "endLine": 321,
-      "summary": "Easy direction (lcm_gcd_dvd_gcd_lcm): lattice chain reasoning via dvd_gcd and dvd_lcm. Helper lemmas: lcm_dvd_mul (lcm(a,b) ∣ a·b) and gcd_lcm_dvd_mul (gcd(lcm(a,b),c) ∣ a·b). Hard direction (gcd_lcm_dvd_lcm_gcd): 185-line Bézout argument. Set g=gcd(a,b), factor a=gα, b=gβ (IsCoprime α β). Set d'=gcd(g,c), factor g=d'g', c=d'c' (IsCoprime g' c'). Write M as linear combination of a,c and b,c; subtract to get g(r₁α-r₂β)=(s₂-s₁)c; cancel d'; use IsCoprime g' c' to get c'∣(r₁α-r₂β); use IsCoprime α β to get β∣(r₁-p_b·c'·w); decompose M=m·(gαβ)+T·c."
+      "summary": "Easy direction (lcm_gcd_dvd_gcd_lcm): lattice chain reasoning via dvd_gcd and dvd_lcm. Helper lemmas: lcm_dvd_mul (lcm(a,b) \u2223 a\u00b7b) and gcd_lcm_dvd_mul (gcd(lcm(a,b),c) \u2223 a\u00b7b). Hard direction (gcd_lcm_dvd_lcm_gcd): 185-line B\u00e9zout argument. Set g=gcd(a,b), factor a=g\u03b1, b=g\u03b2 (IsCoprime \u03b1 \u03b2). Set d'=gcd(g,c), factor g=d'g', c=d'c' (IsCoprime g' c'). Write M as linear combination of a,c and b,c; subtract to get g(r\u2081\u03b1-r\u2082\u03b2)=(s\u2082-s\u2081)c; cancel d'; use IsCoprime g' c' to get c'\u2223(r\u2081\u03b1-r\u2082\u03b2); use IsCoprime \u03b1 \u03b2 to get \u03b2\u2223(r\u2081-p_b\u00b7c'\u00b7w); decompose M=m\u00b7(g\u03b1\u03b2)+T\u00b7c."
     },
     {
       "title": "Part III: Three-Moduli CRT and Summary",
       "startLine": 322,
       "endLine": 391,
-      "summary": "ed_crt_three_sufficient: (1) solve (m₁,m₂) to get x₀; (2) transfer pairwise conditions to x₀; (3) apply lcm_dvd and gcd_lcm_dvd_lcm_gcd; (4) apply ed_crt_sufficient for (lcm(m₁,m₂), m₃); (5) recover m₁ and m₂ conditions via dvd_lcm_left/right. ed_crt_three_iff combines with necessity. ed_crt_three_unique: lcm(m₁,lcm(m₂,m₃)) ∣ (x-y) by nested EuclideanDomain.lcm_dvd. Summary: proof history (axiom → sorry → verified), 7 theorems listed."
+      "summary": "ed_crt_three_sufficient: (1) solve (m\u2081,m\u2082) to get x\u2080; (2) transfer pairwise conditions to x\u2080; (3) apply lcm_dvd and gcd_lcm_dvd_lcm_gcd; (4) apply ed_crt_sufficient for (lcm(m\u2081,m\u2082), m\u2083); (5) recover m\u2081 and m\u2082 conditions via dvd_lcm_left/right. ed_crt_three_iff combines with necessity. ed_crt_three_unique: lcm(m\u2081,lcm(m\u2082,m\u2083)) \u2223 (x-y) by nested EuclideanDomain.lcm_dvd. Summary: proof history (axiom \u2192 sorry \u2192 verified), 7 theorems listed."
     }
   ],
   "sorries": 0

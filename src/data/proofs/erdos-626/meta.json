@@ -1,10 +1,10 @@
 {
   "id": "erdos-626",
-  "title": "Erdős Problem #626: Chromatic Number and Girth",
+  "title": "Erd\u0151s Problem #626: Chromatic Number and Girth",
   "slug": "erdos-626",
-  "description": "Let g_k(n) be the largest m such that there exists an n-vertex graph with chromatic number k and girth > m. Does lim_{n→∞} g_k(n)/log n exist? Bounds: (1/4 log k)·log n ≤ g_k(n) ≤ (2/log(k-2))·log n + 1.",
+  "description": "Let g_k(n) be the largest m such that there exists an n-vertex graph with chromatic number k and girth > m. Does lim_{n\u2192\u221e} g_k(n)/log n exist? Bounds: (1/4 log k)\u00b7log n \u2264 g_k(n) \u2264 (2/log(k-2))\u00b7log n + 1.",
   "meta": {
-    "author": "Erdős (upper bound), Kostochka (lower bound)",
+    "author": "Erd\u0151s (upper bound), Kostochka (lower bound)",
     "sourceUrl": "https://erdosproblems.com/626",
     "date": "",
     "status": "axiomatized",
@@ -45,10 +45,10 @@
       "Definition of g_k(n) function for chromatic-girth trade-off",
       "Definition of chromatic number and girth",
       "Statement of Kostochka's lower bound",
-      "Statement of Erdős's upper bound",
+      "Statement of Erd\u0151s's upper bound",
       "Analysis of bound coefficients and their ratio",
       "Dual problem h^(m)(n) formulation",
-      "Connection to Erdős's 1959 probabilistic method result",
+      "Connection to Erd\u0151s's 1959 probabilistic method result",
       "Limit existence question formalization"
     ],
     "axiomCount": 7,
@@ -57,15 +57,15 @@
     "theoremCount": 13
   },
   "overview": {
-    "historicalContext": "This problem explores one of the most beautiful tensions in graph theory: between chromatic number and girth. Before Erdős's seminal 1959 paper, it was widely believed that graphs with high chromatic number must contain short cycles (since cliques have girth 3). Erdős shattered this intuition by proving, via the probabilistic method, that graphs with arbitrarily high chromatic number and arbitrarily large girth exist.\n\nThe probabilistic method proof was revolutionary: Erdős showed that random graphs $G(n, p)$ with appropriate edge probability $p = n^{\\alpha - 1}$ ($\\alpha < 1/(g-1)$) have, with high probability, both high chromatic number and few short cycles. Deleting one vertex from each short cycle gives the desired graph. This was one of the earliest and most influential applications of probabilistic combinatorics.\n\nProblem #626 asks for the precise quantitative trade-off: how large can the girth be in an $n$-vertex $k$-chromatic graph? Kostochka established the lower bound $g_k(n) \\ge \\frac{1}{4\\log k} \\log n$ using refined probabilistic constructions, while Erdős proved the upper bound $g_k(n) \\le \\frac{2}{\\log(k-2)} \\log n + 1$ via counting arguments (the Moore bound). The gap between these bounds is a factor of approximately 8 for large $k$.\n\nThe limit question — whether $g_k(n)/\\log n$ converges — remains open because we lack sufficient understanding of the structure of extremal graphs achieving the maximum girth for given chromatic number and vertex count.",
+    "historicalContext": "This problem explores one of the most beautiful tensions in graph theory: between chromatic number and girth. Before Erd\u0151s's seminal 1959 paper, it was widely believed that graphs with high chromatic number must contain short cycles (since cliques have girth 3). Erd\u0151s shattered this intuition by proving, via the probabilistic method, that graphs with arbitrarily high chromatic number and arbitrarily large girth exist.\n\nThe probabilistic method proof was revolutionary: Erd\u0151s showed that random graphs $G(n, p)$ with appropriate edge probability $p = n^{\\alpha - 1}$ ($\\alpha < 1/(g-1)$) have, with high probability, both high chromatic number and few short cycles. Deleting one vertex from each short cycle gives the desired graph. This was one of the earliest and most influential applications of probabilistic combinatorics.\n\nProblem #626 asks for the precise quantitative trade-off: how large can the girth be in an $n$-vertex $k$-chromatic graph? Kostochka established the lower bound $g_k(n) \\ge \\frac{1}{4\\log k} \\log n$ using refined probabilistic constructions, while Erd\u0151s proved the upper bound $g_k(n) \\le \\frac{2}{\\log(k-2)} \\log n + 1$ via counting arguments (the Moore bound). The gap between these bounds is a factor of approximately 8 for large $k$.\n\nThe limit question \u2014 whether $g_k(n)/\\log n$ converges \u2014 remains open because we lack sufficient understanding of the structure of extremal graphs achieving the maximum girth for given chromatic number and vertex count.",
     "problemStatement": "Let $k \\ge 4$. Define $g_k(n)$ as the largest $m$ such that there exists an $n$-vertex graph with chromatic number exactly $k$ and girth $> m$ (no cycle of length $\\le m$).\n\n**Question:** Does $\\lim_{n \\to \\infty} g_k(n) / \\log n$ exist?\n\n**Status:** OPEN\n\n**Known bounds:** $\\frac{1}{4\\log k} \\cdot \\log n \\le g_k(n) \\le \\frac{2}{\\log(k-2)} \\cdot \\log n + 1$\n\n**Gap:** The ratio of upper to lower bound coefficient is $\\frac{8\\log k}{\\log(k-2)} \\to 8$ as $k \\to \\infty$.",
-    "text": "Let g_k(n) be the largest m such that there exists an n-vertex graph with chromatic number k and girth > m. Does lim_{n→∞} g_k(n)/log n exist? Bounds: (1/4 log k)·log n ≤ g_k(n) ≤ (2/log(k-2))·log n + 1.",
-    "proofStrategy": "The Lean formalization builds the complete framework:\n\n1. **Definitions**: Chromatic number (sorry'd), girth (sorry'd), $k$-colorability, and the $g_k(n)$ function as a supremum.\n2. **Erdős 1959**: Axiomatized existence of high-$\\chi$, high-girth graphs, with sorry'd corollary $g_k(n) \\to \\infty$.\n3. **Upper bound**: Erdős's bound axiomatized with explicit coefficient $2/\\log(k-2)$.\n4. **Lower bound**: Kostochka's bound axiomatized with coefficient $1/(4\\log k)$.\n5. **Limit question**: Formalized via `Filter.Tendsto` with sorry'd boundedness result.\n6. **Gap analysis**: Bound ratio formula and its limit to 8 (both sorry'd).\n7. **Dual problem**: $h^{(m)}(n)$ with axiomatized polynomial bounds.\n8. **Special cases**: $k = 4$ bounds and triangle-free unbounded chromatic number.\n9. **Ramsey connection**: Link to off-diagonal Ramsey numbers.\n10. **Summary**: Combined bounds in `erdos_626_status`.",
+    "text": "Let g_k(n) be the largest m such that there exists an n-vertex graph with chromatic number k and girth > m. Does lim_{n\u2192\u221e} g_k(n)/log n exist? Bounds: (1/4 log k)\u00b7log n \u2264 g_k(n) \u2264 (2/log(k-2))\u00b7log n + 1.",
+    "proofStrategy": "The Lean formalization builds the complete framework:\n\n1. **Definitions**: Chromatic number (sorry'd), girth (sorry'd), $k$-colorability, and the $g_k(n)$ function as a supremum.\n2. **Erd\u0151s 1959**: Axiomatized existence of high-$\\chi$, high-girth graphs, with sorry'd corollary $g_k(n) \\to \\infty$.\n3. **Upper bound**: Erd\u0151s's bound axiomatized with explicit coefficient $2/\\log(k-2)$.\n4. **Lower bound**: Kostochka's bound axiomatized with coefficient $1/(4\\log k)$.\n5. **Limit question**: Formalized via `Filter.Tendsto` with sorry'd boundedness result.\n6. **Gap analysis**: Bound ratio formula and its limit to 8 (both sorry'd).\n7. **Dual problem**: $h^{(m)}(n)$ with axiomatized polynomial bounds.\n8. **Special cases**: $k = 4$ bounds and triangle-free unbounded chromatic number.\n9. **Ramsey connection**: Link to off-diagonal Ramsey numbers.\n10. **Summary**: Combined bounds in `erdos_626_status`.",
     "keyInsights": [
-      "**Chromatic-girth tension:** High $\\chi$ suggests dense local structure (many edges, clique-like), but high girth forces sparse local structure (tree-like neighborhoods). Erdős's 1959 result proved these can coexist — a foundational result in probabilistic combinatorics.",
+      "**Chromatic-girth tension:** High $\\chi$ suggests dense local structure (many edges, clique-like), but high girth forces sparse local structure (tree-like neighborhoods). Erd\u0151s's 1959 result proved these can coexist \u2014 a foundational result in probabilistic combinatorics.",
       "**$g_k(n) = \\Theta(\\log n)$:** Both bounds establish logarithmic growth in $n$. This is characteristic of probabilistic constructions where the 'witness' graph has exponentially many vertices relative to the target girth.",
       "**Gap factor approaches 8:** As $k \\to \\infty$, the ratio $8\\log k/\\log(k-2) \\to 8$. This constant-factor uncertainty persists even for very large chromatic numbers, suggesting a fundamental limitation in current techniques.",
-      "**The probabilistic method gives existence but not precision:** Erdős's 1959 construction proves graphs exist but doesn't characterize extremal ones. The limit question requires understanding the fine structure of optimal graphs.",
+      "**The probabilistic method gives existence but not precision:** Erd\u0151s's 1959 construction proves graphs exist but doesn't characterize extremal ones. The limit question requires understanding the fine structure of optimal graphs.",
       "**Dual problem $h^{(m)}(n)$:** Maximizing $\\chi$ for fixed girth gives polynomial bounds $\\Theta(n^{1/(m-1)})$ (with log corrections), connecting to the cage problem and Moore graphs in algebraic graph theory."
     ],
     "prerequisites": [
@@ -96,23 +96,23 @@
     {
       "id": "g-function",
       "title": "The g_k(n) Function",
-      "summary": "Noncomputable definition of g_k(n) via supremum, with axiomatized well-definedness for k ≥ 4",
+      "summary": "Noncomputable definition of g_k(n) via supremum, with axiomatized well-definedness for k \u2265 4",
       "startLine": 48,
       "endLine": 63,
       "mathContext": "$g_k(n) = \\\\max\\\\{\\\\text{girth}(G) : |V(G)| = n, \\\\chi(G) = k\\\\}$. How large a girth can a $k$-chromatic $n$-vertex graph have?"
     },
     {
       "id": "erdos-constructions",
-      "title": "Erdős's 1959 Construction",
-      "summary": "Axiomatized existence of high-chromatic, high-girth graphs, plus sorry'd corollary g_k(n) → ∞",
+      "title": "Erd\u0151s's 1959 Construction",
+      "summary": "Axiomatized existence of high-chromatic, high-girth graphs, plus sorry'd corollary g_k(n) \u2192 \u221e",
       "startLine": 64,
       "endLine": 76,
       "mathContext": "Erdos (1959): $\\\\forall k, g$, $\\\\exists G$ with $\\\\chi(G) \\\\geq k$ and girth $> g$. Non-constructive (probabilistic). Explicit constructions: Ramanujan graphs (Lubotzky-Phillips-Sarnak)."
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound (Erdős)",
-      "summary": "Axiomatized bound g_k(n) ≤ (2/log(k-2))·log n + 1 with coefficient definition and k=4 evaluation",
+      "title": "Upper Bound (Erd\u0151s)",
+      "summary": "Axiomatized bound g_k(n) \u2264 (2/log(k-2))\u00b7log n + 1 with coefficient definition and k=4 evaluation",
       "startLine": 77,
       "endLine": 93,
       "mathContext": "$g_k(n) \\\\leq \\\\frac{2}{\\\\log(k-2)} \\\\log n + 1$. The coefficient $2/\\\\log(k-2)$ decreases with $k$: higher chromatic number forces shorter cycles."
@@ -120,7 +120,7 @@
     {
       "id": "lower-bound",
       "title": "Lower Bound (Kostochka)",
-      "summary": "Axiomatized bound g_k(n) ≥ (1/(4 log k))·log n with coefficient definition and k=4 evaluation",
+      "summary": "Axiomatized bound g_k(n) \u2265 (1/(4 log k))\u00b7log n with coefficient definition and k=4 evaluation",
       "startLine": 94,
       "endLine": 110,
       "mathContext": "$g_k(n) \\\\geq \\\\frac{1}{4\\\\log k} \\\\log n$. From probabilistic constructions. Gap: coefficient ranges between $1/(4\\\\log k)$ and $2/\\\\log(k-2)$."
@@ -136,7 +136,7 @@
     {
       "id": "gap-analysis",
       "title": "Gap Analysis",
-      "summary": "Bound ratio formula 8·log k/log(k-2), sorry'd positivity of gap, and sorry'd limit to 8 as k → ∞",
+      "summary": "Bound ratio formula 8\u00b7log k/log(k-2), sorry'd positivity of gap, and sorry'd limit to 8 as k \u2192 \u221e",
       "startLine": 132,
       "endLine": 152,
       "mathContext": "Gap ratio: $\\\\frac{2/\\\\log(k-2)}{1/(4\\\\log k)} = 8\\\\log k / \\\\log(k-2) \\\\to 8$ as $k \\\\to \\\\infty$. For small $k$, the gap is larger."
@@ -144,7 +144,7 @@
     {
       "id": "dual-problem",
       "title": "Dual Problem h^(m)(n)",
-      "summary": "Maximum chromatic number for given girth, sorry'd duality g↔h, and axiomatized polynomial bounds",
+      "summary": "Maximum chromatic number for given girth, sorry'd duality g\u2194h, and axiomatized polynomial bounds",
       "startLine": 153,
       "endLine": 171,
       "mathContext": "Dual: $h(g,n) = \\\\max \\\\chi(G)$ for $n$-vertex graphs with girth $> g$. By duality, bounds on $g_k$ give bounds on $h$."
@@ -152,7 +152,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases and Probabilistic Bounds",
-      "summary": "k=4 bounds, triangle-free unbounded chromatic (sorry'd), Erdős 1959 axiom, and probabilistic lower bound construction",
+      "summary": "k=4 bounds, triangle-free unbounded chromatic (sorry'd), Erd\u0151s 1959 axiom, and probabilistic lower bound construction",
       "startLine": 172,
       "endLine": 203,
       "mathContext": "$k=4$: triangle-free graphs. $g_4(n) = \\\\Theta(\\\\log n)$ but exact asymptotics unknown. Erdos (1959): triangle-free graphs have unbounded $\\\\chi$."
@@ -160,7 +160,7 @@
     {
       "id": "ramsey-connection",
       "title": "Ramsey Connection",
-      "summary": "Off-diagonal Ramsey number definition and sorry'd connection g_k(n) ≤ C·log R(k,n)",
+      "summary": "Off-diagonal Ramsey number definition and sorry'd connection g_k(n) \u2264 C\u00b7log R(k,n)",
       "startLine": 204,
       "endLine": 216,
       "mathContext": "Connection to off-diagonal Ramsey: $R(3,n) = \\\\Theta(n^2/\\\\log n)$ implies bounds on $g_3(n)$ (triangle-free, $\\\\chi = 3$)."
@@ -175,8 +175,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #626 is OPEN. The function $g_k(n)$ — the maximum girth achievable in $n$-vertex $k$-chromatic graphs — satisfies $g_k(n) = \\Theta(\\log n)$ with explicit coefficients from Kostochka's lower bound and Erdős's upper bound. The formalization captures the complete mathematical framework: graph definitions, both bounds, the dual problem, gap analysis showing an asymptotic factor of 8, and the central limit question via Mathlib's filter convergence.",
-    "implications": "This problem connects to foundational themes across combinatorics: (1) the probabilistic method, originating from Erdős's 1959 breakthrough showing high-$\\chi$, high-girth graphs exist; (2) extremal graph theory, where the trade-off between graph parameters is a central organizing principle; (3) the cage problem and Moore graphs in algebraic graph theory; (4) Ramsey theory, through the connection between chromatic number, independence number, and Ramsey numbers; and (5) asymptotic analysis, where determining precise growth rates of combinatorial functions remains a fundamental challenge.",
+    "summary": "Erd\u0151s Problem #626 is OPEN. The function $g_k(n)$ \u2014 the maximum girth achievable in $n$-vertex $k$-chromatic graphs \u2014 satisfies $g_k(n) = \\Theta(\\log n)$ with explicit coefficients from Kostochka's lower bound and Erd\u0151s's upper bound. The formalization captures the complete mathematical framework: graph definitions, both bounds, the dual problem, gap analysis showing an asymptotic factor of 8, and the central limit question via Mathlib's filter convergence.",
+    "implications": "This problem connects to foundational themes across combinatorics: (1) the probabilistic method, originating from Erd\u0151s's 1959 breakthrough showing high-$\\chi$, high-girth graphs exist; (2) extremal graph theory, where the trade-off between graph parameters is a central organizing principle; (3) the cage problem and Moore graphs in algebraic graph theory; (4) Ramsey theory, through the connection between chromatic number, independence number, and Ramsey numbers; and (5) asymptotic analysis, where determining precise growth rates of combinatorial functions remains a fundamental challenge.",
     "openQuestions": [
       "Does $\\lim_{n \\to \\infty} g_k(n)/\\log n$ exist for any fixed $k \\ge 4$? This is the central open question.",
       "Can the gap between the upper and lower bound coefficients (factor ~8 for large k) be narrowed?",
@@ -191,11 +191,11 @@
       "targetId": "ramseys-theorem"
     },
     {
-      "relationship": "The Erdős-Rogers problem (Problem #620) also explores extremal graph structure with forbidden subgraph constraints",
+      "relationship": "The Erd\u0151s-Rogers problem (Problem #620) also explores extremal graph structure with forbidden subgraph constraints",
       "targetId": "erdos-620"
     },
     {
-      "relationship": "Erdős Problem #1 concerns Ramsey-type phenomena that underlie the chromatic-girth trade-off",
+      "relationship": "Erd\u0151s Problem #1 concerns Ramsey-type phenomena that underlie the chromatic-girth trade-off",
       "targetId": "erdos-1"
     }
   ],
@@ -215,7 +215,10 @@
     "theoremCount": 13,
     "definitionCount": 9,
     "path": "Proofs/Erdos626Problem.lean",
-    "sorries": 15
+    "sorries": 15,
+    "additionalFiles": [
+      "Proofs/Erdos626ProblemAristotle.lean"
+    ]
   },
   "sorries": 15
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-644",
-  "title": "Erdős #644: Covering Families of Sets",
+  "title": "Erd\u0151s #644: Covering Families of Sets",
   "slug": "erdos-644",
-  "description": "Let f(k,r) be the minimum size of a covering set for k-uniform families where every r sets share a common pair. Known: f(k,3)=2k, f(k,4)=⌊3k/2⌋, f(k,5)=⌊5k/4⌋, f(k,6)=k. Is f(k,7)=(3/4+o(1))k?",
+  "description": "Let f(k,r) be the minimum size of a covering set for k-uniform families where every r sets share a common pair. Known: f(k,3)=2k, f(k,4)=\u230a3k/2\u230b, f(k,5)=\u230a5k/4\u230b, f(k,6)=k. Is f(k,7)=(3/4+o(1))k?",
   "meta": {
-    "author": "Paul Erdős, Fon-Der-Flaass, Kostochka, Tuza",
+    "author": "Paul Erd\u0151s, Fon-Der-Flaass, Kostochka, Tuza",
     "sourceUrl": "https://erdosproblems.com/644",
     "date": "1992",
     "status": "axiomatized",
@@ -31,7 +31,7 @@
         "covering function f(k,r)",
         "k-uniform family",
         "r-wise pair property",
-        "coefficient sequence cᵣ"
+        "coefficient sequence c\u1d63"
       ],
       "keyTechniques": [
         "Helly-type conditions",
@@ -40,7 +40,7 @@
         "sunflower lemma connections",
         "asymptotic analysis"
       ],
-      "significance": "Determines the precise covering efficiency of k-uniform set families under r-wise pair coherence. The known exact values f(k,3)=2k through f(k,6)=k reveal a decreasing coefficient sequence c₃=2, c₄=3/2, c₅=5/4, c₆=1. The open questions ask whether c₇=3/4 (crossing below the natural barrier c=1) and whether the linear-in-k behavior persists for all r."
+      "significance": "Determines the precise covering efficiency of k-uniform set families under r-wise pair coherence. The known exact values f(k,3)=2k through f(k,6)=k reveal a decreasing coefficient sequence c\u2083=2, c\u2084=3/2, c\u2085=5/4, c\u2086=1. The open questions ask whether c\u2087=3/4 (crossing below the natural barrier c=1) and whether the linear-in-k behavior persists for all r."
     },
     "mathlibDependencies": [
       {
@@ -59,10 +59,10 @@
       "PairIntersects / HasRWisePairProperty: r-wise pair coherence condition",
       "IsCoveringSet: covering set (transversal) predicate",
       "f(k,r): central covering function definition",
-      "Known values axioms: f(k,3)=2k, f(k,4)=⌊3k/2⌋, f(k,5)=⌊5k/4⌋, f(k,6)=k",
+      "Known values axioms: f(k,3)=2k, f(k,4)=\u230a3k/2\u230b, f(k,5)=\u230a5k/4\u230b, f(k,6)=k",
       "coefficientSequence: decreasing coefficient pattern formalization",
       "Monotonicity: f non-increasing in r, non-decreasing in k",
-      "Sunflower connection: relationship to Erdős-Rado sunflower lemma"
+      "Sunflower connection: relationship to Erd\u0151s-Rado sunflower lemma"
     ],
     "axiomCount": 3,
     "lineCount": 277,
@@ -71,14 +71,14 @@
     "theoremCount": 19
   },
   "overview": {
-    "historicalContext": "Erdős, Fon-Der-Flaass, Kostochka, and Tuza introduced this problem in 1992, studying the covering function f(k,r) for k-uniform set families with the r-wise pair intersection property. They determined exact values for r = 3, 4, 5, 6, revealing a striking pattern of decreasing coefficients: c₃ = 2, c₄ = 3/2, c₅ = 5/4, c₆ = 1.\n\nThe r-wise pair property is a Helly-type condition: it requires that any r sets in the family are linked by a common pair intersecting all of them. As r increases, the condition becomes stronger, forcing more structure on the family and enabling smaller covering sets. The sequence of exact values suggests a regular pattern, but no general formula has been established.\n\nThe problem connects to several important themes in combinatorics: the sunflower lemma (Erdős-Rado 1960), Helly-type theorems, hypergraph transversal theory, and the recently improved sunflower bounds (Alweiss-Lovett-Wu-Zhang 2020). The open questions about f(k,7) and general asymptotics probe the fundamental limits of covering efficiency under structural constraints.",
-    "problemStatement": "Let f(k,r) be minimal such that if A₁, A₂, ... is a family of k-sets where every r sets share a common pair {x,y} intersecting all of them, then some set of size f(k,r) intersects all Aᵢ. Q1: Is f(k,7) = (3/4 + o(1))k? Q2: For all r ≥ 3, does f(k,r) = (c_r + o(1))k for some constant c_r?",
-    "text": "Let f(k,r) be the minimum size of a covering set for k-uniform families where every r sets share a common pair. Known: f(k,3)=2k, f(k,4)=⌊3k/2⌋, f(k,5)=⌊5k/4⌋, f(k,6)=k. Is f(k,7)=(3/4+o(1))k?",
+    "historicalContext": "Erd\u0151s, Fon-Der-Flaass, Kostochka, and Tuza introduced this problem in 1992, studying the covering function f(k,r) for k-uniform set families with the r-wise pair intersection property. They determined exact values for r = 3, 4, 5, 6, revealing a striking pattern of decreasing coefficients: c\u2083 = 2, c\u2084 = 3/2, c\u2085 = 5/4, c\u2086 = 1.\n\nThe r-wise pair property is a Helly-type condition: it requires that any r sets in the family are linked by a common pair intersecting all of them. As r increases, the condition becomes stronger, forcing more structure on the family and enabling smaller covering sets. The sequence of exact values suggests a regular pattern, but no general formula has been established.\n\nThe problem connects to several important themes in combinatorics: the sunflower lemma (Erd\u0151s-Rado 1960), Helly-type theorems, hypergraph transversal theory, and the recently improved sunflower bounds (Alweiss-Lovett-Wu-Zhang 2020). The open questions about f(k,7) and general asymptotics probe the fundamental limits of covering efficiency under structural constraints.",
+    "problemStatement": "Let f(k,r) be minimal such that if A\u2081, A\u2082, ... is a family of k-sets where every r sets share a common pair {x,y} intersecting all of them, then some set of size f(k,r) intersects all A\u1d62. Q1: Is f(k,7) = (3/4 + o(1))k? Q2: For all r \u2265 3, does f(k,r) = (c_r + o(1))k for some constant c_r?",
+    "text": "Let f(k,r) be the minimum size of a covering set for k-uniform families where every r sets share a common pair. Known: f(k,3)=2k, f(k,4)=\u230a3k/2\u230b, f(k,5)=\u230a5k/4\u230b, f(k,6)=k. Is f(k,7)=(3/4+o(1))k?",
     "proofStrategy": "The formalization defines the combinatorial primitives (k-families, pair intersection, r-wise pair property, covering sets), states the central function f(k,r), axiomatizes the four known exact values from EFKT92, formalizes the coefficient pattern and monotonicity properties, establishes the sunflower connection, and states the two open questions about f(k,7) and general asymptotics.",
     "keyInsights": [
-      "f(k,3) = 2k, f(k,4) = ⌊3k/2⌋, f(k,5) = ⌊5k/4⌋, f(k,6) = k [EFKT92]",
-      "Coefficients decrease: c₃=2, c₄=3/2, c₅=5/4, c₆=1, conjectured c₇=3/4",
-      "c₆=1 is a natural barrier: covering set = individual set size",
+      "f(k,3) = 2k, f(k,4) = \u230a3k/2\u230b, f(k,5) = \u230a5k/4\u230b, f(k,6) = k [EFKT92]",
+      "Coefficients decrease: c\u2083=2, c\u2084=3/2, c\u2085=5/4, c\u2086=1, conjectured c\u2087=3/4",
+      "c\u2086=1 is a natural barrier: covering set = individual set size",
       "f(k,r) is non-increasing in r (stronger coherence helps) and non-decreasing in k",
       "The r-wise pair property is a Helly-type condition weaker than sunflower structure",
       "Recent sunflower lemma improvements (ALWZ 2020) may inform approaches to this problem"
@@ -86,7 +86,7 @@
     "prerequisites": [
       "Extremal set theory (uniform families, transversals)",
       "Hypergraph theory (covering and matching)",
-      "Erdős-Rado sunflower lemma",
+      "Erd\u0151s-Rado sunflower lemma",
       "Intersection properties of set systems",
       "Asymptotic analysis ($o(1)$ notation)"
     ]
@@ -98,48 +98,48 @@
       "startLine": 31,
       "endLine": 75,
       "summary": "Defines k-element set families (KFamily), pairwise intersection predicates, the r-wise pair property, covering sets (a set S covering all pairs in all sets), and the function f(k,r) = min size of a covering set.",
-      "mathContext": "KFamily α k = Finset (Finset α) where every member has exactly k elements. The covering number $f(k,r)$ = minimum $|S|$ such that every pair from any $k$-set intersects $S$ in $r$ elements."
+      "mathContext": "KFamily \u03b1 k = Finset (Finset \u03b1) where every member has exactly k elements. The covering number $f(k,r)$ = minimum $|S|$ such that every pair from any $k$-set intersects $S$ in $r$ elements."
     },
     {
       "id": "covering-values",
       "title": "Exact Values of f(k,r)",
       "startLine": 73,
       "endLine": 110,
-      "summary": "Axiomatizes exact values: f(k,3) = 2k, f(k,4) = ⌊3k/2⌋, f(k,5) = ⌊5k/4⌋, f(k,6) = k. Proves the upper bound f(k,r) ≤ kr (trivial) and the decreasing pattern in r.",
-      "mathContext": "$f(k,3) = 2k$ (Erdős-Ko-Rado style), $f(k,4) = \\lfloor 3k/2 \\rfloor$, $f(k,5) = \\lfloor 5k/4 \\rfloor$, $f(k,6) = k$. For $r > 6$: $f(k,r) < k$? Coefficients $2, 3/2, 5/4, 1$ suggest convergence to $k$ as $r \\to 6$."
+      "summary": "Axiomatizes exact values: f(k,3) = 2k, f(k,4) = \u230a3k/2\u230b, f(k,5) = \u230a5k/4\u230b, f(k,6) = k. Proves the upper bound f(k,r) \u2264 kr (trivial) and the decreasing pattern in r.",
+      "mathContext": "$f(k,3) = 2k$ (Erd\u0151s-Ko-Rado style), $f(k,4) = \\lfloor 3k/2 \\rfloor$, $f(k,5) = \\lfloor 5k/4 \\rfloor$, $f(k,6) = k$. For $r > 6$: $f(k,r) < k$? Coefficients $2, 3/2, 5/4, 1$ suggest convergence to $k$ as $r \\to 6$."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity and Asymptotic Analysis",
       "startLine": 105,
       "endLine": 160,
-      "summary": "Proves coefficients_decreasing: the ratio f(k,r)/k decreases as r increases. Studies the limit behavior and the question of whether f(k,r) = k for all r ≥ 6.",
+      "summary": "Proves coefficients_decreasing: the ratio f(k,r)/k decreases as r increases. Studies the limit behavior and the question of whether f(k,r) = k for all r \u2265 6.",
       "mathContext": "Coefficients: $r=3 \\to 2$, $r=4 \\to 3/2$, $r=5 \\to 5/4$, $r=6 \\to 1$. The pattern $c_r = (r-1)!!/r!!$ (double factorial) approximates the coefficients. Conjecture: $f(k,r)/k \\to 1$ for large $r$."
     },
     {
       "id": "erdos-ko-rado",
-      "title": "Connection to Erdős-Ko-Rado",
+      "title": "Connection to Erd\u0151s-Ko-Rado",
       "startLine": 160,
       "endLine": 220,
-      "summary": "Connects the covering number f(k,r) to the Erdős-Ko-Rado theorem on intersecting families. The case r=2 corresponds to the EKR bound on the maximum intersecting family size.",
-      "mathContext": "Erdős-Ko-Rado (1961): the maximum family of $k$-subsets of $[n]$ with pairwise intersection ≥ 1 has size $\\binom{n-1}{k-1}$ for $n \\geq 2k$. The covering number $f(k,r)$ generalizes this to the covering perspective."
+      "summary": "Connects the covering number f(k,r) to the Erd\u0151s-Ko-Rado theorem on intersecting families. The case r=2 corresponds to the EKR bound on the maximum intersecting family size.",
+      "mathContext": "Erd\u0151s-Ko-Rado (1961): the maximum family of $k$-subsets of $[n]$ with pairwise intersection \u2265 1 has size $\\binom{n-1}{k-1}$ for $n \\geq 2k$. The covering number $f(k,r)$ generalizes this to the covering perspective."
     },
     {
       "id": "open-questions",
       "title": "Open Questions and Conjectures",
       "startLine": 220,
       "endLine": 277,
-      "summary": "States the open conjecture on f(k,r) for r ≥ 7 and summarizes the connection to Bollobás set-pairs inequality. The determination of all exact values of f(k,r) remains an active research area.",
-      "mathContext": "Open: exact values of $f(k,r)$ for $r \\geq 7$. The Bollobás set-pairs inequality gives $|\\mathcal{F}| \\leq \\binom{a+b}{a}$ for cross-intersecting families, providing tools for the covering problem."
+      "summary": "States the open conjecture on f(k,r) for r \u2265 7 and summarizes the connection to Bollob\u00e1s set-pairs inequality. The determination of all exact values of f(k,r) remains an active research area.",
+      "mathContext": "Open: exact values of $f(k,r)$ for $r \\geq 7$. The Bollob\u00e1s set-pairs inequality gives $|\\mathcal{F}| \\leq \\binom{a+b}{a}$ for cross-intersecting families, providing tools for the covering problem."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #644 on covering families of sets with the r-wise pair property. The function f(k,r) measures covering efficiency under structural constraints, with exact values known for r = 3, 4, 5, 6 revealing a decreasing coefficient sequence. The two open questions — whether c₇ = 3/4 and whether cᵣ exists for all r — probe the fundamental asymptotics of this covering function.",
-    "implications": "Resolution of Question 1 would determine whether the coefficient sequence crosses below the natural barrier c = 1 Resolution of Question 2 would establish whether all r-wise pair families have linear-in-k covering numbers Understanding the limit of cᵣ as r → ∞ would reveal whether infinite coherence enables sublinear covering Connections to the sunflower lemma suggest that improved sunflower bounds may yield progress on f(k,r)",
+    "summary": "This formalization captures Erd\u0151s Problem #644 on covering families of sets with the r-wise pair property. The function f(k,r) measures covering efficiency under structural constraints, with exact values known for r = 3, 4, 5, 6 revealing a decreasing coefficient sequence. The two open questions \u2014 whether c\u2087 = 3/4 and whether c\u1d63 exists for all r \u2014 probe the fundamental asymptotics of this covering function.",
+    "implications": "Resolution of Question 1 would determine whether the coefficient sequence crosses below the natural barrier c = 1 Resolution of Question 2 would establish whether all r-wise pair families have linear-in-k covering numbers Understanding the limit of c\u1d63 as r \u2192 \u221e would reveal whether infinite coherence enables sublinear covering Connections to the sunflower lemma suggest that improved sunflower bounds may yield progress on f(k,r)",
     "openQuestions": [
       "Is f(k,7) = (3/4 + o(1))k?",
-      "Does f(k,r) = (c_r + o(1))k for all r ≥ 3?",
-      "What is the limit of c_r as r → ∞?",
+      "Does f(k,r) = (c_r + o(1))k for all r \u2265 3?",
+      "What is the limit of c_r as r \u2192 \u221e?",
       "Does f(k,r) eventually stabilize or continue decreasing?"
     ]
   },
@@ -152,12 +152,15 @@
     "theoremCount": 19,
     "definitionCount": 14,
     "sorries": 16,
-    "path": "Proofs/Erdos644Problem.lean"
+    "path": "Proofs/Erdos644Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos644ProblemAristotle.lean"
+    ]
   },
   "references": [
     {
       "key": "EFKT92",
-      "citation": "Erdős, P., Fon-Der-Flaass, D. G., Kostochka, A. V., and Tuza, Zs., Covering and independence in triangle structures and set systems, in: Sets, Graphs, and Numbers, Colloq. Math. Soc. János Bolyai 60, North-Holland, 1992, pp. 237-252.",
+      "citation": "Erd\u0151s, P., Fon-Der-Flaass, D. G., Kostochka, A. V., and Tuza, Zs., Covering and independence in triangle structures and set systems, in: Sets, Graphs, and Numbers, Colloq. Math. Soc. J\u00e1nos Bolyai 60, North-Holland, 1992, pp. 237-252.",
       "type": "paper"
     },
     {
@@ -167,12 +170,12 @@
     },
     {
       "key": "ER60",
-      "citation": "Erdős, P. and Rado, R., Intersection theorems for systems of sets, J. London Math. Soc. 35 (1960), 85-90.",
+      "citation": "Erd\u0151s, P. and Rado, R., Intersection theorems for systems of sets, J. London Math. Soc. 35 (1960), 85-90.",
       "type": "paper"
     },
     {
       "key": "erdos644",
-      "citation": "Erdős Problems, Problem #644, https://erdosproblems.com/644",
+      "citation": "Erd\u0151s Problems, Problem #644, https://erdosproblems.com/644",
       "type": "website"
     }
   ],
@@ -180,17 +183,17 @@
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, open"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, open"
     },
     {
       "targetId": "erdos-1075",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, open"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, open"
     },
     {
       "targetId": "erdos-1088",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, open"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, open"
     }
   ],
   "sorries": 16

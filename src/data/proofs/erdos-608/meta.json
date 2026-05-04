@@ -1,10 +1,10 @@
 {
   "id": "erdos-608",
-  "title": "Erdős #608: Edges in 5-Cycles",
+  "title": "Erd\u0151s #608: Edges in 5-Cycles",
   "slug": "erdos-608",
-  "description": "Does G with > n²/4 edges have ≥ (2/9)n² edges in C₅? NO! The correct bound is c = (2 + √2)/16 ≈ 0.2134. Füredi-Maleki and Grzesik-Hu-Volec determined the exact value.",
+  "description": "Does G with > n\u00b2/4 edges have \u2265 (2/9)n\u00b2 edges in C\u2085? NO! The correct bound is c = (2 + \u221a2)/16 \u2248 0.2134. F\u00fcredi-Maleki and Grzesik-Hu-Volec determined the exact value.",
   "meta": {
-    "author": "Paul Erdős, Zoltán Füredi, Dániel Maleki, Andrzej Grzesik, Ping Hu, Jan Volec",
+    "author": "Paul Erd\u0151s, Zolt\u00e1n F\u00fcredi, D\u00e1niel Maleki, Andrzej Grzesik, Ping Hu, Jan Volec",
     "sourceUrl": "https://erdosproblems.com/608",
     "date": "2010s",
     "status": "formalized",
@@ -49,15 +49,15 @@
     "originalContributions": [
       "IsC5: 5-cycle predicate with full distinctness",
       "EdgeInC5: edge participation in 5-cycles",
-      "edgesInC5: count of edges in C₅",
-      "OriginalConjecture: Erdős's false (2/9)n² conjecture",
-      "c: correct constant (2 + √2)/16",
+      "edgesInC5: count of edges in C\u2085",
+      "OriginalConjecture: Erd\u0151s's false (2/9)n\u00b2 conjecture",
+      "c: correct constant (2 + \u221a2)/16",
       "FurediMalekiConstruction: upper bound existential",
       "GrzesikHuVolecBound: matching lower bound",
       "IsOddCycle: general (2k+1)-cycle definition",
-      "odd_cycle_bound_general: (2/9)n² for k ≥ 3",
+      "odd_cycle_bound_general: (2/9)n\u00b2 for k \u2265 3",
       "Stability: structural characterization placeholder",
-      "countC5: C₅ subgraph count"
+      "countC5: C\u2085 subgraph count"
     ],
     "axiomCount": 0,
     "lineCount": 270,
@@ -84,10 +84,10 @@
     {
       "id": "conjecture",
       "title": "Original Conjecture (FALSE)",
-      "summary": "States Erdős's conjecture: $|E(G)| > n^2/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)n^2$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved.",
+      "summary": "States Erd\u0151s's conjecture: $|E(G)| > n^2/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)n^2$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ \u2014 the conjecture is disproved.",
       "startLine": 51,
       "endLine": 63,
-      "mathContext": "States Erdős's conjecture: $|E(G)| > $n^{2}$/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)$n^{2}$$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved."
+      "mathContext": "States Erd\u0151s's conjecture: $|E(G)| > $n^{2}$/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)$n^{2}$$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ \u2014 the conjecture is disproved."
     },
     {
       "id": "constant",
@@ -99,7 +99,7 @@
     },
     {
       "id": "furedi-maleki",
-      "title": "Füredi-Maleki Upper Bound",
+      "title": "F\u00fcredi-Maleki Upper Bound",
       "summary": "States `FurediMalekiConstruction`: $\\forall \\varepsilon > 0$, eventually $\\exists G$ with $|E| > n^2/4$ and $\\text{edgesInC5}(G) \\leq (c + \\varepsilon)n^2$. The extremal construction uses an optimally weighted blow-up.",
       "startLine": 77,
       "endLine": 91,
@@ -123,19 +123,19 @@
     },
     {
       "id": "triangles",
-      "title": "Triangles: Erdős-Faudree-Rousseau",
-      "summary": "Defines `edgesInTriangles` as `edgesInOddCycle G 1`. States the Erdős-Faudree-Rousseau bound: $|E| > n^2/4 \\Rightarrow \\text{edgesInTriangles}(G) \\geq 2\\lfloor n/2 \\rfloor + 1$ — a linear (not quadratic) bound.",
+      "title": "Triangles: Erd\u0151s-Faudree-Rousseau",
+      "summary": "Defines `edgesInTriangles` as `edgesInOddCycle G 1`. States the Erd\u0151s-Faudree-Rousseau bound: $|E| > n^2/4 \\Rightarrow \\text{edgesInTriangles}(G) \\geq 2\\lfloor n/2 \\rfloor + 1$ \u2014 a linear (not quadratic) bound.",
       "startLine": 137,
       "endLine": 150,
-      "mathContext": "Defines `edgesInTriangles` as `edgesInOddCycle G 1`. States the Erdős-Faudree-Rousseau bound: $|E| > n^2/4 \\Rightarrow \\text{edgesInTriangles}(G) \\geq 2\\lfloor n/2 \\rfloor + 1$ — a linear (not quadratic) bound."
+      "mathContext": "Defines `edgesInTriangles` as `edgesInOddCycle G 1`. States the Erd\u0151s-Faudree-Rousseau bound: $|E| > n^2/4 \\Rightarrow \\text{edgesInTriangles}(G) \\geq 2\\lfloor n/2 \\rfloor + 1$ \u2014 a linear (not quadratic) bound."
     },
     {
       "id": "turan",
-      "title": "Turán Threshold Sharpness",
-      "summary": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $n^2/4$ is **sharp**.",
+      "title": "Tur\u00e1n Threshold Sharpness",
+      "summary": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Tur\u00e1n graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $n^2/4$ is **sharp**.",
       "startLine": 151,
       "endLine": 173,
-      "mathContext": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $$n^{2}$/4$ is **sharp**."
+      "mathContext": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Tur\u00e1n graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $$n^{2}$/4$ is **sharp**."
     },
     {
       "id": "small",
@@ -147,7 +147,7 @@
     },
     {
       "id": "construction",
-      "title": "Füredi-Maleki Construction Details",
+      "title": "F\u00fcredi-Maleki Construction Details",
       "summary": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. Proves `construction_optimal`: for $n \\geq 100$, achieves $|E| > n^2/4$ with $\\text{edgesInC5} \\leq cn^2 + n$.",
       "startLine": 188,
       "endLine": 218,
@@ -163,16 +163,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "**Edges in Odd Cycles: From Erdős's Conjecture to Flag Algebras (1960s-2020s)**\n\nErdős posed this problem as part of his program on **supersaturation** in extremal graph theory: once the Turán threshold $\\text{ex}(n; H) = \\lfloor n^2/4 \\rfloor$ is exceeded, how many copies of (or edges in) forbidden substructures must appear? For triangles, **Rademacher (1941)** showed one extra edge creates a triangle, and **Erdős (1962)** refined the counting. **Erdős, Faudree, and Rousseau** studied the triangle case systematically.\n\nFor $C_5$, Erdős conjectured the answer was $(2/9)n^2$ edges in 5-cycles. **Füredi and Maleki** disproved this by constructing graphs using optimally weighted blow-ups with only $(c + o(1))n^2$ edges in $C_5$, where $c = (2 + \\sqrt{2})/16 \\approx 0.2134 < 2/9$. The irrational constant arises from a quadratic optimization over blow-up weights.\n\n**Grzesik, Hu, and Volec (2021)** proved the matching lower bound using **Razborov's flag algebra** method (2007), establishing $c$ as the exact asymptotic answer. Remarkably, for longer odd cycles $C_{2k+1}$ with $k \\geq 3$, the original bound $(2/9)n^2$ IS correct — $C_5$ is the unique exception due to its tight algebraic structure.",
+    "historicalContext": "**Edges in Odd Cycles: From Erd\u0151s's Conjecture to Flag Algebras (1960s-2020s)**\n\nErd\u0151s posed this problem as part of his program on **supersaturation** in extremal graph theory: once the Tur\u00e1n threshold $\\text{ex}(n; H) = \\lfloor n^2/4 \\rfloor$ is exceeded, how many copies of (or edges in) forbidden substructures must appear? For triangles, **Rademacher (1941)** showed one extra edge creates a triangle, and **Erd\u0151s (1962)** refined the counting. **Erd\u0151s, Faudree, and Rousseau** studied the triangle case systematically.\n\nFor $C_5$, Erd\u0151s conjectured the answer was $(2/9)n^2$ edges in 5-cycles. **F\u00fcredi and Maleki** disproved this by constructing graphs using optimally weighted blow-ups with only $(c + o(1))n^2$ edges in $C_5$, where $c = (2 + \\sqrt{2})/16 \\approx 0.2134 < 2/9$. The irrational constant arises from a quadratic optimization over blow-up weights.\n\n**Grzesik, Hu, and Volec (2021)** proved the matching lower bound using **Razborov's flag algebra** method (2007), establishing $c$ as the exact asymptotic answer. Remarkably, for longer odd cycles $C_{2k+1}$ with $k \\geq 3$, the original bound $(2/9)n^2$ IS correct \u2014 $C_5$ is the unique exception due to its tight algebraic structure.",
     "problemStatement": "**Solved Problem (Disproved)**\n\nLet $G$ be a graph with $n$ vertices and more than $n^2/4$ edges. Must $G$ have at least $(2/9)n^2$ edges contained in some $C_5$?\n\n**Answer**: NO. The correct bound is $c = (2 + \\sqrt{2})/16 \\approx 0.2134$, strictly less than $2/9 \\approx 0.2222$.",
-    "text": "Does G with > n²/4 edges have ≥ (2/9)n² edges in C₅? NO! The correct bound is c = (2 + √2)/16 ≈ 0.2134. Füredi-Maleki and Grzesik-Hu-Volec determined the exact value.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core definitions:** Define $C_5$ with full distinctness, edge-in-$C_5$ predicate, and edge count.\n2. **Disproof:** State and disprove the original $(2/9)n^2$ conjecture.\n3. **Correct constant:** Define $c = (2 + \\sqrt{2})/16$ and verify $c < 2/9$.\n4. **Upper bound:** Axiomatize Füredi-Maleki construction giving $\\leq (c + \\varepsilon)n^2$.\n5. **Lower bound:** Axiomatize Grzesik-Hu-Volec flag algebra result giving $\\geq (c - \\varepsilon)n^2$.\n6. **General odd cycles:** Define $(2k+1)$-cycles and prove the $(2/9)n^2$ bound holds for $k \\geq 3$.\n7. **Context:** Triangle case (linear bound), Turán threshold sharpness, small cases, stability.",
+    "text": "Does G with > n\u00b2/4 edges have \u2265 (2/9)n\u00b2 edges in C\u2085? NO! The correct bound is c = (2 + \u221a2)/16 \u2248 0.2134. F\u00fcredi-Maleki and Grzesik-Hu-Volec determined the exact value.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core definitions:** Define $C_5$ with full distinctness, edge-in-$C_5$ predicate, and edge count.\n2. **Disproof:** State and disprove the original $(2/9)n^2$ conjecture.\n3. **Correct constant:** Define $c = (2 + \\sqrt{2})/16$ and verify $c < 2/9$.\n4. **Upper bound:** Axiomatize F\u00fcredi-Maleki construction giving $\\leq (c + \\varepsilon)n^2$.\n5. **Lower bound:** Axiomatize Grzesik-Hu-Volec flag algebra result giving $\\geq (c - \\varepsilon)n^2$.\n6. **General odd cycles:** Define $(2k+1)$-cycles and prove the $(2/9)n^2$ bound holds for $k \\geq 3$.\n7. **Context:** Triangle case (linear bound), Tur\u00e1n threshold sharpness, small cases, stability.",
     "keyInsights": [
-      "**Erdős's conjecture disproved**: The $(2/9)n^2$ bound for edges in $C_5$ is FALSE — the correct constant $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ is strictly smaller",
-      "**Irrational extremal constant**: The appearance of $\\sqrt{2}$ in $c$ reflects a quadratic optimization over blow-up weights in the Füredi-Maleki construction",
+      "**Erd\u0151s's conjecture disproved**: The $(2/9)n^2$ bound for edges in $C_5$ is FALSE \u2014 the correct constant $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ is strictly smaller",
+      "**Irrational extremal constant**: The appearance of $\\sqrt{2}$ in $c$ reflects a quadratic optimization over blow-up weights in the F\u00fcredi-Maleki construction",
       "**Flag algebras resolve the problem**: Grzesik-Hu-Volec (2021) proved the matching lower bound using Razborov's flag algebra method and semidefinite programming",
       "**$C_5$ is the unique exception**: For $C_{2k+1}$ with $k \\geq 3$, the bound $(2/9)n^2$ IS correct; only $C_5$ has a smaller constant",
-      "**Hierarchy of odd cycle supersaturation**: Triangles give $\\Theta(n)$, $C_5$ gives $cn^2$ with $c < 2/9$, and $C_{2k+1}$ ($k \\geq 3$) gives $(2/9)n^2$ — three distinct regimes"
+      "**Hierarchy of odd cycle supersaturation**: Triangles give $\\Theta(n)$, $C_5$ gives $cn^2$ with $c < 2/9$, and $C_{2k+1}$ ($k \\geq 3$) gives $(2/9)n^2$ \u2014 three distinct regimes"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -180,13 +180,13 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #608 on edges in 5-cycles. Erdős's original conjecture of $(2/9)n^2$ edges is disproved: the correct asymptotic bound is $c = (2 + \\sqrt{2})/16 \\approx 0.2134$, determined exactly by Füredi-Maleki (upper bound via weighted blow-up constructions) and Grzesik-Hu-Volec (lower bound via flag algebras). The formalization covers the full $C_5$ machinery, the general odd cycle comparison, triangle and Turán threshold results, and the extremal construction.",
-    "implications": "**Theoretical Significance**: The resolution reveals a surprising hierarchy in odd cycle supersaturation. While $C_5$ has a strictly smaller constant than Erdős predicted, longer odd cycles $C_{2k+1}$ ($k \\geq 3$) do satisfy the $(2/9)n^2$ bound.\n\nThe flag algebra technique used for the lower bound has become a powerful tool in extremal combinatorics, resolving numerous long-standing conjectures. The irrational extremal constant illustrates that discrete optimization problems can have non-trivial algebraic structure.",
+    "summary": "This formalization captures Erd\u0151s Problem #608 on edges in 5-cycles. Erd\u0151s's original conjecture of $(2/9)n^2$ edges is disproved: the correct asymptotic bound is $c = (2 + \\sqrt{2})/16 \\approx 0.2134$, determined exactly by F\u00fcredi-Maleki (upper bound via weighted blow-up constructions) and Grzesik-Hu-Volec (lower bound via flag algebras). The formalization covers the full $C_5$ machinery, the general odd cycle comparison, triangle and Tur\u00e1n threshold results, and the extremal construction.",
+    "implications": "**Theoretical Significance**: The resolution reveals a surprising hierarchy in odd cycle supersaturation. While $C_5$ has a strictly smaller constant than Erd\u0151s predicted, longer odd cycles $C_{2k+1}$ ($k \\geq 3$) do satisfy the $(2/9)n^2$ bound.\n\nThe flag algebra technique used for the lower bound has become a powerful tool in extremal combinatorics, resolving numerous long-standing conjectures. The irrational extremal constant illustrates that discrete optimization problems can have non-trivial algebraic structure.",
     "openQuestions": [
       "What is the exact structure of near-extremal graphs (full stability characterization)?",
       "Can the flag algebra proof of the lower bound be simplified to a human-verifiable argument?",
       "What is the exact extremal value for specific small n (not just the asymptotic density)?",
-      "Is there a unified framework explaining why C₅ behaves differently from C₇, C₉, ...?",
+      "Is there a unified framework explaining why C\u2085 behaves differently from C\u2087, C\u2089, ...?",
       "What are the analogous constants for edges in even cycles C_{2k}?"
     ]
   },
@@ -208,12 +208,15 @@
     "theoremCount": 14,
     "definitionCount": 15,
     "sorries": 13,
-    "path": "Proofs/Erdos608Problem.lean"
+    "path": "Proofs/Erdos608Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos608ProblemAristotle.lean"
+    ]
   },
   "references": [
     {
       "key": "FM",
-      "citation": "Füredi, Zoltán and Maleki, Dániel, The minimum number of edges in C₅-saturated graphs, manuscript.",
+      "citation": "F\u00fcredi, Zolt\u00e1n and Maleki, D\u00e1niel, The minimum number of edges in C\u2085-saturated graphs, manuscript.",
       "type": "paper"
     },
     {
@@ -223,12 +226,12 @@
     },
     {
       "key": "Er62",
-      "citation": "Erdős, Paul, On a theorem of Rademacher-Turán, Illinois J. Math. 6 (1962), 122-127.",
+      "citation": "Erd\u0151s, Paul, On a theorem of Rademacher-Tur\u00e1n, Illinois J. Math. 6 (1962), 122-127.",
       "type": "paper"
     },
     {
       "key": "EFR86",
-      "citation": "Erdős, Paul, Faudree, Ralph J., and Rousseau, Cecil C., Extremal problems involving vertices and edges on odd cycles, Discrete Math. 101 (1992), 23-31.",
+      "citation": "Erd\u0151s, Paul, Faudree, Ralph J., and Rousseau, Cecil C., Extremal problems involving vertices and edges on odd cycles, Discrete Math. 101 (1992), 23-31.",
       "type": "paper"
     },
     {
@@ -238,7 +241,7 @@
     },
     {
       "key": "EP",
-      "citation": "Erdős Problems, Problem #608, https://erdosproblems.com/608.",
+      "citation": "Erd\u0151s Problems, Problem #608, https://erdosproblems.com/608.",
       "type": "website"
     }
   ],
@@ -246,17 +249,17 @@
     {
       "targetId": "erdos-622",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: cycles, extremal-combinatorics, graph-theory, solved"
     },
     {
       "targetId": "erdos-72",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: cycles, extremal-combinatorics, graph-theory, solved"
     },
     {
       "targetId": "erdos-134",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, graph-theory, solved"
     }
   ],
   "sorries": 13

@@ -1,8 +1,8 @@
 {
   "id": "erdos-715",
-  "title": "Erdős Problem #715: Regular Subgraphs in Regular Graphs",
+  "title": "Erd\u0151s Problem #715: Regular Subgraphs in Regular Graphs",
   "slug": "erdos-715",
-  "description": "Does every 4-regular graph contain a 3-regular subgraph? SOLVED: YES by Tashkinov (1982). Every r-regular graph with r ≥ 4 contains a 3-regular subgraph.",
+  "description": "Does every 4-regular graph contain a 3-regular subgraph? SOLVED: YES by Tashkinov (1982). Every r-regular graph with r \u2265 4 contains a 3-regular subgraph.",
   "meta": {
     "author": "Berge, Sauer",
     "sourceUrl": "https://erdosproblems.com/715",
@@ -37,10 +37,10 @@
       "keyTechniques": [
         "Tashkinov's cycle-combination method",
         "Alon-Friedland-Kalai edge-addition argument",
-        "K₄ and Petersen graph as minimal counterexamples",
+        "K\u2084 and Petersen graph as minimal counterexamples",
         "handshaking lemma for parity"
       ],
-      "significance": "Resolves the Berge-Sauer question with a sharp threshold: r = 4 is the minimum regularity degree forcing a 3-regular subgraph. K₄ and the Petersen graph show r = 3 fails. The Alon-Friedland-Kalai strengthening (4-regular + one edge suffices) reveals remarkable structural rigidity in 4-regular graphs. The general threshold problem for k-regular subgraphs remains open for k ≥ 4."
+      "significance": "Resolves the Berge-Sauer question with a sharp threshold: r = 4 is the minimum regularity degree forcing a 3-regular subgraph. K\u2084 and the Petersen graph show r = 3 fails. The Alon-Friedland-Kalai strengthening (4-regular + one edge suffices) reveals remarkable structural rigidity in 4-regular graphs. The general threshold problem for k-regular subgraphs remains open for k \u2265 4."
     },
     "mathlibDependencies": [
       {
@@ -60,21 +60,21 @@
       },
       {
         "theorem": "Fin",
-        "description": "Bounded natural numbers for constructing K₄ (Fin 4) and Petersen graph (Fin 10)",
+        "description": "Bounded natural numbers for constructing K\u2084 (Fin 4) and Petersen graph (Fin 10)",
         "module": "Mathlib.Data.Fin.Basic"
       }
     ],
     "originalContributions": [
       "SimpleGraph': custom simple graph structure with explicit adjacency",
       "degree: vertex degree via Finset.filter on neighbors",
-      "IsRegular: r-regular graph predicate (∀ v, degree v = r)",
+      "IsRegular: r-regular graph predicate (\u2200 v, degree v = r)",
       "IsSubgraph, IsSpanningSubgraph, inducedSubgraph: subgraph hierarchy",
       "HasRegularSubgraph(r, k): central predicate for regular subgraph existence",
-      "tashkinov_theorem: 4-regular → 3-regular subgraph (sorry)",
-      "regular_has_3_regular: r ≥ 4 → 3-regular subgraph (sorry)",
-      "alon_friedland_kalai: 4-regular + edge → 3-regular subgraph (sorry)",
+      "tashkinov_theorem: 4-regular \u2192 3-regular subgraph (sorry)",
+      "regular_has_3_regular: r \u2265 4 \u2192 3-regular subgraph (sorry)",
+      "alon_friedland_kalai: 4-regular + edge \u2192 3-regular subgraph (sorry)",
       "K4: complete graph on Fin 4, proved 3-regular",
-      "K4_minimal_3_regular: K₄ has no proper 3-regular subgraph (sorry)",
+      "K4_minimal_3_regular: K\u2084 has no proper 3-regular subgraph (sorry)",
       "berge_sauer_answer: proved from tashkinov_theorem with witness r = 4",
       "RegularSubgraphThreshold: general threshold function for k-regular subgraphs",
       "petersenGraph: Petersen graph on Fin 10 with explicit adjacency",
@@ -87,16 +87,16 @@
     "theoremCount": 13
   },
   "overview": {
-    "historicalContext": "This problem was posed by Berge and Sauer at the 6th Hungarian Combinatorial Colloquium (1976). It asks whether regular graphs of sufficient degree must contain regular subgraphs of smaller degree. Tashkinov (1982) gave the definitive answer: every 4-regular graph contains a 3-regular subgraph. This was strengthened by Alon, Friedland, and Kalai (1984), who showed that every 4-regular graph plus a single edge already contains a 3-regular subgraph, immediately implying the result for all r ≥ 5.\n\nThe threshold r = 4 is sharp: K₄ is 3-regular but has no proper 3-regular subgraph (removing any edge drops some degree below 3). The Petersen graph (10 vertices, 3-regular) is another minimal example. The general question — for which (r, k) pairs does every r-regular graph contain a k-regular subgraph? — remains an active research area for k ≥ 4.",
+    "historicalContext": "This problem was posed by Berge and Sauer at the 6th Hungarian Combinatorial Colloquium (1976). It asks whether regular graphs of sufficient degree must contain regular subgraphs of smaller degree. Tashkinov (1982) gave the definitive answer: every 4-regular graph contains a 3-regular subgraph. This was strengthened by Alon, Friedland, and Kalai (1984), who showed that every 4-regular graph plus a single edge already contains a 3-regular subgraph, immediately implying the result for all r \u2265 5.\n\nThe threshold r = 4 is sharp: K\u2084 is 3-regular but has no proper 3-regular subgraph (removing any edge drops some degree below 3). The Petersen graph (10 vertices, 3-regular) is another minimal example. The general question \u2014 for which (r, k) pairs does every r-regular graph contain a k-regular subgraph? \u2014 remains an active research area for k \u2265 4.",
     "problemStatement": "Does every regular graph of degree 4 contain a regular subgraph of degree 3? More generally, is there any r such that every r-regular graph must contain a 3-regular subgraph?",
-    "text": "Does every 4-regular graph contain a 3-regular subgraph? SOLVED: YES by Tashkinov (1982). Every r-regular graph with r ≥ 4 contains a 3-regular subgraph.",
-    "proofStrategy": "The formalization defines custom graph structures (SimpleGraph' with adjacency, degree, regularity), subgraph predicates, and the central HasRegularSubgraph(r, k) predicate. Tashkinov's theorem and the Alon-Friedland-Kalai strengthening are stated as theorem sorries. Counterexamples (K₄ on Fin 4, Petersen graph on Fin 10) demonstrate the threshold is sharp. The Berge-Sauer answer is proved from Tashkinov's theorem. Edge counting via the handshaking lemma provides parity constraints.",
+    "text": "Does every 4-regular graph contain a 3-regular subgraph? SOLVED: YES by Tashkinov (1982). Every r-regular graph with r \u2265 4 contains a 3-regular subgraph.",
+    "proofStrategy": "The formalization defines custom graph structures (SimpleGraph' with adjacency, degree, regularity), subgraph predicates, and the central HasRegularSubgraph(r, k) predicate. Tashkinov's theorem and the Alon-Friedland-Kalai strengthening are stated as theorem sorries. Counterexamples (K\u2084 on Fin 4, Petersen graph on Fin 10) demonstrate the threshold is sharp. The Berge-Sauer answer is proved from Tashkinov's theorem. Edge counting via the handshaking lemma provides parity constraints.",
     "keyInsights": [
-      "Tashkinov (1982): Every 4-regular graph contains a 3-regular subgraph — the first complete answer to the Berge-Sauer question",
-      "Alon-Friedland-Kalai (1984): Every 4-regular graph plus an edge contains a 3-regular subgraph, immediately implying r ≥ 5",
-      "K₄ is 3-regular but minimal: no proper 3-regular subgraph exists, showing the threshold is exactly 4",
+      "Tashkinov (1982): Every 4-regular graph contains a 3-regular subgraph \u2014 the first complete answer to the Berge-Sauer question",
+      "Alon-Friedland-Kalai (1984): Every 4-regular graph plus an edge contains a 3-regular subgraph, immediately implying r \u2265 5",
+      "K\u2084 is 3-regular but minimal: no proper 3-regular subgraph exists, showing the threshold is exactly 4",
       "The Petersen graph is another minimal 3-regular graph (10 vertices, girth 5, non-Hamiltonian)",
-      "The general threshold problem for k-regular subgraphs (k ≥ 4) remains open"
+      "The general threshold problem for k-regular subgraphs (k \u2265 4) remains open"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -131,7 +131,7 @@
     {
       "id": "main-results",
       "title": "Tashkinov and Alon-Friedland-Kalai",
-      "summary": "States `tashkinov_theorem` (4-regular → 3-regular subgraph), the corollary for r ≥ 4, and the AFK strengthening (4-regular + edge suffices). All deep results are stated as theorem sorries.",
+      "summary": "States `tashkinov_theorem` (4-regular \u2192 3-regular subgraph), the corollary for r \u2265 4, and the AFK strengthening (4-regular + edge suffices). All deep results are stated as theorem sorries.",
       "startLine": 71,
       "endLine": 97,
       "mathContext": "States `tashkinov_theorem` (4-regular $\\to$ 3-regular subgraph), the corollary for r $\\geq$ 4, and the AFK strengthening (4-regular + edge suffices). All deep results are stated as theorem sorries."
@@ -139,10 +139,10 @@
     {
       "id": "counterexamples",
       "title": "Counterexamples for r < 4",
-      "summary": "K₄ (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness.",
+      "summary": "K\u2084 (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness.",
       "startLine": 98,
       "endLine": 122,
-      "mathContext": "Verified: K₄ (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness."
+      "mathContext": "Verified: K\u2084 (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness."
     },
     {
       "id": "berge-sauer",
@@ -170,10 +170,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #715 (Berge-Sauer question) was SOLVED by Tashkinov in 1982. Every 4-regular graph contains a 3-regular subgraph, and hence every r-regular graph with r ≥ 4 does as well. The threshold is exactly 4: K₄ and the Petersen graph are minimal 3-regular graphs with no proper 3-regular subgraph. The Alon-Friedland-Kalai strengthening shows even 4-regular + one edge suffices.",
-    "implications": "The threshold for 3-regular subgraph existence is exactly r = 4, a sharp structural result Alon-Friedland-Kalai reveals remarkable rigidity: one extra edge beyond 4-regularity forces 3-regular substructure The Petersen graph and K₄ are the canonical minimal counterexamples below the threshold Connects to graph factorization theory and Petersen's theorem on 2-factors",
+    "summary": "Erd\u0151s Problem #715 (Berge-Sauer question) was SOLVED by Tashkinov in 1982. Every 4-regular graph contains a 3-regular subgraph, and hence every r-regular graph with r \u2265 4 does as well. The threshold is exactly 4: K\u2084 and the Petersen graph are minimal 3-regular graphs with no proper 3-regular subgraph. The Alon-Friedland-Kalai strengthening shows even 4-regular + one edge suffices.",
+    "implications": "The threshold for 3-regular subgraph existence is exactly r = 4, a sharp structural result Alon-Friedland-Kalai reveals remarkable rigidity: one extra edge beyond 4-regularity forces 3-regular substructure The Petersen graph and K\u2084 are the canonical minimal counterexamples below the threshold Connects to graph factorization theory and Petersen's theorem on 2-factors",
     "openQuestions": [
-      "What is the threshold for k-regular subgraphs for general k ≥ 4?",
+      "What is the threshold for k-regular subgraphs for general k \u2265 4?",
       "Can Tashkinov's proof be made constructive with polynomial-time algorithms?",
       "What is the minimum number of vertices needed for a 4-regular graph to contain a 3-regular subgraph?",
       "How does this extend to multigraphs and directed graphs?"
@@ -190,7 +190,10 @@
     "theoremCount": 13,
     "definitionCount": 10,
     "path": "Proofs/Erdos715Problem.lean",
-    "sorries": 15
+    "sorries": 15,
+    "additionalFiles": [
+      "Proofs/Erdos715ProblemAristotle.lean"
+    ]
   },
   "references": [
     {
@@ -210,7 +213,7 @@
     },
     {
       "key": "erdos715",
-      "citation": "Erdős Problems, Problem #715, https://erdosproblems.com/715",
+      "citation": "Erd\u0151s Problems, Problem #715, https://erdosproblems.com/715",
       "type": "website"
     }
   ],
@@ -218,17 +221,17 @@
     {
       "targetId": "erdos-182",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, regular-graphs, solved"
+      "description": "Related Erd\u0151s problem sharing themes: graph-theory, regular-graphs, solved"
     },
     {
       "targetId": "erdos-622",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, regular-graphs, solved"
+      "description": "Related Erd\u0151s problem sharing themes: graph-theory, regular-graphs, solved"
     },
     {
       "targetId": "erdos-1008",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, subgraphs"
+      "description": "Related Erd\u0151s problem sharing themes: graph-theory, subgraphs"
     }
   ],
   "sorries": 15

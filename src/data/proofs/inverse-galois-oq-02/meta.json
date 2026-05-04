@@ -1,8 +1,8 @@
 {
   "id": "inverse-galois-oq-02",
-  "title": "Inverse Galois Problem: The Mathieu Group M₂₃",
+  "title": "Inverse Galois Problem: The Mathieu Group M\u2082\u2083",
   "slug": "inverse-galois-oq-02",
-  "description": "Formalizes the structural properties of the Mathieu group M₂₃, the only sporadic simple group not yet known to be a Galois group over ℚ. Proves M₂₃ is perfect (commutator equals the whole group), non-solvable, and not covered by Shafarevich's theorem. Includes the prime factorization |M₂₃| = 2⁷ · 3² · 5 · 7 · 11 · 23, divisibility results for Sylow analysis, and the open realizability question.",
+  "description": "Formalizes the structural properties of the Mathieu group M\u2082\u2083, the only sporadic simple group not yet known to be a Galois group over \u211a. Proves M\u2082\u2083 is perfect (commutator equals the whole group), non-solvable, and not covered by Shafarevich's theorem. Includes the prime factorization |M\u2082\u2083| = 2\u2077 \u00b7 3\u00b2 \u00b7 5 \u00b7 7 \u00b7 11 \u00b7 23, divisibility results for Sylow analysis, and the open realizability question.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-03-30",
@@ -25,7 +25,7 @@
       "Group theory (simple groups, solvability, commutator subgroups, derived series)",
       "Finite group classification (sporadic groups, Mathieu groups)"
     ],
-    "assumptions": "3 axioms: M23 (existence of M₂₃ as subgroup of S₂₃), M23_card (|M₂₃| = 10200960), M23_isSimple (M₂₃ is simple). The 3 axioms are well-established mathematical facts, not conjectures. 6 sorries in this file.",
+    "assumptions": "3 axioms: M23 (existence of M\u2082\u2083 as subgroup of S\u2082\u2083), M23_card (|M\u2082\u2083| = 10200960), M23_isSimple (M\u2082\u2083 is simple). The 3 axioms are well-established mathematical facts, not conjectures. 6 sorries in this file.",
     "relatedProblems": [
       {
         "id": "inverse-galois",
@@ -41,13 +41,13 @@
     "theoremCount": 18
   },
   "overview": {
-    "historicalContext": "The Mathieu groups, discovered by Émile Mathieu in 1861 and 1873, were the first sporadic simple groups to be identified. There are five: $M_{11}$, $M_{12}$, $M_{22}$, $M_{23}$, and $M_{24}$, with orders ranging from 7,920 to 244,823,040. They arise as automorphism groups of Steiner systems and are deeply connected to coding theory through the Golay codes.\n\nIn the context of the Inverse Galois Problem, the sporadic simple groups represent the most challenging frontier. Thompson (1984) established realizability for many sporadics, including the Monster group. Matzat (1984, 1987) handled most Mathieu groups: $M_{11}$, $M_{12}$, and $M_{24}$ were shown realizable in 1984, and $M_{22}$ followed in 1987. However, $M_{23}$ has resisted all known methods.\n\nThe difficulty is structural: Thompson's rigidity criterion—the main tool for sporadic realizability—requires finding conjugacy class triples $(C_1, C_2, C_3)$ that are simultaneously compatible (product $= 1$), generating, rigid (unique solution up to conjugation), and rational (invariant under outer automorphisms). For $M_{23}$, with its 17 conjugacy classes and trivial outer automorphism group, no such triple exists.\n\nDettweiler and Reiter (1999) achieved a partial result: $M_{23}$ is a regular Galois group over $\\mathbb{Q}(t)$, the rational function field. This means $M_{23}$ occurs as a Galois group over a transcendental extension of $\\mathbb{Q}$, but specializing from $\\mathbb{Q}(t)$ to $\\mathbb{Q}$ requires additional number-theoretic arguments that remain incomplete.",
+    "historicalContext": "The Mathieu groups, discovered by \u00c9mile Mathieu in 1861 and 1873, were the first sporadic simple groups to be identified. There are five: $M_{11}$, $M_{12}$, $M_{22}$, $M_{23}$, and $M_{24}$, with orders ranging from 7,920 to 244,823,040. They arise as automorphism groups of Steiner systems and are deeply connected to coding theory through the Golay codes.\n\nIn the context of the Inverse Galois Problem, the sporadic simple groups represent the most challenging frontier. Thompson (1984) established realizability for many sporadics, including the Monster group. Matzat (1984, 1987) handled most Mathieu groups: $M_{11}$, $M_{12}$, and $M_{24}$ were shown realizable in 1984, and $M_{22}$ followed in 1987. However, $M_{23}$ has resisted all known methods.\n\nThe difficulty is structural: Thompson's rigidity criterion\u2014the main tool for sporadic realizability\u2014requires finding conjugacy class triples $(C_1, C_2, C_3)$ that are simultaneously compatible (product $= 1$), generating, rigid (unique solution up to conjugation), and rational (invariant under outer automorphisms). For $M_{23}$, with its 17 conjugacy classes and trivial outer automorphism group, no such triple exists.\n\nDettweiler and Reiter (1999) achieved a partial result: $M_{23}$ is a regular Galois group over $\\mathbb{Q}(t)$, the rational function field. This means $M_{23}$ occurs as a Galois group over a transcendental extension of $\\mathbb{Q}$, but specializing from $\\mathbb{Q}(t)$ to $\\mathbb{Q}$ requires additional number-theoretic arguments that remain incomplete.",
     "problemStatement": "**Is the Mathieu group $M_{23}$ realizable as a Galois group over $\\mathbb{Q}$?**\n\nEquivalently: does there exist a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong M_{23}$?\n\nThis is the **last sporadic simple group** whose realizability over $\\mathbb{Q}$ remains unknown. All other 25 of the 26 sporadic groups have been shown to be Galois groups over $\\mathbb{Q}$.",
-    "text": "A 388-line formalization in 9 parts exploring the Mathieu group $M_{23}$ and its position in the Inverse Galois Problem. Part I axiomatizes $M_{23}$ as a subgroup of $S_{23}$ with three axioms: existence, cardinality ($|M_{23}| = 10200960$), and simplicity. Part II develops order-theoretic properties: the prime factorization $|M_{23}| = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$, non-primality of the order, and prime divisibility results for all 7 prime factors. Part III contains the core structural analysis: $M_{23}$ is not abelian (abelian simple groups have prime order, but 10200960 is composite), perfect ($[M_{23}, M_{23}] = M_{23}$ by simplicity), and not solvable (derived series stays constant). Part IV connects this to the broader program: since $M_{23}$ is not solvable, Shafarevich's theorem (all solvable groups are Galois over $\\mathbb{Q}$) does not apply. Part V states the open realizability question. Parts VI–IX provide mathematical context: the rigidity obstruction (no rigid rational triples among 17 conjugacy classes), comparison with other Mathieu groups ($M_{11}, M_{12}, M_{22}, M_{24}$ are all realized), and Sylow subgroup existence.",
-    "proofStrategy": "The development follows a systematic structural analysis:\n\n1. **AXIOMATIZATION** (Part I): $M_{23}$ is introduced as a subgroup of $S_{23}$ with three axioms encoding well-established mathematical facts: existence, order 10200960, and simplicity. These are not conjectures—they are classical results verified computationally and by multiple independent proofs.\n\n2. **ORDER ANALYSIS** (Part II): The prime factorization $2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23 = 10200960$ is verified by `norm_num`. Non-primality is proved by exhibiting the factor 2. Individual prime divisibility results support Sylow analysis.\n\n3. **STRUCTURAL CORE** (Parts III–IV): The chain non-abelian $\\to$ perfect $\\to$ non-solvable is established:\n   - **Non-abelian**: Abelian simple groups have prime order (Lagrange + no proper subgroups), but $|M_{23}|$ is not prime.\n   - **Perfect**: The commutator $[M_{23}, M_{23}]$ is normal in $M_{23}$. By simplicity, it equals $\\bot$ or $\\top$. If $\\bot$, then $M_{23}$ is abelian—contradiction. So $[M_{23}, M_{23}] = M_{23}$.\n   - **Non-solvable**: The derived series of a perfect group is constant at $\\top$. A solvable group's derived series reaches $\\bot$. Since $\\top \\neq \\bot$ (nontrivial), contradiction.\n\n4. **OPEN PROBLEM** (Part V): The realizability question is stated as a sorry—marking it as genuinely unresolved, not as a gap in our formalization.\n\n5. **CONTEXT** (Parts VI–IX): The rigidity obstruction explains WHY $M_{23}$ is hard: Thompson's method fails due to the absence of rigid rational triples among the 17 conjugacy classes.",
+    "text": "A 388-line formalization in 9 parts exploring the Mathieu group $M_{23}$ and its position in the Inverse Galois Problem. Part I axiomatizes $M_{23}$ as a subgroup of $S_{23}$ with three axioms: existence, cardinality ($|M_{23}| = 10200960$), and simplicity. Part II develops order-theoretic properties: the prime factorization $|M_{23}| = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$, non-primality of the order, and prime divisibility results for all 7 prime factors. Part III contains the core structural analysis: $M_{23}$ is not abelian (abelian simple groups have prime order, but 10200960 is composite), perfect ($[M_{23}, M_{23}] = M_{23}$ by simplicity), and not solvable (derived series stays constant). Part IV connects this to the broader program: since $M_{23}$ is not solvable, Shafarevich's theorem (all solvable groups are Galois over $\\mathbb{Q}$) does not apply. Part V states the open realizability question. Parts VI\u2013IX provide mathematical context: the rigidity obstruction (no rigid rational triples among 17 conjugacy classes), comparison with other Mathieu groups ($M_{11}, M_{12}, M_{22}, M_{24}$ are all realized), and Sylow subgroup existence.",
+    "proofStrategy": "The development follows a systematic structural analysis:\n\n1. **AXIOMATIZATION** (Part I): $M_{23}$ is introduced as a subgroup of $S_{23}$ with three axioms encoding well-established mathematical facts: existence, order 10200960, and simplicity. These are not conjectures\u2014they are classical results verified computationally and by multiple independent proofs.\n\n2. **ORDER ANALYSIS** (Part II): The prime factorization $2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23 = 10200960$ is verified by `norm_num`. Non-primality is proved by exhibiting the factor 2. Individual prime divisibility results support Sylow analysis.\n\n3. **STRUCTURAL CORE** (Parts III\u2013IV): The chain non-abelian $\\to$ perfect $\\to$ non-solvable is established:\n   - **Non-abelian**: Abelian simple groups have prime order (Lagrange + no proper subgroups), but $|M_{23}|$ is not prime.\n   - **Perfect**: The commutator $[M_{23}, M_{23}]$ is normal in $M_{23}$. By simplicity, it equals $\\bot$ or $\\top$. If $\\bot$, then $M_{23}$ is abelian\u2014contradiction. So $[M_{23}, M_{23}] = M_{23}$.\n   - **Non-solvable**: The derived series of a perfect group is constant at $\\top$. A solvable group's derived series reaches $\\bot$. Since $\\top \\neq \\bot$ (nontrivial), contradiction.\n\n4. **OPEN PROBLEM** (Part V): The realizability question is stated as a sorry\u2014marking it as genuinely unresolved, not as a gap in our formalization.\n\n5. **CONTEXT** (Parts VI\u2013IX): The rigidity obstruction explains WHY $M_{23}$ is hard: Thompson's method fails due to the absence of rigid rational triples among the 17 conjugacy classes.",
     "keyInsights": [
       "**$M_{23}$ is the unique sporadic holdout**: Of the 26 sporadic simple groups in the classification of finite simple groups, 25 are known Galois groups over $\\mathbb{Q}$. $M_{23}$ is the sole exception, making it perhaps the most important specific open case in inverse Galois theory.",
-      "**The rigidity obstruction**: Thompson's rigidity method—the workhorse for sporadic realizability—fails for $M_{23}$ because no triple of conjugacy classes satisfies all four conditions simultaneously (compatibility, generation, rigidity, rationality). This is not just a gap in current techniques; it's a structural property of $M_{23}$'s conjugacy class geometry.",
+      "**The rigidity obstruction**: Thompson's rigidity method\u2014the workhorse for sporadic realizability\u2014fails for $M_{23}$ because no triple of conjugacy classes satisfies all four conditions simultaneously (compatibility, generation, rigidity, rationality). This is not just a gap in current techniques; it's a structural property of $M_{23}$'s conjugacy class geometry.",
       "**Asymmetry among Mathieu groups**: $M_{24}$ (the most complex Mathieu group, order 244,823,040) IS realizable over $\\mathbb{Q}$, but $M_{23}$ (its point stabilizer, order 10,200,960) is not known to be. This asymmetry reflects subtle differences in conjugacy class structures, not group complexity.",
       "**The non-solvable structural chain**: $M_{23}$ simple $\\to$ non-abelian (non-prime order) $\\to$ perfect ($[G,G] = G$) $\\to$ non-solvable. This chain places $M_{23}$ firmly beyond Shafarevich's theorem, requiring explicit construction methods.",
       "**Connection to coding theory**: $M_{23}$ is the automorphism group of the Steiner system $S(4,7,23)$, which is related to the binary Golay code of length 23. This connection to information theory suggests unconventional approaches to the realizability problem.",
@@ -62,77 +62,77 @@
   "sections": [
     {
       "id": "axiomatization",
-      "title": "Part I: Axiomatization of M₂₃",
+      "title": "Part I: Axiomatization of M\u2082\u2083",
       "startLine": 62,
       "endLine": 92,
-      "summary": "Three axioms defining M₂₃ as a subgroup of S₂₃ with specified cardinality and simplicity"
+      "summary": "Three axioms defining M\u2082\u2083 as a subgroup of S\u2082\u2083 with specified cardinality and simplicity"
     },
     {
       "id": "order-properties",
       "title": "Part II: Order-Theoretic Properties",
       "startLine": 94,
       "endLine": 146,
-      "summary": "Prime factorization |M₂₃| = 2⁷·3²·5·7·11·23, non-primality, and divisibility results"
+      "summary": "Prime factorization |M\u2082\u2083| = 2\u2077\u00b73\u00b2\u00b75\u00b77\u00b711\u00b723, non-primality, and divisibility results"
     },
     {
       "id": "non-solvability",
       "title": "Part III: Non-Solvability Analysis",
       "startLine": 148,
       "endLine": 219,
-      "summary": "The core structural result: M₂₃ is non-abelian, perfect, and not solvable"
+      "summary": "The core structural result: M\u2082\u2083 is non-abelian, perfect, and not solvable"
     },
     {
       "id": "shafarevich-gap",
       "title": "Part IV: Position in the Inverse Galois Program",
       "startLine": 221,
       "endLine": 245,
-      "summary": "Shafarevich's theorem does not cover M₂₃; any realization requires non-solvable methods"
+      "summary": "Shafarevich's theorem does not cover M\u2082\u2083; any realization requires non-solvable methods"
     },
     {
       "id": "open-question",
       "title": "Part V: The Open Question",
       "startLine": 247,
       "endLine": 270,
-      "summary": "Statement of the open realizability problem for M₂₃ over ℚ"
+      "summary": "Statement of the open realizability problem for M\u2082\u2083 over \u211a"
     },
     {
       "id": "rigidity-obstruction",
       "title": "Part VI: The Rigidity Obstruction",
       "startLine": 272,
       "endLine": 314,
-      "summary": "Why Thompson's rigidity criterion fails for M₂₃: no rigid rational triples"
+      "summary": "Why Thompson's rigidity criterion fails for M\u2082\u2083: no rigid rational triples"
     },
     {
       "id": "sporadic-comparison",
       "title": "Part VII: Comparison with Other Sporadic Groups",
       "startLine": 316,
       "endLine": 349,
-      "summary": "Status of all Mathieu groups for IGP and the M₂₃/M₂₄ asymmetry"
+      "summary": "Status of all Mathieu groups for IGP and the M\u2082\u2083/M\u2082\u2084 asymmetry"
     },
     {
       "id": "sylow-structure",
       "title": "Part VIII: Sylow Structure",
       "startLine": 351,
       "endLine": 362,
-      "summary": "Existence of Sylow subgroups for each prime dividing |M₂₃|"
+      "summary": "Existence of Sylow subgroups for each prime dividing |M\u2082\u2083|"
     },
     {
       "id": "broader-program",
       "title": "Part IX: Connection to the Broader Program",
       "startLine": 364,
       "endLine": 388,
-      "summary": "Impact of resolving M₂₃ realizability and possible approaches"
+      "summary": "Impact of resolving M\u2082\u2083 realizability and possible approaches"
     }
   ],
   "conclusion": {
-    "mainResult": "M₂₃ is axiomatized as a simple subgroup of S₂₃ with |M₂₃| = 10200960 = 2⁷·3²·5·7·11·23. We establish it is perfect and not solvable, placing it beyond the reach of Shafarevich's theorem. The realizability of M₂₃ as a Galois group over ℚ remains open — the last sporadic simple group with unknown status.",
+    "mainResult": "M\u2082\u2083 is axiomatized as a simple subgroup of S\u2082\u2083 with |M\u2082\u2083| = 10200960 = 2\u2077\u00b73\u00b2\u00b75\u00b77\u00b711\u00b723. We establish it is perfect and not solvable, placing it beyond the reach of Shafarevich's theorem. The realizability of M\u2082\u2083 as a Galois group over \u211a remains open \u2014 the last sporadic simple group with unknown status.",
     "openQuestions": [
-      "Is M₂₃ a Galois group over ℚ? (The central open question)",
-      "Can middle convolution specialization from ℚ(t) to ℚ be completed for M₂₃?",
-      "Does M₂₃'s connection to the binary Golay code suggest coding-theoretic approaches to realizability?"
+      "Is M\u2082\u2083 a Galois group over \u211a? (The central open question)",
+      "Can middle convolution specialization from \u211a(t) to \u211a be completed for M\u2082\u2083?",
+      "Does M\u2082\u2083's connection to the binary Golay code suggest coding-theoretic approaches to realizability?"
     ],
-    "summary": "M₂₃ is axiomatized as a simple subgroup of S₂₃ with |M₂₃| = 10200960 = 2⁷·3²·5·7·11·23. We establish it is perfect and not solvable, placing it beyond the reach of Shafarevich's theorem. The realizability of M₂₃ as a Galois group over ℚ remains open — the last sporadic simple group with unknown status.",
-    "implications": "Resolving M₂₃ realizability would complete the sporadic group chapter of the Inverse Galois Problem, demonstrating all 26 sporadic simple groups are Galois groups over ℚ."
+    "summary": "M\u2082\u2083 is axiomatized as a simple subgroup of S\u2082\u2083 with |M\u2082\u2083| = 10200960 = 2\u2077\u00b73\u00b2\u00b75\u00b77\u00b711\u00b723. We establish it is perfect and not solvable, placing it beyond the reach of Shafarevich's theorem. The realizability of M\u2082\u2083 as a Galois group over \u211a remains open \u2014 the last sporadic simple group with unknown status.",
+    "implications": "Resolving M\u2082\u2083 realizability would complete the sporadic group chapter of the Inverse Galois Problem, demonstrating all 26 sporadic simple groups are Galois groups over \u211a."
   },
   "crossReferences": [
     {
@@ -143,7 +143,7 @@
     {
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
-      "description": "Sister entry proving the solvability divide (S_n solvable iff n ≤ 4) and A₅ analysis"
+      "description": "Sister entry proving the solvability divide (S_n solvable iff n \u2264 4) and A\u2085 analysis"
     }
   ],
   "sorries": 6,
@@ -159,6 +159,9 @@
       "Proofs.InverseGalois",
       "Proofs.InverseGaloisOQ01"
     ],
-    "lemmaCount": 0
+    "lemmaCount": 0,
+    "additionalFiles": [
+      "Proofs/InverseGaloisOQ02Aristotle.lean"
+    ]
   }
 }

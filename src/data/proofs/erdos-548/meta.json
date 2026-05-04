@@ -1,10 +1,10 @@
 {
   "id": "erdos-548",
-  "title": "Erdős Problem #548: The Erdős-Sós Conjecture",
+  "title": "Erd\u0151s Problem #548: The Erd\u0151s-S\u00f3s Conjecture",
   "slug": "erdos-548",
-  "description": "Every graph on n vertices with more than (k-1)n/2 edges contains every tree on k+1 vertices. This famous conjecture of Erdős and Sós remains open, with partial results for girth >= 5, C4-free graphs, and large k.",
+  "description": "Every graph on n vertices with more than (k-1)n/2 edges contains every tree on k+1 vertices. This famous conjecture of Erd\u0151s and S\u00f3s remains open, with partial results for girth >= 5, C4-free graphs, and large k.",
   "meta": {
-    "author": "Erdős-Sós (1963), partial: Brandt-Dobson (1996), Saclé-Wozniak (1997)",
+    "author": "Erd\u0151s-S\u00f3s (1963), partial: Brandt-Dobson (1996), Sacl\u00e9-Wozniak (1997)",
     "sourceUrl": "https://erdosproblems.com/548",
     "date": "1963",
     "status": "axiomatized",
@@ -30,7 +30,7 @@
   "overview": {
     "historicalContext": "**The Erdos-Sos Conjecture**\n\nOne of the most famous open problems in extremal graph theory, proposed by Erdos and Sos around 1963.\n\n**The question:**\nHow many edges guarantee that a graph contains every possible tree of a given size? The conjecture states that average degree $> k-1$ (equivalently, $> (k-1)n/2$ edges) suffices for all trees on $k+1$ vertices.\n\n**Context in extremal graph theory:**\nThe classical Turan theorem (1941) determines the maximum edges in a $K_r$-free graph: $\\text{ex}(n, K_r) = (1 - 1/(r-1))\\binom{n}{2}$. For trees, the situation is more subtle because different trees of the same size can have very different extremal numbers. The Erdos-Sos conjecture would unify all these: $\\text{ex}(n, T) \\le (k-1)n/2$ for every tree $T$ with $k$ edges.\n\n**Timeline of partial results:**\n- **1963**: Erdos and Sos pose the conjecture\n- **1996**: Brandt and Dobson prove it for graphs with girth $\\ge 5$ using the locally tree-like structure to enable greedy embedding\n- **1997**: Sacle and Wozniak prove it for $C_4$-free graphs, extending the girth result by allowing triangles\n- **2000**: Wang, Li, and Liu prove it when the complement has girth $\\ge 5$, handling dense graphs via clique structure\n- **~2000**: Komlos, Sos, and Szemeredi announce a proof for sufficiently large $k$ using the regularity-blow-up method; full details remain unpublished\n\n**Why it remains open:**\nThe difficulty is that different tree shapes (paths, stars, balanced trees, caterpillars) require fundamentally different embedding strategies. The path $P_{k+1}$ is the hardest case -- it achieves $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly -- while the star $K_{1,k}$ is trivial (just find a high-degree vertex). A proof must handle all shapes simultaneously.",
     "problemStatement": "**Problem Statement**\n\nLet $n \\ge k+1$. Does every graph on $n$ vertices with at least $(k-1)n/2 + 1$ edges contain every tree on $k+1$ vertices?\n\n**Equivalent Formulations:**\n1. Average degree $> k-1$ implies all $(k+1)$-vertex trees\n2. $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees $T$ with $k$ edges\n3. Every $T$-free graph has at most $(k-1)n/2$ edges\n\n**Status**: OPEN (marked as 'falsifiable' -- could be disproved by counterexample)\n\n**Best Known Bound**: $n(k-1)+1$ edges suffice (roughly $n$ times weaker than conjectured).",
-    "text": "Every graph on n vertices with more than (k-1)n/2 edges contains every tree on k+1 vertices. This famous conjecture of Erdős and Sós remains open, with partial results for girth >= 5, C4-free graphs, and large k.",
+    "text": "Every graph on n vertices with more than (k-1)n/2 edges contains every tree on k+1 vertices. This famous conjecture of Erd\u0151s and S\u00f3s remains open, with partial results for girth >= 5, C4-free graphs, and large k.",
     "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the full landscape of the conjecture in ten sections:\n\n1. **Trees (Part I):** Defines `IsTree` (connected + acyclic), constructs `pathGraph` and `starGraph` as concrete `SimpleGraph` instances with inline proofs of `symm` and `loopless`.\n\n2. **Subgraph containment (Part II):** Defines embedding via `ContainsSubgraph` (injective edge-preserving map) and `TreeFree` (negation).\n\n3. **Edge counting (Part III):** Defines `edgeCount`, states the handshaking lemma, and defines `avgDegree` over $\\mathbb{Q}$ with the equivalence to the edge-count formulation.\n\n4. **The conjecture (Part IV):** Two forms -- `ErdosSosConjecture` with generic types and strict inequality, `Erdos548Statement` with `Fin n` and $\\ge (k-1)n/2 + 1$.\n\n5. **Partial results (Part V):** Axiomatizes the trivial bound, defines girth and $C_4$-freeness, and axiomatizes Brandt-Dobson, Sacle-Wozniak, and Wang-Li-Liu.\n\n6. **Extremal function (Part VI):** Defines $\\text{ex}(n, T)$ via supremum and connects it to the conjecture.\n\n7. **Special trees (Part VII):** Contrasts paths (extremal) with stars (easy via pigeonhole).\n\n8. **Asymptotic result (Part VIII):** Axiomatizes the Komlos-Sos-Szemeredi result for large $k$.\n\n9. **Related theorems (Part IX):** Erdos-Gallai matching theorem and Turan number for paths.\n\n10. **Open status (Part X):** The conjecture's status as a tautological disjunction.",
     "keyInsights": [
       "**Paths as the extremal case:** The path $P_{k+1}$ achieves $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly (Erdos-Gallai 1959), making it the 'hardest' tree. If the conjecture holds, every other tree $T$ satisfies $\\text{ex}(n, T) \\le \\text{ex}(n, P_{k+1})$, meaning paths are universally extremal among trees of the same size.",
@@ -41,7 +41,7 @@
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)",
+      "Extremal graph theory (Tur\u00e1n-type problems)",
       "Combinatorics and number theory"
     ]
   },
@@ -157,23 +157,26 @@
     "theoremCount": 6,
     "definitionCount": 16,
     "path": "Proofs/Erdos548Problem.lean",
-    "sorries": 6
+    "sorries": 6,
+    "additionalFiles": [
+      "Proofs/Erdos548ProblemAristotle.lean"
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-1011",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: extremal-graph-theory, graph-theory"
     },
     {
       "targetId": "erdos-1033",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: extremal-graph-theory, graph-theory"
     },
     {
       "targetId": "erdos-1034",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: extremal-graph-theory, graph-theory"
     }
   ],
   "sorries": 6

@@ -61,8 +61,7 @@
         "id": "fourier-series",
         "relationship": "Root: the main Fourier series formalization"
       }
-    ],
-    "theoremCount": 11
+    ]
   },
   "overview": {
     "historicalContext": "The connection between analyticity and exponential Fourier decay was established by Paley and Wiener (1934) in their foundational work on Fourier transforms in the complex domain. The key insight is that holomorphic extension to a strip allows contour shifting, which introduces an exponential damping factor. This is the periodic analog of the Paley-Wiener theorem for the Fourier transform on the real line. The Paley-Wiener theorem has become a cornerstone of harmonic analysis: it characterizes the class of Fourier transforms of compactly supported or exponentially decaying functions in terms of analytic extension. Carleman (1944) extended the framework to distributions, and the theorem plays central roles in signal processing (bandlimited signals), PDE theory (propagation of analyticity), and spectral theory. The open question in this gallery series concerns the sharp constant in the periodic version and whether exponential decay gives a complete characterization of strip analyticity.",
@@ -74,7 +73,7 @@
       "The sharp constant K(f) = sup_n |c_n| * e^{2*pi*delta*|n|/T} equals the strip boundary norm when the boundary is a natural boundary",
       "The Paley-Wiener characterization is a complete equivalence: strip analyticity <=> exponential Fourier decay, with the strip width determined by the decay rate",
       "The Poisson kernel P_r(x) = sum r^|n| e^{inx} achieves exact exponential decay with strip width -T*ln(r)/(2*pi)",
-      "The Lean formalization uses `Complex.abs_exp_ofReal_mul_I` and custom contour-shifting arguments since Mathlib lacks a direct Paley-Wiener API — the proof must build the analytic machinery from scratch using `HasSum` and `Complex.differentiableAt`"
+      "The Lean formalization uses `Complex.abs_exp_ofReal_mul_I` and custom contour-shifting arguments since Mathlib lacks a direct Paley-Wiener API \u2014 the proof must build the analytic machinery from scratch using `HasSum` and `Complex.differentiableAt`"
     ],
     "prerequisites": [
       "Complex contour integration",
@@ -224,7 +223,10 @@
       }
     ],
     "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
-    "sorries": 2
+    "sorries": 2,
+    "additionalFiles": [
+      "Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
+    ]
   },
   "mainTheorems": [
     {
