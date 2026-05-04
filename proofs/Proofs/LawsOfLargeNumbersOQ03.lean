@@ -250,7 +250,36 @@ def IsMixing (T : Ω → Ω) (μ : Measure Ω) : Prop :=
 theorem mixing_implies_ergodic (T : Ω → Ω) (hT : MeasurePreserving T μ μ)
     (hTm : Measurable T) [IsProbabilityMeasure μ]
     (hmix : IsMixing T μ) : Ergodic T μ := by
-  sorry -- Standard: invariant sets satisfy μ(A) = μ(A)²
+  refine ⟨hT, fun s hs hinv => ?_⟩
+  -- hinv : T ⁻¹' s =ᵐ[μ] s. Show μ s = 0 ∨ μ s = μ Set.univ.
+  -- All iterates T^[n]⁻¹' s are ae-equal to s
+  have haeq : ∀ n, T^[n] ⁻¹' s =ᵐ[μ] s := by
+    intro n
+    induction n with
+    | zero => simp
+    | succ n ih =>
+      simp only [Function.iterate_succ, Function.comp_apply]
+      exact (hT.quasiMeasurePreserving.preimage_ae_eq ih).trans hinv
+  -- μ (s ∩ T^[n]⁻¹' s) = μ s for all n
+  have hconst : ∀ n, μ (s ∩ T^[n] ⁻¹' s) = μ s := fun n =>
+    measure_congr (((ae_eq_refl s).inter (haeq n)).trans (Set.inter_self s ▸ ae_eq_refl s))
+  -- Mixing gives limit μs * μs; constant sequence gives limit μs
+  have htend_mix := hmix s s hs hs
+  have htend_const : Tendsto (fun n => μ (s ∩ T^[n] ⁻¹' s)) atTop (nhds (μ s)) := by
+    simp_rw [hconst]; exact tendsto_const_nhds
+  have heq : μ s = μ s * μ s := tendsto_nhds_unique htend_const htend_mix
+  -- μ s = 0 or μ s = 1 = μ Set.univ
+  rcases eq_or_ne (μ s) 0 with hzero | hpos
+  · exact Or.inl hzero
+  · right
+    have hle : μ s ≤ 1 := by
+      simpa [IsProbabilityMeasure.measure_univ] using measure_mono (Set.subset_univ s)
+    have htop : μ s ≠ ∞ := (lt_of_le_of_lt hle one_lt_top).ne
+    have h1 : μ s = 1 := by
+      have := heq  -- μ s = μ s * μ s
+      rw [show μ s = μ s * 1 from (mul_one _).symm] at this
+      exact (ENNReal.mul_left_cancel₀ hpos htop this).symm
+    rw [h1, IsProbabilityMeasure.measure_univ]
 
 -- ============================================================
 -- PART 9: Examples of Ergodic Systems
