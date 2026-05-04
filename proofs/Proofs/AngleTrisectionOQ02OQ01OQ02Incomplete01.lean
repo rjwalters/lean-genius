@@ -149,11 +149,10 @@ private lemma isConstructible_algebraic (α : ℂ) (h : IsConstructible α) : Is
     applying it with K = ℚ⟮β⟯ gives `finrank ↥ℚ⟮β⟯ ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) ∣ 2^k'`, which
     via the tower law gives `finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+1) * 2^k'`.
 
-    **Remaining sorry**: `h_top_Ka` (that β generates K_aβ = K⊔ℚ⟮a⟯⊔ℚ⟮β⟯ over K⊔ℚ⟮a⟯).
-    The adjoin-of-β over K_a equals K_aβ because any K_a-subfield of K_aβ containing β also
-    contains ℚ⟮β⟯ (as β generates ℚ⟮β⟯ over ℚ ≤ K_a). Requires Mathlib API for
-    `IntermediateField.sup` decomposition — not yet available via `adjoin_eq_top_of_adjoin_eq_top`
-    since the ambient field K_aβ ≠ ℚ⟮β⟯. -/
+    **Proof of h_top_Ka** (Session 38): β generates Ka ⊔ ℚ⟮β⟯ over Ka.
+    Strategy: define Ka_in = Ka.comap (Ka ⊔ ℚ⟮β⟯).val, prove adjoin ℚ (Ka_in ∪ {β'}) = ⊤
+    via map_injective + adjoin_union + adjoin_self, then use adjoin_eq_top_of_adjoin_eq_top
+    to get adjoin Ka (Ka_in ∪ {β'}) = ⊤, reduce adjoin Ka Ka_in = ⊥ via mem_bot. -/
 -- Helper: (adjoin Ka {β}).restrictScalars ℚ = Ka ⊔ ℚ⟮β⟯, so the carriers are equal
 -- This is used to identify the Ka-finrank of Ka ⊔ ℚ⟮β⟯ with adjoin.finrank
 private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β : ℂ)
@@ -190,16 +189,50 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
   -- and coe_restrictScalars is rfl, so adjoin Ka {β} and Ka ⊔ ℚ⟮β⟯ have the same carrier
   -- Thus adjoin Ka {β'} = ⊤ in Ka ⊔ ℚ⟮β⟯ follows from the set equality
   have h_top_Ka : IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯)) = ⊤ := by
-    apply IntermediateField.restrictScalars_injective ℚ
-    rw [IntermediateField.restrictScalars_top,
-        IntermediateField.restrictScalars_adjoin_eq_sup]
-    -- LHS: (adjoin Ka {β'}).restrictScalars ℚ = Ka_in_Kaβ ⊔ adjoin ℚ {β'}
-    -- Need: Ka_in_Kaβ ⊔ adjoin ℚ {β'} = ⊤ in IntermediateField ℚ (Ka ⊔ ℚ⟮β⟯)
-    rw [IntermediateField.eq_top_iff]
-    intro ⟨x, hx⟩ _
-    -- x ∈ Ka ⊔ ℚ⟮β⟯ in ℂ
-    -- want: ⟨x, hx⟩ ∈ Ka_in_Kaβ ⊔ adjoin ℚ {β'} inside ↥(Ka ⊔ ℚ⟮β⟯)
-    sorry
+    -- Ka_in = preimage of Ka inside ↥(Ka ⊔ ℚ⟮β⟯)
+    let Ka_in : IntermediateField ℚ ↥(Ka ⊔ ℚ⟮β⟯) := Ka.comap (Ka ⊔ ℚ⟮β⟯).val
+    -- val maps Ka_in onto Ka
+    have h_img : (Ka ⊔ ℚ⟮β⟯).val '' (↑Ka_in : Set ↥(Ka ⊔ ℚ⟮β⟯)) = ↑Ka := by
+      ext x; constructor
+      · rintro ⟨⟨y, _⟩, hmem, rfl⟩
+        exact IntermediateField.mem_comap.mp (SetLike.mem_coe.mp hmem)
+      · intro hx
+        exact ⟨⟨x, le_sup_left hx⟩,
+               SetLike.mem_coe.mpr (IntermediateField.mem_comap.mpr hx), rfl⟩
+    -- adjoin ℚ (↑Ka_in ∪ {β'}) = ⊤ via injectivity of val
+    have h_adj_ℚ : IntermediateField.adjoin ℚ (↑Ka_in ∪ {β'}) = ⊤ := by
+      apply IntermediateField.map_injective (Ka ⊔ ℚ⟮β⟯).val
+      rw [← AlgHom.fieldRange_eq_map, IntermediateField.fieldRange_val,
+          IntermediateField.adjoin_map, Set.image_union, Set.image_singleton,
+          show (Ka ⊔ ℚ⟮β⟯).val β' = β from rfl,
+          h_img]
+      -- goal: adjoin ℚ (↑Ka ∪ {β}) = Ka ⊔ ℚ⟮β⟯ in IntermediateField ℚ ℂ
+      exact le_antisymm
+        (IntermediateField.adjoin_le_iff.mpr (Set.union_subset
+          (fun x hx => le_sup_left hx)
+          (fun x hx => by
+            rw [Set.mem_singleton_iff] at hx
+            exact le_sup_right (hx ▸ IntermediateField.mem_adjoin_simple_self ℚ β))))
+        (sup_le
+          (by intro x hx; exact IntermediateField.subset_adjoin ℚ _ (Set.mem_union_left _ hx))
+          (IntermediateField.adjoin_simple_le_iff.mpr
+            (IntermediateField.subset_adjoin ℚ _
+              (Set.mem_union_right ↑Ka (Set.mem_singleton_self β)))))
+    -- tower law: adjoin ℚ S = ⊤ implies adjoin ↥Ka S = ⊤
+    have h_adj_Ka := IntermediateField.adjoin_eq_top_of_adjoin_eq_top h_adj_ℚ
+    -- Ka_in elements are algebraMap images, so they lie in adjoin ↥Ka {β'} already
+    have h_le : IntermediateField.adjoin ↥Ka (↑Ka_in ∪ {β'}) ≤
+                IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯)) :=
+      IntermediateField.adjoin_le_iff.mpr (Set.union_subset
+        (fun y hmem =>
+          let k : ↥Ka :=
+            ⟨(Ka ⊔ ℚ⟮β⟯).val y,
+             IntermediateField.mem_comap.mp (SetLike.mem_coe.mp hmem)⟩
+          have hyk : y = algebraMap ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) k := Subtype.ext rfl
+          hyk ▸ IntermediateField.algebraMap_mem
+            (IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯))) k)
+        (IntermediateField.subset_adjoin ↥Ka _))
+    exact eq_top_iff.mpr (h_adj_Ka ▸ h_le)
   -- finrank Ka (Ka ⊔ ℚ⟮β⟯) = natDegree (minpoly Ka β')
   have h_finrank : Module.finrank ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) = (minpoly ↥Ka β').natDegree := by
     have := IntermediateField.adjoin.finrank hβ'_int
