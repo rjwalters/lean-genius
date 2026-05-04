@@ -4,49 +4,92 @@
   "slug": "pappus-theorem-oq-02",
   "description": "A complete algebraic proof of Pappus's Hexagon Theorem over any commutative ring K, using the same cross-product framework as the Desargues theorem. Given two sets of collinear points A, B, C and A', B', C', the three cross-join intersection points P, Q, R are collinear. The proof reduces to a degree-9 polynomial identity verified by computer algebra coefficients.",
   "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
     "status": "verified",
+    "proofRepoPath": "Proofs/PappusTheoremOQ02.lean",
+    "tags": ["projective-geometry", "ring-theory", "combinatorics", "cross-product", "pappus"],
     "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "sorryCount": 0,
+    "lineCount": 465,
     "theoremCount": 12,
     "definitionCount": 3,
-    "lineCount": 465,
-    "leanFile": "proofs/Proofs/PappusTheoremOQ02.lean",
-    "imports": [
-      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
-      "Mathlib.Tactic"
-    ],
-    "tags": ["projective-geometry", "ring-theory", "combinatorics", "cross-product", "pappus"],
-    "assumptions": [],
-    "sorries": 0
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Pappus of Alexandria proved his hexagon theorem around 320 CE, making it one of the oldest results in projective geometry. In modern terms: given six points alternating on two lines, the three intersection points of opposite sides of the resulting hexagon are collinear. The theorem's algebraic significance was recognized much later: Pappus holds in a projective plane if and only if the coordinatizing division ring is commutative (a field). This makes Pappus's theorem equivalent to the commutativity of multiplication in the coordinate field — a purely group-theoretic condition. Over a non-commutative division ring (skew field), Pappus fails but Desargues still holds. The present formalization proves Pappus over any commutative ring (not just fields), including ℤ and 𝔽_p.",
+    "problemStatement": "Let $K$ be a commutative ring. Given homogeneous coordinate vectors $A, B, C, A', B', C' \\in K^3$ satisfying $\\det(A,B,C) = 0$ (collinear on line $L_1$) and $\\det(A',B',C') = 0$ (collinear on line $L_2$), define $P = \\text{cross}(\\text{cross}(A,B'), \\text{cross}(A',B))$, $Q = \\text{cross}(\\text{cross}(A,C'), \\text{cross}(A',C))$, $R = \\text{cross}(\\text{cross}(B,C'), \\text{cross}(B',C))$. Prove $\\det(P,Q,R) = 0$ (P, Q, R are collinear).",
+    "proofStrategy": "Step 1: Apply the Lagrange identity to express P, Q, R as linear combinations: $P = d_1 A' - d_2 B$ where $d_1 = \\det(A,B',B)$, $d_2 = \\det(A,B',A')$, etc. Step 2: Expand $\\det(P,Q,R)$ with the actual $d_i$'s replaced by abstract variables, proving the multilinear expansion by `ring` (degree-6 identity). Step 3: Prove the core identity: the degree-6 expression equals $f \\cdot \\det(A,B,C) + g \\cdot \\det(A',B',C')$ for explicit degree-9 polynomial coefficients $f$ and $g$ computed by Gröbner basis. Step 4: Apply the collinearity hypotheses to conclude $\\det(P,Q,R) = 0$.",
+    "keyInsights": [
+      "The cross-product framework represents projective points as homogeneous coordinate vectors in $K^3$, lines as cross products, and collinearity as vanishing of a $3 \\times 3$ determinant. This makes Pappus a purely algebraic identity in the ring $K$, with no geometric axioms needed.",
+      "The two-step proof splits the algebraic complexity: first expand det(P,Q,R) with abstract variables $d_1, \\ldots, d_6$ (degree 6, feasible for `ring`), then handle the substitution of actual determinant values as the degree-9 core identity (requires `linear_combination` with CAS-computed Gröbner coefficients).",
+      "The Lagrange cross-product identity `cross(cross(a,b), cross(c,d)) = det(a,b,d)·c − det(a,b,c)·d` is the computational engine. Applied to $P = \\text{cross}(\\text{cross}(A,B'), \\text{cross}(A',B))$, it expresses $P$ as a linear combination of $A'$ and $B$ with determinant coefficients, reducing the problem to pure ring arithmetic.",
+      "The theorem holds over any commutative ring $K$, including $\\mathbb{Z}$ (non-field), finite fields $\\mathbb{F}_p$, and $\\mathbb{Q}$. This universality comes from the proof being a polynomial identity: it holds wherever polynomial arithmetic works, i.e., any commutative ring.",
+      "Pappus implies Desargues: the gallery includes a bonus re-proof of one direction of Desargues using this same cross-product framework, confirming that Pappus is the stronger theorem. In abstract projective planes, Pappus → Desargues is classical but non-trivial; here the algebraic proof makes it a simple corollary."
+    ]
   },
   "sections": [
     {
-      "id": "cross-product",
-      "title": "Cross Product Infrastructure",
-      "description": "The definitions cross3, threeVecMat, and collinear_K establish the algebraic framework. cross3 is the standard 3D cross product over K; threeVecMat packages three vectors as matrix rows for determinant computation; collinear_K says three vectors in K³ are collinear (projectively) when the 3×3 determinant vanishes. The Lagrange identity (lagrange_cross_K) states cross(cross(a,b), cross(c,d)) = det(a,b,d)·c − det(a,b,c)·d.",
-      "theorems": ["cross3_zero", "cross3_one", "cross3_two", "threeVecMat_det_explicit", "lagrange_cross_K"]
+      "id": "header",
+      "title": "Header: Problem Statement and Proof Strategy",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Documents the open question (can Pappus be proved with the Desargues cross-product framework?), the main statement, and the two-step strategy: multilinear expansion by ring then core identity by linear_combination with CAS coefficients."
     },
     {
-      "id": "pappus-core",
-      "title": "Core Pappus Identity",
-      "description": "The proof strategy: express the three intersection points P, Q, R as cross products, then show det(P, Q, R) = 0. The key steps are pappus_det_multilinear (degree-6 multilinear expansion, proved by ring) and pappus_core_identity (the key algebraic identity showing det(P,Q,R) is proportional to det(A,B,C)·det(A',B',C') with collinearity coefficients — proved using linear_combination with CAS-computed Gröbner coefficients).",
-      "theorems": ["pappus_det_multilinear", "pappus_core_identity"]
+      "id": "cross-product",
+      "title": "Cross Product Infrastructure",
+      "startLine": 62,
+      "endLine": 97,
+      "summary": "Defines cross3 (standard 3D cross product over K), threeVecMat (3×3 matrix of row vectors for det computation), and collinear_K (three points collinear iff det = 0). The cross3_zero/one/two lemmas are definitional rfl's."
+    },
+    {
+      "id": "lagrange",
+      "title": "Lagrange Cross-Product Identity",
+      "startLine": 98,
+      "endLine": 121,
+      "summary": "Proves lagrange_cross_K: cross(cross(a,b), cross(c,d)) = det(a,b,d)·c − det(a,b,c)·d. This identity, proved by ring, is the key to expressing line intersections (as cross products of cross products) as linear combinations of the original points."
+    },
+    {
+      "id": "multilinear",
+      "title": "Multilinear Expansion (Degree-6 Identity)",
+      "startLine": 123,
+      "endLine": 167,
+      "summary": "Proves pappus_det_multilinear: for abstract variables d1,...,d6, det(d1·A'-d2·B, d3·A'-d4·C, d5·B'-d6·C) equals the four-term sum. Proved by ring (manageable at degree 6 with abstract coefficients)."
+    },
+    {
+      "id": "core-identity",
+      "title": "Core Pappus Identity (Degree-9)",
+      "startLine": 168,
+      "endLine": 219,
+      "summary": "The heart of the proof: shows the four-term determinant expansion equals f·det(A,B,C) + g·det(A',B',C') for explicit degree-9 polynomial coefficients f and g. Proved via linear_combination with CAS-computed Gröbner basis coefficients."
     },
     {
       "id": "main-theorem",
-      "title": "Pappus's Theorem and Corollaries",
-      "description": "The main theorem pappus_K proves Pappus's Hexagon Theorem over any CommRing K: given collinearity of (A,B,C) and (A',B',C'), the three intersection points P, Q, R are collinear. Corollaries pappus_Q, pappus_Z, pappus_Fp specialize to ℚ, ℤ, and finite fields 𝔽_p respectively. A bonus theorem desargues_forward_K reproves one direction of Desargues using this framework.",
-      "theorems": ["pappus_K", "pappus_Q", "pappus_Z", "pappus_Fp", "desargues_forward_K"]
+      "title": "Main Theorem: Pappus over CommRing",
+      "startLine": 220,
+      "endLine": 265,
+      "summary": "Assembles the proof: apply Lagrange to get P, Q, R; apply pappus_det_multilinear; apply pappus_core_identity; conclude det(P,Q,R) = 0 from the collinearity hypotheses."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: ℚ, ℤ, Finite Fields",
+      "startLine": 266,
+      "endLine": 350,
+      "summary": "Specializes pappus_K to pappus_Q (rational numbers), pappus_Z (integers), pappus_Fp (ZMod p for prime p) — all by type inference. Also includes desargues_forward_K: a bonus re-proof of one direction of Desargues using the same framework."
+    },
+    {
+      "id": "numerical-verification",
+      "title": "Numerical Verification",
+      "startLine": 351,
+      "endLine": 465,
+      "summary": "Three concrete Pappus configurations over ℚ verified by ring. These serve as sanity checks confirming the abstract theorem gives correct results on specific hexagon configurations."
     }
   ],
-  "overview": {
-    "summary": "Pappus's Hexagon Theorem is one of the oldest and most important theorems in projective geometry: the six vertices of a hexagon inscribed alternately in two lines yield collinear diagonal intersections. Over a commutative ring, this is a polynomial identity; over a skew field, it fails—Pappus's theorem is equivalent to commutativity of the coordinatizing field.",
-    "approach": "The cross-product approach represents projective points as homogeneous coordinates in K³ and intersection of lines as cross products. Collinearity is the vanishing of a 3×3 determinant. After expressing P, Q, R as cross products via the Lagrange identity, the collinearity condition det(P,Q,R) = 0 reduces to a polynomial identity in the 18 coordinates of A, B, C, A', B', C'. This identity is verified by ring at degree 6, then the full Pappus identity is proved using CAS-computed coefficients for linear_combination.",
-    "significance": "Pappus's theorem has deep algebraic significance: in any projective plane, Pappus implies Desargues, and Pappus holds iff the plane can be coordinatized by a commutative field (not just a skew field). The Lean 4 proof here works over any CommRing, including ℤ and finite fields, and serves as a companion to the Desargues proof in this gallery."
-  },
   "conclusion": {
     "summary": "Pappus's Hexagon Theorem is machine-checked over any CommRing with no axioms or sorries. The approach directly parallels the gallery's Desargues proof, confirming that the cross-product framework handles both classical projective geometry theorems.",
+    "implications": "The algebraic proof over CommRing makes Pappus a theorem about polynomial identities, not geometry axioms. This means: (1) the theorem transfers automatically to any CommRing, (2) the proof technique scales to other projective configurations, (3) the necessity of commutativity is clear — the proof uses commutativity of K throughout. For education: this shows how classical synthetic geometry can be reduced to computer-verifiable ring algebra, demonstrating that projective geometry over ℤ is as rigorous as over ℝ.",
     "openQuestions": [
       "Can Pappus's theorem be proved for the projective plane over a skew field—and does the proof then fail, confirming the necessity of commutativity?",
       "Can the converse be formalized: if Pappus holds in some abstract projective plane, is the coordinatizing ring necessarily commutative?",
@@ -55,10 +98,17 @@
   },
   "crossReferences": [
     {
-      "id": "desargues-theorem",
+      "proofId": "desargues-theorem",
       "relationship": "uses",
-      "description": "Shares the cross-product and Lagrange identity infrastructure"
+      "description": "Shares the cross-product and Lagrange identity infrastructure; Pappus implies Desargues (bonus theorem in this file)"
     }
   ],
-  "sorries": 0
+  "leanFile": {
+    "path": "Proofs/PappusTheoremOQ02.lean",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "lineCount": 465,
+    "theoremCount": 12,
+    "definitionCount": 3
+  }
 }
