@@ -28,7 +28,7 @@
     "theoremCount": 11
   },
   "overview": {
-    "historicalContext": "Erdős conjectured that among all pairwise coprime subsets A of {1,...,n-1}, the set of primes below n maximizes the sum ∑_{a∈A} 1/(n-a). This is an extremal problem connecting the arithmetic of pairwise coprime sets to harmonic analysis. The primes are in a sense the 'densest' pairwise coprime set, and this conjecture makes that precise through a weighted harmonic measure.",
+    "historicalContext": "Erdős conjectured (references Er77c, Er80) that among all pairwise coprime subsets A of {1,...,n-1}, the set of primes below n maximizes the sum ∑_{a∈A} 1/(n-a). This is an extremal problem in additive-multiplicative number theory: it asks whether the primes are 'optimal' for a specific density measure among all multiplicatively independent sets.\n\nThe intuition is that pairwise coprime sets are sparse — any two elements share no common prime factor — and the primes, being the atoms of multiplication, are the canonical extremal example. The weighting 1/(n-a) gives more importance to elements close to n; the conjecture says primes up to n are 'spread out' in a way that maximizes this proximity measure.\n\nThe problem remains open as of 2026. Connections to Mertens' theorem (∑_{p≤n} 1/p ~ log log n) and rough number estimates suggest analytic tools may be needed for a full proof.",
     "problemStatement": "Let A ⊆ {1,...,n-1} be pairwise coprime (gcd(a,b)=1 for distinct a,b∈A). Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p prime, p<n} 1/(n-p)?",
     "text": "Among all pairwise coprime subsets of {1,...,n-1}, the primes below n maximize ∑_{a∈A} 1/(n-a). Open conjecture of Erdős.",
     "proofStrategy": "Define primesBelow, PairwiseCoprime, ValidSubset. Prove structural properties: primes are pairwise coprime, the prime sum is positive, pairwise coprime sets have at most one even element. State the main conjecture as an axiom. Derive consequences including bounds for singletons.",
@@ -45,6 +45,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Problem Statement and Module Header",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring states Erdős Problem #1210: does the prime set maximize ∑ 1/(n-a) among all pairwise coprime A ⊆ [1,n)? Lists key observations: primes are pairwise coprime, the prime sum is positive for n≥3, coprime sets have ≤1 even element, and the bound is tight at A = {primes}. References Er77c and Er80.",
+      "mathContext": "$\\sum_{a \\in A} \\frac{1}{n-a} \\le \\sum_{p < n,\\, p \\text{ prime}} \\frac{1}{n-p}$ for all pairwise coprime $A \\subseteq [1,n)$."
+    },
     {
       "id": "definitions",
       "title": "Core Definitions",
