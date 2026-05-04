@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ann-cross3",
+    "type": "definition",
+    "label": "cross3",
+    "title": "3D Cross Product over K",
+    "body": "cross3 a b : Fin 3 → K is the standard cross product: (a₁b₂-a₂b₁, a₂b₀-a₀b₂, a₀b₁-a₁b₀). In projective geometry over K, the cross product of two homogeneous coordinate vectors represents the line through the corresponding points, and the cross product of two such lines gives their intersection point.",
+    "location": { "line": 67 },
+    "tags": ["cross-product", "projective", "definition"]
+  },
+  {
+    "id": "ann-lagrange",
+    "type": "theorem",
+    "label": "lagrange_cross_K",
+    "title": "Lagrange Cross-Product Identity",
+    "body": "cross(cross(a,b), cross(c,d)) = det(a,b,d)·c − det(a,b,c)·d. This identity is the computational engine for expressing line intersections in terms of determinants. Given points on two lines (collinear hypothesis), the intersection of two cross-join lines is computed using this formula, converting the collinearity proof into a determinant-vanishing identity.",
+    "location": { "line": 0 },
+    "tags": ["identity", "cross-product", "determinant", "lagrange"]
+  },
+  {
+    "id": "ann-pappus-multilinear",
+    "type": "theorem",
+    "label": "pappus_det_multilinear",
+    "title": "Degree-6 Multilinear Expansion",
+    "body": "When the intersection points P = d₁A'-d₂B, Q = d₃A'-d₄C, R = d₅B'-d₆C are expressed with abstract ring elements d₁,...,d₆, the determinant det(P,Q,R) expands as a sum of four terms: -d₁d₄d₅·det(A',C,B') - d₂d₃d₅·det(B,A',B') + d₂d₃d₆·det(B,A',C) + d₂d₄d₅·det(B,C,B'). This is a degree-6 polynomial identity proved by ring.",
+    "location": { "line": 0 },
+    "tags": ["multilinear", "determinant", "degree-6", "ring"]
+  },
+  {
+    "id": "ann-pappus-core",
+    "type": "theorem",
+    "label": "pappus_core_identity",
+    "title": "Core Pappus Algebraic Identity",
+    "body": "The key identity: the four-term determinant expansion equals f·det(A,B,C) + g·det(A',B',C') for certain degree-9 polynomial coefficients f and g. When A,B,C are collinear (det = 0) and A',B',C' are collinear (det = 0), both terms vanish, giving det(P,Q,R) = 0 (collinearity of P,Q,R). The coefficients f and g were computed using a Gröbner basis calculation; the proof uses linear_combination.",
+    "location": { "line": 0 },
+    "tags": ["pappus", "core-identity", "groebner", "collinearity"]
+  },
+  {
+    "id": "ann-pappus-main",
+    "type": "theorem",
+    "label": "pappus_K",
+    "title": "Pappus's Hexagon Theorem over CommRing",
+    "body": "Given collinear points A, B, C on line L₁ and A', B', C' on line L₂ in the projective plane over K (CommRing), the three intersection points P = L(A,B') ∩ L(A',B), Q = L(A,C') ∩ L(A',C), R = L(B,C') ∩ L(B',C) are collinear. The proof assembles: compute P,Q,R via Lagrange; apply pappus_det_multilinear; apply pappus_core_identity; use the given collinearity hypotheses.",
+    "location": { "line": 0 },
+    "tags": ["pappus", "hexagon", "commring", "main-theorem"]
+  },
+  {
+    "id": "ann-corollaries",
+    "type": "theorem",
+    "label": "pappus_Q",
+    "title": "Corollaries: ℚ, ℤ, and Finite Fields",
+    "body": "pappus_Q, pappus_Z, pappus_Fp specialize the main theorem to ℚ, ℤ, and 𝔽_p (ZMod p). These corollaries require no additional proof beyond type checking, since CommRing instances for these types are in Mathlib.",
+    "location": { "line": 0 },
+    "tags": ["corollaries", "rational", "integer", "finite-field"]
+  },
+  {
+    "id": "ann-desargues-bonus",
+    "type": "theorem",
+    "label": "desargues_forward_K",
+    "title": "Bonus: Desargues via This Framework",
+    "body": "The cross-product framework also reproves one direction of Desargues's theorem. This confirms the framework is general enough for projective geometry arguments and demonstrates that Pappus and Desargues share the same algebraic infrastructure in this formalization.",
+    "location": { "line": 0 },
+    "tags": ["desargues", "projective", "bonus"]
+  }
+]
