@@ -8,6 +8,7 @@
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02.lean",
+    "parentProofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
     "tags": [
       "inequalities",
       "power-means",
@@ -67,42 +68,48 @@
       "title": "min ≤ HM",
       "summary": "Case split proof using mul_nonneg; gap = a*(b-a) after ring",
       "startLine": 56,
-      "endLine": 73
+      "endLine": 73,
+      "mathContext": "$\\min(a,b) \\le \\frac{2ab}{a+b}$ for $a,b > 0$. WLOG $a \\le b$: gap is $a(b-a) \\ge 0$, a product of non-negatives. ring isolates $a(b-a)$; mul_nonneg closes from $a > 0$, $b-a \\ge 0$."
     },
     {
       "id": "hm-le-gm",
       "title": "HM ≤ GM (ring + positivity)",
       "summary": "Gap ab(a+b)^2 - (2ab)^2 = ab(a-b)^2; positivity closes from ha, hb > 0",
       "startLine": 75,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "$\\frac{2ab}{a+b} \\le \\sqrt{ab}$. Squaring: $\\frac{4a^2b^2}{(a+b)^2} \\le ab$. Gap: $ab(a+b)^2 - 4a^2b^2 = ab(a-b)^2$. Degree-4 SOS; positivity closes $ab(a-b)^2 \\ge 0$ from $a,b > 0$."
     },
     {
       "id": "gm-le-am",
       "title": "GM ≤ AM (ring + positivity)",
       "summary": "Gap ((a+b)/2)^2 - ab = ((a-b)/2)^2; ring identifies; positivity closes",
       "startLine": 93,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "AM-GM: $\\sqrt{ab} \\le \\frac{a+b}{2}$. Squaring: $ab \\le \\left(\\frac{a+b}{2}\\right)^2$. Gap: $\\left(\\frac{a+b}{2}\\right)^2 - ab = \\left(\\frac{a-b}{2}\\right)^2 \\ge 0$. Perfect square; positivity closes without hypotheses."
     },
     {
       "id": "am-le-qm",
       "title": "AM ≤ QM (ring + positivity)",
       "summary": "Gap (a^2+b^2)/2 - ((a+b)/2)^2 = ((a-b)/2)^2; same pattern",
       "startLine": 107,
-      "endLine": 119
+      "endLine": 119,
+      "mathContext": "$\\frac{a+b}{2} \\le \\sqrt{\\frac{a^2+b^2}{2}}$. Squaring: $\\left(\\frac{a+b}{2}\\right)^2 \\le \\frac{a^2+b^2}{2}$. Gap: $\\frac{a^2+b^2}{2} - \\left(\\frac{a+b}{2}\\right)^2 = \\left(\\frac{a-b}{2}\\right)^2 \\ge 0$. Identical pattern to GM ≤ AM."
     },
     {
       "id": "qm-le-max",
       "title": "QM ≤ max",
       "summary": "Case split; gap = (b-a)(b+a)/2 for each case; mul_nonneg + div_nonneg",
       "startLine": 121,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "$\\sqrt{\\frac{a^2+b^2}{2}} \\le \\max(a,b)$. WLOG $b = \\max$: $\\frac{a^2+b^2}{2} \\le b^2$. Gap: $b^2 - \\frac{a^2+b^2}{2} = \\frac{(b-a)(b+a)}{2} \\ge 0$. Linear-factor structure; mul_nonneg + div_nonneg (not a perfect square)."
     },
     {
       "id": "full-chain",
       "title": "The Full Chain",
-      "summary": "Assembles all five inequalities",
+      "summary": "Assembles all five inequalities into a single conjunction",
       "startLine": 146,
-      "endLine": 158
+      "endLine": 158,
+      "mathContext": "$\\forall a,b > 0: \\min(a,b) \\le \\text{HM}(a,b) \\le \\text{GM}(a,b) \\le \\text{AM}(a,b) \\le \\text{QM}(a,b) \\le \\max(a,b)$. The 5-link power mean chain in full generality for two positive reals."
     }
   ],
   "conclusion": {
@@ -116,9 +123,9 @@
   },
   "crossReferences": [
     {
-      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
-      "relationship": "parent-problem",
-      "description": "Parent file with original nlinarith-based proofs of the same chain"
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Parent file with original nlinarith-based proofs of the same power mean chain — this file answers OQ-02 by replacing nlinarith [sq_nonneg ...] with ring + positivity"
     }
   ],
   "leanFile": {
