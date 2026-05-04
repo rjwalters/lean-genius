@@ -18,9 +18,7 @@
   Tags: combinatorics, ramsey-theory, probabilistic-method, asymptotic-analysis
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Real
 
@@ -108,7 +106,7 @@ theorem aks_bound_pos (k : ℕ) (hk : k ≥ 4) (C : ℝ) (hC : C > 0) :
     0 < C * (k : ℝ)^3 / Real.log (k : ℝ)^2 := by
   apply div_pos
   · positivity
-  · positivity
+  · exact pow_pos (log_k_pos k hk) 2
 
 /-
 ## Part III: The Polylogarithmic Gap
@@ -125,8 +123,7 @@ theorem r4k_gap_ratio (k : ℕ) (hk : k ≥ 4) (C c : ℝ) (hC : C > 0) (hc : c 
     C / c * Real.log (k : ℝ)^2 := by
   have hk_pos : (0 : ℝ) < (k : ℝ) := by exact_mod_cast (show 0 < k by omega)
   have hlog_pos : (0 : ℝ) < Real.log (k : ℝ) := log_k_pos k hk
-  field_simp
-  ring
+  field_simp [ne_of_gt hlog_pos, ne_of_gt hk_pos]
 
 /-- The log exponent gap: AKS uses log², MV uses log⁴. The difference is 2.
     The open problem is to determine the exact log exponent c ∈ {2, 3, 4}. -/
