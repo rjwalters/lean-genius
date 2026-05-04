@@ -29,27 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3→2→1 sorry. Step C (density extension) proved in Session 1. Step B (lp_truncation_tendsto_zero) proved in Session 2 via ENNReal DCT. 1 sorry remains: localization_existence (Step A, ~150 lines).",
+    "progressSummary": "PROGRESS: 1 sorry remains (MCT/consistency for g \u2208 Lq). extByZeroCLM + finite-measure Riesz application proved. Awaiting Docker build verification.",
     "builtItems": [
       "integrationCLM_sf: integration CLM for pure SigmaFinite mu",
       "integral_representation_sf: density extension via Lp.induction",
       "riesz_lp_surjective_sigma_finite: main theorem with Step C proved",
       "mem_spanningSets_eventually + pointwise_mul_indicator_tendsto (ported)",
-      "lp_truncation_tendsto_zero: Lp truncation DCT proof via ENNReal dominated convergence + continuity of rpow (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:249)"
+      "lp_truncation_tendsto_zero: Lp truncation DCT proof via ENNReal dominated convergence + continuity of rpow (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:249)",
+      "eLpNorm_indicator_eq_restrict_loc: eLpNorm(S.indicator f, \u03bc) = eLpNorm(f, \u03bc.restrict S) via lintegral_indicator",
+      "memLp_indicator_of_restrict_loc: MemLp(S.indicator f, \u03bc) from MemLp(f, \u03bc.restrict S) + aestronglyMeasurable_indicator_iff",
+      "extByZeroCLM: isometric CLM Lp(\u03bc.restrict S) \u2192L[\u211d] Lp(\u03bc), proved with ae_restrict_iff + coeFn_toLp"
     ],
     "insights": [
       "Step C (density extension) proved: Lp.induction is valid for SigmaFinite without IsFiniteMeasure",
-      "integrationCLM does not need IsFiniteMeasure — Holder inequality suffices",
+      "integrationCLM does not need IsFiniteMeasure \u2014 Holder inequality suffices",
       "3 sorries reduced to 2: localization + Vitali remain; density extension proved",
-      "lp_truncation_tendsto_zero uses ENNReal dominated convergence (tendsto_lintegral_of_dominated_convergence) + continuity of x↦x^r at 0 via ENNReal.continuousAt_rpow_const — no Vitali needed"
+      "lp_truncation_tendsto_zero uses ENNReal dominated convergence (tendsto_lintegral_of_dominated_convergence) + continuity of x\u21a6x^r at 0 via ENNReal.continuousAt_rpow_const \u2014 no Vitali needed",
+      "localization_existence (last sorry) submitted to Aristotle job 1eb03084-d2a8-4280-ac52-12e23d7ca689 on 2026-05-04. Strategy: spanningSets exhaustion + finite-measure Riesz + MCT gluing. ~150 lines estimated.",
+      "localization_existence needs extByZeroCLM to compose \u03c6 with restriction, then riesz_lp_surjective_from_rn applies to each spanning set",
+      "The MCT/consistency step (g\u2099\u2192g globally in Lq) is the only remaining sorry; all infrastructure is now in place"
     ],
     "mathlibGaps": [
       "Lp restriction map Lp(mu) -> Lp(mu.restrict S) not available as isometric map",
       "Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) API verbosity for unifIntegrable + unifTight"
     ],
     "nextSteps": [
-      "Prove localization_existence (~150 lines): needs Lp extension-by-zero map from Lp(μ.restrict Sₙ) to Lp(μ), consistency gₙ=gₙ₊₁ a.e. on Sₙ, MCT for Lq membership. HARD sorry — consider Aristotle submission.",
-      "Submit localization_existence to Aristotle: it is HARD (not OPEN) since finite-measure Riesz is already proved in riesz_lp_surjective_from_rn. The gap is the Lp restriction transfer."
+      "Prove MCT/consistency: g\u2099 (from finite Riesz on \u03bc.restrict S\u2099) are consistent a.e., uniform Lq bound \u2016g\u2099\u2016 \u2264 \u2016\u03c6\u2016, MCT gives g \u2208 Lq(\u03bc)",
+      "Prove indicator agreement: 1_{E\u2229S\u2099} \u2192 1_E in Lp by DCT (\u03bc(E)<\u221e), continuity of \u03c6 + DCT for integral"
     ]
   },
   "tags": [
