@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-energy-increment-step",
+    "type": "theorem",
+    "label": "energy_increment_step",
+    "title": "Energy Increment Step (Main Theorem)",
+    "body": "energy_increment_step: given ε-irregular pair (A,B) in a partition where every part has size ≥ εn, there exists a refined partition with energy ≥ E(current) + ε⁶. The proof: witnesses A'⊆A, B'⊆B give |A'|≥ε|A|≥ε²n and |B'|≥ε²n and |d(A',B')-d(A,B)|>ε, so |A'|·|B'|·δ²>ε²n·ε²n·ε²=ε⁶n². The refined partition is (parts∖{A,B})∪{A',A∖A',B',B∖B'}.",
+    "location": { "line": 742 },
+    "tags": ["main-theorem", "energy-increment", "szemer-edi"]
+  },
+  {
+    "id": "ann-energy-increment-packaging",
+    "type": "theorem",
+    "label": "energy_increment_packaging",
+    "title": "Block-Decomposition Core Lemma",
+    "body": "energy_increment_packaging: separates the block-energy accounting from the ε⁶ lower bound. Given the split A={A',A\\A'} and B={B',B\\B'}, the refined partition's energy exceeds the original by at least 2/n²·|A'|·|B'|·(d(A',B')-d(A,B))². The argument decomposes partition energy into S×S (same), S×T and T×S (non-negative by convexity), and T×T (positive increment from irregularity).",
+    "location": { "line": 406 },
+    "tags": ["packaging", "block-decomposition", "energy-increment"]
+  },
+  {
+    "id": "ann-four-subpair-excess",
+    "type": "theorem",
+    "label": "four_subpair_excess_lb",
+    "title": "Per-Pair Energy Excess Lower Bound",
+    "body": "four_subpair_excess_lb: the energy of the four subpairs {A',A\\A'}×{B',B\\B'} exceeds the energy of A×B by at least 2·|A'|·|B'|·(d(A',B')-d(A,B))²/n². This is the key quantitative step converting a density deviation δ into an energy increment proportional to δ². Proved via four_subpair_deviation_identity (variance formula) and the non-negativity of squared terms.",
+    "location": { "line": 373 },
+    "tags": ["variance", "four-subpairs", "energy"]
+  },
+  {
+    "id": "ann-variance-decomposition",
+    "type": "theorem",
+    "label": "four_subpair_deviation_identity",
+    "title": "Variance Decomposition (δ-Identity)",
+    "body": "four_subpair_deviation_identity: the energy of the four subpairs equals the energy of A×B plus a non-negative variance term. Formally: Σ_{i,j} |Aᵢ||Bⱼ|d(Aᵢ,Bⱼ)² = |A||B|d(A,B)² + Σ |Aᵢ||Bⱼ|(d(Aᵢ,Bⱼ)-d(A,B))². The identity is the 2D analog of the parallel axis theorem: Var(X) = E[X²] - E[X]².",
+    "location": { "line": 348 },
+    "tags": ["variance", "identity", "algebra"]
+  },
+  {
+    "id": "ann-density-convexity",
+    "type": "theorem",
+    "label": "density_sq_convex_right",
+    "title": "Convexity of d² Under Splitting",
+    "body": "density_sq_convex_right: for B = B₁∪B₂ disjoint, |B|·d(A,B)² ≤ |B₁|·d(A,B₁)² + |B₂|·d(A,B₂)². This says d² is convex under weighted splits of one argument. Combined with edgeDensity_symm, it implies splitting EITHER argument is non-decreasing in total energy, which ensures the refinement never loses energy on the non-T×T blocks.",
+    "location": { "line": 78 },
+    "tags": ["convexity", "edge-density", "splitting"]
+  }
+]
