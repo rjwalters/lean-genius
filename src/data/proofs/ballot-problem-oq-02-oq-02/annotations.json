@@ -1,0 +1,114 @@
+[
+  {
+    "id": "annotation-brownian-motion",
+    "type": "definition",
+    "label": "BrownianMotion",
+    "body": "structure BrownianMotion (Ω) [MeasurableSpace Ω] (μ) [IsProbabilityMeasure μ] where\n  W : ℝ → Ω → ℝ\n  path_continuous : ∀ ω, Continuous (fun t => W t ω)",
+    "note": "A Brownian motion is a stochastic process with almost-surely continuous paths. The `path_continuous` field encodes path continuity as a defining property. This is not a mathematical axiom but a type-level hypothesis — theorems in this file apply to any W satisfying this definition.",
+    "location": { "section": "setup" }
+  },
+  {
+    "id": "annotation-fpt",
+    "type": "definition",
+    "label": "firstPassageTime",
+    "body": "firstPassageTime bm a ω = sInf {t | 0 ≤ t ∧ bm.W t ω ≥ a}",
+    "note": "The first passage time to level a: the infimum of times at which the path W(·,ω) first reaches or exceeds a. Lean's sInf convention: sInf ∅ = 0, NOT +∞ as in classical analysis. This creates a subtle discrepancy with the parent file's axiom.",
+    "location": { "section": "setup" }
+  },
+  {
+    "id": "annotation-max-event",
+    "type": "definition",
+    "label": "maxEvent",
+    "body": "maxEvent bm a T = {ω | ∃ s ∈ Icc 0 T, bm.W s ω ≥ a}",
+    "note": "The event that the path W(·,ω) reaches or exceeds level a at some time in [0,T]. The main theorem shows firstPassageTime bm a ω ≤ T ↔ ω ∈ maxEvent bm a T (under a nonemptiness hypothesis).",
+    "location": { "section": "setup" }
+  },
+  {
+    "id": "annotation-hitting-closed",
+    "type": "theorem",
+    "label": "hittingSet_isClosed",
+    "body": "IsClosed {t : ℝ | 0 ≤ t ∧ bm.W t ω ≥ a}",
+    "note": "The hitting set is closed: it is the intersection of [0,∞) (closed) with the preimage of [a,∞) under the continuous map t ↦ W(t,ω). Closedness is crucial for the key step: a nonempty closed bounded-below set contains its infimum.",
+    "location": { "section": "hitting-set-topology" }
+  },
+  {
+    "id": "annotation-bdd-below",
+    "type": "theorem",
+    "label": "hittingSet_bddBelow",
+    "body": "BddBelow {t : ℝ | 0 ≤ t ∧ bm.W t ω ≥ a}",
+    "note": "The hitting set is bounded below by 0, needed to apply csInf_le and IsClosed.csInf_mem.",
+    "location": { "section": "hitting-set-topology" }
+  },
+  {
+    "id": "annotation-csinf-empty",
+    "type": "theorem",
+    "label": "csInf_empty_eq_zero",
+    "body": "sInf (∅ : Set ℝ) = 0",
+    "note": "A critical Lean subtlety: sInf ∅ = 0 in ℝ (via Real.sInf_empty). In classical analysis, inf ∅ = +∞ for first passage times. This difference means: if a path never reaches level a, firstPassageTime = 0 ≤ T for any T > 0, but ω ∉ maxEvent. The parent axiom is therefore technically false without the nonemptiness hypothesis.",
+    "location": { "section": "hitting-set-topology" }
+  },
+  {
+    "id": "annotation-csinf-mem",
+    "type": "theorem",
+    "label": "hittingSet_csInf_mem",
+    "body": "hne : nonempty → sInf {t | 0 ≤ t ∧ W t ω ≥ a} ∈ {t | 0 ≤ t ∧ W t ω ≥ a}",
+    "note": "When the hitting set is nonempty, sInf is achieved (the hitting set is closed and bounded below). This is IsClosed.csInf_mem from Mathlib. The infimum is attained at the first passage time itself.",
+    "location": { "section": "hitting-set-topology" }
+  },
+  {
+    "id": "annotation-max-implies-fpt",
+    "type": "theorem",
+    "label": "maxEvent_implies_fpt_le",
+    "body": "ω ∈ maxEvent bm a T → firstPassageTime bm a ω ≤ T",
+    "note": "Easy direction: if s ∈ [0,T] witnesses W(s,ω) ≥ a, then s is in the hitting set, so sInf ≤ s ≤ T.",
+    "location": { "section": "main-characterization" }
+  },
+  {
+    "id": "annotation-fpt-implies-max",
+    "type": "theorem",
+    "label": "fpt_le_implies_maxEvent",
+    "body": "hne → firstPassageTime bm a ω ≤ T → ω ∈ maxEvent bm a T",
+    "note": "Hard direction: under nonemptiness, sInf is achieved at some time τ ∈ [0, τ] ⊆ [0,T] with W(τ,ω) ≥ a. The witness for maxEvent is τ itself.",
+    "location": { "section": "main-characterization" }
+  },
+  {
+    "id": "annotation-fpt-iff",
+    "type": "theorem",
+    "label": "fpt_le_iff_maxEvent",
+    "body": "hne → (firstPassageTime bm a ω ≤ T ↔ ω ∈ maxEvent bm a T)",
+    "note": "The full bidirectional characterization under nonemptiness. This proves the parent file's axiom firstPassageTime_eq_maxEvent (pointwise version) whenever the hitting set is nonempty.",
+    "location": { "section": "main-characterization" }
+  },
+  {
+    "id": "annotation-fpt-set",
+    "type": "theorem",
+    "label": "fpt_le_set_eq_maxEvent",
+    "body": "(∀ ω, nonempty hitting set) → {ω | τ(ω) ≤ T} = maxEvent bm a T",
+    "note": "Set-level equality: when the hitting set is nonempty for all ω ∈ Ω, the sets {firstPassageTime ≤ T} and maxEvent coincide.",
+    "location": { "section": "main-characterization" }
+  },
+  {
+    "id": "annotation-ivt-crossing",
+    "type": "theorem",
+    "label": "ivt_first_crossing",
+    "body": "W(0,ω) < a ≤ W(T,ω) → ∃ s ∈ (0,T], W(s,ω) = a",
+    "note": "By the Intermediate Value Theorem (isPreconnected_Icc.intermediate_value₂): a continuous path starting below a and ending at or above a must cross level a at some interior time s ∈ (0,T]. The strict positivity of s follows from W(0,ω) < a.",
+    "location": { "section": "ivt-nonemptiness" }
+  },
+  {
+    "id": "annotation-hitting-nonempty",
+    "type": "theorem",
+    "label": "hittingSet_nonempty_of_ivt",
+    "body": "W(0,ω) < a → W(T,ω) ≥ a → ({t | 0 ≤ t ∧ W(t,ω) ≥ a}).Nonempty",
+    "note": "IVT gives a crossing point s ∈ (0,T] with W(s,ω) = a, which witnesses nonemptiness of the hitting set.",
+    "location": { "section": "ivt-nonemptiness" }
+  },
+  {
+    "id": "annotation-fpt-crossing",
+    "type": "theorem",
+    "label": "fpt_le_T_of_crossing",
+    "body": "W(0,ω) < a → W(T,ω) ≥ a → firstPassageTime ≤ T ∧ ω ∈ maxEvent",
+    "note": "For crossing paths (starting below a, ending above), both conditions hold simultaneously: τ ≤ T and ω ∈ maxEvent. This combines IVT nonemptiness with the main characterization.",
+    "location": { "section": "ivt-nonemptiness" }
+  }
+]
