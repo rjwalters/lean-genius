@@ -1,0 +1,58 @@
+{
+  "id": "circumference-via-differentiation",
+  "title": "Circumference Formula via Differentiation of Area",
+  "slug": "circumference-via-differentiation",
+  "description": "The circumference formula C(r) = 2πr is derived by differentiating the disk area A(r) = πr² with respect to radius: C(r) = dA/dr. This formalizes the elegant geometric insight that the rate of change of a disk's area equals its boundary length. Includes the area-circumference duality and scaling laws, machine-checked against Mathlib's integration and differentiation infrastructure.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "lineCount": 199,
+    "leanFile": "proofs/Proofs/CircumferenceViaDifferentiation.lean",
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Polynomial",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
+      "Mathlib.Tactic"
+    ],
+    "tags": ["geometry", "calculus", "circumference", "area", "circle", "differentiation"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "area-function",
+      "title": "Area and Circumference Functions",
+      "description": "areaFn r = π·r² (area of disk with radius r) and circumferenceFn r = 2·π·r (circumference). Basic properties: area_hasDerivAt (d/dr(πr²) = 2πr via HasDerivAt), deriv_area (the Mathlib deriv equals 2πr), and areaFn_differentiable (areaFn is differentiable everywhere).",
+      "theorems": ["areaFn", "circumferenceFn", "area_hasDerivAt", "deriv_area", "areaFn_differentiable"]
+    },
+    {
+      "id": "main-theorems",
+      "title": "Circumference and Measure Identity",
+      "description": "measure_disk_eq_areaFn: Mathlib's Lebesgue measure of the closed disk {x : ℝ² | ‖x‖ ≤ r} equals areaFn r = πr². circumference_eq: C(r) = dA/dr = 2πr. circumference_unit_circle: C(1) = 2π.",
+      "theorems": ["measure_disk_eq_areaFn", "circumference_eq", "circumference_unit_circle"]
+    },
+    {
+      "id": "geometric-properties",
+      "title": "Scaling and Duality",
+      "description": "circumference_scaling: C(λr) = λ·C(r) for λ ≥ 0. circumference_zero: C(0) = 0. area_second_deriv: d²A/dr² = 2π (constant — the circumference formula is linear). areaFn_mono: area is strictly monotone for positive radii. areaFn_eq_zero_iff: area is zero iff r = 0. area_circumference_duality: A(r) = ∫₀ʳ C(t) dt (area = integral of circumference over radii).",
+      "theorems": ["circumference_scaling", "circumference_zero", "area_second_deriv", "areaFn_mono", "areaFn_eq_zero_iff", "measure_disk_scaling", "area_circumference_duality"]
+    }
+  ],
+  "overview": {
+    "summary": "The area-circumference relationship C(r) = dA/dr has a beautiful geometric interpretation: when a disk of radius r grows by dr, the added area is approximately a thin annular strip of width dr and length C(r), giving dA ≈ C(r)·dr. Since A(r) = πr², we get C(r) = 2πr. The inverse relationship is equally elegant: A(r) = ∫₀ʳ C(t) dt — area is the integral of circumference.",
+    "approach": "The proof uses Mathlib's HasDerivAt for polynomials (d/dr(πr²) = 2πr) and MeasureTheory.Measure.Lebesgue.VolumeOfBalls for the area formula (measure of a ball of radius r in ℝ² = π·r²). The area-circumference duality is proved via FTC: differentiating ∫₀ʳ 2πt dt = πr² gives 2πr, and integrating C from 0 to r gives A(r).",
+    "significance": "This derivation of the circumference formula is one of the most elegant in elementary geometry. It generalizes: the surface area of an n-ball is the derivative of its volume with respect to radius. In n dimensions, V(r) = ωₙ·rⁿ implies S(r) = dV/dr = n·ωₙ·rⁿ⁻¹ = ωₙ₋₁·rⁿ⁻¹ where ωₙ and ωₙ₋₁ are the volume constants. For n=2: V = πr², S = 2πr."
+  },
+  "conclusion": {
+    "summary": "The circumference formula C(r) = 2πr is machine-checked as the derivative of the area formula A(r) = πr², with the duality A(r) = ∫₀ʳ C(t) dt also verified.",
+    "openQuestions": [
+      "Can the n-dimensional analog — surface area of S^(n-1) = d/dr(volume of B^n) — be formalized for arbitrary n using Mathlib's geometric measure theory?",
+      "Can the Weyl tube formula (volume of a tubular neighborhood of a manifold as a polynomial in radius) be derived from this differentiation approach?",
+      "Does the area-circumference duality generalize to Riemannian manifolds via the co-area formula?"
+    ]
+  },
+  "crossReferences": []
+}

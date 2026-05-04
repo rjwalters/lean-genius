@@ -1,0 +1,122 @@
+[
+  {
+    "id": "annotation-area-fn",
+    "type": "definition",
+    "label": "areaFn",
+    "body": "areaFn r = π · r²",
+    "note": "The area of a disk of radius r. Defined as a real-valued function so that differentiation is well-defined everywhere.",
+    "location": { "section": "area-function" }
+  },
+  {
+    "id": "annotation-circumference-fn",
+    "type": "definition",
+    "label": "circumferenceFn",
+    "body": "circumferenceFn r = 2 · π · r",
+    "note": "The circumference of a circle of radius r. The main theorem shows this equals the derivative of areaFn.",
+    "location": { "section": "area-function" }
+  },
+  {
+    "id": "annotation-area-has-deriv-at",
+    "type": "theorem",
+    "label": "area_hasDerivAt",
+    "body": "HasDerivAt areaFn (2 * π * r) r",
+    "note": "The derivative of πr² at each point r is 2πr. Proved using Mathlib's HasDerivAt framework for polynomial differentiation: d/dr(π·r²) = π·(2r) = 2πr.",
+    "location": { "section": "area-function" }
+  },
+  {
+    "id": "annotation-deriv-area",
+    "type": "theorem",
+    "label": "deriv_area",
+    "body": "deriv areaFn r = 2 * π * r",
+    "note": "Connects HasDerivAt to Mathlib's deriv function: since areaFn has a derivative at r, deriv areaFn r equals 2πr.",
+    "location": { "section": "area-function" }
+  },
+  {
+    "id": "annotation-area-fn-differentiable",
+    "type": "theorem",
+    "label": "areaFn_differentiable",
+    "body": "Differentiable ℝ areaFn",
+    "note": "areaFn = π·r² is differentiable everywhere on ℝ, needed to apply FTC and other calculus theorems.",
+    "location": { "section": "area-function" }
+  },
+  {
+    "id": "annotation-measure-disk",
+    "type": "theorem",
+    "label": "measure_disk_eq_areaFn",
+    "body": "MeasureTheory.volume {x : ℝ × ℝ | ‖x‖ ≤ r} = ENNReal.ofReal (areaFn r)",
+    "note": "Mathlib's Lebesgue measure of the closed disk of radius r in ℝ² equals πr². Uses MeasureTheory.Measure.Lebesgue.VolumeOfBalls which establishes the volume of Euclidean balls.",
+    "location": { "section": "main-theorems" }
+  },
+  {
+    "id": "annotation-circumference-eq",
+    "type": "theorem",
+    "label": "circumference_eq",
+    "body": "circumferenceFn r = deriv areaFn r",
+    "note": "The central result: C(r) = dA/dr. The circumference formula 2πr is exactly the derivative of the area formula πr². This formalizes the geometric intuition that a thin annular shell of width dr has area ≈ C(r)·dr.",
+    "location": { "section": "main-theorems" }
+  },
+  {
+    "id": "annotation-circumference-unit",
+    "type": "theorem",
+    "label": "circumference_unit_circle",
+    "body": "circumferenceFn 1 = 2 * π",
+    "note": "The unit circle has circumference 2π. A direct computation from the definition circumferenceFn 1 = 2·π·1 = 2π.",
+    "location": { "section": "main-theorems" }
+  },
+  {
+    "id": "annotation-circumference-scaling",
+    "type": "theorem",
+    "label": "circumference_scaling",
+    "body": "∀ λ ≥ 0, circumferenceFn (λ * r) = λ * circumferenceFn r",
+    "note": "Circumference scales linearly: C(λr) = λ·C(r). Follows immediately from linearity of 2πr. This is the 1-dimensional scaling law for 1-dimensional boundary.",
+    "location": { "section": "geometric-properties" }
+  },
+  {
+    "id": "annotation-circumference-zero",
+    "type": "theorem",
+    "label": "circumference_zero",
+    "body": "circumferenceFn 0 = 0",
+    "note": "A degenerate circle of radius 0 has circumference 0.",
+    "location": { "section": "geometric-properties" }
+  },
+  {
+    "id": "annotation-area-second-deriv",
+    "type": "theorem",
+    "label": "area_second_deriv",
+    "body": "deriv (deriv areaFn) r = 2 * π",
+    "note": "The second derivative of area with respect to radius is the constant 2π. Since C(r) = 2πr is linear, its derivative is constant. This means area grows quadratically and circumference grows linearly.",
+    "location": { "section": "geometric-properties" }
+  },
+  {
+    "id": "annotation-area-fn-mono",
+    "type": "theorem",
+    "label": "areaFn_mono",
+    "body": "∀ r₁ r₂ > 0, r₁ < r₂ → areaFn r₁ < areaFn r₂",
+    "note": "Area is strictly increasing for positive radii: larger disks have larger area.",
+    "location": { "section": "geometric-properties" }
+  },
+  {
+    "id": "annotation-area-fn-zero",
+    "type": "theorem",
+    "label": "areaFn_eq_zero_iff",
+    "body": "areaFn r = 0 ↔ r = 0",
+    "note": "Area is zero if and only if the radius is zero. Since πr² = 0 ↔ r = 0 (as π > 0).",
+    "location": { "section": "geometric-properties" }
+  },
+  {
+    "id": "annotation-measure-disk-scaling",
+    "type": "theorem",
+    "label": "measure_disk_scaling",
+    "body": "volume {x : ℝ × ℝ | ‖x‖ ≤ λ * r} = λ² * volume {x | ‖x‖ ≤ r}",
+    "note": "Scaling a disk by λ scales its area by λ². This is the 2D scaling law: area is a 2-homogeneous function of radius.",
+    "location": { "section": "geometric-properties" }
+  },
+  {
+    "id": "annotation-duality",
+    "type": "theorem",
+    "label": "area_circumference_duality",
+    "body": "areaFn r = ∫ t in Set.Icc 0 r, circumferenceFn t",
+    "note": "Area equals the integral of circumference: A(r) = ∫₀ʳ C(t) dt. This is the inverse relationship to C = dA/dr, proved via the Fundamental Theorem of Calculus. Geometrically: the disk of radius r is filled by concentric circles of all radii from 0 to r.",
+    "location": { "section": "geometric-properties" }
+  }
+]
