@@ -206,6 +206,7 @@ import Proofs.BinomialTheoremOQ02OQ01
 import Proofs.BinomialTheoremOQ02OQ01OQ01
 import Proofs.BinomialTheoremOQ02OQ01OQ01Aristotle
 import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01
+import Proofs.BinomialTheoremOQ02OQ01OQ01OQ02
 import Proofs.BinomialTheoremOQ02OQ01OQ02
 import Proofs.BinomialTheoremOQ02OQ01OQ03
 import Proofs.BinomialTheoremOQ02OQ02
