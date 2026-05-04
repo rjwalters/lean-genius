@@ -2,7 +2,7 @@
   "id": "de-moivre-oq-02-oq-02",
   "title": "Chebyshev T·U Cross-Product Formula",
   "slug": "de-moivre-oq-02-oq-02",
-  "description": "Proves the cross-product-to-sum formula 2·T_m·U_n = U_{m+n} + U_{n-m} as a polynomial identity over any commutative ring R, extending the T×T formula to the T×U setting. Proved via paired integer induction with 0 sorries. Also derives the trig identity 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ).",
+  "description": "Proves two Chebyshev product identities: T·U: 2·T_m·U_n = U_{m+n} + U_{n-m} as a polynomial identity over any commutative ring R; and U·U: 2·sin²θ·U_m(cosθ)·U_n(cosθ) = T_{m-n}(cosθ) − T_{m+n+2}(cosθ). Together they complete the Chebyshev product table (T·T, T·U, U·U). Both proved with 0 sorries.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials#Products_of_Chebyshev_polynomials",
@@ -24,14 +24,16 @@
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 182,
-    "assumptions": "0 axioms, 0 sorries. Polynomial identity proved over any commutative ring R.",
-    "theoremCount": 9,
+    "lineCount": 216,
+    "assumptions": "0 axioms, 0 sorries. Polynomial identity proved over any commutative ring R; U·U formula proved in ℝ.",
+    "theoremCount": 11,
     "originalContributions": [
       "T_mul_U_product: 2·T_m·U_n = U_{m+n} + U_{n-m} as a polynomial identity in R[X] for any CommRing R",
       "chebyshev_T_U_product_to_sum: real evaluation form of the cross-product formula",
       "chebyshev_cos_U: 2·cos θ·U_n(cos θ) = U_{n+1}(cos θ) + U_{n-1}(cos θ)",
-      "two_cos_sin_spreading: 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ)"
+      "two_cos_sin_spreading: 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ)",
+      "chebyshev_U_U_product_to_diff: 2·sin²θ·U_m(cosθ)·U_n(cosθ) = T_{m-n}(cosθ) − T_{m+n+2}(cosθ)",
+      "two_sin_sin_spreading: 2·sin((m+1)θ)·sin((n+1)θ) = cos((m-n)θ) − cos((m+n+2)θ)"
     ],
     "historicalContext": "Chebyshev polynomials of the first kind T_n satisfy T_n(cos θ) = cos(nθ), while the second kind U_n satisfy U_n(cos θ)·sin θ = sin((n+1)θ). The product-to-sum formula 2·T_m·T_n = T_{m+n} + T_{m-n} follows immediately from the cosine addition formula. A natural extension is the cross-product 2·T_m·U_n = U_{m+n} + U_{n-m}, which mixes both kinds and corresponds to the trigonometric identity 2·cos(mθ)·sin((n+1)θ) = sin((m+n+1)θ) + sin((n-m+1)θ). Unlike the T×T formula, this identity requires polynomial (not trigonometric) proof techniques, since dividing by sin θ introduces singularities.",
     "problemStatement": "**The Open Question**\n\nThe parent OQ-02 proved $2T_m \\cdot T_n = T_{m+n} + T_{m-n}$ via trigonometry. Can a similar product-to-sum formula hold involving Chebyshev polynomials of the second kind $U_n$?\n\n**Answer: YES — cross-product formula**\n\nFor $m, n : \\mathbb{Z}$ and any commutative ring $R$:\n$$2 \\cdot T_m \\cdot U_n = U_{m+n} + U_{n-m} \\quad \\text{in } R[X]$$\n\nProved algebraically (no trigonometric bridge) via paired integer induction.",
@@ -49,9 +51,9 @@
     "imports": ["Mathlib"],
     "opens": ["Polynomial", "Polynomial.Chebyshev", "Real"],
     "namespace": "DeMoivreOQ02OQ02",
-    "lineCount": 182,
+    "lineCount": 216,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 2,
     "path": "Proofs/DeMoivreOQ02OQ02.lean",
     "sorries": 0,
@@ -71,7 +73,7 @@
   "overview": {
     "historicalContext": "**Two Chebyshev Families**\n\nChebyshev polynomials come in two families sharing the same recurrence $p_{n+2} = 2x \\cdot p_{n+1} - p_n$:\n- **First kind** $T_n$: $T_n(\\cos\\theta) = \\cos(n\\theta)$, initial conditions $T_0 = 1$, $T_1 = x$\n- **Second kind** $U_n$: $U_n(\\cos\\theta)\\sin\\theta = \\sin((n+1)\\theta)$, initial conditions $U_0 = 1$, $U_1 = 2x$\n\n**Product Formulas**\n\nThe parent OQ-02 proved $2T_m \\cdot T_n = T_{m+n} + T_{m-n}$ directly from $2\\cos(m\\theta)\\cos(n\\theta) = \\cos((m+n)\\theta) + \\cos((m-n)\\theta)$. The analogous trigonometric identity for mixed products is $2\\cos(m\\theta)\\sin((n+1)\\theta) = \\sin((m+n+1)\\theta) + \\sin((n-m+1)\\theta)$, which in polynomial form becomes $2T_m \\cdot U_n = U_{m+n} + U_{n-m}$. This requires algebraic proof (the trigonometric conversion would require dividing by $\\sin\\theta$, introducing singularities).",
     "problemStatement": "**The Open Question**\n\nCan the product-to-sum formula be extended to Chebyshev polynomials of the second kind?\n\n**Answer: YES — the cross-product formula**\n\n$$2 \\cdot T_m \\cdot U_n = U_{m+n} + U_{n-m} \\in R[X]$$\n\nfor any commutative ring $R$ and integers $m, n$.",
-    "text": "Proves 2·T_m·U_n = U_{m+n} + U_{n-m} as a polynomial identity over any commutative ring R, via paired integer induction. Also derives the real-evaluation form, the recurrence identity 2·cos θ·U_n(cos θ) = U_{n+1}(cos θ) + U_{n-1}(cos θ), and the trig spreading identity 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ).",
+    "text": "Proves two Chebyshev product identities completing the product table: T·U: 2·T_m·U_n = U_{m+n} + U_{n-m} over any commutative ring R via paired integer induction; and U·U: 2·sin²θ·U_m·U_n = T_{m-n} − T_{m+n+2} via the cos-subtraction formula. Also derives recurrence identity 2·cos θ·U_n = U_{n+1} + U_{n-1} and spreading identities for sin and cos.",
     "proofStrategy": "**Paired Integer Induction**\n\nThe proof defines $Q(m) := P(m) \\wedge P(m-1)$ where $P(m) := 2T_m \\cdot U_n = U_{m+n} + U_{n-m}$ and proves $Q$ by `Int.induction_on`. The key engine is the identity $2X \\cdot U_k = U_{k+1} + U_{k-1}$ (from `U_add_two`), which powers:\n- Base case $P(-1)$: $2T_{-1} \\cdot U_n = 2X \\cdot U_n = U_{n+1} + U_{n-1} = U_{-1+n} + U_{n-(-1)}$ ✓\n- Successor step: from $P(m)$ and $P(m-1)$, apply $T_{m+1} = 2X \\cdot T_m - T_{m-1}$ and `linear_combination`\n- Predecessor step: from $P(m)$ and $P(m-1)$, apply $T_{m-2} = 2X \\cdot T_{m-1} - T_m$ and `linear_combination`",
     "keyInsights": [
       "**Polynomial identity, not trigonometric**: The formula holds in R[X] for any CommRing R, proved without evaluating at cos θ.",
@@ -125,15 +127,23 @@
       "title": "Trig Identity: 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ)",
       "startLine": 155,
       "endLine": 182,
-      "summary": "Converts chebyshev_cos_U to pure trigonometric form via U_real_cos (U_n(cos θ)·sin θ = sin((n+1)θ)). Uses nlinarith with sin²θ + cos²θ = 1 to handle the sin θ factors. Final theorem demoivre_oq02oq02_summary collects the main results.",
-      "mathContext": "From $U_n(\\cos\\theta) \\cdot \\sin\\theta = \\sin((n+1)\\theta)$: multiply $2\\cos\\theta \\cdot U_n(\\cos\\theta) = U_{n+1}(\\cos\\theta) + U_{n-1}(\\cos\\theta)$ by $\\sin\\theta$ to get $2\\cos\\theta \\cdot \\sin((n+1)\\theta) = \\sin((n+2)\\theta) + \\sin(n\\theta)$."
+      "summary": "Converts chebyshev_cos_U to pure trig form via sin_add/sin_sub (not U_real_cos, which has rewrite issues). Proves 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ).",
+      "mathContext": "Uses $\\sin(A+B) + \\sin(A-B) = 2\\sin A \\cos B$ with $A = (n+1)\\theta$, $B = \\theta$."
+    },
+    {
+      "id": "uu-product",
+      "title": "U·U Product-to-Difference Formula",
+      "startLine": 140,
+      "endLine": 215,
+      "summary": "Proves 2·sin²θ·U_m(cosθ)·U_n(cosθ) = T_{m-n}(cosθ) − T_{m+n+2}(cosθ) via: (1) cos(A-B) − cos(A+B) = 2·sin(A)·sin(B); (2) U_n(cosθ)·sinθ = sin((n+1)θ). Also proves two_sin_sin_spreading: 2·sin((m+1)θ)·sin((n+1)θ) = cos((m−n)θ) − cos((m+n+2)θ). Summary theorem demoivre_oq02oq02_summary collects all main results.",
+      "mathContext": "$\\cos((m-n)\\theta) - \\cos((m+n+2)\\theta) = 2\\sin((m+1)\\theta)\\sin((n+1)\\theta) = 2 \\cdot U_m(\\cos\\theta)\\sin\\theta \\cdot U_n(\\cos\\theta)\\sin\\theta$. Dividing by $\\sin^2\\theta = 1 - \\cos^2\\theta$ (in the polynomial sense) gives the formula."
     }
   ],
   "conclusion": {
-    "summary": "Proves 5 theorems with 0 sorries, establishing the Chebyshev T×U cross-product formula as a polynomial identity over any commutative ring R. The paired integer induction technique generalizes the first-kind product-to-sum to the mixed T×U setting.",
+    "summary": "Proves 11 theorems/lemmas with 0 sorries, completing the Chebyshev product table (T·T, T·U, U·U). The T·U identity holds over any commutative ring R via paired integer induction; the U·U identity is proved in ℝ via the cosine subtraction formula.",
     "implications": "**Theoretical Significance**\n\n1. **Over any CommRing R**: Unlike the parent OQ-02 (which uses trigonometry and is specific to ℝ), this identity holds algebraically in any commutative ring — broader generality.\n\n2. **Basis for U×U product formula**: The T×U cross-product can serve as a building block for the U×U product formula $U_m \\cdot U_n = \\sum_{k=0}^{\\min(m,n)} U_{m+n-2k}$ via recurrence matching.\n\n3. **Sin spreading identity**: The trig corollary $2\\cos\\theta \\cdot \\sin((n+1)\\theta) = \\sin((n+2)\\theta) + \\sin(n\\theta)$ is an important building block for Fourier-type series manipulations.",
     "openQuestions": [
-      "Can the U×U product formula U_m · U_n = ∑_{k=0}^{min(m,n)} U_{m+n-2k} be proved by recurrence matching over ℝ[X]?",
+      "Can the U×U product formula U_m · U_n = ∑_{k=0}^{min(m,n)} U_{m+n-2k} (sum form) be proved as a polynomial identity over R[X], analogous to the T·U formula?",
       "Can the T×U cross-product be proved over a more general setting (e.g., Chebyshev polynomials over ℤ)?",
       "Does a T×V cross-product formula hold for the third-kind Chebyshev polynomials V_n (satisfying V_n(cos θ) = cos((n+½)θ)/cos(θ/2))?"
     ]
