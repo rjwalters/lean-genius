@@ -100,7 +100,10 @@
     "axiomCount": 4,
     "lineCount": 313,
     "theoremCount": 6,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "additionalFiles": [
+      "Proofs/Erdos1001OQ02OQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**From Rate to Sharp Rate: Mertens (1874) vs. Walfisz (1963)**\n\nThe parent problem OQ-02 established the rate O(A log N / N) for convergence of the diophantine approximation density S(N,A,c) to f(A,c). This rate came from the elementary Mertens error bound: ∑_{n≤x} φ(n) = (3/π²)x² + O(x log x), which dates to 1874 and follows from partial summation with the trivial estimate ∑_{n≤x} μ(n)/n = O(1).\n\nIn 1963, Walfisz proved a substantially sharper error bound: ∑_{n≤x} φ(n) = (3/π²)x² + O(x (log x)^(2/3) (log log x)^(4/3)). This used Vinogradov's method of exponential sums applied to the zero-free region for ζ(s): ζ(σ+it) ≠ 0 for σ > 1 - c/(log t)^(2/3) (log log t)^(1/3). The same exponent 2/3 appears in both the zero-free region and the error bound — a deep connection between zeros of the Riemann zeta function and the distribution of arithmetic functions.\n\nFor the diophantine approximation problem, the Walfisz bound propagates via Abel summation to give a rate O(A (log N)^(2/3) (log log N)^(4/3) / N), which is strictly smaller order than the O(A log N / N) rate from OQ-02. This definitively answers the sharpness question: the OQ-02 rate was not optimal.",
