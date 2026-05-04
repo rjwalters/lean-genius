@@ -14,7 +14,7 @@
   {
     "id": "ann-igf20-five-divides",
     "proofId": "inverse-galois-f20",
-    "range": { "startLine": 62, "endLine": 88 },
+    "range": { "startLine": 63, "endLine": 88 },
     "type": "insight",
     "title": "Lower Bound I: 5 | |Gal| from Prime Degree, and |Gal| | 120 from S₅",
     "content": "Since X⁵−2 is irreducible of degree 5, any root α generates an extension ℚ(α)/ℚ of degree 5. By Galois theory, 5 divides [splitting field : ℚ] = |Gal|. The theorem `five_dvd_gal_card` uses `Polynomial.Gal.prime_degree_dvd_card`. The companion `gal_card_dvd_120` uses the Galois group's faithful action on the 5 roots (injection into S₅ = symmetric group of order 120), which is a fundamental bound: |Gal| divides the order of the symmetric group on the roots.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-igf20-cyclotomic-root",
     "proofId": "inverse-galois-f20",
-    "range": { "startLine": 91, "endLine": 135 },
+    "range": { "startLine": 94, "endLine": 135 },
     "type": "insight",
     "title": "Key Trick: Ratio of Two Roots is a Primitive 5th Root of Unity",
     "content": "The theorem `fifth_root_ratio_satisfies_cyclotomic5` proves the key observation: if a⁵ = b⁵ and a ≠ b, then c = a/b satisfies Φ₅(c) = 0. The proof factors X⁵−1 = (X−1)(X⁴+X³+X²+X+1) and notes c ≠ 1 (since a ≠ b). `cyclotomic_5_has_root_in_splitting_field` instantiates this with any two distinct roots α, β of X⁵−2 in the splitting field: both satisfy x⁵ = 2, so their ratio α/β is a primitive 5th root of unity ζ₅ in the splitting field.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-igf20-four-divides",
     "proofId": "inverse-galois-f20",
-    "range": { "startLine": 137, "endLine": 205 },
+    "range": { "startLine": 141, "endLine": 208 },
     "type": "insight",
     "title": "Lower Bound II: 4 | finrank, then 20 | |Gal| by Coprimality",
     "content": "Since ζ₅ ∈ SF satisfies Φ₅ and Φ₅ is irreducible of degree 4, the minimal polynomial of ζ₅ over ℚ has degree 4. By the tower law, 4 divides [SF:ℚ]. `twenty_dvd_gal_card` combines 5 | |Gal| and 4 | |Gal| with the crucial fact gcd(4,5) = 1 (so their product 20 also divides |Gal|) via `Nat.Coprime.mul_dvd_of_dvd_of_dvd`. The cyclotomic polynomial Φ₅ = X⁴+X³+X²+X+1 is identified with `Polynomial.cyclotomic 5 ℚ` and its irreducibility follows from `cyclotomic.irreducible_rat`.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-igf20-roots-in-adjoin",
     "proofId": "inverse-galois-f20",
-    "range": { "startLine": 305, "endLine": 388 },
+    "range": { "startLine": 309, "endLine": 388 },
     "type": "insight",
     "title": "Upper Bound Step: All Roots of X⁵−2 Lie in ℚ(α, ζ₅)",
     "content": "The theorem `roots_in_adjoin_f20` proves every root r of X⁵−2 is in ℚ(α, ζ₅). For any root r: c = r/α satisfies c⁵ = 1. Case c = 1: r = α ∈ ℚ(α, ζ₅). Case c ≠ 1: r ≠ α, so c = r/α is a primitive 5th root, and by `cyclotomic5_root_is_power`, c ∈ {ζ₅, ζ₅², ζ₅³, ζ₅⁴}. In each sub-case, r = c·α is a product of powers of ζ₅ and α, hence in ℚ(α, ζ₅). The follow-up `adjoin_alpha_zeta_eq_top_f20` promotes this to SF = ℚ(α, ζ₅) via `IsSplittingField.adjoin_rootSet'`.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-igf20-upper-bound",
     "proofId": "inverse-galois-f20",
-    "range": { "startLine": 393, "endLine": 491 },
+    "range": { "startLine": 394, "endLine": 491 },
     "type": "technique",
     "title": "Upper Bound: Tower Law Gives |Gal| ≤ 20",
     "content": "The proof of `gal_card_dvd_20` is the most complex in the file. It establishes: [ℚ(α):ℚ] = 5 (from degree of X⁵−2), [SF:ℚ(α)] ≤ 4 (from minpoly of ζ₅ over ℚ(α) dividing Φ₅ of degree 4), and [SF:ℚ] = [SF:ℚ(α)]·5 ≤ 20 via the tower law `Module.finrank_mul_finrank`. Combined with the lower bound 20 | |Gal|, it follows |Gal| = 20 by `Nat.dvd_antisymm`. The main technical challenge is working through Lean's tower law machinery with intermediate fields `Kα = ℚ(α)` and `Kαζ = Kα(ζ₅)`.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-igf20-main-results",
     "proofId": "inverse-galois-f20",
-    "range": { "startLine": 494, "endLine": 528 },
+    "range": { "startLine": 498, "endLine": 528 },
     "type": "context",
     "title": "Main Results: |Gal| = 20 and F₂₀ is Realizable",
     "content": "The file concludes with three corollaries assembling the full result. `x5_sub_2_gal_card` combines the lower and upper bounds via `Nat.dvd_antisymm`. `splitting_field_x5_sub_2_finrank` translates the Galois group cardinality to the field extension degree (equal by `Polynomial.Gal.card_of_separable`). `f20_realizable` witnesses the existential: the Frobenius group F₂₀ is realizable over ℚ, with witness K = splitting field of X⁵−2, using `IsGalois.mk` to assemble the normal, separable, and Galois hypotheses.",

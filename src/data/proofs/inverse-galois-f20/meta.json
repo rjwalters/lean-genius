@@ -53,27 +53,43 @@
   "sections": [
     {
       "id": "irreducibility",
-      "title": "Parts I–II: Irreducibility and Lower Bound",
+      "title": "Parts I–II: Irreducibility of X⁵−2 and Lower Bound 5 | |Gal|",
       "startLine": 38,
-      "endLine": 138,
-      "summary": "x_fifth_sub_2_irreducible (Eisenstein), x_fifth_sub_2_natDegree=5, x_fifth_sub_2_separable, x_fifth_sub_2_monic. five_dvd_gal_card: 5 | |Gal|. gal_card_dvd_120: |Gal| | 120.",
-      "mathContext": "$X^5 - 2$ irreducible by Eisenstein at $p=2$. $5 \\mid [\\text{SF}:ℚ]$, so $5 \\mid |\\text{Gal}|$."
+      "endLine": 88,
+      "summary": "x_fifth_sub_2_irreducible (Eisenstein at p=2), x_fifth_sub_2_natDegree=5, x_fifth_sub_2_separable, x_fifth_sub_2_monic. five_dvd_gal_card: 5 | |Gal| since irreducible degree 5 extension contributes a 5-cycle. gal_card_dvd_120: |Gal| | 120 via injection into S₅.",
+      "mathContext": "$X^5 - 2$ irreducible by Eisenstein at $p=2$: leading coeff $\\nmid 2$, others $\\mid 2$, constant $\\nmid 4$. $5 \\mid [\\text{SF}:ℚ] \\Rightarrow 5 \\mid |\\text{Gal}|$."
     },
     {
       "id": "cyclotomic",
-      "title": "Parts III–IV: Φ₅ Root in Splitting Field and 4 | |Gal|",
+      "title": "Parts III–IV: Φ₅ Root in Splitting Field and 20 | |Gal|",
       "startLine": 91,
       "endLine": 208,
-      "summary": "fifth_root_ratio_satisfies_cyclotomic5: ratio of distinct roots satisfies Φ₅. cyclotomic_5_irreducible, cyclotomic_5_natDegree=4. four_dvd_splitting_field_finrank. twenty_dvd_gal_card: 20 | |Gal|.",
-      "mathContext": "Ratio $(\\zeta_5 \\cdot \\alpha)/\\alpha = \\zeta_5$ is a root of $\\Phi_5$. $\\Phi_5$ irred. degree 4 $\\Rightarrow$ $4 \\mid |\\text{Gal}|$."
+      "summary": "fifth_root_ratio_satisfies_cyclotomic5: ratio of two distinct roots satisfies Φ₅(r) = 0, so ζ₅ ∈ SF. cyclotomic_5_irreducible (degree 4), four_dvd_splitting_field_finrank. twenty_dvd_gal_card: gcd(4,5) = 1 and both divide |Gal|, so 20 | |Gal|.",
+      "mathContext": "$(r_1/r_2)^5 = 1,\\; r_1 \\neq r_2 \\Rightarrow \\Phi_5(r_1/r_2) = 0 \\Rightarrow \\zeta_5 \\in \\text{SF}$. $\\Phi_5$ irred. deg 4 $\\Rightarrow 4 \\mid |\\text{Gal}|$. $\\gcd(4,5)=1 \\Rightarrow 20 \\mid |\\text{Gal}|$."
+    },
+    {
+      "id": "fifth-root-infra",
+      "title": "Part V-A: Primitive 5th Root Infrastructure",
+      "startLine": 211,
+      "endLine": 388,
+      "summary": "Establishes that every root of Φ₅ is a power of ζ (ζ, ζ², ζ³, ζ⁴). Proves ζ≠1, ζ≠−1, ζᵏ≠1 for k=2,3,4. roots_in_adjoin_f20: every root r of X⁵−2 lies in ℚ(α, ζ₅) since r/α is a 5th root of unity.",
+      "mathContext": "$\\Phi_5(c)=(c-\\zeta)(c-\\zeta^2)(c-\\zeta^3)(c-\\zeta^4)$. $r^5=\\alpha^5 \\Rightarrow (r/\\alpha)^5=1 \\Rightarrow r/\\alpha \\in \\{1,\\zeta,\\zeta^2,\\zeta^3,\\zeta^4\\} \\Rightarrow r \\in \\mathbb{Q}(\\alpha,\\zeta_5)$."
     },
     {
       "id": "upper-bound",
-      "title": "Parts V–VI: Upper Bound and |Gal| = 20",
-      "startLine": 208,
-      "endLine": 529,
-      "summary": "Fifth root properties (ζ≠1, ζ≠-1, ζ^5=1). roots_in_adjoin_f20: all roots lie in ℚ(α,ζ). Degree ≤ 20. Combined: |Gal(X⁵-2/ℚ)| = 20.",
-      "mathContext": "All roots $\\alpha \\cdot \\zeta_5^k$ lie in $\\mathbb{Q}(\\alpha, \\zeta_5)$. $[\\mathbb{Q}(\\alpha, \\zeta_5):ℚ] = 20$."
+      "title": "Part VI: Tower Law Upper Bound and |Gal| = 20",
+      "startLine": 393,
+      "endLine": 491,
+      "summary": "gal_card_dvd_20: [ℚ(α):ℚ] = 5 and [SF:ℚ(α)] ≤ 4 (minpoly of ζ₅ over ℚ(α) divides Φ₅) give [SF:ℚ] ≤ 20 by tower law. Combined with 20 | |Gal|: |Gal| = 20 by Nat.dvd_antisymm.",
+      "mathContext": "$[\\mathbb{Q}(\\alpha):\\mathbb{Q}]=5,\\; [\\text{SF}:\\mathbb{Q}(\\alpha)] \\leq 4 \\Rightarrow [\\text{SF}:\\mathbb{Q}] \\leq 20. \\quad 20 \\mid |\\text{Gal}| \\leq 20 \\Rightarrow |\\text{Gal}|=20$."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results: x5_sub_2_gal_card and f20_realizable",
+      "startLine": 494,
+      "endLine": 528,
+      "summary": "x5_sub_2_gal_card: |Gal(X⁵−2/ℚ)| = 20. splitting_field_x5_sub_2_finrank: [SF:ℚ] = 20. f20_realizable: the Frobenius group F₂₀ (order 20) is realizable over ℚ, witnessed by the splitting field of X⁵−2 via IsGalois.mk.",
+      "mathContext": "$|\\text{Gal}(X^5-2/\\mathbb{Q})| = 20$; $[\\text{SF}:\\mathbb{Q}] = 20$; $\\exists K/\\mathbb{Q}$ Galois with $|\\text{Gal}(K/\\mathbb{Q})| = 20$ — the Frobenius group $F_{20} \\cong \\mathbb{Z}/5\\mathbb{Z} \\rtimes \\mathbb{Z}/4\\mathbb{Z}$."
     }
   ],
   "conclusion": {
