@@ -37,7 +37,7 @@
     "proofStrategy": "Four-part structure. Part 1: define `RepType n` as a Lean 4 structure with sorted components (a₁ ≤ a₂ ≤ a₃ ≤ a₄, sum of squares = n) and `deriving DecidableEq` for kernel computation. Part 2: define the contribution formula via `permutations = 24 / ∏ Nat.factorial(vals.count v)` (multinomial via List.dedup + List.count) and `signFactor = 2^nonzeroCount`. Part 3: construct 13 explicit `RepType` instances for n=1..10 using a private `mkType` helper, then close all contribution equalities and distribution totals by `native_decide` — no manual computation. Part 4: prove structural bounds `contribution ≤ 384` via Nat.pow_le_pow_right + Nat.div_le_self + Nat.mul_le_mul; verify sharpness via type (1,2,3,4) for n=30.",
     "keyInsights": [
       "**Symmetry groups**: Each type (a₁,...,a₄) has symmetry group of order 2^k × ∏|orb|, where k = nonzero components. Max: (1,2,3,4) → 2^4 × 4! = 384.",
-      "**Type contributions**: (0,0,0,a): 8 (sign of a). (0,0,a,a): 24 (6 perms × 4 signs). (0,a,a,a): 32 (4 perms × 8 signs). (a,a,a,a): 8 (1 perm × 8 signs). (0,0,a,b): 48. (a,b,c,d) all distinct: 384.",
+      "**Type contributions**: (0,0,0,a): 8 (4 perms × 2 signs). (0,0,a,a): 24 (6 perms × 4 signs). (0,a,a,a): 32 (4 perms × 8 signs). (a,a,a,a): 16 (1 perm × 16 signs). (0,0,a,b): 48. (a,b,c,d) all distinct: 384. Note: (a,a,a,a) gives the symmetry_ratio 384/16 = 24 = |S₄|.",
       "**Bound**: contribution(t) ≤ 384 for all types, with equality when all four components are distinct and nonzero.",
       "**Completeness**: distribution_complete_1 through _10 verifies r₄(n) for n=1..7,9,10 via type enumeration.",
       "**Growth and trivial types**: Every perfect square k² has trivial type (0,0,0,k) contributing exactly 8. Since r₄(n) ~ (π²/2)n on average and each type contributes at most 384, the average number of representation types per n grows linearly — the 24:1 symmetry ratio (= |S₄|) measures how much symmetry collapses the count.",
@@ -106,20 +106,24 @@
   },
   "crossReferences": [
     {
-      "proofId": "lagrange-four-squares",
-      "relationship": "parent — Lagrange's four-square theorem proves r₄(n) > 0 for all n; this file analyzes how those representations distribute among types"
+      "targetId": "lagrange-four-squares",
+      "relationship": "parent",
+      "description": "Lagrange's four-square theorem proves r₄(n) > 0 for all n; this file analyzes how those representations distribute among symmetry types"
     },
     {
-      "proofId": "lagrange-four-squares-waring-g2",
-      "relationship": "related — distribution of four-square representations extends Waring g(2)=4 theory to quantitative type analysis"
+      "targetId": "lagrange-four-squares-waring-g2",
+      "relationship": "related",
+      "description": "Distribution of four-square representations extends Waring g(2)=4 theory to quantitative type analysis: g(2)=4 says every n is a sum of 4 squares, this file characterizes how many and of what symmetry type"
     },
     {
-      "proofId": "infinitude-primes-4k3",
-      "relationship": "related — both use mod-4 arithmetic: primes ≡ 1 (mod 4) are sums of two squares; the 4∤d condition in σ*(n) mirrors this mod-4 selection"
+      "targetId": "infinitude-primes-4k3",
+      "relationship": "related",
+      "description": "Both use mod-4 arithmetic: primes ≡ 3 (mod 4) cannot be sums of two squares; the 4∤d condition in σ*(n) = Σ_{4∤d|n} d mirrors this mod-4 selection determining which divisors contribute to r₄(n)"
     },
     {
-      "proofId": "prime-number-theorem",
-      "relationship": "related — Jacobi's formula r₄(n) = 8σ*(n) and the multiplicativity of σ* are closely tied to prime distribution; the average order σ*(n) ~ (π²/12)n (from PNT) gives the growth rate r₄(n) ~ (2π²/3)n"
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Jacobi's formula r₄(n) = 8σ*(n) and the multiplicativity of σ* are tied to prime distribution; the average order σ*(n) ~ (π²/12)n from PNT gives the asymptotic growth rate r₄(n) ~ (2π²/3)n"
     }
   ],
   "mainTheorems": [
