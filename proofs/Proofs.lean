@@ -614,6 +614,7 @@ import Proofs.Erdos1017Problem
 import Proofs.Erdos1018Aristotle
 import Proofs.Erdos1018OQ04
 import Proofs.Erdos1018OQ04Incomplete01
+import Proofs.Erdos1018OQ04Incomplete01Aristotle
 import Proofs.Erdos1018Problem
 import Proofs.Erdos1019Problem
 import Proofs.Erdos101Problem
