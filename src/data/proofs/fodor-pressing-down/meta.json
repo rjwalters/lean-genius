@@ -1,0 +1,59 @@
+{
+  "id": "fodor-pressing-down",
+  "title": "Fodor's Pressing-Down Lemma",
+  "slug": "fodor-pressing-down",
+  "description": "A complete formalization of Fodor's Pressing-Down Lemma (1956): any regressive function on a stationary subset of a regular uncountable cardinal is constant on some stationary subset. The proof uses the diagonal intersection technique—defining infrastructure for club sets, stationary sets, and diagonal intersections that is not yet in Mathlib.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "lineCount": 386,
+    "leanFile": "proofs/Proofs/FodorPressingDown.lean",
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Regular",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Ordinal.Topology"
+    ],
+    "tags": ["set-theory", "ordinals", "cardinals", "clubs", "stationary", "fodor"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "club-sets",
+      "title": "Club and Stationary Sets",
+      "description": "Definitions for the combinatorial core: IsUnboundedBelow (cofinally dense), IsClubBelow (closed and unbounded — a club set), and IsStationaryBelow (intersects every club). The structure IsClubBelow captures the topologically closed, cofinal condition. These are standard set-theoretic notions not yet formalized in Mathlib.",
+      "theorems": ["isClubBelow_Iio_of_isSuccLimit"]
+    },
+    {
+      "id": "diagonal-intersection",
+      "title": "Diagonal Intersection",
+      "description": "The diagonal intersection Δ_{α<κ}(f α) = {γ | ∀ α < γ, γ ∈ f α} simultaneously intersects all club sets indexed below κ while respecting the ordinal structure. The lemmas diagInter_isClosedBelow and diagInter_isUnboundedBelow (a zipper construction) together give diagInter_isClubBelow: the diagonal intersection of clubs is a club.",
+      "theorems": ["mem_diagInter", "diagInter_subset_Iio", "diagInter_isClosedBelow", "diagInter_isUnboundedBelow", "diagInter_isClubBelow"]
+    },
+    {
+      "id": "fodors-lemma",
+      "title": "Fodor's Lemma",
+      "description": "The main theorem fodor: for a regular uncountable cardinal κ with stationary set S and regressive function f (f(α) < α for all α ∈ S), some constant value is achieved on a stationary subset. Proof by contradiction using diagonal intersection. The corollary fodor_aleph1 specializes to κ = ℵ₁.",
+      "theorems": ["fodor", "fodor_aleph1"]
+    }
+  ],
+  "overview": {
+    "summary": "Fodor's Pressing-Down Lemma (also called the Fodor-Neumer theorem) is one of the fundamental tools of infinitary combinatorics. It asserts that any regressive function on a stationary set cannot 'press down' all values—some single value must be achieved on a stationary subset.",
+    "approach": "The proof uses diagonal intersection: the diagonal intersection of clubs C_β (for β < κ) is itself a club. If the conclusion failed, we could build clubs C_β avoiding each fiber f⁻¹(β), and their diagonal intersection would contradict the stationarity of S.",
+    "significance": "Fodor's lemma is used throughout combinatorial set theory: in the proof that the club filter is normal, in cardinal arithmetic, in the Erdős-Hajnal theorem on partition calculus, and in many reflection principles. The diagonal intersection construction formalized here is reusable infrastructure absent from Mathlib."
+  },
+  "conclusion": {
+    "summary": "Fodor's Pressing-Down Lemma is machine-checked with no axioms or sorries. The proof builds club and stationary set infrastructure currently missing from Mathlib.",
+    "openQuestions": [
+      "Can the club and stationary set infrastructure be contributed to Mathlib as a standalone library?",
+      "Does the formalization extend to Shelah-style combinatorial principles (e.g., Diamond ◇)?",
+      "Can the normal filter characterization (the club filter is κ-complete and normal) be derived from this infrastructure?"
+    ]
+  },
+  "crossReferences": []
+}
