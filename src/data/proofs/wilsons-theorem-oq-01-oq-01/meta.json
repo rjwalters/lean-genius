@@ -95,8 +95,8 @@
     {
       "id": "wieferich-analogy",
       "title": "Wieferich Primes: Structural Analogy",
-      "startLine": 102,
-      "endLine": 123,
+      "startLine": 106,
+      "endLine": 129,
       "summary": "IsWieferichPrime definition (p² | 2^(p-1) - 1) and verification of 1093 and 3511 by native_decide. Formalizes the parallel open problem structure: two known examples, ln ln N expected count, no proof of infinitude.",
       "mathContext": "Wieferich: $p^2 \\mid 2^{p-1}-1$ (second-power strengthening of Fermat). Known: $\\{1093, 3511\\}$. Both verifiable by native_decide (unlike 563 for Wilson). Expected count to $N$: $\\ln\\ln N$. Connection: Wieferich primes obstruct the first case of Fermat's Last Theorem."
     }
