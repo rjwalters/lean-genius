@@ -38,7 +38,6 @@
   "overview": {
     "historicalContext": "Routh's theorem (1891) extends Ceva's theorem: when three cevians of a triangle are not concurrent, they form an inner triangle. Edward John Routh, the British mathematician, derived the area ratio formula connecting the inner triangle's area to the original. The formula shows that the area ratio depends only on the parameter values d, e, f at which the cevians divide the opposite sides.",
     "problemStatement": "For cevian parameters d, e, f ∈ (0,1), compute the area of the inner triangle formed by the pairwise intersections of cevians AD, BE, CF in terms of the original triangle's area. Prove that the ratio equals (def-(1-d)(1-e)(1-f))² / ((1-e+de)(1-f+ef)(1-d+fd)).",
-    "text": "Given triangle ABC with cevians dividing BC, CA, AB at parameters d, e, f ∈ (0,1), the three cevians intersect pairwise at P = AD∩BE, Q = BE∩CF, R = CF∩AD. Routh's theorem states: area(PQR)/area(ABC) = routhRatio(d,e,f). When cevians are concurrent (Ceva condition: def = (1-d)(1-e)(1-f)), the inner triangle degenerates (ratio = 0).",
     "proofStrategy": "Work in the standard triangle A=(0,0), B=(1,0), C=(0,1). The three cevian intersection points P, Q, R are computed explicitly as rational functions of d, e, f via linear system solving. The signed area formula reduces to a single polynomial identity after clearing denominators, proved by field_simp + ring.",
     "keyInsights": [
       "The inner triangle vertices are rational functions of d, e, f: P = ((1-d)(1-e)/w₁, d(1-e)/w₁), Q = (ef/w₂, (1-e)(1-f)/w₂), R = (f(1-d)/w₃, fd/w₃) where w₁=1-e+de, w₂=1-f+ef, w₃=1-d+fd",
@@ -46,11 +45,6 @@
       "The denominator expression w₁w₂w₃ is always positive for parameters in (0,1), ensuring the formula is well-defined",
       "The numerator (def-(1-d)(1-e)(1-f))² is a squared quantity, making routhRatio always nonneg and zero exactly when the Ceva condition holds",
       "Affine invariance (from CevasTheoremOQ01.lean) extends the standard triangle result to general triangles"
-    ],
-    "prerequisites": [
-      "CevasTheoremOQ01.lean: routhRatio, cevaCondition, signedArea, lineThrough, affineComb definitions",
-      "Polynomial identity verification: field_simp + ring for rational function equalities",
-      "nlinarith for denominator positivity"
     ]
   },
   "sections": [
@@ -103,31 +97,18 @@
       "Ehrhart generalization: does Routh's formula have an Ehrhart polynomial interpretation for dilations of the inner triangle?"
     ]
   },
-  "leanFile": {
-    "namespace": "RouthTheorem",
-    "lineCount": 230,
-    "axiomCount": 0,
-    "theoremCount": 19,
-    "definitionCount": 3,
-    "path": "Proofs/CevasTheoremOQ01OQ03.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
-      "targetId": "cevas-theorem-oq-01",
-      "relationship": "parent",
-      "description": "Geometric Ceva's theorem — defines routhRatio, signedArea, and proves the 1/3 → 1/7 special case."
+      "proofId": "cevas-theorem-oq-01",
+      "relationship": "parent"
     },
     {
-      "targetId": "cevas-theorem",
-      "relationship": "ancestor",
-      "description": "Algebraic Ceva's theorem — the underlying algebraic condition that determines cevian concurrence."
+      "proofId": "cevas-theorem",
+      "relationship": "ancestor"
     },
     {
-      "targetId": "picks-theorem-oq-02",
-      "relationship": "related",
-      "description": "GCD boundary formula — both proofs use rational parameterization of geometric loci."
+      "proofId": "picks-theorem-oq-02",
+      "relationship": "related"
     }
-  ],
-  "sorries": 0
+  ]
 }
