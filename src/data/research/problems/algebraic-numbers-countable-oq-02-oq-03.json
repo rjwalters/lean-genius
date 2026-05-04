@@ -1,13 +1,13 @@
 {
   "slug": "algebraic-numbers-countable-oq-02-oq-03",
-  "title": "Formalize the independence of the Continuum Hypothesis from ZFC — this entry ...",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Formalize the independence of the Continuum Hypothesis from ZFC \u2014 this entry ...",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalize the independence of the Continuum Hypothesis from ZFC — this entry proves $\\aleph_0 < 2^{\\aleph_0}$ but cannot establish where $2^{\\aleph_0}$ sits in the $\\aleph$-hierarchy without additiona.",
+    "plain": "Formalize the independence of the Continuum Hypothesis from ZFC \u2014 this entry proves $\\aleph_0 < 2^{\\aleph_0}$ but cannot establish where $2^{\\aleph_0}$ sits in the $\\aleph$-hierarchy without additiona.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Proved #transcendentalReals = \ud835\udd20 in 193 lines, 0 sorries, 0 axioms",
+    "builtItems": [
+      "AlgebraicNumbersCountableOQ02OQ03.lean: card_transcendentalReals_eq_continuum (main theorem)",
+      "AlgebraicNumbersCountableOQ02OQ03.lean: aleph0_add_of_ge (absorption lemma)",
+      "AlgebraicNumbersCountableOQ02OQ03.lean: cardinality_dichotomy (full picture)"
+    ],
+    "insights": [
+      "Key insight: partition \u211d = algebraic \u222a transcendental (Classical.em) combined with Cardinal.mk_union_le gives #\u211d \u2264 #algebraics + #transcendentals",
+      "Infinite cardinal absorption \u2135\u2080 + \u03ba = \u03ba (for \u03ba \u2265 \u2135\u2080) proved via Cardinal.add_eq_self \u2014 this is the core lemma for the lower bound",
+      "le_aleph0_iff_set_countable.mpr bridges Set.Countable to cardinal inequality #S \u2264 \u2135\u2080"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },

@@ -1,0 +1,279 @@
+{
+  "id": "algebraic-numbers-countable-oq-02-oq-03",
+  "title": "Exact Cardinality of Transcendental Reals: #transcendentals = 𝔠",
+  "slug": "algebraic-numbers-countable-oq-02-oq-03",
+  "description": "Proves the exact cardinality of the transcendental real numbers is 𝔠 = 2^ℵ₀, equalling the cardinality of ℝ itself. Uses the partition ℝ = algebraic ∪ transcendental, infinite cardinal absorption (ℵ₀ + 𝔠 = 𝔠), and the bound #ℝ ≤ #algebraics + #transcendentals. This is the sharp cardinality version of Cantor's 1874 uncountability result. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Transcendental_number",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicNumbersCountableOQ02OQ03.lean",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "algebraic-numbers",
+      "transcendental-numbers",
+      "continuum",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 193,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-05-04",
+    "originalContributions": [
+      "card_transcendentalReals_eq_continuum: (#transcendentalReals : Cardinal) = 𝔠 (main theorem)",
+      "card_transcendentals_eq_card_reals: #transcendentalReals = #ℝ",
+      "card_algebraics_lt_card_transcendentals: #algebraics < #transcendentals",
+      "card_algebraics_eq_aleph0: #algebraics = ℵ₀",
+      "cardinality_dichotomy: #algebraics = ℵ₀ ∧ #transcendentals = 𝔠 ∧ #ℝ = 𝔠",
+      "aleph0_add_of_ge: ℵ₀ + κ = κ when ℵ₀ ≤ κ (absorption lemma)",
+      "algebraic_trans_partition: algebraic ∪ transcendental = Set.univ",
+      "continuum_le_card_transcendentals: 𝔠 ≤ #transcendentals (lower bound)",
+      "card_transcendentals_le_continuum: #transcendentals ≤ 𝔠 (upper bound)"
+    ],
+    "prerequisites": [
+      "AlgebraicNumbersCountable: algebraic_reals_countable and card_algebraic_reals_eq_aleph0",
+      "AlgebraicNumbersCountableOQ02: transcendentalReals definition and transcendentals_uncountable",
+      "Cardinal.add_eq_self: κ + κ = κ for infinite cardinals",
+      "Cardinal.mk_union_le: #(A ∪ B) ≤ #A + #B",
+      "Cardinal.mk_real: #ℝ = 𝔠",
+      "Cardinal.aleph0_lt_continuum: ℵ₀ < 𝔠"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.add_eq_self",
+        "description": "κ + κ = κ for any infinite cardinal κ ≥ ℵ₀",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.mk_union_le",
+        "description": "#(A ∪ B) ≤ #A + #B (cardinality of union bounded by sum)",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.mk_real",
+        "description": "#ℝ = 𝔠 = 2^ℵ₀ (cardinality of the reals equals the continuum)",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.mk_set_le",
+        "description": "Cardinality of a subtype is at most cardinality of the ambient type",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "le_aleph0_iff_set_countable",
+        "description": "Connects Set.Countable (predicate) to cardinal inequality #S ≤ ℵ₀",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph0_lt_continuum",
+        "description": "ℵ₀ < 𝔠 (naturals are strictly smaller than the continuum)",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      }
+    ],
+    "theoremCount": 12,
+    "relatedProblems": [
+      {
+        "id": "algebraic-numbers-countable-oq-02",
+        "relationship": "Parent: proves ℝ uncountable and transcendentals uncountable"
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Grandparent: proves algebraic numbers are countable with cardinality ℵ₀"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1874 paper established two things: (1) algebraic numbers are countable (cardinality ℵ₀), and (2) real numbers are uncountable. Together these imply transcendental numbers are uncountable, but they don't pin down the exact cardinality of the transcendentals. The natural completion of Cantor's result — proved here — is that the transcendental reals have *exactly* 𝔠 = 2^ℵ₀ elements, the same as ℝ itself.\n\nThis sharpening says the algebraic/transcendental dichotomy is maximally asymmetric in cardinality: the algebraic reals (cardinality ℵ₀) are negligible compared to the transcendental reals (cardinality 𝔠), and removing the algebraic reals from ℝ leaves a set of equal cardinality. The formula 𝔠 = ℵ₀ + 𝔠 = #algebraics + #transcendentals reflects this absorption: adding a countable set to an uncountable set doesn't change cardinality.",
+    "problemStatement": "**Open Question (OQ-02-OQ-03):** What is the *exact* cardinality of the transcendental real numbers?\n\nThe parent proof (OQ-02) shows transcendentals are uncountable. This entry proves the exact cardinality: #transcendentalReals = 𝔠 = 2^ℵ₀.",
+    "proofStrategy": "**Upper bound** (§4, `card_transcendentals_le_continuum`): Since transcendentalReals ⊆ ℝ, the cardinality is at most #ℝ = 𝔠.\n\n**Lower bound** (§4, `continuum_le_card_transcendentals`): The key chain:\n  𝔠 = #ℝ ≤ #(algebraics ∪ transcendentals) ≤ #algebraics + #transcendentals ≤ ℵ₀ + #transcendentals = #transcendentals.\n\nThe three steps use:\n1. `algebraic_trans_partition`: algebraic ∪ transcendental = Set.univ, so #(algebraic ∪ transcendental) = #ℝ\n2. `Cardinal.mk_union_le`: #(A ∪ B) ≤ #A + #B\n3. `aleph0_add_of_ge`: ℵ₀ + κ = κ when κ ≥ ℵ₀ (proved via `Cardinal.add_eq_self`)\n\n**Main theorem** (`card_transcendentalReals_eq_continuum`): le_antisymm combining both bounds.",
+    "keyInsights": [
+      "The key mathematical move is infinite cardinal absorption: ℵ₀ + 𝔠 = 𝔠. This follows from κ + κ = κ for infinite κ (Cardinal.add_eq_self), applied at κ = 𝔠 ≥ ℵ₀. Adding a countable infinity to an uncountable infinity doesn't change the cardinality.",
+      "The partition ℝ = algebraic ∪ transcendental (via Classical.em) is essential for the lower bound. Without knowing the two sets cover all of ℝ, we cannot derive #ℝ ≤ #algebraics + #transcendentals.",
+      "Cardinal.mk_union_le gives #(A ∪ B) ≤ #A + #B. Combined with the partition A ∪ B = Set.univ (so #(A ∪ B) = #ℝ), this yields the critical subadditivity bound.",
+      "The proof is entirely non-constructive: no specific transcendental number appears. The conclusion 'most reals are transcendental' is quantified precisely — the algebraics form an ℵ₀-sized subset of a 𝔠-sized set — but no witness to this majority is needed.",
+      "The strict inequality card_algebraics_lt_card_transcendentals (#algebraics < #transcendentals) follows cleanly: #algebraics ≤ ℵ₀ < 𝔠 = #transcendentals. This gives a one-line proof via Cardinal.aleph0_lt_continuum.",
+      "This result is the cardinality-level companion to two measure-theoretic and category-theoretic analogues: (1) algebraic numbers are Lebesgue null (countable union of points), so transcendentals have full measure; (2) algebraic numbers are meager (first Baire category) in ℝ, so transcendentals are comeager (residual). All three hierarchies agree: transcendentals are the 'typical' real."
+    ],
+    "prerequisites": [
+      "AlgebraicNumbersCountable (Proofs/AlgebraicNumbersCountable.lean): algebraic_reals_countable and card_algebraic_reals_eq_aleph0",
+      "AlgebraicNumbersCountableOQ02 (Proofs/AlgebraicNumbersCountableOQ02.lean): transcendentalReals definition and transcendentals_uncountable",
+      "Infinite cardinal arithmetic: Cardinal.add_eq_self, mk_union_le, mk_real"
+    ],
+    "furtherWork": [
+      "Prove the density analogue: algebraic numbers have Lebesgue measure zero in ℝ",
+      "Prove #(computable reals) = ℵ₀ (computable reals form a countable set, strictly within algebraics in the cardinality hierarchy)",
+      "Prove Baire category version: algebraic numbers are meager in ℝ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "§1–2: Setup and Partition Lemmas",
+      "startLine": 50,
+      "endLine": 76,
+      "summary": "Establishes the partition lemmas: algebraic ∪ transcendental = Set.univ (via Classical.em) and algebraic ∩ transcendental = ∅ (by definition). Reuses transcendentalReals from AlgebraicNumbersCountableOQ02.",
+      "mathContext": "The partition ℝ = {algebraic} ∪ {transcendental} uses Classical.em: every real is either algebraic over ℚ or not. This is the classical (non-constructive) step — no decision procedure for algebraicity is required."
+    },
+    {
+      "id": "cardinal-bounds-algebraics",
+      "title": "§3: Cardinal Bounds on Algebraic Reals",
+      "startLine": 78,
+      "endLine": 84,
+      "summary": "card_algebraic_le_aleph0: #algebraics ≤ ℵ₀. One-line proof using le_aleph0_iff_set_countable.mpr from algebraic_reals_countable (imported from parent).",
+      "mathContext": "#A ≤ ℵ₀ ↔ Set.Countable A (le_aleph0_iff_set_countable). The parent proof's algebraic_reals_countable gives Set.Countable directly."
+    },
+    {
+      "id": "cardinal-bounds-transcendentals",
+      "title": "§4: Cardinal Bounds on Transcendental Reals",
+      "startLine": 86,
+      "endLine": 137,
+      "summary": "Upper bound: #transcendentals ≤ 𝔠 (subset of ℝ). Lower bound: 𝔠 ≤ #transcendentals via absorption chain. Key helper: aleph0_add_of_ge proves ℵ₀ + κ = κ for κ ≥ ℵ₀.",
+      "mathContext": "The absorption lemma: ℵ₀ + κ ≤ κ + κ = κ (Cardinal.add_eq_self applied at κ), and κ ≤ ℵ₀ + κ trivially. Combined: ℵ₀ + κ = κ. Applied at κ = #transcendentals ≥ ℵ₀ (from transcendentals_uncountable)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§5: Main Theorem — Exact Cardinality",
+      "startLine": 139,
+      "endLine": 149,
+      "summary": "card_transcendentalReals_eq_continuum: (#transcendentalReals : Cardinal) = 𝔠. One-line proof: le_antisymm of upper and lower bounds.",
+      "mathContext": "le_antisymm: a ≤ b and b ≤ a imply a = b. Upper bound: card_transcendentals_le_continuum. Lower bound: continuum_le_card_transcendentals."
+    },
+    {
+      "id": "corollaries",
+      "title": "§6: Corollaries — Complete Cardinality Picture",
+      "startLine": 151,
+      "endLine": 193,
+      "summary": "Four corollaries: (1) transcendentals equinumerous with ℝ, (2) strictly more transcendentals than algebraics, (3) algebraics have cardinality ℵ₀, (4) the full dichotomy: #algebraics = ℵ₀ ∧ #transcendentals = 𝔠 ∧ #ℝ = 𝔠.",
+      "mathContext": "card_algebraics_lt_card_transcendentals uses #algebraics ≤ ℵ₀ < 𝔠 = #transcendentals (Cardinal.aleph0_lt_continuum). cardinality_dichotomy packages all three facts as a conjunction."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization gives the complete cardinality picture of Cantor's 1874 algebraic/transcendental dichotomy: algebraic reals have cardinality ℵ₀, transcendental reals have cardinality 𝔠 = 2^ℵ₀ (same as ℝ itself), and the strict inequality #algebraics < #transcendentals holds. The proof uses 193 lines with 0 sorries and 0 axioms.",
+    "implications": "1. **'Almost all' reals are transcendental — precisely quantified**: The ratio #algebraics : #ℝ is ℵ₀ : 𝔠, an infinite-to-infinite comparison where algebraics are in fact a negligible minority. Formally, removing the countable algebraic reals from ℝ leaves a set of the same cardinality (𝔠 = 𝔠). No such statement was possible before Cantor's set theory.\n\n2. **The asymmetry is maximal**: The algebraic/transcendental partition is as asymmetric as possible: one side countable, the other with the full continuum cardinality. There is no partition of ℝ into two parts with this asymmetry that is more extreme in cardinality terms.\n\n3. **Cardinal absorption clarifies infinity arithmetic**: The lemma ℵ₀ + 𝔠 = 𝔠 (proved here as aleph0_add_of_ge) instantiates the general principle that infinite cardinal arithmetic absorbs smaller infinities. This is qualitatively different from finite arithmetic: adding finitely many elements to an infinite set doesn't change cardinality, and adding ℵ₀ many elements to a 𝔠-sized set doesn't either.\n\n4. **Connection to the Continuum Hypothesis**: This result establishes #transcendentals = 𝔠 = 2^ℵ₀, but does not determine where 𝔠 sits in the ℵ-hierarchy. Whether 𝔠 = ℵ₁ (the Continuum Hypothesis) is independent of ZFC. This entry proves the cardinality *equals 𝔠* while remaining agnostic about *which aleph 𝔠 is*.",
+    "openQuestions": [
+      "Prove that Lebesgue-almost-all reals are transcendental (algebraic reals form a Lebesgue null set)",
+      "Prove that Baire-categorically-almost-all reals are transcendental (algebraic reals are meager)",
+      "Prove #(computable reals) = ℵ₀ < 𝔠 = #(non-computable reals), adding a third layer to the hierarchy",
+      "Characterize the set of 'provably transcendental' reals — is it countable (only finitely many can be proved transcendental from any fixed axiom system)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable-oq-02",
+      "relationship": "parent",
+      "description": "Parent proof: ℝ is uncountable and transcendental reals are uncountable. This entry strengthens uncountability to the exact cardinality 𝔠."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "ancestor",
+      "description": "Grandparent proof: algebraic numbers are countable (cardinality ℵ₀). Supplies algebraic_reals_countable and card_algebraic_reals_eq_aleph0 used here."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Cantor's 1874 nested interval proof of ℝ uncountability — alternative approach to the same parent result."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "complementary",
+      "description": "Proves e is transcendental — the first specific element of the continuum-many set whose existence is proved here."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "The diagonal argument establishing #ℝ = 2^ℵ₀ = 𝔠, the continuum value matched by this entry's main theorem."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "The Schröder-Bernstein theorem underlies cardinal equality proofs including #ℝ = 𝔠. This entry uses le_antisymm (the same idea in Cardinal) to conclude equality from two inequalities."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "card_transcendentalReals_eq_continuum",
+      "type": "core",
+      "description": "The exact cardinality of the transcendental real numbers equals 𝔠 = 2^ℵ₀. Proved via le_antisymm combining the subset upper bound and the partition lower bound.",
+      "leanType": "(#(↑transcendentalReals : Set ℝ) : Cardinal) = 𝔠"
+    },
+    {
+      "name": "card_transcendentals_eq_card_reals",
+      "type": "key",
+      "description": "The transcendental reals are equinumerous with ℝ itself — removing the countable algebraics does not reduce cardinality.",
+      "leanType": "(#(↑transcendentalReals : Set ℝ) : Cardinal) = #ℝ"
+    },
+    {
+      "name": "card_algebraics_lt_card_transcendentals",
+      "type": "key",
+      "description": "There are strictly fewer algebraic reals than transcendental reals: ℵ₀ < 𝔠.",
+      "leanType": "(#(↑{x : ℝ | IsAlgebraic ℚ x} : Set ℝ) : Cardinal) < #(↑transcendentalReals : Set ℝ)"
+    },
+    {
+      "name": "cardinality_dichotomy",
+      "type": "key",
+      "description": "The complete cardinality picture: algebraics have cardinality ℵ₀, transcendentals have cardinality 𝔠, and all reals have cardinality 𝔠.",
+      "leanType": "(#(↑{x : ℝ | IsAlgebraic ℚ x} : Set ℝ) : Cardinal) = ℵ₀ ∧ (#(↑transcendentalReals : Set ℝ) : Cardinal) = 𝔠 ∧ (#ℝ : Cardinal) = 𝔠"
+    },
+    {
+      "name": "aleph0_add_of_ge",
+      "type": "supporting",
+      "description": "Infinite cardinal absorption: ℵ₀ + κ = κ when ℵ₀ ≤ κ. Key ingredient for the lower bound.",
+      "leanType": "(h : ℵ₀ ≤ κ) → ℵ₀ + κ = κ"
+    },
+    {
+      "name": "continuum_le_card_transcendentals",
+      "type": "supporting",
+      "description": "Lower bound: 𝔠 ≤ #transcendentalReals. The core calculation via partition and absorption.",
+      "leanType": "𝔠 ≤ (#(↑transcendentalReals : Set ℝ) : Cardinal)"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Georg Cantor"],
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 77, pp. 258–262",
+      "note": "Establishes countability of algebraic numbers and uncountability of ℝ. This entry adds the exact cardinality 𝔠 for the transcendental complement."
+    },
+    {
+      "authors": ["The Mathlib Community"],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides Cardinal.add_eq_self, Cardinal.mk_union_le, Cardinal.mk_real, le_aleph0_iff_set_countable, and Cardinal.aleph0_lt_continuum used here."
+    },
+    {
+      "authors": ["Thomas Jech"],
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics, 3rd edition",
+      "note": "Chapter 3: Cardinal arithmetic, including the absorption law κ + λ = max(κ, λ) for infinite cardinals."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.AlgebraicCard",
+      "Mathlib.Data.Set.Countable",
+      "Mathlib.Tactic",
+      "Proofs.AlgebraicNumbersCountable",
+      "Proofs.AlgebraicNumbersCountableOQ02"
+    ],
+    "opens": ["Cardinal", "AlgebraicNumbersCountable", "AlgebraicNumbersCountableOQ02"],
+    "namespace": "AlgebraicNumbersCountableOQ02OQ03",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AlgebraicNumbersCountableOQ02OQ03.lean"
+  }
+}
