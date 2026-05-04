@@ -163,8 +163,8 @@ private theorem lagrangeBasis_sum_one {n : ℕ} (pts : InterpolationPoints n)
     have hge : n ≤ Q.natDegree :=
       calc n = (Finset.image (fun i : Fin n => pts.points i) Finset.univ).card := himage_card.symm
         _ ≤ Q.roots.toFinset.card := Finset.card_le_card hsub
-        _ ≤ Multiset.card Q.roots := Multiset.toFinset_card_le_card _
-        _ ≤ Q.natDegree := Polynomial.card_roots_le_degree Q
+        _ ≤ Multiset.card Q.roots := Multiset.toFinset_card_le
+        _ ≤ Q.natDegree := Polynomial.card_roots' Q
     omega
   have heval : Q.eval x = 0 := by rw [hQ_zero]; simp
   simp only [hQ_def, Polynomial.eval_sub, Polynomial.eval_finset_sum, Polynomial.eval_C] at heval
@@ -176,7 +176,8 @@ theorem lebesgueFunction_ge_one (pts : InterpolationPoints n) (hn : 0 < n) (x : 
   unfold lebesgueFunction
   calc (1 : ℝ) = |∑ i : Fin n, (lagrangeBasis pts i).eval x| := by
           rw [lagrangeBasis_sum_one pts hn]; simp
-    _ ≤ ∑ i : Fin n, |(lagrangeBasis pts i).eval x| := Finset.abs_sum_le_sum_abs
+    _ ≤ ∑ i : Fin n, |(lagrangeBasis pts i).eval x| :=
+        Finset.abs_sum_le_sum_abs (fun i : Fin n => (lagrangeBasis pts i).eval x) Finset.univ
 
 /-- The Lebesgue constant Λ_n = max_{x ∈ [-1,1]} λ_n(x). -/
 noncomputable def lebesgueConstant (pts : InterpolationPoints n) : ℝ :=
