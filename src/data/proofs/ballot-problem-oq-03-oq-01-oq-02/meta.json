@@ -26,7 +26,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "1 open sorry in GNW infrastructure (BallotProblemOQ03OQ01OQ02Helpers.lean): gnwProb_key — the GNW 1979 probabilistic identity for ≥10-row, ≥10-col, non-rectangular shapes (hard combinatorial identity). The supporting lemmas gnwProb_sum_corners, strictHookCells_card, strictHookCells_nonempty, and strictHookCells_hookLen_lt were proved in PR #14960. hook_walk_identity_gnw (the dispatcher in the gallery face) calls gnwProb_key and is otherwise complete. hookProd_ratio_formula is sorry-free. Proved cases: at-most-2-row, gHookYD, ≤2-col, exactly 3-row through 9-row, ≤9-col (transpose duality), all rectangles.",
-    "lineCount": 14235,
+    "lineCount": 14296,
     "theoremCount": 489,
     "definitionCount": 24,
     "originalContributions": [
