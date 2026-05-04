@@ -1,13 +1,13 @@
 {
   "id": "erdos-156",
-  "title": "Erdős Problem #156: Minimum Size of Maximal Sidon Sets",
+  "title": "Erd\u0151s Problem #156: Minimum Size of Maximal Sidon Sets",
   "slug": "erdos-156",
-  "description": "Does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})?",
+  "description": "Does there exist a maximal Sidon set A \u2282 {1,...,N} of size O(N^{1/3})?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "coauthors": [
-      "Sárközy",
-      "Sós"
+      "S\u00e1rk\u00f6zy",
+      "S\u00f3s"
     ],
     "sourceUrl": "https://erdosproblems.com/156",
     "status": "formalized",
@@ -57,13 +57,13 @@
       }
     ],
     "originalContributions": [
-      "Two equivalent formal definitions of Sidon sets (IsSidonSet with ≤, IsSidonSetAlt with <) with detailed equivalence proof (sidonSet_iff_alt) via four-case analysis",
-      "Greedy Sidon construction (greedySidon) with proved Sidon-ness (greedySidon_is_sidon), interval containment (greedySidon_subset_interval), and maximality (greedySidon_maximal) — all fully proved",
+      "Two equivalent formal definitions of Sidon sets (IsSidonSet with \u2264, IsSidonSetAlt with <) with detailed equivalence proof (sidonSet_iff_alt) via four-case analysis",
+      "Greedy Sidon construction (greedySidon) with proved Sidon-ness (greedySidon_is_sidon), interval containment (greedySidon_subset_interval), and maximality (greedySidon_maximal) \u2014 all fully proved",
       "Maximal Sidon set predicate (IsMaximalSidonSet), interval definition (Interval), and size function",
-      "Complete Sidon sumset characterization: |A+A| = n(n+1)/2 iff A is a Sidon set — three proved theorems: sidon_sumset_size (forward), sidon_of_sumset_size (converse), sidon_iff_sumset_size (biconditional)",
+      "Complete Sidon sumset characterization: |A+A| = n(n+1)/2 iff A is a Sidon set \u2014 three proved theorems: sidon_sumset_size (forward), sidon_of_sumset_size (converse), sidon_iff_sumset_size (biconditional)",
       "Minimum maximal Sidon set size (minMaximalSidonSize via Nat.find) and real-valued infimum formulation (infMaximalSidonSize via iInf)",
       "Shadow framework for greedy lower bound: diffShadow and midShadow set definitions, not_sidon_after_insert lemma (proved), greedySidon_complement_in_shadow lemma (proved)",
-      "Three sorry lemmas forming the N^{1/3} lower bound: diffShadow_ncard_le (shadow union bound), midShadow_ncard_le (midpoint image bound), greedySidon_cube_lower_bound (N ≤ n + n·(n(n+1)/2) + n(n+1)/2)"
+      "Three sorry lemmas forming the N^{1/3} lower bound: diffShadow_ncard_le (shadow union bound), midShadow_ncard_le (midpoint image bound), greedySidon_cube_lower_bound (N \u2264 n + n\u00b7(n(n+1)/2) + n(n+1)/2)"
     ],
     "axiomCount": 0,
     "lineCount": 652,
@@ -72,13 +72,13 @@
     "theoremCount": 19
   },
   "overview": {
-    "historicalContext": "Simon Sidon introduced what are now called Sidon sets (or $B_2$ sequences) in 1932 while studying lacunary Fourier series. A Sidon set is a set of integers where all pairwise sums $a + b$ (with $a \\leq b$) are distinct. Erdős and Turán proved in 1941 that any Sidon set $A \\subseteq \\{1, \\ldots, N\\}$ has size at most $\\sqrt{N} + O(N^{1/4})$, and constructions based on modular arithmetic (Singer difference sets, Erdős-Turán) achieve this bound up to lower-order terms. The greedy algorithm — include each element that preserves the Sidon property — produces sets of size $\\Theta(\\sqrt{N})$.\n\nThe study of *maximal* Sidon sets — those that cannot be extended within $\\{1, \\ldots, N\\}$ — reveals a subtler landscape. The greedy construction automatically produces maximal sets, but these are large (size $\\sim \\sqrt{N}$). Erdős, Sárközy, and Sós [ESS94] asked whether much smaller maximal Sidon sets exist, specifically of size $O(N^{1/3})$. Ruzsa [Ru98b] made a breakthrough by constructing maximal Sidon sets of size $O(N^{1/3+\\varepsilon})$ for any $\\varepsilon > 0$, using a clever recursive method that creates sufficient 'coverage' of sums while keeping the set sparse.\n\nThe gap between Ruzsa's $N^{1/3+\\varepsilon}$ and the conjectured $N^{1/3}$ remains open. The exponent $1/3$ is natural: a maximal Sidon set of size $s$ must 'cover' all $\\sim N$ elements (each absent element must have its sum represented), and each pair in the set covers $O(s)$ sums, requiring $s^2 \\cdot s \\sim N$ — i.e., $s \\sim N^{1/3}$. Whether logarithmic factors can be eliminated is the core question. OEIS A382397 tracks related sequences.",
+    "historicalContext": "Simon Sidon introduced what are now called Sidon sets (or $B_2$ sequences) in 1932 while studying lacunary Fourier series. A Sidon set is a set of integers where all pairwise sums $a + b$ (with $a \\leq b$) are distinct. Erd\u0151s and Tur\u00e1n proved in 1941 that any Sidon set $A \\subseteq \\{1, \\ldots, N\\}$ has size at most $\\sqrt{N} + O(N^{1/4})$, and constructions based on modular arithmetic (Singer difference sets, Erd\u0151s-Tur\u00e1n) achieve this bound up to lower-order terms. The greedy algorithm \u2014 include each element that preserves the Sidon property \u2014 produces sets of size $\\Theta(\\sqrt{N})$.\n\nThe study of *maximal* Sidon sets \u2014 those that cannot be extended within $\\{1, \\ldots, N\\}$ \u2014 reveals a subtler landscape. The greedy construction automatically produces maximal sets, but these are large (size $\\sim \\sqrt{N}$). Erd\u0151s, S\u00e1rk\u00f6zy, and S\u00f3s [ESS94] asked whether much smaller maximal Sidon sets exist, specifically of size $O(N^{1/3})$. Ruzsa [Ru98b] made a breakthrough by constructing maximal Sidon sets of size $O(N^{1/3+\\varepsilon})$ for any $\\varepsilon > 0$, using a clever recursive method that creates sufficient 'coverage' of sums while keeping the set sparse.\n\nThe gap between Ruzsa's $N^{1/3+\\varepsilon}$ and the conjectured $N^{1/3}$ remains open. The exponent $1/3$ is natural: a maximal Sidon set of size $s$ must 'cover' all $\\sim N$ elements (each absent element must have its sum represented), and each pair in the set covers $O(s)$ sums, requiring $s^2 \\cdot s \\sim N$ \u2014 i.e., $s \\sim N^{1/3}$. Whether logarithmic factors can be eliminated is the core question. OEIS A382397 tracks related sequences.",
     "problemStatement": "A Sidon set $A \\subseteq \\{1, \\ldots, N\\}$ is **maximal** if for every $x \\in \\{1, \\ldots, N\\} \\setminus A$, the set $A \\cup \\{x\\}$ is not a Sidon set (i.e., adding $x$ creates a repeated sum).\n\n**Question**: Does there exist a constant $C > 0$ and a family of maximal Sidon sets $\\{A_N\\}_{N \\geq 1}$ with $|A_N| \\leq C \\cdot N^{1/3}$ for all $N$?",
-    "text": "Does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})?",
-    "proofStrategy": "The formalization provides two equivalent definitions of Sidon sets — the standard version (`IsSidonSet`, requiring $a + b = c + d$ with $a \\leq b, c \\leq d$ to imply $\\{a,b\\} = \\{c,d\\}$) and a strict version (`IsSidonSetAlt`, requiring $a < b, c < d$ to imply $a = c, b = d$) — with a detailed proved equivalence. The greedy construction is defined recursively and proved to always yield Sidon sets (greedySidon_is_sidon) and to be maximal (greedySidon_maximal). The Erdős-Turán upper bound and Ruzsa's N^{1/3+ε} construction are mentioned in docstring comments only — they are not axiomatized or proved in this file. The main open conjecture (O(N^{1/3}) maximal Sidon sets) is stated as an open question in the description. The N^{1/3} lower bound framework is developed via diffShadow and midShadow sets, with greedySidon_complement_in_shadow proved, leaving three final shadow-size estimates as sorries.",
+    "text": "Does there exist a maximal Sidon set A \u2282 {1,...,N} of size O(N^{1/3})?",
+    "proofStrategy": "The formalization provides two equivalent definitions of Sidon sets \u2014 the standard version (`IsSidonSet`, requiring $a + b = c + d$ with $a \\leq b, c \\leq d$ to imply $\\{a,b\\} = \\{c,d\\}$) and a strict version (`IsSidonSetAlt`, requiring $a < b, c < d$ to imply $a = c, b = d$) \u2014 with a detailed proved equivalence. The greedy construction is defined recursively and proved to always yield Sidon sets (greedySidon_is_sidon) and to be maximal (greedySidon_maximal). The Erd\u0151s-Tur\u00e1n upper bound and Ruzsa's N^{1/3+\u03b5} construction are mentioned in docstring comments only \u2014 they are not axiomatized or proved in this file. The main open conjecture (O(N^{1/3}) maximal Sidon sets) is stated as an open question in the description. The N^{1/3} lower bound framework is developed via diffShadow and midShadow sets, with greedySidon_complement_in_shadow proved, leaving three final shadow-size estimates as sorries.",
     "keyInsights": [
-      "**Sidon sets are maximally spread sumsets**: A Sidon set $A$ has $|A + A| = |A|(|A|+1)/2$ — the maximum possible for its cardinality. This is because all pairwise sums are distinct, making Sidon sets extremal objects in additive combinatorics",
-      "**The Erdős-Turán bound is tight**: The classical bound $|A| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets in $\\{1,\\ldots,N\\}$ is essentially sharp — constructions from finite geometry (Singer difference sets) achieve $|A| \\sim \\sqrt{N}$. The proof uses the pigeonhole principle: all $\\binom{|A|}{2} + |A|$ sums lie in $\\{2, \\ldots, 2N\\}$",
+      "**Sidon sets are maximally spread sumsets**: A Sidon set $A$ has $|A + A| = |A|(|A|+1)/2$ \u2014 the maximum possible for its cardinality. This is because all pairwise sums are distinct, making Sidon sets extremal objects in additive combinatorics",
+      "**The Erd\u0151s-Tur\u00e1n bound is tight**: The classical bound $|A| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets in $\\{1,\\ldots,N\\}$ is essentially sharp \u2014 constructions from finite geometry (Singer difference sets) achieve $|A| \\sim \\sqrt{N}$. The proof uses the pigeonhole principle: all $\\binom{|A|}{2} + |A|$ sums lie in $\\{2, \\ldots, 2N\\}$",
       "**Maximality forces coverage**: A maximal Sidon set must 'cover' every absent element: for each $x \\notin A$, there must exist $a, b \\in A$ with $a + b = x + c$ for some $c \\in A$ (or similar collision). This coverage requirement creates the tension between sparsity and maximality",
       "**The $N^{1/3}$ heuristic**: If $|A| = s$, the set covers roughly $s^2$ sums in $A + A$ and each sum 'blocks' $O(s)$ potential additions, giving coverage of $\\sim s^3$ elements. Requiring $s^3 \\sim N$ yields $s \\sim N^{1/3}$, explaining why this exponent is natural",
       "**Ruzsa's recursive construction**: Ruzsa's breakthrough builds maximal Sidon sets by starting with a Sidon set $S$ in a smaller interval and recursively extending it to fill gaps, ensuring maximality. The extra $\\varepsilon$ in the exponent comes from logarithmic factors in the recursive depth"
@@ -94,83 +94,83 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement: does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})? Introduces Sidon sets (B₂ sequences) and maximality. References Erdős-Sárközy-Sós [ESS94] and Ruzsa [Ru98b].",
-      "mathContext": "Problem statement: does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})? Introduces Sidon sets (B₂ sequences) and maximality. References Erdős-Sárközy-Sós [ESS94] and Ruzsa [Ru98b]."
+      "summary": "Problem statement: does there exist a maximal Sidon set A \u2282 {1,...,N} of size O(N^{1/3})? Introduces Sidon sets (B\u2082 sequences) and maximality. References Erd\u0151s-S\u00e1rk\u00f6zy-S\u00f3s [ESS94] and Ruzsa [Ru98b].",
+      "mathContext": "Problem statement: does there exist a maximal Sidon set A \u2282 {1,...,N} of size O(N^{1/3})? Introduces Sidon sets (B\u2082 sequences) and maximality. References Erd\u0151s-S\u00e1rk\u00f6zy-S\u00f3s [ESS94] and Ruzsa [Ru98b]."
     },
     {
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
       "startLine": 19,
       "endLine": 81,
-      "summary": "IsSidonSet (pairwise-sum-distinct with ≤ ordering), IsSidonSetAlt (strict < ordering), and proved equivalence sidonSet_iff_alt via four-case analysis on a ≤ b vs a > b and c ≤ d vs c > d.",
-      "mathContext": "IsSidonSet (pairwise-sum-distinct with ≤ ordering), IsSidonSetAlt (strict < ordering), and proved equivalence sidonSet_iff_alt via four-case analysis on a ≤ b vs a > b and c ≤ d vs c > d."
+      "summary": "IsSidonSet (pairwise-sum-distinct with \u2264 ordering), IsSidonSetAlt (strict < ordering), and proved equivalence sidonSet_iff_alt via four-case analysis on a \u2264 b vs a > b and c \u2264 d vs c > d.",
+      "mathContext": "IsSidonSet (pairwise-sum-distinct with \u2264 ordering), IsSidonSetAlt (strict < ordering), and proved equivalence sidonSet_iff_alt via four-case analysis on a \u2264 b vs a > b and c \u2264 d vs c > d."
     },
     {
       "id": "maximal-sidon",
       "title": "Maximal Sidon Sets",
       "startLine": 82,
       "endLine": 101,
-      "summary": "Defines Interval(N) = {n | 1 ≤ n ∧ n ≤ N}, IsMaximalSidonSet (subset of interval + Sidon + non-extendable predicate), and noncomputable size function for finite sets.",
-      "mathContext": "Defines Interval(N) = {n | 1 ≤ n ∧ n ≤ N}, IsMaximalSidonSet (subset of interval + Sidon + non-extendable predicate), and noncomputable size function for finite sets."
+      "summary": "Defines Interval(N) = {n | 1 \u2264 n \u2227 n \u2264 N}, IsMaximalSidonSet (subset of interval + Sidon + non-extendable predicate), and noncomputable size function for finite sets.",
+      "mathContext": "Defines Interval(N) = {n | 1 \u2264 n \u2227 n \u2264 N}, IsMaximalSidonSet (subset of interval + Sidon + non-extendable predicate), and noncomputable size function for finite sets."
     },
     {
       "id": "greedy-construction",
       "title": "Greedy Sidon Construction",
       "startLine": 102,
       "endLine": 183,
-      "summary": "Recursive greedySidon definition: greedySidon(n+1) = greedySidon(n) ∪ {n+1} if Sidon, else greedySidon(n). Proved: greedySidon_is_sidon (induction), greedySidon_subset_interval (induction), greedySidon_mono (monotonicity), greedySidon_rejected (rejection condition), greedySidon_maximal (no element of {1,...,N} can be added). All fully proved without sorry.",
-      "mathContext": "Recursive greedySidon definition: greedySidon(n+1) = greedySidon(n) ∪ {n+1} if Sidon, else greedySidon(n). Proved: greedySidon_is_sidon (induction), greedySidon_subset_interval (induction), greedySidon_mono (monotonicity), greedySidon_rejected (rejection condition), greedySidon_maximal (no element of {1,...,N} can be added). All fully proved without sorry."
+      "summary": "Recursive greedySidon definition: greedySidon(n+1) = greedySidon(n) \u222a {n+1} if Sidon, else greedySidon(n). Proved: greedySidon_is_sidon (induction), greedySidon_subset_interval (induction), greedySidon_mono (monotonicity), greedySidon_rejected (rejection condition), greedySidon_maximal (no element of {1,...,N} can be added). All fully proved without sorry.",
+      "mathContext": "Recursive greedySidon definition: greedySidon(n+1) = greedySidon(n) \u222a {n+1} if Sidon, else greedySidon(n). Proved: greedySidon_is_sidon (induction), greedySidon_subset_interval (induction), greedySidon_mono (monotonicity), greedySidon_rejected (rejection condition), greedySidon_maximal (no element of {1,...,N} can be added). All fully proved without sorry."
     },
     {
       "id": "classical-bounds-comments",
       "title": "Classical Bounds and Minimum Size",
       "startLine": 184,
       "endLine": 235,
-      "summary": "Section comments on known bounds (Erdős-Turán, Ruzsa) and orphan docstrings (no Lean declarations for upper bound, Ruzsa result, or main conjecture — these are descriptive comments only). Defines minMaximalSidonSize via Nat.find using existence of greedySidon.",
-      "mathContext": "Section comments on known bounds (Erdős-Turán, Ruzsa) and orphan docstrings (no Lean declarations for upper bound, Ruzsa result, or main conjecture — these are descriptive comments only). Defines minMaximalSidonSize via Nat.find using existence of greedySidon."
+      "summary": "Section comments on known bounds (Erd\u0151s-Tur\u00e1n, Ruzsa) and orphan docstrings (no Lean declarations for upper bound, Ruzsa result, or main conjecture \u2014 these are descriptive comments only). Defines minMaximalSidonSize via Nat.find using existence of greedySidon.",
+      "mathContext": "Section comments on known bounds (Erd\u0151s-Tur\u00e1n, Ruzsa) and orphan docstrings (no Lean declarations for upper bound, Ruzsa result, or main conjecture \u2014 these are descriptive comments only). Defines minMaximalSidonSize via Nat.find using existence of greedySidon."
     },
     {
       "id": "additive-combinatorics",
       "title": "Additive Combinatorics: Sumset Characterization",
       "startLine": 237,
       "endLine": 463,
-      "summary": "sumset definition {a+b | a,b ∈ A} and sumset_finite (proved). Private lemmas sidon_sum_injOn (injectivity of sum map on ordered pairs for Sidon sets), sumset_eq_image, card_upper_tri (|upper-triangular pairs| = n(n+1)/2 via Prod.swap symmetry). Proved: sidon_sumset_size (|A+A| = n(n+1)/2 for Sidon A), sidon_of_sumset_size (converse), sidon_iff_sumset_size (biconditional). IsB2Set alias for IsSidonSet.",
-      "mathContext": "sumset definition {a+b | a,b ∈ A} and sumset_finite (proved). Private lemmas sidon_sum_injOn (injectivity of sum map on ordered pairs for Sidon sets), sumset_eq_image, card_upper_tri (|upper-triangular pairs| = n(n+1)/2 via Prod.swap symmetry). Proved: sidon_sumset_size (|A+A| = n(n+1)/2 for Sidon A), sidon_of_sumset_size (converse), sidon_iff_sumset_size (biconditional). IsB2Set alias for IsSidonSet."
+      "summary": "sumset definition {a+b | a,b \u2208 A} and sumset_finite (proved). Private lemmas sidon_sum_injOn (injectivity of sum map on ordered pairs for Sidon sets), sumset_eq_image, card_upper_tri (|upper-triangular pairs| = n(n+1)/2 via Prod.swap symmetry). Proved: sidon_sumset_size (|A+A| = n(n+1)/2 for Sidon A), sidon_of_sumset_size (converse), sidon_iff_sumset_size (biconditional). IsB2Set alias for IsSidonSet.",
+      "mathContext": "sumset definition {a+b | a,b \u2208 A} and sumset_finite (proved). Private lemmas sidon_sum_injOn (injectivity of sum map on ordered pairs for Sidon sets), sumset_eq_image, card_upper_tri (|upper-triangular pairs| = n(n+1)/2 via Prod.swap symmetry). Proved: sidon_sumset_size (|A+A| = n(n+1)/2 for Sidon A), sidon_of_sumset_size (converse), sidon_iff_sumset_size (biconditional). IsB2Set alias for IsSidonSet."
     },
     {
       "id": "infimum-formulation",
       "title": "Probabilistic Perspective and Infimum Formulation",
       "startLine": 464,
       "endLine": 491,
-      "summary": "Section comments on probabilistic barriers for random Sidon sets. infMaximalSidonSize(N) defined as ⨅ over IsMaximalSidonSet A N of (size A : ℝ) using iInf. Orphan docstring for main open question (not a formal declaration).",
-      "mathContext": "Section comments on probabilistic barriers for random Sidon sets. infMaximalSidonSize(N) defined as ⨅ over IsMaximalSidonSet A N of (size A : ℝ) using iInf. Orphan docstring for main open question (not a formal declaration)."
+      "summary": "Section comments on probabilistic barriers for random Sidon sets. infMaximalSidonSize(N) defined as \u2a05 over IsMaximalSidonSet A N of (size A : \u211d) using iInf. Orphan docstring for main open question (not a formal declaration).",
+      "mathContext": "Section comments on probabilistic barriers for random Sidon sets. infMaximalSidonSize(N) defined as \u2a05 over IsMaximalSidonSet A N of (size A : \u211d) using iInf. Orphan docstring for main open question (not a formal declaration)."
     },
     {
       "id": "shadow-framework",
       "title": "Greedy Lower Bound: Shadow Framework",
       "startLine": 492,
       "endLine": 620,
-      "summary": "Proof outline for greedy Ω(N^{1/3}) lower bound. greedySidon_finite (proved). diffShadow A = {x | ∃ a,b,c ∈ A, a+x=b+c} (Type-I shadow). midShadow A = {x | ∃ b,c ∈ A, b+c=2x} (Type-II shadow). not_sidon_after_insert (if A is Sidon and A∪{x} is not, then x ∈ diffShadow A or x ∈ midShadow A — proved). greedySidon_complement_in_shadow (every k ∈ {1,...,N} not in greedySidon N lies in its shadow — proved).",
-      "mathContext": "Proof outline for greedy Ω(N^{1/3}) lower bound. greedySidon_finite (proved). diffShadow A = {x | ∃ a,b,c ∈ A, a+x=b+c} (Type-I shadow). midShadow A = {x | ∃ b,c ∈ A, b+c=2x} (Type-II shadow). not_sidon_after_insert (if A is Sidon and A∪{x} is not, then x ∈ diffShadow A or x ∈ midShadow A — proved). greedySidon_complement_in_shadow (every k ∈ {1,...,N} not in greedySidon N lies in its shadow — proved)."
+      "summary": "Proof outline for greedy \u03a9(N^{1/3}) lower bound. greedySidon_finite (proved). diffShadow A = {x | \u2203 a,b,c \u2208 A, a+x=b+c} (Type-I shadow). midShadow A = {x | \u2203 b,c \u2208 A, b+c=2x} (Type-II shadow). not_sidon_after_insert (if A is Sidon and A\u222a{x} is not, then x \u2208 diffShadow A or x \u2208 midShadow A \u2014 proved). greedySidon_complement_in_shadow (every k \u2208 {1,...,N} not in greedySidon N lies in its shadow \u2014 proved).",
+      "mathContext": "Proof outline for greedy \u03a9(N^{1/3}) lower bound. greedySidon_finite (proved). diffShadow A = {x | \u2203 a,b,c \u2208 A, a+x=b+c} (Type-I shadow). midShadow A = {x | \u2203 b,c \u2208 A, b+c=2x} (Type-II shadow). not_sidon_after_insert (if A is Sidon and A\u222a{x} is not, then x \u2208 diffShadow A or x \u2208 midShadow A \u2014 proved). greedySidon_complement_in_shadow (every k \u2208 {1,...,N} not in greedySidon N lies in its shadow \u2014 proved)."
     },
     {
       "id": "shadow-bounds-sorries",
       "title": "Shadow Size Bounds (3 Sorries)",
       "startLine": 621,
       "endLine": 652,
-      "summary": "Three sorry lemmas completing the N^{1/3} lower bound: diffShadow_ncard_le (|diffShadow A| ≤ |A|·(|A|(|A|+1)/2)), midShadow_ncard_le (|midShadow A| ≤ |A|(|A|+1)/2), greedySidon_cube_lower_bound (N ≤ n + n·(n(n+1)/2) + n(n+1)/2, giving n ≥ Ω(N^{1/3})). These are the Aristotle companion targets.",
-      "mathContext": "Three sorry lemmas completing the N^{1/3} lower bound: diffShadow_ncard_le (|diffShadow A| ≤ |A|·(|A|(|A|+1)/2)), midShadow_ncard_le (|midShadow A| ≤ |A|(|A|+1)/2), greedySidon_cube_lower_bound (N ≤ n + n·(n(n+1)/2) + n(n+1)/2, giving n ≥ Ω(N^{1/3})). These are the Aristotle companion targets."
+      "summary": "Three sorry lemmas completing the N^{1/3} lower bound: diffShadow_ncard_le (|diffShadow A| \u2264 |A|\u00b7(|A|(|A|+1)/2)), midShadow_ncard_le (|midShadow A| \u2264 |A|(|A|+1)/2), greedySidon_cube_lower_bound (N \u2264 n + n\u00b7(n(n+1)/2) + n(n+1)/2, giving n \u2265 \u03a9(N^{1/3})). These are the Aristotle companion targets.",
+      "mathContext": "Three sorry lemmas completing the N^{1/3} lower bound: diffShadow_ncard_le (|diffShadow A| \u2264 |A|\u00b7(|A|(|A|+1)/2)), midShadow_ncard_le (|midShadow A| \u2264 |A|(|A|+1)/2), greedySidon_cube_lower_bound (N \u2264 n + n\u00b7(n(n+1)/2) + n(n+1)/2, giving n \u2265 \u03a9(N^{1/3})). These are the Aristotle companion targets."
     }
   ],
   "conclusion": {
-    "summary": "This 652-line formalization of Erdős Problem #156 proves two equivalent Sidon set characterizations, constructs and fully proves the greedy Sidon algorithm (including maximality), and establishes the complete Sidon sumset size theorem (|A+A| = n(n+1)/2 iff A is Sidon — all three directions proved). The shadow framework (diffShadow, midShadow, greedySidon_complement_in_shadow) is fully proved, leaving three shadow-size estimates as sorries. Classical bounds (Erdős-Turán, Ruzsa's N^{1/3+ε}) and the main conjecture are mentioned in docstring comments only — they are not formalized as axioms or theorems in this file.",
+    "summary": "This 652-line formalization of Erd\u0151s Problem #156 proves two equivalent Sidon set characterizations, constructs and fully proves the greedy Sidon algorithm (including maximality), and establishes the complete Sidon sumset size theorem (|A+A| = n(n+1)/2 iff A is Sidon \u2014 all three directions proved). The shadow framework (diffShadow, midShadow, greedySidon_complement_in_shadow) is fully proved, leaving three shadow-size estimates as sorries. Classical bounds (Erd\u0151s-Tur\u00e1n, Ruzsa's N^{1/3+\u03b5}) and the main conjecture are mentioned in docstring comments only \u2014 they are not formalized as axioms or theorems in this file.",
     "implications": "**Theoretical Significance**: Resolution would determine the exact sparsity threshold for Sidon-type coverage: how few elements suffice to 'block' all possible extensions in {1,...,N}.\n\nAn affirmative answer (O(N^{1/3}) achievable) would require new constructions beyond Ruzsa's recursive method, potentially using algebraic or probabilistic techniques. A negative answer would establish a fundamental barrier separating the combinatorial notion of maximality from pure counting arguments.",
     "openQuestions": [
-      "Does the growth exponent α = lim log(minMaximalSidonSize N)/log N exist, and if so, is it exactly 1/3?",
-      "Can Ruzsa's construction be derandomized or simplified to remove the ε in the exponent?",
+      "Does the growth exponent \u03b1 = lim log(minMaximalSidonSize N)/log N exist, and if so, is it exactly 1/3?",
+      "Can Ruzsa's construction be derandomized or simplified to remove the \u03b5 in the exponent?",
       "What is the typical size of a random maximal Sidon set in {1,...,N}?",
-      "How does the problem generalize to B_h sequences for h > 2 — what is the minimal maximal B_h set size?",
-      "Is there a polynomial-time algorithm to find a maximal Sidon set of size O(N^{1/3+ε}) in {1,...,N}?"
+      "How does the problem generalize to B_h sequences for h > 2 \u2014 what is the minimal maximal B_h set size?",
+      "Is there a polynomial-time algorithm to find a maximal Sidon set of size O(N^{1/3+\u03b5}) in {1,...,N}?"
     ]
   },
   "leanFile": {
@@ -184,12 +184,15 @@
     "theoremCount": 19,
     "definitionCount": 12,
     "path": "Proofs/Erdos156Problem.lean",
-    "sorries": 3
+    "sorries": 3,
+    "additionalFiles": [
+      "Proofs/Erdos156ProblemAristotle.lean"
+    ]
   },
   "references": [
     {
       "key": "ESS94",
-      "citation": "P. Erdős, A. Sárközy, V. T. Sós, 'On sum sets of Sidon sets', Journal of Number Theory (1994)"
+      "citation": "P. Erd\u0151s, A. S\u00e1rk\u00f6zy, V. T. S\u00f3s, 'On sum sets of Sidon sets', Journal of Number Theory (1994)"
     },
     {
       "key": "Ru98b",
@@ -204,17 +207,17 @@
     {
       "targetId": "erdos-155",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
     },
     {
       "targetId": "erdos-757",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
     },
     {
       "targetId": "erdos-789",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
     }
   ],
   "sorries": 3

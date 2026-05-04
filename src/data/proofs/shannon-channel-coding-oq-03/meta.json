@@ -2,7 +2,7 @@
   "id": "shannon-channel-coding-oq-03",
   "title": "Fano's Inequality",
   "slug": "shannon-channel-coding-oq-03",
-  "description": "Formalizes Fano's inequality H(X|Y) ≤ h(P_e) + P_e·log(|X|-1), the fundamental converse tool of channel coding theory. The proof decomposes into: the core algebraic inequality ∑q(x)² ≤ max q(x) for probability distributions (proved), establishing that the gallery's formula P_e upper-bounds the MAP error probability (proved), per-slice Fano bounds via Gibbs inequality, Jensen aggregation using concavity of binary entropy, and monotonicity of h(p) + p·log(c).",
+  "description": "Formalizes Fano's inequality H(X|Y) \u2264 h(P_e) + P_e\u00b7log(|X|-1), the fundamental converse tool of channel coding theory. The proof decomposes into: the core algebraic inequality \u2211q(x)\u00b2 \u2264 max q(x) for probability distributions (proved), establishing that the gallery's formula P_e upper-bounds the MAP error probability (proved), per-slice Fano bounds via Gibbs inequality, Jensen aggregation using concavity of binary entropy, and monotonicity of h(p) + p\u00b7log(c).",
   "meta": {
     "author": "Robert Fano (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
@@ -22,7 +22,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset.le_sup'",
-        "description": "Every element is ≤ the sup, used for the core algebraic inequality",
+        "description": "Every element is \u2264 the sup, used for the core algebraic inequality",
         "module": "Mathlib.Data.Finset.Lattice"
       },
       {
@@ -37,14 +37,14 @@
       },
       {
         "theorem": "Real.log_le_sub_one_of_pos",
-        "description": "log(x) ≤ x - 1, the basis for Gibbs inequality used in fano_per_element",
+        "description": "log(x) \u2264 x - 1, the basis for Gibbs inequality used in fano_per_element",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
     "originalContributions": [
-      "sum_sq_le_max: fully proved algebraic inequality ∑q(x)² ≤ max q for probability distributions",
+      "sum_sq_le_max: fully proved algebraic inequality \u2211q(x)\u00b2 \u2264 max q for probability distributions",
       "formula_pe_ge_map_pe: proved that the gallery's formula P_e upper-bounds the MAP error probability",
-      "fano_theorem: complete proof structure connecting MAP Fano → monotonicity → formula P_e version",
+      "fano_theorem: complete proof structure connecting MAP Fano \u2192 monotonicity \u2192 formula P_e version",
       "Identified that ShannonEntropy.lean has a pre-existing build issue in strong_subadditivity (linarith failure at line 811)"
     ],
     "assumptions": "0 axioms, 0 sorries. All lemmas fully proved: sum_sq_le_max, slice_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_map_bound, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and fano_theorem. Complete independent formalization of Fano's inequality.",
@@ -62,20 +62,20 @@
     "theoremCount": 10
   },
   "overview": {
-    "historicalContext": "Fano's inequality was proved by Robert Fano in 1952 and is one of the most important tools in information theory. It provides a lower bound on the probability of error for any estimator of a random variable X given observations Y. The inequality states that the conditional entropy H(X|Y) is at most h(P_e) + P_e·log(|X|-1), where P_e is the error probability and h is binary entropy.\n\nFano's inequality is the key ingredient in the converse direction of Shannon's channel coding theorem: it shows that any reliable communication at rate above channel capacity is impossible. Without it, we could only prove achievability (good codes exist at rate < C) but not the converse (no codes exist at rate > C).\n\nThe inequality has been refined and generalized many times since 1952, and appears in virtually every proof of impossibility results in information theory and statistical inference.",
+    "historicalContext": "Fano's inequality was proved by Robert Fano in 1952 and is one of the most important tools in information theory. It provides a lower bound on the probability of error for any estimator of a random variable X given observations Y. The inequality states that the conditional entropy H(X|Y) is at most h(P_e) + P_e\u00b7log(|X|-1), where P_e is the error probability and h is binary entropy.\n\nFano's inequality is the key ingredient in the converse direction of Shannon's channel coding theorem: it shows that any reliable communication at rate above channel capacity is impossible. Without it, we could only prove achievability (good codes exist at rate < C) but not the converse (no codes exist at rate > C).\n\nThe inequality has been refined and generalized many times since 1952, and appears in virtually every proof of impossibility results in information theory and statistical inference.",
     "problemStatement": "For a joint distribution $P_{XY}$ on finite alphabets $\\mathcal{X} \\times \\mathcal{Y}$ with $|\\mathcal{X}| \\geq 2$, define the error probability:\n$$P_e = 1 - \\sum_{y} \\frac{\\sum_x P(x,y)^2}{P(Y=y)}$$\n\nProve **Fano's Inequality**:\n$$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}| - 1)$$\n\nwhere $h(p) = -p\\log p - (1-p)\\log(1-p)$ is the binary entropy function.",
-    "proofStrategy": "The proof proceeds in four conceptual steps:\n\n**Step 1: Algebraic Foundation (Proved)**\nFor any probability distribution $q$ on a finite set, $\\sum_x q(x)^2 \\leq \\max_x q(x)$. Proof: since $q(x) \\leq \\max q$, we have $q(x)^2 \\leq (\\max q) \\cdot q(x)$, and summing gives $\\sum q^2 \\leq (\\max q) \\cdot \\sum q = \\max q$.\n\n**Step 2: Formula P_e ≥ MAP P_e (Proved)**\nThe gallery's formula P_e is an upper bound on the MAP (minimum) error probability. The per-slice inequality from Step 1 (after dividing by $P(Y=y)$) shows $\\sum_x P(x,y)^2/P(Y=y) \\leq \\max_x P(x,y)$, and summing over $y$ relates the two error probability definitions.\n\n**Step 3: Per-element Fano via Gibbs (Sorry)**\nFor a single distribution $q$ with $|\\text{supp}| \\geq 2$, apply Gibbs inequality with bimodal reference distribution $Q$: put mass $p^* = \\max q$ on the mode and distribute $(1-p^*)/(n-1)$ uniformly on the remaining $n-1$ elements. The resulting bound is exactly $h(1-p^*) + (1-p^*)\\log(n-1)$.\n\n**Step 4: Aggregation via Jensen (Sorry)**\nDecompose $H(X|Y) = \\sum_y P(Y=y) \\cdot H(X|Y=y)$, apply Step 3 slice-by-slice, then use Jensen's inequality for the concave function $h$ to combine the per-slice bounds into a bound on the aggregate error $P_e^{\\text{MAP}}$.\n\n**Step 5: Monotonicity (Sorry)**\nSince $P_e^{\\text{MAP}} \\leq P_e^{\\text{formula}}$ (Step 2), and $f(p) = h(p) + p\\log(n-1)$ is non-decreasing on $[0,(n-1)/n]$, the bound at $P_e^{\\text{MAP}}$ extends to $P_e^{\\text{formula}}$.",
+    "proofStrategy": "The proof proceeds in four conceptual steps:\n\n**Step 1: Algebraic Foundation (Proved)**\nFor any probability distribution $q$ on a finite set, $\\sum_x q(x)^2 \\leq \\max_x q(x)$. Proof: since $q(x) \\leq \\max q$, we have $q(x)^2 \\leq (\\max q) \\cdot q(x)$, and summing gives $\\sum q^2 \\leq (\\max q) \\cdot \\sum q = \\max q$.\n\n**Step 2: Formula P_e \u2265 MAP P_e (Proved)**\nThe gallery's formula P_e is an upper bound on the MAP (minimum) error probability. The per-slice inequality from Step 1 (after dividing by $P(Y=y)$) shows $\\sum_x P(x,y)^2/P(Y=y) \\leq \\max_x P(x,y)$, and summing over $y$ relates the two error probability definitions.\n\n**Step 3: Per-element Fano via Gibbs (Sorry)**\nFor a single distribution $q$ with $|\\text{supp}| \\geq 2$, apply Gibbs inequality with bimodal reference distribution $Q$: put mass $p^* = \\max q$ on the mode and distribute $(1-p^*)/(n-1)$ uniformly on the remaining $n-1$ elements. The resulting bound is exactly $h(1-p^*) + (1-p^*)\\log(n-1)$.\n\n**Step 4: Aggregation via Jensen (Sorry)**\nDecompose $H(X|Y) = \\sum_y P(Y=y) \\cdot H(X|Y=y)$, apply Step 3 slice-by-slice, then use Jensen's inequality for the concave function $h$ to combine the per-slice bounds into a bound on the aggregate error $P_e^{\\text{MAP}}$.\n\n**Step 5: Monotonicity (Sorry)**\nSince $P_e^{\\text{MAP}} \\leq P_e^{\\text{formula}}$ (Step 2), and $f(p) = h(p) + p\\log(n-1)$ is non-decreasing on $[0,(n-1)/n]$, the bound at $P_e^{\\text{MAP}}$ extends to $P_e^{\\text{formula}}$.",
     "keyInsights": [
-      "The gallery uses a 'formula P_e' (based on ∑P²/P(Y)) rather than the classical MAP error probability — these differ but satisfy MAP ≤ formula, and monotonicity of h(p)+p·log(c) bridges the gap",
-      "The key algebraic move is ∑q² ≤ max(q) for probability distributions — this follows from q(x) ≤ max(q) and is proved completely",
+      "The gallery uses a 'formula P_e' (based on \u2211P\u00b2/P(Y)) rather than the classical MAP error probability \u2014 these differ but satisfy MAP \u2264 formula, and monotonicity of h(p)+p\u00b7log(c) bridges the gap",
+      "The key algebraic move is \u2211q\u00b2 \u2264 max(q) for probability distributions \u2014 this follows from q(x) \u2264 max(q) and is proved completely",
       "Fano's proof uses a 'bimodal' reference distribution: probability p* on the mode, (1-p*)/(n-1) on others. This is the unique distribution achieving equality in Gibbs for this problem",
-      "Jensen's inequality for concave h allows aggregating per-slice bounds: ∑ w_y·h(p_y) ≤ h(∑ w_y·p_y), converting a per-y bound into a joint bound",
+      "Jensen's inequality for concave h allows aggregating per-slice bounds: \u2211 w_y\u00b7h(p_y) \u2264 h(\u2211 w_y\u00b7p_y), converting a per-y bound into a joint bound",
       "The proof architecture in Lean separates three concerns: algebra (sum_sq_le_max), error probability comparison (formula_pe_ge_map_pe), and function monotonicity (fano_func_mono)"
     ],
     "prerequisites": [
       "Information theory: entropy, conditional entropy, mutual information",
       "Binary entropy function h(p) and its properties (concavity, maximum at 1/2)",
-      "Gibbs inequality (KL divergence non-negativity): H(p) ≤ -∑ p_i·log q_i",
+      "Gibbs inequality (KL divergence non-negativity): H(p) \u2264 -\u2211 p_i\u00b7log q_i",
       "Jensen's inequality for concave functions",
       "Monotone function theory and calculus"
     ]
@@ -94,7 +94,7 @@
       "title": "MAP Error Probability",
       "startLine": 63,
       "endLine": 76,
-      "summary": "Defines MAP error probability P_e^{MAP} = 1 - ∑_y max_x P(X=x,Y=y) as 1 minus the sum of maximum probabilities per y-slice.",
+      "summary": "Defines MAP error probability P_e^{MAP} = 1 - \u2211_y max_x P(X=x,Y=y) as 1 minus the sum of maximum probabilities per y-slice.",
       "mathContext": "$P_e^{\\text{MAP}} = 1 - \\sum_y \\max_x P(X=x,Y=y)$"
     },
     {
@@ -102,7 +102,7 @@
       "title": "Core Algebraic Inequality (Proved)",
       "startLine": 80,
       "endLine": 102,
-      "summary": "PROVED: For any probability distribution q, ∑q(x)² ≤ max q(x). The proof uses that q(x) ≤ max(q), so q(x)² ≤ max(q)·q(x), and summing gives ∑q² ≤ max(q)·1.",
+      "summary": "PROVED: For any probability distribution q, \u2211q(x)\u00b2 \u2264 max q(x). The proof uses that q(x) \u2264 max(q), so q(x)\u00b2 \u2264 max(q)\u00b7q(x), and summing gives \u2211q\u00b2 \u2264 max(q)\u00b71.",
       "mathContext": "$\\sum_x q(x)^2 \\leq \\max_x q(x)$ for any probability distribution $q$"
     },
     {
@@ -110,7 +110,7 @@
       "title": "Per-Slice Bound (Proved)",
       "startLine": 103,
       "endLine": 121,
-      "summary": "PROVED: For each y, ∑_x P(x,y)²/P(Y=y) ≤ max_x P(x,y). Follows by applying the core algebraic inequality to the conditional distribution P(X=x|Y=y).",
+      "summary": "PROVED: For each y, \u2211_x P(x,y)\u00b2/P(Y=y) \u2264 max_x P(x,y). Follows by applying the core algebraic inequality to the conditional distribution P(X=x|Y=y).",
       "mathContext": "$\\sum_x \\frac{P(x,y)^2}{P(Y=y)} \\leq \\max_x P(x,y)$ for each $y$"
     },
     {
@@ -118,7 +118,7 @@
       "title": "Formula P_e Bounds MAP P_e (Proved)",
       "startLine": 122,
       "endLine": 139,
-      "summary": "PROVED: P_e^{MAP} ≤ P_e^{formula}, where the formula uses ∑_y ∑_x P²/P(Y). This means the gallery's formula P_e is a conservative upper bound on the actual MAP error probability.",
+      "summary": "PROVED: P_e^{MAP} \u2264 P_e^{formula}, where the formula uses \u2211_y \u2211_x P\u00b2/P(Y). This means the gallery's formula P_e is a conservative upper bound on the actual MAP error probability.",
       "mathContext": "$P_e^{\\text{MAP}} \\leq 1 - \\sum_y \\frac{\\sum_x P(x,y)^2}{P(Y=y)} = P_e^{\\text{formula}}$"
     },
     {
@@ -126,7 +126,7 @@
       "title": "Per-Element Fano Bound (Proved)",
       "startLine": 140,
       "endLine": 166,
-      "summary": "PROVED: For a single distribution q with |α| ≥ 2, H(q) ≤ h(1-max q) + (1-max q)·log(|α|-1). Uses Gibbs inequality with a bimodal reference distribution concentrating p* = max(q) on the mode.",
+      "summary": "PROVED: For a single distribution q with |\u03b1| \u2265 2, H(q) \u2264 h(1-max q) + (1-max q)\u00b7log(|\u03b1|-1). Uses Gibbs inequality with a bimodal reference distribution concentrating p* = max(q) on the mode.",
       "mathContext": "$H(q) \\leq h(1-p^*) + (1-p^*)\\log(n-1)$ where $p^* = \\max_x q(x)$"
     },
     {
@@ -134,7 +134,7 @@
       "title": "MAP Fano Bound via Jensen (Proved)",
       "startLine": 168,
       "endLine": 191,
-      "summary": "PROVED: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(|X|-1). Aggregates per-slice bounds using Jensen's inequality for the concave binary entropy function h.",
+      "summary": "PROVED: H(X|Y) \u2264 h(P_e^{MAP}) + P_e^{MAP}\u00b7log(|X|-1). Aggregates per-slice bounds using Jensen's inequality for the concave binary entropy function h.",
       "mathContext": "$H(X|Y) \\leq h(P_e^{\\text{MAP}}) + P_e^{\\text{MAP}}\\log(|X|-1)$"
     },
     {
@@ -142,7 +142,7 @@
       "title": "Monotonicity of Fano Bound (Proved)",
       "startLine": 193,
       "endLine": 209,
-      "summary": "PROVED: f(p) = h(p) + p·log(c) is non-decreasing on [0, c/(1+c)] for c ≥ 1. Derivative argument: f'(p) = log((1-p)c/p) ≥ 0 iff p ≤ c/(1+c).",
+      "summary": "PROVED: f(p) = h(p) + p\u00b7log(c) is non-decreasing on [0, c/(1+c)] for c \u2265 1. Derivative argument: f'(p) = log((1-p)c/p) \u2265 0 iff p \u2264 c/(1+c).",
       "mathContext": "$f(p) = h(p) + p\\log c$ is monotone on $[0, c/(1+c)]$, so $p_1 \\leq p_2 \\leq c/(1+c) \\Rightarrow f(p_1) \\leq f(p_2)$"
     },
     {
@@ -150,7 +150,7 @@
       "title": "Fano's Inequality (Main Theorem)",
       "startLine": 211,
       "endLine": 255,
-      "summary": "Main theorem: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) for formula P_e. Chains together MAP Fano bound → monotonicity → formula P_e version. Proof structure is complete; remaining sorries are in the supporting lemmas.",
+      "summary": "Main theorem: H(X|Y) \u2264 h(P_e) + P_e\u00b7log(|X|-1) for formula P_e. Chains together MAP Fano bound \u2192 monotonicity \u2192 formula P_e version. Proof structure is complete; remaining sorries are in the supporting lemmas.",
       "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$"
     }
   ],
@@ -173,7 +173,7 @@
   ],
   "conclusion": {
     "summary": "Complete formalization of Fano's inequality with 0 sorries and 0 axioms. All lemmas are fully proved: sum_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_map_bound, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and the main fano_theorem. The file is self-contained and builds successfully.",
-    "implications": "This formalization establishes:\n\n**1. Converse Tool for Channel Coding**: With 0 sorries, the `fano_inequality` axiom in `ShannonChannelCoding.lean` can be replaced, making the converse direction of Shannon's channel coding theorem axiom-free.\n\n**2. Proved Algebraic Foundation**: The inequality ∑q² ≤ max(q) for probability distributions is fully proved and can be reused in other contexts (e.g., bounding distinguishability measures).\n\n**3. Error Probability Comparison**: The formal proof that the gallery's formula P_e upper-bounds the MAP error probability clarifies the relationship between two natural error probability definitions.",
+    "implications": "This formalization establishes:\n\n**1. Converse Tool for Channel Coding**: With 0 sorries, the `fano_inequality` axiom in `ShannonChannelCoding.lean` can be replaced, making the converse direction of Shannon's channel coding theorem axiom-free.\n\n**2. Proved Algebraic Foundation**: The inequality \u2211q\u00b2 \u2264 max(q) for probability distributions is fully proved and can be reused in other contexts (e.g., bounding distinguishability measures).\n\n**3. Error Probability Comparison**: The formal proof that the gallery's formula P_e upper-bounds the MAP error probability clarifies the relationship between two natural error probability definitions.",
     "openQuestions": [
       "Can Fano's inequality be generalized to continuous alphabets (differential entropy version)?",
       "Can the fano_inequality axiom in ShannonChannelCoding.lean now be replaced with a direct import of fano_theorem from this file?"
@@ -193,7 +193,10 @@
     "sorries": 0,
     "path": "Proofs/ShannonChannelCodingOQ03.lean",
     "theoremCount": 10,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "additionalFiles": [
+      "Proofs/ShannonChannelCodingOQ03Aristotle.lean"
+    ]
   },
   "references": [
     {

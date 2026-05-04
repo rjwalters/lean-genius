@@ -1,10 +1,10 @@
 {
   "id": "erdos-490",
-  "title": "Erdős Problem #490: Distinct Products of Two Sets",
+  "title": "Erd\u0151s Problem #490: Distinct Products of Two Sets",
   "slug": "erdos-490",
-  "description": "If A, B ⊆ {1,...,N} have all products ab distinct, is |A||B| ≪ N²/log N? SOLVED: YES (Szemerédi 1976). Optimal example achieves N²/(2 log N).",
+  "description": "If A, B \u2286 {1,...,N} have all products ab distinct, is |A||B| \u226a N\u00b2/log N? SOLVED: YES (Szemer\u00e9di 1976). Optimal example achieves N\u00b2/(2 log N).",
   "meta": {
-    "author": "Szemerédi (1976 solution), Erdős (1972 original)",
+    "author": "Szemer\u00e9di (1976 solution), Erd\u0151s (1972 original)",
     "sourceUrl": "https://erdosproblems.com/490",
     "date": "1976",
     "status": "axiomatized",
@@ -37,7 +37,7 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Real logarithm for the N²/log N bound and productRatio",
+        "description": "Real logarithm for the N\u00b2/log N bound and productRatio",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
@@ -52,19 +52,19 @@
       }
     ],
     "originalContributions": [
-      "IsSubsetUpTo: formalization of A ⊆ {1,...,N}",
-      "productSet: A·B = {ab : a∈A, b∈B} via Finset.biUnion/image",
-      "HasDistinctProducts: |A·B| = |A|·|B| (cardinality-based)",
+      "IsSubsetUpTo: formalization of A \u2286 {1,...,N}",
+      "productSet: A\u00b7B = {ab : a\u2208A, b\u2208B} via Finset.biUnion/image",
+      "HasDistinctProducts: |A\u00b7B| = |A|\u00b7|B| (cardinality-based)",
       "ProductMapInjective: equivalent injectivity-based definition",
       "maxProductSize: extremal function via Nat.find",
-      "ErdosQuestion490: formal ∃C, |A||B| ≤ CN²/log N",
-      "szemeredi_theorem axiom: Szemerédi's 1976 upper bound",
+      "ErdosQuestion490: formal \u2203C, |A||B| \u2264 CN\u00b2/log N",
+      "szemeredi_theorem axiom: Szemer\u00e9di's 1976 upper bound",
       "optimalA, optimalB: extremal construction with primes > N/2",
       "optimal_has_distinct_products axiom: construction is valid",
       "optimal_works_because_primes: divisibility argument (sorried)",
       "productRatio, LimitQuestion: open limit formalization",
       "IsMultiplicativeSidon: A = B special case",
-      "multiplicativeEnergy: counting quadruples a₁b₁ = a₂b₂",
+      "multiplicativeEnergy: counting quadruples a\u2081b\u2081 = a\u2082b\u2082",
       "bound_is_optimal: matching lower bound (partially proved)"
     ],
     "axiomCount": 2,
@@ -73,17 +73,17 @@
     "theoremCount": 10
   },
   "overview": {
-    "historicalContext": "Erdős posed Problem #490 at the 1972 Number Theory Conference at the University of Colorado, asking for the maximum of $|A||B|$ when $A, B \\subseteq \\{1,\\ldots,N\\}$ have all products $ab$ distinct. The problem sits at the intersection of multiplicative number theory and extremal combinatorics.\n\nSzemerédi resolved the problem in 1976 in his paper \"On a problem of P. Erdős\" in the Journal of Number Theory, proving that $|A||B| \\ll N^2/\\log N$. His argument is a counting argument based on the divisor function: the total number of divisor pairs $(a,b)$ with $ab \\leq N^2$ is $\\sum_{n \\leq N^2} d(n) \\sim N^2 \\log N$, but the distinct products condition restricts each $n$ to contribute at most one pair, yielding the $\\log N$ savings.\n\nThe bound is sharp. The construction $A = [1, N/2]$ and $B = \\{p \\text{ prime} : N/2 < p \\leq N\\}$ achieves $|A||B| \\sim N^2/(4\\log N)$. The key insight is that primes $p > N/2$ cannot divide any integer $\\leq N/2$ (since $p > N/2 \\geq a$ for $a \\in A$), so $a_1 p_1 = a_2 p_2$ forces $p_1 = p_2$ by unique factorization, and then $a_1 = a_2$. By the prime number theorem, $|B| = \\pi(N) - \\pi(N/2) \\sim N/(2\\log N)$.\n\nErdős also posed the finer question: does $\\lim_{N\\to\\infty} \\max |A||B| \\cdot \\log N / N^2$ exist? Van Doorn observed that if the limit exists, it must be $\\geq 1$. This limit question remains open and connects to deep questions about the distribution of smooth numbers and the multiplicative structure of intervals.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet A, B ⊆ {1,...,N} be such that all products ab with a ∈ A, b ∈ B are distinct.\n\nIs it true that |A||B| ≪ N²/log N?\n\n**Answer: YES** (Szemerédi 1976)\n\n**Best Possible:** A = [1, N/2], B = primes in (N/2, N]\nachieve |A||B| ~ N²/(2 log N).\n\n**Open (Erdős 1972):** Does lim max|A||B|·log N/N² exist? What is its value?",
-    "text": "If A, B ⊆ {1,...,N} have all products ab distinct, is |A||B| ≪ N²/log N? SOLVED: YES (Szemerédi 1976). Optimal example achieves N²/(2 log N).",
-    "proofStrategy": "The formalization takes a layered approach. First, it establishes two equivalent definitions of distinct products — the cardinality-based `HasDistinctProducts` ($|A \\cdot B| = |A||B|$) and the injectivity-based `ProductMapInjective` (the map $(a,b) \\mapsto ab$ is injective). Szemerédi's upper bound is axiomatized, and the answer YES is derived immediately.\n\nThe optimal construction is then formalized: `optimalA N = [1, N/2]` and `optimalB N = primes in (N/2, N]`. The theorem `optimal_works_because_primes` sketches why products are distinct (prime divisibility argument, currently sorried). The matching lower bound `bound_is_optimal` shows $|A||B| \\geq c N^2/\\log N$, establishing tightness.\n\nBeyond the main result, the formalization explores the open limit question (productRatio, van Doorn's observation), the special case of multiplicative Sidon sets ($A = B$), multiplicative energy as a measure of product collisions, and connections to related Erdős problems (#425 on sums, #896 on general products).",
+    "historicalContext": "Erd\u0151s posed Problem #490 at the 1972 Number Theory Conference at the University of Colorado, asking for the maximum of $|A||B|$ when $A, B \\subseteq \\{1,\\ldots,N\\}$ have all products $ab$ distinct. The problem sits at the intersection of multiplicative number theory and extremal combinatorics.\n\nSzemer\u00e9di resolved the problem in 1976 in his paper \"On a problem of P. Erd\u0151s\" in the Journal of Number Theory, proving that $|A||B| \\ll N^2/\\log N$. His argument is a counting argument based on the divisor function: the total number of divisor pairs $(a,b)$ with $ab \\leq N^2$ is $\\sum_{n \\leq N^2} d(n) \\sim N^2 \\log N$, but the distinct products condition restricts each $n$ to contribute at most one pair, yielding the $\\log N$ savings.\n\nThe bound is sharp. The construction $A = [1, N/2]$ and $B = \\{p \\text{ prime} : N/2 < p \\leq N\\}$ achieves $|A||B| \\sim N^2/(4\\log N)$. The key insight is that primes $p > N/2$ cannot divide any integer $\\leq N/2$ (since $p > N/2 \\geq a$ for $a \\in A$), so $a_1 p_1 = a_2 p_2$ forces $p_1 = p_2$ by unique factorization, and then $a_1 = a_2$. By the prime number theorem, $|B| = \\pi(N) - \\pi(N/2) \\sim N/(2\\log N)$.\n\nErd\u0151s also posed the finer question: does $\\lim_{N\\to\\infty} \\max |A||B| \\cdot \\log N / N^2$ exist? Van Doorn observed that if the limit exists, it must be $\\geq 1$. This limit question remains open and connects to deep questions about the distribution of smooth numbers and the multiplicative structure of intervals.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A, B \u2286 {1,...,N} be such that all products ab with a \u2208 A, b \u2208 B are distinct.\n\nIs it true that |A||B| \u226a N\u00b2/log N?\n\n**Answer: YES** (Szemer\u00e9di 1976)\n\n**Best Possible:** A = [1, N/2], B = primes in (N/2, N]\nachieve |A||B| ~ N\u00b2/(2 log N).\n\n**Open (Erd\u0151s 1972):** Does lim max|A||B|\u00b7log N/N\u00b2 exist? What is its value?",
+    "text": "If A, B \u2286 {1,...,N} have all products ab distinct, is |A||B| \u226a N\u00b2/log N? SOLVED: YES (Szemer\u00e9di 1976). Optimal example achieves N\u00b2/(2 log N).",
+    "proofStrategy": "The formalization takes a layered approach. First, it establishes two equivalent definitions of distinct products \u2014 the cardinality-based `HasDistinctProducts` ($|A \\cdot B| = |A||B|$) and the injectivity-based `ProductMapInjective` (the map $(a,b) \\mapsto ab$ is injective). Szemer\u00e9di's upper bound is axiomatized, and the answer YES is derived immediately.\n\nThe optimal construction is then formalized: `optimalA N = [1, N/2]` and `optimalB N = primes in (N/2, N]`. The theorem `optimal_works_because_primes` sketches why products are distinct (prime divisibility argument, currently sorried). The matching lower bound `bound_is_optimal` shows $|A||B| \\geq c N^2/\\log N$, establishing tightness.\n\nBeyond the main result, the formalization explores the open limit question (productRatio, van Doorn's observation), the special case of multiplicative Sidon sets ($A = B$), multiplicative energy as a measure of product collisions, and connections to related Erd\u0151s problems (#425 on sums, #896 on general products).",
     "keyInsights": [
-      "**Why N²/log N:** The divisor function $d(n) = \\sum_{d|n} 1$ averages $\\log n$, so $\\sum_{n \\leq N^2} d(n) \\sim N^2 \\log N$. Distinct products restrict each $n$ to at most one divisor pair, saving a factor of $\\log N$.",
+      "**Why N\u00b2/log N:** The divisor function $d(n) = \\sum_{d|n} 1$ averages $\\log n$, so $\\sum_{n \\leq N^2} d(n) \\sim N^2 \\log N$. Distinct products restrict each $n$ to at most one divisor pair, saving a factor of $\\log N$.",
       "**Primes as Extremizers:** The optimal construction exploits primes $p > N/2$ that are too large to divide any element of $A$. This forces $a_1 p_1 = a_2 p_2 \\Rightarrow p_1 = p_2$ by unique factorization.",
       "**Multiplicative Sidon Connection:** When $A = B$, the problem becomes: how large can a multiplicative Sidon set be? The bound $|A| \\ll N/\\sqrt{\\log N}$ is a consequence, and the primes (a Sidon set by unique factorization) nearly achieve it.",
-      "**Energy Viewpoint:** Distinct products is equivalent to minimal multiplicative energy $E^\\times(A,B) = |A||B|$. This connects to the Balog-Szemerédi-Gowers framework: low energy implies large product sets.",
-      "**The Open Limit:** Does the normalized ratio $\\max |A||B| \\cdot \\log N / N^2$ converge? This is surprisingly delicate — it depends on the fine structure of primes in short intervals and the distribution of smooth numbers.",
-      "**Sum-Product Duality:** Problem #490 is the multiplicative counterpart of questions about distinct sums (Problem #425). The Erdős-Szemerédi conjecture suggests sums and products cannot both be constrained simultaneously."
+      "**Energy Viewpoint:** Distinct products is equivalent to minimal multiplicative energy $E^\\times(A,B) = |A||B|$. This connects to the Balog-Szemer\u00e9di-Gowers framework: low energy implies large product sets.",
+      "**The Open Limit:** Does the normalized ratio $\\max |A||B| \\cdot \\log N / N^2$ converge? This is surprisingly delicate \u2014 it depends on the fine structure of primes in short intervals and the distribution of smooth numbers.",
+      "**Sum-Product Duality:** Problem #490 is the multiplicative counterpart of questions about distinct sums (Problem #425). The Erd\u0151s-Szemer\u00e9di conjecture suggests sums and products cannot both be constrained simultaneously."
     ],
     "prerequisites": [
       "Number theory fundamentals",
@@ -94,34 +94,34 @@
     {
       "id": "header-imports",
       "title": "Problem Statement and Imports",
-      "summary": "Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial",
+      "summary": "Problem overview, references to Szemer\u00e9di 1976 and Erd\u0151s 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial",
       "startLine": 1,
       "endLine": 37,
-      "mathContext": "Mathematical content: Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial"
+      "mathContext": "Mathematical content: Problem overview, references to Szemer\u00e9di 1976 and Erd\u0151s 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only — no theorem declared",
+      "summary": "IsSubsetUpTo (A \u2286 {1,...,N}), productSet (A\u00b7B via biUnion/image), HasDistinctProducts (|A\u00b7B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only \u2014 no theorem declared",
       "startLine": 38,
       "endLine": 62,
-      "mathContext": "Mathematical content: IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only"
+      "mathContext": "Mathematical content: IsSubsetUpTo (A \u2286 {1,...,N}), productSet (A\u00b7B via biUnion/image), HasDistinctProducts (|A\u00b7B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only"
     },
     {
       "id": "the-erdos-question",
-      "title": "The Erdős Question",
-      "summary": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| ≤ CN²/log N",
+      "title": "The Erd\u0151s Question",
+      "summary": "maxProductSize via Nat.find, ErdosQuestion490 formalizing \u2203C, |A||B| \u2264 CN\u00b2/log N",
       "startLine": 63,
       "endLine": 95,
-      "mathContext": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| $\\leq$ CN²/log N"
+      "mathContext": "maxProductSize via Nat.find, ErdosQuestion490 formalizing \u2203C, |A||B| $\\leq$ CN\u00b2/log N"
     },
     {
       "id": "szemeredi-theorem",
-      "title": "Szemerédi's Theorem (1976)",
-      "summary": "szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately",
+      "title": "Szemer\u00e9di's Theorem (1976)",
+      "summary": "szemeredi_theorem axiom proving the N\u00b2/log N upper bound; erdos_490_answer derives YES immediately",
       "startLine": 96,
       "endLine": 111,
-      "mathContext": "Verified: szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately"
+      "mathContext": "Verified: szemeredi_theorem axiom proving the N\u00b2/log N upper bound; erdos_490_answer derives YES immediately"
     },
     {
       "id": "optimal-example",
@@ -134,7 +134,7 @@
     {
       "id": "limit-question",
       "title": "The Limit Question (Open)",
-      "summary": "productRatio normalization, LimitQuestion existence, LimitQuestionOpen placeholder; van Doorn's observation (limit ≥ 1 if it exists) is documented in a docstring comment only — no Lean declaration",
+      "summary": "productRatio normalization, LimitQuestion existence, LimitQuestionOpen placeholder; van Doorn's observation (limit \u2265 1 if it exists) is documented in a docstring comment only \u2014 no Lean declaration",
       "startLine": 134,
       "endLine": 154,
       "mathContext": "productRatio normalization, LimitQuestion existence, LimitQuestionOpen placeholder; van Doorn's observation is docstring-only"
@@ -142,7 +142,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases: Multiplicative Sidon Sets",
-      "summary": "IsMultiplicativeSidon (A = B case), primes_sidon (primes form a Sidon set, sorried); the sidon_bound (|A|² ≤ CN²/log N) is noted in a docstring comment only — no axiom or theorem declared",
+      "summary": "IsMultiplicativeSidon (A = B case), primes_sidon (primes form a Sidon set, sorried); the sidon_bound (|A|\u00b2 \u2264 CN\u00b2/log N) is noted in a docstring comment only \u2014 no axiom or theorem declared",
       "startLine": 155,
       "endLine": 177,
       "mathContext": "IsMultiplicativeSidon (A = B case), primes_sidon (primes form a Sidon set, sorried); sidon_bound is docstring-only"
@@ -158,27 +158,27 @@
     {
       "id": "bounds-history",
       "title": "Bounds History",
-      "summary": "Progression from trivial N² bound to Szemerédi's N²/log N; trivial_bound and counting_bound (sorried), szemeredi_bound (derived from axiom)",
+      "summary": "Progression from trivial N\u00b2 bound to Szemer\u00e9di's N\u00b2/log N; trivial_bound and counting_bound (sorried), szemeredi_bound (derived from axiom)",
       "startLine": 203,
       "endLine": 227,
-      "mathContext": "Axiomatized: Progression from trivial N² bound to Szemerédi's N²/log N; trivial_bound and counting_bound (sorried), szemeredi_bound (derived from axiom)"
+      "mathContext": "Axiomatized: Progression from trivial N\u00b2 bound to Szemer\u00e9di's N\u00b2/log N; trivial_bound and counting_bound (sorried), szemeredi_bound (derived from axiom)"
     },
     {
       "id": "summary",
       "title": "Summary and Optimality",
-      "summary": "erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (partially proved)",
+      "summary": "erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing \u0398(N\u00b2/log N) tightness via the prime construction (partially proved)",
       "startLine": 228,
       "endLine": 282,
-      "mathContext": "Bound: erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (partially proved)"
+      "mathContext": "Bound: erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing \u0398(N\u00b2/log N) tightness via the prime construction (partially proved)"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #490 asked whether sets A, B ⊆ {1,...,N} with distinct products satisfy |A||B| ≪ N²/log N. Szemerédi (1976) proved YES using a divisor-counting argument. The formalization captures the upper bound (axiomatized), the matching lower bound via the prime construction A = [1, N/2], B = primes in (N/2, N] (achieving ~N²/(4 log N)), and the open limit question about whether max|A||B|·log N/N² converges.",
-    "implications": "This result reveals how the multiplicative structure of integers — specifically the density of primes and the divisor function — constrains extremal combinatorial configurations.\n\nThe prime number theorem is essential to both the upper bound (via divisor sums) and the lower bound (via prime density in intervals).\n\nThe multiplicative energy framework connects to modern additive combinatorics (Balog-Szemerédi-Gowers theorem), and the sum-product duality links to the Erdős-Szemerédi conjecture. The open limit question touches on deep number-theoretic issues about oscillations in prime distribution.",
+    "summary": "Erd\u0151s Problem #490 asked whether sets A, B \u2286 {1,...,N} with distinct products satisfy |A||B| \u226a N\u00b2/log N. Szemer\u00e9di (1976) proved YES using a divisor-counting argument. The formalization captures the upper bound (axiomatized), the matching lower bound via the prime construction A = [1, N/2], B = primes in (N/2, N] (achieving ~N\u00b2/(4 log N)), and the open limit question about whether max|A||B|\u00b7log N/N\u00b2 converges.",
+    "implications": "This result reveals how the multiplicative structure of integers \u2014 specifically the density of primes and the divisor function \u2014 constrains extremal combinatorial configurations.\n\nThe prime number theorem is essential to both the upper bound (via divisor sums) and the lower bound (via prime density in intervals).\n\nThe multiplicative energy framework connects to modern additive combinatorics (Balog-Szemer\u00e9di-Gowers theorem), and the sum-product duality links to the Erd\u0151s-Szemer\u00e9di conjecture. The open limit question touches on deep number-theoretic issues about oscillations in prime distribution.",
     "openQuestions": [
-      "Does lim max|A||B|·log N/N² exist? (Erdős's refined question, still open)",
-      "What is the exact limit if it exists? Van Doorn shows it must be ≥ 1",
-      "What is the optimal constant C in Szemerédi's bound |A||B| ≤ CN²/log N?",
+      "Does lim max|A||B|\u00b7log N/N\u00b2 exist? (Erd\u0151s's refined question, still open)",
+      "What is the exact limit if it exists? Van Doorn shows it must be \u2265 1",
+      "What is the optimal constant C in Szemer\u00e9di's bound |A||B| \u2264 CN\u00b2/log N?",
       "Can the primes-based construction be improved to give a larger constant in the lower bound?",
       "What is the computational complexity of finding optimal A, B for given N?",
       "Does a multi-set generalization hold: if A, B are multisets with distinct products, what bound applies?"
@@ -202,23 +202,26 @@
     "theoremCount": 10,
     "definitionCount": 15,
     "path": "Proofs/Erdos490Problem.lean",
-    "sorries": 6
+    "sorries": 6,
+    "additionalFiles": [
+      "Proofs/Erdos490ProblemAristotle.lean"
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-1161",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, number-theory, solved"
     },
     {
       "targetId": "erdos-297",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, number-theory, solved"
     },
     {
       "targetId": "erdos-310",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, number-theory, solved"
     }
   ],
   "sorries": 6

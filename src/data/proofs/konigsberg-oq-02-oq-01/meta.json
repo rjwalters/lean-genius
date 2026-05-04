@@ -1,6 +1,6 @@
 {
   "id": "konigsberg-oq-02-oq-01",
-  "title": "Hierholzer's Algorithm — Directed Eulerian Circuit (Corrected)",
+  "title": "Hierholzer's Algorithm \u2014 Directed Eulerian Circuit (Corrected)",
   "slug": "konigsberg-oq-02-oq-01",
   "description": "Fully formalizes Hierholzer's algorithm for directed Eulerian circuits, correcting a bug in KonigsbergOQ02 where `directed_euler_circuit_sufficient` was missing the strong connectivity hypothesis. Complete proof with 0 sorries: maximal trail sub-lemma, Walk.splice, removeArcList infrastructure, and WF induction on arcCount.",
   "meta": {
@@ -28,34 +28,34 @@
     "originalContributions": [
       "Bug fix: directed_euler_circuit_sufficient in KonigsbergOQ02 missing isStronglyConnected hypothesis",
       "Digraph.isStronglyConnected: definition of the missing hypothesis with counterexample documentation",
-      "maximal_balanced_trail_is_circuit: proved (0 sorries) — key Hierholzer sub-lemma",
-      "fst_count_eq_outDegree_stuck: proved — count of out-arcs equals outDegree at stuck vertex",
-      "snd_count_le_inDegree: proved — count of in-arcs is at most inDegree for Nodup trails",
-      "Walk.splice: proved (0 sorries) — concatenate two walks at a shared vertex",
-      "Walk.splice_nodup: proved — arc-disjoint splice yields Nodup walk",
-      "removeArcList: definition — residual digraph removing an arc list",
-      "removeArcList_arcCount: proved (0 sorries) — residual arcCount = D.arcCount - removed",
-      "removeArcList_balanced: proved (0 sorries) — removing a circuit preserves balance",
-      "walk_split_at: proved (0 sorries) — split a circuit at an interior vertex using take/drop",
-      "nodup_circuit_exists_of_outDeg_pos: proved (0 sorries) — WF induction building Nodup circuit",
-      "walk_closed: proved — digraph closure forces walks to stay in closed sets",
-      "vertex_with_unused_arc: proved (0 sorries) — strong connectivity provides extension vertex",
-      "directed_euler_circuit_sufficient_corrected: proved (0 sorries) — full Hierholzer algorithm via WF induction on arcCount"
+      "maximal_balanced_trail_is_circuit: proved (0 sorries) \u2014 key Hierholzer sub-lemma",
+      "fst_count_eq_outDegree_stuck: proved \u2014 count of out-arcs equals outDegree at stuck vertex",
+      "snd_count_le_inDegree: proved \u2014 count of in-arcs is at most inDegree for Nodup trails",
+      "Walk.splice: proved (0 sorries) \u2014 concatenate two walks at a shared vertex",
+      "Walk.splice_nodup: proved \u2014 arc-disjoint splice yields Nodup walk",
+      "removeArcList: definition \u2014 residual digraph removing an arc list",
+      "removeArcList_arcCount: proved (0 sorries) \u2014 residual arcCount = D.arcCount - removed",
+      "removeArcList_balanced: proved (0 sorries) \u2014 removing a circuit preserves balance",
+      "walk_split_at: proved (0 sorries) \u2014 split a circuit at an interior vertex using take/drop",
+      "nodup_circuit_exists_of_outDeg_pos: proved (0 sorries) \u2014 WF induction building Nodup circuit",
+      "walk_closed: proved \u2014 digraph closure forces walks to stay in closed sets",
+      "vertex_with_unused_arc: proved (0 sorries) \u2014 strong connectivity provides extension vertex",
+      "directed_euler_circuit_sufficient_corrected: proved (0 sorries) \u2014 full Hierholzer algorithm via WF induction on arcCount"
     ]
   },
   "overview": {
-    "historicalContext": "Carl Hierholzer (1840–1871) published his algorithm for directed Eulerian circuits posthumously in 1873. Euler had characterized Eulerian paths in 1736 (the Königsberg bridges problem), but the constructive algorithm — greedily extending trails until stuck, then splicing sub-circuits — was Hierholzer's contribution, running in O(E) time.\n\nFor directed graphs, balance alone (indeg = outdeg) is necessary but not sufficient. Two disjoint directed triangles satisfy balance but have no Eulerian circuit spanning both components. **Strong connectivity** is the missing ingredient. This file fixes a bug in the parent proof (KonigsbergOQ02) where the sufficiency axiom omitted this hypothesis.\n\nThis entry formalizes the key Hierholzer sub-lemma — that any maximal Nodup trail in a balanced digraph must close into a circuit — using a counting argument on the balance condition.",
-    "problemStatement": "**Corrected Directed Eulerian Circuit Sufficiency** (Hierholzer, 1873):\n\nLet $D = (V, A)$ be a finite directed graph where:\n1. $D$ is **strongly connected**: $\\forall u, v \\in V$, there exists a directed walk from $u$ to $v$\n2. Every vertex satisfies $\\mathrm{indeg}(v) = \\mathrm{outdeg}(v)$ (**balance**)\n\nThen $\\exists v_0 \\in V$ and a closed walk $W$ from $v_0$ to $v_0$ traversing every arc exactly once (an **Eulerian circuit**).\n\n**Bug in KonigsbergOQ02**: `directed_euler_circuit_sufficient` omitted hypothesis (1). Counterexample: two disjoint directed triangles — balanced, but no single trail spans both components.",
-    "proofStrategy": "Hierholzer's algorithm:\n1. Build maximal Nodup trail from v₀ (greedy edge following)\n2. By `maximal_balanced_trail_is_circuit`: maximal trail must be a closed circuit C\n3. If C is Eulerian: done\n4. If not: some vertex u on C has unused out-arcs (by strong connectivity + balance)\n5. Build new circuit C' from u in the residual subgraph D' = D.removeArcList C.arcs\n6. D' is balanced (by removeArcList_balanced)\n7. Splice C' into C at vertex u (by Walk.splice)\n8. Repeat (WF induction on D.arcCount - current circuit length)",
+    "historicalContext": "Carl Hierholzer (1840\u20131871) published his algorithm for directed Eulerian circuits posthumously in 1873. Euler had characterized Eulerian paths in 1736 (the K\u00f6nigsberg bridges problem), but the constructive algorithm \u2014 greedily extending trails until stuck, then splicing sub-circuits \u2014 was Hierholzer's contribution, running in O(E) time.\n\nFor directed graphs, balance alone (indeg = outdeg) is necessary but not sufficient. Two disjoint directed triangles satisfy balance but have no Eulerian circuit spanning both components. **Strong connectivity** is the missing ingredient. This file fixes a bug in the parent proof (KonigsbergOQ02) where the sufficiency axiom omitted this hypothesis.\n\nThis entry formalizes the key Hierholzer sub-lemma \u2014 that any maximal Nodup trail in a balanced digraph must close into a circuit \u2014 using a counting argument on the balance condition.",
+    "problemStatement": "**Corrected Directed Eulerian Circuit Sufficiency** (Hierholzer, 1873):\n\nLet $D = (V, A)$ be a finite directed graph where:\n1. $D$ is **strongly connected**: $\\forall u, v \\in V$, there exists a directed walk from $u$ to $v$\n2. Every vertex satisfies $\\mathrm{indeg}(v) = \\mathrm{outdeg}(v)$ (**balance**)\n\nThen $\\exists v_0 \\in V$ and a closed walk $W$ from $v_0$ to $v_0$ traversing every arc exactly once (an **Eulerian circuit**).\n\n**Bug in KonigsbergOQ02**: `directed_euler_circuit_sufficient` omitted hypothesis (1). Counterexample: two disjoint directed triangles \u2014 balanced, but no single trail spans both components.",
+    "proofStrategy": "Hierholzer's algorithm:\n1. Build maximal Nodup trail from v\u2080 (greedy edge following)\n2. By `maximal_balanced_trail_is_circuit`: maximal trail must be a closed circuit C\n3. If C is Eulerian: done\n4. If not: some vertex u on C has unused out-arcs (by strong connectivity + balance)\n5. Build new circuit C' from u in the residual subgraph D' = D.removeArcList C.arcs\n6. D' is balanced (by removeArcList_balanced)\n7. Splice C' into C at vertex u (by Walk.splice)\n8. Repeat (WF induction on D.arcCount - current circuit length)",
     "keyInsights": [
-      "**Strong connectivity is necessary**: Two disjoint balanced directed triangles satisfy balance but have no Eulerian circuit — any trail stays within one component. The original axiom in KonigsbergOQ02 was unsound without this hypothesis.",
+      "**Strong connectivity is necessary**: Two disjoint balanced directed triangles satisfy balance but have no Eulerian circuit \u2014 any trail stays within one component. The original axiom in KonigsbergOQ02 was unsound without this hypothesis.",
       "**Balance counting forces circuit closure**: The proof uses the path equation $[u] \\mathbin{++} \\mathrm{map\\ snd}(arcs) = \\mathrm{map\\ fst}(arcs) \\mathbin{++} [v_0]$. Counting occurrences of $v_0$ with the stuck condition ($fst\\text{-}count = outDeg$) and the Nodup bound ($snd\\text{-}count \\leq inDeg = outDeg$) forces $u = v_0$.",
       "**Nodup is essential**: Without the Nodup condition, repeated arcs could inflate counts and break the degree bound inequality needed for the counting argument.",
-      "**path_fst_snd_eq vs circuit_fst_perm_snd**: For circuits (start = end), fst and snd multisets are equal. For paths, they differ by exactly the endpoints — the reproved path equation exploits this difference.",
-      "**Formal verification catches axiom bugs**: Attempting to prove the corrected theorem revealed that the original axiom was missing a hypothesis — a subtle error that informal mathematical intuition might overlook.",
-      "**removeArcList preserves balance**: Removing a directed circuit C from digraph D yields a balanced residual — because circuit_fst_perm_snd ensures each vertex loses exactly one in-arc and one out-arc per circuit traversal, maintaining inDeg = outDeg.",
+      "**path_fst_snd_eq vs circuit_fst_perm_snd**: For circuits (start = end), fst and snd multisets are equal. For paths, they differ by exactly the endpoints \u2014 the reproved path equation exploits this difference.",
+      "**Formal verification catches axiom bugs**: Attempting to prove the corrected theorem revealed that the original axiom was missing a hypothesis \u2014 a subtle error that informal mathematical intuition might overlook.",
+      "**removeArcList preserves balance**: Removing a directed circuit C from digraph D yields a balanced residual \u2014 because circuit_fst_perm_snd ensures each vertex loses exactly one in-arc and one out-arc per circuit traversal, maintaining inDeg = outDeg.",
       "**WF induction on arcCount**: nodup_circuit_exists_of_outDeg_pos uses Nat.lt_wfRel on the residual arcCount. Each recursive call produces a strictly smaller residual (removeArcList_arcCount), ensuring termination regardless of graph connectivity.",
-      "**walk_split_at enables circuit splicing**: Splitting a circuit W at an interior vertex u via List.take/drop produces two walks W₁ and W₂; Walk.splice then recombines them with an inserted sub-circuit, extending coverage without revisiting arcs."
+      "**walk_split_at enables circuit splicing**: Splitting a circuit W at an interior vertex u via List.take/drop produces two walks W\u2081 and W\u2082; Walk.splice then recombines them with an inserted sub-circuit, extending coverage without revisiting arcs."
     ]
   },
   "conclusion": {
@@ -84,6 +84,9 @@
       "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
       "Mathlib.Tactic",
       "Proofs.KonigsbergOQ02"
+    ],
+    "additionalFiles": [
+      "Proofs/KonigsbergOQ02OQ01Aristotle.lean"
     ]
   },
   "sections": [
@@ -99,14 +102,14 @@
       "title": "Part I: Auxiliary List Lemmas",
       "startLine": 39,
       "endLine": 79,
-      "summary": "chain_tail_fst_eq_dropLast_snd and path_fst_snd_eq — reproved since private in OQ02"
+      "summary": "chain_tail_fst_eq_dropLast_snd and path_fst_snd_eq \u2014 reproved since private in OQ02"
     },
     {
       "id": "sec-strong-connectivity",
       "title": "Part II: Strong Connectivity",
       "startLine": 80,
       "endLine": 94,
-      "summary": "Digraph.isStronglyConnected — the hypothesis missing from directed_euler_circuit_sufficient"
+      "summary": "Digraph.isStronglyConnected \u2014 the hypothesis missing from directed_euler_circuit_sufficient"
     },
     {
       "id": "sec-counting",
@@ -120,7 +123,7 @@
       "title": "Part IV: Maximal Trail is a Circuit",
       "startLine": 156,
       "endLine": 214,
-      "summary": "maximal_balanced_trail_is_circuit — proved with 0 sorries; the key Hierholzer sub-lemma"
+      "summary": "maximal_balanced_trail_is_circuit \u2014 proved with 0 sorries; the key Hierholzer sub-lemma"
     },
     {
       "id": "sec-walk-splice",
@@ -141,14 +144,14 @@
       "title": "Part VII: Nodup Circuit Sub-Lemmas",
       "startLine": 481,
       "endLine": 715,
-      "summary": "nodup_arcs_length_le, isEulerian_of_length_eq, nodup_circuit_exists_of_outDeg_pos — WF induction on residual arcCount builds Nodup circuit from any vertex with positive outDegree"
+      "summary": "nodup_arcs_length_le, isEulerian_of_length_eq, nodup_circuit_exists_of_outDeg_pos \u2014 WF induction on residual arcCount builds Nodup circuit from any vertex with positive outDegree"
     },
     {
       "id": "sec-walk-split-hierholzer",
       "title": "Part VIII: walk_split_at and Full Hierholzer Assembly",
       "startLine": 716,
       "endLine": 954,
-      "summary": "walk_closed, vertex_with_unused_arc, walk_split_at (List.take/drop), circuit splicing machinery, and directed_euler_circuit_sufficient_corrected — final Hierholzer algorithm via WF induction on arcCount"
+      "summary": "walk_closed, vertex_with_unused_arc, walk_split_at (List.take/drop), circuit splicing machinery, and directed_euler_circuit_sufficient_corrected \u2014 final Hierholzer algorithm via WF induction on arcCount"
     }
   ],
   "crossReferences": [
@@ -160,7 +163,7 @@
     {
       "id": "konigsberg",
       "relationship": "ancestor",
-      "description": "Original Königsberg bridges undirected case"
+      "description": "Original K\u00f6nigsberg bridges undirected case"
     }
   ],
   "sorries": 0

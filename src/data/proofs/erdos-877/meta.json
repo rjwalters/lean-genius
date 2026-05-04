@@ -4,7 +4,7 @@
   "slug": "erdos-877",
   "description": "Let f_m(n) count maximal sum-free subsets A of {1,...,n}. Is f_m(n) = o(2^{n/2})? SOLVED: YES. Sharp bounds show f_m(n) = (C_n + o(1))2^{n/4} where C_n depends on n mod 4.",
   "meta": {
-    "author": "Cameron-Erdős (problem), Łuczak-Schoen (solved), BLST (sharp bounds)",
+    "author": "Cameron-Erd\u0151s (problem), \u0141uczak-Schoen (solved), BLST (sharp bounds)",
     "sourceUrl": "https://erdosproblems.com/877",
     "date": "2001",
     "status": "axiomatized",
@@ -48,7 +48,7 @@
     {
       "targetId": "erdos-748",
       "relationship": "related",
-      "description": "Problem #748 asks about f(n), the count of all sum-free subsets. This problem asks about f_m(n), the count of maximal ones. The ratio f_m(n)/f(n) → 0 exponentially."
+      "description": "Problem #748 asks about f(n), the count of all sum-free subsets. This problem asks about f_m(n), the count of maximal ones. The ratio f_m(n)/f(n) \u2192 0 exponentially."
     },
     {
       "targetId": "erdos-863",
@@ -91,7 +91,7 @@
     },
     {
       "id": "cameron-erdos-bound",
-      "title": "Cameron-Erdős Lower Bound",
+      "title": "Cameron-Erd\u0151s Lower Bound",
       "startLine": 143,
       "endLine": 160,
       "summary": "$f_m(n) > 2^{n/4}$ for $n \\geq 4$, via constructing exponentially many maximal sum-free sets from subsets of odd numbers.",
@@ -99,7 +99,7 @@
     },
     {
       "id": "luczak-schoen",
-      "title": "Łuczak-Schoen (2001): Main Question Resolved",
+      "title": "\u0141uczak-Schoen (2001): Main Question Resolved",
       "startLine": 167,
       "endLine": 180,
       "summary": "$\\exists c < 1/2,\\ f_m(n) < 2^{cn}$. Resolves the main question: $f_m(n) = o(2^{n/2})$ is **YES**.",
@@ -123,7 +123,7 @@
     },
     {
       "id": "erdos-748",
-      "title": "Comparison with Erdős #748",
+      "title": "Comparison with Erd\u0151s #748",
       "startLine": 234,
       "endLine": 253,
       "summary": "$f(n) = \\Theta(2^{n/2})$ vs $f_m(n) = \\Theta(2^{n/4})$: maximality reduces the count exponentially. The ratio $f_m(n)/f(n) = \\Theta(2^{-n/4}) \\to 0$.",
@@ -134,15 +134,15 @@
       "title": "Summary and Resolution",
       "startLine": 256,
       "endLine": 291,
-      "summary": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta(2^{n/4})$.",
-      "mathContext": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta($$2^{{n/4}$}$)$."
+      "summary": "Combined `erdos_877_solved`: \u0141uczak-Schoen resolves the question, Cameron-Erd\u0151s gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta(2^{n/4})$.",
+      "mathContext": "Combined `erdos_877_solved`: \u0141uczak-Schoen resolves the question, Cameron-Erd\u0151s gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta($$2^{{n/4}$}$)$."
     }
   ],
   "overview": {
-    "historicalContext": "Sum-free sets (sets with no solution to a = b + c) are fundamental objects in additive combinatorics, studied since Schur (1916) and Erdős-Ko-Rado (1961). Cameron and Erdős studied both f(n), the count of all sum-free subsets of [n], and f_m(n), the count of maximal ones. They proved f_m(n) > 2^{n/4} using constructions from odd numbers, and asked whether f_m(n) = o(2^{n/2}). Łuczak and Schoen (2001) resolved this affirmatively, showing f_m(n) < 2^{cn} for some c < 1/2. Balogh, Liu, Sharifzadeh, and Treglown (BLST) then pinpointed the exact growth: f_m(n) = 2^{(1/4+o(1))n} (2015) and the sharp asymptotic f_m(n) = (C_n + o(1))·2^{n/4} with C_n depending on n mod 4 (2018). The BLST proofs use the hypergraph container method, one of the most powerful modern tools in combinatorics.",
+    "historicalContext": "Sum-free sets (sets with no solution to a = b + c) are fundamental objects in additive combinatorics, studied since Schur (1916) and Erd\u0151s-Ko-Rado (1961). Cameron and Erd\u0151s studied both f(n), the count of all sum-free subsets of [n], and f_m(n), the count of maximal ones. They proved f_m(n) > 2^{n/4} using constructions from odd numbers, and asked whether f_m(n) = o(2^{n/2}). \u0141uczak and Schoen (2001) resolved this affirmatively, showing f_m(n) < 2^{cn} for some c < 1/2. Balogh, Liu, Sharifzadeh, and Treglown (BLST) then pinpointed the exact growth: f_m(n) = 2^{(1/4+o(1))n} (2015) and the sharp asymptotic f_m(n) = (C_n + o(1))\u00b72^{n/4} with C_n depending on n mod 4 (2018). The BLST proofs use the hypergraph container method, one of the most powerful modern tools in combinatorics.",
     "problemStatement": "Let f_m(n) count the number of maximal sum-free subsets of {1,...,n}. Estimate f_m(n) - is it true that f_m(n) = o(2^{n/2})?",
     "text": "Let f_m(n) count maximal sum-free subsets A of {1,...,n}. Is f_m(n) = o(2^{n/2})? SOLVED: YES. Sharp bounds show f_m(n) = (C_n + o(1))2^{n/4} where C_n depends on n mod 4.",
-    "proofStrategy": "The formalization defines sum-free and maximal sum-free sets with two equivalent formulations, establishes counting functions f(n) and f_m(n) via powerset filtering, proves basic examples (odds, upper half), and axiomatizes the key results: Cameron-Erdős lower bound, Łuczak-Schoen upper bound, and BLST sharp asymptotics.",
+    "proofStrategy": "The formalization defines sum-free and maximal sum-free sets with two equivalent formulations, establishes counting functions f(n) and f_m(n) via powerset filtering, proves basic examples (odds, upper half), and axiomatizes the key results: Cameron-Erd\u0151s lower bound, \u0141uczak-Schoen upper bound, and BLST sharp asymptotics.",
     "keyInsights": [
       "**Sum-free characterization**: $A \\cap (A+A) = \\emptyset$ gives an elegant characterization; odd numbers and upper-half sets are canonical examples",
       "**Maximality as saturation**: Every element outside a maximal sum-free set participates in a sum with the set, creating strong structural constraints",
@@ -156,14 +156,14 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erdős through BLST. 4 sorries remain.",
-    "implications": "This result reveals a striking gap between the count of all sum-free sets (~2^{n/2}) and maximal sum-free sets (~2^{n/4}). The container method developed for this problem has become one of the most widely used tools in modern combinatorics, with applications to Turán-type problems, Ramsey theory, and graph enumeration.",
+    "summary": "Erd\u0151s Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = \u0398(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erd\u0151s through BLST. 4 sorries remain.",
+    "implications": "This result reveals a striking gap between the count of all sum-free sets (~2^{n/2}) and maximal sum-free sets (~2^{n/4}). The container method developed for this problem has become one of the most widely used tools in modern combinatorics, with applications to Tur\u00e1n-type problems, Ramsey theory, and graph enumeration.",
     "openQuestions": [
       "What are the exact numerical values of C_0, C_1, C_2, C_3 in the BLST sharp bound?",
       "Can the structure of maximal sum-free sets be characterized more precisely (e.g., typical set profiles)?",
-      "What about maximal sum-free sets in other groups: ℤ_n, ℤ_p, or general abelian groups?",
+      "What about maximal sum-free sets in other groups: \u2124_n, \u2124_p, or general abelian groups?",
       "Can the 4 remaining sorries (maximal_criterion, odds_construction, maximal_vs_all, erdos_877) be closed?",
-      "Is there a sharp threshold for the transition from f_m(n) ≈ f(n) to f_m(n) ≪ f(n) as the maximality constraint is relaxed?"
+      "Is there a sharp threshold for the transition from f_m(n) \u2248 f(n) to f_m(n) \u226a f(n) as the maximality constraint is relaxed?"
     ]
   },
   "leanFile": {
@@ -185,7 +185,10 @@
     "theoremCount": 9,
     "definitionCount": 6,
     "path": "Proofs/Erdos877Problem.lean",
-    "sorries": 4
+    "sorries": 4,
+    "additionalFiles": [
+      "Proofs/Erdos877ProblemAristotle.lean"
+    ]
   },
   "sorries": 4
 }

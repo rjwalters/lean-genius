@@ -70,7 +70,7 @@
       "title": "Part IV: Catalan Number Bounds",
       "startLine": 196,
       "endLine": 240,
-      "summary": "Proves catalan_le_four_pow: C_n ≤ 4^n by case analysis for small n and via C_n ≤ C(2n,n) ≤ 4^n for large n. Includes the private lemma centralBinom_succ_eq and the step-lemma catalan_step (C_n ≤ C_{n+1}) used for monotonicity.",
+      "summary": "Proves catalan_le_four_pow: C_n \u2264 4^n by case analysis for small n and via C_n \u2264 C(2n,n) \u2264 4^n for large n. Includes the private lemma centralBinom_succ_eq and the step-lemma catalan_step (C_n \u2264 C_{n+1}) used for monotonicity.",
       "mathContext": "$C_n \\leq \\binom{2n}{n} \\leq 4^n$. The first inequality: $C_n = \\binom{2n}{n} - \\binom{2n}{n+1} \\leq \\binom{2n}{n}$. The second: $\\binom{2n}{n} \\leq 4^n$ since the central term of $(1+1)^{2n} = 4^n$ is the largest."
     },
     {
@@ -78,7 +78,7 @@
       "title": "Part V: Monotonicity and Tabulated Values",
       "startLine": 241,
       "endLine": 280,
-      "summary": "Proves catalan_mono (C_m ≤ C_n for m ≤ n) by induction using catalan_step. Tabulates the first six Catalan numbers (C_0=1,...,C_5=42) and first four central binomial coefficients (C(0,0)=1,...,C(6,3)=20) as a reference table.",
+      "summary": "Proves catalan_mono (C_m \u2264 C_n for m \u2264 n) by induction using catalan_step. Tabulates the first six Catalan numbers (C_0=1,...,C_5=42) and first four central binomial coefficients (C(0,0)=1,...,C(6,3)=20) as a reference table.",
       "mathContext": "$C_n$ is non-decreasing: $C_m \\leq C_n$ for $m \\leq n$. First values: $C_0=1, C_1=1, C_2=2, C_3=5, C_4=14, C_5=42$. Central binomials: $\\binom{0}{0}=1, \\binom{2}{1}=2, \\binom{4}{2}=6, \\binom{6}{3}=20$."
     },
     {
@@ -86,13 +86,13 @@
       "title": "Part VI: The Catalan Convolution Identity",
       "startLine": 281,
       "endLine": 312,
-      "summary": "Proves the fundamental Catalan convolution: C_{n+1} = ∑_{k=0}^{n} C_k·C_{n-k}. The proof bridges to Mathlib's _root_.catalan via the characterizing identity C_n*(n+1) = C(2n,n), then applies catalan_succ' from Mathlib. Verifies the identity for C_1=1, C_2=2, C_3=5.",
+      "summary": "Proves the fundamental Catalan convolution: C_{n+1} = \u2211_{k=0}^{n} C_k\u00b7C_{n-k}. The proof bridges to Mathlib's _root_.catalan via the characterizing identity C_n*(n+1) = C(2n,n), then applies catalan_succ' from Mathlib. Verifies the identity for C_1=1, C_2=2, C_3=5.",
       "mathContext": "$C_{n+1} = \\sum_{k=0}^n C_k \\cdot C_{n-k}$. Combinatorial meaning: to fully parenthesize $n+2$ factors, choose position $k+1$ for the outermost multiplication, then independently parenthesize left ($C_k$ ways) and right ($C_{n-k}$ ways) factors."
     }
   ],
   "conclusion": {
     "summary": "Catalan numbers fully formalized: C_n*(n+1) = C(2n,n) proved via absorption identity, positivity, monotonicity, 2^n/4^n bounds proved, and the convolution C_{n+1} = sum C_k*C_{n-k} proved via Mathlib's catalan_succ'. 0 sorries, 0 axioms.",
-    "implications": "This formalization connects the gallery's binomial coefficient work (CombinationsFormula) to the ballot problem proofs (BallotProblemOQ03). The central binomial bound C(2n,n) <= 4^n is independently useful (e.g., for the Apéry irrationality proof).",
+    "implications": "This formalization connects the gallery's binomial coefficient work (CombinationsFormula) to the ballot problem proofs (BallotProblemOQ03). The central binomial bound C(2n,n) <= 4^n is independently useful (e.g., for the Ap\u00e9ry irrationality proof).",
     "openQuestions": [
       "Prove the generating function C(x) = (1 - sqrt(1-4x))/(2x)",
       "Prove the closed form C_n = C(2n,n)/(n+1) directly without going through catalan_mul_succ"
@@ -105,7 +105,10 @@
     "theoremCount": 22,
     "definitionCount": 2,
     "path": "Proofs/CombinationsFormulaOQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CombinationsFormulaOQ02Aristotle.lean"
+    ]
   },
   "crossReferences": [
     {

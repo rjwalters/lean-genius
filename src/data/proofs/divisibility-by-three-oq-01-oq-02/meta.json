@@ -2,7 +2,7 @@
   "id": "divisibility-by-three-oq-01-oq-02",
   "title": "Convergence of Digital Root Iteration",
   "slug": "divisibility-by-three-oq-01-oq-02",
-  "description": "Proves that repeatedly summing the decimal digits of any natural number n terminates at digitalRoot(n) in finitely many steps. The key insight: digit sum strictly decreases for n ≥ 10, and all iterates preserve n mod 9.",
+  "description": "Proves that repeatedly summing the decimal digits of any natural number n terminates at digitalRoot(n) in finitely many steps. The key insight: digit sum strictly decreases for n \u2265 10, and all iterates preserve n mod 9.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Digital_root#Properties",
@@ -22,11 +22,11 @@
     "axiomCount": 0,
     "assumptions": "0 sorries, 0 axioms. Fully machine-checked.",
     "originalContributions": [
-      "digitSum_le_self: (Nat.digits 10 n).sum ≤ n for all n (manual proof via Nat.digits_def')",
-      "digitSum_lt_of_ge_ten: digitSum n < n for n ≥ 10 (manual proof, avoids Nat.sum_digits_lt naming issue)",
-      "iterDigitSum_terminates: ∃ k, (digitSum^[k]) n < 10 (strong induction via Nat.strongRecOn)",
-      "iterDigitSum_modEq_9: (digitSum^[k]) n ≡ n [MOD 9] (mod 9 loop invariant)",
-      "iterDigitSum_converges: ∃ k, (digitSum^[k]) n = digitalRoot n (main convergence theorem)",
+      "digitSum_le_self: (Nat.digits 10 n).sum \u2264 n for all n (manual proof via Nat.digits_def')",
+      "digitSum_lt_of_ge_ten: digitSum n < n for n \u2265 10 (manual proof, avoids Nat.sum_digits_lt naming issue)",
+      "iterDigitSum_terminates: \u2203 k, (digitSum^[k]) n < 10 (strong induction via Nat.strongRecOn)",
+      "iterDigitSum_modEq_9: (digitSum^[k]) n \u2261 n [MOD 9] (mod 9 loop invariant)",
+      "iterDigitSum_converges: \u2203 k, (digitSum^[k]) n = digitalRoot n (main convergence theorem)",
       "digitalRoot_is_fixed_point: digitSum(digitalRoot n) = digitalRoot n (fixed point property)"
     ],
     "dateAdded": "2026-04-05",
@@ -36,20 +36,20 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The digital root — the single digit obtained by repeatedly summing a number's digits — has roots stretching back to ancient Indian mathematics. The Vedic technique of 'casting out nines' (navaśeṣa) appears in texts as early as the 6th century CE, used by mathematicians like Āryabhaṭa for checking arithmetic. The method entered European mathematics through al-Khwārizmī's 9th-century works and was popularized in the West by Leonardo of Pisa (Fibonacci) in his 1202 *Liber Abaci*, where it served as a practical check for multiplication and division. The underlying algebraic insight — that $10 \\equiv 1 \\pmod{9}$, making digit sums preserve residues mod 9 — was well understood by the 12th century. The digital root itself (the fixed point of iterated digit summation) gained its modern name in recreational mathematics of the early 20th century. Despite its elementary character, the formal convergence proof requires two distinct mathematical ingredients: a termination argument (digit sum strictly decreases for multi-digit numbers, providing a well-founded measure) and an identification argument (the mod 9 loop invariant pins down the unique single-digit limit). This formalization makes both ingredients explicit in Lean 4, building on Mathlib's Nat.digits API and Nat.modEq_digits_sum.",
-    "problemStatement": "**Open Question (OQ-02 from divisibility-by-three-oq-01)**: Can the convergence of the digital root iteration be formally proved — that starting from any n ∈ ℕ, the sequence n, digitSum(n), digitSum(digitSum(n)), ... always terminates at digitalRoot(n) in finitely many steps?\n\n**Answer**: YES. The proof uses strong induction (digitSum n < n for n ≥ 10) and mod 9 preservation to identify the terminal value.",
-    "text": "A 205-line formalization proving convergence of the digital root iteration. All theorems including `digitSum_pos` and `iterDigitSum_converges` are proved with 0 sorries. The proof is self-contained: digit sum bounds are proved via `Nat.digits_def` (the decomposition n = n%10 :: digits(n/10) for n ≥ 10), avoiding dependence on renamed Mathlib lemmas.",
-    "proofStrategy": "**Section I** (Basic Properties): `digitSum_le_self` (n) ≤ n by strong induction using `Nat.digits_def'` to unfold n = n%10 + 10*(n/10). `digitSum_lt_of_ge_ten` follows: n%10 + digitSum(n/10) ≤ n%10 + n/10 < n (since n/10 < 10*(n/10) for n ≥ 10).\n\n**Section II** (Iteration Properties): Termination by strong induction: if n < 10, k=0 works; if n ≥ 10, find k' for digitSum(n) < n, then k'+1 works. Mod 9 invariance by induction on k.\n\n**Section III** (Convergence): The terminal value m = (digitSum^[k]) n satisfies m < 10 and m ≡ n (mod 9). Cases: n=0 (all iterates 0), n%9=0 (m=9 by positivity), n%9≠0 (m=n%9). Each case closed by `interval_cases m <;> omega`.",
+    "historicalContext": "The digital root \u2014 the single digit obtained by repeatedly summing a number's digits \u2014 has roots stretching back to ancient Indian mathematics. The Vedic technique of 'casting out nines' (nava\u015be\u1e63a) appears in texts as early as the 6th century CE, used by mathematicians like \u0100ryabha\u1e6da for checking arithmetic. The method entered European mathematics through al-Khw\u0101rizm\u012b's 9th-century works and was popularized in the West by Leonardo of Pisa (Fibonacci) in his 1202 *Liber Abaci*, where it served as a practical check for multiplication and division. The underlying algebraic insight \u2014 that $10 \\equiv 1 \\pmod{9}$, making digit sums preserve residues mod 9 \u2014 was well understood by the 12th century. The digital root itself (the fixed point of iterated digit summation) gained its modern name in recreational mathematics of the early 20th century. Despite its elementary character, the formal convergence proof requires two distinct mathematical ingredients: a termination argument (digit sum strictly decreases for multi-digit numbers, providing a well-founded measure) and an identification argument (the mod 9 loop invariant pins down the unique single-digit limit). This formalization makes both ingredients explicit in Lean 4, building on Mathlib's Nat.digits API and Nat.modEq_digits_sum.",
+    "problemStatement": "**Open Question (OQ-02 from divisibility-by-three-oq-01)**: Can the convergence of the digital root iteration be formally proved \u2014 that starting from any n \u2208 \u2115, the sequence n, digitSum(n), digitSum(digitSum(n)), ... always terminates at digitalRoot(n) in finitely many steps?\n\n**Answer**: YES. The proof uses strong induction (digitSum n < n for n \u2265 10) and mod 9 preservation to identify the terminal value.",
+    "text": "A 205-line formalization proving convergence of the digital root iteration. All theorems including `digitSum_pos` and `iterDigitSum_converges` are proved with 0 sorries. The proof is self-contained: digit sum bounds are proved via `Nat.digits_def` (the decomposition n = n%10 :: digits(n/10) for n \u2265 10), avoiding dependence on renamed Mathlib lemmas.",
+    "proofStrategy": "**Section I** (Basic Properties): `digitSum_le_self` (n) \u2264 n by strong induction using `Nat.digits_def'` to unfold n = n%10 + 10*(n/10). `digitSum_lt_of_ge_ten` follows: n%10 + digitSum(n/10) \u2264 n%10 + n/10 < n (since n/10 < 10*(n/10) for n \u2265 10).\n\n**Section II** (Iteration Properties): Termination by strong induction: if n < 10, k=0 works; if n \u2265 10, find k' for digitSum(n) < n, then k'+1 works. Mod 9 invariance by induction on k.\n\n**Section III** (Convergence): The terminal value m = (digitSum^[k]) n satisfies m < 10 and m \u2261 n (mod 9). Cases: n=0 (all iterates 0), n%9=0 (m=9 by positivity), n%9\u22600 (m=n%9). Each case closed by `interval_cases m <;> omega`.",
     "keyInsights": [
       "**Nat.digits_def' as Structural Decomposition**: `Nat.digits_def' (by omega) (by omega : 0 < n)` rewrites `Nat.digits 10 n` to `n % 10 :: Nat.digits 10 (n / 10)`, enabling inductive proofs about the digit sum.",
-      "**omega for Euclidean Division**: In Lean 4, `omega` handles `n / 10` and `n % 10` with the built-in Euclidean identity. The inequality `n % 10 + n/10 < n` for n ≥ 10 is directly provable by omega.",
-      "**Mod 9 as Loop Invariant**: Since digitSum m ≡ m (mod 9) for all m, the residue class mod 9 is preserved through all iterations. The terminal single-digit value is uniquely determined by this invariant.",
-      "**interval_cases for Case Analysis**: Once we know 0 ≤ m < 10, `interval_cases m <;> omega` gives 10 cases and closes each by modular arithmetic. This avoids complex positivity arguments.",
-      "**Strong Induction Pattern**: The decreasing measure (digitSum n < n for n ≥ 10) + base case (n < 10 terminates immediately) follows the canonical strong induction pattern for termination proofs."
+      "**omega for Euclidean Division**: In Lean 4, `omega` handles `n / 10` and `n % 10` with the built-in Euclidean identity. The inequality `n % 10 + n/10 < n` for n \u2265 10 is directly provable by omega.",
+      "**Mod 9 as Loop Invariant**: Since digitSum m \u2261 m (mod 9) for all m, the residue class mod 9 is preserved through all iterations. The terminal single-digit value is uniquely determined by this invariant.",
+      "**interval_cases for Case Analysis**: Once we know 0 \u2264 m < 10, `interval_cases m <;> omega` gives 10 cases and closes each by modular arithmetic. This avoids complex positivity arguments.",
+      "**Strong Induction Pattern**: The decreasing measure (digitSum n < n for n \u2265 10) + base case (n < 10 terminates immediately) follows the canonical strong induction pattern for termination proofs."
     ],
     "prerequisites": [
       "Digital root: repeatedly sum digits until single digit",
-      "Casting out nines: n ≡ digitSum n (mod 9)",
+      "Casting out nines: n \u2261 digitSum n (mod 9)",
       "Nat.digits in Lean 4: Nat.digits b n returns the digit list in base b",
       "Function.iterate for iterated function application"
     ]
@@ -68,7 +68,7 @@
     {
       "targetId": "divisibility-by-3",
       "relationship": "related",
-      "description": "The foundational divisibility-by-3 rule, which follows from the same casting-out-nines principle (3 | n ↔ 3 | digitSum(n)) that underlies the digital root"
+      "description": "The foundational divisibility-by-3 rule, which follows from the same casting-out-nines principle (3 | n \u2194 3 | digitSum(n)) that underlies the digital root"
     },
     {
       "targetId": "divisibility-rules",
@@ -87,7 +87,10 @@
     "theoremCount": 14,
     "definitionCount": 1,
     "path": "Proofs/DivisibilityByThreeOQ01OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean"
+    ]
   },
   "sections": [
     {
@@ -118,7 +121,7 @@
       "title": "Section III: Convergence to digitalRoot",
       "startLine": 122,
       "endLine": 165,
-      "summary": "Main theorem iterDigitSum_converges: ∃ k, (digitSum^[k]) n = digitalRoot n. Case analysis: n=0, n%9=0, n%9≠0. Each case uses interval_cases m <;> omega.",
+      "summary": "Main theorem iterDigitSum_converges: \u2203 k, (digitSum^[k]) n = digitalRoot n. Case analysis: n=0, n%9=0, n%9\u22600. Each case uses interval_cases m <;> omega.",
       "mathContext": "The terminal value $m = \\text{digitSum}^{[k]}(n) < 10$ satisfies $m \\equiv n \\pmod{9}$. So $m = \\text{digitalRoot}(n)$ (the unique single-digit representative)."
     },
     {
@@ -132,11 +135,11 @@
   ],
   "conclusion": {
     "summary": "Proves convergence of the digital root iteration: for any n, iterating digit summation terminates at digitalRoot(n). All theorems compile with 0 sorries, including `digitSum_pos` (proved by strong induction on the digit decomposition) and `iterDigitSum_converges`.",
-    "implications": "The formalization demonstrates the standard termination-by-decreasing-measure pattern in Lean 4: define a strictly decreasing measure (digitSum n < n for n ≥ 10), apply strong induction, and extract the fixed point. The mod 9 loop invariant then identifies the fixed point uniquely. This two-ingredient pattern — well-founded descent for termination, algebraic invariant for identification — recurs throughout formalized mathematics (e.g., Euclidean algorithm convergence, continued fraction expansion, Collatz-type iterations where the invariant is known). The uniqueness theorem (digitalRoot_unique) provides a characterization that could serve as an alternative definition of digital root in future Mathlib contributions.",
+    "implications": "The formalization demonstrates the standard termination-by-decreasing-measure pattern in Lean 4: define a strictly decreasing measure (digitSum n < n for n \u2265 10), apply strong induction, and extract the fixed point. The mod 9 loop invariant then identifies the fixed point uniquely. This two-ingredient pattern \u2014 well-founded descent for termination, algebraic invariant for identification \u2014 recurs throughout formalized mathematics (e.g., Euclidean algorithm convergence, continued fraction expansion, Collatz-type iterations where the invariant is known). The uniqueness theorem (digitalRoot_unique) provides a characterization that could serve as an alternative definition of digital root in future Mathlib contributions.",
     "openQuestions": [
-      "Prove the rate of convergence: show (digitSum^[⌈log₁₀ n⌉]) n < 10, giving an explicit bound on the number of iterations needed",
-      "Generalize to arbitrary bases: prove convergence of the base-b digital root iteration for any b ≥ 2, with the fixed point determined by n mod (b-1)",
-      "Formalize the additive persistence function (number of iterations until convergence) and investigate its growth rate — it is known that persistence grows as O(log n) but the exact maximum for each digit count is an open combinatorial problem"
+      "Prove the rate of convergence: show (digitSum^[\u2308log\u2081\u2080 n\u2309]) n < 10, giving an explicit bound on the number of iterations needed",
+      "Generalize to arbitrary bases: prove convergence of the base-b digital root iteration for any b \u2265 2, with the fixed point determined by n mod (b-1)",
+      "Formalize the additive persistence function (number of iterations until convergence) and investigate its growth rate \u2014 it is known that persistence grows as O(log n) but the exact maximum for each digit count is an open combinatorial problem"
     ]
   },
   "sorries": 0

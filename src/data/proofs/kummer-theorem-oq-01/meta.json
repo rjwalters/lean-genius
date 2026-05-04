@@ -29,32 +29,32 @@
     {
       "targetId": "kummer-theorem",
       "relationship": "extends",
-      "description": "Generalizes Kummer's theorem from binomial coefficients C(n,k) to multinomial coefficients C(n; k₁,...,kₘ) via iterated binomial decomposition"
+      "description": "Generalizes Kummer's theorem from binomial coefficients C(n,k) to multinomial coefficients C(n; k\u2081,...,k\u2098) via iterated binomial decomposition"
     },
     {
       "targetId": "kummer-theorem-oq-02",
       "relationship": "related",
-      "description": "q-Kummer theorem: cyclotomic factorization of q-binomials — the q-analog direction"
+      "description": "q-Kummer theorem: cyclotomic factorization of q-binomials \u2014 the q-analog direction"
     },
     {
       "targetId": "kummer-theorem-oq-03",
       "relationship": "related",
-      "description": "Divisibility patterns in Pascal's triangle mod p^k — higher-power version of Kummer's theorem"
+      "description": "Divisibility patterns in Pascal's triangle mod p^k \u2014 higher-power version of Kummer's theorem"
     },
     {
       "targetId": "erdos-728-factorial-divisibility",
       "relationship": "related",
-      "description": "Factorial divisibility (Erdős #728) — related p-adic valuation questions for factorial expressions"
+      "description": "Factorial divisibility (Erd\u0151s #728) \u2014 related p-adic valuation questions for factorial expressions"
     }
   ],
   "overview": {
-    "historicalContext": "Ernst Kummer proved in 1852 that the highest power of a prime p dividing the binomial coefficient C(n, k) equals the number of carries when adding k and n-k in base p. This elegant theorem connects combinatorics (counting subsets) with the arithmetic of positional numeral systems. The result was rediscovered and generalized throughout the 20th century. The multinomial extension is a natural question: the multinomial coefficient C(n; k₁, k₂, ..., kₘ) counts the number of ways to partition n objects into groups of sizes k₁, ..., kₘ (with n = k₁ + ... + kₘ). The key insight is that multinomial coefficients factor as products of binomials via a telescoping decomposition: C(n; k₁,...,kₘ) = C(k₁+k₂, k₁) · C(k₁+k₂+k₃, k₁+k₂) · ... · C(n, n-kₘ). Applying Kummer's theorem to each factor and summing gives the total carry count when adding k₁, k₂, ..., kₘ successively in base p.",
-    "problemStatement": "Can Kummer's theorem — $v_p\\binom{n}{k} = c(k, n-k; p)$ where $c$ counts base-$p$ carries — be extended to multinomial coefficients? That is, does $v_p\\binom{n}{k_1,\\ldots,k_m} = $ total carries when adding $k_1,\\ldots,k_m$ in base $p$? Answer: yes, via iterated binomial decomposition.",
-    "proofStrategy": "The file defines the multinomial coefficient as n! / (k₁! · ... · kₘ!) using `List.sum` and `List.prod`. The key identity `multinomial_eq_prod_choose` is now fully proved via companion file `KummerTheoremOQ01Aristotle.lean`, which uses backward list induction (`List.reverseRecOn`) with two key lemmas: `multinomial_append_singleton` (LHS step: appending k multiplies by C(sum+k,k)) and `rhs_append_singleton` (RHS step: the scanl/zip/tail/prod picks up factor C(sum+k,k)). The `zip_scanl_append_singleton` lemma (proved by generalizing the accumulator and induction on `ks`) is the key auxiliary result. `multinomial_pair` and `multinomial_triple` are proved via `Nat.choose_mul_factorial_mul_factorial`. The p-adic valuation statement (v_p of multinomial = total carries) is documented as a comment — full formalization requires base-p carry counting not yet in Mathlib.",
+    "historicalContext": "Ernst Kummer proved in 1852 that the highest power of a prime p dividing the binomial coefficient C(n, k) equals the number of carries when adding k and n-k in base p. This elegant theorem connects combinatorics (counting subsets) with the arithmetic of positional numeral systems. The result was rediscovered and generalized throughout the 20th century. The multinomial extension is a natural question: the multinomial coefficient C(n; k\u2081, k\u2082, ..., k\u2098) counts the number of ways to partition n objects into groups of sizes k\u2081, ..., k\u2098 (with n = k\u2081 + ... + k\u2098). The key insight is that multinomial coefficients factor as products of binomials via a telescoping decomposition: C(n; k\u2081,...,k\u2098) = C(k\u2081+k\u2082, k\u2081) \u00b7 C(k\u2081+k\u2082+k\u2083, k\u2081+k\u2082) \u00b7 ... \u00b7 C(n, n-k\u2098). Applying Kummer's theorem to each factor and summing gives the total carry count when adding k\u2081, k\u2082, ..., k\u2098 successively in base p.",
+    "problemStatement": "Can Kummer's theorem \u2014 $v_p\\binom{n}{k} = c(k, n-k; p)$ where $c$ counts base-$p$ carries \u2014 be extended to multinomial coefficients? That is, does $v_p\\binom{n}{k_1,\\ldots,k_m} = $ total carries when adding $k_1,\\ldots,k_m$ in base $p$? Answer: yes, via iterated binomial decomposition.",
+    "proofStrategy": "The file defines the multinomial coefficient as n! / (k\u2081! \u00b7 ... \u00b7 k\u2098!) using `List.sum` and `List.prod`. The key identity `multinomial_eq_prod_choose` is now fully proved via companion file `KummerTheoremOQ01Aristotle.lean`, which uses backward list induction (`List.reverseRecOn`) with two key lemmas: `multinomial_append_singleton` (LHS step: appending k multiplies by C(sum+k,k)) and `rhs_append_singleton` (RHS step: the scanl/zip/tail/prod picks up factor C(sum+k,k)). The `zip_scanl_append_singleton` lemma (proved by generalizing the accumulator and induction on `ks`) is the key auxiliary result. `multinomial_pair` and `multinomial_triple` are proved via `Nat.choose_mul_factorial_mul_factorial`. The p-adic valuation statement (v_p of multinomial = total carries) is documented as a comment \u2014 full formalization requires base-p carry counting not yet in Mathlib.",
     "keyInsights": [
       "The iterated decomposition $\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{k_1+\\cdots+k_i}{k_1+\\cdots+k_{i-1}}$ is the algebraic heart of the extension. Each factor is an ordinary binomial to which Kummer's theorem applies directly.",
-      "Kummer's theorem for each binomial factor gives $v_p\\binom{k_1+\\cdots+k_i}{k_1+\\cdots+k_{i-1}} = c(k_i, k_1+\\cdots+k_{i-1}; p)$ — the carries when adding the $i$-th part to the running sum. Summing over all $i$ gives the total carries for adding all parts.",
-      "The Lean definition uses `List.scanl (· + ·) 0` to compute running sums, then `zip`s with the original list to form the binomial argument pairs. This matches the mathematical telescoping exactly, but the general proof requires list induction on `ks`.",
+      "Kummer's theorem for each binomial factor gives $v_p\\binom{k_1+\\cdots+k_i}{k_1+\\cdots+k_{i-1}} = c(k_i, k_1+\\cdots+k_{i-1}; p)$ \u2014 the carries when adding the $i$-th part to the running sum. Summing over all $i$ gives the total carries for adding all parts.",
+      "The Lean definition uses `List.scanl (\u00b7 + \u00b7) 0` to compute running sums, then `zip`s with the original list to form the binomial argument pairs. This matches the mathematical telescoping exactly, but the general proof requires list induction on `ks`.",
       "The pair case `multinomial_pair` is trivially proved using `Nat.add_choose_eq`, confirming the definition is correct. The triple case requires the identity $(a+b+c)!/(a! \\cdot b! \\cdot c!) = (\\binom{a+b}{a})(\\binom{a+b+c}{a+b})$, proved up to the final factorial division.",
       "The p-adic valuation statement v_p(multinomial(ks)) = total carries is documented as a comment in the file. Full formalization requires a base-p carry-counting formalism not yet available in Mathlib."
     ]
@@ -73,7 +73,7 @@
       "title": "Multinomial Coefficient Definition",
       "startLine": 33,
       "endLine": 36,
-      "summary": "Defines `multinomial (ks : List ℕ) : ℕ` as `(ks.sum).factorial / (ks.map Nat.factorial).prod`. Marked `noncomputable` since Lean's kernel does not evaluate natural number division with classical logic.",
+      "summary": "Defines `multinomial (ks : List \u2115) : \u2115` as `(ks.sum).factorial / (ks.map Nat.factorial).prod`. Marked `noncomputable` since Lean's kernel does not evaluate natural number division with classical logic.",
       "mathContext": "$\\binom{n}{k_1,\\ldots,k_m} = \\frac{n!}{k_1! \\cdot k_2! \\cdots k_m!}$ where $n = \\sum k_i$"
     },
     {
@@ -103,7 +103,7 @@
   ],
   "conclusion": {
     "summary": "This file fully establishes the algebraic scaffolding for the multinomial extension of Kummer's theorem. All sorries have been eliminated: `multinomial_eq_prod_choose` is proved via backward list induction in companion file `KummerTheoremOQ01Aristotle.lean`, `multinomial_pair` and `multinomial_triple` are directly proved via `Nat.choose_mul_factorial_mul_factorial`. The p-adic valuation statement (v_p of multinomial = total carries) is documented as a comment; full formalization awaits base-p carry counting in Mathlib.",
-    "implications": "**Divisibility of multinomial coefficients**: Kummer's theorem for multinomials immediately gives a divisibility criterion: $p \\mid \\binom{n}{k_1,\\ldots,k_m}$ if and only if there is at least one carry when adding $k_1,\\ldots,k_m$ in base $p$. The coefficient is NOT divisible by $p$ precisely when $k_1,\\ldots,k_m$ are the base-$p$ digits of $n$ in some order — this generalizes Lucas' theorem to multiple parts.\n\n**Lucas' theorem and its multinomial extension**: Lucas' theorem states $\\binom{m}{n} \\equiv \\prod_i \\binom{m_i}{n_i} \\pmod{p}$ where $m_i, n_i$ are the base-$p$ digits of $m$ and $n$. The multinomial analog (Granville 1997) states $\\binom{n}{k_1,\\ldots,k_m} \\equiv \\prod_{\\text{digits}} \\binom{n_j}{k_{1,j},\\ldots,k_{m,j}} \\pmod{p}$, where the product is over digit positions. This is a direct consequence of the carry-count formula: zero carries means the digits don't interact.\n\n**Combinatorial identities**: The `multinomial_eq_prod_choose` identity is a generating function identity: it gives the coefficient of $x_1^{k_1} \\cdots x_m^{k_m}$ in $(x_1+\\cdots+x_m)^n$ as the telescoping product. This is used to prove the multinomial theorem, Vandermonde's identity (which is the $m=2$ case), and various symmetric function identities.\n\n**q-Analogs and Gaussian binomials**: The $q$-multinomial coefficient $\\binom{n}{k_1,\\ldots,k_m}_q$ (Gaussian multinomial) satisfies an analogous carry-count theorem at roots of unity. The iterated decomposition $\\binom{n}{k_1,\\ldots,k_m}_q = \\prod_i \\binom{S_i}{k_i}_q$ holds in the $q$-analog setting, connecting to the theory of quantum groups and $p$-divisibility of $q$-binomials.",
+    "implications": "**Divisibility of multinomial coefficients**: Kummer's theorem for multinomials immediately gives a divisibility criterion: $p \\mid \\binom{n}{k_1,\\ldots,k_m}$ if and only if there is at least one carry when adding $k_1,\\ldots,k_m$ in base $p$. The coefficient is NOT divisible by $p$ precisely when $k_1,\\ldots,k_m$ are the base-$p$ digits of $n$ in some order \u2014 this generalizes Lucas' theorem to multiple parts.\n\n**Lucas' theorem and its multinomial extension**: Lucas' theorem states $\\binom{m}{n} \\equiv \\prod_i \\binom{m_i}{n_i} \\pmod{p}$ where $m_i, n_i$ are the base-$p$ digits of $m$ and $n$. The multinomial analog (Granville 1997) states $\\binom{n}{k_1,\\ldots,k_m} \\equiv \\prod_{\\text{digits}} \\binom{n_j}{k_{1,j},\\ldots,k_{m,j}} \\pmod{p}$, where the product is over digit positions. This is a direct consequence of the carry-count formula: zero carries means the digits don't interact.\n\n**Combinatorial identities**: The `multinomial_eq_prod_choose` identity is a generating function identity: it gives the coefficient of $x_1^{k_1} \\cdots x_m^{k_m}$ in $(x_1+\\cdots+x_m)^n$ as the telescoping product. This is used to prove the multinomial theorem, Vandermonde's identity (which is the $m=2$ case), and various symmetric function identities.\n\n**q-Analogs and Gaussian binomials**: The $q$-multinomial coefficient $\\binom{n}{k_1,\\ldots,k_m}_q$ (Gaussian multinomial) satisfies an analogous carry-count theorem at roots of unity. The iterated decomposition $\\binom{n}{k_1,\\ldots,k_m}_q = \\prod_i \\binom{S_i}{k_i}_q$ holds in the $q$-analog setting, connecting to the theory of quantum groups and $p$-divisibility of $q$-binomials.",
     "openQuestions": [
       "Can the p-adic valuation statement be fully formalized using Kummer's theorem from Mathlib? This would require a Lean formalism for base-p carries (not yet in Mathlib) and induction over the telescoping product.",
       "Is there a q-analog? The q-binomial coefficient (Gaussian binomial) satisfies a Kummer-like theorem; the q-multinomial analog is less well-studied.",
@@ -116,14 +116,19 @@
       "Mathlib",
       "Proofs.KummerTheoremOQ01Aristotle"
     ],
-    "opens": ["Nat"],
+    "opens": [
+      "Nat"
+    ],
     "namespace": "KummerMultinomial",
     "axiomCount": 0,
     "lineCount": 108,
     "theoremCount": 3,
     "definitionCount": 1,
     "path": "Proofs/KummerTheoremOQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/KummerTheoremOQ01Aristotle.lean"
+    ]
   },
   "sorries": 0
 }

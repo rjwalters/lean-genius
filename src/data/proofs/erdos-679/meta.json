@@ -1,10 +1,10 @@
 {
   "id": "erdos-679",
-  "title": "Erdős #679: Small ω(n-k) for All k < n",
+  "title": "Erd\u0151s #679: Small \u03c9(n-k) for All k < n",
   "slug": "erdos-679",
-  "description": "Are there infinitely many n such that ω(n-k) < (1+ε) log k / log log k for all large k < n? The main question is OPEN; the stronger version with O(1) error is FALSE.",
+  "description": "Are there infinitely many n such that \u03c9(n-k) < (1+\u03b5) log k / log log k for all large k < n? The main question is OPEN; the stronger version with O(1) error is FALSE.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/679",
     "date": "1979",
     "status": "formalized",
@@ -27,8 +27,8 @@
       "subfield": "Distribution of prime factor counts",
       "level": "research",
       "centralObjects": [
-        "ω(n) distinct prime factor count",
-        "threshold (1+ε) log k / log log k",
+        "\u03c9(n) distinct prime factor count",
+        "threshold (1+\u03b5) log k / log log k",
         "SatisfiesProperty predicate",
         "Hardy-Ramanujan normal order"
       ],
@@ -40,12 +40,12 @@
         "probabilistic heuristics",
         "dichotomy principle"
       ],
-      "significance": "Probes the simultaneous distribution of ω across arithmetic progressions n-k. The main conjecture is open after 45+ years and cannot be resolved by finite computation. The disproved stronger version (O(1) error) shows the (1+ε) multiplicative slack is essential. Resolution would reveal deep structure in the correlation of prime factor counts across consecutive differences."
+      "significance": "Probes the simultaneous distribution of \u03c9 across arithmetic progressions n-k. The main conjecture is open after 45+ years and cannot be resolved by finite computation. The disproved stronger version (O(1) error) shows the (1+\u03b5) multiplicative slack is essential. Resolution would reveal deep structure in the correlation of prime factor counts across consecutive differences."
     },
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
-        "description": "Finset of distinct prime factors, the foundation for the ω definition",
+        "description": "Finset of distinct prime factors, the foundation for the \u03c9 definition",
         "module": "Mathlib.Data.Nat.Factors"
       },
       {
@@ -70,19 +70,19 @@
       }
     ],
     "originalContributions": [
-      "omega: ω(n) via Nat.primeFactors.card with basic properties",
-      "omega_mul_coprime: additivity of ω on coprime arguments",
+      "omega: \u03c9(n) via Nat.primeFactors.card with basic properties",
+      "omega_mul_coprime: additivity of \u03c9 on coprime arguments",
       "NormalOrderOmega: Hardy-Ramanujan normal order formalization",
-      "threshold: (1+ε) log k / log log k threshold function",
-      "SatisfiesProperty: simultaneous small-ω predicate",
+      "threshold: (1+\u03b5) log k / log log k threshold function",
+      "SatisfiesProperty: simultaneous small-\u03c9 predicate",
       "MainConjecture: infinitely many special n exist (OPEN)",
       "StrongerVersion: O(1) error version (DISPROVEN)",
       "stronger_version_false: formal negation of the stronger version",
       "dottedcalculator_result: quantitative lower bound with secondary term",
-      "bigOmega / OmegaVariant: Ω function variant with log₂ threshold",
+      "bigOmega / OmegaVariant: \u03a9 function variant with log\u2082 threshold",
       "primorial: product of first r primes definition",
       "dichotomy: excluded-middle separation of outcomes",
-      "density_upper_bound: special n have density ≤ x/log x"
+      "density_upper_bound: special n have density \u2264 x/log x"
     ],
     "axiomCount": 0,
     "lineCount": 259,
@@ -91,14 +91,14 @@
     "theoremCount": 16
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1979 about the distribution of distinct prime factors across differences n-k. The question asks whether infinitely many integers n exist such that all predecessors n-k (for large k) have ω below the threshold (1+ε) log k / log log k.\n\nThe problem has a subtle two-part structure. The stronger version — with an additive O(1) error instead of the multiplicative (1+ε) factor — has been disproven: for every large n, some k < n gives ω(n-k) ≥ log k/log log k + c·log k/(log log k)². But the main question with the (1+ε) slack remains open.\n\nThe Hardy-Ramanujan theorem (1917) provides the context: ω(n) ~ log log n for 'typical' n, while the maximum of ω for n ≤ x is ~ log x/log log x. The threshold is (1+ε) times this maximum, so the question asks whether all predecessors can simultaneously stay below (1+ε) times the extremal order. Probabilistic heuristics suggest special n should be rare (count ~ x/log x), and the problem provably cannot be resolved by finite computation.",
-    "problemStatement": "Let ε > 0 and ω(n) count the number of distinct prime factors of n. Are there infinitely many n such that ω(n-k) < (1+ε) log k / log log k for all sufficiently large k < n?",
-    "text": "Are there infinitely many n such that ω(n-k) < (1+ε) log k / log log k for all large k < n? The main question is OPEN; the stronger version with O(1) error is FALSE.",
-    "proofStrategy": "The formalization defines ω via Nat.primeFactors.card, establishes properties (additivity, values at primes), axiomatizes the Hardy-Ramanujan normal order, defines the threshold and main conjecture, disproves the stronger O(1) version, introduces the Ω variant, analyzes special cases (powers of 2, primorials), proves lower bounds on ω(n-k), establishes the dichotomy (either infinitely many or uniform lower bound), and bounds the density of special n.",
+    "historicalContext": "Erd\u0151s posed this problem in 1979 about the distribution of distinct prime factors across differences n-k. The question asks whether infinitely many integers n exist such that all predecessors n-k (for large k) have \u03c9 below the threshold (1+\u03b5) log k / log log k.\n\nThe problem has a subtle two-part structure. The stronger version \u2014 with an additive O(1) error instead of the multiplicative (1+\u03b5) factor \u2014 has been disproven: for every large n, some k < n gives \u03c9(n-k) \u2265 log k/log log k + c\u00b7log k/(log log k)\u00b2. But the main question with the (1+\u03b5) slack remains open.\n\nThe Hardy-Ramanujan theorem (1917) provides the context: \u03c9(n) ~ log log n for 'typical' n, while the maximum of \u03c9 for n \u2264 x is ~ log x/log log x. The threshold is (1+\u03b5) times this maximum, so the question asks whether all predecessors can simultaneously stay below (1+\u03b5) times the extremal order. Probabilistic heuristics suggest special n should be rare (count ~ x/log x), and the problem provably cannot be resolved by finite computation.",
+    "problemStatement": "Let \u03b5 > 0 and \u03c9(n) count the number of distinct prime factors of n. Are there infinitely many n such that \u03c9(n-k) < (1+\u03b5) log k / log log k for all sufficiently large k < n?",
+    "text": "Are there infinitely many n such that \u03c9(n-k) < (1+\u03b5) log k / log log k for all large k < n? The main question is OPEN; the stronger version with O(1) error is FALSE.",
+    "proofStrategy": "The formalization defines \u03c9 via Nat.primeFactors.card, establishes properties (additivity, values at primes), axiomatizes the Hardy-Ramanujan normal order, defines the threshold and main conjecture, disproves the stronger O(1) version, introduces the \u03a9 variant, analyzes special cases (powers of 2, primorials), proves lower bounds on \u03c9(n-k), establishes the dichotomy (either infinitely many or uniform lower bound), and bounds the density of special n.",
     "keyInsights": [
-      "The stronger version with O(1) error is FALSE: ∃ c > 0 s.t. ∀ large n, ∃ k: ω(n-k) ≥ log k/log log k + c·log k/(log log k)²",
-      "The (1+ε) multiplicative slack version is OPEN after 45+ years",
-      "Hardy-Ramanujan: ω(n) ~ log log n for almost all n; max ω(n≤x) ~ log x/log log x",
+      "The stronger version with O(1) error is FALSE: \u2203 c > 0 s.t. \u2200 large n, \u2203 k: \u03c9(n-k) \u2265 log k/log log k + c\u00b7log k/(log log k)\u00b2",
+      "The (1+\u03b5) multiplicative slack version is OPEN after 45+ years",
+      "Hardy-Ramanujan: \u03c9(n) ~ log log n for almost all n; max \u03c9(n\u2264x) ~ log x/log log x",
       "Probabilistic heuristic: special n have count ~ x/log x (rare but possibly infinite)",
       "Key dichotomy: either infinitely many exist or there is a uniform lower bound with c > 0",
       "The problem cannot be resolved by finite computation"
@@ -111,100 +111,100 @@
   "sections": [
     {
       "id": "omega",
-      "title": "The ω Function",
-      "summary": "Defines ω(n) = |primeFactors(n)| via `Nat.primeFactors.card`. Proves ω(1) = 0, ω(p) = 1, ω(p^k) = 1, and additivity ω(mn) = ω(m) + ω(n) for coprime m, n.",
+      "title": "The \u03c9 Function",
+      "summary": "Defines \u03c9(n) = |primeFactors(n)| via `Nat.primeFactors.card`. Proves \u03c9(1) = 0, \u03c9(p) = 1, \u03c9(p^k) = 1, and additivity \u03c9(mn) = \u03c9(m) + \u03c9(n) for coprime m, n.",
       "startLine": 30,
       "endLine": 52,
-      "mathContext": "Formal definition: Defines ω(n) = |primeFactors(n)| via `Nat.primeFactors.card`. Proves ω(1) = 0, ω(p) = 1, ω(p^k) = 1, and additivity ω(mn) = ω(m) + ω(n) for coprime m, n."
+      "mathContext": "Formal definition: Defines \u03c9(n) = |primeFactors(n)| via `Nat.primeFactors.card`. Proves \u03c9(1) = 0, \u03c9(p) = 1, \u03c9(p^k) = 1, and additivity \u03c9(mn) = \u03c9(m) + \u03c9(n) for coprime m, n."
     },
     {
       "id": "hardy-ramanujan",
       "title": "Hardy-Ramanujan Normal Order",
-      "summary": "Formalizes the normal order theorem: ω(n) ~ log log n for almost all n. Also bounds the maximum: max ω(n≤x) ≤ 2 log x / log log x.",
+      "summary": "Formalizes the normal order theorem: \u03c9(n) ~ log log n for almost all n. Also bounds the maximum: max \u03c9(n\u2264x) \u2264 2 log x / log log x.",
       "startLine": 53,
       "endLine": 73,
-      "mathContext": "Formalizes the normal order theorem: ω(n) ~ log $\\log n$ for almost all n. Also bounds the maximum: max ω(n$\\leq$x) $\\leq$ 2 log x / log log x."
+      "mathContext": "Formalizes the normal order theorem: \u03c9(n) ~ log $\\log n$ for almost all n. Also bounds the maximum: max \u03c9(n$\\leq$x) $\\leq$ 2 log x / log log x."
     },
     {
       "id": "main",
       "title": "The Main Question",
-      "summary": "Defines the threshold (1+ε) log k / log log k, the SatisfiesProperty predicate, and the MainConjecture: infinitely many n satisfy the property. Notes the problem is OPEN.",
+      "summary": "Defines the threshold (1+\u03b5) log k / log log k, the SatisfiesProperty predicate, and the MainConjecture: infinitely many n satisfy the property. Notes the problem is OPEN.",
       "startLine": 74,
       "endLine": 91,
-      "mathContext": "Formal definition: Defines the threshold (1+ε) log k / log log k, the SatisfiesProperty predicate, and the MainConjecture: infinitely many n satisfy the property. Notes the problem is OPEN."
+      "mathContext": "Formal definition: Defines the threshold (1+\u03b5) log k / log log k, the SatisfiesProperty predicate, and the MainConjecture: infinitely many n satisfy the property. Notes the problem is OPEN."
     },
     {
       "id": "stronger",
       "title": "Stronger Version (Disproven)",
-      "summary": "Defines StrongerVersion with O(1) error and proves it FALSE. Gives quantitative lower bound: ∃ c > 0, ∀ large n, ∃ k: ω(n-k) ≥ threshold + c·log k/(log log k)².",
+      "summary": "Defines StrongerVersion with O(1) error and proves it FALSE. Gives quantitative lower bound: \u2203 c > 0, \u2200 large n, \u2203 k: \u03c9(n-k) \u2265 threshold + c\u00b7log k/(log log k)\u00b2.",
       "startLine": 92,
       "endLine": 110,
-      "mathContext": "Defines StrongerVersion with $O(1)$ error and proves it FALSE. Gives quantitative lower bound: ∃ c > 0, ∀ large n, ∃ k: ω(n-k) $\\geq$ threshold + c·log k/(log log k)²."
+      "mathContext": "Defines StrongerVersion with $O(1)$ error and proves it FALSE. Gives quantitative lower bound: \u2203 c > 0, \u2200 large n, \u2203 k: \u03c9(n-k) $\\geq$ threshold + c\u00b7log k/(log log k)\u00b2."
     },
     {
       "id": "bigomega",
-      "title": "The Ω Function Variant",
-      "summary": "Defines Ω(n) counting prime factors with multiplicity, proves Ω ≥ ω, and states the analogous question with threshold log₂ k.",
+      "title": "The \u03a9 Function Variant",
+      "summary": "Defines \u03a9(n) counting prime factors with multiplicity, proves \u03a9 \u2265 \u03c9, and states the analogous question with threshold log\u2082 k.",
       "startLine": 111,
       "endLine": 129,
-      "mathContext": "Defines Ω(n) counting prime factors with multiplicity, proves Ω $\\geq$ ω, and states the analogous question with threshold log₂ k."
+      "mathContext": "Defines \u03a9(n) counting prime factors with multiplicity, proves \u03a9 $\\geq$ \u03c9, and states the analogous question with threshold log\u2082 k."
     },
     {
       "id": "special",
       "title": "Special Cases",
-      "summary": "Analyzes n = 2^m (powers of 2) and n = primorial(r) = p₁···pᵣ. Shows both fail the property — some k always gives large ω(n-k).",
+      "summary": "Analyzes n = 2^m (powers of 2) and n = primorial(r) = p\u2081\u00b7\u00b7\u00b7p\u1d63. Shows both fail the property \u2014 some k always gives large \u03c9(n-k).",
       "startLine": 130,
       "endLine": 144,
-      "mathContext": "Analyzes n = $2^{m}$ (powers of 2) and n = primorial(r) = p₁···pᵣ. Shows both fail the property — some k always gives large ω(n-k)."
+      "mathContext": "Analyzes n = $2^{m}$ (powers of 2) and n = primorial(r) = p\u2081\u00b7\u00b7\u00b7p\u1d63. Shows both fail the property \u2014 some k always gives large \u03c9(n-k)."
     },
     {
       "id": "lower",
       "title": "Lower Bounds",
-      "summary": "For any n ≥ 10, some k gives ω(n-k) ≥ (log log n)/2. The set of k with ω(n-k) ≤ 2 has density < 1.",
+      "summary": "For any n \u2265 10, some k gives \u03c9(n-k) \u2265 (log log n)/2. The set of k with \u03c9(n-k) \u2264 2 has density < 1.",
       "startLine": 145,
       "endLine": 158,
-      "mathContext": "For any n $\\geq$ 10, some k gives ω(n-k) $\\geq$ (log $\\log n$)/2. The set of k with ω(n-k) $\\leq$ 2 has density < 1."
+      "mathContext": "For any n $\\geq$ 10, some k gives \u03c9(n-k) $\\geq$ (log $\\log n$)/2. The set of k with \u03c9(n-k) $\\leq$ 2 has density < 1."
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Placeholder connections to Problem #248 (bounded ω(n+k), solved by Tao-Teräväinen) and Problem #413 (ω-barriers).",
+      "summary": "Placeholder connections to Problem #248 (bounded \u03c9(n+k), solved by Tao-Ter\u00e4v\u00e4inen) and Problem #413 (\u03c9-barriers).",
       "startLine": 159,
       "endLine": 168,
-      "mathContext": "Bound: Placeholder connections to Problem #248 (bounded ω(n+k), solved by Tao-Teräväinen) and Problem #413 (ω-barriers)."
+      "mathContext": "Bound: Placeholder connections to Problem #248 (bounded \u03c9(n+k), solved by Tao-Ter\u00e4v\u00e4inen) and Problem #413 (\u03c9-barriers)."
     },
     {
       "id": "heuristics",
       "title": "Probabilistic Heuristics",
-      "summary": "Random n should not satisfy the property. Expected count of special n ≤ x is heuristically ~ x/log x. Computational evidence: no n ≤ 10^6 satisfies the property for ε = 0.1.",
+      "summary": "Random n should not satisfy the property. Expected count of special n \u2264 x is heuristically ~ x/log x. Computational evidence: no n \u2264 10^6 satisfies the property for \u03b5 = 0.1.",
       "startLine": 169,
       "endLine": 189,
-      "mathContext": "Random n should not satisfy the property. Expected count of special n $\\leq$ x is heuristically ~ x/log x. Computational evidence: no n $\\leq$ $10^{6}$ satisfies the property for ε = 0.1."
+      "mathContext": "Random n should not satisfy the property. Expected count of special n $\\leq$ x is heuristically ~ x/log x. Computational evidence: no n $\\leq$ $10^{6}$ satisfies the property for \u03b5 = 0.1."
     },
     {
       "id": "dichotomy",
       "title": "Key Dichotomy",
-      "summary": "Either infinitely many special n exist (MainConjecture) or there is a uniform lower bound: ∀ large n, ∃ k with ω(n-k) ≥ (1+c) threshold.",
+      "summary": "Either infinitely many special n exist (MainConjecture) or there is a uniform lower bound: \u2200 large n, \u2203 k with \u03c9(n-k) \u2265 (1+c) threshold.",
       "startLine": 190,
       "endLine": 198,
-      "mathContext": "Either infinitely many special n exist (MainConjecture) or there is a uniform lower bound: ∀ large n, ∃ k with ω(n-k) $\\geq$ (1+c) threshold."
+      "mathContext": "Either infinitely many special n exist (MainConjecture) or there is a uniform lower bound: \u2200 large n, \u2203 k with \u03c9(n-k) $\\geq$ (1+c) threshold."
     },
     {
       "id": "density",
       "title": "Density Considerations",
-      "summary": "If special n exist, their count is at most x/log x (zero density). Asks whether density is even x^α for α < 1.",
+      "summary": "If special n exist, their count is at most x/log x (zero density). Asks whether density is even x^\u03b1 for \u03b1 < 1.",
       "startLine": 199,
       "endLine": 251,
-      "mathContext": "Mathematical content: If special n exist, their count is at most x/log x (zero density). Asks whether density is even x^α for α < 1."
+      "mathContext": "Mathematical content: If special n exist, their count is at most x/log x (zero density). Asks whether density is even x^\u03b1 for \u03b1 < 1."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #679 on simultaneous smallness of ω(n-k). The main conjecture (OPEN) asks whether infinitely many n have all predecessors with ω below (1+ε) times the extremal order. The stronger O(1) version is disproven. The problem cannot be resolved by finite computation and connects deeply to the Hardy-Ramanujan theorem and the distribution of prime factors.",
-    "implications": "Resolution would reveal whether the prime factor structure of n-1, n-2, ..., 1 can be simultaneously controlled The disproof of the O(1) version shows the (1+ε) slack is essential and sharp Connections to Problems #248 and #413 place this in a web of ω-distribution questions The density bound x/log x suggests special n are at least as rare as primes",
+    "summary": "This formalization captures Erd\u0151s Problem #679 on simultaneous smallness of \u03c9(n-k). The main conjecture (OPEN) asks whether infinitely many n have all predecessors with \u03c9 below (1+\u03b5) times the extremal order. The stronger O(1) version is disproven. The problem cannot be resolved by finite computation and connects deeply to the Hardy-Ramanujan theorem and the distribution of prime factors.",
+    "implications": "Resolution would reveal whether the prime factor structure of n-1, n-2, ..., 1 can be simultaneously controlled The disproof of the O(1) version shows the (1+\u03b5) slack is essential and sharp Connections to Problems #248 and #413 place this in a web of \u03c9-distribution questions The density bound x/log x suggests special n are at least as rare as primes",
     "openQuestions": [
-      "Does the main conjecture hold for any ε > 0?",
+      "Does the main conjecture hold for any \u03b5 > 0?",
       "What is the density of special n if they exist?",
-      "What is the analogous answer for Ω (prime factors with multiplicity)?",
+      "What is the analogous answer for \u03a9 (prime factors with multiplicity)?",
       "Can sieve-theoretic methods (as used for #248) be adapted to this backward-shift setting?"
     ]
   },
@@ -212,17 +212,17 @@
     {
       "targetId": "erdos-248",
       "relationship": "related",
-      "description": "Both study ω bounds on shifted integers; #248 asks about forward shifts ω(n+k) (solved by Tao-Teräväinen), #679 about backward shifts ω(n-k) (open)"
+      "description": "Both study \u03c9 bounds on shifted integers; #248 asks about forward shifts \u03c9(n+k) (solved by Tao-Ter\u00e4v\u00e4inen), #679 about backward shifts \u03c9(n-k) (open)"
     },
     {
       "targetId": "erdos-413",
       "relationship": "related",
-      "description": "Both study structural constraints on ω; #413 formalizes ω-barriers (m + ω(m) <= n), #679 asks about simultaneous smallness of ω(n-k)"
+      "description": "Both study structural constraints on \u03c9; #413 formalizes \u03c9-barriers (m + \u03c9(m) <= n), #679 asks about simultaneous smallness of \u03c9(n-k)"
     },
     {
       "targetId": "erdos-878",
       "relationship": "related",
-      "description": "Both study prime factorization functions with unusual asymptotic behavior; #878 defines unconventional additive functions f(n), F(n) while #679 studies ω(n-k) distribution"
+      "description": "Both study prime factorization functions with unusual asymptotic behavior; #878 defines unconventional additive functions f(n), F(n) while #679 studies \u03c9(n-k) distribution"
     }
   ],
   "references": [
@@ -230,19 +230,19 @@
       "title": "The normal number of prime factors of a number n",
       "author": "Hardy, G. H. and Ramanujan, S.",
       "year": "1917",
-      "description": "Foundational result: ω(n) ~ log log n for almost all n, providing the baseline for the threshold in Problem #679"
+      "description": "Foundational result: \u03c9(n) ~ log log n for almost all n, providing the baseline for the threshold in Problem #679"
     },
     {
       "title": "The Gaussian law of errors in the theory of additive number theoretic functions",
-      "author": "Erdős, P. and Kac, M.",
+      "author": "Erd\u0151s, P. and Kac, M.",
       "year": "1940",
-      "description": "Erdős-Kac theorem: (ω(n) - log log n)/sqrt(log log n) converges to a Gaussian, quantifying the fluctuations relevant to #679"
+      "description": "Erd\u0151s-Kac theorem: (\u03c9(n) - log log n)/sqrt(log log n) converges to a Gaussian, quantifying the fluctuations relevant to #679"
     },
     {
       "title": "Divisors",
       "author": "Hall, R. R. and Tenenbaum, G.",
       "year": "1988",
-      "description": "Comprehensive reference on divisor functions and additive number theory, including large deviation estimates for ω"
+      "description": "Comprehensive reference on divisor functions and additive number theory, including large deviation estimates for \u03c9"
     },
     {
       "key": "HR17",
@@ -251,7 +251,7 @@
     },
     {
       "key": "EK40",
-      "citation": "Erdős, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, Amer. J. Math. 62 (1940), 738-742.",
+      "citation": "Erd\u0151s, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, Amer. J. Math. 62 (1940), 738-742.",
       "type": "paper"
     },
     {
@@ -261,7 +261,7 @@
     },
     {
       "key": "erdos679",
-      "citation": "Erdős Problems, Problem #679, https://erdosproblems.com/679",
+      "citation": "Erd\u0151s Problems, Problem #679, https://erdosproblems.com/679",
       "type": "website"
     }
   ],
@@ -284,7 +284,10 @@
     "theoremCount": 16,
     "definitionCount": 18,
     "sorries": 10,
-    "path": "Proofs/Erdos679Problem.lean"
+    "path": "Proofs/Erdos679Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos679ProblemAristotle.lean"
+    ]
   },
   "sorries": 10
 }

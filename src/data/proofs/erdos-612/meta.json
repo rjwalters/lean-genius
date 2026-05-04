@@ -1,10 +1,10 @@
 {
   "id": "erdos-612",
-  "title": "Erdős Problem #612: Diameter Bounds for Clique-Free Graphs",
+  "title": "Erd\u0151s Problem #612: Diameter Bounds for Clique-Free Graphs",
   "slug": "erdos-612",
-  "description": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 4; base case (triangle-free) remains valid.",
+  "description": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D \u2264 \u03b1\u00b7n/d + O(1) disproved for r \u2265 4; base case (triangle-free) remains valid.",
   "meta": {
-    "author": "Erdős-Pach-Pollack-Tuza (1989), counterexamples by Czabarka-Singgih-Székely (2021)",
+    "author": "Erd\u0151s-Pach-Pollack-Tuza (1989), counterexamples by Czabarka-Singgih-Sz\u00e9kely (2021)",
     "sourceUrl": "https://erdosproblems.com/612",
     "date": "1989",
     "status": "axiomatized",
@@ -44,8 +44,8 @@
       "Definition of diameter and minimum degree",
       "Definition of K_r-free (clique-free) graphs",
       "Statement of original conjectures 1 and 2",
-      "Formalization of counterexample existence (Czabarka-Singgih-Székely)",
-      "Statement of amended conjecture: D ≤ (3-2/k)·n/d",
+      "Formalization of counterexample existence (Czabarka-Singgih-Sz\u00e9kely)",
+      "Statement of amended conjecture: D \u2264 (3-2/k)\u00b7n/d",
       "Triangle-free base case validation",
       "Special cases: path, cycle, complete, bipartite graphs"
     ],
@@ -56,15 +56,15 @@
     "theoremCount": 12
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #612: Diameter Bounds for Clique-Free Graphs**\n\nThe diameter-degree relationship in graphs has been studied since the mid-20th century. The fundamental question is: how does forbidding dense substructures (cliques) affect the diameter?\n\n**The Basic Bound (Erdős-Pach-Pollack-Tuza, 1989):**\nIn their landmark 1989 paper 'How to make a graph connected,' Erdős, Pach, Pollack, and Tuza proved that any connected graph on $n$ vertices with minimum degree $d$ has diameter $D \\le 3n/(d+1) + O(1)$. The coefficient 3 is tight for general graphs. They then asked: can forbidding $K_r$ subgraphs improve this coefficient?\n\n**Original Conjectures (1989):**\n1. $K_{2r}$-free with $(r-1)(3r+2) \\mid d$: $D \\le \\frac{2(r-1)(3r+2)}{2r^2-1} \\cdot n/d + O(1)$\n2. $K_{2r+1}$-free with $(3r-1) \\mid d$: $D \\le \\frac{3r-1}{r} \\cdot n/d + O(1)$\n\nThese conjectures predicted specific coefficients strictly less than 3, with divisibility conditions on $d$ to handle boundary effects.\n\n**Counterexamples (Czabarka-Singgih-Székely, 2021):**\nOver 30 years later, Eva Czabarka, Inne Singgih, and László Székely disproved both conjectures for $r \\ge 2$. They constructed explicit $K_{2r}$-free graph families with diameter $D = (6r-5)n/((2r-1)d + 2r-3)$, exceeding the conjectured bounds asymptotically. Their construction uses iterated blow-ups of carefully chosen base graphs.\n\n**The Surviving Base Case:**\nRemarkably, the $r = 1$ case (triangle-free) survives: $D \\le 5n/(2d) + O(1)$ with coefficient $5/2 = 2.5 < 3$. This uses the key property that in triangle-free graphs, neighborhoods of adjacent vertices are disjoint.\n\n**Amended Conjecture (Czabarka-Singgih-Székely, 2021):**\nThey proposed a simpler conjecture: $D \\le (3 - 2/k) \\cdot n/d + O(1)$ for $K_{k+1}$-free graphs. This interpolates cleanly from $k = 2$ (coefficient 2) to $k \\to \\infty$ (coefficient 3).\n\n**Further Counterexamples (Cambie-Jooken, 2025):**\nEven the amended conjecture was shown to fail for $K_4$-free graphs without additional colorability assumptions. The verified cases ($k = 3, 4$) require $\\chi(G) \\le k$, which is strictly stronger than $\\omega(G) \\le k$ by Mycielski-type constructions.\n\n**Current Status:**\nThe exact optimal coefficient $\\alpha^*(k)$ such that $D \\le \\alpha^*(k) \\cdot n/\\delta + O(1)$ for $K_{k+1}$-free connected graphs remains unknown for $k \\ge 3$. Only the triangle-free case ($k = 2$, coefficient $5/2$) is fully resolved.",
-    "problemStatement": "**Setup:** G is connected, n vertices, minimum degree d, diameter D, K_r-free.\n\n**Original Question:** Does D ≤ α(r) · n/d + O(1) for specific α(r) coefficients?\n\n**Status:**\n- **r = 1 (triangle-free):** TRUE — D ≤ 5n/(2d) + O(1)\n- **r ≥ 2:** DISPROVED — counterexamples exist with larger diameter\n\n**Amended Conjecture:** D ≤ (3 - 2/k) · n/d for K_{k+1}-free (partially verified)",
-    "text": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 4; base case (triangle-free) remains valid.",
-    "proofStrategy": "The formalization:\n\n1. Defines `diameter`, `minDegree`, and `IsKFree`\n2. States `OriginalConjecture1` and `OriginalConjecture2`\n3. Defines coefficient functions `alpha_2r` and `alpha_2r1`\n4. States `counterexample_exists` for r ≥ 2\n5. Proves `original_conjecture1_false` for r ≥ 2\n6. States `triangle_free_diameter` for base case\n7. Defines `AmendedConjecture` with coefficient (3 - 2/k)\n8. Shows special cases and the Moore bound connection",
+    "historicalContext": "**Erd\u0151s Problem #612: Diameter Bounds for Clique-Free Graphs**\n\nThe diameter-degree relationship in graphs has been studied since the mid-20th century. The fundamental question is: how does forbidding dense substructures (cliques) affect the diameter?\n\n**The Basic Bound (Erd\u0151s-Pach-Pollack-Tuza, 1989):**\nIn their landmark 1989 paper 'How to make a graph connected,' Erd\u0151s, Pach, Pollack, and Tuza proved that any connected graph on $n$ vertices with minimum degree $d$ has diameter $D \\le 3n/(d+1) + O(1)$. The coefficient 3 is tight for general graphs. They then asked: can forbidding $K_r$ subgraphs improve this coefficient?\n\n**Original Conjectures (1989):**\n1. $K_{2r}$-free with $(r-1)(3r+2) \\mid d$: $D \\le \\frac{2(r-1)(3r+2)}{2r^2-1} \\cdot n/d + O(1)$\n2. $K_{2r+1}$-free with $(3r-1) \\mid d$: $D \\le \\frac{3r-1}{r} \\cdot n/d + O(1)$\n\nThese conjectures predicted specific coefficients strictly less than 3, with divisibility conditions on $d$ to handle boundary effects.\n\n**Counterexamples (Czabarka-Singgih-Sz\u00e9kely, 2021):**\nOver 30 years later, Eva Czabarka, Inne Singgih, and L\u00e1szl\u00f3 Sz\u00e9kely disproved both conjectures for $r \\ge 2$. They constructed explicit $K_{2r}$-free graph families with diameter $D = (6r-5)n/((2r-1)d + 2r-3)$, exceeding the conjectured bounds asymptotically. Their construction uses iterated blow-ups of carefully chosen base graphs.\n\n**The Surviving Base Case:**\nRemarkably, the $r = 1$ case (triangle-free) survives: $D \\le 5n/(2d) + O(1)$ with coefficient $5/2 = 2.5 < 3$. This uses the key property that in triangle-free graphs, neighborhoods of adjacent vertices are disjoint.\n\n**Amended Conjecture (Czabarka-Singgih-Sz\u00e9kely, 2021):**\nThey proposed a simpler conjecture: $D \\le (3 - 2/k) \\cdot n/d + O(1)$ for $K_{k+1}$-free graphs. This interpolates cleanly from $k = 2$ (coefficient 2) to $k \\to \\infty$ (coefficient 3).\n\n**Further Counterexamples (Cambie-Jooken, 2025):**\nEven the amended conjecture was shown to fail for $K_4$-free graphs without additional colorability assumptions. The verified cases ($k = 3, 4$) require $\\chi(G) \\le k$, which is strictly stronger than $\\omega(G) \\le k$ by Mycielski-type constructions.\n\n**Current Status:**\nThe exact optimal coefficient $\\alpha^*(k)$ such that $D \\le \\alpha^*(k) \\cdot n/\\delta + O(1)$ for $K_{k+1}$-free connected graphs remains unknown for $k \\ge 3$. Only the triangle-free case ($k = 2$, coefficient $5/2$) is fully resolved.",
+    "problemStatement": "**Setup:** G is connected, n vertices, minimum degree d, diameter D, K_r-free.\n\n**Original Question:** Does D \u2264 \u03b1(r) \u00b7 n/d + O(1) for specific \u03b1(r) coefficients?\n\n**Status:**\n- **r = 1 (triangle-free):** TRUE \u2014 D \u2264 5n/(2d) + O(1)\n- **r \u2265 2:** DISPROVED \u2014 counterexamples exist with larger diameter\n\n**Amended Conjecture:** D \u2264 (3 - 2/k) \u00b7 n/d for K_{k+1}-free (partially verified)",
+    "text": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D \u2264 \u03b1\u00b7n/d + O(1) disproved for r \u2265 4; base case (triangle-free) remains valid.",
+    "proofStrategy": "The formalization:\n\n1. Defines `diameter`, `minDegree`, and `IsKFree`\n2. States `OriginalConjecture1` and `OriginalConjecture2`\n3. Defines coefficient functions `alpha_2r` and `alpha_2r1`\n4. States `counterexample_exists` for r \u2265 2\n5. Proves `original_conjecture1_false` for r \u2265 2\n6. States `triangle_free_diameter` for base case\n7. Defines `AmendedConjecture` with coefficient (3 - 2/k)\n8. Shows special cases and the Moore bound connection",
     "keyInsights": [
       "**The BFS expansion argument:** The basic bound $D \\le 3n/(d+1)$ works by counting: from vertex $u$, the ball $B_r(u)$ of radius $r$ contains at least $\\min(n, 1 + d + d(d-1) + \\cdots)$ vertices. With minimum degree $d$, we reach all $n$ vertices in $\\sim 3n/d$ steps. Forbidding cliques changes the expansion rate, which is why the coefficient depends on $r$.",
       "**Neighborhood disjointness in triangle-free graphs:** If $G$ is triangle-free and $u \\sim v$, then $N(u) \\cap N(v) = \\emptyset$ (any common neighbor would form a triangle). This means $|N[u] \\cup N[v]| \\ge 1 + 2d$, roughly doubling the expansion rate compared to general graphs. This is the key structural property that gives coefficient $5/2$ instead of 3.",
       "**The gap between clique number and chromatic number:** The amended conjecture works under $\\chi(G) \\le k$ (colorability) but fails under $\\omega(G) \\le k$ (clique-freeness). Mycielski's construction gives triangle-free graphs with arbitrarily large $\\chi$, and similar constructions for larger $\\omega$ show that $K_{k+1}$-free is much weaker than $k$-colorable. The diameter bound depends on chromatic structure, not just clique structure.",
-      "**Counterexample via blow-ups:** The Czabarka-Singgih-Székely counterexamples use iterated blow-ups: replace each vertex of a base graph with a large independent set, creating a $K_{2r}$-free graph with many vertices but a long diameter forced by the base graph's structure. This technique exploits the gap between global clique-freeness and local expansion rate.",
+      "**Counterexample via blow-ups:** The Czabarka-Singgih-Sz\u00e9kely counterexamples use iterated blow-ups: replace each vertex of a base graph with a large independent set, creating a $K_{2r}$-free graph with many vertices but a long diameter forced by the base graph's structure. This technique exploits the gap between global clique-freeness and local expansion rate.",
       "**The degree-diameter trade-off as a spectrum:** The problem reveals a continuous spectrum from the path graph ($D = n-1$, $d = 1$) to the complete graph ($D = 1$, $d = n-1$). The coefficient $\\alpha(k)$ parametrizes this trade-off for $K_{k+1}$-free graphs. Finding $\\alpha^*(k)$ exactly for each $k$ remains the central open problem."
     ],
     "prerequisites": [
@@ -84,10 +84,10 @@
     {
       "id": "basic-bound",
       "title": "The Basic Bound",
-      "summary": "Axiomatizes the Erdős-Pach-Pollack-Tuza (1989) result: $D \\le 3n/(d+1) + C$ for any connected graph. This coefficient 3 is the baseline all clique-free improvements aim to beat.",
+      "summary": "Axiomatizes the Erd\u0151s-Pach-Pollack-Tuza (1989) result: $D \\le 3n/(d+1) + C$ for any connected graph. This coefficient 3 is the baseline all clique-free improvements aim to beat.",
       "startLine": 51,
       "endLine": 61,
-      "mathContext": "Axiomatized: Axiomatizes the Erdős-Pach-Pollack-Tuza (1989) result: $D \\le 3n/(d+1) + C$ for any connected graph. This coefficient 3 is the baseline all clique-free improvements aim to beat."
+      "mathContext": "Axiomatized: Axiomatizes the Erd\u0151s-Pach-Pollack-Tuza (1989) result: $D \\le 3n/(d+1) + C$ for any connected graph. This coefficient 3 is the baseline all clique-free improvements aim to beat."
     },
     {
       "id": "original-conjecture1",
@@ -107,7 +107,7 @@
     },
     {
       "id": "counterexamples",
-      "title": "Counterexamples (Czabarka-Singgih-Székely 2021)",
+      "title": "Counterexamples (Czabarka-Singgih-Sz\u00e9kely 2021)",
       "summary": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). Proves `original_conjecture1_false` for $r \\ge 2$.",
       "startLine": 104,
       "endLine": 124,
@@ -155,8 +155,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #612 has a complex status: the original conjectures are DISPROVED for r ≥ 2 by Czabarka-Singgih-Székely (2021), but the base case (triangle-free, r = 1) remains valid. The amended conjecture D ≤ (3-2/k)·n/d is partially verified but has its own counterexamples from Cambie-Jooken (2025).",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Diameter-degree trade-off in network design:** The bound $D \\le \\alpha \\cdot n/d$ directly constrains network topology design — given $n$ nodes and a wiring budget (minimum degree $d$), the diameter determines worst-case routing latency. Knowing $\\alpha$ precisely for $K_r$-free networks (which model sparse, locally structured topologies) is essential for efficient network design.\n\n2. **Turán-type extremal theory:** This problem extends Turán's theorem from edge counting to metric properties. Turán tells us how many edges a $K_r$-free graph can have; this problem asks how 'spread out' such a graph can be.\n\nThe interplay between density and metric structure is a frontier of extremal graph theory.\n\n3. **The Moore bound and degree-diameter problem:** The Moore bound $n \\le 1 + d(d-1)^D/(d-2)$ gives a hard upper limit on $n$ for given $d, D$. The diameter-degree trade-off in $K_r$-free graphs provides a complementary perspective: for given $n$ and $d$, how small can $D$ be?\n\n4. **Chromatic number vs clique number:** The failure of the amended conjecture without colorability assumptions highlights the fundamental gap between $\\omega(G)$ and $\\chi(G)$. This connects to the theory of $\\chi$-bounded graph classes and the Gyárfás-Sumner conjecture.\n\n5. **Counterexample methodology:** The blow-up constructions of Czabarka-Singgih-Székely are a template for disproving extremal conjectures — replace vertices with independent sets to scale up while preserving clique-freeness.",
+    "summary": "Erd\u0151s Problem #612 has a complex status: the original conjectures are DISPROVED for r \u2265 2 by Czabarka-Singgih-Sz\u00e9kely (2021), but the base case (triangle-free, r = 1) remains valid. The amended conjecture D \u2264 (3-2/k)\u00b7n/d is partially verified but has its own counterexamples from Cambie-Jooken (2025).",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Diameter-degree trade-off in network design:** The bound $D \\le \\alpha \\cdot n/d$ directly constrains network topology design \u2014 given $n$ nodes and a wiring budget (minimum degree $d$), the diameter determines worst-case routing latency. Knowing $\\alpha$ precisely for $K_r$-free networks (which model sparse, locally structured topologies) is essential for efficient network design.\n\n2. **Tur\u00e1n-type extremal theory:** This problem extends Tur\u00e1n's theorem from edge counting to metric properties. Tur\u00e1n tells us how many edges a $K_r$-free graph can have; this problem asks how 'spread out' such a graph can be.\n\nThe interplay between density and metric structure is a frontier of extremal graph theory.\n\n3. **The Moore bound and degree-diameter problem:** The Moore bound $n \\le 1 + d(d-1)^D/(d-2)$ gives a hard upper limit on $n$ for given $d, D$. The diameter-degree trade-off in $K_r$-free graphs provides a complementary perspective: for given $n$ and $d$, how small can $D$ be?\n\n4. **Chromatic number vs clique number:** The failure of the amended conjecture without colorability assumptions highlights the fundamental gap between $\\omega(G)$ and $\\chi(G)$. This connects to the theory of $\\chi$-bounded graph classes and the Gy\u00e1rf\u00e1s-Sumner conjecture.\n\n5. **Counterexample methodology:** The blow-up constructions of Czabarka-Singgih-Sz\u00e9kely are a template for disproving extremal conjectures \u2014 replace vertices with independent sets to scale up while preserving clique-freeness.",
     "openQuestions": [
       "What is the correct coefficient for K_{k+1}-free graphs?",
       "Is the amended conjecture (3-2/k) true without colorability assumptions?",
@@ -180,23 +180,26 @@
     "theoremCount": 12,
     "definitionCount": 13,
     "path": "Proofs/Erdos612Problem.lean",
-    "sorries": 16
+    "sorries": 16,
+    "additionalFiles": [
+      "Proofs/Erdos612ProblemAristotle.lean"
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-133",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: degree-bounds, diameter, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: degree-bounds, diameter, graph-theory"
     },
     {
       "targetId": "erdos-1006",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: counterexample, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: counterexample, graph-theory"
     },
     {
       "targetId": "erdos-1034",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: counterexample, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: counterexample, graph-theory"
     }
   ],
   "sorries": 16

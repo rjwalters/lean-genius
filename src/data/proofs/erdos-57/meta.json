@@ -1,8 +1,8 @@
 {
   "id": "erdos-57",
-  "title": "Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number",
+  "title": "Erd\u0151s Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number",
   "slug": "erdos-57",
-  "description": "If G has infinite chromatic number and a₁ < a₂ < ⋯ are its odd cycle lengths, then ∑ 1/aᵢ = ∞. Solved by Liu-Montgomery (2020).",
+  "description": "If G has infinite chromatic number and a\u2081 < a\u2082 < \u22ef are its odd cycle lengths, then \u2211 1/a\u1d62 = \u221e. Solved by Liu-Montgomery (2020).",
   "meta": {
     "author": "Liu-Montgomery",
     "sourceUrl": "https://erdosproblems.com/57",
@@ -29,15 +29,15 @@
     "theoremCount": 5
   },
   "overview": {
-    "historicalContext": "Erdős and Hajnal conjectured in 1966 that graphs with infinite chromatic number must have 'many' odd cycles, quantified by the divergence of the reciprocal sum ∑ 1/aᵢ. The conjecture sits in a hierarchy of increasingly strong claims: (1) infinitely many odd cycle lengths, (2) ∑ 1/aᵢ = ∞ (this problem), (3) positive upper density (Erdős 1981, OPEN), (4) upper density ≥ 1/2 (Erdős 1995-96, OPEN). The foundation is the classical bipartite characterization: χ(G) ≤ 2 iff no odd cycles. Problem #57 asks what happens at χ(G) = ∞. Liu and Montgomery solved it in 2020 using dependent random choice and structural decomposition techniques from extremal combinatorics. Their proof analyzes graphs lacking short odd cycles, showing that even in the high-girth regime (where odd cycles are sparse), the reciprocal sum still diverges. The result has connections to Ramsey theory and the Gyárfás-Sumner conjecture on χ-bounded classes.",
+    "historicalContext": "Erd\u0151s and Hajnal conjectured in 1966 that graphs with infinite chromatic number must have 'many' odd cycles, quantified by the divergence of the reciprocal sum \u2211 1/a\u1d62. The conjecture sits in a hierarchy of increasingly strong claims: (1) infinitely many odd cycle lengths, (2) \u2211 1/a\u1d62 = \u221e (this problem), (3) positive upper density (Erd\u0151s 1981, OPEN), (4) upper density \u2265 1/2 (Erd\u0151s 1995-96, OPEN). The foundation is the classical bipartite characterization: \u03c7(G) \u2264 2 iff no odd cycles. Problem #57 asks what happens at \u03c7(G) = \u221e. Liu and Montgomery solved it in 2020 using dependent random choice and structural decomposition techniques from extremal combinatorics. Their proof analyzes graphs lacking short odd cycles, showing that even in the high-girth regime (where odd cycles are sparse), the reciprocal sum still diverges. The result has connections to Ramsey theory and the Gy\u00e1rf\u00e1s-Sumner conjecture on \u03c7-bounded classes.",
     "problemStatement": "If $G$ is a graph with $\\chi(G) = \\infty$ and $a_1 < a_2 < \\cdots$ are the lengths of the odd cycles of $G$, then $\\sum 1/a_i = \\infty$.",
-    "text": "If G has infinite chromatic number and a₁ < a₂ < ⋯ are its odd cycle lengths, then ∑ 1/aᵢ = ∞. Solved by Liu-Montgomery (2020).",
-    "proofStrategy": "The formalization defines cycle lengths via Mathlib's `Walk.IsCycle`, models infinite chromatic number as `∀ k, ¬IsColorable G k`, and computes the harmonic sum as a `tsum` in `ENNReal` (allowing ∞ = ⊤). The main result `erdos_57` is axiomatized. Three results are proved: `finite_reciprocal_sum_ne_top` (finite sum in ENNReal is not ⊤), `oddCycleLengths_pos` (odd cycles have length ≥ 3 via `three_le_length`), and the corollary `infinite_odd_cycle_lengths` (by contradiction using the first two). Open density conjectures are formalized using `Filter.limsup`. The bipartite characterization has 2 sorries.",
+    "text": "If G has infinite chromatic number and a\u2081 < a\u2082 < \u22ef are its odd cycle lengths, then \u2211 1/a\u1d62 = \u221e. Solved by Liu-Montgomery (2020).",
+    "proofStrategy": "The formalization defines cycle lengths via Mathlib's `Walk.IsCycle`, models infinite chromatic number as `\u2200 k, \u00acIsColorable G k`, and computes the harmonic sum as a `tsum` in `ENNReal` (allowing \u221e = \u22a4). The main result `erdos_57` is axiomatized. Three results are proved: `finite_reciprocal_sum_ne_top` (finite sum in ENNReal is not \u22a4), `oddCycleLengths_pos` (odd cycles have length \u2265 3 via `three_le_length`), and the corollary `infinite_odd_cycle_lengths` (by contradiction using the first two). Open density conjectures are formalized using `Filter.limsup`. The bipartite characterization has 2 sorries.",
     "keyInsights": [
-      "The harmonic sum ∑ 1/aᵢ in ENNReal is the right framework: it is either finite (a real number) or ⊤ (infinity), and the axiom asserts it equals ⊤ for χ(G) = ∞",
-      "The corollary 'infinitely many odd cycle lengths' follows by contradiction: a finite set has finite reciprocal sum, contradicting ∑ 1/aᵢ = ⊤",
-      "High-girth constructions (Erdős 1959, Kwan-Sudakov 2021) show χ(G) = ∞ is compatible with lower density 0 for odd cycle lengths — the reciprocal sum divergence is a precisely calibrated measure",
-      "The hierarchy: no odd cycles (χ ≤ 2) → finitely many → infinitely many → ∑ 1/aᵢ = ∞ (PROVED) → d̄ > 0 (OPEN) → d̄ ≥ 1/2 (OPEN)",
+      "The harmonic sum \u2211 1/a\u1d62 in ENNReal is the right framework: it is either finite (a real number) or \u22a4 (infinity), and the axiom asserts it equals \u22a4 for \u03c7(G) = \u221e",
+      "The corollary 'infinitely many odd cycle lengths' follows by contradiction: a finite set has finite reciprocal sum, contradicting \u2211 1/a\u1d62 = \u22a4",
+      "High-girth constructions (Erd\u0151s 1959, Kwan-Sudakov 2021) show \u03c7(G) = \u221e is compatible with lower density 0 for odd cycle lengths \u2014 the reciprocal sum divergence is a precisely calibrated measure",
+      "The hierarchy: no odd cycles (\u03c7 \u2264 2) \u2192 finitely many \u2192 infinitely many \u2192 \u2211 1/a\u1d62 = \u221e (PROVED) \u2192 d\u0304 > 0 (OPEN) \u2192 d\u0304 \u2265 1/2 (OPEN)",
       "Liu-Montgomery's dependent random choice technique: embed dense bipartite subgraphs into neighborhoods, then use the odd-cycle-free structure to derive contradictions"
     ],
     "prerequisites": [
@@ -50,15 +50,15 @@
     {
       "id": "header",
       "title": "Problem Statement, History, and Imports",
-      "summary": "Documentation header with Erdős-Hajnal (1966) conjecture, historical progression through density conjectures, Liu-Montgomery (2020) solution, Mathlib import",
+      "summary": "Documentation header with Erd\u0151s-Hajnal (1966) conjecture, historical progression through density conjectures, Liu-Montgomery (2020) solution, Mathlib import",
       "startLine": 1,
       "endLine": 27,
-      "mathContext": "Erdős-Hajnal (1966): if $\\chi(G) = \\infty$ and $a_1 < a_2 < \\cdots$ are odd cycle lengths of $G$, then $\\sum 1/a_i = \\infty$. Solved by Liu-Montgomery (2020)."
+      "mathContext": "Erd\u0151s-Hajnal (1966): if $\\chi(G) = \\infty$ and $a_1 < a_2 < \\cdots$ are odd cycle lengths of $G$, then $\\sum 1/a_i = \\infty$. Solved by Liu-Montgomery (2020)."
     },
     {
       "id": "definitions",
       "title": "Core Definitions: Cycles, Coloring, Infinite Chromatic Number",
-      "summary": "cycleLengths via Walk.IsCycle existential, oddCycleLengths as odd-parity filter, IsColorable via proper k-coloring, HasInfiniteChromaticNumber as ∀ k negation",
+      "summary": "cycleLengths via Walk.IsCycle existential, oddCycleLengths as odd-parity filter, IsColorable via proper k-coloring, HasInfiniteChromaticNumber as \u2200 k negation",
       "startLine": 28,
       "endLine": 50,
       "mathContext": "$\\mathcal{C}(G) = \\{|p| : p \\text{ cycle in } G\\}$, $\\mathcal{C}_{\\text{odd}}(G) = \\{n \\in \\mathcal{C}(G) : n \\text{ odd}\\}$. $\\chi(G) = \\infty \\iff \\forall k, \\neg\\text{IsColorable}(G, k)$."
@@ -66,7 +66,7 @@
     {
       "id": "harmonic-sum",
       "title": "Harmonic Sum in ENNReal",
-      "summary": "oddCycleHarmonicSum as tsum over oddCycleLengths subtype of 1/n in ENNReal, allowing ⊤ value",
+      "summary": "oddCycleHarmonicSum as tsum over oddCycleLengths subtype of 1/n in ENNReal, allowing \u22a4 value",
       "startLine": 51,
       "endLine": 56,
       "mathContext": "$\\text{oddCycleHarmonicSum}(G) = \\sum_{n \\in \\mathcal{C}_{\\text{odd}}(G)} \\frac{1}{n} \\in [0, \\infty]$ computed as `tsum` in `ENNReal`."
@@ -74,7 +74,7 @@
     {
       "id": "main-result",
       "title": "Main Result: erdos_57 Axiom (Liu-Montgomery 2020)",
-      "summary": "Axiom: HasInfiniteChromaticNumber G → oddCycleHarmonicSum G = ⊤. The solved Erdős-Hajnal conjecture",
+      "summary": "Axiom: HasInfiniteChromaticNumber G \u2192 oddCycleHarmonicSum G = \u22a4. The solved Erd\u0151s-Hajnal conjecture",
       "startLine": 57,
       "endLine": 65,
       "mathContext": "$\\chi(G) = \\infty \\implies \\sum_{n \\in \\mathcal{C}_{\\text{odd}}(G)} 1/n = \\infty$. Axiomatized as $\\text{oddCycleHarmonicSum}(G) = \\top$."
@@ -82,15 +82,15 @@
     {
       "id": "proved-lemmas",
       "title": "Proved Lemmas: Finite Sum, Positivity, Corollary",
-      "summary": "finite_reciprocal_sum_ne_top via tsum→Finset.sum conversion + ENNReal.sum_lt_top. oddCycleLengths_pos via three_le_length. infinite_odd_cycle_lengths by contradiction combining both",
+      "summary": "finite_reciprocal_sum_ne_top via tsum\u2192Finset.sum conversion + ENNReal.sum_lt_top. oddCycleLengths_pos via three_le_length. infinite_odd_cycle_lengths by contradiction combining both",
       "startLine": 66,
       "endLine": 120,
       "mathContext": "Three results proved from the axiom: (1) $|S| < \\infty \\implies \\sum_{n \\in S} 1/n < \\infty$, (2) $n \\in \\mathcal{C}_{\\text{odd}} \\implies n \\geq 3$, (3) $\\chi(G) = \\infty \\implies |\\mathcal{C}_{\\text{odd}}(G)| = \\infty$."
     },
     {
       "id": "open-questions",
-      "title": "Open Density Conjectures (Erdős 1981, 1995-96)",
-      "summary": "upperDensity via Filter.limsup of |S ∩ [1,N]|/N. UpperDensityConjecture: d̄ > 0. HalfDensityConjecture: d̄ ≥ 1/2. Both OPEN, strictly stronger than #57",
+      "title": "Open Density Conjectures (Erd\u0151s 1981, 1995-96)",
+      "summary": "upperDensity via Filter.limsup of |S \u2229 [1,N]|/N. UpperDensityConjecture: d\u0304 > 0. HalfDensityConjecture: d\u0304 \u2265 1/2. Both OPEN, strictly stronger than #57",
       "startLine": 121,
       "endLine": 142,
       "mathContext": "$\\overline{d}(S) = \\limsup_{N \\to \\infty} \\frac{|S \\cap [1,N]|}{N}$. Conjectures: $\\overline{d}(\\mathcal{C}_{\\text{odd}}) > 0$ (1981) and $\\overline{d}(\\mathcal{C}_{\\text{odd}}) \\geq 1/2$ (1995). Both OPEN."
@@ -98,26 +98,26 @@
     {
       "id": "bipartite",
       "title": "Bipartite Characterization (2 sorries)",
-      "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅ (sorry). colorable_two_no_odd_cycles: IsColorable G 2 → empty odd cycles (sorry). Classical foundation for the chromatic-cycle connection",
+      "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite \u2194 oddCycleLengths G = \u2205 (sorry). colorable_two_no_odd_cycles: IsColorable G 2 \u2192 empty odd cycles (sorry). Classical foundation for the chromatic-cycle connection",
       "startLine": 143,
       "endLine": 154,
-      "mathContext": "$G \\text{ bipartite} \\iff \\mathcal{C}_{\\text{odd}}(G) = \\emptyset \\iff \\chi(G) \\leq 2$. The classical König characterization."
+      "mathContext": "$G \\text{ bipartite} \\iff \\mathcal{C}_{\\text{odd}}(G) = \\emptyset \\iff \\chi(G) \\leq 2$. The classical K\u00f6nig characterization."
     },
     {
       "id": "historical-notes",
       "title": "Historical Notes and References",
-      "summary": "Liu-Montgomery proof technique overview, fundamental bipartite-odd cycle connection, references to Erdős-Hajnal (1966) and Liu-Montgomery (2020)",
+      "summary": "Liu-Montgomery proof technique overview, fundamental bipartite-odd cycle connection, references to Erd\u0151s-Hajnal (1966) and Liu-Montgomery (2020)",
       "startLine": 155,
       "endLine": 166,
       "mathContext": "Liu-Montgomery used dependent random choice to embed dense bipartite subgraphs, then derive contradictions from the odd-cycle-free structure."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #57 was SOLVED by Liu and Montgomery in 2020. The 167-line formalization axiomatizes the main result (∑ 1/aᵢ = ⊤ for χ(G) = ∞) and proves three supporting results: finite reciprocal sums are not ⊤, odd cycle lengths are positive, and the corollary that infinitely many odd cycle lengths exist. Two sorries remain for the bipartite characterization. Open density conjectures from Erdős (1981, 1995-96) are formalized but remain unresolved.",
+    "summary": "Erd\u0151s Problem #57 was SOLVED by Liu and Montgomery in 2020. The 167-line formalization axiomatizes the main result (\u2211 1/a\u1d62 = \u22a4 for \u03c7(G) = \u221e) and proves three supporting results: finite reciprocal sums are not \u22a4, odd cycle lengths are positive, and the corollary that infinitely many odd cycle lengths exist. Two sorries remain for the bipartite characterization. Open density conjectures from Erd\u0151s (1981, 1995-96) are formalized but remain unresolved.",
     "implications": "The result establishes a precise quantitative threshold for odd cycle richness: the reciprocal sum divergence is the exact boundary between what is proved and what remains open. The density conjectures would further strengthen the connection between chromatic complexity and cycle structure, potentially illuminating the broader question of which graph properties are forced by high chromatic number.",
     "openQuestions": [
-      "Must odd cycle lengths have positive upper density when χ(G) = ∞? (Erdős 1981, OPEN)",
-      "Is the upper density of odd cycle lengths at least 1/2? (Erdős 1995-96, OPEN)",
+      "Must odd cycle lengths have positive upper density when \u03c7(G) = \u221e? (Erd\u0151s 1981, OPEN)",
+      "Is the upper density of odd cycle lengths at least 1/2? (Erd\u0151s 1995-96, OPEN)",
       "What is the relationship to Problem #65 on general cycle lengths in graphs with large chromatic number?",
       "Can the bipartite characterization sorries be proved via Aristotle (Mathlib's SimpleGraph.IsBipartite)?"
     ]
@@ -126,12 +126,12 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Both concern forced substructures in graphs: Ramsey theory guarantees monochromatic cliques in colored complete graphs, while Erdős #57 guarantees rich odd cycle structure in graphs with infinite chromatic number. Liu-Montgomery's proof uses Ramsey-type dependent random choice arguments"
+      "description": "Both concern forced substructures in graphs: Ramsey theory guarantees monochromatic cliques in colored complete graphs, while Erd\u0151s #57 guarantees rich odd cycle structure in graphs with infinite chromatic number. Liu-Montgomery's proof uses Ramsey-type dependent random choice arguments"
     },
     {
       "targetId": "erdos-65",
       "relationship": "related",
-      "description": "Erdős #65 concerns general cycle lengths in graphs with large chromatic number. Problem #57 specializes to odd cycle lengths with $\\chi(G) = \\infty$ — both probe the relationship between chromatic complexity and cycle structure"
+      "description": "Erd\u0151s #65 concerns general cycle lengths in graphs with large chromatic number. Problem #57 specializes to odd cycle lengths with $\\chi(G) = \\infty$ \u2014 both probe the relationship between chromatic complexity and cycle structure"
     },
     {
       "targetId": "four-color-theorem",
@@ -163,36 +163,39 @@
     "theoremCount": 5,
     "definitionCount": 8,
     "path": "Proofs/Erdos57Problem.lean",
-    "sorries": 2
+    "sorries": 2,
+    "additionalFiles": [
+      "Proofs/Erdos57ProblemAristotle.lean"
+    ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Hajnal, András",
+      "authors": "Erd\u0151s, Paul; Hajnal, Andr\u00e1s",
       "title": "On chromatic number of graphs and set-systems",
       "year": "1966",
-      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae, vol. 17, pp. 61–99",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae, vol. 17, pp. 61\u201399",
       "note": "Original conjecture that graphs with infinite chromatic number must have divergent reciprocal sum of odd cycle lengths"
     },
     {
       "authors": "Liu, Hong; Montgomery, Richard",
-      "title": "A solution to Erdős and Hajnal's odd cycle problem",
+      "title": "A solution to Erd\u0151s and Hajnal's odd cycle problem",
       "year": "2020",
-      "venue": "Journal of the American Mathematical Society, vol. 36, pp. 1191–1234",
+      "venue": "Journal of the American Mathematical Society, vol. 36, pp. 1191\u20131234",
       "note": "Solved Problem #57 using dependent random choice and structural decomposition techniques from extremal combinatorics"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On the combinatorial problems which I would most like to see solved",
       "year": "1981",
-      "venue": "Combinatorica, vol. 1, pp. 25–42",
-      "note": "Posed the upper density conjecture: odd cycle lengths of graphs with χ(G) = ∞ should have positive upper density"
+      "venue": "Combinatorica, vol. 1, pp. 25\u201342",
+      "note": "Posed the upper density conjecture: odd cycle lengths of graphs with \u03c7(G) = \u221e should have positive upper density"
     },
     {
       "authors": "Kwan, Matthew; Sudakov, Benny",
       "title": "Ramsey numbers of degenerate graphs",
       "year": "2021",
-      "venue": "Bulletin of the London Mathematical Society, vol. 53, pp. 1551–1562",
-      "note": "High-girth constructions showing χ(G) = ∞ is compatible with lower density 0 for odd cycle lengths — demonstrating the reciprocal sum divergence in Problem #57 is precisely calibrated"
+      "venue": "Bulletin of the London Mathematical Society, vol. 53, pp. 1551\u20131562",
+      "note": "High-girth constructions showing \u03c7(G) = \u221e is compatible with lower density 0 for odd cycle lengths \u2014 demonstrating the reciprocal sum divergence in Problem #57 is precisely calibrated"
     }
   ],
   "sorries": 2

@@ -1,10 +1,10 @@
 {
   "id": "erdos-214",
-  "title": "Erdős Problem #214: Unit Distance Free Sets and Unit Squares",
+  "title": "Erd\u0151s Problem #214: Unit Distance Free Sets and Unit Squares",
   "slug": "erdos-214",
-  "description": "If S ⊂ ℝ² has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juhász, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
+  "description": "If S \u2282 \u211d\u00b2 has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juh\u00e1sz, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
   "meta": {
-    "author": "Juhász",
+    "author": "Juh\u00e1sz",
     "sourceUrl": "https://erdosproblems.com/214",
     "date": "1979",
     "status": "axiomatized",
@@ -24,12 +24,12 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Type for points in ℝ²",
+        "description": "Type for points in \u211d\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
       },
       {
         "theorem": "Real.sqrt",
-        "description": "Square root for diagonal length √2",
+        "description": "Square root for diagonal length \u221a2",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
@@ -40,10 +40,10 @@
     ],
     "originalContributions": [
       "Formalization of IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare",
-      "Statement and axiomatization of Juhász's theorem (1979)",
+      "Statement and axiomatization of Juh\u00e1sz's theorem (1979)",
       "Stronger version: ContainsCongruentCopy for any PointSet 4",
       "Proof of unit_distance_free_iff_no_edges (graph characterization)",
-      "ScaledLattice √2·ℤ² as unit-distance-free example",
+      "ScaledLattice \u221a2\u00b7\u2124\u00b2 as unit-distance-free example",
       "Formalization of HoldsFor5Points open question",
       "Connection to chromatic number of the plane"
     ],
@@ -58,15 +58,15 @@
       },
       {
         "id": "erdos-171",
-        "relationship": "Unit distance chromatic number (Hadwiger-Nelson problem): each color class is unit-distance-free, directly connecting to Juhász's theorem"
+        "relationship": "Unit distance chromatic number (Hadwiger-Nelson problem): each color class is unit-distance-free, directly connecting to Juh\u00e1sz's theorem"
       },
       {
         "id": "erdos-508",
-        "relationship": "Another formulation of the Hadwiger-Nelson problem: bounds χ(ℝ²) ∈ {5,...,7} via de Grey's 1581-vertex graph"
+        "relationship": "Another formulation of the Hadwiger-Nelson problem: bounds \u03c7(\u211d\u00b2) \u2208 {5,...,7} via de Grey's 1581-vertex graph"
       },
       {
         "id": "erdos-100",
-        "relationship": "Point sets with restricted distances: n points in ℝ² with distance constraints, sharing the distance geometry framework"
+        "relationship": "Point sets with restricted distances: n points in \u211d\u00b2 with distance constraints, sharing the distance geometry framework"
       },
       {
         "id": "erdos-107",
@@ -79,19 +79,19 @@
     ],
     "axiomCount": 2,
     "lineCount": 197,
-    "assumptions": "2 axioms: juhasz_1979 (Juhász 1979 — unit-distance free sets contain unit squares in complement), juhasz_stronger (stronger: unit-distance free sets contain any 4-point configuration in complement). 1 sorry in unit_square_from_stronger.",
+    "assumptions": "2 axioms: juhasz_1979 (Juh\u00e1sz 1979 \u2014 unit-distance free sets contain unit squares in complement), juhasz_stronger (stronger: unit-distance free sets contain any 4-point configuration in complement). 1 sorry in unit_square_from_stronger.",
     "theoremCount": 5
   },
   "overview": {
-    "historicalContext": "**Unit Distance Free Sets: Geometric Ramsey Theory in the Plane**\n\nErdős posed Problem #214 in 1983, asking about the geometric consequences of avoiding a single distance. The question lies at the heart of combinatorial geometry: what structure must the complement of a 'sparse' set possess?\n\n**The Unit Distance Graph**\n\nThe unit distance graph G₁(ℝ²) has all points of ℝ² as vertices and edges connecting pairs at distance 1. A unit-distance-free set is an independent set in this graph. The chromatic number χ(ℝ²) — the minimum colors needed so each color class is unit-distance-free — is the Hadwiger-Nelson problem: 5 ≤ χ(ℝ²) ≤ 7 (de Grey 2018 for the lower bound, hexagonal tiling for the upper).\n\n**Juhász's Resolution (1979)**\n\nRóbert Juhász proved a much stronger result than Erdős asked for: if S avoids unit distances, then Sᶜ contains a congruent copy of ANY 4-point configuration — not just unit squares. The proof uses the key observation that for each p ∈ S, the entire unit circle centered at p lies in Sᶜ, providing an abundance of points to build configurations from.\n\n**The Proof Strategy**\n\nFor any 4-point configuration P = {p₁, p₂, p₃, p₄}: Choose any point in S. Its unit circle (in Sᶜ) provides a 1-parameter family of candidate locations. The configuration has 8 degrees of freedom (4 points in ℝ²) minus 3 for rigid motions = 5 intrinsic degrees. The unit circles in Sᶜ provide enough flexibility (continuous families of points) to realize any 4-point configuration.\n\n**Limitations and Open Questions**\n\nThe result breaks down for large n-point configurations: there exist unit-distance-free sets whose complements miss certain n-point patterns. The critical threshold n is unknown. The 5-point case — whether ALL 5-point configurations must appear in Sᶜ — remains open since 1979.",
-    "problemStatement": "Let S ⊂ ℝ² be such that no two points in S are distance 1 apart. Must the complement of S contain four points which form a unit square?\n\n**Answer:** YES (Juhász, 1979). More generally, Sᶜ contains a congruent copy of any 4-point configuration.",
-    "text": "If S ⊂ ℝ² has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juhász, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
-    "proofStrategy": "**Formalization Structure**\n\nThe Lean file has ten parts:\n\n1. **Basic definitions**: Plane (EuclideanSpace ℝ (Fin 2)), dist (‖p-q‖), IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare\n\n2. **Main statement**: Erdos214Statement axiomatized via juhasz_1979; erdos_214_solved = juhasz_1979\n\n3. **Stronger version**: PointSet n = Fin n → Plane, ContainsCongruentCopy via isometry, JuhaszStrongerTheorem for n=4, unit_square_from_stronger (sorry: needs explicit unit square encoding)\n\n4. **Limitations**: fails_for_large_sets (∃ n with failure), HoldsFor5Points (open question)\n\n5. **Graph connection**: UnitDistanceGraph definition, unit_distance_free_iff_no_edges (FULLY PROVED), chromatic_number_of_plane (placeholder True)\n\n6. **Proof techniques**: Three placeholder True axioms sketching the geometric argument\n\n7. **Examples**: ScaledLattice = √2·ℤ² (unit-distance-free, axiomatized)\n\n8. **Related problems**: Hadwiger-Nelson, unit distance problem, Moser's worm (all placeholder True)\n\n9. **Geometric intuition**: Placeholder axioms explaining the role of unit circles and 4-point freedom\n\n10. **Summary**: erdos_214_summary = ⟨juhasz_1979, juhasz_stronger⟩ (fully proved from axioms)\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: unit_distance_free_iff_no_edges (graph characterization), erdos_214_solved, erdos_214_summary\n- **Axiomatized**: juhasz_1979, juhasz_stronger, fails_for_large_sets, scaled_lattice_is_unit_free\n- **Sorry**: unit_square_from_stronger (needs explicit unit square as PointSet 4)\n- **Placeholder (True)**: chromatic_number_of_plane, structure_of_maximal_sets, pigeonhole_argument, unit_circle_intersections, nelson_hadwiger_problem, etc.",
+    "historicalContext": "**Unit Distance Free Sets: Geometric Ramsey Theory in the Plane**\n\nErd\u0151s posed Problem #214 in 1983, asking about the geometric consequences of avoiding a single distance. The question lies at the heart of combinatorial geometry: what structure must the complement of a 'sparse' set possess?\n\n**The Unit Distance Graph**\n\nThe unit distance graph G\u2081(\u211d\u00b2) has all points of \u211d\u00b2 as vertices and edges connecting pairs at distance 1. A unit-distance-free set is an independent set in this graph. The chromatic number \u03c7(\u211d\u00b2) \u2014 the minimum colors needed so each color class is unit-distance-free \u2014 is the Hadwiger-Nelson problem: 5 \u2264 \u03c7(\u211d\u00b2) \u2264 7 (de Grey 2018 for the lower bound, hexagonal tiling for the upper).\n\n**Juh\u00e1sz's Resolution (1979)**\n\nR\u00f3bert Juh\u00e1sz proved a much stronger result than Erd\u0151s asked for: if S avoids unit distances, then S\u1d9c contains a congruent copy of ANY 4-point configuration \u2014 not just unit squares. The proof uses the key observation that for each p \u2208 S, the entire unit circle centered at p lies in S\u1d9c, providing an abundance of points to build configurations from.\n\n**The Proof Strategy**\n\nFor any 4-point configuration P = {p\u2081, p\u2082, p\u2083, p\u2084}: Choose any point in S. Its unit circle (in S\u1d9c) provides a 1-parameter family of candidate locations. The configuration has 8 degrees of freedom (4 points in \u211d\u00b2) minus 3 for rigid motions = 5 intrinsic degrees. The unit circles in S\u1d9c provide enough flexibility (continuous families of points) to realize any 4-point configuration.\n\n**Limitations and Open Questions**\n\nThe result breaks down for large n-point configurations: there exist unit-distance-free sets whose complements miss certain n-point patterns. The critical threshold n is unknown. The 5-point case \u2014 whether ALL 5-point configurations must appear in S\u1d9c \u2014 remains open since 1979.",
+    "problemStatement": "Let S \u2282 \u211d\u00b2 be such that no two points in S are distance 1 apart. Must the complement of S contain four points which form a unit square?\n\n**Answer:** YES (Juh\u00e1sz, 1979). More generally, S\u1d9c contains a congruent copy of any 4-point configuration.",
+    "text": "If S \u2282 \u211d\u00b2 has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juh\u00e1sz, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file has ten parts:\n\n1. **Basic definitions**: Plane (EuclideanSpace \u211d (Fin 2)), dist (\u2016p-q\u2016), IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare\n\n2. **Main statement**: Erdos214Statement axiomatized via juhasz_1979; erdos_214_solved = juhasz_1979\n\n3. **Stronger version**: PointSet n = Fin n \u2192 Plane, ContainsCongruentCopy via isometry, JuhaszStrongerTheorem for n=4, unit_square_from_stronger (sorry: needs explicit unit square encoding)\n\n4. **Limitations**: fails_for_large_sets (\u2203 n with failure), HoldsFor5Points (open question)\n\n5. **Graph connection**: UnitDistanceGraph definition, unit_distance_free_iff_no_edges (FULLY PROVED), chromatic_number_of_plane (placeholder True)\n\n6. **Proof techniques**: Three placeholder True axioms sketching the geometric argument\n\n7. **Examples**: ScaledLattice = \u221a2\u00b7\u2124\u00b2 (unit-distance-free, axiomatized)\n\n8. **Related problems**: Hadwiger-Nelson, unit distance problem, Moser's worm (all placeholder True)\n\n9. **Geometric intuition**: Placeholder axioms explaining the role of unit circles and 4-point freedom\n\n10. **Summary**: erdos_214_summary = \u27e8juhasz_1979, juhasz_stronger\u27e9 (fully proved from axioms)\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: unit_distance_free_iff_no_edges (graph characterization), erdos_214_solved, erdos_214_summary\n- **Axiomatized**: juhasz_1979, juhasz_stronger, fails_for_large_sets, scaled_lattice_is_unit_free\n- **Sorry**: unit_square_from_stronger (needs explicit unit square as PointSet 4)\n- **Placeholder (True)**: chromatic_number_of_plane, structure_of_maximal_sets, pigeonhole_argument, unit_circle_intersections, nelson_hadwiger_problem, etc.",
     "keyInsights": [
-      "For any p ∈ S (unit-distance-free), the entire unit circle {q : ‖p-q‖ = 1} lies in Sᶜ — this provides continuous families of complement points to build configurations from",
-      "Juhász's result is much stronger than the original question: ALL 4-point configurations appear in Sᶜ, not just unit squares. The 4-point threshold is sharp — the result fails for large n",
-      "The scaled lattice √2·ℤ² is unit-distance-free because (a-c)² + (b-d)² = 1/2 has no integer solutions, yet its complement (almost all of ℝ²) trivially contains unit squares",
-      "The Hadwiger-Nelson connection: each color class in a χ(ℝ²)-coloring is unit-distance-free, so Juhász applies to each class. De Grey (2018) proved χ(ℝ²) ≥ 5 via a 1581-vertex graph",
+      "For any p \u2208 S (unit-distance-free), the entire unit circle {q : \u2016p-q\u2016 = 1} lies in S\u1d9c \u2014 this provides continuous families of complement points to build configurations from",
+      "Juh\u00e1sz's result is much stronger than the original question: ALL 4-point configurations appear in S\u1d9c, not just unit squares. The 4-point threshold is sharp \u2014 the result fails for large n",
+      "The scaled lattice \u221a2\u00b7\u2124\u00b2 is unit-distance-free because (a-c)\u00b2 + (b-d)\u00b2 = 1/2 has no integer solutions, yet its complement (almost all of \u211d\u00b2) trivially contains unit squares",
+      "The Hadwiger-Nelson connection: each color class in a \u03c7(\u211d\u00b2)-coloring is unit-distance-free, so Juh\u00e1sz applies to each class. De Grey (2018) proved \u03c7(\u211d\u00b2) \u2265 5 via a 1581-vertex graph",
       "The 5-point case is the key open problem: can we always find congruent copies of 5-point configurations in complements of unit-distance-free sets?"
     ],
     "prerequisites": [
@@ -103,77 +103,77 @@
     {
       "id": "header",
       "title": "Problem Statement",
-      "summary": "Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations.",
+      "summary": "Docstring introducing Erd\u0151s Problem #214 (1983): unit-distance-free S implies S\u1d9c contains unit square? Answered YES by Juh\u00e1sz (1979) with the stronger result covering all 4-point configurations.",
       "startLine": 1,
       "endLine": 25,
-      "mathContext": "Mathematical content: Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations."
+      "mathContext": "Mathematical content: Docstring introducing Erd\u0151s Problem #214 (1983): unit-distance-free S implies S\u1d9c contains unit square? Answered YES by Juh\u00e1sz (1979) with the stronger result covering all 4-point configurations."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Defines Plane = EuclideanSpace ℝ (Fin 2), dist = ‖p-q‖, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length √2), ContainsUnitSquare (∃ four points in S forming a unit square).",
+      "summary": "Defines Plane = EuclideanSpace \u211d (Fin 2), dist = \u2016p-q\u2016, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length \u221a2), ContainsUnitSquare (\u2203 four points in S forming a unit square).",
       "startLine": 36,
       "endLine": 62,
-      "mathContext": "Defines Plane = EuclideanSpace ℝ (Fin 2), dist = ‖p-q‖, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length √2), ContainsUnitSquare (∃ four points in S forming a unit square)."
+      "mathContext": "Defines Plane = EuclideanSpace \u211d (Fin 2), dist = \u2016p-q\u2016, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length \u221a2), ContainsUnitSquare (\u2203 four points in S forming a unit square)."
     },
     {
       "id": "main-statement",
       "title": "Main Statement and Solution",
-      "summary": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom.",
+      "summary": "Erdos214Statement = \u2200 S, IsUnitDistanceFree S \u2192 ContainsUnitSquare S\u1d9c. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom.",
       "startLine": 63,
       "endLine": 76,
-      "mathContext": "Erdos214Statement = ∀ S, IsUnitDistanceFree S $\\to$ ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom."
+      "mathContext": "Erdos214Statement = \u2200 S, IsUnitDistanceFree S $\\to$ ContainsUnitSquare S\u1d9c. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom."
     },
     {
       "id": "stronger-version",
       "title": "Stronger Version: Any 4-Point Set",
-      "summary": "Defines PointSet n = Fin n → Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: ∀ S unit-free, ∀ P : PointSet 4, Sᶜ contains congruent copy. unit_square_from_stronger has sorry (needs explicit unit square encoding as PointSet 4).",
+      "summary": "Defines PointSet n = Fin n \u2192 Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: \u2200 S unit-free, \u2200 P : PointSet 4, S\u1d9c contains congruent copy. unit_square_from_stronger has sorry (needs explicit unit square encoding as PointSet 4).",
       "startLine": 77,
       "endLine": 107,
-      "mathContext": "Defines PointSet n = Fin n → Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: ∀ S unit-free, ∀ P : PointSet 4, Sᶜ contains congruent copy. unit_square_from_stronger has sorry (needs explicit unit square encoding as PointSet 4)."
+      "mathContext": "Defines PointSet n = Fin n \u2192 Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: \u2200 S unit-free, \u2200 P : PointSet 4, S\u1d9c contains congruent copy. unit_square_from_stronger has sorry (needs explicit unit square encoding as PointSet 4)."
     },
     {
       "id": "limitations",
       "title": "Limitations for Larger Sets",
-      "summary": "fails_for_large_sets: ∃ n, ∃ S unit-free with ∃ P : PointSet n not in Sᶜ. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown.",
+      "summary": "fails_for_large_sets: \u2203 n, \u2203 S unit-free with \u2203 P : PointSet n not in S\u1d9c. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown.",
       "startLine": 108,
       "endLine": 123,
-      "mathContext": "Mathematical content: fails_for_large_sets: ∃ n, ∃ S unit-free with ∃ P : PointSet n not in Sᶜ. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown."
+      "mathContext": "Mathematical content: fails_for_large_sets: \u2203 n, \u2203 S unit-free with \u2203 P : PointSet n not in S\u1d9c. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown."
     },
     {
       "id": "unit-distance-graph",
       "title": "Unit Distance Graph Connection",
-      "summary": "UnitDistanceGraph(S) = pairs at distance 1 in S. FULLY PROVED: unit_distance_free_iff_no_edges (S is unit-free iff UDG(S) = ∅) via ext/simp proof. Chromatic number χ(ℝ²) ∈ {5,...,7} stated as placeholder True.",
+      "summary": "UnitDistanceGraph(S) = pairs at distance 1 in S. FULLY PROVED: unit_distance_free_iff_no_edges (S is unit-free iff UDG(S) = \u2205) via ext/simp proof. Chromatic number \u03c7(\u211d\u00b2) \u2208 {5,...,7} stated as placeholder True.",
       "startLine": 124,
       "endLine": 152,
-      "mathContext": "UnitDistanceGraph(S) = pairs at distance 1 in S. FULLY PROVED: unit_distance_free_iff_no_edges (S is unit-free iff UDG(S) = ∅) via ext/simp proof. Chromatic number χ(ℝ²) ∈ {5,...,7} stated as placeholder True."
+      "mathContext": "UnitDistanceGraph(S) = pairs at distance 1 in S. FULLY PROVED: unit_distance_free_iff_no_edges (S is unit-free iff UDG(S) = \u2205) via ext/simp proof. Chromatic number \u03c7(\u211d\u00b2) \u2208 {5,...,7} stated as placeholder True."
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques (Sketched)",
-      "summary": "Three placeholder True axioms outlining Juhász's geometric argument: (1) maximal unit-free sets have specific structure, (2) unit circles at points of S lie in Sᶜ (pigeonhole), (3) circle intersection patterns limit Sᶜ sparseness.",
+      "summary": "Three placeholder True axioms outlining Juh\u00e1sz's geometric argument: (1) maximal unit-free sets have specific structure, (2) unit circles at points of S lie in S\u1d9c (pigeonhole), (3) circle intersection patterns limit S\u1d9c sparseness.",
       "startLine": 153,
       "endLine": 175,
-      "mathContext": "Three placeholder True axioms outlining Juhász's geometric argument: (1) maximal unit-free sets have specific structure, (2) unit circles at points of S lie in Sᶜ (pigeonhole), (3) circle intersection patterns limit Sᶜ sparseness."
+      "mathContext": "Three placeholder True axioms outlining Juh\u00e1sz's geometric argument: (1) maximal unit-free sets have specific structure, (2) unit circles at points of S lie in S\u1d9c (pigeonhole), (3) circle intersection patterns limit S\u1d9c sparseness."
     },
     {
       "id": "examples",
       "title": "Examples and Constructions",
-      "summary": "Notes ℤ² is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = √2·ℤ² which IS unit-distance-free (axiomatized): distance between lattice points is √(2·integer), never equaling 1 since 1/2 is not an integer sum of squares.",
+      "summary": "Notes \u2124\u00b2 is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = \u221a2\u00b7\u2124\u00b2 which IS unit-distance-free (axiomatized): distance between lattice points is \u221a(2\u00b7integer), never equaling 1 since 1/2 is not an integer sum of squares.",
       "startLine": 176,
       "endLine": 197,
-      "mathContext": "Notes ℤ² is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = √2·ℤ² which IS unit-distance-free (axiomatized): distance between lattice points is √(2·integer), never equaling 1 since 1/2 is not an integer sum of squares."
+      "mathContext": "Notes \u2124\u00b2 is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = \u221a2\u00b7\u2124\u00b2 which IS unit-distance-free (axiomatized): distance between lattice points is \u221a(2\u00b7integer), never equaling 1 since 1/2 is not an integer sum of squares."
     }
   ],
   "conclusion": {
-    "summary": "Juhász (1979) proved that if S ⊂ ℝ² avoids unit distances, then Sᶜ contains a congruent copy of any 4-point configuration — in particular, a unit square. This captures how avoiding a single distance forces geometric richness in the complement. The result is sharp: it fails for sufficiently large n-point configurations, and the 5-point case remains open.",
-    "implications": "1. **Geometric Ramsey Theory**: The result is a partition theorem for the plane: in any 2-coloring where one color avoids unit distances, the other color contains all 4-point configurations. This is a geometric analogue of classical Ramsey theory.\n\n2. **Independent Set Structure**: Unit-distance-free sets (independent sets of G₁(ℝ²)) cannot be geometrically 'rich' — their complements must contain diverse configurations. This connects graph theory (independence number) to geometry (configuration embedding).\n\n**3. Chromatic Number Connection**: Since each color class in a χ(ℝ²)-coloring is unit-distance-free, Juhász's theorem gives structural information about optimal colorings: each color class's complement is geometrically rich.\n\n4. **Threshold Phenomenon**: The transition from 'works for 4 points' to 'fails for large n' suggests a sharp threshold in the number of points. Finding this threshold would reveal the precise geometric complexity that unit-distance-free complements must exhibit.\n\n5. **Measure-Theoretic Perspective**: Unit-distance-free sets can have positive measure (e.g., small disks), but their complements (which also have positive measure) always contain 4-point configurations. The density of available points in Sᶜ is the enabling mechanism.",
+    "summary": "Juh\u00e1sz (1979) proved that if S \u2282 \u211d\u00b2 avoids unit distances, then S\u1d9c contains a congruent copy of any 4-point configuration \u2014 in particular, a unit square. This captures how avoiding a single distance forces geometric richness in the complement. The result is sharp: it fails for sufficiently large n-point configurations, and the 5-point case remains open.",
+    "implications": "1. **Geometric Ramsey Theory**: The result is a partition theorem for the plane: in any 2-coloring where one color avoids unit distances, the other color contains all 4-point configurations. This is a geometric analogue of classical Ramsey theory.\n\n2. **Independent Set Structure**: Unit-distance-free sets (independent sets of G\u2081(\u211d\u00b2)) cannot be geometrically 'rich' \u2014 their complements must contain diverse configurations. This connects graph theory (independence number) to geometry (configuration embedding).\n\n**3. Chromatic Number Connection**: Since each color class in a \u03c7(\u211d\u00b2)-coloring is unit-distance-free, Juh\u00e1sz's theorem gives structural information about optimal colorings: each color class's complement is geometrically rich.\n\n4. **Threshold Phenomenon**: The transition from 'works for 4 points' to 'fails for large n' suggests a sharp threshold in the number of points. Finding this threshold would reveal the precise geometric complexity that unit-distance-free complements must exhibit.\n\n5. **Measure-Theoretic Perspective**: Unit-distance-free sets can have positive measure (e.g., small disks), but their complements (which also have positive measure) always contain 4-point configurations. The density of available points in S\u1d9c is the enabling mechanism.",
     "openQuestions": [
-      "Does the property hold for all 5-point configurations? This is the first open case after Juhász's 4-point theorem.",
+      "Does the property hold for all 5-point configurations? This is the first open case after Juh\u00e1sz's 4-point theorem.",
       "What is the maximum n for which every n-point configuration appears in the complement of every unit-distance-free set?",
-      "Can Juhász's theorem be quantified: what is the minimum distance from a given point to the nearest congruent copy of a 4-point configuration in Sᶜ?",
-      "Does the result extend to higher dimensions: if S ⊂ ℝ^d avoids unit distances, what is the maximum n(d) for which Sᶜ contains all n-point configurations?",
-      "Is there a constructive proof giving an explicit algorithm to find the 4-point configuration in Sᶜ?"
+      "Can Juh\u00e1sz's theorem be quantified: what is the minimum distance from a given point to the nearest congruent copy of a 4-point configuration in S\u1d9c?",
+      "Does the result extend to higher dimensions: if S \u2282 \u211d^d avoids unit distances, what is the maximum n(d) for which S\u1d9c contains all n-point configurations?",
+      "Is there a constructive proof giving an explicit algorithm to find the 4-point configuration in S\u1d9c?"
     ]
   },
   "leanFile": {
@@ -192,7 +192,10 @@
     "theoremCount": 5,
     "definitionCount": 13,
     "path": "Proofs/Erdos214Problem.lean",
-    "sorries": 1
+    "sorries": 1,
+    "additionalFiles": [
+      "Proofs/Erdos214ProblemAristotle.lean"
+    ]
   },
   "crossReferences": [
     {
@@ -208,17 +211,17 @@
     {
       "targetId": "erdos-171",
       "relationship": "related",
-      "description": "Unit distance chromatic number (Hadwiger-Nelson problem): each color class is unit-distance-free, directly connecting to Juhász's theorem"
+      "description": "Unit distance chromatic number (Hadwiger-Nelson problem): each color class is unit-distance-free, directly connecting to Juh\u00e1sz's theorem"
     },
     {
       "targetId": "erdos-508",
       "relationship": "related",
-      "description": "Another formulation of the Hadwiger-Nelson problem: bounds χ(ℝ²) ∈ {5,...,7} via de Grey's 1581-vertex graph"
+      "description": "Another formulation of the Hadwiger-Nelson problem: bounds \u03c7(\u211d\u00b2) \u2208 {5,...,7} via de Grey's 1581-vertex graph"
     },
     {
       "targetId": "erdos-100",
       "relationship": "related",
-      "description": "Point sets with restricted distances: n points in ℝ² with distance constraints, sharing the distance geometry framework"
+      "description": "Point sets with restricted distances: n points in \u211d\u00b2 with distance constraints, sharing the distance geometry framework"
     },
     {
       "targetId": "erdos-107",
@@ -236,7 +239,7 @@
       "key": "SST84b",
       "authors": [
         "J. Spencer",
-        "E. Szemerédi",
+        "E. Szemer\u00e9di",
         "W.T. Trotter"
       ],
       "title": "Unit distances in the Euclidean plane",
