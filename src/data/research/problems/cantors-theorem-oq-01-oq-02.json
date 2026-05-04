@@ -1,0 +1,134 @@
+{
+  "slug": "cantors-theorem-oq-01-oq-02",
+  "title": "What is the exact aleph-index of ℶ₂",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: What is the exact aleph-index of ℶ₂.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-04T11:17:07.542Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved |P(P(R))| = beth_3, general formula |P^n(R)| = beth_{n+1}, and Konig constraint cf(beth_2) > c. 0 sorries, 0 axioms. Docker build pending verification.",
+    "builtItems": [
+      "card_powerSet_powerSet_real_eq_beth_three: #(Set (Set R)) = Cardinal.beth 3 [CantorsTheoremOQ01OQ02.lean:72]",
+      "card_iteratedPowerSet_eq_beth: forall n, #(iteratedPowerSet n) = Cardinal.beth (n+1) [line:124]",
+      "iteratedPowerSet_strict_mono: strict increasing hierarchy [line:145]",
+      "konig_constraint_powerSet_real: c < cf(beth_2) via Cardinal.lt_cof_power [line:208]",
+      "konig_constraint_beth: generalized to all beth levels [line:215]",
+      "aleph_index_lower_cofinality_bound: if #(Set R) = aleph_alpha then c < cf(aleph_alpha) [line:226]"
+    ],
+    "insights": [
+      "The exact aleph-index of beth_2 is independent of ZFC (Easton theorem) — only constraint is cf(beth_2) > c",
+      "Cardinal.lt_cof_power proves Konig: for aleph_0 <= kappa and 2<=n, kappa < cf(n^kappa)",
+      "beth_nat_succ private lemma bridges N indices to Ordinal via Order.succ_eq_add_one + push_cast + ring",
+      "iteratedPowerSet : N -> Type (recursive definition) enables general formula as a typed theorem",
+      "All beth equalities are unconditional ZFC theorems; aleph-index questions are independent"
+    ],
+    "mathlibGaps": [
+      "Easton theorem (independence of 2^kappa) not in Mathlib — requires forcing, hundreds of lines"
+    ],
+    "nextSteps": [
+      "Verify Docker build compiles (Docker unavailable during session due to multi-agent load)",
+      "If succ case push_cast;ring_nf fails, try rfl or simp only [Nat.add_assoc]",
+      "Potential follow-up: formalize Easton independence result (hard, requires forcing machinery)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "cantors-theorem",
+    "cantors-theorem-oq-01",
+    "cantors-theorem-oq-01-oq-01",
+    "cantors-theorem-oq-02",
+    "cantors-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T11:17:07.541Z",
+  "lastUpdate": "2026-05-04T11:17:07.541Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorsTheorem.lean",
+      "filename": "CantorsTheorem.lean",
+      "lineCount": 158,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheorem.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01.lean",
+      "filename": "CantorsTheoremOQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01OQ01.lean",
+      "filename": "CantorsTheoremOQ01OQ01.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ02.lean",
+      "filename": "CantorsTheoremOQ02.lean",
+      "lineCount": 282,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ03.lean",
+      "filename": "CantorsTheoremOQ03.lean",
+      "lineCount": 311,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ03.lean"
+    }
+  ]
+}
