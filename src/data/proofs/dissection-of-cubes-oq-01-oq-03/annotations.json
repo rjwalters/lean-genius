@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-imports-noncomputable",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "technique",
+    "title": "Imports, noncomputable, and Classical DecidableEq",
+    "content": "The file imports `Mathlib` (full library), `DissectionOfCubes`, and `DissectionOfCubesOQ01`. The `noncomputable section` declaration is required because `volumeSum` uses real-number arithmetic — `ℝ` is noncomputable in Lean 4 because its elements are Cauchy sequences (limits) which cannot be computed by a terminating algorithm. The `noncomputable instance : DecidableEq Cube := Classical.decEq _` uses classical logic to assert decidable equality for `Cube` structures, allowing `Finset.sum` to be defined over `Finset Cube`. Without this instance, `Finset.sum` would fail to synthesize the required `DecidableEq Cube` typeclass.",
+    "mathContext": "In Lean 4, computability is tracked by the type system. Real numbers ($\\mathbb{R}$) are constructed as equivalence classes of Cauchy sequences and are not computable. The `noncomputable` modifier tells Lean to skip code generation for these definitions. `Classical.decEq` uses the law of excluded middle ($\\forall x, y: x = y \\vee x \\neq y$) to produce `DecidableEq` — legal in propositions but not in computable data.",
+    "significance": "technical",
+    "relatedConcepts": ["noncomputable in Lean 4", "Classical.decEq", "DecidableEq typeclass", "real number computability"],
+    "prerequisites": ["Lean 4 noncomputable keyword", "Classical logic in Lean 4", "Finset.sum signature"]
+  },
+  {
     "id": "ann-module-overview",
     "proofId": "dissection-of-cubes-oq-01-oq-03",
     "range": {
