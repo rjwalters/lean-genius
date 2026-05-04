@@ -14,14 +14,15 @@
       "Mathlib.Analysis.Normed.Group.Quotient",
       "Mathlib.MeasureTheory.Group.Integral",
       "Mathlib.Topology.MetricSpace.Holder",
-      "Mathlib.Tactic"
+      "Mathlib.Tactic",
+      "Proofs.FourierSeriesOQ02Incomplete01"
     ],
     "opens": [
       "MeasureTheory",
       "scoped"
     ],
     "namespace": "FourierHolderDecay",
-    "lineCount": 486,
+    "lineCount": 908,
     "axiomCount": 1,
     "sorries": 0,
     "definitionCount": 3,
@@ -98,7 +99,7 @@
       "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
     ],
     "axiomCount": 1,
-    "lineCount": 486,
+    "lineCount": 908,
     "assumptions": "1 axiom (holder_decay_is_optimal_seq: Weierstrass sequential optimality, corrected from incorrect cofinite version). The decay_implies_regularity theorem has been fully proved via FourierDecayInfra.",
     "theoremCount": 18
   },

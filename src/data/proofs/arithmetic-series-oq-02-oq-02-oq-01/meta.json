@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified. Depends on ArithmeticSeriesOQ02OQ02 (parallel Vandermonde).",
-    "lineCount": 165,
+    "lineCount": 319,
     "theoremCount": 8,
     "definitionCount": 1,
     "originalContributions": [
@@ -106,12 +106,15 @@
   },
   "leanFile": {
     "namespace": "ArithmeticSeriesOQ02OQ02OQ01",
-    "lineCount": 165,
+    "lineCount": 319,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 1,
     "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Proofs.ArithmeticSeriesOQ02OQ02"
+    ]
   },
   "crossReferences": [
     {
