@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
+    "range": { "startLine": 1, "endLine": 60 },
+    "type": "concept",
+    "title": "Cramér's Conjecture as a Universal Gap Bound",
+    "content": "This file answers: if Cramér's conjecture holds (prime gaps are $O(\\log^2 p)$), does this force a prime into every interval $[x, x + x^\\varepsilon]$ for any $\\varepsilon > 0$?\n\nThe answer is **yes**, and the proof has a single analytic core: $\\log^2(x) = o(x^\\varepsilon)$ for every $\\varepsilon > 0$. This asymptotic — proved rigorously from `isLittleO_log_rpow_atTop` — is what converts a *logarithmic* gap bound into a *power* gap guarantee.\n\nThe structure is:\n1. Prove $C \\cdot \\log^2(n) < n^\\varepsilon$ eventually for any $C, \\varepsilon > 0$ (analytic)\n2. Apply a single bridge axiom to convert Cramér's nth-prime formulation to an interval bound\n3. Chain: Cramér gap ≤ C·log² < x^ε → prime exists in [x, x+x^ε]\n4. Cover small x with BHP (unconditional ε = 0.525)",
+    "mathContext": "The PrimeGapConjecture(ε) predicate asserts: for all $x \\geq 2$, there exists a prime $p$ with $x \\leq p \\leq x + x^\\varepsilon$. Baker-Harman-Pintz (2001) proved this for $\\varepsilon = 0.525$; under Cramér it holds for all $\\varepsilon > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Cramér's conjecture", "PrimeGapConjecture", "isLittleO", "Baker-Harman-Pintz"],
+    "prerequisites": ["BertrandsPostulateOQ03", "BertrandsPostulateOQ03OQ04", "PrimeNumberTheorem"]
+  },
+  {
+    "id": "ann-log-sq-asymptotic",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
+    "range": { "startLine": 70, "endLine": 119 },
+    "type": "technique",
+    "title": "Proving log²(n) = o(n^ε) via isLittleO Squaring",
+    "content": "The lemma `log_sq_lt_rpow_eventually` proves: for any $C > 0$ and $\\varepsilon > 0$,\n$$C \\cdot \\log(n)^2 < n^\\varepsilon \\quad \\text{for all sufficiently large } n.$$\n\nThe proof uses Mathlib's `isLittleO_log_rpow_atTop` with exponent $\\varepsilon/4$: $\\log(n) = O(n^{\\varepsilon/4})$, so $|\\log(n)| \\leq \\frac{1}{2} n^{\\varepsilon/4}$ eventually. Squaring gives $\\log(n)^2 \\leq \\frac{1}{4} n^{\\varepsilon/2}$. For large $n$, $n^{\\varepsilon/2} \\geq C$, so $C \\cdot \\log^2(n) \\leq \\frac{C}{4} \\cdot n^{\\varepsilon/2} < n^{\\varepsilon/2} \\cdot n^{\\varepsilon/2} = n^\\varepsilon$.\n\nThe `max` threshold combines: the little-o threshold $N_1$ and $\\lceil C^{2/\\varepsilon} \\rceil$ (ensuring $n^{\\varepsilon/2} \\geq C$).",
+    "mathContext": "$\\log(n) = o(n^{\\varepsilon/4})$ is `isLittleO_log_rpow_atTop hε4`. Squaring: $\\log^2 = o(n^{\\varepsilon/2})$. Since $n^{\\varepsilon/2} \\to \\infty$, it exceeds $C$ eventually. Then $C\\log^2 < n^{\\varepsilon/2} \\cdot n^{\\varepsilon/2} = n^\\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["isLittleO_log_rpow_atTop", "rpow_add", "Nat.ceil", "Filter.eventually_atTop"],
+    "prerequisites": ["Real.isLittleO_log_rpow_atTop", "rpow_le_rpow", "mul_le_mul"]
+  },
+  {
+    "id": "ann-bridge-axiom",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
+    "range": { "startLine": 121, "endLine": 163 },
+    "type": "concept",
+    "title": "The Bridge Axiom: nth-Prime Formulation → Interval Formulation",
+    "content": "Cramér's conjecture is naturally stated in terms of the *nth prime*: $p_{n+1} - p_n = O(\\log^2 p_n)$. The `PrimeGapConjecture` predicate is an *interval* statement: $\\exists$ prime in $[x, x+x^\\varepsilon]$.\n\nThe bridge axiom `cramer_implies_nextPrime_bound` converts between these. Mathematically, if $p_n \\leq x < p_{n+1}$ then nextPrime$(x) = p_{n+1}$ and:\n$$p_{n+1} - x \\leq p_{n+1} - p_n \\leq C \\cdot \\log^2(p_n) \\leq C \\cdot \\log^2(x).$$\nSo nextPrime$(x) \\leq x + C\\log^2(x)$.\n\nThis is axiomatized rather than proved because formalizing the index $n = \\#\\{\\text{primes} \\leq x\\}$ as a function of $x$ requires `Nat.count`/`Nat.nth` API that is technically involved but mathematically routine.",
+    "mathContext": "The axiom takes the Cramér hypothesis as a $\\exists C > 0$ quantified statement over `Nat.nth Nat.Prime` and produces the nextPrimeFrom bound. This is a consequence of monotonicity of primes and the inequality $p_n \\leq x$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.nth", "Nat.Prime", "cramer_conjecture", "nextPrimeFrom"],
+    "prerequisites": ["Nat.infinite_setOf_prime", "Nat.find_spec"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
+    "range": { "startLine": 165, "endLine": 230 },
+    "type": "technique",
+    "title": "Chaining Bounds: Cramér → Existence in [x, x+x^ε]",
+    "content": "The main proof of `cramer_implies_primeGapConjecture` combines three ingredients:\n\n1. **Cramér bound**: nextPrime$(x) \\leq x + C\\log^2(x)$ (bridge axiom, for $x \\geq 2$)\n2. **Asymptotic**: $C\\log^2(x) < x^\\varepsilon$ for $x \\geq N$ (log-sq lemma)\n3. **BHP base case**: PrimeGapConjecture$(0.525)$ unconditionally (parent entry)\n\nFor $\\varepsilon \\geq 0.525$: `prime_gap_conjecture_monotone` gives the result directly from BHP.\n\nFor $\\varepsilon < 0.525$: `cramer_implies_primeGapConjecture_eventually` gives a threshold $N$ beyond which Cramér works. Below $N$, BHP covers all $x \\geq 2$. The case split on `x ≥ N` joins these two halves.\n\nThe proof of the eventual form is a direct `calc`:\n$$\\text{nextPrime}(x) \\leq x + C\\log^2(x) \\leq x + x^\\varepsilon.$$",
+    "mathContext": "The combination `by_cases h : ε ≥ 0.525` splits into two proofs. For the sub-0.525 case, `Filter.eventually_atTop` extracts threshold $N$; `by_cases hxN : x ≥ N` handles the two regions.",
+    "significance": "key",
+    "relatedConcepts": ["prime_gap_conjecture_monotone", "prime_gap_conjecture_bhp", "Filter.eventually_atTop", "by_cases"],
+    "prerequisites": ["cramer_conjecture", "BertrandsPostulateOQ03.prime_gap_conjecture_bhp"]
+  },
+  {
+    "id": "ann-density-gap",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
+    "range": { "startLine": 232, "endLine": 257 },
+    "type": "concept",
+    "title": "Existence vs Density: The Gap That Cramér Cannot Close",
+    "content": "The `cramer_hierarchy` theorem crystallizes what is known and unknown:\n\n- **Proved (BHP)**: PrimeGapConjecture(0.525) — unconditional\n- **Proved here (Cramér)**: PrimeGapConjecture(ε) for all ε > 0 — conditional on Cramér\n- **Open**: PrimeGapConjecture(0) — constant-sized gaps (twin prime conjecture territory)\n- **Open**: ShortIntervalPNT(ε) for ε < 1 — even under Cramér's conjecture\n\nThe key gap: `existence_is_weaker_than_density` shows ShortIntervalPNT → PrimeGapConjecture eventually (from the parent), but NOT the converse. Gap bounds control the *maximum* spacing but not the *equidistribution* of primes. Proving density in $[x, x+x^\\varepsilon]$ requires Montgomery-type conjectures on the pair correlation of zeros of ζ(s).",
+    "mathContext": "ShortIntervalPNT(ε) asserts $\\pi(x+x^\\varepsilon) - \\pi(x) \\sim x^\\varepsilon/\\log(x)$. PrimeGapConjecture(ε) asserts only that the count is $\\geq 1$. The ratio can be as small as 0 in the weaker statement.",
+    "significance": "supporting",
+    "relatedConcepts": ["ShortIntervalPNT", "PrimeGapConjecture", "cramer_hierarchy", "density vs existence"],
+    "prerequisites": ["shortIntervalPNT_implies_primeGapConjecture_eventually", "BertrandsPostulateOQ03OQ04"]
+  }
+]
