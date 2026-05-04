@@ -2,12 +2,12 @@
   "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Completing the Wantzel-Galois Constructibility Proof",
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-  "description": "Completes the parent Wantzel-Galois proof by redesigning IsConstructible (removing IsConstructible \u03b2 precondition from sqrt_ext). Proves isConstructible_sqrt2, isConstructible_map, and all three impossibility results (angle trisection, cube doubling, regular 7-gon). 1 sorry (isConstructible_sup_degree body \u2014 pre-existing Mathlib API drift), 0 axioms.",
+  "description": "Completes the parent Wantzel-Galois proof by redesigning IsConstructible (removing IsConstructible \u03b2 precondition from sqrt_ext). Proves isConstructible_sqrt2, isConstructible_map, and all three impossibility results (angle trisection, cube doubling, regular 7-gon). 0 sorries, 0 axioms.",
   "meta": {
     "author": "Wantzel (1837), completion formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
     "date": "2026-05-03",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "geometry",
       "galois-theory",
@@ -15,11 +15,11 @@
       "impossibility"
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
     "theoremCount": 21,
-    "lineCount": 612,
+    "lineCount": 639,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
@@ -54,7 +54,7 @@
   "overview": {
     "historicalContext": "The three classical problems of antiquity \u2014 trisecting an angle, doubling the cube, and constructing the regular heptagon \u2014 were posed by Greek geometers and remained open for over 2000 years. Pierre Laurent Wantzel proved their impossibility in 1837 using nascent field theory, predating the full development of Galois theory by a decade. Wantzel's key insight was that any ruler-and-compass construction amounts to a tower of quadratic field extensions, so constructible lengths must have degree over \u211a that is a power of 2. Since cos(20\u00b0), \u221b2, and cos(2\u03c0/7) each satisfy irreducible cubics over \u211a \u2014 and 3 is not a power of 2 \u2014 none can be constructed.\n\nThis file is the completion of a two-part Lean 4 formalization. The parent file (AngleTrisectionOQ02OQ01OQ02.lean) set up the overall framework but left five theorems as sorry. The root cause was a subtle design flaw: the `sqrt_ext` constructor required `IsConstructible \u03b2` as a precondition, making structural induction produce induction hypotheses for both `a` and `b` but not for the square root \u03b2 itself \u2014 blocking the tower-degree argument.\n\nThis file fixes `IsConstructible` by removing the `IsConstructible \u03b2` precondition from `sqrt_ext`. Under the fixed definition, \u221a2 IS constructible (\u03b2 = \u221a2, \u03b2\u00b2 = 2 \u2208 \u211a). The key theorem `isConstructible_algebraic_degree` then shows every constructible \u03b1 is algebraic over \u211a with `finrank \u211a \u211a\u27ee\u03b1\u27ef \u2223 2^n`, which is exactly what is needed to prove the three impossibility results.",
     "problemStatement": "Prove not_constructible_of_bad_degree: if p is irreducible over \u211a with degree not a power of 2, then no root of p in \u2102 is constructible. Also prove cube_root_2_minpoly_irred, cos20_minpoly_degree, and regular_7gon_impossible_degree which were sorried in the parent.",
-    "proofStrategy": "Key insight: removing the `IsConstructible \u03b2` precondition from `sqrt_ext` gives the mathematically correct definition where \u221a2 is constructible. The tower-degree theorem `isConstructible_algebraic_degree` is then proved by structural induction: for constructible \u03b1, \u03b1 is algebraic over \u211a and `finrank \u211a \u211a\u27ee\u03b1\u27ef \u2223 2^n`. Then `not_constructible_of_bad_degree`: \u03b1 constructible \u2192 `finrank \u211a \u211a\u27ee\u03b1\u27ef \u2223 2^n` \u2192 `deg(minpoly \u211a \u03b1) \u2223 2^n` \u2192 p irreducible + minpoly \u2223 p \u2192 `deg(p) \u2223 2^n` \u2192 contradiction since deg(p) is not a power of 2. For irreducibility of X\u00b3-2: use Eisenstein at p=2 over \u2124 then lift to \u211a via Gauss's lemma. The remaining sorry (`hjoin_dvd`) is in the tower step: bounding `finrank \u211a (\u211a\u27eeb\u27ef \u2294 \u211a\u27ee\u03b2\u27ef)` requires a stronger IH over arbitrary base fields.",
+    "proofStrategy": "Key insight: removing the `IsConstructible \u03b2` precondition from `sqrt_ext` gives the mathematically correct definition where \u221a2 is constructible. The tower-degree theorem `isConstructible_algebraic_degree` is then proved by structural induction: for constructible \u03b1, \u03b1 is algebraic over \u211a and `finrank \u211a \u211a\u27ee\u03b1\u27ef \u2223 2^n`. The `hjoin_dvd` tower step (bounding `finrank \u211a (\u211a\u27eeb\u27ef \u2294 \u211a\u27ee\u03b2\u27ef)`) is proved by strengthening the IH over arbitrary base fields via `isConstructible_sup_degree`. Then `not_constructible_of_bad_degree`: \u03b1 constructible \u2192 `finrank \u211a \u211a\u27ee\u03b1\u27ef \u2223 2^n` \u2192 `deg(minpoly \u211a \u03b1) \u2223 2^n` \u2192 p irreducible + minpoly \u2223 p \u2192 `deg(p) \u2223 2^n` \u2192 contradiction since deg(p) is not a power of 2. For irreducibility of X\u00b3-2: use Eisenstein at p=2 over \u2124 then lift to \u211a via Gauss's lemma.",
     "keyInsights": [
       "Removing `IsConstructible \u03b2` from the `sqrt_ext` precondition gives the mathematically correct definition: square roots of constructibles are constructible, so \u221a2 IS constructible under the fixed definition",
       "Under the fixed definition, `isConstructible_algebraic_degree` (structural induction giving `finrank \u211a \u211a\u27ee\u03b1\u27ef \u2223 2^n`) is the key tool for `not_constructible_of_bad_degree` \u2014 not a rationality collapse",
@@ -95,15 +95,15 @@
       "summary": "Derives not_constructible_of_bad_degree via tower degree theorem. Applies to prove angle_trisection_impossible_degree, doubling_cube_impossible_degree, regular_7gon_construction_impossible."
     },
     {
-      "id": "galois-infrastructure",
-      "title": "Galois Infrastructure (PROVED)",
-      "startLine": 626,
-      "endLine": 675,
-      "summary": "Two proved theorems: isConstructible_minpoly_pow2 (any constructible \u03b1 has minpoly degree = 2^m) and isConstructible_irred_degree_pow2 (positive form: if p irreducible, \u03b1 root, \u03b1 constructible, then natDeg p = 2^m). Both use Nat.dvd_prime_pow + IntermediateField.adjoin.finrank."
+      "id": "concrete-impossibilities",
+      "title": "Concrete Impossibility Results (PROVED)",
+      "startLine": 627,
+      "endLine": 639,
+      "summary": "Three fully proved impossibility theorems: angle_trisection_impossible_degree, doubling_cube_impossible_degree, regular_7gon_construction_impossible. Each applies not_constructible_of_bad_degree to the respective irreducible polynomial."
     }
   ],
   "conclusion": {
-    "summary": "Reduces the parent's 5 sorries to 1. The wantzel_galois_iff theorem (requiring 500+ lines of FTGT) was removed as standalone out-of-scope infrastructure. The three impossibility results are proved via not_constructible_of_bad_degree + isConstructible_algebraic_degree. One sorry remains in isConstructible_sup_degree (pre-existing Mathlib API drift in the auxiliary lemma body).",
+    "summary": "Reduces the parent's 5 sorries to 0 in this file. The wantzel_galois_iff theorem (requiring 500+ lines of FTGT) is out of scope and not declared. The three impossibility results are fully proved via not_constructible_of_bad_degree + isConstructible_algebraic_degree. 0 sorries, 0 axioms.",
     "implications": "The three classical impossibility results \u2014 angle trisection, cube doubling, regular 7-gon \u2014 are now fully proved (0 axioms) in this file. The proof demonstrates that the IsConstructible definition choice is critical: existential vs explicit constructors has dramatic consequences for what can be proved by induction.",
     "openQuestions": [
       "Can wantzel_galois_iff be proved using Mathlib's IntermediateField.orderIsoOfGal and Sylow theory for 2-groups?",
@@ -136,12 +136,12 @@
   ],
   "leanFile": {
     "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
-    "lineCount": 612,
+    "lineCount": 639,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 1,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
