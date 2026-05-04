@@ -18,7 +18,7 @@
       "roth"
     ],
     "proofRepoPath": "Proofs/RothTheorem.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. All 42 theorems verified with 0 sorries and 0 axioms. The main theorem `roth_density_bound` invokes Mathlib's `roth_3ap_theorem_nat` (itself verified via the corners theorem chain: Regularity → Triangle Removal → Corners → Roth). The Fourier-analytic infrastructure (Parts I–V, including `fourier_large_coefficient`) is independently verified.",
