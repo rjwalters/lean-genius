@@ -2338,6 +2338,7 @@ import Proofs.LagrangeTheoremOQ05
 import Proofs.LawOfCosines
 import Proofs.LawOfCosinesOQ03
 import Proofs.LawOfCosinesOQ04
+import Proofs.LawOfCosinesOQ04OQ02
 import Proofs.LawOfCosinesOQ05
 import Proofs.LawOfSinesOQ06
 import Proofs.LawsOfLargeNumbers
