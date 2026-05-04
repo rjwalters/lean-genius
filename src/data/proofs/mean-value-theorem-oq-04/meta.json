@@ -1,0 +1,67 @@
+{
+  "id": "mean-value-theorem-oq-04",
+  "title": "Fundamental Theorem of Calculus via MVT Structure",
+  "slug": "mean-value-theorem-oq-04",
+  "description": "Establishes the Fundamental Theorem of Calculus and its connection to the Mean Value Theorem: MVT (local) gives one value c with f'(c) = (f(b)-f(a))/(b-a), while FTC (global) gives the exact integral formula. Both are proved, along with integration by parts, uniqueness of antiderivatives, MVT as an integral average, and the Lipschitz distance bound.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "lineCount": 293,
+    "leanFile": "proofs/Proofs/MeanValueTheoremOQ04.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "tags": ["calculus", "mean-value-theorem", "fundamental-theorem-calculus", "integration", "analysis"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "ftc-parts",
+      "title": "Fundamental Theorem of Calculus",
+      "description": "The two parts of FTC: ftc_part1 (∫ₐˣ f is differentiable and its derivative is f(x)), ftc_part1_deriv (the derivative is exactly f), and antiderivative_of_integral (the integral function is the canonical antiderivative). The Newton-Leibniz formula ftc_part2: ∫ₐᵇ F' = F(b) - F(a) for continuously differentiable F.",
+      "theorems": ["ftc_part1", "ftc_part1_deriv", "antiderivative_of_integral", "newton_leibniz", "ftc_part2"]
+    },
+    {
+      "id": "mvt-ftc-connection",
+      "title": "MVT-FTC Structural Connection",
+      "description": "The key insight: ftc_implies_mvt shows MVT follows from FTC + IVT — the integral mean value lies between min and max of f', so by IVT some c achieves f'(c) = ∫f'/(b-a). mvt_equals_integral_average: the MVT value is the integral average f'(c) = ∫ₐᵇ f'/(b-a).",
+      "theorems": ["ftc_implies_mvt", "mvt_equals_integral_average"]
+    },
+    {
+      "id": "integral-identities",
+      "title": "Integral Identities and Applications",
+      "description": "integration_by_parts: ∫ₐᵇ f'g = f(b)g(b) - f(a)g(a) - ∫ₐᵇ fg'. ftc_uniqueness: any two antiderivatives of f differ by a constant. diff_then_integrate and integrate_then_diff: the FTC as inverse operations. ftc_no_loss: differentiating ∫ₐˣ f then integrating recovers the original integral.",
+      "theorems": ["integration_by_parts", "ftc_uniqueness", "diff_then_integrate", "integrate_then_diff", "ftc_no_loss"]
+    },
+    {
+      "id": "approximation",
+      "title": "Approximation Bounds",
+      "description": "integral_approx_from_mvt: |∫ₐᵇ f - f(c)·(b-a)| ≤ Lip(f')·(b-a)²/2 for Lipschitz f'. lipschitz_dist_bound: for Lipschitz continuous f, |f(x) - f(y)| ≤ Lip·|x - y|. These give quantitative error bounds for numerical integration via the MVT.",
+      "theorems": ["integral_approx_from_mvt", "lipschitz_dist_bound"]
+    }
+  ],
+  "overview": {
+    "summary": "The MVT and FTC are dual perspectives on the same local-to-global principle: the MVT says there exists a point where the instantaneous rate equals the average rate; the FTC says the exact average rate is the integral divided by the interval length. This file proves both from Mathlib's integration infrastructure and makes the structural connection explicit.",
+    "approach": "All 14 results are proved using Mathlib's IntervalIntegral, HasDerivAt, and ContinuousOn APIs. The FTC Part 1 uses intervalIntegral.integral_hasDerivAt_right; Newton-Leibniz uses intervalIntegral.integral_eq_sub_of_hasDerivAt. The MVT derivation from FTC uses the intermediate value theorem (IVT) applied to f' on [a,b]: the integral mean ∫f'/(b-a) lies in [min f', max f'] by the mean value property of integrals, so IVT gives a point c with f'(c) = ∫f'/(b-a).",
+    "significance": "The FTC is the central theorem of calculus, connecting differential and integral calculus. The proof that MVT is a corollary of FTC+IVT reveals the conceptual hierarchy: integration is more fundamental than differentiation in the sense that FTC implies MVT but not vice versa without additional structure. The inclusion of integration by parts and uniqueness of antiderivatives makes this a self-contained calculus toolkit."
+  },
+  "conclusion": {
+    "summary": "Fourteen calculus theorems — FTC Parts 1 and 2, MVT as FTC corollary, integration by parts, uniqueness of antiderivatives, and approximation bounds — machine-checked against Mathlib.",
+    "openQuestions": [
+      "Can the multivariable FTC (Green's theorem, Stokes' theorem) be derived from this framework using Mathlib's differential forms?",
+      "Can the Lebesgue version of FTC (differentiability a.e. for absolutely continuous functions) be formalized?",
+      "Does the MVT imply FTC (with the right hypotheses)? Can a Lean 4 proof of FTC purely from MVT be constructed?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "extends",
+      "description": "Extends the base MVT formalization with FTC and the MVT-FTC structural connection"
+    }
+  ]
+}
