@@ -2302,6 +2302,7 @@ import Proofs.LHopitalOQ02Aristotle
 import Proofs.LHopitalOQ03
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeFourSquaresOQ01
+import Proofs.LagrangeFourSquaresOQ01OQ01
 import Proofs.LagrangeFourSquaresOQ02
 import Proofs.LagrangeFourSquaresOQ04
 import Proofs.LagrangeFourSquaresWaringG2

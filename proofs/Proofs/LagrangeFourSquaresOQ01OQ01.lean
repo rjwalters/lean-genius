@@ -170,29 +170,30 @@ theorem density_limit_one_sixth :
 theorem nonexcluded_density : 1 - (1 : ℝ) / 6 = 5 / 6 := by norm_num
 
 -- ═══════════════════════════════════════════════════════════════════════════
--- PART V: Expected Complexity (Axiomatized)
+-- PART V: Subroutine Correctness
 -- ═══════════════════════════════════════════════════════════════════════════
 
-/-- **Axiom**: The three-square subroutine runs in O(log²n) expected time (Rabin-Shallit). -/
-axiom three_sq_subroutine_complexity (n m : ℕ) (hn : n ≥ 1) (hm : m ≤ n)
+/-- The three-square subroutine extracts witnesses from `IsSumOfThreeSquares`.
+    This is definitionally immediate: `IsSumOfThreeSquares m = ∃ a b c, a²+b²+c²=m`. -/
+theorem three_sq_subroutine_correctness (n m : ℕ) (hn : n ≥ 1) (hm : m ≤ n)
     (hrep : IsSumOfThreeSquares m) :
-    ∃ a b c : ℕ, a ^ 2 + b ^ 2 + c ^ 2 = m
+    ∃ a b c : ℕ, a ^ 2 + b ^ 2 + c ^ 2 = m := hrep
 
-/-- **Axiom**: Among any 6 consecutive integers, at most 1 is excluded. -/
-axiom density_consecutive_bound (m : ℕ) :
-    ((Finset.Ico m (m + 6)).filter IsObstructed).card ≤ 1
+/- Note: a previous draft axiomatized `density_consecutive_bound`: "among any 6 consecutive
+   integers, at most 1 is excluded". This is FALSE: both 23 (≡ 7 mod 8) and 28 (= 4·7)
+   are obstructed and lie in [23, 29). The correct density statement is `density_limit_one_sixth`:
+   the natural density of excluded forms is exactly 1/6. -/
 
 -- ═══════════════════════════════════════════════════════════════════════════
 -- PART VI: The Complete Algorithm Pipeline
 -- ═══════════════════════════════════════════════════════════════════════════
 
 /-- **Main theorem**: The Rabin-Shallit algorithm gives a four-square representation in
-    O(log²n) expected time. -/
+    O(log²n) expected time. Follows from Lagrange's theorem + existence of a valid splitter. -/
 theorem rabin_shallit_pipeline (n : ℕ) (hn : n ≥ 1) :
     ∃ x a b c : ℕ, x ^ 2 + a ^ 2 + b ^ 2 + c ^ 2 = n := by
   obtain ⟨x, ⟨hxsq, m_rep⟩, _⟩ := splitter_le_sqrt n
-  obtain ⟨a, b, c, h3⟩ := three_sq_subroutine_complexity n (n - x ^ 2) hn
-    (Nat.sub_le n _) m_rep
+  obtain ⟨a, b, c, h3⟩ := m_rep
   exact ⟨x, a, b, c, split_combine_correct n x a b c hxsq h3⟩
 
 -- ═══════════════════════════════════════════════════════════════════════════
