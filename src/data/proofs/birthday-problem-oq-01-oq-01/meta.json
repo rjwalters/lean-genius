@@ -2,10 +2,10 @@
   "id": "birthday-problem-oq-01-oq-01",
   "title": "Birthday Distribution: Formal Analysis of Collision Count X",
   "slug": "birthday-problem-oq-01-oq-01",
-  "description": "Formal distributional analysis of X = number of birthday collision pairs. Defines X(f) = |{(i,j) : i < j, f(i)=f(j)}|, proves X=0 ↔ injective, #{f|X=0} = descFactorial(d,n), Pr(X=0) = descFactorial(d,n)/d^n, the indicator decomposition X = Σ I_{ij}, and the bound E[X] = C(n,2)/d assuming double counting (3 sorries).",
+  "description": "Formal distributional analysis of X = number of birthday collision pairs. Proves: X=0 ↔ injective, #{f|X=0} = descFactorial(d,n), Pr(X=0) = descFactorial(d,n)/d^n, indicator decomposition X = Σ I_{ij}, E[X] = C(n,2)/d via double counting. All proofs complete (0 sorries).",
   "meta": {
     "author": "Lean Genius Researcher",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BirthdayProblemOQ01OQ01.lean",
     "tags": [
       "probability",
@@ -16,15 +16,15 @@
       "descFactorial",
       "indicator"
     ],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
     "leanFile": "proofs/Proofs/BirthdayProblemOQ01OQ01.lean",
-    "sorryCount": 3,
+    "sorryCount": 0,
     "definitionCount": 2,
-    "lineCount": 241,
+    "lineCount": 282,
     "theoremCount": 15,
-    "assumptions": "3 sorries remaining: card_ordered_pairs (#{(i,j)|i<j in Fin n} = C(n,2)), card_funs_shared_birthday (#{f|f(i)=f(j)} = d^{n-1}), sum_collisionCount (double counting Σ_f X(f) = C(n,2)·d^{n-1}). All other theorems including X=0↔injective, #{f|X=0}=descFactorial, Pr(X=0), indicator decomposition, and E[X] assuming double counting are fully proved.",
+    "assumptions": "None. All theorems fully proved including the double counting lemmas: card_ordered_pairs, card_funs_shared_birthday, and sum_collisionCount.",
     "mathlibDependencies": [
       {
         "theorem": "Fintype.card_embedding_eq",
@@ -150,11 +150,11 @@
   "leanFile": {
     "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
     "filename": "BirthdayProblemOQ01OQ01.lean",
-    "lineCount": 241,
+    "lineCount": 282,
     "theoremCount": 15,
     "axiomCount": 0,
     "defCount": 2,
-    "sorryCount": 3,
+    "sorryCount": 0,
     "isAristotle": false,
     "additionalFiles": [
       "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"

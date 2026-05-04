@@ -152,11 +152,29 @@ theorem collisionCount_eq_sum_indicators (f : Fin n → Fin d) :
 /-- The number of ordered pairs (i < j) in Fin n equals C(n, 2). -/
 theorem card_ordered_pairs (n : ℕ) :
     (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)).card = n.choose 2 := by
-  sorry
-  -- Proof sketch: #{(i,j) | i < j in Fin n} = n(n-1)/2 = C(n,2).
-  -- By symmetry: #{i < j} = #{i > j} and #{i = j} = n.
-  -- Total = n², so #{i < j} = (n² - n)/2 = n(n-1)/2 = C(n,2).
-  -- In Lean: use Finset.card_offDiag and the order bijection.
+  rw [Nat.choose_two_right]
+  have h_offDiag : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2)).card =
+      n * (n - 1) := by
+    have hset : (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2) =
+        (Finset.univ : Finset (Fin n)).offDiag := by
+      ext ⟨a, b⟩; simp [Finset.mem_offDiag]
+    rw [hset, Finset.card_offDiag, Finset.card_univ, Fintype.card_fin]
+  have h_symm : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card =
+      ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)).card :=
+    Finset.card_bij (fun p _ => (p.2, p.1))
+      (fun ⟨a, b⟩ h => by simp_all)
+      (fun ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ _ _ h => by simp [Prod.ext_iff] at h; exact Prod.ext h.2 h.1)
+      (fun ⟨a, b⟩ h => ⟨(b, a), by simp_all, by simp⟩)
+  have h_disj : Disjoint ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2))
+      ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)) := by
+    apply Finset.disjoint_filter.mpr
+    intro ⟨a, b⟩ _ h1 h2; exact lt_irrefl a (lt_trans h1 h2)
+  have h_union : (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2) =
+      (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)) ∪
+      (Finset.univ.filter (fun p : Fin n × Fin n => p.2 < p.1)) := by
+    ext ⟨a, b⟩; simp [ne_iff_lt_or_gt]
+  rw [h_union, Finset.card_union_of_disjoint h_disj] at h_offDiag
+  omega
 
 /-- X(f) ≤ C(n, 2): at most one collision per pair. -/
 theorem collisionCount_le_choose_two (f : Fin n → Fin d) :
@@ -183,7 +201,26 @@ theorem collisionCount_le_choose_two (f : Fin n → Fin d) :
     The bijection uses the Fin n \ {j} ≃ Fin (n-1) index equivalence. -/
 theorem card_funs_shared_birthday (n d : ℕ) (i j : Fin n) (hij : i ≠ j) :
     (Finset.univ.filter (fun f : Fin n → Fin d => f i = f j)).card = d ^ (n - 1) := by
-  sorry
+  rw [← Fintype.card_coe]
+  rw [show Fintype.card ↥(Finset.univ.filter (fun f : Fin n → Fin d => f i = f j)) =
+         Fintype.card ({k : Fin n // k ≠ j} → Fin d) from
+    Fintype.card_congr {
+      toFun := fun ⟨f, _⟩ ⟨k, _⟩ => f k
+      invFun := fun g => ⟨fun k => if h : k = j then g ⟨i, hij⟩ else g ⟨k, h⟩, by
+        simp only [dif_neg hij, dif_pos rfl]⟩
+      left_inv := fun ⟨f, hfij⟩ => Subtype.ext (funext fun k => by
+        by_cases h : k = j
+        · subst h; simp [hfij]
+        · simp [h])
+      right_inv := fun g => funext fun ⟨k, hk⟩ => by simp [hk]
+    }]
+  rw [Fintype.card_fun, Fintype.card_fin]
+  congr 1
+  -- Fintype.card {k : Fin n // k ≠ j} = n - 1
+  rw [Fintype.card_subtype]
+  rw [show Finset.univ.filter (fun k : Fin n => k ≠ j) =
+         ({j} : Finset (Fin n)).compl from by ext k; simp [Finset.mem_compl]]
+  rw [Finset.card_compl, Fintype.card_fin, Finset.card_singleton]
 
 /-- **Σ_f X(f) = C(n,2) · d^{n-1}** (double counting, SORRY):
 
@@ -191,11 +228,15 @@ theorem card_funs_shared_birthday (n d : ℕ) (i j : Fin n) (hij : i ≠ j) :
       Σ_f X(f) = Σ_f Σ_{i<j} I_{ij}(f) = Σ_{i<j} Σ_f I_{ij}(f) = Σ_{i<j} d^{n-1} = C(n,2)·d^{n-1} -/
 theorem sum_collisionCount (n d : ℕ) :
     ∑ f : Fin n → Fin d, collisionCount f = n.choose 2 * d ^ (n - 1) := by
-  sorry
-  -- Proof strategy (once card_funs_shared_birthday and card_ordered_pairs are proved):
-  -- simp_rw [collisionCount_eq_sum_indicators, ← Finset.sum_comm]
-  -- conv_lhs => arg 2; ext p; rw [sum_indicator_eq_d_pow]; rfl
-  -- rw [Finset.sum_const, card_ordered_pairs, smul_eq_mul]
+  simp_rw [collisionCount_eq_sum_indicators]
+  rw [Finset.sum_comm]
+  have inner_eq : ∀ p ∈ (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2),
+      ∑ f : Fin n → Fin d, collisionIndicator f p.1 p.2 = d ^ (n - 1) := by
+    intro ⟨p1, p2⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    simp only [collisionIndicator, Finset.sum_boole]
+    exact card_funs_shared_birthday n d p1 p2 (ne_of_lt hp)
+  rw [Finset.sum_congr rfl inner_eq, Finset.sum_const, card_ordered_pairs, smul_eq_mul]
 
 /-- **E[X] = C(n,2)/d** (PROVED assuming sum_collisionCount):
 
