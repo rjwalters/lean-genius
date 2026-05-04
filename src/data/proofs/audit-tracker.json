@@ -14166,11 +14166,11 @@
       "notes": "Re-audited 2026-05-04: 0 sorries, leanFile.axiomCount=0 (meta.axiomCount=2 from parent imports, by design). covers_unit_cube:=trivial is struct field fill not a True stub. Empty issues array was auditor artifact."
     },
     "chebyshev-bounds-oq-04": {
-      "auditCount": 2,
-      "lastAudited": "2026-05-04T01:13:36Z",
+      "auditCount": 3,
+      "lastAudited": "2026-05-04T02:43:32Z",
       "result": "clean",
       "issues": [],
-      "notes": "Re-audited 2026-05-04: 0 sorries, 4 axioms, all metadata consistent. Empty issues array was auditor artifact."
+      "notes": "Re-audited 2026-05-04: 1 sorry (psi_doubling_le_log_centralBinom, pending Aristotle), 3 axioms (chebyshevPsi_upper_bound, chebyshevPsi_asymptotic, pnt_equivalence), lineCount=219, all metadata consistent with origin/main."
     },
     "bezout-identity-oq-01-oq-01": {
       "auditCount": 1,
