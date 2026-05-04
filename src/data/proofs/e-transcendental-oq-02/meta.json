@@ -22,7 +22,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "theoremCount": 21,
+    "theoremCount": 28,
     "mathlibDependencies": [
       {
         "theorem": "Real.exp_one_gt_d9",
@@ -59,14 +59,14 @@
       "Theorems e_digit1..e_digit9: the first 9 decimal digits of e = 2.718281828... proved machine-checkably (saturating the Mathlib lower bound exp_one_gt_d9)",
       "Theorem e_normal_implies_uniform_decimal_digits: IsNormalInBase 10 e → each digit d appears with frequency 1/10 (proved from definition using filter and norm_num)",
       "Axiom rational_digits_eventually_periodic: rationals have eventually periodic base-b expansions (pigeonhole, period divides φ(q))",
-      "Axiom periodic_has_missing_ktuple: periodic sequences with period T have missing k-tuples when bᵏ > T (orbit cardinality argument)",
+      "Theorem periodic_has_missing_ktuple: proved — T-periodic Fin-b sequences have missing k-tuples when bᵏ > T (orbit cardinality: image of range T has card ≤ T < bᵏ = |univ|; periodicity maps any n ≥ N₀ to orbit entry)",
       "Axiom normal_imp_irrational: normality in any base implies irrationality (uses the two combinatorial axioms)",
       "Axiom e_absolutely_normal: e is absolutely normal — the main open conjecture (2026)"
     ],
     "dateAdded": "2026-05-04",
-    "axiomCount": 4,
-    "lineCount": 266,
-    "assumptions": "4 axioms: (1) rational_digits_eventually_periodic — rationals have eventually periodic base-b digit expansions (pigeonhole principle, period T | φ(q)); (2) periodic_has_missing_ktuple — a T-periodic sequence on Fin b has at most T distinct k-tuples, so some k-tuple is absent when bᵏ > T; (3) normal_imp_irrational — normality in any base b ≥ 2 implies irrationality (uses axioms 1-2 + Tendsto formalism); (4) e_absolutely_normal — e is absolutely normal (the main open conjecture, 2026). 27 theorems including first 9 decimal digits of e proved from exp_one bounds.",
+    "axiomCount": 3,
+    "lineCount": 300,
+    "assumptions": "3 axioms: (1) rational_digits_eventually_periodic — rationals have eventually periodic base-b digit expansions (pigeonhole principle, period T | φ(q)); (2) normal_imp_irrational — normality in any base b ≥ 2 implies irrationality (uses axiom 1 + periodic_has_missing_ktuple + Tendsto formalism); (3) e_absolutely_normal — e is absolutely normal (the main open conjecture, 2026). periodic_has_missing_ktuple is now a proved theorem (orbit cardinality argument). 28 theorems including first 9 decimal digits of e proved from exp_one bounds.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -168,9 +168,9 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 266,
-    "axiomCount": 4,
-    "theoremCount": 27,
+    "lineCount": 300,
+    "axiomCount": 3,
+    "theoremCount": 28,
     "definitionCount": 3,
     "path": "Proofs/ETranscendentalOQ02.lean",
     "sorries": 0
