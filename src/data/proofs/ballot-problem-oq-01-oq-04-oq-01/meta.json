@@ -1,0 +1,138 @@
+{
+  "id": "ballot-problem-oq-01-oq-04-oq-01",
+  "title": "Chung-Feller Bijection: Rotation Index to Path Type",
+  "slug": "ballot-problem-oq-01-oq-04-oq-01",
+  "description": "Constructs and verifies the Chung-Feller bijection between balanced paths and (Dyck path, type index) pairs, proving that all n+1 path types of balanced lattice paths of length 2n have equal cardinality (the Catalan number Cₙ). The bijection maps a balanced path to its 'good rotation' (cyclic rotation until the last 1 becomes the head) and the rotation's type index. The main results are `chung_feller_bijection_exists` (the bijection is bijective) and `chung_feller_uniform'` (uniform distribution over path types via the bijection).",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number#Second_proof",
+    "date": "Classical result (Chung-Feller 1949); formalized 2026",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "ballot-problem",
+      "chung-feller",
+      "bijection",
+      "lattice-paths",
+      "dyck-paths"
+    ],
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 12 theorems verified with 0 sorries and 0 axioms. Imports BallotProblemOQ01OQ04Core.lean (the definition infrastructure, also 0 axioms).",
+    "originalContributions": [
+      "IsDyckPath: definition of Dyck paths as balanced paths with all prefix sums ≥ 0",
+      "chungFellerRot: the 'good rotation' — cyclicRotation (1::l) (rightmostMinPos (1::l))",
+      "chungFellerRot_head_eq_one: the good rotation always starts with 1",
+      "chungFellerRot_tail_nonneg_prefixSum: tail of good rotation has non-negative prefix sums",
+      "chungFellerRot_tail_upsteps_all_above: all upsteps in the tail are above the axis",
+      "chungFellerRot_tail_type_eq_n: the tail has upstepsAboveAxis = n (it's a Dyck path)",
+      "chungFellerRot_tail_is_dyck: the tail of the good rotation is a Dyck path",
+      "orbit_same_dyck: all balanced paths in the same rotation orbit map to the same Dyck path",
+      "chungFellerMap: the bijection candidate (balanced path → Dyck path × path type index)",
+      "chung_feller_bijection_exists: the map is bijective (injective + surjective)",
+      "chung_feller_uniform': all n+1 path types of balanced paths have the same cardinality"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 1164,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Chung-Feller theorem (1949) states that among all balanced lattice paths of length 2n (equal steps up and down), the paths with exactly k 'upsteps above the axis' are counted by the Catalan number Cₙ = C(2n,n)/(n+1), independently of k ∈ {0,1,...,n}. This gives a combinatorial proof that Cₙ = C(2n,n)/(n+1) by counting all (n+1)·Cₙ balanced paths.\n\nThe bijection proceeds by 'good rotation': given a balanced path l, prepend 1 to get (1::l), then cyclically rotate by the position of the rightmost minimum. The rotation starts with 1 (always) and its tail is a Dyck path. The rotation index encodes the 'type' of l — how many upsteps cross the axis.\n\nThis formalization answers OQ-01 of ballot-problem-oq-01-oq-04: 'Can we prove the bijection explicitly?' with a complete, verified proof.",
+    "problemStatement": "**Chung-Feller theorem**: For any n ≥ 1 and any j, k ∈ {0,...,n}:\n|{balanced paths of length 2n and type j}| = |{balanced paths of length 2n and type k}|\n(where 'type j' means the path has exactly j upsteps above the horizontal axis).\n\nFormalized as: `chung_feller_uniform'`.",
+    "text": "A 1164-line explicit construction of the Chung-Feller bijection. The proof establishes: (1) the good rotation produces a Dyck path as its tail, (2) paths in the same rotation orbit share the same Dyck image, (3) the bijection chungFellerMap is injective (via inversion) and surjective, (4) uniform distribution follows by type-swapping through the bijection.",
+    "proofStrategy": "**Definitions**: `chungFellerRot l = cyclicRotation (1::l) (rightmostMinPos (1::l))` — cyclic rotation of (1::l) by the position of the rightmost minimum. `chungFellerMap n hn l = (tail of chungFellerRot l, upstepsAboveAxis l)`.\n\n**Step 1 (good rotation is Dyck)**: `chungFellerRot_tail_is_dyck` — the tail D of the good rotation satisfies IsDyckPath D n. Proof: D has all non-negative prefix sums (since the rightmostMinPos rotation ensures this) and upstepsAboveAxis D = n.\n\n**Step 2 (orbit invariance)**: `orbit_same_dyck` — if l₂ is a cyclic rotation of l₁ by r, then chungFellerRot l₁ = chungFellerRot l₂ (they map to the same Dyck path). The good rotation is orbit-canonical.\n\n**Step 3 (bijectivity)**: `chung_feller_bijection_exists` — injectivity: if two balanced paths have the same (Dyck, type) pair, they must be the same path (reconstruct from D and type). Surjectivity: every (D, k) pair comes from some balanced path (the k-th rotation of (1::D)).\n\n**Step 4 (uniformity)**: `chung_feller_uniform'` — apply `Set.ncard_congr` with the type-swapping map: send a type-j path l to the unique type-k preimage sharing the same Dyck path. This map is well-defined and bijective via the bijection e.",
+    "keyInsights": [
+      "**Rightmost minimum rotation**: The key insight is that among all cyclic rotations of (1::l), exactly one starts with 1 and has all subsequent prefix sums ≥ 1 (the 'good rotation'). Taking the rightmost minimum position ensures uniqueness. This is the cycle lemma in disguise.",
+      "**Orbit-canonical Dyck path**: All n+1 balanced paths in the same rotation orbit (the orbit of 1::D under cyclic rotation) share the same Dyck path D as their chungFellerRot tail. This is the structural key: the bijection sends each orbit to a single Dyck path, with the path type encoding which element of the orbit the path is.",
+      "**Type-swapping surjection for uniformity**: `chung_feller_uniform'` avoids recomputing cardinalities by using `Set.ncard_congr`. The type-swapping map l ↦ e.symm((e(l).1, ⟨k, ...⟩)) replaces the type index j with k while keeping the Dyck path. This is a bijection between type-j and type-k paths.",
+      "**Injectivity via reconstruction**: To show injectivity of chungFellerMap, given (D, type₁) = (D, type₂), reconstruct the original paths as specific rotations of (1::D). The reconstruction uses cyclicRotation_get?_zero and the inverse rotation formula."
+    ],
+    "prerequisites": [
+      "Dyck paths and Catalan numbers",
+      "Chung-Feller theorem",
+      "Cyclic rotation and the cycle lemma",
+      "Ballot sequences and lattice paths"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Parent OQ-04 axiomatizes chung_feller_uniform; OQ-04-OQ-01 proves the explicit bijection, eliminating the need for the axiom"
+    },
+    {
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "related",
+      "description": "Parent ballot problem formalization; this proves the uniform distribution subcase"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.BallotProblemOQ01OQ04Core"
+    ],
+    "namespace": "ChungFellerBijection",
+    "lineCount": 1164,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-cf-definitions",
+      "title": "Definitions: IsDyckPath and chungFellerRot",
+      "startLine": 44,
+      "endLine": 74,
+      "summary": "IsDyckPath D n: D is balanced and all prefix sums are ≥ 0. chungFellerRot l: the 'good rotation' — cyclicRotation (1::l) (rightmostMinPos (1::l)).",
+      "mathContext": "A Dyck path of semi-length n is a balanced $\\pm 1$ sequence of length $2n$ with all prefix sums $\\geq 0$. There are $C_n$ Dyck paths."
+    },
+    {
+      "id": "sec-cf-good-rotation",
+      "title": "Good Rotation Properties (L74–340)",
+      "startLine": 74,
+      "endLine": 388,
+      "summary": "Proves: chungFellerRot_head_eq_one (head = 1), chungFellerRot_tail_nonneg_prefixSum (tail prefix sums ≥ 0), chungFellerRot_tail_upsteps_all_above (tail has only axis-crossing upsteps), chungFellerRot_tail_type_eq_n (tail type = n), chungFellerRot_tail_is_dyck (tail is Dyck).",
+      "mathContext": "The good rotation of any balanced path starts with 1 and its tail is a Dyck path. The rotation position (rightmostMinPos) ensures this."
+    },
+    {
+      "id": "sec-cf-orbit",
+      "title": "Orbit Invariance and Bijection Map (L388–781)",
+      "startLine": 388,
+      "endLine": 782,
+      "summary": "orbit_same_dyck: all paths in the same rotation orbit have the same chungFellerRot. chungFellerMap definition (L456): maps balanced path to (Dyck tail, type index).",
+      "mathContext": "Each rotation orbit of a Dyck path $D$ contains exactly $n+1$ balanced paths. The bijection maps orbit position (type) to a single Dyck target."
+    },
+    {
+      "id": "sec-cf-bijection",
+      "title": "Bijectivity: chung_feller_bijection_exists (L782–1023)",
+      "startLine": 782,
+      "endLine": 1023,
+      "summary": "Proves chung_feller_bijection_exists: chungFellerMap is bijective. Injectivity: same (D, type) ⟹ same path (via reconstruction from orbit). Surjectivity: every (D, k) comes from k-th rotation of (1::D).",
+      "mathContext": "Bijectivity of $\\text{chungFellerMap} : \\{\\text{balanced paths of length }2n\\} \\to \\{\\text{Dyck paths of semi-length }n\\} \\times \\text{Fin}(n+1)$."
+    },
+    {
+      "id": "sec-cf-uniform",
+      "title": "Uniform Distribution: chung_feller_uniform' (L1023–1164)",
+      "startLine": 1023,
+      "endLine": 1164,
+      "summary": "Proves chung_feller_uniform': |{type-j balanced paths}| = |{type-k balanced paths}| for all j,k ≤ n. Uses Set.ncard_congr with the type-swapping map l ↦ e.symm((e(l).1, k)).",
+      "mathContext": "Corollary: $|\\{\\text{balanced paths of type }j\\}| = C_n$ for each $j = 0,1,\\ldots,n$. All $(n+1)C_n$ balanced paths are uniformly distributed over types."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the Chung-Feller bijection. The 12-theorem file proves that chungFellerMap is a bijection between balanced paths and (Dyck path, type index) pairs, deriving uniform distribution of balanced paths over path types as a corollary.",
+    "implications": "This completes the proof of the Chung-Feller theorem (1949) in Lean 4. The bijection provides an elementary combinatorial proof that all n+1 types of balanced lattice paths are equinumerous, and hence each type is counted by the Catalan number. The construction also gives a canonical form for balanced paths (their rotation type).",
+    "openQuestions": [
+      "Generalize to k-balanced paths (paths with p ups and q downs, gcd(p,q)=1) — the generalized ballot problem",
+      "Connect to the Lindström-Gessel-Viennot lemma for multi-path generalizations",
+      "Prove the Chung-Feller theorem using the kernel method (generating function approach) for a second proof"
+    ]
+  },
+  "sorries": 0
+}
