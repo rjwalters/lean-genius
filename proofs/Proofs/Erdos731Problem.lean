@@ -20,7 +20,9 @@ least integer m with m ∤ C(2n, n) satisfies m ~ f(n).
 
 import Mathlib.Data.Nat.Choose.Central
 import Mathlib.Data.Nat.Choose.Dvd
+import Mathlib.Data.Nat.Choose.Factorization
 import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Data.Nat.Log
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.Bertrand
 import Mathlib.Tactic
@@ -139,21 +141,75 @@ theorem lower_bound_most_n :
   fun _ => ⟨1, by omega, trivial⟩
 
 /-- C(N, k) divides lcm(1, ..., N) for k ≤ N.
-    Proof (not yet formalized): By Kummer's theorem, v_p(C(N,k)) = number of carries
-    when adding k and N-k in base p. The number of carries ≤ floor(log_p N),
-    which equals v_p(lcm(1,...,N)). So v_p(C(N,k)) ≤ v_p(lcm(1,...,N)) for all primes p,
-    hence C(N,k) | lcm(1,...,N).
-    See also: Nair (1982), integral proof via Beta function identity. -/
-axiom choose_dvd_lcm (N k : ℕ) (hk : k ≤ N) :
-  Nat.choose N k ∣ (Finset.range (N + 1)).lcm id
+    Proof: For each prime p, v_p(C(N,k)) ≤ log_p(N) = v_p(lcm(1,...,N)).
+    The key steps are:
+    - v_p(C(N,k)) ≤ log_p(N) by Nat.factorization_choose_le_log.
+    - p^(log_p N) ∈ {1,...,N} since p^(log_p N) ≤ N (by pow_log_le_self) and ≥ 1.
+    - Hence p^(log_p N) | lcm(1,...,N), giving log_p(N) ≤ v_p(lcm(1,...,N)). -/
+theorem choose_dvd_lcm (N k : ℕ) (hk : k ≤ N) :
+    Nat.choose N k ∣ (Finset.Icc 1 N).lcm id := by
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · simp [Nat.le_zero.mp hk]
+  have hchoose_pos : 0 < Nat.choose N k := Nat.choose_pos hk
+  have hlcm_ne_zero : (Finset.Icc 1 N).lcm id ≠ 0 := by
+    intro h
+    rw [Finset.lcm_eq_zero_iff] at h
+    obtain ⟨x, hx_mem, hx_zero⟩ := h
+    simp only [Finset.mem_Icc] at hx_mem
+    simp only [id] at hx_zero
+    omega
+  rw [← Nat.factorization_le_iff_dvd hchoose_pos.ne' hlcm_ne_zero]
+  intro p
+  by_cases hp : p.Prime
+  · have hpow_le : p ^ Nat.log p N ≤ N := Nat.pow_log_le_self p hN.ne'
+    have hpow_mem : p ^ Nat.log p N ∈ Finset.Icc 1 N :=
+      Finset.mem_Icc.mpr ⟨Nat.one_le_pow _ _ hp.pos, hpow_le⟩
+    calc (Nat.choose N k).factorization p
+        ≤ Nat.log p N := Nat.factorization_choose_le_log
+      _ ≤ ((Finset.Icc 1 N).lcm id).factorization p :=
+          (hp.pow_dvd_iff_le_factorization hlcm_ne_zero).mp (Finset.dvd_lcm hpow_mem)
+  · simp [Nat.factorization_eq_zero_of_not_prime _ hp]
+
+/-- leastNonDivisor m ≤ j whenever j > 0 and j ∤ m. -/
+private lemma leastNonDivisor_le_of_ndvd {m j : ℕ} (hj_pos : j > 0) (hj_ndvd : ¬(j ∣ m)) :
+    leastNonDivisor m ≤ j := by
+  unfold leastNonDivisor
+  rcases Nat.eq_zero_or_pos m with rfl | hm_pos
+  · simp; omega
+  · rw [dif_neg hm_pos.ne']
+    apply Nat.find_min'
+    exact ⟨hj_pos, hj_ndvd⟩
+
 
 /-- Upper bound: leastNonDivCentral n ≤ 2n+1 for all n ≥ 1.
-    Proof: If all m ∈ {1,...,2n+1} divide C(2n,n), then lcm(1,...,2n+1) ≤ C(2n,n).
-    But C(2n+1,n) | lcm(1,...,2n+1) [choose_dvd_lcm] and
-    C(2n+1,n) > C(2n,n) [choose_succ_gt_central], contradiction.
+    By contradiction: if all m ∈ {1,...,2n+1} divide C(2n,n), then
+    lcm(1,...,2n+1) | C(2n,n). But C(2n+1,n) | lcm(1,...,2n+1) [choose_dvd_lcm]
+    so C(2n+1,n) | C(2n,n), contradicting C(2n+1,n) > C(2n,n).
     Note: (2n+1) itself CAN divide C(2n,n) when composite (e.g. n=577). -/
-axiom upper_bound_trivial (n : ℕ) (hn : n ≥ 1) :
-  leastNonDivCentral n ≤ 2 * n + 1
+theorem upper_bound_trivial (n : ℕ) (hn : n ≥ 1) :
+    leastNonDivCentral n ≤ 2 * n + 1 := by
+  unfold leastNonDivCentral
+  -- Suffices to find j ≤ 2n+1 with j > 0 and j ∤ C(2n,n)
+  suffices h : ∃ j ≤ 2 * n + 1, j > 0 ∧ ¬(j ∣ centralBinom n) by
+    obtain ⟨j, hj_le, hj_pos, hj_ndvd⟩ := h
+    exact (leastNonDivisor_le_of_ndvd hj_pos hj_ndvd).trans hj_le
+  -- Prove by contradiction: assume all m ≤ 2n+1 divide C(2n,n)
+  by_contra habs
+  push_neg at habs
+  -- habs : ∀ j ≤ 2n+1, j > 0 → j ∣ C(2n,n)
+  have hall : ∀ j ∈ Finset.Icc 1 (2 * n + 1), j ∣ centralBinom n := by
+    intro j hj
+    have hmem := Finset.mem_Icc.mp hj
+    exact habs j hmem.2 (by omega)
+  -- lcm(1,...,2n+1) | C(2n,n)
+  have hlcm_dvd : (Finset.Icc 1 (2 * n + 1)).lcm id ∣ centralBinom n :=
+    Finset.lcm_dvd hall
+  -- C(2n+1,n) | lcm(1,...,2n+1) by choose_dvd_lcm
+  have hchoose_dvd : Nat.choose (2 * n + 1) n ∣ (Finset.Icc 1 (2 * n + 1)).lcm id :=
+    choose_dvd_lcm (2 * n + 1) n (by omega)
+  -- So C(2n+1,n) | C(2n,n), but C(2n+1,n) > C(2n,n) > 0: contradiction
+  have htrans := hchoose_dvd.trans hlcm_dvd
+  exact absurd (Nat.le_of_dvd (centralBinom_pos n) htrans) (by linarith [choose_succ_gt_central n hn])
 
 /-- **Bertrand's postulate** applied: for n ≥ 1, there exists a prime p
     with n < p ≤ 2n, and this prime divides C(2n, n) exactly once.

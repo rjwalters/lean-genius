@@ -694,3 +694,86 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Docker build verification needed for the limsup_add_le proof
 - The Aristotle job cb09e358 (erdos_1201_half_case) is superseded — mark as resolved_manually
 - Pool status: erdos-1201 now has 0 sorries, 1 axiom — consider completing if Docker passes
+
+---
+
+## Session 2026-05-04 (Session 17) - lowerDensity + Density Completions (researcher-9)
+
+**Mode**: REVISIT
+**Outcome**: progress — 10 new theorems + 1 def, theorem count 87→97
+
+### What I Did
+- Added section "Upper Density Basic Facts": `upperDensity_empty`, `upperDensity_le_one`,
+  `upperDensity_ge_zero`, `upperDensity_univ`
+- Added section "Asymptotic Behavior as Window Grows":
+  - `gpfConsecutive_atTop`: for fixed n ≥ 2, Filter.Tendsto (gpfConsecutive n) atTop atTop
+    (uses Nat.exists_infinite_primes to find prime p > max(n,M) for any bound M)
+  - `erdos_1201_eventually_good`: fixed n ≥ 2 is eventually good for all large k (follows
+    from `erdos_1201_individual_threshold` + `gpfConsecutive_le_of_le_k`)
+  - `erdos_1201_density_eventually_large`: assuming ErdosProblem1201, density ≥ 1-η for
+    ALL k ≥ K (not just one k); edge cases n=0,1 handled by interval_cases
+- Added section "Lower Density": `lowerDensity` def via `Filter.liminf`, plus
+  `lowerDensity_nonneg`, `lowerDensity_le_upperDensity`, `lowerDensity_compl`
+
+### Key Findings
+- **lowerDensity_compl** uses `Antitone.map_limsup_of_continuousAt` with antitone f = (1-·):
+  converts limsup(density S) to liminf(1 - density S). Named arguments: f_cont, bdd_above, cobdd.
+  This gives the EXACT identity `lD(Sᶜ) = 1 - uD(S)`, not just an inequality.
+- **gpfConsecutive_atTop** is the convergence result: for any fixed starting point n ≥ 2,
+  the GPF of consecutive products grows without bound as the window extends.
+- **IsBoundedUnder (·≥·).isCoboundedUnder_le** converts lower bound witnesses for liminf;
+  **IsBoundedUnder (·≤·).isCoboundedUnder_ge** converts upper bound witnesses for limsup.
+- n=0,1 edge cases in `erdos_1201_density_eventually_large`: n=0 gives
+  consecutiveProduct=0 → gpfConsecutive=0 → contradiction with hypothesis; n=1 uses
+  2 | consecutiveProduct 1 k (via Finset.dvd_prod_of_mem with i=1) → gpf ≥ 2 > 1.
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1287→1480 lines, 87→97 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (lineCount 1270→1480, theoremCount 87→97, definitionCount 5→6)
+- `src/data/research/problems/erdos-1201.json` (builtItems +11, insights +5)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Status
+- **Axiom count**: 1 (unchanged: erdos_1201_half_case)
+- **Sorry count**: 0
+- **Theorems proved**: 97 (added 10 new theorems)
+- **Definitions**: 6 (added lowerDensity)
+- **Assessment**: Gallery formalization enriched with complete density infrastructure.
+  The open problem (eliminate axiom, prove conjecture for ε ∈ (0,1/2)) remains genuinely
+  blocked on Dickman ρ function density estimates.
+
+---
+
+## Session 2026-05-04 (Session 18) - API Fixes + Memory Optimization
+
+**Mode**: REVISIT
+**Outcome**: progress — fixed compilation errors preventing Docker build
+
+### What I Did
+- Discovered `origin/research/erdos-1201-lower-density` (PR #15527) had 6 broken API calls
+  to `Finset.Nat.card_Icc` (unknown constant in Lean 4.26.0)
+- Added `private lemma icc_one_card (N : ℕ) : (Finset.Icc 1 N).card = N` using range-map
+  construction (proven to work in earlier sessions)
+- Replaced all 6 `by simp [Finset.Nat.card_Icc]; omega` calls with `icc_one_card N`
+- Replaced `lowerDensity_compl`'s `Antitone.map_limsup_of_continuousAt` proof with
+  `Filter.liminf_const_sub` (lighter on memory, avoids ContinuousAt elaboration at limsup)
+- Previous Docker build killed with exit code 137 (OOM) from the Antitone approach
+- Closed superseded PRs #15471, #15501, #15504 (all contained by #15527)
+- Pushed fix commit `6444217927` to `research/erdos-1201-lower-density`
+- PR #15527 is MERGEABLE/CLEAN
+
+### Key Findings
+- `Finset.Nat.card_Icc` is unknown in Lean 4.26.0; robust replacement is range-map construction
+- `Antitone.map_limsup_of_continuousAt` is memory-heavy (ContinuousAt elaboration at limsup)
+  → use `Filter.liminf_const_sub c hbdd hcobdd` instead for `liminf(c - f) = c - limsup f`
+- `Filter.liminf_const_sub` signature: `(hbdd : IsBoundedUnder (·≤·)) (hcobdd : IsCoboundedUnder (·≤·))`
+- `icc_one_card` is now the canonical helper for `(Finset.Icc 1 N).card = N` in this file
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1480→1473 lines, 0 sorries, API fixes)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- Docker build verification: PR #15527 needs successful build to merge
+- If Docker OOMs again, investigate splitting `lowerDensity_compl` proof into smaller lemmas
+- Open question: formalize the Dickman ρ density estimate for ε < 1/2 (blocked, >1000 LOC)
