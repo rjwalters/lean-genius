@@ -60,9 +60,9 @@
         "relationship": "Erdős Problem #90 (maximum unit distances u(n)) is the prerequisite problem — #668 studies uniqueness of configurations achieving u(n)"
       }
     ],
-    "axiomCount": 3,
+    "axiomCount": 6,
     "lineCount": 282,
-    "assumptions": "3 axioms (f_four, four_config_unique, extremalQuotient_finite — all used by proved theorems), 0 sorries. Previously 7 axioms — removed 4 unused axioms.",
+    "assumptions": "6 axioms: f_one/f_two/f_three/f_four (base values f(1)=f(2)=f(3)=f(4)=1), four_config_unique (uniqueness of the 4-point extremal configuration), extremalQuotient_finite (finite count of extremal configurations). No sorries.",
     "theoremCount": 14
   },
   "overview": {
