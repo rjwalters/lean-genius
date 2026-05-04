@@ -36,7 +36,7 @@
     "originalContributions": [
       "First direct formalization of eh_conditional_h_le_12 as a theorem derived from maynard_tao_sieve_eh applied to the OQ01 5-tuple",
       "no_admissible_5_tuple_diam_le_10: consolidation of all 5 non-admissibility witnesses for diameter ≤ 10 as a single conjunction",
-      "Sieve level comparison framework: bvLevel = ehLevel = 1/2, but BV needs k ≥ 50 while EH needs k ≥ 5 (10× improvement)",
+      "eh_threshold_lt_bv_threshold (5 < 50) and eh_threshold_divides_bv (5 | 50): the EH sieve threshold is strictly smaller than BV's and divides it — the meaningful structural comparison between the two regimes",
       "OpenQuestion01OQ02: formal definition of the open problem as ∃ H ≤ 12, H is an unconditional gap bound",
       "eh_solves_oq01oq02: conditional answer to the open question via EH"
     ],
@@ -105,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the Elliott-Halberstam conditional improvement of the prime gap bound from H ≤ 246 to H ≤ 12. The 24 proved theorems with 0 sorries and 1 axiom (maynard_tao_sieve_eh) give a complete structural picture: the sieve threshold difference (k=5 vs k=50) traces back to the BV-vs-EH level gap (θ < 1/2 vs θ = 1/2), and the open problem is precisely whether this critical boundary can be crossed without assuming EH.",
+    "summary": "This formalization captures the Elliott-Halberstam conditional improvement of the prime gap bound from H ≤ 246 to H ≤ 12. The 25 proved theorems with 0 sorries and 1 axiom (maynard_tao_sieve_eh) give a complete structural picture: the sieve threshold difference (k=5 vs k=50) traces back to the BV-vs-EH level gap (θ < 1/2 vs θ = 1/2), and the open problem is precisely whether this critical boundary can be crossed without assuming EH.",
     "openQuestions": [
       "Can H ≤ 12 be proved unconditionally — i.e., can the EH conjecture be proved or bypassed?",
       "Does a new sieve technique exist that achieves k=5 without EH-level distribution estimates?",
