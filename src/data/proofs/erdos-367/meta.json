@@ -76,9 +76,7 @@
       "Basic real analysis (logarithms, limits, sequences)"
     ],
     "date": "1980",
-    "lineCount": 436,
-    "assumptions": "1 axiom: van_doorn_lower_bound (deep result: infinitely many n with product B₂ ≥ cn²log(n), used to prove strong bound fails for k≥3)",
-    "theoremCount": 13
+    "assumptions": "1 axiom: van_doorn_lower_bound (deep result: infinitely many n with product B₂ ≥ cn²log(n), used to prove strong bound fails for k≥3)"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #367: Products of 2-Full Parts**\n\nThis problem connects two classical themes in multiplicative number theory: the distribution of powerful numbers and the multiplicative structure of consecutive integers.\n\n**Background:** The 2-full (or squareful) part $B_2(n)$ captures the 'square content' of $n$'s prime factorization. Golomb (1970) introduced powerful numbers (where every prime divides with exponent $\\geq 2$) and studied their distribution. The function $B_2$ generalizes this: $B_2(n) = \\prod_{v_p(n) \\geq 2} p^{v_p(n)}$ extracts the powerful component from any integer.\n\n**The problem:** Erdős asked whether $\\prod_{n \\leq m < n+k} B_2(m) \\ll n^{2+o(1)}$ for every fixed $k$. The exponent 2 is natural: since $B_2(n) \\leq n$, the product of $k$ terms is at most $n^k$, but heuristically most $B_2(m)$ are small, so the 'effective' exponent should be much less than $k$.\n\n**Progress:**\n- For $k \\leq 2$: the strong bound $\\ll n^2$ holds trivially ($B_2(n) \\leq n$).\n- **van Doorn (2023):** Proved the strong bound **fails** for $k \\geq 3$. Specifically, there exist infinitely many $n$ with $\\prod_{m=n}^{n+2} B_2(m) \\gg n^2 \\log n$. The construction uses the Chinese Remainder Theorem to find $n$ where multiple consecutive integers have large square factors.\n- The **weak bound** $n^{2+o(1)}$ (with the logarithmic slack) remains open for all $k \\geq 3$.",
