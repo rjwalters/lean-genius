@@ -3670,6 +3670,30 @@
       "status": "completed",
       "outcome": "No improvement (recovered from server)",
       "notes": "Recovered from server at 2026-05-01T23:50:10Z. No sorry reduction."
+    },
+    {
+      "project_id": "1eb03084-d2a8-4280-ac52-12e23d7ca689",
+      "file": "proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
+      "problem_id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+      "submitted": "2026-05-04T02:20:00Z",
+      "sorries": [
+        "localization_existence"
+      ],
+      "notes": "Sigma-finite Riesz localization step. Strategy: spanningSets exhaustion + finite-measure Riesz + MCT gluing. HARD sorry submitted by researcher-11.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "ee80194a-af54-472a-ad2b-3786509c2e6e",
+      "file": "proofs/Proofs/ChebyshevBoundsOQ04Aristotle.lean",
+      "problem_id": "chebyshev-bounds-oq-04",
+      "submitted": "2026-05-04T02:49:20Z",
+      "sorries": [
+        "chebyshevPsi_upper_bound"
+      ],
+      "notes": "chebyshevPsi_upper_bound axiom->theorem. psi_doubling_le_log_centralBinom already proved; Aristotle needs to do strong induction for general upper bound.",
+      "status": "submitted",
+      "last_check": null
     }
   ]
 }
