@@ -81,7 +81,8 @@
       "**Ballot = SYT**: SYT of shape (m,k) biject with ballot sequences, counted by ballotSeqCount(m+1,k) — this is the RSK/ballot connection",
       "**Hook product for 2-row (m,m)**: Row 0 hooks (m+1, m, …, 2) give (m+1)!; row 1 hooks (m, m-1, …, 1) give m!; total = (m+1)! · m!",
       "**Catalan formula connection**: C_m · (m+1) = C(2m,m), with `choose_mul_factorial_mul_factorial` providing the final cancellation",
-      "**Cancellation**: Multiply through by (m+1) using catalan_formula and choose_mul_factorial, then expand (m+1)! via factorial_succ"
+      "**Cancellation**: Multiply through by (m+1) using catalan_formula and choose_mul_factorial, then expand (m+1)! via factorial_succ",
+      "**LGV antisymmetry**: lgv_swap_sources and lgv_swap_targets prove that lgvDet is antisymmetric in its source/target pairs — swapping pairs negates the determinant, mirroring row/column transposition for matrices. This is why the path-count determinant counts non-intersecting path systems with the right signed orientation, which is the key algebraic fact behind the LGV lemma's counting power."
     ],
     "prerequisites": [
       "Combinatorics (ballot sequences, binomial coefficients)",
