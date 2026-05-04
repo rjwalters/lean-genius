@@ -1,0 +1,128 @@
+{
+  "id": "ballot-problem-oq-01-oq-01-oq-02",
+  "title": "Abstract Cycle Lemma for Arbitrary Integer Sequences",
+  "slug": "ballot-problem-oq-01-oq-01-oq-02",
+  "description": "Extends the Dvoretzky-Motzkin cycle lemma infrastructure beyond {+1,-k} sequences. For unit-decrement sequences (steps ≥ -1), proves a downward IVT: every integer level in [minPrefixSum, 0] is achieved by some prefix sum. For all-positive sequences (steps > 0), proves all rotations are good, giving |goodRotations| = l.length.",
+  "meta": {
+    "author": "Lean Genius (OQ02 of ballot-problem-oq-01-oq-01)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "ballot-problem",
+      "cycle-lemma",
+      "generalization",
+      "discrete-ivt",
+      "prefix-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 211,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-04",
+    "assumptions": "None. All 9 theorems are fully proved (0 axioms, 0 sorries).",
+    "mathlibDependencies": [
+      {
+        "theorem": "List.sum_take_succ",
+        "description": "Prefix sum recursion: (l.take (j+1)).sum = (l.take j).sum + l[j]",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "Finset.min'",
+        "description": "Minimum of a nonempty finset, used for leftmost-crossing argument",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "List.take_prefix",
+        "description": "l.take n is a prefix of l, giving l.take n ⊆ l",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unit_decrement_step_bound: consecutive prefix sums drop by at most 1 for step-≥-1 sequences",
+      "unit_decrement_downward_ivt: downward IVT using leftmost-crossing Finset.min' argument",
+      "unit_decrement_levels_achieved: every level in [minPrefixSum, 0] is achieved",
+      "all_positive_prefixSum_strictMono: strict monotonicity of prefix sums for all-positive sequences",
+      "all_positive_all_rotations_good: all rotations are good when all steps are positive",
+      "all_positive_goodRotations_card: |goodRotations| = l.length for all-positive sequences"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Dvoretzky-Motzkin cycle lemma (1947) originally applies to sequences with steps in {+1,-k}. The key algebraic property enabling the exact count |goodRotations| = S is that every integer level in [minPS, minPS+S) is achieved by some prefix sum — a consequence of the {+1,-k} structure. This file investigates which weaker step conditions still give partial cycle lemma analogs.\n\nFor unit-decrement sequences (all steps ≥ -1), the prefix sum can drop by at most 1 per step, giving a **downward IVT**: every level in [minPrefixSum, 0] is achieved. This is exactly the downward half of the discrete IVT used in the {+1,-k} lower bound proof.\n\nFor all-positive sequences (all steps > 0), prefix sums are strictly increasing, so every cyclic rotation trivially maintains positive prefix sums — giving |goodRotations| = l.length, the maximum possible.",
+    "problemStatement": "**Question**: For integer sequences beyond {+1,-k}, what can be said about the set of good cyclic rotations?\n\n**Answer**: (1) For step-≥-1 sequences: every integer level in [minPS, 0] is achieved (downward IVT). (2) For all-positive sequences: |goodRotations| = l.length (all rotations are good).",
+    "proofStrategy": "For unit-decrement: fix the leftmost position in (i,j] where the prefix sum first drops to ≤ v. Its predecessor has prefix sum > v, and the step is ≥ -1, so the prefix sum can only drop to exactly v. For all-positive: strict monotonicity of prefix sums makes the non-wrapping part positive directly; the wrapping part is positive because the starting prefix sum is strictly less than the total sum.",
+    "keyInsights": [
+      "The downward IVT uses a Finset.min' (leftmost crossing) argument rather than induction, giving a cleaner proof than the {+1,-k} case",
+      "For unit-decrement sequences, the IVT holds in the downward direction but NOT upward — large positive steps can skip levels going up",
+      "For all-positive sequences, the cycle lemma gives count = length (not sum), showing the step alphabet fundamentally changes the count",
+      "The two cases (unit-decrement, all-positive) bracket the {+1,-k} case: the downward IVT is one half of the {+1,-k} lower bound"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unit-decrement",
+      "title": "Part I: Unit-Decrement Sequences",
+      "startLine": 30,
+      "endLine": 120,
+      "summary": "Three theorems: unit_decrement_step_bound (prefix sums drop by ≤ 1), unit_decrement_downward_ivt (leftmost-crossing gives exact level achievement), unit_decrement_levels_achieved (every level in [minPS, 0] is achieved via IVT from position 0 to rightmostMinPos).",
+      "mathContext": "For step ≥ -1: if prefixSum l i > v and prefixSum l j ≤ v with i < j, let kstar = leftmost k ∈ (i,j] with prefixSum l k ≤ v. Then prefixSum l (kstar-1) > v by minimality, so prefixSum l kstar = prefixSum l (kstar-1) + l[kstar-1] ≥ (v+1) + (-1) = v. Combined with ≤ v: exact v."
+    },
+    {
+      "id": "all-positive",
+      "title": "Part II: All-Positive-Step Sequences",
+      "startLine": 121,
+      "endLine": 211,
+      "summary": "Six theorems: all_positive_prefixSum_step (strict increase per step), all_positive_prefixSum_strictMono (global strict mono by induction), all_positive_prefixSum_lt_sum (interior prefix sums < total sum), all_positive_prefixSum_nonneg (all prefix sums ≥ 0), all_positive_all_rotations_good (both wrapping and non-wrapping cases use mono + bound), all_positive_goodRotations_card (|goodRotations| = l.length via Finset equality).",
+      "mathContext": "For step > 0: prefixSum l i < prefixSum l (i+j) (strict mono) gives non-wrapping case. prefixSum l i < l.sum (interior bound) with (l.take k).sum ≥ 0 (positivity) gives wrapping case."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems prove that the cycle lemma structure depends on the step alphabet: unit-decrement sequences satisfy a downward IVT (explaining the lower bound mechanism for {+1,-k} sequences), while all-positive sequences give |goodRotations| = l.length — the maximum, not the sum.",
+    "implications": "The unit-decrement IVT isolates the key property needed for the {+1,-k} lower bound: downward continuity. The all-positive case shows that positive-sum sequences can have much more structure than the cycle lemma predicts — when all steps are positive, every rotation is good, not just sum-many rotations.",
+    "openQuestions": [
+      "For step ≥ -m sequences (m > 1), is |goodRotations| ≥ ⌈l.sum / m⌉?",
+      "Can the unit-decrement IVT be strengthened to give a lower bound tighter than 1 on |goodRotations|?",
+      "What is the relationship between the step alphabet and the exact count |goodRotations| in general?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.BallotProblemOQ01OQ01"
+    ],
+    "opens": ["GeneralizedBallot"],
+    "namespace": "BallotAbstractCycleLemma",
+    "lineCount": 211,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the Dvoretzky-Motzkin cycle lemma for {+1,-k} sequences via IVT and rightmost position"
+    },
+    {
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "related",
+      "description": "The generalized ballot problem: the cycle lemma for {+1,-k} sequences gives the exact good rotation count"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "unit_decrement_downward_ivt",
+      "type": "core",
+      "description": "Downward IVT: for step-≥-1 sequences, if prefix sum at i > v and at j ≤ v, some k ∈ (i,j] achieves exactly v"
+    },
+    {
+      "name": "all_positive_goodRotations_card",
+      "type": "core",
+      "description": "|goodRotations l| = l.length for all-positive-step sequences — every rotation is good"
+    }
+  ],
+  "sorries": 0
+}
