@@ -18,7 +18,7 @@
     "sourceUrl": "https://erdosproblems.com/321",
     "erdosUrl": "https://erdosproblems.com/321",
     "axiomCount": 2,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "assumptions": "2 axioms: bleicher_erdos_lower (R(N) \u2265 N/log N, Bleicher\u2013Erd\u0151s 1975) and bleicher_erdos_upper (R(N) \u2264 C\u00b7(N/log N)\u00b7log log N, 1976). Open problem \u2014 precise asymptotic of R(N) remains unknown.",
     "badge": "axiom",
     "proofRepoPath": "Proofs/Erdos321Problem.lean",
@@ -187,7 +187,7 @@
   "leanFile": {
     "lineCount": 190,
     "axiomCount": 2,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 3,
     "imports": [
       "Mathlib.Data.Finset.Basic",
