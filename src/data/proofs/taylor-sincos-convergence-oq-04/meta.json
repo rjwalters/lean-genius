@@ -17,7 +17,7 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ04.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 assumptions. The full general remainder bound (x < 0 case) is proved via reflection g(t) = f(-t) using Mathlib's iteratedDeriv_comp_neg. The linear_combo_bound is proved via linearity of iteratedDeriv.",
