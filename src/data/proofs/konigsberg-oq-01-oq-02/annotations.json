@@ -144,5 +144,30 @@
       "native_decide: native compilation for decidable propositions on finite types",
       "exact_mod_cast: coercion from ℕ to ℤ arithmetic"
     ]
+  },
+  {
+    "id": "ann-koe02-applications",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "Applications: De Bruijn Sequences, BEST Theorem, Genome Assembly",
+    "content": "The directed Eulerian theorem has three celebrated applications that transform abstract degree-balance into practical algorithms.\n\n**De Bruijn sequences** (de Bruijn 1946, Good 1946): A de Bruijn sequence of order n over alphabet Σ is a cyclic sequence in which every n-letter word appears exactly once. Construction: build the de Bruijn graph B(n,Σ) with vertices = (n-1)-grams and edges = n-grams; each vertex has in-degree = out-degree = |Σ|, so the directed Eulerian theorem guarantees an Eulerian circuit, which spells the de Bruijn sequence. For binary sequences of order n, this gives a sequence of length 2ⁿ containing every binary n-bit string exactly once — used in Gray codes, card tricks, and robotic motion planning.\n\n**BEST theorem** (van Aardenne-Ehrenfest, de Bruijn 1951; Smith, Tutte 1941–48): For an Eulerian directed graph, the number of Eulerian circuits starting at vertex $w$ is $t_w(G) \\times \\prod_{v \\neq w} (\\text{outDeg}(v)-1)!$, where $t_w(G)$ counts arborescences rooted at $w$ (computable via the Matrix-Tree theorem as a determinant). The formula is the directed analogue of the BEST for undirected graphs and connects Eulerian enumeration to algebraic graph theory.\n\n**Genome assembly** (Pevzner, Tang, Waterman 2001): The EULER assembler fragments a genome into overlapping k-mers, builds the de Bruijn graph (vertices = (k-1)-mers, edges = k-mers), and reconstructs the genome as an Eulerian path. This transformed computational biology: next-generation sequencing assembly became an instance of the directed Eulerian path problem, tractable in O(|E|) via Hierholzer's algorithm.",
+    "mathContext": "**De Bruijn graph**: $B(n, \\Sigma)$ has vertex set $\\Sigma^{n-1}$, edge $(w_1\\ldots w_{n-1}) \\to (w_2\\ldots w_n)$ for each $w_n \\in \\Sigma$. Every vertex: $\\text{outDeg} = \\text{inDeg} = |\\Sigma|$. **BEST**: $\\#(\\text{Eulerian circuits at }w) = t_w(G) \\cdot \\prod_v (d^+(v)-1)!$. **Genome assembly**: $k$-mer graph $\\to$ Eulerian path $\\to$ genome sequence. Handshaking lemma implies balanced iff $\\sum_v \\text{outDeg}(v) = \\sum_v \\text{inDeg}(v) = |E|$ (flow conservation).",
+    "significance": "key",
+    "relatedConcepts": [
+      "de Bruijn graph",
+      "de Bruijn sequence",
+      "BEST theorem",
+      "Matrix-Tree theorem (Kirchhoff 1847)",
+      "Hierholzer's algorithm",
+      "k-mer genome assembly",
+      "Gray codes"
+    ],
+    "prerequisites": [
+      "directed Eulerian theorem (directed_eulerian_iff)",
+      "Hierholzer's algorithm O(|E|)",
+      "Matrix-Tree theorem for arborescence counting",
+      "combinatorics of cyclic sequences"
+    ]
   }
 ]
