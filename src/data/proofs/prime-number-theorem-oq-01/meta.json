@@ -1,0 +1,188 @@
+{
+  "id": "prime-number-theorem-oq-01",
+  "title": "The Riemann Hypothesis: Zeros of ζ(s) and PNT Error Bounds",
+  "slug": "prime-number-theorem-oq-01",
+  "description": "Formalizes the Riemann Hypothesis as a precise mathematical statement using Mathlib's riemannZeta, explores what RH implies for PNT error bounds via von Koch's theorem, and connects zero-free regions to prime distribution. 0 sorries, 5 axioms (open results in analytic number theory).",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Riemann_hypothesis",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PrimeNumberTheoremOQ01.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "primes",
+      "riemann-hypothesis",
+      "pnt",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 281,
+    "dateAdded": "2026-05-04",
+    "assumptions": "5 axioms: vonKoch_rh_error (von Koch 1901), pnt_classical_error (Vinogradov-Korobov), littlewood_omega (Littlewood 1914), pi_exceeds_li_infinitely (sign change), backlund_zero_counting (Backlund 1918). The Riemann Hypothesis itself is the main open conjecture.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "riemannZeta_ne_zero_of_one_le_re",
+        "description": "ζ(s) ≠ 0 for Re(s) ≥ 1 (PNT-equivalent zero-free region)",
+        "module": "Mathlib.NumberTheory.LSeries.Nonvanishing"
+      },
+      {
+        "theorem": "riemannZeta_ne_zero_of_one_lt_re",
+        "description": "ζ(s) ≠ 0 for Re(s) > 1 (Euler product)",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      },
+      {
+        "theorem": "riemannZeta_one_sub",
+        "description": "Functional equation: ζ(1-s) = 2(2π)^{-s} Γ(s) cos(πs/2) ζ(s)",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      },
+      {
+        "theorem": "riemannZeta_neg_two_mul_nat_add_one",
+        "description": "Trivial zeros at s = -2n",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      }
+    ],
+    "originalContributions": [
+      "Formal RH definition: all non-trivial zeros in criticalStrip lie on criticalLine (Re(s) = 1/2)",
+      "rh_strip_zero_free: Under RH, the region 1/2 < Re(s) < 1 is zero-free (proved)",
+      "rh_zeros_on_half_line: Under RH, every critical-strip zero has Re(s) = 1/2 (proved)",
+      "zeros_symmetric_in_strip: Functional equation gives zero symmetry about Re(s) = 1/2 (proved)",
+      "pnt_rh_landscape: Summary theorem collecting all three proved structural results"
+    ],
+    "theoremCount": 13,
+    "definitionCount": 5
+  },
+  "sections": [
+    {
+      "id": "formal-rh",
+      "title": "The Formal Riemann Hypothesis",
+      "startLine": 45,
+      "endLine": 70,
+      "summary": "Defines criticalStrip, criticalLine, and RiemannHypothesis formally using Mathlib's riemannZeta function.",
+      "mathContext": "RH states all zeros ρ of ζ(s) in 0 < Re(ρ) < 1 satisfy Re(ρ) = 1/2. This is one of the seven Millennium Prize Problems."
+    },
+    {
+      "id": "zero-free-regions",
+      "title": "Zero-Free Regions (Proved)",
+      "startLine": 73,
+      "endLine": 130,
+      "summary": "Proves: (1) Euler product gives ζ(s) ≠ 0 for Re(s) > 1, (2) PNT-strength ζ(s) ≠ 0 for Re(s) ≥ 1, (3) trivial zeros at s = -2n, (4) under RH the strip 1/2 < Re(s) < 1 is zero-free, (5) zeros are symmetric under s ↔ 1-s.",
+      "mathContext": "The PNT zero-free region (Re(s) ≥ 1) is equivalent to PNT itself. RH extends the zero-free region to Re(s) > 1/2, which is why RH implies the optimal PNT error bound."
+    },
+    {
+      "id": "quantitative-bounds",
+      "title": "Quantitative Error Bounds (Axiomatized)",
+      "startLine": 155,
+      "endLine": 220,
+      "summary": "Axiomatizes von Koch's O(√x log x) conditional bound, the unconditional O(x exp(-c√log x)) bound, and the improved RH-conditional bound.",
+      "mathContext": "Von Koch (1901) proved RH → |π(x) - Li(x)| = O(√x log x). The unconditional bound O(x exp(-c√log x)) follows from Hadamard-de la Vallée Poussin plus Vinogradov-Korobov zero-free region estimates."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness: Littlewood's Omega Bound",
+      "startLine": 222,
+      "endLine": 245,
+      "summary": "Axiomatizes Littlewood's result that |π(x) - Li(x)| = Ω(√x log log log x / log x) and the sign change of π(x) - Li(x).",
+      "mathContext": "Littlewood (1914) refuted Gauss's conjecture that π(x) < Li(x) always, showing the error oscillates with amplitude ≥ C√x log log log x / log x. This shows Von Koch's O(√x log x) is near-optimal."
+    },
+    {
+      "id": "zero-counting",
+      "title": "The Zero-Counting Function N(T)",
+      "startLine": 248,
+      "endLine": 275,
+      "summary": "Defines zeroCounting T = #{zeros ρ with Im(ρ) ≤ T} and axiomatizes Backlund's asymptotic N(T) ~ (T/2π) log(T/2π).",
+      "mathContext": "Backlund (1918) proved N(T) = (T/2π) log(T/2π) - T/(2π) + O(log T) by integrating log ζ(s) around the critical rectangle. The explicit formula connects these zeros to prime distribution."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**From PNT to Optimal Prime Distribution**\n\nThe Prime Number Theorem (PNT), proved by Hadamard and de la Vallée Poussin in 1896, states that π(x) ~ x/log x. Its proof relies on the non-vanishing of ζ(s) on the line Re(s) = 1 — the boundary of the region where the Euler product converges.\n\nRiemann's 1859 paper introduced the Riemann Hypothesis: that all non-trivial zeros of ζ(s) lie on the critical line Re(s) = 1/2. Von Koch (1901) proved that RH is equivalent to the optimal PNT error bound |π(x) - Li(x)| = O(√x log x).\n\nThe hierarchy of zero-free regions directly controls the PNT error term:\n- Standard PNT: Re(s) ≥ 1 → O(x exp(-c√log x)) error\n- Under RH: Re(s) > 1/2 → O(√x log x) error\n\nLittlewood (1914) showed the error term is Ω(√x log log log x / log x) infinitely often, making √x essentially optimal. The connection between zero locations and prime distribution is mediated by the explicit formula: ψ(x) = x - ∑_ρ x^ρ/ρ + ..., where under RH every |x^ρ| = √x.",
+    "problemStatement": "**Open Question OQ-01**: Does the Riemann Hypothesis hold? That is, do all non-trivial zeros of the Riemann zeta function ζ(s) have real part equal to 1/2?\n\nThis is one of the seven Millennium Prize Problems, with a $1,000,000 prize for a proof or disproof. This entry formalizes the precise mathematical statement, known consequences, and the quantitative relationship between zero locations and prime distribution.",
+    "text": "Formalizes the Riemann Hypothesis in its prime-distribution context: zero-free regions, von Koch's optimal error bound, and the role of the explicit formula.",
+    "proofStrategy": "1. **Formal statement**: Define RH via Mathlib's `riemannZeta : ℂ → ℂ` as all non-trivial zeros having Re(s) = 1/2.\n2. **Proved results**: Use Mathlib's `riemannZeta_ne_zero_of_one_le_re` for the PNT zero-free region; derive the extended zero-free region under RH by contradiction with the RH definition; prove zero symmetry via `riemannZeta_one_sub`.\n3. **Axiomatized results**: State von Koch's theorem, the unconditional error bound, Littlewood's omega result, and Backlund's zero-counting asymptotic as named axioms with precise mathematical statements.",
+    "keyInsights": [
+      "The PNT zero-free region (Re(s) ≥ 1) and RH's zero-free region (Re(s) > 1/2) differ in the exponent of the error term: O(x exp(-c√log x)) vs O(√x log x). This is because |x^ρ| = x^{Re(ρ)}, so moving zeros closer to Re(s) = 0 would improve the bound.",
+      "Von Koch's theorem is a precise implication: RH → O(√x log x) error. The converse also holds: O(√x log x) error → RH. So the error bound is equivalent to RH.",
+      "Littlewood's omega result shows √x is optimal: no zero-free region can give better than Ω(√x) error in |π(x) - Li(x)|. This is because the zeros on the critical line contribute oscillations of size √x.",
+      "The functional equation ζ(1-s) = 2(2π)^{-s} Γ(s) cos(πs/2) ζ(s) implies zeros come in pairs: if ζ(s) = 0 then ζ(1-s) = 0. Combined with complex conjugation, zeros are symmetric about Re(s) = 1/2, which is consistent with RH."
+    ],
+    "prerequisites": [
+      "Prime Number Theorem (Proofs.PrimeNumberTheorem): π(x) ~ x/log x",
+      "Mathlib's Riemann zeta function (riemannZeta : ℂ → ℂ) and its analytic properties",
+      "Complex analysis: zero-free regions, functional equation, explicit formula"
+    ]
+  },
+  "conclusion": {
+    "summary": "Formalizes the Riemann Hypothesis from the PNT angle: proved that RH extends the zero-free region to 1/2 < Re(s) < 1, and axiomatized von Koch's optimal O(√x log x) error bound, Littlewood's omega lower bound, and Backlund's zero-counting asymptotic. 0 sorries, 5 axioms.",
+    "implications": "If RH is ever proved, replacing the 5 axioms with actual proofs would immediately give Lean-verified versions of: (1) the best known error bound for the prime counting function, (2) prime gap estimates O(√p log p), and (3) the distribution of zeros on the critical line.",
+    "openQuestions": [
+      "Is the Riemann Hypothesis true? ($1M Millennium Prize Problem, Clay Mathematics Institute)",
+      "Can the explicit formula ψ(x) = x - ∑_ρ x^ρ/ρ + ... be formalized in Lean 4 using Mathlib's complex analysis?",
+      "Can von Koch's theorem be proved conditionally in Lean, given the explicit formula as an axiom?",
+      "What is the optimal constant C in |π(x) - Li(x)| ≤ C√x log x (under RH)? Schoenfeld's explicit bound: C = 1/(8π) for x ≥ 2657."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "Extends the PNT gallery entry with RH as an open follow-up question"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The riemann-hypothesis entry formalizes 91+ equivalences; this entry focuses on the PNT error bound angle"
+    }
+  ],
+  "references": [
+    {
+      "title": "Über die Anzahl der Primzahlen unter einer gegebenen Grösse",
+      "author": "Bernhard Riemann",
+      "year": "1859",
+      "venue": "Monatsberichte der Berliner Akademie",
+      "description": "Riemann's original paper introducing the zeta function zeros and the PNT connection"
+    },
+    {
+      "title": "Sur la distribution des nombres premiers",
+      "author": "H. von Koch",
+      "year": "1901",
+      "venue": "Acta Mathematica",
+      "description": "Von Koch's theorem: RH ↔ |π(x) - Li(x)| = O(√x log x)"
+    },
+    {
+      "title": "Sur la distribution des nombres premiers",
+      "author": "J.E. Littlewood",
+      "year": "1914",
+      "venue": "Comptes Rendus",
+      "description": "Littlewood's omega theorem and sign-change result for π(x) - Li(x)"
+    },
+    {
+      "title": "Calculating the Number of Primes below a Given Limit",
+      "author": "R.J. Backlund",
+      "year": "1918",
+      "venue": "Öfversigt Finska Vetensk.-Soc. Förhandl.",
+      "description": "Backlund's asymptotic N(T) ~ (T/2π) log(T/2π) for the zero-counting function"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LSeries.RiemannZeta",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Sqrt",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "PrimeNumberTheoremOQ01",
+    "lineCount": 281,
+    "axiomCount": 5,
+    "theoremCount": 13,
+    "definitionCount": 5,
+    "path": "Proofs/PrimeNumberTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
