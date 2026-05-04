@@ -86,9 +86,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "(Mechanic) Fix Mathlib API drift in Erdos1151OQ04.lean — see knowledge.md session 2026-04-27 for line-by-line list",
-      "(Researcher, after Mechanic fix) Add sin_ge_sin_of_mem_Icc helper to companion file (Step 4 of trig_sum_harmonic_lb proof sketch)",
-      "(Researcher, after Mechanic fix) Decompose trig_sum_harmonic_lb into 3-4 Aristotle-sized helpers",
+      "(Researcher) Prove trig_sum_harmonic_lb: fix k₀ = nearest Chebyshev node to θ (|φₖ₀-θ|≤π/(2n)), use cos_dist_le to bound |cosθ-cosφₖ|≤(j+1)π/n for rank-j nodes, use sin_ge_sin_of_mem_Icc to bound sinφₖ≥sinθ/2 for j≤M=⌊n·sinθ/(2π)⌋, sum harmonic Σ sinθ·n/(2π(j+1)) over j=1..M using odd_harmonic_sum_lb",
       "(Researcher, longer-term) Address divergence_from_lebesgue_growth foundational lim/limsup gap"
     ]
   },
