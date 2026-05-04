@@ -4362,6 +4362,17 @@ lemma mem_removeCorner {μ : YoungDiagram} {c x : ℕ × ℕ} (hc : isCorner μ 
   simp only [removeCorner, YoungDiagram.mem_mk, Finset.mem_erase, YoungDiagram.mem_cells]
   tauto
 
+/-- A corner of μ distinct from c₁ remains a corner of removeCorner μ c₁. -/
+private lemma isCorner_removeCorner_of_ne {μ : YoungDiagram} {c₁ c₂ : ℕ × ℕ}
+    (hc₁ : isCorner μ c₁) (hc₂ : isCorner μ c₂) (hne : c₁ ≠ c₂) :
+    isCorner (removeCorner μ c₁ hc₁) c₂ := by
+  obtain ⟨hc₂mem, hc₂right, hc₂below⟩ := hc₂
+  refine ⟨(mem_removeCorner hc₁).mpr ⟨hc₂mem, hne.symm⟩, ?_, ?_⟩
+  · intro hmem
+    exact hc₂right ((mem_removeCorner hc₁).mp hmem).1
+  · intro hmem
+    exact hc₂below ((mem_removeCorner hc₁).mp hmem).1
+
 /-- Cardinality of removeCorner is μ.card - 1. -/
 lemma removeCorner_card {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
     (removeCorner μ c hc).card = μ.card - 1 := by
@@ -13850,22 +13861,38 @@ private lemma gnwProb_stable (μ : YoungDiagram) (c : ℕ × ℕ) (x : ℕ × �
     rw [Nat.add_succ, gnwProb_step μ c (hookLength μ x.1 x.2 + d) x hx (Nat.le_add_right _ _)]
     exact ihd
 
+/-- GNW 1979 exchange identity (core inductive step, product form — no division).
+    For distinct corners c and c' of μ, removing c' preserves the normalized walk probability:
+      F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ)
+    where F(ν,d) = Σ_{x∈ν} gnwProb(ν,d,h(x),x) and H = hookProd.
+    This is the only non-circular bridge: given gnwProb_key for μ\c' (IH), it implies
+    gnwProb_key for μ.  Proof requires careful analysis of how removing c' shifts
+    hook lengths in the arm/leg of c; verified on L-shape and (3,1) shape. -/
+private lemma gnwProb_exchange (μ : YoungDiagram) {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    (∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x) *
+      (hookProd (removeCorner μ c hc) : ℚ) *
+      (hookProd (removeCorner μ c' hc') : ℚ) =
+    (∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb (removeCorner μ c' hc') c
+          (hookLength (removeCorner μ c' hc') x.1 x.2) x) *
+      (hookProd (removeCorner (removeCorner μ c' hc') c
+          (isCorner_removeCorner_of_ne hc' hc hne.symm)) : ℚ) *
+      (hookProd μ : ℚ) := by
+  sorry
+
 /-- GNW KEY theorem (Greene-Nijenhuis-Wilf 1979):
     The sum of GNW walk probabilities over all cells in μ equals the hookProd ratio.
     This is the hard combinatorial core of the GNW 1979 proof.
 
-    Prerequisites now proved:
-    - hookLength_isCorner_one: corners have hookLength 1
-    - gnwProb_step: gnwProb (K+1) x = gnwProb K x for K ≥ hookLength x
-    - gnwProb_stable: gnwProb K x = gnwProb (hookLength x) x for K ≥ hookLength x
-
-    Proof strategy (GNW 1979 induction on |μ|):
-    For |μ|=1, μ={c}: sum = 1, ratio = hookProd({c})/hookProd(∅) = 1. ✓
-    Inductive step: split sum into corners (contribute 1 for c, 0 for c'≠c) and non-corners.
-    For non-corner x: gnwProb (hookLength x) x = (1/|H*(x)|)*Σ_{y∈H*(x)} gnwProb (hookLength y) y
-    (using gnwProb_stable to replace gnwProb (hookLength x - 1) y with gnwProb (hookLength y) y).
-    The resulting double sum telescopes using the hook product formula:
-    hookProd(μ)/hookProd(μ\c) = Π_{y∈preHook(c)} hookLength(y)/(hookLength(y)-1). -/
+    Proof: by strong induction on μ.card.
+    Base (single-corner, μ is a rectangle): gnwProb = 1 everywhere; ratio = μ.card.
+    Step (multi-corner): pick any c' ≠ c.  gnwProb_exchange gives:
+      F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ).
+    By IH on μ\c' (using isCorner_removeCorner_of_ne):
+      F(μ\c',c) · H((μ\c')\c) = H(μ\c').
+    Substituting: F(μ,c) · H(μ\c) · H(μ\c') = H(μ\c') · H(μ),
+    so F(μ,c) = H(μ)/H(μ\c)  (dividing by H(μ\c') > 0). -/
 private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ c) :
     ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
     (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) := by
@@ -14016,12 +14043,61 @@ private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ
       rw [h_arm_prod, h_leg_prod]
       push_cast [h_card]; ring
     rw [h_sum_card, h_ratio_card]
-  · -- Multi-corner case: GNW 1979 exchange argument.
-    -- For |corners(μ)| ≥ 2, the proof requires the exchange principle from GNW 1979:
-    -- induction on μ.card, using that for any other corner c', the walk probability
-    -- sum satisfies F(μ,c) = F(μ\c',c) by exchanging hook weights in the random walk.
-    -- The invariance H(μ)/H(μ\c) = H(μ\c')/H(μ\{c,c'}) then closes the induction.
-    sorry
+  · -- Multi-corner case (|corners μ| ≥ 2), using gnwProb_exchange + strong induction.
+    -- The proof below is CORRECT MODULO two sorry'd steps:
+    --   (a) setting up strong induction on μ.card so the IH is available, and
+    --   (b) gnwProb_exchange (which requires the GNW 1979 hook-weight shift argument).
+    -- Once both are proved, the remaining algebraic steps close immediately.
+    --
+    -- Pick a second corner c' ≠ c.
+    have h_card_ge2 : 2 ≤ (corners μ).card := by
+      have hpos : 0 < (corners μ).card := Finset.card_pos.mpr ⟨c, hcmem⟩
+      omega
+    obtain ⟨c', hc'mem, hne⟩ : ∃ c' ∈ corners μ, c' ≠ c := by
+      obtain ⟨c₁, hc₁, c₂, hc₂, hne12⟩ := Finset.one_lt_card.mp (by omega)
+      by_cases h : c₁ = c
+      · exact ⟨c₂, hc₂, fun h2 => hne12 (h.trans h2.symm)⟩
+      · exact ⟨c₁, hc₁, h⟩
+    have hc' : isCorner μ c' := mem_corners.mp hc'mem
+    -- c is a corner of removeCorner μ c' hc' (distinct corners survive removal).
+    have hc_in_rc' : isCorner (removeCorner μ c' hc') c :=
+      isCorner_removeCorner_of_ne hc' hc hne.symm
+    -- (a) IH: gnwProb_key holds for removeCorner μ c' hc' and corner c.
+    -- (Requires strong induction; removeCorner μ c' hc' has card < μ.card.)
+    have h_IH : ∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb (removeCorner μ c' hc') c
+          (hookLength (removeCorner μ c' hc') x.1 x.2) x =
+        (hookProd (removeCorner μ c' hc') : ℚ) /
+          hookProd (removeCorner (removeCorner μ c' hc') c hc_in_rc') := by
+      sorry  -- IH from strong induction on μ.card; removeCorner_card gives card < μ.card
+    -- Rearrange IH: F(μ\c',c) * H((μ\c')\c) = H(μ\c')
+    have hHrc' : (0 : ℚ) < hookProd (removeCorner (removeCorner μ c' hc') c hc_in_rc') :=
+      Nat.cast_pos.mpr (Finset.prod_pos (fun x _ => hookLength_pos _ _ _))
+    have hHc' : (0 : ℚ) < hookProd (removeCorner μ c' hc') :=
+      Nat.cast_pos.mpr (Finset.prod_pos (fun x _ => hookLength_pos _ _ _))
+    have h_IH_prod : (∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb (removeCorner μ c' hc') c
+          (hookLength (removeCorner μ c' hc') x.1 x.2) x) *
+        (hookProd (removeCorner (removeCorner μ c' hc') c hc_in_rc') : ℚ) =
+        hookProd (removeCorner μ c' hc') := by
+      rw [h_IH, div_mul_cancel₀ _ (ne_of_gt hHrc')]
+    -- (b) Exchange identity: F(μ,c)*H(μ\c)*H(μ\c') = F(μ\c',c)*H((μ\c')\c)*H(μ)
+    have h_exch := gnwProb_exchange μ hc hc' hne
+    -- Substitute IH into exchange RHS: F'*H_cc' → H_c'
+    rw [h_IH_prod] at h_exch
+    -- h_exch now: F(μ,c)*H(μ\c)*H(μ\c') = H(μ\c')*H(μ)
+    -- Normalize commutativity so H(μ\c') is on the right
+    rw [mul_comm (hookProd (removeCorner μ c' hc') : ℚ) (hookProd μ : ℚ)] at h_exch
+    -- h_exch: F(μ,c)*H(μ\c)*H(μ\c') = H(μ)*H(μ\c')
+    -- Cancel H(μ\c') to get F(μ,c)*H(μ\c) = H(μ)
+    have hHrc : (0 : ℚ) < hookProd (removeCorner μ c hc) :=
+      Nat.cast_pos.mpr (Finset.prod_pos (fun x _ => hookLength_pos _ _ _))
+    have h_Hc' : (hookProd (removeCorner μ c' hc') : ℚ) ≠ 0 := ne_of_gt hHc'
+    have h_main_prod : (∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x) *
+        (hookProd (removeCorner μ c hc) : ℚ) = hookProd μ :=
+      mul_right_cancel₀ h_Hc' h_exch
+    rw [eq_div_iff (ne_of_gt hHrc)]
+    linarith [h_main_prod]
 
 /-- Hook-walk identity for arbitrary non-empty Young diagrams via GNW walk.
     Proof: rewrite each ratio using gnwProb_key, swap the double sum, and apply
