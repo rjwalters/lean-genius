@@ -1267,4 +1267,61 @@ theorem erdos_1201_smooth_decay_implies_conjecture
   intro ε η hε₀ hε₁ hη
   exact erdos_1201_from_bad_density_bound ε hε₀ hε₁ (h ε hε₀ hε₁) η hη
 
+-- ============================================================
+-- Section: Bad Set Structure for ε < 1/2
+-- These results document why the ε < 1/2 case genuinely
+-- requires density arguments beyond what k=0 can achieve.
+-- For ε < 1/2, prime squares p² have gpf(p²) = p but (p²)^(1-ε) > p
+-- (since 2*(1-ε) > 1 when ε < 1/2), so p² is bad for k=0.
+-- ============================================================
+
+/-- **GPF of Prime Square**: For a prime p, greatestPrimeFactor(p²) = p.
+    Any prime factor of p² must equal p (as p is prime), giving both bounds. -/
+theorem greatestPrimeFactor_sq_prime (p : ℕ) (hp : p.Prime) :
+    greatestPrimeFactor (p ^ 2) = p := by
+  have hp2 : 2 ≤ p ^ 2 := by nlinarith [hp.two_le]
+  apply Nat.le_antisymm
+  · exact Nat.le_of_dvd hp.pos
+        ((gpf_prime _ hp2).dvd_of_dvd_pow (gpf_dvd _ hp2))
+  · exact gpf_ge_prime_dvd _ p hp2 hp (dvd_pow_self p (by norm_num))
+
+/-- **GPF of window-zero prime square**: gpfConsecutive(p²)(0) = p for prime p. -/
+theorem gpfConsecutive_sq_prime (p : ℕ) (hp : p.Prime) :
+    gpfConsecutive (p ^ 2) 0 = p := by
+  rw [gpfConsecutive_zero, greatestPrimeFactor_sq_prime p hp]
+
+/-- **Prime squares are bad for k=0 when ε < 1/2**: For prime p and ε < 1/2,
+    p² is NOT in the good set for window k=0.
+    Since gpf(p²) = p and (p²)^(1-ε) = p^(2-2ε) ≥ p (as 2-2ε ≥ 1 when ε ≤ 1/2),
+    the GPF does not exceed the threshold n^(1-ε). -/
+theorem gpfConsecutive_sq_prime_bad_k0 (p : ℕ) (hp : p.Prime) (ε : ℝ)
+    (hε₀ : 0 < ε) (hε_half : ε < 1 / 2) :
+    ¬((p ^ 2 : ℕ) : ℝ) ^ (1 - ε) < (gpfConsecutive (p ^ 2) 0 : ℝ) := by
+  rw [gpfConsecutive_sq_prime p hp]
+  push_neg
+  have hp_cast : ((p ^ 2 : ℕ) : ℝ) = (p : ℝ) ^ 2 := by push_cast; ring
+  rw [hp_cast, ← Real.rpow_natCast (p : ℝ) 2,
+      ← Real.rpow_mul (by positivity)]
+  -- Goal: (p:ℝ) ≤ (p:ℝ)^(2*(1-ε)); since ε<1/2, exponent 2*(1-ε) > 1 ≥ 1
+  calc (p : ℝ) = (p : ℝ) ^ (1 : ℝ) := (Real.rpow_one _).symm
+    _ ≤ (p : ℝ) ^ (2 * (1 - ε)) := by
+        apply Real.rpow_le_rpow_of_exponent_le
+        · linarith [show (2 : ℝ) ≤ (p : ℝ) from by exact_mod_cast hp.two_le]
+        · linarith
+
+/-- **Bad set for k=0 is infinite when ε < 1/2**: The set of n not good for k=0
+    contains all prime squares, which form an infinite family. -/
+theorem erdos_1201_bad_set_k0_infinite (ε : ℝ) (hε₀ : 0 < ε) (hε_half : ε < 1 / 2) :
+    Set.Infinite {n : ℕ | ¬((n : ℝ) ^ (1 - ε) < (gpfConsecutive n 0 : ℝ))} := by
+  have h_inj : Set.InjOn (· ^ 2 : ℕ → ℕ) {p : ℕ | p.Prime} := by
+    intro a _ b _ hab
+    rcases Nat.lt_or_ge a b with h | h
+    · exact absurd hab (Nat.ne_of_lt (pow_lt_pow_left h (Nat.zero_le a) (by norm_num)))
+    · rcases eq_or_lt_of_le h with rfl | h
+      · rfl
+      · exact absurd hab.symm (Nat.ne_of_lt (pow_lt_pow_left h (Nat.zero_le b) (by norm_num)))
+  apply (Nat.infinite_setOf_prime.image h_inj).mono
+  rintro n ⟨p, hp, rfl⟩
+  exact gpfConsecutive_sq_prime_bad_k0 p hp ε hε₀ hε_half
+
 end Erdos1201
