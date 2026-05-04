@@ -183,11 +183,81 @@ theorem int_dist_card_le
     (hS_noncol : ¬∀ p ∈ S, ∀ q ∈ S, ∀ r ∈ S,
       (p.1 - r.1) * (q.2 - r.2) = (q.1 - r.1) * (p.2 - r.2)) :
     S.card ≤ 2 * d ^ 2 + 2 := by
-  -- Fix two distinct anchor points P₁, P₂ ∈ S
-  -- For Q ∈ S \ {P₁,P₂}: distance pair (k₁,k₂) ∈ {1..d}², at most d² choices
-  -- Each choice gives ≤ 2 points (by three_pts_two_circles_contra)
-  -- So |S| - 2 ≤ 2*d², hence |S| ≤ 2*d² + 2
-  sorry
+  -- Extract non-collinear triple to get two distinct anchors p₁, p₂ ∈ S
+  push_neg at hS_noncol
+  obtain ⟨p₁, hp₁, p₂, hp₂, p₃, _, hncol⟩ := hS_noncol
+  have hp1ne2 : p₁ ≠ p₂ := fun heq => by subst heq; exact hncol rfl
+  -- Remove the two anchors: T = (S.erase p₁).erase p₂
+  set T := (S.erase p₁).erase p₂ with hT_def
+  have hT_sub : T ⊆ S :=
+    (Finset.erase_subset _ _).trans (Finset.erase_subset _ _)
+  have hp₂_mem_erased : p₂ ∈ S.erase p₁ :=
+    Finset.mem_erase.mpr ⟨hp1ne2.symm, hp₂⟩
+  -- |S| = |T| + 2
+  have hScard_eq : S.card = T.card + 2 := by
+    rw [hT_def, Finset.card_erase_of_mem hp₂_mem_erased,
+        Finset.card_erase_of_mem hp₁]
+    have h₁ : 1 ≤ S.card := Finset.card_pos.mpr ⟨p₁, hp₁⟩
+    have h₂ : 1 ≤ (S.erase p₁).card :=
+      Finset.card_pos.mpr ⟨p₂, hp₂_mem_erased⟩
+    omega
+  -- Suffices to show |T| ≤ 2 * d²
+  suffices h : T.card ≤ 2 * d ^ 2 by linarith
+  -- Index set: all distance pairs (k₁, k₂) ∈ {1..d}²
+  let pairs := (Finset.Icc 1 d) ×ˢ (Finset.Icc 1 d)
+  -- Fiber: points of T with the given distance pair to (p₁, p₂)
+  let fiber : ℕ × ℕ → Finset (ℝ × ℝ) := fun pk =>
+    T.filter fun Q =>
+      (Q.1 - p₁.1) ^ 2 + (Q.2 - p₁.2) ^ 2 = (pk.1 : ℝ) ^ 2 ∧
+      (Q.1 - p₂.1) ^ 2 + (Q.2 - p₂.2) ^ 2 = (pk.2 : ℝ) ^ 2
+  -- Every Q ∈ T belongs to some fiber
+  have hT_cover : T ⊆ pairs.biUnion fiber := by
+    intro Q hQ
+    have hQne2 : Q ≠ p₂ := (Finset.mem_erase.mp hQ).1
+    have hQ_er : Q ∈ S.erase p₁ := (Finset.mem_erase.mp hQ).2
+    have hQne1 : Q ≠ p₁ := (Finset.mem_erase.mp hQ_er).1
+    have hQS : Q ∈ S := (Finset.mem_erase.mp hQ_er).2
+    obtain ⟨k₁, hk₁pos, hk₁le, hk₁eq⟩ := hS_dist Q hQS p₁ hp₁ hQne1
+    obtain ⟨k₂, hk₂pos, hk₂le, hk₂eq⟩ := hS_dist Q hQS p₂ hp₂ hQne2
+    refine Finset.mem_biUnion.mpr ⟨(k₁, k₂), ?_, ?_⟩
+    · simp only [pairs, Finset.mem_product, Finset.mem_Icc]
+      exact ⟨⟨hk₁pos, hk₁le⟩, hk₂pos, hk₂le⟩
+    · simp only [fiber, Finset.mem_filter]
+      exact ⟨hQ, hk₁eq, hk₂eq⟩
+  -- Each fiber has at most 2 elements (by the circle intersection lemma)
+  have hfiber_le : ∀ pk ∈ pairs, (fiber pk).card ≤ 2 := by
+    intro ⟨k₁, k₂⟩ _
+    rcases le_or_lt (fiber (k₁, k₂)).card 1 with h1 | h1
+    · linarith
+    · -- At least 2 elements: extract two distinct ones
+      rw [Finset.one_lt_card] at h1
+      obtain ⟨Q₁, hQ₁, Q₂, hQ₂, hQ₁₂ne⟩ := h1
+      -- Every other element of the fiber must equal Q₁ or Q₂
+      have hsub : fiber (k₁, k₂) ⊆ ({Q₁, Q₂} : Finset _) := by
+        intro Q hQ
+        simp only [fiber, Finset.mem_filter] at hQ₁ hQ₂ hQ
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        by_contra h
+        push_neg at h
+        -- Q, Q₁, Q₂ are three distinct points on both circles → contradiction
+        exact three_pts_two_circles_contra p₁ p₂ (k₁ : ℝ) (k₂ : ℝ) hp1ne2
+          Q₁ Q₂ Q hQ₁₂ne (Ne.symm h.1) (Ne.symm h.2)
+          hQ₁.2.1 hQ₁.2.2 hQ₂.2.1 hQ₂.2.2 hQ.2.1 hQ.2.2
+      calc (fiber (k₁, k₂)).card
+          ≤ ({Q₁, Q₂} : Finset (ℝ × ℝ)).card := Finset.card_le_card hsub
+        _ ≤ 2 := by
+            apply (Finset.card_insert_le _ _).trans
+            simp
+  -- Combine: |T| ≤ Σ |fiber| ≤ Σ 2 = 2 * d²
+  have hpairs_card : pairs.card = d ^ 2 := by
+    simp only [pairs, Finset.card_product, Finset.card_Icc]
+    omega
+  calc T.card
+      ≤ (pairs.biUnion fiber).card := Finset.card_le_card hT_cover
+    _ ≤ ∑ pk ∈ pairs, (fiber pk).card := Finset.card_biUnion_le
+    _ ≤ ∑ _pk ∈ pairs, 2 := Finset.sum_le_sum hfiber_le
+    _ = 2 * d ^ 2 := by
+        rw [Finset.sum_const, smul_eq_mul, hpairs_card, mul_comm]
 
 /-! ## Main theorem -/
 

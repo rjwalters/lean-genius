@@ -7,7 +7,7 @@
     "author": "Anning–Erdős (1945); formalized 2026",
     "sourceUrl": "https://erdosproblems.com/100",
     "date": "1945",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos100OQ01WIP01.lean",
     "tags": [
       "discrete-geometry",
@@ -16,11 +16,11 @@
       "circle-geometry",
       "quadratic-polynomials"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 214,
-    "assumptions": "One sorry remains: the fiber counting argument in int_dist_card_le (bounding |S| ≤ 2d²+2 by counting distance pairs). The three_pts_two_circles_contra theorem is fully proved.",
+    "lineCount": 284,
+    "assumptions": "None. Fully machine-verified.",
     "dateAdded": "2026-05-04",
     "mathlib_version": "4.26.0",
     "theoremCount": 4
@@ -28,7 +28,7 @@
   "overview": {
     "historicalContext": "The Anning–Erdős theorem (1945) is a fundamental result in discrete geometry: any infinite set of points in the plane with all pairwise distances being integers must be collinear. Equivalently, for any bound d, every non-collinear planar integer-distance set with all distances ≤ d is finite. The proof rests on two key observations: (1) two distinct circles intersect in at most 2 points, and (2) for fixed anchor points P₁, P₂, any other point Q in the set is determined by the pair (dist(Q,P₁), dist(Q,P₂)) up to a 2-fold ambiguity. Since there are at most d² distance pairs, the set has at most 2+2d² points.",
     "problemStatement": "For any d > 0, every non-collinear planar point set with all pairwise integer distances bounded by d has at most 2d² + 2 points.",
-    "text": "Proves the key algebraic and geometric lemmas toward the Anning–Erdős theorem, culminating in the main finiteness theorem with one sorry remaining for the cardinality counting argument.",
+    "text": "Proves the Anning–Erdős finiteness theorem completely: every non-collinear planar set with all pairwise integer distances ≤ d has at most 2d²+2 points. Zero sorries, zero axioms.",
     "proofStrategy": "The proof proceeds in three stages: (1) **Algebraic root bound** — `quadratic_at_most_two_roots` proves that a nonzero quadratic polynomial has at most 2 roots using only ring arithmetic (via `linear_combination`), avoiding the Polynomial API entirely. (2) **Circle intersection** — `three_pts_two_circles_contra` proves that three distinct points cannot simultaneously lie on two circles with distinct centers. The proof subtracts the two circle equations to obtain the radical axis (a linear equation), then splits on whether the center-difference dx is zero or not: in the dx=0 case, all points share the same y-coordinate and a quadratic in x applies; in the dx≠0 case, x is expressed as a linear function of y via the radical axis, and substituting into one circle equation yields a quadratic in y. In both cases, three distinct roots of a degree-2 polynomial give a contradiction via `quadratic_at_most_two_roots`. (3) **Cardinality bound** — `int_dist_card_le` states the precise bound |S| ≤ 2d²+2 using the fiber counting argument (1 sorry for the Finset cardinality step).",
     "prerequisites": [
       "Circle geometry: two circles with distinct centers intersect in at most 2 points",
@@ -78,11 +78,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The circle intersection infrastructure for the Anning–Erdős theorem is formalized: `quadratic_at_most_two_roots` and `three_pts_two_circles_contra` are fully proved. The main theorem `anning_erdos_finiteness` is proved modulo one sorry (the Finset cardinality fiber-counting step in `int_dist_card_le`).",
-    "implications": "The `three_pts_two_circles_contra` theorem is the geometric heart of the Anning–Erdős proof: it shows that for any two fixed anchor points, the distance-pair map Q ↦ (dist(Q,P₁), dist(Q,P₂)) has fibers of size ≤ 2. Combined with the fiber counting, this gives the finite bound |S| ≤ 2d²+2.",
+    "summary": "The Anning–Erdős finiteness theorem is completely formalized: `quadratic_at_most_two_roots`, `three_pts_two_circles_contra`, `int_dist_card_le`, and `anning_erdos_finiteness` are all fully proved with 0 sorries and 0 axioms.",
+    "implications": "The fiber counting argument uses `Finset.card_biUnion_le` to bound |S∖{P₁,P₂}| ≤ 2d² by covering with distance-pair fibers, each of size ≤ 2 by `three_pts_two_circles_contra`. Together with |{P₁,P₂}| = 2, this gives |S| ≤ 2d²+2.",
     "openQuestions": [
-      "Can the fiber counting sorry in `int_dist_card_le` be eliminated? The proof needs a Lean 4 Finset cardinality argument partitioning T by distance pairs.",
-      "Can `piepmeyer_upper` in the parent file be proved by supplying an explicit 9-point witness? This would eliminate the second sorry in Erdos100OQ01.lean."
+      "Can `piepmeyer_upper` in the parent file Erdos100OQ01.lean be proved by supplying an explicit 9-point witness? This would eliminate the remaining sorry in the parent file.",
+      "Can the Anning–Erdős bound 2d²+2 be tightened? The true maximum is conjectured to be around d+√2d+O(1)."
     ]
   },
   "crossReferences": [
@@ -106,12 +106,12 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic"
     ],
     "namespace": "Erdos100OQ01WIP01",
-    "lineCount": 214,
+    "lineCount": 284,
     "axiomCount": 0,
     "theoremCount": 4,
     "path": "Proofs/Erdos100OQ01WIP01.lean",
-    "sorries": 1,
+    "sorries": 0,
     "definitionCount": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
