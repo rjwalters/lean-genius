@@ -45,12 +45,15 @@ Formalize the second Chebyshev function ψ(n) = Σ_{k≤n} Λ(k) and prove:
 - Submitted Aristotle job: `a6b2d46e-90cf-4f96-a532-c704bee322da`
 
 ### Key Findings
-- `Nat.bertrand (n : ℕ) (hn : 1 ≤ n) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n` is the correct current API
+- `Nat.bertrand (n : ℕ) (hn : 1 ≤ n) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n` is correct current API
 - `Nat.exists_prime_lt_and_le_two_mul` also works but requires `n ≠ 0`
-- Naive induction from doubling lemma DOES NOT prove full ψ(n) ≤ 2n·log 2 (tested and confirmed)
-- vonMangoldt_sum identity in Mathlib: `Σ_{d ∈ n.divisors} Λ d = Real.log n`
-- Fubini reindex gives: `log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋`
-- From this: `log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋-2⌊n/d⌋) ≥ ψ(2n)-ψ(n)`
+- `Finset.single_le_sum (hf) hmem` — element is ⦃⦄ semi-implicit; no extra `_` placeholder
+- `Finset.sum_sdiff_eq_sub` cannot be used as `simp only` lemma with proof arg; use `Finset.sum_sdiff` in linarith instead
+- `Real.log (n / 2 + 1)` with `n : ℕ` coerces to REAL division; use `(n / 2 : ℕ) + 1 : ℝ` for nat floor division
+- `Finset.range_mono (by omega) : range (n+1) ⊆ range (2n+1)` — API confirmed working
+- Naive induction from doubling lemma DOES NOT prove full ψ(n) ≤ 2n·log 2 (tested)
+- vonMangoldt_sum identity: `Σ_{d ∈ n.divisors} Λ d = Real.log n`
+- log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋-2⌊n/d⌋) ≥ ψ(2n)-ψ(n) is the classical Chebyshev argument
 
 ### Net Effect
 - axiomCount: 4 → 3 (chebyshevPsi_doubling_le converted to theorem)
