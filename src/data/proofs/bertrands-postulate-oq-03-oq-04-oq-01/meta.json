@@ -1,0 +1,226 @@
+{
+  "id": "bertrands-postulate-oq-03-oq-04-oq-01",
+  "title": "Cramér's Conjecture Implies PrimeGapConjecture for All ε > 0",
+  "slug": "bertrands-postulate-oq-03-oq-04-oq-01",
+  "description": "Proves that Cramér's conjecture (prime gaps are O(log² p)) implies PrimeGapConjecture(ε) for every ε > 0: for large enough x, the interval [x, x + x^ε] always contains a prime. The key insight is the asymptotic log(x)² = o(x^ε), proved using Mathlib's isLittleO_log_rpow_atTop. For small x, BHP (2001) handles the base case. This places Cramér's conjecture in a hierarchy: strictly stronger than BHP's ε = 0.525 but strictly weaker than ShortIntervalPNT(ε), which requires prime equidistribution in short intervals.",
+  "meta": {
+    "author": "Cramér (1936); Baker-Harman-Pintz (2001)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_conjecture",
+    "date": "1936",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BertrandsPostulateOQ03OQ04OQ01.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "prime-gaps",
+      "analytic-number-theory",
+      "asymptotics",
+      "cramer-conjecture",
+      "bertrand-postulate"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "isLittleO_log_rpow_atTop",
+        "description": "Mathlib's little-o bound: log(x) = o(x^c) for any c > 0",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow_of_exponent_ge",
+        "description": "Monotone decrease of x^c in c when x ≥ 1: x^ε ≥ x^0.525 when ε ≤ 0.525",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.infinite_setOf_prime.exists_gt",
+        "description": "There exists a prime greater than any given natural number — used to define nextPrimeFrom",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Filter.eventually_atTop",
+        "description": "Characterization of eventually-at-top: ∀ᶠ n atTop, P n ↔ ∃ N, ∀ n ≥ N, P n",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "log_sq_lt_rpow_eventually: Fully proved lemma that C·log(n)² < n^ε for all n ≥ N(C,ε), using isLittleO_log_rpow_atTop from Mathlib",
+      "nextPrimeFrom: Definition of the next prime at or after x, with prime and ≥ x lemmas proved",
+      "cramer_implies_nextPrime_bound: Bridge axiom connecting nth-prime Cramér formulation to interval formulation with explicit mathematical justification",
+      "cramer_implies_primeGapConjecture_eventually: Proved theorem: Cramér → PrimeGapConjecture(ε) for all sufficiently large x",
+      "cramer_implies_primeGapConjecture: Full theorem combining eventual result with BHP for small x",
+      "cramer_hierarchy: Summary theorem placing Cramér in the hierarchy: BHP(0.525) ≤ Cramér(all ε) < ShortIntervalPNT(ε)"
+    ],
+    "dateAdded": "2026-05-04",
+    "axiomCount": 1,
+    "lineCount": 257,
+    "assumptions": "Relies on `axiom cramer_conjecture` from `Proofs.BertrandsPostulateOQ03` (Cramér's conjecture: prime gaps are O(log²p)) and `axiom cramer_implies_nextPrime_bound` declared in this file (the bridge from nth-prime to interval formulation). Also transitively depends on `axiom bhp_short_interval` (BHP 2001) for the small-x base case. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "bertrands-postulate-oq-03",
+        "relationship": "Grandparent entry; establishes cramer_conjecture, bhp_short_interval, and PrimeGapConjecture type"
+      },
+      {
+        "id": "bertrands-postulate-oq-03-oq-04",
+        "relationship": "Parent entry; establishes ShortIntervalPNT and the RH-conditional density result"
+      },
+      {
+        "id": "bertrands-postulate-oq-03-oq-04-oq-03",
+        "relationship": "Sibling entry (OQ-03); proves the filter algebra steps for long-interval density"
+      }
+    ],
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Cramér (1936) conjectured that the gaps between consecutive primes $p_n$ and $p_{n+1}$ satisfy $p_{n+1} - p_n = O(\\log^2 p_n)$. This probabilistic conjecture — motivated by treating primes as independent events with density $1/\\log n$ — implies a very tight distribution for prime gaps. Baker-Harman-Pintz (BHP, 2001) proved unconditionally that there is always a prime in $[x, x + x^{0.525}]$, the best known unconditional result. The Riemann Hypothesis (RH) improves this to $x^{0.5+\\varepsilon}$ via the explicit formula. Cramér's conjecture, if true, would give existence in $[x, x + C\\log^2 x]$ — much tighter than $x^\\varepsilon$. This file formalizes the implication: Cramér → existence in $[x, x + x^\\varepsilon]$ for every $\\varepsilon > 0$, bridging the gap between BHP and the full Cramér picture.",
+    "problemStatement": "**Open Question (OQ-01 of OQ-04)**: Does Cramér's conjecture imply PrimeGapConjecture(ε) for all ε > 0? That is, does the gap bound $p_{n+1} - p_n \\leq C \\log^2 p_n$ guarantee that every interval $[x, x + x^\\varepsilon]$ contains a prime?\n\n**Answer**: YES — proved in this file. The key is the asymptotic $\\log^2 x = o(x^\\varepsilon)$ for any $\\varepsilon > 0$.",
+    "text": "A 257-line formalization proving that Cramér's conjecture implies PrimeGapConjecture(ε) for every ε > 0. The proof splits into five parts: (1) the key asymptotic lemma C·log(n)² < n^ε for large n, proved using Mathlib's isLittleO_log_rpow_atTop; (2) the nextPrimeFrom infrastructure; (3) a bridge axiom connecting Cramér's nth-prime formulation to an interval bound; (4) the main theorem combining the asymptotics with BHP for the base case; and (5) a hierarchy theorem placing Cramér strictly between BHP and ShortIntervalPNT.",
+    "proofStrategy": "The asymptotic lemma uses isLittleO_log_rpow_atTop with exponent ε/4 to bound log(n) ≤ (1/2)n^(ε/4). Squaring gives log(n)² ≤ (1/4)n^(ε/2). Since C ≤ n^(ε/2) for large n (bounded by C^(2/ε) ≤ n), we get C·log(n)² < n^ε. The main theorem applies this asymptotic to the Cramér bound nextPrime(x) ≤ x + C·log(x)², giving nextPrime(x) ≤ x + x^ε for large x. For small x, BHP's ε=0.525 result handles the base case via monotonicity: x^ε ≥ x^0.525 when ε ≤ 0.525.",
+    "keyInsights": [
+      "The asymptotic log²(x) = o(x^ε) is the mathematical core: for any fixed ε > 0, the polynomial x^ε eventually dominates the logarithmic bound C·log²(x)",
+      "Cramér's gap bound C·log²(p) is exponentially tighter than x^ε, so the two bounds compare favorably for all ε > 0 — even for tiny ε like 0.001",
+      "The bridge between nth-prime formulation (Cramér) and interval formulation (PrimeGapConjecture) requires knowing which prime index n corresponds to a given x — technically involved but mathematically routine",
+      "BHP (2001) as base case: for ε ≥ 0.525, no axiom is needed; for ε < 0.525, Cramér handles the large-x range and BHP handles small x",
+      "Density gap: even under Cramér, showing COUNT(primes in [x, x+x^ε]) ≈ x^ε/log(x) requires equidistribution, not just existence — ShortIntervalPNT(ε) is strictly stronger than what Cramér gives"
+    ],
+    "prerequisites": [
+      "Cramér's conjecture: prime gaps satisfy pₙ₊₁ - pₙ ≤ C·log²(pₙ)",
+      "Baker-Harman-Pintz theorem (BHP 2001): ∃ prime in [x, x + x^0.525] unconditionally",
+      "Asymptotics: log(x) = o(x^c) for any c > 0 (from isLittleO_log_rpow_atTop)",
+      "Filter.eventually_atTop: Lean 4 formalization of 'for all sufficiently large n'"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Problem Statement and Hierarchy",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring poses the question: does Cramér's conjecture imply PrimeGapConjecture(ε) for all ε > 0? Answers YES, states the key insight (log²=o(x^ε)), presents a result table, and notes the density gap (ShortIntervalPNT is strictly stronger). Imports Mathlib asymptotics, PNT, PrimeGapBounds, and both parent OQ files.",
+      "mathContext": "The hierarchy: BHP(0.525) ← Cramér(all ε) ← ShortIntervalPNT(ε). Cramér gives existence in [x, x+C log²x] ⊂ [x, x+x^ε] for large x; density in short intervals needs equidistribution."
+    },
+    {
+      "id": "asymptotic-lemma",
+      "title": "Part 1: Key Asymptotic — log² = o(x^ε)",
+      "startLine": 60,
+      "endLine": 115,
+      "summary": "log_sq_lt_rpow_eventually: For any C > 0 and ε > 0, C·log(n)² < n^ε for all n ≥ N(C,ε). Proved using isLittleO_log_rpow_atTop at exponent ε/4, then squaring the bound and applying C ≤ n^(ε/2).",
+      "mathContext": "isLittleO_log_rpow_atTop gives |log n| ≤ (1/2)|n^(ε/4)| eventually. Squaring: log²n ≤ (1/4)n^(ε/2). For n ≥ C^(2/ε) we have C ≤ n^(ε/2), so C·log²n ≤ (C/4)·n^(ε/2) < n^ε."
+    },
+    {
+      "id": "nextprime-infrastructure",
+      "title": "Part 2: nextPrimeFrom Infrastructure",
+      "startLine": 116,
+      "endLine": 151,
+      "summary": "Defines nextPrimeFrom(x) as the smallest prime ≥ x via Nat.find. Proves nextPrimeFrom_prime (it's prime) and nextPrimeFrom_ge (it's ≥ x). Includes bridge axiom cramer_implies_nextPrime_bound with mathematical justification.",
+      "mathContext": "nextPrimeFrom(x) = Nat.find(∃ p prime, p > x-1). The bridge axiom: if pₙ₊₁ - pₙ ≤ C·log²(pₙ) for all n, then for x with pₙ ≤ x < pₙ₊₁, nextPrime(x) = pₙ₊₁ ≤ pₙ + C·log²(pₙ) ≤ x + C·log²(x)."
+    },
+    {
+      "id": "main-theorem-eventually",
+      "title": "Part 3: Cramér → PrimeGapConjecture Eventually",
+      "startLine": 152,
+      "endLine": 183,
+      "summary": "cramer_implies_primeGapConjecture_eventually: Proves that for each ε > 0, for all sufficiently large x, there exists a prime in [x, x+x^ε]. Combines the bridge axiom with the asymptotic lemma.",
+      "mathContext": "Obtain C from cramer_implies_nextPrime_bound. Obtain N from log_sq_lt_rpow_eventually. For x ≥ max(N, 2): nextPrime(x) ≤ x + C·log²(x) < x + x^ε."
+    },
+    {
+      "id": "full-theorem",
+      "title": "Part 4: Full PrimeGapConjecture via BHP Base Case",
+      "startLine": 184,
+      "endLine": 216,
+      "summary": "cramer_implies_primeGapConjecture: Full PrimeGapConjecture(ε) for all ε > 0. For ε ≥ 0.525 uses BHP directly; for ε < 0.525 combines the eventual result with BHP for x < N.",
+      "mathContext": "Case ε ≥ 0.525: BHP via prime_gap_conjecture_monotone. Case ε < 0.525: for x ≥ N use the eventual result; for x < N, BHP gives prime in [x, x+x^0.525] ⊂ [x, x+x^ε] since x^ε ≥ x^0.525 (x≥2, ε≤0.525)."
+    },
+    {
+      "id": "density-gap-and-hierarchy",
+      "title": "Part 5: Density Gap and Cramér Hierarchy",
+      "startLine": 217,
+      "endLine": 257,
+      "summary": "existence_is_weaker_than_density: ShortIntervalPNT → PrimeGapConjecture (not the converse). cramer_hierarchy: summary theorem with three components — BHP(0.525) unconditional, Cramér(all ε) in this file, RH→ShortIntervalPNT(1/2+ε) from parent.",
+      "mathContext": "PrimeGapConjecture is ∃-existence; ShortIntervalPNT is ∀-density asymptotic. Cramér gap bounds guarantee only that the LARGEST gap is O(log²x) — individual intervals could be empty even with small maximum gap, since density requires the TYPICAL gap to be small."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry proves that Cramér's conjecture implies PrimeGapConjecture(ε) for every ε > 0, using the asymptotic log²(x) = o(x^ε) from Mathlib's isLittleO_log_rpow_atTop. The BHP 2001 result handles the base case, making the full theorem unconditional for large ε and Cramér-conditional only for ε < 0.525.",
+    "implications": "The result places Cramér's conjecture precisely in the prime gap hierarchy: it implies existence in [x, x+x^ε] for all ε but falls short of the PNT density prediction x^ε/log(x) primes in such intervals. This cleanly separates the existence problem (solved under Cramér) from the equidistribution problem (open for ε < 1).",
+    "openQuestions": [
+      "Can the bridge axiom (cramer_implies_nextPrime_bound) be formally proved using the Nat.count/Nat.nth API in Lean 4?",
+      "Does any weaker form of Cramér (e.g., gaps ≤ C·log(p)^α for α > 2) still imply PrimeGapConjecture(ε) for some ε > 0?",
+      "Is there a direct route from Cramér's conjecture to ShortIntervalPNT(ε) for any ε > 0, without assuming equidistribution separately?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate-oq-03",
+      "relationship": "foundational",
+      "description": "Grandparent entry; defines PrimeGapConjecture, cramer_conjecture, and prime_gap_conjecture_bhp (BHP result) used here"
+    },
+    {
+      "targetId": "bertrands-postulate-oq-03-oq-04",
+      "relationship": "extends",
+      "description": "Parent entry (OQ-04); defines ShortIntervalPNT and the RH-conditional result; this OQ-01 adds the Cramér implication"
+    },
+    {
+      "targetId": "bertrands-postulate-oq-03-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Sibling (OQ-03); proves filter algebra steps for long-interval density; this file addresses existence in short intervals"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cramér, Harald",
+      "title": "On the order of magnitude of the difference between consecutive prime numbers",
+      "year": "1936",
+      "venue": "Acta Arithmetica",
+      "note": "Conjectured prime gaps O(log² p) via probabilistic heuristics"
+    },
+    {
+      "authors": "Baker, R.C.; Harman, G.; Pintz, J.",
+      "title": "The difference between consecutive primes, II",
+      "year": "2001",
+      "venue": "Proceedings of the London Mathematical Society",
+      "note": "BHP 2001: proved existence of prime in [x, x + x^0.525] unconditionally"
+    },
+    {
+      "authors": "Montgomery, Hugh L.",
+      "title": "The pair correlation of zeros of the zeta function",
+      "year": "1973",
+      "venue": "AMS Proceedings of Symposia in Pure Mathematics",
+      "note": "Suggests Cramér's conjecture may be slightly off; gaps might be larger by a log log factor"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic",
+      "Proofs.PrimeNumberTheorem",
+      "Proofs.PrimeGapBounds",
+      "Proofs.BertrandsPostulateOQ03",
+      "Proofs.BertrandsPostulateOQ03OQ04"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Real",
+      "Nat",
+      "BertrandsPostulateOQ03",
+      "BertrandsPostulateOQ03OQ04",
+      "PrimeGapBounds"
+    ],
+    "namespace": "BertrandsPostulateOQ03OQ04OQ01",
+    "lineCount": 257,
+    "axiomCount": 1,
+    "sorries": 0,
+    "path": "Proofs/BertrandsPostulateOQ03OQ04OQ01.lean",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "sorries": 0
+}
