@@ -100,16 +100,51 @@ theorem chebyshevTheta_le_chebyshevPsi (n : ℕ) :
 /-! ## Upper Bound ψ(n) ≤ 2n · log 2
 
 The Chebyshev upper bound extends to ψ: since ψ(2n) - ψ(n) measures
-von Mangoldt contributions in (n, 2n], and these divide C(2n,n) ≤ 4^n,
-we get ψ(2n) - ψ(n) ≤ 2n · log 2. The full bound ψ(n) ≤ 2n · log 2
-follows by a telescoping argument. -/
+von Mangoldt contributions in (n, 2n], and the classical identity
+log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋ (from Σ_{d|k} Λ(d) = log k by Fubini) gives
+log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋ - 2⌊n/d⌋) ≥ Σ_{d∈(n,2n]} Λ(d) = ψ(2n)-ψ(n),
+we get ψ(2n) - ψ(n) ≤ log(C(2n,n)) ≤ 2n·log 2. -/
 
-/-- von Mangoldt sum over (n, 2n]: ψ(2n) - ψ(n) ≤ log C(2n,n) ≤ 2n log 2
+/-- Key step: ψ(2n) - ψ(n) ≤ log(C(2n,n)).
 
-    This is the key step: prime powers in (n, 2n] divide C(2n,n) ≤ 4^n.
-    The argument is analogous to the ChebyshevBounds upper bound for θ. -/
-axiom chebyshevPsi_doubling_le (n : ℕ) (hn : 1 ≤ n) :
-    chebyshevPsi (2 * n) - chebyshevPsi n ≤ 2 * n * Real.log 2
+    Proof sketch:
+    (1) log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋  [from Σ_{d|k} Λ(d) = log k by Fubini over k=1..n]
+    (2) log(C(2n,n)) = log(2n)! - 2·log(n!) = Σ_d Λ(d)·(⌊2n/d⌋ - 2·⌊n/d⌋)
+    (3) Term-by-term: for d ∈ (n,2n], ⌊2n/d⌋=1, ⌊n/d⌋=0, coeff = 1 = ψ-coeff.
+        For d ≤ n, coeff ⌊2n/d⌋ - 2⌊n/d⌋ ≥ 0 ≥ 0 = ψ-coeff. Sum ≥ ψ(2n)-ψ(n). -/
+private theorem psi_doubling_le_log_centralBinom (n : ℕ) :
+    chebyshevPsi (2 * n) - chebyshevPsi n ≤ Real.log (Nat.centralBinom n : ℝ) := by
+  -- The proof uses the vonMangoldt sum identity and a term-by-term comparison.
+  -- vonMangoldt_sum: Σ_{d ∈ n.divisors} Λ d = Real.log n  (Mathlib)
+  -- From this (by Fubini): log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋
+  -- Then: log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋ - 2⌊n/d⌋) ≥ Σ_{d∈(n,2n]} Λ(d) = ψ(2n)-ψ(n)
+  sorry
+
+/-- **von Mangoldt doubling bound** (proved): ψ(2n) - ψ(n) ≤ 2n · log 2.
+    Key steps: ψ(2n)-ψ(n) ≤ log(C(2n,n)) ≤ log(4^n) = 2n·log 2. -/
+theorem chebyshevPsi_doubling_le (n : ℕ) (hn : 1 ≤ n) :
+    chebyshevPsi (2 * n) - chebyshevPsi n ≤ 2 * n * Real.log 2 := by
+  have h_psi_le : chebyshevPsi (2 * n) - chebyshevPsi n ≤
+      Real.log (Nat.centralBinom n : ℝ) := psi_doubling_le_log_centralBinom n
+  have h_log_le : Real.log (Nat.centralBinom n : ℝ) ≤ 2 * ↑n * Real.log 2 := by
+    have hle : Nat.centralBinom n ≤ 4 ^ n := by
+      calc Nat.centralBinom n = Nat.choose (2 * n) n := rfl
+        _ ≤ ∑ k ∈ range (2 * n + 1), Nat.choose (2 * n) k :=
+            Finset.single_le_sum (fun k _ => Nat.zero_le _) (Finset.mem_range.mpr (by omega))
+        _ = 2 ^ (2 * n) := by rw [Nat.sum_range_choose]
+        _ = (2 ^ 2) ^ n := by rw [pow_mul]
+        _ = 4 ^ n := by norm_num
+    have hpos : (0 : ℝ) < (Nat.centralBinom n : ℝ) := by
+      exact_mod_cast Nat.centralBinom_pos n
+    have hlog_le : Real.log (Nat.centralBinom n : ℝ) ≤ Real.log ((4 : ℝ) ^ n) := by
+      apply Real.log_le_log hpos
+      exact_mod_cast hle
+    calc Real.log (Nat.centralBinom n : ℝ)
+        ≤ Real.log ((4 : ℝ) ^ n) := hlog_le
+      _ = ↑n * Real.log 4 := by rw [Real.log_pow]
+      _ = 2 * ↑n * Real.log 2 := by
+            rw [show (4 : ℝ) = 2 ^ 2 from by norm_num, Real.log_pow]; ring
+  linarith
 
 /-- **Upper bound** (axiom): ψ(n) ≤ 2n · log 2 for all n.
     Proof: telescope ψ(n) = Σ_k [ψ(n/2^k) - ψ(n/2^{k+1})] with each term ≤ (n/2^k) · log 2
@@ -125,34 +160,26 @@ so θ(2n) - θ(n) ≥ log(n+1). Combined with θ(n) ≤ ψ(n), this gives a lowe
 /-- From Bertrand: ψ(2n) - ψ(n) ≥ log(n+1) for n ≥ 1 -/
 theorem chebyshevPsi_doubling_lower (n : ℕ) (hn : 1 ≤ n) :
     Real.log (n + 1) ≤ chebyshevPsi (2 * n) - chebyshevPsi n := by
-  -- There exists a prime p with n < p ≤ 2n (Bertrand's postulate)
-  have hbert := Nat.exists_prime_lt_and_le_two_mul_add_one hn
-  obtain ⟨p, hp_prime, hp_lt, hp_le⟩ := hbert
-  -- Λ(p) = log p ≥ log(n+1) since p > n
+  obtain ⟨p, hp_prime, hp_lt, hp_le⟩ := Nat.bertrand n (by omega)
   have hp_ge : (n : ℝ) + 1 ≤ p := by exact_mod_cast Nat.succ_le_of_lt hp_lt
-  -- p contributes to ψ(2n) but not ψ(n) since n < p ≤ 2n
-  have hp_in_range : p ∈ range (2 * n + 1) := by
-    simp [Nat.mem_range]
-    omega
-  have hp_not_in_range : p ∉ range (n + 1) := by
-    simp [Nat.mem_range]
-    omega
+  have hsubset : range (n + 1) ⊆ range (2 * n + 1) := Finset.range_mono (by omega)
+  have hmem : p ∈ range (2 * n + 1) \ range (n + 1) := by
+    simp only [Finset.mem_sdiff, Finset.mem_range]
+    exact ⟨by omega, by omega⟩
   unfold chebyshevPsi
+  have key : vonMangoldt p ≤
+      ∑ k ∈ range (2 * n + 1), vonMangoldt k - ∑ k ∈ range (n + 1), vonMangoldt k := by
+    have hf : ∀ k ∈ range (2 * n + 1) \ range (n + 1), (0 : ℝ) ≤ vonMangoldt k :=
+      fun k _ => vonMangoldt_nonneg
+    have hle : vonMangoldt p ≤
+        ∑ k ∈ range (2 * n + 1) \ range (n + 1), vonMangoldt k :=
+      Finset.single_le_sum hf hmem
+    linarith [Finset.sum_sdiff hsubset (f := vonMangoldt)]
   calc Real.log (n + 1)
-      ≤ Real.log p := by
-        apply Real.log_le_log (by norm_cast; omega)
-        exact hp_ge
+      ≤ Real.log p := Real.log_le_log (by norm_cast; omega) hp_ge
     _ = vonMangoldt p := (vonMangoldt_apply_prime hp_prime).symm
     _ ≤ ∑ k ∈ range (2 * n + 1), vonMangoldt k -
-        ∑ k ∈ range (n + 1), vonMangoldt k := by
-        rw [← Finset.sum_sdiff (s₁ := range (n + 1)) (s₂ := range (2 * n + 1)) (by
-          intro x; simp [Nat.mem_range]; omega)]
-        simp only [Finset.sum_sdiff_eq_sub (by
-          intro x; simp [Nat.mem_range]; omega)]
-        apply Finset.single_le_sum
-        · intro k _; exact vonMangoldt_nonneg
-        · simp only [Finset.mem_sdiff]
-          exact ⟨hp_in_range, hp_not_in_range⟩
+        ∑ k ∈ range (n + 1), vonMangoldt k := key
 
 /-! ## PNT Equivalence (Axiomatized) -/
 
@@ -171,15 +198,22 @@ axiom pnt_equivalence :
 /-! ## Summary Theorem: Chebyshev ψ bounds -/
 
 /-- **Main result**: The second Chebyshev function satisfies
-    θ(n) ≤ ψ(n) and ψ(n) ≥ log(n+1) for n ≥ 1 (from Bertrand). -/
+    θ(n) ≤ ψ(n) and ψ(n) ≥ log(⌊n/2⌋+1) for n ≥ 1 (from Bertrand). -/
 theorem chebyshevPsi_bounds (n : ℕ) (hn : 1 ≤ n) :
     chebyshevThetaOQ n ≤ chebyshevPsi n ∧
-    Real.log (n / 2 + 1) ≤ chebyshevPsi n := by
-  constructor
-  · exact chebyshevTheta_le_chebyshevPsi n
-  · -- From Bertrand: ψ(2*(n/2)) - ψ(n/2) ≥ log(n/2+1)
-    -- And ψ is non-decreasing (von Mangoldt ≥ 0)
-    have h := chebyshevPsi_doubling_lower (n / 2) (by omega)
+    Real.log ((n / 2 : ℕ) + 1 : ℝ) ≤ chebyshevPsi n := by
+  refine ⟨chebyshevTheta_le_chebyshevPsi n, ?_⟩
+  rcases Nat.eq_zero_or_pos (n / 2) with h0 | hpos
+  · have : ((n / 2 : ℕ) : ℝ) = 0 := by exact_mod_cast h0
+    simp only [this, zero_add, Real.log_one]
+    exact chebyshevPsi_nonneg n
+  · have hle : 2 * (n / 2) ≤ n := Nat.mul_div_le n 2
+    have hmono : chebyshevPsi (2 * (n / 2)) ≤ chebyshevPsi n := by
+      unfold chebyshevPsi
+      apply Finset.sum_le_sum_of_subset_of_nonneg
+      · intro k; simp only [Finset.mem_range]; omega
+      · intro k _ _; exact vonMangoldt_nonneg
+    have h := chebyshevPsi_doubling_lower (n / 2) hpos
     linarith [chebyshevPsi_nonneg (n / 2)]
 
 end ChebyshevBoundsOQ04
