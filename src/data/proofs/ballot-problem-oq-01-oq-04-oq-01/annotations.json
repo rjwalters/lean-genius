@@ -1,0 +1,119 @@
+[
+  {
+    "id": "cf-dyck-good-rotation",
+    "proofId": "ballot-problem-oq-01-oq-04-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 44,
+      "endLine": 74
+    },
+    "title": "IsDyckPath and chungFellerRot: Core Definitions",
+    "content": "`IsDyckPath D n` asserts that D is a balanced ±1 path of semi-length n where all prefix sums are ≥ 0. Formally: `IsBalancedPath D n ∧ ∀ k, (D.take k).sum ≥ 0`.\n\n`chungFellerRot l = cyclicRotation (1::l) (rightmostMinPos (1::l))` — the 'good rotation'. Starting from the augmented path (1::l), rotate by the position of the rightmost minimum. The rightmost minimum position is the canonical choice ensuring uniqueness.\n\nKey invariant: among all n+1 cyclic rotations of (1::l), exactly one is a 'good rotation' (starts with 1, all subsequent prefix sums ≥ 1). The good rotation position is unique and canonical.",
+    "significance": "key",
+    "mathContext": "A Dyck path of semi-length $n$ is a path from $(0,0)$ to $(2n,0)$ using $\\pm 1$ steps that never goes below the $x$-axis. The good rotation of a balanced path $l$ uses the 'cycle lemma': among $2n$ rotations of any lattice path from $(0,0)$ to $(0,0)$, exactly one never dips below the axis.",
+    "relatedConcepts": [
+      "Catalan numbers",
+      "Dyck paths",
+      "cyclic rotation",
+      "rightmostMinPos"
+    ],
+    "prerequisites": [
+      "IsBalancedPath definition",
+      "cyclicRotation",
+      "rightmostMinPos"
+    ]
+  },
+  {
+    "id": "cf-tail-is-dyck",
+    "proofId": "ballot-problem-oq-01-oq-04-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 332,
+      "endLine": 390
+    },
+    "title": "chungFellerRot_tail_is_dyck: The Good Rotation's Tail is a Dyck Path",
+    "content": "`chungFellerRot_tail_is_dyck {l : List ℤ} {n : ℕ} (hn : 0 < n) (hbal : IsBalancedPath l n) : IsDyckPath (chungFellerRot l).tail n`\n\nThis is the central structural result. Proof chain:\n1. `chungFellerRot_head_eq_one`: the good rotation starts with 1.\n2. `chungFellerRot_tail_nonneg_prefixSum`: the tail has all prefix sums ≥ 0.\n3. `chungFellerRot_tail_upsteps_all_above`: all upsteps in the tail are above the axis (position of upstep = position in prefix sum sequence where value increases, which is always ≥ 1 for the tail).\n4. `chungFellerRot_tail_type_eq_n`: upstepsAboveAxis(tail) = n.\n5. Combine: tail is balanced with all prefix sums ≥ 0 → IsDyckPath.",
+    "significance": "critical",
+    "mathContext": "The Chung-Feller bijection maps $l$ to $(\\text{tail}(\\text{rot}(l)), \\text{type}(l))$. For this to work, $\\text{tail}(\\text{rot}(l))$ must be a Dyck path — this theorem establishes that invariant.",
+    "relatedConcepts": [
+      "Dyck paths",
+      "cyclic rotation",
+      "prefix sums",
+      "upstepsAboveAxis"
+    ],
+    "prerequisites": [
+      "chungFellerRot_head_eq_one",
+      "chungFellerRot_tail_nonneg_prefixSum",
+      "chungFellerRot_tail_type_eq_n"
+    ]
+  },
+  {
+    "id": "cf-orbit-same-dyck",
+    "proofId": "ballot-problem-oq-01-oq-04-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 388,
+      "endLine": 456
+    },
+    "title": "orbit_same_dyck: Rotation Orbit Has Same Dyck Image",
+    "content": "`orbit_same_dyck {l₁ l₂ : List ℤ} {n : ℕ} {r : ℕ}` (hbal₁, hbal₂ : balanced) (hr : l₂ is a rotation of l₁ by r) `: chungFellerRot l₁ = chungFellerRot l₂`\n\nIf two balanced paths are in the same rotation orbit (one is a cyclic rotation of the other), they have the same good rotation output. This is because: the augmented path (1::l₂) is a rotation of (1::l₁), the good rotation of both coincides (there's a unique 'good' position in each orbit by the cycle lemma), so the good rotations are identical.\n\nConsequence: the Dyck path `(chungFellerRot l).tail` depends only on the rotation orbit, not on the specific representative l in the orbit.",
+    "significance": "key",
+    "mathContext": "Orbit structure: the $n+1$ elements of the rotation orbit of $1::D$ (for a Dyck path $D$) each correspond to a distinct balanced path type. The map $l \\mapsto \\text{tail}(\\text{rot}(l))$ collapses the orbit to its canonical Dyck representative.",
+    "relatedConcepts": [
+      "rotation orbits",
+      "cycle lemma",
+      "Chung-Feller bijection"
+    ],
+    "prerequisites": [
+      "chungFellerRot definition",
+      "cyclicRotation_compose_wrap",
+      "rightmostMinPos uniqueness"
+    ]
+  },
+  {
+    "id": "cf-bijection-exists",
+    "proofId": "ballot-problem-oq-01-oq-04-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 782,
+      "endLine": 1023
+    },
+    "title": "chung_feller_bijection_exists: The Bijection is Bijective",
+    "content": "`chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) : Function.Bijective (chungFellerMap n hn)`\n\n`chungFellerMap n hn l = ((chungFellerRot l).tail, ⟨upstepsAboveAxis l, ...⟩)`\n\n**Injectivity**: Given chungFellerMap(l₁) = chungFellerMap(l₂) = (D, type), both l₁ and l₂ have the same Dyck image D and same type (number of axis-crossing upsteps). Since the Dyck image uniquely determines the orbit, and the type uniquely determines which element of the orbit, l₁ = l₂.\n\n**Surjectivity**: Given a pair (D, ⟨k, hk⟩), the k-th cyclic rotation of (1::D) gives a balanced path l with chungFellerRot(l) = (1::D), so tail = D, and the rotation type = k.",
+    "significance": "critical",
+    "mathContext": "The Chung-Feller bijection: $\\phi_n : \\{\\text{balanced paths of length }2n\\} \\xrightarrow{\\sim} \\{\\text{Dyck paths of semi-length }n\\} \\times \\{0,1,\\ldots,n\\}$.",
+    "relatedConcepts": [
+      "bijection",
+      "Equiv.ofBijective",
+      "injectivity and surjectivity"
+    ],
+    "prerequisites": [
+      "chungFellerMap definition",
+      "orbit_same_dyck",
+      "chungFellerRot_tail_is_dyck"
+    ]
+  },
+  {
+    "id": "cf-uniform",
+    "proofId": "ballot-problem-oq-01-oq-04-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 1023,
+      "endLine": 1164
+    },
+    "title": "chung_feller_uniform': Uniform Distribution Over Path Types",
+    "content": "`chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n)`: |{balanced paths of length 2n and type j}| = |{balanced paths of length 2n and type k}|\n\nwhere 'type j' means upstepsAboveAxis = j.\n\nProof: Apply `Set.ncard_congr` with the type-swapping map:\n`f(l) = (e.symm((e(l).1, ⟨k, hk⟩)).val`\nwhere `e = Equiv.ofBijective (chungFellerMap n hn') (chung_feller_bijection_exists n hn')`.\n\nThis sends a type-j balanced path l to the unique type-k balanced path sharing the same Dyck image. The map is well-defined (by the bijection), and bijective (Equiv.symm is injective). The key observation: e(l).1 is the Dyck image (orbit-canonical), and replacing the type component with k gives a type-k path.\n\nFor n=0: trivially true (only one path type exists).",
+    "significance": "critical",
+    "mathContext": "**Chung-Feller theorem (1949)**: For all $0 \\leq j, k \\leq n$, $|\\{\\text{balanced paths of length }2n\\text{ and type }j\\}| = C_n$. The $n+1$ types are equidistributed.",
+    "relatedConcepts": [
+      "Catalan numbers",
+      "uniform distribution",
+      "Set.ncard_congr"
+    ],
+    "prerequisites": [
+      "chung_feller_bijection_exists",
+      "Set.ncard_congr",
+      "Equiv.ofBijective"
+    ]
+  }
+]
