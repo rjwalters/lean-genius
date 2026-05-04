@@ -94,7 +94,7 @@
   ],
   "conclusion": {
     "summary": "The open question from `infinitude-primes-4k3` is answered: yes, infinitely many primes ≡ 1 (mod 4) by an elementary construction parallel to the ≡ 3 proof. The complete mod-4 classification of primes follows: every odd prime is ≡ 1 or ≡ 3 (mod 4), both classes are infinite, and 2 is the unique even prime.",
-    "implications": "This completes the elementary approach to Dirichlet's theorem for the mod-4 case. The two proofs (InfinitudePrimes4k3 for ≡ 3 and InfinitudePrimes4k1 for ≡ 1) together provide a fully formalized elementary classification of primes by residue mod 4, with no analytic number theory required.",
+    "implications": "This completes the elementary approach to Dirichlet's theorem for the mod-4 case. The two proofs together (InfinitudePrimes4k3 for $p \\equiv 3$ and InfinitudePrimes4k1 for $p \\equiv 1$) give a fully machine-verified elementary classification of primes by residue mod 4, without any Dirichlet L-functions or analytic number theory.\n\nThe formalization highlights a structural asymmetry: the $p \\equiv 3$ case needs only basic product-of-residues arithmetic, while $p \\equiv 1$ requires Euler's criterion — a genuine depth difference between two superficially similar results. This asymmetry reflects the algebraic structure of $\\mathbb{Z}[i]$: primes $p \\equiv 1 \\pmod 4$ split as $p = (a+bi)(a-bi)$, requiring the multiplicative character theory of $\\mathbb{F}_p^\\times$; primes $p \\equiv 3 \\pmod 4$ remain irreducible in $\\mathbb{Z}[i]$.\n\nThe integration-layer design pattern demonstrated here — a small wrapper file that imports two completed proofs and packages a conjunction as the answer to an open question — is reusable wherever a gallery entry answers a question whose parts are in sibling files. It keeps each proof file focused while enabling multi-file reasoning at the gallery level.",
     "openQuestions": [
       "Can similar elementary arguments prove infinitely many primes ≡ 1 (mod 3)? (No — this requires quadratic reciprocity or L-functions, since there is no simple Euclid-type construction.)",
       "What is the minimum Mathlib infrastructure needed to prove infinitely many primes in any AP {a + nd} with gcd(a,d) = 1 elementarily? Dirichlet's original proof uses L-functions; are there elementary proofs for other small moduli (5, 8, 12)?",
@@ -104,19 +104,23 @@
   "crossReferences": [
     {
       "proofId": "infinitude-primes-4k3",
-      "relationship": "parent — proves infinitely many primes ≡ 3 (mod 4); this file answers its OQ-03 about primes ≡ 1 (mod 4)"
+      "relationship": "parent",
+      "description": "Proves infinitely many primes ≡ 3 (mod 4) via N = 4(n+1)! − 1; this file answers its OQ-03 about the ≡ 1 (mod 4) case using the parallel construction N = (2(n+1)!)² + 1."
     },
     {
       "proofId": "infinitude-primes-4k1",
-      "relationship": "sibling — gallery entry for InfinitudePrimes4k1.lean, the ≡ 1 mod 4 proof imported here"
+      "relationship": "dependency",
+      "description": "Gallery entry for InfinitudePrimes4k1.lean — the ≡ 1 (mod 4) proof that this file imports; the actual construction and Euler's criterion argument live there."
     },
     {
       "proofId": "infinitude-primes",
-      "relationship": "ancestor — base Euclid infinitude of primes; all mod-4 variants follow this structure"
+      "relationship": "ancestor",
+      "description": "Base Euclid infinitude of primes; all mod-4 variants adapt its structure (find a number N > n!, show it has a prime factor not in the finite set)."
     },
     {
       "proofId": "infinitude-primes-oq-03",
-      "relationship": "sibling — elementary proof of infinitely many primes ≡ 2 (mod 3); same Euclid-style strategy, different modulus, no quadratic residue theory needed"
+      "relationship": "sibling",
+      "description": "Elementary proof of infinitely many primes ≡ 2 (mod 3); same Euclid-style strategy, different modulus, no quadratic residue theory needed — shows the ≡ 1 (mod 4) case is genuinely harder."
     }
   ],
   "leanFile": {
