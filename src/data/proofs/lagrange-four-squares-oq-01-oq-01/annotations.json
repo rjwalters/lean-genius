@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ann-lfs-oq01-oq01-split-combine",
+    "proofId": "lagrange-four-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 64
+    },
+    "type": "theorem",
+    "title": "split_combine_correct: The Algorithm's Core Algebraic Identity",
+    "content": "`split_combine_correct` proves that if x² ≤ n and a²+b²+c² = n−x², then x²+a²+b²+c² = n. This is the heart of the Rabin-Shallit split-combine step: find a three-square representation of the remainder n−x², then attach x to get a four-square representation of n. The proof is just `omega` — it's pure natural-number arithmetic. The companion `combine_is_four_sq` packages the existential conclusion, stating that the algorithm always produces a witness.",
+    "mathContext": "The algebraic identity is $x^2 + a^2 + b^2 + c^2 = x^2 + (n - x^2) = n$ when $x^2 \\leq n$ and $a^2 + b^2 + c^2 = n - x^2$. In Lean, `n - x^2` is natural-number subtraction, so the hypothesis `hx : x^2 ≤ n` is needed to ensure no underflow. The `omega` tactic handles the arithmetic with natural-number subtraction correctly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rabin-Shallit algorithm",
+      "IsValidSplitter",
+      "three-square oracle",
+      "natural number subtraction"
+    ],
+    "prerequisites": [
+      "Natural number subtraction in Lean: a - b for Nat can be 0 if b > a",
+      "omega: decision procedure for linear arithmetic over ℤ and ℕ"
+    ]
+  },
+  {
+    "id": "ann-lfs-oq01-oq01-valid-splitter",
+    "proofId": "lagrange-four-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "valid_splitter_exists: Connecting Lagrange to Rabin-Shallit",
+    "content": "`valid_splitter_exists` proves that for every n, there exists x with IsValidSplitter n x — i.e., x²≤n and n−x² is a sum of three squares. The proof is a 3-line deduction from Lagrange: write n = a²+b²+c²+d² (from Nat.sum_four_squares), then x=d is a valid splitter (d²≤n and a²+b²+c² = n−d²). The companion `splitter_le_sqrt` adds x≤√n using Nat.le_sqrt, and `rabin_shallit_terminates` packages the full termination guarantee.",
+    "mathContext": "Every $n$ is a sum of four squares: $n = a^2 + b^2 + c^2 + d^2$. Taking $x = d$ gives $x^2 = d^2 \\leq n$ and $n - x^2 = a^2 + b^2 + c^2$, a sum of three squares. So $d$ is a valid splitter. The connection to $\\sqrt{n}$: since $d^2 \\leq n$, we have $d \\leq \\lfloor\\sqrt{n}\\rfloor$ by `Nat.le_sqrt`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.sum_four_squares",
+      "Lagrange's four-square theorem",
+      "IsValidSplitter",
+      "Nat.sqrt",
+      "Nat.le_sqrt"
+    ],
+    "prerequisites": [
+      "Nat.sum_four_squares: the main Lagrange theorem in Mathlib",
+      "Nat.le_sqrt: a ≤ Nat.sqrt n ↔ a^2 ≤ n"
+    ]
+  },
+  {
+    "id": "ann-lfs-oq01-oq01-excluded-structure",
+    "proofId": "lagrange-four-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "obstructed_iff_base_or_step: Self-Similar Structure of Legendre's Excluded Forms",
+    "content": "`obstructed_iff_base_or_step` characterizes IsObstructed n (i.e., n = 4^a(8b+7)) by a structural recurrence: n is excluded iff n≡7 mod 8 OR (4|n and n/4 is excluded). This equivalence is the key to both the density analysis and the algorithm: to check if n is excluded, reduce to n/4; the recursion terminates since n/4 < n. The companion theorems `not_obstructed_{1,2,3,5,6}_mod_8` close off the five non-excluded residues mod 8 using the De Morgan form `not_obstructed_iff`. The theorem `only_excluded_lt_8` shows 7 is the unique excluded number below 8.",
+    "mathContext": "If $n = 4^a(8b+7)$: for $a=0$, $n \\equiv 7 \\pmod 8$; for $a \\geq 1$, $n = 4 \\cdot (4^{a-1}(8b+7))$, so $4 \\mid n$ and $n/4 = 4^{a-1}(8b+7)$ is excluded. Conversely, $n \\equiv 7 \\pmod 8$ gives $n = 4^0 \\cdot (8 \\cdot \\lfloor n/8 \\rfloor + 7)$; and if $4 \\mid n$ and $n/4$ is excluded then $n/4 = 4^a(8b+7)$ so $n = 4^{a+1}(8b+7)$. The proof uses `rcases a with _ | a` to handle the base case $a=0$ vs inductive case $a \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre's three-square theorem",
+      "IsObstructed",
+      "modular arithmetic",
+      "structural induction",
+      "density analysis"
+    ],
+    "prerequisites": [
+      "Legendre's three-square theorem: n is not a sum of three squares iff n = 4^a(8b+7)",
+      "omega for modular arithmetic in Lean",
+      "rcases for case analysis on Nat"
+    ]
+  },
+  {
+    "id": "ann-lfs-oq01-oq01-density",
+    "proofId": "lagrange-four-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 155,
+      "endLine": 170
+    },
+    "type": "theorem",
+    "title": "density_limit_one_sixth: Excluded Forms Have Density 1/6 via Geometric Series",
+    "content": "`density_limit_one_sixth` proves ∑ k:ℕ, (1/8)·(1/4)^k = 1/6. This is the analytic backbone of the Rabin-Shallit complexity analysis: among all integers, the fraction that are excluded (of the form 4^a(8b+7)) has density exactly 1/6. The proof uses `tsum_geometric_of_lt_one` from Mathlib and `norm_num`. The companion `density_geometric_sum` shows the partial sum to k=4 already exceeds 1/6−1/256, confirming fast convergence.",
+    "mathContext": "At the base level, residue 7 mod 8 has density $1/8$. At level 1, numbers $\\equiv 4^1 \\cdot 7 \\pmod{4^2 \\cdot 8}$ add another $1/8 \\cdot 1/4$. The total density is $\\sum_{k=0}^\\infty \\frac{1}{8} \\cdot \\frac{1}{4^k} = \\frac{1/8}{1-1/4} = \\frac{1}{8} \\cdot \\frac{4}{3} = \\frac{1}{6}$. This means $5/6$ of all integers are NOT excluded, so a random choice of $x$ with $n-x^2$ non-excluded succeeds with probability $\\approx 5/6$ — independent of $n$ — giving $O(1)$ expected splitter trials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum_geometric_of_lt_one",
+      "geometric series",
+      "density analysis",
+      "Rabin-Shallit complexity"
+    ],
+    "prerequisites": [
+      "tsum_geometric_of_lt_one (r : ℝ) (h0 : 0 ≤ r) (h1 : r < 1) : ∑' n, r^n = (1-r)⁻¹",
+      "norm_num for rational arithmetic in Lean"
+    ]
+  },
+  {
+    "id": "ann-lfs-oq01-oq01-subroutine-correctness",
+    "proofId": "lagrange-four-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 176,
+      "endLine": 197
+    },
+    "type": "theorem",
+    "title": "three_sq_subroutine_correctness: Definitionally Trivial — and a Refuted Axiom",
+    "content": "`three_sq_subroutine_correctness` states that if IsSumOfThreeSquares m holds, we can extract witnesses a,b,c with a²+b²+c²=m. The proof is just `hrep` — unpacking the definition, since `IsSumOfThreeSquares m` *is* `∃ a b c, a²+b²+c²=m`. This theorem replaces what an earlier draft incorrectly stated as an axiom. A second would-be axiom, `density_consecutive_bound` (\"at most 1 of any 6 consecutive integers is excluded\"), was found to be FALSE: both 23 (≡ 7 mod 8, hence 4⁰·(8·2+7)) and 28 (= 4·7, hence 4¹·(8·0+7)) are obstructed and lie in [23, 29) — two excluded values in a window of 6. The correct density statement is `density_limit_one_sixth`, proved via `tsum_geometric_of_lt_one`. The main theorem `rabin_shallit_pipeline` uses `three_sq_subroutine_correctness` and `split_combine_correct` with 0 axioms.",
+    "mathContext": "IsValidSplitter n x guarantees IsSumOfThreeSquares (n − x²), so the algorithm can always extract (a,b,c). The `obtain ⟨a, b, c, h3⟩ := m_rep` in `rabin_shallit_pipeline` directly destructs the existential. As for the refuted axiom: among $\\{23, 24, 25, 26, 27, 28\\}$, the numbers $23 = 4^0(8 \\cdot 2 + 7)$ and $28 = 4^1(8 \\cdot 0 + 7)$ are both of the excluded form. The true statement is about *density* (asymptotic proportion $1/6$), not about every window of 6.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsSumOfThreeSquares",
+      "IsObstructed",
+      "density_limit_one_sixth",
+      "rabin_shallit_pipeline",
+      "counter-example to density_consecutive_bound"
+    ],
+    "prerequisites": [
+      "IsSumOfThreeSquares n := ∃ a b c, a²+b²+c²=n (just an existential)",
+      "23 ≡ 7 mod 8 and 28 = 4×7 are both of the form 4^a(8b+7)"
+    ]
+  }
+]
