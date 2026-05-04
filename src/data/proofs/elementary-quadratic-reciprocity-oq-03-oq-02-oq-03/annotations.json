@@ -1,0 +1,80 @@
+[
+  {
+    "id": "ann-eqr-oq3-oq2-oq3-header",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Module Header: Generalized Kronecker QR — Problem and Strategy",
+    "content": "The file opens by stating the open question from OQ03OQ02: does the Kronecker symbol satisfy generalized QR for fundamental discriminants? The answer is YES. Lines 7-52 explain the mathematical content: for coprime fundamental discriminants D₁, D₂, the symmetry (D₁/|D₂|)_K = (D₂/|D₁|)_K holds. Case 1 (D₁ ≡ 1 mod 4) follows from Jacobi QR. Case 2 (both ≡ 3 mod 4) gives a sign flip. The general case is axiomatized.",
+    "mathContext": "A fundamental discriminant D is the discriminant of a quadratic number field ℚ(√m). For D ≡ 1 (mod 4): D must be squarefree (e.g., 5, -3, -7, 13). For D = 4m: m must be squarefree with m ≡ 2,3 (mod 4) (e.g., D = -4, 8, -8). The Kronecker symbol (D/·) for such D is the real primitive Dirichlet character of conductor |D|.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental discriminant",
+      "Kronecker symbol",
+      "Jacobi symbol",
+      "quadratic reciprocity",
+      "Dirichlet character",
+      "class field theory"
+    ]
+  },
+  {
+    "id": "ann-eqr-oq3-oq2-oq3-fund-disc",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "IsFundamentalDiscriminant: Two-Case Definition",
+    "content": "Line 64-68: IsFundamentalDiscriminant D is defined as a disjunction. Case 1: D ≡ 1 (mod 4) and D is squarefree — these are discriminants of real or imaginary quadratic fields with odd conductor. Case 2: D ≡ 0 (mod 4), D = 4m with m ≡ 2 or 3 (mod 4) and m squarefree — these have even conductor (2 | |D|). Lines 70-88 verify D=1 and D=-4 are fundamental discriminants.",
+    "mathContext": "The discriminant of ℚ(√m) (m squarefree) is: D = m if m ≡ 1 (mod 4), D = 4m otherwise. So D ≡ 1 (mod 4) case gives real quadratic fields when D > 0 (like ℚ(√5)) and imaginary when D < 0 (like ℚ(√(-3))). The D = 4m case gives ℚ(i) for D = -4, ℚ(√2) for D = 8, etc. The full conductor is |D| in both cases.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squarefree integer",
+      "quadratic number field",
+      "field discriminant",
+      "conductor"
+    ]
+  },
+  {
+    "id": "ann-eqr-oq3-oq2-oq3-qr-proof",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 89,
+      "endLine": 145
+    },
+    "type": "proof-step",
+    "title": "Proved Kronecker QR: Two Cases from Jacobi QR",
+    "content": "kronecker_symm_pos_one_mod_four (lines 100-113): For D₁ ≡ 1 (mod 4) and D₂ odd positive, proves kronecker ↑D₁ ↑D₂ = kronecker ↑D₂ ↑D₁. Proof: rw kronecker_eq_jacobi twice to reduce both sides to Jacobi symbols, then exact jacobiSym.quadratic_reciprocity_one_mod_four. kronecker_sign_three_mod_four (lines 128-145): For both ≡ 3 (mod 4), proves the sign flip using jacobiSym.quadratic_reciprocity_three_mod_four.",
+    "mathContext": "The Jacobi QR formula: J(m,n)·J(n,m) = (-1)^{(m-1)/2·(n-1)/2}. When m ≡ 1 (mod 4): (m-1)/2 ≡ 0 (mod 2), so the exponent is even and the factor is 1, giving J(m,n) = J(n,m). When both m ≡ n ≡ 3 (mod 4): both (m-1)/2 and (n-1)/2 are odd, so the factor is -1, giving J(m,n) = -J(n,m). This sign flip corresponds to both fields being imaginary quadratic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jacobi QR",
+      "quadratic_reciprocity_one_mod_four",
+      "quadratic_reciprocity_three_mod_four",
+      "kronecker_eq_jacobi"
+    ]
+  },
+  {
+    "id": "ann-eqr-oq3-oq2-oq3-axiom",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 146,
+      "endLine": 165
+    },
+    "type": "axiom",
+    "title": "kronecker_qr_fundamental: The Remaining Axiom",
+    "content": "The axiom kronecker_qr_fundamental (lines 152-158) states the general Kronecker QR for coprime fundamental discriminants: kronecker D₁ D₂.natAbs = kronecker D₂ D₁.natAbs. The proof for negative and even discriminants requires either (a) genus theory for binary quadratic forms or (b) class field theory via Artin reciprocity. Both approaches are substantial infrastructure not yet in Mathlib.",
+    "mathContext": "For negative fundamental discriminants like D = -4: kronecker (-4) n for odd n equals J(-4,n) = J(-1,n)·J(4,n) which involves the Legendre symbol at -1 and the second supplement. The symmetry with kronecker n 4 (or kronecker n (-4)) requires tracking signs carefully. For even discriminants D = 8: kronecker 8 n involves the 2-adic character, which Mathlib's JacobiSymbol doesn't fully handle for even arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin reciprocity",
+      "genus theory",
+      "quadratic forms",
+      "class field theory"
+    ]
+  }
+]
