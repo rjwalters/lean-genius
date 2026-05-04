@@ -25,15 +25,13 @@ Session 28: Structured the single tower sorry into 5-step proof (Steps A-E).
 Session 29: Restored sessions 26-28 work (accidentally reverted in PR #12782).
            Also improved not_constructible_of_bad_degree to use Dvd (not Eq).
 
-## Remaining Sorries
-
-1. `wantzel_galois_iff` (out-of-scope): Requires full Galois correspondence + 2-group structure.
-   Estimated: 500+ lines of new Galois theory infrastructure. Out of scope.
-   Proof strategy documented in detail (Session 36): see `isConstructible_map` for key infrastructure.
+## All Sorries Resolved
 
 Previously resolved:
 - `hβ_dvd` (Step C): proved in Sessions 31-32 via tower law + minpoly degree bound (#15067, #15103)
 - `hjoin_dvd` (Step D): proved in Session 34 via stronger IH `isConstructible_sup_degree` (#15128)
+- `wantzel_galois_iff`: proved in Session 38 via Galois correspondence (#15349)
+- `h_top_Ka`: proved via Ka_im = restrict + restrict_algEquiv + lift_injective (#15460 fix)
 
 ## New Lemmas (Session 36)
 
@@ -149,11 +147,7 @@ private lemma isConstructible_algebraic (α : ℂ) (h : IsConstructible α) : Is
     applying it with K = ℚ⟮β⟯ gives `finrank ↥ℚ⟮β⟯ ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) ∣ 2^k'`, which
     via the tower law gives `finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+1) * 2^k'`.
 
-    **Remaining sorry**: `h_top_Ka` (that β generates K_aβ = K⊔ℚ⟮a⟯⊔ℚ⟮β⟯ over K⊔ℚ⟮a⟯).
-    The adjoin-of-β over K_a equals K_aβ because any K_a-subfield of K_aβ containing β also
-    contains ℚ⟮β⟯ (as β generates ℚ⟮β⟯ over ℚ ≤ K_a). Requires Mathlib API for
-    `IntermediateField.sup` decomposition — not yet available via `adjoin_eq_top_of_adjoin_eq_top`
-    since the ambient field K_aβ ≠ ℚ⟮β⟯. -/
+    Proved via restrict/restrict_algEquiv/lift_injective reducing to adjoin ℚ (↑Ka ∪ {β}) = Ka ⊔ ℚ⟮β⟯. -/
 -- Helper: (adjoin Ka {β}).restrictScalars ℚ = Ka ⊔ ℚ⟮β⟯, so the carriers are equal
 -- This is used to identify the Ka-finrank of Ka ⊔ ℚ⟮β⟯ with adjoin.finrank
 private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β : ℂ)
@@ -185,21 +179,57 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
   have h_deg_le : (minpoly ↥Ka β').natDegree ≤ 2 :=
     (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne).trans (by
       simp [Polynomial.natDegree_sub_eq_left_of_natDegree_lt])
-  -- β' generates Ka ⊔ ℚ⟮β⟯ over Ka
-  -- Key: (adjoin Ka {β}).restrictScalars ℚ = Ka ⊔ ℚ⟮β⟯ (restrictScalars_adjoin_eq_sup)
-  -- and coe_restrictScalars is rfl, so adjoin Ka {β} and Ka ⊔ ℚ⟮β⟯ have the same carrier
-  -- Thus adjoin Ka {β'} = ⊤ in Ka ⊔ ℚ⟮β⟯ follows from the set equality
+  -- β' generates Ka ⊔ ℚ⟮β⟯ over Ka via: reduce to adjoin ℚ (↑Ka ∪ {β}) = Ka ⊔ ℚ⟮β⟯ in ℂ
   have h_top_Ka : IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯)) = ⊤ := by
-    apply IntermediateField.restrictScalars_injective ℚ
-    rw [IntermediateField.restrictScalars_top,
-        IntermediateField.restrictScalars_adjoin_eq_sup]
-    -- LHS: (adjoin Ka {β'}).restrictScalars ℚ = Ka_in_Kaβ ⊔ adjoin ℚ {β'}
-    -- Need: Ka_in_Kaβ ⊔ adjoin ℚ {β'} = ⊤ in IntermediateField ℚ (Ka ⊔ ℚ⟮β⟯)
-    rw [IntermediateField.eq_top_iff]
-    intro ⟨x, hx⟩ _
-    -- x ∈ Ka ⊔ ℚ⟮β⟯ in ℂ
-    -- want: ⟨x, hx⟩ ∈ Ka_in_Kaβ ⊔ adjoin ℚ {β'} inside ↥(Ka ⊔ ℚ⟮β⟯)
-    sorry
+    -- Ka_im = image of Ka in ↥(Ka⊔ℚ⟮β⟯), as IntermediateField ℚ ↥(Ka⊔ℚ⟮β⟯)
+    let Ka_im : IntermediateField ℚ ↥(Ka ⊔ ℚ⟮β⟯) :=
+      IntermediateField.restrict (le_sup_left (b := ℚ⟮β⟯))
+    -- AlgEquiv ↥Ka ≃ₐ[ℚ] ↥Ka_im
+    let i : ↥Ka ≃ₐ[ℚ] ↥Ka_im :=
+      IntermediateField.restrict_algEquiv (le_sup_left (b := ℚ⟮β⟯))
+    -- Algebra Ka ↥(Ka⊔ℚ⟮β⟯) via inclusion
+    haveI hAlg_Ka_amb : Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) :=
+      (IntermediateField.inclusion (le_sup_left (b := ℚ⟮β⟯))).toAlgebra
+    -- Algebra Ka_im ↥(Ka⊔ℚ⟮β⟯) via val
+    haveI hAlg_Ka_im : Algebra ↥Ka_im ↥(Ka ⊔ ℚ⟮β⟯) :=
+      (IntermediateField.val Ka_im).toAlgebra
+    -- IsScalarTower ℚ Ka_im ↥(Ka⊔ℚ⟮β⟯)
+    haveI hST_Ka_im : IsScalarTower ℚ ↥Ka_im ↥(Ka ⊔ ℚ⟮β⟯) :=
+      IsScalarTower.of_algebraMap_eq (fun r =>
+        Subtype.ext (by simp [Ka_im, hAlg_Ka_im, RingHom.algebraMap_toAlgebra]))
+    -- algebraMap Ka ↥(Ka⊔ℚ⟮β⟯) = (algebraMap Ka_im ↥(Ka⊔ℚ⟮β⟯)) ∘ i
+    have hi : algebraMap ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) = (algebraMap ↥Ka_im ↥(Ka ⊔ ℚ⟮β⟯)) ∘ i := by
+      funext x
+      simp [i, Ka_im, IntermediateField.restrict_algEquiv, AlgEquiv.ofInjectiveField,
+            hAlg_Ka_amb, hAlg_Ka_im, RingHom.algebraMap_toAlgebra, IntermediateField.val]
+    -- Reduce to IntermediateField ℚ ↥(Ka⊔ℚ⟮β⟯) by restrictScalars_injective
+    apply (IntermediateField.restrictScalars_injective ℚ)
+    rw [IntermediateField.restrictScalars_top]
+    -- Change base via AlgEquiv i and restrictScalars
+    rw [IntermediateField.restrictScalars_adjoin_of_algEquiv i hi,
+        IntermediateField.restrictScalars_adjoin Ka_im]
+    -- Reduce to ℂ-level by lift_injective
+    apply (IntermediateField.lift_injective (Ka ⊔ ℚ⟮β⟯))
+    rw [IntermediateField.lift_top, IntermediateField.lift_adjoin]
+    -- Compute image under Subtype.val
+    have hval_Ka_im : Subtype.val '' (Ka_im : Set ↥(Ka ⊔ ℚ⟮β⟯)) = (Ka : Set ℂ) := by
+      ext x; simp [Ka_im, IntermediateField.restrict, IntermediateField.mem_restrict]
+    have hval_β' : Subtype.val '' ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯)) = ({β} : Set ℂ) := by
+      simp [β']
+    rw [Set.image_union, hval_Ka_im, hval_β']
+    -- adjoin ℚ (↑Ka ∪ {β}) = Ka ⊔ ℚ⟮β⟯
+    apply le_antisymm
+    · apply IntermediateField.adjoin_le_iff.mpr
+      intro x hx
+      rcases Set.mem_union.mp hx with hxa | hxβ
+      · exact le_sup_left hxa
+      · exact le_sup_right
+          (Set.mem_singleton_iff.mp hxβ ▸ IntermediateField.mem_adjoin_simple_self ℚ β)
+    · apply sup_le
+      · rw [← IntermediateField.adjoin_self ℚ Ka]
+        exact IntermediateField.adjoin.mono ℚ _ _ Set.subset_union_left
+      · change IntermediateField.adjoin ℚ {β} ≤ _
+        exact IntermediateField.adjoin.mono ℚ _ _ Set.subset_union_right
   -- finrank Ka (Ka ⊔ ℚ⟮β⟯) = natDegree (minpoly Ka β')
   have h_finrank : Module.finrank ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) = (minpoly ↥Ka β').natDegree := by
     have := IntermediateField.adjoin.finrank hβ'_int
