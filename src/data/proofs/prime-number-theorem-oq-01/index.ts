@@ -1,5 +1,6 @@
-import type { Proof, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/PrimeNumberTheoremOQ01.lean?raw'
 
 const meta = metaJson as {
@@ -27,8 +28,9 @@ export const primeNumberTheoremOQ01Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
+export const primeNumberTheoremOQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+
 export const primeNumberTheoremOQ01Data: ProofData = {
   proof: primeNumberTheoremOQ01Proof,
-  annotations: [],
-  tacticStates: [],
+  annotations: primeNumberTheoremOQ01Annotations,
 }
