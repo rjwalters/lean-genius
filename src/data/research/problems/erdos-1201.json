@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 87 structural theorems (1 sorry → Aristotle, 1 axiom). Formal reduction: ErdosProblem1201 ← smooth-window density decays to 0 as k→∞ (erdos_1201_smooth_decay_implies_conjecture). Frontier: ε∈(0,1/2) via erdos_1201_equiv_small_eps. Truly blocked on density lower bounds (Dickman ρ).",
+    "progressSummary": "PROGRESS: 94 theorems/defs, 1 sorry (backward direction of strong iff smooth-decay). Added lowerDensity + exact complement duality + ErdosProblem1201Strong + erdos_1201_strong_implies_weak. Strong formulation reduces to: smooth-window upper density → 0 as k→∞.",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -112,7 +112,14 @@
       "erdos_1201_good_prime_k0 (Erdos1201Problem.lean:1159): primes are good for k=0 — rpow_lt_rpow_of_exponent_lt gives n^(1-ε)<n",
       "upperDensity_compl_ge (Erdos1201Problem.lean:1172): 1-upperDensity(S) ≤ upperDensity(Sᶜ) — 1 sorry for limsup sub-additivity",
       "erdos_1201_from_bad_density_bound (Erdos1201Problem.lean:1205): bad density ≤ η implies good density ≥ 1-η — uses upperDensity_mono + upperDensity_compl_ge",
-      "erdos_1201_smooth_decay_implies_conjecture (Erdos1201Problem.lean:1231): ErdosProblem1201 follows from smooth-window density decay — one-line reduction"
+      "erdos_1201_smooth_decay_implies_conjecture (Erdos1201Problem.lean:1231): ErdosProblem1201 follows from smooth-window density decay — one-line reduction",
+      "lowerDensity : Set ℕ → ℝ (Filter.liminf of density) at Erdos1201Problem.lean:1276",
+      "lowerDensity_compl_eq : lowerDensity Sᶜ = 1 - upperDensity S at line 1284",
+      "upperDensity_compl_eq : upperDensity Sᶜ = 1 - lowerDensity S at line 1305",
+      "lowerDensity_le_upperDensity : lowerDensity S ≤ upperDensity S at line 1320",
+      "ErdosProblem1201Strong : lowerDensity ≥ 1-η formulation at line 1340",
+      "erdos_1201_strong_implies_weak : Strong → Weak at line 1351",
+      "erdos_1201_strong_iff_smooth_decay (1 sorry): Strong ↔ smooth-window upper density → 0 at line 1360"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
@@ -160,17 +167,19 @@
       "erdos_1201_conditional_proof: Erdős #1201 is a formal consequence of prime gap density hypothesis",
       "Density complement: 1 - upperDensity(S) ≤ upperDensity(Sᶜ) follows from density_S + density_Sᶜ = 1 (exact for each N) + limsup sub-additivity",
       "n<2 edge case avoided by proving bad⊆complement(good) not complement(bad)⊆good — gpfConsecutive 0 k = 0 ≤ 0^(1-ε) so n=0 is not good",
-      "erdos_1201_smooth_decay_implies_conjecture: the formal reduction makes the Dickman function gap mathematically precise and minimal"
+      "erdos_1201_smooth_decay_implies_conjecture: the formal reduction makes the Dickman function gap mathematically precise and minimal",
+      "lowerDensity = Filter.liminf of |S∩[1,N]|/N; exact complement duality lD(Sᶜ) = 1 - uD(S) via Filter.liminf_const_sub with IsCoboundedUnder witness b=0",
+      "ErdosProblem1201Strong (lowerDensity ≥ 1-η) strictly strengthens the weak conjecture; erdos_1201_strong_implies_weak proved via lowerDensity_le_upperDensity",
+      "erdos_1201_strong_iff_smooth_decay: forward direction complete via erdos_1201_not_good_smooth_window + upperDensity_mono; backward sorry needs limsup_add_le + limsup(1/N)=0"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
       "Smooth number theory (Dickman's function ρ(u)) not formalized in Mathlib — needed for quantitative density estimates"
     ],
     "nextSteps": [
-      "Aristotle: prove limsup sub-additivity sorry in upperDensity_compl_ge",
-      "Full Sylvester-Schur P(n,k) > k for all n > k: needs binomial/Chebyshev — HARD (>300 lines)",
-      "Density lower bounds: Dickman ρ function — truly BLOCKED (>1000 lines infra)",
-      "erdos_1201_smooth_decay_implies_conjecture documents the precise reduction needed: prove smooth-window density → 0"
+      "Close backward sorry in erdos_1201_strong_iff_smooth_decay: use Filter.Tendsto.limsup_eq for 1/N→0, then limsup_add_le for subadditivity",
+      "Submit backward sorry to Aristotle as HARD (needs limsup arithmetic chain)",
+      "Update meta.json lineCount→1440, theoremCount→94, sorries→1 after Docker build confirms compilation"
     ],
     "markdown": "# Erdős #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erdős wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
