@@ -16,6 +16,7 @@
       "finite-sets"
     ],
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+    "parentProofId": "ballot-problem-oq-01-oq-02-oq-01",
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-05-03",
@@ -59,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "module-intro",
+      "title": "Module Introduction: Open Question and Proof Strategy",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring poses OQ-01-OQ-02-OQ-01-OQ-02 (generalize uniformOn_fiber_transfer to ALL events) and answers YES. Describes the four-step proof strategy: S-decomposition via surjectivity, P-fiber decomposition, uniform counting via ncard_biUnion_eq_of_uniform, ENNReal ratio cancellation. Contrasts with OQ-01: that proved one event for one function; this proves ALL events for ANY function with uniform fibers.",
+      "mathContext": "The key abstraction step: generalize from a specific ballot event $P_0$ to $\\forall P \\subseteq T: \\text{uniformOn}(S)(f^{-1}(P)) = \\text{uniformOn}(T)(P)$. The proof works because $k$ cancels: $\\frac{k|P|}{k|T|} = \\frac{|P|}{|T|}$."
+    },
+    {
       "id": "fiber-geometry",
       "title": "Fiber Geometry Lemmas",
       "startLine": 30,
@@ -97,7 +106,8 @@
     "openQuestions": [
       "Can this be lifted to MeasureTheory.Measure.map: does a Measurable equal-fiber surjection push `Measure.count` restricted to A to `Measure.count` restricted to T, formalized as `(Measure.count.restrict A).map f = Measure.count.restrict T`?",
       "For non-uniform fiber sizes, is there a characterization of exactly which events P ⊆ T have their uniformOn probability preserved? (Intuition: P must be a union of 'equi-weighted' cosets of the fiber-size partition.)",
-      "Does the result extend to infinite sets under a suitable density notion? For sequences with natural density, an equal-density fiber condition might give an analogous Cesàro-mean probability preservation."
+      "Does the result extend to infinite sets under a suitable density notion? For sequences with natural density, an equal-density fiber condition might give an analogous Cesàro-mean probability preservation.",
+      "Can this theorem be stated as a Mathlib-ready lemma for contribution? The theorem's hypotheses (finite sets, uniform fiber sizes, surjectivity) are clean enough to fit into Mathlib's ProbabilityTheory.uniformOn API — is there prior art to cite or are these genuinely novel lemmas?"
     ]
   },
   "leanFile": {
