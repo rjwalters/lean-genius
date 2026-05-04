@@ -16,7 +16,7 @@
       "approximation",
       "open"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 311,
     "erdosUrl": "https://erdosproblems.com/311",
@@ -50,9 +50,9 @@
       "tang_upper_bound axiom (subexponential upper bound)",
       "erdos_311_conjecture axiom (ε-N₀ form)"
     ],
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 103,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "3 axioms: delta_lower_bound_pnt (PNT-based lower bound e^{-(1+ε)N}), tang_upper_bound (Tang's subexponential upper bound), erdos_311_conjecture (the main open conjecture: log δ(N)/N → -c for c ∈ (0,1)). No sorries.",
     "theoremCount": 6
   },
   "sections": [
