@@ -221,3 +221,37 @@ theorem deficiency_pos_of_smooth {n k : ℕ} {i : ℕ} (hi : i < k)
   unfold deficiency
   apply Finset.card_pos.mpr
   exact ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hi, hsmooth⟩⟩
+
+/-
+## Section VIII: Remaining Known Deficiency-2 Examples
+
+Completing the catalogue from ELS (1988, 1993): the four deficiency-2 cases
+not yet verified in Sections V–VI.
+-/
+
+/-- C(95,10): deficiency 1. Consecutive companion to C(94,10). -/
+theorem deficiency_95_10 : deficiency 95 10 = 1 := by native_decide
+/-- C(5179,27): deficiency 2. -/
+theorem deficiency_5179_27 : deficiency 5179 27 = 2 := by native_decide
+/-- C(8413,28): deficiency 2. -/
+theorem deficiency_8413_28 : deficiency 8413 28 = 2 := by native_decide
+/-- C(8414,28): deficiency 2. Consecutive pair with C(8413,28). -/
+theorem deficiency_8414_28 : deficiency 8414 28 = 2 := by native_decide
+/-- C(96622,42): deficiency 2. -/
+theorem deficiency_96622_42 : deficiency 96622 42 = 2 := by native_decide
+
+/-
+## Section IX: ELS Corollary
+-/
+
+/-- For fixed k, the ELS upper bound implies only finitely many n ≥ 2k have
+positive deficiency in C(n,k) — the set is bounded above by C·2^k·√k. -/
+theorem finitely_many_for_fixed_k (k : ℕ) :
+    Set.Finite { n : ℕ | 2 * k ≤ n ∧ NoSmallPrimeFactors n k ∧ deficiency n k ≥ 1 } := by
+  obtain ⟨C, hC, hels⟩ := els_upper_bound
+  apply Set.Finite.subset (Set.finite_Iic ⌈C * 2 ^ k * Real.sqrt k⌉₊)
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn
+  obtain ⟨hn2k, hnsp, hndef⟩ := hn
+  simp only [Set.mem_Iic]
+  exact Nat.cast_le.mp ((hels n k hn2k hnsp hndef).trans (Nat.le_ceil _))
