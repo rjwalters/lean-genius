@@ -5,12 +5,12 @@
   "description": "Advances the sigma-finite Lp Riesz representation from 3 sorries to 1 by proving Step C (density extension, Session 1) and Step B (Lp truncation convergence via Vitali, Session 2). Only localization_existence (Step A, ~150 lines of Lp restriction map infrastructure) remains as a sorry.",
   "leanFile": {
     "namespace": "RieszSigmaFiniteComplete",
-    "lineCount": 452,
+    "lineCount": 952,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 2,
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "meta": {
     "status": "formalized",
