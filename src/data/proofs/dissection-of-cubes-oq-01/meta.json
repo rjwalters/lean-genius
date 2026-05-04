@@ -53,8 +53,9 @@
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 2,
-    "lineCount": 274,
-    "assumptions": "2 axioms inherited from DissectionOfCubes.lean: smaller_cube_above_axiom (the geometric descent axiom: smallest cube on floor has smaller cube above), all_different_implies_long_chains_axiom (all-different sizes implies infinite descending chains). 0 own axioms. 0 sorries."
+    "lineCount": 640,
+    "assumptions": "2 axioms inherited from DissectionOfCubes.lean: smaller_cube_above_axiom (the geometric descent axiom: smallest cube on floor has smaller cube above), all_different_implies_long_chains_axiom (all-different sizes implies infinite descending chains). 0 own axioms. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Littlewood's 1953 proof (Wiedijk #82) established that NO cube dissection can have all different sizes: in any finite partition of a cube into smaller cubes, at least two must share the same side length. The infinite descent argument — the smallest cube on any floor forces an ever-smaller cube above it — implies repeated sizes are unavoidable.\n\nThis raises a natural quantitative follow-up: exactly how many cubes must participate in size repetitions? The binary existence statement 'at least one collision pair' is equivalent to saying 'at least 2 cubes collide.' But in all known cube dissections, many more cubes share sizes. The question of whether exactly 2 is achievable remains open.\n\nBy contrast, the 2D analog (squaring the square) allows ALL different sizes. The smallest simple perfect squared square, found by Brooks–Smith–Stone–Tutte (1940), uses 21 squares with all different sizes. This dimensional gap makes the 3D minimum collision number especially intriguing.",
@@ -139,7 +140,7 @@
       "DissectionOfCubes"
     ],
     "namespace": "DissectionOfCubesOQ01",
-    "lineCount": 274,
+    "lineCount": 640,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 4,

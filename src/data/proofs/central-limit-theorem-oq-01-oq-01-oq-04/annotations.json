@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-clt-oq04-intro",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "Operator-Stable Distributions: Beyond Scalar Normalization",
+    "content": "The classical CLT normalizes sums by 1/√n (a scalar). For heavy-tailed vectors in ℝ^d, this scalar normalization fails — different components may have different tail indices. The operator-stable framework replaces 1/√n with a matrix A_n = n^{-E}, where E is the 'd×d exponent matrix'. The Gaussian is the canonical example: E = (1/2)·I (identity scaling). This file formalizes the full multivariate theory: definitions (Part I), quadratic form lemmas (Part II), Gaussian stability proof (Part III), 1D connection (Part IV), structural properties (Part V), axiomatized hard results from Hudson-Mason 1982 and Meerschaert-Scheffler 2001 (Part VI), and classical CLT recovery (Part VII).",
+    "mathContext": "Scalar case: $\\mu$ stable with exponent $\\alpha \\leq 2$, normalization $n^{-1/\\alpha}$. Matrix case: $\\mu$ operator-stable with exponent matrix $E$, normalization $A_n = n^{-E} = \\exp(-E \\log n)$. Eigenvalue constraint: $\\operatorname{Re}(\\lambda(E)) \\geq 1/2$ (generalizing $1/\\alpha \\geq 1/2 \\Leftrightarrow \\alpha \\leq 2$). Gaussian: $E = \\frac{1}{2}I$, all eigenvalues $= 1/2$.",
+    "significance": "context",
+    "relatedConcepts": ["operator-stable laws", "matrix normalization", "exponent matrix", "CLT generalization", "heavy tails"],
+    "prerequisites": ["classical CLT", "α-stable distributions", "matrix exponential", "weak convergence"]
+  },
+  {
+    "id": "ann-clt-oq04-definitions",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 37, "endLine": 81 },
+    "type": "definition",
+    "title": "Six Core Definitions: From Quadratic Forms to Domain of Attraction",
+    "content": "Six noncomputable definitions build the framework. `quadForm d Σ ξ = ∑ᵢ ∑ⱼ Σᵢⱼ ξᵢ ξⱼ` is the Gaussian exponent. `vecInner d x y = ∑ᵢ xᵢyᵢ` is the dot product for drift terms. `gaussCharFun d Σ ξ = exp(-quadForm(ξ)/2)` is the Gaussian characteristic function in ℂ. `IsOperatorStable` asserts the self-similarity condition φ(Aₙᵀξ)^n = φ(ξ)·exp(i⟨bₙ,ξ⟩) for some matrix sequence {Aₙ} and drift {bₙ}. `HasScalarExponent` specializes to scalar A_n = n^{-c}·I, corresponding to 1D stability index α = 1/c. `InOperatorDomainOfAttraction` requires both operator-stability of the limit and convergence of scaled n-fold convolutions.",
+    "mathContext": "$\\phi_\\Sigma(\\xi) = \\exp\\!\\bigl(-\\tfrac{1}{2}\\xi^\\top \\Sigma \\xi\\bigr)$ for $\\xi \\in \\mathbb{R}^d$. `IsOperatorStable`: $\\exists \\{A_n\\}, \\{b_n\\}$ s.t. $\\phi(A_n^\\top \\xi)^n = \\phi(\\xi) e^{i\\langle b_n, \\xi\\rangle}$. `HasScalarExponent(c)`: $A_n = n^{-c} I$. `InOperatorDOA`: $\\psi$ is operator-stable AND $A_n(X_1+\\cdots+X_n) - b_n \\xrightarrow{d} \\psi$.",
+    "significance": "key",
+    "relatedConcepts": ["characteristic function", "Gaussian distribution", "operator-stability definition", "domain of attraction", "scalar exponent"],
+    "prerequisites": ["complex exponential", "matrix transpose", "probability measures on ℝ^d", "weak convergence", "Lean noncomputable section"]
+  },
+  {
+    "id": "ann-clt-oq04-quadform",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 83, "endLine": 127 },
+    "type": "technique",
+    "title": "Quadratic Form Scaling: The Key Computation for Gaussian Self-Similarity",
+    "content": "Two critical lemmas establish the algebraic core. `quadForm_scale` proves quadForm(c·ξ) = c²·quadForm(ξ) by ring: scalar multiplication factors out as c² from the double sum. `quadForm_scale_inv_sqrt` is the pivotal application: quadForm(ξ/√n) = (1/n)·quadForm(ξ). The proof uses `Real.mul_self_sqrt` (√n · √n = n) and `field_simp` to handle the division, then `ring` for the algebra. Two supporting lemmas: `gaussCharFun_zero` (φ = 1 at ξ = 0, from exp(0) = 1) and `gaussCharFun_norm_le_one` (|φ| ≤ 1 for psd Σ, from exp(-nonneg) ≤ 1).",
+    "mathContext": "`quadForm_scale_inv_sqrt`: $q(\\xi/\\sqrt{n}) = \\sum_{i,j} \\Sigma_{ij} (\\xi_i/\\sqrt{n})(\\xi_j/\\sqrt{n}) = (1/n)\\sum_{i,j}\\Sigma_{ij}\\xi_i\\xi_j = (1/n)q(\\xi)$. Key: $\\sqrt{n}\\cdot\\sqrt{n} = n$ (from `Real.mul_self_sqrt`). `gaussCharFun_norm_le_one`: $\\|e^{-q(\\xi)/2}\\| = e^{-q(\\xi)/2} \\leq 1$ since $q(\\xi) \\geq 0$ for psd $\\Sigma$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic form scaling", "Real.mul_self_sqrt", "field_simp", "positive semidefinite", "Finset.sum_congr"],
+    "prerequisites": ["Finset double sum manipulation", "real square root lemmas in Mathlib", "positive semidefinite matrices"]
+  },
+  {
+    "id": "ann-clt-oq04-gaussian-stability",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 129, "endLine": 190 },
+    "type": "insight",
+    "title": "Gaussian Self-Similarity: (φ(ξ/√n))^n = φ(ξ) via exp_neg_div_pow",
+    "content": "The main proved theorem. `exp_neg_div_pow` first establishes the complex identity (exp(-x/n))^n = exp(-x) using `Complex.exp_nat_mul` and `field_simp`. `gaussian_operator_stable` chains: (φ_Σ(ξ/√n))^n = (exp(-quadForm(ξ/√n)/2))^n = (exp(-(1/n)·quadForm(ξ)/2))^n = exp(-quadForm(ξ)/2) = φ_Σ(ξ). A `show` tactic reorganizes `(1/n)·q/2 = q/2/n` so `exp_neg_div_pow` applies directly. `gaussian_has_scalar_exponent` then translates to `HasScalarExponent(1/2)` using `Real.rpow_neg` and `Real.rpow_one_div_eq_pow_inv` to show n^{-1/2} = 1/√n. `gaussian_is_operator_stable` witnesses `IsOperatorStable` by providing the matrix A_n = n^{-1/2}·I explicitly.",
+    "mathContext": "Chain: $\\phi_\\Sigma(\\xi/\\sqrt{n})^n = \\bigl(e^{-q(\\xi/\\sqrt{n})/2}\\bigr)^n = \\bigl(e^{-(q(\\xi)/n)/2}\\bigr)^n = \\bigl(e^{-(q(\\xi)/2)/n}\\bigr)^n = e^{-q(\\xi)/2} = \\phi_\\Sigma(\\xi)$. Core: $(e^{-x/n})^n = e^{n(-x/n)} = e^{-x}$ via `Complex.exp_nat_mul`.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.exp_nat_mul", "Real.rpow_neg", "exp_neg_div_pow", "Gaussian characteristic function", "self-similar process"],
+    "prerequisites": ["complex exponential algebra", "nat power of exp", "Lean field_simp", "push_cast for real→complex coercions"]
+  },
+  {
+    "id": "ann-clt-oq04-scalar-1d",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 192, "endLine": 229 },
+    "type": "technique",
+    "title": "1D Connection: α-Stable Laws Embed as HasScalarExponent(1/α)",
+    "content": "Three elements connect the multivariate framework back to the 1D case. `univariateEmbed φ ξ = φ(ξ 0)` embeds a function ℝ → ℂ into (Fin 1 → ℝ) → ℂ by extracting the single coordinate. `univariate_embed_stable` proves that if φ satisfies the 1D scalar stability equation, the embedding has `HasScalarExponent 1 (embed φ) c`. `alpha_stable_is_operator_stable` applies this to `stableCharFun α` (imported from the parent file) with c = 1/α: the proof uses `abs_div`, `Real.div_rpow`, and `rpow_mul` to simplify |t·n^{-1/α}|^α = |t|^α/n, then `field_simp` closes n·(-|t|^α/n) = -|t|^α. This establishes the bridge: the 1D stability index α corresponds to scalar exponent c = 1/α.",
+    "mathContext": "`stableCharFun(α)(t) = exp(-|t|^\\alpha)`. Scalar stability: $(\\phi(t \\cdot n^{-1/\\alpha}))^n = \\phi(t)$. Computation: $|t \\cdot n^{-1/\\alpha}|^\\alpha = |t|^\\alpha \\cdot n^{-1}$, so $(e^{-|t|^\\alpha/n})^n = e^{-|t|^\\alpha} = \\phi(t)$. Embedding: $\\text{univariateEmbed}(\\phi)(\\xi) = \\phi(\\xi_0)$ for $\\xi: \\text{Fin}\\, 1 \\to \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["α-stable laws", "stableCharFun", "univariate embedding", "Real.rpow_mul", "abs_div"],
+    "prerequisites": ["parent file CentralLimitTheoremOQ01OQ01", "1D stable laws", "rpow lemmas in Mathlib"]
+  },
+  {
+    "id": "ann-clt-oq04-structural",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 231, "endLine": 251 },
+    "type": "technique",
+    "title": "Closure Under Linear Maps: Operator-Stable Preserved by Nonsingular Transforms",
+    "content": "`operator_stable_linear_image` proves that if φ is operator-stable with normalizations {Aₙ}, then the pushforward φ(Bᵀ·) is operator-stable with normalizations {Aₙ·B}. The proof extracts the witness (Aₙ, bₙ), constructs the new witness (Aₙ·B, bₙ), and uses `Finset.sum_comm` to verify matrix multiplication associativity. `const_one_is_operator_stable` proves the trivial case: the constant function 1 is operator-stable with A_n = 0 matrix, serving as a degenerate sanity check. These structural properties are essential for the domain of attraction theory, which relies on the fact that the set of operator-stable laws is closed under affine transforms.",
+    "mathContext": "If $\\phi(A_n^\\top \\xi)^n = \\phi(\\xi) e^{i\\langle b_n, \\xi\\rangle}$, then $(\\phi(B^\\top\\cdot))((A_nB)^\\top\\xi)^n = \\phi(B^\\top A_n^\\top \\xi)^n = \\phi(A_n^\\top(B^\\top\\xi))^n = \\phi(B^\\top\\xi)e^{i\\langle b_n, B^\\top\\xi\\rangle}$. Lean: `Matrix.mul_apply` + `Finset.sum_comm` for the composition.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear image of stable law", "Matrix.mul_apply", "Finset.sum_comm", "pushforward measure"],
+    "prerequisites": ["matrix multiplication", "Lean convert tactic", "composition of linear maps"]
+  },
+  {
+    "id": "ann-clt-oq04-axioms",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 253, "endLine": 319 },
+    "type": "definition",
+    "title": "Two Deep Axioms: Hudson-Mason Eigenvalue Bound and Meerschaert-Scheffler DOA",
+    "content": "Two axioms encode the hardest theorems. `eigenvalue_ge_half`: for any non-degenerate operator-stable φ with exponent matrix E, all eigenvalues have Re(λ) ≥ 1/2 (Hudson-Mason 1982 TAMS). The intuition: smaller eigenvalues would imply α > 2, requiring infinite second moments, contradicting convergence. The corollary `scalar_exponent_ge_half` applies this to E = c·I (all eigenvalues = c) to recover c ≥ 1/2, i.e., α = 1/c ≤ 2. The proof uses `Matrix.eigenvalues` on the scalar matrix and `Fin.eq_zero_or_pos` for the nonzero-dimension case. `meerschaert_scheffler`: the domain of attraction biconditional — φ ∈ DOA(ψ) iff the tail of φ is matrix regularly varying with exponent E. This is Theorem 8.2.1 from Meerschaert-Scheffler (2001, Wiley), the definitive reference for multivariate stable limit theory.",
+    "mathContext": "`eigenvalue_ge_half`: $\\phi$ operator-stable, $E$ exponent $\\Rightarrow \\operatorname{Re}(\\lambda_k(E)) \\geq 1/2$ for all $k$. `meerschaert_scheffler` (MS 2001, Thm 8.2.1): $\\phi \\in \\mathrm{DOA} \\iff \\exists E, \\nu: \\lim_n \\phi(n\\xi)^n / \\nu(e^{-E\\log t}\\xi) = 1$. The RHS encodes matrix regular variation of $\\phi$ with exponent $E$.",
+    "significance": "key",
+    "relatedConcepts": ["Hudson-Mason 1982", "Meerschaert-Scheffler 2001", "matrix regular variation", "eigenvalue constraint", "spectral theory of stable laws"],
+    "prerequisites": ["operator-stable law spectral theory", "matrix regular variation", "Karamata theory in ℝ^d", "weak convergence of probability measures"]
+  },
+  {
+    "id": "ann-clt-oq04-doa",
+    "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
+    "range": { "startLine": 321, "endLine": 357 },
+    "type": "insight",
+    "title": "Gaussian Is in Its Own DOA: The Multivariate CLT as Operator Self-Stability",
+    "content": "`gaussian_in_own_doa` closes the circle: N(0,Σ) is in its own operator domain of attraction. The proof witnesses: the limit is `gaussCharFun d Σ` (operator-stable by Part III), the normalizations are A_n = n^{-1/2}·I, drifts are 0. Crucially, since each term of the convergent sequence exactly equals gaussCharFun (non-asymptotically, by `gaussian_operator_stable`), `Filter.tendsto_const_nhds` closes the Tendsto goal immediately. `finite_cov_in_gaussian_doa` extends to finite-covariance distributions, but uses a placeholder `True` for the second-moment condition — a formal admission that this step requires additional formalization work. Together, these two results state the multivariate CLT in the language of operator-stable distributions.",
+    "mathContext": "`gaussian_in_own_doa`: $N(0,\\Sigma) \\in \\mathrm{DOA}(N(0,\\Sigma))$ with $A_n = n^{-1/2}I$, $b_n = 0$. Each term: $\\phi_\\Sigma(n^{-1/2}\\cdot)^n = \\phi_\\Sigma(\\cdot)$ exactly (non-asymptotic). `tendsto_const_nhds`: a constant sequence converges to its constant value. `finite_cov_in_gaussian_doa`: $\\phi(0)=1$, finite covariance $\\Rightarrow \\phi \\in \\mathrm{DOA}(N(0,\\Sigma))$.",
+    "significance": "key",
+    "relatedConcepts": ["Filter.tendsto_const_nhds", "multivariate CLT", "self-similar process", "domain of attraction", "universal Gaussian attractor"],
+    "prerequisites": ["Filter.Tendsto in Mathlib", "tendsto_const_nhds", "operator domain of attraction", "Gaussian CLT"]
+  }
+]

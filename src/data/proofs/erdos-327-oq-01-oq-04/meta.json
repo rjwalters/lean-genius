@@ -20,7 +20,7 @@
     "axiomCount": 0,
     "assumptions": "No axioms. All theorems proved from Mathlib. Uses construct_sumDvdProd_pair from OQ-01.",
     "mathlib_version": "4.26.0",
-    "lineCount": 87,
+    "lineCount": 252,
     "erdosNumber": 327,
     "erdosUrl": "https://erdosproblems.com/327",
     "relatedProblems": [
@@ -32,7 +32,8 @@
         "id": "erdos-327",
         "relationship": "Grandparent: sum-divides-product avoidance"
       }
-    ]
+    ],
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #327 asks how large a subset $A \\subseteq \\{1, \\ldots, N\\}$ can be if no two elements $a, b \\in A$ satisfy $(a+b) \\mid ab$ (equivalently, $1/a + 1/b$ is a unit fraction). The complementary counting question — how many such pairs exist in $\\{1, \\ldots, N\\}$ — leads to the function $D(N)$. The parametrization from OQ-01 shows all such pairs arise from coprime factorizations: $(a, b) = (ms a', ms b')$ where $\\gcd(a', b') = 1$ and $s = a' + b'$. The simplest nontrivial family is $(a', b') = (1, 2)$, giving $s = 3$ and pairs $(3k, 6k)$. This family already yields a linear lower bound $D(N) \\geq \\lfloor N/6 \\rfloor$, and the full count is conjectured to satisfy $D(N) \\sim C \\cdot N \\log N$ for some constant $C$.",
@@ -134,7 +135,7 @@
       "Nat"
     ],
     "namespace": "Erdos327OQ01OQ04",
-    "lineCount": 87,
+    "lineCount": 252,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 1,

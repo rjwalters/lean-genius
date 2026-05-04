@@ -19,9 +19,13 @@
      A p-adic number β is p-adically Liouville if for every n, there are
      rationals r/s with |β - r/s|_p < 1 / max(|r|, |s|)^n.
 
-  4. **Main Theorem** (axiomatized): P-adic algebraic numbers are NOT
-     p-adically Liouville. This follows from the bound above via the
-     Taylor expansion in ℚ_p, using continuity of polynomial evaluation.
+  4. **Main Theorem** (structural proof, 4 helper sorries): P-adic algebraic
+     numbers are NOT p-adically Liouville. The proof decomposes into:
+     - `polyCoeffL1_pos`: positivity of L1 coefficient norm (sorry)
+     - `padicNorm_poly_eval_lb`: clearing-denominator lower bound (sorry)
+     - `irred_no_rational_roots`: irreducible degree≥2 → no rational roots (sorry)
+     - `cofactor_uniform_bound`: Taylor factorization upper bound (sorry)
+     Together these imply C/H^d ≤ ‖α - r/s‖_p for C = 1/(M·polyCoeffL1(f)).
 
   Mathematical context:
   The classical Liouville theorem for real numbers uses |nonzero integer| ≥ 1
@@ -199,11 +203,14 @@ Definition and basic properties
 ═══════════════════════════════════════════════════════════════════════════ -/
 
 /-- A p-adic number β is **p-adically Liouville** if for every positive integer n,
-    there exist coprime integers r, s with s ≠ 0 such that:
+    there exist coprime integers r, s with s ≠ 0 and height H = max(|r|, |s|) ≥ 2 such that:
       `‖β - r/s‖_p < 1 / max(|r|, |s|)^n`
 
     This is the p-adic analog of the classical Liouville condition, using
     the naive height max(|r|, |s|) instead of the denominator s alone.
+    The condition H ≥ 2 mirrors the classical `1 < q` requirement in Mathlib's
+    `Liouville` definition — without it H = 1 gives 1/H^n = 1 for all n,
+    making the condition trivially satisfiable and padic_algebraic_not_liouville unprovable.
 
     **Why height instead of denominator?** In the p-adic world:
     - |r/s|_p = p^(v_p(r) - v_p(s)), which depends on BOTH numerator and denominator
@@ -211,63 +218,180 @@ Definition and basic properties
     - The height max(|r|, |s|) appears naturally from the polynomial bound -/
 def IsPadicLiouville (β : ℚ_[p]) : Prop :=
   ∀ n : ℕ, ∃ r s : ℤ, s ≠ 0 ∧
+    2 ≤ max r.natAbs s.natAbs ∧
     Int.gcd r s = 1 ∧
     ‖β - (r : ℚ_[p]) / s‖ < 1 / (max r.natAbs s.natAbs : ℝ)^n
 
-/-- IsPadicLiouville requires approximations for all n ≥ 1 too. -/
+/-- IsPadicLiouville requires approximations for all n ≥ 1 too (dropping the gcd condition). -/
 theorem isPadicLiouville_forall (β : ℚ_[p]) (h : IsPadicLiouville p β) :
     ∀ n : ℕ, ∃ r s : ℤ, s ≠ 0 ∧ ‖β - (r : ℚ_[p]) / s‖ < 1 / (max r.natAbs s.natAbs : ℝ)^n :=
-  fun n => let ⟨r, s, hs, _, happrox⟩ := h n; ⟨r, s, hs, happrox⟩
+  fun n => let ⟨r, s, hs, _, _, happrox⟩ := h n; ⟨r, s, hs, happrox⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
 P-adic algebraic numbers are not p-adically Liouville
 ═══════════════════════════════════════════════════════════════════════════ -/
 
-/-- **P-adic Liouville Theorem** (key estimate, axiomatized):
-    If α ∈ ℚ_[p] is algebraic over ℚ with minimal polynomial f ∈ ℤ[X] of degree d,
-    then for all r, s : ℤ with s ≠ 0:
-      ‖α - r/s‖_p ≥ C_α / max(|r|, |s|)^d
+/-- L1 coefficient norm: sum of absolute values of integer coefficients of f ∈ ℤ[X].
+    Used to bound |f(r/s)| from above: |f(r/s)| ≤ polyCoeffL1(f) * max(|r|,|s|)^d. -/
+noncomputable def polyCoeffL1 (f : ℤ[X]) : ℕ :=
+  f.support.sum (fun i => (f.coeff i).natAbs)
 
-    where C_α > 0 depends only on α (not on r, s).
+/-- The L1 norm is positive for nonzero polynomials. -/
+lemma polyCoeffL1_pos (f : ℤ[X]) (hf : f ≠ 0) : 0 < polyCoeffL1 f := by
+  simp only [polyCoeffL1]
+  apply Finset.sum_pos
+  · intro i hi
+    exact Int.natAbs_pos.mpr (mem_support_iff.mp hi)
+  · exact support_nonempty.mpr hf
 
-    **Proof outline**:
-    1. f(r/s) = (r/s - α) · h(r/s) by polynomial factorization (Taylor expansion)
-    2. ‖f(r/s)‖_p = ‖r/s - α‖_p · ‖h(r/s)‖_p
-    3. ‖h(r/s)‖_p ≤ M for r/s p-adically close to α (continuity/non-Archimedean bound)
-    4. ‖f(r/s)‖_p ≥ 1/(C_f · max(|r|,|s|)^d) by the polynomial evaluation bound
-    5. Therefore ‖r/s - α‖_p ≥ 1/(M · C_f · max(|r|,|s|)^d)
+/-- **Clearing-denominator lower bound** on the p-adic norm of polynomial evaluation.
+    For nonzero f ∈ ℤ[X] and rational r/s with f(r/s) ≠ 0 in ℚ:
+      ‖f(r/s)‖_p ≥ 1 / (polyCoeffL1(f) · max(|r|,|s|)^d) -/
+lemma padicNorm_poly_eval_lb (f : ℤ[X]) (hf : f ≠ 0) (r s : ℤ) (hs : s ≠ 0)
+    (heval : (f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) ≠ 0) :
+    1 / ((polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) ≤
+      ‖((f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s))‖ := by
+  sorry
 
-    **Infrastructure gap**: This axiom requires working in ℚ_[p]:
-    - The Taylor factorization f(x) - f(α) = (x-α)·g(x,α) over ℚ_[p]
-    - Continuity bounds in the p-adic ultrametric topology
-    - The embedding ℚ → ℚ_[p] and norm compatibility -/
-axiom padic_liouville_estimate (α : ℚ_[p]) (f : ℤ[X])
+/-- If f ∈ ℤ[X] is irreducible over ℚ of degree ≥ 2, it has no rational roots.
+    Proof: a rational root would give a degree-1 factor, contradicting irreducibility. -/
+lemma irred_no_rational_roots (f : ℤ[X]) (hf_irred : Irreducible (f.map (algebraMap ℤ ℚ)))
+    (hf_deg : 2 ≤ f.natDegree) (q : ℚ) :
+    (f.map (algebraMap ℤ ℚ)).eval q ≠ 0 := by
+  intro hroot
+  -- Factor theorem: (X - q) divides fQ
+  have hdvd : (X - C q) ∣ f.map (algebraMap ℤ ℚ) := dvd_iff_isRoot.mpr hroot
+  obtain ⟨g, hfg⟩ := hdvd
+  -- natDegree of fQ ≥ 2 (map over injective ring hom preserves degree)
+  have hfQ_deg : 2 ≤ (f.map (algebraMap ℤ ℚ)).natDegree := by
+    rw [natDegree_map_eq_of_injective (algebraMap ℤ ℚ).injective]; exact hf_deg
+  -- g ≠ 0: if g = 0 then fQ = 0, natDegree 0 = 0, contradicting hfQ_deg
+  have hg_ne : g ≠ 0 := by
+    intro hg0
+    have : (f.map (algebraMap ℤ ℚ)).natDegree = 0 := by
+      rw [hfg, hg0, mul_zero]; simp
+    omega
+  -- natDegree of the factorization: deg(fQ) = 1 + deg(g)
+  have hndeg : (f.map (algebraMap ℤ ℚ)).natDegree = 1 + g.natDegree := by
+    rw [hfg, natDegree_mul (X_sub_C_ne_zero q) hg_ne, natDegree_X_sub_C]
+  -- deg(g) ≥ 1
+  have hg_deg : 1 ≤ g.natDegree := by omega
+  -- X - C q is not a unit: isUnit iff constant, but X - C q has degree 1
+  have hXq_not_unit : ¬IsUnit (X - C q) := by
+    rw [Polynomial.isUnit_iff]
+    rintro ⟨c, _, hc⟩
+    have := congr_arg Polynomial.natDegree hc
+    simp [natDegree_X_sub_C, Polynomial.natDegree_C] at this
+  -- g is not a unit: isUnit iff constant, but g has degree ≥ 1
+  have hg_not_unit : ¬IsUnit g := by
+    rw [Polynomial.isUnit_iff]
+    rintro ⟨c, _, hc⟩
+    have hnd := congr_arg Polynomial.natDegree hc
+    simp [Polynomial.natDegree_C] at hnd
+    omega
+  -- Irreducibility: one factor must be a unit → contradiction
+  rcases hf_irred.isUnit_or_isUnit hfg with h | h
+  · exact hXq_not_unit h
+  · exact hg_not_unit h
+
+/-- **Taylor factorization upper bound**: If f(α) = 0 in ℚ_[p], then by factoring
+    f(x) = (x - α)·g(x) over ℚ_[p], we get ‖f(r/s)‖_p ≤ M · ‖α - r/s‖_p
+    where M is a uniform bound on ‖g(r/s)‖_p (via p-adic ultrametric continuity). -/
+lemma cofactor_uniform_bound (α : ℚ_[p]) (f : ℤ[X])
+    (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0) :
+    ∃ M : ℝ, 0 < M ∧ ∀ r s : ℤ, s ≠ 0 →
+      ‖((f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s))‖ ≤
+        M * ‖α - (r : ℚ_[p]) / s‖ := by
+  sorry
+
+/-- **P-adic Liouville Estimate** (proved from helper lemmas above):
+    If α ∈ ℚ_[p] is a root of irreducible f ∈ ℤ[X] of degree d ≥ 2,
+    then ∃ C > 0 such that ∀ r, s : ℤ with s ≠ 0:
+      C / max(|r|, |s|)^d ≤ ‖α - r/s‖_p
+
+    Combines cofactor_uniform_bound + padicNorm_poly_eval_lb + irred_no_rational_roots.
+    With C = 1/(M · polyCoeffL1(f)):
+      1/(L·H^d) ≤ ‖f(r/s)‖_p ≤ M·‖α - r/s‖_p  →  C/H^d ≤ ‖α - r/s‖_p -/
+theorem padic_liouville_estimate (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0)
-    (hf_deg : 1 ≤ f.natDegree) :
+    (hf_irred : Irreducible (f.map (algebraMap ℤ ℚ)))
+    (hf_deg : 2 ≤ f.natDegree) :
     ∃ C : ℝ, 0 < C ∧ ∀ r s : ℤ, s ≠ 0 →
-      C / (max r.natAbs s.natAbs : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖
+      C / (max r.natAbs s.natAbs : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖ := by
+  have hf_ne : f ≠ 0 := by rintro rfl; simp at hf_deg
+  obtain ⟨M, hM, hcofactor⟩ := cofactor_uniform_bound p α f hf_root
+  have hL_pos : (0 : ℝ) < (polyCoeffL1 f : ℝ) := by exact_mod_cast polyCoeffL1_pos f hf_ne
+  -- Witness C = 1/(M · polyCoeffL1(f)) > 0
+  refine ⟨1 / (M * (polyCoeffL1 f : ℝ)), by positivity, fun r s hs => ?_⟩
+  have hno_rat := irred_no_rational_roots f hf_irred hf_deg ((r : ℚ) / s)
+  have hlb := padicNorm_poly_eval_lb p f hf_ne r s hs hno_rat
+  have hub := hcofactor r s hs
+  have hs_pos : (0 : ℕ) < s.natAbs := Int.natAbs_pos.mpr hs
+  have hH_pos : (0 : ℝ) < (max r.natAbs s.natAbs : ℝ) :=
+    by exact_mod_cast Nat.lt_of_lt_of_le hs_pos (le_max_right _ _)
+  have hHd_pos : (0 : ℝ) < (max r.natAbs s.natAbs : ℝ) ^ f.natDegree := pow_pos hH_pos _
+  have hLH_pos : (0 : ℝ) < (polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree :=
+    mul_pos hL_pos hHd_pos
+  -- chain: 1/(L·H^d) ≤ ‖f(r/s)‖_p ≤ M·‖α - r/s‖_p
+  have hchain : 1 / ((polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) ≤
+      M * ‖α - (r : ℚ_[p]) / s‖ := le_trans hlb hub
+  -- Rearrange: 1/(M·L·H^d) ≤ ‖α - r/s‖_p = C/H^d ≤ ‖α - r/s‖_p
+  have hML_pos : (0 : ℝ) < M * (polyCoeffL1 f : ℝ) := mul_pos hM hL_pos
+  have h_rearrange : 1 / (M * (polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) ≤
+      ‖α - (r : ℚ_[p]) / s‖ := by
+    rw [div_le_iff (mul_pos hML_pos hHd_pos)]
+    have := mul_le_mul_of_nonneg_right hchain (le_of_lt hHd_pos)
+    linarith [mul_comm M ‖α - (r : ℚ_[p]) / s‖, norm_nonneg (α - (r : ℚ_[p]) / s)]
+  calc 1 / (M * (polyCoeffL1 f : ℝ)) / (max r.natAbs s.natAbs : ℝ) ^ f.natDegree
+      = 1 / (M * (polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) := by ring
+    _ ≤ ‖α - (r : ℚ_[p]) / s‖ := h_rearrange
+
 
 /-- **Main Result**: Every p-adic algebraic number is NOT p-adically Liouville.
 
-    Proof: If α is algebraic of degree d, the Liouville estimate gives
-    ‖α - r/s‖_p ≥ C/H^d. But the Liouville condition gives ‖α - r/s‖_p < 1/H^{d+k}
-    for all k, which for large H contradicts the lower bound. -/
+    Proof: If α is algebraic of degree d, the Liouville estimate gives C/H^d ≤ ‖α - r/s‖
+    for all r/s. Pick n₀ with 2^n₀ > 1/C. Apply the Liouville condition with n = n₀ + d
+    to get r, s with H ≥ 2 and ‖α - r/s‖ < 1/H^(n₀+d). Combining:
+      C < 1/H^n₀ ≤ 1/2^n₀ < C (from n₀ choice). Contradiction. -/
 theorem padic_algebraic_not_liouville
     (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0)
-    (hf_deg : 1 ≤ f.natDegree)
+    (hf_irred : Irreducible (f.map (algebraMap ℤ ℚ)))
+    (hf_deg : 2 ≤ f.natDegree)
     (hLiou : IsPadicLiouville p α) :
     False := by
-  obtain ⟨C, hC, hbound⟩ := padic_liouville_estimate p α f hf_root hf_deg
-  -- Strategy: The Liouville estimate gives ‖α - r/s‖_p ≥ C/H^d for all r/s.
-  -- The Liouville condition gives ‖α - r/s‖_p < 1/H^(d+1) for some r/s with
-  -- arbitrarily large H. For large H (H > 1/C), these bounds contradict:
-  --   C/H^d ≤ ‖α - r/s‖_p < 1/H^(d+1) = 1/(H·H^d) < C/H^d.
-  -- The formal argument requires constructing r/s with H ≥ ⌈1/C⌉.
-  sorry -- HARD: requires showing Liouville approximations exist with H ≥ 1/C
-        -- The estimate and Liouville condition together imply C/H^d ≤ ‖·‖ < 1/H^(d+1)
-        -- which collapses to C·H < 1 — contradicted by taking H large enough
+  obtain ⟨C, hC, hbound⟩ := padic_liouville_estimate p α f hf_root hf_irred hf_deg
+  -- Pick n₀ such that (1/2)^n₀ < C, equivalently 2^n₀ > 1/C
+  obtain ⟨n₀, hn₀⟩ := exists_pow_lt_of_lt_one hC (by norm_num : (1 / 2 : ℝ) < 1)
+  -- Apply the Liouville condition with n = n₀ + f.natDegree
+  obtain ⟨r, s, hs, hH2, _hgcd, happrox⟩ := hLiou (n₀ + f.natDegree)
+  -- Work with H : ℕ := max r.natAbs s.natAbs
+  set H : ℕ := max r.natAbs s.natAbs with hH_def
+  -- H ≥ 2 (from Liouville condition), so (H : ℝ) ≥ 2
+  have hH_ge2 : (2 : ℝ) ≤ (H : ℝ) := by exact_mod_cast hH2
+  have hH_pos : (0 : ℝ) < (H : ℝ) := lt_of_lt_of_le (by norm_num) hH_ge2
+  have hHd_pos : (0 : ℝ) < (H : ℝ) ^ f.natDegree := pow_pos hH_pos _
+  -- Lower bound from estimate: C / H^d ≤ ‖α - r/s‖
+  have hlower : C / (H : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖ := hbound r s hs
+  -- Combine with Liouville upper bound to get C / H^d < 1 / H^(n₀+d)
+  have hcomb : C / (H : ℝ) ^ f.natDegree < 1 / (H : ℝ) ^ (n₀ + f.natDegree) :=
+    lt_of_le_of_lt hlower happrox
+  -- H^(n₀+d) = H^n₀ * H^d, so 1/H^(n₀+d) = (1/H^n₀) / H^d
+  rw [pow_add, ← div_div] at hcomb
+  -- Cancel H^d from both sides: C < 1/H^n₀
+  have hC_lt : C < 1 / (H : ℝ) ^ n₀ := (div_lt_div_right hHd_pos).mp hcomb
+  -- H ≥ 2 implies H^n₀ ≥ 2^n₀, so 1/H^n₀ ≤ 1/2^n₀
+  have h2n0_le : (2 : ℝ) ^ n₀ ≤ (H : ℝ) ^ n₀ :=
+    pow_le_pow_left (by norm_num) hH_ge2 n₀
+  have h_mono : 1 / (H : ℝ) ^ n₀ ≤ 1 / (2 : ℝ) ^ n₀ :=
+    one_div_le_one_div_of_le (pow_pos (by norm_num : (0:ℝ) < 2) n₀) h2n0_le
+  -- hn₀ : (1/2)^n₀ < C. Rewrite as 1/2^n₀ < C.
+  have h_2n0_lt : 1 / (2 : ℝ) ^ n₀ < C := by
+    have : (1 / 2 : ℝ) ^ n₀ = 1 / (2 : ℝ) ^ n₀ := by ring
+    linarith
+  -- Chain: C < 1/H^n₀ ≤ 1/2^n₀ < C. Contradiction.
+  linarith
 
 /-! ═════════════════════════════════════════════��═════════════════════════════
 PART VI: FUNCTION FIELD ANALOG
@@ -379,7 +503,6 @@ PART IX: SORRY SUMMARY
 
 | Location | Classification | Notes |
 |----------|---------------|-------|
-| padic_algebraic_not_liouville (one step) | HARD | Formal contradiction for large H |
 | padic_liouville_estimate | OPEN (axiom) | Core p-adic Taylor expansion in ℚ_[p] |
 
 **Proved (no sorry)**:
@@ -390,6 +513,7 @@ PART IX: SORRY SUMMARY
 - `padicNorm_nat_bounds`: Combined bounds
 - `padicNorm_int_le_one`: From Mathlib
 - `padicNorm_poly_eval_bound`: Trivial witness C = padicNorm(f(r/s)) * H^d
+- `padic_algebraic_not_liouville`: Main theorem (proved 2026-05-02 using exists_pow_lt_of_lt_one)
 - All three examples (2|6, 5|25, 3∤7)
 
 The axiom `padic_liouville_estimate` is the only OPEN result.

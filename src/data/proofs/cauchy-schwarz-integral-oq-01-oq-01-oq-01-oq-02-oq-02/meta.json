@@ -1,0 +1,166 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+  "title": "Power Mean Inequality: ring + positivity Automation",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+  "description": "The power mean chain HM ≤ GM ≤ AM ≤ QM re-proved using ring algebraic normalization and positivity for non-negativity, eliminating explicit sq_nonneg hints. Demonstrates that positivity (with ring preprocessing) suffices for the full chain.",
+  "meta": {
+    "author": "Formal verification — automation study",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02.lean",
+    "parentProofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "tags": [
+      "inequalities",
+      "power-means",
+      "automation",
+      "positivity",
+      "ring",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 187,
+    "assumptions": "No axioms or sorries. All results proved from first principles using ring + positivity.",
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "sqrt(a^2) = a for a >= 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Demonstrates that ring + positivity replaces all explicit sq_nonneg hints in the power mean chain",
+      "Shows that hm_le_gm, gm_le_am, am_le_qm are all provable via have key := by ring; rw [key]; positivity",
+      "Answers the open question: polyrith not needed; positivity suffices after ring normalization",
+      "Provides cleaner, more structured proofs where the algebraic identity is made explicit"
+    ],
+    "theoremCount": 6
+  },
+  "overview": {
+    "historicalContext": "The power mean chain HM ≤ GM ≤ AM ≤ QM is a cornerstone of classical analysis. The AM-GM inequality appears in Euclid (geometric construction proof) and was first stated algebraically by Cauchy in 1821. Hardy, Littlewood, and Pólya systematized the theory of power means in their landmark 1934 book *Inequalities*, establishing the complete hierarchy of power means $M_r(a,b) = ((a^r + b^r)/2)^{1/r}$ and proving that $M_r$ is monotone increasing in $r$. The HM-GM-AM-QM chain is the special case $r \\in \\{-1, 0, 1, 2\\}$ (with GM as the $r \\to 0$ limit).\n\nFrom a **proof automation perspective**, each link in the chain is a quadratic or quartic polynomial inequality. The parent file (OQ02) used `nlinarith` with explicit `sq_nonneg` hints — a manually-guided approach that works but is fragile. This file answers the automation open question: the `ring + positivity` pattern completely eliminates manual witnesses. `ring` finds the sum-of-squares certificate algebraically; `positivity` closes the nonnegativity goal by structural recognition. This demonstrates a general principle: for polynomial inequalities that reduce to perfect squares or products of non-negatives, `ring + positivity` provides a complete and clean automation.",
+    "problemStatement": "Can polyrith or positivity close the power mean inequality goals hint-free, yielding a fully automated proof of HM ≤ GM ≤ AM ≤ QM?",
+    "text": "Re-proves the power mean chain using ring algebraic normalization followed by positivity for nonnegativity. The key insight: each inequality gap B - A = ((a-b)/c)^2 for some constant c. ring verifies this mechanically; positivity closes 0 ≤ ((a-b)/c)^2 by recognizing perfect squares.",
+    "proofStrategy": "For each inequality A ≤ B: (1) suffices h : 0 ≤ B - A by linarith, (2) have key : B - A = square_form := by ring, (3) rw [key]; positivity. The ring tactic finds the algebraic identity; positivity closes the square nonnegativity.",
+    "keyInsights": [
+      "polyrith is not needed: it proves equalities, not inequalities. positivity is sufficient for the nonnegativity goals.",
+      "The core automation pattern is: ring establishes B - A = E^2, then positivity closes 0 ≤ E^2 without any hint",
+      "For hm_le_gm: ab(a+b)^2 - (2ab)^2 = ab(a-b)^2 — positivity closes from ha > 0, hb > 0",
+      "For gm_le_am: ((a+b)/2)^2 - ab = ((a-b)/2)^2 — positivity closes this as a perfect square",
+      "For am_le_qm: (a^2+b^2)/2 - ((a+b)/2)^2 = ((a-b)/2)^2 — same pattern",
+      "nlinarith [] (no hints) works for the degree-2 SOS goals but may fail for degree-4 goals like hm_le_gm"
+    ],
+    "prerequisites": [
+      "Basic real analysis",
+      "Lean 4 tactic automation (positivity, ring)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "min-le-hm",
+      "title": "min ≤ HM",
+      "summary": "Case split proof using mul_nonneg; gap = a*(b-a) after ring",
+      "startLine": 56,
+      "endLine": 73,
+      "mathContext": "$\\min(a,b) \\le \\frac{2ab}{a+b}$ for $a,b > 0$. WLOG $a \\le b$: gap is $a(b-a) \\ge 0$, a product of non-negatives. ring isolates $a(b-a)$; mul_nonneg closes from $a > 0$, $b-a \\ge 0$."
+    },
+    {
+      "id": "hm-le-gm",
+      "title": "HM ≤ GM (ring + positivity)",
+      "summary": "Gap ab(a+b)^2 - (2ab)^2 = ab(a-b)^2; positivity closes from ha, hb > 0",
+      "startLine": 75,
+      "endLine": 91,
+      "mathContext": "$\\frac{2ab}{a+b} \\le \\sqrt{ab}$. Squaring: $\\frac{4a^2b^2}{(a+b)^2} \\le ab$. Gap: $ab(a+b)^2 - 4a^2b^2 = ab(a-b)^2$. Degree-4 SOS; positivity closes $ab(a-b)^2 \\ge 0$ from $a,b > 0$."
+    },
+    {
+      "id": "gm-le-am",
+      "title": "GM ≤ AM (ring + positivity)",
+      "summary": "Gap ((a+b)/2)^2 - ab = ((a-b)/2)^2; ring identifies; positivity closes",
+      "startLine": 93,
+      "endLine": 105,
+      "mathContext": "AM-GM: $\\sqrt{ab} \\le \\frac{a+b}{2}$. Squaring: $ab \\le \\left(\\frac{a+b}{2}\\right)^2$. Gap: $\\left(\\frac{a+b}{2}\\right)^2 - ab = \\left(\\frac{a-b}{2}\\right)^2 \\ge 0$. Perfect square; positivity closes without hypotheses."
+    },
+    {
+      "id": "am-le-qm",
+      "title": "AM ≤ QM (ring + positivity)",
+      "summary": "Gap (a^2+b^2)/2 - ((a+b)/2)^2 = ((a-b)/2)^2; same pattern",
+      "startLine": 107,
+      "endLine": 119,
+      "mathContext": "$\\frac{a+b}{2} \\le \\sqrt{\\frac{a^2+b^2}{2}}$. Squaring: $\\left(\\frac{a+b}{2}\\right)^2 \\le \\frac{a^2+b^2}{2}$. Gap: $\\frac{a^2+b^2}{2} - \\left(\\frac{a+b}{2}\\right)^2 = \\left(\\frac{a-b}{2}\\right)^2 \\ge 0$. Identical pattern to GM ≤ AM."
+    },
+    {
+      "id": "qm-le-max",
+      "title": "QM ≤ max",
+      "summary": "Case split; gap = (b-a)(b+a)/2 for each case; mul_nonneg + div_nonneg",
+      "startLine": 121,
+      "endLine": 144,
+      "mathContext": "$\\sqrt{\\frac{a^2+b^2}{2}} \\le \\max(a,b)$. WLOG $b = \\max$: $\\frac{a^2+b^2}{2} \\le b^2$. Gap: $b^2 - \\frac{a^2+b^2}{2} = \\frac{(b-a)(b+a)}{2} \\ge 0$. Linear-factor structure; mul_nonneg + div_nonneg (not a perfect square)."
+    },
+    {
+      "id": "full-chain",
+      "title": "The Full Chain",
+      "summary": "Assembles all five inequalities into a single conjunction",
+      "startLine": 146,
+      "endLine": 158,
+      "mathContext": "$\\forall a,b > 0: \\min(a,b) \\le \\text{HM}(a,b) \\le \\text{GM}(a,b) \\le \\text{AM}(a,b) \\le \\text{QM}(a,b) \\le \\max(a,b)$. The 5-link power mean chain in full generality for two positive reals."
+    }
+  ],
+  "conclusion": {
+    "summary": "The power mean chain is re-proved using ring + positivity, eliminating all explicit sq_nonneg witnesses from the parent proof. For hm_le_gm, gm_le_am, and am_le_qm, the approach is fully automated: ring finds the algebraic identity, positivity closes the nonnegativity goal. polyrith is not needed.",
+    "implications": "This confirms that for algebraic inequalities reducible to sum-of-squares form, the ring + positivity combination provides a cleaner, more maintainable proof than ad hoc nlinarith hints. The pattern generalizes to any inequality whose gap is a perfect square or product of non-negatives.",
+    "openQuestions": [
+      "Can polyrith find the algebraic certificate B - A = E^2 automatically, making the ring step also unnecessary?",
+      "Does nlinarith [] (no hints at all) succeed for all five steps if the goals are pre-normalized by ring?",
+      "For the n-variable power mean chain, does positivity scale or does degree growth require more elaborate automation?"
+    ]
+  },
+  "references": [
+    {
+      "authors": ["G. H. Hardy", "J. E. Littlewood", "G. Pólya"],
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Seminal reference establishing the theory of power means; proves the complete monotone chain M_r(a,b) for r ∈ ℝ and the general AM-GM inequality."
+    },
+    {
+      "authors": ["A.-L. Cauchy"],
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "École Polytechnique",
+      "note": "First algebraic proof of the AM-GM inequality; also contains the Cauchy-Schwarz inequality in its original form."
+    },
+    {
+      "authors": ["J. M. Steele"],
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press",
+      "note": "Modern treatment of inequality methods including power means; discusses the role of SOS (sum-of-squares) certificates in inequality proofs."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Parent file with original nlinarith-based proofs of the same power mean chain — this file answers OQ-02 by replacing nlinarith [sq_nonneg ...] with ring + positivity"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Real"],
+    "namespace": "PowerMeanAuto",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

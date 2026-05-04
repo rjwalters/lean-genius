@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Curvature-Parametrized Trigonometric Functions cs_K and sn_K",
-    "content": "curvatureCos K r and curvatureSin K r are defined piecewise on the sign of K. For K>0 (spherical): cs_K(r)=cos(√K·r) and sn_K(r)=sin(√K·r)/√K. For K<0 (hyperbolic): cs_K(r)=cosh(√(-K)·r) and sn_K(r)=sinh(√(-K)·r)/√(-K). For K=0 (Euclidean limit): cs_K(r)=1 and sn_K(r)=r. These are the standard curvature-trigonometric functions appearing in Riemannian geometry.",
+    "content": "curvatureCos K r and curvatureSin K r are defined piecewise on the sign of K. For K>0 (spherical): cs_K(r)=cos(\u221aK\u00b7r) and sn_K(r)=sin(\u221aK\u00b7r)/\u221aK. For K<0 (hyperbolic): cs_K(r)=cosh(\u221a(-K)\u00b7r) and sn_K(r)=sinh(\u221a(-K)\u00b7r)/\u221a(-K). For K=0 (Euclidean limit): cs_K(r)=1 and sn_K(r)=r. These are the standard curvature-trigonometric functions appearing in Riemannian geometry.",
     "mathContext": "The functions satisfy $\\text{cs}_K(0)=1$, $\\text{sn}_K(0)=0$, $\\text{cs}_K(-r)=\\text{cs}_K(r)$ (even), $\\text{sn}_K(-r)=-\\text{sn}_K(r)$ (odd), and the unified identity $\\text{cs}_K(r)^2 + K\\cdot\\text{sn}_K(r)^2 = 1$. At $K=1$: cos and sin. At $K=-1$: cosh and sinh. The factor $1/\\sqrt{K}$ (resp. $1/\\sqrt{-K}$) in $\\text{sn}_K$ ensures that $\\text{sn}_K(r)\\to r$ as $K\\to 0$, preserving the Euclidean limit.",
     "significance": "key",
     "relatedConcepts": [
@@ -29,15 +29,15 @@
       "startLine": 183,
       "endLine": 217
     },
-    "type": "theorem",
-    "title": "Unified Pythagorean Identity: cs_K² + K·sn_K² = 1",
-    "content": "curvaturePythagorean proves that cs_K(r)² + K·sn_K(r)² = 1 for ALL K ∈ ℝ. This single identity unifies: cos²(r)+sin²(r)=1 (K=1), cosh²(r)-sinh²(r)=1 (K=-1), 1+0=1 (K=0). The factor K changes sign from + to - automatically when K=-1. This is the algebraic heart of the unification — the same formula works across all geometries.",
+    "type": "insight",
+    "title": "Unified Pythagorean Identity: cs_K\u00b2 + K\u00b7sn_K\u00b2 = 1",
+    "content": "curvaturePythagorean proves that cs_K(r)\u00b2 + K\u00b7sn_K(r)\u00b2 = 1 for ALL K \u2208 \u211d. This single identity unifies: cos\u00b2(r)+sin\u00b2(r)=1 (K=1), cosh\u00b2(r)-sinh\u00b2(r)=1 (K=-1), 1+0=1 (K=0). The factor K changes sign from + to - automatically when K=-1. This is the algebraic heart of the unification \u2014 the same formula works across all geometries.",
     "mathContext": "Proof by cases on sign of K. For $K<0$: write $\\cosh^2(\\sqrt{-K}r) + K\\cdot(\\sinh(\\sqrt{-K}r)/\\sqrt{-K})^2 = \\cosh^2 + K\\cdot\\sinh^2/(-K) = \\cosh^2 - \\sinh^2 = 1$ using Real.cosh_sq_sub_sinh_sq. Key step: $K\\cdot(\\sinh^2/(-K)) = -\\sinh^2$ is proved by field_simp since $K\\neq 0$. For $K>0$: similarly $K\\cdot(\\sin^2/K) = \\sin^2$, so $\\cos^2+\\sin^2=1$ closes by Real.sin_sq_add_cos_sq.",
     "significance": "key",
     "relatedConcepts": [
       "Pythagorean theorem",
-      "hyperbolic identity cosh²-sinh²=1",
-      "trigonometric identity cos²+sin²=1"
+      "hyperbolic identity cosh\u00b2-sinh\u00b2=1",
+      "trigonometric identity cos\u00b2+sin\u00b2=1"
     ],
     "prerequisites": [
       "Real.cosh_sq_sub_sinh_sq",
@@ -53,9 +53,9 @@
       "startLine": 260,
       "endLine": 275
     },
-    "type": "theorem",
-    "title": "Recovery of Classical Laws at K = ±1",
-    "content": "unified_K_neg1_gives_hyperbolic shows that a UnifiedTriangle(-1) satisfies cosh(c)=cosh(a)cosh(b)-sinh(a)sinh(b)cos(C). unified_K1_gives_spherical shows that a UnifiedTriangle(1) satisfies cos(c)=cos(a)cos(b)+sin(a)sin(b)cos(C). Both are proved by simp_only to unfold the curvatureCos/Sin at K=±1, then linarith to reorganize the law field.",
+    "type": "insight",
+    "title": "Recovery of Classical Laws at K = \u00b11",
+    "content": "unified_K_neg1_gives_hyperbolic shows that a UnifiedTriangle(-1) satisfies cosh(c)=cosh(a)cosh(b)-sinh(a)sinh(b)cos(C). unified_K1_gives_spherical shows that a UnifiedTriangle(1) satisfies cos(c)=cos(a)cos(b)+sin(a)sin(b)cos(C). Both are proved by simp_only to unfold the curvatureCos/Sin at K=\u00b11, then linarith to reorganize the law field.",
     "mathContext": "For $K=-1$: simp_only [curvatureCos_neg_one, curvatureSin_neg_one] rewrites cs_{-1}=cosh and sn_{-1}=sinh. The law field then reads: $\\cosh(c) = \\cosh(a)\\cosh(b) + (-1)\\cdot\\sinh(a)\\sinh(b)\\cos(C)$. linarith converts $-1\\cdot x = -x$ to derive $\\cosh(c) = \\cosh(a)\\cosh(b) - \\sinh(a)\\sinh(b)\\cos(C)$. The minus sign in the hyperbolic law is the algebraic effect of $K=-1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -76,9 +76,9 @@
       "startLine": 283,
       "endLine": 314
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Algebraic Equivalences for K > 0 and K < 0",
-    "content": "unified_to_spherical_K_pos shows that for K>0, the unified formula is equivalent to the spherical law at scaled sides: cos(√K·c) = cos(√K·a)cos(√K·b) + sin(√K·a)sin(√K·b)cos(C). The key is K·(sin(√K·a)/√K)·(sin(√K·b)/√K) = sin(√K·a)·sin(√K·b) — the √K factors cancel. Similarly, unified_to_hyperbolic_K_neg gives the K<0 ↔ hyperbolic equivalence.",
+    "content": "unified_to_spherical_K_pos shows that for K>0, the unified formula is equivalent to the spherical law at scaled sides: cos(\u221aK\u00b7c) = cos(\u221aK\u00b7a)cos(\u221aK\u00b7b) + sin(\u221aK\u00b7a)sin(\u221aK\u00b7b)cos(C). The key is K\u00b7(sin(\u221aK\u00b7a)/\u221aK)\u00b7(sin(\u221aK\u00b7b)/\u221aK) = sin(\u221aK\u00b7a)\u00b7sin(\u221aK\u00b7b) \u2014 the \u221aK factors cancel. Similarly, unified_to_hyperbolic_K_neg gives the K<0 \u2194 hyperbolic equivalence.",
     "mathContext": "The equivalence for $K>0$ follows from the private lemma K_mul_div_sqrt_sq_pos: $K\\cdot(x/\\sqrt{K})\\cdot(y/\\sqrt{K}) = x\\cdot y$ (proved by field_simp). Applying this with $x=\\sin(\\sqrt{K}a)$ and $y=\\sin(\\sqrt{K}b)$: linear_combination (K_mul_div_sqrt_sq_pos result) * cos(C) gives the key step, then constructor <;> intro h <;> linarith closes both directions. Geometric meaning: a sphere of curvature $K$ has radius $R=1/\\sqrt{K}$, so side lengths $a$ at angular distance $a$ correspond to arc length $\\sqrt{K}\\cdot a$ at unit radius.",
     "significance": "key",
     "relatedConcepts": [
@@ -99,21 +99,21 @@
       "startLine": 334,
       "endLine": 343
     },
-    "type": "theorem",
-    "title": "Euclidean Limit (K → 0) — Fully Proved via Taylor Bounds",
+    "type": "insight",
+    "title": "Euclidean Limit (K \u2192 0) \u2014 Fully Proved via Taylor Bounds",
     "content": [
-      "`euclidean_limit_holds` (lines 392-670, **fully proved with 0 sorries**) states: if c²=a²+b²-2ab·cosC, then for all ε>0 there exists δ>0 such that |K|<δ implies |unified_formula(K)| < ε. The proof is a 280-line three-case analysis:\n\n**K>0**: |sin(√K·r)| ≤ √K·|r| and 1-cos(√K·r) ≤ K·r²/2 give |expression| ≤ K·M_pos ≤ |K|·M < ε.\n\n**K<0**: `cosh_K_bound` and `cosh_double_K_bound` (private helper lemmas at 346-385) bound cosh-1 and sinh² via exponential growth. AM-GM gives |sinh(u·a)·sinh(u·b)| ≤ -K·(...). The full bound gives |expression| ≤ -K·M_neg ≤ |K|·M < ε.\n\n**K=0**: expression is exactly 0 < ε.\n\nThe δ = min(1, ε/M) where M = M_pos + M_neg with explicit constants."
+      "`euclidean_limit_holds` (lines 392-670, **fully proved with 0 sorries**) states: if c\u00b2=a\u00b2+b\u00b2-2ab\u00b7cosC, then for all \u03b5>0 there exists \u03b4>0 such that |K|<\u03b4 implies |unified_formula(K)| < \u03b5. The proof is a 280-line three-case analysis:\n\n**K>0**: |sin(\u221aK\u00b7r)| \u2264 \u221aK\u00b7|r| and 1-cos(\u221aK\u00b7r) \u2264 K\u00b7r\u00b2/2 give |expression| \u2264 K\u00b7M_pos \u2264 |K|\u00b7M < \u03b5.\n\n**K<0**: `cosh_K_bound` and `cosh_double_K_bound` (private helper lemmas at 346-385) bound cosh-1 and sinh\u00b2 via exponential growth. AM-GM gives |sinh(u\u00b7a)\u00b7sinh(u\u00b7b)| \u2264 -K\u00b7(...). The full bound gives |expression| \u2264 -K\u00b7M_neg \u2264 |K|\u00b7M < \u03b5.\n\n**K=0**: expression is exactly 0 < \u03b5.\n\nThe \u03b4 = min(1, \u03b5/M) where M = M_pos + M_neg with explicit constants."
     ],
     "mathContext": "The Taylor expansion: $\\text{cs}_K(r) = \\cos(\\sqrt{K}r) = 1 - \\frac{K r^2}{2} + O(K^2)$ and $\\text{sn}_K(r) = \\frac{\\sin(\\sqrt{K}r)}{\\sqrt{K}} = r - \\frac{K r^3}{6} + O(K^2)$. Substituting: $\\text{cs}_K(c) - (\\text{cs}_K(a)\\text{cs}_K(b) + K\\cdot\\text{sn}_K(a)\\text{sn}_K(b)\\cos(C)) = (1-Kc^2/2) - (1-Ka^2/2)(1-Kb^2/2) - K\\cdot a\\cdot b\\cdot\\cos(C) + O(K^2) = Kc^2/2 - K(a^2+b^2)/2 + K\\cdot ab\\cos(C) + O(K^2) = K(c^2-a^2-b^2+2ab\\cos(C))/2 + O(K^2) = 0 + O(K^2)$ using the Euclidean law. So the expression is $O(K^2)$ and the $\\delta = \\sqrt{\\epsilon/M}$ for appropriate constant $M$ would work.",
     "significance": "key",
     "relatedConcepts": [
       "Taylor expansion",
-      "K→0 limit",
+      "K\u21920 limit",
       "Euclidean geometry as flat limit"
     ],
     "prerequisites": [
       "cos(x) Taylor series near 0",
-      "sin(x)/x → 1 as x→0",
+      "sin(x)/x \u2192 1 as x\u21920",
       "Mathlib real analysis infrastructure"
     ]
   },
@@ -126,7 +126,7 @@
     },
     "type": "concept",
     "title": "Special Values, Parity, and Key Algebra Lemmas",
-    "content": "Three groups of supporting lemmas (lines 87-181):\n\n**Part II — Special values** (87-130): `@[simp]` lemmas compute cs_K and sn_K at K=±1 and K=0. `curvatureCos_neg_one` uses `simp only` with explicit norm_num proofs for conditions like `¬(-1 > 0)` and `(-1 < 0)`. `curvatureCos_at_zero` and `curvatureSin_at_zero` use `split_ifs with h1 h2` to handle all three cases.\n\n**Part III — Parity** (131-148): `curvatureCos_neg` (even: cs_K(-r) = cs_K(r)) and `curvatureSin_neg` (odd: sn_K(-r) = -sn_K(r)) follow from `mul_neg` and the corresponding parity of cos/cosh and sin/sinh.\n\n**Part IV — Key algebra lemmas** (149-181): Two `private lemma`s that are the algebraic engine for equivalence proofs:\n- `K_mul_div_sqrt_sq_pos`: K·(x/√K)·(y/√K) = x·y for K>0. Proved by `field_simp` then `rw [sq_sqrt, mul_div_cancel_left₀]`.\n- `K_mul_div_sqrt_sq_neg`: K·(x/√(-K))·(y/√(-K)) = -(x·y) for K<0. Proved by `div_neg, mul_div_cancel_left₀`.\nThese two lemmas resolve the sign difference between spherical and hyperbolic laws algebraically.",
+    "content": "Three groups of supporting lemmas (lines 87-181):\n\n**Part II \u2014 Special values** (87-130): `@[simp]` lemmas compute cs_K and sn_K at K=\u00b11 and K=0. `curvatureCos_neg_one` uses `simp only` with explicit norm_num proofs for conditions like `\u00ac(-1 > 0)` and `(-1 < 0)`. `curvatureCos_at_zero` and `curvatureSin_at_zero` use `split_ifs with h1 h2` to handle all three cases.\n\n**Part III \u2014 Parity** (131-148): `curvatureCos_neg` (even: cs_K(-r) = cs_K(r)) and `curvatureSin_neg` (odd: sn_K(-r) = -sn_K(r)) follow from `mul_neg` and the corresponding parity of cos/cosh and sin/sinh.\n\n**Part IV \u2014 Key algebra lemmas** (149-181): Two `private lemma`s that are the algebraic engine for equivalence proofs:\n- `K_mul_div_sqrt_sq_pos`: K\u00b7(x/\u221aK)\u00b7(y/\u221aK) = x\u00b7y for K>0. Proved by `field_simp` then `rw [sq_sqrt, mul_div_cancel_left\u2080]`.\n- `K_mul_div_sqrt_sq_neg`: K\u00b7(x/\u221a(-K))\u00b7(y/\u221a(-K)) = -(x\u00b7y) for K<0. Proved by `div_neg, mul_div_cancel_left\u2080`.\nThese two lemmas resolve the sign difference between spherical and hyperbolic laws algebraically.",
     "mathContext": "Parity: in all three cases, $\\text{cs}_K(-r) = \\text{cs}_K(r)$ and $\\text{sn}_K(-r) = -\\text{sn}_K(r)$ follow from the parity of cos, cosh (even) and sin, sinh (odd). The algebra: $K \\cdot (x/\\sqrt{K}) \\cdot (y/\\sqrt{K}) = K \\cdot xy/K = xy$ for $K>0$, and $K \\cdot (x/\\sqrt{-K}) \\cdot (y/\\sqrt{-K}) = K \\cdot xy/(-K) = -xy$ for $K<0$. The sign flip is exactly what makes the unified formula recover the minus sign in the hyperbolic law.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -138,7 +138,7 @@
     ],
     "prerequisites": [
       "Real.cos_neg, Real.cosh_neg (parity)",
-      "Real.sq_sqrt, mul_div_cancel_left₀",
+      "Real.sq_sqrt, mul_div_cancel_left\u2080",
       "field_simp for algebraic simplification"
     ]
   },
@@ -151,8 +151,8 @@
     },
     "type": "definition",
     "title": "UnifiedTriangle Structure: Axiomatizing K-Geometry Triangles",
-    "content": "`UnifiedTriangle (K : ℝ)` (lines 226-237) is a Lean structure encoding a triangle in a space of constant sectional curvature K. Fields:\n- `a, b, c : ℝ` — side lengths (all positive via `ha`, `hb`, `hc`)\n- `C : ℝ` — angle opposite to c (constrained: `0 < C < π`)\n- `law` — the unified formula as a field: `cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C)`\n\nThe structure axiomatizes triangles at the formula level, without building the actual Riemannian geometry. The theorem `unified_law_of_cosines` (lines 239-242) extracts the `law` field — a trivial one-liner `t.law`.\n\n**Recovery theorems** (248-276): `spherical_recovery_K1` and `hyperbolic_recovery_Kneg1` show that classical-form hypotheses imply the K=±1 unified formula. `unified_K_neg1_gives_hyperbolic` and `unified_K1_gives_spherical` go the other direction: a UnifiedTriangle at K=±1 satisfies the classical law. These are all `simp [cs_K_one/neg_one] + linarith`.",
-    "mathContext": "The `law` field is a proposition (a proof that the formula holds), not data. A structure field of type `Prop` acts as an axiom about the triangle's geometry. This design means any tuple (a, b, c, C) satisfying the unified formula `cs_K(c) = cs_K(a)cs_K(b) + K·sn_K(a)sn_K(b)cos(C)` can be wrapped in `UnifiedTriangle K`. The structure does not require a, b, c to satisfy triangle inequalities beyond positivity and C ∈ (0,π).",
+    "content": "`UnifiedTriangle (K : \u211d)` (lines 226-237) is a Lean structure encoding a triangle in a space of constant sectional curvature K. Fields:\n- `a, b, c : \u211d` \u2014 side lengths (all positive via `ha`, `hb`, `hc`)\n- `C : \u211d` \u2014 angle opposite to c (constrained: `0 < C < \u03c0`)\n- `law` \u2014 the unified formula as a field: `cs_K(c) = cs_K(a)\u00b7cs_K(b) + K\u00b7sn_K(a)\u00b7sn_K(b)\u00b7cos(C)`\n\nThe structure axiomatizes triangles at the formula level, without building the actual Riemannian geometry. The theorem `unified_law_of_cosines` (lines 239-242) extracts the `law` field \u2014 a trivial one-liner `t.law`.\n\n**Recovery theorems** (248-276): `spherical_recovery_K1` and `hyperbolic_recovery_Kneg1` show that classical-form hypotheses imply the K=\u00b11 unified formula. `unified_K_neg1_gives_hyperbolic` and `unified_K1_gives_spherical` go the other direction: a UnifiedTriangle at K=\u00b11 satisfies the classical law. These are all `simp [cs_K_one/neg_one] + linarith`.",
+    "mathContext": "The `law` field is a proposition (a proof that the formula holds), not data. A structure field of type `Prop` acts as an axiom about the triangle's geometry. This design means any tuple (a, b, c, C) satisfying the unified formula `cs_K(c) = cs_K(a)cs_K(b) + K\u00b7sn_K(a)sn_K(b)cos(C)` can be wrapped in `UnifiedTriangle K`. The structure does not require a, b, c to satisfy triangle inequalities beyond positivity and C \u2208 (0,\u03c0).",
     "significance": "key",
     "relatedConcepts": [
       "UnifiedTriangle",
@@ -176,7 +176,7 @@
     },
     "type": "concept",
     "title": "Scaling Consistency and Euclidean Limit Setup",
-    "content": "**Scaling consistency** (317-330): `curvature_family_consistency_pos` proves cs_K(r) = cs_1(√K·r) for K>0 — i.e., K-geometry is unit-sphere geometry at scale 1/√K. Similarly, `curvature_sin_family_consistency_pos` proves sn_K(r) = sn_1(√K·r)/√K. Both are proved by `simp [curvatureCos, hK]` — the definitions unfold directly.\n\n**Euclidean limit helper lemmas** (338-385): Three private helper lemmas bound the error terms in the Taylor expansion:\n- `exp_sub_one_le_mul_exp (t)`: exp(t)-1 ≤ t·exp(t). Proved from `Real.add_one_le_exp`.\n- `cosh_sub_one_le (x)`: cosh(x)-1 ≤ (x²/2)·exp(x²/2). Uses `Real.cosh_le_exp_half_sq`.\n- `cosh_K_bound {K u}`: cosh(u·x)-1 ≤ -K·(x²/2·exp(x²/2)) when u²=-K. Applies `cosh_sub_one_le` and bounds exp(-K·x²/2) ≤ exp(x²/2) via monotonicity.\n- `cosh_double_K_bound {K u}`: cosh(2·u·x)-1 ≤ -K·2·(x²·exp(2x²)). Handles the double-angle bound needed for sinh² = (cosh(2x)-1)/2.",
+    "content": "**Scaling consistency** (317-330): `curvature_family_consistency_pos` proves cs_K(r) = cs_1(\u221aK\u00b7r) for K>0 \u2014 i.e., K-geometry is unit-sphere geometry at scale 1/\u221aK. Similarly, `curvature_sin_family_consistency_pos` proves sn_K(r) = sn_1(\u221aK\u00b7r)/\u221aK. Both are proved by `simp [curvatureCos, hK]` \u2014 the definitions unfold directly.\n\n**Euclidean limit helper lemmas** (338-385): Three private helper lemmas bound the error terms in the Taylor expansion:\n- `exp_sub_one_le_mul_exp (t)`: exp(t)-1 \u2264 t\u00b7exp(t). Proved from `Real.add_one_le_exp`.\n- `cosh_sub_one_le (x)`: cosh(x)-1 \u2264 (x\u00b2/2)\u00b7exp(x\u00b2/2). Uses `Real.cosh_le_exp_half_sq`.\n- `cosh_K_bound {K u}`: cosh(u\u00b7x)-1 \u2264 -K\u00b7(x\u00b2/2\u00b7exp(x\u00b2/2)) when u\u00b2=-K. Applies `cosh_sub_one_le` and bounds exp(-K\u00b7x\u00b2/2) \u2264 exp(x\u00b2/2) via monotonicity.\n- `cosh_double_K_bound {K u}`: cosh(2\u00b7u\u00b7x)-1 \u2264 -K\u00b72\u00b7(x\u00b2\u00b7exp(2x\u00b2)). Handles the double-angle bound needed for sinh\u00b2 = (cosh(2x)-1)/2.",
     "mathContext": "The scaling identity $\\text{cs}_K(r) = \\cos(\\sqrt{K} \\cdot r)$ for $K>0$ is immediate from the definition when $K>0$. For the Euclidean limit, the key inequalities are: (1) $\\cos(x) \\geq 1 - x^2/2$ (from `Real.one_sub_sq_div_two_le_cos`), giving $1-\\cos(\\sqrt{K}r) \\leq Kr^2/2$; (2) $|\\sin(x)| \\leq |x|$ (from `Real.abs_sin_le_abs`). These give the K>0 bound. For K<0, `Real.cosh_le_exp_half_sq` gives the cosh bound.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -188,7 +188,7 @@
     ],
     "prerequisites": [
       "Real.cosh_le_exp_half_sq in Mathlib",
-      "Real.add_one_le_exp (e^x ≥ 1+x)",
+      "Real.add_one_le_exp (e^x \u2265 1+x)",
       "Real.one_sub_sq_div_two_le_cos"
     ]
   }

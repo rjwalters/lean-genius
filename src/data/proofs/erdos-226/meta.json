@@ -55,7 +55,8 @@
     ],
     "lineCount": 268,
     "assumptions": "1 axiom: barth_schneider_1970. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "The question of arithmetic control over analytic functions dates to Stäckel (1895), who showed a transcendental entire function can take rational values at all rationals — but his construction did not control irrational inputs. Erdős sharpened this to an $\\textit{if and only if}$ question: can $f(x) \\in \\mathbb{Q} \\Leftrightarrow x \\in \\mathbb{Q}$? Hayman included it as Problem 2.31 in his 1974 collection, attributing it to Erdős. Barth and Schneider solved it affirmatively in 1970, proving the much stronger result that for ANY countable dense $A, B \\subset \\mathbb{R}$, a transcendental entire $f$ with $f(A) = B$ exists — and can be made strictly monotone on $\\mathbb{R}$. Their 1971 follow-up extended this to countable dense subsets of $\\mathbb{C}$. The construction uses Weierstrass products and careful interpolation on the countable dense set.",

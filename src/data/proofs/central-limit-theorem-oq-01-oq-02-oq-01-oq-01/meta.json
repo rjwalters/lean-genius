@@ -31,7 +31,8 @@
       "Conjugate symmetry φ(-t) = conj(φ(t)) (proved)",
       "Scaling and standardization relationships (proved)",
       "CLT Gaussian stability: Sₙ/√n ~ N(0,1) via char fn (proved)"
-    ]
+    ],
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "The **characteristic function** $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ is the Fourier transform of a probability distribution, analogous to the moment generating function but defined for all distributions. It was systematically developed by Paul Lévy (1925) as the central tool in his rigorous proof of the Central Limit Theorem and the theory of stable distributions.\n\nFor the Gaussian distribution $N(\\mu, \\sigma^2)$, the characteristic function takes the closed form $\\varphi(t) = \\exp(i\\mu t - \\sigma^2 t^2/2)$, which can be computed by completing the square in the Gaussian integral. This formula encodes all moments: differentiating at $t=0$ gives $\\mathbb{E}[X^k]$ in terms of $\\mu$ and $\\sigma$.\n\nThe **product formula** $\\varphi_{X+Y}(t) = \\varphi_X(t)\\cdot\\varphi_Y(t)$ for independent $X, Y$ follows from $\\mathbb{E}[e^{it(X+Y)}] = \\mathbb{E}[e^{itX}]\\mathbb{E}[e^{itY}]$ when $X, Y$ are independent. For Gaussians, this product formula reduces to simple exponential addition: $\\exp(a)\\cdot\\exp(b) = \\exp(a+b)$, making the sum-of-parameters rule $\\mu \\mapsto \\mu_1+\\mu_2$, $\\sigma^2 \\mapsto \\sigma_1^2+\\sigma_2^2$ immediate.\n\n**Lévy's continuity theorem** (the deep result this file builds toward) states that pointwise convergence of characteristic functions implies weak convergence of distributions. Together with the product formula, this gives the CLT: for iid $X_i$ with mean $\\mu$ and variance $\\sigma^2$, the char fn of $(S_n - n\\mu)/(\\sigma\\sqrt{n})$ converges pointwise to $e^{-t^2/2}$.",

@@ -73,7 +73,8 @@
       "Infinite series convergence (tsum)",
       "p-adic analysis (for understanding Erdős's proof technique)"
     ],
-    "lineCount": 329
+    "lineCount": 329,
+    "theoremCount": 23
   },
   "overview": {
     "historicalContext": "The study of arithmetic properties of the series S(t) = sum 1/(t^n - 1) originates in classical analytic number theory. The series naturally arises as a Lambert series with constant coefficients, connecting it to the divisor function tau(n) via the identity S(t) = sum tau(n)/t^n. In 1948, Paul Erdos published 'On arithmetical properties of Lambert series' in the Journal of the Indian Mathematical Society, proving that S(t) is irrational whenever t is an integer >= 2. His proof used careful analysis of the p-adic structure of partial sums. Sarvadaman Chowla conjectured that the irrationality should hold for all rational t > 1, not just integers. This conjecture remains open and connects to broader questions about Lambert series, transcendence theory, and the Erdos-Borwein constant E = S(2) ~ 1.606695. The problem appears as #1049 in the Erdos problems collection and is closely related to #1048 (Lambert series generalizations) and #1050 (related irrationality questions).",

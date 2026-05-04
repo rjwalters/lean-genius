@@ -54,7 +54,8 @@
         "relationship": "Sibling open question: asymptotic bounds for the birthday problem"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "The birthday problem, first stated by Richard von Mises in *Über Aufteilungs- und Besetzungswahrscheinlichkeiten* (1939), asks how many people are needed for a >50% chance of a shared birthday. The answer — just 23 — is famously counterintuitive and became a staple of probability pedagogy.\n\nThe natural generalization to k-way coincidences asks: when do k people share a birthday? This connects to the classical occupancy problem in combinatorics, studied by Flajolet, Gardy, and Thimonier (1992) using analytic combinatorics, and by Wendl (2003) in the context of DNA sequence assembly. The threshold for a k-way collision scales roughly as $d^{(k-1)/k} \\cdot (k!)^{1/k}$: for $d = 365$ days, $k=2$ needs ~23 people, $k=3$ needs ~88, and $k=4$ needs ~187.\n\nThe generalized pigeonhole principle underlying this formalization was first explicitly formulated by Dirichlet (1834) as the *Schubfachprinzip* (drawer principle). The k-way version — if $n > (k-1)d$ items are placed in $d$ containers, some container holds $\\geq k$ items — is a straightforward extension that appears in virtually every combinatorics textbook. Applications range from hash table collision analysis in computer science to the coupon collector's problem and urn models in probability.",

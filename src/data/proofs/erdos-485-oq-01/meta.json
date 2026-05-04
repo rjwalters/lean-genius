@@ -50,7 +50,8 @@
     "axiomCount": 3,
     "lineCount": 451,
     "assumptions": "3 axioms: Schinzel-Zannier lower bound, Erdős upper bound, f(k)→∞. Lacunary lower bound was REMOVED (found to be false: counterexample p = 1-x²-(1/2)x⁴).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Erdős Problem #485 has roots in a 1947 paper by Rényi and Rédei studying the minimum number of terms when polynomials are squared. Erdős proved in 1949 that f(k) < k^(1-c) via the exponentially-spaced construction P_k = Σ x^(3^j) — the geometric progression of exponents ensures very few cross-terms coincide when squaring. Erdős also conjectured (with Rényi) that f(k) → ∞, which stood open for 40 years until Schinzel (1987) proved f(k) > (log log k)/log 2. The big improvement came in 2009 when Schinzel and Zannier used Weil height theory from arithmetic geometry: the height of P satisfies H(P²) ≥ H(P)², giving a lower bound on support size via the logarithmic Mahler measure. The gap between Ω(log k) and O(k^(1-c)) remains the central open problem in sparse polynomial arithmetic. Notably, the formalization includes the discovery that the naive 'lacunary lower bound' (claiming termCount(P²) ≥ 2k-1) is FALSE — a counterexample p = 1 - x² - (1/2)x⁴ shows that coefficient cancellation can reduce the term count below the sumset lower bound.",

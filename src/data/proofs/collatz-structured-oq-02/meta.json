@@ -38,7 +38,8 @@
     "dateAdded": "2026-03-23",
     "lineCount": 256,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 27
   },
   "overview": {
     "historicalContext": "Lothar Collatz first posed the 3n+1 problem in 1937, and it quickly became one of the most famous unsolved problems in mathematics — Paul Erdős remarked that 'mathematics is not yet ready for such problems.' The conjecture is equivalent to asking whether the only cycle in the Collatz dynamical system is 1→4→2→1. Riho Terras (1976) proved that almost all positive integers have a finite stopping time, introducing probabilistic methods to the field. Jeffrey Lagarias's landmark 1985 survey systematized structural results about hypothetical cycles, establishing the algebraic framework based on the $2^M > 3^j$ constraint. Shalom Eliahou (1993) pushed these bounds dramatically, proving that any non-trivial cycle must have length exceeding $1.7 \\times 10^{10}$ (17 billion). The computational frontier reached $n < 2^{68} \\approx 2.95 \\times 10^{20}$ (Barina, 2020), verified by distributed computation. Despite these results, the conjecture remains wide open — Terence Tao (2019) proved that the Collatz conjecture holds for 'almost all' integers in a logarithmic density sense, the strongest result to date.",
@@ -183,7 +184,6 @@
     "axiomCount": 0,
     "theoremCount": 27,
     "lemmaCount": 0,
-    "defCount": 4,
     "imports": [
       "Mathlib.Tactic"
     ],

@@ -52,7 +52,8 @@
     "axiomCount": 0,
     "lineCount": 202,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Taylor's theorem has a rich history spanning several centuries. James Gregory discovered the general idea of power series expansion around 1671, and Brook Taylor published his systematic treatment in *Methodus Incrementorum Directa et Inversa* in 1715, giving the result its name. Colin Maclaurin popularized the special case $a = 0$ (Maclaurin series) in his 1742 *Treatise of Fluxions*, though this was already implicit in Taylor's work.\n\nThe rigorous formulation with explicit remainder terms came much later. Joseph-Louis Lagrange introduced the remainder $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ in his 1797 *Théorie des fonctions analytiques*, providing the first tool for bounding approximation error. Augustin-Louis Cauchy developed an alternative remainder form $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ that is sometimes more convenient for analysis. Both forms rely on the Mean Value Theorem applied to a carefully constructed auxiliary function.\n\nTaylor's theorem is entry #35 on Freek Wiedijk's list of 100 greatest theorems. It is arguably the most widely applied theorem in all of mathematics: it underlies numerical computation (floating-point arithmetic, quadrature, ODE solvers), optimization (Newton's method uses the second-order Taylor expansion), physics (perturbation theory, linearization of nonlinear systems), and machine learning (gradient descent is first-order Taylor). The formal verification in Lean establishes both remainder forms with full generality.",

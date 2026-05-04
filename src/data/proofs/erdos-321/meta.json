@@ -18,11 +18,12 @@
     "sourceUrl": "https://erdosproblems.com/321",
     "erdosUrl": "https://erdosproblems.com/321",
     "axiomCount": 2,
+    "theoremCount": 8,
     "assumptions": "2 axioms: bleicher_erdos_lower (R(N) \u2265 N/log N, Bleicher\u2013Erd\u0151s 1975) and bleicher_erdos_upper (R(N) \u2264 C\u00b7(N/log N)\u00b7log log N, 1976). Open problem \u2014 precise asymptotic of R(N) remains unknown.",
     "badge": "axiom",
     "proofRepoPath": "Proofs/Erdos321Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 174,
+    "lineCount": 190,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sup",
@@ -40,7 +41,8 @@
       "Proved equivalence of two subset sum formulations (distinct subsets \u2194 injective map)",
       "Proved hereditary property: subsets of sets with distinct reciprocal sums inherit distinctness",
       "Proved conjecture holds trivially for A = {1,...,N} (erdos_321_asymptotics)",
-      "Connected Bleicher\u2013Erd\u0151s bounds to Egyptian fraction theory and greedy algorithms"
+      "Connected Bleicher\u2013Erd\u0151s bounds to Egyptian fraction theory and greedy algorithms",
+      "maxDistinctReciprocal_ge_one: PROVED \u2014 R(N) \u2265 1 for N \u2265 1, witnessed by singleton {1} \u2208 {1,...,N}"
     ],
     "prerequisites": [
       "Combinatorial number theory (subset sums, extremal problems)",
@@ -76,25 +78,25 @@
     },
     {
       "id": "r-definition",
-      "title": "R(N) Definition",
+      "title": "R(N) Definition and Lower Bound",
       "startLine": 126,
-      "endLine": 134,
-      "summary": "Defines `maxDistinctReciprocal N` as the maximum cardinality over subsets of $\\{1,\\ldots,N\\}$ with distinct reciprocal sums, via `Finset.sup` over the filtered powerset.",
-      "mathContext": "$R(N) = \\max\\{|A| : A \\subseteq [N], \\text{ all reciprocal subset sums distinct}\\}$, noncomputable due to the existential in the filter predicate."
+      "endLine": 150,
+      "summary": "Defines `maxDistinctReciprocal N` as the maximum cardinality over subsets of $\\{1,\\ldots,N\\}$ with distinct reciprocal sums, via `Finset.sup` over the filtered powerset. `maxDistinctReciprocal_ge_one` (PROVED, line 137): $R(N) \\geq 1$ for all $N \\geq 1$, witnessed by the singleton $\\{1\\}$.",
+      "mathContext": "$R(N) = \\max\\{|A| : A \\subseteq [N], \\text{ all reciprocal subset sums distinct}\\} \\geq 1$ since $\\{1\\} \\subseteq [N]$ trivially has distinct sums ($0 \\neq 1$)."
     },
     {
       "id": "known-bounds",
       "title": "Bleicher-Erd\u0151s Bounds (Axiomatized)",
-      "startLine": 136,
-      "endLine": 155,
+      "startLine": 152,
+      "endLine": 175,
       "summary": "Three doc-comment descriptions of the known bounds: lower bound $R(N) \\geq N/\\log N$ (Bleicher-Erd\u0151s 1975, constructive via prime factorization), upper bound $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (1976, counting argument via $\\text{lcm}(1,\\ldots,N)$), and combined $\\Theta(N/\\log N)$ statement.",
       "mathContext": "$c_1 \\cdot \\frac{N}{\\log N} \\leq R(N) \\leq c_2 \\cdot \\frac{N \\log\\log N}{\\log N}$. The gap is one iterated logarithm factor."
     },
     {
       "id": "main-conjecture",
       "title": "Erd\u0151s Problem #321: Exact Asymptotics (OPEN)",
-      "startLine": 143,
-      "endLine": 155,
+      "startLine": 177,
+      "endLine": 190,
       "summary": "States the main problem: determine the exact asymptotic behavior of $R(N)$. The formal theorem `erdos_321_asymptotics` is tautological (take $f = R$, proved by `rfl`). The real open problem is finding an explicit closed-form for the iterated log correction.",
       "mathContext": "The conjecture: is $\\lim_{N \\to \\infty} R(N) \\cdot \\log N / N = c$ for some constant $c > 0$, or do iterated log corrections persist?"
     }
@@ -183,7 +185,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 174,
+    "lineCount": 190,
     "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 3,
@@ -216,6 +218,11 @@
         "name": "erdos_321_asymptotics",
         "type": "tautology",
         "description": "Tautological existence: \u2203 f, R(N) = f(N), proved by rfl \u2014 the real content is the axiomatized Bleicher\u2013Erd\u0151s bounds"
+      },
+      {
+        "name": "maxDistinctReciprocal_ge_one",
+        "type": "original",
+        "description": "R(N) \u2265 1 for all N \u2265 1: singleton {1} is a valid witness \u2014 proves {1} \u2208 filtered powerset via Finset.le_sup"
       }
     ],
     "path": "Proofs/Erdos321Problem.lean",

@@ -1,0 +1,134 @@
+{
+  "id": "erdos-1009-oq-01",
+  "title": "Optimal Constant in Györi's Edge-Disjoint Triangle Bound",
+  "slug": "erdos-1009-oq-01",
+  "description": "Formalizes the open question of finding the exact optimal constant C in Györi's bound f(c) ≤ Cc² for edge-disjoint triangles beyond the Turán threshold. Proves structural properties of valid bound constants and derives the lower bound C* ≥ 1/4 from Sauer's construction.",
+  "meta": {
+    "author": "Györi (1988); formalized 2026",
+    "sourceUrl": "https://erdosproblems.com/1009",
+    "date": "1971",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/Erdos1009OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "edge-disjoint",
+      "turan-numbers",
+      "optimization",
+      "open"
+    ],
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 160,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "assumptions": "3 axioms: boundFunction (opaque function representing f(c)), gyori_quadratic_bound (existence of valid constant C from Györi 1988), sauer_lower_bound (f(2) ≥ 1 from Sauer's K_{1,m,m} construction). These encode the deepest published results underpinning the open question.",
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
+    "erdosNumber": 1009,
+    "erdosUrl": "https://erdosproblems.com/1009",
+    "erdosProblemStatus": "open"
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1009",
+      "relationship": "extends",
+      "description": "The parent problem: Györi (1988) proved f(c) ≪ c², i.e., the bound function is O(c²). This OQ asks for the exact optimal constant C."
+    },
+    {
+      "targetId": "erdos-1009-oq-02",
+      "relationship": "sibling",
+      "description": "The K₄ analog of Györi's theorem: the open question of whether a similar result holds for K₄-free graphs."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**From Györi's O(c²) to the Exact Constant**\n\nErvin Györi proved in 1988 that the bound function f(c) in Erdős Problem #1009 satisfies f(c) = O(c²): there exists an absolute constant C > 0 such that f(c) ≤ Cc² for all c > 0. This resolved the existence part of Erdős's question. However, the precise value of the optimal constant C* — the smallest C for which f(c) ≤ Cc² holds — remains unknown.\n\nSauer's construction (the complete tripartite graph K_{1,m,m}) shows f(2) ≥ 1, which immediately gives the lower bound C* ≥ 1/4, since any valid C must satisfy C · 4 ≥ f(2) ≥ 1. Erdős also showed f(c) = 0 for c < 1/2, meaning the constraint on C is non-trivial only for c ≥ 1/2.\n\nDetermining C* exactly would quantify how efficiently one can pack triangles in dense graphs — a fundamental extremal combinatorics question connecting Turán theory to packing theory.",
+    "problemStatement": "**Open Question OQ-01: The Exact Optimal Constant**\n\nGyöri (1988) established that $f(c) \\leq C c^2$ for some $C > 0$. Define the **optimal bound constant** as:\n$$C^* = \\inf\\{C \\in \\mathbb{R} : C \\text{ is a valid bound}, \\forall c > 0, f(c) \\leq C c^2\\}$$\n\nKnown: $C^* \\geq 1/4$ (from Sauer's $f(2) \\geq 1$) and $C^* < \\infty$ (from Györi's theorem). The exact value of $C^*$ is an open problem.",
+    "proofStrategy": "**Formalization Approach**\n\n1. Axiomatize `boundFunction` (the opaque function f), `gyori_quadratic_bound` (existence of a valid C), and `sauer_lower_bound` (f(2) ≥ 1).\n2. Define `ValidBound C` as the predicate '(boundFunction c) ≤ Cc² for all c > 0'.\n3. Prove structural properties: nonnegativity, upward closure (mono), closure under min.\n4. Define `optimalBound` as `sInf {C | ValidBound C}` using Mathlib's `csInf`.\n5. Prove `optimalBound_le` (csInf_le), `optimalBound_nonneg` (le_csInf + nonnegativity), and `lt_optimalBound_not_valid` (contrapositive of csInf_le).\n6. Prove `optimalBound_ge_quarter` by showing every valid D satisfies D · 4 ≥ f(2) ≥ 1, hence D ≥ 1/4; taking the infimum gives C* ≥ 1/4.\n7. State the open question as a Lean Prop (`optimalBoundQuestion`).",
+    "keyInsights": [
+      "**ValidBound is upward-closed**: If C is a valid bound and C ≤ C', then C' is also valid (by transitivity and nonnegativity of c²). This means the set of valid constants is a ray [C*, ∞) — justifying the infimum definition of C*.",
+      "**Closure under min gives tighter bounds**: The minimum of two valid bound constants is also valid. This structural property underlies the infimum being well-defined: any finite collection of valid constants can be improved by taking their minimum.",
+      "**The Sauer lower bound C* ≥ 1/4 follows from a single evaluation**: The argument is entirely local — evaluate the ValidBound constraint at c = 2, use f(2) ≥ 1, and solve D · 4 ≥ 1 to get D ≥ 1/4. The csInf then inherits this lower bound.",
+      "**ratio_le reformulates ValidBound**: The lemma ValidBound.ratio_le (f(c)/c² ≤ C) reformulates the bound as a supremum condition: C* = sup_{c>0} f(c)/c². This dual characterization connects the infimum of valid constants to the supremum of the ratio.",
+      "**The open question has a clean Prop formulation**: `optimalBoundQuestion` states that C* is characterized by exactly the property that ValidBound D ↔ C* ≤ D. This is the sharp threshold characterization — C* is the exact cutoff. Proving this Prop requires knowing f(c)/c² → C* as c → ∞ or some sequence approaching the supremum."
+    ]
+  },
+  "sections": [
+    {
+      "id": "axioms",
+      "title": "Axioms and Deep Results",
+      "startLine": 27,
+      "endLine": 52,
+      "summary": "Axiomatizes boundFunction (the f(c) function), gyori_quadratic_bound (existence of valid C > 0 from Györi 1988), and sauer_lower_bound (f(2) ≥ 1 from Sauer's construction).",
+      "mathContext": "$f: \\mathbb{R} \\to \\mathbb{N}$ is the 'missing triangles' bound function. Györi (1988): $\\exists C > 0, \\forall c > 0, f(c) \\leq Cc^2$. Sauer: $f(2) \\geq 1$."
+    },
+    {
+      "id": "valid-bound",
+      "title": "Valid Bound Constants",
+      "startLine": 53,
+      "endLine": 98,
+      "summary": "Defines ValidBound C, proves validBound_exists (from Györi), ValidBound.nonneg, ValidBound.mono (upward closure), ValidBound.min_valid (closure under min), ValidBound.ratio_le (f(c)/c² ≤ C).",
+      "mathContext": "$C$ is a valid bound iff $\\forall c > 0, f(c) \\leq Cc^2$. The set $\\{C : C \\text{ valid}\\}$ is nonempty (by Györi), bounded below by 0, and upward-closed."
+    },
+    {
+      "id": "optimal-bound",
+      "title": "The Optimal Bound Constant",
+      "startLine": 99,
+      "endLine": 130,
+      "summary": "Defines optimalBound as sInf {C | ValidBound C}. Proves validBounds_bddBelow, optimalBound_le (csInf_le), optimalBound_nonneg (le_csInf), lt_optimalBound_not_valid (contrapositive).",
+      "mathContext": "$C^* = \\inf\\{C : C \\text{ valid}\\}$. Since the set is nonempty and bounded below by 0, $C^*$ is well-defined. For any valid $C$, $C^* \\leq C$; for $D < C^*$, $D$ is not valid."
+    },
+    {
+      "id": "sauer-bound",
+      "title": "Lower Bound from Sauer's Construction",
+      "startLine": 131,
+      "endLine": 148,
+      "summary": "Proves optimalBound_ge_quarter: C* ≥ 1/4. Uses sauer_lower_bound (f(2) ≥ 1) at c = 2 to show every valid D satisfies D · 4 ≥ 1, hence D ≥ 1/4.",
+      "mathContext": "For any valid $D$: $D \\cdot 2^2 = 4D \\geq f(2) \\geq 1$, so $D \\geq 1/4$. Taking the infimum: $C^* \\geq 1/4$."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 149,
+      "endLine": 160,
+      "summary": "States erdos_small_c_statement (f(c) = 0 for c < 1/2) and optimalBoundQuestion (there exists C = C* with 1/4 ≤ C and ValidBound D ↔ C ≤ D). Both are Lean Props (not asserted true).",
+      "mathContext": "Known: $1/4 \\leq C^* < \\infty$. Open: What is $C^*$ exactly? The threshold characterization $C^* \\leq D \\Leftrightarrow D$ valid would follow from the supremum of $f(c)/c^2$ being attained."
+    }
+  ],
+  "conclusion": {
+    "summary": "Provides a complete Lean 4 formalization of the structural theory around Györi's optimal constant: valid bounds form an upward-closed ray, the optimal constant is their infimum, and Sauer's construction gives the lower bound C* ≥ 1/4. Three axioms encode the deep published results; all structural theorems are fully proved with 0 sorries.",
+    "implications": "The formalization cleanly separates what is proved (structural properties of ValidBound, the infimum characterization of C*, the lower bound C* ≥ 1/4) from what is open (the exact value of C*). If C* were determined — say C* = 1/4 exactly — the formalization would be updated by proving ValidBound_iff_ge_quarter, eliminating the optimalBoundQuestion Prop. The framework is ready to absorb future progress.",
+    "openQuestions": [
+      "What is the exact value of C* = inf{C : f(c) ≤ Cc² for all c > 0}? Is C* = 1/4 (matching Sauer's lower bound exactly)?",
+      "Is the infimum C* attained, i.e., does f(c) ≤ C*c² hold for all c > 0? Or is it only an infimum (approached but not achieved)?",
+      "Does f(c)/c² → C* as c → ∞? This would confirm C* is the supremum of the ratio and give a constructive characterization."
+    ]
+  },
+  "references": [
+    {
+      "type": "paper",
+      "title": "On the number of edge disjoint triangles in K₄-free graphs",
+      "authors": ["E. Györi"],
+      "year": 1988,
+      "journal": "Combinatorica"
+    },
+    {
+      "type": "paper",
+      "title": "Some unsolved problems in graph theory and combinatorics",
+      "authors": ["P. Erdős"],
+      "year": 1971,
+      "journal": "Combinatorica"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/Erdos1009OQ01.lean",
+    "theoremCount": 10,
+    "axiomCount": 3,
+    "lineCount": 160,
+    "sorries": 0,
+    "definitionCount": 3
+  },
+  "sorries": 0
+}

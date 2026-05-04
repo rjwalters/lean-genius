@@ -50,7 +50,8 @@
       "Graph theory (graph coloring, Kempe chains)",
       "Combinatorics (pigeonhole principle, counting)",
       "Basic topology intuition (Jordan curve theorem, planarity)"
-    ]
+    ],
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "The Four Color Conjecture was proposed by Francis Guthrie in 1852 and first published by Augustus De Morgan. Alfred Kempe published a 'proof' in 1879 using his chain-swap argument, which was accepted for 11 years until Percy John Heawood found a flaw in 1890: two Kempe chain swaps needed for 4-coloring can interfere with each other. Heawood salvaged the argument to prove the Five Color Theorem, which remains the strongest result achievable by pure Kempe methods.\n\nKenneth Appel and Wolfgang Haken proved the Four Color Theorem in 1976 using a computer-assisted case analysis of 1,478 reducible configurations (reduced to 633 by Robertson, Sanders, Seymour, and Thomas in 1997). Georges Gonthier formally verified the proof in Coq in 2005, establishing it as one of the first major theorems with a fully machine-checked proof. The question of whether a human-readable proof exists — one that can be verified by hand without checking hundreds of configurations — remains open as of 2025.\n\nAlternative approaches include William Tutte's algebraic reformulation: for planar graphs, 4-colorability is equivalent to the existence of a nowhere-zero $\\mathbb{Z}_2 \\times \\mathbb{Z}_2$-flow. Paul Seymour proved the 6-flow theorem (1981), and the 5-flow conjecture is close to resolved, but the 4-flow conjecture (equivalent to 4CT) remains dependent on computer verification. This file formalizes the Kempe chain obstruction to understand precisely why human-readable methods break down at 4 colors.",
@@ -165,7 +166,6 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "lemmaCount": 0,
-    "defCount": 4,
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "Mathlib.Combinatorics.SimpleGraph.Coloring",

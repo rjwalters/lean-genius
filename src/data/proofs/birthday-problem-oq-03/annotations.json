@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Documentation: k-Way Birthday Coincidences",
-    "content": "The module documentation outlines the four main results of this formalization: (1) the generalized pigeonhole bound — $n > (k-1)d$ forces a k-way coincidence; (2) classical recovery — the $k=2$ case is equivalent to non-injectivity; (3) monotonicity — stronger coincidences imply weaker ones; (4) probability = 1 when the pigeonhole bound is exceeded. The approach uses Mathlib's `Finset.card_eq_sum_card_fiberwise` for fiber decomposition and `Finset.sum_le_sum` for bounding.\n\nThe historical note records the scaling of thresholds: for $d = 365$ days, $k=2$ needs ~23 people (the classical surprise), $k=3$ needs ~88, and $k=4$ needs ~187. The general scaling is $d^{(k-1)/k} \\cdot (k!)^{1/k}$.",
+    "content": "The module documentation outlines the four main results of this formalization: (1) the generalized pigeonhole bound \u2014 $n > (k-1)d$ forces a k-way coincidence; (2) classical recovery \u2014 the $k=2$ case is equivalent to non-injectivity; (3) monotonicity \u2014 stronger coincidences imply weaker ones; (4) probability = 1 when the pigeonhole bound is exceeded. The approach uses Mathlib's `Finset.card_eq_sum_card_fiberwise` for fiber decomposition and `Finset.sum_le_sum` for bounding.\n\nThe historical note records the scaling of thresholds: for $d = 365$ days, $k=2$ needs ~23 people (the classical surprise), $k=3$ needs ~88, and $k=4$ needs ~187. The general scaling is $d^{(k-1)/k} \\cdot (k!)^{1/k}$.",
     "mathContext": "Threshold for $>50\\%$ probability of a k-way coincidence among $d$ equally likely outcomes: $n \\approx d^{(k-1)/k} \\cdot (k!)^{1/k}$. For $d=365$: $n_2 \\approx 23$, $n_3 \\approx 88$, $n_4 \\approx 187$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -54,7 +54,7 @@
     },
     "type": "definition",
     "title": "HasKWay: The k-Way Coincidence Predicate",
-    "content": "A k-way coincidence occurs when some day `j` has at least `k` people assigned to it: $\\exists j, k \\leq |\\text{fiberAt}(f, j)|$. This existential definition is clean and enables both the pigeonhole proof (by contradiction on the negation) and the probability framework (by counting assignments satisfying the predicate).\n\nNote the direction: `k ≤ card` rather than `card ≥ k`. This is idiomatic in Mathlib, where `≤` is the preferred relation.",
+    "content": "A k-way coincidence occurs when some day `j` has at least `k` people assigned to it: $\\exists j, k \\leq |\\text{fiberAt}(f, j)|$. This existential definition is clean and enables both the pigeonhole proof (by contradiction on the negation) and the probability framework (by counting assignments satisfying the predicate).\n\nNote the direction: `k \u2264 card` rather than `card \u2265 k`. This is idiomatic in Mathlib, where `\u2264` is the preferred relation.",
     "mathContext": "$\\text{HasKWay}(f, k) \\iff \\exists j \\in \\text{Fin}\\,d,\\; |f^{-1}(j)| \\geq k$",
     "significance": "key",
     "relatedConcepts": [
@@ -74,9 +74,9 @@
       "startLine": 58,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fiber Partition of Unity",
-    "content": "The fiber sizes sum to $n$: $\\sum_{j \\in \\text{Fin}\\,d} |\\text{fiberAt}(f, j)| = n$. This is the partition-of-unity identity — every person belongs to exactly one fiber (the day they're assigned to), so summing over fibers counts each person exactly once.\n\nThe proof applies Mathlib's `Finset.card_eq_sum_card_fiberwise`, which expresses $|S| = \\sum_{t \\in T} |\\{s \\in S \\mid f(s) = t\\}|$ for any function $f : S \\to T$. The `simp` and `linarith` close the goal after specializing to `S = \\text{Fin}\\,n$, $T = \\text{Fin}\\,d$.",
+    "content": "The fiber sizes sum to $n$: $\\sum_{j \\in \\text{Fin}\\,d} |\\text{fiberAt}(f, j)| = n$. This is the partition-of-unity identity \u2014 every person belongs to exactly one fiber (the day they're assigned to), so summing over fibers counts each person exactly once.\n\nThe proof applies Mathlib's `Finset.card_eq_sum_card_fiberwise`, which expresses $|S| = \\sum_{t \\in T} |\\{s \\in S \\mid f(s) = t\\}|$ for any function $f : S \\to T$. The `simp` and `linarith` close the goal after specializing to `S = \\text{Fin}\\,n$, $T = \\text{Fin}\\,d$.",
     "mathContext": "$\\sum_{j=0}^{d-1} |\\text{fiberAt}(f, j)| = n$, since the fibers $\\{f^{-1}(j)\\}_{j \\in \\text{Fin}\\,d}$ partition $\\text{Fin}\\,n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -121,7 +121,7 @@
     },
     "type": "insight",
     "title": "Concrete Pigeonhole Instances for d=365",
-    "content": "Three concrete examples instantiate the generalized pigeonhole for the standard 365-day calendar:\n- `pigeonhole_365`: general template for any $k$ with $d=365$\n- $k=2$: 366 people guarantee a pairwise collision ($365 \\cdot 1 < 366$) — the classical pigeonhole\n- $k=3$: 731 people guarantee a triple collision ($365 \\cdot 2 < 731$)\n\nThese serve as sanity checks: the pigeonhole bound $(k-1) \\cdot 365$ gives the hard threshold. The real surprise of the birthday problem is that the *probabilistic* threshold (>50% chance) is much lower than the pigeonhole (certainty) threshold.",
+    "content": "Three concrete examples instantiate the generalized pigeonhole for the standard 365-day calendar:\n- `pigeonhole_365`: general template for any $k$ with $d=365$\n- $k=2$: 366 people guarantee a pairwise collision ($365 \\cdot 1 < 366$) \u2014 the classical pigeonhole\n- $k=3$: 731 people guarantee a triple collision ($365 \\cdot 2 < 731$)\n\nThese serve as sanity checks: the pigeonhole bound $(k-1) \\cdot 365$ gives the hard threshold. The real surprise of the birthday problem is that the *probabilistic* threshold (>50% chance) is much lower than the pigeonhole (certainty) threshold.",
     "mathContext": "$k=2$: $n > 365$ guarantees a collision (pigeonhole), but $n \\ge 23$ gives $>50\\%$ probability.\n$k=3$: $n > 730$ guarantees a triple, but $n \\ge 88$ gives $>50\\%$ probability.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -142,7 +142,7 @@
     },
     "type": "concept",
     "title": "Classical Recovery: 2-Way = Non-Injective",
-    "content": "Proves the equivalence `HasKWay f 2 ↔ ¬Function.Injective f`. Forward: a fiber with $\\ge 2$ elements gives two distinct people $i_1 \\neq i_2$ with $f(i_1) = f(i_2) = j$, contradicting injectivity. The key step uses `Finset.one_lt_card` to extract the two distinct witnesses. Backward: non-injectivity gives $f(i_1) = f(i_2)$ with $i_1 \\neq i_2$, so the fiber at $f(i_1)$ contains both $i_1$ and $i_2$, giving $|\\text{fiber}| \\geq 2$.\n\nThis equivalence is the bridge between the k-way framework and the original birthday problem, which is typically stated in terms of injectivity (all birthdays distinct).",
+    "content": "Proves the equivalence `HasKWay f 2 \u2194 \u00acFunction.Injective f`. Forward: a fiber with $\\ge 2$ elements gives two distinct people $i_1 \\neq i_2$ with $f(i_1) = f(i_2) = j$, contradicting injectivity. The key step uses `Finset.one_lt_card` to extract the two distinct witnesses. Backward: non-injectivity gives $f(i_1) = f(i_2)$ with $i_1 \\neq i_2$, so the fiber at $f(i_1)$ contains both $i_1$ and $i_2$, giving $|\\text{fiber}| \\geq 2$.\n\nThis equivalence is the bridge between the k-way framework and the original birthday problem, which is typically stated in terms of injectivity (all birthdays distinct).",
     "mathContext": "$\\text{HasKWay}(f, 2) \\iff \\neg\\text{Injective}(f)$\n\nEquivalently: $\\exists j,\\; |f^{-1}(j)| \\ge 2 \\iff \\exists i_1 \\ne i_2,\\; f(i_1) = f(i_2)$",
     "significance": "key",
     "relatedConcepts": [
@@ -165,7 +165,7 @@
     },
     "type": "concept",
     "title": "Monotonicity in k",
-    "content": "Two monotonicity results: (1) `hasKWay_mono`: a k-way coincidence implies a $k'$-way coincidence for $k' \\leq k$ — if some day has $\\geq k$ people, it certainly has $\\geq k'$ people. The proof is a simple `le_trans`. (2) `hasKWay_implies_pair`: specializes to $k' = 2$, formalizing 'a birthday triple implies a birthday pair.'\n\nThese capture the intuitive ordering: stronger coincidences imply weaker ones.",
+    "content": "Two monotonicity results: (1) `hasKWay_mono`: a k-way coincidence implies a $k'$-way coincidence for $k' \\leq k$ \u2014 if some day has $\\geq k$ people, it certainly has $\\geq k'$ people. The proof is a simple `le_trans`. (2) `hasKWay_implies_pair`: specializes to $k' = 2$, formalizing 'a birthday triple implies a birthday pair.'\n\nThese capture the intuitive ordering: stronger coincidences imply weaker ones.",
     "mathContext": "$k' \\le k \\text{ and } \\exists j,\\; |f^{-1}(j)| \\ge k \\implies \\exists j,\\; |f^{-1}(j)| \\ge k'$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -187,7 +187,7 @@
     },
     "type": "definition",
     "title": "Probability Framework: noKWaySet and probKWay",
-    "content": "`noKWaySet n d k` is the set of birthday assignments where every day has fewer than $k$ people — the 'safe' assignments. `probKWay n d k` is defined as $1 - |\\text{noKWaySet}| / d^n$, following the standard complementary counting approach: the probability of a k-way coincidence equals 1 minus the probability of avoiding one.\n\nThe definition is `noncomputable` because it involves division in $\\mathbb{Q}$ computed from a finite set cardinality — the computation is well-defined but Lean's kernel can't evaluate it.",
+    "content": "`noKWaySet n d k` is the set of birthday assignments where every day has fewer than $k$ people \u2014 the 'safe' assignments. `probKWay n d k` is defined as $1 - |\\text{noKWaySet}| / d^n$, following the standard complementary counting approach: the probability of a k-way coincidence equals 1 minus the probability of avoiding one.\n\nThe definition is `noncomputable` because it involves division in $\\mathbb{Q}$ computed from a finite set cardinality \u2014 the computation is well-defined but Lean's kernel can't evaluate it.",
     "mathContext": "$P(\\text{k-way}) = 1 - \\frac{|\\{f : [n] \\to [d] \\mid \\forall j,\\; |f^{-1}(j)| < k\\}|}{d^n}$",
     "significance": "key",
     "relatedConcepts": [
@@ -210,7 +210,7 @@
     },
     "type": "concept",
     "title": "Probability = 1 Under Pigeonhole",
-    "content": "When $n > (k-1) \\cdot d$, the probability of a k-way coincidence is exactly 1: every possible birthday assignment has a k-way coincidence, so `noKWaySet` is empty. The proof shows `noKWaySet n d k = ∅` by deriving a contradiction for any hypothetical member using `pigeonhole_kway`, then `simp` computes $1 - 0/d^n = 1$.",
+    "content": "When $n > (k-1) \\cdot d$, the probability of a k-way coincidence is exactly 1: every possible birthday assignment has a k-way coincidence, so `noKWaySet` is empty. The proof shows `noKWaySet n d k = \u2205` by deriving a contradiction for any hypothetical member using `pigeonhole_kway`, then `simp` computes $1 - 0/d^n = 1$.",
     "mathContext": "$n > (k-1)d \\implies P(\\text{k-way}) = 1 - \\frac{|\\emptyset|}{d^n} = 1 - 0 = 1$",
     "significance": "key",
     "relatedConcepts": [
@@ -276,7 +276,7 @@
     },
     "type": "concept",
     "title": "No k-Way When n < k, and Probability = 0",
-    "content": "`no_kway_of_lt`: When $n < k$, no assignment can have a k-way coincidence — you can't have $k$ people at one birthday with fewer than $k$ people total. The proof bounds $|\\text{fiberAt}(f, j)| \\leq |\\text{Fin}\\,n| = n < k$.\n\n`probKWay_zero_of_lt`: The probability is 0 when $n < k$, since every assignment avoids k-way coincidences: $\\text{noKWaySet} = \\text{univ}$, so $P = 1 - d^n/d^n = 0$. The proof uses `div_self` to evaluate $d^n / d^n = 1$.\n\nTogether with `probKWay_one_of_pigeonhole`, these bracket the probability: $P = 0$ for $n < k$, $P = 1$ for $n > (k-1)d$, and $0 < P < 1$ in between.",
+    "content": "`no_kway_of_lt`: When $n < k$, no assignment can have a k-way coincidence \u2014 you can't have $k$ people at one birthday with fewer than $k$ people total. The proof bounds $|\\text{fiberAt}(f, j)| \\leq |\\text{Fin}\\,n| = n < k$.\n\n`probKWay_zero_of_lt`: The probability is 0 when $n < k$, since every assignment avoids k-way coincidences: $\\text{noKWaySet} = \\text{univ}$, so $P = 1 - d^n/d^n = 0$. The proof uses `div_self` to evaluate $d^n / d^n = 1$.\n\nTogether with `probKWay_one_of_pigeonhole`, these bracket the probability: $P = 0$ for $n < k$, $P = 1$ for $n > (k-1)d$, and $0 < P < 1$ in between.",
     "mathContext": "$n < k \\implies P(\\text{k-way}) = 0$ and $n > (k-1)d \\implies P(\\text{k-way}) = 1$.\n\nThe interesting regime is $k \\le n \\le (k-1)d$ where $0 < P < 1$.",
     "significance": "supporting",
     "relatedConcepts": [

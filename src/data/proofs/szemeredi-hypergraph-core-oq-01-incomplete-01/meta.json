@@ -18,7 +18,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/SzemerediHypergraphGowers.lean",
-    "badge": "infrastructure",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -43,9 +43,10 @@
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "lineCount": 322,
+    "lineCount": 535,
     "assumptions": "Infrastructure file: 0 sorries, 0 axioms. Provides definitions (SimplicialComplex, completeComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity) and supporting lemmas. A previously-attempted naive_implies_gowers theorem was removed; the obstruction (sub-complex topCliques are not generally transversals of vertex sub-parts) is documented in-file (Part VII), and three provable surrogates are supplied instead (relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self, isGowersRegular_empty).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "Szemerédi's 1975 theorem (Acta Arith. 27, 199–245) — every set of integers of positive upper density contains arbitrarily long arithmetic progressions — was originally proved using an extremely intricate combinatorial argument that introduced the regularity lemma for graphs as a key tool. Furstenberg (1977) gave a fundamentally different proof via ergodic theory, opening the door to vast generalizations (multidimensional Szemerédi, polynomial Szemerédi, density Hales-Jewett). The Gowers (2007) hypergraph regularity lemma is a far-reaching generalization of Szemerédi's graph regularity (2-uniform) to k-uniform hypergraphs, and provides a purely combinatorial proof of the multidimensional Szemerédi theorem. The classical graph regularity measures how much the edge density changes when restricting to sub-parts of a bipartition. For hypergraphs, the correct notion — introduced by Gowers and independently by Rödl-Skokan (2004) and Nagle-Rödl-Schacht (2006) — is *relative regularity*: measuring density relative to an underlying system of lower-dimensional hypergraphs (the 'complex'), and requiring density stability under dense sub-complexes. The technical heart of the modern hypergraph approach is that ordinary 'flat' regularity is too weak for k≥3 (a counterexample of Gowers and Wolf shows the counting lemma fails); the relative formulation tracks how each dimension level depends on the levels below, making the inductive removal lemma feasible. This file formalizes the foundational data structures and consistency lemmas needed for any subsequent counting lemma formalization.",
@@ -165,7 +166,7 @@
       "Classical"
     ],
     "namespace": "Szemeredi.Hypergraph",
-    "lineCount": 322,
+    "lineCount": 535,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 6,

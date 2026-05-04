@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "k=3 Birthday Extension Counting: From n=23 to n=88",
-    "content": "The classical birthday problem asks: how many people to get 50% chance of some pair sharing a birthday? Answer: 23. This file addresses the k=3 generalization: how many for 50% chance that 3+ people share? Answer: 88 (for d=365 days). The formalization builds the extension-counting framework for computing exact probabilities recursively. The key idea: when adding person n+1 to a valid n-person assignment (where no day has ≥ k=3 people), the number of valid placement days is d minus the count of 'doubled' (full) days. This framework enables computing |noKWay(n+1)| from |noKWay(n)|.",
+    "content": "The classical birthday problem asks: how many people to get 50% chance of some pair sharing a birthday? Answer: 23. This file addresses the k=3 generalization: how many for 50% chance that 3+ people share? Answer: 88 (for d=365 days). The formalization builds the extension-counting framework for computing exact probabilities recursively. The key idea: when adding person n+1 to a valid n-person assignment (where no day has \u2265 k=3 people), the number of valid placement days is d minus the count of 'doubled' (full) days. This framework enables computing |noKWay(n+1)| from |noKWay(n)|.",
     "mathContext": "Extension count: $|\\{j : |f^{-1}(j)| < k-1\\}| = d - \\#\\{\\text{full days}\\}$ valid days for person $n+1$. For $k=3$: doubled days are full days.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -31,9 +31,9 @@
       "startLine": 36,
       "endLine": 49
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fiber Infrastructure: People Partitioned by Day",
-    "content": "`fiberAt f j` is the set of people assigned to day j, defined as a filter on the universe `Finset.univ`. `fiberAt_sum` proves the partition-of-unity: the sum of fiber sizes equals n (the total people). The proof uses `Finset.card_eq_sum_card_fiberwise` from Mathlib, which states that for any function f : α → β, the total cardinality equals the sum over fibers. The result is then a `linarith` call after normalizing with `simp`. This is the combinatorial backbone: people are partitioned by their assigned day.",
+    "content": "`fiberAt f j` is the set of people assigned to day j, defined as a filter on the universe `Finset.univ`. `fiberAt_sum` proves the partition-of-unity: the sum of fiber sizes equals n (the total people). The proof uses `Finset.card_eq_sum_card_fiberwise` from Mathlib, which states that for any function f : \u03b1 \u2192 \u03b2, the total cardinality equals the sum over fibers. The result is then a `linarith` call after normalizing with `simp`. This is the combinatorial backbone: people are partitioned by their assigned day.",
     "mathContext": "$\\sum_{j \\in [d]} |f^{-1}(j)| = n$ where $f^{-1}(j) = \\{i : f(i) = j\\}$ is the fiber at day $j$",
     "significance": "key",
     "relatedConcepts": [
@@ -55,9 +55,9 @@
       "startLine": 58,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Full Days Bound: Pigeonhole Prevents All Days Being Full",
-    "content": "`fullDays f k` is the set of days with exactly k-1 people (at maximum capacity). `fullDays_lt_d` proves the key lemma: if n < (k-1)·d (below the pigeonhole threshold), then #{full days} < d. The proof is by contradiction: if all d days were full (each with k-1 people), then the fiber sum would be ≥ (k-1)·d > n, contradicting `fiberAt_sum`. The contradiction argument uses `Finset.eq_univ_of_card` (if a subset has cardinality d, it's the whole Finset.univ) and `Finset.sum_le_sum` to lower-bound the fiber sum when all days are full.",
+    "content": "`fullDays f k` is the set of days with exactly k-1 people (at maximum capacity). `fullDays_lt_d` proves the key lemma: if n < (k-1)\u00b7d (below the pigeonhole threshold), then #{full days} < d. The proof is by contradiction: if all d days were full (each with k-1 people), then the fiber sum would be \u2265 (k-1)\u00b7d > n, contradicting `fiberAt_sum`. The contradiction argument uses `Finset.eq_univ_of_card` (if a subset has cardinality d, it's the whole Finset.univ) and `Finset.sum_le_sum` to lower-bound the fiber sum when all days are full.",
     "mathContext": "$n < (k-1)d \\implies \\#\\{\\text{full days}\\} < d$. Proof: if all $d$ days have $k-1$ people, $\\sum |f^{-1}(j)| \\geq (k-1)d > n$, contradicting $\\sum = n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -109,7 +109,7 @@
     },
     "type": "insight",
     "title": "Day Type Decomposition for k=3: Empty + Single + Double = d",
-    "content": "For k=3 (max 2 people per day), the days split into three types: empty (0 people), single (1 person), double (2 people). `day_type_trichotomy` uses `omega` on the validity hypothesis `card ≤ 2` to conclude card ∈ {0,1,2}. Three disjoint-filter lemmas prove pairwise disjointness of the type sets using `Finset.disjoint_filter.mpr` (filters with contradictory predicates are disjoint). `day_types_cover` assembles the covering result. `day_types_sum_d` proves |empty| + |single| + |double| = d by two applications of `Finset.card_union_of_disjoint` and the covering fact. This gives the combinatorial invariant: the type counts (a,b,c) with a+b+c=d and b+2c=n characterize all valid assignments.",
+    "content": "For k=3 (max 2 people per day), the days split into three types: empty (0 people), single (1 person), double (2 people). `day_type_trichotomy` uses `omega` on the validity hypothesis `card \u2264 2` to conclude card \u2208 {0,1,2}. Three disjoint-filter lemmas prove pairwise disjointness of the type sets using `Finset.disjoint_filter.mpr` (filters with contradictory predicates are disjoint). `day_types_cover` assembles the covering result. `day_types_sum_d` proves |empty| + |single| + |double| = d by two applications of `Finset.card_union_of_disjoint` and the covering fact. This gives the combinatorial invariant: the type counts (a,b,c) with a+b+c=d and b+2c=n characterize all valid assignments.",
     "mathContext": "For $k=3$: $|\\text{empty}| + |\\text{single}| + |\\text{double}| = d$ and $|\\text{single}| + 2|\\text{double}| = n$. This type vector $(a,b,c)$ determines the combinatorial structure of the assignment.",
     "significance": "key",
     "relatedConcepts": [
@@ -133,10 +133,10 @@
       "startLine": 208,
       "endLine": 221
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Restriction Monotonicity: Fewer People, Smaller Fibers",
-    "content": "`fiberAt_restrict_le` proves that restricting an (n+1)-person assignment f to the first n people (via `f ∘ Fin.castSucc`) has weakly smaller fibers at each day. The proof is by `Finset.card_le_card`: the restricted fiber at j is a subset of the full fiber at j (since `Fin.castSucc` embeds Fin n into Fin (n+1)). `restrict_valid` then shows restriction preserves the validity bound: if all fibers of f are ≤ m, so are the restricted fibers. This is the key 'downward monotonicity' property connecting the n+1 problem to the n problem in the recursion.",
-    "mathContext": "$|f|_{[n]}^{-1}(j)| \\leq |f^{-1}(j)|$ for all $j$ — removing a person can only shrink fibers. Enables: valid $(n+1)$-assignment $\\implies$ valid $n$-assignment.",
+    "content": "`fiberAt_restrict_le` proves that restricting an (n+1)-person assignment f to the first n people (via `f \u2218 Fin.castSucc`) has weakly smaller fibers at each day. The proof is by `Finset.card_le_card`: the restricted fiber at j is a subset of the full fiber at j (since `Fin.castSucc` embeds Fin n into Fin (n+1)). `restrict_valid` then shows restriction preserves the validity bound: if all fibers of f are \u2264 m, so are the restricted fibers. This is the key 'downward monotonicity' property connecting the n+1 problem to the n problem in the recursion.",
+    "mathContext": "$|f|_{[n]}^{-1}(j)| \\leq |f^{-1}(j)|$ for all $j$ \u2014 removing a person can only shrink fibers. Enables: valid $(n+1)$-assignment $\\implies$ valid $n$-assignment.",
     "significance": "supporting",
     "relatedConcepts": [
       "restriction",

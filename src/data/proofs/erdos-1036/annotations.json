@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Statement and Imports",
-    "content": "Erdős Problem #1036 asks: if a graph on n vertices has no clique or independent set larger than c log n vertices (a non-Ramsey graph), must it contain at least 2^{Ω_c(n)} non-isomorphic induced subgraphs? The answer is YES by Shelah (1998). The open question (oq-01) asks for the optimal constant c' in the exponent.",
+    "content": "Erd\u0151s Problem #1036 asks: if a graph on n vertices has no clique or independent set larger than c log n vertices (a non-Ramsey graph), must it contain at least 2^{\u03a9_c(n)} non-isomorphic induced subgraphs? The answer is YES by Shelah (1998). The open question (oq-01) asks for the optimal constant c' in the exponent.",
     "mathContext": "The problem sits at the intersection of Ramsey theory and subgraph enumeration. A graph $G$ is non-Ramsey at level $c$ if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, where $\\omega$ is the clique number and $\\alpha$ is the independence number. Ramsey's theorem guarantees that any graph on $n$ vertices has $\\omega(G)$ or $\\alpha(G)$ at least $\\frac{1}{2}\\log n$, so non-Ramsey graphs are precisely those achieving the optimal asymptotic balance.",
     "significance": "supporting",
     "prerequisites": [
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Clique Number, Independence Number, and Non-Ramsey",
-    "content": "The clique number ω(G) is the supremum of clique sizes in G, and the independence number α(G) is the supremum of independent set sizes. G is non-Ramsey at level c if both are bounded by c log |V|. Note that sSup over a potentially empty set is well-defined in Lean (returns 0 by convention), making these definitions noncomputable but mathematically sound.",
+    "content": "The clique number \u03c9(G) is the supremum of clique sizes in G, and the independence number \u03b1(G) is the supremum of independent set sizes. G is non-Ramsey at level c if both are bounded by c log |V|. Note that sSup over a potentially empty set is well-defined in Lean (returns 0 by convention), making these definitions noncomputable but mathematically sound.",
     "mathContext": "These are defined using `sSup` (supremum) over the set of sizes of cliques/independent sets. `independenceNumber` is defined via the complement graph: $\\alpha(G) = \\omega(G^c)$, where $G^c$ is the complement. The non-Ramsey condition $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$ captures graphs with no large homogeneous structure.",
     "significance": "key",
     "prerequisites": [
@@ -56,8 +56,8 @@
     },
     "type": "definition",
     "title": "numInducedSubgraphClasses (Placeholder)",
-    "content": "This definition counts induced subgraph isomorphism classes — the key quantity in Problem #1036. The current implementation is a placeholder: it counts all subsets (= 2^n) rather than isomorphism classes. Correctly quotienting by graph isomorphism requires significantly more infrastructure (decidable isomorphism for finite graphs). The placeholder gives the trivial upper bound exactly, making it a conservative over-approximation.",
-    "mathContext": "The correct definition would be $|\\{[H] : H \\text{ is an induced subgraph of } G\\} / {\\cong}|$ where $\\cong$ is graph isomorphism. The placeholder uses `Fintype.card (Finset V)` which equals $2^{|V|}$ — the number of subsets, hence the number of induced subgraphs before taking isomorphism classes. This over-counts since non-isomorphic induced subgraphs may share the same isomorphism class.",
+    "content": "This definition counts induced subgraph isomorphism classes \u2014 the key quantity in Problem #1036. The current implementation is a placeholder: it counts all subsets (= 2^n) rather than isomorphism classes. Correctly quotienting by graph isomorphism requires significantly more infrastructure (decidable isomorphism for finite graphs). The placeholder gives the trivial upper bound exactly, making it a conservative over-approximation.",
+    "mathContext": "The correct definition would be $|\\{[H] : H \\text{ is an induced subgraph of } G\\} / {\\cong}|$ where $\\cong$ is graph isomorphism. The placeholder uses `Fintype.card (Finset V)` which equals $2^{|V|}$ \u2014 the number of subsets, hence the number of induced subgraphs before taking isomorphism classes. This over-counts since non-isomorphic induced subgraphs may share the same isomorphism class.",
     "significance": "supporting",
     "prerequisites": [
       "graph isomorphism",
@@ -77,10 +77,10 @@
       "startLine": 60,
       "endLine": 72
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Shelah's Theorem (1998) and Existence of Non-Ramsey Graphs",
-    "content": "Two axioms capture the two key results: Shelah's 1998 theorem (the main result solving #1036) and Erdős's 1947 probabilistic existence result for non-Ramsey graphs. Both are stated as axiom declarations because their proofs require substantial mathematical infrastructure (graph regularity, probabilistic method) not yet formalized in this file.",
-    "mathContext": "Shelah's theorem: for any $c > 0$, there exists $c' > 0$ such that every non-Ramsey$(c)$ graph $G$ on $n$ vertices satisfies $\\text{numISC}(G) \\geq 2^{c'n}$. The existence axiom proves: for any $c > 0$, there exists a non-Ramsey$(c)$ graph on $n \\geq 1$ vertices (proved via the probabilistic method — a random graph $G(n, 1/2)$ is non-Ramsey with high probability for appropriate $c$).",
+    "content": "Two axioms capture the two key results: Shelah's 1998 theorem (the main result solving #1036) and Erd\u0151s's 1947 probabilistic existence result for non-Ramsey graphs. Both are stated as axiom declarations because their proofs require substantial mathematical infrastructure (graph regularity, probabilistic method) not yet formalized in this file.",
+    "mathContext": "Shelah's theorem: for any $c > 0$, there exists $c' > 0$ such that every non-Ramsey$(c)$ graph $G$ on $n$ vertices satisfies $\\text{numISC}(G) \\geq 2^{c'n}$. The existence axiom proves: for any $c > 0$, there exists a non-Ramsey$(c)$ graph on $n \\geq 1$ vertices (proved via the probabilistic method \u2014 a random graph $G(n, 1/2)$ is non-Ramsey with high probability for appropriate $c$).",
     "significance": "key",
     "prerequisites": [
       "axiom declarations",
@@ -90,7 +90,7 @@
     "relatedConcepts": [
       "Shelah's theorem",
       "probabilistic method",
-      "Erdős-Hajnal",
+      "Erd\u0151s-Hajnal",
       "regularity lemma"
     ]
   },
@@ -101,9 +101,9 @@
       "startLine": 74,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Alon-Hajnal (1991): Sub-exponential Precursor",
-    "content": "The Alon-Hajnal 1991 bound (sub-exponential: exp(n·(log n)^{-O(log log n)})) is derived here from Shelah's stronger exponential bound. The derivation uses the classical estimate e^x ≥ 1 + x, which shows 2^{c'n} ≥ c'·log(2)·n. This makes the sub-exponential result a formal consequence of the exponential one.",
+    "content": "The Alon-Hajnal 1991 bound (sub-exponential: exp(n\u00b7(log n)^{-O(log log n)})) is derived here from Shelah's stronger exponential bound. The derivation uses the classical estimate e^x \u2265 1 + x, which shows 2^{c'n} \u2265 c'\u00b7log(2)\u00b7n. This makes the sub-exponential result a formal consequence of the exponential one.",
     "mathContext": "The derivation chain: $\\text{numISC}(G) \\geq 2^{c''n} \\geq e^{c'' \\cdot n \\cdot \\ln 2} \\geq c'' \\cdot n \\cdot \\ln 2$ (using $e^x \\geq x$). The last inequality is `Real.add_one_le_exp`: $e^x \\geq 1 + x \\geq x$ for all $x$. The proof uses `calc` with `Real.rpow_def_of_pos` to convert $2^{c''n}$ to exponential form.",
     "significance": "supporting",
     "prerequisites": [
@@ -128,7 +128,7 @@
     "type": "definition",
     "title": "Optimal Constant and Placeholder Lemma",
     "content": "The optimal constant optimalConstant(c) is the supremum of all c' satisfying Shelah's conclusion for all non-Ramsey(c) graphs. The universe annotation Type (not Type*) is necessary for sSup to be well-typed. The lemma numISC_cast_fin shows that with the placeholder definition, numInducedSubgraphClasses on Fin n equals 2^n, allowing the bounding arguments to proceed.",
-    "mathContext": "The optimal constant formalizes the open question oq-01: $f^*(c) = \\sup\\{c' : \\forall G \\text{ non-Ramsey}(c), \\text{numISC}(G) \\geq 2^{c'n}\\}$. The `Type` vs `Type*` issue arises because `sSup` requires `CompleteLattice` which needs a fixed universe. The lemma `numISC_cast_fin n G : (numISC G : ℝ) = 2^n` holds because `Fintype.card (Finset (Fin n)) = 2^n`.",
+    "mathContext": "The optimal constant formalizes the open question oq-01: $f^*(c) = \\sup\\{c' : \\forall G \\text{ non-Ramsey}(c), \\text{numISC}(G) \\geq 2^{c'n}\\}$. The `Type` vs `Type*` issue arises because `sSup` requires `CompleteLattice` which needs a fixed universe. The lemma `numISC_cast_fin n G : (numISC G : \u211d) = 2^n` holds because `Fintype.card (Finset (Fin n)) = 2^n`.",
     "significance": "key",
     "prerequisites": [
       "sSup",
@@ -150,10 +150,10 @@
       "startLine": 117,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Optimal Constant Bounds: Positive and at Most 1",
     "content": "Two theorems establish that optimalConstant(c) is in (0, 1] for c > 0. The upper bound at most 1 follows from the existence of non-Ramsey graphs: if G exists on n vertices, then numISC(G) = 2^n (by the placeholder), so c' at most 1 is forced by comparing 2^n at least 2^{c'n}. The lower bound follows from Shelah's c'' > 0 lying in the optimality set, combined with the BddAbove condition.",
-    "mathContext": "Upper bound: By `Real.rpow_lt_rpow_of_exponent_lt` with base 2 > 1, if $c' > 1$ then $2^{c'n} > 2^n$, contradicting the placeholder bound. Lower bound: Shelah gives $c'' > 0$ in the optimality set, and `le_csSup` gives `optimalConstant(c) ≥ c'' > 0`.",
+    "mathContext": "Upper bound: By `Real.rpow_lt_rpow_of_exponent_lt` with base 2 > 1, if $c' > 1$ then $2^{c'n} > 2^n$, contradicting the placeholder bound. Lower bound: Shelah gives $c'' > 0$ in the optimality set, and `le_csSup` gives `optimalConstant(c) \u2265 c'' > 0`.",
     "significance": "supporting",
     "prerequisites": [
       "Real.rpow_lt_rpow_of_exponent_lt",
@@ -174,9 +174,9 @@
       "startLine": 162,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complement Symmetry and Main Theorem",
-    "content": "The complement section proves that non-Ramsey is preserved under graph complementation (since the clique number of the complement equals the independence number and vice versa). The main theorem erdos_1036 is just Shelah's axiom restated — it encapsulates the answer to Problem #1036. The optimalConstantAtRandom definition states the open conjecture that the optimal constant equals 1 for c = 2/log 2 (the random graph threshold).",
+    "content": "The complement section proves that non-Ramsey is preserved under graph complementation (since the clique number of the complement equals the independence number and vice versa). The main theorem erdos_1036 is just Shelah's axiom restated \u2014 it encapsulates the answer to Problem #1036. The optimalConstantAtRandom definition states the open conjecture that the optimal constant equals 1 for c = 2/log 2 (the random graph threshold).",
     "mathContext": "Complement symmetry: $\\omega(G^c) = \\alpha(G)$ follows from the definition of $\\alpha$ via complement cliques. The non-Ramsey preservation: $(\\omega(G^c), \\alpha(G^c)) = (\\alpha(G), \\omega(G))$, so $\\max = \\max$ is preserved. The open conjecture `optimalConstantAtRandom` states $f^*(2/\\ln 2) = 1$, reflecting that random graphs $G(n,1/2)$ achieve all $2^n$ distinct induced subgraphs (each subset induces a distinct graph with high probability).",
     "significance": "key",
     "prerequisites": [

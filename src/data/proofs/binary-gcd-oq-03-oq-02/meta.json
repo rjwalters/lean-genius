@@ -1,0 +1,176 @@
+{
+  "id": "binary-gcd-oq-03-oq-02",
+  "title": "Schönhage's Recursive HGCD: GCD Preservation and Matrix Invariants",
+  "slug": "binary-gcd-oq-03-oq-02",
+  "description": "Formalizes Schönhage's recursive half-GCD (HGCD) in Lean 4, extending the Lehmer hybrid (BinaryGcdOQ03) with the full recursive structure. Proves GCD preservation, the determinant invariant, the matrix-vector row convention, entry bounds via Cramer's rule, and perturbation infrastructure toward size reduction. One sorry remains for the recursive case of the row-output size-reduction bound.",
+  "sorries": 1,
+  "meta": {
+    "author": "Schönhage (1971), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Half-GCD_algorithm",
+    "date": "1971",
+    "status": "formalized",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "computational-algebra",
+      "complexity",
+      "matrices"
+    ],
+    "proofRepoPath": "Proofs/BinaryGcdOQ03OQ02.lean",
+    "badge": "wip",
+    "sorries": 1,
+    "axiomCount": 0,
+    "lineCount": 1020,
+    "dateAdded": "2026-05-03",
+    "theoremCount": 33,
+    "assumptions": "",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.log_mono_right",
+        "description": "Monotonicity of Nat.log used in hgcdShift bounds",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Int.natAbs_add_le",
+        "description": "Triangle inequality for Int.natAbs in perturbation bounds",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "Nat.div_lt_self",
+        "description": "Top-half inputs strictly smaller than original",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "cofactor_mul_apply: cofactor multiplication composes the apply action — M.mul N applied to (a,b) equals M applied to (N.apply a b)",
+      "hgcdMatrix_det_unit: the recursive HGCD matrix always has determinant ±1, proved by induction on fuel using lehmerCofactors_det_unit at leaves and det_mul at recursive steps",
+      "hgcdMatrix_preserves_gcd: applying the HGCD matrix to (a,b) yields a pair with the same GCD — the operational correctness theorem of Schönhage's algorithm",
+      "lehmerCofactors_invariant: row-vector invariant (a₀,b₀)·M = (current pair) is preserved across all Lehmer cofactor steps, establishing the row convention needed for size-reduction",
+      "lehmerCofactors_id_apply_le: residue monotonicity — max of the Lehmer row output is ≤ max of the original inputs",
+      "row_vec_cramer: Cramer identity — from (a₀,b₀)·M = (ahat,bhat) and det = ±1, derives a₀·det = ahat·M.δ − bhat·M.γ",
+      "entry_bound_of_even/odd: all matrix entries of lehmerCofactors are bounded in absolute value by the initial inputs, proved via Cramer + alternating sign pattern",
+      "cofactor_apply_shift_decomp: apply(aHi·2^s + ea, bHi·2^s + eb) = 2^s·apply(aHi,bHi) + apply(ea,eb) — the key algebraic identity for the Lehmer perturbation argument",
+      "cofactor_apply_err_bound: given |entries| ≤ C and |errors| ≤ B, the perturbation component is ≤ 2·C·B",
+      "hgcdShift_top_lt: the top-half truncation a/2^s is strictly less than a — the induction-measure decrease for Step 4 strong induction"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Arnold Schönhage (1971) extended Lehmer's hybrid GCD to achieve optimal O(M(n)·log n) bit complexity, where M(n) is the cost of multiplying n-bit integers. The key innovation is recursion: instead of running Lehmer's single-level approximation once, HGCD recurses on the top half of the bits to compute a cofactor matrix M₁, applies M₁ to the full inputs to get a half-size pair, then recurses again. This two-level recursion gives O(log n) levels, each costing O(M(n)), for total O(M(n)·log n). The algorithm underlies GMP's mpn_hgcd implementation and is the standard GCD algorithm for cryptographic-size integers (thousands of bits).",
+    "problemStatement": "Can Schönhage's recursive HGCD (half-GCD) be formalized in Lean 4, establishing the GCD-preservation correctness proof and making progress toward the O(M(n)·log n) bit complexity bound?",
+    "proofStrategy": "The formalization is structured in nine parts. Parts I–IV establish the core correctness: the composition law for cofactor matrices, the fuel-indexed recursive definition of hgcdMatrix, the determinant invariant (proved by induction on fuel), and GCD preservation (a corollary via gcd_cofactor_eq from BinaryGcdOQ03). Parts V–VI build the size-reduction infrastructure: the row-convention matrix-vector invariant for Lehmer cofactors, residue monotonicity, the Cramer identity, and entry bounds via the alternating sign pattern (EvenPattern/OddPattern). Part VII adds the perturbation decomposition (apply distributes over shifts). Part VIII proves the induction prerequisites (shift ≥ 1, top-half strictly smaller). Part IX states the remaining size-reduction bound with one sorry for the recursive case, which requires a quotient stability lemma connecting top-half quotients to full-precision Euclidean quotients.",
+    "keyInsights": [
+      "Fuel-indexed totality decouples correctness from termination: hgcdMatrix is total by construction and GCD preservation holds for all fuel values, independently of whether the fuel is sufficient for the algorithm to run to completion.",
+      "The convention dichotomy is a genuine obstruction: the apply action (column convention M·(a,b)ᵀ) tracks a different intermediate state from the row convention (a,b)·M. GCD preservation uses the column convention; size reduction requires the row convention. These agree on determinant-based theorems but diverge on state tracking.",
+      "The composition law cofactor_mul_apply is the algebraic key: it states that M.mul N applied columnwise is M applied to N's output. This chains the two HGCD recursive calls into a single correct reduction.",
+      "Entry bounds arise from Cramer inversion: if (a₀,b₀)·M = (ahat,bhat), then by unimodularity, each entry of M is a linear combination of ahat and bhat with coefficients ±1. With the alternating sign pattern from lehmerInnerStep, all entries are bounded by max(a₀,b₀).",
+      "The remaining sorry (recursive size-reduction) requires quotient stability: showing that the Euclidean quotients computed from the top-half approximation (a/2^s, b/2^s) match those from the full-precision (a,b) for the relevant number of steps. This is proved in Stehlé–Zimmermann (2004) but requires ≈200 lines of new Lean infrastructure."
+    ]
+  },
+  "sections": [
+    {
+      "id": "composition-law",
+      "title": "Part I: Composition of Cofactor Matrices",
+      "startLine": 61,
+      "endLine": 73,
+      "summary": "Proves cofactor_mul_apply: (M.mul N).apply a b = M.apply (N.apply a b). One-line proof by ring.",
+      "mathContext": "If $N$ transforms $(a,b)$ to $(u,v)$ and $M$ transforms $(u,v)$ to $(p,q)$, then $M \\cdot N$ transforms $(a,b)$ to $(p,q)$ directly. This is the standard matrix composition law, proved by ring arithmetic over the four entries."
+    },
+    {
+      "id": "hgcd-definition",
+      "title": "Part II: Recursive HGCD Matrix Definition",
+      "startLine": 74,
+      "endLine": 159,
+      "summary": "Defines hgcdMatrix, hgcdThreshold (64), hgcdShift (⌈bits/2⌉), hgcdMatrixOf (top-level entry). Provides hgcdMatrix_succ and hgcdMatrix_zero reduction lemmas for proof rewrites.",
+      "mathContext": "The fuel-indexed definition avoids well-founded recursion complications. At fuel 0 it returns the identity. At fuel $f+1$: if $\\max(a,b) < 64$, fall back to Lehmer cofactor accumulation; otherwise set $s = \\lceil \\log_2(\\max(a,b))/2 \\rceil$, compute $M_1 = \\mathrm{hgcd}(a/2^s, b/2^s)$, apply $M_1$ to $(a,b)$ to get $(a',b')$, compute $M_2 = \\mathrm{hgcd}(a',b')$, return $M_2 \\cdot M_1$."
+    },
+    {
+      "id": "det-invariant",
+      "title": "Part III: Determinant Is ±1",
+      "startLine": 160,
+      "endLine": 199,
+      "summary": "Proves hgcdMatrix_det_unit: det(hgcdMatrix fuel a b) = 1 or -1 for all fuel, a, b. Induction: base gives identity (det 1); leaf uses lehmerCofactors_det_unit; recursive case uses det_mul and IH twice.",
+      "mathContext": "The unimodularity $\\det(M) = \\pm 1$ is the invariant that makes cofactor matrices GCD-preserving. For $M_2 \\cdot M_1$: $\\det(M_2 \\cdot M_1) = \\det(M_2) \\cdot \\det(M_1) = (\\pm 1)(\\pm 1) = \\pm 1$."
+    },
+    {
+      "id": "gcd-preservation",
+      "title": "Part IV: GCD Preservation",
+      "startLine": 200,
+      "endLine": 245,
+      "summary": "Proves hgcdMatrix_preserves_gcd and hgcdMatrixOf_preserves_gcd: applying the HGCD matrix to (a,b) yields a pair with the same GCD. Corollary of gcd_cofactor_eq from BinaryGcdOQ03 and the det invariant.",
+      "mathContext": "Since $\\det(M) = \\pm 1$, Cramer's rule shows any common divisor of $M \\cdot (a,b)^T$ divides $(a,b)$ and vice versa, so $\\gcd(M \\cdot (a,b)^T) = \\gcd(a,b)$. This is the operational correctness statement of the HGCD algorithm."
+    },
+    {
+      "id": "row-vector-invariant",
+      "title": "Part V.5: Matrix-Vector Row Convention Invariant",
+      "startLine": 246,
+      "endLine": 438,
+      "summary": "Eight theorems establishing the row-convention invariant (a₀,b₀)·M = (current pair) across Lehmer steps. Key results: lehmerCofactors_invariant, lehmerCofactors_id_apply_le (residue ≤ max input).",
+      "mathContext": "The Lehmer inner step appends $M' = M \\cdot S$ by right-multiplication, where $S = \\begin{pmatrix}0&1\\\\1&-q\\end{pmatrix}$. The row-convention relation $(a_0, b_0) \\cdot M = (\\hat{a}, \\hat{b})$ is preserved because right-multiplication shifts exactly the right column. This gives $\\max(\\hat{a}', \\hat{b}') \\le \\max(\\hat{a}, \\hat{b})$ at each step, proving residue monotonicity."
+    },
+    {
+      "id": "entry-bounds",
+      "title": "Part VI: Cramer Identity, Sign Patterns, and Entry Bounds",
+      "startLine": 439,
+      "endLine": 622,
+      "summary": "Proves row_vec_cramer (Cramer identity), EvenPattern/OddPattern definitions, alternation lemmas for lehmerInnerStep, and entry_bound_of_even/odd: all matrix entries ≤ max(a₀,b₀).",
+      "mathContext": "From $(a_0,b_0) \\cdot M = (\\hat{a},\\hat{b})$ with $\\det M = \\pm 1$, Cramer inversion gives $a_0 = \\pm(\\hat{a} \\cdot M.\\delta - \\hat{b} \\cdot M.\\gamma)$. With the sign pattern enforcing positive residues, each matrix entry is $\\le \\max(a_0, b_0)$. This is Step 2b of the Stehlé–Zimmermann size-reduction proof."
+    },
+    {
+      "id": "perturbation",
+      "title": "Part VII: Perturbation Infrastructure",
+      "startLine": 623,
+      "endLine": 735,
+      "summary": "Six theorems: apply distributes over addition and scalar multiplication; apply(aHi·2^s + ea, bHi·2^s + eb) = 2^s·apply(aHi,bHi) + apply(ea,eb); error bounds |apply(ea,eb)| ≤ 2·C·B given |entries|≤C, |errors|≤B.",
+      "mathContext": "The key identity $M(a_H \\cdot 2^s + e_a, b_H \\cdot 2^s + e_b) = 2^s \\cdot M(a_H,b_H) + M(e_a,e_b)$ separates signal (the top-half HGCD output) from noise (the low-bit contribution). With entry bounds $|M_{ij}| \\le C$ and $|e| \\le 2^s$, the error satisfies $|M(e_a,e_b)| \\le 2C \\cdot 2^s$."
+    },
+    {
+      "id": "shift-bounds",
+      "title": "Part VIII: Shift Bounds for Step 4 Induction",
+      "startLine": 736,
+      "endLine": 785,
+      "summary": "Proves hgcdShift_pos (shift ≥ 1 for inputs ≥ 4) and hgcdShift_top_lt (top-half input a/2^s < a). These are the induction-measure decrease lemmas needed for strong induction on input size.",
+      "mathContext": "$s = \\lceil \\log_2(\\max(a,b)) / 2 \\rceil \\ge 1$ when $\\max(a,b) \\ge 4$, so $2^s \\ge 2$ and $a/2^s < a$ by Nat.div_lt_self. This strict decrease enables the Step 4 strong induction on bitsize."
+    },
+    {
+      "id": "size-reduction",
+      "title": "Part IX: Size Reduction (1 sorry — recursive case)",
+      "startLine": 786,
+      "endLine": 935,
+      "summary": "States hgcdMatrix_joint_bound: for sufficient fuel, output and entries are bounded by 2^(hgcdShift+3). Base cases and column-convention counterexample proved; recursive case has 1 sorry awaiting quotient stability infrastructure.",
+      "mathContext": "The missing piece is quotient stability: showing the Euclidean quotients from $(a/2^s, b/2^s)$ match those from $(a,b)$ for the first $O(n/2)$ steps. Proved in Stehlé–Zimmermann (2004) §3–4 using the approximation quality bound; requires ≈200 lines of Lean infrastructure not yet formalized."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the recursive case of hgcdMatrix_joint_bound be closed by formalizing quotient stability (≈200 lines of Lean infrastructure from Stehlé–Zimmermann §3–4)?",
+      "difficulty": "hard",
+      "tags": ["size-reduction", "quotient-stability", "lean4"]
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the O(M(n)·log n) bit complexity bound be stated and proved once Mathlib gains a model for fast multiplication and bit-operation costs?",
+      "difficulty": "very-hard",
+      "tags": ["complexity", "bit-complexity", "fast-multiplication", "mathlib"]
+    }
+  ],
+  "leanFile": {
+    "namespace": "HGcd",
+    "lineCount": 1020,
+    "axiomCount": 0,
+    "theoremCount": 33,
+    "definitionCount": 6,
+    "path": "Proofs/BinaryGcdOQ03OQ02.lean",
+    "sorries": 1
+  },
+  "conclusion": {
+    "summary": "This formalization of Schönhage's recursive HGCD establishes the core correctness layer in 936 lines with a single sorry. The three main theorems — `cofactor_mul_apply` (compositional algebra), `hgcdMatrix_det_unit` (unimodularity by fuel induction), and `hgcdMatrix_preserves_gcd` (operational correctness) — formally verify that Schönhage's two-level recursion produces a GCD-preserving matrix. The size-reduction infrastructure (row-convention invariant, Cramer identity, entry bounds, perturbation decomposition) is complete except for the quotient stability lemma needed for the recursive size bound. Together with `BinaryGcdOQ03` (the Lehmer hybrid), this represents the first Lean formalization of the HGCD algorithm's correctness structure.",
+    "implications": "Schönhage's HGCD is the inner loop of every modern number theory computation involving large integers: RSA key generation, elliptic curve scalar multiplication, polynomial GCD in computer algebra systems, and lattice basis reduction (LLL algorithm). Formalizing its correctness in Lean 4 provides a verified foundation for future cryptographic algorithm verification. The quotient stability sorry (≈200 lines remaining) is the only gap between this formalization and a complete proof of size reduction — once closed, the file would establish the full recursive structure needed to state the $O(M(n)\\log n)$ complexity claim. The GMP library's `mpn_hgcd` implements exactly this algorithm for production GCD computation; a Lean verification would enable formal auditing of such production code.",
+    "openQuestions": [
+      "Can the quotient stability lemma (Stehlé–Zimmermann §3–4) be formalized in ≈200 lines to close the sorry in `hgcdMatrix_joint_bound`? The key is Theorem 4 of Stehlé–Zimmermann 2004: 'if $2^s > 4\\max(a,b)/\\gcd(a,b)$, the first $k$ Euclidean quotients of $(a_H, b_H)$ and $(a,b)$ agree.' Lean infrastructure needed: remainder sequence properties, divisibility bounds for continued fraction convergents.",
+      "Once Mathlib includes a formal model of fast multiplication (FFT-based or Karatsuba), can the $O(M(n)\\log n)$ bit-complexity bound be formally stated and proved? This would require defining 'arithmetic circuit complexity' or a comparable cost model in Lean 4, connecting `hgcdMatrix_joint_bound` to a recursion tree analysis.",
+      "Can the verified GCD algorithm be connected to applications? E.g., a formally verified RSA key generation procedure that relies on `hgcdMatrixOf_preserves_gcd` for its correctness guarantee."
+    ]
+  }
+}

@@ -30,7 +30,8 @@
       "Freiman's theorem"
     ],
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "This problem connects two fundamental concepts in additive combinatorics: Schnirelmann density and additive bases. Schnirelmann density σ(A) = inf_{N≥1} |A ∩ {1,...,N}|/N is a worst-case density measure, crucial in the study of additive number theory.\n\nErdős proved in 1936 that additive bases of order k have a specific density-boosting property with factor α(1-α)/(2k). Linnik in 1942 constructed an 'essential component' - a set that increases Schnirelmann density when added - that is NOT an additive basis.\n\nThis problem asks whether the stronger density-boosting property (improving counts for specific translates) can exist without being a basis. It probes the gap between 'essential components' and 'additive bases'.",

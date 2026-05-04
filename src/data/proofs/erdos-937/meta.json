@@ -63,7 +63,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 334,
-    "assumptions": "3 axioms: fermat_no_four_squares_in_AP, bajpai_bennett_chan_four_term, bajpai_bennett_chan_three_term_3powerful. 0 sorries."
+    "assumptions": "3 axioms: fermat_no_four_squares_in_AP, bajpai_bennett_chan_four_term, bajpai_bennett_chan_three_term_3powerful. 0 sorries.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #937: Arithmetic Progressions and Powerful Numbers**\n\nThis problem connects two fundamental concepts: arithmetic progressions and powerful (squarefull) numbers. A number n is powerful if every prime factor appears with exponent at least 2.\n\n**Key History:**\n- Fermat (17th century): Proved no four perfect squares form an arithmetic progression\n- Erdős (1976): Asked about coprime powerful numbers in arithmetic progressions\n- Erdős conjectured behavior for r-powerful numbers depends on r\n- Bajpai-Bennett-Chan (2024): Proved infinitely many 4-term coprime powerful APs exist\n\n**Mathematical Setting:**\n- Without coprimality: Arbitrarily long APs of powerful numbers exist (easy construction)\n- With coprimality: The question becomes much harder and more interesting\n- The r = 2 case (ordinary powerful numbers) was settled in 2024\n\nThe problem beautifully illustrates how adding constraints (coprimality) can transform an easy problem into a deep one.",

@@ -19,10 +19,11 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 213,
+    "lineCount": 469,
     "assumptions": "1 axiom: eliahou_cycle_bound — Eliahou (1993) proved any non-trivial Collatz cycle has period > 17 billion (Discrete Math 118:45–56). Fully machine-verified results: j=1 uniqueness theorem, halving bounds j=5..8, minimum cycle lengths, case complexity lower bound.",
     "dateAdded": "2026-04-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "The Collatz conjecture is equivalent to the non-existence of cycles other than {1,4,2}. Lagarias (1985) systematized the algebraic approach via the 2^M > 3^j constraint, and Eliahou (1993) pushed this to a lower bound of 17 billion on any non-trivial cycle's length. The parity case analysis approach (ruling out fixed points and 2-cycles directly) raises the natural question: how far can it go? This file shows it works cleanly for the j=1 (algebraic uniqueness) case and can verify specific small k via interval_cases, but the exponential growth of parity patterns (2^k) makes it infeasible for large k without the algebraic machinery.",
@@ -136,7 +137,7 @@
       "Proofs.CollatzCycles"
     ],
     "namespace": "CollatzCyclesOQ01",
-    "lineCount": 213,
+    "lineCount": 469,
     "axiomCount": 1,
     "theoremCount": 16,
     "path": "Proofs/CollatzStructuredOQ02OQ01.lean",

@@ -63,7 +63,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 327,
-    "assumptions": "3 axioms: abc_conjecture_holds (the unproven ABC conjecture as a Prop), cushing_pascoe_theorem (2016: ABC → n!±1 eventually not powerful), crowdmath_theorem (2020: ABC → 2^n±1 eventually not powerful). The four variant axioms have been PROVED from these two conditional theorems."
+    "assumptions": "3 axioms: abc_conjecture_holds (the unproven ABC conjecture as a Prop), cushing_pascoe_theorem (2016: ABC → n!±1 eventually not powerful), crowdmath_theorem (2020: ABC → 2^n±1 eventually not powerful). The four variant axioms have been PROVED from these two conditional theorems.",
+    "theoremCount": 27
   },
   "overview": {
     "historicalContext": "**Erdős Problem #936**\n\nThis problem was posed by Paul Erdős in 1976 [Er76d, p.32] and concerns powerful numbers near special sequences.\n\n**Key History:**\n- Erdős (1976): Original problem formulation\n- Cushing-Pascoe (2016): Proved n! ± 1 case assuming ABC conjecture\n- CrowdMath (2020): Extended to 2^n ± 1 case assuming ABC conjecture\n\n**Mathematical Setting:**\nA number m is *powerful* if whenever a prime p divides m, then p² also divides m. Equivalently, m = a²b³ for positive integers a, b. The powerful numbers begin: 1, 4, 8, 9, 16, 25, 27, 32, 36, ...\n\nThe problem asks whether the sequences 2^n + 1, 2^n - 1, n! + 1, and n! - 1 are powerful for only finitely many n. This is connected to the ABC conjecture, one of the deepest unsolved problems in number theory.",
@@ -115,7 +116,7 @@
     {
       "id": "four-variants",
       "title": "The Four Variants",
-      "summary": "Individual axioms for each sequence variant",
+      "summary": "Four variant theorems proved from the two conditional axioms: 2^n±1 and n!±1 eventually not powerful, each conditional on abc_conjecture_holds.",
       "startLine": 230,
       "endLine": 285
     },

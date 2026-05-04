@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Overview: Ball Volumes Shrink to Zero",
-    "content": "The header explains the surprising fact that unit n-ball volumes ω_n → 0 as n → ∞. Despite the fact that R^n gets 'larger', the unit ball gets a vanishingly small fraction of space.\n\nThe proof strategy has three parts: (1) even formula ω_{2k} = π^k/k!, (2) odd bound ω_{2k+1} ≤ 2·ω_{2k}, and (3) squeeze via the exp series. The file imports the parent proof for ω, omega_pos, omega_recurrence.",
-    "mathContext": "ω_n = π^{n/2}/Γ(n/2+1). Recurrence: ω_{n+2} = (2π/(n+2))·ω_n. The factor 2π/(n+2) < 1 for n ≥ 5, causing exponential decay.",
+    "content": "The header explains the surprising fact that unit n-ball volumes \u03c9_n \u2192 0 as n \u2192 \u221e. Despite the fact that R^n gets 'larger', the unit ball gets a vanishingly small fraction of space.\n\nThe proof strategy has three parts: (1) even formula \u03c9_{2k} = \u03c0^k/k!, (2) odd bound \u03c9_{2k+1} \u2264 2\u00b7\u03c9_{2k}, and (3) squeeze via the exp series. The file imports the parent proof for \u03c9, omega_pos, omega_recurrence.",
+    "mathContext": "\u03c9_n = \u03c0^{n/2}/\u0393(n/2+1). Recurrence: \u03c9_{n+2} = (2\u03c0/(n+2))\u00b7\u03c9_n. The factor 2\u03c0/(n+2) < 1 for n \u2265 5, causing exponential decay.",
     "significance": "supporting",
     "relatedConcepts": [
       "curse of dimensionality",
@@ -18,7 +18,7 @@
     ],
     "prerequisites": [
       "ball volume recurrence",
-      "Γ function"
+      "\u0393 function"
     ]
   },
   {
@@ -28,10 +28,10 @@
       "startLine": 37,
       "endLine": 47
     },
-    "type": "theorem",
-    "title": "omega_even_formula: ω(2k) = π^k / k!",
-    "content": "Proved by structural induction on k.\n\nBase (k=0): ω(0) = 1 = π^0/0! by `omega_zero` and `simp`.\n\nInductive step: ω(2(k+1)) = ω(2k+2) = 2π/(2k+2)·ω(2k) [by `omega_recurrence`] = 2π/(2k+2)·π^k/k! [by IH] = π^(k+1)/(k+1)!.\n\nThe arithmetic identity 2π/(2k+2)·π^k/k! = π^(k+1)/(k+1)! is proved by `field_simp; ring` after `push_cast [Nat.factorial_succ]` expands (k+1)! = (k+1)·k!.",
-    "mathContext": "The formula ω_{2k} = π^k/k! makes explicit that even-indexed ball volumes are exactly the terms of $\\sum_{k=0}^\\infty \\frac{\\pi^k}{k!} = e^\\pi$. Since this series converges, the terms must go to 0.",
+    "type": "insight",
+    "title": "omega_even_formula: \u03c9(2k) = \u03c0^k / k!",
+    "content": "Proved by structural induction on k.\n\nBase (k=0): \u03c9(0) = 1 = \u03c0^0/0! by `omega_zero` and `simp`.\n\nInductive step: \u03c9(2(k+1)) = \u03c9(2k+2) = 2\u03c0/(2k+2)\u00b7\u03c9(2k) [by `omega_recurrence`] = 2\u03c0/(2k+2)\u00b7\u03c0^k/k! [by IH] = \u03c0^(k+1)/(k+1)!.\n\nThe arithmetic identity 2\u03c0/(2k+2)\u00b7\u03c0^k/k! = \u03c0^(k+1)/(k+1)! is proved by `field_simp; ring` after `push_cast [Nat.factorial_succ]` expands (k+1)! = (k+1)\u00b7k!.",
+    "mathContext": "The formula \u03c9_{2k} = \u03c0^k/k! makes explicit that even-indexed ball volumes are exactly the terms of $\\sum_{k=0}^\\infty \\frac{\\pi^k}{k!} = e^\\pi$. Since this series converges, the terms must go to 0.",
     "significance": "key",
     "relatedConcepts": [
       "exp series",
@@ -51,10 +51,10 @@
       "startLine": 56,
       "endLine": 82
     },
-    "type": "theorem",
-    "title": "omega_odd_le_two_even: ω(2k+1) ≤ 2·ω(2k)",
-    "content": "Proved by structural induction on k.\n\nBase (k=0): ω(1) = 2 = 2·ω(0) = 2·1 by `omega_one` and `omega_zero`.\n\nInductive step (k → k+1): Need ω(2k+3) ≤ 2·ω(2k+2).\n- From recurrence: ω(2k+3) = 2π/(2k+3)·ω(2k+1)\n- By IH: ω(2k+1) ≤ 2·ω(2k)\n- So: ω(2k+3) ≤ 2π/(2k+3)·2·ω(2k) = 4π/(2k+3)·ω(2k)\n- Key arithmetic: 4π/(2k+3) ≤ 4π/(2k+2) since 2k+3 ≥ 2k+2\n- And: 4π/(2k+2)·ω(2k) = 2·ω(2k+2) from the even recurrence\n\nThe 3-step `calc` chain makes this explicit, using `div_le_div_of_le_left` for the fraction inequality and `mul_le_mul_of_nonneg_left/right` for multiplying inequalities.",
-    "mathContext": "The induction is tight: the ratio ω(2k+1)/ω(2k) grows (by Wallis' formula it ~ √(πk)), so the bound 2 is not eventually sharp. But 2 is a valid constant bound for all k, sufficient for the squeeze argument.",
+    "type": "insight",
+    "title": "omega_odd_le_two_even: \u03c9(2k+1) \u2264 2\u00b7\u03c9(2k)",
+    "content": "Proved by structural induction on k.\n\nBase (k=0): \u03c9(1) = 2 = 2\u00b7\u03c9(0) = 2\u00b71 by `omega_one` and `omega_zero`.\n\nInductive step (k \u2192 k+1): Need \u03c9(2k+3) \u2264 2\u00b7\u03c9(2k+2).\n- From recurrence: \u03c9(2k+3) = 2\u03c0/(2k+3)\u00b7\u03c9(2k+1)\n- By IH: \u03c9(2k+1) \u2264 2\u00b7\u03c9(2k)\n- So: \u03c9(2k+3) \u2264 2\u03c0/(2k+3)\u00b72\u00b7\u03c9(2k) = 4\u03c0/(2k+3)\u00b7\u03c9(2k)\n- Key arithmetic: 4\u03c0/(2k+3) \u2264 4\u03c0/(2k+2) since 2k+3 \u2265 2k+2\n- And: 4\u03c0/(2k+2)\u00b7\u03c9(2k) = 2\u00b7\u03c9(2k+2) from the even recurrence\n\nThe 3-step `calc` chain makes this explicit, using `div_le_div_of_le_left` for the fraction inequality and `mul_le_mul_of_nonneg_left/right` for multiplying inequalities.",
+    "mathContext": "The induction is tight: the ratio \u03c9(2k+1)/\u03c9(2k) grows (by Wallis' formula it ~ \u221a(\u03c0k)), so the bound 2 is not eventually sharp. But 2 is a valid constant bound for all k, sufficient for the squeeze argument.",
     "significance": "key",
     "relatedConcepts": [
       "div_le_div_of_le_left",
@@ -74,9 +74,9 @@
       "startLine": 101,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "omega_tendsto_zero: Main Theorem",
-    "content": "The proof has 5 steps:\n\n1. **π^k/k! → 0**: Uses `(summable_pow_div_factorial ‖π‖).tendsto_atTop_zero` — since the exp series Σ |π|^k/k! = e^|π| converges, its terms → 0. The `congr` step removes the absolute value (since π > 0).\n\n2. **n/2 → ∞**: Uses `tendsto_atTop_atTop_of_monotone` with monotonicity (Nat.div_le_div_right) and unboundedness (2b/2 = b).\n\n3. **π^(n/2)/(n/2)! → 0**: Composition via `Filter.Tendsto.comp`.\n\n4. **2·π^(n/2)/(n/2)! → 0**: Scalar multiple `hcomp.const_mul 2`.\n\n5. **Squeeze**: `tendsto_of_tendsto_of_tendsts_of_le_of_le` with lower bound 0 (from omega_pos) and upper bound from `omega_le_two_even_half` composed with `omega_even_formula`.",
+    "content": "The proof has 5 steps:\n\n1. **\u03c0^k/k! \u2192 0**: Uses `(summable_pow_div_factorial \u2016\u03c0\u2016).tendsto_atTop_zero` \u2014 since the exp series \u03a3 |\u03c0|^k/k! = e^|\u03c0| converges, its terms \u2192 0. The `congr` step removes the absolute value (since \u03c0 > 0).\n\n2. **n/2 \u2192 \u221e**: Uses `tendsto_atTop_atTop_of_monotone` with monotonicity (Nat.div_le_div_right) and unboundedness (2b/2 = b).\n\n3. **\u03c0^(n/2)/(n/2)! \u2192 0**: Composition via `Filter.Tendsto.comp`.\n\n4. **2\u00b7\u03c0^(n/2)/(n/2)! \u2192 0**: Scalar multiple `hcomp.const_mul 2`.\n\n5. **Squeeze**: `tendsto_of_tendsto_of_tendsts_of_le_of_le` with lower bound 0 (from omega_pos) and upper bound from `omega_le_two_even_half` composed with `omega_even_formula`.",
     "mathContext": "The upper bound $\\omega_n \\leq 2 \\cdot \\frac{\\pi^{\\lfloor n/2 \\rfloor}}{\\lfloor n/2 \\rfloor!}$ holds for all $n$ simultaneously, avoiding the need to separately combine even and odd subsequence limits.",
     "significance": "key",
     "relatedConcepts": [
@@ -97,10 +97,10 @@
       "startLine": 134,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Corollaries: Subsequences and Eventually-Small Bound",
-    "content": "Three corollaries follow from `omega_tendsto_zero`:\n\n1. **omega_even_tendsto_zero**: ω_{2k} → 0. Proved by composing `omega_tendsto_zero` with the injection k ↦ 2k (which is `tendsto_atTop_atTop_of_monotone` with the obvious monotonicity).\n\n2. **omega_odd_tendsto_zero**: ω_{2k+1} → 0. Same pattern with k ↦ 2k+1.\n\n3. **omega_eventually_lt_one**: Eventually ω_n < 1. Extracted by unfolding `Metric.tendsto_atTop` at ε=1 to get an explicit N such that n ≥ N → |ω_n - 0| < 1, i.e., ω_n < 1 (since ω_n > 0).\n\nThese corollaries demonstrate how a single limit theorem (`omega_tendsto_zero`) can be specialized to both subsequences and uniform eventual bounds, all within Lean's filter framework.",
-    "mathContext": "In Lean's filter library: `Tendsto f atTop (nhds 0)` means for every ε-neighborhood of 0, all but finitely many values of f land in it. `Metric.tendsto_atTop` gives the ε-N version: `∀ ε > 0, ∃ N, ∀ n ≥ N, dist (f n) 0 < ε`. The `eventually_atTop` lemma converts this to the `∀ᶠ n in atTop, P n` notation.",
+    "content": "Three corollaries follow from `omega_tendsto_zero`:\n\n1. **omega_even_tendsto_zero**: \u03c9_{2k} \u2192 0. Proved by composing `omega_tendsto_zero` with the injection k \u21a6 2k (which is `tendsto_atTop_atTop_of_monotone` with the obvious monotonicity).\n\n2. **omega_odd_tendsto_zero**: \u03c9_{2k+1} \u2192 0. Same pattern with k \u21a6 2k+1.\n\n3. **omega_eventually_lt_one**: Eventually \u03c9_n < 1. Extracted by unfolding `Metric.tendsto_atTop` at \u03b5=1 to get an explicit N such that n \u2265 N \u2192 |\u03c9_n - 0| < 1, i.e., \u03c9_n < 1 (since \u03c9_n > 0).\n\nThese corollaries demonstrate how a single limit theorem (`omega_tendsto_zero`) can be specialized to both subsequences and uniform eventual bounds, all within Lean's filter framework.",
+    "mathContext": "In Lean's filter library: `Tendsto f atTop (nhds 0)` means for every \u03b5-neighborhood of 0, all but finitely many values of f land in it. `Metric.tendsto_atTop` gives the \u03b5-N version: `\u2200 \u03b5 > 0, \u2203 N, \u2200 n \u2265 N, dist (f n) 0 < \u03b5`. The `eventually_atTop` lemma converts this to the `\u2200\u1da0 n in atTop, P n` notation.",
     "significance": "supporting",
     "relatedConcepts": [
       "Metric.tendsto_atTop",

@@ -1,0 +1,75 @@
+{
+  "id": "sperner-simplicial-bridge",
+  "title": "Sperner's Lemma for Pseudomanifold Simplicial Complexes",
+  "slug": "sperner-simplicial-bridge",
+  "description": "A bridge proof that derives Sperner's lemma for finite sets of simplices satisfying a pseudomanifold condition from the abstract door-counting theorem in SpernerMathlib. The key construction converts geometric simplicial data—unordered vertex sets, codimension-1 face adjacency—into the abstract CellComplex-style axioms required by the door-counting proof, using vertex ordering via Finset.sort and a full verification of the three adjacency axioms.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 21,
+    "definitionCount": 5,
+    "lineCount": 612,
+    "leanFile": "proofs/Proofs/SpernerSimplicialBridge.lean",
+    "imports": ["Proofs.SpernerMathlib"],
+    "tags": ["combinatorics", "topology", "sperner", "simplicial-complex", "pseudomanifold", "bridge"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "vertex-enum",
+      "title": "Vertex Enumeration",
+      "description": "The definition vertexEnum converts an unordered finset of vertices into an ordered tuple using Finset.sort with the linear order on E. The key properties: vertexEnum_mem (each k-th vertex belongs to the simplex), vertexEnum_injective (the ordering is injective), vertexEnum_image_univ (the image is exactly the simplex). These properties are the foundation for converting finset-based simplices into the cell-complex vertex format.",
+      "theorems": ["vertexEnum_mem", "vertexEnum_injective", "vertexEnum_image_univ"]
+    },
+    {
+      "id": "face-machinery",
+      "title": "Codimension-1 Face Infrastructure",
+      "description": "A codimension-1 face (opposite vertex k) is the image of vertexEnum restricted to Fin(d+1) \\ {k}. The lemmas faceOf_card, faceOf_subset, vertexEnum_image_erase establish that this face has cardinality d, is a subset of the simplex, and equals the simplex with the k-th vertex erased. The helper vertexEnum_not_mem_faceOf_iff characterizes which vertices are NOT in a face.",
+      "theorems": ["faceOf_card", "faceOf_subset", "vertexEnum_image_erase", "vertexEnum_not_mem_faceOf_iff"]
+    },
+    {
+      "id": "containers-adjacency",
+      "title": "Containers and Adjacency",
+      "description": "The containersOf function finds all top-dimensional cells containing a given face. Under the pseudomanifold hypothesis (each codim-1 face in at most 2 cells), containersOf_card_le_two shows each face has at most 2 containers. The adjacency function adjFn maps cell-face pairs to their adjacent cell (if any): if the face has exactly 2 containers, the adjacent cell is the other one; if only 1, it's a boundary face (returns none).",
+      "theorems": ["self_mem_containersOf", "containersOf_card_le_two", "containersOf_card_one_or_two", "containersOf_card_eq_two_of_adjFn", "adjFn_vertex", "adjFn_ne", "adjFn_s", "adjFn_face_eq", "adjFn_symm"]
+    },
+    {
+      "id": "bridge-theorem",
+      "title": "Sperner's Lemma",
+      "description": "The main theorem exists_panchromatic applies abstract Sperner's lemma (from SpernerMathlib) to finite sets of top-dimensional simplices. Given a finite set topCells of (d+1)-vertex simplices, the pseudomanifold property, a vertex coloring, and an odd boundary door count, the theorem produces a panchromatic cell. The proof instantiates Sperner.exists_panchromatic by providing adjFn and verifying all three adjacency axioms (adjFn_symm, adjFn_vertex, adjFn_ne).",
+      "theorems": ["exists_panchromatic"]
+    }
+  ],
+  "overview": {
+    "summary": "This file bridges abstract and geometric Sperner's lemma. The abstract version (SpernerMathlib) works with any adjacency data satisfying three axioms. This bridge verifies that pure pseudomanifold simplicial complexes—finite sets of equal-cardinality simplices where each codimension-1 face belongs to at most 2 simplices—satisfy exactly those axioms.",
+    "approach": "The key challenge is converting unordered finsets (geometric simplices) into ordered vertex arrays (needed for the abstract framework). Finset.sort with a LinearOrder provides a canonical ordering. The pseudomanifold condition directly implies the adjacency axioms: symmetry (sharing a face is symmetric), shared-face property (adjacent cells share the d-face), and distinctness (a cell can't be adjacent to itself).",
+    "significance": "This bridge is the geometric-to-combinatorial interface layer for Sperner's lemma. It connects Mathlib's geometric simplicial complex infrastructure to the abstract door-counting proof, enabling application to any specific triangulation—the standard d-simplex, barycentric subdivisions, etc.—once the pseudomanifold condition is verified."
+  },
+  "conclusion": {
+    "summary": "Sperner's lemma for pseudomanifold simplicial complexes is machine-checked with no axioms or sorries. The bridge relies only on SpernerMathlib (not the full Mathlib import), keeping the dependency chain minimal.",
+    "openQuestions": [
+      "Can the pseudomanifold condition be weakened to allow non-pure complexes (cells of different dimensions)?",
+      "Does this bridge extend to Mathlib's Geometry.SimplicialComplex type by extracting facets and verifying the pseudomanifold condition?",
+      "Can the door-counting framework be adapted to prove Sperner-type results on infinite graphs or locally finite complexes?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "sperner-mathlib",
+      "relationship": "uses",
+      "description": "Abstract Sperner's lemma via door counting (imported directly)"
+    },
+    {
+      "id": "sperner-mathlib4",
+      "relationship": "related",
+      "description": "Alternative abstract formulation using CellComplex structure"
+    },
+    {
+      "id": "sperner-simplicial-instance",
+      "relationship": "related",
+      "description": "Concrete Triangulation instantiation for the same abstract theorem"
+    }
+  ]
+}

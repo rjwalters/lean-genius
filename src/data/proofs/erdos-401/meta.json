@@ -66,7 +66,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 319,
-    "assumptions": "3 axiom(s): erdos_graham_baseline, barreto_leeham_401, sothanaphan_counterexample. See Lean source for complete statements."
+    "assumptions": "3 axiom(s): erdos_graham_baseline, barreto_leeham_401, sothanaphan_counterexample. See Lean source for complete statements.",
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "This problem comes from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. It is closely related to Problems #400 and #729.\n\n**The g_k Function**: Problem #400 introduced g_k(n), the maximum of (a₁ + ... + a_k) - n subject to a₁!...a_k! | n!. Erdős-Graham showed g_k(n) ≪ log(n).\n\n**The Extra Factors**: Problem #401 asks what happens when we multiply n! by prime powers 2ⁿ3ⁿ...p_rⁿ. These extra factors provide additional 'room' for the factorial divisibility.\n\n**Resolution**: In 2026, Barreto and Leeham proved the answer is YES using AI-assisted methods. Interestingly, Sothanaphan showed that the stronger version (for ALL large n) is FALSE, using the counterexample n = p_{r+1}^k - 1.",

@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "RNS Base Structure",
-    "content": "The `RNSBase` structure packages three fields: the moduli list, the pairwise coprimality proof, and the lower bound ≥ 2 for each modulus. `dynamicRange` is the product of all moduli, representing the size of the uniquely representable integer range [0, M) by CRT. `maxWidth` uses `foldl max 0` — the maximum element of the list — representing the hardware channel bit width.",
+    "content": "The `RNSBase` structure packages three fields: the moduli list, the pairwise coprimality proof, and the lower bound \u2265 2 for each modulus. `dynamicRange` is the product of all moduli, representing the size of the uniquely representable integer range [0, M) by CRT. `maxWidth` uses `foldl max 0` \u2014 the maximum element of the list \u2014 representing the hardware channel bit width.",
     "mathContext": "$M = \\prod_{i=1}^{k} m_i$ (dynamic range), $w = \\max_i m_i$ (channel width), $M \\leq w^k$",
     "significance": "key",
     "relatedConcepts": [
@@ -33,7 +33,7 @@
     },
     "type": "concept",
     "title": "Dynamic Range Bound via foldl max Induction",
-    "content": "The bound `dynamicRange ≤ maxWidth^channels` is proved by showing `list.prod ≤ (foldl max 0)^length`. The helper lemmas (`foldl_max_ge_of_mem`, `foldl_max_mono`) are needed because Lean's list operations don't automatically expose the monotonicity and membership properties of `foldl max`. The key induction step: `(m :: ms).prod = m * ms.prod ≤ (foldl max 0 (m::ms)) * (foldl max 0 (m::ms))^ms.length`, using that m ≤ foldl max and the inductive hypothesis for ms.",
+    "content": "The bound `dynamicRange \u2264 maxWidth^channels` is proved by showing `list.prod \u2264 (foldl max 0)^length`. The helper lemmas (`foldl_max_ge_of_mem`, `foldl_max_mono`) are needed because Lean's list operations don't automatically expose the monotonicity and membership properties of `foldl max`. The key induction step: `(m :: ms).prod = m * ms.prod \u2264 (foldl max 0 (m::ms)) * (foldl max 0 (m::ms))^ms.length`, using that m \u2264 foldl max and the inductive hypothesis for ms.",
     "mathContext": "$\\prod_i m_i \\leq \\max(m_i)^k$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -55,9 +55,9 @@
       "startLine": 105,
       "endLine": 120
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Verified Prime RNS Bases: {2,3,5}, {2,3,5,7}, {2,3,5,7,11,13}",
-    "content": "Three concrete prime RNS bases are machine-verified using norm_num. `three_prime_range` confirms [2,3,5].prod = 30 (30 representable values per cycle). `three_prime_coprime` proves pairwise coprimality via `decide` or case analysis — necessary because CRT requires coprimality for the isomorphism ℤ/M ≅ ℤ/m₁ × ⋯ × ℤ/mₖ to hold. `six_prime_range` confirms [2,3,5,7,11,13].prod = 30030, the primorial 6#. These bases are historically significant: {2,3,5} was used in early RNS processors; {2,3,5,7,11,13} gives 30030 representable integers — sufficient for 15-bit arithmetic — across 6 independent channels, each processing at most 4 bits.",
+    "content": "Three concrete prime RNS bases are machine-verified using norm_num. `three_prime_range` confirms [2,3,5].prod = 30 (30 representable values per cycle). `three_prime_coprime` proves pairwise coprimality via `decide` or case analysis \u2014 necessary because CRT requires coprimality for the isomorphism \u2124/M \u2245 \u2124/m\u2081 \u00d7 \u22ef \u00d7 \u2124/m\u2096 to hold. `six_prime_range` confirms [2,3,5,7,11,13].prod = 30030, the primorial 6#. These bases are historically significant: {2,3,5} was used in early RNS processors; {2,3,5,7,11,13} gives 30030 representable integers \u2014 sufficient for 15-bit arithmetic \u2014 across 6 independent channels, each processing at most 4 bits.",
     "mathContext": "The primorial $k\\# = p_1 \\cdot p_2 \\cdots p_k$: $3\\# = 30$, $4\\# = 210$, $6\\# = 30030$. Prime bases are optimal: no other set of $k$ pairwise coprime integers in $[2, p_k]$ has a larger product. The CRT isomorphism $\\mathbb{Z}/30030\\mathbb{Z} \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/3 \\times \\mathbb{Z}/5 \\times \\mathbb{Z}/7 \\times \\mathbb{Z}/11 \\times \\mathbb{Z}/13$ makes 6-channel parallel arithmetic exact.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -76,26 +76,52 @@
   {
     "id": "ann-prime-bases",
     "proofId": "chinese-remainder-constructive-oq-03",
-    "range": { "startLine": 105, "endLine": 120 },
-    "type": "theorem",
+    "range": {
+      "startLine": 105,
+      "endLine": 120
+    },
+    "type": "insight",
     "title": "Verified Prime RNS Bases: {2,3,5}, {2,3,5,7}, {2,3,5,7,11,13}",
-    "content": "Three concrete prime RNS bases are machine-verified using norm_num. `three_prime_range` confirms [2,3,5].prod = 30 (30 representable values per cycle). `three_prime_coprime` proves pairwise coprimality via `decide` or case analysis — necessary because CRT requires coprimality for the isomorphism ℤ/M ≅ ℤ/m₁ × ⋯ × ℤ/mₖ to hold. `six_prime_range` confirms [2,3,5,7,11,13].prod = 30030, the primorial 6#. These bases are historically significant: {2,3,5} was used in early RNS processors; {2,3,5,7,11,13} gives 30030 representable integers — sufficient for 15-bit arithmetic — across 6 independent channels, each processing at most 4 bits.",
+    "content": "Three concrete prime RNS bases are machine-verified using norm_num. `three_prime_range` confirms [2,3,5].prod = 30 (30 representable values per cycle). `three_prime_coprime` proves pairwise coprimality via `decide` or case analysis \u2014 necessary because CRT requires coprimality for the isomorphism \u2124/M \u2245 \u2124/m\u2081 \u00d7 \u22ef \u00d7 \u2124/m\u2096 to hold. `six_prime_range` confirms [2,3,5,7,11,13].prod = 30030, the primorial 6#. These bases are historically significant: {2,3,5} was used in early RNS processors; {2,3,5,7,11,13} gives 30030 representable integers \u2014 sufficient for 15-bit arithmetic \u2014 across 6 independent channels, each processing at most 4 bits.",
     "mathContext": "The primorial $k\\# = p_1 \\cdot p_2 \\cdots p_k$: $3\\# = 30$, $4\\# = 210$, $6\\# = 30030$. Prime bases are optimal: no other set of $k$ pairwise coprime integers in $[2, p_k]$ has a larger product. The CRT isomorphism $\\mathbb{Z}/30030\\mathbb{Z} \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/3 \\times \\mathbb{Z}/5 \\times \\mathbb{Z}/7 \\times \\mathbb{Z}/11 \\times \\mathbb{Z}/13$ makes 6-channel parallel arithmetic exact.",
     "significance": "supporting",
-    "relatedConcepts": ["norm_num tactic", "primorial", "pairwise coprimality", "CRT isomorphism"],
-    "prerequisites": ["Nat.Coprime", "List.Pairwise", "norm_num tactic", "CRT structure"]
+    "relatedConcepts": [
+      "norm_num tactic",
+      "primorial",
+      "pairwise coprimality",
+      "CRT isomorphism"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "List.Pairwise",
+      "norm_num tactic",
+      "CRT structure"
+    ]
   },
   {
     "id": "ann-prime-bases",
     "proofId": "chinese-remainder-constructive-oq-03",
-    "range": { "startLine": 105, "endLine": 120 },
-    "type": "theorem",
+    "range": {
+      "startLine": 105,
+      "endLine": 120
+    },
+    "type": "insight",
     "title": "Verified Prime RNS Bases: {2,3,5}, {2,3,5,7}, {2,3,5,7,11,13}",
-    "content": "Three concrete prime RNS bases are machine-verified using norm_num. `three_prime_range` confirms [2,3,5].prod = 30 (30 representable values per cycle). `three_prime_coprime` proves pairwise coprimality via `decide` or case analysis — necessary because CRT requires coprimality for the isomorphism ℤ/M ≅ ℤ/m₁ × ⋯ × ℤ/mₖ to hold. `six_prime_range` confirms [2,3,5,7,11,13].prod = 30030, the primorial 6#. These bases are historically significant: {2,3,5} was used in early RNS processors; {2,3,5,7,11,13} gives 30030 representable integers — sufficient for 15-bit arithmetic — across 6 independent channels, each processing at most 4 bits.",
+    "content": "Three concrete prime RNS bases are machine-verified using norm_num. `three_prime_range` confirms [2,3,5].prod = 30 (30 representable values per cycle). `three_prime_coprime` proves pairwise coprimality via `decide` or case analysis \u2014 necessary because CRT requires coprimality for the isomorphism \u2124/M \u2245 \u2124/m\u2081 \u00d7 \u22ef \u00d7 \u2124/m\u2096 to hold. `six_prime_range` confirms [2,3,5,7,11,13].prod = 30030, the primorial 6#. These bases are historically significant: {2,3,5} was used in early RNS processors; {2,3,5,7,11,13} gives 30030 representable integers \u2014 sufficient for 15-bit arithmetic \u2014 across 6 independent channels, each processing at most 4 bits.",
     "mathContext": "The primorial $k\\# = p_1 \\cdot p_2 \\cdots p_k$: $3\\# = 30$, $4\\# = 210$, $6\\# = 30030$. Prime bases are optimal: no other set of $k$ pairwise coprime integers in $[2, p_k]$ has a larger product. The CRT isomorphism $\\mathbb{Z}/30030\\mathbb{Z} \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/3 \\times \\mathbb{Z}/5 \\times \\mathbb{Z}/7 \\times \\mathbb{Z}/11 \\times \\mathbb{Z}/13$ makes 6-channel parallel arithmetic exact.",
     "significance": "supporting",
-    "relatedConcepts": ["norm_num tactic", "primorial", "pairwise coprimality", "CRT isomorphism"],
-    "prerequisites": ["Nat.Coprime", "List.Pairwise", "norm_num tactic", "CRT structure"]
+    "relatedConcepts": [
+      "norm_num tactic",
+      "primorial",
+      "pairwise coprimality",
+      "CRT isomorphism"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "List.Pairwise",
+      "norm_num tactic",
+      "CRT structure"
+    ]
   },
   {
     "id": "ann-mersenne-mod",
@@ -106,7 +132,7 @@
     },
     "type": "concept",
     "title": "Mersenne Euclidean Step",
-    "content": "The key lemma `mersenne_mod_eq` proves (2^b - 1) mod (2^a - 1) = 2^(b mod a) - 1 for a ≥ 2. This is the Mersenne analogue of the Euclidean algorithm step. It uses `pow_two_mod_mersenne` (which proves 2^b ≡ 2^(b mod a) mod (2^a - 1) via 2^a ≡ 1 mod (2^a - 1)) and careful natural number subtraction arithmetic. The bound 2^(b mod a) < 2^a - 1 ensures the remainder is in the right range.",
+    "content": "The key lemma `mersenne_mod_eq` proves (2^b - 1) mod (2^a - 1) = 2^(b mod a) - 1 for a \u2265 2. This is the Mersenne analogue of the Euclidean algorithm step. It uses `pow_two_mod_mersenne` (which proves 2^b \u2261 2^(b mod a) mod (2^a - 1) via 2^a \u2261 1 mod (2^a - 1)) and careful natural number subtraction arithmetic. The bound 2^(b mod a) < 2^a - 1 ensures the remainder is in the right range.",
     "mathContext": "$(2^b - 1) \\bmod (2^a - 1) = 2^{b \\bmod a} - 1$ for $a \\geq 2$",
     "significance": "key",
     "relatedConcepts": [
@@ -129,7 +155,7 @@
       "endLine": 224
     },
     "type": "insight",
-    "title": "Coprime Exponents → Coprime Mersenne Numbers",
+    "title": "Coprime Exponents \u2192 Coprime Mersenne Numbers",
     "content": "The theorem `mersenne_coprime_of_coprime` proves that gcd(2^a - 1, 2^b - 1) = 1 when gcd(a, b) = 1. The proof uses strong induction on a with the Euclidean algorithm: gcd(2^a - 1, 2^b - 1) = gcd(2^(b mod a) - 1, 2^a - 1) by `mersenne_mod_eq`, then recurse with b mod a < a. Base cases: a = 0 forces b = 1 (gcd(0,b) = b = 1); a = 1 gives 2^1 - 1 = 1. The `Nat.strongRecOn` induction scheme allows the step b mod a < a to trigger the inductive hypothesis.",
     "mathContext": "$\\gcd(2^a - 1, 2^b - 1) = 2^{\\gcd(a,b)} - 1 \\implies \\gcd(a,b) = 1 \\implies \\gcd(2^a-1, 2^b-1) = 1$",
     "significance": "key",
@@ -155,8 +181,8 @@
     },
     "type": "definition",
     "title": "Primorial Definition and Optimality Bounds",
-    "content": "`primorial` is defined as a lookup table for k ≤ 6 via pattern matching (1, 2, 6, 30, 210, 2310, 30030 = 2, 6, 30, 210, 2310, 30030 for k = 0, 1, ..., 6). The optimality theorem `primorial_growth_lower` proves k# ≥ 2^k for 1 ≤ k ≤ 6 by `interval_cases k; norm_num` — reducing the general bound to 6 decidable arithmetic facts. The theorems `nasa_rns_efficiency` and `dsp_rns_efficiency` verify specific 4-channel and 6-channel RNS base efficiency ratios used in real NASA/DSP applications. The lookup-table approach reflects a genuine limitation: a general proof would require formalizing the prime number theorem or the definition of the k-th prime, which is not yet available in Lean in a convenient form for this style of argument.",
-    "mathContext": "$k\\# = p_1 p_2 \\cdots p_k \\geq 2^k$ (each $p_i \\geq 2$). The bound is tight at $k=1$ ($p_1 = 2 = 2^1$) and loose for large $k$ (prime gaps widen). For hardware applications: a 4-channel base {2,3,5,7} achieves $M = 210 \\geq 2^7$, handling 8-bit arithmetic in 4 channels of width ≤ 3 bits each.",
+    "content": "`primorial` is defined as a lookup table for k \u2264 6 via pattern matching (1, 2, 6, 30, 210, 2310, 30030 = 2, 6, 30, 210, 2310, 30030 for k = 0, 1, ..., 6). The optimality theorem `primorial_growth_lower` proves k# \u2265 2^k for 1 \u2264 k \u2264 6 by `interval_cases k; norm_num` \u2014 reducing the general bound to 6 decidable arithmetic facts. The theorems `nasa_rns_efficiency` and `dsp_rns_efficiency` verify specific 4-channel and 6-channel RNS base efficiency ratios used in real NASA/DSP applications. The lookup-table approach reflects a genuine limitation: a general proof would require formalizing the prime number theorem or the definition of the k-th prime, which is not yet available in Lean in a convenient form for this style of argument.",
+    "mathContext": "$k\\# = p_1 p_2 \\cdots p_k \\geq 2^k$ (each $p_i \\geq 2$). The bound is tight at $k=1$ ($p_1 = 2 = 2^1$) and loose for large $k$ (prime gaps widen). For hardware applications: a 4-channel base {2,3,5,7} achieves $M = 210 \\geq 2^7$, handling 8-bit arithmetic in 4 channels of width \u2264 3 bits each.",
     "significance": "supporting",
     "relatedConcepts": [
       "primorial",
@@ -174,26 +200,52 @@
   {
     "id": "ann-primorial-optimality",
     "proofId": "chinese-remainder-constructive-oq-03",
-    "range": { "startLine": 240, "endLine": 272 },
+    "range": {
+      "startLine": 240,
+      "endLine": 272
+    },
     "type": "definition",
     "title": "Primorial Definition and Optimality Bounds",
-    "content": "`primorial` is defined as a lookup table for k ≤ 6 via pattern matching (1, 2, 6, 30, 210, 2310, 30030 = 2, 6, 30, 210, 2310, 30030 for k = 0, 1, ..., 6). The optimality theorem `primorial_growth_lower` proves k# ≥ 2^k for 1 ≤ k ≤ 6 by `interval_cases k; norm_num` — reducing the general bound to 6 decidable arithmetic facts. The theorems `nasa_rns_efficiency` and `dsp_rns_efficiency` verify specific 4-channel and 6-channel RNS base efficiency ratios used in real NASA/DSP applications. The lookup-table approach reflects a genuine limitation: a general proof would require formalizing the prime number theorem or the definition of the k-th prime, which is not yet available in Lean in a convenient form for this style of argument.",
-    "mathContext": "$k\\# = p_1 p_2 \\cdots p_k \\geq 2^k$ (each $p_i \\geq 2$). The bound is tight at $k=1$ ($p_1 = 2 = 2^1$) and loose for large $k$ (prime gaps widen). For hardware applications: a 4-channel base {2,3,5,7} achieves $M = 210 \\geq 2^7$, handling 8-bit arithmetic in 4 channels of width ≤ 3 bits each.",
+    "content": "`primorial` is defined as a lookup table for k \u2264 6 via pattern matching (1, 2, 6, 30, 210, 2310, 30030 = 2, 6, 30, 210, 2310, 30030 for k = 0, 1, ..., 6). The optimality theorem `primorial_growth_lower` proves k# \u2265 2^k for 1 \u2264 k \u2264 6 by `interval_cases k; norm_num` \u2014 reducing the general bound to 6 decidable arithmetic facts. The theorems `nasa_rns_efficiency` and `dsp_rns_efficiency` verify specific 4-channel and 6-channel RNS base efficiency ratios used in real NASA/DSP applications. The lookup-table approach reflects a genuine limitation: a general proof would require formalizing the prime number theorem or the definition of the k-th prime, which is not yet available in Lean in a convenient form for this style of argument.",
+    "mathContext": "$k\\# = p_1 p_2 \\cdots p_k \\geq 2^k$ (each $p_i \\geq 2$). The bound is tight at $k=1$ ($p_1 = 2 = 2^1$) and loose for large $k$ (prime gaps widen). For hardware applications: a 4-channel base {2,3,5,7} achieves $M = 210 \\geq 2^7$, handling 8-bit arithmetic in 4 channels of width \u2264 3 bits each.",
     "significance": "supporting",
-    "relatedConcepts": ["primorial", "prime number theorem", "interval_cases", "RNS efficiency"],
-    "prerequisites": ["primorial definition", "interval_cases tactic", "norm_num tactic", "prime optimality"]
+    "relatedConcepts": [
+      "primorial",
+      "prime number theorem",
+      "interval_cases",
+      "RNS efficiency"
+    ],
+    "prerequisites": [
+      "primorial definition",
+      "interval_cases tactic",
+      "norm_num tactic",
+      "prime optimality"
+    ]
   },
   {
     "id": "ann-primorial-optimality",
     "proofId": "chinese-remainder-constructive-oq-03",
-    "range": { "startLine": 240, "endLine": 272 },
+    "range": {
+      "startLine": 240,
+      "endLine": 272
+    },
     "type": "definition",
     "title": "Primorial Definition and Optimality Bounds",
-    "content": "`primorial` is defined as a lookup table for k ≤ 6 via pattern matching (1, 2, 6, 30, 210, 2310, 30030 = 2, 6, 30, 210, 2310, 30030 for k = 0, 1, ..., 6). The optimality theorem `primorial_growth_lower` proves k# ≥ 2^k for 1 ≤ k ≤ 6 by `interval_cases k; norm_num` — reducing the general bound to 6 decidable arithmetic facts. The theorems `nasa_rns_efficiency` and `dsp_rns_efficiency` verify specific 4-channel and 6-channel RNS base efficiency ratios used in real NASA/DSP applications. The lookup-table approach reflects a genuine limitation: a general proof would require formalizing the prime number theorem or the definition of the k-th prime, which is not yet available in Lean in a convenient form for this style of argument.",
-    "mathContext": "$k\\# = p_1 p_2 \\cdots p_k \\geq 2^k$ (each $p_i \\geq 2$). The bound is tight at $k=1$ ($p_1 = 2 = 2^1$) and loose for large $k$ (prime gaps widen). For hardware applications: a 4-channel base {2,3,5,7} achieves $M = 210 \\geq 2^7$, handling 8-bit arithmetic in 4 channels of width ≤ 3 bits each.",
+    "content": "`primorial` is defined as a lookup table for k \u2264 6 via pattern matching (1, 2, 6, 30, 210, 2310, 30030 = 2, 6, 30, 210, 2310, 30030 for k = 0, 1, ..., 6). The optimality theorem `primorial_growth_lower` proves k# \u2265 2^k for 1 \u2264 k \u2264 6 by `interval_cases k; norm_num` \u2014 reducing the general bound to 6 decidable arithmetic facts. The theorems `nasa_rns_efficiency` and `dsp_rns_efficiency` verify specific 4-channel and 6-channel RNS base efficiency ratios used in real NASA/DSP applications. The lookup-table approach reflects a genuine limitation: a general proof would require formalizing the prime number theorem or the definition of the k-th prime, which is not yet available in Lean in a convenient form for this style of argument.",
+    "mathContext": "$k\\# = p_1 p_2 \\cdots p_k \\geq 2^k$ (each $p_i \\geq 2$). The bound is tight at $k=1$ ($p_1 = 2 = 2^1$) and loose for large $k$ (prime gaps widen). For hardware applications: a 4-channel base {2,3,5,7} achieves $M = 210 \\geq 2^7$, handling 8-bit arithmetic in 4 channels of width \u2264 3 bits each.",
     "significance": "supporting",
-    "relatedConcepts": ["primorial", "prime number theorem", "interval_cases", "RNS efficiency"],
-    "prerequisites": ["primorial definition", "interval_cases tactic", "norm_num tactic", "prime optimality"]
+    "relatedConcepts": [
+      "primorial",
+      "prime number theorem",
+      "interval_cases",
+      "RNS efficiency"
+    ],
+    "prerequisites": [
+      "primorial definition",
+      "interval_cases tactic",
+      "norm_num tactic",
+      "prime optimality"
+    ]
   },
   {
     "id": "ann-rns-arithmetic",
@@ -204,7 +256,7 @@
     },
     "type": "insight",
     "title": "RNS Arithmetic Correctness",
-    "content": "The correctness of RNS addition and multiplication reduces to single-line `simp` proofs using `Nat.add_mod` and `Nat.mul_mod`: (x + y) mod m = ((x mod m) + (y mod m)) mod m. This reflects the fundamental algebraic fact that ℤ/mℤ is a ring homomorphic image of ℤ. The `rnsEncode`, `rnsAdd`, `rnsMul` functions operate componentwise via `List.map` and `List.zip`, making the proofs purely functional.",
+    "content": "The correctness of RNS addition and multiplication reduces to single-line `simp` proofs using `Nat.add_mod` and `Nat.mul_mod`: (x + y) mod m = ((x mod m) + (y mod m)) mod m. This reflects the fundamental algebraic fact that \u2124/m\u2124 is a ring homomorphic image of \u2124. The `rnsEncode`, `rnsAdd`, `rnsMul` functions operate componentwise via `List.map` and `List.zip`, making the proofs purely functional.",
     "mathContext": "$(x + y) \\bmod m \\equiv (x \\bmod m) + (y \\bmod m) \\pmod{m}$ for all moduli $m$",
     "significance": "key",
     "relatedConcepts": [

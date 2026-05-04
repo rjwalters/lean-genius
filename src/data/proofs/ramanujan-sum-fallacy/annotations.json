@@ -76,7 +76,7 @@
       "startLine": 8,
       "endLine": 45
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The False Claim Would Require Convergence",
     "content": "This theorem shows that IF we could prove $\\sum n = -\\frac{1}{12}$, THEN the series would need to be `Summable`. But the series diverges, so this implication is vacuously true - we can never satisfy the hypothesis.",
     "mathContext": "The argument uses the contrapositive of `tsum_eq_zero_of_not_summable`: if `¬ Summable f`, then `tsum f = 0`. So `tsum naturals = -1/12` would force `tsum naturals ≠ 0`, hence `Summable naturals` — but we prove `¬ Summable naturals` by showing partial sums are unbounded. The `sorry` marks the exact point where the informal argument breaks the formal rules.",
@@ -123,7 +123,7 @@
       "startLine": 55,
       "endLine": 56
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "FALLACY: Cannot Prove Grandi = 1/2",
     "content": "Here we attempt to prove the Numberphile claim that $1-1+1-1+\\cdots = \\frac{1}{2}$. **This is impossible** - the `sorry` can never be filled in. Since the series isn't summable, `tsum grandi = 0` by definition, and $0 \\neq \\frac{1}{2}$.",
     "mathContext": "Formally: `tsum_eq_zero_of_not_summable : ¬ Summable f → tsum f = 0`. Since `¬ Summable grandi`, we get `tsum grandi = 0`. The goal `tsum grandi = 1/2` reduces to `(0 : ℝ) = 1/2`, which `norm_num` immediately refutes. Any `sorry`-free proof here would yield `False`.",
@@ -169,7 +169,7 @@
       "startLine": 78,
       "endLine": 91
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Alternating Naturals Don't Converge Either",
     "content": "The series $1-2+3-4+5-6+\\cdots$ also diverges. Its partial sums grow without bound in absolute value: $1, -1, 2, -2, 3, -3, \\ldots$",
     "mathContext": "Define `alternatingNaturals n = (-1)^n * (n + 1)`. The partial sums satisfy $|S_{2k}| = k+1$ and $|S_{2k+1}| = k+1$ — both grow without bound. `¬ Summable alternatingNaturals` follows from the necessary condition: if `Summable f`, then `Filter.Tendsto f atTop (nhds 0)`. But `|alternatingNaturals n| = n+1 → ∞`, so it cannot tend to 0.",
@@ -192,7 +192,7 @@
       "startLine": 93,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Shifting Requires Convergence Proof",
     "content": "Mathlib's lemmas for manipulating series (like `tsum_eq_zero_add`) all require a `Summable` hypothesis. This is the **type-level gatekeeper** that prevents invalid reasoning.",
     "mathContext": "The relevant Mathlib lemma: `theorem tsum_eq_zero_add {f : ℕ → α} (hf : Summable f) : ∑' n, f n = f 0 + ∑' n, f (n + 1)`. Without `hf`, both sides equal 0 by `tsum_eq_zero_of_not_summable`, making the equation trivially `0 = 0 + 0`. The `Summable` term is a **proof witness** — it cannot be faked; you must construct it from first principles.",
@@ -214,7 +214,7 @@
       "startLine": 99,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "FALLACY: Shift-Add Blocked by Type System",
     "content": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**. We would need `Summable alternatingNaturals`, but we proved this is false!",
     "mathContext": "The attempted proof calls `tsum_eq_zero_add h` where `h : Summable alternatingNaturals`. But `alternatingNaturals_not_summable : ¬ Summable alternatingNaturals` makes it impossible to construct such `h` without `sorry`. Lean's elaborator rejects the proof: there is no term of type `Summable alternatingNaturals` to supply. The `sorry` here is a permanent red flag — it marks the exact location where the informal argument breaks the formal rules.",
@@ -236,7 +236,7 @@
       "startLine": 110,
       "endLine": 128
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Partial Sums Grow Without Bound",
     "content": "The sum $1+2+\\cdots+n = \\frac{n(n+1)}{2}$, which grows without bound as $n \\to \\infty$. This is the formal statement that the series diverges.",
     "mathContext": "The triangular number formula $T_n = \\frac{n(n+1)}{2}$ gives `∑ k in Finset.range n, (k+1) = n*(n+1)/2`. For any bound $M$, choosing $n > 2M$ gives $T_n > M$. Formally: `∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < ∑ k in Finset.range n, naturals k`. This implies `¬ Summable naturals` since summable sequences must have terms tending to 0, but `naturals n = n+1 → ∞`.",
@@ -258,7 +258,7 @@
       "startLine": 206,
       "endLine": 213
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "MAIN RESULT: The Sum Does NOT Equal -1/12",
     "content": "Here's the key theorem: $\\sum_{n=1}^{\\infty} n \\neq -\\frac{1}{12}$. The proof is almost trivial once we know the series doesn't converge:\n1. `naturals` is not summable\n2. Therefore `tsum naturals = 0` (by Mathlib convention)\n3. $0 \\neq -\\frac{1}{12}$ (by `norm_num`)",
     "mathContext": "Proof sketch: `have h0 : tsum naturals = 0 := tsum_eq_zero_of_not_summable naturals_not_summable; have h1 : (0 : ℝ) ≠ -1/12 := by norm_num; rw [h0]; exact h1`. The three-step argument reflects the mathematical reality: **standard summation assigns no value to this series** — not $-1/12$, not $+\\infty$, just the junk value 0.",
@@ -304,7 +304,7 @@
       "startLine": 215,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Step 2 Fails: Cannot Shift Divergent Series",
     "content": "The second step uses the shift-and-add manipulation. **BLOCKED**: This requires `Summable` which we cannot prove for divergent series.",
     "mathContext": "Step 2 of the Numberphile argument claims $2S_2 = \\frac{1}{4}$ by shifting and adding. In Lean: `tsum alternatingNaturals + tsum (fun n => alternatingNaturals (n+1)) = 1/4`. By `tsum_eq_zero_of_not_summable`, both `tsum`s equal 0, giving `0 + 0 = 0 ≠ 1/4`. The shift lemma `tsum_eq_zero_add` is unavailable since `¬ Summable alternatingNaturals`. Step 2 thus fails in two independent ways: the computed value is wrong, and the manipulation is illegal.",
@@ -326,7 +326,7 @@
       "startLine": 226,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Step 3 'Works' But Is Useless",
     "content": "Interestingly, the equation $S - S_2 = 4S$ **does typecheck** - but it's trivially true because both sides equal 0! This shows how Mathlib's convention prevents false conclusions: we can prove $0 - 0 = 4 \\cdot 0$, but this tells us nothing about $-\\frac{1}{12}$.",
     "mathContext": "The algebraic step $S - S_2 = 4S$ typechecks as: `tsum naturals - tsum alternatingNaturals = 4 * tsum naturals`. Since both `tsum` values are 0 by `tsum_eq_zero_of_not_summable`, this becomes `0 - 0 = 4 * 0`, i.e., `0 = 0` — provable by `ring`. The Numberphile argument uses this *form* to conclude $S = -\\frac{1}{12}$, but Lean sees only `0 = 0`: no information about the actual series value is transmitted.",

@@ -14,6 +14,9 @@ find `u_n` such that min degree `> 2^n - u_n` on `2^n` vertices forces `Q_n`.
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.DegreeSum
+import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Bipartite
 import Mathlib.Data.Fin.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
@@ -294,3 +297,83 @@ theorem hypercube_n_edge_count (n : ℕ) :
   rw [← h_eq, card_image_of_injective _ hf_inj,
       card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]
   ring
+
+/- ## Handshaking lemma for Q_n -/
+
+/-- **Handshaking lemma for Q_n**: twice the number of undirected edges equals `n · 2^n`
+    (the sum of all vertex degrees).
+
+    This is the handshaking lemma applied to the `n`-regular graph `Q_n`:
+    `2 · |E(Q_n)| = ∑_v deg(v) = 2^n · n`. -/
+theorem hypercube_handshaking (n : ℕ) :
+    2 * (hypercubeGraph n).edgeFinset.card = n * 2 ^ n := by
+  have hdeg : ∀ v : Fin (2 ^ n), (hypercubeGraph n).degree v = n := fun v => by
+    simp only [SimpleGraph.degree, SimpleGraph.neighborFinset_eq_filter]
+    exact hypercube_n_regular_general n v
+  have hshake := (hypercubeGraph n).sum_degrees_eq_twice_card_edges
+  simp_rw [hdeg] at hshake
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hshake
+  linarith
+
+/- ## Bipartiteness of Q_n -/
+
+/-- The bit-count sum for vertex `v`: the number of set bits in the first `n` positions.
+    Used to define the 2-coloring of Q_n by popcount parity. -/
+def hypercubeBitCount (n : ℕ) (v : ℕ) : ℕ :=
+  ∑ k : Fin n, if v.testBit k.val then 1 else 0
+
+/-- The 2-coloring of Q_n by bit-count parity: vertex `v` has color 0 (even) or 1 (odd)
+    according to the parity of the number of set bits in `v`. -/
+def hypercubeColor (n : ℕ) (v : Fin (2 ^ n)) : Fin 2 :=
+  ⟨hypercubeBitCount n v.val % 2, Nat.mod_lt _ (by norm_num)⟩
+
+/-- XOR with `2^k` changes `hypercubeBitCount` by exactly 1: flipping bit `k` either
+    increments or decrements the count by 1, so the parity always changes. -/
+private lemma hypercubeBitCount_xor_pow_parity (n k : ℕ) (hk : k < n) (v : ℕ) :
+    hypercubeBitCount n (v ^^^ 2 ^ k) % 2 ≠ hypercubeBitCount n v % 2 := by
+  simp only [hypercubeBitCount]
+  -- The erase-k sum is identical for v and v ^^^ 2^k (bits j ≠ k are unchanged)
+  have h_rest : ∑ j ∈ Finset.univ.erase (⟨k, hk⟩ : Fin n),
+      if (v ^^^ 2 ^ k).testBit j.val then 1 else 0 =
+      ∑ j ∈ Finset.univ.erase (⟨k, hk⟩ : Fin n),
+      if v.testBit j.val then 1 else 0 := by
+    apply Finset.sum_congr rfl
+    intro ⟨j, _⟩ hmem
+    simp only [Finset.mem_erase, ne_eq, Fin.mk.injEq] at hmem
+    rw [Nat.testBit_xor, Nat.testBit_two_pow_of_ne hmem.1, Bool.xor_false]
+  -- The k-th bit flips: testBit (v ^^^ 2^k) k = !testBit v k
+  have h_flip : (v ^^^ 2 ^ k).testBit k = !(v.testBit k) := by
+    rw [Nat.testBit_xor, Nat.testBit_two_pow_self, Bool.true_xor]
+  -- Expand both sums: isolate k-th term + erase sum
+  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨k, hk⟩ : Fin n)),
+      show (⟨k, hk⟩ : Fin n).val = k from rfl, h_flip, h_rest,
+      ← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨k, hk⟩ : Fin n)),
+      show (⟨k, hk⟩ : Fin n).val = k from rfl]
+  -- Now: (if !(v.testBit k) then 1 else 0 + X) % 2 ≠ (if v.testBit k then 1 else 0 + X) % 2
+  -- where X = ∑ j ∈ erase ⟨k⟩, if v.testBit j then 1 else 0
+  -- Case split: bit k is false or true
+  cases hb : v.testBit k
+  · -- bit k = false → !bit k = true → sum_new = 1 + X, sum_old = 0 + X
+    simp only [hb, Bool.not_false, ite_true, ite_false, zero_add]
+    omega
+  · -- bit k = true → !bit k = false → sum_new = 0 + X, sum_old = 1 + X
+    simp only [hb, Bool.not_true, ite_true, ite_false, zero_add]
+    omega
+
+/-- **Q_n is bipartite** (2-colorable): the vertex set splits into two independent sets
+    according to the parity of the number of set bits (popcount parity).
+
+    Coloring: vertex `v` gets color `(bitcount parity of v.val) ∈ Fin 2`.
+    Adjacent vertices differ in exactly one bit, so their parities differ. -/
+theorem hypercube_bipartite (n : ℕ) : (hypercubeGraph n).IsBipartite :=
+  ⟨SimpleGraph.Coloring.mk
+    (hypercubeColor n)
+    (fun {u v} hadj => by
+      obtain ⟨_, k, hk⟩ := hadj
+      -- v.val = u.val ^^^ 2^k.val (from u.val ^^^ v.val = 2^k.val)
+      have hv : v.val = u.val ^^^ 2 ^ k.val := by
+        have h1 : u.val ^^^ (u.val ^^^ v.val) = u.val ^^^ 2 ^ k.val := by rw [hk]
+        rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h1
+        exact h1
+      simp only [hypercubeColor, Fin.mk.injEq, hv]
+      exact hypercubeBitCount_xor_pow_parity n k.val k.isLt u.val)⟩

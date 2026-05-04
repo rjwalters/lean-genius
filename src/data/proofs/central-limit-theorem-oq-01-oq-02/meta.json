@@ -42,7 +42,8 @@
     "axiomCount": 0,
     "lineCount": 322,
     "assumptions": "0 axioms, 0 sorries. All 19 theorems fully proved. stable_inf_divisible (α-stable infinite divisibility) was converted to a block comment; the remaining 19 theorems about Lévy triplets, Gaussian/Poisson instances, and Lévy-Itô decomposition are machine-verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "The Lévy-Khintchine formula stands as one of the deepest results in probability theory, characterizing all infinitely divisible distributions through a single canonical representation. Paul Lévy established the formula in 1934 as part of his systematic study of stochastic processes with independent increments, building on earlier work by Bruno de Finetti (1929) on the structure of infinitely divisible laws. Aleksandr Khintchine independently proved the same result in 1937 using characteristic function methods. The formula reveals that every infinitely divisible distribution is uniquely determined by three objects: a drift parameter γ, a Gaussian variance σ², and a Lévy measure ν that describes the jump structure. This trichotomy — drift, diffusion, jumps — became the foundation for the modern theory of Lévy processes, with far-reaching applications in mathematical finance (jump-diffusion models of Merton 1976), physics (anomalous diffusion), and statistics (stable distributions as limit laws for heavy-tailed data).",

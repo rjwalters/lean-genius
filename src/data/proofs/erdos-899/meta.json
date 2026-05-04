@@ -47,7 +47,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 140,
-    "assumptions": "1 axiom: ruzsa_difference_growth. See Lean source for the complete statement."
+    "assumptions": "1 axiom: ruzsa_difference_growth. See Lean source for the complete statement.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem 899 concerns the growth rate of difference sets, a fundamental question in additive combinatorics. Given a set A of natural numbers, the difference set A - A consists of all integers of the form a - b where a, b ∈ A.\n\nThe question asks: if A is sparse (has zero density), can A - A also be sparse relative to A? Intuitively, if A has large gaps, the differences should spread out, forcing A - A to be much larger than A.\n\nImre Ruzsa proved in 1978 that the answer is no—the ratio |A - A| / |A| must tend to infinity. This result is foundational in additive combinatorics and connects to the study of sumsets, Freiman's theorem, and the structure of sets with small doubling.",

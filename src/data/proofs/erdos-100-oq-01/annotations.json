@@ -2,7 +2,7 @@
   {
     "id": "n-over-log-sublinear",
     "line": 54,
-    "type": "theorem",
+    "type": "insight",
     "title": "n/log n = o(n): Known Bound is Strictly Sublinear",
     "body": "`n_over_log_sublinear` proves that $n/\\log n = o(n)$, i.e., $(n/\\log n)/n = 1/\\log n \\to 0$ as $n \\to \\infty$. This formalizes the fact that the Guth-Katz bound $\\Omega(n/\\log n)$ is strictly weaker than the conjectured linear bound $\\Omega(n)$: as $n \\to \\infty$, the ratio of the two bounds $(n/\\log n)/n = 1/\\log n$ goes to zero. The proof uses `Filter.Tendsto_div` and `log_tendsto_atTop`.",
     "mathContext": "In asymptotic analysis, $f = o(g)$ means $f/g \\to 0$. Here $f(n) = n/\\log n$ and $g(n) = n$, so $f/g = 1/\\log n \\to 0$. This is a standard result: $\\log n$ diverges to infinity, so its reciprocal goes to zero. The Lean formalization requires carefully translating the discrete statement (over $\\mathbb{N}$) to the real-valued limit via coercions.",
@@ -18,7 +18,7 @@
       "Filter.atTop",
       "Tendsto API"
     ],
-    "content": "Confirms that the Guth-Katz bound and the Erdős conjecture are genuinely different — the gap is not a bounded constant but grows without bound. This justifies the difficulty of closing the gap and the importance of Problem #100.",
+    "content": "Confirms that the Guth-Katz bound and the Erd\u0151s conjecture are genuinely different \u2014 the gap is not a bounded constant but grows without bound. This justifies the difficulty of closing the gap and the importance of Problem #100.",
     "proofId": "erdos-100-oq-01",
     "range": {
       "startLine": 54,
@@ -30,8 +30,8 @@
     "line": 92,
     "type": "definition",
     "title": "Linear Diameter Conjecture (Formal Statement)",
-    "body": "`linearDiameterConjecture` formalizes Erdős's conjecture: $\\exists c > 0$ such that for all sufficiently large $n$, every $n$-point integer distance set has diameter $\\geq cn$. The `∀ᶠ n in Filter.atTop` quantifier captures 'for all sufficiently large $n$'. The inner `∀ (diam : ℝ)` with `c * n ≤ diam` states the diameter bound. This is a Lean `def` of type `Prop` — a formal statement of the open question.",
-    "mathContext": "An *integer distance set* in $\\mathbb{R}^2$ is a finite set where all pairwise Euclidean distances are positive integers. The diameter is $\\max_{p, q \\in S} |pq|$. Erdős conjectured (1986) that the minimum diameter of an $n$-point integer distance set grows linearly: $\\text{diam}(S) \\geq cn$ for some absolute constant $c > 0$. The best known result (Guth-Katz) only gives $cn/\\log n$.",
+    "body": "`linearDiameterConjecture` formalizes Erd\u0151s's conjecture: $\\exists c > 0$ such that for all sufficiently large $n$, every $n$-point integer distance set has diameter $\\geq cn$. The `\u2200\u1da0 n in Filter.atTop` quantifier captures 'for all sufficiently large $n$'. The inner `\u2200 (diam : \u211d)` with `c * n \u2264 diam` states the diameter bound. This is a Lean `def` of type `Prop` \u2014 a formal statement of the open question.",
+    "mathContext": "An *integer distance set* in $\\mathbb{R}^2$ is a finite set where all pairwise Euclidean distances are positive integers. The diameter is $\\max_{p, q \\in S} |pq|$. Erd\u0151s conjectured (1986) that the minimum diameter of an $n$-point integer distance set grows linearly: $\\text{diam}(S) \\geq cn$ for some absolute constant $c > 0$. The best known result (Guth-Katz) only gives $cn/\\log n$.",
     "significance": "supporting",
     "relatedConcepts": [
       "sublinearBound",
@@ -54,9 +54,9 @@
   {
     "id": "linear-implies-known",
     "line": 105,
-    "type": "theorem",
+    "type": "insight",
     "title": "Linear Conjecture Implies Known Sublinear Bound",
-    "body": "`linear_implies_known` proves `linearDiameterConjecture → sublinearBound`. The proof chains: if `c * n ≤ diam`, then `c * n / Real.log n ≤ c * n ≤ diam` (since `Real.log n ≥ 1` for `n ≥ 3`). This logical relationship confirms the linear conjecture is a strengthening of the known result — any proof of the conjecture would automatically give the known bound as a corollary. The `log_gt_one` lemma (line 60) provides the key inequality `log n > 1` for `n ≥ 3`.",
+    "body": "`linear_implies_known` proves `linearDiameterConjecture \u2192 sublinearBound`. The proof chains: if `c * n \u2264 diam`, then `c * n / Real.log n \u2264 c * n \u2264 diam` (since `Real.log n \u2265 1` for `n \u2265 3`). This logical relationship confirms the linear conjecture is a strengthening of the known result \u2014 any proof of the conjecture would automatically give the known bound as a corollary. The `log_gt_one` lemma (line 60) provides the key inequality `log n > 1` for `n \u2265 3`.",
     "mathContext": "The implication $cn \\geq cn/\\log n$ holds for $\\log n \\geq 1$ (i.e., $n \\geq e \\approx 2.718$). In Lean terms: `div_le_self (mul_nonneg hc.le ...) (le_of_lt log_gt_one)`. This is a trivial inequality but an important logical check: the conjecture and the known result are not contradictory.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,13 +80,13 @@
   {
     "id": "anning-erdos-finiteness",
     "line": 142,
-    "type": "theorem",
-    "title": "Anning-Erdős: Infinite Non-Collinear Integer Distance Sets Impossible (sorry)",
-    "body": "`anning_erdos_finiteness` states the Anning-Erdős theorem (1945): for any bound $d$, there are only finitely many non-collinear configurations of $n$ points with all pairwise integer distances $\\leq d$. Equivalently: an infinite set of non-collinear points with all mutual integer distances is impossible. The proof has 1 sorry — the Anning-Erdős argument requires number theory (hyperbola intersections) not yet in Mathlib.",
-    "mathContext": "Anning and Erdős proved (1945): given two points $A, B$ at integer distance $d$, the locus of points $C$ with $|CA| - |CB| = k$ (for each integer $k$ with $|k| < d$) is a hyperbola with only finitely many integer points. Since $C$ must lie on one of the $2d-1$ such hyperbolas, only finitely many choices for $C$ are compatible with the integer distance constraint given $A$ and $B$. By induction, the $n$-th point is constrained to finitely many positions.",
+    "type": "insight",
+    "title": "Anning-Erd\u0151s: Infinite Non-Collinear Integer Distance Sets Impossible (sorry)",
+    "body": "`anning_erdos_finiteness` states the Anning-Erd\u0151s theorem (1945): for any bound $d$, there are only finitely many non-collinear configurations of $n$ points with all pairwise integer distances $\\leq d$. Equivalently: an infinite set of non-collinear points with all mutual integer distances is impossible. The proof has 1 sorry \u2014 the Anning-Erd\u0151s argument requires number theory (hyperbola intersections) not yet in Mathlib.",
+    "mathContext": "Anning and Erd\u0151s proved (1945): given two points $A, B$ at integer distance $d$, the locus of points $C$ with $|CA| - |CB| = k$ (for each integer $k$ with $|k| < d$) is a hyperbola with only finitely many integer points. Since $C$ must lie on one of the $2d-1$ such hyperbolas, only finitely many choices for $C$ are compatible with the integer distance constraint given $A$ and $B$. By induction, the $n$-th point is constrained to finitely many positions.",
     "significance": "key",
     "relatedConcepts": [
-      "Anning-Erdős-1945",
+      "Anning-Erd\u0151s-1945",
       "integer-hyperbola",
       "collinear-constraint",
       "piepmeyer_upper"
@@ -96,7 +96,7 @@
       "Finset.card",
       "collinearity in Lean"
     ],
-    "content": "The fundamental constraint on integer distance sets: you cannot have infinitely many non-collinear integer-distance points. This is why the diameter question is interesting: the Anning-Erdős theorem forces any large integer distance set to be nearly collinear or have large diameter.",
+    "content": "The fundamental constraint on integer distance sets: you cannot have infinitely many non-collinear integer-distance points. This is why the diameter question is interesting: the Anning-Erd\u0151s theorem forces any large integer distance set to be nearly collinear or have large diameter.",
     "proofId": "erdos-100-oq-01",
     "range": {
       "startLine": 142,
@@ -106,9 +106,9 @@
   {
     "id": "piepmeyer-small-case",
     "line": 123,
-    "type": "theorem",
+    "type": "insight",
     "title": "Piepmeyer's 9-Point Configuration: Upper Bound Witness (sorry)",
-    "body": "`piepmeyer_upper` states the existence of Piepmeyer's 9-point configuration: a set of 9 non-collinear points in ℝ² with all $\\binom{9}{2} = 36$ pairwise distances being positive integers $\\leq 4$. The proof has 1 sorry because it requires an explicit coordinate witness — specific $(x_i, y_i)$ values that must be verified by computation. This configuration is extremal: it shows the diameter can be as small as 4 for $n = 9$, while the lower bound gives $\\text{diam} \\geq c \\cdot 9 / \\log 9 \\approx 4.1c$.",
+    "body": "`piepmeyer_upper` states the existence of Piepmeyer's 9-point configuration: a set of 9 non-collinear points in \u211d\u00b2 with all $\\binom{9}{2} = 36$ pairwise distances being positive integers $\\leq 4$. The proof has 1 sorry because it requires an explicit coordinate witness \u2014 specific $(x_i, y_i)$ values that must be verified by computation. This configuration is extremal: it shows the diameter can be as small as 4 for $n = 9$, while the lower bound gives $\\text{diam} \\geq c \\cdot 9 / \\log 9 \\approx 4.1c$.",
     "mathContext": "OEIS A186704 tabulates minimum diameters of non-collinear integer distance sets: $n=3$ gives diam 1, $n=4$ gives diam 3, $n=5$ gives diam 5, $n=7$ gives diam 6 (Harborth configuration). Piepmeyer's 9-point example (with diameter 4) appears near-optimal for small $n$. To verify the configuration in Lean, one needs to provide 9 explicit points $(x_i, y_i) \\in \\mathbb{Q}^2$ (rational coordinates suffice for integer distance computations) and check all 36 distance conditions via `norm_num`.",
     "significance": "key",
     "relatedConcepts": [

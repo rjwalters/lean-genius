@@ -22,7 +22,8 @@
     "axiomCount": 0,
     "lineCount": 84,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1987 in his paper on combinatorial problems in set theory. The question lies at the intersection of partition calculus, cardinal arithmetic, and the combinatorics of countable subsets. The classical Erdős–Rado partition relation ℵ₁ → (ℵ₁)²_{ℵ₀} (1956) established foundational results about coloring pairs, but coloring countable subsets introduces an entirely different combinatorial landscape. The successor of the continuum κ = (2^ℵ₀)⁺ appears as the natural threshold because it is the smallest cardinal exceeding the number of reals, and questions about partition properties at this level are known to be sensitive to set-theoretic axioms. Under CH, κ = ℵ₂ and the problem connects to classical partition properties of ℵ₂ studied by Todorcevic, Shelah, and others. The problem asks whether κ colors suffice for a 'chromatic completeness' property: every κ-sized subset must realize all colors among its countable subsets. This is a strong Ramsey-type requirement that goes beyond standard partition relations by quantifying over all large subsets simultaneously.",

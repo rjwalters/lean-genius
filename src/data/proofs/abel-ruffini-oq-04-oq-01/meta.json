@@ -98,7 +98,8 @@
         "id": "abel-ruffini-oq-04-oq-03",
         "relationship": "Foundational: formalizes Galois's full solvability criterion, of which this entry uses the forward direction (solvable by radicals ⇒ solvable Galois group)"
       }
-    ]
+    ],
+    "theoremCount": 36
   },
   "crossReferences": [
     {
@@ -225,6 +226,16 @@
       "Galois theory (field extensions, Galois groups, splitting fields)",
       "Polynomial algebra (irreducibility criteria, Eisenstein criterion)",
       "Sylow theory (Sylow subgroup existence, uniqueness, and counting)"
+    ],
+    "relatedConcepts": [
+      "Galois group",
+      "solvability by radicals",
+      "S5",
+      "Eisenstein criterion",
+      "Vandermonde determinant",
+      "Wiedijk theorem 16",
+      "discriminant sign",
+      "Sylow theory"
     ]
   },
   "sections": [
@@ -234,7 +245,14 @@
       "startLine": 1,
       "endLine": 98,
       "summary": "Documents the complete Abel-Ruffini proof chain and motivation for choosing $x^5 - 4x + 2$. Lists all 5 steps from $A_5$ simplicity to unsolvability by radicals. Lines 63-91: three computational lemmas proved by `native_decide` that must appear before `open scoped Classical` for decidability — `perm_fin5_order5_order3_not_commute` (used in Sylow order-15 elimination), `perm_fin5_order_dvd5_sign_one` (elements of order dividing 5 in $S_5$ are even), and `transposition_not_normalizing_5cycle` (used in Sylow elimination of orders 10, 20, 40). All three feed into the main proof.",
-      "mathContext": "Proof chain: (1) $A_5$ simple, (2) $S_n$ not solvable for $n \\geq 5$, (3) solvable by radicals $\\Rightarrow$ solvable Gal, (4) $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, (5) roots not expressible by radicals."
+      "mathContext": "Proof chain: (1) $A_5$ simple, (2) $S_n$ not solvable for $n \\geq 5$, (3) solvable by radicals $\\Rightarrow$ solvable Gal, (4) $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, (5) roots not expressible by radicals.",
+      "relatedConcepts": [
+        "Abel-Ruffini theorem",
+        "Galois theory",
+        "native_decide",
+        "solvability by radicals",
+        "proof chain"
+      ]
     },
     {
       "id": "polynomial",
@@ -242,7 +260,14 @@
       "startLine": 99,
       "endLine": 108,
       "summary": "Defines $p = X^5 - 4X + 2$ over $\\mathbb{Q}$ and its $\\mathbb{Z}[X]$ version `p_int` for Eisenstein criterion application.",
-      "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$, $p_{\\text{int}} = x^5 - 4x + 2 \\in \\mathbb{Z}[X]$."
+      "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$, $p_{\\text{int}} = x^5 - 4x + 2 \\in \\mathbb{Z}[X]$.",
+      "relatedConcepts": [
+        "Bring-Jerrard form",
+        "Eisenstein criterion",
+        "Polynomial.C",
+        "rational polynomial",
+        "integer polynomial"
+      ]
     },
     {
       "id": "irreducibility",
@@ -250,7 +275,14 @@
       "startLine": 109,
       "endLine": 183,
       "summary": "Proves $p$ is irreducible over $\\mathbb{Q}$. First proves irreducibility over $\\mathbb{Z}$ using Eisenstein's criterion at the prime ideal $(2)$, then transfers to $\\mathbb{Q}$ via Gauss's lemma (monic $\\Rightarrow$ primitive).",
-      "mathContext": "Eisenstein at $(2) \\subset \\mathbb{Z}$: $2 \\nmid 1$, $2 \\mid 0, 0, 0, -4, 2$, $4 \\nmid 2$. Therefore $p$ is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma."
+      "mathContext": "Eisenstein at $(2) \\subset \\mathbb{Z}$: $2 \\nmid 1$, $2 \\mid 0, 0, 0, -4, 2$, $4 \\nmid 2$. Therefore $p$ is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma.",
+      "relatedConcepts": [
+        "Eisenstein criterion",
+        "Gauss's lemma",
+        "prime ideal",
+        "p_int_monic",
+        "irreducible_of_eisenstein_criterion"
+      ]
     },
     {
       "id": "structure",
@@ -258,7 +290,14 @@
       "startLine": 184,
       "endLine": 207,
       "summary": "Proves $\\deg(p) = 5$, $p$ is monic, $p$ is separable (char 0), and $|\\text{rootSet}(p)| = 5$.",
-      "mathContext": "$\\deg(p) = 5$, $p$ monic and separable. In the splitting field: $|\\{\\alpha : p(\\alpha) = 0\\}| = 5$."
+      "mathContext": "$\\deg(p) = 5$, $p$ monic and separable. In the splitting field: $|\\{\\alpha : p(\\alpha) = 0\\}| = 5$.",
+      "relatedConcepts": [
+        "separable polynomial",
+        "splitting field",
+        "rootSet",
+        "compute_degree!",
+        "characteristic zero"
+      ]
     },
     {
       "id": "galois-structure",
@@ -266,7 +305,14 @@
       "startLine": 208,
       "endLine": 231,
       "summary": "Proves $5 \\mid |\\text{Gal}|$ (prime degree gives transitive action, orbit-stabilizer) and $|\\text{Gal}| \\mid 120$ (galActionHom embeds $\\text{Gal}$ into $S_5$). Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
-      "mathContext": "$5 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 5! = 120$. Possible orders: $\\{5, 10, 15, 20, 30, 40, 60, 120\\}$."
+      "mathContext": "$5 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 5! = 120$. Possible orders: $\\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
+      "relatedConcepts": [
+        "galActionHom",
+        "orbit-stabilizer theorem",
+        "Lagrange's theorem",
+        "transitive group action",
+        "prime_degree_dvd_card"
+      ]
     },
     {
       "id": "gal-order",
@@ -274,7 +320,14 @@
       "startLine": 232,
       "endLine": 1377,
       "summary": "The largest section (~1150 lines): proves $|\\text{Gal}| = 120$ via systematic case elimination. (a) Lines 232-264: polynomial evaluations showing 3 sign changes (sign change comment motivates complex conjugation argument). (b) Lines 265-293: `c5` 5-cycle definition and Part V(c) Galois infrastructure header. (c) Lines 306-336: `galToPerm5` injection from $\\text{Gal}$ to $S_5$, injectivity, and `galSign`. (d) Lines 337-507: Sylow elimination of orders 15 and 30 (`no_subgroup_order_15`, `a5_card`, `no_subgroup_order_30`). (e) Lines 508-806: Vandermonde machinery, discriminant computation ($\\Delta^2 = -212144$), and `gal_has_odd_perm`. (e2) Lines 807-1244: complex conjugation gives transposition (`sfEmb`, `conjGalAut`, `gal_has_transposition`), Sylow elimination of non-3-divisible orders (`gal_card_ne_20`, `gal_card_ne_10`, `gal_card_ne_40`), `three_dvd_gal_card`. (f) Lines 1246-1377: case elimination (`gal_card_ne_15`, `gal_card_ne_30`, `gal_card_ne_60`) and `gal_card_eq_120`. Fully proved with 0 axioms.",
-      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). All steps fully proved."
+      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). All steps fully proved.",
+      "relatedConcepts": [
+        "Vandermonde determinant",
+        "complex conjugation",
+        "Sylow elimination",
+        "discriminant sign",
+        "gal_card_eq_120"
+      ]
     },
     {
       "id": "gal-iso",
@@ -282,7 +335,14 @@
       "startLine": 1378,
       "endLine": 1412,
       "summary": "Proves `gal_iso_s5`: $\\text{Gal} \\cong S_5$ via galActionHom bijectivity. Injective (Mathlib's `galActionHom_injective`) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ from `gal_card_eq_120`. Bijectivity via `Fintype.bijective_iff_injective_and_card`. Transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`.",
-      "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$."
+      "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$.",
+      "relatedConcepts": [
+        "galActionHom",
+        "MulEquiv.ofBijective",
+        "pigeonhole principle",
+        "Equiv.permCongr",
+        "Fintype.bijective_iff_injective_and_card"
+      ]
     },
     {
       "id": "not-solvable",
@@ -290,7 +350,14 @@
       "startLine": 1413,
       "endLine": 1431,
       "summary": "`s5_not_solvable`: $S_5$ not solvable via `Equiv.Perm.not_solvable` with $5 \\leq |\\text{Fin}\\;5|$. `gal_not_solvable`: transfers non-solvability from $S_5$ to $\\text{Gal}$ via the surjective `MulEquiv` from Part VI using `solvable_of_surjective`.",
-      "mathContext": "$S_5$ not solvable (derived series stalls at $A_5$). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable."
+      "mathContext": "$S_5$ not solvable (derived series stalls at $A_5$). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable.",
+      "relatedConcepts": [
+        "derived series",
+        "A5 simplicity",
+        "solvable_of_surjective",
+        "Equiv.Perm.not_solvable",
+        "group surjection"
+      ]
     },
     {
       "id": "abel-ruffini-conclusion",
@@ -298,7 +365,14 @@
       "startLine": 1432,
       "endLine": 1466,
       "summary": "Main theorem `roots_not_solvable_by_rad`: for any root $\\alpha$ of $x^5 - 4x + 2$, $\\alpha \\notin \\text{solvableByRad}(\\mathbb{Q})$. Proof: assume $\\alpha$ solvable by radicals; by `solvableByRad.isSolvable'` with `p_irreducible` and `hroot`, $\\text{Gal}(p)$ is solvable — contradicting `gal_not_solvable`.",
-      "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$."
+      "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$.",
+      "relatedConcepts": [
+        "solvableByRad.isSolvable'",
+        "contrapositive",
+        "radical extension",
+        "IsSolvableByRad",
+        "Galois bridge"
+      ]
     },
     {
       "id": "three-dvd-proved",
@@ -306,7 +380,13 @@
       "startLine": 1210,
       "endLine": 1244,
       "summary": "Proves `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$ by eliminating all non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$. Order 5 eliminated by sign argument (order-5 permutations in $S_5$ are even). Order 20 eliminated by `gal_card_ne_20` (F₂₀ has no transpositions but Gal does). Orders 10 and 40 eliminated via Sylow theory. All cases fully proved.",
-      "mathContext": "$|\\text{Gal}| \\in \\{5,10,15,20,30,40,60,120\\}$. Not 5 (sign), not 10, 20, 40 (Sylow/transposition arguments). Remaining: $\\{15,30,60,120\\}$ — all divisible by 3."
+      "mathContext": "$|\\text{Gal}| \\in \\{5,10,15,20,30,40,60,120\\}$. Not 5 (sign), not 10, 20, 40 (Sylow/transposition arguments). Remaining: $\\{15,30,60,120\\}$ — all divisible by 3.",
+      "relatedConcepts": [
+        "Sylow theory",
+        "transposition normalization",
+        "native_decide",
+        "non-3-divisible order elimination"
+      ]
     },
     {
       "id": "vandermonde-infrastructure",
@@ -314,7 +394,14 @@
       "startLine": 508,
       "endLine": 1244,
       "summary": "Root enumeration (`rootEnum_p`), Vandermonde product $\\Delta = \\det(V(\\text{roots}))$, Galois permutation of roots, Vandermonde permutation identity ($\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$), and `gal_has_odd_perm` proved via the discriminant sign argument ($\\text{disc}(p) < 0$ implies $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has odd sign).",
-      "mathContext": "$\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$. $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$. If all signs $+1$, $\\Delta \\in \\mathbb{Q}$ but $\\Delta^2 < 0$ — contradiction."
+      "mathContext": "$\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$. $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$. If all signs $+1$, $\\Delta \\in \\mathbb{Q}$ but $\\Delta^2 < 0$ — contradiction.",
+      "relatedConcepts": [
+        "Vandermonde determinant",
+        "Matrix.det_permute",
+        "root enumeration",
+        "galToPerm5",
+        "derivative product identity"
+      ]
     },
     {
       "id": "gal-card-120",
@@ -322,7 +409,14 @@
       "startLine": 1246,
       "endLine": 1377,
       "summary": "Proves `gal_card_eq_120`: $|\\text{Gal}| = 120$ by combining $15 \\mid |\\text{Gal}|$ (from `five_dvd_gal_card` and `three_dvd_gal_card`) with elimination of orders 15 (Sylow), 30 ($A_5$ simplicity), and 60 (odd permutation). Only 120 remains.",
-      "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$."
+      "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$.",
+      "relatedConcepts": [
+        "case elimination",
+        "divisibility chain",
+        "Sylow theory",
+        "discriminant sign",
+        "galois group order"
+      ]
     },
     {
       "id": "realizability",
@@ -330,7 +424,14 @@
       "startLine": 1467,
       "endLine": 1498,
       "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Lines 1485-1498: `#check` verification of all 9 key theorems.",
-      "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
+      "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$.",
+      "relatedConcepts": [
+        "inverse Galois problem",
+        "splitting field",
+        "IsGalois",
+        "FiniteDimensional",
+        "s5_realizable"
+      ]
     }
   ],
   "conclusion": {
@@ -371,7 +472,7 @@
     "namespace": "AbelRuffiniOQ04OQ01",
     "lineCount": 1498,
     "axiomCount": 0,
-    "theoremCount": 64,
+    "theoremCount": 36,
     "definitionCount": 7,
     "mainTheorems": [
       {

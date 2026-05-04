@@ -60,7 +60,8 @@
     ],
     "lineCount": 600,
     "assumptions": "0 axioms. 0 sorries. Fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 31
   },
   "overview": {
     "historicalContext": "The Stern-Brocot tree was independently discovered by Moritz Abraham Stern in 1858 and Achille Brocot in 1861. Stern was a German mathematician studying number-theoretic functions; Brocot was a French clockmaker seeking optimal gear ratios for mechanical clocks. Both arrived at the same elegant structure: a binary tree containing every positive rational number exactly once, already in lowest terms.\n\nThe tree is built using the mediant operation: given fractions a/b and c/d, their mediant is (a+c)/(b+d). Starting with the 'sentinels' 0/1 and 1/0, the root is their mediant 1/1. Each node's left child is the mediant of the node with its left ancestor, and likewise for the right.\n\nThe Stern-Brocot tree has deep connections to continued fractions (the path to any rational encodes its continued fraction expansion), the Euclidean algorithm (the search path mimics gcd computation), Farey sequences (each level of the tree corresponds to a Farey-like refinement), and the Calkin-Wilf tree (a closely related structure with the same enumeration but different tree shape).\n\nGraham, Knuth, and Patashnik's 'Concrete Mathematics' (1994) popularized the tree in computer science, using it to derive properties of continued fractions and to prove the density of rationals in the reals constructively.",

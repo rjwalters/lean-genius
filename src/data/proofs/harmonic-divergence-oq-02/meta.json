@@ -17,9 +17,11 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
+    "theoremCount": 7,
     "lineCount": 156,
     "assumptions": "None. All results fully proved via Cauchy condensation.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "The log-harmonic series Σ 1/(n log n) sits in a classical hierarchy of divergent series established in the 19th century. Oresme (ca. 1350) proved the harmonic series Σ 1/n diverges. Cauchy (1827) introduced the condensation test in Cours d'Analyse, giving a powerful criterion for positive decreasing series. The Cauchy condensation test reduces the convergence of Σ f(n) to that of Σ 2^k f(2^k), and for f(n) = 1/(n log n) this gives the elegant computation 2^k · 1/(2^k · k log 2) = 1/(k log 2). The connection to logarithm iteration was systematized by du Bois-Reymond (1873) in the 'logarithmico-exponential scale': the hierarchy Σ 1/n, Σ 1/(n log n), Σ 1/(n log n log log n), etc., all diverge, but successively slower. Hardy's 'A Course of Pure Mathematics' (1908) popularized these examples as illustrations of the subtlety of series convergence. The partial sums grow as log N, log log N, log log log N respectively, giving a countable tower of divergence rates.",

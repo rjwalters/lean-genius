@@ -52,7 +52,8 @@
       "Upper hemicontinuity"
     ],
     "assumptions": "Three axioms: (1) Brouwer's FPT for compact convex sets, (2) existence of approximate continuous selections for UHC maps with convex values, (3) sequential compactness of compact metric spaces. Plus 2 sorries for the combination arguments.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Shizuo Kakutani proved his fixed point theorem in 1941, generalizing Brouwer's 1911 theorem from single-valued continuous functions to set-valued correspondences. Kakutani's original proof used simplicial approximation on triangulations of the domain, closely following the combinatorial flavor of Brouwer's proof via Sperner's lemma. The approach via approximate continuous selections was developed by Arrigo Cellina in 1969, who showed that partitions of unity could replace the triangulation machinery entirely, yielding a more analytic proof.\n\nThe theorem's greatest impact came through John Nash's 1950 proof of the existence of Nash equilibria in finite games. Nash applied Kakutani's theorem to the best-response correspondence: each player's set of optimal mixed strategies given others' strategies forms a nonempty, convex, compact set, and the correspondence is upper hemicontinuous — precisely Kakutani's conditions. This connection earned Nash the 1994 Nobel Prize in Economics and made Kakutani's theorem one of the most applied results in mathematical economics.\n\nThe factored proof presented here — separating Brouwer's FPT, approximate selections, and sequential compactness as independent axioms — reflects a modern pedagogical approach that clarifies which properties of the domain and the correspondence are responsible for each step of the argument.",

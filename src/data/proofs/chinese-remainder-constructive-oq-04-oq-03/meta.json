@@ -62,9 +62,10 @@
     ],
     "dateAdded": "2026-03-29",
     "axiomCount": 0,
-    "lineCount": 216,
+    "lineCount": 607,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Works over any EuclideanDomain."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Works over any EuclideanDomain.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The classical Chinese Remainder Theorem requires pairwise coprime moduli. Oystein Ore's 1952 paper in the American Mathematical Monthly gave the complete generalization: a system x = ai (mod mi) is solvable iff gcd(mi, mj) | (ai - aj) for all pairs, with solutions unique modulo lcm(m1, ..., mk). The parent formalization (chinese-remainder-constructive-oq-04) generalized the coprime CRT to arbitrary lists. This formalization answers OQ04's third open question by doing the same for the non-coprime case, and goes further by working over arbitrary Euclidean domains rather than just the natural numbers.",
@@ -143,7 +144,7 @@
       "ChineseRemainderNonCoprimeOQ03"
     ],
     "namespace": "ChineseRemainderNonCoprimeList",
-    "lineCount": 216,
+    "lineCount": 607,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 5,

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-lagrange-upper-bound",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 39,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Upper Bound: Mathlib Delegation via Nat.sum_four_squares",
+    "content": "The upper bound g(2) ≤ 4 is obtained in a single line: `Nat.sum_four_squares n`. This illustrates Mathlib's power — Lagrange's celebrated 1770 theorem reduces to a single function call. The Mathlib proof uses Hurwitz quaternions: every natural number is a norm of a Hurwitz quaternion, and the norm decomposes into four integer squares via Euler's four-square identity. The gallery's contribution is the Waring framework built on top of this foundation, not a re-proof of Lagrange's theorem itself.",
+    "mathContext": "$\\forall n \\in \\mathbb{N},\\ \\exists\\, a,b,c,d \\in \\mathbb{N}: a^2+b^2+c^2+d^2 = n$. (Lagrange, 1770.) Lean: `Nat.sum_four_squares n` from `Mathlib.NumberTheory.SumFourSquares`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's four-square theorem",
+      "Hurwitz quaternions",
+      "Euler four-square identity",
+      "Mathlib.NumberTheory.SumFourSquares"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Waring's problem definition"
+    ]
+  },
+  {
+    "id": "ann-mod8-lower-bound",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 52,
+      "endLine": 84
+    },
+    "type": "insight",
+    "title": "Mod 8 Obstruction: Squares Are Never ≡ 7 (mod 8)",
+    "content": "The lower bound uses an elegant modular arithmetic argument. `sq_mod_eight` proves x² % 8 ∈ {0,1,4} for all x via `interval_cases r` over r = 0,...,7 (8 cases, all decided by `decide`). The private lemma `sum_three_from_014_ne_7` verifies exhaustively via `rcases + decide` that none of the 27 = 3³ triples from {0,1,4} sums to 7 mod 8. The chain: `sum_three_sq_mod_eight_ne_seven` assembles these into the mod-8 congruence, and `seven_not_sum_three_sq` applies it to n=7 (since 7 ≡ 7 mod 8). This entire argument is self-contained — no Mathlib number theory needed.",
+    "mathContext": "$x^2 \\bmod 8 \\in \\{0,1,4\\}$ for all $x$. The 27 sums from $\\{0,1,4\\}^3 \\bmod 8$ avoid 7 (max is $12 \\equiv 4$). Hence $x^2+y^2+z^2 \\not\\equiv 7 \\pmod{8}$, so $7 \\neq x^2+y^2+z^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squares mod 8",
+      "modular arithmetic obstruction",
+      "interval_cases tactic",
+      "decide tactic for finite verification"
+    ],
+    "prerequisites": [
+      "Nat.pow_mod for (x%8)^2 % 8 = x^2 % 8",
+      "interval_cases for exhaustive case split",
+      "omega for mod arithmetic",
+      "decide for decidable propositions"
+    ]
+  },
+  {
+    "id": "ann-descent-excluded-form",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 153,
+      "endLine": 230
+    },
+    "type": "concept",
+    "title": "Descent: 4^a(8b+7) Is Never a Sum of 3 Squares",
+    "content": "The general exclusion theorem `excluded_form_needs_four` uses a descent on powers of 4. The key step is `four_mul_not_sum_three_sq`: if n is not a sum of 3 squares, neither is 4n. Proof: if 4n = x²+y²+z², then 4 | x²+y²+z². Since squares are 0 or 1 mod 4 (proved by `sq_mod_four`), the only way three terms summing to 0 mod 4 can occur is if all three are 0 mod 4 — proved by omega. Then `sq_mod_four_zero_imp_even` concludes each root is even. Writing x=2x', y=2y', z=2z' gives n=x'²+y'²+z'², contradiction. The induction in `excluded_form_needs_four` chains this descent: base case 8b+7 fails by mod 8; inductive step applies `four_mul_not_sum_three_sq`.",
+    "mathContext": "Descent step: $4n = x^2+y^2+z^2 \\Rightarrow x^2+y^2+z^2 \\equiv 0 \\pmod{4} \\Rightarrow$ all $x,y,z$ even $\\Rightarrow n = (x/2)^2+(y/2)^2+(z/2)^2$. By induction: $4^a(8b+7)$ is never a sum of 3 squares. (Necessity direction of Legendre's three-square theorem, 1798.)",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite descent",
+      "Legendre's three-square theorem",
+      "mod 4 parity argument",
+      "Nat.dvd_of_mod_eq_zero"
+    ],
+    "prerequisites": [
+      "sq_mod_four lemma",
+      "omega for mod 4 arithmetic",
+      "Nat.dvd_of_mod_eq_zero",
+      "pow_succ for induction on 4^a"
+    ]
+  },
+  {
+    "id": "ann-computable-classification",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 239,
+      "endLine": 323
+    },
+    "type": "concept",
+    "title": "Computable Verification: numSquaresNeeded and Batch Checks",
+    "content": "The computational section adds independent verification. `numSquaresNeeded n` searches for the minimum k ∈ {0,1,2,3,4} by checking: 0 (n=0), 1 (n is a perfect square), 2 (n-x² is a perfect square for some x ≤ √n), 3 (n-x²-y² is a perfect square), else 4. Individual cases are verified: numSq_7 = 4, numSq_15 = 4, numSq_23 = 4, numSq_28 = 4. The batch theorem `max_four_200` confirms all n ≤ 200 need at most 4 squares via `native_decide`. `checkExcludedMatchesFour 100` verifies that `isExcludedForm` exactly characterizes the 4-square numbers up to 100. `needingFour_list_50` confirms {7,15,23,28,31,39,47} are the only such numbers up to 50.",
+    "mathContext": "$\\text{numSquaresNeeded}(n) = \\min\\{k \\in \\{0,1,2,3,4\\}: \\exists\\ a_1^2+\\cdots+a_k^2 = n\\}$. Batch: $\\forall n \\leq 200: \\text{numSquaresNeeded}(n) \\leq 4$. Excluded form up to 50: $\\{7,15,23,28,31,39,47\\} = \\{4^a(8b+7): 4^a(8b+7) \\leq 50\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide tactic",
+      "computable mathematics",
+      "Nat.sqrt",
+      "isExcludedForm characterization"
+    ],
+    "prerequisites": [
+      "Nat.sqrt from Mathlib.Data.Nat.Sqrt",
+      "native_decide for kernel-level evaluation",
+      "List.range and List.any for bounded search"
+    ]
+  },
+  {
+    "id": "ann-infinity-big-g",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 232,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "G(2) = 4: Infinitely Many Numbers Need Exactly 4 Squares",
+    "content": "The theorem `infinitely_many_need_four` establishes that for any N, the number 8(N+1)+7 exceeds N and cannot be a sum of 3 squares. This is stronger than just g(2) ≥ 4: it shows 4 squares are needed for infinitely many numbers, not just a finite exceptional set. Combined with Lagrange (every number needs at most 4), this gives G(2) = 4 where G(k) is the asymptotic Waring constant. The contrast with cubes is instructive: G(3) = 7 < g(3) = 9, because only finitely many numbers (like 23) need 9 cubes, while all large numbers are sums of 7. For squares, there is no such anomaly at small n: the excluded form 4^a(8b+7) keeps appearing at all scales.",
+    "mathContext": "For any $N$: take $n = 8(N+1)+7 > N$. Then $n \\equiv 7 \\pmod{8}$, so $n$ is not a sum of 3 squares. Hence infinitely many $n$ require 4 squares. $G(2) = g(2) = 4$. Contrast: $g(3)=9$ but $G(3)=7$ (Davenport 1939 for $G(2)=4$; Linnik 1943 for $G(3)=7$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Waring G(k) vs g(k)",
+      "Davenport's result G(2)=4",
+      "infinitely many exceptions",
+      "cube sum anomalies"
+    ],
+    "prerequisites": [
+      "eight_b_plus_seven_needs_four",
+      "omega for 8(N+1)+7 > N"
+    ]
+  }
+]

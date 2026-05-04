@@ -7,9 +7,9 @@
       "endLine": 44
     },
     "type": "concept",
-    "title": "Erdős Problem #165: History and Statement",
-    "content": "Erdős Problem #165 asks for an asymptotic formula for R(3,k), the Ramsey number for triangles vs independent sets. The answer is R(3,k) = Θ(k²/log k).\n\n**The Prize**: Erdős offered $250 for resolving this. The asymptotic order was established by Kim (1995), claiming the prize. The exact constant c in R(3,k) ~ c · k²/log k remains open.\n\n**Timeline**: AKS (1980) first proved O(k²/log k). Shearer (1983) found the tight upper bound (1+o(1))k²/log k. Kim (1995) proved the matching lower bound order, then 30 years of work improved the constant: 1/162 → 1/4 (BK/PGM 2020-21) → 1/3 (CJMS 2025) → 1/2 (HHKP 2025).",
-    "mathContext": "R(3,k) = min{n : any graph on n vertices contains K₃ or α(G) ≥ k}. Equivalently: R(3,k) - 1 is the maximum number of vertices in a triangle-free graph with independence number < k. The asymptotic R(3,k) = Θ(k²/log k) was the central result; the exact constant c with R(3,k) ~ c·k²/log k is the remaining open problem.",
+    "title": "Erd\u0151s Problem #165: History and Statement",
+    "content": "Erd\u0151s Problem #165 asks for an asymptotic formula for R(3,k), the Ramsey number for triangles vs independent sets. The answer is R(3,k) = \u0398(k\u00b2/log k).\n\n**The Prize**: Erd\u0151s offered $250 for resolving this. The asymptotic order was established by Kim (1995), claiming the prize. The exact constant c in R(3,k) ~ c \u00b7 k\u00b2/log k remains open.\n\n**Timeline**: AKS (1980) first proved O(k\u00b2/log k). Shearer (1983) found the tight upper bound (1+o(1))k\u00b2/log k. Kim (1995) proved the matching lower bound order, then 30 years of work improved the constant: 1/162 \u2192 1/4 (BK/PGM 2020-21) \u2192 1/3 (CJMS 2025) \u2192 1/2 (HHKP 2025).",
+    "mathContext": "R(3,k) = min{n : any graph on n vertices contains K\u2083 or \u03b1(G) \u2265 k}. Equivalently: R(3,k) - 1 is the maximum number of vertices in a triangle-free graph with independence number < k. The asymptotic R(3,k) = \u0398(k\u00b2/log k) was the central result; the exact constant c with R(3,k) ~ c\u00b7k\u00b2/log k is the remaining open problem.",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
@@ -32,14 +32,14 @@
     },
     "type": "definition",
     "title": "Ramsey Number Axioms: Definition, Symmetry, Recurrence",
-    "content": "The Ramsey number R(m,n) is axiomatized (not defined via graph coloring machinery, which requires extensive Mathlib infrastructure).\n\n**ramseyNumber**: The minimum N such that any 2-coloring of K_N contains a red K_m or a blue K_n. Equivalently: any graph on N vertices contains K_m or an independent set of size n.\n\n**ramseyNumber_symm**: R(m,n) = R(n,m) — swapping red/blue colors swaps the roles of m and n.\n\n**ramseyNumber_recurrence**: R(m,n) ≤ R(m-1,n) + R(m,n-1) — the classical greedy argument: any vertex v in K_N has ≥ R(m-1,n) red neighbors or ≥ R(m,n-1) blue neighbors, and induction applies.",
-    "mathContext": "$R(m,n)$: the minimum $N$ such that every 2-coloring of $E(K_N)$ has a monochromatic $K_m$ (red) or $K_n$ (blue). Key identity: $R(m,n) = R(n,m)$. Recurrence (Erdős-Szekeres 1935): $R(m,n) \\leq R(m-1,n) + R(m,n-1)$, giving $R(m,n) \\leq \\binom{m+n-2}{m-1}$. For $R(3,k)$: $R(3,k) \\leq \\binom{k+1}{2} = O(k^2)$ by recurrence; the tight bound $\\Theta(k^2/\\log k)$ requires much deeper analysis.",
+    "content": "The Ramsey number R(m,n) is axiomatized (not defined via graph coloring machinery, which requires extensive Mathlib infrastructure).\n\n**ramseyNumber**: The minimum N such that any 2-coloring of K_N contains a red K_m or a blue K_n. Equivalently: any graph on N vertices contains K_m or an independent set of size n.\n\n**ramseyNumber_symm**: R(m,n) = R(n,m) \u2014 swapping red/blue colors swaps the roles of m and n.\n\n**ramseyNumber_recurrence**: R(m,n) \u2264 R(m-1,n) + R(m,n-1) \u2014 the classical greedy argument: any vertex v in K_N has \u2265 R(m-1,n) red neighbors or \u2265 R(m,n-1) blue neighbors, and induction applies.",
+    "mathContext": "$R(m,n)$: the minimum $N$ such that every 2-coloring of $E(K_N)$ has a monochromatic $K_m$ (red) or $K_n$ (blue). Key identity: $R(m,n) = R(n,m)$. Recurrence (Erd\u0151s-Szekeres 1935): $R(m,n) \\leq R(m-1,n) + R(m,n-1)$, giving $R(m,n) \\leq \\binom{m+n-2}{m-1}$. For $R(3,k)$: $R(3,k) \\leq \\binom{k+1}{2} = O(k^2)$ by recurrence; the tight bound $\\Theta(k^2/\\log k)$ requires much deeper analysis.",
     "significance": "key",
     "relatedConcepts": [
       "Complete graph",
       "Edge coloring",
       "Pigeonhole principle",
-      "Erdős-Szekeres theorem"
+      "Erd\u0151s-Szekeres theorem"
     ],
     "prerequisites": [
       "Graph theory basics",
@@ -55,13 +55,13 @@
     },
     "type": "definition",
     "title": "R3(k): Triangle vs Independent Set Ramsey Number and Small Values",
-    "content": "**R3(k) = ramseyNumber(3,k)**: The minimum N such that every graph on N vertices contains a triangle (K₃) or an independent set of size k. Defined noncomputably from the axiomatized ramseyNumber.\n\n**R3_small_values**: Exact values known up to k=9:\n- R(3,3)=6, R(3,4)=9, R(3,5)=14\n- R(3,6)=18, R(3,7)=23, R(3,8)=28, R(3,9)=36\n\nBeyond k=9, exact values are unknown — R(3,10) is not yet determined. The growth rate k²/log k emerges only asymptotically; small values don't exhibit the pattern clearly.",
-    "mathContext": "The connection to triangle-free graphs: R(3,k) - 1 = max{|V(G)| : G is triangle-free with α(G) < k}. So R(3,k) ≤ n iff every triangle-free graph on n vertices has independence number ≥ k. The known values $R(3,3)=6, R(3,4)=9, \\ldots, R(3,9)=36$ were established by exhaustive computation. Note $R(3,3) = 6 = 6$ fits the pattern: $(1/2) \\cdot 9/\\log 9 \\approx 2.05$, far from 6 — asymptotics only kick in for large $k$.",
+    "content": "**R3(k) = ramseyNumber(3,k)**: The minimum N such that every graph on N vertices contains a triangle (K\u2083) or an independent set of size k. Defined noncomputably from the axiomatized ramseyNumber.\n\n**R3_small_values**: Exact values known up to k=9:\n- R(3,3)=6, R(3,4)=9, R(3,5)=14\n- R(3,6)=18, R(3,7)=23, R(3,8)=28, R(3,9)=36\n\nBeyond k=9, exact values are unknown \u2014 R(3,10) is not yet determined. The growth rate k\u00b2/log k emerges only asymptotically; small values don't exhibit the pattern clearly.",
+    "mathContext": "The connection to triangle-free graphs: R(3,k) - 1 = max{|V(G)| : G is triangle-free with \u03b1(G) < k}. So R(3,k) \u2264 n iff every triangle-free graph on n vertices has independence number \u2265 k. The known values $R(3,3)=6, R(3,4)=9, \\ldots, R(3,9)=36$ were established by exhaustive computation. Note $R(3,3) = 6 = 6$ fits the pattern: $(1/2) \\cdot 9/\\log 9 \\approx 2.05$, far from 6 \u2014 asymptotics only kick in for large $k$.",
     "significance": "key",
     "relatedConcepts": [
       "Triangle-free graphs",
       "Independence number",
-      "Turán's theorem"
+      "Tur\u00e1n's theorem"
     ],
     "prerequisites": [
       "ramseyNumber axiom",
@@ -77,7 +77,7 @@
     },
     "type": "concept",
     "title": "Upper Bounds: AKS (1980) and Shearer (1983)",
-    "content": "**AKS Theorem (1980)**: R(3,k) ≤ C·k²/log k for some constant C > 0. Formalized as an existential: ∃C > 0, ∃k₀, ∀k ≥ k₀, R3(k) ≤ C·k²/log k. This was the first result with the correct denominator log k.\n\n**Shearer's Theorem (1983)**: The tight upper bound: R(3,k) ≤ (1+ε)·k²/log k for any ε > 0 and sufficiently large k. Shearer used an entropy method relating the independence number of triangle-free graphs to logarithmic factors.\n\nShearer's bound is essentially optimal: it establishes that the leading coefficient in R(3,k)/[k²/log k] is at most 1, and the conjecture is that it is 1/2.",
+    "content": "**AKS Theorem (1980)**: R(3,k) \u2264 C\u00b7k\u00b2/log k for some constant C > 0. Formalized as an existential: \u2203C > 0, \u2203k\u2080, \u2200k \u2265 k\u2080, R3(k) \u2264 C\u00b7k\u00b2/log k. This was the first result with the correct denominator log k.\n\n**Shearer's Theorem (1983)**: The tight upper bound: R(3,k) \u2264 (1+\u03b5)\u00b7k\u00b2/log k for any \u03b5 > 0 and sufficiently large k. Shearer used an entropy method relating the independence number of triangle-free graphs to logarithmic factors.\n\nShearer's bound is essentially optimal: it establishes that the leading coefficient in R(3,k)/[k\u00b2/log k] is at most 1, and the conjecture is that it is 1/2.",
     "mathContext": "Shearer (1983) proved: for any triangle-free graph $G$ on $n$ vertices, $\\alpha(G) \\geq c \\cdot \\sqrt{n \\log n}$ (where $\\alpha(G)$ is the independence number). This gives $R(3,k) \\leq (1+o(1)) k^2/\\log k$ by the probabilistic method: choose a random subset of size $t = (1+\\varepsilon) k^2/\\log k$ and show it must contain a triangle or an independent set of size $k$. The entropy approach was novel and has been widely influential in combinatorics.",
     "significance": "key",
     "relatedConcepts": [
@@ -100,7 +100,7 @@
     },
     "type": "concept",
     "title": "Lower Bounds: 30 Years of Progress (Kim to HHKP)",
-    "content": "**Kim (1995)** — Prize Winner: R(3,k) ≥ (1/162 - ε)·k²/log k. Established the correct order Θ(k²/log k). Kim introduced the **triangle-free process**: add random edges one at a time, rejecting those that create triangles. The resulting graph is triangle-free with small independence number. Kim used martingale concentration inequalities to analyze the process.\n\n**Bohman-Keevash (2021) / Pontiveros-Griffiths-Morris (2020)**: c ≥ 1/4, independently. Used differential equation methods to track the codegree evolution more precisely. PGM conjectured c = 1/4 is optimal.\n\n**Campos-Jenssen-Michelen-Sahasrabudhe (2025)**: c ≥ 1/3. New structural insight about independent sets disproved the PGM conjecture.\n\n**Hefty-Horn-King-Pfender (2025)**: c ≥ 1/2. Two iterative improvements ('two bites') to the triangle-free process analysis, matching the conjectured exact value.",
+    "content": "**Kim (1995)** \u2014 Prize Winner: R(3,k) \u2265 (1/162 - \u03b5)\u00b7k\u00b2/log k. Established the correct order \u0398(k\u00b2/log k). Kim introduced the **triangle-free process**: add random edges one at a time, rejecting those that create triangles. The resulting graph is triangle-free with small independence number. Kim used martingale concentration inequalities to analyze the process.\n\n**Bohman-Keevash (2021) / Pontiveros-Griffiths-Morris (2020)**: c \u2265 1/4, independently. Used differential equation methods to track the codegree evolution more precisely. PGM conjectured c = 1/4 is optimal.\n\n**Campos-Jenssen-Michelen-Sahasrabudhe (2025)**: c \u2265 1/3. New structural insight about independent sets disproved the PGM conjecture.\n\n**Hefty-Horn-King-Pfender (2025)**: c \u2265 1/2. Two iterative improvements ('two bites') to the triangle-free process analysis, matching the conjectured exact value.",
     "mathContext": "Lower bound progression: $c \\geq 1/162$ (Kim 1995) $\\to 1/4$ (BK/PGM 2020-21) $\\to 1/3$ (CJMS 2025) $\\to 1/2$ (HHKP 2025). Each step required understanding the evolution of the triangle-free process. The key quantity is the codegree $d(u,v) = |N(u) \\cap N(v)|$ for pairs of vertices; controlling this is the central difficulty. Kim's breakthrough constant $c = 1/162$ was improved by a factor of 81 over 30 years.",
     "significance": "key",
     "relatedConcepts": [
@@ -121,10 +121,10 @@
       "startLine": 128,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Theorems: current_best_bounds and erdos_165",
-    "content": "**current_best_bounds** (line 135): A proved theorem (not axiom) combining HHKP and Shearer: for any ε > 0, for k ≥ k₀, (1/2 - ε)·k²/log k ≤ R3(k) ≤ (1+ε)·k²/log k. The proof uses `obtain` to get the two k₀ values from hhkp_bound and shearer_upper_bound, then takes their maximum.\n\n**erdos_165** (line 152): The main theorem solving Erdős Problem #165. Proves R(3,k) = Θ(k²/log k) with explicit witnesses c₁ = 1/4 and c₂ = 2:\n- c₁ = 1/4: From HHKP with ε = 1/4: R3(k) ≥ (1/2 - 1/4)·k²/log k = (1/4)·k²/log k\n- c₂ = 2: From Shearer with ε = 1: R3(k) ≤ (1+1)·k²/log k = 2·k²/log k\n\nThe proof is fully machine-verified with 0 sorries.",
-    "mathContext": "$R(3,k) = \\Theta(k^2/\\log k)$: there exist $c_1 = 1/4 > 0$ and $c_2 = 2 > 0$ such that for sufficiently large $k$, $c_1 k^2/\\log k \\leq R(3,k) \\leq c_2 k^2/\\log k$. Note the witnesses ($1/4$ and $2$) are not tight — the true constants are conjectured to both be close to $1/2$. The gap between $1/4$ and $2$ (a factor of 8) reflects the gap between the current best bounds $1/2$ and $1$.",
+    "content": "**current_best_bounds** (line 135): A proved theorem (not axiom) combining HHKP and Shearer: for any \u03b5 > 0, for k \u2265 k\u2080, (1/2 - \u03b5)\u00b7k\u00b2/log k \u2264 R3(k) \u2264 (1+\u03b5)\u00b7k\u00b2/log k. The proof uses `obtain` to get the two k\u2080 values from hhkp_bound and shearer_upper_bound, then takes their maximum.\n\n**erdos_165** (line 152): The main theorem solving Erd\u0151s Problem #165. Proves R(3,k) = \u0398(k\u00b2/log k) with explicit witnesses c\u2081 = 1/4 and c\u2082 = 2:\n- c\u2081 = 1/4: From HHKP with \u03b5 = 1/4: R3(k) \u2265 (1/2 - 1/4)\u00b7k\u00b2/log k = (1/4)\u00b7k\u00b2/log k\n- c\u2082 = 2: From Shearer with \u03b5 = 1: R3(k) \u2264 (1+1)\u00b7k\u00b2/log k = 2\u00b7k\u00b2/log k\n\nThe proof is fully machine-verified with 0 sorries.",
+    "mathContext": "$R(3,k) = \\Theta(k^2/\\log k)$: there exist $c_1 = 1/4 > 0$ and $c_2 = 2 > 0$ such that for sufficiently large $k$, $c_1 k^2/\\log k \\leq R(3,k) \\leq c_2 k^2/\\log k$. Note the witnesses ($1/4$ and $2$) are not tight \u2014 the true constants are conjectured to both be close to $1/2$. The gap between $1/4$ and $2$ (a factor of 8) reflects the gap between the current best bounds $1/2$ and $1$.",
     "significance": "key",
     "relatedConcepts": [
       "Theta notation",
@@ -146,7 +146,7 @@
     },
     "type": "concept",
     "title": "The Triangle-Free Process: The Key Construction",
-    "content": "The **triangle-free process** is the randomized graph construction underlying all lower bound results since Kim (1995):\n\n1. Start with G = empty graph on n vertices\n2. At each step: choose a random non-edge {u,v}; if adding it doesn't create a triangle, add it\n3. Repeat until no more edges can be added (G is triangle-free saturated)\n\nProperties of the resulting graph:\n1. Triangle-free by construction\n2. Maximal: adding any edge creates a triangle\n3. Independence number α(G) ≈ √(n log n) — small!\n\nKim argued: if n = R(3,k) - 1, then α(G) < k by assumption (else G contains an independent set of size k). But the process produces α(G) ≈ √(n log n). Setting √(n log n) ≈ k gives n ≈ k²/log k, establishing R(3,k) = Ω(k²/log k).",
+    "content": "The **triangle-free process** is the randomized graph construction underlying all lower bound results since Kim (1995):\n\n1. Start with G = empty graph on n vertices\n2. At each step: choose a random non-edge {u,v}; if adding it doesn't create a triangle, add it\n3. Repeat until no more edges can be added (G is triangle-free saturated)\n\nProperties of the resulting graph:\n1. Triangle-free by construction\n2. Maximal: adding any edge creates a triangle\n3. Independence number \u03b1(G) \u2248 \u221a(n log n) \u2014 small!\n\nKim argued: if n = R(3,k) - 1, then \u03b1(G) < k by assumption (else G contains an independent set of size k). But the process produces \u03b1(G) \u2248 \u221a(n log n). Setting \u221a(n log n) \u2248 k gives n \u2248 k\u00b2/log k, establishing R(3,k) = \u03a9(k\u00b2/log k).",
     "mathContext": "The triangle-free process is a member of the 'H-free process' family. Key technical challenge: tracking the codegree $d_G(u,v) = |N(u) \\cap N(v)|$ as edges are added. For pairs with high codegree, neither endpoint of a random non-edge can be added without creating a triangle. Kim used martingale concentration (Azuma's inequality) to show codegrees stay small $O(\\log n)$ throughout. This controls the independence number and makes the argument work.",
     "significance": "key",
     "relatedConcepts": [
@@ -170,8 +170,8 @@
     },
     "type": "concept",
     "title": "Conjectures: c = 1/2 (Main) vs c = 1/4 (PGM, Refuted)",
-    "content": "**mainConjecture** (line 194): R(3,k) ~ (1/2)·k²/log k. The exact constant c = 1/2, supported by both CJMS 2025 and HHKP 2025. Formalized as: ∀ε > 0, ∃k₀, ∀k ≥ k₀, (1/2-ε)·k²/log k ≤ R3(k) ≤ (1/2+ε)·k²/log k.\n\n**pgmConjecture** (line 204): R(3,k) ~ (1/4)·k²/log k. The leading conjecture from PGM (2020), now refuted. The PGM conjecture claimed the upper bound (1/4+ε)·k²/log k, but HHKP proved the lower bound (1/2-ε)·k²/log k. Since 1/2 - ε > 1/4 + ε for small ε, these are contradictory.\n\n**Refutation narrative** (lines 208-220): Explicit: at ε = 1/16, HHKP gives R(3,k) ≥ (7/16)k²/log k while PGM claims R(3,k) ≤ (5/16)k²/log k. Since 7/16 > 5/16, the PGM conjecture is false.",
-    "mathContext": "The PGM conjecture was natural because the triangle-free process was believed to produce Ramsey graphs with density tending to the 'pseudo-random' level. The refutation by CJMS (c ≥ 1/3 > 1/4) and HHKP (c ≥ 1/2 > 1/4) shows that the true Ramsey graphs have larger density than pseudo-random, implying a richer structure beyond simple randomness. Both CJMS and HHKP conjecture $c = 1/2$ (matching the upper bound up to a factor of 2).",
+    "content": "**mainConjecture** (line 194): R(3,k) ~ (1/2)\u00b7k\u00b2/log k. The exact constant c = 1/2, supported by both CJMS 2025 and HHKP 2025. Formalized as: \u2200\u03b5 > 0, \u2203k\u2080, \u2200k \u2265 k\u2080, (1/2-\u03b5)\u00b7k\u00b2/log k \u2264 R3(k) \u2264 (1/2+\u03b5)\u00b7k\u00b2/log k.\n\n**pgmConjecture** (line 204): R(3,k) ~ (1/4)\u00b7k\u00b2/log k. The leading conjecture from PGM (2020), now refuted. The PGM conjecture claimed the upper bound (1/4+\u03b5)\u00b7k\u00b2/log k, but HHKP proved the lower bound (1/2-\u03b5)\u00b7k\u00b2/log k. Since 1/2 - \u03b5 > 1/4 + \u03b5 for small \u03b5, these are contradictory.\n\n**Refutation narrative** (lines 208-220): Explicit: at \u03b5 = 1/16, HHKP gives R(3,k) \u2265 (7/16)k\u00b2/log k while PGM claims R(3,k) \u2264 (5/16)k\u00b2/log k. Since 7/16 > 5/16, the PGM conjecture is false.",
+    "mathContext": "The PGM conjecture was natural because the triangle-free process was believed to produce Ramsey graphs with density tending to the 'pseudo-random' level. The refutation by CJMS (c \u2265 1/3 > 1/4) and HHKP (c \u2265 1/2 > 1/4) shows that the true Ramsey graphs have larger density than pseudo-random, implying a richer structure beyond simple randomness. Both CJMS and HHKP conjecture $c = 1/2$ (matching the upper bound up to a factor of 2).",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic constant",
@@ -192,8 +192,8 @@
       "endLine": 237
     },
     "type": "concept",
-    "title": "Related Erdős Problems: #544 (Diagonal) and #986 (Off-Diagonal s≥4)",
-    "content": "**Erdős #544**: Determine R(k,k). Known: 2^(k/2) ≤ R(k,k) ≤ 4^k. A 2023 breakthrough by Campos-Griffiths-Morris-Sahasrabudhe improved the upper bound to (4-ε)^k, the first exponential improvement in 90 years.\n\n**Erdős #986**: Determine R(s,k) for fixed s ≥ 4 and growing k. For s = 3 (Problem #165): Θ(k²/log k). Conjectured for s ≥ 4: R(s,k) = Θ(k^((s+1)/2) / (log k)^((s-1)/2)).\n\n**Triangle-free multiplicity**: How many triangles appear in a 2-coloring of K_n absent a triangle-free coloring? — a related extremal question.",
+    "title": "Related Erd\u0151s Problems: #544 (Diagonal) and #986 (Off-Diagonal s\u22654)",
+    "content": "**Erd\u0151s #544**: Determine R(k,k). Known: 2^(k/2) \u2264 R(k,k) \u2264 4^k. A 2023 breakthrough by Campos-Griffiths-Morris-Sahasrabudhe improved the upper bound to (4-\u03b5)^k, the first exponential improvement in 90 years.\n\n**Erd\u0151s #986**: Determine R(s,k) for fixed s \u2265 4 and growing k. For s = 3 (Problem #165): \u0398(k\u00b2/log k). Conjectured for s \u2265 4: R(s,k) = \u0398(k^((s+1)/2) / (log k)^((s-1)/2)).\n\n**Triangle-free multiplicity**: How many triangles appear in a 2-coloring of K_n absent a triangle-free coloring? \u2014 a related extremal question.",
     "mathContext": "The general asymptotic $R(s,k) = \\Theta(k^{s-1}/(\\log k)^{s-2})$ generalizes $R(3,k) = \\Theta(k^2/\\log k)$ (case $s=3$). For $s=4$: $R(4,k) = \\Theta(k^3/\\log^2 k)$ is conjectured but unproved. The polynomial-in-$k$ behavior with log corrections is a general pattern in off-diagonal Ramsey theory. The diagonal case $R(k,k)$ has exponential behavior $2^{\\Theta(k)}$, a fundamentally different regime.",
     "significance": "supporting",
     "relatedConcepts": [

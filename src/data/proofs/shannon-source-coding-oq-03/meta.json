@@ -1,0 +1,224 @@
+{
+  "id": "shannon-source-coding-oq-03",
+  "title": "Asymptotic Equipartition Property (AEP)",
+  "slug": "shannon-source-coding-oq-03",
+  "description": "The AEP formalizes -1/n log P(X₁,...,Xₙ) → H(p) in probability for i.i.d. sources, proved via Chebyshev's inequality. Typical set size upper bound also proved.",
+  "meta": {
+    "author": "Claude Shannon (1948), Brockway McMillan (1953), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Asymptotic_equipartition_property",
+    "date": "1953",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShannonSourceCodingOQ03.lean",
+    "tags": [
+      "information-theory",
+      "probability",
+      "analysis",
+      "coding-theory",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Algebra.BigOperators.Pi",
+        "description": "Fintype.prod_sum: ∏ a, ∑ b, f a b = ∑ g : α → β, ∏ a, f a (g a) — key to marginal factorization",
+        "module": "Mathlib.Algebra.BigOperators.Pi"
+      },
+      {
+        "theorem": "Analysis.SpecialFunctions.Log.Basic",
+        "description": "Real logarithm: log_prod, log_nonpos, exp_log",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Topology.Algebra.Order.LiminfLimsup",
+        "description": "Real exponential monotonicity for typical set bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "originalContributions": [
+      "Marginal factorization lemma: expVal_marginal proves E[g(Xⱼ)] = ∑ p(a)*g(a) via Fintype.prod_sum",
+      "Proved expVal_empEnt: expected empirical entropy equals Shannon entropy, using expVal_marginal across all coordinates",
+      "Proved aep_concentration: Chebyshev bound P(|empEnt - H| > ε) ≤ logVar/(n·ε²) (fixed bug in prior version)",
+      "Proved typical_set_size_upper: |T_ε^(n)| ≤ exp(n·(H+ε)) without any axioms",
+      "2D bilinear marginal factorization (expVal_marginal_product): E[g₁(Xⱼ₁)·g₂(Xⱼ₂)] = E[g₁]·E[g₂] for j₁ ≠ j₂, extending expVal_marginal via Fintype.prod_sum with two active coordinates",
+      "Proved empEnt_variance = logVar/n: diagonal terms contribute logVar D each via expVal_marginal, cross terms are zero via expVal_marginal_product + mean-centering. Fully closes AEP formalization."
+    ],
+    "assumptions": [],
+    "dateAdded": "2026-05-03",
+    "axiomCount": 0,
+    "lineCount": 476,
+    "prerequisites": [
+      "Shannon entropy H(X) = -∑ p(x) log p(x)",
+      "Chebyshev's inequality for finite probability spaces",
+      "Product of marginal probabilities (i.i.d. model)",
+      "Fintype.prod_sum (bigoperators sum-product exchange)"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Asymptotic Equipartition Property (AEP) is the information-theoretic analogue of the Law of Large Numbers. Shannon (1948) observed informally that for i.i.d. sources, -1/n log P(X₁,...,Xₙ) → H(X) in probability, concentrating probability mass on roughly 2^(nH) 'typical' sequences. McMillan (1953) gave the first rigorous proof (showing convergence almost surely), and Breiman (1957) extended it to ergodic sources. The finitary version via Chebyshev's inequality provides explicit concentration rates.",
+    "problemStatement": "For a discrete memoryless source with alphabet Fin k and distribution p = (p₁,...,p_k):\n\nLet X₁,...,Xₙ be i.i.d. with P(Xᵢ = a) = p(a). The empirical entropy is:\n  empEnt(x₁,...,xₙ) := -(1/n) ∑ᵢ log p(xᵢ)\n\n**AEP**: For all ε > 0,\n  P(|empEnt(X₁,...,Xₙ) - H(p)| > ε) ≤ Var[-log p(X)] / (n·ε²)\n\nIn particular, this probability → 0 as n → ∞.\n\n**Typical set**: T_ε^(n) = {x : |empEnt(x) - H(p)| ≤ ε} has |T_ε^(n)| ≤ exp(n·(H+ε)).",
+    "text": "The AEP proves that empirical entropy concentrates around Shannon entropy for long i.i.d. sequences, with explicit Chebyshev bounds.",
+    "proofStrategy": "The AEP is proved in three steps:\n\n1. **Marginal factorization** (`expVal_marginal`): The joint expectation E[g(Xⱼ)] over i.i.d. sequences factors as ∑_a p(a)*g(a), independent of j. This uses `Fintype.prod_sum` to exchange sum-over-sequences with product-over-coordinates.\n\n2. **Mean** (`expVal_empEnt`): E[empEnt] = H(p). Expand empEnt = -(1/n)∑ᵢ log p(Xᵢ), linearity + marginal factorization gives E[-log p(Xᵢ)] = ∑_a p(a)(-log p(a)) = H(p) for each i, and summing n equal terms and dividing by n gives H(p).\n\n3. **Concentration** (`aep_concentration`): Chebyshev applied to the variance bound Var[empEnt] = logVar/n gives P(|empEnt - H| > ε) ≤ logVar/(n·ε²).\n\nThe typical set size bound follows from: each x ∈ T_ε^(n) satisfies P(x) ≥ exp(-n(H+ε)), so |T_ε^(n)| * exp(-n(H+ε)) ≤ ∑_{x ∈ T} P(x) ≤ 1.",
+    "keyInsights": [
+      "The `Fintype.prod_sum` identity is the algebraic core: it converts a sum over all n-length sequences into a product of independent per-symbol sums, formalizing the i.i.d. assumption",
+      "empEnt is a sum of n i.i.d. random variables Zᵢ = -log p(Xᵢ), each with E[Zᵢ] = H(p). The LLN character of empEnt → H follows immediately from this representation",
+      "The Chebyshev approach gives explicit finite-n bounds (not just asymptotic convergence), making it ideal for source coding applications where blocklength matters",
+      "The typical set size bound |T_ε^(n)| ≤ exp(n(H+ε)) is the achievability half of Shannon's source coding theorem: sequences outside T_ε have vanishing probability, so compressing only typical sequences suffices",
+      "**Variance not mean drives Chebyshev**: The crucial proof repair was that `aep_concentration` requires `empEnt_variance` (rewriting E[(empEnt−H)²] = logVar/n) rather than `expVal_empEnt` (which rewrites E[empEnt] = H). Chebyshev bounds variance — using the mean rewrite produces a tautology that never establishes concentration"
+    ],
+    "prerequisites": [
+      "Shannon entropy H(X) = -∑ p(x) log p(x)",
+      "Chebyshev's inequality for finite probability spaces",
+      "Product of marginal probabilities (i.i.d. model)",
+      "Fintype.prod_sum (bigoperators sum-product exchange)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Problem Statement and Proof Architecture",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring states OQ-03, defines AEP and empirical entropy, outlines Chebyshev proof strategy, and explains connection to source coding. Historical note: Mathematical Status section records the original sorry structure before variance proof was completed.",
+      "mathContext": "AEP: $P\\left(\\left|\\frac{-\\log P(\\mathbf{X})}{n} - H(p)\\right| > \\varepsilon\\right) \\leq \\frac{\\mathrm{Var}_p[-\\log p(X)]}{n\\varepsilon^2} \\to 0$. Typical set: $T_\\varepsilon^{(n)} = \\{\\mathbf{x} : |\\mathrm{empEnt}(\\mathbf{x}) - H| \\leq \\varepsilon\\}$, $|T_\\varepsilon^{(n)}| \\leq e^{n(H+\\varepsilon)}$."
+    },
+    {
+      "id": "distributions",
+      "title": "Probability Distributions",
+      "startLine": 55,
+      "endLine": 90,
+      "summary": "DiscreteDist structure, shannonH definition, shannonH_nonneg.",
+      "mathContext": "A discrete probability distribution on Fin k with normalization constraint."
+    },
+    {
+      "id": "joint",
+      "title": "Joint Distribution and Empirical Entropy",
+      "startLine": 95,
+      "endLine": 135,
+      "summary": "jointProb (product measure), empEnt (empirical entropy), jointProb_sum_one.",
+      "mathContext": "The i.i.d. joint distribution P(x) = ∏ p(xᵢ) and the empirical entropy -(1/n) log P(x)."
+    },
+    {
+      "id": "expval",
+      "title": "Expected Value and Marginal Factorization",
+      "startLine": 140,
+      "endLine": 205,
+      "summary": "expVal definition, expVal_marginal (Fintype.prod_sum factorization), expVal_empEnt = H(p).",
+      "mathContext": "The key lemma: ∑_x P(x)*g(x_j) = ∑_a p(a)*g(a) via sum-product exchange."
+    },
+    {
+      "id": "chebyshev",
+      "title": "Chebyshev's Inequality",
+      "startLine": 210,
+      "endLine": 240,
+      "summary": "chebyshev_finite: P(|f-μ| > ε) ≤ E[(f-μ)²]/ε² for finite distributions.",
+      "mathContext": "Elementary proof via pointwise bound ε² ≤ (f(x)-μ)² when |f(x)-μ| > ε."
+    },
+    {
+      "id": "aep",
+      "title": "AEP Concentration: Variance and Chebyshev Bound",
+      "startLine": 244,
+      "endLine": 380,
+      "summary": "logVar, expVal_marginal_product (2D bilinear), empEnt_variance = logVar/n (fully proved via diagonal/off-diagonal split), aep_concentration: P(|empEnt - H| > ε) ≤ logVar/(n·ε²).",
+      "mathContext": "The variance computation is the deepest result: $\\text{Var}[\\text{empEnt}] = \\text{logVar}/n$. Diagonal terms $E[(Z_j - H)^2] = \\text{logVar}$ use $\\texttt{expVal\\_marginal}$; off-diagonal cross terms $E[(Z_{j_1}-H)(Z_{j_2}-H)] = 0$ use $\\texttt{expVal\\_marginal\\_product}$ (independence) + mean-centering. Chebyshev then gives the explicit bound."
+    },
+    {
+      "id": "typical-set",
+      "title": "Typical Set: Definition and Size Upper Bound",
+      "startLine": 382,
+      "endLine": 421,
+      "summary": "typicalSet definition, typical_set_size_upper: |T_ε^(n)| ≤ exp(n·(H+ε)).",
+      "mathContext": "The typical set $T_\\varepsilon^{(n)} = \\{x : |\\text{empEnt}(x) - H(p)| \\leq \\varepsilon\\}$. Each $x \\in T_\\varepsilon^{(n)}$ satisfies $P(x) = e^{-n \\cdot \\text{empEnt}(x)} \\geq e^{-n(H+\\varepsilon)}$, so $|T_\\varepsilon^{(n)}| \\cdot e^{-n(H+\\varepsilon)} \\leq \\sum_{x \\in T} P(x) \\leq 1$, giving $|T_\\varepsilon^{(n)}| \\leq e^{n(H+\\varepsilon)}$. This is the achievability half of Shannon's source coding theorem."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Verification: Fair Coin Sanity Check",
+      "startLine": 426,
+      "endLine": 445,
+      "summary": "uniformBin (fair Bernoulli), uniformBin_entropy: H(uniformBin) = log 2. Concrete instance confirming abstract definitions.",
+      "mathContext": "The fair coin distribution $p(0) = p(1) = 1/2$ on $\\text{Fin}\\,2$ satisfies $H = -2 \\cdot (1/2) \\log(1/2) = \\log 2 \\approx 0.693$. The $\\texttt{native\\_decide}$ verification confirms the discrete probability axioms and gives a sanity check that the abstract AEP applies to the simplest non-trivial example."
+    },
+    {
+      "id": "aep-summary",
+      "title": "Section VIII: AEP Summary and Bug Fix Record",
+      "startLine": 446,
+      "endLine": 476,
+      "summary": "Closing summary enumerates all 7 proved theorems. Records key bug fix: aep_concentration originally used rw [expVal_empEnt] (wrong — rewrites E[empEnt]=H) but required rw [empEnt_variance] (correct — rewrites E[(empEnt-H)²]=logVar/n).",
+      "mathContext": "Bug: `rw [expVal_empEnt]` rewrites $\\mathbb{E}[\\mathrm{empEnt}] = H$ (the mean). Fix: `rw [empEnt_variance]` rewrites $\\mathbb{E}[(\\mathrm{empEnt}-H)^2] = \\mathrm{logVar}/n$ (the variance). Chebyshev's inequality requires the variance, not the mean."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "depends-on",
+      "description": "The AEP is the probabilistic foundation of the source coding theorem"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "depends-on",
+      "description": "Uses Shannon entropy H(p) = -∑ p log p throughout"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "The AEP is the information-theoretic LLN: -log P(X₁,...,Xₙ)/n → H(X)"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 addresses the converse of the source coding theorem; AEP provides the achievability direction"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-04",
+      "relationship": "sibling",
+      "description": "OQ-04 extends AEP to variable-length codes; this file provides the fixed-length foundation"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "related",
+      "description": "The AEP technique (typical sequences) is the core proof technique for Shannon's channel coding theorem"
+    }
+  ],
+  "conclusion": {
+    "summary": "The AEP is fully formalized for finite discrete memoryless sources: empirical entropy concentrates around H(p) with explicit Chebyshev bounds, and the typical set has size at most exp(n(H+ε)). Zero sorries, zero axioms — complete machine-checked proof.",
+    "implications": "The AEP is the cornerstone of information theory: it operationalizes entropy as the compression limit, provides the probability-1 characterization of typical sequences, and underpins both the achievability and converse of Shannon's source coding theorem.",
+    "openQuestions": [
+      "Can the AEP be extended to ergodic (non-i.i.d.) sources using Mathlib's ergodic theory?",
+      "Can the concentration bound logVar/(n·ε²) be tightened to an exact large-deviations rate using Cramér's theorem?",
+      "Can the lower bound |T_ε^(n)| ≥ (1-δ)·exp(n·(H-ε)) for large n (the converse typical set bound) be formalized in Lean, closing the achievability–converse gap for the source coding theorem?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Real", "Finset", "BigOperators"],
+    "namespace": "AEPFormalization",
+    "lineCount": 476,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 7,
+    "path": "Proofs/ShannonSourceCodingOQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Shannon, Claude E.",
+      "title": "A Mathematical Theory of Communication",
+      "year": "1948",
+      "venue": "Bell System Technical Journal 27(3-4), 379-423, 623-656"
+    },
+    {
+      "authors": "McMillan, Brockway",
+      "title": "The Basic Theorems of Information Theory",
+      "year": "1953",
+      "venue": "Annals of Mathematical Statistics 24(2), 196-219"
+    },
+    {
+      "authors": "Cover, Thomas M.; Thomas, Joy A.",
+      "title": "Elements of Information Theory",
+      "year": "2006",
+      "venue": "Wiley, 2nd edition",
+      "note": "AEP and typical sequences: Chapter 3"
+    }
+  ]
+}

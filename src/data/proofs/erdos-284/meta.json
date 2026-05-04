@@ -63,7 +63,8 @@
     "axiomCount": 3,
     "lineCount": 183,
     "assumptions": "3 axioms: f (minimum function — axiomatized), f_upper_bound (upper bound on f), f_lower_bound (lower bound on f). 0 sorries.",
-    "dateUpdated": "2026-03-27"
+    "dateUpdated": "2026-03-27",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #284 asks about the asymptotic behavior of Egyptian fraction decompositions of 1. An Egyptian fraction representation of 1 is an equation 1 = 1/n₁ + 1/n₂ + ... + 1/nₖ with distinct positive integers n₁ < n₂ < ... < nₖ. The function f(k) denotes the maximum possible first denominator n₁ in such a k-term representation.\n\nThe upper bound f(k) ≤ (1+o(1))·k/(e-1) follows from a simple counting argument: if the first denominator is u, the harmonic sum over [u, eu] is approximately 1 (since ∫₁ᵉ 1/x dx = 1), so we need about (e-1)u terms. Hence k ≥ (e-1-o(1))u, giving u ≤ (1+o(1))k/(e-1).\n\nThe matching lower bound was proved by Croot in 2001. He showed that for any N > 1, one can find distinct integers in the interval (N, eN] whose reciprocals sum to exactly 1. This constructive result implies f(k) ≥ (1-o(1))·k/(e-1), completing the asymptotic determination. The constant 1/(e-1) ≈ 0.582 arises from the integral identity ∫₁ᵉ 1/x dx = 1.",

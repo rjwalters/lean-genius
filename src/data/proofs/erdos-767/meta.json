@@ -58,7 +58,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 193,
-    "assumptions": "4 axioms: g_k, czipszer_upper, erdos_lower, jiang_2004. 0 sorries."
+    "assumptions": "4 axioms: g_k, czipszer_upper, erdos_lower, jiang_2004. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #767 concerns extremal graph theory: given a forbidden substructure (cycles with many chords at a vertex), what is the maximum number of edges a graph can have? A chord of a cycle is an edge connecting two non-adjacent vertices on the cycle. The problem asks for g_k(n), the maximum edges in an n-vertex graph where no cycle has k or more chords incident to a single vertex.\n\nThe problem has a rich history. Czipszer first showed that g_k(n) is finite, bounded by (k+1)n. Erdős provided a matching lower bound construction giving g_k(n) >= (k+1)n - (k+1)² and conjectured equality for large n. Pósa proved the exact formula for k=1 (g_1(n) = 2n-4 for n >= 4), and Erdős himself verified the cases k=2 and k=3.\n\nThe full conjecture was resolved by Jiang in 2004, who proved g_k(n) = (k+1)n - (k+1)² for all n >= 3k+3. Interestingly, Erdős mentioned in 1969 that Lewin claimed to disprove the conjecture, but this was either for small n values or incorrect — Jiang's proof confirms the conjecture definitively.",

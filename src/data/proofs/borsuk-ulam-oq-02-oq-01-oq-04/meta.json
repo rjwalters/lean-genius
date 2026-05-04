@@ -39,7 +39,8 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axioms inherited from BorsukUlamOQ02OQ01.lean: buDim (Borsuk-Ulam dimension function), buDim_two (dimension 2 case), buDim_prime (prime dimension case), buDim_mono (monotonicity of buDim). 0 own axioms. 0 sorries.",
-    "lineCount": 251
+    "lineCount": 251,
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "The **Fadell-Husseini index** (1988) is an ideal-valued cohomological invariant that assigns to each G-space X a homogeneous ideal $\\text{Index}_G(X) \\subseteq H^*(BG; k)$. Unlike numerical indices (which lose information), the ideal-valued index captures the full algebraic structure of the equivariant obstruction.\n\nFor cyclic groups $G = \\mathbb{Z}/p$, the cohomology ring $H^*(B\\mathbb{Z}/p; \\mathbb{F}_p)$ is a polynomial ring, and the FH index is always a principal ideal $(u^m)$. The key computation: for the standard free $\\mathbb{Z}/p$ action on $S^{2n-1}$ (rotation in $\\mathbb{C}^n$), $\\text{Index}_{\\mathbb{Z}/p}(S^{2n-1}) = (u^n)$. This immediately gives the Yang-Borsuk theorem: $\\text{buDim}(p, 2n) = 2n-1$.\n\nFor composite groups $G = \\mathbb{Z}/n$, the FH index provides finer information than simple monotonicity. Restriction maps $\\text{res}_p : H^*(B\\mathbb{Z}/n) \\to H^*(B\\mathbb{Z}/p)$ for each prime $p | n$ give independent constraints on the index ideal.",

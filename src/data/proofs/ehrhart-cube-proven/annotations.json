@@ -1,0 +1,159 @@
+[
+  {
+    "id": "ann-main-bijection",
+    "proofId": "ehrhart-cube-proven",
+    "range": {
+      "startLine": 41,
+      "endLine": 71
+    },
+    "type": "insight",
+    "title": "The Core Bijection: Lattice Points \u2245 Functions to Fin(n+1)",
+    "content": "`cube_lattice_count` is the foundational theorem: the integer lattice points of the $n$-dilated unit $d$-cube biject with functions $\\text{Fin}\\,d \\to \\text{Fin}(n+1)$.\n\nThe dilated cube $n \\cdot [0,1]^d = [0,n]^d$ contains exactly $\\{0, 1, \\ldots, n\\}^d$ integer points. A $d$-tuple $(a_1, \\ldots, a_d) \\in \\{0,\\ldots,n\\}^d$ corresponds bijectively to a function $f : \\text{Fin}\\,d \\to \\text{Fin}(n+1)$ via $f(i) = a_i$ (where $\\text{Fin}(n+1) = \\{0, 1, \\ldots, n\\}$).\n\nThe one-line proof `simp [Fintype.card_fun]` uses `Fintype.card_fun : Fintype.card (\u03b1 \u2192 \u03b2) = Fintype.card \u03b2 ^ Fintype.card \u03b1` with `Fintype.card (Fin d) = d` and `Fintype.card (Fin (n+1)) = n+1` to give $(n+1)^d$ directly. The concrete 3D verifications (n=0,1,2,3 giving 1,8,27,64) validate the formula numerically.\n\nThis approach avoids defining the cube geometrically (no polytope API, no rational convex hull) \u2014 it identifies lattice points of $n \\cdot [0,1]^d$ purely combinatorially with $d$-tuples of integers in $[0,n]$, then uses Lean's cardinality machinery.",
+    "mathContext": "$|n \\cdot [0,1]^d \\cap \\mathbb{Z}^d| = |\\{0,\\ldots,n\\}^d| = |\\text{Fin}(n+1)|^{|\\text{Fin}\\,d|} = (n+1)^d$.\n\n`Fintype.card_fun`: $|\\text{Hom}(\\alpha, \\beta)| = |\\beta|^{|\\alpha|}$, instantiated as $|\\text{Fin}\\,d \\to \\text{Fin}(n+1)| = (n+1)^d$.\n\nSpecial values: $L([0,1]^d, 0) = 1$ (origin only), $L([0,1]^d, 1) = 2^d$ (vertices of the $d$-cube), $L([0,1]^3, n) \\in \\{1,8,27,64,125,\\ldots\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart polynomial",
+      "lattice point counting",
+      "dilated polytope",
+      "Fintype.card_fun",
+      "bijection"
+    ],
+    "prerequisites": [
+      "Fintype.card",
+      "Fintype.card_fun",
+      "Fin arithmetic",
+      "lattice points of polytopes"
+    ]
+  },
+  {
+    "id": "ann-interior-count",
+    "proofId": "ehrhart-cube-proven",
+    "range": {
+      "startLine": 86,
+      "endLine": 103
+    },
+    "type": "insight",
+    "title": "Interior Lattice Points: (n-1)^d via Strict Interior",
+    "content": "`cube_interior_count` proves that the strictly interior lattice points of $n \\cdot [0,1]^d$ number $(n-1)^d$ (using natural-number subtraction).\n\nThe strictly interior integer points of $[0,n]^d$ are those with all coordinates in $\\{1, 2, \\ldots, n-1\\}$, i.e., the set $\\{1,\\ldots,n-1\\}^d \\cong (\\text{Fin}(n-1))^d$ \u2014 but with Lean's natural number subtraction, `n - 1` for $n = 0$ gives 0 and for $n = 1$ gives 0, correctly yielding 0 interior points in those cases.\n\nThe companion `cube_no_interior_at_1` checks the $n = 1$ case explicitly: the unit cube has no interior lattice points (only the 0-dilate makes sense for $n = 1$). The concrete checks `cube_3d_interior_2 = 1` and `cube_3d_interior_3 = 8` verify the formula for the 3D cube at $n = 2$ and $n = 3$.\n\nThe interior count $(n-1)^d$ is also the **Ehrhart interior polynomial** $L^*(n)$ for the unit cube: by Ehrhart-Macdonald reciprocity, $L^*(n) = (-1)^d L(-n)$ where $L(t) = (t+1)^d$, giving $(-1)^d(-n+1)^d = (n-1)^d$.",
+    "mathContext": "$L^*([0,1]^d, n) = |\\text{int}(n \\cdot [0,1]^d) \\cap \\mathbb{Z}^d| = |\\{1,\\ldots,n-1\\}^d| = (n-1)^d$ for $n \\geq 2$; $= 0$ for $n \\leq 1$.\n\nLean: `Fintype.card (Fin d \u2192 Fin (n-1)) = (n-1)^d` (same `card_fun` argument as the main theorem).\n\nRelation to reciprocity: $(-1)^d L(-n) = (-1)^d(-n+1)^d = (-(\u22121)(n-1))^d \\cdot (-1)^d / (-1)^d = (n-1)^d$ \u2014 the interior count equals the reciprocal evaluation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart interior polynomial",
+      "Ehrhart-Macdonald reciprocity",
+      "strictly interior lattice points",
+      "natural number subtraction"
+    ],
+    "prerequisites": [
+      "cube_lattice_count",
+      "Fintype.card_fun",
+      "Nat.zero_pow"
+    ]
+  },
+  {
+    "id": "ann-ehrhart-poly",
+    "proofId": "ehrhart-cube-proven",
+    "range": {
+      "startLine": 125,
+      "endLine": 148
+    },
+    "type": "definition",
+    "title": "cubeEhrhartPoly: The Polynomial (X+1)^d over \u211a",
+    "content": "`cubeEhrhartPoly d : Polynomial \u211a` is $(X+1)^d$ \u2014 the Ehrhart polynomial of the unit $d$-cube as a formal polynomial over $\\mathbb{Q}$.\n\nThree key facts are proved:\n1. **`cube_poly_eval`**: evaluating at $n \\in \\mathbb{N}$ gives $(n+1)^d$ \u2014 matches the counting function\n2. **`cube_poly_agrees_with_count`**: polynomial evaluation $=$ `Fintype.card` (bridging abstract polynomial to combinatorial count)\n3. **`cube_poly_constant_term`**: $L([0,1]^d, 0) = 1$ (constant term is 1, the single point at origin)\n\nThe definition uses `noncomputable` because `Polynomial \u211a` requires `\u211a` to be noncomputable in Lean 4. The polynomial $(X+1)^d$ is a formal power of the polynomial $X+1$, confirmed to evaluate correctly at any $\\mathbb{N}$-to-$\\mathbb{Q}$ cast.\n\nThis explicit polynomial form enables comparison with the axiomatized `ehrhart_poly` in the companion file `EhrhartPolynomialOQ03.lean`, which asserts the same polynomial as an axiom. This file **proves** rather than **assumes** the polynomial form.",
+    "mathContext": "$L([0,1]^d, t) = (t+1)^d \\in \\mathbb{Q}[t]$. The polynomial is monic, degree $d$, leading coefficient 1, constant term 1.\n\nCoefficients: $[X^k](X+1)^d = \\binom{d}{k}$ (binomial coefficient). For $d=3$: $(X+1)^3 = X^3 + 3X^2 + 3X + 1$, agreeing with the 3D cube Ehrhart polynomial $n^3 + 3n^2 + 3n + 1 = (n+1)^3$.\n\n`noncomputable`: $\\mathbb{Q}$ involves `Classical.choice` (for field inversion), so polynomial evaluation over $\\mathbb{Q}$ is noncomputable. This does not affect the mathematical content.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ehrhart polynomial",
+      "polynomial ring",
+      "Polynomial.eval",
+      "binomial theorem",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "Polynomial \u211a",
+      "Polynomial.X",
+      "Polynomial.eval_pow",
+      "noncomputable"
+    ]
+  },
+  {
+    "id": "ann-reciprocity",
+    "proofId": "ehrhart-cube-proven",
+    "range": {
+      "startLine": 166,
+      "endLine": 183
+    },
+    "type": "insight",
+    "title": "Ehrhart-Macdonald Reciprocity for the Unit Cube",
+    "content": "The **Ehrhart-Macdonald reciprocity theorem** (1971) states that for a lattice polytope $P$, the interior counting function satisfies $L^*(P, n) = (-1)^d L(P, -n)$. This file verifies it for the unit cube via an algebraic identity.\n\n`cube_reciprocity_algebraic` proves the rational-valued identity $(t-1)^d = (-1)^d \\cdot ((-t)+1)^d$ for all $t \\in \\mathbb{Q}$, by the two-step calculation:\n- $((-t)+1) = -(t-1)$\n- $(-1)^d \\cdot (-(t-1))^d = (-1)^d \\cdot (-1)^d \\cdot (t-1)^d = (t-1)^d$\n\n`cube_reciprocity_nat` specializes to $t = n \\in \\mathbb{N}$, yielding $((n-1)^d : \\mathbb{Q}) = (-1)^d \\cdot ((-n)+1)^d$. The proof handles the $\\mathbb{N}$-subtraction via `Nat.exists_eq_succ_of_ne_zero` to write $n = m+1$ and `push_cast` to convert the natural number cast into rational arithmetic.\n\nMathematically: $L([0,1]^d, t) = (t+1)^d$, so $(-1)^d L(-n) = (-1)^d(-n+1)^d = (n-1)^d = L^*([0,1]^d, n)$. The interior counting function and the alternating evaluation of the Ehrhart polynomial agree precisely.",
+    "mathContext": "**Ehrhart-Macdonald theorem** (1971): For a lattice polytope $P \\subset \\mathbb{R}^d$ with $|\\partial P \\cap \\mathbb{Z}^d|$ and $|\\text{int}(P) \\cap \\mathbb{Z}^d|$ the boundary and interior counts, $\\sum_{n \\geq 0} L^*(P,n) t^n = (-1)^d \\sum_{n \\geq 0} L(P,n) t^n$ as formal power series under substitution $t \\mapsto 1/t$.\n\nFor the cube: $L(t) = (t+1)^d$, $L^*(t) = (t-1)^d$, and $(-1)^d L(-t) = (-1)^d(-t+1)^d = (t-1)^d = L^*(t)$. \u2713\n\nNote: the general proof uses Stanley's $h^*$-polynomial and non-negativity of $h^*$-vectors. For the cube, it reduces to an algebraic identity $(t-1)^d = (-1)^d(1-t)^d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart-Macdonald reciprocity",
+      "h-star vector",
+      "interior polynomial",
+      "lattice polytope",
+      "generating function"
+    ],
+    "prerequisites": [
+      "Ehrhart polynomial",
+      "cube_interior_count",
+      "mul_pow",
+      "Nat.exists_eq_succ_of_ne_zero",
+      "push_cast"
+    ]
+  },
+  {
+    "id": "ann-picks",
+    "proofId": "ehrhart-cube-proven",
+    "range": {
+      "startLine": 204,
+      "endLine": 234
+    },
+    "type": "insight",
+    "title": "Pick's Theorem as a Corollary of Cube Ehrhart Theory",
+    "content": "Section VI derives **Pick's theorem** (1899) for the unit square from the cube Ehrhart polynomial, illustrating how Ehrhart theory subsumes classical results.\n\n**Pick's theorem** states: for a lattice polygon $P$, Area$(P) = I + B/2 - 1$ where $I$ is the number of interior lattice points and $B$ the number of boundary lattice points.\n\nFor the $n$-dilated unit square $n \\cdot [0,1]^2$:\n- Total lattice points: $(n+1)^2$\n- Interior lattice points: $(n-1)^2$\n- Boundary lattice points: $(n+1)^2 - (n-1)^2 = 4n$\n- Area: $n^2$\n\n`square_picks_general` proves $n^2 = (n-1)^2 + 4n/2 - 1$ for all $n \\geq 1$, which is `square_picks_general` (a `ring` after `push_cast`). The proof of `square_boundary_formula` (4n boundary points) uses `zify` + `ring` after handling the subtraction via a successor-elimination.\n\nThe `square_picks` theorem checks the base case $n=1$: Area $= 1$, $I = 0$, $B = 4$, giving $1 = 0 + 4/2 - 1 = 1$. This is trivially proved by `norm_num` once the counts are established.",
+    "mathContext": "Pick's theorem (1899): For a lattice polygon $P$ with $I$ interior lattice points and $B$ boundary lattice points: $\\text{Area}(P) = I + B/2 - 1$.\n\nFor $n \\cdot [0,1]^2$: $\\text{Area} = n^2$, $I = (n-1)^2$, $B = 4n$. Verify: $(n-1)^2 + 4n/2 - 1 = n^2 - 2n + 1 + 2n - 1 = n^2$. \u2713\n\nEhrhart-theoretic view: The Ehrhart polynomial $L(t) = (t+1)^2 = t^2 + 2t + 1$ has leading coefficient $= \\text{Area}([0,1]^2) = 1$ and constant term $= 1$ (Euler characteristic). The coefficient of $t$ is $\\frac{B}{2} + (\\chi - 1)$ where $\\chi$ is a correction from boundary Ehrhart theory, and Pick's formula is encoded in the linear term.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pick's theorem",
+      "boundary lattice points",
+      "area formula",
+      "lattice polygon",
+      "Ehrhart linear coefficient"
+    ],
+    "prerequisites": [
+      "cube_lattice_count",
+      "cube_interior_count",
+      "Nat.exists_eq_succ_of_ne_zero",
+      "zify",
+      "push_cast",
+      "ring"
+    ]
+  },
+  {
+    "id": "ann-product-formula",
+    "proofId": "ehrhart-cube-proven",
+    "range": {
+      "startLine": 239,
+      "endLine": 263
+    },
+    "type": "insight",
+    "title": "Product Formula and Monotonicity: Structural Properties of the Cube Ehrhart Polynomial",
+    "content": "Section VII proves two structural properties that reveal the cube Ehrhart polynomial as a well-behaved combinatorial function:\n\n**Product formula** (`cube_product_formula`): $L([0,1]^{a+b}, n) = L([0,1]^a, n) \\cdot L([0,1]^b, n)$. This says the $(a+b)$-dimensional cube counts like a product of the $a$- and $b$-dimensional cubes. Proof: `pow_add` applied to $(n+1)^{a+b} = (n+1)^a \\cdot (n+1)^b$, combined with `cube_lattice_count`. This reflects the Cartesian product decomposition $[0,n]^{a+b} \\cong [0,n]^a \\times [0,n]^b$ and the product formula $|A \\times B| = |A| \\cdot |B|$.\n\n**Strict monotonicity** (`cube_count_strict_mono`): For $d \\geq 1$, $m < n \\Rightarrow L(n) > L(m)$, i.e., $(m+1)^d < (n+1)^d$. Proved by `Nat.pow_lt_pow_left` after establishing $m+1 < n+1$ from $m < n$ via `omega`.\n\n**Degenerate cases**: `cube_0d` (0-dimensional cube always has 1 point) and `cube_1d` (1-dimensional segment has $n+1$ points) provide the boundary cases of the dimension induction.\n\nThese properties confirm the cube Ehrhart polynomial is not just a formula but a structurally coherent invariant of product polytopes.",
+    "mathContext": "Product formula: $L(P \\times Q, n) = L(P, n) \\cdot L(Q, n)$ for polytopes $P, Q$ (Ehrhart, 1962). For cubes: $L([0,1]^{a+b}, n) = (n+1)^{a+b} = (n+1)^a \\cdot (n+1)^b = L([0,1]^a, n) \\cdot L([0,1]^b, n)$.\n\nMonotonicity: $(n+1)^d$ is strictly increasing in $n$ for $d \\geq 1$ (the cube gets more lattice points as it expands). `Nat.pow_lt_pow_left`: if $a < b$ and $n \\geq 1$, then $a^n < b^n$.\n\nNote: the 0-dimensional cube $[0,1]^0 = \\{0\\}$ has cardinality 1 for all $n$, since `Fintype.card (Fin 0 \u2192 Fin (n+1)) = (n+1)^0 = 1`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "product polytope",
+      "Cartesian product",
+      "monotone function",
+      "Ehrhart theory",
+      "pow_add"
+    ],
+    "prerequisites": [
+      "cube_lattice_count",
+      "pow_add",
+      "Nat.pow_lt_pow_left",
+      "omega"
+    ]
+  }
+]

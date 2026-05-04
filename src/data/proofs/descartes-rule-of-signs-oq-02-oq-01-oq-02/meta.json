@@ -1,0 +1,309 @@
+{
+  "id": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+  "title": "Sturm's Theorem: Exact Root Count via Sign-Change Sequences",
+  "slug": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+  "description": "Sturm's theorem (1829) provides the EXACT number of distinct real roots of a squarefree polynomial in any interval via sign-change counting in the Sturm sequence. This upgrades Budan's upper bound (OQ-02) to an equality: #{roots in (a,b]} = σ_p(a) - σ_p(b), where the Sturm sequence is constructed via polynomial GCD.",
+  "meta": {
+    "author": "Jacques Charles François Sturm (1829), Lean Genius formalization",
+    "date": "1829",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "real-algebraic-geometry",
+      "root-isolation",
+      "sturm-sequence",
+      "sign-variations",
+      "squarefree",
+      "euclidean-algorithm"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 458,
+    "dateAdded": "2026-05-03",
+    "assumptions": "1 axiom: sturm_exact_count_axiom. All supporting lemmas proved, including the key structural property (mod_eval_at_root), sequence non-emptiness, linear case verification, and four corollaries (no-roots, unique-root, two-roots, monotonicity).",
+    "relatedProblems": [
+      {
+        "id": "descartes-rule-of-signs-oq-02",
+        "relationship": "Sturm's theorem provides an exact count; Budan's theorem (OQ-02) provides the upper bound. For squarefree polynomials, Sturm is strictly tighter."
+      },
+      {
+        "id": "descartes-rule-of-signs-oq-02-oq-01",
+        "relationship": "OQ-02-OQ-01 proves Budan's building blocks; Sturm's exact count goes further, using GCD-based sequences instead of derivative towers."
+      }
+    ],
+    "theoremCount": 26
+  },
+  "overview": {
+    "historicalContext": "Jacques Charles François Sturm (1829) published the theorem bearing his name as a response to a challenge: given a polynomial equation with real coefficients, how many real roots does it have in a given interval? His elegant answer used a GCD-based sequence (now called the Sturm sequence) to give an exact count via sign-variation differences — the first constructive, computable solution to this classical problem. The theorem appeared in Sturm's 1829 paper 'Mémoire sur la résolution des équations numériques' and immediately became the standard tool for real root counting. It was later extended by Sylvester (1853) and connected to the Hermite quadratic forms theory, which gives the number of real roots via the signature of a quadratic form over ℚ — a bridge between polynomial analysis and number theory.",
+    "problemStatement": "For a squarefree polynomial p ∈ ℝ[X] (no repeated roots) and real numbers a < b with p(a) ≠ 0 and p(b) ≠ 0, the number of distinct real roots of p in the half-open interval (a, b] equals the difference in Sturm sign-variation counts: #{x ∈ (a,b] : p(x) = 0} = σ_p(a) - σ_p(b), where σ_p(x) counts sign changes in the Sturm sequence [p₀(x), p₁(x), ..., pₘ(x)].",
+    "proofStrategy": "The proof of sturm_exact_count_axiom follows from three key properties of the Sturm sequence: (1) Interior sign property: at any root r of pₖ (k ≥ 1), the neighbors pₖ₋₁(r) and pₖ₊₁(r) have opposite signs — provable because pₖ₊₁ = -(pₖ₋₁ % pₖ), so at r where pₖ(r) = 0, we get pₖ₊₁(r) = -pₖ₋₁(r). (2) Root of p causes sign count to decrease by exactly 1: as x crosses a root of p, p changes sign while p₁ = p' maintains sign (squarefree means p'(r) ≠ 0), causing net loss of one sign change. (3) Interior roots cause zero net change: the triple (pₖ₋₁, pₖ, pₖ₊₁) contributes one sign change just before the root and one just after, canceling out. Together these properties show σ_p(x) decreases by exactly 1 at each real root of p and is otherwise constant.",
+    "keyInsights": [
+      "The fundamental identity: pₖ₋₁ = (pₖ₋₁/pₖ)·pₖ + pₖ₊₁ (with sign flip), so at any root r of pₖ, pₖ₊₁(r) = -pₖ₋₁(r). This is proved in mod_eval_at_root using the Euclidean division identity b·(a/b) + (a%b) = a from EuclideanDomain.",
+      "Sturm vs Budan: Budan uses the full derivative tower [p, p', p'', ..., p^(n)] and gives only an upper bound. Sturm uses the GCD-reduced sequence [p, p', -(p%p'), -(p'%(p%p')), ...] and gives the exact count. The GCD structure removes the 'excess' sign changes that Budan overcounts.",
+      "Squarefree condition: Required to ensure p'(r) ≠ 0 at every real root r of p. Without squarefreeness, a double root r would satisfy p(r) = p'(r) = 0, and the sign count wouldn't decrease properly at r.",
+      "The Sturm sequence terminates in at most deg(p)+1 steps because each step strictly reduces the degree of the leading term (it's a polynomial GCD computation). The fuel-based recursion sturmSeqAux uses this bound as the termination budget.",
+      "Four corollaries follow immediately from the exact count: no roots (equal Sturm counts), unique root (count drops by 1), two roots (count drops by 2), and monotonicity of the Sturm count (it never increases as x increases)."
+    ]
+  },
+  "leanFile": {
+    "namespace": "SturmTheorem",
+    "lineCount": 458,
+    "axiomCount": 1,
+    "theoremCount": 26,
+    "sorries": 0,
+    "mainTheorems": [
+      {
+        "name": "sturm_exact_count_axiom",
+        "type": "axiom",
+        "description": "Main Sturm theorem: exact root count equals Sturm variation difference"
+      },
+      {
+        "name": "mod_eval_at_root",
+        "type": "proved",
+        "description": "At a root of q, (p % q)(r) = p(r) — the key algebraic identity"
+      },
+      {
+        "name": "sturm_interior_sign_property",
+        "type": "proved",
+        "description": "-(p % q)(r) = -p(r) at a root of q"
+      },
+      {
+        "name": "sturm_neighbors_opposite_at_root",
+        "type": "proved",
+        "description": "Neighbor products are negative at any root of an interior Sturm term"
+      },
+      {
+        "name": "sturm_no_roots",
+        "type": "proved",
+        "description": "Equal Sturm counts implies zero roots in interval"
+      },
+      {
+        "name": "sturm_unique_root",
+        "type": "proved",
+        "description": "Sturm count drop of 1 implies exactly one root"
+      },
+      {
+        "name": "sturm_two_roots",
+        "type": "proved",
+        "description": "Sturm count drop of 2 implies exactly two roots"
+      },
+      {
+        "name": "sturmVariations_antitone",
+        "type": "proved",
+        "description": "Sturm count is non-increasing in x (from exact count theorem)"
+      },
+      {
+        "name": "sturm_linear_left",
+        "type": "proved",
+        "description": "For p = X - c, Sturm count at x < c equals 1"
+      },
+      {
+        "name": "sturm_linear_right",
+        "type": "proved",
+        "description": "For p = X - c, Sturm count at x > c equals 0"
+      },
+      {
+        "name": "squarefree_no_common_roots",
+        "type": "proved",
+        "description": "Squarefree p and p' share no common real roots"
+      }
+    ],
+    "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+    "definitionCount": 8
+  },
+  "sections": [
+    {
+      "id": "auxiliary-defs",
+      "title": "§ 1. Auxiliary Definitions",
+      "startLine": 66,
+      "endLine": 105,
+      "description": "Three supporting definitions: countSignAlts (count adjacent alternations in ±1 integers), signVariations (count sign changes in a real list, ignoring zeros), and rootsInInterval (count roots in half-open interval (a,b]).",
+      "theorems": [
+        "signVariations_nil",
+        "signVariations_singleton",
+        "rootsInInterval_zero",
+        "rootsInInterval_C"
+      ],
+      "tactics": [
+        "simp",
+        "split",
+        "simp only",
+        "intro",
+        "rw",
+        "exact"
+      ]
+    },
+    {
+      "id": "sturm-sequence",
+      "title": "§ 2. The Sturm Sequence",
+      "startLine": 107,
+      "endLine": 127,
+      "description": "Two definitions: sturmSeqAux (fuel-based Sturm sequence construction via polynomial GCD) and sturmSeq (the full Sturm sequence of p, starting from [p, p']). Uses fuel p.natDegree + 1 which suffices since each GCD step strictly reduces degree.",
+      "theorems": [],
+      "tactics": []
+    },
+    {
+      "id": "sequence-properties",
+      "title": "§ 3. Basic Properties of the Sturm Sequence",
+      "startLine": 129,
+      "endLine": 195,
+      "description": "Four structural theorems: the sequence is non-empty, the head is always p, the second element is derivative p, and for degree ≥ 1 polynomials the sequence has at least 2 elements.",
+      "theorems": [
+        "sturmSeqAux_ne_empty",
+        "sturmSeq_ne_empty",
+        "sturmSeqAux_head",
+        "sturmSeq_head",
+        "sturmSeq_length_ge_two"
+      ],
+      "tactics": [
+        "cases",
+        "simp",
+        "intro",
+        "omega",
+        "have"
+      ]
+    },
+    {
+      "id": "sturm-count",
+      "title": "§ 4. The Sturm Sign-Variation Count",
+      "startLine": 197,
+      "endLine": 215,
+      "description": "Definition of sturmVariations: the number of sign changes in the Sturm sequence evaluated at x. Basic theorems for zero polynomial and constants.",
+      "theorems": [
+        "sturmVariations_zero",
+        "sturmVariations_C"
+      ],
+      "tactics": [
+        "simp"
+      ]
+    },
+    {
+      "id": "key-structural-lemma",
+      "title": "§ 5. Key Structural Lemma: Mod at a Root",
+      "startLine": 217,
+      "endLine": 252,
+      "description": "Three theorems proving the foundational algebraic identity: at a root r of q, (p % q)(r) = p(r). This follows from the Euclidean division identity b·(a/b) + (a%b) = a. As a corollary, consecutive Sturm terms bracket any interior root with opposite signs (their product is negative).",
+      "theorems": [
+        "mod_eval_at_root",
+        "sturm_interior_sign_property",
+        "sturm_neighbors_opposite_at_root"
+      ],
+      "tactics": [
+        "have",
+        "simp only",
+        "congr_arg",
+        "eval_add",
+        "eval_mul",
+        "nlinarith"
+      ]
+    },
+    {
+      "id": "main-theorem",
+      "title": "§ 6. Main Theorem: Exact Root Count",
+      "startLine": 254,
+      "endLine": 290,
+      "description": "The main axiom: sturm_exact_count_axiom. For squarefree p with p(a) ≠ 0 and p(b) ≠ 0, the root count in (a,b] equals the Sturm variation difference. Wrapped in theorem sturm_exact_count for convenient use.",
+      "theorems": [
+        "sturm_exact_count_axiom",
+        "sturm_exact_count"
+      ],
+      "tactics": []
+    },
+    {
+      "id": "corollaries",
+      "title": "§ 7. Corollaries",
+      "startLine": 292,
+      "endLine": 358,
+      "description": "Four direct consequences of the exact count theorem: no-roots (equal counts → 0 roots), unique root (count drops by 1 → 1 root), two roots (count drops by 2 → 2 roots), and monotonicity of sturmVariations.",
+      "theorems": [
+        "sturm_no_roots",
+        "sturm_unique_root",
+        "sturm_two_roots",
+        "sturm_count_le_variations",
+        "sturmVariations_antitone"
+      ],
+      "tactics": [
+        "rw",
+        "omega"
+      ]
+    },
+    {
+      "id": "linear-example",
+      "title": "§ 8. Example: Sturm Sequence for a Linear Polynomial",
+      "startLine": 360,
+      "endLine": 395,
+      "description": "Explicit computation for p(x) = x - c: the Sturm sequence is [x-c, 1], and the sign count is 1 when x < c (one sign change: negative, positive) and 0 when x > c (no sign change: positive, positive). Verifies the theorem for degree-1 polynomials.",
+      "theorems": [
+        "linear_deriv",
+        "sturm_linear_left",
+        "sturm_linear_right"
+      ],
+      "tactics": [
+        "simp",
+        "simp only",
+        "norm_num",
+        "have",
+        "linarith"
+      ]
+    },
+    {
+      "id": "squarefree-gcd",
+      "title": "§ 9. Squarefree Polynomials and the GCD Connection",
+      "startLine": 397,
+      "endLine": 425,
+      "description": "Two structural theorems about squarefree polynomials: they share no common real roots with their derivative (squarefree_no_common_roots), and they have nonzero derivative when degree ≥ 1 (squarefree_deriv_ne_zero_of_pos_degree). These are the conditions that make Sturm's exact count work.",
+      "theorems": [
+        "squarefree_no_common_roots",
+        "squarefree_deriv_ne_zero_of_pos_degree"
+      ],
+      "tactics": [
+        "intro",
+        "have",
+        "apply",
+        "rw",
+        "omega",
+        "simp"
+      ]
+    },
+    {
+      "id": "comparison",
+      "title": "§ 10. Comparison with Budan's Theorem",
+      "startLine": 427,
+      "endLine": 448,
+      "description": "A comparative discussion of Sturm vs Budan: both give root count information, but Sturm is exact while Budan gives an upper bound. The key difference is the sequence construction (GCD-based vs derivative tower) and the squarefree requirement.",
+      "theorems": [],
+      "tactics": []
+    }
+  ],
+  "conclusion": {
+    "summary": "This file provides a complete formalization of Sturm's theorem for the Lean Genius gallery. The Sturm sequence is defined constructively via fuel-based GCD recursion, the sign-variation count is defined rigorously, and the main theorem is axiomatized with 1 axiom. Ten supporting theorems are fully proved, including the fundamental algebraic identity (mod_eval_at_root), the structural sign property, four corollaries from the exact count, and explicit verification for linear polynomials.",
+    "implications": "Sturm's theorem has three major algorithmic consequences: (1) Real root isolation — bisect any interval until the Sturm count difference equals 0 or 1, giving provably correct root isolation in finite time; (2) Root count decision — for any polynomial, compute the total number of real roots in (-M, M] for large M in O(n²) time using polynomial GCD; (3) Isolation certificates — each isolated interval with Sturm count 1 is a certificate that exactly one root exists there, usable for constructive analysis.",
+    "openQuestions": [
+      "Prove sturm_exact_count_axiom by formalizing the three key properties: interior sign preservation, root sign count decrease by 1, and interior root sign count preservation.",
+      "Extend to polynomials with repeated roots by first computing gcd(p, p') = d and then applying Sturm to p/d (the squarefree part).",
+      "Formalize the connection between the Sturm sequence and Sylvester's classical matrix: the last nonzero element of the Sturm sequence is gcd(p, p') up to a constant factor.",
+      "Implement and verify a complete root isolation algorithm: SturmIsolate(p, a, b, ε) that returns a list of intervals each containing exactly one root."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs-oq-02",
+      "relationship": "extends",
+      "description": "OQ-02 proves Budan's upper bound and parity theorem using derivative towers. Sturm's theorem (this file) achieves the exact count using GCD-based sequences — strictly stronger for squarefree polynomials."
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "OQ-02-OQ-01 proves building blocks for Budan (Rolle's theorem, IVT sign change). The mod_eval_at_root lemma here is Sturm's analogous key algebraic identity."
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "related",
+      "description": "Descartes' Rule counts positive roots via coefficient sign changes. Sturm's theorem generalizes this to exact counts in any interval via a computationally constructed sequence."
+    }
+  ],
+  "sorries": 0
+}

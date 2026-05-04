@@ -1,0 +1,200 @@
+{
+  "slug": "dissection-of-cubes-oq-01-oq-03",
+  "title": "Can the volume constraint (∑ c",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the volume constraint (∑ c.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-03T11:41:44.693Z",
+    "iteration": 1,
+    "focus": "Proof complete: VolumeDissection with 14 theorems, 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "None — proof merged to gallery",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Defined VolumeDissection with volume_constraint = 1. Proved 14 theorems: volume bounds (side ≤ 1), collision pair bounds (2s³ ≤ 1), and satisfiability. 0 sorries, 0 new axioms.",
+    "builtItems": [
+      "volumeSum: ∑ c.side³ over Finset Cube in DissectionOfCubesOQ01OQ03.lean:59",
+      "VolumeDissection: CubeDissection + volume_constraint = 1 in DissectionOfCubesOQ01OQ03.lean:64",
+      "volumeSum_nonneg, volumeSum_singleton, volumeSum_insert: Part I basic lemmas",
+      "cube_volume_le_one, cube_side_le_one: each cube bounded by unit",
+      "volumeSum_pos, cube_volume_lt_one_of_card_ge_two: Part II volume bounds",
+      "volume_dissection_has_collision: connects OQ-01 to VolumeDissection",
+      "collision_volume_bound: 2s³ ≤ 1 for any collision pair",
+      "collision_side_le_half_cbrt: s³ ≤ 1/2",
+      "min_cubes_for_collision, volumeSum_union, volumeSum_eq, volume_constraint_satisfiable: Part IV"
+    ],
+    "insights": [
+      "Finset.single_le_sum is the key lemma: each term ≤ total sum when all terms are nonneg",
+      "nlinarith with sq_nonneg (c.side - 1) hint handles c.side³ ≤ 1 → c.side ≤ 1",
+      "Collision pairs both contribute s³ to the volume sum, giving 2s³ ≤ 1 directly from volume_constraint",
+      "Global noncomputable instance : DecidableEq Cube needed for ∪ in type signatures (avoids haveI conflicts)",
+      "VolumeDissection wraps CubeDissection — no axioms needed, just a new structure field",
+      "volume_dissection_has_collision bridges the new structure to every_dissection_has_collision from OQ-01"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Can volume_constraint alone prove distinct-size dissection impossibility?",
+      "Prove lower bound on collision pairs using volume constraint",
+      "Formalize Littlewood cascade argument in terms of VolumeDissection"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "impossibility",
+    "infinite-descent",
+    "combinatorics",
+    "open-problem",
+    "wiedijk-100",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01",
+    "dissection-of-cubes-oq-01-oq-01",
+    "dissection-of-cubes-oq-01-oq-03",
+    "dissection-of-cubes-oq-02",
+    "dissection-of-cubes-oq-02-oq-02",
+    "dissection-of-cubes-oq-02-wip-01",
+    "dissection-of-cubes-oq-03",
+    "dissection-of-cubes-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.692Z",
+  "lastUpdate": "2026-05-03T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubes.lean",
+      "filename": "DissectionOfCubes.lean",
+      "lineCount": 367,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubes.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01.lean",
+      "filename": "DissectionOfCubesOQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ01.lean",
+      "filename": "DissectionOfCubesOQ01OQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ03.lean",
+      "filename": "DissectionOfCubesOQ01OQ03.lean",
+      "lineCount": 257,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02.lean",
+      "filename": "DissectionOfCubesOQ02.lean",
+      "lineCount": 380,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02OQ02.lean",
+      "filename": "DissectionOfCubesOQ02OQ02.lean",
+      "lineCount": 455,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02WIP01.lean",
+      "filename": "DissectionOfCubesOQ02WIP01.lean",
+      "lineCount": 104,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02WIP01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03.lean",
+      "filename": "DissectionOfCubesOQ03.lean",
+      "lineCount": 600,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ04.lean",
+      "filename": "DissectionOfCubesOQ04.lean",
+      "lineCount": 562,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ04Aristotle.lean",
+      "filename": "DissectionOfCubesOQ04Aristotle.lean",
+      "lineCount": 90,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04Aristotle.lean"
+    }
+  ]
+}

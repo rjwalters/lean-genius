@@ -20,15 +20,16 @@
     "erdosUrl": "https://erdosproblems.com/1093",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 167,
-    "assumptions": "1 axiom: els_upper_bound (ELS 1993 upper bound theorem). Former many_deficiency_one_examples axiom eliminated by 16 individually verified native_decide examples spanning k=3..28.",
-    "mathlib_version": "4.26.0"
+    "lineCount": 257,
+    "assumptions": "1 axiom: els_upper_bound (ELS 1993 upper bound theorem). Former many_deficiency_one_examples axiom eliminated by 16 individually verified native_decide examples spanning k=3..28. Section VIII adds 5 additional verified examples (including all known deficiency-2 pairs). Section IX proves finitely_many_for_fixed_k as a zero-sorry corollary of the ELS axiom.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 44
   },
   "overview": {
     "historicalContext": "Erdős, Lacampagne, and Selfridge developed this problem across two papers (1988, 1993) and first presented it at the 1986 West Coast Number Theory conference. The question arose from their broader investigation into the prime factorization of binomial coefficients, specifically when $\\binom{n}{k}$ has no 'small' prime factors (all primes dividing it exceed $k$). Under this condition, the falling factorial $n(n-1)\\cdots(n-k+1)$ has a delicate balance: the small prime factors must cancel exactly with $k!$, and the 'deficiency' measures excess smoothness. The ELS upper bound $n \\ll 2^k \\sqrt{k}$ (1993) constrains the search space but leaves both parts of the conjecture open. The problem connects to Dickman's function ($\\Psi(x, y)$ counting $y$-smooth numbers up to $x$), Kummer's theorem (1852) on carries in base-$p$ addition characterizing $v_p(\\binom{n}{k})$, and the broader Erdős program on arithmetic properties of binomial coefficients. The record deficiency of 9 for $\\binom{284}{28}$ has stood since the original investigation, and computational searches have found at least 58 deficiency-1 examples for $n \\leq 10^5$.",
     "problemStatement": "For $n \\geq 2k$, if $\\binom{n}{k}$ has no prime factor $\\leq k$, the deficiency $d(n,k) = |\\{0 \\leq i < k : n - i \\text{ is } k\\text{-smooth}\\}|$. (i) Is $\\{(n,k) : d(n,k) = 1\\}$ infinite? (ii) Is $\\{(n,k) : d(n,k) > 1\\}$ finite?",
     "text": "For n ≥ 2k with C(n,k) having no prime factor ≤ k, the deficiency counts k-smooth terms among n, n-1, ..., n-k+1. Are there infinitely many with deficiency 1? Only finitely many with deficiency > 1? OPEN.",
-    "proofStrategy": "The formalization defines `IsKSmooth` (all prime factors $\\leq k$), `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$), and `deficiency` as a `Finset.filter` cardinality. Both parts of the conjecture are stated as `Prop`s using `Set.Infinite` and `Set.Finite`. Known examples, the ELS bound, and a computational census ($\\geq 58$ examples) are axiomatized. One theorem is fully proved: large prime factors exclude terms from the deficiency count.",
+    "proofStrategy": "The formalization defines `IsKSmooth` (all prime factors $\\leq k$), `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$), and `deficiency` as a `Finset.filter` cardinality. Both parts of the conjecture are stated as `Prop`s using `Set.Infinite` and `Set.Finite`. Known examples and the ELS bound are incorporated; 44 theorems in total (0 sorries). Highlights: all known deficiency-2 pairs verified by `native_decide`; `finitely_many_for_fixed_k` proved as a zero-sorry ELS corollary using `Set.finite_Iic` and `Nat.le_ceil`.",
     "keyInsights": [
       "The deficiency measures 'excess smoothness' in the falling factorial: terms $n - i$ that are $k$-smooth contribute to $d(n,k)$, and these smooth terms are the ones whose prime factors cancel with $k!$ in $\\binom{n}{k} = \\prod(n-i)/k!$",
       "The NoSmallPrimeFactors condition is equivalent to zero carries in base-$p$ addition of $k$ and $n-k$ for all primes $p \\leq k$ (by Kummer's theorem), a highly restrictive arithmetic condition on the pair $(n, k)$",
@@ -98,10 +99,26 @@
       "endLine": 107,
       "summary": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic.",
       "mathContext": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic."
+    },
+    {
+      "id": "remaining-examples",
+      "title": "Remaining Known Deficiency-2 Examples",
+      "startLine": 225,
+      "endLine": 241,
+      "summary": "Completes the catalogue: $d(95,10)=1$; $d(5179,27)=d(8413,28)=d(8414,28)=d(96622,42)=2$. All verified by `native_decide`. Together with Section VI these cover all known deficiency $\\geq 2$ pairs from ELS (1988).",
+      "mathContext": "Completes the catalogue: $d(95,10)=1$; $d(5179,27)=d(8413,28)=d(8414,28)=d(96622,42)=2$. All verified by `native_decide`. Together with Section VI these cover all known deficiency $\\geq 2$ pairs from ELS (1988)."
+    },
+    {
+      "id": "els-corollary",
+      "title": "ELS Corollary: Finiteness for Fixed k",
+      "startLine": 243,
+      "endLine": 257,
+      "summary": "Theorem `finitely_many_for_fixed_k`: for fixed $k$, $\\{n : 2k \\leq n \\wedge \\text{NoSmallPrimeFactors}(n,k) \\wedge d(n,k) \\geq 1\\}$ is finite. Proof: apply `Set.Finite.subset (Set.finite_Iic \\lceil C \\cdot 2^k \\sqrt{k} \\rceil_+)` using `Nat.le_ceil` and `Nat.cast_le`.",
+      "mathContext": "Theorem `finitely_many_for_fixed_k`: for fixed $k$, $\\{n : 2k \\leq n \\wedge \\text{NoSmallPrimeFactors}(n,k) \\wedge d(n,k) \\geq 1\\}$ is finite. Proof: apply `Set.Finite.subset (Set.finite_Iic \\lceil C \\cdot 2^k \\sqrt{k} \\rceil_+)` using `Nat.le_ceil` and `Nat.cast_le`."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1093, an open problem about the distribution of smooth numbers within falling factorial terms of binomial coefficients. The deficiency function $d(n,k)$ counts $k$-smooth terms among $n, n-1, \\ldots, n-k+1$ when $\\binom{n}{k}$ has no small prime factors. Part (i) conjectures infinitely many deficiency-1 cases; Part (ii) conjectures finitely many with deficiency $> 1$. The formalization includes 107 lines of Lean 4 with the ELS upper bound, 58+ computational examples, and one fully proved structural lemma.",
+    "summary": "This formalization captures Erdős Problem #1093 in 257 lines of Lean 4 with 44 theorems and 0 sorries. The deficiency function $d(n,k)$ counts $k$-smooth terms among $n, n-1, \\ldots, n-k+1$ when $\\binom{n}{k}$ has no small prime factors. Part (i) conjectures infinitely many deficiency-1 cases; Part (ii) conjectures finitely many with deficiency $> 1$. Highlights: all known deficiency-$\\geq 2$ pairs from ELS (1988) verified by `native_decide`; `finitely_many_for_fixed_k` proved as a zero-sorry ELS corollary (fixed $k$ forces finiteness of positive-deficiency $n$ via $n \\leq C \\cdot 2^k \\sqrt{k}$).",
     "implications": "Resolution would illuminate the interaction between smooth number distribution (Dickman's function) and the arithmetic structure of binomial coefficients. A proof of Part (ii) would establish that high concentrations of smooth numbers in short intervals, under the NoSmallPrimeFactors constraint, are a finite phenomenon—providing a surprising rigidity result in multiplicative number theory.",
     "openQuestions": [
       "Are there infinitely many binomial coefficients with deficiency 1?",
@@ -223,9 +240,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 167,
+    "lineCount": 257,
     "axiomCount": 1,
-    "theoremCount": 25,
+    "theoremCount": 44,
     "definitionCount": 6,
     "path": "Proofs/Erdos1093Problem.lean",
     "sorries": 0

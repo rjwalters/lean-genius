@@ -17,13 +17,30 @@
   - lai_limsup_bound: Lai (2021) result
   - ord_divides / large_gpf_small_order: ord2 definition is simplified placeholder
   - gpf_mersenne_2/3/5/7/11: noncomputable def, decide won't work
+
+  NOTE: Definitions are re-declared here (not imported from main file) to avoid
+  redeclaration errors when this companion file is compiled standalone.
 -/
 import Mathlib
-import Proofs.Erdos977Problem
 
 namespace Erdos977
 
 open Finset Nat Real Filter
+
+/-- The greatest prime factor of n, or 0 if n ≤ 1. -/
+noncomputable def greatestPrimeFactor (n : ℕ) : ℕ :=
+  if h : n ≤ 1 then 0
+  else (n.primeFactors).max' (Nat.primeFactors_nonempty (Nat.one_lt_iff_ne_one.mpr
+    (fun hn => h (le_of_eq hn))))
+
+/-- Notation: P(n) for greatest prime factor. -/
+notation "P" => greatestPrimeFactor
+
+/-- Mersenne number M_n = 2^n - 1. -/
+def mersenne (n : ℕ) : ℕ := 2 ^ n - 1
+
+/-- A Mersenne prime is a prime of the form 2^n - 1. -/
+def IsMersennePrime (n : ℕ) : Prop := (mersenne n).Prime
 
 /-- P(n) divides n for n > 1.
     Strategy: P(n) = max' of primeFactors(n), which is a member, hence divides n. -/

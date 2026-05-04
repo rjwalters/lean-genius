@@ -27,7 +27,8 @@
     "axiomCount": 3,
     "lineCount": 200,
     "assumptions": "3 axioms: turan_theorem (Turán's theorem for K_r), razborov_triangle_density (Razborov 2010 for K_3), reiher_k4_density (Reiher 2016 for K_4). erdos_simonovits_supersaturation, kruskal_katona, kr_density_conjecture proved or removed.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "**From Turán to Supersaturation**\n\nTurán's theorem (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a K_r-free graph on n vertices is achieved by the complete (r-1)-partite graph with balanced parts. Erdős asked the natural follow-up: if we have *more* edges than this threshold, how many copies of K_r are forced?\n\n**The Triangle Case (r=3)**\n\nRademacher (unpublished, c. 1940s) proved the first supersaturation result: one extra edge over ⌊n²/4⌋ forces ⌊n/2⌋ triangles. Erdős (#1010) conjectured that t extra edges force t·⌊n/2⌋ triangles for t < ⌊n/2⌋, proved by Lovász-Simonovits (1976). Razborov (2010) determined the *exact* minimum triangle density for all edge densities using his flag algebra method, a landmark result.\n\n**Beyond Triangles**\n\nReiher (2016) extended flag algebras to K_4, confirming the Lovász-Simonovits conjecture for 4-cliques. For r ≥ 5, the exact minimum K_r density remains one of the central open problems in extremal combinatorics. The Kruskal-Katona theorem provides structural lower bounds, but exact results require the still-developing theory of flag algebras for hypergraphs.",

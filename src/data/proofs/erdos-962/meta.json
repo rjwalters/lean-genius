@@ -59,7 +59,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 192,
-    "assumptions": "2 axioms: tang_lower_bound, tao_upper_bound. 0 sorries."
+    "assumptions": "2 axioms: tang_lower_bound, tao_upper_bound. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #962 in 1965 at a symposium on extremal problems in number theory. He asked for estimates of k(n), the longest interval of consecutive integers below n where each has a prime factor exceeding the interval length. He proved the first lower bound using sieve methods.\n\nTerence Tao provided the first non-trivial upper bound k(n) ≤ (1+o(1))√n via an elegant pigeonhole argument: if k > √n, some prime p ≤ k must divide two numbers in {m+1,...,m+k}, which are too close together. Quanyu Tang significantly improved the lower bound to exp((1/√2-o(1))√(log n · log log n)).\n\nThe gap between bounds remains enormous: the lower bound is subpolynomial while the upper bound is √n. Erdős conjectured k(n) = o(n^ε) for all ε > 0, which remains open. The problem connects to smooth number theory — k(n) equals the longest interval of non-k-smooth integers.",

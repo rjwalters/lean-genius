@@ -1,8 +1,8 @@
 {
   "slug": "abel-ruffini-oq-09",
   "title": "Differential Galois theory and Liouville's theorem on integration: The di...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-26T08:56:57.648Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Gallery entry created. Polynomial obstruction proved. 3 axioms remain for full theory.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Reduce axiom count: partial fraction argument for rational case.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,43 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETE: axioms reduced 3→2, gaussian_not_elementary proved as theorem, all API drift fixed, Docker build passes",
+    "builtItems": [
+      "DiffField typeclass: field with derivation (2 axioms: additivity + Leibniz). File: Proofs/AbelRuffiniOQ09.lean:79",
+      "constants_zero/one/add/mul: constants form a subfield. Lines 90-113",
+      "deriv_neg/sub: D(-f)=-D(f), D(f-g)=D(f)-D(g). Lines 118-128",
+      "risch_ode_coeff_top: coeff(p'-C(2)·X·p, natDeg+1) = -2·leadingCoeff(p). Line 208 — key lemma",
+      "no_poly_risch_soln: ∀p, p'-C(2)·X·p ≠ 1. Line 236 — main result, 0 sorries",
+      "no_poly_risch_constant: L[p] ≠ C(c) for any nonzero c. Line 248",
+      "risch_ode_raises_degree: natDeg(L[p]) > natDeg(p) for p≠0. Line 264",
+      "risch_pointwise_to_poly + no_poly_risch_pointwise: pointwise ↔ polynomial form. Lines 282-295",
+      "risch_g_linear_const/degree1/constant_solvable: explicit solutions for ∫e^x case. Lines 319-335",
+      "gaussian_vs_linear_contrast: conjunction packaging the L₁ vs L₂ dichotomy. Line 341",
+      "Gallery entry: src/data/proofs/abel-ruffini-oq-09/ (meta.json, annotations.json, index.ts, tacticStates.json)",
+      "risch_linear_surjective_monomial: L₁[Q]=Q'+Q surjective onto X^n via induction with recurrence Q_{n+1}=X^{n+1}-C(n+1)·Q_n [AbelRuffiniOQ09.lean:372]",
+      "risch_linear_surjective_all: L₁ surjective onto all polynomials by Polynomial.induction_on' + linearity [AbelRuffiniOQ09.lean:389]",
+      "rischOp def + rischOp_iter_ne_zero + hasDerivAt_mul_gauss + risch_iterate_eq + gaussian_not_elementary theorem in AbelRuffiniOQ09.lean:276-375"
+    ],
+    "insights": [
+      "The operator L[p] = p' - C(2)·X·p raises polynomial degree by exactly 1 for any nonzero p (L is degree-raising), so its image consists only of polynomials of degree ≥ 1, excluding all nonzero constants",
+      "The coefficient of X^(natDeg p + 1) in L[p] is -2·leadingCoeff(p): proved by simp/push_cast/ring on coeff of sub/C_mul/X_mul/derivative",
+      "For g = x (linear exponent), L₁[Q] = Q'+Q preserves degree (Q dominates Q'), so L₁ is surjective onto constants — ∫e^x is elementary. This degree-preserving vs degree-raising dichotomy is the structural explanation",
+      "Polynomial.funext allows converting pointwise ODE equalities to polynomial ring equalities, using ℝ being an infinite integral domain",
+      "Mathlib has no Picard-Vessiot / differential Galois theory, requiring 3 axioms: Liouville structure theorem, Risch criterion, and Gaussian non-elementarity",
+      "The Abel-Ruffini/Liouville analogy is structural: A₅ simplicity (algebraic Galois) corresponds to degree-raising of L₂ (differential Galois) — both witness obstruction to expressibility in prescribed form",
+      "L₁[Q]=Q'+Q is surjective onto ALL polynomials: proved by induction Q_{n+1}=X^{n+1}-C(n+1)·Q_n and linearity. Completes the contrast: L₁ onto everything, L₂ onto nothing nonzero-constant.",
+      "gaussian_not_elementary proved as a theorem (not axiom) via iterated Risch operator: L^n(g)·exp(-x²)=0 forces L^n(g)=0 by exp_pos, but rischOp_iter_ne_zero shows L^n(g)≠0 for g=q²≠0",
+      "Key API drift fixes needed: Polynomial.induction_on' case names h_add→add, h_monomial→monomial; push_cast mul_zero→zero_mul; congr_arg lambda→Polynomial.ext_iff.mp; Polynomial.monomial_eq_C_mul_X→C_mul_X_pow_eq_monomial; linarith fails on abstract DiffField type, use linear_combination instead"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no Picard-Vessiot theory (Picard-Vessiot extensions, differential Galois groups) — estimated >1000 lines to formalize the Liouville structure theorem",
+      "Partial fraction decomposition for rational functions not in Mathlib in the form needed to extend polynomial Risch obstruction to rational case",
+      "No Mathlib theorem directly proving the Gaussian's non-elementarity (axiomatized here)"
+    ],
+    "nextSteps": [
+      "Reduce axiom count by formalizing the rational case of the Risch criterion using Mathlib partial fractions",
+      "Formalize explicit integration-by-parts formula: Q solving Q'+Q=p is Q=sum_k (-1)^k * p^(k)"
+    ]
   },
   "tags": [
     "challenging",
@@ -50,7 +82,8 @@
     "abel-ruffini-oq-04-oq-02-oq-02",
     "abel-ruffini-oq-04-oq-02-oq-03",
     "abel-ruffini-oq-04-oq-03",
-    "abel-ruffini-oq-04-oq-07"
+    "abel-ruffini-oq-04-oq-07",
+    "abel-ruffini-oq-09"
   ],
   "references": {
     "papers": [],
@@ -65,7 +98,7 @@
     {
       "path": "Proofs/AbelRuffini.lean",
       "filename": "AbelRuffini.lean",
-      "lineCount": 186,
+      "lineCount": 188,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -153,8 +186,8 @@
     {
       "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
       "filename": "AbelRuffiniOQ04OQ03.lean",
-      "lineCount": 166,
-      "theoremCount": 6,
+      "lineCount": 243,
+      "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
@@ -171,6 +204,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ09.lean",
+      "filename": "AbelRuffiniOQ09.lean",
+      "lineCount": 541,
+      "theoremCount": 21,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ09.lean"
     }
   ]
 }

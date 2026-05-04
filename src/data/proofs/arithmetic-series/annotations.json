@@ -6,7 +6,7 @@
       "startLine": 52,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Gauss's Formula (0-indexed)",
     "content": "**The sum 0 + 1 + 2 + ... + (n-1) = n*(n-1)/2.**\n\nThis is Mathlib's convention using `range n` = {0, 1, ..., n-1}. The proof is a direct application of `Finset.sum_range_id`.",
     "mathContext": "$\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$",
@@ -23,7 +23,7 @@
       "startLine": 60,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Gauss's Classical Formula",
     "content": "**The sum 0 + 1 + 2 + ... + n = n*(n+1)/2.**\n\nThis is the formula young Gauss allegedly used to sum 1 to 100. Using `range (n+1)` gives us {0, 1, ..., n}.\n\nThe proof derives this from the 0-indexed version by adjusting the multiplication order.",
     "mathContext": "$\\sum_{i=0}^{n} i = \\frac{n(n+1)}{2}$",
@@ -57,7 +57,7 @@
       "startLine": 98,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "General Arithmetic Series",
     "content": "**Sum of an arithmetic progression with first term a and common difference d.**\n\nThis generalizes Gauss's formula. Setting a=0 and d=1 recovers the sum of 0..n-1.\n\nThe formula is derived by separating the constant term (na) from the varying part (sum of k*d).",
     "mathContext": "$\\sum_{k=0}^{n-1} (a + kd) = na + d \\cdot \\frac{n(n-1)}{2}$",
@@ -74,7 +74,7 @@
       "startLine": 112,
       "endLine": 113
     },
-    "type": "example",
+    "type": "concept",
     "title": "Gauss's Original Problem",
     "content": "**Sum of 1 to 100 = 5050.**\n\nThis is the famous problem Gauss allegedly solved as a schoolboy. The proof uses `native_decide` for computational verification.\n\n50 pairs × 101 = 5050.",
     "mathContext": "$1 + 2 + \\cdots + 100 = 5050$",
@@ -91,7 +91,7 @@
       "startLine": 118,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Sum of Odd Numbers = n²",
     "content": "**The sum of the first n odd numbers equals n squared.**\n\n1 + 3 + 5 + ... + (2n-1) = n²\n\nThis beautiful identity has a lovely visual proof: each odd number adds an 'L-shaped' layer to a growing square. The proof uses induction.",
     "mathContext": "$\\sum_{k=0}^{n-1} (2k+1) = n^2$",
@@ -108,7 +108,7 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Sum of Even Numbers",
     "content": "**The sum 0 + 2 + 4 + ... + 2(n-1) = n*(n-1).**\n\nThis is a special case of the arithmetic series with a=0 and d=2. The proof factors out the 2 and uses the Gauss pairing identity.",
     "mathContext": "$\\sum_{k=0}^{n-1} 2k = n(n-1)$",
@@ -142,7 +142,7 @@
       "startLine": 150,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Triangular Recurrence",
     "content": "**T(n+1) = T(n) + (n+1).**\n\nEach triangular number is obtained by adding the next integer to the previous one. The proof uses divisibility arguments to handle the division by 2.",
     "mathContext": "$T(n+1) = T(n) + (n+1)$",

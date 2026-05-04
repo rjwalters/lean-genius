@@ -2,7 +2,7 @@
   {
     "id": "ann-module-docstring",
     "title": "Module Docstring: The Chow Ring Multiplication Table",
-    "type": "context",
+    "type": "concept",
     "proofId": "hilbert-15-oq-01",
     "range": {
       "startLine": 1,
@@ -10,7 +10,7 @@
     },
     "content": "The module docstring (lines 1–60) is itself a mathematical reference document: it gives the complete Chow ring structure as a table with geometric interpretations for each basis class, displays the full 5×5 multiplication table, traces the four-lines computation σ₁² → σ₁³ → σ₁⁴ = 2 step by step, and explains the proof strategy (native_decide from the explicit LR table). This is the only file in the Lean Genius gallery where the docstring includes a complete multiplication table.\n\nThe relationship to the parent file `Hilbert15SchubertCalculus.lean` is explicit: the parent provides Grassmannian definitions and the axiomatized statement `σ₁⁴ = 2`; this file proves it computationally, eliminating the axiom. This is a demonstration of the refinement methodology: Lean allows working axiomatically first (assuming the hard part), then improving to a proved version.",
     "mathContext": "The grading: $A^0(\\mathrm{Gr}(2,4)) = \\mathbb{Z}\\sigma_\\emptyset$ (degree 0, fundamental class), $A^1 = \\mathbb{Z}\\sigma_1$ (lines meeting a fixed line), $A^2 = \\mathbb{Z}\\sigma_2 \\oplus \\mathbb{Z}\\sigma_{11}$ (lines in a plane / through a point), $A^3 = \\mathbb{Z}\\sigma_{21}$ (lines in a plane through a point), $A^4 = \\mathbb{Z}\\sigma_{22}$ (a specific line, the 'point class'). The product $\\sigma_1 \\cdot \\sigma_{22} = 0$ (no line meets 4 fixed lines + 1 point class in general position) reflects the dimension count: $1 + 4 > 4 = \\dim A^*(\\mathrm{Gr}(2,4))$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Chow ring grading",
       "Schubert calculus",
@@ -117,7 +117,7 @@
   {
     "id": "ann-four-lines-theorem",
     "title": "Four Lines Theorem: σ₁⁴ = 2 by native_decide",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 210,
     "endLine": 255,
     "mathContext": "Seven key product theorems proved by native_decide: sigma1_sq (σ₁² = σ₂+σ₁₁), sigma1_sigma2 (σ₁·σ₂ = σ₂₁), sigma1_sigma11 (σ₁·σ₁₁ = σ₂₁), sigma1_sigma21 (σ₁·σ₂₁ = σ₂₂), sigma2_sq (σ₂² = σ₂₂), sigma11_sq (σ₁₁² = σ₂₂), sigma2_sigma11 (σ₂·σ₁₁ = 0). Main theorem sigma1_fourth: (σ₁*σ₁*σ₁*σ₁).c22 = 2. The computation: σ₁⁴ = ⟨0,0,0,0,0,2⟩. four_lines_number extracts the degree: (σ₁⁴).c22 = 2.",
@@ -139,7 +139,7 @@
   {
     "id": "ann-poincare-giambelli",
     "title": "Poincaré Duality and Giambelli's Formula",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 267,
     "endLine": 301,
     "mathContext": "Poincaré duality: five theorems showing degree(σ_λ·σ_{λ*}) = 1 for dual pairs. The dual of λ = (λ₁,λ₂) is λ* = (2-λ₂, 2-λ₁). Pairs: (∅,22), (1,21), (2,2 self-dual!), (11,11 self-dual!). Non-dual: degree(σ₂·σ₁₁) = 0. Giambelli's formula: giambelli_11 shows -σ₂ + σ₁² = σ₁₁ (equivalently σ₁₁ = σ₁² - σ₂). General Giambelli: σ_{λ₁λ₂} = det[σ_{λ₁} σ_{λ₁+1}; σ_{λ₂-1} σ_{λ₂}]; for λ=(1,1): det[σ₁,σ₂;1,σ₁] = σ₁²-σ₂.",
@@ -161,7 +161,7 @@
   {
     "id": "ann-enumerative-applications",
     "title": "Classical Enumerative Geometry Results",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 311,
     "endLine": 335,
     "mathContext": "Three enumerative theorems: (1) one_line_through_point_meeting_two: degree(σ₁²·σ₁₁) = degree((σ₂+σ₁₁)·σ₁₁) = degree(σ₂₂) = 1 — exactly 1 line passes through a fixed point and meets 2 general lines. (2) one_line_in_plane_meeting_two: degree(σ₁²·σ₂) = 1 — exactly 1 line in a fixed plane meets 2 general lines. (3) overdetermined_three_lines_point: degree(σ₁³·σ₁₁) = 0 — meeting 3 lines and passing through a point is overdetermined. Ring properties: mul_comm_basis (commutativity on basis, by decide) and sigma0_left_identity.",

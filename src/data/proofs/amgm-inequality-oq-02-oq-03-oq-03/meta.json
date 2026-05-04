@@ -18,7 +18,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 1,
-    "lineCount": 66,
+    "lineCount": 609,
     "theoremCount": 3,
     "definitionCount": 0,
     "assumptions": "Uses `maclaurin_step` axiom from AmgmInequalityOQ02. If replaced by the proved `maclaurin_step_proved` from AmgmInequalityOQ02OQ03, all results become fully verified.",
@@ -116,12 +116,15 @@
   ],
   "leanFile": {
     "namespace": "AmgmInequalityOQ02OQ03OQ03",
-    "lineCount": 66,
+    "lineCount": 609,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0,
     "path": "Proofs/AmgmInequalityOQ02OQ03OQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Proofs.AmgmInequalityOQ02"
+    ]
   },
   "sorries": 0
 }

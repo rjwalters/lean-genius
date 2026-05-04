@@ -55,7 +55,7 @@
       "startLine": 49,
       "endLine": 80
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Fintype-Indexed Version of WIP04 (Reindexing via Fintype.equivFin)",
     "content": "Generalizes WIP04's `Fin k`-indexed theorem to a `Fintype σ`-indexed version. WIP04's signature accepts the prime-power factors as a family `p : Fin k → K[X]`, but in WIP05 we naturally produce a family indexed by `↥D` where `D : Finset K[X]` is the set of distinct prime factors. The reindexing uses $\\varphi : \\text{Fin}\\;k \\simeq \\sigma$ from `Fintype.equivFin`, with $k = $ Fintype.card $\\sigma$.\n\nThe nontrivial step is rewriting the product hypothesis. From `hprod : minpoly K M = ∏ i : σ, p i ^ e i`, applying `Equiv.prod_comp` gives `∏ i : σ, p i ^ e i = ∏ i : Fin k, (p ∘ φ) i ^ (e ∘ φ) i`. The `.symm` direction propagates the equation through the substitution. The coprimality hypothesis transfers via `φ.injective`: if `i ≠ j` in `Fin k` and `φ i = φ j`, then `i = j` (contradiction).\n\nThis lemma carries no mathematical content — it is pure index conversion code. Its purpose is to bridge the WIP04 API (Fin-indexed) with the natural data structure of WIP05 (Finset-indexed). Marking it `private` keeps it as an internal adapter rather than a public theorem.",
     "mathContext": "Statement: For any nonderogatory $M : M_n(K)$ and any Fintype-indexed family $(p_i, e_i)_{i \\in \\sigma}$ of pairwise-coprime monic-irreducible prime powers with $\\mu_M = \\prod_{i \\in \\sigma} p_i^{e_i}$, there exists a cyclic vector. Reduces to WIP04 via $\\varphi : \\text{Fin}(|\\sigma|) \\simeq \\sigma$.",
@@ -80,7 +80,7 @@
       "startLine": 84,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Theorem Setup: f = minpoly = charpoly, Monic, Degree n, Not a Unit",
     "content": "Sets up the four basic facts about $f := \\mu_M$ needed throughout the proof. The `n = 0` case is dispatched immediately by `Fin.elim0` (vacuous existence over the empty index type), letting subsequent reasoning assume $n \\geq 1$.\n\n**Fact 1 — `f = M.charpoly`** (line 97): direct from the nonderogatory hypothesis `h : IsNonderogatory M`, which is *defined* as `minpoly K M = M.charpoly` (the equality that makes the canonical surjection $K[X]/(\\mu_M) \\twoheadrightarrow K[X]/(\\chi_M)$ an isomorphism, equivalently that the cyclic K[X]-module structure on $K^n$ is forced).\n\n**Fact 2 — `f.Monic`** (line 98): rewrites $f = \\chi_M$ then applies `Matrix.charpoly_monic`. Monicity is essential for the UFD argument because `normalize p = p` exactly when $p$ is monic over a field.\n\n**Fact 3 — `f.natDegree = n`** (lines 100-101): rewrites $f = \\chi_M$, applies `charpoly_natDegree_eq_dim` (degree of charpoly = matrix size), and `Fintype.card_fin` ($|Fin\\;n| = n$). This degree bound is used implicitly: a polynomial of degree $\\geq 1$ over a field is not a unit, so `normalizedFactors f` is nonempty.\n\n**Fact 4 — `¬IsUnit f`** (lines 102-106): proves by contradiction. If $f$ were a unit and monic, then $f = 1$ (since the only monic units in $K[X]$ are constants, but constants of degree $\\geq 1$ don't exist). But $f.natDegree = n \\geq 1$ contradicts `f = 1` having degree 0. The `omega` tactic discharges the arithmetic.",
     "mathContext": "Setup: $f = \\mu_M = \\chi_M$ (by nonderogatory), $f$ monic of degree $n \\geq 1$. From these: $f \\neq 0$ (Monic.ne_zero) and $f \\notin K^\\times$ (degree argument). These ensure that `exists_mem_normalizedFactors` will produce at least one prime factor.",

@@ -19,7 +19,7 @@
     "sorries": 0,
     "axiomCount": 12,
     "assumptions": "1 explicit axiom (`gaugeTransform`, YangMills/Classical.lean) plus 11 structure-encoded assumptions of type `True` in Exploration.lean: Slavnov-Taylor/BRST Ward identity (`SlavnovTaylorIdentity.ward_identity_holds`, line 2454), regulator IR/UV behavior (`RegulatorProperties.suppresses_ir`, `RegulatorProperties.grows_at_uv`, lines 12746-12748), gauge invariance of observables (`GaugeInvariantObs.gaugeInvariant`, line 15986), Fradkin-Shenker analyticity (`FradkinShenker.analytic`, line 16035), Coleman-Mandula finite spectrum/non-trivial scattering/S-matrix analyticity (`CMHypotheses.finiteSpectrum`, `CMHypotheses.nontrivialScattering`, `CMHypotheses.analyticity`, lines 16760-16764), BRST charge conservation and nilpotency (`BRSTChargeCohom.conservation`, `BRSTChargeCohom.nilpotent`, lines 17248-17250), and asymptotic-safety beta-function vanishing (`AsymptoticSafety.beta_vanishes`, line 17606). Each `: True` field is satisfied by `trivial`, stipulating a substantive QFT property as a hypothesis without proof obligation. Additionally, the file contains approximately 41 structural placeholder theorems beyond line 8000 of the form `theorem X (...(h:P)...): P := h` — these state their hypothesis as conclusion and establish no new mathematical content; they are named after significant physics results (including Creutz confinement, continuum mass gap, and Witten index) to serve as organizational anchors for future formalization.",
-    "lineCount": 28075,
+    "lineCount": 28477,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_nonneg",
@@ -36,7 +36,8 @@
       "Confinement criteria via Wilson loop behavior"
     ],
     "dateAdded": "2026-03-23",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1787
   },
   "overview": {
     "historicalContext": "Kenneth Wilson introduced lattice gauge theory in 1974, providing the first non-perturbative definition of Yang-Mills theory and earning the 1982 Nobel Prize in Physics. By discretizing spacetime into a hypercubic lattice and placing gauge group elements $U_\\ell \\in G$ on links (edges), Wilson showed that gauge invariance is exact on the lattice — not an approximate symmetry that must be recovered in a limit, but an exact property of the discretized theory. Wilson's key insight was that confinement (area law for Wilson loops) emerges naturally in the strong coupling regime: at large $g^2$, the lattice path integral is dominated by disordered configurations that produce area-law decay $\\langle W(C) \\rangle \\sim e^{-\\sigma A}$ with positive string tension $\\sigma$. This framework enabled Michael Creutz's pioneering Monte Carlo simulations (1980), which provided the first numerical evidence for confinement in SU(2) and SU(3) gauge theories. Today, lattice QCD is the standard tool for non-perturbative calculations in the Standard Model — hadronic spectra, decay constants, and form factors computed on the lattice agree with experiment to percent-level precision. The Clay Millennium Prize problem asks whether the continuum limit ($a \\to 0$) of lattice Yang-Mills exists rigorously and exhibits a mass gap, connecting Wilson's practical framework to fundamental questions in mathematical physics.",
@@ -146,12 +147,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 28075,
+    "lineCount": 28477,
     "structureCount": 365,
     "axiomCount": 0,
     "theoremCount": 1787,
     "lemmaCount": 0,
-    "defCount": 641,
+    "definitionCount": 641,
     "imports": [
       "Proofs.YangMills.Classical",
       "Proofs.YangMills.Quantum"

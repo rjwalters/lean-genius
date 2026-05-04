@@ -17,7 +17,7 @@
       "open"
     ],
     "proofRepoPath": "Proofs/Erdos524Problem.lean",
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/524",
     "erdosUrl": "https://erdosproblems.com/524",
@@ -34,10 +34,11 @@
         "relation": "Distribution of arithmetic functions: both study 'almost everywhere' behavior of number-theoretic/analytic quantities under measure-theoretic frameworks"
       }
     ],
-    "axiomCount": 0,
-    "lineCount": 317,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "axiomCount": 1,
+    "lineCount": 322,
+    "assumptions": "1 axiom: erdos_524_main (the Salem–Zygmund order-of-magnitude conjecture: M_n(t) ~ C√n a.e. — OPEN). 0 sorries. The 22 structural theorems about polyMax are fully proved.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 22
   },
   "sections": [
     {
@@ -143,8 +144,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 317,
-    "axiomCount": 0,
+    "lineCount": 322,
+    "axiomCount": 1,
     "theoremCount": 22,
     "definitionCount": 4,
     "path": "Proofs/Erdos524Problem.lean",

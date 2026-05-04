@@ -60,7 +60,8 @@
     "axiomCount": 1,
     "lineCount": 136,
     "assumptions": "1 axiom: v0_exceptions. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős and Selfridge introduced $v(n,k)$ in their 1967 paper 'Some problems on the prime factors of consecutive integers' (Illinois J. Math. 11, pp. 428–430). They proved $v_0(n) \\ge 2$ for all $n \\ge 17$ by analyzing how prime factors distribute across consecutive integers, and determined the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ by explicit computation. However, they could not establish divergence of $v_0(n)$, nor even prove $v_1(n) \\ge 2$ for all large $n$. The problem also appears as B27 in Guy's 'Unsolved Problems in Number Theory' (3rd ed., 2004). The question is connected to the broader study of how prime factors distribute across arithmetic progressions and consecutive integers, touching on the Erdős–Kac theorem, Selberg's sieve, and the distribution of smooth numbers.",

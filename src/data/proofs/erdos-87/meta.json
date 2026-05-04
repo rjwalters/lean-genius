@@ -24,7 +24,8 @@
     "axiomCount": 3,
     "lineCount": 68,
     "assumptions": "3 axioms: diagonalRamsey, graphRamsey, chromaticNumber. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "**Erdős** originally conjectured that $R(G) \\geq R(k)$ whenever $\\chi(G) = k$: graphs with the same chromatic number as $K_k$ should have Ramsey number at least as large. This was disproved by **Faudree and McKay**, who showed the pentagonal wheel $W$ (central vertex joined to $C_5$) has $\\chi(W) = 4$ and $R(W) = 17 < R(4) = 18$. Erdős then weakened the conjecture to two forms: (weak) $R(G) > (1-\\varepsilon)^k \\cdot R(k)$ for large $k$, and (strong) $R(G) > c \\cdot R(k)$ for an absolute constant $c > 0$. The problem connects to the **Erdős-Szekeres bound** $R(k) \\leq 4^k$ (1935), the probabilistic lower bound $R(k) \\geq 2^{k/2}$ (Erdős 1947), and the recent breakthrough by **Campos, Griffiths, Morris, and Sahasrabudhe** (2023) proving $R(k) \\leq (4-\\varepsilon)^k$. The problem remains **open** in both forms.",

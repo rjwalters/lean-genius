@@ -1,0 +1,130 @@
+{
+  "id": "puiseux-theorem-oq-02",
+  "title": "Puiseux Theorem OQ-02: Multivariate Generalization via Iterated Hahn Series",
+  "slug": "puiseux-theorem-oq-02",
+  "description": "Formalizes the multivariate generalization of Puiseux's theorem via iterated Hahn series: K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄...⦃⦃xₙ⦄⦄ defined as `MultiHahnSeries n K`. Proves that this construction inherits CommRing from K by induction, defines the recursive IsMultiPuiseuxSeries predicate, and establishes base cases. The algebraic closure of iterated Laurent series is the iterated Puiseux series field (McDonald 1995, Aroca-Cano-Jung 2003).",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Puiseux_series#Generalizations",
+    "date": "McDonald 1995; Aroca-Cano-Jung 2003; formalized 2026",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "series",
+      "hahn-series",
+      "algebraic-closure",
+      "multivariate",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/PuiseuxTheoremOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 6 theorems and 4 definitions fully verified with 0 sorries and 0 axioms. The main algebraic closure theorem (MultiHahnSeries n K is algebraically closed when K is) requires HahnSeries ℚ K to be algebraically closed — open in Mathlib — so it is described in comments rather than formalized as a theorem.",
+    "originalContributions": [
+      "MultiHahnSeries: iterated HahnSeries ℚ type (n-variate Puiseux series)",
+      "instZeroMultiHahn: Zero instance for MultiHahnSeries by induction on n",
+      "instCommRingMultiHahn: CommRing instance for MultiHahnSeries by induction on n",
+      "IsMultiPuiseuxSeries: recursive common-denominator predicate for multivariate Puiseux series",
+      "isMultiPuiseux_base: base field elements are trivially multi-Puiseux",
+      "isMultiPuiseux_zero: zero is multi-Puiseux at every level (empty support)",
+      "Dimensional facts: multiHahn_zero, multiHahn_one, multiHahn_succ"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 238,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Puiseux's theorem (1850) establishes that the field of Puiseux series over an algebraically closed field of characteristic 0 is itself algebraically closed. Puiseux series are formal power series with rational exponents: elements of K⦃⦃x⦄⦄ = ⋃ₙ K((x^{1/n})). The multivariate generalization asks: what is the algebraic closure of the field of formal Laurent series K((x₁,...,xₙ)) in several variables?\n\nThe answer, established by McDonald (1995) and refined by Aroca, Cano, and Jung (2003), is the iterated Puiseux series field K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄...⦃⦃xₙ⦄⦄, defined by applying the univariate Puiseux construction once per variable. The key subtlety is the ordering: multivariate Puiseux series require a well-order on ℚⁿ for the support to be well-ordered, and the lexicographic ordering of the iterated construction handles this automatically.\n\nThis formalization uses Mathlib's HahnSeries ℚ K as the Lean model for one-variable Puiseux series (Hahn series over the rationals), then iterates: MultiHahnSeries 0 K = K, MultiHahnSeries (n+1) K = HahnSeries ℚ (MultiHahnSeries n K).",
+    "problemStatement": "**Open Question (OQ-02 from Puiseux's Theorem)**: How does Puiseux's theorem generalize to higher dimensions?\n\n**Answer**: The multivariate Puiseux series K⦃⦃x₁,...,xₙ⦄⦄ is defined as the n-fold iterated HahnSeries ℚ construction: `MultiHahnSeries n K`. This inherits CommRing from K by induction and supports the IsMultiPuiseuxSeries predicate capturing the levelwise common-denominator condition.",
+    "text": "A 238-line formalization of the multivariate Puiseux series structure via iterated Hahn series. The key definition is `MultiHahnSeries : ℕ → Type* → Type*` with `MultiHahnSeries 0 K = K` and `MultiHahnSeries (n+1) K = HahnSeries ℚ (MultiHahnSeries n K)`. The algebraic instances (Zero, CommRing) are proved by induction on depth. The IsMultiPuiseuxSeries predicate captures the recursive common-denominator condition. All 6 theorems and 4 definitions are fully verified with 0 sorries.",
+    "proofStrategy": "**Part I** (Iterated Construction): Define `MultiHahnSeries` by recursion on depth. Base case is the coefficient field K; successor step wraps in HahnSeries ℚ.\n\n**Part II** (Algebraic Instances): Prove Zero and CommRing instances for MultiHahnSeries by induction. The inductive step uses Mathlib's existing instances for HahnSeries.\n\n**Part III** (IsMultiPuiseuxSeries Predicate): Define the recursive predicate: at level 0, True; at level n+1, (∃ common denominator for outer exponents) ∧ (all coefficients recursively satisfy the predicate). Prove base cases.\n\n**Part IV** (Algebraic Closure): The full theorem requires IsAlgClosed (HahnSeries ℚ K) when K is algebraically closed and char 0 — this is open in Mathlib. Documented in comments with the inductive structure.\n\n**Part V** (Dimensional Facts): Single-variable case recovers HahnSeries ℚ K; iterated construction agrees with the univariate base theorem at depth 1.",
+    "keyInsights": [
+      "**Iteration is the Key**: The multivariate Puiseux series is not a direct generalization but an iterated application of the univariate construction, one variable at a time with lexicographic ordering.",
+      "**CommRing by Induction**: The algebraic structure propagates cleanly: HahnSeries ℚ R is a CommRing when R is, so the depth-n induction hypothesis gives the depth-n+1 result automatically via Mathlib's typeclass inference.",
+      "**IsMultiPuiseuxSeries Predicate**: The levelwise common-denominator condition captures exactly which elements of MultiHahnSeries n K are genuine Puiseux series (as opposed to more general Hahn series).",
+      "**Mathlib Gap**: The main algebraic closure theorem requires HahnSeries ℚ K to be IsAlgClosed when K is — this instance is not yet in Mathlib 4.26, blocking full formalization of the structural theorem."
+    ],
+    "prerequisites": [
+      "Formal power series and Hahn series",
+      "Algebraic closure and algebraically closed fields",
+      "Typeclass inheritance in Lean 4"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "puiseux-theorem",
+      "relationship": "extends",
+      "description": "Parent formalization proving the univariate Puiseux theorem structure; this file generalizes it to n variables via iterated HahnSeries"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.HahnSeries.Basic",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "PuiseuxTheoremOQ02",
+    "lineCount": 238,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "path": "Proofs/PuiseuxTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-iteration",
+      "title": "Part I: Iterated Puiseux Series",
+      "startLine": 54,
+      "endLine": 90,
+      "summary": "Defines MultiHahnSeries : ℕ → Type* → Type* by recursion: level 0 is K, level n+1 is HahnSeries ℚ (MultiHahnSeries n K). Proves dimensional facts: multiHahn_zero, multiHahn_one, multiHahn_succ (all definitional equalities, 0 sorries).",
+      "mathContext": "MultiHahnSeries 0 K = K, MultiHahnSeries (n+1) K = HahnSeries ℚ (MultiHahnSeries n K). This models K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄...⦃⦃xₙ⦄⦄ as an n-fold iterated Hahn series over ℚ."
+    },
+    {
+      "id": "sec-instances",
+      "title": "Part II: Algebraic Instances for Iterated Construction",
+      "startLine": 92,
+      "endLine": 129,
+      "summary": "Proves instZeroMultiHahn and instCommRingMultiHahn by induction on n. Base: inherits from K. Inductive step: haveI : CommRing (MultiHahnSeries n K) := ih, then exact inferInstance (Mathlib's CommRing instance for HahnSeries). Both compile with 0 sorries.",
+      "mathContext": "The tower K ⊂ HahnSeries ℚ K ⊂ HahnSeries ℚ (HahnSeries ℚ K) ⊂ ... consists of commutative rings at every level. HahnSeries ℚ R is a CommRing when R is, propagating via Mathlib's typeclass system."
+    },
+    {
+      "id": "sec-predicate",
+      "title": "Part III: The Multivariate Puiseux Property",
+      "startLine": 131,
+      "endLine": 179,
+      "summary": "Defines IsMultiPuiseuxSeries : (n : ℕ) → MultiHahnSeries n K → Prop by recursion. At level 0: True; at level n+1: (∃ d : ℕ+, exponents ∈ (1/d)·ℤ) ∧ (∀ coefficient recursively satisfies the predicate). Proves isMultiPuiseux_base (trivial) and isMultiPuiseux_zero (empty support + recursion). Both compile 0 sorries.",
+      "mathContext": "IsMultiPuiseuxSeries captures elements of MultiHahnSeries n K whose support has a common denominator at every level of the iteration. This is the correct multivariate generalization of the Puiseux condition."
+    },
+    {
+      "id": "sec-main-comment",
+      "title": "Part IV: Multivariate Algebraic Closure (Documented)",
+      "startLine": 181,
+      "endLine": 213,
+      "summary": "Documents the multivariate_puiseux_theorem (MultiHahnSeries n K is IsAlgClosed when K is algebraically closed and CharZero). The inductive structure is clear; the gap is that IsAlgClosed (HahnSeries ℚ K) is not yet in Mathlib 4.26. Recorded in comments with proof sketch.",
+      "mathContext": "By induction on n: base case is K (algebraically closed by hypothesis); inductive step applies Puiseux's theorem to conclude HahnSeries ℚ (MultiHahnSeries n K) is algebraically closed. The induction also requires CharZero propagation."
+    },
+    {
+      "id": "sec-properties",
+      "title": "Part V: Properties of the Iterated Construction",
+      "startLine": 215,
+      "endLine": 238,
+      "summary": "Proves single_variable_is_univariate: MultiHahnSeries 1 K = HahnSeries ℚ K (definitional equality, 0 sorry). Documents double_puiseux_redundant: HahnSeries ℚ (HahnSeries ℚ K) ≅ HahnSeries ℚ K as algebraically closed fields (requires algebraic closure uniqueness, not yet formalized).",
+      "mathContext": "The single-variable case recovers the parent PuiseuxTheorem.lean exactly. The double-iteration redundancy follows from the uniqueness of algebraic closures up to isomorphism."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the multivariate Puiseux series structure as iterated HahnSeries ℚ. All definitions (MultiHahnSeries, instZeroMultiHahn, instCommRingMultiHahn, IsMultiPuiseuxSeries) and theorems (6 total) compile with 0 sorries and 0 axioms. The algebraic closure theorem is blocked by a Mathlib gap (IsAlgClosed for HahnSeries ℚ K) and is documented in comments.",
+    "implications": "The iterated Hahn series framework provides a clean model for multivariate Puiseux series in Lean 4. Once Mathlib adds IsAlgClosed for HahnSeries, the full algebraic closure theorem will follow by a simple induction on depth.",
+    "openQuestions": [
+      "Prove IsAlgClosed (HahnSeries ℚ K) when K is algebraically closed and CharZero (requires full Puiseux theorem in Lean) — needed to complete multivariate_puiseux_theorem",
+      "Add Field instance for MultiHahnSeries n K when K is a field (requires HahnSeries field instance from Mathlib)",
+      "Formalize the monomial ordering structure on ℚⁿ for the lexicographic support well-order"
+    ]
+  },
+  "sorries": 0
+}

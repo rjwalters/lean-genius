@@ -22,7 +22,8 @@
     "axiomCount": 0,
     "lineCount": 71,
     "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem asking for the precise growth rate of $R(C_{2n}; k)$, the multicolor Ramsey number of even cycles. For a fixed even cycle $C_{2n}$ and $k$ colors, $R(C_{2n}; k)$ is the minimum $m$ such that every $k$-coloring of $K_m$ contains a monochromatic $C_{2n}$. Erdős established the general bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$. The lower bound uses probabilistic or algebraic constructions (for $C_4$, the polarity graph of a finite projective plane provides the sharp construction). The upper bound relies on the Szemeredi regularity lemma or the dependent random choice technique to find long paths in dense monochromatic subgraphs. For the special case $C_4$ ($n = 2$), Chung and Graham (1975) proved the nearly tight bounds $k^2 - k + 1 < R(C_4; k) \\leq k^2 + k + 1$ when $k - 1$ is a prime power, connecting the problem to the existence of finite projective planes and the Zarankiewicz problem $z(m; 2, 2)$. The gap between the exponents $1/(2n)$ (lower) and $1/(n-1)$ (upper) represents one of the central open questions in Ramsey theory for sparse graphs. For $n = 2$, both exponents equal 1, so the $C_4$ case is resolved up to lower-order terms. For $n \\geq 3$, the gap is genuine and no improvements to either bound are known in general.",

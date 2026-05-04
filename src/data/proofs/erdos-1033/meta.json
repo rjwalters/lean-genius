@@ -53,7 +53,8 @@
     "relatedProblems": [],
     "axiomCount": 3,
     "lineCount": 1018,
-    "assumptions": "3 axioms (erdos_laskar_upper, erdos_laskar_lower, fan_lower). 0 sorries (h_as_min, turan_plus_one, h_four, h_spec all proved). Note: erdos_laskar_upper and fan_lower axioms are too strong for small n (asymptotic results stated as universal)."
+    "assumptions": "3 axioms (erdos_laskar_upper, erdos_laskar_lower, fan_lower). 0 sorries (h_as_min, turan_plus_one, h_four, h_spec all proved). Note: erdos_laskar_upper and fan_lower axioms are too strong for small n (asymptotic results stated as universal).",
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "Pál Turán proved in 1941 that every graph on $n$ vertices with more than $\\lfloor n^2/4 \\rfloor$ edges contains a triangle — establishing the foundational result of extremal graph theory. This problem, posed by Erdős and Laskar, asks a refined question: given that triangles must exist above the Turán threshold, how large must the degree sum of the *heaviest* triangle be?\n\nErdős and Renu Laskar (1985) proved the initial bounds $(1+c)n \\leq h(n) \\leq 2(\\sqrt{3}-1)n$, where the upper bound $2(\\sqrt{3}-1) \\approx 1.464$ comes from optimizing triangle configurations in nearly-bipartite graphs close to the Turán graph $T(n,2)$. Genghua Fan (1988) improved the lower bound to $(21/16)n = 1.3125n$ via careful degree counting arguments.\n\nThe gap between $1.3125n$ and $1.464n$ remains open. The conjectured answer is $h(n) = (2(\\sqrt{3}-1) - o(1))n$, which would mean the Erdős-Laskar construction is essentially optimal.",

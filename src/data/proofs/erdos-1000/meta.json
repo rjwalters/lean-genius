@@ -24,7 +24,8 @@
     "axiomCount": 2,
     "lineCount": 1149,
     "assumptions": "Two deep axioms: erdos_dichotomy (liminf=0 implies limsup=1, via Euler product for φ(n)/n), haight_resolution (vanishing Cesàro average exists, via highly composite construction). erdos_no_zero_limit is now PROVED from erdos_dichotomy (convergence to 0 contradicts dichotomy via frequently-vs-eventually). cassels_liminf_zero is PROVED from haight_resolution. Infrastructure: complement formula, growth bounds, multiplicity bounds, double-counting vocabulary, growth constraints from low density, deficit counting bounds.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 61
   },
   "overview": {
     "historicalContext": "This problem originates in Cassels' 1950 work on Diophantine approximation, where he introduced the generalized totient φ_A to study the distribution of 'new' reduced denominators in increasing integer sequences. Cassels proved that for some sequences, the liminf of the Cesàro average of φ_A(k)/n_k is zero, and connected this to metric Diophantine approximation via the Khinchin-Groshev theorem. Erdős (1964) made the problem sharper: he proved that for any sequence, the individual ratio φ_A(k)/n_k cannot converge to 0, and established a remarkable dichotomy — if liminf = 0 then limsup = 1 — showing the density ratio must oscillate maximally. Erdős then asked whether the Cesàro average itself could vanish, conjecturing it could not. The lower bound φ_A(k) ≥ φ(n_k) (Euler's totient) and the fact that φ(n)/n averages to 6/π² supported his intuition. Haight's subsequent construction proved Erdős wrong: carefully chosen sequences of highly composite numbers force the average to 0 while the individual terms oscillate between 0 and 1. The problem illustrates the subtle gap between pointwise and averaged behavior of arithmetic functions.",

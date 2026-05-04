@@ -83,7 +83,7 @@
       "startLine": 107,
       "endLine": 122
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Catalan Recurrence via Mathlib catalan_succ'",
     "content": "The recurrence proof `Cn_recurrence` is a 3-step rewrite chain using `simp_rw [Cn_eq_catalan]` to replace all `Cn` with `catalan`, then:\n\n1. `catalan_succ'` rewrites `catalan (n+1)` to the antidiagonal form: `∑ p ∈ antidiagonal n, catalan p.1 * catalan p.2`\n2. `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts to the range-sum form `∑ k ∈ range (n+1), catalan k * catalan (n-k)`\n3. The goal closes because `Cn = catalan` everywhere (via `simp_rw`).\n\nThe proof is remarkably short (3 lines) because the heavy lifting is done by the bridge `Cn_eq_catalan` and Mathlib's `catalan_succ'`.",
     "mathContext": "`catalan_succ'` is Mathlib's antidiagonal form: $C_{n+1} = \\sum_{(a,b) \\in \\text{antidiag}(n)} C_a \\cdot C_b$ where $\\text{antidiag}(n) = \\{(a,b) : a+b=n\\}$. After `sum_antidiagonal_eq_sum_range_succ`: $= \\sum_{k=0}^{n} C_k \\cdot C_{n-k}$, which is the standard range-indexed convolution.",

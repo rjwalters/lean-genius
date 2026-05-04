@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1006",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 193,
-    "theoremCount": 15,
-    "assumptions": "None. All 15 theorems are fully proved (0 axioms, 0 sorries). Builds on coloringOrientation definition and acyclicity results from OQ03. New: coloringOrientation_trans (transitivity), coloringOrientation_arc_irrefl (no self-arcs), coloringOrientation_arc_ne (arcs between distinct vertices), coloring_same_color_not_adj (proper coloring).",
+    "lineCount": 410,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems are fully proved. Builds on coloringOrientation definition and acyclicity results from OQ03.",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Coloring",

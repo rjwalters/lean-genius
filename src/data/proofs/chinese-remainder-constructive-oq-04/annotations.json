@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "System Representation: moduli, moduliProd, Satisfies",
-    "content": "Three definitions encode a system of simultaneous congruences as a list of `(remainder, modulus)` pairs:\n\n- `moduli`: Projects the second component of each pair, extracting the list of moduli $[m_1, \\ldots, m_k]$ from the system.\n- `moduliProd`: The product $m_1 \\cdot m_2 \\cdots m_k$ of all moduli, which serves as the modulus for the uniqueness theorem.\n- `Satisfies x sys`: The predicate asserting $x \\equiv a_i \\pmod{m_i}$ for every pair $(a_i, m_i)$ in the system.\n\nThis representation is more flexible than the parent proof's approach of separate theorems for each system size. A system of $k$ congruences is simply a `List (ℕ × ℕ)` of length $k$.",
+    "content": "Three definitions encode a system of simultaneous congruences as a list of `(remainder, modulus)` pairs:\n\n- `moduli`: Projects the second component of each pair, extracting the list of moduli $[m_1, \\ldots, m_k]$ from the system.\n- `moduliProd`: The product $m_1 \\cdot m_2 \\cdots m_k$ of all moduli, which serves as the modulus for the uniqueness theorem.\n- `Satisfies x sys`: The predicate asserting $x \\equiv a_i \\pmod{m_i}$ for every pair $(a_i, m_i)$ in the system.\n\nThis representation is more flexible than the parent proof's approach of separate theorems for each system size. A system of $k$ congruences is simply a `List (\u2115 \u00d7 \u2115)` of length $k$.",
     "mathContext": "Given $\\text{sys} = [(a_1, m_1), \\ldots, (a_k, m_k)]$:\n- $\\text{moduli}(\\text{sys}) = [m_1, \\ldots, m_k]$\n- $\\text{moduliProd}(\\text{sys}) = \\prod_{i=1}^k m_i$\n- $\\text{Satisfies}(x, \\text{sys}) \\iff \\forall i,\\; x \\equiv a_i \\pmod{m_i}$",
     "significance": "key",
     "prerequisites": [
@@ -122,7 +122,7 @@
       "startLine": 68,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "CRT for Lists: Existence (crt_list)",
     "content": "**Theorem**: For any system of congruences with pairwise coprime moduli, a simultaneous solution exists.\n\nThe proof proceeds by induction on the list of `(remainder, modulus)` pairs:\n\n1. **Base case** (empty list): $x = 0$ vacuously satisfies all (zero) congruences.\n2. **Inductive step** (`(a, m) :: rest`): First, `List.pairwise_cons.mp` decomposes the pairwise coprimality into (a) $m$ is coprime to every tail modulus, and (b) the tail moduli are pairwise coprime. By IH, obtain $y$ satisfying the tail system. Then `coprime_prod_of_forall` gives $\\gcd(m, \\prod \\text{rest moduli}) = 1$, enabling `Nat.chineseRemainder` to find $x$ with $x \\equiv a \\pmod{m}$ and $x \\equiv y \\pmod{\\prod \\text{rest}}$. For each tail congruence $(a_i, m_i)$: since $m_i \\mid \\prod \\text{rest}$, we get $x \\equiv y \\pmod{m_i}$, and $y \\equiv a_i \\pmod{m_i}$ by IH, so $x \\equiv a_i \\pmod{m_i}$ by transitivity.",
     "mathContext": "$\\text{Pairwise}(\\gcd = 1, [m_1, \\ldots, m_k])$ and any $[a_1, \\ldots, a_k]$ $\\Longrightarrow$ $\\exists x,\\; \\forall i,\\; x \\equiv a_i \\pmod{m_i}$.\n\nThe construction is: at step $j$, solve the two-moduli system $\\{x \\equiv a_j \\pmod{m_j},\\; x \\equiv y_j \\pmod{\\prod_{i>j} m_i}\\}$ where $y_j$ is the solution for the tail. This mirrors the classical constructive CRT proof via iterated application of the two-moduli case.",
@@ -148,7 +148,7 @@
       "startLine": 95,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "CRT for Lists: Uniqueness (crt_list_unique)",
     "content": "**Theorem**: Any two solutions to a pairwise coprime system are congruent modulo the product of all moduli.\n\nAgain by list induction:\n\n1. **Base case**: `moduliProd [] = 1`, so $x \\equiv y \\pmod{1}$ trivially (discharged by `omega`).\n2. **Inductive step**: Both $x$ and $y$ satisfy the head congruence, so $x \\equiv y \\pmod{m}$ (by transitivity and symmetry of `ModEq`). By IH applied to the tail, $x \\equiv y \\pmod{\\text{moduliProd}(\\text{rest})}$. Since $m$ and $\\text{moduliProd}(\\text{rest})$ are coprime (via `coprime_prod_of_forall`), Mathlib's `Nat.modEq_and_modEq_iff_modEq_mul` combines these into $x \\equiv y \\pmod{m \\cdot \\text{moduliProd}(\\text{rest})}$.\n\nThis establishes that the solution space is a single residue class modulo $\\prod m_i$, confirming the CRT gives essentially unique solutions.",
     "mathContext": "If $\\text{Satisfies}(x, \\text{sys})$ and $\\text{Satisfies}(y, \\text{sys})$ with pairwise coprime moduli, then $x \\equiv y \\pmod{\\prod m_i}$.\n\nKey step: $x \\equiv y \\pmod{m}$ and $x \\equiv y \\pmod{n}$ with $\\gcd(m, n) = 1$ $\\Longleftrightarrow$ $x \\equiv y \\pmod{mn}$. This is `Nat.modEq_and_modEq_iff_modEq_mul`.",

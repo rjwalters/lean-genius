@@ -40,7 +40,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 145,
-    "assumptions": "1 axiom: kovac_counterexample. 0 sorries."
+    "assumptions": "1 axiom: kovac_counterexample. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "This problem was posed by Graham in his 1980 paper 'On partitions of Eⁿ'. Graham had shown that for right-angled triangles, the answer is YES: any finite coloring of ℝ² has a color class containing right-angled triangle vertices of every area. He asked whether the same holds for rectangles.\n\nThe problem remained open for over 40 years until Kovač's elegant resolution in 2023. Using a surprisingly simple construction, Kovač provided an explicit 25-coloring of ℝ² such that no single color class contains the vertices of any rectangle with area 1. This definitively answers the question: NO, rectangles do not have this property.\n\nThe analogous question for parallelograms remains open as of 2025.",

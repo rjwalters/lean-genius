@@ -1,0 +1,163 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
+  "title": "Eliminating retraction_construction: The Ray Construction Without Axioms",
+  "slug": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
+  "description": "Proves the retraction_construction axiom from BrouwerFixedPoint.lean as a theorem: given a continuous self-map f: Bⁿ→Bⁿ with no fixed point, the geometric ray construction x ↦ f(ballClamp(x)) + t₊·(x - f(ballClamp(x))) yields a continuous retraction onto the sphere. 0 sorries, 0 new axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
+    "date": "formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "retraction",
+      "ray-construction",
+      "quadratic-formula",
+      "inner-product-space",
+      "axiom-elimination"
+    ],
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "theoremCount": 17,
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_add_sq_real",
+        "description": "Expansion of ‖v + w‖² in real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "real_inner_smul_right",
+        "description": "Inner product is linear in the right argument",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz: |⟪u,v⟫| ≤ ‖u‖·‖v‖",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "√(a²) = a for a ≥ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "(√a)² = a for a ≥ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.continuous_sqrt",
+        "description": "Continuity of the square root function",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "ballClamp: continuous projection onto the closed unit ball — x ↦ x / max(1, ‖x‖)",
+      "tPlus: the larger root of ‖v + t·w‖² = 1 via the quadratic formula",
+      "tPlus_sphere: the ray v + tPlus·w lies on the unit sphere when ‖v‖ ≤ 1 and w ≠ 0",
+      "tPlus_one_on_sphere: when ‖v+w‖ = 1, the ray formula gives tPlus = 1 (fixes the sphere)",
+      "gClamp_ne_id: f∘ballClamp has no fixed points anywhere in ℝⁿ (even outside the ball)",
+      "retractionFun_maps_to_sphere: the retraction maps every ball point to the unit sphere",
+      "retractionFun_fixes_sphere: the retraction is the identity on the sphere",
+      "retractionFun_continuous: the retraction is globally continuous (denominator ‖w‖² > 0 everywhere)",
+      "retraction_construction_theorem: builds Brouwer.Retraction n from a fixed-point-free self-map",
+      "brouwer_fixed_point_explicit: Brouwer FPT proved without retraction_construction axiom"
+    ],
+    "dateAdded": "2026-05-03",
+    "lineCount": 214,
+    "assumptions": "1 axiom: no_retraction_axiom (from BrouwerFixedPoint.lean — the Brouwer no-retraction theorem, which requires algebraic topology/degree theory). This file proves retraction_construction as a theorem, reducing the axiom count from 2→1 in the BFP import chain."
+  },
+  "overview": {
+    "historicalContext": "Brouwer's Fixed Point Theorem (1911) has several standard proof routes. The elementary route uses the No-Retraction Theorem and a geometric ray construction: given a continuous self-map f: Bⁿ→Bⁿ with no fixed point, define the retraction r(x) as the intersection of the ray from f(x) through x with the sphere Sⁿ⁻¹. This construction appears in every topology textbook (Munkres, Hatcher, etc.) but its explicit formalization requires solving a quadratic equation and proving continuous dependence of the root.\n\nBrouwerFixedPoint.lean (the parent gallery entry) axiomatizes this construction as `retraction_construction`: it states the existence of the retraction without proving it. This gallery entry eliminates that axiom by carrying out the explicit computation.",
+    "problemStatement": "**Open Question (brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01)**: Can the geometric ray construction for the Brouwer retraction be formalized in Lean 4 without axioms? Specifically, given f: Bⁿ→Bⁿ with no fixed point, can the map r(x) = f(x) + t₊(x)(x - f(x)) be proved continuous with the required retraction properties?\n\n**Answer**: Yes. The quadratic formula is available, continuity follows from rational operations on continuous functions, and the sphere-fixing property is an algebraic identity.",
+    "text": "This file provides the explicit proof of the `retraction_construction` axiom from BrouwerFixedPoint.lean. The construction has three components:\n\n1. **Ball clamping**: `ballClamp(x) = x / max(1, ‖x‖)` projects any point in ℝⁿ onto the closed unit ball. This allows extending the self-map f globally: define f'(x) = f(ballClamp(x)). For x in the ball, f'(x) = f(x); for x outside, f'(x) = f(x/‖x‖) ∈ B. Crucially, f' has no fixed points anywhere: inside the ball, a fixed point of f' would be a fixed point of f; outside the ball, ‖f'(x)‖ ≤ 1 < ‖x‖ so f'(x) ≠ x.\n\n2. **Quadratic formula**: For each x, let v = f'(x) and w = x - v. The ray γ(t) = v + t·w intersects the sphere when ‖v + t·w‖² = 1. Expanding via the inner product, this is a quadratic in t: ‖w‖²·t² + 2⟪v,w⟫·t + (‖v‖² - 1) = 0. The discriminant D = ⟪v,w⟫² + ‖w‖²(1 - ‖v‖²) is non-negative (since ‖v‖ ≤ 1), so the larger root t₊ = (-⟪v,w⟫ + √D) / ‖w‖² is well-defined. When ‖w‖ > 0 (which holds since f' has no fixed points), this root is positive and gives a point on the sphere.\n\n3. **Continuity**: The map x ↦ t₊(v(x), w(x)) is continuous because it is a composition of continuous operations (inner products, norms, square root) divided by ‖w(x)‖² > 0. The retraction r(x) = v + t₊·w is then a continuous composition.",
+    "proofStrategy": "**Core algebraic identity** (`tPlus_sphere`): Given v with ‖v‖ ≤ 1 and w ≠ 0, set b = ⟪v,w⟫, a = ‖w‖², disc = b² + a(1-‖v‖²). Let s = √disc. Then:\n- ‖v + tPlus(v,w)·w‖² = ‖v‖² + 2·tPlus·b + tPlus²·a  [norm_sq_lin]\n- Substituting tPlus = (-b + s)/a and using s² = disc gives ‖v‖² + 2·tPlus·b + tPlus²·a = 1 (algebraic verification via nlinarith).\n\n**Sphere-fixing** (`tPlus_one_on_sphere`): When x ∈ Sⁿ⁻¹ (‖v + w‖ = 1), the quadratic has root t = 1 at x. We verify disc = (a+b)² using ‖v+w‖² = ‖v‖² + 2b + a = 1, so a + 2b = 1 - ‖v‖², hence disc = b² + a(1-‖v‖²) = b² + a(a+2b) = (a+b)². Then √disc = a+b (verified non-negative via Cauchy-Schwarz), and tPlus = (-b + a+b)/a = a/a = 1.\n\n**Continuity** (`retractionFun_continuous`): The denominator ‖w(x)‖² = ‖x - f(ballClamp(x))‖² is bounded away from 0 at every x because f∘ballClamp has no fixed points. This guarantees the division in tPlus is continuous.",
+    "keyInsights": [
+      "**The discriminant is always non-negative**: When ‖v‖ ≤ 1 (v is in the ball), the discriminant D = ⟪v,w⟫² + ‖w‖²(1-‖v‖²) satisfies D ≥ 0 by Cauchy-Schwarz: ⟪v,w⟫² ≤ ‖v‖²‖w‖², so D ≥ ‖w‖²(1-‖v‖²) ≥ 0 when ‖v‖ ≤ 1. However, in the formalization we do NOT need Cauchy-Schwarz for this: D = ⟪v,w⟫² + ‖w‖² - ‖w‖²·‖v‖² ≥ ‖w‖² - ‖w‖²·‖v‖² = ‖w‖²(1-‖v‖²) ≥ 0 since ‖v‖ ≤ 1. The simpler bound suffices.",
+      "**Ball clamping is the key to global continuity**: The retraction must be defined on all of ℝⁿ (or at least all of Bⁿ), and the proof that f'(x) ≠ x for ALL x in Bⁿ requires care. For x outside the ball, ‖f(ballClamp(x))‖ ≤ 1 < ‖x‖ forces f'(x) ≠ x. This case analysis is the `gClamp_ne_id` lemma.",
+      "**tPlus = 1 on the sphere is an algebraic identity**: When x ∈ Sⁿ⁻¹, the unique positive root of ‖v + t(x-v)‖² = 1 that satisfies the ray construction is t = 1 (since the ray starts in the ball, passes through x on the sphere, and x is at parameter t = 1). The proof identifies the discriminant as a perfect square: disc = (a+b)², where the key step uses ‖v+w‖ = 1 to get a + 2b = 1 - ‖v‖² and then factor b² + a(a+2b) = (a+b)².",
+      "**Cauchy-Schwarz ensures a+b ≥ 0**: To take √((a+b)²) = a+b (not |a+b|), we need a+b ≥ 0. This follows from a+b = ‖v+w‖² - ⟪v+w, v⟫ = 1 - ⟪v+w,v⟫ and the Cauchy-Schwarz bound ⟪v+w,v⟫ ≤ ‖v+w‖·‖v‖ ≤ 1·1 = 1, so a+b ≥ 1-1 = 0.",
+      "**No implicit function theorem needed**: The textbook argument often invokes the implicit function theorem to prove continuity of the root t₊ as a function of x. Here we bypass IFT entirely: the explicit formula t₊(v,w) = (-⟪v,w⟫ + √D)/‖w‖² is manifestly a continuous composition of inner products, norms, square root, and division (with nonzero denominator), all of which are continuous by standard Mathlib lemmas."
+    ],
+    "prerequisites": [
+      "BrouwerFixedPoint.lean: SelfMap, Retraction, HasFixedPoint, no_retraction_axiom, ClosedBall, UnitSphere",
+      "Mathlib inner product spaces: norm_add_sq_real, real_inner_smul_right, abs_real_inner_le_norm",
+      "Mathlib real analysis: Real.sqrt, Real.sq_sqrt, Real.sqrt_sq, Real.continuous_sqrt"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ball-clamping",
+      "title": "Part I: Ball Clamping",
+      "startLine": 14,
+      "endLine": 57,
+      "summary": "Defines ballClamp(x) = x / max(1, ‖x‖), projects ℝⁿ onto the closed unit ball. Proves norm bound, membership, identity on ball, and continuity.",
+      "mathContext": "ballClamp collapses the exterior of the ball radially onto the sphere. Points already in the ball are unchanged. The denominator max(1,‖x‖) is always ≥ 1, so ‖ballClamp(x)‖ = ‖x‖/max(1,‖x‖) ≤ 1."
+    },
+    {
+      "id": "no-fixed-points",
+      "title": "Part II: Global No-Fixed-Point Property",
+      "startLine": 58,
+      "endLine": 80,
+      "summary": "Proves f∘ballClamp has no fixed points anywhere in ℝⁿ. Key: outside the ball, ‖f(ballClamp(x))‖ ≤ 1 < ‖x‖.",
+      "mathContext": "gClamp_ne_id: for x outside the ball, ‖x‖ > 1 but ‖f(ballClamp(x))‖ ≤ 1, so f(ballClamp(x)) ≠ x by norm comparison."
+    },
+    {
+      "id": "quadratic-formula",
+      "title": "Part III: Ray-Sphere Intersection Formula",
+      "startLine": 81,
+      "endLine": 143,
+      "summary": "Defines tPlus as the larger root of the quadratic ‖v + t·w‖² = 1. Proves tPlus places the ray on the sphere, and equals 1 when ‖v+w‖ = 1.",
+      "mathContext": "tPlus(v,w) = (-⟪v,w⟫ + √(⟪v,w⟫² + ‖w‖²(1-‖v‖²))) / ‖w‖². The discriminant is non-negative for ‖v‖ ≤ 1."
+    },
+    {
+      "id": "retraction",
+      "title": "Part IV: The Retraction Function",
+      "startLine": 144,
+      "endLine": 201,
+      "summary": "Defines retractionFun f x = v + tPlus(v, x-v)·(x-v) where v = f(ballClamp(x)). Proves it maps the ball to the sphere, fixes the sphere, and is continuous.",
+      "mathContext": "Continuity uses that the denominator ‖x - f(ballClamp(x))‖² > 0 everywhere (no fixed points). No implicit function theorem needed — the formula is explicit."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Part V: Main Theorems",
+      "startLine": 202,
+      "endLine": 217,
+      "summary": "retraction_construction_theorem: assembles the retraction structure. brouwer_fixed_point_explicit: Brouwer FPT without retraction_construction axiom.",
+      "mathContext": "The retraction_construction_theorem provides an explicit Brouwer.Retraction n from a fixed-point-free self-map, replacing the axiom in BrouwerFixedPoint.lean."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves that the `retraction_construction` axiom from BrouwerFixedPoint.lean is actually a theorem, eliminating one of the two axioms in the parent file. The proof constructs the retraction explicitly: the ray from f(ballClamp(x)) through x hits the sphere at parameter t₊, given by the quadratic formula. The three required properties (maps to sphere, fixes sphere, continuous) are all proved by direct calculation using standard inner product space lemmas.",
+    "implications": "The retraction_construction axiom in BrouwerFixedPoint.lean can now be replaced by retraction_construction_theorem from this file, reducing the axiom count of the Brouwer Fixed Point Theorem from 2 to 1 (only no_retraction_axiom remains). The remaining axiom requires algebraic topology machinery (singular homology or degree theory) to eliminate, which is the subject of the OQ01OQ02 branch of the gallery.",
+    "openQuestions": [
+      "Can no_retraction_axiom be eliminated? This requires proving that there is no continuous retraction B^n → S^{n-1}, which needs homology (H_{n-1}(B^n) = 0, H_{n-1}(S^{n-1}) ≅ ℤ) or degree theory. Mathlib is developing algebraic topology infrastructure that may eventually make this possible.",
+      "Is there a Sperner's lemma-based proof that requires no analytical axioms at all? The purely combinatorial path via Sperner avoids both the ray construction AND the homological argument."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "parent",
+      "description": "Provides the axiom retraction_construction that this file proves as a theorem, and the no_retraction_axiom framework"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Alternative proof of Brouwer FPT via singular homology — eliminates no_retraction_axiom via homological splitting"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 214,
+    "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 17
+  },
+  "sorries": 0
+}

@@ -55,9 +55,10 @@
       "PolyaVinogradovHolds: key prerequisite statement",
       "BVPrerequisiteLayer: concrete 4-layer roadmap with estimates"
     ],
-    "lineCount": 366,
+    "lineCount": 2383,
     "erdosUrl": null,
-    "dateAdded": "2026-03-27"
+    "dateAdded": "2026-03-27",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "The Bombieri-Vinogradov theorem (1965) is one of the deepest results in analytic number theory. It shows that primes are equidistributed in arithmetic progressions 'on average' over moduli q up to √x, giving results of 'Riemann Hypothesis quality' without assuming RH. It was independently proved by Enrico Bombieri and Askold Ivanovich Vinogradov.\n\nIn 2013, Yitang Zhang used a variant of BV (with 'smooth moduli') as the key analytic input to prove bounded prime gaps. The Maynard-Tao improvement (2014) and Polymath 8b optimization used the full BV theorem to achieve the current record gap bound of 246.",
@@ -190,7 +191,7 @@
       "Filter"
     ],
     "namespace": "BoundedPrimeGapsOQ04",
-    "lineCount": 366,
+    "lineCount": 2383,
     "axiomCount": 1,
     "theoremCount": 12,
     "definitionCount": 10,

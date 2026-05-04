@@ -1,0 +1,195 @@
+[
+  {
+    "id": "ann-birthday-oq01-overview",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 29,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Expected Birthday Pairs: From Probability to Combinatorics",
+    "content": "This file explores the birthday problem through the lens of expected values rather than probability. The classic birthday problem asks when P(at least one shared birthday) > 50%, which happens at n=23. This file instead asks: how many shared birthday pairs do we expect? The answer — E[X] = C(n,2)/d — follows from linearity of expectation: each of the C(n,2) pairs has probability 1/d of sharing a birthday, and E[X] = Σ E[indicator] regardless of dependence between pairs. The 53 theorems span 13 parts covering: basic properties, monotonicity, the additive successor formula, the closed-form rational formula, variance, threshold computations for d=365 (threshold n=28 for E>1, vs classic n=23), positivity, a general threshold criterion, multi-day calendars, and a generalization to expected k-tuples of people sharing a birthday.",
+    "mathContext": "$X = \\sum_{i < j} \\mathbf{1}[\\text{person } i, j \\text{ share birthday}]$. $E[X] = \\binom{n}{2} \\cdot \\frac{1}{d} = \\frac{n(n-1)}{2d}$. For $d=365$: $E[X] > 1$ first when $n=28$ (vs probability $> 50\\%$ at $n=23$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linearity of expectation",
+      "birthday problem",
+      "indicator random variables",
+      "expected value vs probability",
+      "binomial coefficients"
+    ],
+    "prerequisites": [
+      "basic probability: expectation and indicator variables",
+      "combinatorics: binomial coefficients",
+      "Lean 4: noncomputable definitions over ℚ"
+    ]
+  },
+  {
+    "id": "ann-birthday-oq01-definitions",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 33,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "expectedPairs and variancePairs: Rational Definitions via C(n,2)",
+    "content": "Both definitions are `noncomputable` because they produce rational numbers (ℚ) via division. `expectedPairs n d = C(n,2) / d` where `C(n,2) = Nat.choose n 2`. This matches the probabilistic formula E[X] = C(n,2)/d where 1/d is the probability a specific pair shares a birthday. `variancePairs n d = C(n,2) * (d-1) / d^2` encodes the variance formula: each pair indicator has variance (1/d)(1-1/d) = (d-1)/d^2, and since pair indicators are pairwise correlated but we only care about the variance bound, this underestimates the true variance (which would include covariance terms). The fact that Var[X] ≤ E[X] (proved as `variancePairs_le_expected`) follows since (d-1)/d² ≤ 1/d.",
+    "mathContext": "$\\text{expectedPairs}(n,d) = \\binom{n}{2}/d \\in \\mathbb{Q}$. $\\text{variancePairs}(n,d) = \\binom{n}{2}(d-1)/d^2$. Note: the Lean definition captures the variance of a single pair indicator times the count, not the true population variance of $X$ (which would include covariance between overlapping pairs).",
+    "significance": "key",
+    "relatedConcepts": [
+      "noncomputable in Lean 4",
+      "rational arithmetic ℚ",
+      "variance of indicator variables",
+      "Nat.choose in Mathlib"
+    ],
+    "prerequisites": [
+      "probability: variance of sums of indicator variables",
+      "Lean 4: ℚ arithmetic and noncomputable",
+      "Mathlib: Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-birthday-oq01-additivity",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "expectedPairs_succ: The Additive Induction Step",
+    "content": "The key identity `expectedPairs_succ` states E[n+1, d] = E[n, d] + n/d. This has a clean probabilistic interpretation: when the (n+1)th person arrives, they form n new pairs with existing people, each with probability 1/d of sharing a birthday, adding n/d to the expected count. In Lean, the proof reduces to `choose_two_succ`: C(n+1, 2) = C(n, 2) + n, which follows from the recurrence C(n+1, k+1) = C(n, k+1) + C(n, k) at k=1 (giving C(n+1, 2) = C(n, 2) + C(n, 1) = C(n, 2) + n). The `expectedPairs_sum` theorem then telescopes this into E[n, d] = (Σ_{i<n} i) / d = n(n-1)/(2d), verified by induction using `Finset.sum_range_succ`.",
+    "mathContext": "$E[n+1,d] = E[n,d] + \\frac{n}{d}$. Telescoping: $E[n,d] = \\frac{1}{d}\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2d}$. Lean key: $\\binom{n+1}{2} = \\binom{n}{2} + n$ from `Nat.choose_succ_succ`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping sum",
+      "induction on ℕ",
+      "Finset.sum_range_succ",
+      "recurrence C(n+1,k+1) = C(n,k+1) + C(n,k)"
+    ],
+    "prerequisites": [
+      "Lean 4: induction tactics",
+      "Mathlib: Finset.sum_range_succ",
+      "combinatorics: Pascal's rule"
+    ]
+  },
+  {
+    "id": "ann-birthday-oq01-rational-formula",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 137,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "expectedPairs_eq_rational: The Closed-Form Formula",
+    "content": "This is the main formula: E[n, d] = n(n-1)/(2d) as a rational number. The proof path is: (1) `choose_two_cast` converts C(n,2) from ℕ to ℚ as n(n-1)/2; the key sub-proof `two_mul_choose_two` (2*C(n,2) = n*(n-1)) handles the parity argument — either n is even (factor from n) or n-1 is even (factor from n-1). (2) `expectedPairs_eq_rational` then substitutes and simplifies by `ring`. The parity argument in `two_mul_choose_two` uses `Nat.even_or_odd` and case analysis; in Lean 4 natural number subtraction makes `n*(n-1)/2` delicate, so the proof works via `2 * C(n,2) = n*(n-1)` first then divides.",
+    "mathContext": "$E[n,d] = \\frac{n(n-1)}{2d}$. In Lean (ℚ): `expectedPairs n d = (n : ℚ) * ((n : ℚ) - 1) / (2 * d)`. Note: `((n : ℕ) - 1 : ℕ)` (natural subtraction) is not `((n : ℚ) - 1 : ℚ)`, so the cast to ℚ is non-trivial for small n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural number subtraction in Lean",
+      "Nat.cast to ℚ",
+      "parity argument for n*(n-1)",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "Lean 4: cast between ℕ and ℚ",
+      "natural number arithmetic in Lean 4",
+      "Mathlib: Nat.even_or_odd"
+    ]
+  },
+  {
+    "id": "ann-birthday-oq01-variance",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 163,
+      "endLine": 171
+    },
+    "type": "insight",
+    "title": "variancePairs_le_expected: Variance Bound via Division Inequality",
+    "content": "The inequality Var[X] ≤ E[X] follows from (d-1)/d² ≤ 1/d, which simplifies to (d-1)/d ≤ 1, i.e., 1 - 1/d ≤ 1. The Lean proof uses `div_le_div_iff₀` to clear denominators and `nlinarith` with `Nat.zero_le (n.choose 2)`. This bound is non-trivial probabilistically: it shows that birthday pair counts are well-concentrated (variance at most mean), analogous to Poisson-like distributions. For large d (like d=365), Var[X] ≈ E[X], so X approximately follows a Poisson distribution with parameter E[X] = n(n-1)/(2d).",
+    "mathContext": "$\\frac{(d-1)}{d^2} \\leq \\frac{1}{d}$ since $(d-1) \\leq d$. Probabilistically: $\\text{Var}[\\text{Bernoulli}(1/d)] = \\frac{d-1}{d^2} \\leq \\frac{1}{d} = E[\\text{Bernoulli}(1/d)]$. For large $d$: $X \\approx \\text{Poisson}(\\lambda)$ with $\\lambda = n(n-1)/(2d)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "variance bound",
+      "Poisson approximation",
+      "div_le_div_iff in Lean",
+      "Bernoulli indicator variance"
+    ],
+    "prerequisites": [
+      "probability: variance of indicator variables",
+      "Lean 4: nlinarith and division lemmas"
+    ]
+  },
+  {
+    "id": "ann-birthday-oq01-thresholds",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 181,
+      "endLine": 212
+    },
+    "type": "concept",
+    "title": "Threshold Computations for d=365: n=23 vs n=28",
+    "content": "The threshold computations reveal an important distinction between the classic birthday problem (probability threshold) and the expected-pairs version (expectation threshold). The classic result: with n=23 people and d=365 days, the probability of at least one shared pair exceeds 50%. This file establishes: with n=28 people, the expected number of shared pairs first exceeds 1. Specifically, E[28, 365] = C(28,2)/365 = 378/365 > 1, while E[27, 365] = 351/365 < 1. All computations use `norm_num [Nat.choose]` or `native_decide` for the C(n,2) values. The threshold n=40 for E>2 is also computed, and analogues for d=7 (weekly birthdays, threshold n=5) demonstrate the formula's generality.",
+    "mathContext": "For $d=365$: $E[23] = 253/365 < 1$, $E[27] = 351/365 < 1$, $E[28] = 378/365 > 1$, $E[40] = 780/365 > 2$. Classic probability threshold: $P(\\geq 1 \\text{ pair}) > 0.5$ at $n=23$. Expected-pairs threshold: $E[X] > 1$ at $n=28$. Both scale as $O(\\sqrt{d})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "birthday problem classic threshold n=23",
+      "norm_num tactic",
+      "native_decide for large computations",
+      "C(28,2) = 378 vs 365"
+    ],
+    "prerequisites": [
+      "birthday problem: classic vs expected-value formulation",
+      "Lean 4: norm_num for rational arithmetic",
+      "Lean 4: native_decide for Nat.choose computation"
+    ]
+  },
+  {
+    "id": "ann-birthday-oq01-ktuples",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 278,
+      "endLine": 304
+    },
+    "type": "insight",
+    "title": "expectedKTuples: Generalizing to k-Wise Birthday Collisions",
+    "content": "The generalization from pairs (k=2) to k-tuples unifies birthday collision analysis. By linearity of expectation over all C(n,k) k-subsets of people, with each k-subset having probability 1/d^(k-1) of all sharing a birthday (first person picks any day; each of the k-1 remaining must match with probability 1/d), we get E[k-tuples] = C(n,k)/d^(k-1). This is formalized as `expectedKTuples n d k = C(n,k) / d^(k-1)`. The theorem `expectedKTuples_two` confirms this specializes to `expectedPairs` at k=2 (since d^(2-1) = d). For k=3 (triples), the threshold with d=365 is n=94 (since C(94,3) = 134044 > 365^2 = 133225). The threshold grows as O(d^{(k-1)/k}): for pairs O(√d ≈ 19.1), for triples O(d^{2/3} ≈ 50.4).",
+    "mathContext": "$E[k\\text{-tuples}] = \\binom{n}{k}/d^{k-1}$. For $k=2$: $E[\\text{pairs}] = \\binom{n}{2}/d$. For $k=3$ ($d=365$): threshold $n=94$ since $\\binom{94}{3}=134044 > 365^2=133225$. General threshold: $n \\approx (k! \\cdot d^{k-1})^{1/k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "birthday problem generalization",
+      "k-wise collisions",
+      "expected k-tuples",
+      "threshold asymptotics",
+      "C(n,k)/d^(k-1)"
+    ],
+    "prerequisites": [
+      "linearity of expectation over k-subsets",
+      "probability: k-wise independent birthdays",
+      "Lean 4: Nat.choose_pos and positivity"
+    ]
+  },
+  {
+    "id": "ann-birthday-oq01-pairs-triples",
+    "proofId": "birthday-problem-oq-01",
+    "range": {
+      "startLine": 384,
+      "endLine": 420
+    },
+    "type": "concept",
+    "title": "Connecting Triples to Pairs: The Identity 3*C(n,3) = C(n,2)*(n-2)",
+    "content": "The combinatorial identity 3*C(n,3) = C(n,2)*(n-2) has a clean proof: both sides equal n*(n-1)*(n-2)/2. In Lean, this requires careful case analysis on n's parity because natural number division complicates direct ring manipulations. The proof uses `Nat.choose_three_right` (which gives C(n,3) = n*(n-1)*(n-2)/6) and parity analysis to establish 2 | (n+2)*(n+1), then concludes by `omega`. The `triples_from_pairs` theorem then derives: E[triples] = E[pairs] * (n-2)/(3d), a multiplicative relationship showing how the triple expected count scales relative to the pair count as n grows (roughly n/3d per additional person).",
+    "mathContext": "$3\\binom{n}{3} = \\binom{n}{2}(n-2)$ since both equal $\\frac{n(n-1)(n-2)}{2}$. Consequence: $E[\\text{triples}] = E[\\text{pairs}] \\cdot \\frac{n-2}{3d}$. For large $n$: $E[\\text{triples}]/E[\\text{pairs}] \\approx n/(3d)$, so triples dominate when $n \\gg 3d$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose_three_right",
+      "combinatorial identities",
+      "natural number parity arguments",
+      "omega tactic in Lean 4"
+    ],
+    "prerequisites": [
+      "combinatorics: falling factorials and binomial coefficients",
+      "Lean 4: natural number division and omega",
+      "Mathlib: Nat.even_or_odd and choose recurrences"
+    ]
+  }
+]

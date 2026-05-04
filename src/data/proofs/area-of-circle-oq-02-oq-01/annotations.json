@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Proving the Axiom: Two Forms of Unit Ball Volume",
-    "content": "The parent file `AreaOfCircleOQ02.lean` used an axiom `nball_volume_scaling` for the n-ball scaling law rather than a theorem. This file proves that axiom from Mathlib for n ≥ 1. The technical obstacle was a mismatch between two forms of the unit ball volume: Mathlib's `EuclideanSpace.volume_ball` uses `√π^n / Γ(n/2+1)`, while the gallery's `unitBallVolume` uses `π^(n/2) / Γ(n/2+1)`. The bridge lemma (√π)^n = π^(n/2) resolves this discrepancy.",
+    "content": "The parent file `AreaOfCircleOQ02.lean` used an axiom `nball_volume_scaling` for the n-ball scaling law rather than a theorem. This file proves that axiom from Mathlib for n \u2265 1. The technical obstacle was a mismatch between two forms of the unit ball volume: Mathlib's `EuclideanSpace.volume_ball` uses `\u221a\u03c0^n / \u0393(n/2+1)`, while the gallery's `unitBallVolume` uses `\u03c0^(n/2) / \u0393(n/2+1)`. The bridge lemma (\u221a\u03c0)^n = \u03c0^(n/2) resolves this discrepancy.",
     "mathContext": "Mathlib form: $\\text{Vol}(B^n(r)) = (\\sqrt{\\pi})^n / \\Gamma(n/2+1) \\cdot r^n$. Gallery form: $\\text{Vol}(B^n(1)) = \\pi^{n/2} / \\Gamma(n/2+1)$. The two agree because $\\sqrt{\\pi} = \\pi^{1/2}$, so $(\\sqrt{\\pi})^n = (\\pi^{1/2})^n = \\pi^{n/2}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -31,9 +31,9 @@
       "endLine": 68
     },
     "type": "concept",
-    "title": "Bridge Lemma: (√π)^n = π^(n/2) via rpow Laws",
-    "content": "The lemma `sqrt_pi_pow_eq` proves `(Real.sqrt π)^n = π^((n : ℝ)/2)` in three steps: (1) rewrite `√π = π^(1/2)` using `sqrt_eq_rpow`; (2) convert `(π^(1/2))^n` to rpow form using `← rpow_natCast`; (3) apply `← rpow_mul` to get `π^(1/2 · n)`; (4) close by `ring` since `1/2 · n = n/2`. The proof is 4 lines. The use of `← rpow_natCast` (converting `Nat.pow` to `Real.rpow`) is the key step that enables `rpow_mul` to apply.",
-    "mathContext": "$(\\sqrt{\\pi})^n = (\\pi^{1/2})^n = \\pi^{(1/2) \\cdot n} = \\pi^{n/2}$. In Lean: `Real.sqrt_eq_rpow` gives `sqrt π = π ^ (1/2 : ℝ)`; `rpow_natCast` converts `(π^(1/2))^n` to `π^((1/2 : ℝ) * n)` (real rpow); `rpow_mul pi_nonneg.le` gives `π^(1/2 * n) = (π^(1/2))^n`. Direction: `← rpow_mul` and `← rpow_natCast` rewrite right-to-left.",
+    "title": "Bridge Lemma: (\u221a\u03c0)^n = \u03c0^(n/2) via rpow Laws",
+    "content": "The lemma `sqrt_pi_pow_eq` proves `(Real.sqrt \u03c0)^n = \u03c0^((n : \u211d)/2)` in three steps: (1) rewrite `\u221a\u03c0 = \u03c0^(1/2)` using `sqrt_eq_rpow`; (2) convert `(\u03c0^(1/2))^n` to rpow form using `\u2190 rpow_natCast`; (3) apply `\u2190 rpow_mul` to get `\u03c0^(1/2 \u00b7 n)`; (4) close by `ring` since `1/2 \u00b7 n = n/2`. The proof is 4 lines. The use of `\u2190 rpow_natCast` (converting `Nat.pow` to `Real.rpow`) is the key step that enables `rpow_mul` to apply.",
+    "mathContext": "$(\\sqrt{\\pi})^n = (\\pi^{1/2})^n = \\pi^{(1/2) \\cdot n} = \\pi^{n/2}$. In Lean: `Real.sqrt_eq_rpow` gives `sqrt \u03c0 = \u03c0 ^ (1/2 : \u211d)`; `rpow_natCast` converts `(\u03c0^(1/2))^n` to `\u03c0^((1/2 : \u211d) * n)` (real rpow); `rpow_mul pi_nonneg.le` gives `\u03c0^(1/2 * n) = (\u03c0^(1/2))^n`. Direction: `\u2190 rpow_mul` and `\u2190 rpow_natCast` rewrite right-to-left.",
     "significance": "key",
     "relatedConcepts": [
       "Real.sqrt_eq_rpow",
@@ -56,9 +56,9 @@
       "startLine": 69,
       "endLine": 105
     },
-    "type": "theorem",
-    "title": "Main Theorem: Scaling Law for n ≥ 1 via EuclideanSpace.volume_ball",
-    "content": "The theorem `nball_volume_scaling_theorem` proves `Vol(Bⁿ(r)) = ENNReal.ofReal(rⁿ · unitBallVolume n)` for n ≥ 1, r ≥ 0. The proof proceeds: (1) construct `[Nonempty (Fin n)]` from `0 < n` using `⟨⟨0, hn⟩⟩`; (2) apply `EuclideanSpace.volume_ball` to rewrite the LHS; (3) use `ENNReal.ofReal_pow hr` to convert `(ofReal r)^n = ofReal(r^n)`; (4) use `ENNReal.ofReal_mul` to merge two `ofReal` terms; (5) apply `congr 1` to reduce to real arithmetic; (6) unfold `unitBallVolume` and apply `sqrt_pi_pow_eq`. The Nonempty instance construction `⟨⟨0, hn⟩⟩` is the key step that gates the theorem on `n ≥ 1`.",
+    "type": "insight",
+    "title": "Main Theorem: Scaling Law for n \u2265 1 via EuclideanSpace.volume_ball",
+    "content": "The theorem `nball_volume_scaling_theorem` proves `Vol(B\u207f(r)) = ENNReal.ofReal(r\u207f \u00b7 unitBallVolume n)` for n \u2265 1, r \u2265 0. The proof proceeds: (1) construct `[Nonempty (Fin n)]` from `0 < n` using `\u27e8\u27e80, hn\u27e9\u27e9`; (2) apply `EuclideanSpace.volume_ball` to rewrite the LHS; (3) use `ENNReal.ofReal_pow hr` to convert `(ofReal r)^n = ofReal(r^n)`; (4) use `ENNReal.ofReal_mul` to merge two `ofReal` terms; (5) apply `congr 1` to reduce to real arithmetic; (6) unfold `unitBallVolume` and apply `sqrt_pi_pow_eq`. The Nonempty instance construction `\u27e8\u27e80, hn\u27e9\u27e9` is the key step that gates the theorem on `n \u2265 1`.",
     "mathContext": "For $n \\geq 1$ and $r \\geq 0$: `EuclideanSpace.volume_ball` gives $\\text{Vol}(B^n(r)) = (\\text{ofReal}\\, r)^n \\cdot \\text{ofReal}(\\sqrt{\\pi}^n / \\Gamma(n/2+1))$. After conversion: $(\\text{ofReal}\\, r)^n = \\text{ofReal}(r^n)$ (by `ofReal_pow`, since $r \\geq 0$) and $\\text{ofReal}(r^n) \\cdot \\text{ofReal}(x) = \\text{ofReal}(r^n \\cdot x)$ (by `ofReal_mul`). Bridge lemma converts $\\sqrt{\\pi}^n \\to \\pi^{n/2}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -84,8 +84,8 @@
     },
     "type": "insight",
     "title": "Circle Area and Sphere Volume as Zero-Axiom Corollaries",
-    "content": "The theorems `area_2ball_scaling` (A = πr²) and `vol_3ball_scaling` (V = (4π/3)r³) are one-liner corollaries: apply `nball_volume_scaling_theorem 2` (or `3`), then `unitBallVolume_two` (or `_three`), then `ring` for the arithmetic. These were previously in the parent file `area-of-circle-oq-02` as theorems depending on the axiom `nball_volume_scaling`. With this file, they become fully axiom-free — the classical geometry formulas are formally verified from Mathlib's measure theory.",
-    "mathContext": "`unitBallVolume_two : unitBallVolume 2 = π` and `unitBallVolume_three : unitBallVolume 3 = 4*π/3` (from the parent file's definitions). Combined with `nball_volume_scaling_theorem 2 (by norm_num) r hr`: $\\text{Vol}(B^2(r)) = r^2 \\cdot \\pi = \\pi r^2$. For 3D: $r^3 \\cdot (4\\pi/3) = (4\\pi/3)r^3$. The `ring` tactic closes the arithmetic.",
+    "content": "The theorems `area_2ball_scaling` (A = \u03c0r\u00b2) and `vol_3ball_scaling` (V = (4\u03c0/3)r\u00b3) are one-liner corollaries: apply `nball_volume_scaling_theorem 2` (or `3`), then `unitBallVolume_two` (or `_three`), then `ring` for the arithmetic. These were previously in the parent file `area-of-circle-oq-02` as theorems depending on the axiom `nball_volume_scaling`. With this file, they become fully axiom-free \u2014 the classical geometry formulas are formally verified from Mathlib's measure theory.",
+    "mathContext": "`unitBallVolume_two : unitBallVolume 2 = \u03c0` and `unitBallVolume_three : unitBallVolume 3 = 4*\u03c0/3` (from the parent file's definitions). Combined with `nball_volume_scaling_theorem 2 (by norm_num) r hr`: $\\text{Vol}(B^2(r)) = r^2 \\cdot \\pi = \\pi r^2$. For 3D: $r^3 \\cdot (4\\pi/3) = (4\\pi/3)r^3$. The `ring` tactic closes the arithmetic.",
     "significance": "supporting",
     "relatedConcepts": [
       "area-of-circle",
@@ -108,9 +108,9 @@
       "endLine": 163
     },
     "type": "insight",
-    "title": "The n=0 Bug: 0^0 = 1 vs Vol(∅) = 0",
-    "content": "The file closes by proving the parent axiom `nball_volume_scaling` is false at n=0, r=0. The ball of radius 0 in ℝ^0 is empty (proved by `Metric.ball_eq_empty.mpr (le_refl 0)`), so its volume is 0. But the RHS formula gives `ofReal(0^0 · unitBallVolume 0) = ofReal(1 · 1) = 1`, because `0^0 = 1` in ℝ (Lean's convention). The proof uses `zero_ne_one` to derive a contradiction. This is a genuine bug in the parent axiom's generality — the correct hypothesis is `0 < n` rather than `0 ≤ r`.",
-    "mathContext": "$B^0(0) = \\emptyset$ in $\\mathbb{R}^0$ (Fin 0 is empty, so EuclideanSpace ℝ (Fin 0) = {0} is a single point; ball of radius 0 around it is empty by the strict inequality). `unitBallVolume 0 = 1` (by convention: 0-dim 'ball' has volume 1 = Γ(1)/Γ(1) = 1). In Lean: `(0 : ℝ)^0 = 1` by the `zero_pow` convention for exponent 0. So RHS = ofReal(1·1) = 1 ≠ 0 = LHS.",
+    "title": "The n=0 Bug: 0^0 = 1 vs Vol(\u2205) = 0",
+    "content": "The file closes by proving the parent axiom `nball_volume_scaling` is false at n=0, r=0. The ball of radius 0 in \u211d^0 is empty (proved by `Metric.ball_eq_empty.mpr (le_refl 0)`), so its volume is 0. But the RHS formula gives `ofReal(0^0 \u00b7 unitBallVolume 0) = ofReal(1 \u00b7 1) = 1`, because `0^0 = 1` in \u211d (Lean's convention). The proof uses `zero_ne_one` to derive a contradiction. This is a genuine bug in the parent axiom's generality \u2014 the correct hypothesis is `0 < n` rather than `0 \u2264 r`.",
+    "mathContext": "$B^0(0) = \\emptyset$ in $\\mathbb{R}^0$ (Fin 0 is empty, so EuclideanSpace \u211d (Fin 0) = {0} is a single point; ball of radius 0 around it is empty by the strict inequality). `unitBallVolume 0 = 1` (by convention: 0-dim 'ball' has volume 1 = \u0393(1)/\u0393(1) = 1). In Lean: `(0 : \u211d)^0 = 1` by the `zero_pow` convention for exponent 0. So RHS = ofReal(1\u00b71) = 1 \u2260 0 = LHS.",
     "significance": "key",
     "relatedConcepts": [
       "Metric.ball_eq_empty",

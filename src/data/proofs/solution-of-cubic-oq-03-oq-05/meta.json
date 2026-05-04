@@ -31,7 +31,8 @@
         "id": "solution-of-cubic",
         "relationship": "Root: solution of the cubic equation"
       }
-    ]
+    ],
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "François Viète (1540–1603) discovered the fundamental relationship between the roots and coefficients of a polynomial in his posthumous *De Aequationum Recognitione et Emendatione* (1615). The formulas bearing his name connect the elementary symmetric polynomials $\\sigma_1 = \\sum r_i$, $\\sigma_2 = \\sum_{i<j} r_i r_j$, $\\sigma_3 = r_1 r_2 r_3$ to the coefficients of the polynomial. For the cubic $x^3 + ax^2 + bx + c$, they state $a = -\\sigma_1$, $b = \\sigma_2$, $c = -\\sigma_3$ — and the proof is simply the factored form $(x - r_1)(x - r_2)(x - r_3)$ expanded.\n\nVieta's formulas are the foundation of the **theory of symmetric polynomials**: the fact that every symmetric polynomial in $r_1, \\ldots, r_n$ can be expressed as a polynomial in $\\sigma_1, \\ldots, \\sigma_n$ (the fundamental theorem of symmetric polynomials, proved by Newton). This is the starting point for Galois theory, since the Galois group of a polynomial permutes its roots while preserving the coefficients (which are symmetric functions of the roots).\n\nClassically, the formulas were stated over $\\mathbb{C}$ or $\\mathbb{R}$. The Lean proof here works over any commutative ring $R$, making the formulas valid for polynomials with coefficients and roots in $\\mathbb{Z}$, $\\mathbb{Z}/p\\mathbb{Z}$, finite fields, or any algebraic structure satisfying the ring axioms.",
@@ -42,7 +43,7 @@
       "**Generality over CommRing**: the formulas hold over any commutative ring, not just fields or ℂ. This covers e.g. polynomials over ℤ (integer roots, integer coefficients) or ℤ/pℤ (finite field roots), making the results applicable in modular arithmetic and number theory",
       "**Elementary symmetric polynomials**: Vieta's formulas are the isomorphism σ: roots → coefficients via e₁, e₂, e₃. The Newton-Girard identities (expressing power sums p_k = Σ rᵢᵏ in terms of eₖ) follow from Vieta's, connecting the formulas to generating functions and partition theory",
       "**Connection to Galois theory**: the Galois group of the cubic acts by permuting the roots r₁, r₂, r₃. Since the coefficients a, b, c are symmetric functions of the roots (Vieta's formulas), they are fixed by the entire Galois group — this is why coefficients live in the base field even when roots do not. The discriminant Δ = (r₁-r₂)²(r₁-r₃)²(r₂-r₃)², also symmetric, determines whether the Galois group is ℤ/3 (Δ a perfect square) or S₃ (Δ not a perfect square)",
-      "**Roots-as-verification**: the `root_satisfies_poly` theorem provides the reverse direction: given a factorization, each root satisfies the polynomial. This two-way relationship (coefficients ↔ roots) is the core of the fundamental theorem of algebra's constructive content — Vieta's gives the forward map, while root-finding algorithms (Cardano, Newton) provide the reverse"
+      "**Roots-as-verification**: the `root_satisfies` theorem provides the reverse direction: given a factorization, each root satisfies the polynomial. This two-way relationship (coefficients ↔ roots) is the core of the fundamental theorem of algebra's constructive content — Vieta's gives the forward map, while root-finding algorithms (Cardano, Newton) provide the reverse"
     ]
   },
   "crossReferences": [
@@ -117,7 +118,7 @@
       "startLine": 97,
       "endLine": 111,
       "summary": "Proves that if the cubic factors as (x-r₁)(x-r₂)(x-r₃), then evaluating at r₁ gives 0. The proof rewrites using the factorization and evaluates the product: (r₁-r₁)·(r₁-r₂)·(r₁-r₃) = 0·(···) = 0.",
-      "mathContext": "`root_satisfies_poly (h : X^3 + C a * X^2 + C b * X + C c = (X - C r₁) * (X - C r₂) * (X - C r₃)) : Polynomial.eval r₁ (X^3 + C a * X^2 + C b * X + C c) = 0`. Proof: `rw [h]; simp [Polynomial.eval_mul, Polynomial.eval_sub, sub_self]` — evaluating $(r_1 - r_1) = 0$ kills the first factor. This is the reverse direction of the factor theorem: $p(r_i) = 0$ iff $(X - r_i) \\mid p$. Here we prove it directly from the factored form, avoiding the general factor theorem. In Lean, `Polynomial.eval r₁ (X - C r₁) = r₁ - r₁ = 0` by `simp`."
+      "mathContext": "`root_satisfies (h : X^3 + C a * X^2 + C b * X + C c = (X - C r₁) * (X - C r₂) * (X - C r₃)) : Polynomial.eval r₁ (X^3 + C a * X^2 + C b * X + C c) = 0`. Proof: `rw [h]; simp [Polynomial.eval_mul, Polynomial.eval_sub, sub_self]` — evaluating $(r_1 - r_1) = 0$ kills the first factor. This is the reverse direction of the factor theorem: $p(r_i) = 0$ iff $(X - r_i) \\mid p$. Here we prove it directly from the factored form, avoiding the general factor theorem. In Lean, `Polynomial.eval r₁ (X - C r₁) = r₁ - r₁ = 0` by `simp`."
     }
   ],
   "conclusion": {

@@ -72,7 +72,8 @@
     "lineCount": 248,
     "axiomCount": 0,
     "assumptions": "No axioms. 14 sorry(s) remain in the formalization.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "Erdős conjectured that for any tree T bipartite with k vertices in one class and 2k in the other, the Ramsey number R(T) = 4k - 1. This would have been a clean exact formula for a large natural class of trees, extending known results like R(P_n) = n for paths and R(S_n) = 2n - 1 for stars.\n\nThe conjecture was motivated by the lower bound construction: coloring K_{4k-2} by splitting into K_{2k-1,2k-1} (red within parts, blue between) avoids any bipartite (k, 2k) tree in both colors, proving R(T) >= 4k - 1. Erdős believed this construction was tight.\n\nNorin, Sun, and Zhao disproved the conjecture by analyzing the double star — the tree formed by connecting the centers of a k-star and a 2k-star. Using probabilistic and algebraic arguments, they showed R(double star) >= (4.2 - o(1))k, exceeding 4k - 1. The upper bound was obtained via Razborov's flag algebra method (semidefinite programming over graph homomorphism densities), giving R(T) <= (4.21526 + o(1))k for all bipartite (k, 2k) trees. The true constant for the double star thus lies in the narrow interval [4.2, 4.21526].\n\nImportantly, the conjecture survives for restricted classes: trees with bounded maximum degree, brooms (path + star), and certain other structured trees still satisfy R(T) = 4k - 1. The counterexample requires unbounded degree — the star centers have degrees k+1 and 2k+1.",

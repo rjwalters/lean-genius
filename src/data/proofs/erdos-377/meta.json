@@ -53,7 +53,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 134,
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives."
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "This problem arose from studying the prime factorization of central binomial coefficients C(2n, n). The 1975 paper by Erdős, Graham, Ruzsa, and Straus (EGRS75) made significant progress on understanding the 'statistical' behavior of the prime divisibility pattern.\n\nThe central binomial C(2n, n) is highly composite — most primes p ≤ n divide it. By Kummer's theorem, p | C(2n,n) iff there's a carry when adding n + n in base p. The question asks whether the primes that 'miss' have bounded reciprocal sum.\n\nEGRS proved remarkable results about the average behavior but left the main conjecture (uniform boundedness) open. This is mentioned in Guy's 'Unsolved Problems in Number Theory' (Problem B33).",

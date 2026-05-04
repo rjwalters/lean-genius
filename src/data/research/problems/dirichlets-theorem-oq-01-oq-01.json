@@ -1,0 +1,184 @@
+{
+  "slug": "dirichlets-theorem-oq-01-oq-01",
+  "title": "Do Siegel zeros exist",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Do Siegel zeros exist? (The central open question — almost certainly NO, but unproved).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-03T11:41:44.692Z",
+    "iteration": 1,
+    "focus": "Formalized Siegel zero existence consequences in both worlds",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized Siegel zero existence consequences in both worlds (A: zeros exist, B: SZC holds). Proved 19 theorems, 0 sorries, 2 axioms (Linnik bound, effective Linnik under SZC). Gallery entry with meta.json, annotations.json, index.ts created.",
+    "builtItems": [
+      "DirichletsTheoremOQ01OQ01.lean: axiom linnik_bound (Linnik theorem, L=5 Xylouris)",
+      "DirichletsTheoremOQ01OQ01.lean: axiom effective_linnik_no_siegel (L=2 under SZC)",
+      "DirichletsTheoremOQ01OQ01.lean: theorem siegel_zero_positive_gap — Siegel zero has positive distance from 1",
+      "DirichletsTheoremOQ01OQ01.lean: theorem siegel_zero_distance_lower_bound — MVT + Siegel gives (1-β)·M > C(ε)/N^ε",
+      "DirichletsTheoremOQ01OQ01.lean: theorem tatuzawa_single_exception — restate Tatuzawa for single-exception bound",
+      "DirichletsTheoremOQ01OQ01.lean: theorem world_a_nonvanishing_persists — L(1,χ)≠0 holds even in World A",
+      "DirichletsTheoremOQ01OQ01.lean: theorem linnik_implies_dirichlet_existence — Linnik bound implies primes in AP exist",
+      "DirichletsTheoremOQ01OQ01.lean: theorem world_b_linnik_exponent_two — SZC implies L=2 for Linnik",
+      "DirichletsTheoremOQ01OQ01.lean: theorem unique_exceptional_conductor_per_region — Landau-Page uniqueness",
+      "DirichletsTheoremOQ01OQ01.lean: theorem other_conductors_zero_free_near_one — other L-functions get wider ZFR",
+      "DirichletsTheoremOQ01OQ01.lean: theorem exceptional_conductor_siegel_floor — lower bound on L(1,χ) for exceptional",
+      "DirichletsTheoremOQ01OQ01.lean: theorem siegel_zero_creates_repulsion_region — Deuring-Heilbronn formalization",
+      "DirichletsTheoremOQ01OQ01.lean: theorem grh_implies_no_siegel_zeros_standard — GRH eliminates standard range zeros",
+      "DirichletsTheoremOQ01OQ01.lean: theorem szc_implies_L_one_pos — SZC → L(1,χ) > 0",
+      "DirichletsTheoremOQ01OQ01.lean: theorem nonvanishing_unconditional — L(1,χ)≠0 with no assumptions",
+      "DirichletsTheoremOQ01OQ01.lean: theorem three_tier_hierarchy — GRH → SZC → Nonvanishing chain",
+      "DirichletsTheoremOQ01OQ01.lean: theorem world_b_primeCountAP_mono — AP count monotone under SZC",
+      "DirichletsTheoremOQ01OQ01.lean: theorem world_b_siegel_bound_effective — Siegel bound uses ε directly under SZC",
+      "DirichletsTheoremOQ01OQ01.lean: theorem siegel_zero_in_critical_strip — any Siegel zero lies in (1/2,1)",
+      "DirichletsTheoremOQ01OQ01.lean: theorem siegel_zero_question_classical — classical decidability of SZC",
+      "DirichletsTheoremOQ01OQ01.lean: theorem state_of_knowledge — summary: nonvanishing proved, Siegel ineffective, Linnik bounded",
+      "DirichletsTheoremOQ01OQ01.lean: theorem grh_world_summary — under GRH: SZC, L=2 Linnik, effective Siegel-Walfisz"
+    ],
+    "insights": [
+      "World A/World B dichotomy is the correct framing: consequences differ sharply in each world",
+      "Nonvanishing L(1,χ)≠0 holds unconditionally (proved in parent) — Siegel zero question is about EFFECTIVE bounds",
+      "GRH → SZC (standard c < log(N)/2 range) → nonvanishing forms a strict hierarchy",
+      "Deuring-Heilbronn repulsion is self-limiting: one Siegel zero forces all others into wider ZFR",
+      "Linnik constant L directly tied to Siegel zeros: no SZ implies L=2; current best is L≤5 (Xylouris 2011)",
+      "Tatuzawa gives all-but-one effective bound; the exception conductor might hold the Siegel zero",
+      "SiegelZeroConjecture holds iff effective Siegel-Walfisz holds for ALL conductors"
+    ],
+    "mathlibGaps": [
+      "Linnik theorem (smallest prime in AP ≤ C·q^L) — not in Mathlib, axiomatized as linnik_bound",
+      "Effective Linnik exponent L=2 under no Siegel zeros — not in Mathlib, axiomatized as effective_linnik_no_siegel"
+    ],
+    "nextSteps": [
+      "Prove effective lower bounds on L(1,χ) for non-exceptional conductors using Tatuzawa explicitly",
+      "Formalize the precise relationship between Siegel zero depth and Linnik constant",
+      "Connect to dirichlets-theorem-oq-02-oq-01 (GRH) via the three-tier hierarchy"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "classic",
+    "dirichlet",
+    "analytic-number-theory",
+    "l-functions",
+    "arithmetic-progressions",
+    "open-problem",
+    "research",
+    "grh",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "dirichlets-theorem",
+    "dirichlets-theorem-oq-01",
+    "dirichlets-theorem-oq-02",
+    "dirichlets-theorem-oq-02-oq-01",
+    "dirichlets-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.692Z",
+  "lastUpdate": "2026-05-03T11:41:44.692Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DirichletsTheorem.lean",
+      "filename": "DirichletsTheorem.lean",
+      "lineCount": 314,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheorem.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ01.lean",
+      "filename": "DirichletsTheoremOQ01.lean",
+      "lineCount": 706,
+      "theoremCount": 31,
+      "axiomCount": 5,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ01OQ01.lean",
+      "filename": "DirichletsTheoremOQ01OQ01.lean",
+      "lineCount": 335,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ02.lean",
+      "filename": "DirichletsTheoremOQ02.lean",
+      "lineCount": 102,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ02OQ01.lean",
+      "filename": "DirichletsTheoremOQ02OQ01.lean",
+      "lineCount": 367,
+      "theoremCount": 16,
+      "axiomCount": 4,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03.lean",
+      "filename": "DirichletsTheoremOQ03.lean",
+      "lineCount": 140,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03Incomplete01.lean",
+      "filename": "DirichletsTheoremOQ03Incomplete01.lean",
+      "lineCount": 155,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03Incomplete01.lean"
+    }
+  ]
+}

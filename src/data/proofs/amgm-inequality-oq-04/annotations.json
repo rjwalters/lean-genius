@@ -2,85 +2,175 @@
   {
     "id": "ann-agm-definitions",
     "proofId": "amgm-inequality-oq-04",
-    "range": { "startLine": 45, "endLine": 73 },
+    "range": {
+      "startLine": 45,
+      "endLine": 73
+    },
     "type": "definition",
     "title": "AGM Iteration: agmStep, agmSeq, agmA, agmB",
-    "content": "agmStep (a b) = ((a+b)/2, √(ab)) is the single-step AGM map, producing the arithmetic mean and geometric mean. agmSeq a b n iterates this from (a₀,b₀) = (a,b), giving the pair (aₙ,bₙ) at step n. agmA and agmB extract the first and second components respectively. The recurrence theorems agmA_succ and agmB_succ unpack the iteration: agmA a b (n+1) = (agmA a b n + agmB a b n) / 2, agmB a b (n+1) = √(agmA a b n * agmB a b n). These are proved by simp using the definitions. The `noncomputable` annotation is needed because Real.sqrt is noncomputable (it depends on Classical.choice for the real square root).",
+    "content": "agmStep (a b) = ((a+b)/2, \u221a(ab)) is the single-step AGM map, producing the arithmetic mean and geometric mean. agmSeq a b n iterates this from (a\u2080,b\u2080) = (a,b), giving the pair (a\u2099,b\u2099) at step n. agmA and agmB extract the first and second components respectively. The recurrence theorems agmA_succ and agmB_succ unpack the iteration: agmA a b (n+1) = (agmA a b n + agmB a b n) / 2, agmB a b (n+1) = \u221a(agmA a b n * agmB a b n). These are proved by simp using the definitions. The `noncomputable` annotation is needed because Real.sqrt is noncomputable (it depends on Classical.choice for the real square root).",
     "mathContext": "$a_{n+1} = \\frac{a_n + b_n}{2}$, $b_{n+1} = \\sqrt{a_n b_n}$, starting from $(a_0, b_0) = (a, b)$.",
     "significance": "supporting",
-    "relatedConcepts": ["arithmetic mean", "geometric mean", "iteration in Lean", "noncomputable in Lean 4", "Nat.rec pattern matching"],
-    "prerequisites": ["Real.sqrt in Mathlib", "noncomputable def", "Prod.1 and Prod.2 for pair access"]
+    "relatedConcepts": [
+      "arithmetic mean",
+      "geometric mean",
+      "iteration in Lean",
+      "noncomputable in Lean 4",
+      "Nat.rec pattern matching"
+    ],
+    "prerequisites": [
+      "Real.sqrt in Mathlib",
+      "noncomputable def",
+      "Prod.1 and Prod.2 for pair access"
+    ]
   },
   {
     "id": "ann-am-ge-gm",
     "proofId": "amgm-inequality-oq-04",
-    "range": { "startLine": 79, "endLine": 88 },
-    "type": "theorem",
-    "title": "am_ge_gm: (a+b)/2 ≥ √(ab)",
-    "content": "am_ge_gm proves (a+b)/2 ≥ √(ab) for non-negative reals. The proof: rewrite (a+b)/2 as √(((a+b)/2)²) (valid since (a+b)/2 ≥ 0), then apply Real.sqrt_le_sqrt to reduce to the algebraic bound ((a+b)/2)² ≥ ab. The latter is nlinarith [sq_nonneg (a-b)]: it unfolds to (a-b)²/4 ≥ 0. This is the classic proof that AM-GM follows from (a-b)² ≥ 0. The key Lean pattern is `rw [← Real.sqrt_sq hsum]` followed by `Real.sqrt_le_sqrt` — converting an inequality between non-negative reals to an inequality between their squares, handled by monotonicity of sqrt.",
+    "range": {
+      "startLine": 79,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "am_ge_gm: (a+b)/2 \u2265 \u221a(ab)",
+    "content": "am_ge_gm proves (a+b)/2 \u2265 \u221a(ab) for non-negative reals. The proof: rewrite (a+b)/2 as \u221a(((a+b)/2)\u00b2) (valid since (a+b)/2 \u2265 0), then apply Real.sqrt_le_sqrt to reduce to the algebraic bound ((a+b)/2)\u00b2 \u2265 ab. The latter is nlinarith [sq_nonneg (a-b)]: it unfolds to (a-b)\u00b2/4 \u2265 0. This is the classic proof that AM-GM follows from (a-b)\u00b2 \u2265 0. The key Lean pattern is `rw [\u2190 Real.sqrt_sq hsum]` followed by `Real.sqrt_le_sqrt` \u2014 converting an inequality between non-negative reals to an inequality between their squares, handled by monotonicity of sqrt.",
     "mathContext": "$\\frac{a+b}{2} \\geq \\sqrt{ab}$ because $\\left(\\frac{a+b}{2}\\right)^2 - ab = \\frac{(a-b)^2}{4} \\geq 0$.",
     "significance": "key",
-    "relatedConcepts": ["AM-GM inequality", "Real.sqrt_le_sqrt (monotonicity)", "nlinarith with sq_nonneg", "Real.sqrt_sq (sqrt of square)"],
-    "prerequisites": ["Real.sqrt_sq: √(x²) = x for x ≥ 0", "Real.sqrt_le_sqrt: monotone", "nlinarith: nonlinear arithmetic"]
+    "relatedConcepts": [
+      "AM-GM inequality",
+      "Real.sqrt_le_sqrt (monotonicity)",
+      "nlinarith with sq_nonneg",
+      "Real.sqrt_sq (sqrt of square)"
+    ],
+    "prerequisites": [
+      "Real.sqrt_sq: \u221a(x\u00b2) = x for x \u2265 0",
+      "Real.sqrt_le_sqrt: monotone",
+      "nlinarith: nonlinear arithmetic"
+    ]
   },
   {
     "id": "ann-sandwich-monotone",
     "proofId": "amgm-inequality-oq-04",
-    "range": { "startLine": 93, "endLine": 141 },
-    "type": "theorem",
-    "title": "Sandwich and Monotonicity: bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ",
-    "content": "Four theorems establish the key ordering invariant. agm_pos_aux (proved simultaneously for a and b by induction): both sequences stay positive — base case from ha, hb; inductive step uses linarith for a (arithmetic mean of positives is positive) and Real.sqrt_pos_of_pos for b. agmB_le_agmA (bₙ ≤ aₙ by induction, using am_ge_gm): base case from hab, inductive step applies am_ge_gm at each step. agmA_antitone (a-sequence is decreasing): antitone_nat_of_succ_le reduces to aₙ₊₁ ≤ aₙ, which is (aₙ+bₙ)/2 ≤ aₙ, equivalent to bₙ ≤ aₙ. agmB_monotone (b-sequence is increasing): by a calc showing bₙ = √(bₙ·bₙ) ≤ √(aₙ·bₙ) = bₙ₊₁ since aₙ ≥ bₙ. Together: b ≤ b₁ ≤ b₂ ≤ ... ≤ a₂ ≤ a₁ ≤ a.",
+    "range": {
+      "startLine": 93,
+      "endLine": 141
+    },
+    "type": "insight",
+    "title": "Sandwich and Monotonicity: b\u2099 \u2264 b\u2099\u208a\u2081 \u2264 a\u2099\u208a\u2081 \u2264 a\u2099",
+    "content": "Four theorems establish the key ordering invariant. agm_pos_aux (proved simultaneously for a and b by induction): both sequences stay positive \u2014 base case from ha, hb; inductive step uses linarith for a (arithmetic mean of positives is positive) and Real.sqrt_pos_of_pos for b. agmB_le_agmA (b\u2099 \u2264 a\u2099 by induction, using am_ge_gm): base case from hab, inductive step applies am_ge_gm at each step. agmA_antitone (a-sequence is decreasing): antitone_nat_of_succ_le reduces to a\u2099\u208a\u2081 \u2264 a\u2099, which is (a\u2099+b\u2099)/2 \u2264 a\u2099, equivalent to b\u2099 \u2264 a\u2099. agmB_monotone (b-sequence is increasing): by a calc showing b\u2099 = \u221a(b\u2099\u00b7b\u2099) \u2264 \u221a(a\u2099\u00b7b\u2099) = b\u2099\u208a\u2081 since a\u2099 \u2265 b\u2099. Together: b \u2264 b\u2081 \u2264 b\u2082 \u2264 ... \u2264 a\u2082 \u2264 a\u2081 \u2264 a.",
     "mathContext": "$b = b_0 \\leq b_1 \\leq b_2 \\leq \\cdots \\leq a_2 \\leq a_1 \\leq a_0 = a$. Maintained by AM-GM at each step.",
     "significance": "key",
-    "relatedConcepts": ["sandwich property", "antitone_nat_of_succ_le", "monotone_nat_of_le_succ", "joint induction", "Real.sqrt_le_sqrt for monotone b"],
-    "prerequisites": ["antitone_nat_of_succ_le and monotone_nat_of_le_succ (Mathlib API)", "mul_le_mul_of_nonneg_right for sqrt comparison", "calc chains for √(b·b) ≤ √(a·b)"]
+    "relatedConcepts": [
+      "sandwich property",
+      "antitone_nat_of_succ_le",
+      "monotone_nat_of_le_succ",
+      "joint induction",
+      "Real.sqrt_le_sqrt for monotone b"
+    ],
+    "prerequisites": [
+      "antitone_nat_of_succ_le and monotone_nat_of_le_succ (Mathlib API)",
+      "mul_le_mul_of_nonneg_right for sqrt comparison",
+      "calc chains for \u221a(b\u00b7b) \u2264 \u221a(a\u00b7b)"
+    ]
   },
   {
     "id": "ann-gap-contraction",
     "proofId": "amgm-inequality-oq-04",
-    "range": { "startLine": 143, "endLine": 175 },
-    "type": "theorem",
-    "title": "Gap Contraction: aₙ₊₁ - bₙ₊₁ ≤ (aₙ - bₙ)/2",
-    "content": "gap_contracts proves the gap halves at each step: aₙ₊₁ - bₙ₊₁ ≤ (aₙ-bₙ)/2. Unpacking: (aₙ+bₙ)/2 - √(aₙbₙ) ≤ (aₙ-bₙ)/2. This is equivalent to √(aₙbₙ) ≥ bₙ, which is exactly the bₙ-monotonicity result. The final linarith closes the goal once hgm_ge_b (a restatement of bₙ₊₁ ≥ bₙ) is available. gap_bound combines gap_contracts with induction to get the geometric bound: aₙ - bₙ ≤ (a-b)/2ⁿ. This is linear convergence. The actual AGM convergence is quadratic (aₙ - bₙ ≈ constant · 4^{-2^n}), but the linear bound is sufficient to establish that the gap → 0. The `ring` tactic handles the rewriting (a-b)/2^n / 2 = (a-b)/2^{n+1}.",
+    "range": {
+      "startLine": 143,
+      "endLine": 175
+    },
+    "type": "insight",
+    "title": "Gap Contraction: a\u2099\u208a\u2081 - b\u2099\u208a\u2081 \u2264 (a\u2099 - b\u2099)/2",
+    "content": "gap_contracts proves the gap halves at each step: a\u2099\u208a\u2081 - b\u2099\u208a\u2081 \u2264 (a\u2099-b\u2099)/2. Unpacking: (a\u2099+b\u2099)/2 - \u221a(a\u2099b\u2099) \u2264 (a\u2099-b\u2099)/2. This is equivalent to \u221a(a\u2099b\u2099) \u2265 b\u2099, which is exactly the b\u2099-monotonicity result. The final linarith closes the goal once hgm_ge_b (a restatement of b\u2099\u208a\u2081 \u2265 b\u2099) is available. gap_bound combines gap_contracts with induction to get the geometric bound: a\u2099 - b\u2099 \u2264 (a-b)/2\u207f. This is linear convergence. The actual AGM convergence is quadratic (a\u2099 - b\u2099 \u2248 constant \u00b7 4^{-2^n}), but the linear bound is sufficient to establish that the gap \u2192 0. The `ring` tactic handles the rewriting (a-b)/2^n / 2 = (a-b)/2^{n+1}.",
     "mathContext": "$a_{n+1} - b_{n+1} = \\frac{a_n+b_n}{2} - \\sqrt{a_n b_n} \\leq \\frac{a_n-b_n}{2}$ since $\\sqrt{a_n b_n} \\geq b_n$. Bound: $a_n - b_n \\leq \\frac{a-b}{2^n}$.",
     "significance": "key",
-    "relatedConcepts": ["gap contraction", "linear vs quadratic convergence", "geometric bound 1/2^n", "induction on gap_bound", "linarith after restatement"],
-    "prerequisites": ["gap_contracts (one-step halving)", "agmB_monotone (√(a·b) ≥ b)", "induction + ring for /2^n recurrence"]
+    "relatedConcepts": [
+      "gap contraction",
+      "linear vs quadratic convergence",
+      "geometric bound 1/2^n",
+      "induction on gap_bound",
+      "linarith after restatement"
+    ],
+    "prerequisites": [
+      "gap_contracts (one-step halving)",
+      "agmB_monotone (\u221a(a\u00b7b) \u2265 b)",
+      "induction + ring for /2^n recurrence"
+    ]
   },
   {
     "id": "ann-convergence",
     "proofId": "amgm-inequality-oq-04",
-    "range": { "startLine": 176, "endLine": 242 },
+    "range": {
+      "startLine": 176,
+      "endLine": 242
+    },
     "type": "insight",
     "title": "Convergence to Common Limit via Monotone Convergence Theorem",
-    "content": "The convergence argument uses Mathlib's monotone convergence theorem. agmA_bddBelow: the a-sequence is bounded below by b (b ≤ bₙ ≤ aₙ for all n). agmB_bddAbove: the b-sequence is bounded above by a (bₙ ≤ aₙ ≤ a for all n). These, combined with antitone/monotone, give convergence via tendsto_atTop_ciInf (a-sequence → inf) and tendsto_atTop_ciSup (b-sequence → sup). gap_tendsto_zero: the gap (aₙ - bₙ) → 0 by a squeeze argument: 0 ≤ aₙ-bₙ ≤ (a-b)/2ⁿ, and (a-b)·(1/2)ⁿ → 0 by tendsto_pow_atTop_nhds_zero_of_lt_one. agm_common_limit: inf aₙ = sup bₙ by showing ≥ (since aₙ ≥ bₙ forces inf ≥ sup via a max argument) and = (since the difference = limit of gap = 0 via tendsto_nhds_unique).",
+    "content": "The convergence argument uses Mathlib's monotone convergence theorem. agmA_bddBelow: the a-sequence is bounded below by b (b \u2264 b\u2099 \u2264 a\u2099 for all n). agmB_bddAbove: the b-sequence is bounded above by a (b\u2099 \u2264 a\u2099 \u2264 a for all n). These, combined with antitone/monotone, give convergence via tendsto_atTop_ciInf (a-sequence \u2192 inf) and tendsto_atTop_ciSup (b-sequence \u2192 sup). gap_tendsto_zero: the gap (a\u2099 - b\u2099) \u2192 0 by a squeeze argument: 0 \u2264 a\u2099-b\u2099 \u2264 (a-b)/2\u207f, and (a-b)\u00b7(1/2)\u207f \u2192 0 by tendsto_pow_atTop_nhds_zero_of_lt_one. agm_common_limit: inf a\u2099 = sup b\u2099 by showing \u2265 (since a\u2099 \u2265 b\u2099 forces inf \u2265 sup via a max argument) and = (since the difference = limit of gap = 0 via tendsto_nhds_unique).",
     "mathContext": "$\\inf_n a_n = \\sup_n b_n = M(a,b)$, proved via $a_n - b_n \\to 0$ and the monotone convergence theorem.",
     "significance": "key",
-    "relatedConcepts": ["tendsto_atTop_ciInf", "tendsto_atTop_ciSup", "squeeze_zero", "tendsto_nhds_unique", "tendsto_pow_atTop_nhds_zero_of_lt_one"],
-    "prerequisites": ["ciInf/ciSup (conditional infimum/supremum in Mathlib)", "BddBelow/BddAbove types", "tendsto_nhds_unique (limits are unique)", "squeeze_zero: 0 ≤ f ≤ g → g → 0 → f → 0"]
+    "relatedConcepts": [
+      "tendsto_atTop_ciInf",
+      "tendsto_atTop_ciSup",
+      "squeeze_zero",
+      "tendsto_nhds_unique",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one"
+    ],
+    "prerequisites": [
+      "ciInf/ciSup (conditional infimum/supremum in Mathlib)",
+      "BddBelow/BddAbove types",
+      "tendsto_nhds_unique (limits are unique)",
+      "squeeze_zero: 0 \u2264 f \u2264 g \u2192 g \u2192 0 \u2192 f \u2192 0"
+    ]
   },
   {
     "id": "ann-agm-value",
     "proofId": "amgm-inequality-oq-04",
-    "range": { "startLine": 248, "endLine": 273 },
+    "range": {
+      "startLine": 248,
+      "endLine": 273
+    },
     "type": "definition",
     "title": "agm: The AGM as the Infimum of the a-Sequence",
-    "content": "agm a b = ⨅ n, agmA a b n defines the AGM as the infimum (greatest lower bound) of the decreasing a-sequence. Since agm_common_limit proves this infimum equals the supremum of the b-sequence, either choice would work; the infimum is used because the a-sequence is the more natural 'envelope.' agm_eq_limit_A and agm_eq_limit_B confirm the AGM is indeed the limit of both sequences. agm_bounds proves b ≤ agm a b ≤ a: the lower bound uses b = b₀ ≤ b₁ ≤ ... ≤ aₙ, so b is a lower bound for the aₙ (via ciInf_le); the upper bound uses agm ≤ a₀ = a (also via ciInf_le).",
+    "content": "agm a b = \u2a05 n, agmA a b n defines the AGM as the infimum (greatest lower bound) of the decreasing a-sequence. Since agm_common_limit proves this infimum equals the supremum of the b-sequence, either choice would work; the infimum is used because the a-sequence is the more natural 'envelope.' agm_eq_limit_A and agm_eq_limit_B confirm the AGM is indeed the limit of both sequences. agm_bounds proves b \u2264 agm a b \u2264 a: the lower bound uses b = b\u2080 \u2264 b\u2081 \u2264 ... \u2264 a\u2099, so b is a lower bound for the a\u2099 (via ciInf_le); the upper bound uses agm \u2264 a\u2080 = a (also via ciInf_le).",
     "mathContext": "$M(a,b) = \\inf_n a_n = \\lim_{n\\to\\infty} a_n = \\lim_{n\\to\\infty} b_n$, with $b \\leq M(a,b) \\leq a$.",
     "significance": "supporting",
-    "relatedConcepts": ["ciInf (conditional infimum)", "agm_common_limit", "ciInf_le (infimum is ≤ each term)", "agm_bounds"],
-    "prerequisites": ["ciInf_le (needs BddBelow)", "tendsto_atTop_ciInf gives the tendsto", "agm_common_limit bridges inf and sup"]
+    "relatedConcepts": [
+      "ciInf (conditional infimum)",
+      "agm_common_limit",
+      "ciInf_le (infimum is \u2264 each term)",
+      "agm_bounds"
+    ],
+    "prerequisites": [
+      "ciInf_le (needs BddBelow)",
+      "tendsto_atTop_ciInf gives the tendsto",
+      "agm_common_limit bridges inf and sup"
+    ]
   },
   {
     "id": "ann-elliptic-integrals",
     "proofId": "amgm-inequality-oq-04",
-    "range": { "startLine": 274, "endLine": 306 },
+    "range": {
+      "startLine": 274,
+      "endLine": 306
+    },
     "type": "concept",
     "title": "Elliptic Integral Connection (Axiomatized): Gauss's Deep Theorem",
-    "content": "The three axioms capture Gauss's remarkable 1799 discovery. ellipticK : ℝ → ℝ axiomatizes the complete elliptic integral of the first kind K(k) = ∫₀^{π/2} dθ/√(1-k²sin²θ). ellipticK_zero : K(0) = π/2 (the degenerate case: integrand is identically 1, so K(0) = π/2). agm_ellipticK states Gauss's theorem: M(a,b) = a·π/(2·K(√(1-(b/a)²))). The complementary modulus k' = √(1-(b/a)²) converts between the usual (a,b) parameterization and the k-parameterization of elliptic integrals. These are axiomatized rather than proved because Mathlib 4.26.0 does not have a formalized K(k); it is a deep integral requiring theory of complete elliptic integrals. Notably: ellipticK_zero is consistent (K(0) = ∫₀^{π/2} 1 dθ = π/2) and agm_ellipticK is mathematically true but requires the full Gauss proof using complex analysis and modular forms.",
+    "content": "The three axioms capture Gauss's remarkable 1799 discovery. ellipticK : \u211d \u2192 \u211d axiomatizes the complete elliptic integral of the first kind K(k) = \u222b\u2080^{\u03c0/2} d\u03b8/\u221a(1-k\u00b2sin\u00b2\u03b8). ellipticK_zero : K(0) = \u03c0/2 (the degenerate case: integrand is identically 1, so K(0) = \u03c0/2). agm_ellipticK states Gauss's theorem: M(a,b) = a\u00b7\u03c0/(2\u00b7K(\u221a(1-(b/a)\u00b2))). The complementary modulus k' = \u221a(1-(b/a)\u00b2) converts between the usual (a,b) parameterization and the k-parameterization of elliptic integrals. These are axiomatized rather than proved because Mathlib 4.26.0 does not have a formalized K(k); it is a deep integral requiring theory of complete elliptic integrals. Notably: ellipticK_zero is consistent (K(0) = \u222b\u2080^{\u03c0/2} 1 d\u03b8 = \u03c0/2) and agm_ellipticK is mathematically true but requires the full Gauss proof using complex analysis and modular forms.",
     "mathContext": "$K(k) = \\int_0^{\\pi/2} \\frac{d\\theta}{\\sqrt{1-k^2\\sin^2\\theta}}$. Gauss's theorem: $M(a,b) = \\frac{a\\pi}{2K\\!\\left(\\sqrt{1-(b/a)^2}\\right)}$.",
     "significance": "key",
-    "relatedConcepts": ["complete elliptic integral K(k)", "Gauss AGM theorem", "Legendre's relation", "elliptic modulus and complementary modulus", "axiom in Lean 4"],
-    "prerequisites": ["definition of K(k) as an integral", "complementary modulus k' = √(1-k²)", "Gauss's 1799 discovery (requires complex analysis + modular forms to prove)"]
+    "relatedConcepts": [
+      "complete elliptic integral K(k)",
+      "Gauss AGM theorem",
+      "Legendre's relation",
+      "elliptic modulus and complementary modulus",
+      "axiom in Lean 4"
+    ],
+    "prerequisites": [
+      "definition of K(k) as an integral",
+      "complementary modulus k' = \u221a(1-k\u00b2)",
+      "Gauss's 1799 discovery (requires complex analysis + modular forms to prove)"
+    ]
   }
 ]

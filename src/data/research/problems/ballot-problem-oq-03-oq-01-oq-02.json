@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 33 produced no proof progress. Strategy artefact (literature/closing-the-final-sorry.md) added comparing the three known proof routes for closing the final sorry; recommends modularize-then-RSK. Sorry count remains 1: hook_walk_identity ≥10×≥10 non-rectangular.",
+    "progressSummary": "PROGRESS session 38: gnwProb_sum_corners, gnwProb_step, gnwProb_stable, hookLength_isCorner_one all PROVED (PR #15288). hook_walk_identity_gnw complete. Sole remaining sorry: gnwProb_key (GNW 1979 KEY theorem, hard combinatorial induction). Estimated 200-300 lines.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -131,7 +131,18 @@
       "nineRow_arm_row{0..8} (9 lemmas): arm products via prod_div_telescope",
       "Session 32 (2026-04-27): removed ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient (dead, unprovable scaffolding with arbitrary (r,σ,m) untied to μ)",
       "Session 32: replaced removed sorries with OPEN comment block in PART V documenting canonical-config restatement (A) RSK bijection and (B) Lindström/Jacobi-Trudi det identity",
-      "Session 32: documented LGV well-formedness obstruction r-1 ≤ μ.rowLen(r-1), which fails for tall/narrow shapes — needs transpose-duality case split"
+      "Session 32: documented LGV well-formedness obstruction r-1 ≤ μ.rowLen(r-1), which fails for tall/narrow shapes — needs transpose-duality case split",
+      "BallotProblemOQ03OQ01OQ02Helpers.lean: PARTS I-XXIV extracted; 22 private declarations de-privatized for cross-file access",
+      "strictHookCells: arm+leg strict hook cells def (Helpers:13666)",
+      "strictHookCells_mem: proved — each strict hook cell is in μ (Helpers:13671)",
+      "gnwProb: GNW walk probability by Nat.rec on K bound (Helpers:13698)",
+      "hook_walk_identity_gnw: PROVED via gnwProb_key + gnwProb_sum_corners + sum_comm (Helpers:13727)",
+      "gnwProb_sum_corners proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13730-13803 (PR #15288)",
+      "hookLength_isCorner_one proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13807-13817 (PR #15288)",
+      "gnwProb_step proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13822-13839 (PR #15288)",
+      "gnwProb_stable proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13843-13851 (PR #15288)",
+      "hook_walk_identity_gnw proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13877-13896 (uses gnwProb_key which is sorry)",
+      "strictHookCells_card proved: cardinality = hookLength - 1, using Finset.Ico image + disjointness argument (PR #15288)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -208,7 +219,20 @@
       "For rectangles (1 corner): arm product telescopes to rowLen, leg product to colLen, giving R = rowLen × colLen = |μ|; key evidence the algebraic proof works",
       "The two LGV auxiliary lemmas were stated for arbitrary (r, σ, m) with no link to μ. Most parameter choices yield false numerical equalities (e.g. μ=⊥ vs r=1, σ=fun _ => 5). Removing them is honest housekeeping, not a content regression.",
       "youngLGVConfig wellFormed condition r-1 ≤ σ⟨0⟩ reduces to μ.rowLen(numRows-1) ≥ numRows-1 — fails for tall shapes like (1,1,…,1). The general LGV statement requires applying LGV to whichever of μ, μᵀ is wide enough.",
-      "Session 33 (2026-04-27): row-by-row tower has hit diminishing returns at 14022 lines. Adding row N+1 costs ~2200 lines for one branch and worsens the build envelope. The remaining sorry is uniformly closeable only by GNW (~300 lines, probability) or RSK/Fomin growth (~600 lines, also gives full HLF). Modularization (split PARTS XIVc-XXVI) must precede further additions to restore buildability."
+      "Session 33 (2026-04-27): row-by-row tower has hit diminishing returns at 14022 lines. Adding row N+1 costs ~2200 lines for one branch and worsens the build envelope. The remaining sorry is uniformly closeable only by GNW (~300 lines, probability) or RSK/Fomin growth (~600 lines, also gives full HLF). Modularization (split PARTS XIVc-XXVI) must precede further additions to restore buildability.",
+      "Session 35: Modularization — split 14022-line file into Helpers (13645 lines, 0 sorries) + Main (392 lines, 1 sorry). The sorry is now at line 302 of a 392-line file.",
+      "GNW structure: hook_walk_identity_gnw proved once gnwProb_key and gnwProb_sum_corners accepted; proof uses sum_comm to swap Σ_c Σ_x",
+      "Dispatcher hook_walk_identity now sorry-free; sorries isolated to PART XXVI GNW infrastructure",
+      "gnwProb_sum_corners is HARD but NOT the GNW KEY step — it is a standard induction on hookLen bound K (~50 lines)",
+      "gnwProb_key (GNW 1979 KEY) is the sole mathematically deep sorry; 3 TRIVIAL supporting lemmas also remain",
+      "gnwProb_sum_corners is now proved in PR #15288 (origin/main): Sigma_c gnwProb(c,K,x) = 1 for x in mu, K >= hookLen(x) -- proved by strong induction on K",
+      "gnwProb_step proved in PR #15288: gnwProb(K+1,x) = gnwProb(K,x) for K >= hookLen(x) -- stability step by strong induction",
+      "gnwProb_stable proved in PR #15288: gnwProb(K,x) = gnwProb(hookLen(x),x) for K >= hookLen(x) -- stability by induction on d=K-hookLen(x)",
+      "hookLength_isCorner_one proved in PR #15288: corners have hookLength = 1",
+      "gnwProb_key is the SOLE remaining sorry -- the GNW 1979 KEY theorem -- requires exchange argument or direct induction on |mu|",
+      "gnwProb_key for rectangles (single corner): gnwProb_sum_corners gives gnwProb=1 for all x, so sum = |mu| = hookProd(mu)/hookProd(mu\\c) by hook_walk_identity_rectYD",
+      "gnwProb_key for non-rectangles requires the GNW exchange argument: estimated 200-300 lines of Lean, needs careful study of GNW 1979 paper",
+      "Exchange identity attempt disproved: gnwProb_mu(c,K,x) != gnwProb_{mu\\c'}(c,K,x) in general -- counterexample on {(0,0),(0,1),(1,0)} with c=(1,0),c'=(0,1): mu gives 1/2, mu\\c' gives 1"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -216,9 +240,11 @@
       "BallotProblemOQ03.lean regression (omega failure near minSharedStepIdx_preserved) blocks all builds"
     ],
     "nextSteps": [
-      "Fix pre-existing omega regression in BallotProblemOQ03.lean:2541 (lindstromSwapPreservesMinStep) to unblock compilation",
-      "Implement hook_walk_identity_tenPlusRow for 10+ row shapes (requires GNW hook-walk formalization or direct computation approach)",
-      "Consider GNW hook-walk general framework to cover all row counts without row-by-row enumeration"
+      "Study GNW 1979 paper (Greene-Nijenhuis-Wilf, J. Combin. Theory Ser. A 1979) for the actual exchange argument proof",
+      "Prove gnwProb_key for rectangles using: gnwProb_sum_corners (corners(mu)={c} -> gnwProb=1) + hook_walk_identity_rectYD",
+      "Prove gnwProb_key for non-rectangles: formalize GNW 1979 induction on |mu| using corners(mu) has >=2 elements",
+      "Key lemma needed: hookProd ratio formula -- hookProd(mu)/hookProd(mu\\c) = Pi_{y in preHook(c)} hookLen(y)/(hookLen(y)-1)",
+      "Consider Aristotle submission for gnwProb_key -- it is a HARD sorry with known proof"
     ]
   },
   "tags": [
@@ -234,6 +260,7 @@
     "ballot-problem-oq-01-oq-01",
     "ballot-problem-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-04",
     "ballot-problem-oq-01-oq-04",
     "ballot-problem-oq-02",
@@ -241,6 +268,7 @@
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
     "ballot-problem-oq-03-oq-02",
     "ballot-problem-oq-03-oq-03"
@@ -309,24 +337,35 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
       "filename": "BallotProblemOQ01OQ02OQ01.lean",
-      "lineCount": 209,
-      "theoremCount": 7,
+      "lineCount": 250,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 6,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
       "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
-      "lineCount": 109,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "lineCount": 199,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
@@ -353,13 +392,24 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ04.lean",
       "filename": "BallotProblemOQ01OQ04.lean",
-      "lineCount": 188,
-      "theoremCount": 9,
-      "axiomCount": 1,
-      "defCount": 5,
+      "lineCount": 74,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04Core.lean",
+      "filename": "BallotProblemOQ01OQ04Core.lean",
+      "lineCount": 179,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04Core.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
@@ -419,21 +469,32 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 346,
-      "theoremCount": 9,
+      "lineCount": 851,
+      "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 1,
+      "defCount": 6,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "lineCount": 132,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 14005,
-      "theoremCount": 64,
+      "lineCount": 399,
+      "theoremCount": 2,
       "axiomCount": 0,
-      "defCount": 10,
+      "defCount": 0,
       "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
@@ -441,13 +502,24 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 113,
+      "lineCount": 114,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 3,
+      "sorryCount": 4,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "lineCount": 13899,
+      "theoremCount": 78,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",

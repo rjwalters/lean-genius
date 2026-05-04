@@ -20,6 +20,7 @@
     "lebesgue-measure",
     "lebesgue-measure-oq-01",
     "lebesgue-measure-oq-01-oq-01",
+    "lebesgue-measure-oq-01-oq-01-oq-02",
     "lebesgue-measure-oq-02",
     "lebesgue-measure-oq-03",
     "lebesgue-measure-oq-03-oq-01",
@@ -63,6 +64,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ02.lean",
+      "lineCount": 241,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/LebesgueMeasureOQ02.lean",
       "filename": "LebesgueMeasureOQ02.lean",
       "lineCount": 225,
@@ -98,11 +110,11 @@
     {
       "path": "Proofs/LebesgueMeasureOQ06.lean",
       "filename": "LebesgueMeasureOQ06.lean",
-      "lineCount": 1287,
-      "theoremCount": 7,
-      "axiomCount": 0,
+      "lineCount": 1518,
+      "theoremCount": 8,
+      "axiomCount": 1,
       "defCount": 5,
-      "sorryCount": 7,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
     },

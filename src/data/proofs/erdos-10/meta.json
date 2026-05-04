@@ -24,6 +24,7 @@
     "axiomCount": 0,
     "assumptions": "Open problem: Erdős Problem #10 asks whether there exists k such that every sufficiently large integer is a sum of a prime and at most k powers of 2. The Lean file contains 0 formal axiom declarations — it defines the key sets (sumPrimeAndTwoPows, Set.lowerDensity) but leaves the main results as doc-comment descriptions. Classified as axiomatized per CLAUDE.md policy for open conjectures.",
     "lineCount": 94,
+    "theoremCount": 0,
     "prerequisites": [
       "Prime numbers and their distribution",
       "Density of sets of integers (lower density, natural density)",
@@ -194,7 +195,8 @@
     "lineCount": 94,
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "theoremCount": 0
   },
   "sorries": 0
 }

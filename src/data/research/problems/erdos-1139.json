@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 2A (open conjecture + density asymptotic), 16T proved, 0S. Restored axioms after bulk-removal.",
+    "progressSummary": "RESTORED: axioms erdos_1139 and hardy_ramanujan_asymptotic re-added. 16T, 2A, 0S. Status: axiomatized.",
     "builtItems": [
       "Created Erdos1139Problem.lean (157 lines, 11 theorems, 2 axioms, 3 sorries)",
       "Proved prime_isAlmostPrime, four_isAlmostPrime, eight_not_almostPrime",
@@ -53,7 +53,8 @@
       "Nat.nth provides 0-indexed enumeration with strictMono, mem_of_infinite, nth_count API",
       "Classical.decPred needed since bigOmega is noncomputable (uses Finsupp.sum)",
       "Confirmed complete: 2 axioms are open conjecture and deep density result",
-      "Axioms erdos_1139 and hardy_ramanujan_asymptotic restored after c34e89c6 bulk cleanup incorrectly removed them as unused (they formally state the open problem)"
+      "Axioms erdos_1139 and hardy_ramanujan_asymptotic restored after c34e89c6 bulk cleanup incorrectly removed them as unused (they formally state the open problem)",
+      "axioms erdos_1139 and hardy_ramanujan_asymptotic restored to Lean file (were missing since c34e89c6 bulk cleanup; research JSON claimed restore but file was 0-axiom)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -81,9 +82,9 @@
     {
       "path": "Proofs/Erdos1139Problem.lean",
       "filename": "Erdos1139Problem.lean",
-      "lineCount": 179,
+      "lineCount": 193,
       "theoremCount": 16,
-      "axiomCount": 0,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

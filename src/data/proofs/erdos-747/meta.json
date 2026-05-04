@@ -68,7 +68,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 313,
-    "assumptions": "5 axioms: johansson_kahn_vu, kahn_precise_threshold, below_threshold_fails, above_threshold_succeeds, erdos_747. 0 sorries."
+    "assumptions": "5 axioms: johansson_kahn_vu, kahn_precise_threshold, below_threshold_fails, above_threshold_succeeds, erdos_747. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #747 (Shamir's Problem)**\n\nA famous problem in probabilistic combinatorics.\n\n**Key History:**\n- 1979: Shamir asked Erdős about perfect matchings in random 3-uniform hypergraphs\n- Erdős's response: 'Here we have no idea of the answer' (unlike most random hypergraph problems)\n- 2008: Johansson, Kahn, and Vu proved the threshold is ≍ n log n\n- 2023: Kahn determined the precise asymptotic ~ n log n, also for general r-uniform hypergraphs\n\n**Mathematical Significance:**\n- One of the most important results in random hypergraph theory\n- The answer (same threshold for all r) was unexpected",

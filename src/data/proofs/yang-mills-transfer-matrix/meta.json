@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 12,
     "assumptions": "1 explicit axiom (`gaugeTransform`, YangMills/Classical.lean) plus 11 structure-encoded assumptions of type `True` in Exploration.lean: Slavnov-Taylor/BRST Ward identity (`SlavnovTaylorIdentity.ward_identity_holds`, line 2454), regulator IR/UV behavior (`RegulatorProperties.suppresses_ir`, `RegulatorProperties.grows_at_uv`, lines 12746-12748), gauge invariance of observables (`GaugeInvariantObs.gaugeInvariant`, line 15986), Fradkin-Shenker analyticity (`FradkinShenker.analytic`, line 16035), Coleman-Mandula finite spectrum/non-trivial scattering/S-matrix analyticity (`CMHypotheses.finiteSpectrum`, `CMHypotheses.nontrivialScattering`, `CMHypotheses.analyticity`, lines 16760-16764), BRST charge conservation and nilpotency (`BRSTChargeCohom.conservation`, `BRSTChargeCohom.nilpotent`, lines 17248-17250), and asymptotic-safety beta-function vanishing (`AsymptoticSafety.beta_vanishes`, line 17606). Each `: True` field is satisfied by `trivial`, stipulating a substantive QFT property as a hypothesis without proof obligation.",
-    "lineCount": 28075,
+    "lineCount": 28477,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pos",
@@ -36,7 +36,8 @@
       "Connection between lattice and Hamiltonian formulations"
     ],
     "dateAdded": "2026-03-23",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1787
   },
   "overview": {
     "historicalContext": "The transfer matrix method was introduced to lattice gauge theory by Wilson (1974) and developed into a rigorous tool by Osterwalder and Seiler (1978) and Creutz (1983). The key insight is that the Euclidean lattice partition function $Z = \\operatorname{Tr}(T^{N_t})$ connects to Hamiltonian quantum mechanics through the Perron-Frobenius theorem: the transfer matrix $T$ is a strictly positive operator, so it has a unique largest eigenvalue $\\lambda_0$ (the vacuum) with a spectral gap to $\\lambda_1$ (the first excited state). Kogut and Susskind (1975) established the Hamiltonian formulation, decomposing $T = T_E^{1/2} T_B T_E^{1/2}$ into electric (kinetic) and magnetic (potential) parts. Glimm and Jaffe (1987) placed the mass gap extraction on firm mathematical footing in their constructive QFT framework. The finite-volume mass gap is a theorem for any coupling; the Clay Millennium Prize asks whether it persists in the continuum and infinite-volume limits.",
@@ -136,12 +137,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 28075,
+    "lineCount": 28477,
     "structureCount": 365,
     "axiomCount": 0,
     "theoremCount": 1787,
     "lemmaCount": 0,
-    "defCount": 641,
+    "definitionCount": 641,
     "imports": [
       "Proofs.YangMills.Classical",
       "Proofs.YangMills.Quantum"

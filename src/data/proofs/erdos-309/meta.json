@@ -66,7 +66,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 339,
-    "assumptions": "1 axiom: yokota_lower_bound_1997. 3 sorries."
+    "assumptions": "1 axiom: yokota_lower_bound_1997. 3 sorries.",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "**Egyptian Fractions and Erdős's Question**\n\nThis problem concerns a fundamental question about **Egyptian fractions** - sums of distinct unit fractions 1/n. The ancient Egyptians represented all fractions this way.\n\n**The Question:** Given denominators from {1, ..., N}, how many integers can be represented as such sums? Specifically, is this count o(log N) (sublogarithmic)?\n\n**The Answer:** NO. The count F(N) grows like log N + γ, where γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\n**Key Contributors:**\n- Yokota (1997): First logarithmic lower bound\n- Croot (1999): Exact threshold for representability\n- Yokota (2002): Refined bounds with (log log N)² correction\n\n**The harmonic number H_N = 1 + 1/2 + ... + 1/N ~ log N + γ** is central to understanding this problem, as representable integers are bounded by H_N.",

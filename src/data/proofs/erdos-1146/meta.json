@@ -68,8 +68,9 @@
       "additive-number-theory",
       "mann-theorem"
     ],
-    "lineCount": 287,
-    "assumptions": "2 axioms: smooth23_not_lacunary (deep result about ratios of smooth numbers with only 2 and 3 prime factors), smooth23_schnirelmann_zero (Schnirelmann density of smooth numbers is 0). 0 sorries."
+    "lineCount": 655,
+    "assumptions": "2 axioms: smooth23_not_lacunary (deep result about ratios of smooth numbers with only 2 and 3 prime factors), smooth23_schnirelmann_zero (Schnirelmann density of smooth numbers is 0). 0 sorries.",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "Imre Ruzsa posed this problem in 1999, building on his resolution of Erdős Problem #37 about essential components in additive number theory. A set $B \\subseteq \\mathbb{N}$ is an *essential component* if $\\sigma(A + B) > \\sigma(A)$ for every set $A$ with $0 < \\sigma(A) < 1$, where $\\sigma$ denotes the Schnirelmann density. Ruzsa proved that essential components must have counting function growth $\\geq (\\log N)^{1+c}$ for some $c > 0$, ruling out lacunary sets (which have counting function $O(\\log N)$).\n\nThe set $\\{2^m \\cdot 3^n : m, n \\geq 0\\}$ of 3-smooth numbers has counting function $\\sim C(\\log N)^2$, placing it exactly at the threshold with $c = 1$. Ruzsa called this 'the simplest set with a chance to be an essential component,' making it a natural test case for the boundary between essential and non-essential sets in additive combinatorics.",
@@ -229,7 +230,7 @@
       "Erdos37"
     ],
     "namespace": "Erdos1146",
-    "lineCount": 287,
+    "lineCount": 655,
     "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 2,

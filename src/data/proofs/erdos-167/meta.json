@@ -1,6 +1,6 @@
 {
   "id": "erdos-167",
-  "title": "Erd\u0151s Problem #167: Tuza's Conjecture",
+  "title": "Erdős Problem #167: Tuza's Conjecture",
   "slug": "erdos-167",
   "description": "If G is a graph with at most k edge-disjoint triangles, can G be made triangle-free by removing at most 2k edges? Tuza's Conjecture (1981) remains open in general.",
   "meta": {
@@ -28,22 +28,23 @@
       "extremal combinatorics",
       "linear programming relaxation"
     ],
-    "lineCount": 274,
+    "lineCount": 275,
     "assumptions": "1 axiom: IsPlanar. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
-    "historicalContext": "Zsolt Tuza conjectured in 1981 that $\\tau(G) \\leq 2\\nu(G)$ for every graph $G$, where $\\tau(G)$ is the minimum number of edges whose removal destroys all triangles and $\\nu(G)$ is the maximum number of edge-disjoint triangles. The trivial bound $\\tau \\leq 3\\nu$ follows from removing all three edges of each triangle in a maximum packing. Penny Haxell and Yoshiharu Kohayakawa (1998) proved $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ using probabilistic and structural methods. Haxell (1999) verified the conjecture for $K_4$-free graphs. The conjecture also holds for planar graphs (Tuza 1994, Krivelevich 1995) and Erd\u0151s-R\u00e9nyi random graphs $G(n,p)$ for most $p$. The fractional relaxation $\\tau^*(G) \\leq 2\\nu^*(G)$ was proved by Krivelevich via LP duality. Despite four decades of work, the integral conjecture remains open, and the gap between the best general bound 2.87 and the conjectured 2 has resisted improvement.",
+    "historicalContext": "Zsolt Tuza conjectured in 1981 that $\\tau(G) \\leq 2\\nu(G)$ for every graph $G$, where $\\tau(G)$ is the minimum number of edges whose removal destroys all triangles and $\\nu(G)$ is the maximum number of edge-disjoint triangles. The trivial bound $\\tau \\leq 3\\nu$ follows from removing all three edges of each triangle in a maximum packing. Penny Haxell and Yoshiharu Kohayakawa (1998) proved $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ using probabilistic and structural methods. Haxell (1999) verified the conjecture for $K_4$-free graphs. The conjecture also holds for planar graphs (Tuza 1994, Krivelevich 1995) and Erdős-Rényi random graphs $G(n,p)$ for most $p$. The fractional relaxation $\\tau^*(G) \\leq 2\\nu^*(G)$ was proved by Krivelevich via LP duality. Despite four decades of work, the integral conjecture remains open, and the gap between the best general bound 2.87 and the conjectured 2 has resisted improvement.",
     "problemStatement": "Let $\\nu(G)$ be the maximum number of edge-disjoint triangles in $G$, and $\\tau(G)$ the minimum number of edges whose removal makes $G$ triangle-free. **Tuza's Conjecture**: $\\tau(G) \\leq 2\\nu(G)$ for all graphs $G$. Complete graphs $K_4$ and $K_5$ show the factor 2 is best possible.",
     "text": "If G is a graph with at most k edge-disjoint triangles, can G be made triangle-free by removing at most 2k edges? Tuza's Conjecture (1981) remains open in general.",
-    "proofStrategy": "The formalization builds from first principles: triangles as 3-element vertex subsets, edge-disjoint packings as sets of non-overlapping triangles, and triangle covers as edge sets whose removal eliminates all triangles. Aristotle verified three key theorems: (1) `trivial_bound`: $\\tau \\leq 3\\nu$ via constructing a cover by taking all edges from a maximum packing, using `Finset.biUnion` and `offDiag` to enumerate edges; (2) `k4_tight`: $\\nu(K_4)=1, \\tau(K_4)=2$ by exhaustive search over `Fin 4`; (3) `k5_tight`: $\\nu(K_5)=2, \\tau(K_5)=4$ using `native_decide` for finite verification. One axiom is declared: `IsPlanar`, which axiomatizes the planar graph predicate. The Haxell-Kohayakawa bound, K\u2084-free special case, and fractional version are described in docstrings only — no corresponding axioms are declared in the file.",
+    "proofStrategy": "The formalization builds from first principles: triangles as 3-element vertex subsets, edge-disjoint packings as sets of non-overlapping triangles, and triangle covers as edge sets whose removal eliminates all triangles. Aristotle verified three key theorems: (1) `trivial_bound`: $\\tau \\leq 3\\nu$ via constructing a cover by taking all edges from a maximum packing, using `Finset.biUnion` and `offDiag` to enumerate edges; (2) `k4_tight`: $\\nu(K_4)=1, \\tau(K_4)=2$ by exhaustive search over `Fin 4`; (3) `k5_tight`: $\\nu(K_5)=2, \\tau(K_5)=4$ using `native_decide` for finite verification. One axiom is declared: `IsPlanar`, which axiomatizes the planar graph predicate. The Haxell-Kohayakawa bound, K₄-free special case, and fractional version are described in docstrings only — no corresponding axioms are declared in the file.",
     "keyInsights": [
-      "Trivial bound: remove one edge per triangle in maximum packing \u2192 \u03c4 \u2264 3\u03bd",
-      "K\u2084 achieves equality in Tuza: \u03bd(K\u2084) = 1, \u03c4(K\u2084) = 2",
-      "K\u2085 also achieves equality: \u03bd(K\u2085) = 2, \u03c4(K\u2085) = 4",
-      "Best general bound: \u03c4 \u2264 (3 - 3/23)\u03bd \u2248 2.87\u03bd (Haxell-Kohayakawa)",
-      "Fractional version is true: \u03c4* \u2264 2\u03bd*",
-      "Proven for special classes: K\u2084-free, planar, random graphs"
+      "Trivial bound: remove one edge per triangle in maximum packing → τ ≤ 3ν",
+      "K₄ achieves equality in Tuza: ν(K₄) = 1, τ(K₄) = 2",
+      "K₅ also achieves equality: ν(K₅) = 2, τ(K₅) = 4",
+      "Best general bound: τ ≤ (3 - 3/23)ν ≈ 2.87ν (Haxell-Kohayakawa)",
+      "Fractional version is true: τ* ≤ 2ν*",
+      "Proven for special classes: K₄-free, planar, random graphs"
     ],
     "prerequisites": [
       "graph theory fundamentals",
@@ -58,7 +59,7 @@
       "title": "Problem Statement and Context",
       "startLine": 20,
       "endLine": 53,
-      "summary": "Documentation of Erd\u0151s Problem #167: Tuza's 1981 conjecture that \u03c4(G) \u2264 2\u03bd(G), where \u03c4 is the minimum triangle edge cover and \u03bd is the maximum triangle packing. Includes status, references, and formalization roadmap."
+      "summary": "Documentation of Erdős Problem #167: Tuza's 1981 conjecture that τ(G) ≤ 2ν(G), where τ is the minimum triangle edge cover and ν is the maximum triangle packing. Includes status, references, and formalization roadmap."
     },
     {
       "id": "core-definitions",
@@ -72,40 +73,40 @@
       "title": "Tuza's Conjecture Statement",
       "startLine": 86,
       "endLine": 94,
-      "summary": "Formal statement of Tuza's conjecture: for every graph G, the minimum triangle cover size \u03c4(G) is at most 2\u03bd(G) where \u03bd(G) is the maximum triangle packing size. `TuzaConjecture` is a `def : Prop` — not an axiom."
+      "summary": "Formal statement of Tuza's conjecture: for every graph G, the minimum triangle cover size τ(G) is at most 2ν(G) where ν(G) is the maximum triangle packing size. `TuzaConjecture` is a `def : Prop` — not an axiom."
     },
     {
       "id": "trivial-bound",
-      "title": "Trivial Bound: \u03c4 \u2264 3\u03bd",
+      "title": "Trivial Bound: τ ≤ 3ν",
       "startLine": 95,
       "endLine": 175,
-      "summary": "Proves the trivial bound \u03c4(G) \u2264 3\u03bd(G): given a maximum packing of \u03bd edge-disjoint triangles, removing all 3 edges of each triangle yields a cover of size 3\u03bd. Aristotle-verified."
+      "summary": "Proves the trivial bound τ(G) ≤ 3ν(G): given a maximum packing of ν edge-disjoint triangles, removing all 3 edges of each triangle yields a cover of size 3ν. Aristotle-verified."
     },
     {
       "id": "known-results",
-      "title": "Known Results: K\u2084 and K\u2085 Tightness",
+      "title": "Known Results: K₄ and K₅ Tightness",
       "startLine": 176,
       "endLine": 244,
-      "summary": "Tightness examples: K\u2084 has \u03bd=1, \u03c4=2 (ratio 2, matching conjecture) and K\u2085 has \u03bd=2, \u03c4=4 (also ratio 2). Both verified by native_decide. The Haxell-Kohayakawa bound and K\u2084-free/planar special cases appear as docstrings — not axiomatized in the file."
+      "summary": "Tightness examples: K₄ has ν=1, τ=2 (ratio 2, matching conjecture) and K₅ has ν=2, τ=4 (also ratio 2). Both verified by native_decide. The Haxell-Kohayakawa bound and K₄-free/planar special cases appear as docstrings — not axiomatized in the file."
     },
     {
       "id": "fractional-version",
       "title": "Fractional Version",
       "startLine": 245,
       "endLine": 251,
-      "summary": "Documents the fractional relaxation \u03c4*(G) \u2264 2\u03bd*(G) (proved via LP duality) and the fractional Tuza conjecture in docstrings — no axioms are declared here."
+      "summary": "Documents the fractional relaxation τ*(G) ≤ 2ν*(G) (proved via LP duality) and the fractional Tuza conjecture in docstrings — no axioms are declared here."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 252,
       "endLine": 274,
-      "summary": "Summary of formalization status: 4 theorems (trivial bound, K\u2084 tightness, K\u2085 tightness, plus planar-related), 1 axiom (`IsPlanar`). The Haxell-Kohayakawa bound, K\u2084-free, and fractional version appear in docstrings only. The main conjecture \u03c4 \u2264 2\u03bd remains open."
+      "summary": "Summary of formalization status: 4 theorems (trivial bound, K₄ tightness, K₅ tightness, plus planar-related), 1 axiom (`IsPlanar`). The Haxell-Kohayakawa bound, K₄-free, and fractional version appear in docstrings only. The main conjecture τ ≤ 2ν remains open."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #167 (Tuza's Conjecture) is PARTIALLY SOLVED. This formalization includes three Aristotle-verified theorems: the trivial 3\u03bd bound and tightness examples K\u2084 and K\u2085. The conjecture \u03c4 \u2264 2\u03bd remains open for general graphs.",
-    "implications": "**Theoretical Significance**: Tuza's conjecture sits at the intersection of extremal graph theory, combinatorial optimization, and polyhedral combinatorics.\n\nThe fractional version $\\tau^* = 2\\nu^*$ (proved via LP duality) shows the conjecture holds 'on average' \u2014 the obstruction is purely an integrality gap question. If the conjecture holds, it would give a tight characterization of the packing-covering tradeoff for triangles, analogous to K\u00f6nig's theorem for bipartite matchings.",
+    "summary": "Erdős Problem #167 (Tuza's Conjecture) is PARTIALLY SOLVED. This formalization includes three Aristotle-verified theorems: the trivial 3ν bound and tightness examples K₄ and K₅. The conjecture τ ≤ 2ν remains open for general graphs.",
+    "implications": "**Theoretical Significance**: Tuza's conjecture sits at the intersection of extremal graph theory, combinatorial optimization, and polyhedral combinatorics.\n\nThe fractional version $\\tau^* = 2\\nu^*$ (proved via LP duality) shows the conjecture holds 'on average' — the obstruction is purely an integrality gap question. If the conjecture holds, it would give a tight characterization of the packing-covering tradeoff for triangles, analogous to König's theorem for bipartite matchings.",
     "openQuestions": [
       "Does $\\tau(G) \\leq 2\\nu(G)$ hold for all graphs? (The main conjecture, open since 1981)",
       "Can the Haxell-Kohayakawa bound $\\tau \\leq 2.87\\nu$ be improved below $2.5\\nu$?",
@@ -123,7 +124,7 @@
     {
       "targetId": "erdos-136",
       "relationship": "related",
-      "description": "Both are graph coloring/structure problems from Erd\u0151s. #136 concerns the Erd\u0151s-Gy\u00e1rf\u00e1s function f(n,4,5) relating graph size to clique/independence structure, #167 concerns triangle substructure"
+      "description": "Both are graph coloring/structure problems from Erdős. #136 concerns the Erdős-Gyárfás function f(n,4,5) relating graph size to clique/independence structure, #167 concerns triangle substructure"
     }
   ],
   "leanFile": {
@@ -136,7 +137,7 @@
       "Set"
     ],
     "namespace": "Erdos167",
-    "lineCount": 274,
+    "lineCount": 275,
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 7,
@@ -147,14 +148,14 @@
     {
       "key": "Tu41b",
       "authors": [
-        "P. Tur\u00e1n"
+        "P. Turán"
       ],
       "title": "Eine Extremalaufgabe aus der Graphentheorie",
-      "venue": "Matematikai \u00e9s Fizikai Lapok",
+      "venue": "Matematikai és Fizikai Lapok",
       "year": "1941",
       "volume": "48",
       "pages": "436-452",
-      "note": "Tur\u00e1n's theorem: foundation for triangle covering and extremal graph problems"
+      "note": "Turán's theorem: foundation for triangle covering and extremal graph problems"
     }
   ],
   "sorries": 0

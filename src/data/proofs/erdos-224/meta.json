@@ -34,7 +34,8 @@
     "axiomCount": 1,
     "lineCount": 277,
     "assumptions": "1 axiom: danzer_grunbaum (Danzer-Grünbaum theorem: any 2^d+1 points contain an obtuse triple). 0 sorries. hypercube_card and hypercube_obtuse_free are proved theorems, not axioms.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the context of discrete geometry, asking how many points in $\\mathbb{R}^d$ can avoid forming any obtuse angle. The question connects to the geometry of the hypercube: the $2^d$ vertices of $\\{0,1\\}^d$ form an obtuse-free set because all angles between triples of binary vectors are $\\leq 90°$ (specifically $60°$ or $90°$). For $d = 2$, any 5 points in the plane trivially contain an obtuse triple (via convex position arguments). For $d = 3$, Kuiper and Boerdijk proved the 9-point case independently. The general result was established by Ludwig Danzer and Branko Grünbaum in their 1962 paper in *Mathematische Zeitschrift*, resolving the problem for all dimensions. The proof uses induction on dimension with a projection argument, showing that $2^d + 1$ points must contain an obtuse triple. Erdős and Füredi (1983) later studied the related problem of the greatest angle among $n$ points, extending the analysis beyond the threshold case.",

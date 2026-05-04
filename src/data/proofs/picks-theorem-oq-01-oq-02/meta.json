@@ -1,0 +1,137 @@
+{
+  "id": "picks-theorem-oq-01-oq-02",
+  "title": "2D Ehrhart Polynomial via Pick's Theorem",
+  "slug": "picks-theorem-oq-01-oq-02",
+  "description": "Proves the 2D Ehrhart polynomial L(P,t) = A·t² + (B/2)·t + 1 via three routes: (1) directly for axis-aligned rectangles via Finset.card_product, (2) for right triangles via Nat.antidiagonal decomposition and Gaussian summation, and (3) algebraically for all convex lattice polygons from Pick's theorem and scaling axioms. Includes the interior count formula (Ehrhart-Macdonald reciprocity), the h*-vector decomposition, and a cross-framework consistency theorem linking the Finset count with the abstract Ehrhart formula.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-03",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PicksTheoremOQ01OQ02.lean",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "lattice-points",
+      "ehrhart-polynomial",
+      "picks-theorem",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "axiomCount": 3,
+    "assumptions": "3 axioms: picks_theorem (Pick's formula A=i+B/2-1, matching the gallery's axiomatized PicksTheorem.lean), scaled_area (Area(tP)=t²A), scaled_boundary (|∂(tP)|=t·B for t≥1). The rectangle and triangle Ehrhart polynomials are proved with 0 axioms via Finset combinatorics.",
+    "lineCount": 309,
+    "theoremCount": 24,
+    "definitionCount": 7,
+    "originalContributions": [
+      "rectangle_ehrhart: L(R_{a,b},t) = (ta+1)(tb+1) via Finset.card_product (0 axioms)",
+      "triangle_ehrhart_double: 2·L(Δ_n,t) = (tn+1)(tn+2) via Nat.antidiagonal biUnion + Gauss sum (0 axioms)",
+      "ehrhart_formula: L(P,t) = A·t² + (B/2)·t + 1 derived algebraically from picks_theorem + scaling axioms",
+      "ehrhart_interior: interior count i(tP) = A·t² - (B/2)·t + 1 (2D Ehrhart-Macdonald reciprocity)",
+      "ehrhart_is_quadratic: existential statement that L is a degree-2 polynomial in t",
+      "ehrhart_reciprocity_sign_flip: L(P,t) + i(tP) = 2At² + 2 (symmetry of Ehrhart and interior polynomials)",
+      "rectangle_frameworks_agree: abstract Ehrhart formula for rectangles matches Finset count (cross-framework consistency)",
+      "hstar_one_nonneg: h*₁ ≥ 0 proved from Pick's theorem and boundary_ge_three",
+      "ehrhart_from_hstar: L expressed as linear combination of binomial coefficients C(t+2,2), C(t+1,2), C(t,2)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Ehrhart polynomial was introduced by Eugène Ehrhart in 1962. For a convex lattice polytope P in ℝ^d, the count of lattice points in the integer dilation tP is a polynomial L(P,t) of degree d in t. In 2D, Pick's theorem (1899) gives A = i + B/2 - 1, and applying Pick's theorem to tP (where area scales as t² and boundary scales as t) immediately yields the Ehrhart polynomial. The h*-vector (Stanley 1980) encodes L via the decomposition Σ L(P,t)z^t = h*(z)/(1-z)^(d+1); in 2D, h*₀=1, h*₁=A+B/2-1, h*₂=i(P), all non-negative by Stanley's non-negativity theorem.",
+    "problemStatement": "Following the GCD boundary formula for segments (picks-theorem-oq-02) and the triangulation strategy (picks-theorem-oq-01), formalize the Ehrhart polynomial for 2D convex lattice polygons. The main open question is: can Pick's theorem be used to derive its own Ehrhart generalization entirely within Lean, combining the scaling properties of area and boundary with Pick's formula for tP?",
+    "text": "Yes. For a convex lattice polygon P with area A and B boundary lattice points, the number of lattice points in the integer dilation tP (for t ≥ 1) is L(P,t) = A·t² + (B/2)·t + 1. The proof follows from Pick's theorem applied to tP: area scales as t²A, boundary scales as tB, so i(tP) = t²A - tB/2 + 1 and L = i(tP) + tB = t²A + tB/2 + 1. Additionally, the rectangle and right triangle cases are proved from scratch via Finset combinatorics with 0 axioms.",
+    "proofStrategy": "Three proof routes: (1) Rectangles: L(R_{a,b},t) = |range(ta+1) × range(tb+1)| = (ta+1)(tb+1), proved by Finset.card_product. Quadratic form a·b·t² + (a+b)·t + 1 follows by ring. (2) Right triangles: Δ_n decomposes as ⋃_{k=0}^{tn} antidiag(k) (pairwise disjoint), with |antidiag(k)| = k+1. Summing: |Δ_n ∩ ℤ²| = Σ_{k=0}^{tn} (k+1) = C(tn+2,2). Thus 2·L = (tn+1)(tn+2). (3) General polygons: axiomatize Pick's theorem and the two scaling laws, then derive L algebraically. The key identity is i(tP) = t²A - tB/2 + 1 (from Pick applied to tP).",
+    "keyInsights": [
+      "Pick's theorem applied to tP yields the Ehrhart polynomial in two lines: substitute scaled_area and scaled_boundary into picks_theorem, then L = i(tP) + B(tP) = t²A + tB/2 + 1",
+      "The interior count formula i(tP) = t²A - tB/2 + 1 is the 2D Ehrhart-Macdonald reciprocity: the coefficient of t flips sign relative to L(P,t)",
+      "Nat.antidiagonal provides a natural tiling of the right triangle Δ_n into 'diagonals': the k-th antidiagonal has k+1 points, and their sum is the Gauss triangular number C(tn+2,2)",
+      "The h*-vector encodes Stanley's non-negativity: h*₁ = A + B/2 - 1 ≥ 0 (by Pick + B≥3) and h*₂ = i(P) ≥ 0, both machine-verified",
+      "Cross-framework consistency: the abstract Ehrhart formula L = m·n·t² + (m+n)·t + 1 for R_{m,n} matches the Finset count (tm+1)(tn+1) exactly via ring"
+    ],
+    "prerequisites": [
+      "Pick's theorem (axiomatized): A = i + B/2 - 1 for simple lattice polygons",
+      "Finset.card_product: |A × B| = |A| · |B|",
+      "Nat.antidiagonal: Finset of pairs (x,y) with x+y=n, with card = n+1",
+      "Finset.card_biUnion: card of pairwise-disjoint union = sum of cards",
+      "Gaussian arithmetic series: Σ_{k=0}^{n} (k+1) = (n+1)(n+2)/2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "rectangle",
+      "title": "Part I: Rectangle Ehrhart Polynomial",
+      "startLine": 29,
+      "endLine": 61,
+      "summary": "Five theorems about rectangles: rectangle_ehrhart (direct via Finset.card_product), unit_square_ehrhart (t+1)², rectangle_ehrhart_quadratic (quadratic form ab·t²+(a+b)t+1), rectangle_ehrhart_zero (=1), rectangle_ehrhart_one (=(a+1)(b+1)).",
+      "mathContext": "$L(R_{a,b}, t) = (ta+1)(tb+1) = ab \\cdot t^2 + (a+b) \\cdot t + 1$."
+    },
+    {
+      "id": "triangle",
+      "title": "Part II: Right Triangle Ehrhart Polynomial",
+      "startLine": 64,
+      "endLine": 112,
+      "summary": "Proves 2·L(Δ_n,t) = (tn+1)(tn+2) using three private lemmas: triangleScaled_eq_biUnion (antidiagonal tiling), antidiagonals_pairwise_disjoint, gauss_sum_succ. Main theorem triangle_ehrhart_double + two corollaries.",
+      "mathContext": "$2 \\cdot L(\\Delta_n, t) = (tn+1)(tn+2) = n^2t^2 + 3nt + 2$, so $L = \\binom{tn+2}{2}$."
+    },
+    {
+      "id": "axioms",
+      "title": "Part III: Axiomatic Framework and General Ehrhart Formula",
+      "startLine": 114,
+      "endLine": 207,
+      "summary": "Axiomatizes SimpleLatticePolygon, picks_theorem, scaledPolygon (opaque), scaled_area, scaled_boundary. Proves ehrhart_formula, ehrhart_interior (reciprocity), ehrhart_is_quadratic, ehrhart_leading_coeff, ehrhart_reciprocity_sign_flip.",
+      "mathContext": "$L(P,t) = A \\cdot t^2 + \\frac{B}{2} \\cdot t + 1$ and $i(tP) = A \\cdot t^2 - \\frac{B}{2} \\cdot t + 1$."
+    },
+    {
+      "id": "examples",
+      "title": "Part IV: Examples and Cross-Framework Consistency",
+      "startLine": 210,
+      "endLine": 250,
+      "summary": "rectanglePolygon (concrete SimpleLatticePolygon for m×n rectangles), rectangle_picks_check (verifies Pick's axiom holds for rectangles), rectangle_ehrhart_abstract (abstract Ehrhart for rectangles), rectangle_frameworks_agree (Finset count = abstract formula).",
+      "mathContext": "Both give $(tm+1)(tn+1) = mn \\cdot t^2 + (m+n) \\cdot t + 1$."
+    },
+    {
+      "id": "hstar",
+      "title": "Part V: The Ehrhart h*-vector",
+      "startLine": 253,
+      "endLine": 308,
+      "summary": "Defines hstar : Fin 3 → ℚ with h*₀=1, h*₁=A+B/2-1, h*₂=i(P). Proves h*₁≥0 (from Pick+B≥3), h*₂≥0 (trivial), and ehrhart_from_hstar (L = Σ hᵢ·C(t+2-i,2)).",
+      "mathContext": "$\\sum_{t \\geq 0} L(P,t) z^t = \\frac{h_0^* + h_1^* z + h_2^* z^2}{(1-z)^3}$, where $h_i^* \\geq 0$ (Stanley's theorem)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The 2D Ehrhart polynomial L(P,t) = A·t² + (B/2)·t + 1 is machine-verified via three independent proof routes: combinatorial (rectangles and triangles via Finset), algebraic (from Pick's theorem and scaling axioms). The interior count formula and h*-vector non-negativity are derived as immediate consequences. 21 theorems, 7 definitions, 309 lines.",
+    "implications": "This formalization establishes the 2D Ehrhart polynomial as a direct corollary of Pick's theorem when combined with the geometric scaling laws. The cross-framework consistency result (rectangle_frameworks_agree) validates that the axiomatic and combinatorial approaches agree. The h*-vector formulation opens the path to Stanley's non-negativity theorem in higher dimensions.",
+    "openQuestions": [
+      "Prove the Ehrhart-Macdonald reciprocity law in full generality: L(P°,-t) = (-1)^d · i(P,t) where P° is the interior of P",
+      "Formalize the Ehrhart polynomial for 3D lattice polytopes: L(P,t) = V·t³ + (A/2)·t² + ... + 1",
+      "Prove Stanley's non-negativity theorem h*ᵢ ≥ 0 for all d-dimensional lattice polytopes using the unimodular triangulation strategy"
+    ]
+  },
+  "leanFile": {
+    "namespace": "EhrhartPolynomial",
+    "path": "Proofs/PicksTheoremOQ01OQ02.lean",
+    "lineCount": 309,
+    "theoremCount": 24,
+    "definitionCount": 7,
+    "axiomCount": 3,
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem",
+      "relationship": "ancestor",
+      "description": "Pick's Theorem — the axiomatized gallery proof whose formula is the foundation of the Ehrhart polynomial derivation."
+    },
+    {
+      "targetId": "picks-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Pick's Theorem via Triangulation — the triangulation strategy that motivates the Ehrhart generalization."
+    },
+    {
+      "targetId": "picks-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "GCD Boundary Formula — proves that each edge of a lattice polygon contributes gcd(|Δx|,|Δy|) to the boundary count B used in the Ehrhart formula."
+    }
+  ],
+  "sorries": 0
+}

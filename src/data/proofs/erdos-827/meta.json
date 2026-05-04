@@ -1,10 +1,10 @@
 {
   "id": "erdos-827",
-  "title": "Erdős Problem #827: Distinct Circumradii in General Position",
+  "title": "Erd\u0151s Problem #827: Distinct Circumradii in General Position",
   "slug": "erdos-827",
-  "description": "Determine n_k: the minimal number of points in general position guaranteeing a k-subset with all distinct circumradii. Martinez-Roldán-Pensado: n_k ≪ k⁹.",
+  "description": "Determine n_k: the minimal number of points in general position guaranteeing a k-subset with all distinct circumradii. Martinez-Rold\u00e1n-Pensado: n_k \u226a k\u2079.",
   "meta": {
-    "author": "Erdős (1975, 1978)",
+    "author": "Erd\u0151s (1975, 1978)",
     "sourceUrl": "https://erdosproblems.com/827",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos827Problem.lean",
@@ -40,30 +40,30 @@
       }
     ],
     "originalContributions": [
-      "Point as ℝ × ℝ and distSq for squared distances",
-      "GeneralPosition: no three collinear via cross-product test",
-      "circumRadiusSq: R² = a²b²c²/(4·Area²) formula",
-      "AllDistinctCircumradii: all triple pairs have different circumradii",
-      "NkExists: existence of threshold for k-subset with distinct circumradii",
-      "minimalNk: axiomatized with validity and sharpness",
-      "ErdosProblem827: main existence statement",
-      "MartinezBound: n_k ≤ Ck⁹",
-      "erdosClaimedBound: Erdős's original (incorrect) bound",
-      "nk_three, nk_monotone, nk_ge_k: basic properties"
+      "NkProperty (k n : \u2115): explicit threshold predicate (n-point GP sets contain k-good subset)",
+      "nk_exists_witness axiom: existence of n_k for k \u2265 3",
+      "minimalNk: derived via sInf of valid thresholds (was axiom)",
+      "minimalNk_valid: proved theorem from Nat.sInf_mem (was axiom)",
+      "minimalNk_sharp: proved theorem from Nat.sInf_le (was axiom)",
+      "nk_ge_k: n_k \u2265 k via parabola GP construction",
+      "nk_three: n_3 = 3 via vacuous AllDistinctCircumradii",
+      "nk_monotone: n_k\u2081 \u2264 n_k\u2082 for k\u2081 \u2264 k\u2082 via subset inheritance",
+      "martinez_roldan_pensado axiom: n_k \u226a k\u2079 (MRP 2015)"
     ],
-    "axiomCount": 4,
-    "lineCount": 279,
-    "assumptions": "4 axioms: minimalNk (function), minimalNk_valid, minimalNk_sharp, martinez_roldan_pensado. Proved: nk_ge_k (from valid+parabola GP construction), nk_three (from ge_k+sharp+vacuous AllDistinctCircumradii for 3-sets), nk_monotone (from valid+sharp+subset argument)."
+    "axiomCount": 2,
+    "lineCount": 286,
+    "assumptions": "2 axioms: nk_exists_witness (existence of threshold n_k for k\u22653) and martinez_roldan_pensado (polynomial bound n_k\u226ak\u2079). minimalNk is now a derived noncomputable definition via sInf; minimalNk_valid and minimalNk_sharp are proved theorems.",
+    "theoremCount": 16
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #827: Distinct Circumradii in General Position**\n\nErdős posed this problem in 1975, asking a Ramsey-type question in discrete geometry: how many points in general position are needed to guarantee a $k$-element subset where all $\\binom{k}{3}$ triples have distinct circumradii? This is a geometric analog of classical Ramsey problems — instead of coloring edges, we seek 'rainbow' configurations where all circumradii are distinct.\n\n**General Position:** The 'no three collinear' assumption ensures every triple determines a unique circumscribed circle with a well-defined radius. Without this, degenerate triples could have infinite circumradius, making the problem ill-defined.\n\n**Erdős's Error (1978):** Erdős claimed a bound of $n_k \\leq k + 2\\binom{k-1}{2}\\binom{k-1}{3} = \\Theta(k^6)$, but the proof contained errors. The argument used a greedy/Ramsey approach to select points with increasingly constrained circumradii, but incorrectly counted the number of constraints.\n\n**Correction by Martinez-Roldán-Pensado:** They salvaged the approach, correcting the counting argument to establish $n_k \\ll k^9$. The increased exponent (9 vs 6) reflects the need to account for more complex interactions between triples.\n\n**The Gap:** The trivial lower bound $n_k \\geq k$ (need at least $k$ points for a $k$-subset) leaves a gap of 8 orders of magnitude in the exponent. Determining the true growth rate — is it closer to $k$, $k^2$, or $k^9$? — is the central open question.\n\n**Connection to Distinct Distances:** This problem is spiritually related to Erdős's 1946 distinct distances problem (how many distinct distances must $n$ points determine?), solved by Guth-Katz (2015). Both ask about the 'diversity' of geometric measurements from point configurations.",
-    "problemStatement": "For $k \\geq 3$, let $n_k$ be the minimal number such that any $n_k$ points in general position in $\\mathbb{R}^2$ contain a $k$-element subset where all $\\binom{k}{3}$ triples determine circles of distinct radii. Determine $n_k$, or at least its growth rate.\n\nKnown: $n_3 = 3$. $k \\leq n_k \\leq C \\cdot k^9$ (Martinez-Roldán-Pensado).",
-    "text": "Determine n_k: the minimal number of points in general position guaranteeing a k-subset with all distinct circumradii. Martinez-Roldán-Pensado: n_k ≪ k⁹.",
+    "historicalContext": "**Erd\u0151s Problem #827: Distinct Circumradii in General Position**\n\nErd\u0151s posed this problem in 1975, asking a Ramsey-type question in discrete geometry: how many points in general position are needed to guarantee a $k$-element subset where all $\\binom{k}{3}$ triples have distinct circumradii? This is a geometric analog of classical Ramsey problems \u2014 instead of coloring edges, we seek 'rainbow' configurations where all circumradii are distinct.\n\n**General Position:** The 'no three collinear' assumption ensures every triple determines a unique circumscribed circle with a well-defined radius. Without this, degenerate triples could have infinite circumradius, making the problem ill-defined.\n\n**Erd\u0151s's Error (1978):** Erd\u0151s claimed a bound of $n_k \\leq k + 2\\binom{k-1}{2}\\binom{k-1}{3} = \\Theta(k^6)$, but the proof contained errors. The argument used a greedy/Ramsey approach to select points with increasingly constrained circumradii, but incorrectly counted the number of constraints.\n\n**Correction by Martinez-Rold\u00e1n-Pensado:** They salvaged the approach, correcting the counting argument to establish $n_k \\ll k^9$. The increased exponent (9 vs 6) reflects the need to account for more complex interactions between triples.\n\n**The Gap:** The trivial lower bound $n_k \\geq k$ (need at least $k$ points for a $k$-subset) leaves a gap of 8 orders of magnitude in the exponent. Determining the true growth rate \u2014 is it closer to $k$, $k^2$, or $k^9$? \u2014 is the central open question.\n\n**Connection to Distinct Distances:** This problem is spiritually related to Erd\u0151s's 1946 distinct distances problem (how many distinct distances must $n$ points determine?), solved by Guth-Katz (2015). Both ask about the 'diversity' of geometric measurements from point configurations.",
+    "problemStatement": "For $k \\geq 3$, let $n_k$ be the minimal number such that any $n_k$ points in general position in $\\mathbb{R}^2$ contain a $k$-element subset where all $\\binom{k}{3}$ triples determine circles of distinct radii. Determine $n_k$, or at least its growth rate.\n\nKnown: $n_3 = 3$. $k \\leq n_k \\leq C \\cdot k^9$ (Martinez-Rold\u00e1n-Pensado).",
+    "text": "Determine n_k: the minimal number of points in general position guaranteeing a k-subset with all distinct circumradii. Martinez-Rold\u00e1n-Pensado: n_k \u226a k\u2079.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Coordinate Geometry:** `Point` as $\\mathbb{R} \\times \\mathbb{R}$; `distSq` for squared Euclidean distance; `GeneralPosition` via the cross-product collinearity test.\n\n2. **Circumradius:** `circumRadiusSq` using the formula $R^2 = |pq|^2|qr|^2|rp|^2 / (4 \\cdot \\text{Area}^2)$. Working with squared circumradii avoids square roots.\n\n3. **Distinct Circumradii:** `AllDistinctCircumradii S` requires all pairs of distinct triples from $S$ to have different circumradii.\n\n4. **Extremal Function:** `minimalNk` axiomatized with validity (any $n_k$ points contain a good $k$-subset) and sharpness ($n_k - 1$ points can avoid it).\n\n5. **Bounds:** `MartinezBound` ($n_k \\leq Ck^9$) and `erdosClaimedBound` (the incorrect $\\Theta(k^6)$). Basic properties: $n_3 = 3$, monotonicity, $n_k \\geq k$.",
     "keyInsights": [
       "**General Position is Essential:** No three collinear ensures every triple determines a unique circumscribed circle. Without this, the circumradius formula has a zero denominator (degenerate area). The formalization uses the cross-product determinant test, which is exact in $\\mathbb{R}$.",
       "**Squared Circumradius Avoids Roots:** By working with $R^2 = |pq|^2|qr|^2|rp|^2 / (4 \\cdot \\text{Area}^2)$ rather than $R$ itself, the formalization stays within real arithmetic without needing `Real.sqrt`. This is a common technique in computational geometry formalizations.",
-      "**Erdős's Error and Its Correction:** The original $k^6$ bound was incorrect due to miscounting constraints. The corrected $k^9$ bound by Martinez-Roldán-Pensado shows the true complexity of the counting argument is higher than Erdős anticipated, requiring more careful bookkeeping of triple interactions.",
+      "**Erd\u0151s's Error and Its Correction:** The original $k^6$ bound was incorrect due to miscounting constraints. The corrected $k^9$ bound by Martinez-Rold\u00e1n-Pensado shows the true complexity of the counting argument is higher than Erd\u0151s anticipated, requiring more careful bookkeeping of triple interactions.",
       "**Massive Gap Between Bounds:** $k \\leq n_k \\leq Ck^9$ leaves the true growth rate unknown across 8 orders of magnitude in the exponent. Even determining whether $n_k$ grows linearly ($\\Theta(k)$), quadratically ($\\Theta(k^2)$), or with a higher polynomial would be a significant advance.",
       "**Geometric Ramsey Theory:** This problem exemplifies geometric Ramsey theory: seeking unavoidable 'structured' subsets (all circumradii distinct) within large point configurations. The general position assumption is the geometric analog of coloring constraints in classical Ramsey theory."
     ],
@@ -76,21 +76,21 @@
     {
       "id": "header-and-imports",
       "title": "Header and Imports",
-      "summary": "Problem documentation referencing Erdős (1975, 1978) and Martinez-Roldán-Pensado; imports Real, Finset, and Tactic",
+      "summary": "Problem documentation referencing Erd\u0151s (1975, 1978) and Martinez-Rold\u00e1n-Pensado; imports Real, Finset, and Tactic",
       "startLine": 1,
       "endLine": 26
     },
     {
       "id": "general-position",
       "title": "Points in General Position",
-      "summary": "Defines Point as ℝ × ℝ, distSq (squared Euclidean distance), and GeneralPosition (no three collinear via cross-product test)",
+      "summary": "Defines Point as \u211d \u00d7 \u211d, distSq (squared Euclidean distance), and GeneralPosition (no three collinear via cross-product test)",
       "startLine": 28,
       "endLine": 41
     },
     {
       "id": "circumradius",
       "title": "Circumradius",
-      "summary": "Defines circumRadiusSq via R² = a²b²c²/(4·Area²) and AllDistinctCircumradii requiring all triple pairs to have different radii",
+      "summary": "Defines circumRadiusSq via R\u00b2 = a\u00b2b\u00b2c\u00b2/(4\u00b7Area\u00b2) and AllDistinctCircumradii requiring all triple pairs to have different radii",
       "startLine": 43,
       "endLine": 62
     },
@@ -104,14 +104,14 @@
     {
       "id": "main-problem-and-bounds",
       "title": "Main Problem and Known Bounds",
-      "summary": "ErdosProblem827 existence statement, MartinezBound (n_k ≤ Ck⁹), erdosClaimedBound (incorrect k⁶), martinez_roldan_pensado axiom",
+      "summary": "ErdosProblem827 existence statement, MartinezBound (n_k \u2264 Ck\u2079), erdosClaimedBound (incorrect k\u2076), martinez_roldan_pensado axiom",
       "startLine": 87,
       "endLine": 105
     },
     {
       "id": "parabola-construction",
       "title": "Parabola GP Construction",
-      "summary": "Points on y = x² are in general position: parabolaPoint, parabolaSet, parabolaSet_gp (collinearity determinant factors as (a-c)(b-c)(b-a) ≠ 0 for distinct a,b,c). Proves nk_ge_k: the trivial lower bound k ≤ n_k via parabola + validity contradiction.",
+      "summary": "Points on y = x\u00b2 are in general position: parabolaPoint, parabolaSet, parabolaSet_gp (collinearity determinant factors as (a-c)(b-c)(b-a) \u2260 0 for distinct a,b,c). Proves nk_ge_k: the trivial lower bound k \u2264 n_k via parabola + validity contradiction.",
       "startLine": 107,
       "endLine": 163
     },
@@ -125,7 +125,7 @@
     {
       "id": "monotonicity",
       "title": "Monotonicity",
-      "summary": "Proves nk_monotone: k₁ ≤ k₂ → n_{k₁} ≤ n_{k₂} via sharpness + validity + subset heredity.",
+      "summary": "Proves nk_monotone: k\u2081 \u2264 k\u2082 \u2192 n_{k\u2081} \u2264 n_{k\u2082} via sharpness + validity + subset heredity.",
       "startLine": 214,
       "endLine": 237
     },
@@ -138,14 +138,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #827 asks for the growth rate of $n_k$, the minimum number of general-position points guaranteeing a $k$-subset with all distinct circumradii. The problem is OPEN. The best known bounds are $k \\leq n_k \\leq Ck^9$ (Martinez-Roldán-Pensado), with Erdős's original $k^6$ claim containing errors. The formalization captures the circumradius formula, the extremal function with validity and sharpness, and all known bounds.",
-    "implications": "**Theoretical Significance**: **Potential Impact**\n\n1. **Geometric Ramsey Theory:** Determining the growth rate would advance the understanding of unavoidable geometric structures in large point configurations, paralleling classical results on Ramsey numbers.\n\n2. **Discrete Geometry:** The problem connects to the Erdős distinct distances problem and the study of repeated geometric configurations.\n\nTechniques from algebraic geometry and incidence geometry (e.g., Elekes-Rónyai framework) may be applicable.\n\n3. **Computational Geometry:** The circumradius formula $R^2 = a^2b^2c^2/(4 \\cdot \\text{Area}^2)$ provides a computable criterion that could enable computer search for extremal configurations, potentially giving better lower bounds.\n\n4. **Higher Dimensions:** The problem generalizes naturally: in $\\mathbb{R}^d$, every $(d+1)$-tuple of points in general position determines a circumsphere. The $d$-dimensional analog is unexplored.",
+    "summary": "Erd\u0151s Problem #827 asks for the growth rate of $n_k$, the minimum number of general-position points guaranteeing a $k$-subset with all distinct circumradii. The problem is OPEN. The best known bounds are $k \\leq n_k \\leq Ck^9$ (Martinez-Rold\u00e1n-Pensado), with Erd\u0151s's original $k^6$ claim containing errors. The formalization captures the circumradius formula, the extremal function with validity and sharpness, and all known bounds.",
+    "implications": "**Theoretical Significance**: **Potential Impact**\n\n1. **Geometric Ramsey Theory:** Determining the growth rate would advance the understanding of unavoidable geometric structures in large point configurations, paralleling classical results on Ramsey numbers.\n\n2. **Discrete Geometry:** The problem connects to the Erd\u0151s distinct distances problem and the study of repeated geometric configurations.\n\nTechniques from algebraic geometry and incidence geometry (e.g., Elekes-R\u00f3nyai framework) may be applicable.\n\n3. **Computational Geometry:** The circumradius formula $R^2 = a^2b^2c^2/(4 \\cdot \\text{Area}^2)$ provides a computable criterion that could enable computer search for extremal configurations, potentially giving better lower bounds.\n\n4. **Higher Dimensions:** The problem generalizes naturally: in $\\mathbb{R}^d$, every $(d+1)$-tuple of points in general position determines a circumsphere. The $d$-dimensional analog is unexplored.",
     "openQuestions": [
-      "What is the exact growth rate of n_k — is it polynomial, and if so, what is the exponent?",
-      "Can the exponent 9 in the Martinez-Roldán-Pensado bound be lowered? Is the true exponent closer to 1 or 9?",
-      "Is there a superlinear lower bound n_k ≥ k^α for some α > 1?",
-      "What are the extremal configurations — point sets of size n_k - 1 where no k-subset has all distinct circumradii?",
-      "Does the problem generalize to higher dimensions (circumspheres of (d+1)-tuples in ℝ^d)?"
+      "What is the exact growth rate of n_k \u2014 is it polynomial, and if so, what is the exponent?",
+      "Can the exponent 9 in the Martinez-Rold\u00e1n-Pensado bound be lowered? Is the true exponent closer to 1 or 9?",
+      "Is there a superlinear lower bound n_k \u2265 k^\u03b1 for some \u03b1 > 1?",
+      "What are the extremal configurations \u2014 point sets of size n_k - 1 where no k-subset has all distinct circumradii?",
+      "Does the problem generalize to higher dimensions (circumspheres of (d+1)-tuples in \u211d^d)?"
     ]
   },
   "leanFile": {
@@ -156,9 +156,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 279,
-    "axiomCount": 4,
-    "theoremCount": 14,
+    "lineCount": 286,
+    "axiomCount": 2,
+    "theoremCount": 16,
     "definitionCount": 11,
     "path": "Proofs/Erdos827Problem.lean",
     "sorries": 0
@@ -166,17 +166,17 @@
   "references": [
     {
       "key": "Er75",
-      "citation": "Erdős, P., Problems and results in combinatorial geometry (1975).",
+      "citation": "Erd\u0151s, P., Problems and results in combinatorial geometry (1975).",
       "type": "paper"
     },
     {
       "key": "Er78",
-      "citation": "Erdős, P., Set-theoretic, measure-theoretic, combinatorial, and number-theoretic problems (1978).",
+      "citation": "Erd\u0151s, P., Set-theoretic, measure-theoretic, combinatorial, and number-theoretic problems (1978).",
       "type": "paper"
     },
     {
       "key": "MRP",
-      "citation": "Martinez, R., Roldán-Pensado, E., Corrected polynomial bounds for distinct circumradii configurations.",
+      "citation": "Martinez, R., Rold\u00e1n-Pensado, E., Corrected polynomial bounds for distinct circumradii configurations.",
       "type": "paper"
     }
   ],
@@ -184,17 +184,17 @@
     {
       "targetId": "erdos-1088",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, ramsey-type"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, ramsey-type"
     },
     {
       "targetId": "erdos-224",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, geometry"
     },
     {
       "targetId": "erdos-504",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, geometry"
     }
   ],
   "sorries": 0

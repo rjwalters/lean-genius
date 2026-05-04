@@ -77,7 +77,8 @@
         "id": "brouwer-fixed-point-oq-04",
         "relationship": "Kakutani's generalization to set-valued maps, with applications to Nash equilibrium existence"
       }
-    ]
+    ],
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Luitzen Egbertus Jan Brouwer proved this theorem in 1911 in *Mathematische Annalen*. Earlier special cases were known: Poincaré proved a version for smooth maps in 1886, and Hadamard proved the 2D case in 1910 using degree theory. Brouwer's contribution was the full generalization to continuous maps in arbitrary dimension.\n\nThe result is beautifully intuitive: no matter how you continuously 'stir' a disk, some point must end up exactly where it started. Multiple proofs exist: Brouwer's original via degree theory, Sperner's 1928 combinatorial proof via his lemma on triangulations, Milnor's 1965 differential topology proof via Sard's theorem, and modern proofs via singular homology.\n\nThe theorem's applications are vast. John Nash used it in 1950 to prove equilibrium existence in non-cooperative games (Nobel Prize 1994). It guarantees solutions to differential equations via Schauder's extension to Banach spaces. In computational complexity, finding Brouwer fixed points is PPAD-complete (Papadimitriou 1994), explaining why Nash equilibrium computation is hard.\n\nIronically, Brouwer later founded **intuitionism** (1920s), rejecting the law of excluded middle and the non-constructive proof-by-contradiction his own theorem relies upon. He came to view the theorem as an example of mathematics that proves existence without construction — precisely what intuitionists object to.",

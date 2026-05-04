@@ -45,7 +45,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 171,
-    "assumptions": "2 axioms: f_max, f_min. 0 sorries."
+    "assumptions": "2 axioms: f_max, f_min. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Euler's totient function φ(n) counts integers up to n that are coprime to n. A fundamental question is: which values does φ take, and how many times?\n\nCarmichael (1907) conjectured that the equation φ(m) = n never has exactly one solution - every totient value has at least two preimages. This remains one of the oldest open problems in number theory.\n\nErdős proved a remarkable conditional result: if Carmichael's conjecture is false (some n has a unique preimage), then infinitely many such n must exist. This uses the multiplicative structure of φ.\n\nFord (1999) showed that any counterexample to Carmichael's conjecture must exceed 10^(10^10), making computational verification impossible.",

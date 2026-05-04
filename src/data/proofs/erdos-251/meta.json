@@ -48,7 +48,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 201,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #251 asks a deceptively simple question: is the sum Σ pₙ/2ⁿ irrational? Here pₙ denotes the nth prime: p₁ = 2, p₂ = 3, p₃ = 5, and so on.\n\nThe sum converges absolutely (since pₙ ~ n ln n by the prime number theorem and Σ n ln n / 2ⁿ converges). Its decimal expansion begins 3.59686... and is catalogued as OEIS A098990.\n\nErdős himself proved the related result that Σ pₙᵏ/n! is irrational for all k ≥ 1 (the factorial denominators make the problem tractable). He conjectured that Σ pₙᵏ/2ⁿ is also irrational for all k ≥ 1, which includes Problem #251 as the case k = 1.\n\nErdős also formulated a more general conjecture: if gₙ ≥ 2 for all n and gₙ = o(pₙ), then Σ pₙ/(g₁·g₂·...·gₙ) is irrational.",

@@ -22,14 +22,11 @@
   Tags: analysis, interpolation, approximation-theory
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Polynomials.Basic
-import Mathlib.Topology.ContinuousFunction.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos671
 
-open Polynomial ContinuousMap MeasureTheory
+open ContinuousMap MeasureTheory Filter
 
 /- ## Part I: Basic Definitions -/
 
@@ -44,46 +41,143 @@ def PointSequence := (n : ℕ) → InterpolationPoints n
 
 /-- The Lagrange basis polynomial p_i^n: degree n-1, p_i(a_i) = 1, p_i(a_j) = 0 for j ≠ i. -/
 noncomputable def lagrangeBasis (pts : InterpolationPoints n) (i : Fin n) : Polynomial ℝ :=
-  ∏ j in Finset.univ.filter (· ≠ i),
-    C (1 / (pts.points i - pts.points j)) * (X - C (pts.points j))
+  ∏ j ∈ (Finset.univ : Finset (Fin n)).filter (fun k => k ≠ i),
+    (Polynomial.C (1 / (pts.points i - pts.points j)) *
+     (Polynomial.X - Polynomial.C (pts.points j)) : Polynomial ℝ)
 
 /-- p_i^n(a_i) = 1. -/
 theorem lagrangeBasis_self (pts : InterpolationPoints n) (i : Fin n) :
     (lagrangeBasis pts i).eval (pts.points i) = 1 := by
-  sorry
+  simp only [lagrangeBasis, Polynomial.eval_prod, Polynomial.eval_mul,
+             Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]
+  apply Finset.prod_eq_one
+  intro j hj
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+  have h : pts.points i - pts.points j ≠ 0 :=
+    sub_ne_zero.mpr (pts.distinct i j hj.symm)
+  field_simp [h]
 
 /-- p_i^n(a_j) = 0 for j ≠ i. -/
 theorem lagrangeBasis_other (pts : InterpolationPoints n) (i j : Fin n) (hij : i ≠ j) :
     (lagrangeBasis pts i).eval (pts.points j) = 0 := by
-  sorry
+  simp only [lagrangeBasis, Polynomial.eval_prod, Polynomial.eval_mul,
+             Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]
+  apply Finset.prod_eq_zero
+  · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hij.symm⟩
+  · simp [sub_self]
 
 /- ## Part II: Lagrange Interpolation -/
 
-/-- The Lagrange interpolation operator L^n f(x) = Σ f(a_i) p_i(x). -/
-noncomputable def lagrangeInterp (pts : InterpolationPoints n) (f : ℝ → ℝ) (x : ℝ) : ℝ :=
-  ∑ i : Fin n, f (pts.points i) * (lagrangeBasis pts i).eval x
+/-- The Lagrange interpolation operator L^n f(x) = Σ f(a_i) p_i(x).
+    Takes f on the domain [-1,1] since nodes are always in this interval. -/
+noncomputable def lagrangeInterp (pts : InterpolationPoints n)
+    (f : Set.Icc (-1 : ℝ) 1 → ℝ) (x : ℝ) : ℝ :=
+  ∑ i : Fin n, f ⟨pts.points i, pts.in_interval i⟩ * (lagrangeBasis pts i).eval x
 
 /-- L^n interpolates f at the nodes: L^n f(a_i) = f(a_i). -/
-theorem lagrangeInterp_at_node (pts : InterpolationPoints n) (f : ℝ → ℝ) (i : Fin n) :
-    lagrangeInterp pts f (pts.points i) = f (pts.points i) := by
-  sorry
+theorem lagrangeInterp_at_node (pts : InterpolationPoints n)
+    (f : Set.Icc (-1 : ℝ) 1 → ℝ) (i : Fin n) :
+    lagrangeInterp pts f (pts.points i) = f ⟨pts.points i, pts.in_interval i⟩ := by
+  unfold lagrangeInterp
+  rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ _)
+    (fun k _ hki => by rw [lagrangeBasis_other pts k i hki, mul_zero])]
+  rw [lagrangeBasis_self, mul_one]
 
 /-- L^n f is a polynomial of degree ≤ n - 1. -/
-theorem lagrangeInterp_degree (pts : InterpolationPoints n) (f : ℝ → ℝ) :
+theorem lagrangeInterp_degree (pts : InterpolationPoints n)
+    (f : Set.Icc (-1 : ℝ) 1 → ℝ) :
     ∃ p : Polynomial ℝ, p.natDegree ≤ n - 1 ∧
       ∀ x, lagrangeInterp pts f x = p.eval x := by
-  sorry
+  use ∑ i : Fin n, Polynomial.C (f ⟨pts.points i, pts.in_interval i⟩) * lagrangeBasis pts i
+  refine ⟨?_, fun x => ?_⟩
+  · apply le_trans (Polynomial.natDegree_sum_le _ _)
+    apply Finset.sup_le; intro i _
+    apply le_trans Polynomial.natDegree_mul_le
+    simp only [Polynomial.natDegree_C, zero_add]
+    -- lagrangeBasis pts i is a product of (n-1) degree-1 polynomials
+    unfold lagrangeBasis
+    apply le_trans (Polynomial.natDegree_prod_le _ _)
+    have hcard : (Finset.univ.filter (fun k => k ≠ i)).card = n - 1 := by
+      rw [show Finset.univ.filter (fun k : Fin n => k ≠ i) = Finset.univ.erase i from
+        by ext; simp [Finset.mem_filter, Finset.mem_erase]]
+      simp [Finset.card_erase_of_mem]
+    calc ∑ j ∈ Finset.univ.filter (fun k => k ≠ i),
+          (Polynomial.C (1 / (pts.points i - pts.points j)) *
+           (Polynomial.X - Polynomial.C (pts.points j)) : Polynomial ℝ).natDegree
+        ≤ ∑ j ∈ Finset.univ.filter (fun k => k ≠ i), 1 := by
+          apply Finset.sum_le_sum; intro j _
+          apply le_trans Polynomial.natDegree_mul_le
+          simp [Polynomial.natDegree_C, Polynomial.natDegree_X_sub_C]
+      _ = (Finset.univ.filter (fun k => k ≠ i)).card := by simp
+      _ = n - 1 := hcard
+  · simp only [lagrangeInterp, Polynomial.eval_sum, Polynomial.eval_mul, Polynomial.eval_C]
 
 /- ## Part III: The Lebesgue Function -/
 
 /-- The Lebesgue function λ_n(x) = Σ |p_i^n(x)|. -/
 noncomputable def lebesgueFunction (pts : InterpolationPoints n) (x : ℝ) : ℝ :=
-  ∑ i : Fin n, |((lagrangeBasis pts i).eval x)|
+  ∑ i : Fin n, |(lagrangeBasis pts i).eval x|
 
-/-- λ_n(x) ≥ 1 for all x ∈ [-1, 1]. -/
-theorem lebesgueFunction_ge_one (pts : InterpolationPoints n) (x : ℝ)
-    (hx : x ∈ Set.Icc (-1 : ℝ) 1) : lebesgueFunction pts x ≥ 1 := by
-  sorry
+/-- Lagrange basis forms a partition of unity: Σ p_i(x) = 1 for all x. -/
+private theorem lagrangeBasis_sum_one {n : ℕ} (pts : InterpolationPoints n)
+    (hn : 0 < n) (x : ℝ) :
+    ∑ i : Fin n, (lagrangeBasis pts i).eval x = 1 := by
+  set Q := ∑ i : Fin n, lagrangeBasis pts i - Polynomial.C 1 with hQ_def
+  have hQroots : ∀ i : Fin n, Q.eval (pts.points i) = 0 := fun i => by
+    simp only [hQ_def, Polynomial.eval_sub, Polynomial.eval_finset_sum, Polynomial.eval_C]
+    rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ _)]
+    · rw [lagrangeBasis_self]; ring
+    · intro j _ hji; exact lagrangeBasis_other pts j i hji
+  have hQdeg : Q.natDegree ≤ n - 1 := by
+    apply le_trans (Polynomial.natDegree_sub_le _ _)
+    simp only [Polynomial.natDegree_C, max_zero_right]
+    apply le_trans (Polynomial.natDegree_sum_le _ _)
+    apply Finset.sup_le; intro i _
+    unfold lagrangeBasis
+    apply le_trans (Polynomial.natDegree_prod_le _ _)
+    have hcard : (Finset.univ.filter (fun k => k ≠ i)).card = n - 1 := by
+      rw [show Finset.univ.filter (fun k : Fin n => k ≠ i) = Finset.univ.erase i from
+        by ext; simp [Finset.mem_filter, Finset.mem_erase]]
+      simp [Finset.card_erase_of_mem]
+    calc ∑ j ∈ Finset.univ.filter (fun k => k ≠ i),
+            (Polynomial.C (1 / (pts.points i - pts.points j)) *
+             (Polynomial.X - Polynomial.C (pts.points j)) : Polynomial ℝ).natDegree
+        ≤ ∑ j ∈ Finset.univ.filter (fun k => k ≠ i), 1 := by
+            apply Finset.sum_le_sum; intro j _
+            apply le_trans Polynomial.natDegree_mul_le
+            simp [Polynomial.natDegree_C, Polynomial.natDegree_X_sub_C]
+      _ = (Finset.univ.filter (fun k => k ≠ i)).card := by simp
+      _ = n - 1 := hcard
+  have hQ_zero : Q = 0 := by
+    by_contra hne
+    have hmem : ∀ i : Fin n, pts.points i ∈ Q.roots :=
+      fun i => (Polynomial.mem_roots hne).mpr (hQroots i)
+    have himage_card : (Finset.image (fun i : Fin n => pts.points i) Finset.univ).card = n := by
+      rw [Finset.card_image_of_injOn]
+      · simp
+      · intro i _ j _ h; by_contra hij; exact absurd h (pts.distinct i j hij)
+    have hsub : Finset.image (fun i : Fin n => pts.points i) Finset.univ ⊆ Q.roots.toFinset := by
+      intro a ha
+      rw [Finset.mem_image] at ha; obtain ⟨i, _, rfl⟩ := ha
+      rw [Multiset.mem_toFinset]; exact hmem i
+    have hge : n ≤ Q.natDegree :=
+      calc n = (Finset.image (fun i : Fin n => pts.points i) Finset.univ).card := himage_card.symm
+        _ ≤ Q.roots.toFinset.card := Finset.card_le_card hsub
+        _ ≤ Multiset.card Q.roots := Multiset.toFinset_card_le
+        _ ≤ Q.natDegree := Polynomial.card_roots' Q
+    omega
+  have heval : Q.eval x = 0 := by rw [hQ_zero]; simp
+  simp only [hQ_def, Polynomial.eval_sub, Polynomial.eval_finset_sum, Polynomial.eval_C] at heval
+  linarith
+
+/-- λ_n(x) ≥ 1 for all x (requires n ≥ 1 nodes). -/
+theorem lebesgueFunction_ge_one (pts : InterpolationPoints n) (hn : 0 < n) (x : ℝ) :
+    lebesgueFunction pts x ≥ 1 := by
+  unfold lebesgueFunction
+  calc (1 : ℝ) = |∑ i : Fin n, (lagrangeBasis pts i).eval x| := by
+          rw [lagrangeBasis_sum_one pts hn]; simp
+    _ ≤ ∑ i : Fin n, |(lagrangeBasis pts i).eval x| :=
+        Finset.abs_sum_le_sum_abs (fun i : Fin n => (lagrangeBasis pts i).eval x) Finset.univ
 
 /-- The Lebesgue constant Λ_n = max_{x ∈ [-1,1]} λ_n(x). -/
 noncomputable def lebesgueConstant (pts : InterpolationPoints n) : ℝ :=
@@ -96,10 +190,13 @@ This shows Lebesgue constant controls interpolation quality.
 
 /- ## Part IV: Bernstein's Theorem -/
 
+/-- limsup λ_n(x) = ∞ means: for every M, infinitely many n have λ_n(x) ≥ M. -/
+def LebesgueUnbounded (seq : PointSequence) (x : ℝ) : Prop :=
+  ∀ M : ℝ, ∃ᶠ m in atTop, lebesgueFunction (seq m) x ≥ M
+
 /-- Bernstein (1931): For any point sequence, ∃ x₀ where limsup λ_n(x₀) = ∞. -/
 theorem bernstein (seq : PointSequence) :
-    ∃ x₀ ∈ Set.Icc (-1 : ℝ) 1,
-      Filter.limsup (fun n => lebesgueFunction (seq n) x₀) Filter.atTop = ⊤ := by
+    ∃ x₀ ∈ Set.Icc (-1 : ℝ) 1, LebesgueUnbounded seq x₀ := by
   sorry
 
 /-- The Lebesgue constant grows: Λ_n ≥ (2/π) log n + O(1). -/
@@ -111,58 +208,108 @@ theorem lebesgueConstant_growth (pts : InterpolationPoints n) (hn : n ≥ 2) :
 
 /- ## Part V: Erdős-Vértesi Theorem -/
 
+/-- |L^n f(x)| → ∞ means: for every M, infinitely many n have |L^n f(x)| ≥ M. -/
+def InterpUnbounded (seq : PointSequence) (f : Set.Icc (-1 : ℝ) 1 → ℝ) (x : ℝ) : Prop :=
+  ∀ M : ℝ, ∃ᶠ m in atTop, |lagrangeInterp (seq m) f x| ≥ M
+
 /-- Erdős-Vértesi (1980): For any points, ∃ continuous f where |L^n f(x)| → ∞ a.e. -/
 theorem erdos_vertesi (seq : PointSequence) :
     ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
       ∀ᵐ x ∂volume.restrict (Set.Icc (-1 : ℝ) 1),
-        Filter.limsup (fun n => |lagrangeInterp (seq n) f x|) Filter.atTop = ⊤ := by
+        InterpUnbounded seq f x := by
   sorry
 
 -- Divergence is generic: Most continuous functions diverge a.e. (Baire category argument).
 
 /- ## Part VI: Question 1 -/
 
-/-- Question 1: Can λ_n(x) → ∞ yet L^n f(x) → f(x) for some x? -/
+/-- Question 1: Can limsup λ_n(x) = ∞ yet L^n f(x) → f(x) for some x? -/
 def Question1 : Prop :=
   ∃ seq : PointSequence, ∀ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
-    ∃ x ∈ Set.Icc (-1 : ℝ) 1,
-      Filter.limsup (fun n => lebesgueFunction (seq n) x) Filter.atTop = ⊤ ∧
-      Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩))
+    ∃ x : Set.Icc (-1 : ℝ) 1,
+      LebesgueUnbounded seq x.val ∧
+      Tendsto (fun m => lagrangeInterp (seq m) f x.val) atTop (nhds (f x))
 
 /-- Question 1 is OPEN. -/
 axiom question1_open : Question1
 
 /- ## Part VII: Question 2 -/
 
-/-- Question 2: Can λ_n(x) → ∞ for ALL x, yet still have some convergence? -/
+/-- Question 2: Can limsup λ_n(x) = ∞ for ALL x, yet still have some convergence? -/
 def Question2 : Prop :=
   ∃ seq : PointSequence,
-    (∀ x ∈ Set.Icc (-1 : ℝ) 1,
-      Filter.limsup (fun n => lebesgueFunction (seq n) x) Filter.atTop = ⊤) ∧
+    (∀ x ∈ Set.Icc (-1 : ℝ) 1, LebesgueUnbounded seq x) ∧
     (∀ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
-      ∃ x ∈ Set.Icc (-1 : ℝ) 1,
-        Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩)))
+      ∃ x : Set.Icc (-1 : ℝ) 1,
+        Tendsto (fun m => lagrangeInterp (seq m) f x.val) atTop (nhds (f x)))
 
 /-- Question 2 is OPEN. -/
 axiom question2_open : Question2
 
 /-- Question 2 implies Question 1. -/
 theorem q2_implies_q1 (h : Question2) : Question1 := by
-  sorry
+  obtain ⟨seq, hdiv, hconv⟩ := h
+  exact ⟨seq, fun f => by
+    obtain ⟨x, htend⟩ := hconv f
+    exact ⟨x, hdiv x.val x.prop, htend⟩⟩
 
 /- ## Part VIII: Special Point Sequences -/
 
 /-- Chebyshev nodes: x_k = cos((2k-1)π / 2n). -/
 noncomputable def chebyshevNodes (n : ℕ) : InterpolationPoints n where
   points := fun k => Real.cos ((2 * k.val + 1) * Real.pi / (2 * n))
-  in_interval := by sorry
-  distinct := by sorry
+  in_interval := fun k => Real.cos_mem_Icc _
+  distinct := by
+    intro k j hkj heq
+    apply hkj
+    have hn_pos : (0 : ℝ) < 2 * n := by
+      have : 0 < n := k.pos; positivity
+    have hk_in : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc 0 Real.pi := by
+      constructor
+      · positivity
+      · rw [div_le_one (by positivity)]
+        have : (k.val : ℝ) < n := by exact_mod_cast k.isLt
+        nlinarith [Real.pi_pos]
+    have hj_in : (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc 0 Real.pi := by
+      constructor
+      · positivity
+      · rw [div_le_one (by positivity)]
+        have : (j.val : ℝ) < n := by exact_mod_cast j.isLt
+        nlinarith [Real.pi_pos]
+    have h_angle : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) =
+                  (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) :=
+      Real.strictAntiOn_cos.injOn hk_in hj_in heq
+    have h_val : (k.val : ℝ) = j.val := by
+      have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+      field_simp [hpi, hn_pos.ne'] at h_angle
+      linarith
+    exact Fin.ext (by exact_mod_cast h_val)
 
 /-- Equidistant nodes: x_k = -1 + 2k/(n-1). -/
 noncomputable def equidistantNodes (n : ℕ) (hn : n ≥ 2) : InterpolationPoints n where
-  points := fun k => -1 + 2 * k.val / (n - 1)
-  in_interval := by sorry
-  distinct := by sorry
+  points := fun k => -1 + 2 * (k.val : ℝ) / ((n : ℝ) - 1)
+  in_interval := by
+    intro k
+    have hn_cast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le one_lt_two hn
+    have hn1_pos : (0 : ℝ) < (n : ℝ) - 1 := by linarith
+    simp only [Set.mem_Icc]
+    constructor
+    · have : (0 : ℝ) ≤ 2 * (k.val : ℝ) / ((n : ℝ) - 1) :=
+        div_nonneg (by positivity) (le_of_lt hn1_pos)
+      linarith
+    · have hklt : (k.val : ℝ) < (n : ℝ) := by exact_mod_cast k.isLt
+      have : 2 * (k.val : ℝ) / ((n : ℝ) - 1) ≤ 2 := by
+        rw [div_le_iff hn1_pos]; linarith
+      linarith
+  distinct := by
+    intro k j hkj heq
+    apply hkj
+    have hn_cast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le one_lt_two hn
+    have hn1_ne : (n : ℝ) - 1 ≠ 0 := by linarith
+    have h1 : 2 * (k.val : ℝ) / ((n : ℝ) - 1) = 2 * (j.val : ℝ) / ((n : ℝ) - 1) := by
+      linarith
+    have h2 : (k.val : ℝ) = j.val := by field_simp [hn1_ne] at h1; linarith
+    exact Fin.ext (by exact_mod_cast h2)
 
 /-- Equidistant nodes have exponentially growing Lebesgue constant. -/
 theorem equidistant_diverges (n : ℕ) (hn : n ≥ 2) :
@@ -183,8 +330,8 @@ theorem equidistant_diverges (n : ℕ) (hn : n ≥ 2) :
 /-- Faber's theorem: No point sequence gives uniform convergence for all C⁰. -/
 theorem faber :
     ∀ seq : PointSequence, ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
-      ¬∃ x ∈ Set.Icc (-1 : ℝ) 1,
-        Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩)) := by
+      ¬∃ x : Set.Icc (-1 : ℝ) 1,
+        Tendsto (fun m => lagrangeInterp (seq m) f x.val) atTop (nhds (f x)) := by
   sorry
 
 -- Pointwise convergence is more delicate than uniform (can succeed where uniform fails).
@@ -194,16 +341,15 @@ theorem faber :
 /-- For typical f, divergence occurs on a set of positive measure. -/
 theorem positive_measure_divergence (seq : PointSequence) :
     ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
-      volume {x ∈ Set.Icc (-1 : ℝ) 1 |
-        Filter.limsup (fun n => |lagrangeInterp (seq n) f x|) Filter.atTop = ⊤} > 0 := by
+      volume {x ∈ Set.Icc (-1 : ℝ) 1 | InterpUnbounded seq f x} > 0 := by
   sorry
 
 /-- Convergence set can have full measure for specific f. -/
 theorem full_measure_convergence :
     ∃ seq : PointSequence, ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
-      volume {x ∈ Set.Icc (-1 : ℝ) 1 |
-        Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩))} =
-          volume (Set.Icc (-1 : ℝ) 1) := by
+      volume (Subtype.val '' {x : Set.Icc (-1 : ℝ) 1 |
+        Tendsto (fun m => lagrangeInterp (seq m) f x.val) atTop (nhds (f x))}) =
+            volume (Set.Icc (-1 : ℝ) 1) := by
   sorry
 
 /- ## Part XII: The Main Conjecture -/
@@ -218,12 +364,14 @@ axiom main_conjecture_open : MainConjecture
 /-- If Question 2 fails, understanding why would resolve Question 1. -/
 theorem q2_fails_implies (h : ¬Question2) :
     ∀ seq : PointSequence,
-      (∀ x ∈ Set.Icc (-1 : ℝ) 1,
-        Filter.limsup (fun n => lebesgueFunction (seq n) x) Filter.atTop = ⊤) →
+      (∀ x ∈ Set.Icc (-1 : ℝ) 1, LebesgueUnbounded seq x) →
       ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
-        ∀ x ∈ Set.Icc (-1 : ℝ) 1,
-          ¬Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩)) := by
-  sorry
+        ∀ x : Set.Icc (-1 : ℝ) 1,
+          ¬Tendsto (fun m => lagrangeInterp (seq m) f x.val) atTop (nhds (f x)) := by
+  intro seq hdiv
+  by_contra hconv
+  push_neg at hconv
+  exact h ⟨seq, hdiv, hconv⟩
 
 end Erdos671
 

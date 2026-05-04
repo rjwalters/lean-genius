@@ -46,7 +46,8 @@
     "axiomCount": 1,
     "lineCount": 541,
     "assumptions": "1 axiom: converse_product_implies_concyclic_axiom. See Lean source for the complete statement.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "The Product of Segments of Chords theorem appears as Proposition 35 in Book III of Euclid's *Elements* (c. 300 BCE), where Euclid proves it using similar triangles: triangles PAC and PDB are similar (by the inscribed angle theorem), giving PA/PD = PC/PB, hence PA·PB = PC·PD. This makes it one of the oldest formally stated results in circle geometry.\n\nThe deeper unifying concept — the *power of a point* — was introduced by Jakob Steiner in his 1826 work *Einige geometrische Betrachtungen*. Steiner recognized that the quantity $d^2 - r^2$ (where $d$ is the distance from the point to the center) is invariant for all lines through the point, unifying four classical theorems: intersecting chords (interior), two secants (exterior), secant-tangent, and two tangents. The radical axis of two circles (locus where powers are equal) became a fundamental tool in projective and inversive geometry.\n\nThis formalization takes the algebraic approach via Vieta's formulas rather than Euclid's synthetic proof, parametrizing chord-circle intersections as roots of a quadratic equation whose constant term equals the power.",

@@ -74,7 +74,8 @@
       "FourierSeries.lean: fourierCoeff_tendsto_zero for L² functions",
       "Mathlib HolderWith: holder_continuous, MemLp for continuous functions on compact spaces",
       "Parseval's identity and L² Fourier theory"
-    ]
+    ],
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "The Riemann-Lebesgue lemma was first proved by Bernhard Riemann (1867) for piecewise continuous functions and extended by Henri Lebesgue (1903) to all L¹ functions. It states that for f ∈ L¹(ℝ) (or on any locally compact group), the Fourier transform f̂(ξ) → 0 as |ξ| → ∞. Three classical proofs exist: (1) the L¹ density argument (approximate f by step functions, whose Fourier transforms can be computed explicitly); (2) integration by parts for smooth f; (3) the L² route via Parseval's identity (‖ĉ_n‖² summable → coefficients tend to zero). For Hölder-continuous functions, a quantitative version gives ‖ĉ_n‖ = O(|n|^{-α}). This Lean 4 formalization shows that the qualitative result (ĉ_n → 0) follows from the L² route in ~15 lines, bypassing the ~90-line quantitative proof.",

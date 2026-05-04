@@ -1,20 +1,20 @@
 [
   {
     "id": "ann-minkowski-overview",
-    "title": "Minkowski from Hölder: The Proof Chain",
+    "title": "Minkowski from H\u00f6lder: The Proof Chain",
     "type": "concept",
     "startLine": 37,
     "endLine": 45,
-    "mathContext": "The Hölder–Minkowski chain: Young's inequality gives Hölder (∑fg ≤ ‖f‖_p·‖g‖_q), and Hölder gives Minkowski (‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p). Minkowski's inequality is equivalent to the triangle inequality for Lp spaces. The classical proof technique: write ∑(f+g)^p = ∑(f+g)^(p-1)·f + ∑(f+g)^(p-1)·g, apply Hölder twice with conjugate exponents p and q=p/(p-1), then divide both sides by (∑(f+g)^p)^(1/q).",
+    "mathContext": "The H\u00f6lder\u2013Minkowski chain: Young's inequality gives H\u00f6lder (\u2211fg \u2264 \u2016f\u2016_p\u00b7\u2016g\u2016_q), and H\u00f6lder gives Minkowski (\u2016f+g\u2016_p \u2264 \u2016f\u2016_p + \u2016g\u2016_p). Minkowski's inequality is equivalent to the triangle inequality for Lp spaces. The classical proof technique: write \u2211(f+g)^p = \u2211(f+g)^(p-1)\u00b7f + \u2211(f+g)^(p-1)\u00b7g, apply H\u00f6lder twice with conjugate exponents p and q=p/(p-1), then divide both sides by (\u2211(f+g)^p)^(1/q).",
     "significance": "supporting",
     "relatedConcepts": [
-      "Hölder's inequality",
+      "H\u00f6lder's inequality",
       "Lp spaces",
       "triangle inequality",
       "Young's inequality",
       "Riesz representation theorem"
     ],
-    "content": "This file completes the answer to the open question from CauchySchwarzOQ03.lean: can Minkowski be derived from Hölder? Yes. The full chain Young → Hölder → Cauchy-Schwarz → Minkowski → Lp Banach space is now formally established across 4 files with 0 sorries and 0 axioms.",
+    "content": "This file completes the answer to the open question from CauchySchwarzOQ03.lean: can Minkowski be derived from H\u00f6lder? Yes. The full chain Young \u2192 H\u00f6lder \u2192 Cauchy-Schwarz \u2192 Minkowski \u2192 Lp Banach space is now formally established across 4 files with 0 sorries and 0 axioms.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
       "startLine": 49,
@@ -24,10 +24,10 @@
   {
     "id": "ann-minkowski-p1",
     "title": "p=1 Case: Triangle Inequality for Finite Sums",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 49,
     "endLine": 61,
-    "mathContext": "Two p=1 theorems: (1) minkowski_p1_nnreal gives equality ∑(f_i+g_i) = ∑f_i + ∑g_i for NNReal via Finset.sum_add_distrib — equality not inequality, because NNReal has no cancellation. (2) minkowski_p1_real gives ∑|f_i+g_i| ≤ ∑|f_i| + ∑|g_i| for signed reals by pointwise abs_add then Finset.sum_le_sum. The calc block makes the two-step argument explicit.",
+    "mathContext": "Two p=1 theorems: (1) minkowski_p1_nnreal gives equality \u2211(f_i+g_i) = \u2211f_i + \u2211g_i for NNReal via Finset.sum_add_distrib \u2014 equality not inequality, because NNReal has no cancellation. (2) minkowski_p1_real gives \u2211|f_i+g_i| \u2264 \u2211|f_i| + \u2211|g_i| for signed reals by pointwise abs_add then Finset.sum_le_sum. The calc block makes the two-step argument explicit.",
     "significance": "key",
     "relatedConcepts": [
       "triangle inequality",
@@ -46,18 +46,18 @@
   {
     "id": "ann-minkowski-nnreal",
     "title": "General Minkowski for NNReal: NNReal.Lp_add_le",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 80,
     "endLine": 84,
-    "mathContext": "For p ≥ 1 and NNReal-valued f, g on a finite index set s: (∑(f_i+g_i)^p)^(1/p) ≤ (∑f_i^p)^(1/p) + (∑g_i^p)^(1/p). Proved by delegating to NNReal.Lp_add_le, a Mathlib theorem that internalizes the Riesz (1910) argument: split ∑(f+g)^p using the identity, apply Hölder with exponents (p, q=p/(p-1)) to each half, factor out (∑(f+g)^p)^(1/q) to isolate (∑(f+g)^p)^(1/p).",
+    "mathContext": "For p \u2265 1 and NNReal-valued f, g on a finite index set s: (\u2211(f_i+g_i)^p)^(1/p) \u2264 (\u2211f_i^p)^(1/p) + (\u2211g_i^p)^(1/p). Proved by delegating to NNReal.Lp_add_le, a Mathlib theorem that internalizes the Riesz (1910) argument: split \u2211(f+g)^p using the identity, apply H\u00f6lder with exponents (p, q=p/(p-1)) to each half, factor out (\u2211(f+g)^p)^(1/q) to isolate (\u2211(f+g)^p)^(1/p).",
     "significance": "key",
     "relatedConcepts": [
       "NNReal.Lp_add_le",
-      "Hölder's inequality",
+      "H\u00f6lder's inequality",
       "conjugate exponents",
       "Finset Lp norm"
     ],
-    "content": "The central theorem. This one-line proof formally confirms that Mathlib's NNReal.Lp_add_le — which is itself proved via Hölder — makes Minkowski an immediate consequence. The NNReal case is the foundation: all other variants (real, p=2, inner product, Lp integral) either specialize or lift from this.",
+    "content": "The central theorem. This one-line proof formally confirms that Mathlib's NNReal.Lp_add_le \u2014 which is itself proved via H\u00f6lder \u2014 makes Minkowski an immediate consequence. The NNReal case is the foundation: all other variants (real, p=2, inner product, Lp integral) either specialize or lift from this.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
       "startLine": 80,
@@ -67,10 +67,10 @@
   {
     "id": "ann-minkowski-real",
     "title": "Real-Valued Minkowski via Lifting to NNReal",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 98,
     "endLine": 119,
-    "mathContext": "Two theorems: (1) lp_sum_mono (auxiliary): if h_i ≤ k_i pointwise then (∑h_i^p)^(1/p) ≤ (∑k_i^p)^(1/p), proved by NNReal.rpow_le_rpow applied to Finset.sum_le_sum. (2) minkowski_real: (∑‖f_i+g_i‖₊^p)^(1/p) ≤ (∑‖f_i‖₊^p)^(1/p) + (∑‖g_i‖₊^p)^(1/p) via a calc block — first lp_sum_mono using nnnorm_add_le (‖f+g‖₊ ≤ ‖f‖₊ + ‖g‖₊), then NNReal.Lp_add_le. The nnnorm ‖·‖₊ lifts signed reals to NNReal.",
+    "mathContext": "Two theorems: (1) lp_sum_mono (auxiliary): if h_i \u2264 k_i pointwise then (\u2211h_i^p)^(1/p) \u2264 (\u2211k_i^p)^(1/p), proved by NNReal.rpow_le_rpow applied to Finset.sum_le_sum. (2) minkowski_real: (\u2211\u2016f_i+g_i\u2016\u208a^p)^(1/p) \u2264 (\u2211\u2016f_i\u2016\u208a^p)^(1/p) + (\u2211\u2016g_i\u2016\u208a^p)^(1/p) via a calc block \u2014 first lp_sum_mono using nnnorm_add_le (\u2016f+g\u2016\u208a \u2264 \u2016f\u2016\u208a + \u2016g\u2016\u208a), then NNReal.Lp_add_le. The nnnorm \u2016\u00b7\u2016\u208a lifts signed reals to NNReal.",
     "significance": "key",
     "relatedConcepts": [
       "nnnorm",
@@ -89,10 +89,10 @@
   {
     "id": "ann-minkowski-p2",
     "title": "p=2 Euclidean Triangle Inequality",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 134,
     "endLine": 138,
-    "mathContext": "minkowski_p2_nnreal specializes minkowski_nnreal to p=2: (∑(f_i+g_i)²)^(1/2) ≤ (∑f_i²)^(1/2) + (∑g_i²)^(1/2). Proved in one line by calling minkowski_nnreal with norm_num : (1:ℝ) ≤ 2. This is the finite-dimensional Euclidean triangle inequality. Just as Cauchy-Schwarz is Hölder at p=q=2, the Euclidean triangle inequality is Minkowski at p=2.",
+    "mathContext": "minkowski_p2_nnreal specializes minkowski_nnreal to p=2: (\u2211(f_i+g_i)\u00b2)^(1/2) \u2264 (\u2211f_i\u00b2)^(1/2) + (\u2211g_i\u00b2)^(1/2). Proved in one line by calling minkowski_nnreal with norm_num : (1:\u211d) \u2264 2. This is the finite-dimensional Euclidean triangle inequality. Just as Cauchy-Schwarz is H\u00f6lder at p=q=2, the Euclidean triangle inequality is Minkowski at p=2.",
     "significance": "key",
     "relatedConcepts": [
       "Euclidean norm",
@@ -101,7 +101,7 @@
       "Cauchy-Schwarz duality",
       "L2 norm"
     ],
-    "content": "Illustrates the specialization pattern: the general Minkowski framework subsumes the familiar Euclidean geometry. The one-line proof from the general case is a demonstration of the power of abstract inequality theory. The conceptual parallel to Cauchy-Schwarz at p=q=2 makes the Hölder–Minkowski duality concrete.",
+    "content": "Illustrates the specialization pattern: the general Minkowski framework subsumes the familiar Euclidean geometry. The one-line proof from the general case is a demonstration of the power of abstract inequality theory. The conceptual parallel to Cauchy-Schwarz at p=q=2 makes the H\u00f6lder\u2013Minkowski duality concrete.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
       "startLine": 134,
@@ -111,10 +111,10 @@
   {
     "id": "ann-minkowski-inner-product",
     "title": "Inner Product Space Triangle Inequality via Cauchy-Schwarz",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 158,
     "endLine": 169,
-    "mathContext": "Two theorems: (1) minkowski_inner_product: in any InnerProductSpace ℝ E, ‖u+v‖ ≤ ‖u‖ + ‖v‖, proved by norm_add_le (Mathlib). (2) norm_add_sq_le: ‖u+v‖² ≤ (‖u‖+‖v‖)² via nlinarith from minkowski_inner_product. The classical proof of (1) expands ‖u+v‖² = ‖u‖² + 2⟨u,v⟩ + ‖v‖² ≤ ‖u‖² + 2‖u‖‖v‖ + ‖v‖² = (‖u‖+‖v‖)² using ⟨u,v⟩ ≤ ‖u‖‖v‖ from Cauchy-Schwarz.",
+    "mathContext": "Two theorems: (1) minkowski_inner_product: in any InnerProductSpace \u211d E, \u2016u+v\u2016 \u2264 \u2016u\u2016 + \u2016v\u2016, proved by norm_add_le (Mathlib). (2) norm_add_sq_le: \u2016u+v\u2016\u00b2 \u2264 (\u2016u\u2016+\u2016v\u2016)\u00b2 via nlinarith from minkowski_inner_product. The classical proof of (1) expands \u2016u+v\u2016\u00b2 = \u2016u\u2016\u00b2 + 2\u27e8u,v\u27e9 + \u2016v\u2016\u00b2 \u2264 \u2016u\u2016\u00b2 + 2\u2016u\u2016\u2016v\u2016 + \u2016v\u2016\u00b2 = (\u2016u\u2016+\u2016v\u2016)\u00b2 using \u27e8u,v\u27e9 \u2264 \u2016u\u2016\u2016v\u2016 from Cauchy-Schwarz.",
     "significance": "key",
     "relatedConcepts": [
       "InnerProductSpace",
@@ -123,7 +123,7 @@
       "nlinarith",
       "inner product expansion"
     ],
-    "content": "Closes the proof chain: Hölder → Cauchy-Schwarz → inner product triangle inequality. This is the abstract version of Minkowski: any inner product space satisfies ‖u+v‖ ≤ ‖u‖+‖v‖. The nlinarith proof of norm_add_sq_le shows how algebraic manipulations of norms in Lean avoid manual case splits.",
+    "content": "Closes the proof chain: H\u00f6lder \u2192 Cauchy-Schwarz \u2192 inner product triangle inequality. This is the abstract version of Minkowski: any inner product space satisfies \u2016u+v\u2016 \u2264 \u2016u\u2016+\u2016v\u2016. The nlinarith proof of norm_add_sq_le shows how algebraic manipulations of norms in Lean avoid manual case splits.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
       "startLine": 158,
@@ -133,10 +133,10 @@
   {
     "id": "ann-minkowski-lp",
     "title": "Integral Minkowski for Lp Measure Spaces",
-    "type": "theorem",
+    "type": "insight",
     "startLine": 186,
     "endLine": 194,
-    "mathContext": "Two theorems for measure-theoretic Lp spaces: minkowski_lp for general p (with Fact (1 ≤ p) typeclass instance) and minkowski_l2 for L2 (p=2). Both reduce to norm_add_le f g, which is the triangle inequality inherited from the NormedAddCommGroup instance on Lp ℝ p μ. The variable block (line 181) introduces the measure space: MeasurableSpace α and Measure α.",
+    "mathContext": "Two theorems for measure-theoretic Lp spaces: minkowski_lp for general p (with Fact (1 \u2264 p) typeclass instance) and minkowski_l2 for L2 (p=2). Both reduce to norm_add_le f g, which is the triangle inequality inherited from the NormedAddCommGroup instance on Lp \u211d p \u03bc. The variable block (line 181) introduces the measure space: MeasurableSpace \u03b1 and Measure \u03b1.",
     "significance": "key",
     "relatedConcepts": [
       "Lp spaces",
@@ -145,7 +145,7 @@
       "NormedAddCommGroup",
       "integral norm"
     ],
-    "content": "Shows that once Mathlib's Lp spaces are established as NormedAddCommGroup (which requires Minkowski in the construction), the triangle inequality is automatic. The Fact (1 ≤ p) typeclass pattern encodes the hypothesis p ≥ 1 as a typeclass constraint, enabling instance inference. The integral case connects to the finite-sum case via density arguments in Mathlib.",
+    "content": "Shows that once Mathlib's Lp spaces are established as NormedAddCommGroup (which requires Minkowski in the construction), the triangle inequality is automatic. The Fact (1 \u2264 p) typeclass pattern encodes the hypothesis p \u2265 1 as a typeclass constraint, enabling instance inference. The integral case connects to the finite-sum case via density arguments in Mathlib.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
       "startLine": 186,
@@ -154,11 +154,11 @@
   },
   {
     "id": "ann-holder-minkowski-chain",
-    "title": "Hölder–Minkowski Duality: Combined Statement",
-    "type": "theorem",
+    "title": "H\u00f6lder\u2013Minkowski Duality: Combined Statement",
+    "type": "insight",
     "startLine": 215,
     "endLine": 224,
-    "mathContext": "holder_minkowski_chain states both inequalities as a conjunction for NNReal functions: (1) Hölder: ∑f_i·g_i ≤ (∑f_i^p)^(1/p)·(∑g_i^q)^(1/q) via NNReal.inner_le_Lp_mul_Lq, and (2) Minkowski: (∑(f_i+g_i)^p)^(1/p) ≤ (∑f_i^p)^(1/p)+(∑g_i^p)^(1/p) via NNReal.Lp_add_le. Uses Real.HolderConjugate q for the condition 1/p+1/q=1. The proof is ⟨NNReal.inner_le_Lp_mul_Lq s f g hpq, NNReal.Lp_add_le hp f g s⟩.",
+    "mathContext": "holder_minkowski_chain states both inequalities as a conjunction for NNReal functions: (1) H\u00f6lder: \u2211f_i\u00b7g_i \u2264 (\u2211f_i^p)^(1/p)\u00b7(\u2211g_i^q)^(1/q) via NNReal.inner_le_Lp_mul_Lq, and (2) Minkowski: (\u2211(f_i+g_i)^p)^(1/p) \u2264 (\u2211f_i^p)^(1/p)+(\u2211g_i^p)^(1/p) via NNReal.Lp_add_le. Uses Real.HolderConjugate q for the condition 1/p+1/q=1. The proof is \u27e8NNReal.inner_le_Lp_mul_Lq s f g hpq, NNReal.Lp_add_le hp f g s\u27e9.",
     "significance": "key",
     "relatedConcepts": [
       "HolderConjugate",
@@ -167,7 +167,7 @@
       "Riesz representation",
       "functional analysis"
     ],
-    "content": "Formalizes the Hölder–Minkowski duality: Hölder bounds the bilinear pairing ⟨f,g⟩ = ∑f_i·g_i while Minkowski bounds the norm ‖f+g‖_p. Together they establish Lp and Lq as a dual pair — the foundation for the Riesz representation theorem (Lp)* ≅ Lq and the entire edifice of functional analysis.",
+    "content": "Formalizes the H\u00f6lder\u2013Minkowski duality: H\u00f6lder bounds the bilinear pairing \u27e8f,g\u27e9 = \u2211f_i\u00b7g_i while Minkowski bounds the norm \u2016f+g\u2016_p. Together they establish Lp and Lq as a dual pair \u2014 the foundation for the Riesz representation theorem (Lp)* \u2245 Lq and the entire edifice of functional analysis.",
     "proofId": "cauchy-schwarz-oq-03-oq-02",
     "range": {
       "startLine": 215,

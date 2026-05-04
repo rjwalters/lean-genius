@@ -45,7 +45,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 177,
-    "assumptions": "6 axioms: k_equals_3_fails, k_equals_4_fails, k_equals_5_fails, k_equals_6_fails, k_equals_7_fails, k_equals_8_fails. 2 sorries."
+    "assumptions": "6 axioms: k_equals_3_fails, k_equals_4_fails, k_equals_5_fails, k_equals_6_fails, k_equals_7_fails, k_equals_8_fails. 2 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and Moshe Rosenfeld. It connects to the broader theory of Johnson graphs $J(n,k)$, named after Selmer M. Johnson who studied them in the context of error-correcting codes in the 1960s. Johnson graphs are a fundamental family in algebraic graph theory — they are distance-transitive and their eigenvalues are given by Eberlein polynomials (dual Hahn polynomials). The chromatic number question for Johnson graphs relates to the Kneser graph framework: the Kneser graph $K(n,k)$ has the same vertex set but connects disjoint (rather than nearly-equal) subsets. Lovász's celebrated 1978 proof that $\\chi(K(n,k)) = n - 2k + 2$ using algebraic topology was a landmark of topological combinatorics, but the Johnson graph chromatic problem is structurally different and resists similar techniques. Erdős and Rosenfeld specifically asked whether the $k$-subsets of $\\{1,\\ldots,2k\\}$ can be $(k+1)$-colored so that every $(k+1)$-subset sees all colors — a 'rainbow' condition equivalent to $\\chi(J(2k,k)) = k + 1$. Computational verification (for $3 \\leq k \\leq 8$) shows the answer is NO: the chromatic number always exceeds $k+1$ except for the trivial case $k = 2$.",

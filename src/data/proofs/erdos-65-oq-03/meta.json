@@ -19,7 +19,7 @@
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "lineCount": 267,
+    "lineCount": 403,
     "assumptions": "1 axiom: Liu-Montgomery theorem (JAMS 2023) — the main bound on reciprocal cycle sums. This is a deep 43-page result using regularity and probabilistic methods.",
     "originalContributions": [
       "Partial harmonic sum infrastructure with key algebraic identities",
@@ -27,7 +27,8 @@
       "Even/odd cycle decomposition for reciprocal sums",
       "Tightness proof: bipartite construction achieves constant 1/2",
       "Concrete numerical verifications for small cases"
-    ]
+    ],
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "Erdős (1975) conjectured that graphs with large average degree must contain many distinct cycle lengths. Gyárfás, Komlós, and Szemerédi (1984) proved that the number of distinct cycle lengths is $\\Omega(\\log d)$, and conjectured that the sum of reciprocal cycle lengths is at least $(1/2 - o(1)) \\log d$. Liu and Montgomery resolved this conjecture in a landmark paper published in the Journal of the AMS (2023), proving the sharp constant $1/2$ using the regularity method, expander-based cycle-finding, and probabilistic techniques in a 43-page tour de force.",
@@ -110,7 +111,7 @@
       "Proofs.LebesgueMeasureOQ03"
     ],
     "namespace": "Erdos65OQ03",
-    "lineCount": 267,
+    "lineCount": 403,
     "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 6,

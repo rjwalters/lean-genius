@@ -79,7 +79,8 @@
         "description": "Proposes subtransitivity as the characterizing property for Euclidean Ramsey sets"
       }
     ],
-    "assumptions": "5 axioms: ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey, collinear_not_spherical. 0 sorries."
+    "assumptions": "5 axioms: ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey, collinear_not_spherical. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #174: Euclidean Ramsey Sets**\n\nEuclidean Ramsey theory was founded by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The theory extends classical combinatorial Ramsey theory into the geometric realm: which finite point configurations are guaranteed to appear monochromatically in any coloring of high-dimensional Euclidean space?\n\n**Key Developments:**\n- EGMRSS (1973): Proved the necessary condition — every Ramsey set must be spherical\n- Frankl-Rödl (1990): All non-degenerate simplices are Ramsey\n- Kříž (1991-92): Regular polygons, polyhedra, and trapezoids are Ramsey\n- Leader-Russell-Walters (2012): Proposed subtransitivity as the characterizing property\n\n**The Open Problem:**\nThe characterization question remains unsolved. Graham conjectures that every spherical set is Ramsey. The LRW conjecture offers an algebraic alternative: Ramsey iff subtransitive. Neither has been proved or disproved.",

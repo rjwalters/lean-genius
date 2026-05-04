@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED (upstream): file fails to build on origin/main due to Mathlib API drift (mem_sup_left/mem_sup_right unknown, Module.finrank_mul_finrank arg order changed, Nat.eq_zero_of_dvd_of_lt signature changed). Verified by Docker build 2026-04-27. Mechanic agent should repair; researcher work suspended until build is green. Sorries unchanged (3); see knowledge.md Session 31.",
+    "progressSummary": "PROGRESS: 1 sorry remains (wantzel_galois_iff, out-of-scope FTGT+Galois). New lemma isConstructible_map proved (Session 36). Detailed proof strategy documented for both → and ← directions.",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -47,7 +47,13 @@
       "Session 28: Steps A-B proven: a∈ℚ⟮β⟯ via mul_mem, ℚ⟮a⟯≤ℚ⟮β⟯ via adjoin_simple_le_iff, b+β∈join, ℚ⟮b+β⟯≤join",
       "Session 29: Restored isConstructible_sqrt2 — √2 IS constructible under fixed definition",
       "Session 29: isConstructible_algebraic_degree (private lemma): IsConstructible α → IsAlgebraic ℚ α ∧ ∃n, finrank ℚ ℚ⟮α⟯ ∣ 2^n (2 sorries remain: hβ_dvd, hjoin_dvd)",
-      "Session 29: not_constructible_of_bad_degree: Dvd-based proof using isConstructible_algebraic_degree"
+      "Session 29: not_constructible_of_bad_degree: Dvd-based proof using isConstructible_algebraic_degree",
+      "Session 32 PR #15034: 4 API drift fixes applied to AngleTrisectionOQ02OQ01OQ02Incomplete01.lean, file compiles",
+      "finrank_adjoin_β_over_adjoin_a_dvd_two: PROVED by Aristotle job 594e3160 (2026-05-03)",
+      "h_top_Ka full proof attempt in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:182 (Session 34, unverified)",
+      "isConstructible_map: ∀ (σ : ℂ →ₐ[ℚ] ℂ), IsConstructible α → IsConstructible (σ α). Proved by induction. (AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:114-124)",
+      "isConstructible_minpoly_pow2: ∃ m, (minpoly ℚ α).natDegree = 2^m (line 635, Session 37)",
+      "isConstructible_irred_degree_pow2: p irred + α root + IsConstructible α → ∃ m, p.natDegree = 2^m (line 652, Session 37)"
     ],
     "insights": [
       "IsConstructible with existential sqrt_ext blocks induction — must make a,b explicit constructor params to get proper IHs",
@@ -69,17 +75,27 @@
       "Session 30: hβ_dvd requires ℚ⟮β⟯=ℚ⟮a⟯⟮β⟯ as IntermediateField equality to use adjoin.finrank. Alternative: spanning set {1,β} over ℚ⟮a⟯. Both ~100+ lines.",
       "Session 30: Better proof structure: prove ∃K, α∈K ∧ [K:ℚ]|2^n (tower containment). Avoids hβ_dvd and hjoin_dvd entirely. Requires restructuring the whole lemma.",
       "Session 30: Mathlib lemmas found: adjoin.finrank (K⟮x⟯ finrank = minpoly natDeg), minpoly.dvd, natDegree_le_of_dvd, minpoly.degree_dvd. All usable but type-bridging between ℚ⟮β⟯ and ℚ⟮a⟯⟮β⟯ is the bottleneck.",
-      "Session 31 (2026-04-27): Docker build fails on origin/main with 4 Mathlib API drift errors at lines 155,156,176,332,338. Released claim — Mechanic should repair across the angle-trisection/erdos-1151 cohort affected by 2026-04-26 Mathlib upgrade."
+      "Session 31 (2026-04-27): Docker build fails on origin/main with 4 Mathlib API drift errors at lines 155,156,176,332,338. Released claim — Mechanic should repair across the angle-trisection/erdos-1151 cohort affected by 2026-04-26 Mathlib upgrade.",
+      "Session 32: le_sup_left/le_sup_right replaces mem_sup_left/mem_sup_right in IntermediateField lattice (Mathlib 2026-04-26 rename)",
+      "Session 32: Module.finrank_mul_finrank requires have-then-rw pattern; direct rw with explicit type args fails due to implicit instance resolution",
+      "Session 32: Nat.eq_zero_of_dvd_of_lt removed; replacement is Nat.zero_dvd.mp when hypothesis is 0 dvd n",
+      "restrict_algEquiv bridge: IntermediateField.restrict h converts K_a:IntermediateField ℚ ℂ into K_a_im:IntermediateField ℚ ↥K_aβ, enabling restrictScalars_adjoin_of_algEquiv to switch scalar field",
+      "Aristotle finrank strategy: tower law + minpoly ℚ β ∣ (minpoly ℚ a).comp(X²) + interval_cases proves finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2",
+      "h_top_Ka proved via IntermediateField.restrict + restrict_algEquiv + restrictScalars_adjoin_of_algEquiv + lift_injective pattern (Session 34, PR #15128)",
+      "Session 36: isConstructible_map: IsConstructible preserved by ℚ-algebra maps ℂ→ℂ (induction on sqrt_ext: σ(β·β)=σ(a) gives sqrt_ext (σβ) (σa) (σb)). Key for wantzel_galois_iff → direction.",
+      "isConstructible_irred_degree_pow2 is the positive form of not_constructible_of_bad_degree: constructibility forces natDeg p to be a power of 2",
+      "IsAlgClosed.lift gap: extending ℚ(α)→ℂ maps to ℂ→ℂ endomorphisms requires Zorns lemma infrastructure not available in Mathlib for this purpose",
+      "Nat.dvd_prime_pow pattern: (Nat.dvd_prime_pow hprime).mp hdvd gives ⟨m, _, hm⟩ extracting 2-power witnesses"
     ],
     "mathlibGaps": [
       "isConstructible_algebraic_degree: tower degree induction — IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",
-      "wantzel_galois_iff: requires full FTGT + 2-group structure, estimated 500+ lines — not in Mathlib"
+      "wantzel_galois_iff: requires full FTGT + 2-group structure, estimated 500+ lines — not in Mathlib",
+      "finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2 requires showing βelement generates ↥ℚ⟮β⟯ over ↥ℚ⟮a⟯ (adjoin = top in IntermediateField ↥ℚ⟮a⟯ ↥ℚ⟮β⟯)"
     ],
     "nextSteps": [
-      "Option A: Create Incomplete02.lean re-applying Sessions 26-28 fix with hβ_dvd proved (~150L)",
-      "Option B: Prove sqrt2_constructible_tower in OQ04OQ01.lean (~25L, self-contained)",
-      "Accept current state as-is (1 sorry permanently out-of-scope under current def)",
-      "wantzel_galois_iff under current def: permanently out-of-scope"
+      "→ direction intermediate: prove ∃ σ : ℂ →ₐ[ℚ] ℂ, σ(α) = β for another root β (needs full ℂ endomorphism extension)",
+      "← direction: FTGT + Sylow composition series for 2-groups; needs IntermediateField.orderIsoOfGal + degree-2 ↔ adjoin √",
+      "If → direction proves infeasible (Zorn + FTGT gap), mark wantzel_galois_iff as long-term blocked and move to new problem"
     ]
   },
   "tags": [

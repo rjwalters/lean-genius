@@ -163,6 +163,37 @@ theorem constant_not_distinct (c : ℤ) :
   exact absurd (h hp1 hp2 heq) (by decide)
 
 /-
+## Section V.c: Quadratic Impossibility Subcases
+-/
+
+/-- Quadratic polynomials with no linear term cannot have distinct pair sums:
+    1² + 8² = 4² + 7² = 65 gives a collision for any nonzero leading coefficient a. -/
+theorem quadratic_no_linear_not_distinct (a c : ℤ) (ha : a ≠ 0) :
+    ¬HasDistinctPairSums (C a * X ^ 2 + C c) := by
+  intro h
+  have hp1 : ((1 : ℕ), (8 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((4 : ℕ), (7 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have heq : pairSumFn (C a * X ^ 2 + C c) (1, 8) =
+             pairSumFn (C a * X ^ 2 + C c) (4, 7) := by
+    simp [pairSumFn, eval_add, eval_mul, eval_pow, eval_X, eval_C]; ring
+  exact absurd (h hp1 hp2 heq) (by decide)
+
+/-- Monic quadratics with negative linear coefficient -(n+2) fail distinct pair sums:
+    f(0)+f(1) = f(n+1)+f(n+2) via the identity (n+1)·((n+1)-(n+2)) = -(n+1). -/
+theorem monic_neg_linear_quad_not_distinct (n : ℕ) (c : ℤ) :
+    ¬HasDistinctPairSums (X ^ 2 - C ((n : ℤ) + 2) * X + C c) := by
+  intro h
+  have hp1 : ((0 : ℕ), (1 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((n + 1 : ℕ), (n + 2 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]; omega
+  have hne : ((0 : ℕ), (1 : ℕ)) ≠ ((n + 1 : ℕ), (n + 2 : ℕ)) := by
+    intro h; simp [Prod.mk.injEq] at h; omega
+  have heq : pairSumFn (X ^ 2 - C ((n : ℤ) + 2) * X + C c) (0, 1) =
+             pairSumFn (X ^ 2 - C ((n : ℤ) + 2) * X + C c) (n + 1, n + 2) := by
+    simp [pairSumFn, eval_sub, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+    push_cast; ring
+  exact absurd (h hp1 hp2 heq) hne
+
+/-
 ## Section VI: Counting Pair Sums
 -/
 

@@ -30,11 +30,11 @@
       "endLine": 50
     },
     "title": "Sidon Set Definition and Base Cases",
-    "content": "IsSidon S holds when all pairwise sums $a + b$ (with $a \\leq b$) in $S$ are distinct: if $a + b = c + d$ with $a \\leq b$ and $c \\leq d$, then $a = c$ and $b = d$. These are also called $B_2$-sets in additive combinatorics. The empty set and singletons are proved Sidon — the only non-axiom theorems in the file, established by contradiction and simplification respectively.",
+    "content": "IsSidon S holds when all pairwise sums $a + b$ (with $a \\leq b$) in $S$ are distinct: if $a + b = c + d$ with $a \\leq b$ and $c \\leq d$, then $a = c$ and $b = d$. These are also called $B_2$-sets in additive combinatorics. The empty set and singletons are proved Sidon \u2014 the only non-axiom theorems in the file, established by contradiction and simplification respectively.",
     "mathContext": "$S$ is Sidon $\\iff \\forall a \\leq b,\\, c \\leq d \\in S,\\; a + b = c + d \\implies (a,b) = (c,d)$; equivalently, all pairwise sums are distinct",
     "significance": "key",
     "relatedConcepts": [
-      "B₂-sets",
+      "B\u2082-sets",
       "distinct pairwise sums",
       "additive uniqueness",
       "Sidon sequences"
@@ -59,7 +59,7 @@
     "relatedConcepts": [
       "extremal functions",
       "subset optimization",
-      "B₂ density"
+      "B\u2082 density"
     ],
     "prerequisites": [
       "IsSidon",
@@ -75,8 +75,8 @@
       "startLine": 72,
       "endLine": 77
     },
-    "title": "Erdős Lower Bound: $\\ell(N) \\geq c \\cdot N^{1/3}$",
-    "content": "Erdős proved the first lower bound: every finite set of size $N$ has a Sidon subset of size at least $c N^{1/3}$. The proof uses a greedy algorithm: iteratively select elements that don't create repeated sums. The formalization encodes this as $\\ell(A)^3 \\geq c \\cdot |A|$ to avoid real-valued exponents.",
+    "title": "Erd\u0151s Lower Bound: $\\ell(N) \\geq c \\cdot N^{1/3}$",
+    "content": "Erd\u0151s proved the first lower bound: every finite set of size $N$ has a Sidon subset of size at least $c N^{1/3}$. The proof uses a greedy algorithm: iteratively select elements that don't create repeated sums. The formalization encodes this as $\\ell(A)^3 \\geq c \\cdot |A|$ to avoid real-valued exponents.",
     "mathContext": "$\\exists c > 0,\\; \\forall A,\\; |A| \\geq 8 \\implies \\ell(A)^3 \\geq c \\cdot |A|$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -96,8 +96,8 @@
       "startLine": 79,
       "endLine": 84
     },
-    "title": "Komlós-Sulyok-Szemerédi Lower Bound: $\\ell(N) \\geq c \\cdot N^{1/2}$",
-    "content": "Komlós, Sulyok, and Szemerédi improved the lower bound to $\\ell(N) \\geq c \\sqrt{N}$ using a probabilistic/greedy argument: randomly select elements and remove those that create repeated sums. The expected surviving set has size $\\Omega(\\sqrt{N})$. This is the best known lower bound and matches the upper bound up to the leading constant. Formalized as $\\ell(A)^2 \\geq c \\cdot |A|$.",
+    "title": "Koml\u00f3s-Sulyok-Szemer\u00e9di Lower Bound: $\\ell(N) \\geq c \\cdot N^{1/2}$",
+    "content": "Koml\u00f3s, Sulyok, and Szemer\u00e9di improved the lower bound to $\\ell(N) \\geq c \\sqrt{N}$ using a probabilistic/greedy argument: randomly select elements and remove those that create repeated sums. The expected surviving set has size $\\Omega(\\sqrt{N})$. This is the best known lower bound and matches the upper bound up to the leading constant. Formalized as $\\ell(A)^2 \\geq c \\cdot |A|$.",
     "mathContext": "$\\exists c > 0,\\; \\forall A,\\; |A| \\geq 4 \\implies \\ell(A)^2 \\geq c \\cdot |A|$",
     "significance": "key",
     "relatedConcepts": [
@@ -140,13 +140,13 @@
       "startLine": 100,
       "endLine": 106
     },
-    "title": "Erdős Problem 530: $\\ell(N) = \\Theta(\\sqrt{N})$",
-    "content": "The main conjecture: there exist absolute constants $c_1, c_2$ such that $c_1 \\sqrt{N} \\leq \\ell(N) \\leq c_2 \\sqrt{N}$ for all sets of size $N \\geq 4$. The lower bound follows from Komlós-Sulyok-Szemerédi, so the content is really the matching upper bound with a universal constant. Formalized as simultaneous quadratic inequalities $c_1 |A| \\leq \\ell(A)^2 \\leq c_2 |A|$.",
+    "title": "Erd\u0151s Problem 530: $\\ell(N) = \\Theta(\\sqrt{N})$",
+    "content": "The main conjecture: there exist absolute constants $c_1, c_2$ such that $c_1 \\sqrt{N} \\leq \\ell(N) \\leq c_2 \\sqrt{N}$ for all sets of size $N \\geq 4$. The lower bound follows from Koml\u00f3s-Sulyok-Szemer\u00e9di, so the content is really the matching upper bound with a universal constant. Formalized as simultaneous quadratic inequalities $c_1 |A| \\leq \\ell(A)^2 \\leq c_2 |A|$.",
     "mathContext": "$\\text{ErdosProblem530} \\iff \\exists c_1, c_2,\\; \\forall A,\\; c_1 |A| \\leq \\ell(A)^2 \\leq c_2 |A|$",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic equivalence",
-      "Θ-notation",
+      "\u0398-notation",
       "extremal asymptotics"
     ],
     "prerequisites": [
@@ -162,7 +162,7 @@
       "startLine": 115,
       "endLine": 127
     },
-    "title": "Alon-Erdős Partition Conjecture",
+    "title": "Alon-Erd\u0151s Partition Conjecture",
     "content": "A dual formulation: can any $N$-element integer set be partitioned into at most $c\\sqrt{N}$ Sidon sets? IsSidonPartition A parts requires each part to be Sidon, parts to cover $A$, and each element to belong to exactly one part. The conjecture is that $|\\text{parts}|^2 \\leq c \\cdot |A|$. This is related to the chromatic number of the Cayley graph where edges connect pairs sharing a sum with another pair.",
     "mathContext": "$\\exists c,\\; \\forall A,\\; \\exists$ Sidon partition with $|\\text{parts}|^2 \\leq c \\cdot |A|$",
     "significance": "key",
@@ -192,7 +192,7 @@
     "relatedConcepts": [
       "sum counting",
       "binomial coefficients",
-      "B₂ characterization"
+      "B\u2082 characterization"
     ],
     "prerequisites": [
       "IsSidon",
@@ -206,7 +206,7 @@
       "startLine": 179,
       "endLine": 190
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Sidon Sum Injectivity",
     "content": "`sidon_sum_injective` proves that the sum function $(a,b) \\mapsto a + b$ is injective on sorted pairs $\\{(a,b) \\in S \\times S : a \\leq b\\}$ when $S$ is Sidon. This is the core characterization: distinct sorted pairs give distinct sums. The proof unfolds the Sidon condition `hS` directly, using it to derive equality of pairs from equality of sums.",
     "mathContext": "For a Sidon set $S$: $a + b = c + d$ with $a \\leq b, c \\leq d$ implies $(a,b) = (c,d)$. This is equivalent to the `IsSidon` definition. The injectivity immediately gives $|\\{a + b : a \\leq b, a,b \\in S\\}| = |\\{(a,b) : a \\leq b\\}|$.",
@@ -255,7 +255,7 @@
       "startLine": 264,
       "endLine": 268
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Sidon Sum Count: Now Fully Proved",
     "content": "`sidon_sum_count` proves that a Sidon set of size $k$ has exactly $k(k+1)/2$ distinct pairwise sums. This was **previously axiomatized** and is now derived from two lemmas: `sidon_sum_injective` (injectivity implies image size = domain size) and `card_sorted_pairs` (domain has $k(k+1)/2$ elements). The 2-line proof `rw [Finset.card_image_of_injOn ...]; exact card_sorted_pairs S` is a clean composition.\n\nThis result underpins the upper bound $\\ell(N) \\leq O(\\sqrt{N})$: if a Sidon set of size $k$ produces $k(k+1)/2$ distinct sums that must fit in the sumset of the ambient set, we get $k(k+1)/2 \\leq 2N-1$, hence $k \\leq O(\\sqrt{N})$.",
     "mathContext": "$|\\{a + b : (a,b) \\in S \\times S, a \\leq b\\}| = k(k+1)/2$ where $k = |S|$. Since all sums lie in $[2\\min A, 2\\max A]$, we get $k(k+1)/2 \\leq |A + A| \\leq 2|A| - 1$ for $A \\supseteq S$, giving $k = O(\\sqrt{|A|})$.",

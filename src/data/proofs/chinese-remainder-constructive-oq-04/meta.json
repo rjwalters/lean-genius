@@ -82,7 +82,8 @@
     "axiomCount": 0,
     "lineCount": 156,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem has a rich history spanning nearly two millennia. Sun Zi's *Sunzi Suanjing* (~400 CE) posed the earliest known instance: find a number leaving remainders 2, 3, 2 when divided by 3, 5, 7 (answer: 23). The Indian mathematician Brahmagupta (628 CE) solved similar systems in his *Brahmasphutasiddhanta*, and the method was refined by Qin Jiushao in 1247 CE (*Shushu Jiuzhang*), who gave a general algorithm for arbitrary systems — anticipating Gauss by over 500 years.\n\nGauss provided the modern formulation in *Disquisitiones Arithmeticae* (1801, §36), stating the theorem for any number of pairwise coprime moduli and proving both existence and uniqueness. His proof used Bezout's identity to construct solutions, the same approach Mathlib's `Nat.chineseRemainder` implements.\n\nThe parent formalization (`chinese-remainder-constructive`) proves CRT for 2, 3, and 4 moduli with separate theorems (`crt_exists`, `crt_three`, `crt_four`), each requiring its own proof. This formalization answers the natural generalization question: the entire family of CRT theorems for any number of moduli collapses into a single theorem proved by list induction, mirroring Gauss's observation that the two-moduli case is the essential building block.",

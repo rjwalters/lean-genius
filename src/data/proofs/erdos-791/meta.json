@@ -59,7 +59,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 205,
-    "assumptions": "2 axioms: rohrbach_lower (2n ≤ g(n)²), rohrbach_upper (g(n)² ≤ 4n). Mrose 1979 disproof of original Rohrbach conjecture formalized. 0 sorries."
+    "assumptions": "2 axioms: rohrbach_lower (2n ≤ g(n)²), rohrbach_upper (g(n)² ≤ 4n). Mrose 1979 disproof of original Rohrbach conjecture formalized. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #791: Finite Additive 2-Bases**\n\nThis problem originates from additive combinatorics and studies the efficiency of representing all integers in {0,...,n} as sums of two elements from a subset.\n\n**Historical Timeline:**\n- **Rohrbach (1937)**: Established the first bounds (2+c)n ≤ g(n)² ≤ 4n, showing g(n) is roughly √(2n) to 2√n.\n- **Erdős Conjecture**: Asked whether g(n) ~ 2√n asymptotically.\n- **Mrose (1979)**: Disproved the conjecture by constructing bases with g(n)² ≤ (7/2)n = 3.5n.\n- **Yu (2015)**: Improved the lower bound to (2.181...+o(1))n.\n- **Kohonen (2017)**: Improved the upper bound to (3.458...+o(1))n.\n\nThe problem connects to sumset theory, a central topic in additive combinatorics with applications to number theory and computer science.",

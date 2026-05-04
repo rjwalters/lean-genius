@@ -73,7 +73,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 334,
-    "assumptions": "5 axioms: seymour_construction (c(3m+2) ≥ 3^m, Seymour's path construction), binaryEntropy_one_third (H(1/3) = log₂(3) − 2/3), limit_exists (growth rate α = lim c(n)^(1/n) exists, Bradač), bradac_upper_bound (α ≤ 2^H(1/3), Bradač upper bound), alpha_lower_bound (α ≥ 3^(1/3), from Seymour). 0 sorries."
+    "assumptions": "5 axioms: seymour_construction (c(3m+2) ≥ 3^m, Seymour's path construction), binaryEntropy_one_third (H(1/3) = log₂(3) − 2/3), limit_exists (growth rate α = lim c(n)^(1/n) exists, Bradač), bradac_upper_bound (α ≤ 2^H(1/3), Bradač upper bound), alpha_lower_bound (α ≥ 3^(1/3), from Seymour). 0 sorries.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**Erdos Problem #150**\n\nThis problem concerns extremal graph theory and the structure of vertex cuts in graphs.\n\n**Key History:**\n- Erdos and Nesetril: Posed the original question about minimal cuts\n- Seymour: Provided the key lower bound construction using paths\n- Bradac (2024): Solved the problem, proving alpha exists and alpha < 2\n\n**Mathematical Setting:**\n- A minimal cut is an inclusion-minimal set of vertices whose removal disconnects the graph\n- c(n) = maximum number of minimal cuts over all n-vertex graphs\n- The question asks about the asymptotic growth rate c(n)^{1/n}",

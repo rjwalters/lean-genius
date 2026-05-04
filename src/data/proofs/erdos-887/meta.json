@@ -54,7 +54,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 153,
-    "assumptions": "5 axioms: erdos_rosenfeld_four_divisors, chan_perfect_square_bound, divisor_bound_epsilon, and 2 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: erdos_rosenfeld_four_divisors, chan_perfect_square_bound, divisor_bound_epsilon, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #887 was posed by Paul Erdős and Moshe Rosenfeld in a 1997 paper on the number of divisors of n!. The question asks whether there is a universal constant K bounding how many divisors any sufficiently large integer n can have in the short interval (√n, √n + C·n^{1/4}), regardless of the constant C. The problem lies at the heart of understanding how divisors cluster near the square root.\n\nErdős and Rosenfeld proved that 4 is achievable infinitely often: by carefully choosing four primes p₁ < p₂ < p₃ < p₄, one can construct infinitely many n = p₁p₂p₃p₄ such that four of the six pairwise products pᵢpⱼ land in the interval near √n. They conjectured that 4 is the maximum. In 2013, Tsz Ho Chan made progress by proving that perfect squares n = k² have at most 5 divisors in a symmetric interval around √n (the extra divisor being √n itself). Letendre (2025) extended Chan's analysis further.\n\nThe general case remains open. The exponent 1/4 marks a phase transition: for wider intervals (exponent > 1/2) no uniform bound exists, while for narrower intervals (exponent < 1/4) at most 2 divisors can appear. The critical threshold α = 1/4 is where the problem's difficulty concentrates, making it a fundamental question in multiplicative number theory.",

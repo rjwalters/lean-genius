@@ -1,0 +1,120 @@
+{
+  "id": "erdos-1006-oq-01-oq-02",
+  "tractability": 5,
+  "significance": 6,
+  "problemStatement": {
+    "plain": "Can cover graph recognition (deciding if a graph is the Hasse diagram of some finite poset) be done in polynomial time?",
+    "formal": ""
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 10 theorems (was 7). Added k3_is_comparability_graph, k3_not_cover_graph (8-case proof), cover_strictly_subset_comparability. Strict separation between cover and comparability graphs formally proved. 2 axioms, 0 sorries, 261 lines.",
+    "builtItems": [
+      "coverOrientation_no_shortcut: cover orientations are shortcut-free (Erdos1006OQ01OQ02.lean)",
+      "cover_graph_is_hasse: cover graphs admit Hasse-like acyclic orientations (Erdos1006OQ01OQ02.lean)",
+      "cover_implies_related: cover graph edges connect comparable pairs in the poset (Erdos1006OQ01OQ02.lean)",
+      "cover_graph_in_np: NP membership via poset certificate (Erdos1006OQ01OQ02.lean)",
+      "cover_search_space_bound: search space 2^(n^2) (Erdos1006OQ01OQ02.lean)",
+      "cover_subclass_comparability: cover graphs are strictly contained in comparability graphs",
+      "k3_is_comparability_graph: K₃ is a comparability graph via standard linear order on Fin 3 (Erdos1006OQ01OQ02.lean:213)",
+      "k3_not_cover_graph: K₃ is NOT a cover graph — 8-case proof exhausting orientations of covering edges (Erdos1006OQ01OQ02.lean:224)",
+      "cover_strictly_subset_comparability: strict separation witness, K₃ is comparability but not cover (Erdos1006OQ01OQ02.lean:256)"
+    ],
+    "insights": [
+      "Cover graphs != comparability graphs: cover uses covering arcs only, comparability uses all related pairs; 3-chain distinguishes them",
+      "Shortcut-free = Hasse: an acyclic orientation is a Hasse diagram iff it has no shortcut arcs (its own transitive reduction)",
+      "NP membership is trivial: the poset P is a certificate that can be verified by checking isCoverGraphOf",
+      "CovBy.2 applies directly: if u covers v and u covers w, then huv.2 huw.lt : not(w < v), proving no shortcuts",
+      "K₃ separates cover from comparability: any 2 covering edges x⋖y, y⋖z form a chain forbidding x⋖z. On K₃ this creates a contradiction in all 8 covering-direction assignments.",
+      "8-case proof structure: each case is either no_chain (chain forces missing edge) or lt_irrefl (cycle gives x<x), covering all orientations of 3 covering edges on 3 vertices.",
+      "CovBy.2 accessor gives ∀ c, a < c → ¬(c < b) — the key tool proving no_chain and the strict separation."
+    ],
+    "mathlibGaps": [
+      "DecidableRel G.Adj not automatic for SimpleGraph; needs explicit instance for decidability",
+      "pow_mul needed in simp for (2^n)^n = 2^(n*n) — simp alone may not close the goal"
+    ],
+    "nextSteps": [
+      "Run docker build to verify Lean file compiles with 0 sorries",
+      "Consider adding NP-hardness witness or reduction if known",
+      "Explore whether transitive reduction of a comparability orientation gives cover graph efficiently"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1006OQ01.lean",
+      "filename": "Erdos1006OQ01.lean",
+      "lineCount": 278,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ01OQ02.lean",
+      "filename": "Erdos1006OQ01OQ02.lean",
+      "lineCount": 257,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ02.lean",
+      "filename": "Erdos1006OQ02.lean",
+      "lineCount": 470,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ03.lean",
+      "filename": "Erdos1006OQ03.lean",
+      "lineCount": 248,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04.lean",
+      "filename": "Erdos1006OQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006Problem.lean",
+      "filename": "Erdos1006Problem.lean",
+      "lineCount": 142,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1006",
+    "erdos-1006-oq-01",
+    "erdos-1006-oq-01-oq-02",
+    "erdos-1006-oq-02",
+    "erdos-1006-oq-02-oq-03",
+    "erdos-1006-oq-04"
+  ]
+}

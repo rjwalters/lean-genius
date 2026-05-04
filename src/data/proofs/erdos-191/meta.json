@@ -70,7 +70,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 357,
-    "assumptions": "4 axioms: erdos_191, rodl_upper_construction, conlon_fox_sudakov_bound, tripleLog_unbounded. 1 sorry."
+    "assumptions": "4 axioms: erdos_191, rodl_upper_construction, conlon_fox_sudakov_bound, tripleLog_unbounded. 1 sorry.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #191**\n\nThis problem combines Ramsey theory with analytic number theory. The setting is the complete graph K_n on vertices {2, ..., n}, with a 2-coloring of its edges. The goal is to find a monochromatic clique whose vertices have large weighted sum using the weight 1/log x.\n\n**Key History:**\n- [ErGr80] Erdős-Graham: Original problem formulation\n- [Ro03] Rödl: Proved the affirmative answer + optimal upper construction\n- [CFS13] Conlon, Fox, Sudakov: Proved tight lower bound 2^{-8} log log log n\n\n**Mathematical Significance:**\n- Extends classical Ramsey theory from cardinality to weighted measures\n- The 1/log x weight is special: it creates the triple-log threshold\n- Connects graph theory, Ramsey theory, and analytic number theory",

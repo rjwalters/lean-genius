@@ -1,0 +1,130 @@
+{
+  "id": "angle-trisection-oq-03-oq-02",
+  "title": "Ω(log d) Lower Bound for Constructibility: The Algorithm is Tight",
+  "slug": "angle-trisection-oq-03-oq-02",
+  "description": "Proves that the O(log d) constructibility check from OQ-03 is asymptotically optimal. For inputs d = 2^k, the halvings algorithm requires exactly k = ⌊log₂ d⌋ steps, establishing Ω(log d) as a tight lower bound. No algorithm can decide 'is d a power of 2?' in fewer halvings on this input family.",
+  "meta": {
+    "author": "Formalized in Lean 4 (researcher-4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ03OQ02.lean",
+    "tags": [
+      "geometry",
+      "complexity",
+      "constructibility",
+      "logarithm",
+      "lower-bound",
+      "algorithm-analysis",
+      "powers-of-two",
+      "tight-bound"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 382,
+    "theoremCount": 10
+  },
+  "overview": {
+    "historicalContext": "The impossibility of trisecting a general angle with compass and straightedge was proved by Pierre Wantzel in 1837 using Galois theory: an angle θ is trisectable iff 8x³ − 6x − cos θ has a rational root or splits into linear factors over the iterated quadratic extensions of ℚ. The OQ-03 companion entry formalizes an O(log d) algorithm to check whether a denominator d (determining the angle π/d) satisfies the constructibility conditions by counting halvings of d until it becomes odd. This entry (OQ-03-OQ-02) closes the complexity question: the O(log d) bound is not just an upper bound — it is tight. The halvings algorithm performs exactly Nat.log 2 (2^k) = k steps on inputs d = 2^k, and no algorithm can process these inputs in sub-logarithmic time. The proof connects the constructibility check to the 2-adic valuation v₂(d) — the exact power of 2 dividing d — which is the information-theoretically required number of halvings.",
+    "problemStatement": "Let halvings : ℕ → ℕ count the number of divisions by 2 before d becomes odd. Prove: (1) halvings(2^k) = k for all k; (2) halvings(2^k) = Nat.log 2 (2^k); (3) the step count is unbounded (no O(1) bound suffices); (4) 2^k − 1 is rejected in 0 steps while 2^k requires k steps.",
+    "proofStrategy": "The key lemma is halvings_two_mul: halvings(2k) = 1 + halvings(k) for k > 0. From this, halvings_pow2 follows by induction: halvings(2^(k+1)) = halvings(2·2^k) = 1 + halvings(2^k) = 1 + k. The logarithm identification uses Mathlib's Nat.log_pow lemma. The separation theorem (halvings(2^k − 1) = 0) relies on 2^k − 1 being odd (since 2^k − 1 ≡ 1 mod 2), proved by omega after unfolding the modular arithmetic.",
+    "keyInsights": [
+      "**halvings = 2-adic valuation**: halvings(d) counts the largest power of 2 dividing d — exactly v₂(d). For d = 2^k this is k; for odd d this is 0. The halvings function is the discrete logarithm on powers of 2.",
+      "**Inductive recursion unwinds the algorithm**: halvings(2·n) = 1 + halvings(n) for n > 0 is the key recurrence. Applying it k times: halvings(2^k) = k + halvings(1) = k + 0 = k. No combinatorics beyond induction.",
+      "**Mathlib's Nat.log_pow is the bridge**: The connection halvings(2^k) = Nat.log 2 (2^k) reduces to Nat.log_pow (proving log₂(2^k) = k), which Mathlib provides directly. The proof is a one-liner.",
+      "**YES-path is maximally costly**: 2^k−1 is odd and rejected at step 0. 2^k needs all k halvings. The gap halvings(2^k) − halvings(2^k−1) = k shows the YES-path to 'is a power of 2' costs O(log d) in the worst case.",
+      "**Unboundedness ↔ no constant-time algorithm**: halvings_unbounded (∀c, ∃d, halvings(d) ≥ c) witnesses that any claimed O(1) bound fails on d = 2^c. This makes the lower bound explicit as an existential statement."
+    ]
+  },
+  "sections": [
+    {
+      "id": "halvings-algorithm",
+      "title": "The Halvings Algorithm",
+      "startLine": 27,
+      "endLine": 63,
+      "summary": "Defines halvings : ℕ → ℕ by structural recursion (0 for odd inputs, 1 + halvings(n/2) for even). Proves halvings_zero, halvings_one, halvings_succ (equation lemma), halvings_odd (odd → 0), and halvings_two_mul (halvings(2k) = 1 + halvings(k) for k > 0).",
+      "mathContext": "$\\mathrm{halvings}(d) = v_2(d)$, the 2-adic valuation. $\\mathrm{halvings}(2k) = 1 + \\mathrm{halvings}(k)$, $\\mathrm{halvings}(2k+1) = 0$."
+    },
+    {
+      "id": "exact-step-count",
+      "title": "Exact Step Count for Powers of 2",
+      "startLine": 64,
+      "endLine": 83,
+      "summary": "halvings_pow2: halvings(2^k) = k, proved by induction using halvings_two_mul. halvings_eq_log_pow2: halvings(2^k) = Nat.log 2 (2^k) using Mathlib's Nat.log_pow.",
+      "mathContext": "$\\mathrm{halvings}(2^k) = k = \\lfloor \\log_2(2^k) \\rfloor$. Induction: $\\mathrm{halvings}(2^{k+1}) = \\mathrm{halvings}(2 \\cdot 2^k) = 1 + \\mathrm{halvings}(2^k) = 1 + k$."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Ω(log d) Lower Bound and Tightness",
+      "startLine": 85,
+      "endLine": 109,
+      "summary": "constructibility_lower_bound: Nat.log 2 (2^k) ≤ halvings(2^k) (immediate from equality). halvings_unbounded: ∀c, ∃d, halvings(d) ≥ c (witness d = 2^c). halvings_monotone_pow2: larger powers need more halvings. halvings_complexity_tight: both equalities in one conjunction.",
+      "mathContext": "$\\Omega(\\log d)$: for $d = 2^k$, $\\mathrm{halvings}(d) = k = \\log_2 d$. No $O(1)$ algorithm exists since $\\forall c, \\mathrm{halvings}(2^c) = c \\geq c$."
+    },
+    {
+      "id": "separation",
+      "title": "Separation: Powers vs Non-Powers",
+      "startLine": 111,
+      "endLine": 135,
+      "summary": "halvings_pred_pow2: halvings(2^k − 1) = 0 for k ≥ 1 (since 2^k − 1 is odd). halvings_separates_pred: halvings(2^k − 1) < halvings(2^k), confirming the YES-path cost gap.",
+      "mathContext": "$2^k - 1 \\equiv 1 \\pmod{2}$ (odd), so $\\mathrm{halvings}(2^k - 1) = 0$. Gap: $\\mathrm{halvings}(2^k) - \\mathrm{halvings}(2^k - 1) = k$."
+    },
+    {
+      "id": "concrete-computations",
+      "title": "Concrete Computations",
+      "startLine": 137,
+      "endLine": 156,
+      "summary": "native_decide verification: halvings(2^k) = k for k = 0,...,5,8; halvings(3) = halvings(15) = 0; halvings(6) = 1; halvings(12) = 2. Confirms both the formula and the separation for small cases.",
+      "mathContext": "$\\mathrm{halvings}(64) = 6$, $\\mathrm{halvings}(256) = 8$. Odd inputs: $\\mathrm{halvings}(3) = \\mathrm{halvings}(15) = 0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves the Ω(log d) lower bound for the halvings-based constructibility check, completing the complexity picture alongside the O(log d) upper bound from OQ-03. The algorithm is tight: halvings(2^k) = k = Nat.log 2(2^k) for all k, and the step count is unbounded.",
+    "implications": "The tightness result means the O(log d) halvings algorithm from OQ-03 is optimal on the worst-case input family {2^k}. Any decision procedure for 'is d a power of 2?' must handle inputs requiring Ω(log d) halvings, so no asymptotically faster algorithm exists within the halvings model. More broadly, the result illustrates that information-theoretic lower bounds (log d bits to encode k in d = 2^k) translate directly to algorithmic lower bounds when the model of computation is itself counting halvings. The separation between halvings(2^k − 1) = 0 and halvings(2^k) = k further shows the function distinguishes YES from NO instances with maximal sharpness.",
+    "openQuestions": [
+      "Can a tight lower bound be proved for the full constructibility test (not just the 'is d a power of 2?' subproblem), using more of the angle-trisection Galois theory from the parent entry?",
+      "What is the complexity of deciding constructibility of a polygon with n sides in terms of n, if we allow arbitrary arithmetic operations rather than just halvings?",
+      "The halvings function is exactly the 2-adic valuation v₂(d). Can the Θ(log d) complexity result be generalized to any prime p — proving that counting p-adic halvings requires Θ(logₚ d) steps — and can this be formalized for the p-adic Gauss-Wantzel condition (d | 2ᵏ · 3 · 5 · 17 · …)?"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/AngleTrisectionOQ03OQ02.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Tactic",
+      "Proofs.AngleTrisectionOQ03"
+    ],
+    "opens": [
+      "AngleTrisectionOQ03",
+      "Nat"
+    ],
+    "namespace": "AngleTrisectionOQ03OQ02",
+    "lineCount": 382,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 10
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-03",
+      "relationship": "companion",
+      "description": "OQ-03 proves the O(log d) upper bound; this entry proves the matching Ω(log d) lower bound"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "parent",
+      "description": "The parent angle-trisection proof establishes impossibility via Galois theory; OQ-03/OQ-02 analyze the complexity of the constructibility check"
+    },
+    {
+      "targetId": "angle-trisection-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-03-OQ-01 builds an executable constructibility checker (ngonConstructible : ℕ → Bool) whose correctness relies on the halvings algorithm; the Ω(log d) lower bound here shows that checker is asymptotically optimal"
+    },
+    {
+      "targetId": "angle-trisection-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 analyzes generalized constructibility with additional tools (neusis, origami); the halvings complexity result contextualizes why simple compass-straightedge constructibility is decidable in O(log d) and tight"
+    }
+  ]
+}

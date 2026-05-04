@@ -58,7 +58,8 @@
       "Continuum Hypothesis and ZFC independence results"
     ],
     "lineCount": 110,
-    "assumptions": "2 axioms: density_zero_implies_log_density_zero (natural density zero implies logarithmic density zero), log_density_ideal_strictly_larger (there exists a set with logarithmic density zero but positive natural density, showing strict containment). All other results proved as theorems (0 sorries)."
+    "assumptions": "2 axioms: density_zero_implies_log_density_zero (natural density zero implies logarithmic density zero), log_density_ideal_strictly_larger (there exists a set with logarithmic density zero but positive natural density, showing strict containment). All other results proved as theorems (0 sorries).",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "This problem arose during Erdős's visit to Stanisław Ulam at the University of Wisconsin-Madison in 1943-44. They studied the Boolean algebras $\\mathcal{P}(\\omega)/\\text{fin}$ (power set modulo finite sets) and $\\mathcal{P}(\\omega)/\\text{density 0}$ (modulo density-zero sets), believing they had proved these algebras are non-isomorphic, but the proof was 'lost.'\n\nWinfried Just and Adam Krawczyk (1984) proved that under the Continuum Hypothesis (CH), the algebras ARE isomorphic — the opposite of what Erdős and Ulam expected. Shelah later showed their non-isomorphism is consistent with ZFC as well, making the answer genuinely set-theoretically independent: it depends on which set-theoretic axioms beyond ZFC one adopts. This is one of the earliest examples of a 'natural' mathematical question whose answer is independent of ZFC.",

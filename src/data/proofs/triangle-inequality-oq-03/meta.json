@@ -52,7 +52,8 @@
       "Comparison table of Archimedean vs non-Archimedean geometry"
     ],
     "dateAdded": "2026-03-23",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "The study of non-Archimedean analysis began with Kurt Hensel's invention of p-adic numbers in 1897, motivated by analogies between number fields and function fields. Alexander Ostrowski (1916) classified all absolute values on the rationals: they are either the usual absolute value, a p-adic absolute value, or the trivial absolute value. This classification theorem shows that the ultrametric inequality is not an exotic curiosity but governs half of all possible notions of 'distance' on the rationals.\n\nThe ultrametric inequality d(x,z) ≤ max(d(x,y), d(y,z)) — strictly stronger than the usual d(x,z) ≤ d(x,y) + d(y,z) — was studied systematically by Marc Krasner (1940s) who developed the theory of ultrametric spaces and their striking topological properties: every point inside a ball is its center, balls are clopen (both open and closed), and distinct balls of equal radius are disjoint.\n\nThese 'strange' properties have profound consequences in number theory: the p-adic integers form a compact open subring (impossible over ℝ), p-adic analysis has no Archimedean property (|n|_p ≤ 1 for all integers), and Hensel's lemma provides a p-adic Newton's method with guaranteed convergence. Today, p-adic geometry underlies the Langlands program, perfectoid spaces (Scholze, Fields Medal 2018), and modern arithmetic geometry.",
@@ -191,7 +192,7 @@
     "axiomCount": 0,
     "theoremCount": 15,
     "lemmaCount": 0,
-    "defCount": 0,
+    "definitionCount": 0,
     "imports": [
       "Mathlib.Topology.MetricSpace.Ultra.Basic",
       "Mathlib.NumberTheory.Padics.PadicNorm",

@@ -1,128 +1,125 @@
 {
   "id": "cevas-theorem-oq-01-oq-03",
-  "title": "Routh's Theorem: Area Ratio for General Cevian Parameters",
+  "title": "Routh's Theorem: Area Formula for Non-Concurrent Cevians",
   "slug": "cevas-theorem-oq-01-oq-03",
-  "description": "Proves Routh's theorem for arbitrary cevian parameters d, e, f ∈ (0,1): the area of the inner triangle formed by pairwise intersections of the three cevians equals routhRatio(d,e,f) × area(ABC), where routhRatio = (def - (1-d)(1-e)(1-f))² / ((1-e+de)(1-f+ef)(1-d+fd)). Extends the specific 1/3 case from OQ-01 to the complete general formula.",
+  "description": "Proves Routh's theorem for general parameters d, e, f ∈ (0,1): the inner triangle formed by three non-concurrent cevians has signed area equal to routhRatio(d,e,f) = (def-(1-d)(1-e)(1-f))² / ((1-e+de)(1-f+ef)(1-d+fd)) times the original triangle area. Complete proof via coordinate intersection formulas and a single polynomial identity. 19 theorems, 0 axioms.",
   "meta": {
-    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Routh%27s_theorem",
+    "author": "Lean Genius",
     "date": "2026-05-03",
     "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremOQ01OQ03.lean",
     "tags": [
       "geometry",
-      "triangles",
-      "cevians",
+      "euclidean-geometry",
+      "triangle",
+      "ceva",
+      "routh",
       "area",
-      "affine-geometry"
+      "coordinate-geometry"
     ],
-    "proofRepoPath": "Proofs/CevasTheoremOQ01OQ03.lean",
     "badge": "original",
     "sorries": 0,
-    "axiomCount": 0,
-    "lineCount": 184,
-    "mathlibDependencies": [
-      {
-        "theorem": "field_simp + ring",
-        "description": "Core algebraic identity: signedArea(P₁₂, P₂₃, P₃₁) = routhRatio after clearing rational denominators",
-        "module": "Mathlib.Tactic"
-      }
-    ],
-    "originalContributions": [
-      "cevaBECF: BE∩CF intersection point for the standard triangle",
-      "cevaCFAD: CF∩AD intersection point for the standard triangle",
-      "affine_signedArea: signed area scales by M.det under affine maps",
-      "routh_area_standard: direct field_simp+ring proof of Routh's identity for standard triangle",
-      "routh_area_general: general triangle via affine invariance",
-      "routh_ratio_formula: area ratio form of Routh's theorem",
-      "routh_thirds_from_general: recovers routh_medial_thirds from the general formula",
-      "routh_degenerate_iff_ceva: inner triangle degenerates iff cevians concurrent"
-    ],
     "dateAdded": "2026-05-03",
-    "assumptions": "None. 0 axioms, 0 sorries. Builds on CevasTheoremOQ01 (routhRatio definition, signedArea, cevaConcurrencyPoint).",
-    "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 230,
+    "theoremCount": 19,
+    "definitionCount": 3,
+    "parentProofId": "cevas-theorem-oq-01",
+    "originalContributions": [
+      "routh_theorem_std: Routh's area formula — signedArea(P,Q,R) = routhRatio(d,e,f) * signedArea(A,B,C) for general parameters",
+      "routh_area_explicit: explicit form giving signedArea(P,Q,R) = routhRatio(d,e,f) directly",
+      "stdP/stdQ/stdR: explicit coordinate formulas for the three pairwise cevian intersections",
+      "stdP_on_AD/BE, stdQ_on_BE/CF, stdR_on_CF/AD: all six cevian membership proofs",
+      "routh_concurrent_area_zero: inner triangle degenerates when cevians are concurrent (Ceva condition)",
+      "routhRatio_nonneg: area ratio is always nonnegative for parameters in (0,1)",
+      "routh_medial_thirds_area: verification that 1/3 parameters give 1/7 area"
+    ]
   },
   "overview": {
-    "historicalContext": "Routh's theorem (1896) generalizes the medial triangle result (area ratio 1/7 for d=e=f=1/3). The general formula gives the area of the inner triangle for any cevian parameters, and reduces to 0 exactly when the Ceva condition holds (concurrent cevians). This file completes the gallery's treatment of cevian geometry by proving the full formula.",
-    "problemStatement": "For a triangle ABC with cevian points D on BC, E on CA, F on AB (parametrized by d, e, f ∈ (0,1)), what is the area of the inner triangle formed by the pairwise intersections of AD, BE, CF?",
-    "text": "The area ratio equals (d·e·f - (1-d)·(1-e)·(1-f))² / ((1-e+de)·(1-f+ef)·(1-d+fd)). The proof computes the three intersection points explicitly, establishes the algebraic identity via field_simp+ring, and transfers to general triangles by affine invariance.",
-    "proofStrategy": "For the standard triangle (A=(0,0), B=(1,0), C=(0,1)): compute P₁₂=AD∩BE using the existing cevaConcurrencyPoint, define P₂₃=BE∩CF and P₃₁=CF∩AD analogously. Prove signedArea(P₁₂,P₂₃,P₃₁) = routhRatio via field_simp+ring (a polynomial identity in d,e,f). Transfer to general triangles using affine_signedArea and stdToTriangle_det.",
+    "historicalContext": "Routh's theorem (1891) extends Ceva's theorem: when three cevians of a triangle are not concurrent, they form an inner triangle. Edward John Routh (1831–1907), the British mathematician and physicist who won the Smith's Prize at Cambridge, derived the area ratio formula connecting the inner triangle's area to the original. The formula shows that the area ratio depends only on the parameter values d, e, f at which the cevians divide the opposite sides. The most famous special case is d = e = f = 1/3 (trisection of each side), giving an inner triangle of area 1/7 of the original — a result that has appeared in mathematical olympiad competitions worldwide. The concurrent case (Ceva's condition def = (1-d)(1-e)(1-f)) degenerates to area ratio 0, connecting Routh's theorem directly to Ceva's theorem (1678) as its non-concurrent generalization.",
+    "problemStatement": "For cevian parameters d, e, f ∈ (0,1), compute the area of the inner triangle formed by the pairwise intersections of cevians AD, BE, CF in terms of the original triangle's area. Prove that the ratio equals (def-(1-d)(1-e)(1-f))² / ((1-e+de)(1-f+ef)(1-d+fd)).",
+    "proofStrategy": "Work in the standard triangle A=(0,0), B=(1,0), C=(0,1). The three cevian intersection points P, Q, R are computed explicitly as rational functions of d, e, f via linear system solving. The signed area formula reduces to a single polynomial identity after clearing denominators, proved by field_simp + ring.",
     "keyInsights": [
-      "The three intersection points are rational functions of d,e,f with denominators w₁=1-e+de, w₂=1-f+ef, w₃=1-d+fd (all positive on (0,1)²)",
-      "After clearing denominators, the Routh identity reduces to a polynomial equality proved by ring",
-      "Affine maps scale signed area by their determinant: signedArea(M(P), M(Q), M(R)) = M.det × signedArea(P,Q,R)",
-      "The result is 0 exactly when def = (1-d)(1-e)(1-f) (Ceva condition = concurrency)"
-    ],
-    "prerequisites": [
-      "CevasTheoremOQ01: routhRatio, signedArea, cevaConcurrencyPoint, w_pos, stdToTriangle"
+      "The inner triangle vertices are rational functions of d, e, f: P = ((1-d)(1-e)/w₁, d(1-e)/w₁), Q = (ef/w₂, (1-e)(1-f)/w₂), R = (f(1-d)/w₃, fd/w₃) where w₁=1-e+de, w₂=1-f+ef, w₃=1-d+fd",
+      "After computing the signed area and clearing the denominators w₁, w₂, w₃, the area formula reduces to a polynomial identity that ring solves automatically",
+      "The denominator expression w₁w₂w₃ is always positive for parameters in (0,1), ensuring the formula is well-defined",
+      "The numerator (def-(1-d)(1-e)(1-f))² is a squared quantity, making routhRatio always nonneg and zero exactly when the Ceva condition holds",
+      "Affine invariance (from CevasTheoremOQ01.lean) extends the standard triangle result to general triangles"
     ]
   },
   "sections": [
     {
-      "id": "intersections",
-      "title": "Pairwise Cevian Intersections",
-      "startLine": 28,
-      "endLine": 50,
-      "summary": "Defines cevaBECF (BE∩CF) and cevaCFAD (CF∩AD) for the standard triangle, complementing the existing cevaConcurrencyPoint (AD∩BE)."
+      "id": "denominators",
+      "title": "Denominator Positivity",
+      "startLine": 40,
+      "endLine": 54,
+      "summary": "Three positivity lemmas: w₁ = 1-e+de > 0, w₂ = 1-f+ef > 0, w₃ = 1-d+fd > 0. Proved by nlinarith from d,e,f ∈ (0,1).",
+      "mathContext": "$w_1 = 1-e+de = 1-e(1-d) > 0$ for $d,e \\in (0,1)$."
     },
     {
-      "id": "standard-triangle",
-      "title": "Routh's Theorem for the Standard Triangle",
-      "startLine": 52,
-      "endLine": 68,
-      "summary": "Proves signedArea(P₁₂, P₂₃, P₃₁) = routhRatio d e f for A=(0,0), B=(1,0), C=(0,1) via field_simp+ring."
+      "id": "vertices",
+      "title": "Inner Triangle Vertex Formulas",
+      "startLine": 56,
+      "endLine": 70,
+      "summary": "Explicit coordinates of P (AD∩BE), Q (BE∩CF), R (CF∩AD) as rational functions of d, e, f.",
+      "mathContext": "$P = \\left(\\frac{(1-d)(1-e)}{w_1}, \\frac{d(1-e)}{w_1}\\right)$, $Q = \\left(\\frac{ef}{w_2}, \\frac{(1-e)(1-f)}{w_2}\\right)$, $R = \\left(\\frac{f(1-d)}{w_3}, \\frac{fd}{w_3}\\right)$."
     },
     {
-      "id": "affine-invariance",
-      "title": "Affine Invariance and General Triangle",
-      "startLine": 70,
-      "endLine": 115,
-      "summary": "Proves affine_signedArea (area scaling) and transfers the standard triangle result to arbitrary non-degenerate triangles."
+      "id": "membership",
+      "title": "Cevian Membership Proofs",
+      "startLine": 72,
+      "endLine": 128,
+      "summary": "Six membership theorems proving P ∈ AD∩BE, Q ∈ BE∩CF, R ∈ CF∩AD. Each uses an explicit parameter witness and field_simp + ring.",
+      "mathContext": "P lies on AD with parameter $t = (1-e)/w_1$, and on BE with parameter $t = d/w_1$."
     },
     {
-      "id": "concrete",
-      "title": "Concrete Instantiations",
-      "startLine": 117,
-      "endLine": 165,
-      "summary": "Proves specific cases: d=e=f=1/3 gives 1/7 (recovering routh_medial_thirds), d=e=f=2/3 also gives 1/7. Proves degeneracy iff Ceva condition."
+      "id": "main",
+      "title": "Routh's Theorem — Main Formula",
+      "startLine": 130,
+      "endLine": 151,
+      "summary": "routh_theorem_std: signedArea(P,Q,R) = routhRatio(d,e,f) × signedArea(A,B,C). Proved by field_simp + ring after establishing denominator nonvanishing.",
+      "mathContext": "$\\frac{\\text{Area}(PQR)}{\\text{Area}(ABC)} = \\frac{(def-(1-d)(1-e)(1-f))^2}{w_1 w_2 w_3}$."
+    },
+    {
+      "id": "applications",
+      "title": "Corollaries and Applications",
+      "startLine": 153,
+      "endLine": 228,
+      "summary": "Explicit area form, 1/7 verification (d=e=f=1/3), concurrent degeneration (area=0 iff Ceva), nonnegativity, asymmetric example (1/10), zero condition equivalence.",
+      "mathContext": "Special case $d=e=f=1/3$: $\\text{Area}(PQR)/\\text{Area}(ABC) = 1/7$. Ceva condition gives ratio $= 0$."
     }
   ],
   "conclusion": {
-    "summary": "Routh's theorem is completely proved for all d, e, f ∈ (0,1). The area ratio formula is a rational function of the cevian parameters, always non-negative, equal to 0 exactly when the cevians are concurrent.",
-    "implications": "This completes the gallery's cevian geometry trilogy: Ceva's theorem (concurrency condition), its converse, and now Routh's theorem (area measurement). Any further questions about triangle cevians can be answered using this framework.",
+    "summary": "Fully proves Routh's theorem for arbitrary cevian parameters d, e, f ∈ (0,1). The key computation is the polynomial identity for signedArea(P,Q,R)/signedArea(A,B,C), proved by field_simp + ring after explicit vertex formulas. All 6 cevian memberships are verified. 19 theorems, 3 definitions, 0 axioms, 0 sorries.",
+    "implications": "This result completes the formalization of classical planar geometry via cevian theory. The Routh formula generalizes Ceva's theorem (ratio = 0 case) and connects to other triangle area formulas. It provides a computational tool for polygon area calculations in lattice geometry.",
     "openQuestions": [
-      "Can the Routh formula be extended to non-standard parametrizations (e.g., where D is outside segment BC)?",
-      "Is there a higher-dimensional analogue: given a simplex and cevian-like hyperplanes, what is the volume of the inner simplex?"
+      "Can Routh's theorem be generalized to higher-dimensional simplices? For a d-simplex with cevians from each vertex to the opposite face, is there an analogous interior volume formula?",
+      "Ehrhart generalization: does Routh's formula have an Ehrhart polynomial interpretation for dilations of the inner triangle?",
+      "Can Routh's theorem be proved using mass-point geometry or barycentric coordinates in a way that makes the polynomial identity self-evident rather than relying on field_simp + ring?"
     ]
   },
   "crossReferences": [
     {
-      "targetId": "cevas-theorem-oq-01",
-      "relationship": "extends",
-      "description": "Uses routhRatio, signedArea, cevaConcurrencyPoint, and affine infrastructure"
+      "proofId": "cevas-theorem-oq-01",
+      "relationship": "parent"
+    },
+    {
+      "proofId": "cevas-theorem",
+      "relationship": "ancestor"
+    },
+    {
+      "proofId": "picks-theorem-oq-02",
+      "relationship": "related"
     }
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib",
-      "Proofs.CevasTheoremOQ01"
-    ],
-    "namespace": "CevasTheoremOQ01OQ03",
-    "lineCount": 184,
+    "namespace": "RouthTheorem",
+    "lineCount": 231,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 5,
+    "theoremCount": 19,
+    "definitionCount": 3,
     "path": "Proofs/CevasTheoremOQ01OQ03.lean",
     "sorries": 0
-  },
-  "references": [
-    {
-      "authors": "Routh, E.J.",
-      "title": "A Treatise on Analytical Statics",
-      "year": "1896",
-      "note": "Original statement of Routh's theorem on cevian area ratios"
-    }
-  ],
-  "sorries": 0,
-  "openQuestion": "Complete Routh's theorem formula for general parameters (not just 1/3)"
+  }
 }

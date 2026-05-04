@@ -64,7 +64,8 @@
     ],
     "lineCount": 299,
     "assumptions": "3 axioms: brindza_erdos_1991, yu_liu_1996, divisible_case_analysis. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in the 1970s, observing that $(p-1)! + a^{p-1}$ is rarely a perfect power of $p$. The factorial grows super-exponentially while $p^k$ grows only exponentially, so solutions should be sparse.\n\nBrindza and Erdős (1991) proved finiteness using Baker's theory of linear forms in logarithms. Baker's method (1966) gives effective bounds for Diophantine equations involving exponentials: if $\\Lambda = b_1 \\log \\alpha_1 + \\cdots + b_n \\log \\alpha_n \\neq 0$, then $|\\Lambda| > B^{-C}$ for an explicit $C$ depending on the $\\alpha_i$. Applied to $(p-1)! + a^{p-1} = p^k$, this yields an effective (though astronomically large) bound on all solution parameters.\n\nYu and Liu (1996) achieved a complete resolution by refining these bounds through careful $p$-adic analysis and exhaustive case checking for small primes. Their strategy: (1) show $p \\geq 7$ is impossible via factorial growth, (2) for $p = 3$, solve $2 + a^2 = 3^k$ (a generalized Ramanujan-Nagell equation), (3) for $p = 5$, solve $24 + a^4 = 5^k$ by $p$-adic methods.\n\nThe problem connects to Brocard's problem ($n! + 1 = m^2$, still open for $n > 7$) and Catalan's conjecture (proved by Mihailescu 2002: the only consecutive perfect powers are $8$ and $9$). The example $6! + 2^6 = 28^2$ (noted by Erdős-Graham) shows the perfect-power phenomenon extends beyond prime-power bases.",

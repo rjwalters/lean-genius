@@ -1,7 +1,7 @@
 {
   "slug": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
   "title": "Does the theorem extend beyond CharZero",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Branch pushed, PR #15667 created. 5 theorems, 0 sorries, 1 axiom. Docker build pending (infrastructure congestion).",
+    "builtItems": [
+      "Added import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01 to Proofs.lean",
+      "Fixed lineCount 155→165 in meta.json (both meta and leanFile sections)"
+    ],
+    "insights": [
+      "Branch was never pushed from session 1 — always push immediately after commit",
+      "Proofs.lean import is required for Lake to compile the new file",
+      "Docker builds can queue/hang when daemon is busy with many concurrent builds"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Await Docker build for PR #15667 (AngleTrisectionOQ02OQ01OQ01OQ01)",
+      "Optional: prove insep_gal_trivial using RatFunc/FractionRing over ZMod p"
+    ]
   },
   "tags": [
     "challenging",
@@ -45,6 +55,7 @@
     "angle-trisection-cos-20-gal",
     "angle-trisection-cos-20-gal-oq-01",
     "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-02",
     "angle-trisection-cos-20-gal-oq-03",
     "angle-trisection-cos-20-gal-oq-03-oq-01",
     "angle-trisection-oq-01",
@@ -55,13 +66,19 @@
     "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
     "angle-trisection-oq-02-oq-02",
     "angle-trisection-oq-02-oq-03",
+    "angle-trisection-oq-02-oq-03-ext",
     "angle-trisection-oq-02-oq-03-oq-01",
     "angle-trisection-oq-02-oq-04",
     "angle-trisection-oq-02-oq-04-oq-01",
     "angle-trisection-oq-03",
+    "angle-trisection-oq-03-oq-01",
+    "angle-trisection-oq-03-oq-02",
     "angle-trisection-oq-04",
+    "angle-trisection-oq-04-oq-03",
+    "angle-trisection-oq-04-oq-04",
     "angle-trisection-oq-05",
-    "angle-trisection-oq-05-oq-01"
+    "angle-trisection-oq-05-oq-01",
+    "angle-trisection-oq-05-oq-02"
   ],
   "references": {
     "papers": [],
@@ -127,6 +144,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02.lean",
+      "lineCount": 327,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02.lean"
     },
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
@@ -208,11 +236,11 @@
     {
       "path": "Proofs/AngleTrisectionOQ02OQ01OQ02.lean",
       "filename": "AngleTrisectionOQ02OQ01OQ02.lean",
-      "lineCount": 235,
+      "lineCount": 266,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 5,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ02.lean"
     },
@@ -230,13 +258,24 @@
     {
       "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
       "filename": "AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-      "lineCount": 368,
+      "lineCount": 612,
       "theoremCount": 16,
       "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 9,
+      "defCount": 1,
+      "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean",
+      "filename": "AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean",
+      "lineCount": 2680,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ02OQ02.lean",
@@ -296,22 +335,22 @@
     {
       "path": "Proofs/AngleTrisectionOQ02OQ04OQ01.lean",
       "filename": "AngleTrisectionOQ02OQ04OQ01.lean",
-      "lineCount": 335,
+      "lineCount": 365,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ04OQ01.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ02OQ04OQ01Aristotle.lean",
       "filename": "AngleTrisectionOQ02OQ04OQ01Aristotle.lean",
-      "lineCount": 49,
+      "lineCount": 50,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ04OQ01Aristotle.lean"
     },
@@ -325,6 +364,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ03.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ03OQ01.lean",
+      "filename": "AngleTrisectionOQ03OQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ03OQ02.lean",
+      "filename": "AngleTrisectionOQ03OQ02.lean",
+      "lineCount": 157,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ03OQ02.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ04.lean",
@@ -349,6 +410,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ04OQ03.lean"
     },
     {
+      "path": "Proofs/AngleTrisectionOQ04OQ04.lean",
+      "filename": "AngleTrisectionOQ04OQ04.lean",
+      "lineCount": 153,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ04OQ04.lean"
+    },
+    {
       "path": "Proofs/AngleTrisectionOQ05.lean",
       "filename": "AngleTrisectionOQ05.lean",
       "lineCount": 696,
@@ -369,6 +441,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ05OQ02.lean",
+      "filename": "AngleTrisectionOQ05OQ02.lean",
+      "lineCount": 197,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ05OQ02.lean"
     }
   ]
 }

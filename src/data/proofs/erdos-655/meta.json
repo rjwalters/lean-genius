@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 122,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős (1946) posed the fundamental distinct distance problem: what is the minimum number of distinct distances determined by n points in ℝ²? He conjectured Ω(n/√(log n)), achieved by the √n × √n integer lattice. The lower bound progressed through Moser (1952, n^{2/3}), Chung (1984, n^{5/7}), Székely (1997, n^{4/5}), to the near-optimal Ω(n/log n) by Guth and Katz (2015) using algebraic methods. Problem 655, posed with Pach, explores a variant: under a concyclicity restriction (no circle centered at any point passes through 3+ others), each distance value appears ≤ 2 times from each point, immediately giving ≥ (n-1)/2 distinct distances per point by pigeonhole. The conjecture asked whether this bound can be improved to (1+c)n/2 for a universal constant c > 0. Zach Hunter disproved the original formulation: equally-spaced points on a circle satisfy the condition but achieve only ~n/2 distinct distances. The corrected version uses the stronger 'no 4 concyclic' condition, which prevents Hunter's construction. The problem connects to incidence geometry (Szemerédi-Trotter bounds on point-circle incidences) and the broader program of understanding how geometric restrictions on point configurations force larger distance sets.",

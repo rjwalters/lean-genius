@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 45,
     "assumptions": "None. All results proved by computation (decide/native_decide). All theorems fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Paul Erdős Problem #1059 asks whether there are **infinitely many** primes $p$ such that $p - k!$ is composite for every positive integer $k$ satisfying $k! < p$. Such primes are 'factorial-avoiding' — no factorial subtraction yields another prime.\n\nThe first known examples are $p = 101$ and $p = 211$. After 211, this open question (OQ-03) asks: what is the next prime failing the property? The answer is 223 — the very next prime after 211 — and 223 fails immediately via $223 - 4! = 223 - 24 = 199$ (prime).\n\nThis computational result has two implications. First, it shows the 'window' of primes satisfying the Erdős 1059 property is narrow: between 211 and the next prime (223), there is literally no prime that could fail. Second, it illustrates the rarity of the property: among the first few hundred primes, only 101 and 211 are known to satisfy it. Whether the list continues is open.\n\nThe proof uses Lean 4's `decide` tactic, which evaluates the statement at the kernel level (reducing to Boolean computation). For small numbers like 223 and 199, this is entirely feasible — primality testing is decidable and fast for numbers of this magnitude.",

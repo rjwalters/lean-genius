@@ -80,8 +80,9 @@
       "maynard_tao_sieve_eh: The EH-conditional sieve — under Elliott-Halberstam, any admissible 5-tuple of diameter D gives infinitely many prime gaps ≤ D",
       "engelsma_lower_bound: No admissible 50-tuple has diameter < 246 (Engelsma 2013 computer search)"
     ],
-    "lineCount": 2017,
-    "mathlib_version": "4.26.0"
+    "lineCount": 2219,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 128
   },
   "overview": {
     "historicalContext": "**Bounded Prime Gaps: A Landmark in Analytic Number Theory**\n\nThe twin prime conjecture (infinitely many primes differing by 2) remained open for centuries. In 2013, Yitang Zhang made the first unconditional breakthrough: there are infinitely many prime pairs differing by at most 70,000,000. This was stunning because it proved *some* bounded gap exists, even if not 2.\n\nThe Polymath 8 project (organized by Terence Tao) rapidly optimized Zhang's work:\n- **Polymath 8a** (2013): Reduced Zhang's bound to 4,680\n- **Polymath 8b** (2014): Using Maynard's new GPY sieve method, reached **246**\n- **Maynard-Tao (2015)**: Independently showed gap ≤ 600, and generalized to m-tuples\n- **Assuming Elliott-Halberstam conjecture**: Bound improves to **12** (two apart from twin prime conjecture)\n\nThe central combinatorial object is an *admissible k-tuple*: a set $H = \\{h_1, \\ldots, h_k\\}$ of integers such that for every prime $p$, the set $H$ does not cover all residue classes mod $p$. The Dickson conjecture predicts that admissible tuples have infinitely many prime translates; the bounded gaps theorem proves that sufficiently large admissible tuples have infinitely many *partially* realized translates.",
@@ -310,7 +311,7 @@
       "Real"
     ],
     "namespace": "BoundedPrimeGaps",
-    "lineCount": 2017,
+    "lineCount": 2219,
     "axiomCount": 3,
     "theoremCount": 128,
     "definitionCount": 17,

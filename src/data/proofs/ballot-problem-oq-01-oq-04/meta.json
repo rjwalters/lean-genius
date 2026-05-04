@@ -64,9 +64,10 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 73,
+    "lineCount": 1237,
     "assumptions": "0 axioms, 0 sorries. The previously stated axiom chung_feller_uniform is now a theorem re-exporting ChungFellerBijection.chung_feller_uniform' from BallotProblemOQ01OQ04OQ01.lean. The full proof spans three files: BallotProblemOQ01OQ04Core.lean (definitions and cycle-lemma bridge), BallotProblemOQ01OQ04OQ01.lean (explicit bijection), and BallotProblemOQ01OQ04.lean (gallery face).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**The Chung-Feller Theorem (1949)**\n\nChung and Feller proved that among the $\\binom{2n}{n}$ lattice paths from $(0,0)$ to $(2n,0)$ with steps $\\pm 1$, exactly $C_n = \\binom{2n}{n}/(n+1)$ paths have exactly $k$ upsteps above the $x$-axis, for each $k \\in \\{0, 1, \\ldots, n\\}$. The result is remarkable because the count is independent of $k$.\n\nThe most elegant proof uses the Dvoretzky-Motzkin cycle lemma (1947): prepend $+1$ to a balanced path to get a sequence of length $2n+1$ with sum $1$. The cycle lemma guarantees exactly $1$ of the $2n+1$ cyclic rotations has all partial sums positive. This creates a bijection that partitions paths uniformly across the $n+1$ types.",
@@ -90,20 +91,44 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Architecture and Imports",
+      "id": "theorem-statement",
+      "title": "Chung-Feller Theorem Statement",
       "startLine": 1,
+      "endLine": 12,
+      "summary": "Introduces the Chung-Feller theorem: among C(2n,n) balanced ±1 lattice paths from (0,0) to (2n,0), exactly Cₙ paths have exactly k upsteps above the x-axis, for each k ∈ {0,...,n}. The striking feature is that this count is independent of k.",
+      "mathContext": "For each $k \\in \\{0, 1, \\ldots, n\\}$: $|\\{l : \\text{IsBalancedPath}(l, n) \\mid \\text{upstepsAboveAxis}(l) = k\\}| = C_n$, where $C_n = \\binom{2n}{n}/(n+1)$ is the $n$th Catalan number."
+    },
+    {
+      "id": "proof-architecture",
+      "title": "Three-File Proof Architecture",
+      "startLine": 13,
+      "endLine": 30,
+      "summary": "Describes the modular three-file decomposition: BallotProblemOQ01OQ04Core.lean (definitions + cycle-lemma bridge), BallotProblemOQ01OQ04OQ01.lean (explicit bijection chungFellerMap, proved with 0 sorries), and this file (gallery face re-exporting the theorem under its conventional name).",
+      "mathContext": "The proof is split to avoid a dependency cycle: the conventional name `chung_feller_uniform` lives in the gallery face, which imports the companion file that actually proves it. The Core file extracts shared definitions used by both, creating the DAG: Core ← OQ01 ← BallotProblemOQ01OQ04."
+    },
+    {
+      "id": "proof-strategy",
+      "title": "Cycle Lemma Proof Strategy",
+      "startLine": 31,
       "endLine": 49,
-      "summary": "Header documenting the three-file proof architecture (Core, OQ01 bijection, this gallery face), the cycle-lemma proof strategy, and the elimination of the previously stated axiom. Imports BallotProblemOQ01OQ04OQ01 (which transitively pulls in Core, OQ01, and OQ03).",
-      "mathContext": "The Chung-Feller theorem (1949): among $\\binom{2n}{n}$ balanced paths, exactly $C_n$ have $k$ upsteps above the axis, for each $k$. The proof uses Dvoretzky-Motzkin's cycle lemma to construct an explicit bijection between balanced paths and (Dyck paths) × (path types)."
+      "summary": "Four-step proof strategy: (1) a balanced path has n upsteps and n downsteps; (2) prepend +1 to get a length-(2n+1) sum-1 sequence; (3) cycle lemma gives exactly 1 good rotation; (4) the bijection l ↦ (Dyck-tail, upstepsAboveAxis l) distributes paths uniformly across types. Also documents axiom elimination: chung_feller_uniform was previously an axiom placeholder.",
+      "mathContext": "The Dvoretzky-Motzkin cycle lemma (1947): for a sequence with $a$ positive terms and $b$ negative terms and $\\gcd(a,b) = 1$, exactly $a - k \\cdot b$ of the $a+b$ cyclic rotations have all partial sums positive when summing to $k$. Applied here with $k=1$, $a=n+1$, $b=n$, yielding exactly 1 good rotation per balanced path."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Import and Namespace Setup",
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "Imports `BallotProblemOQ01OQ04OQ01` (the bijection companion), opens namespace `ChungFeller` and `ChungFellerBijection` to bring `chung_feller_uniform'`, `balancedPathsOfType`, and related identifiers into scope.",
+      "mathContext": "The single import `Proofs.BallotProblemOQ01OQ04OQ01` transitively brings in `BallotProblemOQ01OQ04Core` (definitions) and `BallotProblemOQ01OQ04OQ01` (the bijection proof). The namespace structure lets this file use `balancedPathsOfType` from Core and `chung_feller_uniform'` from OQ01 directly."
     },
     {
       "id": "chung-feller-uniform",
-      "title": "Chung-Feller Theorem (Uniform Distribution)",
-      "startLine": 50,
+      "title": "Chung-Feller Theorem: Re-Export as Proved Theorem",
+      "startLine": 59,
       "endLine": 73,
-      "summary": "Defines `chung_feller_uniform`: for j, k ≤ n, the j-type and k-type balanced-path sets have equal cardinality. Proof is by re-export of `ChungFellerBijection.chung_feller_uniform'` from the companion file, which constructs an explicit bijection. This was previously stated as an axiom.",
-      "mathContext": "$|\\{\\text{paths with } j \\text{ upsteps above axis}\\}| = |\\{\\text{paths with } k \\text{ upsteps above axis}\\}|$ for all $j, k \\leq n$ — proved via the explicit bijection $l \\mapsto (\\text{Dyck-tail of good rotation}, \\text{upstepsAboveAxis}\\, l)$."
+      "summary": "Re-exports `chung_feller_uniform'` from the companion bijection file under the conventional name `chung_feller_uniform`. Proof is by direct application of the companion's result. This was previously stated as an axiom — it is now a proper theorem with 0 axioms and 0 sorries.",
+      "mathContext": "$\\forall n, j, k : \\mathbb{N},\\ j \\leq n \\Rightarrow k \\leq n \\Rightarrow |\\text{balancedPathsOfType}(n, j)| = |\\text{balancedPathsOfType}(n, k)|$. The proof is one line: apply `ChungFellerBijection.chung_feller_uniform'` with the same arguments."
     }
   ],
   "crossReferences": [
@@ -128,7 +153,8 @@
     "implications": "**Mathematical Significance**\n\n1. **Cycle Lemma Bridge**: The prepend-one-good-rotation theorem is the key structural fact: the 2n+1 cyclic rotations of a prepended balanced path contain exactly 1 good rotation, creating the foundation for the (n+1)-uniform partition.\n\n2. **Catalan Connection**: Via balanced_path_total, the total count C(2n,n) factors as Cₙ × (n+1), so the uniform (n+1)-partition yields Cₙ members per type.\n\n3. **Explicit Bijection**: The cycle-lemma route to Chung-Feller is constructive. The map l ↦ (Dyck-tail of good rotation, upstepsAboveAxis l) is bijective, with no appeal to algebraic topology or generating functions.\n\n4. **Architectural Note**: The previously stated axiom chung_feller_uniform was eliminated by extracting shared definitions to a Core file and flipping the import direction so the gallery face can re-export the bijection-proved theorem under its conventional name.",
     "openQuestions": [
       "Can a q-analog of the Chung-Feller theorem be formalized, tracking the area under the path?",
-      "Does chungFellerMap admit a description in terms of the RSK correspondence, given that Dyck paths and Catalan structures are RSK-related?"
+      "Does chungFellerMap admit a description in terms of the RSK correspondence, given that Dyck paths and Catalan structures are RSK-related?",
+      "Can the Chung-Feller proof be extended to the Lindström-Gessel-Viennot lemma setting, where balanced paths in a planar DAG replace ±1 lattice paths and the cycle lemma generalizes to non-intersecting path families?"
     ]
   },
   "mainTheorems": [
@@ -161,9 +187,9 @@
       "ChungFellerBijection"
     ],
     "namespace": "ChungFeller",
-    "lineCount": 73,
+    "lineCount": 1237,
     "axiomCount": 0,
-    "theoremCount": 1,
+    "theoremCount": 2,
     "substantiveTheoremCount": 1,
     "trivialPlaceholders": 0,
     "definitionCount": 0,

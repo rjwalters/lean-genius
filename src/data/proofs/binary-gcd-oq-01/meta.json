@@ -41,13 +41,14 @@
       "Concrete step counts via native_decide"
     ],
     "axiomCount": 0,
-    "lineCount": 215,
+    "lineCount": 675,
     "assumptions": "None. 0 axiom declarations, 0 sorries.",
     "prerequisites": [
       "Natural number GCD and divisibility",
       "Logarithmic functions on naturals",
       "Well-founded recursion and termination proofs"
-    ]
+    ],
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Two Algorithms for the Same Problem**\n\nThe Euclidean algorithm — described in Book VII of Euclid's *Elements* (~300 BCE) — computes gcd(a,b) via repeated division: (a,b) → (b, a mod b). It is one of the oldest known algorithms. Gabriel Lamé's 1844 analysis in *Comptes Rendus* proved that the algorithm takes at most 5d steps where d is the number of decimal digits of the smaller input — one of the first formal complexity analyses in history, predating computer science by a century. Lamé's proof used the key insight that Fibonacci pairs (F_n, F_{n-1}) are the worst case: the quotient is always 1, forcing the maximum number of steps.\n\nBinary GCD (Stein's algorithm) was published by Josef Stein in 1967, though the core idea was known to programmers working on early binary computers. The algorithm replaces expensive division with bit shifts (halving by 2) and subtraction — operations that are far cheaper on binary hardware. On multi-precision integers (as used in cryptography), the savings are dramatic since division is O(n²) in the number of limbs while shifting is O(n).\n\nThe formal comparison formalized here reveals the asymmetry: Binary GCD uses *more* steps but cheaper ones; the total operation count (weighted by hardware cost) often favors Binary GCD for large inputs. This is a recurring theme in algorithm analysis: step count alone doesn't determine practical efficiency.",
@@ -173,7 +174,7 @@
       "Nat"
     ],
     "namespace": "BinaryGcdOQ01",
-    "lineCount": 215,
+    "lineCount": 675,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 2,

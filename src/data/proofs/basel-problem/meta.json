@@ -67,7 +67,8 @@
       }
     ],
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. All nine theorems are proved from Mathlib (hasSum_zeta_two, hasSum_zeta_four, hasSum_zeta_nat, Real.summable_nat_rpow_inv) with no custom axioms and no definition sorries. The file's original contributions (summable_one_div_sq, summable_nat_sq_inv, positivity lemmas, zeta_general) are pedagogical wrappers composing Mathlib lemmas.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The Basel Problem was posed by Pietro Mengoli in 1650 and named after Basel, the hometown of the Bernoulli family who publicized it. Jakob Bernoulli himself tried and failed to find the sum, knowing only that $\\sum 1/n^2 < 2$ (published in *Tractatus de Seriebus Infinitis*, 1689). The problem defeated the leading mathematicians of the era — the Bernoulli brothers, Leibniz, and Stirling all attempted it without success.\n\nIn 1734, the 27-year-old Leonhard Euler stunned the mathematical world by proving $\\sum_{n=1}^{\\infty} 1/n^2 = \\pi^2/6$. His original proof used a daring factorization of $\\sin(x)/x$ as an infinite product $\\prod(1 - x^2/n^2\\pi^2)$, then compared the $x^2$ coefficient with the Taylor expansion — a method that was brilliant but not fully rigorous, as it assumed infinite polynomials factor like finite ones (justified later by the Weierstrass factorization theorem, 1876). Euler gave at least four different proofs, including partial fractions of $\\pi\\cot(\\pi x)$. The result was later proved rigorously via Fourier analysis: Parseval's identity applied to $f(x) = x$ on $[-\\pi, \\pi]$ yields the sum directly.\n\nThe problem has a remarkable probabilistic interpretation discovered by Euler himself: the probability that two random positive integers are coprime equals $6/\\pi^2 = 1/\\zeta(2)$. At least 70 proofs are now known, including approaches via residue calculus, double integrals, and even statistical mechanics.\n\nEuler went on to compute $\\zeta(2k)$ for all positive integers $k$, discovering the formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ involving Bernoulli numbers. The odd values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious: Apéry proved $\\zeta(3)$ irrational in 1978, but no closed form in terms of $\\pi$ is known for any odd zeta value. Today the Basel identity $\\zeta(2) = \\pi^2/6$ is recognized as the birth of analytic number theory, connecting a sum over integers to the transcendental number $\\pi$ and foreshadowing Riemann's 1859 memoir on the distribution of primes.",
@@ -323,7 +324,6 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "lemmaCount": 0,
-    "defCount": 0,
     "definitionCount": 0,
     "substantiveTheoremCount": 3,
     "trivialSpecializations": 6,

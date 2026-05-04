@@ -7,7 +7,7 @@
     "author": "Hadamard–de la Vallée Poussin (1896)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Prime_number_theorem",
     "date": "1896",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
     "tags": [
       "number-theory",
@@ -19,7 +19,7 @@
       "filter-algebra",
       "asymptotics"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -60,9 +60,9 @@
       "pnt_density_gap_summary: Theorem explicitly documenting the gap between proved long-interval and open short-interval density"
     ],
     "dateAdded": "2026-04-14",
-    "axiomCount": 0,
-    "lineCount": 213,
-    "assumptions": "0 axioms, 0 sorries. The proof is fully verified from PrimeNumberTheorem (which carries 1 axiom for the PNT itself) and Mathlib's filter analysis library.",
+    "axiomCount": 1,
+    "lineCount": 1338,
+    "assumptions": "Relies on `axiom primeNumberTheorem : PrimeNumberTheorem_Ratio` declared in `Proofs.PrimeNumberTheorem`. All three main theorems (pnt_at_scaled_point, pnt_density_long_interval, pnt_density_gap_summary) depend on this axiom. 0 sorries.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
@@ -73,7 +73,8 @@
         "id": "prime-number-theorem",
         "relationship": "Foundation; both theorems here are direct consequences of PNT via filter composition"
       }
-    ]
+    ],
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "The Prime Number Theorem (PNT, 1896) establishes $\\pi(x) \\sim x/\\ln x$, independently proved by Hadamard and de la Vallée Poussin using properties of the Riemann zeta function. The density corollary for proportional intervals — that $(x, (1+c)x]$ contains $\\sim cx/\\log x$ primes — was implicit in the 19th-century analytic program. Chebyshev (1848) had already established $0.92 x/\\log x < \\pi(x) < 1.11 x/\\log x$ via his theta and psi functions; the proportional-interval density follows formally from PNT in exactly the filter-algebraic manner proved here. The filter-algebraic proof of this density requires two modular steps: (1) expressing PNT at $(1+c)x$ using $\\log(x)$ rather than $\\log((1+c)x)$, and (2) algebraically combining two PNT estimates to get the interval density. These steps were first embedded inline in the OQ-04 proof; this entry isolates them as clean standalone theorems.",
@@ -184,8 +185,8 @@
       "PrimeNumberTheorem"
     ],
     "namespace": "BertrandsPostulateOQ03OQ04OQ03",
-    "lineCount": 213,
-    "axiomCount": 0,
+    "lineCount": 1338,
+    "axiomCount": 1,
     "sorries": 0,
     "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
     "theoremCount": 4,

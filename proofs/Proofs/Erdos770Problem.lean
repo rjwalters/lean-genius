@@ -31,6 +31,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
 
 open Finset
@@ -493,3 +494,57 @@ theorem hMinK_is_min {n : ℕ} (hn : 0 < n) {k : ℕ} (hk : k < hMinK n) :
     gcdPowerSeq n k ≠ 1 := by
   unfold hMinK at hk; rw [dif_pos hn] at hk
   exact Nat.find_min ⟨n + 1, gcdPowerSeq_at_succ_eq_one hn⟩ hk
+
+-- ## Fermat formula: h(p-1) = p for primes p
+
+/-- **Key formula**: for any prime p, h(p-1) = p.
+    Upper bound: gcdPowerSeq (p-1) p = 1 from gcdPowerSeq_at_succ_eq_one.
+    Lower bound: Fermat implies gcdPowerSeq (p-1) k ≠ 1 for all k < p,
+    so h(p-1) cannot be strictly less than p. -/
+theorem hMinK_prime_minus_one {p : ℕ} (hp : Nat.Prime p) : hMinK (p - 1) = p := by
+  have hn : 0 < p - 1 := Nat.sub_pos_of_lt hp.one_lt
+  apply Nat.le_antisymm
+  · -- h(p-1) ≤ p: use gcdPowerSeq (p-1) p = 1
+    unfold hMinK; rw [dif_pos hn]
+    apply Nat.find_le
+    have : p - 1 + 1 = p := by omega
+    rw [← this]; exact gcdPowerSeq_at_succ_eq_one hn
+  · -- h(p-1) ≥ p: any k < p satisfies gcdPowerSeq (p-1) k ≠ 1 by Fermat
+    by_contra h
+    push_neg at h
+    exact absurd (hMinK_spec hn)
+      (gcdPowerSeq_ne_one_of_large_prime hp (dvd_refl (p - 1)) h)
+
+/-- When n+1 is prime, h(n) = n+1.
+    Corollary of hMinK_prime_minus_one with p = n+1. -/
+theorem hMinK_succ_of_prime {n : ℕ} (hp : Nat.Prime (n + 1)) : hMinK n = n + 1 := by
+  have h := hMinK_prime_minus_one hp
+  have : n + 1 - 1 = n := by omega
+  rwa [this] at h
+
+-- ## Unboundedness of h(n)
+
+/-- **Q2 resolved (upper half)**: h(n) is unbounded.
+    For any M, there exists n with h(n) > M.
+    Proof: take any prime p > M; then h(p-1) = p > M. -/
+theorem hMinK_unbounded (M : ℕ) : ∃ n, M < hMinK n := by
+  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (M + 1)
+  exact ⟨p - 1, hMinK_prime_minus_one hp_prime ▸ by omega⟩
+
+/-- **Q1 (OPEN)**: For each prime p, the natural density of {n : ℕ | hMinK n = p}
+    exists. The conjectured density δ_p is the probability that the smallest
+    prime q with q ∤ (q-1)! satisfying some divisibility condition equals p.
+    [OPEN — requires density theory for multiplicative functions] -/
+axiom erdos_770_q1 : ∀ p : ℕ, Nat.Prime p →
+    ∃ δ : ℝ, 0 ≤ δ ∧ Filter.Tendsto
+      (fun N : ℕ => ((Finset.filter (fun n => hMinK n = p) (Finset.range N)).card : ℝ) / N)
+      Filter.atTop (nhds δ)
+
+/-- **Q3 (OPEN)**: The function hMinK is characterized by the dominant prime divisor.
+    Specifically: if p is the largest prime with (p-1) | n, then hMinK n = p
+    for all sufficiently large n satisfying the dominance condition.
+    [OPEN — no proof exists in the literature] -/
+axiom erdos_770_q3 : ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
+    ∀ p : ℕ, Nat.Prime p → (p - 1) ∣ n →
+    (∀ q : ℕ, Nat.Prime q → (q - 1) ∣ n → q ≤ p) →
+    hMinK n = p

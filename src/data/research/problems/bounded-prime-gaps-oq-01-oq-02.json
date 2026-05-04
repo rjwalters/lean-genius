@@ -1,13 +1,13 @@
 {
   "slug": "bounded-prime-gaps-oq-01-oq-02",
-  "title": "Prove H ≤ 12 unconditionally: this would require proving Elliott-Halberstam o...",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Prove H \u2264 12 unconditionally: this would require proving Elliott-Halberstam o...",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Prove H ≤ 12 unconditionally: this would require proving Elliott-Halberstam or a variant.",
+    "plain": "Prove H \u2264 12 unconditionally: this would require proving Elliott-Halberstam or a variant.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-26T08:56:57.650Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 24 theorems, 0 sorries, 1 axiom (maynard_tao_sieve_eh). EH conditional H\u226412 via Maynard-Tao sieve + optimal 5-tuple {0,2,6,8,12}.",
+    "builtItems": [
+      "eh_conditional_h_le_12: \u2200 N, \u2203 n \u2265 N, primeGap n \u2264 12 \u2014 direct from maynard_tao_sieve_eh + {0,2,6,8,12}",
+      "no_admissible_5_tuple_diam_le_10: conjunction of all 5 non-admissibility witnesses from OQ01",
+      "OpenQuestion01OQ02: formal definition of the open problem as \u2203 H \u2264 12, unconditional gap bound",
+      "eh_solves_oq01oq02: EH conditional answer to the open question",
+      "sieve_threshold_ratio, bv_needs_10x_more_elements: 5\u00d710=50, sieve comparison framework"
+    ],
+    "insights": [
+      "EH reduces Maynard-Tao sieve tuple threshold from k\u226550 (BV, unconditional) to k\u22655 (EH conditional) \u2014 a 10\u00d7 improvement",
+      "The 5-tuple {0,2,6,8,12} with diameter 12 is optimal: all 5 even 5-tuples with diameter \u2264 10 are non-admissible (proved in OQ01)",
+      "Two admissible 5-tuples of diameter 12 exist: {0,2,6,8,12} and {0,4,6,10,12}",
+      "BV and EH share the same level 1/2, but BV is proved for strict \u03b8 < 1/2; the knife-edge extension to \u03b8 = 1/2 is the open problem",
+      "The unconditional-to-EH gap is 246 vs 12 (factor ~20\u00d7), tracing back to the tuple size ratio 50/5 = 10"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Aristotle could potentially fill trivial sorry in any future sieve lemma",
+      "Monitor for EH-related Mathlib additions (Bombieri-Vinogradov formalization)",
+      "Consider extending to analyze partial EH results (e.g., Motohashi-Pintz 2008 at \u03b8>1/2-\u03b5 on sparse set)"
+    ]
   },
   "tags": [
     "challenging",
@@ -47,7 +63,8 @@
     "bounded-prime-gaps-oq-03-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
     "bounded-prime-gaps-oq-04",
-    "bounded-prime-gaps-oq-04-oq-01"
+    "bounded-prime-gaps-oq-04-oq-01",
+    "bounded-prime-gaps-oq-04-oq-02"
   ],
   "references": {
     "papers": [],

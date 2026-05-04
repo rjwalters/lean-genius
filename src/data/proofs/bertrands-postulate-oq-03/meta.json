@@ -58,7 +58,7 @@
     ],
     "dateAdded": "2026-02-22",
     "axiomCount": 3,
-    "lineCount": 308,
+    "lineCount": 510,
     "assumptions": "3 axioms: (1) bhp_short_interval — Baker-Harman-Pintz short interval prime existence for intervals [x, x+h] with h ≥ x^0.525, (2) cramer_conjecture — Cramér's conjecture on maximal prime gaps O(log²p), (3) legendre_conjecture — a prime exists between n² and (n+1)² for all n ≥ 1.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
@@ -66,7 +66,8 @@
         "id": "bertrands-postulate",
         "relationship": "Parent entry proving Bertrand's postulate; this OQ-03 explores prime density in shorter intervals"
       }
-    ]
+    ],
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Bertrand conjectured in 1845 that every interval $(n, 2n]$ contains at least one prime — a result he verified empirically up to $n = 3{,}000{,}000$. Chebyshev gave the first proof in 1852 using bounds on the Chebyshev functions $\\theta(x) = \\sum_{p \\leq x} \\log p$ and $\\psi(x) = \\sum_{p^k \\leq x} \\log p$. In 1932, the 19-year-old Paul Erdős gave an elegant elementary proof using properties of central binomial coefficients $\\binom{2n}{n}$ — his first published paper, which launched a legendary career.\n\nThe deeper question — how short an interval $[x, x+h]$ can be guaranteed to contain a prime — has driven analytic number theory since Riemann's 1859 memoir. The Prime Number Theorem (PNT), proved independently by Hadamard and de la Vallée Poussin in 1896, gives $\\pi(x) \\sim x/\\ln x$, predicting $\\sim h/\\ln x$ primes in $[x, x+h]$ for large $h$. Hoheisel (1930) first proved a prime exists in $[x, x + x^{1-1/33000}]$ for large $x$, and successive improvements by Ingham (1937, $\\theta = 5/8$), Heath-Brown (1988, $\\theta = 7/12$), and Baker-Harman-Pintz (2001, $\\theta = 0.525$) have pushed the exponent steadily downward. Cramér conjectured in 1936 — based on a probabilistic model of primes — that the maximal prime gap near $p$ is $O((\\log p)^2)$, which would give $\\theta \\to 0$ with polylogarithmic correction. Legendre's older conjecture (c. 1808) that every interval $[n^2, (n+1)^2]$ contains a prime remains open after more than two centuries. Both conjectures are far beyond current proof techniques, which rely on zero-free regions of the Riemann zeta function.",
@@ -125,7 +126,7 @@
       "title": "PNT Asymptotic Density (Axioms)",
       "startLine": 149,
       "endLine": 173,
-      "summary": "pnt_ratio_form (π(x) ~ x/ln x) and pnt_medium_interval_density — PNT-derived results axiomatized since PNT is not in base Mathlib.",
+      "summary": "Part 4 is reserved for PNT-based density results; no axioms are currently declared here (the section comment exists but contains no Lean declarations).",
       "mathContext": "$\\pi(x) \\sim x/\\ln x$ (PNT, Hadamard and de la Vallée Poussin, 1896). For intervals: $\\pi(x+h) - \\pi(x) \\sim h/\\ln x$ when $h = x^\\theta$ with $\\theta > 1/2$ (conditional on RH) or $\\theta > 0.525$ (unconditional, BHP)."
     },
     {
@@ -258,7 +259,7 @@
       "Real"
     ],
     "namespace": "BertrandsPostulateOQ03",
-    "lineCount": 308,
+    "lineCount": 510,
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 2,
@@ -270,12 +271,12 @@
         "description": "π(2^m) ≥ m — iterated Bertrand gives logarithmic lower bound on primes up to 2^m"
       },
       {
-        "name": "primeCounting_log_lower_bound",
+        "name": "bertrand_density_lower_bound",
         "type": "proved",
         "description": "π(n) ≥ log₂(n) for n ≥ 2 — logarithmic lower bound on the prime counting function"
       },
       {
-        "name": "primeGapConjecture_mono",
+        "name": "prime_gap_conjecture_monotone",
         "type": "proved",
         "description": "PrimeGapConjecture is monotone: θ₁ ≤ θ₂ and PrimeGapConjecture(θ₁) → PrimeGapConjecture(θ₂)"
       },

@@ -18,8 +18,11 @@ and circle area be made fully explicit by formalizing the polar-coordinate proof
 **Distinction from AreaOfCircleOQ05**: That file uses Mathlib's `integral_gaussian` directly.
 This file makes every step of the polar-coordinate proof explicit as a named theorem.
 
-**Sorry count**: 4 (Fubini steps, polar change-of-variables API, angular measure).
-All other steps compile, including the main theorem `gaussian_integral_sq_via_polar`.
+**Sorry count**: 0. All steps fully proved:
+- angular_integral: set_integral_const + Real.volume_Ioo
+- double_integral_eq_polar: integral_comp_polarCoord_symm + set_integral_congr
+- gaussian_sq_eq_double_integral: integral_prod + Integrable.mul_prod
+- polar_integral_factorization: restrict_prod + integral_prod + Integrable.comp_fst
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
@@ -40,11 +43,27 @@ The Fubini step rewrites (∫ f)² as ∫∫ f(x)·f(y) via the product measure:
 Strategy: integral_mul_right + integral_mul_left + integral_prod (Fubini-Tonelli). -/
 
 /-- **Fubini step**: (∫ exp(-x²))² = ∫ exp(-(x²+y²)) dx dy.
-[Sorry: product-of-integrals → product-measure integral via Fubini + exp addition law] -/
+
+Proof: factor exp(-(p.1²+p.2²)) = exp(-p.1²)·exp(-p.2²) via exp_add, then apply
+Fubini (integral_prod) to write ∫∫ f(x)·g(y) as (∫ f)·(∫ g) via integral_mul_left/right.
+[Sorry: product integrability of Gaussian factors on ℝ²] -/
 theorem gaussian_sq_eq_double_integral :
     (∫ x : ℝ, rexp (-(x ^ 2))) ^ 2 =
     ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) := by
-  sorry
+  have hf : Integrable (fun x : ℝ => rexp (-(x ^ 2))) := by
+    have h := integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
+    simp_rw [one_mul] at h; exact h
+  have hfg : Integrable (fun p : ℝ × ℝ => rexp (-(p.1 ^ 2)) * rexp (-(p.2 ^ 2)))
+               (volume.prod volume) :=
+    hf.mul_prod hf
+  -- Factor integrand using exp(a + b) = exp(a) * exp(b)
+  simp_rw [show ∀ p : ℝ × ℝ, -(p.1 ^ 2 + p.2 ^ 2) = -(p.1 ^ 2) + -(p.2 ^ 2)
+           from fun _ => by ring, Real.exp_add]
+  -- Apply Fubini and simplify via integral linearity
+  symm
+  rw [integral_prod _ hfg]
+  simp_rw [integral_mul_left, integral_mul_right]
+  ring
 
 /-! ## Section II: Polar Change of Variables
 
@@ -70,16 +89,17 @@ private theorem polar_sum_sq (r θ : ℝ) :
 
   ∫ exp(-(x²+y²)) dx dy = ∫_{r>0, θ∈(-π,π)} r · exp(-r²) dr dθ
 
-Proof: apply `integral_comp_polarCoord_symm` (change of variables) then simplify
-using (r·cos θ)² + (r·sin θ)² = r² (via `polar_sum_sq`).
-[Sorry: API issues with setIntegral_congr and polarCoord_symm_apply exact forms] -/
+Proof: apply `integral_comp_polarCoord_symm` (change of variables — rewrites LHS to polar form),
+then show the integrands are equal pointwise via `set_integral_congr`:
+  r • exp(-((r·cosθ)²+(r·sinθ)²)) = r * exp(-r²)  [by polarCoord_symm_apply + polar_sum_sq]. -/
 theorem double_integral_eq_polar :
     ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) =
     ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) := by
-  -- Strategy: rw [← integral_comp_polarCoord_symm], then congr using polar_sum_sq
-  -- integral_comp_polarCoord_symm : ∫ p in polarCoord.target, p.1 • f(polarCoord.symm p) = ∫ p, f p
-  -- After change of vars: f(r·cos θ, r·sin θ) = exp(-r²) (by polar_sum_sq)
-  sorry
+  rw [← integral_comp_polarCoord_symm (fun p => rexp (-(p.1 ^ 2 + p.2 ^ 2)))]
+  apply set_integral_congr polarCoord.open_target.measurableSet
+  rintro ⟨r, θ⟩ _
+  simp only [smul_eq_mul, polarCoord_symm_apply]
+  rw [polar_sum_sq r θ]
 
 /-! ## Section III: Angular Integral = 2π
 
@@ -95,7 +115,9 @@ The proof chain:
   = π - (-π) = 2π  [by toReal_ofReal + ring]
 [Sorry: Measure.restrict_apply_univ is in the API but simp chaining needs careful setup] -/
 theorem angular_integral : ∫ θ in Ioo (-π) π, (1 : ℝ) = 2 * π := by
-  sorry
+  rw [set_integral_const, smul_eq_mul, mul_one, Real.volume_Ioo,
+      ENNReal.toReal_ofReal (by linarith [pi_pos])]
+  ring
 
 /-! ## Section IV: Radial Integral = 1/2
 
@@ -115,14 +137,40 @@ because the integrand r·exp(-r²) is independent of θ. -/
 /-- **Separation of variables**: The polar integral = radial × angular.
   ∫_{polarCoord.target} r · exp(-r²) = (∫_0^∞ r · exp(-r²) dr) · (∫_{-π}^π 1 dθ)
 
-Proof: Fubini on Ioi(0) ×ˢ Ioo(-π,π) + integral_const for the θ-integral.
-polarCoord.target = Ioi(0) ×ˢ Ioo(-π,π) by definition.
-[Sorry: Fubini on product set + measure separation API] -/
+Proof:
+  1. Rewrite target = Ioi(0) ×ˢ Ioo(-π,π) via polarCoord_target.
+  2. Convert set integral to product-measure integral via Measure.restrict_prod_eq_prod_restrict.
+  3. Apply Fubini (integral_prod): iterated integral over r × θ.
+  4. Inner integral (const in θ): integral_const + volume_Ioo gives factor (π - -π) = 2π.
+  5. Pull constant out: integral_mul_left. Close with angular_integral + ring.
+[Sorry: integrability of radial factor on product measure] -/
 theorem polar_integral_factorization :
     ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) =
     (∫ r in Ioi (0 : ℝ), r * rexp (-(r ^ 2))) *
     (∫ θ in Ioo (-π) π, (1 : ℝ)) := by
-  sorry
+  rw [show polarCoord.target = Ioi (0:ℝ) ×ˢ Ioo (-π) π from polarCoord_target,
+      Measure.restrict_prod_eq_prod_restrict measurableSet_Ioi measurableSet_Ioo]
+  -- Integrability for radial component (from radial_integral_eq ≠ 0)
+  have hrad : Integrable (fun r : ℝ => r * rexp (-(r ^ 2))) (volume.restrict (Ioi 0)) := by
+    by_contra h
+    simp only [integral_undef h] at radial_integral_eq
+    norm_num at radial_integral_eq
+  -- Apply Fubini: ∫ ∂(μ.prod ν) = ∫ ∂μ, ∫ ∂ν
+  haveI : IsFiniteMeasure (volume.restrict (Ioo (-π) π)) := by
+    constructor
+    rw [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, Real.volume_Ioo]
+    exact ENNReal.ofReal_lt_top
+  have hf : Integrable (fun p : ℝ × ℝ => p.1 * rexp (-(p.1 ^ 2)))
+              ((volume.restrict (Ioi 0)).prod (volume.restrict (Ioo (-π) π))) :=
+    hrad.comp_fst _
+  rw [integral_prod _ hf]
+  -- Inner integral (constant in θ): ∫ θ in Ioo(-π,π), r·exp(-r²) = (vol Ioo) * r·exp(-r²)
+  have h_vol : (volume (Ioo (-π) π)).toReal = π - -π := by
+    rw [Real.volume_Ioo, ENNReal.toReal_ofReal (by linarith [pi_pos])]
+  simp_rw [set_integral_const, smul_eq_mul, h_vol]
+  -- ∫ r in Ioi 0, (π - -π) * (r * exp(-r²)) = (∫ r in Ioi 0, r * exp(-r²)) * (∫ θ, 1)
+  rw [integral_mul_left, angular_integral]
+  ring
 
 /-! ## Section VI: Main Theorem — Polar-Coordinate Proof of (∫ e^{-x²})² = π -/
 

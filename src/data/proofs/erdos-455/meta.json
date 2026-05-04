@@ -79,7 +79,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 142,
-    "assumptions": "1 axiom: erdos_455_conjecture (the open conjecture stated as an abstract Prop)."
+    "assumptions": "1 axiom: erdos_455_conjecture (the open conjecture stated as an abstract Prop).",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #455: Monotone Prime Gap Sequences**\n\nThis problem concerns sequences of primes where consecutive gaps never decrease — a discrete convexity condition. Such sequences must spread out increasingly, but the question is: how fast?\n\n**Historical Development:**\n- **Erdős** posed the problem: if $q_1 < q_2 < \\cdots$ are primes with $q_{n+1} - q_n \\geq q_n - q_{n-1}$, must $\\lim q_n/n^2 = \\infty$?\n- **Bernd Richter (1976)**, in *Über die Monotonie von Differenzenfolgen* (Acta Arithmetica), proved the partial result $\\liminf q_n/n^2 > 0.352$, establishing at least quadratic growth.\n- The full conjecture — superquadratic growth — remains open.\n\n**Context:** The sequence of all consecutive primes $(2, 3, 5, 7, 11, 13, \\ldots)$ does NOT satisfy the monotone-gap condition, since the gaps $1, 2, 2, 4, 2, \\ldots$ are not non-decreasing. Monotone-gap prime sequences must be carefully chosen subsequences. The problem connects to the Prime Number Theorem (which gives average gap $\\sim \\log n$) and to Cramér's conjecture on maximal gaps.",

@@ -24,7 +24,8 @@
     "axiomCount": 0,
     "lineCount": 912,
     "assumptions": "7 sorry(s). No axioms.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 37
   },
   "overview": {
     "historicalContext": "Erdős, Rubin, and Taylor introduced the concept of list coloring (choosability) in their landmark 1979/1980 paper, which revealed a fundamental surprise: bipartite graphs, though 2-colorable, can have arbitrarily large list chromatic number. They proved the first bounds $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$ and computed $n(2) = 6$ using $K_{3,3}$ with a clever adversarial list assignment. Hanson, MacGillivray, and Toft (1996) determined $n(3) = 14$ through exhaustive case analysis and gave the recursive bound $n(k) \\leq k \\cdot n(k-2) + 2^k$. Radhakrishnan and Srinivasan (2000) improved the lower bound to $n(k) \\geq c \\cdot 2^k \\sqrt{k/\\ln k}$ using an entropy-based refinement of the probabilistic method. Galvin's 1995 theorem that $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$, proved via the kernel method, provides the key structural result for complete bipartite graphs. The problem connects to Property B (Erdős Problem #901) via the sandwich inequality $m(k) \\leq n(k) \\leq m(k+1)$, linking list coloring to hypergraph 2-coloring theory.",

@@ -22,6 +22,7 @@
     "axiomCount": 0,
     "dateAdded": "2026-04-27",
     "lineCount": 118,
+    "theoremCount": 4,
     "originalContributions": [
       "legendreSym_mul_eq: multiplicativity (a·b/p) = (a/p)·(b/p) packaged as a one-line wrapper around `map_mul (legendreSym p)`",
       "legendreSym_neg_one_eq: first supplementary law (-1/p) = (-1)^((p-1)/2) restated as a clean reduction step",
@@ -62,25 +63,65 @@
   },
   "sections": [
     {
+      "id": "file-setup",
+      "title": "Imports, Doc-Comment, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib's LegendreSymbol.QuadraticReciprocity and Tactic modules. The doc-comment (lines 4–36) describes the five-step algorithm (reduce, handle zero/one, factor via supplementary laws, swap via QR, recurse). Sets linter option, opens ZMod, and establishes the QRAlgorithm namespace.",
+      "mathContext": "Algorithm overview: to compute $\\left(\\tfrac{a}{p}\\right)$, (1) reduce $a \\bmod p$, (2) factor via multiplicativity, (3) handle $-1$ and $2$ via supplementary laws, (4) swap odd prime factors via QR, (5) recurse on smaller modulus."
+    },
+    {
       "id": "reduction-lemmas",
       "title": "Algorithm Reduction Lemmas",
       "startLine": 44,
       "endLine": 64,
-      "summary": "Three reduction steps: multiplicativity (`legendreSym_mul_eq`), first supplementary law (`legendreSym_neg_one_eq`), and the reciprocity swap (`reciprocity_swap`). Each is a one-line wrapper presenting the Mathlib result in the form needed by the algorithm."
+      "summary": "Three reduction steps: multiplicativity (`legendreSym_mul_eq`), first supplementary law (`legendreSym_neg_one_eq`), and the reciprocity swap (`reciprocity_swap`). Each is a one-line wrapper presenting the Mathlib result in the form needed by the algorithm.",
+      "mathContext": "Multiplicativity: $\\left(\\tfrac{ab}{p}\\right) = \\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{b}{p}\\right)$ (from `map_mul`). First supplementary law: $\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2}$ (from `legendreSym.at_neg_one`). Reciprocity swap: $\\left(\\tfrac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}\\left(\\tfrac{p}{q}\\right)$ (from `legendreSym.quadratic_reciprocity'`).",
+      "relatedConcepts": [
+        "Legendre symbol",
+        "multiplicativity",
+        "first supplementary law",
+        "Quadratic Reciprocity",
+        "legendreSym.quadratic_reciprocity'",
+        "map_mul"
+      ]
     },
     {
       "id": "examples",
       "title": "Verified Example Computations",
       "startLine": 66,
       "endLine": 95,
-      "summary": "Seven concrete Legendre symbol computations verified by `decide`: (3/7)=−1, (2/7)=1, (5/13)=−1, (7/11)=−1, (3/5)=−1, (2/17)=1, (6/7)=−1. Each example is annotated with the QR-based hand calculation that `decide` corroborates."
+      "summary": "Seven concrete Legendre symbol computations verified by `decide`: (3/7)=−1, (2/7)=1, (5/13)=−1, (7/11)=−1, (3/5)=−1, (2/17)=1, (6/7)=−1. Each example is annotated with the QR-based hand calculation that `decide` corroborates.",
+      "mathContext": "$(3/7) = -1$ (by swap: $(3/7) \\cdot (7/3) = -1$, $(7/3) = (1/3) = 1$); $(2/7) = 1$ ($7 \\equiv -1 \\pmod{8}$); $(6/7) = (2/7)\\cdot(3/7) = 1\\cdot(-1) = -1$ (multiplicativity). `decide` evaluates each via Euler's criterion in `ZMod p` at elaboration time.",
+      "relatedConcepts": [
+        "decide tactic",
+        "Euler's criterion",
+        "second supplementary law",
+        "ZMod decidability",
+        "elaboration-time computation"
+      ]
     },
     {
       "id": "descent",
-      "title": "Algorithm Termination",
+      "title": "Algorithm Termination (algorithm_descent)",
       "startLine": 97,
+      "endLine": 108,
+      "summary": "Proves `algorithm_descent`: under `q < p`, the reciprocity swap (q/p) = ±(p/q) reduces the modulus from p to q. The `hqp` hypothesis is unused in the proof body (one-line `exact reciprocity_swap`) but encodes the termination contract at the type level, forcing callers to supply a decreasing measure.",
+      "mathContext": "Termination: `hqp : q < p` guarantees modulus decrease. After the swap, $p \\bmod q < q < p$, so each call to `algorithm_descent` strictly reduces the modulus — the decreasing measure for well-founded recursion.",
+      "relatedConcepts": [
+        "well-founded recursion",
+        "algorithm_descent",
+        "decreasing_by",
+        "Euclidean algorithm analogy"
+      ]
+    },
+    {
+      "id": "exports",
+      "title": "Public API Exports",
+      "startLine": 109,
       "endLine": 118,
-      "summary": "Proves `algorithm_descent`: under the hypothesis `q < p`, the reciprocity swap (q/p) = ±(p/q) reduces the modulus from p to q. This makes the Euclidean-style termination argument explicit at the type level."
+      "summary": "Four `#check` declarations confirm that `legendreSym_mul_eq`, `legendreSym_neg_one_eq`, `reciprocity_swap`, and `algorithm_descent` are accessible under their fully qualified `QRAlgorithm.*` names. These are the complete public API for the reduction toolkit.",
+      "mathContext": "Public API: (1) $\\left(\\tfrac{ab}{p}\\right) = \\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{b}{p}\\right)$, (2) $\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2}$, (3) swap $\\left(\\tfrac{q}{p}\\right) \\leftrightarrow \\left(\\tfrac{p}{q}\\right)$, (4) same swap with $q < p$ descent contract."
     }
   ],
   "conclusion": {
@@ -88,28 +129,29 @@
     "implications": "The companion proof `quadratic-reciprocity-algorithm-oq-01` builds on this packaging by implementing the full recursive algorithm (Jacobi-symbol form, well-founded termination, native_decide-verified examples). This entry exposes the *minimum* set of lemmas needed to turn QR into a computation, useful as a teaching artifact and as a stepping stone for downstream verified applications such as Solovay-Strassen primality testing and Tonelli-Shanks square roots.",
     "openQuestions": [
       "Can the second supplementary law $\\left(\\tfrac{2}{p}\\right) = (-1)^{(p^2-1)/8}$ be packaged as a fourth reduction lemma in the same one-line wrapper style, completing the standalone algorithmic toolkit?",
-      "Can the descent statement be strengthened to a recursion principle that takes the three reduction lemmas as inputs and produces a verified Legendre symbol computer, without going through the Jacobi-symbol detour of `quadratic-reciprocity-algorithm-oq-01`?"
+      "Can the descent statement be strengthened to a recursion principle that takes the three reduction lemmas as inputs and produces a verified Legendre symbol computer, without going through the Jacobi-symbol detour of `quadratic-reciprocity-algorithm-oq-01`?",
+      "Can the verified Legendre symbol computation be extended to the Jacobi symbol (a/n) for composite n via the same three-step reduction, and proved correct against Mathlib's JacobiSym, giving a unified algorithmic toolkit for primality testing via Solovay-Strassen?"
     ]
   },
   "crossReferences": [
     {
-      "proofId": "quadratic-reciprocity",
-      "relationship": "Foundation",
+      "targetId": "quadratic-reciprocity",
+      "relationship": "foundation",
       "description": "The underlying Law of Quadratic Reciprocity that is packaged here as the swap step of an algorithm."
     },
     {
-      "proofId": "quadratic-reciprocity-algorithm",
-      "relationship": "Parent proof",
+      "targetId": "quadratic-reciprocity-algorithm",
+      "relationship": "related",
       "description": "The parent algorithmic presentation of QR; this entry provides the canonical reduction-lemma form."
     },
     {
-      "proofId": "quadratic-reciprocity-algorithm-oq-01",
-      "relationship": "Sibling — full algorithm",
+      "targetId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "extends",
       "description": "Companion entry that builds on these reduction lemmas to give a fully recursive Jacobi-symbol algorithm with well-founded termination and native_decide-verified examples."
     },
     {
-      "proofId": "elementary-quadratic-reciprocity",
-      "relationship": "Related proof",
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
       "description": "An elementary proof of QR via Gauss sums; provides the theoretical foundation that this algorithmic packaging makes computational."
     }
   ],
@@ -130,5 +172,14 @@
       "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
       "Mathlib.NumberTheory.LegendreSymbol.Basic"
     ]
+  },
+  "leanFile": {
+    "namespace": "QRAlgorithm",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/QuadraticReciprocityOQ03.lean",
+    "sorries": 0
   }
 }

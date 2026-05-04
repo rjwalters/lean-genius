@@ -7,8 +7,8 @@
       "endLine": 48
     },
     "type": "definition",
-    "title": "logHarmonic: Guarded Definition for n ≥ 2",
-    "content": "The logHarmonic function is defined with a guard `n < 2 → 0` to handle the problematic cases n=0 (log 0 = 0 in Lean's Real.log) and n=1 (log 1 = 0, making 1/(1·log 1) undefined). The auxiliary theorem logHarmonic_of_ge_two strips the guard for the cases that matter analytically. This guarding pattern is standard in Lean for functions with natural domain restrictions — it ensures the function is total (defined on all ℕ) while being mathematically meaningful only on the intended domain.",
+    "title": "logHarmonic: Guarded Definition for n \u2265 2",
+    "content": "The logHarmonic function is defined with a guard `n < 2 \u2192 0` to handle the problematic cases n=0 (log 0 = 0 in Lean's Real.log) and n=1 (log 1 = 0, making 1/(1\u00b7log 1) undefined). The auxiliary theorem logHarmonic_of_ge_two strips the guard for the cases that matter analytically. This guarding pattern is standard in Lean for functions with natural domain restrictions \u2014 it ensures the function is total (defined on all \u2115) while being mathematically meaningful only on the intended domain.",
     "mathContext": "Lean's \\texttt{Real.log} satisfies: \\texttt{Real.log 0 = 0} (by convention), \\texttt{Real.log x = 0} for $x \\leq 0$, and \\texttt{Real.log x = ln x} for $x > 0$. For $n = 1$: $\\log(1) = 0$, so $1/(1 \\cdot \\log 1) = 1/0 = 0$ in Lean (division by zero convention). The guard $n < 2$ bundles both pathological cases. The \\texttt{noncomputable} annotation is needed because \\texttt{Real.log} is defined via a classical construction (not computable).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -30,14 +30,14 @@
       "startLine": 58,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "logHarmonic is Antitone: Required for Condensation Test",
-    "content": "The antitone property is the key precondition for the Cauchy condensation test. The proof handles two cases: (a) m=1: logHarmonic 1 = 0 ≤ logHarmonic n (since logHarmonic ≥ 0). (b) m ≥ 2: reduce to showing m·log m ≤ n·log n when m ≤ n. This uses mul_le_mul with the monotonicity of both n (cast) and log n (Real.log_le_log). The case analysis on m < 2 is necessary because the Lean definition has a guard.",
+    "content": "The antitone property is the key precondition for the Cauchy condensation test. The proof handles two cases: (a) m=1: logHarmonic 1 = 0 \u2264 logHarmonic n (since logHarmonic \u2265 0). (b) m \u2265 2: reduce to showing m\u00b7log m \u2264 n\u00b7log n when m \u2264 n. This uses mul_le_mul with the monotonicity of both n (cast) and log n (Real.log_le_log). The case analysis on m < 2 is necessary because the Lean definition has a guard.",
     "mathContext": "Antitone: $m \\leq n \\Rightarrow f(n) \\leq f(m)$ (note: 'decreasing' in informal language). Formally for $m, n \\geq 2$: $\\frac{1}{n \\log n} \\leq \\frac{1}{m \\log m}$ iff $m \\log m \\leq n \\log n$. The bound $m \\log m \\leq n \\log n$ for $m \\leq n \\geq 2$: by \\texttt{mul\\_le\\_mul}, need $m \\leq n$ (cast), $\\log m \\leq \\log n$ (Real.log\\_le\\_log, requires $m > 0$), $0 \\leq \\log m$ (Real.log\\_nonneg, requires $1 \\leq m$), $0 \\leq n$ (cast nonneg).",
     "significance": "key",
     "relatedConcepts": [
       "antitone functions",
-      "monotone n·log n",
+      "monotone n\u00b7log n",
       "Real.log_le_log",
       "Cauchy condensation prerequisites"
     ],
@@ -54,9 +54,9 @@
       "startLine": 83,
       "endLine": 102
     },
-    "type": "theorem",
-    "title": "The Key Computation: 2^k · f(2^k) = 1/(k·log 2)",
-    "content": "condensed_logHarmonic_eq is the mathematical heart of the proof: the exact computation showing the condensed series reduces to 1/(k·log 2). The key logarithm identity is log(2^k) = k·log 2 (Real.log_pow). After substituting this, the 2^k factors cancel and we get the clean formula. The Lean proof uses field_simp + ring to handle the algebraic manipulation after establishing the necessary nonzero guards for field_simp.",
+    "type": "insight",
+    "title": "The Key Computation: 2^k \u00b7 f(2^k) = 1/(k\u00b7log 2)",
+    "content": "condensed_logHarmonic_eq is the mathematical heart of the proof: the exact computation showing the condensed series reduces to 1/(k\u00b7log 2). The key logarithm identity is log(2^k) = k\u00b7log 2 (Real.log_pow). After substituting this, the 2^k factors cancel and we get the clean formula. The Lean proof uses field_simp + ring to handle the algebraic manipulation after establishing the necessary nonzero guards for field_simp.",
     "mathContext": "$2^k \\cdot \\frac{1}{2^k \\cdot \\log(2^k)} = \\frac{2^k}{2^k \\cdot k \\log 2} = \\frac{1}{k \\log 2}$. The step $\\log(2^k) = k \\log 2$: in Lean, \\texttt{Real.log\\_pow k 2} gives $\\log(2^k) = k \\cdot \\log 2$ (where the cast \\texttt{Nat.cast\\_pow} converts $2^k : \\mathbb{N}$ to $2^k : \\mathbb{R}$). The guards: $k \\neq 0$ (from $k \\geq 1$), $\\log 2 \\neq 0$ (since $\\log 2 > 0$ as $2 > 1$), $2^k \\neq 0$ (by \\texttt{positivity}). The \\texttt{field\\_simp} tactic then clears all denominators.",
     "significance": "key",
     "relatedConcepts": [
@@ -79,10 +79,10 @@
       "startLine": 106,
       "endLine": 142
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Condensed Series Diverges: The Summability Contradiction",
-    "content": "The proof of condensed_logHarmonic_not_summable uses a chain of summability implications by contradiction. The key technique is Summable.comp_injective: if f : ℕ → ℝ is summable and g : ℕ → ℕ is injective, then f∘g is summable. Used with g = k ↦ k+1 to extract the tail Σ_{k≥1} of the condensed series. Then multiplying by log 2 gives summability of Σ 1/k, contradicting Real.not_summable_one_div_natCast. The final theorem logHarmonic_not_summable is a one-liner using summable_condensed_iff_of_nonneg.",
-    "mathContext": "Contradiction chain: [condensed summable] → [tail $\\sum_{k \\geq 1} 1/(k \\log 2)$ summable] → [after $\\cdot \\log 2$: $\\sum_{k \\geq 1} 1/(k+1)$ summable] → [after shift: $\\sum_{n \\geq 1} 1/n$ summable] → contradiction. The \\texttt{Summable.mul\\_left (Real.log 2)} step: if $\\sum a_k$ converges then $\\sum (\\log 2 \\cdot a_k)$ converges, and $\\log 2 \\cdot \\frac{1}{(k+1) \\log 2} = \\frac{1}{k+1}$. The \\texttt{Real.not\\_summable\\_one\\_div\\_natCast}: $\\sum_{n=1}^{\\infty} 1/n$ diverges (Mathlib). Final step: \\texttt{summable\\_condensed\\_iff\\_of\\_nonneg} (from OQ-04): $\\sum f(n)$ converges iff $\\sum 2^k f(2^k)$ converges, for $f$ nonneg antitone.",
+    "content": "The proof of condensed_logHarmonic_not_summable uses a chain of summability implications by contradiction. The key technique is Summable.comp_injective: if f : \u2115 \u2192 \u211d is summable and g : \u2115 \u2192 \u2115 is injective, then f\u2218g is summable. Used with g = k \u21a6 k+1 to extract the tail \u03a3_{k\u22651} of the condensed series. Then multiplying by log 2 gives summability of \u03a3 1/k, contradicting Real.not_summable_one_div_natCast. The final theorem logHarmonic_not_summable is a one-liner using summable_condensed_iff_of_nonneg.",
+    "mathContext": "Contradiction chain: [condensed summable] \u2192 [tail $\\sum_{k \\geq 1} 1/(k \\log 2)$ summable] \u2192 [after $\\cdot \\log 2$: $\\sum_{k \\geq 1} 1/(k+1)$ summable] \u2192 [after shift: $\\sum_{n \\geq 1} 1/n$ summable] \u2192 contradiction. The \\texttt{Summable.mul\\_left (Real.log 2)} step: if $\\sum a_k$ converges then $\\sum (\\log 2 \\cdot a_k)$ converges, and $\\log 2 \\cdot \\frac{1}{(k+1) \\log 2} = \\frac{1}{k+1}$. The \\texttt{Real.not\\_summable\\_one\\_div\\_natCast}: $\\sum_{n=1}^{\\infty} 1/n$ diverges (Mathlib). Final step: \\texttt{summable\\_condensed\\_iff\\_of\\_nonneg} (from OQ-04): $\\sum f(n)$ converges iff $\\sum 2^k f(2^k)$ converges, for $f$ nonneg antitone.",
     "significance": "key",
     "relatedConcepts": [
       "Summable.comp_injective",
@@ -93,7 +93,7 @@
     "prerequisites": [
       "Summable and its operations in Mathlib",
       "Summable.mul_left",
-      "Summable.comp_injective with injection k ↦ k+1",
+      "Summable.comp_injective with injection k \u21a6 k+1",
       "summable_condensed_iff_of_nonneg from OQ-04"
     ]
   },
@@ -106,7 +106,7 @@
     },
     "type": "insight",
     "title": "Divergence Rate: Partial Sums Grow Like log(log N)",
-    "content": "The file's closing section (lines 144-156) provides context on the divergence rate: the partial sums Σ_{n=2}^N 1/(n·log n) grow like log(log N) as N → ∞, by integral comparison with ∫ dx/(x·log x) = log(log x). This places the log-harmonic series in the hierarchy log(log N) ≪ log N ≪ N^ε — diverging at the very slowest rate of any classical series.",
+    "content": "The file's closing section (lines 144-156) provides context on the divergence rate: the partial sums \u03a3_{n=2}^N 1/(n\u00b7log n) grow like log(log N) as N \u2192 \u221e, by integral comparison with \u222b dx/(x\u00b7log x) = log(log x). This places the log-harmonic series in the hierarchy log(log N) \u226a log N \u226a N^\u03b5 \u2014 diverging at the very slowest rate of any classical series.",
     "mathContext": "By the Cauchy condensation argument: if $a_n$ is nonneg decreasing, $\\sum a_n$ converges iff $\\sum 2^k a_{2^k}$ converges. Here $2^k a_{2^k} = 2^k \\cdot \\frac{1}{2^k \\log(2^k)} = \\frac{1}{k \\log 2}$, which is a rescaled harmonic series and diverges. The partial sum asymptotics follow from $\\sum_{n=2}^N \\frac{1}{n \\log n} \\approx \\int_2^N \\frac{dx}{x \\log x} = \\log(\\log N) - \\log(\\log 2)$.",
     "significance": "supporting",
     "relatedConcepts": [

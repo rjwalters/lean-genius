@@ -68,7 +68,8 @@
     ],
     "axiomCount": 1,
     "assumptions": "1 axiom: erdos_884 (the OPEN main conjecture). All 8 supporting axioms eliminated: divisorList_pairwise_lt, mem_divisorList_iff, consecutiveGap_pos, generalGap_pos, divisors_6, divisors_prime, prime_case_equality, gap_lower_bound — all proved. numDivisors_mul_coprime sorry also proved via σ��� multiplicativity.",
-    "lineCount": 498
+    "lineCount": 498,
+    "theoremCount": 34
   },
   "overview": {
     "historicalContext": "Erdős Problem #884 appears in [Er98] and asks about the relationship between two sums over divisor gaps. Given the divisors d₁ < d₂ < ··· < d_t of a positive integer n, one can form either the all-pairs sum (summing 1/(d_j - d_i) over all i < j) or the consecutive-pairs sum (summing only over adjacent divisors). The question is whether the all-pairs sum is controlled by the consecutive-pairs sum up to an absolute constant.\n\nThe problem is related to Erdős Problem #144 on divisor arithmetic. Terence Tao has indicated that this problem appears tractable, suggesting it may be amenable to combinatorial or analytic arguments about divisor distributions.\n\nThe trivial observation is that for primes p, both sums equal 1/(p-1) since there is only one pair of divisors {1, p}. For composite numbers with many divisors, the all-pairs sum has O(τ²) terms while the consecutive-pairs sum has only O(τ) terms, making the conjectured bound non-trivial.",
@@ -240,7 +241,7 @@
     "namespace": "Erdos884",
     "lineCount": 498,
     "axiomCount": 1,
-    "theoremCount": 33,
+    "theoremCount": 34,
     "definitionCount": 9,
     "path": "Proofs/Erdos884Problem.lean",
     "sorries": 0

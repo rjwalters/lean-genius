@@ -46,7 +46,8 @@
       "Binary entropy function and concavity (OQ-04)",
       "Conditional entropy definition from ShannonEntropy.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Robert Fano derived his inequality in 1952 as a lecture handout at MIT — later published in his 1961 textbook 'Transmission of Information'. Fano was searching for a lower bound on the probability of decoding error given an observed channel output Y, and his key insight was to connect error probability P_e to conditional entropy H(X|Y): the channel decoder cannot recover X reliably if H(X|Y) is large, and quantifying this intuition precisely requires bounding H(X|Y) from above in terms of P_e. The resulting inequality H(X|Y) ≤ h(P_e) + P_e·log(|X|−1) became the standard tool for proving impossibility (converse) results: to show that no code with rate R > C achieves vanishing error, one invokes Fano to lower-bound P_e in terms of H(X|Y), then lower-bounds H(X|Y) in terms of R−C.\n\nShannon's 1948 paper established C = max_p I(X;Y) without a fully rigorous converse; Fano's inequality provided the missing piece. Wolfowitz (1957) and Gallager (1965) standardized the converse proof using Fano, and it now appears in every information theory textbook (Cover & Thomas, Csiszár & Körner, Gallager). The inequality is also central to rate-distortion theory, channel coding with feedback, and hypothesis testing.\n\nThis Lean formalization bridges two components: the self-contained OQ-03 Fano proof (using a private conditional entropy definition to avoid a dependency bug) and the project's standard definition. The bridge confirms definitional equality by `rfl`, enabling OQ-03's machine-verified result to flow into the channel coding converse chain.",
@@ -70,14 +71,14 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 37,
       "summary": "Module header with imports, docstring, and namespace setup."
     },
     {
       "id": "definition-compatibility",
       "title": "Definition Compatibility",
-      "startLine": 35,
-      "endLine": 50,
+      "startLine": 39,
+      "endLine": 55,
       "summary": "Proves FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy by rfl. Both expand to the same formula with 0·log(0)=0 convention.",
       "mathContext": "$H_{\\text{OQ03}}(X|Y) = H_{\\text{std}}(X|Y)$ definitionally"
     },
@@ -85,24 +86,24 @@
       "id": "fano-corollary",
       "title": "Fano's Inequality (from OQ-03)",
       "startLine": 56,
-      "endLine": 69,
+      "endLine": 74,
       "summary": "Derives Fano's inequality as a direct corollary of OQ-03's fano_theorem, using definition compatibility.",
       "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$ for formula $P_e$"
     },
     {
       "id": "axiom-reduction",
       "title": "Axiom Reduction (Blocked)",
-      "startLine": 73,
-      "endLine": 120,
+      "startLine": 75,
+      "endLine": 134,
       "summary": "Documents the strategy to eliminate fano_inequality axiom from ShannonChannelCoding.lean. Blocked by ShannonEntropy.lean line 811 bug. Root cause and fix identified.",
       "mathContext": "Axiom $\\texttt{fano\\_inequality}$ in ShannonChannelCoding.lean follows from fano\\_from\\_oq03 by definitional equality"
     },
     {
       "id": "trivial-case",
       "title": "Trivial Case |X|=1",
-      "startLine": 126,
-      "endLine": 141,
-      "summary": "States Fano bound for |X|=1 (Unit type). In this case (|X|-1)=0 and H(X|Y)=0, so both sides are trivially 0. Sorry pending cleanup of Unit-sum simp tactics.",
+      "startLine": 135,
+      "endLine": 181,
+      "summary": "Proves Fano bound for |X|=1 (Unit type). In this case (|X|-1)=0 so log(0)=0 and the RHS reduces to h(P_e); P_e=0 by hsum; conditionalEntropy=0 since log(1)=0; concluded by h_nonneg.",
       "mathContext": "For $|\\mathcal{X}|=1$: $H(X|Y) = 0 = h(P_e)$ since $P_e \\cdot \\log(0) = 0$"
     }
   ],

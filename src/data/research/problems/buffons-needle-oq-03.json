@@ -59,7 +59,8 @@
     "buffons-needle-oq-01-oq-02",
     "buffons-needle-oq-02",
     "buffons-needle-oq-02-oq-01",
-    "buffons-needle-oq-02-oq-02"
+    "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-03"
   ],
   "references": {
     "papers": [],
@@ -118,11 +119,11 @@
     {
       "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
       "filename": "BuffonsNeedleOQ01OQ01OQ04.lean",
-      "lineCount": 333,
-      "theoremCount": 20,
+      "lineCount": 395,
+      "theoremCount": 25,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ04.lean"
     },
@@ -169,6 +170,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 248,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
     }
   ]
 }

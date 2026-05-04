@@ -31,7 +31,7 @@
       "startLine": 48,
       "endLine": 53
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Reducing Interval Integrals to Set Integrals via integral_of_le",
     "content": "The proof bridges Mathlib's `intervalIntegral` API and its set integral API using `integral_of_le`, which converts an oriented interval integral `∫ x in a..b` into a set integral over `Ioc a b = (a,b]` when `a ≤ b`. The rw/simp_rw calls systematically push this conversion from the outermost to innermost integrals on both sides. This reduction is necessary because the Fubini machinery (`integral_integral_swap`) operates on Bochner integrals against product measures, not syntactic interval notation.",
     "mathContext": "When $a \\le b$: $\\int_a^b f\\,dx = \\int_{(a,b]} f\\,d\\mu$ where $\\mu$ is Lebesgue measure restricted to $(a,b] = \\mathrm{Ioc}(a,b)$. The signed interval integral $\\int_a^b$ differs from $\\int_b^a$ by a sign, but for $a \\le b$ it agrees with the set integral.",
@@ -55,7 +55,7 @@
       "startLine": 61,
       "endLine": 65
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Transferring Icc Integrability to Ioc via Measure Monotonicity",
     "content": "Integrability on the closed rectangle `Icc a b × Icc c d` is transferred to the half-open rectangle `Ioc a b × Ioc c d` by exploiting measure monotonicity: `Ioc ⊆ Icc` implies the restricted measure is smaller, and `Integrable.mono_measure` propagates integrability to smaller measures. The `Measure.prod_mono` lemma applies monotonicity componentwise to the product measure. The two boundary points added/removed have measure zero, so this step is measure-theoretically trivial but syntactically necessary.",
     "mathContext": "Since $(a,b] \\subseteq [a,b]$, we have $\\mu|_{(a,b]} \\le \\mu|_{[a,b]}$ as measures, so $f \\in L^1(\\mu|_{[a,b]} \\otimes \\mu|_{[c,d]})$ implies $f \\in L^1(\\mu|_{(a,b]} \\otimes \\mu|_{(c,d]})$ via $\\|f\\|_{L^1(\\text{small})} \\le \\|f\\|_{L^1(\\text{large})}$.",

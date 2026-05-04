@@ -1,40 +1,231 @@
-{
-  "annotations": [
-    {
-      "id": "ann-1",
-      "type": "insight",
-      "title": "minFoldLevel via Nat.find",
-      "body": "The minimum fold level is defined classically via Nat.find on the predicate 'k ≥ 1 ∧ IsKFoldConstructible d k'. Existence is guaranteed by the algebraic completeness theorem from OQ-02.",
-      "location": { "startLine": 68, "endLine": 72 }
+[
+  {
+    "id": "file-header",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
     },
-    {
-      "id": "ann-2",
-      "type": "insight",
-      "title": "Multiplicativity is the key structural theorem",
-      "body": "constructible_mul_iff shows that k-fold constructibility is 'multiplicative' in the sense that a product m·n is k-fold constructible iff both factors are. This directly implies minFoldLevel(m·n) = max(minFoldLevel m, minFoldLevel n).",
-      "location": { "startLine": 44, "endLine": 57 }
+    "type": "concept",
+    "title": "Open Question: Minimum Simultaneous Folds for Polynomial Roots",
+    "content": "This file answers angle-trisection-oq-05-oq-03: how many simultaneous origami folds are needed to construct a root of a degree-d polynomial? The answer is minFoldLevel(d) — the index j of the largest prime p_j dividing d. The proof builds on AngleTrisectionOQ05OQ01 (the k-fold constructibility framework) and AngleTrisectionOQ05OQ02 (exact fold levels for primes and the algebraic completeness theorem). The eight results proved here go from the fundamental structural theorems (monotonicity, multiplicativity) through the definition and characterization of minFoldLevel to concrete computations and the unboundedness theorem.",
+    "mathContext": "The k-fold origami constructibility framework: a real number $\\alpha$ is k-fold constructible if it lies in a tower $\\mathbb{Q} = F_0 \\subset F_1 \\subset \\cdots \\subset F_k$ where each $F_{i+1} = F_i(\\sqrt{r_i})$ is a degree-2 extension. A polynomial of degree $d$ has all roots k-fold constructible iff $d$ is $p_k$-smooth (all prime factors $\\leq p_k$). The minimum fold level for degree $d$ is thus $\\min\\{j \\geq 1 : p_j\\text{-smooth} \\supset \\text{primes}(d)\\}$, where $p_1=3, p_2=5, p_3=7, \\ldots$ is the sequence of odd primes.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "k-fold constructibility",
+      "origami axioms",
+      "IsKFoldConstructible",
+      "foldPrimeBound",
+      "AngleTrisectionOQ05OQ01",
+      "AngleTrisectionOQ05OQ02"
+    ],
+    "prerequisites": [
+      "AngleTrisectionOQ05OQ01: defines IsKFoldConstructible d k, foldPrimeBound k = Nat.nth prime k",
+      "AngleTrisectionOQ05OQ02: proves nth_prime_constructible_at j hj and nth_prime_not_constructible_below j",
+      "Angle trisection impossibility: 3 is not classically constructible (1-fold), requires 2-fold (Beloch fold)"
+    ]
+  },
+  {
+    "id": "classical-decidability",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
     },
-    {
-      "id": "ann-3",
-      "type": "technique",
-      "title": "Nat.find_min and Nat.find_min' for minimality",
-      "body": "Two dual facts: Nat.find_min gives that no smaller k works (minimality), while Nat.find_min' gives that the minimum is ≤ any valid k (upper bound). Together they yield the complete characterization minFoldLevel d ≤ k ↔ d is k-fold constructible.",
-      "location": { "startLine": 88, "endLine": 110 }
+    "type": "concept",
+    "title": "Classical Decidability Instance for Nat.find",
+    "content": "The private instance provides `DecidablePred (fun k : ℕ => k ≥ 1 ∧ IsKFoldConstructible d k)` via `Classical.decPred`. This is required by `Nat.find`, which searches for the least k satisfying a decidable predicate. In Lean 4 / Mathlib, `Nat.find` requires a `Decidable` instance on the predicate, but constructibility is defined via a real-number tower and is not computably decidable. The classical instance says: from excluded middle, every proposition is decidable — we sacrifice computability but gain the existence and minimality API of `Nat.find`.",
+    "mathContext": "In constructive type theory, `DecidablePred p` means we can decide `p n` for each `n : ℕ`. `Classical.decPred` asserts this classically (using `Classical.em`), yielding `Decidable.isTrue` or `Decidable.isFalse` without an algorithm. The annotation `noncomputable def minFoldLevel` (line 72) confirms that the resulting definition cannot be evaluated. The `private` modifier keeps this instance local to avoid polluting global type class search.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Classical.decPred",
+      "Nat.find",
+      "noncomputable",
+      "Classical.em",
+      "DecidablePred"
+    ],
+    "prerequisites": [
+      "Lean 4 classical logic: `Classical.decPred` gives decidability non-constructively",
+      "Nat.find requires: Decidable instance + existence proof",
+      "noncomputable: functions using Classical.choice or Classical.decPred cannot be compiled"
+    ]
+  },
+  {
+    "id": "generalized-monotonicity",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 43,
+      "endLine": 51
     },
-    {
-      "id": "ann-4",
-      "type": "result",
-      "title": "Prime fold levels are exact",
-      "body": "For the j-th prime p_j (0-indexed), minFoldLevel(p_j) = j. This is the sharpest possible statement: p_j needs exactly j folds, not j-1 (too large for p_{j-1}-smooth) and not j+1 (already j-fold constructible).",
-      "location": { "startLine": 125, "endLine": 141 }
+    "type": "insight",
+    "title": "constructible_mono_le: More Folds Always Suffice",
+    "content": "`constructible_mono_le` proves that k-fold constructibility is monotone: if d is k-fold constructible and k ≤ k', then d is k'-fold constructible. The proof destructs `IsKFoldConstructible d k` to get the smoothness bound, then uses monotonicity of `foldPrimeBound` (which is just `Nat.nth prime k`, an increasing function) to upgrade the bound from `foldPrimeBound k` to `foldPrimeBound k'`. The key step is `(Nat.nth_strictMono Nat.infinite_setOf_prime).monotone hkk'`, which says the nth prime function is (weakly) monotone.",
+    "mathContext": "If $d$ is $p_k$-smooth (every prime $q \\mid d$ satisfies $q \\leq p_k$), then $d$ is also $p_{k'}$-smooth for $k' \\geq k$ since $p_k \\leq p_{k'}$ (primes are listed in increasing order). Formally: $\\text{foldPrimeBound}(k) = p_k$ and $k \\leq k' \\Rightarrow p_k \\leq p_{k'}$. The `calc` chain: $q \\leq \\text{foldPrimeBound}\\,k \\leq \\text{foldPrimeBound}\\,k'$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsKFoldConstructible",
+      "foldPrimeBound",
+      "Nat.nth_strictMono",
+      "Nat.infinite_setOf_prime",
+      "prime smoothness"
+    ],
+    "prerequisites": [
+      "IsKFoldConstructible d k := k ≥ 1 ∧ d > 0 ∧ ∀ q prime, q ∣ d → q ≤ foldPrimeBound k",
+      "foldPrimeBound k = Nat.nth (fun p => p.Prime) k — the k-th prime (0-indexed)",
+      "Nat.nth_strictMono: the nth-element function on an infinite set is strictly monotone"
+    ]
+  },
+  {
+    "id": "multiplicativity-iff",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
     },
-    {
-      "id": "ann-5",
-      "type": "result",
-      "title": "minFoldLevel 42 = 3: the dominant prime controls",
-      "body": "42 = 2·3·7. The factor 7 (the 3rd prime) is the dominant one: minFoldLevel 42 = max(minFoldLevel 2, minFoldLevel 3, minFoldLevel 7) = max(1, 1, 3) = 3. Three simultaneous folds are both necessary and sufficient.",
-      "location": { "startLine": 215, "endLine": 226 }
-    }
-  ],
-  "source": "annotations.json"
-}
+    "type": "insight",
+    "title": "constructible_mul_iff: Multiplicativity of k-Fold Constructibility",
+    "content": "`constructible_mul_iff` proves that m·n is k-fold constructible iff both m and n are. The forward direction: any prime divisor of m (resp. n) divides m·n, so the smoothness bound for m·n immediately gives a bound for m (resp. n). The backward direction: any prime divisor of m·n divides m or n (by primality of q), so `q.dvd_mul.mp hqmn` does a case split and applies the respective smoothness bounds. This biconditional is the key structural theorem: it reduces fold level computations to individual factors.",
+    "mathContext": "For $m, n > 0$: $mn$ is $p_k$-smooth $\\Leftrightarrow$ $m$ and $n$ are both $p_k$-smooth. Proof: $\\text{primes}(mn) = \\text{primes}(m) \\cup \\text{primes}(n)$, so $\\max(\\text{primes}(mn)) = \\max(\\max(\\text{primes}(m)), \\max(\\text{primes}(n)))$. In Lean: `hq.dvd_mul.mp hqmn` gives `q ∣ m ∨ q ∣ n` (since q is prime and q ∣ m·n), splitting into two cases each resolved by the respective smoothness witness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsKFoldConstructible",
+      "Nat.Prime.dvd_mul",
+      "prime smoothness",
+      "minFoldLevel_mul"
+    ],
+    "prerequisites": [
+      "Nat.Prime.dvd_mul: if p prime and p ∣ m*n then p ∣ m ∨ p ∣ n",
+      "IsKFoldConstructible requires d > 0; use Nat.mul_pos for the product",
+      "This theorem directly implies minFoldLevel(m·n) = max(minFoldLevel m, minFoldLevel n)"
+    ]
+  },
+  {
+    "id": "minfoldlevel-definition",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 68,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "minFoldLevel via Nat.find: Existence, Minimality, and Characterization",
+    "content": "`minFoldLevel d hd` is defined as `Nat.find (eventually_constructible d hd)` — the minimum k ≥ 1 such that d is k-fold constructible, whose existence is guaranteed by the algebraic completeness theorem from OQ-02. Four companion lemmas use the `Nat.find` API: `minFoldLevel_pos` (≥ 1, from `.1` of the spec), `minFoldLevel_constructible` (attained, from `.2`), `minFoldLevel_minimal` (no k < min works, from `Nat.find_min`), and `minFoldLevel_le_of_constructible` (upper bound for any valid k, from `Nat.find_min'`). Together these give the complete characterization `minFoldLevel_le_iff`: minFoldLevel d ≤ k ↔ d is k-fold constructible (for k ≥ 1).",
+    "mathContext": "The `Nat.find` API: given `h : ∃ n, P n`, `Nat.find h` is the least `n` with `P n`. Key lemmas: `Nat.find_spec h : P (Nat.find h)`, `Nat.find_min h {m} (hm : m < Nat.find h) : ¬ P m`, `Nat.find_min' h {m} (hm : P m) : Nat.find h ≤ m`. The characterization theorem `minFoldLevel_le_iff`: $\\text{minFoldLevel}(d) \\leq k \\Leftrightarrow d \\text{ is } k\\text{-fold constructible}$. Forward by `constructible_mono_le`; backward by `minFoldLevel_le_of_constructible`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "Nat.find_spec",
+      "Nat.find_min",
+      "Nat.find_min'",
+      "eventually_constructible",
+      "minFoldLevel_le_iff"
+    ],
+    "prerequisites": [
+      "eventually_constructible d hd : ∃ k, k ≥ 1 ∧ IsKFoldConstructible d k (from OQ-02)",
+      "Nat.find_min (minimality): Nat.find h < k → ¬ P k",
+      "Nat.find_min' (upper bound): P k → Nat.find h ≤ k"
+    ]
+  },
+  {
+    "id": "prime-fold-levels",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 100,
+      "endLine": 156
+    },
+    "type": "insight",
+    "title": "minFoldLevel for Small Primes: 1, 2, 3, 5, 7, 11",
+    "content": "Five theorems compute exact fold levels for the first primes: minFoldLevel 2 = 1, minFoldLevel 3 = 1, minFoldLevel 5 = 2, minFoldLevel 7 = 3, minFoldLevel 11 = 4. Each proof has the same structure: upper bound from `minFoldLevel_le_of_constructible` using the witness from OQ-02 (e.g., `degree_five_2fold`); lower bound by contradiction using `minFoldLevel_pos` and the non-constructibility below the threshold (e.g., `degree_five_not_1fold`). The general theorem `minFoldLevel_nth_prime`: for j ≥ 1, `minFoldLevel (foldPrimeBound j) _ = j`.",
+    "mathContext": "The pattern for prime $p = p_j$ ($j$th odd prime): Upper bound: $p_j$ is $p_j$-smooth (trivially, since $p_j \\mid p_j$ and $p_j \\leq p_j$), so $j$-fold constructible. Lower bound: $p_j > p_{j-1}$ (strict), so $p_j$ is NOT $p_{j-1}$-smooth, hence NOT $(j-1)$-fold constructible. Therefore $\\text{minFoldLevel}(p_j) = j$. In Lean, `minFoldLevel_nth_prime j hj` gives this for any $j \\geq 1$, using `nth_prime_constructible_at` and `nth_prime_not_constructible_below` from OQ-02.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nth_prime_constructible_at",
+      "nth_prime_not_constructible_below",
+      "minFoldLevel_nth_prime",
+      "foldPrimeBound",
+      "degree_five_2fold",
+      "degree_seven_3fold"
+    ],
+    "prerequisites": [
+      "OQ-02 proves: nth_prime_constructible_at j hj — p_j is j-fold constructible",
+      "OQ-02 proves: nth_prime_not_constructible_below j — p_j is not (j-1)-fold constructible",
+      "foldPrimeBound j = Nat.nth (fun p => p.Prime) j, so foldPrimeBound 1 = 3, foldPrimeBound 2 = 5, ..."
+    ]
+  },
+  {
+    "id": "multiplicative-property",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 160,
+      "endLine": 175
+    },
+    "type": "insight",
+    "title": "minFoldLevel_mul: The Dominant Prime Controls",
+    "content": "`minFoldLevel_mul m n hm hn` proves `minFoldLevel (m*n) _ = max (minFoldLevel m hm) (minFoldLevel n hn)`. The upper bound: m*n is max-fold constructible since both m and n are (using `constructible_mul_iff` backward and `constructible_mono_le` to raise each to the max). The lower bound `max ≤ minFoldLevel(m*n)` is `max_le` with two goals: each of minFoldLevel m and minFoldLevel n is ≤ minFoldLevel(m*n), proved by extracting each factor from `constructible_mul_iff` forward. This theorem is the fundamental computational rule for minFoldLevel.",
+    "mathContext": "The key equation: $\\text{minFoldLevel}(mn) = \\max(\\text{minFoldLevel}(m), \\text{minFoldLevel}(n))$. Proof: $mn$ needs $k$ folds iff both $m$ and $n$ need at most $k$ folds (by `constructible_mul_iff`), i.e., iff $\\text{minFoldLevel}(m) \\leq k$ and $\\text{minFoldLevel}(n) \\leq k$ (by `minFoldLevel_le_iff`), i.e., iff $\\max(\\text{minFoldLevel}(m), \\text{minFoldLevel}(n)) \\leq k$. For example: $\\text{minFoldLevel}(42) = \\text{minFoldLevel}(2 \\cdot 3 \\cdot 7) = \\max(1, 1, 3) = 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructible_mul_iff",
+      "constructible_mono_le",
+      "minFoldLevel_le_iff",
+      "max_le",
+      "minFoldLevel_fortytwo"
+    ],
+    "prerequisites": [
+      "constructible_mul_iff: IsKFoldConstructible (m*n) k ↔ both factors are k-fold",
+      "minFoldLevel_le_iff: minFoldLevel d ≤ k ↔ d is k-fold constructible",
+      "max_le: max a b ≤ c ↔ a ≤ c ∧ b ≤ c"
+    ]
+  },
+  {
+    "id": "concrete-computations",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 177,
+      "endLine": 237
+    },
+    "type": "insight",
+    "title": "Concrete Fold Levels: 6, 10, 14, 15, 42",
+    "content": "Five theorems compute minFoldLevel for composite degrees: minFoldLevel 6 = 1 (6=2·3, max(1,1)=1), minFoldLevel 10 = 2 (10=2·5, the factor 5 forces 2 folds), minFoldLevel 14 = 3 (14=2·7, the factor 7 forces 3 folds), minFoldLevel 15 = 2 (15=3·5, max(1,2)=2), minFoldLevel 42 = 3 (42=2·3·7, the factor 7 is dominant). These confirm that the minimum fold count is determined entirely by the largest prime factor via the prime index. For minFoldLevel 15 and 14, the proofs use `fold_1_bound` and `fold_2_bound` inline rather than the full `minFoldLevel_mul` theorem — showing direct smoothness arguments for composite cases.",
+    "mathContext": "The dominant-prime rule: for $d = p_1^{a_1} \\cdots p_r^{a_r}$ (prime factorization), $\\text{minFoldLevel}(d) = \\max_i \\{j : p_j = p_i\\}$ where $j$ is the index in the odd prime sequence. Concretely: $2 \\to 1, 3 \\to 1, 5 \\to 2, 7 \\to 3, 11 \\to 4, \\ldots$ So $\\text{minFoldLevel}(42) = \\text{minFoldLevel}(2 \\cdot 3 \\cdot 7) = \\max(1,1,3) = 3$ — three simultaneous folds are necessary and sufficient for a degree-42 polynomial.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minFoldLevel_mul",
+      "fold_1_bound",
+      "fold_2_bound",
+      "fold_3_bound",
+      "not_smooth_of_large_prime",
+      "degree_fortytwo_3fold"
+    ],
+    "prerequisites": [
+      "fold_1_bound: foldPrimeBound 1 = 3 (first odd prime)",
+      "fold_2_bound: foldPrimeBound 2 = 5 (second odd prime)",
+      "fold_3_bound: foldPrimeBound 3 = 7 (third odd prime)",
+      "not_smooth_of_large_prime: if q prime > foldPrimeBound k and q ∣ d, d is not k-fold constructible"
+    ]
+  },
+  {
+    "id": "unboundedness",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 240,
+      "endLine": 248
+    },
+    "type": "insight",
+    "title": "minFoldLevel_unbounded: Arbitrarily Many Folds Required",
+    "content": "`minFoldLevel_unbounded K` proves: for any K, there exists a degree d requiring strictly more than K simultaneous folds. The witness is `foldPrimeBound (K+1)` — the (K+1)-th prime — which requires exactly K+1 folds by `minFoldLevel_nth_prime`. The proof is by contradiction: if minFoldLevel ≤ K then the (K+1)-th prime would be K-fold constructible, contradicting `nth_prime_not_constructible_below`. This confirms that no fixed fold count suffices for all polynomial degrees — the problem hierarchy is infinite.",
+    "mathContext": "For any $K$, take $d = p_{K+1}$ (the $(K+1)$th prime in the sequence). By `minFoldLevel_nth_prime`: $\\text{minFoldLevel}(p_{K+1}) = K+1 > K$. Proof by contradiction: if $\\text{minFoldLevel}(p_{K+1}) \\leq K$ then $p_{K+1}$ would be $K$-fold constructible (by `minFoldLevel_le_iff`), contradicting $p_{K+1} > p_K = \\text{foldPrimeBound}(K)$ (which makes $p_{K+1}$ not $p_K$-smooth). The infinitude of primes (Mathlib's `Nat.infinite_setOf_prime`) guarantees that $p_{K+1}$ exists for all $K$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minFoldLevel_nth_prime",
+      "nth_prime_not_constructible_below",
+      "Nat.infinite_setOf_prime",
+      "foldPrimeBound",
+      "minFoldLevel_le_iff"
+    ],
+    "prerequisites": [
+      "minFoldLevel_nth_prime j hj: minFoldLevel (foldPrimeBound j) = j",
+      "nth_prime_not_constructible_below: foldPrimeBound (j+1) is NOT j-fold constructible",
+      "Nat.infinite_setOf_prime: used to ensure Nat.nth prime k exists for all k"
+    ]
+  }
+]

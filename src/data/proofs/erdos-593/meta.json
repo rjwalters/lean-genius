@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 110,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1995 as part of his investigations into infinite combinatorics and hypergraph coloring, offering a $500 prize for its solution. The question asks which finite 3-uniform hypergraphs are 'unavoidable' — meaning they must appear in every 3-uniform hypergraph of uncountable chromatic number. The motivation comes from the completely solved graph case: for ordinary graphs, a finite graph is unavoidable if and only if it is bipartite. The key insight behind the graph case is that non-bipartite graphs (those containing odd cycles) can be avoided because there exist triangle-free graphs of arbitrarily large chromatic number, as Erdős showed using the probabilistic method in 1959 and Mycielski demonstrated with an explicit construction in 1955. Erdős, Galvin, and Hajnal (1975) established the general framework: for each uniformity r, characterize the unavoidable finite r-uniform hypergraphs. The case r = 2 is solved. The case r = 3 is the first open frontier and has resisted all attempts for nearly five decades. The natural analog of bipartiteness is 2-colorability (property B), and 2-colorable hypergraphs are known to be unavoidable. Whether the converse holds — whether every unavoidable 3-uniform hypergraph must be 2-colorable — is the central open question.",

@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview and Imports",
-    "content": "**Erdős Problem #97** asks whether every convex polygon has a vertex with no 4 equidistant neighbors.\n\n**Status**: OPEN (for k = 4). Prize: $100.\n\n**History**:\n- Erdős (1946): Originally conjectured k = 3.\n- Danzer (1987): 9-point convex counterexample for k = 3.\n- Fishburn–Reeds (1992): 20-point convex polygon with 3 unit-distance neighbors at every vertex.\n- k = 4 remains open.\n\nImports Mathlib's EuclideanSpace and Convex libraries.",
-    "mathContext": "The type `ℝ²` abbreviates `EuclideanSpace ℝ (Fin 2)`, the Euclidean plane with norm `‖·‖`. The `dist` function gives the standard Euclidean distance.",
+    "content": "**Erd\u0151s Problem #97** asks whether every convex polygon has a vertex with no 4 equidistant neighbors.\n\n**Status**: OPEN (for k = 4). Prize: $100.\n\n**History**:\n- Erd\u0151s (1946): Originally conjectured k = 3.\n- Danzer (1987): 9-point convex counterexample for k = 3.\n- Fishburn\u2013Reeds (1992): 20-point convex polygon with 3 unit-distance neighbors at every vertex.\n- k = 4 remains open.\n\nImports Mathlib's EuclideanSpace and Convex libraries.",
+    "mathContext": "The type `\u211d\u00b2` abbreviates `EuclideanSpace \u211d (Fin 2)`, the Euclidean plane with norm `\u2016\u00b7\u2016`. The `dist` function gives the standard Euclidean distance.",
     "significance": "key",
     "relatedConcepts": [
       "EuclideanSpace",
@@ -28,7 +28,7 @@
     "type": "definition",
     "title": "Equidistance Definitions",
     "content": "**HasNEquidistantPointsAt n A p**: there exists a positive radius r such that at least n points of A lie on the circle of radius r centered at p.\n\n**HasNEquidistantProperty n A**: every point in A has n equidistant neighbors (the radius may vary by vertex).\n\nThe vertex-dependent radius is what allows Danzer's 9-gon to satisfy the 3-equidistant property.",
-    "mathContext": "Formally: `HasNEquidistantPointsAt n A p = ∃ r > 0, (A.filter (dist p · = r)).card ≥ n`. The use of `Finset.filter` and `Finset.card` gives a computable (in principle) definition.",
+    "mathContext": "Formally: `HasNEquidistantPointsAt n A p = \u2203 r > 0, (A.filter (dist p \u00b7 = r)).card \u2265 n`. The use of `Finset.filter` and `Finset.card` gives a computable (in principle) definition.",
     "significance": "key",
     "relatedConcepts": [
       "Finset.filter",
@@ -47,8 +47,8 @@
     },
     "type": "definition",
     "title": "Unit-Distance Property",
-    "content": "**HasNUnitDistanceProperty n A**: every point in A has at least n neighbors at distance exactly 1.\n\nThis is **stronger** than the equidistant property: the distance is fixed globally at 1, not just equal among a group. Fishburn–Reeds' 20-gon satisfies this for k = 3.",
-    "mathContext": "Formally: `HasNUnitDistanceProperty n A = ∀ p ∈ A, (A.filter (dist p · = 1)).card ≥ n`. The unit-distance graph of A connects pairs at distance 1; this property says every vertex has degree ≥ n in that graph.",
+    "content": "**HasNUnitDistanceProperty n A**: every point in A has at least n neighbors at distance exactly 1.\n\nThis is **stronger** than the equidistant property: the distance is fixed globally at 1, not just equal among a group. Fishburn\u2013Reeds' 20-gon satisfies this for k = 3.",
+    "mathContext": "Formally: `HasNUnitDistanceProperty n A = \u2200 p \u2208 A, (A.filter (dist p \u00b7 = 1)).card \u2265 n`. The unit-distance graph of A connects pairs at distance 1; this property says every vertex has degree \u2265 n in that graph.",
     "significance": "key",
     "relatedConcepts": [
       "unit-distance-graph",
@@ -69,7 +69,7 @@
     "type": "definition",
     "title": "Main Conjecture: k = 4",
     "content": "**Erdos97Conjecture** states: for every non-empty finite set A of points in convex position, A does not have the 4-equidistant property.\n\nThis uses `ConvexIndep id A` (Mathlib's predicate for convex independence: no point in A is in the convex hull of the others) to capture 'vertices of a convex polygon'.\n\nThe conjecture is OPEN. A $100 prize is offered.",
-    "mathContext": "`ConvexIndep id A` means the identity map on A is convex-independent: for each `p ∈ A`, `p ∉ convexHull ℝ (A \\ {p})`. This is the standard Mathlib formulation of 'points in convex position'.",
+    "mathContext": "`ConvexIndep id A` means the identity map on A is convex-independent: for each `p \u2208 A`, `p \u2209 convexHull \u211d (A \\ {p})`. This is the standard Mathlib formulation of 'points in convex position'.",
     "significance": "key",
     "relatedConcepts": [
       "ConvexIndep",
@@ -90,8 +90,8 @@
     },
     "type": "concept",
     "title": "Danzer's Counterexample (1987)",
-    "content": "**danzer_counterexample** axiom: there exists a convex 9-gon where every vertex has 3 equidistant neighbors.\n\nThis **disproves** Erdős's original k = 3 conjecture. The radius can vary by vertex.\n\nThe explicit coordinates involve specific rational multiples of √3, arranged in 3 groups of 3 around an equilateral triangle. Verification requires floating-point computation; axiomatized here.",
-    "mathContext": "The formal-conjectures project (erdosproblems.com/97) gives explicit coordinates: three groups $(A_1, A_2, A_3)$, $(B_1, B_2, B_3)$, $(C_1, C_2, C_3)$ with carefully chosen rational-√3 coordinates. Proving convex independence and the equidistance property for all 9 points requires `norm_num` with these explicit values.",
+    "content": "**danzer_counterexample** axiom: there exists a convex 9-gon where every vertex has 3 equidistant neighbors.\n\nThis **disproves** Erd\u0151s's original k = 3 conjecture. The radius can vary by vertex.\n\nThe explicit coordinates involve specific rational multiples of \u221a3, arranged in 3 groups of 3 around an equilateral triangle. Verification requires floating-point computation; axiomatized here.",
+    "mathContext": "The formal-conjectures project (erdosproblems.com/97) gives explicit coordinates: three groups $(A_1, A_2, A_3)$, $(B_1, B_2, B_3)$, $(C_1, C_2, C_3)$ with carefully chosen rational-\u221a3 coordinates. Proving convex independence and the equidistance property for all 9 points requires `norm_num` with these explicit values.",
     "significance": "key",
     "relatedConcepts": [
       "danzer",
@@ -111,9 +111,9 @@
       "startLine": 97,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "k = 3 Conjecture Is False",
-    "content": "**erdos_97_k3_false**: a proved theorem (from the Danzer axiom) that the k = 3 version of Erdős's original conjecture is false.\n\nThe proof: extract the 9-point convex polygon from `danzer_counterexample`, verify it is non-empty (since it has 9 points), and apply it to derive a contradiction with the k = 3 universal statement.",
+    "content": "**erdos_97_k3_false**: a proved theorem (from the Danzer axiom) that the k = 3 version of Erd\u0151s's original conjecture is false.\n\nThe proof: extract the 9-point convex polygon from `danzer_counterexample`, verify it is non-empty (since it has 9 points), and apply it to derive a contradiction with the k = 3 universal statement.",
     "mathContext": "The proof uses `Finset.nonempty_iff_ne_empty` and `omega` to deduce non-emptiness from `A.card = 9`. Then `danzer_counterexample` provides the explicit counterexample to the universal statement.",
     "significance": "key",
     "relatedConcepts": [
@@ -133,9 +133,9 @@
       "endLine": 133
     },
     "type": "concept",
-    "title": "Fishburn–Reeds Results (1992)",
-    "content": "**fishburn_reeds_example**: a convex 20-gon where every vertex has 3 unit-distance neighbors.\n\n**fishburn_reeds_minimal**: 20 is the minimum size for such a configuration.\n\nThis strengthens Danzer's result: the common distance is fixed at 1, not just equal. The minimality of 20 is proved in Fishburn–Reeds' 1992 paper.",
-    "mathContext": "The 20-gon construction uses integer coordinates satisfying carefully crafted Diophantine conditions. `fishburn_reeds_minimal` is stated as a conjunction: all smaller convex sets fail, and the 20-gon exists — combining the minimality and existence in one axiom.",
+    "title": "Fishburn\u2013Reeds Results (1992)",
+    "content": "**fishburn_reeds_example**: a convex 20-gon where every vertex has 3 unit-distance neighbors.\n\n**fishburn_reeds_minimal**: 20 is the minimum size for such a configuration.\n\nThis strengthens Danzer's result: the common distance is fixed at 1, not just equal. The minimality of 20 is proved in Fishburn\u2013Reeds' 1992 paper.",
+    "mathContext": "The 20-gon construction uses integer coordinates satisfying carefully crafted Diophantine conditions. `fishburn_reeds_minimal` is stated as a conjunction: all smaller convex sets fail, and the 20-gon exists \u2014 combining the minimality and existence in one axiom.",
     "significance": "key",
     "relatedConcepts": [
       "fishburn-reeds",
@@ -157,7 +157,7 @@
     "type": "definition",
     "title": "General k Conjecture and Implication",
     "content": "**GeneralKConjecture**: does some universal k work for ALL convex polygons?\n\nEven this weaker form is open. The theorem **main_implies_general** proves that if the k = 4 conjecture holds, then the general k conjecture holds too (with k = 4 as a witness).",
-    "mathContext": "Formally: `GeneralKConjecture = ∃ k, ∀ convex A, ¬HasNEquidistantProperty k A`. The implication `Erdos97Conjecture → GeneralKConjecture` is trivial: take `k = 4` as the existential witness. This shows that solving the open problem would also resolve the general question.",
+    "mathContext": "Formally: `GeneralKConjecture = \u2203 k, \u2200 convex A, \u00acHasNEquidistantProperty k A`. The implication `Erdos97Conjecture \u2192 GeneralKConjecture` is trivial: take `k = 4` as the existential witness. This shows that solving the open problem would also resolve the general question.",
     "significance": "key",
     "relatedConcepts": [
       "open-problem",
@@ -180,7 +180,7 @@
     "type": "concept",
     "title": "Why Convexity Is Essential",
     "content": "**no_bound_without_convexity**: without the convexity constraint, there is no universal bound.\n\nFor any k, there exist k-equidistant configurations (e.g., regular polygons, hypercube embeddings). Convexity is the crucial geometric constraint that makes the problem non-trivial.",
-    "mathContext": "Hypercube graphs: the d-cube $\\{0,1\\}^d \\subset \\mathbb{R}^d$ has $2^d$ vertices, each at Hamming distance 1 from d neighbors. This can be isometrically embedded in $\\mathbb{R}^2$ giving a (non-convex) set where every vertex has d unit-distance neighbors — so d-equidistant sets exist for any d.",
+    "mathContext": "Hypercube graphs: the d-cube $\\{0,1\\}^d \\subset \\mathbb{R}^d$ has $2^d$ vertices, each at Hamming distance 1 from d neighbors. This can be isometrically embedded in $\\mathbb{R}^2$ giving a (non-convex) set where every vertex has d unit-distance neighbors \u2014 so d-equidistant sets exist for any d.",
     "significance": "supporting",
     "relatedConcepts": [
       "convexity",

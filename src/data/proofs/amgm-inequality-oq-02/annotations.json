@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Maclaurin's Chain: AM-GM Refined by Elementary Symmetric Polynomials",
-    "content": "The module establishes the Maclaurin inequality chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ for non-negative reals, where Mₖ = (eₖ/C(n,k))^(1/k) and eₖ is the k-th elementary symmetric polynomial. The endpoints are M₁ = AM (arithmetic mean) and Mₙ = GM (geometric mean), so AM ≥ GM is the coarsest case of this chain. The key proof engine is Newton's log-concavity: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1)) · (eₖ₊₁/C(n,k+1)), which implies the Maclaurin step Mₖ ≥ Mₖ₊₁. The formalization proves 13 results fully and axiomatizes 2 deep classical results (Newton log-concavity and the Maclaurin step).",
+    "content": "The module establishes the Maclaurin inequality chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ for non-negative reals, where Mₖ = (eₖ/C(n,k))^(1/k) and eₖ is the k-th elementary symmetric polynomial. The endpoints are M₁ = AM (arithmetic mean) and Mₙ = GM (geometric mean), so AM ≥ GM is the coarsest case of this chain. The key proof engine is Newton's log-concavity: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1)) · (eₖ₊₁/C(n,k+1)), which implies the Maclaurin step Mₖ ≥ Mₖ₊₁. The formalization proves 17 theorems fully (including 6 private helpers) and axiomatizes 2 deep classical results (Newton log-concavity and the Maclaurin step).",
     "mathContext": "For non-negative reals $x_1,\\ldots,x_n$: $e_k = \\sum_{|S|=k} \\prod_{i\\in S} x_i$, $M_k = (e_k/\\binom{n}{k})^{1/k}$. Chain: $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$. Special cases: $M_1 = \\frac{\\sum x_i}{n}$ (AM), $M_n = (\\prod x_i)^{1/n}$ (GM). Newton's engine: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$ — log-concavity of the normalized sequence.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
       "startLine": 66,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "M₁² ≥ M₂ for n=2,3,4: Sum-of-Squares Certificates",
     "content": "Three small-case proofs establish M₁² ≥ M₂ by explicit sum-of-squares certificates. For n=2: (a+b)/2 ≥ √(ab) is proved by showing (√a - √b)² ≥ 0, expanding via sq_sqrt, then using linarith. For n=3: (a+b+c)² ≥ 3(ab+bc+ca) follows from (a-b)² + (b-c)² + (c-a)² ≥ 0 — nlinarith closes the goal with sq_nonneg hints. For n=4: nlinarith handles (a+b+c+d)² ≥ (4/3)(ab+ac+ad+bc+bd+cd) with all 6 pairwise sq_nonneg hints. These concrete cases illustrate the sum-of-squares principle that underlies the general Cauchy-Schwarz proof.",
     "mathContext": "n=2: $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0 \\Rightarrow a + b \\geq 2\\sqrt{ab} \\Rightarrow (a+b)/2 \\geq \\sqrt{ab}$. n=3: $(a-b)^2+(b-c)^2+(c-a)^2 = 2(a^2+b^2+c^2-ab-bc-ca) \\geq 0 \\Rightarrow (a+b+c)^2 \\geq 3(ab+bc+ca)$. n=4: same with $\\binom{4}{2}=6$ pairs. General pattern: $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ and $n\\cdot\\sum x_i^2 \\geq (\\sum x_i)^2$ (Cauchy-Schwarz) gives $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$.",
@@ -103,7 +103,7 @@
       "startLine": 94,
       "endLine": 110
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Cauchy-Schwarz via Double Sum: n·∑xᵢ² ≥ (∑xᵢ)²",
     "content": "The private lemma cauchy_schwarz_sum proves n·∑xᵢ² ≥ (∑xᵢ)² for general n via the double-sum identity ∑ᵢ∑ⱼ(xᵢ-xⱼ)² = 2(n·∑xᵢ² - (∑xᵢ)²) ≥ 0. The proof expands (xᵢ-xⱼ)² = xᵢ² - 2xᵢxⱼ + xⱼ², applies simp_rw to push through the sum, and uses three auxiliary facts: h1 (∑ᵢ∑ⱼ xᵢ² = n·∑xᵢ²), h2 (∑ᵢ∑ⱼ xⱼ² = n·∑xⱼ²), h3 (∑ᵢ∑ⱼ 2xᵢxⱼ = 2(∑xᵢ)²). Combined with ring and linarith, this establishes the bound without any positivity hypotheses on x.",
     "mathContext": "$\\sum_i\\sum_j (x_i-x_j)^2 = n\\sum_i x_i^2 + n\\sum_j x_j^2 - 2\\sum_i x_i \\cdot \\sum_j x_j = 2(n\\sum x_i^2 - (\\sum x_i)^2) \\geq 0$. Lean proof: `h3 : ∑ i j, 2*x i*x j = 2*(∑ i, x i)^2` via `rw [sq, sum_mul]; simp_rw [mul_sum]`. This Cauchy-Schwarz is weaker than the general inner product form but suffices for the Maclaurin M₁²≥M₂ inequality.",
@@ -130,7 +130,7 @@
       "startLine": 205,
       "endLine": 271
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "General M₁² ≥ M₂: Binomial Identity + Cauchy-Schwarz",
     "content": "This section contains two key results. First, sq_sum_eq_sum_sq_add_two_elemSymm (lines 205-224) proves the binomial identity (∑xᵢ)² = ∑xᵢ² + 2·e₂ by induction on n using the e₂ recurrence from Part II. Base case (n=0): e₂ vanishes because no 2-element subsets exist in Fin 0 (proved by omega on cardinality). Inductive step: Fin.sum_univ_castSucc splits the sum, elemSymm_two_succ decomposes e₂, and nlinarith closes the goal with sq_nonneg hints.\n\nSecond, maclaurin_sq_m1_ge_m2_general (lines 226-271) proves C(n,2)·(∑xᵢ)² ≥ n²·e₂ for ALL reals (no non-negativity needed) using: (1) Cauchy-Schwarz (h_cs: n·∑xᵢ² ≥ (∑xᵢ)²); (2) the binomial identity from sq_sum_eq_sum_sq_add_two_elemSymm; (3) Pascal identity (h_2cn2: 2·C(n,2) = n·(n-1), proved by induction via Nat.choose_succ_succ). The algebraic chain: 2·(C·S₁² - n²·e₂) = n·(n·S₂ - S₁²) ≥ 0 follows from Cauchy-Schwarz, closed by nlinarith.",
     "mathContext": "$(\\sum_{i=1}^n x_i)^2 = \\sum_{i=1}^n x_i^2 + 2\\sum_{i<j} x_ix_j = \\sum_{i=1}^n x_i^2 + 2e_2$. Inductive proof: $(\\sum_{i=1}^{n+1} x_i)^2 = (\\sum_{i=1}^n x_i + x_{n+1})^2 = (\\sum_{i=1}^n x_i)^2 + 2x_{n+1}\\sum_{i=1}^n x_i + x_{n+1}^2 = (\\sum x_i^2 + 2e_2(x_1,\\ldots,x_n)) + 2x_{n+1}\\cdot e_1 + x_{n+1}^2$ $= \\sum_{i=1}^{n+1} x_i^2 + 2(e_2 + x_{n+1}\\cdot e_1) = \\sum_{i=1}^{n+1} x_i^2 + 2e_2(x_1,\\ldots,x_{n+1})$ using the recurrence $e_2(\\text{succ}) = e_2 + x_{n+1}\\cdot e_1$.",
@@ -207,7 +207,7 @@
       "startLine": 315,
       "endLine": 330
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "AM-GM from Mathlib's Weighted Mean Inequality",
     "content": "amgm_from_maclaurin derives the standard AM-GM inequality ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n from Mathlib's Real.geom_mean_le_arith_mean_weighted with uniform weights 1/n. The proof establishes three prerequisites: hw (each weight 1/n ≥ 0, by positivity), hw' (weights sum to 1, by mul_one_div_cancel), and applies the weighted AM-GM to get ∏ xᵢ^(1/n) ≤ ∑ (1/n)·xᵢ = (∑ xᵢ)/n. The final calc block combines key and a ring simplification using mul_sum.",
     "mathContext": "Mathlib's weighted AM-GM: $\\prod_{i} z_i^{w_i} \\leq \\sum_i w_i z_i$ when $w_i \\geq 0$, $\\sum w_i = 1$. With $w_i = 1/n$: $\\prod x_i^{1/n} \\leq \\sum (1/n)x_i = (\\sum x_i)/n$. This corresponds to $M_n \\leq M_1$ in Maclaurin notation, the coarsest inequality in the chain. The `positivity` tactic closes $0 \\leq 1/n$ automatically.",
@@ -232,7 +232,7 @@
       "startLine": 366,
       "endLine": 391
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Maclaurin Chain by Induction on the Gap k-j",
     "content": "maclaurin_chain proves Mⱼ ≥ Mₖ for 0 < j ≤ k ≤ n by induction on d = k - j. The proof uses `obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hjk` to write k = j + d, then inducts on d. Base case d=0: Mⱼ ≥ Mⱼ (le_rfl). Inductive step: Mⱼ ≥ Mⱼ₊ₑ (by ih) and Mⱼ₊ₑ ≥ Mⱼ₊ₑ₊₁ (by maclaurin_step), giving Mⱼ ≥ Mⱼ₊ₑ₊₁ via a calc block. The theorem maclaurin_m1_ge_mn (M₁ ≥ Mₙ, i.e., AM ≥ GM in Maclaurin language) is then a one-line corollary: `maclaurin_chain 1 n (by omega) (by omega) le_rfl x hx`.",
     "mathContext": "Induction on gap: to prove $M_j \\geq M_k$ for $k = j+d$, apply $M_j \\geq M_{j+e}$ (IH) and $M_{j+e} \\geq M_{j+e+1}$ (step). The step axiom `maclaurin_step` gives $M_k \\geq M_{k+1}$ for any $0 < k < n$. Therefore $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ by transitivity. Special case: $M_1 = \\text{AM} \\geq M_n = \\text{GM}$, recovering AM-GM. The calc block in Lean: `maclaurinMean j x ≥ maclaurinMean (j+e) x := hih` then `_ ≥ maclaurinMean (j+e+1) x := hstep`.",
@@ -329,7 +329,7 @@
       "startLine": 393,
       "endLine": 486
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "General Recurrence, Vanishing, and Product Identities",
     "content": "Part VI (lines 393-397 header) introduces structural theorems for inductive proofs on n and boundary behavior. The private lemma pc_disj_general (lines 401-414) establishes disjointness for the generalized powersetCard decomposition, extending the k=1 case from Part II to arbitrary k — any subset in the mapped range of castSucc cannot contain Fin.last, proved by the same Fin.castSucc_lt_last argument.\n\nThree structural theorems complete the elementary symmetric polynomial toolkit. elemSymm_succ generalizes the k=1 recurrence to arbitrary k: eₖ₊₁(x₁,...,xₙ₊₁) = eₖ₊₁(x₁,...,xₙ) + xₙ₊₁·eₖ(x₁,...,xₙ). The proof mirrors elemSymm_two_succ with pc_disj_general and an injectivity argument for insert on subsets not containing Fin.last. elemSymm_gt_eq_zero proves eₖ = 0 for k > n — no k-element subsets exist when k > n, so the defining sum is empty. elemSymm_n_eq_prod proves eₙ(x₁,...,xₙ) = ∏ᵢ xᵢ — the unique n-element subset of Fin n is univ itself, shown by Finset.eq_univ_of_card.",
     "mathContext": "The recurrence $e_{k+1}(x_1,\\ldots,x_{n+1}) = e_{k+1}(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_k(x_1,\\ldots,x_n)$ is the symmetric polynomial analog of Pascal's rule $\\binom{n+1}{k+1} = \\binom{n}{k+1} + \\binom{n}{k}$ (counting $k+1$-element subsets by whether they contain the last element). Boundary: $e_k = 0$ for $k > n$ (no subsets), $e_n = \\prod x_i$ (unique full subset).",
@@ -381,7 +381,7 @@
       "startLine": 336,
       "endLine": 364
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "M₁² ≥ M₂ from Newton's Log-Concavity Axiom",
     "content": "maclaurin_sq_m1_ge_m2_from_newton provides an alternative proof of C(n,2)·(∑xᵢ)² ≥ n²·e₂ for non-negative inputs by directly invoking the newton_log_concavity axiom at k=1. The proof: (1) instantiate Newton at k=1 to get ((∑xᵢ)/n)² ≥ e₂/C(n,2); (2) simplify using e₀=1, e₁=∑xᵢ, C(n,0)=1, C(n,1)=n; (3) cross-multiply both sides by n²·C(n,2) > 0 via div_nonneg and field_simp. This contrasts with maclaurin_sq_m1_ge_m2_general, which proves the same inequality axiom-free for ALL reals (not just non-negative) using Cauchy-Schwarz + the binomial identity.",
     "mathContext": "Newton at $k=1$: $((\\sum x_i)/n)^2 \\geq e_2/\\binom{n}{2}$, cross-multiplied to $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$. Requires $x_i \\geq 0$ (via the axiom), unlike the Cauchy-Schwarz proof which works for all reals.",

@@ -1,7 +1,7 @@
 {
   "slug": "cantor-diagonalization-oq-01-oq-02",
   "title": "Is the Continuum Hypothesis decided by large cardinal axioms",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,50 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-26T08:56:57.651Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized large cardinal axioms, Lévy-Solovay independence, and proved MM/MA → ¬CH.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Docker build verification.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS (Session 1, 2026-05-03): Formalized large cardinal axioms (inaccessible, measurable), forcing axioms (Martin's Axiom, Martin's Maximum), Lévy-Solovay independence results (axiomatized), and proved MM→¬CH, MA→¬CH by cardinal arithmetic. 11 theorems, 6 axioms, 0 sorries.",
+    "builtItems": [
+      "IsStrongLimit, IsRegular, IsInaccessible, IsMeasurable: definitions (CantorDiagonalizationOQ01OQ02.lean:50)",
+      "HasInaccessible, HasMeasurable, MartinsAxiom, MartinsMaximum: axiom propositions (line:97)",
+      "measurable_implies_inaccessible, inaccessible_is_strong_limit, inaccessible_uncountable: basic props (line:115)",
+      "mm_implies_ma: Martin's Maximum implies Martin's Axiom (line:122)",
+      "levy_solovay_inaccessible_ch/not_ch: axioms for Lévy-Solovay inaccessible case (line:149)",
+      "levy_solovay_measurable_ch/not_ch: axioms for Lévy-Solovay measurable case (line:155)",
+      "inaccessible_independent_of_ch, measurable_independent_of_ch: independence bundled (line:161)",
+      "mm_implies_not_ch: proved MM → ¬CH by cardinal arithmetic (line:179)",
+      "ma_implies_not_ch: proved MA → ¬CH by cardinal arithmetic (line:190)",
+      "mm_consistent, ma_consistent: axioms for forcing axiom consistency (line:203)",
+      "UltimateLConjecture, ultimate_l_implies_ch_consistent: Woodin program (line:228)",
+      "large_cardinals_and_ch_summary, ch_independent_of_large_cardinals: summary theorems (line:248)"
+    ],
+    "insights": [
+      "Standard large cardinals (measurable, supercompact) don't decide CH — Lévy-Solovay: small forcing preserves measurability",
+      "Martin's Maximum implies 2^ℵ₀ = ℵ₂, which provably contradicts CH (2^ℵ₀ = ℵ₁) since ℵ₁ < ℵ₂",
+      "Martin's Axiom implies 2^ℵ₀ ≥ ℵ₂, similarly refuting CH",
+      "Woodin Ultimate-L program aims to canonically settle CH as true using inner model theory — still open",
+      "The key distinction: 'size' axioms (large cardinals) don't decide CH; 'saturation' axioms (forcing axioms) do",
+      "Cardinal.aleph_lt.mpr (by norm_num) is the clean way to prove aleph α < aleph β from α < β"
+    ],
+    "mathlibGaps": [
+      "No Mathlib formalization of measurable cardinals (Scott's theorem, ultrafilters on cardinals)",
+      "Forcing is not formalized in Mathlib — Lévy-Solovay must be axiomatized"
+    ],
+    "nextSteps": [
+      "Docker build to verify compilation",
+      "Extension: add GCH → CH consequence to show GCH is a stronger axiom"
+    ]
   },
   "tags": [
     "challenging",
@@ -46,6 +72,7 @@
     "cantor-diagonalization-oq-01-oq-01",
     "cantor-diagonalization-oq-01-oq-01-oq-02",
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "cantor-diagonalization-oq-01-oq-02",
     "cantor-diagonalization-oq-02",
     "cantor-diagonalization-oq-02-oq-01",
     "cantor-diagonalization-oq-02-oq-03",
@@ -123,6 +150,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
+      "filename": "CantorDiagonalizationOQ01OQ02.lean",
+      "lineCount": 307,
+      "theoremCount": 14,
+      "axiomCount": 7,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ02.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ02.lean",

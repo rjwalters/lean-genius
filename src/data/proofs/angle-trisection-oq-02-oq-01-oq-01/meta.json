@@ -42,7 +42,8 @@
     ],
     "axiomCount": 0,
     "assumptions": "No axioms. Uses natDegree_dvd_card_gal from parent file (also 0 axioms). The theorem prime_degree_dvd_card_from_general is fully proved.",
-    "lineCount": 123
+    "lineCount": 238,
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The connection between polynomial degree and Galois group order is classical: for an irreducible polynomial $p$ over $F$, the tower law gives $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $[F(\\alpha):F] = \\deg(p)$, forcing $\\deg(p) \\mid [E:F] = |\\text{Gal}(p)|$. Emil Artin's 1942 lecture notes *Galois Theory* (Notre Dame Mathematical Lectures) establish the abstract framework in which this divisibility lives, though the polynomial-level statement emerged from the interplay with algebraic number theory and the classical impossibility results. The prime-degree special case is most prominent in constructibility: a real number is constructible iff its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2; since $2\\cos(20°)$ satisfies the degree-3 irreducible $X^3 - 3X - 1$, angle trisection is impossible. Mathlib's `prime_degree_dvd_card` (in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`) was written precisely for this constructibility toolkit. However, the same argument works for any irreducible: the only prime-specific step was deducing $\\deg(p) \\neq 0$ from `Nat.Prime.ne_zero`, which `Irreducible.natDegree_pos` provides for free. Dropping the hypothesis extends the theorem's reach considerably: in the solvability-by-radicals theory, degree-4 irreducibles arise (the $S_4$ Galois group case requires $4 \\mid |\\text{Gal}|$); in algebraic number theory, the Frobenius element $\\text{Frob}_{\\mathfrak{p}}$ for a prime $\\mathfrak{p}$ above $p$ has order equal to the inertia degree $f(\\mathfrak{p}|p)$, and the Chebotarev density theorem counts conjugacy classes by splitting behavior — both require degree divisibility for non-prime-degree residue polynomials. The gallery entry models the complete contribution pipeline: prototype the generalization, exhibit the original as a corollary, document exact Mathlib diff and deprecation strategy.",
@@ -160,12 +161,15 @@
     }
   ],
   "leanFile": {
-    "lineCount": 123,
+    "lineCount": 238,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ01.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 5
+    "theoremCount": 5,
+    "imports": [
+      "Proofs.AngleTrisectionOQ02OQ01"
+    ]
   },
   "sorries": 0
 }

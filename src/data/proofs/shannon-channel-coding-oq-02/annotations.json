@@ -26,7 +26,7 @@
     },
     "type": "concept",
     "title": "BSC Output Entropy is Input-Independent",
-    "content": "Proves that ∑_y W(x,y)·log W(x,y) = p·log(p) + (1-p)·log(1-p) for all input symbols x. This is a direct consequence of BSC symmetry: for any input, the output distribution is always Bernoulli(p), just with the labels possibly swapped. The proof uses Bool case analysis and ring arithmetic.",
+    "content": "Proves that \u2211_y W(x,y)\u00b7log W(x,y) = p\u00b7log(p) + (1-p)\u00b7log(1-p) for all input symbols x. This is a direct consequence of BSC symmetry: for any input, the output distribution is always Bernoulli(p), just with the labels possibly swapped. The proof uses Bool case analysis and ring arithmetic.",
     "mathContext": "$\\sum_y W(x,y) \\ln W(x,y) = p \\ln p + (1-p) \\ln(1-p)$ for all $x \\in \\{0,1\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -45,9 +45,9 @@
       "startLine": 102,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "H(Y|X) = h(p) for BSC",
-    "content": "The main computational result: the conditional output entropy of a BSC equals h(p) regardless of the input distribution (as long as all input probabilities are positive). The proof unfolds the conditionalEntropy definition on the transposed joint distribution, eliminates the if-then-else branches (all probabilities are positive), simplifies the denominator ∑_y' p(x)·W(x,y') = p(x) to cancel with the numerator, swaps the sum order, factors out p(x), and uses BSC symmetry to replace the inner sum with p·log(p)+(1-p)·log(1-p). After summing p(x) to 1, the result is -[p·log(p)+(1-p)·log(1-p)] = h(p).",
+    "content": "The main computational result: the conditional output entropy of a BSC equals h(p) regardless of the input distribution (as long as all input probabilities are positive). The proof unfolds the conditionalEntropy definition on the transposed joint distribution, eliminates the if-then-else branches (all probabilities are positive), simplifies the denominator \u2211_y' p(x)\u00b7W(x,y') = p(x) to cancel with the numerator, swaps the sum order, factors out p(x), and uses BSC symmetry to replace the inner sum with p\u00b7log(p)+(1-p)\u00b7log(1-p). After summing p(x) to 1, the result is -[p\u00b7log(p)+(1-p)\u00b7log(1-p)] = h(p).",
     "mathContext": "$H(Y|X) = \\sum_x p(x) \\cdot H(Y|X=x) = \\sum_x p(x) \\cdot h(p) = h(p)$",
     "significance": "key",
     "relatedConcepts": [
@@ -67,9 +67,9 @@
       "startLine": 222,
       "endLine": 240
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "BSC Capacity = log 2 - h(p)",
-    "content": "Proves that the channel capacity (supremum of mutual information over all input distributions) equals log 2 - h(p). The proof uses antisymmetry: the upper bound shows every input distribution gives MI ≤ log 2 - h(p), and the lower bound exhibits the uniform distribution achieving MI = log 2 - h(p). This eliminates the bsc_capacity_eq axiom from the parent formalization.",
+    "content": "Proves that the channel capacity (supremum of mutual information over all input distributions) equals log 2 - h(p). The proof uses antisymmetry: the upper bound shows every input distribution gives MI \u2264 log 2 - h(p), and the lower bound exhibits the uniform distribution achieving MI = log 2 - h(p). This eliminates the bsc_capacity_eq axiom from the parent formalization.",
     "mathContext": "$C(\\text{BSC}(p)) = \\sup_{p(x)} I(X;Y) = \\log 2 - h(p)$",
     "significance": "key",
     "relatedConcepts": [
@@ -90,9 +90,9 @@
       "startLine": 242,
       "endLine": 262
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Random Coding Existence Lemma",
-    "content": "If the average error over a finite ensemble of codebooks is at most ε, then there exists a specific codebook with error ≤ ε. This is the probabilistic method step in Shannon's achievability proof. The proof is by contradiction: if all errors exceed ε, the average exceeds ε too.",
+    "content": "If the average error over a finite ensemble of codebooks is at most \u03b5, then there exists a specific codebook with error \u2264 \u03b5. This is the probabilistic method step in Shannon's achievability proof. The proof is by contradiction: if all errors exceed \u03b5, the average exceeds \u03b5 too.",
     "mathContext": "If $\\frac{1}{|\\mathcal{C}|} \\sum_{C \\in \\mathcal{C}} P_e(C) \\leq \\varepsilon$, then $\\exists C^*: P_e(C^*) \\leq \\varepsilon$",
     "significance": "key",
     "relatedConcepts": [

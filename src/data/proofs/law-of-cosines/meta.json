@@ -47,7 +47,8 @@
     "axiomCount": 0,
     "lineCount": 280,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "The Law of Cosines has ancient origins: Euclid (~300 BCE) gave geometric equivalents in Elements Book II (Propositions 12-13), and al-Kashi (1420s) stated the first modern trigonometric formulation, still called al-Kashi's theorem in many countries. It became standard with the development of trigonometry in the 16th-17th centuries and is fundamental to surveying, navigation, and physics. The law generalizes the Pythagorean theorem: when C = 90°, the cosine term vanishes and c² = a² + b². The algebraic form c² = a² + b² - 2ab cos(C) was instrumental in spherical trigonometry and celestial mechanics, and its inner-product formulation ||v - w||² = ||v||² + ||w||² - 2⟨v,w⟩ unifies geometry and linear algebra.",

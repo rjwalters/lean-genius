@@ -57,7 +57,8 @@
     "axiomCount": 5,
     "lineCount": 487,
     "assumptions": "5 axioms: gleason_lemma_1, gleason_lemma_2, no_small_subgroups_suggests_lie_structure, montgomery_zippin_theorem, von_neumann_compact_groups. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Hilbert's 5th Problem was posed at the 1900 International Congress of Mathematicians in Paris. Sophus Lie had developed the theory of continuous transformation groups in the 1870s, always assuming differentiability of the group operations. Hilbert asked whether this assumption was necessary. Von Neumann made the first breakthrough in 1933, proving the compact case using the Peter-Weyl theorem and Haar measure. The full resolution came in 1952 when Gleason, Montgomery, and Zippin independently proved that locally compact groups with no small subgroups are Lie groups. Yamabe extended this in 1953 to show every locally compact group is a projective limit of Lie groups. The remaining open part — the Hilbert-Smith conjecture on group actions on manifolds — saw a major advance when Pardon proved the dimension 3 case in 2013. Terence Tao's 2014 graduate text provides a modern treatment of the entire theory.",

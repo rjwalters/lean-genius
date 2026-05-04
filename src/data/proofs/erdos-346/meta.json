@@ -30,7 +30,8 @@
     ],
     "lineCount": 80,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "A sequence of positive integers is complete if every sufficiently large integer can be represented as a sum of distinct terms. Zeckendorf's theorem (1972) shows the Fibonacci sequence is complete: every positive integer has a unique Fibonacci representation. The question of how robust completeness is — what happens when terms are removed — connects to deep properties of the golden ratio.\n\nGraham (1964) showed that the sequence Fₙ − (−1)^n (= 1, 3, 4, 8, 12, 21, ...) is both strongly complete (removing finitely many terms preserves completeness) and fragile (removing infinitely many terms can destroy it). Erdős and Graham (1980) studied this phenomenon systematically.\n\nThe golden ratio φ = (1+√5)/2 ≈ 1.618 appears as a sharp threshold: if aₙ₊₁/aₙ > φ, fragility is automatic.",

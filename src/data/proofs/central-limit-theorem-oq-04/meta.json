@@ -50,7 +50,8 @@
     "axiomCount": 9,
     "lineCount": 649,
     "assumptions": "9 axioms (free probability not in Mathlib). Core axioms: freeCumulant (3), freeConv + linearization + identity (3), cumulant_determines_distribution, semicircle_cumulant_higher, free_clt. PROVED: freeConv_comm, freeConv_assoc (from cumulant determinism), Rtransform_additive (from cumulant linearity). Rtransform defined as coefficient sequence.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 21
   },
   "sections": [
     {

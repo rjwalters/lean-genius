@@ -41,7 +41,8 @@
     "axiomCount": 0,
     "lineCount": 266,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Buffon's Needle Problem was posed by Georges-Louis Leclerc, Comte de Buffon in his 1777 *Essai d'arithmétique morale*, making it one of the earliest problems in geometric probability. Buffon was a polymath — naturalist, mathematician, and director of the Jardin du Roi — who used this problem to explore the foundations of probability theory. The elegant answer $P = 2\\ell/(\\pi d)$ stunned contemporaries: how could $\\pi$, a geometric constant, arise from a probability calculation about random needle drops? Pierre-Simon Laplace recognized its deeper significance and connected it to what we now call integral geometry. In 1812, Laplace used the needle experiment to propose one of the first Monte Carlo methods for estimating $\\pi$: drop $n$ needles, count $k$ crossings, then $\\pi \\approx 2\\ell n/(kd)$. The Italian mathematician Mario Lazzarini claimed in 1901 to have estimated $\\pi$ to six decimal places with 3,408 throws — a result widely suspected to be fabricated, as the ratio $355/113$ (an excellent rational approximation to $\\pi$) fits suspiciously well. In the 20th century, Augustin-Louis Cauchy and later Mark Kac generalized Buffon's result to the Cauchy-Crofton formula, which relates the length of any rectifiable curve to its expected number of intersections with random lines, founding the field of integral geometry.",

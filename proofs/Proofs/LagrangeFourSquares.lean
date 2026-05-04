@@ -205,12 +205,6 @@ def r4 (n : ℕ) : ℕ :=
 def sumDivisorsNot4 (n : ℕ) : ℕ :=
   (Finset.filter (fun d => d ∣ n ∧ ¬(4 ∣ d)) (Finset.range (n + 1))).sum id
 
-/-- Jacobi's four-square theorem: r₄(n) = 8 · Σ_{d|n, 4∤d} d -/
-theorem jacobi_four_squares (n : ℕ) (hn : n ≥ 1) :
-    -- The number of ways to write n as ordered sum of 4 integer squares
-    -- equals 8 times the sum of divisors not divisible by 4
-    True := trivial
-
 /-- For prime p, r₄(p) = 8(p + 1) since divisors are 1 and p, neither div by 4 -/
 theorem r4_prime_formula (p : ℕ) (hp : Nat.Prime p) (hp_odd : p % 2 = 1) :
     sumDivisorsNot4 p = 1 + p := by
@@ -370,23 +364,6 @@ theorem every_nat_is_quaternion_norm (n : ℕ) :
   obtain ⟨a, b, c, d, h⟩ := lagrange_four_squares n
   exact ⟨⟨a, b, c, d⟩, by simp [LipschitzQuaternion.norm]; omega⟩
 
-/-- The Hurwitz quaternions include half-integers: (a+b·i+c·j+d·k)/2
-    where a,b,c,d are all integers or all half-integers.
-    They form a Euclidean domain (Hurwitz, 1896). -/
-theorem hurwitz_quaternions_euclidean :
-    -- The Hurwitz quaternion order is a Euclidean domain
-    -- with respect to the quaternion norm
-    True := trivial
-
-/-- The number of ways to write n as a norm of a Hurwitz quaternion
-    equals 24 times the sum of odd divisors of n (when n is odd).
-    This gives yet another proof of Lagrange's theorem. -/
-theorem hurwitz_representation_count :
-    ∀ n : ℕ, n ≥ 1 → Odd n →
-      -- The number of Hurwitz quaternion norms equal to n
-      -- is 24 · σ(n) where σ is the sum-of-divisors function
-      True := fun _ _ _ => trivial
-
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS
 -- ═════════════════════════════════════════════════════════════════════════
@@ -400,7 +377,6 @@ theorem hurwitz_representation_count :
 
 -- Part III: Representation Counts
 #check sumDivisorsNot4
-#check jacobi_four_squares
 
 -- Part IV: Waring's Problem
 #check waringG
@@ -412,6 +388,5 @@ theorem hurwitz_representation_count :
 -- Part V: Quaternions
 #check LipschitzQuaternion
 #check every_nat_is_quaternion_norm
-#check hurwitz_quaternions_euclidean
 
 end LagrangeFourSquares

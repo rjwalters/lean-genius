@@ -54,7 +54,8 @@
       }
     ],
     "lineCount": 348,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 31
   },
   "overview": {
     "historicalContext": "The Taylor series for $\\sin$ and $\\cos$ have a remarkable history spanning nearly seven centuries. The Kerala school mathematician Madhava of Sangamagrama (c. 1350) discovered these infinite series around 1400 CE, roughly 300 years before Brook Taylor's 1715 *Methodus Incrementorum Directa et Inversa*. Madhava's result, preserved in Nilakantha's *Tantrasangraha* (1501) and Jyeshthadeva's *Yuktibhasa* (c. 1530), expressed $\\sin x = x - x^3/3! + x^5/5! - \\cdots$ in the language of arc-length and chord-length ratios.\n\nIn Europe, Newton independently discovered the series for $\\sin$ and $\\cos$ around 1665 using his generalized binomial methods, and Euler systematically exploited them in his *Introductio in analysin infinitorum* (1748). The rigorous convergence proof came later: Cauchy's *Cours d'analyse* (1821) provided the framework of limits and convergence, while Lagrange's remainder formula gave the quantitative bound $|R_n(x)| \\leq M|x|^{n+1}/(n+1)!$ where $M = \\sup|f^{(n+1)}|$.\n\nWhat makes the trig series special is the uniform derivative bound: since $\\sin$ and $\\cos$ cycle through $\\{\\sin, \\cos, -\\sin, -\\cos\\}$ with period 4, every iterated derivative is bounded by 1 in absolute value. This eliminates the exponential growth factor that appears in the $e^x$ remainder bound, giving the cleaner estimate $|R_n(x)| \\leq |x|^{n+1}/n!$. This formalization makes this simplification explicit and proves it is strictly tighter than the analogous $\\exp$ bound.",

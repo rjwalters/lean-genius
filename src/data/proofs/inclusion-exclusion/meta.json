@@ -48,7 +48,8 @@
     "axiomCount": 0,
     "lineCount": 218,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "The inclusion-exclusion principle emerged gradually over two centuries. Abraham de Moivre stated the two-set case in *The Doctrine of Chances* (1718) while computing probabilities of card games. Leonhard Euler used a multi-set version in 1748 to derive his totient formula $\\phi(n) = n \\prod_{p \\mid n}(1 - 1/p)$, counting integers coprime to $n$ by alternately including and excluding multiples of each prime factor.\n\nThe general $n$-set formula was established independently by Daniel Augusto da Silva (1854) and James Joseph Sylvester (1883). Sylvester's formulation appeared in his work on combinatorial chemistry and is sometimes called the 'Sylvester sieve.' The principle is equivalent to Möbius inversion on the Boolean lattice $2^{[n]}$, a connection made explicit by Gian-Carlo Rota in his foundational 1964 paper, which unified inclusion-exclusion, the Euler totient, the chromatic polynomial, and the Möbius function under a single framework.\n\nIn number theory, the Legendre sieve and its refinements (Brun's sieve, the Selberg sieve) are inclusion-exclusion applied to prime counting. In probability, the Bonferroni inequalities $P(A_1 \\cup \\cdots \\cup A_n) \\leq \\sum P(A_i)$ and their refined alternating bounds are truncations of inclusion-exclusion, widely used in statistics and reliability theory.",

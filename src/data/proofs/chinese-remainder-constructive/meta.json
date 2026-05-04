@@ -57,7 +57,8 @@
     "axiomCount": 0,
     "lineCount": 416,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem first appeared in the Sunzi Suanjing ('The Mathematical Classic of Sun Zi'), a Chinese treatise from the 3rd-5th century CE. The classic problem asks:\n\n'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'\n\nThe answer is 23, unique modulo 105 = 3 * 5 * 7. Indian mathematicians, notably Aryabhata (499 CE), independently developed similar techniques for astronomical calculations involving planetary periods. The theorem was rediscovered in Europe by Euler and fully developed by Gauss in his Disquisitiones Arithmeticae (1801), where it appears as a tool for reducing modular computations. The modern ring-theoretic formulation — CRT gives an isomorphism Z/mnZ -> Z/mZ x Z/nZ — emerged in the 20th century and is fundamental to algebraic number theory and cryptography.",

@@ -53,8 +53,9 @@
     ],
     "historicalContext": "Shizuo Kakutani (1941) proved this generalization of Brouwer's theorem. John Nash (1950) used it to prove the existence of Nash equilibria, earning the Nobel Prize in Economics (1994). The theorem is essential in mathematical economics (Arrow-Debreu general equilibrium) and optimal control (Filippov's lemma).",
     "axiomCount": 2,
-    "lineCount": 505,
-    "assumptions": "2 axioms: kakutani_fixed_point_axiom (Kakutani fixed-point theorem for compact convex sets in ℝⁿ) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets — requires Schoenflies-type theorem not yet in Mathlib). 0 sorries."
+    "lineCount": 754,
+    "assumptions": "2 axioms: kakutani_fixed_point_axiom (Kakutani fixed-point theorem for compact convex sets in ℝⁿ) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets — requires Schoenflies-type theorem not yet in Mathlib). 0 sorries.",
+    "theoremCount": 22
   },
   "overview": {
     "historicalContext": "Shizuo Kakutani proved his fixed point theorem in 1941, motivated by von Neumann's 1937 minimax theorem and its use of Brouwer's theorem for existence proofs in economics. Kakutani's insight was that many economic and game-theoretic models naturally involve set-valued maps (e.g., a consumer's demand given prices is a set of optimal bundles, not a single point), and that Brouwer's theorem could be extended to handle these. John Nash's 1950 proof of equilibrium existence in non-cooperative games — for which he received the 1994 Nobel Prize in Economics — relies essentially on Kakutani's theorem applied to the best-response correspondence. The Arrow-Debreu proof of general competitive equilibrium (1954), which earned Arrow the 1972 Nobel Prize, also depends on it. The theorem has since become indispensable in mathematical economics, optimal control theory (Filippov's lemma for differential inclusions, 1962), and nonlinear analysis. The infinite-dimensional generalization by Glicksberg (1952) and Fan (1952) extends it to locally convex spaces, enabling applications to infinite-horizon economic models.",
@@ -204,7 +205,7 @@
       "Filter"
     ],
     "namespace": "KakutaniFPT",
-    "lineCount": 505,
+    "lineCount": 754,
     "axiomCount": 2,
     "theoremCount": 22,
     "definitionCount": 11,

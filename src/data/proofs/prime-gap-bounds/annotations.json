@@ -30,7 +30,7 @@
     },
     "type": "definition",
     "title": "Bertrand's Postulate Wrapper",
-    "content": "`bertrand_postulate` wraps Mathlib's `Nat.exists_prime_lt_and_le_two_mul` in a more readable form. The Mathlib version takes `n \\neq 0` as hypothesis; this wrapper takes the equivalent `n \\geq 1` and converts via `Nat.one_le_iff_ne_zero`.\n\nThe wrapper provides a cleaner interface: given $n \\geq 1$, it returns a prime $p$ with the conjunction $p$ is prime $\\wedge$ $n < p$ $\\wedge$ $p \\leq 2n$. This is the only external mathematical input to the entire file — every other result is derived from this single theorem.",
+    "content": "`bertrand_postulate` wraps Mathlib's `Nat.exists_prime_lt_and_le_two_mul` in a more readable form. The Mathlib version takes `n \\neq 0` as hypothesis; this wrapper takes the equivalent `n \\geq 1` and converts via `Nat.one_le_iff_ne_zero`.\n\nThe wrapper provides a cleaner interface: given $n \\geq 1$, it returns a prime $p$ with the conjunction $p$ is prime $\\wedge$ $n < p$ $\\wedge$ $p \\leq 2n$. This is the only external mathematical input to the entire file \u2014 every other result is derived from this single theorem.",
     "mathContext": "Bertrand's postulate: for $n \\geq 1$, $\\exists p$ prime with $n < p \\leq 2n$.\n\nEquivalently: $\\pi(2n) \\geq \\pi(n) + 1$ for $n \\geq 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -52,7 +52,7 @@
     },
     "type": "definition",
     "title": "First Prime and nth Prime Properties",
-    "content": "`first_prime` records $p_0 = 2$ (the base case for induction on $n$-th primes). `nth_prime_is_prime` wraps `Nat.nth_mem_of_infinite` to confirm that $p_n$ is always prime — a fact needed repeatedly when applying Bertrand or manipulating the counting function.\n\nThe key insight is that `Nat.nth` provides an order-preserving bijection between $\\mathbb{N}$ and the infinite set of primes. The `Nat.infinite_setOf_prime` proof ensures this enumeration is well-defined.",
+    "content": "`first_prime` records $p_0 = 2$ (the base case for induction on $n$-th primes). `nth_prime_is_prime` wraps `Nat.nth_mem_of_infinite` to confirm that $p_n$ is always prime \u2014 a fact needed repeatedly when applying Bertrand or manipulating the counting function.\n\nThe key insight is that `Nat.nth` provides an order-preserving bijection between $\\mathbb{N}$ and the infinite set of primes. The `Nat.infinite_setOf_prime` proof ensures this enumeration is well-defined.",
     "mathContext": "$p_0 = 2$. For all $n$: $p_n$ is prime. The function $n \\mapsto p_n$ is the unique order-preserving bijection $\\mathbb{N} \\to \\{p \\in \\mathbb{N} : p \\text{ prime}\\}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -73,9 +73,9 @@
       "startLine": 51,
       "endLine": 63
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Prime Counting Doubles: pi(2n) > pi(n)",
-    "content": "`primeCounting_double_gt` is the core quantitative consequence of Bertrand: $\\pi(2n) > \\pi(n)$ for $n \\geq 1$. The proof obtains a prime $p$ with $n < p \\leq 2n$ from Bertrand, then chains two monotonicity facts:\n\n1. $\\text{count}(n+1) \\leq \\text{count}(p) < \\text{count}(p+1)$ — the strict step uses `count_strict_mono`, which says counting a prime at $p$ increments the count\n2. $\\text{count}(p+1) \\leq \\text{count}(2n+1)$ — from monotonicity since $p \\leq 2n$\n\nThe `omega` tactic closes the gap between these chain links. The key subtlety is unfurling `primeCounting` to `primeCounting'` (which is `count Nat.Prime (n+1)`) to work at the `count` level.",
+    "content": "`primeCounting_double_gt` is the core quantitative consequence of Bertrand: $\\pi(2n) > \\pi(n)$ for $n \\geq 1$. The proof obtains a prime $p$ with $n < p \\leq 2n$ from Bertrand, then chains two monotonicity facts:\n\n1. $\\text{count}(n+1) \\leq \\text{count}(p) < \\text{count}(p+1)$ \u2014 the strict step uses `count_strict_mono`, which says counting a prime at $p$ increments the count\n2. $\\text{count}(p+1) \\leq \\text{count}(2n+1)$ \u2014 from monotonicity since $p \\leq 2n$\n\nThe `omega` tactic closes the gap between these chain links. The key subtlety is unfurling `primeCounting` to `primeCounting'` (which is `count Nat.Prime (n+1)`) to work at the `count` level.",
     "mathContext": "$\\pi(2n) > \\pi(n)$ for $n \\geq 1$.\n\nProof sketch: Bertrand gives prime $p \\in (n, 2n]$. Then $\\pi(n) < \\pi(p) \\leq \\pi(2n)$ by monotonicity of $\\pi$ and the fact that $p$ contributes to $\\pi(2n)$ but not $\\pi(n)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -97,7 +97,7 @@
       "startLine": 65,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Corollary: pi(2n) >= pi(n) + 1",
     "content": "`primeCounting_double_ge_succ` restates the strict inequality as a $+1$ bound: $\\pi(2n) \\geq \\pi(n) + 1$. This additive form is more convenient for the iterated doubling lemma, where each doubling step adds at least 1 to the count. The proof is a one-line `omega` application from the strict inequality.",
     "mathContext": "$\\pi(2n) \\geq \\pi(n) + 1$ for $n \\geq 1$. Equivalently: doubling the search range always captures at least one new prime.",
@@ -117,7 +117,7 @@
       "startLine": 71,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Iterated Doubling: pi(2^k * n) >= pi(n) + k",
     "content": "`primeCounting_pow_two_mul` generalizes the doubling bound by induction on $k$: $\\pi(2^k n) \\geq \\pi(n) + k$ for $n \\geq 1$. The base case $k = 0$ is trivial ($2^0 n = n$). The inductive step rewrites $2^{k+1} n = 2 \\cdot (2^k n)$ and applies `primeCounting_double_ge_succ` to the inner term.\n\nThe proof must verify $2^j n \\geq 1$ at each step (required by the doubling lemma), which follows from $2^j \\geq 1$ and $n \\geq 1$. The `calc` chain at the end makes the arithmetic transparent: $\\pi(2^{j+1} n) \\geq \\pi(2^j n) + 1 \\geq (\\pi(n) + j) + 1 = \\pi(n) + (j + 1)$.",
     "mathContext": "$\\pi(2^k n) \\geq \\pi(n) + k$ for $n \\geq 1$.\n\nSetting $n = 1$: $\\pi(2^k) \\geq k + 1$, so there are at least $k + 1$ primes up to $2^k$. This gives $\\pi(N) \\geq \\log_2 N + 1$ for powers of 2, a weak form of the Prime Number Theorem's $\\pi(N) \\sim N / \\ln N$.",
@@ -142,7 +142,7 @@
     },
     "type": "insight",
     "title": "Small Value Computations via decide",
-    "content": "Four exact values of $\\pi$ are verified by `decide`: $\\pi(10) = 4$, $\\pi(20) = 8$, $\\pi(30) = 10$, $\\pi(50) = 15$. The `decide` tactic instructs Lean's kernel to compute the answer by brute-force evaluation — it checks every number up to $n$ for primality and counts the primes.\n\nThe example `primeCounting 20 > primeCounting 10` combines the computed values to verify Bertrand's postulate for $n = 10$ computationally. While this is a special case of `primeCounting_double_gt`, the point is to demonstrate that Lean's kernel can independently verify the concrete case.\n\nNote that `decide` becomes impractical for larger values (e.g., $\\pi(1000)$) due to the $O(n^2)$ cost of trial division for each candidate. The algebraic bounds proved above handle all sizes uniformly.",
+    "content": "Four exact values of $\\pi$ are verified by `decide`: $\\pi(10) = 4$, $\\pi(20) = 8$, $\\pi(30) = 10$, $\\pi(50) = 15$. The `decide` tactic instructs Lean's kernel to compute the answer by brute-force evaluation \u2014 it checks every number up to $n$ for primality and counts the primes.\n\nThe example `primeCounting 20 > primeCounting 10` combines the computed values to verify Bertrand's postulate for $n = 10$ computationally. While this is a special case of `primeCounting_double_gt`, the point is to demonstrate that Lean's kernel can independently verify the concrete case.\n\nNote that `decide` becomes impractical for larger values (e.g., $\\pi(1000)$) due to the $O(n^2)$ cost of trial division for each candidate. The algebraic bounds proved above handle all sizes uniformly.",
     "mathContext": "$\\pi(10) = 4$ (primes: 2, 3, 5, 7), $\\pi(20) = 8$ (adding 11, 13, 17, 19), $\\pi(30) = 10$ (adding 23, 29), $\\pi(50) = 15$ (adding 31, 37, 41, 43, 47).\n\nThese match the PNT estimate $\\pi(n) \\approx n / \\ln n$: $50 / \\ln 50 \\approx 12.8$ vs actual 15.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -163,7 +163,7 @@
       "startLine": 120,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Key Lemma: Order-Preserving Enumeration of Primes",
     "content": "`nth_prime_succ_le_of_prime_gt` is the most technically demanding proof in the file. It states: if $q$ is prime and $q > p_n$, then $p_{n+1} \\leq q$. In other words, $p_{n+1}$ is the *smallest* prime exceeding $p_n$.\n\nThe proof proceeds by contradiction. Assuming $q < p_{n+1}$:\n1. **Upper bound**: $\\text{count}(q+1) \\leq n+1$ from $q + 1 \\leq p_{n+1}$ and monotonicity of count, combined with the identity $\\text{count}(p_{n+1}) = n + 1$.\n2. **Lower bound**: $\\text{count}(q) \\geq n + 1$ from $p_n + 1 \\leq q$ and the fact that $\\text{count}(p_n + 1) = n + 1$ (since $p_n$ is prime, the count increments at $p_n + 1$).\n3. **Contradiction**: $\\text{count}(q+1) = \\text{count}(q) + 1$ (since $q$ is prime), so $n + 1 \\leq \\text{count}(q) \\leq \\text{count}(q+1) - 1 \\leq n$, contradiction.\n\nThe key identity used repeatedly is `Nat.count_nth_of_infinite`: $\\text{count}(p_n) = n$ for the $n$-th element of an infinite decidable set.",
     "mathContext": "If $q$ is prime and $q > p_n$, then $p_{n+1} \\leq q$.\n\nEquivalently: $p_{n+1} = \\min\\{q : q \\text{ prime}, q > p_n\\}$.\n\nThis is the order-preserving property of the enumeration $n \\mapsto p_n$: the $(n+1)$-th prime is the least prime exceeding the $n$-th.",
@@ -187,7 +187,7 @@
       "startLine": 149,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Exponential Bound: p_n <= 2^(n+1)",
     "content": "`nth_prime_le_two_pow_succ` is the crown result: $p_n \\leq 2^{n+1}$ (0-indexed). The proof is by induction on $n$:\n\n**Base case** ($n = 0$): $p_0 = 2 \\leq 2^1 = 2$, using `first_prime` and `norm_num`.\n\n**Inductive step**: Given $p_k \\leq 2^{k+1}$, we need $p_{k+1} \\leq 2^{k+2}$. First, $p_k \\neq 0$ (since $p_k$ is prime, hence $p_k \\geq 2$). By Bertrand's postulate applied to $p_k$, there exists a prime $q$ with $p_k < q \\leq 2p_k$. By the key lemma, $p_{k+1} \\leq q$. The `calc` chain finishes:\n$$p_{k+1} \\leq q \\leq 2p_k \\leq 2 \\cdot 2^{k+1} = 2^{k+2}$$\n\nThe bound is sharp at $n = 0$ ($p_0 = 2 = 2^1$) but increasingly loose: $p_9 = 29$ vs $2^{10} = 1024$.",
     "mathContext": "$p_n \\leq 2^{n+1}$ for all $n \\geq 0$.\n\nThis is an elementary consequence of Bertrand's postulate, requiring no analytic methods. The PNT gives the asymptotically optimal $p_n \\sim n \\ln n$, but proving that requires the theory of the Riemann zeta function or Selberg's elementary proof.",
@@ -211,7 +211,7 @@
       "startLine": 170,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "1-Indexed Corollary: p_n <= 2^n",
     "content": "`nth_prime_le_two_pow` provides the more natural 1-indexed statement: $p_n \\leq 2^n$ where $p_1 = 2, p_2 = 3, \\ldots$. The proof is a direct reindexing of the 0-indexed result, substituting $n - 1$ for $n$ and simplifying with `Nat.sub_add_cancel`.\n\nThis form is convenient for applications that use 1-indexed prime enumeration (e.g., \"the 100th prime is at most $2^{100}$\").",
     "mathContext": "$p_n \\leq 2^n$ for $n \\geq 1$ (1-indexed: $p_1 = 2, p_2 = 3, \\ldots$).\n\nEquivalent to the 0-indexed $p_{n-1} \\leq 2^n$.",

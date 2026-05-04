@@ -2,97 +2,203 @@
   {
     "id": "ann-igp-a5-computational-setup",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 53, "endLine": 66 },
-    "type": "theorem",
+    "range": {
+      "startLine": 53,
+      "endLine": 66
+    },
+    "type": "insight",
     "title": "Computational Lemmas via native_decide",
-    "content": "Two group-theoretic facts about Perm(Fin 5) are verified by exhaustive computational search before opening the Classical namespace. The first asserts that no element of order 5 commutes with any element of order 3 in S₅ — a statement about all 14,400 pairs (120 × 120) of group elements. The second asserts no element of S₅ has order exactly 15 (i.e., if σ^15 = 1 then σ^5 = 1 or σ^3 = 1). These are used later to derive contradictions in the Sylow theory arguments. The `native_decide` tactic compiles these propositions to native code and evaluates them; it is more efficient than `decide` for large finite computations.",
+    "content": "Two group-theoretic facts about Perm(Fin 5) are verified by exhaustive computational search before opening the Classical namespace. The first asserts that no element of order 5 commutes with any element of order 3 in S\u2085 \u2014 a statement about all 14,400 pairs (120 \u00d7 120) of group elements. The second asserts no element of S\u2085 has order exactly 15 (i.e., if \u03c3^15 = 1 then \u03c3^5 = 1 or \u03c3^3 = 1). These are used later to derive contradictions in the Sylow theory arguments. The `native_decide` tactic compiles these propositions to native code and evaluates them; it is more efficient than `decide` for large finite computations.",
     "mathContext": "Max element order in $S_5$ is $\\text{lcm}(1,2,3,4,5) = 6$, so orders in $S_5$ lie in $\\{1,2,3,4,5,6\\}$. A divisor of 15 in this set must be in $\\{1, 3, 5\\}$, ruling out order-15 elements. The non-commutativity fact reflects that in $A_5$, elements of orders 3 and 5 generate the whole group.",
     "significance": "supporting",
-    "relatedConcepts": ["Cayley's theorem", "Sylow theory", "element orders in symmetric groups", "native_decide tactic"],
-    "prerequisites": ["finite group theory", "symmetric groups Sₙ", "Lean 4 computational tactics"]
+    "relatedConcepts": [
+      "Cayley's theorem",
+      "Sylow theory",
+      "element orders in symmetric groups",
+      "native_decide tactic"
+    ],
+    "prerequisites": [
+      "finite group theory",
+      "symmetric groups S\u2099",
+      "Lean 4 computational tactics"
+    ]
   },
   {
     "id": "ann-igp-a5-polynomial-def",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 85, "endLine": 87 },
+    "range": {
+      "startLine": 85,
+      "endLine": 87
+    },
     "type": "definition",
-    "title": "The Witness Polynomial q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5",
-    "content": "The polynomial q is defined as the linear translate p(x−1) of the simpler trinomial p(x) = x⁵ + 20x + 16. Linear translation preserves the Galois group (since the splitting fields differ only by a rational shift), but changes the coefficient structure. The key advantage: q satisfies Eisenstein's criterion at p=5, making irreducibility elementary. Without the translation, p(x) = x⁵ + 20x + 16 is not Eisenstein at any prime (though p is still irreducible, it requires a different argument). The coefficients −5, 25, −10, 10, −5 are all divisible by 5, and the constant −5 is not divisible by 25.",
+    "title": "The Witness Polynomial q(x) = x\u2075 \u2212 5x\u2074 + 10x\u00b3 \u2212 10x\u00b2 + 25x \u2212 5",
+    "content": "The polynomial q is defined as the linear translate p(x\u22121) of the simpler trinomial p(x) = x\u2075 + 20x + 16. Linear translation preserves the Galois group (since the splitting fields differ only by a rational shift), but changes the coefficient structure. The key advantage: q satisfies Eisenstein's criterion at p=5, making irreducibility elementary. Without the translation, p(x) = x\u2075 + 20x + 16 is not Eisenstein at any prime (though p is still irreducible, it requires a different argument). The coefficients \u22125, 25, \u221210, 10, \u22125 are all divisible by 5, and the constant \u22125 is not divisible by 25.",
     "mathContext": "$q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5 = p(x-1)$ where $p(x) = x^5 + 20x + 16$. By Eisenstein at $(5) \\subset \\mathbb{Z}$: all non-leading coefficients lie in $(5)$ and the constant $-5 \\notin (5^2) = (25)$.",
     "significance": "key",
-    "relatedConcepts": ["Eisenstein's criterion", "Gauss's lemma", "linear substitution preserving Galois group", "trinomial polynomials"],
-    "prerequisites": ["polynomial rings over ℤ and ℚ", "Eisenstein's irreducibility criterion", "Galois theory basics"]
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "Gauss's lemma",
+      "linear substitution preserving Galois group",
+      "trinomial polynomials"
+    ],
+    "prerequisites": [
+      "polynomial rings over \u2124 and \u211a",
+      "Eisenstein's irreducibility criterion",
+      "Galois theory basics"
+    ]
   },
   {
     "id": "ann-igp-a5-eisenstein",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 135, "endLine": 173 },
-    "type": "theorem",
-    "title": "Eisenstein's Criterion via ℤ[X] and Gauss's Lemma",
-    "content": "The irreducibility of q is proved by applying Eisenstein's criterion in ℤ[X] and then transferring to ℚ[X] via Gauss's lemma. In Mathlib, `Polynomial.irreducible_of_eisenstein_criterion` takes: a prime ideal P, the leading coefficient not in P, each lower coefficient in P, positive degree, and the constant term not in P². Monic polynomials are automatically primitive (gcd of coefficients = 1), enabling the ℤ→ℚ transfer via `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`. The coefficient check uses `interval_cases k` to enumerate all positions k ∈ {0,1,2,3,4} and verify each coefficient is divisible by 5.",
+    "range": {
+      "startLine": 135,
+      "endLine": 173
+    },
+    "type": "insight",
+    "title": "Eisenstein's Criterion via \u2124[X] and Gauss's Lemma",
+    "content": "The irreducibility of q is proved by applying Eisenstein's criterion in \u2124[X] and then transferring to \u211a[X] via Gauss's lemma. In Mathlib, `Polynomial.irreducible_of_eisenstein_criterion` takes: a prime ideal P, the leading coefficient not in P, each lower coefficient in P, positive degree, and the constant term not in P\u00b2. Monic polynomials are automatically primitive (gcd of coefficients = 1), enabling the \u2124\u2192\u211a transfer via `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`. The coefficient check uses `interval_cases k` to enumerate all positions k \u2208 {0,1,2,3,4} and verify each coefficient is divisible by 5.",
     "mathContext": "Eisenstein at $(p) = (5)$: for $f = a_n x^n + \\cdots + a_0$, irreducibility over $\\mathbb{Z}$ requires $p \\nmid a_n$, $p \\mid a_i$ for all $i < n$, and $p^2 \\nmid a_0$. Gauss's lemma: if $f \\in \\mathbb{Z}[x]$ is primitive and irreducible over $\\mathbb{Z}$, then $f$ is irreducible over $\\mathbb{Q}$.",
     "significance": "key",
-    "relatedConcepts": ["Gauss's lemma", "primitive polynomials", "ideal-theoretic Eisenstein criterion", "ℤ-irreducible implies ℚ-irreducible"],
-    "prerequisites": ["polynomial rings", "prime ideals in ℤ", "Gauss's lemma", "monic polynomials"]
+    "relatedConcepts": [
+      "Gauss's lemma",
+      "primitive polynomials",
+      "ideal-theoretic Eisenstein criterion",
+      "\u2124-irreducible implies \u211a-irreducible"
+    ],
+    "prerequisites": [
+      "polynomial rings",
+      "prime ideals in \u2124",
+      "Gauss's lemma",
+      "monic polynomials"
+    ]
   },
   {
     "id": "ann-igp-a5-galois-embedding",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 207, "endLine": 309 },
+    "range": {
+      "startLine": 207,
+      "endLine": 309
+    },
     "type": "concept",
     "title": "Galois Group Bounds: 5 | |Gal| and |Gal| | 120",
-    "content": "Two fundamental constraints on the Galois group size are established. First, `five_dvd_gal_card`: since q is irreducible of prime degree 5, the Galois group acts transitively on the 5 roots, so 5 | |Gal| by the orbit-stabilizer theorem. This uses `Polynomial.Gal.prime_degree_dvd_card`. Second, `gal_card_dvd_120`: the Galois group embeds injectively into Sym(roots) ≅ S₅ via the Galois action; since |S₅| = 5! = 120, Lagrange's theorem gives |Gal| | 120. The discriminant argument then refines this to |Gal| | 60, since the perfect square discriminant forces Gal ≤ A₅. The single remaining axiom `three_dvd_gal_card` (3 | |Gal|, from Dedekind's theorem) combines with 5 | |Gal| to give 15 | |Gal|.",
+    "content": "Two fundamental constraints on the Galois group size are established. First, `five_dvd_gal_card`: since q is irreducible of prime degree 5, the Galois group acts transitively on the 5 roots, so 5 | |Gal| by the orbit-stabilizer theorem. This uses `Polynomial.Gal.prime_degree_dvd_card`. Second, `gal_card_dvd_120`: the Galois group embeds injectively into Sym(roots) \u2245 S\u2085 via the Galois action; since |S\u2085| = 5! = 120, Lagrange's theorem gives |Gal| | 120. The discriminant argument then refines this to |Gal| | 60, since the perfect square discriminant forces Gal \u2264 A\u2085. The single remaining axiom `three_dvd_gal_card` (3 | |Gal|, from Dedekind's theorem) combines with 5 | |Gal| to give 15 | |Gal|.",
     "mathContext": "Three-step cardinality argument: $5 \\mid |\\text{Gal}(q)| \\mid 120 = 5!$, then disc$(q) = 32000^2 \\Rightarrow \\text{Gal}(q) \\leq A_5$, so $|\\text{Gal}(q)| \\mid 60$. Combined with axiom $3 \\mid |\\text{Gal}(q)|$: $15 \\mid |\\text{Gal}(q)|$ and $|\\text{Gal}(q)| \\mid 60$, so $|\\text{Gal}(q)| \\in \\{15, 30, 60\\}$.",
     "significance": "key",
-    "relatedConcepts": ["orbit-stabilizer theorem", "Galois action on roots", "discriminant and alternating group", "transitive subgroups of S₅"],
-    "prerequisites": ["Galois theory: action on roots", "Lagrange's theorem", "Polynomial.Gal in Mathlib", "discriminant of polynomials"]
+    "relatedConcepts": [
+      "orbit-stabilizer theorem",
+      "Galois action on roots",
+      "discriminant and alternating group",
+      "transitive subgroups of S\u2085"
+    ],
+    "prerequisites": [
+      "Galois theory: action on roots",
+      "Lagrange's theorem",
+      "Polynomial.Gal in Mathlib",
+      "discriminant of polynomials"
+    ]
   },
   {
     "id": "ann-igp-a5-sylow-elimination",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 329, "endLine": 552 },
-    "type": "theorem",
+    "range": {
+      "startLine": 329,
+      "endLine": 552
+    },
+    "type": "insight",
     "title": "Sylow Theory Eliminates Orders 15 and 30",
-    "content": "The heart of the group-theoretic argument: if |Gal| ∈ {15, 30, 60}, the values 15 and 30 are eliminated. For order 15: any group H of order 15 = 3·5 has a unique Sylow 5-subgroup (n₅ ≡ 1 mod 5, n₅ | 3, so n₅ = 1) and a unique Sylow 3-subgroup (n₃ ≡ 1 mod 3, n₃ | 5, so n₃ = 1). Both being normal means elements of P₅ and P₃ commute (commutator argument). But the computational lemma shows no order-5 element of S₅ commutes with any order-3 element — contradiction. For order 30: A₅ has order 60, so a subgroup of order 30 would have index 2 in A₅, making it normal — but A₅ is simple, contradiction.",
-    "mathContext": "Sylow's theorem: $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid m$ where $|H| = p^a m$. For $|H| = 15$: $n_5 = 1$ and $n_3 = 1$ (both Sylow subgroups unique, hence normal). Elements of disjoint normal subgroups commute: $\\sigma \\tau \\sigma^{-1} \\tau^{-1} \\in P_5 \\cap P_3 = \\{1\\}$. A₅ simplicity: no proper non-trivial normal subgroups, so no index-2 subgroup.",
+    "content": "The heart of the group-theoretic argument: if |Gal| \u2208 {15, 30, 60}, the values 15 and 30 are eliminated. For order 15: any group H of order 15 = 3\u00b75 has a unique Sylow 5-subgroup (n\u2085 \u2261 1 mod 5, n\u2085 | 3, so n\u2085 = 1) and a unique Sylow 3-subgroup (n\u2083 \u2261 1 mod 3, n\u2083 | 5, so n\u2083 = 1). Both being normal means elements of P\u2085 and P\u2083 commute (commutator argument). But the computational lemma shows no order-5 element of S\u2085 commutes with any order-3 element \u2014 contradiction. For order 30: A\u2085 has order 60, so a subgroup of order 30 would have index 2 in A\u2085, making it normal \u2014 but A\u2085 is simple, contradiction.",
+    "mathContext": "Sylow's theorem: $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid m$ where $|H| = p^a m$. For $|H| = 15$: $n_5 = 1$ and $n_3 = 1$ (both Sylow subgroups unique, hence normal). Elements of disjoint normal subgroups commute: $\\sigma \\tau \\sigma^{-1} \\tau^{-1} \\in P_5 \\cap P_3 = \\{1\\}$. A\u2085 simplicity: no proper non-trivial normal subgroups, so no index-2 subgroup.",
     "significance": "key",
-    "relatedConcepts": ["Sylow theorems", "simple groups", "A₅ simplicity", "commutator subgroup", "index-2 subgroup theorem"],
-    "prerequisites": ["Sylow theory", "simple groups definition", "index-2 subgroups are normal", "Sylow subgroup normality"]
+    "relatedConcepts": [
+      "Sylow theorems",
+      "simple groups",
+      "A\u2085 simplicity",
+      "commutator subgroup",
+      "index-2 subgroup theorem"
+    ],
+    "prerequisites": [
+      "Sylow theory",
+      "simple groups definition",
+      "index-2 subgroups are normal",
+      "Sylow subgroup normality"
+    ]
   },
   {
     "id": "ann-igp-a5-vandermonde-disc",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 996, "endLine": 1897 },
-    "type": "theorem",
+    "range": {
+      "startLine": 996,
+      "endLine": 1897
+    },
+    "type": "insight",
     "title": "Vandermonde Product and Discriminant: |Gal| Divides 60",
-    "content": "The most technically substantial section: proving |Gal(q)| | 60 entirely without axioms. The Vandermonde product Δ = ∏_{i<j}(αᵢ − αⱼ) satisfies Δ² = disc(q) = 32000². Since Δ² is a perfect square in ℚ, Δ itself lies in ℚ. Any Galois automorphism σ acts as a permutation on roots, so σ(Δ) = sign(σ) · Δ. Since Δ ∈ ℚ, σ(Δ) = Δ, forcing sign(σ) = 1 for all σ. The equality Δ² = disc(q) is proved via complex embedding and the Sophie Germain identity $a^4 + 4b^4 = (a^2+2b^2+2ab)(a^2+2b^2-2ab)$. The resultant equality `disc(q) = resultant(q, q')` bridges the Vandermonde product to the discriminant formula. This section alone spans ~900 lines, reflecting the depth of the discriminant computation.",
+    "content": "The most technically substantial section: proving |Gal(q)| | 60 entirely without axioms. The Vandermonde product \u0394 = \u220f_{i<j}(\u03b1\u1d62 \u2212 \u03b1\u2c7c) satisfies \u0394\u00b2 = disc(q) = 32000\u00b2. Since \u0394\u00b2 is a perfect square in \u211a, \u0394 itself lies in \u211a. Any Galois automorphism \u03c3 acts as a permutation on roots, so \u03c3(\u0394) = sign(\u03c3) \u00b7 \u0394. Since \u0394 \u2208 \u211a, \u03c3(\u0394) = \u0394, forcing sign(\u03c3) = 1 for all \u03c3. The equality \u0394\u00b2 = disc(q) is proved via complex embedding and the Sophie Germain identity $a^4 + 4b^4 = (a^2+2b^2+2ab)(a^2+2b^2-2ab)$. The resultant equality `disc(q) = resultant(q, q')` bridges the Vandermonde product to the discriminant formula. This section alone spans ~900 lines, reflecting the depth of the discriminant computation.",
     "mathContext": "$\\text{disc}(q) = \\prod_{i < j}(\\alpha_i - \\alpha_j)^2 = \\Delta^2$. For trinomial $p = x^5 + 20x + 16$: $\\text{disc}(p) = 4^4 \\cdot 20^5 + 5^5 \\cdot 16^4 = 1024000000 = 32000^2$. $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$. Since $\\Delta \\in \\mathbb{Q}$: $\\text{sign}(\\sigma) = +1$ for all $\\sigma \\in \\text{Gal}(q)$, so $\\text{Gal}(q) \\leq A_5$.",
     "significance": "key",
-    "relatedConcepts": ["Vandermonde determinant", "polynomial discriminant", "resultant", "Sophie Germain identity", "discriminant and alternating group"],
-    "prerequisites": ["Vandermonde products", "discriminant formula for polynomials", "resultant of polynomials", "complex embedding of number fields"]
+    "relatedConcepts": [
+      "Vandermonde determinant",
+      "polynomial discriminant",
+      "resultant",
+      "Sophie Germain identity",
+      "discriminant and alternating group"
+    ],
+    "prerequisites": [
+      "Vandermonde products",
+      "discriminant formula for polynomials",
+      "resultant of polynomials",
+      "complex embedding of number fields"
+    ]
   },
   {
     "id": "ann-igp-a5-main-iso",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 1976, "endLine": 2024 },
+    "range": {
+      "startLine": 1976,
+      "endLine": 2024
+    },
     "type": "insight",
-    "title": "The Isomorphism Gal(q/ℚ) ≅ A₅",
-    "content": "The culminating isomorphism: inject Gal(q) into S₅ via action on roots; the image has index 2; the unique index-2 subgroup of S₅ is A₅. The Galois action on roots gives φ : Gal(q) → Perm(Fin 5) ≅ S₅. Since |Gal(q)| = 60 and |S₅| = 120, the image has index 2. Mathlib's `Equiv.Perm.eq_alternatingGroup_of_index_eq_two` states that A₅ is the unique index-2 subgroup of S₅ (a deep fact following from A₅'s simplicity). Therefore φ(Gal(q)) = A₅, giving Gal(q) ≅ A₅.",
+    "title": "The Isomorphism Gal(q/\u211a) \u2245 A\u2085",
+    "content": "The culminating isomorphism: inject Gal(q) into S\u2085 via action on roots; the image has index 2; the unique index-2 subgroup of S\u2085 is A\u2085. The Galois action on roots gives \u03c6 : Gal(q) \u2192 Perm(Fin 5) \u2245 S\u2085. Since |Gal(q)| = 60 and |S\u2085| = 120, the image has index 2. Mathlib's `Equiv.Perm.eq_alternatingGroup_of_index_eq_two` states that A\u2085 is the unique index-2 subgroup of S\u2085 (a deep fact following from A\u2085's simplicity). Therefore \u03c6(Gal(q)) = A\u2085, giving Gal(q) \u2245 A\u2085.",
     "mathContext": "Sign homomorphism $\\varepsilon : S_5 \\to \\{\\pm 1\\}$ with kernel $A_5 = \\ker(\\varepsilon)$, $[S_5 : A_5] = 2$. Uniqueness of index-2 subgroup: any $H \\leq S_5$ with $[S_5 : H] = 2$ is normal and must equal $\\ker(S_5 \\to S_5/H) \\cong \\ker(\\varepsilon)$. Thus $H = A_5$. Formally: $\\phi(\\text{Gal}(q)) \\leq S_5$, $|\\phi(\\text{Gal}(q))| = 60$, $[S_5 : \\phi] = 2 \\Rightarrow \\phi(\\text{Gal}(q)) = A_5$.",
     "significance": "key",
-    "relatedConcepts": ["sign homomorphism", "index-2 subgroup uniqueness", "alternating group", "kernel of homomorphism", "group isomorphism"],
-    "prerequisites": ["sign homomorphism on Sₙ", "alternating group", "index-2 subgroup theorem", "MulEquiv in Mathlib"]
+    "relatedConcepts": [
+      "sign homomorphism",
+      "index-2 subgroup uniqueness",
+      "alternating group",
+      "kernel of homomorphism",
+      "group isomorphism"
+    ],
+    "prerequisites": [
+      "sign homomorphism on S\u2099",
+      "alternating group",
+      "index-2 subgroup theorem",
+      "MulEquiv in Mathlib"
+    ]
   },
   {
     "id": "ann-igp-a5-non-solvable",
     "proofId": "inverse-galois-oq-06",
-    "range": { "startLine": 2035, "endLine": 2067 },
+    "range": {
+      "startLine": 2035,
+      "endLine": 2067
+    },
     "type": "insight",
     "title": "Non-Solvability: Beyond Shafarevich's Theorem",
-    "content": "The final section establishes that the realized Galois group is not solvable, distinguishing this from all previous entries in the series (S₃, D₄, F₂₀, V₄ — all solvable). The proof transfers A₅'s non-solvability through the isomorphism: if Gal(q) were solvable, A₅ would be solvable (via the surjective homomorphism Gal(q) ↠ A₅) — contradiction. Galois proved polynomial equations are solvable by radicals iff the Galois group is solvable. Since A₅ is not solvable, q is not solvable by radicals — this entry exhibits a concrete quintic witnessing Abel-Ruffini.",
+    "content": "The final section establishes that the realized Galois group is not solvable, distinguishing this from all previous entries in the series (S\u2083, D\u2084, F\u2082\u2080, V\u2084 \u2014 all solvable). The proof transfers A\u2085's non-solvability through the isomorphism: if Gal(q) were solvable, A\u2085 would be solvable (via the surjective homomorphism Gal(q) \u21a0 A\u2085) \u2014 contradiction. Galois proved polynomial equations are solvable by radicals iff the Galois group is solvable. Since A\u2085 is not solvable, q is not solvable by radicals \u2014 this entry exhibits a concrete quintic witnessing Abel-Ruffini.",
     "mathContext": "Galois correspondence: $f$ solvable by radicals $\\Leftrightarrow$ $\\text{Gal}(f/\\mathbb{Q})$ is solvable. $A_5$ is simple non-abelian, so $[A_5, A_5] = A_5$ and the derived series does not terminate. Transfer: $\\text{Gal}(q) \\cong A_5$ and solvability is preserved by quotients, so if $\\text{Gal}(q)$ were solvable, $A_5$ would be too.",
     "significance": "key",
-    "relatedConcepts": ["solvable groups", "Abel-Ruffini theorem", "solvability by radicals", "simple groups are not solvable", "Galois correspondence"],
-    "prerequisites": ["solvable group definition", "derived series", "Galois's solvability theorem", "Abel-Ruffini theorem"]
+    "relatedConcepts": [
+      "solvable groups",
+      "Abel-Ruffini theorem",
+      "solvability by radicals",
+      "simple groups are not solvable",
+      "Galois correspondence"
+    ],
+    "prerequisites": [
+      "solvable group definition",
+      "derived series",
+      "Galois's solvability theorem",
+      "Abel-Ruffini theorem"
+    ]
   }
 ]

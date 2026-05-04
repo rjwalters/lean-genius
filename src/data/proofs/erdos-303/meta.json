@@ -1,10 +1,10 @@
 {
   "id": "erdos-303",
-  "title": "Erd\u0151s Problem #303: Monochromatic Unit Fraction Solutions",
+  "title": "Erdős Problem #303: Monochromatic Unit Fraction Solutions",
   "slug": "erdos-303",
-  "description": "In any finite colouring of the integers, does there exist a monochromatic solution to 1/a = 1/b + 1/c with distinct a, b, c? A Ramsey-theoretic problem solved affirmatively by Brown and R\u00f6dl (1991).",
+  "description": "In any finite colouring of the integers, does there exist a monochromatic solution to 1/a = 1/b + 1/c with distinct a, b, c? A Ramsey-theoretic problem solved affirmatively by Brown and Rödl (1991).",
   "meta": {
-    "author": "Brown and R\u00f6dl (1991)",
+    "author": "Brown and Rödl (1991)",
     "sourceUrl": "https://erdosproblems.com/303",
     "date": "1991",
     "status": "axiomatized",
@@ -48,25 +48,26 @@
       "Formal definition of unit fraction equation",
       "Equivalence with algebraic form bc = a(b+c)",
       "Definition of finite colouring and monochromaticity",
-      "Brown-R\u00f6dl theorem as axiom",
+      "Brown-Rödl theorem as axiom",
       "Verified examples: 1/2=1/3+1/6, 1/3=1/4+1/12, etc.",
       "Infinite family of solutions: 1/n = 1/(n+1) + 1/(n(n+1))",
-      "Connection to density version (Erd\u0151s #302)"
+      "Connection to density version (Erdős #302)"
     ],
     "axiomCount": 2,
     "lineCount": 259,
-    "assumptions": "2 axioms: brownRodl_theorem, erdos303_true. See Lean source for complete statements."
+    "assumptions": "2 axioms: brownRodl_theorem, erdos303_true. See Lean source for complete statements.",
+    "theoremCount": 8
   },
   "overview": {
-    "historicalContext": "This problem combines Ramsey theory with the arithmetic of unit fractions. The equation 1/a = 1/b + 1/c, also known as the 'Egyptian fraction equation' (since Egyptians preferred writing fractions as sums of unit fractions), has been studied since antiquity.\n\nErd\u0151s asked whether any finite colouring of the integers must contain three integers of the same colour satisfying this equation. This is a Ramsey-theoretic question: no matter how you partition the integers into finitely many classes, some class contains a 'pattern' (here, a unit fraction triple).\n\nBrown and R\u00f6dl proved the affirmative answer in 1991 using Ramsey-theoretic techniques. The related density version (Erd\u0151s #302) asks whether sets of positive density contain such solutions.",
-    "problemStatement": "**Problem (Erd\u0151s)**: Is it true that in any finite colouring of the integers there exists a monochromatic solution to\n$$\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$$\nwith distinct $a, b, c$?\n\n**Answer**: YES\n\n**Proved by**: Brown and R\u00f6dl (1991)",
-    "text": "In any finite colouring of the integers, does there exist a monochromatic solution to 1/a = 1/b + 1/c with distinct a, b, c? A Ramsey-theoretic problem solved affirmatively by Brown and R\u00f6dl (1991).",
-    "proofStrategy": "We formalize the problem and the solution:\n\n1. **Unit Fraction Equation**: Define UnitFractionEq a b c as (1/a : \u211d) = 1/b + 1/c. Prove equivalence with the algebraic form bc = a(b+c).\n\n2. **Verified Examples**: Prove concrete instances like 1/2 = 1/3 + 1/6 and 1/3 = 1/4 + 1/12 using norm_num.\n\n3. **Colourings**: Define IsFiniteColouring and Monochromatic. Prove two equivalent definitions of monochromaticity.\n\n4. **Main Theorem**: State Brown-R\u00f6dl's theorem as an axiom: in any finite colouring, a monochromatic valid solution exists.\n\n5. **Infinite Solutions**: Prove infinitely many solutions exist of the form 1/n = 1/(n+1) + 1/(n(n+1)).",
+    "historicalContext": "This problem combines Ramsey theory with the arithmetic of unit fractions. The equation 1/a = 1/b + 1/c, also known as the 'Egyptian fraction equation' (since Egyptians preferred writing fractions as sums of unit fractions), has been studied since antiquity.\n\nErdős asked whether any finite colouring of the integers must contain three integers of the same colour satisfying this equation. This is a Ramsey-theoretic question: no matter how you partition the integers into finitely many classes, some class contains a 'pattern' (here, a unit fraction triple).\n\nBrown and Rödl proved the affirmative answer in 1991 using Ramsey-theoretic techniques. The related density version (Erdős #302) asks whether sets of positive density contain such solutions.",
+    "problemStatement": "**Problem (Erdős)**: Is it true that in any finite colouring of the integers there exists a monochromatic solution to\n$$\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$$\nwith distinct $a, b, c$?\n\n**Answer**: YES\n\n**Proved by**: Brown and Rödl (1991)",
+    "text": "In any finite colouring of the integers, does there exist a monochromatic solution to 1/a = 1/b + 1/c with distinct a, b, c? A Ramsey-theoretic problem solved affirmatively by Brown and Rödl (1991).",
+    "proofStrategy": "We formalize the problem and the solution:\n\n1. **Unit Fraction Equation**: Define UnitFractionEq a b c as (1/a : ℝ) = 1/b + 1/c. Prove equivalence with the algebraic form bc = a(b+c).\n\n2. **Verified Examples**: Prove concrete instances like 1/2 = 1/3 + 1/6 and 1/3 = 1/4 + 1/12 using norm_num.\n\n3. **Colourings**: Define IsFiniteColouring and Monochromatic. Prove two equivalent definitions of monochromaticity.\n\n4. **Main Theorem**: State Brown-Rödl's theorem as an axiom: in any finite colouring, a monochromatic valid solution exists.\n\n5. **Infinite Solutions**: Prove infinitely many solutions exist of the form 1/n = 1/(n+1) + 1/(n(n+1)).",
     "keyInsights": [
-      "**Unit fraction identity**: 1/n = 1/(n+1) + 1/(n(n+1)) for all n \u2265 2, providing infinitely many solutions.",
+      "**Unit fraction identity**: 1/n = 1/(n+1) + 1/(n(n+1)) for all n ≥ 2, providing infinitely many solutions.",
       "**Algebraic reformulation**: 1/a = 1/b + 1/c is equivalent to bc = a(b+c), avoiding division.",
-      "**Ramsey principle**: No matter how you colour \u2124 with finitely many colours, some colour class contains a unit fraction triple.",
-      "**Density connection**: The colouring version (this problem) is the Ramsey analog of the density version (Erd\u0151s #302).",
+      "**Ramsey principle**: No matter how you colour ℤ with finitely many colours, some colour class contains a unit fraction triple.",
+      "**Density connection**: The colouring version (this problem) is the Ramsey analog of the density version (Erdős #302).",
       "**Computable witnesses**: The identity 1/n = 1/(n+1) + 1/(n(n+1)) is verified by native_decide for specific n, showing that formalized number theory can produce machine-checkable computational certificates alongside abstract theorems"
     ],
     "prerequisites": [
@@ -106,7 +107,7 @@
     },
     {
       "id": "theorem",
-      "title": "Brown-R\u00f6dl Theorem (SOLVED)",
+      "title": "Brown-Rödl Theorem (SOLVED)",
       "startLine": 108,
       "endLine": 139,
       "summary": "The main result as an axiom"
@@ -123,15 +124,15 @@
       "title": "Connection to Density Version",
       "startLine": 190,
       "endLine": 259,
-      "summary": "Relation to Erd\u0151s #302 and the general pattern"
+      "summary": "Relation to Erdős #302 and the general pattern"
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #303, which asks whether any finite colouring of the integers contains a monochromatic solution to 1/a = 1/b + 1/c. Brown and R\u00f6dl proved this affirmatively in 1991. We define the unit fraction equation, prove concrete examples, and state the main theorem as an axiom along with the infinite family 1/n = 1/(n+1) + 1/(n(n+1)).",
+    "summary": "We formalize Erdős Problem #303, which asks whether any finite colouring of the integers contains a monochromatic solution to 1/a = 1/b + 1/c. Brown and Rödl proved this affirmatively in 1991. We define the unit fraction equation, prove concrete examples, and state the main theorem as an axiom along with the infinite family 1/n = 1/(n+1) + 1/(n(n+1)).",
     "implications": "This result shows that the unit fraction equation is 'unavoidable' under any finite colouring, a strong Ramsey-theoretic property. It connects to broader questions about which equations have this property (partition regularity).",
     "openQuestions": [
       "What is the minimum number of colours needed for no monochromatic solution?",
-      "Does the density version (Erd\u0151s #302) also hold?",
+      "Does the density version (Erdős #302) also hold?",
       "Which other Diophantine equations are partition regular?",
       "Can the proof be made constructive with explicit bounds?"
     ]
@@ -155,17 +156,17 @@
     {
       "targetId": "erdos-46",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: colouring, number-theory, ramsey-theory, unit-fractions"
+      "description": "Related Erdős problem sharing themes: colouring, number-theory, ramsey-theory, unit-fractions"
     },
     {
       "targetId": "erdos-148",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, unit-fractions"
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
     },
     {
       "targetId": "erdos-242",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, unit-fractions"
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
     }
   ],
   "sorries": 0

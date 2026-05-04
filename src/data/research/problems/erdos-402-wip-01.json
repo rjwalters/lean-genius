@@ -54,32 +54,32 @@
       "erdos_402_equality_counterexample: complete disproof",
       "dvd_lt_imp_le_half: proper divisors are at most half",
       "erdos_402_pair: main conjecture for |A|=2",
-      "dvd_lt_imp_le_half: d|n \u2227 d<n \u2192 d \u2264 n/2",
+      "dvd_lt_imp_le_half: d|n ∧ d<n → d ≤ n/2",
       "erdos_402_pair: main conjecture for |A|=2 via proper-divisor bound",
-      "max_ge_card_of_pos: max(A) \u2265 |A| for positive Finset A",
-      "erdos_402_contains_one: main conjecture when 1 \u2208 A via pigeonhole",
-      "erdos_402_small_min: when min(A) \u2264 max(A)/card, conjecture follows immediately",
-      "three_element_gcd_bound: for a<b<c, gcd(c,a) \u2264 c/3 or gcd(c,b) \u2264 c/3",
+      "max_ge_card_of_pos: max(A) ≥ |A| for positive Finset A",
+      "erdos_402_contains_one: main conjecture when 1 ∈ A via pigeonhole",
+      "erdos_402_small_min: when min(A) ≤ max(A)/card, conjecture follows immediately",
+      "three_element_gcd_bound: for a<b<c, gcd(c,a) ≤ c/3 or gcd(c,b) ≤ c/3",
       "erdos_402_three: full three-element case of Graham's conjecture"
     ],
     "insights": [
       "Equality characterization is false: {1,2,4} is a counterexample (primitive, satisfies GCD condition, not in three families)",
-      "For two-element sets: gcd of distinct elements is a proper divisor of the larger, so \u2264 max/2 = max/|A|",
-      "Key to disproving case 2: L/1 = L must be in image, so L \u2208 {1,2,4}, but lcm(1,...,n) cannot equal any of these for n\u22653",
-      "Coprimality of 2 and 3 forces 6|L when n\u22653, ruling out L\u22644",
-      "Pair case reduces to: gcd properly divides max element, so gcd \u2264 max/2 = max/card",
-      "Contains-one case: gcd(max,1)=1 and max\u2265card by pigeonhole (A \u2286 {1,...,max})",
+      "For two-element sets: gcd of distinct elements is a proper divisor of the larger, so ≤ max/2 = max/|A|",
+      "Key to disproving case 2: L/1 = L must be in image, so L ∈ {1,2,4}, but lcm(1,...,n) cannot equal any of these for n≥3",
+      "Coprimality of 2 and 3 forces 6|L when n≥3, ruling out L≤4",
+      "Pair case reduces to: gcd properly divides max element, so gcd ≤ max/2 = max/card",
+      "Contains-one case: gcd(max,1)=1 and max≥card by pigeonhole (A ⊆ {1,...,max})",
       "max_ge_card_of_pos proved via injection into range(max+1)\\{0} using card_sdiff",
       "For 3 distinct positive ints a<b<c: if gcd(c,x) > c/3 then gcd(c,x) = c/2 (unique proper divisor > c/3)",
-      "Two elements can't both be c/2 (distinct), so at least one gcd \u2264 c/3",
-      "Small-min case: min \u2264 max/card implies gcd(max,min) \u2264 min \u2264 max/card"
+      "Two elements can't both be c/2 (distinct), so at least one gcd ≤ c/3",
+      "Small-min case: min ≤ max/card implies gcd(max,min) ≤ min ≤ max/card"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Main conjecture (erdos_402_graham_conjecture) requires Balasubramanian-Soundararajan sieve argument",
       "Could try proving for |A|=3 but case analysis becomes complex",
       "Consider reduction: if A has common factor d, divide by d to reduce to primitive case",
-      "Coprime pair existence: if A has two coprime elements with max\u2265card, bound follows"
+      "Coprime pair existence: if A has two coprime elements with max≥card, bound follows"
     ]
   },
   "tags": [
@@ -93,7 +93,8 @@
   ],
   "relatedProofs": [
     "erdos-4",
-    "erdos-40"
+    "erdos-40",
+    "erdos-402"
   ],
   "references": {
     "papers": [

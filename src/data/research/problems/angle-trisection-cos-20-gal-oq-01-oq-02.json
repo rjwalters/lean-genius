@@ -29,9 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms, pCos5_irreducible proved via Eisenstein+composition",
+    "builtItems": [
+      "r_eis_int_cos5 : ℤ[X] (Eisenstein polynomial X²-5X+5 in AngleTrisectionCos20GalOQ01OQ02.lean:97)",
+      "r_eis_int_cos5_irreducible (Eisenstein at p=5 in AngleTrisectionCos20GalOQ01OQ02.lean:112)",
+      "r_eis_rat_cos5_irreducible (Gauss lemma lift in AngleTrisectionCos20GalOQ01OQ02.lean:136)",
+      "r_comp_eq_pCos5 (composition identity in AngleTrisectionCos20GalOQ01OQ02.lean:147)",
+      "pCos5_irreducible (Eisenstein+composition proof in AngleTrisectionCos20GalOQ01OQ02.lean:158)"
+    ],
+    "insights": [
+      "Eisenstein+composition proof: Y²-5Y+5 at p=5, substitution Y=2X+2 gives pCos5",
+      "Direct adaptation of pCos7_irreducible proof pattern from AngleTrisectionCos20GalOQ01.lean",
+      "Composition argument: irreducibility preserved under invertible linear substitutions",
+      "Both ℓ∘ℓ_inv=X and ℓ_inv∘ℓ=X verified by simp+ring with rcases n 0,1,2+ pattern",
+      "interval_cases k with k<2 covers exactly k=0,1 for degree-2 Eisenstein check"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -45,6 +57,7 @@
     "angle-trisection-cos-20-gal",
     "angle-trisection-cos-20-gal-oq-01",
     "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-02",
     "angle-trisection-cos-20-gal-oq-03",
     "angle-trisection-cos-20-gal-oq-03-oq-01"
   ],
@@ -90,6 +103,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02.lean",
+      "lineCount": 327,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02.lean"
     },
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",

@@ -1,0 +1,172 @@
+{
+  "id": "ballot-problem-oq-03-oq-03",
+  "title": "Hook-Length Formula for 2-Row Young Diagrams",
+  "slug": "ballot-problem-oq-03-oq-03",
+  "description": "Proves the Frame-Robinson-Thrall hook-length formula for the rectangular 2-row Young diagram (m,m): C_m · (m+1)! · m! = (2m)!. Builds on the 2×2 LGV lemma and Catalan-ballot connection from BallotProblemOQ03, and states the n×n LGV matrix infrastructure for future generalization.",
+  "meta": {
+    "author": "Frame-Robinson-Thrall (1954)",
+    "sourceUrl": "",
+    "date": "1954",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ03OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-paths",
+      "lgv-lemma",
+      "young-tableaux",
+      "hook-length",
+      "catalan",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 187,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "C(n,k) * k! * (n-k)! = n!, used to convert binomial coefficients to factorials",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_succ",
+        "description": "(n+1)! = (n+1) * n!, used in the final cancellation step",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "mul_right_cancel₀",
+        "description": "Cancellation of nonzero factor on the right: a*k=b*k → a=b (k≠0)",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proved hook_length_formula_two_row: C_m * (m+1)! * m! = (2m)! for rectangular 2×m SYT",
+      "Connected Frame-Robinson-Thrall hook-length formula to the ballot problem and LGV infrastructure from BallotProblemOQ03",
+      "Defined lgvMatrix for the n×n LGV path matrix and proved lgvMatrix_2x2 connecting it to lgvDet",
+      "Proved symmetry properties of lgvDet (swap sources, swap targets, swap both)",
+      "Stated the n×n LGV lemma framework with needed infrastructure description"
+    ],
+    "assumptions": "No axioms. All results proved from LGV lemma in BallotProblemOQ03 + Mathlib.",
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "path": "Proofs/BallotProblemOQ03OQ03.lean",
+    "lineCount": 187,
+    "namespace": "LGVCorollaries",
+    "imports": [
+      "Proofs.BallotProblemOQ03"
+    ],
+    "mainTheorems": [
+      "hook_length_formula_two_row",
+      "lgvMatrix_2x2",
+      "lgv_nonneg_standard"
+    ],
+    "mainDefinitions": [
+      "lgvMatrix"
+    ],
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "sorries": 0,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The hook-length formula, proved by Frame, Robinson, and Thrall in 1954, gives the number of standard Young tableaux (SYT) of any shape $\\lambda$ as $n! / \\prod_{u \\in \\lambda} h(u)$, where $h(u)$ is the hook length at cell $u$. This elegant formula was originally established by a combinatorial argument, and has since been reproved via numerous methods including the probabilistic proof by Greene, Nijenhuis, and Wilf (1979), and the beautiful bijective proof using the Lindström-Gessel-Viennot (LGV) lemma.\n\nFor 2-row shapes, the connection to the ballot problem is particularly transparent: SYT of shape $(m,k)$ biject with ballot sequences (sequences where one candidate always leads), whose count is given by the ballot formula due to Bertrand (1887) and Ballot (1887). Specifically, $f^{(m,k)} = \\text{ballotSeqCount}(m+1, k)$.\n\nThe fully proved 2×2 LGV lemma in BallotProblemOQ03.lean provides the lattice path counting infrastructure. This file derives concrete applications and proves the hook-length formula for the rectangular (m=k) case.",
+    "problemStatement": "For the rectangular 2-row Young diagram of shape $(m,m)$, prove the hook-length formula: $C_m \\cdot (m+1)! \\cdot m! = (2m)!$",
+    "text": "Proves the hook-length formula for the rectangular 2-row Young diagram. For shape (m,m), the SYT count satisfies C_m · (m+1)! · m! = (2m)!, recovering the Catalan hook-length identity.",
+    "proofStrategy": "Uses two key ingredients: (1) `catalan_formula : C_m * (m+1) = C(2m,m)` from BallotProblemOQ03, and (2) Mathlib's `Nat.choose_mul_factorial_mul_factorial : C(2m,m) * m! * m! = (2m)!`. Combining via `Nat.factorial_succ` (to expand (m+1)!) gives the desired identity for the rectangular case.",
+    "keyInsights": [
+      "**Ballot = SYT**: SYT of shape (m,k) biject with ballot sequences, counted by ballotSeqCount(m+1,k) — this is the RSK/ballot connection",
+      "**Hook product for 2-row (m,m)**: Row 0 hooks (m+1, m, …, 2) give (m+1)!; row 1 hooks (m, m-1, …, 1) give m!; total = (m+1)! · m!",
+      "**Catalan formula connection**: C_m · (m+1) = C(2m,m), with `choose_mul_factorial_mul_factorial` providing the final cancellation",
+      "**Cancellation**: Multiply through by (m+1) using catalan_formula and choose_mul_factorial, then expand (m+1)! via factorial_succ",
+      "**LGV antisymmetry**: lgv_swap_sources and lgv_swap_targets prove that lgvDet is antisymmetric in its source/target pairs — swapping pairs negates the determinant, mirroring row/column transposition for matrices. This is why the path-count determinant counts non-intersecting path systems with the right signed orientation, which is the key algebraic fact behind the LGV lemma's counting power."
+    ],
+    "prerequisites": [
+      "Combinatorics (ballot sequences, binomial coefficients)",
+      "Young tableaux (standard Young tableaux, hook lengths)",
+      "Lattice path counting (LGV lemma from BallotProblemOQ03)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Imports BallotProblemOQ03 and states the namespace `LGVCorollaries`. Opens `LatticePathLGV` and `Finset`."
+    },
+    {
+      "id": "lgv-applications",
+      "title": "Concrete LGV Applications",
+      "startLine": 26,
+      "endLine": 55,
+      "summary": "`lgv_dyck_pair_count`: Dyck path pairs via lgvDet formula. `lgv_nonneg_standard`: determinant non-negativity for standard configurations."
+    },
+    {
+      "id": "ballot-catalan",
+      "title": "Ballot-Catalan Connection",
+      "startLine": 56,
+      "endLine": 70,
+      "summary": "`catalan_eq_ballot_extended`: exports catalan_eq_ballot from parent file — C_n counts non-intersecting path pairs."
+    },
+    {
+      "id": "symmetry",
+      "title": "LGV Determinant Symmetry",
+      "startLine": 71,
+      "endLine": 92,
+      "summary": "Proved `lgv_swap_sources`, `lgv_swap_targets`, `lgv_swap_both`: swapping source/target pairs negates or preserves lgvDet."
+    },
+    {
+      "id": "computations",
+      "title": "Verified Computations",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "Four `example` statements verifying lgvDet for small concrete cases via `native_decide`."
+    },
+    {
+      "id": "lgv-general",
+      "title": "n×n LGV Matrix Statement",
+      "startLine": 107,
+      "endLine": 140,
+      "summary": "`lgvMatrix`: the n×n path count matrix. `lgvMatrix_2x2`: connects to lgvDet for n=2. Infrastructure description for the general n×n LGV lemma."
+    },
+    {
+      "id": "hook-rectangular",
+      "title": "Hook-Length Formula for Rectangular 2×m SYT",
+      "startLine": 141,
+      "endLine": 186,
+      "summary": "`hook_length_formula_two_row`: C_m · (m+1)! · m! = (2m)! for rectangular Young diagrams. Proof uses catalan_formula + choose_mul_factorial_mul_factorial. Verified for m=1,2,3."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves the hook-length formula for the rectangular 2-row Young diagram: C_m · (m+1)! · m! = (2m)! (the Catalan hook-length identity). All 8 theorems are proved with 0 sorries and 0 axioms using the 2×2 LGV infrastructure from BallotProblemOQ03. The general non-square 2-row case (m > k) is left as future work pending the n×n LGV lemma framework.",
+    "implications": "The hook-length formula connects three beautiful areas of combinatorics: Young tableaux, ballot sequences, and lattice paths via the LGV lemma. The 2-row rectangular case is the simplest non-trivial instance and serves as the foundation for understanding the general formula.\n\nThe `lgvMatrix` definition provides the starting point for a full n×n LGV generalization. The missing ingredient — a sign-reversing involution for n-tuples of intersecting paths — is the main open direction.",
+    "openQuestions": [
+      "Extend to general non-square 2-row shapes (m,k) with m > k via the ballot formula and choose_mul_factorial",
+      "Extend to general shapes using the n×n LGV lemma: the key missing piece is the involution for n intersecting paths",
+      "Prove the hook-length formula for 3-row shapes, which would require the 3×3 LGV lemma",
+      "Connect to the probabilistic hook-length proof (Greene-Nijenhuis-Wilf 1979) via the existing LGV infrastructure"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-03",
+      "relationship": "extends",
+      "description": "Builds on the fully proved 2×2 LGV lemma, ballot formula, and Catalan number results from BallotProblemOQ03"
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "ballot-problem-oq-03-oq-02 proves the general r×r LGV lemma; this file applies the 2×2 case to hook-length formulas"
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "uses",
+      "description": "Uses the ballot problem framework (ballotSeqCount, ballot_formula) to count SYT of 2-row shapes"
+    }
+  ],
+  "sorries": 0
+}

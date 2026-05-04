@@ -1,7 +1,7 @@
 {
   "slug": "erdos-367",
   "title": "Erdős #367",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Verified 2 provable axioms (twoFullPart_eq_one_iff, twoFullPart_mul_coprime) are unused — proof tree unaffected. 3 deep axioms remain (strong_bound_fails_k3, van_doorn_lower_bound, average_twoFullPart_bounded).",
+    "progressSummary": "PROGRESS: Proved weak_bound_k1 and weak_bound_k2 (Erdős conjecture for k=1,2). 1 axiom remains (van_doorn_lower_bound).",
     "builtItems": [
       "Proved twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq in Erdos367Problem.lean",
       "Proved strong_bound_k1 in Erdos367Problem.lean:140",
-      "Proved strong_bound_k2 in Erdos367Problem.lean:155"
+      "Proved strong_bound_k2 in Erdos367Problem.lean:155",
+      "Proved strongBound_implies_weakBound in Erdos367Problem.lean:171",
+      "Proved weak_bound_k1 in Erdos367Problem.lean:188",
+      "Proved weak_bound_k2 in Erdos367Problem.lean:192"
     ],
     "insights": [
       "4 axioms proved from Mathlib: twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq",
@@ -46,13 +49,15 @@
       "strong_bound_fails_k3 and van_doorn_lower_bound are deep results (irreducible). average_twoFullPart_bounded is analytic (needs summation bounds).",
       "twoFullPart_eq_one_iff and twoFullPart_mul_coprime are NOT used by any theorem — axiom elimination would not strengthen the proof tree",
       "Backward dir (Squarefree→B₂=1): Nat.squarefree_iff_factorization_le_one gives all exponents ≤ 1, filter_true_of_mem + factorization_prod_pow_eq_self gives squarefreePart=n",
-      "Forward dir (B₂=1→Squarefree): n/squarefreePart(n)=1 → squarefreePart=n → all exponents are 1 (contrapositive: exponent ≥ 2 means strict inequality)"
+      "Forward dir (B₂=1→Squarefree): n/squarefreePart(n)=1 → squarefreePart=n → all exponents are 1 (contrapositive: exponent ≥ 2 means strict inequality)",
+      "Real.rpow_natCast bridges HPow ℝ ℕ ℝ (monoid) and HPow ℝ ℝ ℝ (rpow) — needed for n^2 ≤ n^{2+ε}",
+      "strongBound → weakBound proof: rw [← rpow_natCast] then rpow_le_rpow_of_exponent_le",
+      "Erdős conjecture for k=1,2 now proved in Lean via strong → weak bound chain"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove twoFullPart_eq_one_iff: use Nat.squarefree_iff_factorization_le_one + filter_true_of_mem + factorization_prod_pow_eq_self",
-      "Prove twoFullPart_mul_coprime: use Nat.primeFactors_mul + factorization_mul coprime",
-      "3 axioms are likely irreducible: strong_bound_fails_k3, van_doorn_lower_bound, average_twoFullPart_bounded"
+      "van_doorn_lower_bound: irreducible, needs CRT + PNT for APs + sieve theory (~500 lines)",
+      "Consider releasing claim if no further tractable work"
     ],
     "markdown": "# Erdős #367 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $B_2(n)$ be the 2-full part of $n$ (that is, $B_2(n)=n/n'$ where $n'$ is the product of all primes that divide $n$ exactly once). Is it true that, for every fixed $k\\geq 1$,\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2+o(1)}?\\]Or perhaps even $\\ll_k n^2$?\n\n\n\nIt would also be interesting to find upper and lower bounds for the analogous product with $B_r$ for $r\\geq 3$, where $B_r(n)$ is the $r$-full part of $n$ (that is, the product of prime powers $p^a \\mid n$ such that $p^{a+1}\\nmid n$ and $a\\geq r$). Is it true that, for every fixed $r,k\\geq 2$ and $\\epsilon>0$,\\[\\limsup \\frac{\\prod_{n\\leq m<n+k}B_r(m) }{n^{1+\\epsilon}}\\to\\infty?\\]van Doorn notes in the comments that for $k\\leq 2$ we trivially have\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2},\\]but that this fails for all $k\\geq 3$, and in fact\\[\\prod_{n\\leq m<n+3}B_2(m) \\gg n^{2}\\log n\\]infinitely often.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #366\n- Problem #368\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
@@ -77,8 +82,8 @@
     {
       "path": "Proofs/Erdos367Problem.lean",
       "filename": "Erdos367Problem.lean",
-      "lineCount": 409,
-      "theoremCount": 9,
+      "lineCount": 437,
+      "theoremCount": 12,
       "axiomCount": 1,
       "defCount": 10,
       "sorryCount": 0,

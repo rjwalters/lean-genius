@@ -7,19 +7,19 @@
       "endLine": 113
     },
     "type": "definition",
-    "title": "The Mertens Function M(n) = Σ_{k≤n} μ(k)",
-    "content": "The Mertens function M(n) is defined as a finite sum of the Möbius function values from 0 to n. In Lean 4, `ArithmeticFunction.moebius` is the Mathlib implementation of μ. The function starts at M(0) = 0 (since μ(0) = 0 by convention), M(1) = 1 (μ(1) = 1), and M(2) = 0 (μ(0) + μ(1) + μ(2) = 0 + 1 + (−1) = 0). The Möbius function satisfies: μ(1) = 1, μ(p) = −1 for primes, μ(p₁···pₖ) = (−1)ᵏ for products of distinct primes, and μ(n) = 0 if n has a squared prime factor. Specific values are proved by `native_decide` — this computational approach is only feasible because ArithmeticFunction.moebius is computable in Mathlib.",
-    "mathContext": "$M(n) = \\sum_{k=1}^{n} \\mu(k)$, where $\\mu$ is the Möbius function: $\\mu(1)=1$, $\\mu(p)=-1$, $\\mu(p_1 \\cdots p_k) = (-1)^k$ (distinct primes), $\\mu(n) = 0$ (n has squared factor). Known values: $M(100) = 1$, $M(1000) = 2$. The Mertens conjecture $|M(n)| < \\sqrt{n}$ was disproved by Odlyzko-te Riele (1985): a counterexample exists around $n \\approx e^{10^{64}}$.",
+    "title": "The Mertens Function M(n) = \u03a3_{k\u2264n} \u03bc(k)",
+    "content": "The Mertens function M(n) is defined as a finite sum of the M\u00f6bius function values from 0 to n. In Lean 4, `ArithmeticFunction.moebius` is the Mathlib implementation of \u03bc. The function starts at M(0) = 0 (since \u03bc(0) = 0 by convention), M(1) = 1 (\u03bc(1) = 1), and M(2) = 0 (\u03bc(0) + \u03bc(1) + \u03bc(2) = 0 + 1 + (\u22121) = 0). The M\u00f6bius function satisfies: \u03bc(1) = 1, \u03bc(p) = \u22121 for primes, \u03bc(p\u2081\u00b7\u00b7\u00b7p\u2096) = (\u22121)\u1d4f for products of distinct primes, and \u03bc(n) = 0 if n has a squared prime factor. Specific values are proved by `native_decide` \u2014 this computational approach is only feasible because ArithmeticFunction.moebius is computable in Mathlib.",
+    "mathContext": "$M(n) = \\sum_{k=1}^{n} \\mu(k)$, where $\\mu$ is the M\u00f6bius function: $\\mu(1)=1$, $\\mu(p)=-1$, $\\mu(p_1 \\cdots p_k) = (-1)^k$ (distinct primes), $\\mu(n) = 0$ (n has squared factor). Known values: $M(100) = 1$, $M(1000) = 2$. The Mertens conjecture $|M(n)| < \\sqrt{n}$ was disproved by Odlyzko-te Riele (1985): a counterexample exists around $n \\approx e^{10^{64}}$.",
     "significance": "key",
     "relatedConcepts": [
-      "Möbius function",
+      "M\u00f6bius function",
       "squarefree numbers",
       "Mertens conjecture",
       "Odlyzko-te Riele theorem",
       "ArithmeticFunction.moebius"
     ],
     "prerequisites": [
-      "Möbius function definition",
+      "M\u00f6bius function definition",
       "prime factorization",
       "squarefree integers",
       "Mathlib's ArithmeticFunction library"
@@ -33,8 +33,8 @@
       "endLine": 153
     },
     "type": "concept",
-    "title": "Axiom: RH Implies |M(n)| = O(√n)",
-    "content": "The most famous consequence of RH formalized here: under the Riemann Hypothesis, the Mertens function is bounded by a constant multiple of √n. This was proved by Littlewood (1912), who showed the equivalence RH ⟺ M(x) = O(x^{1/2+ε}) for all ε > 0. The sharper form (O(√n) with a single constant C rather than x^ε factors) also follows from RH via exponential sum techniques. The axiom is stated with ∃ C > 0 to capture the O-notation precisely without choosing a specific constant. The proof requires Perron's formula (connecting Dirichlet series to summatory functions) and bounds on ζ'(s)/ζ(s) inside the critical strip — neither is in Mathlib yet.",
+    "title": "Axiom: RH Implies |M(n)| = O(\u221an)",
+    "content": "The most famous consequence of RH formalized here: under the Riemann Hypothesis, the Mertens function is bounded by a constant multiple of \u221an. This was proved by Littlewood (1912), who showed the equivalence RH \u27fa M(x) = O(x^{1/2+\u03b5}) for all \u03b5 > 0. The sharper form (O(\u221an) with a single constant C rather than x^\u03b5 factors) also follows from RH via exponential sum techniques. The axiom is stated with \u2203 C > 0 to capture the O-notation precisely without choosing a specific constant. The proof requires Perron's formula (connecting Dirichlet series to summatory functions) and bounds on \u03b6'(s)/\u03b6(s) inside the critical strip \u2014 neither is in Mathlib yet.",
     "mathContext": "RH $\\Rightarrow$ $|M(n)| \\leq C\\sqrt{n}$ for some absolute constant $C > 0$. Proof sketch: by Perron's formula, $M(x) = \\frac{1}{2\\pi i} \\int_{\\sigma - iT}^{\\sigma + iT} \\frac{x^s}{s \\zeta(s)} ds + O(x^\\sigma/T)$. Under RH, shift the contour to $\\text{Re}(s) = 1/2 + \\epsilon$; the residue at $s=0$ gives 0, and the integral over the vertical line is $O(\\sqrt{x} \\log^2 x)$. The Mertens conjecture $|M(n)| < \\sqrt{n}$ is stronger but false.",
     "significance": "key",
     "relatedConcepts": [
@@ -58,9 +58,9 @@
       "startLine": 182,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Trivial Consequences: Zeros on Critical Line and Trivial Zeros off It",
-    "content": "The two simplest consequences of RH are proved directly from Mathlib's definition. First, `rh_zeros_on_critical_line`: if RH holds, then every non-trivial zero (not of the form s = −2(n+1) and not s = 1) has real part 1/2. This is just an unfolding of the definition `RiemannHypothesis := ∀ s, ζ(s) = 0 → ¬∃n, s = −2(n+1) → s ≠ 1 → s.re = 1/2`. Second, `trivial_zeros_negative_real_part`: the trivial zeros at s = −2, −4, −6, ... have real part < 0 (specifically −2n < 0), hence they are NOT on the critical line Re(s) = 1/2. This is proved by a simple real-number inequality: (−2·(n+1)).re = −2(n+1) < 0 since n+1 > 0.",
+    "content": "The two simplest consequences of RH are proved directly from Mathlib's definition. First, `rh_zeros_on_critical_line`: if RH holds, then every non-trivial zero (not of the form s = \u22122(n+1) and not s = 1) has real part 1/2. This is just an unfolding of the definition `RiemannHypothesis := \u2200 s, \u03b6(s) = 0 \u2192 \u00ac\u2203n, s = \u22122(n+1) \u2192 s \u2260 1 \u2192 s.re = 1/2`. Second, `trivial_zeros_negative_real_part`: the trivial zeros at s = \u22122, \u22124, \u22126, ... have real part < 0 (specifically \u22122n < 0), hence they are NOT on the critical line Re(s) = 1/2. This is proved by a simple real-number inequality: (\u22122\u00b7(n+1)).re = \u22122(n+1) < 0 since n+1 > 0.",
     "mathContext": "Mathlib's definition: $\\text{RiemannHypothesis} := \\forall s \\in \\mathbb{C},\\ \\zeta(s) = 0 \\to \\neg(\\exists n, s = -2(n+1)) \\to s \\neq 1 \\to \\text{Re}(s) = 1/2$. Trivial zeros: $s_n = -2n$ for $n = 1, 2, 3, \\ldots$ have $\\text{Re}(s_n) = -2n < 0 < 1/2$. Non-trivial zeros: all other zeros (excluding the pole at $s=1$), conjectured (RH) to satisfy $\\text{Re}(s) = 1/2$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -84,12 +84,12 @@
       "endLine": 546
     },
     "type": "concept",
-    "title": "Li's Criterion: RH ⟺ All Li Constants λₙ ≥ 0",
-    "content": "Li's criterion (proved by Xian-Jin Li in 1997, generalized by Bombieri-Lagarias in 1999) provides a completely different characterization of RH: the Riemann Hypothesis holds if and only if all the Li constants λₙ = (1/(n-1)!) (d^n/ds^n [s^{n-1} log ξ(s)])_{s=1} are non-negative. Here ξ(s) = (1/2)s(s-1)π^{-s/2}Γ(s/2)ζ(s) is the completed zeta function. The Li constants have the explicit form λₙ = Σ_{ρ} [1 − (1 − 1/ρ)^n] where the sum is over non-trivial zeros ρ. Since RH asserts all ρ have Re(ρ) = 1/2, each term [1 − (1 − 1/ρ)^n] is non-negative when Re(ρ) ≥ 1/2. The criterion is axiomatized because the `liConstant` function is opaque — its definition requires the zero set of ζ(s), not yet formalized.",
+    "title": "Li's Criterion: RH \u27fa All Li Constants \u03bb\u2099 \u2265 0",
+    "content": "Li's criterion (proved by Xian-Jin Li in 1997, generalized by Bombieri-Lagarias in 1999) provides a completely different characterization of RH: the Riemann Hypothesis holds if and only if all the Li constants \u03bb\u2099 = (1/(n-1)!) (d^n/ds^n [s^{n-1} log \u03be(s)])_{s=1} are non-negative. Here \u03be(s) = (1/2)s(s-1)\u03c0^{-s/2}\u0393(s/2)\u03b6(s) is the completed zeta function. The Li constants have the explicit form \u03bb\u2099 = \u03a3_{\u03c1} [1 \u2212 (1 \u2212 1/\u03c1)^n] where the sum is over non-trivial zeros \u03c1. Since RH asserts all \u03c1 have Re(\u03c1) = 1/2, each term [1 \u2212 (1 \u2212 1/\u03c1)^n] is non-negative when Re(\u03c1) \u2265 1/2. The criterion is axiomatized because the `liConstant` function is opaque \u2014 its definition requires the zero set of \u03b6(s), not yet formalized.",
     "mathContext": "Li constants: $\\lambda_n = \\frac{1}{(n-1)!} \\frac{d^n}{ds^n}[s^{n-1} \\log \\xi(s)]\\big|_{s=1} = \\sum_\\rho \\left[1 - \\left(1 - \\frac{1}{\\rho}\\right)^n\\right]$ (sum over non-trivial zeros $\\rho$). Li's theorem: $\\lambda_n \\geq 0$ for all $n \\geq 1$ $\\Leftrightarrow$ $\\text{Re}(\\rho) = 1/2$ for all non-trivial $\\rho$ $\\Leftrightarrow$ RH. Numerical computation: $\\lambda_1 = \\sum_\\rho \\text{Re}(1/\\rho) \\approx 0.0231\\ldots > 0$.",
     "significance": "key",
     "relatedConcepts": [
-      "completed zeta function ξ(s)",
+      "completed zeta function \u03be(s)",
       "Gamma function",
       "Li constants",
       "Bombieri-Lagarias generalization",
@@ -109,16 +109,16 @@
       "startLine": 1020,
       "endLine": 1025
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "RH Implies Mertens Bound, Li's Criterion, and Density Hypothesis",
-    "content": "The theorem `rh_triple_equivalence` packages three results: (1) RH ⟹ |M(n)| = O(√n) (Mertens bound), (2) RH ⟺ all Li constants ≥ 0 (Li's criterion), and (3) RH ⟹ Density Hypothesis. The Density Hypothesis states that N(σ,T) ≪ T^{2(1-σ)+ε} where N(σ,T) counts zeros with Re(ρ) ≥ σ — this is a quantitative strengthening of RH. The proof is immediate: just apply the three previously-stated axioms. The theorem documents that these diverse characterizations of RH all follow from a single hypothesis — illustrating how RH is a central organizing principle of analytic number theory.",
+    "content": "The theorem `rh_triple_equivalence` packages three results: (1) RH \u27f9 |M(n)| = O(\u221an) (Mertens bound), (2) RH \u27fa all Li constants \u2265 0 (Li's criterion), and (3) RH \u27f9 Density Hypothesis. The Density Hypothesis states that N(\u03c3,T) \u226a T^{2(1-\u03c3)+\u03b5} where N(\u03c3,T) counts zeros with Re(\u03c1) \u2265 \u03c3 \u2014 this is a quantitative strengthening of RH. The proof is immediate: just apply the three previously-stated axioms. The theorem documents that these diverse characterizations of RH all follow from a single hypothesis \u2014 illustrating how RH is a central organizing principle of analytic number theory.",
     "mathContext": "Density Hypothesis (DH): $N(\\sigma, T) \\ll T^{2(1-\\sigma)+\\epsilon}$ for all $\\sigma \\geq 1/2$. RH $\\Rightarrow$ DH: under RH, $N(\\sigma, T) = 0$ for $\\sigma > 1/2$ (no zeros off the critical line), which vacuously satisfies DH. Li: RH $\\Leftrightarrow$ $\\lambda_n \\geq 0$. Mertens: RH $\\Rightarrow$ $|M(n)| = O(\\sqrt{n})$. All packaged in one theorem as evidence that RH unifies analytic number theory.",
     "significance": "supporting",
     "relatedConcepts": [
       "Density Hypothesis",
       "zero-free regions",
       "analytic number theory unification",
-      "Lindelöf Hypothesis"
+      "Lindel\u00f6f Hypothesis"
     ],
     "prerequisites": [
       "Riemann Hypothesis",
@@ -135,21 +135,21 @@
       "endLine": 1075
     },
     "type": "concept",
-    "title": "RH Implies ψ(x) = x + O(√x log²x): von Koch's Bound",
-    "content": "The Chebyshev psi function ψ(x) = Σ_{pᵏ≤x} log p (sum of log p over prime powers ≤ x) is the most natural function for studying prime distribution. The Prime Number Theorem (unconditional) gives ψ(x) = x + o(x). Under RH, von Koch (1901) proved the much sharper ψ(x) = x + O(√x log²x). This is the optimal error term: without RH, a zero at Re(ρ) = 1/2 + δ gives an error term of at least Ω(x^{1/2+δ}), worse than √x. The bound follows from the explicit formula ψ(x) = x − Σ_{ρ} x^ρ/ρ − log(2π): under RH, |x^ρ/ρ| = x^{1/2}/|ρ|, and Σ_ρ 1/|ρ| converges with log²x growth. The theorem `rh_implies_theta_upper_from_psi` then derives the upper bound for the Chebyshev theta function θ(x) from ψ(x) ≥ θ(x).",
+    "title": "RH Implies \u03c8(x) = x + O(\u221ax log\u00b2x): von Koch's Bound",
+    "content": "The Chebyshev psi function \u03c8(x) = \u03a3_{p\u1d4f\u2264x} log p (sum of log p over prime powers \u2264 x) is the most natural function for studying prime distribution. The Prime Number Theorem (unconditional) gives \u03c8(x) = x + o(x). Under RH, von Koch (1901) proved the much sharper \u03c8(x) = x + O(\u221ax log\u00b2x). This is the optimal error term: without RH, a zero at Re(\u03c1) = 1/2 + \u03b4 gives an error term of at least \u03a9(x^{1/2+\u03b4}), worse than \u221ax. The bound follows from the explicit formula \u03c8(x) = x \u2212 \u03a3_{\u03c1} x^\u03c1/\u03c1 \u2212 log(2\u03c0): under RH, |x^\u03c1/\u03c1| = x^{1/2}/|\u03c1|, and \u03a3_\u03c1 1/|\u03c1| converges with log\u00b2x growth. The theorem `rh_implies_theta_upper_from_psi` then derives the upper bound for the Chebyshev theta function \u03b8(x) from \u03c8(x) \u2265 \u03b8(x).",
     "mathContext": "von Koch (1901): RH $\\Rightarrow$ $\\psi(x) = x + O(\\sqrt{x} \\log^2 x)$. Explicit formula: $\\psi(x) = x - \\sum_{\\rho} \\frac{x^\\rho}{\\rho} - \\log 2\\pi - \\frac{1}{2}\\log(1 - x^{-2})$. Under RH: $|x^\\rho/\\rho| = x^{1/2}/|\\rho|$, and $\\sum_\\rho 1/|\\rho| \\log x = O(\\log^2 x)$. Unconditional PNT gives only $\\psi(x) = x + o(x)$, exponentially weaker.",
     "significance": "key",
     "relatedConcepts": [
       "Chebyshev psi function",
-      "explicit formula for ψ(x)",
+      "explicit formula for \u03c8(x)",
       "prime number theorem",
       "von Koch's theorem",
       "von Mangoldt function"
     ],
     "prerequisites": [
-      "Chebyshev functions θ and ψ",
+      "Chebyshev functions \u03b8 and \u03c8",
       "explicit formula for prime counting",
-      "analytic continuation of ζ(s)",
+      "analytic continuation of \u03b6(s)",
       "prime number theorem"
     ]
   }

@@ -57,7 +57,8 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 338,
-    "assumptions": "0 axioms, 0 sorries. Core FTC (integral_eq_sub_of_hasDerivAt) and integral operations from Mathlib; original work is the Green's theorem reformulation."
+    "assumptions": "0 axioms, 0 sorries. Core FTC (integral_eq_sub_of_hasDerivAt) and integral operations from Mathlib; original work is the Green's theorem reformulation.",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**George Green (1793–1841)** published his theorem in 1828 in 'An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism.' The theorem relates a line integral around a simple closed curve C to a double integral over the region D enclosed by C:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA$$\n\nGreen's theorem is a special case of **Stokes' theorem** in 2D, itself a vast generalization of the Fundamental Theorem of Calculus. For a rectangle, the proof reduces to applying FTC twice (once in each variable) and Fubini to interchange the order of integration.\n\nThe **original formalization** of Green's theorem in this gallery (Wiedijk #21) used abstract definitions for `lineIntegral` and `doubleIntegralCurl` that returned 0 as stubs. **This extension (OQ-01)** replaces those stubs with genuine Mathlib `intervalIntegral` objects, making the formalization mathematically substantive.",

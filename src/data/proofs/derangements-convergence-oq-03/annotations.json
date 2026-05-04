@@ -53,7 +53,7 @@
       "startLine": 44,
       "endLine": 52
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Theorem Declaration and Setup",
     "content": "The main theorem `derangements_eq_round` is stated for `n : ℕ` with hypothesis `hn : 2 ≤ n`. Two setup steps prepare the proof: (1) `hfact_pos` establishes `n! > 0` via `Nat.cast_pos.mpr n.factorial_pos`, needed later when dividing by n!. (2) `set x : ℝ := n! · rexp(-1) with hx_def` names the target value `n!/e`, so subsequent lines can write `x` instead of the full expression. Using `set` also creates `hx_def : x = n! · rexp(-1)` for rewriting.",
     "mathContext": "The theorem statement: for $n \\geq 2$, $(D(n) : \\mathbb{Z}) = \\text{round}(n! \\cdot e^{-1})$, where $D(n) = $ `numDerangements n` is the number of derangements in $S_n$. The coercion $(D(n) : \\mathbb{Z})$ is needed because `numDerangements n : ℕ` and `round` returns $\\mathbb{Z}$. The proof works with $x = n! \\cdot \\text{rexp}(-1) = n!/e \\in \\mathbb{R}$.",
@@ -77,7 +77,7 @@
       "startLine": 53,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Phase 1: Establishing the Strict Bound |D(n) − x| < 1/2",
     "content": "Phase 1 proves `hlt : |D(n) - x| < 1/2` in four steps:\n\n1. **Import the rate**: `hrate := derangements_convergence_rate n` gives `|D(n)/n! - rexp(-1)| ≤ 1/(n+1)!`.\n\n2. **Reshape the left side**: `hmul` shows `|D(n)/n! - rexp(-1)| = |D(n) - x|/n!` by rewriting `D(n)/n! - rexp(-1) = (D(n) - x)/n!` (using `hx_def`), then applying `abs_div` and `abs_of_pos hfact_pos`.\n\n3. **Multiply by n!**: Rewriting `hrate` with `hmul` and `div_le_iff hfact_pos` gives `|D(n) - x| ≤ n! · (1/(n+1)!)`, which equals `1/(n+1)` by `factorial_mul_one_div_factorial_succ`.\n\n4. **Strict inequality**: `hn3 : 2 < n+1` (from `hn : 2 ≤ n` via omega) and `one_div_lt_one_div_of_lt` give `1/(n+1) < 1/2`. The `calc` chain closes the goal.",
     "mathContext": "The rate bound: $|D(n)/n! - e^{-1}| \\leq 1/(n+1)!$. After multiplying: $|D(n) - n!/e| \\leq n!/(n+1)! = 1/(n+1)$. For $n \\geq 2$: $n+1 \\geq 3$, so $1/(n+1) \\leq 1/3 < 1/2$. The sharp bound: at $n=2$, $|D(2) - 2!/e| = |1 - 2/e| \\approx |1 - 0.736| = 0.264 < 0.333 = 1/3$.",
@@ -103,7 +103,7 @@
       "startLine": 73,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Phase 2: Rounding Conclusion via floor_eq_iff",
     "content": "Phase 2 converts `hlt : |D(n) - x| < 1/2` into `D(n) = round(x)` using Lean's rounding API:\n\n1. **Unfold round**: `rw [round_eq]` replaces `round x` with `⌊x + 1/2⌋` (Mathlib definition: `round x = ⌊x + 1/2⌋`).\n\n2. **Apply floor_eq_iff**: `floor_eq_iff.mpr` reduces the goal `⌊x + 1/2⌋ = D(n)` to showing `D(n) ≤ x + 1/2` and `x + 1/2 < D(n) + 1`.\n\n3. **Unpack |D - x| < 1/2**: `abs_lt.mp hlt` gives `habs.1 : -(1/2) < D - x` and `habs.2 : D - x < 1/2`.\n\n4. **Close both goals with linarith**: First goal (`D ≤ x + 1/2`) follows from `D - x < 1/2`. Second goal (`x + 1/2 < D + 1`) follows from `-(1/2) < D - x`. Both need `push_cast` to unify ℤ and ℝ coercions before `linarith`.",
     "mathContext": "The Mathlib `round` function: $\\text{round}\\,x = \\lfloor x + 1/2 \\rfloor$. The `floor_eq_iff` lemma: $\\lfloor r \\rfloor = z \\Leftrightarrow z \\leq r < z+1$. Since $|D(n) - x| < 1/2$, we have $x - 1/2 < D(n) < x + 1/2$, i.e., $D(n) - 1 < x - 1/2 < D(n)$, so $\\lfloor x + 1/2 \\rfloor = D(n)$. The `push_cast` tactic is needed because `D(n) : ℕ` must be cast to $\\mathbb{R}$ for `linarith` to work.",

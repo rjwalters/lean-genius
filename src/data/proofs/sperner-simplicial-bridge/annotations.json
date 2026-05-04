@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-vertex-enum",
+    "type": "definition",
+    "label": "vertexEnum",
+    "title": "Canonical Vertex Enumeration via Sorting",
+    "body": "vertexEnum s hs k returns the k-th vertex of simplex s in sorted order, using Finset.sort with the LinearOrder on E. This converts unordered finset data into ordered arrays compatible with the abstract CellComplex/Sperner framework, where cells have Fin(d+1)-indexed vertices.",
+    "location": { "line": 65 },
+    "tags": ["definition", "sorting", "vertex", "finset"]
+  },
+  {
+    "id": "ann-vertex-inj",
+    "type": "theorem",
+    "label": "vertexEnum_injective",
+    "title": "Vertex Enumeration Is Injective",
+    "body": "For a simplex s with d+1 vertices, vertexEnum s hs is injective as a function Fin(d+1) → E. This follows from Nodup property of Finset.sort: since the sorted list has no duplicate elements, distinct indices give distinct vertices.",
+    "location": { "line": 80 },
+    "tags": ["injectivity", "sorting", "nodup"]
+  },
+  {
+    "id": "ann-face-machinery",
+    "type": "theorem",
+    "label": "vertexEnum_image_erase",
+    "title": "Face Image Equals Simplex with Vertex Erased",
+    "body": "The image of Fin(d+1) \\ {k} under vertexEnum equals s.erase (vertexEnum s hs k). This is the core identity connecting the abstract face notion (removing index k) to the geometric face notion (removing a specific vertex from the finset).",
+    "location": { "line": 134 },
+    "tags": ["face", "erase", "image", "geometric"]
+  },
+  {
+    "id": "ann-containers",
+    "type": "definition",
+    "label": "containersOf",
+    "title": "Container Cells for a Face",
+    "body": "containersOf topCells f returns the finset of top-dimensional cells in topCells that contain the face f as a subset. The pseudomanifold condition requires containersOf f to have cardinality at most 2 for every codimension-1 face f.",
+    "location": { "line": 0 },
+    "tags": ["definition", "containers", "pseudomanifold"]
+  },
+  {
+    "id": "ann-containers-le-two",
+    "type": "theorem",
+    "label": "containersOf_card_le_two",
+    "title": "Pseudomanifold: At Most 2 Containers per Face",
+    "body": "Under the pseudomanifold hypothesis, every d-element face has at most 2 cells containing it. This is the direct formalization of the pseudomanifold condition and is the key premise for all adjacency lemmas.",
+    "location": { "line": 304 },
+    "tags": ["pseudomanifold", "containers", "cardinality"]
+  },
+  {
+    "id": "ann-adjfn",
+    "type": "definition",
+    "label": "adjFn",
+    "title": "Adjacency Function for Simplicial Data",
+    "body": "adjFn topCells hcard s k looks up the face opposite vertex k in cell s (via the erased-vertex construction), finds all cells containing that face, and returns Some(s', k') where s' is the other cell and k' is the index of the shared face vertex in s'. Returns None if the face is on the boundary (only 1 container).",
+    "location": { "line": 0 },
+    "tags": ["definition", "adjacency", "simplicial"]
+  },
+  {
+    "id": "ann-adjfn-symm",
+    "type": "theorem",
+    "label": "adjFn_symm",
+    "title": "Adjacency Is Symmetric",
+    "body": "If adjFn s k = Some(s', k'), then adjFn s' k' = Some(s, k). This is the first adjacency axiom needed for the abstract Sperner framework. The proof uses the symmetric structure of containersOf: if s and s' both contain the face, then s' is the other cell when looking from s, and vice versa.",
+    "location": { "line": 447 },
+    "tags": ["adjacency", "symmetry", "axiom"]
+  },
+  {
+    "id": "ann-adjfn-vertex",
+    "type": "theorem",
+    "label": "adjFn_vertex",
+    "title": "Adjacent Cells Share a Codimension-1 Face",
+    "body": "If adjFn s k = Some(s', k'), then the vertex images of Fin(d+1) \\ {k} under vertexEnum for s equals the vertex image of Fin(d+1) \\ {k'} for s'. This is the second adjacency axiom: adjacent cells share their common (d-1)-face. The proof uses vertexEnum_image_erase to convert between the abstract and geometric face representations.",
+    "location": { "line": 347 },
+    "tags": ["adjacency", "shared-face", "axiom"]
+  },
+  {
+    "id": "ann-adjfn-ne",
+    "type": "theorem",
+    "label": "adjFn_ne",
+    "title": "Adjacent Cells Are Distinct",
+    "body": "If adjFn s k = Some(s', k'), then s ≠ s' (as finsets). This is the third adjacency axiom. The proof uses adjFn_s': the other container is specifically a cell DIFFERENT from s, enforced by Finset.exists_ne.",
+    "location": { "line": 384 },
+    "tags": ["adjacency", "distinctness", "axiom"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "type": "theorem",
+    "label": "exists_panchromatic",
+    "title": "Sperner's Lemma for Pseudomanifold Simplicial Complexes",
+    "body": "Given a finite set topCells of (d+1)-vertex simplices satisfying the pseudomanifold condition, a vertex coloring c, and an odd count of boundary door-face pairs, there exists a panchromatic cell—one whose vertices collectively receive all d+1 colors. The proof instantiates Sperner.exists_panchromatic from SpernerMathlib by providing adjFn and the three verified adjacency axioms.",
+    "location": { "line": 564 },
+    "tags": ["sperner", "existence", "panchromatic", "main-result"]
+  }
+]

@@ -25,7 +25,8 @@
     "axiomCount": 2,
     "lineCount": 211,
     "assumptions": "2 axioms: abbott_hanson_upper_bound, erdos_lower_bound. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #535** connects number theory to extremal combinatorics through $\\gcd$-defined hypergraphs. The function $f_r(N)$ measures the maximum size of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that no $r$ elements share the same pairwise $\\gcd$.\n\nErdős first studied this in 1964 in his paper 'On a problem in elementary number theory and a combinatorial problem,' establishing both the first non-trivial upper bound $f_r(N) \\leq N^{3/4+o(1)}$ via double-counting arguments, and the lower bound $f_3(N) > N^{c/\\log \\log N}$ using multiplicative constructions with smooth numbers. Abbott and Hanson (1970) improved the upper bound to $f_r(N) \\leq N^{1/2+o(1)}$ in *Bull. London Math. Soc.*, using the insight that $\\gcd$-cliques correspond to cliques in auxiliary graphs, then applying Turán's theorem.\n\nThe gap between the polynomial upper bound $N^{1/2}$ and the quasi-polynomial lower bound $N^{c/\\log \\log N}$ is enormous — it spans the entire range between polynomial and sub-polynomial growth rates. Erdős conjectured that the lower bound is tight: $f_r(N) \\leq N^{c/\\log \\log N}$. This conjecture would follow from a strengthened version of the Erdős-Rado Sunflower Lemma (1960), specifically removing the factorial factor from the sunflower bound. The recent breakthrough by Alweiss, Lovett, Wu, and Zhang (2020) on the sunflower conjecture, improving the bound to $(C \\log k)^k$, represents significant progress but does not yet resolve Problem #535.",

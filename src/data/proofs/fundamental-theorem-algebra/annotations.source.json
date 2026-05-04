@@ -6,7 +6,7 @@
       "type": "section-doc",
       "contains": "What This Proves"
     },
-    "type": "example",
+    "type": "context",
     "title": "Degree of a Polynomial",
     "content": "The **degree** of a polynomial is the highest power of the variable with a non-zero coefficient.\n\nFor $z^2 + 1$, the degree is 2. The polynomial $z^3 - 2z + 5$ has degree 3.\n\nDegree 0 means a constant polynomial. The fundamental theorem requires degree at least 1 (non-constant).",
     "mathContext": "$\\deg(z^n + \\text{lower terms}) = n$\n\n$\\deg(c) = 0$ for constant $c \\neq 0$\n\n$\\deg(0) = -\\infty$ (by convention)",
@@ -30,7 +30,7 @@
       "name": "fundamental_theorem_of_algebra",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Fundamental Theorem of Algebra",
     "content": "**Every non-constant polynomial with complex coefficients has at least one complex root.**\n\nThis seemingly simple statement has profound consequences:\n- No need to extend numbers beyond the complexes for algebra\n- Every polynomial equation is solvable (has solutions)\n- The complex numbers are 'algebraically complete'\n\nDespite the name 'algebra', every known proof uses analysis or topology.",
     "mathContext": "$\\forall p \\in \\mathbb{C}[z], \\deg p \\geq 1 \\Rightarrow \\exists z_0 \\in \\mathbb{C}, p(z_0) = 0$",
@@ -55,7 +55,7 @@
       "name": "no_roots_implies_constant",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Contrapositive Form",
     "content": "An equivalent statement of FTA: **if a polynomial has no roots, it must be constant.**\n\nThis is the contrapositive of the main theorem:\n- Original: $\\deg p \\geq 1 \\Rightarrow \\exists$ root\n- Contrapositive: no roots $\\Rightarrow \\deg p = 0$\n\nBoth say the same thing logically, but this form is sometimes more useful.",
     "mathContext": "$(\\deg p \\geq 1 \\Rightarrow \\exists z, p(z) = 0)$\n\n$\\equiv$\n\n$(\\forall z, p(z) \\neq 0 \\Rightarrow \\deg p = 0)$",
@@ -79,7 +79,7 @@
       "name": "splits_over_complex",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complete Splitting",
     "content": "Every complex polynomial **splits** into linear factors.\n\nThis means for any $p \\in \\mathbb{C}[z]$ of degree $n$:\n$p(z) = c(z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nwhere $c$ is the leading coefficient and $r_1, \\ldots, r_n$ are the roots.\n\nThis is immediate from algebraic closure: keep factoring out roots until nothing's left.",
     "mathContext": "A polynomial *splits* over $K$ if:\n\n$p = c \\prod_i (x - r_i)$ where $r_i \\in K$\n\nEvery polynomial splits over its algebraic closure.",
@@ -103,7 +103,7 @@
       "name": "card_roots_eq_degree",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Counting Roots",
     "content": "**A degree-n polynomial has exactly n roots, counted with multiplicity.**\n\nMultiplicity: if $(z - r)^k$ divides $p$ but $(z - r)^{k+1}$ doesn't, then $r$ has multiplicity $k$.\n\nExample: $z^3 - z^2 = z^2(z-1)$ has:\n- Root 0 with multiplicity 2\n- Root 1 with multiplicity 1\n- Total: 2 + 1 = 3 = degree",
     "mathContext": "For $p \\neq 0$: $\\sum_{r : p(r) = 0} \\text{mult}_r(p) = \\deg p$\n\nMathlib represents this via multisets: $|\\text{roots}(p)| = \\deg p$",
@@ -127,7 +127,7 @@
       "name": "monic_prod_roots",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Monic Polynomial Factorization",
     "content": "A **monic** polynomial (leading coefficient 1) equals the product of its root factors.\n\nIf $p(z) = z^n + a_{n-1}z^{n-1} + \\cdots + a_0$ and $r_1, \\ldots, r_n$ are its roots:\n\n$p(z) = (z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nThis gives a complete representation of any monic polynomial in terms of its roots.",
     "mathContext": "For monic $p$:\n\n$p = \\prod_{r \\in \\text{roots}(p)} (X - r)$\n\nwhere the product is over the multiset of roots (with repetition)",
@@ -152,7 +152,7 @@
       "kind": "theorem",
       "extendBefore": 2
     },
-    "type": "example",
+    "type": "context",
     "title": "Quadratics Always Have Roots",
     "content": "As a special case: **every quadratic $az^2 + bz + c$ (with $a \\neq 0$) has roots.**\n\nThe famous quadratic formula gives them explicitly:\n$z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nIn the complex numbers, $\\sqrt{b^2 - 4ac}$ always exists (complex square roots exist), so roots always exist.\n\nThe proof here derives this from the general FTA.",
     "mathContext": "Quadratic formula: $z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nDiscriminant $\\Delta = b^2 - 4ac$:\n- $\\Delta > 0$: two real roots\n- $\\Delta = 0$: one repeated root\n- $\\Delta < 0$: two complex conjugate roots",
@@ -177,7 +177,7 @@
     },
     "type": "insight",
     "title": "Namespace Setup and Concrete Examples",
-    "content": "The `open Polynomial Complex` brings Mathlib's polynomial notation (`X`, `C`, `degree`, `IsRoot`) and complex number operations into scope. Two concrete examples ground the abstraction:\n\n1. **Degree computation**: `degree (X ^ 2 + 1 : ℂ[X]) = 2`, discharged by `simp` with `degree_add_eq_left_of_degree_lt` — the degree of a sum equals the degree of its highest-degree summand when the other terms are strictly lower.\n\n2. **Root verification**: `IsRoot (X ^ 2 + 1 : ℂ[X]) Complex.I`, proving that $i$ is a root of $z^2 + 1$. The proof evaluates: $i^2 + 1 = -1 + 1 = 0$, using `Complex.I_sq : I^2 = -1` and `norm_num`. This is the simplest instance of FTA: over $\\mathbb{R}$, $z^2 + 1$ has no roots, but over $\\mathbb{C}$ it factors as $(z-i)(z+i)$.",
+    "content": "The `open Polynomial Complex` brings Mathlib's polynomial notation (`X`, `C`, `degree`, `IsRoot`) and complex number operations into scope. Two concrete examples ground the abstraction:\n\n1. **Degree computation**: `degree (X ^ 2 + 1 : \u2102[X]) = 2`, discharged by `simp` with `degree_add_eq_left_of_degree_lt` \u2014 the degree of a sum equals the degree of its highest-degree summand when the other terms are strictly lower.\n\n2. **Root verification**: `IsRoot (X ^ 2 + 1 : \u2102[X]) Complex.I`, proving that $i$ is a root of $z^2 + 1$. The proof evaluates: $i^2 + 1 = -1 + 1 = 0$, using `Complex.I_sq : I^2 = -1` and `norm_num`. This is the simplest instance of FTA: over $\\mathbb{R}$, $z^2 + 1$ has no roots, but over $\\mathbb{C}$ it factors as $(z-i)(z+i)$.",
     "mathContext": "$z^2 + 1 = (z - i)(z + i)$ over $\\mathbb{C}$. The root $i = \\sqrt{-1}$ is the fundamental reason $\\mathbb{C}$ was invented: Cardano and Bombelli (c. 1545-1572) encountered $\\sqrt{-1}$ while solving cubics via the Cardano-Tartaglia formula, even when the final answers were real. The algebraic closure of $\\mathbb{R}$ requires only adjoining $i$: $\\mathbb{C} = \\mathbb{R}[i]/(i^2+1)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -203,7 +203,7 @@
     },
     "type": "concept",
     "title": "Complete Factorization: Monic Product of Root Factors",
-    "content": "`monic_prod_roots` proves the complete factorization theorem: every monic polynomial over $\\mathbb{C}$ equals the product of its root factors $(X - r)$, taken over the multiset of roots with multiplicity.\n\nThe proof:\n1. Obtain `Splits (RingHom.id ℂ) p` from `IsAlgClosed.splits_codomain` — every polynomial splits over $\\mathbb{C}$\n2. Show the root count equals the degree via `natDegree_eq_card_roots`\n3. Apply `prod_multiset_X_sub_C_of_monic_of_roots_card_eq` — Mathlib's factorization theorem for monic polynomials whose root count equals their degree\n\nThis is the constructive content of FTA: not just that roots *exist*, but that the polynomial *factors completely* into linear terms. Combined with `card_roots_eq_degree`, this gives the full picture: every degree-$n$ monic polynomial has exactly $n$ roots and factors as $\\prod_{i=1}^n (X - r_i)$.",
+    "content": "`monic_prod_roots` proves the complete factorization theorem: every monic polynomial over $\\mathbb{C}$ equals the product of its root factors $(X - r)$, taken over the multiset of roots with multiplicity.\n\nThe proof:\n1. Obtain `Splits (RingHom.id \u2102) p` from `IsAlgClosed.splits_codomain` \u2014 every polynomial splits over $\\mathbb{C}$\n2. Show the root count equals the degree via `natDegree_eq_card_roots`\n3. Apply `prod_multiset_X_sub_C_of_monic_of_roots_card_eq` \u2014 Mathlib's factorization theorem for monic polynomials whose root count equals their degree\n\nThis is the constructive content of FTA: not just that roots *exist*, but that the polynomial *factors completely* into linear terms. Combined with `card_roots_eq_degree`, this gives the full picture: every degree-$n$ monic polynomial has exactly $n$ roots and factors as $\\prod_{i=1}^n (X - r_i)$.",
     "mathContext": "For monic $p \\in \\mathbb{C}[X]$: $p = \\prod_{r \\in \\text{roots}(p)} (X - r)$, where $\\text{roots}(p)$ is a multiset of cardinality $\\deg(p)$. Comparing coefficients yields **Vieta's formulas**: $e_k(r_1, \\ldots, r_n) = (-1)^k a_{n-k}$, where $e_k$ is the $k$-th elementary symmetric polynomial.",
     "significance": "key",
     "relatedConcepts": [
@@ -226,8 +226,8 @@
       "contains": "Why This Matters"
     },
     "type": "insight",
-    "title": "Why FTA Matters: Algebraic Completeness of ℂ",
-    "content": "The commentary section explains four consequences of FTA:\n\n1. **Algebraic completeness**: $\\mathbb{C}$ is the *terminal* number system for algebra — no further extension is needed to solve polynomial equations. Compare: $\\mathbb{R}$ fails ($x^2+1=0$ has no solution), $\\mathbb{Q}$ fails ($x^2-2=0$), even the algebraic numbers $\\overline{\\mathbb{Q}}$ are algebraically closed but $\\mathbb{C}$ is the canonical completion of $\\mathbb{R}$.\n\n2. **Linear algebra**: Every complex matrix has an eigenvalue (eigenvalues are roots of the characteristic polynomial), so every complex linear map has Jordan normal form — a complete structural decomposition.\n\n3. **Field hierarchy**: $\\mathbb{C}$ is the algebraic closure of both $\\mathbb{R}$ (adjoining $i$) and $\\mathbb{Q}$ (countably many algebraic extensions).\n\n4. **Analysis-algebra bridge**: Despite its algebraic statement, every proof of FTA uses the completeness and/or connectedness of $\\mathbb{C}$ — topological properties unavailable in purely algebraic settings.",
+    "title": "Why FTA Matters: Algebraic Completeness of \u2102",
+    "content": "The commentary section explains four consequences of FTA:\n\n1. **Algebraic completeness**: $\\mathbb{C}$ is the *terminal* number system for algebra \u2014 no further extension is needed to solve polynomial equations. Compare: $\\mathbb{R}$ fails ($x^2+1=0$ has no solution), $\\mathbb{Q}$ fails ($x^2-2=0$), even the algebraic numbers $\\overline{\\mathbb{Q}}$ are algebraically closed but $\\mathbb{C}$ is the canonical completion of $\\mathbb{R}$.\n\n2. **Linear algebra**: Every complex matrix has an eigenvalue (eigenvalues are roots of the characteristic polynomial), so every complex linear map has Jordan normal form \u2014 a complete structural decomposition.\n\n3. **Field hierarchy**: $\\mathbb{C}$ is the algebraic closure of both $\\mathbb{R}$ (adjoining $i$) and $\\mathbb{Q}$ (countably many algebraic extensions).\n\n4. **Analysis-algebra bridge**: Despite its algebraic statement, every proof of FTA uses the completeness and/or connectedness of $\\mathbb{C}$ \u2014 topological properties unavailable in purely algebraic settings.",
     "mathContext": "The Artin-Schreier theorem characterizes algebraically closed fields: a field $K$ is algebraically closed iff it has no proper algebraic extension. For $\\mathbb{C}$: the extension degree $[\\mathbb{C}:\\mathbb{R}] = 2$ is the unique case where a real closed field has algebraic closure of degree 2 (via adjoining $\\sqrt{-1}$). No field of positive characteristic has this property.",
     "significance": "key",
     "relatedConcepts": [
@@ -253,7 +253,7 @@
     },
     "type": "concept",
     "title": "Quadratic Case: FTA Applied to Degree-2 Polynomials",
-    "content": "`quadratic_has_root` proves that every quadratic $az^2 + bz + c$ with $a \\neq 0$ has a complex root, deriving this from the general FTA rather than the quadratic formula.\n\nThe proof is the longest in the file (36 lines) because it must:\n1. **Construct** the polynomial $p = C(a) \\cdot X^2 + C(b) \\cdot X + C(c)$ from scalar coefficients\n2. **Compute degree**: Show $\\deg(p) = 2$ by proving the leading term $C(a) \\cdot X^2$ dominates — requires `degree_C ha` (nonzero constant has degree 0), `degree_X_pow`, and `degree_add_eq_left_of_degree_lt`\n3. **Apply FTA**: `Complex.exists_root` with `0 < 2`\n4. **Translate back**: Convert `IsRoot p z` (polynomial evaluation) to the scalar equation $az^2 + bz + c = 0$\n\nThe degree computation takes 20 lines — a typical pattern in formalized mathematics where 'obvious' facts require careful bookkeeping. The classical quadratic formula $z = (-b \\pm \\sqrt{b^2-4ac})/(2a)$ would be shorter but less general: this proof works uniformly for all characteristics.",
+    "content": "`quadratic_has_root` proves that every quadratic $az^2 + bz + c$ with $a \\neq 0$ has a complex root, deriving this from the general FTA rather than the quadratic formula.\n\nThe proof is the longest in the file (36 lines) because it must:\n1. **Construct** the polynomial $p = C(a) \\cdot X^2 + C(b) \\cdot X + C(c)$ from scalar coefficients\n2. **Compute degree**: Show $\\deg(p) = 2$ by proving the leading term $C(a) \\cdot X^2$ dominates \u2014 requires `degree_C ha` (nonzero constant has degree 0), `degree_X_pow`, and `degree_add_eq_left_of_degree_lt`\n3. **Apply FTA**: `Complex.exists_root` with `0 < 2`\n4. **Translate back**: Convert `IsRoot p z` (polynomial evaluation) to the scalar equation $az^2 + bz + c = 0$\n\nThe degree computation takes 20 lines \u2014 a typical pattern in formalized mathematics where 'obvious' facts require careful bookkeeping. The classical quadratic formula $z = (-b \\pm \\sqrt{b^2-4ac})/(2a)$ would be shorter but less general: this proof works uniformly for all characteristics.",
     "mathContext": "For $a \\neq 0$: $\\deg(aX^2 + bX + c) = 2$ since $\\deg(aX^2) = 2$ and $\\deg(bX + c) \\leq 1 < 2$. FTA gives $\\exists z, az^2 + bz + c = 0$. The classical quadratic formula identifies the roots explicitly, but FTA guarantees existence without computation.",
     "significance": "supporting",
     "relatedConcepts": [

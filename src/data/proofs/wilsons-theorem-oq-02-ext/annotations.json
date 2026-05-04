@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-gauss-wilson-abstract",
+    "type": "theorem",
+    "label": "gaussWilson_abstract_ext",
+    "title": "Gauss-Wilson Theorem (Complete Characterization)",
+    "body": "gaussWilson_abstract_ext: for n ≥ 3, ∏(ZMod n)ˣ = -1 ↔ IsCyclic (ZMod n)ˣ. This is the complete group-theoretic characterization of the Gauss-Wilson product. The cyclic case (∏ = -1) uses Mathlib's Wilson theorem infrastructure; the non-cyclic case (∏ = 1 ≠ -1) is proved via the two-involution trick. Together they show that the product distinguishes cyclic from non-cyclic unit groups.",
+    "location": { "line": 490 },
+    "tags": ["main-theorem", "gauss-wilson", "characterization"]
+  },
+  {
+    "id": "ann-prod-non-cyclic",
+    "type": "theorem",
+    "label": "prod_units_one_of_not_cyclic_ext",
+    "title": "Product of Units is 1 When Non-Cyclic",
+    "body": "prod_units_one_of_not_cyclic_ext: for n ≥ 3 with (ZMod n)× non-cyclic, ∏(ZMod n)ˣ = 1. The proof: (1) reduce to ∏S where S = {x | x²=1} via pairing non-square-root units with their inverses; (2) apply the two-involution trick: FPF involution x↦cx gives ∏S = c^(|S|/2); FPF involution x↦cdx gives ∏S = (cd)^(|S|/2); comparing forces d^(|S|/2) = 1 and then c^(|S|/2) = 1, so ∏S = 1.",
+    "location": { "line": 362 },
+    "tags": ["non-cyclic", "product", "two-involution"]
+  },
+  {
+    "id": "ann-prod-involution",
+    "type": "theorem",
+    "label": "prod_involution_const",
+    "title": "FPF Involution with Constant Pair Product",
+    "body": "prod_involution_const: in a finite commutative group G with FPF involution σ satisfying x·σ(x) = c for all x, ∏G = c^(|G|/2). This is the abstract engine of the two-involution trick. Proved by telescoping: pair each x with σ(x), each pair contributes c, and there are |G|/2 pairs. Works for any commutative group, not just ZMod.",
+    "location": { "line": 99 },
+    "tags": ["involution", "product", "abstract-algebra"]
+  },
+  {
+    "id": "ann-fpf-even",
+    "type": "theorem",
+    "label": "even_card_of_fpf_involution",
+    "title": "FPF Involution Implies Even Cardinality",
+    "body": "even_card_of_fpf_involution: a fixed-point-free involution on a finite set implies even cardinality. Proved by constructing an explicit bijection between the set and pairs. Required for prod_involution_const (to make sense of c^(|G|/2) for natural number exponents).",
+    "location": { "line": 59 },
+    "tags": ["involution", "cardinality", "even"]
+  },
+  {
+    "id": "ann-card-s-ge3",
+    "type": "theorem",
+    "label": "card_sq_eq_one_ge_three_of_not_cyclic_zmod",
+    "title": "Non-Cyclic 2-Torsion Has Size ≥ 3",
+    "body": "card_sq_eq_one_ge_three_of_not_cyclic_zmod: for n ≥ 3 with (ZMod n)× non-cyclic, |{x : (ZMod n)ˣ | x² = 1}| ≥ 3. This follows directly from GaussWilsonNonCyclic, which proves ∃ x with x²=1, x ≠ ±1. The three elements are 1, -1, and that third root, giving cardinality ≥ 3 and allowing the two-involution trick to pick distinct c, d.",
+    "location": { "line": 278 },
+    "tags": ["2-torsion", "cardinality", "non-cyclic"]
+  }
+]

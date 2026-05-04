@@ -82,7 +82,7 @@
       "startLine": 152,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "even_card_fpf_invol: Fixed-Point-Free Involutions Yield Even Sets",
     "content": "**even_card_fpf_invol**: If $f : S \\to S$ is a fixed-point-free involution on a finite set $S$ (i.e., $f(f(x)) = x$, $f(x) \\in S$, $f(x) \\neq x$ for all $x \\in S$), then $|S|$ is even. Proved by **strong induction** on $|S|$: pick $x \\in S$, pair with $y = f(x) \\neq x$, remove both to get $S' = S \\setminus \\{x, y\\}$, verify $f$ restricts to a fixed-point-free involution on $S'$, apply induction, and conclude $|S| = |S'| + 2$.",
     "mathContext": "The proof uses `Finset.strongInduction`. The restriction to $S'$: if $a \\in S'$, then $f(a) \\neq x$ (else $f(f(a)) = f(x) = y$, so $a = y \\notin S'$) and $f(a) \\neq y$ (else $f(f(a)) = f(y) = x$, so $a = x \\notin S'$). The cardinality identity $|S| = |S'| + 2$ uses `Finset.card_erase_of_mem` twice. This abstract lemma is the key engine for `interior_doors_even`: the adjacency map $\\text{adjMap}$ is a fixed-point-free involution on interior doors (using `adj_symm` for involution and `adj_ne` for fixed-point-free), so the number of interior doors is even.",
@@ -107,7 +107,7 @@
       "startLine": 323,
       "endLine": 394
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "abstract_door_parity: Per-Simplex Door Count Has Same Parity as Surjectivity",
     "content": "**abstract_door_parity**: For any $f : \\{0,\\ldots,d\\} \\to \\{0,\\ldots,d\\}$, the number of door positions $k$ (where removing index $k$, remaining values cover $\\{0,\\ldots,d-1\\}$) has parity 1 if $f$ is surjective, 0 otherwise. This is the fundamental per-simplex fact: **FC simplices contribute 1 door (odd), non-FC simplices contribute 0 or 2 doors (even)**.",
     "mathContext": "Four cases: (1) **$f$ surjective**: unique $k_0$ with $f(k_0) = d$; removing $k_0$ leaves a bijection onto $\\{0,\\ldots,d-1\\}$ \u2014 exactly 1 door. (2) **$d$ not in image**: all $d+1$ values land in $\\{0,\\ldots,d-1\\}$, some color appears twice, impossible to eliminate \u2014 0 doors. (3) **All values $< d$, $f$ not surjective on $\\{0,\\ldots,d-1\\}$**: some $j_0$ never appears \u2014 0 doors. (4) **All values $< d$, $g : \\text{Fin}(d+1) \\to \\text{Fin}(d)$ surjective**: by `door_parity_all_small`, exactly 2 doors (the two positions mapping to the repeated color $c_0$, which appears exactly twice). The helper `door_parity_all_small` (line 207) proves: if $d+1$ values in $\\{0,\\ldots,d-1\\}$ are all covered, exactly one color has count 2 (excess count $= 1$), giving exactly 2 door positions.",
@@ -132,7 +132,7 @@
       "startLine": 429,
       "endLine": 471
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "interior_doors_even: Interior Doors Pair Up Under the Adjacency Involution",
     "content": "**interior_doors_even**: The number of interior door pairs $(s, k)$ \u2014 those satisfying `isDoorAt` AND $\\text{adj}(s,k) \\neq \\text{none}$ \u2014 is even. The proof shows `adjMap` (which maps $(s,k)$ to its adjacent $(s', k')$ when interior) is a **fixed-point-free involution** on the set of interior doors, then applies `even_card_fpf_invol`.",
     "mathContext": "Three conditions for `even_card_fpf_invol`: (1) **Involution**: $\\text{adjMap}(\\text{adjMap}(s,k)) = (s,k)$ follows from `adj_symm` \u2014 if $\\text{adj}(s,k) = (s',k')$ then $\\text{adj}(s',k') = (s,k)$. (2) **Closure**: $\\text{adjMap}(s,k) = (s',k')$ is an interior door by `door_transfer` (line 420) \u2014 adjacent facets share door status because `adj_vertices` gives them identical $(d-1)$-vertex sets. (3) **Fixed-point-free**: $\\text{adjMap}(s,k) \\neq (s,k)$ by `adj_ne` (adjacent simplices are distinct, so $s' \\neq s$). The **door_transfer** lemma is the crucial bridge: it shows `isDoorAt` depends only on the vertex set of the shared facet, not on which simplex we view it from.",
@@ -157,7 +157,7 @@
       "startLine": 479,
       "endLine": 506
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "no_boundary_doors_face_lt: Sperner Kills All Non-Face-d Boundary Doors",
     "content": "**no_boundary_doors_face_lt**: For a Sperner coloring $c$ and a boundary facet on face $k < d$ (i.e., $\\text{adj}(s,k) = \\text{none}$), there is no door at position $k$. The proof: a door at $k < d$ requires color $k$ to appear among the non-$k$ vertices. But `boundary_face` says all non-$k$ vertices lie on face $k$ of the simplex, and the Sperner condition forbids color $k$ on face $k$. Contradiction. **Corollary** (boundary_door_is_last_face, line 491): every boundary door has $k = d$.",
     "mathContext": "The Sperner condition `IsSperner c` is: $\\forall v, k : \\text{onFace}(v, k) \\Rightarrow c(v) \\neq k$. The door condition at $k < d$ requires $\\exists i \\neq k : c(v_{s,i}) = k$ (color $k$ appears). The `boundary_face` axiom gives $\\text{onFace}(v_{s,j}, k)$ for all $j \\neq k$ when $\\text{adj}(s,k) = \\text{none}$. So every candidate witness $i \\neq k$ has $v_{s,i}$ on face $k$, where Sperner forbids color $k$. The Lean proof uses `Fin.ext rfl` to show $\\text{castSucc}\\langle k, h_k \\rangle = k$ as a Fin element, connecting the door condition's color target to the Sperner condition's face index.",
@@ -182,7 +182,7 @@
       "startLine": 601,
       "endLine": 642
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "sperner_parity: The Sperner Parity Theorem",
     "content": "**sperner_parity**: The number of fully-colored simplices has the same parity as the number of boundary doors on face $d$: $$|FC| \\equiv |\\{(s,k) : \\text{door}(s,k) \\wedge \\text{adj}=\\text{none} \\wedge k = d\\}| \\pmod{2}.$$ This is the **main quantitative result** of the file \u2014 Sperner's lemma (existence of an FC simplex) follows when the boundary count is odd.",
     "mathContext": "The `calc` proof chain (lines 626\u2013642): $$|FC| \\equiv \\sum_s |\\text{doors}(s)| \\equiv |\\text{all doors}| \\equiv |\\text{interior}| + |\\text{boundary}| \\equiv |\\text{boundary on face }d| \\pmod{2}$$ Step (1): `per_simplex_door_parity` (each FC contributes 1, non-FC contributes even). Step (2): `card_doors_eq_sum` (product counting: total doors = sum of per-simplex doors). Step (3): `doors_partition` (interior $\\cup$ boundary, disjoint). Step (4): $|\\text{interior}|$ even from `interior_doors_even`, using `hm` to write $|\\text{interior}| = m + m$. Step (5): `boundary_doors_eq_face_d` (Sperner kills all boundary doors except on face $d$). The `sum_mod_congr` helper (line 533) handles the sum-mod manipulation in step (1).",
@@ -207,7 +207,7 @@
       "startLine": 654,
       "endLine": 667
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "sperner_ndim: n-Dimensional Sperner's Lemma",
     "content": "**sperner_ndim**: For any abstract triangulation $K$ and Sperner coloring $c$, if the number of boundary doors on face $d$ is odd, then a fully-colored simplex exists. The proof is three lines: odd boundary doors $\\Rightarrow |FC| \\equiv 1 \\pmod{2}$ (by `sperner_parity`) $\\Rightarrow |FC| \\geq 1$ $\\Rightarrow$ FC simplex exists. The **boundary-odd hypothesis** is the inductive input: for concrete triangulations, dischargeable by induction on $d$ (base case $d=0$: trivially FC).",
     "mathContext": "The theorem takes `hbdry : Odd (|boundary doors on face d|)` as a hypothesis rather than proving it, cleanly separating the abstract parity proof from the triangulation-specific inductive argument. In practice: for the Freudenthal triangulation, the boundary face $d$ restriction is a lower-dimensional Freudenthal triangulation, and boundary door oddness follows by induction. The abstraction is suitable for **Mathlib contribution** (mathlib4#25231): any library that constructs a `SpernerTriangulation` instance immediately inherits the Sperner parity theorem for free. **Kuhn's path-following (1960)** makes the proof constructive: starting at any boundary door on face $d$, follow the unique opposite door inside each simplex to reach an FC simplex. In Lean, `Finset.card_pos` converts the odd (hence nonzero) cardinality to nonemptiness.",

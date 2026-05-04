@@ -66,9 +66,10 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 183,
+    "lineCount": 840,
     "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**The Chain from Cubic to Quartic**\n\nWhen Lodovico Ferrari (Cardano's student) discovered how to solve the general quartic equation in the 1540s, he reduced it to a cubic — now called the *resolvent cubic*. The method, published in Cardano's *Ars Magna* (1545), works as follows:\n\nGiven the depressed quartic $y^4 + py^2 + qy + r = 0$, Ferrari introduced an auxiliary variable $m$ satisfying\n\n$$8m^3 + 20pm^2 + (16p^2 - 8r)m + (4p^3 - 4pr - q^2) = 0$$\n\nThis *resolvent cubic* in $m$ is the bridge: once you can solve it (which Cardano's formula does), you can solve the quartic by completing the square twice.\n\nThe natural question is: how does Cardano's formula apply here? The resolvent cubic has a quadratic term ($20pm^2$), but Cardano's formula is designed for the *depressed* form (no quadratic term). The answer is the **Tschirnhaus substitution**: replacing $m = t - 5p/6$ eliminates the quadratic term and reduces the resolvent to a depressed cubic $t^3 + P_r t + Q_r = 0$ — exactly the form Cardano can solve.\n\nThis file proves the key algebraic identity connecting the two: evaluating the resolvent cubic at $t - 5p/6$ gives exactly $8$ times the depressed form. This is the precise mathematical bridge between Wiedijk #37 and Wiedijk #46.",
@@ -101,7 +102,7 @@
       "GeneralQuartic"
     ],
     "namespace": "SolutionOfCubicOQ05",
-    "lineCount": 183,
+    "lineCount": 840,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 3,

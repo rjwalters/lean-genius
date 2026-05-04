@@ -49,7 +49,7 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Automatic Foundation",
     "content": "A beautiful consequence: in the derived membership, x never contains itself! This follows automatically from the reflexivity of relative identity: Id(x, x, x) always holds, so ¬Id(x, x, x) is always false.",
     "mathContext": "This means D1 automatically produces membership relations satisfying the Foundation axiom. The identity axioms encode well-foundedness for free.",
@@ -92,7 +92,7 @@
       "startLine": 146,
       "endLine": 153
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Same Status Characterization",
     "content": "We prove Id∈(x, y, z) ↔ (y ∈ x ↔ z ∈ x). This elegant characterization shows that D2-identity is exactly biconditional membership: y and z are identified by x iff they have logically equivalent membership in x.",
     "mathContext": "The proof uses case analysis on whether y ∈ x. This characterization makes the connection to Quine explicit and simplifies later reasoning.",
@@ -112,7 +112,7 @@
       "startLine": 146,
       "endLine": 153
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Transitivity by Case Analysis",
     "content": "The transitivity proof is the most intricate. Given Id∈(x, y, z) and Id∈(x, z, w), we case-split on which disjunct holds for each. Two cases lead to contradictions (z is both member and non-member), and two cases give the result directly.",
     "mathContext": "The four cases: (both,both), (both,neither), (neither,both), (neither,neither). The middle two are impossible by consistency. This is a nice example of exhaustive case analysis in Lean.",
@@ -154,7 +154,7 @@
       "startLine": 249,
       "endLine": 259
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Round-Trip Theorem",
     "content": "THE key theorem: starting from membership ∈, going to identity via D2, then back to membership via D1, we recover the original: ∈' ↔ ∈. This establishes that identity and membership are mutually interpretable.",
     "mathContext": "The proof expands definitions and uses Foundation crucially. The expression simplifies because x ∉ x (by Foundation), making the 'y ∈ x ∧ x ∈ x' disjunct always false. What remains is ¬(¬y ∈ x), which is just y ∈ x.",
@@ -196,7 +196,7 @@
       "startLine": 265,
       "endLine": 281
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "The Power of tauto",
     "content": "The alternative proof using 'tauto' is remarkably short: just unfold definitions, introduce the Foundation hypothesis, and let the tautology checker handle the rest. This demonstrates that the core logic is purely propositional.",
     "mathContext": "The 'tauto' tactic in Lean handles classical propositional logic automatically. Once we have ¬(x ∈ x) as a hypothesis, the equivalence MemFromId ↔ mem is a propositional tautology.",
@@ -217,7 +217,7 @@
       "startLine": 314,
       "endLine": 325
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Universality Theorem",
     "content": "The culmination: identity theory can express all of mathematics. Since ZF is a universal foundation and derived membership ∈' is equivalent to original ∈, any ZF axiom true of ∈ is equally true of ∈'. Identity theory + ZF-on-∈' is consistent.",
     "mathContext": "This is a meta-theorem: it says identity theory is 'open-ended' in Etter's terminology—capable of expressing any mathematical structure. The three-place identity predicate, with its minimal axioms, suffices for all of mathematics.",

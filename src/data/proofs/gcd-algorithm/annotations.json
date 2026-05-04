@@ -56,7 +56,7 @@
       "startLine": 66,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Euclidean Recurrence",
     "content": "**The Core Identity**:\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\nThis is the heart of the algorithm. The key insight is that common divisors are preserved:\n\n- If $d | a$ and $d | b$, then $d | (a \\mod b)$ since $a \\mod b = a - qb$\n- Conversely, if $d | b$ and $d | (a \\mod b)$, then $d | a$ since $a = qb + (a \\mod b)$\n\nThus the two pairs have exactly the same common divisors.",
     "mathContext": "In Lean: `theorem euclidean_recurrence (a : ℕ) {b : ℕ} (hb : b ≠ 0) : Nat.gcd a b = Nat.gcd b (a % b)`. The proof uses `Nat.gcd_comm` twice and `Nat.gcd_rec`. Key supporting fact: $a = \\lfloor a/b \\rfloor \\cdot b + (a \\bmod b)$, so any $d$ dividing $a$ and $b$ also divides $a - \\lfloor a/b \\rfloor \\cdot b = a \\bmod b$. The invariant `gcd (a, b) = gcd (b, a % b)` holds because both sides represent the same lattice meet in $(\\mathbb{N}, \\mid)$.",
@@ -80,7 +80,7 @@
       "startLine": 79,
       "endLine": 86
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Base Case: GCD with Zero",
     "content": "**Base Case**: $\\gcd(a, 0) = a$\n\nThis makes sense because:\n- Every number divides 0 (since $0 = 0 \\cdot n$ for any $n$)\n- So the common divisors of $a$ and $0$ are exactly the divisors of $a$\n- The greatest of these is $a$ itself\n\nThis base case terminates the recursion.",
     "mathContext": "In Lean: `theorem gcd_zero_right (a : ℕ) : Nat.gcd a 0 = a := Nat.gcd_zero_right a`. This follows because `∀ n, n ∣ 0` (since `0 = 0 * n`), so the set of common divisors of $a$ and $0$ equals the set of divisors of $a$, whose maximum in the divisibility order is $a$ itself. Dually, `Nat.gcd_zero_left : Nat.gcd 0 a = a`. Together these give $0$ as the identity of the GCD monoid $(\\mathbb{N}, \\gcd, 0)$.",
@@ -104,7 +104,7 @@
       "startLine": 88,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "GCD is Commutative",
     "content": "**Symmetry**: $\\gcd(a, b) = \\gcd(b, a)$\n\nThe order of arguments doesn't matter for GCD. This follows directly from the definition: the common divisors of $a$ and $b$ are exactly the common divisors of $b$ and $a$.",
     "mathContext": "In Lean: `theorem gcd_comm (a b : ℕ) : Nat.gcd a b = Nat.gcd b a := Nat.gcd_comm a b`. Proof sketch: the set of common divisors is symmetric — $\\{d : d \\mid a \\land d \\mid b\\} = \\{d : d \\mid b \\land d \\mid a\\}$ — so their maxima coincide. Commutativity is one of the defining properties of a semilattice: $(\\mathbb{N}, \\gcd)$ is a commutative, idempotent, associative monoid (with identity $0$).",
@@ -127,7 +127,7 @@
       "startLine": 96,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "GCD Divides Both Arguments",
     "content": "**Correctness Property 1**: The GCD divides both inputs.\n\n$$\\gcd(a, b) \\mid a \\text{ and } \\gcd(a, b) \\mid b$$\n\nThis is half of what makes it a *common* divisor. The proofs follow directly from the definition of GCD in Mathlib.",
     "mathContext": "In Lean: `Nat.gcd_dvd_left a b : Nat.gcd a b ∣ a` and `Nat.gcd_dvd_right a b : Nat.gcd a b ∣ b`. The proofs use strong induction on `b`: base case `gcd a 0 = a ∣ a`; inductive step uses `gcd a b = gcd b (a % b)` and the inductive hypothesis that `gcd b (a % b) ∣ b` and `gcd b (a % b) ∣ (a % b)`, from which `gcd b (a % b) ∣ a` follows since `a = q * b + (a % b)`.",
@@ -150,7 +150,7 @@
       "startLine": 108,
       "endLine": 114
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "GCD is the Greatest",
     "content": "**Correctness Property 2**: Any common divisor divides the GCD.\n\nIf $d \\mid a$ and $d \\mid b$, then $d \\mid \\gcd(a, b)$.\n\nThis means $\\gcd(a, b)$ is the *greatest* common divisor because every other common divisor must be smaller (since it divides the GCD).\n\n**Universal Property**: This characterizes GCD uniquely.",
     "mathContext": "In Lean: `Nat.dvd_gcd : d ∣ a → d ∣ b → d ∣ Nat.gcd a b`. Proof by induction: base case `d ∣ gcd a 0 = a` from `d ∣ a`; inductive step `d ∣ gcd a b = gcd b (a % b)` from `d ∣ b` and `d ∣ (a % b)` (which follows from `d ∣ a` and `d ∣ b` since `a % b = a - q * b`). Combined with `gcd_dvd_left/right`, this gives the universal property: $d \\mid \\gcd(a,b) \\iff d \\mid a \\land d \\mid b$.",
@@ -174,7 +174,7 @@
       "startLine": 116,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complete Characterization",
     "content": "**The Universal Property of GCD**:\n\n$d = \\gcd(a, b)$ if and only if:\n1. $d \\mid a$ and $d \\mid b$ (it's a common divisor)\n2. For all $e$: if $e \\mid a$ and $e \\mid b$, then $e \\mid d$ (it's the greatest)\n\nThis completely characterizes the GCD and shows it's unique.",
     "mathContext": "In Lean: `theorem gcd_characterization (a b d : ℕ) : d = Nat.gcd a b ↔ (d ∣ a ∧ d ∣ b ∧ ∀ e, e ∣ a → e ∣ b → e ∣ d)`. The proof uses `Nat.dvd_antisymm` for uniqueness: both `d ∣ gcd a b` (from `Nat.dvd_gcd`) and `gcd a b ∣ d` (applying the maximality hypothesis to `gcd a b`, which divides both `a` and `b`). This is the lattice-theoretic characterization of meet: $d = a \\sqcap b$ iff $d \\leq a$, $d \\leq b$, and $\\forall e, e \\leq a \\land e \\leq b \\Rightarrow e \\leq d$ (where $\\leq$ is the divisibility order).",
@@ -249,7 +249,7 @@
       "startLine": 162,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Consecutive Integers are Coprime",
     "content": "For any $n$, we have $\\gcd(n, n+1) = 1$.\n\nIntuition: if $d$ divides both $n$ and $n+1$, then $d$ divides their difference $(n+1) - n = 1$. So $d = 1$.\n\nThis is why consecutive Fibonacci numbers are always coprime!",
     "mathContext": "In Lean: `theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1)` proved via `Nat.coprime_self_add_right` and `Nat.coprime_one_right`. The mathematical argument: if $d \\mid n$ and $d \\mid (n+1)$, then $d \\mid 1$, so $d = 1$. This specializes to `Nat.Coprime.symm (Nat.coprime_succ_self n)`. Related: `Nat.Coprime (Fibonacci n) (Fibonacci (n+1))` — consecutive Fibonacci numbers are coprime, which is why they give the worst case for the Euclidean algorithm.",
@@ -272,7 +272,7 @@
       "startLine": 169,
       "endLine": 178
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Bezout's Identity",
     "content": "**Bezout's Identity**: For any $a, b \\in \\mathbb{N}$, there exist integers $x, y$ such that:\n\n$$\\gcd(a, b) = ax + by$$\n\nThe **extended Euclidean algorithm** computes these coefficients alongside the GCD.\n\n**Applications**:\n- Solving linear Diophantine equations $ax + by = c$\n- Computing modular multiplicative inverses\n- RSA key generation\n\n**Example**: $\\gcd(35, 15) = 5 = 35 \\cdot 1 + 15 \\cdot (-2)$",
     "mathContext": "In Lean: `theorem bezout_identity (a b : ℕ) : ∃ x y : ℤ, (Nat.gcd a b : ℤ) = a * x + b * y := ⟨Nat.gcdA a b, Nat.gcdB a b, Nat.gcd_eq_gcd_ab a b⟩`. The note to ℤ is crucial: Bezout coefficients can be negative (e.g., $\\gcd(3,5) = 5 \\cdot 2 + 3 \\cdot (-3) = 1$). In Mathlib, `Nat.gcdA` and `Nat.gcdB` are the extended Euclidean algorithm outputs. The identity $ax + by = 1$ for coprime $a, b$ gives the modular inverse: $ax \\equiv 1 \\pmod{b}$.",
@@ -296,7 +296,7 @@
       "startLine": 180,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Bezout Coefficients",
     "content": "Mathlib provides explicit Bezout coefficients via `Nat.gcdA` and `Nat.gcdB`:\n\n$$\\gcd(a, b) = a \\cdot \\text{gcdA}(a, b) + b \\cdot \\text{gcdB}(a, b)$$\n\nThese are computed by the extended Euclidean algorithm, which tracks the linear combination as it computes the GCD.",
     "mathContext": "In Lean: `theorem bezout_equation (a b : ℕ) : (Nat.gcd a b : ℤ) = a * Nat.gcdA a b + b * Nat.gcdB a b := Nat.gcd_eq_gcd_ab a b`. The coercion `(Nat.gcd a b : ℤ)` is needed since `Nat.gcdA : ℕ → ℕ → ℤ` returns integers. The extended algorithm tracks: at each step $(r_i, x_i, y_i)$ with $r_i = a x_i + b y_i$, updating via $r_{i+1} = r_{i-1} - q_i r_i$, $x_{i+1} = x_{i-1} - q_i x_i$, $y_{i+1} = y_{i-1} - q_i y_i$.",
@@ -319,7 +319,7 @@
       "startLine": 185,
       "endLine": 185
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Examples",
     "content": "**Tracing gcd(48, 18)**:\n\n```\ngcd(48, 18) = gcd(18, 48 mod 18) = gcd(18, 12)\ngcd(18, 12) = gcd(12, 18 mod 12) = gcd(12, 6)\ngcd(12, 6)  = gcd(6, 12 mod 6)   = gcd(6, 0)\ngcd(6, 0)   = 6\n```\n\nOnly 4 steps! The algorithm is remarkably efficient.\n\nEach step is verified in Lean using `native_decide` to compute the result directly.",
     "mathContext": "In Lean: each step is verified by `native_decide`, which compiles the decision to native code and evaluates. For `gcd(48, 18) = 6`: the algorithm runs $48 = 2 \\cdot 18 + 12$, $18 = 1 \\cdot 12 + 6$, $12 = 2 \\cdot 6 + 0$, terminating in 3 steps. `native_decide` calls `Nat.decEq` on the reduced expression. Step-tracing examples serve as `#eval`-style tests within the proof system, confirmed by the kernel.",

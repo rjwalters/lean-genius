@@ -63,7 +63,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 296,
-    "assumptions": "2 axioms: chaotic_ordering_rationals, chaotic_ordering_k_term. 0 sorries."
+    "assumptions": "2 axioms: chaotic_ordering_rationals, chaotic_ordering_k_term. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**Erdos Problem #194**\n\nThis problem asks about the structure of orderings (enumerations) of the real numbers, specifically whether they must contain monotone arithmetic progressions.\n\n**The Question:**\nGiven any way of listing the real numbers in a sequence, must there exist three terms that form both an arithmetic progression and are monotone (increasing or decreasing) in the listing order?\n\n**Resolution:**\nArdal, Brown, and Jungic (2011) showed the surprising answer is NO. They constructed \"chaotic orderings\" of the rationals (and by extension, the reals) that contain no monotone 3-term arithmetic progressions. This disproves the natural intuition that dense sets must have such structures in any enumeration.",
@@ -139,7 +140,7 @@
       "summary": "chaotic_ordering_k_term, chaotic_ordering_reals extensions",
       "startLine": 221,
       "endLine": 244,
-      "mathContext": "Axiomatized: chaotic_ordering_k_term (extension to k >= 3). Placeholder True-stub: chaotic_ordering_reals (statement simplified to \u2203 ordering : \u211d \u2192 \u2115, True, full uncountable-ordering statement not formalized)."
+      "mathContext": "Axiomatized: chaotic_ordering_k_term (extension to k >= 3). Placeholder True-stub: chaotic_ordering_reals (statement simplified to ∃ ordering : ℝ → ℕ, True, full uncountable-ordering statement not formalized)."
     },
     {
       "id": "related",

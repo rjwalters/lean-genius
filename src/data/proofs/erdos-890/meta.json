@@ -23,7 +23,8 @@
     "axiomCount": 2,
     "lineCount": 210,
     "assumptions": "2 axioms: erdos_selfridge_lower_bound, classical_omega_limsup. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Erdős and Selfridge studied $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$ in their 1967 paper [ErSe67], where $\\omega(m)$ counts the distinct prime divisors of $m$. The Hardy-Ramanujan theorem (1917) established that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős-Kac theorem (1940) showed $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is asymptotically normal. For the cumulative function $S_k(n)$, Erdős and Selfridge proved the lower bound $\\liminf_{n \\to \\infty} S_k(n) \\geq k + \\pi(k) - 1$ using Pólya's 1918 theorem that $k$-smooth numbers (those with all prime factors $\\leq k$) have unbounded gaps: among $n, n+1, \\ldots, n+k-1$, all but at most one must have a prime factor $> k$. This yields at least $k + \\pi(k) - 1$ distinct prime factors in total. The two open conjectures sharpen this: (1) $\\liminf S_k(n) \\leq k + \\pi(k)$, which combined with the lower bound would pin the liminf to $k + \\pi(k) - 1$ or $k + \\pi(k)$; and (2) $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$, generalizing the classical single-integer result to consecutive blocks. The problem connects to Jacobsthal's function $g(k)$ (the maximal gap in $\\{1, \\ldots, m\\}$ coprime to the first $k$ primes) and to recent work on the distribution of $\\omega$ in short intervals.",

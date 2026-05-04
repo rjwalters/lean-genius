@@ -1,10 +1,10 @@
 {
   "id": "erdos-353",
-  "title": "Erd\u0151s Problem #353: Geometric Configurations in Sets of Infinite Measure",
+  "title": "Erdős Problem #353: Geometric Configurations in Sets of Infinite Measure",
   "slug": "erdos-353",
-  "description": "Let A \u2286 \u211d\u00b2 have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kova\u010d 2023).",
+  "description": "Let A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kovač 2023).",
   "meta": {
-    "author": "Erd\u0151s-Mauldin, Kova\u010d (2023), Koizumi (2025)",
+    "author": "Erdős-Mauldin, Kovač (2023), Koizumi (2025)",
     "sourceUrl": "https://erdosproblems.com/353",
     "date": "",
     "status": "axiomatized",
@@ -48,18 +48,19 @@
       "HasCongruentSides for polygons",
       "Configuration existence predicates (HasTriangleWithArea, etc.)",
       "Koizumi's three main theorems as axioms",
-      "Kova\u010d's parallelogram counterexample axiom",
-      "Kova\u010d-Predojevi\u0107 cyclic quadrilateral theorem"
+      "Kovač's parallelogram counterexample axiom",
+      "Kovač-Predojević cyclic quadrilateral theorem"
     ],
     "axiomCount": 4,
     "lineCount": 445,
-    "assumptions": "4 axiom(s): Koizumi's three main theorems (isosceles trapezoid, isosceles triangle, right triangle) and Kova\u010d-Predojevi\u0107 cyclic quadrilateral theorem are stated as axioms."
+    "assumptions": "4 axiom(s): Koizumi's three main theorems (isosceles trapezoid, isosceles triangle, right triangle) and Kovač-Predojević cyclic quadrilateral theorem are stated as axioms.",
+    "theoremCount": 8
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #353**\n\nThis problem explores what geometric configurations must appear in sets of infinite measure in the plane.\n\n**Key History:**\n- Erd\u0151s-Mauldin (unpublished): Claimed true for trapezoids\n- Kova\u010d (2023): Proved trapezoids work; showed parallelograms can fail\n- Kova\u010d-Predojevi\u0107 (2024): Proved cyclic quadrilaterals; congruent sides counterexample\n- Koizumi (2025): Complete resolution for isosceles trapezoids, triangles, and right triangles\n\n**Mathematical Setting:**\nThe problem connects geometric measure theory with combinatorial geometry. Infinite measure ensures sufficient point density to guarantee configurations.",
-    "problemStatement": "**Problem Statement**\n\nLet $A \\subseteq \\mathbb{R}^2$ be a measurable set with infinite Lebesgue measure.\n\nMust $A$ contain the vertices of:\n1. An isosceles trapezoid of area 1?\n2. An isosceles triangle of area 1?\n3. A right-angled triangle of area 1?\n4. A cyclic quadrilateral of area 1?\n5. A polygon with congruent sides of area 1?\n\n**Answers:**\n- Isosceles trapezoid: **YES** (Koizumi 2025)\n- Isosceles triangle: **YES** (Koizumi 2025)\n- Right-angled triangle: **YES** (Koizumi 2025)\n- Cyclic quadrilateral: **YES** (Kova\u010d-Predojevi\u0107 2024)\n- Parallelogram: **NO** (Kova\u010d 2023)\n- Congruent-sided polygon: **NOT ALWAYS** (Kova\u010d-Predojevi\u0107 2024)",
-    "text": "Let A \u2286 \u211d\u00b2 have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kova\u010d 2023).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Measure Setup:** Define HasInfiniteMeasure using Lebesgue measure\n\n2. **Geometric Predicates:** Define triangleArea, quadrilateralArea, and shape predicates\n\n3. **Configuration Existence:** Predicates for shapes with vertices in A of given area\n\n4. **Main Theorems:** State Koizumi's results as axioms\n\n5. **Counterexamples:** Kova\u010d's parallelogram and congruent sides results\n\n6. **Scaling:** Show area can be any positive value, not just 1",
+    "historicalContext": "**Erdős Problem #353**\n\nThis problem explores what geometric configurations must appear in sets of infinite measure in the plane.\n\n**Key History:**\n- Erdős-Mauldin (unpublished): Claimed true for trapezoids\n- Kovač (2023): Proved trapezoids work; showed parallelograms can fail\n- Kovač-Predojević (2024): Proved cyclic quadrilaterals; congruent sides counterexample\n- Koizumi (2025): Complete resolution for isosceles trapezoids, triangles, and right triangles\n\n**Mathematical Setting:**\nThe problem connects geometric measure theory with combinatorial geometry. Infinite measure ensures sufficient point density to guarantee configurations.",
+    "problemStatement": "**Problem Statement**\n\nLet $A \\subseteq \\mathbb{R}^2$ be a measurable set with infinite Lebesgue measure.\n\nMust $A$ contain the vertices of:\n1. An isosceles trapezoid of area 1?\n2. An isosceles triangle of area 1?\n3. A right-angled triangle of area 1?\n4. A cyclic quadrilateral of area 1?\n5. A polygon with congruent sides of area 1?\n\n**Answers:**\n- Isosceles trapezoid: **YES** (Koizumi 2025)\n- Isosceles triangle: **YES** (Koizumi 2025)\n- Right-angled triangle: **YES** (Koizumi 2025)\n- Cyclic quadrilateral: **YES** (Kovač-Predojević 2024)\n- Parallelogram: **NO** (Kovač 2023)\n- Congruent-sided polygon: **NOT ALWAYS** (Kovač-Predojević 2024)",
+    "text": "Let A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kovač 2023).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Measure Setup:** Define HasInfiniteMeasure using Lebesgue measure\n\n2. **Geometric Predicates:** Define triangleArea, quadrilateralArea, and shape predicates\n\n3. **Configuration Existence:** Predicates for shapes with vertices in A of given area\n\n4. **Main Theorems:** State Koizumi's results as axioms\n\n5. **Counterexamples:** Kovač's parallelogram and congruent sides results\n\n6. **Scaling:** Show area can be any positive value, not just 1",
     "keyInsights": [
       "**Infinite Measure is Key:** Ensures enough points exist to form configurations",
       "**Parallelograms are Special:** Two parallel pairs give more constraints than one",
@@ -107,7 +108,7 @@
     },
     {
       "id": "kovac",
-      "title": "Kova\u010d Results (2023-2024)",
+      "title": "Kovač Results (2023-2024)",
       "summary": "Trapezoids, parallelogram counterexample, cyclic quadrilaterals",
       "startLine": 217,
       "endLine": 255,
@@ -140,10 +141,10 @@
     {
       "id": "connections",
       "title": "Connections",
-      "summary": "Erd\u0151s distance problem, Ramsey theory",
+      "summary": "Erdős distance problem, Ramsey theory",
       "startLine": 320,
       "endLine": 337,
-      "mathContext": "Mathematical content: Erd\u0151s distance problem, Ramsey theory"
+      "mathContext": "Mathematical content: Erdős distance problem, Ramsey theory"
     },
     {
       "id": "summary",
@@ -155,8 +156,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #353 asks about geometric configurations in sets of infinite measure. Koizumi (2025) proved that isosceles trapezoids, isosceles triangles, and right triangles of area 1 must exist. Kova\u010d showed parallelograms can fail, revealing a fundamental distinction.",
-    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Geometric Measure Theory:** Lebesgue measure and density properties\n\n2. **Combinatorial Geometry:** Configuration existence in point sets\n\n**3. Erd\u0151s Distance Problem:** Related questions about point configurations\n\n4. **Ramsey Theory:** Large sets contain structured subsets\n\n5. **Discrete Geometry:** Unit area problems and geometric density.",
+    "summary": "Erdős Problem #353 asks about geometric configurations in sets of infinite measure. Koizumi (2025) proved that isosceles trapezoids, isosceles triangles, and right triangles of area 1 must exist. Kovač showed parallelograms can fail, revealing a fundamental distinction.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Geometric Measure Theory:** Lebesgue measure and density properties\n\n2. **Combinatorial Geometry:** Configuration existence in point sets\n\n**3. Erdős Distance Problem:** Related questions about point configurations\n\n4. **Ramsey Theory:** Large sets contain structured subsets\n\n5. **Discrete Geometry:** Unit area problems and geometric density.",
     "openQuestions": [
       "Characterize all shapes that must appear in infinite measure sets",
       "What is the minimum measure needed to guarantee a given configuration?",

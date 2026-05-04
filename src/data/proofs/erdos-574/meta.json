@@ -22,7 +22,8 @@
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "proofRepoPath": "Proofs/Erdos574Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 78
+    "lineCount": 78,
+    "theoremCount": 0
   },
   "sections": [
     {
@@ -104,7 +105,6 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 4,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Real.Basic",

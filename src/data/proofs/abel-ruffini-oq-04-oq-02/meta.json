@@ -43,7 +43,8 @@
     "axiomCount": 0,
     "lineCount": 154,
     "assumptions": "0 axioms, 0 sorries. S₂ via CommGroup instance, S₃ via decide on derived series, S₄ via native_decide. Classification theorem combines with Mathlib's Equiv.Perm.not_solvable.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "The solvability of symmetric groups is the algebraic heart of the Abel-Ruffini theorem and its converse. Lagrange (1770) studied resolvents and permutation groups to understand polynomial roots, observing that degree 2, 3, and 4 equations have explicit radical solutions — the quadratic formula (antiquity), Cardano's cubic formula (1545), and Ferrari's quartic formula (1545). Ruffini (1799) attempted the first proof that degree 5 is unsolvable but left gaps. Abel (1824) gave the first complete proof of the Abel-Ruffini theorem.\n\nGalois (1832) revolutionized the subject by establishing the correspondence between polynomial solvability and group solvability: a polynomial is solvable by radicals if and only if its Galois group is a solvable group. He identified that Sₙ (n ≥ 5) is not solvable because A₅ (order 60) is the smallest non-abelian simple group — its derived series stalls at [A₅, A₅] = A₅, never reaching {e}.\n\nFor n ≤ 4, the complete composition factor towers are: S₂ ⊵ {e} (factor ℤ/2ℤ), S₃ ⊵ A₃ ⊵ {e} (factors ℤ/2ℤ, ℤ/3ℤ), S₄ ⊵ A₄ ⊵ V₄ ⊵ {e} (factors ℤ/2ℤ, ℤ/3ℤ, ℤ/2ℤ, ℤ/2ℤ). The Klein four-group V₄ ≅ ℤ/2ℤ × ℤ/2ℤ plays a starring role for the quartic: it is the unique normal subgroup of S₄ that is not contained in A₄, enabling the extra solvability step. The Jordan-Hölder theorem (1870s) then establishes that all composition factors of a solvable group must be cyclic of prime order, perfectly matching the towers above.",
@@ -65,6 +66,16 @@
       "Group theory (solvable groups, derived series, commutator subgroups)",
       "Symmetric groups and permutations",
       "Lean 4 decidability and native_decide"
+    ],
+    "relatedConcepts": [
+      "solvable group",
+      "derived series",
+      "symmetric group classification",
+      "Klein four-group V4",
+      "A5 simplicity",
+      "Galois correspondence",
+      "radical formula",
+      "CommGroup instance"
     ]
   },
   "sections": [
@@ -74,7 +85,15 @@
       "startLine": 1,
       "endLine": 43,
       "summary": "Module docstring documenting the open question, the answer (S₂, S₃, S₄ are all solvable), the proof techniques (CommGroup, decide, native_decide), and references. Imports Mathlib's Solvable, Alternating, and Tactic modules.",
-      "mathContext": "Imports: `GroupTheory.Solvable` supplies `IsSolvable`, `isSolvable_def` ($G$ is solvable $\\iff \\exists n,\\, D^n(G) = \\{e\\}$), and `derivedSeries`; `SpecificGroups.Alternating` provides the $A_5$ simplicity used contrapositively in the forward direction of `solvable_iff_le_four`. The `maxHeartbeats 1600000` increase (4× the default 400000) is required for `native_decide` in `s4_solvable`: computing that `derivedSeries(S_4, 3) = ⊥` requires exhaustive evaluation over $|S_4|^3 = 13824$ permutation triples."
+      "mathContext": "Imports: `GroupTheory.Solvable` supplies `IsSolvable`, `isSolvable_def` ($G$ is solvable $\\iff \\exists n,\\, D^n(G) = \\{e\\}$), and `derivedSeries`; `SpecificGroups.Alternating` provides the $A_5$ simplicity used contrapositively in the forward direction of `solvable_iff_le_four`. The `maxHeartbeats 1600000` increase (4× the default 400000) is required for `native_decide` in `s4_solvable`: computing that `derivedSeries(S_4, 3) = ⊥` requires exhaustive evaluation over $|S_4|^3 = 13824$ permutation triples.",
+      "relatedConcepts": [
+        "GroupTheory.Solvable",
+        "maxHeartbeats",
+        "isSolvable_def",
+        "derivedSeries",
+        "native_decide",
+        "Alternating module"
+      ]
     },
     {
       "id": "s2-solvable",
@@ -82,7 +101,15 @@
       "startLine": 45,
       "endLine": 55,
       "summary": "S₂ is commutative (CommGroup instance via decide), hence solvable.",
-      "mathContext": "$S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$ is abelian. $[S_2, S_2] = \\{e\\}$."
+      "mathContext": "$S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$ is abelian. $[S_2, S_2] = \\{e\\}$.",
+      "relatedConcepts": [
+        "CommGroup",
+        "IsSolvable",
+        "abelian group",
+        "inferInstance",
+        "decide",
+        "quadratic formula"
+      ]
     },
     {
       "id": "s3-solvable",
@@ -90,7 +117,15 @@
       "startLine": 57,
       "endLine": 69,
       "summary": "S₃ solvable via derivedSeries(2) = ⊥, verified by decide.",
-      "mathContext": "$S_3 \\rhd A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\rhd \\{e\\}$. Both quotients abelian."
+      "mathContext": "$S_3 \\rhd A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\rhd \\{e\\}$. Both quotients abelian.",
+      "relatedConcepts": [
+        "isSolvable_def",
+        "derivedSeries",
+        "alternating group A3",
+        "decide",
+        "commutator subgroup",
+        "Cardano cubic"
+      ]
     },
     {
       "id": "s4-solvable",
@@ -98,7 +133,15 @@
       "startLine": 71,
       "endLine": 82,
       "summary": "S₄ solvable via derivedSeries(3) = ⊥, verified by native_decide.",
-      "mathContext": "$S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$. $V_4$ is the Klein four-group."
+      "mathContext": "$S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$. $V_4$ is the Klein four-group.",
+      "relatedConcepts": [
+        "native_decide",
+        "Klein four-group V4",
+        "alternating group A4",
+        "derivedSeries",
+        "normal subgroup",
+        "Ferrari quartic"
+      ]
     },
     {
       "id": "classification",
@@ -106,7 +149,14 @@
       "startLine": 84,
       "endLine": 110,
       "summary": "solvable_iff_le_four: Sₙ is solvable iff n ≤ 4. Forward: contrapositive of not_solvable. Backward: interval_cases on n ∈ {0,1,2,3,4}.",
-      "mathContext": "$S_n$ is solvable $\\iff n \\leq 4$."
+      "mathContext": "$S_n$ is solvable $\\iff n \\leq 4$.",
+      "relatedConcepts": [
+        "Equiv.Perm.not_solvable",
+        "interval_cases",
+        "A5 simplicity",
+        "Cardinal.mk_fintype",
+        "omega"
+      ]
     },
     {
       "id": "degree-picture",
@@ -114,7 +164,14 @@
       "startLine": 112,
       "endLine": 154,
       "summary": "Convenience corollaries: small_symmetric_solvable (n ≤ 4 → solvable) and large_symmetric_not_solvable (n ≥ 5 → not solvable). Closing summary table showing all symmetric group solvability with proof techniques and derived series lengths.",
-      "mathContext": "The two directional corollaries present the classification as implications: $n \\leq 4 \\Rightarrow \\text{IsSolvable}(S_n)$ (`small_symmetric_solvable`) and $n \\geq 5 \\Rightarrow \\neg\\text{IsSolvable}(S_n)$ (`large_symmetric_not_solvable`). Together with Galois's theorem ($\\text{IsSolvableByRad}(F, \\alpha) \\Rightarrow \\text{IsSolvable}(q.\\text{Gal})$, where $q = \\text{minpoly}_F(\\alpha)$), these give: if $q$ is a polynomial with $\\text{Gal}(q) \\cong S_n$ for $n \\leq 4$, then its roots are solvable by radicals; if $\\text{Gal}(q) \\cong S_n$ for $n \\geq 5$, they are not."
+      "mathContext": "The two directional corollaries present the classification as implications: $n \\leq 4 \\Rightarrow \\text{IsSolvable}(S_n)$ (`small_symmetric_solvable`) and $n \\geq 5 \\Rightarrow \\neg\\text{IsSolvable}(S_n)$ (`large_symmetric_not_solvable`). Together with Galois's theorem ($\\text{IsSolvableByRad}(F, \\alpha) \\Rightarrow \\text{IsSolvable}(q.\\text{Gal})$, where $q = \\text{minpoly}_F(\\alpha)$), these give: if $q$ is a polynomial with $\\text{Gal}(q) \\cong S_n$ for $n \\leq 4$, then its roots are solvable by radicals; if $\\text{Gal}(q) \\cong S_n$ for $n \\geq 5$, they are not.",
+      "relatedConcepts": [
+        "small_symmetric_solvable",
+        "large_symmetric_not_solvable",
+        "solvable_iff_le_four",
+        "Galois correspondence",
+        "degree-by-degree analysis"
+      ]
     }
   ],
   "conclusion": {

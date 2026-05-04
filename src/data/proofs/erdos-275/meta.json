@@ -45,8 +45,9 @@
       "erdos_275 summary theorem combining main result and tightness"
     ],
     "axiomCount": 2,
-    "lineCount": 172,
-    "assumptions": "2 axioms: erdos_275_theorem, not_covered_2r_minus_1. 0 sorries."
+    "lineCount": 171,
+    "assumptions": "2 axioms: erdos_275_theorem, not_covered_2r_minus_1. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**Erdős Problem #275** lies at the heart of *covering systems*, a subject Erdős pioneered starting in the 1950s. A covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ whose union is all of $\\mathbb{Z}$. Erdős asked: if $r$ congruences cover $2^r$ consecutive integers, must they cover all integers?\n\n**Historical Development:**\n- **Erdős (1950s):** Introduced covering systems and formulated numerous problems, including #275. His earliest covering system work dates to his 1950 proof that there exist infinitely many odd integers not of the form $2^k + p$, using a covering system with moduli $\\{2, 3, 4, 8, 12, 24\\}$.\n- **Selfridge (1970):** Independently solved Problem #275, showing $2^r$ is the exact threshold.\n- **Crittenden and Vanden Eynden (1970):** Published the proof in *Proceedings of the AMS*, using induction on the structure of moduli with careful analysis modulo 2.\n- **Hough (2015):** Proved the minimum modulus conjecture (Erdős #2), showing every covering system with distinct moduli $> 1$ must have a modulus $\\leq 10^{16}$ — later improved to $616{,}000$ by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022).\n\n**Key Insight:** The exponential bound $2^r$ reflects binary structure — the optimal counterexample uses powers of 2 as moduli, and coverage depends on the binary digits of integers.",
@@ -181,7 +182,7 @@
     ],
     "opens": [],
     "namespace": "Erdos275",
-    "lineCount": 172,
+    "lineCount": 171,
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 8,

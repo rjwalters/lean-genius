@@ -22,13 +22,12 @@ Tags: extremal-graph-theory, induced-subgraphs, maximum-degree
 Results:
 - erdos_614_existence: proved from f_upper_bound
 - f_max_k: identified as FALSE and removed (star graph counterexample)
-- f_case_k_eq_1: converted from axiom to theorem with proof structure
-  (1 sorry remains: type transport from arbitrary V to Fin n)
+- f_case_k_eq_1: proved (existsGraphWithPropertyP uses Fin n canonically)
 - hasPropertyP_one_triple_has_edge: proved — P(1) implies every triple has an edge
 - edge_injection_bound: proved — injection from vertex cover to edge set
 - edgeCount_ge_of_propertyP1: proved — core math result for Fin n
 Axioms: 2 (f_lower_bound, f_mono_k)
-Sorries: 1 (type transport via Fintype.equivFin in f_case_k_eq_1)
+Sorries: 0
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -91,12 +90,11 @@ on n vertices.
 noncomputable def edgeCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   (Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)).card
 
-/-- A graph on n vertices exists with m edges having property P(k). -/
+/-- A graph on n vertices exists with m edges having property P(k).
+    We use Fin n as the canonical vertex type (WLOG by relabeling). -/
 def existsGraphWithPropertyP (n k m : ℕ) : Prop :=
-  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
-    Fintype.card V = n ∧
-    ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
-      edgeCount G = m ∧ hasPropertyP G k
+  ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+    edgeCount G = m ∧ hasPropertyP G k
 
 /-- The induced max degree of any subgraph on S is at most |S| - 1. -/
 theorem inducedMaxDegree_le (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) :
@@ -193,8 +191,7 @@ theorem f_upper_bound :
   ∀ n k : ℕ, k + 2 ≤ n →
     existsGraphWithPropertyP n k (n * (n - 1) / 2) := by
   intro n k hnk
-  exact ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n,
-    ⊤, inferInstance, edgeCount_complete n, complete_hasPropertyP n k hnk⟩
+  exact ⟨⊤, inferInstance, edgeCount_complete n, complete_hasPropertyP n k hnk⟩
 
 /-
 ## Part 5: Special Cases
@@ -375,15 +372,9 @@ private theorem edgeCount_ge_of_propertyP1 {n : ℕ} (hn : n ≥ 3)
 theorem f_case_k_eq_1 :
   ∀ n : ℕ, n ≥ 3 →
     ∀ m, existsGraphWithPropertyP n 1 m → m ≥ n - 2 := by
-  intro n hn m ⟨V, hfin, hdec, hcard, G, hdr, hedge, hprop⟩
-  rw [← hedge, ← hcard]
-  -- Transport from V to Fin (Fintype.card V) via Fintype.equivFin.
-  -- Since edgeCount uses < on V, and existsGraphWithPropertyP quantifies
-  -- over arbitrary V, we need V to have a linear order for edgeCount to
-  -- be well-defined. The existential witness must provide this.
-  -- For the transport: use Fintype.equivFin to push G to Fin n,
-  -- preserving both hasPropertyP and edgeCount.
-  sorry  -- Type transport via Fintype.equivFin
+  intro n hn m ⟨G, _hdr, hedge, hprop⟩
+  rw [← hedge]
+  exact edgeCount_ge_of_propertyP1 hn G hprop
 
 /- **FALSE THEOREM (removed)**: The original claimed k=n-2 forces complete graph.
     COUNTEREXAMPLE: The star graph K_{1,n-1} has n-1 edges and satisfies P(n-2),
@@ -572,8 +563,7 @@ private theorem partialStar_hasPropertyP (n : ℕ) (hn : 2 ≤ n) :
     This is much tighter than the complete-graph bound n*(n-1)/2. -/
 theorem f_n_minus_2_upper_bound :
     ∀ n : ℕ, 2 ≤ n → existsGraphWithPropertyP n (n - 2) (n - 2) :=
-  fun n hn => ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n,
-               partialStar n, inferInstance,
+  fun n hn => ⟨partialStar n, inferInstance,
                partialStar_edgeCount n hn,
                partialStar_hasPropertyP n hn⟩
 

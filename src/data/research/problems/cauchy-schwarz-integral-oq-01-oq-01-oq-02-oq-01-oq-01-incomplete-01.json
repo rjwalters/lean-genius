@@ -1,0 +1,93 @@
+{
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+  "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Lp Riesz Representation for Sigma-Finite Measures (Complete).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T11:21:07.632Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 1 sorry remains in localization_existence (consistency+MCT); hext_ind+hagree_n proved this session",
+    "builtItems": [
+      "integrationCLM_sf: integration CLM for pure SigmaFinite mu",
+      "integral_representation_sf: density extension via Lp.induction",
+      "riesz_lp_surjective_sigma_finite: main theorem with Step C proved",
+      "mem_spanningSets_eventually + pointwise_mul_indicator_tendsto (ported)",
+      "lp_truncation_tendsto_zero: Lp truncation DCT proof via ENNReal dominated convergence + continuity of rpow (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:249)",
+      "eLpNorm_indicator_eq_restrict_loc: eLpNorm(S.indicator f, μ) = eLpNorm(f, μ.restrict S) via lintegral_indicator",
+      "memLp_indicator_of_restrict_loc: MemLp(S.indicator f, μ) from MemLp(f, μ.restrict S) + aestronglyMeasurable_indicator_iff",
+      "extByZeroCLM: isometric CLM Lp(μ.restrict S) →L[ℝ] Lp(μ), proved with ae_restrict_iff + coeFn_toLp",
+      "hext_ind: AE equality extByZeroCLM indicator = Lp indicator in localization_existence (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:365)",
+      "hagree_n: φ(1_E) = ∫_E g_seq n for E ⊆ Sₙ (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:401)"
+    ],
+    "insights": [
+      "Step C (density extension) proved: Lp.induction is valid for SigmaFinite without IsFiniteMeasure",
+      "integrationCLM does not need IsFiniteMeasure — Holder inequality suffices",
+      "3 sorries reduced to 2: localization + Vitali remain; density extension proved",
+      "lp_truncation_tendsto_zero uses ENNReal dominated convergence (tendsto_lintegral_of_dominated_convergence) + continuity of x↦x^r at 0 via ENNReal.continuousAt_rpow_const — no Vitali needed",
+      "localization_existence (last sorry) submitted to Aristotle job 1eb03084-d2a8-4280-ac52-12e23d7ca689 on 2026-05-04. Strategy: spanningSets exhaustion + finite-measure Riesz + MCT gluing. ~150 lines estimated.",
+      "localization_existence needs extByZeroCLM to compose φ with restriction, then riesz_lp_surjective_from_rn applies to each spanning set",
+      "The MCT/consistency step (gₙ→g globally in Lq) is the only remaining sorry; all infrastructure is now in place",
+      "ae_restrict_iff type bridge: coeFn_toLp for MemLp f p (μ.restrict S) gives =ᵐ[μ.restrict S]; use (ae_restrict_iff hS).mp to get ∀ᵐ a ∂μ, a ∈ S → f a = ...",
+      "AE chain direction: hlhs.trans hkey |>.trans hrhs.symm avoids circular chains",
+      "hext_ind proved: extByZeroCLM(Sₙ)(1_E^Lp(μₙ)) = 1_E^Lp(μ) for E ⊆ Sₙ via ae chain",
+      "hagree_n proved: φ(1_E) = ∫_E g_seq n dμ for E ⊆ Sₙ with finite measure, via hext_ind + hg_seq_rep + integral_indicator"
+    ],
+    "mathlibGaps": [
+      "Lp restriction map Lp(mu) -> Lp(mu.restrict S) not available as isometric map",
+      "Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) API verbosity for unifIntegrable + unifTight"
+    ],
+    "nextSteps": [
+      "Prove consistency: g_seq m =ᵐ[μ.restrict Sₘ] g_seq n via ae_eq_restrict_of_forall_setIntegral_eq (AEEqOfIntegral.lean:403)",
+      "Define global g := lim g_seq pointwise, prove MemLp g q μ via lintegral_iUnion bound",
+      "Prove indicator agreement: φ(1_{E∩Sₙ}) → φ(1_E) via CLM continuity + lp_truncation_tendsto_zero"
+    ]
+  },
+  "tags": [
+    "functional-analysis",
+    "lp-spaces",
+    "riesz-representation",
+    "sigma-finite"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:21:07.632Z",
+  "lastUpdate": "2026-05-03T11:21:07.632Z",
+  "significance": 7,
+  "tractability": 4
+}

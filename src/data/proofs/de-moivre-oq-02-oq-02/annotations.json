@@ -1,0 +1,174 @@
+[
+  {
+    "id": "ann-dmo2-two-x-u",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 41
+    },
+    "type": "insight",
+    "title": "Key Lemma: 2X·U_k = U_{k+1} + U_{k-1}",
+    "content": "The identity `2X·U_k = U_{k+1} + U_{k-1}` is derived from Mathlib's `U_add_two` (which states U_{k+1} = 2X·U_k - U_{k-1}) by rearranging. In Lean, `have h := U_add_two (R := R) (k - 1)` gives `U_{k+1} = 2X·U_k - U_{k-1}`, and `linear_combination -h` closes the goal `2X·U_k = U_{k+1} + U_{k-1}`. This lemma is the engine of the whole proof: it is used three times — once in the base case P(-1), and once in each of Q_succ and Q_pred to handle the 2X·T_m·U_n splitting.",
+    "mathContext": "From $U_{(k-1)+2} = 2X \\cdot U_{(k-1)+1} - U_{k-1}$, simplifying: $U_{k+1} = 2X \\cdot U_k - U_{k-1}$, so $2X \\cdot U_k = U_{k+1} + U_{k-1}$. This is the polynomial analog of $2\\cos\\theta \\cdot \\sin((k+1)\\theta) = \\sin((k+2)\\theta) + \\sin(k\\theta)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "U_add_two",
+      "linear_combination",
+      "Chebyshev recurrence",
+      "second-kind Chebyshev"
+    ],
+    "prerequisites": [
+      "Mathlib.RingTheory.Polynomial.Chebyshev",
+      "linear_combination tactic",
+      "polynomial ring over CommRing"
+    ]
+  },
+  {
+    "id": "ann-dmo2-paired-induction",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Paired Induction: Q(m) = P(m) ∧ P(m-1) with Successor Step",
+    "content": "The Chebyshev recurrence T_{m+2} = 2X·T_{m+1} - T_m is second-order in m, so the induction step for P(m+1) needs both P(m) and P(m-1). The standard solution is to carry a conjunction Q(m) = P(m) ∧ P(m-1) and prove Q by Int.induction_on. The Q_zero base case proves both P(0) (trivial: 2·1·U_n = 2U_n) and P(-1) (using T_{-1} = X and two_X_U). The Q_succ successor step receives Q(m) = ⟨P(m), P(m-1)⟩ and must return Q(m+1) = ⟨P(m+1), P(m)⟩; the second component is free (just P(m) from the hypothesis), and P(m+1) is closed by linear_combination using T_add_two and two applications of two_X_U.",
+    "mathContext": "Successor step: $2T_{m+1} \\cdot U_n \\stackrel{T_{m+1}=2X T_m - T_{m-1}}{=} 2X(2T_m U_n) - (2T_{m-1}U_n) \\stackrel{\\text{IH}}{=} 2X(U_{m+n}+U_{n-m}) - (U_{m-1+n}+U_{n-m+1})$. Apply two\\_X\\_U to each term: $= (U_{m+n+1}+U_{m+n-1}) + (U_{n-m+1}+U_{n-m-1}) - U_{m-1+n} - U_{n-m+1} = U_{m+1+n} + U_{n-m-1}$ ✓.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.induction_on",
+      "linear_combination",
+      "T_add_two",
+      "second-order recurrence",
+      "paired induction"
+    ],
+    "prerequisites": [
+      "integer induction in Lean 4 (Int.induction_on)",
+      "linear_combination tactic",
+      "T_add_two (Chebyshev first-kind recurrence)"
+    ]
+  },
+  {
+    "id": "ann-dmo2-t-neg1",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 63
+    },
+    "type": "insight",
+    "title": "T_{-1} = X: Inline Mini-Proof from T_add_two",
+    "content": "The base case P(-1) requires T_{-1} = X, which is not directly in Mathlib but follows from T_add_two at n=-1: T(1) = 2X·T(0) - T(-1) gives X = 2X·1 - T(-1), so T(-1) = X. This mini-proof is done inline with `have hm1 : T R (-1 : ℤ) = X` using T_add_two(-1) and `linear_combination -h`. Once T_{-1} = X is established, P(-1) reduces to 2X·U_n = U_{n-1} + U_{n+1}, which is exactly the two_X_U lemma. This pattern — using T_add_two at a shifted argument to recover a value not in the library — is a recurring technique for negative integer Chebyshev evaluations.",
+    "mathContext": "From $T_{(-1)+2} = 2X \\cdot T_{(-1)+1} - T_{-1}$, using $T_1 = X$ and $T_0 = 1$: $X = 2X \\cdot 1 - T_{-1}$, so $T_{-1} = X$. Then $2T_{-1} \\cdot U_n = 2X \\cdot U_n = U_{n+1} + U_{n-1} = U_{-1+n} + U_{n-(-1)}$ ✓.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "T_add_two",
+      "T_zero",
+      "T_one",
+      "negative integer Chebyshev",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "T_add_two (Chebyshev recurrence)",
+      "T_zero, T_one (initial conditions)",
+      "two_X_U key lemma"
+    ]
+  },
+  {
+    "id": "ann-dmo2-q-pred",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Q_pred: Backward Induction Step via T_{m-2} = 2X·T_{m-1} - T_m",
+    "content": "The predecessor step is the symmetric counterpart to Q_succ. Given Q(m) = ⟨P(m), P(m-1)⟩, Q_pred must produce Q(m-1) = ⟨P(m-1), P(m-2)⟩. The first component P(m-1) is free from the hypothesis. For P(m-2), use T_add_two at (m-2) rearranged as T_{m-2} = 2X·T_{m-1} - T_m. Then 2T_{m-2}·U_n = 2X·(2T_{m-1}·U_n) - (2T_m·U_n), and apply P(m-1) and P(m) from the IH, then two_X_U twice, with linear_combination closing the resulting algebraic identity. This symmetric structure — needing both a successor and predecessor step for integer induction — is what makes the paired conjunction Q the right carrier.",
+    "mathContext": "Predecessor step: $2T_{m-2} \\cdot U_n \\stackrel{T_{m-2}=2X T_{m-1}-T_m}{=} 2X(2T_{m-1}U_n) - (2T_mU_n)$. By IH: $= 2X(U_{m-1+n}+U_{n-m+1}) - (U_{m+n}+U_{n-m})$. By two\\_X\\_U: $= (U_{m+n}+U_{m-2+n}) + (U_{n-m+2}+U_{n-m}) - U_{m+n} - U_{n-m} = U_{m-2+n} + U_{n-m+2}$ ✓.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.induction_on predecessor step",
+      "T_add_two",
+      "linear_combination",
+      "backward induction",
+      "integer induction on ℤ"
+    ],
+    "prerequisites": [
+      "Q_succ (successor step for comparison)",
+      "T_add_two at shifted argument",
+      "two_X_U key lemma"
+    ]
+  },
+  {
+    "id": "ann-dmo2-main-theorem",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 125
+    },
+    "type": "insight",
+    "title": "T_mul_U_product: Int.induction_on Assembles the Three Cases",
+    "content": "The main theorem T_mul_U_product assembles the three private lemmas into a complete integer induction via Int.induction_on. The pattern `suffices h : Q n m from h.1` extracts P(m) from Q(m), then Int.induction_on dispatches to Q_zero (base), Q_succ (successor), and Q_pred (predecessor/negative). The Q_pred case has a subtle syntactic issue in Lean: the predecessor case produces `Q n (-↑k - 1)` for `k : ℕ`, and the argument is `Q n (-(↑k : ℤ))`, requiring a careful cast. This is the only publicly exported result of the PolynomialIdentity section; all the machinery (two_X_U, P, Q, Q_zero, Q_succ, Q_pred) is private.",
+    "mathContext": "$\\forall m : \\mathbb{Z},\\; (2 : R[X]) \\cdot T_R(m) \\cdot U_R(n) = U_R(m+n) + U_R(n-m)$. Proof assembles: $Q(0) \\land \\text{Q\\_succ} \\land \\text{Q\\_pred} \\xrightarrow{\\text{Int.induction\\_on}} Q(m) \\implies P(m)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.induction_on",
+      "suffices tactic",
+      "PolynomialIdentity section",
+      "private vs public lemmas"
+    ],
+    "prerequisites": [
+      "Q_zero, Q_succ, Q_pred",
+      "Int.induction_on in Lean 4",
+      "CommRing variable abstraction"
+    ]
+  },
+  {
+    "id": "ann-dmo2-trig-form",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 128,
+      "endLine": 171
+    },
+    "type": "insight",
+    "title": "From Polynomial to Trigonometric: Three Corollaries",
+    "content": "The RealEvaluation section derives three corollaries from T_mul_U_product. First, chebyshev_T_U_product_to_sum evaluates the polynomial identity at cos θ using congr_arg and simp. Second, chebyshev_cos_U specializes to m=1: since T_1(cos θ) = cos θ, this gives 2·cos θ·U_n(cos θ) = U_{n+1}(cos θ) + U_{n-1}(cos θ), a clean recurrence for U at real values. Third, two_cos_sin_spreading multiplies by sin θ and applies U_real_cos (which states U_n(cos θ)·sin θ = sin((n+1)θ)) to get the pure trig spreading identity. The `nlinarith` at the end handles sin²θ + cos²θ = 1 as an auxiliary fact. Crucially, no case split on sin θ = 0 is needed because the algebraic proof avoids dividing by sin θ.",
+    "mathContext": "Evaluation chain: polynomial identity $\\xrightarrow{\\text{eval}(\\cos\\theta)}$ $2T_m(c)U_n(c) = U_{m+n}(c) + U_{n-m}(c)$ $\\xrightarrow{m=1}$ $2c \\cdot U_n(c) = U_{n+1}(c) + U_{n-1}(c)$ $\\xrightarrow{\\times \\sin\\theta}$ $2\\cos\\theta \\cdot \\sin((n+1)\\theta) = \\sin((n+2)\\theta) + \\sin(n\\theta)$, where $c = \\cos\\theta$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.eval ring homomorphism",
+      "congr_arg",
+      "U_real_cos",
+      "T_real_cos",
+      "T_one",
+      "nlinarith with auxiliary hypothesis"
+    ],
+    "prerequisites": [
+      "T_mul_U_product polynomial identity",
+      "U_real_cos (Mathlib: U_n(cos θ)·sin θ = sin((n+1)θ))",
+      "T_real_cos (Mathlib: T_n(cos θ) = cos(nθ))"
+    ]
+  },
+  {
+    "id": "ann-dmo2-summary",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 174,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Summary Theorem: Cross-Product and Recurrence Together",
+    "content": "The demoivre_oq02oq02_summary theorem packages the two main results as a conjunction for easy export: the full cross-product formula at arbitrary (m, n, θ) and the m=1 recurrence corollary. As a trivial conjunction proof, it serves as a single import point for downstream use. It also signals the boundary of the namespace — everything provable here about T×U mixed products has been captured. The pattern of a summary theorem as a ∧-conjunction of the key results, proved by ⟨theorem1, theorem2⟩, is a clean documentation idiom in Lean formalization.",
+    "mathContext": "Summary: $(\\forall m, n, \\theta)\\; 2T_m(\\cos\\theta)U_n(\\cos\\theta) = U_{m+n}(\\cos\\theta) + U_{n-m}(\\cos\\theta)$ $\\;\\land\\;$ $(\\forall n, \\theta)\\; 2\\cos\\theta \\cdot U_n(\\cos\\theta) = U_{n+1}(\\cos\\theta) + U_{n-1}(\\cos\\theta)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjunction proof pattern",
+      "namespace boundary",
+      "documentation theorem",
+      "Lean formalization idiom"
+    ],
+    "prerequisites": [
+      "chebyshev_T_U_product_to_sum",
+      "chebyshev_cos_U"
+    ]
+  }
+]

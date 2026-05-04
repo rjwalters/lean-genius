@@ -1,0 +1,117 @@
+[
+  {
+    "id": "gb-compact-riemannian",
+    "proofId": "euler-polyhedral-oq-02-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 47,
+      "endLine": 68
+    },
+    "title": "CompactRiemannianSurface and OrientableClosedSurface: Axiomatized Structures",
+    "content": "`structure CompactRiemannianSurface` with fields:\n- `chi : ℤ` — Euler characteristic χ(M)\n- `totalCurvature : ℝ` — ∫_M K dA\n- `area : ℝ`, `area_pos : 0 < area` — positive area\n- **`gauss_bonnet : totalCurvature = 2 * π * chi`** — the Gauss-Bonnet theorem (AXIOM)\n\n`structure OrientableClosedSurface extends CompactRiemannianSurface` with:\n- `genus : ℕ`\n- **`chi_genus : chi = 2 - 2 * (genus : ℤ)`** — Euler characteristic formula (AXIOM)\n\nBoth structure fields encode mathematical theorems not yet formalized in Mathlib 4.26.0. The design allows all consequences to be proved purely from these two field hypotheses.",
+    "significance": "key",
+    "mathContext": "The Gauss-Bonnet theorem states $\\int_M K\\,dA = 2\\pi\\chi(M)$ for compact orientable Riemannian surfaces without boundary. The classification theorem for orientable surfaces gives $\\chi(M_g) = 2 - 2g$ where $g$ is the genus. Together these two facts determine all curvature-topology relationships.",
+    "relatedConcepts": [
+      "Gaussian curvature",
+      "Euler characteristic",
+      "genus classification",
+      "Riemannian geometry"
+    ],
+    "prerequisites": [
+      "Riemannian metrics (not in Mathlib 4.26.0)",
+      "Integration on manifolds (not in Mathlib 4.26.0)"
+    ]
+  },
+  {
+    "id": "gb-curvature-genus",
+    "proofId": "euler-polyhedral-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 174,
+      "endLine": 197
+    },
+    "title": "positive_curvature_is_sphere / zero_curvature_is_torus / negative_curvature_high_genus",
+    "content": "Three classification theorems:\n\n`theorem positive_curvature_is_sphere (S : OrientableClosedSurface) (h : 0 < S.totalCurvature) : S.genus = 0`\nProof: positive ∫K → positive χ (from gauss_bonnet) → genus = 0 (from chi_genus, omega).\n\n`theorem zero_curvature_is_torus (S : OrientableClosedSurface) (h : S.totalCurvature = 0) : S.genus = 1`\nProof: ∫K = 0 → χ = 0 → genus = 1 (from chi_genus, omega).\n\n`theorem negative_curvature_high_genus (S : OrientableClosedSurface) (h : S.totalCurvature < 0) : 2 ≤ S.genus`\nProof: by contradiction — if genus < 2, then genus = 0 or 1, but sphere_total_curvature gives ∫K = 4π > 0 and torus_total_curvature gives ∫K = 0, both contradicting h < 0.",
+    "significance": "critical",
+    "mathContext": "The three cases partition closed orientable surfaces by curvature:\n- $g=0$ (sphere, $\\chi=2$): $\\int K\\,dA = 4\\pi > 0$\n- $g=1$ (torus, $\\chi=0$): $\\int K\\,dA = 0$\n- $g\\geq 2$ (hyperbolic, $\\chi < 0$): $\\int K\\,dA = 4\\pi(1-g) < 0$\n\nThis is the Gauss-Bonnet theorem's most striking consequence: global topology controls the sign of curvature.",
+    "relatedConcepts": [
+      "uniformization theorem",
+      "hyperbolic geometry",
+      "spherical geometry",
+      "Euler characteristic"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface.gauss_bonnet",
+      "OrientableClosedSurface.chi_genus"
+    ]
+  },
+  {
+    "id": "gb-girard",
+    "proofId": "euler-polyhedral-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 544,
+      "endLine": 560
+    },
+    "title": "girard_formula: Spherical Excess Theorem",
+    "content": "`structure GeodesicTriangle` with `gauss_bonnet_triangle : K * area = α + β + γ - π` (AXIOM).\n\n`theorem girard_formula (T : GeodesicTriangle) (hK : T.K ≠ 0) : T.area = (T.α + T.β + T.γ - π) / T.K`\nProof: from gauss_bonnet_triangle by `div_eq_of_eq_mul` (2 lines).\n\nFor the unit sphere (K=1): Area = α + β + γ - π (spherical excess).\nFor a Euclidean triangle (K=0): the formula degenerates — angles sum to exactly π, consistent with ∫K dA = 0.\nFor the hyperbolic plane (K=-1): Area = π - (α + β + γ) > 0 (angular defect).",
+    "significance": "key",
+    "mathContext": "Girard's theorem (1629): the area of a spherical triangle equals its spherical excess $E = \\alpha + \\beta + \\gamma - \\pi$. This is historically significant as the first proof that the surface area of a sphere is proportional to the solid angle it subtends. The formula generalizes: $\\text{Area} = E/K$ for any constant curvature surface.",
+    "relatedConcepts": [
+      "spherical excess",
+      "angular defect",
+      "constant curvature surfaces",
+      "non-Euclidean geometry"
+    ],
+    "prerequisites": [
+      "GeodesicTriangle.gauss_bonnet_triangle",
+      "Lean 4 field_simp / linarith"
+    ]
+  },
+  {
+    "id": "gb-poincare-hopf",
+    "proofId": "euler-polyhedral-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 620,
+      "endLine": 680
+    },
+    "title": "VectorFieldOnSurface: Poincaré-Hopf Index Theorem",
+    "content": "`structure VectorFieldOnSurface (S : CompactRiemannianSurface)` with:\n- `singularities : Finset ℕ` — index set of singular points\n- `index : ℕ → ℤ` — index of each singularity\n- **`poincare_hopf : ∑ i ∈ singularities, index i = S.chi`** (AXIOM)\n\n`theorem hairy_ball_type (S : CompactRiemannianSurface) (hchi : S.chi ≠ 0) (V : VectorFieldOnSurface S) : ¬(V.singularities = ∅)`\nProof: if no singularities, ∑ index = 0 = χ, contradicting χ ≠ 0.\n\nFor the sphere (χ = 2): every vector field has total index 2, so it must have at least one singular point. The hairy ball theorem follows: no non-vanishing vector field on S².",
+    "significance": "key",
+    "mathContext": "The Poincaré-Hopf theorem: for any smooth vector field with isolated singularities on a compact manifold, $\\sum_i \\text{ind}(v_i) = \\chi(M)$. For $S^2$ ($\\chi=2$), every vector field must have total index 2. The 'hairy ball theorem' (you can't comb a hairy ball without a cowlick) follows: any tangent vector field on $S^2$ has a zero.",
+    "relatedConcepts": [
+      "hairy ball theorem",
+      "vector field index",
+      "Poincaré-Hopf theorem",
+      "Euler characteristic"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface",
+      "Finset.sum in Lean 4"
+    ]
+  },
+  {
+    "id": "gb-morse",
+    "proofId": "euler-polyhedral-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 700,
+      "endLine": 786
+    },
+    "title": "MorseFunctionOnSurface: Morse Inequalities and Euler Characteristic",
+    "content": "`structure MorseFunctionOnSurface (S : CompactRiemannianSurface)` with:\n- `criticalPoints : Fin 3 → ℕ` — counts c_0, c_1, c_2 of critical points of each index\n- `bettiNumbers : Fin 3 → ℕ` — Betti numbers β_0, β_1, β_2\n- **`morse_inequalities : ∀ k, bettiNumbers k ≤ criticalPoints k`** (AXIOM)\n- **`euler_char_morse : ∑ k : Fin 3, (-1)^(k:ℕ) * criticalPoints k = S.chi`** (AXIOM)\n\nConsequences:\n- `weak_morse_inequality`: β_k ≤ c_k for each k\n- `strong_morse_euler`: Σ(-1)^k c_k = χ\n- `morse_minima_bound`: at least β_0 critical points of index 0 (local minima)\n- `morse_connected`: if connected (β_0=1), then c_0 ≥ 1 minimum",
+    "significance": "key",
+    "mathContext": "Morse theory: any smooth function on a compact manifold with only non-degenerate critical points satisfies the Morse inequalities. The weak Morse inequality $\\beta_k \\leq c_k$ (Betti numbers bounded by critical point counts) and the Morse relations $\\sum(-1)^k c_k = \\chi$ are classical. For surfaces: $c_0 - c_1 + c_2 = \\chi$, so a torus function needs at least $c_0 \\geq 1$, $c_1 \\geq 2$, $c_2 \\geq 1$.",
+    "relatedConcepts": [
+      "Morse theory",
+      "Betti numbers",
+      "critical points",
+      "Euler characteristic formula"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface",
+      "Finset.sum with Fin 3"
+    ]
+  }
+]

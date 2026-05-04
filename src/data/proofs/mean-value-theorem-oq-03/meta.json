@@ -73,7 +73,8 @@
     "axiomCount": 0,
     "lineCount": 461,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "The Mean Value Theorem has a rich 300-year history. **Rolle** (1691) proved the special case $f(a) = f(b) \\Rightarrow f'(c) = 0$. **Lagrange** (1801) generalized to $f'(c) = \\frac{f(b)-f(a)}{b-a}$. **Cauchy** (1823) gave the ratio form for parametric curves. When **Banach** (1932) and **Dieudonné** (1960) developed analysis in normed spaces, they discovered the equality form fails: circular motion $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1 \\neq 0$. The resolution is the **mean value inequality** $\\|f(b) - f(a)\\| \\leq C \\cdot (b-a)$, which Dieudonné called 'the correct form of the mean value theorem.' This inequality is strictly weaker than equality for $\\mathbb{R} \\to \\mathbb{R}$ but is the *only* form available for $\\mathbb{R} \\to E$ and $E \\to F$, and it suffices for all applications in nonlinear analysis.",

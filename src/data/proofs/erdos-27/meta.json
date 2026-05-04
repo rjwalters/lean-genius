@@ -69,7 +69,8 @@
       "Chinese Remainder Theorem",
       "Modular arithmetic"
     ],
-    "assumptions": "4 axioms for deep mathematical results: (1) erdos_27_ffkpy — FFKPY 2007 main disproof (JAMS Theorem 1.1); (2) growing_C_achieves — FFKPY 2007 positive direction (Theorem 1.2); (3) averaging_bound_exists — probabilistic averaging argument; (4) bbmst_2024 — Bloom-Briggs-Maynard-Smith-Tao 2024 minimum modulus bound. All are published theorems."
+    "assumptions": "4 axioms for deep mathematical results: (1) erdos_27_ffkpy — FFKPY 2007 main disproof (JAMS Theorem 1.1); (2) growing_C_achieves — FFKPY 2007 positive direction (Theorem 1.2); (3) averaging_bound_exists — probabilistic averaging argument; (4) bbmst_2024 — Bloom-Briggs-Maynard-Smith-Tao 2024 minimum modulus bound. All are published theorems.",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "**Erdős Problem #27: Almost Covering Systems**\n\nThis $\\$100$ Erdős prize problem sits at the heart of the theory of covering systems — one of Erdős's most sustained research interests.\n\n**Background: Covering Systems**\nA covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ with distinct moduli $n_1 < \\ldots < n_k$ such that every integer belongs to at least one class. Erdős initiated the systematic study of these objects in 1950 and posed dozens of problems about them over the next five decades.\n\n**The Almost-Covering Question:**\nErdős asked a natural relaxation: instead of covering *every* integer, what if we only need to cover all but a small fraction? An $\\varepsilon$-almost covering leaves at most density $\\varepsilon$ of integers uncovered. The specific question was whether a fixed constant $C > 1$ suffices to achieve $\\varepsilon$-almost covering with all moduli in the bounded range $[N, CN]$, for *all* $\\varepsilon > 0$ and $N \\geq 1$.\n\n**The FFKPY Disproof:**\nFilaseta, Ford, Konyagin, Pomerance, and Yu resolved this negatively. Their key insight: for moduli in $[N, CN]$ with fixed $C$, the total 'coverage capacity' is $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$, which is bounded. Using a critical exponent $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$, they showed that for $C \\leq N^{\\alpha(N)}$ (which includes all constants), the uncovered density is bounded below by approximately $1/(2C)$. No fixed $C$ can make this arbitrarily small.\n\n**What Does Work:**\nIf $C$ is allowed to grow with $N$ (e.g., $C(N) = N^{1/\\log\\log N}$), then $\\varepsilon$-almost coverings exist for any fixed $\\varepsilon$. The boundary between success and failure lies at the growth rate of the critical exponent.\n\n**Connection to Perfect Coverings:**\nThe related question for perfect coverings (covering *every* integer) was resolved by Hough (2015): covering systems cannot have all moduli exceeding some absolute bound. Bloom, Briggs, Maynard, Smith, and Tao (2024) improved the bound to $616{,}000$.",
@@ -193,7 +194,7 @@
     "namespace": "Erdos27",
     "lineCount": 340,
     "axiomCount": 4,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 16,
     "path": "Proofs/Erdos27Problem.lean",
     "sorries": 0

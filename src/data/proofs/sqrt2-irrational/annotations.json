@@ -62,7 +62,7 @@
       "startLine": 5,
       "endLine": 49
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Even Square Implies Even Root",
     "content": "**The key lemma**: If $n^2$ is even, then $n$ is even. The proof uses the contrapositive: assume $n$ is odd, show $n^2$ is odd, contradicting that $n^2$ is even.",
     "mathContext": "Why does odd$^2$ = odd? Write $n = 2k+1$. Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which is odd. The tactic `Odd.pow` handles this in Lean.",
@@ -80,7 +80,7 @@
       "startLine": 5,
       "endLine": 49
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Square of Odd is Odd",
     "content": "A direct proof that odd$^2$ = odd. If $n = 2k + 1$ (odd), then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which has the form $2m + 1$ (odd).",
     "mathContext": "The `ring` tactic handles the algebraic manipulation automatically. The `obtain` tactic destructs the existential in the definition of `Odd`.",
@@ -100,7 +100,7 @@
       "startLine": 5,
       "endLine": 49
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Divisibility by 2 Preserved by Squaring",
     "content": "A bidirectional lemma: $2 \\mid n^2 \\iff 2 \\mid n$. The forward direction uses `even_of_even_sq`; the reverse is direct calculation: if $n = 2k$, then $n^2 = 4k^2 = 2(2k^2)$.",
     "mathContext": "The `↔` (iff) in Lean requires proving both directions. The `constructor` tactic splits this into two goals.",
@@ -120,7 +120,7 @@
       "startLine": 53,
       "endLine": 53
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Supporting Lemmas and Main Theorem: Parity Argument",
     "content": "This section contains the classical parity-based proof machinery:\n\n**`even_of_sq_even`**: The key lemma — if $n^2$ is even, then $n$ is even. Proved by contradiction via `by_contra`: assume $n$ is odd, derive $n^2$ is odd (`Odd.pow`), contradict the hypothesis.\n\n**`sq_even_div_four`**: If $n$ is even (write $n = k + k$), then $n^2 = 4k^2$, so $4 \\mid n^2$. Proved by `calc` with `ring`.\n\n**`irrational_sqrt_two_classic`**: The main theorem — `Irrational (Real.sqrt 2)` — proved in one line: `exact irrational_sqrt_two` (delegating to Mathlib). The docstring spells out the classical argument: $\\sqrt{2} = a/b$ coprime $\\Rightarrow a^2 = 2b^2 \\Rightarrow a$ even $\\Rightarrow a = 2k \\Rightarrow b^2 = 2k^2 \\Rightarrow b$ even $\\Rightarrow$ both even, contradicting coprimality.",
     "mathContext": "The classical parity argument formalizes as:\n1. Assume $\\sqrt{2} = a/b$ with $\\gcd(a,b) = 1$ (coprime).\n2. $a^2 = 2b^2$, so $a^2$ is even, so $a$ is even (`even_of_sq_even`): write $a = 2k$.\n3. $4k^2 = 2b^2$, so $b^2 = 2k^2$, so $b$ is even.\n4. Contradiction: $2 \\mid a$ and $2 \\mid b$ contradicts $\\gcd(a,b) = 1$.\n\nThis file has **0 sorries** — the main theorem is fully proved via Mathlib's `irrational_sqrt_two`.",
@@ -165,7 +165,7 @@
       "startLine": 55,
       "endLine": 65
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Squaring Both Sides",
     "content": "From $\\sqrt{2} = p/q$, we square both sides to get $2 = p^2/q^2$, hence $p^2 = 2q^2$. This eliminates the square root and gives us an equation in integers.",
     "mathContext": "This is the key algebraic step. In Lean, `congrArg (·^2)` applies squaring to both sides of an equation.",
@@ -244,7 +244,7 @@
       "startLine": 161,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Irrationality of √3",
     "content": "Since 3 is prime, it appears to multiplicity 1 (odd) in 3. By the same multiplicity argument that proved √2 irrational, √3 is also irrational.",
     "mathContext": "In Lean, we use `Nat.Prime.irrational_sqrt` which proves √p is irrational for any prime p. The proof reduces to showing 3 is prime via `Nat.prime_three`.",
@@ -264,7 +264,7 @@
       "startLine": 170,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Irrationality of √5",
     "content": "5 is prime, so it appears to odd multiplicity in 5. Therefore √5 is irrational.",
     "mathContext": "Same pattern as √3. Mathlib provides `Nat.prime_five` to establish that 5 is prime.",
@@ -284,7 +284,7 @@
       "startLine": 179,
       "endLine": 182
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Irrationality of √6",
     "content": "6 = 2 × 3. Both primes 2 and 3 appear to multiplicity 1 (odd). The same argument applies: √6 is irrational.",
     "mathContext": "This example shows the theorem works for composite numbers too. We use `irrational_sqrt_natCast_iff.mpr` with the fact that 6 is not a perfect square (`¬ IsSquare 6`). The `decide` tactic verifies this computationally.",
@@ -305,7 +305,7 @@
       "startLine": 187,
       "endLine": 193
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Irrationality of √7",
     "content": "7 is prime, so √7 is irrational by the same reasoning.",
     "mathContext": "We use `by decide : Nat.Prime 7` to verify primality computationally, then apply `Nat.Prime.irrational_sqrt`.",
@@ -325,7 +325,7 @@
       "startLine": 195,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The General Theorem",
     "content": "**Main Result**: For any natural number $n$ that is not a perfect square, $\\sqrt{n}$ is irrational. This single theorem subsumes all the specific cases: √2, √3, √5, √6, √7, √8, √10, ...",
     "mathContext": "The theorem `irrational_sqrt_of_not_square` uses Mathlib's `irrational_sqrt_natCast_iff` which establishes the result based on `¬ IsSquare n`.",
@@ -347,7 +347,7 @@
       "startLine": 201,
       "endLine": 207
     },
-    "type": "example",
+    "type": "concept",
     "title": "Perfect Squares vs Non-Squares",
     "content": "The `decide` tactic can verify whether a number is a perfect square. Non-squares: 2, 3, 5, 6, 7, 8, 10, ... Perfect squares: 1 = 1², 4 = 2², 9 = 3², 16 = 4², ...",
     "mathContext": "For perfect squares, we provide explicit witnesses: `IsSquare 4` is proven by `⟨2, by ring⟩` showing $4 = 2 \\cdot 2$. The `decide` tactic handles non-squares by computation.",

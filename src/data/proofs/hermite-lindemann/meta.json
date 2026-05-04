@@ -41,7 +41,8 @@
     "axiomCount": 1,
     "lineCount": 390,
     "assumptions": "1 axiom: hermite_lindemann (deep analytic number theory, not in Mathlib). All corollaries (e transcendence, π transcendence) are now proved from this single axiom via Euler's identity and algebraic closure properties.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Charles Hermite's 1873 paper \"Sur la fonction exponentielle\" proved $e$ is transcendental, introducing the **auxiliary polynomial method** that became the foundation of transcendence theory. Hermite's key innovation was constructing a polynomial $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$ whose integral against $e^x$ yields simultaneously a nonzero integer and a quantity less than 1 — a contradiction. Ferdinand von Lindemann generalized this in his 1882 paper \"Über die Zahl $\\pi$\" to show $e^\\alpha$ is transcendental for any nonzero algebraic $\\alpha$, immediately proving $\\pi$ transcendental via Euler's identity and settling the ancient circle-squaring problem. Karl Weierstrass published the definitive generalization in 1885: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent. This hierarchy — Hermite to Lindemann to Weierstrass — established the template that Gelfond, Schneider, and Baker would later extend.",
@@ -202,7 +203,7 @@
     "namespace": "HermiteLindemann",
     "lineCount": 390,
     "axiomCount": 1,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 1,
     "path": "Proofs/HermiteLindemann.lean",
     "sorries": 0

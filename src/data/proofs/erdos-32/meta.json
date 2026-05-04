@@ -63,7 +63,8 @@
       "Sumset theory",
       "Sieve methods"
     ],
-    "assumptions": "3 axioms: erdos_log_squared, kolountzakis_log_loglog, ruzsa_lower_bound. 0 sorries."
+    "assumptions": "3 axioms: erdos_log_squared, kolountzakis_log_loglog, ruzsa_lower_bound. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #32, proposed around 1954, asks about the sparsest possible 'additive complement' of the primes. A set A is an additive complement if every sufficiently large integer n can be written as p + a for some prime p and a ∈ A.\n\nThe problem has a rich history of progressive improvements:\n- **Lorentz**: First showed O((log N)³) is achievable\n- **Erdős (1954)**: Improved to O((log N)²)\n- **Wolke (1996)**: Achieved (log N)^(1+o(1)) for almost all integers\n- **Kolountzakis (1996)**: Achieved O((log N)(log log N))\n- **Ruzsa (1998)**: The breakthrough — O(ω(N)·log N) for any ω(N) → ∞\n- **Ruzsa (1998)**: Lower bound liminf ≥ e^γ ≈ 1.781 times log N\n\nThe gap between Ruzsa's upper bound (any function going to infinity times log N) and his lower bound (constant times log N) remains unresolved. Erdős offered $50 for determining whether O(log N) is achievable.",

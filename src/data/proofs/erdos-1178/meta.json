@@ -55,7 +55,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 278,
-    "assumptions": "3 axioms: sarkozy_selkow_result (Sárközy-Selkow 2005 upper bound construction), bes_lower_bound (Brown-Erdős-Sós 1973 lower bound via Steiner systems), and solymosi_d3_10 (Solymosi-Solymosi 2017 specific bound dr 3 10 ≤ 14). All three are deep published results not available in Mathlib. All derived theorems (dr_spec, dr_minimal, sarkozy_selkow_upper, ruzsa_szemeredi_d3_3, efr_e3, solymosi_d3_10_gap, bes_d3_10_lower, d3_10_bounds) are fully proved from these axioms. 0 sorries."
+    "assumptions": "3 axioms: sarkozy_selkow_result (Sárközy-Selkow 2005 upper bound construction), bes_lower_bound (Brown-Erdős-Sós 1973 lower bound via Steiner systems), and solymosi_d3_10 (Solymosi-Solymosi 2017 specific bound dr 3 10 ≤ 14). All three are deep published results not available in Mathlib. All derived theorems (dr_spec, dr_minimal, sarkozy_selkow_upper, ruzsa_szemeredi_d3_3, efr_e3, solymosi_d3_10_gap, bes_d3_10_lower, d3_10_bounds) are fully proved from these axioms. 0 sorries.",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "Brown, Erdős, and Sós (1973) initiated the study of extremal numbers for r-uniform hypergraphs avoiding configurations with few vertices relative to edges. They introduced the function d_r(e) — the threshold number of vertices above which the extremal number becomes subquadratic — and conjectured d_r(e) = (r-2)e + 3. They proved the lower bound. Ruzsa and Szemerédi (1978) resolved the case r=3, e=3 (the famous (6,3)-problem), connecting it to the Triangle Removal Lemma and Szemerédi's regularity lemma. Erdős-Frankl-Rödl (1986) proved the full e=3 case. Recent work by Conlon, Gishboliner, Levanzov, and Shapira (2023) brought the r=3 upper bound close to the conjectured value.",

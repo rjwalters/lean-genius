@@ -59,7 +59,8 @@
       "endLine": 343
     },
     "assumptions": "0 axioms, 0 sorries. Core building blocks (Jensen, rpow arithmetic) from Mathlib; original proofs for duality identity and negative-exponent monotonicity.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "The Power Mean Inequality states that $M_r \\leq M_s$ whenever $r \\leq s$. While the positive-exponent case ($0 < r \\leq s$) follows directly from Jensen's inequality applied to the convex function $t \\mapsto t^{s/r}$, the negative-exponent case requires a fundamentally different approach.\n\nThe classical trick, due to Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9), exploits the algebraic duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ between positive and negative power means via value inversion. This duality is an instance of a pervasive pattern in analysis: Hölder duality ($\\|f\\|_p^* = \\|f\\|_{p/(p-1)}$), Legendre-Fenchel duality in convex analysis ($f^{**} = f$ for convex $f$), and Pontryagin duality in harmonic analysis all exploit the same principle — negating or inverting a parameter transforms one inequality into another. The power mean duality is perhaps the simplest non-trivial example.\n\nAs of early 2026, Mathlib4 had an explicit TODO noting the gap for 'generalized mean inequality with any $p \\leq q$, including negative numbers.' This formalization fills that gap for the $r \\leq s < 0$ case, complementing the positive case proved in the parent file. The proof technique — reducing to a known case via an algebraic identity — is a model for how duality arguments can systematically extend results across parameter boundaries.",
@@ -154,7 +155,6 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "lemmaCount": 0,
-    "defCount": 3,
     "path": "Proofs/AmgmInequalityOQ03.lean",
     "sorries": 0,
     "definitionCount": 3

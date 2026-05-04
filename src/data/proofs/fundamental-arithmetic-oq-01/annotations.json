@@ -9,11 +9,11 @@
     "type": "concept",
     "title": "Module Preamble: Imports and Mathematical Context",
     "content": "The file opens with a docblock summarising the mathematical content: for coprime m, n the p-adic valuations satisfy v_p(mn) = v_p(m) + v_p(n), and coprimality means the factorizations have disjoint support. Three Mathlib imports are used: Nat.Factorization.Basic (providing Nat.factorization and Nat.factorization_mul), Nat.GCD.Basic (providing Nat.Coprime and Nat.coprime_iff_disjoint), and Tactic (providing the tactic infrastructure). The namespace FundamentalArithmeticOQ01 isolates all declarations from the global namespace.",
-    "mathContext": "The key Mathlib definitions: \\texttt{Nat.factorization : ℕ → Finsupp ℕ ℕ} is the prime factorization as a finite-support function; \\texttt{Nat.factorization\\_mul (hm : m ≠ 0) (hn : n ≠ 0)} is the core multiplicativity lemma; \\texttt{Nat.Coprime m n} is defined as \\texttt{Nat.gcd m n = 1}; \\texttt{Nat.coprime\\_iff\\_disjoint} gives the Finsupp support characterization of coprimality.",
+    "mathContext": "The key Mathlib definitions: \\texttt{Nat.factorization : \u2115 \u2192 Finsupp \u2115 \u2115} is the prime factorization as a finite-support function; \\texttt{Nat.factorization\\_mul (hm : m \u2260 0) (hn : n \u2260 0)} is the core multiplicativity lemma; \\texttt{Nat.Coprime m n} is defined as \\texttt{Nat.gcd m n = 1}; \\texttt{Nat.coprime\\_iff\\_disjoint} gives the Finsupp support characterization of coprimality.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.factorization",
-      "Finsupp ℕ ℕ",
+      "Finsupp \u2115 \u2115",
       "Nat.Coprime",
       "Mathlib.Data.Nat.Factorization.Basic"
     ],
@@ -30,10 +30,10 @@
       "startLine": 34,
       "endLine": 41
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Factorization Multiplicativity: One-Line Proof via Mathlib",
-    "content": "The central theorem factorization_mul_eq is a one-line proof delegating to Nat.factorization_mul from Mathlib. This highlights the 'thin wrapper' pattern: the theorem adds nothing mathematically beyond giving the result a local name in this namespace. The pointwise form factorization_mul_apply adds one step — rewriting by the Finsupp equality and applying rfl — showing that Finsupp application (f p) is definitionally equal to computing the p-th component of the sum.",
-    "mathContext": "In Lean, \\texttt{Nat.factorization : ℕ → Finsupp ℕ ℕ} maps $n$ to the function $p \\mapsto v_p(n)$ (the p-adic valuation). \\texttt{Finsupp.add} is pointwise addition. The theorem states: $(mn).\\text{factorization} = m.\\text{factorization} + n.\\text{factorization}$, where $+$ is Finsupp addition. Pointwise: $(m.\\text{fact})(p) + (n.\\text{fact})(p) = (m.\\text{fact} + n.\\text{fact})(p)$ by \\texttt{Finsupp.add\\_apply rfl}.",
+    "content": "The central theorem factorization_mul_eq is a one-line proof delegating to Nat.factorization_mul from Mathlib. This highlights the 'thin wrapper' pattern: the theorem adds nothing mathematically beyond giving the result a local name in this namespace. The pointwise form factorization_mul_apply adds one step \u2014 rewriting by the Finsupp equality and applying rfl \u2014 showing that Finsupp application (f p) is definitionally equal to computing the p-th component of the sum.",
+    "mathContext": "In Lean, \\texttt{Nat.factorization : \u2115 \u2192 Finsupp \u2115 \u2115} maps $n$ to the function $p \\mapsto v_p(n)$ (the p-adic valuation). \\texttt{Finsupp.add} is pointwise addition. The theorem states: $(mn).\\text{factorization} = m.\\text{factorization} + n.\\text{factorization}$, where $+$ is Finsupp addition. Pointwise: $(m.\\text{fact})(p) + (n.\\text{fact})(p) = (m.\\text{fact} + n.\\text{fact})(p)$ by \\texttt{Finsupp.add\\_apply rfl}.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.factorization_mul",
@@ -54,9 +54,9 @@
       "startLine": 52,
       "endLine": 64
     },
-    "type": "theorem",
-    "title": "Coprimality ↔ Disjoint Factorization Support",
-    "content": "The disjointness theorem and its pointwise consequence expose the deep connection between GCD and prime factorizations. Nat.coprime_iff_disjoint is a Mathlib lemma that states gcd(m,n) = 1 iff the Finsupp supports are disjoint — this is the algebraic content of 'no prime divides both m and n'. The coprime_valuation_exclusive theorem then converts the support disjointness into a pointwise exclusive-or statement: for each prime p, at least one of v_p(m), v_p(n) must be 0.",
+    "type": "insight",
+    "title": "Coprimality \u2194 Disjoint Factorization Support",
+    "content": "The disjointness theorem and its pointwise consequence expose the deep connection between GCD and prime factorizations. Nat.coprime_iff_disjoint is a Mathlib lemma that states gcd(m,n) = 1 iff the Finsupp supports are disjoint \u2014 this is the algebraic content of 'no prime divides both m and n'. The coprime_valuation_exclusive theorem then converts the support disjointness into a pointwise exclusive-or statement: for each prime p, at least one of v_p(m), v_p(n) must be 0.",
     "mathContext": "$\\gcd(m,n) = 1 \\iff \\text{Disjoint}(\\text{supp}(\\text{fact}(m)), \\text{supp}(\\text{fact}(n)))$. The proof of \\texttt{coprime\\_valuation\\_exclusive}: by contradiction, suppose $v_p(m) \\neq 0$ and $v_p(n) \\neq 0$. Then $p \\in \\text{supp}(\\text{fact}(m))$ (by \\texttt{Finsupp.mem\\_support\\_iff.mpr}) and $p \\in \\text{supp}(\\text{fact}(n))$. But \\texttt{Disjoint.ne\\_of\\_mem} says no element can be in both sets of a disjoint pair, contradiction. The \\texttt{push\\_neg} tactic converts $\\neg(A \\lor B)$ to $\\neg A \\land \\neg B$ to extract both hypotheses.",
     "significance": "key",
     "relatedConcepts": [
@@ -79,10 +79,10 @@
       "startLine": 71,
       "endLine": 94
     },
-    "type": "theorem",
-    "title": "Concrete Example: 420 = 12 × 35 Demonstrates Disjoint Factorizations",
-    "content": "The 420 = 12 × 35 example is pedagogically ideal: 12 = 2²·3 and 35 = 5·7 use completely disjoint sets of primes. The three layers of verification — factorization(12), factorization(35), and factorization(420) — are proved by native_decide (computational verification), while factorization_420_split proves the Finsupp equation factorization(420) = factorization(12) + factorization(35) using the multiplicativity theorem directly, without computation.",
-    "mathContext": "$12 = 2^2 \\cdot 3$, $35 = 5 \\cdot 7$, $420 = 2^2 \\cdot 3 \\cdot 5 \\cdot 7$. As Finsupp values: $\\text{fact}(12) = \\{2 \\mapsto 2, 3 \\mapsto 1\\}$, $\\text{fact}(35) = \\{5 \\mapsto 1, 7 \\mapsto 1\\}$, their sum $= \\{2 \\mapsto 2, 3 \\mapsto 1, 5 \\mapsto 1, 7 \\mapsto 1\\} = \\text{fact}(420)$. The \\texttt{refine ⟨?\\_, ?\\_, ?\\_, ?\\_⟩ <;> native\\_decide} pattern is efficient for proving conjunctions by computation.",
+    "type": "insight",
+    "title": "Concrete Example: 420 = 12 \u00d7 35 Demonstrates Disjoint Factorizations",
+    "content": "The 420 = 12 \u00d7 35 example is pedagogically ideal: 12 = 2\u00b2\u00b73 and 35 = 5\u00b77 use completely disjoint sets of primes. The three layers of verification \u2014 factorization(12), factorization(35), and factorization(420) \u2014 are proved by native_decide (computational verification), while factorization_420_split proves the Finsupp equation factorization(420) = factorization(12) + factorization(35) using the multiplicativity theorem directly, without computation.",
+    "mathContext": "$12 = 2^2 \\cdot 3$, $35 = 5 \\cdot 7$, $420 = 2^2 \\cdot 3 \\cdot 5 \\cdot 7$. As Finsupp values: $\\text{fact}(12) = \\{2 \\mapsto 2, 3 \\mapsto 1\\}$, $\\text{fact}(35) = \\{5 \\mapsto 1, 7 \\mapsto 1\\}$, their sum $= \\{2 \\mapsto 2, 3 \\mapsto 1, 5 \\mapsto 1, 7 \\mapsto 1\\} = \\text{fact}(420)$. The \\texttt{refine \u27e8?\\_, ?\\_, ?\\_, ?\\_\u27e9 <;> native\\_decide} pattern is efficient for proving conjunctions by computation.",
     "significance": "supporting",
     "relatedConcepts": [
       "native_decide for factorization",
@@ -102,9 +102,9 @@
       "startLine": 103,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Iterated Factorization: List Induction Pattern",
-    "content": "The factorization_prod_eq theorem extends multiplicativity from pairs to finite lists. The proof is a clean example of structural list induction in Lean 4: the nil case gives factorization(1) = 0 (the empty sum), and the cons case uses Nat.factorization_mul plus the induction hypothesis. The key auxiliary List.prod_ne_zero propagates the nonzero hypothesis from list elements to the product — a necessary assumption for Nat.factorization_mul (which requires m ≠ 0 and n ≠ 0).",
+    "content": "The factorization_prod_eq theorem extends multiplicativity from pairs to finite lists. The proof is a clean example of structural list induction in Lean 4: the nil case gives factorization(1) = 0 (the empty sum), and the cons case uses Nat.factorization_mul plus the induction hypothesis. The key auxiliary List.prod_ne_zero propagates the nonzero hypothesis from list elements to the product \u2014 a necessary assumption for Nat.factorization_mul (which requires m \u2260 0 and n \u2260 0).",
     "mathContext": "Claim: $(a_1 \\cdots a_k).\\text{fact} = \\text{fact}(a_1) + \\cdots + \\text{fact}(a_k)$. Base: $\\text{fact}(\\text{nil.prod}) = \\text{fact}(1) = 0$ (since $v_p(1) = 0$ for all $p$). Step: $\\text{fact}(a :: l).\\text{prod}) = \\text{fact}(a \\cdot l.\\text{prod}) = \\text{fact}(a) + \\text{fact}(l.\\text{prod})$ (by multiplicativity) $= \\text{fact}(a) + \\text{sum}(l.\\text{map fact})$ (by IH). The \\texttt{List.prod\\_ne\\_zero} lemma: if all elements of $l$ are nonzero, then $l.\\text{prod} \\neq 0$.",
     "significance": "supporting",
     "relatedConcepts": [

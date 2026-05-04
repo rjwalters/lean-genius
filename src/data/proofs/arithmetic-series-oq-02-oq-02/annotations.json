@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 17
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Three Identities in the Hockey Stick Hierarchy",
     "content": "The module docstring states the open question ('Generalize the hockey stick identity to multi-dimensional sums') and previews the three identities proved: the 1D hockey stick (already known), the parallel Vandermonde (new intermediate result), and the 2D hockey stick (the target). The dependency graph is explicit: parallel Vandermonde is the technical core, 2D hockey stick follows by composition with the 1D result. The `open Finset BigOperators` makes range, sum, and ∑ notation available throughout, standard for Lean 4 combinatorics proofs in Mathlib.",
     "mathContext": "The three-identity hierarchy:\n$$\\text{1D: } \\sum_{i=0}^n \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$$\n$$\\text{Parallel Vandermonde: } \\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$$\n$$\\text{2D: } \\sum_{i+j \\leq n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$$\nThe 2D identity is essentially $\\sum_{m=0}^{n}(\\text{parallel Vandermonde at }m)$, i.e., applying the 1D hockey stick to the parallel Vandermonde result.",

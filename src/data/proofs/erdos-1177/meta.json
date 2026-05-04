@@ -24,7 +24,8 @@
     "axiomCount": 5,
     "lineCount": 206,
     "assumptions": "5 axioms. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdos, Galvin, and Hajnal posed three interrelated conjectures about 3-uniform hypergraph families F_G(kappa) = {H : chi(H) = kappa, G not a subhypergraph of H}. These generalize the classical question 'can high chromatic number force the presence of specific substructures?' to the setting of forbidden subhypergraphs. For ordinary graphs (2-uniform), Erdos (1959) showed that high chromatic number does not force short cycles (high-chromatic-number high-girth graphs exist). The 3-uniform case with uncountable chromatic numbers is much harder. Conjecture 1 asks for a beth_2 = 2^(2^aleph_0) bound on witness size. Conjecture 2 asks for joint avoidance. Conjecture 3 asks for cardinal transfer. Referenced in Vaughan (1999) Problem 7.94.",

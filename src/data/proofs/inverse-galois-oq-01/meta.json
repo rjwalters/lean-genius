@@ -38,8 +38,9 @@
         "relationship": "Parent entry stating the Inverse Galois Problem and axiomatizing Shafarevich's theorem for solvable groups"
       }
     ],
-    "lineCount": 723,
-    "mathlib_version": "4.26.0"
+    "lineCount": 4822,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 40
   },
   "overview": {
     "historicalContext": "The Inverse Galois Problem — does every finite group appear as the Galois group of some extension of $\\mathbb{Q}$? — is one of the oldest and most important open questions in algebra. David Hilbert (1892) proved that all symmetric groups $S_n$ are Galois groups over $\\mathbb{Q}$ via his irreducibility theorem, establishing that the generic polynomial of degree $n$ has Galois group $S_n$. Emmy Noether (1918) proposed a strategy: if $G$ acts faithfully on a vector space $V$, is $k(V)^G$ purely transcendental over $k$? A positive answer (Noether's problem) would imply $G$ is a Galois group over $\\mathbb{Q}$, but Swan (1969) and Lenstra (1974) found counterexamples.\n\nIgor Shafarevich (1954) proved the deepest general result: every solvable group is a Galois group over $\\mathbb{Q}$. His proof uses class field theory and is highly non-constructive. For the non-solvable realm, progress has been case-by-case: Thompson (1984) proved the Monster group is realizable, and subsequent work by Malle, Matzat, and others has verified realizability for all but one of the 26 sporadic simple groups (the Mathieu group $M_{23}$ remains open as of 2024). All alternating groups $A_n$ are known to be realizable (Hilbert 1892 for $S_n$ implies $A_n$ by taking the discriminant).\n\nThis formalization explores the solvability frontier — the boundary at $n = 5$ where symmetric groups transition from solvable to non-solvable. It proves the complete characterization $S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$, establishes that $A_5$ is simple, perfect, and not solvable, develops Galois-theoretic fixed field formulas, and states the full Inverse Galois Conjecture as an open problem.",
@@ -181,7 +182,7 @@
       "Can $\\text{PSL}(2,7)$ (order 168, the second smallest non-abelian simple group) be formally realized as a Galois group over $\\mathbb{Q}$? The standard approach uses the polynomial $x^7 - 7x + 3$, which has Galois group $\\text{PSL}(2,7)$.",
       "Can the quotient realizability theorem be applied constructively to derive new Galois groups from S5? (S5/A5 = C2 is trivial; more interesting quotients require larger realized groups.)",
       "The Inverse Galois Conjecture is stated but marked `sorry` (intentionally — it is open). Can partial results (e.g., all alternating groups are realizable via Hilbert's irreducibility theorem) be formalized as intermediate steps?",
-      "Can the solvability characterization be generalized to alternating groups: $A_n$ solvable $\\Leftrightarrow$ $n \\leq 4$? The forward direction (simplicity of $A_n$ for $n \\geq 5$ implies non-solvability) follows from Mathlib."
+      "The $A_n$ solvability characterization ($A_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) is now formalized in this file (`an_solvable_iff`, Part XII). Can the classification be extended to other group families — for example, generalized symmetric groups $G(m, p, n)$ (complex reflection groups) or wreath products $S_m \\wr S_n$? Are there analogues of the $n \\leq 4$ threshold for these families?"
     ]
   },
   "crossReferences": [

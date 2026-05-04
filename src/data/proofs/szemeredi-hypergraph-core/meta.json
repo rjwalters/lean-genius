@@ -52,7 +52,8 @@
       "Szemerédi graph regularity (SzemerediCore.lean)"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Szemerédi's regularity lemma (1975) for graphs is one of the most powerful tools in combinatorics, but many applications require a hypergraph version. The challenge is that naive generalizations of graph regularity to hypergraphs fail: knowing that pairs of vertex sets have uniform density does not suffice to count k-uniform structures.\n\nGowers (2007) and independently Rödl–Skokan (2004) and Nagle–Rödl–Schacht (2006) solved this by introducing regularity relative to an underlying simplicial complex. In their framework, a k-uniform hypergraph is regular not when large vertex subsets preserve density, but when restricting to dense sub-complexes of the (k-1)-skeleton preserves density. This relative regularity is what makes the hypergraph counting lemma work.\n\nThis module formalizes the foundational definitions: k-uniform hypergraphs, k-partite density via transversals, and the naive epsilon-regularity condition. The naive version captures the density-deviation idea and specializes to the graph case (k=2), serving as a stepping stone to the full Gowers regularity.",

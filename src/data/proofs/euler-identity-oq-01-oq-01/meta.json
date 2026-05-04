@@ -68,7 +68,8 @@
         "id": "euler-identity",
         "relationship": "Independent proof of the same identity via Mathlib's Complex.exp_mul_I"
       }
-    ]
+    ],
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Euler published $e^{ix} = \\cos(x) + i\\sin(x)$ in 1748 in his *Introductio in analysin infinitorum* (Chapter 8), by splitting the exponential Taylor series $e^{ix} = \\sum_n (ix)^n/n!$ into even-index terms (which sum to $\\cos x$) and odd-index terms (which sum to $i\\sin x$). This was a formal manipulation of power series before rigorous analysis — Euler did not verify convergence in the modern sense. The resulting identity $e^{i\\pi} + 1 = 0$, sometimes called 'the most beautiful formula in mathematics', was first stated by Euler in *Introductio* as a consequence of the more general formula.\n\nEuler's formula has a precursor in de Moivre's formula (1722): $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$, which de Moivre stated without proof for rational $n$ and which Euler generalized by connecting $\\cos\\theta + i\\sin\\theta = e^{i\\theta}$. Together, these form the foundation of complex trigonometry. The formula's deeper significance emerged over the next century: it makes the unit circle $S^1 = \\{e^{i\\theta} : \\theta \\in \\mathbb{R}\\}$ into a compact abelian group with coordinate $e^{i\\theta}$, and the functions $e^{in\\theta}$ for $n \\in \\mathbb{Z}$ form an orthonormal basis for $L^2(S^1)$ — the foundation of Fourier series. Weierstrass's theorem (1885) that every continuous periodic function is uniformly approximable by trigonometric polynomials is the function-theoretic consequence. From this perspective, Euler's formula is not merely a curiosity but the bridge between analysis on the real line and harmonic analysis on the circle.\n\nThe parent formalization (`EulerIdentityOQ01`) captured Euler's 1748 argument in Lean 4 but required 3 axioms for the analytic infrastructure: the even/odd `tsum` splitting, and the identification of the even and odd subseries with $\\cos$ and $\\sin$ via their Taylor series. This file resolves all three by connecting the parent's proof structure to Mathlib's `Complex.cos_eq_tsum`, `Complex.sin_eq_tsum`, and `tsum_even_add_odd`. The result — a fully machine-verified, 0-axiom Taylor series proof of Euler's identity — demonstrates that Mathlib's analysis library (as of 2026) has sufficient depth to close these gaps without any new mathematics.",
@@ -189,7 +190,6 @@
     "lineCount": 142,
     "axiomCount": 0,
     "theoremCount": 10,
-    "defCount": 3,
     "mainTheorems": [
       {
         "name": "euler_formula",

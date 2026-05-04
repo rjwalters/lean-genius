@@ -1,0 +1,156 @@
+{
+  "id": "minpoly-charpoly",
+  "title": "Minimal Polynomial vs Characteristic Polynomial of Matrices",
+  "slug": "minpoly-charpoly",
+  "description": "Formalizes the fundamental relationship between minimal and characteristic polynomials of matrices: minpoly K M divides charpoly M, both are monic, minpoly annihilates M (Cayley-Hamilton variant), and roots of minpoly are roots of charpoly. 17 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius MinpolyCharpoly",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinpolyCharpoly.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "minimal-polynomial",
+      "characteristic-polynomial",
+      "cayley-hamilton",
+      "algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 246,
+    "theoremCount": 18,
+    "assumptions": "None. All 17 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.charpoly",
+        "description": "Characteristic polynomial of a matrix",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "minpoly",
+        "description": "Minimal polynomial of a matrix",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The characteristic polynomial det(λI − M) was central to Cauchy's eigenvalue work (1829) and formalized by Weierstrass (1858) in the context of bilinear forms. The Cayley-Hamilton theorem — every matrix satisfies its own characteristic polynomial — was announced by Cayley for 2×2 and 3×3 cases in 1858 and by Hamilton for quaternions the same year; the full n×n proof was given by Frobenius (1878) using invariant factors and the rational canonical form. The minimal polynomial emerged from Frobenius's invariant factor theory: m_M is the largest invariant factor of (λI − M), equivalently the GCD of all (n−1)×(n−1) minors of (λI − M) divided by the GCD of all entries. The fundamental theorem minpoly | charpoly follows from Cayley-Hamilton (charpoly annihilates M) and the universal property of minpoly (it divides any annihilating polynomial). The minimal polynomial governs the primary decomposition of K^n as a K[X]-module and determines the Jordan structure: M is diagonalizable over K iff minpoly has no repeated roots; M has a cyclic vector iff minpoly = charpoly. This file provides the foundational infrastructure for Jordan normal form theory in Lean 4.",
+    "problemStatement": "Prove: (1) minpoly K M divides charpoly M. (2) Both are monic. (3) charpoly annihilates M (Cayley-Hamilton). (4) minpoly degree ≤ dim(M). (5) Roots of minpoly are roots of charpoly.",
+    "proofStrategy": "Most results follow from Mathlib's minpoly and charpoly APIs. minpoly_dvd_charpoly: use minpoly.dvd and charpoly_monic. charpoly_annihilates: Matrix.aeval_self_charpoly. minpoly_annihilates: minpoly.aeval.",
+    "keyInsights": [
+      "**Divisibility**: minpoly(M) | charpoly(M) because charpoly(M)[M] = 0 (Cayley-Hamilton) and minpoly(M) divides any annihilating polynomial.",
+      "**Degree bounds**: deg(minpoly) ≤ n = dim(K^n) since the n+1 matrices {I, M, M², ..., M^n} are linearly dependent in Mat_n(K).",
+      "**Root relationship**: Every root of minpoly is a root of charpoly (divisibility). The converse may fail (Jordan blocks).",
+      "**Cayley-Hamilton**: charpoly(M)(M) = 0 — the matrix satisfies its own characteristic polynomial.",
+      "**Universal property generates the annihilator ideal**: minpoly generates Ann(M) = {p ∈ K[X] | p(M) = 0} as a principal ideal. Equivalently, p(M) = 0 iff minpoly | p. This makes minpoly the unique 'canonical' annihilating polynomial from which all others derive."
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-relationship",
+      "title": "Parts 1–2: Integrality and Divisibility",
+      "startLine": 49,
+      "endLine": 92,
+      "summary": "matrix_is_integral: every matrix is integral over its base ring (prerequisite for minpoly). minpoly_dvd_charpoly: minpoly K M | M.charpoly — the core divisibility theorem. minpoly_monic: minpoly is monic. minpoly_degree_pos: degree ≥ 1 for nontrivial matrix rings.",
+      "mathContext": "$\\text{minpoly}(M) \\mid \\text{charpoly}(M)$; minpoly is monic; $\\deg(\\text{minpoly}) \\geq 1$."
+    },
+    {
+      "id": "degree-bounds",
+      "title": "Part 3: Degree Bounds",
+      "startLine": 94,
+      "endLine": 116,
+      "summary": "minpoly_degree_le_charpoly_degree: deg(minpoly) ≤ deg(charpoly) via Polynomial.natDegree_le_of_dvd. minpoly_degree_le_dim: deg(minpoly) ≤ n via Matrix.charpoly_natDegree_eq_dim. Both use charpoly_monic.ne_zero to ensure the divisor is nonzero.",
+      "mathContext": "$1 \\leq \\deg(m_M) \\leq \\deg(p_M) = n$ where $n = \\text{Fintype.card}\\,\\mathtt{n}$."
+    },
+    {
+      "id": "annihilation-universal",
+      "title": "Parts 4–5: Annihilation, Universal Property, Monicness",
+      "startLine": 118,
+      "endLine": 151,
+      "summary": "charpoly_annihilates: aeval M M.charpoly = 0 (Cayley-Hamilton from Mathlib). minpoly_annihilates: aeval M (minpoly K M) = 0 (defining property). minpoly_divides_annihilator: universal property (minpoly.dvd). both_monic: both polynomials are monic.",
+      "mathContext": "$\\text{Ann}(M) = (m_M)$ as a principal ideal in $K[X]$. $p(M) = 0 \\Leftrightarrow m_M \\mid p$."
+    },
+    {
+      "id": "roots-linmap",
+      "title": "Parts 6–7: Root Relationship and Linear Map Connection",
+      "startLine": 153,
+      "endLine": 179,
+      "summary": "minpoly_root_is_charpoly_root: every root of minpoly is a root of charpoly. minpoly_eq_linmap_minpoly: minpoly of matrix = minpoly of corresponding linear map (Matrix.minpoly_toLin'). Establishes basis-independence of the minimal polynomial.",
+      "mathContext": "$\\alpha$ root of $m_M \\Rightarrow$ $\\alpha$ root of $p_M$. $m_M = m_\\phi$ where $\\phi$ is the linear map represented by $M$."
+    },
+    {
+      "id": "examples-uniqueness",
+      "title": "Parts 8–9: Concrete Examples and Uniqueness",
+      "startLine": 181,
+      "endLine": 213,
+      "summary": "identity_annihilated: aeval I (minpoly K I) = 0 (minpoly = X − 1). zero_annihilated: aeval 0 (minpoly K 0) = 0 (minpoly = X). zero_matrix_minpoly_dvd_charpoly: minpoly(0) | charpoly(0). minpoly_dvd_annihilating_monic: universal property restated. Identity and zero are the extremal cases with maximum degree gap n−1.",
+      "mathContext": "Identity: $m_I = X-1$, $p_I = (X-1)^n$. Zero: $m_0 = X$, $p_0 = X^n$. Both have degree gap $n-1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Minpoly-charpoly relationship fully formalized: 17 theorems, 0 sorries, 0 axioms. Divisibility, annihilation, degree bounds, and root relationships all proved.",
+    "implications": "This provides the core infrastructure for Jordan normal form theory in Lean 4. The minpoly | charpoly relationship is fundamental to understanding diagonalizability (minpoly splits into distinct linear factors) vs. Jordan decomposition.",
+    "openQuestions": [
+      "Can the Jordan normal form theorem be formalized in Lean 4 using this infrastructure?",
+      "Can the characterization of diagonalizable matrices (minpoly has no repeated roots) be proved?",
+      "Can the rational canonical form (based on minpoly factorization) be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "MinpolyCharpoly",
+    "lineCount": 246,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 0,
+    "path": "Proofs/MinpolyCharpoly.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "parent",
+      "description": "Cayley-Hamilton (charpoly(M)(M) = 0) is the key ingredient: it makes charpoly an annihilating polynomial, from which minpoly | charpoly follows via the universal property"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "companion",
+      "description": "Companion entry formalizing minpoly reduction (any f(M) = f mod minpoly, evaluated at M) and the annihilator ideal Ann(M) = (minpoly) in K[X]"
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "related",
+      "description": "Cyclic vector theory: M has a cyclic vector iff minpoly(M) = charpoly(M), the case of minimum degree gap — complementary to the extremal examples (I, 0) where the gap is maximal"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Polynomial reduction via minpoly: for any polynomial f, aeval M f = aeval M (f mod minpoly), leveraging the universal property proved here"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "minpoly_dvd_charpoly",
+      "type": "core",
+      "statement": "∀ K n, minpoly K M ∣ M.charpoly",
+      "description": "The minimal polynomial divides the characteristic polynomial.",
+      "significance": "Fundamental structural relationship between the two key polynomials"
+    },
+    {
+      "name": "charpoly_annihilates",
+      "type": "core",
+      "statement": "Matrix.aeval M M.charpoly = 0",
+      "description": "Cayley-Hamilton: every matrix satisfies its characteristic polynomial.",
+      "significance": "The starting point for the divisibility proof"
+    }
+  ],
+  "sorries": 0
+}

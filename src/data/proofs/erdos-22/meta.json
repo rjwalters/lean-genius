@@ -63,7 +63,8 @@
       "Graph density and independence number",
       "Probabilistic combinatorics"
     ],
-    "assumptions": "6 axioms: edgeCount, independenceNumber, rt, fox_loh_zhao_2015, rt_lower_bound, fox_loh_zhao_sublinear. See Lean source for complete statements."
+    "assumptions": "6 axioms: edgeCount, independenceNumber, rt, fox_loh_zhao_2015, rt_lower_bound, fox_loh_zhao_sublinear. See Lean source for complete statements.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #22 is the Bollobás-Erdős conjecture from 1976, arising from their systematic study of Ramsey-Turán problems. Turán's theorem (1941) tells us the maximum number of edges in a K₄-free graph on n vertices is about n²/3, achieved by the complete tripartite graph T(n,3). However, T(n,3) has independence number n/3, which is linear in n. The natural question is: what happens if we also demand small independence number?\n\nBollobás and Erdős conjectured that for any ε > 0 and sufficiently large n, there exist K₄-free graphs on n vertices with at least n²/8 edges and independence number at most εn. They proved a weaker version with (1/8 + o(1))n² edges. The bound n²/8 corresponds to the Ramsey-Turán density ρ₄ = 1/4, which measures the asymptotic edge density achievable under both clique-free and small-independence constraints.\n\nFox, Loh, and Zhao resolved the conjecture fully in 2015 using pseudorandom Cayley graph constructions over finite fields. Their result is actually much stronger than the conjecture: the independence number achieved is only O((log log n)^{3/2} / (log n)^{1/2} · n), which is far smaller than any εn. This polylogarithmic bound demonstrates the power of algebraic and probabilistic methods in extremal combinatorics.",

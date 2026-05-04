@@ -22,7 +22,8 @@
     "axiomCount": 0,
     "lineCount": 113,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Arithmetic — that every positive integer has a unique prime factorization — was known to Euclid but first explicitly proved by Gauss in Disquisitiones Arithmeticae (1801). The multiplicative property of factorization is one of its key corollaries: v_p(mn) = v_p(m) + v_p(n) for all primes p, where v_p is the p-adic valuation. This additive property turns multiplication of integers into addition of 'exponent vectors', making ℕ (under multiplication) isomorphic to the free commutative monoid on primes. The p-adic valuation v_p was formalized by Kürschák (1913) and became central to algebraic number theory through Ostrowski's theorem (1916) and local fields. In Mathlib, Nat.factorization represents this as a Finsupp ℕ ℕ — a finite support function from primes to exponents — making the additive structure of factorization explicit as Finsupp addition.",

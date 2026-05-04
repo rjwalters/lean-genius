@@ -42,7 +42,8 @@
     "axiomCount": 0,
     "lineCount": 332,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 37
   },
   "overview": {
     "historicalContext": "Girard Desargues stated his theorem around 1639 in the context of perspective drawing and projective geometry. The theorem — that two triangles in perspective from a point are also in perspective from a line — holds in every projective plane coordinatizable by a division ring, a result formalized in OQ-01 using cross-product algebra. Forest Ray Moulton (1902) constructed the first concrete counterexample: an affine plane with the same point set as $\\mathbb{R}^2$ but modified lines, where negative slopes double upon crossing the $y$-axis. This showed that Desargues's theorem is not a consequence of the incidence axioms alone — it depends on the algebraic structure of the coordinate system. The Hessenberg-Artin theorem (Karl Hessenberg 1905, Emil Artin 1957) later proved the converse: a projective plane is Desarguesian if and only if it is coordinatizable by a division ring. The Moulton plane thus occupies a central place in the classification of projective planes and serves as the canonical example in most modern textbooks on incidence geometry (e.g., Hartshorne's *Foundations of Projective Geometry*).",

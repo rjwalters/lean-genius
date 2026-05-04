@@ -70,7 +70,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 372,
-    "assumptions": "4 axioms (kiss_2002, sylvester_frobenius, sylvester_count, frobenius_consecutive) and 2 sorries (nonrep_finite, topK_finite)."
+    "assumptions": "4 axioms (kiss_2002, sylvester_frobenius, sylvester_count, frobenius_consecutive) and 2 sorries (nonrep_finite, topK_finite).",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "Erdős Problem #434 is closely related to the classical Frobenius problem (also called the coin problem or money changing problem). Given a set of positive integers with gcd = 1, only finitely many integers are non-representable as sums of elements from the set.\n\nThe Frobenius number is the largest such non-representable integer. For two coprime integers a and b, Sylvester proved in 1884 that this equals ab - a - b, and the count of non-representables is (a-1)(b-1)/2.\n\nProblem #434 asks a different question: not what is the largest non-representable integer, but which k-element subset of {1, ..., n} maximizes the COUNT of non-representable integers. Kiss (2002) proved that the answer is the 'top k' set: {n-k+1, ..., n}. Intuitively, using larger numbers creates more gaps in what's representable.\n\nThe problem connects to numerical semigroup theory, where the 'genus' of a semigroup (number of gaps) is a central invariant. Problem #434 asks which generators maximize the genus. The result is also remarkable from an optimization perspective: the greedy algorithm (always pick the largest available number) produces the provably optimal solution — a rare case in combinatorial optimization where greedy is exactly optimal.\n\nRamírez-Alfonsín (2005) showed that computing the Frobenius number for sets of 3 or more elements is NP-hard, making the clean explicit solution to the extremal problem all the more surprising.",

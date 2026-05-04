@@ -60,7 +60,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 189,
-    "assumptions": "4 axioms: bondy_erdos_conjecture, kss_2005_upper_odd, kss_2005_lower_odd, benevides_skokan_2009. 0 sorries."
+    "assumptions": "4 axioms: bondy_erdos_conjecture, kss_2005_upper_odd, kss_2005_lower_odd, benevides_skokan_2009. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**The 3-Color Ramsey Number for Cycles**\n\nBondy and Erdős conjectured that R(C_n;3) ≤ 4n - 3, where R(G;3) is the minimum m such that any 3-coloring of K_m contains a monochromatic copy of G.\n\n**Historical Development:**\n- **Bondy-Erdős:** Original conjecture R(C_n;3) ≤ 4n - 3\n- **Łuczak (1999):** Proved R(C_n;3) ≤ (4+o(1))n; improved to (3+o(1))n for even n\n- **Kohayakawa-Simonovits-Skokan (2005):** Exact bound 4n-3 for large odd n\n- **Benevides-Skokan (2009):** Exact bound R(C_n;3) = 2n for large even n\n\nThe problem is completely resolved with a beautiful dichotomy: odd and even cycles have dramatically different Ramsey numbers!",

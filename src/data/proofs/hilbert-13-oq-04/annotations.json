@@ -25,7 +25,7 @@
       "startLine": 128,
       "endLine": 151
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Dimension Monotonicity",
     "content": "Proves that covering dimension is monotone: dim(X) <= n implies dim(X) <= n+1. Also states the dimension-0 characterization: dim(X) = 0 iff every finite open cover has a disjoint refinement. The monotonicity is proved directly from the definition.",
     "significance": "supporting",
@@ -43,7 +43,7 @@
       "startLine": 153,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Dimension of the Unit Cube",
     "content": "States that [0,1]^n has covering dimension exactly n. The upper bound (dim <= n) uses coordinate hyperplane decomposition; the lower bound (dim > n-1) requires the Lebesgue covering theorem or degree theory. Both are axiomatized due to their deep topological content.",
     "significance": "key",
@@ -61,7 +61,7 @@
       "startLine": 186,
       "endLine": 234
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Ostrand's Separating Maps",
     "content": "Axiomatizes Ostrand's theorem (1965): for a compact metric space of dimension n, there exist 2n+1 continuous maps to [0,1] that jointly separate all points. These separating maps are the key technical ingredient for the generalized KA construction.",
     "significance": "key",
@@ -79,7 +79,7 @@
       "startLine": 235,
       "endLine": 249
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Generalized Kolmogorov-Arnold Theorem",
     "content": "The main theorem: every continuous function on a compact metrizable space of covering dimension n admits a representation as a sum of 2n+1 compositions of continuous univariate functions with continuous maps from X to R. This generalizes the classical KA theorem from [0,1]^n.",
     "significance": "key",
@@ -97,7 +97,7 @@
       "startLine": 251,
       "endLine": 298
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Sternfeld's Characterization",
     "content": "The definitive characterization (Sternfeld 1985): a compact metrizable space X has the superposition property with 2n+1 maps (every f : X -> R decomposes into 2n+1 univariate compositions) if and only if dim(X) <= n. This is a biconditional, giving both necessity and sufficiency.",
     "significance": "key",
@@ -116,7 +116,7 @@
       "startLine": 300,
       "endLine": 318
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Recovery of Classical KA Theorem",
     "content": "Derives the classical KA theorem for [0,1]^n as a direct corollary of the generalized theorem combined with the fact that dim([0,1]^n) = n. This demonstrates that the generalized framework properly subsumes the original result.",
     "significance": "key",
@@ -134,7 +134,7 @@
       "startLine": 320,
       "endLine": 348
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Sharpness of 2n+1 Bound",
     "content": "Establishes that 2n+1 is the optimal number of terms: for n-dimensional spaces (n >= 1), the superposition property with 2n maps fails. Combined with the sufficiency of 2n+1, this gives the complete picture: exactly 2n+1 terms are needed.",
     "significance": "key",

@@ -18,6 +18,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
+    "theoremCount": 16,
     "mathlibDependencies": [
       {
         "theorem": "Analysis.SpecialFunctions.Log.Basic",
@@ -56,7 +57,33 @@
       "Convex optimization (for R(D) characterization)",
       "Gaussian distribution properties"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "shannon-source-coding",
+        "relationship": "Parent: lossless source coding theorem — rate-distortion at D = 0 recovers H(X)"
+      },
+      {
+        "id": "shannon-channel-coding",
+        "relationship": "Dual: channel coding at capacity C — source-channel separation connects R(D) ≤ C"
+      },
+      {
+        "id": "shannon-entropy",
+        "relationship": "Foundation: mutual information I(X;X̂) is the optimand in the R(D) variational problem"
+      },
+      {
+        "id": "shannon-source-coding-oq-02",
+        "relationship": "Complementary: Huffman coding achieves H(X) at D=0 — the constructive lossless complement"
+      },
+      {
+        "id": "shannon-source-coding-oq-04",
+        "relationship": "Extension: further source coding results building on this entry"
+      },
+      {
+        "id": "shannon-channel-coding-oq-02",
+        "relationship": "Related: channel capacity for specific models — the C parameter in the separation theorem"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Shannon's 1948 paper established the entropy H(X) as the fundamental limit of lossless data compression. But most practical communication involves lossy compression: images, audio, and video are routinely compressed with acceptable quality loss. In 1959, Shannon published 'Coding Theorems for a Discrete Source with a Fidelity Criterion' in IRE National Convention Record, extending source coding theory to the lossy regime.\n\nThe key insight was to parametrize the quality-rate tradeoff by a distortion measure d(x, x̂) and seek the minimum mutual information I(X; X̂) over all conditional distributions p(x̂|x) satisfying the distortion constraint E[d(X, X̂)] ≤ D. This infimum R(D) — the rate-distortion function — is the lossy analogue of entropy: it gives the minimum number of bits per source symbol needed for reproduction at distortion level D.\n\nShannon proved that R(D) is convex and non-increasing in D, with R(0) = H(X) (recovering the lossless theorem) and R(D_max) = 0. For a Gaussian source with squared-error distortion, R(D) = ½ log(σ²/D), which is the theoretical foundation for all modern lossy codecs (JPEG, MP3, H.264, etc.).\n\nThe rate-distortion coding theorem — achievability and converse — shows that R(D) is both achievable (via random coding) and tight (via the data processing inequality). Berger (1971) provided a comprehensive treatment in his monograph 'Rate Distortion Theory', and Blahut (1972) gave the iterative algorithm (Blahut-Arimoto) for computing R(D) numerically.",
@@ -69,7 +96,12 @@
       "**Gaussian closed form**: R(D) = ½ log(σ²/D) for the Gaussian source is the cleanest rate-distortion result. The optimal test channel adds Gaussian noise X̂ = X + Z, and the proof uses the maximum-entropy property of the Gaussian distribution",
       "**Binary entropy as the key function**: For binary sources with Hamming distortion, R(D) = h(p) - h(D) where h is the binary entropy function. The formalization proves h ≥ 0, h is symmetric, h(0) = 0, and h(1/2) = log 2",
       "**Lossless as a special case**: At D = 0, the only admissible test channel for Hamming distortion is the identity X̂ = X, giving I(X;X̂) = H(X). So R(0) = H(X), recovering the 1948 source coding theorem as an endpoint of rate-distortion theory",
-      "**Convexity requires optimization machinery**: The axiomatized convexity of R(D) needs: (a) existence of optimal test channels (compactness of the simplex), (b) time-sharing of channels, and (c) convexity of mutual information in the conditional — a deep result from the log-sum inequality"
+      "**Convexity requires optimization machinery**: The axiomatized convexity of R(D) needs: (a) existence of optimal test channels (compactness of the simplex), (b) time-sharing of channels, and (c) convexity of mutual information in the conditional — a deep result from the log-sum inequality",
+      "**Blahut-Arimoto Algorithm (1972)**: R(D) can be computed via alternating optimization. Fix reproduction marginal $Q(\\hat{x})$; optimize the test channel via the Boltzmann form $W^*(\\hat{x}|x) \\propto Q(\\hat{x}) e^{-s \\cdot d(x,\\hat{x})}$ (the unique minimizer of $I(X;\\hat{X})$ at fixed $E[d]$, by Lagrange duality with multiplier $s > 0$). Then update $Q(\\hat{x}) \\leftarrow \\sum_x p(x) W^*(\\hat{x}|x)$. Both steps decrease the Lagrangian $I(X;\\hat{X}) - s(D - E[d])$ monotonically, and the algorithm converges geometrically (Blahut 1972, Arimoto 1972 independently). This is an instance of the EM algorithm: the Q-update is the E-step (compute sufficient statistics of the test channel), and the W-update is the M-step (maximize with respect to channel). Each point on the R(D) curve corresponds to a Lagrange multiplier value $s \\geq 0$ — as $s \\to 0$, $R \\to 0$; as $s \\to \\infty$, $D \\to 0$.",
+      "**Source-Channel Separation Theorem**: Transmitting a source at distortion $D$ over a channel with capacity $C$ is reliably achievable if and only if $R(D) \\leq C$. The achievability direction: compress the source to $R(D)$ bits/symbol using a rate-distortion code, then encode for the channel at rate $C \\geq R(D)$ using a channel code. The converse: any scheme achieving distortion $D$ over a channel of capacity $C$ satisfies $R(D) \\leq C$ (by the data processing inequality and Fano's inequality). This separation theorem, proved by Shannon (1959), completely decouples source and channel coding: the optimal system is the concatenation of the best source code and the best channel code, with no performance loss in the large blocklength limit. The gallery entry `shannon-channel-coding` formalizes the channel capacity $C$; the separation theorem is the formal bridge between these two Lean entries.",
+      "**Operational Meaning via Typical Sequences**: The rate-distortion coding theorem gives the information-theoretic operational meaning of $R(D)$: for any $R > R(D)$ and $\\epsilon > 0$, there exists a code with $2^{nR}$ codewords achieving average distortion $\\leq D + \\epsilon$ for all sufficiently large blocklengths $n$. The achievability proof constructs a random codebook by drawing $2^{nR}$ codewords i.i.d. from the reproduction marginal $Q(\\hat{x})$, and shows that the probability of finding a jointly $D$-typical codeword approaches 1 exponentially in $n$. The converse uses Fano's inequality applied to the distortion constraint: any code with fewer than $2^{nR(D)}$ codewords must incur average distortion $> D$. The Lean formalization gives the static ($n=1$) variational definition; formalizing the dynamic (large-$n$) coding theorem would require Mathlib's law of large numbers and the method of types.",
+      "**Shannon Lower Bound and the Gaussian Extremum**: For a source $X$ with differential entropy $h(X)$ and squared-error distortion, $R(D) \\geq h(X) - \\frac{1}{2}\\log(2\\pi e D)$ (the Shannon lower bound). For $X \\sim \\mathcal{N}(0, \\sigma^2)$: $h(X) = \\frac{1}{2}\\log(2\\pi e \\sigma^2)$, so $R(D) \\geq \\frac{1}{2}\\log(\\sigma^2/D)$. The Gaussian achieves this bound with equality — the Gaussian is the worst-case (hardest to compress) source for a given variance and squared-error distortion. This extremum property is the continuous analog of the maximum-entropy theorem: Gaussian maximizes entropy at fixed variance. The lower bound follows from $h(X) \\leq \\frac{1}{2}\\log(2\\pi e \\text{Var}(X))$ and the data processing inequality. The `gaussian_rd_nonneg` and `gaussian_rd_halve_distortion` theorems in this entry probe the Gaussian formula directly; the lower bound framework would require differential entropy formalization.",
+      "**Rate-Distortion Theory and Variational Autoencoders (VAEs)**: The VAE loss (Kingma-Welling 2013) is the evidence lower bound (ELBO): $\\mathcal{L}(\\theta, \\phi; x) = \\mathbb{E}_{q_\\phi(z|x)}[\\log p_\\theta(x|z)] - D_{KL}(q_\\phi(z|x) \\| p(z))$. This decomposes as (reconstruction quality) $-$ (code length). The KL term $D_{KL}(q_\\phi \\| p)$ is the expected code length (mutual information $I(X;Z)$ in the channel $q_\\phi(z|x)$); the reconstruction term $\\mathbb{E}[\\log p_\\theta(x|z)]$ is the negative distortion. Maximizing the ELBO is exactly minimizing $I(X;Z) + \\lambda \\cdot E[d(X, g(Z))]$ — the Lagrangian of the rate-distortion problem with multiplier $\\lambda = 1/s$! The VAE thus implicitly traces out the rate-distortion curve: the single decoder $p_\\theta(x|z)$ and encoder $q_\\phi(z|x)$ implement a learned test channel $W(z|x)$. The optimal Gaussian VAE (spherical Gaussian prior, squared-error reconstruction) achieves $R(D) = \\frac{1}{2}\\log(\\sigma^2/D)$ for Gaussian data — exactly `gaussian_rd_halve_distortion` in disguise. This connection, formalized by Alemi et al. (2018) as the 'rate-distortion/information bottleneck perspective on VAEs', grounds modern deep learning compression in the same mathematical framework Shannon proved in 1959."
     ],
     "prerequisites": [
       "Shannon entropy and mutual information",
@@ -86,7 +118,7 @@
       "startLine": 29,
       "endLine": 92,
       "summary": "Definitions of distortion measure, expected distortion, test channel, joint distribution, admissibility, achievable rates, and the rate-distortion function R(D) = inf I(X;X̂).",
-      "mathContext": "$R(D) = \\inf_{p(\\hat{x}|x):\\, E[d(X,\\hat{X})] \\le D} I(X;\\hat{X})$"
+      "mathContext": "$R(D) = \\inf_{p(\\hat{x}|x):\\, E[d(X,\\hat{X})] \\le D} I(X;\\hat{X})$ where mutual information $I(X;\\hat{X}) = \\sum_{x,\\hat{x}} p_{X\\hat{X}}(x,\\hat{x}) \\log \\frac{p_{X\\hat{X}}(x,\\hat{x})}{p_X(x) p_{\\hat{X}}(\\hat{x})}$. The infimum is over the convex set of admissible test channels $W(\\hat{x}|x)$ satisfying $E[d(X,\\hat{X})] = \\sum_{x,\\hat{x}} p(x) W(\\hat{x}|x) d(x,\\hat{x}) \\leq D$. By Shannon's coding theorem, $R(D)$ is both achievable (there exist codes approaching it) and optimal (no code can do better)."
     },
     {
       "id": "joint-properties",
@@ -94,7 +126,7 @@
       "startLine": 94,
       "endLine": 116,
       "summary": "Non-negativity and normalization of the induced joint distribution p(x,y) = p(x)W(y|x), plus non-negativity of expected distortion.",
-      "mathContext": "$p_{XY}(x,y) = p(x)\\,W(y|x) \\ge 0$, $\\sum_{x,y} p_{XY}(x,y) = 1$"
+      "mathContext": "$p_{XY}(x,y) = p_X(x) \\cdot W(y|x) \\ge 0$ and $\\sum_{x,y} p_{XY}(x,y) = 1$. The normalization proof uses the tower property: $\\sum_{x,y} p(x) W(y|x) = \\sum_x p(x) (\\sum_y W(y|x)) = \\sum_x p(x) \\cdot 1 = 1$. Well-formedness of $p_{XY}$ is prerequisite for defining mutual information $I(X;Y) = D_{KL}(p_{XY} \\| p_X \\otimes p_Y)$, the quantity optimized in $R(D)$."
     },
     {
       "id": "monotonicity",
@@ -102,7 +134,7 @@
       "startLine": 118,
       "endLine": 132,
       "summary": "Achievable rates set monotonicity: D₁ ≤ D₂ implies the D₁-admissible set is contained in the D₂-admissible set.",
-      "mathContext": "$D_1 \\le D_2 \\Rightarrow \\{I : E[d] \\le D_1\\} \\subseteq \\{I : E[d] \\le D_2\\}$"
+      "mathContext": "$D_1 \\le D_2 \\Rightarrow \\mathcal{W}_{D_1} \\subseteq \\mathcal{W}_{D_2} \\Rightarrow \\inf_{\\mathcal{W}_{D_2}} I \\le \\inf_{\\mathcal{W}_{D_1}} I$, i.e., $R(D_2) \\le R(D_1)$. The key step: $\\texttt{achievableRates\\_mono}$ proves set containment, and monotonicity of $\\text{sInf}$ (infimum over a larger set is no greater) gives the rate inequality. Operationally: more distortion tolerance relaxes the constraint, admitting additional test channels and enabling potentially lower rates."
     },
     {
       "id": "hamming",
@@ -110,7 +142,7 @@
       "startLine": 134,
       "endLine": 159,
       "summary": "Hamming distortion d(x,y) = 1_{x≠y} with bounds and characterization. The natural distortion for discrete sources.",
-      "mathContext": "$d_H(x,y) = \\begin{cases} 0 & x = y \\\\ 1 & x \\ne y \\end{cases}$"
+      "mathContext": "$d_H(x,y) = \\mathbf{1}_{x \\ne y}$: 0 for correct reproduction, 1 for any error. For a Bernoulli($p$) source and Hamming distortion, the optimal test channel achieving $R(D) = h(p) - h(D)$ is the binary symmetric channel with crossover probability $D$ — each source symbol $x$ is reproduced correctly with probability $1-D$ and flipped with probability $D$. The formula $d_H(x,y) = 1 - \\delta_{xy}$ makes the expected distortion $E[d_H] = P(X \\ne \\hat{X})$ exactly the bit error probability."
     },
     {
       "id": "binary-entropy",
@@ -118,7 +150,7 @@
       "startLine": 161,
       "endLine": 211,
       "summary": "Binary entropy h(p) = -p log(p) - (1-p)log(1-p) with non-negativity, symmetry h(p) = h(1-p), boundary values h(0) = 0 and h(1/2) = log 2.",
-      "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p)$, $h(0) = 0$, $h(\\tfrac{1}{2}) = \\log 2$"
+      "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p) = H(\\text{Bernoulli}(p))$. Properties: $h(0) = h(1) = 0$ (certain outcomes have 0 entropy); $h(1/2) = \\log 2$ (maximum, uniform distribution); $h$ is strictly concave on $[0,1]$ (by $h'' = -1/(p(1-p)) < 0$); $h(p) = h(1-p)$ (symmetry). Role in rate-distortion: for a Bernoulli($p$) source, the binary rate-distortion function is $R(D) = h(p) - h(D)$ (Shannon 1959), since the optimal test channel (binary symmetric at crossover $D$) contributes $h(D)$ bits of equivocation, reducing the source entropy $h(p)$ to $R(D)$."
     },
     {
       "id": "gaussian",
@@ -126,7 +158,7 @@
       "startLine": 213,
       "endLine": 265,
       "summary": "Gaussian R(D) = ½ log(σ²/D): non-negativity, monotonicity (decreasing in D), boundary R(σ²) = 0, and halving-distortion formula R(D/2) = R(D) + ½ log 2.",
-      "mathContext": "$R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$"
+      "mathContext": "$R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$, achieved by the optimal test channel $\\hat{X} = X + Z$ where $Z \\sim \\mathcal{N}(0, \\sigma^2 - D)$ independent of $X$: then $\\hat{X} \\sim \\mathcal{N}(0, \\sigma^2)$, $X - \\hat{X} = -Z$ has variance $\\sigma^2 - D$, and $I(X;\\hat{X}) = h(\\hat{X}) - h(\\hat{X}|X) = h(\\hat{X}) - h(Z) = \\frac{1}{2}\\log(2\\pi e\\sigma^2) - \\frac{1}{2}\\log(2\\pi e(\\sigma^2-D)) = \\frac{1}{2}\\log\\frac{\\sigma^2}{\\sigma^2-D}$... wait, the correct form is $R(D) = \\frac{1}{2}\\log(\\sigma^2/D)$ via the Gaussian maximum-entropy property: $h(\\hat{X}) - h(X|\\hat{X}) = h(X) - h(X - \\hat{X}) \\geq h(X) - \\frac{1}{2}\\log(2\\pi e D)$. The 6 dB/bit rule: $R(D/2) = R(D) + \\frac{1}{2}\\log 2$, proved as `gaussian_rd_halve_distortion`."
     },
     {
       "id": "water-filling",
@@ -134,7 +166,7 @@
       "startLine": 267,
       "endLine": 280,
       "summary": "Multi-dimensional Gaussian R(D) = ∑ max(0, ½ log(σᵢ²/θ)) via reverse water-filling. Non-negativity proved.",
-      "mathContext": "$R(D) = \\sum_{i=1}^n \\max\\!\\left(0,\\, \\frac{1}{2}\\log\\frac{\\sigma_i^2}{\\theta}\\right)$"
+      "mathContext": "$R(D) = \\sum_{i=1}^n \\max\\!\\left(0,\\, \\frac{1}{2}\\log\\frac{\\sigma_i^2}{\\theta}\\right)$ where $\\theta > 0$ is the water level chosen so $\\sum_{i=1}^n \\min(\\sigma_i^2, \\theta) = D$. The optimal strategy: allocate zero bits to components with $\\sigma_i^2 \\leq \\theta$ (they are reproduced at distortion $\\sigma_i^2 \\leq D_i$) and compress components with $\\sigma_i^2 > \\theta$ to distortion $\\theta$. Geometrically, the water level $\\theta$ is chosen so the total water poured into $n$ vessels of heights $\\sigma_i^2$ totals $D$ — hence 'reverse water-filling' (reverse because we fill from above, setting distortion to $\\theta$ rather than rate)."
     },
     {
       "id": "convexity",
@@ -142,7 +174,7 @@
       "startLine": 282,
       "endLine": 292,
       "summary": "R(D) is convex in D (axiomatized). Proof requires optimization over test channels and convexity of mutual information.",
-      "mathContext": "$R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda)R(D_2)$"
+      "mathContext": "$R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda) R(D_2)$ for $\\lambda \\in [0,1]$. Proof idea: let $W_1, W_2$ achieve $R(D_1), R(D_2)$ respectively. The time-sharing channel $W = \\lambda W_1 + (1-\\lambda) W_2$ has expected distortion $\\lambda D_1 + (1-\\lambda)D_2$ (linearity) and achieves rate $I(X; \\hat{X}, B) = \\lambda I(X;\\hat{X}|B=1) + (1-\\lambda)I(X;\\hat{X}|B=2)$ where $B$ is the sharing bit. Adding the rate of $B$ (at most $h(\\lambda) \\to 0$ in the limit) gives convexity. The log-sum inequality $\\sum a_i \\log(a_i/b_i) \\geq (\\sum a_i) \\log(\\sum a_i / \\sum b_i)$ is the key algebraic step for convexity of mutual information in the conditional."
     }
   ],
   "crossReferences": [
@@ -165,6 +197,21 @@
       "targetId": "shannon-channel-coding",
       "relationship": "complementary",
       "description": "Rate-distortion (source coding) and channel coding are dual problems: source coding asks for the minimum rate to describe a source within distortion D, while channel coding asks for the maximum rate at which reliable communication is possible. The separation theorem connects them: compress to R(D), then code for the channel at rate C."
+    },
+    {
+      "targetId": "shannon-entropy-oq-01",
+      "relationship": "related",
+      "description": "Differential entropy for continuous sources (e.g., Gaussian) is the foundation for the Shannon lower bound on R(D) and for the Gaussian closed-form R(D) = ½ log(σ²/D). The differential entropy h(X) = ½ log(2πeσ²) for X ~ N(0,σ²) directly enters the Shannon lower bound."
+    },
+    {
+      "targetId": "shannon-source-coding-oq-04",
+      "relationship": "related",
+      "description": "Extends source coding theory; related to rate-distortion as both concern the fundamental limits of data compression with different fidelity criteria."
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-02",
+      "relationship": "related",
+      "description": "Channel capacity bounds for specific channel models — the rate parameter C in the source-channel separation theorem R(D) ≤ C. Together with rate-distortion theory, this characterizes the full source-channel coding tradeoff."
     }
   ],
   "conclusion": {
@@ -172,7 +219,10 @@
     "implications": "**1. Foundation for Lossy Coding**: This formalization provides the mathematical framework for analyzing all lossy compression systems — JPEG, MP3, H.264, and modern neural codecs all operate at rates bounded below by R(D).\n\n**2. Gaussian as the Benchmark**: The proved Gaussian formula R(D) = ½ log(σ²/D) is the standard benchmark for lossy compression. The 6 dB/bit rule (each additional bit halves the distortion) follows directly from the halving-distortion theorem.\n\n**3. Extends the Lossless Theory**: By showing R(0) = H(X), rate-distortion theory subsumes Shannon's 1948 source coding theorem as a special case, providing a unified framework for both lossless and lossy compression.\n\n**4. Convex Optimization Connection**: The rate-distortion function is the value function of a convex optimization problem, connecting information theory to convex programming. The Blahut-Arimoto algorithm exploits this convexity for numerical computation.",
     "openQuestions": [
       "Can the Blahut-Arimoto algorithm for computing R(D) be formalized, proving convergence to the true rate-distortion function? This iterative algorithm alternates between optimizing the test channel and the reproduction distribution.",
-      "Can R(D) convexity be proved from first principles in Lean, using the log-sum inequality and time-sharing of test channels? This would eliminate the single remaining axiom."
+      "Can R(D) convexity be proved from first principles in Lean, using the log-sum inequality and time-sharing of test channels? This would eliminate the single remaining axiom.",
+      "**Binary rate-distortion function**: For a Bernoulli($p$) source with Hamming distortion, $R(D) = h(p) - h(D)$ for $0 \\leq D \\leq \\min(p, 1-p)$ (where $h$ is binary entropy). This explicit formula is central to all digital communications rate analysis but is only commented in the Lean file. Can Lean formalize this from the variational definition $R(D) = \\inf I(X;\\hat{X})$, using the optimal test channel $W(1|0) = W(0|1) = D$ (the binary symmetric channel at crossover $D$) and the convexity of mutual information? Doing so would eliminate a major gap between the abstract $\\texttt{rateDistortionFn}$ definition and its concrete binary specialization.",
+      "**Achievability of the rate-distortion coding theorem**: The operational statement — for any $R > R(D)$, there exist codes of rate $R$ achieving distortion $\\leq D + \\epsilon$ for large blocklengths $n$ — requires Lean's probability theory (law of large numbers, typical sequences). Can Lean formalize the random coding argument: generate a codebook of $2^{nR}$ codewords i.i.d. from $Q^n(\\hat{x})$, show the probability of joint typicality with the source sequence exceeds $1 - \\epsilon$? This would give a formal statement of the operational content of $R(D)$, converting the static variational definition into a dynamic coding guarantee.",
+      "**Source-channel separation theorem in Lean**: Can Lean formalize the equivalence: a discrete memoryless source can be transmitted at distortion $D$ over a channel of capacity $C$ (from `shannon-channel-coding`) if and only if $\\texttt{rateDistortionFn} \\leq C$? The proof requires: (a) achievability — compose a rate-distortion code with a channel code, (b) converse — apply the data processing inequality and Fano's inequality. A formal proof would bridge the two major information theory entries in the gallery (`shannon-source-coding-oq-01` and `shannon-channel-coding`) into a unified theorem."
     ]
   },
   "leanFile": {

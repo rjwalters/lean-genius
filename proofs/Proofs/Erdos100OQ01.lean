@@ -1,5 +1,6 @@
 import Mathlib.Tactic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Proofs.Erdos100OQ01WIP01
 
 /-
 # Distance Set Diameter: Linear vs Logarithmic Growth
@@ -146,7 +147,7 @@ theorem anning_erdos_finiteness :
           (p.1 - q.1)^2 + (p.2 - q.2)^2 = ↑(k^2)) ∧
         ¬(∀ p ∈ S, ∀ q ∈ S, ∀ r ∈ S, -- not all collinear
           (p.1 - r.1) * (q.2 - r.2) = (q.1 - r.1) * (p.2 - r.2)) := by
-  sorry -- Requires the Anning-Erdős argument (number theory + geometry)
+  exact Erdos100OQ01WIP01.anning_erdos_finiteness
 
 /-! ## Conclusion
 

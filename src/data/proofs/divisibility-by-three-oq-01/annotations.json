@@ -2,73 +2,149 @@
   {
     "id": "ann-div3oq1-master-theorem",
     "proofId": "divisibility-by-three-oq-01",
-    "range": { "startLine": 37, "endLine": 48 },
-    "type": "theorem",
-    "title": "The Master Theorem: d ∣ n ↔ d ∣ (n mod M) When d ∣ M",
-    "content": "dvd_iff_dvd_mod is the foundational theorem that unifies all 'last k digits' divisibility rules. The proof proceeds by Euclidean division: write n = M·(n/M) + (n mod M). If d | M, then d divides M·(n/M), so d | n iff d | (n mod M). The two directions are handled separately: for the forward direction, d | n combined with d | M·(n/M) gives d | (n mod M) by subtraction; for the reverse, d | (n mod M) combined with d | M·(n/M) gives d | n by addition (Nat.dvd_add). Every specific rule (2 via M=10, 4 via M=100, 8 via M=1000, 5 via M=10, etc.) is a one-line corollary with a concrete witness for d | M.",
+    "range": {
+      "startLine": 37,
+      "endLine": 48
+    },
+    "type": "insight",
+    "title": "The Master Theorem: d \u2223 n \u2194 d \u2223 (n mod M) When d \u2223 M",
+    "content": "dvd_iff_dvd_mod is the foundational theorem that unifies all 'last k digits' divisibility rules. The proof proceeds by Euclidean division: write n = M\u00b7(n/M) + (n mod M). If d | M, then d divides M\u00b7(n/M), so d | n iff d | (n mod M). The two directions are handled separately: for the forward direction, d | n combined with d | M\u00b7(n/M) gives d | (n mod M) by subtraction; for the reverse, d | (n mod M) combined with d | M\u00b7(n/M) gives d | n by addition (Nat.dvd_add). Every specific rule (2 via M=10, 4 via M=100, 8 via M=1000, 5 via M=10, etc.) is a one-line corollary with a concrete witness for d | M.",
     "mathContext": "$d \\mid M \\Rightarrow (d \\mid n \\iff d \\mid (n \\bmod M))$. Proof: $n = M \\cdot \\lfloor n/M \\rfloor + (n \\bmod M)$, so $d \\mid n \\iff d \\mid (n \\bmod M)$ since $d \\mid M \\cdot \\lfloor n/M \\rfloor$.",
     "significance": "key",
-    "relatedConcepts": ["Euclidean division", "Nat.dvd_add", "last-k-digit rule", "modular arithmetic"],
-    "prerequisites": ["Nat.div_add_mod", "Nat.dvd_of_mod_eq_zero", "dvd_mul_right"]
+    "relatedConcepts": [
+      "Euclidean division",
+      "Nat.dvd_add",
+      "last-k-digit rule",
+      "modular arithmetic"
+    ],
+    "prerequisites": [
+      "Nat.div_add_mod",
+      "Nat.dvd_of_mod_eq_zero",
+      "dvd_mul_right"
+    ]
   },
   {
     "id": "ann-div3oq1-power-families",
     "proofId": "divisibility-by-three-oq-01",
-    "range": { "startLine": 113, "endLine": 118 },
-    "type": "theorem",
+    "range": {
+      "startLine": 113,
+      "endLine": 118
+    },
+    "type": "insight",
     "title": "Infinite Power Families: 2^k and 5^k Divisibility Rules",
-    "content": "pow2_dvd_last_k and pow5_dvd_last_k capture infinite families of divisibility rules in single universally quantified statements. They follow from the factorization 10 = 2 × 5: since 10^k = (2×5)^k = 2^k × 5^k, both 2^k | 10^k and 5^k | 10^k hold. The master theorem then gives: 2^k | n ↔ 2^k | (n mod 10^k) and 5^k | n ↔ 5^k | (n mod 10^k). This simultaneously proves the k=1 (2 | last digit), k=2 (4 | last 2 digits), k=3 (8 | last 3 digits), and all higher cases as special instances of a single parametric theorem.",
+    "content": "pow2_dvd_last_k and pow5_dvd_last_k capture infinite families of divisibility rules in single universally quantified statements. They follow from the factorization 10 = 2 \u00d7 5: since 10^k = (2\u00d75)^k = 2^k \u00d7 5^k, both 2^k | 10^k and 5^k | 10^k hold. The master theorem then gives: 2^k | n \u2194 2^k | (n mod 10^k) and 5^k | n \u2194 5^k | (n mod 10^k). This simultaneously proves the k=1 (2 | last digit), k=2 (4 | last 2 digits), k=3 (8 | last 3 digits), and all higher cases as special instances of a single parametric theorem.",
     "mathContext": "$2^k \\mid 10^k$ and $5^k \\mid 10^k$ follow from $10 = 2 \\times 5$, giving $10^k = 2^k \\cdot 5^k$. Hence $\\forall k, n.\\ 2^k \\mid n \\iff 2^k \\mid (n \\bmod 10^k)$, and similarly for $5^k$.",
     "significance": "key",
-    "relatedConcepts": ["pow2_dvd_pow10", "pow5_dvd_pow10", "dvd_iff_dvd_mod", "parametric divisibility"],
-    "prerequisites": ["dvd_iff_dvd_mod", "mul_pow", "dvd_mul_right", "dvd_mul_left"]
+    "relatedConcepts": [
+      "pow2_dvd_pow10",
+      "pow5_dvd_pow10",
+      "dvd_iff_dvd_mod",
+      "parametric divisibility"
+    ],
+    "prerequisites": [
+      "dvd_iff_dvd_mod",
+      "mul_pow",
+      "dvd_mul_right",
+      "dvd_mul_left"
+    ]
   },
   {
     "id": "ann-div3oq1-thirteen",
     "proofId": "divisibility-by-three-oq-01",
-    "range": { "startLine": 129, "endLine": 148 },
-    "type": "theorem",
+    "range": {
+      "startLine": 129,
+      "endLine": 148
+    },
+    "type": "insight",
     "title": "Divisibility by 13 via Truncation and IsCoprime",
-    "content": "thirteen_dvd_truncation proves the 'add 4 times the last digit' rule for 13: 13 | n ↔ 13 | (n/10 + 4·(n%10)). The key algebraic identity is 10(q + 4r) = n + 39r where n = 10q + r. The two directions use the same identity: in the forward direction, 13 | n and 13 | 39r (since 39 = 3·13) give 13 | 10(q+4r), then IsCoprime (13, 10) cancels the 10 factor. The coprimality argument (IsCoprime.dvd_of_dvd_mul_left) is the key tool: since gcd(13, 10) = 1, if 13 | 10·x then 13 | x. The proof works over ℤ to handle the subtraction cleanly.",
+    "content": "thirteen_dvd_truncation proves the 'add 4 times the last digit' rule for 13: 13 | n \u2194 13 | (n/10 + 4\u00b7(n%10)). The key algebraic identity is 10(q + 4r) = n + 39r where n = 10q + r. The two directions use the same identity: in the forward direction, 13 | n and 13 | 39r (since 39 = 3\u00b713) give 13 | 10(q+4r), then IsCoprime (13, 10) cancels the 10 factor. The coprimality argument (IsCoprime.dvd_of_dvd_mul_left) is the key tool: since gcd(13, 10) = 1, if 13 | 10\u00b7x then 13 | x. The proof works over \u2124 to handle the subtraction cleanly.",
     "mathContext": "$10(q + 4r) = 10q + 40r = n - r + 40r = n + 39r \\equiv n \\pmod{13}$ since $13 \\mid 39 = 3 \\times 13$. So $13 \\mid n \\iff 13 \\mid 10(q+4r) \\iff 13 \\mid (q+4r)$ by $\\gcd(13,10)=1$.",
     "significance": "key",
-    "relatedConcepts": ["IsCoprime", "truncation method", "osculator", "push_cast", "omega"],
-    "prerequisites": ["IsCoprime.dvd_of_dvd_mul_left", "Euclidean division", "Int.dvd_sub"]
+    "relatedConcepts": [
+      "IsCoprime",
+      "truncation method",
+      "osculator",
+      "push_cast",
+      "omega"
+    ],
+    "prerequisites": [
+      "IsCoprime.dvd_of_dvd_mul_left",
+      "Euclidean division",
+      "Int.dvd_sub"
+    ]
   },
   {
     "id": "ann-div3oq1-digit-sum",
     "proofId": "divisibility-by-three-oq-01",
-    "range": { "startLine": 161, "endLine": 163 },
-    "type": "theorem",
+    "range": {
+      "startLine": 161,
+      "endLine": 163
+    },
+    "type": "insight",
     "title": "digitSum_dvd_iff: Unified Digit-Sum Framework via Mathlib",
-    "content": "digitSum_dvd_iff is the helper that unifies all digit-sum divisibility rules: d | n ↔ d | (digits b n).sum whenever b ≡ 1 (mod d). The proof uses Nat.modEq_digits_sum from Mathlib, which establishes n ≡ (digits b n).sum (mod d) when b ≡ 1 (mod d). The condition b ≡ 1 (mod d) makes each digit contribute with weight 1 in the position-value expansion: n = Σ aᵢ · bⁱ ≡ Σ aᵢ · 1ⁱ = Σ aᵢ (mod d). This theorem instantiates to: 37 (b=1000, since 1000 ≡ 1 mod 37), 99 (b=100), 999 (b=1000), 27 (b=1000), 7 in octal (b=8, 8 ≡ 1 mod 7), and more.",
+    "content": "digitSum_dvd_iff is the helper that unifies all digit-sum divisibility rules: d | n \u2194 d | (digits b n).sum whenever b \u2261 1 (mod d). The proof uses Nat.modEq_digits_sum from Mathlib, which establishes n \u2261 (digits b n).sum (mod d) when b \u2261 1 (mod d). The condition b \u2261 1 (mod d) makes each digit contribute with weight 1 in the position-value expansion: n = \u03a3 a\u1d62 \u00b7 b\u2071 \u2261 \u03a3 a\u1d62 \u00b7 1\u2071 = \u03a3 a\u1d62 (mod d). This theorem instantiates to: 37 (b=1000, since 1000 \u2261 1 mod 37), 99 (b=100), 999 (b=1000), 27 (b=1000), 7 in octal (b=8, 8 \u2261 1 mod 7), and more.",
     "mathContext": "If $b \\equiv 1 \\pmod{d}$, then $b^k \\equiv 1 \\pmod{d}$ for all $k$, so $n = \\sum_k a_k b^k \\equiv \\sum_k a_k \\pmod{d}$ where $a_k$ are the base-$b$ digits of $n$. Hence $d \\mid n \\iff d \\mid \\sum_k a_k$.",
     "significance": "key",
-    "relatedConcepts": ["Nat.modEq_digits_sum", "digit sum", "base representation", "Nat.digits", "ModEq"],
-    "prerequisites": ["Nat.ModEq.dvd_iff", "Nat.modEq_digits_sum", "native_decide for b%d=1"]
+    "relatedConcepts": [
+      "Nat.modEq_digits_sum",
+      "digit sum",
+      "base representation",
+      "Nat.digits",
+      "ModEq"
+    ],
+    "prerequisites": [
+      "Nat.ModEq.dvd_iff",
+      "Nat.modEq_digits_sum",
+      "native_decide for b%d=1"
+    ]
   },
   {
     "id": "ann-div3oq1-digital-root",
     "proofId": "divisibility-by-three-oq-01",
-    "range": { "startLine": 277, "endLine": 318 },
+    "range": {
+      "startLine": 277,
+      "endLine": 318
+    },
     "type": "definition",
     "title": "Digital Root: Definition and Complete Characterization",
     "content": "digitalRoot n is defined as 0 if n = 0, 9 if n > 0 and 9 | n, and n mod 9 otherwise. This captures the iterative digit-summing process: repeatedly summing digits of any positive integer eventually reaches a single-digit value, which equals n mod 9 (except when 9 | n, in which case the sum converges to 9, not 0). The characterization theorem digitalRoot_eq_9_iff proves the equivalence with 9-divisibility. The connection to 3-divisibility (digitalRoot_mod3) shows that 3 | n iff 3 | digitalRoot n, since n mod 3 = digitalRoot n mod 3. The Lean proofs use split_ifs and omega for the case analysis.",
     "mathContext": "$\\text{digitalRoot}(n) = \\begin{cases} 0 & n = 0 \\\\ 9 & 9 \\mid n,\\ n > 0 \\\\ n \\bmod 9 & \\text{otherwise} \\end{cases}$. For $n > 0$: $\\text{digitalRoot}(n) = 9 \\iff 9 \\mid n$; $\\text{digitalRoot}(n) \\bmod 3 = n \\bmod 3$.",
     "significance": "supporting",
-    "relatedConcepts": ["digit sum", "modular arithmetic mod 9", "casting out nines", "recreational mathematics"],
-    "prerequisites": ["Nat.mod_eq_zero_of_dvd", "split_ifs tactic", "omega tactic"]
+    "relatedConcepts": [
+      "digit sum",
+      "modular arithmetic mod 9",
+      "casting out nines",
+      "recreational mathematics"
+    ],
+    "prerequisites": [
+      "Nat.mod_eq_zero_of_dvd",
+      "split_ifs tactic",
+      "omega tactic"
+    ]
   },
   {
     "id": "ann-div3oq1-coprime",
     "proofId": "divisibility-by-three-oq-01",
-    "range": { "startLine": 337, "endLine": 373 },
-    "type": "theorem",
+    "range": {
+      "startLine": 337,
+      "endLine": 373
+    },
+    "type": "insight",
     "title": "Coprime Factorization: Composite Divisibility via CRT",
-    "content": "coprime_mul_dvd_iff proves the general fact: if gcd(d₁, d₂) = 1, then d₁ × d₂ | n iff d₁ | n and d₂ | n. The forward direction is immediate from transitivity; the reverse uses Nat.Coprime.mul_dvd_of_dvd_of_dvd (the CRT direction). This theorem gives all composite rules as one-line corollaries: 6 = 2×3 (gcd=1), 12 = 4×3, 15 = 3×5, 18 = 2×9, 36 = 4×9, 45 = 9×5, 60 = 4×15, 90 = 9×10. The coprimality conditions are verified by native_decide — a pattern that handles the rote verification automatically while keeping the general theorem as the logical core.",
+    "content": "coprime_mul_dvd_iff proves the general fact: if gcd(d\u2081, d\u2082) = 1, then d\u2081 \u00d7 d\u2082 | n iff d\u2081 | n and d\u2082 | n. The forward direction is immediate from transitivity; the reverse uses Nat.Coprime.mul_dvd_of_dvd_of_dvd (the CRT direction). This theorem gives all composite rules as one-line corollaries: 6 = 2\u00d73 (gcd=1), 12 = 4\u00d73, 15 = 3\u00d75, 18 = 2\u00d79, 36 = 4\u00d79, 45 = 9\u00d75, 60 = 4\u00d715, 90 = 9\u00d710. The coprimality conditions are verified by native_decide \u2014 a pattern that handles the rote verification automatically while keeping the general theorem as the logical core.",
     "mathContext": "$\\gcd(d_1, d_2) = 1 \\Rightarrow (d_1 d_2 \\mid n \\iff d_1 \\mid n \\land d_2 \\mid n)$. Chinese Remainder Theorem: coprime divisibility conditions combine multiplicatively. Example: $6 \\mid n \\iff 2 \\mid n \\land 3 \\mid n$ since $\\gcd(2,3)=1$.",
     "significance": "supporting",
-    "relatedConcepts": ["Chinese Remainder Theorem", "Nat.Coprime", "native_decide", "composite divisibility"],
-    "prerequisites": ["Nat.Coprime.mul_dvd_of_dvd_of_dvd", "dvd_trans", "dvd_mul_right", "dvd_mul_left"]
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "Nat.Coprime",
+      "native_decide",
+      "composite divisibility"
+    ],
+    "prerequisites": [
+      "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+      "dvd_trans",
+      "dvd_mul_right",
+      "dvd_mul_left"
+    ]
   }
 ]

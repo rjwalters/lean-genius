@@ -58,7 +58,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 296,
-    "assumptions": "3 axioms: balakran_theorem (Balakran 1929, k=1 case), egrs_theorem (EGRS variant for k≥2), erdos_factorial_bound (Erdős 1968 bound). 0 sorries."
+    "assumptions": "3 axioms: balakran_theorem (Balakran 1929, k=1 case), egrs_theorem (EGRS variant for k≥2), erdos_factorial_bound (Erdős 1968 bound). 0 sorries.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #727 was posed by Erdős, Graham, Ruzsa, and Straus in their 1975 paper 'On the prime factors of C(2n,n)'. The problem asks about the divisibility of (2n)! by squared factorials.\n\n**Key results**:\n- **Balakran (1929)**: Solved the k=1 case, proving ((n+1)!)² | (2n)! for infinitely many n. This is equivalent to (n+1)² dividing the central binomial coefficient C(2n,n).\n- **Classical**: (n+1) | C(2n,n) for ALL n (this defines the Catalan numbers).\n- **EGRS (1975)**: Proved a weaker variant: (n+k)!(n+1)! | (2n)! for infinitely many n, for any k ≥ 2.\n\nThe main question for k ≥ 2 remains **OPEN** even for k = 2.",

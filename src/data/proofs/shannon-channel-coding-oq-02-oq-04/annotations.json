@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "H(Y|X) = -C: The Key Computation for Row-Symmetric Channels",
-    "content": "The core computation generalizing the BSC conditional entropy proof:\n\nFor input x with p(x) > 0:\n  Term = p(x)·W(x,y)·log(p(x)·W(x,y) / p(x))  [denominator = ∑_{y'} p(x)·W(x,y') = p(x)]\n       = p(x)·W(x,y)·log(W(x,y))               [p(x) cancels]\n\nFor input x with p(x) = 0:\n  Term = 0 (by the if-then-else in conditionalEntropy)\n\nSumming over all (y,x):\n  ∑_y ∑_x term = ∑_x p(x) · ∑_y W(x,y)·log(W(x,y))\n               = ∑_x p(x) · C                    [by row symmetry]\n               = C · ∑_x p(x) = C               [since ∑_x p(x) = 1]\n\nConditional entropy = -(C) = -C.\n\nKey: This works for ANY input distribution, even degenerate ones, because zero-probability inputs contribute 0 to both sides.",
-    "mathContext": "This generalizes the BSC computation where the constant C = p·log(p) + (1-p)·log(1-p). For a general row-symmetric channel, C = ∑_y W(x₀,y)·log(W(x₀,y)) for any fixed x₀. The condition C = const is equivalent to: all rows of the channel matrix have equal Shannon entropy H(row x) = -C.",
+    "content": "The core computation generalizing the BSC conditional entropy proof:\n\nFor input x with p(x) > 0:\n  Term = p(x)\u00b7W(x,y)\u00b7log(p(x)\u00b7W(x,y) / p(x))  [denominator = \u2211_{y'} p(x)\u00b7W(x,y') = p(x)]\n       = p(x)\u00b7W(x,y)\u00b7log(W(x,y))               [p(x) cancels]\n\nFor input x with p(x) = 0:\n  Term = 0 (by the if-then-else in conditionalEntropy)\n\nSumming over all (y,x):\n  \u2211_y \u2211_x term = \u2211_x p(x) \u00b7 \u2211_y W(x,y)\u00b7log(W(x,y))\n               = \u2211_x p(x) \u00b7 C                    [by row symmetry]\n               = C \u00b7 \u2211_x p(x) = C               [since \u2211_x p(x) = 1]\n\nConditional entropy = -(C) = -C.\n\nKey: This works for ANY input distribution, even degenerate ones, because zero-probability inputs contribute 0 to both sides.",
+    "mathContext": "This generalizes the BSC computation where the constant C = p\u00b7log(p) + (1-p)\u00b7log(1-p). For a general row-symmetric channel, C = \u2211_y W(x\u2080,y)\u00b7log(W(x\u2080,y)) for any fixed x\u2080. The condition C = const is equivalent to: all rows of the channel matrix have equal Shannon entropy H(row x) = -C.",
     "significance": "key",
     "relatedConcepts": [
       "conditionalEntropy",
@@ -29,9 +29,9 @@
       "endLine": 141
     },
     "type": "concept",
-    "title": "Doubly Balanced Condition: Uniform Input → Uniform Output",
-    "content": "A channel is doubly balanced if all column sums are equal:\n  ∀ y : β, ∑_x W(x,y) = |α|/|β|\n\nWith uniform input (p(x) = 1/|α|):\n  P(Y=y) = ∑_x p(x)·W(x,y) = (1/|α|) · ∑_x W(x,y) = (1/|α|) · (|α|/|β|) = 1/|β|\n\nSo the output is uniform on β, giving H(Y) = log|β|.\n\nFor BSC (α = β = Bool): column sums = p + (1-p) = 1 = |Bool|/|Bool|. ✓\nFor q-ary symmetric channel: each output appears with probability 1/q from each input, so column sums = |α|/q = |α|/|β|. ✓\n\nThe doubly balanced condition is STRONGER than row symmetry alone. It ensures the maximum entropy H(Y) = log|β| is actually achieved by the uniform input.",
-    "mathContext": "A doubly stochastic matrix (where both row sums and column sums equal 1, with |α| = |β|) satisfies the doubly balanced condition with |α|/|β| = 1. The BSC is doubly stochastic. For general |α| ≠ |β|, the condition ∑_x W(x,y) = |α|/|β| is the natural analog.",
+    "title": "Doubly Balanced Condition: Uniform Input \u2192 Uniform Output",
+    "content": "A channel is doubly balanced if all column sums are equal:\n  \u2200 y : \u03b2, \u2211_x W(x,y) = |\u03b1|/|\u03b2|\n\nWith uniform input (p(x) = 1/|\u03b1|):\n  P(Y=y) = \u2211_x p(x)\u00b7W(x,y) = (1/|\u03b1|) \u00b7 \u2211_x W(x,y) = (1/|\u03b1|) \u00b7 (|\u03b1|/|\u03b2|) = 1/|\u03b2|\n\nSo the output is uniform on \u03b2, giving H(Y) = log|\u03b2|.\n\nFor BSC (\u03b1 = \u03b2 = Bool): column sums = p + (1-p) = 1 = |Bool|/|Bool|. \u2713\nFor q-ary symmetric channel: each output appears with probability 1/q from each input, so column sums = |\u03b1|/q = |\u03b1|/|\u03b2|. \u2713\n\nThe doubly balanced condition is STRONGER than row symmetry alone. It ensures the maximum entropy H(Y) = log|\u03b2| is actually achieved by the uniform input.",
+    "mathContext": "A doubly stochastic matrix (where both row sums and column sums equal 1, with |\u03b1| = |\u03b2|) satisfies the doubly balanced condition with |\u03b1|/|\u03b2| = 1. The BSC is doubly stochastic. For general |\u03b1| \u2260 |\u03b2|, the condition \u2211_x W(x,y) = |\u03b1|/|\u03b2| is the natural analog.",
     "significance": "key",
     "relatedConcepts": [
       "doubly stochastic matrix",
@@ -50,9 +50,9 @@
       "startLine": 143,
       "endLine": 190
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Achievability and Converse: Uniform Input Achieves Capacity",
-    "content": "These two theorems together establish the capacity formula:\n\n**Achievability** (`sym_uniform_mi`, lines 143-168): The uniform input distribution achieves MI = log|β| + C. The proof decomposes MI = H(Y) - H(Y|X):\n- H(Y|X) = -C by row symmetry (previous section)\n- H(Y) = log|β| because the doubly-balanced condition ensures the Y-marginal under uniform input is uniform over β\n\n**Converse** (`sym_mi_le`, lines 170-190): For any input distribution, MI ≤ log|β| + C. Proof: MI = H(Y) - H(Y|X) = H(Y) + C, and H(Y) ≤ log|β| by the maximum-entropy principle for finite distributions.\n\nTogether: max MI = log|β| + C, achieved exactly by the uniform input.",
+    "content": "These two theorems together establish the capacity formula:\n\n**Achievability** (`sym_uniform_mi`, lines 143-168): The uniform input distribution achieves MI = log|\u03b2| + C. The proof decomposes MI = H(Y) - H(Y|X):\n- H(Y|X) = -C by row symmetry (previous section)\n- H(Y) = log|\u03b2| because the doubly-balanced condition ensures the Y-marginal under uniform input is uniform over \u03b2\n\n**Converse** (`sym_mi_le`, lines 170-190): For any input distribution, MI \u2264 log|\u03b2| + C. Proof: MI = H(Y) - H(Y|X) = H(Y) + C, and H(Y) \u2264 log|\u03b2| by the maximum-entropy principle for finite distributions.\n\nTogether: max MI = log|\u03b2| + C, achieved exactly by the uniform input.",
     "mathContext": "The capacity $C_{\\text{sym}} = \\log|\\beta| - H(\\text{row})$ where $H(\\text{row}) = -C = -\\sum_y W(x,y) \\log W(x,y)$ is the (constant) per-row entropy. The achievability uses: for a doubly balanced channel, the uniform input achieves $H(Y) = \\log|\\beta|$ since $\\sum_x W(x,y)/|\\alpha| = 1/|\\beta|$ for all $y$, making the output uniform. The converse uses $H(Y) \\leq \\log|\\beta|$ (maximum entropy at uniform distribution).",
     "significance": "key",
     "relatedConcepts": [
@@ -76,9 +76,9 @@
       "endLine": 220
     },
     "type": "insight",
-    "title": "Capacity = log|β| + C = log|β| - H(row): The General Formula",
-    "content": "The main theorem:\n  C(W) = log|β| - H(row) = log|β| + C\n  where C = ∑_y W(x,y)·log(W(x,y)) ≤ 0 (negative entropy)\n  and H(row) = -C ≥ 0 (row entropy)\n\nSpecial cases:\n• BSC(p): |β|=2, C = p·log p + (1-p)·log(1-p) → C = log 2 - h(p)\n• Binary erasure channel (BEC): |β|=3 (0, 1, ε), rows [1-ε, 0, ε] and [0, 1-ε, ε]\n  C = (1-ε)log(1-ε) + ε·log(ε) → capacity = log 2 + C = (1-ε)·log 2\n• q-ary symmetric channel: each entry = (1-p)/(q-1) or p, capacity = log(q) - h(p) - p·log(q-1)\n\nThe formula captures the fundamental tradeoff: higher row entropy (more uncertainty about Y given X) means lower capacity.",
-    "mathContext": "The formula C = log|β| - H(row) follows directly from C = H(Y) - H(Y|X) = log|β| - (-C). The row entropy H(row) = -C ≥ 0 is bounded by log|β| (entropy ≤ log of alphabet), so C(W) = log|β| - H(row) ≥ 0. The capacity equals 0 when H(row) = log|β|, i.e., when rows are uniform (maximum noise).",
+    "title": "Capacity = log|\u03b2| + C = log|\u03b2| - H(row): The General Formula",
+    "content": "The main theorem:\n  C(W) = log|\u03b2| - H(row) = log|\u03b2| + C\n  where C = \u2211_y W(x,y)\u00b7log(W(x,y)) \u2264 0 (negative entropy)\n  and H(row) = -C \u2265 0 (row entropy)\n\nSpecial cases:\n\u2022 BSC(p): |\u03b2|=2, C = p\u00b7log p + (1-p)\u00b7log(1-p) \u2192 C = log 2 - h(p)\n\u2022 Binary erasure channel (BEC): |\u03b2|=3 (0, 1, \u03b5), rows [1-\u03b5, 0, \u03b5] and [0, 1-\u03b5, \u03b5]\n  C = (1-\u03b5)log(1-\u03b5) + \u03b5\u00b7log(\u03b5) \u2192 capacity = log 2 + C = (1-\u03b5)\u00b7log 2\n\u2022 q-ary symmetric channel: each entry = (1-p)/(q-1) or p, capacity = log(q) - h(p) - p\u00b7log(q-1)\n\nThe formula captures the fundamental tradeoff: higher row entropy (more uncertainty about Y given X) means lower capacity.",
+    "mathContext": "The formula C = log|\u03b2| - H(row) follows directly from C = H(Y) - H(Y|X) = log|\u03b2| - (-C). The row entropy H(row) = -C \u2265 0 is bounded by log|\u03b2| (entropy \u2264 log of alphabet), so C(W) = log|\u03b2| - H(row) \u2265 0. The capacity equals 0 when H(row) = log|\u03b2|, i.e., when rows are uniform (maximum noise).",
     "significance": "key",
     "relatedConcepts": [
       "channel capacity",
@@ -99,7 +99,7 @@
     },
     "type": "concept",
     "title": "BSC Recovered from the General Theorem",
-    "content": "The BSC satisfies both hypotheses:\n\n1. Row symmetry (bsc_row_symmetric): For BSC(p) with x : Bool:\n   ∑_{y:Bool} W(x,y)·log(W(x,y)) = p·log(p) + (1-p)·log(1-p) (same for all x)\n   Proof: cases x; simp; ring — both true and false give the same sum.\n\n2. Doubly balanced (bsc_doubly_balanced): Column sums = |Bool|/|Bool| = 2/2 = 1\n   ∑_{x:Bool} W(x,y) = (1-p) + p = 1 for both y = true and y = false.\n\nThen bsc_capacity_from_symmetric applies sym_channel_capacity to recover:\n  C(BSC(p)) = log 2 + (p·log p + (1-p)·log(1-p)) = log 2 - h(p)\n\nThis provides an ALTERNATIVE proof of the BSC capacity from the more general theorem, complementing the direct proof in ShannonChannelCodingOQ02.",
+    "content": "The BSC satisfies both hypotheses:\n\n1. Row symmetry (bsc_row_symmetric): For BSC(p) with x : Bool:\n   \u2211_{y:Bool} W(x,y)\u00b7log(W(x,y)) = p\u00b7log(p) + (1-p)\u00b7log(1-p) (same for all x)\n   Proof: cases x; simp; ring \u2014 both true and false give the same sum.\n\n2. Doubly balanced (bsc_doubly_balanced): Column sums = |Bool|/|Bool| = 2/2 = 1\n   \u2211_{x:Bool} W(x,y) = (1-p) + p = 1 for both y = true and y = false.\n\nThen bsc_capacity_from_symmetric applies sym_channel_capacity to recover:\n  C(BSC(p)) = log 2 + (p\u00b7log p + (1-p)\u00b7log(1-p)) = log 2 - h(p)\n\nThis provides an ALTERNATIVE proof of the BSC capacity from the more general theorem, complementing the direct proof in ShannonChannelCodingOQ02.",
     "mathContext": "The two proofs of BSC capacity (direct via ShannonChannelCodingOQ02, and via general symmetric channel) are both valid. The general theorem gives more conceptual clarity: the capacity formula follows from the structural properties (row symmetry + doubly balanced), not from the specifics of the binary alphabet.",
     "significance": "supporting",
     "relatedConcepts": [

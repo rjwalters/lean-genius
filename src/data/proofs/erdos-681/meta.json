@@ -24,7 +24,8 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "lineCount": 362,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "Erdős, Eggleton, and Selfridge posed this problem about the distribution of least prime factors in shifted integers. The question asks whether, near any sufficiently large integer n, one can always find a composite number n+k whose smallest prime factor exceeds k². The constraint that n+k be composite is essential: if n+k is prime, then p(n+k) = n+k, which trivially exceeds k² for large n.\n\nThe difficulty lies in composite numbers: if n+k is composite, then p(n+k) ≤ √(n+k), so the condition k² < p(n+k) ≤ √(n+k) implies k⁴ < n+k, meaning k must be at most about n^{1/4}. The problem asks whether among the first ~n^{1/4} shifts from n, at least one composite has an unusually large least prime factor.\n\nThe problem generalizes naturally to arbitrary exponents: for any fixed d, does there exist k with n+k composite and p(n+k) > k^d? The original conjecture is the d=2 case. The d=0 case is trivially true (all prime factors are ≥ 2), and the d=1 case is easy. The formalization at 200 lines is notably rich with 12 proved theorems including uniqueness of LPF, the d=0 trivial case, general monotonicity, and the connection to Problem #680. Related to Erdős Problems #680 and #682.",

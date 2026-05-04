@@ -2,7 +2,7 @@
   "id": "fair-games-theorem-oq-02-oq-01",
   "title": "Doob's Optional Stopping Theorem: Standalone Formalization",
   "slug": "fair-games-theorem-oq-02-oq-01",
-  "description": "Comprehensive formalization of Doob's Optional Stopping Theorem (1953) using Mathlib's probability library. Proves three forms of OST (bounded, submartingale inequality, two stopping times), the martingale convergence theorem, the submartingale characterization via OST, and Doob's maximal inequality. Answers the open question from FairGamesTheoremOQ02: Yes, Mathlib's martingale library is sufficient for a complete OST formalization. 10 theorems, 0 sorries, 291 lines.",
+  "description": "Comprehensive formalization of Doob's Optional Stopping Theorem (1953) using Mathlib's probability library. Proves three forms of OST (bounded, submartingale inequality, two stopping times), the martingale convergence theorem, the submartingale characterization via OST, and Doob's maximal inequality. Answers the open question from FairGamesTheoremOQ02: Yes, Mathlib's martingale library is sufficient for a complete OST formalization. 10 theorems, 0 sorries, 621 lines.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
@@ -21,8 +21,8 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "assumptions": "None. Delegates to FairGamesTheoremOQ03.lean (which is fully verified) and Mathlib's martingale library.",
-    "lineCount": 291,
-    "theoremCount": 11,
+    "lineCount": 621,
+    "theoremCount": 10,
     "definitionCount": 0,
     "originalContributions": [
       "doob_optional_stopping_theorem: clean standalone statement of the bounded OST",
@@ -70,9 +70,10 @@
   },
   "leanFile": {
     "namespace": "FairGamesOQ02OQ01",
-    "lineCount": 291,
+    "imports": ["Proofs.FairGamesTheoremOQ03"],
+    "lineCount": 621,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 10,
     "definitionCount": 0,
     "path": "Proofs/FairGamesTheoremOQ02OQ01.lean",
     "sorries": 0

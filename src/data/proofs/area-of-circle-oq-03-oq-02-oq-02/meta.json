@@ -57,7 +57,8 @@
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries.",
     "lineCount": 204,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "Archimedes (~250 BCE) bounded π between 223/71 and 22/7 using 96-sided regular polygons, but without computing the exact error. The fraction 22/7 ≈ 3.14286 exceeds π ≈ 3.14159 by about 0.04%. In 1944, D.P. Dalzell published 'On 22/7' in the Journal of the London Mathematical Society, showing that the elegant integral ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π; since the integrand is strictly positive on (0,1), this immediately gives π < 22/7 without any approximation argument. In 1947, Ivan Niven independently discovered the same integral in his celebrated paper 'A simple proof that π is irrational'. The integral has become one of the most elegant results in recreational mathematics, appearing in countless textbooks and competitions. The open question from area-of-circle-oq-03-oq-02 asked whether this specific integral identity could be formalized in Lean 4 using Mathlib's integration library.",

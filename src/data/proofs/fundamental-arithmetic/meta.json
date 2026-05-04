@@ -51,7 +51,8 @@
     "axiomCount": 0,
     "lineCount": 224,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Arithmetic has roots in Euclid's *Elements* (c. 300 BCE): Book VII, Proposition 31 proves every composite number has a prime factor (existence), while Propositions 32 and Book IX, Proposition 14 establish key steps toward uniqueness. However, Euclid never stated the theorem explicitly. Carl Friedrich Gauss gave the first rigorous proof in §16 of his *Disquisitiones Arithmeticae* (1801), recognizing that uniqueness requires Euclid's Lemma ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) as a non-trivial ingredient. Ernst Zermelo (1934) gave an elegant proof using the well-ordering principle. The theorem fails in certain algebraic number rings — for example, in $\\mathbb{Z}[\\sqrt{-5}]$, $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ has two distinct factorizations into irreducibles. Kummer's introduction of 'ideal numbers' (1847) to restore unique factorization led to Dedekind's theory of ideals and ultimately to the algebraic concept of a **Unique Factorization Domain** (UFD). This is #80 on Freek Wiedijk's list of 100 theorems formalized in proof assistants.",

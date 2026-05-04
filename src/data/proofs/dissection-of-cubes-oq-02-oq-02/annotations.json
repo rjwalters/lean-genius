@@ -31,8 +31,8 @@
       "endLine": 50
     },
     "type": "definition",
-    "title": "The Angle Quotient Group ℝ/πℤ",
-    "content": "Three definitions construct the angle quotient group:\n\n1. `piMultiples`: the additive subgroup $\\pi\\mathbb{Z} = \\{n\\pi : n \\in \\mathbb{Z}\\} \\subset \\mathbb{R}$, via `AddSubgroup.zmultiples`\n2. `AngleQuot`: the quotient $\\mathbb{R}/\\pi\\mathbb{Z}$\n3. `angleClass θ`: the canonical projection $\\theta \\mapsto [\\theta]$\n\nThe quotient identifies angles differing by integer multiples of $\\pi$. An element $[\\theta]$ has infinite order iff $\\theta/\\pi$ is irrational.",
+    "title": "The Angle Quotient Group \u211d/\u03c0\u2124",
+    "content": "Three definitions construct the angle quotient group:\n\n1. `piMultiples`: the additive subgroup $\\pi\\mathbb{Z} = \\{n\\pi : n \\in \\mathbb{Z}\\} \\subset \\mathbb{R}$, via `AddSubgroup.zmultiples`\n2. `AngleQuot`: the quotient $\\mathbb{R}/\\pi\\mathbb{Z}$\n3. `angleClass \u03b8`: the canonical projection $\\theta \\mapsto [\\theta]$\n\nThe quotient identifies angles differing by integer multiples of $\\pi$. An element $[\\theta]$ has infinite order iff $\\theta/\\pi$ is irrational.",
     "mathContext": "$\\mathbb{R}/\\pi\\mathbb{Z} \\cong \\mathbb{R}/\\mathbb{Z}$ via $\\theta \\mapsto \\theta/\\pi$. Torsion elements are exactly rational multiples of $\\pi$.",
     "significance": "key",
     "prerequisites": [
@@ -53,8 +53,8 @@
       "startLine": 52,
       "endLine": 82
     },
-    "type": "theorem",
-    "title": "Properties of ℝ/πℤ",
+    "type": "insight",
+    "title": "Properties of \u211d/\u03c0\u2124",
     "content": "Four properties: `angleClass_int_mul_pi` ($[n\\pi] = 0$), `angleClass_pi` ($[\\pi] = 0$), `zsmul_angleClass` ($n \\cdot [\\theta] = [n\\theta]$), and `zsmul_eq_zero_iff` ($n \\cdot [\\theta] = 0 \\iff \\exists m, n\\theta = m\\pi$). These establish the algebraic infrastructure for the torsion vanishing argument.",
     "mathContext": "$n \\cdot [\\theta] = [n\\theta]$ and $n \\cdot [\\theta] = 0 \\iff n\\theta \\in \\pi\\mathbb{Z}$.",
     "significance": "supporting",
@@ -76,8 +76,8 @@
       "endLine": 97
     },
     "type": "definition",
-    "title": "The Dehn Invariant Group ℝ ⊗_ℤ (ℝ/πℤ)",
-    "content": "`DehnGroup = TensorProduct ℤ ℝ AngleQuot`. Elements are formal $\\mathbb{Z}$-linear combinations $\\sum_i r_i \\otimes [\\theta_i]$ satisfying bilinearity. `edgeTerm len angle` constructs a single edge's contribution $\\ell \\otimes [\\theta]$.",
+    "title": "The Dehn Invariant Group \u211d \u2297_\u2124 (\u211d/\u03c0\u2124)",
+    "content": "`DehnGroup = TensorProduct \u2124 \u211d AngleQuot`. Elements are formal $\\mathbb{Z}$-linear combinations $\\sum_i r_i \\otimes [\\theta_i]$ satisfying bilinearity. `edgeTerm len angle` constructs a single edge's contribution $\\ell \\otimes [\\theta]$.",
     "mathContext": "$\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$: the tensor product over $\\mathbb{Z}$ enforces $(n \\cdot r) \\otimes x = r \\otimes (n \\cdot x)$, which kills torsion when $\\mathbb{R}$ is divisible.",
     "significance": "key",
     "prerequisites": [
@@ -97,9 +97,9 @@
       "startLine": 100,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Rational Angle Vanishing: The Central Algebraic Argument",
-    "content": "Three theorems form the algebraic heart:\n\n1. `real_zsmul_div`: $n \\cdot (r/n) = r$ — $\\mathbb{R}$ is divisible\n2. `tmul_torsion_eq_zero`: If $n \\cdot x = 0$ (torsion), then $r \\otimes x = 0$ for ALL $r$\n3. `rational_angle_vanishes`: $r \\otimes [q\\pi] = 0$ for all $q \\in \\mathbb{Q}$\n\nThe proof of (2): $r = n \\cdot (r/n)$ by divisibility, so $r \\otimes x = (n \\cdot (r/n)) \\otimes x = (r/n) \\otimes (n \\cdot x) = (r/n) \\otimes 0 = 0$. The $\\mathbb{Z}$-bilinearity moves $n$ from left to right factor, where it annihilates $x$.\n\nFor (3): $[q\\pi]$ has order dividing $q.\\text{den}$, since $q.\\text{den} \\cdot [q\\pi] = [q.\\text{num} \\cdot \\pi] = 0$.",
+    "content": "Three theorems form the algebraic heart:\n\n1. `real_zsmul_div`: $n \\cdot (r/n) = r$ \u2014 $\\mathbb{R}$ is divisible\n2. `tmul_torsion_eq_zero`: If $n \\cdot x = 0$ (torsion), then $r \\otimes x = 0$ for ALL $r$\n3. `rational_angle_vanishes`: $r \\otimes [q\\pi] = 0$ for all $q \\in \\mathbb{Q}$\n\nThe proof of (2): $r = n \\cdot (r/n)$ by divisibility, so $r \\otimes x = (n \\cdot (r/n)) \\otimes x = (r/n) \\otimes (n \\cdot x) = (r/n) \\otimes 0 = 0$. The $\\mathbb{Z}$-bilinearity moves $n$ from left to right factor, where it annihilates $x$.\n\nFor (3): $[q\\pi]$ has order dividing $q.\\text{den}$, since $q.\\text{den} \\cdot [q\\pi] = [q.\\text{num} \\cdot \\pi] = 0$.",
     "mathContext": "$r \\otimes x = (n \\cdot \\frac{r}{n}) \\otimes x = \\frac{r}{n} \\otimes (n \\cdot x) = \\frac{r}{n} \\otimes 0 = 0$. This uses $\\mathbb{R}$ being a divisible $\\mathbb{Z}$-module (equivalently, flat over $\\mathbb{Z}$).",
     "significance": "key",
     "prerequisites": [
@@ -121,10 +121,10 @@
       "startLine": 152,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Special Angles and Cube Dehn Invariant",
     "content": "Corollaries of `rational_angle_vanishes`: edges with $\\pi/2$, $\\pi$, or $\\pi/3$ dihedral angles contribute zero. `cube_dehn_zero` follows: all 12 cube edges have angle $\\pi/2 = (1/2)\\pi$, so $D(\\text{cube}) = 0$.",
-    "mathContext": "$D(\\text{cube}) = 12a \\otimes [\\pi/2] = 0$ since $\\pi/2 = (1/2)\\pi$ is rational × $\\pi$.",
+    "mathContext": "$D(\\text{cube}) = 12a \\otimes [\\pi/2] = 0$ since $\\pi/2 = (1/2)\\pi$ is rational \u00d7 $\\pi$.",
     "significance": "key",
     "prerequisites": [
       "rational_angle_vanishes"
@@ -142,9 +142,9 @@
       "startLine": 182,
       "endLine": 227
     },
-    "type": "theorem",
-    "title": "Tetrahedron: Irrational Angle and D ≠ 0",
-    "content": "`tetAngle = arccos(1/3)` is the dihedral angle of a regular tetrahedron. By Niven's theorem (axiom, proved in parent file), $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, so $[\\arccos(1/3)]$ has infinite order in $\\mathbb{R}/\\pi\\mathbb{Z}$. The flatness axiom then gives $6a \\otimes [\\arccos(1/3)] \\neq 0$ for $a > 0$.\n\nThis is the contrast that drives Hilbert's Third Problem: cube angles are rational × $\\pi$ (torsion → vanishes), tetrahedron angles are irrational × $\\pi$ (infinite order → persists).",
+    "type": "insight",
+    "title": "Tetrahedron: Irrational Angle and D \u2260 0",
+    "content": "`tetAngle = arccos(1/3)` is the dihedral angle of a regular tetrahedron. By Niven's theorem (axiom, proved in parent file), $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, so $[\\arccos(1/3)]$ has infinite order in $\\mathbb{R}/\\pi\\mathbb{Z}$. The flatness axiom then gives $6a \\otimes [\\arccos(1/3)] \\neq 0$ for $a > 0$.\n\nThis is the contrast that drives Hilbert's Third Problem: cube angles are rational \u00d7 $\\pi$ (torsion \u2192 vanishes), tetrahedron angles are irrational \u00d7 $\\pi$ (infinite order \u2192 persists).",
     "mathContext": "$\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$ (Niven). Therefore $D(\\text{tet}) = 6a \\otimes [\\arccos(1/3)] \\neq 0$.",
     "significance": "key",
     "prerequisites": [
@@ -164,8 +164,8 @@
       "startLine": 229,
       "endLine": 244
     },
-    "type": "theorem",
-    "title": "Hilbert's Third Problem: Cube ≇ Tetrahedron",
+    "type": "insight",
+    "title": "Hilbert's Third Problem: Cube \u2247 Tetrahedron",
     "content": "`hilbert_third_problem`: $D(\\text{cube}) = 0 \\neq D(\\text{tetrahedron})$, so the cube and tetrahedron are not scissors congruent. This answers Hilbert's Third Problem (1900) negatively. The proof is four lines: assume equality, substitute $D(\\text{cube}) = 0$, contradict $D(\\text{tet}) \\neq 0$.",
     "mathContext": "$D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0 \\Rightarrow D(\\text{cube}) \\neq D(\\text{tet})$.",
     "significance": "key",
@@ -185,7 +185,7 @@
       "startLine": 246,
       "endLine": 283
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Octahedron: D(oct) = -D(tet)",
     "content": "The octahedron's dihedral angle $\\arccos(-1/3) = \\pi - \\arccos(1/3)$ gives $[\\arccos(-1/3)] = -[\\arccos(1/3)]$ in $\\mathbb{R}/\\pi\\mathbb{Z}$ (since $[\\pi] = 0$). Therefore $D(\\text{oct}) = -D(\\text{tet}) \\neq 0$: the octahedron is also not scissors congruent to the cube.",
     "mathContext": "$[\\arccos(-1/3)] = [\\pi - \\arccos(1/3)] = [\\pi] - [\\arccos(1/3)] = -[\\arccos(1/3)]$.",
@@ -232,7 +232,7 @@
     "type": "insight",
     "title": "2D Contrast: Why Area Suffices for Polygons",
     "content": "`polygon_angle_trivial` shows $r \\otimes [q\\pi] = 0$ for rational $q$ (just reuses `rational_angle_vanishes`). `dehn_zero_of_rational_angles` proves that any polyhedron whose dihedral angles are all rational multiples of $\\pi$ has $D = 0$, by induction over the edge list. This explains why the Dehn invariant doesn't appear in 2D: after triangulating a polygon, all internal angles are integer multiples of $\\pi$ (each triangle has angle sum $\\pi$), so the 2D Dehn invariant is identically zero. Area alone classifies polygon scissors congruence (Bolyai-Gerwien, 1833).",
-    "mathContext": "2D: area alone classifies scissors congruence (Bolyai-Gerwien 1833). 3D: volume + Dehn invariant (Dehn-Sydler 1965). For $n \\geq 4$: Jessen-Thorup (1978) showed volume + Dehn invariant do NOT suffice — additional invariants are needed.",
+    "mathContext": "2D: area alone classifies scissors congruence (Bolyai-Gerwien 1833). 3D: volume + Dehn invariant (Dehn-Sydler 1965). For $n \\geq 4$: Jessen-Thorup (1978) showed volume + Dehn invariant do NOT suffice \u2014 additional invariants are needed.",
     "significance": "supporting",
     "prerequisites": [
       "rational_angle_vanishes",

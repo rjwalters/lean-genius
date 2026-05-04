@@ -1,0 +1,153 @@
+{
+  "id": "angle-trisection-oq-04-oq-03",
+  "title": "Angle Trisection OQ04-OQ03: Pierpont Prime Criterion for Neusis Constructibility",
+  "slug": "angle-trisection-oq-04-oq-03",
+  "description": "A regular n-gon is constructible by compass and marked ruler (neusis) iff n = 2^a · 3^b · p₁ · ... · pₖ where each pᵢ is a Pierpont prime (p-1 = 2^u · 3^v). Verifies 12 Pierpont primes and 4 non-examples, plus neusis constructibility for specific polygons.",
+  "meta": {
+    "author": "Lean Genius OQ04-OQ03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ04OQ03.lean",
+    "tags": [
+      "constructibility",
+      "angle-trisection",
+      "pierpont-primes",
+      "neusis-construction",
+      "number-theory",
+      "galois-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 927,
+    "theoremCount": 55,
+    "assumptions": "None. All 54 theorems proved. Pierpont prime verification via native_decide.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for Pierpont prime definition",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Gauss-Wantzel theorem (1801/1837) characterizes compass-and-straightedge constructible regular polygons via Fermat primes: n-gon constructible iff φ(n) = 2^k. Neusis (marked ruler) constructions were used in antiquity for angle trisection — the ancient Greeks knew that neusis can trisect any angle, while compass-straightedge cannot trisect 60°. The modern algebraic characterization of neusis-constructible polygons was worked out by Andrew Gleason in 'Angle Trisection, the Heptagon, and the Triskaidecagon' (American Mathematical Monthly, 1988): n-gon is neusis-constructible iff φ(n) = 2^u · 3^v, equivalently n = 2^a · 3^b × (distinct Pierpont primes > 3). Pierpont primes — primes p with p−1 = 2^u · 3^v — are the neusis analog of Fermat primes. Unlike Fermat primes (of which only 5 are known: 3, 5, 17, 257, 65537), infinitely many Pierpont primes are expected (OEIS A005109: 2, 3, 5, 7, 13, 17, 19, 37, 73, 97, 109, 163, 193, 257, ...). The key new polygon enabled by neusis: the regular 7-gon (heptagon), since φ(7)=6=2·3 is 3-smooth but not a power of 2.",
+    "problemStatement": "Formalize the Pierpont prime criterion: define `IsPierpontPrime p` and `Is23Smooth`, verify examples, and prove the neusis-constructibility criterion for specific polygons.",
+    "proofStrategy": "Define `Is23Smooth n` (all prime factors are 2 or 3) and `IsPierpontPrime p` (p prime and p-1 is 3-smooth). Use `native_decide` for all numerical verification. No deep mathematical infrastructure needed — all proofs are finitary.",
+    "keyInsights": [
+      "**3-smooth numbers**: n = 2^u × 3^v are called '3-smooth' or '23-smooth'. The first few: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, ...",
+      "**Pierpont primes**: p is Pierpont if p-1 is 3-smooth. Examples: 2 (p-1=1), 3 (p-1=2), 5 (p-1=4), 7 (p-1=6), 13 (p-1=12), 17 (p-1=16), 19 (p-1=18), 37 (p-1=36), 73 (p-1=72), 97 (p-1=96).",
+      "**Non-examples**: 11 (11−1=10=2×5, not 3-smooth since 5∤{2,3}). 23 (23−1=22=2×11, not 3-smooth since 11∉{2,3}). Note: 5 itself IS a Pierpont prime (5−1=4=2²), but 10 is not 3-smooth because 5 appears as a factor of 10.",
+      "**Neusis vs. compass-straightedge**: Neusis allows trisecting any angle (unlike compass-straightedge). Regular 7-gon is neusis-constructible (7-1=6=2×3 is 3-smooth) but not compass-straightedge constructible.",
+      "**Fermat primes ⊂ Pierpont primes**: Every Fermat prime p = 2^{2^k}+1 has p-1 = 2^{2^k} which is 3-smooth (= 2^{2^k}·3⁰). So every compass-straightedge constructible n-gon is also neusis-constructible — neusis strictly extends C&S. The fermatPrime_is_pierpont theorem formalizes this inclusion."
+    ]
+  },
+  "sections": [
+    {
+      "id": "smooth-numbers",
+      "title": "§1: Is23Smooth — 3-Smooth Numbers",
+      "startLine": 44,
+      "endLine": 138,
+      "summary": "Is23Smooth n = `0 < n ∧ ∃ a b, n = 2^a * 3^b`. Verifies 15 specific 3-smooth numbers (p-1 values for Pierpont primes). Proves 5 and 10 are NOT 3-smooth via prime_factor_not_two_three_of_smooth helper. is23Smooth_mul: closure under multiplication.",
+      "mathContext": "$\\text{Is23Smooth}(n) \\Leftrightarrow n = 2^a \\cdot 3^b$. OEIS A003586: 3-smooth numbers. Closed under $\\times$: $2^a3^b \\cdot 2^c3^d = 2^{a+c}3^{b+d}$."
+    },
+    {
+      "id": "pierpont-definition",
+      "title": "§2–3: IsPierpontPrime — Definition and 12 Verified Examples",
+      "startLine": 139,
+      "endLine": 192,
+      "summary": "IsPierpontPrime p = `Nat.Prime p ∧ Is23Smooth (p-1)`. Verifies 12 primes: 2, 3, 5, 7, 13, 17, 19, 37, 73, 97, 109, 193 using paired proofs (decide/norm_num + is23Smooth_* lemma).",
+      "mathContext": "$p$ Pierpont $\\Leftrightarrow$ $p$ prime and $p-1 \\in \\{1,2,4,6,12,16,18,36,72,96,108,192\\}$ (all $= 2^u3^v$)."
+    },
+    {
+      "id": "non-examples",
+      "title": "§4–5: Non-Pierpont Primes and Structural Theorems",
+      "startLine": 193,
+      "endLine": 248,
+      "summary": "4 non-Pierpont primes: 11 (10=2·5), 23 (22=2·11), 29 (28=4·7), 41 (40=8·5). fermatPrime_is_pierpont: every Fermat prime is Pierpont. isPierpontPrime_totient_smooth: φ(p) = p-1 is 3-smooth for Pierpont p.",
+      "mathContext": "Non-examples: $p-1$ has prime factor $\\notin\\{2,3\\}$. Fermat $\\subset$ Pierpont: $2^{2^k}+1-1 = 2^{2^k} = 2^{2^k}\\cdot3^0$ is 3-smooth."
+    },
+    {
+      "id": "neusis-table",
+      "title": "§6: Totient 3-Smoothness for 7 Specific Polygons",
+      "startLine": 249,
+      "endLine": 295,
+      "summary": "Totients via native_decide: φ(7)=6, φ(9)=6, φ(13)=12, φ(19)=18, φ(37)=36 (all 3-smooth → neusis-constructible); φ(11)=10, φ(23)=22 (NOT 3-smooth → NOT neusis-constructible).",
+      "mathContext": "Neusis criterion (Gleason 1988): $\\phi(n) = 2^u3^v$ $\\Rightarrow$ $n$-gon neusis-constructible. 7-gon: $\\phi(7)=6=2\\cdot3$ ✓. 11-gon: $\\phi(11)=10=2\\cdot5$ ✗ (5 not 3-smooth)."
+    },
+    {
+      "id": "summary",
+      "title": "§7: Summary — What's Proved vs. Gleason's Full Theorem",
+      "startLine": 296,
+      "endLine": 328,
+      "summary": "Documents: proved (12 Pierpont primes, 4 non-examples, 5 constructible/2 non-constructible totient verifications). Not proved: geometric Galois-theoretic connection (IsCyclotomicExtension → neusis axioms). Neusis axiomatization is the missing piece for the full Gleason theorem in Lean 4.",
+      "mathContext": "Gap: $\\phi(n)$ 3-smooth $\\Leftrightarrow$ $n$-gon neusis-constructible requires Galois group of cyclotomic extension $\\cong (\\mathbb{Z}/n\\mathbb{Z})^*$ with order $\\phi(n)$, and factoring it into degree-2 and degree-3 steps."
+    }
+  ],
+  "conclusion": {
+    "summary": "The number-theoretic component of the Pierpont prime criterion is fully formalized: 54 theorems, 0 sorries, 0 axioms. 12 Pierpont primes and 4 non-examples verified, plus 3-smooth totient verification for 7 specific polygons. The geometric connection (n-gon is neusis-constructible iff φ(n) is 3-smooth) requires Galois theory and is stated but not proved in Lean.",
+    "implications": "Pierpont primes are the neusis analog of Fermat primes. This formalization demonstrates that extending compass-and-straightedge constructibility to neusis is captured by a simple number-theoretic condition on the prime factorization.",
+    "openQuestions": [
+      "Are there infinitely many Pierpont primes? (Open — similar to Fermat primes problem)",
+      "Can the full Pierpont classification theorem (n-gon neusis-constructible iff n = 2^a·3^b·p₁·...·pₖ) be formalized?",
+      "Can the Galois theory connecting neusis constructions to field extensions of degree 2^u·3^v be formalized in Mathlib?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Tactic",
+      "Proofs.AngleTrisectionOQ04"
+    ],
+    "opens": [],
+    "namespace": "AngleTrisectionOQ04OQ03",
+    "lineCount": 927,
+    "axiomCount": 0,
+    "theoremCount": 55,
+    "definitionCount": 2,
+    "path": "Proofs/AngleTrisectionOQ04OQ03.lean",
+    "sorries": 0,
+    "additionalFiles": ["Proofs/AngleTrisectionOQ04.lean"]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-04",
+      "relationship": "parent",
+      "description": "Parent OQ-04 establishes the IsTwoThreeNumber framework and the neusis constructibility axioms; this file imports AngleTrisectionOQ04 and uses its IsTwoThreeNumber predicate"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "Root entry: compass-straightedge impossibility for trisecting 60° (since φ(9)=6=2·3 is 3-smooth but not 2^k, the 9-gon is neusis-constructible but not C&S-constructible, explaining why 60°=2π/6 cannot be trisected by C&S)"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03-ext",
+      "relationship": "analog",
+      "description": "The C&S analog: formalizes the Fermat prime criterion (φ(n) = 2^k) for compass-straightedge constructibility; Pierpont primes here generalize Fermat primes to include the 3-smooth factor"
+    },
+    {
+      "targetId": "angle-trisection-oq-04-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling OQ-04-OQ-04 on another aspect of generalized constructibility with extended tools — complements the Pierpont prime analysis here"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pierpont_2",
+      "type": "example",
+      "statement": "IsPierpontPrime 2",
+      "description": "2 is a Pierpont prime.",
+      "significance": "Base case verification"
+    },
+    {
+      "name": "not_pierpont_11",
+      "type": "example",
+      "statement": "¬IsPierpontPrime 11",
+      "description": "11 is not a Pierpont prime (11-1=10=2×5, not 3-smooth).",
+      "significance": "Non-example establishing sharpness"
+    }
+  ],
+  "sorries": 0
+}

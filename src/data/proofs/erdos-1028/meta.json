@@ -25,7 +25,8 @@
     "axiomCount": 2,
     "lineCount": 311,
     "assumptions": "2 axioms: erdos_upper, erdos_spencer_lower. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #1028 concerns the discrepancy of sign functions: given a function f mapping pairs from {1,...,n} to {±1}, the discrepancy of a subset X is |∑_{x≠y∈X} f(x,y)|. The function H(n) is the minimum over all sign functions f of the maximum discrepancy over all subsets X. This measures the unavoidable imbalance in signed complete graphs.\n\nErdős (1963) established the upper bound H(n) = O(n^{3/2}) using the probabilistic method: a random sign function achieves maximum discrepancy O(n^{3/2}) with positive probability. For a subset of size k, the expected discrepancy of a random signing is √(k(k-1)) ≈ k, and optimizing over k ≈ √n gives the n^{3/2} bound. Note: the originally proposed lower bound H(n) ≥ n/4 was found to be incorrect (Aristotle verified a counterexample for n=8).\n\nErdős and Spencer (1971) proved the matching lower bound H(n) = Ω(n^{3/2}) using entropy and counting arguments, establishing H(n) = Θ(n^{3/2}). Their proof showed that any sign function must have some subset with discrepancy at least cn^{3/2}, confirming that random signs are essentially optimal. The formalization includes several theorems proved by Aristotle (Harmonic), including the well-definedness of H(n), symmetric pair sum decomposition, and discrepancy bounds.",

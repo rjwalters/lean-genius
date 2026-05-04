@@ -1,0 +1,196 @@
+{
+  "id": "godel-first-incompleteness-oq01-oq-01",
+  "title": "Rosser's Improvement: Incompleteness via Plain Consistency",
+  "slug": "godel-first-incompleteness-oq01-oq-01",
+  "description": "J. Barkley Rosser's 1936 improvement of Gödel's First Incompleteness Theorem, replacing ω-consistency with plain consistency. The Rosser sentence R encodes a proof-length comparison: 'for every proof of me, there is an equally short or shorter disproof.' Under plain consistency (no ω-consistency needed), R is formally undecidable. The formalization uses only 3 axioms versus Gödel's 5.",
+  "meta": {
+    "author": "J. Barkley Rosser (1936), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Rosser%27s_trick",
+    "date": "1936",
+    "status": "axiomatized",
+    "tags": [
+      "logic",
+      "foundations",
+      "incompleteness",
+      "self-reference",
+      "advanced",
+      "rosser-trick"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Logic.Basic",
+        "description": "Basic logical connectives and predicates",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Rosser sentence R: encodes proof-length comparison (∀ proof p, ∃ disproof q ≤ p)",
+      "R_not_provable: underprovability under plain consistency (no ω-consistency)",
+      "R_not_disprovable: underdisprovability under plain consistency",
+      "R_prov_iff_disprova: equi-decidability — (⊢ R) ↔ (⊢ ¬R), the structural heart of Rosser's trick",
+      "rosser_first_incompleteness: incompleteness under plain consistency (vs. ω-consistency in Gödel)",
+      "godel_vs_rosser_comparison: explicit comparison of the two approaches",
+      "3-axiom proof vs. 5-axiom Gödel proof — elimination of omega_consistency_G axiom",
+      "R_witness_incompleteness: explicit undecidable sentence provided",
+      "complete_implies_inconsistent_rosser: completeness forces inconsistency under Rosser axioms"
+    ],
+    "dateAdded": "2026-05-03",
+    "axiomCount": 3,
+    "assumptions": "Three axioms: (1) Provable: Formula → Prop (opaque provability predicate, same as Gödel version); (2) R_prov_gives_formal_disproof: if ⊢ R then ⊢ ¬R (Rosser sentence key property — any proof of R yields a formal disproof via the comparison structure and Σ₁-completeness); (3) R_disproof_gives_formal_prov: if ⊢ ¬R then ⊢ R (symmetric property — any disproof of R yields a formal proof, eliminating the need for ω-consistency). These three axioms replace the five axioms of the Gödel version, crucially eliminating omega_consistency_G.",
+    "prerequisites": [
+      "Gödel's First Incompleteness Theorem (1931)",
+      "Mathematical logic: formal systems, provability, consistency",
+      "Gödel numbering and arithmetization of metamathematics",
+      "Σ₁-completeness of proof predicates",
+      "Proof-length comparisons and bounded quantifiers in arithmetic"
+    ],
+    "lineCount": 308,
+    "proofRepoPath": "Proofs/GodelFirstIncompletenessOQ01OQ01.lean",
+    "mathlib_version": "4.26.0",
+    "relatedProofs": [
+      {
+        "id": "godel-first-incompleteness-oq01",
+        "relationship": "parent",
+        "note": "Gödel's original 1931 proof using ω-consistency; Rosser's improvement replaces omega_consistency_G with the Rosser sentence construction"
+      },
+      {
+        "id": "godel-incompleteness",
+        "relationship": "ancestor",
+        "note": "Pedagogical scaffold using Provable := fun _ => False"
+      }
+    ],
+    "theoremCount": 11
+  },
+  "overview": {
+    "historicalContext": "Gödel's 1931 incompleteness theorem used ω-consistency as a hypothesis: if the system proves ∃n P(n), then the system is not ω-consistent if it also proves ¬P(n̄) for every specific n. Many logicians felt this was an 'unnatural' or overly strong assumption. J. Barkley Rosser (1936) addressed this by constructing a different self-referential sentence that makes the unprovability argument work under plain consistency alone.\n\nRosser's modification is now the standard form of the First Incompleteness Theorem. Every modern statement of Gödel's theorem uses 'consistent' rather than 'ω-consistent' — Rosser's improvement is invisible in the standard formulation but is mathematically essential.",
+    "problemStatement": "Can Gödel's First Incompleteness Theorem be proved using only plain consistency (¬(⊢φ ∧ ⊢¬φ) for all φ) rather than ω-consistency? The question is: does there exist a sentence that is formally undecidable in any consistent (not just ω-consistent) formal system satisfying certain minimal conditions?",
+    "text": "Rosser's 1936 improvement proves First Incompleteness under plain consistency using the Rosser sentence R. R encodes 'for every proof of me, there is an equally short or shorter disproof.' The key structural property is equi-decidability: (⊢ R) ↔ (⊢ ¬R). Under consistency, this forces both to be unprovable, giving undecidability without ω-consistency.",
+    "proofStrategy": "Two main lemmas:\n\n1. **R_not_provable**: If ⊢ R, then by R_prov_gives_formal_disproof, ⊢ ¬R. But then ⊢ R and ⊢ ¬R, contradicting consistency.\n\n2. **R_not_disprovable**: If ⊢ ¬R, then by R_disproof_gives_formal_prov, ⊢ R. But then ⊢ R and ⊢ ¬R, contradicting consistency.\n\nBoth lemmas use only plain consistency — no ω-consistency. The Rosser sentence's symmetric structure makes both directions work the same way, while Gödel's G only gave a direct contradiction in one direction (requiring ω-consistency for the other).",
+    "keyInsights": [
+      "**Equi-decidability is the key structural property**: (⊢ R) ↔ (⊢ ¬R). This makes the undecidability proof symmetric: provability and disprovability are equivalent, so under consistency, both fail.",
+      "**Gödel's G lacks symmetry**: G says 'I am not provable.' If G were disprovable, we'd need ω-consistency to derive a contradiction (because ⊢ ¬G doesn't directly imply ⊢ G). Rosser's R removes this asymmetry.",
+      "**Proof-length comparison is the innovation**: R encodes a comparison between proof and disproof lengths. This extra structure allows the system to 'chase its own tail' in both directions under plain consistency.",
+      "**Fewer axioms**: 3 axioms vs. 5 for Gödel. The Rosser axioms are stronger individually (each encodes both the self-reference AND the Σ₁-completeness implication), but there are fewer of them.",
+      "**Universal applicability**: Rosser's theorem shows incompleteness for ALL consistent recursive extensions of Q (Robinson arithmetic), not just ω-consistent ones. This is the standard modern form."
+    ]
+  },
+  "sections": [
+    {
+      "id": "infrastructure",
+      "title": "Part 1–2: Basic Infrastructure",
+      "startLine": 54,
+      "endLine": 93,
+      "summary": "Formula structure (code : Nat), neg (code + 1), opaque Provable axiom, notation ⊢ φ, Consistent and Complete definitions. Same setup as GodelFirstIncompletenessOQ01.lean."
+    },
+    {
+      "id": "rosser-sentence",
+      "title": "Part 3: The Rosser Sentence",
+      "startLine": 95,
+      "endLine": 115,
+      "summary": "def R : Formula := ⟨43⟩. Detailed docstring explaining the proof-length comparison semantics: R ↔ (∀ proof code p, ∃ disproof code q ≤ p). Contrast with Gödel's G = ⟨42⟩."
+    },
+    {
+      "id": "rosser-axioms",
+      "title": "Part 4: The Three Key Axioms",
+      "startLine": 117,
+      "endLine": 170,
+      "summary": "axiom R_prov_gives_formal_disproof: ⊢ R → ⊢ ¬R (Rosser Prov→Disprov); axiom R_disproof_gives_formal_prov: ⊢ ¬R → ⊢ R (Rosser Disprov→Prov). Each axiom replaces multiple Gödel axioms and eliminates omega_consistency_G."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Parts 5–6: Main Theorems",
+      "startLine": 172,
+      "endLine": 244,
+      "summary": "R_not_provable, R_not_disprovable, R_undecidable, rosser_first_incompleteness, no_consistent_complete_rosser. Clean 3-line proofs using consistency + Rosser axioms only."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Part 7: Structural Properties",
+      "startLine": 246,
+      "endLine": 280,
+      "summary": "R_prov_iff_disprova: the equi-decidability biconditional (⊢ R ↔ ⊢ ¬R). consistent_iff_R_undecidable: internal characterization of consistency via R."
+    },
+    {
+      "id": "comparison",
+      "title": "Parts 8–9: Comparison with Gödel",
+      "startLine": 282,
+      "endLine": 308,
+      "summary": "godel_vs_rosser_comparison, R_witness_incompleteness, complete_implies_inconsistent_rosser, rosser_explicit_undecidable. Documents the structural improvement: omega_consistency_G is eliminated."
+    }
+  ],
+  "conclusion": {
+    "summary": "Rosser's 1936 improvement of Gödel's First Incompleteness Theorem is formalized with 3 axioms and 0 sorries. The Rosser sentence R satisfies (⊢ R) ↔ (⊢ ¬R), making the undecidability proof symmetric and eliminating the need for ω-consistency. Under plain consistency, R is neither provable nor disprovable, witnessing incompleteness. The formalization uses 3 axioms (vs. 5 for Gödel), crucially eliminating the omega_consistency_G axiom.",
+    "implications": "Rosser's improvement is the reason the modern statement of Gödel's First Incompleteness Theorem says 'consistent' rather than 'ω-consistent'. It shows that incompleteness is not an artifact of the ω-consistency hypothesis but a fundamental property of consistent arithmetical systems. The result applies to every consistent recursive extension of Robinson arithmetic Q, including ZFC, PA, and all standard foundations of mathematics.",
+    "openQuestions": [
+      "Can the three Rosser axioms themselves be derived from a fully formal treatment of the Diagonal Lemma in Lean 4, reducing the axiom count further?",
+      "The Rosser sentence has the equi-decidability property (⊢ R ↔ ⊢ ¬R). Are there other sentences with this property? What is the general structure of 'Rosser-type' sentences?",
+      "Gödel's Second Incompleteness Theorem (Con(F) is unprovable in F) — can it also be proved under plain consistency, or does it require ω-consistency or stronger?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "godel-first-incompleteness-oq01",
+      "relationship": "parent",
+      "description": "Gödel's original 1931 proof using ω-consistency and 5 axioms; Rosser's improvement in this file reduces to 3 axioms and plain consistency."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "ancestor",
+      "description": "Pedagogical scaffold using Provable := fun _ => False; establishes the proof architecture that this file builds on."
+    },
+    {
+      "targetId": "erdos-1210",
+      "relationship": "thematic",
+      "description": "Both concern unprovability and open conjectures; Erdős #1210 is an open number-theory problem while Rosser's theorem proves undecidability of self-referential arithmetic sentences."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "RosserFirst.rosser_first_incompleteness",
+      "type": "core",
+      "description": "Any consistent system satisfying the three Rosser axioms is incomplete",
+      "leanStatement": "theorem rosser_first_incompleteness (h : Consistent) : ¬ Complete"
+    },
+    {
+      "name": "RosserFirst.R_undecidable",
+      "type": "core",
+      "description": "The Rosser sentence R is neither provable nor disprovable under plain consistency",
+      "leanStatement": "theorem R_undecidable (h : Consistent) : ¬ Provable R ∧ ¬ Provable (neg R)"
+    },
+    {
+      "name": "RosserFirst.R_prov_iff_disprova",
+      "type": "key",
+      "description": "Equi-decidability: R is provable if and only if R is disprovable",
+      "leanStatement": "theorem R_prov_iff_disprova : (⊢ R) ↔ (⊢ ¬ᶠ R)"
+    },
+    {
+      "name": "RosserFirst.R_not_provable",
+      "type": "supporting",
+      "description": "R is not provable (no ω-consistency needed)",
+      "leanStatement": "theorem R_not_provable (h : Consistent) : ¬ Provable R"
+    },
+    {
+      "name": "RosserFirst.R_not_disprovable",
+      "type": "supporting",
+      "description": "¬R is not provable (replaces omega_consistency_G from Gödel's proof)",
+      "leanStatement": "theorem R_not_disprovable (h : Consistent) : ¬ Provable (neg R)"
+    },
+    {
+      "name": "RosserFirst.godel_vs_rosser_comparison",
+      "type": "meta",
+      "description": "Under Rosser's axioms, plain consistency suffices for full undecidability of R",
+      "leanStatement": "theorem godel_vs_rosser_comparison : ∀ h : Consistent, ¬ Provable R ∧ ¬ Provable (neg R)"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 3,
+    "lineCount": 308,
+    "sorries": 0,
+    "path": "Proofs/GodelFirstIncompletenessOQ01OQ01.lean",
+    "definitionCount": 5,
+    "theoremCount": 11
+  }
+}

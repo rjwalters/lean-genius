@@ -59,7 +59,7 @@
       "galois_criterion_implies_degree_criterion: Bridges the Galois criterion (2-group Gal) to the degree criterion (degree = 2^k)"
     ],
     "dateAdded": "2026-03-21",
-    "lineCount": 115,
+    "lineCount": 481,
     "axiomCount": 0,
     "assumptions": "None. All 4 theorems fully proved from Mathlib and OQ-01 with 0 axioms and 0 sorries.",
     "prerequisites": [
@@ -69,7 +69,8 @@
       "Minimal polynomials and irreducibility",
       "Compass-and-straightedge constructibility criteria"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Pierre Wantzel proved in 1837 that an algebraic number is constructible by compass and straightedge only if its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2. Évariste Galois, whose posthumous 1846 publication established the foundations of group theory, provided the deeper characterization: constructibility is equivalent to the Galois group being a 2-group. This refinement transforms a degree computation into a group-theoretic question.\n\nThe parent formalization OQ-02 axiomatized this Galois criterion with 6 axioms, including explicit Galois group order computations ($|\\text{Gal}(x^3-2)| = 6$). This file demonstrates that `galois_2group_implies_degree_pow2` is provable from Mathlib's `Polynomial.Gal` infrastructure using the tower law on $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$, reducing the axiom count from 6 to 5.\n\nThe approach exemplifies a general methodology in formalized mathematics: **axiom elimination via library bridging**. An initial formalization axiomatizes deep results to establish the main theorem's logical structure; subsequent work systematically replaces axioms with proofs from the proof assistant's library. This incremental strategy — used extensively in the Lean 4 mathematical library — allows formalizations to proceed even when the library lacks specific theorems, then improve as library coverage grows. The key insight here — that the divisibility $\\deg(p) \\mid |\\text{Gal}(p)|$ suffices without computing the exact group order — reflects a broader trend in modern algebra: structural arguments replacing explicit computation.",
@@ -267,7 +268,7 @@
       "Polynomial"
     ],
     "namespace": "AngleTrisectionOQ02OQ01",
-    "lineCount": 115,
+    "lineCount": 481,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 1,

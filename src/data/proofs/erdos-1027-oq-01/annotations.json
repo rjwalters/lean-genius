@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Header: Quantitative Union Bound Strategy",
-    "content": "This file formalizes OQ-01 from Erdős #1027: an explicit lower bound on the number of good sets (proper transversals) in an n-uniform set family. Imports Erdos1027Problem for SetFamily, goodSets, familyUnion, IsNUniform, HasPropertyB. The main result: |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1}. The proof has two stages: (1) count missing and containing subsets for each A ∈ F; (2) apply union bound over F.\n\nThe file header documents that all 3 original sorries have been resolved: `card_subsets_containing` (involution bijection), `hbad_bound` (union bound over bad-due-to-A sets), and `hgood_bad` (goodSets and badTotal partition X.powerset).",
+    "content": "This file formalizes OQ-01 from Erd\u0151s #1027: an explicit lower bound on the number of good sets (proper transversals) in an n-uniform set family. Imports Erdos1027Problem for SetFamily, goodSets, familyUnion, IsNUniform, HasPropertyB. The main result: |goodSets F| \u2265 2^|X| \u2212 |F|\u00b72^{|X|\u2212n+1}. The proof has two stages: (1) count missing and containing subsets for each A \u2208 F; (2) apply union bound over F.\n\nThe file header documents that all 3 original sorries have been resolved: `card_subsets_containing` (involution bijection), `hbad_bound` (union bound over bad-due-to-A sets), and `hgood_bad` (goodSets and badTotal partition X.powerset).",
     "mathContext": "The union bound argument: for each $A \\in F$, the 'bad subsets due to $A$' (missing $A$ or containing $A$) number at most $2 \\cdot 2^{|X|-n}$. Summing: total bad $\\leq |F| \\cdot 2^{|X|-n+1}$. So good $= 2^{|X|} - \\text{bad} \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "card_subsets_missing: Counting via subset_sdiff",
-    "content": "Proves |{B ⊆ X : Disjoint B A}| = 2^{|X|−|A|}. The proof is a two-line argument:\n1. Show the filter equals (X \\ A).powerset via `Finset.subset_sdiff`: B ⊆ X ∧ Disjoint B A ↔ B ⊆ X \\ A.\n2. Apply `card_powerset` and `card_sdiff` to conclude.\n\nThe `ext B; simp only [mem_filter, mem_powerset, subset_sdiff]` tactic handles the set equality in one step.",
+    "content": "Proves |{B \u2286 X : Disjoint B A}| = 2^{|X|\u2212|A|}. The proof is a two-line argument:\n1. Show the filter equals (X \\ A).powerset via `Finset.subset_sdiff`: B \u2286 X \u2227 Disjoint B A \u2194 B \u2286 X \\ A.\n2. Apply `card_powerset` and `card_sdiff` to conclude.\n\nThe `ext B; simp only [mem_filter, mem_powerset, subset_sdiff]` tactic handles the set equality in one step.",
     "mathContext": "The bijection: $\\{B \\subseteq X : B \\cap A = \\emptyset\\} = \\mathcal{P}(X \\setminus A)$. So the count is $2^{|X \\setminus A|} = 2^{|X| - |A|}$ (since $A \\subseteq X$ gives $|X \\setminus A| = |X| - |A|$).",
     "significance": "key",
     "relatedConcepts": [
@@ -42,7 +42,7 @@
       "disjoint sets"
     ],
     "prerequisites": [
-      "Finset.subset_sdiff: B ⊆ X \\ A ↔ B ⊆ X ∧ Disjoint B A"
+      "Finset.subset_sdiff: B \u2286 X \\ A \u2194 B \u2286 X \u2227 Disjoint B A"
     ]
   },
   {
@@ -53,8 +53,8 @@
       "endLine": 77
     },
     "type": "concept",
-    "title": "card_subsets_containing: Involution Bijection via B ↦ X \\ B",
-    "content": "Proves |{A ⊆ B ⊆ X}| = 2^{|X|−|A|} using `Finset.card_bij` with the involution B ↦ X \\ B.\n\nThe proof has three obligations for `card_bij`:\n1. **Well-definedness**: A ⊆ B ⊆ X → X\\B ⊆ X ∧ Disjoint (X\\B) A. Proved by `Finset.sdiff_subset` and `Finset.disjoint_left`.\n2. **Injectivity**: X\\B₁ = X\\B₂ → B₁ = B₂. Follows from `sdiff_sdiff_cancel_left` applied twice.\n3. **Surjectivity**: given C ⊆ X with Disjoint C A, take B = X\\C, then A ⊆ B via disjointness and X\\(X\\C) = C.\n\nThe involution B ↦ X \\ B is its own inverse (X\\(X\\B) = B for B ⊆ X) and exchanges the two set families, giving equal cardinalities.",
+    "title": "card_subsets_containing: Involution Bijection via B \u21a6 X \\ B",
+    "content": "Proves |{A \u2286 B \u2286 X}| = 2^{|X|\u2212|A|} using `Finset.card_bij` with the involution B \u21a6 X \\ B.\n\nThe proof has three obligations for `card_bij`:\n1. **Well-definedness**: A \u2286 B \u2286 X \u2192 X\\B \u2286 X \u2227 Disjoint (X\\B) A. Proved by `Finset.sdiff_subset` and `Finset.disjoint_left`.\n2. **Injectivity**: X\\B\u2081 = X\\B\u2082 \u2192 B\u2081 = B\u2082. Follows from `sdiff_sdiff_cancel_left` applied twice.\n3. **Surjectivity**: given C \u2286 X with Disjoint C A, take B = X\\C, then A \u2286 B via disjointness and X\\(X\\C) = C.\n\nThe involution B \u21a6 X \\ B is its own inverse (X\\(X\\B) = B for B \u2286 X) and exchanges the two set families, giving equal cardinalities.",
     "mathContext": "The involution $B \\mapsto X \\setminus B$ on $\\mathcal{P}(X)$ satisfies $X \\setminus (X \\setminus B) = B$ for $B \\subseteq X$. It maps $\\{A \\subseteq B \\subseteq X\\}$ to $\\{C \\subseteq X : \\text{Disjoint}(C, A)\\}$: if $A \\subseteq B$, then for any $x \\in A$, $x \\notin X \\setminus B$, so $A \\cap (X \\setminus B) = \\emptyset$.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
     },
     "type": "concept",
     "title": "card_bad_bound: Union Bound for Single Set",
-    "content": "Proves |bad-due-to-A| ≤ 2 · 2^{|X|−|A|} via `card_union_le`. The bad-due-to-A set is the union of subsets disjoint from A and subsets containing A.\n\nThe proof uses a `calc` block:\n1. `card_union_le` gives |disjoint ∪ containing| ≤ |disjoint| + |containing|\n2. Both equal 2^{|X|−|A|} by `card_subsets_missing` and `card_subsets_containing`\n3. The sum equals 2 · 2^{|X|−|A|} by `ring`",
+    "content": "Proves |bad-due-to-A| \u2264 2 \u00b7 2^{|X|\u2212|A|} via `card_union_le`. The bad-due-to-A set is the union of subsets disjoint from A and subsets containing A.\n\nThe proof uses a `calc` block:\n1. `card_union_le` gives |disjoint \u222a containing| \u2264 |disjoint| + |containing|\n2. Both equal 2^{|X|\u2212|A|} by `card_subsets_missing` and `card_subsets_containing`\n3. The sum equals 2 \u00b7 2^{|X|\u2212|A|} by `ring`",
     "mathContext": "$|\\{B \\subseteq X : B \\cap A = \\emptyset\\} \\cup \\{B \\subseteq X : A \\subseteq B\\}| \\leq 2 \\cdot 2^{|X|-|A|}$ by union bound and both component counts equaling $2^{|X|-|A|}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -98,9 +98,9 @@
       "startLine": 93,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "good_set_lower_bound: Main Quantitative Bound (fully proved)",
-    "content": "The main theorem: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|−n+1}. All subgoals are fully proved:\n\n**hbad_bound** (lines 105–143): total bad subsets ≤ |F| · 2 · 2^{|X|−n}.\n- Defines `badFor A` = bad-due-to-A = {B ⊆ X : Disjoint B A ∨ A ⊆ B}\n- Shows `badTotal ⊆ F.biUnion badFor` by case-splitting: if B is not good, either it misses some A (Disjoint case) or contains some A (subset case)\n- Uses `Finset.card_biUnion_le` then `card_bad_bound` per member\n\n**hgood_bad** (lines 145–158): goodSets F and badTotal partition X.powerset.\n- Shows both are filters on X.powerset (good/not-good)\n- `Finset.disjoint_left` gives disjointness\n- `ext B; simp; tauto` gives the union equals X.powerset\n- Concludes via `card_union_of_disjoint` + `card_powerset`\n\n**Final step** (lines 160–161): `linarith` with `2 · 2^{|X|−n} ≤ 2^{|X|−n+1}` (from `pow_succ`).",
+    "content": "The main theorem: 2^|X| \u2264 |goodSets F| + |F| \u00b7 2^{|X|\u2212n+1}. All subgoals are fully proved:\n\n**hbad_bound** (lines 105\u2013143): total bad subsets \u2264 |F| \u00b7 2 \u00b7 2^{|X|\u2212n}.\n- Defines `badFor A` = bad-due-to-A = {B \u2286 X : Disjoint B A \u2228 A \u2286 B}\n- Shows `badTotal \u2286 F.biUnion badFor` by case-splitting: if B is not good, either it misses some A (Disjoint case) or contains some A (subset case)\n- Uses `Finset.card_biUnion_le` then `card_bad_bound` per member\n\n**hgood_bad** (lines 145\u2013158): goodSets F and badTotal partition X.powerset.\n- Shows both are filters on X.powerset (good/not-good)\n- `Finset.disjoint_left` gives disjointness\n- `ext B; simp; tauto` gives the union equals X.powerset\n- Concludes via `card_union_of_disjoint` + `card_powerset`\n\n**Final step** (lines 160\u2013161): `linarith` with `2 \u00b7 2^{|X|\u2212n} \u2264 2^{|X|\u2212n+1}` (from `pow_succ`).",
     "mathContext": "The key identity $2 \\cdot 2^{|X|-n} = 2^{|X|-n+1}$ lets us rewrite the bound. The partition argument: $\\mathcal{P}(X) = \\text{goodSets}(F) \\sqcup \\text{badTotal}$, so $|\\text{goodSets}| + |\\text{badTotal}| = 2^{|X|}$. Combined: $|\\text{goodSets}| = 2^{|X|} - |\\text{badTotal}| \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -125,14 +125,14 @@
       "startLine": 163,
       "endLine": 181
     },
-    "type": "theorem",
-    "title": "property_b_from_union_bound: Classical Erdős-Hajnal Corollary",
-    "content": "Corollary: if |F| · 2 < 2^n and F is n-uniform over X with n ≤ |X|, then F has Property B.\n\nThe proof applies `good_set_lower_bound` then derives |goodSets F| > 0 via `nlinarith`. The key step uses `pow_add` to write 2^{|X|} = 2^{|X|−n} · 2^n, allowing the hypothesis |F|·2 < 2^n to dominate the bound.\n\nOnce |goodSets F| > 0 is established, `Finset.card_pos` extracts an element B ∈ goodSets F. Unfolding `goodSets` (a filter on X.powerset for `IsGoodSet`) gives B ⊆ X with `IsGoodSet B F`, which unfolds to `IntersectsAll B F ∧ ContainsNone B F`, witnessing `HasPropertyB F`.",
-    "mathContext": "If $|F| \\cdot 2 < 2^n$, then $|F| \\cdot 2^{|X|-n+1} < 2^{|X|}$ (multiplying both sides by $2^{|X|-n}$), so $|\\text{goodSets}(F)| \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1} > 0$. This recovers the classical Erdős-Hajnal threshold: $|F| < 2^{n-1}$ implies Property B.",
+    "type": "insight",
+    "title": "property_b_from_union_bound: Classical Erd\u0151s-Hajnal Corollary",
+    "content": "Corollary: if |F| \u00b7 2 < 2^n and F is n-uniform over X with n \u2264 |X|, then F has Property B.\n\nThe proof applies `good_set_lower_bound` then derives |goodSets F| > 0 via `nlinarith`. The key step uses `pow_add` to write 2^{|X|} = 2^{|X|\u2212n} \u00b7 2^n, allowing the hypothesis |F|\u00b72 < 2^n to dominate the bound.\n\nOnce |goodSets F| > 0 is established, `Finset.card_pos` extracts an element B \u2208 goodSets F. Unfolding `goodSets` (a filter on X.powerset for `IsGoodSet`) gives B \u2286 X with `IsGoodSet B F`, which unfolds to `IntersectsAll B F \u2227 ContainsNone B F`, witnessing `HasPropertyB F`.",
+    "mathContext": "If $|F| \\cdot 2 < 2^n$, then $|F| \\cdot 2^{|X|-n+1} < 2^{|X|}$ (multiplying both sides by $2^{|X|-n}$), so $|\\text{goodSets}(F)| \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1} > 0$. This recovers the classical Erd\u0151s-Hajnal threshold: $|F| < 2^{n-1}$ implies Property B.",
     "significance": "key",
     "relatedConcepts": [
       "Property B",
-      "Erdős-Hajnal theorem",
+      "Erd\u0151s-Hajnal theorem",
       "HasPropertyB",
       "goodSets",
       "pow_add"

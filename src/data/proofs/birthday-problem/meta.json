@@ -69,7 +69,8 @@
       }
     ],
     "lineCount": 402,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 24
   },
   "overview": {
     "historicalContext": "The Birthday Problem, also known as the Birthday Paradox, was first rigorously analyzed by Richard von Mises in his 1939 paper on the problem of coincidences. Harold Davenport independently studied it in the 1940s using similar counting arguments.\n\nThe 'paradox' is psychological, not mathematical: most people greatly underestimate the probability because they confuse the chance of someone matching *their* birthday ($\\approx n/365$, which requires $\\sim 253$ people for 50%) with the chance of *any* pair matching (which requires only 23 people). The key is that with $n$ people there are $\\binom{n}{2} = n(n-1)/2$ pairs — for $n=23$ that's already 253 pairs.\n\nIn the 1990s, the Birthday Problem gained renewed significance in cryptography. Yuval (1979) introduced the 'birthday attack' showing that hash collisions can be found in $O(2^{n/2})$ time rather than $O(2^n)$, fundamentally changing how hash function output lengths are chosen. This principle drove the transition from 128-bit hashes (only 64-bit collision resistance) to 256-bit hashes for security-critical applications.",
@@ -252,7 +253,6 @@
     "axiomCount": 0,
     "theoremCount": 24,
     "lemmaCount": 0,
-    "defCount": 5,
     "definitionCount": 5,
     "path": "Proofs/BirthdayProblem.lean",
     "sorries": 0

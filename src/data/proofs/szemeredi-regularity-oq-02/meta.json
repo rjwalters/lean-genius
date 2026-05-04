@@ -42,9 +42,10 @@
       "sz_two_steps_tower: 2-step Szemerédi bound ≥ 4^(4^n) — tower growth quantified",
       "fk_bound_at_half: explicit FK bound 4^4 = 256 at ε = 1/2 vs Szemerédi's tower"
     ],
-    "lineCount": 399,
+    "lineCount": 1042,
     "assumptions": "0 axioms, 0 sorries. Fully verified using Mathlib's SimpleGraph, Finset, and ε-regularity infrastructure.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Szemerédi's Regularity Lemma (1978) is one of the most powerful tools in extremal combinatorics. Originally developed as a lemma to prove Szemerédi's theorem on arithmetic progressions (1975 — itself resolving a 1936 Erdős-Turán conjecture), the lemma states that every sufficiently large graph can be partitioned into a bounded number of vertex classes such that most pairs of classes are 'ε-regular' — the edge density between large subsets closely approximates the density between the entire classes. The price is severe: the number of parts may be as large as a tower function tower(1/ε) — a stack of exponentials of height proportional to 1/ε. In 1997, Gowers proved this tower bound is necessary: no partition into only singly exponentially many parts can guarantee ε-regularity for all graphs.\n\nFrieze and Kannan (1999) introduced a weaker 'cut regularity' condition motivated by matrix approximation problems in theoretical computer science. Their version asks only that a partition approximates the graph's edge density globally — the total cut error over ALL pairs (A,B) ⊆ V is ≤ ε·n², rather than requiring per-pair regularity. This global guarantee requires at most 4^(1/ε²) parts — singly exponential, not tower. Frieze-Kannan (FK) regularity is strictly weaker: there exist graphs where every ε-cut-approximation has pairs that are not ε-regular. The FK version has superior computational properties: FK-regular partitions can be found in polynomial time O(n^{2+1/ε²}) using randomized algorithms, while Szemerédi regularity requires exponential time in the worst case (Alon, Duke, Lefmann, Rödl, Yuster, 2007).\n\nThe relationship between the two notions forms a strict hierarchy — Szemerédi regularity implies FK cut-approximation, but not conversely — making FK an attractive alternative for applications where the global cut guarantee suffices. Key applications of FK regularity include the regularity-based graph algorithms of Frieze-Kannan (sampling graph properties, counting structures), the property testing framework of Alon-Fischer-Krivelevich-Szegedy, and the foundations of graphon theory (Lovász-Szegedy, 2007), which abstracts regularity to the analytic setting of bounded symmetric measurable functions on [0,1]².\n\nThis file proves the Szemerédi ⟹ FK implication formally in Lean 4, using Mathlib's existing SzemerediRegularity library as the foundation, and quantifies the tower-vs-singly-exponential gap with explicit Lean computations.",
@@ -194,7 +195,7 @@
       "Classical"
     ],
     "namespace": "SzemerediFKComparison",
-    "lineCount": 399,
+    "lineCount": 1042,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 2,

@@ -69,7 +69,8 @@
     "axiomCount": 0,
     "lineCount": 366,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "**Archimedes and the Method of Exhaustion**\n\nAround 250 BCE, Archimedes proved that the area of a circle equals $\\pi r^2$ using his *method of exhaustion* — one of the most beautiful ideas in ancient mathematics. The method works by squeezing the circle between two sequences of regular polygons:\n\n- **Inscribed n-gon**: fits inside the circle, area $< \\pi r^2$\n- **Circumscribed n-gon**: surrounds the circle, area $> \\pi r^2$\n\nAs $n \\to \\infty$, both converge to $\\pi r^2$. Archimedes used 96-gons to prove $3 + \\frac{10}{71} < \\pi < 3 + \\frac{1}{7}$.\n\n**Why this is remarkable**: This predates calculus by 1900 years! Archimedes was essentially computing a limit without the language of limits. The method of exhaustion is a precursor to the rigorous $\\varepsilon$-$N$ definition of convergence.\n\n**The Open Question**: Can Archimedes' geometric argument be formalized in Lean 4 with explicit convergence rates?\n\n**The Answer**: YES — using Mathlib's `HasDerivAt` for the fundamental limits $\\sin(h)/h \\to 1$ and $\\tan(h)/h \\to 1$, the full proof chain is formalized.",

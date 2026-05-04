@@ -15,7 +15,12 @@
       "algebraic topology"
     ],
     "mathContext": "For $n \\geq 1$: $\\forall f: B^n \\to B^n$ continuous, $\\exists x \\in B^n,\\; f(x) = x$, where $B^n = \\{x \\in \\mathbb{R}^n : \\|x\\| \\leq 1\\}$.",
-    "prerequisites": ["topology", "continuous functions", "closed ball", "algebraic topology"]
+    "prerequisites": [
+      "topology",
+      "continuous functions",
+      "closed ball",
+      "algebraic topology"
+    ]
   },
   {
     "id": "ann-closed-ball",
@@ -34,7 +39,11 @@
       "boundary",
       "contractibility"
     ],
-    "prerequisites": ["metric spaces", "normed vector spaces", "homology (for full proof)"]
+    "prerequisites": [
+      "metric spaces",
+      "normed vector spaces",
+      "homology (for full proof)"
+    ]
   },
   {
     "id": "ann-fixed-point-def",
@@ -46,7 +55,7 @@
     },
     "type": "definition",
     "title": "Self-Maps, Fixed Points, and Original Structures",
-    "content": "Part 2 introduces the formalization's original structures:\n\n**`SelfMap n`**: a continuous function $f: \\mathbb{R}^n \\to \\mathbb{R}^n$ with `maps_ball : ∀ x ∈ B^n, f(x) ∈ B^n`. This bundles continuity (`Continuous toFun`) with the invariance constraint into a single type, ensuring well-formedness at the type level.\n\n**`IsFixedPoint f x := f x = x`**: the predicate for individual fixed points.\n\n**`HasFixedPoint n f := ∃ x ∈ B^n, IsFixedPoint f.toFun x`**: the existential statement that Brouwer's theorem proves.\n\nFixed points are ubiquitous: Nash equilibria are fixed points of best-response maps, steady states of ODEs are fixed points of the flow, and market clearing prices are fixed points of excess demand maps. Brouwer's theorem guarantees existence for continuous self-maps of balls, but not uniqueness or computability.",
+    "content": "Part 2 introduces the formalization's original structures:\n\n**`SelfMap n`**: a continuous function $f: \\mathbb{R}^n \\to \\mathbb{R}^n$ with `maps_ball : \u2200 x \u2208 B^n, f(x) \u2208 B^n`. This bundles continuity (`Continuous toFun`) with the invariance constraint into a single type, ensuring well-formedness at the type level.\n\n**`IsFixedPoint f x := f x = x`**: the predicate for individual fixed points.\n\n**`HasFixedPoint n f := \u2203 x \u2208 B^n, IsFixedPoint f.toFun x`**: the existential statement that Brouwer's theorem proves.\n\nFixed points are ubiquitous: Nash equilibria are fixed points of best-response maps, steady states of ODEs are fixed points of the flow, and market clearing prices are fixed points of excess demand maps. Brouwer's theorem guarantees existence for continuous self-maps of balls, but not uniqueness or computability.",
     "mathContext": "$f \\in \\text{SelfMap}(n)$ iff $f: \\mathbb{R}^n \\to \\mathbb{R}^n$ continuous with $f(B^n) \\subseteq B^n$. $\\text{HasFixedPoint}(n, f) := \\exists x \\in B^n,\\; f(x) = x$. The `SelfMap` structure bundles `toFun`, `continuous'`, and `maps_ball` into a single record, analogous to Mathlib's `ContinuousMap` but with the additional domain/codomain constraint.",
     "significance": "key",
     "relatedConcepts": [
@@ -55,7 +64,12 @@
       "convergence",
       "ContinuousMap"
     ],
-    "prerequisites": ["continuous functions", "self-maps", "closed ball", "Lean structures"]
+    "prerequisites": [
+      "continuous functions",
+      "self-maps",
+      "closed ball",
+      "Lean structures"
+    ]
   },
   {
     "id": "ann-retraction",
@@ -75,7 +89,11 @@
       "continuous map"
     ],
     "mathContext": "A retraction $r: X \\to A$ satisfies $r|_A = \\text{id}_A$. The no-retraction theorem: $\\nexists r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$.",
-    "prerequisites": ["continuous maps", "subspaces", "topological invariants"]
+    "prerequisites": [
+      "continuous maps",
+      "subspaces",
+      "topological invariants"
+    ]
   },
   {
     "id": "ann-no-retraction",
@@ -85,7 +103,7 @@
       "name": "no_retraction_axiom",
       "kind": "axiom"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No-Retraction Theorem: The Topological Heart",
     "content": "**Theorem:** There is no retraction from the closed ball $B^n$ to its boundary sphere $S^{n-1}$ (for $n \\geq 1$).\n\nThis is the topological core of Brouwer's theorem. The proof uses algebraic topology:\n\n**Via Homology:**\n- The ball has trivial homology: $H_k(B^n) = 0$ for $k > 0$\n- The sphere has nontrivial homology: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$\n- A retraction would induce $H_{n-1}(S^{n-1}) \\to H_{n-1}(B^n) \\to H_{n-1}(S^{n-1}) = \\text{id}$\n- But this factors through $H_{n-1}(B^n) = 0$, forcing $\\text{id} = 0$. Contradiction!\n\n**Via Degree Theory:**\n- The identity on $S^{n-1}$ has degree 1\n- A retraction composed with inclusion gives the identity\n- But the composition factors through $B^n$, which is contractible\n- Contractible spaces have degree 0. So $1 = 0$. Contradiction!",
     "mathContext": "$\\nexists r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$",
@@ -129,9 +147,9 @@
       "type": "doc-comment",
       "contains": "Brouwer Fixed Point Theorem**"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Brouwer's Fixed Point Theorem",
-    "content": "**Theorem:** Every continuous map $f: B^n \\to B^n$ has a fixed point.\n\n**Proof:**\n1. Suppose $f$ has no fixed point (aiming for contradiction)\n2. Construct the retraction $r: B^n \\to S^{n-1}$ using the ray construction\n3. But no such retraction can exist (No-Retraction Theorem)\n4. Contradiction! So $f$ must have a fixed point. $\\square$\n\nThe Lean proof is remarkably concise — just 3 lines:\n```\nby_contra h\nlet r := retraction_from_no_fixpoint n f h\nexact no_retraction hn ⟨r, trivial⟩\n```\n`by_contra h` assumes $\\neg\\text{HasFixedPoint}$; `retraction_from_no_fixpoint` constructs the retraction (axiomatized); `no_retraction` produces the contradiction. The entire centuries-long development of algebraic topology — from Brouwer's degree theory (1911) through Eilenberg-Steenrod homology (1945) — is compressed into two axioms that capture the essential logical structure.",
+    "content": "**Theorem:** Every continuous map $f: B^n \\to B^n$ has a fixed point.\n\n**Proof:**\n1. Suppose $f$ has no fixed point (aiming for contradiction)\n2. Construct the retraction $r: B^n \\to S^{n-1}$ using the ray construction\n3. But no such retraction can exist (No-Retraction Theorem)\n4. Contradiction! So $f$ must have a fixed point. $\\square$\n\nThe Lean proof is remarkably concise \u2014 just 3 lines:\n```\nby_contra h\nlet r := retraction_from_no_fixpoint n f h\nexact no_retraction hn \u27e8r, trivial\u27e9\n```\n`by_contra h` assumes $\\neg\\text{HasFixedPoint}$; `retraction_from_no_fixpoint` constructs the retraction (axiomatized); `no_retraction` produces the contradiction. The entire centuries-long development of algebraic topology \u2014 from Brouwer's degree theory (1911) through Eilenberg-Steenrod homology (1945) \u2014 is compressed into two axioms that capture the essential logical structure.",
     "mathContext": "$\\forall f: B^n \\to B^n$ continuous ($n \\geq 1$), $\\exists x \\in B^n: f(x) = x$. The proof is modus tollens: $\\text{no fixed point} \\Rightarrow \\text{retraction exists} \\Rightarrow \\bot$ (since no retraction can exist). The two axioms encapsulate: (1) the No-Retraction Theorem (from homology: $\\text{id}_{\\mathbb{Z}}$ cannot factor through 0), and (2) the ray-casting construction (from analysis: solving $\\|f(x) + t(x - f(x))\\|^2 = 1$ for $t > 0$).",
     "significance": "key",
     "prerequisites": [
@@ -153,7 +171,7 @@
     },
     "type": "insight",
     "title": "Dimension 1: IVT and the Axiom-Free Case",
-    "content": "The 1D example (lines 229-242) is the only axiom-free result in the file: every continuous $f: [0,1] \\to [0,1]$ has a fixed point, proved using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo` from the Intermediate Value Theorem.\n\nThe proof is clean Lean: extract `ContinuousOn` from `Continuous`, verify `0 ≤ 1`, wrap the mapping hypothesis, and apply the IVT-based fixed point theorem. No axioms needed — the IVT provides the topological content directly.\n\nThe contrast is instructive: in 1D, the IVT suffices (via $g(x) = f(x) - x$, with $g(0) \\geq 0$ and $g(1) \\leq 0$). In higher dimensions, $g(x) = f(x) - x$ maps $B^n \\to \\mathbb{R}^n$ and the IVT doesn't apply — you need the topological obstruction (homology) to show $g$ must have a zero. This is where algebraic topology becomes essential and why the general theorem requires the two axioms.",
+    "content": "The 1D example (lines 229-242) is the only axiom-free result in the file: every continuous $f: [0,1] \\to [0,1]$ has a fixed point, proved using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo` from the Intermediate Value Theorem.\n\nThe proof is clean Lean: extract `ContinuousOn` from `Continuous`, verify `0 \u2264 1`, wrap the mapping hypothesis, and apply the IVT-based fixed point theorem. No axioms needed \u2014 the IVT provides the topological content directly.\n\nThe contrast is instructive: in 1D, the IVT suffices (via $g(x) = f(x) - x$, with $g(0) \\geq 0$ and $g(1) \\leq 0$). In higher dimensions, $g(x) = f(x) - x$ maps $B^n \\to \\mathbb{R}^n$ and the IVT doesn't apply \u2014 you need the topological obstruction (homology) to show $g$ must have a zero. This is where algebraic topology becomes essential and why the general theorem requires the two axioms.",
     "significance": "key",
     "relatedConcepts": [
       "intermediate value theorem",
@@ -161,8 +179,12 @@
       "1D topology",
       "exists_mem_Icc_isFixedPt_of_mapsTo"
     ],
-    "mathContext": "$f: [0,1] \\to [0,1]$ continuous $\\implies \\exists c \\in [0,1],\\; f(c) = c$. Proof: $g(x) = f(x) - x$ satisfies $g(0) = f(0) \\geq 0$ and $g(1) = f(1) - 1 \\leq 0$. By IVT, $\\exists c,\\; g(c) = 0$, i.e., $f(c) = c$. Lean uses `exists_mem_Icc_isFixedPt_of_mapsTo` which packages this argument for `MapsTo f (Icc a b) (Icc a b)` with `ContinuousOn f (Icc a b)` and `a ≤ b`.",
-    "prerequisites": ["intermediate value theorem", "continuous functions on intervals", "ContinuousOn"]
+    "mathContext": "$f: [0,1] \\to [0,1]$ continuous $\\implies \\exists c \\in [0,1],\\; f(c) = c$. Proof: $g(x) = f(x) - x$ satisfies $g(0) = f(0) \\geq 0$ and $g(1) = f(1) - 1 \\leq 0$. By IVT, $\\exists c,\\; g(c) = 0$, i.e., $f(c) = c$. Lean uses `exists_mem_Icc_isFixedPt_of_mapsTo` which packages this argument for `MapsTo f (Icc a b) (Icc a b)` with `ContinuousOn f (Icc a b)` and `a \u2264 b`.",
+    "prerequisites": [
+      "intermediate value theorem",
+      "continuous functions on intervals",
+      "ContinuousOn"
+    ]
   },
   {
     "id": "ann-dimension-2",
@@ -181,6 +203,9 @@
       "intuitive mathematics"
     ],
     "mathContext": "$f: B^2 \\to B^2$ continuous $\\implies \\exists x \\in B^2,\\; f(x) = x$, where $B^2$ is the closed unit disk in $\\mathbb{R}^2$.",
-    "prerequisites": ["brouwer_fixed_point (main theorem)", "closed unit disk"]
+    "prerequisites": [
+      "brouwer_fixed_point (main theorem)",
+      "closed unit disk"
+    ]
   }
 ]

@@ -29,7 +29,8 @@
         "id": "erdos-1022",
         "relationship": "Parent problem: Property B and sparse set families"
       }
-    ]
+    ],
+    "theoremCount": 8
   },
   "overview": {
     "text": "A formalization generalizing Property B (hypergraph 2-colorability) to Property B_k (k-colorability). Defines HasPropertyBK: there exists a k-coloring such that no set in the family is monochromatic. Proves 10 theorems: monotonicity in k (B_k → B_{k+1}), equivalence with the original Property B when k=2, singleton/empty family base cases, and the k-color hierarchy. States the generalized first-moment threshold as an open question.",
@@ -111,7 +112,6 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "lemmaCount": 0,
-    "defCount": 3,
     "imports": [
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Fintype.Basic",

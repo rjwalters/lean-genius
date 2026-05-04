@@ -1,0 +1,221 @@
+[
+  {
+    "id": "ann-picks-ehrhart-rectangle",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 29,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Rectangle Ehrhart via Finset.card_product: Zero-Axiom Combinatorial Proof",
+    "content": "The five rectangle theorems use the single key lemma Finset.card_product: |A × B| = |A| · |B|. The definition rectangleScaled(a,b,t) is Finset.range(ta+1) ×ˢ Finset.range(tb+1), which has exactly (ta+1)(tb+1) elements by card_product. The proof of rectangle_ehrhart is a one-liner: simp [rectangleScaled, Finset.card_product]. All subsequent rectangle theorems (unit_square_ehrhart, rectangle_ehrhart_quadratic, rectangle_ehrhart_zero, rectangle_ehrhart_one) follow by rw + ring from this base result. Zero axioms, pure Finset combinatorics.",
+    "mathContext": "L(R_{a,b}, t) = |\\text{range}(ta+1) \\times \\text{range}(tb+1)| = (ta+1)(tb+1) = ab \\cdot t^2 + (a+b) \\cdot t + 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_product",
+      "rectangleScaled definition",
+      "Ehrhart polynomial",
+      "combinatorial counting"
+    ],
+    "prerequisites": [
+      "Finset.range cardinality",
+      "Finset.card_product",
+      "lattice point counting"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-antidiagonal-infra",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Antidiagonal Tiling: Decomposing the Triangle into Diagonal Strips",
+    "content": "The right triangle Δ_n = {(x,y) ∈ ℕ² : x+y ≤ tn} is decomposed using Nat.antidiagonal: the k-th antidiagonal antidiag(k) = {(x,y) : x+y = k} has exactly k+1 elements. The key lemma triangleScaled_eq_biUnion proves triangleScaled(n,t) = ⋃_{k=0}^{tn} antidiag(k), using Finset.mem_biUnion and omega. The disjointness lemma antidiagonals_pairwise_disjoint follows since (x,y) ∈ antidiag(k) means x+y = k, which uniquely determines k. This tiling sets up Finset.card_biUnion to count by summing |antidiag(k)| = k+1.",
+    "mathContext": "\\{(x,y) \\in \\mathbb{N}^2 : x+y \\leq tn\\} = \\bigsqcup_{k=0}^{tn} \\{(x,y) : x+y = k\\}, \\quad |\\text{antidiag}(k)| = k+1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Nat.antidiagonal",
+      "Finset.card_biUnion",
+      "PairwiseDisjoint",
+      "triangleScaled definition"
+    ],
+    "prerequisites": [
+      "Nat.antidiagonal API",
+      "Finset.biUnion",
+      "pairwise disjointness in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-gauss-triangle",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 87,
+      "endLine": 112
+    },
+    "type": "insight",
+    "title": "Gauss Sum + triangle_ehrhart_double: Zero-Axiom Triangle Count",
+    "content": "gauss_sum_succ proves 2·∑_{k=0}^{n}(k+1) = (n+1)(n+2) by simple induction + linarith on the successor case. triangle_ehrhart_double then chains everything: rw [triangleScaled_eq_biUnion] decomposes the triangle, card_biUnion (with the pairwise disjoint lemma) turns the count into a sum, simp [Nat.card_antidiagonal] simplifies each antidiagonal count to k+1, and exact gauss_sum_succ finishes. The result 2·L(Δ_n,t) = (tn+1)(tn+2) is L(Δ_n,t) = C(tn+2,2), proved with 0 axioms via pure Finset combinatorics.",
+    "mathContext": "2 \\cdot |\\Delta_n(t)| = \\sum_{k=0}^{tn}(k+1) \\cdot 2 = (tn+1)(tn+2). \\quad L(\\Delta_n, t) = \\binom{tn+2}{2} = \\frac{(tn+1)(tn+2)}{2}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gaussian arithmetic series",
+      "Nat.card_antidiagonal",
+      "Finset.card_biUnion",
+      "induction proof"
+    ],
+    "prerequisites": [
+      "gauss_sum_succ",
+      "antidiagonal tiling (triangleScaled_eq_biUnion)",
+      "Finset.card_biUnion"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-axioms",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 130,
+      "endLine": 156
+    },
+    "type": "definition",
+    "title": "Axiomatic Framework: 3 Axioms and the SimpleLatticePolygon Structure",
+    "content": "The general Ehrhart polynomial requires 3 axioms. SimpleLatticePolygon packages the polygon data (interior_count, boundary_count, area, area_pos, boundary_ge_three). picks_theorem axiomatizes A = i + B/2 - 1, matching the gallery's axiomatized PicksTheorem.lean. scaled_area axiomatizes Area(tP) = t²·Area(P), and scaled_boundary axiomatizes |∂(tP)| = t·|∂P| for t ≥ 1. The opaque def scaledPolygon models the dilation operation without specifying how interior/boundary counts change — those are computed from the axioms. This keeps the formalization clean: only the scaling laws matter algebraically, not the geometric construction.",
+    "mathContext": "\\text{picks\\_theorem}: A = i + \\tfrac{B}{2} - 1. \\quad \\text{scaled\\_area}: \\text{Area}(tP) = t^2 A. \\quad \\text{scaled\\_boundary}: |\\partial(tP)| = tB \\; (t \\geq 1).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pick's theorem axiomatization",
+      "SimpleLatticePolygon structure",
+      "opaque definitions in Lean 4",
+      "axiom declarations"
+    ],
+    "prerequisites": [
+      "Pick's theorem (gallery)",
+      "Lean 4 structure syntax",
+      "axiom vs theorem in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-formula",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 158,
+      "endLine": 178
+    },
+    "type": "insight",
+    "title": "ehrhart_formula: Pick's Theorem Applied to tP in 5 Lines",
+    "content": "The proof of the main Ehrhart formula is elegant: (1) have h_pick := picks_theorem(scaledPolygon P t) — apply Pick to tP; (2) have h_area := scaled_area P t — get Area(tP) = t²A; (3) have h_bdy := scaled_boundary P t ht — get |∂(tP)| = tB; (4) cast the boundary equation to ℚ; (5) rw [h_area, h_bdy'] at h_pick — substitute scalings into Pick's formula; (6) linarith to combine. The key derivation: t²A = i(tP) + tB/2 - 1 (from Pick on tP), so L = i(tP) + tB = t²A + tB/2 + 1. All in 5 lines after the hypotheses.",
+    "mathContext": "\\text{Pick on } tP: t^2 A = i(tP) + \\frac{tB}{2} - 1 \\implies i(tP) = t^2 A - \\frac{tB}{2} + 1 \\implies L(P,t) = i(tP) + tB = t^2 A + \\frac{B}{2}t + 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "picks_theorem axiom",
+      "scaled_area",
+      "scaled_boundary",
+      "linarith tactic",
+      "push_cast"
+    ],
+    "prerequisites": [
+      "3 axioms (picks_theorem, scaled_area, scaled_boundary)",
+      "linarith arithmetic solver",
+      "push_cast for ℕ→ℚ coercions"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-reciprocity",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 180,
+      "endLine": 207
+    },
+    "type": "insight",
+    "title": "ehrhart_interior: 2D Ehrhart-Macdonald Reciprocity via Sign Flip",
+    "content": "ehrhart_interior proves i(tP) = A·t² - (B/2)·t + 1 — the interior count formula, where the sign of the linear term flips relative to L(P,t) = A·t² + (B/2)·t + 1. This is the 2D Ehrhart-Macdonald reciprocity: L(P,-t) = (-1)^d · i(P,t). The symmetry is captured by ehrhart_reciprocity_sign_flip: L(P,t) + i(tP) = 2At² + 2 (the B-terms cancel). ehrhart_is_quadratic packages the result as an existential (∃ a b c, L = at² + bt + c), giving the abstract polynomial statement. All three follow from ehrhart_formula + picks_theorem via linarith.",
+    "mathContext": "i(tP) = At^2 - \\tfrac{B}{2}t + 1. \\quad L(P,t) + i(tP) = 2At^2 + 2. \\quad \\text{Ehrhart-Macdonald: } L(P,-t) = (-1)^d \\cdot i(P,t).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart-Macdonald reciprocity",
+      "ehrhart_formula",
+      "sign flip",
+      "interior lattice points"
+    ],
+    "prerequisites": [
+      "ehrhart_formula",
+      "picks_theorem axiom",
+      "linarith tactic"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-crossframework",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 213,
+      "endLine": 250
+    },
+    "type": "insight",
+    "title": "rectangle_frameworks_agree: Cross-Framework Consistency Validation",
+    "content": "rectangle_frameworks_agree is the key validation theorem: it proves that latticeCount(rectanglePolygon(m,n), t) = (rectangleScaled m n t).card — the abstract Ehrhart formula (derived from Pick's axioms) and the combinatorial Finset count agree for rectangles. The proof chains rectangle_ehrhart_abstract (which uses ehrhart_formula + the rectangle structure) with rectangle_ehrhart (which uses card_product), then push_cast + ring to reconcile the ℚ and ℕ expressions. This confirms the axiomatic and combinatorial frameworks are consistent, validating both approaches.",
+    "mathContext": "\\text{(abstract Ehrhart)}: mn \\cdot t^2 + (m+n) \\cdot t + 1 = \\text{(Finset count)}: (tm+1)(tn+1). \\quad \\text{Verified by ring.}",
+    "significance": "key",
+    "relatedConcepts": [
+      "rectanglePolygon definition",
+      "ehrhart_formula",
+      "rectangle_ehrhart",
+      "cross-framework validation"
+    ],
+    "prerequisites": [
+      "ehrhart_formula",
+      "rectangle_ehrhart (Finset proof)",
+      "push_cast + ring for ℕ↔ℚ",
+      "rectangle_picks_check"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-hstar",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 256,
+      "endLine": 308
+    },
+    "type": "concept",
+    "title": "h*-vector: Stanley Non-Negativity and Ehrhart Series Decomposition",
+    "content": "The h*-vector hstar: Fin 3 → ℚ encodes the Ehrhart series: ∑_{t≥0} L(P,t)z^t = (h*₀ + h*₁z + h*₂z²)/(1-z)³ where h*₀=1, h*₁=A+B/2-1, h*₂=i(P). Stanley's non-negativity theorem (all h*ᵢ ≥ 0) is proved: h*₀=1 trivially, h*₂=i(P)≥0 by Nat.cast_nonneg, h*₁≥0 using picks_theorem (h*₁ = i(P)+B-2 ≥ 0 since B≥3). ehrhart_from_hstar recovers L as a linear combination of binomial coefficients C(t+2,2), C(t+1,2), C(t,2) via nlinarith + field_simp, the most algebraically demanding proof in the file.",
+    "mathContext": "h_0^* = 1,\\; h_1^* = A + \\tfrac{B}{2} - 1 \\geq 0,\\; h_2^* = i(P) \\geq 0. \\quad L(P,t) = h_0^* \\binom{t+2}{2} + h_1^* \\binom{t+1}{2} + h_2^* \\binom{t}{2}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "h*-vector (Stanley)",
+      "Ehrhart series generating function",
+      "Stanley non-negativity theorem",
+      "nlinarith + field_simp"
+    ],
+    "prerequisites": [
+      "hstar definition",
+      "ehrhart_formula",
+      "picks_theorem",
+      "Finset binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-picks-ehrhart-history",
+    "proofId": "picks-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Historical Setting: Ehrhart 1962 Generalizes Pick 1899 via Polynomial Counting",
+    "content": "Pick's theorem (1899) gives a formula for the area of a lattice polygon in terms of lattice points. The Ehrhart polynomial (Eugène Ehrhart, 1962) generalizes this: for a d-dimensional convex lattice polytope P, the lattice point count L(P,t) in the integer dilation tP is a degree-d polynomial in t. In 2D, combining Pick's theorem with the scaling laws (Area(tP)=t²A, |∂(tP)|=tB) immediately yields L(P,t). This file demonstrates a key insight: Pick's theorem is not just a formula for area — it is the 2D Ehrhart polynomial theorem in disguise, once you add the scaling axioms. The three proof routes (combinatorial for rectangles, Finset for triangles, axiomatic for general polygons) provide independent verification.",
+    "mathContext": "\\text{Pick (1899):} A = i + B/2 - 1. \\quad \\text{Ehrhart (1962):} L(P,t) = A \\cdot t^2 + \\tfrac{B}{2} \\cdot t + 1. \\quad \\text{Scaling:} L = \\text{Pick on } tP.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pick's theorem",
+      "Ehrhart polynomial",
+      "lattice polytope theory",
+      "1962 Ehrhart paper"
+    ],
+    "prerequisites": [
+      "Pick's theorem geometry",
+      "lattice point counting",
+      "polynomial in t"
+    ]
+  }
+]

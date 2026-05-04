@@ -67,7 +67,8 @@
     "marquee-phase-3"
   ],
   "relatedProofs": [
-    "szemeredi-full"
+    "szemeredi-full",
+    "szemeredi-full-oq-02"
   ],
   "references": {
     "papers": [],
@@ -80,28 +81,15 @@
   "tractability": 3,
   "leanFiles": [
     {
-      "path": "Proofs/SzemerediTheorem.lean",
-      "axiomCount": 1,
-      "theoremCount": 16,
-      "sorryCount": 0
-    },
-    {
-      "path": "Proofs/SzemerediCore.lean",
+      "path": "Proofs/SzemerediFullOQ02.lean",
+      "filename": "SzemerediFullOQ02.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
       "axiomCount": 0,
-      "theoremCount": 3,
-      "sorryCount": 0
-    },
-    {
-      "path": "Proofs/SzemerediCounting.lean",
-      "axiomCount": 0,
-      "theoremCount": 14,
-      "sorryCount": 0
-    },
-    {
-      "path": "Proofs/SzemerediRegularity.lean",
-      "axiomCount": 0,
-      "theoremCount": 17,
-      "sorryCount": 0
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediFullOQ02.lean"
     }
   ]
 }

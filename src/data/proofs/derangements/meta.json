@@ -61,7 +61,8 @@
         "relationship": "Extension of derangements"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The derangement problem — also known as the 'problème des rencontres' (problem of coincidences) or the 'hat-check problem' — was first studied by Pierre Rémond de Montmort in his 1708 book 'Essay d'Analyse sur les Jeux de Hazard'. Montmort computed $D_n$ for small $n$ and conjectured the general formula. Nikolaus Bernoulli corresponded with Montmort about the problem, and Euler later derived the formula $D_n = n! \\sum (-1)^k/k!$ using inclusion-exclusion in 1751. The subfactorial notation $!n$ was introduced by William Allen Whitworth in 1878. The convergence $D_n/n! \\to 1/e$ is a celebrated result in combinatorial probability — it means that for large $n$, a random permutation has roughly a 36.79% chance of being a derangement, regardless of $n$. This is an early example of a 'universal' probability that doesn't depend on the problem size.",

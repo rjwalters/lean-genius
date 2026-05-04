@@ -28,7 +28,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: borsuk_ulam_general (Borsuk-Ulam theorem for n\u22651). Former axioms no_retraction, brouwer_fixed_point, lusternik_schnirelmann proved from BU; ham_sandwich_general, odd_map_odd_degree converted to theorems.",
+    "assumptions": "1 axiom: borsuk_ulam_general (Borsuk-Ulam theorem for n≥1). Former axioms no_retraction, brouwer_fixed_point, lusternik_schnirelmann proved from BU; ham_sandwich_general, odd_map_odd_degree converted to theorems.",
     "mathlibDependencies": [
       {
         "theorem": "intermediate_value_Icc",
@@ -70,7 +70,8 @@
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
     "axioms": 4,
-    "lineCount": 5139
+    "lineCount": 5139,
+    "theoremCount": 220
   },
   "overview": {
     "historicalContext": "**Constructive Borsuk-Ulam**\n\nThe Borsuk-Ulam theorem states that every continuous map f: S^n -> R^n has an antipodal pair: a point x with f(x) = f(-x). The classical proof for n >= 2 uses algebraic topology (Brouwer degree or homology), which is inherently non-constructive.\n\nFor n = 1, however, the theorem reduces to the Intermediate Value Theorem: define g(x) = f(x) - f(-x), observe g is antisymmetric (g(-a) = -g(a)), and apply IVT to find a zero. This argument is constructive in the sense that it produces a witness via IVT.\n\n**Tucker's Lemma**\n\nThe combinatorial analog: any signed labeling of a subdivided interval with opposite signs at the endpoints must have a sign-change edge. This is the discrete foundation for constructive Borsuk-Ulam proofs.",
@@ -162,7 +163,7 @@
     {
       "targetId": "borsuk-ulam",
       "relationship": "extends",
-      "description": "Base Borsuk-Ulam formalization \u2014 this file extends it by proving the 1D case constructively via IVT and establishing a complete axiom reduction chain"
+      "description": "Base Borsuk-Ulam formalization — this file extends it by proving the 1D case constructively via IVT and establishing a complete axiom reduction chain"
     },
     {
       "targetId": "borsuk-ulam-oq-02",
@@ -172,12 +173,12 @@
     {
       "targetId": "brouwer-fixed-point",
       "relationship": "proves",
-      "description": "This file proves Brouwer's fixed-point theorem as a corollary of the no-retraction theorem, which in turn follows from Borsuk-Ulam \u2014 completing the classical equivalence chain BU \u2192 no-retraction \u2192 Brouwer FP"
+      "description": "This file proves Brouwer's fixed-point theorem as a corollary of the no-retraction theorem, which in turn follows from Borsuk-Ulam — completing the classical equivalence chain BU → no-retraction → Brouwer FP"
     },
     {
       "targetId": "brouwer-fixed-point-oq-02",
       "relationship": "related",
-      "description": "Another Brouwer FP extension \u2014 this file's axiom reduction independently proves the 1D Brouwer FP from IVT"
+      "description": "Another Brouwer FP extension — this file's axiom reduction independently proves the 1D Brouwer FP from IVT"
     },
     {
       "targetId": "intermediate-value-theorem",
@@ -187,7 +188,7 @@
     {
       "targetId": "schauder-fixed-point",
       "relationship": "related",
-      "description": "Schauder's fixed-point theorem extends Brouwer's to infinite dimensions \u2014 the BU \u2192 Brouwer FP chain in this file is the finite-dimensional foundation"
+      "description": "Schauder's fixed-point theorem extends Brouwer's to infinite dimensions — the BU → Brouwer FP chain in this file is the finite-dimensional foundation"
     }
   ],
   "leanFile": {

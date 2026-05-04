@@ -69,7 +69,8 @@
         "relationship": "Grandparent: algebraic numbers are countable"
       }
     ],
-    "assumptions": "0 axioms. Relies only on Mathlib's completeness of ℝ (conditional supremum) and basic real arithmetic."
+    "assumptions": "0 axioms. Relies only on Mathlib's completeness of ℝ (conditional supremum) and basic real arithmetic.",
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "In 1874, Georg Cantor published 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (Journal für die reine und angewandte Mathematik, 77, pp. 258-262), introducing his first proof that the real numbers are uncountable. This predates the more famous diagonal argument (1891) by 17 years.\n\nThe nested interval proof is remarkable for its constructive character: given any proposed enumeration f : ℕ → ℝ, it explicitly constructs an interval-based witness — a real number guaranteed not to appear in the list. Cantor's original paper was primarily about algebraic numbers being countable; the uncountability of ℝ was a corollary demonstrating the existence of transcendental numbers.\n\nThis Lean 4 formalization uses a thirds-based subdivision (rather than the halves that might seem natural), a key technical choice that ensures left endpoints strictly increase at every step. Cantor's original argument had this monotonicity property implicitly; making it explicit and proved is the main contribution of this formalization over a naive bisection approach.",
@@ -195,7 +196,6 @@
     "substantiveTheoremCount": 7,
     "computationalVerifications": 0,
     "lemmaCount": 1,
-    "defCount": 4,
     "imports": [
       "Mathlib.Data.Real.Basic",
       "Mathlib.Order.ConditionallyCompleteLattice.Basic",

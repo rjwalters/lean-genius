@@ -52,7 +52,8 @@
     "axiomCount": 4,
     "lineCount": 158,
     "assumptions": "4 axioms: F, erdos_spencer_lower_bound, F3_characterization, one_jump_for_t3. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #161** is a $500 prize problem about phase transitions in hypergraph coloring. It asks whether the function F^(t)(n,α), which measures how well 2-colorings of t-uniform hypergraphs can be balanced, has discontinuities as α varies from 0 to 1/2.\n\nThe α=0 case reduces to classical Ramsey theory, where F^(t)(n,0) grows like the iterated logarithm log_{t-1}(n). For positive α, the Erdős-Spencer lower bound shows F grows much faster, like (log n)^{1/(t-1)}. Erdős believed there is exactly one jump, at α=0, where the behavior changes dramatically.\n\nConlon, Fox, and Sudakov (2011) resolved the t=3 case by proving F^(3)(n,α) = Θ(√(log n)) for all α > 0, confirming the one-jump structure. For t > 3, the exact behavior remains open, though the same phase transition pattern is expected.",

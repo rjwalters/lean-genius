@@ -62,7 +62,8 @@
         "relationship": "Parent problem: this file formalizes the BH density prediction from oq-05"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 32
   },
   "sections": [
     {
@@ -148,7 +149,6 @@
     "substantiveTheoremCount": 6,
     "computationalVerifications": 16,
     "lemmaCount": 0,
-    "defCount": 3,
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Set.Finite.Basic",

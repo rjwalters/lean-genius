@@ -55,24 +55,26 @@
       "IsAdmissible definition: t-admissible subsets of {1,...,N}",
       "f(N,t) extremal function: supremum of admissible set sizes",
       "oddSet definition: odd numbers in {1,...,N} as canonical solution",
-      "oddSet_admissible axiom: odd set satisfies 1-non-divisibility",
-      "oddSet_card axiom: |oddSet(N)| = (N+1)/2",
-      "f_t1 axiom: tight bound for t = 1",
+      "oddSet_admissible theorem: odd set satisfies 1-non-divisibility (proved)",
+      "oddSet_card theorem: |oddSet(N)| = (N+1)/2 (proved)",
+      "f_t1 theorem: tight bound for t = 1 (proved)",
       "ErdosConjecture635 definition: formal statement of the open conjecture",
-      "f_monotone_t axiom: monotonicity in t",
-      "f_lower_half axiom: universal lower bound from odd set",
-      "f_t1_density axiom: density convergence for t = 1",
-      "erdos_635_t1_solved theorem: the t = 1 case from axioms"
+      "f_monotone_t theorem: monotonicity in t (proved)",
+      "f_lower_half theorem: universal lower bound from odd set (proved)",
+      "f_t1_density theorem: density convergence for t = 1 (proved)",
+      "no_far_doubles theorem: admissible sets exclude far multiples (proved)",
+      "erdos_635_t1_solved theorem: the t = 1 case from axioms (proved)"
     ],
     "axiomCount": 1,
     "lineCount": 369,
-    "assumptions": "1 axiom: erdos_635 (OPEN conjecture). f_t2_lower, erdos_construction_t2 removed (unused). f_t1_density proved."
+    "assumptions": "1 axiom: erdos_635 (OPEN conjecture). f_t2_lower, erdos_construction_t2 removed (unused). f_t1_density proved.",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "**Erdős Problem #635** originates from a letter Erdős wrote to Imre Ruzsa around 1980. The problem asks a deceptively simple question: given a subset A of {1,...,N} where large differences between elements cannot divide the larger element, how big can A be? This sits at the intersection of additive and multiplicative number theory, where the additive structure (gaps between elements) interacts with multiplicative structure (divisibility).\n\nThe problem has a clean answer for t = 1: the optimal set consists of all odd numbers in {1,...,N}, giving exactly ⌊(N+1)/2⌋ elements. The key insight is that the difference of two odd numbers is always even, and an even number cannot divide an odd number. This elegant argument completely resolves the t = 1 case. For t = 2, Erdős himself showed that one can beat the N/2 barrier by a logarithmic factor, constructing sets of size N/2 + c·log(N) by augmenting odd numbers with carefully chosen powers of 2.\n\nDespite these partial results, the general conjecture — that the density is always close to 1/2 regardless of t — remains open. The difficulty lies in the fact that larger t relaxes the constraint (applying only to pairs with large enough gaps), yet the conjecture asserts this doesn't fundamentally change the extremal density. The references [Gu83] by Gupta and [Ru99] by Ruzsa contain related work on divisibility conditions in combinatorial number theory.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nFor $t \\geq 1$ and $A \\subseteq \\{1, \\ldots, N\\}$, suppose that whenever $a, b \\in A$ with $b - a \\geq t$, we have $(b - a) \\nmid b$. How large can $|A|$ be?\n\n**Conjecture:** $|A| \\leq \\left(\\frac{1}{2} + o_t(1)\\right) N$\n\n**Known Results:**\n- $t = 1$: Maximum is $\\lfloor(N+1)/2\\rfloor$ (all odd numbers), SOLVED\n- $t = 2$: $|A| \\geq N/2 + c \\log N$ for some $c > 0$ (Erdős construction)\n- General $t$: $|A| \\geq (N+1)/2$ (odd numbers always work as lower bound)",
     "text": "For A ⊆ {1,...,N} where b - a ≥ t implies (b-a) does not divide b, is the maximum size of A at most (1/2 + o_t(1))N? The t = 1 case is solved but the general conjecture remains open.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define the non-divisibility condition (IsNonDivisible) and admissibility (IsAdmissible) as predicates on finite sets with parameter t. The extremal function f(N,t) is defined as sSup over achievable cardinalities.\n\n2. **Solved Case (t=1):** The odd set is defined explicitly using Finset.Icc and filter. Three axioms establish its admissibility, its cardinality, and the optimality of f(N,1) = (N+1)/2.\n\n3. **Partial Results (t=2):** Two axioms capture Erdős's construction — the existence of sets beating N/2 by c·log(N), and the explicit construction using odd numbers plus powers of 2.\n\n4. **Open Conjecture:** ErdosConjecture635 formalizes the o_t(1) notation using ε-N₀ quantifiers: for every ε > 0 and t ≥ 1, there exists N₀ such that f(N,t) ≤ (1/2 + ε)N for N ≥ N₀.\n\n5. **Structural Properties:** Monotonicity in t, the universal lower bound from odd numbers, density convergence for t=1, and the no-far-multiples consequence are axiomatized.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define the non-divisibility condition (IsNonDivisible) and admissibility (IsAdmissible) as predicates on finite sets with parameter t. The extremal function f(N,t) is defined as sSup over achievable cardinalities.\n\n2. **Solved Case (t=1):** The odd set is defined explicitly using Finset.Icc and filter. Theorems prove its admissibility (oddSet_admissible), cardinality (oddSet_card), and optimality of f(N,1) = (N+1)/2 (f_t1).\n\n3. **Partial Results (t=2):** Comment section notes Erdős's construction (sets of size N/2 + c·log N); the formal construction was removed as unused.\n\n4. **Open Conjecture:** ErdosConjecture635 formalizes the o_t(1) notation using ε-N₀ quantifiers: for every ε > 0 and t ≥ 1, there exists N₀ such that f(N,t) ≤ (1/2 + ε)N for N ≥ N₀. This is the sole remaining axiom.\n\n5. **Structural Properties:** Monotonicity in t, the universal lower bound from odd numbers, density convergence for t=1, and the no_far_doubles consequence are all proved theorems.",
     "keyInsights": [
       "**Additive-Multiplicative Coupling:** The condition ties additive structure (gaps b-a) to multiplicative structure (divisibility of b), creating a subtle constraint on set composition",
       "**Odd Numbers as Universal Lower Bound:** The set of odd numbers satisfies the condition for ALL t ≥ 1, since even differences never divide odd numbers — this gives f(N,t) ≥ (N+1)/2 universally",
@@ -107,47 +109,47 @@
       "id": "case-t1",
       "title": "Part III: The Case t = 1 — Odd Numbers",
       "startLine": 67,
-      "endLine": 98,
-      "summary": "Defines oddSet and axiomatizes: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality.",
-      "mathContext": "Formal definition: Defines oddSet and axiomatizes: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality."
+      "endLine": 195,
+      "summary": "Defines oddSet; proves oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality.",
+      "mathContext": "Proved: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 = (N+1)/2 for N ≥ 1."
     },
     {
       "id": "case-t2",
       "title": "Part IV: The Case t = 2 — Beating the N/2 Barrier",
-      "startLine": 99,
-      "endLine": 124,
-      "summary": "Axioms for f_t2_lower (N/2 + c·log N) and erdos_construction_t2 using odd numbers plus powers of 2.",
-      "mathContext": "Axiomatized: Axioms for f_t2_lower (N/2 + c·log N) and erdos_construction_t2 using odd numbers plus powers of 2."
+      "startLine": 196,
+      "endLine": 202,
+      "summary": "Comment section only — t=2 lower bound construction (f_t2_lower, erdos_construction_t2) removed as unused.",
+      "mathContext": "No code in this section; f_t2_lower and erdos_construction_t2 were removed."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture (OPEN)",
-      "startLine": 125,
-      "endLine": 148,
+      "startLine": 203,
+      "endLine": 226,
       "summary": "Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635.",
-      "mathContext": "Formal definition: Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635."
+      "mathContext": "Formal definition: ErdosConjecture635. Axiom: erdos_635 : ErdosConjecture635 (the open conjecture)."
     },
     {
       "id": "bounds",
       "title": "Part VI: Upper and Lower Bounds",
-      "startLine": 149,
-      "endLine": 172,
-      "summary": "Axioms: f_upper_trivial (f ≤ N), f_monotone_t, f_lower_half (≥ (N+1)/2), f_t1_density (→ 1/2).",
-      "mathContext": "Axioms: f_upper_trivial (f $\\leq$ N), f_monotone_t, f_lower_half ($\\geq$ (N+1)/2), f_t1_density ($\\to$ 1/2)."
+      "startLine": 227,
+      "endLine": 312,
+      "summary": "Proves: f_upper_trivial (f ≤ N), f_monotone_t, f_lower_half (≥ (N+1)/2), f_t1_density (→ 1/2).",
+      "mathContext": "Proved: f_upper_trivial (f $\\leq$ N), f_monotone_t, f_lower_half ($\\geq$ (N+1)/2), f_t1_density ($\\to$ 1/2)."
     },
     {
       "id": "structural",
       "title": "Part VII: Structural Observations",
-      "startLine": 173,
-      "endLine": 188,
-      "summary": "Axiom no_far_multiples: admissible sets exclude distant multiples.",
-      "mathContext": "Axiomatized: Axiom no_far_multiples: admissible sets exclude distant multiples."
+      "startLine": 313,
+      "endLine": 340,
+      "summary": "Proves no_far_doubles: admissible sets exclude pairs where the smaller divides the larger at distance ≥ t.",
+      "mathContext": "Proved: no_far_doubles (was formerly axiomatized as no_far_multiples)."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
-      "startLine": 189,
-      "endLine": 265,
+      "startLine": 341,
+      "endLine": 369,
       "summary": "erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t.",
       "mathContext": "Verified: erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t."
     }

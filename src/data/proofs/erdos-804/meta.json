@@ -56,7 +56,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 244,
-    "assumptions": "5 axioms: erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false, alon_sudakov_upper_bound_1, and 2 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false, alon_sudakov_upper_bound_1, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #804** was posed by Erdős and Hajnal as part of their study of local-to-global structure in graphs. The question asks: if every small induced subgraph has a good independent set, how good must the global independent set be?\n\n**Historical Development:**\n- **1991 (Erdős [Er91]):** Posed the problem with conjectured bounds.\n- **2007 (Alon-Sudakov [AlSu07]):** Completely resolved both questions in the NEGATIVE. The conjectured bounds were far too optimistic.\n\n**Key Insight:** Local independent set structure does NOT propagate as strongly to global structure as Erdős and Hajnal expected. The true bounds involve an extra log log n factor in the denominator.",

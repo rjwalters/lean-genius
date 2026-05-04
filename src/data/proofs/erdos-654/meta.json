@@ -22,7 +22,8 @@
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
     "proofRepoPath": "Proofs/Erdos654Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 111
+    "lineCount": 111,
+    "theoremCount": 1
   },
   "sections": [
     {
@@ -147,7 +148,6 @@
     "axiomCount": 0,
     "theoremCount": 1,
     "lemmaCount": 0,
-    "defCount": 5,
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.Basic",
       "Mathlib.Data.Finset.Card",

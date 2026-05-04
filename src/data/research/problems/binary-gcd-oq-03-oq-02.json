@@ -18,20 +18,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-01T00:00:00.000Z",
-    "iteration": 4,
-    "focus": "Pursuing size-reduction lemma. Steps 1+2a (matrix-vector invariant + residue monotonicity) added in Session 3 (2026-05-02) as PART V.5 of BinaryGcdOQ03OQ02.lean. Next: Step 2b — Cramer-inversion entry bound on the cofactor matrix.",
+    "iteration": 5,
+    "focus": "Step 2b complete (Session 4): Cramer identity + sign pattern + entry bounds in PART VI. Next: Session 5 Step 3 perturbation bound.",
     "blockers": [
       "Complexity bound O(M(n) log n) is unfalsifiable in current Mathlib: no bit-complexity model for arithmetic, no fast multiplication. Genuinely blocked; not a blocker on size-reduction work."
     ],
     "nextAction": "Session 4: Cramer-inversion entry bound. From the row-vector invariant (a₀, b₀) · M = (ahat', bhat') and det M = ±1, invert to (a₀, b₀) = (ahat', bhat') · M⁻¹ and bound entries of M.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "Session 3 (2026-05-02): PROGRESS — added PART V.5 to BinaryGcdOQ03OQ02.lean: 8 theorems (~140 lines) for the matrix-vector invariant and residue monotonicity (Steps 1 + 2a of the size-reduction proof plan). The new section uses the row-vector convention (a₀, b₀) · M = (ahat, bhat), required because lehmerInnerStep updates the cofactor accumulator via right-multiplication. Identifies a convention obstruction: the column-action `apply` used by cofactor_apply_gcd cannot state size reduction faithfully. 0 new sorries, 0 new axioms; hgcdMatrix_size_reduction remains a True placeholder pending Steps 2b (Cramer-inversion entry bound) and 3 (perturbation argument).",
+    "progressSummary": "Session 7 (2026-05-03): CORRECTION + PROGRESS — discovered hgcdMatrix_joint_bound is FALSE (column convention output is not bounded). Replaced with correct row-output bound. Proved base case hgcdMatrix_small_row_output_le. hgcdMatrix_row_output_le has 1 sorry (recursive case) requiring new invariant infrastructure.",
     "builtItems": [
       "BinaryGcdOQ03OQ02.lean: hgcdMatrix def — fuel-indexed recursive HGCD (Schönhage). Threshold-based bottoming via lehmerCofactors; otherwise top-half-shift recursion + apply + bottom-half recursion + matrix product.",
       "BinaryGcdOQ03OQ02.lean: cofactor_mul_apply — proves CofactorMatrix.mul corresponds to composition of CofactorMatrix.apply. Algebraic kernel justifying the M₂.mul M₁ return.",
@@ -43,7 +43,21 @@
       "BinaryGcdOQ03OQ02.lean PART V.5: lehmerInnerStep_residue_le — per-step bound bhat' < bhat ∧ ahat' = bhat. omega after splitting the lehmerInnerStep ifs.",
       "BinaryGcdOQ03OQ02.lean PART V.5: lehmerInnerStep_max_le — corollary, max ahat' bhat' ≤ max ahat bhat.",
       "BinaryGcdOQ03OQ02.lean PART V.5: lehmerCofactors_invariant_le — strengthens the multi-step invariant with the residue bound carried through the induction by transitivity.",
-      "BinaryGcdOQ03OQ02.lean PART V.5: lehmerCofactors_id_apply_le — specialisation to M = id, the residue-side bound for size reduction (Step 2a final form)."
+      "BinaryGcdOQ03OQ02.lean PART V.5: lehmerCofactors_id_apply_le — specialisation to M = id, the residue-side bound for size reduction (Step 2a final form).",
+      "BinaryGcdOQ03OQ02.lean PART VI: row_vec_cramer — Cramer/Bezout identity: a0*det = ahat*M.delta - bhat*M.gamma. Proved by linear_combination.",
+      "BinaryGcdOQ03OQ02.lean PART VI: EvenPattern / OddPattern — sign predicates for Lehmer cofactor entries.",
+      "BinaryGcdOQ03OQ02.lean PART VI: lehmerInnerStep_even_to_odd + odd_to_even — one step flips sign pattern. nlinarith.",
+      "BinaryGcdOQ03OQ02.lean PART VI: lehmerCofactors_has_pattern — induction: always EvenPattern or OddPattern from id.",
+      "BinaryGcdOQ03OQ02.lean PART VI: entry_bound_of_even + entry_bound_of_odd — entries bounded by initial inputs when residues >=1. Combines Cramer + sign pattern.",
+      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_add — apply distributes over addition of inputs (ring lemma).",
+      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_smul — apply commutes with scalar multiplication (ring lemma).",
+      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_shift_decomp — apply(aHi·2^s+ea, bHi·2^s+eb) = 2^s·apply(aHi,bHi) + apply(ea,eb). Key algebraic identity for perturbation argument.",
+      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_natAbs_le — triangle bound |apply(ea,eb).1| ≤ |M.α|·|ea| + |M.β|·|eb| via Int.natAbs_add_le + Int.natAbs_mul.",
+      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_err_bound — given |M.α|,|M.β| ≤ C and |ea|,|eb| ≤ B, error component ≤ 2·C·B.",
+      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_err_bound_snd — same bound for second component using |M.γ|,|M.δ|.",
+      "hgcdMatrix_small_row_output_le (proved): for max a b < hgcdThreshold, row output of hgcdMatrix (fuel+1) a b is bounded by max a b. Proved via hgcdMatrix_small + lehmerCofactors_id_apply_le. BinaryGcdOQ03OQ02.lean:824",
+      "hgcdMatrix_row_output_le (1 sorry): full statement that row output of hgcdMatrix fuel a b <= max a b. Base cases proved; recursive case sorry. BinaryGcdOQ03OQ02.lean:850",
+      "native_decide counterexample: (hgcdMatrix 1 37 5).apply(37,5).2.natAbs = 184 and 2^(hgcdShift 37 5 + 3) = 64. Confirms falsity of joint-bound column statement."
     ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
@@ -56,7 +70,13 @@
       "Fuel-indexed totality avoids the size-reduction proof obligation in the def. Termination via fuel decreasing; correctness via induction on fuel. The hard math (size reduction) is decoupled from the correctness layer.",
       "Convention dichotomy (Session 3): the column-action CofactorMatrix.apply (M·(a,b)ᵀ) is the right operator for det-based theorems (cofactor_apply_gcd, hgcdMatrix_preserves_gcd) but does NOT track the algorithm's state when the cofactor is updated by right-multiplication M' = M.mul ⟨0, 1, 1, -q⟩. The state-tracking invariant is instead the row-vector relation (a₀, b₀) · M = (current pair). This is preserved by lehmerInnerStep and is what the size-reduction lemma must use.",
       "Residue monotonicity (Session 3) is self-contained: max ahat' bhat' ≤ max ahat bhat follows directly from Nat.mod_lt with no matrix-vector machinery. It composes through lehmerCofactors by transitivity.",
-      "Step 2b plan (Session 3 → Session 4): from the row-vector invariant (a₀, b₀) · M = (ahat', bhat') and det M = ±1, invert to (a₀, b₀) = (ahat', bhat') · M⁻¹ where M⁻¹.α = δ, M⁻¹.β = -β, M⁻¹.γ = -γ, M⁻¹.δ = α (up to sign of det). Bound each entry of M⁻¹ by max a₀ b₀ / max ahat' bhat' (using residue monotonicity for the denominator); since |det M| = 1, entries of M are bounded by entries of M⁻¹."
+      "Step 2b plan (Session 3 → Session 4): from the row-vector invariant (a₀, b₀) · M = (ahat', bhat') and det M = ±1, invert to (a₀, b₀) = (ahat', bhat') · M⁻¹ where M⁻¹.α = δ, M⁻¹.β = -β, M⁻¹.γ = -γ, M⁻¹.δ = α (up to sign of det). Bound each entry of M⁻¹ by max a₀ b₀ / max ahat' bhat' (using residue monotonicity for the denominator); since |det M| = 1, entries of M are bounded by entries of M⁻¹.",
+      "Sign alternation converts the Cramer identity into an entry BOUND (Session 4). Without sign info, the Bezout formula does not bound individual entries. With EvenPattern, all terms separate and bound M.delta <= a0 when ahat' >= 1.",
+      "Entry bound hypothesis 1 <= ahat': requires algorithm to still be running. For HGCD, always satisfied: top-half cofactor applied to full-precision inputs strictly larger than top-half residues.",
+      "Step 3 algebraic split is clean: apply(aHi·2^s+ea, bHi·2^s+eb) = 2^s·apply(aHi,bHi) + apply(ea,eb). Proved by ring. This reduces Step 3 to bounding the error apply(ea,eb) using Step 2b entry bounds (|M.α|,|M.β| ≤ max(aHi,bHi)) and the fact ea,eb < 2^s.",
+      "The MISSING piece for closing hgcdMatrix_size_reduction is inductive: need to show hgcdMatrix fuel aHi bHi reduces max(aHi,bHi) by at least half. This is an induction on bitsize that requires fuel to track depth — genuinely recursive and multi-session.",
+      "hgcdMatrix_joint_bound is FALSE: for a=37,b=5, column output component has natAbs=184 > 64=2^(hgcdShift 37 5+3). Root cause: right-accumulated Lehmer matrix satisfies row convention, NOT column convention. Column output = M.alpha*a + M.beta*b is NOT bounded by max a b.",
+      "Correct bound is on ROW output: (a*M.alpha + b*M.gamma, a*M.beta + b*M.delta) gives Euclidean residues bounded by max a b. This is the content of lehmerCofactors_id_apply_le, extended to hgcdMatrix."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -65,11 +85,9 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Session 4 (Step 2b): Cramer-inversion entry bound on cofactor matrix. From (a₀, b₀) · M = (ahat', bhat') and det M = ±1, invert to (a₀, b₀) = (ahat', bhat') · M⁻¹; bound entries of M by entries of M⁻¹. Self-contained, no Mathlib gap. ~80-120 lines.",
-      "Session 5 (Step 3): Perturbation bound between full-precision (a, b) · M and top-half-truncated (aHi · 2^shift, bHi · 2^shift) · M. Quantifies the low-bit contribution. ~60-100 lines.",
-      "Session 6 (Step 4): Compose Steps 2a + 2b + 3 to close hgcdMatrix_size_reduction with explicit constants. Replace the True placeholder with the real bound bitsize(max applied) ≤ bitsize(max input)/2 + O(1).",
-      "(Optional) Wire hgcdMatrix into a top-level recursive GCD function and prove correctness by composing hgcdMatrix_preserves_gcd with euclidGcd_eq_gcd at the leaves. ~50-100 lines.",
-      "(Deferred — separate initiative) Bit-complexity bound O(M(n) log n) requires Mathlib infrastructure for fast multiplication and a bit-complexity model. Per session 1, this is multi-thousand-line foundational work."
+      "Recursive case of hgcdMatrix_row_output_le: need invariant tracking that hgcdMatrix f a b was constructed for inputs (a,b), so rowOut(M2*M1,a,b) feeds correctly into the IH for M2.",
+      "Specifically: hgcdMatrix_succ defines M1=hgcdMatrix f (a/2^s) (b/2^s) and M2=hgcdMatrix f (rowOut M1 applied to a/2^s,b/2^s). Prove rowOut(M2*M1, a, b) = rowOut(M1, rowOut(M2, a/2^s, b/2^s)) * 2^s + small-correction.",
+      "Alternative: prove stronger invariant that rowOut(hgcdMatrix fuel a b, a, b) <= max a b by tracking the Euclidean algorithm relation explicitly rather than via matrix IH."
     ]
   },
   "tags": [
@@ -81,7 +99,9 @@
     "binary-gcd",
     "binary-gcd-oq-01",
     "binary-gcd-oq-01-oq-04",
-    "binary-gcd-oq-03"
+    "binary-gcd-oq-02",
+    "binary-gcd-oq-03",
+    "binary-gcd-oq-03-oq-02"
   ],
   "references": {
     "papers": [],
@@ -127,6 +147,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04.lean"
     },
     {
+      "path": "Proofs/BinaryGcdOQ02.lean",
+      "filename": "BinaryGcdOQ02.lean",
+      "lineCount": 135,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02.lean"
+    },
+    {
       "path": "Proofs/BinaryGcdOQ03.lean",
       "filename": "BinaryGcdOQ03.lean",
       "lineCount": 491,
@@ -147,6 +178,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02.lean",
+      "filename": "BinaryGcdOQ03OQ02.lean",
+      "lineCount": 1021,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02.lean"
     }
   ]
 }

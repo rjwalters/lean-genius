@@ -66,7 +66,8 @@
     "dateAdded": "2026-03-24",
     "axiomCount": 7,
     "lineCount": 472,
-    "assumptions": "7 axioms: volume_preimage_double_null (measure-theoretic helper), ae_double_of_almost_jensen (Fubini section extraction), almost_multiplicative_stability, almost_jensen_stability, almost_derivation_stability, measurable_multiplicative_is_power, measurable_derivation_is_zero. 0 sorries."
+    "assumptions": "7 axioms: volume_preimage_double_null (measure-theoretic helper), ae_double_of_almost_jensen (Fubini section extraction), almost_multiplicative_stability, almost_jensen_stability, almost_derivation_stability, measurable_multiplicative_is_power, measurable_derivation_is_zero. 0 sorries.",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "**Extending the de Bruijn-Jurkat Paradigm**\n\nThe de Bruijn-Jurkat theorem (1965-66) showed that almost additive functions can be corrected to truly additive functions a.e. This naturally raises the question: does the same stability hold for other fundamental functional equations?\n\n**The Key Equations:**\n1. **Multiplicative** (Cauchy exponential): $f(xy) = f(x)f(y)$ — characterizes exponentials and power functions\n2. **Jensen** (midpoint affinity): $f((x+y)/2) = (f(x)+f(y))/2$ — characterizes affine functions\n3. **Derivation** (Leibniz rule): $d(xy) = x \\cdot d(y) + y \\cdot d(x)$ — characterizes differentiation\n\n**Known Results:**\n- **Ger (1979)** showed stability holds for polynomial functional equations, which includes the derivation case\n- **Járai (2005)** gave a comprehensive treatment of regularity for functional equations in several variables\n- The multiplicative case reduces to the additive case via logarithms (for positive solutions)\n- The Jensen case is algebraically equivalent to the additive case modulo a constant",
@@ -183,7 +184,6 @@
   },
   "leanFile": {
     "path": "Proofs/Erdos1126OQ01Problem.lean",
-    "filename": "Erdos1126OQ01Problem.lean",
     "lineCount": 472,
     "axiomCount": 7,
     "sorries": 0,

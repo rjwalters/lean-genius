@@ -59,7 +59,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 326,
-    "assumptions": "3 axioms: ramseyNumber, F_ramsey_lower, aks_upper_bound. 0 sorries."
+    "assumptions": "3 axioms: ramseyNumber, F_ramsey_lower, aks_upper_bound. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős, Fajtlowicz, and Staton in 1988. It asks whether the function F(n) — the largest guaranteed regular induced subgraph in any n-vertex graph — grows superlogarithmically. The question sits at the intersection of Ramsey theory and structural graph theory.\n\nRamsey theory immediately gives F(n) ≥ c·log(n), since every graph on n vertices contains a clique or independent set of size ≈ (1/2)log₂(n), and both are regular. The 2023 breakthrough by Campos, Griffiths, Morris, and Sahasrabudhe on diagonal Ramsey numbers slightly improves the constant but not the growth rate.\n\nAlon, Krivelevich, and Sudakov (2007) proved the best known upper bound F(n) ≤ C·√n·(log n)^{O(1)} using probabilistic constructions. The enormous gap between log(n) and √n remains one of the major open questions in extremal graph theory.",

@@ -75,13 +75,14 @@
     "relatedProblems": [
       {
         "id": "amgm-inequality-oq-02",
-        "relationship": "Sub-entry exploring extensions or open questions arising from AM-GM"
+        "relationship": "Proves Maclaurin's inequalities via elementary symmetric polynomials: M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ strictly refining AM-GM"
       },
       {
         "id": "amgm-inequality-oq-03",
         "relationship": "Power mean hierarchy generalizing the AM-GM chain"
       }
-    ]
+    ],
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "The AM-GM inequality has ancient origins. Euclid implicitly used it in Book VI of the *Elements* (~300 BCE): if you inscribe a right triangle in a semicircle and drop an altitude from the right angle to the hypotenuse, the altitude's length is the geometric mean of the two segments of the hypotenuse. Since the altitude can be no longer than the radius (the arithmetic mean of the two segments), this gives AM ≥ GM geometrically.\n\nThe first general n-variable proof was given by Augustin-Louis Cauchy in his 1821 *Cours d'analyse*. Cauchy's elegant method uses **forward-backward induction**: he first proves the inequality for powers of 2 (by repeatedly applying the two-variable case), then shows that if AM-GM holds for n numbers, it holds for n-1 numbers as well (by setting one variable equal to the mean). This backward step is the clever insight that makes the induction work without needing $n$ to increase by 1 each time.\n\nIndependently, Colin Maclaurin (1729) discovered a hierarchy of symmetric inequalities that imply AM-GM as a special case. His *Maclaurin inequalities* relate the elementary symmetric polynomial means and strictly strengthen AM-GM for distinct values.\n\nGeorge Pólya later gave what many consider the most elegant proof: the exponential inequality $e^{x-1} \\geq x$ (with equality iff $x=1$) applied to each ratio $a_i / G$ (where $G$ is the geometric mean) immediately yields $e^{A/G - 1} \\geq A/G \\geq 1$, hence $A \\geq G$. This proof, featured in Steele's *Cauchy-Schwarz Master Class*, reveals AM-GM as a consequence of the convexity of $e^x$.\n\nToday AM-GM is one of the most ubiquitous tools in mathematical analysis, combinatorics, and optimization. It appears in proofs of the Cauchy-Schwarz inequality, bounds on entropy in information theory, and the isoperimetric inequality. It is #38 on Wiedijk's landmark list of 100 theorems deemed important to formalize in proof assistants.",
@@ -116,7 +117,7 @@
     {
       "targetId": "amgm-inequality-oq-02",
       "relationship": "parent",
-      "description": "Sub-entry exploring extensions or open questions arising from the AM-GM inequality."
+      "description": "Proves Maclaurin's inequalities: the normalized means $M_k = (e_k/\\binom{n}{k})^{1/k}$ formed from elementary symmetric polynomials satisfy $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$, strictly refining AM-GM for distinct values (AM = $M_1$, GM = $M_n$)."
     },
     {
       "targetId": "amgm-inequality-oq-03",
@@ -235,7 +236,7 @@
     "implications": "**Theoretical Significance:**\n\n**1. Optimization Principle**\nWhen maximizing a product with fixed sum—or minimizing sum with fixed product—the optimum occurs when all variables are equal. This is why the square maximizes area among rectangles with fixed perimeter, and why equal portfolio weights arise in certain utility maximization problems.\n\n**2. Information Theory**\nAM-GM underlies the log-sum inequality used in bounding Kullback-Leibler divergence and mutual information. The inequality $-\\sum p_i \\log p_i \\leq \\log n$ (maximum entropy of $n$ outcomes is achieved by uniform distribution) follows from AM-GM applied to $\\log$.\n\n**3. Gateway to Deeper Inequalities**\nAM-GM implies the Cauchy-Schwarz inequality ($\\sum a_i b_i \\leq \\sqrt{(\\sum a_i^2)(\\sum b_i^2)}$) and is implied by Jensen's inequality. It is the simplest non-trivial member of the chain: HM ≤ GM ≤ AM ≤ QM (harmonic ≤ geometric ≤ arithmetic ≤ quadratic mean).\n\n**4. Competition Mathematics**\nA fundamental tool for olympiad problems; most competition inequality proofs reduce to an application of AM-GM or Cauchy-Schwarz at some step.",
     "openQuestions": [
       "How does AM-GM generalize to operator means in matrix analysis? The matrix AM-GM inequality $A \\# B \\leq (A+B)/2$ (where $\\#$ is the geometric mean of positive-definite matrices) requires substantially deeper machinery.",
-      "Maclaurin's inequalities $e_1/\\binom{n}{1} \\geq (e_2/\\binom{n}{2})^{1/2} \\geq \\cdots \\geq (e_n/\\binom{n}{n})^{1/n}$ (where $e_k$ are elementary symmetric polynomials) strictly refine AM-GM—are these fully formalized in Mathlib?",
+      "**[Addressed in `amgm-inequality-oq-02`]** Maclaurin's inequalities $e_1/\\binom{n}{1} \\geq (e_2/\\binom{n}{2})^{1/2} \\geq \\cdots \\geq (e_n/\\binom{n}{n})^{1/n}$ (where $e_k$ are elementary symmetric polynomials) strictly refine AM-GM. The gallery sub-entry `amgm-inequality-oq-02` formalizes these for the normalized means $M_k = (e_k/\\binom{n}{k})^{1/k}$, proving $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ with $M_1 = \\text{AM}$ and $M_n = \\text{GM}$. The open question for Mathlib is whether the full strict inequality chain is captured in a single general theorem rather than specific small cases.",
       "How do weighted power means $M_p = (\\sum w_i z_i^p)^{1/p}$ interpolate between GM ($p \\to 0$) and AM ($p=1$), and can Lean verify the full monotonicity of $p \\mapsto M_p$?",
       "The Gauss arithmetic-geometric mean iteration $a_{n+1} = (a_n + b_n)/2$, $b_{n+1} = \\sqrt{a_n b_n}$ converges quadratically to the AGM, which computes elliptic integrals: $\\int_0^{\\pi/2} d\\theta/\\sqrt{a^2\\cos^2\\theta + b^2\\sin^2\\theta} = \\pi/(2\\cdot\\text{AGM}(a,b))$. Can this convergence and the elliptic integral connection be formalized in Lean?"
     ]

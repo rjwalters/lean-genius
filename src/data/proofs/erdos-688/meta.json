@@ -2,9 +2,9 @@
   "id": "erdos-688",
   "title": "Covering by Large Prime Congruences",
   "slug": "erdos-688",
-  "description": "Define \u03b5\u2099 as the max \u03b5 such that choosing one residue class per prime in (n^\u03b5, n] covers [1,n]. Estimate \u03b5\u2099; is \u03b5\u2099 = o(1)? Erd\u0151s showed \u03b5\u2099 \u226b (log log log n)/(log log n).",
+  "description": "Define εₙ as the max ε such that choosing one residue class per prime in (n^ε, n] covers [1,n]. Estimate εₙ; is εₙ = o(1)? Erdős showed εₙ ≫ (log log log n)/(log log n).",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/688",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos688Problem.lean",
@@ -27,7 +27,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 126,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 3
   },
   "sections": [
     {
@@ -35,8 +36,8 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Module docstring introducing Erd\u0151s Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erd\u0151s's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open.",
-      "mathContext": "Module docstring introducing Erd\u0151s Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erd\u0151s's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open."
+      "summary": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open.",
+      "mathContext": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open."
     },
     {
       "id": "imports",
@@ -67,8 +68,8 @@
       "title": "Known Bounds",
       "startLine": 61,
       "endLine": 72,
-      "summary": "Erd\u0151s's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$.",
-      "mathContext": "Erd\u0151s's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\$\\log n$)/(\\log\\$\\log n$)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$."
+      "summary": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$.",
+      "mathContext": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\$\\log n$)/(\\log\\$\\log n$)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$."
     },
     {
       "id": "per-prime-coverage",
@@ -104,15 +105,15 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erd\u0151s posed this problem in 1979 (paper Er79d) as part of his extensive study of covering systems and the interplay between prime distribution and modular arithmetic. Classical covering systems, studied by Erd\u0151s since the 1950s (with his celebrated conjecture that the minimum modulus of a covering system is bounded, resolved by Hough in 2015), use all moduli. Problem #688 restricts to prime moduli in a specific range (n^\u03b5, n], asking how 'local' the primes can be while still covering an interval. The key analytic input is Mertens' theorem (1874): the sum of prime reciprocals up to x is log log x + M + o(1), where M \u2248 0.2615 is the Meissel-Mertens constant. This gives the total coverage capacity \u2211 n/p \u2248 n \u00b7 log(1/\u03b5) for primes in (n^\u03b5, n]. Erd\u0151s proved that \u03b5\u2099 \u226b (log log log n)/(log log n), a bound involving triply-iterated logarithms \u2014 characteristic of number-theoretic extremal problems. The conjecture \u03b5\u2099 = o(1) remains open and connects to Problems #687 (covering with one class per prime up to n) and #689 (similar questions for composite moduli). The problem also has a dual relationship to sieve theory, where one excludes rather than includes residue classes.",
+    "historicalContext": "Erdős posed this problem in 1979 (paper Er79d) as part of his extensive study of covering systems and the interplay between prime distribution and modular arithmetic. Classical covering systems, studied by Erdős since the 1950s (with his celebrated conjecture that the minimum modulus of a covering system is bounded, resolved by Hough in 2015), use all moduli. Problem #688 restricts to prime moduli in a specific range (n^ε, n], asking how 'local' the primes can be while still covering an interval. The key analytic input is Mertens' theorem (1874): the sum of prime reciprocals up to x is log log x + M + o(1), where M ≈ 0.2615 is the Meissel-Mertens constant. This gives the total coverage capacity ∑ n/p ≈ n · log(1/ε) for primes in (n^ε, n]. Erdős proved that εₙ ≫ (log log log n)/(log log n), a bound involving triply-iterated logarithms — characteristic of number-theoretic extremal problems. The conjecture εₙ = o(1) remains open and connects to Problems #687 (covering with one class per prime up to n) and #689 (similar questions for composite moduli). The problem also has a dual relationship to sieve theory, where one excludes rather than includes residue classes.",
     "problemStatement": "Define $\\varepsilon_n$ as the supremum of $\\varepsilon \\in (0,1)$ for which there exists a choice of one residue class $a_p \\pmod{p}$ for each prime $p \\in (n^\\varepsilon, n]$ such that every integer in $[1, n]$ lies in at least one chosen class. Is $\\varepsilon_n = o(1)$?",
-    "text": "Define \u03b5\u2099 as the max \u03b5 such that choosing one residue class per prime in (n^\u03b5, n] covers [1,n]. Estimate \u03b5\u2099; is \u03b5\u2099 = o(1)? Erd\u0151s showed \u03b5\u2099 \u226b (log log log n)/(log log n).",
-    "proofStrategy": "The formalization defines covering assignments as dependent functions from primes to their residue classes, the interval coverage predicate, the prime range set, and the covering exponent via supremum. It axiomatizes the main conjecture (\u03b5\u2099 \u2192 0 via Filter.Tendsto), Erd\u0151s's lower bound, and structural properties including Mertens' coverage estimate, monotonicity, full prime covering, and sieve duality.",
+    "text": "Define εₙ as the max ε such that choosing one residue class per prime in (n^ε, n] covers [1,n]. Estimate εₙ; is εₙ = o(1)? Erdős showed εₙ ≫ (log log log n)/(log log n).",
+    "proofStrategy": "The formalization defines covering assignments as dependent functions from primes to their residue classes, the interval coverage predicate, the prime range set, and the covering exponent via supremum. It axiomatizes the main conjecture (εₙ → 0 via Filter.Tendsto), Erdős's lower bound, and structural properties including Mertens' coverage estimate, monotonicity, full prime covering, and sieve duality.",
     "keyInsights": [
-      "**Mertens' theorem is the key tool**: $\\sum_{n^\\varepsilon < p \\le n} 1/p \\approx \\log(1/\\varepsilon)$, so the total coverage capacity grows logarithmically as $\\varepsilon \\to 0$ \u2014 just barely enough to potentially cover $[1, n]$ with careful class choices",
-      "**Iterated logarithm lower bound**: Erd\u0151s's bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ shows the covering exponent decreases extremely slowly, if at all",
+      "**Mertens' theorem is the key tool**: $\\sum_{n^\\varepsilon < p \\le n} 1/p \\approx \\log(1/\\varepsilon)$, so the total coverage capacity grows logarithmically as $\\varepsilon \\to 0$ — just barely enough to potentially cover $[1, n]$ with careful class choices",
+      "**Iterated logarithm lower bound**: Erdős's bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ shows the covering exponent decreases extremely slowly, if at all",
       "**Covering vs. sieving duality**: Including one class per prime to cover is dual to excluding one class per prime to sieve; this connects to Legendre's sieve and the Brun-Selberg machinery",
-      "**CRT independence**: By the Chinese Remainder Theorem, residues modulo distinct primes are independent, making probabilistic arguments viable \u2014 a random assignment covers each $m$ with probability $1 - \\prod(1-1/p)$",
+      "**CRT independence**: By the Chinese Remainder Theorem, residues modulo distinct primes are independent, making probabilistic arguments viable — a random assignment covers each $m$ with probability $1 - \\prod(1-1/p)$",
       "**Connected cluster**: Problems #687, #688, #689 form a family studying covering by prime congruence classes with different range restrictions"
     ],
     "prerequisites": [
@@ -121,12 +122,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Formalizes Erd\u0151s Problem #688 on covering intervals [1, n] using one residue class per prime in (n^\u03b5, n]. The covering exponent \u03b5\u2099 measures how 'local' the primes can be while maintaining coverage. Erd\u0151s's iterated-logarithm lower bound \u03b5\u2099 \u226b (log log log n)/(log log n) is the best known; whether \u03b5\u2099 \u2192 0 remains open after 47 years.",
-    "implications": "Understanding \u03b5\u2099 reveals the covering power of large primes and connects three fundamental areas: the distribution of primes (via PNT and Mertens), the structure of covering systems (via CRT and inclusion-exclusion), and sieve theory (via the covering-sieving duality). A resolution would also inform the design of efficient hash functions and pseudorandom generators based on modular arithmetic.",
+    "summary": "Formalizes Erdős Problem #688 on covering intervals [1, n] using one residue class per prime in (n^ε, n]. The covering exponent εₙ measures how 'local' the primes can be while maintaining coverage. Erdős's iterated-logarithm lower bound εₙ ≫ (log log log n)/(log log n) is the best known; whether εₙ → 0 remains open after 47 years.",
+    "implications": "Understanding εₙ reveals the covering power of large primes and connects three fundamental areas: the distribution of primes (via PNT and Mertens), the structure of covering systems (via CRT and inclusion-exclusion), and sieve theory (via the covering-sieving duality). A resolution would also inform the design of efficient hash functions and pseudorandom generators based on modular arithmetic.",
     "openQuestions": [
-      "Is \u03b5\u2099 = o(1), as Erd\u0151s conjectured? Can the lower bound be improved beyond the triply-iterated logarithm?",
-      "What is the true order of magnitude of \u03b5\u2099 \u2014 is it closer to 1/log log n or to (log log log n)/(log log n)?",
-      "Can the Lov\u00e1sz Local Lemma or entropy compression give better probabilistic bounds for the covering?",
+      "Is εₙ = o(1), as Erdős conjectured? Can the lower bound be improved beyond the triply-iterated logarithm?",
+      "What is the true order of magnitude of εₙ — is it closer to 1/log log n or to (log log log n)/(log log n)?",
+      "Can the Lovász Local Lemma or entropy compression give better probabilistic bounds for the covering?",
       "How does the answer change if multiple residue classes per prime are allowed (Problem #689 variant)?"
     ]
   },
@@ -144,7 +145,7 @@
     "sorries": 0
   },
   "references": [
-    "Erd\u0151s (1979): Problems and results on combinatorial number theory III (Er79d)",
+    "Erdős (1979): Problems and results on combinatorial number theory III (Er79d)",
     "Mertens (1874): Ein Beitrag zur analytischen Zahlentheorie (prime reciprocal sums)",
     "Harborth (1986): On the covering number (covering systems with large moduli)",
     "Halberstam & Richert (1974): Sieve Methods (sieve-covering duality)",
@@ -155,12 +156,12 @@
     {
       "targetId": "erdos-281",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: congruences, covering systems, number theory"
+      "description": "Related Erdős problem sharing themes: congruences, covering systems, number theory"
     },
     {
       "targetId": "erdos-687",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: covering systems, number theory, sieve theory"
+      "description": "Related Erdős problem sharing themes: covering systems, number theory, sieve theory"
     }
   ],
   "sorries": 0

@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-05-01",
     "axiomCount": 0,
-    "lineCount": 135,
+    "lineCount": 311,
     "assumptions": "None. 0 axiom declarations, 0 sorries.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -66,7 +66,8 @@
       "Binary GCD on ℕ (Proofs/GcdAlgorithmOQ02.lean) and its correctness proof",
       "Mathlib's Int.gcd defined via natAbs",
       "Basic absolute-value identities on ℤ"
-    ]
+    ],
+    "theoremCount": 14
   },
   "sections": [
     {
@@ -127,7 +128,8 @@
       "The `natAbs` reduction is the canonical formal idiom for lifting ℕ-level algorithms to ℤ, mirroring how Mathlib itself defines `Int.gcd`. This makes the integer extension a one-line `rfl`-grade reduction rather than a re-derivation.",
       "Marking sign-invariance lemmas as `@[simp]` means downstream proofs over ℤ never need to reason about negation explicitly — the simp set normalizes through them silently.",
       "All algebraic properties (commutativity, edges, divisibility) inherit through the single bridge `binaryGcdInt_eq_intGcd`. Each becomes a one-line proof: `rw [binaryGcdInt_eq_intGcd]; exact Int.gcd_*`. This is the textbook example of when introducing a definitional bridge eliminates redundant proof work.",
-      "The bignum half of OQ-02 is automatically resolved by Lean's kernel: `Nat` operations compile to GMP, so binary GCD on `ℕ` already runs on bignums. The remaining mathematical question (formal bit-sequence equivalence) is a separate, larger project."
+      "The bignum half of OQ-02 is automatically resolved by Lean's kernel: `Nat` operations compile to GMP, so binary GCD on `ℕ` already runs on bignums. The remaining mathematical question (formal bit-sequence equivalence) is a separate, larger project.",
+      "All 14 theorems follow the same two-step proof pattern — rewrite through `binaryGcdInt_eq_intGcd`, then apply the matching `Int.gcd_*` Mathlib lemma. This illustrates how a single definitional bridge eliminates the need to reprove the entire theorem family from scratch, a general technique applicable to any ℤ-extension of an ℕ-level algorithm."
     ],
     "prerequisites": [
       "Binary GCD on ℕ (`Proofs.GcdAlgorithmOQ02`) including `binaryGcd_eq_gcd`",
@@ -199,7 +201,7 @@
       "BinaryGcd"
     ],
     "namespace": "BinaryGcdOQ02",
-    "lineCount": 135,
+    "lineCount": 311,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 1,

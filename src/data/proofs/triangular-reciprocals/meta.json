@@ -43,7 +43,8 @@
     "axiomCount": 0,
     "lineCount": 308,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Triangular numbers T_n = n(n+1)/2 are among the oldest objects in number theory, studied by the Pythagoreans (~500 BCE) who arranged pebbles in triangular patterns. The figurate number tradition continued through Nicomachus of Gerasa (c. 100 AD) and Theon of Smyrna (c. 130 AD). The telescoping technique underlying this proof traces to Leibniz (1673), who computed ∑1/(n(n+1)) = 1 as one of the earliest evaluated infinite series — predating the Euler–Mengoli resolution of the Basel problem by decades. The result that ∑1/T_n = 2 follows immediately by the factor-of-2 relationship 1/T_n = 2/(n(n+1)). This is Wiedijk's 100 Theorems #42.",

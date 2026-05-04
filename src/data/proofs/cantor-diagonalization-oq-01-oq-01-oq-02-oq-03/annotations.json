@@ -6,10 +6,10 @@
       "startLine": 40,
       "endLine": 46
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "E1: Cantor Lower Bound for the Continuum Function",
     "content": "The first Easton condition: $2^{\\aleph_\\alpha} \\geq \\aleph_{\\alpha+1}$ for every ordinal $\\alpha$. The proof chains two facts: (1) Cantor's theorem `Cardinal.cantor` gives $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$, and (2) `Order.succ_le_of_lt` converts the strict inequality to $\\aleph_{\\alpha+1} \\leq 2^{\\aleph_\\alpha}$, since $\\aleph_{\\alpha+1}$ is the successor of $\\aleph_\\alpha$ in the cardinal order (via `aleph_succ`).",
-    "mathContext": "$\\aleph_{\\alpha+1} \\leq 2^{\\aleph_\\alpha}$ follows from $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$ (Cantor) and $\\aleph_{\\alpha+1} = $ successor of $\\aleph_\\alpha$. In Lean: `aleph_succ` rewrites the LHS, then `Order.succ_le_of_lt (Cardinal.cantor (aleph α))` closes the goal.",
+    "mathContext": "$\\aleph_{\\alpha+1} \\leq 2^{\\aleph_\\alpha}$ follows from $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$ (Cantor) and $\\aleph_{\\alpha+1} = $ successor of $\\aleph_\\alpha$. In Lean: `aleph_succ` rewrites the LHS, then `Order.succ_le_of_lt (Cardinal.cantor (aleph \u03b1))` closes the goal.",
     "significance": "key",
     "relatedConcepts": [
       "Cantor's theorem",
@@ -30,7 +30,7 @@
       "startLine": 48,
       "endLine": 53
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "E2: Monotonicity of the Continuum Function",
     "content": "The second Easton condition: $\\alpha \\leq \\beta \\Rightarrow 2^{\\aleph_\\alpha} \\leq 2^{\\aleph_\\beta}$. The proof uses `Cardinal.power_le_power_right` (if the base is at most the other base, the powers compare), with `aleph_le_aleph.mpr h` converting the ordinal inequality $\\alpha \\leq \\beta$ to the cardinal inequality $\\aleph_\\alpha \\leq \\aleph_\\beta$.",
     "mathContext": "The aleph function is order-preserving: $\\alpha \\leq \\beta \\Rightarrow \\aleph_\\alpha \\leq \\aleph_\\beta$ (`aleph_le_aleph`). Then `power_le_power_right` gives $2^{\\aleph_\\alpha} \\leq 2^{\\aleph_\\beta}$ since $2 \\leq 2$ trivially. This is the easiest Easton condition to prove.",
@@ -54,15 +54,15 @@
       "startLine": 55,
       "endLine": 68
     },
-    "type": "theorem",
-    "title": "E3: König's Cofinality Constraint (Generalized)",
-    "content": "The deepest Easton condition: $\\mathrm{cf}(2^\\kappa) > \\kappa$ for any infinite cardinal $\\kappa$. This is König's theorem from 1905, which rules out cardinals of 'small cofinality' as values of the continuum function. In Lean, `Cardinal.lt_cof_power hκ_inf (by norm_num)` provides this directly. The specialization `easton_konig_aleph` applies to the aleph sequence by showing $\\aleph_0 \\leq \\aleph_\\alpha$ for any $\\alpha$.",
-    "mathContext": "König's theorem: $\\kappa < \\mathrm{cf}(2^\\kappa)$ for infinite $\\kappa$. Consequence: $2^{\\aleph_0} \\neq \\aleph_\\omega$ (since $\\mathrm{cf}(\\aleph_\\omega) = \\omega = \\aleph_0 \\not> \\aleph_0$). More generally, $2^{\\aleph_\\alpha}$ cannot equal any cardinal of cofinality $\\leq \\aleph_\\alpha$. In Lean: `(2 ^ κ).ord.cof.card` computes the cofinality via the ordinal associated to the cardinal power.",
+    "type": "insight",
+    "title": "E3: K\u00f6nig's Cofinality Constraint (Generalized)",
+    "content": "The deepest Easton condition: $\\mathrm{cf}(2^\\kappa) > \\kappa$ for any infinite cardinal $\\kappa$. This is K\u00f6nig's theorem from 1905, which rules out cardinals of 'small cofinality' as values of the continuum function. In Lean, `Cardinal.lt_cof_power h\u03ba_inf (by norm_num)` provides this directly. The specialization `easton_konig_aleph` applies to the aleph sequence by showing $\\aleph_0 \\leq \\aleph_\\alpha$ for any $\\alpha$.",
+    "mathContext": "K\u00f6nig's theorem: $\\kappa < \\mathrm{cf}(2^\\kappa)$ for infinite $\\kappa$. Consequence: $2^{\\aleph_0} \\neq \\aleph_\\omega$ (since $\\mathrm{cf}(\\aleph_\\omega) = \\omega = \\aleph_0 \\not> \\aleph_0$). More generally, $2^{\\aleph_\\alpha}$ cannot equal any cardinal of cofinality $\\leq \\aleph_\\alpha$. In Lean: `(2 ^ \u03ba).ord.cof.card` computes the cofinality via the ordinal associated to the cardinal power.",
     "significance": "key",
     "relatedConcepts": [
       "Cardinal.lt_cof_power",
       "cofinality",
-      "König's theorem",
+      "K\u00f6nig's theorem",
       "regular cardinals"
     ],
     "prerequisites": [
@@ -106,7 +106,7 @@
     },
     "type": "concept",
     "title": "The Deep Direction: Easton Forcing (Acknowledged Limitation)",
-    "content": "This section contains the deep direction of Easton's theorem: any Easton function is REALIZABLE as the continuum function in some forcing extension of ZFC. Three theorems appear here: `easton_consistency`, `easton_full_characterization`, and `easton_iff_characterization`. All three conclude `True` rather than the actual forcing statement — an honest acknowledgment that class forcing (Easton product forcing) is not in Mathlib, not a sorry gap. The file has 0 sorries and 0 axioms; the mathematical limitation is deliberate and documented. The comment explains why: class forcing — specifically Easton product forcing that adds $F(\\alpha) - \\aleph_\\alpha$ many Cohen subsets to each regular $\\aleph_\\alpha$ simultaneously — is not formalized in Mathlib. This is a fundamental limitation: Easton's theorem is a metamathematical statement about ZFC models, not a theorem within ZFC.",
+    "content": "This section contains the deep direction of Easton's theorem: any Easton function is REALIZABLE as the continuum function in some forcing extension of ZFC. Three theorems appear here: `easton_consistency`, `easton_full_characterization`, and `easton_iff_characterization`. All three conclude `True` rather than the actual forcing statement \u2014 an honest acknowledgment that class forcing (Easton product forcing) is not in Mathlib, not a sorry gap. The file has 0 sorries and 0 axioms; the mathematical limitation is deliberate and documented. The comment explains why: class forcing \u2014 specifically Easton product forcing that adds $F(\\alpha) - \\aleph_\\alpha$ many Cohen subsets to each regular $\\aleph_\\alpha$ simultaneously \u2014 is not formalized in Mathlib. This is a fundamental limitation: Easton's theorem is a metamathematical statement about ZFC models, not a theorem within ZFC.",
     "mathContext": "Easton product forcing: for each regular cardinal $\\kappa$, add $F(\\kappa)$-many Cohen subsets to $\\kappa$ via a product of Cohen forcings $\\prod_{\\kappa \\text{ regular}} \\mathrm{Add}(\\kappa, F(\\kappa))$ with Easton support. This forces $2^\\kappa = F(\\kappa)$ for all regular $\\kappa$ while preserving all cardinals. The proof that GCH violations don't 'interfere' between different regular cardinals is the hard part, requiring the Easton lemma about products with varying chain conditions.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -131,12 +131,12 @@
       "endLine": 170
     },
     "type": "insight",
-    "title": "König Excludes ℵ_{α+ω}: A Fully Proved Concrete Application",
-    "content": "A fully proved concrete example of König's constraint: $2^{\\aleph_\\alpha} \\neq \\aleph_{\\alpha+\\omega}$, because $\\aleph_{\\alpha+\\omega}$ has cofinality $\\omega \\leq \\aleph_\\alpha$, violating E3.\n\nThe Lean proof (lines 151–170) derives a contradiction from the assumption $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+\\omega}$:\n1. König gives $\\aleph_\\alpha < (\\aleph_{\\alpha+\\omega}).\\mathrm{ord.cof}$\n2. A cofinality chain computes $(\\aleph_{\\alpha+\\omega}).\\mathrm{ord.cof} = \\aleph_0 \\leq \\aleph_\\alpha$:\n   - `rw [ord_aleph]` converts aleph ord to omega_\n   - `cof_omega (isSuccLimit_add α isSuccLimit_omega0)` uses that $\\alpha+\\omega$ is a limit ordinal\n   - `cof_add α ω omega0_ne_zero` reduces to $\\mathrm{cof}(\\omega)$\n   - `cof_omega0` gives $\\mathrm{cof}(\\omega) = \\aleph_0$\n3. This contradicts $\\aleph_\\alpha < \\aleph_0 \\leq \\aleph_\\alpha$.\n\nThis theorem is fully proved with 0 sorries — the cofinality computation uses four Mathlib lemmas chained together.",
-    "mathContext": "$\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\omega$ because $\\aleph_{\\alpha+\\omega} = \\sup_{n < \\omega} \\aleph_{\\alpha+n}$ is a countably cofinal limit. By König: $\\aleph_\\alpha < \\mathrm{cf}(2^{\\aleph_\\alpha})$, but if $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+\\omega}$ then $\\mathrm{cf}(2^{\\aleph_\\alpha}) = \\omega \\leq \\aleph_\\alpha$ — contradiction. For $\\alpha = 0$: $2^{\\aleph_0} \\neq \\aleph_\\omega$ is the classic application. Key chain: `ord_aleph → cof_omega (isSuccLimit) → cof_add → cof_omega0`.",
+    "title": "K\u00f6nig Excludes \u2135_{\u03b1+\u03c9}: A Fully Proved Concrete Application",
+    "content": "A fully proved concrete example of K\u00f6nig's constraint: $2^{\\aleph_\\alpha} \\neq \\aleph_{\\alpha+\\omega}$, because $\\aleph_{\\alpha+\\omega}$ has cofinality $\\omega \\leq \\aleph_\\alpha$, violating E3.\n\nThe Lean proof (lines 151\u2013170) derives a contradiction from the assumption $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+\\omega}$:\n1. K\u00f6nig gives $\\aleph_\\alpha < (\\aleph_{\\alpha+\\omega}).\\mathrm{ord.cof}$\n2. A cofinality chain computes $(\\aleph_{\\alpha+\\omega}).\\mathrm{ord.cof} = \\aleph_0 \\leq \\aleph_\\alpha$:\n   - `rw [ord_aleph]` converts aleph ord to omega_\n   - `cof_omega (isSuccLimit_add \u03b1 isSuccLimit_omega0)` uses that $\\alpha+\\omega$ is a limit ordinal\n   - `cof_add \u03b1 \u03c9 omega0_ne_zero` reduces to $\\mathrm{cof}(\\omega)$\n   - `cof_omega0` gives $\\mathrm{cof}(\\omega) = \\aleph_0$\n3. This contradicts $\\aleph_\\alpha < \\aleph_0 \\leq \\aleph_\\alpha$.\n\nThis theorem is fully proved with 0 sorries \u2014 the cofinality computation uses four Mathlib lemmas chained together.",
+    "mathContext": "$\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\omega$ because $\\aleph_{\\alpha+\\omega} = \\sup_{n < \\omega} \\aleph_{\\alpha+n}$ is a countably cofinal limit. By K\u00f6nig: $\\aleph_\\alpha < \\mathrm{cf}(2^{\\aleph_\\alpha})$, but if $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+\\omega}$ then $\\mathrm{cf}(2^{\\aleph_\\alpha}) = \\omega \\leq \\aleph_\\alpha$ \u2014 contradiction. For $\\alpha = 0$: $2^{\\aleph_0} \\neq \\aleph_\\omega$ is the classic application. Key chain: `ord_aleph \u2192 cof_omega (isSuccLimit) \u2192 cof_add \u2192 cof_omega0`.",
     "significance": "key",
     "relatedConcepts": [
-      "König's theorem",
+      "K\u00f6nig's theorem",
       "cofinality of limit alephs",
       "singular cardinals",
       "excluded values",
@@ -162,8 +162,8 @@
     },
     "type": "concept",
     "title": "Closing Summary: Theorem Inventory and Mathlib API Notes",
-    "content": "The closing comment block (lines 174–206) serves as a formal theorem inventory and engineering notes:\n\n**All 7 proved theorems (0 sorries)**:\n- `easton_lower_bound`: E1 (Cantor + successor)\n- `easton_monotone`: E2 (monotonicity)\n- `easton_konig_general`: E3 for any infinite cardinal\n- `easton_konig_aleph`: E3 for the aleph sequence\n- `continuum_satisfies_easton`: actual continuum function satisfies all Easton conditions\n- `easton_iff_characterization`: necessity + sufficiency (forcing direction → True)\n- `easton_excludes_limit_alephs`: 2^{ℵ_α} ≠ ℵ_{α+ω} for any α\n\n**Cofinality computation Mathlib API** (the chain used in `easton_excludes_limit_alephs`):\n- `ord_aleph`: `(aleph o).ord = ω_ o`\n- `cof_omega`: `(ω_ o).cof = o.cof` for limit ordinals\n- `cof_add`: `cof (a + b) = cof b` for `b ≠ 0`\n- `cof_omega0`: `cof ω = ℵ₀`\n- `isSuccLimit_add`, `isSuccLimit_omega0`: limit ordinal facts\n\n**API evolution note**: A previous version used `.ord.cof.card` (incorrect for current Mathlib) — `Ordinal.cof` now returns `Cardinal` directly, so the correct form is `.ord.cof`. This type of API change is common in evolving Mathlib versions.\n\n**The shadow of forcing**: The necessary conditions (E1)–(E3) are exactly what ZFC can prove about the continuum function — they are the 'shadow' of Easton forcing visible from inside ZFC.",
-    "mathContext": "Full cofinality chain: $\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\mathrm{cof}(\\omega_{\\alpha+\\omega}) = \\mathrm{cof}(\\alpha + \\omega) = \\mathrm{cof}(\\omega) = \\aleph_0$ using `ord_aleph → cof_omega → cof_add → cof_omega0`. Note: `Ordinal.cof : Ordinal → Cardinal` (not `Ordinal → Ordinal → Cardinal`) in Mathlib 4.26+.",
+    "content": "The closing comment block (lines 174\u2013206) serves as a formal theorem inventory and engineering notes:\n\n**All 7 proved theorems (0 sorries)**:\n- `easton_lower_bound`: E1 (Cantor + successor)\n- `easton_monotone`: E2 (monotonicity)\n- `easton_konig_general`: E3 for any infinite cardinal\n- `easton_konig_aleph`: E3 for the aleph sequence\n- `continuum_satisfies_easton`: actual continuum function satisfies all Easton conditions\n- `easton_iff_characterization`: necessity + sufficiency (forcing direction \u2192 True)\n- `easton_excludes_limit_alephs`: 2^{\u2135_\u03b1} \u2260 \u2135_{\u03b1+\u03c9} for any \u03b1\n\n**Cofinality computation Mathlib API** (the chain used in `easton_excludes_limit_alephs`):\n- `ord_aleph`: `(aleph o).ord = \u03c9_ o`\n- `cof_omega`: `(\u03c9_ o).cof = o.cof` for limit ordinals\n- `cof_add`: `cof (a + b) = cof b` for `b \u2260 0`\n- `cof_omega0`: `cof \u03c9 = \u2135\u2080`\n- `isSuccLimit_add`, `isSuccLimit_omega0`: limit ordinal facts\n\n**API evolution note**: A previous version used `.ord.cof.card` (incorrect for current Mathlib) \u2014 `Ordinal.cof` now returns `Cardinal` directly, so the correct form is `.ord.cof`. This type of API change is common in evolving Mathlib versions.\n\n**The shadow of forcing**: The necessary conditions (E1)\u2013(E3) are exactly what ZFC can prove about the continuum function \u2014 they are the 'shadow' of Easton forcing visible from inside ZFC.",
+    "mathContext": "Full cofinality chain: $\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\mathrm{cof}(\\omega_{\\alpha+\\omega}) = \\mathrm{cof}(\\alpha + \\omega) = \\mathrm{cof}(\\omega) = \\aleph_0$ using `ord_aleph \u2192 cof_omega \u2192 cof_add \u2192 cof_omega0`. Note: `Ordinal.cof : Ordinal \u2192 Cardinal` (not `Ordinal \u2192 Ordinal \u2192 Cardinal`) in Mathlib 4.26+.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib API versioning",
@@ -185,14 +185,14 @@
     },
     "type": "concept",
     "title": "Easton's Theorem: What This File Proves",
-    "content": "This file formalizes the necessary conditions for Easton's theorem — the complete characterization of which functions can serve as the generalized continuum function $\\alpha \\mapsto 2^{\\aleph_\\alpha}$ on regular cardinals.\n\nThe three necessary conditions (E1)–(E3) are what ZFC can prove without forcing. Easton's 1970 result is that these are also sufficient — any function satisfying them is realizable via class forcing. The sufficiency direction requires forcing infrastructure not in Mathlib, so it is stated with conclusion True.\n\nImports: three Mathlib cardinal modules provide the key lemmas — `Cardinal.Basic` for the aleph function and Cantor's theorem, `Cardinal.Ordinal` for the ord/aleph correspondence, and `Cardinal.Cofinality` for König's theorem (`lt_cof_power`) and the cofinality computation machinery.",
+    "content": "This file formalizes the necessary conditions for Easton's theorem \u2014 the complete characterization of which functions can serve as the generalized continuum function $\\alpha \\mapsto 2^{\\aleph_\\alpha}$ on regular cardinals.\n\nThe three necessary conditions (E1)\u2013(E3) are what ZFC can prove without forcing. Easton's 1970 result is that these are also sufficient \u2014 any function satisfying them is realizable via class forcing. The sufficiency direction requires forcing infrastructure not in Mathlib, so it is stated with conclusion True.\n\nImports: three Mathlib cardinal modules provide the key lemmas \u2014 `Cardinal.Basic` for the aleph function and Cantor's theorem, `Cardinal.Ordinal` for the ord/aleph correspondence, and `Cardinal.Cofinality` for K\u00f6nig's theorem (`lt_cof_power`) and the cofinality computation machinery.",
     "mathContext": "Easton's spectrum: a function $F: \\mathrm{Ord} \\to \\mathrm{Card}$ is an **Easton function** iff (E1) $F(\\alpha) \\geq \\aleph_{\\alpha+1}$, (E2) $F$ is monotone, (E3) $\\mathrm{cf}(F(\\alpha)) > \\aleph_\\alpha$ for regular $\\aleph_\\alpha$. Easton proved these characterize exactly the functions realizable as $2^{\\aleph_\\alpha}$ in some ZFC model.",
     "significance": "supporting",
     "relatedConcepts": [
       "generalized continuum hypothesis",
       "Easton's theorem",
       "class forcing",
-      "König's theorem",
+      "K\u00f6nig's theorem",
       "regular cardinals"
     ],
     "prerequisites": [

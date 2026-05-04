@@ -20,9 +20,10 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 4,
-    "lineCount": 260,
+    "lineCount": 572,
     "assumptions": "saccheri_legendre (angle sum ≤ π in neutral geometry), defect_transitivity_axiom (zero defect propagates), angle_sum_pi_implies_playfair (main characterization), parallel_implies_angle_sum (forward direction). All are classical theorems of neutral geometry requiring ~1000 lines of infrastructure not yet in Mathlib.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The relationship between angle sums and Euclidean geometry is one of the oldest results in foundations of mathematics. Euclid's parallel postulate (Book I, Postulate 5) was suspected to be provable from the other axioms, but this was never achieved. In the 18th and 19th centuries, Saccheri (1733) and Legendre (1794, 1823) proved what we now call the Saccheri-Legendre theorem: in neutral geometry (without the parallel postulate), the angle sum of any triangle cannot exceed π.\n\nThe deeper result — that angle sum = π for all triangles is EQUIVALENT to the parallel postulate — was understood by Legendre and confirmed when Bolyai and Lobachevsky (1830s) constructed consistent hyperbolic geometries where angle sum < π. This settled the 2000-year-old question: the parallel postulate cannot be proved from neutral geometry, and angle sum characterizes the Euclidean case.",
@@ -124,7 +125,7 @@
       "ParallelPostulate"
     ],
     "namespace": "TriangleAngleSumOQ01",
-    "lineCount": 260,
+    "lineCount": 572,
     "axiomCount": 4,
     "sorries": 0,
     "path": "Proofs/TriangleAngleSumOQ01.lean",

@@ -30,15 +30,17 @@ As N → ∞, dividing by N²:
 The Dirichlet series Σ μ(d)/d² = 6/π² is the central analytic fact,
 connecting the arithmetic Möbius function to the Basel problem.
 
-### Step 3: Density Limit (axiomatized)
-The convergence uses dominated convergence (|μ(d)/d²| ≤ 1/d², Σ 1/d² < ∞).
+### Step 3: Density Limit (proved)
+Via Tannery's dominated convergence theorem:
+- For each d: μ(d)·(⌊N/d⌋/N)² → μ(d)/d²  (since ⌊N/d⌋/N → 1/d)
+- Dominator: |μ(d)·(⌊N/d⌋/N)²| ≤ 1/d²  (since |μ(d)| ≤ 1 and ⌊N/d⌋/N ≤ 1/d)
+- Σ 1/d² < ∞  (Basel problem)
 
-## Axiom Count: 2
-1. `moebius_dirichlet_series_at_two`: Σ μ(d)/d² = 6/π² (Dirichlet series)
-2. `coprime_pair_density_limit`: The density limit (dominated convergence)
+## Axiom Count: 0
 
-## Sorry Count: 1
-The finite sum exchange in the Möbius decomposition.
+All axioms eliminated:
+- `moebius_dirichlet_series_at_two` (proved via `LSeries_zeta_mul_Lseries_moebius`)
+- `coprime_pair_density_limit` (proved via `tendsto_tsum_of_dominated_convergence`)
 
 ## References
 - Cesàro (1885): first explicit statement of the density
@@ -54,9 +56,46 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Analysis.Normed.Group.Tannery
 import Mathlib.Tactic
 
 open Filter Finset BigOperators Real Nat ArithmeticFunction
+
+open scoped LSeries.notation
+
+-- Helper: (⌊N/d⌋ : ℝ) / N → 1/d as N → ∞ (for any fixed d)
+private lemma nat_div_div_tendsto (d : ℕ) :
+    Tendsto (fun N : ℕ => (N / d : ℕ) / (N : ℝ)) atTop (nhds (1 / (d : ℝ))) := by
+  rcases Nat.eq_zero_or_pos d with rfl | hd
+  · simp [Nat.div_zero]
+    exact tendsto_const_nhds
+  · have hd' : (0 : ℝ) < d := Nat.cast_pos.mpr hd
+    rw [Metric.tendsto_atTop]
+    intro ε hε
+    refine ⟨max 1 ⌈(d : ℝ) / ε⌉₊, fun N hN => ?_⟩
+    have hN1 : 1 ≤ N := (Nat.le_max_left 1 _).trans hN
+    have hN' : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+    have hd_ne : (d : ℝ) ≠ 0 := hd'.ne'
+    have hN_ne : (N : ℝ) ≠ 0 := hN'.ne'
+    -- Key: N = (N/d)*d + N%d, so (N/d)/N = 1/d - (N%d)/(d*N)
+    have hdm : (N / d : ℕ) * d + N % d = N := Nat.div_add_mod N d
+    have heq : (N / d : ℕ) / (N : ℝ) - 1 / d = -((N % d : ℕ) : ℝ) / ((d : ℝ) * N) := by
+      field_simp; push_cast; linarith
+    rw [Real.dist_eq, heq, abs_neg, abs_of_nonneg (by positivity)]
+    rw [div_lt_iff (by positivity)]
+    have hmod : (N % d : ℝ) < d := by exact_mod_cast Nat.mod_lt N hd
+    -- N ≥ ⌈d/ε⌉ ≥ d/ε, so d ≤ ε*N
+    have hN_ge : (d : ℝ) ≤ ε * N := by
+      have h1 : (d : ℝ) / ε ≤ ⌈(d : ℝ) / ε⌉₊ := Nat.le_ceil _
+      have h2 : (⌈(d : ℝ) / ε⌉₊ : ℝ) ≤ N := by
+        exact_mod_cast (Nat.le_max_right 1 _).trans hN
+      calc (d : ℝ) = d / ε * ε := by field_simp
+        _ ≤ ↑⌈↑d / ε⌉₊ * ε := by nlinarith
+        _ ≤ N * ε := by nlinarith
+        _ = ε * N := mul_comm _ _
+    -- (N%d) < d ≤ ε*N ≤ ε*d*N = ε*(d*N)
+    have h1d : (1 : ℝ) ≤ d := by exact_mod_cast hd
+    nlinarith [mul_pos hε hN', mul_pos hd' hN']
 
 namespace BaselProblemOQ04OQ03
 
@@ -199,50 +238,181 @@ theorem countCoprimePairs_moebius (N : ℕ) (hN : 0 < N) :
     simp only [Finset.mem_product, Finset.mem_Icc] at hp
     exact coprime_iff_moebius_sum p.1 p.2 (by omega) (by omega)
   rw [Finset.sum_congr rfl h_moebius]
-  -- Step 3: Exchange the order of summation
-  -- The triple (m, n, d) with d | gcd(m,n), 1 ≤ m,n ≤ N
-  -- corresponds to d ∈ [1,N], m ∈ multiples of d in [1,N], n ∈ multiples of d in [1,N]
-  sorry -- finite Fubini: exchange Σ_{m,n} Σ_{d|gcd(m,n)} = Σ_{d≤N} Σ_{m,n: d|m, d|n}
+  -- Step 3: Exchange the order of summation (finite Fubini)
+  -- For (m,n) ∈ [1,N]², divisors of gcd(m,n) = {d ∈ [1,N] : d|m ∧ d|n}
+  have h_step3 : ∀ p ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N,
+      ∑ d ∈ (Nat.gcd p.1 p.2).divisors, (ArithmeticFunction.moebius d : ℤ) =
+      ∑ d ∈ Finset.Icc 1 N,
+        if (d ∣ p.1 ∧ d ∣ p.2) then (ArithmeticFunction.moebius d : ℤ) else 0 := by
+    intro ⟨m, n⟩ hp
+    simp only [Finset.mem_product, Finset.mem_Icc] at hp
+    rw [← Finset.sum_filter]
+    congr 1
+    ext d
+    simp only [Nat.mem_divisors, Nat.dvd_gcd_iff, Finset.mem_filter, Finset.mem_Icc]
+    constructor
+    · rintro ⟨⟨hdm, hdn⟩, _⟩
+      exact ⟨⟨Nat.pos_of_dvd_of_pos hdm (by omega), Nat.le_of_dvd (by omega) hdm⟩, hdm, hdn⟩
+    · rintro ⟨_, hdm, hdn⟩
+      refine ⟨⟨hdm, hdn⟩, ?_⟩
+      intro h
+      have := (Nat.gcd_eq_zero_iff.mp h).1
+      omega
+  rw [Finset.sum_congr rfl h_step3, Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro d hd_mem
+  simp only [Finset.mem_Icc] at hd_mem
+  rw [← Finset.sum_filter, Finset.sum_const, card_pairs_divisible d N (by omega)]
+  simp only [nsmul_eq_mul]
+  push_cast
+  ring
 
 -- ============================================================
 -- SECTION V: Analytic Axioms
 -- ============================================================
 
-/-- **Axiom (Möbius Dirichlet Series)**:
+/-- **Theorem (Möbius Dirichlet Series)**:
     Σ_{d=1}^∞ μ(d)/d² = 6/π².
 
-    This is the analytic identity connecting the Möbius function to the
-    Basel constant. It follows from:
-    - The formal identity (μ * ζ)(n) = 1_{n=1} (Dirichlet convolution)
-    - The L-series identity: L(μ, s) · ζ(s) = 1 for Re(s) > 1
-    - Setting s = 2: L(μ, 2) = 1/ζ(2) = 6/π²
-
-    Mathlib's `riemannZeta_two` gives ζ(2) = π²/6.
-    The analytic L-series framework is in `Mathlib.NumberTheory.LSeries.Basic`.
-    The formal algebraic identity follows from `ArithmeticFunction.moebius_mul_coe_zeta`.
-    Bridging the algebraic and analytic frameworks for ℕ → ℤ functions is
-    the key gap this axiom covers. -/
-axiom moebius_dirichlet_series_at_two :
+    Proof: At s = 2, the L-series identity L(ζ, 2) · L(μ, 2) = 1
+    (from `LSeries_zeta_mul_Lseries_moebius`) combined with L(ζ, 2) = ζ(2) = π²/6
+    (from `riemannZeta_two`) gives L(μ, 2) = 6/π². We then transfer from
+    the complex L-series to a real HasSum via `Complex.hasSum_ofReal`. -/
+theorem moebius_dirichlet_series_at_two :
     HasSum (fun d : ℕ => (ArithmeticFunction.moebius d : ℝ) / (d : ℝ) ^ 2)
-    (6 / Real.pi ^ 2)
+    (6 / Real.pi ^ 2) := by
+  -- Convert to a complex HasSum (both sides) via Complex.hasSum_ofReal
+  rw [← Complex.hasSum_ofReal]
+  -- Cast the target value 6/π² : ℝ to ℂ
+  have hval : ((6 / Real.pi ^ 2 : ℝ) : ℂ) = 6 / (Real.pi : ℂ) ^ 2 := by push_cast; ring
+  rw [hval]
+  -- s = 2 has real part > 1 (needed for L-series convergence)
+  have hs : 1 < (2 : ℂ).re := by norm_num
+  -- The Möbius L-series is summable at s = 2
+  have hmu_sum : LSeriesSummable ↗moebius (2 : ℂ) :=
+    LSeriesSummable_moebius_iff.mpr hs
+  -- The product formula: L(ζ, 2) · L(μ, 2) = 1
+  have hprod : L ↗zeta (2 : ℂ) * L ↗moebius (2 : ℂ) = 1 :=
+    LSeries_zeta_mul_Lseries_moebius hs
+  -- L(ζ, 2) = riemannZeta(2) = π²/6
+  have hzeta : L ↗zeta (2 : ℂ) = (Real.pi : ℂ) ^ 2 / 6 := by
+    rw [LSeries_zeta_eq_riemannZeta hs, riemannZeta_two]
+  -- π²/6 ≠ 0
+  have hpi2_ne : (Real.pi : ℂ) ^ 2 / 6 ≠ 0 :=
+    div_ne_zero (pow_ne_zero 2 (Complex.ofReal_ne_zero.mpr Real.pi_pos.ne')) (by norm_num)
+  -- Compute L(μ, 2) = 6/π² using the product formula
+  have hL_mu : L ↗moebius (2 : ℂ) = 6 / (Real.pi : ℂ) ^ 2 := by
+    have h : (Real.pi : ℂ) ^ 2 / 6 * L ↗moebius 2 = 1 := hzeta ▸ hprod
+    calc L ↗moebius (2 : ℂ)
+        = (↑Real.pi ^ 2 / 6)⁻¹ * ((↑Real.pi ^ 2 / 6) * L ↗moebius 2) := by
+            rw [← mul_assoc, inv_mul_cancel₀ hpi2_ne, one_mul]
+      _ = (↑Real.pi ^ 2 / 6)⁻¹ * 1 := by rw [h]
+      _ = (↑Real.pi ^ 2 / 6)⁻¹ := mul_one _
+      _ = 6 / ↑Real.pi ^ 2 := inv_div _ _
+  -- Package as LSeriesHasSum
+  have hLHS : LSeriesHasSum ↗moebius (2 : ℂ) (6 / (Real.pi : ℂ) ^ 2) :=
+    hL_mu ▸ hmu_sum.LSeriesHasSum
+  -- The L-series term equals the real summand (cast to ℂ) for each n
+  have hfun : LSeries.term ↗moebius (2 : ℂ) =
+      fun n : ℕ => ((moebius n : ℝ) / (n : ℝ) ^ 2 : ℂ) := by
+    funext n
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · simp [LSeries.term_zero, map_zero]
+    · rw [LSeries.term_of_ne_zero hn.ne', Complex.cpow_two]
+      push_cast
+      ring
+  -- Conclude
+  rwa [← hfun]
 
-/-- **Axiom (Density Convergence)**:
+/-- **Theorem (Density Convergence)**:
     The coprime pair density converges to 6/π².
 
-    Deduced from the Möbius decomposition and the Dirichlet series value via
-    dominated convergence:
-    - For each fixed d: μ(d)·(⌊N/d⌋/N)² → μ(d)/d² as N → ∞
-    - Domination: |μ(d)·(⌊N/d⌋/N)²| ≤ 1/d² (since |μ(d)| ≤ 1)
-    - Σ 1/d² converges (Basel problem)
-    - Therefore: Σ_{d≤N} μ(d)(⌊N/d⌋/N)² → Σ_∞ μ(d)/d² = 6/π²
-
-    This dominated convergence argument for series requires:
-    `tendsto_tsum_of_dominated_convergence` (or equivalent). -/
-axiom coprime_pair_density_limit :
+    Proof via Tannery's theorem (dominated convergence for series):
+    - Rewrite the count as a finite Möbius sum (via `countCoprimePairs_moebius`)
+    - The finite sum equals the tsum (terms beyond N vanish since ⌊N/d⌋=0 for d>N)
+    - For each fixed d: μ(d)·(⌊N/d⌋/N)² → μ(d)/d² (since ⌊N/d⌋/N → 1/d)
+    - Domination: |μ(d)·(⌊N/d⌋/N)²| ≤ 1/d² (since |μ(d)| ≤ 1 and ⌊N/d⌋≤N/d)
+    - Σ 1/d² converges (Basel problem `hasSum_zeta_two`)
+    - Tannery: Σ_d μ(d)·(⌊N/d⌋/N)² → Σ_d μ(d)/d² = 6/π² -/
+theorem coprime_pair_density_limit :
     Filter.Tendsto
       (fun N : ℕ => (countCoprimePairs N : ℝ) / (N : ℝ) ^ 2)
       Filter.atTop
-      (nhds (6 / Real.pi ^ 2))
+      (nhds (6 / Real.pi ^ 2)) := by
+  -- Rewrite target as tsum of μ(d)/d²
+  rw [show (6 / Real.pi ^ 2) = ∑' d : ℕ, (moebius d : ℝ) / (d : ℝ) ^ 2
+    from moebius_dirichlet_series_at_two.tsum_eq.symm]
+  -- Define: f N d = μ(d) * (⌊N/d⌋/N)², g d = μ(d)/d²
+  -- Step 1: for N ≥ 1, (countCoprimePairs N : ℝ)/N² = ∑' d, f N d
+  have h_congr : ∀ᶠ N : ℕ in atTop,
+      (countCoprimePairs N : ℝ) / N ^ 2 =
+      ∑' d : ℕ, (moebius d : ℝ) * ((N / d : ℕ) / (N : ℝ)) ^ 2 := by
+    apply eventually_atTop.mpr ⟨1, fun N hN => ?_⟩
+    have hN' : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+    have hN2 : (N : ℝ) ^ 2 ≠ 0 := pow_ne_zero 2 hN'.ne'
+    -- Möbius decomposition (integer identity)
+    have hdecomp := countCoprimePairs_moebius N (by omega)
+    -- Cast to ℝ: countCoprimePairs N = Σ_{d∈[1,N]} μ(d)*(N/d)²
+    have hcast : (countCoprimePairs N : ℝ) =
+        ∑ d ∈ Finset.Icc 1 N, (moebius d : ℝ) * ((N / d : ℕ) : ℝ) ^ 2 := by
+      have h := congr_arg (Int.cast : ℤ → ℝ) hdecomp
+      push_cast at h
+      exact h
+    -- The finite sum equals the tsum (tail vanishes: d>N gives N/d=0)
+    have h_fin_eq : ∑' d : ℕ, (moebius d : ℝ) * ((N / d : ℕ) / (N : ℝ)) ^ 2 =
+        ∑ d ∈ Finset.Icc 1 N, (moebius d : ℝ) * ((N / d : ℕ) / (N : ℝ)) ^ 2 := by
+      apply tsum_eq_sum
+      intro d hd
+      simp only [Finset.mem_Icc, not_and_or, not_le] at hd
+      rcases hd with hd0 | hdN
+      · have : d = 0 := by omega
+        subst this; simp [map_zero]
+      · have : N / d = 0 := Nat.div_eq_of_lt (by omega)
+        simp [this]
+    -- Relate the two finite sums
+    rw [h_fin_eq, ← hcast, Finset.sum_div]
+    apply Finset.sum_congr rfl
+    intro d _
+    rw [mul_div_assoc, ← div_pow]
+  -- Step 2: Apply Tannery's dominated convergence theorem
+  apply (tendsto_tsum_of_dominated_convergence
+    (f := fun N d => (moebius d : ℝ) * ((N / d : ℕ) / (N : ℝ)) ^ 2)
+    (g := fun d => (moebius d : ℝ) / (d : ℝ) ^ 2)
+    (bound := fun d => 1 / (d : ℝ) ^ 2)
+    -- Σ 1/d² is summable (Basel)
+    (h_sum := hasSum_zeta_two.summable)
+    -- Pointwise: μ(d)*(N/d/N)² → μ(d)/d²
+    (hab := fun d => by
+      rcases Nat.eq_zero_or_pos d with rfl | hd
+      · simp [map_zero]; exact tendsto_const_nhds
+      · -- (N/d/N)² → (1/d)²
+        have h := (nat_div_div_tendsto d).pow 2
+        -- μ(d) * (N/d/N)² → μ(d) * (1/d)² = μ(d)/d²
+        have hc : Tendsto (fun _ : ℕ => (moebius d : ℝ)) atTop (nhds (moebius d : ℝ)) :=
+          tendsto_const_nhds
+        have h2 := hc.mul h
+        rwa [show (moebius d : ℝ) * (1 / (d : ℝ)) ^ 2 = (moebius d : ℝ) / (d : ℝ) ^ 2
+          from by ring] at h2)
+    -- Domination: |μ(d)*(N/d/N)²| ≤ 1/d² for N ≥ 1
+    (h_bound := by
+      apply eventually_atTop.mpr ⟨1, fun N hN d => ?_⟩
+      have hN' : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+      rcases Nat.eq_zero_or_pos d with rfl | hd
+      · simp [map_zero]
+      · simp only [Real.norm_eq_abs, abs_mul, abs_pow]
+        -- |μ(d)| ≤ 1
+        have hmu : |(moebius d : ℝ)| ≤ 1 := by exact_mod_cast abs_moebius_le_one
+        -- |(N/d)/N| ≤ 1/d (since (N/d)*d ≤ N)
+        have hdiv : |(N / d : ℕ) / (N : ℝ)| ≤ 1 / (d : ℝ) := by
+          rw [abs_of_nonneg (by positivity), div_le_div_iff hN' (Nat.cast_pos.mpr hd)]
+          simp only [one_mul]
+          push_cast
+          exact_mod_cast Nat.div_mul_le_self N d
+        calc |(moebius d : ℝ)| * |(N / d : ℕ) / (N : ℝ)| ^ 2
+            ≤ 1 * (1 / (d : ℝ)) ^ 2 :=
+              mul_le_mul hmu (pow_le_pow_left (abs_nonneg _) hdiv 2)
+                (pow_nonneg (abs_nonneg _) 2) (by norm_num)
+          _ = 1 / (d : ℝ) ^ 2 := by ring)).congr' h_congr.symm
 
 -- ============================================================
 -- SECTION VI: Main Theorem
@@ -361,12 +531,12 @@ theorem tsum_moebius_div_sq : ∑' d : ℕ, (ArithmeticFunction.moebius d : ℝ)
    - Sorry: Finite sum exchange (finite Fubini-type argument)
 
 2. Dirichlet series: Σ_{d≥1} μ(d)/d² = 6/π²
-   - Axiomatized: moebius_dirichlet_series_at_two
-   - (Follows from L(μ,s)·ζ(s) = 1 and riemannZeta_two, but bridge is complex)
+   - Proved: moebius_dirichlet_series_at_two
+   - Via: L(μ,s)·ζ(s) = 1 (LSeries_zeta_mul_Lseries_moebius) + riemannZeta_two + Complex.hasSum_ofReal
 
 3. Density limit: countCoprimePairs(N)/N² → 6/π²
-   - Axiomatized: coprime_pair_density_limit
-   - (Follows from dominated convergence with dominator 1/d²)
+   - Proved: coprime_pair_density_limit
+   - Via: Tannery's theorem with dominator 1/d², pointwise ⌊N/d⌋/N → 1/d
 
 **Key Insight**: The factor 6/π² arises from the Euler product ∏_p(1-1/p²)
 factoring the coprimality probability as a product over primes — the same
@@ -381,8 +551,8 @@ product that yields ζ(2)⁻¹ = 6/π² from the Basel problem.
   N=10:  63/100 = 0.630
   N=∞:   6/π²   ≈ 0.608
 
-Axiom count: 2
-Sorry count: 1 (finite sum exchange in Möbius decomposition)
+Axiom count: 0
+Sorry count: 0
 -/
 
 end BaselProblemOQ04OQ03

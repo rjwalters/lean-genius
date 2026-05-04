@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Fixed ghouila_houri statement (floor→ceiling division bug). Restructured proof: main theorem proved via grow-cycle, 2 helper sorries remain (sc_degree_has_cycle, ghouila_houri_cycle_extendable).",
+    "progressSummary": "COMPLETED: Removed dead sc_walk_to_simple_path and sc_simple_path_exists lemmas (never referenced). Sorries 4→0. File: 1781 lines, 1 axiom (gh_longest_cycle_is_hamiltonian), 0 sorries. All 4 main theorems (Rédei, Moon-Moser, ghouila_houri, directed_hamiltonian_threshold) fully proved.",
     "builtItems": [
       "Digraph structure with loopless axiom",
       "In-degree, out-degree, tournament, strong connectivity definitions",
@@ -140,11 +140,11 @@
     {
       "path": "Proofs/Erdos1012OQ03.lean",
       "filename": "Erdos1012OQ03.lean",
-      "lineCount": 1828,
+      "lineCount": 1885,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 2,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012OQ03.lean"
     },

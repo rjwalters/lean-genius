@@ -29,14 +29,17 @@
   5. `lehmerCofactors_invariant_le` — strengthens (4) with the
      residue-monotonicity bound `max ahat' bhat' ≤ max ahat bhat`.
 
-  Out of scope (deferred — see `hgcdMatrix_size_reduction`):
+  Toward size reduction (PARTS VIII–IX):
+  We also prove `hgcdShift_pos` (shift ≥ 1 for large inputs) and
+  `hgcdShift_top_lt` (top-half inputs strictly decrease), which
+  enable the strong induction for Step 4. The joint bound
+  `hgcdMatrix_joint_bound` is stated as a sorry; the missing piece
+  is a "quotient stability" lemma not yet formalized here.
+
+  Out of scope (deferred):
   The bit-complexity claim O(M(n)·log n) requires a Mathlib model of
   fast multiplication and bit operations that does not yet exist.
-  Filling that gap is a multi-thousand-line foundational project. The
-  size-reduction lemma needed for the complexity claim is stated as
-  `hgcdMatrix_size_reduction` below with a focused open question; the
-  remaining piece for closing it is a Cramer-inversion entry bound on
-  the cofactor matrix.
+  Filling that gap is a multi-thousand-line foundational project.
 
   References:
     - Schönhage (1971), "Schnelle Berechnung von Kettenbruchentwicklungen"
@@ -434,98 +437,584 @@ theorem lehmerCofactors_id_apply_le (fuel ahat bhat : ℕ) :
   · simp [CofactorMatrix.id]
 
 -- ═══════════════════════════════════════════════════════════════
--- PART VI: SIZE REDUCTION (deferred — open mathematical content)
+-- PART VI: CRAMER IDENTITY AND SIGN PATTERN (Step 2b)
 -- ═══════════════════════════════════════════════════════════════
 
-/-- The HGCD size-reduction lemma: applying `hgcdMatrix` to `(a, b)`
-    yields a pair `(a', b')` whose magnitude is about half of `max a b`.
+/-- Cramer recovery formula in the row-vector convention.
 
-    This is the only non-trivial mathematical claim that distinguishes
-    HGCD from Lehmer's algorithm. Once established (with the right
-    constants), iterating HGCD gives O(log n) reductions to size 1,
-    each costing one M(n) full-precision matrix-vector multiplication
-    — yielding the O(M(n)·log n) complexity bound.
+    From `(a₀, b₀) · M = (ahat, bhat)` — i.e.,
+      a₀·M.α + b₀·M.γ = ahat  and  a₀·M.β + b₀·M.δ = bhat —
+    the determinant identity gives:
 
-    Stating the lemma precisely requires choosing a `bitsize` measure
-    and the constant in front of `bitsize/2`. Standard formulations:
+      a₀ · det M = ahat · M.δ - bhat · M.γ
+      b₀ · det M = bhat · M.α - ahat · M.β
 
-      ‖M·(a,b)‖∞ ≤ ‖(a,b)‖∞ / 2 + O(1)
+    Proof: pure algebra. `linear_combination M.δ * h₁ - M.γ * h₂` for
+    the first goal, `M.α * h₂ - M.β * h₁` for the second. -/
+theorem row_vec_cramer {a₀ b₀ ahat bhat : ℤ} {M : CofactorMatrix}
+    (h₁ : a₀ * M.α + b₀ * M.γ = ahat)
+    (h₂ : a₀ * M.β + b₀ * M.δ = bhat) :
+    a₀ * M.det = ahat * M.δ - bhat * M.γ ∧
+    b₀ * M.det = bhat * M.α - ahat * M.β := by
+  simp only [CofactorMatrix.det]
+  exact ⟨by linear_combination M.δ * h₁ - M.γ * h₂,
+         by linear_combination M.α * h₂ - M.β * h₁⟩
 
-    where ‖·‖∞ is the max of bit-lengths. The O(1) absorbs the
-    "rounding" introduced by truncation of the top half.
+/-- The "even-step" sign pattern: entries after an even number of
+    `lehmerInnerStep` applications starting from `CofactorMatrix.id`.
+    The identity has α = δ = 1 ≥ 0 and β = γ = 0 ≤ 0, so it is even. -/
+def EvenPattern (M : CofactorMatrix) : Prop :=
+  0 ≤ M.α ∧ M.β ≤ 0 ∧ M.γ ≤ 0 ∧ 0 ≤ M.δ
 
-    A complete proof requires:
-      (a) A clean Lean definition of `bitsize` (or use Nat.log 2 + 1).
-      (b) The "advance" lemma for one HGCD step: starting from
-          (a, b) with max bitsize n, after applying the recursively
-          computed M₁ to full precision, the new max bitsize is
-          ≤ n - n/2 + c for some explicit constant c independent of n.
-      (c) Composing two such steps for the recursive call structure.
+/-- The "odd-step" sign pattern: α ≤ 0, δ ≤ 0, β ≥ 0, γ ≥ 0. -/
+def OddPattern (M : CofactorMatrix) : Prop :=
+  M.α ≤ 0 ∧ 0 ≤ M.β ∧ 0 ≤ M.γ ∧ M.δ ≤ 0
 
-    Open question (this proof obligation):
-    Is there a Lean-friendly statement of this lemma that avoids
-    deep dependencies on bit-complexity infrastructure? Stehlé and
-    Zimmermann (2004) give a careful analysis with explicit constants
-    for the binary-recursive variant. -/
-theorem hgcdMatrix_size_reduction :
-    ∀ (a b : ℕ), 4 ≤ max a b → True := by
-  -- Placeholder statement: when filled in, this will assert
-  -- a precise size-reduction bound on `hgcdMatrixOf a b`.
-  -- See research/problems/binary-gcd-oq-03-oq-02/knowledge.md.
-  intros; trivial
+/-- The identity matrix has EvenPattern. -/
+theorem CofactorMatrix.id_even_pattern : EvenPattern CofactorMatrix.id := by
+  simp [EvenPattern, CofactorMatrix.id]
+
+/-- One successful `lehmerInnerStep` takes EvenPattern to OddPattern.
+
+    M' = M.mul [[0,1],[1,-q]]:
+      M'.α = M.β,         M'.γ = M.δ
+      M'.β = M.α - q·M.β, M'.δ = M.γ - q·M.δ
+
+    For EvenPattern (α ≥ 0, β ≤ 0, γ ≤ 0, δ ≥ 0) and q ≥ 0:
+      M'.α = M.β ≤ 0  ✓
+      M'.β = M.α + q·(-M.β) ≥ 0  ✓  (both terms non-negative)
+      M'.γ = M.δ ≥ 0  ✓
+      M'.δ = M.γ - q·M.δ ≤ 0  ✓  (M.γ ≤ 0, -q·M.δ ≤ 0) -/
+theorem lehmerInnerStep_even_to_odd {ahat bhat : ℕ} {M M' : CofactorMatrix}
+    {ahat' bhat' : ℕ}
+    (hstep : lehmerInnerStep ahat bhat M = some (ahat', bhat', M'))
+    (heven : EvenPattern M) :
+    OddPattern M' := by
+  simp [lehmerInnerStep] at hstep
+  split at hstep <;> simp_all
+  split at hstep <;> simp_all
+  obtain ⟨_, _, rfl⟩ := hstep
+  obtain ⟨hα, hβ, hγ, hδ⟩ := heven
+  simp only [OddPattern]
+  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  refine ⟨hβ, ?_, hδ, ?_⟩
+  · nlinarith
+  · nlinarith
+
+/-- One successful `lehmerInnerStep` takes OddPattern to EvenPattern. -/
+theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
+    {ahat' bhat' : ℕ}
+    (hstep : lehmerInnerStep ahat bhat M = some (ahat', bhat', M'))
+    (hodd : OddPattern M) :
+    EvenPattern M' := by
+  simp [lehmerInnerStep] at hstep
+  split at hstep <;> simp_all
+  split at hstep <;> simp_all
+  obtain ⟨_, _, rfl⟩ := hstep
+  obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
+  simp only [EvenPattern]
+  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  -- M' = [[M.β, M.α - q·M.β], [M.δ, M.γ - q·M.δ]]
+  -- EvenPattern: M'.α = M.β ≥ 0, M'.β = M.α - q·M.β ≤ 0, M'.γ = M.δ ≤ 0, M'.δ = M.γ - q·M.δ ≥ 0
+  refine ⟨hβ, ?_, hδ, ?_⟩
+  · -- M.α - q*M.β ≤ 0: M.α ≤ 0, q*M.β ≥ 0
+    nlinarith
+  · -- 0 ≤ M.γ - q*M.δ: M.γ ≥ 0, -q*M.δ ≥ 0 (since M.δ ≤ 0)
+    nlinarith
+
+/-- `lehmerCofactors` preserves the EvenPattern/OddPattern disjunction
+    from any starting matrix that has one.
+
+    Induction on fuel: base returns the initial pattern unchanged.
+    Each successful step flips even↔odd via the alternation lemmas. -/
+theorem lehmerCofactors_has_pattern_from
+    (fuel ahat bhat : ℕ) (M₀ : CofactorMatrix)
+    (h₀ : EvenPattern M₀ ∨ OddPattern M₀) :
+    EvenPattern (lehmerCofactors fuel ahat bhat M₀) ∨
+    OddPattern (lehmerCofactors fuel ahat bhat M₀) := by
+  induction fuel generalizing ahat bhat M₀ with
+  | zero => simp [lehmerCofactors]; exact h₀
+  | succ n ih =>
+    simp only [lehmerCofactors]
+    match hstep : lehmerInnerStep ahat bhat M₀ with
+    | none => exact h₀
+    | some (ahat', bhat', M') =>
+      rcases h₀ with heven | hodd
+      · exact ih ahat' bhat' M' (Or.inr (lehmerInnerStep_even_to_odd hstep heven))
+      · exact ih ahat' bhat' M' (Or.inl (lehmerInnerStep_odd_to_even hstep hodd))
+
+/-- `lehmerCofactors` starting from `CofactorMatrix.id` always has
+    EvenPattern or OddPattern. -/
+theorem lehmerCofactors_has_pattern (fuel ahat bhat : ℕ) :
+    EvenPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id) ∨
+    OddPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id) :=
+  lehmerCofactors_has_pattern_from fuel ahat bhat CofactorMatrix.id
+    (Or.inl CofactorMatrix.id_even_pattern)
+
+/-- Entry bound for `lehmerCofactors` starting from `id`:
+    when EvenPattern holds, the non-negative entries δ and α are
+    bounded by the initial inputs, and the non-positive entries
+    γ and β are bounded in absolute value.
+
+    Precisely: under EvenPattern (so M.δ ≥ 0, M.γ ≤ 0) and the
+    row-vector invariant
+      `ahat * M.α + bhat * M.γ = ahat'`  (with ahat' : ℤ, ≥ 0)
+      `ahat * M.β + bhat * M.δ = bhat'`  (with bhat' : ℤ, ≥ 0)
+    and det M = 1:
+      ahat = ahat' * M.δ + bhat' * (-M.γ) ≥ ahat' * M.δ ≥ M.δ  (if ahat' ≥ 1)
+      bhat = bhat' * M.α + ahat' * (-M.β) ≥ bhat' * M.α ≥ M.α  (if bhat' ≥ 1) -/
+theorem entry_bound_of_even {a₀ b₀ ahat' bhat' : ℤ} {M : CofactorMatrix}
+    (h₁ : a₀ * M.α + b₀ * M.γ = ahat')
+    (h₂ : a₀ * M.β + b₀ * M.δ = bhat')
+    (hdet : M.det = 1)
+    (heven : EvenPattern M)
+    (ha₀ : 0 < a₀) (hb₀ : 0 < b₀)
+    (hahat' : 1 ≤ ahat') (hbhat' : 1 ≤ bhat') :
+    M.δ ≤ a₀ ∧ -(a₀) ≤ M.γ ∧ M.α ≤ b₀ ∧ -(b₀) ≤ M.β := by
+  obtain ⟨hα, hβ, hγ, hδ⟩ := heven
+  obtain ⟨hcr_a, hcr_b⟩ := row_vec_cramer h₁ h₂
+  rw [hdet, mul_one] at hcr_a hcr_b
+  -- hcr_a : a₀ = ahat' * M.δ - bhat' * M.γ
+  -- hcr_b : b₀ = bhat' * M.α - ahat' * M.β
+  -- Since EvenPattern: M.γ ≤ 0 so -bhat' * M.γ ≥ 0,
+  -- and M.δ ≥ 0, ahat' ≥ 1 → a₀ ≥ ahat' * M.δ ≥ M.δ
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- M.δ ≤ a₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') (neg_nonneg.mpr hγ),
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ ahat') hδ]
+  · -- -a₀ ≤ M.γ, i.e., M.γ ≥ -a₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hδ,
+               mul_nonneg (by linarith : (0:ℤ) ≤ bhat') (neg_nonneg.mpr hγ)]
+  · -- M.α ≤ b₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') (neg_nonneg.mpr hβ),
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ bhat') hα]
+  · -- -b₀ ≤ M.β, i.e., M.β ≥ -b₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') hα,
+               mul_nonneg (by linarith : (0:ℤ) ≤ ahat') (neg_nonneg.mpr hβ)]
+
+/-- Entry bound for OddPattern (symmetric to EvenPattern case). -/
+theorem entry_bound_of_odd {a₀ b₀ ahat' bhat' : ℤ} {M : CofactorMatrix}
+    (h₁ : a₀ * M.α + b₀ * M.γ = ahat')
+    (h₂ : a₀ * M.β + b₀ * M.δ = bhat')
+    (hdet : M.det = -1)
+    (hodd : OddPattern M)
+    (ha₀ : 0 < a₀) (hb₀ : 0 < b₀)
+    (hahat' : 1 ≤ ahat') (hbhat' : 1 ≤ bhat') :
+    -(a₀) ≤ M.δ ∧ M.γ ≤ a₀ ∧ -(b₀) ≤ M.α ∧ M.β ≤ b₀ := by
+  obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
+  obtain ⟨hcr_a, hcr_b⟩ := row_vec_cramer h₁ h₂
+  rw [hdet] at hcr_a hcr_b
+  -- hcr_a : a₀ * (-1) = ahat' * M.δ - bhat' * M.γ
+  -- → -a₀ = ahat' * M.δ - bhat' * M.γ
+  -- OddPattern: M.δ ≤ 0, M.γ ≥ 0
+  -- ahat' * M.δ ≤ 0 and bhat' * M.γ ≥ 0
+  -- -a₀ = ahat' * M.δ - bhat' * M.γ ≤ ahat' * M.δ ≤ M.δ (if ahat' ≥ 1)
+  -- → M.δ ≥ -a₀ ✓
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') hγ,
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ ahat') (neg_nonneg.mpr hδ)]
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') (neg_nonneg.mpr hδ),
+               mul_nonneg (by linarith : (0:ℤ) ≤ bhat') hγ]
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hβ,
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ bhat') (neg_nonneg.mpr hα)]
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') (neg_nonneg.mpr hα),
+               mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hβ]
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VII: PERTURBATION INFRASTRUCTURE (Step 3 building blocks)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Step 3 infrastructure
+
+The HGCD algorithm computes `M₁ = hgcdMatrix fuel (a >> s) (b >> s)` using
+the top-half truncation of `(a, b)`, then applies `M₁` to the full-precision
+`(a, b)`. Step 3 bounds the discrepancy introduced by this truncation.
+
+Write `aHi = a / 2^s`, `bHi = b / 2^s`, `ea = a % 2^s`, `eb = b % 2^s`, so
+that `a = aHi * 2^s + ea` and `b = bHi * 2^s + eb` with `0 ≤ ea, eb < 2^s`.
+
+Linearity of `apply` gives:
+  `M.apply a b = M.apply (aHi*2^s) (bHi*2^s) + M.apply ea eb`
+           `= 2^s · M.apply aHi bHi + M.apply ea eb`.
+
+The first term is bounded by `2^s · max(aHi, bHi)` from residue monotonicity
+(Step 2a applied to the top-half subproblem).  The second (error) term is:
+  `|M.α · ea + M.β · eb| ≤ (|M.α| + |M.β|) · 2^s`
+                        `≤ 2 · max(aHi, bHi) · 2^s`
+using the entry bounds from Step 2b (`entry_bound_of_even/odd`).
+
+The lemmas in this section establish the algebraic pieces.  The
+inductive bitsize argument needed to close `hgcdMatrix_size_reduction`
+is deferred (Step 4). -/
+
+/-- `CofactorMatrix.apply` distributes over addition of inputs.
+    This is pure ring algebra: apply(a₁ + a₂, b₁ + b₂) splits into
+    apply(a₁, b₁) + apply(a₂, b₂) component-wise. -/
+theorem cofactor_apply_add (M : CofactorMatrix) (a₁ a₂ b₁ b₂ : ℤ) :
+    (M.apply (a₁ + a₂) (b₁ + b₂)).1 = (M.apply a₁ b₁).1 + (M.apply a₂ b₂).1 ∧
+    (M.apply (a₁ + a₂) (b₁ + b₂)).2 = (M.apply a₁ b₁).2 + (M.apply a₂ b₂).2 := by
+  simp only [CofactorMatrix.apply]
+  exact ⟨by ring, by ring⟩
+
+/-- `CofactorMatrix.apply` commutes with scalar multiplication.
+    For any scalar `k : ℤ`, `M.apply (k · a) (k · b) = k · M.apply a b`
+    component-wise. -/
+theorem cofactor_apply_smul (M : CofactorMatrix) (k a b : ℤ) :
+    (M.apply (k * a) (k * b)).1 = k * (M.apply a b).1 ∧
+    (M.apply (k * a) (k * b)).2 = k * (M.apply a b).2 := by
+  simp only [CofactorMatrix.apply]
+  exact ⟨by ring, by ring⟩
+
+/-- The full-precision apply equals `2^s` times the top-half apply, plus the
+    error from the low-bits `(ea, eb)`.
+
+    Concretely: `a = aHi * 2^s + ea` and `b = bHi * 2^s + eb`, so by
+    `cofactor_apply_add` and `cofactor_apply_smul`:
+      `(M.apply a b).1 = 2^s · (M.apply aHi bHi).1 + (M.apply ea eb).1`.
+    This is the key decomposition for the perturbation argument. -/
+theorem cofactor_apply_shift_decomp (M : CofactorMatrix) (aHi bHi ea eb : ℤ) (s : ℕ) :
+    let pow2s : ℤ := 2 ^ s
+    (M.apply (aHi * pow2s + ea) (bHi * pow2s + eb)).1 =
+      pow2s * (M.apply aHi bHi).1 + (M.apply ea eb).1 ∧
+    (M.apply (aHi * pow2s + ea) (bHi * pow2s + eb)).2 =
+      pow2s * (M.apply aHi bHi).2 + (M.apply ea eb).2 := by
+  simp only [CofactorMatrix.apply]
+  exact ⟨by ring, by ring⟩
+
+/-- Triangle bound: |M.α · ea + M.β · eb| ≤ |M.α| · |ea| + |M.β| · |eb|.
+
+    This is Int.natAbs triangle inequality for the first component of
+    `M.apply ea eb`. Used to bound the error term in Step 3 given
+    entry bounds on M from Step 2b. -/
+theorem cofactor_apply_natAbs_le (M : CofactorMatrix) (ea eb : ℤ) :
+    (M.apply ea eb).1.natAbs ≤ M.α.natAbs * ea.natAbs + M.β.natAbs * eb.natAbs ∧
+    (M.apply ea eb).2.natAbs ≤ M.γ.natAbs * ea.natAbs + M.δ.natAbs * eb.natAbs := by
+  simp only [CofactorMatrix.apply]
+  constructor
+  · calc (M.α * ea + M.β * eb).natAbs
+        ≤ (M.α * ea).natAbs + (M.β * eb).natAbs := Int.natAbs_add_le _ _
+      _ = M.α.natAbs * ea.natAbs + M.β.natAbs * eb.natAbs := by
+            simp [Int.natAbs_mul]
+  · calc (M.γ * ea + M.δ * eb).natAbs
+        ≤ (M.γ * ea).natAbs + (M.δ * eb).natAbs := Int.natAbs_add_le _ _
+      _ = M.γ.natAbs * ea.natAbs + M.δ.natAbs * eb.natAbs := by
+            simp [Int.natAbs_mul]
+
+/-- Error bound for the first component of `M.apply ea eb` when entries are
+    bounded by `C` and inputs are bounded by `B` (all in ℕ).
+
+    From `cofactor_apply_natAbs_le` with `|M.α|, |M.β| ≤ C` and
+    `|ea|, |eb| ≤ B`, the first component is at most `2 · C · B`. -/
+theorem cofactor_apply_err_bound (M : CofactorMatrix) (ea eb : ℤ) (C B : ℕ)
+    (hα : M.α.natAbs ≤ C) (hβ : M.β.natAbs ≤ C)
+    (hea : ea.natAbs ≤ B) (heb : eb.natAbs ≤ B) :
+    (M.apply ea eb).1.natAbs ≤ 2 * C * B := by
+  have ⟨h, _⟩ := cofactor_apply_natAbs_le M ea eb
+  calc (M.apply ea eb).1.natAbs
+      ≤ M.α.natAbs * ea.natAbs + M.β.natAbs * eb.natAbs := h
+    _ ≤ C * B + C * B := by
+          apply Nat.add_le_add
+          · exact Nat.mul_le_mul hα hea
+          · exact Nat.mul_le_mul hβ heb
+    _ = 2 * C * B := by ring
+
+/-- Error bound for the second component of `M.apply ea eb`. Symmetric to
+    `cofactor_apply_err_bound` using `|M.γ|` and `|M.δ|`. -/
+theorem cofactor_apply_err_bound_snd (M : CofactorMatrix) (ea eb : ℤ) (C B : ℕ)
+    (hγ : M.γ.natAbs ≤ C) (hδ : M.δ.natAbs ≤ C)
+    (hea : ea.natAbs ≤ B) (heb : eb.natAbs ≤ B) :
+    (M.apply ea eb).2.natAbs ≤ 2 * C * B := by
+  have ⟨_, h⟩ := cofactor_apply_natAbs_le M ea eb
+  calc (M.apply ea eb).2.natAbs
+      ≤ M.γ.natAbs * ea.natAbs + M.δ.natAbs * eb.natAbs := h
+    _ ≤ C * B + C * B := by
+          apply Nat.add_le_add
+          · exact Nat.mul_le_mul hγ hea
+          · exact Nat.mul_le_mul hδ heb
+    _ = 2 * C * B := by ring
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VIIb: ROW-CONVENTION DECOMPOSITION LEMMAS
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Row-product decomposition
+
+When `a = aHi * 2^s + aLo` and `b = bHi * 2^s + bLo`, the row products
+`a * M.α + b * M.γ` and `a * M.β + b * M.δ` decompose as:
+
+  `2^s * (aHi * M.α + bHi * M.γ) + (aLo * M.α + bLo * M.γ)`
+  `2^s * (aHi * M.β + bHi * M.δ) + (aLo * M.β + bLo * M.δ)`
+
+This is the **row-convention** analogue of `cofactor_apply_shift_decomp`.
+It is used in Step 4 to relate the full-precision row output to the
+reduced inputs `(aHi, bHi) = (a / 2^s, b / 2^s)`. -/
+
+/-- Row products distribute over the `2^s` decomposition of inputs. -/
+theorem row_product_decompose (M : CofactorMatrix)
+    (a aHi aLo b bHi bLo : ℤ) (s : ℕ)
+    (ha : a = aHi * 2 ^ s + aLo) (hb : b = bHi * 2 ^ s + bLo) :
+    a * M.α + b * M.γ =
+      (2 : ℤ) ^ s * (aHi * M.α + bHi * M.γ) + (aLo * M.α + bLo * M.γ) ∧
+    a * M.β + b * M.δ =
+      (2 : ℤ) ^ s * (aHi * M.β + bHi * M.δ) + (aLo * M.β + bLo * M.δ) := by
+  subst ha; subst hb; constructor <;> ring
+
+/-- If `aHi * M.α + bHi * M.γ = aHi'` and `aHi * M.β + bHi * M.δ = bHi'`, the
+    row products of `(a, b) = (aHi * 2^s + aLo, bHi * 2^s + bLo)` simplify
+    to `2^s * aHi' + (aLo * M.α + bLo * M.γ)` and `2^s * bHi' + (aLo * M.β + bLo * M.δ)`. -/
+theorem row_product_with_invariant (M : CofactorMatrix)
+    (a aHi aLo b bHi bLo : ℤ) (s : ℕ) (aHi' bHi' : ℤ)
+    (ha : a = aHi * 2 ^ s + aLo) (hb : b = bHi * 2 ^ s + bLo)
+    (hinv₁ : aHi * M.α + bHi * M.γ = aHi')
+    (hinv₂ : aHi * M.β + bHi * M.δ = bHi') :
+    a * M.α + b * M.γ = (2 : ℤ) ^ s * aHi' + (aLo * M.α + bLo * M.γ) ∧
+    a * M.β + b * M.δ = (2 : ℤ) ^ s * bHi' + (aLo * M.β + bLo * M.δ) := by
+  subst ha; subst hb
+  exact ⟨by linear_combination (2 : ℤ) ^ s * hinv₁,
+         by linear_combination (2 : ℤ) ^ s * hinv₂⟩
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VIII: SIZE REDUCTION PREREQUISITES (Step 4 foundations)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Shift bounds — prerequisite for strong induction
+
+The size-reduction proof proceeds by strong induction on `max a b`.
+The key fact enabling the induction is that the top-half inputs
+`(a / 2^s, b / 2^s)` are **strictly smaller** than `(a, b)`, so the
+induction hypothesis applies.
+
+These lemmas establish that `hgcdShift a b ≥ 1` (for large enough
+inputs) and hence the top-half truncation truly reduces the input
+magnitude. -/
+
+/-- The half-bit shift is at least 1 when `max a b ≥ 4`.
+
+    Proof: `hgcdShift a b = (Nat.log 2 (max a b) + 1) / 2`.
+    Since `max a b ≥ 4 = 2²`, we have `Nat.log 2 (max a b) ≥ 2`,
+    so `(2 + 1) / 2 = 1`. -/
+theorem hgcdShift_pos (a b : ℕ) (h : 4 ≤ max a b) : 1 ≤ hgcdShift a b := by
+  simp only [hgcdShift]
+  have hlog2 : 2 ≤ Nat.log 2 (max a b) := by
+    calc 2 = Nat.log 2 4 := by native_decide
+      _ ≤ Nat.log 2 (max a b) := Nat.log_mono_right h
+  omega
+
+/-- The top-half inputs `(a / 2^s, b / 2^s)` are strictly less than
+    `max a b` when `hgcdThreshold ≤ max a b`.
+
+    This is the key induction-measure decrease: the recursive calls in
+    `hgcdMatrix` pass inputs strictly smaller than the current inputs,
+    enabling strong induction on `max a b`.
+
+    Proof: since `hgcdThreshold = 64 ≥ 4`, `hgcdShift ≥ 1`, so
+    `2^s ≥ 2`, and dividing by ≥ 2 strictly decreases a positive value. -/
+theorem hgcdShift_top_lt (a b : ℕ) (h : hgcdThreshold ≤ max a b) :
+    max (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b) < max a b := by
+  have h4 : 4 ≤ max a b := by simp only [hgcdThreshold] at h; omega
+  have hpos : 1 ≤ hgcdShift a b := hgcdShift_pos a b h4
+  have hmax_pos : 0 < max a b := by omega
+  have h1lt2s : 1 < 2 ^ hgcdShift a b :=
+    Nat.one_lt_pow (by omega) (by norm_num)
+  calc max (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b)
+      ≤ max a b / 2 ^ hgcdShift a b := by
+          apply max_le
+          · exact Nat.div_le_div_right (le_max_left _ _)
+          · exact Nat.div_le_div_right (le_max_right _ _)
+    _ < max a b := Nat.div_lt_self hmax_pos h1lt2s
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART IX: ROW OUTPUT BOUND (corrected Step 4)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Convention clarification and counterexample
+
+`hgcdMatrix` uses **right-multiplication accumulation**: each Lehmer step
+appends `M' = M.mul S` where `S = ⟨0,1,1,-q⟩`. The resulting matrix satisfies
+the **row-convention identity** (`lehmerCofactors_id_apply_eq`):
+
+  `a₀ · M.α + b₀ · M.γ = current_ahat`
+  `a₀ · M.β + b₀ · M.δ = current_bhat`
+
+The **column-convention** output `M.apply(a₀, b₀) = (M.α·a₀ + M.β·b₀, M.γ·a₀ + M.δ·b₀)`
+is NOT the residue sequence. It can be much larger than `max a b`.
+
+**Counterexample** (a = 37, b = 5):
+- `max 37 5 = 37 < 64 = hgcdThreshold`, so `hgcdMatrix 1 37 5 = lehmerCofactors 64 37 5 id`
+- Lehmer runs two steps (quotients 7 and 2), stopping when remainder = 0 at step 3
+- Final matrix: `⟨1, -2, -7, 15⟩`
+- Column output: `(1·37 + (-2)·5, (-7)·37 + 15·5) = (27, -184)`
+- `hgcdShift 37 5 = (Nat.log 2 37 + 1) / 2 = 3`; `2^(3+3) = 64`
+- `184 > 64`: the previous `hgcdMatrix_joint_bound` statement is **false**.
+
+The correct bound is on the **row output**, which gives Euclidean residues bounded
+by `max a b`. `lehmerCofactors_id_apply_le` already establishes this for the base case. -/
+
+/-- Counterexample: column-convention output of `hgcdMatrix 1 37 5` has natAbs = 184. -/
+example : ((hgcdMatrix 1 37 5).apply (37 : ℤ) 5).2.natAbs = 184 := by native_decide
+
+/-- For (37, 5), the HGCD shift is 3, so 2^(s+3) = 64 < 184. -/
+example : 2 ^ (hgcdShift 37 5 + 3) = 64 := by native_decide
+
+/-- For inputs below threshold, the ROW output of `hgcdMatrix` is bounded by `max a b`.
+
+    After `hgcdMatrix_small` reduces to `lehmerCofactors hgcdThreshold a b id`,
+    `lehmerCofactors_id_apply_le` directly supplies natural-number witnesses
+    for the row output components with `max ahat' bhat' ≤ max a b`. -/
+theorem hgcdMatrix_small_row_output_le (fuel a b : ℕ) (h : max a b < hgcdThreshold) :
+    ((a : ℤ) * (hgcdMatrix (fuel + 1) a b).α
+        + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).γ).natAbs ≤ max a b ∧
+    ((a : ℤ) * (hgcdMatrix (fuel + 1) a b).β
+        + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).δ).natAbs ≤ max a b := by
+  rw [hgcdMatrix_small fuel a b h]
+  obtain ⟨ahat', bhat', h1, h2, hmax⟩ := lehmerCofactors_id_apply_le hgcdThreshold a b
+  constructor
+  · rw [h1]; simp only [Int.natAbs_ofNat]; exact le_trans (le_max_left ahat' bhat') hmax
+  · rw [h2]; simp only [Int.natAbs_ofNat]; exact le_trans (le_max_right ahat' bhat') hmax
+
+/-- [Sorry] The ROW output of `hgcdMatrix fuel a b` is bounded by `max a b`.
+
+    The row output `(a·M.α + b·M.γ, a·M.β + b·M.δ)` equals the Euclidean residues
+    produced by the Lehmer–Schönhage steps applied to `(a, b)`.
+
+    **Base case** (`fuel = 0`): `M = id`, row output = `(a, b)` ≤ `max a b`. ✓
+    **Threshold case** (`max a b < hgcdThreshold`): `hgcdMatrix_small_row_output_le`. ✓
+    **Recursive case** (Session 11 analysis):
+      `hgcdMatrix (f+1) a b = (hgcdMatrix f aHi bHi).mul M₂` where
+      `aHi = a / 2^s`, `bHi = b / 2^s`, `s = hgcdShift a b`, and
+      `M₂ = hgcdMatrix f (rowOut(hgcdMatrix f aHi bHi))`.
+
+      By `cofactor_mul_apply` + `row_product_decompose`, the row output decomposes as:
+        `a·(M₁.mul M₂).α + b·(M₁.mul M₂).γ`
+        `= rowOut(M₂, rowOut(M₁, aHi, bHi))` + low-order term from `(aLo, bLo)`.
+
+      The IH gives `|rowOut(M₁, aHi, bHi)| ≤ max(aHi, bHi) < max(a,b)`.
+      But M₂ was built for inputs *from M₁'s column output*, not the row output:
+      `M₂ = hgcdMatrix f (M₁.apply aHi bHi).1 (M₁.apply aHi bHi).2`.
+
+      Sign-pattern analysis (EvenPattern/OddPattern) bounds each *individual* entry
+      of M₁ and M₂ by `max(aHi, bHi) < max(a,b)`, but when applied to the row
+      output of M₁ (which can be up to `max(a,b)`), the second-stage row products
+      `rowOut(M₂, rowOut(M₁))` can reach `2 · max(a,b)`.
+
+      The fundamental obstacle: the IH for M₂ is at its *own* inputs (column output of
+      M₁ applied to `aHi,bHi`), not at `rowOut(M₁, aHi, bHi)`.
+
+    **Required**: Joint induction on `max(a,b)` tracking simultaneously:
+      (1) row output ≤ max(a,b), and
+      (2) column output ≤ max(a,b) · C for some entry-bound constant C.
+    This follows Stehlé–Zimmermann (2004) §4 and requires stronger intermediate lemmas
+    connecting the two conventions via the Lehmer invariant.
+
+    **Classification**: HARD (structural invariant linking row and column conventions
+    across recursive calls). Not amenable to Aristotle. -/
+theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
+    ((a : ℤ) * (hgcdMatrix fuel a b).α
+        + (b : ℤ) * (hgcdMatrix fuel a b).γ).natAbs ≤ max a b ∧
+    ((a : ℤ) * (hgcdMatrix fuel a b).β
+        + (b : ℤ) * (hgcdMatrix fuel a b).δ).natAbs ≤ max a b := by
+  induction fuel generalizing a b with
+  | zero =>
+    rw [hgcdMatrix_zero]
+    simp [CofactorMatrix.id, Int.natAbs_ofNat]
+    exact ⟨le_max_left a b, le_max_right a b⟩
+  | succ f ih =>
+    by_cases hsmall : max a b < hgcdThreshold
+    · exact hgcdMatrix_small_row_output_le f a b hsmall
+    · sorry
 
 /-! ## Summary
 
 **Proved (0 axioms, 0 sorries):**
 
 1. **Composition law** (`cofactor_mul_apply`): cofactor multiplication
-   composes the `apply` action correctly. This is the algebraic kernel
-   that justifies returning `M₂.mul M₁` from the recursion.
+   composes the `apply` action correctly.
 
 2. **Determinant invariant** (`hgcdMatrix_det_unit`): every matrix
-   returned by `hgcdMatrix` has det ±1. Proof by induction on fuel,
-   using `lehmerCofactors_det_unit` (BinaryGcdOQ03.lean) at the leaf
-   and `det_mul` for the recursive case.
+   returned by `hgcdMatrix` has det ±1.
 
 3. **GCD preservation** (`hgcdMatrix_preserves_gcd`): applying the
-   HGCD matrix to (a, b) yields a pair with the same GCD. Immediate
-   corollary of `cofactor_apply_gcd` (BinaryGcdOQ03.lean) given the
-   determinant invariant.
+   HGCD matrix to (a, b) yields a pair with the same GCD.
 
 4. **Matrix-vector invariant for Lehmer cofactors**
    (`lehmerInnerStep_invariant`, `lehmerCofactors_invariant`,
    `lehmerCofactors_id_apply_eq`): the row-vector relation
    `(a₀, b₀) · M = (current pair)` is preserved by `lehmerInnerStep`
-   and hence by `lehmerCofactors`. This is Step 1 of the size-reduction
-   proof plan, working in the row convention dictated by the right-
-   multiplication update rule of `lehmerInnerStep` (PART V.5 docstring).
+   and hence by `lehmerCofactors`. Step 1 of the size-reduction proof.
 
 5. **Residue monotonicity** (`lehmerInnerStep_residue_le`,
    `lehmerInnerStep_max_le`, `lehmerCofactors_invariant_le`,
-   `lehmerCofactors_id_apply_le`): each Lehmer inner step satisfies
-   `bhat' < bhat ∧ ahat' = bhat`, so `max ahat' bhat' ≤ max ahat bhat`;
-   this composes through `lehmerCofactors`. Combined with (4), this
-   gives the residue-side bound for the size-reduction argument.
-   Step 2a of the proof plan.
+   `lehmerCofactors_id_apply_le`): each step has `bhat' < bhat` and
+   `max ahat' bhat' ≤ max ahat bhat`. Step 2a.
 
-**Architectural significance:** This file establishes that the
-*operational correctness* of Schönhage's recursive HGCD reduces to
-the matrix-determinant invariant already proved for Lehmer's
-algorithm. The recursion structure adds no new GCD-preservation
-obligation — it only redistributes work across recursion levels for
-asymptotic complexity gain. The new PART V.5 lays the row-convention
-foundation that `hgcdMatrix_size_reduction` (currently a `True`
-placeholder) requires; what remains is the Cramer-inversion entry
-bound on the cofactor matrix (Step 2b) and a perturbation argument
-for the truncated top-half input (Step 3).
+6. **Cramer identity** (`row_vec_cramer`): from `(a₀, b₀)·M = (ahat, bhat)`
+   and the determinant, derives `a₀·det = ahat·M.δ - bhat·M.γ` and
+   `b₀·det = bhat·M.α - ahat·M.β`. Proved by `linear_combination`.
+
+7. **Sign pattern** (`EvenPattern`, `OddPattern`,
+   `lehmerInnerStep_even_to_odd`, `lehmerInnerStep_odd_to_even`,
+   `lehmerCofactors_has_pattern_from`, `lehmerCofactors_has_pattern`):
+   each `lehmerInnerStep` flips the sign pattern of the matrix entries
+   (EvenPattern ↔ OddPattern). `lehmerCofactors` starting from id
+   always has EvenPattern or OddPattern. Step 2b foundation.
+
+8. **Entry bounds** (`entry_bound_of_even`, `entry_bound_of_odd`):
+   under the row-vector invariant with positive residues (ahat', bhat' ≥ 1)
+   and EvenPattern (resp. OddPattern), all matrix entries are bounded
+   in absolute value by the initial inputs a₀ and b₀. Proved using
+   Cramer + sign pattern. This is Step 2b.
+
+9. **Perturbation infrastructure** (PART VII, Step 3 building blocks):
+   - `cofactor_apply_add`: `apply` distributes over addition of inputs.
+   - `cofactor_apply_smul`: `apply` commutes with scalar multiplication.
+   - `cofactor_apply_shift_decomp`: full-precision `apply(aHi·2^s + ea, bHi·2^s + eb)`
+     decomposes as `2^s · apply(aHi, bHi) + apply(ea, eb)`.
+   - `cofactor_apply_natAbs_le`: triangle bound for `natAbs` of both components.
+   - `cofactor_apply_err_bound` / `cofactor_apply_err_bound_snd`: given
+     entry bounds `|M.α|, |M.β| ≤ C` and input bounds `|ea|, |eb| ≤ B`,
+     the error component is at most `2·C·B`. This is the quantitative error
+     bound combining Step 2b entry bounds with the low-bit size.
+
+10. **Row-convention decomposition** (PART VIIb, Session 11):
+    - `row_product_decompose`: for `a = aHi·2^s + aLo`, `b = bHi·2^s + bLo`,
+      the row products `a·M.α + b·M.γ` and `a·M.β + b·M.δ` factor as
+      `2^s · (aHi·M.α + bHi·M.γ) + (aLo·M.α + bLo·M.γ)` (and symmetrically).
+    - `row_product_with_invariant`: if `aHi·M.α + bHi·M.γ = aHi'` and
+      `aHi·M.β + bHi·M.δ = bHi'`, then the full-precision row products simplify
+      to `2^s · aHi' + low-order term`. Both proved by `ring` / `linear_combination`.
+
+11. **Shift-position bound** (`hgcdShift_pos`): `hgcdShift a b ≥ 1` when
+    `max a b ≥ 4`. Proof: `Nat.log 2 (max a b) ≥ 2` for input ≥ 4, so
+    `(2+1)/2 = 1`. Uses `Nat.log_mono_right`.
+
+12. **Top-half strictly smaller** (`hgcdShift_top_lt`): for threshold inputs,
+    `max (a / 2^s) (b / 2^s) < max a b`. This is the **induction-measure
+    decrease** needed for the Step 4 strong induction. Proof: `2^s ≥ 2`
+    from hgcdShift_pos, then `Nat.div_lt_self`.
+
+13. **Column-convention counterexample** (PART IX): `hgcdMatrix_joint_bound`
+    as previously stated is FALSE. For (a, b) = (37, 5), the column output
+    component has natAbs = 184 > 64 = 2^(hgcdShift 37 5 + 3). Verified by
+    `native_decide`. The column convention `M.apply(a,b)` does NOT bound
+    Euclidean residues for a right-accumulated Lehmer matrix.
+
+14. **Base-case row output bound** (`hgcdMatrix_small_row_output_le`): for
+    `max a b < hgcdThreshold`, the ROW output `(a·M.α + b·M.γ, a·M.β + b·M.δ)`
+    of `hgcdMatrix (fuel+1) a b` is ≤ `max a b`. Proved using `hgcdMatrix_small`
+    and `lehmerCofactors_id_apply_le`.
+
+**Remaining for size reduction (1 sorry):**
+- `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
+  Base cases (fuel=0 and threshold case) are proved; the **missing piece** is the
+  recursive case. Session 11 sign-pattern analysis: individual entries of M₁ and M₂
+  are bounded by `max(aHi,bHi)`, but `rowOut(M₂, rowOut(M₁))` can reach `2·max(a,b)`
+  because M₂'s IH is at its column-output inputs (from M₁), not the row-output.
+  The proof requires joint induction tracking both row and column output bounds
+  (Stehlé–Zimmermann 2004 §4 approach).
 
 **Out of scope (deferred):**
-
-- Bit-complexity bound O(M(n)·log n) (`hgcdMatrix_size_reduction`):
-  requires Mathlib infrastructure (fast multiplication, bit-complexity
-  model) that does not yet exist. The size-reduction lemma is stated
-  as a placeholder; filling it requires a separate Mathlib-contribution
-  initiative. See knowledge.md for the breakdown.
+- Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
+  (fast multiplication, bit-complexity model) that does not yet exist.
 -/
 
 end HGcd

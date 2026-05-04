@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-scc-oq02oq03-header",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Proof Architecture: Three-Step Information-Theoretic Argument",
+    "content": "The file header previews the complete logical chain: (1) H(W) = log M since the message W is uniform over M codewords; (2) I(W;Y^n) ≤ n·C by the MI chain rule for memoryless channels and the data processing inequality; (3) H(W|Ŵ) ≤ 1 + P_e·log M via Fano's inequality. Combining via the chain rule for mutual information: log M = H(W) = I(W;Y^n) + H(W|Y^n) ≤ n·C + 1 + P_e·log M. This derivation is axiomatized as a single Lean axiom; the file then proves the algebraic consequence P_e ≥ (R-C)/(2R) from pure real-number arithmetic.",
+    "mathContext": "$\\log M = H(W) = I(W; Y^n) + H(W \\mid Y^n) \\leq n C + 1 + P_e \\log M \\implies P_e \\geq \\frac{R-C}{2R}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fano's inequality",
+      "data processing inequality",
+      "mutual information chain rule",
+      "channel capacity"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "mutual information",
+      "discrete memoryless channels"
+    ]
+  },
+  {
+    "id": "ann-scc-oq02oq03-error-def",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 32,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Average Error Probability of a Block Code",
+    "content": "The definition `codeErrorProb` computes the average (over messages) probability of a decoding error. For each message i, the inner sum computes the probability the channel output y^n is decoded correctly (decoder y = i), and `1 - ...` is the error probability for message i. Dividing by M gives the average. The formula uses the product channel distribution ∏ᵢ W(xᵢ, yᵢ) exploiting the memoryless channel assumption. Note this is a noncomputable definition since it involves Real summation over infinite types.",
+    "mathContext": "P_e = \\frac{1}{M} \\sum_{i=1}^{M} \\Pr[\\hat{W} \\neq i \\mid W = i] = \\frac{1}{M} \\sum_{i=1}^{M} \\left(1 - \\sum_{y^n} \\prod_{j=1}^{n} W(x_{ij}, y_j) \\cdot \\mathbf{1}[\\hat{W}(y^n) = i]\\right)",
+    "significance": "key",
+    "relatedConcepts": [
+      "error probability",
+      "block code",
+      "noncomputable definition",
+      "product distribution"
+    ],
+    "prerequisites": [
+      "block codes in Lean",
+      "DMChannel definition",
+      "Fintype summation"
+    ]
+  },
+  {
+    "id": "ann-scc-oq02oq03-fano-axiom",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 39,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "The Fano-MI Converse Axiom: Why It's Axiomatized",
+    "content": "The single axiom `fano_mi_converse_bound` encodes three information-theoretic results in one statement. These require: (i) a formalized definition of Shannon entropy H over finitely-supported distributions, (ii) a proved Fano inequality relating H(W|Ŵ) to P_e and log M, and (iii) the memoryless channel mutual information chain rule I(W;Y^n) ≤ n·C. As of Lean's Mathlib, the Lean 4 information theory library (InformationTheory) exists but the full probabilistic infrastructure for this chain of inequalities is incomplete. Axiomatizing this bound is standard practice in formal information theory — the axiom's statement is mathematically precise and can be discharged when Mathlib's information theory library matures.",
+    "mathContext": "Axiom: $\\log M \\leq n C + 1 + P_e \\log M$. Proof sketch: $\\log M = H(W) = I(W; \\hat{W}) + H(W|\\hat{W}) \\leq I(W; Y^n) + H(W|\\hat{W}) \\leq nC + (1 + P_e \\log M)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fano's inequality",
+      "data processing inequality",
+      "mutual information chain rule",
+      "axiom in formal math"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "Fano's inequality derivation",
+      "Lean 4 axiom keyword"
+    ]
+  },
+  {
+    "id": "ann-scc-oq02oq03-algebraic-converse",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 60,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Algebraic Converse: From Fano-MI Bound to P_e Lower Bound",
+    "content": "The lemma `converse_from_combined_bound` is purely algebraic over ℝ with no information theory. From `log M ≤ n·C + 1 + P_e·log M` (the Fano-MI bound) and `n·R ≤ log M` (the rate condition), it derives P_e ≥ 1 − (n·C+1)/(n·R). The proof splits on whether P_e ≤ 1 (the substantive case) or P_e > 1 (trivially true since we'd need P_e < 0 to violate the bound). The main step: (1−P_e)·log M ≤ n·C+1, combined with log M ≥ n·R, gives (1−P_e)·n·R ≤ n·C+1. Dividing by n·R gives the bound. The `linarith` tactic handles the final linear arithmetic.",
+    "mathContext": "$(1 - P_e)\\log M \\leq nC + 1 \\text{ and } \\log M \\geq nR \\implies (1-P_e) \\cdot nR \\leq nC+1 \\implies P_e \\geq 1 - \\frac{nC+1}{nR}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nlinarith",
+      "linarith",
+      "div_le_iff",
+      "le_div_iff"
+    ],
+    "prerequisites": [
+      "real number algebra",
+      "Lean 4 field tactics",
+      "by_cases on inequality"
+    ]
+  },
+  {
+    "id": "ann-scc-oq02oq03-threshold",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 81,
+      "endLine": 104
+    },
+    "type": "insight",
+    "title": "Threshold Lemma: Block Length n ≥ 2/(R-C) Makes the Gap Appear",
+    "content": "The threshold lemma bridges the asymptotic bound P_e ≥ 1−(n·C+1)/(n·R) to the concrete gap δ = (R−C)/(2R). The key inequality to prove is (R−C)/(2R) ≤ 1 − (n·C+1)/(n·R), which after clearing denominators becomes: (R−C)·(n·R) + 2R·(n·C+1) ≤ 2R·(n·R). The algebraic core is `hkey: n·C·R + 2R ≤ n·R²`, which follows from `n·(R−C) ≥ 2` by multiplying both sides by R. The proof uses `div_add_div` to combine fractions, then `div_le_one` to reduce to a polynomial inequality handled by `linarith`.",
+    "mathContext": "For $n(R-C) \\geq 2$: $1 - \\frac{nC+1}{nR} = \\frac{nR - nC - 1}{nR} \\geq \\frac{nR - nC - n(R-C)/2}{nR} = \\frac{n(R-C)/2}{nR} = \\frac{R-C}{2R}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "div_add_div",
+      "div_le_one",
+      "ring tactic",
+      "threshold conditions"
+    ],
+    "prerequisites": [
+      "ordered field arithmetic",
+      "Lean 4 ring/linarith tactics",
+      "ceiling functions"
+    ]
+  },
+  {
+    "id": "ann-scc-oq02oq03-helpers",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 106,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Gap Positivity and Rate Conversion Lemmas",
+    "content": "`converse_delta_pos` proves δ = (R−C)/(2R) > 0 when R > C via `div_pos`, using `sub_pos.mpr hRC` and `linarith` for 2R > 0. `rate_ge_implies_log` converts the rate condition `R ≤ rate_of_code hn code` (a ratio definition: log(M)/n) into the log form `n·R ≤ log M`. This uses `le_div_iff` with the positivity of n, plus `mul_comm` to match orientation. These two helper lemmas structure the main theorem proof cleanly: δ > 0 comes from `converse_delta_pos`, and the log-rate bound comes from `rate_ge_implies_log`.",
+    "mathContext": "$\\delta = \\frac{R-C}{2R} > 0 \\iff R > C$. Rate condition: $R \\leq \\frac{\\log M}{n} \\iff nR \\leq \\log M$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "div_pos",
+      "sub_pos",
+      "le_div_iff",
+      "rate_of_code"
+    ],
+    "prerequisites": [
+      "BlockCode.rate definition",
+      "Lean 4 div/mul lemmas"
+    ]
+  },
+  {
+    "id": "ann-scc-oq02oq03-main-theorem",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 121,
+      "endLine": 163
+    },
+    "type": "insight",
+    "title": "Main Theorem: Explicit Threshold ⌈2/(R-C)⌉ with Quantitative Gap",
+    "content": "The main theorem `channel_coding_converse_asymptotic` has four stages in the Lean proof: (1) `converse_delta_pos` provides δ > 0; (2) `⌈2/(R-C)⌉₊` is the explicit natural number threshold using the positive ceiling function; (3) the threshold condition `N ≤ n` translates to `2 ≤ n·(R-C)` via `div_le_iff`; (4) the three helper lemmas chain together with `linarith` to complete the bound. The `set` tactic names C and δ for readability. The use of `⌈2/(R-C)⌉₊` (natural number ceiling) is important: it handles the case R−C = 0 safely (ceiling of infinity is 0 in ℕ) while giving the exact threshold when R > C.",
+    "mathContext": "Main result: $\\forall R > C,\\; \\exists N = \\lceil 2/(R-C) \\rceil,\\; \\forall n \\geq N,\\; \\forall \\text{code with rate} \\geq R:\\; P_e \\geq \\frac{R-C}{2R}$. As $n \\to \\infty$: $P_e \\geq 1 - C/R$ (strong converse).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.ceil",
+      "channel_coding_converse_asymptotic",
+      "strong converse",
+      "set tactic"
+    ],
+    "prerequisites": [
+      "natural number ceiling in Lean",
+      "linarith chains",
+      "capacity_nonneg"
+    ]
+  }
+]

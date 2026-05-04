@@ -1,0 +1,169 @@
+{
+  "id": "dissection-of-cubes-oq-02-wip-01",
+  "title": "Tensor Product Dehn Invariant in ℝ ⊗_ℚ (ℝ/πℚ)",
+  "slug": "dissection-of-cubes-oq-02-wip-01",
+  "description": "Formalizes the proper tensor product Dehn invariant D(P) ∈ ℝ ⊗_ℚ (ℝ/πℚ) using algebraic tensor products in Lean 4, and proves that the cube and regular tetrahedron have distinct invariants — completing the invariant separation in the correct algebraic setting.",
+  "meta": {
+    "author": "Dehn (1900)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dehn_invariant",
+    "date": "1900",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DissectionOfCubesOQ02WIP01.lean",
+    "tags": [
+      "geometry",
+      "scissors-congruence",
+      "dehn-invariant",
+      "tensor-products",
+      "algebraic-topology",
+      "hilbert-problems"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "mathlibDependencies": [
+      {
+        "theorem": "TensorProduct",
+        "description": "Tensor product of ℚ-modules for ℝ ⊗_ℚ (ℝ/πℚ)",
+        "module": "Mathlib.LinearAlgebra.TensorProduct.Basic"
+      },
+      {
+        "theorem": "Submodule.span",
+        "description": "ℚ-span of {π} for the piRatSpan submodule",
+        "module": "Mathlib.LinearAlgebra.Span"
+      },
+      {
+        "theorem": "Module.Free.chooseBasis",
+        "description": "Basis of a free ℚ-module for constructing separating functionals",
+        "module": "Mathlib.LinearAlgebra.FreeModule.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defines piRatSpan = span_ℚ{π} ⊂ ℝ as the ℚ-rational multiples of π — the correct modulus for the Dehn invariant",
+      "Defines angleClass : ℝ → ℝ ⧸ piRatSpan sending angle θ to its class [θ] in ℝ/πℚ",
+      "Defines dehnElement : ℕ → ℝ → ℝ ⊗_ℚ (ℝ/πℚ) as n ⊗ [θ], representing n edges of dihedral angle θ",
+      "Proves one_tmul_ne_zero: for any ℚ-module M and m ≠ 0, the element 1 ⊗ₜ m is nonzero in ℝ ⊗_ℚ M — via a separating ℚ-linear functional",
+      "Proves cube_dehn_zero: D(cube) = 12 ⊗ [π/2] = 0 since π/2 ∈ πℚ",
+      "Proves tetra_dehn_ne_zero: D(tetrahedron) = 6 ⊗ [arccos(1/3)] ≠ 0 since arccos(1/3) ∉ πℚ",
+      "Proves dehn_invariants_differ: the cube and regular tetrahedron have distinct tensor product Dehn invariants"
+    ],
+    "lineCount": 482,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. The proof uses Classical.choice (standard Lean axiom) via Module.Free.chooseBasis to construct a separating ℚ-linear functional; this is not a mathematical axiom but a foundational logic axiom present in all Lean proofs. The irrationality of arccos(1/3)/π is inherited from tetrahedron_angle_irrational_pi in the parent file (DissectionOfCubesOQ02.lean), which is fully proved via Chebyshev recurrence.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "parentProofId": "dissection-of-cubes-oq-02"
+  },
+  "overview": {
+    "historicalContext": "Max Dehn (1900) defined his invariant as D(P) = Σ_e ℓ(e) ⊗ [θ(e)] ∈ ℝ ⊗_ℤ (ℝ/πℤ), where the sum is over all edges e of polyhedron P, ℓ(e) is the edge length, and [θ(e)] is the dihedral angle mod πℤ. The key property is that scissors-congruent polyhedra have equal Dehn invariants. The cube has all dihedral angles π/2 = (1/2)π ∈ πℚ, so its invariant is zero. The regular tetrahedron has dihedral angle arccos(1/3) ∉ πℚ (by Niven's theorem), giving a nonzero invariant. This formalization replaces ℤ with ℚ as the scalar ring — equivalent for polyhedra with rational edge lengths — enabling use of ℚ-vector space structure (in particular, existence of separating functionals) to prove the tetrahedron's invariant is nonzero.",
+    "problemStatement": "Formalize the tensor product Dehn invariant D(P) ∈ ℝ ⊗_ℚ (ℝ/πℚ) in Lean 4 using Mathlib's TensorProduct machinery, and prove that the cube and regular tetrahedron have distinct invariants via D(cube) = 0 ≠ D(tetrahedron).",
+    "text": "This entry formalizes the proper algebraic tensor product Dehn invariant for Hilbert's Third Problem. Unlike the parent entry (which uses a simplified boolean predicate), this formalization places the invariant in its correct algebraic home: the ℚ-tensor product ℝ ⊗_ℚ (ℝ/πℚ). The key mathematical content is proving that 6 ⊗ [arccos(1/3)] ≠ 0 in this tensor product, which requires showing that the class [arccos(1/3)] is nonzero in ℝ/πℚ and that tensoring a nonzero element with 1 ∈ ℝ preserves nonzero-ness — a consequence of ℝ being faithfully flat over ℚ.",
+    "proofStrategy": "Three-layer proof. Layer 1 (algebraic setup): Define piRatSpan = ℚ·π ⊂ ℝ as a Submodule, and angleClass as the quotient map ℝ → ℝ ⧸ piRatSpan. Layer 2 (angle separation): Prove cube_angle_class_zero (π/2 ∈ piRatSpan → class = 0) and tetra_angle_class_ne_zero (arccos(1/3) ∉ piRatSpan → class ≠ 0, using tetrahedron_angle_irrational_pi from the parent). Layer 3 (tensor product nonzero): The general lemma one_tmul_ne_zero proves that 1 ⊗ₜ m ≠ 0 in ℝ ⊗_ℚ M whenever m ≠ 0. Proof: Since M is a ℚ-vector space (free ℚ-module), choose a basis and extract a coordinate functional φ with φ(m) ≠ 0; apply id ⊗ φ to map 1 ⊗ m to 1·φ(m) ≠ 0 in ℝ. Combining: dehnElement n θ = n ⊗ [θ]; n=6 and [arccos(1/3)] ≠ 0 gives nonzero Dehn invariant for tetrahedron; n=12 and [π/2] = 0 gives zero invariant for cube.",
+    "keyInsights": [
+      "The correct algebraic home for the Dehn invariant is ℝ ⊗_ℤ (ℝ/πℤ), but working over ℚ (ℝ ⊗_ℚ (ℝ/πℚ)) is equivalent for polyhedra with rational edge lengths and gives access to ℚ-vector space theory",
+      "The hardest step is proving 1 ⊗ m ≠ 0 for m ≠ 0 in ℝ ⊗_ℚ M — this requires the axiom of choice (to find a separating functional) and reflects the faithfully flat extension ℚ → ℝ",
+      "The angle class [θ] = 0 in ℝ/πℚ iff θ is a rational multiple of π — precisely the distinction between cube (π/2 = (1/2)π) and tetrahedron (arccos(1/3)/π irrational by Niven)",
+      "Using Mathlib's TensorProduct.mk and Submodule.mkQ enables clean proof of both cube_dehn_zero (via simp after rewriting the class to 0) and tetra_dehn_ne_zero (via smul_ne_zero and one_tmul_ne_zero)",
+      "The use of Module.Free.chooseBasis to extract a separating ℚ-linear functional is an instance of a general principle: over a field (or PID), any nonzero element of a free module can be distinguished from zero by a coordinate functional — this is precisely the content of faithful flatness of ℚ → ℝ as an extension of commutative rings"
+    ],
+    "prerequisites": [
+      "Tensor products over commutative rings (ℚ-bilinear maps)",
+      "Quotient modules and the universal property",
+      "Niven's theorem: arccos(1/3) is an irrational multiple of π",
+      "Free modules and basis existence over ℚ (axiom of choice)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-preamble",
+      "title": "Module Setup and Imports",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Imports Mathlib and the parent proof DissectionOfCubesOQ02 (which contains tetrahedron_angle_irrational_pi via Chebyshev recurrence). Opens the Real and DissectionOfCubesOQ02 namespaces. The module docstring states the OQ-02-WIP-01 goal: formalize the proper algebraic tensor product Dehn invariant in ℝ ⊗_ℚ (ℝ/πℚ), completing what the parent entry proves with a simplified boolean predicate.",
+      "mathContext": "Key import: `Proofs.DissectionOfCubesOQ02` provides `tetrahedron_angle_irrational_pi : ¬∃ q : ℚ, arccos (1/3) = q * π`, the Niven-type irrationality result proved via Chebyshev polynomial recurrence in the parent file. This is the sole dependency bridging analysis (irrationality) to algebra (tensor products)."
+    },
+    {
+      "id": "tensor-setup",
+      "title": "Tensor Product Setup",
+      "startLine": 19,
+      "endLine": 31,
+      "summary": "Defines the three fundamental objects: piRatSpan (the ℚ-span of π inside ℝ as a ℚ-submodule), angleClass (the quotient map ℝ → ℝ ⧸ piRatSpan sending each angle to its class mod πℚ), and dehnElement (n ⊗ [θ] in ℝ ⊗_ℚ (ℝ/πℚ), representing n edges of dihedral angle θ).",
+      "mathContext": "piRatSpan := $\\{q \\cdot \\pi \\mid q \\in \\mathbb{Q}\\} \\subset \\mathbb{R}$ as a $\\mathbb{Q}$-submodule. angleClass $\\theta := [\\theta] \\in \\mathbb{R}/\\pi\\mathbb{Q}$. dehnElement $n$ $\\theta := n \\cdot (1 \\otimes_{\\mathbb{Q}} [\\theta]) \\in \\mathbb{R} \\otimes_{\\mathbb{Q}} (\\mathbb{R}/\\pi\\mathbb{Q})$."
+    },
+    {
+      "id": "angle-classes",
+      "title": "Cube and Tetrahedron Angle Classes",
+      "startLine": 32,
+      "endLine": 59,
+      "summary": "Proves that π/2 ∈ piRatSpan (since π/2 = (1/2)·π) and hence [π/2] = 0 in ℝ/πℚ. Also proves that arccos(1/3) ∉ piRatSpan (directly from tetrahedron_angle_irrational_pi) and hence [arccos(1/3)] ≠ 0.",
+      "mathContext": "$\\pi/2 = (1/2) \\cdot \\pi \\in \\pi\\mathbb{Q} \\Rightarrow [\\pi/2] = 0$. $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$ (Niven) $\\Rightarrow \\arccos(1/3) \\notin \\pi\\mathbb{Q} \\Rightarrow [\\arccos(1/3)] \\neq 0$."
+    },
+    {
+      "id": "tensor-nonzero",
+      "title": "Tensor Product Nonzero Lemma",
+      "startLine": 61,
+      "endLine": 84,
+      "summary": "Proves the key general lemma: for any ℚ-module M and nonzero m : M, the element 1 ⊗ₜ m is nonzero in ℝ ⊗_ℚ M. The proof extracts a separating ℚ-linear functional φ : M → ℚ with φ(m) ≠ 0 using Module.Free.chooseBasis, then applies id ⊗ φ to separate 1 ⊗ m from 0.",
+      "mathContext": "For $m \\neq 0$ in $M$ ($\\mathbb{Q}$-module), $\\exists \\phi : M \\to_{\\mathbb{Q}} \\mathbb{Q}$ with $\\phi(m) \\neq 0$. Then $(\\mathrm{id} \\otimes \\phi)(1 \\otimes m) = 1 \\cdot \\phi(m) \\neq 0$ in $\\mathbb{R} \\otimes_{\\mathbb{Q}} \\mathbb{Q} \\cong \\mathbb{R}$."
+    },
+    {
+      "id": "dehn-invariants",
+      "title": "Dehn Invariant Computation and Separation",
+      "startLine": 86,
+      "endLine": 103,
+      "summary": "Proves cube_dehn_zero: D(cube) = 12 ⊗ [π/2] = 0 (since [π/2] = 0). Proves tetra_dehn_ne_zero: D(tetrahedron) = 6 ⊗ [arccos(1/3)] ≠ 0 (since 6 ≠ 0 and [arccos(1/3)] ≠ 0 by one_tmul_ne_zero). Concludes dehn_invariants_differ.",
+      "mathContext": "$D(\\text{cube}) = 12 \\cdot (1 \\otimes [\\pi/2]) = 12 \\cdot 0 = 0$. $D(\\text{tet}) = 6 \\cdot (1 \\otimes [\\arccos(1/3)]) \\neq 0$ by smul_ne_zero and one_tmul_ne_zero."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization places the Dehn invariant in its correct algebraic setting: the tensor product ℝ ⊗_ℚ (ℝ/πℚ). The key contributions are (1) the general one_tmul_ne_zero lemma showing nonzero elements remain nonzero after tensoring with 1 ∈ ℝ, and (2) the complete computation showing D(cube) = 0 ≠ D(tetrahedron) in this tensor product. This upgrades the boolean invariant in the parent entry to a proper algebraic invariant, connecting to the algebraic K-theory interpretation of scissors congruence groups.",
+    "implications": "The tensor product Dehn invariant formalization demonstrates the power of Mathlib's algebraic infrastructure: Submodule quotients, tensor products, and free module bases combine cleanly to produce a rigorous treatment of a classical geometric theorem. The one_tmul_ne_zero lemma is a general result about faithful flatness of field extensions that may be useful in other formalization contexts.",
+    "openQuestions": [
+      "Formalize the full Dehn invariant with variable edge lengths (ℓ(e) as a general real weight, not just integer count) in ℝ ⊗_ℚ (ℝ/πℚ)",
+      "Prove Dehn's theorem directly: scissors congruence implies equal Dehn invariant (currently assumed as a hypothesis in the parent file)",
+      "Formalize the Dehn-Sydler completeness theorem: volume + Dehn invariant are the complete invariants for scissors congruence in ℝ³"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "extends",
+      "description": "Upgrades the simplified boolean Dehn invariant to the proper tensor product setting. Imports and reuses tetrahedron_angle_irrational_pi from this parent.",
+      "proofId": "dissection-of-cubes-oq-02"
+    },
+    {
+      "relationship": "related",
+      "description": "The Hilbert 3rd problem main entry — this provides the algebraic invariant that separates cube from tetrahedron.",
+      "proofId": "hilbert-3"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DissectionOfCubesOQ02"
+    ],
+    "namespace": "DissectionOfCubesOQ02WIP01",
+    "lineCount": 482,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "opens": [
+      "Real",
+      "DissectionOfCubesOQ02"
+    ],
+    "path": "Proofs/DissectionOfCubesOQ02WIP01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "De00",
+      "citation": "Dehn, M., Ueber den Rauminhalt, Mathematische Annalen 55 (1900), 465-478.",
+      "type": "paper"
+    },
+    {
+      "key": "Ni56",
+      "citation": "Niven, I., Irrational Numbers, Carus Math. Monographs No. 11, MAA (1956).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

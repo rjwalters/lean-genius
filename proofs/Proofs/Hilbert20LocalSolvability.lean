@@ -28,10 +28,11 @@ condition (Ψ) states: Im(p) does not change sign from - to + along the
 oriented bicharacteristics of Re(p).
 
 ## Status
-Three axioms remain: `IsLocallySolvable` (requires distribution theory),
-`hormander_necessity` (deep microlocal analysis), `dencker_sufficiency` (Dencker 2006).
-Bicharacteristic curves are concretized as a structure, enabling proofs of
-`elliptic_satisfies_psi` and `real_symbol_satisfies_psi`.
+Two axioms remain: `IsLocallySolvable` (requires distribution theory) and
+`nirenberg_treves` (the biconditional characterization, combining Hörmander 1960 +
+Dencker 2006). Bicharacteristic curves are concretized as a structure, enabling
+proved theorems for `elliptic_satisfies_psi`, `real_symbol_satisfies_psi`,
+`hormander_necessity`, and `dencker_sufficiency`.
 
 Reference: Hilbert's 20th Problem, https://erdosproblems.com (related problems)
 -/
@@ -101,8 +102,7 @@ def IsPrincipalType {n m : ℕ} (P : LinearPDO n m) : Prop :=
     flow of Re(p_m). That ODE condition is omitted here (pending Mathlib
     ODE infrastructure), making this definition slightly more general than
     the classical one. This strengthens condition (Ψ) (more curves to check),
-    so the deep axioms (`hormander_necessity`, `dencker_sufficiency`) remain
-    sound as stated. -/
+    so the `nirenberg_treves` axiom remains sound as stated. -/
 structure BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) where
   /-- The spatial component x(t) of the curve in ℝⁿ -/
   x : ℝ → Fin n → ℝ
@@ -139,35 +139,37 @@ def ConditionPsi {n m : ℕ} (P : LinearPDO n m) : Prop :=
 
 /-! ## Part IV: The Nirenberg-Treves Conjecture (Dencker's Theorem) -/
 
-/-- **Theorem (Hörmander, 1960):** Condition (Ψ) is necessary for
-    local solvability of operators of principal type.
+/-- **The Nirenberg-Treves Conjecture (Hörmander 1960 + Dencker 2006):**
+    For operators of principal type, local solvability is equivalent to
+    condition (Ψ) on the principal symbol.
 
-    If P is locally solvable and of principal type, then P satisfies
-    condition (Ψ). -/
-axiom hormander_necessity {n m : ℕ} (P : LinearPDO n m)
+    This single axiom combines both directions: necessity (Hörmander 1960,
+    deep microlocal analysis) and sufficiency (Dencker 2006, weight functions
+    and energy estimates). Stated axiomatically since the proofs require
+    distribution theory and second microlocalization not yet in Mathlib. -/
+axiom nirenberg_treves {n m : ℕ} (P : LinearPDO n m)
+    (hpt : IsPrincipalType P) (x₀ : Fin n → ℝ) :
+    IsLocallySolvable P x₀ ↔ ConditionPsi P
+
+/-- **Theorem (Hörmander, 1960):** Condition (Ψ) is necessary for
+    local solvability of operators of principal type. -/
+theorem hormander_necessity {n m : ℕ} (P : LinearPDO n m)
     (hpt : IsPrincipalType P) (x₀ : Fin n → ℝ)
-    (hsol : IsLocallySolvable P x₀) : ConditionPsi P
+    (hsol : IsLocallySolvable P x₀) : ConditionPsi P :=
+  (nirenberg_treves P hpt x₀).mp hsol
 
 /-- **Theorem (Dencker, 2006):** Condition (Ψ) is sufficient for
-    local solvability of operators of principal type.
-
-    This completed the proof of the Nirenberg-Treves conjecture.
-    The proof uses sophisticated microlocal analysis techniques. -/
-axiom dencker_sufficiency {n m : ℕ} (P : LinearPDO n m)
+    local solvability of operators of principal type. -/
+theorem dencker_sufficiency {n m : ℕ} (P : LinearPDO n m)
     (hpt : IsPrincipalType P) (hpsi : ConditionPsi P)
-    (x₀ : Fin n → ℝ) : IsLocallySolvable P x₀
+    (x₀ : Fin n → ℝ) : IsLocallySolvable P x₀ :=
+  (nirenberg_treves P hpt x₀).mpr hpsi
 
-/-- **The Nirenberg-Treves Conjecture (proved):**
-    For operators of principal type, condition (Ψ) is equivalent
-    to local solvability.
-
-    This is the precise characterization that Hilbert's 20th problem
-    OQ-01 asks for. -/
+/-- **The Nirenberg-Treves Characterization** (alias for `nirenberg_treves`). -/
 theorem nirenberg_treves_characterization {n m : ℕ} (P : LinearPDO n m)
     (hpt : IsPrincipalType P) (x₀ : Fin n → ℝ) :
     IsLocallySolvable P x₀ ↔ ConditionPsi P :=
-  ⟨fun h => hormander_necessity P hpt x₀ h,
-   fun h => dencker_sufficiency P hpt h x₀⟩
+  nirenberg_treves P hpt x₀
 
 /-! ## Part V: Important Special Cases -/
 

@@ -43,7 +43,7 @@
       "startLine": 45,
       "endLine": 48
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euler's Four-Square Identity",
     "content": "**The Heart of the Proof**\n\nEuler proved in 1748 that:\n$$(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$$\n\nwhere:\n- $A = ax - by - cz - dw$\n- $B = ay + bx + cw - dz$\n- $C = az - bw + cx + dy$\n- $D = aw + bz - cy + dx$\n\nThese are exactly the components of the quaternion product $(a + bi + cj + dk)(x + yi + zj + wk)$!\n\nThe proof is pure algebra - Lean's `ring` tactic handles it instantly.",
     "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = (ax-by-cz-dw)^2 + (ay+bx+cw-dz)^2 + (az-bw+cx+dy)^2 + (aw+bz-cy+dx)^2$",
@@ -61,7 +61,7 @@
       "startLine": 50,
       "endLine": 63
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "The ring Tactic",
     "content": "The `ring` tactic is Lean's automated prover for polynomial ring identities. It expands both sides and verifies they're equal.\n\nThis 8-term polynomial identity would be tedious to prove by hand, but `ring` handles it instantly by normalizing both sides to a canonical form.",
     "mathContext": "Ring arithmetic in any commutative ring R.",
@@ -97,7 +97,7 @@
       "startLine": 50,
       "endLine": 70
     },
-    "type": "example",
+    "type": "concept",
     "title": "The Notorious Seven",
     "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a² + b² + c² with integers.",
     "mathContext": "7 = 4⁰(8·0 + 7) fits Legendre's obstruction.",
@@ -114,7 +114,7 @@
       "startLine": 72,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Lagrange's Four Squares Theorem",
     "content": "**Every natural number is a sum of four squares.**\n\nThe proof in Mathlib follows the classical strategy:\n\n1. **Euler's Identity** reduces the problem to primes\n2. **Existence**: For each prime p, show some mp (m < p) is a sum of four squares\n3. **Descent**: If m > 1, find a smaller working multiple\n4. **Conclusion**: By descent, p itself is a sum of four squares\n5. **Extension**: Use Euler's identity for composites\n\nThis is #19 on Wiedijk's list of 100 famous theorems.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{N}: a^2 + b^2 + c^2 + d^2 = n$",
@@ -135,7 +135,7 @@
       "startLine": 83,
       "endLine": 94
     },
-    "type": "corollary",
+    "type": "insight",
     "title": "Integer Version",
     "content": "The theorem also holds with integers instead of natural numbers. The squares of any integers work, since $(-a)^2 = a^2$.\n\nThis version is sometimes more convenient in algebraic contexts.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: a^2 + b^2 + c^2 + d^2 = n$",

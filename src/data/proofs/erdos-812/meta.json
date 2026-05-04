@@ -1,10 +1,10 @@
 {
   "id": "erdos-812",
-  "title": "Erd\u0151s Problem #812: Growth of Consecutive Ramsey Numbers",
+  "title": "Erdős Problem #812: Growth of Consecutive Ramsey Numbers",
   "slug": "erdos-812",
-  "description": "Two questions about Ramsey number growth: (1) Is R(n+1)/R(n) \u2265 1+c for some c > 0? (2) Is R(n+1) - R(n) \u226b n\u00b2? Both questions remain OPEN. Best known: R(n+1) - R(n) \u2265 4n - 8 (Burr-Erd\u0151s-Faudree-Schelp 1989).",
+  "description": "Two questions about Ramsey number growth: (1) Is R(n+1)/R(n) ≥ 1+c for some c > 0? (2) Is R(n+1) - R(n) ≫ n²? Both questions remain OPEN. Best known: R(n+1) - R(n) ≥ 4n - 8 (Burr-Erdős-Faudree-Schelp 1989).",
   "meta": {
-    "author": "Erd\u0151s, Burr, Faudree, Schelp",
+    "author": "Erdős, Burr, Faudree, Schelp",
     "sourceUrl": "https://erdosproblems.com/812",
     "date": "1989-1991",
     "status": "axiomatized",
@@ -45,10 +45,10 @@
     "originalContributions": [
       "R axiom: the diagonal Ramsey number",
       "ratio_conjecture and quadratic_difference_conjecture definitions",
-      "BEFS_theorem axiom: R(n+1) - R(n) \u2265 4n - 8",
+      "BEFS_theorem axiom: R(n+1) - R(n) ≥ 4n - 8",
       "problem_165_bound axiom: two-step almost-quadratic bound",
       "Computational verifications for small n (7 examples proved by norm_num)",
-      "erdos_812_summary: conjunction proved by exact \u27e8BEFS_theorem, problem_165_bound\u27e9"
+      "erdos_812_summary: conjunction proved by exact ⟨BEFS_theorem, problem_165_bound⟩"
     ],
     "relatedProblems": [
       "erdos-165",
@@ -62,16 +62,17 @@
     ],
     "axiomCount": 3,
     "lineCount": 157,
-    "assumptions": "3 axioms: R, BEFS_theorem, problem_165_bound. 0 sorries."
+    "assumptions": "3 axioms: R, BEFS_theorem, problem_165_bound. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
-    "historicalContext": "**Consecutive Ramsey Number Growth: From Erd\u0151s-Szekeres to the BEFS Linear Bound**\n\nThe diagonal Ramsey number $R(n)$ \u2014 the minimum $N$ such that any 2-coloring of $K_N$ contains a monochromatic $K_n$ \u2014 is one of the most mysterious quantities in combinatorics. Since Erd\u0151s and Szekeres (1935) proved $R(n) \\leq \\binom{2n-2}{n-1} < 4^n$ and Erd\u0151s (1947) proved $R(n) \\geq 2^{n/2}$ using the probabilistic method (the founding result of probabilistic combinatorics), the exponential base has remained unknown: $\\sqrt{2} \\leq \\alpha \\leq 4$ where $R(n) \\sim \\alpha^n$.\n\n**Problem #812 (Erd\u0151s, 1991)** asks two questions about the *consecutive* growth of $R(n)$:\n1. **Ratio conjecture**: Is $R(n+1)/R(n) \\geq 1 + c$ for some absolute $c > 0$?\n2. **Quadratic difference conjecture**: Is $R(n+1) - R(n) \\gg n^2$?\n\n**The BEFS Linear Bound (1989)**: Burr, Erd\u0151s, Faudree, and Schelp proved the best known result: $R(n+1) - R(n) \\geq 4n - 8$ for $n \\geq 2$. Their proof analyzes critical colorings \u2014 2-colorings of $K_{R(n)-1}$ with no monochromatic $K_n$ \u2014 and shows that extending to $K_{R(n+1)-1}$ requires adding at least $4n - 8$ vertices. The bound is tight at $n = 3$: $R(4) - R(3) = 18 - 6 = 12 \\geq 4 \\cdot 3 - 8 = 4$.\n\n**The Two-Step Gap (Problem #165)**: For the *two-step* difference $R(n+2) - R(n)$, much more is known. Using $R(n+2) \\geq R(n) + R(3, R(n) - 1) - 1$ and the asymptotic $R(3, k) \\sim k^2/(2\\log k)$ (Kim 1995 for lower bound, Shearer 1983 for upper), one obtains $R(n+2) - R(n) \\gg n^{2-o(1)}$. This tantalizingly shows that quadratic growth is achievable with a two-step gap but remains unproved for one step.\n\n**Known Exact Values**: $R(3) = 6$ (Ramsey 1930), $R(4) = 18$ (Greenwood-Gleason 1955), $43 \\leq R(5) \\leq 46$ (McKay-Radziszowski 1995, Angeltveit-McKay 2024). Erd\u0151s's famous aliens quote captures the difficulty: *'If aliens demanded $R(5)$, we could marshal our best minds... but if they asked for $R(6)$, we should just surrender.'*\n\n**Recent Progress**: In 2023, Campos, Griffiths, Morris, and Sahasrabudhe proved $R(n) \\leq (4 - \\varepsilon)^n$ for some small $\\varepsilon > 0$, the first improvement to the Erd\u0151s-Szekeres upper bound in nearly 90 years. This breakthrough suggests that the exponential base may indeed be closer to $\\sqrt{2}$ than to $4$, but says nothing about consecutive differences.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $R(n)$ denote the diagonal Ramsey number.\n\n**Question 1 (Ratio):** Is it true that $R(n+1)/R(n) \\geq 1 + c$ for some constant $c > 0$ and all sufficiently large $n$?\n\n**Question 2 (Quadratic Difference):** Is it true that $R(n+1) - R(n) \\gg n^2$?\n\n**Best Known:** $R(n+1) - R(n) \\geq 4n - 8$ for $n \\geq 2$ (Burr-Erd\u0151s-Faudree-Schelp 1989).\n\n**Status:** Both questions remain completely open.",
-    "text": "Two questions about Ramsey number growth: (1) Is R(n+1)/R(n) \u2265 1+c for some c > 0? (2) Is R(n+1) - R(n) \u226b n\u00b2? Both questions remain OPEN. Best known: R(n+1) - R(n) \u2265 4n - 8 (Burr-Erd\u0151s-Faudree-Schelp 1989).",
+    "historicalContext": "**Consecutive Ramsey Number Growth: From Erdős-Szekeres to the BEFS Linear Bound**\n\nThe diagonal Ramsey number $R(n)$ — the minimum $N$ such that any 2-coloring of $K_N$ contains a monochromatic $K_n$ — is one of the most mysterious quantities in combinatorics. Since Erdős and Szekeres (1935) proved $R(n) \\leq \\binom{2n-2}{n-1} < 4^n$ and Erdős (1947) proved $R(n) \\geq 2^{n/2}$ using the probabilistic method (the founding result of probabilistic combinatorics), the exponential base has remained unknown: $\\sqrt{2} \\leq \\alpha \\leq 4$ where $R(n) \\sim \\alpha^n$.\n\n**Problem #812 (Erdős, 1991)** asks two questions about the *consecutive* growth of $R(n)$:\n1. **Ratio conjecture**: Is $R(n+1)/R(n) \\geq 1 + c$ for some absolute $c > 0$?\n2. **Quadratic difference conjecture**: Is $R(n+1) - R(n) \\gg n^2$?\n\n**The BEFS Linear Bound (1989)**: Burr, Erdős, Faudree, and Schelp proved the best known result: $R(n+1) - R(n) \\geq 4n - 8$ for $n \\geq 2$. Their proof analyzes critical colorings — 2-colorings of $K_{R(n)-1}$ with no monochromatic $K_n$ — and shows that extending to $K_{R(n+1)-1}$ requires adding at least $4n - 8$ vertices. The bound is tight at $n = 3$: $R(4) - R(3) = 18 - 6 = 12 \\geq 4 \\cdot 3 - 8 = 4$.\n\n**The Two-Step Gap (Problem #165)**: For the *two-step* difference $R(n+2) - R(n)$, much more is known. Using $R(n+2) \\geq R(n) + R(3, R(n) - 1) - 1$ and the asymptotic $R(3, k) \\sim k^2/(2\\log k)$ (Kim 1995 for lower bound, Shearer 1983 for upper), one obtains $R(n+2) - R(n) \\gg n^{2-o(1)}$. This tantalizingly shows that quadratic growth is achievable with a two-step gap but remains unproved for one step.\n\n**Known Exact Values**: $R(3) = 6$ (Ramsey 1930), $R(4) = 18$ (Greenwood-Gleason 1955), $43 \\leq R(5) \\leq 46$ (McKay-Radziszowski 1995, Angeltveit-McKay 2024). Erdős's famous aliens quote captures the difficulty: *'If aliens demanded $R(5)$, we could marshal our best minds... but if they asked for $R(6)$, we should just surrender.'*\n\n**Recent Progress**: In 2023, Campos, Griffiths, Morris, and Sahasrabudhe proved $R(n) \\leq (4 - \\varepsilon)^n$ for some small $\\varepsilon > 0$, the first improvement to the Erdős-Szekeres upper bound in nearly 90 years. This breakthrough suggests that the exponential base may indeed be closer to $\\sqrt{2}$ than to $4$, but says nothing about consecutive differences.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $R(n)$ denote the diagonal Ramsey number.\n\n**Question 1 (Ratio):** Is it true that $R(n+1)/R(n) \\geq 1 + c$ for some constant $c > 0$ and all sufficiently large $n$?\n\n**Question 2 (Quadratic Difference):** Is it true that $R(n+1) - R(n) \\gg n^2$?\n\n**Best Known:** $R(n+1) - R(n) \\geq 4n - 8$ for $n \\geq 2$ (Burr-Erdős-Faudree-Schelp 1989).\n\n**Status:** Both questions remain completely open.",
+    "text": "Two questions about Ramsey number growth: (1) Is R(n+1)/R(n) ≥ 1+c for some c > 0? (2) Is R(n+1) - R(n) ≫ n²? Both questions remain OPEN. Best known: R(n+1) - R(n) ≥ 4n - 8 (Burr-Erdős-Faudree-Schelp 1989).",
     "proofStrategy": "**Formalization Strategy**\n\n1. **Axiomatized Ramsey Number**: $R(n)$ is declared as an axiom $R : \\mathbb{N} \\to \\mathbb{N}$. Docstrings describe known values and classical bounds, but these are not separately declared axioms.\n\n2. **Formal Conjectures**: Defines `ratio_conjecture` and `quadratic_difference_conjecture` as `Prop` values.\n\n3. **Known Results**: Axiomatizes the BEFS linear bound and the Problem #165 two-step bound. The two-step bound uses a subpolynomial correction factor formalized as $f : \\mathbb{N} \\to \\mathbb{R}$ with $f(n) \\leq n^\\varepsilon$ eventually.\n\n4. **Computational Verifications**: Seven `norm_num` examples verify ratios and BEFS bounds for small $n$.\n\n5. **Summary Theorem**: A **verified proof** `erdos_812_summary` packages BEFS and the two-step bound as a conjunction.",
     "keyInsights": [
-      "**Linear vs quadratic gap**: The BEFS bound $R(n+1) - R(n) \\geq 4n - 8$ is linear, while the conjectured growth is quadratic ($\\gg n^2$). Bridging this gap \u2014 from $O(n)$ to $O(n^2)$ \u2014 would be a major advance in Ramsey theory, equivalent to understanding the local behavior of an exponentially growing function",
-      "**Two-step vs one-step**: The two-step difference $R(n+2) - R(n) \\gg n^{2-o(1)}$ is almost quadratic, but the one-step difference is only known to be linear. This asymmetry suggests that $R(n)$ may have an oscillatory or irregular local structure that 'smooths out' over two steps \u2014 a phenomenon not captured by any current model",
+      "**Linear vs quadratic gap**: The BEFS bound $R(n+1) - R(n) \\geq 4n - 8$ is linear, while the conjectured growth is quadratic ($\\gg n^2$). Bridging this gap — from $O(n)$ to $O(n^2)$ — would be a major advance in Ramsey theory, equivalent to understanding the local behavior of an exponentially growing function",
+      "**Two-step vs one-step**: The two-step difference $R(n+2) - R(n) \\gg n^{2-o(1)}$ is almost quadratic, but the one-step difference is only known to be linear. This asymmetry suggests that $R(n)$ may have an oscillatory or irregular local structure that 'smooths out' over two steps — a phenomenon not captured by any current model",
       "**Ratio conjecture and exponential base**: If $R(n+1)/R(n) \\geq 1 + c$, then $R(n) \\geq R(3) \\cdot (1+c)^{n-3}$, pinning down the exponential base $\\alpha \\geq 1 + c$. Currently $\\alpha \\in [\\sqrt{2}, 4-\\varepsilon]$ (CGMS 2023), and determining $\\alpha$ is arguably the central problem of Ramsey theory",
       "**Small cases are misleading**: $R(3)/R(2) = R(4)/R(3) = 3$, both suggesting $c \\approx 2$. But with only two non-trivial exact values known, this pattern may break for $R(5)/R(4)$. The ratio could vary wildly for small $n$ before stabilizing (if it stabilizes at all)",
       "**Connection to the 2023 breakthrough**: Campos-Griffiths-Morris-Sahasrabudhe proved $R(n) \\leq (4-\\varepsilon)^n$, the first upper bound improvement in 90 years. This affects the possible range of the ratio limit but does not directly address consecutive differences, leaving Problem #812 untouched"
@@ -113,8 +114,8 @@
       "title": "BEFS Linear Bound (1989)",
       "startLine": 83,
       "endLine": 88,
-      "summary": "Axiomatizes the Burr-Erd\u0151s-Faudree-Schelp theorem: $R(n+1) - R(n) \\geq 4n - 8$ for all $n \\geq 2$. The best known lower bound on consecutive differences.",
-      "mathContext": "Verified: Axiomatizes the Burr-Erd\u0151s-Faudree-Schelp theorem: $R(n+1) - R(n) \\geq 4n - 8$ for all $n \\geq 2$. The best known lower bound on consecutive differences."
+      "summary": "Axiomatizes the Burr-Erdős-Faudree-Schelp theorem: $R(n+1) - R(n) \\geq 4n - 8$ for all $n \\geq 2$. The best known lower bound on consecutive differences.",
+      "mathContext": "Verified: Axiomatizes the Burr-Erdős-Faudree-Schelp theorem: $R(n+1) - R(n) \\geq 4n - 8$ for all $n \\geq 2$. The best known lower bound on consecutive differences."
     },
     {
       "id": "twostep",
@@ -134,8 +135,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full structure of Erd\u0151s Problem #812 on consecutive Ramsey number growth. It axiomatizes the diagonal Ramsey number $R(n)$, defines the two open conjectures (ratio bound and quadratic difference), presents the best known results (BEFS linear bound and Problem #165 two-step bound), verifies bounds computationally for small $n$, and packages the known results in a verified summary theorem.",
-    "implications": "**Theoretical Significance**: **Ramsey Theory Significance**\n\n1. **Central Open Problem**: Determining the growth rate of $R(n)$ is one of the most important problems in combinatorics. Problem #812's two questions would each represent significant progress: the ratio conjecture pins down the exponential base, while the quadratic conjecture closes the gap between $O(n)$ and $O(n^2)$ consecutive differences.\n\n2. **BEFS Bound in Context**: The $4n - 8$ bound has stood as the best result for over 35 years.\n\nIt was proved in the same era as Alon's subdivided graph theorem (Problem #800) and reflects the combinatorial depth of critical coloring arguments.\n\n3. **Connection to Upper Bound Improvements**: The 2023 result $R(n) \\leq (4 - \\varepsilon)^n$ by Campos-Griffiths-Morris-Sahasrabudhe is the biggest advance in Ramsey theory in decades. If the exponential base $\\alpha$ can be determined more precisely, the consecutive ratios $R(n+1)/R(n) \\to \\alpha$ would follow.\n\n4. **Probabilistic Method Limitations**: Both conjectures resist current probabilistic techniques because they require *lower bounds* on Ramsey numbers (which need explicit constructions) rather than upper bounds (which the probabilistic method excels at).\n\n5. **Formal Verification**: The file demonstrates how open problems can be meaningfully formalized: defining conjectures as `Prop`, axiomatizing partial results, proving logical consequences, and verifying computational evidence \u2014 all while making the status of each component explicit.",
+    "summary": "This formalization captures the full structure of Erdős Problem #812 on consecutive Ramsey number growth. It axiomatizes the diagonal Ramsey number $R(n)$, defines the two open conjectures (ratio bound and quadratic difference), presents the best known results (BEFS linear bound and Problem #165 two-step bound), verifies bounds computationally for small $n$, and packages the known results in a verified summary theorem.",
+    "implications": "**Theoretical Significance**: **Ramsey Theory Significance**\n\n1. **Central Open Problem**: Determining the growth rate of $R(n)$ is one of the most important problems in combinatorics. Problem #812's two questions would each represent significant progress: the ratio conjecture pins down the exponential base, while the quadratic conjecture closes the gap between $O(n)$ and $O(n^2)$ consecutive differences.\n\n2. **BEFS Bound in Context**: The $4n - 8$ bound has stood as the best result for over 35 years.\n\nIt was proved in the same era as Alon's subdivided graph theorem (Problem #800) and reflects the combinatorial depth of critical coloring arguments.\n\n3. **Connection to Upper Bound Improvements**: The 2023 result $R(n) \\leq (4 - \\varepsilon)^n$ by Campos-Griffiths-Morris-Sahasrabudhe is the biggest advance in Ramsey theory in decades. If the exponential base $\\alpha$ can be determined more precisely, the consecutive ratios $R(n+1)/R(n) \\to \\alpha$ would follow.\n\n4. **Probabilistic Method Limitations**: Both conjectures resist current probabilistic techniques because they require *lower bounds* on Ramsey numbers (which need explicit constructions) rather than upper bounds (which the probabilistic method excels at).\n\n5. **Formal Verification**: The file demonstrates how open problems can be meaningfully formalized: defining conjectures as `Prop`, axiomatizing partial results, proving logical consequences, and verifying computational evidence — all while making the status of each component explicit.",
     "openQuestions": [
       "Is $R(n+1)/R(n) \\geq 1 + c$ for some absolute $c > 0$? Even proving $R(n+1)/R(n) \\to \\infty$ (that the ratio is unbounded) would be a breakthrough.",
       "Is $R(n+1) - R(n) \\gg n^2$? Can the BEFS linear bound $4n - 8$ be improved to $n^{1+\\delta}$ for any $\\delta > 0$?",
@@ -163,17 +164,17 @@
     {
       "targetId": "erdos-165",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
     },
     {
       "targetId": "erdos-166",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
     },
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
     }
   ],
   "sorries": 0

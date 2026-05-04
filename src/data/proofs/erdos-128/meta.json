@@ -22,13 +22,14 @@
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "proofRepoPath": "Proofs/Erdos128Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 82
+    "lineCount": 82,
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Rousseau, appearing in Erdős's 1993 paper [Er93, p.344] and also in the Erdős-Rousseau paper [ErRo93]. It asks whether a local density condition — every large induced subgraph being dense — forces a global structure (a triangle). The problem sits at the intersection of extremal graph theory and Ramsey-type forcing, asking for the precise threshold at which local density guarantees global substructure.\n\nThe constant $1/50$ is motivated by the balanced blow-up of the 5-cycle $C_5$: partition $n$ vertices into 5 equal parts and connect parts $i$ and $i+1 \\pmod{5}$. This graph is triangle-free (since $C_5$ contains no $K_3$), has $n^2/5$ total edges, and any induced subgraph on $\\geq n/2$ vertices has at most $\\approx n^2/50$ edges. The Petersen graph (the $n=10$ case) is the smallest such extremal example.\n\nThe first major result was by Erdős, Faudree, Rousseau, and Schelp (1994), who proved the conjecture with $50$ replaced by $16$. They also proved a generalized form: for any $0 < \\alpha < 1$, if every set of $\\geq \\alpha n$ vertices induces $> \\alpha^3 n^2/2$ edges, then the graph contains a triangle. Krivelevich (1995) obtained a different trade-off, proving the result with the subgraph size increased to $3n/5$ but the constant improved to $25$. Keevash and Sudakov (2006) proved the conjecture under additional structural assumptions: either when the total edge count is $\\leq n^2/12$ or $\\geq n^2/5$. Norin and Yepremyan (2015) extended this to graphs with $\\geq (1/5 - c)n^2$ edges for some $c > 0$. The current best result is by Razborov (2022), who used his flag algebra method to improve the constant to $27/1024 \\approx 0.0264$, narrowing the gap with $1/50 = 0.02$ to a factor of $\\approx 1.32$. Erdős offered $250 for the resolution.",
     "problemStatement": "Let $G$ be a graph with $n$ vertices such that every induced subgraph on $\\geq \\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges. Must $G$ contain a triangle?",
     "text": "If every induced subgraph on ≥ ⌊n/2⌋ vertices has > n²/50 edges, must G contain a triangle? 1/50 is best possible (C₅ blow-up). Partial: EFRS (1/16), Krivelevich (3n/5, 1/25), Razborov (27/1024). Open ($250).",
-    "proofStrategy": "The formalization defines a custom `Graph n` structure with symmetric, irreflexive adjacency on `Fin n`, along with `edgeCount`, `induce` (induced subgraph), `hasTriangle`, and `triangleFree`. The key definition `denseSubgraphs` captures the local density condition. The extremal $C_5$ blow-up is axiomatized, as are four partial results: EFRS (constant 16), Krivelevich (threshold $3n/5$, constant 25), Razborov (constant $27/1024$), and Norin-Yepremyan (dense graphs). The main conjecture `erdos_128_conjecture` is stated as an axiom. Zero sorries.",
+    "proofStrategy": "The formalization defines a custom `Graph n` structure with symmetric, irreflexive adjacency on `Fin n`, along with `edgeCount`, `induce` (induced subgraph), `hasTriangle`, and `triangleFree`. The key definition `denseSubgraphs` captures the local density condition. The extremal $C_5$ blow-up, four partial results (EFRS, Krivelevich, Razborov, Norin-Yepremyan), and the main conjecture are documented as docstring specifications. The corresponding axiom declarations were removed from the Lean source; zero axioms, zero sorries.",
     "keyInsights": [
       "The $C_5$ blow-up is the conjectured unique extremal example: it is triangle-free and saturates the $n^2/50$ bound in half-sized subgraphs. Its 5-part structure means any subset of $n/2$ vertices intersects at most 2 'edge-classes' heavily, yielding edge density $\\approx 2 \\cdot (n/5)^2 / \\binom{n/2}{2} \\approx 2/25$.",
       "The progression of constants — EFRS $1/16$, Razborov $27/1024 \\approx 0.0264$, conjectured $1/50 = 0.02$ — shows the problem is 'almost solved' quantitatively but the final gap is structurally hard. The remaining factor $\\approx 1.32$ likely requires understanding the exact extremal structure, not just density inequalities.",
@@ -80,8 +81,8 @@
       "title": "Extremal Example: $C_5$ Blow-up",
       "startLine": 58,
       "endLine": 67,
-      "summary": "Axiomatizes the $C_5$ blow-up: triangle-free with $e(G[S]) \\leq n^2/50 + n$ for all $|S| \\geq n/2$. Shows tightness of the constant $1/50$.",
-      "mathContext": "Axiomatizes the $C_5$ blow-up: triangle-free with $e(G[S]) \\leq $n^{2}$/50 + n$ for all $|S| \\geq n/2$. Shows tightness of the constant $1/50$."
+      "summary": "Documents the $C_5$ blow-up via docstring: triangle-free with $e(G[S]) \\leq n^2/50 + n$ for all $|S| \\geq n/2$. Shows tightness of the constant $1/50$. No formal Lean declaration.",
+      "mathContext": "Documents the $C_5$ blow-up via docstring: triangle-free with $e(G[S]) \\leq $n^{2}$/50 + n$ for all $|S| \\geq n/2$. Shows tightness of the constant $1/50$."
     },
     {
       "id": "efrs-krivelevich",
@@ -93,7 +94,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #128 in 105 lines of Lean 4, encoding the local-to-global triangle forcing conjecture with its extremal $C_5$ blow-up example, four major partial results (EFRS, Krivelevich, Razborov, Norin-Yepremyan), and the open $250 conjecture. Zero sorries; all deep results axiomatized.",
+    "summary": "This formalization defines the graph-theory structures for Erdős Problem #128 (82 lines): the custom `Graph n` type, `denseSubgraphs`, `hasTriangle`, and `triangleFree`. The $C_5$ blow-up, partial results (EFRS, Krivelevich, Razborov, Norin-Yepremyan), and the main conjecture are docstring specifications only; the corresponding axiom declarations were removed from the Lean source.",
     "implications": "Resolution would establish a precise Turán-type threshold for local-to-global triangle forcing: the $C_5$ blow-up would be the unique extremal configuration, connecting the problem to the classical Turán theory and to the broader program of characterizing which local conditions force global substructures. The flag algebra approach of Razborov suggests that computational methods (semidefinite programming certificates) may be sufficient, potentially yielding a computer-assisted proof.",
     "openQuestions": [
       "Can flag algebras close the remaining gap from $27/1024 \\approx 0.0264$ to $1/50 = 0.02$? The gap factor is $\\approx 1.32$.",
@@ -117,7 +118,6 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 5,
     "imports": [
       "Mathlib.Tactic",
       "Mathlib.Data.Nat.Basic",

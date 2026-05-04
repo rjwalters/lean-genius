@@ -2,73 +2,151 @@
   {
     "id": "ann-sls-setup",
     "proofId": "spherical-law-of-sines",
-    "range": { "startLine": 39, "endLine": 51 },
+    "range": {
+      "startLine": 39,
+      "endLine": 51
+    },
     "type": "definition",
     "title": "Framework: dot, normSq, arcLen, tripleProduct, projPerp",
-    "content": "The proof uses Fin 3 → ℝ (function type) as the ambient vector space, compatible with Mathlib's crossProduct bilinear map. Six definitions are introduced: dot (inner product as ∑ uᵢvᵢ), normSq (= dot u u), IsUnit3 (normSq u = 1), arcLen (= Real.arccos of dot product), tripleProduct (= dot a (b×c), the scalar triple product / determinant), and projPerp (= fun i => uᵢ − (u·w)wᵢ, the perpendicular projection). This 'Fin 3 → ℝ' framework avoids EuclideanSpace machinery, making cross product lemmas directly applicable without coercions.",
+    "content": "The proof uses Fin 3 \u2192 \u211d (function type) as the ambient vector space, compatible with Mathlib's crossProduct bilinear map. Six definitions are introduced: dot (inner product as \u2211 u\u1d62v\u1d62), normSq (= dot u u), IsUnit3 (normSq u = 1), arcLen (= Real.arccos of dot product), tripleProduct (= dot a (b\u00d7c), the scalar triple product / determinant), and projPerp (= fun i => u\u1d62 \u2212 (u\u00b7w)w\u1d62, the perpendicular projection). This 'Fin 3 \u2192 \u211d' framework avoids EuclideanSpace machinery, making cross product lemmas directly applicable without coercions.",
     "mathContext": "$\\text{dot}(u,v) = \\sum_{i<3} u_i v_i$, $\\text{projPerp}(u,w)_i = u_i - (u \\cdot w) w_i$, $\\text{tripleProduct}(a,b,c) = a \\cdot (b \\times c) = \\det[a,b,c]$.",
     "significance": "supporting",
-    "relatedConcepts": ["Fin 3 → ℝ", "crossProduct", "scalar triple product", "perpendicular projection"],
-    "prerequisites": ["Mathlib.LinearAlgebra.CrossProduct", "Real.arccos"]
+    "relatedConcepts": [
+      "Fin 3 \u2192 \u211d",
+      "crossProduct",
+      "scalar triple product",
+      "perpendicular projection"
+    ],
+    "prerequisites": [
+      "Mathlib.LinearAlgebra.CrossProduct",
+      "Real.arccos"
+    ]
   },
   {
     "id": "ann-sls-lagrange",
     "proofId": "spherical-law-of-sines",
-    "range": { "startLine": 77, "endLine": 81 },
-    "type": "theorem",
-    "title": "Lagrange's Identity: |u×v|² = |u|²|v|² − (u·v)²",
-    "content": "Lagrange's identity is the key algebraic relationship between the cross product norm and the dot product: |u×v|² = |u|²|v|² − (u·v)². The Lean proof expands everything using simp with [crossProduct, Fin.sum_univ_three] (which replaces finite sums by the three explicit terms) and then closes by ring. This identity is used twice: once in normSq_projPerp_unit (to show |projPerp u w|² ≥ 0 via the nonnegativity of |u×w|²) and again in sin_sq_dihedralAngle (to compute the Cauchy-Schwarz bound). It is the bridge between cross product geometry and inner product algebra.",
+    "range": {
+      "startLine": 77,
+      "endLine": 81
+    },
+    "type": "insight",
+    "title": "Lagrange's Identity: |u\u00d7v|\u00b2 = |u|\u00b2|v|\u00b2 \u2212 (u\u00b7v)\u00b2",
+    "content": "Lagrange's identity is the key algebraic relationship between the cross product norm and the dot product: |u\u00d7v|\u00b2 = |u|\u00b2|v|\u00b2 \u2212 (u\u00b7v)\u00b2. The Lean proof expands everything using simp with [crossProduct, Fin.sum_univ_three] (which replaces finite sums by the three explicit terms) and then closes by ring. This identity is used twice: once in normSq_projPerp_unit (to show |projPerp u w|\u00b2 \u2265 0 via the nonnegativity of |u\u00d7w|\u00b2) and again in sin_sq_dihedralAngle (to compute the Cauchy-Schwarz bound). It is the bridge between cross product geometry and inner product algebra.",
     "mathContext": "$|u \\times v|^2 = (u_1 v_2 - u_2 v_1)^2 + (u_2 v_0 - u_0 v_2)^2 + (u_0 v_1 - u_1 v_0)^2 = |u|^2|v|^2 - (u \\cdot v)^2$.",
     "significance": "key",
-    "relatedConcepts": ["cross product", "Cauchy-Schwarz inequality", "Fin.sum_univ_three", "ring tactic"],
-    "prerequisites": ["crossProduct", "dot", "normSq", "Fin.sum_univ_three"]
+    "relatedConcepts": [
+      "cross product",
+      "Cauchy-Schwarz inequality",
+      "Fin.sum_univ_three",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "crossProduct",
+      "dot",
+      "normSq",
+      "Fin.sum_univ_three"
+    ]
   },
   {
     "id": "ann-sls-projperp-sin",
     "proofId": "spherical-law-of-sines",
-    "range": { "startLine": 111, "endLine": 123 },
-    "type": "theorem",
-    "title": "normSq_projPerp_unit: |projPerp u w|² = sin²(arcLen u w)",
-    "content": "For unit vectors u, w, the squared norm of the perpendicular projection of u onto the plane ⊥ w equals sin²(arcLen u w). The proof: (1) normSq_projPerp gives |projPerp u w|² = |u|² − (u·w)² = 1 − (u·w)²; (2) arcLen u w = arccos(u·w) and sin(arccos(x)) = √(1−x²) (Real.sin_arccos, which requires no bounds — valid for all real x); (3) √(1−x²)² = 1−x² for 0 ≤ 1−x². The nonnegativity 0 ≤ 1 − (u·w)² follows from Lagrange's identity: |u×w|² = 1·1 − (u·w)² ≥ 0. Notably, Real.sin_arccos in Lean 4 Mathlib requires no domain hypothesis — it holds for all x ∈ ℝ by convention (arccos is extended outside [-1,1]).",
+    "range": {
+      "startLine": 111,
+      "endLine": 123
+    },
+    "type": "insight",
+    "title": "normSq_projPerp_unit: |projPerp u w|\u00b2 = sin\u00b2(arcLen u w)",
+    "content": "For unit vectors u, w, the squared norm of the perpendicular projection of u onto the plane \u22a5 w equals sin\u00b2(arcLen u w). The proof: (1) normSq_projPerp gives |projPerp u w|\u00b2 = |u|\u00b2 \u2212 (u\u00b7w)\u00b2 = 1 \u2212 (u\u00b7w)\u00b2; (2) arcLen u w = arccos(u\u00b7w) and sin(arccos(x)) = \u221a(1\u2212x\u00b2) (Real.sin_arccos, which requires no bounds \u2014 valid for all real x); (3) \u221a(1\u2212x\u00b2)\u00b2 = 1\u2212x\u00b2 for 0 \u2264 1\u2212x\u00b2. The nonnegativity 0 \u2264 1 \u2212 (u\u00b7w)\u00b2 follows from Lagrange's identity: |u\u00d7w|\u00b2 = 1\u00b71 \u2212 (u\u00b7w)\u00b2 \u2265 0. Notably, Real.sin_arccos in Lean 4 Mathlib requires no domain hypothesis \u2014 it holds for all x \u2208 \u211d by convention (arccos is extended outside [-1,1]).",
     "mathContext": "$|\\text{projPerp}(u,w)|^2 = 1 - (u \\cdot w)^2 = 1 - \\cos^2(\\arccos(u \\cdot w)) = \\sin^2(\\arccos(u \\cdot w)) = \\sin^2(\\text{arcLen}(u,w))$.",
     "significance": "key",
-    "relatedConcepts": ["Real.sin_arccos", "Real.sq_sqrt", "perpendicular projection", "Pythagorean identity"],
-    "prerequisites": ["normSq_projPerp", "lagrange_identity", "Real.sin_arccos", "Real.sq_sqrt"]
+    "relatedConcepts": [
+      "Real.sin_arccos",
+      "Real.sq_sqrt",
+      "perpendicular projection",
+      "Pythagorean identity"
+    ],
+    "prerequisites": [
+      "normSq_projPerp",
+      "lagrange_identity",
+      "Real.sin_arccos",
+      "Real.sq_sqrt"
+    ]
   },
   {
     "id": "ann-sls-cross-eq",
     "proofId": "spherical-law-of-sines",
-    "range": { "startLine": 133, "endLine": 156 },
-    "type": "theorem",
+    "range": {
+      "startLine": 133,
+      "endLine": 156
+    },
+    "type": "insight",
     "title": "projPerp_cross_eq: The Key Identity for the Law of Sines",
-    "content": "This is the mathematical heart of the proof: projPerp(B,A) × projPerp(C,A) = det[A,B,C] · A. Geometrically: both projections lie in the plane perpendicular to unit vector A, so their cross product must be parallel to A (as the normal to that plane). The coefficient is the scalar triple product det[A,B,C].\n\nAlgebraically, component i of LHS − RHS equals (1 − |A|²)·(B×C)ᵢ, which vanishes when |A| = 1. The Lean proof verifies this component by component using funext + fin_cases i, expanding everything with simp [crossProduct, Fin.sum_univ_three, Pi.smul_apply, smul_eq_mul], and then closing each case with linear_combination −(Bⱼ·Cₖ − Bₖ·Cⱼ) · h where h : A₀²+A₁²+A₂² = 1.\n\nThe use of tripleProduct A B C • A (scalar multiplication) rather than fun i => tripleProduct A B C * A i is necessary for correct Lean 4 parsing — the notation avoids operator precedence conflicts with the equality sign.",
+    "content": "This is the mathematical heart of the proof: projPerp(B,A) \u00d7 projPerp(C,A) = det[A,B,C] \u00b7 A. Geometrically: both projections lie in the plane perpendicular to unit vector A, so their cross product must be parallel to A (as the normal to that plane). The coefficient is the scalar triple product det[A,B,C].\n\nAlgebraically, component i of LHS \u2212 RHS equals (1 \u2212 |A|\u00b2)\u00b7(B\u00d7C)\u1d62, which vanishes when |A| = 1. The Lean proof verifies this component by component using funext + fin_cases i, expanding everything with simp [crossProduct, Fin.sum_univ_three, Pi.smul_apply, smul_eq_mul], and then closing each case with linear_combination \u2212(B\u2c7c\u00b7C\u2096 \u2212 B\u2096\u00b7C\u2c7c) \u00b7 h where h : A\u2080\u00b2+A\u2081\u00b2+A\u2082\u00b2 = 1.\n\nThe use of tripleProduct A B C \u2022 A (scalar multiplication) rather than fun i => tripleProduct A B C * A i is necessary for correct Lean 4 parsing \u2014 the notation avoids operator precedence conflicts with the equality sign.",
     "mathContext": "$\\text{projPerp}(B,A) \\times \\text{projPerp}(C,A) = \\det[A,B,C] \\cdot A$. Proof: $(\\text{LHS})_i - \\det[A,B,C] \\cdot A_i = (1 - |A|^2)(B \\times C)_i = 0$ for unit $A$.",
     "significance": "key",
-    "relatedConcepts": ["cross product", "scalar triple product", "linear_combination", "component-wise proof"],
-    "prerequisites": ["projPerp", "tripleProduct", "unit_sum", "Pi.smul_apply", "Fin.sum_univ_three"]
+    "relatedConcepts": [
+      "cross product",
+      "scalar triple product",
+      "linear_combination",
+      "component-wise proof"
+    ],
+    "prerequisites": [
+      "projPerp",
+      "tripleProduct",
+      "unit_sum",
+      "Pi.smul_apply",
+      "Fin.sum_univ_three"
+    ]
   },
   {
     "id": "ann-sls-dihedral-sin",
     "proofId": "spherical-law-of-sines",
-    "range": { "startLine": 173, "endLine": 219 },
-    "type": "theorem",
+    "range": {
+      "startLine": 173,
+      "endLine": 219
+    },
+    "type": "insight",
     "title": "sin_sq_dihedralAngle: Connecting the Dihedral Angle to the Triple Product",
-    "content": "The dihedral angle α at vertex A is defined as the angle between the projections projPerp(B,A) and projPerp(C,A): α = arccos(pB·pC / (|pB|·|pC|)). The theorem proves sin²(α) = det[A,B,C]² / (|projPerp B A|² · |projPerp C A|²).\n\nProof outline: (1) using Real.sin_arccos (no bounds needed), sin²(arccos(x)) = 1−x² for all x; (2) with x = pB·pC/(|pB||pC|), we need 1 − (pB·pC)²/(|pB||pC|)² = det²/(|pB|²·|pC|²); (3) this rearranges to |pB|²·|pC|² − (pB·pC)² = det², which follows from: Lagrange's identity gives |pB×pC|² = |pB|²|pC|² − (pB·pC)², and normSq_projPerp_cross gives |pB×pC|² = det².\n\nThe Cauchy-Schwarz check (pB·pC)² ≤ (|pB||pC|)² ensures the argument of arccos lies in [-1,1], making the degenerate case branch (returning 0) irrelevant under the nonzero hypotheses.",
+    "content": "The dihedral angle \u03b1 at vertex A is defined as the angle between the projections projPerp(B,A) and projPerp(C,A): \u03b1 = arccos(pB\u00b7pC / (|pB|\u00b7|pC|)). The theorem proves sin\u00b2(\u03b1) = det[A,B,C]\u00b2 / (|projPerp B A|\u00b2 \u00b7 |projPerp C A|\u00b2).\n\nProof outline: (1) using Real.sin_arccos (no bounds needed), sin\u00b2(arccos(x)) = 1\u2212x\u00b2 for all x; (2) with x = pB\u00b7pC/(|pB||pC|), we need 1 \u2212 (pB\u00b7pC)\u00b2/(|pB||pC|)\u00b2 = det\u00b2/(|pB|\u00b2\u00b7|pC|\u00b2); (3) this rearranges to |pB|\u00b2\u00b7|pC|\u00b2 \u2212 (pB\u00b7pC)\u00b2 = det\u00b2, which follows from: Lagrange's identity gives |pB\u00d7pC|\u00b2 = |pB|\u00b2|pC|\u00b2 \u2212 (pB\u00b7pC)\u00b2, and normSq_projPerp_cross gives |pB\u00d7pC|\u00b2 = det\u00b2.\n\nThe Cauchy-Schwarz check (pB\u00b7pC)\u00b2 \u2264 (|pB||pC|)\u00b2 ensures the argument of arccos lies in [-1,1], making the degenerate case branch (returning 0) irrelevant under the nonzero hypotheses.",
     "mathContext": "$\\sin^2(\\alpha) = 1 - \\frac{(p_B \\cdot p_C)^2}{|p_B|^2|p_C|^2} = \\frac{|p_B|^2|p_C|^2 - (p_B \\cdot p_C)^2}{|p_B|^2|p_C|^2} = \\frac{|p_B \\times p_C|^2}{|p_B|^2|p_C|^2} = \\frac{\\det^2}{\\sin^2(c) \\sin^2(b)}$.",
     "significance": "key",
-    "relatedConcepts": ["dihedral angle", "Lagrange identity", "normSq_projPerp_cross", "Cauchy-Schwarz"],
-    "prerequisites": ["dihedralAngle", "Real.sin_arccos", "lagrange_identity", "normSq_projPerp_cross"]
+    "relatedConcepts": [
+      "dihedral angle",
+      "Lagrange identity",
+      "normSq_projPerp_cross",
+      "Cauchy-Schwarz"
+    ],
+    "prerequisites": [
+      "dihedralAngle",
+      "Real.sin_arccos",
+      "lagrange_identity",
+      "normSq_projPerp_cross"
+    ]
   },
   {
     "id": "ann-sls-main",
     "proofId": "spherical-law-of-sines",
-    "range": { "startLine": 235, "endLine": 310 },
-    "type": "theorem",
+    "range": {
+      "startLine": 235,
+      "endLine": 310
+    },
+    "type": "insight",
     "title": "spherical_law_of_sines_all_sq: All Three Ratios Equal",
-    "content": "spherical_law_of_sines_sq proves sin²(a)/sin²(α) = sin²(b)/sin²(β) by expressing both as det²/(sin²(a)·sin²(b)·sin²(c)) · common_factor and canceling via field_simp. The key observations: sin²(arcLen B C) = |projPerp C B|² (from sin_sq_arcLen), sin²(dih A B C) = det²/(|projPerp B A|²·|projPerp C A|²) (from sin_sq_dihedralAngle), and |projPerp B A|² = |projPerp A B|² (since both equal sin²(arcLen A B)).\n\nspherical_law_of_sines_all_sq obtains the third equality by applying the two-ratio theorem to the relabeled triangle (B,C,A). The key insight: tripleProduct B C A = tripleProduct A B C (cyclic symmetry, tripleProduct_cyclic), so det² is unchanged. The dihedral angle rewrites use explicit instantiation (dihedralAngle_B_comm A B C).symm to avoid pattern-matching interference between the two rewrite steps.\n\nThe statement is in squared form (sin²/sin²) to avoid complications with signs and square roots, which is mathematically equivalent to the ratio form for the non-degenerate case.",
+    "content": "spherical_law_of_sines_sq proves sin\u00b2(a)/sin\u00b2(\u03b1) = sin\u00b2(b)/sin\u00b2(\u03b2) by expressing both as det\u00b2/(sin\u00b2(a)\u00b7sin\u00b2(b)\u00b7sin\u00b2(c)) \u00b7 common_factor and canceling via field_simp. The key observations: sin\u00b2(arcLen B C) = |projPerp C B|\u00b2 (from sin_sq_arcLen), sin\u00b2(dih A B C) = det\u00b2/(|projPerp B A|\u00b2\u00b7|projPerp C A|\u00b2) (from sin_sq_dihedralAngle), and |projPerp B A|\u00b2 = |projPerp A B|\u00b2 (since both equal sin\u00b2(arcLen A B)).\n\nspherical_law_of_sines_all_sq obtains the third equality by applying the two-ratio theorem to the relabeled triangle (B,C,A). The key insight: tripleProduct B C A = tripleProduct A B C (cyclic symmetry, tripleProduct_cyclic), so det\u00b2 is unchanged. The dihedral angle rewrites use explicit instantiation (dihedralAngle_B_comm A B C).symm to avoid pattern-matching interference between the two rewrite steps.\n\nThe statement is in squared form (sin\u00b2/sin\u00b2) to avoid complications with signs and square roots, which is mathematically equivalent to the ratio form for the non-degenerate case.",
     "mathContext": "$\\frac{\\sin^2 a}{\\sin^2 \\alpha} = \\frac{\\sin^2 a \\cdot \\sin^2 b \\cdot \\sin^2 c}{\\det^2} = \\frac{\\sin^2 b}{\\sin^2 \\beta} = \\frac{\\sin^2 c}{\\sin^2 \\gamma}$, using $\\det[A,B,C] = \\det[B,C,A] = \\det[C,A,B]$.",
     "significance": "key",
-    "relatedConcepts": ["spherical law of sines", "tripleProduct_cyclic", "field_simp", "dihedralAngle symmetry"],
-    "prerequisites": ["sin_sq_arcLen", "sin_sq_dihedralAngle", "tripleProduct_cyclic", "dihedralAngle_B_comm", "dihedralAngle_C_comm"]
+    "relatedConcepts": [
+      "spherical law of sines",
+      "tripleProduct_cyclic",
+      "field_simp",
+      "dihedralAngle symmetry"
+    ],
+    "prerequisites": [
+      "sin_sq_arcLen",
+      "sin_sq_dihedralAngle",
+      "tripleProduct_cyclic",
+      "dihedralAngle_B_comm",
+      "dihedralAngle_C_comm"
+    ]
   }
 ]

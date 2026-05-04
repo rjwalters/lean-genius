@@ -285,13 +285,13 @@ theorem constructible_up_to_50 :
     TotientIsPow2 6 ∧ TotientIsPow2 8 ∧ TotientIsPow2 10 ∧
     TotientIsPow2 12 ∧ TotientIsPow2 15 ∧ TotientIsPow2 16 ∧
     TotientIsPow2 17 ∧ TotientIsPow2 20 ∧ TotientIsPow2 24 ∧
-    TotientIsPow2 30 ∧ TotientIsPow2 32 ∧ TotientIsPow2 40 ∧
-    TotientIsPow2 48 := by
+    TotientIsPow2 30 ∧ TotientIsPow2 32 ∧ TotientIsPow2 34 ∧
+    TotientIsPow2 40 ∧ TotientIsPow2 48 := by
   refine ⟨⟨1, by decide⟩, ⟨1, by decide⟩, ⟨2, by decide⟩,
           ⟨1, by decide⟩, ⟨2, by decide⟩, ⟨2, by decide⟩,
           ⟨2, by decide⟩, ⟨3, by decide⟩, ⟨3, by decide⟩,
           ⟨4, by decide⟩, ⟨3, by decide⟩, ⟨3, by decide⟩,
           ⟨3, by decide⟩, ⟨4, by decide⟩, ⟨4, by decide⟩,
-          ⟨4, by decide⟩⟩
+          ⟨4, by decide⟩, ⟨4, by decide⟩⟩
 
 end AngleTrisectionOQ02OQ03Ext

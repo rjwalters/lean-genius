@@ -2,169 +2,327 @@
   {
     "id": "ann-header",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 1, "endLine": 47 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
     "title": "Proof Architecture Overview",
     "content": "The file header documents the three-step proof strategy: (1) a combinatorial Möbius decomposition counting coprime pairs via the sum Σ μ(d)⌊N/d⌋², (2) evaluating the Dirichlet series Σ μ(d)/d² = 6/π² as an axiom, and (3) taking the density limit via dominated convergence (axiomatized). The sorry count is minimal — only the finite sum exchange remains — because the analytic steps require L-series bridge machinery not yet in Mathlib for ℤ-valued arithmetic functions.",
     "mathContext": "$\\lim_{N\\to\\infty} \\frac{|\\{(m,n)\\in[N]^2:\\gcd(m,n)=1\\}|}{N^2} = \\frac{6}{\\pi^2} = \\frac{1}{\\zeta(2)}$",
-    "significance": "context",
-    "relatedConcepts": ["Möbius function", "natural density", "Dirichlet series", "Basel problem"],
-    "prerequisites": ["Riemann zeta function", "Möbius inversion formula", "natural density"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Möbius function",
+      "natural density",
+      "Dirichlet series",
+      "Basel problem"
+    ],
+    "prerequisites": [
+      "Riemann zeta function",
+      "Möbius inversion formula",
+      "natural density"
+    ]
   },
   {
     "id": "ann-imports",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 49, "endLine": 61 },
-    "type": "technical",
+    "range": {
+      "startLine": 49,
+      "endLine": 61
+    },
+    "type": "concept",
     "title": "Imports and Namespace Setup",
     "content": "The proof draws on four distinct Mathlib subsystems: (1) ArithmeticFunction for Möbius μ and the identity μ*ζ=1, (2) LSeries.HurwitzZetaValues for ζ(2)=π²/6, (3) EulerProduct.DirichletLSeries for the Euler product machinery, and (4) SpecificLimits for convergence results. Opening ArithmeticFunction makes `moebius`, `zeta`, and `one` directly accessible without qualification, reducing verbosity in the main proofs.",
     "mathContext": "$\\mu * \\zeta = \\mathbf{1}$ where $\\mathbf{1}(n) = [n=1]$ is the identity arithmetic function.",
-    "significance": "technical",
-    "relatedConcepts": ["Dirichlet convolution", "arithmetic functions", "Mathlib imports"],
-    "prerequisites": ["Lean 4 imports", "Mathlib structure"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet convolution",
+      "arithmetic functions",
+      "Mathlib imports"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib structure"
+    ]
   },
   {
     "id": "ann-count-def",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 63, "endLine": 70 },
+    "range": {
+      "startLine": 63,
+      "endLine": 70
+    },
     "type": "definition",
     "title": "The Coprime Pair Count",
     "content": "The central object `countCoprimePairs N` counts pairs (m, n) with 1 ≤ m, n ≤ N and gcd(m,n) = 1, using `Nat.Coprime` (which is definitionally equal to `Nat.gcd m n = 1`). The `noncomputable` annotation allows this to be used in real-valued expressions (since it maps into ℝ in the density statement), while `native_decide` can still evaluate it for concrete N by unfolding to the finset computation. The Cartesian product `Finset.Icc 1 N ×ˢ Finset.Icc 1 N` captures the square [1,N]².",
     "mathContext": "$\\text{countCoprimePairs}(N) = |\\{(m,n)\\in\\{1,\\ldots,N\\}^2 : \\gcd(m,n)=1\\}|$",
     "significance": "key",
-    "relatedConcepts": ["Nat.Coprime", "Finset.filter", "Cartesian product", "natural density"],
-    "prerequisites": ["Lean 4 definitions", "Finset API", "natural number gcd"]
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "Finset.filter",
+      "Cartesian product",
+      "natural density"
+    ],
+    "prerequisites": [
+      "Lean 4 definitions",
+      "Finset API",
+      "natural number gcd"
+    ]
   },
   {
     "id": "ann-moebius-sum",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 75, "endLine": 117 },
-    "type": "technique",
+    "range": {
+      "startLine": 75,
+      "endLine": 117
+    },
+    "type": "concept",
     "title": "Möbius Inversion: The Coprimality Detector",
     "content": "This theorem proves the fundamental identity Σ_{d|n} μ(d) = [n=1], the cornerstone of multiplicative number theory. The proof uses `moebius_mul_coe_zeta`, which encodes the Dirichlet convolution identity μ*ζ = 1 in Mathlib. The technical challenge is reconciling the sum over `n.divisors` with the sum over `n.divisorsAntidiagonal` used internally; a bijection via `Finset.sum_nbij Prod.fst` bridges the two. The `simp_rw` step simplifies ζ(n) = (if n=0 then 0 else 1) to eliminate the zero case.",
     "mathContext": "$\\sum_{d|n} \\mu(d) = [n=1]$ — equivalently, $\\mu * \\zeta = \\mathbf{1}$ as Dirichlet series, where $\\zeta$ is the constant-1 multiplicative function (not the Riemann zeta).",
     "significance": "key",
-    "relatedConcepts": ["Möbius function", "Dirichlet convolution", "divisors", "divisorsAntidiagonal"],
-    "prerequisites": ["multiplicative functions", "Dirichlet convolution", "Finset bijections"]
+    "relatedConcepts": [
+      "Möbius function",
+      "Dirichlet convolution",
+      "divisors",
+      "divisorsAntidiagonal"
+    ],
+    "prerequisites": [
+      "multiplicative functions",
+      "Dirichlet convolution",
+      "Finset bijections"
+    ]
   },
   {
     "id": "ann-coprime-detector",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 119, "endLine": 124 },
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    },
     "type": "concept",
     "title": "Coprimality Detector via Möbius",
     "content": "This is the key application of Möbius inversion to coprimality: since Σ_{d|n} μ(d) = [n=1], applying to n = gcd(m,n) gives [gcd(m,n)=1] = Σ_{d|gcd(m,n)} μ(d). This converts a non-additive predicate (coprimality) into a sum that can be exchanged with other sums. The `simp [Nat.Coprime]` closes the goal by unfolding `Nat.Coprime` to `Nat.gcd m n = 1`, making the conditional [gcd(m,n)=1] directly visible.",
     "mathContext": "$[\\gcd(m,n)=1] = \\sum_{d|\\gcd(m,n)} \\mu(d)$. The sum has value 1 when $\\gcd(m,n)=1$ and 0 otherwise.",
     "significance": "key",
-    "relatedConcepts": ["Nat.Coprime", "gcd divisors", "indicator function", "Möbius inversion"],
-    "prerequisites": ["Nat.Coprime definition", "moebius_sum_divisors"]
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "gcd divisors",
+      "indicator function",
+      "Möbius inversion"
+    ],
+    "prerequisites": [
+      "Nat.Coprime definition",
+      "moebius_sum_divisors"
+    ]
   },
   {
     "id": "ann-card-multiples",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 129, "endLine": 154 },
-    "type": "technique",
+    "range": {
+      "startLine": 129,
+      "endLine": 154
+    },
+    "type": "concept",
     "title": "Counting Multiples of d in [1, N]",
     "content": "The count of multiples of d in [1,N] is ⌊N/d⌋. The proof constructs an explicit bijection between `filter (d ∣ ·) (Icc 1 N)` and `(range (N/d)).image (· * d + d)`, then uses injectivity of multiplication to compute the cardinality. The bijection maps j ↦ (j+1)*d, so the image {d, 2d, ..., ⌊N/d⌋·d} has exactly ⌊N/d⌋ elements. The bound `k ≤ N/d` relies on `Nat.le_div_iff_mul_le` (the natural number division characterization).",
     "mathContext": "$|\\{a\\in\\{1,\\ldots,N\\} : d\\mid a\\}| = \\lfloor N/d\\rfloor$. The multiples are $d, 2d, \\ldots, \\lfloor N/d\\rfloor \\cdot d$.",
     "significance": "supporting",
-    "relatedConcepts": ["floor division", "Finset.image", "injectivity", "Nat.div"],
-    "prerequisites": ["natural number division", "Finset cardinality lemmas"]
+    "relatedConcepts": [
+      "floor division",
+      "Finset.image",
+      "injectivity",
+      "Nat.div"
+    ],
+    "prerequisites": [
+      "natural number division",
+      "Finset cardinality lemmas"
+    ]
   },
   {
     "id": "ann-card-pairs",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 156, "endLine": 165 },
-    "type": "technique",
+    "range": {
+      "startLine": 156,
+      "endLine": 165
+    },
+    "type": "concept",
     "title": "Counting d-Divisible Pairs: ⌊N/d⌋²",
     "content": "The count of pairs (m,n) ∈ [N]² with d|m and d|n factors as a product: the set {(m,n): d|m, d|n} equals {m: d|m} × {n: d|n}. The proof uses `Finset.card_product` and the previously established `card_multiples` to conclude the count is (N/d)². The `sq` rewrite converts `(N/d) * (N/d)` to `(N/d)^2`. This independence of divisibility conditions — one on m, one on n — reflects the independence of events over the product measure.",
     "mathContext": "$|\\{(m,n)\\in[N]^2: d\\mid m, d\\mid n\\}| = \\lfloor N/d\\rfloor^2$. The condition $d|\\gcd(m,n)$ is equivalent to $d|m$ and $d|n$ independently.",
     "significance": "supporting",
-    "relatedConcepts": ["Cartesian product of sets", "independent divisibility", "Finset.card_product"],
-    "prerequisites": ["card_multiples", "Finset product lemmas"]
+    "relatedConcepts": [
+      "Cartesian product of sets",
+      "independent divisibility",
+      "Finset.card_product"
+    ],
+    "prerequisites": [
+      "card_multiples",
+      "Finset product lemmas"
+    ]
   },
   {
     "id": "ann-mobius-decomp",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 171, "endLine": 206 },
+    "range": {
+      "startLine": 171,
+      "endLine": 206
+    },
     "type": "insight",
     "title": "The Central Combinatorial Identity (Möbius Decomposition)",
     "content": "This is the proof's combinatorial heart: countCoprimePairs(N) = Σ_{d=1}^N μ(d)·⌊N/d⌋². The completed steps use `Finset.sum_boole` (to convert indicator-based cardinality to a sum), then `coprime_iff_moebius_sum` (to expand [gcd=1] into a Möbius sum). The remaining `sorry` is the finite sum exchange: swapping Σ_{(m,n)} Σ_{d|gcd(m,n)} to Σ_d Σ_{(m,n): d|m,d|n}. This is a finite Fubini argument — both sides count the same triples (m,n,d) — and should be provable via `Finset.sum_comm` or `Finset.sum_sigma`.",
     "mathContext": "$\\text{countCoprimePairs}(N) = \\sum_{d=1}^N \\mu(d)\\lfloor N/d\\rfloor^2$. Counting triples $(m,n,d)$ with $1\\le m,n\\le N$ and $d|\\gcd(m,n)$ in two ways gives this identity.",
     "significance": "key",
-    "relatedConcepts": ["Fubini for finite sums", "Finset.sum_comm", "triple counting", "Möbius decomposition"],
-    "prerequisites": ["coprime_iff_moebius_sum", "card_pairs_divisible", "Finset.sum_boole"]
+    "relatedConcepts": [
+      "Fubini for finite sums",
+      "Finset.sum_comm",
+      "triple counting",
+      "Möbius decomposition"
+    ],
+    "prerequisites": [
+      "coprime_iff_moebius_sum",
+      "card_pairs_divisible",
+      "Finset.sum_boole"
+    ]
   },
   {
     "id": "ann-axiom-dirichlet",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 211, "endLine": 227 },
+    "range": {
+      "startLine": 211,
+      "endLine": 227
+    },
     "type": "concept",
     "title": "Axiom: Möbius Dirichlet Series at s=2",
     "content": "This axiom asserts HasSum (μ(d)/d²) (6/π²), i.e., the Dirichlet series L(μ, 2) = 6/π². The mathematical proof exists: L(μ,s)·ζ(s) = 1 (from moebius_mul_coe_zeta), so L(μ,2) = 1/ζ(2) = 6/π² (from riemannZeta_two). The formalization gap is that `moebius_mul_coe_zeta` works with ℤ-valued arithmetic functions, but `HasSum` for L-series requires working in ℝ; no Mathlib bridge currently converts the algebraic identity to a summability statement for the ℤ-to-ℝ cast of μ.",
     "mathContext": "$\\sum_{d=1}^\\infty \\frac{\\mu(d)}{d^2} = \\frac{1}{\\zeta(2)} = \\frac{6}{\\pi^2}$. This is $L(\\mu,2) = \\frac{1}{\\zeta(2)}$, where $L(\\mu,s) = \\sum_{d=1}^\\infty \\mu(d)d^{-s}$ for $\\text{Re}(s)>1$.",
     "significance": "key",
-    "relatedConcepts": ["Dirichlet L-series", "Riemann zeta function", "Möbius function", "HasSum"],
-    "prerequisites": ["Dirichlet series", "L(μ,s)·ζ(s)=1 identity", "riemannZeta_two"]
+    "relatedConcepts": [
+      "Dirichlet L-series",
+      "Riemann zeta function",
+      "Möbius function",
+      "HasSum"
+    ],
+    "prerequisites": [
+      "Dirichlet series",
+      "L(μ,s)·ζ(s)=1 identity",
+      "riemannZeta_two"
+    ]
   },
   {
     "id": "ann-axiom-density",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 229, "endLine": 245 },
+    "range": {
+      "startLine": 229,
+      "endLine": 245
+    },
     "type": "concept",
     "title": "Axiom: Density Convergence via Dominated Convergence",
     "content": "This axiom establishes that countCoprimePairs(N)/N² → 6/π² as N → ∞. The proof outline uses dominated convergence for series: for each fixed d, μ(d)·(⌊N/d⌋/N)² → μ(d)/d² as N → ∞ (since ⌊N/d⌋/N → 1/d); the dominator is 1/d² (since |μ(d)| ≤ 1); and Σ 1/d² = π²/6 < ∞. The self-referential beauty here: the dominator that makes dominated convergence work is exactly the Basel series π²/6, and the limit is its reciprocal 6/π².",
     "mathContext": "$\\frac{\\text{countCoprimePairs}(N)}{N^2} = \\sum_{d=1}^N \\mu(d)\\left(\\frac{\\lfloor N/d\\rfloor}{N}\\right)^2 \\to \\sum_{d=1}^\\infty \\frac{\\mu(d)}{d^2} = \\frac{6}{\\pi^2}$.",
     "significance": "key",
-    "relatedConcepts": ["dominated convergence", "Basel series", "uniform domination", "Tendsto"],
-    "prerequisites": ["Möbius decomposition", "moebius_dirichlet_series_at_two", "Mathlib.Analysis.SpecificLimits"]
+    "relatedConcepts": [
+      "dominated convergence",
+      "Basel series",
+      "uniform domination",
+      "Tendsto"
+    ],
+    "prerequisites": [
+      "Möbius decomposition",
+      "moebius_dirichlet_series_at_two",
+      "Mathlib.Analysis.SpecificLimits"
+    ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 251, "endLine": 261 },
+    "range": {
+      "startLine": 251,
+      "endLine": 261
+    },
     "type": "insight",
     "title": "Main Theorem: Cesàro 1885",
     "content": "The main theorem is a one-line proof — it directly applies the `coprime_pair_density_limit` axiom. The theorem packages the analytic statement as `Filter.Tendsto ... Filter.atTop (nhds (6/π²))`, which in Lean is the rigorous formulation of 'converges to 6/π² along the filter of large N'. The trivial proof underscores that all the mathematical depth is in the axioms and lemmas; the statement itself just names the result for use as a standalone theorem.",
     "mathContext": "$\\lim_{N\\to\\infty} \\frac{\\text{countCoprimePairs}(N)}{N^2} = \\frac{6}{\\pi^2} \\approx 0.6079$. Stated as a Filter.Tendsto along atTop.",
     "significance": "key",
-    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "nhds", "natural density"],
-    "prerequisites": ["coprime_pair_density_limit", "Filter API"]
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "Filter.atTop",
+      "nhds",
+      "natural density"
+    ],
+    "prerequisites": [
+      "coprime_pair_density_limit",
+      "Filter API"
+    ]
   },
   {
     "id": "ann-properties",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 265, "endLine": 294 },
-    "type": "technique",
+    "range": {
+      "startLine": 265,
+      "endLine": 294
+    },
+    "type": "concept",
     "title": "Density Properties and Numerical Bounds",
     "content": "Four properties establish the qualitative behavior of the density 6/π²: it is positive (from π > 0), less than 1 (from π > 3 so π² > 9 > 6), lies in (0,1), and equals 1/ζ(2). The bounds 3/8 < 6/π² < 2/3 are proved using π > 3 and π < 4 from Mathlib's trigonometric bounds. Numerically: 6/16 = 3/8 (using π < 4) and 6/9 = 2/3 (using π > 3). The `nlinarith` tactic closes both bounds after squaring the π inequalities with `sq_nonneg`.",
     "mathContext": "$\\frac{3}{8} < \\frac{6}{\\pi^2} < \\frac{2}{3}$. From $3 < \\pi < 4$: $\\pi^2 < 16 \\Rightarrow 6/\\pi^2 > 3/8$; $\\pi^2 > 9 \\Rightarrow 6/\\pi^2 < 2/3$.",
     "significance": "supporting",
-    "relatedConcepts": ["pi bounds", "nlinarith", "Real.pi_gt_three", "Real.pi_lt_four"],
-    "prerequisites": ["Real.pi_pos", "Mathlib trigonometric bounds"]
+    "relatedConcepts": [
+      "pi bounds",
+      "nlinarith",
+      "Real.pi_gt_three",
+      "Real.pi_lt_four"
+    ],
+    "prerequisites": [
+      "Real.pi_pos",
+      "Mathlib trigonometric bounds"
+    ]
   },
   {
     "id": "ann-small-cases",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 299, "endLine": 326 },
-    "type": "context",
+    "range": {
+      "startLine": 299,
+      "endLine": 326
+    },
+    "type": "concept",
     "title": "Computational Verification for Small N",
     "content": "Six theorems verify countCoprimePairs at N=1,2,3,4,5,10 using `native_decide`, which compiles the decision procedure to native code for efficient evaluation. The densities start at 1.0 (N=1), dip to ~0.63 at N=10, and converge toward 6/π² ≈ 0.608. These verified values serve as a sanity check and illustrate the slow monotone convergence of the density. Notice the density at N=2 is 3/4=0.75 (pairs (1,1),(1,2),(2,1)) — the non-coprime pair (2,2) with gcd=2 is the only exclusion.",
     "mathContext": "Densities: $N=1: 1.0$, $N=2: 0.75$, $N=3: 7/9\\approx0.778$, $N=4: 13/16=0.813$, $N=5: 21/25=0.84$, $N=10: 0.63$. All exceed $6/\\pi^2\\approx0.608$ (density approaches from above).",
-    "significance": "context",
-    "relatedConcepts": ["native_decide", "computational verification", "convergence from above"],
-    "prerequisites": ["countCoprimePairs definition", "Lean 4 decide tactic"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "computational verification",
+      "convergence from above"
+    ],
+    "prerequisites": [
+      "countCoprimePairs definition",
+      "Lean 4 decide tactic"
+    ]
   },
   {
     "id": "ann-euler-product",
     "proofId": "basel-problem-oq-04-oq-03",
-    "range": { "startLine": 330, "endLine": 346 },
+    "range": {
+      "startLine": 330,
+      "endLine": 346
+    },
     "type": "insight",
     "title": "Euler Product Interpretation and tsum Identity",
     "content": "The `density_eq_euler_product` theorem states 6/π² = 1/(π²/6), connecting to the Euler product ∏_p(1-p⁻²)⁻¹ = π²/6 proved in BaselProblemOQ04. Inverting gives ∏_p(1-1/p²) = 6/π², the 'independence over primes' interpretation: since gcd(m,n)=1 iff no prime p divides both m and n, and by CRT these events are independent, Pr[gcd(m,n)=1] = ∏_p Pr[p∤gcd] = ∏_p(1-1/p²) = 6/π². The `tsum_moebius_div_sq` exposes the HasSum axiom as a tsum equation.",
     "mathContext": "$\\frac{6}{\\pi^2} = \\prod_p\\left(1-\\frac{1}{p^2}\\right) = \\frac{1}{\\zeta(2)}$. By CRT: $\\Pr[\\gcd(m,n)=1] = \\prod_p \\Pr[p\\nmid\\gcd(m,n)] = \\prod_p\\left(1-\\frac{1}{p^2}\\right)$.",
     "significance": "key",
-    "relatedConcepts": ["Euler product", "Chinese Remainder Theorem", "probabilistic independence", "tsum"],
-    "prerequisites": ["basel-problem-oq-04 (Euler product)", "HasSum.tsum_eq", "independence over primes"]
+    "relatedConcepts": [
+      "Euler product",
+      "Chinese Remainder Theorem",
+      "probabilistic independence",
+      "tsum"
+    ],
+    "prerequisites": [
+      "basel-problem-oq-04 (Euler product)",
+      "HasSum.tsum_eq",
+      "independence over primes"
+    ]
   }
 ]

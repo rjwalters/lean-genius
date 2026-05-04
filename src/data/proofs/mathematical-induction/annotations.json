@@ -9,13 +9,13 @@
     "type": "concept",
     "title": "The Foundation of Recursive Reasoning",
     "content": "Mathematical induction is the principle that allows us to prove statements about all natural numbers by:\n\n1. **Base Case**: Prove the statement holds for 0\n2. **Inductive Step**: Prove that if it holds for $n$, it holds for $n+1$\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is Peano's fifth axiom, and it's what distinguishes the natural numbers from other structures.",
-    "mathContext": "In Lean 4, `Nat` is defined as an inductive type with constructors `zero : Nat` and `succ : Nat → Nat`. The `Nat.rec` recursor is automatically generated and has the type signature: `Nat.rec : {motive : Nat → Sort u} → motive 0 → (∀ n, motive n → motive (n+1)) → ∀ n, motive n`. The induction principle is *definitionally* the recursor — there is no distinction in Lean's type theory between proving by induction and computing by recursion.",
+    "mathContext": "In Lean 4, `Nat` is defined as an inductive type with constructors `zero : Nat` and `succ : Nat \u2192 Nat`. The `Nat.rec` recursor is automatically generated and has the type signature: `Nat.rec : {motive : Nat \u2192 Sort u} \u2192 motive 0 \u2192 (\u2200 n, motive n \u2192 motive (n+1)) \u2192 \u2200 n, motive n`. The induction principle is *definitionally* the recursor \u2014 there is no distinction in Lean's type theory between proving by induction and computing by recursion.",
     "significance": "key",
     "prerequisites": [
-      "natural numbers (ℕ)",
+      "natural numbers (\u2115)",
       "propositions and predicates in Lean",
-      "universal quantification (∀)",
-      "logical connectives (∧, →)"
+      "universal quantification (\u2200)",
+      "logical connectives (\u2227, \u2192)"
     ],
     "relatedConcepts": [
       "Peano axioms",
@@ -36,8 +36,8 @@
     },
     "type": "insight",
     "title": "Historical Context and Approach",
-    "content": "The Principle of Mathematical Induction was rigorously formulated by Giuseppe Peano in 1889 as the fifth axiom in his axiomatization of the natural numbers.\n\nHowever, the technique has much older roots:\n- **Pascal (1665)**: Used induction explicitly in 'Traité du Triangle Arithmétique'\n- **Fermat**: Used infinite descent (contrapositive induction)\n- **Ancient Greeks**: Euclid implicitly used inductive reasoning\n\nIn modern type theory, induction is built into the foundations: natural numbers are an inductive type, and the induction principle is automatically generated as the recursor.",
-    "mathContext": "Peano's 1889 axiomatization introduced five axioms for the naturals: (1) 0 is a natural number; (2) every natural has a successor; (3) 0 is not a successor; (4) the successor function is injective; (5) the induction schema. Dedekind's contemporaneous work 'Was sind und was sollen die Zahlen?' (1888) gave an equivalent categorical characterization: ℕ is the unique (up to isomorphism) simply infinite system. In type theory, Lean implements Dedekind's categorical view — the `Nat` inductive type is defined by its recursor, and the induction principle is an immediate consequence of the universal property of the initial algebra.",
+    "content": "The Principle of Mathematical Induction was rigorously formulated by Giuseppe Peano in 1889 as the fifth axiom in his axiomatization of the natural numbers.\n\nHowever, the technique has much older roots:\n- **Pascal (1665)**: Used induction explicitly in 'Trait\u00e9 du Triangle Arithm\u00e9tique'\n- **Fermat**: Used infinite descent (contrapositive induction)\n- **Ancient Greeks**: Euclid implicitly used inductive reasoning\n\nIn modern type theory, induction is built into the foundations: natural numbers are an inductive type, and the induction principle is automatically generated as the recursor.",
+    "mathContext": "Peano's 1889 axiomatization introduced five axioms for the naturals: (1) 0 is a natural number; (2) every natural has a successor; (3) 0 is not a successor; (4) the successor function is injective; (5) the induction schema. Dedekind's contemporaneous work 'Was sind und was sollen die Zahlen?' (1888) gave an equivalent categorical characterization: \u2115 is the unique (up to isomorphism) simply infinite system. In type theory, Lean implements Dedekind's categorical view \u2014 the `Nat` inductive type is defined by its recursor, and the induction principle is an immediate consequence of the universal property of the initial algebra.",
     "significance": "key",
     "prerequisites": [
       "history of mathematical logic",
@@ -60,10 +60,10 @@
       "startLine": 57,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Weak Induction (Standard Form)",
-    "content": "**Weak Induction**: The standard form of mathematical induction.\n\n```lean\ntheorem weak_induction (P : ℕ → Prop)\n    (base : P 0)\n    (step : ∀ n, P n → P (n + 1)) :\n    ∀ n, P n\n```\n\nThe proof uses Lean's `induction` tactic, which applies the `Nat.rec` recursor. This is the most common form of induction used in practice.",
-    "mathContext": "In Lean 4, the `induction n with` tactic desugars to an application of `Nat.rec`. The `| zero => exact base` branch fills in the base case, and `| succ k ih => exact step k ih` fills in the inductive step with `ih : P k`. This is definitionally equal to `Nat.rec base step n`. Lean checks that the two constructors cover all cases of the `Nat` inductive type, giving totality. The `∀ n, P n` conclusion is a dependent function type `(n : ℕ) → P n`.",
+    "content": "**Weak Induction**: The standard form of mathematical induction.\n\n```lean\ntheorem weak_induction (P : \u2115 \u2192 Prop)\n    (base : P 0)\n    (step : \u2200 n, P n \u2192 P (n + 1)) :\n    \u2200 n, P n\n```\n\nThe proof uses Lean's `induction` tactic, which applies the `Nat.rec` recursor. This is the most common form of induction used in practice.",
+    "mathContext": "In Lean 4, the `induction n with` tactic desugars to an application of `Nat.rec`. The `| zero => exact base` branch fills in the base case, and `| succ k ih => exact step k ih` fills in the inductive step with `ih : P k`. This is definitionally equal to `Nat.rec base step n`. Lean checks that the two constructors cover all cases of the `Nat` inductive type, giving totality. The `\u2200 n, P n` conclusion is a dependent function type `(n : \u2115) \u2192 P n`.",
     "significance": "key",
     "prerequisites": [
       "Lean 4 `induction` tactic",
@@ -89,13 +89,13 @@
     },
     "type": "insight",
     "title": "Induction IS the Recursor",
-    "content": "The alternative proof `weak_induction'` shows that induction is literally the recursor:\n\n```lean\ntheorem weak_induction' ... : ∀ n, P n :=\n  Nat.rec base step\n```\n\nIn type theory, the induction principle for any inductive type is automatically generated as its **recursor**. For `Nat`, this is `Nat.rec`.",
-    "mathContext": "The term `Nat.rec base step : ∀ n, P n` is a fully elaborated proof term with no tactics. In the Curry-Howard correspondence, this term is simultaneously a proof of `∀ n, P n` and a program computing values of type `P n` by recursion on `n`. Lean's kernel reduces `Nat.rec base step 0` to `base` and `Nat.rec base step (n+1)` to `step n (Nat.rec base step n)` by `ι`-reduction (iota reduction). This is the computational content of the induction principle.",
+    "content": "The alternative proof `weak_induction'` shows that induction is literally the recursor:\n\n```lean\ntheorem weak_induction' ... : \u2200 n, P n :=\n  Nat.rec base step\n```\n\nIn type theory, the induction principle for any inductive type is automatically generated as its **recursor**. For `Nat`, this is `Nat.rec`.",
+    "mathContext": "The term `Nat.rec base step : \u2200 n, P n` is a fully elaborated proof term with no tactics. In the Curry-Howard correspondence, this term is simultaneously a proof of `\u2200 n, P n` and a program computing values of type `P n` by recursion on `n`. Lean's kernel reduces `Nat.rec base step 0` to `base` and `Nat.rec base step (n+1)` to `step n (Nat.rec base step n)` by `\u03b9`-reduction (iota reduction). This is the computational content of the induction principle.",
     "significance": "key",
     "prerequisites": [
       "Nat.rec recursor type signature",
       "proof terms vs tactics in Lean",
-      "ι-reduction (iota reduction)",
+      "\u03b9-reduction (iota reduction)",
       "Curry-Howard correspondence"
     ],
     "relatedConcepts": [
@@ -115,14 +115,14 @@
       "startLine": 87,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strong Induction (Complete Induction)",
-    "content": "**Strong Induction**: Instead of assuming just $P(n)$, we assume $P(k)$ for **all** $k < n$.\n\n```lean\ntheorem strong_induction (P : ℕ → Prop)\n    (step : ∀ n, (∀ k, k < n → P k) → P n) :\n    ∀ n, P n\n```\n\n**Key insight**: The base case is implicit! When $n = 0$, the hypothesis '$\\forall k < 0, P(k)$' is vacuously true (there are no such $k$), so we must prove $P(0)$ directly.",
-    "mathContext": "The Lean proof uses `Nat.strong_induction_on` from Mathlib, which has signature `Nat.strong_induction_on : ∀ {P : ℕ → Sort*} (n : ℕ), (∀ m, (∀ a, a < m → P a) → P m) → P n`. Internally, this is proved by weak induction on the auxiliary predicate `Q(n) := ∀ k < n, P k`, then extracting `P n` from `Q(n+1)`. The `step` function in strong induction takes a proof of `∀ k < n, P k` — when `n = 0`, this is the empty function (proof of `False.elim` applied to `Nat.not_lt_zero`), so `P 0` must still be established from the step alone using the vacuously true hypothesis.",
+    "content": "**Strong Induction**: Instead of assuming just $P(n)$, we assume $P(k)$ for **all** $k < n$.\n\n```lean\ntheorem strong_induction (P : \u2115 \u2192 Prop)\n    (step : \u2200 n, (\u2200 k, k < n \u2192 P k) \u2192 P n) :\n    \u2200 n, P n\n```\n\n**Key insight**: The base case is implicit! When $n = 0$, the hypothesis '$\\forall k < 0, P(k)$' is vacuously true (there are no such $k$), so we must prove $P(0)$ directly.",
+    "mathContext": "The Lean proof uses `Nat.strong_induction_on` from Mathlib, which has signature `Nat.strong_induction_on : \u2200 {P : \u2115 \u2192 Sort*} (n : \u2115), (\u2200 m, (\u2200 a, a < m \u2192 P a) \u2192 P m) \u2192 P n`. Internally, this is proved by weak induction on the auxiliary predicate `Q(n) := \u2200 k < n, P k`, then extracting `P n` from `Q(n+1)`. The `step` function in strong induction takes a proof of `\u2200 k < n, P k` \u2014 when `n = 0`, this is the empty function (proof of `False.elim` applied to `Nat.not_lt_zero`), so `P 0` must still be established from the step alone using the vacuously true hypothesis.",
     "significance": "key",
     "prerequisites": [
       "Nat.strong_induction_on from Mathlib",
-      "vacuous truth (∀ k < 0, P k)",
+      "vacuous truth (\u2200 k < 0, P k)",
       "predicate strengthening technique",
       "weak induction"
     ],
@@ -145,11 +145,11 @@
     "type": "concept",
     "title": "Why Use Strong Induction?",
     "content": "Strong induction is more convenient when the proof of $P(n)$ needs information about values other than $n-1$.\n\n**Example**: To prove every $n \\geq 2$ has a prime divisor:\n- If $n$ is prime, done.\n- If $n = ab$ is composite, we need $P(a)$ where $a$ could be much smaller than $n-1$.\n\nWeak induction would require a more complex auxiliary statement.",
-    "mathContext": "The prime divisor example illustrates why strong induction has better ergonomics for certain classes of proofs. With weak induction only, proving 'every n ≥ 2 has a prime divisor' requires the auxiliary predicate 'for all m ≤ n with m ≥ 2, m has a prime divisor' — this is the predicate strengthening technique `strong_from_weak` formalizes. A key heuristic: strong induction is needed when the induction goes to a value other than `n-1`, such as `n/2` (binary search), `n-k` for variable `k` (dynamic programming), or an arbitrary divisor (number theory). In Lean, `Nat.strong_induction_on` and `Nat.strongRecOn` are the main tools.",
+    "mathContext": "The prime divisor example illustrates why strong induction has better ergonomics for certain classes of proofs. With weak induction only, proving 'every n \u2265 2 has a prime divisor' requires the auxiliary predicate 'for all m \u2264 n with m \u2265 2, m has a prime divisor' \u2014 this is the predicate strengthening technique `strong_from_weak` formalizes. A key heuristic: strong induction is needed when the induction goes to a value other than `n-1`, such as `n/2` (binary search), `n-k` for variable `k` (dynamic programming), or an arbitrary divisor (number theory). In Lean, `Nat.strong_induction_on` and `Nat.strongRecOn` are the main tools.",
     "significance": "key",
     "prerequisites": [
       "prime numbers",
-      "divisibility in ℕ",
+      "divisibility in \u2115",
       "composite number decomposition",
       "inductive hypothesis"
     ],
@@ -169,10 +169,10 @@
       "startLine": 113,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Weak Induction Implies Strong",
-    "content": "**Weak → Strong**: Strengthen the predicate to $Q(n) = \\forall k < n. P(k)$.\n\n1. **Base**: $Q(0)$ is vacuously true (no $k < 0$).\n2. **Step**: If $Q(n)$ holds (i.e., $P(k)$ for all $k < n$), then by the strong step hypothesis, $P(n)$ holds, so $Q(n+1)$ holds.\n3. By weak induction on $Q$, we get $Q(n)$ for all $n$, which gives $P(n)$.\n\nThis is a classic proof technique: strengthening the induction hypothesis.",
-    "mathContext": "The key move is introducing the auxiliary predicate `Q(n) := ∀ k < n, P k`. In Lean: `let Q : ℕ → Prop := fun n => ∀ k, k < n → P k`. The weak induction hypothesis gives `Q_base : Q 0` (vacuously, since `k < 0` is false by `Nat.not_lt_zero`) and `Q_step : ∀ n, Q n → Q (n+1)` (using `Nat.lt_succ_iff_lt_or_eq` to split `k < n+1` into `k < n` or `k = n`). This technique of strengthening the induction hypothesis is a fundamental proof strategy: when the obvious induction hypothesis is too weak to close the inductive step, add more structure to the predicate.",
+    "content": "**Weak \u2192 Strong**: Strengthen the predicate to $Q(n) = \\forall k < n. P(k)$.\n\n1. **Base**: $Q(0)$ is vacuously true (no $k < 0$).\n2. **Step**: If $Q(n)$ holds (i.e., $P(k)$ for all $k < n$), then by the strong step hypothesis, $P(n)$ holds, so $Q(n+1)$ holds.\n3. By weak induction on $Q$, we get $Q(n)$ for all $n$, which gives $P(n)$.\n\nThis is a classic proof technique: strengthening the induction hypothesis.",
+    "mathContext": "The key move is introducing the auxiliary predicate `Q(n) := \u2200 k < n, P k`. In Lean: `let Q : \u2115 \u2192 Prop := fun n => \u2200 k, k < n \u2192 P k`. The weak induction hypothesis gives `Q_base : Q 0` (vacuously, since `k < 0` is false by `Nat.not_lt_zero`) and `Q_step : \u2200 n, Q n \u2192 Q (n+1)` (using `Nat.lt_succ_iff_lt_or_eq` to split `k < n+1` into `k < n` or `k = n`). This technique of strengthening the induction hypothesis is a fundamental proof strategy: when the obvious induction hypothesis is too weak to close the inductive step, add more structure to the predicate.",
     "significance": "key",
     "prerequisites": [
       "predicate strengthening / generalization",
@@ -196,10 +196,10 @@
       "startLine": 135,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strong Induction Implies Weak",
-    "content": "**Strong → Weak**: This direction is straightforward.\n\nWeak induction is a special case of strong induction where we only use the hypothesis at $n-1$.\n\nGiven base case $P(0)$ and step $P(n) \\to P(n+1)$, we can construct the strong step: assuming $P(k)$ for all $k < n$, use only $P(n-1)$ (when $n > 0$) to get $P(n)$.\n\nThis shows both principles have the same expressive power!",
-    "mathContext": "The proof unfolds by case analysis on `n`. For `n = 0`, use `base` directly (no inductive hypothesis needed). For `n = succ m`, the strong hypothesis gives `∀ k < m+1, P k`; applying it at `k = m` (using `Nat.lt_succ_self m : m < m+1`) yields `P m`, and then `step m : P m → P (m+1)` closes the case. This exhibits weak induction as the restriction of strong induction where only the immediately preceding value is used. The logical equivalence confirms both principles are equally expressive: they axiomatize the same class of structures (the standard model ℕ plus non-standard models of Peano arithmetic).",
+    "content": "**Strong \u2192 Weak**: This direction is straightforward.\n\nWeak induction is a special case of strong induction where we only use the hypothesis at $n-1$.\n\nGiven base case $P(0)$ and step $P(n) \\to P(n+1)$, we can construct the strong step: assuming $P(k)$ for all $k < n$, use only $P(n-1)$ (when $n > 0$) to get $P(n)$.\n\nThis shows both principles have the same expressive power!",
+    "mathContext": "The proof unfolds by case analysis on `n`. For `n = 0`, use `base` directly (no inductive hypothesis needed). For `n = succ m`, the strong hypothesis gives `\u2200 k < m+1, P k`; applying it at `k = m` (using `Nat.lt_succ_self m : m < m+1`) yields `P m`, and then `step m : P m \u2192 P (m+1)` closes the case. This exhibits weak induction as the restriction of strong induction where only the immediately preceding value is used. The logical equivalence confirms both principles are equally expressive: they axiomatize the same class of structures (the standard model \u2115 plus non-standard models of Peano arithmetic).",
     "significance": "supporting",
     "prerequisites": [
       "case analysis on Nat (zero/succ)",
@@ -222,16 +222,16 @@
       "startLine": 154,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Example: Sum of First n Natural Numbers",
-    "content": "A classic application of weak induction:\n\n$$2 \\cdot \\sum_{i=0}^{n} i = n(n+1)$$\n\nOr equivalently: $0 + 1 + 2 + \\cdots + n = \\frac{n(n+1)}{2}$\n\n**Base case** ($n = 0$): $2 \\cdot 0 = 0 \\cdot 1$ ✓\n\n**Inductive step**: Assuming the formula for $n$, we verify it for $n+1$ using `ring` to handle the algebra.",
-    "mathContext": "In Lean, `∑ i ∈ Finset.range (n+1), i` computes the sum using `Finset.sum`. The proof uses `Finset.sum_range_succ : ∑ i ∈ Finset.range (n+1), f i = (∑ i ∈ Finset.range n, f i) + f n` to unfold the last term, then the inductive hypothesis rewrites the prefix sum, and `ring` closes the remaining arithmetic identity. The factor of 2 avoids division in ℕ (which truncates in Lean). Lean's `ring` tactic handles polynomial identities over commutative (semi)rings, including ℕ. This is entry #74 in Wiedijk's 100 Theorems list.",
+    "content": "A classic application of weak induction:\n\n$$2 \\cdot \\sum_{i=0}^{n} i = n(n+1)$$\n\nOr equivalently: $0 + 1 + 2 + \\cdots + n = \\frac{n(n+1)}{2}$\n\n**Base case** ($n = 0$): $2 \\cdot 0 = 0 \\cdot 1$ \u2713\n\n**Inductive step**: Assuming the formula for $n$, we verify it for $n+1$ using `ring` to handle the algebra.",
+    "mathContext": "In Lean, `\u2211 i \u2208 Finset.range (n+1), i` computes the sum using `Finset.sum`. The proof uses `Finset.sum_range_succ : \u2211 i \u2208 Finset.range (n+1), f i = (\u2211 i \u2208 Finset.range n, f i) + f n` to unfold the last term, then the inductive hypothesis rewrites the prefix sum, and `ring` closes the remaining arithmetic identity. The factor of 2 avoids division in \u2115 (which truncates in Lean). Lean's `ring` tactic handles polynomial identities over commutative (semi)rings, including \u2115. This is entry #74 in Wiedijk's 100 Theorems list.",
     "significance": "supporting",
     "prerequisites": [
       "Finset.sum and Finset.range in Mathlib",
       "Finset.sum_range_succ lemma",
       "ring tactic for arithmetic identities",
-      "arithmetic in ℕ (no subtraction pitfalls)"
+      "arithmetic in \u2115 (no subtraction pitfalls)"
     ],
     "relatedConcepts": [
       "arithmetic series",
@@ -250,14 +250,14 @@
       "startLine": 166,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Example: Existence of Prime Divisors",
     "content": "Every natural number $n \\geq 2$ has a prime divisor.\n\nThis requires strong induction because if $n = ab$ is composite, we apply the hypothesis to $a$, which could be much smaller than $n-1$.\n\nWe use Mathlib's `Nat.exists_prime_and_dvd` which encapsulates this strong induction argument.",
-    "mathContext": "Mathlib's `Nat.exists_prime_and_dvd` has signature `Nat.exists_prime_and_dvd : n ≠ 1 → ∃ p, Nat.Prime p ∧ p ∣ n`. The condition `n ≠ 1` is equivalent to `2 ≤ n` for `n : ℕ` (since `n = 0` gives divisor 2 via convention, or we need `n ≥ 2`). Internally, Mathlib proves this by strong induction: if `n` is prime, `n ∣ n`; if `n = a * b` with `1 < a, b < n`, apply the induction hypothesis to `a`. In Lean, `omega` or `Nat.lt_of_dvd_of_lt` are used to verify that proper divisors are strictly smaller, satisfying the strong induction decrease condition. This is a prototypical use of strong induction in number theory.",
+    "mathContext": "Mathlib's `Nat.exists_prime_and_dvd` has signature `Nat.exists_prime_and_dvd : n \u2260 1 \u2192 \u2203 p, Nat.Prime p \u2227 p \u2223 n`. The condition `n \u2260 1` is equivalent to `2 \u2264 n` for `n : \u2115` (since `n = 0` gives divisor 2 via convention, or we need `n \u2265 2`). Internally, Mathlib proves this by strong induction: if `n` is prime, `n \u2223 n`; if `n = a * b` with `1 < a, b < n`, apply the induction hypothesis to `a`. In Lean, `omega` or `Nat.lt_of_dvd_of_lt` are used to verify that proper divisors are strictly smaller, satisfying the strong induction decrease condition. This is a prototypical use of strong induction in number theory.",
     "significance": "key",
     "prerequisites": [
       "Nat.Prime definition in Mathlib",
-      "divisibility (Dvd) in ℕ",
+      "divisibility (Dvd) in \u2115",
       "Nat.exists_prime_and_dvd from Mathlib",
       "omega tactic for linear arithmetic"
     ],
@@ -278,10 +278,10 @@
       "startLine": 180,
       "endLine": 186
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Well-Ordering Principle",
-    "content": "**Well-Ordering Principle**: Every nonempty subset of $\\mathbb{N}$ has a least element.\n\nIn Lean, this is captured by `Nat.find`: given a decidable predicate $P$ and a proof that some $n$ satisfies $P$, `Nat.find` returns the smallest such $n$.\n\n```lean\ntheorem well_ordering (P : ℕ → Prop) [DecidablePred P]\n    (hne : ∃ n, P n) :\n    ∃ m, P m ∧ ∀ n, P n → m ≤ n\n```",
-    "mathContext": "`Nat.find` in Lean has type `(h : ∃ n, P n) → ℕ` where `P` must be `DecidablePred`. It requires a proof of existence to return the minimum witness. `Nat.find_spec h : P (Nat.find h)` and `Nat.find_min' h : P n → Nat.find h ≤ n` provide the minimality. The `DecidablePred` typeclass constraint means the predicate must be computably decidable — this is necessary because `Nat.find` is implemented by linear search from 0. For non-computable predicates (requiring `Classical.choice`), one uses `Nat.find` with `Classical.decideEq` or works with `Nat.sInf` from order theory.",
+    "content": "**Well-Ordering Principle**: Every nonempty subset of $\\mathbb{N}$ has a least element.\n\nIn Lean, this is captured by `Nat.find`: given a decidable predicate $P$ and a proof that some $n$ satisfies $P$, `Nat.find` returns the smallest such $n$.\n\n```lean\ntheorem well_ordering (P : \u2115 \u2192 Prop) [DecidablePred P]\n    (hne : \u2203 n, P n) :\n    \u2203 m, P m \u2227 \u2200 n, P n \u2192 m \u2264 n\n```",
+    "mathContext": "`Nat.find` in Lean has type `(h : \u2203 n, P n) \u2192 \u2115` where `P` must be `DecidablePred`. It requires a proof of existence to return the minimum witness. `Nat.find_spec h : P (Nat.find h)` and `Nat.find_min' h : P n \u2192 Nat.find h \u2264 n` provide the minimality. The `DecidablePred` typeclass constraint means the predicate must be computably decidable \u2014 this is necessary because `Nat.find` is implemented by linear search from 0. For non-computable predicates (requiring `Classical.choice`), one uses `Nat.find` with `Classical.decideEq` or works with `Nat.sInf` from order theory.",
     "significance": "key",
     "prerequisites": [
       "DecidablePred typeclass",
@@ -307,10 +307,10 @@
       "startLine": 188,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Well-Ordering Implies Strong Induction",
-    "content": "**Proof by contraposition**: If $\\neg \\forall n. P(n)$, then the set $S = \\{n : \\neg P(n)\\}$ is nonempty.\n\nBy well-ordering, $S$ has a minimum $m$. But then $P(k)$ holds for all $k < m$, so by the strong induction hypothesis, $P(m)$ should hold—contradiction!\n\nThis shows well-ordering and induction are equivalent principles.",
-    "mathContext": "The Lean proof uses `by_contra h; push_neg at h` to obtain `∃ n, ¬P n`. Then `well_ordering (fun n => ¬P n) h` gives the minimal counterexample `m` with `hm : ¬P m` and `hmin : ∀ n, ¬P n → m ≤ n`. The key step: `intro k hkm` with `hkm : k < m` gives `by_contra hk; exact Nat.not_lt.mpr (hmin k hk) hkm` — the minimality of `m` says `m ≤ k`, contradicting `k < m`. So all `k < m` satisfy `P k`, and the strong induction `step` gives `P m`, contradicting `hm`. This is the standard proof that WOP ↔ strong induction, formalized with Lean's contradiction tactics.",
+    "content": "**Proof by contraposition**: If $\\neg \\forall n. P(n)$, then the set $S = \\{n : \\neg P(n)\\}$ is nonempty.\n\nBy well-ordering, $S$ has a minimum $m$. But then $P(k)$ holds for all $k < m$, so by the strong induction hypothesis, $P(m)$ should hold\u2014contradiction!\n\nThis shows well-ordering and induction are equivalent principles.",
+    "mathContext": "The Lean proof uses `by_contra h; push_neg at h` to obtain `\u2203 n, \u00acP n`. Then `well_ordering (fun n => \u00acP n) h` gives the minimal counterexample `m` with `hm : \u00acP m` and `hmin : \u2200 n, \u00acP n \u2192 m \u2264 n`. The key step: `intro k hkm` with `hkm : k < m` gives `by_contra hk; exact Nat.not_lt.mpr (hmin k hk) hkm` \u2014 the minimality of `m` says `m \u2264 k`, contradicting `k < m`. So all `k < m` satisfy `P k`, and the strong induction `step` gives `P m`, contradicting `hm`. This is the standard proof that WOP \u2194 strong induction, formalized with Lean's contradiction tactics.",
     "significance": "key",
     "prerequisites": [
       "proof by contraposition in Lean (by_contra, push_neg)",
@@ -337,14 +337,14 @@
     },
     "type": "concept",
     "title": "Connection to Type Theory",
-    "content": "In Lean's type theory, the natural numbers are defined as an **inductive type**:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat → Nat\n```\n\nThe induction principle is automatically generated as the **recursor** `Nat.rec`:\n\n```lean\nNat.rec : (base : P 0) → (step : ∀ n, P n → P (n+1)) → (n : ℕ) → P n\n```\n\nThis is exactly the computational content of the induction principle!",
-    "mathContext": "In Lean 4's kernel, `Nat` is a primitive type but behaves as if defined by `inductive Nat where | zero : Nat | succ : Nat → Nat`. The universe-polymorphic recursor `Nat.rec : {motive : Nat → Sort u} → motive 0 → (∀ n, motive n → motive (n+1)) → ∀ n, motive n` is the unique elimination rule. When `motive : Nat → Prop`, this gives the induction principle; when `motive : Nat → Type`, this gives primitive recursion. Lean's definitional equality includes ι-reduction: `Nat.rec f g 0 ≡ f` and `Nat.rec f g (succ n) ≡ g n (Nat.rec f g n)`. This means proofs and programs defined by `Nat.rec` compute, enabling the Curry-Howard correspondence between mathematical proofs and executable programs.",
+    "content": "In Lean's type theory, the natural numbers are defined as an **inductive type**:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat \u2192 Nat\n```\n\nThe induction principle is automatically generated as the **recursor** `Nat.rec`:\n\n```lean\nNat.rec : (base : P 0) \u2192 (step : \u2200 n, P n \u2192 P (n+1)) \u2192 (n : \u2115) \u2192 P n\n```\n\nThis is exactly the computational content of the induction principle!",
+    "mathContext": "In Lean 4's kernel, `Nat` is a primitive type but behaves as if defined by `inductive Nat where | zero : Nat | succ : Nat \u2192 Nat`. The universe-polymorphic recursor `Nat.rec : {motive : Nat \u2192 Sort u} \u2192 motive 0 \u2192 (\u2200 n, motive n \u2192 motive (n+1)) \u2192 \u2200 n, motive n` is the unique elimination rule. When `motive : Nat \u2192 Prop`, this gives the induction principle; when `motive : Nat \u2192 Type`, this gives primitive recursion. Lean's definitional equality includes \u03b9-reduction: `Nat.rec f g 0 \u2261 f` and `Nat.rec f g (succ n) \u2261 g n (Nat.rec f g n)`. This means proofs and programs defined by `Nat.rec` compute, enabling the Curry-Howard correspondence between mathematical proofs and executable programs.",
     "significance": "key",
     "prerequisites": [
       "inductive types in Lean 4",
       "Nat.rec universe-polymorphic recursor",
       "Sort u hierarchy (Prop, Type 0, Type 1, ...)",
-      "ι-reduction (iota reduction)",
+      "\u03b9-reduction (iota reduction)",
       "Curry-Howard correspondence"
     ],
     "relatedConcepts": [
@@ -367,8 +367,8 @@
     },
     "type": "concept",
     "title": "Generalizing to Other Data Types",
-    "content": "Induction generalizes to any inductively defined type. For lists:\n\n```lean\ntheorem list_induction (P : List α → Prop)\n    (base : P [])\n    (step : ∀ x xs, P xs → P (x :: xs)) :\n    ∀ l, P l\n```\n\nThis is **structural induction**: prove for the empty list, and prove for `x :: xs` assuming it holds for `xs`.",
-    "mathContext": "The list recursor `List.rec` has two cases mirroring the two constructors: `nil : List α` and `cons : α → List α → List α`. The `list_induction` theorem directly applies `List.rec`. In Lean, the `induction l with | nil => ... | cons x xs ih => ...` tactic desugars to `List.rec`. Structural induction applies to *any* inductive type: trees, terms, formulas, etc. For well-founded recursion on non-inductive structures (e.g., termination of algorithms), Lean uses `termination_by` with a well-founded relation, generalizing structural induction via `WellFounded.induction`. The `Finset.induction_on` lemma used in `sum_first_n` is another instance: induction on finite sets by adding one element at a time.",
+    "content": "Induction generalizes to any inductively defined type. For lists:\n\n```lean\ntheorem list_induction (P : List \u03b1 \u2192 Prop)\n    (base : P [])\n    (step : \u2200 x xs, P xs \u2192 P (x :: xs)) :\n    \u2200 l, P l\n```\n\nThis is **structural induction**: prove for the empty list, and prove for `x :: xs` assuming it holds for `xs`.",
+    "mathContext": "The list recursor `List.rec` has two cases mirroring the two constructors: `nil : List \u03b1` and `cons : \u03b1 \u2192 List \u03b1 \u2192 List \u03b1`. The `list_induction` theorem directly applies `List.rec`. In Lean, the `induction l with | nil => ... | cons x xs ih => ...` tactic desugars to `List.rec`. Structural induction applies to *any* inductive type: trees, terms, formulas, etc. For well-founded recursion on non-inductive structures (e.g., termination of algorithms), Lean uses `termination_by` with a well-founded relation, generalizing structural induction via `WellFounded.induction`. The `Finset.induction_on` lemma used in `sum_first_n` is another instance: induction on finite sets by adding one element at a time.",
     "significance": "supporting",
     "prerequisites": [
       "List inductive type (nil, cons constructors)",

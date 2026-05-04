@@ -45,7 +45,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 612,
-    "assumptions": "1 axiom: tao_disproves_part_i. See Lean source for the complete statement."
+    "assumptions": "1 axiom: tao_disproves_part_i. See Lean source for the complete statement.",
+    "theoremCount": 52
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and appears as Problem B2 in Richard Guy's influential book 'Unsolved Problems in Number Theory' (2004). The function f(n) computes the minimal m such that n can be written as a sum of the k smallest divisors of m.\n\nThe function has a curious property: it is undefined for exactly two values, n = 2 and n = 5. These are the only positive integers that cannot be expressed as a partial sum of divisors. This follows from a careful analysis of divisor structure.\n\nTerry Tao made significant progress on this problem by showing that the strong conjecture f(n) = o(n) is FALSE. He proved that the density of {n : f(n) ≤ δn} is at most O(δ²), meaning there are many n where f(n) is at least a constant fraction of n.\n\nHowever, the weaker question—whether f(n) = o(n) for ALMOST ALL n—remains open, as does the question of whether limsup f(n)/n = ∞.",

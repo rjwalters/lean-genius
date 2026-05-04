@@ -26,7 +26,8 @@
       "Sin-cross identity: sin(angle u v)·‖u‖·‖v‖ = |cross2D u v| proved from 2D Lagrange identity",
       "Three equivalent area formulas connecting side-angle products to cross product area",
       "Law of Sines derived purely from area equality without coordinates"
-    ]
+    ],
+    "theoremCount": 24
   },
   "overview": {
     "historicalContext": "The Law of Sines is one of the fundamental results of Euclidean trigonometry, relating the sides of a triangle to the sines of the opposite angles. It was known to Ptolemy (c. 150 CE) in the context of the inscribed angle theorem, and was stated explicitly by Abu Nasr ibn Iraq (c. 1000 CE) and later by François Viète (1579). The area-based proof used here — equating three area formulas (1/2)ab sin(C) — is one of the clearest elementary approaches. The key mathematical content is that for a non-degenerate planar triangle, the cross product captures the signed area, and the sin-angle identity connects it to the inner product angle. In Lean 4, the proof must handle the analytic subtleties of InnerProductGeometry.angle (defined via arccos) and the non-triviality of sin being positive for triangle angles.",

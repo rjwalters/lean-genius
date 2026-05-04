@@ -87,7 +87,7 @@
       "startLine": 59,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Main Theorem",
     "content": "Here it is—the theorem that launched a thousand memes. We claim that $1 + 1 = 2$, or more precisely, that `one + one = two` where these are our defined Peano naturals.\n\nThe proof will show that both sides compute to the same thing.",
     "mathContext": "$S(0) + S(0) = S(S(0))$. Expanding by the recursive case: $S(0) + S(0) = S(S(0) + 0)$. Then by the base case: $S(S(0) + 0) = S(S(0)) = 2$. Each step is a *definitional* reduction, so the kernel closes the proof without any runtime computation.",
@@ -110,7 +110,7 @@
       "startLine": 59,
       "endLine": 61
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Unfolding the Computation",
     "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition—no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
     "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$. The `unfold` tactic makes each definitional step explicit: first expanding `one` and `two`, then applying the recursive and base cases of `add`. After unfolding, both sides are syntactically identical, so `rfl` closes the goal.",
@@ -152,7 +152,7 @@
       "startLine": 72,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Right Identity",
     "content": "Zero is a right identity for addition: $n + 0 = n$. This follows immediately from the definition of `add`—it's the base case! The proof is `rfl` because `n + zero` *reduces to* `n` by definition.",
     "mathContext": "$\\forall n \\in \\mathbb{N}: n + 0 = n$. This is the base case of the `add` definition, so it holds *definitionally*: `add n zero` reduces to `n` by the first equation of the pattern match, making the proof a direct `rfl` with no computation needed.",
@@ -174,7 +174,7 @@
       "startLine": 72,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Left Identity (Requires Induction)",
     "content": "Zero is also a left identity: $0 + n = n$. But this requires **induction**! Why?\n\nOur addition is defined by recursion on the *second* argument, so `zero + n` doesn't immediately reduce. We must prove it for all `n` by induction:\n\n- **Base case:** `zero + zero = zero` ✓ (by definition)\n- **Inductive step:** If `zero + n = n`, then `zero + succ n = succ (zero + n) = succ n` ✓",
     "mathContext": "$\\forall n \\in \\mathbb{N}: 0 + n = n$. Unlike the right identity, `add zero n` does NOT reduce definitionally—the pattern match is on the second argument, so `add zero (succ m)` reduces to `succ (add zero m)`, not directly to `succ m`. Induction on $n$ bridges this gap, with the base `rfl` and inductive step using `rw [ih]`.",
@@ -196,7 +196,7 @@
       "startLine": 90,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Commutativity of Addition",
     "content": "Addition is commutative: $n + m = m + n$. This requires induction and uses both the `zero_add` and `succ_add` lemmas as stepping stones.\n\nThe proof goes by induction on `n`:\n- When $n = 0$: Use `zero_add` to show $0 + m = m = m + 0$\n- When $n = S(k)$: Use `succ_add` and the inductive hypothesis",
     "mathContext": "$\\forall m, n \\in \\mathbb{N}: m + n = n + m$. The proof uses `succ_add` (proved by induction) and `zero_add` as stepping stones. Commutativity requires two inductive proofs because `add` is asymmetric: `n + succ m = succ (n + m)` is definitional but `succ n + m = succ (n + m)` is not.",
@@ -219,7 +219,7 @@
       "startLine": 93,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Associativity of Addition",
     "content": "Addition is associative: $(a + b) + c = a + (b + c)$. With commutativity, this makes $(\\mathbb{N}, +)$ a commutative monoid.\n\nThe proof is by induction on `c`, which matches how addition is defined (recursion on the second argument). Both base case and inductive step reduce to definitional equality after applying the definition of `add`.",
     "mathContext": "$\\forall a, b, c \\in \\mathbb{N}: (a + b) + c = a + (b + c)$. Induction is on $c$ (matching the recursion direction of `add`): the base case `(a+b)+0 = a+(b+0)` is `rfl`, and the inductive step uses `add_succ` and `rw [ih]`. Together with commutativity, this establishes $(\\mathbb{N}, +, 0)$ as a commutative monoid.",
@@ -306,7 +306,7 @@
       "startLine": 83,
       "endLine": 83
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Successor Distributes Left",
     "content": "This lemma shows that $S(n) + m = S(n + m)$—the successor can be 'factored out' from the left argument.\n\nThis is NOT definitionally true (unlike `add_succ`) because our `add` recurses on the *right* argument. We need induction on `m` to prove it.\n\nThis asymmetry—one direction is trivial, the other requires proof—reflects the inherent asymmetry in our recursive definition.",
     "mathContext": "$S(n) + m = S(n + m)$. This lemma is the key asymmetry: `add_succ` ($n + S(m) = S(n+m)$) is *definitional* (it IS the recursive case), but `succ_add` ($S(n)+m = S(n+m)$) requires induction. Lean's `simp` and `omega` tactics know both forms, but proving it from scratch requires understanding which direction the recursion unfolds.",

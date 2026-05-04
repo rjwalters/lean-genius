@@ -46,9 +46,10 @@
     ],
     "dateAdded": "2026-02-22",
     "axiomCount": 2,
-    "lineCount": 442,
+    "lineCount": 1012,
     "assumptions": "2 axioms. No sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "Cantor's 1891 diagonal argument proved the reals are uncountable, establishing the gap ℵ₀ < 2^ℵ₀. Cantor had conjectured in 1878 that no cardinality exists between countable and the continuum — the Continuum Hypothesis (CH), which became Hilbert's first problem (1900).\n\nAfter 62 years, Gödel (1940) proved CH is consistent with ZFC using the constructible universe L. Cohen (1963) proved ¬CH is also consistent using his revolutionary forcing technique, earning the Fields Medal. Together they showed CH is *independent* of ZFC.\n\nEaston (1970) showed the independence is dramatic: for regular alephs, 2^ℵ_α can consistently equal any ℵ_β with cf(β) > ℵ_α. König's theorem (1905) that cf(2^ℵ₀) > ℵ₀ is essentially the only ZFC constraint. Shelah's pcf theory (1990s) provides the deepest known analysis of cardinal arithmetic under ZFC alone.\n\nThe question remains philosophically alive: Woodin's Ultimate-L program (2010s) argues for CH from the perspective of inner model theory, while forcing axioms like Martin's Maximum suggest ¬CH with 2^ℵ₀ = ℵ₂.",
@@ -225,7 +226,7 @@
       "Cardinal"
     ],
     "namespace": "CantorDiagonalizationOQ01",
-    "lineCount": 442,
+    "lineCount": 1012,
     "axiomCount": 2,
     "theoremCount": 28,
     "definitionCount": 5,

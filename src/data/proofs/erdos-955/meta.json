@@ -66,7 +66,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: ppt_bound (Pollack-Pomerance-Thompson 2018: if |A cap [1,x]| <= x^{1/2+o(1)} then s^{-1}(A) has density 0), erdos_955_summary (combined partial results: primes, sums of two squares, sparse sets). Former axioms s_eq_s_alt, six_perfect, twentyeight_perfect, forward_fails, erdos_1973_empty_preimage, two_untouchable, five_untouchable, pollack_primes, troupe_many_factors, troupe_two_squares, s_bound now proved as theorems or definitions.",
-    "lineCount": 191
+    "lineCount": 192,
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "The sum of proper divisors $s(n) = \\sigma(n) - n$ (the aliquot sum) has been studied since antiquity in connection with perfect numbers—integers where $s(n) = n$, such as 6 and 28. Pythagoras and Euclid investigated these, and Euler proved that all even perfect numbers have the form $2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.\n\nThe modern question about density preservation under $s$ was formulated by Erdős, Granville, Pomerance, and Spiro in their influential 1990 paper on iterates of arithmetic functions. The EGPS conjecture asks: if $A \\subset \\mathbb{N}$ has natural density 0, must $s^{-1}(A) = \\{n : s(n) \\in A\\}$ also have density 0? This is a question about the \"regularity\" of the arithmetic function $s$—whether it distributes values uniformly enough that sparse target sets cannot attract a dense set of inputs.\n\nSubstantial partial progress has been made. Pollack (2014) proved the conjecture for $A$ = primes, using deep results on the distribution of $s(n)$ modulo primes. Troupe (2020) extended this to $A$ = sums of two squares. Pollack, Pomerance, and Thompson (2018) proved the conjecture for all sets with $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$, identifying the threshold exponent $1/2$ as critical. The general case remains open after over 35 years.\n\nStrikingly, the forward direction behaves differently: there exist density-0 sets $A$ whose image $s(A)$ has positive density. Additionally, the existence of untouchable numbers (integers $k$ with $s^{-1}(\\{k\\}) = \\emptyset$, such as 2 and 5) shows that even positive-density sets can have empty preimages. The conjecture concerns only the backward direction: does sparse target force sparse fiber?\n\n**Status**: OPEN — The EGPS conjecture is unresolved in full generality.",
@@ -107,10 +108,10 @@
     {
       "id": "perfect-numbers",
       "title": "Perfect, Deficient, and Abundant Numbers",
-      "summary": "Classifies natural numbers by comparing $s(n)$ with $n$: perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$). Axiomatizes that 6 and 28 are perfect numbers, the first two examples known since antiquity.",
+      "summary": "Classifies natural numbers by comparing $s(n)$ with $n$: perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$). The first two perfect numbers, 6 and 28, are classical examples known since antiquity.",
       "startLine": 59,
       "endLine": 75,
-      "mathContext": "Classifies natural numbers by comparing $s(n)$ with $n$: perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$). Axiomatizes that 6 and 28 are perfect numbers, the first two examples known since antiquity."
+      "mathContext": "Classifies natural numbers by comparing $s(n)$ with $n$: perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$). The first two perfect numbers, 6 and 28, are classical examples known since antiquity."
     },
     {
       "id": "density",
@@ -139,18 +140,18 @@
     {
       "id": "contrasts",
       "title": "Contrasting Behaviors",
-      "summary": "Axiomatizes two striking contrasts: (1) Forward failure—there exist density-0 sets $A$ with $s(A)$ having positive density (e.g., semiprimes). (2) Empty preimages—untouchable numbers like 2 and 5 are never values of $s(n)$, so even large target sets can have empty fibers.",
+      "summary": "Documents two striking contrasts via docstrings: (1) Forward failure—there exist density-0 sets $A$ with $s(A)$ having positive density (e.g., semiprimes). (2) Empty preimages—untouchable numbers like 2 and 5 are never values of $s(n)$, so even large target sets can have empty fibers. Defines `IsUntouchable k` as $\\neg\\exists n > 0, s(n) = k$.",
       "startLine": 113,
       "endLine": 136,
-      "mathContext": "Axiomatizes two striking contrasts: (1) Forward failure—there exist density-0 sets $A$ with $s(A)$ having positive density (e.g., semiprimes). (2) Empty preimages—untouchable numbers like 2 and 5 are never values of $s(n)$, so even large target sets can have empty fibers."
+      "mathContext": "Documents two striking contrasts via docstrings: (1) Forward failure—there exist density-0 sets $A$ with $s(A)$ having positive density (e.g., semiprimes). (2) Empty preimages—untouchable numbers like 2 and 5 are never values of $s(n)$, so even large target sets can have empty fibers."
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "summary": "Axiomatizes three key results: Pollack (2014) proved the conjecture for $A$ = primes using modular distribution of $s(n)$. Troupe (2015) handled integers with many prime factors. Troupe (2020) proved the case $A$ = sums of two squares, exploiting the known density $\\sim x/\\sqrt{\\log x}$ and multiplicative structure.",
+      "summary": "Documents three key partial results via docstrings: Pollack (2014) proved the conjecture for $A$ = primes using modular distribution of $s(n)$. Troupe (2015) handled integers with many prime factors. Troupe (2020) proved the case $A$ = sums of two squares, exploiting the known density $\\sim x/\\sqrt{\\log x}$ and multiplicative structure. Also defines `IsSumOfTwoSquares`.",
       "startLine": 137,
       "endLine": 162,
-      "mathContext": "Axiomatizes three key results: Pollack (2014) proved the conjecture for $A$ = primes using modular distribution of $s(n)$. Troupe (2020) proved the case $A$ = sums of two squares, exploiting the known density $\\sim x/\\sqrt{\\log x}$ and multiplicative structure."
+      "mathContext": "Documents three key partial results via docstrings: Pollack (2014) proved the conjecture for $A$ = primes using modular distribution of $s(n)$. Troupe (2020) proved the case $A$ = sums of two squares, exploiting the known density $\\sim x/\\sqrt{\\log x}$ and multiplicative structure."
     },
     {
       "id": "ppt-bound",
@@ -163,10 +164,10 @@
     {
       "id": "growth-bound",
       "title": "Growth Bound on s(n)",
-      "summary": "Axiomatizes $s(n) \\leq n(2 + \\log\\log n)$, explaining why the PPT threshold is $1/2$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range are too sparse to capture enough preimages.",
+      "summary": "Documents $s(n) \\leq n(2 + \\log\\log n)$ via a docstring, explaining why the PPT threshold is $1/2$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range are too sparse to capture enough preimages.",
       "startLine": 181,
       "endLine": 190,
-      "mathContext": "Axiomatizes $s(n) \\leq n(2 + \\log\\log n)$, explaining why the PPT threshold is $1/2$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range are too sparse to capture enough preimages."
+      "mathContext": "Documents $s(n) \\leq n(2 + \\log\\log n)$ via a docstring, explaining why the PPT threshold is $1/2$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range are too sparse to capture enough preimages."
     },
     {
       "id": "summary",
@@ -203,7 +204,7 @@
       "Filter"
     ],
     "namespace": "Erdos955",
-    "lineCount": 191,
+    "lineCount": 192,
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 14,

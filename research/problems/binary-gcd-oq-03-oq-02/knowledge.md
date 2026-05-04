@@ -340,3 +340,117 @@ a placeholder. Sessions 4-5 of the prior `research/binary-gcd-hgcd-skeleton-2026
 branch (PR #14097, conflicting/draft) had the same lemmas in a
 divergent file structure; this session cleanly ports them onto the
 merged file.
+
+## Session 2026-05-02 (Session 6) — Audit + Circular-Dependency Insight
+
+**Mode**: REVISIT
+**Outcome**: knowledge-sync — sessions 4-5 (Step 2b) already committed (8595544, 67e6d6c); knowledge.md was 2 sessions behind.
+
+### What Sessions 4-5 Added (already in git)
+
+Per commits `8595544e6b3` and `67e6d6c9833`:
+- `row_vec_cramer`: from row-vec invariant + det, derives entries in terms of residues.
+- `EvenPattern` / `OddPattern` defs + alternation lemmas (lehmerInnerStep flips pattern).
+- `lehmerCofactors_has_pattern` / `lehmerCofactors_has_pattern_from`.
+- `entry_bound_of_even` / `entry_bound_of_odd`: M entries ≤ a₀, b₀ (initial inputs).
+
+Step 2b is complete. The file has 8 proved milestones (detailed in file Summary).
+
+### Circular Dependency in Step 3 (Key Insight)
+
+Step 3 requires bounding `|(a,b)·M - (aHi·2^s, bHi·2^s)·M|` where `(a,b) = (aHi·2^s + aLo, bHi·2^s + bLo)`.
+
+Perturbation = `|aLo·M.α + bLo·M.γ|` ≤ `2^s · max_entry`.
+
+With `entry_bound_of_even/odd`: max_entry ≤ max(a₀, b₀) ≤ 2^(N/2), so perturbation ≤ `2^(N/2) · 2^(N/2) = 2^N` — equal to the input size. NOT useful.
+
+The TIGHT bound requires max_entry ≤ 2^(N/4) — which comes from knowing the REDUCED PAIR has N/4 bits. But that IS size reduction. This is a circular dependency.
+
+**Resolution**: joint induction on N, proving size-of-output AND entry-bound simultaneously. This matches Stehlé-Zimmermann (2004) Theorem 1.
+
+### Next Steps
+
+1. **Restate `hgcdMatrix_size_reduction`** with a joint statement: `max output ≤ 2^(N/2 + c) ∧ entry_bound ≤ 2^(N/2)`. ~50 lines setup.
+2. **Joint induction proof** by strong induction on `Nat.log 2 (max a b)`. ~150-200 lines.
+3. This is a dedicated session of ~4-6 hours.
+
+## Session 2026-05-03 (Session 5) — Perturbation Infrastructure (Step 3)
+
+**Mode**: REVISIT
+**Outcome**: progress (Step 3 infrastructure added)
+
+### What I Did
+
+- Verified that Sessions 3 and 4 work (Steps 1, 2a, 2b) is already merged into main (PRs #14522 and #14881).
+- Added PART VII (~114 lines) to `BinaryGcdOQ03OQ02.lean` with 6 theorems forming the perturbation infrastructure for Step 3:
+
+  1. `cofactor_apply_add`: `apply` distributes over addition of inputs (ring).
+  2. `cofactor_apply_smul`: `apply` commutes with scalar multiplication (ring).
+  3. `cofactor_apply_shift_decomp`: Decomposes `apply(aHi·2^s + ea, bHi·2^s + eb)` as `2^s · apply(aHi, bHi) + apply(ea, eb)`. This is the key algebraic identity for the perturbation argument.
+  4. `cofactor_apply_natAbs_le`: Triangle bound `|M.apply(ea, eb).1| ≤ |M.α|·|ea| + |M.β|·|eb|` using `Int.natAbs_add_le` + `Int.natAbs_mul`.
+  5. `cofactor_apply_err_bound`: Given `|M.α|, |M.β| ≤ C` and `|ea|, |eb| ≤ B`, then `|apply(ea, eb).1| ≤ 2·C·B`.
+  6. `cofactor_apply_err_bound_snd`: Same for the second component using `|M.γ|` and `|M.δ|`.
+
+- 0 new sorries, 0 new axioms.
+
+### Key Findings
+
+- Steps 1, 2a, 2b all complete in main. The size-reduction proof structure is clear:
+  - `cofactor_apply_shift_decomp` gives the algebraic split: `apply(a, b) = 2^s·apply(aHi, bHi) + apply(ea, eb)`.
+  - `cofactor_apply_err_bound` bounds the error term using Step 2b entry bounds.
+  - The MISSING piece (Step 4) is an inductive proof that `hgcdMatrix fuel aHi bHi` reduces `max(aHi, bHi)` by half — this requires induction on bitsize and is inherently recursive.
+
+- The PART VII placeholder `hgcdMatrix_size_reduction := True` is renamed PART VIII.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +124 lines (PART VII: 6 theorems + renamed PART VIII, updated Summary).
+
+### Next Steps
+
+1. **Step 4 (inductive)**: Prove `hgcdMatrix` reduces bitsize by half. Requires fuel-based induction with a strengthened IH tracking `Nat.log 2 (max output) ≤ Nat.log 2 (max input) / 2`. May need a `bitsize_reduction_for_lehmerCofactors` lemma first (that lehmerCofactors on (aHi, bHi) reduces max by at least 1 step).
+
+2. **Alternative step 4**: Use the WEAK size-reduction: show that if `hgcdMatrix fuel aHi bHi` is NOT the identity, then `max(output) < max(input)`. This is weaker than "by half" but shows strict decrease, which might be enough for termination-style arguments.
+
+
+## Session 2026-05-03 (Session 7) - Convention Correction and Base-Case Row Bound
+
+**Mode**: REVISIT
+**Outcome**: progress (false theorem removed, correct statement + base cases proved)
+
+### What I Did
+
+- Analyzed `hgcdMatrix_joint_bound` and discovered it is **FALSE** as stated.
+- Computed the counterexample: for a=37, b=5, `hgcdMatrix 1 37 5 = ⟨1,-2,-7,15⟩` and
+  the column output component `(−7)·37 + 15·5 = −184`, giving natAbs = 184.
+  But `hgcdShift(37,5) = 3` and `2^(3+3) = 64`. So 184 > 64 — theorem violated.
+- Identified root cause: `M.apply(a,b) = (M.α·a + M.β·b, M.γ·a + M.δ·b)` is the
+  **column convention** and is NOT bounded for a right-accumulated Lehmer matrix.
+  The ROW convention `(a·M.α + b·M.γ, a·M.β + b·M.δ)` gives Euclidean residues
+  and IS bounded by `max a b`.
+- Replaced PART IX: removed false theorem, added `native_decide` counterexample,
+  proved `hgcdMatrix_small_row_output_le` (base case), and stated corrected
+  `hgcdMatrix_row_output_le` with 1 sorry (recursive case).
+
+### Key Findings
+
+- `hgcdMatrix_small_row_output_le` (proved): for `max a b < hgcdThreshold`, after
+  `hgcdMatrix_small` reduces to `lehmerCofactors hgcdThreshold a b id`, the theorem
+  `lehmerCofactors_id_apply_le` directly gives the row output ≤ `max a b`.
+- Recursive case blocker: the IH for M₂ applies to M₂'s own intended inputs
+  `(a/2^s, b/2^s)` (outputs of M₁ on the half-size inputs). It does NOT directly
+  bound `rowOut(M₂, rowOut(M₁, a, b))` which is what we need. Bridging requires
+  a new invariant tracking the relationship between the two input sequences.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — PART IX replaced (+91 lines, -78 lines)
+
+### Next Steps
+
+1. **Recursive case of `hgcdMatrix_row_output_le`**: Need invariant that `hgcdMatrix f a b`
+   was constructed for inputs `(a,b)`, so `rowOut(M₂·M₁, a, b)` feeds correctly
+   into the IH for `M₂`.
+2. **Alternative approach**: Prove the full Euclidean relation directly — that
+   `rowOut(hgcdMatrix fuel a b, a, b)` gives the Euclidean residues of `(a,b)` —
+   rather than going via matrix induction.

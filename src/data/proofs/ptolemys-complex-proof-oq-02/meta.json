@@ -59,8 +59,9 @@
     ],
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "lineCount": 351,
-    "assumptions": "Core result derived via Mathlib's Real.sin_add (line 199 of PtolemysComplexProofOQ02.lean): the key chord-length lemma norm_exp_diff uses Real.sin_add to establish ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β). All other steps — Ptolemy equality application, CCW order verification, remaining chord lemmas, and non-degeneracy conditions — are independently formalized. 0 axiom declarations, 0 sorries."
+    "lineCount": 833,
+    "assumptions": "Core result derived via Mathlib's Real.sin_add (line 199 of PtolemysComplexProofOQ02.lean): the key chord-length lemma norm_exp_diff uses Real.sin_add to establish ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β). All other steps — Ptolemy equality application, CCW order verification, remaining chord lemmas, and non-degeneracy conditions — are independently formalized. 0 axiom declarations, 0 sorries.",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Claudius Ptolemy (c. 150 AD) used his theorem on chords of circles to compute trigonometric tables in the *Almagest*. The argument is simple: inscribe a specific cyclic quadrilateral in a unit circle, apply the equality $|AC|\\cdot|BD| = |AB|\\cdot|CD| + |BC|\\cdot|DA|$, and read off the sine addition formula from the resulting equation. This was the standard derivation of $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$ for 1500 years, before Euler introduced the exponential form $e^{i(\\alpha+\\beta)} = e^{i\\alpha}e^{i\\beta}$ which makes it a one-line calculation. This file machine-verifies the classical argument, using complex numbers to represent the unit circle and building on `PtolemysTheoremOQ01.lean` for the Ptolemy equality machinery.",
@@ -154,9 +155,12 @@
       "Mathlib.Analysis.Complex.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Complex", "Real"],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
     "namespace": "PtolemysComplexProofOQ02",
-    "lineCount": 351,
+    "lineCount": 833,
     "axiomCount": 0,
     "theoremCount": 11,
     "substantiveTheoremCount": 1,

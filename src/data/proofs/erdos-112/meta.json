@@ -21,7 +21,8 @@
     "assumptions": "0 axioms, 0 sorries. Partial formalization of Directed Ramsey Theory: defines tournament structures and chromatic number concepts. The main open bounds (erdos_112_well_defined, ramsey_lower, hunter_upper) are referenced in comments but not formalized as Lean axioms.",
     "proofRepoPath": "Proofs/Erdos112Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 77
+    "lineCount": 77,
+    "theoremCount": 0
   },
   "sections": [
     {
@@ -196,7 +197,6 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 4,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Finset.Basic",

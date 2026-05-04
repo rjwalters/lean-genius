@@ -22,7 +22,8 @@
     "assumptions": "2 axioms: erdos_szekeres_lower, erdos_szekeres_upper. 0 sorries.",
     "proofRepoPath": "Proofs/Erdos562Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 85
+    "lineCount": 85,
+    "theoremCount": 3
   },
   "sections": [
     {
@@ -125,7 +126,6 @@
     "axiomCount": 2,
     "theoremCount": 3,
     "lemmaCount": 0,
-    "defCount": 2,
     "imports": [
       "Mathlib.Combinatorics.Ramsey",
       "Mathlib.Data.Nat.Basic",

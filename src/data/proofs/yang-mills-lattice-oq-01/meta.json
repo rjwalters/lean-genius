@@ -22,7 +22,7 @@
     "sorries": 0,
     "axiomCount": 2,
     "assumptions": "2 axioms: (1) os_reconstruction — the GNS construction from reflection-positive lattice OS data producing a WightmanQFT; this is mathematically proven (Osterwalder-Schrader 1973, Osterwalder-Seiler 1978) but requires functional analysis (Bochner's theorem, GNS construction) beyond current Mathlib. (2) os_mass_gap_transfer — that exponential decay of Schwinger functions implies a spectral gap in the reconstructed Hilbert space via the Kallen-Lehmann representation; similarly proven but requires the full OS machinery. The 2D results (Migdal formula, string tension, SU(2) computation) are fully proved with 0 axioms.",
-    "lineCount": 500,
+    "lineCount": 624,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_neg",
@@ -50,7 +50,8 @@
       "Proof that the 4D Millennium Problem implies existence of a finite-lattice Wightman QFT with mass gap"
     ],
     "dateAdded": "2026-04-21",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 21
   },
   "overview": {
     "historicalContext": "The Osterwalder-Schrader (OS) reconstruction theorem (1973, 1975) is the rigorous mathematical bridge between Euclidean field theory and physical quantum field theory. It states: a system of Schwinger functions (Euclidean correlators) satisfying five axioms — Euclidean covariance (OS1), reflection positivity (OS2), regularity (OS3), symmetry (OS4), and cluster decomposition (OS5) — can be analytically continued via Wick rotation $\\tau \\mapsto it$ to produce a system of Wightman distributions satisfying all Wightman axioms. The Hilbert space is constructed by the GNS (Gelfand-Naimark-Segal) procedure from the reflection-positive bilinear form. The key axiom is OS2: without reflection positivity, the inner product on the GNS Hilbert space might not be positive definite, and unitarity would be lost. In the lattice context, Osterwalder and Seiler (1978) showed that reflection positivity of the lattice action is equivalent to the transfer matrix $T$ being a positive semi-definite operator on the gauge-invariant Hilbert space. The Clay Millennium Prize ($1M) asks whether 4D lattice Yang-Mills theory satisfies all five OS axioms in the continuum limit $a \\to 0$, and whether the resulting Wightman QFT has a positive mass gap.",
@@ -148,12 +149,11 @@
     }
   ],
   "leanFile": {
-    "lineCount": 500,
+    "lineCount": 624,
     "structureCount": 7,
     "axiomCount": 2,
     "theoremCount": 21,
     "lemmaCount": 0,
-    "defCount": 6,
     "imports": [
       "Proofs.YangMills.Quantum"
     ],

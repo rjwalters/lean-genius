@@ -1,0 +1,177 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-02",
+  "title": "Cubic and Quartic Characters as Higher Reciprocity Pathway",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-02",
+  "description": "Generalizes the Zolotarev character uniqueness argument (OQ-01) to cubic and quartic residue characters. For primes p ≡ 1 (mod 3), constructs the cubic character χ₃ = (· ^ ((p-1)/3)) as a group homomorphism (ZMod p)ˣ →* (ZMod p)ˣ and proves the complete Euler criterion: χ₃(a) = 1 ↔ a is a cubic residue. The kernel cardinality |ker χ₃| = (p-1)/3 is proved via IsCyclic.card_pow_eq_one_le + injectivity argument. The quartic character χ₄ is constructed in parallel with full quartic Euler criterion proved. Cubic reciprocity (Eisenstein 1844) is axiomatized with a Jacobi sum proof strategy. 27 theorems, 0 sorries, 2 axioms.",
+  "meta": {
+    "author": "Eisenstein (1844), Ireland-Rosen (1990)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cubic_reciprocity",
+    "date": "1844",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "cubic-reciprocity",
+      "quartic-reciprocity",
+      "character-theory",
+      "group-homomorphisms",
+      "eisenstein-integers",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 562,
+    "theoremCount": 27,
+    "defCount": 6,
+    "assumptions": "Two axioms (both require Eisenstein integers ℤ[ω] not in Mathlib): (1) cubicResidueSymbol — definition of the cubic residue symbol (ρ/π)₃ for Eisenstein primes. (2) cubic_reciprocity — (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via Jacobi sums. All 27 theorems proved; 0 sorries remain. Key: cubicChar_kernel_card and quarticChar_kernel_card (|ker χ| = (p-1)/3 and (p-1)/4 via IsCyclic.card_pow_eq_one_le), cubicEuler_hard and quarticEuler_hard (both Euler criterion hard directions via discrete log).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Cubic reciprocity was discovered by Gauss and proved by Eisenstein in 1844 using the Eisenstein integers ℤ[ω] where ω = e^{2πi/3}. The law states that for primary Eisenstein primes π and ρ, the cubic residue symbol (ρ/π)₃ equals (π/ρ)₃. This extends the Zolotarev character uniqueness argument: for primes p ≡ 1 (mod 3), the group (ZMod p)ˣ is cyclic of order p-1 divisible by 3, giving exactly two non-trivial cubic characters (plus the trivial one). The cubic Euler criterion — a is a cube mod p iff a^((p-1)/3) = 1 — is the natural generalization of Euler's quadratic criterion. Ireland and Rosen's book (Ch. 9) gives the definitive modern treatment via Jacobi sums.",
+    "problemStatement": "Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity?",
+    "text": "Partially: the cubic character χ₃ and quartic character χ₄ are constructed as group homomorphisms, and the easy direction of the Euler criterion is proved. Cubic reciprocity requires Eisenstein integers (ℤ[ω]) not yet in Mathlib 4.26, so it is axiomatized with a Jacobi sum proof strategy.",
+    "proofStrategy": "For the cubic character: define χ₃(a) = a^((p-1)/3) as powMonoidHom applied to (ZMod p)ˣ. Prove χ₃(a)³ = 1 using Fermat's little theorem for units (units_pow_card_sub_one_eq_one). Prove a = x³ implies χ₃(a) = 1 by lifting x to a unit and computing (x³)^((p-1)/3) = x^(p-1) = 1. The quartic construction is identical with exponent (p-1)/4. Cubic reciprocity is axiomatized; the proof strategy would use Jacobi sums J(χ,χ) in ℤ[ω].",
+    "keyInsights": [
+      "The cubic character χ₃ = powMonoidHom((p-1)/3) is a well-defined group homomorphism by cyclicity of (ZMod p)ˣ and 3 | (p-1) when p ≡ 1 (mod 3)",
+      "χ₃(a)³ = a^(p-1) = 1 by Fermat, so the image of χ₃ consists of cube roots of unity in (ZMod p)ˣ",
+      "Easy Euler criterion: x³ = a implies a^((p-1)/3) = (x^3)^((p-1)/3) = x^(p-1) = 1, proved via Units.mk0 lift and pow_mul",
+      "Hard Euler criterion (χ₃(a) = 1 implies a is a cube) proved by discrete log: write a = g^k for generator g of (ZMod p)ˣ; χ₃(a)=1 implies (p-1)|k(p-1)/3, so 3|k; then a = (g^(k/3))³",
+      "Cubic reciprocity requires Eisenstein integers ℤ[ω] for the Jacobi sum J(χ₃, χ₃); this ring is not in Mathlib 4.26"
+    ],
+    "prerequisites": [
+      "Cubic residues and the cubic Legendre symbol",
+      "Cyclic group theory and character theory",
+      "Fermat's little theorem for units in ZMod p",
+      "Eisenstein integers (for full cubic reciprocity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cubic-character",
+      "title": "Cubic Character Construction",
+      "startLine": 59,
+      "endLine": 145,
+      "summary": "Defines IsCubicResidue and cubExp = (p-1)/3. Constructs cubicChar = powMonoidHom(cubExp) as a group homomorphism. Proves χ₃(a)³ = 1 via Fermat's little theorem for units. Proves closure properties: cubic residues are closed under 0, 1, cubing, multiplication, squaring, and inverse.",
+      "mathContext": "χ₃ : (ZMod p)ˣ →* (ZMod p)ˣ, χ₃(a) = a^{(p-1)/3}, χ₃(a)³ = a^{p-1} = 1"
+    },
+    {
+      "id": "euler-criterion",
+      "title": "Cubic Euler Criterion",
+      "startLine": 156,
+      "endLine": 238,
+      "summary": "Proves both directions: easy (a = x³ → χ₃(a) = 1 via Fermat) and hard (χ₃(a) = 1 → a is a cube via discrete log in cyclic group). The hard direction uses IsCyclic.exists_generator + Subgroup.mem_zpowers_iff + orderOf_dvd_of_zpow_eq_one to get 3 | k, then a = (g^(k/3))³. Together gives the full Euler criterion iff.",
+      "mathContext": "∀ a : (ZMod p)ˣ, IsCubicResidue a ↔ χ₃(a) = 1 (fully proved, 0 axioms)"
+    },
+    {
+      "id": "kernel-cardinality",
+      "title": "Cubic Character Kernel Cardinality",
+      "startLine": 267,
+      "endLine": 302,
+      "summary": "Proves cubicChar_kernel_card: |{a : (ZMod p)ˣ | χ₃(a) = 1}| = (p-1)/3. Uses IsCyclic.card_pow_eq_one_le for the upper bound and Finset.le_card_of_inj_on_range with the injection k ↦ (g^3)^k for the lower bound, where g is a generator with orderOf(g^3) = (p-1)/3.",
+      "mathContext": "|ker χ₃| = |{a : (ZMod p)ˣ | a^{(p-1)/3} = 1}| = (p-1)/3. Proved: upper bound from IsCyclic.card_pow_eq_one_le; lower bound from injectivity of k ↦ (g³)^k via pow_injOn_Iio_orderOf."
+    },
+    {
+      "id": "quartic-character",
+      "title": "Quartic Character Parallel",
+      "startLine": 307,
+      "endLine": 375,
+      "summary": "Mirrors the cubic construction for quartExp = (p-1)/4 when p ≡ 1 (mod 4). Defines quarticChar = powMonoidHom(quartExp), proves χ₄(a)⁴ = 1 via Fermat, and proves the easy Euler criterion direction via identical Units.mk0 technique.",
+      "mathContext": "χ₄ : (ZMod p)ˣ →* (ZMod p)ˣ, χ₄(a) = a^{(p-1)/4}, χ₄(a)⁴ = a^{p-1} = 1"
+    },
+    {
+      "id": "eisenstein-integers",
+      "title": "Eisenstein Primes and Cubic Reciprocity",
+      "startLine": 360,
+      "endLine": 440,
+      "summary": "Defines the EisensteinPrime structure (norm, primary condition, not rational prime condition). Axiomatizes the cubic residue symbol (ρ/π)₃ and cubic reciprocity (ρ/π)₃ = (π/ρ)₃ for primary primes. Documents the Jacobi sum proof strategy in detail.",
+      "mathContext": "Cubic reciprocity: (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via J(χ₃,χ₃) ∈ ℤ[ω]"
+    },
+    {
+      "id": "summary-packages",
+      "title": "Character Package Summary",
+      "startLine": 444,
+      "endLine": 460,
+      "summary": "Two summary theorems packaging the main results: cubic_character_package (for p ≡ 1 mod 3) states χ₃ is a hom with χ₃(a)³ = 1 and the Euler criterion iff. quartic_character_package (for p ≡ 1 mod 4) states the analogous quartic results.",
+      "mathContext": "Packages for p ≡ 1 (mod 3): χ₃ hom property + χ₃³ = 1 + Euler criterion iff"
+    }
+  ],
+  "conclusion": {
+    "summary": "The cubic character χ₃ and quartic character χ₄ are constructed as group homomorphisms in Lean 4. The complete Euler criterion (both directions) is now fully proved: the hard direction uses discrete logarithm in the cyclic group (ZMod p)ˣ. Full cubic reciprocity requires Eisenstein integers (ℤ[ω]) not yet in Mathlib 4.26, and is axiomatized with a detailed Jacobi sum proof strategy.",
+    "implications": "This file provides the foundation for cubic and quartic reciprocity formalization once Mathlib gains Eisenstein integer support. The character construction technique (powMonoidHom + Fermat's little theorem for units) extends naturally to any prime power character.",
+    "openQuestions": [
+      "Can the Eisenstein integers ℤ[ω] be added to Mathlib 4? (This is the key blocker for cubic reciprocity)",
+      "Can the quartic reciprocity law (biquadratic reciprocity) be axiomatized with Gaussian integers ℤ[i] as the coefficient ring?",
+      "Can the Jacobi sum J(χ₃, χ₃) computation be formalized once ℤ[ω] is in Mathlib?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "parent",
+      "description": "Zolotarev's Permutation Proof of QR (uses character uniqueness argument)"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Gauss Sum as Third Formal QR Pathway"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Quadratic Reciprocity: Eisenstein's Proof"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Eisenstein, G."
+      ],
+      "title": "Beweis des Reciprocitätssatzes für die cubischen Reste in der Theorie der aus dritten Wurzeln der Einheit zusammengesetzten complexen Zahlen",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "year": "1844",
+      "note": "First proof of cubic reciprocity using Eisenstein integers"
+    },
+    {
+      "authors": [
+        "Ireland, K.",
+        "Rosen, M."
+      ],
+      "title": "A Classical Introduction to Modern Number Theory",
+      "venue": "Springer Graduate Texts in Mathematics",
+      "year": "1990",
+      "pages": "Chapter 9",
+      "note": "Standard reference for cubic and quartic reciprocity via Jacobi sums"
+    },
+    {
+      "authors": [
+        "Lemmermeyer, F."
+      ],
+      "title": "Reciprocity Laws: From Euler to Eisenstein",
+      "venue": "Springer Monographs in Mathematics",
+      "year": "2000",
+      "pages": "Chapters 7-9",
+      "note": "Comprehensive historical and mathematical treatment of higher reciprocity"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "CubicCharacter",
+    "lineCount": 562,
+    "axiomCount": 2,
+    "theoremCount": 27,
+    "definitionCount": 6,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

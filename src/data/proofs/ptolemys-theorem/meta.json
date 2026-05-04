@@ -35,7 +35,8 @@
     "axiomCount": 0,
     "lineCount": 240,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Claudius Ptolemy of Alexandria (c. 100-170 AD) proved this theorem in Book I, Chapter 10 of his astronomical treatise *Almagest* (c. 150 AD), where it was the key tool for computing a table of chords — the ancient equivalent of trigonometric tables. The chord table allowed Ptolemy to compute $\\text{chord}(\\alpha + \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$, which is equivalent to the modern addition formula $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$. The theorem was fundamental to astronomy and navigation for over 1500 years. The elegant complex-number proof — $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ — was discovered much later and reveals the deep algebraic structure behind the geometric identity. The converse is also true: Ptolemy's equality characterizes cyclic quadrilaterals. The inequality version $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff the points are concyclic.",

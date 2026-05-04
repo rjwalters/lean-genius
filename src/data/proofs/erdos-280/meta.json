@@ -57,7 +57,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 113,
-    "assumptions": "1 axiom: original_conjecture_false. 0 sorries."
+    "assumptions": "1 axiom: original_conjecture_false. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #280 appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' Given a sequence n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k and associated residues aₖ mod nₖ, Erdős conjectured that the count of integers m < nₖ avoiding all specified congruence classes should be Ω(k). They wrote that this 'may have to await improvements in current sieve methods.'\n\nThe bound nₖ > (1+ε)k log k is optimal because the k-th prime pₖ ~ k log k by the Prime Number Theorem. Using primes as moduli would create a much more constrained problem where covering is harder. The factor (1+ε) ensures the moduli grow slightly faster than the primes, allowing the problem to be meaningful.\n\nStijn Cambie found a trivial counterexample that made sieve theory unnecessary. Taking nₖ = 2^k (which grows exponentially, far exceeding the required bound) and aₖ = 2^(k-1) + 1, every integer m > 1 in [0, 2^k) is covered by some congruence class. Only m = 1 survives, giving count = 1 instead of Ω(k). The key insight is that powers of 2 as moduli create efficient coverings via binary representation.",

@@ -24,7 +24,8 @@
     "axiomCount": 0,
     "lineCount": 238,
     "assumptions": "No axioms. 12 sorry(s) remain in the formalization.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "This $100 Erdős problem was posed by Burr, Erdős, Faudree, Rousseau, and Schelp in 1989. It asks for the precise asymptotic behavior of R(C₄, Sₙ), the Ramsey number of the 4-cycle versus the star graph K_{1,n}. Parsons (1975) established the upper bound R(C₄, Sₙ) ≤ n + ⌈√n⌉ + 1 using the Kővári-Sós-Turán theorem, which bounds the number of edges in C₄-free graphs. Parsons also determined exact values when n is related to prime powers: R(C₄, S_{q²+1}) = n + q using the polarity graph of the projective plane PG(2,q), a remarkable C₄-free extremal graph with q²+q+1 vertices. BEFRS (1989) proved the lower bound R(C₄, Sₙ) ≥ n + √n - 6n^{11/40}, where the exponent 11/40 comes from Huxley's prime gap bound. The problem is deeply connected to analytic number theory: the exact value of R(C₄, Sₙ) depends on how close n is to q² for a prime power q, and finding such q requires prime gap estimates. Under Cramér's conjecture on prime gaps, the lower bound would improve to n + √n - n^{o(1)}, nearly closing the gap. All known exact values lie in {n + ⌈√n⌉, n + ⌈√n⌉ + 1}, a remarkably narrow range. The $100 prize question asks: for any c > 0, are there infinitely many n with R(C₄, Sₙ) ≤ n + √n - c?",

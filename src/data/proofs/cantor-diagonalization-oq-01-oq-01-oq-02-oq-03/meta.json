@@ -21,7 +21,8 @@
     "axiomCount": 0,
     "lineCount": 206,
     "assumptions": "No axioms, no sorries. 7 theorems fully proved. The consistency direction of Easton's theorem (any Easton function is realizable via class forcing) is stated as SatisfiesEastonConditions F → True — an acknowledged limitation since class forcing is not in Mathlib. The mathematical content formalizes the complete set of necessary conditions ZFC can prove about the continuum function on regular cardinals.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Easton's theorem (1970) is one of the deepest results in set-theoretic cardinal arithmetic. It completely characterizes which functions F : Reg → Card can be the continuum function κ ↦ 2^κ restricted to regular cardinals. The necessary conditions (E1)–(E3) were known before Easton; the revolutionary content is the consistency of ANY function satisfying them, proved via class product forcing (Easton forcing). The problem generalizes König's theorem (1905) and Cantor's theorem to give the first complete picture of the continuum function's behavior.",

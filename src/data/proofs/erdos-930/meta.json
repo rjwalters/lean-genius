@@ -1,10 +1,10 @@
 {
   "id": "erdos-930",
-  "title": "Erd\u0151s Problem #930: Products of Disjoint Intervals and Perfect Powers",
+  "title": "Erdős Problem #930: Products of Disjoint Intervals and Perfect Powers",
   "slug": "erdos-930",
-  "description": "Is it true that, for every r, there is a k such that if I\u2081,...,I\u1d63 are disjoint intervals of consecutive integers, all of length at least k, then their combined product is not a perfect power?",
+  "description": "Is it true that, for every r, there is a k such that if I₁,...,Iᵣ are disjoint intervals of consecutive integers, all of length at least k, then their combined product is not a perfect power?",
   "meta": {
-    "author": "Erd\u0151s-Selfridge (1975) solved r=1; general case open",
+    "author": "Erdős-Selfridge (1975) solved r=1; general case open",
     "sourceUrl": "https://erdosproblems.com/930",
     "date": "1975",
     "status": "axiomatized",
@@ -45,23 +45,24 @@
       "Definition of perfect power predicate IsPower in Lean 4",
       "Definitions of intervalProduct and intervalLength",
       "Verified theorems that 0, 1, n^2, and n^3 are perfect powers",
-      "Verified example: the product 2\u00b73 = 6 is not a perfect power (axiomatizing six_not_isPower)",
-      "Documentation of the OPEN main conjecture and the Erd\u0151s-Selfridge theorem (no formal declarations for these)"
+      "Verified example: the product 2·3 = 6 is not a perfect power (axiomatizing six_not_isPower)",
+      "Documentation of the OPEN main conjecture and the Erdős-Selfridge theorem (no formal declarations for these)"
     ],
     "axiomCount": 1,
     "lineCount": 149,
-    "assumptions": "1 axiom: six_not_isPower. 0 sorries."
+    "assumptions": "1 axiom: six_not_isPower. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
-    "historicalContext": "This problem asks about products of integers from multiple disjoint intervals. Erd\u0151s and Selfridge famously proved in 1975 that the product of two or more consecutive positive integers is NEVER a perfect power. This resolved the r=1 case of Problem #930.\n\nThe general case asks: for r disjoint intervals of consecutive integers, all sufficiently long, is their combined product never a perfect power? The condition that intervals be 'sufficiently long' (length at least k, where k depends on r) is necessary\u2014without it, counterexamples exist for r=2.\n\nThe Erd\u0151s-Selfridge proof uses sophisticated arguments about prime multiplicities. The key insight is that for any product of consecutive integers, there exists a prime whose multiplicity is not divisible by any given l > 1, preventing the product from being a perfect l-th power.",
-    "problemStatement": "Is it true that, for every $r$, there is a $k$ such that if $I_1,\\ldots,I_r$ are disjoint intervals of consecutive integers, all of length at least $k$, then\n$$\\prod_{1\\leq i\\leq r}\\prod_{m\\in I_i}m$$\nis not a perfect power?\n\n**Status**:\n- **OPEN** for general $r > 1$\n- **SOLVED** for $r = 1$ (Erd\u0151s-Selfridge, 1975)\n\n**Known**: The product of $k \\geq 2$ consecutive positive integers $(n+1)(n+2)\\cdots(n+k)$ is never a perfect power.",
-    "text": "Is it true that, for every r, there is a k such that if I\u2081,...,I\u1d63 are disjoint intervals of consecutive integers, all of length at least k, then their combined product is not a perfect power?",
-    "proofStrategy": "We provide a partial Lean 4 scaffold for this problem:\n\n1. **Defining perfect powers**: `IsPower n` holds if n = m^l for some l > 1\n\n2. **Interval primitives**: `intervalProduct` and `intervalLength` over `Finset.Icc`\n\n3. **Documented (not formalized)**: The main conjecture for r > 1, the r=1 Erd\u0151s-Selfridge theorem, and the prime-multiplicity technical lemma appear only as docstrings; no `axiom` or `theorem` declarations are produced for them\n\n4. **Verified properties**: 0, 1, n^2, and n^3 are perfect powers (proved)\n\n5. **Single concrete axiom**: `six_not_isPower` (\u00ac IsPower 6) is asserted by axiom and used to prove the example `product_2_3_not_power`",
+    "historicalContext": "This problem asks about products of integers from multiple disjoint intervals. Erdős and Selfridge famously proved in 1975 that the product of two or more consecutive positive integers is NEVER a perfect power. This resolved the r=1 case of Problem #930.\n\nThe general case asks: for r disjoint intervals of consecutive integers, all sufficiently long, is their combined product never a perfect power? The condition that intervals be 'sufficiently long' (length at least k, where k depends on r) is necessary—without it, counterexamples exist for r=2.\n\nThe Erdős-Selfridge proof uses sophisticated arguments about prime multiplicities. The key insight is that for any product of consecutive integers, there exists a prime whose multiplicity is not divisible by any given l > 1, preventing the product from being a perfect l-th power.",
+    "problemStatement": "Is it true that, for every $r$, there is a $k$ such that if $I_1,\\ldots,I_r$ are disjoint intervals of consecutive integers, all of length at least $k$, then\n$$\\prod_{1\\leq i\\leq r}\\prod_{m\\in I_i}m$$\nis not a perfect power?\n\n**Status**:\n- **OPEN** for general $r > 1$\n- **SOLVED** for $r = 1$ (Erdős-Selfridge, 1975)\n\n**Known**: The product of $k \\geq 2$ consecutive positive integers $(n+1)(n+2)\\cdots(n+k)$ is never a perfect power.",
+    "text": "Is it true that, for every r, there is a k such that if I₁,...,Iᵣ are disjoint intervals of consecutive integers, all of length at least k, then their combined product is not a perfect power?",
+    "proofStrategy": "We provide a partial Lean 4 scaffold for this problem:\n\n1. **Defining perfect powers**: `IsPower n` holds if n = m^l for some l > 1\n\n2. **Interval primitives**: `intervalProduct` and `intervalLength` over `Finset.Icc`\n\n3. **Documented (not formalized)**: The main conjecture for r > 1, the r=1 Erdős-Selfridge theorem, and the prime-multiplicity technical lemma appear only as docstrings; no `axiom` or `theorem` declarations are produced for them\n\n4. **Verified properties**: 0, 1, n^2, and n^3 are perfect powers (proved)\n\n5. **Single concrete axiom**: `six_not_isPower` (¬ IsPower 6) is asserted by axiom and used to prove the example `product_2_3_not_power`",
     "keyInsights": [
       "**Perfect power definition**: n is a perfect power if n = m^l with l > 1. Examples: 4, 8, 9, 16, 25, 27, 32, ...",
       "**Why consecutive products aren't powers (mathematical, not formalized here)**: In any product (n+1)(n+2)...(n+k), there's always some prime p whose multiplicity isn't divisible by any l > 1.",
-      "**The key technical lemma (documented in comments, not formalized)**: For k \u2265 3 and sufficiently large n, there exists a prime p \u2265 k such that l \u2224 ord_p((n+1)...(n+k)).",
-      "**Why intervals must be long**: For r=2 with short intervals, counterexamples exist\u2014the length constraint prevents pathological cases.",
+      "**The key technical lemma (documented in comments, not formalized)**: For k ≥ 3 and sufficiently large n, there exists a prime p ≥ k such that l ∤ ord_p((n+1)...(n+k)).",
+      "**Why intervals must be long**: For r=2 with short intervals, counterexamples exist—the length constraint prevents pathological cases.",
       "**Connection to factorials**: This problem relates to the structure of prime factorizations in factorial-like products."
     ],
     "prerequisites": [
@@ -77,7 +78,7 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Problem statement, historical context, and references to Erd\u0151s-Selfridge (1975)."
+      "summary": "Problem statement, historical context, and references to Erdős-Selfridge (1975)."
     },
     {
       "id": "definitions",
@@ -95,7 +96,7 @@
     },
     {
       "id": "erdos-selfridge",
-      "title": "Erd\u0151s-Selfridge Theorem r=1 (documentation only)",
+      "title": "Erdős-Selfridge Theorem r=1 (documentation only)",
       "startLine": 72,
       "endLine": 90,
       "summary": "Comment-only description of the solved r=1 case (1975); no axiom or theorem declaration."
@@ -105,7 +106,7 @@
       "title": "Prime Multiplicity Lemma (nextPrime def + documentation)",
       "startLine": 91,
       "endLine": 113,
-      "summary": "Defines `nextPrime` (least prime \u2265 k) and describes the technical Erd\u0151s-Selfridge lemma in a docstring; the lemma itself is not formalized."
+      "summary": "Defines `nextPrime` (least prime ≥ k) and describes the technical Erdős-Selfridge lemma in a docstring; the lemma itself is not formalized."
     },
     {
       "id": "properties",
@@ -123,13 +124,13 @@
     }
   ],
   "conclusion": {
-    "summary": "We provide a partial Lean 4 scaffold for Erd\u0151s Problem #930. Concretely we formalize the perfect power predicate, basic verified properties (0, 1, squares, cubes), and a single axiomatized counterexample (`six_not_isPower`) used to prove that 2\u00b73 is not a power. The main conjecture (r > 1) and the Erd\u0151s-Selfridge r=1 theorem (1975) are documented in comments but not declared as Lean axioms or theorems. The general case for r > 1 intervals remains OPEN.",
+    "summary": "We provide a partial Lean 4 scaffold for Erdős Problem #930. Concretely we formalize the perfect power predicate, basic verified properties (0, 1, squares, cubes), and a single axiomatized counterexample (`six_not_isPower`) used to prove that 2·3 is not a power. The main conjecture (r > 1) and the Erdős-Selfridge r=1 theorem (1975) are documented in comments but not declared as Lean axioms or theorems. The general case for r > 1 intervals remains OPEN.",
     "implications": "**Theoretical Significance**: This problem connects prime factorization structure with the arithmetic of interval products.\n\nUnderstanding why consecutive products avoid being powers reveals deep facts about how primes distribute in these products. Progress here would illuminate the multiplicative structure of factorial-like numbers.",
     "openQuestions": [
       "Does the conjecture hold for r = 2 disjoint intervals?",
-      "What is the minimal k(r) such that r intervals of length \u2265 k have non-power product?",
-      "Can the Erd\u0151s-Selfridge method extend to multiple intervals?",
-      "What is the relationship to Catalan's conjecture (now Mih\u0103ilescu's theorem)?"
+      "What is the minimal k(r) such that r intervals of length ≥ k have non-power product?",
+      "Can the Erdős-Selfridge method extend to multiple intervals?",
+      "What is the relationship to Catalan's conjecture (now Mihăilescu's theorem)?"
     ]
   },
   "leanFile": {
@@ -152,17 +153,17 @@
     {
       "targetId": "erdos-1094",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, prime-factorization"
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
     },
     {
       "targetId": "erdos-1108",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, perfect-powers"
+      "description": "Related Erdős problem sharing themes: number-theory, perfect-powers"
     },
     {
       "targetId": "erdos-137",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, prime-factorization"
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
     }
   ],
   "sorries": 0

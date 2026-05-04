@@ -59,7 +59,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 214,
-    "assumptions": "3 axioms: hopf_pannwitz_1934 (Hopf-Pannwitz 1934 — maximum diameter edges for n points), three_dimensional_case (3D analogue — proved by Grünbaum, Heppes, Strasziewicz), erdos_1960 (Erdős 1960 — d-dimensional case coefficient (p-1)/(2p)). 0 sorries."
+    "assumptions": "3 axioms: hopf_pannwitz_1934 (Hopf-Pannwitz 1934 — maximum diameter edges for n points), three_dimensional_case (3D analogue — proved by Grünbaum, Heppes, Strasziewicz), erdos_1960 (Erdős 1960 — d-dimensional case coefficient (p-1)/(2p)). 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #223: Maximum Diameter Pairs**\n\nThis problem, originally a conjecture of Vázsonyi, asks: in an n-point set with diameter 1, how many pairs can be at distance exactly 1?\n\n**Key History:**\n- Vázsonyi: Original conjecture\n- Hopf-Pannwitz (1934): Solved 2D case, f₂(n) = n\n- Grünbaum, Heppes, Strasziewicz (1956-57): Independently solved 3D, f₃(n) = 2n-2\n- Erdős (1960): Showed quadratic growth for d ≥ 4\n- Swanepoel (2009): Complete characterization with extremal configurations\n\n**Dimensional Transition:**\nThe most striking feature is the phase transition at d = 4: linear growth in 2D/3D becomes quadratic in 4D+.",

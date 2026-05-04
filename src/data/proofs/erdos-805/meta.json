@@ -47,7 +47,8 @@
     "dateAdded": "2026-01-18",
     "axiomCount": 2,
     "lineCount": 105,
-    "assumptions": "2 axioms: alon_sudakov_2007, alon_bucic_sudakov_2021. See Lean source for complete statements."
+    "assumptions": "2 axioms: alon_sudakov_2007, alon_bucic_sudakov_2021. See Lean source for complete statements.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #805 asks about the 'everywhere Ramsey' property of graphs: for which threshold functions g(n) does there exist an n-vertex graph where every induced subgraph on g(n) vertices contains both a clique of size at least log n and an independent set of size at least log n? This question sits at the intersection of Ramsey theory and extremal graph theory, probing how local Ramsey properties constrain global graph structure.\n\nErdős and Hajnal conjectured that g(n) = (log n)³ is too small — no such graph should exist at this threshold. Alon and Sudakov (2007) proved this up to a logarithmic factor: no such graph exists when g(n) = c(log n)³/(log log n). This provides a strong upper bound on the threshold function.\n\nAlon, Bucić, and Sudakov (2021) established the positive direction, showing that such graphs do exist when g(n) ≤ 2^{2^{(log log n)^{1/2+o(1)}}}. Their construction uses probabilistic methods and careful analysis of Ramsey numbers. The enormous gap between the upper bound (near (log n)³) and the lower bound (near 2^{2^{√(log log n)}}) shows that determining the exact threshold requires fundamentally new techniques.",

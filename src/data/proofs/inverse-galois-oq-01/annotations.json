@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Module Overview: The Non-Solvable Frontier",
-    "content": "The Inverse Galois Problem (IGP) asks: does every finite group appear as $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K$? This file explores the *non-solvable frontier* — the boundary at $n = 5$ where symmetric groups transition from solvable to non-solvable.\n\nThe file proves 31 theorems in 11 parts, culminating in the complete characterization `sn_solvable_iff`: $S_n$ is solvable if and only if $n \\leq 4$. For solvable groups, Shafarevich's theorem (1954, axiomatized in `InverseGalois.lean`) guarantees realizability. For non-solvable groups, explicit polynomial constructions are required — and the file documents a census of 18+ groups realized across the Lean-Genius formalization.",
-    "mathContext": "The IGP has deep connections across algebra: Hilbert's irreducibility theorem (1892) proves all $S_n$ and $A_n$ are realizable; Shafarevich (1954) covers all solvable groups; Thompson (1984) proved the Monster group realizable. The full conjecture remains open — all but possibly one sporadic simple group ($M_{23}$) are known to be Galois groups over $\\mathbb{Q}$.",
+    "content": "The Inverse Galois Problem (IGP) asks: does every finite group appear as $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K$? This file explores the *non-solvable frontier* \u2014 the boundary at $n = 5$ where symmetric groups transition from solvable to non-solvable.\n\nThe file proves 31 theorems in 11 parts, culminating in the complete characterization `sn_solvable_iff`: $S_n$ is solvable if and only if $n \\leq 4$. For solvable groups, Shafarevich's theorem (1954, axiomatized in `InverseGalois.lean`) guarantees realizability. For non-solvable groups, explicit polynomial constructions are required \u2014 and the file documents a census of 18+ groups realized across the Lean-Genius formalization.",
+    "mathContext": "The IGP has deep connections across algebra: Hilbert's irreducibility theorem (1892) proves all $S_n$ and $A_n$ are realizable; Shafarevich (1954) covers all solvable groups; Thompson (1984) proved the Monster group realizable. The full conjecture remains open \u2014 all but possibly one sporadic simple group ($M_{23}$) are known to be Galois groups over $\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
       "Inverse Galois Problem",
@@ -30,8 +30,8 @@
       "startLine": 60,
       "endLine": 71
     },
-    "type": "theorem",
-    "title": "S₁ through S₄ Are Solvable",
+    "type": "insight",
+    "title": "S\u2081 through S\u2084 Are Solvable",
     "content": "Four `example` declarations confirm that $S_1, S_2, S_3, S_4$ are solvable, all proved by `inferInstance`. The instances come from `AbelRuffiniGaloisExtensions.lean`, which constructs explicit composition series: $S_2 \\cong C_2$ (abelian), $S_3$ via $1 \\to A_3 \\to S_3 \\to C_2 \\to 1$, $S_4$ via the Klein four-group chain.\n\nThese are the 'easy' cases for the Inverse Galois Problem: Shafarevich's theorem covers all of them (and all solvable groups) automatically.",
     "mathContext": "Composition series: $S_2: \\{e\\} \\triangleleft S_2$ (abelian). $S_3: \\{e\\} \\triangleleft A_3 \\triangleleft S_3$ ($A_3 \\cong \\mathbb{Z}/3$). $S_4: \\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$ ($V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$, all quotients abelian).",
     "significance": "supporting",
@@ -53,8 +53,8 @@
       "startLine": 73,
       "endLine": 77
     },
-    "type": "theorem",
-    "title": "S₅ Is Not Solvable: The Fundamental Obstruction",
+    "type": "insight",
+    "title": "S\u2085 Is Not Solvable: The Fundamental Obstruction",
     "content": "`s5_not_solvable` proves $\\neg\\text{IsSolvable}(S_5)$ using Mathlib's `Equiv.Perm.not_solvable`. The proof bridges from $\\mathbb{N}$ to Cardinal: the hypothesis $5 \\leq 5$ (trivially true) is cast to $5 \\leq |\\text{Fin}\\,5|$ via `simp` and `norm_cast`, then passed to `Equiv.Perm.not_solvable`.\n\nThis is the group-theoretic heart of both Abel-Ruffini (quintics have no radical formula) and the IGP frontier (non-solvable groups need explicit constructions).",
     "mathContext": "The derived series of $S_5$: $D^0 = S_5$, $D^1 = [S_5, S_5] = A_5$, $D^k = A_5$ for all $k \\geq 1$ (because $A_5$ is perfect: $[A_5, A_5] = A_5$). The series never reaches $\\{e\\}$, so $S_5$ is not solvable.",
     "significance": "key",
@@ -76,8 +76,8 @@
       "startLine": 91,
       "endLine": 96
     },
-    "type": "theorem",
-    "title": "General Non-Solvability for n ≥ 5",
+    "type": "insight",
+    "title": "General Non-Solvability for n \u2265 5",
     "content": "`sn_not_solvable_of_ge_five` generalizes to all $n \\geq 5$: given $5 \\leq n$ in $\\mathbb{N}$, cast to Cardinal and apply `Equiv.Perm.not_solvable`. The same 3-line proof pattern as the specific cases ($S_5, S_6, S_7$).",
     "mathContext": "For $n \\geq 5$: $A_n$ is simple (and non-abelian), so $A_n$ is perfect, so $D^k(S_n) = A_n$ for all $k \\geq 1$. The derived series stalls, making $S_n$ non-solvable. The proof only needs the cardinal inequality $5 \\leq |\\text{Fin}\\,n|$.",
     "significance": "key",
@@ -99,7 +99,7 @@
       "endLine": 120
     },
     "type": "concept",
-    "title": "Computing |Sₙ| = n! via Fintype.card_perm",
+    "title": "Computing |S\u2099| = n! via Fintype.card_perm",
     "content": "Five theorems compute $|S_1| = 1$, $|S_2| = 2$, $|S_3| = 6$, $|S_4| = 24$, $|S_5| = 120$, each by the same pattern: `rw [Fintype.card_perm, Fintype.card_fin]; norm_num`. Mathlib's `Fintype.card_perm` gives $|S_n| = (\\text{Fintype.card}(\\alpha))!$ and `Fintype.card_fin` evaluates $|\\text{Fin}\\,n| = n$, reducing to a numerical computation handled by `norm_num`.\n\nThese concrete values are needed for Part IV ($|S_5|/|A_5| = 2$) and the census in Part VIII.",
     "mathContext": "$|S_n| = n!$ counts the number of bijections $\\{1,\\ldots,n\\} \\to \\{1,\\ldots,n\\}$. The factorial grows rapidly: $|S_5| = 120$, $|S_6| = 720$, etc. For the Inverse Galois Problem, these cardinalities determine the degrees of the corresponding splitting fields.",
     "significance": "supporting",
@@ -121,9 +121,9 @@
       "startLine": 122,
       "endLine": 124
     },
-    "type": "theorem",
-    "title": "|A₅| = 60 via native_decide",
-    "content": "`a5_card` proves $|A_5| = 60$ using `native_decide` — a computed verification that evaluates the cardinality by enumerating all 60 even permutations of 5 elements. This contrasts with the algebraic proof ($|A_n| = n!/2$) and the `norm_num`-based proofs for $|S_n|$.",
+    "type": "insight",
+    "title": "|A\u2085| = 60 via native_decide",
+    "content": "`a5_card` proves $|A_5| = 60$ using `native_decide` \u2014 a computed verification that evaluates the cardinality by enumerating all 60 even permutations of 5 elements. This contrasts with the algebraic proof ($|A_n| = n!/2$) and the `norm_num`-based proofs for $|S_n|$.",
     "mathContext": "$|A_5| = 5!/2 = 120/2 = 60$. The 60 elements decompose into conjugacy classes of sizes 1 (identity), 15 (products of two disjoint transpositions), 20 (3-cycles), and 12 + 12 (two classes of 5-cycles). This class structure is why $A_5$ is simple: no union of classes including $\\{e\\}$ has size dividing 60.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -143,9 +143,9 @@
       "startLine": 136,
       "endLine": 138
     },
-    "type": "theorem",
-    "title": "A₅ Is Simple: The Core Fact",
-    "content": "`a5_simple` delegates to Mathlib's `alternatingGroup.isSimpleGroup_five`. $A_5$ is simple: its only normal subgroups are $\\{e\\}$ and $A_5$ itself. This is the ultimate reason $S_n$ is not solvable for $n \\geq 5$ — the derived series reaches $A_n$ and cannot descend further.",
+    "type": "insight",
+    "title": "A\u2085 Is Simple: The Core Fact",
+    "content": "`a5_simple` delegates to Mathlib's `alternatingGroup.isSimpleGroup_five`. $A_5$ is simple: its only normal subgroups are $\\{e\\}$ and $A_5$ itself. This is the ultimate reason $S_n$ is not solvable for $n \\geq 5$ \u2014 the derived series reaches $A_n$ and cannot descend further.",
     "mathContext": "$A_5$ is the smallest non-abelian simple group ($|A_5| = 60$). Proof of simplicity: a normal subgroup $N \\trianglelefteq A_5$ must be a union of conjugacy classes containing $\\{e\\}$, and $|N|$ must divide 60. The class sizes are 1, 15, 20, 12, 12. No sub-sum including 1 (other than 1 and 60) divides 60. Therefore $N = \\{e\\}$ or $N = A_5$.",
     "significance": "key",
     "relatedConcepts": [
@@ -166,8 +166,8 @@
       "startLine": 142,
       "endLine": 151
     },
-    "type": "theorem",
-    "title": "A₅ Is Not Solvable",
+    "type": "insight",
+    "title": "A\u2085 Is Not Solvable",
     "content": "`a5_not_solvable` proves $\\neg\\text{IsSolvable}(A_5)$ by contradiction: if $A_5$ were solvable, then $S_5$ would be solvable (via the short exact sequence $1 \\to A_5 \\to S_5 \\to C_2 \\to 1$ using `solvable_of_ker_le_range`). But $S_5$ is not solvable (by `s5_not_solvable`). Contradiction.\n\nThe proof constructs the exact sequence explicitly: the alternating group injection `(alternatingGroup (Fin 5)).subtype` and the sign map `Equiv.Perm.sign` form a kernel-range pair.",
     "mathContext": "The short exact sequence $1 \\to A_5 \\xrightarrow{\\iota} S_5 \\xrightarrow{\\text{sign}} C_2 \\to 1$ means $S_5$ is an extension of $A_5$ by $C_2$. A group extension with both kernel ($A_5$) and quotient ($C_2$) solvable is solvable. Contrapositive: if the extension ($S_5$) is not solvable, then the kernel ($A_5$) is not solvable.",
     "significance": "key",
@@ -190,10 +190,10 @@
       "startLine": 153,
       "endLine": 158
     },
-    "type": "theorem",
-    "title": "A₅ Is Not Abelian",
-    "content": "`a5_not_commutative` proves $\\neg(\\forall a, b \\in A_5, ab = ba)$ by contradiction: if $A_5$ were abelian, then `isSolvable_of_comm` would give `IsSolvable(A_5)`, contradicting `a5_not_solvable`. This is a stepping stone to the perfectness proof — it rules out the trivial case $[A_5, A_5] = \\{e\\}$ in the simplicity dichotomy.\n\nThe implication chain: abelian $\\Rightarrow$ solvable $\\Rightarrow$ contradiction. This is why every non-abelian simple group is automatically non-solvable.",
-    "mathContext": "For any group: abelian $\\Rightarrow$ solvable (the derived series is $G \\supset [G,G] = \\{e\\}$ in one step). Contrapositive: non-solvable $\\Rightarrow$ non-abelian. $A_5$ has non-commuting elements — for example, the 3-cycle $(1\\,2\\,3)$ and the 3-cycle $(1\\,2\\,4)$ do not commute: $(1\\,2\\,3)(1\\,2\\,4) = (1\\,3)(2\\,4) \\neq (1\\,4)(2\\,3) = (1\\,2\\,4)(1\\,2\\,3)$.",
+    "type": "insight",
+    "title": "A\u2085 Is Not Abelian",
+    "content": "`a5_not_commutative` proves $\\neg(\\forall a, b \\in A_5, ab = ba)$ by contradiction: if $A_5$ were abelian, then `isSolvable_of_comm` would give `IsSolvable(A_5)`, contradicting `a5_not_solvable`. This is a stepping stone to the perfectness proof \u2014 it rules out the trivial case $[A_5, A_5] = \\{e\\}$ in the simplicity dichotomy.\n\nThe implication chain: abelian $\\Rightarrow$ solvable $\\Rightarrow$ contradiction. This is why every non-abelian simple group is automatically non-solvable.",
+    "mathContext": "For any group: abelian $\\Rightarrow$ solvable (the derived series is $G \\supset [G,G] = \\{e\\}$ in one step). Contrapositive: non-solvable $\\Rightarrow$ non-abelian. $A_5$ has non-commuting elements \u2014 for example, the 3-cycle $(1\\,2\\,3)$ and the 3-cycle $(1\\,2\\,4)$ do not commute: $(1\\,2\\,3)(1\\,2\\,4) = (1\\,3)(2\\,4) \\neq (1\\,4)(2\\,3) = (1\\,2\\,4)(1\\,2\\,3)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "abelian group",
@@ -212,9 +212,9 @@
       "startLine": 164,
       "endLine": 186
     },
-    "type": "theorem",
-    "title": "A₅ Is Perfect: [A₅, A₅] = A₅",
-    "content": "`a5_commutator_eq_top` is the deepest original proof in the file (25 lines). Strategy: the commutator subgroup $[A_5, A_5]$ is normal in $A_5$. Since $A_5$ is simple, $[A_5, A_5] = \\{e\\}$ or $[A_5, A_5] = A_5$. If $[A_5, A_5] = \\{e\\}$, then all commutators $aba^{-1}b^{-1} = 1$, so $ab = ba$ for all $a, b$ — but this means $A_5$ is abelian, and abelian groups are solvable, contradicting `a5_not_solvable`. Therefore $[A_5, A_5] = A_5$ (perfect).\n\nThe proof handles the abelian case by explicitly manipulating commutators: from $aba^{-1}b^{-1} = 1$ derive $aba^{-1} = b$, then $ab = ba$ via `group` and `calc`.",
+    "type": "insight",
+    "title": "A\u2085 Is Perfect: [A\u2085, A\u2085] = A\u2085",
+    "content": "`a5_commutator_eq_top` is the deepest original proof in the file (25 lines). Strategy: the commutator subgroup $[A_5, A_5]$ is normal in $A_5$. Since $A_5$ is simple, $[A_5, A_5] = \\{e\\}$ or $[A_5, A_5] = A_5$. If $[A_5, A_5] = \\{e\\}$, then all commutators $aba^{-1}b^{-1} = 1$, so $ab = ba$ for all $a, b$ \u2014 but this means $A_5$ is abelian, and abelian groups are solvable, contradicting `a5_not_solvable`. Therefore $[A_5, A_5] = A_5$ (perfect).\n\nThe proof handles the abelian case by explicitly manipulating commutators: from $aba^{-1}b^{-1} = 1$ derive $aba^{-1} = b$, then $ab = ba$ via `group` and `calc`.",
     "mathContext": "A group $G$ is *perfect* if $G = [G, G]$ (equals its own commutator subgroup). Equivalently, the abelianization $G/[G,G]$ is trivial. For $A_5$: simplicity gives $[A_5, A_5] \\in \\{\\{e\\}, A_5\\}$; non-commutativity rules out $\\{e\\}$. The perfectness of $A_5$ is what makes the derived series of $S_5$ stall: $D^1(S_5) = A_5$ and $D^{k+1}(S_5) = [D^k(S_5), D^k(S_5)] = [A_5, A_5] = A_5$ for all $k \\geq 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -239,7 +239,7 @@
     },
     "type": "concept",
     "title": "Part IV: Alternating Group as Index-2 Normal Subgroup",
-    "content": "Three results establish the structural relationship between $A_n$ and $S_n$: (1) `alternating_normal` — $A_n \\trianglelefteq S_n$ via `inferInstance` (since $A_n = \\ker(\\text{sign})$, a kernel is always normal); (2) `alternating_card_five'` restates $|A_5| = 60$; (3) `s5_div_a5` computes $|S_5|/|A_5| = 120/60 = 2$, confirming the index $[S_5:A_5] = 2$.\n\nThe index-2 condition means $A_n$ is the unique subgroup of index 2 in $S_n$, and the quotient $S_n/A_n \\cong C_2$ is the sign representation.",
+    "content": "Three results establish the structural relationship between $A_n$ and $S_n$: (1) `alternating_normal` \u2014 $A_n \\trianglelefteq S_n$ via `inferInstance` (since $A_n = \\ker(\\text{sign})$, a kernel is always normal); (2) `alternating_card_five'` restates $|A_5| = 60$; (3) `s5_div_a5` computes $|S_5|/|A_5| = 120/60 = 2$, confirming the index $[S_5:A_5] = 2$.\n\nThe index-2 condition means $A_n$ is the unique subgroup of index 2 in $S_n$, and the quotient $S_n/A_n \\cong C_2$ is the sign representation.",
     "mathContext": "For any group $G$ and normal subgroup $N \\trianglelefteq G$ with $[G:N] = 2$: $N$ is automatically normal (since left and right cosets coincide when there are only two). The short exact sequence $1 \\to A_n \\to S_n \\to C_2 \\to 1$ splits for $n \\neq 2, 6$ (the splitting gives $S_n \\cong A_n \\rtimes C_2$, though the semidirect product structure is not needed here).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -263,7 +263,7 @@
     },
     "type": "concept",
     "title": "Part V: The Solvable vs Non-Solvable Landscape",
-    "content": "Commentary and one theorem partitioning all finite groups into the solvable realm (covered by Shafarevich: cyclic, abelian, dihedral, $p$-groups, $S_1$–$S_4$, all groups of order $< 60$) and the non-solvable realm (requiring explicit constructions). `trivial_realizable` proves the trivial group is realized by the trivial extension $\\mathbb{Q}/\\mathbb{Q}$, using $|\\text{Gal}(\\mathbb{Q}/\\mathbb{Q})| = 1$ from `IsGalois.card_aut_eq_finrank` and $[\\mathbb{Q}:\\mathbb{Q}] = 1$.\n\nThe commentary catalogs which non-solvable groups have been realized: $A_5$ (order 60) and $S_5$ (order 120), with $\\text{PSL}(2,7)$ (168), $A_6$ (360), and sporadic groups as future targets.",
+    "content": "Commentary and one theorem partitioning all finite groups into the solvable realm (covered by Shafarevich: cyclic, abelian, dihedral, $p$-groups, $S_1$\u2013$S_4$, all groups of order $< 60$) and the non-solvable realm (requiring explicit constructions). `trivial_realizable` proves the trivial group is realized by the trivial extension $\\mathbb{Q}/\\mathbb{Q}$, using $|\\text{Gal}(\\mathbb{Q}/\\mathbb{Q})| = 1$ from `IsGalois.card_aut_eq_finrank` and $[\\mathbb{Q}:\\mathbb{Q}] = 1$.\n\nThe commentary catalogs which non-solvable groups have been realized: $A_5$ (order 60) and $S_5$ (order 120), with $\\text{PSL}(2,7)$ (168), $A_6$ (360), and sporadic groups as future targets.",
     "mathContext": "Shafarevich's theorem (1954): every solvable group is $\\text{Gal}(K/\\mathbb{Q})$ for some $K$. All groups of order $< 60$ are solvable (Burnside's $p^aq^b$ theorem + Feit-Thompson odd-order theorem). The smallest non-solvable group is $A_5$ with $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$, which has three distinct prime factors as required.",
     "significance": "key",
     "relatedConcepts": [
@@ -285,7 +285,7 @@
       "startLine": 261,
       "endLine": 267
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fixed Field Existence",
     "content": "`fixed_field_exists` proves that for any subgroup $H \\leq \\text{Gal}(K/F)$, the fixed field $K^H = \\{x \\in K \\mid \\forall \\sigma \\in H, \\sigma(x) = x\\}$ exists as an intermediate field. The proof is a direct application of Mathlib's `IntermediateField.fixedField`.\n\nThis is the foundational step for the Galois correspondence: every subgroup determines a fixed field, and the degree formulas in subsequent theorems quantify this relationship.",
     "mathContext": "$K^H = \\{x \\in K : \\sigma(x) = x \\text{ for all } \\sigma \\in H\\}$. The Galois correspondence: $H \\mapsto K^H$ gives an inclusion-reversing bijection between subgroups of $\\text{Gal}(K/F)$ and intermediate fields $F \\subseteq E \\subseteq K$, with inverse $E \\mapsto \\text{Gal}(K/E)$.",
@@ -309,7 +309,7 @@
       "startLine": 271,
       "endLine": 278
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fixed Field Degree Formula: [K : K^H] = |H|",
     "content": "`finrank_over_fixed_field` proves that the degree of a Galois extension $K$ over the fixed field $K^H$ equals the order of the subgroup $H \\leq \\text{Gal}(K/F)$. This is a direct consequence of Mathlib's `IntermediateField.finrank_fixedField_eq_card` with a `Nat.card` to `Fintype.card` conversion.\n\nThis is the quantitative content of the Galois correspondence: subgroup size determines field extension degree.",
     "mathContext": "The fundamental theorem of Galois theory: $H \\leq \\text{Gal}(K/F) \\longleftrightarrow K^H$ (intermediate field), with $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$. The tower law gives $[K:F] = [K:K^H] \\cdot [K^H:F] = |H| \\cdot [G:H] = |G|$, consistent with $[K:F] = |\\text{Gal}(K/F)|$ for Galois extensions.",
@@ -333,7 +333,7 @@
       "startLine": 282,
       "endLine": 300
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fixed Field Degree over Base: [K^H : F] = [G : H]",
     "content": "`finrank_fixed_field_over_base` proves $[K^H:F] = [G:H]$ (the index of $H$ in $G$). The proof is the most technical in the file: it combines the tower law $[K:F] = [K:K^H] \\cdot [K^H:F]$ with $[K:K^H] = |H|$ (previous theorem) and Lagrange's theorem $|G| = |H| \\cdot [G:H]$, then uses `nlinarith` to solve the resulting integer equation.\n\nTogether with `finrank_over_fixed_field`, these two theorems give the complete quantitative Galois correspondence.",
     "mathContext": "From the tower law: $[K^H:F] = [K:F] / [K:K^H] = |G| / |H| = [G:H]$. The proof handles the division in $\\mathbb{N}$ (where division truncates) by working with the multiplicative identity $|H| \\cdot [G:H] = |G| = [K:K^H] \\cdot [K^H:F] = |H| \\cdot [K^H:F]$ and cancelling $|H| > 0$.",
@@ -357,7 +357,7 @@
       "startLine": 310,
       "endLine": 320
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Sign Homomorphism: Kernel and Surjectivity",
     "content": "`sign_surjective` ($\\text{sign}$ is surjective for $n \\geq 2$) and `sign_ker_eq_alternating` ($\\ker(\\text{sign}) = A_n$) establish the short exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\text{sign}} C_2 \\to 1$. Surjectivity uses `Equiv.Perm.sign_surjective` from Mathlib; the kernel characterization follows from the definition of `alternatingGroup` as the kernel of sign.",
     "mathContext": "The sign homomorphism $\\text{sign}: S_n \\to \\{\\pm 1\\} \\cong C_2$ classifies permutations as even ($+1$) or odd ($-1$). Its kernel $A_n$ is the alternating group. The surjectivity for $n \\geq 2$ relies on the existence of transpositions, which have sign $-1$. This exact sequence is used in `a5_not_solvable` to transfer non-solvability from $S_5$ to $A_5$.",
@@ -381,9 +381,9 @@
       "startLine": 365,
       "endLine": 378
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Part VIII: Census of 18+ Realized Galois Groups",
-    "content": "An extensive commentary and one theorem documenting all groups explicitly realized as Galois groups over $\\mathbb{Q}$ across the Lean-Genius formalization. The census includes: cyclic groups $C_1$ through $C_{12}$ (via cyclotomic extensions $\\mathbb{Q}(\\zeta_p)$), $V_4 \\cong C_2^2$ (8th cyclotomic), $C_4 \\times C_2$ (15th cyclotomic), $C_2^3$ (compositum), $S_3$ ($X^3-2$), $D_4$ ($X^4-2$), $F_{20}$ ($X^5-2$), $A_5$ ($x^5+20x-16$), and $S_5$ ($x^5-4x+2$).\n\n`nonsolvable_realized_orders` states that Galois extensions of orders 60 ($A_5$) and 120 ($S_5$) exist. The 2 `sorry`s are structural — they require importing `InverseGaloisA5` and `AbelRuffiniOQ04OQ01` without creating import cycles.",
+    "content": "An extensive commentary and one theorem documenting all groups explicitly realized as Galois groups over $\\mathbb{Q}$ across the Lean-Genius formalization. The census includes: cyclic groups $C_1$ through $C_{12}$ (via cyclotomic extensions $\\mathbb{Q}(\\zeta_p)$), $V_4 \\cong C_2^2$ (8th cyclotomic), $C_4 \\times C_2$ (15th cyclotomic), $C_2^3$ (compositum), $S_3$ ($X^3-2$), $D_4$ ($X^4-2$), $F_{20}$ ($X^5-2$), $A_5$ ($x^5+20x-16$), and $S_5$ ($x^5-4x+2$).\n\n`nonsolvable_realized_orders` states that Galois extensions of orders 60 ($A_5$) and 120 ($S_5$) exist. The 2 `sorry`s are structural \u2014 they require importing `InverseGaloisA5` and `AbelRuffiniOQ04OQ01` without creating import cycles.",
     "mathContext": "The census shows the formalized frontier: all solvable groups are covered abstractly (Shafarevich axiom), while the non-solvable frontier extends to $A_5$ (via $x^5+20x-16$, Sylow analysis) and $S_5$ (via $x^5-4x+2$, Eisenstein + discriminant). The next non-solvable targets in order of complexity: $\\text{PSL}(2,7) \\cong GL(3,\\mathbb{F}_2)$ (order 168, realized by $x^7-7x+3$), $A_6$ (order 360), and $\\text{PSL}(2,11)$ (order 660).",
     "significance": "key",
     "relatedConcepts": [
@@ -405,9 +405,9 @@
       "startLine": 408,
       "endLine": 419
     },
-    "type": "theorem",
-    "title": "The Complete Characterization: Sₙ Solvable iff n ≤ 4",
-    "content": "`sn_solvable_iff` is the synthesis theorem: $S_n$ is solvable if and only if $n \\leq 4$. The forward direction ($\\Rightarrow$) uses `sn_not_solvable_of_ge_five`: if $n > 4$ then $5 \\leq n$ and $S_n$ is not solvable — contradicting the hypothesis. The backward direction ($\\Leftarrow$) uses `interval_cases n` to split into 5 cases ($n = 0, 1, 2, 3, 4$), each solved by `infer_instance`.\n\nThis is the complete answer to the question 'which symmetric groups are solvable?' — the structural divide that drives both Abel-Ruffini and the Inverse Galois Problem.",
+    "type": "insight",
+    "title": "The Complete Characterization: S\u2099 Solvable iff n \u2264 4",
+    "content": "`sn_solvable_iff` is the synthesis theorem: $S_n$ is solvable if and only if $n \\leq 4$. The forward direction ($\\Rightarrow$) uses `sn_not_solvable_of_ge_five`: if $n > 4$ then $5 \\leq n$ and $S_n$ is not solvable \u2014 contradicting the hypothesis. The backward direction ($\\Leftarrow$) uses `interval_cases n` to split into 5 cases ($n = 0, 1, 2, 3, 4$), each solved by `infer_instance`.\n\nThis is the complete answer to the question 'which symmetric groups are solvable?' \u2014 the structural divide that drives both Abel-Ruffini and the Inverse Galois Problem.",
     "mathContext": "$S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$. Equivalently: the derived series of $S_n$ reaches $\\{e\\}$ iff $n \\leq 4$. For $n \\geq 5$, the derived series stalls at $A_n$ (perfect for $n \\geq 5$). This characterization implies: a polynomial of degree $n$ with generic Galois group $S_n$ is solvable by radicals iff $n \\leq 4$ (Abel-Ruffini).",
     "significance": "key",
     "relatedConcepts": [
@@ -428,10 +428,10 @@
       "startLine": 397,
       "endLine": 402
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Inverse Galois Conjecture (Open Problem)",
-    "content": "`inverse_galois_conjecture` states: for every finite group $G$, there exists a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong G$. The `sorry` is intentional — this is one of the most important open problems in algebra.\n\nKnown cases: all solvable groups (Shafarevich 1954), all symmetric and alternating groups (Hilbert 1892), 25 of 26 sporadic simple groups (various authors, 1970s–2000s), all groups of Lie type over $\\mathbb{F}_p$ for sufficiently large $p$ (various). The only sporadic group with unknown status over $\\mathbb{Q}$ is $M_{23}$.",
-    "mathContext": "$\\forall G \\text{ finite}, \\exists K/\\mathbb{Q} \\text{ Galois}: \\text{Gal}(K/\\mathbb{Q}) \\cong G$. This is equivalent to asking: every finite group is a quotient of $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$, the absolute Galois group of $\\mathbb{Q}$ — one of the most mysterious objects in mathematics.",
+    "content": "`inverse_galois_conjecture` states: for every finite group $G$, there exists a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong G$. The `sorry` is intentional \u2014 this is one of the most important open problems in algebra.\n\nKnown cases: all solvable groups (Shafarevich 1954), all symmetric and alternating groups (Hilbert 1892), 25 of 26 sporadic simple groups (various authors, 1970s\u20132000s), all groups of Lie type over $\\mathbb{F}_p$ for sufficiently large $p$ (various). The only sporadic group with unknown status over $\\mathbb{Q}$ is $M_{23}$.",
+    "mathContext": "$\\forall G \\text{ finite}, \\exists K/\\mathbb{Q} \\text{ Galois}: \\text{Gal}(K/\\mathbb{Q}) \\cong G$. This is equivalent to asking: every finite group is a quotient of $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$, the absolute Galois group of $\\mathbb{Q}$ \u2014 one of the most mysterious objects in mathematics.",
     "significance": "key",
     "relatedConcepts": [
       "Inverse Galois Problem",
@@ -452,7 +452,7 @@
       "startLine": 428,
       "endLine": 433
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Cayley's Theorem: G Embeds into S_{|G|}",
     "content": "`cayley_card` proves Cayley's theorem: every finite group $G$ admits an injective homomorphism into $S_{|G|}$ (the symmetric group on $|G|$ elements). The proof uses the left-regular representation: $g \\mapsto (x \\mapsto gx)$. Lean's `MulAction.toPermHom G G` gives the homomorphism; injectivity follows because if $gx = hx$ for all $x$, then setting $x = 1$ gives $g = h$.\n\nThis connects the Inverse Galois Problem to symmetric groups: realizing all $S_n$ is necessary for IGP (since every $G$ embeds into some $S_n$).",
     "mathContext": "Cayley's theorem: $\\phi: G \\hookrightarrow S_G$ via $\\phi(g)(x) = gx$. This is injective: $\\phi(g) = \\phi(h) \\Rightarrow gx = hx$ for all $x \\Rightarrow g = h$ (set $x = e$). For IGP: $G \\hookrightarrow S_n$ means $G$ is a subgroup of $S_n$, but being a Galois group requires $G$ as a *quotient* of $\\text{Gal}(K/\\mathbb{Q})$, which is a stronger condition.",

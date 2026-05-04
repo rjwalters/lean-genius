@@ -21,7 +21,8 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "lineCount": 213,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Roger Apéry's 1978 proof that $\\zeta(3)$ is irrational stunned the mathematical world. At age 61, Apéry presented at the Journées Arithmétiques conference a sequence of identities that produced integer sequences $(a_n, b_n)$ satisfying $b_n \\zeta(3) - a_n \\to 0$ geometrically — fast enough to prove irrationality by a simple denominators argument. Henri Cohen reconstructed the proof on the spot; several attendees left in disbelief. The method rests on a 3-term recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5)u_n - n^3 u_{n-1}$ with remarkable integrality properties. Despite decades of computer searches, no analogous recurrence is known for $\\zeta(5)$. Zudilin (2001) showed at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational via a different method, but cannot identify which one.",

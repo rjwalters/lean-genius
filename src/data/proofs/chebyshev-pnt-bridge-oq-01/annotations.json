@@ -6,10 +6,10 @@
       "startLine": 32,
       "endLine": 34
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Legendre's Formula for v_p(n!)",
     "content": "States Legendre's formula: the $p$-adic valuation of $n!$ is $v_p(n!) = \\sum_{i=1}^{n} \\lfloor n/p^i \\rfloor$. This is currently a `sorry` -- the connection between Mathlib's `Nat.factorization` API and the summation formula needs to be established.",
-    "mathContext": "$v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor = \\sum_{i=1}^{\\lfloor \\log_p n \\rfloor} \\lfloor n/p^i \\rfloor$. In Lean: `(n !).factorization p = ∑ i ∈ Finset.Ico 1 (n + 1), n / p ^ i`. The sum is finite since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$.",
+    "mathContext": "$v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor = \\sum_{i=1}^{\\lfloor \\log_p n \\rfloor} \\lfloor n/p^i \\rfloor$. In Lean: `(n !).factorization p = \u2211 i \u2208 Finset.Ico 1 (n + 1), n / p ^ i`. The sum is finite since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$.",
     "significance": "key",
     "prerequisites": [
       "p-adic valuation",
@@ -30,7 +30,7 @@
       "startLine": 41,
       "endLine": 45
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Carry Term Bound: Each Digit Contributes 0 or 1",
     "content": "Proves the fundamental carry bound: $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\leq 1$ for all $i$. This is the combinatorial heart of the proof -- each position in the base-$p$ addition of $n + n$ generates at most one carry. The proof uses `omega` after establishing $2\\lfloor n/p^i \\rfloor \\leq \\lfloor 2n/p^i \\rfloor$.",
     "mathContext": "For any real $x$: $\\lfloor 2x \\rfloor - 2\\lfloor x \\rfloor \\in \\{0, 1\\}$. Writing $x = \\lfloor x \\rfloor + \\{x\\}$, we get $\\lfloor 2x \\rfloor = 2\\lfloor x \\rfloor + \\lfloor 2\\{x\\} \\rfloor$, and $\\lfloor 2\\{x\\} \\rfloor \\in \\{0, 1\\}$ since $0 \\leq \\{x\\} < 1$.",
@@ -54,7 +54,7 @@
       "startLine": 49,
       "endLine": 52
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Carry Terms Vanish for Large Powers",
     "content": "When $p^i > 2n$, the carry term $\\lfloor 2n/p^i \\rfloor = 0$ since the dividend is less than the divisor. This ensures the sum $\\sum_i (\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor)$ has only finitely many nonzero terms.",
     "mathContext": "$p^i > 2n \\Rightarrow \\lfloor 2n/p^i \\rfloor = 0$, so the carry term at position $i$ vanishes. Combined with the carry bound, this gives $v_p\\binom{2n}{n} \\leq \\lfloor \\log_p(2n) \\rfloor$.",
@@ -76,7 +76,7 @@
       "startLine": 55,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Existence of a Large Power of p",
     "content": "Proves that for any prime $p$ and $n \\geq 1$, there exists $k \\leq 2n$ such that $p^k > 2n$. The proof takes $k = 2n$ and shows $p^{2n} \\geq 2^{2n} > 2n$ by induction. This provides the truncation point for the carry sum, ensuring the valuation $v_p\\binom{2n}{n}$ is bounded by a computable quantity.",
     "mathContext": "$p \\geq 2 \\Rightarrow p^{2n} \\geq 2^{2n} \\geq 2n + 1 > 2n$ for $n \\geq 1$. The induction step: $2^{2(n+1)} = 4 \\cdot 2^{2n} \\geq 4(2n+1) = 8n + 4 \\geq 2(n+1) + 1$ for $n \\geq 0$.",
@@ -100,10 +100,10 @@
       "startLine": 78,
       "endLine": 80
     },
-    "type": "theorem",
-    "title": "Main Bound: p^{v_p(C(2n,n))} ≤ 2n",
+    "type": "insight",
+    "title": "Main Bound: p^{v_p(C(2n,n))} \u2264 2n",
     "content": "The **main theorem**: for any prime $p$ and $n \\geq 1$, $p^{v_p\\binom{2n}{n}} \\leq 2n$. Currently `sorry` -- requires connecting the carry infrastructure (proved) to Mathlib's `Nat.factorization` API. The proof sketch: $v_p\\binom{2n}{n} = \\sum_i \\text{carry}_i \\leq \\lfloor \\log_p(2n) \\rfloor$, so $p^{v_p} \\leq p^{\\log_p(2n)} = 2n$.",
-    "mathContext": "$p^{v_p\\binom{2n}{n}} \\leq 2n$. Equivalently: $v_p\\binom{2n}{n} \\leq \\log_p(2n)$. In Lean: `p ^ ((2 * n).choose n).factorization p ≤ 2 * n`.",
+    "mathContext": "$p^{v_p\\binom{2n}{n}} \\leq 2n$. Equivalently: $v_p\\binom{2n}{n} \\leq \\log_p(2n)$. In Lean: `p ^ ((2 * n).choose n).factorization p \u2264 2 * n`.",
     "significance": "key",
     "prerequisites": [
       "carry bound theorem",
@@ -125,10 +125,10 @@
       "startLine": 84,
       "endLine": 86
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Product Bound via Prime Counting",
     "content": "Corollary: $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$. Since $\\binom{2n}{n} = \\prod_{p \\text{ prime}} p^{v_p\\binom{2n}{n}}$ and each factor is $\\leq 2n$, and there are $\\pi(2n)$ primes $\\leq 2n$, the product is bounded by $(2n)^{\\pi(2n)}$. Currently `sorry`.",
-    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq \\prod_{p \\leq 2n} 2n = (2n)^{\\pi(2n)}$. In Lean: `(2 * n).choose n ≤ (2 * n) ^ (2 * n).primeCounting'`.",
+    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq \\prod_{p \\leq 2n} 2n = (2n)^{\\pi(2n)}$. In Lean: `(2 * n).choose n \u2264 (2 * n) ^ (2 * n).primeCounting'`.",
     "significance": "key",
     "prerequisites": [
       "prime_pow_val_central_binom_le theorem",
@@ -139,7 +139,7 @@
       "prime counting function",
       "fundamental theorem of arithmetic",
       "multiplicative function bound",
-      "Erdős's argument"
+      "Erd\u0151s's argument"
     ]
   },
   {
@@ -149,7 +149,7 @@
       "startLine": 94,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Central Binomial Lower Bound",
     "content": "States $(2n+1) \\cdot \\binom{2n}{n} \\geq 4^n$. This follows from the binomial theorem: $4^n = (1+1)^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\leq (2n+1) \\binom{2n}{n}$ since $\\binom{2n}{n}$ is the maximum binomial coefficient. Currently `sorry`.",
     "mathContext": "$4^n = 2^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\leq (2n+1) \\cdot \\max_k \\binom{2n}{k} = (2n+1) \\cdot \\binom{2n}{n}$. Equivalently: $\\binom{2n}{n} \\geq 4^n/(2n+1)$.",
@@ -173,7 +173,7 @@
       "startLine": 101,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Chebyshev's Combined Inequality",
     "content": "The final synthesis: $4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$. This combines the binomial lower bound with the product upper bound and yields, after taking logarithms: $\\pi(2n) \\geq (n \\ln 4 - \\ln(2n+1)) / \\ln(2n) \\sim n \\ln 4 / \\ln(2n)$. Currently `sorry`.",
     "mathContext": "$4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$ implies $\\pi(2n) \\geq \\frac{n \\ln 4 - \\ln(2n+1)}{\\ln(2n)} \\sim \\frac{\\ln 4}{2} \\cdot \\frac{2n}{\\ln(2n)} \\approx 0.693 \\cdot \\frac{2n}{\\ln(2n)}$.",

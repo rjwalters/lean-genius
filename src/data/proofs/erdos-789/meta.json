@@ -63,7 +63,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 242,
-    "assumptions": "3 axioms: h, straus_1966_upper, erdos_choi_1974_lower. 0 sorries."
+    "assumptions": "3 axioms: h, straus_1966_upper, erdos_choi_1974_lower. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**The Sum-Length-Free Property**\\n\\nA set B is sum-length-free if whenever two sums of elements from B are equal, they must involve the same number of terms. This is weaker than the Sidon property (which requires the actual terms to be equal).\\n\\n**Erdős's Original Work (1962)**\\n\\nErdős proved h(n) ≪ n^{5/6} and h(n) ≫ n^{1/3}. The lower bound used a beautiful probabilistic construction: for random α, the set of elements whose fractional parts {αa} lie in a small interval tends to be sum-length-free.\\n\\n**Straus's Improvement (1966)**\\n\\nStraus dramatically improved the upper bound to h(n) ≪ √n using a clever counting argument on sum representations.\\n\\n**Erdős-Choi (1974)**\\n\\nChoi improved the lower bound to h(n) ≫ (n log n)^{1/3} by refining Erdős's probabilistic argument.\\n\\n**The Gap**\\n\\nThe gap between (n log n)^{1/3} and √n is substantial. For n = 10^6, this is roughly 239 vs 1000. Closing this gap is the main open problem.",

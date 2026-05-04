@@ -45,8 +45,9 @@
     ],
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
-    "lineCount": 183,
-    "assumptions": "0 axioms, 0 sorries. All theorems fully proved: card_subsets_missing, card_subsets_containing, card_bad_bound, good_set_lower_bound, property_b_from_union_bound."
+    "lineCount": 536,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved: card_subsets_missing, card_subsets_containing, card_bad_bound, good_set_lower_bound, property_b_from_union_bound.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The Property B problem (2-colorability of hypergraphs) was introduced by Erdős and Hajnal in their 1961 paper 'On a property of families of sets', motivated by combinatorial topology and graph coloring. The classical threshold result — if F is n-uniform with |F| < 2^{n-1}, then F has Property B — follows from a probabilistic argument: a uniformly random 2-coloring fails to be good for a fixed A ∈ F with probability 2 · (1/2)^n = 2^{1-n}, so the expected number of 'bad' sets is |F| · 2^{1-n} < 1, guaranteeing a good coloring exists. The 2024 resolution of Erdős #1027 by Koishi Chan gave the quantitative strengthening that ≫_c 2^|X| good sets exist for |F| ≤ c·2^n. OQ-01 establishes an elementary lower bound — |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1} — via a direct counting argument, providing a fully machine-verified version of the classical probabilistic bound.",
@@ -147,7 +148,7 @@
       "Erdos1027"
     ],
     "namespace": "Erdos1027.UnionBound",
-    "lineCount": 183,
+    "lineCount": 536,
     "axiomCount": 0,
     "theoremCount": 5,
     "substantiveTheoremCount": 4,

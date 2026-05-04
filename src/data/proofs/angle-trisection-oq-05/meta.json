@@ -69,7 +69,8 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries. All theorems are proved directly from definitions and Mathlib. The Huzita-Hatori axioms are stated as a structure (existence assertions about fold lines), not assumed. The algebraic characterization (degree divides 2^a * 3^b) is encoded as the definition of IsOrigamiConstructible. The equivalence with neusis holds by definitional equality.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 27
   },
   "leanFile": {
     "imports": [
@@ -86,7 +87,6 @@
     "axiomCount": 0,
     "theoremCount": 27,
     "lemmaCount": 0,
-    "defCount": 10,
     "definitionCount": 10,
     "path": "Proofs/AngleTrisectionOQ05.lean",
     "sorries": 0

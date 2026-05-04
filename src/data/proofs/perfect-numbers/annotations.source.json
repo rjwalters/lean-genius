@@ -45,7 +45,7 @@
     },
     "type": "definition",
     "title": "Perfect Number Definition",
-    "content": "A number $n$ is **perfect** if $\\sigma(n) = 2n$, where $\\sigma$ is the sum-of-divisors function. Equivalently, the sum of proper divisors equals $n$.\n\nFor $n = 6$:\n- All divisors: $1, 2, 3, 6$ with sum $= 12 = 2 \\times 6$ ✓\n- Proper divisors: $1, 2, 3$ with sum $= 6$ ✓",
+    "content": "A number $n$ is **perfect** if $\\sigma(n) = 2n$, where $\\sigma$ is the sum-of-divisors function. Equivalently, the sum of proper divisors equals $n$.\n\nFor $n = 6$:\n- All divisors: $1, 2, 3, 6$ with sum $= 12 = 2 \\times 6$ \u2713\n- Proper divisors: $1, 2, 3$ with sum $= 6$ \u2713",
     "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$\n\n$n$ perfect $\\Leftrightarrow \\sigma(n) = 2n$",
     "significance": "key",
     "relatedConcepts": [
@@ -100,7 +100,7 @@
       "name": "euclid_perfect_numbers",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euclid's Theorem (Elements IX.36)",
     "content": "**Euclid's Theorem**: If $2^{k+1} - 1$ is a Mersenne prime, then $2^k \\times (2^{k+1} - 1)$ is perfect.\n\nThis 2,300-year-old result gives a recipe for generating perfect numbers from Mersenne primes:\n\n| $k$ | Mersenne Prime | Perfect Number |\n|-----|----------------|----------------|\n| 1   | $M_2 = 3$      | $2 \\times 3 = 6$ |\n| 2   | $M_3 = 7$      | $4 \\times 7 = 28$ |\n| 4   | $M_5 = 31$     | $16 \\times 31 = 496$ |\n| 6   | $M_7 = 127$    | $64 \\times 127 = 8128$ |",
     "mathContext": "Euclid's proof uses:\n$\\sigma(2^k \\cdot M) = \\sigma(2^k) \\cdot \\sigma(M) = (2^{k+1}-1)(M+1) = M \\cdot 2^{k+1} = 2n$",
@@ -123,7 +123,7 @@
       "name": "euler_even_perfect",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euler's Theorem (1747)",
     "content": "**Euler's Theorem**: Every *even* perfect number has Euclid's form.\n\nEuler proved the converse 2,000 years after Euclid, completing the characterization of even perfect numbers. If $n$ is even and perfect, then:\n\n$$n = 2^k \\times (2^{k+1} - 1)$$\n\nwhere $2^{k+1} - 1$ is a Mersenne prime.",
     "mathContext": "Euler's proof analyzes the prime factorization and uses properties of the multiplicative $\\sigma$ function.",
@@ -145,7 +145,7 @@
       "name": "even_perfect_iff",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euclid-Euler Biconditional",
     "content": "**The Complete Characterization**:\n\n$$n \\text{ is even and perfect} \\Leftrightarrow n = 2^k(2^{k+1}-1) \\text{ where } 2^{k+1}-1 \\text{ is prime}$$\n\nThis biconditional combines Euclid's ancient result with Euler's 18th-century proof, providing a complete classification of even perfect numbers.",
     "mathContext": "This is Wiedijk's 100 Theorems #70.",
@@ -168,9 +168,9 @@
       "name": "six_is_perfect",
       "kind": "theorem"
     },
-    "type": "example",
+    "type": "context",
     "title": "First Perfect Number: 6",
-    "content": "$6 = 2^1 \\times 3$ where $3 = 2^2 - 1$ is prime.\n\n**Verification**: Proper divisors of 6 are $1, 2, 3$. Their sum is $1 + 2 + 3 = 6$. ✓\n\nThe proof uses `native_decide` to verify that $3$ is prime, then applies Euclid's theorem.",
+    "content": "$6 = 2^1 \\times 3$ where $3 = 2^2 - 1$ is prime.\n\n**Verification**: Proper divisors of 6 are $1, 2, 3$. Their sum is $1 + 2 + 3 = 6$. \u2713\n\nThe proof uses `native_decide` to verify that $3$ is prime, then applies Euclid's theorem.",
     "mathContext": "$6 = 2^1 \\cdot M_2 = 2 \\cdot 3$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -187,9 +187,9 @@
       "name": "twentyeight_is_perfect",
       "kind": "theorem"
     },
-    "type": "example",
+    "type": "context",
     "title": "Second Perfect Number: 28",
-    "content": "$28 = 2^2 \\times 7$ where $7 = 2^3 - 1$ is prime.\n\n**Verification**: Proper divisors of 28 are $1, 2, 4, 7, 14$. Their sum is $1 + 2 + 4 + 7 + 14 = 28$. ✓",
+    "content": "$28 = 2^2 \\times 7$ where $7 = 2^3 - 1$ is prime.\n\n**Verification**: Proper divisors of 28 are $1, 2, 4, 7, 14$. Their sum is $1 + 2 + 4 + 7 + 14 = 28$. \u2713",
     "mathContext": "$28 = 2^2 \\cdot M_3 = 4 \\cdot 7$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -205,7 +205,7 @@
       "name": "fourhundredninetysix_is_perfect",
       "kind": "theorem"
     },
-    "type": "example",
+    "type": "context",
     "title": "Third Perfect Number: 496",
     "content": "$496 = 2^4 \\times 31$ where $31 = 2^5 - 1$ is prime.\n\nThis is the largest perfect number the ancient Greeks knew. Nicomachus of Gerasa listed 6, 28, and 496 in his *Introduction to Arithmetic* (c. 100 CE).",
     "mathContext": "$496 = 2^4 \\cdot M_5 = 16 \\cdot 31$",
@@ -223,7 +223,7 @@
       "name": "eightthousandonetwentyeight_is_perfect",
       "kind": "theorem"
     },
-    "type": "example",
+    "type": "context",
     "title": "Fourth Perfect Number: 8128",
     "content": "$8128 = 2^6 \\times 127$ where $127 = 2^7 - 1$ is prime.\n\nDiscovered in antiquity, 8128 remained the largest known perfect number for over 1,000 years until the Renaissance.",
     "mathContext": "$8128 = 2^6 \\cdot M_7 = 64 \\cdot 127$",

@@ -2,73 +2,150 @@
   {
     "id": "ann-godel-eval-structure",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-03",
-    "range": { "startLine": 57, "endLine": 70 },
+    "range": {
+      "startLine": 57,
+      "endLine": 70
+    },
     "type": "definition",
     "title": "EvalStructure and Lawvere's Fixed-Point Theorem",
-    "content": "EvalStructure packages the data of a computation model: objects Ob (programs/codes), values Val (outputs), and an evaluation function eval : Ob → Ob → Val. Point-surjectivity means every behavior is 'representable': for any function g : Ob → Val, there exists a program a that computes g when applied to any input. The Lawvere fixed-point theorem (lawvere_fpt) is a one-liner from this: given a point-surjective eval and any endomorphism f, apply the diagonal function x ↦ f(eval x x) to get a program a₀ whose behavior is f ∘ (eval a₀), then eval a₀ a₀ is a fixed point of f. The proof is 2 lines of Lean: obtain the diagonal code, extract the fixed point.",
+    "content": "EvalStructure packages the data of a computation model: objects Ob (programs/codes), values Val (outputs), and an evaluation function eval : Ob \u2192 Ob \u2192 Val. Point-surjectivity means every behavior is 'representable': for any function g : Ob \u2192 Val, there exists a program a that computes g when applied to any input. The Lawvere fixed-point theorem (lawvere_fpt) is a one-liner from this: given a point-surjective eval and any endomorphism f, apply the diagonal function x \u21a6 f(eval x x) to get a program a\u2080 whose behavior is f \u2218 (eval a\u2080), then eval a\u2080 a\u2080 is a fixed point of f. The proof is 2 lines of Lean: obtain the diagonal code, extract the fixed point.",
     "mathContext": "Point-surjectivity: $\\forall g : \\text{Ob} \\to \\text{Val},\\ \\exists a : \\text{Ob},\\ \\forall x : \\text{Ob},\\ \\text{eval}(a, x) = g(x)$. Lawvere: applying this to $g = f \\circ (\\text{eval}(-, -))$ gives $a_0$ with $\\text{eval}(a_0, a_0) = f(\\text{eval}(a_0, a_0))$.",
     "significance": "key",
-    "relatedConcepts": ["Lawvere's fixed-point theorem", "cartesian closed categories", "diagonal argument", "universal evaluation"],
-    "prerequisites": ["function types in Lean 4", "Cantor diagonalization (parent file)", "CCC diagonal morphism"]
+    "relatedConcepts": [
+      "Lawvere's fixed-point theorem",
+      "cartesian closed categories",
+      "diagonal argument",
+      "universal evaluation"
+    ],
+    "prerequisites": [
+      "function types in Lean 4",
+      "Cantor diagonalization (parent file)",
+      "CCC diagonal morphism"
+    ]
   },
   {
     "id": "ann-godel-diagonal-lemma",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-03",
-    "range": { "startLine": 83, "endLine": 90 },
-    "type": "theorem",
+    "range": {
+      "startLine": 83,
+      "endLine": 90
+    },
+    "type": "insight",
     "title": "Abstract Diagonal Lemma: Every Endomorphism Has a Fixed Point",
-    "content": "diagonal_lemma makes the connection to Gödel explicit: in any point-surjective evaluation structure on sentences, every endomorphism F : Form → Form has a fixed point G with G = F(G). In concrete Peano Arithmetic, the Diagonal Lemma (Carnap 1934) says: for any formula F(x), there exists a sentence G such that PA ⊢ G ↔ F(⌈G⌉), where ⌈G⌉ is the Gödel number of G. The abstract theorem subsumes this: Code = ℕ, Form = PA-sentences, and eval = Gödel's substitution function sub(n, m) = the formula obtained by substituting the numeral m into formula n. The proof is immediate from lawvere_fpt — a 3-line application.",
+    "content": "diagonal_lemma makes the connection to G\u00f6del explicit: in any point-surjective evaluation structure on sentences, every endomorphism F : Form \u2192 Form has a fixed point G with G = F(G). In concrete Peano Arithmetic, the Diagonal Lemma (Carnap 1934) says: for any formula F(x), there exists a sentence G such that PA \u22a2 G \u2194 F(\u2308G\u2309), where \u2308G\u2309 is the G\u00f6del number of G. The abstract theorem subsumes this: Code = \u2115, Form = PA-sentences, and eval = G\u00f6del's substitution function sub(n, m) = the formula obtained by substituting the numeral m into formula n. The proof is immediate from lawvere_fpt \u2014 a 3-line application.",
     "mathContext": "Diagonal Lemma (Carnap): $\\forall F(x).\\ \\exists G.\\ \\mathrm{PA} \\vdash G \\leftrightarrow F(\\ulcorner G \\urcorner)$. In the abstract framework: point-surjectivity of eval + Lawvere FPT $\\Rightarrow$ $\\forall F : \\mathrm{Form} \\to \\mathrm{Form}.\\ \\exists G.\\ G = F(G)$.",
     "significance": "key",
-    "relatedConcepts": ["Gödel numbering", "Carnap's diagonal lemma", "self-reference", "fixed-point combinators"],
-    "prerequisites": ["lawvere_fpt", "EvalStructure.IsPointSurjective", "Peano Arithmetic coding"]
+    "relatedConcepts": [
+      "G\u00f6del numbering",
+      "Carnap's diagonal lemma",
+      "self-reference",
+      "fixed-point combinators"
+    ],
+    "prerequisites": [
+      "lawvere_fpt",
+      "EvalStructure.IsPointSurjective",
+      "Peano Arithmetic coding"
+    ]
   },
   {
     "id": "ann-godel-model-structure",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-03",
-    "range": { "startLine": 101, "endLine": 126 },
+    "range": {
+      "startLine": 101,
+      "endLine": 126
+    },
     "type": "definition",
     "title": "GodelModel: Axiomatizing a Peano-Strength Formal System",
-    "content": "GodelModel axiomatizes the essential features of a Peano-strength formal system as structure fields, avoiding the need to formalize first-order logic from scratch. The four axioms are: (1) h_diag — the diagonal lemma as point-surjectivity, encoding Gödel's self-referential machinery; (2) h_consistent — syntactic consistency: no formula and its negation are both provable; (3) h_reflection — the Σ₁-soundness principle: if the system proves 'φ is provable', then φ actually is provable; (4) h_D1 — the first provability condition: if φ is provable, then 'φ is provable' is provable. These four axioms are all that the incompleteness proof needs.",
-    "mathContext": "The axioms formalize: (h_consistent) $\\forall \\varphi.\\ \\mathrm{Pr}(\\varphi) \\to \\neg\\mathrm{Pr}(\\neg\\varphi)$; (h_reflection) $\\mathrm{Pr}(\\overline{\\mathrm{Pr}(\\varphi)}) \\to \\mathrm{Pr}(\\varphi)$; (h_D1, Löb's D1) $\\mathrm{Pr}(\\varphi) \\to \\mathrm{Pr}(\\overline{\\mathrm{Pr}(\\varphi)})$. These are axioms of provability logic (GL).",
+    "content": "GodelModel axiomatizes the essential features of a Peano-strength formal system as structure fields, avoiding the need to formalize first-order logic from scratch. The four axioms are: (1) h_diag \u2014 the diagonal lemma as point-surjectivity, encoding G\u00f6del's self-referential machinery; (2) h_consistent \u2014 syntactic consistency: no formula and its negation are both provable; (3) h_reflection \u2014 the \u03a3\u2081-soundness principle: if the system proves '\u03c6 is provable', then \u03c6 actually is provable; (4) h_D1 \u2014 the first provability condition: if \u03c6 is provable, then '\u03c6 is provable' is provable. These four axioms are all that the incompleteness proof needs.",
+    "mathContext": "The axioms formalize: (h_consistent) $\\forall \\varphi.\\ \\mathrm{Pr}(\\varphi) \\to \\neg\\mathrm{Pr}(\\neg\\varphi)$; (h_reflection) $\\mathrm{Pr}(\\overline{\\mathrm{Pr}(\\varphi)}) \\to \\mathrm{Pr}(\\varphi)$; (h_D1, L\u00f6b's D1) $\\mathrm{Pr}(\\varphi) \\to \\mathrm{Pr}(\\overline{\\mathrm{Pr}(\\varphi)})$. These are axioms of provability logic (GL).",
     "significance": "key",
-    "relatedConcepts": ["provability logic GL", "Σ₁-soundness", "D1 axiom", "Hilbert-Bernays conditions", "syntactic consistency"],
-    "prerequisites": ["structure keyword in Lean 4", "abstract algebra of provability", "Peano Arithmetic"]
+    "relatedConcepts": [
+      "provability logic GL",
+      "\u03a3\u2081-soundness",
+      "D1 axiom",
+      "Hilbert-Bernays conditions",
+      "syntactic consistency"
+    ],
+    "prerequisites": [
+      "structure keyword in Lean 4",
+      "abstract algebra of provability",
+      "Peano Arithmetic"
+    ]
   },
   {
     "id": "ann-godel-sentence-incompleteness",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-03",
-    "range": { "startLine": 137, "endLine": 164 },
-    "type": "theorem",
-    "title": "Gödel Sentence and First Incompleteness: The Core Proof",
-    "content": "godel_sentence applies diagonal_lemma with F = Neg ∘ PrSent to obtain G with G = Neg(PrSent G) — a sentence saying 'I am not provable'. godel_first_incompleteness proves G is not provable by a 5-step contradiction: (1) assume Pr G; (2) by D1 (h_D1): Pr(PrSent G); (3) since G = Neg(PrSent G), substituting gives Pr(Neg(PrSent G)); (4) but step (2) and (3) together give Pr(PrSent G) and Pr(Neg(PrSent G)); (5) this contradicts consistency (h_consistent). The key technical move is `hG ▸ hPrG` which rewrites using the fixed-point equation G = Neg(PrSent G) to convert the provability of G into provability of Neg(PrSent G).",
-    "mathContext": "Gödel sentence: $G := \\neg\\mathrm{Pr}(G)$ (fixed point of $\\neg\\mathrm{Pr}$). Proof: assume $\\mathrm{Pr}(G)$. Then by D1: $\\mathrm{Pr}(\\overline{\\mathrm{Pr}(G)})$. But $G = \\neg\\overline{\\mathrm{Pr}(G)}$, so $\\mathrm{Pr}(\\neg\\overline{\\mathrm{Pr}(G)})$. Contradicts consistency.",
+    "range": {
+      "startLine": 137,
+      "endLine": 164
+    },
+    "type": "insight",
+    "title": "G\u00f6del Sentence and First Incompleteness: The Core Proof",
+    "content": "godel_sentence applies diagonal_lemma with F = Neg \u2218 PrSent to obtain G with G = Neg(PrSent G) \u2014 a sentence saying 'I am not provable'. godel_first_incompleteness proves G is not provable by a 5-step contradiction: (1) assume Pr G; (2) by D1 (h_D1): Pr(PrSent G); (3) since G = Neg(PrSent G), substituting gives Pr(Neg(PrSent G)); (4) but step (2) and (3) together give Pr(PrSent G) and Pr(Neg(PrSent G)); (5) this contradicts consistency (h_consistent). The key technical move is `hG \u25b8 hPrG` which rewrites using the fixed-point equation G = Neg(PrSent G) to convert the provability of G into provability of Neg(PrSent G).",
+    "mathContext": "G\u00f6del sentence: $G := \\neg\\mathrm{Pr}(G)$ (fixed point of $\\neg\\mathrm{Pr}$). Proof: assume $\\mathrm{Pr}(G)$. Then by D1: $\\mathrm{Pr}(\\overline{\\mathrm{Pr}(G)})$. But $G = \\neg\\overline{\\mathrm{Pr}(G)}$, so $\\mathrm{Pr}(\\neg\\overline{\\mathrm{Pr}(G)})$. Contradicts consistency.",
     "significance": "key",
-    "relatedConcepts": ["Gödel sentence", "self-referential sentence", "hG ▸ hPrG rewrite", "diagonal_lemma application"],
-    "prerequisites": ["diagonal_lemma", "GodelModel", "h_D1 axiom", "h_consistent axiom"]
+    "relatedConcepts": [
+      "G\u00f6del sentence",
+      "self-referential sentence",
+      "hG \u25b8 hPrG rewrite",
+      "diagonal_lemma application"
+    ],
+    "prerequisites": [
+      "diagonal_lemma",
+      "GodelModel",
+      "h_D1 axiom",
+      "h_consistent axiom"
+    ]
   },
   {
     "id": "ann-godel-strong-incompleteness",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-03",
-    "range": { "startLine": 172, "endLine": 199 },
+    "range": {
+      "startLine": 172,
+      "endLine": 199
+    },
     "type": "definition",
     "title": "StrongGodelModel: Double-Negation Gives Full Undecidability",
-    "content": "StrongGodelModel extends GodelModel with h_dne (double-negation elimination in provability: Pr(Neg(Neg φ)) → Pr φ), modeling classical systems. This extra axiom enables godel_strong_incompleteness: both G and Neg G are unprovable. The proof for 'Neg G unprovable' is the key new argument: if Pr(Neg G) = Pr(Neg(Neg(PrSent G))), then by DNE: Pr(PrSent G), then by reflection (h_reflection): Pr G — contradicting the earlier result that G is unprovable. The chain reflection → h_D1 (first incompleteness) → h_dne (Neg G unprovable) shows the five axioms are tight: each is used exactly once in the proof.",
+    "content": "StrongGodelModel extends GodelModel with h_dne (double-negation elimination in provability: Pr(Neg(Neg \u03c6)) \u2192 Pr \u03c6), modeling classical systems. This extra axiom enables godel_strong_incompleteness: both G and Neg G are unprovable. The proof for 'Neg G unprovable' is the key new argument: if Pr(Neg G) = Pr(Neg(Neg(PrSent G))), then by DNE: Pr(PrSent G), then by reflection (h_reflection): Pr G \u2014 contradicting the earlier result that G is unprovable. The chain reflection \u2192 h_D1 (first incompleteness) \u2192 h_dne (Neg G unprovable) shows the five axioms are tight: each is used exactly once in the proof.",
     "mathContext": "Assuming $\\mathrm{Pr}(\\neg G)$: since $G = \\neg\\overline{\\mathrm{Pr}(G)}$, we have $\\mathrm{Pr}(\\neg\\neg\\overline{\\mathrm{Pr}(G)})$. By DNE: $\\mathrm{Pr}(\\overline{\\mathrm{Pr}(G)})$. By reflection: $\\mathrm{Pr}(G)$. Contradicts $\\neg\\mathrm{Pr}(G)$. Hence both $G$ and $\\neg G$ are unprovable: the system is incomplete.",
     "significance": "supporting",
-    "relatedConcepts": ["ω-consistency", "double-negation elimination", "Rosser's improvement", "h_reflection"],
-    "prerequisites": ["godel_first_incompleteness", "StrongGodelModel.h_dne", "h_reflection axiom", "classical logic"]
+    "relatedConcepts": [
+      "\u03c9-consistency",
+      "double-negation elimination",
+      "Rosser's improvement",
+      "h_reflection"
+    ],
+    "prerequisites": [
+      "godel_first_incompleteness",
+      "StrongGodelModel.h_dne",
+      "h_reflection axiom",
+      "classical logic"
+    ]
   },
   {
     "id": "ann-godel-lawvere-chain",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-03",
-    "range": { "startLine": 231, "endLine": 243 },
-    "type": "theorem",
-    "title": "The Lawvere Chain: Cantor → Rice → Gödel",
-    "content": "lawvere_chain_godel crystallizes the key insight: the Gödel proof uses the same Lawvere mechanism as Cantor's theorem and Rice's theorem, but with a crucial distinction. In Cantor (Val = Prop, f = Not) and Rice (Val = Bool, f = Bool.not), the endomorphism f has NO fixed point — so point-surjectivity itself is impossible (the surjection cannot exist). In Gödel (Val = Form, f = Neg ∘ PrSent), the endomorphism f = negating provability DOES have a fixed point (the Gödel sentence G with G = Neg(PrSent G)) — but this fixed point is unprovable by consistency. Same categorical engine, different logical conclusion: impossibility vs. incompleteness.",
-    "mathContext": "Cantor/Rice: $f : \\mathrm{Val} \\to \\mathrm{Val}$ fixed-point-free $\\Rightarrow$ no point-surjective eval exists. Gödel: $f = \\neg \\mathrm{Pr}$ has a fixed point $G$ (by Lawvere, since eval IS point-surjective) but $G$ is unprovable (by consistency). The categorical skeleton is identical; the semantic consequence differs.",
+    "range": {
+      "startLine": 231,
+      "endLine": 243
+    },
+    "type": "insight",
+    "title": "The Lawvere Chain: Cantor \u2192 Rice \u2192 G\u00f6del",
+    "content": "lawvere_chain_godel crystallizes the key insight: the G\u00f6del proof uses the same Lawvere mechanism as Cantor's theorem and Rice's theorem, but with a crucial distinction. In Cantor (Val = Prop, f = Not) and Rice (Val = Bool, f = Bool.not), the endomorphism f has NO fixed point \u2014 so point-surjectivity itself is impossible (the surjection cannot exist). In G\u00f6del (Val = Form, f = Neg \u2218 PrSent), the endomorphism f = negating provability DOES have a fixed point (the G\u00f6del sentence G with G = Neg(PrSent G)) \u2014 but this fixed point is unprovable by consistency. Same categorical engine, different logical conclusion: impossibility vs. incompleteness.",
+    "mathContext": "Cantor/Rice: $f : \\mathrm{Val} \\to \\mathrm{Val}$ fixed-point-free $\\Rightarrow$ no point-surjective eval exists. G\u00f6del: $f = \\neg \\mathrm{Pr}$ has a fixed point $G$ (by Lawvere, since eval IS point-surjective) but $G$ is unprovable (by consistency). The categorical skeleton is identical; the semantic consequence differs.",
     "significance": "key",
-    "relatedConcepts": ["Lawvere fixed-point theorem", "Cantor's theorem", "Rice's theorem", "undecidability", "incompleteness vs. impossibility"],
-    "prerequisites": ["lawvere_fpt", "godel_first_incompleteness", "Rice theorem (OQ-02)", "fixed-point free endomorphisms"]
+    "relatedConcepts": [
+      "Lawvere fixed-point theorem",
+      "Cantor's theorem",
+      "Rice's theorem",
+      "undecidability",
+      "incompleteness vs. impossibility"
+    ],
+    "prerequisites": [
+      "lawvere_fpt",
+      "godel_first_incompleteness",
+      "Rice theorem (OQ-02)",
+      "fixed-point free endomorphisms"
+    ]
   }
 ]

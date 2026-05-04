@@ -44,8 +44,9 @@
     ],
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
-    "lineCount": 173,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "lineCount": 1110,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Pafnuty Chebyshev (1821–1894), working in St. Petersburg, was the first mathematician to prove **explicit** bounds on $\\pi(x)$, the count of primes up to $x$. In his 1852 paper *Mémoire sur les nombres premiers*, he established that the ratio $\\pi(x)\\log(x)/x$ is always between 0.921 and 1.106 — roughly, primes occur neither too densely nor too sparsely. His method was elementary yet powerful: he exploited properties of the central binomial coefficient $C(2n,n)$ and the Chebyshev $\\psi$-function (the log-weighted prime sum) to derive double-sided bounds without complex analysis.\n\nHalf a century later, Hadamard and de la Vallée Poussin (independently, 1896) proved the **Prime Number Theorem**: $\\pi(x) \\sim x/\\log x$, i.e., the ratio approaches 1. Their proofs required the Riemann zeta function and complex analysis. Chebyshev's elementary technique could not achieve ratio 1, but it established the correct order of magnitude — a feat that stood for 44 years.\n\nThis Lean proof file is the analytical capstone of a chain: ChebyshevBounds.lean (integer inequalities on $C(2n,n)$) → ChebyshevPNTBridge.lean (power bounds on $\\pi(2n)$) → here (real-valued lower bound). The weaker constants $\\log 2 \\approx 0.693$ and $2\\log 4 \\approx 2.773$ (vs. Chebyshev's original 0.921 and 1.106) reflect the use of the simpler $4^n \\leq (2n+1)C(2n,n)$ bound in place of Chebyshev's more refined multi-term product construction.",
@@ -146,7 +147,7 @@
       "Real"
     ],
     "namespace": "ChebyshevPNTBridgeOQ02",
-    "lineCount": 173,
+    "lineCount": 1110,
     "axiomCount": 0,
     "theoremCount": 5,
     "substantiveTheoremCount": 4,

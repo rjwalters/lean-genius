@@ -60,6 +60,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 979,
+    "theoremCount": 34,
     "assumptions": "2 axioms: erdos_268_solved (main interior result for all dimensions), harmonicPointSet_path_connected_large (path-connectedness for d ≥ 2, Kovač-Tao structural analysis). 0 sorries. Proved: shifted_summable (decomposition at n=0), harmonicPointSet_nonempty (powers-of-2 witness), harmonicPointSet_dense_somewhere (directly from interior axiom), coordinate_decreasing (tsum_lt_tsum; requires 0 ∉ A), first_coordinate_largest (from coordinate_decreasing), squares_convergent (bijection + p-series), powers_convergent (bijection + geometric series), harmonicPointSet_one_eq (X₁ = positive half-line via greedy construction), harmonicSubseriesSum_surjective_on_pos (every s > 0 is achievable)."
   },
   "overview": {

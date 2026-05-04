@@ -1,0 +1,273 @@
+[
+  {
+    "id": "ann-koe02-digraph-defs",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 49,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "DiGraph Structure: Finset-Based Directed Graphs with No Self-Loops",
+    "content": "`DiGraph V` is a simple structure: a `Finset (V×V)` of directed edges plus a proof of `noSelfLoops`. This minimalist encoding lets Lean's `Finset` machinery handle all cardinality arguments automatically. `outDegree G v` and `inDegree G v` are defined by `Finset.filter` on the first or second component — this makes the handshaking proof a clean algebraic manipulation. `IsBalanced` and `IsEulerianBalanced` are the core predicates: a vertex is balanced iff in-degree = out-degree, and a graph is Eulerian-balanced iff all vertices are balanced.",
+    "mathContext": "$\\text{DiGraph}(V) = (E \\subseteq V \\times V, \\text{no self-loops})$. $\\text{outDeg}(v) = |\\{e \\in E : e.1 = v\\}|$, $\\text{inDeg}(v) = |\\{e \\in E : e.2 = v\\}|$. $\\text{IsBalanced}(v) \\iff \\text{inDeg}(v) = \\text{outDeg}(v)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.filter: filter a finite set by a predicate",
+      "directed graph (digraph)",
+      "in-degree and out-degree",
+      "Eulerian balance condition"
+    ],
+    "prerequisites": [
+      "Finset: finite sets in Mathlib with decidable membership",
+      "structure in Lean 4: named fields with invariants",
+      "DecidableEq V: required for Finset.filter on vertex type"
+    ]
+  },
+  {
+    "id": "ann-koe02-handshaking",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Double-Counting via Finset.sum_comm: The Directed Handshaking Lemma",
+    "content": "Both handshaking lemmas (`sum_outDegree_eq_edgeCount` and `sum_inDegree_eq_edgeCount`) use the same two-step proof. First, rewrite the filter-card as a sum of indicator functions: `|{e : e.1=v}| = ∑_{e∈E} [e.1=v ? 1 : 0]`. Then swap the summation order with `Finset.sum_comm`: `∑_v ∑_{e∈E} [e.1=v] = ∑_{e∈E} ∑_v [e.1=v] = ∑_{e∈E} 1 = |E|`. The directed handshaking equality ∑ outDeg = ∑ inDeg then follows by transitivity through |E|.",
+    "mathContext": "$\\sum_{v} \\text{outDeg}(v) = \\sum_v |\\{e \\in E : e.1=v\\}| = \\sum_v \\sum_{e \\in E} [e.1=v] \\stackrel{\\text{sum\\_comm}}{=} \\sum_{e \\in E} 1 = |E| = \\sum_v \\text{inDeg}(v)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_comm: exchange order of double summation",
+      "indicator function technique for double-counting",
+      "directed handshaking lemma",
+      "Finset.card_eq_sum_ones"
+    ],
+    "prerequisites": [
+      "Finset.sum_comm: ∑_a ∑_b f(a,b) = ∑_b ∑_a f(a,b) for finite sums",
+      "Finset.card_eq_sum_ones: |S| = ∑_{x∈S} 1",
+      "Finset.sum_ite_eq': collapses a sum of indicators over a type"
+    ]
+  },
+  {
+    "id": "ann-koe02-eulerian-circuit-def",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 112,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "HasEulerianCircuit: Strengthened with ∃! Coverage for Bijectivity",
+    "content": "The key design choice for `HasEulerianCircuit` is the use of `∃!` (unique existence) for edge coverage rather than a simple `∃`. The definition requires: (1) walk length = |E|+1, (2) every edge has a *unique* position in the walk (∃!), (3) the walk is closed (head? = getLast?), and (4) every walk step uses a graph edge (hsteps). The uniqueness condition is essential: `ExistsUnique.unique` allows extracting that any two witnesses to the coverage condition must be equal, enabling the bijection-based proof of necessity. Without ∃!, necessity would fail because a multi-use edge could appear at two positions.",
+    "mathContext": "$\\text{HasEulerianCircuit}(G)$: $\\exists$ walk of length $|E|+1$, $\\forall e \\in E,\\ \\exists! i < |E| : \\text{walk}[i]=e.1 \\wedge \\text{walk}[i+1]=e.2$, and $\\text{walk}[0]=\\text{walk}[|E|]$ (closed).",
+    "significance": "key",
+    "relatedConcepts": [
+      "ExistsUnique (∃!) in Lean 4",
+      "ExistsUnique.unique: any two witnesses to ∃! are equal",
+      "bijection between edges and walk positions",
+      "closed walk condition"
+    ],
+    "prerequisites": [
+      "List.get: safe index into a list with an in-bounds proof",
+      "ExistsUnique: ∃! x, P x means exactly one x satisfies P",
+      "hsteps condition: walk steps must correspond to actual graph edges"
+    ]
+  },
+  {
+    "id": "ann-koe02-closed-walk-balance",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 128,
+      "endLine": 172
+    },
+    "type": "insight",
+    "title": "Circular Shift Bijection: Why Closed Walks Balance Source and Target Counts",
+    "content": "`closed_walk_balance` proves: for a closed walk (walk[0] = walk[n]), the number of positions where walk[i] = v equals the number where walk[i+1] = v. The proof uses Finset.card_bij with the bijection φ(i) = (i=0 ? n-1 : i-1). At i=0: walk[0]=v implies walk[n]=v (closed walk), so target-position n-1 satisfies walk[n] = v. At i>0: walk[i]=v directly gives target-position i-1. Surjectivity uses the inverse ψ(j) = (j=n-1 ? 0 : j+1). All obligations close with `omega` after `split_ifs`.",
+    "mathContext": "Closed walk $\\implies |\\{i < n : w_i = v\\}| = |\\{i < n : w_{i+1} = v\\}|$ for all $v$. Bijection: $\\varphi(i) = \\begin{cases} n-1 & i=0 \\\\ i-1 & i > 0 \\end{cases}$, inverse $\\psi(j) = \\begin{cases} 0 & j=n-1 \\\\ j+1 & j < n-1 \\end{cases}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_bij: cardinality equality via explicit bijection",
+      "circular shift bijection for closed sequences",
+      "split_ifs: case-split on if-then-else in Lean 4",
+      "omega: linear arithmetic"
+    ],
+    "prerequisites": [
+      "Finset.card_bij: requires maps_to, injectivity, surjectivity proofs",
+      "Finset.mem_filter: membership in filter ↔ membership + predicate",
+      "closed walk: walk.head? = walk.getLast? encoded as walk[0] = walk[n]"
+    ]
+  },
+  {
+    "id": "ann-koe02-walk-bijection",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 173,
+      "endLine": 266
+    },
+    "type": "concept",
+    "title": "Classical.choose + ExistsUnique: Walk Position to Edge Bijections",
+    "content": "`walk_source_eq_outDegree` proves that |{i < n : walk[i] = v}| = outDeg(v). The bijection maps each edge e ∈ {e∈G.edges : e.1=v} to its unique walk position via `Classical.choose (hcov e he.mem).exists`. Injectivity: if pos(e1) = pos(e2), both endpoints are determined by the walk, so e1 = e2 as pairs. Surjectivity: for position i with walk[i]=v, the edge (walk[i],walk[i+1]) is in G.edges by hsteps, and by `(hcov e he_mem).unique` its canonical position is exactly i. `walk_target_eq_inDegree` is structurally identical, matching on the second endpoint.",
+    "mathContext": "$|\\{i < n : w_i = v\\}| = \\text{outDeg}(v)$. Bijection: $e \\mapsto \\text{pos}(e) = \\text{Classical.choose}(\\exists! \\text{ clause for } e)$. Uniqueness: `(hcov e he_mem).unique hspec.1 hi_spec` gives `pos(e) = i` when $i$ also satisfies the coverage condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Classical.choose: nonconstructive choice from existence proof",
+      "ExistsUnique.unique: any two witnesses to ∃! are equal",
+      "Prod.ext: two pairs equal iff both components equal"
+    ],
+    "prerequisites": [
+      "Classical.choose_spec: the chosen element satisfies the property",
+      "ExistsUnique.unique: applied as (hcov e hmem).unique to equate walk positions",
+      "hsteps: ensures every consecutive walk pair is a graph edge"
+    ]
+  },
+  {
+    "id": "ann-koe02-necessity",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 268,
+      "endLine": 312
+    },
+    "type": "insight",
+    "title": "Necessity: Chain inDeg = target-count = source-count = outDeg",
+    "content": "`eulerian_circuit_implies_balanced` chains four equalities: inDeg(v) = |{i : walk[i+1]=v}| (walk_target_eq_inDegree) = |{i : walk[i]=v}| (closed_walk_balance) = outDeg(v) (walk_source_eq_outDegree). Setup normalizes hcov and hsteps from walk.length-1 to n = G.edges.card, and extracts walk[0]=walk[n] from the head?=getLast? form using List.getLast?_eq_getLast and List.getLast_eq_get. The chain closes with `omega` in three lines.",
+    "mathContext": "$\\text{inDeg}(v) \\stackrel{\\text{bij}}{=} |\\{i < n : w_{i+1}=v\\}| \\stackrel{\\text{closed}}{=} |\\{i < n : w_i=v\\}| \\stackrel{\\text{bij}}{=} \\text{outDeg}(v)$. Proof: three helper lemmas + omega.",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessity direction of Euler's theorem for directed graphs",
+      "List.getLast?_eq_getLast",
+      "omega: closes natural number arithmetic goals",
+      "chain-of-equalities proof pattern"
+    ],
+    "prerequisites": [
+      "closed_walk_balance: rotation bijection equates source and target counts",
+      "walk_source_eq_outDegree: source positions biject with outgoing edges",
+      "walk_target_eq_inDegree: target positions biject with incoming edges"
+    ]
+  },
+  {
+    "id": "ann-koe02-axioms-examples",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 314,
+      "endLine": 390
+    },
+    "type": "concept",
+    "title": "Hierholzer Axioms, Concrete Examples, and Integer Consequences",
+    "content": "`directed_eulerian_iff` (Hierholzer sufficiency) and `directed_euler_path_iff` (path characterization) are axiomatized — the sufficiency direction requires constructing an Eulerian walk, which demands graph connectivity infrastructure not yet in Mathlib. The concrete examples validate the theory: `directedTriangle` (3-cycle A→B→C→A on Fin 3) is Eulerian-balanced by `native_decide`; `directedPath` (0→1→2) satisfies the Eulerian path degree conditions by `native_decide` and `fin_cases`. The integer consequence `eulerian_balanced_sum_zero` lifts ∑ outDeg = ∑ inDeg to ℤ via `exact_mod_cast`.",
+    "mathContext": "Hierholzer (1873): balanced + weakly connected → Eulerian circuit exists (axiomatized). Directed path degree conditions: $\\text{outDeg}(s) = \\text{inDeg}(s)+1$, $\\text{inDeg}(t) = \\text{outDeg}(t)+1$, all others balanced. Integer form: $\\sum_v (\\text{outDeg}(v) : \\mathbb{Z}) = \\sum_v (\\text{inDeg}(v) : \\mathbb{Z})$ (flow conservation).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hierholzer's algorithm O(|E|) for constructing Eulerian circuits",
+      "BEST theorem: counting Eulerian circuits",
+      "de Bruijn sequences as Eulerian circuits in de Bruijn graphs",
+      "native_decide on Fin types"
+    ],
+    "prerequisites": [
+      "axiom in Lean 4: introduces a proposition without proof",
+      "native_decide: native compilation for decidable propositions on finite types",
+      "exact_mod_cast: coercion from ℕ to ℤ arithmetic"
+    ]
+  },
+  {
+    "id": "ann-koe02-open-walk-counting",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 419,
+      "endLine": 504
+    },
+    "type": "concept",
+    "title": "Open-Walk Counting: Target-Count Excess at the Last Vertex",
+    "content": "`open_walk_last_target_excess` proves that for a walk ending at $w$ (with $w \\neq \\text{walk}[0]$), the count of positions where $w$ is a target exceeds the count where $w$ is a source by exactly 1. Proof: isolate position $n-1$ from the target filter (it contributes one extra since $\\text{walk}[n]=w$), then build a bijection from the remaining target positions $T \\setminus \\{n-1\\}$ to source positions $S$ via $i \\mapsto i+1$. The symmetric lemma `open_walk_first_source_excess` handles the first vertex. Together these prove that an open walk creates an asymmetry of exactly ±1 at its endpoints — the counting foundation for the Eulerian path degree conditions.",
+    "mathContext": "Open walk $v_0 \\to \\cdots \\to v_n$ with $v_0 \\neq v_n = w$: $|\\{i < n : v_{i+1} = w\\}| = |\\{i < n : v_i = w\\}| + 1$. Bijection: $T \\setminus \\{n-1\\} \\to S$ via $i \\mapsto i+1$, where $n-1 \\in T$ is the extra target position. Surjection inverse: $j \\mapsto j-1$ (valid since $v_0 \\neq w$ implies $j \\geq 1$ for any $j \\in S$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_bij with explicit bijection",
+      "walk-position counting",
+      "Eulerian path degree imbalance",
+      "split_ifs + omega pattern"
+    ],
+    "prerequisites": [
+      "Finset.mem_filter",
+      "List.get with bounded index proofs",
+      "Finset.card_bij: requires maps_to, injective, surjective proofs"
+    ]
+  },
+  {
+    "id": "ann-koe02-maxtrail-closed",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 513,
+      "endLine": 728
+    },
+    "type": "insight",
+    "title": "maxTrail + maxTrail_closed: Greedy Trail is Closed in Balanced Graphs",
+    "content": "`maxTrail E v` is a noncomputable greedy function: at each step, if there is an outgoing edge from the current vertex, follow it (removing it from E); otherwise stop. Termination is by `|E|.card` since each step erases one edge. `maxTrail_closed` proves the key theorem: in a balanced digraph, the greedy trail always returns to its starting vertex. The proof is by contradiction: assume the trail ends at `last_v ≠ v`. By maximality (`maxTrailRem_last_no_out`), all outgoing edges of `last_v` were used, so `src_count(last_v) = outDeg(last_v)`. By `open_walk_last_target_excess`: `tgt_count(last_v) = src_count(last_v) + 1`. But `tgt_count ≤ inDeg(last_v) = outDeg(last_v)` (balance). Contradiction: `outDeg + 1 ≤ outDeg`.",
+    "mathContext": "maxTrail terminates: $|E| \\to |E|-1$ per step (erase one edge). maxTrail_closed: if last vertex $u \\neq v$, then $\\text{outDeg}(u) = \\text{src\\_count}(u)$ (all outgoing edges used) and $\\text{tgt\\_count}(u) = \\text{src\\_count}(u)+1$ (open-walk counting). But $\\text{tgt\\_count}(u) \\leq \\text{inDeg}(u) = \\text{outDeg}(u)$. So $\\text{outDeg}(u)+1 \\leq \\text{outDeg}(u)$ — contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "noncomputable def in Lean 4",
+      "termination_by Finset.card",
+      "greedy algorithm correctness",
+      "balance contradiction",
+      "maxTrailRem_last_no_out"
+    ],
+    "prerequisites": [
+      "Classical.choose: nonconstructive selection of outgoing edge",
+      "Finset.card_erase_lt_of_mem: |E\\ {e}| < |E|",
+      "open_walk_last_target_excess: counting imbalance at last vertex",
+      "IsEulerianBalanced: inDeg = outDeg at every vertex"
+    ]
+  },
+  {
+    "id": "ann-koe02-circuit-exists",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 737,
+      "endLine": 848
+    },
+    "type": "concept",
+    "title": "Circuit Existence, Balance Preservation, and Path Necessity",
+    "content": "`circuit_exists` applies `maxTrail_closed` directly: start from any vertex with an outgoing edge, run the greedy trail, which is closed by balance, giving a `DirectedCircuit` structure. `remove_circuit_balanced` (sorry'd) would prove that removing a circuit's edges preserves balance — the circuit passes through each vertex equally often as source and target (by `closed_walk_balance`), so both degrees decrease by the same amount. `euler_path_implies_degree_balance` (sorry'd) proves necessity for Eulerian paths: in an open walk from $s$ to $t$, applying `open_walk_first_source_excess` to $s$ and `open_walk_last_target_excess` to $t$ yields the asymmetric degree conditions; closed-walk balance handles interior vertices. These two sorries are the remaining obstacles to eliminating the `directed_eulerian_iff` axiom.",
+    "mathContext": "Circuit existence: $G$ balanced, $|E| \\geq 1 \\Rightarrow \\exists$ directed circuit in $G$. Remove circuit: for each $v$, circuit passes through $v$ equally as source ($s_v$ times) and target ($t_v = s_v$ times by closed-walk balance), so $\\text{outDeg}_{G'}(v) = \\text{outDeg}_G(v) - s_v = \\text{inDeg}_G(v) - s_v = \\text{inDeg}_{G'}(v)$. Path necessity: $s$ has $\\text{outDeg}(s) = \\text{inDeg}(s)+1$ (extra source at start); $t$ has $\\text{inDeg}(t) = \\text{outDeg}(t)+1$ (extra target at end).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "DirectedCircuit structure",
+      "Hierholzer's algorithm: splice circuits together",
+      "remove_circuit_balanced",
+      "euler_path_implies_degree_balance",
+      "open_walk_first/last_source/target_excess"
+    ],
+    "prerequisites": [
+      "maxTrail_closed: greedy trail is closed in balanced graph",
+      "DirectedCircuit: structure with head_eq_last, length_ge_2, steps_in_G",
+      "DiGraph.removeEdgeSet: G' = G minus edge set S",
+      "Finset.sdiff: set difference for Finset"
+    ]
+  },
+  {
+    "id": "ann-koe02-applications",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Applications: De Bruijn Sequences, BEST Theorem, Genome Assembly",
+    "content": "The directed Eulerian theorem has three celebrated applications that transform abstract degree-balance into practical algorithms.\n\n**De Bruijn sequences** (de Bruijn 1946, Good 1946): A de Bruijn sequence of order n over alphabet Σ is a cyclic sequence in which every n-letter word appears exactly once. Construction: build the de Bruijn graph B(n,Σ) with vertices = (n-1)-grams and edges = n-grams; each vertex has in-degree = out-degree = |Σ|, so the directed Eulerian theorem guarantees an Eulerian circuit, which spells the de Bruijn sequence. For binary sequences of order n, this gives a sequence of length 2ⁿ containing every binary n-bit string exactly once — used in Gray codes, card tricks, and robotic motion planning.\n\n**BEST theorem** (van Aardenne-Ehrenfest, de Bruijn 1951; Smith, Tutte 1941–48): For an Eulerian directed graph, the number of Eulerian circuits starting at vertex $w$ is $t_w(G) \\times \\prod_{v \\neq w} (\\text{outDeg}(v)-1)!$, where $t_w(G)$ counts arborescences rooted at $w$ (computable via the Matrix-Tree theorem as a determinant). The formula is the directed analogue of the BEST for undirected graphs and connects Eulerian enumeration to algebraic graph theory.\n\n**Genome assembly** (Pevzner, Tang, Waterman 2001): The EULER assembler fragments a genome into overlapping k-mers, builds the de Bruijn graph (vertices = (k-1)-mers, edges = k-mers), and reconstructs the genome as an Eulerian path. This transformed computational biology: next-generation sequencing assembly became an instance of the directed Eulerian path problem, tractable in O(|E|) via Hierholzer's algorithm.",
+    "mathContext": "**De Bruijn graph**: $B(n, \\Sigma)$ has vertex set $\\Sigma^{n-1}$, edge $(w_1\\ldots w_{n-1}) \\to (w_2\\ldots w_n)$ for each $w_n \\in \\Sigma$. Every vertex: $\\text{outDeg} = \\text{inDeg} = |\\Sigma|$. **BEST**: $\\#(\\text{Eulerian circuits at }w) = t_w(G) \\cdot \\prod_v (d^+(v)-1)!$. **Genome assembly**: $k$-mer graph $\\to$ Eulerian path $\\to$ genome sequence. Handshaking lemma implies balanced iff $\\sum_v \\text{outDeg}(v) = \\sum_v \\text{inDeg}(v) = |E|$ (flow conservation).",
+    "significance": "key",
+    "relatedConcepts": [
+      "de Bruijn graph",
+      "de Bruijn sequence",
+      "BEST theorem",
+      "Matrix-Tree theorem (Kirchhoff 1847)",
+      "Hierholzer's algorithm",
+      "k-mer genome assembly",
+      "Gray codes"
+    ],
+    "prerequisites": [
+      "directed Eulerian theorem (directed_eulerian_iff)",
+      "Hierholzer's algorithm O(|E|)",
+      "Matrix-Tree theorem for arborescence counting",
+      "combinatorics of cyclic sequences"
+    ]
+  }
+]

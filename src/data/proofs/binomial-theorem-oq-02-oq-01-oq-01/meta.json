@@ -27,11 +27,12 @@
       "Marginal distribution theorem: multinomial marginals are binomial",
       "Covariance result: Cov(Xi,Xj) = -n*pi*pj",
       "Feasibility analysis for Mathlib contribution (~200-300 lines)"
-    ]
+    ],
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "The multinomial distribution was introduced by Jakob Bernoulli in his posthumous Ars Conjectandi (1713) as a natural generalization of the binomial to multiple outcomes. Pierre-Simon Laplace further developed its theory in Théorie analytique des probabilités (1812), deriving the multinomial theorem and using it to analyze games of chance with more than two outcomes. In the 20th century, the multinomial became central to categorical data analysis, information theory (Shannon entropy for discrete distributions), and maximum likelihood estimation for categorical models. The multinomial theorem — the key algebraic identity $(p_1+\\cdots+p_k)^n = \\sum \\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i}$ — simultaneously serves as both the probability normalization proof and a combinatorial identity, making it the elegant bridge between combinatorics and probability theory in this formalization.",
-    "problemStatement": "Can the multinomial distribution be integrated into Mathlib's PMF framework?",
+    "problemStatement": "**Open Question (OQ-01 from binomial-theorem-oq-02-oq-01)**: Can the multinomial distribution be integrated into Mathlib's probability mass function (PMF) framework?\n\n**Answer**: Yes. Mathlib's `PMF α` type requires a function `α → ℝ≥0∞` together with a normalization proof `∑' a, f(a) = 1`. The construction proceeds in four steps: (1) define the support type `Composition α s n` (functions $k : \\alpha \\to \\mathbb{N}$ with $\\sum_{i \\in s} k_i = n$), (2) define the mass function `multinomialPMFVal k = Nat.multinomial(s, k.counts) · ∏ᵢ p(i)^k(i)` in `ℝ≥0∞`, (3) prove normalization from the multinomial theorem $(\\sum_i p_i)^n = 1$, and (4) use `PMF.mk` with these two pieces. The seven sorries correspond to well-understood proof obligations: the `Fintype` instance for `Composition`, the ENNReal lift of the multinomial theorem, and five statistical properties (support, marginals, mean, covariance, concrete example).",
     "text": "The multinomial distribution can be constructed as a Mathlib PMF by defining a Composition type, lifting the multinomial theorem to ENNReal, and proving normalization",
     "proofStrategy": "Define Composition as the support type, construct the PMF value function in ENNReal, prove normalization from the multinomial theorem, then derive properties (marginals, moments).",
     "keyInsights": [
@@ -39,7 +40,8 @@
       "The Composition type provides a clean interface between combinatorics (piAntidiag) and probability (PMF support), bundling the sum constraint and zero-outside conditions into a single Lean structure",
       "ENNReal arithmetic is the main technical hurdle: no subtraction, division requires careful handling of ∞, and lifting the real-valued multinomial theorem to ℝ≥0∞ requires coordinating Nat.cast, ENNReal.coe, and tsum identities",
       "The Fintype instance for Composition is the key prerequisite for PMF.mk — it's provable via a finiteness argument (each counts(i) ≤ n, finitely many indices) but requires ~50 lines of Finset manipulation using piAntidiag as the underlying set",
-      "Negative covariance Cov(Xᵢ,Xⱼ) = -npᵢpⱼ reflects the conservation law ∑Xᵢ = n: the multinomial is concentrated on a hyperplane, so components cannot fluctuate independently"
+      "Negative covariance Cov(Xᵢ,Xⱼ) = -npᵢpⱼ reflects the conservation law ∑Xᵢ = n: the multinomial is concentrated on a hyperplane, so components cannot fluctuate independently",
+      "**Maximum entropy interpretation**: The multinomial distribution maximizes Shannon entropy $H(X) = -\\sum_k P(X=k) \\log P(X=k)$ subject to the constraint that marginal probabilities match the $p_i$. This makes it the natural distribution for categorical data with no additional information — the multinomial is to categorical outcomes what the Gaussian is to real-valued measurements. The entropy $H(X) = \\log \\binom{n}{k_1,\\ldots,k_r}$ at the mode connects the distribution to combinatorial counting."
     ],
     "prerequisites": [
       "Multinomial distribution (parent)",
@@ -118,6 +120,21 @@
       "targetId": "binomial-theorem-oq-02-oq-01",
       "relationship": "answers-question",
       "description": "Answers OQ-01: 'Can the multinomial PMF be integrated into Mathlib's PMF framework?'"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "ancestor",
+      "description": "Root binomial theorem — the two-outcome special case; the multinomial generalizes this to k outcomes."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "parent",
+      "description": "Parent open question: multinomial distribution formalization; this file is a sub-answer to that broader question."
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Birthday problem — the concrete dice example (probability all faces distinct in 6 rolls) is a birthday-problem variant for uniform categorical distributions."
     }
   ],
   "conclusion": {

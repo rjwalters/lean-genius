@@ -8,16 +8,16 @@
     },
     "type": "concept",
     "title": "Module Header: Axiom Elimination Strategy and Scope",
-    "content": "The module docstring (lines 1-28) states the open question: can any of the 8 axioms in `Erdos1015Problem.lean` be proved from Mathlib? The answer is yes for 2 of the 8: `ramseyNumber` (replaced by `Nat.find`) and `ramsey_upper_bound` (proved via the Erdős-Szekeres binomial bound).\n\nThe 6 remaining axioms (listed in lines 15-23) require results not in Mathlib:\n- `moon_f3`, `moon_f3_n`: Moon (1966) proved that the number of spanning trees in $K_t$ equals a specific formula involving the problem's function $f(t)$. This requires deep graph enumeration not in Mathlib.\n- `erdos_ramsey_bound`: The connection between $f(t)$ and $R(t,t)$ requires Ramsey lower bounds (probabilistic method).\n- `burr_erdos_spencer` (BES 1975): the exact formula for $f(t)$ requires the complete BES argument.\n- `f_root_limit`, `f_not_linear`: asymptotic growth of $f(t)$.\n\nThe bridge lemma `ramsey_exists` (lines 41-44) is a `private` two-line proof that wraps the existence theorem from `RamseysTheorem.lean` into the form needed by `Nat.find`. It's private because it's purely auxiliary — the definitions and theorems that follow are the exportable content.",
-    "mathContext": "The parent proof `Erdos1015Problem.lean` axiomatizes 8 results as Lean `axiom` declarations. This file converts 2 from axioms to proved theorems, reducing the assumption count from 8 to 6. The Erdős-Szekeres bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ was proved in the 1935 paper 'A combinatorial problem in geometry' — one of the founding papers of Ramsey theory and extremal combinatorics.",
+    "content": "The module docstring (lines 1-28) states the open question: can any of the 8 axioms in `Erdos1015Problem.lean` be proved from Mathlib? The answer is yes for 2 of the 8: `ramseyNumber` (replaced by `Nat.find`) and `ramsey_upper_bound` (proved via the Erd\u0151s-Szekeres binomial bound).\n\nThe 6 remaining axioms (listed in lines 15-23) require results not in Mathlib:\n- `moon_f3`, `moon_f3_n`: Moon (1966) proved that the number of spanning trees in $K_t$ equals a specific formula involving the problem's function $f(t)$. This requires deep graph enumeration not in Mathlib.\n- `erdos_ramsey_bound`: The connection between $f(t)$ and $R(t,t)$ requires Ramsey lower bounds (probabilistic method).\n- `burr_erdos_spencer` (BES 1975): the exact formula for $f(t)$ requires the complete BES argument.\n- `f_root_limit`, `f_not_linear`: asymptotic growth of $f(t)$.\n\nThe bridge lemma `ramsey_exists` (lines 41-44) is a `private` two-line proof that wraps the existence theorem from `RamseysTheorem.lean` into the form needed by `Nat.find`. It's private because it's purely auxiliary \u2014 the definitions and theorems that follow are the exportable content.",
+    "mathContext": "The parent proof `Erdos1015Problem.lean` axiomatizes 8 results as Lean `axiom` declarations. This file converts 2 from axioms to proved theorems, reducing the assumption count from 8 to 6. The Erd\u0151s-Szekeres bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ was proved in the 1935 paper 'A combinatorial problem in geometry' \u2014 one of the founding papers of Ramsey theory and extremal combinatorics.",
     "significance": "supporting",
     "relatedConcepts": [
       "axiom elimination strategy",
-      "Erdős-Szekeres 1935",
+      "Erd\u0151s-Szekeres 1935",
       "Ramsey number R(r,s)",
       "Nat.find minimum witness",
       "Moon 1966 spanning trees",
-      "Burr-Erdős-Spencer 1975",
+      "Burr-Erd\u0151s-Spencer 1975",
       "probabilistic method Ramsey lower bounds",
       "axiom vs definition Lean 4"
     ],
@@ -36,8 +36,8 @@
     },
     "type": "definition",
     "title": "ramseyNumber: Axiom Replaced by Nat.find Definition",
-    "content": "`ramseyNumber r s` is defined as `Nat.find (ramsey_exists r s ...)` — the minimum $n$ such that `HasRamseyProperty (Fin n) r s`. The `if h : r ≥ 1 ∧ s ≥ 1` guard returns 0 for degenerate cases ($r = 0$ or $s = 0$). This replaces the axiom `axiom ramseyNumber : ℕ → ℕ → ℕ` from the parent proof, converting an assumed existence into a constructive `Nat.find` definition. The `noncomputable` tag is required because `Nat.find` requires a classical existence proof and is not kernel-computable.\n\n`ramseyNumber_spec` (lines 52-56) proves the Ramsey property holds at `ramseyNumber r s` using `Nat.find_spec`. `ramseyNumber_le_of` (lines 58-62) proves minimality using `Nat.find_min'` — if any $n$ has the Ramsey property, then `ramseyNumber ≤ n`. These two lemmas are the complete API: existence + minimality characterize the Ramsey number.\n\nSome known values: R(3,3) = 6 (smallest n where any 2-coloring of K_n has a monochromatic triangle), R(4,4) = 18, R(5,5) ∈ [43, 48] (still not known exactly).",
-    "mathContext": "The Ramsey number $R(r, s)$ = minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic $r$-clique (red) or $s$-clique (blue). `Nat.find (h : ∃ n, P n)` returns the least such $n$; `Nat.find_spec` gives $P(\\text{find})$; `Nat.find_min'` gives minimality. The exact Ramsey numbers are notoriously hard to compute — R(5,5) has been open for decades.",
+    "content": "`ramseyNumber r s` is defined as `Nat.find (ramsey_exists r s ...)` \u2014 the minimum $n$ such that `HasRamseyProperty (Fin n) r s`. The `if h : r \u2265 1 \u2227 s \u2265 1` guard returns 0 for degenerate cases ($r = 0$ or $s = 0$). This replaces the axiom `axiom ramseyNumber : \u2115 \u2192 \u2115 \u2192 \u2115` from the parent proof, converting an assumed existence into a constructive `Nat.find` definition. The `noncomputable` tag is required because `Nat.find` requires a classical existence proof and is not kernel-computable.\n\n`ramseyNumber_spec` (lines 52-56) proves the Ramsey property holds at `ramseyNumber r s` using `Nat.find_spec`. `ramseyNumber_le_of` (lines 58-62) proves minimality using `Nat.find_min'` \u2014 if any $n$ has the Ramsey property, then `ramseyNumber \u2264 n`. These two lemmas are the complete API: existence + minimality characterize the Ramsey number.\n\nSome known values: R(3,3) = 6 (smallest n where any 2-coloring of K_n has a monochromatic triangle), R(4,4) = 18, R(5,5) \u2208 [43, 48] (still not known exactly).",
+    "mathContext": "The Ramsey number $R(r, s)$ = minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic $r$-clique (red) or $s$-clique (blue). `Nat.find (h : \u2203 n, P n)` returns the least such $n$; `Nat.find_spec` gives $P(\\text{find})$; `Nat.find_min'` gives minimality. The exact Ramsey numbers are notoriously hard to compute \u2014 R(5,5) has been open for decades.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.find minimum witness",
@@ -62,9 +62,9 @@
       "startLine": 69,
       "endLine": 101
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "HasRamseyProperty_mono: Ramsey Property Propagates to Larger Graphs",
-    "content": "`HasRamseyProperty_mono` proves that if $n$ has the Ramsey property for $(r, s)$, so does any $m \\geq n$. The proof introduces a coloring `c` on `Fin m`, uses `exists_embedding_of_card_ge` to get an injection `embed : Fin n → Fin m`, restricts the coloring to `Fin n` via `embed`, applies the hypothesis to get a monochromatic clique, then maps the clique back via `embed`.\n\nThe `map embed` step uses `card_map` (an injection preserves cardinality of images) and injectivity of `embed` to transfer clique properties. The proof branches on red/blue via `rcases` with `Left` and `Right`, handling each case symmetrically. This monotonicity lemma is used immediately in `ramseyNumber_le_of` to justify that the minimum $n$ witnessing the Ramsey property is well-defined.",
+    "content": "`HasRamseyProperty_mono` proves that if $n$ has the Ramsey property for $(r, s)$, so does any $m \\geq n$. The proof introduces a coloring `c` on `Fin m`, uses `exists_embedding_of_card_ge` to get an injection `embed : Fin n \u2192 Fin m`, restricts the coloring to `Fin n` via `embed`, applies the hypothesis to get a monochromatic clique, then maps the clique back via `embed`.\n\nThe `map embed` step uses `card_map` (an injection preserves cardinality of images) and injectivity of `embed` to transfer clique properties. The proof branches on red/blue via `rcases` with `Left` and `Right`, handling each case symmetrically. This monotonicity lemma is used immediately in `ramseyNumber_le_of` to justify that the minimum $n$ witnessing the Ramsey property is well-defined.",
     "mathContext": "Monotonicity: $K_n \\hookrightarrow K_m$ for $n \\leq m$. Any monochromatic $r$-clique in $K_n$ is also a monochromatic $r$-clique in $K_m$. In Lean: `Finset.map embed` applies the injection; `card_map` gives $|S.map f| = |S|$ for injective $f$. The color restriction: `c'.color i j := c.color (embed i) (embed j)` pulls back colors along the embedding.",
     "significance": "key",
     "relatedConcepts": [
@@ -89,10 +89,10 @@
       "startLine": 110,
       "endLine": 216
     },
-    "type": "theorem",
-    "title": "HasRamseyProperty_of_add: The Erdős-Szekeres Pigeonhole Step",
+    "type": "insight",
+    "title": "HasRamseyProperty_of_add: The Erd\u0151s-Szekeres Pigeonhole Step",
     "content": "`HasRamseyProperty_of_add` proves the key inductive step: if $n_1$ has property $(r-1, s)$ and $n_2$ has property $(r, s-1)$, then $n_1 + n_2$ has property $(r, s)$. The proof formalizes the classic pigeonhole argument:\n\n1. Pick vertex $v = 0$ in $K_{n_1+n_2}$.\n2. Partition the remaining vertices into red neighborhood $N_\\text{red}$ and blue neighborhood $N_\\text{blue}$.\n3. By `neighborhood_card_sum`: $|N_\\text{red}| + |N_\\text{blue}| = n_1 + n_2 - 1$.\n4. By pigeonhole: either $|N_\\text{red}| \\geq n_1$ or $|N_\\text{blue}| \\geq n_2$.\n5. Case 1 ($|N_\\text{red}| \\geq n_1$): by monotonicity, $N_\\text{red}$ has an $(r-1)$-clique $C$. Extend by $v$: $C \\cup \\{v\\}$ is an $r$-clique.\n6. Case 2 ($|N_\\text{blue}| \\geq n_2$): analogously get $s$-clique.\n\n`extend_red_clique` and `extend_blue_clique` (from `RamseysTheorem.lean`) handle the extension step. The proof is 107 lines (lines 110-216), the longest in the file, reflecting the complexity of the case analysis.",
-    "mathContext": "Ramsey recurrence: $R(r, s) \\leq R(r-1, s) + R(r, s-1)$. Combined with Pascal's rule $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$ and base cases $R(1,s) = 1$, $R(r,1) = 1$, this gives $R(r,s) \\leq \\binom{r+s-2}{r-1}$ by induction. The 1935 Erdős-Szekeres paper uses this exact argument.",
+    "mathContext": "Ramsey recurrence: $R(r, s) \\leq R(r-1, s) + R(r, s-1)$. Combined with Pascal's rule $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$ and base cases $R(1,s) = 1$, $R(r,1) = 1$, this gives $R(r,s) \\leq \\binom{r+s-2}{r-1}$ by induction. The 1935 Erd\u0151s-Szekeres paper uses this exact argument.",
     "significance": "key",
     "relatedConcepts": [
       "ramseyBound_HasRamseyProperty",
@@ -100,9 +100,9 @@
       "extend_red_clique",
       "extend_blue_clique",
       "Pascal's rule binomial",
-      "Ramsey recurrence R(r,s)≤R(r-1,s)+R(r,s-1)",
+      "Ramsey recurrence R(r,s)\u2264R(r-1,s)+R(r,s-1)",
       "pigeonhole principle",
-      "Erdős-Szekeres 1935 paper"
+      "Erd\u0151s-Szekeres 1935 paper"
     ],
     "prerequisites": [
       "HasRamseyProperty from RamseysTheorem.lean",
@@ -117,10 +117,10 @@
       "startLine": 235,
       "endLine": 281
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ramseyBound_HasRamseyProperty: Inductive Proof of the Binomial Bound",
     "content": "`ramseyBound_HasRamseyProperty` proves `HasRamseyProperty (Fin (C(r+s-2, r-1))) r s` by strong induction on $r+s$. The proof matches on $(r, s)$ with four cases:\n- `(0, _)` and `(_, 0)`: vacuous (no coloring of $K_0$ exists), discharged by `omega`.\n- `(1, s+1)`: base case $C(s, 0) = 1$; use `ramsey_one_left`.\n- `(r+2, 1)`: base case $C(r+1, r+1) = 1$; use `ramsey_one_right`.\n- `(r+2, s+2)`: inductive step. Apply `ramseyBound_pascal` to rewrite the goal from `C(r+s+2, r+1)` to the sum `C(r+s+1, r) + C(r+s+1, r+1)`. Then apply `HasRamseyProperty_of_add` with the two inductive hypotheses for $(r+1, s+2)$ and $(r+2, s+1)$, both of which have strictly smaller $r+s$.\n\nThe `generalizing r s` annotation in `induction' hk : r + s using Nat.strong_induction_on with k ih generalizing r s` is critical: it allows the induction hypothesis to specialize to any $(r', s')$ with $r' + s' < k$, not just those with the same $r$ and $s$ structure.",
-    "mathContext": "Strong induction on $r+s$: both recursive calls have smaller $r+s$. `Nat.strong_induction_on` in Lean 4 requires the `generalizing` annotation to allow specialization. The pattern-matching `r+2, s+2` avoids natural number subtraction underflow ($r-1$ is undefined in ℕ for $r = 0$).",
+    "mathContext": "Strong induction on $r+s$: both recursive calls have smaller $r+s$. `Nat.strong_induction_on` in Lean 4 requires the `generalizing` annotation to allow specialization. The pattern-matching `r+2, s+2` avoids natural number subtraction underflow ($r-1$ is undefined in \u2115 for $r = 0$).",
     "significance": "key",
     "relatedConcepts": [
       "ramseyBound binomial coefficient",
@@ -144,10 +144,10 @@
       "startLine": 298,
       "endLine": 313
     },
-    "type": "theorem",
-    "title": "ramsey_upper_bound: R(t,t) ≤ 4^t via Binomial Bound",
-    "content": "`ramsey_upper_bound` proves `ramseyNumber t t ≤ 4^t` for `t ≥ 1` by chaining: `ramseyNumber t t ≤ ramseyBound t t` (from `ramseyNumber_le_ramseyBound`) and `ramseyBound t t ≤ 4^t` (from `ramseyBound_le_four_pow`). The `ramseyBound_le_four_pow` proof uses `choose_le_two_pow : C(n,k) ≤ 2^n` (proved via `Finset.single_le_sum` and `Nat.sum_range_choose`) to give `C(2t-2, t-1) ≤ 2^(2t-2) = 4^(t-1) ≤ 4^t`.\n\n`ramsey_upper_bound_zero` (line 315-317) handles $t = 0$: `ramseyNumber 0 0 = 0 ≤ 1 = 4^0`. `ramsey_upper_bound_all` (lines 319-323) combines both cases into a universal statement for all $t$.\n\nThe $4^t$ bound is suboptimal. The true asymptotic is $R(t,t) \\leq (1+o(1)) \\binom{2t-2}{t-1} / \\sqrt{t}$ (Spencer 1977, improved). The best known lower bound is $R(t,t) > (\\sqrt{2}/e)^t \\cdot t^{1/2}$ (Erdős 1947 probabilistic argument — the paper that launched the probabilistic method in combinatorics).",
-    "mathContext": "The chain: $R(t,t) \\leq \\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$. Central binomial coefficient $\\binom{2t-2}{t-1} \\sim \\frac{4^{t-1}}{\\sqrt{\\pi(t-1)}}$ (Stirling). The $4^t$ bound loses the $1/\\sqrt{t}$ factor. Erdős (1947): $R(t,t) > 2^{t/2}$ via probabilistic argument — the gap between $4^t$ and $2^{t/2}$ remains unresolved.",
+    "type": "insight",
+    "title": "ramsey_upper_bound: R(t,t) \u2264 4^t via Binomial Bound",
+    "content": "`ramsey_upper_bound` proves `ramseyNumber t t \u2264 4^t` for `t \u2265 1` by chaining: `ramseyNumber t t \u2264 ramseyBound t t` (from `ramseyNumber_le_ramseyBound`) and `ramseyBound t t \u2264 4^t` (from `ramseyBound_le_four_pow`). The `ramseyBound_le_four_pow` proof uses `choose_le_two_pow : C(n,k) \u2264 2^n` (proved via `Finset.single_le_sum` and `Nat.sum_range_choose`) to give `C(2t-2, t-1) \u2264 2^(2t-2) = 4^(t-1) \u2264 4^t`.\n\n`ramsey_upper_bound_zero` (line 315-317) handles $t = 0$: `ramseyNumber 0 0 = 0 \u2264 1 = 4^0`. `ramsey_upper_bound_all` (lines 319-323) combines both cases into a universal statement for all $t$.\n\nThe $4^t$ bound is suboptimal. The true asymptotic is $R(t,t) \\leq (1+o(1)) \\binom{2t-2}{t-1} / \\sqrt{t}$ (Spencer 1977, improved). The best known lower bound is $R(t,t) > (\\sqrt{2}/e)^t \\cdot t^{1/2}$ (Erd\u0151s 1947 probabilistic argument \u2014 the paper that launched the probabilistic method in combinatorics).",
+    "mathContext": "The chain: $R(t,t) \\leq \\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$. Central binomial coefficient $\\binom{2t-2}{t-1} \\sim \\frac{4^{t-1}}{\\sqrt{\\pi(t-1)}}$ (Stirling). The $4^t$ bound loses the $1/\\sqrt{t}$ factor. Erd\u0151s (1947): $R(t,t) > 2^{t/2}$ via probabilistic argument \u2014 the gap between $4^t$ and $2^{t/2}$ remains unresolved.",
     "significance": "key",
     "relatedConcepts": [
       "ramseyBound_le_four_pow",
@@ -156,13 +156,13 @@
       "Nat.sum_range_choose",
       "axiom elimination ramsey_upper_bound",
       "Spencer bound 1977",
-      "Erdős probabilistic lower bound 1947",
+      "Erd\u0151s probabilistic lower bound 1947",
       "central binomial coefficient asymptotics"
     ],
     "prerequisites": [
       "ramseyNumber_le_ramseyBound (line 279)",
       "ramseyBound_le_four_pow (line 298)",
-      "Nat.sum_range_choose : ∑ i in range(n+1), C(n,i) = 2^n"
+      "Nat.sum_range_choose : \u2211 i in range(n+1), C(n,i) = 2^n"
     ]
   },
   {
@@ -173,23 +173,23 @@
       "endLine": 353
     },
     "type": "concept",
-    "title": "Axiom Elimination Summary: 8 → 6 Axioms and Why 6 Remain",
-    "content": "Lines 325-353 contain the §5 summary section: a comment table listing all 8 original axioms with their elimination status, followed by `#check` declarations confirming the key theorems.\n\n**Eliminated (2)**:\n1. `ramseyNumber`: Converted from `axiom ramseyNumber : ℕ → ℕ → ℕ` to `noncomputable def` via `Nat.find` (§1). This makes the function mathematically well-defined — it returns the true minimum.\n2. `ramsey_upper_bound`: Proved from scratch via the Erdős-Szekeres binomial bound (§3-§4). This gives `R(t,t) ≤ 4^t` without any axiomatic assumption.\n\n**Remaining (6)** — why each is hard:\n- `moon_f3`, `moon_f3_n` (Moon 1966): These state properties of the problem's function $f(t)$ in terms of specific graph structures. Moon's 1966 result uses a detailed analysis of spanning tree counts in complete graphs, not available in Mathlib.\n- `erdos_ramsey_bound`: Connects $f(t)$ to $R(t,t)$ via Ramsey lower bounds (probabilistic method). The probabilistic method is not formalized in Mathlib.\n- `burr_erdos_spencer` (BES 1975): The complete Burr-Erdős-Spencer argument gives the exact formula for $f(t)$. This is a 10+ page research paper argument.\n- `f_root_limit`, `f_not_linear`: Asymptotic analysis requiring Ramsey lower bounds and analysis of $f(t)^{1/t}$ as $t \\to \\infty$.\n\nThe `#check` lines (348-351) serve as documentation: they confirm the types of the key theorems compile correctly and provide anchor points for readers navigating the file.",
-    "mathContext": "Axiom count reduction: 8 `axiom` declarations → 6 remaining. The two eliminated axioms were the 'easiest': `ramseyNumber` was always a definition (its axiom status was a Lean formalization choice, not a mathematical necessity), and `ramsey_upper_bound` (R(t,t) ≤ 4^t) is a standard 1935 result with a clean combinatorial proof. The remaining 6 require either the full BES theorem or probabilistic method arguments.",
+    "title": "Axiom Elimination Summary: 8 \u2192 6 Axioms and Why 6 Remain",
+    "content": "Lines 325-353 contain the \u00a75 summary section: a comment table listing all 8 original axioms with their elimination status, followed by `#check` declarations confirming the key theorems.\n\n**Eliminated (2)**:\n1. `ramseyNumber`: Converted from `axiom ramseyNumber : \u2115 \u2192 \u2115 \u2192 \u2115` to `noncomputable def` via `Nat.find` (\u00a71). This makes the function mathematically well-defined \u2014 it returns the true minimum.\n2. `ramsey_upper_bound`: Proved from scratch via the Erd\u0151s-Szekeres binomial bound (\u00a73-\u00a74). This gives `R(t,t) \u2264 4^t` without any axiomatic assumption.\n\n**Remaining (6)** \u2014 why each is hard:\n- `moon_f3`, `moon_f3_n` (Moon 1966): These state properties of the problem's function $f(t)$ in terms of specific graph structures. Moon's 1966 result uses a detailed analysis of spanning tree counts in complete graphs, not available in Mathlib.\n- `erdos_ramsey_bound`: Connects $f(t)$ to $R(t,t)$ via Ramsey lower bounds (probabilistic method). The probabilistic method is not formalized in Mathlib.\n- `burr_erdos_spencer` (BES 1975): The complete Burr-Erd\u0151s-Spencer argument gives the exact formula for $f(t)$. This is a 10+ page research paper argument.\n- `f_root_limit`, `f_not_linear`: Asymptotic analysis requiring Ramsey lower bounds and analysis of $f(t)^{1/t}$ as $t \\to \\infty$.\n\nThe `#check` lines (348-351) serve as documentation: they confirm the types of the key theorems compile correctly and provide anchor points for readers navigating the file.",
+    "mathContext": "Axiom count reduction: 8 `axiom` declarations \u2192 6 remaining. The two eliminated axioms were the 'easiest': `ramseyNumber` was always a definition (its axiom status was a Lean formalization choice, not a mathematical necessity), and `ramsey_upper_bound` (R(t,t) \u2264 4^t) is a standard 1935 result with a clean combinatorial proof. The remaining 6 require either the full BES theorem or probabilistic method arguments.",
     "significance": "supporting",
     "relatedConcepts": [
-      "axiom count reduction 8→6",
+      "axiom count reduction 8\u21926",
       "Moon 1966 spanning trees",
-      "Burr-Erdős-Spencer theorem 1975",
+      "Burr-Erd\u0151s-Spencer theorem 1975",
       "probabilistic method combinatorics",
-      "f(t) Erdős 1015 problem",
+      "f(t) Erd\u0151s 1015 problem",
       "Ramsey lower bounds",
       "#check Lean documentation",
-      "open problems Erdős #1015"
+      "open problems Erd\u0151s #1015"
     ],
     "prerequisites": [
-      "ramseyNumber (§1)",
-      "ramsey_upper_bound (§4)",
+      "ramseyNumber (\u00a71)",
+      "ramsey_upper_bound (\u00a74)",
       "remaining axioms in Erdos1015Problem.lean"
     ]
   }

@@ -1,0 +1,162 @@
+[
+  {
+    "mathContext": "The Sturm sequence is built via the Euclidean algorithm for polynomials: p₀ = p, p₁ = p', pₖ₊₁ = -(pₖ₋₁ % pₖ). The fuel parameter n bounds iterations since each step strictly reduces the degree of the leading term.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Euclidean algorithm for polynomials",
+      "polynomial GCD",
+      "EuclideanDomain",
+      "fuel-based recursion"
+    ],
+    "prerequisites": [
+      "Polynomial.instEuclideanDomain for ℝ[X]",
+      "Polynomial.mod and div operations",
+      "Well-founded recursion in Lean 4"
+    ],
+    "content": "sturmSeqAux uses fuel-based structural recursion on n : ℕ. At each step, if q = 0 we stop (returning [p]); otherwise we continue with next pair (q, -(p % q)). The sign flip in -(p % q) is crucial: it ensures the Sturm sequence has the 'opposite sign at interior roots' property that makes the exact count theorem work.\n\nThe fuel bound p.natDegree + 1 suffices because each call reduces the degree: deg(p % q) < deg(q) ≤ deg(p), so after at most deg(p) + 1 steps the remainder is 0.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 127
+    },
+    "lineRange": [
+      107,
+      127
+    ],
+    "type": "insight"
+  },
+  {
+    "mathContext": "The Euclidean division identity states: b · (a/b) + (a%b) = a. Evaluating both sides at a root r of b (where b(r) = 0) gives: 0 + (a%b)(r) = a(r), so (a%b)(r) = a(r).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Euclidean division",
+      "polynomial evaluation",
+      "EuclideanDomain.div_add_mod",
+      "eval_add",
+      "eval_mul"
+    ],
+    "prerequisites": [
+      "EuclideanDomain.div_add_mod in Mathlib",
+      "Polynomial.eval distributes over ring operations"
+    ],
+    "content": "mod_eval_at_root is the algebraic heart of Sturm's theorem. The proof uses EuclideanDomain.div_add_mod to get the identity q · (p/q) + (p%q) = p, then evaluates both sides at r where q(r) = 0. The key step is congr_arg (Polynomial.eval r) applied to the division identity.\n\nThis lemma immediately implies the interior sign property: at any root r of an interior Sturm term pₖ, the next term satisfies pₖ₊₁(r) = -(pₖ₋₁ % pₖ)(r) = -pₖ₋₁(r). Hence pₖ₋₁ and pₖ₊₁ always have opposite signs at roots of pₖ.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 217,
+      "endLine": 241
+    },
+    "lineRange": [
+      217,
+      241
+    ],
+    "type": "insight"
+  },
+  {
+    "mathContext": "Sturm's exact count theorem for squarefree polynomials: #{distinct real roots in (a,b]} = σ_p(a) - σ_p(b), where σ_p(x) is the number of sign changes in [p(x), p'(x), -(p%p')(x), ...].",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Sturm's theorem",
+      "real root counting",
+      "squarefree polynomials",
+      "sign variation",
+      "algorithmic real algebraic geometry"
+    ],
+    "prerequisites": [
+      "The Sturm sequence construction",
+      "The interior sign property (mod_eval_at_root)",
+      "Squarefree condition (p' nonzero at real roots of p)",
+      "Continuity of polynomial evaluation"
+    ],
+    "content": "sturm_exact_count_axiom is the main result, currently axiomatized. The full proof requires showing σ_p(x) is piecewise constant and decreases by exactly 1 at each real root of p:\n\n1. Between roots: σ_p(x) is constant since each pₖ(x) is nonzero and varies continuously.\n2. At a root r of p: p changes sign while p'(r) ≠ 0 (squarefree condition). The sign change count from (p(x), p'(x)) drops by 1 as x crosses r.\n3. At a root r of pₖ (k ≥ 1): The triple (pₖ₋₁(r), 0, pₖ₊₁(r)) with pₖ₋₁(r) = -pₖ₊₁(r) means the sign changes from positions (k-1,k) and (k,k+1) cancel — net change 0.\n\nTaken together, σ_p decreases by exactly #{roots in (a,b]}.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 254,
+      "endLine": 290
+    },
+    "lineRange": [
+      254,
+      290
+    ],
+    "type": "insight"
+  },
+  {
+    "mathContext": "Root isolation is the problem of finding a finite set of disjoint intervals, each containing exactly one real root. Sturm's theorem makes this algorithmic: bisect until Sturm count difference = 1 in each sub-interval.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "root isolation",
+      "interval bisection",
+      "certified numerics",
+      "real algebraic geometry algorithms"
+    ],
+    "prerequisites": [
+      "sturm_exact_count",
+      "sturm_no_roots",
+      "sturm_unique_root"
+    ],
+    "content": "The three corollaries sturm_no_roots, sturm_unique_root, and sturm_two_roots formalize the base cases of the root isolation algorithm:\n- If σ_p(a) = σ_p(b): no roots exist in (a,b], skip this interval.\n- If σ_p(a) = σ_p(b) + 1: exactly one root exists in (a,b], this interval is isolated.\n- If σ_p(a) = σ_p(b) + 2: exactly two roots exist; bisect further.\n\nThe algorithm terminates because each bisection halves the interval width, and the root count in each sub-interval is bounded by the total count.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 292,
+      "endLine": 358
+    },
+    "lineRange": [
+      292,
+      358
+    ],
+    "type": "insight"
+  },
+  {
+    "mathContext": "For the linear polynomial p(x) = x - c, the derivative is 1 (a constant), and the Sturm sequence is [x-c, 1]. At x < c: the values are (negative, positive) → 1 sign change. At x > c: the values are (positive, positive) → 0 sign changes. The theorem gives 1 - 0 = 1 root in (x,c] (when x < c), confirming the single root at c.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linear polynomial",
+      "Sturm sequence base case",
+      "sign change counting",
+      "polynomial evaluation"
+    ],
+    "prerequisites": [
+      "derivative_sub",
+      "derivative_X",
+      "EuclideanDomain.mod_one",
+      "signVariations definition"
+    ],
+    "content": "The linear example serves as a proof-of-concept verification: for p(x) = x - c, the Sturm sequence [x-c, 1] gives σ_p(x) = 1 for x < c and σ_p(x) = 0 for x > c. The difference σ_p(a) - σ_p(b) = 1 whenever a < c ≤ b, confirming exactly one root in (a,b] = 1.\n\nNote the special case p % 1 = 0 for any polynomial p (any polynomial is divisible by 1), so the Sturm sequence terminates after 2 elements for linear p.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 360,
+      "endLine": 395
+    },
+    "lineRange": [
+      360,
+      395
+    ],
+    "type": "insight"
+  },
+  {
+    "mathContext": "A polynomial p is squarefree iff for all a, a² ∣ p implies a is a unit. For polynomials over ℝ (a field), this is equivalent to gcd(p, p') = 1 (constant). Geometrically: p has no repeated roots.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squarefree polynomials",
+      "polynomial GCD",
+      "multiple roots",
+      "Polynomial.Squarefree",
+      "Polynomial.separable"
+    ],
+    "prerequisites": [
+      "Squarefree from Mathlib.RingTheory.Squarefree.Basic",
+      "Polynomial.natDegree_X_sub_C",
+      "Polynomial.isUnit_iff"
+    ],
+    "content": "squarefree_no_common_roots proves that a squarefree polynomial p shares no real roots with its derivative p'. This is the key condition for Sturm's theorem: it ensures that as x crosses a real root r of p, the derivative p'(r) ≠ 0, so the sign at p' doesn't flip simultaneously with p — allowing the sign count to decrease by exactly 1.\n\nThe proof uses the contrapositive: if p(r) = 0 and p'(r) = 0, then (X-r)² ∣ p, but p squarefree means (X-r) is a unit — a contradiction since X-r has degree 1.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 397,
+      "endLine": 425
+    },
+    "lineRange": [
+      397,
+      425
+    ],
+    "type": "insight"
+  }
+]

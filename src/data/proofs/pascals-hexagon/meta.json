@@ -56,7 +56,8 @@
     "axiomCount": 1,
     "lineCount": 1278,
     "assumptions": "1 axiom (conic_implies_pascal_constraint). 1 sorry in proof_sketch_conic_implies_pascal (pending Sylvester's law for the standard conic reduction).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 25
   },
   "overview": {
     "historicalContext": "Blaise Pascal discovered this theorem in 1639, at age 16, calling it the *Hexagrammum Mysticum* (Mystic Hexagram). His original proof, presented to the Académie Parisienne, was lost, but its statement was recorded by Leibniz, who found it among Pascal's papers. Pascal claimed to derive over 400 corollaries from this single result.\n\nThe theorem became a cornerstone of projective geometry, which was systematically developed by Jean-Victor Poncelet in his 1822 *Traité des propriétés projectives des figures*. Charles-Julien Brianchon discovered the dual theorem in 1806 as a student at the École Polytechnique: if a hexagon is circumscribed about a conic, the three main diagonals are concurrent.\n\nThe configuration of 60 Pascal lines arising from permutations of six points on a conic — the *Hexagrammum Mysticum* configuration — attracted major attention from Jakob Steiner (1828), Thomas Kirkman (1849), Arthur Cayley (1849), and George Salmon (1852), who discovered its remarkable incidence properties: 20 Steiner points, 60 Kirkman points, and 15 Plücker lines.\n\nPascal's theorem appears as #28 in Freek Wiedijk's list of 100 greatest theorems. The formalization here uses projective coordinates in $\\mathbb{R}^3$ with the cross product serving double duty for line-through and line-intersection, and the key algebraic identity axiomatized via the Cayley-Bacharach / Bézout argument.",
@@ -227,7 +228,7 @@
     "namespace": null,
     "lineCount": 1278,
     "axiomCount": 1,
-    "theoremCount": 46,
+    "theoremCount": 25,
     "definitionCount": 27,
     "path": "Proofs/PascalsHexagon.lean",
     "sorries": 1

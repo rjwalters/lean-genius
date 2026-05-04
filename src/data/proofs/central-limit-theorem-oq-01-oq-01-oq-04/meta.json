@@ -1,0 +1,146 @@
+{
+  "id": "central-limit-theorem-oq-01-oq-01-oq-04",
+  "title": "Multivariate Operator-Stable Distributions and Matrix Domain of Attraction",
+  "slug": "central-limit-theorem-oq-01-oq-01-oq-04",
+  "description": "Extends the Gnedenko-Kolmogorov domain of attraction theory from the univariate to the multivariate setting. Instead of scalar normalizations n^{1/α}, we use matrix normalizations A_n = n^{-E} where E is the exponent matrix. The core theorem (Meerschaert-Scheffler 2001) characterizes which multivariate distributions converge to operator-stable laws. The Gaussian N(0,Σ) is proved to be self-similar under this framework, generalizing the classical multivariate CLT.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
+    "tags": [
+      "probability",
+      "stable-distributions",
+      "multivariate",
+      "operator-stable",
+      "matrix-regular-variation",
+      "central-limit-theorem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 2,
+    "assumptions": "eigenvalue_ge_half (Hudson-Mason 1982): Re(eigenvalues of exponent matrix E) ≥ 1/2; meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation",
+    "lineCount": 357,
+    "theoremCount": 15,
+    "originalContributions": [
+      "gaussian_operator_stable: N(0,Σ) is operator-stable — (φ_Σ(ξ/√n))^n = φ_Σ(ξ) proved via exp_neg_div_pow",
+      "quadForm_scale_inv_sqrt: quadratic form scaling quadForm(ξ/√n) = (1/n)·quadForm(ξ)",
+      "exp_neg_div_pow: core identity (exp(-x/n))^n = exp(-x) in ℂ",
+      "gaussian_has_scalar_exponent: Gaussian has scalar exponent c = 1/2 with zero drift",
+      "gaussian_is_operator_stable: existential form of Gaussian operator-stability",
+      "alpha_stable_is_operator_stable: 1D α-stable law embeds as operator-stable in ℝ^1",
+      "operator_stable_linear_image: closure under nonsingular linear maps",
+      "gaussian_in_own_doa: Gaussian is in its own operator domain of attraction",
+      "scalar_exponent_ge_half: corollary of eigenvalue bound — scalar exponent c ≥ 1/2"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The classical Central Limit Theorem states that normalized sums of i.i.d. finite-variance random variables converge to a Gaussian. Gnedenko and Kolmogorov (1954) characterized the full domain of attraction using slowly varying functions and tail regularity — this is formalized in the parent entry (OQ-01-OQ-01). The next natural generalization is to random vectors in ℝ^d: instead of scalar normalization by n^{1/α}, we normalize by a d×d matrix A_n. The limit laws, called **operator-stable distributions**, were classified by Hudson and Mason (1982). The complete domain of attraction theory for operator-stable laws was established by Meerschaert and Scheffler (1993, 2001). This entry formalizes the key definitions and axiomatizes the main theorems, with the Gaussian N(0,Σ) fully proved as the principal example.",
+    "problemStatement": "Can the scalar Gnedenko-Kolmogorov domain of attraction theory be generalized to multivariate distributions in ℝ^d, where scalar normalization n^{1/α} is replaced by matrix normalization A_n = n^{-E} for an exponent matrix E?",
+    "text": "Yes. A probability distribution μ on ℝ^d is operator-stable if there exist invertible matrices {A_n} and drift vectors {b_n} such that A_n(X₁+...+Xₙ)−b_n =^d X for i.i.d. copies X_i ~ μ. Equivalently (via characteristic functions): φ(Aₙᵀ ξ)^n = φ(ξ)·exp(i⟨b_n,ξ⟩). The canonical example is the d-dimensional Gaussian N(0,Σ), which is operator-stable with A_n = n^{-1/2}·I and b_n = 0. The exponent matrix E (where A_n = n^{-E}) must have all eigenvalues with real part ≥ 1/2, generalizing the constraint α ≤ 2 from the scalar case.",
+    "proofStrategy": "Two main results are proved:\n\n(1) **Gaussian operator-stability** (proved): The key computation is quadForm(ξ/√n) = (1/n)·quadForm(ξ), established by pointwise manipulation of the double sum using √n·√n = n. Combined with the complex identity (exp(-x/n))^n = exp(-x), this directly gives (φ_Σ(ξ/√n))^n = φ_Σ(ξ).\n\n(2) **Meerschaert-Scheffler theorem** (axiomatized): A distribution is in the operator domain of attraction of some operator-stable law iff its tail measure is matrix regularly varying. This requires the full machinery of operator-valued regular variation and is beyond the scope of a single Lean file.",
+    "keyInsights": [
+      "The quadratic form ξᵀΣξ scales as (c·ξ)ᵀΣ(c·ξ) = c²·ξᵀΣξ — the scaling by 1/√n introduces a factor 1/n, which cancels exactly with the n-th power in the characteristic function",
+      "The complex identity (exp(-x/n))^n = exp(-x) is the algebraic heart of Gaussian self-similarity; it follows from exp_nat_mul and field_simp in Lean 4",
+      "The eigenvalue constraint Re(λ(E)) ≥ 1/2 is the multivariate analog of α ≤ 2: for scalar E = c·I, this reads c ≥ 1/2, i.e., α = 1/c ≤ 2",
+      "Matrix regular variation of the tail is the correct multivariate analog of Karamata regular variation; the matrix E plays the role of the stability index α",
+      "Operator-stable laws are closed under nonsingular linear transformations: if μ is operator-stable with {A_n}, then the pushforward (B)_*μ is operator-stable with {A_n·B}"
+    ],
+    "prerequisites": [
+      "Characteristic functions: φ_μ(ξ) = E[exp(i⟨ξ, X⟩)] for X ~ μ",
+      "Gaussian characteristic function: φ_Σ(ξ) = exp(-ξᵀΣξ/2)",
+      "α-stable distributions and the parent Gnedenko-Kolmogorov framework (OQ-01-OQ-01)",
+      "Matrix exponential: exp(A) for d×d matrices",
+      "Operator-stable laws: stable distributions under matrix normalization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Multivariate Setup and Definitions",
+      "startLine": 27,
+      "endLine": 80,
+      "summary": "Defines quadForm (quadratic form ξᵀΣξ), vecInner (dot product), gaussCharFun (Gaussian characteristic function), IsOperatorStable (existence of matrix normalizations), HasScalarExponent (scalar n^{-c}·I case), and InOperatorDomainOfAttraction."
+    },
+    {
+      "id": "quadform",
+      "title": "Quadratic Form Lemmas",
+      "startLine": 82,
+      "endLine": 120,
+      "summary": "Proves quadForm_scale (scaling by c gives c² factor) and the key lemma quadForm_scale_inv_sqrt: quadForm(ξ/√n) = (1/n)·quadForm(ξ). Also proves gaussCharFun_zero (= 1 at origin) and gaussCharFun_norm_le_one (|φ| ≤ 1 for psd Σ)."
+    },
+    {
+      "id": "gaussian",
+      "title": "Gaussian Operator-Stability (Proved)",
+      "startLine": 122,
+      "endLine": 185,
+      "summary": "Proves exp_neg_div_pow (core identity), gaussian_operator_stable (main result: (φ_Σ(ξ/√n))^n = φ_Σ(ξ)), gaussian_has_scalar_exponent (c = 1/2, zero drift), and gaussian_is_operator_stable (general IsOperatorStable witness)."
+    },
+    {
+      "id": "scalar",
+      "title": "Scalar Specialization and 1D Connection",
+      "startLine": 187,
+      "endLine": 220,
+      "summary": "Defines univariateEmbed (1D → R^1 embedding), proves univariate_embed_stable and alpha_stable_is_operator_stable (1D α-stable embeds as HasScalarExponent(1/α)). Connects to parent file's stableCharFun and DomainOfAttraction framework."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 222,
+      "endLine": 240,
+      "summary": "Proves operator_stable_linear_image (closure under linear maps: if φ is operator-stable with {A_n}, then φ(B·) is operator-stable with {A_n·B}) and const_one_is_operator_stable (trivial example)."
+    },
+    {
+      "id": "axioms",
+      "title": "Axiomatized Hard Results",
+      "startLine": 242,
+      "endLine": 285,
+      "summary": "Axiom eigenvalue_ge_half: all eigenvalues of exponent matrix E have Re ≥ 1/2 (Hudson-Mason 1982). Axiom meerschaert_scheffler: domain of attraction ↔ matrix regular variation (MS 2001). Corollary scalar_exponent_ge_half: scalar exponent c ≥ 1/2."
+    },
+    {
+      "id": "corollaries",
+      "title": "Classical Limit Theorems as Corollaries",
+      "startLine": 287,
+      "endLine": 303,
+      "summary": "Proves gaussian_in_own_doa (Gaussian is in its own DOA — the multivariate CLT). States finite_cov_in_gaussian_doa (finite-covariance distributions converge to Gaussian, capturing the classical CLT in operator-stable language)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The multivariate operator-stable theory is a clean generalization of both the univariate α-stable theory and the classical multivariate CLT. The Gaussian case φ_Σ(ξ/√n)^n = φ_Σ(ξ) is proved by a short computation, while the full domain of attraction characterization (matrix regular variation ↔ DOA) is axiomatized from Meerschaert-Scheffler (2001).",
+    "implications": "This framework unifies two threads: (1) the infinite-variance generalization (parent OQ-01-OQ-01), and (2) the multivariate extension of the classical CLT. In practice, operator-stable laws appear in multivariate extremes, teletraffic modeling (matrix-valued self-similar processes), and heavy-tailed spatial statistics. The eigenvalue constraint Re(λ(E)) ≥ 1/2 is both a theoretical necessity and a practical constraint on the maximum normalization rate.",
+    "openQuestions": [
+      "Can the Meerschaert-Scheffler theorem be partially formalized using Mathlib's existing weak convergence theory?",
+      "Is there a direct Lean 4 proof of the eigenvalue bound using Mathlib's spectral theory for matrices?"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
+    "namespace": "OperatorStable",
+    "axiomCount": 2,
+    "lineCount": 357,
+    "theoremCount": 15,
+    "definitionCount": 7,
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "id": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Gnedenko-Kolmogorov domain of attraction (univariate) — the d=1 scalar case that this entry generalizes"
+    },
+    {
+      "id": "central-limit-theorem-oq-01",
+      "relationship": "ancestor",
+      "description": "α-stable distributions — scalar stable laws that are the 1D case of operator-stable"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "ancestor",
+      "description": "Classical CLT — recovered as the Gaussian DOA theorem in the operator-stable framework"
+    }
+  ],
+  "sorries": 0
+}

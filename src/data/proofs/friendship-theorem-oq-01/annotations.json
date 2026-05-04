@@ -158,7 +158,7 @@
       "startLine": 321,
       "endLine": 492
     },
-    "type": "context",
+    "type": "concept",
     "title": "Spectral Framework: Axiom Elimination Roadmap and Adjacency Infrastructure",
     "content": "Part VI marks the architectural turning point: the spectral axiom `charpoly_eigenvalue_data` has been ELIMINATED. Parts VII-IX develop the matrix infrastructure underlying the axiom-free approach.\n\nPart VII is a 20-entry summary table listing every theorem and definition. Parts VIII-IX prove four foundational matrix results:\n- `adjMatrix_diag_zero`: diagonal entries of the adjacency matrix are 0 (no self-loops)\n- `adjMatrix_trace_zero`: tr(A) = 0 (sum of diagonal entries)\n- `adjMatrix_sq_off_diag`: (A²)ᵢⱼ = 1 for i ≠ j (from `common_neighbor_finset_card`)\n- `adjMatrix_sq_diag`: (A²)ᵢᵢ = deg(i) (from Mathlib's `adjMatrix_mul_self_apply_self`)\n\nThe `#check` block (lines 481-491) serves as a theorem index, confirming all Part I-V results are available for the characteristic polynomial machinery in Parts XI-XVIII.",
     "mathContext": "The trace constraint is the spectral proof's entry point: $\\text{tr}(A) = \\sum_i \\lambda_i = 0$ (since each diagonal entry is 0 and the trace equals the sum of eigenvalues for symmetric matrices). Combined with $A \\mathbf{1} = k \\mathbf{1}$ (all-ones vector is a $k$-eigenvector), the $n-1$ remaining eigenvalues must sum to $-k$. The A² entry formulas are the bridge: $(A^2)_{ij} = |N(i) \\cap N(j)| = 1$ for $i \\neq j$ (friendship) and $(A^2)_{ii} = \\deg(i) = k$ (regularity), encoding the identity $A^2 = (k-1)I + J$ entry by entry.",
@@ -183,7 +183,7 @@
       "startLine": 711,
       "endLine": 1023
     },
-    "type": "technique",
+    "type": "concept",
     "title": "onesMatrix Algebra, Annihilating Polynomial, and Charpoly Factor Infrastructure",
     "content": "This block develops three layers of machinery needed for the characteristic polynomial product identity:\n\n**Layer 1 — onesMatrix algebra** (711-747): `onesMatrix_sq` proves J² = nJ (entry-by-entry: each entry of J² is Σ_w 1·1 = n). `trace_onesMatrix` gives tr(J) = n. `trace_adjMatrix_sq` proves tr(A²) = nk via tr(A²) = Σᵢ (A²)ᵢᵢ = Σᵢ k = nk.\n\n**Layer 2 — annihilating polynomial** (787-805): `annihilating_polynomial` wraps `adjMatrix_functional_eq` in `Polynomial.aeval` form: `aeval A ((X-k)(X²-(k-1))) = 0`. This bridges the matrix equation to the `minpoly.dvd` Mathlib API.\n\n**Layer 3 — eigenvalue existence** (851-1023): `det_eq_zero_of_kernel` proves that if M·v = 0 with v ≠ 0 (over an integral domain), then det(M) = 0 — via the adjugate identity adj(M)·M = det(M)·I. Applied as `adjMatrix_charpoly_eval_k` (k is a root of charpoly, since AJ = kJ forces det(kI-A) = 0). Then `X_sub_k_dvd_adjMatrix_charpoly` obtains (X-k) | charpoly(A) via the factor theorem. Bonus: `charpoly_subleading_coeff_zero` shows the X^{n-1} coefficient of charpoly is 0 (from tr(A) = 0).",
     "mathContext": "$J^2 = nJ$: $(J^2)_{ij} = \\sum_{w} J_{iw} J_{wj} = \\sum_w 1 = n = (nJ)_{ij}$. The annihilating polynomial: since $(A-kI)(A^2-(k-1)I) = 0$, the polynomial $p(X) = (X-k)(X^2-(k-1))$ satisfies $p(A) = 0$, so $\\text{minpoly}(A) \\mid p$. The adjugate argument: $\\text{adj}(M) \\cdot M = \\det(M) \\cdot I$, so $\\det(M) \\cdot v = \\text{adj}(M) \\cdot (M \\cdot v) = 0$. Since $v$ has a nonzero entry, $\\det(M) = 0$ in any integral domain (no field needed). The trace connection: $\\text{tr}(A) = -[X^{n-1}]\\text{charpoly}(A)$ (Mathlib: `Matrix.trace_eq_neg_charpoly_coeff`), so $\\text{tr}(A) = 0$ forces the sub-leading coefficient of charpoly to vanish.",
@@ -209,7 +209,7 @@
       "startLine": 1161,
       "endLine": 1267
     },
-    "type": "technique",
+    "type": "concept",
     "title": "det(cI - J) = c^{n-1}(c-n): The Determinant Identity Enabling Charpoly Product",
     "content": "`det_scalar_sub_onesMatrix` proves det(cI - J) = c^{n-1}(c-n) over ℤ for the all-ones matrix J. This is the computational core of the charpoly product identity.\n\nThe proof has two cases:\n- **c ≠ 0**: Lift to ℚ where c is invertible. Factor cI - J = c(I - c⁻¹J) and apply `det_one_sub_smul_ones_gen` (Weinstein-Aronszajn, already proved): det(I - c⁻¹J) = 1 - n·c⁻¹ = (c-n)/c. So det(cI-J) = c^n · (c-n)/c = c^{n-1}(c-n). The casting from ℤ to ℚ and back uses `Int.cast_ne_zero` and `exact_mod_cast`.\n- **c = 0**: det(-J). If n = 1, direct computation via `Matrix.det_unique`. If n ≥ 2, J is singular (rank 1), so det(J) = 0 (proved by `det_onesMatrix_eq_zero`), and det(-J) = (-1)^n det(J) = 0.\n\nThe polynomial version `det_scalar_sub_onesMatrix_poly` lifts to ℤ[X] via `Polynomial.funext`: both sides agree at every evaluation point, hence equal as polynomials.",
     "mathContext": "The identity $\\det(cI - J) = c^{n-1}(c-n)$ has a simple derivation: $J$ has eigenvalues $n$ (multiplicity 1, eigenvector $\\mathbf{1}$) and $0$ (multiplicity $n-1$, eigenvectors $\\perp \\mathbf{1}$). So $\\det(cI - J) = (c-n)(c-0)^{n-1} = c^{n-1}(c-n)$. The Lean proof avoids eigenvalue decomposition, using instead the rank-1 matrix determinant lemma (Weinstein-Aronszajn). This identity is used in the charpoly product computation: $\\det(xI-A)\\det(-xI-A) = \\det(x^2I - A^2) = \\det((x^2-(k-1))I - J) = (x^2-(k-1))^{n-1}(x^2-(k-1)-n)$. Since $n = k(k-1)+1$, we have $x^2-(k-1)-n = x^2-k^2 = (x-k)(x+k)$.",
@@ -235,7 +235,7 @@
       "startLine": 1531,
       "endLine": 1616
     },
-    "type": "technique",
+    "type": "concept",
     "title": "monic_factor_of_symmetric_irreducible_pow: UFD Factorization in ℤ[X]",
     "content": "`monic_factor_of_symmetric_irreducible_pow` is the key structural lemma: if $p \\in \\mathbb{Z}[X]$ is irreducible, monic, and symmetric ($p(-X) = p$), and $f \\in \\mathbb{Z}[X]$ is monic with $f \\cdot f(-X) = p^{2m}$, then $f = p^m$.\n\nThe proof is by induction on m:\n- **Base (m = 0)**: f·f(-X) = 1 forces f to have degree 0 and leading coefficient 1, so f = 1 = p⁰.\n- **Step (m → m+1)**: Since p | f·f(-X) = p^{2(m+1)} and p is prime (irreducible in a UFD), p | f or p | f(-X). The symmetry of p is used: if p | f(-X), then using the involution f(-X).comp(-X) = f and p(-X) = p, we get p | f anyway. Write f = p·f₁. The induction hypothesis on f₁ gives f₁ = p^m, so f = p^{m+1}.\n\nThe symmetry hypothesis $p(-X) = p$ ensures that $p | f(-X) \\Rightarrow p | f$, which is essential for the primality argument to work symmetrically.",
     "mathContext": "Applied to this proof: $p = X^2 - (k-1)$ is irreducible over $\\mathbb{Z}$ when $k-1$ is not a perfect square (proved by `sq_sub_irreducible_of_not_square`). The symmetry holds: $(X^2-(k-1))|_{X \\mapsto -X} = (-X)^2-(k-1) = X^2-(k-1)$. The product identity gives $f \\cdot f(-X) = (X^2-(k-1))^{n-1}$. Since $n-1 = k(k-1)$ is even, the lemma forces $f = (X^2-(k-1))^{(n-1)/2}$. This polynomial has zero coefficients at all odd degrees, while $k \\geq 2$ forces a nonzero $X^{n-2}$ coefficient in $f$ (from the factor theorem applied to charpoly). This contradiction proves $k-1$ must be a perfect square.",

@@ -1,0 +1,174 @@
+{
+  "id": "buffons-needle-oq-02-oq-03",
+  "title": "Cauchy-Crofton Formula for Arbitrary Measures on S^{n-1}",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "difficulty": "medium",
+  "area": "geometric-probability",
+  "parentProblem": "buffons-needle-oq-02",
+  "problemStatement": {
+    "informal": "Prove the general Cauchy-Crofton formula: for any Borel measure σ on S^{n-1} and segment [A,B] in ℝⁿ, the crossing integral ∫_{S^{n-1}} |⟪u,B-A⟫| dσ(u) equals the expected crossing count when the direction u is drawn from σ and the offset t from Lebesgue measure.",
+    "formal": "∀ σ : Measure S^{n-1}, ∀ A B : EuclideanSpace ℝ (Fin n), crossingIntegral σ A B = ∫∫ 𝟙[H(u,t) crosses [A,B]] dt dσ(u)"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry added in buffons-needle-oq-02-oq-03. Crossing measure lemma fully proved; Fubini and isotropy axiomatized. 2 axioms, 0 sorries, 12 theorems.",
+    "insights": [
+      "The crossing-measure lemma (|{t : H(u,t) crosses [A,B]}| = |⟪u,B-A⟫|) is directly provable from Real.volume_Icc and max_sub_min_eq_abs in Mathlib",
+      "The Fubini exchange requires σ-finiteness and measurability of the crossing indicator — a standard but non-trivial step",
+      "O(n)-invariance of the sphere measure forces α_n to be a universal constant depending only on dimension",
+      "α₂ = 2/π and α₃ = 1/2 are both definitional equalities (match=) — no computation needed",
+      "The noodle theorem (additivity over polygonal path segments) follows trivially from inner product linearity",
+      "The crossing integral is symmetric: [A,B] and [B,A] give the same value by |inner u (-(A-B))| = |inner u (A-B)|"
+    ],
+    "builtItems": [
+      "CauchyCrofton.Hyperplane: structure for hyperplane parameterization (normal, offset) in EuclideanSpace",
+      "CauchyCrofton.Segment: structure for segment (start, finish) in EuclideanSpace",
+      "CauchyCrofton.crosses: crossing predicate min(u·A, u·B) ≤ t ≤ max(u·A, u·B)",
+      "CauchyCrofton.crossing_measure_eq_inner: PROVED — measure of crossing set = |u·B - u·A|",
+      "CauchyCrofton.crossing_measure_eq_inner_diff: PROVED — restated as |⟪u, B-A⟫|",
+      "CauchyCrofton.crossingIntegral: noncomputable def ∫_{S^{n-1}} |⟪u,B-A⟫| dσ",
+      "CauchyCrofton.cauchy_crofton_fubini: AXIOM — Fubini exchange for crossing double integral",
+      "CauchyCrofton.crossingIntegral_smul: PROVED — scaling by c multiplies integral by |c|",
+      "CauchyCrofton.crossingIntegral_symm: PROVED — symmetry [A,B] = [B,A]",
+      "CauchyCrofton.crossingIntegral_polygonal: PROVED — additivity over polygonal paths",
+      "CauchyCrofton.alpha: def with α₁=1, α₂=2/π, α₃=1/2",
+      "CauchyCrofton.isotropy_yields_alpha: AXIOM — O(n)-invariant σ gives α_n × ‖B-A‖",
+      "CauchyCrofton.alpha_decreasing: PROVED — α₂ > α₃ by norm_num",
+      "proofs/Proofs/BuffonsNeedleOQ02OQ03.lean (255 lines, 2 axioms, 0 sorries)"
+    ],
+    "mathlibGaps": [
+      "Fubini-Tonelli for the crossing indicator over S^{n-1} × ℝ — requires measurability proof for crossing_count function",
+      "O(n) Haar measure change-of-variables for sphere integrals — would prove isotropy_yields_alpha"
+    ],
+    "nextSteps": [
+      "Attempt to prove cauchy_crofton_fubini using MeasureTheory.lintegral_prod (Fubini for ENNReal)",
+      "Attempt to prove isotropy_yields_alpha using O(n) action on EuclideanSpace and Haar measure uniqueness"
+    ]
+  },
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-01",
+    "buffons-needle-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-04",
+    "buffons-needle-oq-01-oq-02",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-02-oq-01",
+    "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-03"
+  ],
+  "dateAdded": "2026-05-03",
+  "dateCompleted": "2026-05-03",
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNeedle.lean",
+      "filename": "BuffonsNeedle.lean",
+      "lineCount": 267,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedle.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01.lean",
+      "filename": "BuffonsNeedleOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01.lean",
+      "lineCount": 391,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ01.lean",
+      "lineCount": 224,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ04.lean",
+      "lineCount": 395,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ02.lean",
+      "filename": "BuffonsNeedleOQ01OQ02.lean",
+      "lineCount": 326,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02.lean",
+      "filename": "BuffonsNeedleOQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ01.lean",
+      "lineCount": 310,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02.lean",
+      "filename": "BuffonsNeedleOQ02OQ02.lean",
+      "lineCount": 377,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 248,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
+    }
+  ]
+}

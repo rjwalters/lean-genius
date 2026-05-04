@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 268,
+    "lineCount": 417,
     "assumptions": "One axiom: anticoncentration_bound (Berry-Esseen anticoncentration for subset sums). dfx_lower_bound and pow2_dss proved in 2026-04-26 commit. sum_sq_cauchy_schwarz proved via induction in Z.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
@@ -54,7 +54,8 @@
       "dfx_lower_bound: N ≥ √(2/π)·2ⁿ/√n (1 sorry for base-case arithmetic) — assembles the DFX framework",
       "dfx_improves_counting: DFX bound is asymptotically better than counting bound (n < n² for n ≥ 2)",
       "Concrete cases: f(1)=1 via Finset.subset_singleton_iff, f(2)=2 via simp"
-    ]
+    ],
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #1 ($500 prize) asks: if $A \\subseteq \\{1,\\ldots,N\\}$ has $n$ elements with all $2^n$ subset sums distinct, must $N \\geq c \\cdot 2^n$? Erdős conjectured the answer is yes with $c = 1/\\sqrt{2}$, matching the Conway–Guy sequence. The basic counting bound (1964) gives $N \\geq (2^n-1)/n$: since the sums lie in $[0, nN]$ with $nN+1$ possible values and there are $2^n$ sums, we need $nN + 1 \\geq 2^n$.\n\nDubroff, Fox, and Xu (2021) improved this to $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ using a variance-based anticoncentration argument rooted in the Berry–Esseen theorem. Their key idea: view the $2^n$ subset sums as values of the random variable $X = \\sum_{i=1}^n \\varepsilon_i a_i$ where $\\varepsilon_i \\in \\{0,1\\}$ are i.i.d. Bernoulli(1/2). The distinct subset sums condition forces $X$ to take $2^n$ distinct values. By the normal approximation, the density of $X$ is approximately Gaussian with mean $S/2$ and variance $V = \\sum a_i^2/4$; the anticoncentration of the Gaussian limits the number of distinct achievable values to $\\sim S/\\sqrt{V}$. Using Cauchy–Schwarz ($V \\geq S^2/(4n)$) and $S \\leq nN$, this gives $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$, improving the counting bound by $\\sqrt{n}$.\n\nThe gap between DFX ($\\sim 2^n/\\sqrt{n}$) and the conjectured optimum ($\\sim 2^n/\\sqrt{2}$) remains open. The Conway–Guy sequence (formalized in the companion erdos-1-oq-03) suggests the true answer is $N \\sim 2^n/\\sqrt{2}$, but this has not been proved.",
@@ -209,7 +210,7 @@
       "Mathlib"
     ],
     "namespace": "Erdos1OQ02",
-    "lineCount": 268,
+    "lineCount": 417,
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 0,

@@ -1,8 +1,8 @@
 {
   "slug": "szemeredi-full-oq-01",
   "title": "Szemerédi Theorem: Furstenberg Ergodic-Theoretic Proof Formalization",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Session 5 (2026-04-27) wrote complete ~60-line proof of limit_invariant_on_cylinder (T-invariance at weak-* limits) but discovered the surrounding file has 35 pre-existing Mathlib API drift errors. Session 6 (2026-04-27, ~5h later) confirmed blocker unchanged (no commits to file, no Mathlib pin upgrade) and marked pool entry status='blocked' to stop the re-claim cycle. File cannot build. Repair requires dedicated Mathlib upgrade session.",
+    "progressSummary": "PROGRESS: Session 7 (2026-05-02) fixed 6 Mathlib API drift root errors causing 35 cascading build failures (PR #14878). File should now be buildable. 1 sorry remains: limit_invariant_on_cylinder — proof structure already documented in file. Prokhorov axiom still local. Next: verify build, activate sorry proof.",
     "builtItems": [
       "finsetDirac_apply: sum of Dirac measures on measurable set = filter cardinality (OQ01.lean:316)",
       "cesaroMeasure: N-step Cesaro probability measure definition (OQ01.lean:334)",
@@ -41,7 +41,8 @@
       "cesaroMeasure_cylinderZero: orbit-density formula connecting μ(B₀) to density in [a,a+N) (OQ01.lean:372)",
       "density_lower_bound: elementary half of Furstenberg correspondence, no compactness needed (OQ01.lean:404)",
       "seqCompact_probabilityMeasure_cantor: local axiom for Prokhorov sequential compactness (OQ01.lean:484)",
-      "limit_invariant_on_cylinder: complete proof structure (~60 lines) replacing T-invariance sorry at FurstenbergCorrespondenceOQ01.lean:748 — uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + telescoping bounds; not locally validated due to file-wide build blocker"
+      "limit_invariant_on_cylinder: complete proof structure (~60 lines) replacing T-invariance sorry at FurstenbergCorrespondenceOQ01.lean:748 — uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + telescoping bounds; not locally validated due to file-wide build blocker",
+      "PR #14878: 6 Mathlib API drift fixes in FurstenbergCorrespondenceOQ01.lean — restores buildability after 35-error cascade (Session 7, 2026-05-02)"
     ],
     "insights": [
       "FurstenbergCorrespondence.lean already exists with szemeredi_k2_ergodic proved via Poincaré recurrence",
@@ -58,7 +59,9 @@
       "Proof of limit_invariant_on_cylinder: Portmanteau (clopen frontier=∅ ⟹ ENNReal version) + ENNReal.Tendsto.add (probability measure values ≠ ⊤) + le_of_tendsto_of_tendsto via cesaroMeasure_preimage_le/ge bounds; takes both directions then le_antisymm.",
       "Repo has NO Lean build CI workflow — only label-external-issues runs on PRs. Recent merge of #13069 with unchecked test plan is symptom of this gap.",
       "Session 6 (2026-04-27, ~5h after Session 5): no Mathlib pin upgrade, no commit to FurstenbergCorrespondenceOQ01.lean. Re-claim via depth-first selector wastes researcher cycles when blocker is unchanged.",
-      "Action: pool entry marked status='blocked' (claim-problem.sh:292 excludes both completed and blocked from claim-random selection) so other researchers stop re-discovering the same blocker. Operator must explicitly clear status to 'available' after Mathlib upgrade session."
+      "Action: pool entry marked status='blocked' (claim-problem.sh:292 excludes both completed and blocked from claim-random selection) so other researchers stop re-discovering the same blocker. Operator must explicitly clear status to 'available' after Mathlib upgrade session.",
+      "Mathlib API drift root causes (6 fixes): isOpen_eq_of_isOpen_singleton removed → (isOpen_discrete s).preimage; Finite.instCompactSpace removed → inferInstance; shift_iterate proof wrong without generalizing k (ih too weak); ring_nf left unsolved goals → congr 1; omega; split failed on if-then-else after simp → split_ifs; all 4 cascade to ~35 errors",
+      "shift_iterate original proof had a mathematical bug: induction on n without generalizing k means ih only covers position k, but succ case needs position k+1; proof worked in older Lean by accident (comp_def simp behavior changed)"
     ],
     "mathlibGaps": [
       "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
@@ -68,10 +71,10 @@
       "FurstenbergCorrespondenceOQ01.lean Mathlib upgrade: ~35 specific errors (see knowledge.md session 5)"
     ],
     "nextSteps": [
-      "PRIORITY: Mathlib upgrade session to repair 35 errors in FurstenbergCorrespondenceOQ01.lean (renamed lemmas like isOpen_eq_of_isOpen_singleton, removed instances like Finite.instCompactSpace, tactic behavior changes for split/simp).",
-      "After file builds: validate limit_invariant_on_cylinder proof structure (already written).",
-      "Then prove seqCompact_probabilityMeasure_cantor via Mathlib Prokhorov ingredients (~150-200 lines).",
-      "Recommend: add Lean CI workflow to prevent silent rot of unbuilt files."
+      "PRIORITY: Merge PR #14878 (Mathlib drift fixes) and verify Docker build succeeds.",
+      "After build succeeds: activate limit_invariant_on_cylinder proof (60-line structure already documented in file comment at line ~760). Uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + le_of_tendsto_of_tendsto.",
+      "After limit_invariant_on_cylinder: prove seqCompact_probabilityMeasure_cantor via Mathlib Prokhorov ingredients (~150-200 lines).",
+      "Update pool status to available (not blocked) once PR #14878 merges and build confirms."
     ]
   },
   "tags": [
@@ -82,7 +85,8 @@
     "formalization"
   ],
   "relatedProofs": [
-    "szemeredi-full"
+    "szemeredi-full",
+    "szemeredi-full-oq-02"
   ],
   "references": {
     "papers": [],
@@ -92,5 +96,18 @@
   "started": "2026-04-22T13:03:46.383Z",
   "lastUpdate": "2026-04-27T22:30:00.000Z",
   "significance": 9,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediFullOQ02.lean",
+      "filename": "SzemerediFullOQ02.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediFullOQ02.lean"
+    }
+  ]
 }

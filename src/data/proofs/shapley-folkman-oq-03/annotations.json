@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Shapley-Folkman-Starr Theorem: Economic Context",
-    "content": "This file formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. The key insight: even if individual agent preferences or feasible sets are non-convex, the *aggregate* market demand is 'approximately convex' in a quantitative sense.\n\n**Historical setting**: Shapley and Folkman proved their lemma in 1967 unpublished correspondence (included as an appendix in Starr's 1969 *Econometrica* paper). Starr's contribution was recognizing the economic significance: the lemma gives a uniform bound on non-convexity that is *independent of the number of agents*, making large markets approximately competitive.\n\n**Three main results**:\n1. `convexHull_dist_le` — elementary distance lemma for convex hulls\n2. `shapley_folkman_starr` — the main theorem: dist(x, ΣSᵢ) ≤ dim(E)·δ for x ∈ conv(ΣSᵢ)\n3. `large_economy_near_convex` — corollary: per-agent error d·δ/n → 0 as n → ∞",
+    "content": "This file formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. The key insight: even if individual agent preferences or feasible sets are non-convex, the *aggregate* market demand is 'approximately convex' in a quantitative sense.\n\n**Historical setting**: Shapley and Folkman proved their lemma in 1967 unpublished correspondence (included as an appendix in Starr's 1969 *Econometrica* paper). Starr's contribution was recognizing the economic significance: the lemma gives a uniform bound on non-convexity that is *independent of the number of agents*, making large markets approximately competitive.\n\n**Three main results**:\n1. `convexHull_dist_le` \u2014 elementary distance lemma for convex hulls\n2. `shapley_folkman_starr` \u2014 the main theorem: dist(x, \u03a3S\u1d62) \u2264 dim(E)\u00b7\u03b4 for x \u2208 conv(\u03a3S\u1d62)\n3. `large_economy_near_convex` \u2014 corollary: per-agent error d\u00b7\u03b4/n \u2192 0 as n \u2192 \u221e",
     "mathContext": "**Setup**: $E$ a finite-dimensional normed space, $\\{S_i\\}_{i \\in t}$ sets with pairwise distances $\\leq \\delta$, $x \\in \\text{conv}(\\sum_i S_i)$. **Main bound**: $\\|x - x'\\| \\leq d \\cdot \\delta$ where $d = \\dim(E)$ and $x' \\in \\sum_i S_i$.",
     "significance": "key",
     "relatedConcepts": [
@@ -31,7 +31,7 @@
       "startLine": 48,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "convexHull_dist_le: Distance Bound via Convex Ball",
     "content": "`convexHull_dist_le` proves: if $p \\in \\text{conv}(S)$ and every $s \\in S$ satisfies $\\text{dist}(s,q) \\leq \\delta$, then $\\text{dist}(p,q) \\leq \\delta$.\n\n**Proof idea**: The closed ball $B(q,\\delta)$ is convex and contains $S$. By `convexHull_min` (the convex hull is the smallest convex set containing $S$), $\\text{conv}(S) \\subseteq B(q,\\delta)$. Hence $p \\in B(q,\\delta)$, i.e., $\\text{dist}(p,q) \\leq \\delta$.\n\n`convexHull_dist_le_diam` is the diameter corollary: if every pair in $S$ has distance $\\leq \\delta$, and $q \\in S$, then $p \\in \\text{conv}(S)$ satisfies $\\text{dist}(p,q) \\leq \\delta$.",
     "mathContext": "$\\text{conv}(S) \\subseteq B(q,\\delta)$ because: $S \\subseteq B(q,\\delta)$ (by hypothesis) and $B(q,\\delta)$ is convex (proved via `convex_closedBall`). By minimality of convex hull (`convexHull_min`): $\\text{conv}(S) \\subseteq B(q,\\delta)$.",
@@ -53,7 +53,7 @@
       "startLine": 84,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "shapley_folkman_starr: Main Economic Bound",
     "content": "The main theorem formalizes Starr's 1969 result. Given $x \\in \\text{conv}(\\sum_{i \\in t} S_i)$ where each $S_i$ has diameter $\\leq \\delta$, there exists $x' \\in \\sum_{i \\in t} S_i$ with $\\text{dist}(x, x') \\leq \\dim(E) \\cdot \\delta$.\n\n**Proof steps**:\n1. Apply `sum_close_to_convexHull` (from parent) to get $f : \\iota \\to E$ with $f(i) \\in \\text{conv}(S_i)$ and $\\sum f = x$, plus $J = \\{i : f(i) \\notin S_i\\}$ with $|J| \\leq \\dim(E)$.\n2. For each $j \\in J$, choose any $g(j) \\in S(j)$; for $i \\notin J$, keep $g(i) = f(i) \\in S(i)$.\n3. $x' = \\sum g \\in \\sum S_i$ (term-by-term membership).\n4. `Finset.sum_subset` cancels all non-excess terms: $\\sum(f - g) = \\sum_{j \\in J}(f(j) - g(j))$.\n5. `norm_sum_le` + `convexHull_dist_le_diam` bounds each term by $\\delta$.\n6. Total: $\\text{dist}(x,x') \\leq |J| \\cdot \\delta \\leq \\dim(E) \\cdot \\delta$.",
     "mathContext": "The key calculation:\n$$\\|x - x'\\| = \\|\\textstyle\\sum_{j \\in J}(f_j - g_j)\\| \\leq \\sum_{j \\in J}\\|f_j - g_j\\| \\leq |J| \\cdot \\delta \\leq \\dim(E) \\cdot \\delta$$\nwhere $f_j \\in \\text{conv}(S_j)$, $g_j \\in S_j$, and each $\\|f_j - g_j\\| \\leq \\delta$ by `convexHull_dist_le_diam` (using the diameter bound $\\delta$ for $S_j$).",
@@ -77,7 +77,7 @@
       "startLine": 165,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "large_economy_near_convex: Vanishing Per-Agent Error",
     "content": "The large economy corollary: for $n$ agents each with feasible set $S$ (diameter $\\leq \\delta$), any $x \\in \\text{conv}(n \\cdot S)$ has $x' \\in n \\cdot S$ with $\\text{dist}(x, x') \\leq \\dim(E) \\cdot \\delta$.\n\n**Economic interpretation**: dividing by $n$, the *average* error is at most $\\dim(E) \\cdot \\delta / n \\to 0$. In a market with many agents, the convexified and actual aggregate demands are indistinguishable per capita.\n\n**Proof**: Use $n \\cdot S = \\sum_{i \\in \\text{Fin}(n)} S$ (by `Finset.sum_const` + `Fintype.card_fin`) and apply `shapley_folkman_starr` with the constant family $S_i = S$.",
     "mathContext": "$n \\cdot S = \\sum_{i : \\text{Fin}(n)} S_i$ where $S_i = S$ for all $i$. The Shapley-Folkman bound $d \\cdot \\delta$ is independent of $n$, so per-agent error $= d \\cdot \\delta / n \\to 0$.",
@@ -98,10 +98,10 @@
       "startLine": 196,
       "endLine": 203
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "no_excess_for_convex: Convex Sets Contribute Zero Error",
-    "content": "`no_excess_for_convex` shows that if $S$ is convex then $\\text{conv}(S) = S$, so any $x \\in \\text{conv}(S)$ already lies in $S$. This means convex summands $S_i$ never produce excess indices in the Shapley-Folkman decomposition — only non-convex summands contribute to the approximation error.\n\n**Tightness**: The bound $d \\cdot \\delta$ is tight when all non-convexity is concentrated in $d$ summands (which can each contribute error $\\delta$).",
-    "mathContext": "$S$ convex $\\Rightarrow$ $\\text{conv}(S) = S$ (`Convex.convexHull_eq`). All error in the Shapley-Folkman bound comes from the $\\leq d$ excess indices where $f(i) \\in \\text{conv}(S_i) \\setminus S_i$ — impossible when $S_i$ is convex.",
+    "content": "`no_excess_for_convex` shows that if $S$ is convex then $\\text{conv}(S) = S$, so any $x \\in \\text{conv}(S)$ already lies in $S$. This means convex summands $S_i$ never produce excess indices in the Shapley-Folkman decomposition \u2014 only non-convex summands contribute to the approximation error.\n\n**Tightness**: The bound $d \\cdot \\delta$ is tight when all non-convexity is concentrated in $d$ summands (which can each contribute error $\\delta$).",
+    "mathContext": "$S$ convex $\\Rightarrow$ $\\text{conv}(S) = S$ (`Convex.convexHull_eq`). All error in the Shapley-Folkman bound comes from the $\\leq d$ excess indices where $f(i) \\in \\text{conv}(S_i) \\setminus S_i$ \u2014 impossible when $S_i$ is convex.",
     "significance": "supporting",
     "relatedConcepts": [
       "Convex.convexHull_eq",

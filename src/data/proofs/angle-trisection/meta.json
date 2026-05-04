@@ -67,7 +67,7 @@
       "Trigonometric identities (triple angle formula)",
       "Basic Galois theory (constructibility criterion)"
     ],
-    "lineCount": 383,
+    "lineCount": 1314,
     "relatedProblems": [
       {
         "id": "angle-trisection-oq-02",
@@ -83,7 +83,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "assumptions": "1 axiom inherited from PiTranscendental.lean: lindemann_theorem (Lindemann's theorem — e^α is transcendental for nonzero algebraic α ∈ ℂ). Used via pi_transcendental_over_rationals to prove circle squaring is impossible. 0 own axioms. 0 sorries."
+    "assumptions": "1 axiom inherited from PiTranscendental.lean: lindemann_theorem (Lindemann's theorem — e^α is transcendental for nonzero algebraic α ∈ ℂ). Used via pi_transcendental_over_rationals to prove circle squaring is impossible. 0 own axioms. 0 sorries.",
+    "theoremCount": 23
   },
   "leanFile": {
     "imports": [
@@ -97,12 +98,11 @@
     ],
     "opens": [],
     "namespace": "AngleTrisection",
-    "lineCount": 383,
+    "lineCount": 1314,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 23,
     "lemmaCount": 0,
-    "defCount": 6,
     "definitionCount": 6,
     "path": "Proofs/AngleTrisection.lean",
     "sorries": 0

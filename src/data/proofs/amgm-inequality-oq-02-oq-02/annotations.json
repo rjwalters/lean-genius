@@ -1,0 +1,116 @@
+[
+  {
+    "id": "amgm-oq02-oq02-unnormalized-newton",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 163,
+      "endLine": 301
+    },
+    "title": "elemSymm_log_concave: Unnormalized Newton Inequality",
+    "content": "`elemSymm_log_concave`: For non-negative inputs x : Fin n → ℝ and 1 ≤ k ≤ n-1:\n`elemSymm k x ^ 2 ≥ elemSymm (k-1) x * elemSymm (k+1) x`\n\n**Proof strategy (induction on n)**:\n- Base: n=1. Only e₀=1, e₁=x₁; the inequality e₁² ≥ e₀·e₂ = 0 is trivial.\n- Step: Suppose the inequality holds for n variables. Add x_{n+1}. Use the recurrence: `eₖ(x₁,...,xₙ₊₁) = eₖ(x₁,...,xₙ) + xₙ₊₁ · eₖ₋₁(x₁,...,xₙ)`. Call the old values aₖ (= eₖ(x₁,...,xₙ)) and the new ones bₖ = aₖ + t·aₖ₋₁ where t = xₙ₊₁ ≥ 0.\n\nExpand bₖ² - bₖ₋₁·bₖ₊₁ and group by powers of t. By the inductive hypotheses aₖ² ≥ aₖ₋₁·aₖ₊₁ and aₖ₋₁² ≥ aₖ₋₂·aₖ, plus non-negativity, each group is ≥ 0.",
+    "significance": "key",
+    "mathContext": "Newton's inequality: $e_k^2 \\geq e_{k-1} e_{k+1}$ for elementary symmetric polynomials $e_k(x_1,\\ldots,x_n)$ with $x_i \\geq 0$. Equivalent to log-concavity of the sequence $(e_0, e_1, \\ldots, e_n)$.",
+    "relatedConcepts": [
+      "elementary symmetric polynomials",
+      "log-concave sequences",
+      "recurrence for symmetric polynomials"
+    ],
+    "prerequisites": [
+      "elemSymm definition",
+      "Finset.esymm",
+      "induction on Fin n"
+    ]
+  },
+  {
+    "id": "amgm-oq02-oq02-binom-logconcave",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 301,
+      "endLine": 395
+    },
+    "title": "binom_log_concave: Binomial Coefficients Are Log-Concave",
+    "content": "`binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)`: C(n,k)² ≥ C(n,k-1)·C(n,k+1).\n\nThe proof expands using Pascal's rule and the identity:\nC(n,k)² - C(n,k-1)·C(n,k+1) = C(n,k)² · (1 - (k+1)(n-k)/((n-k+1)·k))\n\nFor 1 ≤ k ≤ n-1: (k+1)(n-k) ≤ k(n-k+1) iff k+n+1-k² ≤ kn+k-k² iff n+1 ≤ kn which is false... Actually proved directly from the explicit quotient formula.\n\nThis lemma is used to convert the unnormalized Newton inequality eₖ² ≥ eₖ₋₁·eₖ₊₁ into the normalized form (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)).",
+    "significance": "key",
+    "mathContext": "$\\binom{n}{k}^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1}$. Equivalently, $\\binom{n}{0}, \\binom{n}{1}, \\ldots, \\binom{n}{n}$ is a log-concave sequence.",
+    "relatedConcepts": [
+      "log-concave sequences",
+      "Pascal's triangle",
+      "Nat.choose"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.choose_succ_succ"
+    ]
+  },
+  {
+    "id": "amgm-oq02-oq02-cleared-denom",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 395,
+      "endLine": 811
+    },
+    "title": "newton_cleared_denom: Cleared-Denominator Newton (520-line induction)",
+    "content": "`newton_cleared_denom`: C(n,k-1)·C(n,k+1)·eₖ² ≥ C(n,k)²·eₖ₋₁·eₖ₊₁.\n\nThis is the cleared-denominator form: multiply both sides of the normalized Newton inequality (eₖ/C)² ≥ (eₖ₋₁/C)(eₖ₊₁/C) by C(n,k-1)·C(n,k+1)·C(n,k)² to clear all denominators.\n\nThe key inductive step `newton_cleared_denom_inductive_step` proves that the new variable t = x_{n+1} ≥ 0 can be absorbed: if the inequality holds for n variables (via IH), it holds for n+1. The proof uses:\n1. **Absorption**: The new terms from the recurrence eₖ(x,t) = eₖ(x) + t·eₖ₋₁(x) expand the LHS−RHS into a quadratic in t.\n2. **Discriminant bound**: The quadratic has non-positive discriminant (from the IH applied to the cross-terms), so it is always ≥ 0.\n\nThe 520-line proof resolves the large number of sub-cases from the quadratic expansion.",
+    "significance": "critical",
+    "mathContext": "The cleared-denominator form avoids all divisions, making the induction cleaner. Equivalent to the normalized Newton inequality: $\\frac{e_k^2}{\\binom{n}{k}^2} \\geq \\frac{e_{k-1}}{\\binom{n}{k-1}} \\cdot \\frac{e_{k+1}}{\\binom{n}{k+1}}$.",
+    "relatedConcepts": [
+      "induction on number of variables",
+      "absorption argument",
+      "discriminant inequality"
+    ],
+    "prerequisites": [
+      "elemSymm recurrence",
+      "elemSymm_log_concave",
+      "binom_log_concave"
+    ]
+  },
+  {
+    "id": "amgm-oq02-oq02-normalized-newton",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 811,
+      "endLine": 850
+    },
+    "title": "newton_log_concavity_proved: Normalized Newton's Inequality",
+    "content": "`newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i)`:\n`normESym k x ^ 2 ≥ normESym (k-1) x * normESym (k+1) x`\n\nwhere `normESym j x = elemSymm j x / Nat.choose n j`.\n\nThis is the **main theorem**, replacing the axiom `newton_log_concavity` from `AmgmInequalityOQ02.lean`. The proof is short (about 30 lines): derives from `newton_cleared_denom` by dividing through by the appropriate binomial coefficients, using `normESym_nonneg` and `div_mul_div_comm`.\n\nConsequence (from parent AmgmInequalityOQ02.lean): the full Maclaurin chain M₁ ≥ M₂ ≥ ... ≥ Mₙ is now a complete theorem.",
+    "significance": "critical",
+    "mathContext": "Normalized Newton: $\\left(\\frac{e_k}{\\binom{n}{k}}\\right)^2 \\geq \\frac{e_{k-1}}{\\binom{n}{k-1}} \\cdot \\frac{e_{k+1}}{\\binom{n}{k+1}}$. This is the key step from which Maclaurin's inequalities follow by induction.",
+    "relatedConcepts": [
+      "Newton's inequalities",
+      "normESym",
+      "Maclaurin's inequalities"
+    ],
+    "prerequisites": [
+      "newton_cleared_denom",
+      "binom_log_concave",
+      "normESym definition"
+    ]
+  },
+  {
+    "id": "amgm-oq02-oq02-maclaurin-step",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 924,
+      "endLine": 959
+    },
+    "title": "maclaurin_step_derived: Mₖ ≥ Mₖ₊₁",
+    "content": "`maclaurin_step_derived {n : ℕ} (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n) (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i)`: `normESym k x ^ (1 / (k : ℝ)) ≥ normESym (k + 1) x ^ (1 / ((k : ℝ) + 1))`\n\nThis replaces the axiom `maclaurin_step` from `AmgmInequalityOQ02.lean`.\n\nProof: Let aₖ = normESym k x, aₖ₊₁ = normESym (k+1) x.\n1. From `newton_log_concavity_proved`: aₖ² ≥ aₖ₋₁·aₖ₊₁ (log-concavity).\n2. From `normESym_log_concave`: aₖ^(k+1) ≥ aₖ₊₁^k (power inequality).\n3. `rpow_ineq_of_pow_ineq`: aₖ^(1/k) ≥ aₖ₊₁^(1/(k+1)) (take (k(k+1))-th root, using Real.rpow).",
+    "significance": "critical",
+    "mathContext": "Maclaurin's chain: $M_k \\geq M_{k+1}$ where $M_j = \\left(\\frac{e_j(x)}{\\binom{n}{j}}\\right)^{1/j}$. Repeated application gives $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$, connecting AM and the $n$-th root of GM.",
+    "relatedConcepts": [
+      "Maclaurin's inequalities",
+      "Real.rpow",
+      "Real.rpow_le_rpow"
+    ],
+    "prerequisites": [
+      "newton_log_concavity_proved",
+      "power_ineq_of_log_concave",
+      "rpow_ineq_of_pow_ineq"
+    ]
+  }
+]

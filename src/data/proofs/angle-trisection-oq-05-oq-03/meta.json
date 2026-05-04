@@ -51,7 +51,8 @@
     "lineCount": 272,
     "assumptions": "None. 0 axioms, 0 sorries. All results follow from the IsKFoldConstructible definition from AngleTrisectionOQ05OQ01 and the completeness theorems from AngleTrisectionOQ05OQ02.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 20
+    "theoremCount": 21,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Alperin and Lang (2006) established that 1-fold origami constructs exactly the 3-smooth degrees and 2-fold origami the 5-smooth degrees. The OQ-01 and OQ-02 entries in this gallery generalize this to all $k$: $k$-fold origami constructs exactly the $p_k$-smooth degrees, and every degree is eventually constructible. A natural follow-up is the optimization question: given a polynomial of degree $d$, what is the *minimum* number of simultaneous folds required? This is equivalent to finding the smallest $k$ such that $d$ is $p_k$-smooth — i.e., identifying the prime-sequence index of the largest prime factor of $d$.",

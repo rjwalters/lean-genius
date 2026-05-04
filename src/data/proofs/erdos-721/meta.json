@@ -1,10 +1,10 @@
 {
   "id": "erdos-721",
-  "title": "Erd\u0151s Problem #721: Van der Waerden Numbers W(3,k)",
+  "title": "Erdős Problem #721: Van der Waerden Numbers W(3,k)",
   "slug": "erdos-721",
   "description": "Give reasonable bounds for W(3,k), the off-diagonal van der Waerden number. SOLVED: Superpolynomial lower bounds (Green 2022, Hunter 2022) and subexponential upper bounds (Schoen 2021, Bloom-Sisask 2023).",
   "meta": {
-    "author": "Erd\u0151s (problem), Green-Hunter (lower bounds), Schoen-Bloom-Sisask (upper bounds)",
+    "author": "Erdős (problem), Green-Hunter (lower bounds), Schoen-Bloom-Sisask (upper bounds)",
     "sourceUrl": "https://erdosproblems.com/721",
     "date": "2023",
     "status": "axiomatized",
@@ -47,7 +47,7 @@
       "W_known_values: exact values W(3,3)=9 through W(3,7)=46",
       "graham_conjecture definition and graham_conjecture_false axiom",
       "green_lower_bound: exp(c(log k)^{4/3}/(log log k)^{1/3})",
-      "hunter_lower_bound: exp(c(log k)\u00b2/log log k)",
+      "hunter_lower_bound: exp(c(log k)²/log log k)",
       "W_superpolynomial: W(3,k) grows faster than any polynomial",
       "schoen_upper_bound: exp(k^c) for c < 1",
       "bloom_sisask_upper_bound: exp(C(log k)^9)",
@@ -58,17 +58,18 @@
     ],
     "axiomCount": 6,
     "lineCount": 240,
-    "assumptions": "6 axioms: W, graham_conjecture_false, green_lower_bound, hunter_lower_bound, schoen_upper_bound, bloom_sisask_upper_bound. 0 sorries."
+    "assumptions": "6 axioms: W, graham_conjecture_false, green_lower_bound, hunter_lower_bound, schoen_upper_bound, bloom_sisask_upper_bound. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #721 asks for bounds on the off-diagonal van der Waerden number W(3,k) \u2014 the minimum n such that any 2-coloring of {1,...,n} contains either a red 3-term arithmetic progression or a blue k-term AP. Van der Waerden proved these numbers exist in 1927, but his original bounds were astronomically large (Ackermann-type). Erd\u0151s posed the challenge in 1980-81 to find reasonable bounds.\n\nGraham famously conjectured W(3,k) \u226a k\u00b2, suggesting polynomial growth. This was spectacularly disproved by Green in 2022, who established the first superpolynomial lower bound: W(3,k) \u2265 exp(c(log k)^{4/3}/(log log k)^{1/3}). Hunter improved this in the same year to exp(c(log k)\u00b2/log log k), raising the logarithmic exponent from 4/3 to 2.\n\nOn the upper bound side, Schoen (2021) first proved W(3,k) < exp(k^c) for c < 1, answering Erd\u0151s's second challenge. The Kelley-Meka breakthrough (2023) on sets without 3-term APs led to dramatic further improvements, culminating in Bloom-Sisask's bound W(3,k) \u2264 exp(C(log k)^9). The exact growth rate, believed to be exp((log k)^{2+o(1)}), remains an open question.",
+    "historicalContext": "Erdős Problem #721 asks for bounds on the off-diagonal van der Waerden number W(3,k) — the minimum n such that any 2-coloring of {1,...,n} contains either a red 3-term arithmetic progression or a blue k-term AP. Van der Waerden proved these numbers exist in 1927, but his original bounds were astronomically large (Ackermann-type). Erdős posed the challenge in 1980-81 to find reasonable bounds.\n\nGraham famously conjectured W(3,k) ≪ k², suggesting polynomial growth. This was spectacularly disproved by Green in 2022, who established the first superpolynomial lower bound: W(3,k) ≥ exp(c(log k)^{4/3}/(log log k)^{1/3}). Hunter improved this in the same year to exp(c(log k)²/log log k), raising the logarithmic exponent from 4/3 to 2.\n\nOn the upper bound side, Schoen (2021) first proved W(3,k) < exp(k^c) for c < 1, answering Erdős's second challenge. The Kelley-Meka breakthrough (2023) on sets without 3-term APs led to dramatic further improvements, culminating in Bloom-Sisask's bound W(3,k) ≤ exp(C(log k)^9). The exact growth rate, believed to be exp((log k)^{2+o(1)}), remains an open question.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $W(3,k)$ be the minimum $n$ such that any red/blue coloring of $\\{1,\\ldots,n\\}$ contains either a red 3-term AP or a blue $k$-term AP.\n\n**Challenges:**\n1. Give any non-trivial lower bounds for $W(3,k)$\n2. Prove $W(3,k) < \\exp(k^c)$ for some $c < 1$\n\n**Resolution:** Both met. Current best bounds:\n$$\\exp\\left(c \\cdot \\frac{(\\log k)^2}{\\log\\log k}\\right) \\leq W(3,k) \\leq \\exp\\left(C \\cdot (\\log k)^9\\right)$$",
     "text": "Give reasonable bounds for W(3,k), the off-diagonal van der Waerden number. SOLVED: Superpolynomial lower bounds (Green 2022, Hunter 2022) and subexponential upper bounds (Schoen 2021, Bloom-Sisask 2023).",
-    "proofStrategy": "The formalization axiomatizes W(3,k) as a function \u2115 \u2192 \u2115 with basic properties (existence, monotonicity, known values). Graham's polynomial conjecture is defined and stated to be false. The four key results are axiomatized: Green's and Hunter's lower bounds, Schoen's and Bloom-Sisask's upper bounds. The deep connection to 3-AP-free sets is formalized through Roth density bounds, Behrend's construction, and the Kelley-Meka density result. Three summary theorems combine the axioms into the main conclusions.",
+    "proofStrategy": "The formalization axiomatizes W(3,k) as a function ℕ → ℕ with basic properties (existence, monotonicity, known values). Graham's polynomial conjecture is defined and stated to be false. The four key results are axiomatized: Green's and Hunter's lower bounds, Schoen's and Bloom-Sisask's upper bounds. The deep connection to 3-AP-free sets is formalized through Roth density bounds, Behrend's construction, and the Kelley-Meka density result. Three summary theorems combine the axioms into the main conclusions.",
     "keyInsights": [
-      "**Superpolynomial Growth**: W(3,k) grows faster than any polynomial, disproving Graham's conjecture W(3,k) \u226a k\u00b2",
-      "**Subexponential Growth**: W(3,k) < exp(k^c) for c < 1, answering Erd\u0151s's second challenge",
-      "**Best Lower Bound**: exp(c(log k)\u00b2/log log k) from Hunter (2022), logarithmic exponent 2",
+      "**Superpolynomial Growth**: W(3,k) grows faster than any polynomial, disproving Graham's conjecture W(3,k) ≪ k²",
+      "**Subexponential Growth**: W(3,k) < exp(k^c) for c < 1, answering Erdős's second challenge",
+      "**Best Lower Bound**: exp(c(log k)²/log log k) from Hunter (2022), logarithmic exponent 2",
       "**Best Upper Bound**: exp(C(log k)^9) from Bloom-Sisask (2023), logarithmic exponent 9",
       "**3-AP Connection**: Bounds on W(3,k) are intimately connected to the density of 3-AP-free sets",
       "**Kelley-Meka Breakthrough**: Their 2023 result on 3-AP-free sets enabled the sharp upper bounds"
@@ -101,8 +102,8 @@
       "title": "Part III: Graham's Conjecture (Disproved)",
       "startLine": 76,
       "endLine": 91,
-      "summary": "graham_conjecture definition (W(3,k) \u2264 Ck\u00b2) and graham_conjecture_false axiom.",
-      "mathContext": "graham_conjecture definition (W(3,k) $\\leq$ Ck\u00b2) and graham_conjecture_false axiom."
+      "summary": "graham_conjecture definition (W(3,k) ≤ Ck²) and graham_conjecture_false axiom.",
+      "mathContext": "graham_conjecture definition (W(3,k) $\\leq$ Ck²) and graham_conjecture_false axiom."
     },
     {
       "id": "lower-bounds",
@@ -154,8 +155,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #721 is SOLVED. Both challenges have been met: (1) Superpolynomial lower bounds established by Green (2022) and Hunter (2022), showing W(3,k) \u2265 exp(c(log k)\u00b2/log log k). (2) Subexponential upper bounds proved by Schoen (2021) and improved to W(3,k) \u2264 exp(C(log k)^9) by Bloom-Sisask (2023). Graham's polynomial conjecture was disproved.",
-    "implications": "The result establishes that van der Waerden numbers W(3,k) grow strictly between polynomial and exponential \u2014 superpolynomially but subexponentially. The breakthroughs connect deeply to the density of sets without 3-term arithmetic progressions, with the Kelley-Meka result enabling the sharp upper bounds.",
+    "summary": "Erdős Problem #721 is SOLVED. Both challenges have been met: (1) Superpolynomial lower bounds established by Green (2022) and Hunter (2022), showing W(3,k) ≥ exp(c(log k)²/log log k). (2) Subexponential upper bounds proved by Schoen (2021) and improved to W(3,k) ≤ exp(C(log k)^9) by Bloom-Sisask (2023). Graham's polynomial conjecture was disproved.",
+    "implications": "The result establishes that van der Waerden numbers W(3,k) grow strictly between polynomial and exponential — superpolynomially but subexponentially. The breakthroughs connect deeply to the density of sets without 3-term arithmetic progressions, with the Kelley-Meka result enabling the sharp upper bounds.",
     "openQuestions": [
       "Is the exact growth rate W(3,k) = exp((log k)^{2+o(1)})?",
       "Can the gap between lower and upper bound exponents (2 vs 9) be closed?",
@@ -176,7 +177,7 @@
     "namespace": "Erdos721",
     "lineCount": 240,
     "axiomCount": 6,
-    "theoremCount": 4,
+    "theoremCount": 3,
     "definitionCount": 2,
     "path": "Proofs/Erdos721Problem.lean",
     "sorries": 0
@@ -185,17 +186,17 @@
     {
       "targetId": "erdos-179",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, solved"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, solved"
     },
     {
       "targetId": "erdos-187",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, van-der-waerden"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, van-der-waerden"
     },
     {
       "targetId": "erdos-645",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: arithmetic-progressions, ramsey-theory, solved, van-der-waerden"
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, ramsey-theory, solved, van-der-waerden"
     }
   ],
   "sorries": 0

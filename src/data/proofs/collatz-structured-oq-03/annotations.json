@@ -56,7 +56,7 @@
       "startLine": 50,
       "endLine": 64
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Concrete Stopping Times: σ(1) = 0 and σ(2) = 1",
     "content": "The two concrete theorems verify the definition on small inputs. `stoppingTime_one`: 1 is the fixed terminal value, so σ(1) = 0 — proved by `Nat.find_eq_zero.mpr rfl` after confirming reachesOne 1 holds with witness k=0. `stoppingTime_two`: 2 → 1 in one step (T(2) = 1), so σ(2) = 1. This is more involved: the proof shows (a) reachesOne 2 holds with witness k=1, (b) the minimum is exactly 1 using `Nat.find_eq_iff.mpr` with two obligations — the predicate holds at k=1, and it fails at k=0 (since T⁰(2) = 2 ≠ 1). `interval_cases k` handles the k < 1 case by exhaustion.",
     "mathContext": "$\\sigma(1) = 0$ because $T^0(1) = 1$ (0 steps needed). $\\sigma(2) = 1$ because $T^1(2) = T(2) = 2/2 = 1$ and $T^0(2) = 2 \\neq 1$ (1 is minimal). The `Nat.find_eq_iff` characterization requires proving both the existence at $k$ and the non-existence at all $k' < k$.",

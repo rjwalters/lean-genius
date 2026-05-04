@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Module Overview: Ptolemy Inequality with Concyclicity Characterization",
-    "content": "This file completes the concyclicity characterization of Ptolemy's theorem in ℂ. Building on `PtolemysComplexProof.lean` (inequality + proportionality) and `PtolemysComplexProofOQ01.lean` (SameRay biconditional), this file provides the geometric/trigonometric connection: for four unit-circle points in CCW order, the Ptolemy ratio is a positive real. The proof is self-contained via trig identities, requiring no inscribed angle theorem.",
-    "mathContext": "Key chain: concyclic CCW → Ptolemy ratio > 0 → SameRay → Ptolemy equality. This file proves the first arrow; PtolemysComplexProofOQ01 proves the second.",
+    "content": "This file completes the concyclicity characterization of Ptolemy's theorem in \u2102. Building on `PtolemysComplexProof.lean` (inequality + proportionality) and `PtolemysComplexProofOQ01.lean` (SameRay biconditional), this file provides the geometric/trigonometric connection: for four unit-circle points in CCW order, the Ptolemy ratio is a positive real. The proof is self-contained via trig identities, requiring no inscribed angle theorem.",
+    "mathContext": "Key chain: concyclic CCW \u2192 Ptolemy ratio > 0 \u2192 SameRay \u2192 Ptolemy equality. This file proves the first arrow; PtolemysComplexProofOQ01 proves the second.",
     "significance": "supporting",
     "relatedConcepts": [
       "Ptolemy's theorem",
@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Unit Circle Conjugation and Ptolemy Ratio Reality",
-    "content": "For unit-circle points (‖z‖ = 1), the complex conjugate satisfies conj(z) = z⁻¹ because z·conj(z) = normSq(z) = 1. This section uses this to prove the Ptolemy ratio R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) is always real when all four points lie on the unit circle.\n\nThe proof strategy: show conj(R) = R, which means R ∈ ℝ. After substituting conj(zᵢ) = zᵢ⁻¹ throughout, `field_simp` collapses the inverses and `ring` closes the resulting algebraic identity. This establishes that R is real before analyzing its sign — the positivity for CCW order is established in the next section.",
+    "content": "For unit-circle points (\u2016z\u2016 = 1), the complex conjugate satisfies conj(z) = z\u207b\u00b9 because z\u00b7conj(z) = normSq(z) = 1. This section uses this to prove the Ptolemy ratio R = (z\u2082-z\u2083)(z\u2081-z\u2084)/((z\u2081-z\u2082)(z\u2083-z\u2084)) is always real when all four points lie on the unit circle.\n\nThe proof strategy: show conj(R) = R, which means R \u2208 \u211d. After substituting conj(z\u1d62) = z\u1d62\u207b\u00b9 throughout, `field_simp` collapses the inverses and `ring` closes the resulting algebraic identity. This establishes that R is real before analyzing its sign \u2014 the positivity for CCW order is established in the next section.",
     "mathContext": "For $z$ on the unit circle: $|z|^2 = z \\bar{z} = 1$, so $\\bar{z} = z^{-1}$. The Ptolemy ratio $R = \\frac{(z_2-z_3)(z_1-z_4)}{(z_1-z_2)(z_3-z_4)}$ satisfies $\\bar{R} = R$ because applying conjugation to all $z_i \\mapsto z_i^{-1}$ and simplifying yields the same expression. Hence $R \\in \\mathbb{R}$ for any four unit-circle points, regardless of their order.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -54,10 +54,10 @@
       "startLine": 128,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "exp_diff_factor: The Exponential Difference Factorization",
-    "content": "Proves exp(iα) - exp(iβ) = 2·I·sin((α-β)/2)·exp(i(α+β)/2). The proof uses Complex.ext to split into real and imaginary parts, then applies product-to-sum identities: cos α - cos β = -2·sin((α-β)/2)·sin((α+β)/2) (proved from cos_add/cos_sub by ring), and sin α - sin β = 2·sin((α-β)/2)·cos((α+β)/2) (from sin_add/sin_sub by ring). The helper lemmas exp_mul_I_re and exp_mul_I_im compute the real/imaginary parts of exp(iθ) from Complex.exp_re/im.",
-    "mathContext": "The factorization is the key algebraic tool. It can also be derived from the sin definition: sin γ = (exp(iγ) - exp(-iγ))/(2i), giving exp(iγ) - exp(-iγ) = 2i·sin(γ), and then factoring out exp(i(α+β)/2). The product-to-sum approach avoids needing this definition directly.",
+    "content": "Proves exp(i\u03b1) - exp(i\u03b2) = 2\u00b7I\u00b7sin((\u03b1-\u03b2)/2)\u00b7exp(i(\u03b1+\u03b2)/2). The proof uses Complex.ext to split into real and imaginary parts, then applies product-to-sum identities: cos \u03b1 - cos \u03b2 = -2\u00b7sin((\u03b1-\u03b2)/2)\u00b7sin((\u03b1+\u03b2)/2) (proved from cos_add/cos_sub by ring), and sin \u03b1 - sin \u03b2 = 2\u00b7sin((\u03b1-\u03b2)/2)\u00b7cos((\u03b1+\u03b2)/2) (from sin_add/sin_sub by ring). The helper lemmas exp_mul_I_re and exp_mul_I_im compute the real/imaginary parts of exp(i\u03b8) from Complex.exp_re/im.",
+    "mathContext": "The factorization is the key algebraic tool. It can also be derived from the sin definition: sin \u03b3 = (exp(i\u03b3) - exp(-i\u03b3))/(2i), giving exp(i\u03b3) - exp(-i\u03b3) = 2i\u00b7sin(\u03b3), and then factoring out exp(i(\u03b1+\u03b2)/2). The product-to-sum approach avoids needing this definition directly.",
     "significance": "key",
     "relatedConcepts": [
       "Complex.exp_re",
@@ -79,16 +79,16 @@
       "startLine": 213,
       "endLine": 310
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ptolemy_ratio_pos_of_ccw: Positivity via Sign Analysis",
-    "content": "The main new theorem. For four unit-circle points z_j = exp(iθ_j) in CCW order (θ₁ < θ₂ < θ₃ < θ₄ < θ₁ + 2π), exhibits t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)) and proves 0 < t and (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄). Positivity: all four half-angle differences lie in (-π,0) by CCW ordering, so all four sines are negative, making products positive. The algebraic equality follows from applying exp_diff_factor to all four chord differences, then noting E₂₃·E₁₄ = E₁₂·E₃₄ = exp(i(θ₁+θ₂+θ₃+θ₄)/2), and closing with push_cast + ring.",
-    "mathContext": "For the CCW order: (θ₂-θ₃)/2 ∈ (-π,0) since θ₂ < θ₃ and θ₃-θ₂ < 2π; similarly for the other three. Real.sin_pos_of_pos_of_lt_pi gives sin(θ) > 0 for θ ∈ (0,π), applied to -argument to get sin < 0. The exp phase identity E₂₃·E₁₄ = E₁₂·E₃₄ follows from adding exponents: (θ₂+θ₃)/2 + (θ₁+θ₄)/2 = (θ₁+θ₂+θ₃+θ₄)/2 = (θ₁+θ₂)/2 + (θ₃+θ₄)/2.",
+    "content": "The main new theorem. For four unit-circle points z_j = exp(i\u03b8_j) in CCW order (\u03b8\u2081 < \u03b8\u2082 < \u03b8\u2083 < \u03b8\u2084 < \u03b8\u2081 + 2\u03c0), exhibits t = sin((\u03b8\u2082-\u03b8\u2083)/2)\u00b7sin((\u03b8\u2081-\u03b8\u2084)/2) / (sin((\u03b8\u2081-\u03b8\u2082)/2)\u00b7sin((\u03b8\u2083-\u03b8\u2084)/2)) and proves 0 < t and (z\u2082-z\u2083)(z\u2081-z\u2084) = t\u00b7(z\u2081-z\u2082)(z\u2083-z\u2084). Positivity: all four half-angle differences lie in (-\u03c0,0) by CCW ordering, so all four sines are negative, making products positive. The algebraic equality follows from applying exp_diff_factor to all four chord differences, then noting E\u2082\u2083\u00b7E\u2081\u2084 = E\u2081\u2082\u00b7E\u2083\u2084 = exp(i(\u03b8\u2081+\u03b8\u2082+\u03b8\u2083+\u03b8\u2084)/2), and closing with push_cast + ring.",
+    "mathContext": "For the CCW order: (\u03b8\u2082-\u03b8\u2083)/2 \u2208 (-\u03c0,0) since \u03b8\u2082 < \u03b8\u2083 and \u03b8\u2083-\u03b8\u2082 < 2\u03c0; similarly for the other three. Real.sin_pos_of_pos_of_lt_pi gives sin(\u03b8) > 0 for \u03b8 \u2208 (0,\u03c0), applied to -argument to get sin < 0. The exp phase identity E\u2082\u2083\u00b7E\u2081\u2084 = E\u2081\u2082\u00b7E\u2083\u2084 follows from adding exponents: (\u03b8\u2082+\u03b8\u2083)/2 + (\u03b8\u2081+\u03b8\u2084)/2 = (\u03b8\u2081+\u03b8\u2082+\u03b8\u2083+\u03b8\u2084)/2 = (\u03b8\u2081+\u03b8\u2082)/2 + (\u03b8\u2083+\u03b8\u2084)/2.",
     "significance": "key",
     "relatedConcepts": [
       "sin_neg_of_neg_of_neg_pi_lt",
       "mul_pos_of_neg_of_neg",
       "Complex.exp_add",
-      "div_mul_cancel₀"
+      "div_mul_cancel\u2080"
     ],
     "prerequisites": [
       "exp_diff_factor",
@@ -103,15 +103,15 @@
       "startLine": 311,
       "endLine": 380
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ptolemy_equality_for_unit_circle_ccw and ptolemy_equality_for_concyclic",
-    "content": "ptolemy_equality_for_unit_circle_ccw follows immediately from ptolemy_ratio_pos_of_ccw (gets t > 0) and ptolemy_equality_of_proportional (t ≥ 0 → equality). ptolemy_equality_for_concyclic normalizes concyclic points to the unit circle via w_i = (z_i - c)/r, applies the unit circle result, then uses ptolemy_iff_normalized (Ptolemy equality is invariant under translation and positive scaling) to transfer back.",
-    "mathContext": "ptolemy_iff_normalized is proved by showing (z_i-z_j)/r differs from z_i-z_j only by a factor of 1/r, so the Ptolemy inequality scales uniformly by 1/r² on both sides.",
+    "content": "ptolemy_equality_for_unit_circle_ccw follows immediately from ptolemy_ratio_pos_of_ccw (gets t > 0) and ptolemy_equality_of_proportional (t \u2265 0 \u2192 equality). ptolemy_equality_for_concyclic normalizes concyclic points to the unit circle via w_i = (z_i - c)/r, applies the unit circle result, then uses ptolemy_iff_normalized (Ptolemy equality is invariant under translation and positive scaling) to transfer back.",
+    "mathContext": "ptolemy_iff_normalized is proved by showing (z_i-z_j)/r differs from z_i-z_j only by a factor of 1/r, so the Ptolemy inequality scales uniformly by 1/r\u00b2 on both sides.",
     "significance": "key",
     "relatedConcepts": [
       "ptolemy_equality_of_proportional",
       "ptolemy_iff_normalized",
-      "IsConcyclic₄"
+      "IsConcyclic\u2084"
     ],
     "prerequisites": [
       "ptolemy_ratio_pos_of_ccw",

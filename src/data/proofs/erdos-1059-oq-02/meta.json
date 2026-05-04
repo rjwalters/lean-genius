@@ -63,7 +63,8 @@
         "description": "Infinite set predicate for the main conjecture",
         "module": "Mathlib.Data.Set.Basic"
       }
-    ]
+    ],
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every $k$ with $k! < p$. The examples $p = 101$ and $p = 211$ are known, but the problem remains open.\n\nErdős suggested using sieve methods — specifically the smooth-number approach — to prove the conjecture. The Selberg sieve (developed by Atle Selberg in 1947) is a powerful elementary sieve that gives upper bounds for primes in restricted sets using the $\\lambda^2$ method. Applied to the factorial-subtraction problem, it quantifies how many primes $p$ in each interval $(l!, (l+1)!]$ can have some $p - k!$ prime, showing this count is small relative to the total prime count in the interval.",

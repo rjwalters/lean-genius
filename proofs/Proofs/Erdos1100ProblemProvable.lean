@@ -73,8 +73,9 @@ noncomputable def tauPerp (n : ℕ) : ℕ :=
 /--
 **Basic property: τ⊥(n) ≥ ω(n)**
 At minimum, consecutive prime powers contribute coprime pairs.
+Axiomatized: formal proof requires intricate reasoning about sorted divisor positions.
 -/
-theorem tau_perp_lower_bound (n : ℕ) (hn : n > 0) : tauPerp n ≥ omega n := by sorry
+axiom tau_perp_lower_bound (n : ℕ) (hn : n > 0) : tauPerp n ≥ omega n
 
 /--
 **Helper: divisors of a prime p are exactly {1, p}.**
@@ -195,13 +196,14 @@ def question2_upper_bound : Prop :=
     (tauPerp n : ℝ) < exp ((log n)^ε)
 
 /--
-**Erdős-Hall lower bound on the maximum:**
+**Erdős-Hall lower bound on the maximum (1978):**
 For all ε > 0 and sufficiently large x:
   max_{n<x} τ⊥(n) > exp((log log x)^(2-ε))
+Axiomatized: requires deep analytic number theory (Erdős-Hall 1978).
 -/
-theorem erdos_hall_max_lower_bound :
+axiom erdos_hall_max_lower_bound :
     ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
-      ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε)) := by sorry
+      ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε))
 
 /- Status of Question 2: OPEN -/
 
@@ -218,15 +220,16 @@ noncomputable def g (k : ℕ) : ℕ :=
 /--
 **Erdős-Simonovits bounds on g(k):**
 (√2 + o(1))^k < g(k) < (2-c)^k for some constant c > 0.
+Axiomatized: requires deep combinatorics on Boolean lattices (Erdős-Simonovits).
 -/
-theorem erdos_simonovits_bounds :
+axiom erdos_simonovits_bounds :
     ∃ c : ℝ, c > 0 ∧
       -- Lower bound
       (∀ ε > 0, ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
         (g k : ℝ) > (Real.sqrt 2 - ε)^k) ∧
       -- Upper bound
       (∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-        (g k : ℝ) < (2 - c)^k) := by sorry
+        (g k : ℝ) < (2 - c)^k)
 
 /--
 **The growth rate of g(k):**

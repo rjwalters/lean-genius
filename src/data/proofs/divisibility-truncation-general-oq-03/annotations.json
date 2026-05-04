@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 40
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Osculator = Bézout Coefficient = CF Convergent",
     "content": "The module header explains the three-way equivalence at the heart of this proof: the divisibility osculator for d (the integer c with d | 10c−1), the Bézout coefficient gcdA(10,d), and the denominator of the last convergent in the continued fraction expansion of 10/d are all the same object. The imports bring in `Mathlib.Tactic`, `Mathlib.Data.Int.GCD` (for `Nat.gcd_eq_gcd_ab` and `Nat.gcdA`/`Nat.gcdB`), `Mathlib.RingTheory.Coprime.Lemmas` (for `IsCoprime.dvd_of_dvd_mul_left`), and `Proofs.DivisibilityTruncationGeneralOQ01` (for `unified_osculator`, which provides the abstract divisibility equivalence d|n ↔ d|⌊n/10⌋+c·(n%10)). The namespace `DivisibilityTruncationGeneralOQ03` isolates the module, and `open UnifiedOsculator` brings the OQ-01 definitions into scope.",
     "mathContext": "The CF/Euclidean duality: Euclid's algorithm for gcd(10,d) proceeds by dividing $r_0 = 10$, $r_1 = d$, $r_2 = r_0 \\bmod r_1$, etc. Each quotient $q_k = \\lfloor r_{k-1}/r_k \\rfloor$ is a CF partial quotient for $10/d$. The final Bézout coefficients $(a, b)$ with $10a + db = 1$ are the numerator/denominator of the last CF convergent. In particular, $a = \\text{gcdA}(10,d)$ is the osculator modulo $d$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.gcd_eq_gcd_ab",
       "Nat.gcdA",
@@ -76,11 +76,11 @@
       "startLine": 124,
       "endLine": 142
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part IV: CF Connection — Conceptual Documentation",
     "content": "Lines 124–142 are a documentation block explaining why the proof is simpler than originally planned. The CF connection (Euclidean quotients = CF partial quotients, Bézout coefficients = CF convergent numerator/denominator) is informative but not proof-essential for the specific claim in `cf_bezout_correspondence`. That claim asks only: ∃ n ∈ ℕ with n < d and d | 10n−1. This is a pure existence statement that follows from: (1) gcdA(10,d) is an osculator (Bézout), (2) gcdA(10,d) % d ∈ [0,d) (emod), (3) gcdA(10,d) % d is still an osculator (osculator_congr). The CF construction — which would produce the same n as the last convergent denominator — adds only conceptual structure, not proof content.",
     "mathContext": "The extended GCD algorithm and CF algorithm for $10/d$ are the same: $q_k = \\lfloor r_{k-1}/r_k \\rfloor$ appears both as an Euclidean quotient and a CF partial quotient, and the final $(a, b)$ with $10a + db = 1$ equals the last convergent $(p/q)$ with $p = a$ and $q = -b$ (up to sign). The osculator is the denominator $q$, confirming the CF framing. But Lean's `GenContFract` formalism requires significant setup, while the Bézout + emod path is 20 lines.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "GenContFract (Mathlib)",
       "CF convergents",
@@ -124,7 +124,7 @@
       "startLine": 47,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Canonical Divisibility Rule via Delegation to OQ-01",
     "content": "`bezout_osculator_rule` shows `d | n ↔ d | ⌊n/10⌋ + gcdA(10,d)·(n%10)` by directly calling `unified_osculator` from the OQ-01 module. Two arguments are passed: (1) `hcop.isCoprime.symm` converts `Nat.Coprime 10 d` to `IsCoprime d 10` (the argument order required by `unified_osculator`); (2) `bezout_gives_osculator d hcop` provides the osculator witness. The entire divisibility algebra is delegated — OQ-03 contributes only the identification of the canonical osculator.",
     "mathContext": "This is a modular architecture: OQ-01 proves the abstract rule $d \\mid n \\iff d \\mid \\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10)$ for any osculator $c$. OQ-03 identifies the canonical $c = \\text{gcdA}(10,d)$. Together: the Bézout coefficient IS the divisibility osculator.",
@@ -168,7 +168,7 @@
       "startLine": 91,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Canonical Reduction: Three Theorems Pinning the Unique Representative",
     "content": "Part III works in three steps. (1) `osculator_mod_d_is_osculator`: applies `osculator_congr` using `d | gcdA(10,d) - gcdA(10,d)%d`, which follows from `Int.ediv_add_emod` rearranged via `linarith`. (2) `osculator_mod_d_bounded`: `Int.emod_nonneg` + `Int.emod_lt_of_pos` give `0 ≤ r < d` as integers; `Int.natAbs_of_nonneg` converts to natural number bound. (3) `canonical_osculator_unique`: chains two applications of `osculator_unique_mod` — `d | c - gcdA` and `d | gcdA - gcdA%d` — then combines with `dvd_add` using the ring identity `c - gcdA%d = (c - gcdA) + (gcdA - gcdA%d)`.",
     "mathContext": "The Euclidean (non-negative) remainder satisfies $0 \\le r < d$ when $d > 0$. In Lean 4, `Int.emod` implements this: `Int.emod_nonneg : 0 < d → 0 ≤ a % d` and `Int.emod_lt_of_pos : 0 < d → a % d < d`. Converting to `ℕ` uses `Int.toNat_of_nonneg` with the non-negativity proof.",
@@ -193,7 +193,7 @@
       "startLine": 169,
       "endLine": 203
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Divisibility Tests: d = 7, 11, 13, 19",
     "content": "Five concrete examples instantiate the general theory: `osculator_seven : IsOsculator 7 (−2)` means 7 | 10·(−2) − 1 = −21, checked by `norm_num`. The corresponding divisibility test `div_by_seven`: `7 | n ↔ 7 | (n/10) − 2·(n%10)` applies `unified_osculator` from OQ-01. The d=11 case (c=−1) gives the classical alternating digit sum rule. Each osculator is verified by `norm_num` after unfolding `IsOsculator`.",
     "mathContext": "Concrete osculators: 7↔−2 (or +5), 11↔−1 (alternating digit sum), 13↔4, 17↔−5, 19↔2. These are precisely the values of `gcdA(10,d) mod d` for each d, confirming the general theorem.",
@@ -215,7 +215,7 @@
       "startLine": 203,
       "endLine": 221
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part VI Summary: d=17 Osculator and Canonical Pipeline",
     "content": "`osculator_seventeen` (c=−5, lines 206-207): 7·(−5)−1 = −51 = −3·17, verified by `norm_num`. This completes the five concrete osculators: 7↔−2, 11↔−1, 13↔4, 17↔−5, 19↔2. The final theorem `canonical_divisibility_test` (lines 211-213) is a one-line proof: it simply calls `bezout_osculator_rule d n hcop`, delegating everything to Part I. This demonstrates the layered architecture: Part I proves the full pipeline, and the summary theorem is a zero-cost alias. The three `#check` statements (lines 215-217) serve as self-verification — they confirm the module exports the three key theorems with their expected types, and Lean will flag them as errors if the types were wrong.",
     "mathContext": "The d=17 case: $\\text{gcdA}(10, 17) = -5$ (since $10 \\cdot (-5) + 17 \\cdot 3 = -50 + 51 = 1$). The osculator $c = -5$ gives the divisibility test: $17 \\mid n \\iff 17 \\mid \\lfloor n/10 \\rfloor - 5 \\cdot (n \\bmod 10)$. For example: $17 \\mid 51 \\iff 17 \\mid 5 - 5 \\cdot 1 = 0$ ✓. The positive representative is $17 - 5 = 12$: $17 \\mid n \\iff 17 \\mid \\lfloor n/10 \\rfloor + 12 \\cdot (n \\bmod 10)$.",

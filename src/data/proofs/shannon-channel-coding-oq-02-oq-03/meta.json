@@ -1,0 +1,173 @@
+{
+  "id": "shannon-channel-coding-oq-02-oq-03",
+  "title": "Channel Coding Converse via Fano's Inequality",
+  "slug": "shannon-channel-coding-oq-02-oq-03",
+  "description": "Proves the asymptotic channel coding converse: when transmission rate R exceeds channel capacity C, the error probability is bounded away from zero for sufficiently long codes. For block length n ≥ 2/(R-C), any code with rate ≥ R has error probability ≥ (R-C)/(2R) > 0. The proof combines Fano's inequality and the memoryless channel mutual information bound into a single axiom, then derives the quantitative lower bound on error probability via algebraic manipulation.",
+  "meta": {
+    "author": "Claude Shannon (1948), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Noisy-channel_coding_theorem",
+    "date": "1948",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
+    "tags": [
+      "information-theory",
+      "analysis",
+      "probability",
+      "coding-theory",
+      "channel-capacity",
+      "advanced"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "theoremCount": 5,
+    "mathlibDependencies": [
+      {
+        "theorem": "Analysis.SpecialFunctions.Log.Basic",
+        "description": "Logarithm properties used in entropy and rate computations",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Algebra.Order.Field.Basic",
+        "description": "Division inequality lemmas (div_le_iff, le_div_iff, div_add_div)",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Asymptotic channel coding converse: P_e ≥ (R-C)/(2R) for n ≥ 2/(R-C)",
+      "Algebraic derivation of P_e lower bound from the Fano-MI converse inequality",
+      "Threshold lemma quantifying the exact block length needed for the gap to appear",
+      "Combined Fano-MI converse axiom compressing three information-theoretic steps into one"
+    ],
+    "assumptions": "1 new axiom: fano_mi_converse_bound (combines Fano inequality + memoryless channel MI subadditivity: log M ≤ n·C + 1 + P_e·log M). Plus axioms inherited from ShannonChannelCoding.lean via import.",
+    "dateAdded": "2026-05-03",
+    "axiomCount": 1,
+    "lineCount": 162,
+    "prerequisites": [
+      "Discrete memoryless channels and channel capacity (ShannonChannelCoding.lean)",
+      "Block codes and rate definition",
+      "Fano's inequality (ShannonChannelCodingOQ03.lean)",
+      "Mutual information and data processing inequality"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' introduced both the channel coding theorem (achievability) and its converse in a single landmark paper. The converse — that no code can achieve reliable communication above capacity — is arguably the more fundamental result: it establishes capacity C as a hard upper limit, not merely an achievable benchmark. Shannon's original proof of the converse used a combinatorial counting argument; the modern form using Fano's inequality became standard through the work of Feinstein (1954) and Wolf/Fano in the 1950s.\n\nRobert Fano (1952) proved the inequality that bears his name: for any random variables W (input) and Ŵ (estimate), H(W|Ŵ) ≤ H_b(P_e) + P_e·log(M-1), where H_b is the binary entropy. Combined with Shannon's chain rule H(W) = I(W;Y^n) + H(W|Y^n), this yields a clean algebraic bound. The 'strong converse' — that P_e → 1 as n → ∞ for any rate R > C, not just P_e bounded away from 0 — was proved by Wolfowitz (1957) and requires a more refined argument. This formalization proves the weaker (but classical) asymptotic converse, with an explicit quantitative threshold N = ⌈2/(R-C)⌉.",
+    "problemStatement": "**Channel Coding Converse (Asymptotic)**:\nFor any discrete memoryless channel with capacity $C$ and any rate $R > C$, there exists $\\delta > 0$ and $N \\in \\mathbb{N}$ such that for all $n \\geq N$, any block code of length $n$ with rate $\\geq R$ satisfies:\n$$P_e \\geq \\delta = \\frac{R-C}{2R} > 0$$\nSpecifically, $N = \\lceil 2/(R-C) \\rceil$ suffices.",
+    "text": "Proves the asymptotic channel coding converse: error probability is bounded away from zero at rates above capacity.",
+    "proofStrategy": "The proof has four stages:\n\n1. **Combined bound (axiom)**: fano_mi_converse_bound axiomatizes the three information-theoretic steps that together give log M ≤ n·C + 1 + P_e·log M. The three steps are: (i) H(W) = log M for uniform sources, (ii) I(W;Y^n) ≤ n·C by memoryless channel MI chain rule, (iii) H(W|Ŵ) ≤ 1 + P_e·log M by Fano's inequality with h(P_e) ≤ log 2 ≤ 1 nat.\n\n2. **Algebraic bound (converse_from_combined_bound)**: From log M ≤ n·C + 1 + P_e·log M and log M ≥ n·R, derive P_e ≥ 1 - (n·C+1)/(n·R). The main step is (1-P_e)·log M ≤ n·C+1, combined with log M ≥ n·R to get (1-P_e)·n·R ≤ n·C+1.\n\n3. **Threshold bound (threshold_bound)**: Show that for n ≥ 2/(R-C), we have (R-C)/(2R) ≤ 1 - (n·C+1)/(n·R). The key algebraic fact is n·(R-C) ≥ 2 implies n·R² ≥ n·C·R + 2R, which gives the bound after clearing denominators.\n\n4. **Main theorem**: Combine steps 2 and 3 to get P_e ≥ (R-C)/(2R) for all n ≥ ⌈2/(R-C)⌉.",
+    "keyInsights": [
+      "Fano's inequality converts the error probability condition into a conditional entropy bound, enabling the algebraic chain",
+      "The memoryless assumption on the channel is essential: it allows I(W;Y^n) ≤ n·C via the MI chain rule for product channels",
+      "The asymptotic threshold n ≥ 2/(R-C) is tight up to constants: as n → ∞, the bound approaches P_e ≥ 1 - C/R",
+      "The gap δ = (R-C)/(2R) is a quantitative lower bound; the true P_e → 1 - C/R as n → ∞ by the strong converse",
+      "The proof establishes existence of N via ⌈2/(R-C)⌉, giving an explicit threshold rather than just ∃N"
+    ],
+    "prerequisites": [
+      "Discrete memoryless channels and channel capacity",
+      "Block codes, encoding, decoding, and error probability",
+      "Fano's inequality relating error probability to conditional entropy",
+      "Mutual information and data processing inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "error-prob-def",
+      "title": "Code Error Probability Definition",
+      "startLine": 33,
+      "endLine": 37,
+      "description": "Defines codeErrorProb: the average fraction of messages decoded incorrectly by a specific decoder.",
+      "summary": "Defines the average error probability of a block code with given encoder and decoder.",
+      "mathContext": "$P_e = \\frac{1}{M}\\sum_{i=1}^M \\Pr[\\hat{W} \\neq i \\mid W=i]$"
+    },
+    {
+      "id": "fano-mi-axiom",
+      "title": "Combined Fano-MI Converse Bound (Axiom)",
+      "startLine": 51,
+      "endLine": 56,
+      "description": "Axiomatizes the three-step information-theoretic argument: H(W)=log M, I(W;Y^n)≤n·C, H(W|Ŵ)≤1+P_e·log M. Together these give log M ≤ n·C + 1 + P_e·log M.",
+      "summary": "Key axiom combining Fano inequality and memoryless channel MI bound.",
+      "mathContext": "Axiom: $\\log M \\leq nC + 1 + P_e \\log M$"
+    },
+    {
+      "id": "algebraic-converse",
+      "title": "Algebraic Converse Lemma",
+      "startLine": 61,
+      "endLine": 79,
+      "description": "From the Fano-MI bound and the rate condition log M ≥ n·R, derives P_e ≥ 1 - (n·C+1)/(n·R) by algebraic manipulation.",
+      "summary": "Derives the P_e lower bound from the combined Fano-MI inequality.",
+      "mathContext": "$\\log M \\geq nR,\\; \\log M \\leq nC+1+P_e\\log M \\implies P_e \\geq 1 - \\frac{nC+1}{nR}$"
+    },
+    {
+      "id": "threshold-lemma",
+      "title": "Threshold Lemma",
+      "startLine": 82,
+      "endLine": 104,
+      "description": "For n ≥ 2/(R-C), proves (R-C)/(2R) ≤ 1 - (n·C+1)/(n·R) by clearing denominators and using the key polynomial inequality n·R² ≥ n·C·R + 2R.",
+      "summary": "Shows the gap (R-C)/(2R) appears once n exceeds the threshold 2/(R-C).",
+      "mathContext": "$n(R-C) \\geq 2 \\implies \\frac{R-C}{2R} \\leq 1 - \\frac{nC+1}{nR}$"
+    },
+    {
+      "id": "delta-pos",
+      "title": "Gap Positivity",
+      "startLine": 107,
+      "endLine": 109,
+      "description": "The gap δ = (R-C)/(2R) is strictly positive when R > C.",
+      "summary": "δ > 0 whenever the rate exceeds capacity.",
+      "mathContext": "$\\delta = \\frac{R-C}{2R} > 0 \\iff R > C$"
+    },
+    {
+      "id": "rate-log-lemma",
+      "title": "Rate-Log Lemma",
+      "startLine": 112,
+      "endLine": 118,
+      "description": "Translates the rate condition R ≤ rate_of_code into the log form n·R ≤ log M needed for the main proof.",
+      "summary": "Converts rate ≥ R into the log M ≥ n·R inequality.",
+      "mathContext": "$R \\leq \\frac{\\log M}{n} \\iff nR \\leq \\log M$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Channel Coding Converse (Asymptotic)",
+      "startLine": 131,
+      "endLine": 163,
+      "description": "The main theorem: for R > C, the gap δ = (R-C)/(2R) is positive and any code with rate ≥ R and block length n ≥ ⌈2/(R-C)⌉ has error probability ≥ δ.",
+      "summary": "Main result: P_e ≥ (R-C)/(2R) for sufficiently long codes at rates above capacity.",
+      "mathContext": "$\\forall n \\geq \\lceil 2/(R-C) \\rceil,\\; \\text{rate} \\geq R \\implies P_e \\geq \\frac{R-C}{2R}$"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the asymptotic channel coding converse: at rates above capacity, error probability is bounded away from zero for sufficiently long codes. The proof introduces one axiom (fano_mi_converse_bound) capturing three information-theoretic steps that require probability-theoretic formalism not yet in Lean's Mathlib. All algebraic manipulation from the bound to the quantitative P_e ≥ (R-C)/(2R) lower bound is fully proved in Lean with no sorries.",
+    "implications": "Together with the achievability direction (channel_coding_achievability axiom in ShannonChannelCoding.lean), this establishes capacity C as the sharp threshold: reliable communication is possible below C and impossible above C. The quantitative bound P_e ≥ (R-C)/(2R) gives an explicit rate of degradation as R → C from above.",
+    "openQuestions": [
+      "Prove the strong converse: P_e → 1 as n → ∞ for any fixed rate R > C",
+      "Reduce fano_mi_converse_bound to first principles using ShannonChannelCodingOQ03.lean's Fano proof",
+      "Formalize the joint typicality lemma to prove channel_coding_achievability",
+      "Extend to channels with feedback or memory"
+    ]
+  },
+  "crossReferences": [
+    {
+      "target": "shannon-channel-coding",
+      "relationship": "extends",
+      "description": "Provides a proved version of channel_coding_converse for the asymptotic regime"
+    },
+    {
+      "target": "shannon-channel-coding-oq-03",
+      "relationship": "uses",
+      "description": "Fano's inequality (proved in OQ03) underlies the fano_mi_converse_bound axiom"
+    },
+    {
+      "target": "shannon-channel-coding-oq-02",
+      "relationship": "related",
+      "description": "BSC capacity proof and achievability lemma — the other half of the channel coding theorem"
+    }
+  ],
+  "leanFile": {
+    "axiomCount": 1,
+    "lineCount": 162,
+    "path": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 5
+  },
+  "sorries": 0
+}

@@ -41,6 +41,57 @@ Key infrastructure already available:
 
 > **Note**: 4 older sessions archived to `sessions/` directory.
 
+## Session 2026-05-02 (Session 35) — Modularize: Helpers + Main split
+
+**Mode**: FRESH (claimed from pool, RICH knowledge tier, score 163)
+**Outcome**: PROGRESS — file split completed; Docker build in progress via CI
+
+### What I Did
+
+1. Analyzed the full dependency structure of the 14022-line file:
+   - `hook_walk_identity` dispatcher is at line 13868 (the LAST function before HLF)
+   - PARTS I-XXIV (lines 1-13674) are all helpers; PART XXV + dispatcher + HLF are lines 13675+
+   - 22 `private` declarations needed to become non-private for cross-file access
+
+2. Created `BallotProblemOQ03OQ01OQ02Helpers.lean` (13645 lines, 0 sorries):
+   - Contains PARTS I-XXIV (all infrastructure, row-by-row hook walk helpers)
+   - 22 declarations de-privatized: isCorner, corners, removeCorner, mem_corners,
+     mem_removeCorner, removeCorner_card, removeCorner_proof_irrel, emptyTableau,
+     gHookYD, hookProdQ_ne_zero, hookProd_ratio_formula,
+     hook_walk_identity_atMostTwoRows/gHookYD/atMostTwoCols/threeRow through nineRow,
+     hook_walk_identity_atMostNineCols
+
+3. Shrunk `BallotProblemOQ03OQ01OQ02.lean` from 14022 → 392 lines:
+   - Imports Helpers
+   - Contains PART XXV (rectangular case) + dispatcher + `hook_length_formula_Q` + main theorems
+   - The 1 sorry is now at line 302 (was line 13932)
+
+4. Committed to `feature/researcher-11` and created PR
+
+### Key Findings
+
+- The modularization is clean: no circular dependencies, 22 clean private→public changes
+- Helpers has 0 sorries; the single sorry is now in a 392-line file
+- Docker build for Helpers is likely within memory limits (no heavy proof elaboration,
+  mostly definitions + computational checks via field_simp/ring)
+- GNW Route A (~300 lines) can now be added to the 392-line Main file and will build
+  well within any reasonable Docker memory limit
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (14022 → 392 lines)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (new, 13645 lines)
+
+### Next Steps
+
+1. Verify Docker/CI build succeeds for both Helpers and Main
+2. Once build passes: implement GNW Route A in Main (~300 lines)
+   - Start with the probabilistic argument; deterministic recasting avoids ProbabilityTheory
+   - The sorry is at line 302 of the new 392-line Main file
+3. Update meta.json once the build is confirmed
+
+---
+
 ## Session 2026-05-01 (Session 34) — Reconcile state.md with sessions 5–33 progress
 
 **Mode**: REVISIT (RICH knowledge tier, score 163)
@@ -817,3 +868,59 @@ File at 14022 lines remains beyond practical Docker 32GB build envelope. The edi
 1. **GNW probabilistic hook-walk proof** (~300 lines) is the cleanest path to a sorry-free `hook_walk_identity`; it would also obviate further row-by-row extensions.
 2. **Canonical-config LGV path**: implement `youngLGVConfigOf` plus (A) and (B), giving a second independent proof of `hook_length_formula`. Note the transpose-duality wrinkle for tall shapes.
 3. **File modularization**: at 14022 lines the file no longer fits the Docker memory envelope. PARTS XII–XXIII (~10000 lines of row-by-row coverage) could be split off into a dedicated module to restore buildability before any further large additions.
+
+---
+
+## Session 2026-05-03 (Session 37) — GNW infrastructure: isolate gnwProb_key sorry
+
+**Mode**: FRESH (claimed from pool, RICH knowledge tier)
+**Outcome**: PROGRESS — GNW skeleton added to Helpers PART XXVI; dispatcher now sorry-free
+
+### What I Did
+
+1. Rebased `feature/researcher-6` worktree onto current main (worktree was 50+ commits behind;
+   Helpers file added in commit 61edf3c111c was missing from worktree).
+
+2. Added PART XXVI to `BallotProblemOQ03OQ01OQ02Helpers.lean` (lines 13645–13748, +104 lines):
+   - `strictHookCells μ i j`: arm + leg cells strictly beyond (i,j), card = hookLen - 1
+   - `strictHookCells_mem`: proved — each strict hook cell is in μ
+   - `strictHookCells_card`: sorry (TRIVIAL)
+   - `strictHookCells_nonempty`: sorry (TRIVIAL)
+   - `strictHookCells_hookLen_lt`: sorry (TRIVIAL)
+   - `gnwProb μ c K x`: probability walk from x ends at corner c, bounded by K
+     - `| 0, _ => 0`
+     - `| K+1, x => if isCorner μ x then (if x = c then 1 else 0) else ...`
+   - `gnwProb_sum_corners`: sorry (HARD: standard induction on K, not GNW itself)
+   - `gnwProb_key`: sorry (GNW 1979 KEY theorem — the hard combinatorial identity)
+   - `hook_walk_identity_gnw`: PROVED using gnwProb_key + gnwProb_sum_corners + sum_comm
+
+3. Updated `BallotProblemOQ03OQ01OQ02.lean`:
+   - Replaced `sorry` at line 302 with `exact hook_walk_identity_gnw μ hn`
+   - Updated header and docstring comments to reflect new state
+
+4. Committed to `feature/researcher-6` (commit 53c1033051).
+
+### Key Findings
+
+- `hook_walk_identity_gnw` proof structure: h1 (rewrite each ratio via ← gnwProb_key) →
+  sum_comm (swap Σ_c Σ_x) → gnwProb_sum_corners (each inner Σ = 1) → Finset.sum_const_one
+- The dispatcher `hook_walk_identity` in Main is now 0 sorries (sorry-free)
+- Net sorry count: was 1 (vague dispatcher sorry) → now 5 (all in Helpers PART XXVI):
+  1. `gnwProb_key` (GNW 1979 KEY — the genuinely hard theorem)
+  2. `gnwProb_sum_corners` (HARD: induction on K; provable but ~50 lines)
+  3. `strictHookCells_card` (TRIVIAL: disjointness + card_Ico + omega)
+  4. `strictHookCells_nonempty` (TRIVIAL: non-corner ↔ arm or leg > 0)
+  5. `strictHookCells_hookLen_lt` (TRIVIAL: hookLength_add_eq comparison)
+- Sorries 3–5 are good Aristotle candidates
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (added PART XXVI, +104 lines)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (sorry at 302 → GNW call; comment updates)
+
+### Next Steps
+
+1. Create PR for feature/researcher-6 → main
+2. Submit sorries 3–5 to Aristotle (likely fast proofs)
+3. Tackle `gnwProb_sum_corners` manually (standard induction on K, ~50 lines)
+4. `gnwProb_key` is the remaining hard mathematical content (GNW 1979)

@@ -7,8 +7,8 @@
     },
     "type": "concept",
     "title": "Multi-Candidate Ballot Problem: The Projection Reduction Strategy",
-    "content": "The classical Bertrand ballot problem (1887, Mathlib Wiedijk #30) asks: if candidate A gets a votes and B gets b votes (a>b), the probability A leads throughout is (a-b)/(a+b). This file extends to m≥2 candidates via a projection argument: map multi-candidate sequences to ±1 sequences. The key insight: 'candidate 0 leads all opponents combined' depends only on the ±1 pattern, not on how opponent votes are distributed among specific candidates. Uniform fibers (equal number of multi-candidate preimages for each ±1 pattern) then preserve conditional probability, reducing to Mathlib's Ballot.ballot_problem.",
-    "mathContext": "Let a be candidate 0's vote count and b = total opponent votes. For any ±1 sequence t with count(+1)=a and count(-1)=b, the set of multi-candidate sequences projecting to t has the same size: b!/(a₁!·...·aₘ₋₁!) (the multinomial coefficient for how opponent votes distribute). Since all fibers have equal size, uniformOn(multiCountedSequence)({stays positive}) = uniformOn(countedSequence a b)(staysPositive) = (a-b)/(a+b) by Ballot.ballot_problem.",
+    "content": "The classical Bertrand ballot problem (1887, Mathlib Wiedijk #30) asks: if candidate A gets a votes and B gets b votes (a>b), the probability A leads throughout is (a-b)/(a+b). This file extends to m\u22652 candidates via a projection argument: map multi-candidate sequences to \u00b11 sequences. The key insight: 'candidate 0 leads all opponents combined' depends only on the \u00b11 pattern, not on how opponent votes are distributed among specific candidates. Uniform fibers (equal number of multi-candidate preimages for each \u00b11 pattern) then preserve conditional probability, reducing to Mathlib's Ballot.ballot_problem.",
+    "mathContext": "Let a be candidate 0's vote count and b = total opponent votes. For any \u00b11 sequence t with count(+1)=a and count(-1)=b, the set of multi-candidate sequences projecting to t has the same size: b!/(a\u2081!\u00b7...\u00b7a\u2098\u208b\u2081!) (the multinomial coefficient for how opponent votes distribute). Since all fibers have equal size, uniformOn(multiCountedSequence)({stays positive}) = uniformOn(countedSequence a b)(staysPositive) = (a-b)/(a+b) by Ballot.ballot_problem.",
     "significance": "supporting",
     "relatedConcepts": [
       "Bertrand ballot problem",
@@ -31,9 +31,9 @@
       "endLine": 87
     },
     "type": "definition",
-    "title": "project: Projecting Multi-Candidate Sequences to ±1",
-    "content": "The project function maps any list over α to a list of integers: the leader maps to +1, all opponents map to -1. Four basic properties are proved: project_length (length preserved), project_nil (empty list), project_cons (cons computation), project_take (commutes with take). These are fundamental lemmas used throughout the file. The choice of +1/-1 is not accidental: it aligns with Mathlib's Ballot.countedSequence which works with ±1 lists.",
-    "mathContext": "project leader s := s.map (fun v => if v = leader then 1 else -1). project_take: (project leader s).take i = project leader (s.take i) — proved by List.map_take. This is crucial for relating prefix sums of the projection to leader vote counts in prefixes. The type α : Type* [DecidableEq α] allows any discrete type for candidates, with Fin m as the concrete instantiation later.",
+    "title": "project: Projecting Multi-Candidate Sequences to \u00b11",
+    "content": "The project function maps any list over \u03b1 to a list of integers: the leader maps to +1, all opponents map to -1. Four basic properties are proved: project_length (length preserved), project_nil (empty list), project_cons (cons computation), project_take (commutes with take). These are fundamental lemmas used throughout the file. The choice of +1/-1 is not accidental: it aligns with Mathlib's Ballot.countedSequence which works with \u00b11 lists.",
+    "mathContext": "project leader s := s.map (fun v => if v = leader then 1 else -1). project_take: (project leader s).take i = project leader (s.take i) \u2014 proved by List.map_take. This is crucial for relating prefix sums of the projection to leader vote counts in prefixes. The type \u03b1 : Type* [DecidableEq \u03b1] allows any discrete type for candidates, with Fin m as the concrete instantiation later.",
     "significance": "supporting",
     "relatedConcepts": [
       "List.map",
@@ -45,7 +45,7 @@
     "prerequisites": [
       "DecidableEq for if-then-else on list elements",
       "List.map_take from Mathlib",
-      "The ±1 convention in Ballot.countedSequence"
+      "The \u00b11 convention in Ballot.countedSequence"
     ],
     "proofId": "ballot-problem-oq-01-oq-02"
   },
@@ -57,8 +57,8 @@
     },
     "type": "definition",
     "title": "Prefix Sums and the leadsAllThroughout Predicate",
-    "content": "prefixSum leader s i := sum of the first i elements of project leader s. This equals 2·(leader votes in s.take i) - i (proved as prefixSum_eq). leadsAllThroughout leader s asserts all prefix sums are positive: ∀ i > 0, i ≤ s.length → prefixSum leader s i > 0. The equivalent reformulation leadsAllThroughout_iff: 2·count(leader, s.take i) > i, i.e., the leader has strictly more than half the votes at every step.",
-    "mathContext": "prefixSum leader s i := ((project leader s).take i).sum. prefixSum_eq: = 2·↑((s.take i).count leader) - ↑i — proved using project_take and project_sum_eq (which computes the full sum as 2·count(leader,s) - s.length by induction). leadsAllThroughout_iff equivalence: prefixSum > 0 ↔ 2·count > i follows from the linear relation between prefixSum and count by omega.",
+    "content": "prefixSum leader s i := sum of the first i elements of project leader s. This equals 2\u00b7(leader votes in s.take i) - i (proved as prefixSum_eq). leadsAllThroughout leader s asserts all prefix sums are positive: \u2200 i > 0, i \u2264 s.length \u2192 prefixSum leader s i > 0. The equivalent reformulation leadsAllThroughout_iff: 2\u00b7count(leader, s.take i) > i, i.e., the leader has strictly more than half the votes at every step.",
+    "mathContext": "prefixSum leader s i := ((project leader s).take i).sum. prefixSum_eq: = 2\u00b7\u2191((s.take i).count leader) - \u2191i \u2014 proved using project_take and project_sum_eq (which computes the full sum as 2\u00b7count(leader,s) - s.length by induction). leadsAllThroughout_iff equivalence: prefixSum > 0 \u2194 2\u00b7count > i follows from the linear relation between prefixSum and count by omega.",
     "significance": "supporting",
     "relatedConcepts": [
       "prefixSum",
@@ -71,7 +71,7 @@
     "prerequisites": [
       "project_take and project_sum_eq",
       "List.length_take_of_le",
-      "push_cast for ℕ → ℤ coercions"
+      "push_cast for \u2115 \u2192 \u2124 coercions"
     ],
     "proofId": "ballot-problem-oq-01-oq-02"
   },
@@ -81,10 +81,10 @@
       "startLine": 143,
       "endLine": 216
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Projection Invariance: The Key Structural Theorem",
-    "content": "The core structural result: leadsAllThroughout_of_same_projection states that if two multi-candidate sequences have the same ±1 projection, they have the same 'leads throughout' property. This is the mathematical content of the reduction — the leading condition is entirely determined by the ±1 pattern. leadsAllThroughout_relabel specializes this: permuting opponent labels (via a function f fixing the leader) preserves the leading property. Part IV specializes to Fin m: FinSequence m, leader = 0 : Fin m, leaderVotes, opponentVotes, finLeadsAll.",
-    "mathContext": "leadsAllThroughout_of_same_projection: if project leader_a s = project leader_b t, then s.length = t.length (from project preserving length) and the prefix sums are identical (same projection → same take → same sum). leadsAllThroughout_relabel: project leader (s.map f) = project leader s when f leader = leader and f maps opponents to opponents. Proved via map_map and extensionality: at each position, f(v) ≠ leader iff v ≠ leader.",
+    "content": "The core structural result: leadsAllThroughout_of_same_projection states that if two multi-candidate sequences have the same \u00b11 projection, they have the same 'leads throughout' property. This is the mathematical content of the reduction \u2014 the leading condition is entirely determined by the \u00b11 pattern. leadsAllThroughout_relabel specializes this: permuting opponent labels (via a function f fixing the leader) preserves the leading property. Part IV specializes to Fin m: FinSequence m, leader = 0 : Fin m, leaderVotes, opponentVotes, finLeadsAll.",
+    "mathContext": "leadsAllThroughout_of_same_projection: if project leader_a s = project leader_b t, then s.length = t.length (from project preserving length) and the prefix sums are identical (same projection \u2192 same take \u2192 same sum). leadsAllThroughout_relabel: project leader (s.map f) = project leader s when f leader = leader and f maps opponents to opponents. Proved via map_map and extensionality: at each position, f(v) \u2260 leader iff v \u2260 leader.",
     "significance": "key",
     "relatedConcepts": [
       "leadsAllThroughout_of_same_projection",
@@ -106,10 +106,10 @@
       "startLine": 218,
       "endLine": 312
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Bridge to Mathlib's Classical Ballot Theorem",
-    "content": "Part V connects the multi-candidate projection to Mathlib's Ballot infrastructure: project_count_one proves count(+1, project leader s) = s.count leader; project_count_neg_one proves count(-1, project leader s) = s.length - s.count leader; project_mem_countedSequence proves project leader s ∈ Ballot.countedSequence a b when s has a leader votes and total length a+b. leadsAll_iff_projection_positive shows the leading property ↔ all prefix sums of the projected list are positive — exactly Mathlib's Ballot.staysPositive condition. Part VI proves basic bounds: denominator positivity and 0 ≤ (a-b)/(a+b) ≤ 1.",
-    "mathContext": "Ballot.countedSequence a b := {l : List ℤ | l.count 1 = a ∧ l.count (-1) = b ∧ ∀ x ∈ l, x = 1 ∨ x = -1}. project_mem_countedSequence: uses project_count_one + project_count_neg_one (proved by list induction) + project_mem_values. leadsAll_iff_projection_positive: (leadsAllThroughout leader s ↔ ...) unfolds to Iff.rfl since the definitions are definitionally equal via project_length. multi_candidate_ballot_bounds: 0 ≤ (a-b)/(a+b) ≤ 1 when b < a via div_nonneg and div_le_one.",
+    "content": "Part V connects the multi-candidate projection to Mathlib's Ballot infrastructure: project_count_one proves count(+1, project leader s) = s.count leader; project_count_neg_one proves count(-1, project leader s) = s.length - s.count leader; project_mem_countedSequence proves project leader s \u2208 Ballot.countedSequence a b when s has a leader votes and total length a+b. leadsAll_iff_projection_positive shows the leading property \u2194 all prefix sums of the projected list are positive \u2014 exactly Mathlib's Ballot.staysPositive condition. Part VI proves basic bounds: denominator positivity and 0 \u2264 (a-b)/(a+b) \u2264 1.",
+    "mathContext": "Ballot.countedSequence a b := {l : List \u2124 | l.count 1 = a \u2227 l.count (-1) = b \u2227 \u2200 x \u2208 l, x = 1 \u2228 x = -1}. project_mem_countedSequence: uses project_count_one + project_count_neg_one (proved by list induction) + project_mem_values. leadsAll_iff_projection_positive: (leadsAllThroughout leader s \u2194 ...) unfolds to Iff.rfl since the definitions are definitionally equal via project_length. multi_candidate_ballot_bounds: 0 \u2264 (a-b)/(a+b) \u2264 1 when b < a via div_nonneg and div_le_one.",
     "significance": "key",
     "relatedConcepts": [
       "Ballot.countedSequence",
@@ -121,7 +121,7 @@
     "prerequisites": [
       "Ballot.countedSequence structure in Mathlib",
       "List.count induction proofs",
-      "div_nonneg and div_le_one for ℚ bounds"
+      "div_nonneg and div_le_one for \u211a bounds"
     ],
     "proofId": "ballot-problem-oq-01-oq-02"
   },
@@ -133,8 +133,8 @@
     },
     "type": "concept",
     "title": "Fiber Analysis and the Main Theorem",
-    "content": "The projectionFiber of a ±1 target is the set of multi-candidate sequences projecting to it. fiber_same_length and fiber_same_leader_positions: sequences in the same fiber have the same length and agree on which positions have leader votes (proved by extracting from the projection). fiber_stays_iff_target: if s is in the fiber over target, then s ∈ multiStaysPositive ↔ target ∈ Ballot.staysPositive (proved by substituting project leader s = target). positive_fiber_dichotomy: each fiber is entirely inside or entirely outside multiStaysPositive. uniformOn_fiber_transfer (axiom): the uniform measure over multiCountedSequence transfers to countedSequence under projection. multi_candidate_ballot (main theorem): proved by applying the axiom then Ballot.ballot_problem.",
-    "mathContext": "multiCountedSequence m hm a b := {s : FinSequence m | s.count (leader m hm) = a ∧ s.length = a + b}. multiStaysPositive := {s | project leader s ∈ Ballot.staysPositive}. positive_fiber_dichotomy: if target ∈ staysPositive, multiPositiveFiber = multiProjectionFiber; if target ∉ staysPositive, multiPositiveFiber = ∅. multi_candidate_ballot proof: rw [uniformOn_fiber_transfer]; exact Ballot.ballot_problem b a hab — a 2-line proof once the axiom is in place.",
+    "content": "The projectionFiber of a \u00b11 target is the set of multi-candidate sequences projecting to it. fiber_same_length and fiber_same_leader_positions: sequences in the same fiber have the same length and agree on which positions have leader votes (proved by extracting from the projection). fiber_stays_iff_target: if s is in the fiber over target, then s \u2208 multiStaysPositive \u2194 target \u2208 Ballot.staysPositive (proved by substituting project leader s = target). positive_fiber_dichotomy: each fiber is entirely inside or entirely outside multiStaysPositive. uniformOn_fiber_transfer (axiom): the uniform measure over multiCountedSequence transfers to countedSequence under projection. multi_candidate_ballot (main theorem): proved by applying the axiom then Ballot.ballot_problem.",
+    "mathContext": "multiCountedSequence m hm a b := {s : FinSequence m | s.count (leader m hm) = a \u2227 s.length = a + b}. multiStaysPositive := {s | project leader s \u2208 Ballot.staysPositive}. positive_fiber_dichotomy: if target \u2208 staysPositive, multiPositiveFiber = multiProjectionFiber; if target \u2209 staysPositive, multiPositiveFiber = \u2205. multi_candidate_ballot proof: rw [uniformOn_fiber_transfer]; exact Ballot.ballot_problem b a hab \u2014 a 2-line proof once the axiom is in place.",
     "significance": "supporting",
     "relatedConcepts": [
       "projectionFiber",
@@ -159,8 +159,8 @@
     },
     "type": "concept",
     "title": "Fiber Bijection: Eliminating the Fiber Cardinality Axiom",
-    "content": "Part VIII-B constructs an explicit bijection between fibers. extractOpponents s target: extracts non-leader values from s at positions where target = -1. reconstructSeq target ops: rebuilds a sequence using leader at target=1 positions and consuming ops at target=-1 positions. fiberSwap t1 t2 s: extract opponents from s (using t1), then reconstruct using t2 pattern. Cancellation: reconstruct_extract_cancel (reconstruct ∘ extract = id on fibers), extract_reconstruct_cancel (extract ∘ reconstruct = id on opponent lists), fiberSwap_cancel (swap-swap = id when fiber members).",
-    "mathContext": "extractOpponents s target := (s.zip target).filterMap (if ·.2 = -1 then some ·.1 else none). reconstructSeq t ops: case split on t head being 1 (emit leader, recur on ops) or -1 (consume ops head, recur). reconstruct_extract_cancel proved by induction on s, case splitting on x = leader or x ≠ leader, using project_cons to determine the target head. fiberSwap_cancel requires: extractOpponents_nonleader (ops are non-leader), extractOpponents_count (ops length = target.count(-1)), and matching -1 counts between t1 and t2.",
+    "content": "Part VIII-B constructs an explicit bijection between fibers. extractOpponents s target: extracts non-leader values from s at positions where target = -1. reconstructSeq target ops: rebuilds a sequence using leader at target=1 positions and consuming ops at target=-1 positions. fiberSwap t1 t2 s: extract opponents from s (using t1), then reconstruct using t2 pattern. Cancellation: reconstruct_extract_cancel (reconstruct \u2218 extract = id on fibers), extract_reconstruct_cancel (extract \u2218 reconstruct = id on opponent lists), fiberSwap_cancel (swap-swap = id when fiber members).",
+    "mathContext": "extractOpponents s target := (s.zip target).filterMap (if \u00b7.2 = -1 then some \u00b7.1 else none). reconstructSeq t ops: case split on t head being 1 (emit leader, recur on ops) or -1 (consume ops head, recur). reconstruct_extract_cancel proved by induction on s, case splitting on x = leader or x \u2260 leader, using project_cons to determine the target head. fiberSwap_cancel requires: extractOpponents_nonleader (ops are non-leader), extractOpponents_count (ops length = target.count(-1)), and matching -1 counts between t1 and t2.",
     "significance": "supporting",
     "relatedConcepts": [
       "extractOpponents",
@@ -182,10 +182,10 @@
       "startLine": 760,
       "endLine": 877
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fiber Cardinality Theorem: All Fibers Have Equal ncard",
-    "content": "Part VIII-C proves fiber_card_uniform: for any two targets t1, t2 ∈ Ballot.countedSequence a b, the fiber sizes (Set.ncard) are equal. The proof: construct injections in both directions using fiberSwap (t1→t2 and t2→t1), then apply Set.ncard_le_ncard_of_injOn in both directions for equality. multiProjectionFiber_finite proves each fiber is a finite set (subset of fixed-length lists over Fin m, which is bounded by Set.finite_range of List.ofFn). This theorem completely proves the combinatorial content of uniformOn_fiber_transfer.",
-    "mathContext": "fiber_card_uniform: Set.ncard(multiProjectionFiber m hm1 a b t1) = Set.ncard(multiProjectionFiber m hm1 a b t2). Proof: inj12 := fiberSwap t1 t2 is Set.InjOn on fiber(t1) (from fiberSwap_cancel: swap-swap-cancel-from-t1 = id). maps12 := fiberSwap sends fiber(t1) to fiber(t2) (from fiberSwap_mem_multiProjectionFiber). Both directions give ncard ≤ in both ways. multiProjectionFiber_finite: {l : List (Fin m) | l.length = a+b} ⊆ Set.range (List.ofFn) — finite since List.ofFn ranges over finitely many (Fin (a+b) → Fin m) functions.",
+    "content": "Part VIII-C proves fiber_card_uniform: for any two targets t1, t2 \u2208 Ballot.countedSequence a b, the fiber sizes (Set.ncard) are equal. The proof: construct injections in both directions using fiberSwap (t1\u2192t2 and t2\u2192t1), then apply Set.ncard_le_ncard_of_injOn in both directions for equality. multiProjectionFiber_finite proves each fiber is a finite set (subset of fixed-length lists over Fin m, which is bounded by Set.finite_range of List.ofFn). This theorem completely proves the combinatorial content of uniformOn_fiber_transfer.",
+    "mathContext": "fiber_card_uniform: Set.ncard(multiProjectionFiber m hm1 a b t1) = Set.ncard(multiProjectionFiber m hm1 a b t2). Proof: inj12 := fiberSwap t1 t2 is Set.InjOn on fiber(t1) (from fiberSwap_cancel: swap-swap-cancel-from-t1 = id). maps12 := fiberSwap sends fiber(t1) to fiber(t2) (from fiberSwap_mem_multiProjectionFiber). Both directions give ncard \u2264 in both ways. multiProjectionFiber_finite: {l : List (Fin m) | l.length = a+b} \u2286 Set.range (List.ofFn) \u2014 finite since List.ofFn ranges over finitely many (Fin (a+b) \u2192 Fin m) functions.",
     "significance": "key",
     "relatedConcepts": [
       "Set.ncard_le_ncard_of_injOn",
@@ -210,7 +210,7 @@
     "type": "concept",
     "title": "Concrete Examples and Reference to Classical Theorem",
     "content": "Four concrete verifications using norm_num: (1) 3 candidates with votes (3,1,1): P = (3-2)/(3+2) = 1/5; (2) 4 candidates with votes (5,2,1,1): P = (5-4)/(5+4) = 1/9; (3) Unanimous (5,0,0): P = 1; (4) Close race (4,3): P = 1/7. A reference to Ballot.ballot_problem (Wiedijk #30) is included via #check. These examples demonstrate the formula's universality: the number of candidates m doesn't affect the answer, only the total votes a and b matter.",
-    "mathContext": "All examples are ℚ arithmetic: (3 - 2 : ℚ)/(3 + 2) = 1/5, etc., proved by norm_num. The reference #check @Ballot.ballot_problem shows the Mathlib type: uniformOn (countedSequence p q) staysPositive = (↑p - ↑q)/(↑p + ↑q). Note: the argument order in Ballot.ballot_problem is (b a hab) where hab : b < a, not (a b), which is why the proof has exact Ballot.ballot_problem b a hab.",
+    "mathContext": "All examples are \u211a arithmetic: (3 - 2 : \u211a)/(3 + 2) = 1/5, etc., proved by norm_num. The reference #check @Ballot.ballot_problem shows the Mathlib type: uniformOn (countedSequence p q) staysPositive = (\u2191p - \u2191q)/(\u2191p + \u2191q). Note: the argument order in Ballot.ballot_problem is (b a hab) where hab : b < a, not (a b), which is why the proof has exact Ballot.ballot_problem b a hab.",
     "significance": "supporting",
     "relatedConcepts": [
       "norm_num",
@@ -219,7 +219,7 @@
       "(a-b)/(a+b) formula"
     ],
     "prerequisites": [
-      "ℚ arithmetic (norm_num)",
+      "\u211a arithmetic (norm_num)",
       "Ballot.ballot_problem argument ordering (b a hab not a b hab)"
     ],
     "proofId": "ballot-problem-oq-01-oq-02"
@@ -231,12 +231,12 @@
       "endLine": 934
     },
     "type": "concept",
-    "title": "Open Challenge: Full Ordering via Lindström-Gessel-Viennot",
-    "content": "The harder multi-candidate question: given m candidates with votes a₁ > a₂ > ... > aₘ, what is the probability that the ordering is maintained at EVERY step? This involves non-intersecting lattice paths and the Lindström-Gessel-Viennot (LGV) lemma. The answer is the determinant of pairwise ballot ratios: det||(aᵢ-aⱼ)/(aᵢ+aⱼ)||. The file defines pairwiseRatio and threeCandidateProduct (for 3 candidates) and verifies threeCandidateProduct 4 2 1 = 1/15 via norm_num.",
-    "mathContext": "For the full ordering problem, the LGV lemma relates the probability of m non-intersecting lattice paths to a determinant of individual path probabilities. In the ballot context: each lattice path from (0,0) to (aᵢ+aⱼ, aᵢ-aⱼ) staying above the x-axis has probability (aᵢ-aⱼ)/(aᵢ+aⱼ). The determinant det||(aᵢ-aⱼ)/(aᵢ+aⱼ)||_{i,j} counts non-intersecting path configurations. threeCandidateProduct 4 2 1 = (2/6)·(1/3)·(3/5) = 1/15.",
+    "title": "Open Challenge: Full Ordering via Lindstr\u00f6m-Gessel-Viennot",
+    "content": "The harder multi-candidate question: given m candidates with votes a\u2081 > a\u2082 > ... > a\u2098, what is the probability that the ordering is maintained at EVERY step? This involves non-intersecting lattice paths and the Lindstr\u00f6m-Gessel-Viennot (LGV) lemma. The answer is the determinant of pairwise ballot ratios: det||(a\u1d62-a\u2c7c)/(a\u1d62+a\u2c7c)||. The file defines pairwiseRatio and threeCandidateProduct (for 3 candidates) and verifies threeCandidateProduct 4 2 1 = 1/15 via norm_num.",
+    "mathContext": "For the full ordering problem, the LGV lemma relates the probability of m non-intersecting lattice paths to a determinant of individual path probabilities. In the ballot context: each lattice path from (0,0) to (a\u1d62+a\u2c7c, a\u1d62-a\u2c7c) staying above the x-axis has probability (a\u1d62-a\u2c7c)/(a\u1d62+a\u2c7c). The determinant det||(a\u1d62-a\u2c7c)/(a\u1d62+a\u2c7c)||_{i,j} counts non-intersecting path configurations. threeCandidateProduct 4 2 1 = (2/6)\u00b7(1/3)\u00b7(3/5) = 1/15.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Lindström-Gessel-Viennot lemma",
+      "Lindstr\u00f6m-Gessel-Viennot lemma",
       "non-intersecting lattice paths",
       "determinant formula",
       "pairwiseRatio",

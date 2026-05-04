@@ -1,0 +1,160 @@
+{
+  "id": "lebesgue-measure-oq-01-oq-03",
+  "title": "Indicator of Any Null Set Has Zero Lebesgue Integral",
+  "slug": "lebesgue-measure-oq-01-oq-03",
+  "description": "The indicator function 𝟙_S of any measurable set S with Lebesgue measure zero has integral zero. This fully general result subsumes the Dirichlet function case (OQ-01, where S = ℚ) and extends it to arbitrary Borel null sets. 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Almost_everywhere",
+    "date": "2026-05-03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ03.lean",
+    "tags": [
+      "measure-theory",
+      "lebesgue-integral",
+      "null-sets",
+      "almost-everywhere",
+      "indicator-function",
+      "borel-sets",
+      "real-analysis"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 240,
+    "theoremCount": 15,
+    "definitionCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Fully machine-verified.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "indicator_ae_zero_of_null: μ(S)=0 implies 𝟙_S = 0 almost everywhere (core lemma)",
+      "integral_indicator_of_null: ∫ 𝟙_S dμ = 0 for any null set S (main theorem, any measure space)",
+      "integral_indicator_of_null_on_set: ∫_T 𝟙_S dμ = 0 for null S, any region T",
+      "integral_mul_indicator_of_null: ∫_T f·𝟙_S dμ = 0 for null S, arbitrary integrand f",
+      "integral_on_null_set: ∫_S f dμ = 0 for null S, any f (via restrict_zero_set)",
+      "integral_indicator_countable: countable sets in ℝ are null sets",
+      "integral_indicator_singleton: single points {a} have zero indicator integral",
+      "integral_indicator_rationals: the Dirichlet function result (OQ-01) as special case",
+      "measure_iUnion_null_of_null: countable union of null sets is a null set",
+      "integral_indicator_iUnion_null: union of null sets has zero indicator integral",
+      "integral_congr_ae_null_change: changing a function on a null set preserves the integral"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lebesgue integral was designed precisely to handle functions that agree almost everywhere as equivalent. Henri Lebesgue's 1902 theory treats two functions as having the same integral if they differ only on a measure-zero set — this is built into the very definition of L¹ as a space of equivalence classes. The principle that null sets are invisible to integration was the key insight distinguishing Lebesgue from Riemann integration. Riemann sums detect function values at every point, so a single badly-behaved point can ruin integrability; Lebesgue integration ignores what happens on any null set.\n\nThe Dirichlet function 𝟙_ℚ is the textbook example: it oscillates between 0 and 1 at every point (Riemann sums never converge), yet ∫ 𝟙_ℚ = 0 under Lebesgue integration because ℚ has measure zero. This OQ-01-OQ-03 result shows the same principle applies to ANY measurable null set, not just ℚ.",
+    "problemStatement": "Can the result from `lebesgue-measure-oq-01` (that the Dirichlet function 𝟙_ℚ has Lebesgue integral zero) be extended to show that the indicator of any Borel set with measure zero has integral zero?",
+    "proofStrategy": "The proof has three steps: (1) μ(S) = 0 implies that almost every x lies outside S, using `compl_mem_ae_iff.mpr`; (2) x ∉ S implies 𝟙_S(x) = 0 by definition; (3) a function that is 0 a.e. has integral 0, by `integral_eq_zero_of_ae`. The extension to restricted integrals uses `ae_restrict_of_ae`. The extension to arbitrary integrands on null sets uses `Measure.restrict_zero_set` and `integral_zero_measure`.",
+    "keyInsights": [
+      "**μ(S) = 0 ⟺ a.e. not in S**: The `compl_mem_ae_iff` equivalence is the key bridge from measure theory to the a.e. framework",
+      "**Bochner integral over zero measure is zero**: `integral_zero_measure` handles the general integrand case without any integrability hypothesis",
+      "**No MeasurableSet hypothesis needed**: For the forward direction (null → zero integral), measurability of S is not required",
+      "**The Dirichlet case is a special case**: ℚ is countable → measure zero → integral of 𝟙_ℚ is zero, all subsumed by the general theorem",
+      "**L¹ is a space of a.e.-equivalence classes**: This result is a cornerstone of why L¹(μ) is defined as equivalence classes rather than actual functions",
+      "**Five-part pedagogical hierarchy**: Parts I–V form a conceptual ladder from abstract (any measure space) to concrete (OQ-01 as corollary): Part I establishes the abstract result; Part II specializes to ℝ; Part III handles countable unions; Part IV reveals the a.e. invariance principle; Part V closes the loop by deriving OQ-01's Dirichlet result as a one-line corollary"
+    ],
+    "prerequisites": [
+      "Lebesgue measure on ℝ",
+      "Bochner integral",
+      "Almost everywhere (a.e.) properties",
+      "Indicator functions"
+    ]
+  },
+  "conclusion": {
+    "summary": "YES: the Dirichlet function result generalizes completely to any measurable null set. For any set S with μ(S) = 0, the indicator 𝟙_S equals 0 almost everywhere, and hence ∫ 𝟙_S dμ = 0. The result holds in any measure space, extends to restricted integrals over any region T, and subsumes countable sets (including ℚ), finite sets, singletons, and countable unions of null sets. 15 theorems proved, 0 sorries, 0 axioms.",
+    "implications": "This result is foundational for Lebesgue integration theory:\n\n- **L¹ theory**: Functions equal a.e. have the same integral; L¹(μ) consists of a.e.-equivalence classes\n- **Cantor set**: The Cantor set is closed, uncountable, and perfect, yet has measure zero; its indicator function integrates to zero\n- **Fubini-Tonelli**: Null sets in product measures correspond to a.e. negligible cross-sections\n- **Radon-Nikodym**: Absolutely continuous measures satisfy ν ≪ μ iff μ(S)=0 implies ν(S)=0",
+    "openQuestions": [
+      "Can the converse be formalized: for measurable S, if ∫ f·𝟙_S dμ = 0 for all bounded f, then μ(S) = 0?",
+      "Can the result be extended to the non-σ-finite setting using inner regularity of the Lebesgue measure?",
+      "Can the Cantor set's uncountability and measure-zero property be used in this framework to provide a machine-verified example showing that null sets can be uncountable?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "LebesgueMeasureOQ01OQ03",
+    "lineCount": 244,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0,
+    "path": "Proofs/LebesgueMeasureOQ01OQ03.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Tactic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-core",
+      "title": "Part I: Core Abstract Theorem",
+      "startLine": 58,
+      "endLine": 115,
+      "summary": "Core theorem in any measure space: μ(S)=0 → 𝟙_S = 0 a.e. → ∫ 𝟙_S = 0. Includes restricted variants and product integrand form.",
+      "mathContext": "For any measure space $(\\alpha, \\mathcal{M}, \\mu)$ and $S \\subseteq \\alpha$ with $\\mu(S) = 0$:\n$$\\int_\\alpha \\mathbf{1}_S \\, d\\mu = 0$$\nThe proof uses the equivalence $S^c \\in \\mu.ae \\iff \\mu(S) = 0$ and then $\\int_\\alpha \\mathbf{1}_{S} \\, d\\mu = 0$ by `integral_eq_zero_of_ae`."
+    },
+    {
+      "id": "sec-lebesgue",
+      "title": "Part II: Lebesgue Measure Specializations",
+      "startLine": 118,
+      "endLine": 158,
+      "summary": "Specializations to Lebesgue measure on ℝ: Borel null sets, countable sets, finite sets, singleton points, the rationals (Dirichlet function).",
+      "mathContext": "For Lebesgue measure $\\lambda$ on $\\mathbb{R}$: if $B$ is any Borel set with $\\lambda(B) = 0$, then $\\int_{\\mathbb{R}} \\mathbf{1}_B \\, d\\lambda = 0$. Countable sets are Borel and have $\\lambda = 0$."
+    },
+    {
+      "id": "sec-unions",
+      "title": "Part III: Countable Unions of Null Sets",
+      "startLine": 161,
+      "endLine": 183,
+      "summary": "Countable union of null sets is a null set; its indicator has zero integral.",
+      "mathContext": "$\\mu\\left(\\bigcup_{n} S_n\\right) = 0$ when each $\\mu(S_n) = 0$, so $\\int \\mathbf{1}_{\\bigcup S_n} \\, d\\mu = 0$."
+    },
+    {
+      "id": "sec-ae",
+      "title": "Part IV: Almost Everywhere Invariance",
+      "startLine": 186,
+      "endLine": 210,
+      "summary": "Changing a function on a null set doesn't affect the integral; a.e.-zero functions integrate to zero.",
+      "mathContext": "If $f = g$ off a null set $S$, then $\\int f \\, d\\mu = \\int g \\, d\\mu$. This is the abstract principle behind all null-set invisibility."
+    },
+    {
+      "id": "sec-subsumes",
+      "title": "Part V: Subsumes OQ-01 Results",
+      "startLine": 213,
+      "endLine": 240,
+      "summary": "Shows the Dirichlet function result (OQ-01) as a one-line corollary: ∫_{[0,1]} 𝟙_ℚ dλ = 0 via integral_indicator_of_null_on_set with S = ℚ. Closing SUMMARY comment lists all 15 theorems.",
+      "mathContext": "OQ-01 special case: $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} \\, d\\lambda = 0$. Proof: `Set.countable_range (Rat.cast : ℚ → ℝ) |>.measure_zero volume` gives $\\lambda(\\mathbb{Q}) = 0$, then `integral_indicator_of_null_on_set` closes the argument."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01",
+      "relationship": "parent",
+      "description": "Parent proof whose Dirichlet function result is subsumed by this general theorem"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Thomae's function also has zero integral by the same a.e. argument"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "related",
+      "description": "The parent gallery entry establishing basic Lebesgue measure properties"
+    }
+  ],
+  "references": [
+    {
+      "text": "Lebesgue, H. (1902). Intégrale, Longueur, Aire. Annali di Matematica. The original theory of Lebesgue integration.",
+      "url": "https://en.wikipedia.org/wiki/Lebesgue_integration"
+    },
+    {
+      "text": "Royden, H. L. & Fitzpatrick, P. (2010). Real Analysis (4th ed.). The standard treatment of null sets and a.e. convergence.",
+      "url": "https://en.wikipedia.org/wiki/Almost_everywhere"
+    },
+    {
+      "text": "Mathlib4: MeasureTheory.integral_eq_zero_of_ae, compl_mem_ae_iff, Measure.restrict_zero_set",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "sorries": 0
+}

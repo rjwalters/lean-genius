@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 261,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 22
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*, asking whether any polynomial of degree $\\geq 2$ can 'perfectly tile' the integers by translation. The question asks: given $f : \\mathbb{Z} \\to \\mathbb{Z}$ of degree $\\geq 2$, does there exist $A \\subseteq \\mathbb{Z}$ such that $\\mathbb{Z} = A \\oplus f(\\mathbb{Z})$? Sekanina (1959) had already shown this is impossible for $f(x) = x^2$ by analyzing the gap structure between consecutive squares. The problem connects to several deep areas: factorization of abelian groups (Hajós's theorem), the Coven-Meyerowitz conjecture on tiling $\\mathbb{Z}$ by finite sets, and additive combinatorics more broadly. The key difficulty is that polynomial images are sparse ($|f(\\mathbb{Z}) \\cap [-N,N]| = O(N^{1/d})$ for degree $d$), so any complement $A$ must have density approaching 1, yet must avoid double-covering any integer. The formalization is notable for containing many proved theorems (not just axioms), establishing structural properties of perfect complements.",

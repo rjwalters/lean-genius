@@ -30,7 +30,8 @@
     ],
     "lineCount": 190,
     "assumptions": "1 axiom: bollobas_erdos_theorem. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Bollobás and Erdős conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Turán's classical theorem on triangle-free graphs. Turán's theorem (1941) established that the complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph on n vertices maximizing the number of edges, at exactly ⌊n²/4⌋. The question posed by Bollobás and Erdős pushed beyond mere existence of triangles to ask about their concentration: once the Turán bound is exceeded, must some edge bear a disproportionate share of the triangle count? The answer n/6 is tight, achieved by graphs close to the balanced complete bipartite graph with a small clique added. Nikiforov subsequently extended these ideas into a broader program on the distribution of cliques above Turán thresholds.",

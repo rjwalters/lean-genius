@@ -1,0 +1,82 @@
+{
+  "id": "wilsons-theorem-oq-02-ext",
+  "title": "Gauss-Wilson Theorem: Non-Cyclic Product via Two-Involution Trick",
+  "slug": "wilsons-theorem-oq-02-ext",
+  "description": "Proves the non-cyclic case of the Gauss-Wilson theorem: when (ZMod n)× is not cyclic (n ≥ 3), the product of all units is 1 rather than -1. The key tool is the two-involution trick on the 2-torsion subgroup S = {x | x²=1}: two distinct FPF involutions on S both compute ∏S, forcing ∏S = 1. Combined with the cyclic case, this gives gaussWilson_abstract_ext: ∏(ZMod n)× = -1 iff (ZMod n)× is cyclic.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "lineCount": 539,
+    "leanFile": "proofs/Proofs/WilsonsTheoremOQ02Ext.lean",
+    "imports": [
+      "Mathlib.NumberTheory.Wilson",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.PrimeFin",
+      "Mathlib.Tactic",
+      "Proofs.GaussWilsonNonCyclic"
+    ],
+    "tags": ["number-theory", "group-theory", "wilson", "gauss-wilson", "cyclic-groups", "zmod"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "group-lemmas",
+      "title": "Group-Theoretic Lemmas",
+      "description": "Two foundational lemmas for commutative groups: mul_sq_eq_one (x² = 1 implies x = x⁻¹), and even_card_of_fpf_involution (a fixed-point-free involution on a finite set implies even cardinality). These are the building blocks for the two-involution trick.",
+      "theorems": ["mul_sq_eq_one", "even_card_of_fpf_involution"]
+    },
+    {
+      "id": "involution-product",
+      "title": "Product via FPF Involutions",
+      "description": "The core algebraic machinery: prod_involution_const shows that if σ is a FPF involution on a finite commutative group G with x·σ(x) = c for all x (a constant), then ∏G = c^(|G|/2). This is the abstract version of pairing each unit with its partner under the involution.",
+      "theorems": ["prod_involution_const"]
+    },
+    {
+      "id": "non-cyclic-case",
+      "title": "Non-Cyclic Units Have Trivial Product",
+      "description": "Three results building to the main theorem: card_sq_eq_one_ge_three_of_not_cyclic_zmod (imports GaussWilsonNonCyclic to get |S| ≥ 3), prod_eq_prod_sq_eq_one (reduces ∏(ZMod n)× to ∏S via involution pairing with -1), and prod_units_one_of_not_cyclic_ext (the two-involution argument: apply involution x↦cx and x↦cdx for distinct c,d ∈ S\\{1} to force ∏S = 1).",
+      "theorems": ["card_sq_eq_one_ge_three_of_not_cyclic_zmod", "prod_eq_prod_sq_eq_one", "prod_units_one_of_not_cyclic_ext"]
+    },
+    {
+      "id": "main-theorem",
+      "title": "Gauss-Wilson Characterization",
+      "description": "gaussWilson_abstract_ext: for n ≥ 3, ∏(ZMod n)ˣ = -1 ↔ (ZMod n)ˣ is cyclic. The two directions: (→) if (ZMod n)× is non-cyclic, the previous section gives ∏ = 1 ≠ -1; (←) the cyclic case follows from Mathlib's Wilson theorem infrastructure. This gives a complete group-theoretic characterization of the Gauss-Wilson product.",
+      "theorems": ["gaussWilson_abstract_ext"]
+    }
+  ],
+  "overview": {
+    "summary": "The Gauss-Wilson theorem (1801) characterizes when the product of all units mod n equals -1: exactly when n ∈ {1, 2, 4, p^k, 2p^k} for odd primes p — the same condition that makes (ZMod n)× cyclic. This file proves the harder direction: when (ZMod n)× is non-cyclic, the product is 1 (not -1). The key insight is the two-involution trick on the 2-torsion subgroup.",
+    "approach": "The two-involution trick: let S = {x ∈ (ZMod n)× | x² = 1}. By GaussWilsonNonCyclic, |S| ≥ 3 when non-cyclic. Pick distinct c, d ∈ S \\ {1}. The involution x ↦ cx is FPF on S with pair product x·cx = c (since c² = 1), so ∏S = c^(|S|/2). The involution x ↦ cdx is also FPF with pair product cd, so ∏S = (cd)^(|S|/2) = c^(|S|/2)·d^(|S|/2). Combining: d^(|S|/2) = 1. By symmetry c^(|S|/2) = 1, so ∏S = c^(|S|/2) = 1. Since ∏(ZMod n)× = ∏S · (product of units with x² ≠ 1 paired via x ↦ x⁻¹) = ∏S · 1 = 1.",
+    "significance": "The Gauss-Wilson theorem characterizes which moduli n have the property that the product of all invertible residues mod n is ≡ -1 (mod n). It is a generalization of Wilson's theorem (n prime: (p-1)! ≡ -1 mod p) and connects the group structure of (ZMod n)× to elementary number theory. The two-involution trick is a beautiful example of using group structure to compute a product without explicit enumeration."
+  },
+  "conclusion": {
+    "summary": "The non-cyclic case of the Gauss-Wilson theorem is machine-checked using the two-involution trick on the 2-torsion subgroup, giving a complete characterization: ∏(ZMod n)× = -1 iff (ZMod n)× is cyclic.",
+    "openQuestions": [
+      "Can the full Gauss-Wilson product formula (∏(ZMod n)× = -1 for n ∈ {1,2,4,p^k,2p^k} and 1 otherwise) be derived as a corollary?",
+      "Does the two-involution trick generalize to other finite abelian groups — is there a general criterion for when ∏G = 1 based on the 2-torsion structure?",
+      "Can this result be used to give a direct Lean 4 proof of quadratic reciprocity via the structure of (ZMod p)×?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "gauss-wilson-non-cyclic",
+      "relationship": "uses",
+      "description": "Imports GaussWilsonNonCyclic to obtain |{x | x²=1}| ≥ 3 in the non-cyclic case"
+    },
+    {
+      "targetId": "wilsons-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Extends the cyclic case infrastructure to prove the complete Gauss-Wilson characterization"
+    }
+  ]
+}

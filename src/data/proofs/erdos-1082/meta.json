@@ -56,7 +56,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 342,
-    "assumptions": "2 axioms: szemeredi_n_over_3, xichuan_counterexample. 0 sorries."
+    "assumptions": "2 axioms: szemeredi_n_over_3, xichuan_counterexample. 0 sorries.",
+    "theoremCount": 23
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1082: Distinct Distances in General Position**\n\nThis problem originates from combinatorial geometry and explores how many distinct distances must be determined by points in general position (no three collinear).\n\n**Historical Timeline:**\n- **Szemerédi (~1975):** Proved the n/3 bound - points in general position determine at least n/3 distinct distances. This was unpublished but cited in Erdős's 1975 paper. Szemerédi also proved that if no k points are collinear, some point determines ≫ n/k distances.\n- **Erdős (1975):** Conjectured the n/2 bound in \"On some problems of elementary and combinatorial geometry.\"\n- **Xichuan (2020s):** Provided a counterexample to the stronger form: 42 points where each point sees only 20 distinct distances.\n\nThe problem connects to the famous Erdős distinct distances problem, which Guth-Katz resolved in 2015 with an Ω(n/log n) bound.",

@@ -61,7 +61,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 186,
-    "assumptions": "1 axiom: laver_consistency (Laver's 1982 forcing result — consistency of ω₂ → (ω₁² + 1, α)² for all α < ω₂). This is a deep independence result requiring large cardinals and iterated forcing."
+    "assumptions": "1 axiom: laver_consistency (Laver's 1982 forcing result — consistency of ω₂ → (ω₁² + 1, α)² for all α < ω₂). This is a deep independence result requiring large cardinals and iterated forcing.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #1170 belongs to the ordinal partition calculus, a field initiated by Erdős and Rado in their landmark 1956 paper 'A partition calculus in set theory' (Bulletin of the AMS). While Ramsey's theorem (1930) addresses finite colorings, the Erdős-Rado program asked which infinite ordinals satisfy partition relations of the form $\\alpha \\to (\\beta)^n_k$. The simplest infinite case, $\\omega \\to (\\omega)^2_2$, was proved by Ramsey himself, but the situation for uncountable ordinals is far more subtle and deeply connected to the axioms of set theory. Problem #1170 asks whether $\\omega_2$ can have the strongest possible 2-color partition property for pairs: for every $\\alpha < \\omega_2$, any 2-coloring of $[\\omega_2]^2$ yields a homogeneous set of order type $\\alpha$. Richard Laver (1982) proved a partial result using iterated Sacks forcing: it is consistent (relative to large cardinals) that the weaker *polarized* relation $\\omega_2 \\to (\\omega_1^2 + 1, \\alpha)^2$ holds for all $\\alpha < \\omega_2$. Foreman and Hajnal (2003) later extended and refined Laver's method. However, the full *balanced* question — requiring the same order type for both colors — remains open and is considered one of the fundamental problems in infinitary combinatorics.",

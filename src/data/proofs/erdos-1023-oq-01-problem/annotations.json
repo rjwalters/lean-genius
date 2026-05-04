@@ -1,0 +1,173 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "erdos-1023-oq-01-problem",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Union-Free Families: Erdős #1023 Extensions",
+    "content": "Erdős problem #1023 asks for the maximum size of a **union-free** family $\\mathcal{F} \\subseteq 2^{[n]}$: a family where no set $A \\in \\mathcal{F}$ equals the union of other members $B_1 \\cup B_2$. The answer is $\\binom{n}{\\lfloor n/2 \\rfloor}$, achieved by the middle layer (all sets of size $\\lfloor n/2 \\rfloor$).\n\nThis file (OQ-01) extends the problem in two directions:\n1. **k-union-free**: forbid $A = B_1 \\cup \\cdots \\cup B_k$ for exactly $k$ other members\n2. **Intersection-free**: the dual notion — forbid $A = B_1 \\cap \\cdots \\cap B_m$ for other members\n\nThe module imports `Finset.Powerset` and `Nat.Choose.Central` for the middle-layer construction. The abbreviation `SetFamily n = Finset (Finset (Fin n))` makes all families explicitly finite, enabling cardinality reasoning.",
+    "mathContext": "Union-free families lie in the hierarchy: (antichains) $\\subsetneq$ (union-free families) $\\subsetneq$ (2-union-free) $\\subsetneq$ (3-union-free) $\\subsetneq \\cdots$. Antichains are the most restrictive: no $A \\subsetneq B$. Union-free is less restrictive: $A$ can have a proper subset in $\\mathcal{F}$, but cannot equal the union of any subset of $\\mathcal{F}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "extremal set theory",
+      "boolean lattice",
+      "union-free families",
+      "Sperner's theorem"
+    ],
+    "prerequisites": [
+      "Finset and SetFamily in Lean 4",
+      "Finset.powerset and Finset.card",
+      "Nat.choose and central binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-core-definitions",
+    "proofId": "erdos-1023-oq-01-problem",
+    "range": {
+      "startLine": 26,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Seven Definitions: SetFamily Constraints",
+    "content": "Seven core definitions establish the family of constraints studied:\n\n**Union operations**:\n- `familyUnion F = F.sup id`: the union $\\bigcup_{A \\in \\mathcal{F}} A$ as a `Finset.sup`\n- `familyInter F hF = F.inf' hF id`: the intersection $\\bigcap_{A \\in \\mathcal{F}} A$ (requires nonemptiness `hF`)\n\n**Family properties**:\n- `isAntichain F`: $\\forall A, B \\in \\mathcal{F},\\ A \\subseteq B \\Rightarrow A = B$ (no proper inclusions)\n- `isUnionFree F`: no $A \\in \\mathcal{F}$ equals the union of a sub-family $G \\subseteq \\mathcal{F} \\setminus \\{A\\}$ with $|G| \\geq 2$\n- `isKUnionOf k A F`: $A$ is the union of exactly $k$ members of $F$ (not including $A$)\n- `isKUnionFree k F`: no member is the union of exactly $k$ others\n- `isInterOf A F`, `isInterFree F`: the intersection-free versions\n- `isKInterOf`, `isKInterFree`: k-intersection variants\n\nThe `Finset.erase A` in the definitions removes $A$ from the witnessing subfamily, ensuring we don't trivially satisfy $A = A$.",
+    "mathContext": "`familyUnion F = F.sup id` uses `Finset.sup` with identity function: $\\bigsqcup_{A \\in F} A$ in the `SemilatticeSup` structure on `Finset (Fin n)`. Similarly `familyInter` uses `Finset.inf'` (which requires nonemptiness) since intersection of the empty family would be the entire set. The `isKUnionOf k A F` definition: $\\exists G \\subseteq F,\\ |G| = k \\wedge A \\notin G \\wedge \\bigcup G = A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sup and Finset.inf'",
+      "antichain in poset",
+      "Sperner family",
+      "Finset.erase"
+    ],
+    "prerequisites": [
+      "Finset.sup (semilattice sup)",
+      "Finset.inf' (nonempty intersection)",
+      "Boolean lattice 2^[n]"
+    ]
+  },
+  {
+    "id": "ann-antichain-kunion-free",
+    "proofId": "erdos-1023-oq-01-problem",
+    "range": {
+      "startLine": 51,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Antichains are k-Union-Free: Subset Forcing",
+    "content": "Theorem `antichain_kUnionFree`: for any $k \\geq 2$, every antichain is k-union-free.\n\n**Proof structure**: Suppose $\\mathcal{F}$ is an antichain and $A \\in \\mathcal{F}$ with $A = B_1 \\cup \\cdots \\cup B_k$ for $B_i \\in \\mathcal{F} \\setminus \\{A\\}$. By `mem_sub_familyUnion`, each $B_i \\subseteq \\bigcup G = A$. So $B_i \\subseteq A$ and $B_i, A \\in \\mathcal{F}$. The antichain property gives $B_i = A$. But $B_i \\in G$ and $A \\notin G$ (by `isKUnionOf` definition), so $B_i \\neq A$. Contradiction.\n\n**Why the contradiction works**: The assumption $A \\notin G$ combined with $B_i = A$ (forced by antichain) gives `hAG (hBeqA B hB ▸ hB)` — the Lean proof rewrites $B = A$ in the membership `hB : B ∈ G` to get `A ∈ G`, contradicting `hAG : A ∉ G`.\n\n**Hierarchy**: `unionFree_implies_kUnionFree` derives k-union-free from plain union-free by noting $|G| = k \\geq 2$ satisfies the `|G| ≥ 2` condition in `isUnionFree`.",
+    "mathContext": "The key lemma `mem_sub_familyUnion: B ∈ F → B ⊆ familyUnion F` says $B \\in \\mathcal{F} \\Rightarrow B \\subseteq \\bigcup_{A \\in \\mathcal{F}} A$. Proof: `intro x hx; exact mem_sup.mpr ⟨B, hB, hx⟩` — an element of $B$ is in $\\bigcup \\mathcal{F}$ by `Finset.mem_sup`.\n\nThe proof handles the empty-$G$ case: if $G = \\emptyset$, then `G.card = 0` contradicts `hGcard : G.card = k ≥ 2`. The `by_contra hne; rw [← ne_eq, ← nonempty_iff_ne_empty]` extracts a witness $B \\in G$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.mem_sup",
+      "antichain forcing argument",
+      "Finset.erase membership",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "isAntichain definition",
+      "Finset.mem_sup",
+      "nonempty_iff_ne_empty"
+    ]
+  },
+  {
+    "id": "ann-intersection-free",
+    "proofId": "erdos-1023-oq-01-problem",
+    "range": {
+      "startLine": 75,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "Antichains are Intersection-Free: Dual Argument",
+    "content": "Theorem `antichain_interFree`: every antichain is intersection-free.\n\n**Proof structure** (dual to union-free): Suppose $A = B_1 \\cap \\cdots \\cap B_m$ for $B_i \\in \\mathcal{F} \\setminus \\{A\\}$. For the intersection, `Finset.inf'_le id hB : familyInter G hG ≤ B` gives $\\bigcap G \\subseteq B$ for any $B \\in G$. So $A = \\bigcap G \\subseteq B_i$. Antichain with $A \\subseteq B_i$ and both in $\\mathcal{F}$ forces... wait: we need $B_i \\subseteq A$ or $A = B_i$. Since antichain says $A \\subseteq B_i \\Rightarrow A = B_i$, we get $B_i = A$. But $A \\notin G$, so $B_i \\neq A$. Contradiction.\n\n**Note on `hanti` orientation**: The antichain definition `isAntichain F` says $A \\subseteq B \\Rightarrow A = B$ (the smaller set equals the larger). In the intersection case, $A \\subseteq B_i$, so `hanti A hA B_i (mem_erase.mp (hGsub hB)).2 (hAsubB B_i hB)` gives $A = B_i$, then `.symm` gives $B_i = A$.\n\n**Hierarchy**: `interFree_implies_kInterFree` and `antichain_kInterFree` work by the same argument as the union case.",
+    "mathContext": "`Finset.inf'_le (id : Finset (Fin n) → Finset (Fin n)) hB : F.inf' hF id ≤ B` encodes $\\bigcap_{X \\in F} X \\subseteq B$ for any $B \\in F$. This is the dual of `Finset.le_sup` / `mem_sub_familyUnion`. The proof uses `rw [← hGinter]` to unfold $A = \\text{familyInter}\\;G\\;hG$ before applying `inf'_le`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.inf' and inf'_le",
+      "De Morgan duality",
+      "intersection-closed families",
+      "antichain in lattice"
+    ],
+    "prerequisites": [
+      "Finset.inf' (nonempty intersection)",
+      "Finset.inf'_le",
+      "isAntichain definition"
+    ]
+  },
+  {
+    "id": "ann-middle-layer",
+    "proofId": "erdos-1023-oq-01-problem",
+    "range": {
+      "startLine": 120,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "Middle Layer: Maximum Antichain of Size C(n, n/2)",
+    "content": "Definition `middleLayer n = univ.powerset.filter (fun A => A.card = n / 2)`: all subsets of `Fin n` of size exactly $\\lfloor n/2 \\rfloor$.\n\n**`middleLayer_card`**: Uses `Finset.card_filter` to count elements of `univ.powerset` (all $2^n$ subsets) with cardinality $n/2$. The result is `Nat.choose n (n/2)` via `Fintype.card_fin`.\n\n**`middleLayer_antichain`**: If $A \\subseteq B$ and $|A| = |B| = n/2$, then `eq_of_subset_of_card_le hAB (hA.2 ▸ hB.2 ▸ le_refl _)` gives $A = B$. This is the minimal cardinality argument: a subset of equal cardinality to the superset must equal it.\n\n**Corollaries** (all one-liners): `middleLayer_kUnionFree`, `middleLayer_interFree`, `middleLayer_kInterFree` — all follow by combining `middleLayer_antichain` with the earlier antichain theorems via function composition.",
+    "mathContext": "Sperner (1928): the maximum antichain in $2^{[n]}$ has size $\\binom{n}{\\lfloor n/2 \\rfloor}$. The LYM inequality proof: for any antichain $\\mathcal{F}$, $\\sum_{A \\in \\mathcal{F}} \\binom{n}{|A|}^{-1} \\leq 1$, so $|\\mathcal{F}| \\leq \\max_k \\binom{n}{k} = \\binom{n}{\\lfloor n/2 \\rfloor}$. The present formalization only proves the middle layer IS an antichain of size $\\binom{n}{\\lfloor n/2 \\rfloor}$; proving it is the MAXIMUM requires LYM (not formalized here).\n\n`Nat.choose n (n/2)` is `Nat.centralBinom` for even $n$. The `simp [middleLayer, Finset.card_filter, Fintype.card_fin]` proof works because `univ.powerset.filter (·.card = n/2)` has exactly $\\binom{n}{n/2}$ elements by Mathlib's `Nat.card_subsets_of_card_eq`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sperner's theorem",
+      "LYM inequality",
+      "Nat.centralBinom",
+      "Finset.card_filter",
+      "maximum antichain"
+    ],
+    "prerequisites": [
+      "Finset.card_filter",
+      "Fintype.card_fin",
+      "eq_of_subset_of_card_le",
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-complement-duality",
+    "proofId": "erdos-1023-oq-01-problem",
+    "range": {
+      "startLine": 143,
+      "endLine": 185
+    },
+    "type": "insight",
+    "title": "Complement Duality: De Morgan in the Boolean Lattice",
+    "content": "The **complement map** $A \\mapsto [n] \\setminus A$ (`setComplement A = univ \\ A`) is a lattice anti-automorphism of $(2^{[n]}, \\subseteq)$:\n- **Involution**: $\\overline{\\bar{A}} = A$ — `setComplement_involutive`\n- **Order-reversing**: $A \\subseteq B \\Rightarrow \\bar{B} \\subseteq \\bar{A}$ — `setComplement_antitone` \n- **Injective**: $\\bar{A} = \\bar{B} \\Rightarrow A = B$ — `setComplement_injective`\n\nThe **complement family** $\\bar{\\mathcal{F}} = \\{\\bar{A} : A \\in \\mathcal{F}\\}$ (`complementFamily F = F.image setComplement`) satisfies:\n- `complementFamily_card`: $|\\bar{\\mathcal{F}}| = |\\mathcal{F}|$ (injective map preserves cardinality)\n- `complementFamily_involutive`: $\\overline{\\bar{\\mathcal{F}}} = \\mathcal{F}$\n- `complementFamily_antichain`: if $\\mathcal{F}$ is antichain, so is $\\bar{\\mathcal{F}}$\n\nThe last theorem is the **De Morgan antichain duality**: $\\mathcal{F}$ has no $A \\subsetneq B$ iff $\\bar{\\mathcal{F}}$ has no $\\bar{B} \\subsetneq \\bar{A}$.",
+    "mathContext": "`complementFamily_antichain` proof: suppose $\\text{compl}(A') \\subseteq \\text{compl}(B')$ in $\\bar{\\mathcal{F}}$. By `setComplement_antitone` applied to `compl(A') ⊆ compl(B')`: $\\text{compl}(\\text{compl}(B')) \\subseteq \\text{compl}(\\text{compl}(A'))$, i.e., $B' \\subseteq A'$ (via `setComplement_involutive`). Original antichain gives $B' = A'$. Therefore $\\text{compl}(A') = \\text{compl}(B')$.\n\nThe full De Morgan law: $\\overline{A \\cup B} = \\bar{A} \\cap \\bar{B}$ means $\\mathcal{F}$ is union-free iff $\\bar{\\mathcal{F}}$ is intersection-free. This is stated but not proved in the summary comment — it would follow from `setComplement_antitone` applied to the union relation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "De Morgan's laws",
+      "lattice anti-automorphism",
+      "setComplement_antitone",
+      "complementFamily involution",
+      "Boolean algebra"
+    ],
+    "prerequisites": [
+      "sdiff_subset_sdiff (Finset)",
+      "Finset.image_image",
+      "card_image_of_injective"
+    ]
+  },
+  {
+    "id": "ann-open-directions",
+    "proofId": "erdos-1023-oq-01-problem",
+    "range": {
+      "startLine": 186,
+      "endLine": 244
+    },
+    "type": "concept",
+    "title": "Summary and Open Directions",
+    "content": "The closing summary lists all 7 definitions and 16 theorems (the file proves 18 total; some minor lemmas are not listed). The three open directions call out:\n\n1. **Full De Morgan duality**: $\\mathcal{F}$ union-free $\\Leftrightarrow$ $\\bar{\\mathcal{F}}$ intersection-free. The forward direction: if $A = B_1 \\cup B_2 \\in \\mathcal{F}$, then $\\bar{A} = \\bar{B_1} \\cap \\bar{B_2}$ with $\\bar{B_i} \\in \\bar{\\mathcal{F}}$, making $\\bar{\\mathcal{F}}$ intersection-closed. The full proof requires `Finset.compl_union` and matching the `isInterOf` definition.\n\n2. **Maximum k-union-free family**: Is $\\binom{n}{\\lfloor n/2 \\rfloor}$ still the maximum for k-union-free families with $k \\geq 3$? For $k=2$ this follows from the base Erdős #1023 result + hierarchy. For $k \\geq 3$, the bound may be larger since $k$-union-free is a weaker condition.\n\n3. **Maximum intersection-free family**: By De Morgan duality, the maximum intersection-free family equals the maximum union-free family = $\\binom{n}{\\lfloor n/2 \\rfloor}$ (if the duality is proved). The middle layer, being simultaneously union-free and intersection-free, achieves both bounds.",
+    "mathContext": "The 16 theorems listed omit 2 lemmas: `mem_sub_familyUnion` (a helper lemma) and `complementFamily_middleLayer_antichain` (a one-line corollary). The namespace ends at line 244 with `end Erdos1023OQ01`. The module has no `#check` or `#eval` commands — all theorems are proved inline without interactive verification beyond Lean's kernel check.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.compl_union",
+      "De Morgan duality for set families",
+      "maximum constrained families",
+      "Frankl's union-closed conjecture"
+    ],
+    "prerequisites": [
+      "isKUnionFree and isInterFree definitions",
+      "complementFamily theorems"
+    ]
+  }
+]

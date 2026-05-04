@@ -17,7 +17,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 142,
+    "lineCount": 534,
     "originalContributions": [
       "dvd_iff_dvd_altDigitSum: general alternating block divisibility rule",
       "seven_dvd_iff_altDigitSum: 7 | n iff 7 | alternating sum of 3-digit blocks",
@@ -26,7 +26,8 @@
       "hundredone_dvd_iff_altDigitSum: div-by-101 via 2-digit blocks"
     ],
     "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified.",
-    "dateAdded": "2026-04-12"
+    "dateAdded": "2026-04-12",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Divisibility rules have been studied since antiquity. The rules for 3 and 9 (digit sum) and for 11 (alternating digit sum) were well known in medieval Islamic and European arithmetic. The rule for 7 is less famous because 7 does not divide 10ʰⁿ−1 for small n (unlike 9 or 11). The key fact 1000 ≡ −1 (mod 7) appears in 19th-century textbooks as a curiosity. Its unification with the 11-rule (using 10 ≡ −1 mod 11) and 13-rule (using 1000 ≡ −1 mod 13) into a single general theorem is a clean result of modern modular arithmetic. The surprising connection: 7 × 11 × 13 = 1001, so 1001 ≡ 0 (mod 7,11,13), making 1000 ≡ −1 modulo all three simultaneously.",
@@ -50,7 +51,7 @@
       "Proofs.DivisibilityRules"
     ],
     "namespace": "DivisibilityRulesOQ02",
-    "lineCount": 142,
+    "lineCount": 534,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0,

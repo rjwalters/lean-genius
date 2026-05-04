@@ -21,7 +21,8 @@
     "assumptions": "1 axiom: sizeRamsey (general size-Ramsey theorem). Other open questions (Q3, K33 linearity) are stated as open Lean propositions, not axioms.",
     "proofRepoPath": "Proofs/Erdos567Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 90
+    "lineCount": 90,
+    "theoremCount": 0
   },
   "sections": [
     {
@@ -131,7 +132,6 @@
     "axiomCount": 1,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 5,
     "imports": [
       "Mathlib.Tactic",
       "Mathlib.Data.Nat.Basic",

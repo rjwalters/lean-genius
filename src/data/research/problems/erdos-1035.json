@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0A, 17T proved, 0S. Repaired 4 Mathlib API drift sites and added hypercube_n_edge_count (Q_n has n·2^n directed edges for all n, generalizing the native_decide checks for n=2 and n=3).",
+    "progressSummary": "COMPLETE: 0A, 20T proved, 0S. Added hypercube_handshaking (2|E|=n·2^n via Mathlib degree-sum formula) and hypercube_bipartite (Q_n is 2-colorable via bit-count parity coloring, proved using Nat.testBit XOR lemmas).",
     "builtItems": [
       "Proved hypercube_self_subgraph via identity embedding",
       "Proved complete_contains_hypercube via identity + adjacency condition",
@@ -67,7 +67,11 @@
       "hypercube_adj_of_flip: every neighbor comes from a bit flip",
       "hypercube_flip_injective: distinct bits give distinct neighbors",
       "hypercube_n_regular_general: Q_n is n-regular for all n",
-      "hypercube_n_edge_count: Q_n has n·2^n directed edges for all n (bijection with Fin(2^n) × Fin n)"
+      "hypercube_n_edge_count: Q_n has n·2^n directed edges for all n (bijection with Fin(2^n) × Fin n)",
+      "hypercube_handshaking: 2·|E(Q_n)| = n·2^n (handshaking/degree-sum formula via sum_degrees_eq_twice_card_edges)",
+      "hypercubeBitCount: helper def, counts set bits in first n positions via Finset.sum testBit",
+      "hypercubeColor: 2-coloring of Q_n by bit-count parity (value in Fin 2)",
+      "hypercube_bipartite: Q_n is IsBipartite (Colorable 2) via explicit Coloring.mk with bit-count parity"
     ],
     "insights": [
       "ContainsAsSubgraph with id embedding trivially proves self-containment",
@@ -127,7 +131,7 @@
     {
       "path": "Proofs/Erdos1035Problem.lean",
       "filename": "Erdos1035Problem.lean",
-      "lineCount": 296,
+      "lineCount": 297,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 8,

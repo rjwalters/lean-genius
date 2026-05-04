@@ -1,0 +1,175 @@
+[
+  {
+    "id": "imports",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 8
+    },
+    "type": "concept",
+    "title": "Imports: Inheriting Two Completed Proofs",
+    "content": "This file imports both InfinitudePrimes4k3 and InfinitudePrimes4k1 — the two sibling proofs that establish infinitely many primes ≡ 3 and ≡ 1 (mod 4) respectively. The OQ-03 file acts as an integration layer: all four theorems here are either direct delegations or conjunctions of results from these two files. Nat.NumberTheory.SumTwoSquares provides Euler's criterion (Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one), which is the key Mathlib theorem underlying InfinitudePrimes4k1's proof that primes dividing k² + 1 must be ≡ 1 (mod 4).",
+    "mathContext": "The dependency graph: OQ-03 imports Primes4k1 (proves $\\{p \\mid p\\equiv 1\\pmod 4\\}$ infinite) and Primes4k3 (proves $\\{p \\mid p\\equiv 3\\pmod 4\\}$ infinite). Both lean on `Mathlib.NumberTheory.SumTwoSquares` for Euler's criterion: $\\left(\\frac{-1}{p}\\right)=1 \\Leftrightarrow p\\equiv 1\\pmod 4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 imports",
+      "module composition",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Euler's criterion"
+    ],
+    "prerequisites": [
+      "InfinitudePrimes4k1",
+      "InfinitudePrimes4k3",
+      "Lean 4 import system"
+    ]
+  },
+  {
+    "id": "oq-answer",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Answering OQ-03: Elementary ≡ 1 (mod 4) Proof",
+    "content": "OQ-03 from infinitude-primes-4k3 asks whether the Euclid-style argument for ≡ 3 (mod 4) can be adapted to ≡ 1 (mod 4). The answer is yes, but the construction differs: instead of N = 4(n+1)! − 1, we use N = (2(n+1)!)² + 1. The ≡ 3 proof exploits that products of residues ≡ 1 (mod 4) stay ≡ 1, forcing a prime factor ≡ 3. For ≡ 1, the key is that any prime p dividing k² + 1 must have −1 as a quadratic residue mod p, which by Euler's criterion forces p ≡ 1 (mod 4). This difference (elementary product argument vs. quadratic residue theory) is what makes the ≡ 1 case slightly deeper.",
+    "mathContext": "For $N = (2(n+1)!)^2 + 1$: any odd prime $p \\mid N$ satisfies $(2(n+1)!)^2 \\equiv -1 \\pmod p$, so $\\left(\\frac{-1}{p}\\right) = 1$. Euler's criterion: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, which equals 1 iff $p \\equiv 1 \\pmod 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "quadratic residues",
+      "Legendre symbol",
+      "Euclid's proof of infinitely many primes",
+      "Fermat's theorem on sums of two squares",
+      "quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "quadratic reciprocity basics",
+      "Nat.Prime",
+      "Legendre symbol definition"
+    ]
+  },
+  {
+    "id": "comparison-table",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 26,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "Two Parallel Constructions: ≡ 3 vs ≡ 1 (mod 4)",
+    "content": "The module comment compares both constructions side-by-side and states the complete classification. For ≡ 3: N = 4(n+1)! − 1 is ≡ 3 (mod 4), and since a product of ≡ 1 numbers is ≡ 1, N must have a prime factor ≡ 3 (mod 4). For ≡ 1: N = (2(n+1)!)² + 1 has an odd prime factor p, and since p | k² + 1, we have −1 ≡ k² (mod p), so −1 is a QR mod p, forcing p ≡ 1 (mod 4). In both cases, the new prime p > n follows by the same contradiction argument. The complete picture: together InfinitudePrimes4k3 and InfinitudePrimes4k1 classify all odd primes mod 4 — both classes are infinite, every odd prime belongs to exactly one, and 2 is the unique even prime.",
+    "mathContext": "\\begin{array}{l|l|l} & p \\equiv 3 \\pmod 4 & p \\equiv 1 \\pmod 4 \\\\ \\hline N & 4(n+1)!-1 & (2(n+1)!)^2+1 \\\\ \\text{Key lemma} & \\prod_{p_i\\equiv 1} \\equiv 1 & (-1/p)=1 \\Rightarrow p\\equiv 1 \\\\ \\text{p > n} & p\\mid (n+1)! \\Rightarrow p\\mid 1 & \\text{same} \\end{array}",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclid's argument",
+      "Dirichlet's theorem",
+      "arithmetic progressions",
+      "product of residues"
+    ],
+    "prerequisites": [
+      "mod 4 arithmetic",
+      "Nat.dvd_factorial",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "infinitely_many_primes_1_mod_4 — Delegation Pattern",
+    "content": "The main theorem is a one-line delegation to InfinitudePrimes4k1.infinitely_many_primes_1_mod_4. This is the correct design: the actual proof lives in InfinitudePrimes4k1.lean, which is imported here. The OQ-03 file serves as a wrapper that packages the result in the context of the parent proof's open question. The Lean proof term is simply an identifier — no tactics needed — making it maximally transparent. The InfinitudePrimes4k1 proof internally uses Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one from Mathlib's SumTwoSquares module to apply Euler's criterion.",
+    "mathContext": "\\forall n \\in \\mathbb{N},\\; \\exists p \\text{ prime},\\; p > n \\wedge p \\equiv 1 \\pmod 4. \\text{ Proof: take } N = (2(n+1)!)^2+1, \\text{ find odd prime } p \\mid N, \\text{ then } p \\equiv 1 \\pmod 4 \\text{ by Euler's criterion, and } p > n \\text{ by divisibility contradiction.}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "SumTwoSquares",
+      "Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one",
+      "proof delegation",
+      "Fermat's theorem on sums of two squares",
+      "Gaussian integers"
+    ],
+    "prerequisites": [
+      "InfinitudePrimes4k1",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "quadratic residues"
+    ]
+  },
+  {
+    "id": "classification-theorem",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 68,
+      "endLine": 82
+    },
+    "type": "insight",
+    "title": "Both Classes Infinite and Complete mod-4 Classification",
+    "content": "Two theorems complete the mod-4 picture. both_classes_infinite packages the conjunction of InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite — both residue classes {p prime | p ≡ 1 mod 4} and {p prime | p ≡ 3 mod 4} are Set.Infinite. odd_prime_mod_four_classification delegates to prime_mod_four from InfinitudePrimes4k3: every odd prime satisfies p % 4 ∈ {1, 3} since p odd means p % 2 = 1, forcing p % 4 ∈ {1, 3}. Together these give the complete elementary classification of primes by residue mod 4 — all without Dirichlet L-functions.",
+    "mathContext": "Every prime $p$ belongs to exactly one of: $\\{2\\}$, $\\{p: p\\equiv 1\\pmod 4\\}$, $\\{p: p\\equiv 3\\pmod 4\\}$. Together: $\\{\\text{primes}\\} = \\{2\\} \\cup \\{p: 4\\mid p-1\\} \\cup \\{p: 4\\mid p-3\\}$ — a complete partition, the mod-4 special case of Dirichlet's theorem proved elementarily.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet's theorem",
+      "arithmetic progressions",
+      "Set.Infinite",
+      "modular arithmetic classification"
+    ],
+    "prerequisites": [
+      "InfinitudePrimes4k3",
+      "InfinitudePrimes4k1",
+      "Set.Infinite API"
+    ]
+  },
+  {
+    "id": "constructions-cover",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 84,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "constructions_cover_all_odd_primes: rcases Pattern for Classification",
+    "content": "The final theorem constructions_cover_all_odd_primes is the most structurally interesting: given any odd prime p, it exhibits a witness showing p lies in an infinite family. The proof uses `rcases InfinitudePrimes4k3.prime_mod_four hp hp2 with h1 | h3` to split on whether p ≡ 1 or p ≡ 3 (mod 4), then `refine ⟨h1, 0, p, hp, hp.two_le, h1, rfl⟩` to provide the witness n=0 (any n works since p > n=0 is p.two_le ≥ 2 > 0). The statement uses a disjunctive type `A ∨ B` with existential witnesses, which is idiomatic Lean for 'the prime belongs to one of two infinite families, and here is the witness'. This pattern shows both sets are covering families, not just abstract infinite sets.",
+    "mathContext": "$\\forall p$ prime, $p \\neq 2$: $(p\\%4=1 \\wedge \\exists n,q:q>n \\wedge q\\%4=1 \\wedge q=p) \\vee (p\\%4=3 \\wedge \\exists n,q:q>n \\wedge q\\%4=3 \\wedge q=p)$. Witness: $n=0$, $q=p$; valid since $p \\geq 2 > 0 = n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rcases tactic",
+      "refine with anonymous constructor",
+      "disjunctive types",
+      "existential witness"
+    ],
+    "prerequisites": [
+      "odd_prime_mod_four_classification",
+      "InfinitudePrimes4k3.prime_mod_four",
+      "Lean 4 rcases pattern matching"
+    ]
+  },
+  {
+    "id": "set-infinite-api",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 72,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Set.Infinite: The Lean 4 / Mathlib API for Infinite Sets",
+    "content": "In Mathlib, `Set.Infinite S` is the proposition that a set S is not finite — equivalently, for every n, S contains more than n elements. It is weaker than `S ≃ ℕ` (countably infinite) and avoids issues with choice axioms. The proof of `both_classes_infinite` is a conjunction of two Set.Infinite propositions, combined with angle brackets `⟨.., ..⟩`. The two witnesses come directly from the sibling proofs: InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite.",
+    "mathContext": "`Set.Infinite S` ↔ `¬ S.Finite` ↔ `∀ n, ∃ T ⊆ S, T.card ≥ n`. Mathlib's primes_1_mod_4_infinite and primes_3_mod_4_infinite establish this via `Set.infinite_of_injective_forall_mem` or similar: the sequence of witness primes $p_n > n$ gives an injective embedding $\\mathbb{N} \\to S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "Set.Finite",
+      "Mathlib set theory API",
+      "cardinality vs infinitude"
+    ],
+    "prerequisites": [
+      "Lean 4 Set type",
+      "Set.Infinite vs Set.Finite in Mathlib",
+      "conjunction introduction ⟨.., ..⟩"
+    ]
+  }
+]

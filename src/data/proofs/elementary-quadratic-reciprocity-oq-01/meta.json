@@ -58,7 +58,8 @@
     "dateAdded": "2026-03-11",
     "axiomCount": 0,
     "lineCount": 628,
-    "assumptions": "0 axioms, 0 sorries. Core quadratic reciprocity and related results (exists_sq_eq_neg_one_iff, exists_sq_eq_two_iff) from Mathlib; original work is elementary proof machinery using permutation signs."
+    "assumptions": "0 axioms, 0 sorries. Core quadratic reciprocity and related results (exists_sq_eq_neg_one_iff, exists_sq_eq_two_iff) from Mathlib; original work is elementary proof machinery using permutation signs.",
+    "theoremCount": 31
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity is Gauss's 'golden theorem' — he gave the first proof in 1796 and published six more over his lifetime. By 2026, over 240 proofs have been published, each illuminating different mathematical structures. Egor Ivanovich Zolotarev published his proof in 1872 as 'Nouvelle démonstration de la loi de réciprocité de Legendre,' introducing the idea that the Legendre symbol equals the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$. This was the first proof to connect QR to permutation theory rather than lattice-point counting (Eisenstein 1844) or Gauss sums (Gauss 1801). Georg Frobenius simplified Zolotarev's argument in 1914, and George Rousseau gave a further simplification in the American Mathematical Monthly (1991). The approach is considered the most algebraic elementary proof and generalizes naturally to higher reciprocity laws via Artin symbols and class field theory.",
@@ -70,7 +71,9 @@
       "Since a cyclic group has exactly one non-trivial quadratic character, they must agree — this is Zolotarev's core insight",
       "mulPerm naturally forms a group homomorphism, making multiplicativity of the Legendre symbol immediate",
       "Squares have positive permutation sign (σ² has even sign), explaining why squares are quadratic residues",
-      "The Zolotarev approach generalizes to higher reciprocity via Artin symbols on more general groups"
+      "The Zolotarev approach generalizes to higher reciprocity via Artin symbols on more general groups",
+      "Character uniqueness is the algebraic heart of the proof: the argument reduces QR entirely to the 1-dimensional representation theory of finite cyclic groups, with no number-theoretic input beyond the existence of a primitive root",
+      "This is the most algebraic of the three elementary proof families (Eisenstein-lattice, Gauss-sum, Zolotarev-permutation) — it requires only that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic, a fact true for all $\\mathbb{F}_{p^n}^\\times$"
     ],
     "prerequisites": [
       "Number theory (Legendre symbol, quadratic residues)",
@@ -180,9 +183,9 @@
     "summary": "This file formalizes Zolotarev's 1872 permutation-based approach to quadratic reciprocity in Lean 4 with 0 sorries and 0 axioms. The full chain is proved: mulPerm infrastructure, cyclic group theory, character uniqueness on cyclic groups, generator cycle analysis ($\\sigma_g$ is a $(p-1)$-cycle with sign $-1$), and Zolotarev's Lemma via the unique quadratic character argument. All consequences (multiplicativity, square detection, QR, supplements) follow cleanly.",
     "implications": "**Theoretical Significance**: 1. **Complete proof pathway**: Demonstrates that QR can be approached purely through permutation theory, with Zolotarev's Lemma fully proved (not axiomatized).\n**2. Algebraic generalization**: The character uniqueness argument generalizes to higher reciprocity laws and Artin symbols on more general groups.\n3. **Formalization insight**: The permutation sign infrastructure is cleanly composable via MonoidHom, and character uniqueness reduces the core lemma to two surjectivity checks.\n4. **Proof comparison**: Bundles both Eisenstein and Zolotarev approaches in a single theorem (`two_proof_methods`).",
     "openQuestions": [
-      "Can a Gauss sum proof provide a third formal QR pathway alongside Eisenstein and Zolotarev?",
-      "Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity?",
-      "Can the CRT decomposition of the multiplication permutation on ZMod(pq) be formalized to give a self-contained Zolotarev QR proof?"
+      "[Addressed in `elementary-quadratic-reciprocity-oq-02`] The Gauss sum proof architecture axiomatizes the cyclotomic evaluation $\\sum_a (a/p)\\zeta^a$ to provide a third formal QR pathway alongside Eisenstein's lattice-point and Zolotarev's permutation approaches.",
+      "Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity? Cubic reciprocity requires $(\\mathbb{Z}[\\omega])^\\times$ for the Eisenstein integers — the cyclic group structure is more complex.",
+      "Can the CRT decomposition of the multiplication permutation on $\\mathbb{Z}/pq\\mathbb{Z}$ be formalized to give a self-contained Zolotarev QR proof without delegating to Mathlib's `legendreSym.quadratic_reciprocity`?"
     ]
   },
   "leanFile": {
@@ -214,9 +217,24 @@
       "description": "The elementary Eisenstein (lattice-point) proof of QR; this OQ-01 provides the complementary Zolotarev permutation approach, with both proof methods bundled in two_proof_methods"
     },
     {
+      "targetId": "elementary-quadratic-reciprocity-oq-02",
+      "relationship": "sibling",
+      "description": "Gauss sum proof architecture — the third QR pathway (alongside Eisenstein and Zolotarev), using cyclotomic character evaluation; answers the open question about the Gauss sum approach"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03",
+      "relationship": "sibling",
+      "description": "Jacobi symbol extension — generalizes from the Legendre symbol (prime moduli) to the Jacobi symbol (composite odd moduli); the Zolotarev character perspective makes this generalization natural"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots — the existence of a generator $g$ with $\\mathrm{ord}(g) = p-1$ is the key foundational fact enabling the character uniqueness argument: the generator $\\sigma_g$ is a $(p-1)$-cycle with sign $-1$"
+    },
+    {
       "targetId": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem about (p-1)! ≡ -1 (mod p) uses the same (ZMod p)ˣ group structure; both proofs leverage the cyclic group properties of units mod a prime"
+      "description": "Wilson's theorem about $(p-1)! \\equiv -1 \\pmod{p}$ uses the same $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ group structure; both proofs leverage the cyclic group properties of units mod a prime"
     }
   ],
   "references": [

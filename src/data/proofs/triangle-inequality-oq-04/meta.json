@@ -51,7 +51,8 @@
       "Application to unit sphere as concrete Riemannian manifold instance"
     ],
     "dateAdded": "2026-04-05",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Bernhard Riemann's 1854 Habilitation lecture 'Über die Hypothesen, welche der Geometrie zu Grunde liegen' introduced the concept of a manifold with an infinitesimally defined length element ds² = g_{ij} dx^i dx^j, and defined the distance between two points as the infimum of arc lengths of smooth curves connecting them. This geodesic distance — the intrinsic metric — satisfies the axioms of a metric space, with the triangle inequality following immediately from the concatenability of paths.\n\nThe mathematical abstraction of this idea — defining distance via infimum of path lengths on any connected metric space — became the foundation of metric geometry. The intrinsic metric is now the key ingredient in the theory of geodesic spaces (Alexandrov, Gromov, Busemann) and plays a central role in Riemannian geometry, sub-Riemannian geometry, optimal transport, and geometric group theory.\n\nThe formalization challenge: Lean 4's Mathlib (v4.26.0) has strong support for general metric spaces and total variation of curves, but lacks full Riemannian manifold formalization. Our approach captures the essential argument — path concatenation + length additivity → triangle inequality — in the general metric space setting using `eVariationOn` (total variation, the coordinate-free analogue of ∫‖γ'‖ dt).",

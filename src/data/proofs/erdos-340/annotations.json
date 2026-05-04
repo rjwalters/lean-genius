@@ -56,7 +56,7 @@
     },
     "type": "insight",
     "title": "Initial Values and Basic Properties",
-    "content": "Three axioms capture the ground truth of the Mian-Chowla sequence:\n\n**`greedy_sidon_values`**: The first 11 terms match OEIS A005282: 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97. The gaps $\\Delta a(n)$ are 1, 2, 4, 5, 8, 10, 14, 21, 15, 16 — irregular but generally growing.\n\n**`greedy_sidon_strict_mono`**: `StrictMono greedySidon` — each new element strictly exceeds the previous, which follows from the greedy construction (we take $m > a(n)$).\n\n**`greedy_sidon_is_sidon`**: Every prefix $\\{a(0), \\ldots, a(n)\\}$ is a Sidon set — the defining invariant maintained by the greedy step.",
+    "content": "Three axioms capture the ground truth of the Mian-Chowla sequence:\n\n**`greedy_sidon_values`**: The first 11 terms match OEIS A005282: 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97. The gaps $\\Delta a(n)$ are 1, 2, 4, 5, 8, 10, 14, 21, 15, 16 \u2014 irregular but generally growing.\n\n**`greedy_sidon_strict_mono`**: `StrictMono greedySidon` \u2014 each new element strictly exceeds the previous, which follows from the greedy construction (we take $m > a(n)$).\n\n**`greedy_sidon_is_sidon`**: Every prefix $\\{a(0), \\ldots, a(n)\\}$ is a Sidon set \u2014 the defining invariant maintained by the greedy step.",
     "mathContext": "OEIS A005282 values confirmed: $a(0)=1, a(1)=2, a(2)=4, a(3)=8, a(4)=13, a(5)=21, a(6)=31, a(7)=45, a(8)=66, a(9)=81, a(10)=97$. Strict monotonicity: $a(n) < a(n+1)$ for all $n$. Sidon invariant: $\\forall n, \\text{IsSidonSet}(\\{a(0), \\ldots, a(n)\\})$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -79,12 +79,12 @@
       "endLine": 76
     },
     "type": "concept",
-    "title": "Known Bounds: Ω(N^{1/3}) Lower and O(√N) Upper",
-    "content": "**`greedy_sidon_lower_bound`**: There exists $C > 0$ such that $|A \\cap [1,N]| \\geq C \\cdot N^{1/3}$ for all $N \\geq 1$. The proof idea: when the greedy sequence has $k$ elements, it has $O(k^2)$ forbidden sums. Each step adds the smallest non-forbidden integer, so the $k$-th element is $a(k) \\leq O(k^3)$ (at most $O(k^2)$ values are blocked per step). Inverting: $k = |A \\cap [1,N]| \\geq \\Omega(N^{1/3})$.\n\n**`erdos_turan_upper_bound`**: Any Sidon set in $[1,N]$ has $\\leq \\sqrt{N} + O(N^{1/4})$ elements (Erdős–Turán, 1941). So the greedy sequence itself satisfies this bound. The gap between $N^{1/3}$ and $N^{1/2}$ is the core open problem.",
-    "mathContext": "$\\exists C > 0: \\forall N \\geq 1,\\; |A \\cap [1,N]| \\geq C N^{1/3}$. Upper bound: $|A \\cap [1,N]| \\leq \\sqrt{N} + C' N^{1/4}$ (Erdős–Turán). The open conjecture closes this gap: $|A \\cap [1,N]| \\geq C_\\varepsilon N^{1/2-\\varepsilon}$.",
+    "title": "Known Bounds: \u03a9(N^{1/3}) Lower and O(\u221aN) Upper",
+    "content": "**`greedy_sidon_lower_bound`**: There exists $C > 0$ such that $|A \\cap [1,N]| \\geq C \\cdot N^{1/3}$ for all $N \\geq 1$. The proof idea: when the greedy sequence has $k$ elements, it has $O(k^2)$ forbidden sums. Each step adds the smallest non-forbidden integer, so the $k$-th element is $a(k) \\leq O(k^3)$ (at most $O(k^2)$ values are blocked per step). Inverting: $k = |A \\cap [1,N]| \\geq \\Omega(N^{1/3})$.\n\n**`erdos_turan_upper_bound`**: Any Sidon set in $[1,N]$ has $\\leq \\sqrt{N} + O(N^{1/4})$ elements (Erd\u0151s\u2013Tur\u00e1n, 1941). So the greedy sequence itself satisfies this bound. The gap between $N^{1/3}$ and $N^{1/2}$ is the core open problem.",
+    "mathContext": "$\\exists C > 0: \\forall N \\geq 1,\\; |A \\cap [1,N]| \\geq C N^{1/3}$. Upper bound: $|A \\cap [1,N]| \\leq \\sqrt{N} + C' N^{1/4}$ (Erd\u0151s\u2013Tur\u00e1n). The open conjecture closes this gap: $|A \\cap [1,N]| \\geq C_\\varepsilon N^{1/2-\\varepsilon}$.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős-Turán bound",
+      "Erd\u0151s-Tur\u00e1n bound",
       "forbidden-sum counting",
       "greedy algorithm analysis",
       "N^{1/3} vs N^{1/2} gap"
@@ -102,9 +102,9 @@
       "startLine": 77,
       "endLine": 85
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Conjecture: Near-Optimal Greedy Growth (Open)",
-    "content": "`greedy_sidon_growth_conjecture` states that the greedy Sidon sequence achieves density $\\Omega(N^{1/2-\\varepsilon})$ for every $\\varepsilon > 0$. This would mean the greedy algorithm is **near-optimal** — matching the $O(\\sqrt{N})$ upper bound up to any polynomial factor.\n\nThis is remarkable because in most combinatorial settings, greedy algorithms are polynomially suboptimal. For example, greedy vertex coloring can use $\\Omega(n / \\log n)$ colors while chromatic number is much smaller for many graphs.\n\nNumerical evidence strongly supports the conjecture: computations up to $N \\approx 10^{15}$ show $f(N) \\approx N^{0.497}$, extremely close to $\\sqrt{N}$. The best proven lower bound remains only $N^{1/3}$.",
+    "content": "`greedy_sidon_growth_conjecture` states that the greedy Sidon sequence achieves density $\\Omega(N^{1/2-\\varepsilon})$ for every $\\varepsilon > 0$. This would mean the greedy algorithm is **near-optimal** \u2014 matching the $O(\\sqrt{N})$ upper bound up to any polynomial factor.\n\nThis is remarkable because in most combinatorial settings, greedy algorithms are polynomially suboptimal. For example, greedy vertex coloring can use $\\Omega(n / \\log n)$ colors while chromatic number is much smaller for many graphs.\n\nNumerical evidence strongly supports the conjecture: computations up to $N \\approx 10^{15}$ show $f(N) \\approx N^{0.497}$, extremely close to $\\sqrt{N}$. The best proven lower bound remains only $N^{1/3}$.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists C_\\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N) \\geq C_\\varepsilon \\cdot N^{1/2-\\varepsilon}$. Equivalently, $\\log f(N) / \\log N \\to 1/2$. The conjecture would show the greedy exponent equals the optimal exponent $1/2$.",
     "significance": "critical",
     "relatedConcepts": [
@@ -127,9 +127,9 @@
       "endLine": 101
     },
     "type": "insight",
-    "title": "Difference Set A−A and Density Question",
-    "content": "`greedySidonDiffSet` formalizes $A - A = \\{a(m) - a(n) : m > n\\}$, the set of all positive differences between terms of the greedy sequence.\n\n`greedy_sidon_diffset_pos_density` states the open conjecture: $A - A$ has **positive upper density**, meaning there exists $\\delta > 0$ with infinitely many $N$ satisfying $|A-A \\cap [1,N]| \\geq \\delta N$.\n\nThis is a separate but related problem. It connects to Erdős Problem #332 on recurrent differences: does every dense set of integers contain the difference of a Sidon set? The Sidon property (all pairwise sums distinct) has consequences for the structure of $A - A$: the pairs $(a(m), a(n))$ with $a(m) - a(n) = d$ are all distinct, giving a combinatorial density argument.\n\nThe final comment connects to random Sidon sets: a random Sidon set in $[1,N]$ has expected size $\\approx N^{1/3}$, far below the greedy sequence's empirical $\\approx N^{0.497}$, suggesting the greedy process exploits structure absent in random sets.",
-    "mathContext": "$A - A = \\{a(m) - a(n) : m > n\\} \\subseteq \\mathbb{N}$. Density conjecture: $\\limsup_{N\\to\\infty} |A-A \\cap [1,N]|/N > 0$. Note: $A - A$ is not a Sidon set itself — it can have repeated elements. A random $B_2$ set in $[1,N]$ has $\\mathbb{E}[|A|] \\approx N^{1/3}$ by the birthday paradox.",
+    "title": "Difference Set A\u2212A and Density Question",
+    "content": "`greedySidonDiffSet` formalizes $A - A = \\{a(m) - a(n) : m > n\\}$, the set of all positive differences between terms of the greedy sequence.\n\n`greedy_sidon_diffset_pos_density` states the open conjecture: $A - A$ has **positive upper density**, meaning there exists $\\delta > 0$ with infinitely many $N$ satisfying $|A-A \\cap [1,N]| \\geq \\delta N$.\n\nThis is a separate but related problem. It connects to Erd\u0151s Problem #332 on recurrent differences: does every dense set of integers contain the difference of a Sidon set? The Sidon property (all pairwise sums distinct) has consequences for the structure of $A - A$: the pairs $(a(m), a(n))$ with $a(m) - a(n) = d$ are all distinct, giving a combinatorial density argument.\n\nThe final comment connects to random Sidon sets: a random Sidon set in $[1,N]$ has expected size $\\approx N^{1/3}$, far below the greedy sequence's empirical $\\approx N^{0.497}$, suggesting the greedy process exploits structure absent in random sets.",
+    "mathContext": "$A - A = \\{a(m) - a(n) : m > n\\} \\subseteq \\mathbb{N}$. Density conjecture: $\\limsup_{N\\to\\infty} |A-A \\cap [1,N]|/N > 0$. Note: $A - A$ is not a Sidon set itself \u2014 it can have repeated elements. A random $B_2$ set in $[1,N]$ has $\\mathbb{E}[|A|] \\approx N^{1/3}$ by the birthday paradox.",
     "significance": "supporting",
     "relatedConcepts": [
       "greedySidonDiffSet",

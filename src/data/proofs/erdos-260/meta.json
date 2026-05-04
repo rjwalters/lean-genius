@@ -51,7 +51,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 269,
-    "assumptions": "1 axiom: erdos_260_conjecture (open conjecture). 3 sorries: series_converges (convergence argument), irrational_of_gaps_to_infinity (Erdős 1974 theorem), irrational_of_superlogarithmic (number-theoretic result)."
+    "assumptions": "1 axiom: erdos_260_conjecture (open conjecture). 3 sorries: series_converges (convergence argument), irrational_of_gaps_to_infinity (Erdős 1974 theorem), irrational_of_superlogarithmic (number-theoretic result).",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1974 work on irrationality of series [Er74b], further developed in the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' with Graham [ErGr80]. It explores a fundamental question at the boundary of analysis and number theory: when does a lacunary (sparse) series produce an irrational sum?\n\nErdős proved that irrationality holds under the stronger condition that the gaps a_{n+1} − aₙ tend to infinity. He also showed irrationality when aₙ grows superlogarithmically, specifically when aₙ ≫ n√(log n · log log n). These partial results demonstrate that 'sufficiently fast' growth guarantees irrationality, but the full conjecture — that the mere condition aₙ/n → ∞ suffices — remains open.\n\nThe problem has an appealing simplicity: the series ∑ aₙ/2^{aₙ} converges absolutely for any increasing sequence (the terms decrease exponentially), so the question is purely about the arithmetic nature of the limit. Erdős and Graham speculated that even having limsup of the gaps being infinite might not suffice for irrationality, but no counterexample has been found. The problem connects to the theory of lacunary series, normal numbers, and the Lindemann-Weierstrass theorem.",

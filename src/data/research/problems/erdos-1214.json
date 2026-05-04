@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1214",
   "title": "Erdős #1214",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Gallery formalization complete. 22 theorems, 0 sorries, 2 axioms (corrales_schoof, zsygmondy). Proved ZMod order characterization, equal-orders from equal support (via Fermat), and concrete support computations.",
+    "builtItems": [
+      "sub_one_dvd_pow_sub_one: (x-1) | (x^n-1) via geometric series in CommRing (Erdos1214Problem.lean:52)",
+      "prime_dvd_pow_sub_one_iff_zmod: p | x^n-1 ↔ (x:ZMod p)^n = 1 (Erdos1214Problem.lean:124)",
+      "prime_dvd_pow_sub_one_iff_order: p | x^n-1 ↔ orderOf(x:ZMod p) | n (Erdos1214Problem.lean:138)",
+      "equal_support_implies_equal_orders: Fermat + antisymmetry (Erdos1214Problem.lean:155)",
+      "corrales_schoof_injective: support map is injective (Erdos1214Problem.lean:211)",
+      "Gallery entry: src/data/proofs/erdos-1214/meta.json"
+    ],
+    "insights": [
+      "ZMod order characterization: p | x^n-1 ↔ orderOf(x:ZMod p) | n — key bridge between divisibility and group theory",
+      "Fermat's little theorem essential: orderOf(x:ZMod p) | p-1, giving positive order when p ∤ x",
+      "equal_support_implies_equal_orders uses divisibility antisymmetry: ord_p(x) | ord_p(y) (from transferring y's order witness) and vice versa",
+      "Concrete support sequences diverge early: supp(2^2-1)={3} ≠ {2}=supp(3^2-1), certifying 2≠3 at n=2"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1214 - Knowledge Base\n\n## Problem Statement\n\nLet $x,y\\geq 1$ be integers such that, for all $n\\geq 1$, the set of primes dividing $x^{n}-1$ is equal to set of primes dividing $y^n-1$. Must $x=y$? Erdős asked this at a 1988 number theory conference in Banff. A positive answer was given by Corrales-Rodrigá\\~{n}ez and Schoof [CoSc97].## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #1213\n- Problem #1215\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- CoSc957\n- CoSc97\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
@@ -42,7 +54,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-12",
-    "erdos-121"
+    "erdos-121",
+    "erdos-1214"
   ],
   "references": {
     "papers": [],
@@ -52,5 +65,18 @@
   "started": "2026-04-16T17:10:06.888Z",
   "lastUpdate": "2026-04-21T11:09:40.249Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1214Problem.lean",
+      "filename": "Erdos1214Problem.lean",
+      "lineCount": 309,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1214Problem.lean"
+    }
+  ]
 }

@@ -1,0 +1,175 @@
+{
+  "id": "lebesgue-measure-oq-01-oq-01-oq-02",
+  "title": "Thomae's Function: Continuous at Irrationals, Discontinuous at Rationals",
+  "slug": "lebesgue-measure-oq-01-oq-01-oq-02",
+  "description": "Proves the complete continuity characterization of Thomae's function (popcorn function): it is continuous at every irrational and discontinuous at every rational. The discontinuity proof uses a sequential argument via irrational sequences converging to each rational. The continuity proof uses an epsilon-delta argument relying on the finiteness of low-denominator rationals in any bounded interval.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Thomae%27s_function",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ01OQ02.lean",
+    "tags": [
+      "thomae-function",
+      "popcorn-function",
+      "continuity",
+      "real-analysis",
+      "irrationals",
+      "epsilon-delta",
+      "sequential-continuity",
+      "rational-approximation",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 240,
+    "assumptions": "0 axioms, 0 sorries. Fully verified.",
+    "theoremCount": 6,
+    "originalContributions": [
+      "thomae_continuous_at_irrational: ContinuousAt thomae x for every irrational x",
+      "thomae_discontinuous_at_rat: ¬ContinuousAt thomae (q : ℝ) for every rational q",
+      "thomae_continuous_iff: ContinuousAt thomae x ↔ Irrational x",
+      "finite_rat_bounded: finiteness of rationals with bounded denominator in a bounded interval",
+      "pos_min_dist: positive minimum distance from an irrational to any finite set of rationals"
+    ],
+    "historicalContext": "Thomae's function (also called the popcorn function or ruler function) was introduced by Carl Johannes Thomae in 1875. It is defined as f(p/q) = 1/q for rationals in reduced form, and f(x) = 0 for irrationals. It became a landmark example in real analysis, being the first known function that is Riemann integrable yet discontinuous on a dense set — namely all rationals. The continuity characterization (continuous at irrationals, discontinuous at rationals) was a key historical insight. It showed that the set of discontinuities can be dense yet have measure zero, which is exactly the Lebesgue criterion for Riemann integrability. The parent proof (lebesgue-measure-oq-01-oq-01) showed the Lebesgue integral is 0; this proof characterizes the exact set of continuity points."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "LebesgueMeasureOQ01OQ01OQ02",
+    "lineCount": 240,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02.lean",
+    "mainTheorems": [
+      {
+        "name": "thomae_continuous_at_irrational",
+        "statement": "∀ {x : ℝ}, Irrational x → ContinuousAt thomae x",
+        "description": "Thomae's function is continuous at every irrational via epsilon-delta using finiteness of low-denominator rationals"
+      },
+      {
+        "name": "thomae_discontinuous_at_rat",
+        "statement": "∀ (r : ℚ), ¬ContinuousAt thomae (r : ℝ)",
+        "description": "Thomae's function is discontinuous at every rational via sequential argument"
+      },
+      {
+        "name": "thomae_continuous_iff",
+        "statement": "∀ (x : ℝ), ContinuousAt thomae x ↔ Irrational x",
+        "description": "The complete characterization: Thomae's function is continuous exactly at the irrationals"
+      }
+    ],
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "**A Function Continuous Exactly at the Irrationals**\n\nThomaes's function $f : \\mathbb{R} \\to \\mathbb{R}$, introduced in 1875, is defined by:\n$$f(x) = \\begin{cases} \\frac{1}{q} & x = \\frac{p}{q} \\text{ in lowest terms, } q > 0, \\\\ 0 & x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nThe function is historically significant as the first example of a Riemann-integrable function that is discontinuous on a dense set (the rationals). The key property is that $f$ is continuous at every irrational and discontinuous at every rational — making its continuity set a dense $G_\\delta$ set (the irrationals) and its discontinuity set a dense $F_\\sigma$ set (the rationals).",
+    "problemStatement": "**The Open Question**\n\nCan we prove that Thomae's function is continuous at every irrational and discontinuous at every rational in Lean?\n\n**Answer: YES**\n\nThe full characterization holds:\n$$\\text{ContinuousAt}\\, f\\, x \\iff x \\in \\mathbb{R} \\setminus \\mathbb{Q}$$",
+    "proofStrategy": "**Two-Part Argument**\n\n**Discontinuity at rationals** (sequential): Given rational $r = p/q$, construct the sequence $y_n = r + \\frac{\\sqrt{2}}{n+1} \\to r$. Each $y_n$ is irrational (since $\\sqrt{2}$ is irrational), so $f(y_n) = 0 \\to 0 \\neq \\frac{1}{q} = f(r)$. By the sequential characterization of continuity, $f$ is discontinuous at $r$.\n\n**Continuity at irrationals** (epsilon-delta): Given irrational $x$ and $\\varepsilon > 0$:\n1. Choose $N$ large enough that $\\frac{1}{N+1} < \\varepsilon$.\n2. The set $S = \\{q \\in \\mathbb{Q} : |q - x| \\leq 1,\\, q.\\mathrm{den} \\leq N\\}$ is **finite** (each denominator $d \\leq N$ contributes a bounded integer range for the numerator).\n3. Since $x$ is irrational, it differs from each element of $S$; take $\\delta = \\min_{q \\in S} |x - q| > 0$.\n4. For $|y - x| < \\delta$: if $y$ is irrational, $f(y) = 0 < \\varepsilon$; if $y = p'/q'$ rational, then $q' > N$ (else $y \\in S$, contradicting $|y-x| < \\delta$), so $f(y) = 1/q' \\leq 1/(N+1) < \\varepsilon$.",
+    "keyInsights": [
+      "**Finite low-denominator rationals**: The key lemma `finite_rat_bounded` shows that for any $x$ and $N$, there are only finitely many rationals $p/q$ with $|p/q - x| \\leq 1$ and $q \\leq N$. This follows because for fixed denominator $d$, the numerators are bounded by a finite integer range.",
+      "**Sequential discontinuity via irrationals**: The sequence $r + \\sqrt{2}/(n+1)$ is irrational because $\\sqrt{2}$ is irrational and rationals are closed under arithmetic. Lean's `irrational_sqrt_two` and field arithmetic close this directly.",
+      "**Positive minimum distance from finite set**: The lemma `pos_min_dist` shows an irrational point has positive distance to every finite set of rationals, enabling the crucial $\\delta$ choice in the continuity proof.",
+      "**Classical choice extracts denominator**: The definition `thomae` uses `h.choose.den` — classical choice on the existential `∃ q : ℚ, (q : ℝ) = x`. Lean's `Rat.cast_inj` then shows uniqueness, giving the correct denominator.",
+      "**`by_cases hirr : Irrational y`**: The continuity proof case-splits on whether the nearby point $y$ is irrational or rational, handling each case cleanly."
+    ],
+    "prerequisites": [
+      "Real analysis: epsilon-delta definition of continuity",
+      "Sequential characterization of continuity",
+      "Irrationality of √2",
+      "Rational numbers and reduced fractions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "thomae-def",
+      "title": "Part I: The Thomae Function",
+      "startLine": 38,
+      "endLine": 68,
+      "summary": "Defines `thomae : ℝ → ℝ` via classical choice: returns 1/q.den if x is rational q, else 0. Proves basic properties: zero at irrationals, value 1/q.den at rationals, nonnegativity.",
+      "mathContext": "$$f(x) = \\begin{cases} 1/q & x = p/q \\text{ reduced}, \\\\ 0 & x \\notin \\mathbb{Q}. \\end{cases}$$\nKey: `Rat.cast_inj.mp` ensures `h.choose = q` for uniqueness of the rational representative."
+    },
+    {
+      "id": "discontinuity",
+      "title": "Part II: Discontinuity at Rationals",
+      "startLine": 69,
+      "endLine": 113,
+      "summary": "Proves ¬ContinuousAt thomae (q : ℝ) for all q : ℚ via sequential argument: the sequence q + √2/(n+1) → q consists of irrationals with thomae = 0, but thomae(q) = 1/q.den > 0.",
+      "mathContext": "**Sequential argument**: The sequence $y_n = q + \\frac{\\sqrt{2}}{n+1}$ satisfies $y_n \\to q$ and $f(y_n) = 0$ for all $n$, while $f(q) = 1/q.\\mathrm{den} > 0$. So $f(y_n) \\not\\to f(q)$."
+    },
+    {
+      "id": "finite-rationals",
+      "title": "Part III: Finiteness of Low-Denominator Rationals",
+      "startLine": 114,
+      "endLine": 163,
+      "summary": "Key infrastructure: `finite_rat_bounded` shows {q : ℚ | |q - x| ≤ 1 ∧ q.den ≤ N} is finite for any x and N. `pos_min_dist` gives positive minimum distance from an irrational to any finite set of rationals.",
+      "mathContext": "For fixed $d \\leq N$: numerators $p$ with $|p/d - x| \\leq 1$ lie in $[\\lfloor(x-1)d\\rfloor, \\lceil(x+1)d\\rceil]$ — a finite integer interval. Union over $d = 1, \\ldots, N$ is finite. Key Lean tool: `Finset.biUnion` over denominator range."
+    },
+    {
+      "id": "continuity",
+      "title": "Part IV: Continuity at Irrationals",
+      "startLine": 164,
+      "endLine": 222,
+      "summary": "Main result: ContinuousAt thomae x for every irrational x. Choose N with 1/(N+1) < ε; let δ = min distance from x to the finite set of nearby rationals with denominator ≤ N. For |y - x| < δ: f(y) = 0 (irrational) or f(y) = 1/q.den ≤ 1/(N+1) < ε (rational with large denominator).",
+      "mathContext": "The epsilon-delta proof has two cases after choosing $\\delta$:\n1. $y$ irrational: $f(y) = 0 < \\varepsilon$ ✓\n2. $y = p/q$ rational with $|y - x| < \\delta$: then $q.\\mathrm{den} > N$ (else $y$ is in the finite set), giving $f(y) = 1/q.\\mathrm{den} < 1/(N+1) < \\varepsilon$ ✓"
+    },
+    {
+      "id": "iff",
+      "title": "Part V: Characterization",
+      "startLine": 224,
+      "endLine": 239,
+      "summary": "The biconditional thomae_continuous_iff: ContinuousAt thomae x ↔ Irrational x. Combines discontinuity (→ direction by contraposition) and continuity (← direction) into the complete characterization.",
+      "mathContext": "$$\\text{ContinuousAt}\\, f\\, x \\iff x \\notin \\mathbb{Q}$$\nThe irrationals form a dense $G_\\delta$ set in $\\mathbb{R}$; Thomae's function witnesses that a function can be continuous on a dense set yet nowhere coincide with a continuous function."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "thomae-riemann",
+      "question": "Is Thomae's function Riemann integrable on [0,1], and can this be formally derived from the continuity characterization?",
+      "context": "The Lebesgue criterion for Riemann integrability states that a bounded function is Riemann integrable if and only if its set of discontinuities has Lebesgue measure zero. The continuity characterization just proved shows Thomae's function is discontinuous exactly at the rationals, which have measure zero. Hence Thomae's function is Riemann integrable on [0,1] with integral 0. Mathlib has the Lebesgue criterion (intervalIntegral.integrableOn_iff_ae) — can this chain be formalized?",
+      "difficulty": "medium",
+      "tags": [
+        "riemann-integration",
+        "lebesgue-criterion",
+        "measure-zero"
+      ]
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The parent proof showing the Lebesgue integral of Thomae's function is 0; this file proves the continuity characterization that explains why (discontinuities form a null set)."
+    },
+    {
+      "targetId": "erdos-1054-oq-01-fnorm",
+      "relationship": "thematic",
+      "description": "Both define functions by number-theoretic properties of rationals (denominator structure) and study their analytic behavior; Thomae's function and the partial-divisor-sum function share the theme of arithmetic-defined real functions."
+    },
+    {
+      "targetId": "derangements-convergence-oq-01-oq-01",
+      "relationship": "thematic",
+      "description": "Both use the real-analytic epsilon-delta framework in Lean 4 and both concern the interface between combinatorial/number-theoretic definitions and real analysis — Thomae's discontinuity set vs derangements' rounding theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "The complete continuity characterization of Thomae's function is formally verified in Lean 4. The proof demonstrates that a formally verified epsilon-delta argument can cleanly handle the key challenge — using finiteness of low-denominator rationals to control the function value near irrationals. The biconditional `thomae_continuous_iff` is the main result: ContinuousAt thomae x ↔ Irrational x.",
+    "significance": "This formalization adds a landmark real analysis example to the gallery. Thomae's function is historically significant as the prototype for understanding Riemann integrability beyond continuous functions, and its continuity characterization is a standard theorem in any real analysis course.",
+    "limitations": "The proof uses classical logic (noncomputable definition via `h.choose`). A constructive formalization would require a constructive characterization of the rational/irrational dichotomy.",
+    "implications": "The epsilon-delta approach — bounding the function by a threshold ε/2 and exploiting finiteness of the rational obstruction set — is a reusable pattern for other functions with countable discontinuity sets. The proof that Thomae's function is Riemann integrable (all discontinuities form a null set) follows directly from this continuity characterization. This formalization validates that Mathlib's `Irrational` API is expressive enough for density arguments in real analysis.",
+    "openQuestions": [
+      "Can Thomae's function be shown to be Riemann integrable in Lean 4, using the continuity-almost-everywhere result proved here together with the Lebesgue criterion?",
+      "Can a constructive proof be given for `thomae_irrational_continuous` that avoids classical choice (`h.choose`), using a computable approximation to the irrational?",
+      "Can the pattern (finite obstruction set → epsilon-delta continuity) be abstracted to a general Mathlib lemma about functions with countable jump discontinuities?"
+    ]
+  }
+}

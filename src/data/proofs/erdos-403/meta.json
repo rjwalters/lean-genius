@@ -53,7 +53,8 @@
     ],
     "axiomCount": 1,
     "assumptions": "1 axiom: lin_theorem_finiteness (Lin theorem — the set of exceptions is finite). 0 sorries.",
-    "lineCount": 339
+    "lineCount": 339,
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "**Erdős Problem #403: Powers of 2 as Factorial Sums**\n\nThis problem asks whether the equation 2^m = a₁! + a₂! + ... + aₖ! (with distinct positive integers aᵢ) has only finitely many solutions.\n\n**Historical Development:**\n- **Burr and Erdős** posed the question\n- **Lin (1976):** Proved finiteness, showing m ≤ 7 is maximal\n- **Frankl:** Independently obtained the same result\n- **Lin's stronger result:** The 2-adic valuation of any such sum is ≤ 254\n\n**The Answer:**\nYES, there are only finitely many solutions. The largest is:\n**2^7 = 2! + 3! + 5! = 2 + 6 + 120 = 128**\n\n**Reference:**\nLin, S., 'On two problems of Erdős concerning sums of distinct factorials.'\nBell Laboratories internal memorandum (1960/1976).\nAlso in Erdős-Graham [ErGr80, p.79].",

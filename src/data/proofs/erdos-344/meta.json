@@ -61,7 +61,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "lineCount": 207,
-    "assumptions": "2 axioms: szemeredi_vu_2006, erdos_optimality_example. 0 sorries."
+    "assumptions": "2 axioms: szemeredi_vu_2006, erdos_optimality_example. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the 1960s, asking whether moderate density ($\\sqrt{N}$) suffices for subcompleteness. The problem has roots in the classical study of complete sequences by Sprague (1937) and Folkman (1966). Folkman first proved that density $N^{1/2+\\varepsilon}$ suffices, using a greedy selection argument. The problem remained open for 40 years until Szemerédi and Vu (2006) proved the sharp result using Fourier-analytic methods and the Freiman-Ruzsa inverse theorem from additive combinatorics. Erdős himself showed in 1962 that the threshold cannot go below $\\sqrt{2N}$ by constructing an explicit counterexample, leaving the gap between $\\sqrt{N}$ and $\\sqrt{2N}$ as an open problem.",

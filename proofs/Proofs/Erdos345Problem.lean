@@ -168,10 +168,37 @@ axiom threshold_fourth : threshold (powerSeq 4) = 5134241
     (OEIS A001661). -/
 axiom threshold_fifth : threshold (powerSeq 5) = 67898772
 
-/- ## Completeness of power sequences -/
+/- ## Completeness derived from threshold values -/
+
+/-- `powerSeq 2` is complete: if it weren't, `threshold (powerSeq 2) = 0`
+    by definition, contradicting `threshold_squares = 129`. -/
+theorem powerSeq_2_complete : IsCompleteSeq (powerSeq 2) := by
+  by_contra h
+  simp only [threshold, dif_neg h] at threshold_squares
+  norm_num at threshold_squares
+
+/-- `powerSeq 3` is complete: derived from `threshold_cubes = 12759`. -/
+theorem powerSeq_3_complete : IsCompleteSeq (powerSeq 3) := by
+  by_contra h
+  simp only [threshold, dif_neg h] at threshold_cubes
+  norm_num at threshold_cubes
+
+/-- `powerSeq 4` is complete: derived from `threshold_fourth = 5134241`. -/
+theorem powerSeq_4_complete : IsCompleteSeq (powerSeq 4) := by
+  by_contra h
+  simp only [threshold, dif_neg h] at threshold_fourth
+  norm_num at threshold_fourth
+
+/-- `powerSeq 5` is complete: derived from `threshold_fifth = 67898772`. -/
+theorem powerSeq_5_complete : IsCompleteSeq (powerSeq 5) := by
+  by_contra h
+  simp only [threshold, dif_neg h] at threshold_fifth
+  norm_num at threshold_fifth
+
+/- ## Completeness of power sequences (general) -/
 
 /-- Power sequences `{n^k}` are complete for all `k ≥ 1`
-(Waring's problem guarantees this). -/
+(Waring's problem guarantees this; for k = 1–5 derived above). -/
 axiom powerSeq_complete (k : ℕ) (hk : 1 ≤ k) :
     IsCompleteSeq (powerSeq k)
 

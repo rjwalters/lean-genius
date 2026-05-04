@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "0 sorries, 0 axioms. All 7 Fano upper-triangular residuals (F43, F53, F63, F65, F73, F75, F76) in derEval14_injective were closed by PR #13632 via explicit Fano-line Leibniz proofs using fin_cases, simp, antisymmetry constraints, and linarith. G2_der_dimension is a proved theorem (not an axiom): finrank ℝ Der(𝕆) = 14 via upper bound (injective derEval14 map) and lower bound (derBasis14_linearIndependent, proved in PR #13121).",
     "lineCount": 1646,
-    "theoremCount": 65,
+    "theoremCount": 27,
     "definitionCount": 19,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
@@ -137,9 +137,9 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 1646,
+    "lineCount": 3688,
     "axiomCount": 0,
-    "theoremCount": 65,
+    "theoremCount": 27,
     "definitionCount": 15,
     "sorries": 0,
     "path": "Proofs/HurwitzTheoremOQ04.lean"

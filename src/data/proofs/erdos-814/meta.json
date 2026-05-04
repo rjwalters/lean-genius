@@ -62,7 +62,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 292,
-    "assumptions": "3 axioms: sauermann_constant, sauermann_theorem, handshaking. 0 sorries."
+    "assumptions": "3 axioms: sauermann_constant, sauermann_theorem, handshaking. 0 sorries.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #814: Minimum Degree Subgraphs**\n\nThis problem concerns a fundamental question in extremal graph theory: given a dense graph, can we always find a small induced subgraph with high minimum degree?\n\n**Key History:**\n- Erdős and Hajnal [Er91]: Studied the case k=3 as a standalone problem\n- Erdős, Faudree, Rousseau, Schelp (1990): Formulated the general conjecture and proved the first quantitative bound of n - cₖ√n vertices\n- Mousset, Noever, Skorić (2017): Improved to n - cₖ·n/log(n) vertices\n- Sauermann (2019): Fully resolved the conjecture with cₖ ≫ 1/k³\n\n**Mathematical Setting:**\nThe edge threshold (k-1)(n-k+2) + C(k-2,2) + 1 is precisely chosen. Graphs with fewer edges can be constructed to avoid the desired subgraph, showing the bound is tight. The conjecture asks whether exceeding this threshold by even one edge forces a small minimum-degree-k subgraph.",

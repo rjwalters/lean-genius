@@ -26,7 +26,7 @@
     "assumptions": "No sorries, no axioms. Uses Mathlib's ZMod.addOrderOf_coe for the orbit size formula (addOrderOf r = n / gcd(n, r.val)) and references MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (Burnside's lemma). The core theorem polya_cyclic_fixed_count is independently proved via explicit bijection; the general necklace formula is stated conditionally with Burnside as a hypothesis.",
     "dateAdded": "2026-04-04",
     "lineCount": 404,
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 2,
     "mathlibDependencies": [
       {

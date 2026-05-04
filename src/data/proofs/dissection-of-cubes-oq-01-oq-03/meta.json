@@ -1,0 +1,170 @@
+{
+  "id": "dissection-of-cubes-oq-01-oq-03",
+  "title": "Volume Constraint for Cube Dissections",
+  "slug": "dissection-of-cubes-oq-01-oq-03",
+  "description": "Formalizes the volume constraint ∑ c.side³ = 1 for cube dissections via a VolumeDissection structure. Proves 14 theorems: volume bounds (each cube ≤ 1, each side ≤ 1), collision pair consequences (2s³ ≤ 1), and that the constraint is satisfiable. Connects the OQ-01 collision theorem to the geometric covering condition.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
+    "date": "2026-05-03",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ03.lean",
+    "tags": [
+      "geometry",
+      "impossibility",
+      "combinatorics",
+      "volume",
+      "open-problem",
+      "wiedijk-100"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "2 inherited axioms from DissectionOfCubes.lean: (1) smaller_cube_above_axiom — the smallest cube on the bottom face has smaller cubes directly above it; (2) all_different_implies_long_chains_axiom — a dissection with all different sizes has arbitrarily long decreasing chains. These underlie the collision existence theorem (volume_dissection_has_collision) via every_dissection_has_collision.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.single_le_sum",
+        "description": "Each term in a nonneg sum is bounded by the total",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset_of_nonneg",
+        "description": "Sum over a subset ≤ sum over superset for nonneg functions",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Finset.sum_union",
+        "description": "Sum distributes over disjoint union",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "volumeSum: definition of ∑ c.side³ over a Finset of cubes",
+      "VolumeDissection: wrapper structure adding volume constraint = 1 to CubeDissection",
+      "volumeSum_nonneg, volumeSum_singleton, volumeSum_insert: basic sum lemmas",
+      "cube_volume_le_one, cube_side_le_one: each cube bounded by unit volume/side",
+      "volumeSum_pos: sum is positive when dissection is nonempty",
+      "cube_volume_lt_one_of_card_ge_two: strict bound when ≥2 cubes",
+      "volume_dissection_has_collision: bridges volume constraint to OQ-01 collision theorem",
+      "collision_volume_bound, collision_side_le_half_cbrt: 2s³ ≤ 1 for colliding pairs",
+      "min_cubes_for_collision, volumeSum_union, volumeSum_eq: structural lemmas",
+      "volume_constraint_satisfiable: explicit witness (one unit cube)"
+    ],
+    "dateAdded": "2026-05-03",
+    "lineCount": 896,
+    "theoremCount": 14
+  },
+  "overview": {
+    "historicalContext": "The impossible cube dissection problem asks whether a cube can be partitioned into finitely many smaller cubes all of *different* sizes. This three-dimensional question arose in the early 20th century as the analogue of *squaring the square* — whether a square can be tiled by squares of distinct sizes. Surprisingly, the 2D problem has a positive answer: in 1978, Duijvestijn found the smallest perfect squared square (21 sub-squares), and many more are now catalogued. The 3D cube problem, however, is *impossible*.\n\nThe classical impossibility proof, presented by Littlewood in *A Mathematician's Miscellany* (1953), uses infinite descent: the smallest cube resting on the bottom face of the unit cube must be surrounded by a ring of cubes whose tops are coplanar — but those cubes are again constrained in the same way, forcing an infinite regress of smaller and smaller cubes. This argument is formalized as Wiedijk's 100-theorem list entry #82.\n\nThe base Lean formalization uses `covers_unit_cube : True` as a placeholder — recording that cubes should tile the unit cube but not enforcing it. OQ-01 established that every nonempty `CubeDissection` (even with the placeholder) has a collision pair (two distinct cubes of the same size). This sub-question OQ-01-OQ-03 asks: can we replace the placeholder with the necessary volumetric condition $\\sum s_c^3 = 1$, and what quantitative consequences follow?",
+    "problemStatement": "**Sub-question**: Can the volume constraint ∑_{c ∈ d.cubes} c.side³ = 1 be formally incorporated into the cube dissection structure?\n\n**Answer**: YES. We define VolumeDissection as CubeDissection + volume_constraint and prove 14 theorems connecting volume bounds to collision structure. Each cube in such a dissection has volume ≤ 1 and side ≤ 1. Any collision pair satisfies 2s³ ≤ 1 (equivalently s³ ≤ 1/2). The constraint is satisfiable: one unit cube witnesses it.",
+    "text": "Defines VolumeDissection — a CubeDissection enriched with the necessary condition that cube volumes sum to 1. Proves bounding theorems (side ≤ 1, volume < 1 for dissections with ≥ 2 cubes) and connects the volume constraint to the collision structure from OQ-01.",
+    "proofStrategy": "**Structure extension**: VolumeDissection wraps CubeDissection and adds volume_constraint : volumeSum dissection.cubes = 1.\n\n**Volume bounds**: From ∑ side³ = 1 with each term ≥ 0, Finset.single_le_sum gives c.side³ ≤ 1. The cubic bound side ≤ 1 follows from nlinarith with degree-3 witnesses.\n\n**Collision bounds**: Collision pairs (c₁, c₂) with c₁.side = c₂.side contribute 2·s³ to the volume sum. Since the total is 1, we get 2s³ ≤ 1, i.e., s³ ≤ 1/2.\n\n**Satisfiability**: One cube with side=1 at the origin satisfies covers_unit_cube (trivial), is contained in [0,1]³, and has volumeSum = 1.",
+    "keyInsights": [
+      "VolumeDissection upgrades the placeholder `covers_unit_cube : True` to the necessary volumetric condition $\\sum s_c^3 = 1$, making the geometric constraint machine-checkable",
+      "The axiom-free structure of 13 of the 14 theorems (Parts I, II, IV) demonstrates that volume algebra is entirely self-contained — only collision *existence* requires the topological axioms from OQ-01",
+      "`Finset.single_le_sum` is the combinatorial backbone: in a nonneg finitely supported sum equal to 1, every individual term is ≤ 1 — the discrete analogue of absolute continuity in measure theory",
+      "The collision volume bound $2s^3 \\leq 1$ (equivalently $s \\leq 2^{-1/3} \\approx 0.794$) is a quantitative sharpening of the impossible-dissection result: not only must collision pairs exist, but they cannot be too large",
+      "The strict vs. weak inequality ($s_k^3 < 1$ for multi-cube dissections vs. $s_k^3 \\leq 1$ in general) mirrors a fundamental combinatorics pattern: when a fixed resource is shared among multiple positive contributors, no single contributor can claim the whole",
+      "The one-cube witness in `volume_constraint_satisfiable` reveals that `VolumeDissection` does not axiomatically force collisions — the collision theorems genuinely require the two inherited axioms about cube geometry"
+    ],
+    "prerequisites": [
+      "Geometry (axis-aligned cubes, volume = side³)",
+      "Finset big operators (∑ over Finset)",
+      "DissectionOfCubes (Wiedijk #82 base, CubeDissection, Cube)",
+      "DissectionOfCubesOQ01 (IsCollisionPair, every_dissection_has_collision)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "volume-sum-basics",
+      "title": "Volume Sum Definition and Basics",
+      "startLine": 54,
+      "endLine": 85,
+      "summary": "Defines volumeSum as ∑ c.side³ and VolumeDissection structure. Proves nonneg, singleton, and insert lemmas."
+    },
+    {
+      "id": "volume-bounds",
+      "title": "Volume Bounds",
+      "startLine": 86,
+      "endLine": 158,
+      "summary": "cube_volume_le_one, cube_side_le_one, volumeSum_pos, cube_volume_lt_one_of_card_ge_two."
+    },
+    {
+      "id": "collision-structure",
+      "title": "Collision Structure",
+      "startLine": 159,
+      "endLine": 199,
+      "summary": "Bridges to OQ-01: volume_dissection_has_collision, collision_volume_bound (2s³ ≤ 1), collision_side_le_half_cbrt."
+    },
+    {
+      "id": "decomposition",
+      "title": "Min Cubes and Volume Decomposition",
+      "startLine": 200,
+      "endLine": 256,
+      "summary": "min_cubes_for_collision, volumeSum_union, volumeSum_eq, volume_constraint_satisfiable."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves that the volume constraint ∑ c.side³ = 1 can be formally incorporated into cube dissections via VolumeDissection. The 14 theorems establish volume bounds, connect the constraint to collision pairs (2s³ ≤ 1), and confirm satisfiability. Volume bound proofs (theorems 1–7, 9–14) are axiom-free; the collision bridge (theorem 8, volume_dissection_has_collision) inherits 2 axioms from the base DissectionOfCubes.lean.",
+    "implications": "**Strengthening the geometric model**: VolumeDissection provides a more faithful model of cube dissections than the base CubeDissection (which has `covers_unit_cube : True`). Any result proved for VolumeDissection applies to genuine cube tilings, whereas results about CubeDissection are weaker — they hold even for non-tiling configurations.\n\n**Quantitative collision bounds**: The volume constraint gives $2s^3 \\leq 1$ for any collision pair, i.e., $s \\leq 2^{-1/3} \\approx 0.794$. This is strictly stronger than saying collision pairs exist: it constrains their size. With $k$ equal-sided cubes, the bound sharpens to $ks^3 \\leq 1$, meaning larger multiplicity forces smaller cube size.\n\n**Clean axiom decomposition**: The proof architecture cleanly separates algebraic facts (axiom-free, 13 theorems) from geometric facts (axiom-dependent, 1 theorem). This suggests a research program: identify which properties of cube dissections are purely volumetric (and hence formally verifiable without geometric axioms) versus which require spatial reasoning.",
+    "openQuestions": [
+      "Can the lower bound on collision multiplicity be sharpened using the volume constraint? OQ-01 guarantees ≥1 collision pair; does $\\sum s_c^3 = 1$ force a minimum number of collision pairs, or minimum total colliding volume?",
+      "Can the volume constraint alone (without full pairwise-disjoint and geometric covering conditions) prove the impossibility of distinct-size dissections? The current impossibility proof uses axiomatic spatial reasoning; perhaps a purely volumetric argument exists.",
+      "What is the tight upper bound on the maximum cube size in a volume-constrained dissection with $n$ cubes? For $n=1$, $s=1$; for $n=2$, $s \\leq 2^{-1/3}$; for general $n$, $s \\leq n^{-1/3}$. Is this bound achievable with distinct sizes?",
+      "Can `VolumeDissection` be extended to `FullDissection` with genuine pairwise disjointness and covering — upgrading from a necessary to a sufficient condition — and what new collision bounds would follow?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DissectionOfCubes",
+      "Proofs.DissectionOfCubesOQ01"
+    ],
+    "opens": [
+      "DissectionOfCubes",
+      "DissectionOfCubesOQ01",
+      "BigOperators"
+    ],
+    "namespace": "DissectionOfCubesOQ01OQ03",
+    "lineCount": 896,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/DissectionOfCubesOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "extends",
+      "description": "Uses IsCollisionPair and every_dissection_has_collision to bridge volume constraint to collision structure"
+    },
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Uses CubeDissection, Cube, and the base Wiedijk #82 formalization"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01-OQ-01 shows HasMinimalCollision is achievable; OQ-01-OQ-03 adds the volume constraint to the structure"
+    }
+  ],
+  "references": [
+    {
+      "authors": "John Edensor Littlewood",
+      "title": "A Mathematician's Miscellany",
+      "year": "1953",
+      "venue": "Methuen",
+      "note": "Infinite descent proof underlying Wiedijk #82; volume argument is implicit in the descent"
+    },
+    {
+      "authors": "Freek Wiedijk",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "http://www.cs.ru.nl/~freek/100/",
+      "note": "Theorem #82: the impossibility of perfect cube dissection, basis for the OQ chain"
+    }
+  ],
+  "sorries": 0
+}

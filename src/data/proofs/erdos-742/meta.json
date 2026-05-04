@@ -55,7 +55,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 207,
-    "assumptions": "2 axioms: balanced_bipartite_minimal, furedi_theorem. 0 sorries."
+    "assumptions": "2 axioms: balanced_bipartite_minimal, furedi_theorem. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "The question of bounding edges in diameter-critical graphs originated with Ore in the 1960s, who asked whether minimal diameter-2 graphs can have more than $\\lfloor n^2/4 \\rfloor$ edges. The conjecture was independently formulated by Murty and Simon, then formally published by Murty and Plesník in 1979. In the same year, Caccetta and Häggkvist studied the broader class of diameter-critical graphs, proving partial results and establishing the connection to extremal graph theory. The breakthrough came in 1992 when Füredi proved the conjecture for sufficiently large $n$ using a combination of neighborhood analysis and counting arguments: each critical edge must have a 'private witness' pair whose only short path uses that edge, and the density of such witnesses constrains the total edge count. The bound $\\lfloor n^2/4 \\rfloor$ coincides with the Turán number $\\mathrm{ex}(n, K_3)$ (Mantel 1907), reflecting the fact that the extremal graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is both triangle-free and minimal diameter-2. This coincidence is not accidental — the bipartite structure forces diameter 2 while the balanced partition maximizes edge count by AM-GM.",

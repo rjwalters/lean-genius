@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Statement and History",
-    "content": "**Erdős Problem #392** asks: what is the minimum number of factors needed to write n! as a product where each factor is at most n²?\n\nThe answer is A(n) = n/2 - n/(2 log n) + o(n/log n).\n\n**Key insight**: Cambie observed that this follows from a simpler variant with bound n by pairing consecutive factors. If a₁...aₜ = n! with each aᵢ ≤ n, then a'ᵢ = a_{2i-1} · a_{2i} gives a factorization with each a'ᵢ ≤ n² and roughly t/2 factors.",
-    "mathContext": "The factorization problem connects to Stirling's approximation log(n!) ~ n log n. Since each factor contributes at most log(n²) = 2 log n, we need at least (n log n)/(2 log n) = n/2 factors.",
+    "content": "**Erd\u0151s Problem #392** asks: what is the minimum number of factors needed to write n! as a product where each factor is at most n\u00b2?\n\nThe answer is A(n) = n/2 - n/(2 log n) + o(n/log n).\n\n**Key insight**: Cambie observed that this follows from a simpler variant with bound n by pairing consecutive factors. If a\u2081...a\u209c = n! with each a\u1d62 \u2264 n, then a'\u1d62 = a_{2i-1} \u00b7 a_{2i} gives a factorization with each a'\u1d62 \u2264 n\u00b2 and roughly t/2 factors.",
+    "mathContext": "The factorization problem connects to Stirling's approximation log(n!) ~ n log n. Since each factor contributes at most log(n\u00b2) = 2 log n, we need at least (n log n)/(2 log n) = n/2 factors.",
     "significance": "key",
     "relatedConcepts": [
       "factorial",
@@ -28,7 +28,7 @@
     "type": "concept",
     "title": "Imports and Namespace",
     "content": "**import Mathlib** brings in the full Mathlib library, providing:\n- `Real.log` and `Real.log_pos` for logarithm reasoning\n- `Filter.atTop` and little-o (`=o[atTop]`) for asymptotic analysis\n- `Finset`, `BigOperators` for products over finite index sets\n\nThe `Erdos392` namespace keeps our definitions separate from the global Lean environment.",
-    "mathContext": "Opening `Nat`, `Filter`, `Real`, `Finset` brings standard names into scope. `BigOperators` enables the ∏ notation for finite products.",
+    "mathContext": "Opening `Nat`, `Filter`, `Real`, `Finset` brings standard names into scope. `BigOperators` enables the \u220f notation for finite products.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -46,8 +46,8 @@
     },
     "type": "definition",
     "title": "Valid Factorizations",
-    "content": "**IsValidFactorization n t B a** means the tuple (a₁, ..., aₜ) is a valid factorization of n! with bound B:\n\n1. The product equals n!: ∏ᵢ aᵢ = n!\n2. The sequence is monotone: a₁ ≤ a₂ ≤ ... ≤ aₜ\n3. All factors are bounded: aᵢ ≤ B for all i\n\nThe monotonicity requirement is standard — it avoids counting permutations of the same factorization.",
-    "mathContext": "The definition uses `Fin t → ℕ` for the factor sequence, ensuring exactly t factors. `Monotone a` means the sequence is non-decreasing. The bound condition `∀ i, a i ≤ B` applies uniformly.",
+    "content": "**IsValidFactorization n t B a** means the tuple (a\u2081, ..., a\u209c) is a valid factorization of n! with bound B:\n\n1. The product equals n!: \u220f\u1d62 a\u1d62 = n!\n2. The sequence is monotone: a\u2081 \u2264 a\u2082 \u2264 ... \u2264 a\u209c\n3. All factors are bounded: a\u1d62 \u2264 B for all i\n\nThe monotonicity requirement is standard \u2014 it avoids counting permutations of the same factorization.",
+    "mathContext": "The definition uses `Fin t \u2192 \u2115` for the factor sequence, ensuring exactly t factors. `Monotone a` means the sequence is non-decreasing. The bound condition `\u2200 i, a i \u2264 B` applies uniformly.",
     "significance": "key",
     "relatedConcepts": [
       "factorial",
@@ -66,7 +66,7 @@
     "type": "concept",
     "title": "The Minimum Function A(n, B)",
     "content": "**A(n, B)** is the minimum number of factors needed to express n! with factor bound B.\n\nThis is axiomatized because:\n1. The definition involves an existential minimum\n2. Constructive computation would require explicit factorization algorithms\n3. Our focus is on the asymptotic formula, not computation\n\n**A_spec** asserts that A(n, B) is indeed the least element of the set of valid factorization lengths.",
-    "mathContext": "`IsLeast S x` means x is in S and x ≤ y for all y in S. The set `{t | ∃ a, IsValidFactorization n t B a}` contains all possible factorization lengths; A(n,B) is the smallest.",
+    "mathContext": "`IsLeast S x` means x is in S and x \u2264 y for all y in S. The set `{t | \u2203 a, IsValidFactorization n t B a}` contains all possible factorization lengths; A(n,B) is the smallest.",
     "significance": "key",
     "relatedConcepts": [
       "minimum",
@@ -82,10 +82,10 @@
       "startLine": 71,
       "endLine": 83
     },
-    "type": "theorem",
-    "title": "Main Result: A(n, n²)",
-    "content": "**erdos_392_main** (axiomatized): With factor bound n², we have\n\nA(n, n²) = n/2 - n/(2 log n) + o(n/log n)\n\nThe error term o(n/log n) means the difference grows slower than n/log n as n → ∞.\n\n**Proof outline**:\n- Upper bound: Use the variant with bound n, then pair factors (Cambie's observation)\n- Lower bound: Stirling's approximation gives the n/2 leading term",
-    "mathContext": "The `=o[atTop]` notation means the left side is little-o of the right side, i.e., the ratio converges to 0 as n → ∞. Written out: (A(n,n²) - n/2 + n/(2 log n)) / (n/log n) → 0.",
+    "type": "insight",
+    "title": "Main Result: A(n, n\u00b2)",
+    "content": "**erdos_392_main** (axiomatized): With factor bound n\u00b2, we have\n\nA(n, n\u00b2) = n/2 - n/(2 log n) + o(n/log n)\n\nThe error term o(n/log n) means the difference grows slower than n/log n as n \u2192 \u221e.\n\n**Proof outline**:\n- Upper bound: Use the variant with bound n, then pair factors (Cambie's observation)\n- Lower bound: Stirling's approximation gives the n/2 leading term",
+    "mathContext": "The `=o[atTop]` notation means the left side is little-o of the right side, i.e., the ratio converges to 0 as n \u2192 \u221e. Written out: (A(n,n\u00b2) - n/2 + n/(2 log n)) / (n/log n) \u2192 0.",
     "significance": "key",
     "relatedConcepts": [
       "little-o",
@@ -101,10 +101,10 @@
       "startLine": 92,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Variant: A(n, n) with Strict Bound",
     "content": "**erdos_392_variant** (axiomatized): With the stricter factor bound n, we have\n\nA(n, n) = n - n/log n + o(n/log n)\n\nThis is solved by a **greedy algorithm**:\n1. Use factor n as many times as possible\n2. Then use n-1 as many times as possible\n3. Continue decreasing until n! is exhausted\n\nThe greedy approach is optimal because larger factors reduce the product most efficiently.",
-    "mathContext": "With bound n instead of n², we need roughly twice as many factors. The formula A(n,n) ~ n vs A(n,n²) ~ n/2 reflects this doubling — consistent with Cambie's pairing argument.",
+    "mathContext": "With bound n instead of n\u00b2, we need roughly twice as many factors. The formula A(n,n) ~ n vs A(n,n\u00b2) ~ n/2 reflects this doubling \u2014 consistent with Cambie's pairing argument.",
     "significance": "key",
     "relatedConcepts": [
       "greedy-algorithm",
@@ -122,8 +122,8 @@
     },
     "type": "concept",
     "title": "Cambie's Factor Pairing",
-    "content": "**cambie_implication** (axiomatized): The main result (bound n²) follows from the variant (bound n) by **factor pairing**.\n\nGiven a₁...aₜ = n! with each aᵢ ≤ n:\n- Define a'ᵢ = a_{2i-1} · a_{2i}\n- Then a'₁...a'_{⌈t/2⌉} = n!\n- Each a'ᵢ ≤ n · n = n²\n\nThis roughly **halves the number of factors**. Combined with the variant's formula A(n,n) ~ n, we get A(n,n²) ~ n/2.",
-    "mathContext": "The formal statement captures the logical dependency: if the variant holds (bound-n formula), then the main result follows (bound-n² formula). The lower bound for the main result comes from Stirling's approximation.",
+    "content": "**cambie_implication** (axiomatized): The main result (bound n\u00b2) follows from the variant (bound n) by **factor pairing**.\n\nGiven a\u2081...a\u209c = n! with each a\u1d62 \u2264 n:\n- Define a'\u1d62 = a_{2i-1} \u00b7 a_{2i}\n- Then a'\u2081...a'_{\u2308t/2\u2309} = n!\n- Each a'\u1d62 \u2264 n \u00b7 n = n\u00b2\n\nThis roughly **halves the number of factors**. Combined with the variant's formula A(n,n) ~ n, we get A(n,n\u00b2) ~ n/2.",
+    "mathContext": "The formal statement captures the logical dependency: if the variant holds (bound-n formula), then the main result follows (bound-n\u00b2 formula). The lower bound for the main result comes from Stirling's approximation.",
     "significance": "key",
     "relatedConcepts": [
       "factor-pairing",
@@ -141,7 +141,7 @@
     },
     "type": "concept",
     "title": "Stirling's Approximation",
-    "content": "**stirling_log_factorial** (axiomatized): Stirling's approximation gives\n\nlog(n!) = n log n - n + (1/2) log(2πn) + O(1/n)\n\nFor our purposes, the key fact is **log(n!) ~ n log n**. This explains why we need ~n/2 factors: each factor ≤ n² contributes ≤ 2 log n to the logarithm, so we need ≥ (n log n)/(2 log n) = n/2 factors.",
+    "content": "**stirling_log_factorial** (axiomatized): Stirling's approximation gives\n\nlog(n!) = n log n - n + (1/2) log(2\u03c0n) + O(1/n)\n\nFor our purposes, the key fact is **log(n!) ~ n log n**. This explains why we need ~n/2 factors: each factor \u2264 n\u00b2 contributes \u2264 2 log n to the logarithm, so we need \u2265 (n log n)/(2 log n) = n/2 factors.",
     "mathContext": "The little-o statement `log(n!) - n log n + n =o[atTop] n log n` captures the leading behavior. The -n and lower order corrections don't affect the asymptotic for A(n).",
     "significance": "key",
     "relatedConcepts": [
@@ -160,8 +160,8 @@
     },
     "type": "concept",
     "title": "Verified Lower Bound Identity",
-    "content": "**factor_count_lower_bound_intuition** (proved): The intuitive calculation\n\n(n · log n) / (2 · log n) = n/2\n\nis formally verified. This identity underpins the leading n/2 term in the main theorem.\n\n**Proof steps**:\n1. Show log n > 0 for n ≥ 2 using `Real.log_pos`\n2. Apply `field_simp` to cancel the log n factor",
-    "mathContext": "The proof uses `Real.log_pos : 1 < x → 0 < Real.log x` and `.ne'` to get `Real.log n ≠ 0`. Then `field_simp` handles the algebraic simplification. This is the only constructively proved theorem in this file.",
+    "content": "**factor_count_lower_bound_intuition** (proved): The intuitive calculation\n\n(n \u00b7 log n) / (2 \u00b7 log n) = n/2\n\nis formally verified. This identity underpins the leading n/2 term in the main theorem.\n\n**Proof steps**:\n1. Show log n > 0 for n \u2265 2 using `Real.log_pos`\n2. Apply `field_simp` to cancel the log n factor",
+    "mathContext": "The proof uses `Real.log_pos : 1 < x \u2192 0 < Real.log x` and `.ne'` to get `Real.log n \u2260 0`. Then `field_simp` handles the algebraic simplification. This is the only constructively proved theorem in this file.",
     "significance": "key",
     "relatedConcepts": [
       "lower-bound",
@@ -179,8 +179,8 @@
     },
     "type": "concept",
     "title": "Verified Small Cases",
-    "content": "We axiomatize values of A(n, n²) for small n:\n\n- **A(2, 4) = 1**: 2! = 2 ≤ 4, one factor suffices\n- **A(3, 9) = 1**: 3! = 6 ≤ 9, one factor suffices\n- **A(4, 16) = 2**: 4! = 24 > 16, need e.g. 4 · 6 = 24\n- **A(5, 25) = 2**: 5! = 120 = 10 · 12 (both ≤ 25)\n\nThese verify the formula: for n = 5, A(5) ≈ n/2 = 2.5, consistent with A(5,25) = 2.",
-    "mathContext": "For n ≥ 4, n! > n², so at least 2 factors are needed. The small case values validate that the formula A(n) ~ n/2 is reasonable even for small n.",
+    "content": "We axiomatize values of A(n, n\u00b2) for small n:\n\n- **A(2, 4) = 1**: 2! = 2 \u2264 4, one factor suffices\n- **A(3, 9) = 1**: 3! = 6 \u2264 9, one factor suffices\n- **A(4, 16) = 2**: 4! = 24 > 16, need e.g. 4 \u00b7 6 = 24\n- **A(5, 25) = 2**: 5! = 120 = 10 \u00b7 12 (both \u2264 25)\n\nThese verify the formula: for n = 5, A(5) \u2248 n/2 = 2.5, consistent with A(5,25) = 2.",
+    "mathContext": "For n \u2265 4, n! > n\u00b2, so at least 2 factors are needed. The small case values validate that the formula A(n) ~ n/2 is reasonable even for small n.",
     "significance": "supporting",
     "relatedConcepts": [
       "small-cases",
@@ -198,8 +198,8 @@
     },
     "type": "concept",
     "title": "Asymptotic: A ~ n/2",
-    "content": "**A_asymptotic_half_n** (axiomatized): For large n, A(n, n²) is approximately n/2.\n\nFormally: for all ε > 0, eventually |A(n,n²)/n - 1/2| < ε.\n\nThis captures the leading behavior without the correction term -n/(2 log n). The ε-δ form is equivalent to the limit A(n,n²)/n → 1/2 as n → ∞.",
-    "mathContext": "The statement uses `Filter.Eventually` (`∀ᶠ n in atTop`) to express 'for sufficiently large n'. This is the standard way to formalize asymptotic convergence in Mathlib.",
+    "content": "**A_asymptotic_half_n** (axiomatized): For large n, A(n, n\u00b2) is approximately n/2.\n\nFormally: for all \u03b5 > 0, eventually |A(n,n\u00b2)/n - 1/2| < \u03b5.\n\nThis captures the leading behavior without the correction term -n/(2 log n). The \u03b5-\u03b4 form is equivalent to the limit A(n,n\u00b2)/n \u2192 1/2 as n \u2192 \u221e.",
+    "mathContext": "The statement uses `Filter.Eventually` (`\u2200\u1da0 n in atTop`) to express 'for sufficiently large n'. This is the standard way to formalize asymptotic convergence in Mathlib.",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic",
@@ -217,8 +217,8 @@
     },
     "type": "concept",
     "title": "Correction Term is Lower Order",
-    "content": "**correction_is_lower_order** (axiomatized): The correction term n/(2 log n) is o(n/2).\n\nSince log n → ∞, we have:\n\n[n/(2 log n)] / [n/2] = 1/log n → 0\n\nThis confirms the correction term is genuinely 'smaller order' than the leading n/2 term. Together with `A_asymptotic_half_n`, this gives the full two-term asymptotic expansion.",
-    "mathContext": "The `isLittleO` relation `f =o[atTop] g` means lim_{n→∞} f(n)/g(n) = 0. Here f(n) = n/(2 log n) and g(n) = n/2, so the ratio is 1/log n which tends to 0.",
+    "content": "**correction_is_lower_order** (axiomatized): The correction term n/(2 log n) is o(n/2).\n\nSince log n \u2192 \u221e, we have:\n\n[n/(2 log n)] / [n/2] = 1/log n \u2192 0\n\nThis confirms the correction term is genuinely 'smaller order' than the leading n/2 term. Together with `A_asymptotic_half_n`, this gives the full two-term asymptotic expansion.",
+    "mathContext": "The `isLittleO` relation `f =o[atTop] g` means lim_{n\u2192\u221e} f(n)/g(n) = 0. Here f(n) = n/(2 log n) and g(n) = n/2, so the ratio is 1/log n which tends to 0.",
     "significance": "supporting",
     "relatedConcepts": [
       "little-o",

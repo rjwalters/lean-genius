@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integral#Polar_coordinates",
     "date": "Classical result, formalized 2026",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "analysis",
       "integration",
@@ -17,20 +17,20 @@
       "measure-theory"
     ],
     "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ01.lean",
-    "badge": "wip",
-    "sorries": 4,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "4 sorries: (1) gaussian_sq_eq_double_integral — Fubini step converting (∫ f)² to ∫∫ f⊗f; (2) double_integral_eq_polar — polar change of variables via integral_comp_polarCoord_symm; (3) angular_integral — ∫_{-π}^{π} 1 dθ = 2π via measure of interval; (4) polar_integral_factorization — Fubini on product set Ioi(0) ×ˢ Ioo(-π,π).",
+    "assumptions": "None. All 10 theorems fully verified with 0 sorries and 0 axioms. The polar_integral_factorization sorry was resolved via Measure.restrict_prod_eq_prod_restrict + integral_prod + Integrable.comp_fst.",
     "originalContributions": [
       "Named theorem for each step of the polar-coordinate proof: Fubini, change of variables, separation, radial, angular",
       "polar_sum_sq lemma: (r·cos θ)² + (r·sin θ)² = r² (compiled, 0 sorry)",
       "Imports radial_integral_eq from AreaOfCircleOQ05 (proved via FTC)",
-      "Main theorem gaussian_integral_sq_via_polar: (∫ e^{-x²})² = π (proved modulo sorries)",
-      "gaussian_integral_via_polar: ∫ e^{-x²} = √π (proved modulo sorries)",
+      "Main theorem gaussian_integral_sq_via_polar: (∫ e^{-x²})² = π (fully proved, 0 sorries)",
+      "gaussian_integral_via_polar: ∫ e^{-x²} = √π (fully proved, 0 sorries)",
       "Connection to circle area: angular=2π (circumference) × radial=1/2 gives π (area)"
     ],
     "dateAdded": "2026-04-05",
-    "lineCount": 183,
+    "lineCount": 231,
     "theoremCount": 10,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
@@ -38,7 +38,7 @@
   "overview": {
     "historicalContext": "The Gaussian integral ∫_{-∞}^{∞} e^{-x²} dx = √π is a fundamental result in analysis with applications throughout probability (normal distribution), physics (quantum mechanics, statistical mechanics), and number theory (theta functions). The standard proof via polar coordinates, due to Poisson, converts the square of the integral to a double integral over ℝ², then changes to polar coordinates (r,θ), separates the resulting integral into radial and angular parts, and computes each. This formalization makes every step of that proof explicit as a named theorem in Lean 4.\n\nThe key identity is that (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} dx dy = ∫₀^∞ ∫_{-π}^π r·e^{-r²} dθ dr = (∫₀^∞ r·e^{-r²} dr)·(∫_{-π}^π dθ) = (1/2)·(2π) = π. The π appears because the angular integral equals 2π — the circumference of the unit circle. This explains the deep geometric connection between the Gaussian integral and circle geometry.",
     "problemStatement": "**Open Question (OQ-01 from OQ-05)**: Can the connection between the Gaussian integral and circle area be made fully explicit by formalizing the polar-coordinate proof?\n\n**Answer**: YES. This file formalizes each step: (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} [Fubini] = ∫_polar r·e^{-r²} [change of variables via integral_comp_polarCoord_symm] = (1/2)·(2π) [separation] = π.",
-    "text": "A 183-line formalization making every step of the classical polar-coordinate proof explicit. The key Lean primitive is `integral_comp_polarCoord_symm` from Mathlib.Analysis.SpecialFunctions.PolarCoord. The Pythagorean lemma `polar_sum_sq` (proving (r·cos θ)² + (r·sin θ)² = r²) and radial integral (imported from AreaOfCircleOQ05) compile with 0 sorries. The main theorem `gaussian_integral_sq_via_polar` and corollary `gaussian_integral_via_polar` are proved modulo 4 intermediate sorries (Fubini steps and polar API details).",
+    "text": "A 231-line formalization making every step of the classical polar-coordinate proof explicit. The key Lean primitive is `integral_comp_polarCoord_symm` from Mathlib.Analysis.SpecialFunctions.PolarCoord. All sections compile with 0 sorries: Sections I–IV (Fubini, polar change of variables, angular = 2π, radial = 1/2), and Section V (polar_integral_factorization via Measure.restrict_prod_eq_prod_restrict + integral_prod + Integrable.comp_fst). The main theorem `gaussian_integral_sq_via_polar` and corollary `gaussian_integral_via_polar` are fully proved.",
     "proofStrategy": "**Section I** (Fubini): Rewrite (∫ e^{-x²})² as ∫∫ e^{-(x²+y²)} via product measure. Strategy: integral_mul_right + integral_prod.\n\n**Section II** (Polar Change of Variables): Apply `integral_comp_polarCoord_symm` (which converts ∫_{polarCoord.target} r·f(polarCoord.symm(r,θ)) to ∫ f). After change of variables, (r·cos θ)² + (r·sin θ)² = r² by polar_sum_sq.\n\n**Section III** (Angular Integral = 2π): ∫_{-π}^{π} 1 dθ = volume(Ioo(-π,π)) = 2π via Real.volume_Ioo.\n\n**Section IV** (Radial Integral = 1/2): ∫₀^∞ r·e^{-r²} dr = 1/2, imported from AreaOfCircleOQ05 (proved via FTC with antiderivative -(1/2)·e^{-r²}).\n\n**Section V** (Factorization): Polar integral factors as radial × angular since integrand r·e^{-r²} is independent of θ.\n\n**Section VI** (Main Theorem): Chain: Fubini → polar → factorization → radial(1/2) × angular(2π) → π.",
     "keyInsights": [
       "**integral_comp_polarCoord_symm as the Key**: This Mathlib theorem provides the polar change of variables: ∫_{polarCoord.target} r • f(polarCoord.symm p) = ∫ f. The factor r is the Jacobian of the polar coordinate map.",
@@ -74,12 +74,12 @@
       "Proofs.AreaOfCircleOQ05"
     ],
     "namespace": "AreaOfCircleOQ05OQ01",
-    "lineCount": 183,
+    "lineCount": 231,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0,
     "path": "Proofs/AreaOfCircleOQ05OQ01.lean",
-    "sorries": 4
+    "sorries": 0
   },
   "sections": [
     {
@@ -87,7 +87,7 @@
       "title": "Section I: Fubini — Square of Gaussian as Double Integral",
       "startLine": 35,
       "endLine": 47,
-      "summary": "States gaussian_sq_eq_double_integral: (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)}. Proof strategy: integral_mul_right + integral_prod (Fubini-Tonelli). Currently sorry.",
+      "summary": "Proves gaussian_sq_eq_double_integral: (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)}. Uses integral_mul_integral (proved via Integrable instance for exp(-x²)) + simp_rw on exp_add. Compiles with 0 sorries.",
       "mathContext": "$(\\int e^{-x^2} dx)^2 = (\\int e^{-x^2} dx)(\\int e^{-y^2} dy) = \\int\\int e^{-(x^2+y^2)} dx\\, dy$ by Fubini."
     },
     {
@@ -95,7 +95,7 @@
       "title": "Section II: Polar Change of Variables",
       "startLine": 49,
       "endLine": 82,
-      "summary": "Proves polar_sum_sq (compiled, no sorry) and states double_integral_eq_polar (sorry). Key: integral_comp_polarCoord_symm converts the 2D integral to polar form.",
+      "summary": "Proves polar_sum_sq (no sorry) and double_integral_eq_polar (no sorry). Key: integral_comp_polarCoord_symm converts the 2D integral to polar form; congr + polarCoord_symm_apply + polar_sum_sq complete the proof. Both compile with 0 sorries.",
       "mathContext": "$\\int\\int e^{-(x^2+y^2)} = \\int_0^\\infty\\int_{-\\pi}^\\pi r e^{-r^2} d\\theta\\, dr$ via polar change of variables with Jacobian $r$."
     },
     {
@@ -103,7 +103,7 @@
       "title": "Section III: Angular Integral = 2π",
       "startLine": 84,
       "endLine": 98,
-      "summary": "States angular_integral: ∫_{-π}^π 1 dθ = 2π. Strategy: volume of interval = 2π via Real.volume_Ioo. Currently sorry.",
+      "summary": "Proves angular_integral: ∫_{-π}^π 1 dθ = 2π via set_integral_const + Real.volume_Ioo + ENNReal.toReal_ofReal + ring. Compiles with 0 sorries.",
       "mathContext": "$\\int_{-\\pi}^\\pi 1\\, d\\theta = \\text{vol}((-\\pi, \\pi)) = 2\\pi$. This is the circumference factor explaining why $\\pi$ appears."
     },
     {
@@ -119,7 +119,7 @@
       "title": "Section V: Factorization of Polar Integral",
       "startLine": 110,
       "endLine": 125,
-      "summary": "States polar_integral_factorization: ∫_{polarCoord.target} r·e^{-r²} = (∫₀^∞ r·e^{-r²})(∫_{-π}^π 1). Strategy: Fubini on Ioi(0) ×ˢ Ioo(-π,π). Currently sorry.",
+      "summary": "Proves polar_integral_factorization: ∫_{polarCoord.target} r·e^{-r²} = (∫₀^∞ r·e^{-r²})(∫_{-π}^π 1). Uses Measure.restrict_prod_eq_prod_restrict + integral_prod + Integrable.comp_fst with IsFiniteMeasure on the angular domain. Fully proved, 0 sorries.",
       "mathContext": "$\\int_{r>0,\\theta\\in(-\\pi,\\pi)} r e^{-r^2} d\\theta\\, dr = \\left(\\int_0^\\infty r e^{-r^2} dr\\right)\\left(\\int_{-\\pi}^\\pi d\\theta\\right)$ since the integrand is independent of $\\theta$."
     },
     {
@@ -127,7 +127,7 @@
       "title": "Section VI: Main Theorem",
       "startLine": 127,
       "endLine": 152,
-      "summary": "Proves gaussian_integral_sq_via_polar: (∫ e^{-x²})² = π by chaining the five sections. Also proves gaussian_integral_via_polar: ∫ e^{-x²} = √π. Both compile modulo the 4 sorry dependencies.",
+      "summary": "Proves gaussian_integral_sq_via_polar: (∫ e^{-x²})² = π by chaining the five sections via rw + ring. Also proves gaussian_integral_via_polar: ∫ e^{-x²} = √π. Both compile with 0 sorries.",
       "mathContext": "$(\\int e^{-x^2})^2 = \\frac{1}{2} \\cdot 2\\pi = \\pi$, hence $\\int_{-\\infty}^\\infty e^{-x^2} dx = \\sqrt{\\pi}$."
     },
     {
@@ -140,12 +140,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Makes every step of the classical polar-coordinate proof of (∫ e^{-x²})² = π explicit as a named theorem. The Pythagorean polar_sum_sq and radial_integral_eq compile with 0 sorries. The main theorem and corollary are proved modulo 4 sorries for the Fubini and measure-theoretic API steps.",
-    "implications": "The 4 sorries target well-defined Mathlib API calls: Fubini for the product-integral identity, integral_comp_polarCoord_symm for the polar change of variables, Real.volume_Ioo chaining for the angular measure, and Fubini on a product set for the separation step. These are HARD sorries suitable for automated proof search (Aristotle). The proof architecture is complete and sound — only the API glue remains.",
+    "summary": "Makes every step of the classical polar-coordinate proof of (∫ e^{-x²})² = π explicit as a named theorem. All sections including polar_integral_factorization (Section V) are fully proved. The main theorem and corollary compile with 0 sorries and 0 axioms.",
+    "implications": "All sections are fully proved. The completed proof demonstrates that the polar-coordinate derivation of the Gaussian integral can be formalized end-to-end in Lean 4 using Mathlib's measure theory API (integral_comp_polarCoord_symm, integral_prod, Measure.restrict_prod_eq_prod_restrict).",
     "openQuestions": [
-      "Fill the 4 sorries using Aristotle automated proof search — all are HARD (standard API applications, no new mathematics required)",
-      "Generalize the separation lemma to polar integrals of arbitrary f(r)·g(θ) — a reusable Fubini instance on the polar domain"
+      "Generalize the separation lemma to polar integrals of arbitrary f(r)·g(θ) — a reusable Fubini instance on the polar domain",
+      "Connect to a formal statement that π = area of unit disk via this polar decomposition"
     ]
   },
-  "sorries": 4
+  "sorries": 0
 }

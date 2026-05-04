@@ -26,7 +26,8 @@
       "Stewart's theorem derived from supplementary angle law of cosines",
       "Median length formula d² = (2b²+2c²-a²)/4 as special case",
       "Pure algebraic proof via ring and nlinarith"
-    ]
+    ],
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Stewart's theorem was proved by Matthew Stewart in 1746 in his paper 'Some General Theorems of Considerable Use in the Higher Parts of Mathematics', published posthumously. It generalizes the law of cosines by relating a cevian length to all three sides of a triangle. The result was likely known earlier — it can be found in the work of Archimedes and is related to Apollonius's theorem (the case where the cevian is a median). Ceva's theorem (1678) had already unified the study of cevians in triangles. The median length formula d² = (2b²+2c²-a²)/4 is a special case corresponding to the midpoint of the opposite side. In modern terms, Stewart's theorem is a direct consequence of the law of cosines applied to the two sub-triangles, using the key observation that the angles ∠BDA and ∠CDA are supplementary (cos(∠CDA) = -cos(∠BDA)), so the cosine terms cancel when the two equations are combined.",

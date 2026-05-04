@@ -47,7 +47,8 @@
     "axiomCount": 4,
     "lineCount": 244,
     "assumptions": "4 axioms: IsHarmonic, H1_zero, WeakPoisson, and 1 more. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Hilbert's twentieth problem asked: do all boundary value problems with reasonable boundary conditions have solutions?\n\nThe answer, developed over the 20th century, is nuanced:\n\n- **Perron's Method (1923)**: Solved the Dirichlet problem for Laplace's equation using subharmonic functions\n- **Sobolev Spaces (1936)**: Introduced the natural function spaces for weak solutions\n- **Lax-Milgram Theorem (1954)**: Provided an abstract existence framework for elliptic problems\n- **Lewy's Example (1957)**: Showed some perfectly smooth PDEs have NO solutions at all\n\nThe resolution reveals that solvability depends deeply on the structure of the equation, not just the boundary conditions.",

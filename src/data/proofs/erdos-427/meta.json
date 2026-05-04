@@ -62,7 +62,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 284,
-    "assumptions": "3 axioms: nthPrime (n-th prime function — axiomatized), shiu_theorem (Shiu theorem — arithmetic progressions of primes), erdos_427_of_shiu (Erdős 427 follows from Shiu). 0 sorries."
+    "assumptions": "3 axioms: nthPrime (n-th prime function — axiomatized), shiu_theorem (Shiu theorem — arithmetic progressions of primes), erdos_427_of_shiu (Erdős 427 follows from Shiu). 0 sorries.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #427 asks whether sums of consecutive primes can always be made divisible by any given modulus. Specifically: for any starting index n and any divisor d > 0, can we find k such that d divides p_n + p_{n+1} + ... + p_{n+k-1}?\n\nThe problem was **solved** by Cedric Pilatte, who observed that a positive answer follows from **Shiu's theorem** (2000). Shiu proved a remarkable strengthening of Dirichlet's theorem: not only do primes appear infinitely often in any arithmetic progression (mod q), but there are arbitrarily long consecutive runs of primes all in the same residue class.\n\nThe key reference is: Shiu, D. K. L., \"Strings of congruent primes\", J. London Math. Soc. (2) 61 (2000), 359-373.",

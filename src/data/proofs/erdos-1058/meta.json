@@ -47,7 +47,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 165,
-    "assumptions": "3 axioms: prime_seq, erdos_stewart_conjecture_true, luca_theorem. 0 sorries."
+    "assumptions": "3 axioms: prime_seq, erdos_stewart_conjecture_true, luca_theorem. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "This problem, posed by Erdős and Cameron L. Stewart, appears as Problem A2 in Richard K. Guy's *Unsolved Problems in Number Theory* (3rd edition, 2004). It explores a surprising intersection between factorial arithmetic and prime distribution: when can $n!+1$ have an unusually restricted set of prime divisors?\n\nThe motivating observation comes from Wilson's theorem: $(p-1)! \\equiv -1 \\pmod{p}$, which guarantees that $p$ divides $(p-1)!+1$. This ensures that for $n$ just below a prime $p_k$, the value $n!+1$ is divisible by $p_k$. The question is whether $p_k$ and $p_{k+1}$ can be the *only* prime divisors — an extreme restriction given that $n!+1$ grows super-exponentially.\n\nFlorian Luca completely resolved this in 2001, published in *Mathematics of Computation* (vol. 71, no. 237). His proof combines lower bounds on the number of distinct prime factors of $n!+1$ (via the factorial's rapid growth rate) with diophantine techniques to show that for $n \\geq 6$, the value $n!+1$ necessarily acquires prime factors beyond $p_k$ and $p_{k+1}$. The five solutions — $n = 1, 2, 3, 4, 5$ — include the remarkable cases $4!+1 = 25 = 5^2$ and $5!+1 = 121 = 11^2$, which are also instances of the much harder Brocard-Ramanujan problem ($n!+1 = m^2$, still open for $n > 7$).",

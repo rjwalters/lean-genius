@@ -1,0 +1,148 @@
+[
+  {
+    "id": "ann-oq03ext-overview",
+    "proofId": "picks-theorem-oq-03-ext",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Ehrhart Theory Extensions: From Counting to Structure",
+    "content": "The core Ehrhart theorem — that the lattice point count L(P, n) is a polynomial in n for convex lattice polytopes P — is powerful but leaves many structural questions open. This file addresses five of them. (1) h*-palindromy: the Ehrhart polynomial's generating function Σ L(n)t^n = (Σ h*_i t^i) / (1-t)^{d+1} encodes a h*-vector; its palindromy characterizes reflexive polytopes. (2) Reciprocity consequences: L*(n) = (-1)^d L(-n) forces L(0) = 1 (origin is always a lattice point), L(-1) = 0, and L*(0) = (-1)^d. (3) Interpolation uniqueness: a degree-d polynomial is determined by d+1 values — confirming Ehrhart polynomials are canonical. (4) Pascal recurrences: L(Δ_d, n) = L(Δ_d, n-1) + L(Δ_{d-1}, n) mirrors Pascal's identity for binomial coefficients C(n+d, d). (5) h*-sum = d! · Vol(P) connects h*-vectors to normalized polytope volume. All 30 theorems are proved without sorries or axioms.",
+    "mathContext": "Ehrhart generating function: $\\sum_{n \\geq 0} L(P, n) t^n = \\frac{\\sum_{i=0}^d h^*_i t^i}{(1-t)^{d+1}}$. Palindromy: $h^*_i = h^*_{d-i}$ iff $P$ is reflexive. $h^*$-sum: $\\sum_i h^*_i = d! \\cdot \\text{Vol}(P)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "h*-vector (Ehrhart polynomial numerator)",
+      "reflexive polytope",
+      "Ehrhart-Macdonald reciprocity",
+      "polynomial interpolation uniqueness",
+      "normalized volume"
+    ],
+    "prerequisites": [
+      "Ehrhart polynomial L(P,n)",
+      "generating function machinery",
+      "lattice polytope basics"
+    ]
+  },
+  {
+    "id": "ann-oq03ext-palindromy",
+    "proofId": "picks-theorem-oq-03-ext",
+    "range": {
+      "startLine": 24,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "h*-Palindromy and the Reflexive Polytope Characterization",
+    "content": "Section I defines three concrete h*-vectors as Fin 4 → ℕ arrays and verifies palindromy computationally via `decide`. Octahedron (3D cross-polytope {x : |x₁|+|x₂|+|x₃| ≤ 1}): h* = (1,3,3,1), palindromic (h*_0=1=h*_3, h*_1=3=h*_2). Unit cube [0,1]³: h* = (1,4,1,0), NOT palindromic (h*_0=1 ≠ 0=h*_3). Standard 3-simplex {x : xᵢ≥0, Σxᵢ≤1}: h* = (1,0,0,0), NOT palindromic. The palindromy criterion (Hibi 1991): a lattice polytope P is reflexive iff h*(P) is palindromic. Equivalently, P is reflexive iff 0 is in the interior and the dual P° = {y : x·y ≤ 1 for all x ∈ P} is also a lattice polytope. The octahedron is the dual of the cube, and both are reflexive — but the cube's h*-vector (1,4,1,0) is not palindromic, which is consistent because the cube is not reflexive as a *lattice* polytope in the usual sense (the standard cube needs a translation to be reflexive).",
+    "mathContext": "Palindromic: $h^*_i = h^*_{d-i}$ for $i = 0, \\ldots, d$. Reflexive: $P$ has a unique interior lattice point (origin) and $P^\\circ$ is also a lattice polytope. Hibi (1991): $P$ reflexive $\\Leftrightarrow$ $h^*(P)$ palindromic. Octahedron: $h^* = (1,3,3,1)$, sum $= 8 = 3! \\cdot (4/3)$ (normalized volume $= 4/3$). Cube: $h^* = (1,4,1,0)$, not palindromic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reflexive polytope (dual is a lattice polytope)",
+      "cross-polytope (octahedron)",
+      "Hibi's palindromy theorem (1991)",
+      "h*-vector generating function",
+      "decide tactic for finite computations"
+    ],
+    "prerequisites": [
+      "Fin n → ℕ as a vector type",
+      "decide for decidable propositions",
+      "lattice polytope definition"
+    ]
+  },
+  {
+    "id": "ann-oq03ext-reciprocity",
+    "proofId": "picks-theorem-oq-03-ext",
+    "range": {
+      "startLine": 58,
+      "endLine": 100
+    },
+    "type": "insight",
+    "title": "Reciprocity Consequences: L(0)=1, L(-1)=0, L*(0)=(-1)^d",
+    "content": "Section II derives algebraic consequences of Ehrhart-Macdonald reciprocity L*(t) = (-1)^d · L(-t) for specific rational values. cube_L and cube_Lstar are defined as ℚ-valued functions cube_L(t) = (t+1)³ and cube_Lstar(t) = (t-1)³. cube_reciprocity: L*(t) = -L(-t) (for d=3, (-1)³ = -1), proved by ring. Key evaluations: cube_L(-1) = 0 (consistent with the cube having no interior lattice points at n=1); cube_Lstar(1) = 0 (unit dilate has no interior points); reciprocity_at_zero_cube: L*(0) = (0-1)³ = -1 = (-1)^3. For d=3: L(0) = 1 (the origin), L(-1) = 0, L*(0) = -1 ← these three evaluations are universal consequences of reciprocity. The simplex parallel: simplex3_L(t) = (t+1)(t+2)(t+3)/6, simplex3_Lstar(t) = (t-1)(t-2)(t-3)/6, simplex3_reciprocity: same reciprocity identity by ring.",
+    "mathContext": "Ehrhart-Macdonald: $L^*(t) = (-1)^d L(-t)$. At $t=0$: $L^*(0) = (-1)^d L(0) = (-1)^d \\cdot 1 = (-1)^d$. At $t=-1$: $L(-1) = (-1)^d L^*(1)$, and $L^*(1) = 0$ (unit dilate has no interior points) gives $L(-1) = 0$. For $d=3$: $L^*(0) = -1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart-Macdonald reciprocity",
+      "interior Ehrhart polynomial L*",
+      "ring tactic for polynomial identities",
+      "cube_L/cube_Lstar as ℚ → ℚ functions"
+    ],
+    "prerequisites": [
+      "Ehrhart-Macdonald reciprocity L*(n) = (-1)^d L(-n)",
+      "ring tactic in Lean 4",
+      "ℚ-valued polynomial functions"
+    ]
+  },
+  {
+    "id": "ann-oq03ext-interpolation",
+    "proofId": "picks-theorem-oq-03-ext",
+    "range": {
+      "startLine": 101,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Polynomial Interpolation Uniqueness via Linear System Solvability",
+    "content": "Section III proves that quadratic and cubic polynomials are uniquely determined by their values at 3 resp. 4 distinct points. The proofs unfold via linarith from the hypothesis that two polynomials agree at all sample points. For quadratics: given c₁=c₂ (at t=0), a₁+b₁+c₁=a₂+b₂+c₂ (at t=1), 4a₁+2b₁+c₁=4a₂+2b₂+c₂ (at t=2), the conclusion a₁=a₂∧b₁=b₂∧c₁=c₂ follows by linarith — arithmetic on the Vandermonde system. The cubic theorem uses 4 evaluation hypotheses and `refine ⟨?_, ?_, ?_, h0⟩ <;> linarith`. This approach avoids general Vandermonde determinant machinery and directly uses linear arithmetic. The mathematical content: an (n+1)×(n+1) Vandermonde matrix with distinct nodes has nonzero determinant Π_{i<j}(xⱼ - xᵢ), so the system is uniquely solvable. In Lean, this is captured by the arithmetic entailment: given the 3 or 4 evaluation equations, the coefficient equations are forced.",
+    "mathContext": "Vandermonde matrix for nodes $0, 1, 2, 3$: $V = \\begin{pmatrix} 1 & 0 & 0 & 0 \\\\ 1 & 1 & 1 & 1 \\\\ 1 & 2 & 4 & 8 \\\\ 1 & 3 & 9 & 27 \\end{pmatrix}$, $\\det V = \\prod_{i < j}(j - i) = 1 \\cdot 2 \\cdot 3 \\cdot 1 \\cdot 2 \\cdot 1 = 12 \\neq 0$. Unique solution for $(a, b, c, d)$ given $(f(0), f(1), f(2), f(3))$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Vandermonde matrix and determinant",
+      "polynomial interpolation (Lagrange form)",
+      "linarith for linear arithmetic",
+      "refine with multiple goals"
+    ],
+    "prerequisites": [
+      "Vandermonde interpolation",
+      "linear arithmetic over ℚ",
+      "linarith tactic"
+    ]
+  },
+  {
+    "id": "ann-oq03ext-pascal",
+    "proofId": "picks-theorem-oq-03-ext",
+    "range": {
+      "startLine": 135,
+      "endLine": 167
+    },
+    "type": "insight",
+    "title": "Pascal Recurrences: Simplex Ehrhart Mirrors Binomial Coefficients",
+    "content": "Section IV proves Pascal-type recurrences: simplex2_pascal: L₂(n) = L₂(n-1) + (n+1), i.e., C(n+2,2) = C(n+1,2) + C(n+1,1). simplex3_pascal: L₃(n) = L₃(n-1) + L₂(n), i.e., C(n+3,3) = C(n+2,3) + C(n+2,2). Both proved by ring — the polynomial identities are trivial. The deeper content is simplex2_column_sum: Σ_{k=0}^{n} (k+1) = (n+1)(n+2)/2, proved by induction on n using Finset.sum_range_succ. This is the 'hockey stick identity' C(n+2,2) = Σ_{k=0}^{n} C(k+1,1), expressing L₂(n) as a cumulative sum of L₁(k). The general pattern L_d(n) = Σ_{k=0}^{n} L_{d-1}(k) extends to all simplex dimensions, reflecting the fact that the d-simplex is the d-fold 'running sum' of the (d-1)-simplex — a discrete integration.",
+    "mathContext": "Pascal recurrence: $\\binom{n+d}{d} = \\binom{n+d-1}{d} + \\binom{n+d-1}{d-1}$. Column sum: $\\binom{n+2}{2} = \\sum_{k=0}^{n} (k+1) = \\sum_{k=0}^n \\binom{k+1}{1}$. General: $L_{\\Delta_d}(n) = \\binom{n+d}{d}$; Pascal: $L_{\\Delta_d}(n) = L_{\\Delta_d}(n-1) + L_{\\Delta_{d-1}}(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's identity for binomial coefficients",
+      "Finset.sum_range_succ for inductive sums",
+      "hockey stick identity",
+      "simplex as repeated running sum"
+    ],
+    "prerequisites": [
+      "simplex Ehrhart L(Δ_d, n) = C(n+d, d)",
+      "induction with Finset.sum_range_succ",
+      "ring tactic for polynomial identities"
+    ]
+  },
+  {
+    "id": "ann-oq03ext-hstar-vol",
+    "proofId": "picks-theorem-oq-03-ext",
+    "range": {
+      "startLine": 193,
+      "endLine": 288
+    },
+    "type": "concept",
+    "title": "h*-Sum, Normalized Volume, and the Summary Theorem",
+    "content": "Sections VI–IX establish the connection between h*-vectors and polytope volume. For all three examples: octahedron (sum h* = 8 = 3! · 4/3), cube (sum h* = 6 = 3! · 1), simplex (sum h* = 1 = 3! · 1/6). The general theorem hstar_sum_volume_relation proves vol = hstar_sum / d! from the relation hstar_sum = d! · vol, using Nat.cast_ne_zero for factorial nonzero. Section VIII (Dehn-Sommerville): reciprocity_euler_3d proves cube_L(0) + cube_Lstar(0) = 0, reflecting the Euler characteristic relation L(0) + (-1)^d L*(0) = 1 + (-1)^d which equals 0 for odd d. The summary theorem ehrhart_extension_summary packages the four main results in a conjunction, proved by providing explicit terms: octahedron_hstar_palindrome, cube_reciprocity, simplex3_reciprocity, simplex3_pascal.",
+    "mathContext": "$\\sum_i h^*_i = d! \\cdot \\text{Vol}(P)$ (normalized volume). Euler characteristic: $L(0) + (-1)^d L^*(0) = 1 + (-1)^d$. For $d$ odd: $= 0$. For $d$ even: $= 2$. Cube ($d=3$): $1 + (-1) = 0$. ✓",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "normalized volume d! Vol(P)",
+      "Dehn-Sommerville relations",
+      "Euler characteristic of polytope",
+      "Nat.factorial_ne_zero for division"
+    ],
+    "prerequisites": [
+      "h*-vector definition as Ehrhart polynomial numerator",
+      "Nat.cast_ne_zero.mpr",
+      "conjunction proving via ⟨_, _, _, _⟩"
+    ]
+  }
+]

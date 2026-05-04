@@ -48,14 +48,15 @@
     ],
     "dateAdded": "2026-03-29",
     "axiomCount": 0,
-    "lineCount": 226,
+    "lineCount": 2408,
     "prerequisites": [
       "IsConstructible definition (AngleTrisection.lean)",
       "Gauss-Wantzel theorem (AngleTrisectionOQ02OQ03.lean)",
       "Basic prime factorization theory (Mathlib)"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "The question of which geometric constructions are possible with compass and straightedge dates back to ancient Greece. While Wantzel (1837) characterized constructibility algebraically (constructible extensions are iterated quadratic extensions), the computational aspects — how efficiently one can decide constructibility — are a natural extension of this work.\n\nThe key insight, formalized here, is that constructibility reduces entirely to a number-theoretic check: a degree d is constructible iff d is a power of 2, which can be decided in O(log d) time by repeated division. This places the constructibility decision problem firmly in P (polynomial time).\n\nFor regular n-gons, the Gauss-Wantzel theorem (proved independently by Gauss in Disquisitiones Arithmeticae, 1801, and by Wantzel in 1837) gives: an n-gon is constructible iff φ(n) is a power of 2. The decidability proof in OQ03 constructs an explicit `Decidable` typeclass instance in Lean 4, which is a stronger statement than 'constructibility is decidable' — it provides the actual decision procedure as a Lean term, from which executable code can be extracted.\n\nThe `Decidable` typeclass is the bridge between mathematical decidability (there exists a procedure) and computational decidability (here is the procedure). By providing `Decidable` instances, OQ03 enables Lean's `decide` and `native_decide` tactics to automatically determine constructibility for any concrete degree — without human proof effort.",
@@ -83,7 +84,7 @@
       "AngleTrisection"
     ],
     "namespace": "AngleTrisectionOQ03",
-    "lineCount": 226,
+    "lineCount": 2408,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,

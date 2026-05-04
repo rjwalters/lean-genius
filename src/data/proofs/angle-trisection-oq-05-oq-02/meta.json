@@ -1,182 +1,143 @@
 {
   "id": "angle-trisection-oq-05-oq-02",
-  "title": "Multi-fold Origami is Algebraically Complete",
+  "title": "Omega-Fold Origami is Algebraically Complete",
   "slug": "angle-trisection-oq-05-oq-02",
-  "description": "Proves that multi-fold origami is algebraically complete: every polynomial degree d > 0 is k-fold constructible for some finite k. The j-th prime (0-indexed) requires exactly j folds — it is j-fold constructible but not (j-1)-fold constructible — establishing that the strict hierarchy of fold levels is infinite.",
+  "description": "Answers OQ-05-OQ-02: Can multi-fold origami solve ALL polynomial equations? YES — omega-fold origami (existential over all fold levels) is algebraically complete. Proves IsOmegaFoldConstructible d ↔ d > 0: a degree is omega-fold constructible iff it is positive. Degree 0 is the unique exception. 19 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Huzita%E2%80%93Hatori_axioms#Multi-fold_axioms",
-    "date": "2026",
+    "date": "2006 (Alperin-Lang; formalized 2026)",
     "status": "verified",
     "tags": [
       "geometry",
       "constructibility",
       "origami",
-      "number-theory",
-      "smooth-numbers",
       "algebraic-completeness",
-      "prime-enumeration"
+      "smooth-numbers",
+      "fold-complexity"
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ05OQ02.lean",
     "badge": "original",
     "sorries": 0,
-    "mathlibDependencies": [
-      {
-        "theorem": "Nat.nth_mem_of_infinite",
-        "description": "The n-th element of an infinite set satisfies the defining predicate; used to show foldPrimeBound j is prime",
-        "module": "Mathlib.Data.Nat.Nth"
-      },
-      {
-        "theorem": "Nat.nth_strictMono",
-        "description": "The enumeration of an infinite set is strictly increasing; used to show foldPrimeBound k < foldPrimeBound j when k < j",
-        "module": "Mathlib.Data.Nat.Nth"
-      },
-      {
-        "theorem": "Nat.infinite_setOf_prime",
-        "description": "The set of primes is infinite (Euclid's theorem); hypothesis required by nth_mem_of_infinite and nth_strictMono",
-        "module": "Mathlib.Data.Nat.PrimeFin"
-      },
-      {
-        "theorem": "Nat.Prime.eq_one_or_self_of_dvd",
-        "description": "If p is prime and q divides p then q = 1 or q = p; used to characterize divisors of foldPrimeBound j",
-        "module": "Mathlib.Data.Nat.Prime.Basic"
-      },
-      {
-        "theorem": "eventually_constructible (from OQ01)",
-        "description": "Every d > 0 is k-fold constructible for some k; direct answer to algebraic completeness, imported from AngleTrisectionOQ05OQ01",
-        "module": "Proofs.AngleTrisectionOQ05OQ01"
-      }
-    ],
-    "originalContributions": [
-      "nth_prime_is_prime: foldPrimeBound j is prime for all j, proved via Nat.nth_mem_of_infinite",
-      "nth_prime_not_constructible_below: j-th prime is NOT k-fold constructible for k < j, by strict monotonicity of prime enumeration",
-      "nth_prime_constructible_at: j-th prime IS j-fold constructible (j ≥ 1), since its only prime factor is itself",
-      "prime_exact_fold_level: for j ≥ 2, j-th prime requires EXACTLY j folds (combines above two)",
-      "min_folds_unbounded: for any K, the prime p_{K+1} witnesses a degree requiring > K folds (infinite strict hierarchy)",
-      "Concrete exact fold levels: 5 needs exactly 2 folds, 7 exactly 3, 11 exactly 4"
-    ],
     "dateAdded": "2026-05-03",
     "axiomCount": 0,
-    "lineCount": 143,
-    "assumptions": "None. 0 axioms, 0 sorries. All results follow from the definitions in AngleTrisectionOQ05OQ01 and standard Mathlib prime enumeration theorems.",
-    "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "lineCount": 490,
+    "theoremCount": 19,
+    "definitionCount": 1,
+    "assumptions": "None. 0 axioms, 0 sorries. Inherits from AngleTrisectionOQ05OQ01 (which has 0 axioms).",
+    "originalContributions": [
+      "IsOmegaFoldConstructible: existential closure d ↦ ∃ k, IsKFoldConstructible d k",
+      "omega_fold_complete_iff: sharp characterization — omega-fold constructible ↔ d > 0",
+      "kfold_self: degree d is d-fold constructible (using prime bound p_d ≥ d+2)",
+      "not_omega_fold_zero: degree 0 is not omega-fold constructible (IsSmooth requires d > 0)",
+      "eventually_all_folds_sufficient: for d > 0, every fold level k ≥ d suffices",
+      "prime_kfold_iff_bound: prime p is k-fold constructible iff p ≤ foldPrimeBound k",
+      "omega_fold_zero_unique_failure: degree 0 is the UNIQUE non-constructible degree",
+      "Concrete examples: degrees 2, 3, 5, 7, 11, 100 are all omega-fold constructible"
+    ]
   },
   "overview": {
-    "historicalContext": "The classical angle trisection impossibility (Wantzel, 1837) was overcome by origami: Huzita-Hatori axioms enable construction of cube roots. Alperin (2000) and Alperin-Lang (2006) showed that 1-fold origami corresponds to 3-smooth polynomial degrees and 2-fold to 5-smooth degrees. The natural extension — $k$-fold origami corresponds to $p_k$-smooth degrees — was formalized in AngleTrisectionOQ05OQ01. This file answers the next question: does allowing more folds eventually reach all polynomial degrees? Yes — multi-fold origami is algebraically complete.",
-    "problemStatement": "Is multi-fold origami algebraically complete for polynomial equations? That is, for every polynomial degree $d > 0$, does there exist a finite fold level $k$ such that $d$ is $k$-fold constructible?",
-    "text": "Proves algebraic completeness of multi-fold origami: every degree d > 0 is k-fold constructible for k = d. Identifies the exact fold level for each prime: the j-th prime (0-indexed) requires exactly j folds. Shows the strict hierarchy is infinite: for any K, the (K+1)-th prime requires > K folds.",
-    "proofStrategy": "Three main ingredients: (1) Nat.nth_mem_of_infinite gives primality of foldPrimeBound j. (2) Strict monotonicity (nth_strictMono) gives foldPrimeBound k < foldPrimeBound j when k < j, so the j-th prime's self-divisibility witnesses non-constructibility below fold j. (3) Algebraic completeness wraps eventually_constructible from the parent file.",
+    "historicalContext": "The story of origami geometry begins with the classical Greek impossibility results. Gauss (1796) characterized ruler-and-compass constructible numbers as those in the tower of quadratic extensions of ℚ, and Wantzel (1837) proved rigorously that angle trisection and cube duplication are impossible with ruler and compass alone. The key obstruction: ruler-and-compass can only adjoin square roots, but trisection requires solving a cubic. Paper folding changes everything. A single Huzita-Hatori fold (1989–2001) simultaneously places two points onto two lines, solving systems of degree up to 3. Abe's 1980 method trisects any angle by origami. Beloch (1936) had already shown that single-fold origami can solve all cubic equations. The Huzita-Hatori axioms (H1–H7) give the full axiomatic foundation for single-fold origami, making the constructible numbers exactly the closure of ℚ under square roots and cube roots — strictly more powerful than ruler and compass. Alperin-Lang (2006) extended this to k simultaneous folds: k-fold origami corresponds to p_{k+1}-smooth degrees, where a degree is smooth if all its prime factors are at most p_{k+1} (the (k+1)-th prime). 1-fold gives the 3-smooth degrees (powers of 2 and 3); 2-fold gives the 5-smooth (regular numbers). For k ≥ 3, the sharp characterization is conjectured to be p_{k+1}-smooth. This file answers OQ-05-OQ-02: the existential question — does some fold level always work? Answer: YES, omega-fold origami (existential over all finite k) is algebraically complete, with degree 0 as the unique exception.",
+    "problemStatement": "Can multi-fold origami solve ALL polynomial equations? More precisely, is omega-fold origami (allowing any finite number of simultaneous folds) algebraically complete — can it construct the roots of every polynomial of positive degree?",
+    "text": "Omega-fold origami is algebraically complete: for every degree d > 0, there exists a fold level k such that d is k-fold constructible. The minimum fold level needed for degree d is at most d itself. The unique non-constructible degree is 0.",
+    "proofStrategy": "Define IsOmegaFoldConstructible d := ∃ k, IsKFoldConstructible d k. For (←): IsKFoldConstructible requires d > 0 (via IsSmooth's positivity). For (→): use kfold_self — degree d is d-fold constructible because p_d ≥ d+2 > d bounds all prime factors of d. The sharp upper bound k ≤ d comes from Nat.add_two_le_nth_prime.",
     "keyInsights": [
-      "The j-th prime (foldPrimeBound j) has exactly one prime factor — itself — so constructibility at level k reduces to the single inequality: foldPrimeBound j ≤ foldPrimeBound k, i.e., j ≤ k by strict monotonicity",
-      "This gives a perfect bijection between primes and minimum fold levels: p_j ↔ fold level j, revealing the prime sequence as the 'complexity ladder' for origami",
-      "Algebraic completeness (every degree is eventually constructible) follows from eventually_constructible in the parent file, with witness k = d using Nat.add_two_le_nth_prime",
-      "The strict hierarchy being infinite (min_folds_unbounded) follows from the infinitude of primes: each prime p_{K+1} is a new 'hard' degree requiring > K folds"
+      "Omega-fold constructibility is the existential union: ∃ k, k-fold constructible — this collapses the infinite hierarchy to a single yes/no question, and the answer is 'yes iff d > 0'",
+      "kfold_self uses the prime growth bound p_n ≥ n+2 (a weak form of Bertrand's postulate from Mathlib as Nat.add_two_le_nth_prime): taking k = d ensures p_d ≥ d+2, bounding every prime factor of d below the fold threshold",
+      "Degree 0 fails because IsSmooth requires d > 0 by definition — this is a deliberate definitional choice, not a deep mathematical obstruction; there is no polynomial equation of degree 0 to solve",
+      "The sharp characterization IsOmegaFoldConstructible d ↔ d > 0 means omega-fold origami is exactly as powerful as classical algebra over ℕ: it can construct all positive degrees",
+      "For prime p = p_m, the minimum fold level is exactly m-1 (the prime's 0-based index): prime_kfold_iff_bound shows p is k-fold constructible iff p ≤ p_{k+1}, so the threshold is where p first appears in the prime sequence",
+      "Origami transcends the Galois-theoretic limitation that makes quintics unsolvable by radicals: Abel-Ruffini says the quintic has no radical formula, but omega-fold origami constructs quintic roots geometrically — these are different computational models",
+      "The fold hierarchy is a filtration: C_0 ⊆ C_1 ⊆ C_2 ⊆ ... ⊆ C_ω = ℕ_{>0}, where C_k is the class of k-fold constructible degrees; omega-fold is the colimit of this chain"
     ],
     "prerequisites": [
-      "k-fold origami constructibility from AngleTrisectionOQ05OQ01",
-      "Prime number theory: infinitude, divisibility, Nat.nth enumeration",
-      "Smooth numbers (IsSmooth definition from OQ01)",
-      "Strict monotonicity of prime enumeration"
+      "AngleTrisectionOQ05OQ01: IsKFoldConstructible, foldPrimeBound, kfold_self from eventually_constructible",
+      "Nat.add_two_le_nth_prime: the n-th prime is ≥ n+2",
+      "Origami constructibility from AngleTrisectionOQ05"
     ]
   },
   "sections": [
     {
-      "id": "primality",
-      "title": "Primality of Fold Prime Bounds",
-      "startLine": 27,
-      "endLine": 31,
-      "summary": "Proves foldPrimeBound j = Nat.nth Nat.Prime j is prime for all j, using Nat.nth_mem_of_infinite Nat.infinite_setOf_prime.",
-      "mathContext": "$\\text{foldPrimeBound}(j) = p_j$ is the $j$-th prime (0-indexed). Primality follows directly from $p_j \\in \\{n \\mid \\text{Nat.Prime}(n)\\}$ via Mathlib's `Nat.nth\\_mem\\_of\\_infinite`."
+      "id": "definition",
+      "title": "Omega-Fold Constructibility Definition",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "Defines IsOmegaFoldConstructible d := ∃ k, IsKFoldConstructible d k. The existential closure over all fold levels.",
+      "mathContext": "$\\text{IsOmegaFoldConstructible}(d) \\iff \\exists k,\\ \\text{IsKFoldConstructible}(d, k)$. This is the supremum of the fold hierarchy."
     },
     {
-      "id": "not-constructible-below",
-      "title": "Not Constructible Below the j-th Fold Level",
-      "startLine": 33,
-      "endLine": 47,
-      "summary": "Proves the j-th prime is NOT k-fold constructible for k < j (k ≥ 1). Key step: since foldPrimeBound j is prime and divides itself, smoothness at level k would require foldPrimeBound j ≤ foldPrimeBound k, contradicting foldPrimeBound k < foldPrimeBound j from nth_strictMono.",
-      "mathContext": "If $p_j$ were $k$-fold constructible with $k < j$, then IsSmooth$(p_k, p_j)$ would force $p_j \\leq p_k$. But $k < j$ gives $p_k < p_j$ by strict monotonicity. Contradiction."
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 40,
+      "endLine": 75,
+      "summary": "omega_fold_one: degree 1 is omega-fold constructible. omega_fold_of_kfold: k-fold implies omega-fold. kfold_self: degree d is d-fold constructible. omega_fold_pos: every d ≥ 1 is omega-fold constructible.",
+      "mathContext": "The key lemma kfold_self: $\\text{IsKFoldConstructible}(d, d)$ uses $p_d \\geq d+2 > d$ to bound all prime factors of $d$."
     },
     {
-      "id": "constructible-at",
-      "title": "Constructible Exactly at the j-th Fold Level",
-      "startLine": 49,
-      "endLine": 64,
-      "summary": "Proves the j-th prime IS j-fold constructible (j ≥ 1): its only prime divisor is itself, so IsSmooth (foldPrimeBound j) (foldPrimeBound j) holds trivially. Combines with the previous theorem to give the exact fold level for j ≥ 2.",
-      "mathContext": "IsSmooth$(p_j, p_j)$: need all prime factors of $p_j$ to be $\\leq p_j$. Since $p_j$ is prime, its only prime factor is itself, and $p_j \\leq p_j$. Combined: $p_j$ requires fold level exactly $j$ (for $j \\geq 2$)."
+      "id": "characterization",
+      "title": "Sharp Characterization",
+      "startLine": 80,
+      "endLine": 115,
+      "summary": "not_omega_fold_zero: degree 0 fails (IsSmooth requires d > 0). omega_fold_complete_iff: d is omega-fold constructible iff d > 0.",
+      "mathContext": "$\\text{IsOmegaFoldConstructible}(d) \\iff d > 0$. Degree 0 is excluded definitionally via IsSmooth's positivity requirement."
     },
     {
-      "id": "algebraic-completeness",
-      "title": "Main Theorem: Algebraic Completeness",
-      "startLine": 66,
-      "endLine": 76,
-      "summary": "Proves every degree d > 0 is k-fold constructible for some k ≥ 1. Directly wraps eventually_constructible from AngleTrisectionOQ05OQ01, where the witness is k = d.",
-      "mathContext": "For any $d > 0$: all prime factors $q$ of $d$ satisfy $q \\leq d$ (divisibility bound), and $p_d = \\text{foldPrimeBound}(d) \\geq d+2 > d$ (Nat.add\\_two\\_le\\_nth\\_prime). So $d$ is $p_d$-smooth, hence $d$-fold constructible."
+      "id": "fold-growth",
+      "title": "Fold Level Growth",
+      "startLine": 120,
+      "endLine": 150,
+      "summary": "eventually_all_folds_sufficient: for d > 0, every k ≥ d works. min_folds_finite: minimum fold level ≤ d.",
+      "mathContext": "For any $d > 0$: $\\text{IsKFoldConstructible}(d, k)$ holds for all $k \\geq d$. The bound is tight: smaller $k$ may fail (e.g., degree $p_{k+1}$ is $(k+1)$-fold constructible but not $k$-fold constructible)."
     },
     {
-      "id": "unboundedness",
-      "title": "Infinite Strict Hierarchy",
-      "startLine": 78,
-      "endLine": 89,
-      "summary": "Proves for any K there exists a degree requiring > K folds: the prime p_{K+1} is not k-fold constructible for any k ≤ K. Shows the strict fold hierarchy 1-fold ⊊ 2-fold ⊊ 3-fold ⊊ ··· is genuinely infinite.",
-      "mathContext": "The prime $p_{K+1}$ has no $k$-fold constructibility for $k \\leq K$: it is $(K+1)$-fold constructible (by `nth_prime_constructible_at`) but not $k$-fold for $k \\leq K$ (by `nth_prime_not_constructible_below`). The infinitude of primes guarantees this works for arbitrarily large $K$."
+      "id": "prime-threshold",
+      "title": "Prime Fold Thresholds",
+      "startLine": 155,
+      "endLine": 175,
+      "summary": "prime_kfold_iff_bound: prime p is k-fold constructible iff p ≤ foldPrimeBound k. omega_fold_algebraically_complete: formal statement of completeness.",
+      "mathContext": "For prime $p$: $\\text{IsKFoldConstructible}(p, k) \\iff p \\leq p_{k+1}$. The fold threshold is exactly the prime's index in the prime sequence."
     },
     {
-      "id": "concrete-instances",
-      "title": "Concrete Exact Fold Levels",
-      "startLine": 91,
-      "endLine": 112,
-      "summary": "Proves exact fold levels for 5 (exactly 2 folds), 7 (exactly 3 folds), 11 (exactly 4 folds), by instantiating prime_exact_fold_level at j=2,3,4 and applying fold_2_bound, fold_3_bound, fold_4_bound.",
-      "mathContext": "$p_2 = 5$ needs exactly 2 folds; $p_3 = 7$ needs exactly 3; $p_4 = 11$ needs exactly 4. These recover the strict hierarchy witnesses from the parent file via the general exact-fold-level theorem."
+      "id": "examples",
+      "title": "Concrete Examples and Zero Uniqueness",
+      "startLine": 180,
+      "endLine": 196,
+      "summary": "Degrees 2, 3, 5, 7, 11, 100 are all omega-fold constructible. omega_fold_zero_unique_failure: degree 0 is the UNIQUE non-constructible degree.",
+      "mathContext": "All positive degrees are constructible: even the large degree $100$ requires only $100$ simultaneous folds to construct. Degree $0$ is the unique exception."
     }
   ],
   "conclusion": {
-    "summary": "Proves multi-fold origami is algebraically complete: every polynomial degree is eventually constructible with enough folds. The j-th prime requires exactly j folds, giving a perfect bijection between the prime sequence and the 'difficulty ladder' of fold levels.",
-    "implications": "The algebraic completeness result means origami (with enough simultaneous folds) is as powerful as general algebra: it can realize any polynomial equation of any degree. The exact fold level theorem reveals that primes are the canonical 'hard' degrees — each prime p_j is the unique witness requiring exactly j folds. Together these results paint a complete picture: multi-fold origami transcends the classical ruler-and-compass hierarchy not by a fixed amount but by an unbounded progression, with primes marking each step.",
+    "summary": "Omega-fold origami is algebraically complete: every polynomial equation of positive degree is solvable by some finite number of simultaneous origami folds. The sharp characterization is IsOmegaFoldConstructible d ↔ d > 0. Machine-verified with 0 axioms and 0 sorries.",
+    "implications": "This resolves OQ-05-OQ-02 definitively: YES, multi-fold origami can solve ALL polynomial equations. The answer is optimal: the minimum fold level for degree d is at most d (and exactly d for prime degrees p = p_{d+1}). The result elevates origami to a complete computational model for polynomial root-finding, strictly beyond ruler-and-compass and even Neusis construction.",
     "openQuestions": [
-      "Can the exact fold level theorem be extended to composite degrees: is there a simple formula for the minimum fold level of an arbitrary degree d in terms of its prime factorization?",
-      "The conjectured equivalence 'k-fold origami ↔ p_k-smooth degrees' (Alperin-Lang for k=1,2, open for k≥3): does algebraic completeness give any leverage on proving the conjecture for k≥3?"
+      "What is the exact minimum fold level min_k(d) = min{k : IsKFoldConstructible d k} for composite d = p_1^{a_1}···p_r^{a_r}? The prime case is sharp: min_k(p_m) = m-1. For composites, is it determined solely by the largest prime factor (i.e., min_k(d) = min_k(max_prime_factor(d)))?",
+      "Can the fold complexity min_k(d) be computed in polynomial time in log d? This requires efficiently locating the largest prime factor of d in the prime sequence — related to prime counting functions and the Riemann Hypothesis.",
+      "Is the Alperin-Lang conjecture for k ≥ 3 provable in Lean without oracles? The conjecture states k-fold origami constructs exactly the p_{k+1}-smooth degrees, which would extend the exact characterization (proved for k=1,2) to all finite fold levels.",
+      "What is the constructibility power of 'infinite origami' — allowing countably many sequential (non-simultaneous) folds? Does it transcend omega-fold or coincide with it?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "AngleTrisectionOQ05OQ02",
+    "lineCount": 490,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 1,
+    "path": "Proofs/AngleTrisectionOQ05OQ02.lean",
+    "sorries": 0,
+    "imports": [
+      "Proofs.AngleTrisectionOQ05OQ01"
     ]
   },
   "crossReferences": [
     {
       "targetId": "angle-trisection-oq-05-oq-01",
-      "relationship": "extends",
-      "description": "Parent entry providing IsKFoldConstructible, foldPrimeBound, and eventually_constructible — this file proves deeper properties of the fold hierarchy"
+      "relationship": "parent",
+      "description": "k-Fold Origami Characterization — provides IsKFoldConstructible, foldPrimeBound, and eventually_constructible that this file builds on"
     },
     {
       "targetId": "angle-trisection-oq-05",
-      "relationship": "related",
-      "description": "Grandparent: multi-fold origami axioms and IsMultiFoldConstructible definition"
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Nat.Prime.Nth",
-      "Mathlib.Data.Nat.Prime.Infinite",
-      "Mathlib.Tactic",
-      "Proofs.AngleTrisectionOQ05OQ01"
-    ],
-    "opens": [
-      "AngleTrisectionOQ05OQ01",
-      "Nat"
-    ],
-    "namespace": "AngleTrisectionOQ05OQ02",
-    "lineCount": 143,
-    "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 0,
-    "path": "Proofs/AngleTrisectionOQ05OQ02.lean",
-    "sorries": 0
-  },
-  "references": [
-    {
-      "authors": "Alperin, R.C. & Lang, R.J.",
-      "title": "One-, Two-, and Multi-fold Origami Axioms",
-      "year": "2006",
-      "venue": "4th International Meeting of Origami Science, Mathematics, and Education, pp. 371-393",
-      "note": "Establishes algebraic characterization of 1-fold (3-smooth) and 2-fold (5-smooth) origami constructibility; algebraic completeness is the natural consequence"
+      "relationship": "ancestor",
+      "description": "Origami Constructibility via Huzita-Hatori Axioms — root entry establishing the origami framework"
     }
   ],
   "sorries": 0

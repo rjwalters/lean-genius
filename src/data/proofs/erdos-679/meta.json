@@ -87,7 +87,8 @@
     "axiomCount": 0,
     "lineCount": 259,
     "assumptions": "0 axiom(s) and 10 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979 about the distribution of distinct prime factors across differences n-k. The question asks whether infinitely many integers n exist such that all predecessors n-k (for large k) have ω below the threshold (1+ε) log k / log log k.\n\nThe problem has a subtle two-part structure. The stronger version — with an additive O(1) error instead of the multiplicative (1+ε) factor — has been disproven: for every large n, some k < n gives ω(n-k) ≥ log k/log log k + c·log k/(log log k)². But the main question with the (1+ε) slack remains open.\n\nThe Hardy-Ramanujan theorem (1917) provides the context: ω(n) ~ log log n for 'typical' n, while the maximum of ω for n ≤ x is ~ log x/log log x. The threshold is (1+ε) times this maximum, so the question asks whether all predecessors can simultaneously stay below (1+ε) times the extremal order. Probabilistic heuristics suggest special n should be rare (count ~ x/log x), and the problem provably cannot be resolved by finite computation.",

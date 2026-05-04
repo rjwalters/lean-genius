@@ -50,7 +50,8 @@
     ],
     "lineCount": 83,
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_536_conjecture. 0 sorries."
+    "assumptions": "1 axiom: erdos_536_conjecture. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős posed versions of this problem from the 1960s through the 1990s, culminating in a discussion at the 1991 West Coast Number Theory session. The question asks whether positive-density subsets of $\\{1,\\ldots,N\\}$ must contain three distinct elements with equal pairwise LCMs: $[a,b] = [b,c] = [a,c]$. This means $a, b, c$ are all divisors of a common value $L = [a,b]$, and each pair covers all prime factors of $L$.\n\nWeisenberg proved the conjecture for density $\\varepsilon > 221/225 \\approx 0.982$, an impressively tight partial result. Weisenberg also constructed sets of size $\\gg (\\log\\log N)^{f(N)} \\cdot N / \\log N$ (where $f(N) \\to \\infty$) that avoid the LCM triple property, showing that if a density threshold exists, triple-free sets can be surprisingly large.\n\nErdős showed that the analogous statement for four elements is false: there exist sets of density $\\geq 1/2$ in $\\{1,\\ldots,N\\}$ with no four elements having all pairwise LCMs equal. This sharp contrast between triples and quadruples is characteristic of extremal combinatorics problems.\n\nThe problem sits within a family of Erdős problems (#535, #537, #856, #857) on GCD/LCM patterns in dense sets, connecting density Ramsey theory to multiplicative number theory. The condition $[a,b] = [b,c] = [a,c] = L$ forces a very rigid multiplicative structure: each pair must jointly account for every prime power in the factorization of $L$.\n\n**Status**: OPEN — The conjecture is proved only for $\\varepsilon > 221/225$.",

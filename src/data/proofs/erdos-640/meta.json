@@ -23,7 +23,8 @@
     "axiomCount": 2,
     "lineCount": 291,
     "assumptions": "2 axioms: steiner_equivalence, trivial_case_k3. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal posed this problem in the 1997 paper [Er97d, p.84], as part of their systematic study of how large chromatic number forces specific substructures in graphs. The problem is a chromatic analogue of the Erdős-Hajnal conjecture on clique/independent set sizes in graphs avoiding fixed induced subgraphs. For $k = 3$, the answer is immediate: any graph with $\\chi(G) \\ge 3$ is non-bipartite, hence contains an odd cycle, and every odd cycle has $\\chi = 3$. For $k \\ge 4$, the problem remains completely open—no value of $f(k)$ is known. Raphael Steiner made a key contribution by showing the conjecture is equivalent to a path formulation: replacing 'odd cycle whose vertices span $\\chi \\ge k$' with 'path whose vertices span $\\chi \\ge k$' gives the same conjecture. This equivalence is surprising since paths are much simpler structures than cycles. The problem connects to the broader Gyárfás-Sumner conjecture (every tree is $\\chi$-bounded), the Erdős-Hajnal conjecture on hereditary graph classes, and the study of $\\chi$-boundedness where graph families are constrained by their chromatic number relative to clique number.",

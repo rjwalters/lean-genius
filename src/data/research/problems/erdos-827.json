@@ -20,7 +20,9 @@
     "since": "2026-04-27T21:05:00.000Z",
     "iteration": 2,
     "focus": "Metadata sync + Nat.find refactor planning. 4 axioms / 14 theorems / 0 sorries; further reduction (4 → 2) requires Nat.find refactor of minimalNk, deferred until Docker build is safe.",
-    "blockers": ["Disk at 89% (1.6GB free) — Docker build unsafe; refactor PR deferred"],
+    "blockers": [
+      "Disk at 89% (1.6GB free) — Docker build unsafe; refactor PR deferred"
+    ],
     "nextAction": "When disk pressure clears: prototype Nat.find refactor of minimalNk + valid + sharp into 1 axiom (witness existence) + 1 noncomputable def. Update nk_ge_k, nk_three, nk_monotone proofs. Verify with Docker.",
     "attemptCounts": {
       "total": 2,
@@ -82,10 +84,10 @@
     {
       "path": "Proofs/Erdos827Problem.lean",
       "filename": "Erdos827Problem.lean",
-      "lineCount": 276,
-      "theoremCount": 14,
-      "axiomCount": 4,
-      "defCount": 10,
+      "lineCount": 287,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos827Problem.lean"

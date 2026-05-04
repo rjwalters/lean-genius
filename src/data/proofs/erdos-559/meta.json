@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 237,
     "assumptions": "No axioms. 10 sorries(s) remain in the formalization.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Beck posed this problem in 1983, motivated by his proof that the size Ramsey number of paths is linear: R̂(P_n) = O(n). He conjectured that the same linearity holds for all bounded-degree graphs: R̂(G) ≤ c_d · n when Δ(G) ≤ d. The conjecture was supported by positive results for increasingly general graph classes: Friedman and Pippenger (1987) proved it for all trees using expander graphs, and Haxell, Kohayakawa, and Luczak (1995) proved it for cycles, completing the picture for Δ ≤ 2. However, Rödl and Szemerédi (2000) dramatically disproved the conjecture for d = 3, constructing degree-3 graphs with R̂(G) ≥ cn(log n)^c using a probabilistic argument involving random 3-regular graphs. Tikhomirov (2022) strengthened this to R̂(G) ≥ cn · exp(c√(log n)), a bound that is superlinear but subpolynomial (n^{1+o(1)}). On the upper bound side, a sequence of improvements — Kohayakawa et al. (n^{5/3+o(1)}), Conlon-Nenadov-Trujić (n^{8/5}), and Draganić-Petrova (2022, n^{3/2+o(1)}) — has steadily reduced the exponent but a substantial gap remains between the lower bound n^{1+o(1)} and the upper bound n^{3/2+o(1)}.",

@@ -50,7 +50,7 @@
       "startLine": 41,
       "endLine": 43
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Multiplicativity of the Norm",
     "content": "Proves N(z*w) = N(z)*N(w) by expanding both sides and using the ring tactic. This multiplicativity is what makes the norm useful for studying factorization: if z = a*b, then N(z) = N(a)*N(b), constraining possible factorizations.",
     "mathContext": "$N(zw) = N(z) \\cdot N(w)$ for all $z, w \\in \\mathbb{Z}[\\sqrt{-5}]$. This follows from the norm being the restriction of the field norm, which is a group homomorphism.",
@@ -72,7 +72,7 @@
       "startLine": 46,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Units Have Norm 1",
     "content": "If z is a unit in Z[sqrt(-5)], then N(z) = 1. Proof: if z*w = 1, then N(z)*N(w) = 1, and since both norms are non-negative integers, both must equal 1. This means the only units are +1 and -1.",
     "mathContext": "$z \\in \\mathbb{Z}[\\sqrt{-5}]^\\times \\Rightarrow N(z) = 1$. Since $a^2 + 5b^2 = 1$ forces $b = 0, a = \\pm 1$, the unit group is $\\{\\pm 1\\}$.",
@@ -94,7 +94,7 @@
       "startLine": 64,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "First Factorization: 6 = 2 * 3",
     "content": "Verifies the first factorization of 6 in Z[sqrt(-5)]: the product of the embeddings of 2 and 3 equals the embedding of 6. This is the 'standard' factorization from the integers.",
     "mathContext": "$6 = 2 \\cdot 3$ in $\\mathbb{Z}[\\sqrt{-5}]$, where $2 = \\langle 2, 0 \\rangle$ and $3 = \\langle 3, 0 \\rangle$.",
@@ -114,7 +114,7 @@
       "startLine": 69,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Second Factorization: 6 = (1+sqrt(-5))(1-sqrt(-5))",
     "content": "Verifies the second factorization: (1 + sqrt(-5)) * (1 - sqrt(-5)) = 1 - (-5) = 6. This genuinely different factorization is the heart of the counterexample. Both factors are algebraic integers not in Z.",
     "mathContext": "$6 = (1 + \\sqrt{-5})(1 - \\sqrt{-5})$ since the product equals $1^2 - (\\sqrt{-5})^2 = 1 - (-5) = 6$. This is a difference-of-squares identity.",
@@ -136,7 +136,7 @@
       "startLine": 77,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Norm Computations for All Factors",
     "content": "Computes the norms of all elements involved: N(2) = 4, N(3) = 9, N(1+sqrt(-5)) = 6, N(1-sqrt(-5)) = 6, N(6) = 36. The consistency check 36 = 4*9 = 6*6 reflects the two factorizations via multiplicativity of the norm.",
     "mathContext": "$N(2) = 4$, $N(3) = 9$, $N(1 \\pm \\sqrt{-5}) = 1 + 5 = 6$, $N(6) = 36$. Note $4 \\cdot 9 = 36 = 6 \\cdot 6$, mirroring the two factorizations.",
@@ -157,7 +157,7 @@
       "startLine": 96,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "All Four Factors Are Non-Units",
     "content": "Proves 2, 3, 1+sqrt(-5), and 1-sqrt(-5) are all non-units by showing their norms (4, 9, 6, 6 respectively) are not equal to 1. This is the first half of showing irreducibility.",
     "mathContext": "Since $N(z) = 1 \\Leftrightarrow z \\in \\{\\pm 1\\}$, and $N(2) = 4 \\neq 1$, $N(3) = 9 \\neq 1$, $N(1 \\pm \\sqrt{-5}) = 6 \\neq 1$, none of these elements are units.",
@@ -177,7 +177,7 @@
       "startLine": 125,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No Element Has Norm 2 or 3",
     "content": "The crucial Diophantine result: the equations a^2 + 5b^2 = 2 and a^2 + 5b^2 = 3 have no integer solutions. This is proved by nlinarith (nonlinear integer arithmetic). This gap in the norm values is what makes factorization fail.",
     "mathContext": "The quadratic form $a^2 + 5b^2$ takes values $\\{0, 1, 4, 5, 6, 9, \\ldots\\}$ on $\\mathbb{Z}^2$, skipping 2 and 3. This gap is what prevents nontrivial factorization of elements with norm 4, 6, or 9.",
@@ -199,7 +199,7 @@
       "startLine": 132,
       "endLine": 136
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Norm 1 Implies Unit",
     "content": "The converse direction: if N(z) = 1, then z is a unit. Since a^2 + 5b^2 = 1 forces b = 0 and a = +/-1, the element z must be +/-1, which are indeed units. Combined with the earlier result, this gives: z is a unit iff N(z) = 1.",
     "mathContext": "$N(z) = 1 \\Rightarrow z \\in \\mathbb{Z}[\\sqrt{-5}]^\\times$. The equation $a^2 + 5b^2 = 1$ over $\\mathbb{Z}$ has solutions $(\\pm 1, 0)$ only.",
@@ -221,7 +221,7 @@
       "startLine": 141,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "2 Is Irreducible in Z[sqrt(-5)]",
     "content": "The most detailed irreducibility proof: if 2 = a*b, then N(a)*N(b) = 4. Since no element has norm 2, the only factorizations of 4 as a product of positive norms are 1*4 and 4*1. In either case, one factor has norm 1 and is therefore a unit. The proof uses omega to eliminate impossible norm values.",
     "mathContext": "If $2 = ab$ then $4 = N(a)N(b)$. Since $N(a), N(b) \\geq 1$ and $N(a), N(b) \\neq 2, 3$, we need $N(a) \\in \\{1, 4\\}$. If $N(a) = 1$ then $a$ is a unit; if $N(a) = 4$ then $N(b) = 1$ and $b$ is a unit.",
@@ -244,7 +244,7 @@
       "startLine": 170,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "2 Does Not Divide (1 + sqrt(-5))",
     "content": "Proves that 2 does not divide (1 + sqrt(-5)) by a direct divisibility argument: if (1+sqrt(-5)) = 2*z, extracting the imaginary part gives 2*z.im = 1, which has no integer solution. This is the key non-primality witness.",
     "mathContext": "If $2 \\mid (1 + \\sqrt{-5})$, then $1 + \\sqrt{-5} = 2(a + b\\sqrt{-5})$ gives $2b = 1$, impossible in $\\mathbb{Z}$. So $2 \\nmid (1+\\sqrt{-5})$, yet $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5}) = 6$, proving 2 is not prime.",
@@ -266,7 +266,7 @@
       "startLine": 186,
       "endLine": 192
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Factorizations Are Essentially Different",
     "content": "The final theorem: since 2 is irreducible but does not divide (1+sqrt(-5)) despite dividing their product 6, the element 2 is irreducible but not prime. In an integral domain, unique factorization holds if and only if every irreducible is prime, so this witnesses the failure of the UFD property.",
     "mathContext": "$2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5})$ but $2 \\nmid (1+\\sqrt{-5})$ and $2 \\nmid (1-\\sqrt{-5})$, so 2 is not prime. Since 2 is irreducible but not prime, $\\mathbb{Z}[\\sqrt{-5}]$ is not a UFD.",

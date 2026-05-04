@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-cyclic-vector-all-fields",
   "title": "Cyclic Vector Existence for Nonderogatory Matrices — RCF Approach",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED-COMPLETE → V2 AXIOM-FREE: PR #13041 (2026-04-27) eliminated nonderogatory_similar_companion axiom by routing through WIP04 primary decomposition (GeneralCyclicVector.nonderogatory_general_has_cyclic_vector). Gallery file now has 0 axioms, 1 routine sorry (monic_factored_form: monic μ over a field factors into coprime monic prime powers — UniqueFactorizationMonoid API, ~50 lines, Aristotle-suitable). Mathematical content fully verified.",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. monic_factored_form proved via UFD factorization (PR feature/researcher-3). Cyclic vector theorem verified over all fields.",
     "builtItems": [
       "exists_strongly_cyclic: helper theorem stated with detailed proof sketch (CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean:301)",
       "nonderogatory_squarefree_has_cyclic_vector: PROVED assuming exists_strongly_cyclic (line 325) — main theorem complete",
@@ -37,7 +37,12 @@
       "CayleyHamiltonCyclicVectorAllFields.lean: Main gallery entry file V2 (0 axioms, 1 routine sorry: monic_factored_form). Replaces V1 RCF axiom via WIP04 primary decomposition (PR #13041).",
       "nonderogatory_has_cyclic_vector: Main theorem proved via monic_factored_form + GeneralCyclicVector.nonderogatory_general_has_cyclic_vector (WIP04 primary decomposition, axiom-free)",
       "nonderogatory_has_cyclic_vector_finite: Finite field corollary proved",
-      "cyclic_iff_not_killed_below_degree: Equivalence characterization proved"
+      "cyclic_iff_not_killed_below_degree: Equivalence characterization proved",
+      "monic_irreducible_multiset_factorization: proved in CayleyHamiltonCyclicVectorAllFields.lean (line 73)",
+      "coprime_of_distinct_monic_irreducible: proved in CayleyHamiltonCyclicVectorAllFields.lean (line 100)",
+      "coprime_pow_of_coprime_irreducible: proved in CayleyHamiltonCyclicVectorAllFields.lean (line 111)",
+      "finset_factorization_from_multiset: proved in CayleyHamiltonCyclicVectorAllFields.lean (line 117)",
+      "monic_factored_form: sorry eliminated, full UFD proof added (line 153)"
     ],
     "insights": [
       "nonderogatory_has_cyclic_vector_any_field already exists in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean with 1 sorry (nonderogatory_similar_companion — RCF, not in Mathlib v4.26.0)",
@@ -57,9 +62,7 @@
       "Rational Canonical Form (PID structure theorem) is a real Mathlib gap (~800 lines), but V2 no longer depends on it."
     ],
     "nextSteps": [
-      "Submit monic_factored_form to Aristotle (routine UFM API, ~50 lines) — would close the file to 0 sorries / 0 axioms.",
-      "Alternative manual route: normalizedFactors μ → toFinset for distinct primes → count for exponents → use Polynomial.normalizedFactors_prod + Polynomial.Monic.normalizedFactors_prod to recover μ. Coprimality from Prime.coprime_iff_not_dvd on distinct primes.",
-      "After 0/0: optionally upstream monic_factored_form to Mathlib as Polynomial.UniqueFactorizationMonoid lemma — generally useful."
+      "Gallery verified: 0 sorries, 0 axioms. No further proof work needed."
     ],
     "markdown": "# Knowledge Base: cayley-hamilton-cyclic-vector-all-fields\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -72,7 +75,8 @@
     "minimal-polynomial"
   ],
   "relatedProofs": [
-    "cayley-hamilton"
+    "cayley-hamilton",
+    "cayley-hamilton-cyclic-vector-all-fields"
   ],
   "references": {
     "papers": [],
@@ -81,5 +85,29 @@
   },
   "started": "2026-04-25T13:30:37+02:00",
   "significance": 8,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFields.lean",
+      "lineCount": 269,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFields.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsAristotle.lean",
+      "lineCount": 133,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean"
+    }
+  ]
 }

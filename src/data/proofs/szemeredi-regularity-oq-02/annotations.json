@@ -2,97 +2,197 @@
   {
     "id": "ann-header-imports",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 1, "endLine": 47 },
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
     "type": "concept",
     "title": "Module Overview: Two Flavors of Graph Regularity",
     "content": "This file formalizes the comparison between two flavors of graph regularity:\n\n**Szemerédi regularity** (1978): A partition into ≤ t parts is ε-regular if for every pair (Pᵢ,Pⱼ), any sufficiently large A⊆Pᵢ, B⊆Pⱼ satisfy |d(A,B)-d(Pᵢ,Pⱼ)| ≤ ε. Guarantee: each pair is uniformly random-like.\n\n**Frieze-Kannan (FK) weak regularity** (1999): A partition approximates the graph's edge density globally — the total cut error over ALL pairs (A,B) is ≤ ε·n². Weaker per-pair guarantee, but with singly exponential (not tower-type) bound on parts.\n\nThe three imports form the complete dependency chain: `Mathlib` (full library), `Proofs.SzemerediCore` (provides `IsEpsilonRegular`, `edgeDensity`, and the core ε-regularity infrastructure), and `Proofs.SzemerediRegularity` (the parent Szemerédi Regularity Lemma formalization). The `variable {V : Type*} [Fintype V] [DecidableEq V]` declaration makes the development universe-polymorphic: it applies to any finite vertex set, not just `Fin n`.\n\nThe file adds the FK definition and the hierarchy theorem: Szemerédi ⟹ FK.",
     "mathContext": "| Property | Szemerédi | Frieze-Kannan |\n|---|---|---|\n| Parts bound | $\\leq \\text{twr}(1/\\varepsilon)$ | $\\leq 4^{1/\\varepsilon^2}$ |\n| Guarantee | Per-pair: $|d(A,B)-d(P,Q)| \\leq \\varepsilon$ | Global: $|e(A,B) - \\text{pred}(A,B)| \\leq \\varepsilon n^2$ |\n| Strength | Stronger | Weaker |\n\nThe cut norm $\\|W\\|_{\\square} = \\sup_{A,B\\subseteq V} |e(A,B) - \\text{pred}(A,B)|/n^2$. The Szemerédi ⟹ FK implication: every ε-regular partition is a 2ε-cut-approximation.\n\nThe `open Szemeredi.Core Szemeredi.Regularity Classical` line makes `IsEpsilonRegular`, `edgeDensity`, `Finpartition.IsEquipartition`, and classical choice available without namespace qualification throughout the file.",
     "significance": "key",
-    "prerequisites": ["Szemerédi regularity lemma", "epsilon-regular pairs", "cut norm", "Frieze-Kannan lemma"],
-    "relatedConcepts": ["szemeredi-regularity", "graph-regularity", "cut-norm", "graphon theory"]
+    "prerequisites": [
+      "Szemerédi regularity lemma",
+      "epsilon-regular pairs",
+      "cut norm",
+      "Frieze-Kannan lemma"
+    ],
+    "relatedConcepts": [
+      "szemeredi-regularity",
+      "graph-regularity",
+      "cut-norm",
+      "graphon theory"
+    ]
   },
   {
     "id": "ann-fk-definition",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 48, "endLine": 65 },
+    "range": {
+      "startLine": 48,
+      "endLine": 65
+    },
     "type": "definition",
     "title": "IsCutApproximation: The FK Cut-Approximation Property",
     "content": "`IsCutApproximation G eps parts` formalizes the Frieze-Kannan cut-approximation property: a partition `parts` is an ε-cut-approximation if for every A, B ⊆ V:\n\n  |e(A,B) - Σᵢⱼ d(Pᵢ,Pⱼ)|A∩Pᵢ||B∩Pⱼ|| ≤ ε·n²\n\nKey features:\n1. The bound is **global**: one inequality over ALL pairs (A,B), not per-pair\n2. The predicted count `Σᵢⱼ d(Pᵢ,Pⱼ)|A∩Pᵢ||B∩Pⱼ|` is what you'd get if each Pᵢ-Pⱼ block had uniform density d(Pᵢ,Pⱼ)\n3. Formalized over ℚ for compatibility with Lean's `edgeDensity : ℚ` type\n\nThis is the discrete counterpart of the continuous cut distance ‖W_G - W_P‖_□ ≤ ε for graphons W_G (adjacency matrix viewed as a function on [0,1]²) and W_P (the step-function graphon of the partition).\n\n**Graphon interpretation**: The FK condition ‖W_G - W_P‖_□ ≤ ε says the partition P defines a step-function graphon W_P that approximates G's adjacency graphon W_G in the cut metric. This is exactly the sense in which 'the partition captures the large-scale structure of G'. The cut metric on graphons was developed by Borgs, Chayes, Lovász, Sós, and Vesztergombi (2006–2012), connecting combinatorics to functional analysis.",
     "mathContext": "$\\text{IsCutApproximation}(G, \\varepsilon, \\mathcal{P})$ iff $\\forall A,B\\subseteq V$:\n$$\\left|e(A,B) - \\sum_{P,Q\\in\\mathcal{P}} d(P,Q)\\,|A\\cap P|\\,|B\\cap Q|\\right| \\leq \\varepsilon n^2$$\nwhere $e(A,B) = \\#\\{(a,b)\\in A\\times B : G.\\text{Adj}\\,a\\,b\\}$ and $d(P,Q) = e(P,Q)/(|P|\\cdot|Q|)$. This is the discrete cut metric; graphon theory relates it to $\\|W_G - W_{\\mathcal{P}}\\|_{\\square}$ where $W_{\\mathcal{P}}(x,y) = d(P_i,P_j)$ for $x\\in P_i, y\\in P_j$.\n\nThe sum $\\sum_{P,Q} d(P,Q)|A\\cap P||B\\cap Q|$ is computed in Lean as `(parts.product parts).sum (fun pq => edgeDensity G pq.1 pq.2 * (A ∩ pq.1).card * (B ∩ pq.2).card)`. Using `ℚ` (rational numbers) avoids division-by-zero issues when computing `edgeDensity`.",
     "significance": "key",
-    "prerequisites": ["SimpleGraph edge density", "Finset.product", "graphon cut distance"],
-    "relatedConcepts": ["cut norm", "graphon theory", "edge density", "regularity lemma"]
+    "prerequisites": [
+      "SimpleGraph edge density",
+      "Finset.product",
+      "graphon cut distance"
+    ],
+    "relatedConcepts": [
+      "cut norm",
+      "graphon theory",
+      "edge density",
+      "regularity lemma"
+    ]
   },
   {
     "id": "ann-edge-helper",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 70, "endLine": 74 },
-    "type": "technique",
+    "range": {
+      "startLine": 70,
+      "endLine": 74
+    },
+    "type": "concept",
     "title": "edge_count_le_product: Trivial Upper Bound",
     "content": "`edge_count_le_product` is a private helper lemma establishing the trivial bound: the number of G-adjacent pairs in A×B is at most |A|·|B| (every pair is either adjacent or not).\n\nThe one-line proof uses:\n1. `Finset.card_filter_le`: the filtered set is a subset, hence smaller\n2. `Finset.card_product`: |A×B| = |A|·|B|\n3. `exact_mod_cast`: casts the Nat inequality to ℚ\n\nThis bound is used in the *small-set* case of `pair_cut_error_bound`: when |A| < ε|P| (or |B| < ε|Q|), the product |A|·|B| ≤ ε|P|·|Q|, so e(A,B) ≤ |A||B| ≤ ε|P||Q| — giving the ε|P||Q| bound without invoking ε-regularity. The factor-of-2 in the main theorem traces directly to needing this bound for both e(A,B) ≤ ε|P||Q| AND d|A||B| ≤ ε|P||Q| separately, yielding 2ε|P||Q| total.",
     "mathContext": "$e(A,B) = |\\{(a,b)\\in A\\times B : G\\text{.Adj}\\,a\\,b\\}| \\leq |A\\times B| = |A|\\cdot|B|$.\n\nIn Lean: `(A.product B).filter (G.Adj ·.1 ·.2)` is a subset of `A.product B` by `Finset.filter_subset`, so `Finset.card_filter_le` gives `card(filter) ≤ card(A.product B) = A.card * B.card` (by `Finset.card_product`). The cast `exact_mod_cast` converts `Nat` to `ℚ`.\n\n**Why this matters in the small-set case**: When $|B| < \\varepsilon|Q|$, regularity cannot be invoked (the condition requires both sets to be $\\geq \\varepsilon$ fraction of their parts). Instead: $e(A,B) \\leq |A||B| \\leq |A| \\cdot \\varepsilon|Q| \\leq \\varepsilon|P||Q|$. Combined with $d(P,Q)|A||B| \\leq 1 \\cdot \\varepsilon|P||Q|$, we get $|e - d|A||B|| \\leq 2\\varepsilon|P||Q|$.",
     "significance": "supporting",
-    "prerequisites": ["Finset.card_filter_le", "Finset.card_product", "exact_mod_cast tactic"],
-    "relatedConcepts": ["epsilon-regular pairs", "large-small case split", "trivial bound", "pair_cut_error_bound"]
+    "prerequisites": [
+      "Finset.card_filter_le",
+      "Finset.card_product",
+      "exact_mod_cast tactic"
+    ],
+    "relatedConcepts": [
+      "epsilon-regular pairs",
+      "large-small case split",
+      "trivial bound",
+      "pair_cut_error_bound"
+    ]
   },
   {
     "id": "ann-per-pair-bound",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 76, "endLine": 185 },
-    "type": "technique",
+    "range": {
+      "startLine": 76,
+      "endLine": 185
+    },
+    "type": "concept",
     "title": "pair_cut_error_bound: Two-Case Per-Pair Lemma",
     "content": "`pair_cut_error_bound` proves: for an ε-regular pair (P,Q), any A⊆P, B⊆Q satisfy:\n\n  |e(A,B) - d(P,Q)·|A|·|B|| ≤ 2ε·|P|·|Q|\n\nThe proof splits on whether A and B are 'large' or 'small' relative to ε:\n\n**Case 1: Both large** (|A| ≥ ε|P| and |B| ≥ ε|Q|):\n- ε-regularity gives |d(A,B) - d(P,Q)| ≤ ε\n- Converting: e/(|A||B|) = d(A,B), so |e - d|A||B|| = |d(A,B) - d|·|A||B| ≤ ε|A||B| ≤ ε|P||Q|\n- Lean requires explicit empty-set handling (A=∅ or B=∅) before applying regularity\n\n**Case 2: A or B small** (e.g., |B| < ε|Q|):\n- Then |A|·|B| ≤ |P|·ε|Q| = ε|P||Q|, and d ≤ 1 so d|A||B| ≤ ε|P||Q|\n- Also e ≤ |A||B| ≤ ε|P||Q| (trivial bound)\n- So |e - d|A||B|| ≤ e + d|A||B| ≤ 2ε|P||Q|\n\nThe constant 2 is tight: it arises from bounding e and d|A||B| each by ε|P||Q| separately.",
     "mathContext": "For $\\varepsilon$-regular pair $(P,Q)$, $A\\subseteq P$, $B\\subseteq Q$:\n$$|e(A,B) - d(P,Q)|A||B|| \\leq 2\\varepsilon|P||Q|$$\n**Large**: $|A|\\geq\\varepsilon|P|$, $|B|\\geq\\varepsilon|Q|$. By regularity: $|d(A,B)-d|\\leq\\varepsilon$. So $|e-d|A||B||=|d(A,B)-d|\\cdot|A||B|\\leq\\varepsilon|A||B|\\leq\\varepsilon|P||Q|$.\n\n**Small** (WLOG $|B|<\\varepsilon|Q|$): $|A||B|\\leq\\varepsilon|P||Q|$, so $e\\leq\\varepsilon|P||Q|$ and $d|A||B|\\leq\\varepsilon|P||Q|$. Thus $|e-d|A||B||\\leq 2\\varepsilon|P||Q|$.\n\nThe Lean proof uses `by_cases` to split on large/small, `rcases eq_or_lt_of_le` to handle empty-set edge cases in the large-large branch, and `nlinarith` for arithmetic. The `abs_le` rewrite allows working with both $\\geq$ and $\\leq$ directions simultaneously.",
     "significance": "key",
-    "prerequisites": ["IsEpsilonRegular predicate", "edgeDensity definition", "linarith and nlinarith", "abs_le"],
-    "relatedConcepts": ["epsilon-regular pairs", "large-small case split", "szemeredi-regularity", "cut error bound"]
+    "prerequisites": [
+      "IsEpsilonRegular predicate",
+      "edgeDensity definition",
+      "linarith and nlinarith",
+      "abs_le"
+    ],
+    "relatedConcepts": [
+      "epsilon-regular pairs",
+      "large-small case split",
+      "szemeredi-regularity",
+      "cut error bound"
+    ]
   },
   {
     "id": "ann-product-disjoint",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 191, "endLine": 211 },
-    "type": "technique",
+    "range": {
+      "startLine": 191,
+      "endLine": 211
+    },
+    "type": "concept",
     "title": "product_pairs_disjoint: Disjointness of Cross-Partition Pairs",
     "content": "`product_pairs_disjoint` is a private helper establishing that the pieces (A∩Pᵢ)×(B∩Pⱼ) for different pairs (i,j) are pairwise disjoint.\n\nThis is the combinatorial heart of `edge_count_partition_sum`: to decompose e(A,B) = Σᵢⱼ e(A∩Pᵢ, B∩Pⱼ), we need A×B = ⋃ᵢⱼ (A∩Pᵢ)×(B∩Pⱼ) as a **disjoint** union. Disjointness holds because the {Pᵢ} partition V: if (a,b) ∈ (A∩Pᵢ)×(B∩Pⱼ) and also (a,b) ∈ (A∩Pₖ)×(B∩Pₗ) with (i,j)≠(k,l), then a ∈ Pᵢ∩Pₖ=∅ or b ∈ Pⱼ∩Pₗ=∅, a contradiction.\n\nThe Lean proof formalizes this using `rw [Ne, Prod.mk.injEq, not_and_or]` to split on which component (first or second) of the pair-index differs, then applies `Finset.disjoint_left.mp (hdisjoint ...)` to reach the contradiction.\n\nWithout disjointness, `Finset.card_biUnion` cannot be applied and the decomposition would only yield an inequality (≤) rather than equality. This lemma is what enables the exact equality in `edge_count_partition_sum`.",
     "mathContext": "For partition $\\mathcal{P} = \\{P_1,\\ldots,P_k\\}$ of $V$ (pairwise disjoint, covering $V$):\n$$A\\times B = \\bigsqcup_{i,j} (A\\cap P_i)\\times(B\\cap P_j) \\quad (\\text{disjoint union})$$\nProof: $(a,b) \\in (A\\cap P_i)\\times(B\\cap P_j) \\cap (A\\cap P_k)\\times(B\\cap P_l)$ with $(i,j)\\neq(k,l)$ implies $a\\in P_i\\cap P_k$ (if $i\\neq k$) or $b\\in P_j\\cap P_l$ (if $j\\neq l$). Since $P_i\\cap P_k = \\emptyset$ for $i\\neq k$ (partition disjointness), both cases yield contradiction.\n\nIn Lean: `rw [Finset.disjoint_left]` reduces to showing no element is in both; `Prod.mk.injEq` and `not_and_or` handle the pair-inequality case split; `Finset.disjoint_left.mp (hdisjoint P₁ P₂ ...)` applies the partition disjointness hypothesis.",
     "significance": "supporting",
-    "prerequisites": ["Finset.disjoint_left", "Prod.mk.injEq", "PairwiseDisjoint partition property"],
-    "relatedConcepts": ["disjoint union", "Finset.card_biUnion", "partition decomposition", "edge_count_partition_sum"]
+    "prerequisites": [
+      "Finset.disjoint_left",
+      "Prod.mk.injEq",
+      "PairwiseDisjoint partition property"
+    ],
+    "relatedConcepts": [
+      "disjoint union",
+      "Finset.card_biUnion",
+      "partition decomposition",
+      "edge_count_partition_sum"
+    ]
   },
   {
     "id": "ann-partition-identities",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 212, "endLine": 287 },
-    "type": "technique",
+    "range": {
+      "startLine": 212,
+      "endLine": 287
+    },
+    "type": "concept",
     "title": "Partition Sum Identities: Algebraic Bridge to Global Bound",
     "content": "Two algebraic partition identities connect per-pair bounds to global cut-approximation:\n\n**`edge_count_partition_sum`** (lines 218–262): For a partition of V,\n  e(A,B) = Σᵢⱼ e(A∩Pᵢ, B∩Pⱼ)\n\nProof: A×B = ⋃ᵢⱼ (A∩Pᵢ)×(B∩Pⱼ) (disjoint union, since parts cover V and are pairwise disjoint via `product_pairs_disjoint`). The filter (adjacency condition) distributes over the biUnion.\n\n**`parts_product_sum_eq_card_sq`** (lines 264–287): For a partition of V,\n  Σᵢⱼ |Pᵢ|·|Pⱼ| = n²\n\nProof: Σᵢ|Pᵢ| = n (parts cover V disjointly via `Finset.card_biUnion`). Then Σᵢⱼ|Pᵢ||Pⱼ| = (Σᵢ|Pᵢ|)² = n².\n\nThese are the algebraic backbone: the first decomposes e(A,B) exactly, and the second converts Σᵢⱼ 2ε|Pᵢ||Pⱼ| into 2ε·n² for the final step of the main theorem.",
     "mathContext": "**Identity 1**: $e(A,B) = \\sum_{i,j} e(A\\cap P_i, B\\cap P_j)$. Proof: $A\\times B = \\bigsqcup_{i,j}(A\\cap P_i)\\times(B\\cap P_j)$ (disjoint cover by the partition $\\{P_i\\}$ of $V$). Used as: $\\text{card}(\\text{biUnion}) = \\sum \\text{card}$ for disjoint pieces.\n\n**Identity 2**: $\\sum_{i,j}|P_i||P_j| = n^2$. Proof: $\\sum_i|P_i|=n$ (partition sum), so $\\sum_{i,j}|P_i||P_j|=(\\sum_i|P_i|)^2=n^2$. In Lean: `Finset.sum_product` + `simp_rw [← Finset.mul_sum, ← Finset.sum_mul]` + `ring`.",
     "significance": "supporting",
-    "prerequisites": ["Finset.card_biUnion", "Finset.sum_product", "disjoint partition cover", "PairwiseDisjoint"],
-    "relatedConcepts": ["partition decomposition", "edge count", "Finset.biUnion", "product_pairs_disjoint"]
+    "prerequisites": [
+      "Finset.card_biUnion",
+      "Finset.sum_product",
+      "disjoint partition cover",
+      "PairwiseDisjoint"
+    ],
+    "relatedConcepts": [
+      "partition decomposition",
+      "edge count",
+      "Finset.biUnion",
+      "product_pairs_disjoint"
+    ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 289, "endLine": 337 },
-    "type": "theorem",
+    "range": {
+      "startLine": 289,
+      "endLine": 337
+    },
+    "type": "insight",
     "title": "szemeredi_implies_fk: The Strict Hierarchy Theorem",
     "content": "`szemeredi_implies_fk` is the central result: every ε-regular partition is a 2ε-cut-approximation.\n\nThe proof chains four steps in a single `calc` block:\n1. **Decompose** via `edge_count_partition_sum`: rewrite e(A,B) as Σᵢⱼ e(A∩Pᵢ,B∩Pⱼ)\n2. **Triangle inequality**: |Σ errᵢⱼ| ≤ Σ |errᵢⱼ| via `Finset.abs_sum_le_sum_abs`\n3. **Per-pair bound**: each |errᵢⱼ| ≤ 2ε|Pᵢ||Pⱼ| via `pair_cut_error_bound`\n4. **Sum**: Σᵢⱼ 2ε|Pᵢ||Pⱼ| = 2ε·n² via `parts_product_sum_eq_card_sq`\n\nNote: the theorem assumes ALL pairs are ε-regular (via `hall_reg`). The full Szemerédi regularity lemma allows ε-fraction of exceptions, but this theorem applies to partitions where all pairs are ε-regular. The converse (FK ⟹ Szemerédi) fails — FK is strictly weaker.\n\n**Logical structure**: The four steps form a modular proof chain: algebraic decomposition → triangle inequality → per-pair bound → global summation. Each step uses a named lemma, making the argument independently verifiable at each stage.",
     "mathContext": "Main chain for fixed $A,B\\subseteq V$:\n$$|e(A,B)-\\text{pred}(A,B)| = |\\sum_{ij}\\text{err}_{ij}| \\leq \\sum_{ij}|\\text{err}_{ij}| \\leq \\sum_{ij}2\\varepsilon|P_i||P_j| = 2\\varepsilon n^2$$\nwhere $\\text{err}_{ij} = e(A\\cap P_i,B\\cap P_j) - d(P_i,P_j)|A\\cap P_i||B\\cap P_j|$ and $\\text{pred}(A,B) = \\sum_{ij}d(P_i,P_j)|A\\cap P_i||B\\cap P_j|$. The factor 2 comes from `pair_cut_error_bound`. The converse fails: a cut-approximation partition need not be ε-regular.\n\n**Sharpness**: The factor 2 is an artifact of the small-set case bounding $e$ and $d|A||B|$ each by $\\varepsilon|P||Q|$ separately. In practice the constant can often be improved with more careful analysis, but 2 matches the Frieze-Kannan (1999) paper's stated bound.",
     "significance": "key",
-    "prerequisites": ["pair_cut_error_bound", "edge_count_partition_sum", "parts_product_sum_eq_card_sq", "Finset.abs_sum_le_sum_abs"],
-    "relatedConcepts": ["cut approximation", "triangle inequality for sums", "Szemerédi regularity hierarchy", "szemeredi-regularity"]
+    "prerequisites": [
+      "pair_cut_error_bound",
+      "edge_count_partition_sum",
+      "parts_product_sum_eq_card_sq",
+      "Finset.abs_sum_le_sum_abs"
+    ],
+    "relatedConcepts": [
+      "cut approximation",
+      "triangle inequality for sums",
+      "Szemerédi regularity hierarchy",
+      "szemeredi-regularity"
+    ]
   },
   {
     "id": "ann-bound-comparison",
     "proofId": "szemeredi-regularity-oq-02",
-    "range": { "startLine": 338, "endLine": 399 },
+    "range": {
+      "startLine": 338,
+      "endLine": 399
+    },
     "type": "insight",
     "title": "Tower vs. Singly Exponential: Quantifying the Complexity Gap",
     "content": "The bound comparison section makes the complexity gap between Szemerédi and FK explicit in Lean:\n\n**Szemerédi tower-type bound:**\n- `sz_stepBound_ge_power`: `stepBound n = n·4^n ≥ 4^n` (step function grows at least exponentially)\n- `sz_two_steps_tower`: After 2 iterations, bound ≥ 4^(4^n) — tower-type growth formally confirmed\n- The actual Szemerédi bound iterates stepBound ~(4/ε^5) times, producing twr(1/ε)\n\n**FK singly exponential bound:**\n- `fkBound eps = 4^⌈1/eps²⌉` — just one exponential\n- `fk_bound_at_half`: At ε=1/2, FK needs ≤ 4^4 = 256 parts\n\n**Algorithmic significance:** FK regularity can be computed in polynomial time (Frieze-Kannan 1999, O(n^{2+1/ε²}) time), while Szemerédi regularity requires exponential time in the worst case (Alon et al. 2007). For applications where the FK guarantee suffices (graph approximation, counting, property testing), FK is dramatically more efficient.\n\n**Gowers' lower bound (1997)**: The tower-type bound for Szemerédi regularity is not a proof artifact — Gowers proved that partitions with only singly exponentially many parts cannot always achieve ε-regularity for ALL pairs. The tower function is genuinely necessary. This makes FK's singly exponential bound a strict improvement in partition complexity, confirmed formally here by `sz_two_steps_tower`: even 2 iterations of the Szemerédi step function already produces a doubly-exponential bound exceeding any single exponential.",
     "mathContext": "Szemerédi: $\\text{stepBound}(n) = n\\cdot 4^n \\geq 4^n$ (for $n\\geq 1$). After 2 steps: $\\text{stepBound}(\\text{stepBound}(n)) \\geq 4^{4^n}$ — tower growth. After $k\\sim 4/\\varepsilon^5$ steps: $\\geq \\text{twr}(k)$.\n\nFrieze-Kannan: $\\leq 4^{\\lceil 1/\\varepsilon^2 \\rceil}$ parts. At $\\varepsilon=1/2$: $4^4=256$; at $\\varepsilon=1/10$: $4^{100}\\approx 10^{60}$. Singly exponential, not a tower.\n\nGowers (1997): any partition into $\\leq \\text{twr}(1/\\varepsilon)/2$ parts fails to be ε-regular for some graph on $n\\geq \\text{twr}(1/\\varepsilon)$ vertices. This means Szemerédi's tower bound is optimal — no improvement to singly exponential is possible while maintaining ε-regularity.",
     "significance": "key",
-    "prerequisites": ["SzemerediRegularity.stepBound definition", "tower function growth", "Nat.pow_le_pow_right"],
-    "relatedConcepts": ["tower functions", "computational complexity of regularity", "FK algorithm polynomial time", "graph approximation algorithms"]
+    "prerequisites": [
+      "SzemerediRegularity.stepBound definition",
+      "tower function growth",
+      "Nat.pow_le_pow_right"
+    ],
+    "relatedConcepts": [
+      "tower functions",
+      "computational complexity of regularity",
+      "FK algorithm polynomial time",
+      "graph approximation algorithms"
+    ]
   }
 ]

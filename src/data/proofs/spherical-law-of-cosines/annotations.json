@@ -2,73 +2,149 @@
   {
     "id": "ann-slc-unit-vectors",
     "proofId": "spherical-law-of-cosines",
-    "range": { "startLine": 45, "endLine": 69 },
+    "range": {
+      "startLine": 45,
+      "endLine": 69
+    },
     "type": "definition",
     "title": "IsUnitVec and Inner Product Bounds for Unit Vectors",
-    "content": "IsUnitVec v asserts ‖v‖ = 1, establishing the unit sphere S² as the ambient space. Three theorems follow immediately: inner_unit_self (⟨v,v⟩ = 1), inner_unit_le_one (|⟨u,v⟩| ≤ 1), and inner_unit_ge_neg_one (-1 ≤ ⟨u,v⟩). These bounds are essential for arccos to be well-defined: arccos is only defined on [-1, 1], so the proof that |⟨u,v⟩| ≤ 1 for unit u, v is not mere bookkeeping — it is the mathematical precondition that makes arc length well-defined. The proofs use abs_real_inner_le_norm and the Cauchy-Schwarz inequality via Mathlib's norm bounds.",
+    "content": "IsUnitVec v asserts \u2016v\u2016 = 1, establishing the unit sphere S\u00b2 as the ambient space. Three theorems follow immediately: inner_unit_self (\u27e8v,v\u27e9 = 1), inner_unit_le_one (|\u27e8u,v\u27e9| \u2264 1), and inner_unit_ge_neg_one (-1 \u2264 \u27e8u,v\u27e9). These bounds are essential for arccos to be well-defined: arccos is only defined on [-1, 1], so the proof that |\u27e8u,v\u27e9| \u2264 1 for unit u, v is not mere bookkeeping \u2014 it is the mathematical precondition that makes arc length well-defined. The proofs use abs_real_inner_le_norm and the Cauchy-Schwarz inequality via Mathlib's norm bounds.",
     "mathContext": "$\\|v\\| = 1 \\Rightarrow |\\langle u, v \\rangle| \\leq \\|u\\|\\|v\\| = 1$ by Cauchy-Schwarz, so $\\langle u, v \\rangle \\in [-1, 1]$ and $\\arccos(\\langle u, v \\rangle)$ is well-defined.",
     "significance": "supporting",
-    "relatedConcepts": ["Cauchy-Schwarz inequality", "unit sphere S²", "EuclideanSpace", "inner product space"],
-    "prerequisites": ["abs_real_inner_le_norm", "real_inner_self_eq_norm_mul_norm", "IsUnitVec"]
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "unit sphere S\u00b2",
+      "EuclideanSpace",
+      "inner product space"
+    ],
+    "prerequisites": [
+      "abs_real_inner_le_norm",
+      "real_inner_self_eq_norm_mul_norm",
+      "IsUnitVec"
+    ]
   },
   {
     "id": "ann-slc-arc-length",
     "proofId": "spherical-law-of-cosines",
-    "range": { "startLine": 81, "endLine": 110 },
+    "range": {
+      "startLine": 81,
+      "endLine": 110
+    },
     "type": "definition",
-    "title": "Arc Length as Arccos of Inner Product: The Geodesic Distance on S²",
-    "content": "arcLength u v = Real.arccos ⟨u, v⟩ defines the geodesic distance on the unit sphere. The key theorem cos_arcLength recovers the inner product from the arc length: cos(arcLength u v) = ⟨u, v⟩. This is the bridge between the linear algebra world (inner products) and the trigonometric world (cosines of angles). It requires both bounds from the unit vector lemmas: Real.cos_arccos requires -1 ≤ ⟨u,v⟩ ≤ 1. The symmetry arcLength_comm follows from real_inner_comm. The self-distance arcLength_self = 0 uses arccos(1) = 0.",
+    "title": "Arc Length as Arccos of Inner Product: The Geodesic Distance on S\u00b2",
+    "content": "arcLength u v = Real.arccos \u27e8u, v\u27e9 defines the geodesic distance on the unit sphere. The key theorem cos_arcLength recovers the inner product from the arc length: cos(arcLength u v) = \u27e8u, v\u27e9. This is the bridge between the linear algebra world (inner products) and the trigonometric world (cosines of angles). It requires both bounds from the unit vector lemmas: Real.cos_arccos requires -1 \u2264 \u27e8u,v\u27e9 \u2264 1. The symmetry arcLength_comm follows from real_inner_comm. The self-distance arcLength_self = 0 uses arccos(1) = 0.",
     "mathContext": "$d(u, v) = \\arccos(\\langle u, v \\rangle) \\in [0, \\pi]$. Recovery: $\\cos(d(u,v)) = \\langle u, v \\rangle$, valid since $\\langle u, v \\rangle \\in [-1,1]$ for unit vectors. This identifies arc length with the angle between vectors in $\\mathbb{R}^3$.",
     "significance": "key",
-    "relatedConcepts": ["Real.arccos", "geodesic distance", "cos_arccos", "Riemannian geometry"],
-    "prerequisites": ["inner_unit_le_one", "inner_unit_ge_neg_one", "Real.cos_arccos", "Real.arccos_nonneg"]
+    "relatedConcepts": [
+      "Real.arccos",
+      "geodesic distance",
+      "cos_arccos",
+      "Riemannian geometry"
+    ],
+    "prerequisites": [
+      "inner_unit_le_one",
+      "inner_unit_ge_neg_one",
+      "Real.cos_arccos",
+      "Real.arccos_nonneg"
+    ]
   },
   {
     "id": "ann-slc-inner-decomposition",
     "proofId": "spherical-law-of-cosines",
-    "range": { "startLine": 193, "endLine": 201 },
-    "type": "theorem",
+    "range": {
+      "startLine": 193,
+      "endLine": 201
+    },
+    "type": "insight",
     "title": "inner_decomposition: The Core Algebraic Identity",
-    "content": "inner_decomposition is the mathematical heart of the spherical law of cosines. For any unit vector n and arbitrary u, v: ⟨u,v⟩ = ⟨u,n⟩⟨v,n⟩ + ⟨proj⊥(u,n), proj⊥(v,n)⟩. This is just the Gram-Schmidt expansion: write u = ⟨u,n⟩·n + proj⊥(u,n) and v = ⟨v,n⟩·n + proj⊥(v,n), then expand the inner product using bilinearity. The cross terms ⟨⟨u,n⟩·n, proj⊥(v,n)⟩ vanish because proj⊥(v,n) ⊥ n by construction. The Lean proof uses simp with inner lemmas and closes with ring. The theorem holds for any three vectors — not just a specific triangle — making it maximally reusable.",
+    "content": "inner_decomposition is the mathematical heart of the spherical law of cosines. For any unit vector n and arbitrary u, v: \u27e8u,v\u27e9 = \u27e8u,n\u27e9\u27e8v,n\u27e9 + \u27e8proj\u22a5(u,n), proj\u22a5(v,n)\u27e9. This is just the Gram-Schmidt expansion: write u = \u27e8u,n\u27e9\u00b7n + proj\u22a5(u,n) and v = \u27e8v,n\u27e9\u00b7n + proj\u22a5(v,n), then expand the inner product using bilinearity. The cross terms \u27e8\u27e8u,n\u27e9\u00b7n, proj\u22a5(v,n)\u27e9 vanish because proj\u22a5(v,n) \u22a5 n by construction. The Lean proof uses simp with inner lemmas and closes with ring. The theorem holds for any three vectors \u2014 not just a specific triangle \u2014 making it maximally reusable.",
     "mathContext": "$u = \\langle u,n \\rangle n + \\text{proj}_{n^\\perp}(u)$, so $\\langle u, v \\rangle = \\langle u,n \\rangle\\langle v,n \\rangle + \\langle \\text{proj}_{n^\\perp}(u), \\text{proj}_{n^\\perp}(v) \\rangle$ since $\\langle n, \\text{proj}_{n^\\perp}(v) \\rangle = 0$.",
     "significance": "key",
-    "relatedConcepts": ["Gram-Schmidt decomposition", "orthogonal complement", "inner product bilinearity", "projectPerp"],
-    "prerequisites": ["inner_sub_left", "inner_sub_right", "inner_smul_right", "real_inner_self_eq_norm_mul_norm"]
+    "relatedConcepts": [
+      "Gram-Schmidt decomposition",
+      "orthogonal complement",
+      "inner product bilinearity",
+      "projectPerp"
+    ],
+    "prerequisites": [
+      "inner_sub_left",
+      "inner_sub_right",
+      "inner_smul_right",
+      "real_inner_self_eq_norm_mul_norm"
+    ]
   },
   {
     "id": "ann-slc-projection-sin",
     "proofId": "spherical-law-of-cosines",
-    "range": { "startLine": 228, "endLine": 238 },
-    "type": "theorem",
+    "range": {
+      "startLine": 228,
+      "endLine": 238
+    },
+    "type": "insight",
     "title": "norm_projectPerp_eq_sin: Projection Norm via Pythagorean Identity and nlinarith",
-    "content": "norm_projectPerp_eq_sin proves ‖proj⊥(u,n)‖ = sin(arcLength(u,n)) for unit vectors. The path is: (1) norm_projectPerp_sq gives ‖proj⊥(u,n)‖² = 1 - ⟨u,n⟩²; (2) sin²(arcLength) = 1 - cos²(arcLength) = 1 - ⟨u,n⟩² by the Pythagorean identity and cos_arcLength; (3) both sides are nonneg, so their squares match. Step 3 requires extracting a nonneg square root from a square equality, which Lean cannot do with simp alone. The proof uses nlinarith with hints [sq_nonneg(‖proj⊥‖ - sin), sq_nonneg(‖proj⊥‖ + sin)] — a standard trick: (a-b)² ≥ 0 and (a+b)² ≥ 0 together with a² = b² and a,b ≥ 0 force a = b.",
+    "content": "norm_projectPerp_eq_sin proves \u2016proj\u22a5(u,n)\u2016 = sin(arcLength(u,n)) for unit vectors. The path is: (1) norm_projectPerp_sq gives \u2016proj\u22a5(u,n)\u2016\u00b2 = 1 - \u27e8u,n\u27e9\u00b2; (2) sin\u00b2(arcLength) = 1 - cos\u00b2(arcLength) = 1 - \u27e8u,n\u27e9\u00b2 by the Pythagorean identity and cos_arcLength; (3) both sides are nonneg, so their squares match. Step 3 requires extracting a nonneg square root from a square equality, which Lean cannot do with simp alone. The proof uses nlinarith with hints [sq_nonneg(\u2016proj\u22a5\u2016 - sin), sq_nonneg(\u2016proj\u22a5\u2016 + sin)] \u2014 a standard trick: (a-b)\u00b2 \u2265 0 and (a+b)\u00b2 \u2265 0 together with a\u00b2 = b\u00b2 and a,b \u2265 0 force a = b.",
     "mathContext": "$\\|\\text{proj}_{n^\\perp}(u)\\|^2 = 1 - \\langle u,n\\rangle^2 = 1 - \\cos^2(d(u,n)) = \\sin^2(d(u,n))$. Since $\\|\\cdot\\| \\geq 0$ and $\\sin(d) \\geq 0$ for $d \\in [0,\\pi]$, taking nonneg square roots gives $\\|\\text{proj}_{n^\\perp}(u)\\| = \\sin(d(u,n))$.",
     "significance": "key",
-    "relatedConcepts": ["Pythagorean identity", "Real.sin_sq", "nlinarith", "nonneg square root"],
-    "prerequisites": ["norm_projectPerp_sq", "Real.sin_sq", "cos_arcLength", "Real.sin_nonneg_of_nonneg_of_le_pi"]
+    "relatedConcepts": [
+      "Pythagorean identity",
+      "Real.sin_sq",
+      "nlinarith",
+      "nonneg square root"
+    ],
+    "prerequisites": [
+      "norm_projectPerp_sq",
+      "Real.sin_sq",
+      "cos_arcLength",
+      "Real.sin_nonneg_of_nonneg_of_le_pi"
+    ]
   },
   {
     "id": "ann-slc-algebraic",
     "proofId": "spherical-law-of-cosines",
-    "range": { "startLine": 249, "endLine": 253 },
-    "type": "theorem",
+    "range": {
+      "startLine": 249,
+      "endLine": 253
+    },
+    "type": "insight",
     "title": "spherical_law_of_cosines_algebraic: The Main Theorem via inner_decomposition",
-    "content": "spherical_law_of_cosines_algebraic is a one-line corollary of inner_decomposition: given unit A, B, C, it expresses ⟨A,B⟩ = ⟨A,C⟩⟨B,C⟩ + ⟨proj⊥(A,C), proj⊥(B,C)⟩. The Lean proof is literally 'exact inner_decomposition A B C hC'. The mathematical content: the inner product ⟨A,B⟩ = cos(c), the term ⟨A,C⟩⟨B,C⟩ = cos(b)·cos(a), and ⟨proj⊥(A,C), proj⊥(B,C)⟩ = ‖proj⊥(A,C)‖‖proj⊥(B,C)‖cos(C) = sin(b)·sin(a)·cos(C). This gives cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) in the non-degenerate case.",
+    "content": "spherical_law_of_cosines_algebraic is a one-line corollary of inner_decomposition: given unit A, B, C, it expresses \u27e8A,B\u27e9 = \u27e8A,C\u27e9\u27e8B,C\u27e9 + \u27e8proj\u22a5(A,C), proj\u22a5(B,C)\u27e9. The Lean proof is literally 'exact inner_decomposition A B C hC'. The mathematical content: the inner product \u27e8A,B\u27e9 = cos(c), the term \u27e8A,C\u27e9\u27e8B,C\u27e9 = cos(b)\u00b7cos(a), and \u27e8proj\u22a5(A,C), proj\u22a5(B,C)\u27e9 = \u2016proj\u22a5(A,C)\u2016\u2016proj\u22a5(B,C)\u2016cos(C) = sin(b)\u00b7sin(a)\u00b7cos(C). This gives cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) in the non-degenerate case.",
     "mathContext": "$\\langle A, B \\rangle = \\langle A, C \\rangle \\langle B, C \\rangle + \\langle \\text{proj}_{C^\\perp}(A), \\text{proj}_{C^\\perp}(B) \\rangle$. Translating: $\\cos c = \\cos b \\cos a + \\sin b \\sin a \\cos C$.",
     "significance": "key",
-    "relatedConcepts": ["inner_decomposition", "spherical triangle", "dihedral angle", "cos-c formula"],
-    "prerequisites": ["inner_decomposition", "IsUnitVec", "projectPerp"]
+    "relatedConcepts": [
+      "inner_decomposition",
+      "spherical triangle",
+      "dihedral angle",
+      "cos-c formula"
+    ],
+    "prerequisites": [
+      "inner_decomposition",
+      "IsUnitVec",
+      "projectPerp"
+    ]
   },
   {
     "id": "ann-slc-trig",
     "proofId": "spherical-law-of-cosines",
-    "range": { "startLine": 262, "endLine": 267 },
-    "type": "theorem",
+    "range": {
+      "startLine": 262,
+      "endLine": 267
+    },
+    "type": "insight",
     "title": "spherical_law_of_cosines_trig: The Theorem with SphericalTriangle Structure",
-    "content": "spherical_law_of_cosines_trig is the version using the SphericalTriangle structure, expressing cos(t.sideC) = cos(t.sideB) * cos(t.sideA) + ⟨proj⊥(A,C), proj⊥(B,C)⟩. It rewrites the sides using cos_sideA/B/C (which reduce to cos_arcLength) and then applies inner_decomposition. The statement uses the SphericalTriangle's field accessors rather than bare unit vectors, providing the interface intended for the gallery. The inner product cross term is left unexpanded — fully expanding to sin(a)·sin(b)·cos(C) would require the non-degeneracy condition ‖proj⊥(A,C)‖ ≠ 0 and ‖proj⊥(B,C)‖ ≠ 0, i.e., A ≠ C and B ≠ C, which is handled by the angleC definition's conditional.",
+    "content": "spherical_law_of_cosines_trig is the version using the SphericalTriangle structure, expressing cos(t.sideC) = cos(t.sideB) * cos(t.sideA) + \u27e8proj\u22a5(A,C), proj\u22a5(B,C)\u27e9. It rewrites the sides using cos_sideA/B/C (which reduce to cos_arcLength) and then applies inner_decomposition. The statement uses the SphericalTriangle's field accessors rather than bare unit vectors, providing the interface intended for the gallery. The inner product cross term is left unexpanded \u2014 fully expanding to sin(a)\u00b7sin(b)\u00b7cos(C) would require the non-degeneracy condition \u2016proj\u22a5(A,C)\u2016 \u2260 0 and \u2016proj\u22a5(B,C)\u2016 \u2260 0, i.e., A \u2260 C and B \u2260 C, which is handled by the angleC definition's conditional.",
     "mathContext": "$\\cos c = \\cos b \\cdot \\cos a + \\langle \\text{proj}_{C^\\perp}(A), \\text{proj}_{C^\\perp}(B) \\rangle$. In the non-degenerate case, the last term equals $\\sin b \\cdot \\sin a \\cdot \\cos C$ where $C$ is the dihedral angle.",
     "significance": "key",
-    "relatedConcepts": ["SphericalTriangle", "cos_sideA", "dihedral angle", "spherical_law_of_cosines_algebraic"],
-    "prerequisites": ["cos_sideA", "cos_sideB", "cos_sideC", "inner_decomposition"]
+    "relatedConcepts": [
+      "SphericalTriangle",
+      "cos_sideA",
+      "dihedral angle",
+      "spherical_law_of_cosines_algebraic"
+    ],
+    "prerequisites": [
+      "cos_sideA",
+      "cos_sideB",
+      "cos_sideC",
+      "inner_decomposition"
+    ]
   }
 ]

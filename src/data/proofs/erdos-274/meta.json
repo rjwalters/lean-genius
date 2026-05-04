@@ -45,8 +45,9 @@
       "Axiomatization of Sun's theorem for abelian groups"
     ],
     "axiomCount": 1,
-    "lineCount": 130,
-    "assumptions": "1 axiom: sun_abelian_case. 0 sorries."
+    "lineCount": 127,
+    "assumptions": "1 axiom: sun_abelian_case. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "The Herzog-Schönheim conjecture, posed in the 1970s, asks whether a group G can be partitioned by cosets of subgroups with pairwise distinct indices. Erdős included this as Problem #274, specifically asking about the abelian case.\n\nSun Zhi-Wei proved in 2004 that for finite abelian groups (and more generally, when all subgroups are subnormal), the answer is NO - at least two cosets must have the same index. This settled Erdős's original question.\n\nMargolis and Schnabel (2019) verified computationally that the conjecture holds for all groups of order less than 1440. The general case remains open.",
@@ -113,7 +114,7 @@
       "title": "Summary",
       "summary": "erdos_274_summary: abelian case proved via Sun's theorem",
       "startLine": 111,
-      "endLine": 130
+      "endLine": 127
     }
   ],
   "conclusion": {
@@ -139,7 +140,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos274",
-    "lineCount": 130,
+    "lineCount": 127,
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 2,

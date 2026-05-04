@@ -30,8 +30,9 @@
     "erdosNumber": 100,
     "proofRepoPath": "Proofs/Erdos100OQ02.lean",
     "axiomCount": 2,
-    "lineCount": 60,
-    "assumptions": "2 axioms inherited from Erdos100Problem.lean: guthKatz_distinct_distances (Guth-Katz 2015 Ω(n/log n) distinct distances bound), piepmeyer_construction (construction showing sharpness). 0 own axioms. 0 sorries."
+    "lineCount": 542,
+    "assumptions": "2 axioms inherited from Erdos100Problem.lean: guthKatz_distinct_distances (Guth-Katz 2015 Ω(n/log n) distinct distances bound), piepmeyer_construction (construction showing sharpness). 0 own axioms. 0 sorries.",
+    "theoremCount": 2
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
       "Set"
     ],
     "namespace": "Erdos100OQ02",
-    "lineCount": 60,
+    "lineCount": 542,
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 0,

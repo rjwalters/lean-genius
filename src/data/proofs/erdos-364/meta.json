@@ -70,7 +70,8 @@
       }
     ],
     "lineCount": 190,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Powerful numbers were introduced by Solomon W. Golomb in 1970. A positive integer n is powerful if for every prime p dividing n, we also have p² | n. Equivalently, n can be written as a²b³ for some integers a, b ≥ 1. The sequence begins 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ...\n\nIn 1976, Erdős asked Mahler whether infinitely many pairs of consecutive powerful numbers exist. Mahler immediately observed that yes—the Pell equation x² = 8y² + 1 has infinitely many solutions, and each gives a pair: (8, 9), (288, 289), (9800, 9801), etc. This is because 8y² is always powerful (divisible by 2³·y²) and x² = 8y² + 1 makes x² powerful too.\n\nErdős then asked the natural follow-up: can there be three consecutive powerful numbers? He believed no, and conjectured more strongly that if nₖ is the k-th powerful number, then nₖ₊₂ - nₖ > nₖᶜ for some c > 0. The abc conjecture would imply only finitely many triples exist.\n\nChan (2025) proved a partial result: no triple n-1, n, n+1 exists when n is a perfect cube. Computational searches have verified no triple exists for n < 10²².",

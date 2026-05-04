@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "isoperimetric-theorem-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Historical Background and Problem Setup",
+    "content": "The file header situates the discrete isoperimetric problem in its historical context. The continuous isoperimetric inequality—that among plane regions of fixed area, the circle has the least perimeter—has fascinated mathematicians since antiquity. The discrete analogue asks: among finite subsets of the integer lattice with a fixed number of points, which have the smallest boundary? Harper (1966) solved this for the hypercube {0,1}^n (initial segments of the simplicial order), and Bollobás–Leader (1991) solved it for ℤ^d using compression arguments. The 1D case on ℤ is the foundation: integer intervals are the optimal sets, and their boundary is exactly 2 (the two endpoints just outside).",
+    "mathContext": "For $S \\subseteq \\mathbb{Z}$ finite, define $\\partial S = \\{x \\notin S : x+1 \\in S \\text{ or } x-1 \\in S\\}$. The isoperimetric bound is $|\\partial S| \\geq 2$ for $|S| \\geq 2$, with equality iff $S = [a,b] \\cap \\mathbb{Z}$ for some $a \\leq b$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "isoperimetric inequality",
+      "Harper's theorem",
+      "Bollobás–Leader compression",
+      "discrete geometry",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "basic combinatorics",
+      "Finset in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-edge-boundary-def",
+    "proofId": "isoperimetric-theorem-oq-02",
+    "range": {
+      "startLine": 33,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Edge Boundary via Shift-Image Difference",
+    "content": "The edge boundary is defined as `((S.image (· - 1)) ∪ (S.image (· + 1))) \\ S`. This encodes 'neighbors of S that are not in S' without requiring any graph-theoretic infrastructure: shifting S left (· - 1) gives the set of integers whose right neighbor is in S, and shifting right (· + 1) gives those whose left neighbor is in S. Taking the union and removing S itself yields exactly the vertex boundary. This definition is Lean-friendly because Finset operations (image, union, sdiff) are all computable and come with extensive API.",
+    "mathContext": "$\\partial S := (\\{x-1 : x \\in S\\} \\cup \\{x+1 : x \\in S\\}) \\setminus S$",
+    "significance": "key",
+    "relatedConcepts": [
+      "vertex boundary",
+      "Finset.image",
+      "Finset.sdiff",
+      "neighborhood in graphs"
+    ],
+    "prerequisites": [
+      "Finset operations in Mathlib",
+      "shift operators on ℤ"
+    ]
+  },
+  {
+    "id": "ann-membership-char",
+    "proofId": "isoperimetric-theorem-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Membership Characterization: Unfolding the Boundary",
+    "content": "The `mem_edgeBoundary` lemma translates the set-algebraic definition into a logical conjunction that is easier to work with in proofs: `x ∈ ∂S ↔ (x+1 ∈ S ∨ x-1 ∈ S) ∧ x ∉ S`. The proof uses `simp` to unfold all Finset operations, then manually reconstructs the equivalence. The key step is converting between the image-based formulation (there exists `a ∈ S` with `a - 1 = x`) and the pointwise one (x+1 ∈ S), which requires a brief `linarith` calculation. This lemma is the main interface for reasoning about boundary membership in the subsequent theorems.",
+    "mathContext": "$x \\in \\partial S \\iff (x+1 \\in S \\lor x-1 \\in S) \\land x \\notin S$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simp lemmas",
+      "characterization lemmas",
+      "Finset.mem_sdiff",
+      "Finset.mem_image"
+    ],
+    "prerequisites": [
+      "propositional logic",
+      "linarith tactic",
+      "Lean 4 simp infrastructure"
+    ]
+  },
+  {
+    "id": "ann-boundary-witnesses",
+    "proofId": "isoperimetric-theorem-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "Constructing Boundary Witnesses via min' and max'",
+    "content": "The proof of the main lower bound is constructive: it explicitly exhibits two distinct elements of ∂S. Setting m = min(S) and M = max(S), the witnesses are m-1 and M+1. To show m-1 ∈ ∂S: its right neighbor m is in S (by definition of min), and m-1 ∉ S because if it were, the minimality of m would be violated (m ≤ m-1, contradicting linarith). Similarly for M+1. The Finset API provides `S.min'_mem` and `S.max'_mem` (guaranteeing m,M ∈ S when S is nonempty), and `S.min'_le` and `S.le_max'` for the minimality/maximality arguments.",
+    "mathContext": "Set $m = \\min(S)$, $M = \\max(S)$. Then $m-1 \\in \\partial S$ (since $m \\in S$, $m-1 \\notin S$) and $M+1 \\in \\partial S$ (since $M \\in S$, $M+1 \\notin S$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.min'",
+      "Finset.max'",
+      "constructive proof",
+      "extremal element argument"
+    ],
+    "prerequisites": [
+      "Finset.min' and max' API in Mathlib",
+      "linear arithmetic over ℤ"
+    ]
+  },
+  {
+    "id": "ann-lower-bound-conclusion",
+    "proofId": "isoperimetric-theorem-oq-02",
+    "range": {
+      "startLine": 81,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Completing the Lower Bound via Subset Cardinality",
+    "content": "With witnesses m-1 and M+1 in hand, the proof concludes using `Finset.card_le_card`: if {m-1, M+1} ⊆ ∂S, then |∂S| ≥ |{m-1, M+1}| = 2. The two-element set {m-1, M+1} has cardinality exactly 2 because m-1 ≠ M+1, which follows from m < M (established by `Finset.min'_lt_max'_of_card`, which requires |S| ≥ 2). This is the only place in the proof where the hypothesis |S| ≥ 2 is consumed — all other steps only need |S| ≥ 1. The final `calc` block assembles everything cleanly.",
+    "mathContext": "$\\{m-1, M+1\\} \\subseteq \\partial S$ and $m < M$ (from $|S| \\geq 2$), so $|\\partial S| \\geq |\\{m-1,M+1\\}| = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_le_card",
+      "Finset.min'_lt_max'_of_card",
+      "cardinality argument",
+      "two-point subsets"
+    ],
+    "prerequisites": [
+      "Finset cardinality API",
+      "Finset.card_insert_of_not_mem"
+    ]
+  },
+  {
+    "id": "ann-interval-boundary",
+    "proofId": "isoperimetric-theorem-oq-02",
+    "range": {
+      "startLine": 93,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "Exact Boundary of an Integer Interval",
+    "content": "The theorem `edgeBoundary_Icc` establishes that ∂([a,b]) = {a-1, b+1} exactly — not just a superset or lower bound, but an equality. The proof is by set extensionality (the `ext x` tactic) followed by a case split on whether x is a left or right boundary point. When x+1 ∈ [a,b] and x ∉ [a,b], then x < a, forcing x = a-1. When x-1 ∈ [a,b] and x ∉ [a,b], then x > b, forcing x = b+1. Both cases are handled by `linarith` from the Icc membership constraints. The reverse direction (showing a-1 and b+1 are indeed in the boundary) is a direct verification. The `edgeBoundary_Icc_card` corollary then gives |∂([a,b])| = 2 immediately.",
+    "mathContext": "$\\partial([a,b]) = \\{a-1, b+1\\}$, so $|\\partial([a,b])| = 2$, achieving the isoperimetric lower bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.Icc",
+      "set extensionality",
+      "equality case in isoperimetric inequalities",
+      "intervals as optimizers"
+    ],
+    "prerequisites": [
+      "Finset.mem_Icc",
+      "linear arithmetic over ℤ",
+      "Finset.ext"
+    ]
+  },
+  {
+    "id": "ann-combined-statement",
+    "proofId": "isoperimetric-theorem-oq-02",
+    "range": {
+      "startLine": 129,
+      "endLine": 136
+    },
+    "type": "insight",
+    "title": "Combined Isoperimetric Statement: Bound and Equality Case",
+    "content": "The final theorem `discrete_isoperimetric_1d` packages both results into a single conjunction: (1) every finite S ⊆ ℤ with |S| ≥ 2 satisfies |∂S| ≥ 2, and (2) intervals [a,b] achieve |∂([a,b])| = 2. The proof is just `⟨fun _ => edgeBoundary_card_ge_two, fun _ _ => edgeBoundary_Icc_card⟩` — a one-liner combining the two subtherems. This structure mirrors the classical statement: every isoperimetric theorem has two parts, the inequality and the characterization of equality cases. Notably, the full converse (if |∂S| = 2 then S is an interval) is not proved here — it remains an open question in this formalization, and a natural follow-up for further Lean development.",
+    "mathContext": "$(\\forall S \\subseteq \\mathbb{Z},\\ |S|\\geq 2 \\Rightarrow |\\partial S|\\geq 2) \\land (\\forall a\\leq b,\\ |\\partial [a,b]|=2)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "isoperimetric inequality",
+      "equality characterization",
+      "conjunction in Lean",
+      "open question on converse"
+    ],
+    "prerequisites": [
+      "edgeBoundary_card_ge_two",
+      "edgeBoundary_Icc_card"
+    ]
+  }
+]

@@ -31,7 +31,7 @@
       "startLine": 57,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Main Theorem",
     "content": "**Schroeder-Bernstein Theorem (Function Form)**:\n\nGiven:\n- $f: A \\to B$ injective\n- $g: B \\to A$ injective\n\nThen: There exists $h: A \\to B$ that is bijective.\n\nIn Lean, we state this as:\n```\ntheorem schroeder_bernstein (f : A -> B) (g : B -> A)\n    (hf : Injective f) (hg : Injective g) :\n    exists h : A -> B, Bijective h\n```\n\nMathlib's `Function.Embedding.schroeder_bernstein` provides this directly.",
     "mathContext": "Given $f: \\alpha \\to \\beta$ injective and $g: \\beta \\to \\alpha$ injective, there exists $h: \\alpha \\to \\beta$ bijective. Lean: `Function.Embedding.schroeder_bernstein hf hg` produces the witness.",
@@ -103,7 +103,7 @@
       "startLine": 95,
       "endLine": 95
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Cardinal Arithmetic Form",
     "content": "In terms of **cardinal numbers**:\n\n$$|A| \\leq |B| \\land |B| \\leq |A| \\implies |A| = |B|$$\n\nThis makes cardinality a **partial order** on sets (up to bijection):\n- Reflexive: $|A| \\leq |A|$ (identity injection)\n- Antisymmetric: $|A| \\leq |B| \\land |B| \\leq |A| \\implies |A| = |B|$ (Schroeder-Bernstein!)\n- Transitive: $|A| \\leq |B| \\land |B| \\leq |C| \\implies |A| \\leq |C|$ (compose injections)\n\nNote: Both types must be in the same universe for cardinal equality to make sense.",
     "mathContext": "`Cardinal.mk \\alpha` is the cardinality of type $\\alpha$. The ordering $|\\alpha| \\leq |\\beta|$ means $\\exists f: \\alpha \\hookrightarrow \\beta$. Antisymmetry follows from `Cardinal.mk_congr` applied to the equivalence from `Function.Embedding.antisymm`. Universe constraint `\\{\\alpha \\beta : \\text{Type } u\\}` required.",
@@ -176,7 +176,7 @@
       "startLine": 131,
       "endLine": 131
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Composition Preserves Injectivity",
     "content": "A useful corollary: if $f: A \\to B$ and $g: B \\to A$ are both injective, then so is $g \\circ f: A \\to A$.\n\n**Proof**: Suppose $g(f(a_1)) = g(f(a_2))$. Since $g$ is injective, $f(a_1) = f(a_2)$. Since $f$ is injective, $a_1 = a_2$. Thus $g \\circ f$ is injective.\n\nThis composition gives an injective self-map $A \\to A$, which in the finite case would imply $A$ and $B$ have the same size immediately.",
     "mathContext": "If $f: \\alpha \\hookrightarrow \\beta$ and $g: \\beta \\hookrightarrow \\alpha$, then $g \\circ f: \\alpha \\hookrightarrow \\alpha$. Lean: `hg.comp hf`. For finite $\\alpha$, pigeonhole gives bijectivity automatically -- but this fails for infinite sets.",
@@ -198,7 +198,7 @@
       "startLine": 148,
       "endLine": 148
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Set-Theoretic Version",
     "content": "For **sets within a common type** (subtypes in Lean):\n\nGiven sets $A, B \\subseteq X$ with:\n- An injection $f: A \\to B$\n- An injection $g: B \\to A$\n\nWe can conclude $|A| = |B|$ as cardinal numbers.\n\nIn Lean, sets are predicates `Set A = A -> Prop`, and elements of a set are subtypes. The theorem applies to these subtypes directly.",
     "mathContext": "For $A, B \\subseteq X$ (subtypes), given injections $f: A \\to B$ and $g: B \\to A$, we get $|A| = |B|$ via `Equiv.ofBijective` and `Cardinal.mk_congr`.",

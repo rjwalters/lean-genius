@@ -55,10 +55,11 @@
     ],
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "lineCount": 270,
+    "lineCount": 510,
     "assumptions": "0 axioms. 0 sorries (core result via Mathlib bridge). Relies on Mathlib's EuclideanGeometry.mul_dist_add_mul_dist_eq_mul_dist_of_cospherical for the Euclidean Ptolemy step. Assumes: Cospherical condition (points on common circle), angle conditions for diagonal crossing, unit sphere (‖a‖=‖b‖=‖c‖=‖d‖=1).",
     "mathlib_version": "4.26.0",
-    "parentProof": "ptolemys-theorem-oq-01"
+    "parentProof": "ptolemys-theorem-oq-01",
+    "theoremCount": 3
   },
   "sections": [
     {
@@ -184,28 +185,39 @@
   ],
   "references": [
     {
-      "authors": ["I. Todhunter"],
+      "authors": [
+        "I. Todhunter"
+      ],
       "title": "Spherical Trigonometry for the Use of Colleges and Schools",
       "year": "1886",
       "venue": "Macmillan and Co., London (5th edition)",
       "note": "Classical textbook on spherical trigonometry. Chapter XIV covers the spherical analogue of Ptolemy's theorem and its connection to the spherical law of cosines and four-point formulae on the sphere. The chord-arc identity ‖a−b‖ = 2R·sin(d_sphere(a,b)/(2R)) appears implicitly in the treatment of arc-chord relationships."
     },
     {
-      "authors": ["M. Berger"],
+      "authors": [
+        "M. Berger"
+      ],
       "title": "Geometry (Volumes I and II)",
       "year": "1987",
       "venue": "Springer Universitext",
       "note": "Volume II, Chapter 18: spherical geometry including the metric structure of S^n as a Riemannian manifold. The chord-arc identity and the relationship between Euclidean and spherical distance are treated in the context of the round metric. Standard reference for inner-product-space formulations of spherical geometry."
     },
     {
-      "authors": ["A. F. Beardon", "D. Minda"],
+      "authors": [
+        "A. F. Beardon",
+        "D. Minda"
+      ],
       "title": "A multi-point Schwarz-Pick lemma",
       "year": "2007",
       "venue": "Journal d'Analyse Mathématique, vol. 92, pp. 81-104",
       "note": "Establishes a framework for Ptolemy-type inequalities in hyperbolic metric spaces and metric spaces with bounded curvature."
     },
     {
-      "authors": ["S. M. Buckley", "D. A. Herron", "X. Xie"],
+      "authors": [
+        "S. M. Buckley",
+        "D. A. Herron",
+        "X. Xie"
+      ],
       "title": "Metric space inversions, quasihyperbolic distance, and uniform spaces",
       "year": "2008",
       "venue": "Indiana University Mathematics Journal, vol. 57, no. 2, pp. 837-890",
@@ -226,7 +238,7 @@
       "EuclideanGeometry"
     ],
     "namespace": "SphericalPtolemy",
-    "lineCount": 270,
+    "lineCount": 510,
     "axiomCount": 0,
     "theoremCount": 3,
     "sorries": 0,

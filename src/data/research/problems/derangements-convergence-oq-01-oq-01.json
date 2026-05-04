@@ -1,0 +1,85 @@
+{
+  "slug": "derangements-convergence-oq-01-oq-01",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "problemStatement": {
+    "formal": "∀ n ≥ 1, |(numDerangements n : ℝ) - (n.factorial : ℝ) / rexp 1| < 1/2",
+    "plain": "For all n ≥ 1, D(n) is the nearest integer to n!/e.",
+    "whyMatters": [
+      "The rounding formula D(n) = round(n!/e) provides a simple computation rule",
+      "The unique nearest integer property characterizes D(n) analytically"
+    ]
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 7 theorems proved, 0 sorries, 0 axioms. Fixed DerangementsConvergence.lean syntax and proved the nearest integer theorem.",
+    "builtItems": [
+      "derangements_rate_scaled: |D(n) - n!/e| ≤ 1/(n+1) for all n",
+      "derangements_nearest_integer: |D(n) - n!/e| < 1/2 for n ≥ 2",
+      "derangements_nearest_integer_n1: |D(1) - 1/e| < 1/2 via e > 2",
+      "derangements_nearest_all: |D(n) - n!/e| < 1/2 for all n ≥ 1",
+      "derangements_unique_nearest: D(n) is unique nearest natural to n!/e",
+      "derangements_quarter_bound and derangements_parametric_bound"
+    ],
+    "insights": [
+      "Rate scaling: multiply |D(n)/n! - e⁻¹| ≤ 1/(n+1)! by n! to get |D(n) - n!/e| ≤ 1/(n+1)",
+      "n=1 case uses Real.add_one_lt_exp one_ne_zero for strict e > 2",
+      "Integer gap lemma: omega closes |m-D(n)| < 1 → m = D(n) after Int casting",
+      "macOS sed silently fails on Unicode: use Python for ∑ k in → ∑ k ∈ fixes"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/DerangementsConvergence.lean",
+      "filename": "DerangementsConvergence.lean",
+      "lineCount": 283,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergence.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01.lean",
+      "filename": "DerangementsConvergenceOQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01OQ01.lean",
+      "filename": "DerangementsConvergenceOQ01OQ01.lean",
+      "lineCount": 148,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03.lean",
+      "filename": "DerangementsConvergenceOQ03.lean",
+      "lineCount": 89,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-convergence",
+    "derangements-convergence-oq-01",
+    "derangements-convergence-oq-01-oq-01",
+    "derangements-convergence-oq-03"
+  ]
+}

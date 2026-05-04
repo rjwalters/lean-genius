@@ -6,9 +6,9 @@
       "startLine": 36,
       "endLine": 48
     },
-    "type": "theorem",
-    "title": "Core Parametrization: Coprime Parts → Sum-Divides-Product",
-    "content": "construct_sumDvdProd_pair proves the algebraic heart of the parametrization: given coprime a', b' and multiplier m ≥ 1, setting a = m·(a'+b')·a' and b = m·(a'+b')·b' always satisfies (a+b) | (a·b). The proof rewrites a+b = m·(a'+b')² and a·b = m²·(a'+b')²·a'·b', making the divisibility obvious: the left side times (m·a'·b') equals the right side. The coprimality of a', b' is stated but not directly used here — it matters for the bijectivity of the parametrization (each coprime pair gives a distinct 'shape' of sum-dvd-prod pair).",
+    "type": "insight",
+    "title": "Core Parametrization: Coprime Parts \u2192 Sum-Divides-Product",
+    "content": "construct_sumDvdProd_pair proves the algebraic heart of the parametrization: given coprime a', b' and multiplier m \u2265 1, setting a = m\u00b7(a'+b')\u00b7a' and b = m\u00b7(a'+b')\u00b7b' always satisfies (a+b) | (a\u00b7b). The proof rewrites a+b = m\u00b7(a'+b')\u00b2 and a\u00b7b = m\u00b2\u00b7(a'+b')\u00b2\u00b7a'\u00b7b', making the divisibility obvious: the left side times (m\u00b7a'\u00b7b') equals the right side. The coprimality of a', b' is stated but not directly used here \u2014 it matters for the bijectivity of the parametrization (each coprime pair gives a distinct 'shape' of sum-dvd-prod pair).",
     "mathContext": "$$a + b = m(a'+b')^2, \\quad a \\cdot b = m^2(a'+b')^2 a'b' = (a+b) \\cdot m a'b'$$ so $(a+b) \\mid ab$ with quotient $m a'b'$. The key identity: $m(a'+b')^2 \\mid m^2(a'+b')^2 a'b'$.",
     "significance": "key",
     "relatedConcepts": [
@@ -29,9 +29,9 @@
       "startLine": 51,
       "endLine": 59
     },
-    "type": "theorem",
-    "title": "Distinctness: a' ≠ b' Guarantees a ≠ b",
-    "content": "construct_sumDvdProd_distinct proves: if a' ≠ b', then m·(a'+b')·a' ≠ m·(a'+b')·b'. The proof is by contradiction: if the two products were equal, then since m·(a'+b') > 0 (by positivity), Nat.eq_of_mul_eq_left would give a' = b', contradicting the hypothesis. This ensures that the parametrization produces ordered pairs (a < b) when we additionally assume a' < b', which is the convention for constructing the pair set.",
+    "type": "insight",
+    "title": "Distinctness: a' \u2260 b' Guarantees a \u2260 b",
+    "content": "construct_sumDvdProd_distinct proves: if a' \u2260 b', then m\u00b7(a'+b')\u00b7a' \u2260 m\u00b7(a'+b')\u00b7b'. The proof is by contradiction: if the two products were equal, then since m\u00b7(a'+b') > 0 (by positivity), Nat.eq_of_mul_eq_left would give a' = b', contradicting the hypothesis. This ensures that the parametrization produces ordered pairs (a < b) when we additionally assume a' < b', which is the convention for constructing the pair set.",
     "mathContext": "$$m(a'+b') > 0 \\text{ and } m(a'+b')a' = m(a'+b')b' \\implies a' = b'$$ by left-cancellation, so $a' \\neq b' \\implies m(a'+b')a' \\neq m(a'+b')b'$.",
     "significance": "key",
     "relatedConcepts": [
@@ -51,10 +51,10 @@
       "startLine": 88,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Minimality of (3,6): Exhaustive Check via interval_cases",
-    "content": "smallest_sumDvdProd_pair proves that no pair (a,b) with 0 < a < b ≤ 5 satisfies (a+b) | (a·b). The proof uses interval_cases on both a (range 1..4) and b (range 2..5), exhausting all 10 pairs. Each case is discharged by omega, which can check the divisibility claim for specific small naturals. The (3,6) pair from coprime (1,2) with m=1 is the first pair reachable, since b=6 is the smallest value exceeding 5 in any valid pair.",
-    "mathContext": "For all $1 \\leq a < b \\leq 5$: pairs checked are $(1,2),(1,3),(1,4),(1,5),(2,3),(2,4),(2,5),(3,4),(3,5),(4,5)$ — none satisfy $(a+b) \\mid ab$. First pair: $a' = 1, b' = 2, m = 1 \\Rightarrow a = 3, b = 6$.",
+    "content": "smallest_sumDvdProd_pair proves that no pair (a,b) with 0 < a < b \u2264 5 satisfies (a+b) | (a\u00b7b). The proof uses interval_cases on both a (range 1..4) and b (range 2..5), exhausting all 10 pairs. Each case is discharged by omega, which can check the divisibility claim for specific small naturals. The (3,6) pair from coprime (1,2) with m=1 is the first pair reachable, since b=6 is the smallest value exceeding 5 in any valid pair.",
+    "mathContext": "For all $1 \\leq a < b \\leq 5$: pairs checked are $(1,2),(1,3),(1,4),(1,5),(2,3),(2,4),(2,5),(3,4),(3,5),(4,5)$ \u2014 none satisfy $(a+b) \\mid ab$. First pair: $a' = 1, b' = 2, m = 1 \\Rightarrow a = 3, b = 6$.",
     "significance": "key",
     "relatedConcepts": [
       "interval_cases tactic",
@@ -75,7 +75,7 @@
     },
     "type": "definition",
     "title": "Counting Definitions: sumDvdProdPairs and numSumDvdProdPairs",
-    "content": "sumDvdProdPairs N is a Finset of ordered pairs (a,b) in {1,...,N}² satisfying a < b and (a+b) | (a·b), defined as a filtered Cartesian product. numSumDvdProdPairs N is its cardinality. Both are noncomputable because Finset.card is computable but the filter predicate involves divisibility, which is decidable but the definition uses noncomputable natural number operations in Lean 4. These definitions formalize the counting function whose asymptotic behavior is the open question in pairCountAsymptotics.",
+    "content": "sumDvdProdPairs N is a Finset of ordered pairs (a,b) in {1,...,N}\u00b2 satisfying a < b and (a+b) | (a\u00b7b), defined as a filtered Cartesian product. numSumDvdProdPairs N is its cardinality. Both are noncomputable because Finset.card is computable but the filter predicate involves divisibility, which is decidable but the definition uses noncomputable natural number operations in Lean 4. These definitions formalize the counting function whose asymptotic behavior is the open question in pairCountAsymptotics.",
     "mathContext": "$$\\text{sumDvdProdPairs}(N) = \\{(a,b) \\in [1,N]^2 \\mid a < b \\text{ and } (a+b) \\mid ab\\}$$ defined via $\\text{Icc}(1,N) \\times_s \\text{Icc}(1,N)$ filtered by the two conditions.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -99,7 +99,7 @@
     },
     "type": "definition",
     "title": "pairCountAsymptotics: The Open Density Conjecture",
-    "content": "pairCountAsymptotics encodes the open question as a Lean Prop: there exist constants 0 < C₁ < C₂ such that for all N > 0, C₁·N·log(N) ≤ numSumDvdProdPairs(N) ≤ C₂·N·log(N). This is a two-sided Θ(N log N) estimate. The heuristic argument from the header: for each coprime pair (a',b') with sum s = a'+b', the valid multipliers m satisfy m·s·max(a',b') ≤ N, giving roughly N/(s·max(a',b')) choices; summing over coprime pairs produces a harmonic sum with a log correction. The exact constant C = Σ_{a' < b', gcd=1} 1/(a'·b'·(a'+b')) is irrational and not yet computed.",
+    "content": "pairCountAsymptotics encodes the open question as a Lean Prop: there exist constants 0 < C\u2081 < C\u2082 such that for all N > 0, C\u2081\u00b7N\u00b7log(N) \u2264 numSumDvdProdPairs(N) \u2264 C\u2082\u00b7N\u00b7log(N). This is a two-sided \u0398(N log N) estimate. The heuristic argument from the header: for each coprime pair (a',b') with sum s = a'+b', the valid multipliers m satisfy m\u00b7s\u00b7max(a',b') \u2264 N, giving roughly N/(s\u00b7max(a',b')) choices; summing over coprime pairs produces a harmonic sum with a log correction. The exact constant C = \u03a3_{a' < b', gcd=1} 1/(a'\u00b7b'\u00b7(a'+b')) is irrational and not yet computed.",
     "mathContext": "$$\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\} = \\Theta(N \\log N)$$ conjectured via: $\\sum_{\\substack{a' < b' \\\\ \\gcd(a',b')=1}} \\frac{N/((a'+b') \\cdot \\max(a',b'))}{1} \\approx C \\cdot N \\log N$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -109,7 +109,7 @@
       "Egyptian fraction density"
     ],
     "prerequisites": [
-      "Asymptotic notation Θ",
+      "Asymptotic notation \u0398",
       "Real.log in Mathlib",
       "Harmonic series and coprime pair sums"
     ]
@@ -121,9 +121,9 @@
       "startLine": 155,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Full Construction: Ordering and Divisibility Combined",
-    "content": "construction_produces_valid_pairs combines the two parts of the parametrization: for coprime a' < b' and m ≥ 1, the pair (a, b) = (m·(a'+b')·a', m·(a'+b')·b') satisfies both a < b and (a+b) | (a·b). The ordering proof uses Nat.mul_lt_mul_of_pos_left with the shared coefficient m·(a'+b') being positive (by positivity). The divisibility proof delegates to construct_sumDvdProd_pair. This is the 'forward direction' of the parametrization theorem: every triple (a', b', m) with gcd(a',b')=1 and a' < b' produces a valid sum-dvd-prod pair.",
+    "content": "construction_produces_valid_pairs combines the two parts of the parametrization: for coprime a' < b' and m \u2265 1, the pair (a, b) = (m\u00b7(a'+b')\u00b7a', m\u00b7(a'+b')\u00b7b') satisfies both a < b and (a+b) | (a\u00b7b). The ordering proof uses Nat.mul_lt_mul_of_pos_left with the shared coefficient m\u00b7(a'+b') being positive (by positivity). The divisibility proof delegates to construct_sumDvdProd_pair. This is the 'forward direction' of the parametrization theorem: every triple (a', b', m) with gcd(a',b')=1 and a' < b' produces a valid sum-dvd-prod pair.",
     "mathContext": "$$a' < b' \\text{ and } m(a'+b') > 0 \\implies m(a'+b')a' < m(a'+b')b'$$ by Nat.mul_lt_mul_of_pos_left; $(a+b) \\mid ab$ from construct\\_sumDvdProd\\_pair.",
     "significance": "key",
     "relatedConcepts": [

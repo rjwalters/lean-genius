@@ -1,123 +1,238 @@
 [
   {
-    "id": "ann-nth-prime-is-prime",
+    "id": "ann-omega-fold-def",
     "proofId": "angle-trisection-oq-05-oq-02",
     "range": {
-      "startLine": 29,
-      "endLine": 31
+      "startLine": 39,
+      "endLine": 43
     },
-    "type": "theorem",
-    "title": "foldPrimeBound j is Prime",
-    "content": "A one-liner using `Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j`. The argument: `foldPrimeBound j = Nat.nth Nat.Prime j` is the j-th element of the set `{n | Nat.Prime n}`, and `Nat.nth_mem_of_infinite` says the n-th element of an infinite set satisfies the defining predicate. The hypothesis `Nat.infinite_setOf_prime` is Euclid's theorem in Mathlib. This unlocks the key property used throughout: foldPrimeBound j has a unique prime factorization consisting of just itself.",
-    "mathContext": "Since $\\text{foldPrimeBound}(j) = \\text{Nat.nth Nat.Prime } j$ is defined as the $j$-th member of $\\{n \\mid \\text{Nat.Prime}(n)\\}$, membership gives primality directly. The infinitude of primes (Euclid, ~300 BC) is the enabling hypothesis.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Nat.nth_mem_of_infinite",
-      "Nat.infinite_setOf_prime",
-      "Euclid's theorem",
-      "prime enumeration"
-    ],
-    "prerequisites": [
-      "foldPrimeBound definition from OQ01",
-      "Nat.nth API",
-      "infinitude of primes"
-    ]
-  },
-  {
-    "id": "ann-not-constructible-below",
-    "proofId": "angle-trisection-oq-05-oq-02",
-    "range": {
-      "startLine": 35,
-      "endLine": 47
-    },
-    "type": "theorem",
-    "title": "Lower Bound on Fold Level: j-th Prime Needs ≥ j Folds",
-    "content": "The proof follows a clean diagonal argument. Suppose foldPrimeBound j is k-fold constructible with k < j. Then IsSmooth (foldPrimeBound k) (foldPrimeBound j) holds, meaning every prime factor of foldPrimeBound j is ≤ foldPrimeBound k. But foldPrimeBound j is prime (nth_prime_is_prime) and divides itself (dvd_refl), so the smoothness condition gives foldPrimeBound j ≤ foldPrimeBound k. Meanwhile, since k < j and foldPrimeBound is strictly monotone (Nat.nth_strictMono on the infinite set of primes), we have foldPrimeBound k < foldPrimeBound j. Contradiction by linarith.",
-    "mathContext": "The key chain: (1) $p_j$ is prime $\\Rightarrow$ $p_j$ divides itself $\\Rightarrow$ smoothness gives $p_j \\leq p_k$. (2) $k < j$ and strict monotonicity give $p_k < p_j$. These contradict. The argument is essentially the statement that a prime cannot be bounded by a smaller prime.",
+    "type": "definition",
+    "title": "Omega-Fold Constructibility: Existential Closure",
+    "content": "Defines IsOmegaFoldConstructible as the existential closure over all fold levels: a degree d is omega-fold constructible if there exists some k such that d is k-fold constructible. This collapses the infinite tower of fold hierarchies (1-fold, 2-fold, 3-fold, ...) into a single predicate. The key insight is that we don't ask 'which level works?' but only 'does some level work?'",
+    "mathContext": "$\\text{IsOmegaFoldConstructible}(d) :\\!\\!\\iff \\exists k \\in \\mathbb{N},\\; \\text{IsKFoldConstructible}(d, k)$. This is the set-theoretic union $\\bigcup_{k=0}^{\\infty} \\mathcal{C}_k$ where $\\mathcal{C}_k$ is the class of $k$-fold constructible degrees.",
     "significance": "key",
     "relatedConcepts": [
-      "Nat.nth_strictMono",
-      "dvd_refl",
-      "nth_prime_is_prime",
-      "strict monotonicity",
-      "diagonal argument"
+      "existential quantification",
+      "fold hierarchy",
+      "IsKFoldConstructible",
+      "algebraic completeness"
     ],
     "prerequisites": [
-      "foldPrimeBound strict monotonicity",
-      "nth_prime_is_prime",
-      "IsKFoldConstructible destructuring"
+      "AngleTrisectionOQ05OQ01",
+      "IsKFoldConstructible definition",
+      "origami fold levels"
     ]
   },
   {
-    "id": "ann-constructible-at",
+    "id": "ann-basic-props",
     "proofId": "angle-trisection-oq-05-oq-02",
     "range": {
       "startLine": 49,
-      "endLine": 64
+      "endLine": 57
     },
-    "type": "theorem",
-    "title": "Upper Bound on Fold Level: j-th Prime Needs ≤ j Folds (Exact Level)",
-    "content": "To show foldPrimeBound j is j-fold constructible, we need IsSmooth (foldPrimeBound j) (foldPrimeBound j). Positivity follows from primality (primes are positive). For the smoothness condition: given any prime q dividing foldPrimeBound j, since foldPrimeBound j is prime (nth_prime_is_prime), its only divisors are 1 and itself. Since q is prime, q ≠ 1, so q = foldPrimeBound j, hence q ≤ foldPrimeBound j. The `eq_one_or_self_of_dvd` lemma from Mathlib handles the case split cleanly. Combined with the lower bound theorem, `prime_exact_fold_level` gives EXACTLY j folds for j ≥ 2.",
-    "mathContext": "IsSmooth$(p_j, p_j)$: the only prime dividing $p_j$ is $p_j$ itself (by primality), and $p_j \\leq p_j$. Together with `nth_prime_not_constructible_below`, this gives: $\\text{min\\_folds}(p_j) = j$ for $j \\geq 2$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Nat.Prime.eq_one_or_self_of_dvd",
-      "prime_exact_fold_level",
-      "exact fold level",
-      "IsSmooth self-smoothness"
-    ],
-    "prerequisites": [
-      "nth_prime_is_prime",
-      "IsSmooth definition",
-      "primality and divisors"
-    ]
-  },
-  {
-    "id": "ann-algebraic-completeness",
-    "proofId": "angle-trisection-oq-05-oq-02",
-    "range": {
-      "startLine": 68,
-      "endLine": 76
-    },
-    "type": "theorem",
-    "title": "Main Theorem: Algebraic Completeness of Multi-fold Origami",
-    "content": "The main theorem is a one-liner wrapping `eventually_constructible` from AngleTrisectionOQ05OQ01. The proof there takes k = d as the witness: all prime factors q of d satisfy q ≤ d (since q divides d), and Nat.add_two_le_nth_prime gives foldPrimeBound(d) = p_d ≥ d+2 > d, so all prime factors of d lie below the prime bound, making d a p_d-smooth number. The completeness result shows the multi-fold hierarchy is not just a proper subset of algebra — it covers all of it.",
-    "mathContext": "Answer to OQ02: YES, multi-fold origami is algebraically complete. $\\forall d > 0, \\exists k \\geq 1, \\text{IsKFoldConstructible}(d, k)$. Witness: $k = d$. Proof: $q \\mid d \\Rightarrow q \\leq d < d+2 \\leq p_d = \\text{foldPrimeBound}(d)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "eventually_constructible",
-      "Nat.add_two_le_nth_prime",
-      "algebraic completeness",
-      "origami completeness",
-      "prime bound witness"
-    ],
-    "prerequisites": [
-      "AngleTrisectionOQ05OQ01.eventually_constructible",
-      "prime bound growth rate"
-    ]
-  },
-  {
-    "id": "ann-min-folds-unbounded",
-    "proofId": "angle-trisection-oq-05-oq-02",
-    "range": {
-      "startLine": 80,
-      "endLine": 89
-    },
-    "type": "theorem",
-    "title": "Infinite Strict Hierarchy: No Finite Fold Level Suffices",
-    "content": "Proves that for any bound K, the prime p_{K+1} is a degree requiring > K folds. The proof: take d = foldPrimeBound (K+1). For k = 0: not constructible since k ≥ 1 is required. For k ≥ 1 with k ≤ K: k < K+1, so by nth_prime_not_constructible_below, foldPrimeBound(K+1) is not k-fold constructible. This shows the strictly increasing chain 1-fold ⊊ 2-fold ⊊ 3-fold ⊊ ··· never stabilizes.",
-    "mathContext": "The strict chain $\\text{KFold}(1) \\subsetneq \\text{KFold}(2) \\subsetneq \\text{KFold}(3) \\subsetneq \\cdots$ is infinite: for each level $K$, the prime $p_{K+1}$ falls outside all levels up to $K$. Equivalently: $\\sup_d \\text{min\\_folds}(d) = \\infty$ (the minimum fold level function is unbounded).",
+    "type": "concept",
+    "title": "Monotonicity: k-Fold Implies Omega-Fold",
+    "content": "Two foundational lemmas establish the relationship between finite and omega-fold constructibility. omega_fold_one shows degree 1 is omega-fold constructible (trivially, using any k ≥ 1). omega_fold_of_kfold is the monotonicity witness: k-fold constructibility implies omega-fold constructibility, proved by simply exhibiting the witness k. These appear trivial but are needed to close reasoning chains that go through finite levels.",
+    "mathContext": "$\\text{IsKFoldConstructible}(d, k) \\implies \\text{IsOmegaFoldConstructible}(d)$ for any $k$. Equivalently: $\\mathcal{C}_k \\subseteq \\mathcal{C}_{\\omega}$ for all $k \\in \\mathbb{N}$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "nth_prime_not_constructible_below",
-      "infinite strict hierarchy",
-      "fold level unboundedness",
-      "infinitude of primes consequence"
+      "monotonicity",
+      "fold hierarchy inclusion",
+      "existential witness"
     ],
     "prerequisites": [
-      "nth_prime_not_constructible_below",
-      "nth_prime_is_prime",
-      "Nat.eq_zero_or_pos case split"
+      "IsOmegaFoldConstructible",
+      "IsKFoldConstructible"
+    ]
+  },
+  {
+    "id": "ann-kfold-self",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "kfold_self: Bertrand's Postulate Powers the Key Bound",
+    "content": "The central computational lemma: every positive degree d is d-fold constructible. The proof uses foldPrimeBound(d) = p_{d+1} (the (d+1)-th prime), and crucially that p_{d+1} ≥ d+2. Since any prime factor q of d satisfies q ≤ d < d+2 ≤ p_{d+1} = foldPrimeBound(d), all prime factors of d are below the fold bound. The bound p_n ≥ n+2 is a weak form of Bertrand's Postulate (there exists a prime between n and 2n), available in Mathlib as Nat.add_two_le_nth_prime.",
+    "mathContext": "$\\text{IsKFoldConstructible}(d, d)$ for all $d \\geq 1$. Key inequality: if $q \\mid d$ and $q$ prime, then $q \\leq d < d+2 \\leq p_{d+1} = \\text{foldPrimeBound}(d)$. Uses $p_n \\geq n+2$ (from Bertrand) where $p_n$ is the $n$-th prime (0-indexed).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "prime growth",
+      "smooth numbers",
+      "fold prime bound",
+      "Nat.add_two_le_nth_prime"
+    ],
+    "prerequisites": [
+      "foldPrimeBound definition",
+      "IsKFoldConstructible",
+      "prime factorization",
+      "Nat.nth_prime"
+    ]
+  },
+  {
+    "id": "ann-not-omega-zero",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Degree 0 Fails: Positivity is a Definitional Barrier",
+    "content": "The theorem not_omega_fold_zero shows degree 0 cannot be omega-fold constructible. The proof is immediate: if degree 0 were k-fold constructible for some k, the IsKFoldConstructible definition requires a positivity witness hpos : 0 > 0, which is a contradiction. This is not a deep mathematical obstruction — it is a deliberate definitional choice that degree 0 is excluded (there is no polynomial equation of degree 0 to 'solve'). The proof pattern `intro ⟨k, _, hpos, _⟩; omega` extracts the positivity field and derives False.",
+    "mathContext": "$\\neg\\, \\text{IsOmegaFoldConstructible}(0)$ because $\\text{IsKFoldConstructible}(0, k)$ requires $0 > 0$, which is false. The IsSmooth predicate (and hence IsKFoldConstructible) enforces $d > 0$ as a precondition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsSmooth positivity",
+      "definitional exclusion",
+      "degree 0 polynomial"
+    ],
+    "prerequisites": [
+      "IsKFoldConstructible positivity field",
+      "IsOmegaFoldConstructible"
+    ]
+  },
+  {
+    "id": "ann-complete-iff",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 83,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "Main Theorem: Algebraic Completeness via Sharp Biconditional",
+    "content": "omega_fold_complete_iff is the principal result: omega-fold origami is algebraically complete if and only if the degree is positive. The proof is a two-direction biconditional. Forward direction (→): any witness k for IsKFoldConstructible d k comes with a positivity field, so d > 0. Backward direction (←): if d > 0, apply omega_fold_pos (which applies kfold_self with witness k = d). The result is a sharp characterization — not just 'omega-fold is powerful' but 'omega-fold captures exactly the positive degrees, and the exception is precisely degree 0.'",
+    "mathContext": "$\\text{IsOmegaFoldConstructible}(d) \\iff d > 0$. Equivalently, $\\mathcal{C}_{\\omega} = \\mathbb{N}_{>0}$: the omega-fold constructible degrees are exactly the positive natural numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic completeness",
+      "origami vs ruler-and-compass",
+      "degree characterization"
+    ],
+    "prerequisites": [
+      "omega_fold_pos",
+      "kfold_self",
+      "not_omega_fold_zero"
+    ]
+  },
+  {
+    "id": "ann-eventually-sufficient",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 99,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Monotone Growth: All Sufficiently Large Fold Levels Work",
+    "content": "eventually_all_folds_sufficient proves that for any positive degree d, every fold level k ≥ d is sufficient. This is the 'eventually' direction: once you have enough folds, adding more doesn't hurt. The proof re-uses the core inequality: since q ≤ d ≤ k, we have q < d+2 ≤ k+2 ≤ foldPrimeBound(k), so the fold bound at level k dominates any prime factor of d. This establishes the upward closure of the fold hierarchy — IsKFoldConstructible is monotone in k.",
+    "mathContext": "$\\forall d > 0,\\, \\forall k \\geq d: \\text{IsKFoldConstructible}(d, k)$. Proof: $q \\mid d$ prime $\\Rightarrow q \\leq d \\leq k \\Rightarrow q < k+2 \\leq p_{k+1} = \\text{foldPrimeBound}(k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fold monotonicity",
+      "upward closure",
+      "eventually",
+      "prime growth bound"
+    ],
+    "prerequisites": [
+      "foldPrimeBound",
+      "add_two_le_nth_prime",
+      "kfold_self"
+    ]
+  },
+  {
+    "id": "ann-min-folds",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Explicit Fold Bound: d Folds Always Suffice for Degree d",
+    "content": "min_folds_finite packages kfold_self into a concrete existence statement: for every positive degree d, there exists a minimum fold level k_min ≤ d that constructs d, and d itself works. This gives an explicit and computable upper bound on the fold complexity function min_k(d). The proof is one line: exhibit k_min = d and invoke kfold_self.",
+    "mathContext": "$\\forall d > 0,\\, \\exists k_{\\min} \\leq d:\\; \\text{IsKFoldConstructible}(d, k_{\\min})$. The bound $k_{\\min} \\leq d$ is tight for prime $d = p_m$: the minimum fold level is exactly $m-1$ (the prime's index), which may be much smaller than $d$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fold complexity",
+      "minimum fold level",
+      "computational origami"
+    ],
+    "prerequisites": [
+      "kfold_self",
+      "IsKFoldConstructible",
+      "prime index"
+    ]
+  },
+  {
+    "id": "ann-prime-threshold",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 126,
+      "endLine": 143
+    },
+    "type": "insight",
+    "title": "Prime Fold Thresholds: Exact Characterization for Primes",
+    "content": "prime_kfold_iff_bound gives the exact fold threshold for prime degrees: a prime p is k-fold constructible if and only if p ≤ foldPrimeBound(k) = p_{k+1}. For primes, there are no composite factors to worry about — p only divides itself, so the IsSmooth condition reduces to checking p against the bound. The forward direction extracts the bound from the smooth condition applied to p (which divides p). The reverse direction uses hp.eq_one_or_self_of_dvd to eliminate q = 1. This means the fold threshold for prime p is exactly its prime index: p = p_m requires fold level ≥ m-1.",
+    "mathContext": "For prime $p$ and $k \\geq 1$: $\\text{IsKFoldConstructible}(p, k) \\iff p \\leq p_{k+1}$. Equivalently, $\\text{min\\_fold}(p_m) = m-1$ where $p_m$ is the $m$-th prime. Example: $\\text{min\\_fold}(11) = \\text{min\\_fold}(p_5) = 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime index",
+      "fold threshold",
+      "smooth number characterization",
+      "nth_prime"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "prime factorization",
+      "foldPrimeBound",
+      "Nat.Prime.eq_one_or_self_of_dvd"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 150,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Concrete Instances: Classic Problems Are Omega-Fold Constructible",
+    "content": "Six concrete instances ground the abstract theorem in familiar mathematics. Degree 3 corresponds to angle trisection and cube root of 2 — impossible by ruler-and-compass but solvable by single-fold origami. Degree 5 is the quintic, whose general non-solvability (Abel-Ruffini) is a separate statement — here it just means the quintic CAN be solved geometrically via origami. Degree 11 marks the transition from 3-fold to 4-fold origami. Degree 100 shows the bound is not a theoretical curiosity: 100 simultaneous folds suffice for any 100th-degree polynomial. omega_fold_zero_unique_failure packages all cases: ¬ IsOmegaFoldConstructible d ↔ d = 0.",
+    "mathContext": "Specializations of $\\text{IsOmegaFoldConstructible}(d) \\iff d > 0$: $d \\in \\{2, 3, 5, 7, 11, 100\\}$ all satisfy $d > 0$. The companion theorem $\\forall d:\\; \\neg\\,\\text{IsOmegaFoldConstructible}(d) \\iff d = 0$ says degree 0 is the UNIQUE failure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "angle trisection",
+      "Abel-Ruffini theorem",
+      "ruler-and-compass impossibility",
+      "quintic equation"
+    ],
+    "prerequisites": [
+      "omega_fold_complete_iff",
+      "classical construction impossibility results"
+    ]
+  },
+  {
+    "id": "ann-fold-comparison",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 185,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Omega-Fold as Union: Structural Clarity Theorems",
+    "content": "The final section restates the relationship between finite and omega-fold constructibility in two equivalent forms. kfold_le_omega is the inclusion witness (same as omega_fold_of_kfold, restated for clarity). omega_fold_as_union is the definitional unfolding: IsOmegaFoldConstructible d ↔ ∃ k, IsKFoldConstructible d k — proved by Iff.rfl since the definition is literally this existential. Together these form a clean summary: the omega level is the colimit (direct limit) of the fold hierarchy, and membership in the colimit is exactly having a representative at some finite level.",
+    "mathContext": "$\\text{IsOmegaFoldConstructible}(d) \\iff \\exists k \\in \\mathbb{N},\\; \\text{IsKFoldConstructible}(d, k)$ — the omega level is the colimit of the diagram $\\mathcal{C}_0 \\subseteq \\mathcal{C}_1 \\subseteq \\mathcal{C}_2 \\subseteq \\cdots$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "colimit",
+      "direct limit",
+      "fold hierarchy",
+      "definitional unfolding"
+    ],
+    "prerequisites": [
+      "IsOmegaFoldConstructible",
+      "IsKFoldConstructible",
+      "Iff.rfl"
     ]
   }
 ]

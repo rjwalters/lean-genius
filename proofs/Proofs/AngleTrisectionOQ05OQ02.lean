@@ -1,143 +1,196 @@
 /-
-  Multi-fold Origami: Algebraic Completeness
+# Omega-Fold Origami: Algebraic Completeness (OQ-05-OQ-02)
 
-  Open Question (angle-trisection-oq-05-oq-02):
-  "Is multi-fold origami algebraically complete for polynomial equations?"
+Open Question from angle-trisection-oq-05-oq-01:
+"Can multi-fold origami solve ALL polynomial equations (is it algebraically complete)?"
 
-  Answer: YES. For every polynomial degree d > 0, there exists a fold level k
-  such that d is k-fold constructible. More precisely:
+## The Answer
 
-  - The j-th prime (0-indexed) requires EXACTLY j folds (j ≥ 1)
-  - No finite fold level suffices for all degrees (strict hierarchy is infinite)
-  - Every degree d > 0 is k-fold constructible for some k ≤ d
+YES: omega-fold origami (allowing arbitrary many simultaneous folds) is
+algebraically complete. Every polynomial equation of positive degree d
+is solvable by omega-fold origami operations.
 
-  Builds on AngleTrisectionOQ05OQ01.lean (k-fold origami characterization).
+## Proof Strategy
+
+From AngleTrisectionOQ05OQ01:
+- k-fold origami constructs degrees d that are p_{k+1}-smooth
+- `eventually_constructible`: for d > 0, using k = d folds suffices
+  (since p_{d+1} ≥ d+2 > d ≥ any prime factor of d, by Bertrand's postulate direction)
+
+We define omega-fold constructibility as ∃ k, IsKFoldConstructible d k
+and prove the sharp characterization: omega-fold constructible ↔ d > 0.
+
+## Status: Verified (0 axioms, 0 sorries)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Data.Nat.Prime.Infinite
-import Mathlib.Tactic
 import Proofs.AngleTrisectionOQ05OQ01
-
-open AngleTrisectionOQ05OQ01 Nat
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Tactic
 
 namespace AngleTrisectionOQ05OQ02
 
-/-! ## Primality of Fold Prime Bounds -/
-
-/-- The k-th fold prime bound is prime. -/
-theorem nth_prime_is_prime (j : ℕ) : Nat.Prime (foldPrimeBound j) :=
-  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j
-
-/-! ## Exact Fold Level for Primes -/
-
-/-- The j-th prime is NOT k-fold constructible for k < j (k ≥ 1).
-    Its only prime factor is itself, which exceeds foldPrimeBound k by
-    strict monotonicity of the prime sequence. -/
-theorem nth_prime_not_constructible_below (j k : ℕ) (hk1 : k ≥ 1) (hkj : k < j) :
-    ¬ IsKFoldConstructible (foldPrimeBound j) k := by
-  intro ⟨_, _, hsm⟩
-  have hprime : Nat.Prime (foldPrimeBound j) := nth_prime_is_prime j
-  have hle : foldPrimeBound j ≤ foldPrimeBound k :=
-    hsm (foldPrimeBound j) hprime (dvd_refl _)
-  have hlt : foldPrimeBound k < foldPrimeBound j := by
-    unfold foldPrimeBound
-    exact (Nat.nth_strictMono Nat.infinite_setOf_prime).lt_iff_lt.mpr hkj
-  linarith
-
-/-- The j-th prime IS j-fold constructible (j ≥ 1):
-    its only prime factor is itself, which equals foldPrimeBound j. -/
-theorem nth_prime_constructible_at (j : ℕ) (hj : j ≥ 1) :
-    IsKFoldConstructible (foldPrimeBound j) j := by
-  refine ⟨hj, (nth_prime_is_prime j).pos, fun q hq hd => ?_⟩
-  rcases (nth_prime_is_prime j).eq_one_or_self_of_dvd q hd with h1 | hself
-  · exact absurd h1 hq.one_lt.ne'
-  · subst hself; exact le_refl _
-
-/-- For j ≥ 2, the j-th prime requires EXACTLY j folds:
-    it is j-fold constructible but NOT (j-1)-fold constructible. -/
-theorem prime_exact_fold_level (j : ℕ) (hj : j ≥ 2) :
-    IsKFoldConstructible (foldPrimeBound j) j ∧
-    ¬ IsKFoldConstructible (foldPrimeBound j) (j - 1) :=
-  ⟨nth_prime_constructible_at j (by omega),
-   nth_prime_not_constructible_below j (j - 1) (by omega) (by omega)⟩
-
-/-! ## Algebraic Completeness -/
-
-/-- MAIN THEOREM: Multi-fold origami is algebraically complete.
-    For every degree d > 0, there exists a fold level k ≥ 1 such that
-    d is k-fold constructible.
-
-    The witness is k = d: since Nat.nth Nat.Prime d ≥ d + 2 > d ≥ any
-    prime factor of d, degree d is d-smooth and hence d-fold constructible. -/
-theorem multi_fold_algebraically_complete (d : ℕ) (hd : d > 0) :
-    ∃ k : ℕ, k ≥ 1 ∧ IsKFoldConstructible d k :=
-  eventually_constructible d hd
-
-/-! ## Unboundedness of the Fold Hierarchy -/
-
-/-- For any fold bound K, there exists a degree requiring more than K folds.
-    The prime p_{K+1} is NOT k-fold constructible for any k ≤ K,
-    so the strict hierarchy of fold levels is infinite. -/
-theorem min_folds_unbounded (K : ℕ) :
-    ∃ d : ℕ, d > 0 ∧ ∀ k : ℕ, k ≤ K → ¬ IsKFoldConstructible d k := by
-  refine ⟨foldPrimeBound (K + 1), (nth_prime_is_prime (K + 1)).pos, ?_⟩
-  intro k hk
-  rcases Nat.eq_zero_or_pos k with rfl | hkpos
-  · intro ⟨h1, _⟩; omega
-  · exact nth_prime_not_constructible_below (K + 1) k hkpos (by omega)
-
-/-! ## Concrete Instances -/
-
-/-- Degree 5 (2nd prime, 0-indexed) requires exactly 2 folds. -/
-theorem five_exact_fold_two :
-    IsKFoldConstructible 5 2 ∧ ¬ IsKFoldConstructible 5 1 := by
-  have h := prime_exact_fold_level 2 (by norm_num)
-  simp only [fold_2_bound] at h
-  exact h
-
-/-- Degree 7 (3rd prime, 0-indexed) requires exactly 3 folds. -/
-theorem seven_exact_fold_three :
-    IsKFoldConstructible 7 3 ∧ ¬ IsKFoldConstructible 7 2 := by
-  have h := prime_exact_fold_level 3 (by norm_num)
-  simp only [fold_3_bound] at h
-  exact h
-
-/-- Degree 11 (4th prime, 0-indexed) requires exactly 4 folds. -/
-theorem eleven_exact_fold_four :
-    IsKFoldConstructible 11 4 ∧ ¬ IsKFoldConstructible 11 3 := by
-  have h := prime_exact_fold_level 4 (by norm_num)
-  simp only [fold_4_bound] at h
-  exact h
-
-/-! ## Summary -/
+open AngleTrisectionOQ05OQ01 Nat
 
 /-
-## Answer to angle-trisection-oq-05-oq-02
+══════════════════════════════════════════════════════════════
+PART I: OMEGA-FOLD CONSTRUCTIBILITY
+══════════════════════════════════════════════════════════════ -/
 
-"Is multi-fold origami algebraically complete for polynomial equations?"
+/-- A degree d is omega-fold constructible if it is k-fold constructible for SOME k.
+    This is the existential closure over all fold levels. -/
+def IsOmegaFoldConstructible (d : ℕ) : Prop :=
+  ∃ k : ℕ, IsKFoldConstructible d k
 
-YES. This file proves:
+/-
+══════════════════════════════════════════════════════════════
+PART II: BASIC PROPERTIES
+══════════════════════════════════════════════════════════════ -/
 
-1. Primality: foldPrimeBound j is always prime.
+/-- Degree 1 is omega-fold constructible. -/
+theorem omega_fold_one : IsOmegaFoldConstructible 1 :=
+  ⟨1, degree_one_constructible 1 (by omega)⟩
 
-2. Exact fold level for primes: for j ≥ 2, the j-th prime (0-indexed)
-   is j-fold constructible but NOT (j-1)-fold constructible.
+/-- If d is k-fold constructible, it is omega-fold constructible. -/
+theorem omega_fold_of_kfold {d k : ℕ} (h : IsKFoldConstructible d k) :
+    IsOmegaFoldConstructible d :=
+  ⟨k, h⟩
 
-3. Algebraic completeness (main theorem): every degree d > 0 is
-   k-fold constructible for some k ≥ 1. Explicit witness: k = d.
+/-- Degree d is d-fold constructible when d ≥ 1:
+    foldPrimeBound(d) = p_{d+1} ≥ d+2 > d ≥ any prime factor of d. -/
+theorem kfold_self {d : ℕ} (hd : d ≥ 1) : IsKFoldConstructible d d := by
+  refine ⟨by omega, by omega, fun q hq hqd => ?_⟩
+  have hqle : q ≤ d := Nat.le_of_dvd (by omega) hqd
+  have hbound : d + 2 ≤ foldPrimeBound d := by
+    unfold foldPrimeBound
+    exact add_two_le_nth_prime d
+  omega
 
-4. Infinite strict hierarchy: for any K, the prime p_{K+1} requires
-   more than K folds. No finite fold level covers all degrees.
+/-- Every degree d ≥ 1 is omega-fold constructible. -/
+theorem omega_fold_pos {d : ℕ} (hd : d ≥ 1) : IsOmegaFoldConstructible d :=
+  ⟨d, kfold_self hd⟩
 
-Concrete examples:
-- p_2 = 5: needs exactly 2 folds
-- p_3 = 7: needs exactly 3 folds
-- p_4 = 11: needs exactly 4 folds
+/-
+══════════════════════════════════════════════════════════════
+PART III: SHARP CHARACTERIZATION
+══════════════════════════════════════════════════════════════ -/
 
-Status: 0 axioms, 0 sorries.
-Builds on: AngleTrisectionOQ05OQ01 (k-fold constructibility framework).
--/
+/-- Degree 0 is NOT omega-fold constructible.
+    The IsSmooth condition requires d > 0. -/
+theorem not_omega_fold_zero : ¬ IsOmegaFoldConstructible 0 := by
+  intro ⟨k, _, hpos, _⟩
+  omega
+
+/-- **Main theorem**: A degree d is omega-fold constructible iff d > 0.
+    Omega-fold origami is algebraically complete: it can solve every
+    polynomial equation of positive degree. -/
+theorem omega_fold_complete_iff {d : ℕ} :
+    IsOmegaFoldConstructible d ↔ d > 0 := by
+  constructor
+  · intro ⟨_, _, hpos, _⟩
+    exact hpos
+  · intro hd
+    exact omega_fold_pos hd
+
+/-
+══════════════════════════════════════════════════════════════
+PART IV: FOLD LEVEL GROWTH
+══════════════════════════════════════════════════════════════ -/
+
+/-- For any d > 0, every fold level k ≥ d suffices to construct d.
+    The minimum number of folds needed for degree d is at most d. -/
+theorem eventually_all_folds_sufficient {d : ℕ} (hd : d > 0) :
+    ∀ k : ℕ, k ≥ d → IsKFoldConstructible d k := by
+  intro k hkd
+  obtain ⟨_, hd_pos, hsm⟩ := kfold_self (by omega : d ≥ 1)
+  refine ⟨by omega, hd_pos, fun q hq hqd => ?_⟩
+  have hqle : q ≤ d := Nat.le_of_dvd hd hqd
+  have hbound : d + 2 ≤ foldPrimeBound k := by
+    unfold foldPrimeBound
+    have h1 : d ≤ k := hkd
+    have h2 : d + 2 ≤ k + 2 := by omega
+    have h3 : k + 2 ≤ foldPrimeBound k := add_two_le_nth_prime k
+    omega
+  omega
+
+/-- For any degree d > 0, the minimum fold level needed is finite and at most d.
+    This gives the explicit bound: `d` folds always suffice. -/
+theorem min_folds_finite {d : ℕ} (hd : d > 0) :
+    ∃ k_min : ℕ, k_min ≤ d ∧ IsKFoldConstructible d k_min := by
+  exact ⟨d, le_refl d, kfold_self (by omega)⟩
+
+/-
+══════════════════════════════════════════════════════════════
+PART V: PRIME FOLD THRESHOLDS
+══════════════════════════════════════════════════════════════ -/
+
+/-- For a prime p, the minimum fold level needed is determined by its prime index:
+    p is k-fold constructible iff p ≤ foldPrimeBound k. -/
+theorem prime_kfold_iff_bound {p k : ℕ} (hp : p.Prime) (hk : k ≥ 1) :
+    IsKFoldConstructible p k ↔ p ≤ foldPrimeBound k := by
+  constructor
+  · intro ⟨_, _, hsm⟩
+    exact hsm p hp (dvd_refl p)
+  · intro hle
+    refine ⟨hk, hp.pos, fun q hq hqd => ?_⟩
+    have : q = p := (hp.eq_one_or_self_of_dvd q hqd).resolve_left hq.one_lt.ne'
+    omega
+
+/-- Any degree d > 0 is omega-fold constructible. Omega-fold origami is
+    algebraically complete: there is no positive-degree polynomial equation
+    that omega-fold origami cannot solve. -/
+theorem omega_fold_algebraically_complete :
+    ∀ d : ℕ, d > 0 → IsOmegaFoldConstructible d :=
+  fun d hd => omega_fold_complete_iff.mpr hd
+
+/-
+══════════════════════════════════════════════════════════════
+PART VI: CONCRETE EXAMPLES
+══════════════════════════════════════════════════════════════ -/
+
+/-- Degree 2 (quadratic) is omega-fold constructible. -/
+theorem omega_degree_2 : IsOmegaFoldConstructible 2 := omega_fold_complete_iff.mpr (by norm_num)
+
+/-- Degree 3 (cubic, angle trisection) is omega-fold constructible. -/
+theorem omega_degree_3 : IsOmegaFoldConstructible 3 := omega_fold_complete_iff.mpr (by norm_num)
+
+/-- Degree 5 (quintic, Abel-Ruffini) is omega-fold constructible. -/
+theorem omega_degree_5 : IsOmegaFoldConstructible 5 := omega_fold_complete_iff.mpr (by norm_num)
+
+/-- Degree 7 is omega-fold constructible. -/
+theorem omega_degree_7 : IsOmegaFoldConstructible 7 := omega_fold_complete_iff.mpr (by norm_num)
+
+/-- Degree 11 (separates 3-fold from 4-fold) is omega-fold constructible. -/
+theorem omega_degree_11 : IsOmegaFoldConstructible 11 := omega_fold_complete_iff.mpr (by norm_num)
+
+/-- Large degree 100 is omega-fold constructible (100 folds suffice). -/
+theorem omega_degree_100 : IsOmegaFoldConstructible 100 := omega_fold_complete_iff.mpr (by norm_num)
+
+/-- Degree 0 is the unique non-constructible degree. -/
+theorem omega_fold_zero_unique_failure :
+    ∀ d : ℕ, ¬ IsOmegaFoldConstructible d ↔ d = 0 := by
+  intro d
+  constructor
+  · intro h
+    rcases Nat.eq_zero_or_pos d with rfl | hd
+    · rfl
+    · exact absurd (omega_fold_complete_iff.mpr hd) h
+  · rintro rfl
+    exact not_omega_fold_zero
+
+/-
+══════════════════════════════════════════════════════════════
+PART VII: FOLD LEVEL COMPARISON
+══════════════════════════════════════════════════════════════ -/
+
+/-- Omega-fold subsumes k-fold: every k-fold constructible degree is omega-fold constructible. -/
+theorem kfold_le_omega {d k : ℕ} (h : IsKFoldConstructible d k) :
+    IsOmegaFoldConstructible d :=
+  ⟨k, h⟩
+
+/-- The omega-fold threshold is the supremum of all fold levels:
+    omega-fold constructible means constructible by SOME finite fold level. -/
+theorem omega_fold_as_union {d : ℕ} :
+    IsOmegaFoldConstructible d ↔ ∃ k : ℕ, IsKFoldConstructible d k :=
+  Iff.rfl
 
 end AngleTrisectionOQ05OQ02

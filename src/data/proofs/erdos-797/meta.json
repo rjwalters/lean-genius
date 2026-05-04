@@ -61,7 +61,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 155,
-    "assumptions": "3 axioms: f, alon_mcdiarmid_reed_upper, precise_lower_bound. 0 sorries."
+    "assumptions": "3 axioms: f, alon_mcdiarmid_reed_upper, precise_lower_bound. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős asked for estimates of f(d), the maximum acyclic chromatic number over all graphs with maximum degree d. An acyclic coloring is a proper vertex coloring in which no cycle is bichromatic (uses only two colors). A greedy argument gives f(d) ≤ d² + 1, and Erdős asked whether f(d) = o(d²).\n\nErdős himself showed the lower bound f(d) ≥ d^{4/3 - o(1)} using probabilistic constructions related to B₂ sequences (Sidon sets). The problem was resolved by Alon, McDiarmid, and Reed in 1991, who proved the matching upper bound f(d) ≤ O(d^{4/3}) using the Lovász Local Lemma, confirming that f(d) = o(d²) and establishing f(d) = Θ(d^{4/3}).\n\nThe precise asymptotics remain slightly open: the best bounds are c·d^{4/3}/(log d)^{1/3} ≤ f(d) ≤ C·d^{4/3}, leaving a (log d)^{1/3} gap. The connection to B₂ sequences (Sidon sets) is central to the lower bound construction — dense Sidon sets in ℤ_p yield graphs requiring many colors for acyclic coloring.",

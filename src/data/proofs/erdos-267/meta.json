@@ -58,7 +58,8 @@
     ],
     "lineCount": 224,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "This problem connects to a long tradition of irrationality questions in number theory going back to Euler's work on $e$ and Lambert's proof that $\\pi$ is irrational (1761). Erdős posed it as part of his broader program asking when 'natural' arithmetic series sum to irrational numbers.\n\nGood (1974) proved the first special case: $\\sum 1/F_{2^n}$ is irrational, using the rapid growth of $F_{2^n}$ and a clever continued fraction argument. Bicknell and Hoggatt (1976) extended this to related subsequences with indices $2^n k$.\n\nThe breakthrough came when André-Jeannin (1989) proved the full sum $\\sum 1/F_n$ is irrational using techniques from transcendence theory, specifically Padé approximation and the connection between Fibonacci numbers and the theory of $q$-series. Paradoxically, this proves the $c = 1$ case (all indices, weakest sparsity condition) while the general $c > 1$ case remains open — a situation where the strongest-looking result is proved but weaker-looking intermediate cases resist proof.\n\nThe problem is part of a cluster of Erdős irrationality conjectures including #250 ($\\sum \\sigma(n)/2^n$, solved by Nesterenko 1996) and #259 ($\\sum \\mu(n)^2 n / 2^n$, solved by Chen-Ruzsa).",

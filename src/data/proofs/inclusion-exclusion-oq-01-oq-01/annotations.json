@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ann-ie-general-formula",
+    "proofId": "inclusion-exclusion-oq-01-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 69
+    },
+    "type": "insight",
+    "title": "The General IE Formula via Mathlib",
+    "content": "The theorem general_inclusion_exclusion is a one-line wrapper around Mathlib's Finset.inclusion_exclusion_card_biUnion. The formula sums over all nonempty subsets t of the index set s: for each such t, the contribution is (-1)^(|t|+1) times the cardinality of the intersection ⋂_{i∈t} Sᵢ (computed via Finset.inf'). This is the most general possible statement: an arbitrary finite index set s, arbitrary sets S i indexed by it, and the alternating sum over the full powerset of s minus the empty set.",
+    "mathContext": "$$\\left|\\bigcup_{i \\in s} S_i\\right| = \\sum_{\\emptyset \\neq t \\subseteq s} (-1)^{|t|+1} \\left|\\bigcap_{i \\in t} S_i\\right|$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "inclusion-exclusion principle",
+      "Finset.powerset",
+      "Finset.inf'",
+      "alternating sum"
+    ],
+    "prerequisites": [
+      "Finset.inclusion_exclusion_card_biUnion"
+    ]
+  },
+  {
+    "id": "ann-ie-biUnion-inter-right",
+    "proofId": "inclusion-exclusion-oq-01-oq-01",
+    "range": {
+      "startLine": 87,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Distributivity: ∩ Over ⋃ (Key Enabling Lemma)",
+    "content": "biUnion_inter_right proves (⋃_{i∈s} Sᵢ) ∩ B = ⋃_{i∈s} (Sᵢ ∩ B). This distributivity law is the heart of the inductive proof of IE: when adding a new set Sⱼ to an existing union, the correction term |(⋃_{i∈s} Sᵢ) ∩ Sⱼ| can be rewritten as |⋃_{i∈s} (Sᵢ ∩ Sⱼ)|, which in turn can be handled inductively. The proof is direct: use ext and simp to reduce to logical equivalences, then a rintro case split on both directions.",
+    "mathContext": "$$\\left(\\bigcup_{i \\in s} S_i\\right) \\cap B = \\bigcup_{i \\in s} (S_i \\cap B)$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "set distributivity",
+      "biUnion",
+      "intersection",
+      "inductive proof structure"
+    ],
+    "prerequisites": [
+      "Finset.mem_inter",
+      "Finset.mem_biUnion"
+    ]
+  },
+  {
+    "id": "ann-ie-inductive-step",
+    "proofId": "inclusion-exclusion-oq-01-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 110
+    },
+    "type": "insight",
+    "title": "Inductive Step: Adding One More Set",
+    "content": "card_biUnion_insert proves |⋃_{i∈insert j s} Sᵢ| = |⋃_{i∈s} Sᵢ| + |Sⱼ| - |⋃_{i∈s}(Sᵢ∩Sⱼ)| (in ℤ). This is the inductive step for IE: each new set Sⱼ contributes its cardinality, but we must subtract the correction term — the cardinality of the union of its intersections with all existing sets. The proof uses biUnion_insert to unfold, card_union_step for the two-set formula, biUnion_inter_right to distribute the intersection, and linarith to close the arithmetic.",
+    "mathContext": "$$\\left|\\bigcup_{i \\in s \\cup \\{j\\}} S_i\\right| = \\left|\\bigcup_{i \\in s} S_i\\right| + |S_j| - \\left|\\bigcup_{i \\in s} (S_i \\cap S_j)\\right|$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on finsets",
+      "biUnion_insert",
+      "card_union_step"
+    ],
+    "prerequisites": [
+      "biUnion_inter_right",
+      "card_union_step"
+    ]
+  },
+  {
+    "id": "ann-ie-three-set",
+    "proofId": "inclusion-exclusion-oq-01-oq-01",
+    "range": {
+      "startLine": 141,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Three-Set Formula: Distributivity Step",
+    "content": "three_set_from_general proves |A∪B∪C| = |A|+|B|+|C| - |A∩B| - |A∩C| - |B∩C| + |A∩B∩C|. The key step is distributivity: (A∪B)∩C = (A∩C)∪(B∩C), which is non-trivial for n>2 sets. Lean proves this by ext+simp+tauto on the logical equivalence. After this, two more applications of card_union_add_card_inter plus an intersection simplification (A∩C)∩(B∩C)=A∩B∩C give all the needed equalities; omega closes the arithmetic.",
+    "mathContext": "$$|A \\cup B \\cup C| = |A|+|B|+|C| - |A\\cap B| - |A\\cap C| - |B\\cap C| + |A\\cap B\\cap C|$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "three-set inclusion-exclusion",
+      "set distributivity",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "Finset.card_union_add_card_inter",
+      "ext",
+      "tauto"
+    ]
+  },
+  {
+    "id": "ann-ie-union-bound",
+    "proofId": "inclusion-exclusion-oq-01-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 178
+    },
+    "type": "insight",
+    "title": "Union Bound (First Bonferroni Inequality)",
+    "content": "union_bound proves |⋃_{i∈s} Sᵢ| ≤ Σ_{i∈s} |Sᵢ| by induction on s. The proof is clean: at the inductive step, |S_a ∪ ⋃_{i∈s} Sᵢ| ≤ |S_a| + |⋃_{i∈s} Sᵢ| (by card_union_le, since |X∪Y| ≤ |X|+|Y|), then apply the inductive hypothesis to bound |⋃_{i∈s} Sᵢ| ≤ Σ_{i∈s}|Sᵢ|. This is also called Boole's inequality in probability: P(⋃ Aᵢ) ≤ Σ P(Aᵢ). In combinatorics it is the first (odd-order) Bonferroni inequality.",
+    "mathContext": "$$\\left|\\bigcup_{i \\in s} S_i\\right| \\leq \\sum_{i \\in s} |S_i|$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bonferroni inequalities",
+      "Boole's inequality",
+      "union bound",
+      "Finset.induction_on"
+    ],
+    "prerequisites": [
+      "Finset.card_union_le",
+      "Finset.induction_on",
+      "Nat.add_le_add_left"
+    ]
+  },
+  {
+    "id": "ann-ie-four-set",
+    "proofId": "inclusion-exclusion-oq-01-oq-01",
+    "range": {
+      "startLine": 218,
+      "endLine": 252
+    },
+    "type": "concept",
+    "title": "Four-Set Formula: Composition Strategy",
+    "content": "four_set_inclusion_exclusion proves the full 4-set IE formula by composing the three-set and two-set cases — not by a direct alternating sum. The strategy: (1) apply two_set_from_general to split off D from (A∪B∪C)∪D; (2) expand (A∪B∪C)∩D = (A∩D)∪(B∩D)∪(C∩D) via ext+tauto; (3) apply three_set_from_general to both A∪B∪C and (A∩D)∪(B∩D)∪(C∩D); (4) simplify pairwise intersections (A∩D)∩(B∩D)=A∩B∩D etc; (5) close with linarith. This avoids writing out 2⁴-1=15 subset terms by hand.",
+    "mathContext": "$$|A\\cup B\\cup C\\cup D| = |A|+|B|+|C|+|D| - |A\\cap B| - \\cdots + |A\\cap B\\cap C| + \\cdots - |A\\cap B\\cap C\\cap D|$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "four-set inclusion-exclusion",
+      "composition of lemmas",
+      "linarith"
+    ],
+    "prerequisites": [
+      "two_set_from_general",
+      "three_set_from_general",
+      "ext",
+      "tauto"
+    ]
+  }
+]

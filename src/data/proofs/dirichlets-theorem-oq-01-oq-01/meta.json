@@ -1,0 +1,124 @@
+{
+  "id": "dirichlets-theorem-oq-01-oq-01",
+  "title": "Do Siegel Zeros Exist? Consequences in Both Worlds",
+  "slug": "dirichlets-theorem-oq-01-oq-01",
+  "description": "The central open question in analytic number theory: do 'Siegel zeros' — real zeros of Dirichlet L-functions in the region (1 - c/log(q), 1) — actually exist? This formalization explores both worlds: World A (Siegel zeros exist) and World B (the SiegelZeroConjecture holds), proving consequences of each including the Linnik bound connection, Landau-Page uniqueness, Deuring-Heilbronn repulsion, and the GRH → SZC implication chain.",
+  "meta": {
+    "field": "Analytic Number Theory",
+    "difficulty": "research",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "axiomCount": 7,
+    "openProblems": [
+      "Whether the SiegelZeroConjecture holds",
+      "Whether Linnik's exponent L = 2 is achievable unconditionally",
+      "Whether Siegel's theorem can be made effective without exceptions"
+    ],
+    "assumptions": [
+      "linnik_bound: Linnik's theorem (L exists, not in Mathlib)",
+      "effective_linnik_no_siegel: No Siegel zeros implies L = 2 (not in Mathlib)",
+      "siegel_theorem: Siegel's ineffective lower bound (from DirichletsTheoremOQ01)",
+      "grh_implies_no_siegel_zeros: GRH eliminates Siegel zeros (from DirichletsTheoremOQ01)",
+      "landau_page_theorem: Landau-Page uniqueness of exceptional conductor (from DirichletsTheoremOQ01)",
+      "deuring_heilbronn_repulsion: Deuring-Heilbronn repulsion (from DirichletsTheoremOQ01)",
+      "tatuzawa_theorem: Tatuzawa single-exception theorem (from DirichletsTheoremOQ01)"
+    ],
+    "tags": ["dirichlet", "l-functions", "siegel-zeros", "linnik", "analytic-number-theory", "open-question"],
+    "sorries": 0
+  },
+  "leanFile": {
+    "path": "Proofs/DirichletsTheoremOQ01OQ01.lean",
+    "namespace": "DirichletsTheoremOQ01OQ01",
+    "imports": [
+      "Proofs.DirichletsTheoremOQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Nat", "Real", "Filter", "DirichletCharacter", "Topology", "DirichletsTheoremOQ01"],
+    "lineCount": 335,
+    "axiomCount": 2,
+    "theoremCount": 20,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "overview": {
+    "summary": "This file directly addresses the question 'Do Siegel zeros exist?' by formalizing the consequences of each answer. The two worlds explored are: World A (Siegel zeros exist, ¬SiegelZeroConjecture) and World B (no Siegel zeros, SiegelZeroConjecture). Key results include: the MVT-Siegel combination constraining how close a Siegel zero can be to 1; Linnik's theorem and its L=2 improvement under no Siegel zeros; the Landau-Page uniqueness of exceptional conductors per region; and the Deuring-Heilbronn repulsion phenomenon showing Siegel zeros are 'self-limiting'.",
+    "keyInsight": "Even in World A, Siegel's ineffective lower bound prevents L(1,χ) from being exactly zero (nonvanishing holds unconditionally), but it can be exponentially small — smaller than any power of 1/log(q). The effective bound C/log(q)² from GRH is what the Siegel zero problem is about.",
+    "keyInsights": [
+      "Even in World A (Siegel zeros exist), L(1,χ) > 0 is unconditional — nonvanishing is proved regardless. The problem is purely about the SIZE of L(1,χ), not its vanishing.",
+      "The two worlds are logically independent: nothing in current mathematics rules out either World A or World B. GRH would rule out Siegel zeros, but GRH is itself open.",
+      "Deuring-Heilbronn repulsion makes Siegel zeros 'self-limiting': if one exists at β₁, it pushes ALL other L-function zeros away from 1, creating a wider zero-free region. A Siegel zero would be an isolated phenomenon.",
+      "The Linnik exponent L measures the difficulty of finding primes in APs. Current best is L ≤ 5 (Xylouris 2011). No Siegel zeros (World B) gives L = 2, the same as GRH. This tight connection makes Siegel zeros central to sieve theory.",
+      "The three-tier hierarchy GRH ⊃ SZC ⊃ L(1,χ) > 0 shows that Siegel zeros sit at exactly the gap between GRH and unconditional results. Proving SZC without GRH would be a major advance."
+    ],
+    "historicalContext": "The Siegel zero problem traces to Carl Ludwig Siegel's 1935 theorem giving an ineffective lower bound on L(1,χ). The term 'Siegel zero' was coined for the potential zeros in (1-c/log(q), 1) whose existence Siegel's method cannot rule out. Heath-Brown (1992) connected Linnik's constant to Siegel zeros. Xylouris (2011) proved L ≤ 5 for Linnik's theorem. Deuring (1933) and Heilbronn (1934) showed that Siegel zeros, if they exist, would repel other zeros. The question remains open as of 2026."
+  },
+  "sections": [
+    {
+      "id": "world-a-consequences",
+      "title": "Consequences of World A: Siegel Zeros Exist",
+      "startLine": 47,
+      "endLine": 120,
+      "summary": "If a Siegel zero β exists, it satisfies 0 < 1 - β. The MVT bound combined with Siegel's ineffective theorem constrains (1-β)·M from below. Tatuzawa's theorem shows effective bounds fail for at most one conductor. Nonvanishing L(1,χ) > 0 holds unconditionally even in World A.",
+      "mathContext": "Siegel zero at $\\beta$: $L(\\beta,\\chi) = 0$, $\\beta \\in (1-c/\\log q, 1)$, so $1-\\beta > 0$. MVT: $L(1,\\chi) \\leq (1-\\beta)\\cdot M$. Siegel: $C(\\varepsilon)/N^\\varepsilon < L(1,\\chi)$. Combining: $(1-\\beta)\\cdot M > C(\\varepsilon)/N^\\varepsilon$."
+    },
+    {
+      "id": "linnik-connection",
+      "title": "Linnik's Theorem and the Siegel Zero Connection",
+      "startLine": 120,
+      "endLine": 175,
+      "summary": "Linnik's theorem (axiom): smallest prime p ≡ a (mod q) satisfies p ≤ C·q^L. Under World B (no Siegel zeros): L = 2, same bound as under GRH. Proves: no Siegel zeros → Linnik L=2, and Linnik L=2 → Dirichlet's theorem existence.",
+      "mathContext": "Linnik (1944): $p_{\\min}(a,q) \\leq C \\cdot q^L$. World B gives $L=2$: $p_{\\min}(a,q) \\leq C \\cdot q^2$. Current best (Xylouris 2011): $L \\leq 5$. GRH would give $L = 2 + \\varepsilon$."
+    },
+    {
+      "id": "landau-page",
+      "title": "Landau-Page and Exceptional Conductor Uniqueness",
+      "startLine": 175,
+      "endLine": 250,
+      "summary": "Landau-Page uniqueness: at most one conductor N ≤ Q can have a Siegel zero in (1-c/log(Q), 1). Proves: unique exceptional conductor per region, other conductors are zero-free, and Deuring-Heilbronn repulsion — a Siegel zero at β₁ forces all other zeros ρ to satisfy Re(ρ) < 1 - c₀·(1-β₁)/log(Q).",
+      "mathContext": "Landau-Page: $|\\{N \\leq Q : \\exists\\beta, L(\\beta,\\chi_N)=0\\text{ near }1\\}| \\leq 1$. Deuring-Heilbronn: if $L(\\beta_1,\\chi_1)=0$ then $\\operatorname{Re}(\\rho) \\leq 1 - c_0(1-\\beta_1)/\\log Q$ for all other zeros $\\rho$."
+    },
+    {
+      "id": "hierarchy",
+      "title": "Structural Equivalences and the GRH → SZC → L(1,χ) > 0 Hierarchy",
+      "startLine": 250,
+      "endLine": 290,
+      "summary": "GRH implies SiegelZeroConjecture in the standard range (c < log(N)/2). SZC implies L(1,χ) > 0. And L(1,χ) > 0 is unconditional. Three-tier hierarchy established: GRH ⊃ SZC ⊃ nonvanishing.",
+      "mathContext": "GRH $\\Rightarrow$ SZC (since zeros in $(1-c/\\log N,1) \\subseteq (1/2,1)$ are forbidden by GRH). SZC $\\Rightarrow$ $L(1,\\chi) > 0$ (World B). $L(1,\\chi) > 0$ unconditional (both worlds). Strict containments: GRH is unknown; SZC is unknown; $L(1,\\chi)>0$ is proved."
+    },
+    {
+      "id": "world-b-improvements",
+      "title": "World B Improvements and the Formal Open Question",
+      "startLine": 290,
+      "endLine": 335,
+      "summary": "Under SZC (World B): primeCountAP is monotone, Siegel's bound is effective, and Siegel zeros cannot be in (1/2,1). The SiegelZeroExistenceQuestion (SZC ∨ ¬SZC) is classically decidable. State of knowledge theorem catalogs proved vs open. Under GRH: effective bound C/log²(q).",
+      "mathContext": "$\\text{SiegelZeroExistenceQuestion} := \\text{SZC} \\vee \\neg\\text{SZC}$ (classical tautology). Under GRH: $L(1,\\chi) \\gg 1/\\log^2 q$. World B: $L(1,\\chi) \\gg 1/\\log q$. Unconditional Siegel: $L(1,\\chi) \\gg_{\\varepsilon} q^{-\\varepsilon}$ (ineffective)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file formalizes the landscape of knowledge about Siegel zero existence: the complete formalization shows that while L(1,χ) ≠ 0 is proved, whether Siegel zeros exist remains open. The two axioms (Linnik bound, effective Linnik under SZC) represent infrastructure not yet in Mathlib. Key proved results: Landau-Page uniqueness of exceptional conductors, Deuring-Heilbronn repulsion from a Siegel zero, GRH eliminates zeros in standard range, Tatuzawa has at most one exception, Linnik implies Dirichlet existence.",
+    "openQuestions": [
+      "Does the SiegelZeroConjecture hold? (The central question — almost certainly YES under GRH, but unknown unconditionally)",
+      "Is there an effective version of Siegel's theorem with no exceptions? (Would imply Linnik L=2 and extended Siegel-Walfisz)",
+      "What is the precise relationship between Linnik's constant L and the depth of Siegel zeros?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "dirichlets-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Parent file establishing Siegel zeros framework, IsSiegelZero definition, and the five key axioms (Siegel's theorem, GRH conditional, Landau-Page, Deuring-Heilbronn, Tatuzawa)"
+    },
+    {
+      "id": "dirichlets-theorem-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "GRH for Dirichlet L-functions — the hypothesis that would imply SiegelZeroConjecture via grh_implies_no_siegel_zeros_standard"
+    }
+  ],
+  "originalContributions": [
+    "Linnik bound connection: axiomatized L ≤ 2 implication from no Siegel zeros (effective_linnik_no_siegel)",
+    "Landau-Page uniqueness restated as other_conductors_zero_free_near_one: explicit uniqueness of exceptional conductor",
+    "Three-tier hierarchy theorem: GRH → SZC (standard range) → Nonvanishing in one clean proof",
+    "siegel_zero_distance_lower_bound: MVT + Siegel combination showing (1-β)·M > C(ε)/N^ε",
+    "state_of_knowledge: summary theorem cataloging proved vs open results"
+  ]
+}

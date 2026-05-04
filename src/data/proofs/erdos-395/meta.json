@@ -54,8 +54,9 @@
       "extremal_example: optimal 1/n construction"
     ],
     "axiomCount": 2,
-    "lineCount": 186,
-    "assumptions": "2 axioms: erdos_original_is_false, hjns_2024. 0 sorries."
+    "lineCount": 184,
+    "assumptions": "2 axioms: erdos_original_is_false, hjns_2024. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #395 concerns the 'reverse Littlewood-Offord problem.' The classical Littlewood-Offord theorem (1943) provides an upper bound on the probability that a random signed sum of vectors lands near any particular target. Erdős turned this around and asked: must a random signed sum of unit complex vectors land near zero with probability at least c/n? He originally posed the question with threshold 1, but Carnielli and Carolino (2011) found a counterexample — taking z₁ = 1 and zₖ = i for k ≥ 2 forces every signed sum to have magnitude at least √2, so no sign choice gives |sum| ≤ 1.\n\nThe revised question, with threshold √2 instead of 1, became the true open problem. He, Juškevičius, Narayanan, and Spiro resolved it affirmatively in 2024, proving that for any unit complex vectors z₁, ..., zₙ, the probability that |ε₁z₁ + ... + εₙzₙ| ≤ √2 (with random signs εᵢ ∈ {-1,1}) is at least c/n for some absolute constant c > 0. Their proof uses Fourier analysis on the Boolean hypercube and concentration inequalities.\n\nThe 1/n bound is optimal: taking half the vectors equal to 1 and half equal to i achieves probability exactly Θ(1/n). The threshold √2 is sharp in the sense that any smaller threshold can yield probability zero. This result completes the picture of Littlewood-Offord type problems by providing the 'reverse' direction — a lower bound on how many sign choices must produce a small sum.",

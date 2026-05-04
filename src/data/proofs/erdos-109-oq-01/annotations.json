@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Upper Density and Positive Upper Density",
-    "content": "Defines the upper density of A as the limsup of |A ∩ [1,N]| / N as N → ∞. A set has positive upper density if this quantity exceeds 0. These definitions are restated from the parent for import independence.",
+    "content": "Defines the upper density of A as the limsup of |A \u2229 [1,N]| / N as N \u2192 \u221e. A set has positive upper density if this quantity exceeds 0. These definitions are restated from the parent for import independence.",
     "mathContext": "$\\bar{d}(A) = \\limsup_{N \\to \\infty} \\frac{|A \\cap [1,N]|}{N}$. A set has positive upper density if $\\bar{d}(A) > 0$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -30,7 +30,7 @@
     },
     "type": "definition",
     "title": "Sumset Operation B +_s C",
-    "content": "The sumset B + C = {b + c : b ∈ B, c ∈ C}, defined as a set comprehension with custom notation +_s. This is the central object of the Erdős sumset conjecture.",
+    "content": "The sumset B + C = {b + c : b \u2208 B, c \u2208 C}, defined as a set comprehension with custom notation +_s. This is the central object of the Erd\u0151s sumset conjecture.",
     "mathContext": "$B + C = \\{b + c : b \\in B, c \\in C\\}$. Also called the Minkowski sum in geometry.",
     "significance": "key",
     "relatedConcepts": [
@@ -94,7 +94,7 @@
     },
     "type": "definition",
     "title": "Piecewise Syndetic Sets",
-    "content": "A set is piecewise syndetic if it is the intersection of a syndetic set and a thick set — equivalently, it has bounded gaps along arbitrarily long intervals. The theorem that positive density implies piecewise syndetic is stated but left as sorry (requires pigeonhole).",
+    "content": "A set is piecewise syndetic if it is the intersection of a syndetic set and a thick set \u2014 equivalently, it has bounded gaps along arbitrarily long intervals. The theorem that positive density implies piecewise syndetic is stated but left as sorry (requires pigeonhole).",
     "mathContext": "$S$ is piecewise syndetic if $\\exists T$ syndetic such that $S \\cap T$ is thick. This is equivalent to: $\\exists g, \\forall L, \\exists n, |S \\cap [n, n+L]|$ has gaps $\\leq g$.",
     "significance": "key",
     "relatedConcepts": [
@@ -114,9 +114,9 @@
       "startLine": 70,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Syndetic Sets Are Infinite",
-    "content": "Proves that syndetic sets are infinite by showing they are unbounded: for every n, the syndetic condition provides an element m ≥ n in S. Uses Set.infinite_of_not_bddAbove.",
+    "content": "Proves that syndetic sets are infinite by showing they are unbounded: for every n, the syndetic condition provides an element m \u2265 n in S. Uses Set.infinite_of_not_bddAbove.",
     "mathContext": "If $S$ is syndetic with gap bound $g$, then $\\forall n, \\exists m \\in S$ with $m \\geq n$, so $S$ is unbounded and hence infinite.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -137,7 +137,7 @@
     },
     "type": "definition",
     "title": "Gap-Controlled Sumset Conjecture",
-    "content": "States the strengthened sumset conjecture: for any set A of positive upper density and any gap function f, there exist infinite B, C with B + C ⊆ A and consecutive elements of B separated by at least f(b). This was proved by Moreira-Richter-Robertson (2019).",
+    "content": "States the strengthened sumset conjecture: for any set A of positive upper density and any gap function f, there exist infinite B, C with B + C \u2286 A and consecutive elements of B separated by at least f(b). This was proved by Moreira-Richter-Robertson (2019).",
     "mathContext": "$\\forall A$ with $\\bar{d}(A) > 0$, $\\forall f : \\mathbb{N} \\to \\mathbb{N}^+$, $\\exists B, C$ infinite with $B + C \\subseteq A$ and $b_2 - b_1 \\geq f(b_1)$ for consecutive $b_1 < b_2 \\in B$.",
     "significance": "key",
     "relatedConcepts": [
@@ -159,7 +159,7 @@
     },
     "type": "definition",
     "title": "Syndetic Sumset Question (Open)",
-    "content": "States the open question: can B in the sumset decomposition B + C ⊆ A always be chosen to be syndetic? The formalization notes this is likely false — if A has large gaps, then B + C ⊆ A forces B and C to respect those gaps.",
+    "content": "States the open question: can B in the sumset decomposition B + C \u2286 A always be chosen to be syndetic? The formalization notes this is likely false \u2014 if A has large gaps, then B + C \u2286 A forces B and C to respect those gaps.",
     "mathContext": "$\\forall A$ with $\\bar{d}(A) > 0$, $\\exists B$ syndetic, $C$ infinite, $B + C \\subseteq A$? Likely FALSE in general.",
     "significance": "key",
     "relatedConcepts": [
@@ -188,7 +188,7 @@
       "Hindman's theorem",
       "Ramsey theory",
       "ultrafilters",
-      "Stone-Čech compactification"
+      "Stone-\u010cech compactification"
     ],
     "prerequisites": [
       "Finset.sum",
@@ -205,13 +205,13 @@
     },
     "type": "insight",
     "title": "Correction: Positive Density Does Not Imply IP",
-    "content": "Documents a corrected mathematical error: a set of positive upper density need NOT contain an IP set. The counterexample is A = {n : n mod 3 ≠ 0}, which has density 2/3 but no IP subset (any IP set eventually contains elements summing to a multiple of 3). The correct relationship is IP*: positive density implies A intersects every IP set.",
+    "content": "Documents a corrected mathematical error: a set of positive upper density need NOT contain an IP set. The counterexample is A = {n : n mod 3 \u2260 0}, which has density 2/3 but no IP subset (any IP set eventually contains elements summing to a multiple of 3). The correct relationship is IP*: positive density implies A intersects every IP set.",
     "mathContext": "$A = \\{n : n \\not\\equiv 0 \\pmod{3}\\}$ has $\\bar{d}(A) = 2/3$ but no IP subset. For any generators $x_1, x_2, \\ldots$, if $x_1 \\equiv x_2 \\equiv 1 \\pmod{3}$, then $x_1 + x_2 \\equiv 2$ and $x_1 + x_2 + x_3 \\equiv 0 \\pmod{3}$.",
     "significance": "key",
     "relatedConcepts": [
       "IP* sets",
       "Furstenberg-Katznelson",
-      "IP Szemerédi theorem"
+      "IP Szemer\u00e9di theorem"
     ],
     "prerequisites": [
       "IsIPSet",
@@ -225,9 +225,9 @@
       "startLine": 155,
       "endLine": 259
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "IP Sets Contain Infinite Sumsets (Odd/Even Splitting)",
-    "content": "The main constructive result: every IP set S contains infinite sets B, C with B + C ⊆ S. The proof splits the generating sequence into odd-indexed (B) and even-indexed (C) subsequences. Both are infinite (by strict monotonicity), and their sums land in S because odd and even index sets are disjoint, so the union is a valid finite subset.",
+    "content": "The main constructive result: every IP set S contains infinite sets B, C with B + C \u2286 S. The proof splits the generating sequence into odd-indexed (B) and even-indexed (C) subsequences. Both are infinite (by strict monotonicity), and their sums land in S because odd and even index sets are disjoint, so the union is a valid finite subset.",
     "mathContext": "Given $\\mathrm{FS}(x_0, x_1, \\ldots) \\subseteq S$, let $B = \\mathrm{FS}(x_1, x_3, x_5, \\ldots)$ and $C = \\mathrm{FS}(x_0, x_2, x_4, \\ldots)$. For $b \\in B, c \\in C$: $b + c = \\sum_{i \\in F_{\\text{odd}}} x_i + \\sum_{j \\in G_{\\text{even}}} x_j = \\sum_{k \\in F_{\\text{odd}} \\cup G_{\\text{even}}} x_k \\in S$ since $F_{\\text{odd}} \\cap G_{\\text{even}} = \\emptyset$.",
     "significance": "key",
     "relatedConcepts": [
@@ -248,9 +248,9 @@
       "startLine": 271,
       "endLine": 285
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "IP Sets Are Infinite",
-    "content": "Proves IP sets are infinite by showing the generating sequence provides unbounded elements: x(k) ≥ k + 1 by induction on strict monotonicity, so each singleton sum x(k) gives an element of S exceeding k.",
+    "content": "Proves IP sets are infinite by showing the generating sequence provides unbounded elements: x(k) \u2265 k + 1 by induction on strict monotonicity, so each singleton sum x(k) gives an element of S exceeding k.",
     "mathContext": "If $(x_i)$ is strictly monotone with $x_0 \\geq 1$, then $x_k \\geq k + 1$ by induction, so $\\{x_k : k \\in \\mathbb{N}\\} \\subseteq S$ is unbounded.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -269,9 +269,9 @@
       "startLine": 297,
       "endLine": 312
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Hindman's Theorem for 2-Colorings",
-    "content": "Applies Hindman's theorem to a 2-coloring of N: either A or its complement A^c contains an IP set. The proof constructs the coloring (0 if n ∈ A, 1 otherwise), applies the axiom, and case-splits on which color class wins.",
+    "content": "Applies Hindman's theorem to a 2-coloring of N: either A or its complement A^c contains an IP set. The proof constructs the coloring (0 if n \u2208 A, 1 otherwise), applies the axiom, and case-splits on which color class wins.",
     "mathContext": "For any $A \\subseteq \\mathbb{N}$, either $A$ or $A^c$ contains an IP set. This follows from Hindman's theorem with $k = 2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -291,9 +291,9 @@
       "startLine": 314,
       "endLine": 322
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Sumset Subset Characterization",
-    "content": "A simple but useful equivalence: B + C ⊆ A if and only if for every b ∈ B and c ∈ C, b + c ∈ A. The proof is a direct unfolding of the sumset definition.",
+    "content": "A simple but useful equivalence: B + C \u2286 A if and only if for every b \u2208 B and c \u2208 C, b + c \u2208 A. The proof is a direct unfolding of the sumset definition.",
     "mathContext": "$(B + C) \\subseteq A \\Leftrightarrow \\forall b \\in B, \\forall c \\in C, b + c \\in A$.",
     "significance": "supporting",
     "relatedConcepts": [

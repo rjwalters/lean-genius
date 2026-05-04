@@ -1,0 +1,173 @@
+[
+  {
+    "id": "ann-core-definitions",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 27,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Wilson Prime and Wilson Quotient Definitions",
+    "content": "Two definitions anchor the entire file. `IsWilsonPrime p` asserts that p is prime AND that p\u00b2 divides (p-1)! + 1 \u2014 the stronger second-power divisibility condition that goes beyond Wilson's theorem. The `wilsonQuotient p = ((p-1)! + 1) / p` is the integer W_p; it is well-defined for every prime by Wilson's theorem, and p is a Wilson prime precisely when p | W_p.",
+    "mathContext": "A prime $p$ is a Wilson prime if $p^2 \\mid (p-1)! + 1$. Wilson's theorem guarantees $p \\mid (p-1)!+1$ for every prime, so the Wilson quotient $W_p = \\frac{(p-1)!+1}{p} \\in \\mathbb{Z}$. The Wilson prime condition is equivalent to $p \\mid W_p$.",
+    "significance": "critical",
+    "prerequisites": [
+      "Wilson's theorem",
+      "modular arithmetic",
+      "factorial arithmetic"
+    ],
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "Fermat's little theorem",
+      "p-adic valuation",
+      "Fermat quotient"
+    ]
+  },
+  {
+    "id": "ann-verified-5-13",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 50
+    },
+    "type": "insight",
+    "title": "Lean Verification: 5 and 13 Are Wilson Primes",
+    "content": "Both `five_is_wilson_prime` and `thirteen_is_wilson_prime` are proved by splitting the `IsWilsonPrime` conjunction and using `native_decide` for the divisibility check. For 5: 4! + 1 = 25 = 5\u00b2, so 5\u00b2 | 4! + 1 trivially. For 13: 12! + 1 = 479,001,601 and 13\u00b2 = 169 divides it, so the Wilson quotient W_13 = 479,001,601/13 = 36,846,277 is itself divisible by 13. The `native_decide` tactic compiles the check to native GMP arithmetic, making both computations instant despite factorial growth.",
+    "mathContext": "For $p = 5$: $4! + 1 = 25 = 5^2$, so $5^2 \\mid 4! + 1$. For $p = 13$: $12! + 1 = 479{,}001{,}601$ and $W_{13} = 479{,}001{,}601 / 13 = 36{,}846{,}277$. Checking $13 \\mid 36{,}846{,}277$: $36{,}846{,}277 / 13 = 2{,}834{,}329$. Since 13 divides $W_{13}$, $13^2 \\mid 12! + 1$.",
+    "significance": "key",
+    "prerequisites": [
+      "native_decide tactic",
+      "factorial arithmetic",
+      "Lean kernel evaluation"
+    ],
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "native_decide",
+      "decidability in Lean 4",
+      "GMP arithmetic"
+    ]
+  },
+  {
+    "id": "ann-axiom-563",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "The Third Wilson Prime: Axiomatizing an External Computation",
+    "content": "563 cannot be verified by `native_decide` because 562! requires arithmetic with over 1300 decimal digits, exhausting the tactic's time budget. Instead it is declared as an `axiom`, encoding the external computational fact first established by Goldberg (1953) using an early electronic computer, then re-verified by Crandall, Dilcher, and Pomerance (1997) during their search to 5\u00d710\u2078. The number 563\u00b2 = 316,969 divides 562! + 1 is mathematically certain but not formally derivable in Lean's kernel without an efficient modular factorial algorithm. This is a principled use of axiomatization for computationally verified but kernel-infeasible facts.",
+    "mathContext": "$563^2 = 316{,}969 \\mid 562! + 1$. The number $562!$ has $\\lfloor \\log_{10}(562!) \\rfloor + 1 = 1{,}324$ decimal digits. Efficient verification requires computing $\\prod_{k=1}^{562} (k \\bmod 316{,}969) \\bmod 316{,}969$, which is feasible by modular arithmetic but exceeds Lean's `native_decide` time budget.",
+    "significance": "critical",
+    "prerequisites": [
+      "Lean axioms",
+      "native_decide limits",
+      "modular factorial arithmetic",
+      "trusted external computations"
+    ],
+    "relatedConcepts": [
+      "Goldberg 1953",
+      "Crandall-Dilcher-Pomerance 1997",
+      "axiomatized computations",
+      "Lean kernel limits"
+    ]
+  },
+  {
+    "id": "ann-open-conjecture",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "The Infinite Conjecture: Pseudorandomness Predicts log log N Wilson Primes",
+    "content": "The axiom `infinitely_many_wilson_primes` encodes the open conjecture that Wilson primes form an infinite, cofinal set in \u2115. The heuristic: if W_p mod p behaves like a uniform random variable on {0, \u2026, p-1}, each prime p independently contributes probability 1/p to being a Wilson prime. Summing over primes, \u03a3 1/p diverges (Euler, 1737), so heuristically infinitely many Wilson primes should exist. For N = 2\u00d710\u00b9\u00b3, \u03a3_{p\u2264N} 1/p \u2248 ln ln(2\u00d710\u00b9\u00b3) \u2248 3.1 \u2014 exactly matching the three known examples. Despite exhaustive computer search to 2\u00d710\u00b9\u00b3, no fourth Wilson prime has been found.",
+    "mathContext": "Heuristic: $\\mathbb{P}[p \\mid W_p] \\approx \\frac{1}{p}$, giving expected count $\\leq N$ of $\\sum_{p \\leq N} \\frac{1}{p} \\approx \\ln \\ln N$ (by Mertens' theorem). For $N = 2 \\times 10^{13}$: $\\ln \\ln(2 \\times 10^{13}) \\approx 3.1$. Lean statement: $\\forall N : \\mathbb{N},\\ \\exists p > N,\\ \\text{Prime}(p) \\wedge \\text{IsWilsonPrime}(p)$.",
+    "significance": "critical",
+    "prerequisites": [
+      "Mertens' theorem",
+      "prime reciprocal sums",
+      "pseudorandomness heuristics",
+      "divergence of \u03a3 1/p"
+    ],
+    "relatedConcepts": [
+      "Wieferich prime conjecture",
+      "Mersenne prime conjecture",
+      "Mertens' theorem",
+      "Euler's divergence proof for prime reciprocals"
+    ]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 100
+    },
+    "type": "insight",
+    "title": "Consequences: Cofinality and Primality from the Axioms",
+    "content": "Four theorems follow from the two axioms without additional mathematical input. `three_known_wilson_primes` packages all three verified instances into one conjunction. `five_sixty_three_is_prime` extracts primality of 563 as a `.1` projection of `fiveHundredSixtyThree_is_wilson_prime` \u2014 a zero-effort corollary. `wilson_primes_unbounded` unpacks the conjecture's `\u2200 N, \u2203 p > N, ...` to show Wilson primes are cofinal. `exists_large_wilson_prime` gives the same content with slightly different bundling, dropping the primality witness into the pair.",
+    "mathContext": "From the axiom $\\forall N, \\exists p > N, \\text{IsWilsonPrime}(p)$: for any bound $N$, a larger Wilson prime exists, so the set $\\{p \\mid \\text{IsWilsonPrime}(p)\\}$ is cofinal in $\\mathbb{N}$ and hence infinite. Primality of 563 follows as the first projection: $\\text{IsWilsonPrime}(563) \\Rightarrow \\text{Prime}(563)$.",
+    "significance": "key",
+    "prerequisites": [
+      "universal/existential in Lean 4",
+      "obtain tactic",
+      "conjunction projection"
+    ],
+    "relatedConcepts": [
+      "cofinal sets",
+      "Lean 4 obtain tactic",
+      "existential witnesses",
+      "conjunction elimination"
+    ]
+  },
+  {
+    "id": "ann-wieferich-def",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Wieferich Primes: A Structural Parallel to Wilson Primes",
+    "content": "A Wieferich prime p satisfies p\u00b2 | 2^(p-1) - 1, replacing the factorial (p-1)! with the Fermat expression 2^(p-1) - 1. Fermat's little theorem guarantees p | 2^(p-1) - 1 for every odd prime p, so Wieferich primes are those with the second-power upgrade. The structure exactly mirrors `IsWilsonPrime`: Wilson's theorem gives p | (p-1)! + 1; Fermat's little theorem gives p | 2^(p-1) - 1; both conditions ask whether p\u00b2 divides. Wieferich (1909) connected his primes to Fermat's Last Theorem: if x^p + y^p = z^p with p \u2224 xyz then p must be a Wieferich prime.",
+    "mathContext": "A prime $p$ is Wieferich if $p^2 \\mid 2^{p-1} - 1$. The Fermat quotient $q_p(2) = \\frac{2^{p-1}-1}{p} \\in \\mathbb{Z}$ (by Fermat), and $p$ is Wieferich iff $p \\mid q_p(2)$. Wieferich's theorem (1909): the first case of FLT fails for $p$ only if $p$ is a Wieferich prime.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Fermat's little theorem",
+      "modular exponentiation",
+      "p-adic valuation"
+    ],
+    "relatedConcepts": [
+      "Wilson primes",
+      "Fermat quotient",
+      "Fermat's Last Theorem first case",
+      "abc conjecture"
+    ]
+  },
+  {
+    "id": "ann-wieferich-verified",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "Why 1093 and 3511 Are Feasible but 563 Was Not",
+    "content": "Both Wieferich verifications use `refine \u27e8by norm_num, ?_\u27e9` to separate the primality goal (handled by `norm_num`) from the modular power goal (handled by `native_decide`). Computing 2^1092 mod 1093\u00b2 and 2^3510 mod 3511\u00b2 uses repeated squaring \u2014 O(log p) multiplications, each mod p\u00b2. In contrast, computing (p-1)! mod p\u00b2 for p = 563 requires O(p) multiplications: roughly 563/log\u2082(1093) \u2248 56\u00d7 more work. This is why the Wieferich verifications succeed where the 563 Wilson prime fails: exponential modular arithmetic scales far better than factorial modular arithmetic.",
+    "mathContext": "Modular exponentiation via repeated squaring: $O(\\log p)$ multiplications, each of size $O(\\log p^2)$. Total work: $O(\\log^3 p)$. Modular factorial: $O(p)$ multiplications. Ratio: $O(p/\\log^3 p)$. For $p = 563$ vs $p = 1093$: $563 / \\log^3(1093) \\approx 563/1000 < 1$, but the absolute $O(p)$ cost of 563 factorial multiplications exceeds `native_decide`'s time limit.",
+    "significance": "supporting",
+    "prerequisites": [
+      "modular exponentiation",
+      "repeated squaring algorithm",
+      "native_decide",
+      "norm_num tactic"
+    ],
+    "relatedConcepts": [
+      "Wilson prime 563 axiom contrast",
+      "fast modular arithmetic",
+      "Meissner 1913",
+      "Beeger 1922"
+    ]
+  }
+]

@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Module Header: The Open Question and Key Reduction Strategy",
-    "content": "The file header (lines 1-40) states the open question from PtolemysComplexProof.lean: is the sufficient condition (same-ray → Ptolemy equality) also necessary? The answer is yes, and the proof reduces everything to a single Mathlib theorem. The three imports supply: `Complex.Basic` (‖·‖ on ℂ, `norm_mul`), `InnerProductSpace.Convex` (the instance chain to strict convexity), and `Tactic`. Line 42 disables the `unusedVariables` linter (suppressing warnings about the z₁,z₂,z₃,z₄ parameter names). Lines 44-46 open Part 1 with a divider comment. The key insight stated in the docblock: Ptolemy equality ↔ `‖a+b‖ = ‖a‖ + ‖b‖` (triangle inequality equality) ↔ `SameRay ℝ a b` (by `sameRay_iff_norm_add`), where ℂ is strictly convex via the InnerProductSpace → UniformConvexSpace → StrictConvexSpace instance chain.",
-    "mathContext": "The algebraic identity from `PtolemysComplexProof.lean`: $(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4) = (z_1-z_3)(z_2-z_4)$. Setting $a = (z_1-z_2)(z_3-z_4)$ and $b = (z_2-z_3)(z_1-z_4)$, Ptolemy's equality $\\|a+b\\| = \\|a\\| + \\|b\\|$ is the equality case of the triangle inequality. In a strictly convex normed space, $\\|a+b\\| = \\|a\\| + \\|b\\|$ iff `SameRay ℝ a b` (i.e., $a$ and $b$ are non-negative real multiples of each other).",
+    "content": "The file header (lines 1-40) states the open question from PtolemysComplexProof.lean: is the sufficient condition (same-ray \u2192 Ptolemy equality) also necessary? The answer is yes, and the proof reduces everything to a single Mathlib theorem. The three imports supply: `Complex.Basic` (\u2016\u00b7\u2016 on \u2102, `norm_mul`), `InnerProductSpace.Convex` (the instance chain to strict convexity), and `Tactic`. Line 42 disables the `unusedVariables` linter (suppressing warnings about the z\u2081,z\u2082,z\u2083,z\u2084 parameter names). Lines 44-46 open Part 1 with a divider comment. The key insight stated in the docblock: Ptolemy equality \u2194 `\u2016a+b\u2016 = \u2016a\u2016 + \u2016b\u2016` (triangle inequality equality) \u2194 `SameRay \u211d a b` (by `sameRay_iff_norm_add`), where \u2102 is strictly convex via the InnerProductSpace \u2192 UniformConvexSpace \u2192 StrictConvexSpace instance chain.",
+    "mathContext": "The algebraic identity from `PtolemysComplexProof.lean`: $(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4) = (z_1-z_3)(z_2-z_4)$. Setting $a = (z_1-z_2)(z_3-z_4)$ and $b = (z_2-z_3)(z_1-z_4)$, Ptolemy's equality $\\|a+b\\| = \\|a\\| + \\|b\\|$ is the equality case of the triangle inequality. In a strictly convex normed space, $\\|a+b\\| = \\|a\\| + \\|b\\|$ iff `SameRay \u211d a b` (i.e., $a$ and $b$ are non-negative real multiples of each other).",
     "significance": "supporting",
     "relatedConcepts": [
       "triangle inequality equality case",
@@ -21,7 +21,7 @@
     "prerequisites": [
       "complex number norms",
       "Mathlib.Analysis.Complex.Basic",
-      "InnerProductSpace ℝ ℂ"
+      "InnerProductSpace \u211d \u2102"
     ]
   },
   {
@@ -31,14 +31,14 @@
       "startLine": 48,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ptolemy_equality_iff_sameRay: The Complete Biconditional",
-    "content": "The main theorem proves the complete biconditional: Ptolemy equality ↔ SameRay ℝ a b, where a = (z₁-z₂)(z₃-z₄) and b = (z₂-z₃)(z₁-z₄). Both directions are proved as `calc` chains using the algebraic identity. Forward direction (→, line 67-74): apply `sameRay_iff_norm_add` (backwards), then compute ‖a+b‖ = ‖(z₁-z₃)(z₂-z₄)‖ by `congr 1; ring` (algebraic identity), then = ‖z₁-z₃‖·‖z₂-z₄‖ by `norm_mul`, then = Ptolemy equality by hypothesis, then = ‖a‖+‖b‖ by `norm_mul`. Backward direction (←, lines 75-82): symmetric. The key Mathlib lemma `sameRay_iff_norm_add` is used in both directions.",
-    "mathContext": "Ptolemy equality: $\\|z_1-z_3\\| \\cdot \\|z_2-z_4\\| = \\|z_1-z_2\\|\\cdot\\|z_3-z_4\\| + \\|z_2-z_3\\|\\cdot\\|z_1-z_4\\|$. Setting $a = (z_1-z_2)(z_3-z_4)$, $b = (z_2-z_3)(z_1-z_4)$: this is $\\|a+b\\| = \\|a\\| + \\|b\\|$. By `sameRay_iff_norm_add` (valid in strictly convex ℂ): this holds iff `SameRay ℝ a b`. The proof uses `norm_mul : ‖a * b‖ = ‖a‖ * ‖b‖` to relate product norms to norms of factors.",
+    "content": "The main theorem proves the complete biconditional: Ptolemy equality \u2194 SameRay \u211d a b, where a = (z\u2081-z\u2082)(z\u2083-z\u2084) and b = (z\u2082-z\u2083)(z\u2081-z\u2084). Both directions are proved as `calc` chains using the algebraic identity. Forward direction (\u2192, line 67-74): apply `sameRay_iff_norm_add` (backwards), then compute \u2016a+b\u2016 = \u2016(z\u2081-z\u2083)(z\u2082-z\u2084)\u2016 by `congr 1; ring` (algebraic identity), then = \u2016z\u2081-z\u2083\u2016\u00b7\u2016z\u2082-z\u2084\u2016 by `norm_mul`, then = Ptolemy equality by hypothesis, then = \u2016a\u2016+\u2016b\u2016 by `norm_mul`. Backward direction (\u2190, lines 75-82): symmetric. The key Mathlib lemma `sameRay_iff_norm_add` is used in both directions.",
+    "mathContext": "Ptolemy equality: $\\|z_1-z_3\\| \\cdot \\|z_2-z_4\\| = \\|z_1-z_2\\|\\cdot\\|z_3-z_4\\| + \\|z_2-z_3\\|\\cdot\\|z_1-z_4\\|$. Setting $a = (z_1-z_2)(z_3-z_4)$, $b = (z_2-z_3)(z_1-z_4)$: this is $\\|a+b\\| = \\|a\\| + \\|b\\|$. By `sameRay_iff_norm_add` (valid in strictly convex \u2102): this holds iff `SameRay \u211d a b`. The proof uses `norm_mul : \u2016a * b\u2016 = \u2016a\u2016 * \u2016b\u2016` to relate product norms to norms of factors.",
     "significance": "key",
     "relatedConcepts": [
       "sameRay_iff_norm_add",
-      "SameRay in ℝ-modules",
+      "SameRay in \u211d-modules",
       "norm_mul",
       "triangle inequality equality",
       "calc chains in Lean"
@@ -56,10 +56,10 @@
       "startLine": 84,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ptolemy_equality_implies_proportional: Explicit Positive Real Factor",
-    "content": "When both opposite-side products are nonzero, Ptolemy equality implies they are positively proportional: ∃ t : ℝ, 0 < t ∧ t • a = b. The proof is a one-liner: apply `ptolemy_equality_iff_sameRay` to convert Ptolemy equality to `SameRay ℝ a b`, then apply `SameRay.exists_pos_left ha hb` to extract the positive real t. The hypotheses `ha : a ≠ 0` and `hb : b ≠ 0` are needed because `SameRay.exists_pos_left` requires nonzero vectors. The full statement is the converse of `ptolemy_equality_of_proportional` from PtolemysComplexProof.lean.",
-    "mathContext": "`SameRay ℝ a b` with $a, b \\neq 0$ implies $\\exists t > 0, t \\cdot a = b$ (i.e., $b/a \\in \\mathbb{R}_{>0}$). The Lean proof: `(ptolemy_equality_iff_sameRay z₁ z₂ z₃ z₄).mp h` gives `SameRay ℝ a b`, then `.exists_pos_left ha hb` extracts $t$. This completes the circle: `ptolemy_equality_of_proportional` said $t \\cdot a = b \\implies$ Ptolemy equality; this theorem says Ptolemy equality $\\implies \\exists t > 0, t \\cdot a = b$ (for nonzero $a, b$).",
+    "content": "When both opposite-side products are nonzero, Ptolemy equality implies they are positively proportional: \u2203 t : \u211d, 0 < t \u2227 t \u2022 a = b. The proof is a one-liner: apply `ptolemy_equality_iff_sameRay` to convert Ptolemy equality to `SameRay \u211d a b`, then apply `SameRay.exists_pos_left ha hb` to extract the positive real t. The hypotheses `ha : a \u2260 0` and `hb : b \u2260 0` are needed because `SameRay.exists_pos_left` requires nonzero vectors. The full statement is the converse of `ptolemy_equality_of_proportional` from PtolemysComplexProof.lean.",
+    "mathContext": "`SameRay \u211d a b` with $a, b \\neq 0$ implies $\\exists t > 0, t \\cdot a = b$ (i.e., $b/a \\in \\mathbb{R}_{>0}$). The Lean proof: `(ptolemy_equality_iff_sameRay z\u2081 z\u2082 z\u2083 z\u2084).mp h` gives `SameRay \u211d a b`, then `.exists_pos_left ha hb` extracts $t$. This completes the circle: `ptolemy_equality_of_proportional` said $t \\cdot a = b \\implies$ Ptolemy equality; this theorem says Ptolemy equality $\\implies \\exists t > 0, t \\cdot a = b$ (for nonzero $a, b$).",
     "significance": "key",
     "relatedConcepts": [
       "SameRay.exists_pos_left",
@@ -79,9 +79,9 @@
       "startLine": 100,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ptolemy_equality_implies_sameRay: The Converse Direction Standalone",
-    "content": "`ptolemy_equality_implies_sameRay` extracts just the forward (converse) direction of the biconditional as a standalone theorem. This is the new result — the direction that was an open question in PtolemysComplexProof.lean. The proof is a one-liner: `(ptolemy_equality_iff_sameRay z₁ z₂ z₃ z₄).mp h`. Providing this as a named standalone theorem (rather than always needing the full iff) makes it convenient for downstream proofs that need only the implication direction.",
+    "content": "`ptolemy_equality_implies_sameRay` extracts just the forward (converse) direction of the biconditional as a standalone theorem. This is the new result \u2014 the direction that was an open question in PtolemysComplexProof.lean. The proof is a one-liner: `(ptolemy_equality_iff_sameRay z\u2081 z\u2082 z\u2083 z\u2084).mp h`. Providing this as a named standalone theorem (rather than always needing the full iff) makes it convenient for downstream proofs that need only the implication direction.",
     "mathContext": "This is the direction: Ptolemy equality $\\Rightarrow$ SameRay $\\mathbb{R}$ $((z_1-z_2)(z_3-z_4))$ $((z_2-z_3)(z_1-z_4))$. In the original `PtolemysComplexProof.lean`, only the converse (SameRay $\\Rightarrow$ Ptolemy equality) was proved. This file's main theorem `ptolemy_equality_iff_sameRay` proves both directions; this standalone extracts the new one for easy citation.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -102,8 +102,8 @@
     },
     "type": "insight",
     "title": "Numerical Verification: Unit Square Shows SameRay in Action",
-    "content": "The example verifies the SameRay condition for the unit square {z₁=0, z₂=1, z₃=1+i, z₄=i}. The two opposite-side products both simplify to -1: a = (0-1)·((1+i)-i) = (-1)·1 = -1, and b = (1-(1+i))·(0-i) = (-i)·(-i) = i² = -1. Since SameRay ℝ (-1) (-1) (two equal nonzero real vectors are on the same ray), the condition is verified. The proof uses `ring` for both computations plus `Complex.I_sq : i² = -1`. The three `#check` commands (lines 133-135) verify that all three theorems type-check correctly without providing a proof.",
-    "mathContext": "The unit square $\\{0, 1, 1+i, i\\}$ is a cyclic quadrilateral (inscribed in the unit circle $|z| = 1$ centered at $(1+i)/2$... wait, actually centered at $(1+i)/2$ with radius $\\sqrt{2}/2$). Ptolemy's equality holds with: diagonals $|0-(1+i)| = \\sqrt{2}$ and $|1-i| = \\sqrt{2}$, sides $|0-1| = 1$, $|1-(1+i)| = 1$, $|(1+i)-i| = 1$, $|i-0| = 1$. Check: $\\sqrt{2} \\cdot \\sqrt{2} = 2 = 1 \\cdot 1 + 1 \\cdot 1$. ✓. Both opposite-side products: $a = (-1)(-1)(1) = -1$ and $b = (-i)(-i) = i^2 = -1$.",
+    "content": "The example verifies the SameRay condition for the unit square {z\u2081=0, z\u2082=1, z\u2083=1+i, z\u2084=i}. The two opposite-side products both simplify to -1: a = (0-1)\u00b7((1+i)-i) = (-1)\u00b71 = -1, and b = (1-(1+i))\u00b7(0-i) = (-i)\u00b7(-i) = i\u00b2 = -1. Since SameRay \u211d (-1) (-1) (two equal nonzero real vectors are on the same ray), the condition is verified. The proof uses `ring` for both computations plus `Complex.I_sq : i\u00b2 = -1`. The three `#check` commands (lines 133-135) verify that all three theorems type-check correctly without providing a proof.",
+    "mathContext": "The unit square $\\{0, 1, 1+i, i\\}$ is a cyclic quadrilateral (inscribed in the unit circle $|z| = 1$ centered at $(1+i)/2$... wait, actually centered at $(1+i)/2$ with radius $\\sqrt{2}/2$). Ptolemy's equality holds with: diagonals $|0-(1+i)| = \\sqrt{2}$ and $|1-i| = \\sqrt{2}$, sides $|0-1| = 1$, $|1-(1+i)| = 1$, $|(1+i)-i| = 1$, $|i-0| = 1$. Check: $\\sqrt{2} \\cdot \\sqrt{2} = 2 = 1 \\cdot 1 + 1 \\cdot 1$. \u2713. Both opposite-side products: $a = (-1)(-1)(1) = -1$ and $b = (-i)(-i) = i^2 = -1$.",
     "significance": "supporting",
     "relatedConcepts": [
       "unit square as cyclic quadrilateral",

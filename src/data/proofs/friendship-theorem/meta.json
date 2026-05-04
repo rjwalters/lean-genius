@@ -45,8 +45,9 @@
     "wiedijkNumber": 83,
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries. FriendshipTheorem.lean imports FriendshipTheoremOQ01.lean which provides both key results: (1) regularity of friendship graphs without universal vertex (via A³ commutativity + complement-connectivity), and (2) k-regular friendship implies k=2 (via characteristic polynomial analysis). Both former axioms eliminated.",
-    "lineCount": 373,
-    "mathlib_version": "4.26.0"
+    "lineCount": 2649,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "In 1966, Paul Erdős, Alfréd Rényi, and Vera T. Sós proved the Friendship Theorem in their paper 'On a problem of K. Zarankiewicz' (Acta Math. Hungar.). The theorem has a beautiful sociological interpretation: if in any group of people, every pair has exactly one mutual friend, then there must be a 'politician' who is friends with everyone.\n\nThe original 1966 proof uses spectral graph theory — analyzing eigenvalues of the adjacency matrix $A$ satisfying $A^2 = J - I + (k-1)A$ (for $k$-regular friendship graphs) to derive contradictions for non-windmill structures. This spectral approach, requiring linear algebra over the reals, was noted as surprisingly deep for such a clean combinatorial statement.\n\nSubsequent proofs avoided spectral methods: Herbert Wilf (1971) gave a purely combinatorial argument, and Craig Huneke (2002, American Mathematical Monthly) presented a slick algebraic proof accessible to undergraduates. The theorem is Wiedijk's #83 in the '100 theorems' list and appears in Proofs from THE BOOK.",
@@ -195,7 +196,7 @@
       "BigOperators"
     ],
     "namespace": "FriendshipTheorem",
-    "lineCount": 373,
+    "lineCount": 2649,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 6,

@@ -61,7 +61,7 @@
       "startLine": 4,
       "endLine": 49
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Complete Characterization",
     "content": "**A prime p is a sum of two squares iff p % 4 ≠ 3**\n\nThe proof has two directions:\n\n1. **If p = a² + b², then p % 4 ≠ 3**: Squares mod 4 are 0 or 1, so their sum is 0, 1, or 2 - never 3.\n\n2. **If p % 4 ≠ 3, then p = a² + b²**: This is the hard direction, proved by Zagier's involution argument in Mathlib.",
     "mathContext": "$(2k)^2 = 4k^2 \\equiv 0 \\pmod 4$\n$(2k+1)^2 = 4k^2 + 4k + 1 \\equiv 1 \\pmod 4$\n\nSo $a^2 + b^2 \\mod 4 \\in \\{0+0, 0+1, 1+0, 1+1\\} = \\{0, 1, 2\\}$",
@@ -78,7 +78,7 @@
       "startLine": 55,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Classic Statement: p ≡ 1 (mod 4)",
     "content": "This is the form Fermat originally stated: every prime congruent to 1 modulo 4 is a sum of two squares.\n\nExamples:\n- 5 = 1 + 4 = 1² + 2²\n- 13 = 4 + 9 = 2² + 3²\n- 17 = 1 + 16 = 1² + 4²\n- 29 = 4 + 25 = 2² + 5²",
     "mathContext": "The first few primes ≡ 1 (mod 4): 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97...",
@@ -95,7 +95,7 @@
       "startLine": 55,
       "endLine": 87
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "The Prime 2: A Special Case",
     "content": "2 = 1² + 1² is trivially a sum of two squares.\n\nNote that 2 ≡ 2 (mod 4), so it's neither in the \"1 mod 4\" nor the \"3 mod 4\" category. The theorem correctly handles this edge case.",
     "mathContext": "2 is the only even prime, making it unique in many ways.",
@@ -112,7 +112,7 @@
       "startLine": 89,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Negative Result: 3 mod 4 Primes",
     "content": "**No prime p ≡ 3 (mod 4) can be a sum of two squares.**\n\nThis is purely a modular arithmetic argument:\n1. Squares mod 4 are only 0 or 1\n2. Sum of two values from {0,1} gives {0,1,2}\n3. The value 3 is impossible\n\nExamples of primes that are NOT sums of two squares: 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83...",
     "mathContext": "Primes ≡ 3 (mod 4): 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103...\n\nNone of these can be written as a² + b².",
@@ -146,7 +146,7 @@
       "startLine": 105,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complete Prime Classification",
     "content": "Every prime falls into exactly one of three categories:\n\n1. **p = 2**: The unique even prime. 2 = 1² + 1².\n2. **p ≡ 1 (mod 4)**: Odd primes of the form 4k+1. Always sums of two squares.\n3. **p ≡ 3 (mod 4)**: Odd primes of the form 4k+3. Never sums of two squares.\n\nNote: p ≡ 0 (mod 4) is impossible for primes > 2 (would be divisible by 4).",
     "mathContext": "The three categories partition all primes:\n$\\{2\\} \\cup \\{5,13,17,29,...\\} \\cup \\{3,7,11,19,...\\}$",

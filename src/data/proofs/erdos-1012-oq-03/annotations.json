@@ -154,7 +154,7 @@
       "startLine": 221,
       "endLine": 285
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Full Path Construction and List-to-Equiv Conversion",
     "content": "`tournament_full_path_list` builds a complete Hamiltonian path by induction on path length: start with any single vertex (length 1), then at each step apply `tournament_path_insert` to extend by one vertex. The key sub-argument: a Nodup list shorter than `card V` must miss at least one vertex (proved by a Finset cardinality argument). `list_path_to_hamiltonian` converts the resulting list to `HasHamiltonianPath` by constructing a bijection `f : Fin n → V` via `f i = l[i]` — injective by `List.Nodup.getElem_inj_iff`, surjective because every `v ∈ V` is in the full-length Nodup list. The bijection gives an `Equiv` via `Equiv.ofBijective`.",
     "mathContext": "The two-step conversion (list → Equiv) reflects a general pattern in Lean formalization: inductive proofs prefer `List`-based definitions (easy to extend), while clean mathematical statements use `Equiv` or `Finset`. The bridge `Equiv.ofBijective f hf_bij` is the standard Lean idiom for extracting an equivalence from a bijective function. The surjectivity argument uses `l.toFinset = Finset.univ` (nodup list of full length exhausts the finite type).",
@@ -251,7 +251,7 @@
       "startLine": 285,
       "endLine": 333
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Cycle List to HasHamiltonianCycle and GH Sorry Infrastructure",
     "content": "`list_cycle_to_hamiltonian` mirrors `list_path_to_hamiltonian`: given a Nodup list `l` with `l.length = card V` and `IsDirectedCycleList D l`, construct `HasHamiltonianCycle D`. The bijection $f : \\text{Fin}\\ n \\to V$ via `f i = l[i]` is injective (`Nodup`) and surjective (full-length list covers `V`). The arc condition for `HasHamiltonianCycle` — `arc(σ.symm i, σ.symm ((i+1)%n))` — matches the modular condition in `IsDirectedCycleList`, so the proof closes by `harcs`. The GH sorry stubs (lines 904–942) are: `sc_digraph_has_directed_cycle` (SC + positive out-degree → cycle exists), `exists_longest_directed_cycle` (finite digraph has a longest cycle), `gh_insertion_point` (degree conditions force a pigeonhole insertion point for any vertex outside the longest cycle), and `insertNth_directed_cycle` (inserting at the found point yields a valid cycle).",
     "mathContext": "The GH sorry stubs follow a well-defined logical structure: `sc_digraph_has_directed_cycle` gives the initial cycle (analogous to `sc_tournament_has_cycle` but for general SC digraphs with positive out-degree); `exists_longest_directed_cycle` uses finiteness to get a maximum-length cycle; `gh_insertion_point` is the degree-counting pigeonhole step (the heart of the Ghouila-Houri proof); `insertNth_directed_cycle` is the cycle closure step. Together they make `ghouila_houri` fully proved (no sorry in the theorem statement itself).",
@@ -276,7 +276,7 @@
       "startLine": 1493,
       "endLine": 1538
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "grow_cycle_to_hamiltonian, moon_moser, and redei: Main Theorems",
     "content": "`grow_cycle_to_hamiltonian` is a private noncomputable definition using well-founded recursion on `Fintype.card V - l.length` (the cycle deficit). Base case: if `l.length = card V`, convert via `list_cycle_to_hamiltonian`. Recursive case: `tournament_cycle_extendable` produces a strictly longer cycle `l'`, and the well-founded measure decreases by `omega`. `moon_moser` is a 2-line theorem: get an initial cycle via `sc_tournament_has_cycle`, then grow it to Hamiltonian via `grow_cycle_to_hamiltonian`. `redei` (at line 1034) is similarly 2 lines: build a full path list via `tournament_full_path_list`, convert via `list_path_to_hamiltonian`. Both are fully proved with 0 sorries.",
     "mathContext": "The `grow_cycle_to_hamiltonian` recursion uses Lean 4's `termination_by`/`decreasing_by` annotations. The termination measure `Fintype.card V - l.length` is a natural number that strictly decreases because `tournament_cycle_extendable` guarantees `l'.length > l.length`. The `noncomputable` tag on `grow_cycle_to_hamiltonian` propagates from `sc_tournament_has_cycle` and `tournament_cycle_extendable` which use classical reasoning. Moon-Moser and Rédei are the two jewels of this file: both fully proved, both 2 lines from their respective infrastructure.",
@@ -302,7 +302,7 @@
       "startLine": 1539,
       "endLine": 1827
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Part V: Arc Threshold via Probabilistic Counting",
     "content": "Part V proves `directed_hamiltonian_threshold`: if a digraph on $n \\geq 3$ vertices has $> (n-1)^2$ arcs, it has a Hamiltonian cycle. The proof uses a probabilistic/counting argument over permutations. `missing_arcs_le` establishes that $|E| > (n-1)^2$ implies at most $n-2$ missing arcs. `hamiltonian_of_few_missing_arcs` is the main lemma: fix a bijection $\\alpha : \\text{Fin}\\ n \\cong V$; a permutation $\\sigma$ is 'bad' if it uses some missing arc $\\alpha(\\sigma(i)) \\to \\alpha(\\sigma(i+1))$. For each missing arc $(a,b)$, the number of bad permutations is $(n-1)!$ (count: at each of $n$ positions for $a$, the position $i+1$ is forced to $b$, leaving $(n-2)!$ choices for the rest). With $\\leq n-2$ missing arcs, total bad permutations $\\leq (n-2)(n-1)! = (n-1)! \\cdot (n-2) < n! = (n-1)! \\cdot n$. So a good permutation exists, giving a Hamiltonian cycle.",
     "mathContext": "The counting argument is a classical application of the probabilistic method (Erdős-style): the 'bad event' for arc $(a,b)$ has probability $(n-1)!/n! = 1/n$, and there are $\\leq n-2$ bad arcs, so the union bound gives probability $\\leq (n-2)/n < 1$ of all bad events. A 'good' permutation exists. This is also known as the Woodall arc-threshold: $|E| > (n-1)^2$ forces Hamiltonicity in a strongly connected digraph. The Lean proof uses `Finset.filter` to build the 'bad permutation' set and `Finset.card_lt_iff_ne_univ` to find a good permutation from the cardinality inequality.",

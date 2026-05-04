@@ -55,7 +55,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 315,
-    "assumptions": "1 axiom: erdos_417_conjecture (Erdős conjecture that V(x)/V'(x) → ∞, OPEN). Previously had 3 axioms; erdos_417_limit_exists removed (inconsistent with conjecture), erdos_417_ratio_gt_one proved from conjecture."
+    "assumptions": "1 axiom: erdos_417_conjecture (Erdős conjecture that V(x)/V'(x) → ∞, OPEN). Previously had 3 axioms; erdos_417_limit_exists removed (inconsistent with conjecture), erdos_417_ratio_gt_one proved from conjecture.",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Erdős first posed this problem in [Er79e], asking about two natural counting functions for Euler's totient values. Given the set of all totient values, one can count how many appear among outputs of small inputs ($V'(x)$) versus how many totient values exist up to $x$ regardless of input size ($V(x)$). The question is whether these two counts grow at comparable rates.\n\nThe problem was revisited in Erdős and Graham [ErGr80] in their influential monograph on combinatorial number theory. In [Er98], Erdős went further and conjectured that $V(x)/V'(x)$ may actually tend to infinity, suggesting that the vast majority of totient values at most $x$ come from inputs much larger than $x$. This would be a striking statement about the structure of the totient function's range.\n\nThe problem connects to deep results on totient value density. Pillai (1929) first showed $V(x) = o(x)$. Erdős (1935) proved $V(x) \\sim cx/\\log x$. Ford (1998) determined the precise asymptotics: $V(x) = \\frac{x}{\\log x} \\exp(C_1(\\log_3 x)^2 + C_2 \\log_3 x + C_3)$. However, the relationship between $V(x)$ and $V'(x)$ remains open, as it requires understanding the **smallest preimage function** $m^*(n) = \\min\\{m : \\varphi(m) = n\\}$. Related questions appear in Problem #416, which concerns the structure of the totient range more directly.",

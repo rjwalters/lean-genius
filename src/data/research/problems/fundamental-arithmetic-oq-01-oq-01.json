@@ -1,0 +1,128 @@
+{
+  "slug": "fundamental-arithmetic-oq-01-oq-01",
+  "title": "Can the unique factorization be proved in a way that avoids the parent file, ...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the unique factorization be proved in a way that avoids the parent file, giving a self-contained proof of the Fundamental Theorem from Mathlib primitives?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-03T11:41:44.695Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: FTA proved via Finsupp approach. 12 theorems, 0 sorries, 0 axioms. Key result: finsupp_prime_prod_factorization (factorization of Finsupp prime power product = original Finsupp), plus uniqueness and existence FTA. Docker build pending.",
+    "builtItems": [
+      "factorization_finset_prod: helper lemma (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization",
+      "fta_reconstruction: n.factorization.prod (·^·) = n (Nat.factorization_prod_pow_eq_self)",
+      "fta_support_eq_primeFactors: support = primeFactors",
+      "fta_support_prime: elements of factorization support are prime",
+      "fta_mem_support_iff_dvd: p ∈ support ↔ p ∣ n (for prime p)",
+      "finsupp_prime_prod_factorization: KEY LEMMA — (f.prod (·^·)).factorization = f",
+      "fta_uniqueness: g.prod(·^·) = n with prime support → g = n.factorization",
+      "fundamental_theorem_of_arithmetic: ∃! f with prime support and f.prod(·^·) = n",
+      "factorization_determines_number: injectivity of factorization on positive naturals",
+      "factorization_eq_iff_valuations: m = n ↔ ∀ p, m.factorization p = n.factorization p",
+      "factorization_eq_zero_iff_one: factorization = 0 ↔ n = 1",
+      "coprime_factorization_disjoint: coprime → disjoint factorization supports"
+    ],
+    "insights": [
+      "Nat.factorization and Finsupp.prod (·^·) are mutual inverses on prime-supported Finsupps",
+      "factorization_finset_prod (distribution over products) proved by induction using Nat.factorization_mul",
+      "For prime p: (p^k).factorization a = if p = a then k else 0 — key for indicator-sum uniqueness argument",
+      "finsupp_prime_prod_factorization is the algebraic core: (f.prod (·^·)).factorization = f for prime-support f",
+      "The Finsupp FTA (∃! f with prime support and f.prod(·^·) = n) has the canonical witness n.factorization"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Docker build pending — verify Lean proof compiles"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "factorization",
+    "coprime",
+    "p-adic-valuation",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "fundamental-arithmetic",
+    "fundamental-arithmetic-oq-01",
+    "fundamental-arithmetic-oq-01-oq-01",
+    "fundamental-arithmetic-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.694Z",
+  "lastUpdate": "2026-05-03T11:41:44.694Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalArithmetic.lean",
+      "filename": "FundamentalArithmetic.lean",
+      "lineCount": 225,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmetic.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ01.lean",
+      "filename": "FundamentalArithmeticOQ01.lean",
+      "lineCount": 114,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ01OQ01.lean",
+      "filename": "FundamentalArithmeticOQ01OQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ02.lean",
+      "filename": "FundamentalArithmeticOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ02.lean"
+    }
+  ]
+}

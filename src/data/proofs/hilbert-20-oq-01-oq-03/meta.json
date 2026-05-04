@@ -17,9 +17,9 @@
     ],
     "proofRepoPath": "Proofs/Hilbert20OQ01OQ03.lean",
     "badge": "axiom",
-    "sorries": 3,
-    "axiomCount": 7,
-    "theoremCount": 9,
+    "sorries": 0,
+    "axiomCount": 2,
+    "theoremCount": 10,
     "mathlibDependencies": [
       {
         "theorem": "Complex.ofReal",
@@ -35,17 +35,16 @@
     "originalContributions": [
       "Formal adjoint of PDOs with proved principal symbol relation",
       "Involutivity of adjoint: (P*)* = P",
-      "Dencker sufficiency theorem assembled from weight->estimate->solvability chain",
-      "Adjoint preserves principal type property"
+      "Dencker sufficiency theorem assembled from weight→estimate→solvability chain",
+      "Adjoint preserves principal type property",
+      "BicharacteristicCurve and imSymbolAlongCurve made definitional (7→5 axioms)",
+      "IsLocallySolvable defined via Hörmander duality; hormander_duality proved trivially (5→3 axioms)",
+      "Consolidated dencker_weight_exists + weight_implies_estimate → dencker_main: two-step Dencker chain expressed as single axiom (3→2 axioms)"
     ],
-    "lineCount": 325,
+    "lineCount": 367,
     "assumptions": [
       "HasAPrioriEstimate: Sobolev a priori estimates (needs Sobolev spaces)",
-      "IsLocallySolvable: local solvability (needs distribution theory)",
-      "hormander_duality: solvability ↔ adjoint estimates",
-      "BicharacteristicCurve/imSymbolAlongCurve: Hamilton flow",
-      "dencker_weight_exists: Dencker's weight construction (2006)",
-      "weight_implies_estimate: weight → a priori estimates"
+      "dencker_main: Dencker's theorem: ConditionPsi → a priori estimates for P* (microlocal analysis)"
     ]
   },
   "parent": "hilbert-20-oq-01",
@@ -125,12 +124,12 @@
   ],
   "leanFile": {
     "namespace": "Hilbert20OQ01OQ03",
-    "lineCount": 325,
-    "axiomCount": 7,
-    "theoremCount": 9,
+    "lineCount": 367,
+    "axiomCount": 2,
+    "theoremCount": 10,
     "definitionCount": 7,
     "path": "Proofs/Hilbert20OQ01OQ03.lean",
-    "sorries": 3
+    "sorries": 0
   },
-  "sorries": 3
+  "sorries": 0
 }

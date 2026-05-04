@@ -17,7 +17,7 @@
       "wiedijk-100",
       "approximation"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -46,28 +46,29 @@
     "lineCount": 640,
     "prerequisites": [
       "Real analysis: limits, asymptotic equivalence (~), sequences",
-      "Factorials and the Gamma function: n! = \u0393(n+1)",
-      "The Wallis product: \u03c0/2 = \u220f(4n\u00b2)/(4n\u00b2-1)",
-      "Logarithmic approximation: log(n!) \u2248 n log n - n + (1/2)log(2\u03c0n)"
+      "Factorials and the Gamma function: n! = Γ(n+1)",
+      "The Wallis product: π/2 = ∏(4n²)/(4n²-1)",
+      "Logarithmic approximation: log(n!) ≈ n log n - n + (1/2)log(2πn)"
     ],
     "assumptions": "0 axioms. The error bound stirling_error_bound_ge_2 is now fully proved via telescoping log bounds from Mathlib.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18
   },
   "crossReferences": [
     {
       "targetId": "e-transcendental",
       "relationship": "related",
-      "description": "Euler's number e appears fundamentally in Stirling's formula as (n/e)^n \u2014 the transcendence of e (Hermite 1873) ensures this factor cannot be simplified algebraically"
+      "description": "Euler's number e appears fundamentally in Stirling's formula as (n/e)^n — the transcendence of e (Hermite 1873) ensures this factor cannot be simplified algebraically"
     },
     {
       "targetId": "pi-transcendental",
       "relationship": "related",
-      "description": "The factor \u221a(2\u03c0) in Stirling's formula connects to the Wallis product and the Gaussian integral \u222be^{-x\u00b2}dx = \u221a\u03c0. The transcendence of \u03c0 (Lindemann 1882) means Stirling's constant is transcendental"
+      "description": "The factor √(2π) in Stirling's formula connects to the Wallis product and the Gaussian integral ∫e^{-x²}dx = √π. The transcendence of π (Lindemann 1882) means Stirling's constant is transcendental"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "complementary",
-      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) \u2248 (n/k)^k \u00b7 (n/(n-k))^{n-k} \u00b7 \u221a(n/(2\u03c0k(n-k))), essential for the central limit theorem and information theory"
+      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) ≈ (n/k)^k · (n/(n-k))^{n-k} · √(n/(2πk(n-k))), essential for the central limit theorem and information theory"
     },
     {
       "targetId": "central-limit-theorem",
@@ -77,12 +78,12 @@
     {
       "targetId": "euler-identity",
       "relationship": "related",
-      "description": "Euler's formula e^{i\u03c0} + 1 = 0 connects the same constants (e, \u03c0) that appear in Stirling's formula. Both reveal deep relationships between exponential growth and circular geometry"
+      "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep relationships between exponential growth and circular geometry"
     },
     {
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "Stirling's formula is derived by approximating $\\ln(n!) = \\sum_{k=1}^n \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1$ via FTC. The integral $\\int \\ln x\\,dx = x\\ln x - x$ is evaluated by integration by parts (a consequence of FTC), and the correction terms (including $\\sqrt{2\\pi n}$) come from the Euler-Maclaurin formula \u2014 a systematic refinement of the sum-to-integral comparison"
+      "description": "Stirling's formula is derived by approximating $\\ln(n!) = \\sum_{k=1}^n \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1$ via FTC. The integral $\\int \\ln x\\,dx = x\\ln x - x$ is evaluated by integration by parts (a consequence of FTC), and the correction terms (including $\\sqrt{2\\pi n}$) come from the Euler-Maclaurin formula — a systematic refinement of the sum-to-integral comparison"
     },
     {
       "targetId": "harmonic-divergence",
@@ -104,9 +105,9 @@
     "historicalContext": "Abraham de Moivre discovered the leading form $(n/e)^n \\sqrt{n}$ around 1721 while studying the normal distribution as an approximation to the binomial. James Stirling refined this in his 1730 book *Methodus Differentialis*, identifying the constant $\\sqrt{2\\pi}$ and the full asymptotic series $n! \\sim \\sqrt{2\\pi n}(n/e)^n(1 + \\frac{1}{12n} + \\frac{1}{288n^2} - \\cdots)$.\n\nThe formula is intimately connected to the Wallis product ($\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$, John Wallis 1656), which provides the $\\pi$ factor through factorial ratios. Euler later extended Stirling's formula to the Gamma function: $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$ for large real $x$, revealing it as a fundamental statement about the growth of the Gamma function along the real axis.",
     "problemStatement": "**Theorem (Stirling, 1730)**: As n approaches infinity:\n\n$$n! \\sim \\sqrt{2\\pi n} \\cdot \\left(\\frac{n}{e}\\right)^n$$\n\nMore precisely, the ratio n!/[sqrt(2*pi*n) * (n/e)^n] approaches 1.\n\nThis is Wiedijk's 100 Theorems #90.",
     "text": "A formalization of Stirling's approximation (Wiedijk #90) with 0 sorries, 0 axioms (verified). Defines `stirlingSeq n` = $n!/(\\sqrt{2n} \\cdot (n/e)^n)$ and proves `stirling_tendsto_sqrt_pi` ($\\text{stirlingSeq} \\to \\sqrt{\\pi}$) via Mathlib's `Stirling.tendsto_stirlingSeq_sqrt_pi`, which uses the Wallis product $\\pi/2 = \\prod_n 4n^2/(4n^2-1)$. Derives the classical form `stirling_asymptotic` ($n!/[\\sqrt{2\\pi n}(n/e)^n] \\to 1$) and practical bounds `stirling_lower_bound`/`stirling_upper_bound`. Includes concrete verifications: $10! = 3628800$ within 0.84% of Stirling, $100!$ ratio verification. Commentary traces from de Moivre's 1721 discovery through Stirling's identification of $\\sqrt{2\\pi}$ to the full asymptotic series.",
-    "proofStrategy": "**Via the Wallis Product**:\n\n1. Define stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n]\n2. Show stirlingSeq converges to sqrt(pi)\n3. This is proved using the Wallis product: pi/2 = prod_n (4n^2)/(4n^2-1)\n4. The asymptotic equivalence follows immediately",
+    "proofStrategy": "**Via Mathlib's Stirling module** (which uses the Wallis Product):\n\n1. Define stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n]\n2. Show stirlingSeq converges to sqrt(pi) — via `Stirling.tendsto_stirlingSeq_sqrt_pi` from Mathlib\n3. Derive n! ~ sqrt(2*pi*n)*(n/e)^n — via `Stirling.factorial_isEquivalent_stirling` from Mathlib\n4. Original contributions: pedagogical presentation, bounds for applications, and connection to binomial coefficient approximations",
     "keyInsights": [
-      "The Stirling sequence $S_n = n! / (\\sqrt{2n} \\cdot (n/e)^n)$ converges to $\\sqrt{\\pi}$, not 1 \u2014 the factor of $\\sqrt{2}$ is absorbed when combining with $\\sqrt{2n}$ to give $\\sqrt{2\\pi n}$",
+      "The Stirling sequence $S_n = n! / (\\sqrt{2n} \\cdot (n/e)^n)$ converges to $\\sqrt{\\pi}$, not 1 — the factor of $\\sqrt{2}$ is absorbed when combining with $\\sqrt{2n}$ to give $\\sqrt{2\\pi n}$",
       "Multiplying $S_n \\to \\sqrt{\\pi}$ by $\\sqrt{2n}$ gives $n!/(n/e)^n \\to \\sqrt{2\\pi n}$, which is exactly Stirling's formula",
       "The relative error is approximately $1/(12n)$ for large $n$, with the full asymptotic expansion having rational coefficients in powers of $1/n$",
       "The Wallis product $\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$ is the key: it connects factorial ratios to $\\pi$, explaining why $\\sqrt{\\pi}$ appears as the limit of the Stirling sequence",
@@ -114,9 +115,9 @@
     ],
     "prerequisites": [
       "Real analysis: limits, asymptotic equivalence (~), sequences",
-      "Factorials and the Gamma function: n! = \u0393(n+1)",
-      "The Wallis product: \u03c0/2 = \u220f(4n\u00b2)/(4n\u00b2-1)",
-      "Logarithmic approximation: log(n!) \u2248 n log n - n + (1/2)log(2\u03c0n)"
+      "Factorials and the Gamma function: n! = Γ(n+1)",
+      "The Wallis product: π/2 = ∏(4n²)/(4n²-1)",
+      "Logarithmic approximation: log(n!) ≈ n log n - n + (1/2)log(2πn)"
     ]
   },
   "sections": [
@@ -175,7 +176,7 @@
       "title": "Methodus Differentialis",
       "year": "1730",
       "venue": "London",
-      "note": "Original derivation of the approximation n! ~ \u221a(2\u03c0n)(n/e)^n, though the constant \u221a(2\u03c0) was determined by de Moivre"
+      "note": "Original derivation of the approximation n! ~ √(2πn)(n/e)^n, though the constant √(2π) was determined by de Moivre"
     }
   ],
   "leanFile": {

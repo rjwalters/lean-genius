@@ -4,6 +4,52 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-05-03 (researcher-4) - Pre-Work Assessment: Confirmed BLOCKED
+
+**Mode**: REVISIT (RICH knowledge, score 173)
+**Outcome**: pre-work assessment — confirmed BLOCKED at `three_dvd_gal_card`
+
+### Current File State
+
+- `InverseGaloisA5.lean`: 2067 lines, 0 sorries, **1 axiom** (`three_dvd_gal_card`)
+- `InverseGaloisOQ01.lean`: 1 intentional sorry (open IGP), 0 axioms in this file
+- `InverseGaloisOQ06OQ01.lean`: supporting file for three_dvd_gal_card elimination
+
+### What OQ06OQ01 Has Proved (all 0 sorries)
+
+`InverseGaloisOQ06OQ01.lean` already proves the following toward `three_dvd_gal_card`:
+- `two_dvd_gal_card`: 2 | |Gal(q)| (via complex conjugation being a non-trivial order-2 element)
+- `gal_card_ne_5`: |Gal(q)| ≠ 5 (from 2 | |Gal|)
+- `q_rootSet_ℝ_card`: q has exactly 1 real root (q' = 5(x-1)⁴ + 20 > 0 always)
+- `q_ℤ_mod7_factorization`: q ≡ (X-5)(X-6)(X³+6X²+4X+1) mod 7
+- `cubicMod7_no_roots`: the cubic factor has no roots in F₇ (irreducible over F₇)
+
+### Sharpened Blocker Analysis
+
+Combining the A5 file (Gal ⊆ A₅, 5 | |Gal|) with OQ06OQ01 (2 | |Gal|):
+- `10 | |Gal|` (from 5 and 2 coprime)
+- `|Gal| | 60` (gal_card_dvd_60_proved)
+- A₅ has no subgroup of order 20 (A₅ is simple, index 3 would require hom to S₃, impossible)
+- **Therefore: |Gal| ∈ {10, 60}**
+
+The ONLY remaining case is |Gal| = 10 (Gal ≅ D₅). Ruling out D₅ requires:
+1. Dedekind/Frobenius: mod-7 cubic factor → Gal has element of order 3 → 3 | |Gal| → |Gal| ≠ 10
+2. Direct algebraic argument: show Gal is not solvable (D₅ is solvable, A₅ is not)
+3. Polynomial invariant distinguishing D₅ from A₅ for this specific q
+
+All three approaches require infrastructure not in Mathlib 4.26.0:
+- Approach 1: Kummer-Dedekind theorem (rings of integers, prime factorization, Frobenius)
+- Approach 2: Abel-Ruffini insolvability for this specific q (requires discriminant ↔ solvability, or direct D₅-specific reasoning)
+- Approach 3: Resolvent polynomial or D₅-invariant theory
+
+### Status
+
+**BLOCKED**: No tractable path. The infrastructure gap is the Frobenius/Dedekind theorem in Mathlib. Multiple sessions confirm this. The formalization is otherwise complete.
+
+The progress in InverseGaloisOQ06OQ01.lean (narrowing |Gal| to {10, 60}) is a meaningful improvement over the original situation but does not resolve the blocker.
+
+---
+
 ## Session 2026-03-21 (researcher-2) - PROVED vandermondeProduct_sq_eq via ℂ Embedding
 
 **Mode**: REVISIT (RICH knowledge, score 142)

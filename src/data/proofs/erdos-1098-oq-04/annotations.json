@@ -2,109 +2,218 @@
   {
     "id": "ann-e1098-oq04-nonccomm-graph",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 35, "endLine": 38 },
+    "range": {
+      "startLine": 35,
+      "endLine": 38
+    },
     "type": "definition",
-    "title": "The Non-Commuting Graph Γ(G)",
-    "content": "`nonCommGraph` defines the non-commuting graph Γ(G) as a Lean 4 `SimpleGraph`: two vertices g, h are adjacent iff they do not commute and are distinct. The three required fields are: `Adj` (the relation), `symm` (symmetry — uses `Commute.symm` to convert `¬Commute g h` to `¬Commute h g`), and `loopless` (irreflexivity — follows since `g ≠ g` is false). The `noncomputable` qualifier arises because decidability of `¬Commute g h` for a general `Group G` may require classical logic.",
+    "title": "The Non-Commuting Graph \u0393(G)",
+    "content": "`nonCommGraph` defines the non-commuting graph \u0393(G) as a Lean 4 `SimpleGraph`: two vertices g, h are adjacent iff they do not commute and are distinct. The three required fields are: `Adj` (the relation), `symm` (symmetry \u2014 uses `Commute.symm` to convert `\u00acCommute g h` to `\u00acCommute h g`), and `loopless` (irreflexivity \u2014 follows since `g \u2260 g` is false). The `noncomputable` qualifier arises because decidability of `\u00acCommute g h` for a general `Group G` may require classical logic.",
     "mathContext": "$\\Gamma(G)$ has vertex set $G$ with edge $\\{g, h\\}$ iff $gh \\neq hg$ and $g \\neq h$. This is an undirected simple graph (no self-loops, symmetric relation). The `SimpleGraph` type in Mathlib provides the complete graph theory library, including clique numbers, chromatic numbers, and graph homomorphisms, enabling Neumann's theorem (about $\\omega(\\Gamma(G))$) and Gustafson's bound (about density of $\\Gamma(G)$) to be stated in a unified framework.",
     "significance": "key",
-    "relatedConcepts": ["simple-graph", "non-commuting-graph", "commute-predicate", "Neumann-1976"],
-    "prerequisites": ["SimpleGraph (Mathlib.Combinatorics.SimpleGraph)", "Commute (Mathlib.GroupTheory.Basic)", "noncomputable in Lean 4"]
+    "relatedConcepts": [
+      "simple-graph",
+      "non-commuting-graph",
+      "commute-predicate",
+      "Neumann-1976"
+    ],
+    "prerequisites": [
+      "SimpleGraph (Mathlib.Combinatorics.SimpleGraph)",
+      "Commute (Mathlib.GroupTheory.Basic)",
+      "noncomputable in Lean 4"
+    ]
   },
   {
     "id": "ann-e1098-oq04-five-eighths",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 52, "endLine": 55 },
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
     "type": "definition",
     "title": "The 5/8 Theorem as an Open Formalization Goal",
-    "content": "`five_eighths_theorem` formalizes Gustafson's 1973 result as a `Prop` statement: for non-abelian finite groups H, `commProb H ≤ 5/8`. It is defined as a `def`, not proved — this is an explicit open formalization target. The non-abelian hypothesis `¬(∃ inst : CommGroup H, True)` encodes 'H does not admit a commutative group structure' using Lean 4's typeclass machinery. Gustafson's original proof: if Pr(G) > 1/4 then G/Z(G) has order ≤ 4, forcing abelianness via the class equation — a contradiction.",
+    "content": "`five_eighths_theorem` formalizes Gustafson's 1973 result as a `Prop` statement: for non-abelian finite groups H, `commProb H \u2264 5/8`. It is defined as a `def`, not proved \u2014 this is an explicit open formalization target. The non-abelian hypothesis `\u00ac(\u2203 inst : CommGroup H, True)` encodes 'H does not admit a commutative group structure' using Lean 4's typeclass machinery. Gustafson's original proof: if Pr(G) > 1/4 then G/Z(G) has order \u2264 4, forcing abelianness via the class equation \u2014 a contradiction.",
     "mathContext": "Gustafson (1973): For non-abelian finite $G$, $\\text{Pr}(G) \\leq 5/8$. The bound is tight: both $D_4$ (dihedral group of order 8) and $Q_8$ (quaternion group) achieve $\\text{Pr}(G) = 5/8$ exactly. Proof sketch: $\\text{Pr}(G) = k(G)/|G|$ where $k(G)$ is the number of conjugacy classes. If $G$ is non-abelian, $|G/Z(G)| \\geq 4$, forcing $k(G) \\leq 5|G|/8$ by the class equation combined with size constraints on conjugacy classes.",
     "significance": "key",
-    "relatedConcepts": ["five-eighths-theorem", "gustafson-1973", "commuting-probability-phase-transition", "D4-Q8-extremal"],
-    "prerequisites": ["commProb in Mathlib", "CommGroup typeclass", "class equation", "conjugacy classes"]
+    "relatedConcepts": [
+      "five-eighths-theorem",
+      "gustafson-1973",
+      "commuting-probability-phase-transition",
+      "D4-Q8-extremal"
+    ],
+    "prerequisites": [
+      "commProb in Mathlib",
+      "CommGroup typeclass",
+      "class equation",
+      "conjugacy classes"
+    ]
   },
   {
     "id": "ann-e1098-oq04-commprob-pos",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 62, "endLine": 63 },
-    "type": "theorem",
+    "range": {
+      "startLine": 62,
+      "endLine": 63
+    },
+    "type": "insight",
     "title": "Commuting Probability is Strictly Positive",
-    "content": "`commProb_pos'` wraps Mathlib's `commProb_pos G` to give `0 < commProb G` for any finite group G. The positivity is immediate: at minimum, every element commutes with itself, so the set of commuting pairs contains the diagonal {(g,g) : g ∈ G} of size |G|. Thus commProb G ≥ 1/|G| > 0. The local wrapper makes the bound available without using the Mathlib lemma name directly.",
+    "content": "`commProb_pos'` wraps Mathlib's `commProb_pos G` to give `0 < commProb G` for any finite group G. The positivity is immediate: at minimum, every element commutes with itself, so the set of commuting pairs contains the diagonal {(g,g) : g \u2208 G} of size |G|. Thus commProb G \u2265 1/|G| > 0. The local wrapper makes the bound available without using the Mathlib lemma name directly.",
     "mathContext": "$\\text{Pr}(G) \\geq |G|/|G|^2 = 1/|G| > 0$. For concrete groups: $\\text{Pr}(\\mathbb{Z}/n\\mathbb{Z}) = 1$ (abelian); $\\text{Pr}(S_3) = 1/2$; $\\text{Pr}(D_4) = \\text{Pr}(Q_8) = 5/8$; $\\text{Pr}(S_n) = k(S_n)/n! \\to 0$ as $n \\to \\infty$ where $k(S_n)$ is the partition function. As groups grow more non-abelian, the commuting probability decreases toward 0.",
     "significance": "supporting",
-    "relatedConcepts": ["commProb_pos in Mathlib", "commuting-pairs", "diagonal-pairs", "lower-bound"],
-    "prerequisites": ["commProb definition", "Fintype.card", "commProb_pos in Mathlib.GroupTheory.CommProbability"]
+    "relatedConcepts": [
+      "commProb_pos in Mathlib",
+      "commuting-pairs",
+      "diagonal-pairs",
+      "lower-bound"
+    ],
+    "prerequisites": [
+      "commProb definition",
+      "Fintype.card",
+      "commProb_pos in Mathlib.GroupTheory.CommProbability"
+    ]
   },
   {
     "id": "ann-e1098-oq04-one-iff-abelian",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 74, "endLine": 77 },
-    "type": "theorem",
+    "range": {
+      "startLine": 74,
+      "endLine": 77
+    },
+    "type": "insight",
     "title": "Commutativity Degree = 1 iff Abelian: Element-wise Form",
-    "content": "`commProb_one_iff_abelian` proves `commProb G = 1 ↔ ∀ a b : G, Commute a b`. The proof rewrites via `commProb_eq_one_iff` (Mathlib uses `Std.Commutative (· * ·)`) and converts between the typeclass form and explicit quantifiers: forward direction applies `.comm a b`, backward direction wraps in the `Std.Commutative` constructor `⟨fun a b => h a b⟩`. The element-wise form is more useful for downstream `apply` and `rw` tactics than the typeclass formulation.",
-    "mathContext": "$\\text{Pr}(G) = 1 \\iff |\\{(g,h): gh = hg\\}| = |G|^2 \\iff$ every pair commutes $\\iff G$ is abelian. Mathlib's `commProb_eq_one_iff` uses `Std.Commutative (· * ·)` which bundles commutativity as a structure. The unwrapped form `\\forall a b, Commute a b` directly matches the hypothesis in theorems like `commProb_lt_one_of_noncomm` and makes the logical chain transparent.",
+    "content": "`commProb_one_iff_abelian` proves `commProb G = 1 \u2194 \u2200 a b : G, Commute a b`. The proof rewrites via `commProb_eq_one_iff` (Mathlib uses `Std.Commutative (\u00b7 * \u00b7)`) and converts between the typeclass form and explicit quantifiers: forward direction applies `.comm a b`, backward direction wraps in the `Std.Commutative` constructor `\u27e8fun a b => h a b\u27e9`. The element-wise form is more useful for downstream `apply` and `rw` tactics than the typeclass formulation.",
+    "mathContext": "$\\text{Pr}(G) = 1 \\iff |\\{(g,h): gh = hg\\}| = |G|^2 \\iff$ every pair commutes $\\iff G$ is abelian. Mathlib's `commProb_eq_one_iff` uses `Std.Commutative (\u00b7 * \u00b7)` which bundles commutativity as a structure. The unwrapped form `\\forall a b, Commute a b` directly matches the hypothesis in theorems like `commProb_lt_one_of_noncomm` and makes the logical chain transparent.",
     "significance": "key",
-    "relatedConcepts": ["abelian-group", "commutativity-degree", "Std.Commutative", "commProb_eq_one_iff"],
-    "prerequisites": ["commProb_eq_one_iff in Mathlib", "Std.Commutative typeclass", "Commute definition in Mathlib"]
+    "relatedConcepts": [
+      "abelian-group",
+      "commutativity-degree",
+      "Std.Commutative",
+      "commProb_eq_one_iff"
+    ],
+    "prerequisites": [
+      "commProb_eq_one_iff in Mathlib",
+      "Std.Commutative typeclass",
+      "Commute definition in Mathlib"
+    ]
   },
   {
     "id": "ann-e1098-oq04-abelian-commprob",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 80, "endLine": 83 },
-    "type": "theorem",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "type": "insight",
     "title": "Abelian Groups Have Commuting Probability 1",
-    "content": "`commProb_abelian` shows that for a `CommGroup H`, `commProb H = 1`. The proof is a one-liner: rewrite by `commProb_eq_one_iff` and provide `⟨mul_comm⟩` as the `Std.Commutative` witness. This works because `CommGroup` carries `mul_comm : ∀ a b, a * b = b * a`, which is precisely the `Std.Commutative` instance. This demonstrates how Lean 4's typeclass hierarchy makes such proofs trivial once the right API is assembled.",
-    "mathContext": "For commutative group $H$: $\\text{Pr}(H) = |H|^2 / |H|^2 = 1$. The `CommGroup H` typeclass in Lean 4 extends `Group H` with the `mul_comm` field. The `Std.Commutative` structure wraps a function satisfying commutativity; `⟨mul_comm⟩` provides `Std.Commutative.comm := mul_comm`. Standard examples: $\\mathbb{Z}/n\\mathbb{Z}$, product groups $A \\times B$ with $A, B$ abelian, additive groups.",
+    "content": "`commProb_abelian` shows that for a `CommGroup H`, `commProb H = 1`. The proof is a one-liner: rewrite by `commProb_eq_one_iff` and provide `\u27e8mul_comm\u27e9` as the `Std.Commutative` witness. This works because `CommGroup` carries `mul_comm : \u2200 a b, a * b = b * a`, which is precisely the `Std.Commutative` instance. This demonstrates how Lean 4's typeclass hierarchy makes such proofs trivial once the right API is assembled.",
+    "mathContext": "For commutative group $H$: $\\text{Pr}(H) = |H|^2 / |H|^2 = 1$. The `CommGroup H` typeclass in Lean 4 extends `Group H` with the `mul_comm` field. The `Std.Commutative` structure wraps a function satisfying commutativity; `\u27e8mul_comm\u27e9` provides `Std.Commutative.comm := mul_comm`. Standard examples: $\\mathbb{Z}/n\\mathbb{Z}$, product groups $A \\times B$ with $A, B$ abelian, additive groups.",
     "significance": "supporting",
-    "relatedConcepts": ["CommGroup", "mul_comm", "commProb_eq_one_iff", "typeclass-composition"],
-    "prerequisites": ["CommGroup typeclass", "Std.Commutative", "commProb_eq_one_iff in Mathlib"]
+    "relatedConcepts": [
+      "CommGroup",
+      "mul_comm",
+      "commProb_eq_one_iff",
+      "typeclass-composition"
+    ],
+    "prerequisites": [
+      "CommGroup typeclass",
+      "Std.Commutative",
+      "commProb_eq_one_iff in Mathlib"
+    ]
   },
   {
     "id": "ann-e1098-oq04-lt-one-noncomm",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 86, "endLine": 92 },
-    "type": "theorem",
+    "range": {
+      "startLine": 86,
+      "endLine": 92
+    },
+    "type": "insight",
     "title": "Non-Commuting Pair Forces Probability Strictly Below 1",
-    "content": "`commProb_lt_one_of_noncomm` proves: if `∃ a b : G, ¬Commute a b`, then `commProb G < 1`. The proof combines `commProb_le_one` (giving ≤ 1) with a contradiction argument: if commProb G = 1, then `commProb_one_iff_abelian.mp` gives `∀ a b, Commute a b`, contradicting the non-commuting witness. The strict inequality `< 1` follows from `lt_of_le_of_ne` applied after ruling out equality.",
-    "mathContext": "$\\text{Pr}(G) < 1 \\iff G$ is non-abelian. Proof structure: Suppose $\\text{Pr}(G) = 1$. Then $\\forall a, b: Commute\\ a\\ b$ (by `commProb_one_iff_abelian`). But the hypothesis gives $a, b$ with $\\neg Commute\\ a\\ b$ — contradiction. Hence $\\text{Pr}(G) \\neq 1$, and since $\\text{Pr}(G) \\leq 1$, we get $\\text{Pr}(G) < 1$. This bridges the graph-theoretic fact (Γ(G) has an edge) to the measure-theoretic fact (density < 1).",
+    "content": "`commProb_lt_one_of_noncomm` proves: if `\u2203 a b : G, \u00acCommute a b`, then `commProb G < 1`. The proof combines `commProb_le_one` (giving \u2264 1) with a contradiction argument: if commProb G = 1, then `commProb_one_iff_abelian.mp` gives `\u2200 a b, Commute a b`, contradicting the non-commuting witness. The strict inequality `< 1` follows from `lt_of_le_of_ne` applied after ruling out equality.",
+    "mathContext": "$\\text{Pr}(G) < 1 \\iff G$ is non-abelian. Proof structure: Suppose $\\text{Pr}(G) = 1$. Then $\\forall a, b: Commute\\ a\\ b$ (by `commProb_one_iff_abelian`). But the hypothesis gives $a, b$ with $\\neg Commute\\ a\\ b$ \u2014 contradiction. Hence $\\text{Pr}(G) \\neq 1$, and since $\\text{Pr}(G) \\leq 1$, we get $\\text{Pr}(G) < 1$. This bridges the graph-theoretic fact (\u0393(G) has an edge) to the measure-theoretic fact (density < 1).",
     "significance": "key",
-    "relatedConcepts": ["commProb_le_one", "commProb_one_iff_abelian", "non-abelian-groups", "lt_of_le_of_ne"],
-    "prerequisites": ["commProb_le_one in Mathlib", "commProb_one_iff_abelian", "lt_of_le_of_ne tactic"]
+    "relatedConcepts": [
+      "commProb_le_one",
+      "commProb_one_iff_abelian",
+      "non-abelian-groups",
+      "lt_of_le_of_ne"
+    ],
+    "prerequisites": [
+      "commProb_le_one in Mathlib",
+      "commProb_one_iff_abelian",
+      "lt_of_le_of_ne tactic"
+    ]
   },
   {
     "id": "ann-e1098-oq04-density-def",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 99, "endLine": 99 },
+    "range": {
+      "startLine": 99,
+      "endLine": 99
+    },
     "type": "definition",
     "title": "Non-Commuting Density as Complement of Commuting Probability",
-    "content": "`nonCommDensity G = 1 - commProb G` is the fraction of ordered pairs (g, h) with gh ≠ hg. The quantity lies in [0, 1): it is 0 for abelian groups. The 5/8 theorem (open formalization goal) would add: nonCommDensity ≤ 3/8 for non-abelian groups. It equals the edge density of Γ(G) interpreted over all ordered pairs.",
+    "content": "`nonCommDensity G = 1 - commProb G` is the fraction of ordered pairs (g, h) with gh \u2260 hg. The quantity lies in [0, 1): it is 0 for abelian groups. The 5/8 theorem (open formalization goal) would add: nonCommDensity \u2264 3/8 for non-abelian groups. It equals the edge density of \u0393(G) interpreted over all ordered pairs.",
     "mathContext": "$\\delta(G) = 1 - \\text{Pr}(G)$. Known values: $D_4, Q_8$: $\\text{Pr} = 5/8$, $\\delta = 3/8$; $S_3$: $\\text{Pr}(S_3) = 3/6 = 1/2$, $\\delta(S_3) = 1/2$ (3 conjugacy classes, $|S_3| = 6$); $S_n$ ($n \\geq 5$): $\\text{Pr}(S_n) \\to 0$, $\\delta(S_n) \\to 1$. The 5/8 theorem says no finite group has $\\text{Pr}(G) \\in (5/8, 1)$, i.e., $\\delta(G) \\in (0, 3/8)$.",
     "significance": "supporting",
-    "relatedConcepts": ["edge-density", "non-commuting-graph", "commutativity-degree", "5/8-theorem-dual"],
-    "prerequisites": ["commProb", "ℚ arithmetic in Lean", "nonCommDensity_zero_iff_abelian"]
+    "relatedConcepts": [
+      "edge-density",
+      "non-commuting-graph",
+      "commutativity-degree",
+      "5/8-theorem-dual"
+    ],
+    "prerequisites": [
+      "commProb",
+      "\u211a arithmetic in Lean",
+      "nonCommDensity_zero_iff_abelian"
+    ]
   },
   {
     "id": "ann-e1098-oq04-density-zero-abelian",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 102, "endLine": 111 },
-    "type": "theorem",
+    "range": {
+      "startLine": 102,
+      "endLine": 111
+    },
+    "type": "insight",
     "title": "Zero Density Characterizes Abelian Groups",
-    "content": "`nonCommDensity_zero_iff_abelian` proves `nonCommDensity G = 0 ↔ ∀ a b, Commute a b`. Forward direction: `1 - commProb G = 0` implies `commProb G = 1` (by `linarith`), then `commProb_one_iff_abelian.mp`. Backward direction: every pair commutes implies `commProb G = 1` (by `commProb_one_iff_abelian.mpr`), then `linarith` gives `1 - 1 = 0`. The `linarith` tactic handles the rational arithmetic automatically.",
-    "mathContext": "$\\delta(G) = 0 \\iff 1 - \\text{Pr}(G) = 0 \\iff \\text{Pr}(G) = 1 \\iff G$ is abelian. This creates a three-way equivalence: $G$ abelian $\\iff \\text{Pr}(G) = 1 \\iff \\delta(G) = 0 \\iff$ Γ(G) has no edges. The `linarith` tactic handles `1 - x = 0 ↔ x = 1` over $\\mathbb{Q}$ automatically, making the numerical steps trivial.",
+    "content": "`nonCommDensity_zero_iff_abelian` proves `nonCommDensity G = 0 \u2194 \u2200 a b, Commute a b`. Forward direction: `1 - commProb G = 0` implies `commProb G = 1` (by `linarith`), then `commProb_one_iff_abelian.mp`. Backward direction: every pair commutes implies `commProb G = 1` (by `commProb_one_iff_abelian.mpr`), then `linarith` gives `1 - 1 = 0`. The `linarith` tactic handles the rational arithmetic automatically.",
+    "mathContext": "$\\delta(G) = 0 \\iff 1 - \\text{Pr}(G) = 0 \\iff \\text{Pr}(G) = 1 \\iff G$ is abelian. This creates a three-way equivalence: $G$ abelian $\\iff \\text{Pr}(G) = 1 \\iff \\delta(G) = 0 \\iff$ \u0393(G) has no edges. The `linarith` tactic handles `1 - x = 0 \u2194 x = 1` over $\\mathbb{Q}$ automatically, making the numerical steps trivial.",
     "significance": "supporting",
-    "relatedConcepts": ["commProb_one_iff_abelian", "linarith tactic", "abelian-characterization", "zero-density"],
-    "prerequisites": ["nonCommDensity definition", "commProb_one_iff_abelian", "linarith for ℚ arithmetic"]
+    "relatedConcepts": [
+      "commProb_one_iff_abelian",
+      "linarith tactic",
+      "abelian-characterization",
+      "zero-density"
+    ],
+    "prerequisites": [
+      "nonCommDensity definition",
+      "commProb_one_iff_abelian",
+      "linarith for \u211a arithmetic"
+    ]
   },
   {
     "id": "ann-e1098-oq04-density-positive",
     "proofId": "erdos-1098-oq-04",
-    "range": { "startLine": 114, "endLine": 118 },
+    "range": {
+      "startLine": 114,
+      "endLine": 118
+    },
     "type": "insight",
     "title": "Positive Density iff Non-Abelian: Completing the Dichotomy",
-    "content": "`nonCommDensity_pos_of_noncomm` proves that when non-commuting elements exist, the non-commuting density is strictly positive. The proof is two steps: `commProb_lt_one_of_noncomm h` gives `commProb G < 1`, then `linarith` converts this to `0 < 1 - commProb G = nonCommDensity G`. Together with `nonCommDensity_zero_iff_abelian`, this establishes the complete density dichotomy: `nonCommDensity G = 0 ↔ abelian` and `nonCommDensity G > 0 ↔ non-abelian`.",
-    "mathContext": "Combined picture: $\\delta(G) = 0 \\iff G$ abelian; $\\delta(G) > 0 \\iff G$ non-abelian. The 5/8 theorem (open formalization goal) would add: $\\delta(G) \\leq 3/8$ always, with equality for $D_4$ and $Q_8$. The Neumann connection (Erdős #1098): $\\omega(\\Gamma(G)) < \\infty \\iff [G:Z(G)] < \\infty$ — a structural characterization via the clique number. Gustafson's theorem gives a density characterization. These are complementary: Neumann controls the maximum 'local concentration' of non-commutativity; Gustafson controls the 'global average'.",
+    "content": "`nonCommDensity_pos_of_noncomm` proves that when non-commuting elements exist, the non-commuting density is strictly positive. The proof is two steps: `commProb_lt_one_of_noncomm h` gives `commProb G < 1`, then `linarith` converts this to `0 < 1 - commProb G = nonCommDensity G`. Together with `nonCommDensity_zero_iff_abelian`, this establishes the complete density dichotomy: `nonCommDensity G = 0 \u2194 abelian` and `nonCommDensity G > 0 \u2194 non-abelian`.",
+    "mathContext": "Combined picture: $\\delta(G) = 0 \\iff G$ abelian; $\\delta(G) > 0 \\iff G$ non-abelian. The 5/8 theorem (open formalization goal) would add: $\\delta(G) \\leq 3/8$ always, with equality for $D_4$ and $Q_8$. The Neumann connection (Erd\u0151s #1098): $\\omega(\\Gamma(G)) < \\infty \\iff [G:Z(G)] < \\infty$ \u2014 a structural characterization via the clique number. Gustafson's theorem gives a density characterization. These are complementary: Neumann controls the maximum 'local concentration' of non-commutativity; Gustafson controls the 'global average'.",
     "significance": "key",
-    "relatedConcepts": ["non-abelian-groups", "density-positive", "density-dichotomy", "Neumann-Gustafson-complementarity"],
-    "prerequisites": ["nonCommDensity_zero_iff_abelian", "commProb_lt_one_of_noncomm", "linarith for strict inequalities in ℚ"]
+    "relatedConcepts": [
+      "non-abelian-groups",
+      "density-positive",
+      "density-dichotomy",
+      "Neumann-Gustafson-complementarity"
+    ],
+    "prerequisites": [
+      "nonCommDensity_zero_iff_abelian",
+      "commProb_lt_one_of_noncomm",
+      "linarith for strict inequalities in \u211a"
+    ]
   }
 ]

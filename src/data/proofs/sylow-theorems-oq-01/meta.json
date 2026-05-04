@@ -20,7 +20,8 @@
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All 3 previously sorry'd theorems proved: cyclic_when_coprime via commutator argument + order calculation, nonabelian_sylow_p_count by contradiction, pq_cyclic_classification by universal instantiation.",
-    "lineCount": 387
+    "lineCount": 387,
+    "theoremCount": 21
   },
   "overview": {
     "historicalContext": "Ludwig Sylow (1872) published three landmark theorems about finite groups in Mathematische Annalen: existence of p-Sylow subgroups (subgroups of order p^k where p^k exactly divides |G|), conjugacy (all Sylow p-subgroups are conjugate), and counting (their number n_p satisfies n_p ≡ 1 mod p and n_p | |G|/p^k). These results, proved when group theory itself was nascent, became the primary tool for classifying finite groups by order. The classification of groups of order pq for distinct primes p < q was one of the first explicit applications: worked out in the late 19th century and consolidated by William Burnside in his 1911 textbook 'Theory of Groups of Finite Order.' The result is a model of beautiful algebra: the entire isomorphism type of a pq-group is determined by the single arithmetic condition p | (q-1). When p ∤ (q-1), both Sylow subgroups are normal, G is isomorphic to their direct product ℤ/p × ℤ/q ≅ ℤ/pq (cyclic since gcd(p,q)=1). When p | (q-1), a non-trivial homomorphism φ : ℤ/p → Aut(ℤ/q) ≅ ℤ/(q-1) exists (since p | (q-1) = |Aut(ℤ/q)|), giving a non-abelian semidirect product ℤ/q ⋊_φ ℤ/p. For order 6: p=2, q=3, 2 | 2, the non-abelian group is S₃. For order 15: p=3, q=5, 3 ∤ 4, only ℤ/15. This formalization uses Mathlib's Sylow API and proves all main cases including the hardest — the cyclic result — via a commutator argument.",

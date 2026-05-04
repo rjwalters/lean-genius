@@ -55,7 +55,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 263,
-    "assumptions": "1 axiom: chung_1992. 1 sorries."
+    "assumptions": "1 axiom: chung_1992. 1 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #666**\n\nErdős posed this problem in 1991, asking whether dense subgraphs of the n-dimensional hypercube must contain 6-cycles. The hypercube Qₙ has 2ⁿ vertices (binary strings of length n) and n·2ⁿ⁻¹ edges (vertices adjacent iff they differ in exactly one coordinate).\n\n**Resolution (1992-1993):**\nThe answer is NO, disproved independently by two groups:\n- **Chung (1992):** Constructed an explicit 4-partition of Qₙ's edges into C₆-free subgraphs\n- **Brouwer-Dejter-Thomassen (1993):** Independent 4-coloring construction avoiding C₄ and C₆\n\n**Further Improvement:**\nConder (1993) showed that only 3 colors suffice - the edges of Qₙ can be 3-colored with no monochromatic C₄ or C₆. This means subgraphs with 1/3 of all edges need not contain C₆.",

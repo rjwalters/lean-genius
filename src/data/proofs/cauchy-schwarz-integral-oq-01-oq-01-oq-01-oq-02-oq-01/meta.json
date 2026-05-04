@@ -19,7 +19,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 193,
+    "lineCount": 790,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -45,7 +45,8 @@
         "description": "Weighted AM-GM inequality (used in PowerMeanCrossZeroOQ)",
         "module": "Mathlib.Analysis.MeanInequalities"
       }
-    ]
+    ],
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The power mean $M_r(x_1,\\ldots,x_n) = \\left(\\sum_i w_i x_i^r\\right)^{1/r}$ is a one-parameter family that interpolates all classical means: $r = -1$ gives the harmonic mean, $r \\to 0$ gives the geometric mean, $r = 1$ gives the arithmetic mean, and $r = 2$ gives the quadratic (RMS) mean. The family was studied by Cauchy (1821) for integer exponents in 'Cours d'analyse', where he proved HM ≤ AM by elementary algebra. The extension to real exponents required analysis: Otto Hölder (1889) and Herman Minkowski (1896) extended the inequality using convexity arguments and what would become Jensen's inequality.\n\nThe complete monotonicity theorem — $M_r \\leq M_s$ for all $r \\leq s$ with $r, s \\neq 0$ — was established rigorously using Jensen's inequality (Johann Jensen, 1906) applied to the convex function $x \\mapsto x^{s/r}$. The three sign cases (both positive, both negative, and crossing zero) require slightly different arguments: the positive and negative cases follow from convexity/concavity of rpow, while the crossing-zero case goes via the GM = $M_0$ bridge (itself a consequence of the AM-GM inequality). The name 'power mean' (or 'Hölder mean') reflects Hölder's contributions.\n\nIn modern Mathlib, the power mean monotonicity is distributed across multiple files organized by the gallery's open-question hierarchy. This file (`PowerMeanMonotoneOQ.lean`) is the unification point, imported by proofs that need the full generality. The gallery architecture — three specialized files feeding one unified file — mirrors the historical development: Cauchy's integer cases, Hölder's extension, and the final unification.",
@@ -151,7 +152,7 @@
       "PowerMeanCrossZero"
     ],
     "namespace": "PowerMeanMonotone",
-    "lineCount": 193,
+    "lineCount": 790,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0,

@@ -48,7 +48,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 145,
-    "assumptions": "4 axioms: harborth_five, kreisel_kurz_seven, exists_four, exists_six. 0 sorries."
+    "assumptions": "4 axioms: harborth_five, kreisel_kurz_seven, exists_four, exists_six. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "This problem asks about integer distance sets in 'general position' - meaning no three points collinear and no four points concyclic. This rules out trivial infinite examples like points on a line or circle.\n\nAnning and Erdős (1945) proved that any set in the plane with no three collinear and all pairwise distances integers must be finite. This fundamental result shows such sets cannot be arbitrarily large.\n\nHarborth showed that n=5 is achievable. Kreisel and Kurz (2008) constructed a 7-point example, which remains the best known. Whether n=8 or larger is possible is open.\n\nRecent work by Greenfeld, Iliopoulou, and Peluse (2024) proved that such sets in [-N,N]² have size O((log N)^C), showing they must be extremely sparse.",

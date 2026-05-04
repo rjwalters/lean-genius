@@ -1,0 +1,140 @@
+[
+  {
+    "id": "roth-theorem-apfree-def",
+    "proofId": "roth-theorem",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 28
+    },
+    "title": "AP-Free Definition on ZMod N",
+    "content": "`APFree A` asserts that `A ⊆ ZMod N` contains no nontrivial 3-term arithmetic progression: there are no $a, d$ with $d \\ne 0$ such that $\\{a, a+d, a+2d\\} \\subseteq A$.\n\nWorking in `ZMod N` (rather than `Finset ℕ`) gives automatic wrap-around arithmetic, simplifying the modular structure. The non-triviality condition `d ≠ 0` excludes the degenerate case where $a = a+d = a+2d$.",
+    "significance": "key",
+    "mathContext": "$A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is *AP-free* (or *3-AP-free*) if $\\nexists a, d \\in \\mathbb{Z}/N\\mathbb{Z}$ with $d \\ne 0$ and $a, a+d, a+2d \\in A$.",
+    "relatedConcepts": [
+      "arithmetic progressions",
+      "Szemerédi's theorem",
+      "ZMod N"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Finset membership"
+    ]
+  },
+  {
+    "id": "roth-theorem-fourier-coeff",
+    "proofId": "roth-theorem",
+    "type": "definition",
+    "range": {
+      "startLine": 98,
+      "endLine": 99
+    },
+    "title": "Fourier Coefficient on ZMod N",
+    "content": "`fourierCoeff A r = Σ_{x∈A} exp(2πi·val(r·x)/N)` computes the Fourier coefficient of the characteristic function of $A$ at frequency $r \\in \\mathbb{Z}/N\\mathbb{Z}$.\n\nThe additive character is `ψ(x) = exp(2πi·val(x)/N)`. The `ZMod.val` function extracts the representative in `{0,...,N-1}`, making the argument to `exp` a real number. The key property is that ψ is a group homomorphism: `ψ(a+b) = ψ(a)·ψ(b)` (proved as `psi_add`).",
+    "significance": "key",
+    "mathContext": "$\\hat{A}(r) = \\sum_{x \\in A} e^{2\\pi i \\cdot \\mathrm{val}(r \\cdot x)/N} = \\sum_{x \\in A} \\psi(rx)$. Note $\\hat{A}(0) = |A|$ and $|\\hat{A}(r)| \\leq |A|$ for all $r$.",
+    "relatedConcepts": [
+      "discrete Fourier transform",
+      "additive characters",
+      "ZMod.val"
+    ],
+    "prerequisites": [
+      "complex exponentials",
+      "group homomorphisms",
+      "Complex.exp"
+    ]
+  },
+  {
+    "id": "roth-theorem-parseval",
+    "proofId": "roth-theorem",
+    "type": "theorem",
+    "range": {
+      "startLine": 354,
+      "endLine": 397
+    },
+    "title": "Parseval's Identity on ZMod N",
+    "content": "`parseval_on_zmod`: $\\sum_{r \\in \\mathbb{Z}/N\\mathbb{Z}} \\|\\hat{A}(r)\\|^2 = |A| \\cdot N$.\n\nThe proof starts from the complex identity $\\sum_r \\hat{A}(r) \\cdot \\overline{\\hat{A}(r)} = |A| \\cdot N$ and extracts the real part. The key step is character orthogonality: $\\sum_r \\psi(r(x-y)) = N \\cdot \\mathbf{1}[x=y]$, which converts the double sum to a delta function, leaving $\\sum_{x,y \\in A} N \\cdot \\mathbf{1}[x=y] = |A| \\cdot N$.",
+    "significance": "critical",
+    "mathContext": "$\\sum_{r=0}^{N-1} |\\hat{A}(r)|^2 = |A| \\cdot N$. In particular, for the nonzero frequencies: $\\sum_{r \\ne 0} |\\hat{A}(r)|^2 = |A| \\cdot N - |A|^2 = |A|(N - |A|)$.",
+    "relatedConcepts": [
+      "Parseval's theorem",
+      "character orthogonality",
+      "energy of a set"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "character orthogonality",
+      "complex inner product"
+    ]
+  },
+  {
+    "id": "roth-theorem-large-coeff",
+    "proofId": "roth-theorem",
+    "type": "theorem",
+    "range": {
+      "startLine": 615,
+      "endLine": 816
+    },
+    "title": "Large Fourier Coefficient from AP-Freeness",
+    "content": "`fourier_large_coefficient`: If $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is AP-free with $|A| \\geq \\delta N$, then $\\exists r \\ne 0$ with $\\|\\hat{A}(r)\\| \\geq \\delta^2 N/2$.\n\nThis is the key analytic step in Roth's proof, formalized in two cases:\n\n**Case 1** ($\\delta^2 N < 2$): The bound $\\delta^2 N/2 < 1$. By Parseval, $\\sum_{r \\ne 0} \\|\\hat{A}(r)\\|^2 = |A|(N-|A|) \\geq N-1$. Since there are $N-1$ nonzero frequencies, some $\\|\\hat{A}(r)\\|^2 \\geq 1 > \\delta^2 N/2$.\n\n**Case 2** ($\\delta^2 N \\geq 2$): If all $\\|\\hat{A}(r)\\| < \\delta^2 N/2$ for $r \\ne 0$, use the AP counting identity $|A| \\cdot N = \\sum_r \\hat{A}(r)^2 \\overline{\\hat{A}(2r)}$ (from AP-freeness: tripleCount = 0). Split the nonzero-frequency sum into T₁ (where $2r \\ne 0$) and T₂ (where $2r = 0$, at most one element). Bound each part using the hypothesis and Parseval, obtaining $|A|^2 - N < \\delta^2 N^2/2$, contradicting $|A| \\geq \\delta N$.",
+    "significance": "critical",
+    "mathContext": "If $|A|/N \\geq \\delta$ and $A$ has no 3-AP, then $\\max_{r \\ne 0} |\\hat{A}(r)| \\geq \\delta^2 N / 2$. This was Roth's key insight (1953).",
+    "relatedConcepts": [
+      "density increment strategy",
+      "Parseval pigeonhole",
+      "AP counting identity"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "Parseval's theorem",
+      "AM-GM inequality"
+    ]
+  },
+  {
+    "id": "roth-theorem-density-increment",
+    "proofId": "roth-theorem",
+    "type": "theorem",
+    "range": {
+      "startLine": 1127,
+      "endLine": 1330
+    },
+    "title": "Density Increment Lemma",
+    "content": "`density_increment_lemma`: If $A$ is AP-free with density $\\delta$ in $\\mathbb{Z}/N\\mathbb{Z}$, then some coset of a subgroup has density $\\geq \\delta + \\delta^2/4$.\n\nProof via Fourier decomposition over cosets: Write $\\hat{A}(r) = \\sum_j (f_j - m) \\psi(rj)$ where $f_j$ is the density of $A$ in the $j$-th coset and $m = |A|/g$ is the mean. The large Fourier coefficient $|\\hat{A}(r)| \\geq \\delta^2 N/2$ (from `fourier_large_coefficient`) forces the sum of deviations $\\sum_j |f_j - m|$ to be large. The zero-sum property $\\sum_j (f_j - m) = 0$ implies the positive deviations sum to $\\geq \\delta^2 N/4$, so some coset achieves density $m + \\delta^2 N/(4g) = \\delta + \\delta^2/4$ (in ZMod(N/g)).",
+    "significance": "key",
+    "mathContext": "Starting from density $\\delta$, each density increment step multiplies the ambient size by $g$ while increasing density by $\\delta^2/4$. After $O(1/\\delta)$ steps, density exceeds 2/3 (trivially containing a 3-AP).",
+    "relatedConcepts": [
+      "density increment strategy",
+      "coset restriction",
+      "Fourier decomposition over cosets"
+    ],
+    "prerequisites": [
+      "coset restriction (cosetRestrict)",
+      "Fourier large coefficient",
+      "triangle inequality for complex norms"
+    ]
+  },
+  {
+    "id": "roth-theorem-main",
+    "proofId": "roth-theorem",
+    "type": "theorem",
+    "range": {
+      "startLine": 1372,
+      "endLine": 1401
+    },
+    "title": "Roth's Theorem: roth_density_bound",
+    "content": "`roth_density_bound`: For every $\\delta > 0$, $\\exists N_0$ such that for all $N \\geq N_0$ and $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ with $|A| \\geq \\delta N$, $A$ contains a 3-AP.\n\nThe proof maps $A$ to the natural numbers via `ZMod.val` (which is injective and maps elements of $A$ to $\\{0, \\ldots, N-1\\}$), verifies `apFree_imp_threeAPFree_val` (AP-free in ZMod N → ThreeAPFree on ℕ), and invokes Mathlib's `roth_3ap_theorem_nat` with the `cornersTheoremBound`.\n\nThe key bridge lemma `apFree_imp_threeAPFree_val` uses the fact that if $\\mathrm{val}(x) + \\mathrm{val}(z) = 2\\,\\mathrm{val}(y)$ in $\\mathbb{N}$, then $x + z = 2y$ in $\\mathbb{Z}/N\\mathbb{Z}$ (since $\\mathrm{val}(x) + \\mathrm{val}(z) < 2N$, no modular reduction occurs).",
+    "significance": "critical",
+    "mathContext": "$r_3(N) = o(N)$ where $r_3(N)$ is the maximum size of a subset of $\\{1, \\ldots, N\\}$ without a 3-AP. Roth (1953) proved $r_3(N) = O(N/\\log\\log N)$; better bounds known since.",
+    "relatedConcepts": [
+      "Szemerédi's theorem",
+      "ThreeAPFree",
+      "roth_3ap_theorem_nat",
+      "cornersTheoremBound"
+    ],
+    "prerequisites": [
+      "Mathlib Roth theorem",
+      "ZMod.val injectivity",
+      "ThreeAPFree definition"
+    ]
+  }
+]

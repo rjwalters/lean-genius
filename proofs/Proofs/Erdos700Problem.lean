@@ -23,6 +23,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Multiplicity
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 /- ## Definitions -/
 
@@ -408,12 +409,19 @@ theorem f_prime_square (p : ℕ) (hp : p.Prime) :
   rw [hmin] at hbound
   exact hbound
 
-/-- Question 2: Are there infinitely many composite n with f(n) > √n?
-    Prime squares achieve f(p²) = p = √(p²), so they give ≥ but not >.
-    Whether strict inequality f(n) > √n occurs for infinitely many
-    composite n remains open. -/
+/-- **Erdős 700 – Question 2 (OPEN)**: There are infinitely many composite n with f(n) > √n.
+    Prime squares achieve f(p²) ≥ p = √(p²) with equality (not strict). n = 30 gives
+    the first example: f(30) = 6 > 5 = ⌊√30⌋. Whether infinitely many such n exist is open. -/
+axiom erdos_700_question2 :
+    Set.Infinite {n : ℕ | ¬n.Prime ∧ 4 ≤ n ∧ Nat.sqrt n < fBinom n}
+
 /- ## Question 3: Upper Bound Conjecture -/
 
-/-- Question 3: Is f(n) ≪_A n/(log n)^A for every A > 0?
-    This would show f(n) is much smaller than n/P(n) for typical n,
-    since P(n) ~ log n for most n by the Hardy-Ramanujan theorem. -/
+/-- **Erdős 700 – Question 3 (OPEN)**: f(n) ≪_A n/(log n)^A for every A > 0.
+    For every A > 0, there exists C > 0 such that f(n) ≤ C · n / (log n)^A
+    for all composite n ≥ 4. This connects to Hardy-Ramanujan: P(n) ~ log n for
+    typical n, so n/P(n) ~ n/log n, and f(n) should be much smaller. [OPEN] -/
+axiom erdos_700_question3 :
+    ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧
+      ∀ n : ℕ, ¬n.Prime → 4 ≤ n →
+        (fBinom n : ℝ) ≤ C * (n : ℝ) / Real.log n ^ A

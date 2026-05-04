@@ -122,7 +122,7 @@
       "startLine": 48,
       "endLine": 54
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Diagonal Differs from Oracle",
     "content": "**Key Lemma**: The diagonal behavior always differs from the oracle's prediction at self-application points.\n\nFor any program code $n$:\n$\\text{diagonal}(H)(n) \\neq H(n, n)$\n\nThis follows immediately from the fact that $\\neg b \\neq b$ for any boolean.",
     "mathContext": "$\\text{diagonal}(H)(n) = \\neg H(n, n) \\neq H(n, n)$\n\nBecause $\\neg \\text{true} = \\text{false} \\neq \\text{true}$\nand $\\neg \\text{false} = \\text{true} \\neq \\text{false}$",
@@ -144,7 +144,7 @@
       "startLine": 48,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No Correct Halting Oracle Exists",
     "content": "**Main Theorem**: For any oracle $H$ and any code $c$ that implements the diagonal behavior, the oracle $H$ cannot correctly predict $c$'s behavior on input $c$.\n\nIf the oracle were correct, then:\n- $H(c, c) = \\text{true}$ would mean $c$ halts on $c$\n- But $c$ implements diagonal, so $c(c) = \\neg H(c,c) = \\text{false}$\n\nContradiction! (And similarly for the false case.)",
     "mathContext": "$\\forall H, \\forall c,$ if $c$ implements $\\text{diagonal}(H)$, then\n$H(c, c) = \\text{true} \\Rightarrow c(c) = \\text{false}$ (contradiction)\n$H(c, c) = \\text{false} \\Rightarrow c(c) = \\text{true}$ (contradiction)",
@@ -166,7 +166,7 @@
       "startLine": 59,
       "endLine": 87
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Case: Oracle Says Halt",
     "content": "**Case 1**: Suppose $H(c, c) = \\text{true}$ (oracle predicts halt).\n\nThen by definition of diagonal:\n$\\text{diagonal}(H)(c) = \\neg H(c, c) = \\text{false}$\n\nBut the hypothesis says $c$ correctly implements diagonal, so $c$ halting means diagonal returns true.\n\nContradiction: $\\text{false} = \\text{true}$.",
     "mathContext": "$H(c,c) = \\text{true}$\n$\\Rightarrow \\text{diagonal}(H)(c) = \\text{false}$\n$\\Rightarrow c(c)$ loops\n$\\Rightarrow H(c,c)$ should be $\\text{false}$ (contradiction)",
@@ -188,7 +188,7 @@
       "startLine": 59,
       "endLine": 87
     },
-    "type": "tactic",
+    "type": "concept",
     "title": "Case: Oracle Says Loop",
     "content": "**Case 2**: Suppose $H(c, c) = \\text{false}$ (oracle predicts loop).\n\nThen by definition of diagonal:\n$\\text{diagonal}(H)(c) = \\neg H(c, c) = \\text{true}$\n\nBut the hypothesis says $c$ correctly implements diagonal, so diagonal returning true means $c$ halts.\n\nContradiction: $H$ said $c$ loops but $c$ halts.",
     "mathContext": "$H(c,c) = \\text{false}$\n$\\Rightarrow \\text{diagonal}(H)(c) = \\text{true}$\n$\\Rightarrow c(c)$ halts\n$\\Rightarrow H(c,c)$ should be $\\text{true}$ (contradiction)",
@@ -210,7 +210,7 @@
       "startLine": 59,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Logical Equivalence Formulation",
     "content": "A cleaner restatement: there is no oracle-code pair $(H, c)$ where the oracle's prediction matches the diagonal behavior in both directions.\n\nThe biconditional $H(c,c) = \\text{true} \\iff \\text{diagonal}(H)(c) = \\text{true}$ cannot hold, because the diagonal is defined to be the negation.",
     "mathContext": "$\\neg\\big[(H(c,c) = \\text{true} \\iff \\text{diagonal}(c) = \\text{true}) \\land$\n$(H(c,c) = \\text{false} \\iff \\text{diagonal}(c) = \\text{false})\\big]$",
@@ -232,7 +232,7 @@
       "startLine": 92,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No Self-Halting Decider",
     "content": "**Alternative Formulation**: No function can correctly determine its own halting behavior on its own encoding.\n\nFor any proposed decider $H : \\mathbb{N} \\to \\text{Bool}$ (where $H(n)$ means \"program $n$ halts on $n$\"), there exists a behavior that $H$ gets wrong everywhere.",
     "mathContext": "$\\forall H : \\mathbb{N} \\to \\text{Bool},$\n$\\exists b : \\mathbb{N} \\to \\text{Bool},$\n$\\forall n : \\mathbb{N},$\n$b(n) \\neq H(n)$",
@@ -254,7 +254,7 @@
       "startLine": 133,
       "endLine": 142
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Halting Problem Undecidable",
     "content": "**Final Summary**: For any halting oracle $H$, the diagonal program provides an explicit counterexample.\n\nThe diagonal behavior exists (we constructed it), and it differs from every oracle prediction at the self-application point. Therefore no oracle can be correct.",
     "mathContext": "$\\forall H : \\text{HaltingOracle},$\n$\\exists b : \\text{Behavior},$\n$\\forall c : \\mathbb{N},$\n$\\neg(H(c,c) = b(c))$\n\nWitness: $b = \\text{diagonal}(H)$",

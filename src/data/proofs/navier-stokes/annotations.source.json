@@ -41,7 +41,7 @@
       "type": "section-doc",
       "contains": "What This File Contains"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Key Numerical Inequality",
     "content": "This is the heart of the depletion mechanism: $\\kappa \\cdot c_{FK} > 2$ proves that geometric depletion (from vortex stretching alignment) overwhelms the potential for concentration. The factor $\\kappa = 4$ comes from the geometry of strain-vorticity interaction.",
     "mathContext": "When $\\kappa \\cdot c_{FK} > 2$, the depletion coefficient $d = 2 - \\kappa \\cdot c_{FK}$ becomes negative, meaning the system naturally depletes rather than concentrates. Numerically: $4 \\times 2.11 = 8.44 > 2$.",
@@ -60,7 +60,7 @@
     "proofId": "navier-stokes-regularity",
     "anchor": {
       "type": "section-doc",
-      "contains": "══════════════════════════════════════════════════"
+      "contains": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
     },
     "type": "definition",
     "title": "Depletion Coefficient",
@@ -83,7 +83,7 @@
       "name": "spectralGap_val",
       "kind": "theorem"
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Bernoulli's Inequality",
     "content": "The classical Bernoulli inequality $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ is proved by induction. This elementary result becomes surprisingly powerful when applied to backward-time energy growth, establishing that solutions cannot remain bounded while growing at a positive rate.",
     "mathContext": "**Bernoulli's inequality**: For $x \\geq -1$ and $n \\in \\mathbb{N}$, $(1+x)^n \\geq 1 + nx$. Proof by induction: base $n=0$ trivial; step uses $(1+x)^{n+1} = (1+x)^n(1+x) \\geq (1+nx)(1+x) = 1+(n+1)x+nx^2 \\geq 1+(n+1)x$. In the enstrophy argument: starting from $E_0 > 0$ with discrete growth step $h = 1/(\\lambda_1)$, after $n$ steps $E_n = E_0(1+\\lambda_1 h)^n = E_0 \\cdot 2^n$. Bernoulli gives $E_n \\geq E_0(1+n)$, providing the linear lower bound needed to show $E_n \\to \\infty$.",
@@ -101,7 +101,7 @@
       "name": "c_FK_pos",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Backward Growth is Unbounded",
     "content": "Using Bernoulli's inequality, this shows that if enstrophy grows at rate $\\lambda_1$ (the spectral gap) in backward time, it must eventually exceed any bound $M$. This is the quantitative engine behind the Liouville theorem: bounded ancient solutions cannot have positive growth rate.",
     "mathContext": "For $E_0 > 0$ and step $h > 0$: $$E_0(1 + \\lambda_1 h)^n \\geq E_0(1 + n\\lambda_1 h) \\to \\infty$$ as $n \\to \\infty$.",
@@ -123,7 +123,7 @@
       "name": "AncientSolution",
       "kind": "structure"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Enstrophy is Monotone in Backward Time",
     "content": "A key technical lemma: for ancient solutions, enstrophy $E(\\tau)$ is monotonically increasing in backward time $\\tau$. Since $dE/d\\tau \\geq 2(\\lambda_1 - C_S)E > 0$ (spectral gap exceeds stretching), $E$ cannot decrease going backward. This monotonicity is the bridge to the Liouville theorem.",
     "mathContext": "The proof applies the mean value theorem: if $E'(\\tau) \\geq 0$ everywhere on $[\\tau_1, \\tau_2]$, then $E(\\tau_2) \\geq E(\\tau_1)$.",
@@ -145,7 +145,7 @@
       "name": "backward_growth_rate",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Liouville Theorem for Bounded Ancient Solutions",
     "content": "The climax of Part III: any bounded ancient solution must be constant. The proof is elegant: $E$ is monotone increasing (backward) and bounded above by $M$, so it must converge to a constant. But a constant non-zero $E$ contradicts the positive growth rate from the spectral gap.",
     "mathContext": "This mirrors classical Liouville theorems: bounded harmonic functions on $\\mathbb{R}^n$ are constant. Here, the spectral gap provides the rigidity that forces constancy.",
@@ -167,7 +167,7 @@
       "type": "doc-comment",
       "contains": "Stability condition"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ESS Theorem: Type I Blowup Impossible",
     "content": "The Escauriaza-Seregin-Sverak theorem (2003) rules out Type I (self-similar) blowup for Navier-Stokes. This proof formalizes it: bounded ancient solutions are constant, constant solutions have zero dissipation, but the spectral gap requires positive dissipation for non-trivial solutions. Contradiction.",
     "mathContext": "Type I blowup would have $|u(x,t)| \\leq C/\\sqrt{T-t}$. The rescaled solution around the blowup would be an ancient solution with bounded enstrophy - now shown impossible.",
@@ -186,7 +186,7 @@
     "proofId": "navier-stokes-regularity",
     "anchor": {
       "type": "doc-comment",
-      "contains": "Diffusion scale: R_diff = √(ν/Ω)"
+      "contains": "Diffusion scale: R_diff = \u221a(\u03bd/\u03a9)"
     },
     "type": "definition",
     "title": "Navier-Stokes Solution Structure",
@@ -248,7 +248,7 @@
       "name": "E'_nonpos_of_stable",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Effective Beta Vanishes",
     "content": "For Type II blowup with $\\alpha > 1$, the effective stretching coefficient $\\beta = C_\\beta(T-t)^{\\alpha-1}$ vanishes as $t \\to T$. This is the key decay: because $\\alpha - 1 > 0$, the power $(T-t)^{\\alpha-1} \\to 0$ faster than stretching can grow.",
     "mathContext": "Given any $\\epsilon > 0$, there exists $t_0$ near $T$ such that $C_\\beta(T-t)^{\\alpha-1} < \\epsilon$ for $t > t_0$. Choose $\\epsilon = c_d/2$ to make stretching negligible compared to dissipation.",
@@ -269,7 +269,7 @@
       "name": "NSAxioms",
       "kind": "structure"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Type II Implies Eventual Stability",
     "content": "The heart of Part VI: for Type II scenarios, there exists $t_0 < T$ such that for all $t > t_0$, we have $S(t) \\leq \\nu P(t)$. Stretching is dominated by dissipation near the potential blowup time! This is the stability that prevents blowup.",
     "mathContext": "The proof chains: $(T-t)^{\\alpha-1} < c_d/(2C_\\beta)$ implies $S \\leq (c_d/2)\\Omega E \\leq (\\nu P)/2 \\leq \\nu P$. Dissipation wins.",
@@ -288,9 +288,9 @@
     "proofId": "navier-stokes-regularity",
     "anchor": {
       "type": "section-doc",
-      "contains": "══════════════════════════════════════════════════"
+      "contains": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Enstrophy Bounded After Stability",
     "content": "Once stability kicks in ($S \\leq \\nu P$), the enstrophy derivative $E' = 2S - 2\\nu P \\leq 0$ becomes non-positive. Enstrophy is non-increasing after $t_0$, so $E(t) \\leq E(t_0)$ for all $t > t_0$. Combined with the early-time bound, $E$ is globally bounded.",
     "mathContext": "By the monotonicity theorem for functions with non-positive derivative on a convex domain, $E(t) \\leq E(t_0)$ for $t \\in [t_0, T)$.",
@@ -311,7 +311,7 @@
       "name": "c_FK_full_pos",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Type II Blowup is Impossible",
     "content": "The culmination of Part VI: Type II blowup cannot occur. The proof: eventual stability gives bounded $E$, BKM criterion converts bounded $E$ to bounded $\\Omega$, but blowup means $\\Omega \\to \\infty$. Contradiction. Combined with ESS (no Type I), **all blowup is impossible**.",
     "mathContext": "This is a proof by contradiction. Assume blowup occurs at time $T$. Then $\\Omega(t) \\to \\infty$ as $t \\to T$. But we proved $\\Omega(t) \\leq C$ for all $t < T$. This contradiction rules out blowup entirely.",

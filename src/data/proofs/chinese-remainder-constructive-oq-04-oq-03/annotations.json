@@ -120,7 +120,7 @@
       "startLine": 140,
       "endLine": 170
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Existence: ed_crt_list_sufficient",
     "content": "**Theorem**: If all pairs satisfy the GCD compatibility condition, a simultaneous solution exists.\n\nProof by list induction:\n1. **Base**: Empty system, $x = 0$ is a trivial solution.\n2. **Step**: Given `(a, c) :: rest`, the IH gives $y$ satisfying the tail. The transfer lemma `gcd_listLcm_dvd_sub` produces $\\gcd(\\mathrm{listLcm}(\\text{rest moduli}), c) \\mid (y - a)$, which is exactly the condition for `ed_crt_sufficient` (two-moduli non-coprime CRT). This yields $x$ with $\\mathrm{listLcm}(\\text{rest}) \\mid (x - y)$ and $c \\mid (x - a)$.\n\nFor tail congruences: $m_j \\mid \\mathrm{listLcm}(\\text{rest})$ (by `dvd_listLcm`), so $m_j \\mid (x - y)$. Combined with $m_j \\mid (y - a_j)$ from the IH, we get $m_j \\mid (x - a_j)$ by linearity.",
     "mathContext": "$\\text{Compatible}(\\text{sys}) \\Longrightarrow \\exists x,\\; \\text{Satisfies}(x, \\text{sys})$.\n\nThe inductive construction mirrors the coprime CRT but uses $\\mathrm{lcm}$ instead of products, and the transfer lemma instead of direct coprimality.",
@@ -144,7 +144,7 @@
       "startLine": 172,
       "endLine": 182
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Necessity: ed_crt_list_necessary",
     "content": "**Theorem**: If a solution exists, pairwise GCD conditions hold.\n\nSimple proof: if $x$ is a solution, then $m_i \\mid (x - a_i)$ and $m_j \\mid (x - a_j)$. Since $\\gcd(m_i, m_j)$ divides both $m_i$ and $m_j$, it divides both $(x - a_i)$ and $(x - a_j)$, hence their difference $(a_i - a_j) = (x - a_j) - (x - a_i)$.",
     "mathContext": "$\\exists x,\\; \\text{Satisfies}(x, \\text{sys}) \\Longrightarrow \\text{Compatible}(\\text{sys})$.\n\nEquivalently: $\\gcd(m_i, m_j) \\mid (x - a_i)$ and $\\gcd(m_i, m_j) \\mid (x - a_j)$ imply $\\gcd(m_i, m_j) \\mid (a_i - a_j)$.",
@@ -167,7 +167,7 @@
       "startLine": 184,
       "endLine": 187
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Full Characterization: ed_crt_list_iff",
     "content": "**Theorem**: A system of congruences over a Euclidean domain is solvable if and only if all pairs satisfy the GCD compatibility condition. This is the complete generalization of the Chinese Remainder Theorem.\n\nThe proof is simply the conjunction of `ed_crt_list_sufficient` and `ed_crt_list_necessary`.",
     "mathContext": "$\\exists x,\\; \\text{Satisfies}(x, \\text{sys}) \\iff \\text{Compatible}(\\text{sys})$.\n\nThis is the definitive characterization of solvability for simultaneous linear congruences.",
@@ -188,7 +188,7 @@
       "startLine": 189,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Uniqueness: ed_crt_list_unique",
     "content": "**Theorem**: Any two solutions agree modulo listLcm of all moduli.\n\nProof: For each modulus $m_j$, both $x$ and $y$ satisfy $m_j \\mid (x - a_j)$ and $m_j \\mid (y - a_j)$, so $m_j \\mid (x - y)$. Since every modulus divides $(x - y)$, their LCM divides $(x - y)$ by the universal property (`listLcm_dvd`).\n\nThis is the tightest possible uniqueness bound. For coprime moduli, $\\mathrm{lcm} = \\prod$, recovering the classical result. For non-coprime moduli, $\\mathrm{lcm} < \\prod$, giving a strictly tighter bound.",
     "mathContext": "$\\text{Satisfies}(x, \\text{sys}) \\land \\text{Satisfies}(y, \\text{sys}) \\Longrightarrow \\mathrm{lcm}(m_1, \\ldots, m_k) \\mid (x - y)$.\n\nFor coprime moduli: $\\mathrm{lcm}(m_1, \\ldots, m_k) = \\prod m_i$, recovering classical CRT uniqueness.",

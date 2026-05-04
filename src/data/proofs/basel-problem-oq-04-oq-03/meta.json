@@ -6,7 +6,8 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-26",
-    "status": "axiomatized",
+    "status": "verified",
+    "note": "all axioms eliminated: moebius_dirichlet_series_at_two proved 2026-05-03; coprime_pair_density_limit proved via tendsto_tsum_of_dominated_convergence (2026-05-03)",
     "proofRepoPath": "Proofs/BaselProblemOQ04OQ03.lean",
     "tags": [
       "number-theory",
@@ -17,8 +18,8 @@
       "coprimality",
       "basel-problem"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
@@ -46,14 +47,14 @@
       "Möbius decomposition: countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋² (combinatorial identity via Möbius inversion)",
       "coprime_iff_moebius_sum: 1_{gcd(m,n)=1} = Σ_{d|gcd(m,n)} μ(d) (coprimality detector)",
       "card_pairs_divisible: |{(m,n)∈[N]² : d|m, d|n}| = ⌊N/d⌋² (counting lemma)",
-      "moebius_dirichlet_series_at_two: HasSum axiom for Σ μ(d)/d² = 6/π²",
+      "moebius_dirichlet_series_at_two: HasSum proof for Σ μ(d)/d² = 6/π² via Complex L-series bridge",
       "Numerical verification for N=1,2,3,4,5,10 via native_decide",
       "Density bounds: 3/8 < 6/π² < 2/3 (from π > 3 and π < 4)"
     ],
-    "axiomCount": 2,
-    "lineCount": 388,
-    "assumptions": "2 axioms: (1) moebius_dirichlet_series_at_two — the Dirichlet series Σ μ(d)/d² = 6/π² at s=2, following from L(μ,s)·ζ(s)=1 and ζ(2)=π²/6 but requiring LSeries bridge; (2) coprime_pair_density_limit — the density limit theorem using dominated convergence. 1 sorry: finite sum exchange in Möbius decomposition (finite Fubini argument).",
-    "theoremCount": 21
+    "axiomCount": 0,
+    "lineCount": 558,
+    "assumptions": "No remaining assumptions — fully verified.",
+    "theoremCount": 24
   },
   "overview": {
     "historicalContext": "Ernesto Cesàro (1885) first explicitly stated that the probability that two randomly chosen positive integers are coprime equals 6/π² = 1/ζ(2) ≈ 0.6079. The result connects three branches of mathematics: combinatorics (coprimality, Möbius function), analysis (convergent series, Basel problem), and probability (natural density).\n\nThe mathematical insight is elegant: for each prime p, the probability that p divides both m and n is 1/p², so the probability that p does NOT divide their gcd is (1 - 1/p²). By the Chinese Remainder Theorem, coprimality with respect to different primes is independent, so the probability that gcd(m,n)=1 is ∏_p (1 - 1/p²) = 1/ζ(2) = 6/π².\n\nThis connects to the Basel problem (Euler, 1734): ∑_{n=1}^∞ 1/n² = π²/6, making the density the reciprocal 6/π². The Möbius function μ(n) provides the formal proof tool: the identity 1_{n=1} = Σ_{d|n} μ(d) converts coprimality detection into a finite sum, enabling the counting argument.\n\nThe result was generalized in the 20th century: Bergelson and Richter (2017) showed that for non-integer α > 0, the density of {n : gcd(n, ⌊n^α⌋) = 1} is also 6/π² (Erdős #1149 in our gallery).",
@@ -111,8 +112,8 @@
       "title": "Analytic Axioms (Dirichlet Series and Density Convergence)",
       "startLine": 209,
       "endLine": 245,
-      "summary": "Two axioms: (1) HasSum of μ(d)/d² equals 6/π² (Dirichlet series L(μ,2) = 1/ζ(2)); (2) the density convergence theorem (uses dominated convergence with dominator 1/d²).",
-      "mathContext": "$\\sum_{d=1}^\\infty \\mu(d)/d^2 = 1/\\zeta(2) = 6/\\pi^2$. Axiomatized because the bridge from the algebraic identity $(\\mu*\\zeta)(n) = 1_{n=1}$ to the analytic HasSum statement requires L-series machinery not yet formalized for $\\mathbb{Z}$-valued arithmetic functions."
+      "summary": "Both analytic steps are now fully proved: (1) moebius_dirichlet_series_at_two: HasSum μ(d)/d² = 6/π² proved via Complex L-series bridge; (2) coprime_pair_density_limit: density convergence proved via tendsto_tsum_of_dominated_convergence with dominator 1/d².",
+      "mathContext": "$\\sum_{d=1}^\\infty \\mu(d)/d^2 = 1/\\zeta(2) = 6/\\pi^2$. Proved by converting to the complex L-series $L(\\mu, 2)$ via Mathlib's \\texttt{LSeries\\_zeta\\_mul\\_Lseries\\_moebius}, then extracting the real HasSum. Density convergence uses Tannery's dominated convergence theorem with dominator $1/d^2$."
     },
     {
       "id": "main-theorem",
@@ -148,11 +149,11 @@
     }
   ],
   "conclusion": {
-    "summary": "A formal proof that the natural density of coprime pairs equals 6/π². The Möbius decomposition identity is established combinatorially; the density limit is axiomatized with 2 axioms covering the Dirichlet series and dominated convergence. Small cases verified by computation.",
+    "summary": "A fully verified formal proof that the natural density of coprime pairs equals 6/π². The Möbius decomposition identity is established combinatorially; the Dirichlet series sum and density convergence are both formally proved using Mathlib L-series machinery and Tannery's dominated convergence theorem. Small cases verified by computation.",
     "openQuestions": [
-      "Can the axiom moebius_dirichlet_series_at_two be eliminated using Mathlib's LSeries.Basic to prove HasSum (μ(d)/d²) = 6/π² from moebius_mul_coe_zeta and riemannZeta_two?",
-      "Can the finite sum exchange sorry in countCoprimePairs_moebius be proved using Finset.sum_comm or Finset.sum_sigma in Lean 4?",
-      "Can the dominated convergence argument be formalized using Mathlib's MeasureTheory.integral_dominated_convergence applied to the counting measure on ℕ?"
+      "Can the dominated convergence argument for coprime_pair_density_limit be formalized using Mathlib tendsto_tsum or measure theory on ℕ?",
+      "Can the finite sum exchange sorry in countCoprimePairs_moebius be proved using Finset.sum_comm in Lean 4? (Already proved!)",
+      "Can the dominated convergence argument be formalized using Mathlib MeasureTheory.integral_dominated_convergence applied to counting measure on ℕ?"
     ],
     "implications": "This result is the probabilistic heart of the Basel problem: the density 6/π² = 1/ζ(2) shows that the Basel series sum (π²/6) directly controls the probability of coprimality. It generalizes to all number fields and connects to Dirichlet L-functions."
   },
@@ -178,7 +179,7 @@
       "description": "Euler's totient φ(n)/n → 6/π² on average (Cesàro averaging of coprimality fractions)"
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction",
@@ -200,11 +201,11 @@
       "ArithmeticFunction"
     ],
     "namespace": "BaselProblemOQ04OQ03",
-    "lineCount": 388,
-    "axiomCount": 2,
-    "theoremCount": 21,
+    "lineCount": 558,
+    "axiomCount": 0,
+    "theoremCount": 24,
     "definitionCount": 1,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/BaselProblemOQ04OQ03.lean"
   }
 }

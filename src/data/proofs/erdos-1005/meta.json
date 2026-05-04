@@ -25,7 +25,8 @@
     "axiomCount": 1,
     "lineCount": 140,
     "assumptions": "1 axiom: longestSimilarRun (definition of longest-similar-run function, axiomatized pending full Farey sequence construction). longestSimilarRun_lower, longestSimilarRun_upper (van Doorn 2025 bounds), erdos_1005_conjecture now proved. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "The Farey sequence $F_n$ — the set of reduced fractions $a/b$ with $0 \\leq a \\leq b \\leq n$ arranged in increasing order — has been studied since the early 19th century (independently by Haros in 1802 and Farey in 1816). Cauchy gave the first proof that adjacent Farey fractions $a/b, c/d$ satisfy $|ad - bc| = 1$, a property connecting them to the modular group $SL_2(\\mathbb{Z})$ and continued fractions. In 1942, Mayer observed that consecutive Farey fractions tend to be 'similarly ordered' — meaning their numerators and denominators move in the same direction, i.e., $(a_k - a_l)(b_k - b_l) \\geq 0$ — and proved that the longest such run $f(n) \\to \\infty$. Erdős (1943) strengthened this to $f(n) \\gg n$, establishing linear growth. For over 80 years, no explicit constants were known. van Doorn (2025) finally established $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$, with the upper bound using the determinant property of adjacent Farey fractions and the lower bound via explicit constructions. van Doorn conjectures $f(n)/n \\to 1/4$, but the factor-of-3 gap between the bounds remains a significant challenge. The problem connects to Stern-Brocot trees, lattice point geometry, and longest chain problems in partial orders.",

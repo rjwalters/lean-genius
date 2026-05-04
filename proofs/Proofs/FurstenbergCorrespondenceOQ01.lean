@@ -66,11 +66,11 @@ theorem shift_measurable : Measurable shift :=
 /-- Iterating the shift n times: shift^[n](x)(k) = x(k + n). -/
 theorem shift_iterate (x : CantorSpace) (n k : ℕ) :
     shift^[n] x k = x (k + n) := by
-  induction n with
-  | zero => simp [Function.iterate_zero]
+  induction n generalizing k with
+  | zero => rfl
   | succ n ih =>
-    simp [Function.iterate_succ', Function.comp_def, shift, ih]
-    ring_nf
+    simp only [Function.iterate_succ', Function.comp_apply, shift, ih]
+    congr 1; omega
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART II: CYLINDER SETS
@@ -98,7 +98,7 @@ theorem cylinder_isClopen (i : ℕ) (b : Bool) : IsClopen (cylinder i b) := by
   · -- Closed: preimage of {b} under continuous projection
     exact isClosed_eq (continuous_apply i) continuous_const
   · -- Open: preimage of {b} under continuous projection, {b} is open in Bool
-    exact isOpen_eq_of_isOpen_singleton (continuous_apply i) (isOpen_discrete {b})
+    exact (isOpen_discrete {b}).preimage (continuous_apply i)
 
 /-- Cylinder sets are measurable. -/
 theorem cylinder_measurableSet (i : ℕ) (b : Bool) :
@@ -142,15 +142,15 @@ noncomputable def setIndicator (A : Set ℕ) : CantorSpace :=
     reading position 0 tells us whether n ∈ A. -/
 theorem shift_indicator_zero (A : Set ℕ) (n : ℕ) :
     shift^[n] (setIndicator A) 0 = true ↔ n ∈ A := by
-  simp [shift_iterate, setIndicator]
-  split <;> simp_all
+  simp only [shift_iterate, setIndicator, zero_add, Set.mem_setOf_eq]
+  split_ifs with h <;> simp [h]
 
 /-- The indicator lies in cylinder n true iff n ∈ A.
     Equivalent to: setIndicator A ∈ T^{-n}(B₀) ↔ n ∈ A. -/
 theorem indicator_mem_cylinder (A : Set ℕ) (n : ℕ) :
     setIndicator A ∈ cylinder n true ↔ n ∈ A := by
-  simp [cylinder, setIndicator]
-  split <;> simp_all
+  simp only [cylinder, Set.mem_setOf_eq, setIndicator]
+  split_ifs with h <;> simp [h]
 
 /-- The indicator lies in B₀ iff 0 ∈ A. -/
 theorem indicator_mem_cylinderZero (A : Set ℕ) :
@@ -220,8 +220,8 @@ theorem orbit_indicator_hits (A : Set ℕ) (N : ℕ) :
     ((Finset.range N).filter (fun n => n ∈ A)).card := by
   congr 1
   ext n
-  simp [cylinderZero, cylinder, shift_iterate, setIndicator]
-  split <;> simp_all
+  simp only [cylinderZero, cylinder, Set.mem_setOf_eq, shift_iterate, setIndicator, zero_add]
+  split_ifs with h <;> simp [h]
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: COMPACTNESS OF CANTOR SPACE
@@ -236,7 +236,7 @@ Cesàro averages has a convergent subsequence.
 -/
 
 /-- Bool is a compact space (it's finite). -/
-instance : CompactSpace Bool := Finite.instCompactSpace
+instance : CompactSpace Bool := inferInstance
 
 /-- Cantor space is compact (Tychonoff's theorem: product of compact spaces). -/
 instance : CompactSpace CantorSpace :=
@@ -488,7 +488,7 @@ private theorem filter_shift_card_le (x : CantorSpace) (N : ℕ) (S : Set Cantor
       ((Finset.range (N + 2)).filter (fun m => shift^[m] x ∈ S)).card ≤
       ((Finset.range (N + 1)).filter (fun m => shift^[m] x ∈ S)).card + 1 := by
     rw [Finset.range_succ, Finset.filter_insert]
-    split
+    split_ifs
     · exact le_of_le_of_eq (Finset.card_insert_le _ _) rfl
     · exact Nat.le_add_right _ _
   linarith

@@ -67,7 +67,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 277,
-    "assumptions": "3 axioms: sierpinski_kurepa (Sierpiński-Kurepa — unconditional 2-color partition result), erdos_under_ch (Erdős — 3-color partition under CH), shelah_consistency (Shelah — failure of 3-color partition is consistent with ZFC). 0 sorries."
+    "assumptions": "3 axioms: sierpinski_kurepa (Sierpiński-Kurepa — unconditional 2-color partition result), erdos_under_ch (Erdős — 3-color partition under CH), shelah_consistency (Shelah — failure of 3-color partition is consistent with ZFC). 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #474: Coloring ℝ² for Uncountable Sets**\n\nA foundational problem in infinite Ramsey theory posed by Erdős in 1954, asking when the continuum can be 3-colored so that every uncountable set's pairs realize all colors. Erdős offered a $100 prize for resolving the problem without the Continuum Hypothesis.\n\n**Key History:**\n- 1954: Erdős posed the problem and offered $100\n- Sierpinski and Kurepa independently proved the 2-color case always works\n- Erdős proved the 3-color case holds under CH (c = ℵ₁)\n- Shelah showed a negative answer is consistent with ZFC, though his model requires a very large continuum (much larger than ℵ₂)\n\n**Mathematical Setting:**\nIn partition calculus notation, the question is: When does 2^ℵ₀ → (ℵ₁)³₂ hold? This sits at the intersection of cardinal arithmetic and Ramsey theory, where independence phenomena from ZFC arise naturally. The key open question is whether failure is consistent with c = ℵ₂.",

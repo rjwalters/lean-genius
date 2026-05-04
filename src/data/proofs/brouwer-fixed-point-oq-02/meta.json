@@ -50,10 +50,11 @@
     "axiomCount": 0,
     "lineCount": 391,
     "assumptions": "0 axioms, 0 sorries. 1D fixed point existence uses Mathlib's exists_mem_Icc_isFixedPt_of_mapsTo (Brouwer FPT).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13
   },
   "overview": {
-    "historicalContext": "The computational complexity of finding fixed points interweaves topology, analysis, and computational complexity theory across a century of development. L.E.J. Brouwer (1911) proved existence non-constructively using degree theory, sparking foundational debates about constructive mathematics \u2014 Brouwer himself later rejected his own proof's methods. Stefan Banach (1922) provided the first constructive algorithm: iterate a contraction and converge geometrically, yielding explicit error bounds. Emanuel Sperner (1928) supplied the combinatorial foundation with his simplex labeling lemma, which Knaster, Kuratowski, and Mazurkiewicz used to give an independent proof of Brouwer's theorem. The complexity-theoretic revolution came with Christos Papadimitriou's introduction of PPAD (1994), identifying a class of total search problems whose totality follows from the 'parity argument on directed graphs.' Xi Chen and Xiaotie Deng (2009) proved that computing approximate Brouwer fixed points is PPAD-complete in dimensions $\\geq 2$, resolving a major open question. In 1D, however, the bisection method achieves optimal $O(\\log(1/\\varepsilon))$ query complexity \u2014 a dramatic complexity gap between one and higher dimensions. John Nash's proof (1950) that every finite game has an equilibrium relies on Brouwer's theorem, and the PPAD-completeness of Nash equilibrium computation (Daskalakis-Goldberg-Papadimitriou 2009) is a direct descendant of this line of work.",
+    "historicalContext": "The computational complexity of finding fixed points interweaves topology, analysis, and computational complexity theory across a century of development. L.E.J. Brouwer (1911) proved existence non-constructively using degree theory, sparking foundational debates about constructive mathematics — Brouwer himself later rejected his own proof's methods. Stefan Banach (1922) provided the first constructive algorithm: iterate a contraction and converge geometrically, yielding explicit error bounds. Emanuel Sperner (1928) supplied the combinatorial foundation with his simplex labeling lemma, which Knaster, Kuratowski, and Mazurkiewicz used to give an independent proof of Brouwer's theorem. The complexity-theoretic revolution came with Christos Papadimitriou's introduction of PPAD (1994), identifying a class of total search problems whose totality follows from the 'parity argument on directed graphs.' Xi Chen and Xiaotie Deng (2009) proved that computing approximate Brouwer fixed points is PPAD-complete in dimensions $\\geq 2$, resolving a major open question. In 1D, however, the bisection method achieves optimal $O(\\log(1/\\varepsilon))$ query complexity — a dramatic complexity gap between one and higher dimensions. John Nash's proof (1950) that every finite game has an equilibrium relies on Brouwer's theorem, and the PPAD-completeness of Nash equilibrium computation (Daskalakis-Goldberg-Papadimitriou 2009) is a direct descendant of this line of work.",
     "problemStatement": "OQ-02: What is the computational complexity of finding approximate fixed points?\n\nGiven a continuous function f: [0,1]^n -> [0,1]^n and epsilon > 0, find x such that |f(x) - x| <= epsilon.\n\nIn 1D: O(log 1/epsilon) queries suffice (binary search) and are necessary.\nIn >= 2D: The problem is PPAD-complete (Chen-Deng 2009).",
     "text": "A comprehensive formalization of the computational complexity landscape for finding approximate fixed points. Covers binary search optimality (O(log 1/epsilon) in 1D), contraction mapping convergence with explicit error bounds, PPAD structure and solution existence via pigeonhole, Sperner's lemma, fixed point stability under perturbation, and Krasnoselskii-Mann averaged iteration.",
     "proofStrategy": "The formalization builds the complexity picture from multiple angles:\n\n1. **Existence** (IVT): Continuous [0,1] -> [0,1] functions have fixed points\n2. **Binary search**: Bisection narrows sign-change intervals by 1/2^n, giving O(log 1/epsilon)\n3. **Contraction mapping**: L-Lipschitz maps with L < 1 converge geometrically with explicit error bounds\n4. **PPAD structure**: Defined PPAD instances with source/sink/path structure, proved solutions exist via pigeonhole\n5. **Sperner's lemma**: 1D case connecting combinatorial and analytic perspectives\n6. **Stability**: Fixed points are Lipschitz-continuous in the map (delta/(1-L) perturbation bound)\n7. **Averaged iteration**: Krasnoselskii-Mann damping with Lipschitz constant (1-t(1-L))",
@@ -149,27 +150,27 @@
     {
       "targetId": "brouwer-fixed-point",
       "relationship": "extends",
-      "description": "Base Brouwer fixed-point theorem \u2014 this file extends it by formalizing the computational complexity landscape: binary search optimality, contraction convergence rates, PPAD structure, and stability under perturbation"
+      "description": "Base Brouwer fixed-point theorem — this file extends it by formalizing the computational complexity landscape: binary search optimality, contraction convergence rates, PPAD structure, and stability under perturbation"
     },
     {
       "targetId": "borsuk-ulam",
       "relationship": "related",
-      "description": "Borsuk-Ulam implies Brouwer FP via the no-retraction theorem \u2014 both are foundational topological fixed-point results, and this file's PPAD analysis connects to the computational complexity of BU-type search problems"
+      "description": "Borsuk-Ulam implies Brouwer FP via the no-retraction theorem — both are foundational topological fixed-point results, and this file's PPAD analysis connects to the computational complexity of BU-type search problems"
     },
     {
       "targetId": "intermediate-value-theorem",
       "relationship": "uses",
-      "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo \u2014 the binary search algorithm in this file exploits IVT's constructive nature to achieve O(log 1/\u03b5) convergence"
+      "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo — the binary search algorithm in this file exploits IVT's constructive nature to achieve O(log 1/ε) convergence"
     },
     {
       "targetId": "schauder-fixed-point",
       "relationship": "related",
-      "description": "Schauder extends Brouwer FP to infinite dimensions \u2014 this file's contraction mapping and Krasnoselskii-Mann iteration analyses connect to Schauder's broader fixed-point framework"
+      "description": "Schauder extends Brouwer FP to infinite dimensions — this file's contraction mapping and Krasnoselskii-Mann iteration analyses connect to Schauder's broader fixed-point framework"
     },
     {
       "targetId": "borsuk-ulam-oq-03",
       "relationship": "related",
-      "description": "BU-OQ-03 proves the axiom reduction BU \u2192 no-retraction \u2192 Brouwer FP \u2014 this file explores the computational side of the same fixed-point landscape"
+      "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the same fixed-point landscape"
     }
   ],
   "references": [
@@ -177,35 +178,35 @@
       "authors": "Chen, X. and Deng, X.",
       "title": "Settling the complexity of two-player Nash equilibrium",
       "year": "2006",
-      "venue": "Proceedings of the 47th Annual IEEE Symposium on Foundations of Computer Science (FOCS), 261\u2013272",
-      "note": "Proves PPAD-completeness of 2-player Nash equilibrium; the techniques extend to PPAD-completeness of Brouwer approximate fixed points in \u22652 dimensions"
+      "venue": "Proceedings of the 47th Annual IEEE Symposium on Foundations of Computer Science (FOCS), 261–272",
+      "note": "Proves PPAD-completeness of 2-player Nash equilibrium; the techniques extend to PPAD-completeness of Brouwer approximate fixed points in ≥2 dimensions"
     },
     {
       "authors": "Papadimitriou, C. H.",
       "title": "On the complexity of the parity argument and other inefficient proofs of existence",
       "year": "1994",
-      "venue": "Journal of Computer and System Sciences, 48(3), 498\u2013532",
+      "venue": "Journal of Computer and System Sciences, 48(3), 498–532",
       "note": "Introduces the PPAD complexity class capturing the computational hardness of path-following arguments, foundational to this formalization"
     },
     {
       "authors": "Banach, S.",
-      "title": "Sur les op\u00e9rations dans les ensembles abstraits et leur application aux \u00e9quations int\u00e9grales",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
       "year": "1922",
-      "venue": "Fundamenta Mathematicae, 3, 133\u2013181",
+      "venue": "Fundamenta Mathematicae, 3, 133–181",
       "note": "Original proof of the Banach contraction mapping theorem with geometric convergence, formalized here as contraction_convergence"
     },
     {
       "authors": "Sperner, E.",
-      "title": "Neuer Beweis f\u00fcr die Invarianz der Dimensionszahl und des Gebietes",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
       "year": "1928",
-      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universit\u00e4t Hamburg, 6, 265\u2013272",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg, 6, 265–272",
       "note": "Sperner's lemma on simplex labelings, used here in the 1D discrete IVT and as the combinatorial foundation for Brouwer's theorem"
     },
     {
       "authors": "Daskalakis, C., Goldberg, P. W., and Papadimitriou, C. H.",
       "title": "The complexity of computing a Nash equilibrium",
       "year": "2009",
-      "venue": "SIAM Journal on Computing, 39(1), 195\u2013259",
+      "venue": "SIAM Journal on Computing, 39(1), 195–259",
       "note": "Proves PPAD-completeness of Nash equilibrium via a Brouwer fixed-point reduction, directly connected to this file's PPAD formalization"
     }
   ],

@@ -39,7 +39,8 @@
       "Each step proved independently with explicit algebraic proofs",
       "Equality conditions: all means coincide when a = b",
       "Transitivity corollaries: HM ≤ AM, GM ≤ max, min ≤ AM"
-    ]
+    ],
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "The power mean inequality has roots stretching back centuries. The AM-GM inequality for two variables was known to ancient Greek mathematicians and appears in Euclid's Elements in geometric form. The harmonic mean was studied by Pythagoras and the Pythagoreans as part of their theory of musical ratios. Cauchy gave the first rigorous proof of the general n-variable AM-GM inequality in 1821 using his celebrated forward-backward induction. The systematic study of the family of power means $M_p(a,b) = ((a^p+b^p)/2)^{1/p}$ was developed in the early 20th century, with the complete monotonicity result $M_{p_1} \\leq M_{p_2}$ for $p_1 \\leq p_2$ established in the landmark 1934 book Inequalities by Hardy, Littlewood, and Pólya. The quadratic mean (root-mean-square) gained practical prominence in physics and engineering as the natural measure of signal power. This Lean formalization captures the $n=2$ case of the full chain $\\min = M_{-\\infty} \\leq M_{-1} \\leq M_0 \\leq M_1 \\leq M_2 \\leq M_{+\\infty} = \\max$, providing a machine-verified foundation for these classical results.",

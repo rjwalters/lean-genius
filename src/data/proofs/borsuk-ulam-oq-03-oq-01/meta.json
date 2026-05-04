@@ -58,7 +58,8 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
     "lineCount": 1163,
-    "assumptions": "1 axiom (Tucker's lemma in 2D axiomatized). No sorries."
+    "assumptions": "1 axiom (Tucker's lemma in 2D axiomatized). No sorries.",
+    "theoremCount": 47
   },
   "overview": {
     "historicalContext": "**Tucker's Lemma and the 1D Borsuk-Ulam Theorem**\n\nTucker's lemma (1946) is the combinatorial analog of Borsuk-Ulam: any signed labeling of a triangulated interval with antipodal boundary condition must have a complementary edge (adjacent vertices with opposite labels). In 1D, Tucker's lemma and BU are equivalent.\n\n**Important caveat**: On the interval [-1,1], many Borsuk-Ulam-style statements are degenerate because x = 0 is self-antipodal (0 = -0). Results like \"there exist x, y with f(x) = f(y) and x + y = 0\" are trivially satisfied by x = y = 0, and do not extract hidden structure from any existence theorem. The genuinely nontrivial Borsuk-Ulam topology begins on S^1, where the antipodal map has no fixed points.\n\nThis file's strongest content is the Tucker 1D proof via discrete IVT, the circle BU proof, and the sign-change parity infrastructure. The interval-level quantitative bounds (Lipschitz, oscillation, bisection) are correct but elementary consequences of continuity and compactness, not deep Borsuk-Ulam phenomena.\n\nThe higher-dimensional Tucker's lemma (triangulated disks B^n with labels from {+-1,...,+-n}) implies the full n-dimensional Borsuk-Ulam theorem. The 2D and n-D cases are axiomatized here.",
@@ -230,12 +231,12 @@
     {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
-      "description": "The continuous IVT is the analytic foundation for circle Borsuk-Ulam proved here: g(0) and g(\u03c0) have opposite signs, so IVT gives \u03b8 with g(\u03b8)=0, i.e., an antipodal agreement point on S\u00b9"
+      "description": "The continuous IVT is the analytic foundation for circle Borsuk-Ulam proved here: g(0) and g(π) have opposite signs, so IVT gives θ with g(θ)=0, i.e., an antipodal agreement point on S¹"
     },
     {
       "targetId": "borsuk-ulam",
       "relationship": "ancestor",
-      "description": "The root Borsuk-Ulam formalization \u2014 this entry provides the 1D combinatorial infrastructure (Tucker's lemma, discrete IVT) that forms the base case for inductive approaches to the full n-dimensional theorem"
+      "description": "The root Borsuk-Ulam formalization — this entry provides the 1D combinatorial infrastructure (Tucker's lemma, discrete IVT) that forms the base case for inductive approaches to the full n-dimensional theorem"
     }
   ],
   "sorries": 0

@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "k-Moduli CRT Extension: From 2 to k Non-Coprime Moduli",
-    "content": "The parent proof (OQ01) established three efficiency improvements for 2 non-coprime moduli: LCM bound, Bézout reduction, and Garner decomposition. This file answers the natural follow-up: does the theory extend to k arbitrary moduli?\n\nThe answer is yes, and the key insight is that Finset.lcm in ℤ's GCDMonoid provides the k-fold LCM universality property out of the box. The main theorem (kModuli_periodic) states that k congruences y₁ ≡ y₂ [ZMOD mᵢ] for all i ∈ s are equivalent to kLCM(s) | (y₁ - y₂).\n\nFour main results: (1) LCM periodicity, (2) canonical form in [0, kLCM), (3) kLCM ≤ ∏mᵢ with strict inequality when moduli share factors, (4) iterative construction reducing k+1 to k + one 2-modulus step.",
+    "content": "The parent proof (OQ01) established three efficiency improvements for 2 non-coprime moduli: LCM bound, B\u00e9zout reduction, and Garner decomposition. This file answers the natural follow-up: does the theory extend to k arbitrary moduli?\n\nThe answer is yes, and the key insight is that Finset.lcm in \u2124's GCDMonoid provides the k-fold LCM universality property out of the box. The main theorem (kModuli_periodic) states that k congruences y\u2081 \u2261 y\u2082 [ZMOD m\u1d62] for all i \u2208 s are equivalent to kLCM(s) | (y\u2081 - y\u2082).\n\nFour main results: (1) LCM periodicity, (2) canonical form in [0, kLCM), (3) kLCM \u2264 \u220fm\u1d62 with strict inequality when moduli share factors, (4) iterative construction reducing k+1 to k + one 2-modulus step.",
     "mathContext": "For $k$ congruences $x \\equiv a_i \\pmod{m_i}$, $i \\in s$: solutions form a coset of $L\\mathbb{Z}$ where $L = \\text{lcm}_{i \\in s}(m_i)$. The LCM satisfies $L \\le \\prod m_i$ with equality iff moduli are pairwise coprime.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -32,8 +32,8 @@
       "endLine": 64
     },
     "type": "definition",
-    "title": "kLCM: The k-Moduli LCM via ℤ GCDMonoid",
-    "content": "The kLCM is defined as Finset.lcm s (↑· : ℕ → ℤ), computing the LCM of all moduli in the finite set s, working in ℤ's GCDMonoid instance.\n\nThis definition immediately inherits Finset.dvd_lcm (each modulus divides the kLCM) and Finset.lcm_dvd (kLCM is the least such). The two together give kLCM_dvd_iff: kLCM(s) | d ↔ ∀ m ∈ s, m | d — the universal property of LCM.\n\nBase cases kLCM_empty = 1 and kLCM_singleton m = m follow by simp. kLCM_dvd_prod (kLCM divides the product) follows from dvd_prod_of_mem.",
+    "title": "kLCM: The k-Moduli LCM via \u2124 GCDMonoid",
+    "content": "The kLCM is defined as Finset.lcm s (\u2191\u00b7 : \u2115 \u2192 \u2124), computing the LCM of all moduli in the finite set s, working in \u2124's GCDMonoid instance.\n\nThis definition immediately inherits Finset.dvd_lcm (each modulus divides the kLCM) and Finset.lcm_dvd (kLCM is the least such). The two together give kLCM_dvd_iff: kLCM(s) | d \u2194 \u2200 m \u2208 s, m | d \u2014 the universal property of LCM.\n\nBase cases kLCM_empty = 1 and kLCM_singleton m = m follow by simp. kLCM_dvd_prod (kLCM divides the product) follows from dvd_prod_of_mem.",
     "mathContext": "$L = \\text{lcm}_{m \\in s}(m)$ satisfies: $m \\mid L$ for all $m \\in s$, and if $m \\mid d$ for all $m \\in s$ then $L \\mid d$. Computed via Finset.lcm in $\\mathbb{Z}$'s GCDMonoid.",
     "significance": "key",
     "relatedConcepts": [
@@ -49,9 +49,9 @@
       "startLine": 66,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Theorem: k-Moduli Periodicity",
-    "content": "The central result: k congruences y₁ ≡ y₂ [ZMOD mᵢ] for all i ∈ s are equivalent to kLCM(s) | (y₁ - y₂).\n\nThe proof is remarkably short: simp_rw unfolds each Int.ModEq as divisibility (Int.modEq_iff_dvd), then kLCM_dvd_iff.symm provides the equivalence between 'all moduli divide the difference' and 'the kLCM divides the difference'.\n\nThe corollary solution_coset shows that if x₀ and y both satisfy k congruences, then kLCM(s) | (y - x₀) — solutions form a coset.",
+    "content": "The central result: k congruences y\u2081 \u2261 y\u2082 [ZMOD m\u1d62] for all i \u2208 s are equivalent to kLCM(s) | (y\u2081 - y\u2082).\n\nThe proof is remarkably short: simp_rw unfolds each Int.ModEq as divisibility (Int.modEq_iff_dvd), then kLCM_dvd_iff.symm provides the equivalence between 'all moduli divide the difference' and 'the kLCM divides the difference'.\n\nThe corollary solution_coset shows that if x\u2080 and y both satisfy k congruences, then kLCM(s) | (y - x\u2080) \u2014 solutions form a coset.",
     "mathContext": "$\\forall m \\in s,\\, y_1 \\equiv y_2 \\pmod{m} \\iff L \\mid (y_1 - y_2)$ where $L = \\text{lcm}(s)$. Proof: each congruence is $m \\mid (y_1 - y_2)$; conjunction over $s$ is $L \\mid (y_1 - y_2)$ by LCM universality.",
     "significance": "key",
     "relatedConcepts": [
@@ -67,9 +67,9 @@
       "startLine": 94,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Canonical Form: Reduction to [0, kLCM)",
-    "content": "Any solution y can be reduced to y % kLCM(s) ∈ [0, kLCM(s)), and this canonical representative still satisfies all k congruences.\n\nThe proof uses the identity y = y%L + L*(y/L) (Int.emod_add_ediv), so y - y%L = L*(y/L) is divisible by L, hence by each mᵢ (since mᵢ | L). Thus y%L ≡ y [ZMOD mᵢ].\n\nPositivity results kLCM_nonneg and kLCM_pos are proved using Finset.lcm_nonneg and dvd_kLCM respectively.",
+    "content": "Any solution y can be reduced to y % kLCM(s) \u2208 [0, kLCM(s)), and this canonical representative still satisfies all k congruences.\n\nThe proof uses the identity y = y%L + L*(y/L) (Int.emod_add_ediv), so y - y%L = L*(y/L) is divisible by L, hence by each m\u1d62 (since m\u1d62 | L). Thus y%L \u2261 y [ZMOD m\u1d62].\n\nPositivity results kLCM_nonneg and kLCM_pos are proved using Finset.lcm_nonneg and dvd_kLCM respectively.",
     "mathContext": "$y' = y \\bmod L \\in [0, L)$ satisfies all congruences: $y' \\equiv y \\pmod{m_i}$ since $m_i \\mid L \\mid (y - y')$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -85,9 +85,9 @@
       "startLine": 136,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Efficiency: kLCM vs Product Bound",
-    "content": "Two efficiency bounds:\n\n1. kLCM_le_prod: kLCM(s) ≤ ∏ᵢ∈s mᵢ. Proof: kLCM divides the product (kLCM_dvd_prod) and the product is positive, so kLCM ≤ product (Int.le_of_dvd).\n\n2. kLCM_lt_prod_when_gcd_gt_one: when two moduli m,n have gcd > 1, kLCM({m,n}) < m*n. This delegates to lcm_lt_mul_of_gcd_gt_one from the parent proof (ChineseRemainderNonCoprimeOQ01).\n\nThe efficiency gain is the ratio ∏mᵢ / kLCM(s), which equals the product of pairwise gcd contributions.",
+    "content": "Two efficiency bounds:\n\n1. kLCM_le_prod: kLCM(s) \u2264 \u220f\u1d62\u2208s m\u1d62. Proof: kLCM divides the product (kLCM_dvd_prod) and the product is positive, so kLCM \u2264 product (Int.le_of_dvd).\n\n2. kLCM_lt_prod_when_gcd_gt_one: when two moduli m,n have gcd > 1, kLCM({m,n}) < m*n. This delegates to lcm_lt_mul_of_gcd_gt_one from the parent proof (ChineseRemainderNonCoprimeOQ01).\n\nThe efficiency gain is the ratio \u220fm\u1d62 / kLCM(s), which equals the product of pairwise gcd contributions.",
     "mathContext": "$L \\le \\prod m_i$ always. When $\\gcd(m_i, m_j) > 1$ for some pair: $L < \\prod m_i$ strictly. Example: $\\text{lcm}(4,6,10) = 60 < 240 = 4 \\cdot 6 \\cdot 10$.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,9 +103,9 @@
       "startLine": 164,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Iterative Construction: k+1 Reduces to k + One 2-Modulus Step",
-    "content": "kModuli_iterative: if x₀ solves all congruences for s with period L = kLCM(s), then solving for s ∪ {m} is equivalent to the 2-modulus problem: y ≡ a_m [ZMOD m] and y ≡ x₀ [ZMOD L].\n\nForward direction: from the full k+1 solution, extract the m-th congruence directly and derive y ≡ x₀ [ZMOD L] via kModuli_periodic.\n\nBackward direction: from y ≡ x₀ [ZMOD L], chain dvd_trans through kLCM to recover each individual congruence y ≡ aₙ [ZMOD n] for n ∈ s.\n\nThis corresponds directly to the standard iterative CRT algorithm.",
+    "content": "kModuli_iterative: if x\u2080 solves all congruences for s with period L = kLCM(s), then solving for s \u222a {m} is equivalent to the 2-modulus problem: y \u2261 a_m [ZMOD m] and y \u2261 x\u2080 [ZMOD L].\n\nForward direction: from the full k+1 solution, extract the m-th congruence directly and derive y \u2261 x\u2080 [ZMOD L] via kModuli_periodic.\n\nBackward direction: from y \u2261 x\u2080 [ZMOD L], chain dvd_trans through kLCM to recover each individual congruence y \u2261 a\u2099 [ZMOD n] for n \u2208 s.\n\nThis corresponds directly to the standard iterative CRT algorithm.",
     "mathContext": "If $x_0$ solves $\\{x \\equiv a_i \\pmod{m_i}\\}_{i \\in s}$, then solving for $s \\cup \\{m\\}$ reduces to: $y \\equiv a_m \\pmod{m}$ and $y \\equiv x_0 \\pmod{L}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -121,9 +121,9 @@
       "startLine": 199,
       "endLine": 215
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Necessary Condition: GCD Compatibility",
-    "content": "kModuli_necessary: if x₀ solves all k congruences, then for every pair m, n ∈ s: gcd(m,n) | (a_m - a_n).\n\nProof: from x₀ ≡ a_m [ZMOD m] and x₀ ≡ a_n [ZMOD n], we get m | (x₀ - a_m) and n | (x₀ - a_n). Since gcd(m,n) divides both m and n, it divides both (x₀ - a_m) and (x₀ - a_n), hence their difference (a_m - a_n).",
+    "content": "kModuli_necessary: if x\u2080 solves all k congruences, then for every pair m, n \u2208 s: gcd(m,n) | (a_m - a_n).\n\nProof: from x\u2080 \u2261 a_m [ZMOD m] and x\u2080 \u2261 a_n [ZMOD n], we get m | (x\u2080 - a_m) and n | (x\u2080 - a_n). Since gcd(m,n) divides both m and n, it divides both (x\u2080 - a_m) and (x\u2080 - a_n), hence their difference (a_m - a_n).",
     "mathContext": "Necessary condition: $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all $i, j$. This is the k-moduli analogue of the classical 2-moduli solvability condition.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -141,7 +141,7 @@
     },
     "type": "concept",
     "title": "Concrete Examples: Efficiency Gains and Solutions",
-    "content": "Three concrete examples verified by native_decide and decide:\n\n1. kLCM({4,6,10}) = 60 < 240 = 4*6*10 (efficiency gain of 4)\n2. Solution x = 21 satisfies 21 ≡ 1 [4], 21 ≡ 3 [6], 21 ≡ 1 [10] with verified compatibility conditions\n3. kLCM({6,10,15}) = 30 < 900 = 6*10*15 (efficiency gain of 30)\n4. kLCM({2,3,5}) = 30 = 2*3*5 (coprime case: no efficiency gain)",
+    "content": "Three concrete examples verified by native_decide and decide:\n\n1. kLCM({4,6,10}) = 60 < 240 = 4*6*10 (efficiency gain of 4)\n2. Solution x = 21 satisfies 21 \u2261 1 [4], 21 \u2261 3 [6], 21 \u2261 1 [10] with verified compatibility conditions\n3. kLCM({6,10,15}) = 30 < 900 = 6*10*15 (efficiency gain of 30)\n4. kLCM({2,3,5}) = 30 = 2*3*5 (coprime case: no efficiency gain)",
     "mathContext": "$\\text{lcm}(4,6,10) = 60$, $\\text{lcm}(6,10,15) = 30$. The solution $x = 21$ satisfies $21 \\equiv 1 \\pmod{4}$, $21 \\equiv 3 \\pmod{6}$, $21 \\equiv 1 \\pmod{10}$.",
     "significance": "supporting",
     "relatedConcepts": [
