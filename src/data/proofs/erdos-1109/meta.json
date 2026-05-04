@@ -76,7 +76,7 @@
     "axiomCount": 2,
     "lineCount": 3713,
     "assumptions": "2 axioms: konyagin_lower_2004, konyagin_upper_2004. 0 sorries.",
-    "theoremCount": 151
+    "theoremCount": 92
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1109: Squarefree Sumsets**\n\nThis problem combines additive combinatorics with multiplicative number theory. It asks: how large can a set be if all its pairwise sums avoid any square factor?\n\n**Historical Development:**\n- **Erdős-Sárközy (1987):** First studied the problem, proving log N ≪ f(N) ≪ N^{3/4} log N. They conjectured the lower bound is closer to the truth.\n- **Sárközy (1992):** Extended to A+B and k-power-free sumsets.\n- **Gyarmati (2001):** Alternative proof of log N lower bound with new A+B results.\n- **Konyagin (2004):** Current best bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}.\n\nThe problem connects to the infinite analogue (#1103) and has applications in understanding the structure of squarefree numbers.",
@@ -272,7 +272,7 @@
     "namespace": "Erdos1109",
     "lineCount": 3713,
     "axiomCount": 2,
-    "theoremCount": 151,
+    "theoremCount": 92,
     "definitionCount": 8,
     "path": "Proofs/Erdos1109Problem.lean",
     "sorries": 0
