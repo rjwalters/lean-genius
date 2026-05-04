@@ -29,9 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved turan_triangle from Mathlib (8→7 axioms). Remaining axioms depend on isPlanar (sorry) or deep theorems. Kuratowski formalization in Mathlib NOT feasible: no graph minor/subdivision infrastructure.",
+    "progressSummary": "PROGRESS: Converted K4_saturated_planar axiom to theorem (3 axioms remain). 1 sorry for edge count (⊤ on 4-element type has 6 edges) submitted to Aristotle. Remaining: cyclePlus2K1_saturated_planar (hard), erdos_construction_exists (very hard), simonovits_theorem (open).",
     "builtItems": [
-      "Proved turan_triangle theorem in Erdos1019Problem.lean:118-135 (from Mathlib Turán bound)"
+      "Proved turan_triangle theorem in Erdos1019Problem.lean:118-135 (from Mathlib Turán bound)",
+      "theorem K4_saturated_planar in Erdos1019Problem.lean (converted from axiom, 1 sorry remains)",
+      "Erdos1019Aristotle.lean companion file with top graph edge count targets for Aristotle"
     ],
     "insights": [
       "Mathlib has no graph minor definitions (SimpleGraph.Minor does not exist)",
@@ -44,7 +46,11 @@
       "turan_triangle axiom proved from Mathlib CliqueFree.card_edgeFinset_le (8→7 axioms)",
       "Remaining 7 axioms all depend on isPlanar or deep results (Simonovits, Erdős construction)",
       "bipartite_not_saturated sorry blocked on isPlanar sorry — K_{4,6} case requires knowing K_{4,6} is not planar",
-      "FourColorTheorem.lean has a Planar class based on edge bound but this is necessary-not-sufficient for planarity"
+      "FourColorTheorem.lean has a Planar class based on edge bound but this is necessary-not-sufficient for planarity",
+      "Converted K4_saturated_planar from axiom to theorem (4→3 axiom declarations)",
+      "Proof structure: heq (inducedSubgraph = ⊤ on clique), no_minor_of_card_lt for planarity, omega for card≥3",
+      "Remaining sorry: (⊤ : SimpleGraph ↥S).edgeFinset.card = 6 for Fintype.card ↥S = 4",
+      "Aristotle companion Erdos1019Aristotle.lean created with top_edgeFinset_card lemmas"
     ],
     "mathlibGaps": [],
     "nextSteps": [

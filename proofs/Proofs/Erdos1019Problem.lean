@@ -223,11 +223,48 @@ def containsK4 (G : SimpleGraph V) : Prop :=
   ∃ S : Finset V, S.card = 4 ∧ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v
 
 /-- Any 4-clique in a graph induces a saturated planar subgraph.
-    K₄ is a triangulation: 6 = 3·4 - 6 edges. -/
-axiom K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
+    K₄ is a triangulation: 6 = 3·4 - 6 edges.
+    Planarity via Wagner: 4 < 5 (no K₅ minor) and 4 < 6 (no K₃,₃ minor).
+    Edge count: C(4,2) = 6 = 3·4 - 6. -/
+theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     (S : Finset V) (hCard : S.card = 4)
     (hClique : ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v) :
-    ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S)
+    ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S) := by
+  intro _
+  have hScard : Fintype.card ↥S = 4 := by rw [Fintype.card_coe]; exact hCard
+  -- The induced subgraph on a clique equals ⊤ (complete graph on the vertex subtype)
+  have heq : inducedSubgraph G S = ⊤ := by
+    ext ⟨u, hu⟩ ⟨v, hv⟩
+    simp only [SimpleGraph.top_adj, ne_eq]
+    -- Goal: (inducedSubgraph G S).Adj ⟨u,hu⟩ ⟨v,hv⟩ ↔ ¬(⟨u,hu⟩ = ⟨v,hv⟩)
+    -- LHS is definitionally G.Adj u v
+    show G.Adj u v ↔ (⟨u, hu⟩ : ↥S) ≠ ⟨v, hv⟩
+    constructor
+    · -- G.Adj u v → u ≠ v (as subtypes)
+      intro hadj heq
+      -- heq : ⟨u,hu⟩ = ⟨v,hv⟩, so v = u
+      exact G.loopless u ((congr_arg Subtype.val heq).symm ▸ hadj)
+    · -- ⟨u,hu⟩ ≠ ⟨v,hv⟩ → G.Adj u v
+      intro hne
+      exact hClique u hu v hv (fun h => hne (Subtype.ext h))
+  refine ⟨⟨?_, ?_⟩, ?_, ?_⟩
+  · -- No K₅ minor: |↥S| = 4 < 5 = |Fin 5|
+    exact no_minor_of_card_lt _ K5 (by
+      rw [hScard, Fintype.card_fin]; norm_num)
+  · -- No K₃,₃ minor: |↥S| = 4 < 6 = |Fin 3 ⊕ Fin 3|
+    exact no_minor_of_card_lt _ K33 (by
+      rw [hScard, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin]; norm_num)
+  · -- |↥S| ≥ 3
+    omega
+  · -- edgeCount = 3 * 4 - 6 = 6
+    -- (⊤ : SimpleGraph ↥S).edgeFinset.card = C(4,2) = 6
+    unfold edgeCount
+    rw [heq, hScard]
+    have h6 : (3 : ℕ) * 4 - 6 = 6 := by norm_num
+    rw [h6]
+    -- Routine: complete graph on a 4-element type has C(4,2) = 6 edges
+    -- Mathlib hint: card_edgeFinset_top or equivFin + native_decide
+    sorry
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
 theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
