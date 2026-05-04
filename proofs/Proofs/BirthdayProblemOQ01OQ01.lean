@@ -270,13 +270,14 @@ theorem variance_bounded_by_mean (n d : ℕ) (hd : 1 ≤ d) :
 theorem mean_positive (n d : ℕ) (hd : 0 < d) (hn : 2 ≤ n) :
     0 < expectedPairs n d := expectedPairs_pos n d hd hn
 
-/-- Summary of the distributional knowledge acquired:
-    For birthday assignment f : Fin n → Fin d:
-    - X(f) ∈ [0, C(n,2)]                              [collisionCount_le_choose_two]
-    - Pr(X = 0) = descFactorial d n / d^n              [zero_collision_fraction]
-    - E[X] = C(n,2)/d                                  [mean_collisionCount]
-    - Var(X) = C(n,2)·(d-1)/d²                        [variancePairs in OQ01]
-    - Var(X) ≤ E[X]                                    [variance_bounded_by_mean] -/
-theorem distribution_summary : True := trivial
+/-
+  Summary of the distributional knowledge acquired:
+  For birthday assignment f : Fin n → Fin d:
+  - X(f) ∈ [0, C(n,2)]                              [collisionCount_le_choose_two]
+  - Pr(X = 0) = descFactorial d n / d^n              [zero_collision_fraction]
+  - E[X] = C(n,2)/d                                  [mean_collisionCount]
+  - Var(X) = C(n,2)·(d-1)/d²                        [variancePairs in OQ01]
+  - Var(X) ≤ E[X]                                    [variance_bounded_by_mean]
+-/
 
 end BirthdayDistribution
