@@ -23,46 +23,63 @@
     {
       "id": "ftc-parts",
       "title": "Fundamental Theorem of Calculus",
-      "description": "The two parts of FTC: ftc_part1 (∫ₐˣ f is differentiable and its derivative is f(x)), ftc_part1_deriv (the derivative is exactly f), and antiderivative_of_integral (the integral function is the canonical antiderivative). The Newton-Leibniz formula ftc_part2: ∫ₐᵇ F' = F(b) - F(a) for continuously differentiable F.",
-      "theorems": ["ftc_part1", "ftc_part1_deriv", "antiderivative_of_integral", "newton_leibniz", "ftc_part2"]
+      "startLine": 37,
+      "endLine": 83,
+      "summary": "Five FTC theorems. ftc_part1: if f is continuous on [a,b], then x ↦ ∫ₐˣ f is differentiable with derivative f (differentiation undoes integration). ftc_part1_deriv: the derivative is exactly f. antiderivative_of_integral: ∫ₐˣ f is the canonical antiderivative vanishing at a. newton_leibniz: ∫ₐᵇ F' = F(b) - F(a) for C¹ F (the Newton-Leibniz formula). ftc_part2: a second formulation of Newton-Leibniz with slightly different hypotheses."
     },
     {
       "id": "mvt-ftc-connection",
-      "title": "MVT-FTC Structural Connection",
-      "description": "The key insight: ftc_implies_mvt shows MVT follows from FTC + IVT — the integral mean value lies between min and max of f', so by IVT some c achieves f'(c) = ∫f'/(b-a). mvt_equals_integral_average: the MVT value is the integral average f'(c) = ∫ₐᵇ f'/(b-a).",
-      "theorems": ["ftc_implies_mvt", "mvt_equals_integral_average"]
+      "title": "MVT Derived from FTC via IVT",
+      "startLine": 84,
+      "endLine": 118,
+      "summary": "The structural connection: ftc_implies_mvt shows the Mean Value Theorem follows from FTC + IVT — the integral mean ∫f'/(b-a) lies between min and max of f', so IVT gives c with f'(c) equal to that mean. mvt_equals_integral_average: f'(c) = ∫ₐᵇ f'/(b-a) for the MVT witness c. This reveals FTC is more fundamental than MVT."
     },
     {
       "id": "integral-identities",
-      "title": "Integral Identities and Applications",
-      "description": "integration_by_parts: ∫ₐᵇ f'g = f(b)g(b) - f(a)g(a) - ∫ₐᵇ fg'. ftc_uniqueness: any two antiderivatives of f differ by a constant. diff_then_integrate and integrate_then_diff: the FTC as inverse operations. ftc_no_loss: differentiating ∫ₐˣ f then integrating recovers the original integral.",
-      "theorems": ["integration_by_parts", "ftc_uniqueness", "diff_then_integrate", "integrate_then_diff", "ftc_no_loss"]
+      "title": "Integration by Parts, Uniqueness, and Inverse Operations",
+      "startLine": 119,
+      "endLine": 268,
+      "summary": "Five theorems. integration_by_parts: ∫f'g = [fg]ₐᵇ - ∫fg', proved via product rule + Newton-Leibniz. ftc_uniqueness: two antiderivatives of the same function differ by a constant. diff_then_integrate: differentiating then integrating recovers the original. integrate_then_diff: the derivative of ∫ₐˣ f is f. ftc_no_loss: differentiating ∫ₐˣ f then integrating recovers ∫ₐˣ f itself."
     },
     {
       "id": "approximation",
-      "title": "Approximation Bounds",
-      "description": "integral_approx_from_mvt: |∫ₐᵇ f - f(c)·(b-a)| ≤ Lip(f')·(b-a)²/2 for Lipschitz f'. lipschitz_dist_bound: for Lipschitz continuous f, |f(x) - f(y)| ≤ Lip·|x - y|. These give quantitative error bounds for numerical integration via the MVT.",
-      "theorems": ["integral_approx_from_mvt", "lipschitz_dist_bound"]
+      "title": "Quantitative Bounds via Lipschitz Theory",
+      "startLine": 270,
+      "endLine": 293,
+      "summary": "integral_approx_from_mvt: for Lipschitz derivative f', |∫ₐᵇ f - f(c)·(b-a)| ≤ Lip(f')·(b-a)²/2 — a quantitative error bound for the trapezoidal approximation. lipschitz_dist_bound: for Lipschitz f, |f(x)-f(y)| ≤ K·|x-y| — the Lipschitz condition gives distance control from derivative bounds."
     }
   ],
   "overview": {
-    "summary": "The MVT and FTC are dual perspectives on the same local-to-global principle: the MVT says there exists a point where the instantaneous rate equals the average rate; the FTC says the exact average rate is the integral divided by the interval length. This file proves both from Mathlib's integration infrastructure and makes the structural connection explicit.",
-    "approach": "All 14 results are proved using Mathlib's IntervalIntegral, HasDerivAt, and ContinuousOn APIs. The FTC Part 1 uses intervalIntegral.integral_hasDerivAt_right; Newton-Leibniz uses intervalIntegral.integral_eq_sub_of_hasDerivAt. The MVT derivation from FTC uses the intermediate value theorem (IVT) applied to f' on [a,b]: the integral mean ∫f'/(b-a) lies in [min f', max f'] by the mean value property of integrals, so IVT gives a point c with f'(c) = ∫f'/(b-a).",
-    "significance": "The FTC is the central theorem of calculus, connecting differential and integral calculus. The proof that MVT is a corollary of FTC+IVT reveals the conceptual hierarchy: integration is more fundamental than differentiation in the sense that FTC implies MVT but not vice versa without additional structure. The inclusion of integration by parts and uniqueness of antiderivatives makes this a self-contained calculus toolkit."
+    "historicalContext": "The Fundamental Theorem of Calculus connects two of the central operations in mathematics — differentiation and integration — and was independently developed by Isaac Newton (1666, in his 'Method of Fluxions') and Gottfried Wilhelm Leibniz (1675, introducing the ∫ notation). The Newton-Leibniz formula $\\int_a^b F'(x)\\,dx = F(b)-F(a)$ was first stated explicitly by Leibniz and is sometimes called the 'Barrow's theorem' after Isaac Barrow who proved a geometric version in 1670. The Mean Value Theorem, proved by Cauchy in 1821 (for real-valued functions of a real variable) as a sharpening of earlier results by Rolle (1691) and Lagrange (1797), is usually presented as a precursor to FTC. This file reverses the logical order: FTC is proved first, and MVT is derived from FTC + IVT, revealing the conceptual hierarchy. In Lean 4, both are formalized using Mathlib's `intervalIntegral` library and `HasDerivAt` framework, machine-checking the classical analysis results against Mathlib's real analysis infrastructure.",
+    "problemStatement": "For a continuous function $f : [a,b] \\to \\mathbb{R}$: (1) prove FTC Part 1 — the function $x \\mapsto \\int_a^x f$ is differentiable with derivative $f$; (2) prove the Newton-Leibniz formula $\\int_a^b F' = F(b)-F(a)$ for $C^1$ functions $F$; (3) derive MVT from FTC: there exists $c \\in (a,b)$ with $f'(c) = \\frac{f(b)-f(a)}{b-a}$; (4) prove integration by parts $\\int_a^b f'g = [fg]_a^b - \\int_a^b fg'$; and (5) give the Lipschitz approximation bound $|\\int_a^b f - f(c)(b-a)| \\leq \\text{Lip}(f') \\cdot (b-a)^2/2$.",
+    "proofStrategy": "All results use Mathlib's `intervalIntegral` API. FTC Part 1 uses `intervalIntegral.integral_hasDerivAt_right`, which gives `HasDerivAt (fun x => ∫ₐˣ f) (f x) x` for continuous `f`. Newton-Leibniz uses `intervalIntegral.integral_eq_sub_of_hasDerivAt`, which requires continuity of `F'` and `HasDerivAt F` on the interval. MVT from FTC: apply FTC to get $\\int_a^b f' = f(b)-f(a)$, then note the mean $\\int f'/(b-a)$ lies in $[\\min f', \\max f']$ by integral monotonicity, and apply IVT to $f'$ on $[a,b]$ to get the witness $c$. Integration by parts follows from Newton-Leibniz applied to the product rule $(fg)' = f'g + fg'$.",
+    "keyInsights": [
+      "The MVT is often presented as a prerequisite for FTC, but the derivation here reverses this: FTC + IVT implies MVT. The MVT gives a single point $c$ where $f'(c)$ equals the average; FTC gives the exact integral average. This shows integration is conceptually deeper than differentiation in the sense of what each implies.",
+      "`HasDerivAt` is preferred over `Differentiable` or `deriv` in Lean because it is a constructive witness — it provides both the derivative value and the limit proof. This makes it composable: `HasDerivAt F f' a` and `HasDerivAt G g' a` directly give `HasDerivAt (F + G) (f' + g') a` without additional lemmas.",
+      "The Newton-Leibniz formula $\\int_a^b F' = F(b)-F(a)$ requires both `HasDerivAt F` on the interior AND `ContinuousOn F'` on the closed interval `[a,b]`. The closed-interval continuity is needed for the integral to be well-defined in Mathlib's `intervalIntegral` framework, which uses Bochner integrals.",
+      "Integration by parts is obtained by applying Newton-Leibniz to the product $(fg)$ and using the product rule $(fg)' = f'g + fg'$. In Lean: `HasDerivAt (f * g) (f' * g + f * g') a` follows from `HasDerivAt.mul`. The final result rearranges: $\\int f'g = \\int (fg)' - \\int fg' = [fg]_a^b - \\int fg'$.",
+      "The Lipschitz approximation bound $|\\int_a^b f - f(c)(b-a)| \\leq K(b-a)^2/2$ (for $K$-Lipschitz $f'$) is the first-order quadrature error bound — the foundation of the trapezoidal rule's $O(h^2)$ error. In Lean, it follows from $|\\int_a^b f(t) - f(c)\\,dt| \\leq \\int_a^b K|t-c|\\,dt$ and the bound $\\int_a^b |t-c|\\,dt \\leq (b-a)^2/2$."
+    ]
   },
   "conclusion": {
-    "summary": "Fourteen calculus theorems — FTC Parts 1 and 2, MVT as FTC corollary, integration by parts, uniqueness of antiderivatives, and approximation bounds — machine-checked against Mathlib.",
+    "summary": "Fourteen classical analysis theorems — FTC Parts 1 and 2, Newton-Leibniz formula, MVT as FTC corollary, integration by parts, uniqueness of antiderivatives, FTC as inverse operations, and Lipschitz approximation bounds — machine-checked against Mathlib's `intervalIntegral` and `HasDerivAt` infrastructure.",
+    "implications": "The FTC is the central theorem of analysis, used in virtually every branch of mathematics and physics: ordinary differential equations (solving $y' = f$ via integration), complex analysis (Cauchy's theorem), differential geometry (Stokes' theorem), and quantum mechanics (action functionals). The machine-checked Newton-Leibniz formula provides a verified foundation for symbolic computation systems that use this formula. The MVT-from-FTC derivation reveals a conceptual hierarchy: the MVT is a qualitative consequence of the quantitative FTC. The integration by parts formula is the algebraic heart of many Fourier analysis computations.",
     "openQuestions": [
-      "Can the multivariable FTC (Green's theorem, Stokes' theorem) be derived from this framework using Mathlib's differential forms?",
-      "Can the Lebesgue version of FTC (differentiability a.e. for absolutely continuous functions) be formalized?",
-      "Does the MVT imply FTC (with the right hypotheses)? Can a Lean 4 proof of FTC purely from MVT be constructed?"
+      "Can the multivariable FTC — Stokes' theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$ for differential forms — be derived from this one-dimensional FTC using Mathlib's emerging differential forms library?",
+      "Can the Lebesgue version of FTC (every absolutely continuous function is the integral of its a.e.-defined derivative, and vice versa) be formalized using Mathlib's `MeasureTheory.Measure.AbsolutelyContinuous`?",
+      "Does Mathlib's `intervalIntegral` framework support a verified implementation of numerical quadrature (trapezoidal rule, Simpson's rule) with `O(h^2)` and `O(h^4)` error bounds from the Lipschitz approximation theorems in this file?"
     ]
   },
   "crossReferences": [
     {
-      "targetId": "mean-value-theorem",
+      "proofId": "mean-value-theorem",
       "relationship": "extends",
-      "description": "Extends the base MVT formalization with FTC and the MVT-FTC structural connection"
+      "description": "Extends the base MVT formalization with FTC and the structural derivation of MVT from FTC + IVT."
+    },
+    {
+      "proofId": "circumference-via-differentiation",
+      "relationship": "related",
+      "description": "The area-circumference duality A(r) = ∫₀ʳ C(t) dt is an application of the Newton-Leibniz formula from this file."
     }
   ]
 }

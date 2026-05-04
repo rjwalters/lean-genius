@@ -1,47 +1,98 @@
 [
   {
-    "id": "ann-ftc-implies-mvt",
+    "id": "ann-ftc-part1",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 43, "endLine": 57 },
     "type": "theorem",
-    "label": "ftc_implies_mvt",
-    "title": "FTC Implies MVT (via IVT)",
-    "body": "ftc_implies_mvt: for C¹ function f on [a,b], ∃ c ∈ (a,b), f'(c) = (f(b)-f(a))/(b-a). Proof: by FTC, ∫ₐᵇ f' = f(b)-f(a). The integral mean ∫f'/(b-a) lies between min f' and max f' on [a,b] (by the integral monotonicity). By IVT applied to f', there exists c with f'(c) equal to that mean. This derivation shows MVT is a strict consequence of FTC+IVT.",
-    "location": { "line": 165 },
-    "tags": ["mvt", "ftc", "ivt", "structural-connection"]
+    "title": "ftc_part1: FTC Part 1 — Differentiation Undoes Integration",
+    "content": "For continuous f on [a,b]: the function x ↦ ∫ₐˣ f is differentiable with derivative f. Proved using Mathlib's intervalIntegral.integral_hasDerivAt_right, which gives HasDerivAt (∫ₐˣ f) (f x) x for continuous f. This is the 'integration then differentiation' direction of FTC — the integral function is the canonical antiderivative of f. Also includes ftc_part1_deriv (the deriv equals f) and antiderivative_of_integral (the integral function vanishes at a).",
+    "mathContext": "$\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$ for continuous $f$ — the integral function is the antiderivative of $f$ that vanishes at $a$.",
+    "significance": "critical",
+    "relatedConcepts": ["intervalIntegral.integral_hasDerivAt_right", "HasDerivAt", "antiderivative", "continuous functions"],
+    "prerequisites": ["Mathlib.Analysis.Calculus.Deriv.Basic", "intervalIntegral", "ContinuousOn"]
   },
   {
     "id": "ann-newton-leibniz",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 70, "endLine": 83 },
     "type": "theorem",
-    "label": "newton_leibniz",
-    "title": "Newton-Leibniz Formula",
-    "body": "newton_leibniz: for continuously differentiable F on [a,b], ∫ₐᵇ F' = F(b) - F(a). The fundamental formula connecting integration and differentiation. Used in: ftc_implies_mvt (the integral mean equals (f(b)-f(a))/(b-a)), integration_by_parts (via product rule), and diff_then_integrate.",
-    "location": { "line": 75 },
-    "tags": ["newton-leibniz", "integration", "fundamental"]
+    "title": "newton_leibniz: FTC Part 2 — The Evaluation Formula",
+    "content": "For C¹ function F on [a,b]: ∫ₐᵇ F' = F(b) - F(a). This is the 'differentiation then integration' direction of FTC — the central formula connecting indefinite and definite integrals. Proved using intervalIntegral.integral_eq_sub_of_hasDerivAt, which requires: (1) HasDerivAt F on the interior (a,b); (2) ContinuousOn F' on [a,b] (needed for the integral to be well-defined). Also includes ftc_part2 as a slightly different formulation.",
+    "mathContext": "$\\int_a^b F'(x)\\,dx = F(b) - F(a)$ — Newton-Leibniz formula, proved by Leibniz (1675) and Barrow (1670).",
+    "significance": "critical",
+    "relatedConcepts": ["intervalIntegral.integral_eq_sub_of_hasDerivAt", "HasDerivAt", "ContinuousOn", "Newton-Leibniz"],
+    "prerequisites": ["HasDerivAt", "intervalIntegral", "Mathlib.MeasureTheory.Integral.IntervalIntegral"]
+  },
+  {
+    "id": "ann-ftc-implies-mvt",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 93, "endLine": 101 },
+    "type": "theorem",
+    "title": "ftc_implies_mvt: MVT Derived from FTC + IVT",
+    "content": "For C¹ function f on [a,b] with a < b: ∃ c ∈ (a,b), f'(c) = (f(b)-f(a))/(b-a). Proof: by Newton-Leibniz, ∫ₐᵇ f' = f(b)-f(a), so the integral mean ∫f'/(b-a) = (f(b)-f(a))/(b-a). The integral mean lies between min f' and max f' on [a,b] (by integral monotonicity). By IVT applied to f', there exists c with f'(c) equal to that mean. This shows MVT is a qualitative corollary of the quantitative FTC.",
+    "mathContext": "FTC: $\\int_a^b f' = f(b)-f(a)$. IVT applied to the mean: $\\min f' \\leq \\frac{f(b)-f(a)}{b-a} \\leq \\max f'$ gives $\\exists c: f'(c) = \\frac{f(b)-f(a)}{b-a}$.",
+    "significance": "critical",
+    "relatedConcepts": ["Mean Value Theorem", "Intermediate Value Theorem", "integral mean", "FTC + IVT"],
+    "prerequisites": ["newton_leibniz", "IVT (isPreconnected_Icc.intermediate_value₂)", "ContinuousOn.image_Icc"]
+  },
+  {
+    "id": "ann-mvt-integral-average",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 102, "endLine": 118 },
+    "type": "theorem",
+    "title": "mvt_equals_integral_average: MVT Point Achieves Integral Mean",
+    "content": "For the MVT witness c: f'(c) = ∫ₐᵇ f'/(b-a). The MVT says c exists with f'(c) = average rate; this theorem identifies that average rate as the integral average ∫f'/(b-a). The two formulations (difference quotient and integral average) are equivalent by Newton-Leibniz: (f(b)-f(a))/(b-a) = ∫f'/(b-a). This is the 'integral mean value property' of derivatives.",
+    "mathContext": "The MVT witness $c$ satisfies $f'(c) = \\frac{1}{b-a}\\int_a^b f'(t)\\,dt = \\frac{f(b)-f(a)}{b-a}$ — the derivative at $c$ equals the integral average of the derivative.",
+    "significance": "key",
+    "relatedConcepts": ["integral mean value", "MVT structural connection", "newton_leibniz"],
+    "prerequisites": ["ftc_implies_mvt", "newton_leibniz"]
   },
   {
     "id": "ann-integration-by-parts",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 126, "endLine": 151 },
     "type": "theorem",
-    "label": "integration_by_parts",
-    "title": "Integration by Parts",
-    "body": "integration_by_parts: for C¹ functions f, g on [a,b]: ∫ₐᵇ f'·g = f(b)·g(b) - f(a)·g(a) - ∫ₐᵇ f·g'. Proved by applying Newton-Leibniz to the product rule: (fg)' = f'g + fg' → ∫(fg)' = ∫f'g + ∫fg', and ∫(fg)' = f(b)g(b) - f(a)g(a) by Newton-Leibniz.",
-    "location": { "line": 200 },
-    "tags": ["integration-by-parts", "product-rule"]
+    "title": "integration_by_parts: Product Rule in Integral Form",
+    "content": "For C¹ functions f, g on [a,b]: ∫ₐᵇ f'·g = f(b)·g(b) - f(a)·g(a) - ∫ₐᵇ f·g'. Proved by applying Newton-Leibniz to the product rule: (fg)' = f'g + fg', so ∫(fg)' = ∫f'g + ∫fg', and ∫(fg)' = f(b)g(b) - f(a)g(a) by Newton-Leibniz. In Lean: HasDerivAt.mul gives HasDerivAt (f*g) (f'*g + f*g') a, then Newton-Leibniz applies.",
+    "mathContext": "$\\int_a^b f'(x)g(x)\\,dx = [f(x)g(x)]_a^b - \\int_a^b f(x)g'(x)\\,dx$ — integration by parts, from $(fg)' = f'g + fg'$ via Newton-Leibniz.",
+    "significance": "key",
+    "relatedConcepts": ["product rule", "HasDerivAt.mul", "newton_leibniz", "Fourier analysis"],
+    "prerequisites": ["newton_leibniz", "HasDerivAt.mul", "ContinuousOn.mul"]
   },
   {
     "id": "ann-ftc-uniqueness",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 161, "endLine": 183 },
     "type": "theorem",
-    "label": "ftc_uniqueness",
-    "title": "Antiderivatives Unique Up to Constant",
-    "body": "ftc_uniqueness: if F' = G' on [a,b] and both are continuous, then F - G is constant. The standard uniqueness theorem for antiderivatives: the derivative being zero everywhere implies constant (by MVT). Together with FTC Part 1, this means ∫ₐˣ f is the unique antiderivative vanishing at a.",
-    "location": { "line": 240 },
-    "tags": ["uniqueness", "antiderivative", "constant"]
+    "title": "ftc_uniqueness: Antiderivatives Unique Up to Constant",
+    "content": "If F' = G' on (a,b) and both are continuous on [a,b], then F - G is constant. The standard uniqueness theorem for antiderivatives: if h = F - G has h' = 0 everywhere, then h is constant by the MVT (a function with zero derivative on a connected set is constant). In Lean: this uses that HasDerivAt (F-G) 0 implies zero derivative everywhere, then applies the constant lemma.",
+    "mathContext": "$F' = G' \\Rightarrow F - G = \\text{const}$ — uniqueness of antiderivatives, proved by applying MVT to $h = F-G$ with $h' = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["uniqueness", "constant functions", "MVT", "connected sets"],
+    "prerequisites": ["HasDerivAt", "isConst_of_deriv_eq_zero", "IsConnected.Ioo"]
   },
   {
-    "id": "ann-ftc-part1",
+    "id": "ann-diff-then-integrate",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 247, "endLine": 262 },
     "type": "theorem",
-    "label": "ftc_part1",
-    "title": "FTC Part 1: Integral as Antiderivative",
-    "body": "ftc_part1: if f is continuous on [a,b], then x ↦ ∫ₐˣ f is continuously differentiable with derivative f. This is the 'differentiation undoes integration' direction of FTC. Proved from Mathlib's intervalIntegral.integral_hasDerivAt_right, which gives HasDerivAt at each interior point.",
-    "location": { "line": 30 },
-    "tags": ["ftc", "antiderivative", "differentiation"]
+    "title": "diff_then_integrate and integrate_then_diff: FTC as Inverse Operations",
+    "content": "diff_then_integrate: differentiating F then integrating recovers F (up to the constant F(a)): ∫ₐᵇ F' = F(b) - F(a). integrate_then_diff: integrating f then differentiating recovers f: (∫ₐˣ f)' = f(x). Together these say that differentiation and integration are inverse operations (up to constants and evaluation at a). The composition is not perfect — each 'undoes' the other in one direction but not the other.",
+    "mathContext": "$\\frac{d}{dx}\\int_a^x f = f(x)$ and $\\int_a^b F' = F(b)-F(a)$ — differentiation and integration as inverse operations.",
+    "significance": "supporting",
+    "relatedConcepts": ["inverse operations", "FTC Part 1 and 2", "antiderivative"],
+    "prerequisites": ["ftc_part1", "newton_leibniz"]
+  },
+  {
+    "id": "ann-lipschitz-bound",
+    "proofId": "mean-value-theorem-oq-04",
+    "range": { "startLine": 276, "endLine": 292 },
+    "type": "theorem",
+    "title": "lipschitz_dist_bound: Distance Control from Derivative Bounds",
+    "content": "For K-Lipschitz continuous F (|F'(x)| ≤ K everywhere): |F(x) - F(y)| ≤ K·|x - y|. This is the quantitative bound on displacement from derivative bounds, proved by applying Newton-Leibniz to |F(x) - F(y)| = |∫ᵧˣ F'| ≤ ∫ᵧˣ K = K|x-y|. In the approximation context: integral_approx_from_mvt gives |∫f - f(c)·(b-a)| ≤ Lip(f')·(b-a)²/2, the first-order quadrature error bound.",
+    "mathContext": "$|F(x)-F(y)| \\leq K|x-y|$ for $K$-Lipschitz $F$, giving the quadrature error $|\\int_a^b f - f(c)(b-a)| \\leq \\text{Lip}(f') \\cdot \\frac{(b-a)^2}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lipschitz continuity", "quadrature error", "trapezoidal rule", "NNReal.lipschitzWith"],
+    "prerequisites": ["newton_leibniz", "NNReal.lipschitzWith", "intervalIntegral.norm_integral_le_of_norm_le_const"]
   }
 ]
