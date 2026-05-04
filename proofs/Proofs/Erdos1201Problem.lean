@@ -379,31 +379,6 @@ theorem gpfConsecutive_succ_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
   exact gpfConsecutive_gt_k_of_prime_in_window (k + 3) k (by omega) p hp_prime
     (by omega) (by omega)
 
-/-- Among any m consecutive integers starting at n (for m ≥ 1), some term is divisible by m.
-    Key: k+1 consecutive integers cover all residue classes mod m exactly once. -/
-private lemma exists_dvd_in_consecutive (n m : ℕ) (hm : 0 < m) : ∃ i < m, m ∣ n + i := by
-  refine ⟨(m - n % m) % m, Nat.mod_lt _ hm, ?_⟩
-  rcases Nat.eq_zero_or_pos (n % m) with h | h
-  · simpa [h, Nat.sub_zero, Nat.mod_self] using Nat.dvd_of_mod_eq_zero h
-  · rw [Nat.mod_eq_of_lt (by have := Nat.mod_lt n hm; omega)]
-    have heq : n + (m - n % m) = m * (n / m + 1) := by
-      have := Nat.div_add_mod n m; omega
-    exact heq ▸ dvd_mul_right m _
-
-/-- **Sylvester-Schur (prime window size)**: When k+1 is prime, P(n, k) ≥ k+1 for all n ≥ 1.
-    Among any k+1 consecutive integers, the complete residue system mod k+1 guarantees one
-    is divisible by k+1, which is a prime factor > k of the consecutive product. -/
-theorem gpfConsecutive_ge_succ_k_of_prime (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
-    k + 1 ≤ gpfConsecutive n k := by
-  obtain ⟨i, hi_lt, hi_dvd⟩ := exists_dvd_in_consecutive n (k + 1) (Nat.succ_pos k)
-  exact le_gpfConsecutive_of_prime_dvd_term n k i hn (by omega) (k + 1) hk1 hi_dvd
-
-/-- **Sylvester-Schur (prime window size, strict)**: When k+1 is prime, k < P(n, k) for all n ≥ 1.
-    Covers all prime-predecessor k: k = 1, 2, 4, 6, 10, 12, 16, 18, ... -/
-theorem gpfConsecutive_gt_k_of_prime_succ (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
-    k < gpfConsecutive n k :=
-  Nat.lt_of_lt_of_le (Nat.lt_succ_self k) (gpfConsecutive_ge_succ_k_of_prime n k hn hk1)
-
 /-
 ## Infinitely Many n with Large GPF
 -/
@@ -594,6 +569,30 @@ theorem le_gpfConsecutive_of_prime_dvd_term (n k i : ℕ) (hn : 1 ≤ n) (hi : i
   unfold gpfConsecutive
   exact gpf_ge_prime_dvd (consecutiveProduct n k) p hcp hp
     (dvd_trans hpdvd (dvd_consecutiveProduct_term n k i hi))
+
+/-- Among any m consecutive integers starting at n (for m ≥ 1), some term is divisible by m.
+    Key: k+1 consecutive integers cover all residue classes mod k+1 exactly once. -/
+private lemma exists_dvd_in_consecutive (n m : ℕ) (hm : 0 < m) : ∃ i < m, m ∣ n + i := by
+  rcases Nat.eq_zero_or_pos (n % m) with h | h
+  · exact ⟨0, hm, Nat.dvd_of_mod_eq_zero h⟩
+  · have hlt : n % m < m := Nat.mod_lt n hm
+    refine ⟨m - n % m, Nat.sub_lt hm h, Nat.dvd_of_mod_eq_zero ?_⟩
+    rw [Nat.add_mod, Nat.mod_eq_of_lt (Nat.sub_lt hm h),
+        Nat.add_sub_cancel' (Nat.le_of_lt hlt), Nat.mod_self]
+
+/-- **Sylvester-Schur (prime window size)**: When k+1 is prime, P(n, k) ≥ k+1 for all n ≥ 1.
+    Among any k+1 consecutive integers, the complete residue system mod k+1 guarantees one
+    is divisible by k+1, which is a prime factor > k of the consecutive product. -/
+theorem gpfConsecutive_ge_succ_k_of_prime (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
+    k + 1 ≤ gpfConsecutive n k := by
+  obtain ⟨i, hi_lt, hi_dvd⟩ := exists_dvd_in_consecutive n (k + 1) (Nat.succ_pos k)
+  exact le_gpfConsecutive_of_prime_dvd_term n k i hn (by omega) (k + 1) hk1 hi_dvd
+
+/-- **Sylvester-Schur (prime window size, strict)**: When k+1 is prime, k < P(n, k) for all n ≥ 1.
+    Covers all prime-predecessor k: k = 1, 2, 4, 6, 10, 12, 16, 18, ... -/
+theorem gpfConsecutive_gt_k_of_prime_succ (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
+    k < gpfConsecutive n k :=
+  Nat.lt_of_lt_of_le (Nat.lt_succ_self k) (gpfConsecutive_ge_succ_k_of_prime n k hn hk1)
 
 /-- Tight Bertrand bound: for n ≥ 1, n < P(n,n) ≤ 2n (prime in Bertrand window). -/
 theorem gpfConsecutive_between (n : ℕ) (hn : 1 ≤ n) :
