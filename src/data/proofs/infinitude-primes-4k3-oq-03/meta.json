@@ -46,7 +46,6 @@
   "overview": {
     "historicalContext": "The infinitude of primes congruent to 1 (mod 4) is a special case of **Dirichlet's theorem** (1837), which requires analytic machinery (Dirichlet L-functions). However, the specific case $p \\equiv 1 \\pmod 4$ has an **elementary proof** using Fermat's theorem that $-1$ is a quadratic residue mod $p$ if and only if $p \\equiv 1 \\pmod 4$.\n\nThis result completes the elementary classification of primes by their residue mod 4:\n- $p = 2$ (the unique even prime)\n- $p \\equiv 1 \\pmod 4$ (infinitely many, proved here)\n- $p \\equiv 3 \\pmod 4$ (infinitely many, proved in `infinitude-primes-4k3`)\n\nThe two elementary proofs are parallel in structure but differ in their key lemma: the ≡ 3 case uses a simple product argument, while the ≡ 1 case requires Euler's criterion for quadratic residues.",
     "problemStatement": "**Open Question (infinitude-primes-4k3-OQ-03)**: Can the elementary argument used to prove infinitely many primes ≡ 3 (mod 4) be adapted to prove infinitely many primes ≡ 1 (mod 4)?\n\n**Answer**: Yes. The construction $N = (2(n+1)!)^2 + 1$ plays the same role as $N = 4(n+1)! - 1$ in the ≡ 3 proof. The key difference is the lemma needed: for ≡ 3, we use that products of ≡ 1 numbers stay ≡ 1; for ≡ 1, we use Euler's criterion that $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod 4$.",
-    "text": "This file answers the third open question from `infinitude-primes-4k3`: can the elementary approach generalize to primes ≡ 1 (mod 4)?\n\nThe proof in `InfinitudePrimes4k1.lean` (imported here) shows: given any $n$, consider $N = (2(n+1)!)^2 + 1$. This number is odd and greater than 1, so it has an odd prime factor $p$. Since $p \\mid (2(n+1)!)^2 + 1$, we have $(2(n+1)!)^2 \\equiv -1 \\pmod p$, so $-1$ is a square mod $p$. By Euler's criterion, this forces $p \\equiv 1 \\pmod 4$. If $p \\leq n$, then $p \\mid (n+1)!$ and hence $p \\mid (2(n+1)!)^2$, so $p \\mid 1$ — contradiction. Therefore $p > n$.\n\nThis file also establishes the **complete picture**: every odd prime satisfies exactly one of $p \\equiv 1 \\pmod 4$ or $p \\equiv 3 \\pmod 4$, and both classes are infinite.",
     "proofStrategy": "**Imports**: Delegates the main proof to `InfinitudePrimes4k1.infinitely_many_primes_1_mod_4` and `InfinitudePrimes4k3.primes_3_mod_4_infinite`.\n\n**The 1 mod 4 construction**:\n1. Take $N = (2(n+1)!)^2 + 1$ — odd, greater than 1\n2. $N$ has an odd prime factor $p$\n3. Since $p \\mid k^2 + 1$ (where $k = 2(n+1)!$), Euler's criterion gives $p \\equiv 1 \\pmod 4$\n4. If $p \\leq n+1$ then $p \\mid (n+1)!$ so $p \\mid k^2$ hence $p \\mid 1$ — contradiction\n\n**Classification theorem**: Every odd prime $p$ satisfies $p \\equiv 1$ or $3 \\pmod 4$ since $p$ is odd (not divisible by 2) and $p \\geq 3$ implies $p \\bmod 4 \\in \\{1, 3\\}$.",
     "keyInsights": [
       "**Parallel structure**: The ≡ 1 and ≡ 3 proofs are exactly parallel: N = X² + 1 vs N = 4k! − 1, with different key lemmas about why prime factors have the target residue.",
@@ -54,12 +53,6 @@
       "**Complete mod-4 classification**: Together the two results show every odd prime is ≡ 1 or ≡ 3 (mod 4), and both classes are infinite. This is a complete elementary classification.",
       "**No Dirichlet L-functions needed**: The special cases a = 1, 3 mod 4 are the only arithmetic progressions {a + 4k} with gcd(a,4) = 1 that admit elementary proofs of infinitude.",
       "**Mathlib's SumTwoSquares is the bridge**: The Mathlib theorem Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one (from NumberTheory.SumTwoSquares) encodes Euler's criterion — it says a prime p with p ≡ 3 (mod 4) cannot divide a number of the form k² + 1. This is the machine-checked version of a classical result connecting quadratic residues to Fermat's theorem on sums of two squares (every prime p ≡ 1 mod 4 is a sum of two squares)."
-    ],
-    "prerequisites": [
-      "Elementary modular arithmetic (residues mod 4)",
-      "Euler's criterion for quadratic residues (−1|p) = 1 iff p ≡ 1 (mod 4)",
-      "Mathlib: Nat.Prime, Nat.exists_prime_and_dvd, Nat.dvd_factorial",
-      "Mathlib SumTwoSquares: Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one"
     ]
   },
   "sections": [
@@ -90,28 +83,16 @@
   },
   "crossReferences": [
     {
-      "targetId": "infinitude-primes-4k3",
-      "relationship": "parent",
-      "description": "Parent proof — proves infinitely many primes ≡ 3 (mod 4). This file answers its OQ-03 about primes ≡ 1 (mod 4)."
+      "proofId": "infinitude-primes-4k3",
+      "relationship": "parent — proves infinitely many primes ≡ 3 (mod 4); this file answers its OQ-03 about primes ≡ 1 (mod 4)"
     },
     {
-      "targetId": "infinitude-primes-4k1",
-      "relationship": "related",
-      "description": "Gallery entry for InfinitudePrimes4k1.lean — the proof of infinitely many primes ≡ 1 (mod 4) imported here."
+      "proofId": "infinitude-primes-4k1",
+      "relationship": "sibling — gallery entry for InfinitudePrimes4k1.lean, the ≡ 1 mod 4 proof imported here"
     },
     {
-      "targetId": "infinitude-primes",
-      "relationship": "related",
-      "description": "Base infinitude of primes — the classical Euclid argument that all primes are infinite."
+      "proofId": "infinitude-primes",
+      "relationship": "ancestor — base Euclid infinitude of primes; all mod-4 variants follow this structure"
     }
-  ],
-  "leanFile": {
-    "lineCount": 103,
-    "path": "Proofs/InfinitudePrimes4k3OQ03.lean",
-    "axiomCount": 0,
-    "sorries": 0,
-    "definitionCount": 0,
-    "theoremCount": 4
-  },
-  "sorries": 0
+  ]
 }
