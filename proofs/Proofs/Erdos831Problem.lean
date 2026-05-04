@@ -338,6 +338,11 @@ Combined with h(4) ≥ 1 (trivially, any triple has a circumcircle), h(4) = 1.
 ## Part VI: The Main Conjecture
 -/
 
+/-- **Erdős Problem #831 main question:** h(n) → ∞ as n → ∞.
+    The central open problem: does the minimum number of distinct circumradii
+    grow without bound as the point count grows? [OPEN] -/
+axiom erdos_831_growing : ∀ k : ℕ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → h n ≥ k
+
 /-
 ## Part VII: Related Constructions
 -/
