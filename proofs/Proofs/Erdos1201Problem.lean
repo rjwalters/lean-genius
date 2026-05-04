@@ -1284,4 +1284,197 @@ theorem erdos_1201_smooth_decay_implies_conjecture
   intro ε η hε₀ hε₁ hη
   exact erdos_1201_from_bad_density_bound ε hε₀ hε₁ (h ε hε₀ hε₁) η hη
 
+/-
+## Upper Density Basic Facts
+-/
+
+/-- The empty set has upper density 0. -/
+theorem upperDensity_empty : upperDensity ∅ = 0 := by
+  simp only [upperDensity]
+  have h : (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ (∅ : Set ℕ))).card : ℝ) / N) =
+           fun _ => 0 := by ext N; simp
+  rw [h]; exact Filter.limsup_const 0
+
+/-- Upper density is at most 1: the counting ratio never exceeds 1. -/
+theorem upperDensity_le_one (S : Set ℕ) : upperDensity S ≤ 1 := by
+  simp only [upperDensity]
+  apply Filter.limsup_le_of_le
+  · exact (⟨0, Filter.Eventually.of_forall fun (N : ℕ) =>
+        div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)⟩ :
+        Filter.IsBoundedUnder (· ≥ ·) Filter.atTop _).isCoboundedUnder_le
+  · exact Filter.Eventually.of_forall fun (N : ℕ) => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · exact div_le_one_of_le
+            ((Finset.card_filter_le _ _).trans (by simp [Finset.Nat.card_Icc]; omega))
+            (Nat.cast_nonneg _)
+
+/-- Upper density is non-negative. -/
+theorem upperDensity_ge_zero (S : Set ℕ) : 0 ≤ upperDensity S := by
+  simpa [upperDensity_empty] using upperDensity_mono (Set.empty_subset S)
+
+/-- The full set ℕ has upper density 1. -/
+theorem upperDensity_univ : upperDensity Set.univ = 1 :=
+  le_antisymm (upperDensity_le_one _) (by
+    simp only [upperDensity]
+    have h : ∀ᶠ N : ℕ in Filter.atTop,
+        (((Finset.Icc 1 N).filter fun n => n ∈ Set.univ).card : ℝ) / N = 1 :=
+      Filter.eventually_atTop.mpr ⟨1, fun N hN => by
+        rw [Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _)]
+        have : (Finset.Icc 1 N).card = N := by simp [Finset.Nat.card_Icc]; omega
+        rw [this]; exact div_self (Nat.cast_ne_zero.mpr (by omega))⟩
+    exact (Filter.limsup_congr h).trans (Filter.limsup_const 1))
+
+/-
+## Asymptotic Behavior as Window Grows
+-/
+
+/-- For fixed n ≥ 2, the window GPF P(n,k) tends to +∞ as k → ∞.
+    Proof: for any bound M, by infinitude of primes there exists a prime p > max(n,M);
+    then for k ≥ p - n, the window contains p, giving P(n,k) ≥ p > M. -/
+theorem gpfConsecutive_atTop (n : ℕ) (hn : 2 ≤ n) :
+    Filter.Tendsto (gpfConsecutive n) Filter.atTop Filter.atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro M
+  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (max n M + 1)
+  have hn_lt : n < p := by omega
+  have hM_le : M ≤ p := by omega
+  refine ⟨p - n, fun k hk => ?_⟩
+  have heq : n + (p - n) = p := Nat.add_sub_cancel' (Nat.le_of_lt hn_lt)
+  calc M ≤ p := hM_le
+    _ = n + (p - n) := heq.symm
+    _ ≤ gpfConsecutive n k :=
+        gpfConsecutive_ge_prime_term n k (p - n) hn hk (heq.symm ▸ hp_prime)
+
+/-- **Individual eventual goodness**: For any fixed n ≥ 2 and ε ∈ (0,1), n is eventually
+    "good": for all sufficiently large k, P(n,k) > n^(1-ε).
+    Follows from `erdos_1201_individual_threshold` + monotonicity of P(n,k) in k. -/
+theorem erdos_1201_eventually_good (n : ℕ) (hn : 2 ≤ n) (ε : ℝ)
+    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    ∀ᶠ k in Filter.atTop, (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  obtain ⟨K, hK⟩ := erdos_1201_individual_threshold n hn ε hε₀ hε₁
+  exact Filter.eventually_atTop.mpr
+    ⟨K, fun k hk => hK.trans_le (Nat.cast_le.mpr (gpfConsecutive_le_of_le_k n hn hk))⟩
+
+/-- **Density is eventually large**: Assuming ErdosProblem1201, for each ε, η > 0 the
+    good-set density is ≥ 1 - η for ALL sufficiently large k, not just one k.
+    This strengthens ErdosProblem1201 using k-monotonicity of the good set. -/
+theorem erdos_1201_density_eventually_large (hE : ErdosProblem1201)
+    (ε η : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) (hη : 0 < η) :
+    ∃ K : ℕ, ∀ k ≥ K,
+      upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η := by
+  obtain ⟨K, hK⟩ := hE ε η hε₀ hε₁ hη
+  refine ⟨K, fun k hk => hK.trans (upperDensity_mono ?_)⟩
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn ⊢
+  rcases le_or_lt 2 n with hn2 | hn2
+  · exact hn.trans_le (Nat.cast_le.mpr (gpfConsecutive_le_of_le_k n hn2 hk))
+  · interval_cases n
+    · simp only [Nat.cast_zero] at hn
+      have h0cp : consecutiveProduct 0 K = 0 :=
+        Finset.prod_eq_zero (Finset.mem_range.mpr (Nat.zero_lt_succ K)) (by simp)
+      have h0gpf : (gpfConsecutive 0 K : ℝ) = 0 := by
+        norm_cast; simp [gpfConsecutive, h0cp, greatestPrimeFactor, Nat.primeFactors_zero]
+      rw [Real.zero_rpow (by linarith), h0gpf] at hn
+      exact absurd hn (lt_irrefl 0)
+    · simp only [Nat.cast_one, Real.one_rpow] at hn ⊢
+      have hK1 : 1 ≤ K := by
+        by_contra h; push_neg at h; interval_cases K
+        simp [gpfConsecutive, consecutiveProduct_zero, greatestPrimeFactor, Nat.primeFactors_one]
+          at hn
+      have hk1 : 1 ≤ k := le_trans hK1 hk
+      have h2dvd : 2 ∣ consecutiveProduct 1 k :=
+        Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (show 1 < k + 1 from by omega))
+          (by norm_num)
+      have hcp_pos : 0 < consecutiveProduct 1 k := consecutiveProduct_pos 1 k (by omega)
+      exact_mod_cast calc (1 : ℝ) < 2 := by norm_num
+        _ ≤ gpfConsecutive 1 k := by
+            exact_mod_cast gpf_ge_prime_dvd (consecutiveProduct 1 k) 2
+              (Nat.le_of_dvd hcp_pos h2dvd) (by norm_num) h2dvd
+
+/-
+## Lower Density
+-/
+
+/-- Lower density of a set S ⊆ ℕ: lim inf_{N→∞} |S ∩ [1,N]| / N. -/
+noncomputable def lowerDensity (S : Set ℕ) : ℝ :=
+  haveI : DecidablePred (· ∈ S) := Classical.decPred _
+  Filter.liminf (fun N : ℕ =>
+    (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ))
+  Filter.atTop
+
+/-- Lower density is non-negative. -/
+theorem lowerDensity_nonneg (S : Set ℕ) : 0 ≤ lowerDensity S := by
+  simp only [lowerDensity]
+  have hbdd : Filter.IsBoundedUnder (· ≤ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ)) :=
+    ⟨1, Filter.Eventually.of_forall fun (N : ℕ) => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+        exact_mod_cast (Finset.card_filter_le _ _).trans
+          (by simp [Finset.Nat.card_Icc]; omega)⟩
+  apply le_liminf_of_le hbdd.isCoboundedUnder_ge
+  exact Filter.Eventually.of_forall fun (N : ℕ) =>
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+
+/-- Lower density is at most upper density. -/
+theorem lowerDensity_le_upperDensity (S : Set ℕ) : lowerDensity S ≤ upperDensity S := by
+  simp only [lowerDensity, upperDensity]
+  have hbdd : Filter.IsBoundedUnder (· ≤ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ)) :=
+    ⟨1, Filter.Eventually.of_forall fun (N : ℕ) => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+        exact_mod_cast (Finset.card_filter_le _ _).trans
+          (by simp [Finset.Nat.card_Icc]; omega)⟩
+  exact Filter.liminf_le_limsup hbdd.isCoboundedUnder_ge hbdd
+
+/-- **Lower density of complement = 1 − upper density**:
+    For N ≥ 1, |Sᶜ ∩ [1,N]| / N = 1 - |S ∩ [1,N]| / N exactly,
+    so lim inf(density Sᶜ) = lim inf(1 - density S) = 1 - lim sup(density S). -/
+theorem lowerDensity_compl (S : Set ℕ) : lowerDensity Sᶜ = 1 - upperDensity S := by
+  haveI hS : DecidablePred (· ∈ S) := Classical.decPred _
+  haveI hSc : DecidablePred (· ∈ Sᶜ) := Classical.decPred _
+  have heq : ∀ᶠ N : ℕ in Filter.atTop,
+      (((Finset.Icc 1 N).filter (fun n => n ∉ S)).card : ℝ) / (N : ℝ) =
+      1 - (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ) := by
+    apply Filter.eventually_atTop.mpr ⟨1, fun N hN => ?_⟩
+    have hcard : (Finset.Icc 1 N).card = N := by simp [Finset.Nat.card_Icc]; omega
+    have hcard_le : ((Finset.Icc 1 N).filter (fun n => n ∈ S)).card ≤ N :=
+      (Finset.card_filter_le _ _).trans hcard.le
+    have hcompl : (Finset.Icc 1 N).filter (fun n => n ∉ S) =
+        (Finset.Icc 1 N) \ (Finset.Icc 1 N).filter (fun n => n ∈ S) := by
+      ext x; simp [Set.mem_compl_iff]
+    rw [hcompl, Finset.card_sdiff (Finset.filter_subset _ _), hcard]
+    push_cast [Nat.cast_sub hcard_le]
+    field_simp
+  have hlower : lowerDensity Sᶜ = Filter.liminf
+      (fun N : ℕ => 1 - (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ))
+      Filter.atTop := by
+    simp only [lowerDensity, Set.mem_compl_iff]
+    exact Filter.liminf_congr heq
+  rw [hlower]
+  have hbdd_above : Filter.IsBoundedUnder (· ≤ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ)) :=
+    ⟨1, Filter.Eventually.of_forall fun (N : ℕ) => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+        exact_mod_cast (Finset.card_filter_le _ _).trans
+          (by simp [Finset.Nat.card_Icc]; omega)⟩
+  have hbdd_below : Filter.IsBoundedUnder (· ≥ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ)) :=
+    ⟨0, Filter.Eventually.of_forall fun (N : ℕ) =>
+      div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)⟩
+  have hanti : Antitone (fun x : ℝ => 1 - x) := fun a b hab => by linarith
+  have hmap := hanti.map_limsup_of_continuousAt
+    (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ))
+    (f_cont := (continuous_const.sub continuous_id).continuousAt)
+    (bdd_above := hbdd_above)
+    (cobdd := hbdd_below.isCoboundedUnder_le)
+  simp only [Function.comp, upperDensity] at hmap
+  exact hmap.symm
+
 end Erdos1201
