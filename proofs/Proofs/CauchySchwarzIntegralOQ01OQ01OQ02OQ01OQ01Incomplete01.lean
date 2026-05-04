@@ -436,11 +436,15 @@ theorem localization_existence
       { measure_univ_lt_top := by
           rw [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter]
           exact measure_spanningSets_lt_top μ m }
-    -- Integrability on (μ.restrict Sm) for both sides (needs 1 ≤ q from hpq.symm)
-    have hgm_int : Integrable (g_seq m) (μ.restrict (spanningSets μ m)) := by
-      sorry
-    have hgn_int : Integrable (g_seq n) (μ.restrict (spanningSets μ m)) := by
-      sorry
+    -- Integrability on (μ.restrict Sm) for both sides:
+    -- 1 ≤ q from hpq.symm.one_lt_of_lt hp1 (same pattern as parent at line 885)
+    have hq_ge1 : 1 ≤ q := by linarith [hpq.symm.one_lt_of_lt hp1]
+    have hgm_int : Integrable (g_seq m) (μ.restrict (spanningSets μ m)) :=
+      (hg_seq_mem m).integrable hq_ge1
+    have hgn_small : MemLp (g_seq n) q (μ.restrict (spanningSets μ m)) :=
+      (hg_seq_mem n).mono_measure (Measure.restrict_mono (spanningSets_mono μ hmn) le_rfl)
+    have hgn_int : Integrable (g_seq n) (μ.restrict (spanningSets μ m)) :=
+      hgn_small.integrable hq_ge1
     apply ae_eq_of_forall_setIntegral_eq_of_sigmaFinite
         (fun s _ _ => hgm_int.integrableOn)
         (fun s _ _ => hgn_int.integrableOn)
