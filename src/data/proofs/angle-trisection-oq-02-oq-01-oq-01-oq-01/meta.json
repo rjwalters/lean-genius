@@ -45,7 +45,7 @@
     ],
     "axiomCount": 1,
     "assumptions": "One axiom: insep_gal_trivial (states that inseparable irreducibles have trivial Galois group). Full proof would require building F_p(t) and computing the automorphism group of a purely inseparable extension. All other theorems are axiom-free.",
-    "lineCount": 155,
+    "lineCount": 165,
     "theoremCount": 5,
     "definitionCount": 0
   },
@@ -54,7 +54,7 @@
     "sorryCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
-    "lineCount": 155
+    "lineCount": 165
   },
   "overview": {
     "historicalContext": "The theorem $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ for irreducible polynomials follows from the tower law in field theory: if $\\alpha$ is a root of $p$ in the splitting field $E$, then $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$, where $[F(\\alpha):F] = \\deg(p)$. This argument is characteristic-free — it does not use the field's characteristic at all. The CharZero hypothesis in prior formalizations entered only to ensure that the irreducible polynomial $p$ is separable, which is needed for $\\text{Gal}(p)$ to be defined and for $\\text{Gal}(p)$ to have the expected cardinality via `Gal.card_of_separable`. In characteristic $p > 0$, the story splits: separable irreducibles behave exactly as in characteristic 0, but inseparable irreducibles (e.g., $X^p - t$ over $\\mathbb{F}_p(t)$) have trivial Galois groups despite having degree $p$, so the divisibility fails. The boundary between characteristic-0 behavior and characteristic-$p$ pathology is precisely separability.",
