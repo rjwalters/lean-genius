@@ -1091,4 +1091,109 @@ theorem erdos_1201_equiv_small_eps :
     · push_neg at hε_half
       exact h ε η hε₀ hε_half hη
 
+/-
+## Upper Density: Basic Properties
+-/
+
+/-- The empty set has upper density 0. -/
+theorem upperDensity_empty : upperDensity ∅ = 0 := by
+  simp only [upperDensity]
+  have h : (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ (∅ : Set ℕ))).card : ℝ) / N) =
+           fun _ => 0 := by ext N; simp
+  rw [h]; exact Filter.limsup_const 0
+
+/-- Upper density is at most 1: the counting ratio never exceeds 1. -/
+theorem upperDensity_le_one (S : Set ℕ) : upperDensity S ≤ 1 := by
+  simp only [upperDensity, ← Filter.limsup_const (1 : ℝ)]
+  apply Filter.limsup_le_limsup
+  · exact Filter.Eventually.of_forall fun N => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · exact div_le_one_of_le
+          ((Finset.card_filter_le _ _).trans (by rw [Finset.Nat.card_Icc]; omega))
+          (Nat.cast_nonneg _)
+  · use 0
+    intro a ha
+    by_contra hlt
+    push_neg at hlt
+    obtain ⟨N, hN⟩ := ha.exists
+    linarith [div_nonneg (Nat.cast_nonneg (((Finset.Icc 1 N).filter (· ∈ S)).card))
+      (Nat.cast_nonneg N)]
+  · exact ⟨1, Filter.Eventually.of_forall fun _ => le_refl _⟩
+
+/-- Upper density is non-negative. -/
+theorem upperDensity_ge_zero (S : Set ℕ) : 0 ≤ upperDensity S := by
+  have h := upperDensity_mono (Set.empty_subset S)
+  rwa [upperDensity_empty] at h
+
+/-- The full set ℕ has upper density 1. -/
+theorem upperDensity_univ : upperDensity Set.univ = 1 := by
+  apply le_antisymm (upperDensity_le_one _)
+  simp only [upperDensity, ← Filter.limsup_const (1 : ℝ)]
+  apply Filter.limsup_le_limsup
+  · apply Filter.eventually_atTop.mpr
+    refine ⟨1, fun N hN => ?_⟩
+    rw [Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _)]
+    rw [show (Finset.Icc 1 N).card = N from by rw [Finset.Nat.card_Icc]; omega]
+    push_cast
+    exact le_of_eq (div_self (Nat.cast_ne_zero.mpr (by omega))).symm
+  · exact ⟨1, Filter.Eventually.of_forall fun _ => le_refl _⟩
+  · exact ⟨1, Filter.eventually_atTop.mpr ⟨1, fun N hN => by
+      rw [Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _)]
+      rw [show (Finset.Icc 1 N).card = N from by rw [Finset.Nat.card_Icc]; omega]
+      push_cast
+      exact le_of_eq (div_self (Nat.cast_ne_zero.mpr (by omega)))⟩⟩
+
+/-
+## GPF Term Bound
+-/
+
+/-- The GPF of any individual term n+i (i ≤ k) is ≤ the window GPF P(n,k).
+    Since GPF(n+i) is prime and divides n+i which divides the product, GPF(n+i) ≤ P(n,k). -/
+theorem gpfConsecutive_ge_gpf_term (n k i : ℕ) (hn : 2 ≤ n) (hi : i ≤ k) :
+    greatestPrimeFactor (n + i) ≤ gpfConsecutive n k :=
+  le_gpfConsecutive_of_prime_dvd_term n k i (by omega) hi _
+    (gpf_prime (n + i) (by omega)) (gpf_dvd (n + i) (by omega))
+
+/-
+## Finite Window Existence
+-/
+
+/-- For the initial segment [1,N] and ε ∈ (0,1), the explicit window k = 2⌈N^{1-ε}⌉ + 2
+    makes every n ≤ N good. Uses `erdos_1201_threshold_bound`: P(n,k) > k/2 ≥ ⌈N^{1-ε}⌉ ≥ n^{1-ε}. -/
+theorem erdos_1201_exists_k_for_all_small_n (N : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    ∃ k : ℕ, 2 ≤ k ∧ ∀ n, 1 ≤ n → n ≤ N → (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  use 2 * Nat.ceil ((N : ℝ) ^ (1 - ε)) + 2
+  refine ⟨by omega, fun n hn1 hn2 => ?_⟩
+  apply erdos_1201_threshold_bound n _ ε hn1 (by omega)
+  have hne : (n : ℝ) ^ (1 - ε) ≤ (N : ℝ) ^ (1 - ε) :=
+    Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hn2) (by linarith)
+  have hk_div : ((2 * Nat.ceil ((N : ℝ) ^ (1 - ε)) + 2 : ℕ) : ℝ) / 2 =
+                ↑(Nat.ceil ((N : ℝ) ^ (1 - ε))) + 1 := by push_cast; ring
+  rw [hk_div]
+  calc (n : ℝ) ^ (1 - ε)
+      ≤ (N : ℝ) ^ (1 - ε)                   := hne
+    _ ≤ ↑(Nat.ceil ((N : ℝ) ^ (1 - ε)))     := Nat.le_ceil _
+    _ < ↑(Nat.ceil ((N : ℝ) ^ (1 - ε))) + 1 := lt_add_one _
+
+/-- For any finite set F ⊆ ℕ≥2 and ε ∈ (0,1), there exists a single window K
+    making every n ∈ F good simultaneously. This contrasts with the Erdős conjecture,
+    which requires a fixed K working for a density-1 set of ALL n. -/
+theorem erdos_1201_finite_set_good (F : Finset ℕ) (ε : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1)
+    (hF : ∀ n ∈ F, 2 ≤ n) :
+    ∃ K : ℕ, ∀ n ∈ F, (n : ℝ) ^ (1 - ε) < (gpfConsecutive n K : ℝ) := by
+  induction F using Finset.induction_on with
+  | empty => exact ⟨0, fun n hn => absurd hn Finset.not_mem_empty⟩
+  | @insert a F' haF' ih =>
+    have hF' : ∀ n ∈ F', 2 ≤ n := fun n hn => hF n (Finset.mem_insert_of_mem hn)
+    obtain ⟨K', hK'⟩ := ih hF'
+    obtain ⟨Ka, hKa⟩ := erdos_1201_individual_threshold a
+        (hF a (Finset.mem_insert_self a F')) ε hε₀ hε₁
+    exact ⟨max K' Ka, fun n hn => by
+      rcases Finset.mem_insert.mp hn with rfl | hmem
+      · exact erdos_1201_good_set_mono ε (le_max_right K' Ka) n
+            (hF a (Finset.mem_insert_self a F')) hKa
+      · exact erdos_1201_good_set_mono ε (le_max_left K' Ka) n
+            (hF n (Finset.mem_insert_of_mem hmem)) (hK' n hmem)⟩
+
 end Erdos1201
