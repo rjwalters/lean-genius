@@ -56,7 +56,14 @@ psum σ R 1 = Σ_{i : σ} X i = esymm σ R 1
 -/
 theorem psum_one_eq_esymm_one :
     psum σ R 1 = esymm σ R 1 := by
-  sorry
+  rw [MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 1 one_ne_zero]
+  have hfilt : (Finset.antidiagonal 1).filter (fun a : ℕ × ℕ => a.1 ∈ Set.Ioo 0 1) = ∅ := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_antidiagonal, Set.mem_Ioo,
+               Finset.not_mem_empty, iff_false, not_and, not_lt]
+    omega
+  simp only [hfilt, Finset.sum_empty]
+  ring
 
 /-
 TARGET 2: Newton-Girard k=2 — power sum in terms of elementary symmetric polynomials.
@@ -69,7 +76,16 @@ Derivation via psum_eq_mul_esymm_sub_sum at n=2:
 -/
 theorem psum_two_eq :
     psum σ R 2 = esymm σ R 1 ^ 2 - 2 * esymm σ R 2 := by
-  sorry
+  rw [MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 2 (by norm_num)]
+  have hfilt : (Finset.antidiagonal 2).filter (fun a : ℕ × ℕ => a.1 ∈ Set.Ioo 0 2) =
+               {(1, 1)} := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_antidiagonal, Set.mem_Ioo,
+               Finset.mem_singleton, Prod.mk.injEq]
+    omega
+  simp only [hfilt, Finset.sum_singleton]
+  rw [psum_one_eq_esymm_one]
+  ring
 
 /-
 TARGET 3: Newton-Girard k=3 — power sum in terms of lower-degree power sums.
@@ -85,6 +101,17 @@ Derivation via psum_eq_mul_esymm_sub_sum at n=3:
 theorem psum_three_eq :
     psum σ R 3 =
       esymm σ R 1 * psum σ R 2 - esymm σ R 2 * psum σ R 1 + 3 * esymm σ R 3 := by
-  sorry
+  rw [MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 3 (by norm_num)]
+  have hfilt : (Finset.antidiagonal 3).filter (fun a : ℕ × ℕ => a.1 ∈ Set.Ioo 0 3) =
+               {(1, 2), (2, 1)} := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_antidiagonal, Set.mem_Ioo,
+               Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+    omega
+  simp only [hfilt,
+             Finset.sum_insert (by decide : (1, 2) ∉ ({(2, 1)} : Finset (ℕ × ℕ))),
+             Finset.sum_singleton]
+  rw [psum_one_eq_esymm_one]
+  ring
 
 end AmgmInequalityOQ02OQ01OQ02OQ01Aristotle
