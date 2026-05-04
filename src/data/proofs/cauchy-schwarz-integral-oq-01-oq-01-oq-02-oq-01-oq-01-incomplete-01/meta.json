@@ -3,6 +3,15 @@
   "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
   "description": "Advances the sigma-finite Lp Riesz representation from 3 sorries to 1 by proving Step C (density extension, Session 1) and Step B (Lp truncation convergence via Vitali, Session 2). Only localization_existence (Step A, ~150 lines of Lp restriction map infrastructure) remains as a sorry.",
+  "leanFile": {
+    "namespace": "RieszSigmaFiniteComplete",
+    "lineCount": 452,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
+    "sorries": 1
+  },
   "meta": {
     "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
@@ -17,7 +26,7 @@
     "badge": "formalized",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 386,
+    "lineCount": 452,
     "assumptions": "1 HARD sorry remaining (down from 3): localization_existence (~150 lines, Lp restriction map infrastructure). Step C (density extension) and Step B (lp_truncation_tendsto_zero via Vitali) are both fully proved.",
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
