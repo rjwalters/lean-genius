@@ -911,6 +911,34 @@ noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
 noncomputable def powers2Point (d : ℕ) : Fin d → ℝ :=
   harmonicPoint d powersOf2Set
 
+/-- X₁ equals the positive half-line: the harmonic subseries point set in dimension 1
+    consists of exactly the functions Fin 1 → ℝ with positive value.
+    (⊆) All harmonic subseries sums of nonempty sets are positive.
+    (⊇) Every s > 0 is achievable via the greedy harmonic construction. -/
+theorem harmonicPointSet_one_eq :
+    harmonicPointSet 1 = {x : Fin 1 → ℝ | 0 < x 0} := by
+  ext x
+  simp only [harmonicPointSet, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨A, hAinf, hAconv, rfl⟩
+    exact all_coordinates_positive 1 A hAinf.nonempty hAconv 0
+  · intro hx
+    obtain ⟨A, hAinf, hAconv, hAsum⟩ := exists_infinite_harmonic_set (x 0) hx
+    refine ⟨A, hAinf, hAconv, ?_⟩
+    funext ⟨i, hi⟩
+    fin_cases hi
+    simp only [harmonicPoint, shiftedHarmonicSum, Fin.val_mk]
+    rw [show (fun n : A => (1:ℝ) / (↑↑n + 0)) = (fun n : A => (1:ℝ) / ↑↑n) from by ext n; simp]
+    exact hAsum
+
+/-- The harmonic subseries sum map is surjective onto (0, ∞): for any target s > 0
+    there exists an infinite A ⊆ ℕ with convergent harmonic sum equal to s.
+    This follows from the greedy harmonic construction (see greedySet / greedyBudget). -/
+theorem harmonicSubseriesSum_surjective_on_pos (s : ℝ) (hs : 0 < s) :
+    ∃ A : Set ℕ, A.Infinite ∧ HasConvergentHarmonicSubseries A ∧
+      harmonicSubseriesSum A = s :=
+  exists_infinite_harmonic_set s hs
+
 end Erdos268
 
 /-

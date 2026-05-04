@@ -239,3 +239,30 @@ theorem factorization_lcmInterval (n k : ℕ) :
     rw [lcmInterval_succ,
         Nat.factorization_lcm (by omega) (lcmInterval_ne_zero n k),
         ih, Finset.range_succ, Finset.sup_insert]
+
+/- ## General large-m distinctness bound -/
+
+/-- **Structural bound**: for any k ≥ 1, if m + k exceeds the consecutive product
+    (n+1)·(n+2)·⋯·(n+k), then lcmInterval(m, k) ≠ lcmInterval(n, k).
+
+    Proof: `lcmInterval(n,k) ≤ consecutiveProduct(n,k)` by `lcmInterval_dvd_product`,
+    while `lcmInterval(m,k) ≥ m+k` by `le_lcmInterval`. These sandwich to a contradiction. -/
+theorem erdos677_large_m (n m k : ℕ) (hk : 0 < k) (hm : n + k ≤ m)
+    (hbig : consecutiveProduct n k < m + k) :
+    lcmInterval m k ≠ lcmInterval n k := by
+  intro heq
+  have h_n_le : lcmInterval n k ≤ consecutiveProduct n k :=
+    Nat.le_of_dvd (consecutiveProduct_pos n k) (lcmInterval_dvd_product n k)
+  have h_m_ge : m + k ≤ lcmInterval m k := le_lcmInterval m k hk
+  have h_chain : m + k ≤ lcmInterval n k := heq ▸ h_m_ge
+  linarith
+
+/-- Corollary for k = 3: Erdős #677 holds when m + 3 > (n+1)(n+2)(n+3).
+    This elementary bound covers all "large m" cases without the Thue–Siegel axiom. -/
+theorem erdos677_k3_large_m (m n : ℕ) (hm : n + 3 ≤ m)
+    (hbig : (n + 1) * (n + 2) * (n + 3) < m + 3) :
+    lcmInterval m 3 ≠ lcmInterval n 3 := by
+  apply erdos677_large_m n m 3 (by omega) hm
+  have : consecutiveProduct n 3 = (n + 1) * (n + 2) * (n + 3) := by
+    simp [consecutiveProduct, Finset.prod_range_succ]; ring
+  linarith

@@ -123,3 +123,73 @@ theorem cofiniteImage_subset (a ι : ℕ → ℕ) :
 /-- The identity is a cofinite subsequence (keeps all indices). -/
 theorem isCofiniteSubseq_id (a : ℕ → ℕ) : IsCofiniteSubseq a id :=
   ⟨strictMono_id, by simp [Set.range_id]⟩
+
+-- ============================================================================
+-- § DENSITY INFRASTRUCTURE
+-- ============================================================================
+
+/-- The counting function is monotone: A ⊆ B → countIn A N ≤ countIn B N. -/
+theorem countIn_mono (A B : Set ℕ) (h : A ⊆ B) (N : ℕ) :
+    countIn A N ≤ countIn B N := by
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  intro x _
+  exact h
+
+/-- The count is bounded by N: countIn S N ≤ N. -/
+theorem countIn_le (S : Set ℕ) (N : ℕ) : countIn S N ≤ N := by
+  apply le_trans (Finset.card_filter_le _ _)
+  simp [Finset.card_Icc]
+
+/-- Density is monotone upward: if A ⊆ B and A has density 1, then B also has density 1.
+    Proof: sandwich countIn A N / N ≤ countIn B N / N ≤ 1 with countIn A N / N → 1. -/
+theorem hasDensity_one_of_superset (A B : Set ℕ) (hAB : A ⊆ B)
+    (hA : HasDensity A 1) : HasDensity B 1 := by
+  intro ε hε
+  obtain ⟨N₀, hN₀⟩ := hA ε hε
+  refine ⟨max N₀ 1, fun N hN => ?_⟩
+  have hNN₀ : N₀ ≤ N := le_trans (le_max_left _ _) hN
+  have hN1 : 1 ≤ N := le_trans (le_max_right _ _) hN
+  have hNpos : (0 : ℚ) < N := by exact_mod_cast Nat.pos_of_ne_zero (Nat.one_le_iff_ne_zero.mp hN1)
+  have hA_close := hN₀ N hNN₀
+  have step1 : (countIn A N : ℚ) / N ≤ (countIn B N : ℚ) / N :=
+    (div_le_div_right hNpos).mpr (by exact_mod_cast countIn_mono A B hAB N)
+  have step2 : (countIn B N : ℚ) / N ≤ 1 :=
+    div_le_one_of_le (by exact_mod_cast countIn_le B N) hNpos.le
+  have step3 : (countIn A N : ℚ) / N ≤ 1 :=
+    div_le_one_of_le (by exact_mod_cast countIn_le A N) hNpos.le
+  rw [abs_sub_comm, abs_of_nonneg (by linarith)] at hA_close
+  rw [abs_sub_comm, abs_of_nonneg (by linarith)]
+  linarith
+
+-- ============================================================================
+-- § CONSEQUENCES OF THE AXIOM
+-- ============================================================================
+
+/-- From erdos347_affirmative: the full sequence (identity subsequence) has density-1 subset sums.
+    This instantiates the existential with the identity cofinite subsequence. -/
+theorem erdos347_range_density_one :
+    ∃ (a : ℕ → ℕ), IsMonotone a ∧ HasRatioLimit a 2 ∧
+      HasDensity (subsetSums (Set.range a)) 1 := by
+  obtain ⟨a, hm, hr, hd⟩ := erdos347_affirmative
+  refine ⟨a, hm, hr, ?_⟩
+  have h := hd id (isCofiniteSubseq_id a)
+  simp only [cofiniteImage, Function.comp_id] at h
+  exact h
+
+/-- SubsetSums are invariant under the cofinite subsequence structure:
+    cofiniteImage a ι has subset sums contained in subsetSums (Set.range a). -/
+theorem subsetSums_cofiniteImage_subset (a ι : ℕ → ℕ) :
+    subsetSums (cofiniteImage a ι) ⊆ subsetSums (Set.range a) :=
+  subsetSums_mono _ _ (cofiniteImage_subset a ι)
+
+/-- For any cofinite subsequence of the Erdős-347 witness, the subset sums of
+    that subsequence also have density ≥ 1 as a subset of P(range a). -/
+theorem erdos347_cofinite_density_via_superset :
+    ∃ (a : ℕ → ℕ), IsMonotone a ∧ HasRatioLimit a 2 ∧
+      ∀ (ι : ℕ → ℕ), IsCofiniteSubseq a ι →
+        HasDensity (subsetSums (Set.range a)) 1 := by
+  obtain ⟨a, hm, hr, hd⟩ := erdos347_affirmative
+  refine ⟨a, hm, hr, fun ι hι => ?_⟩
+  have hcof := hd ι hι
+  exact hasDensity_one_of_superset _ _ (subsetSums_cofiniteImage_subset a ι) hcof

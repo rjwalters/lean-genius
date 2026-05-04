@@ -50,7 +50,34 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+## Session 2026-05-03 (Session 1) — Twin/Cousin Prime Stepping Structure
+
+**Mode**: FRESH
+**Outcome**: progress — 7 new theorems, 23→30 total
+
+### What I Did
+- Read full Lean file (263 lines, 23 theorems, 1 axiom, 0 sorries)
+- Identified gap: seed elements 3 and 5 always appear in candidate lists — structural observation not yet formalized
+- Proved `ulam35_f0_eq_three` (f(0) = 3) and `ulam35_f1_eq_five` (f(1) = 5)
+- Proved `ulam35_gap_ge_two`: consecutive terms always differ by ≥ 2 (specializes existing gap theorem, eliminates f(n)=2 case)
+- Proved `ulam35_three_in_ofFn` and `ulam35_five_in_ofFn`: seed elements appear in candidate lists
+- Proved `ulam35_twin_prime_step`: **f(n)+2 prime → f(n+1) = f(n)+2** (main result)
+- Proved `ulam35_cousin_prime_upper`: f(n)+4 prime → f(n+1) ≤ f(n)+4
+
+### Key Findings
+- Twin prime step is tight: minimality gives ≤, gap bound gives ≥, so equality when f(n)+2 is prime
+- Both 3 and 5 are always available as "donors" in the extension rule — unique to the {3,5} seed
+- The pattern 3,5,7,11,13,17,19,23 matches all odd primes through 23; twin prime pairs explain advances by 2
+
+### Files Modified
+- `proofs/Proofs/Erdos472Problem.lean` (327 lines, was 263)
+- `src/data/proofs/erdos-472/meta.json` (theoremCount 23→30, lineCount, new section)
+- `src/data/research/problems/erdos-472.json` (knowledge updated)
+
+### Next Steps
+- Prove complement: f(n)+2 NOT prime → f(n+1) ≥ f(n)+4
+- Formalize cousin prime exact step when both conditions hold
+- Upper bound from full sequence: f(n+1) ≤ 2f(n)-1 when 2f(n)-1 is prime
 
 ---
 

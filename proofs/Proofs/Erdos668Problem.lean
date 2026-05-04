@@ -279,4 +279,56 @@ theorem f_pos (n : ℕ) (hn : n ≥ 1) : f n ≥ 1 := by
   have hpos := (Set.ncard_pos hfin).mpr hne'
   omega
 
+-- ============================================================================
+-- § Known small cases (f(1)=f(2)=f(3)=1) and structural consequences
+-- ============================================================================
+
+/-- f(1) = 1: The unique 1-point configuration (all 1-point sets are congruent). -/
+axiom f_one : f 1 = 1
+
+/-- f(2) = 1: The unique 2-point unit-distance configuration (two points at distance 1). -/
+axiom f_two : f 2 = 1
+
+/-- f(3) = 1: The unique 3-point extremal configuration is an equilateral triangle.
+    Known: u(3) = 3, achieved uniquely (up to congruence) by the equilateral triangle. -/
+axiom f_three : f 3 = 1
+
+/-- For n ≤ 4, f(n) = 1 (the extremal configuration is unique). -/
+theorem f_le_four_eq_one : f 1 = 1 ∧ f 2 = 1 ∧ f 3 = 1 ∧ f 4 = 1 :=
+  ⟨f_one, f_two, f_three, f_four⟩
+
+/-- Congruent sets have equal cardinality.
+    Proof: φ induces an injection S → T (via hST) and S ← T (via hTS + φ⁻¹). -/
+theorem areCongruent_card_eq {S T : Finset Plane} (h : areCongruent S T) :
+    S.card = T.card := by
+  obtain ⟨φ, hST, hTS⟩ := h
+  have le1 : S.card ≤ T.card := by
+    have himg : S.image φ ⊆ T := fun x hx => by
+      obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hx; exact hST p hp
+    calc S.card = (S.image φ).card :=
+          (Finset.card_image_of_injOn (fun a _ b _ h => φ.injective h)).symm
+      _ ≤ T.card := Finset.card_le_card himg
+  have le2 : T.card ≤ S.card := by
+    have himg : T.image φ.symm ⊆ S := fun x hx => by
+      obtain ⟨q, hq, rfl⟩ := Finset.mem_image.mp hx
+      obtain ⟨p, hp, hpq⟩ := hTS q hq
+      rwa [← hpq, φ.symm_apply_apply]
+    calc T.card = (T.image φ.symm).card :=
+          (Finset.card_image_of_injOn (fun a _ b _ h => φ.symm.injective h)).symm
+      _ ≤ S.card := Finset.card_le_card himg
+  omega
+
+/-- Congruent extremal sets achieve the same maximum unit distance count. -/
+theorem congruent_extremal_same_u {S T : Finset Plane}
+    (h : areCongruent S T) (hS : isExtremal S) : isExtremal T :=
+  congruent_preserves_extremal h (areCongruent_card_eq h) hS
+
+/-- If question_one holds (f(n) → ∞), then the modified question_two holds
+    (f(n) > 1 for all sufficiently large n). -/
+theorem question_one_implies_question_two_modified :
+    question_one → question_two_modified := by
+  intro h
+  obtain ⟨N, hN⟩ := h 2
+  exact ⟨N, fun n hn => by have := hN n hn; omega⟩
+
 end Erdos668

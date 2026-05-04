@@ -37,7 +37,7 @@
       "erdos_960_summary (proved): combines disproof (r>=3,k>=4) with r=2 base case"
     ],
     "axiomCount": 2,
-    "lineCount": 251,
+    "lineCount": 296,
     "assumptions": "2 axioms: erdos_960_disproof (APSSV 2026 — quadratic lower bound F ≥ n²/12 - 10n/3 for r≥3, k≥4), erdos_960_littleo_false (negation of little-o conjecture). 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7
@@ -161,9 +161,9 @@
     ],
     "opens": [],
     "namespace": "Erdos960",
-    "lineCount": 251,
+    "lineCount": 296,
     "axiomCount": 2,
-    "theoremCount": 7,
+    "theoremCount": 13,
     "definitionCount": 7,
     "path": "Proofs/Erdos960Problem.lean",
     "sorries": 0

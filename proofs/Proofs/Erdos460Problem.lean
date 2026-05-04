@@ -289,3 +289,39 @@ theorem erdos_460_restricted_question :
   · obtain ⟨N₀, hN₀⟩ := h_large M hM
     exact ⟨N₀, fun n hn =>
       lt_of_lt_of_le (hN₀ n hn) (largePrime_le_sieveReciprocal n)⟩
+
+/- ## Section VIII: Additional Structural Properties -/
+
+/-- greedyCoprimeSieve n 0 = 0 from definition. -/
+theorem sieve_at_zero (n : ℕ) : greedyCoprimeSieve n 0 = 0 := rfl
+
+/-- greedyCoprimeSieve n 1 = 1 from definition. -/
+theorem sieve_at_one (n : ℕ) : greedyCoprimeSieve n 1 = 1 := rfl
+
+/-- The restricted sum to small-prime-divisible indices is non-negative. -/
+theorem smallPrimeDivisibleSum_nonneg (n : ℕ) : 0 ≤ smallPrimeDivisibleSum n := by
+  unfold smallPrimeDivisibleSum
+  apply Finset.sum_nonneg
+  intro k _
+  dsimp only []
+  split_ifs with h
+  · exact div_nonneg one_pos.le (Nat.cast_nonneg _)
+  · exact le_refl _
+
+/-- The restricted sum to large-prime indices is non-negative. -/
+theorem largePrimeSum_nonneg (n : ℕ) : 0 ≤ largePrimeSum n := by
+  unfold largePrimeSum
+  apply Finset.sum_nonneg
+  intro k _
+  dsimp only []
+  split_ifs with h
+  · exact div_nonneg one_pos.le (Nat.cast_nonneg _)
+  · exact le_refl _
+
+/-- The least prime factor of a prime p equals p itself. -/
+theorem leastPrimeFactor_prime_eq (p : ℕ) (hp : p.Prime) : leastPrimeFactor p = p := by
+  unfold leastPrimeFactor
+  rw [if_neg (Nat.not_le.mpr hp.one_lt)]
+  have h1 : p.minFac ∣ p := Nat.minFac_dvd p
+  have h2 : (p.minFac).Prime := Nat.minFac_prime hp.two_le
+  exact (hp.eq_one_or_self_of_dvd p.minFac h1).resolve_left h2.ne_one

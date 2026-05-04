@@ -492,3 +492,51 @@ theorem infinite_sidon_gap_from_finite :
   obtain ⟨N₁, hN₁⟩ := infinite_set_card_grows S hS.1 n₀
   -- For N ≥ N₁: the restriction is Sidon with ≥ n₀ elements → apply conjecture
   exact ⟨N₁, fun N hN _ => hn₀ _ (infinite_sidon_restriction S hS N) (hN₁ N hN)⟩
+
+/-
+## Section X: Sumset Extremes
+-/
+
+/-- The sumset A+A is nonempty whenever A is nonempty:
+    if a ∈ A then a + a ∈ A+A. -/
+theorem sumset_nonempty (A : Finset ℕ) (hA : A.Nonempty) : (sumset A).Nonempty := by
+  obtain ⟨a, ha⟩ := hA
+  exact ⟨a + a, Finset.mem_image.mpr ⟨(a, a), Finset.mem_product.mpr ⟨ha, ha⟩, rfl⟩⟩
+
+/-- The minimum element of A+A is 2·min(A): the diagonal pair achieves the minimum,
+    and every sum a+b ≥ min(A)+min(A). -/
+theorem sumset_min' (A : Finset ℕ) (hA : A.Nonempty) :
+    (sumset A).min' (sumset_nonempty A hA) = 2 * A.min' hA := by
+  apply le_antisymm
+  · apply Finset.min'_le
+    exact Finset.mem_image.mpr ⟨(A.min' hA, A.min' hA),
+      Finset.mem_product.mpr ⟨Finset.min'_mem A hA, Finset.min'_mem A hA⟩, by ring⟩
+  · apply Finset.le_min'
+    intro x hx
+    obtain ⟨⟨a, b⟩, hab, rfl⟩ := Finset.mem_image.mp hx
+    obtain ⟨ha, hb⟩ := Finset.mem_product.mp hab
+    linarith [Finset.min'_le A a ha, Finset.min'_le A b hb]
+
+/-- The maximum element of A+A is 2·max(A): the diagonal pair achieves the maximum,
+    and every sum a+b ≤ max(A)+max(A). -/
+theorem sumset_max' (A : Finset ℕ) (hA : A.Nonempty) :
+    (sumset A).max' (sumset_nonempty A hA) = 2 * A.max' hA := by
+  apply le_antisymm
+  · apply Finset.max'_le
+    intro x hx
+    obtain ⟨⟨a, b⟩, hab, rfl⟩ := Finset.mem_image.mp hx
+    obtain ⟨ha, hb⟩ := Finset.mem_product.mp hab
+    linarith [Finset.le_max' A a ha, Finset.le_max' A b hb]
+  · apply Finset.le_max'
+    exact Finset.mem_image.mpr ⟨(A.max' hA, A.max' hA),
+      Finset.mem_product.mpr ⟨Finset.max'_mem A hA, Finset.max'_mem A hA⟩, by ring⟩
+
+/-- The span of A+A is twice the span of A:
+    max(A+A) − min(A+A) = 2·(max(A) − min(A)). -/
+theorem sumset_span (A : Finset ℕ) (hA : A.Nonempty) :
+    (sumset A).max' (sumset_nonempty A hA) - (sumset A).min' (sumset_nonempty A hA) =
+    2 * (A.max' hA - A.min' hA) := by
+  rw [sumset_min' A hA, sumset_max' A hA]
+  have hle : A.min' hA ≤ A.max' hA :=
+    Finset.min'_le A (A.max' hA) (Finset.max'_mem A hA)
+  omega

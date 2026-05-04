@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added general structural theorems — ulam_seq_ge_three, ulam_seq_ne_two, ulam_seq_odd, ulam35_seed_ge_three. Total: 23 theorems, 1 axiom (open conjecture), 0 sorries.",
+    "progressSummary": "PROGRESS: 23→30 theorems. Added twin/cousin prime stepping structure: f(0)=3, f(1)=5 always in candidate lists; twin prime step (f(n)+2 prime → exact advance by 2); cousin prime upper bound (f(n)+4 prime → advance ≤ 4). 0 sorries, 1 axiom.",
     "builtItems": [
       "Fixed seed_two_gives_even: added missing Odd p hypothesis (theorem was false for even p)",
       "Replaced deprecated List.Sorted with List.Pairwise (3 occurrences)",
@@ -37,7 +37,14 @@
       "ulam_seq_ge_three: all terms ≥ 3 when seed primes ≥ 3 (induction + monotonicity)",
       "ulam_seq_ne_two: no term = 2, corollary of ge_three",
       "ulam_seq_odd: all terms odd (prime ≥ 3 → odd, via even/odd dichotomy)",
-      "ulam35_seed_ge_three: {3,5} seed satisfies ≥ 3 condition (by decide)"
+      "ulam35_seed_ge_three: {3,5} seed satisfies ≥ 3 condition (by decide)",
+      "ulam35_f0_eq_three: f(0) = 3 in any {3,5} Ulam sequence (Erdos472Problem.lean:268)",
+      "ulam35_f1_eq_five: f(1) = 5 in any {3,5} Ulam sequence (Erdos472Problem.lean:274)",
+      "ulam35_gap_ge_two: f(n+1) ≥ f(n)+2 always (eliminates f(n)=2 case) (Erdos472Problem.lean:281)",
+      "ulam35_three_in_ofFn: 3 always in candidate list at step n (Erdos472Problem.lean:288)",
+      "ulam35_five_in_ofFn: 5 in candidate list for n ≥ 1 (Erdos472Problem.lean:294)",
+      "ulam35_twin_prime_step: f(n)+2 prime → f(n+1) = f(n)+2 (Erdos472Problem.lean:301)",
+      "ulam35_cousin_prime_upper: f(n)+4 prime → f(n+1) ≤ f(n)+4 (Erdos472Problem.lean:316)"
     ],
     "insights": [
       "File is well-developed: 19 theorems including computational verification of 8 terms",
@@ -47,10 +54,18 @@
       "List.Sorted deprecated in current Mathlib in favor of List.Pairwise",
       "seed_two_gives_even was incorrectly stated for all p >= 3 - only true for odd p",
       "General structural bound: for seeds with all primes ≥ 3, strict monotonicity gives f(n) ≥ 3 for all n",
-      "Oddness preserved: since 2 is the only even prime and all terms are ≥ 3, all terms are odd — this means the parity argument in odd_candidate_from_odd applies to every step"
+      "Oddness preserved: since 2 is the only even prime and all terms are ≥ 3, all terms are odd — this means the parity argument in odd_candidate_from_odd applies to every step",
+      "Both seed elements 3 and 5 always appear in subsequent candidate lists — this is the key structural observation enabling exact stepping",
+      "Twin prime step: whenever f(n) and f(n)+2 are both prime, the sequence advances by exactly 2. This is the tightest possible step (gap bound says ≥ 2).",
+      "Cousin prime bound: f(n)+4 is always a candidate when prime (via 5 in seq), so f(n+1) ≤ f(n)+4 in that case. Combining: if either f(n)+2 or f(n)+4 is prime, f(n+1) ≤ f(n)+4.",
+      "The twin prime conjecture implies the {3,5} Ulam sequence contains infinitely many twin prime steps — but this is weaker than proving the sequence is infinite."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove: if f(n)+2 is NOT prime, then f(n+1) ≥ f(n)+4 (complement of twin prime step)",
+      "Formalize: f(n+1) = f(n)+4 when f(n)+2 composite and f(n)+4 prime (cousin prime exact step)",
+      "Upper bound from full sequence: f(n+1) ≤ f(n) + f(n) - 1 = 2f(n) - 1 when 2f(n)-1 is prime"
+    ],
     "markdown": "# Erdős #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [

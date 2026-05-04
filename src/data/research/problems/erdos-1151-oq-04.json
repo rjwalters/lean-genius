@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1151-oq-04",
   "title": "Prove erdos_1941_divergence via Lebesgue Function Growth at Chebyshev Nodes",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "IN-PROGRESS",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,14 +27,12 @@
     "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-04-21",
-    "iteration": 1,
-    "focus": "Build blocked by Mathlib API drift in main file. Companion file sorry-free. Awaiting Mechanic repair.",
-    "blockers": [
-      "Erdos1151OQ04.lean fails to build on origin/main: 17+ Mathlib API drift errors. Mechanic must fix before research can resume."
-    ],
-    "nextAction": "Wait for Mechanic to repair Mathlib API drift in Erdos1151OQ04.lean (div_le_div_iff renaming, Nat.eq_or_gt_of_le removal). Cannot resume work until upstream build is green.",
+    "phase": "IN-PROGRESS",
+    "since": "2026-05-04",
+    "iteration": 2,
+    "focus": "Mathlib API drift fixed (5 issues: div_le_div_iff→div_le_div_iff₀, harmonic_eq_sum_range→induction, Nat.eq_or_gt_of_le→eq_or_lt_of_le, Int.even_iff_not_odd→Even.not_odd, arccos_lt_pi.mpr→inline). 2 sorries remain: trig_sum_harmonic_lb (Lipschitz + harmonic sum for θ∈(0,π)) and divergence_from_lebesgue_growth (lim vs limsup gap).",
+    "blockers": [],
+    "nextAction": "Attempt trig_sum_harmonic_lb proof: decompose into sin_ge_sin_of_mem_Icc helper (Step 4) + Lipschitz bound + near-node harmonic sum.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED upstream: main file Erdos1151OQ04.lean has Mathlib API drift errors (div_le_div_iff renamed, Nat.eq_or_gt_of_le removed, etc.) introduced 2026-04-26/27 in commits 67e2cafc/343f1622. Companion file is sorry-free (stale metadata corrected). 2 genuine sorries remain in main file (trig_sum_harmonic_lb, divergence_from_lebesgue_growth) but cannot be worked until Mechanic fixes API drift.",
+    "progressSummary": "Mathlib API drift FIXED (2026-05-04): 5 issues resolved — div_le_div_iff→div_le_div_iff₀, harmonic_eq_sum_range→induction proof, Nat.eq_or_gt_of_le→eq_or_lt_of_le, Int.even_iff_not_odd.mp→Even.not_odd, arccos_lt_pi.mpr→inline lt_of_le_of_ne proof. File now builds (pending Docker validation). 2 genuine sorries remain: trig_sum_harmonic_lb (Lipschitz+harmonic sum lower bound, strategy documented) and divergence_from_lebesgue_growth (lim vs limsup gap, may require axiom relaxation).",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -88,9 +86,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "(Mechanic) Fix Mathlib API drift in Erdos1151OQ04.lean — see knowledge.md session 2026-04-27 for line-by-line list",
-      "(Researcher, after Mechanic fix) Add sin_ge_sin_of_mem_Icc helper to companion file (Step 4 of trig_sum_harmonic_lb proof sketch)",
-      "(Researcher, after Mechanic fix) Decompose trig_sum_harmonic_lb into 3-4 Aristotle-sized helpers",
+      "(Researcher) Prove trig_sum_harmonic_lb: fix k₀ = nearest Chebyshev node to θ (|φₖ₀-θ|≤π/(2n)), use cos_dist_le to bound |cosθ-cosφₖ|≤(j+1)π/n for rank-j nodes, use sin_ge_sin_of_mem_Icc to bound sinφₖ≥sinθ/2 for j≤M=⌊n·sinθ/(2π)⌋, sum harmonic Σ sinθ·n/(2π(j+1)) over j=1..M using odd_harmonic_sum_lb",
       "(Researcher, longer-term) Address divergence_from_lebesgue_growth foundational lim/limsup gap"
     ]
   },
@@ -122,11 +118,11 @@
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 1283,
-      "theoremCount": 29,
+      "lineCount": 1320,
+      "theoremCount": 31,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 4,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04.lean"
     },

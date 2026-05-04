@@ -371,6 +371,87 @@ lemma nc_div_pow_tendsto (c : ℝ) (hc : 0 < c) :
     (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 2 / 3)).comp tendsto_natCast_atTop_atTop
   exact (tendsto_nat_floor_mul_div_atTop hc.le).comp hpow
 
+/-- d^(2/3) → +∞ over ℕ. Extracted for reuse in Lemmas A and B. -/
+private lemma rpow23_atTop : Filter.Tendsto (fun d : ℕ => (d : ℝ) ^ ((2 : ℝ) / 3))
+    Filter.atTop Filter.atTop :=
+  (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 2 / 3)).comp tendsto_natCast_atTop_atTop
+
+/-- 2 / d^(2/3) → 0 as d → ∞. -/
+private lemma two_div_rpow23_tendsto_zero : Filter.Tendsto
+    (fun d : ℕ => (2 : ℝ) / (d : ℝ) ^ ((2 : ℝ) / 3)) Filter.atTop (nhds 0) := by
+  have h : Filter.Tendsto (fun d : ℕ => (2 : ℝ) * ((d : ℝ) ^ ((2 : ℝ) / 3))⁻¹)
+      Filter.atTop (nhds (2 * 0)) :=
+    tendsto_const_nhds.mul (tendsto_inv_atTop_zero.comp rpow23_atTop)
+  simp only [mul_zero] at h
+  refine h.congr' ?_
+  filter_upwards with d using (div_eq_mul_inv 2 _).symm
+
+/-- Lemma A: λ_c(d) := C(n_c(d), 3) / d² → c³/6 as d → ∞,
+    where n_c(d) = ⌊c · d^(2/3)⌋.
+    Proof: squeeze C(n,3)/d² between (n−2)³/(6d²) and n³/(6d²),
+    both converging to c³/6 via nc_div_pow_tendsto. -/
+lemma lambda_tendsto (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto
+      (fun d : ℕ => ((⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ : ℕ).choose 3 : ℝ) / (d : ℝ) ^ 2)
+      Filter.atTop (nhds (c ^ 3 / 6)) := by
+  have hbase := nc_div_pow_tendsto c hc
+  -- (d^(2/3))^3 = d^2 for d > 0 (used to convert between the two quotient forms)
+  have hpow3_eq : ∀ᶠ d in Filter.atTop, ((d : ℝ) ^ ((2 : ℝ) / 3)) ^ 3 = (d : ℝ) ^ 2 := by
+    filter_upwards [Filter.eventually_ne_atTop 0] with d hd
+    have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hd
+    rw [← Real.rpow_natCast ((d : ℝ) ^ ((2 : ℝ) / 3)) 3, ← Real.rpow_mul hd_pos.le]
+    norm_num
+  -- Upper bound: (nc d)³/(6d²) → c³/6
+  have hupper : Filter.Tendsto
+      (fun d : ℕ => (⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ : ℝ) ^ 3 / (6 * (d : ℝ) ^ 2))
+      Filter.atTop (nhds (c ^ 3 / 6)) := by
+    apply ((hbase.pow 3).div_const 6).congr'
+    filter_upwards [hpow3_eq, Filter.eventually_ne_atTop 0] with d hd3 hd
+    have hne : (d : ℝ) ^ ((2 : ℝ) / 3) ≠ 0 :=
+      (Real.rpow_pos_of_pos (by exact_mod_cast Nat.pos_of_ne_zero hd) _).ne'
+    rw [div_pow, hd3]; ring
+  -- Lower base: (nc(d) − 2)/d^(2/3) → c
+  have hlower_base : Filter.Tendsto
+      (fun d : ℕ => ((⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ : ℝ) - 2) / (d : ℝ) ^ ((2 : ℝ) / 3))
+      Filter.atTop (nhds c) := by
+    have h := hbase.sub two_div_rpow23_tendsto_zero
+    simp only [sub_zero] at h
+    exact h.congr' (by filter_upwards with d; ring)
+  -- Lower bound: (nc(d)−2)³/(6d²) → c³/6
+  have hlower : Filter.Tendsto
+      (fun d : ℕ => ((⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ : ℝ) - 2) ^ 3 / (6 * (d : ℝ) ^ 2))
+      Filter.atTop (nhds (c ^ 3 / 6)) := by
+    apply ((hlower_base.pow 3).div_const 6).congr'
+    filter_upwards [hpow3_eq, Filter.eventually_ne_atTop 0] with d hd3 hd
+    have hne : (d : ℝ) ^ ((2 : ℝ) / 3) ≠ 0 :=
+      (Real.rpow_pos_of_pos (by exact_mod_cast Nat.pos_of_ne_zero hd) _).ne'
+    rw [div_pow, hd3]; ring
+  -- nc(d) ≥ 2 eventually (since c·d^(2/3) → ∞)
+  have hnc_ge_2 : ∀ᶠ d in Filter.atTop, 2 ≤ ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ := by
+    filter_upwards [rpow23_atTop.eventually_ge_atTop (2 / c)] with d hd
+    rw [Nat.le_floor]
+    have heq : c * (2 / c) = 2 := by field_simp
+    linarith [mul_le_mul_of_nonneg_left hd hc.le]
+  -- Squeeze: lower ≤ C(nc,3)/d² ≤ upper, both → c³/6
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le hlower hupper
+  · filter_upwards [hnc_ge_2, Filter.eventually_ne_atTop 0] with d hn hd
+    have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hd
+    have hd2 : (0 : ℝ) < (d : ℝ) ^ 2 := by positivity
+    rw [← div_div]; exact (div_le_div_right hd2).mpr (choose3_lb _ hn)
+  · filter_upwards [Filter.eventually_ne_atTop 0] with d hd
+    have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hd
+    have hd2 : (0 : ℝ) < (d : ℝ) ^ 2 := by positivity
+    rw [← div_div]; exact (div_le_div_right hd2).mpr (choose3_ub _)
+
+/-- Lemma B: exp(−λ_c(d)) → exp(−c³/6) as d → ∞.
+    Direct corollary of Lemma A and continuity of Real.exp. -/
+lemma exp_lambda_tendsto (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto
+      (fun d : ℕ => Real.exp (-((⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ : ℕ).choose 3 /
+        (d : ℝ) ^ 2)))
+      Filter.atTop (nhds (Real.exp (-(c ^ 3 / 6)))) :=
+  (Real.continuous_exp.tendsto (-(c ^ 3 / 6))).comp (lambda_tendsto c hc).neg
+
 -- ============================================================
 -- §6. k=2 vs k=3 THRESHOLD COMPARISON
 -- ============================================================
@@ -473,7 +554,7 @@ theorem good_count_n3 (d : ℕ) :
 /-
   ## Summary
 
-  **Proved (9 theorems, 2 sorries/axioms):**
+  **Proved (12 theorems, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -482,8 +563,12 @@ theorem good_count_n3 (d : ℕ) :
   6. `asympThreshold_d365_bounds`: asympThreshold(365) ∈ (82, 83)
   7. `k3_threshold_gt_k2`: k=3 threshold > k=2 for all d ≥ 1 (PROVED)
   8. `general_threshold_exponent`: exponent (k-1)/k ∈ (0,1)
+  9. `nc_div_pow_tendsto`: n_c(d)/d^{2/3} → c (Session 3)
+  10. `lambda_tendsto` (Lemma A): C(n_c(d),3)/d² → c³/6 (Session 4)
+  11. `exp_lambda_tendsto` (Lemma B): exp(-C(n_c(d),3)/d²) → exp(-c³/6) (Session 4)
 
-  **Axioms (1):** `poisson_approx_birthday3` (Chen-Stein Poisson approximation)
+  **Axioms (1):** `poisson_approx_birthday3` — now simplified to Lemma C only:
+    P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B are proved; only Poisson convergence remains)
 
   **General k-way threshold:** ~ (k! d^{k-1} ln 2)^{1/k} ~ d^{(k-1)/k}
   | k | exponent | formula               |
@@ -496,6 +581,8 @@ theorem good_count_n3 (d : ℕ) :
 #check @asympThreshold_ratio
 #check @asympThreshold_d365_bounds
 #check @k3_threshold_gt_k2
+#check @lambda_tendsto
+#check @exp_lambda_tendsto
 #check @poisson_approx_birthday3
 
 end BirthdayThreshold3

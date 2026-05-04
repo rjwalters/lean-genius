@@ -238,6 +238,51 @@ theorem linear_implies_littleo (r k : ℕ) (_hr : r ≥ 2) (_hk : k ≥ 2) :
           rw [div_mul_cancel₀ _ (ne_of_gt hε)] at h; linarith
         nlinarith
 
+-- ## Part VIII: Structural Properties
+
+/-- IsOrdinaryLine P p q implies p ∈ P.points. -/
+theorem isOrdinaryLine_mem_left (P : PointConfig) {p q : ℕ × ℕ}
+    (h : IsOrdinaryLine P p q) : p ∈ P.points := h.1
+
+/-- IsOrdinaryLine P p q implies q ∈ P.points. -/
+theorem isOrdinaryLine_mem_right (P : PointConfig) {p q : ℕ × ℕ}
+    (h : IsOrdinaryLine P p q) : q ∈ P.points := h.2.1
+
+/-- IsOrdinaryLine P p q implies p ≠ q. -/
+theorem isOrdinaryLine_ne (P : PointConfig) {p q : ℕ × ℕ}
+    (h : IsOrdinaryLine P p q) : p ≠ q := h.2.2.1
+
+/-- If S ⊆ T and T is an all-ordinary subset, then S is also all-ordinary. -/
+theorem allOrdinary_mono (P : PointConfig) {S T : Finset (ℕ × ℕ)}
+    (hST : S ⊆ T) (hT : AllOrdinary P T) : AllOrdinary P S :=
+  ⟨fun x hx => hT.1 (hST hx), fun p hp q hq hpq => hT.2 p (hST hp) q (hST hq) hpq⟩
+
+/-- A 2-point set {p, q} with p ≠ q is all-ordinary iff IsOrdinaryLine P p q. -/
+theorem allOrdinary_pair_iff (P : PointConfig) (p q : ℕ × ℕ) (hpq : p ≠ q) :
+    AllOrdinary P {p, q} ↔ IsOrdinaryLine P p q := by
+  constructor
+  · intro ⟨_, hord⟩
+    have hp : p ∈ ({p, q} : Finset _) := Finset.mem_insert_self p _
+    have hq : q ∈ ({p, q} : Finset _) := Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton.mpr rfl))
+    exact hord p hp q hq hpq
+  · intro h
+    refine ⟨fun x hx => ?_, fun a ha b hb hab => ?_⟩
+    · simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact h.1
+      · exact h.2.1
+    · simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
+      rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+      · exact absurd rfl hab
+      · exact h
+      · exact isOrdinaryLine_symm P p q h
+      · exact absurd rfl hab
+
+/-- The linear conjecture also fails for r ≥ 3, k ≥ 4 (contrapositive of linear_implies_littleo). -/
+theorem erdos_960_linear_false (r k : ℕ) (hr : r ≥ 3) (hk : k ≥ 4) :
+    ¬ ErdosConjecture960_linear r k := fun h =>
+  erdos_960_littleo_false r k hr hk (linear_implies_littleo r k (by omega) (by omega) h)
+
 -- ## Summary
 
 /-- Erdős Problem #960: Summary

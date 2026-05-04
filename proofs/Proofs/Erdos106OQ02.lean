@@ -614,6 +614,51 @@ theorem no_rotation_help_at_2 : f_rot 2 = g_ap 2 := by
   rw [h, bku_theorem_ap 1 (by omega)]
   norm_num
 
+-- ============================================================================
+-- § TIGHT BOUNDS AT k²+1: ROTATION BENEFIT IN [0, 1)
+-- ============================================================================
+
+/-- √(k²+1) < k+1 for k ≥ 1: since (k+1)² = k²+2k+1 > k²+1. -/
+theorem sqrt_k2_plus_1_lt_k_succ (k : ℕ) (hk : k ≥ 1) :
+    Real.sqrt (↑(k ^ 2 + 1) : ℝ) < ↑k + 1 := by
+  have hk_cast : (1 : ℝ) ≤ ↑k := by exact_mod_cast hk
+  have hlt : (↑(k ^ 2 + 1) : ℝ) < (↑k + 1) ^ 2 := by push_cast; nlinarith
+  calc Real.sqrt (↑(k ^ 2 + 1) : ℝ)
+      < Real.sqrt ((↑k + 1) ^ 2) := Real.sqrt_lt_sqrt (by positivity) hlt
+    _ = ↑k + 1 := Real.sqrt_sq (by linarith)
+
+/-- f_rot(k²+1) < k+1 for k ≥ 1, from the tight upper bound on √(k²+1). -/
+theorem f_rot_k2_plus1_lt_k_succ (k : ℕ) (hk : k ≥ 1) :
+    f_rot (k ^ 2 + 1) < ↑k + 1 := by
+  have h_bound := f_rot_upper_k2_plus_1 k
+  have h_sqrt := sqrt_k2_plus_1_lt_k_succ k hk
+  linarith
+
+/-- f_rot(k²+1) ∈ [k, k+1) for k ≥ 1: rotation can improve on k but not reach k+1. -/
+theorem f_rot_k2_plus1_range (k : ℕ) (hk : k ≥ 1) :
+    (↑k : ℝ) ≤ f_rot (k ^ 2 + 1) ∧ f_rot (k ^ 2 + 1) < ↑k + 1 :=
+  ⟨f_rot_lower_k2_plus_1 k hk, f_rot_k2_plus1_lt_k_succ k hk⟩
+
+/-- The rotation benefit at k²+1 is non-negative for k ≥ 1. -/
+theorem rotation_benefit_nonneg (k : ℕ) (hk : k ≥ 1) :
+    0 ≤ f_rot (k ^ 2 + 1) - g_ap (k ^ 2 + 1) := by
+  have h_frot := f_rot_lower_k2_plus_1 k hk
+  have h_gap := bku_theorem_ap k hk
+  linarith
+
+/-- The rotation benefit at k²+1 is strictly less than 1 for k ≥ 1. -/
+theorem rotation_benefit_lt_one (k : ℕ) (hk : k ≥ 1) :
+    f_rot (k ^ 2 + 1) - g_ap (k ^ 2 + 1) < 1 := by
+  have h_frot := f_rot_k2_plus1_lt_k_succ k hk
+  have h_gap := bku_theorem_ap k hk
+  linarith
+
+/-- The rotation benefit at k²+1 lies in [0, 1) for k ≥ 1:
+    rotation helps but not by a whole unit. -/
+theorem rotation_effect_unit_interval (k : ℕ) (hk : k ≥ 1) :
+    f_rot (k ^ 2 + 1) - g_ap (k ^ 2 + 1) ∈ Set.Ico (0 : ℝ) 1 :=
+  Set.mem_Ico.mpr ⟨rotation_benefit_nonneg k hk, rotation_benefit_lt_one k hk⟩
+
 #check rotationHelps
 #check rotationNeverHelps
 #check erdos106GeneralConjecture

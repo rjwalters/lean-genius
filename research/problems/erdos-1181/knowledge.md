@@ -9,10 +9,10 @@ Is it true that there exists some c > 0 such that, for all large n,
 ## Status
 
 **Erdős Database Status**: OPEN
-**Formalization Status**: COMPLETE (axiomatized)
+**Formalization Status**: COMPLETE (axiomatized) — fully formalized, 0 sorries
 
 **Tractability Score**: 6/10
-**Aristotle Suitable**: Yes (1 theorem sorry: iterated_log_sublinear)
+**Aristotle Suitable**: No (0 sorries remaining; 1 axiom is the open conjecture)
 
 ## Tags
 
@@ -36,6 +36,9 @@ q(n, log n) ≤ (1+o(1))(log n)² follows from:
 q(n, log n) ≪ (log log n / log log log n) · log n
 Would be dramatically stronger than the (1-c)(log n)² conjecture.
 
+**tao_implies_erdos1181 is fully proved**: Tao's heuristic → Erdős #1181 (c=1/2),
+using the proved iterated_log_sublinear lemma.
+
 ## Related Problems
 
 - **Problem #457**: Lower bound question — q(n, log n) ≥ (2+ε) log n infinitely often?
@@ -44,26 +47,21 @@ Would be dramatically stronger than the (1-c)(log n)² conjecture.
 
 ## Formalization Details
 
-### Proved Constructively (no axioms)
+### Proved Constructively (no axioms) — Current State (2026-05-03)
 - consecutiveProduct_pos: positivity from Finset.prod_pos
 - q_prime: from Nat.find_spec
 - q_not_dvd: from Nat.find_spec
 - q_minimal: from Nat.find_min
+- **iterated_log_sublinear** (formerly sorry): C·(loglog n/logloglog n) < (1/2)·log n eventually, via Real.tendsto_log_div_rpow_atTop + triple-composition of log tendencies
+- **tao_implies_erdos1181**: Tao's heuristic → Erdős #1181 (full calc proof)
 - **conjectures_compatible**: infinite set ∩ cofinite set is infinite (Set.Infinite.diff + Filter.eventually_atTop)
-- **tao_implies_erdos1181**: calc proof complete (modulo iterated_log_sublinear)
 
-### Axioms (4)
-1. trivial_upper_bound: (1+o(1))(log n)² bound via primorial/PNT
-2. erdos_1181: main open conjecture
-3. pnt_chebyshev: PNT for Chebyshev function θ(x) ~ x
-4. primorial_divides_bound: if all primes < q divide m, then θ(q) ≤ log m
+### Axioms (1) — Current State
+1. erdos_1181: main open conjecture (correct, problem remains open)
 
-### Sorries (1 theorem)
-1. iterated_log_sublinear: C·(loglog n / logloglog n) < (1/2)·log n eventually
-
-### Notes on Axioms
-- **pnt_chebyshev**: PNT is NOT in base Mathlib. The PrimeNumberTheoremAnd external project has it, but it's not integrated.
-- **primorial_divides_bound**: Potential issue — θ sums primes ≤ q_val (inclusive via Icc) but hypothesis covers primes < q_val (strict).
+Note: Previous axioms trivial_upper_bound, pnt_chebyshev, primorial_divides_bound were
+eliminated in restructuring — file now focuses on the Tao heuristic approach
+which bypasses PNT entirely.
 
 ## References
 
@@ -86,6 +84,13 @@ Would be dramatically stronger than the (1-c)(log n)² conjecture.
 - Net result: 2 sorries → 1, 7 theorems → 8, 235 → 261 lines
 - Investigated PNT in Mathlib — not in base Mathlib, axiom stays
 
+### Session 3 (2026-05-03, researcher-1)
+- Reviewed current file state: 292 lines, 1 axiom (erdos_1181), 0 sorries, 8 theorems
+- **iterated_log_sublinear now fully proved** (was a sorry in Session 2)
+- File restructured between sessions: eliminated trivial_upper_bound, pnt_chebyshev, primorial_divides_bound axioms
+- Updated annotations: fixed stale sorry references, corrected line ranges, added 3 new annotations
+- Updated meta.json: added iterated_log_sublinear to originalContributions
+
 ---
 
-*Generated from erdosproblems.com, updated 2026-03-29*
+*Updated 2026-05-03*

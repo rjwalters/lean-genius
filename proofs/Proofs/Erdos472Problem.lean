@@ -261,3 +261,67 @@ give infiniteness (since there are infinitely many primes). This remains open. -
 axiom ulam35_contains_all_odd_primes_conjecture :
     ∀ p : ℕ, p.Prime → p ≥ 3 →
       ∃ n : ℕ, ∃ seq, seq = ulamExtend n [3, 5] ∧ p ∈ seq
+
+/- ## Step analysis via seed elements -/
+
+/-- In any Ulam prime sequence starting from {3, 5}, f(0) = 3. -/
+theorem ulam35_f0_eq_three (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f) : f 0 = 3 := by
+  have h := hf.1 ⟨0, by decide⟩
+  have : ulamSeed35.get ⟨0, by decide⟩ = 3 := rfl
+  rw [this] at h; exact h
+
+/-- In any Ulam prime sequence starting from {3, 5}, f(1) = 5. -/
+theorem ulam35_f1_eq_five (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f) : f 1 = 5 := by
+  have h := hf.1 ⟨1, by decide⟩
+  have : ulamSeed35.get ⟨1, by decide⟩ = 5 := rfl
+  rw [this] at h; exact h
+
+/-- In the {3, 5} Ulam sequence, consecutive terms always differ by at least 2.
+    Specializes ulam_seq_gap: the exceptional case f(n) = 2 is impossible since
+    all terms are ≥ 3. -/
+theorem ulam35_gap_ge_two (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f) (n : ℕ) :
+    f n + 2 ≤ f (n + 1) := by
+  rcases ulam_seq_gap ulamSeed35 f hf n with h | ⟨h2, _⟩
+  · exact h
+  · exact absurd h2 (ulam_seq_ne_two ulamSeed35 f hf (by decide) (by decide) n)
+
+/-- 3 = f(0) always appears in the candidate list at any step n. -/
+theorem ulam35_three_in_ofFn (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f) (n : ℕ) :
+    (3 : ℕ) ∈ List.ofFn (fun i : Fin (n + 1) => f i) := by
+  rw [List.mem_ofFn]
+  exact ⟨⟨0, Nat.zero_lt_succ n⟩, ulam35_f0_eq_three f hf⟩
+
+/-- 5 = f(1) appears in the candidate list at step n when n ≥ 1. -/
+theorem ulam35_five_in_ofFn (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f)
+    (n : ℕ) (hn : 1 ≤ n) :
+    (5 : ℕ) ∈ List.ofFn (fun i : Fin (n + 1) => f i) := by
+  rw [List.mem_ofFn]
+  exact ⟨⟨1, by omega⟩, ulam35_f1_eq_five f hf⟩
+
+/-- Twin prime step: if f(n) and f(n)+2 form a twin prime pair, f(n+1) = f(n)+2.
+    Proof: 3 is always in the sequence (f(0) = 3), so f(n)+3-1 = f(n)+2 is always
+    a candidate when prime. Minimality gives f(n+1) ≤ f(n)+2; the gap bound gives
+    f(n+1) ≥ f(n)+2. -/
+theorem ulam35_twin_prime_step (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f)
+    (n : ℕ) (hn : 1 ≤ n) (h_twin : (f n + 2).Prime) :
+    f (n + 1) = f n + 2 := by
+  have hlen : ulamSeed35.length - 1 ≤ n := by norm_num [ulamSeed35]; omega
+  obtain ⟨_, hmin⟩ := hf.2.2.2 n hlen
+  have hcand : IsCandidateNext (List.ofFn (fun i : Fin (n + 1) => f i)) (f n) (f n + 2) := by
+    refine ⟨h_twin, 3, ulam35_three_in_ofFn f hf n, ?_⟩; omega
+  have hle : f (n + 1) ≤ f n + 2 := by
+    by_contra hlt; push_neg at hlt
+    exact hmin (f n + 2) hlt hcand
+  exact Nat.le_antisymm hle (ulam35_gap_ge_two f hf n)
+
+/-- Cousin prime upper bound: if f(n)+4 is prime (n ≥ 1), then f(n+1) ≤ f(n)+4.
+    Since 5 = f(1) is always in the sequence for n ≥ 1, f(n)+5-1 = f(n)+4 is a candidate. -/
+theorem ulam35_cousin_prime_upper (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f)
+    (n : ℕ) (hn : 1 ≤ n) (h_cousin : (f n + 4).Prime) :
+    f (n + 1) ≤ f n + 4 := by
+  have hlen : ulamSeed35.length - 1 ≤ n := by norm_num [ulamSeed35]; omega
+  obtain ⟨_, hmin⟩ := hf.2.2.2 n hlen
+  have hcand : IsCandidateNext (List.ofFn (fun i : Fin (n + 1) => f i)) (f n) (f n + 4) := by
+    refine ⟨h_cousin, 5, ulam35_five_in_ofFn f hf n hn, ?_⟩; omega
+  by_contra hlt; push_neg at hlt
+  exact hmin (f n + 4) hlt hcand
