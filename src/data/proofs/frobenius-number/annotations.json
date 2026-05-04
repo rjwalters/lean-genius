@@ -1,56 +1,86 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "frobenius-number",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "title": "Historical Context: Sylvester's 1884 Coin Problem",
+    "content": "The Frobenius coin problem (also called the Money Changing Problem or Postage Stamp Problem) asks: given denominations with gcd = 1, what is the largest amount that cannot be made? Sylvester's 1884 solution for two coprime denominations a and b is the clean formula g(a,b) = ab - a - b. Despite the elementary statement, the three-generator case (n ≥ 3) has no known closed-form solution and computing g(a,b,c) is NP-hard in general.",
+    "mathContext": "For $\\gcd(a,b) = 1$: $g(a,b) = ab - a - b$. Equivalent form: $g(a,b) = (a-1)(b-1) - 1$. Count of non-representable positives: $(a-1)(b-1)/2$.",
+    "significance": "context",
+    "relatedConcepts": ["Frobenius number", "Sylvester 1884", "Chicken McNugget Theorem", "coin problem", "Nat.Coprime"],
+    "prerequisites": ["Lean 4 Nat arithmetic", "Mathlib.Data.Nat.GCD.Basic"]
+  },
+  {
     "id": "ann-representable",
+    "proofId": "frobenius-number",
+    "range": { "startLine": 42, "endLine": 68 },
     "type": "definition",
-    "label": "Representable",
-    "title": "Representable as Non-Negative Linear Combination",
-    "body": "Representable a b n := ∃ x y : ℕ, n = a*x + b*y. This is the coin representation: can you make n cents using only a-cent and b-cent coins? The Frobenius number is the largest n that is NOT representable.",
-    "location": { "line": 43 },
-    "tags": ["definition", "representable", "coin-problem"]
+    "title": "Representable: The Coin Combination Predicate",
+    "content": "Representable a b n is the existential `∃ x y : ℕ, n = a*x + b*y` — can you make n using only a-cent and b-cent coins with non-negative amounts? The closure theorems show: 0, a, b are always representable; representable numbers are closed under adding a or b. These five lemmas are the base cases for the inductive argument showing all sufficiently large numbers are representable.",
+    "mathContext": "$\\text{Representable}(a,b,n) \\iff \\exists x,y \\geq 0: n = ax + by$",
+    "significance": "key",
+    "relatedConcepts": ["non-negative linear combination", "closure under addition", "inductive representability"],
+    "prerequisites": ["Lean 4 existential statements", "Nat arithmetic"]
   },
   {
-    "id": "ann-frobenius-def",
-    "type": "definition",
-    "label": "frobeniusNumber",
-    "title": "Frobenius Number Definition",
-    "body": "frobeniusNumber a b := a * b - a - b. For coprime a, b, this equals (a-1)(b-1) - 1 and is the largest non-representable natural number. The famous Chicken McNugget example: a=6, b=9 (not coprime), but for a=6, b=7 (coprime): g = 42-6-7 = 29.",
-    "location": { "line": 0 },
-    "tags": ["definition", "frobenius-number"]
-  },
-  {
-    "id": "ann-sylvester",
-    "type": "theorem",
-    "label": "sylvester_frobenius",
-    "title": "Sylvester's Theorem",
-    "body": "For gcd(a,b) = 1 with a,b ≥ 1: (1) frobeniusNumber a b is not representable, and (2) every n > frobeniusNumber a b is representable. The proof uses Bezout's identity to show every residue class mod a contains a representable multiple of b within the right range.",
-    "location": { "line": 0 },
-    "tags": ["sylvester", "main-theorem", "frobenius"]
+    "id": "ann-injectivity",
+    "proofId": "frobenius-number",
+    "range": { "startLine": 94, "endLine": 132 },
+    "type": "technique",
+    "title": "Injectivity → Surjectivity: The Bijection Engine",
+    "content": "The private lemma `mul_mod_injective` proves that k ↦ k*b mod a is injective on Fin a when gcd(a,b) = 1. Proof: if k₁*b ≡ k₂*b (mod a), then a | b*(k₁-k₂), and since gcd(a,b) = 1, `Nat.Coprime.dvd_of_dvd_mul_right` gives a | (k₁-k₂). Since |k₁-k₂| < a, this forces k₁ = k₂. Then `Finite.injective_iff_surjective` converts injectivity to surjectivity on the finite set Fin a, giving `exists_mul_mod`: every residue r < a is achieved as k*b mod a.",
+    "mathContext": "$\\gcd(a,b) = 1 \\Rightarrow (k_1 b \\equiv k_2 b \\pmod{a} \\Rightarrow k_1 \\equiv k_2 \\pmod{a}) \\Rightarrow$ bijection on $\\{0,\\ldots,a-1\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Coprime.dvd_of_dvd_mul_right", "Finite.injective_iff_surjective", "Fin a", "modular arithmetic bijection"],
+    "prerequisites": ["Nat.Coprime API", "Fin and Finset in Lean 4", "modular equivalence via Nat.modEq_iff_dvd'"]
   },
   {
     "id": "ann-large-rep",
-    "type": "theorem",
-    "label": "large_representable",
-    "title": "Large Integers Are Representable",
-    "body": "For n > frobeniusNumber a b = ab - a - b with gcd(a,b) = 1: n is representable. The proof finds the unique residue r of n mod a, then uses the Bezout identity to write r ≡ b*k (mod a) for some k, and checks that the corresponding representation stays within nonneg bounds.",
-    "location": { "line": 0 },
-    "tags": ["representability", "threshold"]
+    "proofId": "frobenius-number",
+    "range": { "startLine": 134, "endLine": 180 },
+    "type": "insight",
+    "title": "Large Representable: The Residue Class Argument",
+    "content": "For n ≥ (a-1)(b-1), find k < a with k*b ≡ n (mod a) (from surjectivity). Then a | (n - k*b). The crucial step: why is n ≥ k*b? By contradiction — if k*b > n, then a | (k*b - n), so a ≤ k*b - n. But k ≤ a-1 gives k*b ≤ (a-1)b = (a-1)(b-1) + (a-1) ≤ n + (a-1) < n + a, so k*b < n + a and k*b - n < a. Contradiction with a ≤ k*b - n. Thus n = aq + k*b for some q ≥ 0.",
+    "mathContext": "Given $n \\geq (a-1)(b-1)$: find $k < a$ with $kb \\equiv n \\pmod{a}$. Claim $kb \\leq n$: else $a \\leq kb - n \\leq (a-1)b - n \\leq (a-1)(b-1) + (a-1) - n < a$. Contradiction. So $n = aq + kb$ with $q \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["residue class", "modular representation", "Nat.modEq_iff_dvd'", "Nat.le_of_dvd"],
+    "prerequisites": ["exists_mul_mod", "Nat divisibility API"]
   },
   {
     "id": "ann-not-rep",
-    "type": "theorem",
-    "label": "frobenius_not_representable",
-    "title": "Frobenius Number Is Not Representable",
-    "body": "The specific value ab - a - b is NOT representable by coprime a and b. The proof shows that any representation a*x + b*y = ab - a - b with x,y ≥ 0 leads to a contradiction, since all solutions to a*x + b*y = ab - a - b over ℤ have at least one negative component.",
-    "location": { "line": 0 },
-    "tags": ["non-representable", "key-lemma"]
+    "proofId": "frobenius-number",
+    "range": { "startLine": 182, "endLine": 215 },
+    "type": "insight",
+    "title": "Non-Representability: Coprimality Forces Contradiction",
+    "content": "Suppose ab - a - b = ax + by. Then a*b = a*(x+1) + b*(y+1). Since a | a*b and a | a*(x+1), we get a | b*(y+1). By coprimality (gcd(a,b)=1), `Nat.Coprime.dvd_of_dvd_mul_left` gives a | (y+1), so y+1 ≥ a. Similarly b | (x+1), so x+1 ≥ b. Then a*(x+1) + b*(y+1) ≥ a*b + b*a = 2ab > ab. But it equals ab. Contradiction by `linarith`.",
+    "mathContext": "If $ax + by = ab - a - b$, then $a(x+1) + b(y+1) = ab$. But $a \\mid (y+1)$ and $b \\mid (x+1)$ force $a(x+1) \\geq ab$ and $b(y+1) \\geq ab$, so their sum $\\geq 2ab > ab$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Coprime.dvd_of_dvd_mul_left", "Nat.dvd_sub'", "coprimality + divisibility", "nlinarith"],
+    "prerequisites": ["Nat.Coprime API", "Nat subtraction and divisibility"]
   },
   {
-    "id": "ann-count",
-    "type": "definition",
-    "label": "numNonRepresentable",
-    "title": "Counting Non-Representable Integers",
-    "body": "numNonRepresentable a b counts positive integers that are not representable. For coprime a, b, this equals (a-1)(b-1)/2. The frobenius_consecutive theorem characterizes the structure of representable integers near the Frobenius number.",
-    "location": { "line": 0 },
-    "tags": ["counting", "non-representable"]
+    "id": "ann-sylvester",
+    "proofId": "frobenius-number",
+    "range": { "startLine": 217, "endLine": 233 },
+    "type": "insight",
+    "title": "Sylvester's Theorem: The Complete Statement",
+    "content": "`sylvester_frobenius` combines the two halves into a conjunction: frobeniusNumber a b equals ab-a-b AND is not representable AND every n > frobeniusNumber a b is representable. The proof bundles `frobenius_not_representable` and `large_representable` (after converting the bound `n > ab-a-b` to `(a-1)*(b-1) ≤ n` via omega). The `rfl` proof of equality is because frobeniusNumber is defined as a*b - a - b.",
+    "mathContext": "$g(a,b) = ab - a - b$, $\\neg\\text{Rep}(a,b,g)$, $n > g \\Rightarrow \\text{Rep}(a,b,n)$ — all in one triple conjunction.",
+    "significance": "key",
+    "relatedConcepts": ["frobenius_not_representable", "large_representable", "frobenius_alt_axiom", "omega"],
+    "prerequisites": ["Lean 4 conjunction (And)", "frobeniusNumber definition"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "frobenius-number",
+    "range": { "startLine": 240, "endLine": 263 },
+    "type": "context",
+    "title": "Verified Examples via native_decide",
+    "content": "Concrete computations validate the formula: g(3,5) = 7 (7 is the largest amount not makeable with 3- and 5-cent coins), g(3,7) = 11, g(5,8) = 27. The numNonRepresentable examples confirm (a-1)(b-1)/2: for (3,5) this is (2)(4)/2 = 4 non-representable positives {1,2,4,7}; for (3,7) it's 6. The `native_decide` tactic compiles these to native code for fast verified computation.",
+    "mathContext": "$g(3,5) = 7$: non-representable positive integers are $\\{1,2,4,7\\}$, count $= (3-1)(5-1)/2 = 4$.",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "frobeniusNumber", "numNonRepresentable", "Chicken McNugget"],
+    "prerequisites": ["native_decide tactic in Lean 4"]
   }
 ]
