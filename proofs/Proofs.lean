@@ -255,6 +255,7 @@ import Proofs.BorsukUlamOQ04
 import Proofs.BoundedPrimeGaps
 import Proofs.BoundedPrimeGapsOQ01
 import Proofs.BoundedPrimeGapsOQ01OQ02
+import Proofs.BoundedPrimeGapsOQ01OQ03
 import Proofs.BoundedPrimeGapsOQ03
 import Proofs.BoundedPrimeGapsOQ03OQ01
 import Proofs.BoundedPrimeGapsOQ03OQ01OQ04
