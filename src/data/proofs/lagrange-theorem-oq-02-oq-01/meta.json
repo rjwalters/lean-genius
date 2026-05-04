@@ -16,13 +16,21 @@
       "orbit-stabilizer",
       "research"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 192,
-    "theoremCount": 8,
-    "definitionCount": 2,
+    "lineCount": 226,
+    "theoremCount": 6,
+    "definitionCount": 1,
     "dateAdded": "2026-05-04",
+    "leanFile": {
+      "lineCount": 226,
+      "sorries": 0,
+      "axiomCount": 0,
+      "theoremCount": 6,
+      "definitionCount": 1,
+      "imports": ["Mathlib", "Proofs.LagrangeTheoremOQ02"]
+    },
     "mathlibDependencies": [
       {
         "theorem": "MulAction.card_orbit_mul_card_stabilizer_eq_card_group",
@@ -50,7 +58,7 @@
       "burnside_divides: |G| divides Σ_g|Fix(g)|",
       "lagrange_orbitstab_burnside_chain: packages Lagrange→Orbit-Stabilizer→Burnside as single statement"
     ],
-    "assumptions": "None. Fully verified, 0 axioms, 0 sorries."
+    "assumptions": "0 sorries, 0 axioms. Core theorem (burnside_from_orbit_stabilizer) derives from Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group. Original contributions: explicit double-counting bijection (sigma_fixedBy_equiv_sigma_stabilizer) and derived lemmas."
   },
   "overview": {
     "historicalContext": "Burnside's lemma — that the number of orbits equals the average number of fixed points — was actually proved by Cauchy in 1845 and independently by Frobenius in 1887. Burnside only popularized it in his 1897 textbook, yet the name 'Burnside's lemma' stuck. The standard proof uses a double-counting argument: counting the set {(g,x) : g•x=x} by group element gives Σ_g|Fix(g)|; counting by action point gives Σ_x|Stab(x)|. The orbit-stabilizer theorem — generalizing Lagrange's 1771 theorem on subgroup orders — then converts Σ_x|Stab(x)| into |X/G|·|G|. This entry formalizes that double-counting bijection explicitly in Lean 4.",
