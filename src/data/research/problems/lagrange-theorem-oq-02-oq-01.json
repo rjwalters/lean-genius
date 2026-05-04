@@ -1,0 +1,132 @@
+{
+  "slug": "lagrange-theorem-oq-02-oq-01",
+  "title": "Formalize Burnside's counting lemma directly from orbit-stabilizer: |X/G| = (...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Formalize Burnside's counting lemma directly from orbit-stabilizer: |X/G| = (....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-04T17:47:35.846Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms. Explicit double-counting bijection (g,x,g\u2022x=x) \u21a6 (x,g,g\u2022x=x) proved via rfl. Burnside derived from orbit-stabilizer. PR submitted.",
+    "builtItems": [
+      "sigma_fixedBy_equiv_sigma_stabilizer: Equiv with rfl proofs in LagrangeTheoremOQ02OQ01.lean:33",
+      "sum_card_fixedBy_eq_sum_card_stabilizer: \u03a3_g|Fix|=\u03a3_x|Stab| via card_sigma in :56",
+      "stabilizer_smul_equiv: Stab(g\u2022x)\u2243Stab(x) via conjugation in :80",
+      "stabilizer_card_eq_of_orbit: |Stab(g\u2022x)|=|Stab(x)| in :107",
+      "sum_card_stabilizer_orbit: each orbit contributes |G| in :116",
+      "burnside_from_orbit_stabilizer: Burnside from orbit-stabilizer in :143",
+      "burnside_divides: |G|\u2223\u03a3|Fix(g)| in :164",
+      "lagrange_orbitstab_burnside_chain: chain statement in :175"
+    ],
+    "insights": [
+      "Double-counting bijection sigma_fixedBy_equiv_sigma_stabilizer has rfl left/right inverses \u2014 definitional isomorphism",
+      "Stabilizer conjugation h \u21a6 g\u207b\u00b9hg proves Stab(g\u2022x) \u2243 Stab(x) explicitly via 4-step rw chain",
+      "Each orbit contributes exactly |G| to \u03a3_x|Stab(x)|: orbit-invariance of |Stab| + orbit-stabilizer",
+      "burnside_from_orbit_stabilizer: two uses of double-counting identity make the derivation structure transparent"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "oq-01: prove orbit partition sum \u03a3_x|Stab(x)|=|X/G||G| without using Mathlib Burnside",
+      "oq-02: generalize double-counting bijection to monoid actions"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-03",
+    "lagrange-theorem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T17:47:35.846Z",
+  "lastUpdate": "2026-05-04T17:47:35.846Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01.lean",
+      "filename": "LagrangeTheoremOQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02.lean",
+      "filename": "LagrangeTheoremOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ03.lean",
+      "filename": "LagrangeTheoremOQ03.lean",
+      "lineCount": 374,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 114,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    }
+  ]
+}

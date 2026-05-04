@@ -1,0 +1,46 @@
+{
+  "source": "lean-genius-research",
+  "version": "1.0",
+  "annotations": [
+    {
+      "id": "ann-double-count-bijection",
+      "type": "insight",
+      "lean_name": "sigma_fixedBy_equiv_sigma_stabilizer",
+      "title": "The Double-Counting Bijection Has rfl Proofs",
+      "body": "The map (g, x, h) ↦ (x, g, h) between sigma types Σ_g Fix(g) ≃ Σ_x Stab(x) has definitional left and right inverses — both `left_inv` and `right_inv` are proved by `rfl`. This means the bijection is not just a bijection of sets but a definitional isomorphism: the two sigma types are literally the same data in a different order.",
+      "tags": ["lean4", "definitional-equality", "bijection"]
+    },
+    {
+      "id": "ann-fixedBy-vs-stabilizer",
+      "type": "explanation",
+      "lean_name": "sigma_fixedBy_equiv_sigma_stabilizer",
+      "title": "fixedBy and stabilizer: Two Perspectives on the Same Condition",
+      "body": "`MulAction.fixedBy X g = {x : X | g • x = x}` groups points by the acting element. `MulAction.stabilizer G x` groups group elements by the fixed point. Both encode the condition `g • x = x` — one as a set of points, one as a subgroup of G. The sigma type bijection makes this symmetry explicit: Σ_g Fix(g) and Σ_x Stab(x) are two ways to index the same relation.",
+      "tags": ["group-actions", "fixed-points", "stabilizer"]
+    },
+    {
+      "id": "ann-conjugation-bijection",
+      "type": "technique",
+      "lean_name": "stabilizer_smul_equiv",
+      "title": "Conjugation Bijection: Proving Stab(g•x) ≃ Stab(x)",
+      "body": "The map h ↦ g⁻¹hg sends Stab(g•x) to Stab(x): if h•(g•x)=g•x, then (g⁻¹hg)•x = g⁻¹•(h•(g•x)) = g⁻¹•(g•x) = x. The Lean proof uses `rw [mul_smul, mul_smul, hh, inv_smul_smul]` — four rewrites that unfold the calculation step by step. The inverse map k ↦ gkg⁻¹ is proved similarly. The `left_inv`/`right_inv` proofs use `group` tactic to verify the group law identities.",
+      "tags": ["conjugation", "lean4-tactics", "orbit-stabilizer"]
+    },
+    {
+      "id": "ann-orbit-sum",
+      "type": "lemma",
+      "lean_name": "sum_card_stabilizer_orbit",
+      "title": "Each Orbit Contributes Exactly |G|",
+      "body": "For any x, Σ_{y ∈ Orb(x)} |Stab(y)| = |G|. Proof: (1) orbit-invariance of |Stab| (via conjugation) → all terms equal |Stab(x)|; (2) Finset.sum_const gives sum = |Orb(x)|·|Stab(x)|; (3) orbit-stabilizer gives |Orb(x)|·|Stab(x)| = |G|. This is the quantitative heart of the orbit partition sum.",
+      "tags": ["orbit-stabilizer", "orbit-partition", "counting"]
+    },
+    {
+      "id": "ann-burnside-structure",
+      "type": "proof-structure",
+      "lean_name": "burnside_from_orbit_stabilizer",
+      "title": "Two-Step Proof Structure of Burnside's Lemma",
+      "body": "The Lean proof of `burnside_from_orbit_stabilizer` has a transparent two-step structure: Step 1 applies `sum_card_fixedBy_eq_sum_card_stabilizer` (double-counting) to convert Σ_g|Fix(g)| to Σ_x|Stab(x)|. Step 2 applies Mathlib's Burnside lemma to the hypothesis and uses the double-counting identity again to convert the hypothesis' LHS, giving Σ_x|Stab(x)| = |X/G|·|G|. The double-counting identity is used twice, making its role structurally explicit.",
+      "tags": ["proof-structure", "lean4", "burnside-lemma"]
+    }
+  ]
+}
