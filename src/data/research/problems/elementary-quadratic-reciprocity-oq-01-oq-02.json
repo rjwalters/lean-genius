@@ -29,31 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Constructed cubic/quartic characters as group homs; proved easy Euler criterion; axiomatized hard direction and cubic reciprocity. File in PR.",
+    "progressSummary": "PROGRESS: Full cubic/quartic Euler criteria proved (both directions); quartic kernel cardinality proved. Cubic reciprocity axiomatized. 27 theorems, 0 sorries. PR merged.",
     "builtItems": [
       "cubicChar : (ZMod p)ˣ →* (ZMod p)ˣ in ElementaryQuadraticReciprocityOQ01OQ02.lean:83",
       "cubicChar_pow_three_eq_one : χ₃(a)³ = 1 via Fermat in :105",
       "cubicChar_eq_one_of_cube : easy Euler criterion direction in :156",
-      "isCubicResidue_iff_cubicChar_one : cubic Euler iff (mod axiom) in :188",
-      "quarticChar : (ZMod p)ˣ →* (ZMod p)ˣ in :257",
-      "cubic_character_package + quartic_character_package : summary theorems in :376-391"
+      "cubicEuler_hard : hard Euler criterion via discrete log in :182",
+      "isCubicResidue_iff_cubicChar_one : cubic Euler iff (fully proved) in :234",
+      "cubicChar_kernel_card : |ker χ₃| = (p-1)/3 via IsCyclic sandwich in :273",
+      "quarticChar : (ZMod p)ˣ →* (ZMod p)ˣ in :326",
+      "quarticEuler_hard : hard quartic Euler criterion via discrete log in :370",
+      "isQuarticResidue_iff_quarticChar_one : quartic Euler iff (fully proved) in :412",
+      "quarticChar_kernel_card : |ker χ₄| = (p-1)/4 via IsCyclic sandwich in :421",
+      "cubic_character_package + quartic_character_package : summary theorems"
     ],
     "insights": [
       "cubicChar = powMonoidHom((p-1)/3) is a well-typed group hom (ZMod p)ˣ →* (ZMod p)ˣ using CommMonoid instance",
       "Easy Euler criterion: x³=a → a^((p-1)/3)=1 proved via Units.mk0 lift + pow_mul + units_pow_card_sub_one_eq_one",
-      "Cyclic kernel cardinality API (IsCyclic.exists_unique_subgroup_of_dvd) missing from Mathlib 4.26",
+      "Hard Euler criterion: discrete log in cyclic (ZMod p)ˣ; write a=g^k, use orderOf_dvd_iff_zpow_eq_one to get divisibility, conclude n|k",
+      "Kernel cardinality |ker χₙ| = (p-1)/n via IsCyclic.card_pow_eq_one_le (upper bound) + Finset.le_card_of_inj_on_range + pow_injOn_Iio_orderOf (lower bound)",
       "Eisenstein integers ℤ[ω] not in Mathlib 4.26 — cubic reciprocity must be axiomatized",
-      "Quartic character χ₄ = powMonoidHom((p-1)/4) has identical proof structure to χ₃"
+      "Quartic Euler criterion hard direction proved by identical discrete log method as cubic",
+      "Mathlib4 API: orderOf_dvd_iff_zpow_eq_one (not orderOf_dvd_of_zpow_eq_one); Nat.card_eq_fintype_card needed after orderOf_eq_card_of_forall_mem_zpowers"
     ],
     "mathlibGaps": [
-      "Cyclic group kernel cardinality: Fintype.card {x : G | x^k=1} = gcd(k,|G|) for cyclic G",
       "Eisenstein integers ℤ[ω] structure and prime theory not in Mathlib 4.26",
-      "Cubic residue symbol (ρ/π)₃ definition requires ℤ[ω] units"
+      "Cubic residue symbol (ρ/π)₃ definition requires ℤ[ω] units",
+      "Quartic (biquadratic) reciprocity law — axiomatized from Gaussian integers ℤ[i]"
     ],
     "nextSteps": [
-      "Submit cubicEuler_hard sorry to Aristotle for cyclic group kernel argument",
       "Monitor Mathlib PRs for Eisenstein integer additions",
-      "Try proving cubicChar_kernel_card via Subgroup.card_eq_iff_eq_top or orderOf arguments"
+      "Consider adding quartic reciprocity axiom (using Gaussian integers ℤ[i] instead of ℤ[ω])",
+      "Generalize to n-th power residue characters for arbitrary prime n | p-1"
     ]
   },
   "tags": [
