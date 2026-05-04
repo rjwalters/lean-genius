@@ -76,7 +76,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b]. hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. hookProd_ratio_formula is proved-free. Part XIV proves hook_length_formula_general via corner induction; hook_walk_identity_gnw dispatcher is complete. 1 open proved remains: gnwProb_key (GNW 1979 probabilistic identity, hard). The supporting strictHookCells_* lemmas and gnwProb_sum_corners were proved in PR #14960.",
+    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b]. hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. hookProd_ratio_formula is sorry-free. Part XIV proves hook_length_formula_general via corner induction; hook_walk_identity_gnw dispatcher is complete. 1 open sorry remains: gnwProb_key (GNW 1979 probabilistic identity, hard). The supporting strictHookCells_* lemmas and gnwProb_sum_corners were proved in PR #14960.",
     "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
       "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
