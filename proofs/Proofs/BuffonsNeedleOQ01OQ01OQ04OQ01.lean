@@ -24,12 +24,8 @@ matching the formula sphereArea(0)/(2-1) · r = 2 · r.
 3. `cauchyCrofton_product`: c_n · c_{n+1} = 2/(n·π) for n ≥ 2
 4. `cauchyCroftonConst_pos`: positivity of Cauchy-Crofton constants
 
-## Relationship to Parent
-
-The parent axiomatizes `AngularAverageData` for all n. Here we prove it for n=2
-using ∫_0^π |cos θ| dθ = 2, which is a special case of ∫_0^π |sin(θ+c)| dθ = 2.
-For n ≥ 3, the Beta integral ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ = 1/(n-1) is needed
-and remains axiomatized in the general `angularAvg_ndim` statement below.
+The 2D instance proves that the Buffon-Barbier formula E = 2L/(πd) requires no
+measure-theoretic axioms — it follows from classical interval integration.
 -/
 
 open Real intervalIntegral MeasureTheory
@@ -46,27 +42,23 @@ namespace BuffonsNeedleOQ01OQ01OQ04OQ01
     Key: sin(θ + π/2) = cos θ, so this is a rotation of ∫_0^π |sin θ| dθ = 2. -/
 theorem integral_abs_cos_zero_pi : ∫ θ in (0 : ℝ)..π, |cos θ| = 2 := by
   have hid : ∀ θ : ℝ, |sin (θ + π / 2)| = |cos θ| := by
-    intro θ
-    congr 1
-    rw [sin_add, sin_pi_div_two, cos_pi_div_two]
-    ring
+    intro θ; congr 1
+    rw [sin_add, sin_pi_div_two, cos_pi_div_two]; ring
   have hshift := BuffonsNeedleOQ01OQ01.integral_abs_sin_shift (π / 2)
   simp_rw [hid] at hshift
   exact hshift
 
 /-- The 2D angular average function, defined as the actual sphere integral factor:
       angularAvg2D(r) = r · ∫_0^π |cos θ| dθ
-    This represents (1/σ_1) · ∫_{S^1} |⟨(r,0), ω⟩| dσ(ω), i.e., the angular
-    average of |⟨v, ω⟩| over S^1 (half-period version for RP^1). -/
+    This represents half the S^1 integral ∫_{S^1} |⟨(r,0), ω⟩| dσ(ω) = 4r,
+    corresponding to the RP^1 version (each direction counted once). -/
 noncomputable def sphereAngularAvg2D (r : ℝ) : ℝ :=
   r * ∫ θ in (0 : ℝ)..π, |cos θ|
 
 /-- The 2D angular average equals 2r. -/
-theorem sphereAngularAvg2D_eq (r : ℝ) (hr : 0 ≤ r) :
-    sphereAngularAvg2D r = 2 * r := by
+theorem sphereAngularAvg2D_eq (r : ℝ) : sphereAngularAvg2D r = 2 * r := by
   unfold sphereAngularAvg2D
-  rw [integral_abs_cos_zero_pi]
-  ring
+  rw [integral_abs_cos_zero_pi]; ring
 
 /-- The 2D angular average is non-negative for r ≥ 0. -/
 theorem sphereAngularAvg2D_nonneg (r : ℝ) (hr : 0 ≤ r) :
@@ -90,14 +82,14 @@ theorem sphereAngularAvg2D_nonneg (r : ℝ) (hr : 0 ≤ r) :
 noncomputable def angularAverageData2D : AngularAverageData 2 where
   angularAvg := sphereAngularAvg2D
   angularAvg_eq := fun r hr => by
-    rw [sphereAngularAvg2D_eq r hr]
-    simp only [show (2 : ℕ) - 2 = 0 from rfl, show (2 : ℕ) - 1 = 1 from rfl]
-    rw [sphereArea_zero]
-    norm_num
+    rw [sphereAngularAvg2D_eq]
+    -- Goal: 2 * r = sphereArea (2 - 2) / ((2 : ℝ) - 1) * r
+    -- Natural number 2 - 2 = 0, real 2 - 1 = 1, sphereArea 0 = 2
+    simp [sphereArea_zero]
   angularAvg_nonneg := fun r hr => sphereAngularAvg2D_nonneg r hr
 
 /-- Consistency check: `angularAverageData2D` recovers the correct constant c_2 = 2/π.
-    E[crossings] = 2/(σ_1 · d) · angularAvg2D(L) = 2/(2π·d) · 2L = 2L/(πd). -/
+    E[crossings] = 2/(σ_1·d) · angularAvg2D(L) = 2/(2πd) · 2L = 2L/(πd). -/
 theorem angularAverageData2D_expectedCrossings (L d : ℝ) (hd : 0 < d) (hL : 0 ≤ L) :
     expectedCrossings (n := 2) L d =
     2 / (sphereArea 1 * d) * angularAverageData2D.angularAvg L := by
@@ -107,15 +99,12 @@ theorem angularAverageData2D_expectedCrossings (L d : ℝ) (hd : 0 < d) (hL : 0 
 -- Part III: General n-Dimensional Angular Averaging
 -- ============================================================
 
-/-- **Angular Averaging Theorem** (general, n ≥ 3).
+/-- **Angular Averaging Theorem** (general, n ≥ 3, axiomatized).
     For n ≥ 3: ∫_{S^{n-1}} |ω₁| dσ(ω) = 2σ_{n-2}/(n-1), where σ_k is the
     surface area of S^k. This follows from the Beta integral:
-      ∫_0^{π/2} cos(θ) · sin^{n-2}(θ) dθ = 1/(n-1)
-    via substitution u = sin(θ), giving [u^{n-1}/(n-1)]_0^1 = 1/(n-1).
-    Combined with the sphere area via polar coordinates:
-      ∫_{S^{n-1}} |ω₁| dσ = σ_{n-2} · 2 · ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ
-                            = σ_{n-2} · 2/(n-1)
-    This is the n-dimensional generalization of ∫_0^π |cos θ| dθ = 2 (case n=2). -/
+      ∫_0^{π/2} cos(θ) · sin^{n-2}(θ) dθ = 1/(n-1)   [substitution u = sin(θ)]
+    via the spherical coordinate decomposition on S^{n-1}.
+    For n=2, this is proved in `angularAverageData2D` from ∫_0^π |cos θ| dθ = 2. -/
 axiom angularAvg_ndim (n : ℕ) (hn : 3 ≤ n) : AngularAverageData n
 
 -- ============================================================
@@ -126,49 +115,49 @@ axiom angularAvg_ndim (n : ℕ) (hn : 3 ≤ n) : AngularAverageData n
 
     Proof: c_n = 2σ_{n-2}/((n-1)σ_{n-1}), c_{n+1} = 2σ_{n-1}/(n·σ_n).
     Product = 4σ_{n-2}/((n-1)·n·σ_n). By the sphere area recurrence
-    σ_n = 2π/(n-1) · σ_{n-2}, we get σ_{n-2} = (n-1)/(2π) · σ_n, so:
-    product = 4·(n-1)/(2π)·σ_n / ((n-1)·n·σ_n) = 4/(2πn) = 2/(πn). -/
+    σ_n = 2π/(n-1) · σ_{n-2}, we substitute σ_{n-2} = (n-1)/(2π)·σ_n:
+    product = 4·(n-1)/(2π)·σ_n / ((n-1)·n·σ_n) = 2/(n·π). -/
 theorem cauchyCrofton_product (n : ℕ) (hn : 2 ≤ n) :
     cauchyCroftonConst n * cauchyCroftonConst (n + 1) = 2 / ((n : ℝ) * π) := by
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero (by omega)
   have hn1_pos : (0 : ℝ) < (n : ℝ) - 1 := by
-    have : 1 < n := Nat.lt_of_lt_of_le one_lt_two hn
-    exact_mod_cast this
+    exact_mod_cast (show 0 < n - 1 from by omega)
   have hσn2_pos := sphereArea_pos (n - 2)
   have hσn1_pos := sphereArea_pos (n - 1)
-  have hσn_pos := sphereArea_pos n
-  -- Reduce n+1-2 and n+1-1 in ℕ
+  -- Use the sphere area recurrence σ_n = 2π/(n-1) · σ_{n-2}
+  have hrec := sphereArea_recurrence n hn
+  -- n + 1 - 2 = n - 1 and n + 1 - 1 = n in ℕ
   have h2 : n + 1 - 2 = n - 1 := by omega
   have h1 : n + 1 - 1 = n := by omega
-  -- The real subtraction cast: (↑(n+1) - 1 : ℝ) = ↑n
-  have hcast : ((n : ℝ) + 1 - 1) = (n : ℝ) := by ring
-  -- Sphere area recurrence
-  have hrec := sphereArea_recurrence n hn
-  simp only [cauchyCroftonConst, h2, h1, Nat.cast_add, Nat.cast_one, hcast]
-  rw [hrec]
-  have hpi_pos := pi_pos
-  field_simp [hn1_pos.ne', hn_pos.ne', hσn1_pos.ne', hσn2_pos.ne', hpi_pos.ne']
+  -- Real cast: (n+1:ℕ) cast to ℝ minus 1 equals n
+  simp only [cauchyCroftonConst, h2, h1]
+  have hcast : ((n : ℝ) + 1) - 1 = (n : ℝ) := by ring
+  push_cast
+  rw [hcast, hrec]
+  field_simp [hn1_pos.ne', hn_pos.ne', hσn1_pos.ne', hσn2_pos.ne', pi_pos.ne']
   ring
 
-/-- Corollary: c_2 · c_3 = 1/π. -/
+/-- Corollary: c_2 · c_3 = 1/π. Verified from c_2 = 2/π and c_3 = 1/2. -/
 theorem cauchyCrofton_product_two :
     cauchyCroftonConst 2 * cauchyCroftonConst 3 = 1 / π := by
-  have h := cauchyCrofton_product 2 (by norm_num)
-  simp only [Nat.cast_ofNat] at h
-  rw [h]; field_simp [pi_pos.ne']
+  rw [cauchyCrofton_two, cauchyCrofton_three]
+  have hpi := pi_pos
+  field_simp [hpi.ne']; ring
 
-/-- The product c_n · c_{n+1} is strictly decreasing in n: 2/(nπ) > 2/((n+1)π). -/
+/-- The product c_n · c_{n+1} is strictly decreasing: for n ≥ 2,
+    2/(n·π) > 2/((n+1)·π). -/
 theorem cauchyCrofton_product_decreasing (n : ℕ) (hn : 2 ≤ n) :
     cauchyCroftonConst n * cauchyCroftonConst (n + 1) >
     cauchyCroftonConst (n + 1) * cauchyCroftonConst (n + 2) := by
   rw [cauchyCrofton_product n hn, cauchyCrofton_product (n + 1) (by omega)]
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
-  apply div_lt_div_of_pos_left (by norm_num) (mul_pos (mul_pos hn_pos pi_pos)
-    (by positivity : (0 : ℝ) < ((n : ℝ) + 1) * π))
-  · push_cast; nlinarith
+  have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by linarith
+  push_cast
+  rw [gt_iff_lt, div_lt_div_iff (mul_pos hn1_pos pi_pos) (mul_pos hn_pos pi_pos)]
+  nlinarith
 
 -- ============================================================
--- Part V: Positivity and Boundedness
+-- Part V: Positivity and Monotonicity
 -- ============================================================
 
 /-- All Cauchy-Crofton constants are positive (for n ≥ 1). -/
@@ -181,21 +170,19 @@ theorem cauchyCroftonConst_pos (n : ℕ) (hn : 1 ≤ n) : 0 < cauchyCroftonConst
       linarith
     · exact sphereArea_pos _
 
-/-- c_2 ≤ 1 (since 2/π < 1). -/
+/-- c_2 < 1 (since 2/π < 1). -/
 theorem cauchyCroftonConst_two_lt_one : cauchyCroftonConst 2 < 1 := by
   rw [cauchyCrofton_two]
-  rw [div_lt_one pi_pos]
-  linarith [pi_gt_three]
+  rw [div_lt_one pi_pos]; linarith [pi_gt_three]
 
-/-- From the product formula, consecutive constants satisfy:
-    c_{n+1} = 2/(n·π·c_n), so as c_n is bounded away from 0, c_{n+1} is determined. -/
+/-- From the product formula, c_{n+1} is determined by c_n:
+    c_{n+1} = 2/(n·π·c_n) for n ≥ 2. -/
 theorem cauchyCrofton_successor_eq (n : ℕ) (hn : 2 ≤ n)
     (hcn : 0 < cauchyCroftonConst n) :
     cauchyCroftonConst (n + 1) = 2 / ((n : ℝ) * π * cauchyCroftonConst n) := by
-  have h := cauchyCrofton_product n hn
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
-  rw [← h]
-  field_simp [hcn.ne', hn_pos.ne', pi_pos.ne']
-  ring
+  have h := cauchyCrofton_product n hn
+  field_simp [hcn.ne', hn_pos.ne', pi_pos.ne'] at h ⊢
+  linarith
 
 end BuffonsNeedleOQ01OQ01OQ04OQ01
