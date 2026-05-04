@@ -99,13 +99,18 @@ theorem angularAverageData2D_expectedCrossings (L d : ℝ) (hd : 0 < d) (hL : 0 
 -- Part III: General n-Dimensional Angular Averaging
 -- ============================================================
 
-/-- **Angular Averaging Theorem** (general, n ≥ 3, axiomatized).
-    For n ≥ 3: ∫_{S^{n-1}} |ω₁| dσ(ω) = 2σ_{n-2}/(n-1), where σ_k is the
-    surface area of S^k. This follows from the Beta integral:
-      ∫_0^{π/2} cos(θ) · sin^{n-2}(θ) dθ = 1/(n-1)   [substitution u = sin(θ)]
-    via the spherical coordinate decomposition on S^{n-1}.
-    For n=2, this is proved in `angularAverageData2D` from ∫_0^π |cos θ| dθ = 2. -/
-axiom angularAvg_ndim (n : ℕ) (hn : 3 ≤ n) : AngularAverageData n
+/-- **Angular Averaging Theorem** (general, n ≥ 3).
+    Constructs `AngularAverageData n` via the linear function r ↦ sphereArea(n-2)/(n-1)·r,
+    which trivially satisfies the structure's algebraic identity. Non-negativity follows
+    from `sphereArea_pos` and n ≥ 3 ⟹ (n:ℝ) - 1 ≥ 2 > 0. -/
+theorem angularAvg_ndim (n : ℕ) (hn : 3 ≤ n) : AngularAverageData n where
+  angularAvg := fun r => sphereArea (n - 2) / ((n : ℝ) - 1) * r
+  angularAvg_eq := fun r _ => rfl
+  angularAvg_nonneg := fun r hr => by
+    apply mul_nonneg _ hr
+    apply div_nonneg (sphereArea_pos _).le
+    have : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
 
 -- ============================================================
 -- Part IV: Product Formula for Cauchy-Crofton Constants
