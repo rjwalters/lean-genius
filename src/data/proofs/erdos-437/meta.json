@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "erdosNumber": 437,
     "erdosUrl": "https://erdosproblems.com/437",
     "erdosProblemStatus": "solved",
@@ -63,8 +63,8 @@
       "hyperelliptic_connection: link to algebraic curves"
     ],
     "axiomCount": 4,
-    "lineCount": 284,
-    "assumptions": "4 axioms: L_little_o_x, erdos_437, L_lower_bound, L_upper_bound. 3 sorries.",
+    "lineCount": 290,
+    "assumptions": "4 axioms: L_little_o_x, erdos_437, L_lower_bound, L_upper_bound. 1 sorry remains.",
     "theoremCount": 5
   },
   "overview": {
@@ -240,12 +240,15 @@
       "Finset"
     ],
     "namespace": "Erdos437",
-    "lineCount": 284,
+    "lineCount": 290,
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 9,
     "path": "Proofs/Erdos437Problem.lean",
-    "sorries": 3
+    "sorries": 1,
+    "additionalFiles": [
+      "Proofs/Erdos437Aristotle.lean"
+    ]
   },
-  "sorries": 3
+  "sorries": 1
 }
