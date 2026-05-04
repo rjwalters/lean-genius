@@ -1,0 +1,75 @@
+{
+  "id": "abel-ruffini-galois-extensions-oq-05",
+  "title": "Shafarevich's Theorem: Every Finite Solvable Group is a Galois Group over ℚ",
+  "slug": "abel-ruffini-galois-extensions-oq-05",
+  "description": "Formalizes Shafarevich's 1954 theorem: every finite solvable group G is realizable as Gal(L/ℚ) for some Galois extension L/ℚ. The theorem is axiomatized (the proof requires class field theory, embedding problems, and Brauer groups not in Mathlib). Derives 7 corollaries: cyclic groups, abelian groups, S₃, S₄ are all realizable; subgroups and quotients of solvable groups are realizable; S₅ is the first non-realizable-by-solvability example.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AbelRuffiniGaloisExtensionsOQ05.lean",
+    "tags": [
+      "group-theory",
+      "galois-theory",
+      "inverse-galois-problem",
+      "solvable-groups",
+      "number-theory",
+      "abel-ruffini",
+      "shafarevich"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 1,
+    "assumptions": "shafarevich_inverse_galois: Every finite solvable group G is the Galois group of some number field extension L/ℚ. Shafarevich (1954, Izv. Akad. Nauk). Proof requires class field theory, embedding problems, and Brauer group theory — not currently in Mathlib.",
+    "lineCount": 175,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "originalContributions": [
+      "shafarevich_inverse_galois: core axiom — Gal(L/ℚ) ≅ G for every finite solvable G",
+      "cyclic_group_realizable: ℤ/nℤ is realizable (abelian → solvable → Shafarevich)",
+      "abelian_group_realizable: all finite abelian groups are realizable",
+      "s3_realizable: S₃ is realizable (solvable since n ≤ 4, apply Shafarevich)",
+      "s4_realizable: S₄ is realizable (solvable since n ≤ 4, apply Shafarevich)",
+      "subgroup_of_solvable_realizable: subgroups of solvable groups are realizable",
+      "quotient_of_solvable_realizable: quotients of solvable groups are realizable",
+      "s5_not_solvable_obstruction: S₅ fails solvability criterion (not solvable)"
+    ],
+    "proofStrategy": "Shafarevich's theorem is axiomatized. Corollaries are proved via solvability closure properties from the parent file (AbelRuffiniGaloisExtensions.lean): CommGroup.isSolvable for abelian/cyclic, symmetric_solvable_of_le_four for S₃,S₄, subgroup_solvable_of_solvable and quotient_solvable_of_solvable for closure. S₅ non-realizability follows from s5_not_solvable.",
+    "openQuestions": [
+      "Can Shafarevich's theorem be proved in Lean using Mathlib's class field theory?",
+      "Is every finite group (not just solvable) realizable over ℚ? (The Inverse Galois Problem — open)",
+      "Can the specific Galois extensions for S₃ and S₄ be constructed explicitly in Lean?"
+    ],
+    "sections": [
+      {
+        "title": "Shafarevich's Core Axiom",
+        "content": "For any finite solvable group G, there exists a Galois extension L/ℚ with Gal(L/ℚ) ≅ G. The proof uses class field theory for abelian steps, then an inductive construction along the derived series using embedding problem theory.",
+        "theorems": ["shafarevich_inverse_galois"]
+      },
+      {
+        "title": "Cyclic and Abelian Corollaries",
+        "content": "Cyclic groups ℤ/nℤ and all finite abelian groups are realizable over ℚ. Proof: CommGroup.isSolvable + Shafarevich. For cyclic groups, the classical construction via cyclotomic extensions ℚ(ζₙ) gives explicit realizations, but Shafarevich applies generally.",
+        "theorems": ["cyclic_group_realizable", "abelian_group_realizable"]
+      },
+      {
+        "title": "Symmetric Group Cases",
+        "content": "S₃ and S₄ are both realizable (solvable groups, apply Shafarevich). S₅ fails the solvability criterion — it is the smallest symmetric group that is not solvable, corresponding to the impossibility of solving degree-5 polynomials by radicals.",
+        "theorems": ["s3_realizable", "s4_realizable", "s5_not_solvable_obstruction"]
+      },
+      {
+        "title": "Closure Properties",
+        "content": "The class of groups realizable over ℚ via Shafarevich's theorem is closed under taking subgroups and quotients (since both preserve solvability). This gives a structural picture of the solvable part of the inverse Galois problem.",
+        "theorems": ["subgroup_of_solvable_realizable", "quotient_of_solvable_realizable"]
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05.lean",
+    "axiomCount": 1,
+    "sorryCount": 0,
+    "lineCount": 175,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
+}
