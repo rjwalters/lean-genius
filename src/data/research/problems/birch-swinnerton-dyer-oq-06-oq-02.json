@@ -1,0 +1,121 @@
+{
+  "slug": "birch-swinnerton-dyer-oq-06-oq-02",
+  "title": "Connect the height pairing matrix values to actual N\u00e9ron-Tate heights compute...",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Connect the height pairing matrix values to actual N\u00e9ron-Tate heights compute....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-04T16:38:18.111Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Gallery entry created. 26 theorems, 1 def, 0 sorries, 2 axioms (inherited). Weierstrass group law computations: P1+P2=(1,0), [2]P1=(3,5), [2]P2=(10/9,-35/27), [4]P1=(114/121,-267/1331). Naive height bounds proved.",
+    "builtItems": [
+      "p1_on_curve: P1=(0,0) verified on curve 389a [BirchSwinnertonDyerOQ06OQ02.lean:76]",
+      "p2_on_curve: P2=(-1,1) verified on curve 389a [BirchSwinnertonDyerOQ06OQ02.lean:80]",
+      "double_p1_on_curve: [2]P1=(3,5) on curve [BirchSwinnertonDyerOQ06OQ02.lean:84]",
+      "double_p2_on_curve: [2]P2=(10/9,-35/27) on curve [BirchSwinnertonDyerOQ06OQ02.lean:89]",
+      "quadruple_p1_on_curve: [4]P1=(114/121,-267/1331) on curve [BirchSwinnertonDyerOQ06OQ02.lean:93]",
+      "Weierstrass doubling formula: slope/x/y for [2]P1, [2]P2, [4]P1 all by norm_num",
+      "second_approx_exceeds_first: log(121)/16 > log(3)/4 (height approx monotonicity)"
+    ],
+    "insights": [
+      "Curve 389a: y^2+y = x^3+x^2-2x has a1=0, a2=1, a3=1, a4=-2, a6=0",
+      "y-coordinate formula: y2 = lambda*(x1-x2) - y1 - 1 (NOT -lambda*(x1+x2)+y1-1)",
+      "Naive height approx log(3)/4 \u2248 0.275 and log(121)/16 \u2248 0.300 undershoot h11=0.7622 due to large local heights at p=389",
+      "P1+P2=(1,0) shows generators are not negatives of each other",
+      "All computations over Q verifiable by norm_num -- no Mathlib elliptic curve API needed"
+    ],
+    "mathlibGaps": [
+      "Canonical height limit convergence requires Neron function theory not in Mathlib 4.26",
+      "Local height contributions at p=389 require p-adic analysis not formalized"
+    ],
+    "nextSteps": [
+      "Compute [8]P1 to get third approximation and show sequence increases toward h11",
+      "Formalize the Neron height decomposition for curve 389a"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "connection"
+  ],
+  "relatedProofs": [
+    "birch-swinnerton-dyer",
+    "birch-swinnerton-dyer-oq-06"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T16:38:18.110Z",
+  "lastUpdate": "2026-05-04T16:38:18.110Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BirchSwinnertonDyer.lean",
+      "filename": "BirchSwinnertonDyer.lean",
+      "lineCount": 7436,
+      "theoremCount": 254,
+      "axiomCount": 17,
+      "defCount": 143,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyer.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerAristotle.lean",
+      "filename": "BirchSwinnertonDyerAristotle.lean",
+      "lineCount": 391,
+      "theoremCount": 66,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerAristotle.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerOQ01.lean",
+      "filename": "BirchSwinnertonDyerOQ01.lean",
+      "lineCount": 298,
+      "theoremCount": 8,
+      "axiomCount": 8,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerOQ06.lean",
+      "filename": "BirchSwinnertonDyerOQ06.lean",
+      "lineCount": 274,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ06.lean"
+    }
+  ]
+}

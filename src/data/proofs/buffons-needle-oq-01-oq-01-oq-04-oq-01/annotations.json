@@ -1,46 +1,98 @@
-{
-  "annotations": [
-    {
-      "id": "ann-001",
-      "type": "key_insight",
-      "title": "Rotation reduces cos to sin",
-      "body": "The identity sin(θ + π/2) = cos θ means ∫_0^π |cos θ| dθ is exactly a phase-shifted version of ∫_0^π |sin θ| dθ = 2. This elegantly connects the 2D angular average to the already-proved sin integral.",
-      "lean_ref": "integral_abs_cos_zero_pi"
-    },
-    {
-      "id": "ann-002",
-      "type": "definition",
-      "title": "Angular average as actual integral",
-      "body": "sphereAngularAvg2D(r) = r · ∫_0^π |cos θ| dθ represents the half-sphere angular average: (1/2) ∫_{S^1} |⟨(r,0), ω⟩| dσ(ω). The factor 1/2 comes from identifying antipodal points (RP^1 = S^1/±), so each direction is counted once.",
-      "lean_ref": "sphereAngularAvg2D"
-    },
-    {
-      "id": "ann-003",
-      "type": "main_theorem",
-      "title": "2D angular averaging — axiom-free",
-      "body": "The AngularAverageData 2 instance is constructed entirely from interval integration: angularAvg r = r · 2 = 2r matches sphereArea(0)/(2-1) · r = 2 · r. This eliminates all axioms for the 2D Cauchy-Crofton formula.",
-      "lean_ref": "angularAverageData2D"
-    },
-    {
-      "id": "ann-004",
-      "type": "proof_technique",
-      "title": "Product formula via recurrence",
-      "body": "c_n · c_{n+1} = 2/(n·π) uses the sphere area recurrence σ_n = 2π/(n-1) · σ_{n-2} to cancel σ_{n-1} and σ_{n-2} terms. The cancellation is: 4σ_{n-2} / ((n-1)·n·σ_n) = 4σ_{n-2} / ((n-1)·n·(2π/(n-1))·σ_{n-2}) = 2/(n·π).",
-      "lean_ref": "cauchyCrofton_product"
-    },
-    {
-      "id": "ann-005",
-      "type": "open_problem",
-      "title": "Beta integral for n ≥ 3",
-      "body": "For n ≥ 3, the angular averaging identity requires ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ = 1/(n-1). This follows from the substitution u = sin(θ): ∫_0^1 u^{n-2} du = 1/(n-1). The challenge is connecting this to the sphere integral via polar coordinates in Mathlib.",
-      "lean_ref": "angularAvg_ndim"
-    },
-    {
-      "id": "ann-006",
-      "type": "consistency_check",
-      "title": "Recovery of c_2 = 2/π",
-      "body": "E[crossings] = 2/(σ_1·d) · angularAvg2D(L) = 2/(2πd) · 2L = 2L/(πd). This verifies that the axiom-free 2D instance correctly recovers the Buffon-Barbier formula E = 2L/(πd) for curves in the plane.",
-      "lean_ref": "angularAverageData2D_expectedCrossings"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-001",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "technique",
+    "title": "Rotation Reduces cos to sin",
+    "content": "The identity sin(θ + π/2) = cos θ means ∫_0^π |cos θ| dθ is exactly a phase-shifted version of ∫_0^π |sin θ| dθ = 2. Rather than computing the antiderivative of |cos θ| directly, the proof applies integral_abs_sin_shift from the parent file and rewrites via the phase identity. This zero-computation strategy exploits the rotational symmetry between sin and cos.",
+    "mathContext": "$\\int_0^\\pi |\\cos\\theta|\\,d\\theta = \\int_0^\\pi |\\sin(\\theta + \\pi/2)|\\,d\\theta = 2$. The shift-invariance of the integral over a full period makes this exact.",
+    "significance": "key",
+    "relatedConcepts": ["phase shift", "rotational symmetry", "trigonometric integrals", "interval integral shift lemma"],
+    "prerequisites": ["Real.sin_add", "Real.sin_pi_div_two", "integral_abs_sin_shift"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 51, "endLine": 66 },
+    "type": "definition",
+    "title": "sphereAngularAvg2D: The 2D Angular Average",
+    "content": "sphereAngularAvg2D(r) = r · ∫_0^π |cos θ| dθ represents the half-sphere angular average: (1/2) ∫_{S^1} |⟨(r,0), ω⟩| dσ(ω). The factor 1/2 comes from identifying antipodal points (RP^1 = S^1/±), so each direction is counted once. The theorem sphereAngularAvg2D_eq immediately simplifies this to 2r using the cos integral result. Non-negativity follows from mul_nonneg and abs_nonneg.",
+    "mathContext": "$\\text{sphereAngularAvg2D}(r) = r \\cdot \\int_0^\\pi |\\cos\\theta|\\,d\\theta = 2r$. This equals $\\frac{1}{2}\\int_{S^1} |\\langle (r,0), \\omega\\rangle|\\,d\\sigma(\\omega)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sphere integral", "projective space", "angular average", "AngularAverageData"],
+    "prerequisites": ["intervalIntegral", "abs_nonneg", "mul_nonneg"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 68, "endLine": 96 },
+    "type": "insight",
+    "title": "Axiom-Free AngularAverageData 2 Instance",
+    "content": "The AngularAverageData 2 instance is constructed entirely from interval integration: angularAvg r = r · 2 = 2r matches the required formula sphereArea(0)/(2-1) · r = 2 · r. Here sphereArea(0) = 2 (two points ±1 on S^0) and 2-1 = 1 as a real number, so the verification reduces to 2*r = 2/(1)*r. The consistency check angularAverageData2D_expectedCrossings then confirms this instance produces E[crossings] = 2L/(πd) for n=2 by delegating to the parent file's expectedCrossings_eq_angularAvg theorem.",
+    "mathContext": "$c_2 = \\frac{2\\sigma_0}{(2-1)\\sigma_1} = \\frac{2\\cdot 2}{1\\cdot 2\\pi} = \\frac{2}{\\pi}$. The instance verifies $\\text{angularAvg}(r) = \\frac{\\sigma_0}{2-1}\\cdot r = 2r$ without any axioms.",
+    "significance": "key",
+    "relatedConcepts": ["AngularAverageData", "Cauchy-Crofton formula", "sphereArea_zero", "expected crossings"],
+    "prerequisites": ["AngularAverageData", "sphereArea_zero", "expectedCrossings_eq_angularAvg"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 110, "endLine": 138 },
+    "type": "technique",
+    "title": "Product Formula via Sphere Area Recurrence",
+    "content": "c_n · c_{n+1} = 2/(n·π) uses the sphere area recurrence σ_n = 2π/(n-1) · σ_{n-2} to cancel σ_{n-1} and σ_{n-2} terms. Writing out: c_n · c_{n+1} = [2σ_{n-2}/((n-1)σ_{n-1})] · [2σ_{n-1}/(n·σ_n)] = 4σ_{n-2}/((n-1)·n·σ_n). Substituting σ_n = (2π/(n-1))·σ_{n-2} gives 4σ_{n-2}/((n-1)·n·(2π/(n-1))·σ_{n-2}) = 2/(n·π). In Lean this is handled by push_cast, rw [hcast, hrec], then field_simp+ring to close the goal.",
+    "mathContext": "$c_n \\cdot c_{n+1} = \\frac{4\\sigma_{n-2}}{(n-1) n \\sigma_n} = \\frac{4\\sigma_{n-2}}{(n-1) n \\cdot \\frac{2\\pi}{n-1}\\sigma_{n-2}} = \\frac{2}{n\\pi}$.",
+    "significance": "key",
+    "relatedConcepts": ["sphere area recurrence", "telescoping cancellation", "Cauchy-Crofton constants", "field_simp"],
+    "prerequisites": ["sphereArea_recurrence", "cauchyCroftonConst", "push_cast", "field_simp"]
+  },
+  {
+    "id": "ann-005",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 98, "endLine": 108 },
+    "type": "context",
+    "title": "The n ≥ 3 Axiom: Beta Integral Gap",
+    "content": "For n ≥ 3, the angular averaging identity requires ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ = 1/(n-1). This follows from the substitution u = sin(θ): the integral becomes ∫_0^1 u^{n-2} du = 1/(n-1). The challenge is connecting this to the sphere integral via polar coordinates on S^{n-1} in Mathlib. The axiom precisely names this gap: angularAvg_ndim is the only assumption in the file.",
+    "mathContext": "$\\int_0^{\\pi/2} \\cos\\theta \\cdot \\sin^{n-2}\\theta\\,d\\theta = \\int_0^1 u^{n-2}\\,du = \\frac{1}{n-1}$. This is the Beta function $B(1, (n-1)/2)/2$ at integer arguments.",
+    "significance": "context",
+    "relatedConcepts": ["Beta integral", "polar coordinates on S^{n-1}", "Euler Beta function", "sphere measure decomposition"],
+    "prerequisites": ["MeasureTheory.integral_rpow", "intervalIntegral.integral_comp_sub_right"]
+  },
+  {
+    "id": "ann-006",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 91, "endLine": 96 },
+    "type": "insight",
+    "title": "Consistency: Recovery of c_2 = 2/π",
+    "content": "E[crossings] = 2/(σ_1·d) · angularAvg2D(L) = 2/(2πd) · 2L = 2L/(πd). This verifies that the axiom-free 2D instance correctly recovers the Buffon-Barbier formula E = 2L/(πd) for curves in the plane. The proof delegates entirely to expectedCrossings_eq_angularAvg from the parent file, confirming the instance satisfies all interface requirements.",
+    "mathContext": "$E[\\text{crossings}] = \\frac{2}{\\sigma_1 \\cdot d} \\cdot \\text{angularAvg2D}(L) = \\frac{2}{2\\pi d} \\cdot 2L = \\frac{2L}{\\pi d}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Buffon-Barbier formula", "expected crossings", "integral geometry", "Cauchy-Crofton formula"],
+    "prerequisites": ["expectedCrossings_eq_angularAvg", "sphereArea 1"]
+  },
+  {
+    "id": "ann-007",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 140, "endLine": 157 },
+    "type": "insight",
+    "title": "Product Sequence is Strictly Decreasing",
+    "content": "The product c_n · c_{n+1} = 2/(n·π) is strictly decreasing in n: 2/((n+1)·π) < 2/(n·π) because n < n+1. The Lean proof applies cauchyCrofton_product twice to rewrite both sides, then uses div_lt_div_iff with positivity lemmas and nlinarith to close. This implies the partial sums ∑_n c_n · c_{n+1} = (2/π)∑_n 1/n diverge — the constants themselves must tend to 0 sufficiently slowly.",
+    "mathContext": "$c_n c_{n+1} = \\frac{2}{n\\pi} > \\frac{2}{(n+1)\\pi} = c_{n+1}c_{n+2}$ for all $n \\geq 2$. The sequence $(c_n c_{n+1})_{n\\geq 2}$ is a harmonic-like positive decreasing sequence.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone sequences", "harmonic series", "asymptotic analysis", "Cauchy-Crofton constants"],
+    "prerequisites": ["div_lt_div_iff", "nlinarith", "cauchyCrofton_product"]
+  },
+  {
+    "id": "ann-008",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "range": { "startLine": 159, "endLine": 188 },
+    "type": "technique",
+    "title": "Positivity and Successor Recurrence",
+    "content": "cauchyCroftonConst_pos proves 0 < c_n for all n ≥ 1 by applying div_pos with mul_pos twice: 2 > 0 times sphereArea > 0 for numerator, (n-1 ≥ 0) times sphereArea > 0 for denominator. The successor formula c_{n+1} = 2/(n·π·c_n) follows from the product formula by dividing both sides by c_n, using positivity to justify the division. Together these give a computational tool: if c_2 = 2/π is known, all subsequent constants are determined by iteration.",
+    "mathContext": "$c_{n+1} = \\frac{2}{n\\pi c_n}$, so $c_3 = \\frac{2}{2\\pi \\cdot (2/\\pi)} = \\frac{2}{4} = \\frac{1}{2}$, $c_4 = \\frac{2}{3\\pi \\cdot (1/2)} = \\frac{4}{3\\pi}$, etc.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity lemmas", "div_pos", "recurrence relations", "Cauchy-Crofton constants"],
+    "prerequisites": ["div_pos", "mul_pos", "sphereArea_pos", "cauchyCrofton_product"]
+  }
+]

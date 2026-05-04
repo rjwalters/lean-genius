@@ -3530,10 +3530,10 @@
       "result": "clean"
     },
     "erdos-107": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-04T04:02:31Z",
-      "result": "clean"
+      "lastAudited": "2026-05-04T18:29:01Z",
+      "result": "issues-fixed"
     },
     "erdos-1070": {
       "auditCount": 5,
@@ -7014,9 +7014,9 @@
     },
     "erdos-437": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-04T03:56:44Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-05-04T18:29:01Z",
+      "result": "issues-fixed"
     },
     "erdos-438": {
       "agentId": "auditor-cycle-20-batch",
@@ -11712,10 +11712,10 @@
       "result": "clean"
     },
     "hilbert-13-oq-04": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-04T12:48:30Z",
-      "result": "issues-found"
+      "lastAudited": "2026-05-04T17:00:00Z",
+      "result": "issues-fixed"
     },
     "hilbert-14": {
       "agentId": "auditor-cycle-20-batch",
@@ -14367,8 +14367,8 @@
       "issues": []
     },
     "birthday-problem-oq-01-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-05-04T18:17:32Z",
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T14:36:03Z",
       "result": "clean",
       "issues": []
     },
@@ -14415,8 +14415,8 @@
       "issues": []
     },
     "binomial-theorem-oq-02-oq-01-oq-01-oq-02": {
-      "auditCount": 5,
-      "lastAudited": "2026-05-04T18:11:42Z",
+      "auditCount": 4,
+      "lastAudited": "2026-05-04T18:02:27Z",
       "result": "clean",
       "issues": []
     },
@@ -14451,8 +14451,8 @@
       "issues": []
     },
     "cayley-hamilton-oq-01-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-05-04T18:16:29Z",
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T14:36:03Z",
       "result": "clean",
       "issues": []
     },
@@ -14553,15 +14553,15 @@
       "issues": []
     },
     "binary-gcd-oq-02-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-05-04T18:17:32Z",
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T17:51:31Z",
       "result": "clean",
       "issues": []
     },
     "buffons-needle-oq-01-oq-01-oq-04-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-05-04T18:20:40Z",
-      "result": "issues-fixed",
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T17:51:53Z",
+      "result": "clean",
       "issues": []
     },
     "cube-root-3-irrational-oq-02-oq-01": {
@@ -14571,9 +14571,27 @@
       "issues": []
     },
     "prime-number-theorem-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-05-04T18:19:54Z",
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T18:06:11Z",
       "result": "clean",
+      "issues": []
+    },
+    "birch-swinnerton-dyer-oq-06-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T18:30:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "lagrange-theorem-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T18:30:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "law-of-cosines-oq-04-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T18:30:33Z",
+      "result": "issues-fixed",
       "issues": []
     }
   },

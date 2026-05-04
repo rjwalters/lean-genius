@@ -229,6 +229,7 @@ import Proofs.BirchSwinnertonDyer
 import Proofs.BirchSwinnertonDyerAristotle
 import Proofs.BirchSwinnertonDyerOQ01
 import Proofs.BirchSwinnertonDyerOQ06
+import Proofs.BirchSwinnertonDyerOQ06OQ02
 import Proofs.BirthdayProblem
 import Proofs.BirthdayProblemAsymptotics
 import Proofs.BirthdayProblemOQ01
@@ -478,6 +479,7 @@ import Proofs.CubeRoot2Irrational
 import Proofs.CubeRoot2IrrationalOQ03
 import Proofs.CubeRoot3Irrational
 import Proofs.CubeRoot3IrrationalOQ02
+import Proofs.CubeRoot3IrrationalOQ02OQ01
 import Proofs.CubeRoot5Irrational
 import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational
@@ -2338,6 +2340,7 @@ import Proofs.LagrangeTheoremOQ05
 import Proofs.LawOfCosines
 import Proofs.LawOfCosinesOQ03
 import Proofs.LawOfCosinesOQ04
+import Proofs.LawOfCosinesOQ04OQ02
 import Proofs.LawOfCosinesOQ05
 import Proofs.LawOfSinesOQ06
 import Proofs.LawsOfLargeNumbers

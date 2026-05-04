@@ -183,7 +183,13 @@ lemma CardSet.mono {n : ℕ} {m m' : ℕ} (hm : m ∈ CardSet n) (hmm : m ≤ m'
 /-- **Lower bound**: f(3) ≥ 3. Fewer than 3 points cannot contain
     a convex triangle, so CardSet 3 ⊆ {m | 3 ≤ m}. -/
 lemma cardSet_three_lower_bound : ∀ m ∈ CardSet 3, 3 ≤ m := by
-  sorry
+  intro m hm
+  -- ersz_lower_bound at n=3: 2^(3-2)+1 = 3 ≤ f 3 = sInf (CardSet 3) ≤ m
+  have h3 : 3 ≤ f 3 := by
+    have := ersz_lower_bound 3 (by norm_num)
+    norm_num at this ⊢
+    exact this
+  exact le_trans h3 (Nat.sInf_le hm)
 
 /-- f(3) = 3: Three non-collinear points always form a triangle.
 

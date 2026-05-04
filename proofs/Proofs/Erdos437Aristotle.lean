@@ -42,16 +42,44 @@ lemma pow_four_pos (k : ℕ) : 4 ^ k ≥ 1 :=
   ## Section 2: List Partial Products
 -/
 
+/-- Helper: foldl (·*·) with non-unit accumulator factors out the accumulator. -/
+private lemma foldl_mul_acc (xs : List ℕ) (acc : ℕ) :
+    xs.foldl (· * ·) acc = acc * xs.foldl (· * ·) 1 := by
+  induction xs generalizing acc with
+  | nil => simp
+  | cons h t ih =>
+    simp only [List.foldl_cons]
+    rw [ih (acc * h), ih h]
+    ring
+
 /-- Partial product of a list is the product of the first k elements -/
 lemma partial_product_cons (a : ℕ) (as : List ℕ) :
     (a :: as).foldl (· * ·) 1 = a * as.foldl (· * ·) 1 := by
-  sorry
+  simp only [List.foldl_cons, one_mul]
+  exact foldl_mul_acc as a
 
 /-- The product of List.range k mapped to 4^(i+1) is 4^(k*(k+1)/2) -/
 lemma pow_four_range_product (k : ℕ) :
     (List.range k).foldl (fun acc i => acc * 4 ^ (i + 1)) 1 =
     4 ^ (k * (k + 1) / 2) := by
-  sorry
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    rw [List.range_succ, List.foldl_append]
+    simp only [List.foldl_cons, List.foldl_nil]
+    rw [ih, ← pow_add]
+    congr 1
+    -- Goal: n * (n + 1) / 2 + (n + 1) = (n + 1) * (n + 2) / 2
+    have heven : 2 ∣ n * (n + 1) := by
+      rcases Nat.even_or_odd n with ⟨m, hm⟩ | ⟨m, hm⟩
+      · exact ⟨m * (n + 1), by subst hm; ring⟩
+      · exact ⟨n * (m + 1), by subst hm; ring⟩
+    have heven2 : 2 ∣ (n + 1) * (n + 2) := by
+      rcases Nat.even_or_odd n with ⟨m, hm⟩ | ⟨m, hm⟩
+      · exact ⟨(n + 1) * (m + 1), by subst hm; ring⟩
+      · exact ⟨(m + 1) * (n + 2), by subst hm; ring⟩
+    linarith [Nat.div_mul_cancel heven, Nat.div_mul_cancel heven2,
+              show n * (n + 1) + 2 * (n + 1) = (n + 1) * (n + 2) from by ring]
 
 /-
   ## Section 3: Division Arithmetic for L(x)/x

@@ -1,0 +1,89 @@
+{
+  "slug": "law-of-cosines-oq-04-oq-02",
+  "title": "Angle Bisector Length Formula from Stewart's Theorem",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "t^2 * (b+c)^2 = b*c*((b+c)^2 - a^2)",
+    "plain": "The angle bisector length formula t² = bc[(b+c)² - a²]/(b+c)² follows from Stewart's theorem.",
+    "whyMatters": [
+      "Demonstrates that polynomial linear_combination witnesses suffice to derive classical geometric identities",
+      "Provides a zero-axiom formalization bridging angle bisector theorem to Stewart's theorem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "bisector_ratio_m: m*(b+c) = a*c via linear_combination",
+      "bisector_ratio_n: n*(b+c) = a*b via linear_combination",
+      "bisector_product: m*n*(b+c)^2 = a^2*b*c via linear_combination",
+      "angle_bisector_squared: t^2*(b+c)^2 = b*c*((b+c)^2-a^2) — main result",
+      "angle_bisector_ratio: divided form t^2 = b*c*((b+c)^2-a^2)/(b+c)^2",
+      "Special cases: equilateral, 3-4-5, isoceles triangle"
+    ],
+    "open": [],
+    "goal": "Proved: 0 sorries, 0 axioms"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-04T19:00:00.000Z",
+    "iteration": 1,
+    "focus": "Complete proof submitted as PR.",
+    "blockers": [],
+    "nextAction": "Await PR merge.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Lean file written (163 lines, 0 sorries, 0 axioms). Proved angle bisector formula as corollary of Stewart's theorem using polynomial linear_combination witnesses.",
+    "builtItems": [
+      "LawOfCosinesOQ04OQ02.lean: bisector_ratio_m (line 40)",
+      "LawOfCosinesOQ04OQ02.lean: bisector_ratio_n (line 52)",
+      "LawOfCosinesOQ04OQ02.lean: bisector_product (line 63)",
+      "LawOfCosinesOQ04OQ02.lean: angle_bisector_squared (line 89)",
+      "LawOfCosinesOQ04OQ02.lean: angle_bisector_ratio (line 110)",
+      "LawOfCosinesOQ04OQ02.lean: angle_bisector_length (line 128)",
+      "src/data/proofs/law-of-cosines-oq-04-oq-02/meta.json"
+    ],
+    "insights": [
+      "The angle bisector ratio m*b = n*c and m+n=a gives m*(b+c) = a*c and n*(b+c) = a*b — these are the key algebraic bridges",
+      "The polynomial witness -(b+c)^2*hstewart + b^2*(b+c)*hm + c^2*(b+c)*hn - a*hmn equals a*(t^2*(b+c)^2 - bc*((b+c)^2-a^2))",
+      "Canceling a (using a_pos) gives the formula — this is the linear_combination pattern for polynomial geometry proofs",
+      "No nlinarith needed — pure algebraic manipulation via linear_combination suffices"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Follow-up: Prove the generalized bisector formula for weighted cevians (trigonometric form)",
+      "Follow-up: Formalize the angle bisector theorem (m*b = n*c follows from equal angles) using Mathlib metric geometry"
+    ]
+  },
+  "tags": [
+    "gallery-extracted",
+    "geometry",
+    "law-of-cosines",
+    "stewarts-theorem",
+    "angle-bisector",
+    "algebraic-proof"
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Tactic.LinearCombination",
+      "Mathlib.Algebra.GroupWithZero.Basic"
+    ]
+  },
+  "started": "2026-05-04T19:00:00.000Z",
+  "lastUpdate": "2026-05-04T19:45:00.000Z",
+  "significance": 5,
+  "tractability": 9
+}

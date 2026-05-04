@@ -1,0 +1,119 @@
+{
+  "id": "cube-root-3-irrational-oq-02-oq-01",
+  "title": "∛3 Field Extension Degree: [ℚ(∛3):ℚ] = 3",
+  "slug": "cube-root-3-irrational-oq-02-oq-01",
+  "description": "Derives [ℚ(∛3):ℚ] = 3 as a corollary of the Eisenstein criterion approach. Uses the general theorem adjoin_nthRoot_finrank from CubeRoot2IrrationalOQ03. Also re-derives ∛3's irrationality from degree > 1, and establishes the general principle: algebraic elements with [ℚ(α):ℚ] > 1 are irrational.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-05-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02OQ01.lean",
+    "tags": [
+      "field-extensions",
+      "algebraic-numbers",
+      "irrationality",
+      "cube-roots",
+      "minimal-polynomial",
+      "eisenstein"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 0,
+    "assumptions": "None — fully verified. Depends on CubeRoot2IrrationalOQ03 for adjoin_nthRoot_finrank and related lemmas.",
+    "lineCount": 91,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "cbrt3_fieldExtDegree: [ℚ(∛3):ℚ] = 3 as one-line corollary of adjoin_nthRoot_finrank",
+      "minpoly_cbrt3_natDeg: natDegree(minpoly ℚ ∛3) = 3 as corollary",
+      "cbrt3_irrational_from_degree: ∛3 is irrational via minpoly degree argument (third proof)",
+      "irrational_of_degree_gt_one: general principle — [ℚ(α):ℚ] > 1 implies α ∉ ℚ",
+      "cbrt3_irrational_via_principle: applies the general principle to ∛3"
+    ]
+  },
+  "leanFile": {
+    "lineCount": 91,
+    "path": "Proofs/CubeRoot3IrrationalOQ02OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 5
+  },
+  "overview": {
+    "historicalContext": "The degree [ℚ(∛3):ℚ] = 3 is a classical result in algebraic number theory. While ∛3's irrationality was known to antiquity, the field-extension perspective emerged with Galois and Dedekind in the 19th century. The key insight: an algebraic number α lies in ℚ if and only if its minimal polynomial has degree 1. This connects the qualitative fact 'α ∉ ℚ' to the quantitative measurement '[ℚ(α):ℚ] > 1', and the full degree [ℚ(∛3):ℚ] = 3 tells us precisely how far ∛3 is from being rational.",
+    "problemStatement": "**Open Question OQ-01 from cube-root-3-irrational-oq-02**:\n\nThe parent file proves ∛3 is irrational via Eisenstein irreducibility. Can [ℚ(∛3):ℚ] = 3 be derived as a corollary? The hint from the gallery: `CubeRoot2IrrationalOQ03` already proves `adjoin_nthRoot_finrank 3 3 3 = 3`.\n\n**This file answers yes**: one-line corollary, plus three additional theorems connecting degree to irrationality.",
+    "proofStrategy": "**Core argument**: The general theorem `adjoin_nthRoot_finrank n m p hn hp hdvd hndvd hm` from `CubeRoot2IrrationalOQ03` proves `Module.finrank ℚ ℚ⟮(m:ℝ)^(1/n)⟯ = n` when `p | m` but `p² ∤ m`. Specializing to `n=3, m=3, p=3` gives [ℚ(∛3):ℚ] = 3 immediately.\n\n**Irrationality from degree**: If ∛3 = q ∈ ℚ, then `minpoly ℚ ∛3 = X - C q` (Mathlib's `minpoly.eq_X_sub_C`), which has degree 1. But `adjoin.finrank` says `[ℚ(∛3):ℚ] = natDegree(minpoly ℚ ∛3) = 1`. This contradicts [ℚ(∛3):ℚ] = 3.\n\n**General principle**: The same argument works for any algebraic α with [ℚ(α):ℚ] > 1.",
+    "keyInsights": [
+      "The entire proof reduces to a five-argument norm_num call: adjoin_nthRoot_finrank 3 3 3 (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)",
+      "Irrationality follows from degree > 1 via a two-step chain: (1) q ∈ ℚ implies minpoly = X - C q (degree 1), (2) adjoin.finrank says degree = 1, contradicting degree = 3",
+      "The key Mathlib lemma minpoly.eq_X_sub_C gives: if α = algebraMap K L a, then minpoly K α = X - C a",
+      "IntermediateField.adjoin.finrank connects Module.finrank with natDegree(minpoly): Module.finrank K K⟮α⟯ = (minpoly K α).natDegree",
+      "The general principle irrational_of_degree_gt_one captures the fundamental algebraic fact: an element is in the base field iff it satisfies a degree-1 minimal polynomial"
+    ],
+    "prerequisites": [
+      "CubeRoot2IrrationalOQ03.lean: adjoin_nthRoot_finrank, isIntegral_nthRoot, minpoly_nthRoot_natDegree",
+      "Mathlib: minpoly.eq_X_sub_C, IntermediateField.adjoin.finrank, natDegree_X_sub_C"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-field-degree",
+      "title": "PART I: Field Extension Degree [ℚ(∛3):ℚ] = 3",
+      "startLine": 36,
+      "endLine": 47,
+      "summary": "cbrt3_fieldExtDegree proves Module.finrank ℚ ℚ⟮(3:ℝ)^(1/3)⟯ = 3 as a direct one-line corollary of adjoin_nthRoot_finrank 3 3 3 with five norm_num side conditions.",
+      "mathContext": "Specializes $\\texttt{adjoin\\_nthRoot\\_finrank}(n{=}3, m{=}3, p{=}3)$: checks $2 \\leq 3$, $\\text{Prime}\\,3$, $3 \\mid 3$, $\\neg\\,9 \\mid 3$, $0 < 3$. All by `norm_num`. Result: $[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}] = 3$."
+    },
+    {
+      "id": "sec-minpoly-degree",
+      "title": "PART II: Minimal Polynomial Degree",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "minpoly_cbrt3_natDeg proves natDegree(minpoly ℚ ∛3) = 3 as a corollary of minpoly_nthRoot_natDegree 3 3 3. The minimal polynomial is X³−3 (Eisenstein at p=3).",
+      "mathContext": "$\\text{minpoly}\\,\\mathbb{Q}\\,(\\sqrt[3]{3}) = X^3 - 3$ (irreducible by Eisenstein, monic, vanishes at $\\sqrt[3]{3}$). Its $\\text{natDegree} = 3$."
+    },
+    {
+      "id": "sec-irrational-from-degree",
+      "title": "PART III: Irrationality from Degree",
+      "startLine": 59,
+      "endLine": 76,
+      "summary": "cbrt3_irrational_from_degree proves Irrational ((3:ℝ)^(1/3)) via degree: if ∛3 = q ∈ ℚ, then minpoly ℚ ∛3 = X - C q (degree 1) by minpoly.eq_X_sub_C, contradicting minpoly degree 3.",
+      "mathContext": "Key steps: (1) $q \\in \\mathbb{Q} \\Rightarrow \\text{minpoly}\\,\\mathbb{Q}\\,q = X - Cq$ by `minpoly.eq_X_sub_C`. (2) $\\text{natDegree}(X - Cq) = 1 \\neq 3$. Uses `rw [\\leftarrow hq]` to rewrite $\\sqrt[3]{3}$ as $(\\uparrow q : \\mathbb{R})$ in the goal."
+    },
+    {
+      "id": "sec-general-principle",
+      "title": "PART IV: General Principle",
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "irrational_of_degree_gt_one proves: for algebraic α : ℝ with Module.finrank ℚ ℚ⟮α⟯ > 1, α is irrational. Uses the same argument: α = q ∈ ℚ forces finrank = 1 via adjoin.finrank + minpoly.eq_X_sub_C, contradicting the hypothesis. cbrt3_irrational_via_principle applies this to ∛3.",
+      "mathContext": "General fact: $\\alpha \\in \\mathbb{Q} \\Leftrightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 1$. Proof of $\\Rightarrow$: $\\alpha = q \\Rightarrow \\text{minpoly}\\,\\mathbb{Q}\\,\\alpha = X - Cq \\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\text{natDegree}(X-Cq) = 1$ by `adjoin.finrank`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cube-root-3-irrational-oq-02",
+      "relationship": "extends",
+      "description": "Parent proof via Eisenstein. This file derives the stronger degree statement as a corollary."
+    },
+    {
+      "targetId": "cube-root-2-irrational-oq-03",
+      "relationship": "depends",
+      "description": "Source of adjoin_nthRoot_finrank, isIntegral_nthRoot, minpoly_nthRoot_natDegree."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02-oq-02",
+      "relationship": "motivates",
+      "description": "OQ-02 proves {1, ∛3, (∛3)²} linearly independent over ℚ — a consequence of [ℚ(∛3):ℚ] = 3."
+    }
+  ],
+  "conclusion": {
+    "summary": "[ℚ(∛3):ℚ] = 3 via adjoin_nthRoot_finrank. 5 theorems, 0 sorries, 0 axioms.",
+    "implications": "**Degree as strength**: [ℚ(∛3):ℚ] = 3 is strictly stronger than ∛3 ∉ ℚ. It rules out any ℚ-linear relation of degree < 3. In particular, (∛3)² cannot be expressed as a + b·∛3 for any a, b ∈ ℚ — a fact that OQ-02 makes precise via linear independence.\n\n**The general principle**: `irrational_of_degree_gt_one` formalizes the fundamental algebraic fact that rational elements are exactly the degree-1 algebraic numbers. This has immediate applications to any algebraic number whose minimal polynomial degree is established.",
+    "openQuestions": [
+      "Is {1, ∛3, (∛3)²} linearly independent over ℚ? (Addressed in OQ-02: the three basis vectors of the degree-3 extension.)",
+      "Can the converse of irrational_of_degree_gt_one be proved: if α is irrational and algebraic, does [ℚ(α):ℚ] > 1? (Yes, by definition of minimal polynomial degree ≥ 2 for irrational algebraic numbers.)"
+    ]
+  },
+  "sorries": []
+}

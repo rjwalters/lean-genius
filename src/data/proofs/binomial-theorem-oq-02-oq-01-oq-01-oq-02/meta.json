@@ -6,7 +6,7 @@
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-05-04",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "probability",
       "information-theory",
@@ -16,18 +16,20 @@
       "combinatorics"
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean",
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "dateAdded": "2026-05-04",
     "axiomCount": 0,
-    "lineCount": 261,
-    "assumptions": "No axioms. 2 sorries remain: source entropy recovery (H(Multinomial(1,p)) = -∑ pᵢ log pᵢ) and the log upper bound H ≤ log|Comp(s,n)|. The non-negativity and zero-trial theorems are fully proved.",
+    "lineCount": 380,
+    "assumptions": "Axiom-free: all theorems fully proved with no axiom declarations and no structure-encoded assumptions. Proved: multinomialEntropy_nonneg, multinomialEntropy_zero_trials, multinomialProb_n1_indicator, multinomialEntropy_n1_eq_source, multinomialEntropy_upper_bound, multinomialEntropy_binomial.",
     "originalContributions": [
       "multinomialEntropy: Shannon entropy definition for multinomial distribution",
-      "multinomialEntropy_nonneg: H(X) ≥ 0 for valid probability vectors (fully proved)",
-      "multinomialEntropy_zero_trials: H(Multinomial(0,p)) = 0 (fully proved)",
-      "multinomialProb_n1_indicator: P(indicator_j) = p_j at n=1 (fully proved)",
-      "multinomial_zero_eq_one: Nat.multinomial s 0 = 1 (proved from spec)"
+      "multinomialEntropy_nonneg: H(X) ≥ 0 for valid probability vectors (proved)",
+      "multinomialEntropy_zero_trials: H(Multinomial(0,p)) = 0 (proved)",
+      "multinomialProb_n1_indicator: P(indicator_j) = p_j at n=1 (proved)",
+      "multinomialEntropy_n1_eq_source: H(Multinomial(1,p)) = -∑ pᵢ log pᵢ (proved)",
+      "multinomialEntropy_upper_bound: H(X) ≤ log|Comp(s,n)| via Gibbs inequality (proved)",
+      "multinomialEntropy_binomial: 2-category special case nonneg (proved)"
     ],
     "theoremCount": 8,
     "substantiveTheoremCount": 6,
@@ -81,7 +83,7 @@
       "title": "Source Entropy Recovery at n=1",
       "startLine": 136,
       "endLine": 195,
-      "summary": "multinomialProb_n1_indicator (proved): P(δ_j) = p_j. multinomialEntropy_n1_eq_source (sorry): H(Multinomial(1,p)) = -∑ pᵢ log pᵢ.",
+      "summary": "multinomialProb_n1_indicator (proved): P(δ_j) = p_j. multinomialEntropy_n1_eq_source (proved): H(Multinomial(1,p)) = -∑ pᵢ log pᵢ.",
       "mathContext": "At $n=1$, each composition is an indicator function $\\delta_j$ for some $j \\in s$. The multinomial coefficient $\\text{multinomial}(s, \\delta_j) = 1$ and $\\prod p_i^{\\delta_j(i)} = p_j$. So $H = -\\sum_j p_j \\log p_j = H(p)$."
     },
     {
@@ -89,7 +91,7 @@
       "title": "Entropy Upper Bound",
       "startLine": 198,
       "endLine": 220,
-      "summary": "multinomialEntropy_upper_bound (sorry): H(X) ≤ log|Comp(s,n)| with equality for uniform input.",
+      "summary": "multinomialEntropy_upper_bound (proved): H(X) ≤ log|Comp(s,n)| with equality for uniform input.",
       "mathContext": "By Gibbs inequality applied to uniform Q on Comp(s,n): $H(P) \\leq -\\sum_k P(k)\\log(1/|\\text{Comp}|) = \\log|\\text{Comp}|$."
     },
     {
@@ -124,7 +126,7 @@
     }
   ],
   "conclusion": {
-    "summary": "YES, the Shannon entropy of the multinomial distribution can be formalized in Lean 4. Non-negativity and the zero-trial case are fully proved. The source entropy recovery (n=1) and upper bound require bijection proofs that are structured as sorries.",
+    "summary": "YES, the Shannon entropy of the multinomial distribution can be fully formalized in Lean 4 with 0 axioms and 0 sorries. Non-negativity, zero-trial determinism, source entropy recovery at n=1, and the Gibbs upper bound are all machine-checked.",
     "implications": "The formalization provides a foundation for information-theoretic reasoning about multinomial experiments: entropy bounds for hypothesis testing, channel capacity for categorical channels, and the maximum entropy principle for categorical distributions.",
     "openQuestions": [
       "Can the bijection piAntidiag s 1 ≃ s be expressed cleanly using Finset.sum_nbij or Finset.equiv_of_eq?",
@@ -147,14 +149,14 @@
       "BinomialTheoremOQ02OQ01"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ02",
-    "lineCount": 261,
+    "lineCount": 380,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "substantiveTheoremCount": 6,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 7,
     "duplicateTheorems": 0,
     "definitionCount": 1,
     "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean",
-    "sorries": 2
+    "sorries": 0
   },
   "mainTheorems": [
     {
@@ -176,5 +178,5 @@
       "leanType": "multinomialProb s p 1 (fun i => if i = j then 1 else 0) = p j"
     }
   ],
-  "sorries": 2
+  "sorries": 0
 }

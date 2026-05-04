@@ -1,0 +1,115 @@
+{
+  "id": "law-of-cosines-oq-04-oq-02",
+  "title": "Angle Bisector Length Formula from Stewart's Theorem",
+  "slug": "law-of-cosines-oq-04-oq-02",
+  "description": "Derives the angle bisector length formula t²(b+c)² = bc·((b+c)²-a²) as a direct algebraic corollary of Stewart's theorem, using the angle bisector theorem (m·b = n·c) as the only geometric input. The proof uses polynomial linear_combination witnesses, producing a zero-axiom, zero-sorry formalization of this classical triangle geometry result.",
+  "leanFile": {
+    "path": "Proofs/LawOfCosinesOQ04OQ02.lean",
+    "namespace": "AngleBisectorLength",
+    "imports": [
+      "Mathlib",
+      "Proofs.LawOfCosinesOQ04"
+    ],
+    "opens": ["StewartsTheorem"],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 163,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "openQuestion": {
+    "id": "law-of-cosines-oq-04-oq-02",
+    "parentId": "law-of-cosines-oq-04",
+    "question": "Does the angle bisector length formula t² = bc[(b+c)²-a²]/(b+c)² follow from Stewart's theorem?",
+    "answer": "Yes. The angle bisector ratio (m·b = n·c) gives m·(b+c) = a·c and n·(b+c) = a·b. Substituting into Stewart's theorem and applying a polynomial linear_combination witness yields a·t²·(b+c)² = a·bc·((b+c)²-a²). Canceling a gives the formula. 0 axioms, 0 sorries."
+  },
+  "highlights": [
+    "Zero-axiom, zero-sorry proof of the angle bisector length formula",
+    "Purely algebraic: uses linear_combination with polynomial witnesses",
+    "Bridges angle bisector theorem to Stewart's theorem systematically",
+    "Includes special cases: equilateral, 3-4-5 right triangle, isoceles"
+  ],
+  "assumptions": [],
+  "implications": [
+    {
+      "statement": "t² = bc·((b+c)²-a²)/(b+c)² when b+c > 0",
+      "type": "corollary"
+    },
+    {
+      "statement": "For isoceles (b=c): t² = b²-a²/4, matching the altitude formula",
+      "type": "corollary"
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-04",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ04OQ02.lean",
+    "tags": [
+      "geometry",
+      "triangle-geometry",
+      "angle-bisector",
+      "stewarts-theorem",
+      "cevian",
+      "law-of-cosines",
+      "algebraic-proof",
+      "open-question"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 163,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "originalContributions": [
+      "bisector_ratio_m: m·(b+c) = a·c from angle bisector ratio — proved via linear_combination",
+      "bisector_ratio_n: n·(b+c) = a·b — proved via linear_combination",
+      "bisector_product: m·n·(b+c)² = a²·bc — proved via linear_combination",
+      "angle_bisector_squared: t²·(b+c)² = bc·((b+c)²-a²) — main result, proved via linear_combination",
+      "angle_bisector_ratio: t² = bc·((b+c)²-a²)/(b+c)² — divided form",
+      "angle_bisector_length: full geometric version from law-of-cosines setup",
+      "Special cases: equilateral, 3-4-5, isoceles triangle verifications"
+    ],
+    "proofStrategy": "Express the key polynomial identity using linear_combination with witness -(b+c)²·hstewart + b²·(b+c)·hm + c²·(b+c)·hn - a·hmn. This equals a·(t²·(b+c)² - bc·((b+c)²-a²)). After canceling a (using ha_pos), the angle bisector formula follows.",
+    "openQuestions": [
+      "Can the full geometric angle bisector theorem (m·b = n·c follows from equal angles) be proved from Mathlib's metric geometry?",
+      "Does the generalized bisector length formula for weighted cevians follow from a similar polynomial witness?"
+    ],
+    "sections": [
+      {
+        "title": "Angle Bisector Ratio Lemmas",
+        "content": "Three lemmas establish the algebraic consequences of the angle bisector ratio m·b = n·c combined with m + n = a: (1) m·(b+c) = a·c, (2) n·(b+c) = a·b, (3) m·n·(b+c)² = a²·bc. Each proved via linear_combination.",
+        "startLine": 39,
+        "endLine": 76,
+        "theorems": ["bisector_ratio_m", "bisector_ratio_n", "bisector_product"]
+      },
+      {
+        "title": "Main Theorem (Cleared-Denominator Form)",
+        "content": "The central result: t²·(b+c)² = bc·((b+c)²-a²). Proved by constructing a·(goal) via linear_combination, then canceling a using mul_left_cancel₀. The divided form t² = bc·((b+c)²-a²)/(b+c)² follows immediately.",
+        "startLine": 79,
+        "endLine": 124,
+        "theorems": ["angle_bisector_squared", "angle_bisector_ratio"]
+      },
+      {
+        "title": "Full Geometric Version",
+        "content": "Combines Stewart's theorem from LawOfCosinesOQ04.lean with the algebraic angle bisector result to give the full geometric theorem under law-of-cosines sub-triangle hypotheses.",
+        "startLine": 127,
+        "endLine": 146,
+        "theorems": ["angle_bisector_length"]
+      },
+      {
+        "title": "Special Cases",
+        "content": "Verifies the formula for equilateral triangles (t² = 3s²/4), 3-4-5 right triangles (t² = 288/49), and isoceles triangles (t² = b²-a²/4).",
+        "startLine": 149,
+        "endLine": 163,
+        "theorems": ["angle_bisector_equilateral", "angle_bisector_3_4_5", "angle_bisector_isoceles"]
+      }
+    ],
+    "mathContext": {
+      "field": "Euclidean Geometry / Algebraic Methods",
+      "keyTheorem": "Angle bisector length formula: t² = bc·((b+c)²-a²)/(b+c)² where a, b, c are the triangle's sides and t is the bisector from A.",
+      "historicalBackground": "The angle bisector length formula is a classical result in triangle geometry, typically proved via Stewart's Theorem (1746). The angle bisector theorem BD/DC = AB/AC was known to ancient Greek geometers. This formalization makes the algebraic derivation explicit via polynomial witnesses.",
+      "significance": "Demonstrates how polynomial linear_combination witnesses can systematically derive non-trivial geometric identities from simpler algebraic hypotheses, providing a model for similar derivations."
+    }
+  }
+}

@@ -106,5 +106,25 @@
       "historicalBackground": "Frobenius (1880) proved the special case for cyclic groups; Chebotarev (1922) extended it to all Galois extensions using a topological argument over function fields. This theorem simultaneously proves Dirichlet's theorem on primes in arithmetic progressions and gives the analytic foundation for Galois theory's relationship to prime splitting.",
       "significance": "Chebotarev's theorem is the bridge between Galois theory and analytic number theory. It shows that the Galois group is encoded in the statistical distribution of primes. In the Abel-Ruffini context, it gives a probabilistic criterion for detecting non-solvability: if the density of irreducible primes for a degree-5 polynomial is 1/5, the Galois group is S₅ (non-solvable)."
     }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.FieldTheory.Galois.Basic",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Proofs.AbelRuffiniGaloisExtensions",
+      "Proofs.AbelRuffiniGaloisExtensionsOQ05"
+    ],
+    "opens": ["AbelRuffiniGaloisExtensions", "Finset"],
+    "namespace": "AbelRuffiniOQ10",
+    "lineCount": 369,
+    "axiomCount": 2,
+    "theoremCount": 23,
+    "definitionCount": 1,
+    "path": "Proofs/AbelRuffiniOQ10.lean",
+    "sorries": 0
   }
 }
