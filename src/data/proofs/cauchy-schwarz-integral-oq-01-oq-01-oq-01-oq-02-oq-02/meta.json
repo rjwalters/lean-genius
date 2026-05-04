@@ -41,7 +41,7 @@
       "Answers the open question: polyrith not needed; positivity suffices after ring normalization",
       "Provides cleaner, more structured proofs where the algebraic identity is made explicit"
     ],
-    "theoremCount": 7
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "The parent proof CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean uses nlinarith with explicit hints such as sq_nonneg (a - b) to close the key inequality steps. This raises the question: can modern proof automation (polyrith, positivity) eliminate these manual witnesses? This file answers the question affirmatively for positivity, showing that ring + positivity is a complete automation strategy for the power mean chain.",
@@ -66,43 +66,43 @@
       "id": "min-le-hm",
       "title": "min ≤ HM",
       "summary": "Case split proof using mul_nonneg; gap = a*(b-a) after ring",
-      "startLine": 63,
-      "endLine": 78
+      "startLine": 56,
+      "endLine": 73
     },
     {
       "id": "hm-le-gm",
       "title": "HM ≤ GM (ring + positivity)",
       "summary": "Gap ab(a+b)^2 - (2ab)^2 = ab(a-b)^2; positivity closes from ha, hb > 0",
-      "startLine": 87,
-      "endLine": 106
+      "startLine": 75,
+      "endLine": 91
     },
     {
       "id": "gm-le-am",
       "title": "GM ≤ AM (ring + positivity)",
       "summary": "Gap ((a+b)/2)^2 - ab = ((a-b)/2)^2; ring identifies; positivity closes",
-      "startLine": 111,
-      "endLine": 126
+      "startLine": 93,
+      "endLine": 105
     },
     {
       "id": "am-le-qm",
       "title": "AM ≤ QM (ring + positivity)",
       "summary": "Gap (a^2+b^2)/2 - ((a+b)/2)^2 = ((a-b)/2)^2; same pattern",
-      "startLine": 131,
-      "endLine": 145
+      "startLine": 107,
+      "endLine": 119
     },
     {
       "id": "qm-le-max",
       "title": "QM ≤ max",
       "summary": "Case split; gap = (b-a)(b+a)/2 for each case; mul_nonneg + div_nonneg",
-      "startLine": 150,
-      "endLine": 170
+      "startLine": 121,
+      "endLine": 144
     },
     {
       "id": "full-chain",
       "title": "The Full Chain",
       "summary": "Assembles all five inequalities",
-      "startLine": 173,
-      "endLine": 181
+      "startLine": 146,
+      "endLine": 158
     }
   ],
   "conclusion": {
@@ -127,7 +127,7 @@
     "namespace": "PowerMeanAuto",
     "lineCount": 187,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 6,
     "definitionCount": 4,
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02.lean",
     "sorries": 0
