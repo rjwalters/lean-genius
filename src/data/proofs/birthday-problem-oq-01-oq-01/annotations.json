@@ -1,0 +1,78 @@
+{
+  "proofId": "birthday-problem-oq-01-oq-01",
+  "version": "1.0",
+  "annotations": [
+    {
+      "id": "ann-1",
+      "type": "insight",
+      "lineStart": 59,
+      "lineEnd": 61,
+      "title": "Collision count as a Finset cardinality",
+      "body": "X(f) is defined as the cardinality of the filtered set of ordered pairs (i,j) with i < j and f(i) = f(j). Using Finset.card of a filtered univ is the canonical Lean 4 way to count elements satisfying a decidable predicate.",
+      "significance": 8
+    },
+    {
+      "id": "ann-2",
+      "type": "technique",
+      "lineStart": 71,
+      "lineEnd": 82,
+      "title": "X=0 ↔ Injective via filter_eq_empty",
+      "body": "The key step is Finset.card_eq_zero ↔ filter is empty ↔ the predicate fails for all elements. Then bijectivity between the two directions uses lt_or_gt_of_ne to case-split on the ordering of distinct indices.",
+      "significance": 9
+    },
+    {
+      "id": "ann-3",
+      "type": "insight",
+      "lineStart": 98,
+      "lineEnd": 111,
+      "title": "Equiv chain from subtype to embedding",
+      "body": "The proof of #{f|X=0} = descFactorial uses two equivalences: {f|X=0} ≃ {f|injective} (via subtypeEquivRight and the iff) then {f|injective} ≃ (Fin n ↪ Fin d) (explicit bidirectional map). Fintype.card_congr + card_embedding_eq then gives descFactorial d n.",
+      "significance": 9
+    },
+    {
+      "id": "ann-4",
+      "type": "connection",
+      "lineStart": 126,
+      "lineEnd": 131,
+      "title": "Unification with birthday paradox",
+      "body": "zero_collision_fraction proves that the collision-count approach (counting f with X(f)=0) and the birthday paradox approach (counting injections) give the same probability descFactorial(d,n)/d^n. This connects BirthdayProblemOQ01OQ01.lean with BirthdayProblem.lean.",
+      "significance": 8
+    },
+    {
+      "id": "ann-5",
+      "type": "technique",
+      "lineStart": 138,
+      "lineEnd": 146,
+      "title": "Indicator decomposition via sum_filter",
+      "body": "The proof rewrites Finset.card_filter as Finset.sum using ← Finset.sum_filter, then applies sum_congr to handle each element. A case split on i<j and f(i)=f(j) covers all four combinations via simp.",
+      "significance": 7
+    },
+    {
+      "id": "ann-6",
+      "type": "open-question",
+      "lineStart": 153,
+      "lineEnd": 159,
+      "title": "card_ordered_pairs sorry — approach via offDiag",
+      "body": "The proof that #{(i,j) ∈ Fin n × Fin n | i<j} = C(n,2) can likely use Finset.card_offDiag (which counts i≠j pairs = n(n-1)) combined with the bijection between i<j and unordered {i,j} pairs. Alternatively, an explicit induction on n should work.",
+      "significance": 7
+    },
+    {
+      "id": "ann-7",
+      "type": "open-question",
+      "lineStart": 184,
+      "lineEnd": 186,
+      "title": "card_funs_shared_birthday sorry — bijection approach",
+      "body": "#{f : Fin n → Fin d | f(i)=f(j)} = d^{n-1} for i≠j. The bijection maps each such f to (v, g) where v = f(i) ∈ Fin d and g : Fin(n-1) → Fin d assigns the remaining values. The hard part in Lean is constructing the Fin(n-1) ≃ Fin n \\ {j} equivalence.",
+      "significance": 8
+    },
+    {
+      "id": "ann-8",
+      "type": "insight",
+      "lineStart": 204,
+      "lineEnd": 217,
+      "title": "E[X] proof structure: field_simp + ring",
+      "body": "The mean_collisionCount proof handles the n=0 case separately (simp), then for n+1 uses Nat.succ_sub_one to simplify (n+1)-1=n, followed by field_simp and ring for the algebraic identity. The key is casting sum_collisionCount (a ℕ equality) via push_cast.",
+      "significance": 6
+    }
+  ]
+}
