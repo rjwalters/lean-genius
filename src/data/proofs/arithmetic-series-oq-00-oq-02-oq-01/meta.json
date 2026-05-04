@@ -23,7 +23,7 @@
     "dateAdded": "2026-05-04",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
-    "lineCount": 170,
+    "lineCount": 139,
     "theoremCount": 7,
     "definitionCount": 1,
     "originalContributions": [
@@ -77,16 +77,16 @@
     {
       "id": "integer-obstruction",
       "title": "IV. No Integer Weight",
-      "startLine": 95,
-      "endLine": 144,
+      "startLine": 89,
+      "endLine": 110,
       "summary": "Proves no_integer_weight: no w : ℕ → ℤ satisfies the identity for all n. Expands the n=1 and n=2 sums over Ico sets using decide and sum_singleton/sum_insert. After norm_cast and ring, the constraints reduce to w(1)=1 and w(1)+3·w(2)=9; omega derives False from 3·w(2)=8.",
       "mathContext": "The $n=1$ identity forces $w(1) = 1$. The $n=2$ identity forces $w(1) + 3w(2) = 9$, hence $3w(2) = 8$, which has no integer solution. The key step: $2 \\cdot 2 - 1 = 3$, so the coefficient of $w(2)$ is 3, and $8 \\not\\equiv 0 \\pmod{3}$."
     },
     {
       "id": "uniqueness",
       "title": "V. Uniqueness of the Rational Weight",
-      "startLine": 146,
-      "endLine": 170,
+      "startLine": 111,
+      "endLine": 136,
       "summary": "Proves nicWeight_unique_at_12: any rational weight satisfying the identity for all n must have w(1) = nicWeight(1) and w(2) = nicWeight(2). Follows the same sum-expansion argument as Section IV, then uses linarith to recover the forced values.",
       "mathContext": "By telescoping, $w(k)(2k-1)$ is determined at each $k$ by the partial sums. For $k=1,2$, the values $w(1)=1$ and $w(2)=8/3$ are forced. In general, $w(k) = k^3/(2k-1) = $ nicWeight$(k)$."
     }
@@ -100,7 +100,7 @@
     "namespace": "ArithmeticSeriesOQ00OQ02OQ01",
     "imports": ["Mathlib", "Proofs.ArithmeticSeriesOQ00"],
     "axiomCount": 0,
-    "lineCount": 170,
+    "lineCount": 139,
     "theoremCount": 7,
     "definitionCount": 1,
     "sorries": 0
