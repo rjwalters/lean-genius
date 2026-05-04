@@ -1,0 +1,180 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+  "title": "Multinomial Entropy Formalization",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+  "description": "Formalizes the Shannon entropy H(X) = -∑ P(k) log P(k) of the multinomial distribution, proving non-negativity and zero-trial determinism",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-05-04",
+    "status": "formalized",
+    "tags": [
+      "probability",
+      "information-theory",
+      "multinomial",
+      "entropy",
+      "shannon-entropy",
+      "combinatorics"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean",
+    "badge": "wip",
+    "sorries": 2,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 0,
+    "lineCount": 261,
+    "assumptions": "No axioms. 2 sorries remain: source entropy recovery (H(Multinomial(1,p)) = -∑ pᵢ log pᵢ) and the log upper bound H ≤ log|Comp(s,n)|. The non-negativity and zero-trial theorems are fully proved.",
+    "originalContributions": [
+      "multinomialEntropy: Shannon entropy definition for multinomial distribution",
+      "multinomialEntropy_nonneg: H(X) ≥ 0 for valid probability vectors (fully proved)",
+      "multinomialEntropy_zero_trials: H(Multinomial(0,p)) = 0 (fully proved)",
+      "multinomialProb_n1_indicator: P(indicator_j) = p_j at n=1 (fully proved)",
+      "multinomial_zero_eq_one: Nat.multinomial s 0 = 1 (proved from spec)"
+    ],
+    "theoremCount": 8,
+    "substantiveTheoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Shannon entropy $H(X) = -\\sum_x P(X=x)\\log P(X=x)$ was introduced by Claude Shannon in 'A Mathematical Theory of Communication' (1948) as the fundamental measure of information in a discrete probability distribution. For the multinomial distribution — which models the frequencies of $k$ categories in $n$ independent trials — the entropy captures the uncertainty in the composition of outcomes. Boltzmann had earlier used a related quantity in statistical mechanics, and the connection to combinatorics (the log of the multinomial coefficient) was noted by Boltzmann, Planck, and Einstein. For the multinomial, $H(X) = -\\sum_{k: \\sum k_i = n} \\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i} \\cdot \\log\\left(\\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i}\\right)$, which does not simplify to a closed form in general but achieves its maximum $H = \\log\\binom{n+r-1}{r-1}$ for the uniform distribution $p_i = 1/r$.",
+    "problemStatement": "**Open Question (OQ-02 from binomial-theorem-oq-02-oq-01-oq-01)**: Can the entropy $H(X) = -\\sum_k P(X=k) \\log P(X=k)$ of the multinomial distribution be formalized in Lean 4?\n\n**Answer**: Yes. We construct `multinomialEntropy s p n : ℝ` as a finite sum over the compositions `s.piAntidiag n`, using `multinomialProb s p n k` from the parent file as the probability mass function. The formalization requires: (1) handling the $0 \\cdot \\log 0 = 0$ convention (automatic via `Real.log 0 = 0`), (2) non-negativity via `Finset.single_le_sum` and normalization, and (3) connecting to the source entropy $H(p)$ at $n=1$.",
+    "text": "Shannon entropy of the multinomial distribution is formalizable in Lean 4, with non-negativity provable from the normalization theorem already in the parent file",
+    "proofStrategy": "Define entropy as a finite sum over piAntidiag, prove non-negativity using single_le_sum + multinomialProb_sum_eq_one, prove structural results using bijection between piAntidiag s 1 and s.",
+    "keyInsights": [
+      "The non-negativity of entropy follows from two facts already proved in the parent file: multinomialProb_nonneg (P(k) ≥ 0) and multinomialProb_sum_eq_one (∑ P(k) = 1 implies P(k) ≤ 1). These together give P(k) ∈ [0,1], and -P·log P ≥ 0 for such values.",
+      "The 0·log(0) = 0 convention is automatic in Lean/Mathlib since Real.log 0 = 0, so 0 * Real.log 0 = 0 without any special-casing — the `if prob = 0 then 0 else ...` guard is a belt-and-suspenders precaution for clean splitting.",
+      "At n=1, the multinomial distribution IS the source distribution: P(X = indicator_j) = p_j for each j ∈ s, so H(Multinomial(1,p)) = -∑ pᵢ log pᵢ. This is the fundamental connection between the entropy of a single trial and the entropy of the source.",
+      "At n=0, there is exactly one outcome (the all-zeros composition with probability 1), giving H = 0. This confirms: zero trials means complete certainty.",
+      "The upper bound H(X) ≤ log|Comp(s,n)| holds by the Gibbs inequality applied to the uniform distribution on Comp(s,n). The number of compositions |Comp(s,n)| = C(n+|s|-1, |s|-1) by stars-and-bars."
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ02OQ01: multinomialProb and normalization",
+      "Shannon entropy and information theory basics",
+      "Mathlib PMF framework"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-definition",
+      "title": "Multinomial Entropy Definition",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "Defines multinomialEntropy as -∑_{k ∈ piAntidiag} (if P(k)=0 then 0 else P(k)·log P(k))",
+      "mathContext": "The Shannon entropy $H(X) = -\\sum_{k \\in \\text{Comp}(s,n)} P(X=k) \\log P(X=k)$ with convention $0 \\cdot \\log 0 = 0$."
+    },
+    {
+      "id": "sec-nonneg",
+      "title": "Non-negativity (Fully Proved)",
+      "startLine": 70,
+      "endLine": 108,
+      "summary": "Proves H(X) ≥ 0: each term -P·log P ≥ 0 because P ∈ [0,1] and log is nonpositive there.",
+      "mathContext": "$P(k) \\in [0,1]$ follows from non-negativity (multinomialProb_nonneg) and normalization via Finset.single_le_sum. Then $-P \\log P \\geq 0$ by Real.log_nonpos."
+    },
+    {
+      "id": "sec-zero-trials",
+      "title": "Zero Entropy at n=0",
+      "startLine": 111,
+      "endLine": 134,
+      "summary": "Proves H(Multinomial(0,p)) = 0: unique composition all-zero with probability 1.",
+      "mathContext": "$\\text{piAntidiag}(s, 0) = \\{\\mathbf{0}\\}$ and $P(X = \\mathbf{0}) = \\text{multinomial}(s,0) \\cdot \\prod p_i^0 = 1$, so $H = -1 \\cdot \\log 1 = 0$."
+    },
+    {
+      "id": "sec-n1",
+      "title": "Source Entropy Recovery at n=1",
+      "startLine": 136,
+      "endLine": 195,
+      "summary": "multinomialProb_n1_indicator (proved): P(δ_j) = p_j. multinomialEntropy_n1_eq_source (sorry): H(Multinomial(1,p)) = -∑ pᵢ log pᵢ.",
+      "mathContext": "At $n=1$, each composition is an indicator function $\\delta_j$ for some $j \\in s$. The multinomial coefficient $\\text{multinomial}(s, \\delta_j) = 1$ and $\\prod p_i^{\\delta_j(i)} = p_j$. So $H = -\\sum_j p_j \\log p_j = H(p)$."
+    },
+    {
+      "id": "sec-upper-bound",
+      "title": "Entropy Upper Bound",
+      "startLine": 198,
+      "endLine": 220,
+      "summary": "multinomialEntropy_upper_bound (sorry): H(X) ≤ log|Comp(s,n)| with equality for uniform input.",
+      "mathContext": "By Gibbs inequality applied to uniform Q on Comp(s,n): $H(P) \\leq -\\sum_k P(k)\\log(1/|\\text{Comp}|) = \\log|\\text{Comp}|$."
+    },
+    {
+      "id": "sec-binomial",
+      "title": "Binomial Case",
+      "startLine": 222,
+      "endLine": 240,
+      "summary": "For s = {false, true} with p(true) = p, p(false) = 1-p, the multinomial entropy is nonneg.",
+      "mathContext": "The 2-category special case gives $H(X) = -\\sum_{k=0}^n \\binom{n}{k} p^k (1-p)^{n-k} \\log\\left(\\binom{n}{k}p^k(1-p)^{n-k}\\right) \\geq 0$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "answers-question",
+      "description": "Answers OQ-02: Can multinomial entropy be formalized?"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent: multinomial distribution and normalization (multinomialProb_sum_eq_one)"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "related",
+      "description": "Shannon entropy definition and non-negativity — same conceptual content for general discrete distributions"
+    },
+    {
+      "targetId": "birthday-problem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Markov bound for birthday problem also uses multinomial probability structure"
+    }
+  ],
+  "conclusion": {
+    "summary": "YES, the Shannon entropy of the multinomial distribution can be formalized in Lean 4. Non-negativity and the zero-trial case are fully proved. The source entropy recovery (n=1) and upper bound require bijection proofs that are structured as sorries.",
+    "implications": "The formalization provides a foundation for information-theoretic reasoning about multinomial experiments: entropy bounds for hypothesis testing, channel capacity for categorical channels, and the maximum entropy principle for categorical distributions.",
+    "openQuestions": [
+      "Can the bijection piAntidiag s 1 ≃ s be expressed cleanly using Finset.sum_nbij or Finset.equiv_of_eq?",
+      "Can the multinomial CLT be stated: (Xᵢ - npᵢ)/√(npᵢ(1-pᵢ)) → N(0,1) in distribution?",
+      "Can the maximum entropy property be proved: the uniform input maximizes H(X) among all p with ∑ pᵢ = 1?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic",
+      "Proofs.BinomialTheoremOQ02OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "BinomialTheoremOQ02OQ01"
+    ],
+    "namespace": "BinomialTheoremOQ02OQ01OQ01OQ02",
+    "lineCount": 261,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 6,
+    "duplicateTheorems": 0,
+    "definitionCount": 1,
+    "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean",
+    "sorries": 2
+  },
+  "mainTheorems": [
+    {
+      "name": "multinomialEntropy_nonneg",
+      "type": "core",
+      "description": "H(X) ≥ 0 for valid probability vectors",
+      "leanType": "(hp_nonneg) → (hp_sum) → 0 ≤ multinomialEntropy s p n"
+    },
+    {
+      "name": "multinomialEntropy_zero_trials",
+      "type": "core",
+      "description": "H(Multinomial(0,p)) = 0",
+      "leanType": "multinomialEntropy s p 0 = 0"
+    },
+    {
+      "name": "multinomialProb_n1_indicator",
+      "type": "supporting",
+      "description": "Probability of indicator function at n=1 equals source probability",
+      "leanType": "multinomialProb s p 1 (fun i => if i = j then 1 else 0) = p j"
+    }
+  ],
+  "sorries": 2
+}
