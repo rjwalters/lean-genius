@@ -283,7 +283,7 @@ private noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
             (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f₂)).toLp _,
           (Measure.ae_restrict_iff' hS).mp (Lp.coeFn_add f₁ f₂)]
           with a h12 h1 h2 hadd hinner
-        rw [h12, h1, h2, hadd]
+        rw [h12, hadd, h1, h2]
         simp only [Set.indicator_apply, Pi.add_apply]
         split_ifs with ha
         · exact hinner ha
@@ -307,10 +307,13 @@ private noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
     1
     (fun f => by
       simp only [LinearMap.coe_mk, AddHom.coe_mk, one_mul]
-      rw [Lp.norm_def,
-          (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).eLpNorm_toLp,
-          eLpNorm_indicator_eq_restrict_loc hS _ hp hptop,
-          ← Lp.norm_def])
+      have hh := memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)
+      have heq : ‖hh.toLp _‖ = ‖f‖ := by
+        simp only [Lp.norm_def]
+        congr 1
+        rw [eLpNorm_congr_ae hh.coeFn_toLp,
+            eLpNorm_indicator_eq_restrict_loc hS _ hp hptop]
+      exact heq.le)
 
 -- ============================================================================
 -- § 5. Localization step (Step A — 1 sorry)
@@ -343,8 +346,12 @@ theorem localization_existence
         φ (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop f) =
         ∫ a, (f : α → ℝ) a * gₙ a ∂(μ.restrict (spanningSets μ n)) := by
     intro n
-    haveI hfin_n : IsFiniteMeasure (μ.restrict (spanningSets μ n)) := by
-      constructor; simp [Measure.restrict_apply_univ, measure_spanningSets_lt_top μ n]
+    haveI hfin_n : IsFiniteMeasure (μ.restrict (spanningSets μ n)) :=
+      { measure_univ_lt_top := by
+          have : (μ.restrict (spanningSets μ n)) Set.univ =
+              μ (spanningSets μ n) := by
+            rw [Measure.restrict_apply MeasurableSet.univ, Set.inter_univ]
+          rw [this]; exact measure_spanningSets_lt_top μ n }
     haveI : SigmaFinite (μ.restrict (spanningSets μ n)) := inferInstance
     let φₙ : Lp ℝ p (μ.restrict (spanningSets μ n)) →L[ℝ] ℝ :=
       φ.comp (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop)
