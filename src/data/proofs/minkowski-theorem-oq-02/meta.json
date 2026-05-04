@@ -19,7 +19,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 970,
+    "lineCount": 284,
     "assumptions": "Three axioms handle measure-theoretic steps: (1) dirichletSet_convex: the parallelogram {|x| < Q+1, |αx-y| < 1/Q} is convex — intersection of two halfplanes; (2) dirichletSet_measurable: it is Lebesgue measurable — open set hence Borel; (3) dirichletSet_volume: its area equals 4(Q+1)/Q — proved by Fubini or the shear map T(x,y)=(x,αx-y) with det(T)=-1 mapping S to a rectangle. The main theorem and all logical steps are fully proved.",
     "dateAdded": "2026-04-03",
     "mathlibDependencies": [
@@ -196,7 +196,7 @@
         "leanType": "(α : ℝ) → (Q : ℕ) → 0 < Q → ∃ q p : ℤ, 1 ≤ q ∧ q ≤ Q ∧ |α * q - p| < 1 / Q"
       }
     ],
-    "lineCount": 970,
+    "lineCount": 284,
     "path": "Proofs/MinkowskiTheoremOQ02.lean",
     "definitionCount": 1,
     "theoremCount": 6

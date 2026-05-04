@@ -43,7 +43,7 @@
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "lineCount": 535,
+    "lineCount": 322,
     "assumptions": "Infrastructure file: 0 sorries, 0 axioms. Provides definitions (SimplicialComplex, completeComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity) and supporting lemmas. A previously-attempted naive_implies_gowers theorem was removed; the obstruction (sub-complex topCliques are not generally transversals of vertex sub-parts) is documented in-file (Part VII), and three provable surrogates are supplied instead (relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self, isGowersRegular_empty).",
     "mathlib_version": "4.26.0",
     "theoremCount": 14
@@ -166,7 +166,7 @@
       "Classical"
     ],
     "namespace": "Szemeredi.Hypergraph",
-    "lineCount": 535,
+    "lineCount": 322,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 6,

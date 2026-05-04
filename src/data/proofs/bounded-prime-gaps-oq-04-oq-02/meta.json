@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 6,
-    "lineCount": 2982,
+    "lineCount": 599,
     "theoremCount": 10,
     "assumptions": "6 axioms: gaussSumBound (|τ(χ)| = √q for primitive characters), polyaVinogradov (|Σ χ(n)| ≤ √q·log q), largeSieve (bilinear exponential sum bound), siegelWalfisz (ψ(x;q,a) = x/φ(q) + O(xe^{-c√log x}) for small q), vaughanIdentity (von Mangoldt decomposition into bilinear sums), zeroDensityEstimate (N(σ,T,χ) ≪ (qT)^{A(1-σ)}). These are proved theorems missing from Mathlib, not mathematical assumptions.",
     "originalContributions": [
@@ -131,7 +131,7 @@
     "imports": ["Mathlib", "Proofs.BoundedPrimeGaps", "Proofs.BoundedPrimeGapsOQ04"],
     "opens": ["Nat", "Finset", "BoundedPrimeGaps", "BoundedPrimeGapsOQ04", "ArithmeticFunction", "Filter"],
     "namespace": "BoundedPrimeGapsOQ04OQ02",
-    "lineCount": 2982,
+    "lineCount": 599,
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 8,

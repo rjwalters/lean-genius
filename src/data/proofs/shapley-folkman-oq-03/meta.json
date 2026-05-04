@@ -33,7 +33,7 @@
     "proofStrategy": "Apply sum_close_to_convexHull (from ShapleyFolkman.lean) to decompose x as Σf(i) with f(i) ∈ conv(S(i)) and at most dim(E) 'excess' indices where f(i) ∉ S(i). For each excess index j, replace f(j) by any g(j) ∈ S(j). The sum x' = Σg(i) lies in ΣS(i). The distance bound uses convexHull_dist_le_diam (proved in this file) for each excess index. A Finset.sum_subset argument shows non-excess terms contribute zero to the difference.",
     "assumptions": "0 axioms. 0 sorries. Fully machine-checked. The parent ShapleyFolkman.lean has 0 sorries (completed 2026-04-24 via WF induction on total minCaraDepth), making this proof fully verified end-to-end.",
     "axiomCount": 0,
-    "lineCount": 1441,
+    "lineCount": 203,
     "theoremCount": 5,
     "definitionCount": 0
   },
@@ -162,7 +162,7 @@
       "Proofs.ShapleyFolkman"
     ],
     "namespace": "ShapleyFolkmanOQ03",
-    "lineCount": 1441,
+    "lineCount": 203,
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/ShapleyFolkmanOQ03.lean",

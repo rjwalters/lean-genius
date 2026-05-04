@@ -22,7 +22,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 1072,
+    "lineCount": 182,
     "assumptions": "No axioms, no sorries. Imports AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01; all key theorems reduce to those parent results via case-splitting.",
     "mathlib_version": "4.26.0",
     "historicalContext": "This entry answers the natural question raised by two near-identical proofs in the gallery: both AngleTrisectionCos20Gal (8X³−6X−1, the minimal polynomial of cos(20°)) and AngleTrisectionCos20GalOQ01 (8X³−4X²−4X+1, the minimal polynomial of cos(π/7)) have Galois groups of order 3, but each proof uses a different Eisenstein prime (p=2 vs p=7). The parameterized unification reveals the common structure: both belong to a family of cyclic cubics over ℚ reducible to Eisenstein form by a suitable linear substitution. The CyclicCubicData typeclass captures the common interface, providing a template extensible to other angles whose minimal polynomials are cyclic cubics.",
@@ -103,7 +103,7 @@
       "Proofs.AngleTrisectionCos20GalOQ01"
     ],
     "namespace": "AngleTrisectionCos20GalOQ01OQ01",
-    "lineCount": 1072,
+    "lineCount": 182,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 4,
