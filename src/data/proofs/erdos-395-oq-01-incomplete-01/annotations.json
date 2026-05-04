@@ -1,58 +1,74 @@
-{
-  "annotations": [
-    {
-      "id": "annotation-1",
-      "type": "keyInsight",
-      "lineStart": 68,
-      "lineEnd": 102,
-      "title": "Parity via ZMod 2: tail sum is odd",
-      "body": "The core insight: T = ε₂+...+εₙ (sum of n-1 values each ±1) is odd. Since (-1) ≡ 1 (mod 2) and (+1) ≡ 1 (mod 2), every term contributes 1 in ZMod 2. The total is (n-1)·1 ≡ n-1 ≡ 1 (mod 2) because n is even. An odd integer is nonzero.",
-      "mathContext": "ZMod 2 arithmetic: in characteristic 2, -1 = 1, so both +1 and -1 cast to 1. This makes parity arguments for ±1 sums particularly clean."
-    },
-    {
-      "id": "annotation-2",
-      "type": "proofTechnique",
-      "lineStart": 105,
-      "lineEnd": 127,
-      "title": "Sum split using Fin.sum_univ_succ",
-      "body": "The signed sum over Fin n is split into the first term (index 0, which has z₀=1) and the remaining n-1 terms (each with zᵢ=i). Fin.sum_univ_succ handles this for Fin (n-1+1) = Fin n.",
-      "mathContext": "Fin.sum_univ_succ: ∑ i : Fin (n+1), f i = f 0 + ∑ i : Fin n, f i.succ. Used with n replaced by n-1."
-    },
-    {
-      "id": "annotation-3",
-      "type": "keyInsight",
-      "lineStart": 130,
-      "lineEnd": 155,
-      "title": "normSq = 1 + T² bounds the complex norm",
-      "body": "For the split form e₀ + i·T: normSq = e₀² + T². Since e₀ ∈ {-1,1} we have e₀² = 1. Since T ≠ 0 is an integer, T² ≥ 1. Therefore normSq ≥ 2, and Complex.abs = √(normSq) ≥ √2.",
-      "mathContext": "Complex.normSq_apply gives normSq as re² + im². For a + i·b (a,b : ℤ): re = a, im = b, so normSq = a² + b²."
-    },
-    {
-      "id": "annotation-4",
-      "type": "historicalContext",
-      "lineStart": 1,
-      "lineEnd": 25,
-      "title": "The Carnielli-Carolino counterexample (2011)",
-      "body": "Erdős originally asked: can P(|ε₁z₁+...+εₙzₙ| ≤ 1) ≥ c/n always hold? Carnielli and Carolino showed in 2011 that for z₁=1 and z₂=...=zₙ=i (n even), the sum is always at least √2 in absolute value, so the probability of ≤1 is 0, refuting the conjecture. The revised threshold √2 was then shown correct by HJNS 2024.",
-      "mathContext": "The √2 threshold comes from |1 + i·m|² = 1 + m² ≥ 2 for m ∈ ℤ\\ {0}, i.e., the minimum nonzero complex integer of the form a + bi (a,b ∈ ℤ) has |a+bi| ≥ √2 (achieved by ±1 ± i)."
-    },
-    {
-      "id": "annotation-5",
-      "type": "proofTechnique",
-      "lineStart": 155,
-      "lineEnd": 164,
-      "title": "Integer T ≠ 0 implies T² ≥ 1 in ℝ",
-      "body": "Since T : ℤ with T ≠ 0, we have |T| ≥ 1 (smallest nonzero absolute value of an integer). Cast to ℝ: |(T:ℝ)| ≥ 1. Then (T:ℝ)² = |(T:ℝ)|² ≥ 1² = 1. Key: Int.one_le_natAbs bridges ℤ nonzero to ℕ natAbs ≥ 1.",
-      "mathContext": "Int.one_le_natAbs : a ≠ 0 → 1 ≤ a.natAbs. Combined with Int.cast_natAbs and exact_mod_cast to transfer to ℝ."
-    },
-    {
-      "id": "annotation-6",
-      "type": "keyInsight",
-      "lineStart": 158,
-      "lineEnd": 164,
-      "title": "Consequence: original problem is FALSE",
-      "body": "From counterexample_always_large_proved, we immediately get that for n=2, the configuration z₁=1, z₂=i gives P(|sum|≤1) = 0 (no sign vectors achieve this), so no c > 0 can make P ≥ c/n hold. This is erdos_original_false_proved, proved without any axioms.",
-      "mathContext": "The consequence uses Real.sqrt_lt_sqrt to show √2 > 1, then linarith to conclude the probability cannot equal c/2 for any c > 0."
-    }
-  ]
-}
+[
+  {
+    "id": "ann-e395inc01-header",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "The Carnielli-Carolino Counterexample: Background",
+    "content": "This file provides the axiom-free proof that the Carnielli-Carolino configuration always achieves |sum| ≥ √2. The parent file erdos-395-oq-01 axiomatized this fact; here it is proved from first principles using only integer parity and complex arithmetic from Mathlib.",
+    "mathContext": "The configuration is $z_1 = 1$, $z_k = i$ for $k \\geq 2$, with $n$ even. For any sign vector $\\varepsilon \\in \\{-1,1\\}^n$, the signed sum is $S = \\varepsilon_1 \\cdot 1 + (\\varepsilon_2 + \\cdots + \\varepsilon_n) \\cdot i$. Since $|S|^2 = \\varepsilon_1^2 + T^2$ where $T = \\varepsilon_2 + \\cdots + \\varepsilon_n$, and $T \\neq 0$ by parity, we get $|S|^2 \\geq 2$, so $|S| \\geq \\sqrt{2}$.",
+    "significance": "context",
+    "relatedConcepts": ["Littlewood-Offord problem", "reverse Littlewood-Offord", "Gaussian integers", "complex norm"],
+    "prerequisites": ["complex numbers", "ZMod arithmetic", "Finset summation in Lean 4"]
+  },
+  {
+    "id": "ann-e395inc01-negone-zmod2",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 34, "endLine": 34 },
+    "type": "technique",
+    "title": "(-1 : ZMod 2) = 1 by decide",
+    "content": "The one-line lemma `neg_one_zmod2` proves that -1 equals 1 in ZMod 2, verified by the `decide` tactic which exhaustively checks all elements of ZMod 2 = {0, 1}.",
+    "mathContext": "In $\\mathbb{Z}/2\\mathbb{Z}$, $-1 \\equiv 1 \\pmod{2}$ since $-1 + 2 = 1$. Both $+1$ and $-1$ reduce to $1 \\bmod 2$, which is the key to showing that each sign value $\\varepsilon_k \\in \\{-1,1\\}$ contributes the same amount modulo 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod 2", "modular arithmetic", "decide tactic", "characteristic 2"],
+    "prerequisites": ["ZMod in Lean 4", "decidable propositions"]
+  },
+  {
+    "id": "ann-e395inc01-cc-re",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 36, "endLine": 48 },
+    "type": "technique",
+    "title": "Real part of signed sum equals ε₀",
+    "content": "The `cc_re` lemma computes the real part of the signed sum for the Carnielli-Carolino counterexample. It uses `Finset.sum_eq_single` to isolate index 0 (which has z₀=1, contributing ε₀·Re(1) = ε₀) and shows all other terms contribute 0 (since Re(i) = 0).",
+    "mathContext": "For $z_0 = 1$ and $z_k = i$ ($k > 0$): $\\operatorname{Re}(\\varepsilon_k z_k) = \\varepsilon_k \\operatorname{Re}(z_k)$. Since $\\operatorname{Re}(1) = 1$ and $\\operatorname{Re}(i) = 0$, only the $k=0$ term survives: $\\operatorname{Re}(S) = \\varepsilon_0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complex real part", "Finset.sum_eq_single", "reAddGroupHom"],
+    "prerequisites": ["complex arithmetic in Lean 4", "Finset.sum API"]
+  },
+  {
+    "id": "ann-e395inc01-cc-im",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 50, "endLine": 70 },
+    "type": "technique",
+    "title": "Imaginary part is the tail sum T",
+    "content": "The `cc_im` lemma computes the imaginary part as T = ε₁+...+εₙ₋₁. It uses `imAddGroupHom` to commute the imaginary-part map through the Finset sum, then strips the zero term at index 0 (Im(1) = 0) via `Finset.add_sum_erase`.",
+    "mathContext": "For $z_0 = 1$ and $z_k = i$ ($k > 0$): $\\operatorname{Im}(\\varepsilon_k z_k) = \\varepsilon_k \\operatorname{Im}(z_k)$. Since $\\operatorname{Im}(1) = 0$ and $\\operatorname{Im}(i) = 1$, we get $\\operatorname{Im}(S) = \\sum_{k=1}^{n-1} \\varepsilon_k = T$. This reduces a complex norm bound to an integer nonzero claim.",
+    "significance": "supporting",
+    "relatedConcepts": ["complex imaginary part", "Finset.add_sum_erase", "imAddGroupHom"],
+    "prerequisites": ["complex arithmetic in Lean 4", "Finset.erase API"]
+  },
+  {
+    "id": "ann-e395inc01-tail-nonzero",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 72, "endLine": 90 },
+    "type": "insight",
+    "title": "Parity argument: tail sum is odd, hence nonzero",
+    "content": "This is the mathematical core of the proof. The lemma `tail_nonzero` proves T ≠ 0 by contradiction: if T = 0, then (T : ZMod 2) = 0. But each εₖ ∈ {-1,1} maps to 1 in ZMod 2, so (T : ZMod 2) = (n-1)·1. Since n is even, n-1 is odd, giving (n-1)·1 ≡ 1 (mod 2). This contradicts 0 = 1 in ZMod 2.",
+    "mathContext": "Key steps: (1) $\\varepsilon_k \\in \\{-1, 1\\} \\Rightarrow \\varepsilon_k \\equiv 1 \\pmod 2$. (2) There are $n-1$ tail terms. (3) $n$ even $\\Rightarrow n-1 = 2(k-1)+1$ for some $k \\geq 1$ $\\Rightarrow n-1 \\equiv 1 \\pmod 2$. (4) So $T \\equiv (n-1) \\cdot 1 \\equiv 1 \\pmod 2$. An odd integer is nonzero. In Lean: `smul_eq_mul` converts the scalar sum in ZMod 2, and `show (2 : ZMod 2) = 0 from by decide` eliminates the even part.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod 2", "parity argument", "proof by contradiction", "integer parity"],
+    "prerequisites": ["modular arithmetic", "ZMod API in Lean 4", "Finset.sum_congr", "smul in ZMod"]
+  },
+  {
+    "id": "ann-e395inc01-main-thm",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 96, "endLine": 116 },
+    "type": "insight",
+    "title": "Main theorem: |sum| ≥ √2 for all sign vectors",
+    "content": "The theorem `counterexample_always_large_proved` assembles the four lemmas: (1) unfold normSq = Re² + Im² = ε₀² + T², (2) ε₀² = 1 since ε₀ ∈ {-1,1}, (3) T ≠ 0 (by tail_nonzero) implies T² ≥ 1 (nonzero integer), (4) normSq ≥ 1+1 = 2, (5) Real.sqrt_le_sqrt gives |sum| = √normSq ≥ √2.",
+    "mathContext": "The bound $T^2 \\geq 1$ for $T \\in \\mathbb{Z} \\setminus \\{0\\}$ uses $|T| \\geq 1$: $T^2 = |T|^2 \\geq 1$. In Lean, `Int.natAbs_pos.mpr hT` gives `natAbs T ≥ 1`, then `exact_mod_cast` lifts to $\\mathbb{R}$, and `nlinarith [sq_abs (T : ℝ)]` concludes $T^2 \\geq 1$. The final step is `Real.sqrt_le_sqrt`: $\\sqrt{2} \\leq \\sqrt{\\operatorname{normSq}(S)}$ given $2 \\leq \\operatorname{normSq}(S)$.",
+    "significance": "key",
+    "relatedConcepts": ["normSq", "Real.sqrt monotonicity", "Int.natAbs", "complex absolute value"],
+    "prerequisites": ["complex norm in Lean 4", "Real.sqrt API", "integer casting to ℝ"]
+  }
+]
