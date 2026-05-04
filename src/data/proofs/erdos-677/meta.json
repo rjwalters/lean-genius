@@ -21,9 +21,14 @@
     "erdosUrl": "https://erdosproblems.com/677",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "assumptions": "1 axiom: thue_siegel_finiteness (Thue-Siegel theorem: finitely many solutions for fixed k). Four former axioms now proved: lcmInterval_example1/2 (native_decide), lcmInterval_dvd_product (Finset.induction + Nat.lcm_dvd), lcmInterval_pos (dvd + product positivity).",
-    "lineCount": 195,
-    "mathlib_version": "4.26.0"
+    "assumptions": "1 axiom: thue_siegel_finiteness (Thue-Siegel theorem: finitely many solutions for fixed k). Former axioms now proved: lcmInterval_example1/2 (native_decide), lcmInterval_dvd_product (Finset.induction + Nat.lcm_dvd), lcmInterval_pos (dvd + product positivity). Conjecture verified for k=1 and k=2.",
+    "lineCount": 268,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 25,
+    "originalContributions": [
+      "erdos677_large_m: general bound — for any k, if m+k > consecutiveProduct(n,k) then M(m,k)≠M(n,k)",
+      "erdos677_k3_large_m: k=3 corollary of the large-m bound, axiom-free"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem about the distinctness of lcm of consecutive integer blocks. The Thue-Siegel theorem implies finiteness for fixed k. Erdős knew only two cross-parameter examples: lcm(5,6,7) = lcm(14,15) = 210 and lcm(4,5,6,7) = lcm(20,21) = 420. A stronger conjecture asserts that consecutive products can rarely share the same prime factor set. The LCM of k consecutive integers equals k! times a binomial coefficient, and the prime factorization structure is deeply connected to Sylvester-Schur theory; the analogous problem for products (rather than LCMs) of consecutive integers relates to Catalan-type Diophantine equations and was studied by Stormer and others in the early 20th century.",
@@ -90,15 +95,31 @@
       "endLine": 172,
       "summary": "Recursion (lcmInterval_succ), element divisibility (dvd_lcmInterval), monotonicity in k (lcmInterval_dvd_succ/add), and consecutiveProduct recursion/positivity.",
       "mathContext": "$M(n, k+1) = \\text{lcm}(n+k+1, M(n,k))$. For $i < k$: $(n+i+1) \\mid M(n,k)$. $M(n,k) \\mid M(n, k+j)$ for all $j$. $\\prod_{i=1}^{k+1}(n+i) = \\prod_{i=1}^k (n+i) \\cdot (n+k+1)$."
+    },
+    {
+      "id": "resolved-cases",
+      "title": "Conjecture Resolved for k = 1 and k = 2",
+      "startLine": 200,
+      "endLine": 230,
+      "summary": "PROVED: erdos677_k1 (k=1 case) and erdos677_k2 (k=2 case). Also: lcmInterval_ne_zero (M(n,k) ≠ 0), le_lcmInterval (n+k ≤ M(n,k)), lcmInterval_two (M(n,2) = (n+1)(n+2)).",
+      "mathContext": "For $k=1$: $M(n,1) = n+1$ is injective in $n$, so $M(m,1) \\neq M(n,1)$ when $m \\geq n+1$. For $k=2$: $\\gcd(n+1,n+2)=1$ implies $M(n,2) = (n+1)(n+2)$, which is strictly increasing in $n$, so $M(m,2) > M(n,2)$ when $m \\geq n+2$. Lower bound: $n+k \\mid M(n,k)$ implies $n+k \\leq M(n,k)$ for $k>0$."
+    },
+    {
+      "id": "factorization",
+      "title": "Factorization Characterization",
+      "startLine": 230,
+      "endLine": 241,
+      "summary": "PROVED: factorization_lcmInterval — the Nat.factorization of M(n,k) equals the pointwise sup of the factorizations of n+1,...,n+k.",
+      "mathContext": "$(M(n,k))\\text{.factorization} = \\bigsqcup_{i=0}^{k-1} (n+i+1)\\text{.factorization}$, where $\\sqcup$ is the pointwise maximum of prime exponents. Equivalently: $v_p(M(n,k)) = \\max_{i<k} v_p(n+i+1)$ for every prime $p$. This characterizes when $M(n,k) = M(m,k)$: iff for every prime $p$, the maximum $p$-adic valuation in the two intervals coincide."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, Thue–Siegel finiteness, and structural properties including recursion, element divisibility, and monotonicity. 0 sorries, 15 theorems.",
-    "implications": "Resolution would advance understanding of multiplicative structure of consecutive integers and connect to Diophantine equations.",
+    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, Thue–Siegel finiteness, and structural properties. New in this session: the conjecture is PROVED for k=1 and k=2, the key factorization formula is proved (v_p(M(n,k)) = max over i of v_p(n+i+1)), and a lower bound n+k ≤ M(n,k) is established. 0 sorries, 23 theorems.",
+    "implications": "The factorization formula makes precise why the conjecture should hold: as n shifts by k, the set of p-adic valuations must change for at least one prime. The k=1 and k=2 resolved cases show the conjecture holds for small intervals. The general case remains open, with the Thue–Siegel theorem giving finiteness for each fixed k.",
     "openQuestions": [
-      "Is M(m,k) ≠ M(n,k) for all m ≥ n+k?",
-      "Are the two known cross-parameter examples the only ones?",
-      "Does the stronger prime-factor conjecture hold?"
+      "Is M(m,k) ≠ M(n,k) for all m ≥ n+k and k ≥ 3?",
+      "Can the factorization formula be used to prove the conjecture for k=3 or general k?",
+      "Are the two known cross-parameter examples M(4,3)=M(13,2) and M(3,4)=M(19,2) the only ones?"
     ]
   },
   "leanFile": {
@@ -112,9 +133,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 195,
+    "lineCount": 268,
     "axiomCount": 1,
-    "theoremCount": 17,
+    "theoremCount": 25,
     "definitionCount": 5,
     "path": "Proofs/Erdos677Problem.lean",
     "sorries": 0
