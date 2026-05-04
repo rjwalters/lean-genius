@@ -57,7 +57,7 @@
     "dateAdded": "2026-04-04",
     "lineCount": 507,
     "assumptions": "1 axiom (greens_theorem_l1curl — Whitney's 1957 theorem). 19 theorems with 0 sorries. Supporting results are fully proved using Mathlib's LipschitzWith, MeasureTheory, and trigonometric libraries.",
-    "theoremCount": 22
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "**Classical Green's theorem** (George Green, 1828) requires:\n1. **C¹ boundary**: the curve γ must have a continuous derivative everywhere\n2. **C¹ vector field**: P and Q must have continuous partial derivatives\n\n**Hasbrouck Whitney (1957)** proved these conditions can be drastically weakened. His minimal regularity theorem shows Green's theorem holds when:\n1. The boundary is merely **Lipschitz** (derivative exists a.e. but may have jumps at corners)\n2. The curl is merely **L¹** (Lebesgue integrable, not necessarily continuous)\n\nThe key mechanism is **Rademacher's theorem** (1919): every Lipschitz function is differentiable at Lebesgue-almost-every point. This gives a well-defined a.e. tangent vector to any Lipschitz curve, making the line integral meaningful.\n\nThis generalization is practically important: the boundary of a square, polygon, or any piecewise-smooth domain is Lipschitz but NOT C¹ (corners cause derivative jumps).",
@@ -216,7 +216,7 @@
     "namespace": "GreensTheoremOQ02",
     "lineCount": 507,
     "axiomCount": 1,
-    "theoremCount": 22,
+    "theoremCount": 19,
     "definitionCount": 4,
     "path": "Proofs/GreensTheoremOQ02.lean",
     "sorries": 0

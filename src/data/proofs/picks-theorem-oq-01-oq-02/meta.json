@@ -22,7 +22,7 @@
     "axiomCount": 3,
     "assumptions": "3 axioms: picks_theorem (Pick's formula A=i+B/2-1, matching the gallery's axiomatized PicksTheorem.lean), scaled_area (Area(tP)=t²A), scaled_boundary (|∂(tP)|=t·B for t≥1). The rectangle and triangle Ehrhart polynomials are proved with 0 axioms via Finset combinatorics.",
     "lineCount": 309,
-    "theoremCount": 21,
+    "theoremCount": 24,
     "definitionCount": 7,
     "originalContributions": [
       "rectangle_ehrhart: L(R_{a,b},t) = (ta+1)(tb+1) via Finset.card_product (0 axioms)",
@@ -111,7 +111,7 @@
     "namespace": "EhrhartPolynomial",
     "path": "Proofs/PicksTheoremOQ01OQ02.lean",
     "lineCount": 309,
-    "theoremCount": 21,
+    "theoremCount": 24,
     "definitionCount": 7,
     "axiomCount": 3,
     "sorries": 0
