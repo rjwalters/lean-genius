@@ -27,15 +27,17 @@
       "Joint distribution: density of {n : gcd(n, ⌊n^α⌋) = d} for fixed d > 1",
       "Multivariate version: {n : gcd(n, ⌊n^{α_1}⌋, ..., ⌊n^{α_k}⌋) = 1} for non-integer α_i"
     ],
-    "goal": "Currently 0 sorries, 2 axioms. Path to 1 axiom: prove random_coprime_density using existing moebius_sum_divisors_eq + card_multiples infrastructure plus Mathlib's hasSum_zeta_two. The bergelson_richter axiom (deep ergodic theory) is unlikely provable in Mathlib."
+    "goal": "0 sorries, 1 axiom. random_coprime_density proved (2→1 axioms). bergelson_richter (deep ergodic theory) is unlikely provable in Mathlib."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T16:24:55.487Z",
     "iteration": 3,
-    "focus": "Path-to-proof for random_coprime_density: Möbius inversion infrastructure complete; remaining gap is Möbius-Tannery asymptotic interchange.",
-    "blockers": [],
-    "nextAction": "Prove random_coprime_density using moebius_sum_divisors_eq + hasSum_zeta_two + Tannery-style asymptotic interchange of summation and limit.",
+    "focus": "COMPLETE: 0 sorries, 1 axiom (bergelson_richter). random_coprime_density proved via BaselProblemOQ04OQ03 bridge.",
+    "blockers": [
+      "bergelson_richter requires deep ergodic theory (Bergelson-Richter 2017) — not Mathlib-provable"
+    ],
+    "nextAction": "No further axiom elimination possible. Submit PR.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -43,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED (0 sorries, 2 axioms): bergelson_richter (Bergelson-Richter ergodic theory result, deep, unlikely Mathlib-provable) and random_coprime_density (Cesàro coprime density, infrastructure for proving from Mathlib is now in place — Möbius inversion + Basel + asymptotic interchange).",
+    "progressSummary": "AXIOMATIZED (0 sorries, 1 axiom): bergelson_richter (Bergelson-Richter ergodic theory result, deep, unlikely Mathlib-provable). random_coprime_density proved via Set.ncard bridge + BaselProblemOQ04OQ03.coprime_pair_density_limit (Möbius inversion + Tannery).",
     "builtItems": [
       "one_isFloorPowerCoprime: n=1 always coprime (Erdos1149Problem.lean:55)",
       "one_mem_coprimeFloorPowerSet: 1 ∈ coprime set (Erdos1149Problem.lean:59)",
@@ -64,14 +66,12 @@
       "countCoprimePairs provides computable Finset-based infrastructure for future work on random_coprime_density",
       "random_coprime_density axiom path-to-proof: combine moebius_sum_divisors_eq (already proved) + card_multiples + hasSum_zeta_two (Mathlib). Remaining gap is Möbius-Tannery asymptotic interchange ∑_{d≤N} μ(d)⌊N/d⌋²/N² → ∑_d μ(d)/d² = 1/ζ(2).",
       "Aristotle companion file (Erdos1149Aristotle.lean) is fully proved (0 sorries) — all 14 supporting lemmas verified.",
-      "JSON metadata reconciled 2026-04-27: actual sorryCount=0 in companion, line counts corrected (Problem 320, Aristotle 106)."
+      "JSON metadata reconciled 2026-04-27: actual sorryCount=0 in companion, line counts corrected (Problem 320, Aristotle 106).",
+      "random_coprime_density proved 2026-05-04: axiom eliminated via Set.ncard ↔ Finset.card bridge + BaselProblemOQ04OQ03.coprime_pair_density_limit (Möbius inversion + Tannery). axiomCount 2→1."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize Möbius-Tannery interchange: ∑_{d=1}^N μ(d)⌊N/d⌋² / N² → ∑_d μ(d)/d² as N → ∞",
-      "Connect ∑_d μ(d)/d² = 1/ζ(2) using Mathlib's hasSum_zeta_two (Basel: ∑1/n² = π²/6)",
-      "Identify countCoprimePairs N = ∑_{d=1}^N μ(d)⌊N/d⌋² (counting identity via Möbius)",
-      "Combine to prove random_coprime_density (eliminating one of the two axioms)"
+      "Prove bergelson_richter (requires Bergelson-Richter 2017 ergodic theory — not currently Mathlib-provable)"
     ],
     "markdown": "# Erdős #1149 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -101,16 +101,16 @@
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1149Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1149Problem.lean",
       "filename": "Erdos1149Problem.lean",
-      "lineCount": 321,
-      "theoremCount": 17,
-      "axiomCount": 2,
+      "lineCount": 335,
+      "theoremCount": 18,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

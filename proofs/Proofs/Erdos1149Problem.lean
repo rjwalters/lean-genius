@@ -20,6 +20,7 @@
 -/
 
 import Mathlib
+import Proofs.BaselProblemOQ04OQ03
 
 open Finset Filter BigOperators Set
 
@@ -157,13 +158,27 @@ independent random integers.
 
 /-- The "probability" that two random integers are coprime is 6/π².
     More precisely, lim_{N→∞} |{(a,b) ∈ [1,N]² : gcd(a,b) = 1}| / N² = 6/π².
-    This is a classical result (Euler product for 1/ζ(2)). -/
-axiom random_coprime_density :
+    Proved via Möbius inversion + Tannery's theorem (BaselProblemOQ04OQ03). -/
+theorem random_coprime_density :
     Filter.Tendsto
       (fun N : ℕ => (Set.ncard {p : ℕ × ℕ | p.1 ∈ Set.Icc 1 N ∧ p.2 ∈ Set.Icc 1 N ∧
         Nat.Coprime p.1 p.2} : ℝ) / (N : ℝ) ^ 2)
       Filter.atTop
-      (nhds (6 / Real.pi ^ 2))
+      (nhds (6 / Real.pi ^ 2)) := by
+  suffices h_eq : ∀ N : ℕ, Set.ncard {p : ℕ × ℕ | p.1 ∈ Set.Icc 1 N ∧
+      p.2 ∈ Set.Icc 1 N ∧ Nat.Coprime p.1 p.2} =
+    BaselProblemOQ04OQ03.countCoprimePairs N by
+    simp_rw [h_eq]; exact BaselProblemOQ04OQ03.coprime_pair_density_limit
+  intro N
+  have h_set : {p : ℕ × ℕ | p.1 ∈ Set.Icc 1 N ∧ p.2 ∈ Set.Icc 1 N ∧
+      Nat.Coprime p.1 p.2} =
+      ↑((Finset.Icc 1 N ×ˢ Finset.Icc 1 N).filter (fun p => Nat.Coprime p.1 p.2)) := by
+    ext ⟨a, b⟩
+    simp only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_Icc, Set.mem_Icc]
+    tauto
+  rw [h_set, Set.ncard_coe_Finset]
+  simp [BaselProblemOQ04OQ03.countCoprimePairs]
 
 /-- Coprime pair counting via Finset (decidable/computable).
     Counts |{(a,b) ∈ [1,N]² : gcd(a,b) = 1}| using a finite computation. -/
