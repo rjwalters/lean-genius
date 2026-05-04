@@ -1,74 +1,118 @@
 [
   {
-    "id": "ann-fpf-invol",
-    "type": "theorem",
-    "label": "Finset.even_card_of_fpf_invol",
-    "title": "Fixed-Point-Free Involution Has Even Cardinality",
-    "body": "Proved using Finset.sum_involution over ZMod 2: summing 1 for each element, the involution pairs show the sum is 0 mod 2, hence the cardinality is even. This ZMod 2 approach is more concise than the strong-induction proof in SpernerMathlib.lean.",
-    "location": { "line": 60 },
-    "tags": ["combinatorics", "involution", "parity", "ZMod"]
+    "id": "ann-sperner-fpf-invol",
+    "proofId": "sperner-mathlib4",
+    "range": { "startLine": 60, "endLine": 77 },
+    "type": "technique",
+    "title": "Fixed-point-free involution parity via Finset.sum_involution over ZMod 2",
+    "content": "Proves `Finset.even_card_of_fpf_invol`: any fixed-point-free involution σ on a Finset s has even cardinality. The proof uses `Finset.sum_involution` over ZMod 2: sum of 1 for each element pairs with σ, giving total = 0 mod 2, hence the cardinality is even. This ZMod 2 approach is more concise than the classical inductive argument.",
+    "mathContext": "A fixed-point-free involution $\\sigma: S \\to S$ (with $\\sigma^2 = \\text{id}$ and $\\sigma(x) \\neq x$ for all $x$) pairs elements into 2-element orbits, so $|S|$ is even. Algebraic proof via `Finset.sum_involution`: $\\sum_{x \\in S} 1 = \\sum_{x \\in S} 1_{\\{x \\neq \\sigma(x)\\}} = \\sum_{x \\in S} (1 - 1_{\\{x = \\sigma(x)\\}}) \\equiv 0 \\pmod{2}$ when $\\sigma$ is fixed-point-free. In ZMod 2: `Finset.sum_involution` gives $\\sum f + \\sum f\\circ\\sigma = 0$ when $f(x) + f(\\sigma(x)) = 0$, and with $f = 1$, this is $2|S| = 0$ mod 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_involution",
+      "ZMod 2 arithmetic",
+      "fixed-point-free involution",
+      "orbit decomposition",
+      "Tucker's lemma"
+    ],
+    "prerequisites": [
+      "Finset.sum_involution",
+      "ZMod.val_natCast",
+      "ZMod 2",
+      "Finset.card_eq_sum_ones"
+    ]
   },
   {
-    "id": "ann-door-parity",
-    "type": "theorem",
-    "label": "door_count_parity",
-    "title": "Door Count Parity Equals Surjectivity Indicator",
-    "body": "For a coloring f : Fin(d+1) → Fin(d+1), the number of door positions k (where removing k still covers all lower colors 0..d-1) is odd iff f is surjective (hence bijective). Cases: (1) f not surjective → 0 doors (even); (2) f surjective as Fin(d+1) → Fin(d+1) → exactly 1 door (odd); (3) f viewed as Fin(d+1) → Fin(d) is surjective → exactly 2 doors from the duplicated fiber (even).",
-    "location": { "line": 386 },
-    "tags": ["combinatorics", "door", "surjection", "parity"]
+    "id": "ann-sperner-door-parity",
+    "proofId": "sperner-mathlib4",
+    "range": { "startLine": 386, "endLine": 397 },
+    "type": "insight",
+    "title": "door_count_parity: per-cell parity via surjectivity",
+    "content": "Proves `door_count_parity`: for a coloring f : Fin(d+1) → Fin(d+1), the number of door positions k (where {f(0),...,f(d)} \\ {k} contains all of {0,...,d-1}) is odd iff f is surjective to Fin(d+1). Three cases: (1) f not surjective as Fin(d+1) → Fin(d+1): 0 doors (even); (2) f surjective to Fin(d+1): exactly 1 door (the missing color slot, making it panchromatic); (3) f surjective to Fin(d): exactly 2 doors (one for each of the two elements sharing the missing fiber).",
+    "mathContext": "A 'door' in a $d$-cell with coloring $f : \\{0,\\ldots,d\\} \\to \\{0,\\ldots,d\\}$ is a position $k$ such that $f$ restricted to $\\{0,\\ldots,d\\}\\setminus\\{k\\}$ covers all of $\\{0,\\ldots,d-1\\}$. This happens iff color $d$ appears exactly once at position $k$ and the remaining positions cover $\\{0,\\ldots,d-1\\}$. The count is: 0 if $f$ misses some color in $\\{0,\\ldots,d-1\\}$ (not surjective to $\\text{Fin}(d)$); 1 if $f$ is a bijection; 2 if $f$ is surjective to $\\text{Fin}(d)$ only (two positions share the same color in $\\{0,\\ldots,d-1\\}$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "surjective colorings",
+      "pigeonhole principle",
+      "fiber counting",
+      "panchromatic cells",
+      "door positions"
+    ],
+    "prerequisites": [
+      "Fintype.surjective_iff_injective",
+      "Finset.card_eq_one_iff",
+      "Finset.card_image_of_injOn",
+      "Fin.cases"
+    ]
   },
   {
-    "id": "ann-cell-complex",
+    "id": "ann-sperner-cell-complex",
+    "proofId": "sperner-mathlib4",
+    "range": { "startLine": 404, "endLine": 507 },
     "type": "definition",
-    "label": "CellComplex",
-    "title": "Abstract Cell Complex Structure",
-    "body": "CellComplex V d packages the minimal data for Sperner's lemma: a finite Cell type, a vertex function Cell → Fin(d+1) → V, and an adjacency map Cell → Fin(d+1) → Option(Cell × Fin(d+1)) satisfying: (1) adj_symm: if adj s k = some(s',k') then adj s' k' = some(s,k); (2) adj_vertex: adjacent cells share a codimension-1 face; (3) adj_ne: adjacent cells are distinct. These three axioms are exactly what the door-counting proof needs.",
-    "location": { "line": 404 },
-    "tags": ["structure", "cell-complex", "adjacency", "mathlib"]
+    "title": "CellComplex: minimal axioms for the door-counting proof",
+    "content": "Defines `CellComplex V d`: a structure with cells (a `Fintype`), a vertex function `verts : cells → Fin (d+1) → V`, and an adjacency map `adj : cells → Fin (d+1) → Option cells` satisfying: `adj_symm` (if adj c k = some c', then adj c' j = some c for some j), `adj_shared_face` (adjacent cells share d vertices), `adj_distinct` (a cell is not adjacent to itself). IsPanchromatic and IsDoor are defined in terms of these.",
+    "mathContext": "The three CellComplex axioms capture exactly the properties needed for the door-counting proof: (1) `adj_symm`: interior doors pair — each shared face comes from exactly two cells, giving the involution. (2) `adj_shared_face`: the shared face between two adjacent cells is a codimension-1 face (d vertices), so adjacency corresponds to crossing a door. (3) `adj_distinct`: self-adjacency would break the involution structure. Together, these replace all geometric axioms (coordinate embedding, simplicial structure, etc.) needed in classical proofs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimal abstract structure",
+      "adjacency involution",
+      "Mathlib typeclass design",
+      "SimplicialComplex instantiation",
+      "combinatorial abstraction"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "Option",
+      "Fin",
+      "Structure definitions in Lean 4"
+    ]
   },
   {
-    "id": "ann-is-panchromatic",
-    "type": "definition",
-    "label": "IsPanchromatic",
-    "title": "Panchromatic Cell",
-    "body": "A cell s is panchromatic if the composition of the coloring c : V → Fin(d+1) with the vertex function K.vertex s : Fin(d+1) → V is surjective. Equivalently, all d+1 colors appear among the cell's vertices.",
-    "location": { "line": 440 },
-    "tags": ["panchromatic", "surjective", "coloring"]
+    "id": "ann-sperner-interior-even",
+    "proofId": "sperner-mathlib4",
+    "range": { "startLine": 508, "endLine": 651 },
+    "type": "technique",
+    "title": "even_card_interiorDoors: interior doors pair via adjacency involution",
+    "content": "Proves `even_card_interiorDoors`: the number of interior doors (doors shared by two cells) is even. Interior doors are exactly the pairs (c, k) where adj c k = some c'. The adjacency map gives an involution on such pairs (since adj_symm ensures each interior door appears from both sides), and the involution is fixed-point-free (adj_distinct). Applying `even_card_of_fpf_invol` concludes.",
+    "mathContext": "The involution on interior doors: map $(c, k) \\mapsto (c', j)$ where $\\text{adj}(c, k) = \\text{Some}(c')$ and $\\text{adj}(c', j) = \\text{Some}(c)$. This is an involution by `adj_symm`. Fixed-point-free: $(c,k) \\neq (c', j)$ because `adj_distinct` ensures $c' \\neq c$ (adjacency is irreflexive). Even count follows from `even_card_of_fpf_invol`. This is the key cancellation: interior doors contribute 0 mod 2 to the door sum, so only boundary doors survive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "adjacency involution",
+      "interior vs boundary doors",
+      "even_card_of_fpf_invol",
+      "adj_symm axiom",
+      "cancellation in double counting"
+    ],
+    "prerequisites": [
+      "even_card_of_fpf_invol",
+      "CellComplex.adj_symm",
+      "CellComplex.adj_distinct",
+      "Finset.filter"
+    ]
   },
   {
-    "id": "ann-is-door",
-    "type": "definition",
-    "label": "IsDoor",
-    "title": "Door (Codimension-1 Face)",
-    "body": "A face (s, k) is a door if removing vertex k from cell s, the remaining d vertices cover all colors 0..d-1 (in Fin(d)). This is the key combinatorial notion bridging the door-count parity and Sperner's lemma.",
-    "location": { "line": 446 },
-    "tags": ["door", "face", "coloring"]
-  },
-  {
-    "id": "ann-interior-even",
-    "type": "theorem",
-    "label": "even_card_interiorDoors",
-    "title": "Interior Doors Pair via Adjacency",
-    "body": "The set of interior doors—pairs (s,k) where adj s k ≠ none and (s,k) is a door—has even cardinality. The proof applies Finset.even_card_of_fpf_invol to the adjacency map: each interior door maps to its neighbor door, forming fixed-point-free pairs.",
-    "location": { "line": 0 },
-    "tags": ["parity", "interior", "involution", "adjacency"]
-  },
-  {
-    "id": "ann-sperner-parity",
-    "type": "theorem",
-    "label": "sperner_parity",
-    "title": "Sperner Parity Theorem",
-    "body": "The panchromatic cell count is congruent to the boundary door count modulo 2. The proof chains: (1) sum door counts per cell equals total doors (card_doors_eq_sum); (2) total doors splits into interior (even, by even_card_interiorDoors) plus boundary; (3) per-cell door count parity equals the panchromatic indicator (door_count_parity). The interior even term cancels, leaving the congruence.",
-    "location": { "line": 652 },
-    "tags": ["sperner", "parity", "panchromatic", "door-counting"]
-  },
-  {
-    "id": "ann-sperner",
-    "type": "theorem",
-    "label": "sperner",
-    "title": "Sperner's Lemma",
-    "body": "If the boundary door count is odd, then a panchromatic cell exists. Follows immediately from sperner_parity: odd boundary doors → odd panchromatic count → at least one panchromatic cell.",
-    "location": { "line": 714 },
-    "tags": ["sperner", "existence", "panchromatic", "main-result"]
+    "id": "ann-sperner-main",
+    "proofId": "sperner-mathlib4",
+    "range": { "startLine": 652, "endLine": 732 },
+    "type": "insight",
+    "title": "sperner_parity and sperner: assembling the door-counting argument",
+    "content": "Proves `sperner_parity`: (# panchromatic cells) ≡ (# boundary doors) (mod 2). The proof sums `door_count_parity` over all cells and splits into interior (paired by even_card_interiorDoors) vs boundary doors. The `sperner` theorem derives existence of a panchromatic cell from an odd boundary door count, using `Finset.card_pos`.",
+    "mathContext": "The full assembly: $\\sum_{c \\in \\text{cells}} |\\text{doors}(c)| \\equiv \\sum_{c} |\\text{doors}(c)| \\pmod 2$. The interior doors contribute 0 mod 2 (by `even_card_interiorDoors`). The remaining doors are boundary doors. The per-cell count $|\\text{doors}(c)|$ is odd iff $c$ is panchromatic (by `door_count_parity`). So $\\sum |\\text{doors}(c)| \\equiv |\\text{panchromatic cells}| \\pmod 2$. Combined: $|\\text{panchromatic}| \\equiv |\\text{boundary doors}| \\pmod 2$. Odd boundary doors → odd panchromatic count → at least one panchromatic cell exists.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double counting mod 2",
+      "boundary vs interior doors",
+      "door_count_parity",
+      "even_card_interiorDoors",
+      "Finset.card_pos"
+    ],
+    "prerequisites": [
+      "door_count_parity",
+      "even_card_interiorDoors",
+      "Finset.sum_filter",
+      "ZMod.val_natCast",
+      "Finset.card_pos"
+    ]
   }
 ]
