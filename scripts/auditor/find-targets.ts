@@ -296,7 +296,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
     meta: {
       status: proofMeta.status || 'unknown',
       badge: proofMeta.badge || 'unknown',
-      claimedSorries: proofMeta.sorries ?? -1,
+      claimedSorries: proofMeta.sorries ?? proofMeta.sorryCount ?? -1,
       // leanFile.axiomCount counts only the main file; meta.axiomCount counts the
       // full import chain. When we aggregate detection across additionalFiles or
       // followed imports, compare against meta.axiomCount to avoid false-positive
