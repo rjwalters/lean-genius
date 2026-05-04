@@ -50,9 +50,9 @@
       "tang_upper_bound axiom (subexponential upper bound)",
       "erdos_311_conjecture axiom (ε-N₀ form)"
     ],
-    "axiomCount": 0,
-    "lineCount": 103,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "axiomCount": 3,
+    "lineCount": 114,
+    "assumptions": "3 axioms (delta_lower_bound_pnt, tang_upper_bound, erdos_311_conjecture). 0 sorries. The main open conjecture and two known asymptotic results are axiomatized; all structural theorems are proved."
   },
   "sections": [
     {
@@ -144,8 +144,8 @@
       "Classical"
     ],
     "namespace": null,
-    "lineCount": 103,
-    "axiomCount": 0,
+    "lineCount": 114,
+    "axiomCount": 3,
     "theoremCount": 6,
     "definitionCount": 5,
     "path": "Proofs/Erdos311Problem.lean",

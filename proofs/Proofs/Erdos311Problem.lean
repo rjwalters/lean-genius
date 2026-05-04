@@ -91,13 +91,24 @@ theorem delta_antitone (N : ℕ) : delta (N + 1) ≤ delta N := by
 
 /- ## Lower Bound -/
 
-/-- δ(N) ≥ e^{-(1+o(1))N}: for every ε > 0, δ(N) ≥ e^{-(1+ε)N} for large N.
-    This follows from δ(N) ≥ 1/lcm(1,...,N) and the PNT estimate on lcm. -/
+/-- PNT-based lower bound: δ(N) ≥ e^{-(1+ε)N} for all ε > 0 and sufficiently large N.
+    The "trivial" bound δ(N) ≥ 1/lcm(1,...,N) combined with log lcm(1,...,N) ~ N
+    (the prime number theorem via Chebyshev) gives the exponential lower bound. -/
+axiom delta_lower_bound_pnt : ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
+    Real.exp (-(1 + ε) * N) ≤ delta N
+
 /- ## Upper Bound -/
 
-/-- Tang's upper bound: δ(N) ≤ exp(-cN/(log N · log log N)³) for some c > 0.
-    This is far from the conjectured e^{-cN}. -/
-/- ## The Conjecture -/
+/-- Tang's upper bound (2020): there exists an absolute constant c > 0 such that
+    for all N ≥ 3, δ(N) ≤ exp(-c·N / (log N · log log N)³).
+    This is far from the conjectured e^{-cN} but improves all earlier bounds. -/
+axiom tang_upper_bound : ∃ c : ℝ, 0 < c ∧ ∀ N : ℕ, 3 ≤ N →
+    delta N ≤ Real.exp (-c * N / (Real.log N * Real.log (Real.log N)) ^ 3)
 
-/-- Erdős Problem #311 (Erdős–Graham 1980): δ(N) = e^{-(c+o(1))N}
-    for some constant c ∈ (0,1). -/
+/- ## The Open Conjecture -/
+
+/-- Erdős Problem #311 (Erdős–Graham 1980): there exists c ∈ (0,1) such that
+    log δ(N) / N → -c as N → ∞, i.e., δ(N) = e^{-(c+o(1))N}.
+    The gap between the PNT lower bound (c ≤ 1) and Tang's upper bound is wide open. -/
+axiom erdos_311_conjecture : ∃ c : ℝ, 0 < c ∧ c < 1 ∧
+    Filter.Tendsto (fun N : ℕ => Real.log (delta N) / N) Filter.atTop (nhds (-c))
