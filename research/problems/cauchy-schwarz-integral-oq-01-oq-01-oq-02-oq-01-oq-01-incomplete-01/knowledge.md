@@ -2,6 +2,53 @@
 
 ---
 
+## Session 2026-05-04 (Session 4) — hext_ind + hagree_n Proved
+
+**Mode**: REVISIT (ACT)
+**Outcome**: progress — hext_ind and hagree_n proved, 1 sorry remains (consistency + MCT)
+
+### What I Did
+
+1. **Chose g_seq family from hriesz_n**: `choose g_seq hg_seq_mem hg_seq_rep using hriesz_n`
+
+2. **Proved `hext_ind`**: `extByZeroCLM(Sₙ)(1_E^Lp(μₙ)) = 1_E^Lp(μ)` for E ⊆ Sₙ
+   - After `rw [Lp.ext_iff]`, prove both sides equal `E.indicator 1` a.e. w.r.t. μ
+   - `hlhs`: coeFn of extByZeroCLM f = Sₙ.indicator (coeFn f) a.e. (from `memLp_indicator_of_restrict_loc.coeFn_toLp`)
+   - `hkey`: Sₙ.indicator (coeFn f) = E.indicator 1 a.e. — **key technique**:
+     - `coeFn_toLp` for `MemLp f p (μ.restrict Sₙ)` gives `=ᵐ[μ.restrict Sₙ]`, NOT `=ᵐ[μ]`
+     - Convert via `(ae_restrict_iff' hSₙ).mp coeFn_toLp`: from `=ᵐ[μ.restrict Sₙ]` to `∀ᵐ a ∂μ, a ∈ Sₙ → coeFn a = E.indicator 1 a`
+     - Then `filter_upwards` + `by_cases hn : a ∈ Sₙ` to handle both cases
+   - Chain: `exact hlhs.trans hkey |>.trans hrhs.symm`
+
+3. **Proved `hagree_n`**: `φ(1_E) = ∫_E g_seq n dμ` for E ⊆ Sₙ, μ(E) ≠ ⊤
+   - Rewrite: `φ(1_E) = φ(extByZeroCLM(1_E^Lp(μₙ)))` via `hext_ind`
+   - Apply `hg_seq_rep n`: = `∫ coeFn(1_E^Lp(μₙ)) * g_seq n ∂(μ.restrict Sₙ)`
+   - Simplify indicator via `integral_indicator hE` + `Measure.restrict_restrict hE` + `Set.inter_eq_left.mpr hEn`
+
+4. **1 sorry remains in `localization_existence`**: consistency + MCT + global g construction
+
+### Key Findings
+
+- **`ae_restrict_iff'` as type bridge**: `coeFn_toLp` for `MemLp f p (μ.restrict S)` gives `=ᵐ[μ.restrict S]`; use `(ae_restrict_iff' hS).mp` to get `∀ᵐ a ∂μ, a ∈ S → f a = ...`
+- **Chain direction matters**: `hlhs.trans hkey |>.trans hrhs.symm` (NOT circular)
+- `Measure.restrict_restrict hE : (μ.restrict Sₙ).restrict E = μ.restrict (E ∩ Sₙ)` — useful for changing integral base
+- **PR #15485**: `fix/cs-localization-hext-ind` (fresh branch from main, 1 commit, 66 lines new)
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` (main repo, +66 lines)
+
+### Next Steps
+
+1. **Prove consistency**: `g_seq m =ᵐ[μ.restrict Sₘ] g_seq n` for m ≤ n
+   - For E ⊆ Sₘ ⊆ Sₙ: `hagree_n m E ... = hagree_n n E ...`
+   - Apply `ae_eq_restrict_of_forall_setIntegral_eq` (AEEqOfIntegral.lean:403)
+2. **Prove MCT step**: define `g := fun a => lim (g_seq · a)` (limit exists by consistency a.e.)
+   - `MemLp g q μ` via `lintegral_iUnion` + monotone bound from `‖φₙ‖ ≤ ‖φ‖`
+3. **Prove indicator agreement**: `φ(1_{E∩Sₙ}) → φ(1_E)` via `lp_truncation_tendsto_zero` already proved
+
+---
+
 ## Session 2026-05-04 (Session 3) — extByZeroCLM + Localization Structure
 
 **Mode**: REVISIT (ACT)

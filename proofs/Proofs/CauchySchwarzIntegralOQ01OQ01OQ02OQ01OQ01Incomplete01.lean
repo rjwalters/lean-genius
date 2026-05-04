@@ -358,8 +358,72 @@ theorem localization_existence
     obtain ⟨gₙ, hgₙ, hgₙ_rep⟩ :=
       RieszLpSurjectivity.riesz_lp_surjective_from_rn p q hp1 hptop hpq φₙ
     exact ⟨gₙ, hgₙ, hgₙ_rep⟩
-  -- Consistency + MCT step: gₙ are compatible and yield g ∈ Lq(μ)
-  -- with indicator agreement
+  -- Extract the gₙ family
+  choose g_seq hg_seq_mem hg_seq_rep using hriesz_n
+  -- Key: extByZeroCLM(Sₙ)(1_E^Lp(μₙ)) = 1_E^Lp(μ), for E ⊆ Sₙ
+  -- (Both have representative E.indicator 1 a.e. w.r.t. μ)
+  have hext_ind : ∀ n (E : Set α) (hE : MeasurableSet E) (hEn : E ⊆ spanningSets μ n)
+      (hfin : μ E ≠ ⊤),
+      extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop
+        ((memLp_indicator_const p hE 1 (Or.inr (show (μ.restrict (spanningSets μ n)) E ≠ ⊤ from by
+            rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin))).toLp _) =
+      (memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _ := by
+    intro n E hE hEn hfin
+    have hfin_n : (μ.restrict (spanningSets μ n)) E ≠ ⊤ := by
+      rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin
+    rw [Lp.ext_iff]
+    -- Show both cofunctions are a.e. E.indicator 1 under μ
+    have hlhs : (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop
+        ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _) : α → ℝ) =ᵐ[μ]
+        (spanningSets μ n).indicator
+          ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) :=
+      (memLp_indicator_of_restrict_loc (measurableSet_spanningSets μ n) hp0 hptop
+        (Lp.memLp _)).coeFn_toLp
+    have hrhs : ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _ : α → ℝ) =ᵐ[μ]
+        E.indicator 1 :=
+      (memLp_indicator_const p hE 1 (Or.inr hfin)).coeFn_toLp
+    -- Sₙ.indicator (coeFn of 1_E^Lp(μₙ)) =ᵐ[μ] E.indicator 1
+    -- coeFn_toLp gives =ᵐ[μ.restrict Sₙ]; convert to =ᵐ[μ] via ae_restrict_iff'
+    have hkey : (spanningSets μ n).indicator
+        ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) =ᵐ[μ]
+        E.indicator 1 := by
+      have hcoe_restrict : ∀ᵐ a ∂μ, a ∈ spanningSets μ n →
+          (memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ a = E.indicator 1 a :=
+        (ae_restrict_iff' (measurableSet_spanningSets μ n)).mp
+          (memLp_indicator_const p hE 1 (Or.inr hfin_n)).coeFn_toLp
+      filter_upwards [hcoe_restrict] with a ha
+      simp only [Set.indicator_apply]
+      by_cases hn : a ∈ spanningSets μ n
+      · simp only [hn, ite_true]; exact ha hn
+      · simp only [hn, ite_false, Set.indicator_apply, if_neg (fun he => hn (hEn he))]
+    exact hlhs.trans hkey |>.trans hrhs.symm
+  -- For E ⊆ Sₙ with μ(E) < ∞: φ(1_E^Lp(μ)) = ∫_E g_seq n dμ
+  have hagree_n : ∀ n (E : Set α) (hE : MeasurableSet E) (hEn : E ⊆ spanningSets μ n)
+      (hfin : μ E ≠ ⊤),
+      φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
+      ∫ a in E, g_seq n a ∂μ := by
+    intro n E hE hEn hfin
+    have hfin_n : (μ.restrict (spanningSets μ n)) E ≠ ⊤ := by
+      rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin
+    -- φ(1_E) = φ(extByZeroCLM(1_E^Lp(μₙ))) = ∫ 1_E * g_seq n ∂μₙ = ∫_E g_seq n ∂μ
+    rw [← hext_ind n E hE hEn hfin]
+    rw [hg_seq_rep n]
+    -- ∫ (coeFn of 1_E^Lp(μₙ)) * g_seq n ∂(μ.restrict Sₙ) = ∫_E g_seq n ∂μ
+    have hcoe : ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) =ᵐ[μ.restrict (spanningSets μ n)]
+        E.indicator 1 :=
+      (memLp_indicator_const p hE 1 (Or.inr hfin_n)).coeFn_toLp
+    rw [integral_congr_ae (EventuallyEq.mul_right hcoe _)]
+    simp_rw [Set.indicator_apply, Pi.one_apply, ite_mul, one_mul, zero_mul]
+    rw [integral_indicator hE, Measure.restrict_restrict hE,
+      Set.inter_comm, Set.inter_eq_left.mpr hEn]
+  -- Remaining: consistency + MCT + global g ∈ Lq(μ) + indicator agreement for all E
+  -- HARD SORRY: construct g via a.e. limit of g_seq, prove MemLp g q μ via MCT,
+  -- prove indicator agreement using hagree_n + tendsto_setIntegral_of_monotone
+  -- Key tools:
+  --   ae_eq_restrict_of_forall_setIntegral_eq: for consistency (g_seq m = g_seq n a.e. on Sₘ)
+  --   lintegral_iUnion (+ monotone): for MCT bound ‖g‖_Lq ≤ ‖φ‖
+  --   tendsto_setIntegral_of_monotone: ∫_{E∩Sₙ} g dμ → ∫_E g dμ
+  --   lp_truncation_tendsto_zero (proved): ‖1_{E∩Sₙ} - 1_E‖_Lp → 0, so φ(1_{E∩Sₙ}) → φ(1_E)
   sorry
 
 -- ============================================================================
