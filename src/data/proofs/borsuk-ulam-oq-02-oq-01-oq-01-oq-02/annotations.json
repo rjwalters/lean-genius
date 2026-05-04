@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "exotic-framework-intro",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "Exotic G-Representations: When Composites Exceed Prime Subgroups",
+    "content": "This file formalizes the concept of 'exotic representations' in equivariant Borsuk-Ulam theory. A representation (n, d) is exotic if the composite cyclic group Z/n has strictly higher BU dimension than any of its prime subgroups — a behavior invisible from examining prime subgroups alone. The BU dimension buDim(n, d) was axiomatized in the grandparent file; the formula conjecture buDim ≤ buDimFormula (where buDimFormula = max over prime divisors) is the key open conjecture from the parent file. This file shows that exotic representations would be precisely the counterexamples to that conjecture, and derives structural constraints (exotic requires ≥2 distinct prime factors, primes and prime powers are never exotic).",
+    "mathContext": "**Setup**: $\\text{buDim}(n, d)$ = equivariant BU dimension of $Z/n$-representations of $\\mathbb{R}^d$. **Formula**: $\\text{buDimFormula}(n, d) = \\max_{p \\mid n, p\\text{ prime}} \\text{buDim}(p, d)$. **Exotic**: $\\text{IsExotic}(n, d) :\\equiv \\text{buDimFormula}(n, d) < \\text{buDim}(n, d)$, i.e., the composite group creates extra topological constraints beyond prime subgroups.",
+    "significance": "critical",
+    "prerequisites": ["equivariant Borsuk-Ulam theory", "BU dimension axioms", "Smith theory", "cyclic group representations"],
+    "relatedConcepts": ["buDim", "buDimFormula", "borsuk-ulam-oq-02-oq-01-oq-01", "borsuk-ulam-oq-02-oq-01", "IsExotic"]
+  },
+  {
+    "id": "isexotic-definition",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 44, "endLine": 56 },
+    "type": "definition",
+    "title": "IsExotic and exoticDefect: Formalizing the Gap",
+    "content": "IsExotic(n, d) is defined as the strict inequality buDimFormula(n, d) < buDim(n, d). The definition uses the ordering direction: buDimFormula is the LOWER bound conjectured by the formula axiom, so exotic means buDim exceeds this lower bound. exoticDefect(n, d) = buDim(n, d) - buDimFormula(n, d) is the natural number gap (0 for non-exotic). exoticDefect_eq_zero_iff proves defect = 0 ↔ ¬IsExotic, using Nat.sub_eq_zero_iff_le and not_lt — the standard way to convert ℕ subtraction to ≤.",
+    "mathContext": "$\\text{IsExotic}(n,d) :\\equiv \\text{buDimFormula}(n,d) < \\text{buDim}(n,d)$. $\\text{exoticDefect}(n,d) = \\text{buDim}(n,d) - \\text{buDimFormula}(n,d)$ (ℕ subtraction, 0 when ≤). Key: since the formula axiom gives $\\text{buDim} \\leq \\text{buDimFormula}$ for $n \\geq 2$, any nonzero defect would be a counterexample to the conjecture.",
+    "significance": "critical",
+    "prerequisites": ["buDimFormula definition", "Nat.sub_eq_zero_iff_le", "equivariant BU theory"],
+    "relatedConcepts": ["buDimFormula", "buDim_le_formula", "exotic_iff_refutes_conjecture"]
+  },
+  {
+    "id": "non-exotic-primes-prime-powers",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 62, "endLine": 83 },
+    "type": "theorem",
+    "title": "Non-Exotic Cases: Primes and Prime Powers",
+    "content": "not_exotic_prime shows primes are trivially non-exotic: buDimFormula(p, d) = buDim(p, d) by definition (the only prime factor of p is p itself), so buDimFormula = buDim and IsExotic is false. not_exotic_prime_pow handles prime powers p^k: by Nat.primeFactors_prime_pow, the prime factors of p^k are exactly {p}, so buDimFormula(p^k, d) = buDim(p, d). The formula axiom buDim_le_formula gives buDim(p^k, d) ≤ buDim(p, d) (for n ≥ 2), so buDimFormula(p^k, d) ≥ buDim(p^k, d) — not exotic. buDimFormula_prime_pow is the auxiliary formula calculation: buDimFormula(p^k, d) = buDim(p, d).",
+    "mathContext": "For prime $p$: $\\text{primeFactors}(p) = \\{p\\}$, so $\\text{buDimFormula}(p,d) = \\text{buDim}(p,d)$ — trivially non-exotic. For prime power $p^k$ ($k \\geq 1$): $\\text{primeFactors}(p^k) = \\{p\\}$ (Nat.primeFactors_prime_pow), so $\\text{buDimFormula}(p^k,d) = \\text{buDim}(p,d) \\geq \\text{buDim}(p^k,d)$ by the formula axiom.",
+    "significance": "critical",
+    "prerequisites": ["Nat.primeFactors_prime_pow", "buDimFormula_prime", "buDim_le_formula", "Smith theory"],
+    "relatedConcepts": ["IsExotic", "exotic_implies_two_prime_factors", "not_exotic_four", "not_exotic_nine"]
+  },
+  {
+    "id": "formula-monotonicity",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 89, "endLine": 98 },
+    "type": "theorem",
+    "title": "Formula Monotonicity Under Divisibility — Pure Combinatorics",
+    "content": "buDimFormula_mono_of_dvd proves that if n | m, then buDimFormula(n, d) ≤ buDimFormula(m, d). The proof is a single line: Finset.sup_mono applied to Nat.primeFactors_mono (which gives primeFactors(n) ⊆ primeFactors(m) when n | m and m ≠ 0). This result requires zero topological input — it follows purely from the combinatorial structure of the formula as a Finset.sup over prime factors. This is in sharp contrast to the BU dimension monotonicity buDim_dvd_mono, which inherits buDim_mono from the axiomatic framework.",
+    "mathContext": "$n \\mid m \\Rightarrow \\text{primeFactors}(n) \\subseteq \\text{primeFactors}(m)$ (Nat.primeFactors_mono). Since $\\text{buDimFormula}(n,d) = \\bigsqcup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p,d)$, monotonicity of Finset.sup under set inclusion gives $\\text{buDimFormula}(n,d) \\leq \\text{buDimFormula}(m,d)$.",
+    "significance": "key",
+    "prerequisites": ["Nat.primeFactors_mono", "Finset.sup_mono", "lattice theory"],
+    "relatedConcepts": ["buDimFormula", "buDim_dvd_mono", "buDim_mono", "borsuk-ulam-oq-02-oq-01"]
+  },
+  {
+    "id": "exotic-two-prime-factors",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 104, "endLine": 120 },
+    "type": "theorem",
+    "title": "Exotic Requires ≥ 2 Distinct Prime Factors",
+    "content": "exotic_implies_two_prime_factors is the key structural constraint: if (n, d) is exotic and n ≥ 2, then n has at least 2 distinct prime factors. The proof by contradiction: if card(primeFactors(n)) < 2, since n ≥ 2 means primeFactors(n) is nonempty, card = 1, so primeFactors(n) = {p} for some prime p (by Finset.card_eq_one). Then not_exotic_of_singleton_primeFactors gives ¬IsExotic, contradicting the assumption. This structural result requires no topological axioms — it follows entirely from the combinatorial structure of prime factorization and the already-proved non-exotic results.",
+    "mathContext": "**Consequence**: The smallest composite with ≥ 2 prime factors is $n = 6 = 2 \\times 3$. So the smallest possible exotic case is $(n,d) = (6, d)$ for some $d$. All $n \\in \\{2,3,4,5\\}$ are prime powers: primes 2, 3, 5 and prime power $4 = 2^2$ — all provably non-exotic.",
+    "significance": "critical",
+    "prerequisites": ["Finset.card_eq_one", "Nat.primeFactors_mono", "not_exotic_of_singleton_primeFactors"],
+    "relatedConcepts": ["IsExotic", "six_has_two_prime_factors", "not_exotic_prime_pow", "borsuk-ulam-oq-02-oq-01-oq-01"]
+  },
+  {
+    "id": "conjecture-no-exotic-equivalence",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 126, "endLine": 139 },
+    "type": "insight",
+    "title": "Conjecture ↔ Absence of Exotic: The Logical Core",
+    "content": "exotic_iff_refutes_conjecture states the logical dual: IsExotic(n, d) ↔ ¬(buDim(n, d) ≤ buDimFormula(n, d)), by simp with not_le. no_exotic_of_conjecture shows the formula axiom immediately rules out all exotic representations (for n ≥ 2). conjecture_iff_no_exotic is the crowning result: the formula conjecture (buDim ≤ buDimFormula for all n ≥ 2) is EQUIVALENT to the absence of all exotic representations. This makes the exotic representation question a precise reformulation of the open conjecture — exotic representations ARE the counterexamples.",
+    "mathContext": "**Equivalence**: $\\forall n,d,\\ n \\geq 2 \\Rightarrow \\text{buDim}(n,d) \\leq \\text{buDimFormula}(n,d)$ $\\iff$ $\\forall n,d,\\ n \\geq 2 \\Rightarrow \\neg\\text{IsExotic}(n,d)$. Proof: simp with IsExotic and not_lt. This is a pure logical reformulation — no topology needed.",
+    "significance": "critical",
+    "prerequisites": ["buDim_le_formula axiom", "IsExotic definition", "logical equivalence"],
+    "relatedConcepts": ["IsExotic", "buDimFormula", "no_exotic_of_conjecture", "buDim_le_formula"]
+  },
+  {
+    "id": "concrete-prime-power-examples",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 145, "endLine": 163 },
+    "type": "theorem",
+    "title": "Concrete Non-Exotic Examples: 4 = 2², 8 = 2³, 9 = 3², 25 = 5²",
+    "content": "Four instantiations of not_exotic_prime_pow confirm non-exoticity for the smallest prime powers: not_exotic_four (4=2²), not_exotic_eight (8=2³), not_exotic_nine (9=3²), not_exotic_twentyfive (25=5²). All proofs are one-liners applying the general theorem with norm_num for the primality conditions. The formula values are also computed: buDimFormula(4,d) = buDim(2,d) and buDimFormula(9,d) = buDim(3,d), by buDimFormula_prime_pow. These computations verify that the formula reduces prime power cases to their prime base.",
+    "mathContext": "$\\text{buDimFormula}(4,d) = \\text{buDim}(2,d)$ (since $4 = 2^2$, only prime factor is 2). $\\text{buDimFormula}(9,d) = \\text{buDim}(3,d)$ (since $9=3^2$). These are special cases of $\\text{buDimFormula}(p^k,d) = \\text{buDim}(p,d)$ for prime $p$, $k \\geq 1$.",
+    "significance": "supporting",
+    "prerequisites": ["not_exotic_prime_pow", "buDimFormula_prime_pow", "norm_num"],
+    "relatedConcepts": ["not_exotic_prime_pow", "buDimFormula_prime_pow", "exotic_implies_two_prime_factors"]
+  },
+  {
+    "id": "n-six-first-exotic-candidate",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 168, "endLine": 188 },
+    "type": "insight",
+    "title": "n = 6: The Minimal Exotic Candidate and Its Formula",
+    "content": "n = 6 = 2 × 3 is the smallest composite with 2 distinct prime factors, making it the first case where exotic behavior could in principle occur. six_has_two_prime_factors confirms card({2,3}) = 2 by native_decide. buDimFormula_six computes buDimFormula(6, d) = buDim(2, d) ⊔ buDim(3, d) (max of Z/2 and Z/3 BU dimensions). small_n_not_exotic_shape confirms all n ∈ [2,5] are prime powers (card ≤ 1). not_exotic_six and buDim_six_eq_max give the conditional result: under the formula axiom, buDim(6, d) = max(buDim(2, d), buDim(3, d)) — the 6 = 2×3 group adds nothing beyond its prime subgroups.",
+    "mathContext": "$\\{n \\geq 2 : |\\text{primeFactors}(n)| = 1\\} = \\{2,3,4,5,7,8,9,11,\\ldots\\}$ (primes and prime powers). Smallest $n$ with $|\\text{primeFactors}(n)| \\geq 2$: $n = 6$. Under conjecture: $\\text{buDim}(6,d) = \\text{buDim}(2,d) \\sqcup \\text{buDim}(3,d) = \\max(\\text{buDim}(2,d), \\text{buDim}(3,d))$.",
+    "significance": "critical",
+    "prerequisites": ["exotic_implies_two_prime_factors", "buDimFormula", "buDim_eq_formula", "equivariant topology"],
+    "relatedConcepts": ["exotic_implies_two_prime_factors", "conjecture_iff_no_exotic", "six_has_two_prime_factors", "buDimFormula_six"]
+  },
+  {
+    "id": "exotic-defect-properties",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 193, "endLine": 201 },
+    "type": "theorem",
+    "title": "Exotic Defect Vanishes for Prime Powers and Under Conjecture",
+    "content": "exoticDefect_prime_pow shows prime powers have zero exotic defect: defect = 0 iff ¬IsExotic, and not_exotic_prime_pow gives ¬IsExotic for prime powers. exoticDefect_zero_of_conjecture shows the defect is zero for all n ≥ 2 under the formula conjecture (via no_exotic_of_conjecture). Together these show that the exotic defect is a well-defined measure of deviation from the prime formula, and the formula conjecture asserts it is universally zero. The defect function provides a quantitative way to ask about exotic representations: not just whether they exist, but how large the excess could be.",
+    "mathContext": "$\\text{exoticDefect}(n,d) = 0$ iff $\\text{buDim}(n,d) \\leq \\text{buDimFormula}(n,d)$ iff $\\neg\\text{IsExotic}(n,d)$. For prime powers and under the conjecture, defect is universally 0. A nonzero defect would directly witness a counterexample to the formula conjecture.",
+    "significance": "key",
+    "prerequisites": ["exoticDefect definition", "exoticDefect_eq_zero_iff", "no_exotic_of_conjecture"],
+    "relatedConcepts": ["exoticDefect", "IsExotic", "conjecture_iff_no_exotic", "buDim_le_formula"]
+  }
+]
