@@ -27,8 +27,8 @@
     "axiomCount": 0,
     "assumptions": "1 open sorry in GNW infrastructure (BallotProblemOQ03OQ01OQ02Helpers.lean): gnwProb_key — the GNW 1979 probabilistic identity for ≥10-row, ≥10-col, non-rectangular shapes (hard combinatorial identity). The supporting lemmas gnwProb_sum_corners, strictHookCells_card, strictHookCells_nonempty, and strictHookCells_hookLen_lt were proved in PR #14960. hook_walk_identity_gnw (the dispatcher in the gallery face) calls gnwProb_key and is otherwise complete. hookProd_ratio_formula is sorry-free. Proved cases: at-most-2-row, gHookYD, ≤2-col, exactly 3-row through 9-row, ≤9-col (transpose duality), all rectangles.",
     "lineCount": 398,
-    "theoremCount": 489,
-    "definitionCount": 24,
+    "theoremCount": 16,
+    "definitionCount": 1,
     "originalContributions": [
       "hookLength: hook length at cell (i,j) = armLen + legLen + 1 using YoungDiagram.rowLen and colLen",
       "hookLength_pos: hook lengths are always positive (arm + leg + 1 ≥ 1) — unconditional",
@@ -98,10 +98,11 @@
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
-    "theoremCount": 2,
+    "theoremCount": 16,
     "definitionCount": 1,
     "additionalFiles": [
-      "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
+      "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
+      "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     ]
   },
   "crossReferences": [
