@@ -1,0 +1,153 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+  "title": "Fermat's Two-Square Theorem via Gaussian Integers",
+  "slug": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+  "description": "Proves Fermat's two-square theorem: a prime p is a sum of two squares iff p = 2 or p ≡ 1 (mod 4). The forward direction uses a ZMod 4 decidability argument (squares are 0 or 1 mod 4, so their sum is never 3). The backward direction uses Mathlib's Nat.Prime.sq_add_sq. Also establishes the Gaussian integer connection: inert primes (p ≡ 3 mod 4) are simultaneously prime in ℤ[i] and inexpressible as sums of two squares — both facts from the same mod-4 obstruction.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fermat%27s_theorem_on_sums_of_two_squares",
+    "date": "Fermat 1640, Euler 1747, Gauss 1832; formalized 2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "gaussian-integers",
+      "sum-of-two-squares",
+      "modular-arithmetic",
+      "fermat",
+      "prime-classification"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Uses Mathlib's Nat.Prime.sq_add_sq (which relies on Gaussian integer theory internally) and fin_cases/decide for the ZMod 4 exhaustive check.",
+    "lineCount": 176,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.sq_add_sq",
+        "description": "If p is prime and p % 4 ≠ 3, then p is a sum of two natural number squares",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "Casting naturals to ZMod n is equal iff they are congruent mod n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "GaussianInt (via parent import)",
+        "description": "ℤ[i] as Zsqrtd(-1); inert_prime from BezoutIdentityOQ02OQ01OQ02OQ02",
+        "module": "Mathlib.NumberTheory.Zsqrtd.GaussianInt"
+      }
+    ],
+    "originalContributions": [
+      "fermat_two_square: biconditional iff characterization of primes as sums of two squares (p = 2 or p ≡ 1 mod 4)",
+      "not_sum_sq_of_mod4_eq_three: mod-4 obstruction proof, reusing the ZMod 4 technique from the parent Gaussian integer file",
+      "inert_prime_not_sum_sq: connecting Gaussian integer inert primes to the sum-of-squares impossibility",
+      "split_prime_sum_sq: if a Gaussian integer has norm p (prime), then p is a sum of two squares",
+      "fermat_two_square_int: integer form of the biconditional (∃ a b : ℤ, a² + b² = p)"
+    ],
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Fermat stated in 1640 (in a letter to Mersenne) that a prime p is expressible as a sum of two integer squares iff p = 2 or p ≡ 1 (mod 4). Despite claiming a proof, Fermat never published one. The first complete proof was given by Euler in 1747, using Fermat's method of infinite descent. In 1832, Gauss gave a conceptually cleaner proof using Gaussian integers ℤ[i]: p splits in ℤ[i] iff p = 2 or p ≡ 1 (mod 4), and splitting means p = N(π) = π·π̄ where π = a + bi gives p = a² + b². The mod-4 obstruction for primes ≡ 3 (mod 4) is elementary: squares are 0 or 1 mod 4, so their sum is at most 2, never 3. This is one of the oldest and most elegant results in number theory, connecting quadratic residues, Gaussian integers, and the arithmetic of ℤ[i].",
+    "problemStatement": "Does Fermat's two-square theorem follow directly from the Gaussian integer framework formalized in BezoutIdentityOQ02OQ01OQ02OQ02? Specifically: prove that for a prime p, the existence of integers a, b with a² + b² = p is equivalent to p = 2 or p ≡ 1 (mod 4).",
+    "proofStrategy": "The proof has two directions. Forward (sum → mod 4): assume a² + b² = p; cast to ZMod 4; since squares in ZMod 4 are only 0 or 1 (checked by fin_cases + decide over all 16 pairs), their sum is 0, 1, or 2, never 3; so p ≢ 3 (mod 4). Backward (mod 4 → sum): for p = 2, exhibit 1² + 1² = 2; for p ≡ 1 (mod 4), use Mathlib's Nat.Prime.sq_add_sq which requires only p % 4 ≠ 3 and [Fact p.Prime].",
+    "keyInsights": [
+      "The mod-4 obstruction is decidable: all 16 pairs (a, b) in ZMod 4 × ZMod 4 satisfy a² + b² ≠ 3. This is the same ZMod 4 technique used in the parent proof (BezoutIdentityOQ02OQ01OQ02OQ02) to prove inert_prime — so the impossibility direction of the two-square theorem and the primality of inert primes in ℤ[i] have identical proofs.",
+      "The theorem unifies two perspectives: (1) number-theoretic (p is a sum of two squares iff it is not ≡ 3 mod 4), and (2) Gaussian-algebraic (p splits in ℤ[i] iff p = 2 or p ≡ 1 mod 4). The Lean proof explicitly connects both via inert_prime_not_sum_sq.",
+      "Nat.Prime.sq_add_sq in Mathlib requires [Fact p.Prime] as a typeclass instance, following Mathlib's convention of using Fact for global primality hypotheses. This is why the backward direction of fermat_two_square uses haveI : Fact p.Prime := ⟨hp⟩.",
+      "The integer form (fermat_two_square_int) reduces to the ℕ form via natAbs: a² = (a.natAbs)² for any integer a (using Int.natAbs_sq). This symmetry — that sign doesn't matter for squares — reflects the fact that the sum-of-squares question is purely about positive values.",
+      "The result split_prime_sum_sq makes the connection explicit: if a Gaussian integer z has norm.natAbs = p (prime) and is not a unit, then its real and imaginary parts give p = z.re.natAbs² + z.im.natAbs². This is the core of the Gaussian integer proof of Fermat's theorem."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Documentation describing Fermat's two-square theorem and its two-direction proof. Imports GaussianInt, SumTwoSquares, and the parent Gaussian integer proof. Opens GaussianInt and GaussianIntEuclidean namespaces.",
+      "mathContext": "Fermat's two-square theorem: $p = a^2 + b^2$ (prime) $\\iff$ $p = 2$ or $p \\equiv 1 \\pmod{4}$. Imports `Mathlib.NumberTheory.SumTwoSquares` for `Nat.Prime.sq_add_sq`."
+    },
+    {
+      "id": "sec-mod4",
+      "title": "Part 1: Mod-4 Obstruction",
+      "startLine": 34,
+      "endLine": 69,
+      "summary": "sq_mod4_cases: squares in ZMod 4 are 0 or 1 (by fin_cases). sum_sq_ne_three: sum of two squares in ZMod 4 is never 3 (by decide). not_sum_sq_of_mod4_eq_three: the main obstruction theorem using ZMod 4 casting.",
+      "mathContext": "For any $x \\in \\mathbb{Z}/4\\mathbb{Z}$, $x^2 \\in \\{0, 1\\}$ (checked by cases: $0^2=0, 1^2=1, 2^2=0, 3^2=1$). Hence $a^2 + b^2 \\in \\{0,1,2\\}$, never 3. If $p \\equiv 3 \\pmod{4}$, cast $a^2+b^2=p$ to $\\mathbb{Z}/4\\mathbb{Z}$ via `congr_arg Nat.cast`, apply `ZMod.natCast_eq_natCast_iff` to get $(p : \\mathbb{Z}/4\\mathbb{Z}) = 3$, contradiction."
+    },
+    {
+      "id": "sec-main",
+      "title": "Part 2: Main Theorem",
+      "startLine": 71,
+      "endLine": 115,
+      "summary": "fermat_two_square: the biconditional for ℕ squares. fermat_two_square_int: integer form using Int.natAbs_sq to reduce to ℕ form.",
+      "mathContext": "**Forward**: if $p \\neq 2$ and $p \\not\\equiv 1 \\pmod 4$, show $p \\equiv 3 \\pmod 4$ (since $p$ is odd prime: $p \\% 4 \\in \\{1,3\\}$, and $p \\% 4 \\neq 1$), then apply `not_sum_sq_of_mod4_eq_three`. **Backward**: $p = 2$: exhibit $1^2+1^2=2$; $p \\equiv 1$: `Nat.Prime.sq_add_sq` (needs `[Fact p.Prime]` instance)."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Part 3: Concrete Examples",
+      "startLine": 117,
+      "endLine": 140,
+      "summary": "Positive examples: 2 = 1²+1², 5 = 1²+2², 13 = 2²+3², 17 = 1²+4², 29 = 2²+5². Negative examples: 3, 7, 11 are not sums of two squares.",
+      "mathContext": "Primes $\\equiv 1 \\pmod 4$: 5, 13, 17, 29, 37, ... Primes $\\equiv 3 \\pmod 4$: 3, 7, 11, 19, 23, ... The density of each is 1/2 among all primes (Dirichlet's theorem). Each positive example is verified by `norm_num`; each negative example uses `not_sum_sq_of_mod4_eq_three`."
+    },
+    {
+      "id": "sec-gaussian",
+      "title": "Part 4: Gaussian Integer Connection",
+      "startLine": 142,
+      "endLine": 176,
+      "summary": "inert_prime_not_sum_sq: primes ≡ 3 (mod 4) are both inert in ℤ[i] and inexpressible as sums. split_prime_sum_sq: Gaussian integers of prime norm give sum-of-squares representations.",
+      "mathContext": "`inert_prime_not_sum_sq`: combines `GaussianIntEuclidean.inert_prime` (from parent) with `not_sum_sq_of_mod4_eq_three`. `split_prime_sum_sq`: if $z \\in \\mathbb{Z}[i]$ has $N(z) = p$ (prime) and is not a unit, then $z.re^2 + z.im^2 = p$ via `gaussian_norm_formula`. Uses `Int.natAbs_sq` to convert integer squares to ℕ."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fermat's two-square theorem is proved with 0 sorries and 0 axioms. The forward direction uses a decidable mod-4 obstruction (same ZMod 4 technique as the parent's inert_prime proof). The backward direction uses Mathlib's Nat.Prime.sq_add_sq. The Gaussian integer connection is made explicit via inert_prime_not_sum_sq and split_prime_sum_sq.",
+    "implications": "This proof demonstrates that the mod-4 obstruction — central to both Fermat's two-square theorem and the inert prime classification in ℤ[i] — can be handled mechanically by `decide` in ZMod 4. The same pattern applies to other sum-of-squares results: e.g., p = a² + 2b² iff p = 2 or p ≡ 1,3 (mod 8), using ZMod 8 decidability. The explicit connection between Gaussian integer splitting and sum-of-squares is a clean example of how algebraic number theory makes classical number theory transparent.",
+    "openQuestions": [
+      "Can the proof be extended to Gaussian integer splitting: prove that p splits in ℤ[i] iff p = 2 or p ≡ 1 (mod 4), completing both directions of the prime classification?",
+      "Can the same ZMod decidability technique generalize to prove p = a² + nb² characterizations for other imaginary quadratic fields ℤ[√(-n)]?",
+      "Landau-Ramanujan theorem: the number of integers ≤ N that are sums of two squares is asymptotically K·N/√(log N). Can this be formalized in Lean 4?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent: Gaussian integers as Euclidean domain and prime classification. This file proves the Fermat two-square corollary."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Sibling: ℤ[√-2] as Euclidean domain — another imaginary quadratic ring with analogous prime classification"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity determines when -1 is a square mod p, connecting to which primes split in ℤ[i]"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Zsqrtd.GaussianInt",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Proofs.BezoutIdentityOQ02OQ01OQ02OQ02"
+    ],
+    "opens": [
+      "GaussianInt",
+      "GaussianIntEuclidean"
+    ],
+    "namespace": "BezoutIdentityOQ02OQ01OQ02OQ02OQ02",
+    "lineCount": 176,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ02.lean"
+  }
+}
