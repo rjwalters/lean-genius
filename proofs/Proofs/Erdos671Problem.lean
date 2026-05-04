@@ -88,7 +88,29 @@ theorem lagrangeInterp_degree (pts : InterpolationPoints n)
     (f : Set.Icc (-1 : ℝ) 1 → ℝ) :
     ∃ p : Polynomial ℝ, p.natDegree ≤ n - 1 ∧
       ∀ x, lagrangeInterp pts f x = p.eval x := by
-  sorry
+  use ∑ i : Fin n, Polynomial.C (f ⟨pts.points i, pts.in_interval i⟩) * lagrangeBasis pts i
+  refine ⟨?_, fun x => ?_⟩
+  · apply le_trans (Polynomial.natDegree_sum_le _ _)
+    apply Finset.sup_le; intro i _
+    apply le_trans Polynomial.natDegree_mul_le
+    simp only [Polynomial.natDegree_C, zero_add]
+    -- lagrangeBasis pts i is a product of (n-1) degree-1 polynomials
+    unfold lagrangeBasis
+    apply le_trans (Polynomial.natDegree_prod_le _ _)
+    have hcard : (Finset.univ.filter (fun k => k ≠ i)).card = n - 1 := by
+      rw [show Finset.univ.filter (fun k : Fin n => k ≠ i) = Finset.univ.erase i from
+        by ext; simp [Finset.mem_filter, Finset.mem_erase]]
+      simp [Finset.card_erase_of_mem]
+    calc ∑ j ∈ Finset.univ.filter (fun k => k ≠ i),
+          (Polynomial.C (1 / (pts.points i - pts.points j)) *
+           (Polynomial.X - Polynomial.C (pts.points j)) : Polynomial ℝ).natDegree
+        ≤ ∑ j ∈ Finset.univ.filter (fun k => k ≠ i), 1 := by
+          apply Finset.sum_le_sum; intro j _
+          apply le_trans Polynomial.natDegree_mul_le
+          simp [Polynomial.natDegree_C, Polynomial.natDegree_X_sub_C]
+      _ = (Finset.univ.filter (fun k => k ≠ i)).card := by simp
+      _ = n - 1 := hcard
+  · simp only [lagrangeInterp, Polynomial.eval_sum, Polynomial.eval_mul, Polynomial.eval_C]
 
 /- ## Part III: The Lebesgue Function -/
 
@@ -185,9 +207,29 @@ noncomputable def chebyshevNodes (n : ℕ) : InterpolationPoints n where
 
 /-- Equidistant nodes: x_k = -1 + 2k/(n-1). -/
 noncomputable def equidistantNodes (n : ℕ) (hn : n ≥ 2) : InterpolationPoints n where
-  points := fun k => -1 + 2 * k.val / (n - 1)
-  in_interval := by sorry
-  distinct := by sorry
+  points := fun k => -1 + 2 * (k.val : ℝ) / ((n : ℝ) - 1)
+  in_interval := by
+    intro k
+    have hn_cast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le one_lt_two hn
+    have hn1_pos : (0 : ℝ) < (n : ℝ) - 1 := by linarith
+    simp only [Set.mem_Icc]
+    constructor
+    · have : (0 : ℝ) ≤ 2 * (k.val : ℝ) / ((n : ℝ) - 1) :=
+        div_nonneg (by positivity) (le_of_lt hn1_pos)
+      linarith
+    · have hklt : (k.val : ℝ) < (n : ℝ) := by exact_mod_cast k.isLt
+      have : 2 * (k.val : ℝ) / ((n : ℝ) - 1) ≤ 2 := by
+        rw [div_le_iff hn1_pos]; linarith
+      linarith
+  distinct := by
+    intro k j hkj heq
+    apply hkj
+    have hn_cast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le one_lt_two hn
+    have hn1_ne : (n : ℝ) - 1 ≠ 0 := by linarith
+    have h1 : 2 * (k.val : ℝ) / ((n : ℝ) - 1) = 2 * (j.val : ℝ) / ((n : ℝ) - 1) := by
+      linarith
+    have h2 : (k.val : ℝ) = j.val := by field_simp [hn1_ne] at h1; linarith
+    exact Fin.ext (by exact_mod_cast h2)
 
 /-- Equidistant nodes have exponentially growing Lebesgue constant. -/
 theorem equidistant_diverges (n : ℕ) (hn : n ≥ 2) :
