@@ -154,33 +154,24 @@ so θ(2n) - θ(n) ≥ log(n+1). Combined with θ(n) ≤ ψ(n), this gives a lowe
 /-- From Bertrand: ψ(2n) - ψ(n) ≥ log(n+1) for n ≥ 1 -/
 theorem chebyshevPsi_doubling_lower (n : ℕ) (hn : 1 ≤ n) :
     Real.log (n + 1) ≤ chebyshevPsi (2 * n) - chebyshevPsi n := by
-  -- There exists a prime p with n < p ≤ 2n (Bertrand's postulate)
   obtain ⟨p, hp_prime, hp_lt, hp_le⟩ := Nat.bertrand n hn
-  -- Λ(p) = log p ≥ log(n+1) since p > n
   have hp_ge : (n : ℝ) + 1 ≤ p := by exact_mod_cast Nat.succ_le_of_lt hp_lt
-  -- p contributes to ψ(2n) but not ψ(n) since n < p ≤ 2n
-  have hp_in_range : p ∈ range (2 * n + 1) := by
-    simp [Nat.mem_range]
-    omega
-  have hp_not_in_range : p ∉ range (n + 1) := by
-    simp [Nat.mem_range]
-    omega
+  have hsubset : range (n + 1) ⊆ range (2 * n + 1) := Finset.range_mono (by omega)
+  have hmem : p ∈ range (2 * n + 1) \ range (n + 1) := by
+    simp only [Finset.mem_sdiff, Finset.mem_range]
+    exact ⟨by omega, by omega⟩
   unfold chebyshevPsi
+  have key : vonMangoldt p ≤
+      ∑ k ∈ range (2 * n + 1), vonMangoldt k - ∑ k ∈ range (n + 1), vonMangoldt k := by
+    have hle : vonMangoldt p ≤
+        ∑ k ∈ range (2 * n + 1) \ range (n + 1), vonMangoldt k :=
+      Finset.single_le_sum (fun k _ => vonMangoldt_nonneg) _ hmem
+    linarith [Finset.sum_sdiff hsubset (f := vonMangoldt)]
   calc Real.log (n + 1)
-      ≤ Real.log p := by
-        apply Real.log_le_log (by norm_cast; omega)
-        exact hp_ge
+      ≤ Real.log p := Real.log_le_log (by norm_cast; omega) hp_ge
     _ = vonMangoldt p := (vonMangoldt_apply_prime hp_prime).symm
     _ ≤ ∑ k ∈ range (2 * n + 1), vonMangoldt k -
-        ∑ k ∈ range (n + 1), vonMangoldt k := by
-        rw [← Finset.sum_sdiff (s₁ := range (n + 1)) (s₂ := range (2 * n + 1)) (by
-          intro x; simp [Nat.mem_range]; omega)]
-        simp only [Finset.sum_sdiff_eq_sub (by
-          intro x; simp [Nat.mem_range]; omega)]
-        apply Finset.single_le_sum
-        · intro k _; exact vonMangoldt_nonneg
-        · simp only [Finset.mem_sdiff]
-          exact ⟨hp_in_range, hp_not_in_range⟩
+        ∑ k ∈ range (n + 1), vonMangoldt k := key
 
 /-! ## PNT Equivalence (Axiomatized) -/
 
@@ -199,17 +190,16 @@ axiom pnt_equivalence :
 /-! ## Summary Theorem: Chebyshev ψ bounds -/
 
 /-- **Main result**: The second Chebyshev function satisfies
-    θ(n) ≤ ψ(n) and ψ(n) ≥ log(n+1) for n ≥ 1 (from Bertrand). -/
+    θ(n) ≤ ψ(n) and ψ(n) ≥ log(⌊n/2⌋+1) for n ≥ 1 (from Bertrand). -/
 theorem chebyshevPsi_bounds (n : ℕ) (hn : 1 ≤ n) :
     chebyshevThetaOQ n ≤ chebyshevPsi n ∧
-    Real.log (n / 2 + 1) ≤ chebyshevPsi n := by
+    Real.log ((n / 2 : ℕ) + 1 : ℝ) ≤ chebyshevPsi n := by
   refine ⟨chebyshevTheta_le_chebyshevPsi n, ?_⟩
   rcases Nat.eq_zero_or_pos (n / 2) with h0 | hpos
-  · -- n = 1: log(0+1) = 0 ≤ psi(n)
-    simp only [h0, Nat.cast_zero, zero_add, Real.log_one]
+  · have : ((n / 2 : ℕ) : ℝ) = 0 := by exact_mod_cast h0
+    simp only [this, zero_add, Real.log_one]
     exact chebyshevPsi_nonneg n
-  · -- n ≥ 2: apply Bertrand to n/2, then use psi monotonicity
-    have hle : 2 * (n / 2) ≤ n := Nat.mul_div_le n 2
+  · have hle : 2 * (n / 2) ≤ n := Nat.mul_div_le n 2
     have hmono : chebyshevPsi (2 * (n / 2)) ≤ chebyshevPsi n := by
       unfold chebyshevPsi
       apply Finset.sum_le_sum_of_subset_of_nonneg
