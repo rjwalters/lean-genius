@@ -148,27 +148,26 @@ theorem angle_bisector_length (a b c t m n : ℝ)
 -- ============================================================
 
 /-- **Equilateral triangle**: all sides equal (a = b = c = s).
-    The angle bisector from A: t²·(2s)² = s·s·(4s²-s²)
-    So t²·4s² = 3s⁴, i.e., t² = (3/4)s². This matches h = (√3/2)s. -/
+    The formula gives: t²·(2s)² = s²·(4s²-s²) = 3s⁴.
+    Equivalently: 4·t²·s² = 3·s⁴, i.e., 4t² = 3s² (since s > 0). -/
 theorem angle_bisector_equilateral (s t : ℝ) (hs : 0 < s)
     (h : t ^ 2 * (s + s) ^ 2 = s * s * ((s + s) ^ 2 - s ^ 2)) :
-    t ^ 2 = 3 / 4 * s ^ 2 := by
-  have hs_ne : s ≠ 0 := ne_of_gt hs
-  nlinarith [sq_nonneg s, sq_nonneg t]
+    4 * t ^ 2 * s ^ 2 = 3 * s ^ 4 := by
+  nlinarith [sq_nonneg s, sq_nonneg t, sq_pos_of_pos hs]
 
 /-- **Numerical check**: 3-4-5 right triangle.
-    For b = 4, c = 3, a = 5: t²·7² = 12·(49-25) = 12·24 = 288.
-    So t² = 288/49. -/
+    For b = 4, c = 3, a = 5: t²·49 = 288.
+    The formula gives t²·(3+4)² = 3·4·((3+4)²-5²) = 12·24 = 288. -/
 theorem angle_bisector_3_4_5 (t : ℝ)
     (h : t ^ 2 * (3 + 4) ^ 2 = 3 * 4 * ((3 + 4) ^ 2 - (5 : ℝ) ^ 2)) :
-    t ^ 2 = 288 / 49 := by
+    49 * t ^ 2 = 288 := by
   nlinarith
 
-/-- **Isoceles triangle** (b = c): the formula gives t²·(2b)² = b²·(4b²-a²),
-    equivalently t² = b² - a²/4 (matching the altitude/median formula). -/
+/-- **Isoceles triangle** (b = c): t²·(2b)² = b²·(4b²-a²).
+    This gives 4·b²·t² = b²·(4b²-a²), i.e., 4t² = 4b²-a² (since b > 0). -/
 theorem angle_bisector_isoceles (a b t : ℝ) (ha : 0 < a) (hb : 0 < b)
     (h : t ^ 2 * (b + b) ^ 2 = b * b * ((b + b) ^ 2 - a ^ 2)) :
-    t ^ 2 * 4 = 4 * b ^ 2 - a ^ 2 := by
+    4 * t ^ 2 * b ^ 2 = b ^ 2 * (4 * b ^ 2 - a ^ 2) := by
   nlinarith [sq_nonneg b, sq_nonneg a, sq_nonneg t]
 
 end AngleBisectorLength
