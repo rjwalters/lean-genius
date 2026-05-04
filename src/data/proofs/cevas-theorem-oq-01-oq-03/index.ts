@@ -33,4 +33,5 @@ export const cevasTheoremOq01Oq03Annotations: Annotation[] = annotationsJson as 
 export const cevasTheoremOq01Oq03Data: ProofData = {
   proof: cevasTheoremOq01Oq03Proof,
   annotations: cevasTheoremOq01Oq03Annotations,
+  tacticStates: [],
 }
