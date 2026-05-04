@@ -13869,7 +13869,43 @@ private lemma gnwProb_stable (μ : YoungDiagram) (c : ℕ × ℕ) (x : ℕ × �
 private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ c) :
     ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
     (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) := by
-  sorry  -- GNW 1979 KEY theorem: requires deep combinatorial induction (see comment above)
+  have hcmem : c ∈ corners μ := mem_corners.mpr hc
+  by_cases h_single : (corners μ).card = 1
+  · -- Single-corner case: μ is a rectangle. gnwProb = 1 everywhere by gnwProb_sum_corners.
+    -- Step 1: corners(μ) = {c}
+    have h_corners_one : corners μ = {c} := by
+      obtain ⟨c₀, hc₀⟩ := Finset.card_eq_one.mp h_single
+      have hcc₀ : c = c₀ := Finset.mem_singleton.mp (hc₀ ▸ hcmem)
+      simp [hc₀, hcc₀]
+    -- Step 2: gnwProb(μ, c, h(x), x) = 1 for all x ∈ μ
+    have h_gnw_one : ∀ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x = 1 := by
+      intro x hx
+      have hxmem : x ∈ μ := YoungDiagram.mem_cells.mp hx
+      have hsum := gnwProb_sum_corners μ (hookLength μ x.1 x.2) x hxmem le_rfl
+      have heq : ∑ c' ∈ (corners μ).attach, gnwProb μ c'.val (hookLength μ x.1 x.2) x =
+                 gnwProb μ c (hookLength μ x.1 x.2) x :=
+        Finset.sum_eq_single_of_mem ⟨c, hcmem⟩ (Finset.mem_attach _ _) (fun c' _ hne =>
+          absurd (Subtype.ext (Finset.mem_singleton.mp (h_corners_one ▸ c'.prop))) hne)
+      linarith [hsum, heq]
+    -- Step 3: sum over μ.cells = μ.card (as ℚ)
+    have h_sum_card : ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x = μ.card := by
+      have : ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x = ∑ _x ∈ μ.cells, (1 : ℚ) :=
+        Finset.sum_congr rfl (fun x hx => h_gnw_one x hx)
+      rw [this, sum_const_one]; simp [YoungDiagram.card]
+    -- Step 4: hook ratio = μ.card for single-corner (rectangle) case.
+    -- By hookProd_ratio_formula: ratio = Π_{s<c.2} h(c.1,s)/(h-1) * Π_{r<c.1} h(r,c.2)/(h-1).
+    -- Single-corner implies: rowLen(r) = c.2+1 for r ≤ c.1, colLen(s) = c.1+1 for s ≤ c.2.
+    -- This gives h(c.1,s) = c.2-s+1 and h(r,c.2) = c.1-r+1; each product telescopes
+    -- (via prod_div_telescope) to c.2+1 and c.1+1; product = (c.2+1)*(c.1+1) = μ.card.
+    have h_ratio_card : (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) = μ.card := by
+      sorry
+    rw [h_sum_card, h_ratio_card]
+  · -- Multi-corner case: GNW 1979 exchange argument.
+    -- For |corners(μ)| ≥ 2, the proof requires the exchange principle from GNW 1979:
+    -- induction on μ.card, using that for any other corner c', the walk probability
+    -- sum satisfies F(μ,c) = F(μ\c',c) by exchanging hook weights in the random walk.
+    -- The invariance H(μ)/H(μ\c) = H(μ\c')/H(μ\{c,c'}) then closes the induction.
+    sorry
 
 /-- Hook-walk identity for arbitrary non-empty Young diagrams via GNW walk.
     Proof: rewrite each ratio using gnwProb_key, swap the double sum, and apply
