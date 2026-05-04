@@ -51,9 +51,9 @@
       "DensityQuestion definition"
     ],
     "axiomCount": 1,
-    "lineCount": 105,
+    "lineCount": 139,
     "assumptions": "1 axiom: landau_two_squares. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph, asking about the counting function f_{k,m}(x) of integers representable as sums of m nonnegative k-th powers. The question is rooted in the classical Waring problem (every integer is a sum of g(k) k-th powers, proved by Hilbert 1909), but shifts focus from representation of all integers to counting how many integers have representations with fewer summands. Landau (1908) completely resolved k = 2 by showing f_{2,2}(x) ~ c·x/√(log x), where c is the Landau-Ramanujan constant arising from the multiplicative structure of sums of two squares (Fermat's theorem). For k > 2, the situation is dramatically different: even whether f_{k,k}(x) = o(x) (zero density) is unknown. The circle method of Hardy-Littlewood-Vinogradov is the primary tool for Waring's problem, but it gives asymptotic formulas only when the number of summands exceeds k. Erdős described the regime m ≤ k as 'unattackable by the methods at our disposal.'",
@@ -153,9 +153,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 105,
+    "lineCount": 139,
     "axiomCount": 1,
-    "theoremCount": 2,
+    "theoremCount": 5,
     "definitionCount": 6,
     "path": "Proofs/Erdos323Problem.lean",
     "sorries": 0
