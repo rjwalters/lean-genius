@@ -21,8 +21,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 5,
-    "assumptions": "5 axioms: unitCube_covDimLE_pos (n≥1 case, upper bound for [0,1]^n), unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). The n=0 case (dim({*})=0) is now fully proved via covDimLE_of_unique. 0 sorries.",
+    "axiomCount": 6,
+    "assumptions": "6 axioms: unitCube_covDimLE_pos (n≥1 case, upper bound for [0,1]^n), unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). The n=0 case (dim({*})=0) is now fully proved via covDimLE_of_unique. 0 sorries.",
     "dateAdded": "2026-03-30",
     "hilbertNumber": 13,
     "mathlibDependencies": [
@@ -188,7 +188,7 @@
   "leanFile": {
     "path": "Proofs/Hilbert13GeneralSpaces.lean",
     "filename": "Hilbert13GeneralSpaces.lean",
-    "axiomCount": 5,
+    "axiomCount": 6,
     "sorries": 0,
     "lineCount": 480,
     "definitionCount": 8,
