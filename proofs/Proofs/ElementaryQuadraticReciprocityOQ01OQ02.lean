@@ -191,7 +191,7 @@ theorem cubicEuler_hard {p : ℕ} [Fact p.Prime] (h3 : p % 3 = 1)
     rw [ZMod.card_units_eq_totient, Nat.totient_prime (Fact.out)]
   -- Generator g has order p - 1
   have hord : orderOf g = p - 1 := by
-    rw [← hcard]; exact orderOf_eq_card_of_forall_mem_zpowers hg
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcard]
   -- cubExp p = (p-1)/3 is positive
   have hcubPos : (cubExp p : ℤ) ≠ 0 := by
     have : 0 < cubExp p := Nat.div_pos
@@ -206,7 +206,7 @@ theorem cubicEuler_hard {p : ℕ} [Fact p.Prime] (h3 : p % 3 = 1)
     rwa [← zpow_natCast, ← zpow_mul] at h1
   -- orderOf g | k * cubExp p (as integers)
   have hdvd : (↑(p - 1) : ℤ) ∣ k * ↑(cubExp p) := by
-    have := orderOf_dvd_of_zpow_eq_one hpow_eq
+    have := orderOf_dvd_iff_zpow_eq_one.mpr hpow_eq
     rwa [hord] at this
   -- Since p - 1 = 3 * cubExp p, we get 3 | k
   have hcub3 : (↑(p - 1) : ℤ) = 3 * ↑(cubExp p) := by
@@ -387,7 +387,7 @@ theorem quarticEuler_hard {p : ℕ} [Fact p.Prime] (h4 : p % 4 = 1)
       rw [hk, ← quarticChar_apply]; exact hχ
     rwa [← zpow_natCast, ← zpow_mul] at h1
   have hdvd : (↑(p - 1) : ℤ) ∣ k * ↑(quartExp p) := by
-    have := orderOf_dvd_of_zpow_eq_one hpow_eq
+    have := orderOf_dvd_iff_zpow_eq_one.mpr hpow_eq
     rwa [hord] at this
   have hquart4 : (↑(p - 1) : ℤ) = 4 * ↑(quartExp p) := by
     exact_mod_cast (quartExp_mul h4).symm
