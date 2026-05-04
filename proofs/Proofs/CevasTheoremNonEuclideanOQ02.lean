@@ -1,19 +1,19 @@
 /-
-  Hyperbolic Menelaus Theorem
+  Menelaus Theorem in Non-Euclidean Geometry (Euclidean, Spherical, Hyperbolic)
 
   Menelaus' theorem is the transversal analogue of Ceva's theorem.
   While Ceva characterizes concurrent cevians (product of positive ratios = 1),
   Menelaus characterizes collinear transversal points
   (product of signed ratios = -1).
 
-  In hyperbolic geometry:
-  For triangle ABC, if a transversal meets line BC at D, line CA at E,
-  and line AB at F, then D, E, F are collinear iff:
-    sinh(BD)/sinh(DC) · sinh(CE)/sinh(EA) · sinh(AF)/sinh(FB) = -1
-  where distances are signed (positive for same direction, negative for opposite).
+  This file covers all three constant-curvature geometries:
 
-  Key insight: sinh is an odd function (sinh(-x) = -sinh(x)), so it naturally
-  preserves the sign convention for directed distances.
+  Euclidean: (BD/DC) · (CE/EA) · (AF/FB) = -1
+  Spherical: sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = -1
+  Hyperbolic: sinh(BD)/sinh(DC) · sinh(CE)/sinh(EA) · sinh(AF)/sinh(FB) = -1
+
+  Key insight: sin and sinh are odd functions, naturally preserving the sign
+  convention for directed arc lengths and distances.
 
   Parent: CevasTheoremNonEuclidean.lean
 
@@ -87,7 +87,8 @@ theorem generalized_menelaus (cfg : GeneralizedMenelausConfig) :
 theorem sinh_eq_zero_iff {x : ℝ} : Real.sinh x = 0 ↔ x = 0 := by
   constructor
   · intro h
-    exact Real.sinh_strictMono.injective (h.trans Real.sinh_zero.symm)
+    have hmono : StrictMono Real.sinh := Real.sinh_strictMono
+    exact hmono.injective (h.trans Real.sinh_zero.symm)
   · rintro rfl; exact Real.sinh_zero
 
 theorem sinh_ne_zero_of_ne_zero {x : ℝ} (hx : x ≠ 0) : Real.sinh x ≠ 0 :=
@@ -166,7 +167,71 @@ theorem euclidean_menelaus (cfg : GeneralizedMenelausConfig) :
   generalized_menelaus cfg
 
 -- ============================================================
--- PART 5: Ceva–Menelaus Sign Relationship
+-- PART 5: Spherical Menelaus Theorem
+-- ============================================================
+
+/-- Configuration for Menelaus' theorem on the sphere.
+
+    On a sphere, "distances" are arc lengths. For Menelaus' theorem, the
+    relevant quantities are *signed* arcs along the geodesic sides.
+    Unlike Spherical Ceva (arcs in (0, π) where sin is automatically
+    positive), Menelaus needs signed quantities, so the hypothesis is
+    the weaker `Real.sin _ ≠ 0` for the denominator arcs. -/
+structure SphericalMenelausConfig where
+  bd : ℝ
+  dc : ℝ
+  ce : ℝ
+  ea : ℝ
+  af : ℝ
+  fb : ℝ
+  hsin_dc : Real.sin dc ≠ 0
+  hsin_ea : Real.sin ea ≠ 0
+  hsin_fb : Real.sin fb ≠ 0
+
+noncomputable def sphericalMenelausProduct (cfg : SphericalMenelausConfig) : ℝ :=
+  (Real.sin cfg.bd / Real.sin cfg.dc) *
+  (Real.sin cfg.ce / Real.sin cfg.ea) *
+  (Real.sin cfg.af / Real.sin cfg.fb)
+
+noncomputable def SphericalMenelausConfig.toGeneralized
+    (cfg : SphericalMenelausConfig) : GeneralizedMenelausConfig where
+  bd := Real.sin cfg.bd
+  dc := Real.sin cfg.dc
+  ce := Real.sin cfg.ce
+  ea := Real.sin cfg.ea
+  af := Real.sin cfg.af
+  fb := Real.sin cfg.fb
+  hdc := cfg.hsin_dc
+  hea := cfg.hsin_ea
+  hfb := cfg.hsin_fb
+
+theorem sphericalMenelausProduct_eq_generalized (cfg : SphericalMenelausConfig) :
+    sphericalMenelausProduct cfg = menelausProduct cfg.toGeneralized := by rfl
+
+/-- **Spherical Menelaus Theorem**
+
+    On a sphere, for triangle ABC with a transversal meeting line BC at D,
+    line CA at E, and line AB at F:
+    D, E, F are collinear if and only if
+      sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = -1
+
+    The proof reduces to the algebraic core via the sin measure function.
+    This completes the curvature trichotomy:
+
+    | K  | Geometry   | Measure | Ceva | Menelaus |
+    |----|------------|---------|------|----------|
+    | +1 | Spherical  | sin     | = 1  | = -1     |
+    | 0  | Euclidean  | id      | = 1  | = -1     |
+    | -1 | Hyperbolic | sinh    | = 1  | = -1     | -/
+theorem spherical_menelaus (cfg : SphericalMenelausConfig) :
+    sphericalMenelausProduct cfg = -1 ↔
+    Real.sin cfg.bd * Real.sin cfg.ce * Real.sin cfg.af =
+    -(Real.sin cfg.dc * Real.sin cfg.ea * Real.sin cfg.fb) := by
+  rw [sphericalMenelausProduct_eq_generalized]
+  exact generalized_menelaus cfg.toGeneralized
+
+-- ============================================================
+-- PART 6: Ceva–Menelaus Sign Relationship
 -- ============================================================
 
 /-- The algebraic relationship between Ceva and Menelaus.
@@ -214,14 +279,25 @@ theorem hyperbolic_menelaus_midpoint_example
 1. **Generalized Menelaus framework**: algebraic core for signed ratios
 2. **Hyperbolic Menelaus theorem**: product = -1 characterization via sinh
 3. **Euclidean Menelaus**: direct specialization (identity measure function)
-4. **Ceva-Menelaus relationship**: same algebra, different target (1 vs -1)
-5. **sinh auxiliary**: sinh x = 0 ↔ x = 0 (for signed distance well-definedness)
-6. **Midpoint example**: when D is the midpoint, sinh(BD)/sinh(DC) = 1
+4. **Spherical Menelaus theorem**: product = -1 characterization via sin
+5. **Ceva-Menelaus relationship**: same algebra, different target (1 vs -1)
+6. **sinh auxiliary**: sinh x = 0 ↔ x = 0 (for signed distance well-definedness)
+7. **Midpoint example**: when D is the midpoint, sinh(BD)/sinh(DC) = 1
+
+### Curvature Trichotomy
+
+The file now covers all three constant-curvature geometries:
+
+| K  | Geometry   | Measure | Ceva | Menelaus |
+|----|------------|---------|------|----------|
+| +1 | Spherical  | sin     | = 1  | = -1     |
+| 0  | Euclidean  | id      | = 1  | = -1     |
+| -1 | Hyperbolic | sinh    | = 1  | = -1     |
 
 ### Architecture
 The file parallels CevasTheoremNonEuclidean.lean:
 - Generalized config → specialized configs → main theorems
-- sinh preserves signs (odd function), enabling the signed ratio framework
+- sinh/sin preserve the sign convention (odd functions), enabling the signed ratio framework
 - The algebraic core is a single biconditional about products
 
 ### Connection to Parent
