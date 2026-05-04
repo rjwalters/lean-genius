@@ -17,11 +17,11 @@
       "analytic-number-theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-05-03",
     "axiomCount": 3,
-    "assumptions": "3 axioms: (1) chebyshevPsi_upper_bound \u2014 \u03c8(n) \u2264 2n\u00b7log 2 by telescoping the doubling lemma; (2) chebyshevPsi_asymptotic \u2014 \u03c8(n)/n \u2192 1, the Prime Number Theorem for \u03c8; (3) pnt_equivalence \u2014 \u03c8(n)/n \u2192 1 \u2194 \u03c0(n) ~ n/log n, the equivalence of PNT forms. (1 sorry: psi_doubling_le_log_centralBinom \u2014 inner von Mangoldt/Fubini identity, pending Aristotle.)",
-    "lineCount": 219,
+    "assumptions": "3 axioms: (1) chebyshevPsi_upper_bound \u2014 \u03c8(n) \u2264 2n\u00b7log 2 by telescoping the doubling lemma; (2) chebyshevPsi_asymptotic \u2014 \u03c8(n)/n \u2192 1, the Prime Number Theorem for \u03c8; (3) pnt_equivalence \u2014 \u03c8(n)/n \u2192 1 \u2194 \u03c0(n) ~ n/log n, the equivalence of PNT forms.",
+    "lineCount": 316,
     "theoremCount": 9,
     "definitionCount": 2,
     "originalContributions": [
@@ -29,7 +29,9 @@
       "Proof that \u03b8(n) \u2264 \u03c8(n): rewrites log p as vonMangoldt p for primes (chebyshevThetaOQ_eq_sumVonMangoldt), then uses subset sum monotonicity",
       "Proof of chebyshevPsi_doubling_lower: \u03c8(2n) \u2212 \u03c8(n) \u2265 log(n+1) from Bertrand's postulate \u2014 the Bertrand prime p in (n, 2n] contributes \u039b(p) = log p \u2265 log(n+1) to the difference",
       "Summary theorem chebyshevPsi_bounds combining \u03b8 \u2264 \u03c8 and the Bertrand lower bound",
-      "Proof structure for chebyshevPsi_doubling_le: chains psi_doubling_le_log_centralBinom (log\u2009C(2n,n) \u2265 \u03c8(2n)\u2212\u03c8(n), 1 sorry) with fully-proved outer bound log\u2009C(2n,n) \u2264 2n\u00b7log\u20092 via Nat.centralBinom_le_four_pow + Real.log_pow"
+      "Proof of log_factorial_vonMangoldt (Fubini step): log(m!) = \u03a3_{d \u2208 range(m+1)} \u039b(d)\u00b7\u230am/d\u230b via vonMangoldt_sum, Finset.sum_comm', and Nat.card_multiples'",
+      "Proof of psi_doubling_le_log_centralBinom: \u03c8(2n)\u2212\u03c8(n) \u2264 log C(2n,n) via Fubini identity on log factorials, floor coefficients 1 for d \u2208 (n,2n] (Nat.div_eq_of_lt_le), and Hermite inequality for d \u2264 n (Nat.mul_div_le_mul_div_assoc)",
+      "Proof of chebyshevPsi_doubling_le: chains psi_doubling_le_log_centralBinom with log C(2n,n) \u2264 2n\u00b7log 2 via Nat.centralBinom_le_four_pow + Real.log_pow"
     ]
   },
   "overview": {
@@ -114,18 +116,19 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevBoundsOQ04",
-    "lineCount": 219,
+    "lineCount": 316,
     "path": "Proofs/ChebyshevBoundsOQ04.lean",
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 2,
-    "sorries": 1,
+    "sorries": 0,
     "imports": [
-      "Mathlib.NumberTheory.VonMangoldt",
+      "Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt",
       "Mathlib.NumberTheory.Primorial",
       "Mathlib.NumberTheory.PrimeCounting",
       "Mathlib.NumberTheory.Bertrand",
       "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Nat.Factorization.Basic",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Tactic"
     ],
@@ -135,5 +138,5 @@
       "ArithmeticFunction"
     ]
   },
-  "sorries": 1
+  "sorries": 0
 }
