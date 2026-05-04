@@ -17,13 +17,13 @@
       "analytic-number-theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1201,
     "erdosUrl": "https://erdosproblems.com/1201",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_1201_half_case (the \u03b5=1/2 partial result, proved by Erd\u0151s). 1 sorry: backward direction of erdos_1201_strong_iff_smooth_decay (limsup arithmetic step: limsup_add_le + limsup(1/N)=0). The main conjecture ErdosProblem1201 is open. Includes: Bertrand window bounds, Sylvester-Schur, factorial divisibility, \u03b5/k-monotonicity, density-monotonicity, smooth-window duality, lowerDensity infrastructure, ErdosProblem1201Strong formulation, formal reduction ErdosProblem1201 \u2190 smooth-decay conjecture.",
-    "lineCount": 1440,
+    "assumptions": "1 axiom: erdos_1201_half_case (the \u03b5=1/2 partial result, proved by Erd\u0151s). The main conjecture ErdosProblem1201 is open. Includes: Bertrand window bounds, Sylvester-Schur, factorial divisibility, \u03b5/k-monotonicity, density-monotonicity, smooth-window duality, lowerDensity infrastructure, ErdosProblem1201Strong formulation, erdos_1201_strong_iff_smooth_decay (Strong \u2194 smooth-window density \u2192 0), formal reduction ErdosProblem1201 \u2190 smooth-decay conjecture.",
+    "lineCount": 1499,
     "mathlib_version": "4.26.0",
     "theoremCount": 94
   },
