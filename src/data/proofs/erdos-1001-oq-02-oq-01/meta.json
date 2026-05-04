@@ -156,5 +156,6 @@
       "summary": "Proves oq02_rate_not_sharp: |S(N,A,c) - f(A,c)| = o(A log N / N).",
       "mathContext": "The main theorem combines: (1) the sharp rate axiom $|S-f| = O(A(\\log N)^{2/3}(\\log\\log N)^{4/3}/N)$, and (2) the comparison $(\\log N)^{2/3}(\\log\\log N)^{4/3}/N = o(\\log N/N)$, via $\\texttt{IsBigO.trans\\_isLittleO}$. This yields $|S-f| = o(A \\log N/N)$ — strictly better convergence than OQ-02's O bound."
     }
-  ]
+  ],
+  "sorries": 4
 }
