@@ -318,6 +318,7 @@ import Proofs.CauchySchwarzIntegralOQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ01OQ02
+import Proofs.CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01
