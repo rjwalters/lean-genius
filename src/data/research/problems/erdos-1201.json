@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 87 structural theorems (1 sorry → Aristotle, 1 axiom). Formal reduction: ErdosProblem1201 ← smooth-window density decays to 0 as k→∞ (erdos_1201_smooth_decay_implies_conjecture). Frontier: ε∈(0,1/2) via erdos_1201_equiv_small_eps. Truly blocked on density lower bounds (Dickman ρ).",
+    "progressSummary": "PROGRESS: 91 theorems (87+4), 0 sorries, 1 axiom (erdos_1201_half_case). Sessions 1-15 complete. New: bad-set structure for ε < 1/2 (4 theorems). Key structural result: bad set for k=0 is INFINITE for ε < 1/2, witnessed by prime squares.",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -109,10 +109,13 @@
       "erdos_1201_not_good_smooth_window (1153:1095): n bad ↔ window fully smooth",
       "erdos_1201_good_iff_rough_term (1153:1120): n good ↔ ∃ rough term in window",
       "erdos_1201_conditional_proof (1153:1135): Erdős conj from Cramér-type prime gap hypothesis",
-      "erdos_1201_good_prime_k0 (Erdos1201Problem.lean:1159): primes are good for k=0 — rpow_lt_rpow_of_exponent_lt gives n^(1-ε)<n",
-      "upperDensity_compl_ge (Erdos1201Problem.lean:1172): 1-upperDensity(S) ≤ upperDensity(Sᶜ) — 1 sorry for limsup sub-additivity",
-      "erdos_1201_from_bad_density_bound (Erdos1201Problem.lean:1205): bad density ≤ η implies good density ≥ 1-η — uses upperDensity_mono + upperDensity_compl_ge",
-      "erdos_1201_smooth_decay_implies_conjecture (Erdos1201Problem.lean:1231): ErdosProblem1201 follows from smooth-window density decay — one-line reduction"
+      "gpfConsecutive_atTop (Erdos1201Problem.lean:~1159): Filter.Tendsto atTop atTop for fixed n ≥ 2",
+      "erdos_1201_eventually_good (Erdos1201Problem.lean:~1183): ∀ᶠ k in atTop, n^(1-ε) < gpfConsecutive n k",
+      "erdos_1201_density_eventually_large (Erdos1201Problem.lean:~1188): ErdosProblem1201 → ∃K, ∀k≥K, density ≥ 1-η",
+      "greatestPrimeFactor_sq_prime: gpf(p²) = p for prime p (Erdos1201Problem.lean:1280)",
+      "gpfConsecutive_sq_prime: gpfConsecutive(p²)(0) = p (Erdos1201Problem.lean:1289)",
+      "gpfConsecutive_sq_prime_bad_k0: p² not good for k=0 when ε < 1/2 (Erdos1201Problem.lean:1298)",
+      "erdos_1201_bad_set_k0_infinite: bad set for k=0 is infinite for ε < 1/2 (Erdos1201Problem.lean:1315)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
@@ -158,19 +161,22 @@
       "Session 12: Filter.Eventually.of_forall and div_le_div_of_nonneg_right are current Mathlib API replacements",
       "Smooth-window duality: n bad ↔ all gpf(n+i) ≤ n^(1-ε), connecting density to Dickman ρ",
       "erdos_1201_conditional_proof: Erdős #1201 is a formal consequence of prime gap density hypothesis",
-      "Density complement: 1 - upperDensity(S) ≤ upperDensity(Sᶜ) follows from density_S + density_Sᶜ = 1 (exact for each N) + limsup sub-additivity",
-      "n<2 edge case avoided by proving bad⊆complement(good) not complement(bad)⊆good — gpfConsecutive 0 k = 0 ≤ 0^(1-ε) so n=0 is not good",
-      "erdos_1201_smooth_decay_implies_conjecture: the formal reduction makes the Dickman function gap mathematically precise and minimal"
+      "gpfConsecutive_atTop: P(n,k) → +∞ as k → ∞ for fixed n ≥ 2, via infinitude of primes (Session 14)",
+      "Coercions: after interval_cases, hypotheses have ↑0 (Nat.cast) not (0:ℝ), requiring simp [Nat.cast_zero] before rw",
+      "For ε < 1/2, prime squares p² have gpf(p²) = p but (p²)^(1-ε) = p^(2-2ε) > p (since 2*(1-ε) > 1), so p² is NOT good for k=0 — showing k=0 fails for ε < 1/2",
+      "Nat.Prime.dvd_of_dvd_pow is the key lemma: if prime q divides p^n then q divides p — used to show gpf(p²) ≤ p"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
       "Smooth number theory (Dickman's function ρ(u)) not formalized in Mathlib — needed for quantitative density estimates"
     ],
     "nextSteps": [
-      "Aristotle: prove limsup sub-additivity sorry in upperDensity_compl_ge",
-      "Full Sylvester-Schur P(n,k) > k for all n > k: needs binomial/Chebyshev — HARD (>300 lines)",
-      "Density lower bounds: Dickman ρ function — truly BLOCKED (>1000 lines infra)",
-      "erdos_1201_smooth_decay_implies_conjecture documents the precise reduction needed: prove smooth-window density → 0"
+      "Full Sylvester-Schur for ALL k+1 (composite): P(n,k) > k needs binomial coefficient machinery — HARD",
+      "Density lower bounds for ε < 1/2: Dickman ρ function — truly BLOCKED (>1000 lines infra)",
+      "Further structural theorems show diminishing returns; the mathematical frontier is documented in erdos_1201_equiv_small_eps",
+      "Quantify bad-set density for ε < 1/2: prime squares have density → 0 by PNT, but the full bad set (all k=0 bad n) might be denser",
+      "ε = 1/2 case: Erdős claimed proof — key is Bertrand prime in [n, 2n] gives rough term, density from prime number theorem",
+      "Consider: erdos_1201_bad_density_k0_lower_bound — bad set for k=0 has positive density when ε < 1/2"
     ],
     "markdown": "# Erdős #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erdős wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
