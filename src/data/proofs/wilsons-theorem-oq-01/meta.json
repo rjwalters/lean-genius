@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
-    "lineCount": 688,
+    "lineCount": 1114,
     "theoremCount": 35,
     "definitionCount": 9,
     "originalContributions": [
@@ -68,12 +68,15 @@
   },
   "leanFile": {
     "namespace": "WilsonsTheoremGeneralization",
-    "lineCount": 688,
+    "lineCount": 1114,
     "axiomCount": 0,
     "theoremCount": 35,
     "definitionCount": 9,
     "path": "Proofs/WilsonsTheoremOQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Proofs.WilsonsTheoremOQ02"
+    ]
   },
   "crossReferences": [
     {

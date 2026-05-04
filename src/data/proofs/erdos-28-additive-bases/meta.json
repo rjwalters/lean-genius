@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 2,
     "assumptions": "2 axioms for known partial results: grekos_lower_bound (Grekos et al. 2003: if A is an asymptotic basis of order 2, then r_A(n) ≥ 6 for infinitely many n) and borwein_lower_bound (Borwein et al.: r_A(n) ≥ 8 for infinitely many n). The Erdős-Turán conjecture itself (lim sup r_A(n) = ∞) remains open.",
-    "lineCount": 647,
+    "lineCount": 1152,
     "theoremCount": 19,
     "definitionCount": 11,
     "originalContributions": [
@@ -64,12 +64,15 @@
   },
   "leanFile": {
     "namespace": "Erdos28",
-    "lineCount": 647,
+    "lineCount": 1152,
     "axiomCount": 2,
     "theoremCount": 19,
     "definitionCount": 11,
     "path": "Proofs/Erdos28AdditiveBases.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Proofs.Erdos340GreedySidon"
+    ]
   },
   "crossReferences": [
     {

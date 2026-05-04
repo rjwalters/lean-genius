@@ -21,7 +21,7 @@
     "sorries": 0,
     "dateAdded": "2026-05-03",
     "axiomCount": 0,
-    "lineCount": 196,
+    "lineCount": 490,
     "theoremCount": 19,
     "definitionCount": 1,
     "assumptions": "None. 0 axioms, 0 sorries. Inherits from AngleTrisectionOQ05OQ01 (which has 0 axioms).",
@@ -118,12 +118,15 @@
   },
   "leanFile": {
     "namespace": "AngleTrisectionOQ05OQ02",
-    "lineCount": 196,
+    "lineCount": 490,
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 1,
     "path": "Proofs/AngleTrisectionOQ05OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Proofs.AngleTrisectionOQ05OQ01"
+    ]
   },
   "crossReferences": [
     {

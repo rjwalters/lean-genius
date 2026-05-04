@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 169,
+    "lineCount": 327,
     "theoremCount": 12,
     "definitionCount": 0,
     "assumptions": "None. Fully machine-verified. Imports ArithmeticSeriesOQ02OQ04.lean (0 axioms).",
@@ -151,12 +151,15 @@
   ],
   "leanFile": {
     "namespace": "ArithmeticSeriesOQ02OQ04OQ01",
-    "lineCount": 169,
+    "lineCount": 327,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 0,
     "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Proofs.ArithmeticSeriesOQ02OQ04"
+    ]
   },
   "sorries": 0
 }
