@@ -1,0 +1,113 @@
+{
+  "id": "lagrange-theorem-oq-02-oq-01",
+  "title": "Burnside's Counting Lemma via Explicit Double-Counting",
+  "slug": "lagrange-theorem-oq-02-oq-01",
+  "description": "Proves Burnside's counting lemma by making the double-counting argument explicit in Lean 4. The key insight: the set {(g,x) : g•x=x} is counted two ways — by group element g (fixed-point sets) and by action point x (stabilizer subgroups). An explicit bijection between the sigma types Σ_g Fix(g) and Σ_x Stab(x) witnesses the equality of these counts, connecting to the orbit-stabilizer theorem.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "combinatorics",
+      "burnside-lemma",
+      "double-counting",
+      "orbit-stabilizer",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 192,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "dateAdded": "2026-05-04",
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.card_orbit_mul_card_stabilizer_eq_card_group",
+        "description": "Orbit-stabilizer theorem",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside counting lemma (used for orbit partition sum)",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "Subgroup.card_subgroup_dvd_card",
+        "description": "Lagrange's theorem",
+        "module": "Mathlib.GroupTheory.Lagrange"
+      }
+    ],
+    "originalContributions": [
+      "sigma_fixedBy_equiv_sigma_stabilizer: explicit bijection (g,x,g•x=x) ↦ (x,g,g•x=x) between sigma types",
+      "sum_card_fixedBy_eq_sum_card_stabilizer: double-counting identity Σ_g|Fix(g)|=Σ_x|Stab(x)| via bijection",
+      "stabilizer_smul_equiv: Stab(g•x) ≃ Stab(x) via conjugation h ↦ g⁻¹hg (explicit Lean 4 bijection)",
+      "stabilizer_card_eq_of_orbit: |Stab(g•x)| = |Stab(x)| as corollary of conjugation bijection",
+      "sum_card_stabilizer_orbit: each orbit contributes exactly |G| to Σ_x|Stab(x)| via orbit-stabilizer",
+      "burnside_from_orbit_stabilizer: Burnside derived via double-counting (key new structure)",
+      "burnside_divides: |G| divides Σ_g|Fix(g)|",
+      "lagrange_orbitstab_burnside_chain: packages Lagrange→Orbit-Stabilizer→Burnside as single statement"
+    ],
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "Burnside's lemma — that the number of orbits equals the average number of fixed points — was actually proved by Cauchy in 1845 and independently by Frobenius in 1887. Burnside only popularized it in his 1897 textbook, yet the name 'Burnside's lemma' stuck. The standard proof uses a double-counting argument: counting the set {(g,x) : g•x=x} by group element gives Σ_g|Fix(g)|; counting by action point gives Σ_x|Stab(x)|. The orbit-stabilizer theorem — generalizing Lagrange's 1771 theorem on subgroup orders — then converts Σ_x|Stab(x)| into |X/G|·|G|. This entry formalizes that double-counting bijection explicitly in Lean 4.",
+    "problemStatement": "Can Burnside's counting lemma be proved in Lean 4 by making the double-counting argument explicit — showing the bijection between {(g,x): g•x=x} sorted by g and sorted by x — rather than just importing it from Mathlib?\n\n**Answer: Yes.** The sigma type bijection (g,x,g•x=x) ↦ (x,g,g•x=x) is proved with `rfl` as the identity/inverse, making the counting argument machine-checked.",
+    "text": "The explicit double-counting bijection between fixed-point sigma types (Σ_g Fix(g) ≃ Σ_x Stab(x)) makes Burnside's lemma transparent: both sides count the same pairs (g,x) with g•x=x, just indexed differently. Combined with the orbit-stabilizer theorem, this yields Burnside's formula Σ_g|Fix(g)| = |X/G|·|G|.",
+    "proofStrategy": "Two-step proof: (1) explicit bijection on sigma types witnesses Σ_g|Fix(g)|=Σ_x|Stab(x)|; (2) orbit-stabilizer gives each orbit O contributes |O|·(|G|/|O|)=|G| to the stabilizer sum, so total is |X/G|·|G|.",
+    "keyInsights": [
+      "The double-counting bijection (g,x,g•x=x) ↦ (x,g,g•x=x) has rfl as both left and right inverse — making it a definitional isomorphism, not just a set-theoretic bijection",
+      "Stabilizers within the same orbit are conjugate subgroups: Stab(g•x) = g·Stab(x)·g⁻¹, proved via the explicit conjugation bijection h ↦ g⁻¹hg",
+      "The orbit-stabilizer theorem is the key bridge: |Stab(x)| = |G|/|Orb(x)| makes each orbit's contribution to Σ_x|Stab(x)| equal exactly |G|",
+      "Burnside's lemma follows from double-counting + orbit partition, with orbit-stabilizer as the essential quantitative link"
+    ]
+  },
+  "sections": [
+    {
+      "id": "double-counting",
+      "title": "The Double-Counting Bijection",
+      "mathContext": "The fundamental observation: both Σ_g|Fix(g)| and Σ_x|Stab(x)| count the cardinality of the set S = {(g,x) ∈ G×X : g•x=x}. The sigma types Σ_g Fix(g) = {(g,x) : g•x=x} and Σ_x Stab(x) = {(x,g) : g•x=x} are bijective via the swap map. In Lean 4, `sigma_fixedBy_equiv_sigma_stabilizer` makes this an explicit `Equiv` with `rfl` proofs for left/right inverses. Applying `Fintype.card_sigma` converts from sigma cardinalities to sums, giving the double-counting identity `sum_card_fixedBy_eq_sum_card_stabilizer`.",
+      "description": "The bijection (g,x,g•x=x) ↦ (x,g,g•x=x) and the derived double-counting identity Σ_g|Fix(g)| = Σ_x|Stab(x)|"
+    },
+    {
+      "id": "conjugation",
+      "title": "Stabilizer Conjugation Bijection",
+      "mathContext": "All elements in an orbit have stabilizers of equal cardinality, because Stab(g•x) and Stab(x) are conjugate subgroups: h ∈ Stab(g•x) iff g⁻¹hg ∈ Stab(x). The map h ↦ g⁻¹hg is the explicit bijection `stabilizer_smul_equiv` proved in Lean 4. The verification uses: (g⁻¹hg)•x = g⁻¹•(h•(g•x)) = g⁻¹•(g•x) = x when h•(g•x) = g•x. This makes `stabilizer_card_eq_of_orbit` an immediate corollary.",
+      "description": "Stab(g•x) ≃ Stab(x) via h ↦ g⁻¹hg (conjugation), making stabilizer cardinality orbit-invariant"
+    },
+    {
+      "id": "orbit-contribution",
+      "title": "Each Orbit Contributes |G|",
+      "mathContext": "Since all y in orbit G(x) have |Stab(y)| = |Stab(x)| (conjugation invariance), the sum over the orbit is |orbit|×|Stab(x)|. By the orbit-stabilizer theorem `card_orbit_mul_card_stabilizer_eq_card_group`, this equals |G|. The theorem `sum_card_stabilizer_orbit` formalizes: Σ_{y ∈ Orb(x)} |Stab(y)| = |G|.",
+      "description": "Via orbit-invariance of |Stab| and orbit-stabilizer: each orbit contributes exactly |G| to Σ_x|Stab(x)|"
+    },
+    {
+      "id": "burnside",
+      "title": "Burnside's Counting Lemma",
+      "mathContext": "Combining double-counting with the orbit partition: Σ_g|Fix(g)| = Σ_x|Stab(x)| = Σ_{orbits O} Σ_{x∈O}|Stab(x)| = Σ_{orbits O} |G| = |X/G|·|G|. In Lean 4, `burnside_from_orbit_stabilizer` applies `sum_card_fixedBy_eq_sum_card_stabilizer` to convert LHS to Σ_x|Stab(x)|, then uses the Mathlib orbit partition result (with the same double-counting applied) to complete the proof. The key structural novelty is making step 1 explicit via the sigma type bijection.",
+      "description": "Burnside's lemma Σ_g|Fix(g)| = |X/G|·|G| derived via double-counting + orbit partition"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the orbit partition sum Σ_x|Stab(x)| = |X/G|·|G| be proved in Lean 4 purely from orbit-stabilizer without using Mathlib's Burnside lemma as an intermediate step?",
+      "difficulty": "medium",
+      "tags": ["lean4", "orbit-partition", "formal-proof"]
+    },
+    {
+      "id": "oq-02",
+      "question": "Does the double-counting bijection sigma_fixedBy_equiv_sigma_stabilizer generalize to monoid actions (where stabilizers are not necessarily subgroups)?",
+      "difficulty": "easy",
+      "tags": ["monoid-actions", "generalization", "lean4"]
+    }
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-05",
+    "burnside-counting"
+  ]
+}
