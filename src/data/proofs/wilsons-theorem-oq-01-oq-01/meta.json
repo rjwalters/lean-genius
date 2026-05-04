@@ -35,19 +35,19 @@
   },
   "overview": {
     "historicalContext": "Wilson primes are primes p satisfying p² | (p-1)! + 1, a strengthening of Wilson's theorem that (p-1)! ≡ -1 (mod p) for primes p. Equivalently, p is a Wilson prime iff the Wilson quotient W_p = ((p-1)! + 1)/p satisfies p | W_p. The three known Wilson primes are 5 (trivially: 4! + 1 = 25 = 5²), 13 (verified computationally), and 563 (discovered by Goldberg in 1953 using early computers). A connection to Bernoulli numbers, observed by Glaisher (1901), states: p is a Wilson prime iff p divides the numerator of the Bernoulli number B_{p-1}. This links Wilson primes to Kummer's theory of regular primes and Fermat's Last Theorem. Despite intensive computer search (now extending beyond 2×10¹³), no fourth Wilson prime has been found. The heuristic argument predicts that the number of Wilson primes up to N should grow as ln(ln(N)), suggesting about 3 Wilson primes below 10¹³ — consistent with the three known examples.",
-    "problemStatement": "Is the set of Wilson primes infinite? Axiomatize the third Wilson prime 563 and the infinite conjecture; verify the smaller Wilson primes and derive consequences of the conjecture.",
-    "text": "A Wilson prime p satisfies p² | (p-1)! + 1. This strengthens Wilson's theorem (which only requires p | (p-1)! + 1) by demanding the second power of p divides. The Wilson quotient formulation: p is a Wilson prime iff p | W_p where W_p = ((p-1)! + 1)/p. The primes 5 and 13 are verified in Lean by native_decide. The prime 563 cannot be verified this way — 562! has over 1300 decimal digits — so it is axiomatized based on Goldberg's 1953 computation. The open conjecture that infinitely many Wilson primes exist is also axiomatized; consequences include unboundedness. For analogy, the Wieferich primes 1093 and 3511 are included and verified by native_decide.",
-    "proofStrategy": "Direct computation via native_decide for Wilson prime verifications of 5 and 13, and for Wieferich primes 1093 and 3511. The 563 Wilson prime and the infinite conjecture are axioms. Consequences are derived via unpacking the conjecture's universal/existential quantifiers.",
+    "problemStatement": "A prime $p$ is a **Wilson prime** if $p^2 \\mid (p-1)! + 1$, strengthening Wilson's theorem ($p \\mid (p-1)! + 1$) to a second-power condition. The Wilson quotient $W_p = ((p-1)!+1)/p$ is always an integer; $p$ is Wilson iff $p \\mid W_p$. Only three Wilson primes are known: 5, 13, and 563. The open conjecture asks whether infinitely many exist. This entry axiomatizes 563 (too large for `native_decide`) and the conjecture, verifies 5 and 13, derives unboundedness, and includes Wieferich primes ($p^2 \\mid 2^{p-1} - 1$) as an analogy.",
+    "proofStrategy": "Direct computation via `native_decide` for Wilson prime verifications of 5 and 13, and for Wieferich primes 1093 and 3511. The 563 Wilson prime is an `axiom` (Goldberg 1953; 562! exceeds `native_decide` capacity). The infinite conjecture is an `axiom`. Consequences (unboundedness, cofinality) are derived by `obtain`-destructuring the conjecture's `∀ N, ∃ p > N` quantifiers. Primality of 563 is a zero-cost corollary via conjunction projection.",
     "keyInsights": [
-      "563 is axiomatized rather than verified: 562! mod 563² requires arbitrary-precision arithmetic beyond native_decide capacity",
-      "Wieferich prime analogy: p² | 2^(p-1) - 1 mirrors the Wilson prime condition; both 1093 and 3511 are verified by native_decide",
-      "Unboundedness from the conjecture: if Wilson primes were bounded, the set would be finite — contradicting the axiom that gives primes above any N",
-      "Heuristic density: treating W_p mod p as uniform, each prime contributes probability 1/p, and Σ 1/p ≈ ln ln N"
+      "563 is axiomatized, not verified: computing 562! mod 563² requires O(p) modular multiplications over a 1324-digit number, exceeding native_decide's time budget — while Wieferich primes need only O(log p) via repeated squaring",
+      "Pseudorandomness heuristic predicts log log N Wilson primes up to N: treating W_p mod p as uniform gives probability 1/p per prime; Σ 1/p diverges, and Σ_{p ≤ 2×10¹³} 1/p ≈ 3.1 exactly matches the three known examples",
+      "Bernoulli number connection (Glaisher, 1901): p is a Wilson prime iff p divides the numerator of the Bernoulli number B_{p-1}, linking Wilson primes to Kummer's theory of irregular primes and Fermat's Last Theorem",
+      "Wieferich-Wilson parallel: both conditions are second-power upgrades of classical theorems (Wilson's theorem vs. Fermat's little theorem), and both satisfy the same log log N heuristic — Wilson's theorem gives p | (p-1)! + 1, Fermat gives p | 2^(p-1) - 1",
+      "Consequences require no mathematics: unboundedness and cofinality follow from the conjecture axiom by pure logic — obtain destructures the ∀ N, ∃ p > N existential without any number-theoretic work"
     ]
   },
   "conclusion": {
     "summary": "This entry axiomatizes the third Wilson prime 563 (a computation first done by Goldberg in 1953) and the open conjecture that there are infinitely many Wilson primes. Combined with the parent file's verification of 5 and 13, all three known Wilson primes appear in Lean. Consequences of the conjecture (unboundedness) are proved. The Wieferich primes 1093 and 3511 are verified by native_decide as an analogy. Whether the infinite conjecture is true remains one of the simplest-to-state open problems in number theory.",
-    "significance": "First Lean 4 formalization of the Wilson prime infinite conjecture with verified consequences. Provides axiomatized coverage of all three known Wilson primes in a single file. The Wieferich prime verifications (1093, 3511 by native_decide) illustrate the parallel heuristic for Wieferich primes and demonstrate that native_decide can handle those computations even though it cannot handle the 563 Wilson prime verification.",
+    "implications": "First Lean 4 formalization of the Wilson prime infinite conjecture with verified consequences. Provides axiomatized coverage of all three known Wilson primes in a single file. The Wieferich prime verifications (1093, 3511 by native_decide) illustrate why the factorial/exponential distinction matters computationally, and demonstrate the principled use of axioms for externally-verified but kernel-infeasible computations.",
     "openQuestions": [
       "Are there infinitely many Wilson primes? (The axiomatized conjecture, open since at least 1900)",
       "Is there a fourth Wilson prime? The search has reached 2×10¹³ without finding one",
@@ -58,54 +58,60 @@
   },
   "sections": [
     {
+      "id": "core-definitions",
       "title": "Core Definitions",
-      "lines": "27-36",
-      "description": "Defines IsWilsonPrime (p prime and p² | (p-1)! + 1) and wilsonQuotient (((p-1)! + 1) / p).",
-      "theorems": ["IsWilsonPrime", "wilsonQuotient"]
+      "startLine": 27,
+      "endLine": 36,
+      "summary": "Defines IsWilsonPrime (p prime and p² | (p-1)! + 1) and wilsonQuotient (((p-1)! + 1) / p). The Wilson quotient is an integer for every prime p by Wilson's theorem; p is Wilson iff p divides its own quotient."
     },
     {
+      "id": "verified-5-13",
       "title": "Verified Wilson Primes: 5 and 13",
-      "lines": "38-50",
-      "description": "Lean verification by native_decide that 5 and 13 are Wilson primes. These are small enough for Lean's arbitrary-precision kernel arithmetic.",
-      "theorems": ["five_is_wilson_prime", "thirteen_is_wilson_prime"]
+      "startLine": 38,
+      "endLine": 50,
+      "summary": "Lean verification by native_decide that 5 and 13 are Wilson primes. For 5: 4! + 1 = 25 = 5². For 13: 12! + 1 = 479,001,601 and 13² = 169 divides it. Both computations are feasible for native_decide's GMP kernel."
     },
     {
+      "id": "axiom-563",
       "title": "The Third Wilson Prime (Axiom)",
-      "lines": "52-63",
-      "description": "563 is axiomatized as a Wilson prime. The computation 562! mod 563² requires numbers with over 1300 digits, exceeding native_decide capacity. Verified by Goldberg (1953) and Crandall et al. (1997).",
-      "theorems": ["fiveHundredSixtyThree_is_wilson_prime"]
+      "startLine": 52,
+      "endLine": 63,
+      "summary": "563 is axiomatized as a Wilson prime. Computing 562! mod 563² requires O(p) multiplications over a 1324-digit number, exceeding native_decide's time budget. First verified by Goldberg (1953), re-verified by Crandall, Dilcher, and Pomerance (1997)."
     },
     {
+      "id": "open-conjecture",
       "title": "The Open Conjecture",
-      "lines": "65-77",
-      "description": "The main open question: for every N there exists a prime p > N that is a Wilson prime. Supported by the log log N density heuristic; no proof is known.",
-      "theorems": ["infinitely_many_wilson_primes"]
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "The main open question as an axiom: ∀ N, ∃ p > N, Prime p ∧ IsWilsonPrime p. Supported by the log log N heuristic (Σ 1/p diverges); exhaustive search to 2×10¹³ has found no fourth Wilson prime."
     },
     {
+      "id": "consequences",
       "title": "Consequences of the Conjecture",
-      "lines": "79-100",
-      "description": "Packages all three known Wilson primes, extracts primality of 563, and derives unboundedness and the large-Wilson-prime existence property from the conjecture axiom.",
-      "theorems": ["three_known_wilson_primes", "five_sixty_three_is_prime", "wilson_primes_unbounded", "exists_large_wilson_prime"]
+      "startLine": 79,
+      "endLine": 100,
+      "summary": "Four theorems derived from the axioms: three_known_wilson_primes (conjunction of all three), five_sixty_three_is_prime (corollary), wilson_primes_unbounded and exists_large_wilson_prime (cofinality from the conjecture's ∀-∃ by obtain)."
     },
     {
+      "id": "wieferich-analogy",
       "title": "Analogy with Wieferich Primes",
-      "lines": "102-122",
-      "description": "Defines IsWieferichPrime (p prime and p² | 2^(p-1) - 1) and verifies the two known Wieferich primes 1093 (Meissner, 1913) and 3511 (Beeger, 1922) by native_decide, illustrating the parallel heuristic.",
-      "theorems": ["IsWieferichPrime", "wieferich_1093", "wieferich_3511"]
+      "startLine": 102,
+      "endLine": 122,
+      "summary": "Defines IsWieferichPrime (p prime and p² | 2^(p-1) - 1) and verifies 1093 (Meissner, 1913) and 3511 (Beeger, 1922) by native_decide. Exponential modular arithmetic uses O(log p) steps vs. O(p) for factorial, explaining why these are feasible but 563 was not."
     }
   ],
   "crossReferences": [
     {
-      "id": "wilsons-theorem",
+      "proofId": "wilsons-theorem",
       "relationship": "parent — establishes Wilson's theorem (p-1)! ≡ -1 (mod p) for primes p"
     },
     {
-      "id": "wilsons-theorem-oq-01",
+      "proofId": "wilsons-theorem-oq-01",
       "relationship": "parent — defines IsWilsonPrime, proves 5 and 13 are Wilson primes, provides structural tools"
     },
     {
-      "id": "prime-number-theorem-oq-01",
-      "relationship": "related — prime distribution; density arguments for Wilson prime counts"
+      "proofId": "prime-number-theorem-oq-01",
+      "relationship": "related — prime distribution; density arguments for Wilson prime counts via Mertens' theorem"
     }
   ]
 }
