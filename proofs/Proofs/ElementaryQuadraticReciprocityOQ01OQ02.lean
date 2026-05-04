@@ -504,12 +504,10 @@ example : (7 : ℕ) % 3 = 1 := by norm_num
 example : cubExp 7 = 2 := by norm_num [cubExp]
 
 -- Cubic residues mod 7: cubes are {0, 1, 6} since 1³=1, 2³=1, 3³=6, 6³=6 (mod 7)
-example : IsCubicResidue (1 : ZMod 7) := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨1, by decide⟩
-example : IsCubicResidue (6 : ZMod 7) := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨3, by decide⟩  -- 3³ = 27 ≡ 6 mod 7
-example : IsCubicResidue (0 : ZMod 7) := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨0, by simp⟩
+private instance : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+example : IsCubicResidue (1 : ZMod 7) := ⟨1, by decide⟩
+example : IsCubicResidue (6 : ZMod 7) := ⟨3, by decide⟩  -- 3³ = 27 ≡ 6 mod 7
+example : IsCubicResidue (0 : ZMod 7) := ⟨0, by simp⟩
 
 -- Euler criterion for p = 7: cubic residue iff a^2 ≡ 1 (mod 7)
 example : (1 : ZMod 7) ^ 2 = 1 := by decide  -- 1 is cubic residue ✓
