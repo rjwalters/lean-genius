@@ -1,0 +1,243 @@
+{
+  "id": "law-of-cosines-oq-03-oq-02",
+  "title": "Hyperbolic Law of Sines",
+  "slug": "law-of-cosines-oq-03-oq-02",
+  "description": "Formalizes the hyperbolic law of sines sin(A)/sinh(a) = sin(B)/sinh(b) = sin(C)/sinh(c) for hyperbolic triangles. Packages the law as a HyperbolicSineTriangle structure with 6 axiom fields. Derives cross-multiplication forms, the isoceles theorem (a=b ↔ A=B) via arccos injectivity on [0,π], and right-angle specialization. 15 theorems, 6 structure-encoded axioms, 0 sorries.",
+  "leanFile": {
+    "path": "Proofs/LawOfCosinesOQ03OQ02.lean",
+    "namespace": "HyperbolicLawOfSines",
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Tactic",
+      "Proofs.LawOfCosinesOQ03"
+    ],
+    "opens": ["Real"],
+    "axiomCount": 6,
+    "sorries": 0,
+    "lineCount": 264,
+    "theoremCount": 15,
+    "definitionCount": 1
+  },
+  "openQuestion": {
+    "id": "law-of-cosines-oq-03-oq-02",
+    "parentId": "law-of-cosines-oq-03",
+    "question": "What is the hyperbolic law of sines, and does it give an isoceles criterion?",
+    "answer": "The hyperbolic law of sines is sin(A)/sinh(a) = sin(B)/sinh(b) = sin(C)/sinh(c). It implies a=b iff A=B: equal sides force equal sinh values (injectivity of sinh), hence equal sin values via the law, hence equal angles by sin injectivity on (0,π) using the angular defect A+B+C<π to rule out the supplement. 6 structure-encoded axioms, 0 sorries."
+  },
+  "highlights": [
+    "Hyperbolic law of sines: sin(A)/sinh(a) = sin(B)/sinh(b) = sin(C)/sinh(c)",
+    "Isoceles theorem (a=b ↔ A=B) via arccos injectivity on [0,π]",
+    "Cross-multiplication forms for all three pairs of sides/angles",
+    "Right-angle specialization: sin(A)/sinh(a) = 1/sinh(c) when C=π/2",
+    "Equilateral triangle: a=b=c implies A=B=C"
+  ],
+  "assumptions": [
+    "HyperbolicSineTriangle.ha: 0 < a (structure field)",
+    "HyperbolicSineTriangle.hb: 0 < b (structure field)",
+    "HyperbolicSineTriangle.hc: 0 < c (structure field)",
+    "HyperbolicSineTriangle.defect_pos: A+B+C < π (structure field)",
+    "HyperbolicSineTriangle.law_sines: sin A / sinh a = sin B / sinh b (structure field)",
+    "HyperbolicSineTriangle.law_sines_bc: sin B / sinh b = sin C / sinh c (structure field)"
+  ],
+  "implications": [
+    {
+      "statement": "a = b if and only if A = B (isoceles criterion)",
+      "type": "theorem"
+    },
+    {
+      "statement": "sin(A)/sinh(a) = 1/sinh(c) when C = π/2",
+      "type": "corollary"
+    },
+    {
+      "statement": "A = B = C when a = b = c (equilateral)",
+      "type": "corollary"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The hyperbolic law of sines $\\sin A / \\sinh a = \\sin B / \\sinh b = \\sin C / \\sinh c$ is a fundamental identity in hyperbolic trigonometry, alongside the hyperbolic law of cosines. It was developed in the 19th century following the discovery of hyperbolic geometry by Lobachevsky, Bolyai, and Gauss. The law is the direct analogue of the Euclidean law of sines $a/\\sin A = b/\\sin B = c/\\sin C$, with the substitution $a \\to \\sinh a$ (reflecting the hyperbolic metric) and the role of sides and angles transposed: in the hyperbolic law, the sines of the angles appear in the numerator and the hyperbolic sines of the opposite sides in the denominator. The common value $\\sin A / \\sinh a = 1/(2R)$ where $R$ is the circumradius of the hyperbolic triangle in the ambient space. The isoceles criterion $a = b \\Leftrightarrow A = B$ (which holds in Euclidean geometry for the law of sines $a/\\sin A = b/\\sin B$) lifts cleanly to the hyperbolic setting using injectivity of $\\sinh$ and of $\\sin$ on $(0, \\pi)$.",
+    "problemStatement": "Given a hyperbolic triangle with sides $a, b, c > 0$ and angles $A, B, C \\in (0, \\pi)$ opposite the respective sides, with angular defect $A + B + C < \\pi$, formalize the **hyperbolic law of sines**:\n$$\\frac{\\sin A}{\\sinh a} = \\frac{\\sin B}{\\sinh b} = \\frac{\\sin C}{\\sinh c}$$\nand prove the **isoceles theorem**: $a = b \\Leftrightarrow A = B$.",
+    "proofStrategy": "The law is axiomatized via two pairwise equalities in the HyperbolicSineTriangle structure: law_sines (A/a = B/b) and law_sines_bc (B/b = C/c). Transitivity gives A/a = C/c. Cross-multiplication forms (sin A · sinh b = sin B · sinh a, etc.) follow by clearing denominators using sinh > 0 on positive inputs. The isoceles theorem uses: (forward) a=b → sinh a = sinh b → (via law) sin A = sin B → A = B by sin injectivity on (0,π) with supplement excluded by the defect A+B+C<π; (backward) A=B → sin A = sin B → sinh a = sinh b → a = b by sinh injectivity.",
+    "keyInsights": [
+      "The angular defect A+B+C < π is the key constraint that enables the isoceles proof: it rules out the supplement case A = π-B (which would give A+B=π > A+B+C), ensuring that sin A = sin B forces A = B rather than A = π-B.",
+      "The structure HyperbolicSineTriangle encodes 6 axiom fields rather than 3: the positivity constraints (ha, hb, hc) count as axioms because they are geometric facts about hyperbolic distance (side lengths are positive), not provable from the law itself.",
+      "The proof of law_sines_cross_ac (sin A · sinh c = sin C · sinh a) from the other two cross-multiplication equalities requires a careful nlinarith call: direct ring manipulation from the pairwise laws gives sin A · sinh b = sin B · sinh a and sin B · sinh c = sin C · sinh b, and these combine via positivity of sin B and sinh b.",
+      "The injectivity of sinh on ℝ (Real.sinh_injective) follows from the fact that sinh is strictly monotone, which Mathlib provides directly. Combined with div_left_inj' for rational equalities, this yields the backward direction of the isoceles theorem in a few lines.",
+      "The right-angle specialization sin(A)/sinh(a) = 1/sinh(c) when C=π/2 follows immediately from sin(π/2)=1, highlighting the structural analogy with the Euclidean sine rule sin(A) = a/c in a right triangle."
+    ],
+    "prerequisites": [
+      "Hyperbolic law of cosines (parent file LawOfCosinesOQ03.lean)",
+      "Real.sinh: definition and basic properties (sinh_pos_iff, sinh_injective)",
+      "Real.sin_pos_of_pos_of_lt_pi: sin x > 0 for x ∈ (0, π)",
+      "Real.cos_injOn_Icc: cos is injective on [0, π]",
+      "Angular defect: A+B+C < π for hyperbolic triangles"
+    ]
+  },
+  "sections": [
+    {
+      "id": "structure",
+      "title": "HyperbolicSineTriangle Structure",
+      "startLine": 44,
+      "endLine": 72,
+      "summary": "Defines the HyperbolicSineTriangle structure with 6 axiom fields: ha (a>0), hb (b>0), hc (c>0), defect_pos (A+B+C<π), law_sines (sinA/sinha=sinB/sinhb), law_sines_bc (sinB/sinhb=sinC/sinhc). Angle constraints (hA, hB, hC, hA_lt, hB_lt, hC_lt) are stored as additional fields but are positivity/boundedness assumptions, not counted among the 6 mathematical axioms.",
+      "mathContext": "The structure axiomatizes the law without deriving it from a hyperbolic metric model (Poincaré disk, hyperboloid). This is consistent with LawOfCosinesOQ03 which axiomatizes the first and second laws of cosines via structure fields. The status 'axiomatized' correctly reflects the 6 structure-encoded assumptions."
+    },
+    {
+      "id": "sinh-positivity",
+      "title": "sinh Positivity Helpers",
+      "startLine": 74,
+      "endLine": 86,
+      "summary": "sinh_pos_of_pos proves sinh x > 0 for x > 0 via Real.sinh_pos_iff. sinh_pos_ne_zero gives sinh x ≠ 0. Both are needed to clear denominators in div_eq_div_iff calls.",
+      "mathContext": "Real.sinh_pos_iff: sinh x > 0 ↔ x > 0 (from Mathlib). Equivalent to sinh being strictly increasing with sinh(0)=0."
+    },
+    {
+      "id": "ratio-forms",
+      "title": "Three Ratio Forms",
+      "startLine": 87,
+      "endLine": 103,
+      "summary": "law_sines_ac: sin A / sinh a = sin C / sinh c by transitivity (t.law_sines.trans t.law_sines_bc). law_sines_all: conjunction of all three equalities.",
+      "mathContext": "Eq.trans connects the two pairwise laws. The all-three-equal form is useful for downstream consumers needing to match on any specific pair."
+    },
+    {
+      "id": "cross-mult",
+      "title": "Cross-Multiplication Forms",
+      "startLine": 105,
+      "endLine": 140,
+      "summary": "Three theorems: law_sines_cross_ab (sin A · sinh b = sin B · sinh a), law_sines_cross_bc, law_sines_cross_ac. The AB and BC forms follow directly from div_eq_div_iff. The AC form uses nlinarith with the AB and BC forms and positivity of sin B, sinh b.",
+      "mathContext": "$\\sin A / \\sinh a = \\sin B / \\sinh b$ cleared of denominators gives $\\sin A \\cdot \\sinh b = \\sin B \\cdot \\sinh a$. For AC: multiply AB by sinh c and BC by sinh a, then use $\\sin B \\cdot \\sinh b > 0$ to cancel."
+    },
+    {
+      "id": "defect",
+      "title": "Angle Sum and Angular Defect",
+      "startLine": 142,
+      "endLine": 152,
+      "summary": "angle_sum_lt_pi: A+B+C < π (extracts defect_pos). angular_defect_pos: 0 < π-(A+B+C) by linarith.",
+      "mathContext": "The angular defect $\\delta = \\pi - (A+B+C)$ equals the hyperbolic area of the triangle (Gauss-Bonnet, curvature -1). For ideal triangles with all vertices at infinity, $\\delta = \\pi$ (maximum area)."
+    },
+    {
+      "id": "sin-injectivity",
+      "title": "sin Injectivity Lemma on (0,π)",
+      "startLine": 155,
+      "endLine": 210,
+      "summary": "sin_eq_of_lt_pi proves: if sin A = sin B with A, B ∈ (0,π) and A+B < π, then A = B. Key steps: cos²A = cos²B (from sin²A = sin²B); if cos A = -cos B then cos(A+B) = -1 (contradicting A+B < π); so cos A = cos B; then Real.cos_injOn_Icc concludes A = B.",
+      "mathContext": "$\\sin A = \\sin B$ implies $A = B$ or $A = \\pi - B$. The second case gives $A + B = \\pi$, ruled out by $A + B < \\pi$. The proof via $\\cos^2 A = \\cos^2 B$ and $\\cos A = -\\cos B \\Rightarrow \\cos(A+B) = -1 \\Rightarrow A+B = \\pi$ is a clean algebraic route avoiding case splits on intervals."
+    },
+    {
+      "id": "isoceles",
+      "title": "Isoceles Theorem: a=b ↔ A=B",
+      "startLine": 213,
+      "endLine": 236,
+      "summary": "isoceles_iff proves a=b ↔ A=B. Forward: a=b → sinh a=sinh b → (div_left_inj') sin A=sin B → (sin_eq_of_lt_pi) A=B. Backward: A=B → sin A=sin B → (law_sines_cross_ab + nlinarith) sinh a=sinh b → (Real.sinh_injective) a=b.",
+      "mathContext": "The key insight: $\\sin A / \\sinh a = \\sin B / \\sinh b$ and $\\sinh a = \\sinh b$ gives $\\sin A / \\sinh a = \\sin A / \\sinh a$, so $\\sin A = \\sin B$ by div_left_inj'. The angular defect then forces $A = B$ via sin_eq_of_lt_pi."
+    },
+    {
+      "id": "special-cases",
+      "title": "Right-Angle and Equilateral Special Cases",
+      "startLine": 238,
+      "endLine": 264,
+      "summary": "right_angle_sines: C=π/2 gives sinA/sinha = 1/sinhc (since sin(π/2)=1). equilateral_angles: a=b=c implies A=B and B=C by two applications of isoceles_iff and sin_eq_of_lt_pi. ratio_pos: the common ratio sinA/sinha is positive.",
+      "mathContext": "The right-angle case is the hyperbolic analogue of $\\sin A = a/c$ in Euclidean right triangles. The positivity of the ratio sinA/sinha follows from sin_pos_of_pos_of_lt_pi and sinh_pos_of_pos."
+    }
+  ],
+  "conclusion": {
+    "summary": "The hyperbolic law of sines is axiomatized via 6 structure fields in HyperbolicSineTriangle. From the law we derive: the triple-ratio form, three cross-multiplication equalities, the isoceles criterion (a=b↔A=B), right-angle and equilateral specializations. The isoceles proof uses arccos injectivity (via cos_injOn_Icc) after ruling out the supplement case via the angular defect.",
+    "implications": "The hyperbolic law of sines is the fundamental tool for computing angles from sides in hyperbolic geometry, dual to the law of cosines. Together with LawOfCosinesOQ03, it provides the complete hyperbolic trigonometry. The isoceles criterion mirrors the Euclidean case and is used in classifying hyperbolic triangles. The common ratio 1/(2R) identifies the circumradius R in hyperbolic space.",
+    "openQuestions": [
+      "Derive the hyperbolic law of sines from the hyperbolic law of cosines (the two are classically equivalent via sinh-cos-arccos manipulations). This would reduce LawOfCosinesOQ03OQ02 to 0 structure-encoded axioms.",
+      "Prove the circumradius formula R = sinh a / (2 sin A) for hyperbolic triangles, analogous to R = a / (2 sin A) in Euclidean geometry.",
+      "Formalize the full congruence theory for hyperbolic triangles: AAS, ASA, SAS congruence using the law of sines and cosines."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "law-of-cosines-oq-03",
+      "title": "Hyperbolic Law of Cosines",
+      "relationship": "parent"
+    },
+    {
+      "id": "law-of-cosines",
+      "title": "Euclidean Law of Cosines",
+      "relationship": "related"
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-04",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ03OQ02.lean",
+    "tags": [
+      "hyperbolic-geometry",
+      "law-of-sines",
+      "trigonometry",
+      "real-analysis",
+      "isoceles-theorem",
+      "open-question"
+    ],
+    "sorries": 0,
+    "axiomCount": 6,
+    "lineCount": 264,
+    "theoremCount": 15,
+    "definitionCount": 1,
+    "originalContributions": [
+      "HyperbolicSineTriangle structure with 6 axiom fields encoding the hyperbolic law of sines",
+      "law_sines_ac: sin A / sinh a = sin C / sinh c by transitivity",
+      "law_sines_cross_ab/bc/ac: cross-multiplication forms of the law",
+      "sin_eq_of_lt_pi: injectivity lemma for sin on (0,π) under angular defect bound",
+      "isoceles_iff: a = b ↔ A = B via arccos injectivity (cos_injOn_Icc)",
+      "right_angle_sines: specialization to C = π/2",
+      "equilateral_angles: a = b = c implies A = B = C",
+      "ratio_pos: the common ratio sin A / sinh a is positive"
+    ],
+    "proofStrategy": "Axiomatize via HyperbolicSineTriangle structure (6 fields). Derive cross-multiplication forms using div_eq_div_iff and sinh positivity. Prove sin injectivity on (0,π) via cos²A=cos²B (from sin²A=sin²B) → cos A=cos B (ruling out cos A=-cos B by the defect bound) → A=B (cos_injOn_Icc). Apply to prove isoceles_iff.",
+    "openQuestions": [
+      "Derive the hyperbolic law of sines from the hyperbolic law of cosines to eliminate the 6 axiom fields",
+      "Prove the circumradius formula R = sinh a / (2 sin A)",
+      "Formalize AAS, ASA, SAS congruence for hyperbolic triangles"
+    ],
+    "sections": [
+      {
+        "title": "HyperbolicSineTriangle Structure",
+        "content": "Defines the 6-axiom structure: ha, hb, hc (side positivity), defect_pos (angular defect), law_sines (A/a=B/b ratio), law_sines_bc (B/b=C/c ratio). Angles and their bounds are additional non-counted fields.",
+        "startLine": 44,
+        "endLine": 72,
+        "theorems": []
+      },
+      {
+        "title": "sinh Positivity and Ratio Forms",
+        "content": "sinh_pos_of_pos, sinh_pos_ne_zero (denominator clearing). law_sines_ac (A/a=C/c), law_sines_all (all three equal).",
+        "startLine": 74,
+        "endLine": 103,
+        "theorems": ["sinh_pos_of_pos", "sinh_pos_ne_zero", "law_sines_ac", "law_sines_all"]
+      },
+      {
+        "title": "Cross-Multiplication and Defect",
+        "content": "law_sines_cross_ab, law_sines_cross_bc, law_sines_cross_ac. angle_sum_lt_pi, angular_defect_pos.",
+        "startLine": 105,
+        "endLine": 152,
+        "theorems": ["law_sines_cross_ab", "law_sines_cross_bc", "law_sines_cross_ac", "angle_sum_lt_pi", "angular_defect_pos"]
+      },
+      {
+        "title": "sin Injectivity and Isoceles Theorem",
+        "content": "sin_eq_of_lt_pi (injectivity lemma), isoceles_iff (main isoceles result).",
+        "startLine": 155,
+        "endLine": 236,
+        "theorems": ["sin_eq_of_lt_pi", "isoceles_iff"]
+      },
+      {
+        "title": "Special Cases",
+        "content": "right_angle_sines (C=π/2), equilateral_angles (a=b=c → A=B=C), ratio_pos.",
+        "startLine": 238,
+        "endLine": 264,
+        "theorems": ["right_angle_sines", "equilateral_angles", "ratio_pos"]
+      }
+    ],
+    "mathContext": {
+      "field": "Hyperbolic Geometry / Trigonometry",
+      "keyTheorem": "Hyperbolic law of sines: sin(A)/sinh(a) = sin(B)/sinh(b) = sin(C)/sinh(c); isoceles criterion: a=b ↔ A=B.",
+      "historicalBackground": "Discovered alongside hyperbolic geometry (Lobachevsky, Bolyai, Gauss, 19th century). The law is the fundamental computational tool for hyperbolic trigonometry, dual to the law of cosines.",
+      "significance": "Provides the isoceles criterion and right-angle specialization for hyperbolic triangles, useful in classification and computation in hyperbolic geometry and Thurston's geometrization program."
+    }
+  }
+}
