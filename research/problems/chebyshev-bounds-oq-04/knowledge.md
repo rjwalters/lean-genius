@@ -45,8 +45,9 @@ Formalize the second Chebyshev function ψ(n) = Σ_{k≤n} Λ(k) and prove:
 - Submitted Aristotle job: `a6b2d46e-90cf-4f96-a532-c704bee322da`
 
 ### Key Findings
-- `Nat.bertrand (n : ℕ) (hn : 1 ≤ n) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n` is correct current API
-- `Nat.exists_prime_lt_and_le_two_mul` also works but requires `n ≠ 0`
+- `Nat.bertrand (n : ℕ) (hn : n ≠ 0) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n` — current API takes `n ≠ 0`, use `by omega` from `1 ≤ n`
+- `Nat.centralBinom_le_four_pow` does NOT exist in Mathlib; must prove `C(2n,n) ≤ 4^n` inline via `Finset.single_le_sum + Nat.sum_range_choose`
+- `vonMangoldt_nonneg` has `{k : ℕ}` fully implicit; `fun k _ => vonMangoldt_nonneg` in lambda doesn't work — must extract `have hf : ∀ k ∈ s, 0 ≤ vonMangoldt k := fun k _ => vonMangoldt_nonneg` with explicit type annotation
 - `Finset.single_le_sum (hf) hmem` — element is ⦃⦄ semi-implicit; no extra `_` placeholder
 - `Finset.sum_sdiff_eq_sub` cannot be used as `simp only` lemma with proof arg; use `Finset.sum_sdiff` in linarith instead
 - `Real.log (n / 2 + 1)` with `n : ℕ` coerces to REAL division; use `(n / 2 : ℕ) + 1 : ℝ` for nat floor division
@@ -58,9 +59,9 @@ Formalize the second Chebyshev function ψ(n) = Σ_{k≤n} Λ(k) and prove:
 ### Net Effect
 - axiomCount: 4 → 3 (chebyshevPsi_doubling_le converted to theorem)
 - sorryCount: 0 → 1 (psi_doubling_le_log_centralBinom)
-- Docker build: in progress
+- Docker build: ✅ SUCCEEDED (exit 0, 3073 jobs) — PR #15413
 
 ### Next Steps
-- Await Aristotle result for `psi_doubling_le_log_centralBinom`
+- Await Aristotle result for `psi_doubling_le_log_centralBinom` (job `a6b2d46e-90cf-4f96-a532-c704bee322da`)
 - If Aristotle proves it: eliminate sorry, axiomCount 3, sorryCount 0
 - Future: try to prove `chebyshevPsi_upper_bound` from `chebyshevPsi_doubling_le` (requires non-trivial telescoping argument)
