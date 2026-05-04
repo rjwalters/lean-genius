@@ -307,7 +307,7 @@ theorem multinomialEntropy_upper_bound {α : Type*} [DecidableEq α]
         rw [Real.log_mul (ne_of_gt hNR) (ne_of_gt hPpos)]; ring]
       rw [show multinomialProb s p n k - (N : ℝ)⁻¹ =
               multinomialProb s p n k * (1 - ((N : ℝ) * multinomialProb s p n k)⁻¹) from by
-        field_simp; ring]
+        field_simp [hNR.ne', ne_of_gt hPpos]; ring]
       exact mul_le_mul_of_nonneg_left (log_lb _ hNPpos) (le_of_lt hPpos)
   -- Sum the per-term bounds: ∑(P k - 1/N) ≤ ∑(log N * P k + entropy term)
   have sum_lb : (0 : ℝ) ≤
