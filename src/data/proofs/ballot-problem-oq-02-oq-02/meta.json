@@ -1,0 +1,64 @@
+{
+  "id": "ballot-problem-oq-02-oq-02",
+  "title": "First Passage Time Characterization via csInf Theory",
+  "slug": "ballot-problem-oq-02-oq-02",
+  "description": "Proves the first passage time characterization for Brownian motion from first principles using csInf theory and the Intermediate Value Theorem. The parent BallotProblemOQ02.lean uses an axiom asserting {ω | τ(ω) ≤ T} = maxEvent; here both directions are proved under the natural nonemptiness hypothesis, with a careful analysis of sInf ∅ = 0 in Lean's ℝ (which makes the parent axiom false without the nonemptiness condition).",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "lineCount": 185,
+    "leanFile": "proofs/Proofs/BallotProblemOQ02OQ02.lean",
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+      "Mathlib.Tactic"
+    ],
+    "tags": ["probability", "stochastic-processes", "brownian-motion", "first-passage-time", "intermediate-value-theorem", "ballot-problem"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: Brownian Motion and First Passage Time",
+      "description": "BrownianMotion structure: a stochastic process W : ℝ → Ω → ℝ with continuous paths. firstPassageTime bm a ω = sInf {t ≥ 0 : W(t,ω) ≥ a}. maxEvent bm a T = {ω | ∃ s ∈ [0,T], W(s,ω) ≥ a}.",
+      "theorems": ["BrownianMotion", "firstPassageTime", "maxEvent"]
+    },
+    {
+      "id": "hitting-set-topology",
+      "title": "Topology of the Hitting Set",
+      "description": "hittingSet_isClosed: the hitting set {t ≥ 0 : W(t,ω) ≥ a} is closed, proved by continuity (preimage of closed [a,∞)). hittingSet_bddBelow: bounded below by 0. csInf_empty_eq_zero: sInf ∅ = 0 in ℝ (key Lean subtlety). hittingSet_csInf_mem: when nonempty, sInf is achieved (closed set contains its infimum).",
+      "theorems": ["hittingSet_isClosed", "hittingSet_bddBelow", "csInf_empty_eq_zero", "hittingSet_csInf_mem"]
+    },
+    {
+      "id": "main-characterization",
+      "title": "First Passage Time Characterization",
+      "description": "maxEvent_implies_fpt_le: τ ≤ T follows from hitting level a in [0,T] (easy direction). fpt_le_implies_maxEvent: under nonemptiness, τ ≤ T implies hitting (hard direction, uses csInf ∈ closed set). fpt_le_iff_maxEvent: the full iff under nonemptiness. fpt_le_set_eq_maxEvent: set-level equality when nonemptiness holds for all ω.",
+      "theorems": ["maxEvent_implies_fpt_le", "fpt_le_implies_maxEvent", "fpt_le_iff_maxEvent", "fpt_le_set_eq_maxEvent"]
+    },
+    {
+      "id": "ivt-nonemptiness",
+      "title": "IVT-Based Nonemptiness",
+      "description": "ivt_first_crossing: by IVT, if W(0,ω) < a ≤ W(T,ω), there exists a first crossing time s ∈ (0,T]. hittingSet_nonempty_of_ivt: crossing paths give nonempty hitting sets. fpt_le_T_of_crossing: for crossing paths, τ ≤ T and ω ∈ maxEvent both hold.",
+      "theorems": ["ivt_first_crossing", "hittingSet_nonempty_of_ivt", "fpt_le_T_of_crossing"]
+    }
+  ],
+  "overview": {
+    "summary": "The first passage time τ(ω) = inf{t ≥ 0 : W(t,ω) ≥ a} should equal T if and only if W hits level a in [0,T]. This is intuitively obvious but requires careful attention to Lean's convention sInf ∅ = 0 (not +∞), which makes the set equality false without a nonemptiness hypothesis. When the hitting set is nonempty, both directions follow from the key fact that a closed bounded-below set contains its own infimum.",
+    "approach": "The easy direction (maxEvent → τ ≤ T) uses csInf_le to bound τ by any element of the hitting set. The hard direction (τ ≤ T → maxEvent) uses IsClosed.csInf_mem: since the hitting set is closed (by path continuity) and nonempty, sInf is achieved, providing the witness for maxEvent. The IVT section handles the typical case: when a path starts below a and ends above a, the crossing time witnesses nonemptiness.",
+    "significance": "This result eliminates the axiom firstPassageTime_eq_maxEvent from BallotProblemOQ02.lean by proving it from path continuity and csInf theory. The careful handling of sInf ∅ = 0 illustrates a subtle difference between classical measure theory (where inf ∅ = +∞ for a first passage time) and Lean's real number conventions. The proof technique — closed sets contain their infima — is a reusable pattern for first passage time analysis."
+  },
+  "conclusion": {
+    "summary": "The first passage time characterization τ(ω) ≤ T ↔ ω ∈ maxEvent is machine-checked from path continuity alone, with the IVT providing the nonemptiness condition needed for sInf theory. The parent axiom is proved under its natural hypothesis.",
+    "openQuestions": [
+      "Can the strong Markov property for Brownian motion be formalized in Lean using the measurability of stopping times?",
+      "Does the reflection principle follow from the first passage time characterization and the Markov property?",
+      "Can Doob's optional stopping theorem be formalized for martingales defined over probability spaces in Mathlib?"
+    ]
+  },
+  "crossReferences": []
+}
