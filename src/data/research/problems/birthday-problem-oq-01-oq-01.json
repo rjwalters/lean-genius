@@ -1,0 +1,127 @@
+{
+  "slug": "birthday-problem-oq-01-oq-01",
+  "title": "Birthday Distribution: Formal Analysis of Collision Count X",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Define } X(f) = |\\{(i,j) : i < j,\\, f(i) = f(j)\\}|. \\text{ Prove: } X=0 \\iff f \\text{ injective},\\; \\#\\{f \\mid X=0\\} = d^{\\underline{n}},\\; \\Pr(X=0) = d^{\\underline{n}}/d^n,\\; E[X] = \\binom{n}{2}/d.",
+    "plain": "Can the distribution of X (number of birthday collision pairs) be analyzed formally in Lean, beyond just computing E[X]? Define X, prove X=0 ↔ injective, count {f|X=0} = descFactorial(d,n), prove Pr(X=0) = descFactorial/d^n, and show E[X] = C(n,2)/d via double counting.",
+    "whyMatters": [
+      "Formally defines the collision count random variable X as a Lean Finset.card",
+      "Proves X=0 ↔ injective — connecting collision count to the birthday paradox",
+      "Unifies two formalizations: #{f|X=0}=descFactorial (from BirthdayProblem.lean) and E[X]=C(n,2)/d (from BirthdayProblemOQ01.lean) share the same combinatorial foundation",
+      "Provides complete distributional picture: Pr(X=0), E[X], Var(X), Var(X)≤E[X]"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "collisionCount_eq_zero_iff: X(f) = 0 ↔ f injective",
+      "card_zero_collision: #{f|X=0} = Nat.descFactorial d n",
+      "zero_collision_fraction: Pr(X=0) = descFactorial(d,n)/d^n (unification theorem)",
+      "collisionCount_eq_sum_indicators: X = Σ_{i<j} I_{ij}",
+      "collisionCount_le_choose_two: X ≤ C(n,2)",
+      "mean_collisionCount: E[X] = C(n,2)/d (assuming sum_collisionCount)",
+      "variance_bounded_by_mean: Var(X) ≤ E[X]"
+    ],
+    "open": [
+      "card_ordered_pairs: #{(i,j) ∈ Fin n × Fin n | i<j} = C(n,2) — sorry",
+      "card_funs_shared_birthday: #{f : Fin n → Fin d | f(i)=f(j)} = d^{n-1} — sorry",
+      "sum_collisionCount: Σ_f X(f) = C(n,2)·d^{n-1} — sorry"
+    ],
+    "goal": "Eliminate the 3 sorry lemmas to make the full E[X] proof complete"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-04T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Main structure proved. 3 sorry lemmas remain: card_ordered_pairs, card_funs_shared_birthday, sum_collisionCount.",
+    "blockers": [],
+    "nextAction": "Prove card_ordered_pairs via Finset.card_offDiag or explicit induction; prove card_funs_shared_birthday via Fin equivalence bijection.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Distribution analysis file created with 15 theorems, 3 sorry lemmas. Key results proved: X=0↔injective, #{f|X=0}=descFactorial, Pr(X=0) formula, indicator decomposition.",
+    "builtItems": [
+      "collisionCount def: X(f) = Finset.card of filtered pairs (i,j) with i<j and f(i)=f(j) [BirthdayProblemOQ01OQ01.lean:59]",
+      "collisionIndicator def: I_{ij}(f) = if f(i)=f(j) then 1 else 0 [BirthdayProblemOQ01OQ01.lean:63]",
+      "collisionCount_eq_zero_iff: X=0 ↔ injective via filter_eq_empty [BirthdayProblemOQ01OQ01.lean:71]",
+      "card_zero_collision: #{f|X=0}=descFactorial via Equiv chain + Fintype.card_embedding_eq [BirthdayProblemOQ01OQ01.lean:98]",
+      "zero_collision_fraction: Pr(X=0) = descFactorial(d,n)/d^n (unification) [BirthdayProblemOQ01OQ01.lean:126]",
+      "collisionCount_eq_sum_indicators: X = Σ_{i<j} I_{ij} [BirthdayProblemOQ01OQ01.lean:138]",
+      "collisionCount_le_choose_two: X ≤ C(n,2) [BirthdayProblemOQ01OQ01.lean:162]",
+      "mean_collisionCount: E[X] = expectedPairs assuming sum_collisionCount [BirthdayProblemOQ01OQ01.lean:204]"
+    ],
+    "insights": [
+      "X=0 ↔ injective: the collision count is zero exactly when no two inputs share a value — proved via Finset.card_eq_zero + lt_or_gt_of_ne case split",
+      "Equiv chain pattern: {f|X=0} ≃ {f|injective} ≃ (Fin n ↪ Fin d) allows Fintype.card_embedding_eq to apply directly",
+      "Unification: both BirthdayProblem.lean and this file compute descFactorial(d,n)/d^n for Pr(X=0) — confirmed same formula",
+      "Indicator decomposition: Finset.card_filter = Finset.sum of {0,1} values — proved via sum_congr + case split",
+      "Double counting (Fubini): Σ_f X(f) = Σ_f Σ_{i<j} I_{ij}(f) = Σ_{i<j} d^{n-1} = C(n,2)·d^{n-1} — needs two sorry lemmas",
+      "card_ordered_pairs approach: use Finset.card_offDiag (= n(n-1)) + bijection with strict-order pairs, or induction on n",
+      "card_funs_shared_birthday approach: bijection with Fin d × (Fin(n-1) → Fin d) using Fin n \\ {j} ≃ Fin(n-1)"
+    ],
+    "mathlibGaps": [
+      "Finset.card_lt_pairs (or equivalent for #{(i,j)|i<j in Fin n} = n.choose 2) — may require constructing bijection manually",
+      "Fintype.card of functions with one value fixed — needed for card_funs_shared_birthday"
+    ],
+    "nextSteps": [
+      "Prove card_ordered_pairs: try Finset.card_filter on univ (Fin n × Fin n) with p.1 < p.2 — may use Finset.card_lt_pairs or induction",
+      "Prove card_funs_shared_birthday: construct Equiv between {f|f(i)=f(j)} and Fin d × (Fin(n-1) → Fin d)",
+      "Once both proved, sum_collisionCount follows via simp_rw + Finset.sum_comm + Finset.sum_const"
+    ]
+  },
+  "tags": [
+    "probability",
+    "birthday-problem",
+    "combinatorics",
+    "random-variable",
+    "expected-value",
+    "descFactorial",
+    "indicator"
+  ],
+  "relatedProofs": [
+    "birthday-problem",
+    "birthday-problem-oq-01",
+    "birthday-problem-oq-02",
+    "birthday-problem-oq-02-oq-01",
+    "birthday-problem-oq-03",
+    "birthday-problem-oq-03-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-02",
+    "birthday-problem-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Fintype.card_embedding_eq",
+      "Equiv.subtypeEquivRight",
+      "Fintype.card_fun",
+      "Nat.descFactorial",
+      "Nat.choose"
+    ]
+  },
+  "started": "2026-05-04T00:00:00.000Z",
+  "lastUpdate": "2026-05-04T12:00:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 241,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    }
+  ]
+}

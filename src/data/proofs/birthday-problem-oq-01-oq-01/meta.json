@@ -1,0 +1,158 @@
+{
+  "id": "birthday-problem-oq-01-oq-01",
+  "title": "Birthday Distribution: Formal Analysis of Collision Count X",
+  "slug": "birthday-problem-oq-01-oq-01",
+  "description": "Formal distributional analysis of X = number of birthday collision pairs. Defines X(f) = |{(i,j) : i < j, f(i)=f(j)}|, proves X=0 ↔ injective, #{f|X=0} = descFactorial(d,n), Pr(X=0) = descFactorial(d,n)/d^n, the indicator decomposition X = Σ I_{ij}, and the bound E[X] = C(n,2)/d assuming double counting (3 sorries).",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "combinatorics",
+      "random-variable",
+      "expected-value",
+      "descFactorial",
+      "indicator"
+    ],
+    "badge": "wip",
+    "sorries": 3,
+    "axiomCount": 0,
+    "lineCount": 241,
+    "theoremCount": 15,
+    "assumptions": "3 sorries remaining: card_ordered_pairs (#{(i,j)|i<j in Fin n} = C(n,2)), card_funs_shared_birthday (#{f|f(i)=f(j)} = d^{n-1}), sum_collisionCount (double counting Σ_f X(f) = C(n,2)·d^{n-1}). All other theorems including X=0↔injective, #{f|X=0}=descFactorial, Pr(X=0), indicator decomposition, and E[X] assuming double counting are fully proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_embedding_eq",
+        "description": "Number of injective functions Fin n ↪ Fin d equals descFactorial d n",
+        "module": "Mathlib.Logic.Embedding.Basic"
+      },
+      {
+        "theorem": "Equiv.subtypeEquivRight",
+        "description": "Subtype equivalence for rewriting between X=0 and injective",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Fintype.card_fun",
+        "description": "Total assignments |{f : Fin n → Fin d}| = d^n",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients C(n,2) for the expected pairs bound",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of collisionCount X(f) = |{(i,j) : i<j, f(i)=f(j)}| as a Lean Finset.card",
+      "Proof that X(f)=0 ↔ f injective via Finset.filter_eq_empty characterization",
+      "Proof that #{f|X=0} = descFactorial d n via Equiv chain through embeddings",
+      "Unification theorem: Pr(X=0) = descFactorial(d,n)/d^n connecting collision count to birthday paradox",
+      "Indicator decomposition: X = Σ_{i<j} collisionIndicator f i j proved by Finset rewrite",
+      "Upper bound: X ≤ C(n,2) at most one collision per ordered pair",
+      "Distributional summary: bounds, probability formula, E[X], Var[X] all organized systematically"
+    ],
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "birthday-problem",
+        "relationship": "Proves Pr(X=0) = descFactorial(d,n)/d^n using the same combinatorial foundation"
+      },
+      {
+        "id": "birthday-problem-oq-01",
+        "relationship": "Imports expectedPairs and variancePairs; proves E[X] = expectedPairs via double counting"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The birthday problem (von Mises, 1939) asks for the probability that no two people share a birthday. A natural extension is to study the full distribution of X = number of birthday collision pairs, not just P(X=0). The expected value E[X] = C(n,2)/d follows from linearity of expectation (birthday-problem-oq-01). This file formalizes X itself as a Lean definition and proves structural theorems: X=0 ↔ injective, the exact zero-collision count #{f|X=0} = descFactorial(d,n), the probability formula Pr(X=0), and the indicator decomposition X = Σ I_{ij}.",
+    "problemStatement": "Can the distribution of X (number of birthday collision pairs) be analyzed formally in Lean, beyond just computing E[X]?",
+    "proofStrategy": "Define X(f) as a Finset.card (cardinality of filtered pairs). Prove X=0 ↔ injective via Finset.card_eq_zero. Count injections via Equiv chain: {f|X=0} ≃ {f|injective} ≃ (Fin n ↪ Fin d), then apply Fintype.card_embedding_eq. The indicator decomposition rewrites the filter via Finset.card_filter = Finset.sum. Double counting (Σ_f X(f) = C(n,2)·d^{n-1}) requires two sorry'd lemmas: card_ordered_pairs and card_funs_shared_birthday.",
+    "keyInsights": [
+      "**X=0 ↔ Injective**: The collision count is zero exactly when no two inputs share a value — this is precisely injectivity. Proved via ne_of_lt and Finset.filter_eq_empty.",
+      "**Equiv chain for injection counting**: {f|X=0} ≃ (Fin n ↪ Fin d) via two intermediate equivalences, allowing Fintype.card_embedding_eq to give descFactorial(d,n).",
+      "**Unification**: Pr(X=0) = descFactorial(d,n)/d^n connects the collision-count formalization (this file) to the birthday paradox formalization (BirthdayProblem.lean) — they compute the same probability.",
+      "**Fubini for finite sums**: Σ_f X(f) = Σ_f Σ_{i<j} I_{ij}(f) = Σ_{i<j} Σ_f I_{ij}(f) = C(n,2)·d^{n-1}. This double counting argument (once the two sorry'd lemmas are proved) gives E[X] = C(n,2)/d.",
+      "**Distributional completeness**: Together with BirthdayProblemOQ01.lean, this file provides Pr(X=0), E[X]=C(n,2)/d, Var(X)=C(n,2)(d-1)/d², and Var(X) ≤ E[X] — a comprehensive distributional picture."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "Defines collisionCount X(f) = |{(i,j) : i<j, f(i)=f(j)}| and collisionIndicator I_{ij}(f) ∈ {0,1}.",
+      "mathContext": "$X(f) = |\\{(i,j) : i < j,\\, f(i) = f(j)\\}|$; $I_{ij}(f) = \\mathbb{1}[f(i)=f(j)]$."
+    },
+    {
+      "id": "x-zero-iff-injective",
+      "title": "X = 0 ↔ Injective",
+      "startLine": 70,
+      "endLine": 88,
+      "summary": "Proves collisionCount f = 0 iff f is injective. Core: Finset.card_eq_zero ↔ filter is empty ↔ no i<j with f(i)=f(j).",
+      "mathContext": "$X(f) = 0 \\iff f$ injective. Proof uses $\\text{card}=0 \\iff \\text{filter empty}$."
+    },
+    {
+      "id": "zero-collision-count",
+      "title": "Zero-Collision Count = descFactorial",
+      "startLine": 93,
+      "endLine": 116,
+      "summary": "Proves #{f : Fin n → Fin d | X(f) = 0} = Nat.descFactorial d n via Equiv chain through embeddings.",
+      "mathContext": "$|\\{f : [n]\\to[d] \\mid X(f)=0\\}| = d^{\\underline{n}}$. Uses $\\text{Fintype.card\\_embedding\\_eq}$."
+    },
+    {
+      "id": "probability-formula",
+      "title": "Probability Formula",
+      "startLine": 121,
+      "endLine": 131,
+      "summary": "Proves Pr(X=0) = descFactorial(d,n)/d^n as a rational number. Unifies collision-count and birthday-paradox formalizations.",
+      "mathContext": "$\\Pr(X=0) = d^{\\underline{n}}/d^n$. Follows from card_zero_collision and card_all_assignments."
+    },
+    {
+      "id": "indicator-decomposition",
+      "title": "Indicator Decomposition",
+      "startLine": 137,
+      "endLine": 146,
+      "summary": "Proves X(f) = Σ_{i<j} I_{ij}(f) by rewriting Finset.card_filter as Finset.sum.",
+      "mathContext": "$X(f) = \\sum_{i<j} I_{ij}(f)$ via $|\\text{filter P}| = \\sum_{x\\in S} \\mathbb{1}[P(x)]$."
+    },
+    {
+      "id": "distributional-bounds",
+      "title": "Distributional Bounds",
+      "startLine": 152,
+      "endLine": 170,
+      "summary": "X ≤ C(n,2) (at most one collision per pair). card_ordered_pairs sorry'd; collisionCount_le_choose_two depends on it.",
+      "mathContext": "$X(f) \\leq \\binom{n}{2}$ since each ordered pair contributes at most 1 to the count."
+    },
+    {
+      "id": "double-counting",
+      "title": "Double Counting and Expected Value",
+      "startLine": 176,
+      "endLine": 217,
+      "summary": "Three sorry'd lemmas (card_ordered_pairs, card_funs_shared_birthday, sum_collisionCount) plus proved mean_collisionCount assuming sum_collisionCount.",
+      "mathContext": "$\\sum_f X(f) = \\binom{n}{2} \\cdot d^{n-1}$; dividing by $d^n$ gives $E[X] = \\binom{n}{2}/d$."
+    },
+    {
+      "id": "concentration",
+      "title": "Concentration Results",
+      "startLine": 223,
+      "endLine": 239,
+      "summary": "Imports variancePairs bounds from OQ01. Var(X) ≤ E[X] and E[X] > 0 for n≥2.",
+      "mathContext": "$\\text{Var}(X) = \\binom{n}{2}(d-1)/d^2 \\leq \\binom{n}{2}/d = E[X]$ when $d \\geq 1$."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+    "filename": "BirthdayProblemOQ01OQ01.lean",
+    "lineCount": 241,
+    "theoremCount": 15,
+    "axiomCount": 0,
+    "defCount": 2,
+    "sorryCount": 3,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+  }
+}
