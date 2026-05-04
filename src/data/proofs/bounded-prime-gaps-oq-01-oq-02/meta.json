@@ -73,43 +73,44 @@
       "title": "EH-Conditional H ≤ 12",
       "startLine": 30,
       "endLine": 64,
-      "description": "Main results: quintuple_card, quintuple_le_12, eh_conditional_h_le_12 (the core theorem), and eh_strictly_improves_on_246. The key theorem derives H ≤ 12 by applying maynard_tao_sieve_eh to the admissible {0,2,6,8,12} from OQ01."
+      "summary": "Main results: quintuple_card (card=5), quintuple_le_12 (all elements ≤ 12), eh_conditional_h_le_12 (the core theorem applying maynard_tao_sieve_eh to {0,2,6,8,12}), and eh_strictly_improves_on_246 (H ≤ 12 implies ∃H < 246 with infinitely many gaps ≤ H)."
     },
     {
       "id": "numerical",
       "title": "Numerical Comparison of Bounds",
       "startLine": 65,
       "endLine": 99,
-      "description": "Arithmetic theorems about the gap between EH (12) and unconditional (246) bounds: eh_bound_lt_polymath_bound, bound_gap (234), eh_improvement_factor (≥20×), sieve_threshold_ratio (5×10=50), and no_admissible_5_tuple_diam_le_10 (exhaustive non-admissibility)."
+      "summary": "Arithmetic theorems: eh_bound_lt_polymath_bound (12 < 246), bound_gap (234 = 246-12), eh_improvement_factor (20·12 ≤ 246), sieve_threshold_ratio (5·10 = 50), bv_needs_10x_more_elements, and no_admissible_5_tuple_diam_le_10 (exhaustive non-admissibility witness for all 5 even 5-tuples with diameter ≤ 10)."
     },
     {
       "id": "sieve-level",
       "title": "Sieve Level Analysis",
       "startLine": 100,
       "endLine": 143,
-      "description": "BV vs EH level comparison: bvLevel = ehLevel = 1/2 (a definitional marker; both regimes share the level value 1/2). The substantive numeric facts are eh_threshold_lt_bv_threshold (5 < 50) and eh_threshold_divides_bv (5 | 50); the companion theorems bv_requires_50_elements and eh_requires_5_elements are literal-equality markers recording the threshold values."
+      "summary": "bvLevel = ehLevel = 1/2 (both definitions, equal by rfl). bv_requires_50_elements (50=50) and eh_requires_5_elements (5=5) are literal-equality markers. Substantive inequalities: eh_threshold_lt_bv_threshold (5 < 50) and eh_threshold_divides_bv (5 | 50), recording the 10× reduction in tuple size from BV to EH level."
     },
     {
       "id": "witnesses",
       "title": "Admissible Tuple Witnesses",
       "startLine": 145,
       "endLine": 170,
-      "description": "Two optimal 5-tuple witnesses for the EH bound: eh_witness_1 ({0,2,6,8,12}) and eh_witness_2 ({0,4,6,10,12}), with two_optimal_5_tuples confirming they are distinct. sieve_witness_comparison shows the 5-tuple is much smaller than the BV 50-tuple."
+      "summary": "Two optimal 5-tuple witnesses: eh_witness_1 ({0,2,6,8,12}) and eh_witness_2 ({0,4,6,10,12}), both of diameter 12. two_optimal_5_tuples confirms they are distinct (native_decide). quintuple_diameter (12-0=12). sieve_witness_comparison: |{0,2,6,8,12}| = 5 < 50."
     },
     {
       "id": "open-problem",
       "title": "Open Problem and Hierarchy",
       "startLine": 172,
-      "endLine": 218,
-      "description": "OpenQuestion01OQ02 definition, gap_bound_eh_implies_unconditional and gap_bound_tpc_implies_eh (TPC → EH → unconditional), eh_conditional_range (2 ≤ H_opt ≤ 12 under EH), eh_solves_oq01oq02 (EH is sufficient), and h12_unconditional_implies_progress (any unconditional H ≤ 12 surpasses current state of the art)."
+      "endLine": 219,
+      "summary": "OpenQuestion01OQ02 definition (∃H ≤ 12, infinitely many prime gaps ≤ H), gap_bound_eh_implies_unconditional (H≤12 → H≤246) and gap_bound_tpc_implies_eh (TPC → EH bound), eh_conditional_range (2 ≤ H_opt ≤ 12 under EH), eh_solves_oq01oq02 (EH proves OpenQuestion01OQ02), and h12_unconditional_implies_progress (any unconditional H≤12 surpasses state of art)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the Elliott-Halberstam conditional improvement of the prime gap bound from H ≤ 246 to H ≤ 12. The 25 proved theorems with 0 sorries and 1 axiom (maynard_tao_sieve_eh) give a complete structural picture: the sieve threshold difference (k=5 vs k=50) traces back to the BV-vs-EH level gap (θ < 1/2 vs θ = 1/2), and the open problem is precisely whether this critical boundary can be crossed without assuming EH.",
+    "summary": "This formalization captures the Elliott-Halberstam conditional improvement from H ≤ 246 (unconditional Polymath 8b) to H ≤ 12. With 25 proved theorems, 0 sorries, and 1 axiom (maynard_tao_sieve_eh), the file gives a complete structural picture: the 10× reduction in sieve threshold (k=50 → k=5) traces back to the single step from strict θ < 1/2 to equality θ = 1/2 in the distribution estimate for primes in APs, and the optimal admissible 5-tuple {0,2,6,8,12} of diameter 12 gives the best possible EH-conditional bound.",
+    "implications": "The EH conditional bound H ≤ 12 represents the current frontier between what is conditionally achievable and what the Twin Prime Conjecture predicts (H=2). Proving EH unconditionally — or finding a sieve argument that requires only k=5 without EH-level estimates — would be a major breakthrough in analytic number theory, yielding H ≤ 12 as a theorem. The formal definition of OpenQuestion01OQ02 makes this milestone machine-checkable: any proof of that proposition constitutes progress beyond Polymath 8b. The formalization also illustrates how conditional improvements in number theory can be precisely organized around distribution estimates (BV vs EH) and their sieve-theoretic consequences.",
     "openQuestions": [
-      "Can H ≤ 12 be proved unconditionally — i.e., can the EH conjecture be proved or bypassed?",
-      "Does a new sieve technique exist that achieves k=5 without EH-level distribution estimates?",
-      "Can the Maynard-Tao sieve be formalized in Lean 4, eliminating the maynard_tao_sieve_eh axiom?"
+      "Can H ≤ 12 be proved unconditionally — i.e., can the EH conjecture be proved, or can its hypothesis be avoided by a new sieve argument?",
+      "Does a new sieve technique exist that achieves the k=5 threshold without full EH-level primes-in-APs distribution?",
+      "Can the Maynard-Tao sieve framework be formalized in Lean 4 / Mathlib, eliminating the maynard_tao_sieve_eh axiom entirely?"
     ]
   },
   "crossReferences": [
