@@ -1,0 +1,62 @@
+{
+  "id": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+  "title": "Mathlib Contribution: ncard_biUnion_eq_of_uniform (Uniform Fiber Cardinality)",
+  "slug": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+  "description": "Answers whether the abstract ncard_biUnion_eq_of_uniform lemma (proved in ballot-problem-oq-01-oq-02-oq-01 for the multi-candidate ballot fiber analysis) can be contributed to Mathlib. Answer: Yes. Presents the lemma in Mathlib-ready form using Set.PairwiseDisjoint, adds three specializations (Set index, Finset index, Fintype index), and provides a concrete disjoint-pairs example. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "set-theory",
+      "cardinality",
+      "ballot-problem",
+      "mathlib-contribution",
+      "finite-sets"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 0,
+    "assumptions": "",
+    "lineCount": 175,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "ncard_biUnion_eq_of_uniform: Set-indexed version with PairwiseDisjoint (Mathlib-ready form)",
+      "ncard_biUnion_eq_of_uniform_finset: Finset-indexed version for cleaner usage",
+      "ncard_iUnion_eq_of_uniform: Fintype version with Pairwise (Disjoint on s)",
+      "ncard_eq_mul_of_uniform_fibers: consequence for function fibers over image",
+      "ncard_biUnion_eq_of_uniform_compat: compatibility with parent file's explicit ∀ form",
+      "Disjoint-pairs example: three pairs {2i, 2i+1} for i=0,1,2"
+    ],
+    "proofStrategy": "All lemmas reduce to Set.ncard_biUnion + Finset.sum_const + sum_congr. The PairwiseDisjoint form matches Mathlib conventions. The Fintype version uses biUnion_univ + ncard_univ to reduce to the Set case.",
+    "openQuestions": [
+      "What is the Mathlib PR process for contributing Set.ncard lemmas?",
+      "Should the lemma be stated for ncard or for Nat.card (more general)?",
+      "Is there a version for Multiset or Finsupp fibers?"
+    ],
+    "sections": [
+      {
+        "title": "Core Lemma (Mathlib-Ready)",
+        "content": "ncard_biUnion_eq_of_uniform uses Set.PairwiseDisjoint (Mathlib standard) instead of the explicit ∀∀ form. The proof is 6 lines from Set.ncard_biUnion + Finset.sum_congr + sum_const.",
+        "theorems": ["ncard_biUnion_eq_of_uniform"]
+      },
+      {
+        "title": "Specializations",
+        "content": "Three variants: Finset-indexed (cleaner for discrete problems), Fintype-indexed (universal union via biUnion_univ), and function-fiber version (connects to preimage counting). All reduce to the core lemma.",
+        "theorems": ["ncard_biUnion_eq_of_uniform_finset", "ncard_iUnion_eq_of_uniform", "ncard_eq_mul_of_uniform_fibers"]
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "lineCount": 175,
+    "theoremCount": 6,
+    "definitionCount": 0
+  }
+}
