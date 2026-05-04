@@ -33,6 +33,7 @@ export const inverseGaloisD4Annotations: Annotation[] = annotationsJson as unkno
 export const inverseGaloisD4Data: ProofData = {
   proof: inverseGaloisD4Proof,
   annotations: inverseGaloisD4Annotations,
+  tacticStates: [],
 }
 
 export default inverseGaloisD4Data

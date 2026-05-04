@@ -77,44 +77,14 @@
       "Is there a general criterion for when Gal(X^n - a/ℚ) is dihedral?"
     ]
   },
-  "leanFile": {
-    "imports": ["Mathlib", "Proofs.NthRootIrrationalOQ01"],
-    "opens": [],
-    "namespace": "InverseGaloisD4",
-    "lineCount": 682,
-    "axiomCount": 0,
-    "theoremCount": 27,
-    "definitionCount": 2,
-    "path": "Proofs/InverseGaloisD4.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
-      "targetId": "inverse-galois",
-      "relationship": "extends",
-      "description": "D₄ realization via X⁴-2/ℚ"
+      "proofId": "inverse-galois",
+      "relationship": "parent — main inverse Galois problem entry; this file provides the D₄ realization via X⁴-2/ℚ"
     },
     {
-      "targetId": "inverse-galois-f20",
-      "relationship": "related",
-      "description": "Companion: F₂₀ realization via X⁵-2/ℚ"
+      "proofId": "inverse-galois-f20",
+      "relationship": "sibling — companion F₂₀ realization via X⁵-2/ℚ (analogous construction for degree 5)"
     }
-  ],
-  "mainTheorems": [
-    {
-      "name": "x4_sub_2_gal_card_ne_four",
-      "type": "core",
-      "statement": "|Gal(X⁴−2/ℚ)| ≠ 4",
-      "description": "The Galois group has order strictly greater than 4 (it's 8 = |D₄|).",
-      "significance": "Key step distinguishing D₄ from cyclic C₄"
-    },
-    {
-      "name": "x_sq_add_1_no_root_in_adjoin_root_x4_sub_2",
-      "type": "core",
-      "statement": "X²+1 has no root in AdjoinRoot(X⁴−2)",
-      "description": "The ℝ-embedding argument: AdjoinRoot(X⁴−2) ⊂ ℝ, and X²+1 has no real root.",
-      "significance": "Core geometric argument forcing [SF:ℚ] = 8 rather than 4"
-    }
-  ],
-  "sorries": 0
+  ]
 }
