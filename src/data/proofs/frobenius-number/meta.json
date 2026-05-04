@@ -4,52 +4,97 @@
   "slug": "frobenius-number",
   "description": "A complete proof of Sylvester's 1884 theorem: for coprime positive integers a and b, the Frobenius number (largest non-representable integer) is g(a,b) = ab - a - b. Also known as the Chicken McNugget Theorem or Coin Problem. The proof establishes the representability structure via the Bezout identity and shows exactly (a-1)(b-1)/2 non-representable positive integers exist.",
   "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
     "status": "verified",
+    "proofRepoPath": "Proofs/FrobeniusNumber.lean",
+    "tags": ["number-theory", "combinatorics", "frobenius", "coin-problem", "coprime"],
     "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "sorryCount": 0,
+    "lineCount": 317,
     "theoremCount": 13,
     "definitionCount": 3,
-    "lineCount": 317,
-    "leanFile": "proofs/Proofs/FrobeniusNumber.lean",
-    "imports": ["Mathlib.Data.Nat.GCD.Basic", "Mathlib.Tactic"],
-    "tags": ["number-theory", "combinatorics", "frobenius", "coin-problem", "coprime"],
-    "assumptions": [],
-    "sorries": 0
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "J.J. Sylvester posed the Frobenius coin problem in 1882 and solved the two-generator case in 1884: for coprime positive integers $a$ and $b$, the largest amount that cannot be made using only $a$-cent and $b$-cent coins is $ab - a - b$. The result was independently rediscovered multiple times (Frobenius discussed it in lectures, giving it his name). The popular 'Chicken McNugget Theorem' refers to the claim that with 6- and 9-piece boxes you can't make exactly 43 pieces, but since gcd(6,9)=3, the actual coprime example is {3,5} or {5,7}. The n-generator generalization ($n \\geq 3$) is NP-hard, making this two-generator formula doubly remarkable: it is both explicit and proves the maximum exists (a non-trivial fact — when gcd > 1 there is no largest non-representable number).",
+    "problemStatement": "For coprime positive integers $a, b$ (i.e., $\\gcd(a,b) = 1$), define $g(a,b) = ab - a - b$. Prove: (1) $g(a,b)$ is NOT representable as $ax + by$ with $x, y \\geq 0$; (2) every integer $n > g(a,b)$ IS representable. Additionally, there are exactly $(a-1)(b-1)/2$ positive non-representable integers.",
+    "proofStrategy": "The key is that the map $k \\mapsto kb \\bmod a$ is a bijection on $\\{0, 1, \\ldots, a-1\\}$ when $\\gcd(a,b) = 1$ (proved via injectivity → surjectivity on a finite set). Given $n > ab - a - b$, find $k < a$ with $kb \\equiv n \\pmod{a}$. Then $a \\mid (n - kb)$, giving $n - kb = aq$ for some $q \\geq 0$, so $n = aq + kb$. The bound $n > ab - a - b = (a-1)(b-1) - 1$ ensures $n \\geq (a-1)(b-1)$ which, combined with $k < a$, forces $q \\geq 0$. For the non-representability of $ab - a - b$: any representation $ax + by = ab - a - b$ leads to $a(x+1) + b(y+1) = ab$; coprimality then forces $a \\mid (y+1)$ and $b \\mid (x+1)$, giving $x+1 \\geq b$ and $y+1 \\geq a$, so $a(x+1) + b(y+1) \\geq 2ab > ab$, contradiction.",
+    "keyInsights": [
+      "The injectivity of $k \\mapsto kb \\bmod a$ on $\\{0, \\ldots, a-1\\}$ is the bridge between the number theory (coprimality) and the combinatorics (surjectivity needed to find representations). In Lean 4 this uses `Finite.injective_iff_surjective` on `Fin a`.",
+      "The bound $(a-1)(b-1) \\leq n$ is equivalent to $n > ab - a - b$ by a simple omega computation: $(a-1)(b-1) = ab - a - b + 1$. This rewriting is the key step connecting the theorem's two formulations.",
+      "The non-representability proof uses a `nlinarith`-friendly formulation: any representation $ax + by = ab - a - b$ would give $a(x+1) + b(y+1) = ab$ with $a \\mid (y+1)$ and $b \\mid (x+1)$, forcing both terms to be at least $ab$ — but their sum is $ab$. Contradiction by linear arithmetic.",
+      "Consecutive integers $(a, a+1)$ always have $\\gcd = 1$, giving the family $g(a, a+1) = a^2 - a - 1$. For $a = 2$: only 1 is non-representable in $\\{2, 3\\}$; for $a = 3$: only $\\{1, 2, 4, 5\\}$ are non-representable in $\\{3, 4\\}$ with max 5.",
+      "The count $(a-1)(b-1)/2$ of non-representable positive integers is proved implicitly via examples but not by a general theorem in this file — it is an open question whether this gallery proof can be extended to include the exact count."
+    ]
   },
   "sections": [
     {
       "id": "representability",
-      "title": "Representability",
-      "description": "The definition Representable a b n captures n = ax + by for x, y ≥ 0. Basic closure properties: 0, a, b are representable; representability is closed under addition of a or b. The definition frobeniusNumber := a*b - a - b captures the conjectured threshold.",
-      "theorems": ["representable_zero", "representable_a", "representable_b", "representable_add_a", "representable_add_b"]
+      "title": "Representability: Definition and Closure Properties",
+      "startLine": 38,
+      "endLine": 68,
+      "summary": "Defines `Representable a b n := ∃ x y : ℕ, n = a*x + b*y` and proves closure: 0, a, b are representable; if n is representable so are n+a and n+b. These closure properties bootstrap the inductive structure used in the main theorem."
+    },
+    {
+      "id": "frobenius-def",
+      "title": "Frobenius Number and Count Definitions",
+      "startLine": 70,
+      "endLine": 89,
+      "summary": "Defines `frobeniusNumber a b := a*b - a - b` (the conjectured threshold) and `numNonRepresentable a b := (a-1)*(b-1)/2` (the count of non-representable positives). Proves the alternative form `frobeniusNumber = (a-1)*(b-1) - 1` for a,b ≥ 2."
+    },
+    {
+      "id": "key-lemma",
+      "title": "Key Lemma: Bijection k ↦ kb mod a on Fin a",
+      "startLine": 90,
+      "endLine": 132,
+      "summary": "The private lemma `mul_mod_injective` proves injectivity of k ↦ k*b mod a on Fin a (when gcd(a,b) = 1) via coprimality. Then `exists_mul_mod` inverts this: every residue r < a is achieved as k*b mod a for some k < a. This bijection is the number-theoretic engine of the Frobenius theorem."
     },
     {
       "id": "main-theorem",
-      "title": "Sylvester's Frobenius Theorem",
-      "description": "The main theorem sylvester_frobenius proves: for gcd(a,b) = 1 with a,b ≥ 1, the Frobenius number is ab - a - b. This means: (1) ab - a - b is not representable, and (2) all integers > ab - a - b are representable. The proof uses the Bezout identity to construct explicit representations for large integers.",
-      "theorems": ["frobenius_alt_axiom", "large_representable", "frobenius_not_representable", "sylvester_frobenius"]
+      "title": "Main Theorem: Large Numbers Are Representable",
+      "startLine": 134,
+      "endLine": 233,
+      "summary": "Two key theorems: `large_representable` (every n ≥ (a-1)(b-1) is representable, proved by finding k < a with k*b ≡ n mod a) and `frobenius_not_representable` (ab-a-b is not representable, by coprimality forcing x+1 ≥ b and y+1 ≥ a). Combined in `sylvester_frobenius`."
     },
     {
-      "id": "consequences",
-      "title": "Consequences",
-      "description": "Corollaries: eventually_all_representable shows that all sufficiently large integers are representable (quantitative: all n > ab - a - b). The representability closure properties closure_a and closure_b extend the basic step lemmas. The frobenius_consecutive theorem characterizes when consecutive integers are representable.",
-      "theorems": ["eventually_all_representable", "representable_closure_a", "representable_closure_b", "frobenius_consecutive"]
+      "id": "examples",
+      "title": "Verified Numeric Examples",
+      "startLine": 235,
+      "endLine": 263,
+      "summary": "Concrete computations using native_decide: frobeniusNumber(3,5)=7, (3,7)=11, (5,8)=27. Explicit representations for 8 through 12 in {3,5}. numNonRepresentable(3,5)=4 (values: 1,2,4,7) and (3,7)=6."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries and Special Cases",
+      "startLine": 265,
+      "endLine": 316,
+      "summary": "eventually_all_representable (quantitative: all n ≥ (a-1)(b-1) work), closure theorems as one-line aliases, frobenius_consecutive (special case: g(a,a+1) = a²-a-1), and Chicken McNugget examples (g(2,3)=1, g(3,4)=5, g(4,5)=11)."
     }
   ],
-  "overview": {
-    "summary": "The Frobenius Coin Problem asks: given coin denominations a₁, ..., aₙ with gcd = 1, what is the largest amount that cannot be represented? For two denominations a and b with gcd(a,b) = 1, Sylvester (1884) proved the answer is ab - a - b. This is also called the Chicken McNugget Theorem (6-piece and 9-piece boxes: largest non-representable count = 6·9-6-9 = 43).",
-    "approach": "The proof uses Bezout's identity to find an explicit residue structure: for each residue class mod a, the smallest representable number in that class determines the threshold. Every number larger than ab - a - b must lie in some residue class with a small enough representative to be representable.",
-    "significance": "The two-variable Frobenius problem is completely solved. The n-variable version (n ≥ 3 generators) is NP-hard to compute exactly, making this an instance where the 2-generator case has an elegant closed form while the general case is computationally intractable."
-  },
   "conclusion": {
-    "summary": "The Frobenius number formula g(a,b) = ab - a - b is machine-checked for all coprime positive integers a and b, with no axioms or sorries.",
+    "summary": "The Frobenius number formula g(a,b) = ab - a - b is machine-checked for all coprime positive integers a and b, with no axioms or sorries. The proof uses the bijection k ↦ kb mod a on Fin a as the key number-theoretic tool.",
+    "implications": "This is the complete two-variable solution to the Frobenius coin problem. The n-variable version (n ≥ 3 generators) is NP-hard in general, so this entry captures the full extent of what is computationally tractable. The bijection approach (injectivity → surjectivity on a finite set) is a pattern that reappears in many discrete math arguments: coprimality + finiteness → existence. The result also implies that the set of non-representable numbers is exactly a symmetric set: n is non-representable iff ab - a - b - n is non-representable (when 1 ≤ n ≤ ab - a - b - 1), a beautiful duality not proved here.",
     "openQuestions": [
-      "Can the proof be extended to the 3-generator case g(a,b,c) with explicit formulas for specific families?",
-      "The Sylvester-Gallai theorem (any set of points not all collinear has an ordinary line) is named after the same Sylvester — is there a connection via generating sets?",
-      "Can the count of non-representable numbers ((a-1)(b-1)/2) be proved as a corollary in this framework?"
+      "Can the count of non-representable numbers ((a-1)(b-1)/2) be proved as a theorem in this framework, not just verified for examples?",
+      "The symmetry of non-representable numbers (n is non-representable iff g(a,b) - n is non-representable, when both are positive) — can this be formalized here?",
+      "Can the proof be extended to the 3-generator case g(a,b,c) with explicit formulas for specific families (arithmetic progressions, Fibonacci triples)?"
     ]
   },
-  "crossReferences": [],
-  "sorries": 0
+  "crossReferences": [
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both proofs make fundamental use of prime and coprimality properties from Mathlib's Nat.GCD infrastructure"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/FrobeniusNumber.lean",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "lineCount": 317,
+    "theoremCount": 13,
+    "definitionCount": 3
+  }
 }
