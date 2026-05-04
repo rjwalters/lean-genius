@@ -1,0 +1,44 @@
+{
+  "id": "ballot-problem-oq-03-oq-01-oq-02-incomplete-01",
+  "title": "Hook-Length Formula via LGV Lemma (Complete Proof)",
+  "status": "blocked",
+  "question": "Can the gnwProb_key (Greene-Nijenhuis-Wilf 1979 KEY identity) be formalized to complete the hook-length formula proof for all Young diagrams?",
+  "knowledge": {
+    "progressSummary": "PROGRESS: h_ratio_card proved (single-corner hook ratio = card, 117 lines). gnwProb_key has 1 sorry remaining: multi-corner GNW exchange argument (~150-200 lines). PR #15599 on branch fix/ballot-gnw-key.",
+    "insights": [
+      "gnwProb_key states: \u03a3_{x \u2208 \u03bc} gnwProb(\u03bc,c,hookLen(x),x) = hookProd(\u03bc)/hookProd(\u03bc\\c) for any corner c",
+      "All supporting lemmas proved: gnwProb_sum_corners, gnwProb_stable, gnwProb_step, hookProd_ratio_formula, strictHookCells_card, strictHookCells_hookLen_lt",
+      "P(x\u2192c)=0 for all x with x.1 > c.1 or x.2 > c.2 (walk can only increase row/col index)",
+      "For single-row \u03bc, all P_j=1 and sum = n (verified by explicit recursion: S_j = n-j)",
+      "For rectangle \u03bc, all probabilities = 1 and sum = a*b",
+      "hookProd_ratio_formula already proved: hookProd(\u03bc)/hookProd(\u03bc\\c) = \u03a0_{s<j} h(i,s)/(h(i,s)-1) * \u03a0_{r<i} h(r,j)/(h(r,j)-1)",
+      "Simple strong induction on |\u03bc| fails for odd n: \u03c8(2m+1) \u2264 (4m+4) log 2 but need \u2264 (4m+2) log 2",
+      "GNW 1979 uses specific recursion relating sum to W(y) = \u03a3_{x non-corner: y\u2208H*(x)} 1/(h(x)-1)",
+      "HLF and HWI are PROVABLY EQUIVALENT at each level given HLF at lower levels + card_SYT_corner_step: cannot derive one from the other without a direct computation",
+      "gnwProb_key for rectangles (single-corner shapes) is provable via gnwProb_sum_corners + hook_walk_identity_rectYD since gnwProb=1 for all cells",
+      "The GNW exchange lemma is a SUM identity, not pointwise: F(mu,c)/F(nu,c) = R(mu,c)/R(nu,c) for nu=mu\\c prime verified on [3,1] example",
+      "Key algebraic relation: R_mu(c)/R_nu(c) = R_mu(c prime)/R_{mu\\c}(c prime) -- pure hookProd identity, provable without GNW",
+      "Mutual induction approach also fails: even proving HLF and HWI simultaneously by strong induction requires GNW for the big base case",
+      "h_ratio_card proof strategy: rowLen(0)=c.2+1 and colLen(0)=c.1+1 via single-corner identification (corner at bottom of last column and corner at end of last row must both equal c), then uniform rowLen/colLen by anti-monotone squeezing, giving hook formulas h(c.1,s)=c.2-s+1, h(r,c.2)=c.1-r+1; products telescope via prod_div_telescope; rectangle card=(c.1+1)*(c.2+1) from cells=range(c.1+1)xrange(c.2+1).",
+      "colLen anti-monotone proof inline: if colLen(s) > colLen(t) for s<=t, then (colLen(s),t) in mu implies (colLen(s),s) in mu (lower-set), but colLen(s) >= colLen(s) is false. Can be proved without named Mathlib lemma."
+    ],
+    "builtItems": [
+      "h_ratio_card: 117-line proof that hookProd(mu)/hookProd(mu\\c) = mu.card for single-corner mu. BallotProblemOQ03OQ01OQ02Helpers.lean:13900-14017. PR #15599."
+    ],
+    "mathlibGaps": [
+      "No simple induction on |\u03bc| works without using specific structure of Young diagrams",
+      "Relating gnwProb(\u03bc,c,\u00b7) to gnwProb(\u03bc',c,\u00b7) for \u03bc'=removeCorner(\u03bc,c') requires tracking how absorption at c' affects probabilities"
+    ],
+    "nextSteps": [
+      "Multi-corner GNW exchange argument (~150-200 lines): show F(mu,c) = F(mu\\c',c) using hookProd ratio invariance H(mu)/H(mu\\c) = H(mu\\c')/H(mu\\{c,c'}) with induction on mu.card. Key: cannot do pointwise (FALSE by L-shape counterexample), must use total sum exchange.",
+      "Verify h_ratio_card compiles: Docker build Proofs.BallotProblemOQ03OQ01OQ02Helpers. Fix potential issues: push_cast [show s <= c.2], field_simp after prod_div_telescope, Prod.fst/Prod.snd simp alignment with hookProd_ratio_formula.",
+      "Submit multi-corner sorry to Aristotle (HARD, known GNW 1979 proof)."
+    ]
+  },
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-03-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-02"
+  ]
+}

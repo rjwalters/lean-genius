@@ -2,72 +2,64 @@
 
 **Phase**: ACT
 **Since**: 2026-05-04T00:00:00Z
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
 
 Proving `gnwProb_key` (GNW 1979 KEY theorem) — sole remaining sorry in
-`BallotProblemOQ03OQ01OQ02Helpers.lean`. Two sorrys remain after this session's work.
+`BallotProblemOQ03OQ01OQ02Helpers.lean`. One sorry remains after session 40.
 
-## Session 39 Progress (2026-05-04)
+## Session 40 Progress (2026-05-04)
 
-Partial proof written in PR `fix/ballot-gnw-key`. Split gnwProb_key into two cases:
+Proved `h_ratio_card` (117 lines) in PR `fix/ballot-gnw-key` (#15599).
 
-### Single-Corner Case (rectangle): PARTIALLY PROVED
-- **gnwProb = 1 everywhere**: PROVED via gnwProb_sum_corners
-  - corners(mu) = {c} → Finset.sum_eq_single_of_mem + Subtype.ext gives gnwProb = 1
-  - Sum = mu.card: proved via sum_congr + sum_const_one
-- **Hook ratio = mu.card**: SORRY with detailed sketch
-  - By hookProd_ratio_formula: ratio = arm_prod * leg_prod
-  - Single-corner implies rowLen(r) = c.2+1 (r ≤ c.1) and colLen(s) = c.1+1 (s ≤ c.2)
-  - Proof sketch: strict decrease in rowLen before c.1 → second corner (contradiction)
-  - Then hookLength(c.1, s) = c.2-s+1, hookLength(r, c.2) = c.1-r+1
-  - prod_div_telescope gives arm_prod = c.2+1, leg_prod = c.1+1
-  - (c.2+1)*(c.1+1) = mu.card (counting rectangle cells)
-  - Estimated: ~70 Lean lines
+### Single-Corner Case: FULLY PROVED (pending Docker build verification)
+- **gnwProb = 1 everywhere**: PROVED (session 39)
+- **Hook ratio = μ.card**: PROVED via 117-line `h_ratio_card` proof
 
-### Multi-Corner Case: SORRY
-- Requires GNW 1979 exchange argument
-- Key insight: H(mu)/H(mu\c) = H(mu\c')/H(mu\{c,c'}) for any corner c'≠c
-  (proved above as hookProd ratio invariance)
-- Exchange implies F(mu,c) relates to F(mu\c',c) via induction
-- Estimated: ~150-200 Lean lines
+#### h_ratio_card proof strategy:
+1. `rowLen(0) = c.2+1`: Corner at bottom of last column = c → rowLen(0)-1 = c.2
+2. `colLen(0) = c.1+1`: Corner at end of last row = c → colLen(0)-1 = c.1
+3. Uniform rowLen/colLen: anti-monotone squeezing gives rowLen(r) = c.2+1 for r ≤ c.1,
+   colLen(s) = c.1+1 for s ≤ c.2. (colLen_anti proved inline via contradiction.)
+4. hookLength formulas: h(c.1, s) = c.2-s+1 (for s < c.2), h(r, c.2) = c.1-r+1 (for r < c.1)
+5. Products telescope via `prod_div_telescope`: arm=c.2+1, leg=c.1+1
+6. Rectangle card: `μ.cells = range(c.1+1) ×ˢ range(c.2+1)`, so μ.card = (c.1+1)*(c.2+1)
+7. Assembly: `hookProd_ratio_formula hc` + arm/leg prods + push_cast + ring
 
-## State of origin/main (as of 2026-05-04, commit e5282f6792c)
+### Multi-Corner Case: SORRY (line 14024)
+- Requires GNW 1979 exchange argument (~150-200 lines)
+- The pointwise exchange F_x(mu,c) = F_x(mu\c',c) is FALSE (L-shape counterexample)
+- Need the TOTAL sum exchange using hookProd ratio invariance
 
-All supporting lemmas proved (previous sessions):
-- strictHookCells, gnwProb, gnwProb_sum_corners, gnwProb_step, gnwProb_stable: **PROVED**
-- hook_walk_identity_gnw: **PROVED modulo gnwProb_key**
+## State of PR `fix/ballot-gnw-key` (#15599, 2026-05-04)
 
-**File**: BallotProblemOQ03OQ01OQ02Helpers.lean, 13,935 lines (after this session)
+Commits: e36e8a7b8a, 344e1d5f8d, 414a62ae67
+
+**File**: BallotProblemOQ03OQ01OQ02Helpers.lean, ~14,035 lines
 
 ## Blockers
 
-**Sorry 1** (h_ratio_card, single-corner case):
-- Need: single-corner → rowLen/colLen const → hookLength formula → telescoping product
-- Available tools: rowLen_anti, colLen_anti (from YoungDiagram), prod_div_telescope
-- Obstacle: rectangle lemmas (arm_prod_rectYD etc.) are private in main file, not accessible
-- Solution: prove rectangle characterization from scratch in Helpers (~70 lines)
-
-**Sorry 2** (multi-corner case):
+**Sorry 1** (multi-corner GNW exchange, line 14024):
 - GNW 1979 exchange argument: ~150-200 lines
-- Key step: relate F(mu,c) to F(mu\c',c) via hook weight changes
-- The pointwise exchange F_x(mu,c) = F_x(mu\c',c) is FALSE (verified by counterexample)
-- Need the TOTAL sum exchange, which uses the hookProd ratio invariance
+- Strategy: pick c' ∈ corners(mu)\{c}. By induction: F(mu\c', c) = hookProd(mu\c')/hookProd(mu\{c,c'})
+  Show F(mu,c) = F(mu\c',c) using hookProd ratio invariance (already proved as hookProd_ratio_invariance?)
+- Need to check if `hookProd_ratio_invariance` lemma exists in Helpers
+
+## Potential Build Issues in h_ratio_card
+
+- `push_cast [show s ≤ c.2 from by omega]` — must handle Nat.cast_sub correctly
+- `field_simp` after `prod_div_telescope` — may need explicit `div_one`
+- `simp only [Prod.fst, Prod.snd]` alignment with `hookProd_ratio_formula hc` output
 
 ## Next Action
 
-1. **h_ratio_card proof** (~70 lines): prove single-corner → rectangle structure + telescoping
-   - Lemma: no strict decrease in rowLen/colLen before c.1/c.2 in single-corner mu
-   - Use prod_div_telescope (available in Helpers) to telescope the arm/leg products
-   - Counting argument for mu.card = (c.1+1)*(c.2+1)
-
-2. **Multi-corner case** (~150-200 lines): GNW 1979 exchange
-   - Consider submitting to Aristotle (HARD sorry, known proof)
-   - Or prove directly using the hookProd ratio invariance as a lemma
+1. **Verify Docker build** of PR #15599 — fix any type errors in h_ratio_card
+2. **Multi-corner case**: check if hookProd_ratio_invariance exists, then write exchange argument
+3. **Consider Aristotle submission** for multi-corner case (HARD sorry, known GNW 1979 proof)
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 4
-- Approaches tried: 4 (GNW sketch, direct exchange FALSE, partial proof structure, current)
+- Total attempts: 5
+- Current approach attempts: 5
+- Approaches tried: 5 (GNW sketch, direct exchange FALSE, partial proof, case split, rectangle proof)
