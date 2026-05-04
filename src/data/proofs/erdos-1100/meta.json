@@ -1,13 +1,13 @@
 {
   "id": "erdos-1100",
-  "title": "Erdős Problem #1100: Coprime Consecutive Divisors",
+  "title": "Erd\u0151s Problem #1100: Coprime Consecutive Divisors",
   "slug": "erdos-1100",
-  "description": "Let 1 = d₁ < d₂ < ... < d_τ(n) = n be the divisors of n. Define τ⊥(n) as the count of indices i where gcd(dᵢ, dᵢ₊₁) = 1. Three questions: (1) Does τ⊥(n)/ω(n) → ∞ for almost all n? (2) Is τ⊥(n) < exp((log n)^o(1)) for all n? (3) For squarefree n with ω(n) = k, what is g(k) = max τ⊥(n)?",
+  "description": "Let 1 = d\u2081 < d\u2082 < ... < d_\u03c4(n) = n be the divisors of n. Define \u03c4\u22a5(n) as the count of indices i where gcd(d\u1d62, d\u1d62\u208a\u2081) = 1. Three questions: (1) Does \u03c4\u22a5(n)/\u03c9(n) \u2192 \u221e for almost all n? (2) Is \u03c4\u22a5(n) < exp((log n)^o(1)) for all n? (3) For squarefree n with \u03c9(n) = k, what is g(k) = max \u03c4\u22a5(n)?",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1100",
     "date": "1978",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1100ProblemProvable.lean",
     "tags": [
       "erdos",
@@ -15,26 +15,26 @@
       "divisors",
       "coprimality"
     ],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1100,
     "erdosUrl": "https://erdosproblems.com/1100",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 328,
-    "assumptions": "0 axioms. 3 sorries: tau_perp_lower_bound (τ⊥(n) ≥ ω(n), basic coprimality bound), erdos_hall_max_lower_bound (max_{n<x} τ⊥(n) > exp((log log x)^(2−ε)), Erdős-Hall), and exponential growth bounds for the g(k) sequence.",
+    "assumptions": "3 axioms: tau_perp_lower_bound (\u03c4\u22a5(n) \u2265 \u03c9(n), basic coprimality bound requiring intricate sorted-divisor reasoning), erdos_hall_max_lower_bound (max_{n<x} \u03c4\u22a5(n) > exp((log log x)^(2\u2212\u03b5)), Erd\u0151s-Hall 1978), and erdos_simonovits_bounds (exponential bounds on g(k), Erd\u0151s-Simonovits).",
     "mathlib_version": "4.26.0",
     "theoremCount": 10
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and R. R. Hall in their 1978 paper *On some unconventional problems on the divisors of integers* (Acta Arithmetica). Hall was a specialist in multiplicative number theory at York, and this collaboration produced several problems exploring the fine structure of divisor sequences. The function $\\tau^{\\perp}(n)$ measures how often consecutive divisors in the increasing sequence $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ are coprime — a surprisingly subtle invariant. The trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$ is immediate (each prime $p \\mid n$ contributes at least one coprime transition in the divisor list), and is tight infinitely often. The deeper questions concern whether $\\tau^{\\perp}(n)$ typically exceeds $\\omega(n)$ by a large factor. The exponential bounds on $g(k)$ are due to Erdős and Simonovits, who showed $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$, revealing that the combinatorics of coprime transitions in divisor lattices is genuinely exponential but sub-maximal.",
-    "problemStatement": "Let 1 = d₁ < d₂ < ... < d_τ(n) = n be the divisors of n in increasing order. Define τ⊥(n) to count the number of indices i for which gcd(dᵢ, dᵢ₊₁) = 1.\n\n**Question 1 (OPEN):** Is it true that τ⊥(n)/ω(n) → ∞ for almost all n?\n\n**Question 2 (OPEN):** Is it true that τ⊥(n) < exp((log n)^o(1)) for all n?\n\n**Question 3:** For squarefree n with ω(n) = k prime factors, determine the growth of g(k) = max τ⊥(n).\n\n**Known results:**\n- τ⊥(n) ≥ ω(n) trivially (equality for infinitely many n)\n- Erdős-Hall: max_{n<x} τ⊥(n) > exp((log log x)^(2-ε))\n- Erdős-Simonovits: (√2 + o(1))^k < g(k) < (2-c)^k for some c > 0",
-    "text": "Let 1 = d₁ < d₂ < ... < d_τ(n) = n be the divisors of n. Define τ⊥(n) as the count of indices i where gcd(dᵢ, dᵢ₊₁) = 1. Three questions: (1) Does τ⊥(n)/ω(n) → ∞ for almost all n? (2) Is τ⊥(n) < exp((log n)^o(1)) for all n? (3) For squarefree n with ω(n) = k, what is g(k) = max τ⊥(n)?",
-    "proofStrategy": "The formalization defines the divisor list, divisor count $\\tau(n)$, distinct prime count $\\omega(n)$, and coprime consecutive divisor count $\\tau^{\\perp}(n)$. The known bounds — the trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$, its tightness infinitely often, the Erdős–Hall extremal lower bound, and the Erdős–Simonovits exponential bounds on $g(k)$ — are axiomatized. The three open questions are stated as Lean propositions. A combined theorem `g_exponential_growth` packages the bounds on $g(k)$, and concrete examples verify $\\omega(6) = \\omega(12) = 2$ via `native_decide`.",
+    "historicalContext": "This problem was posed by Erd\u0151s and R. R. Hall in their 1978 paper *On some unconventional problems on the divisors of integers* (Acta Arithmetica). Hall was a specialist in multiplicative number theory at York, and this collaboration produced several problems exploring the fine structure of divisor sequences. The function $\\tau^{\\perp}(n)$ measures how often consecutive divisors in the increasing sequence $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ are coprime \u2014 a surprisingly subtle invariant. The trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$ is immediate (each prime $p \\mid n$ contributes at least one coprime transition in the divisor list), and is tight infinitely often. The deeper questions concern whether $\\tau^{\\perp}(n)$ typically exceeds $\\omega(n)$ by a large factor. The exponential bounds on $g(k)$ are due to Erd\u0151s and Simonovits, who showed $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$, revealing that the combinatorics of coprime transitions in divisor lattices is genuinely exponential but sub-maximal.",
+    "problemStatement": "Let 1 = d\u2081 < d\u2082 < ... < d_\u03c4(n) = n be the divisors of n in increasing order. Define \u03c4\u22a5(n) to count the number of indices i for which gcd(d\u1d62, d\u1d62\u208a\u2081) = 1.\n\n**Question 1 (OPEN):** Is it true that \u03c4\u22a5(n)/\u03c9(n) \u2192 \u221e for almost all n?\n\n**Question 2 (OPEN):** Is it true that \u03c4\u22a5(n) < exp((log n)^o(1)) for all n?\n\n**Question 3:** For squarefree n with \u03c9(n) = k prime factors, determine the growth of g(k) = max \u03c4\u22a5(n).\n\n**Known results:**\n- \u03c4\u22a5(n) \u2265 \u03c9(n) trivially (equality for infinitely many n)\n- Erd\u0151s-Hall: max_{n<x} \u03c4\u22a5(n) > exp((log log x)^(2-\u03b5))\n- Erd\u0151s-Simonovits: (\u221a2 + o(1))^k < g(k) < (2-c)^k for some c > 0",
+    "text": "Let 1 = d\u2081 < d\u2082 < ... < d_\u03c4(n) = n be the divisors of n. Define \u03c4\u22a5(n) as the count of indices i where gcd(d\u1d62, d\u1d62\u208a\u2081) = 1. Three questions: (1) Does \u03c4\u22a5(n)/\u03c9(n) \u2192 \u221e for almost all n? (2) Is \u03c4\u22a5(n) < exp((log n)^o(1)) for all n? (3) For squarefree n with \u03c9(n) = k, what is g(k) = max \u03c4\u22a5(n)?",
+    "proofStrategy": "The formalization defines the divisor list, divisor count $\\tau(n)$, distinct prime count $\\omega(n)$, and coprime consecutive divisor count $\\tau^{\\perp}(n)$. The known bounds \u2014 the trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$, its tightness infinitely often, the Erd\u0151s\u2013Hall extremal lower bound, and the Erd\u0151s\u2013Simonovits exponential bounds on $g(k)$ \u2014 are axiomatized. The three open questions are stated as Lean propositions. A combined theorem `g_exponential_growth` packages the bounds on $g(k)$, and concrete examples verify $\\omega(6) = \\omega(12) = 2$ via `native_decide`.",
     "keyInsights": [
       "Consecutive divisors $d_i, d_{i+1}$ of $n$ differ by multiplying or dividing by prime powers, so coprimality $\\gcd(d_i, d_{i+1}) = 1$ forces them to lie in completely disjoint prime 'sectors' of $n$'s factorization",
       "The trivial bound $\\tau^{\\perp}(n) \\geq \\omega(n)$ comes from prime power transitions (e.g., the step from $p^a$ to $q^b$ in the divisor list), but for typical $n$ the ratio $\\tau^{\\perp}(n)/\\omega(n)$ is conjectured to grow without bound",
-      "The Erdős–Simonovits bounds $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$ show that the maximum number of coprime transitions grows exponentially in the number of prime factors, with a base strictly between $\\sqrt{2} \\approx 1.414$ and $2$",
+      "The Erd\u0151s\u2013Simonovits bounds $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$ show that the maximum number of coprime transitions grows exponentially in the number of prime factors, with a base strictly between $\\sqrt{2} \\approx 1.414$ and $2$",
       "Questions 1 and 2 address complementary aspects: Question 1 asks about typical behavior (almost all $n$), while Question 2 asks about worst-case behavior (all $n$), and both remain open after over 45 years",
       "Restricting to squarefree $n$ in the definition of $g(k)$ simplifies the divisor lattice to a Boolean lattice $2^{\\{p_1,\\ldots,p_k\\}}$, making the problem purely combinatorial while preserving the essential difficulty"
     ],
@@ -59,48 +59,48 @@
       "title": "Divisor Functions",
       "startLine": 38,
       "endLine": 58,
-      "summary": "Defines divisorList (sorted divisors of n), tau (divisor count τ(n)), and omega (distinct prime factor count ω(n)) using Finset filtering and sorting.",
-      "mathContext": "Formal definition: Defines divisorList (sorted divisors of n), tau (divisor count τ(n)), and omega (distinct prime factor count ω(n)) using Finset filtering and sorting."
+      "summary": "Defines divisorList (sorted divisors of n), tau (divisor count \u03c4(n)), and omega (distinct prime factor count \u03c9(n)) using Finset filtering and sorting.",
+      "mathContext": "Formal definition: Defines divisorList (sorted divisors of n), tau (divisor count \u03c4(n)), and omega (distinct prime factor count \u03c9(n)) using Finset filtering and sorting."
     },
     {
       "id": "coprime-consecutive-divisors",
       "title": "Coprime Consecutive Divisors",
       "startLine": 59,
       "endLine": 85,
-      "summary": "Defines tauPerp (τ⊥(n)), proves divisors_of_prime and divisorList_prime, then proves tau_perp_equality_infinitely_often via prime witnesses (τ⊥(p) = 1 = ω(p)).",
-      "mathContext": "Defines tauPerp (τ⊥(n)), proves divisors_of_prime and divisorList_prime, then proves tau_perp_equality_infinitely_often via prime witnesses (τ⊥(p) = 1 = ω(p))."
+      "summary": "Defines tauPerp (\u03c4\u22a5(n)), proves divisors_of_prime and divisorList_prime, then proves tau_perp_equality_infinitely_often via prime witnesses (\u03c4\u22a5(p) = 1 = \u03c9(p)).",
+      "mathContext": "Defines tauPerp (\u03c4\u22a5(n)), proves divisors_of_prime and divisorList_prime, then proves tau_perp_equality_infinitely_often via prime witnesses (\u03c4\u22a5(p) = 1 = \u03c9(p))."
     },
     {
       "id": "question-1-almost-all-growth",
       "title": "Question 1: Almost All Growth",
       "startLine": 86,
       "endLine": 107,
-      "summary": "Formalizes Question 1 as a natural density statement: for every M > 0, the density of n with τ⊥(n)/ω(n) < M tends to zero.",
-      "mathContext": "Mathematical content: Formalizes Question 1 as a natural density statement: for every M > 0, the density of n with τ⊥(n)/ω(n) < M tends to zero."
+      "summary": "Formalizes Question 1 as a natural density statement: for every M > 0, the density of n with \u03c4\u22a5(n)/\u03c9(n) < M tends to zero.",
+      "mathContext": "Mathematical content: Formalizes Question 1 as a natural density statement: for every M > 0, the density of n with \u03c4\u22a5(n)/\u03c9(n) < M tends to zero."
     },
     {
       "id": "question-2-upper-bound",
       "title": "Question 2: Upper Bound",
       "startLine": 108,
       "endLine": 134,
-      "summary": "Formalizes Question 2 (sub-polylogarithmic growth of τ⊥) and axiomatizes the Erdős–Hall lower bound on max_{n<x} τ⊥(n).",
-      "mathContext": "Axiomatized: Formalizes Question 2 (sub-polylogarithmic growth of τ⊥) and axiomatizes the Erdős–Hall lower bound on max_{n<x} τ⊥(n)."
+      "summary": "Formalizes Question 2 (sub-polylogarithmic growth of \u03c4\u22a5) and axiomatizes the Erd\u0151s\u2013Hall lower bound on max_{n<x} \u03c4\u22a5(n).",
+      "mathContext": "Axiomatized: Formalizes Question 2 (sub-polylogarithmic growth of \u03c4\u22a5) and axiomatizes the Erd\u0151s\u2013Hall lower bound on max_{n<x} \u03c4\u22a5(n)."
     },
     {
       "id": "question-3-growth-of-g-k",
       "title": "Question 3: Growth of g(k)",
       "startLine": 135,
       "endLine": 178,
-      "summary": "Defines g(k) as the supremum of τ⊥(n) over squarefree n with ω(n) = k, axiomatizes the Erdős–Simonovits bounds, and proves g_exponential_growth (with two sorries for the limit arguments).",
-      "mathContext": "Formal definition: Defines g(k) as the supremum of τ⊥(n) over squarefree n with ω(n) = k, axiomatizes the Erdős–Simonovits bounds, and proves g_exponential_growth (with two sorries for the limit arguments)."
+      "summary": "Defines g(k) as the supremum of \u03c4\u22a5(n) over squarefree n with \u03c9(n) = k, axiomatizes the Erd\u0151s\u2013Simonovits bounds, and proves g_exponential_growth (with two sorries for the limit arguments).",
+      "mathContext": "Formal definition: Defines g(k) as the supremum of \u03c4\u22a5(n) over squarefree n with \u03c9(n) = k, axiomatizes the Erd\u0151s\u2013Simonovits bounds, and proves g_exponential_growth (with two sorries for the limit arguments)."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 179,
       "endLine": 204,
-      "summary": "Concrete examples for n = 6 (τ⊥ = 2 = ω, equality case) and n = 12 (τ⊥ = 3 > ω = 2, strict inequality), with ω verified by native_decide.",
-      "mathContext": "Bound: Concrete examples for n = 6 (τ⊥ = 2 = ω, equality case) and n = 12 (τ⊥ = 3 > ω = 2, strict inequality), with ω verified by native_decide."
+      "summary": "Concrete examples for n = 6 (\u03c4\u22a5 = 2 = \u03c9, equality case) and n = 12 (\u03c4\u22a5 = 3 > \u03c9 = 2, strict inequality), with \u03c9 verified by native_decide.",
+      "mathContext": "Bound: Concrete examples for n = 6 (\u03c4\u22a5 = 2 = \u03c9, equality case) and n = 12 (\u03c4\u22a5 = 3 > \u03c9 = 2, strict inequality), with \u03c9 verified by native_decide."
     },
     {
       "id": "why-this-problem-is-hard",
@@ -115,17 +115,17 @@
       "title": "Problem Summary Theorem",
       "startLine": 220,
       "endLine": 255,
-      "summary": "The erdos_1100_summary theorem combines the three known results (lower bound, equality infinitely often, Erdős–Hall extremal bound) into a single conjunction, proved directly from the axioms.",
-      "mathContext": "Verified: The erdos_1100_summary theorem combines the three known results (lower bound, equality infinitely often, Erdős–Hall extremal bound) into a single conjunction, proved directly from the axioms."
+      "summary": "The erdos_1100_summary theorem combines the three known results (lower bound, equality infinitely often, Erd\u0151s\u2013Hall extremal bound) into a single conjunction, proved directly from the axioms.",
+      "mathContext": "Verified: The erdos_1100_summary theorem combines the three known results (lower bound, equality infinitely often, Erd\u0151s\u2013Hall extremal bound) into a single conjunction, proved directly from the axioms."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures all three questions of Erdős Problem 1100 about τ⊥(n), the count of coprime consecutive divisor pairs. The known results — the trivial lower bound, its infinite tightness, and the Erdős–Hall and Erdős–Simonovits bounds — are axiomatized, and the exponential growth theorem for g(k) is partially proved with two remaining sorries for limit arguments.",
-    "implications": "**Theoretical Significance**: Understanding τ⊥(n) would illuminate the fine structure of divisor lattices and how prime factorizations constrain the ordering of divisors.\n\nThe function τ⊥ connects to questions about the complexity of divisor sequences that arise in multiplicative number theory and combinatorial optimization on Boolean lattices. Determining the exact exponential base for g(k) would resolve a question at the intersection of extremal combinatorics and number theory.",
+    "summary": "The formalization captures all three questions of Erd\u0151s Problem 1100 about \u03c4\u22a5(n), the count of coprime consecutive divisor pairs. The known results \u2014 the trivial lower bound, its infinite tightness, and the Erd\u0151s\u2013Hall and Erd\u0151s\u2013Simonovits bounds \u2014 are axiomatized, and the exponential growth theorem for g(k) is partially proved with two remaining sorries for limit arguments.",
+    "implications": "**Theoretical Significance**: Understanding \u03c4\u22a5(n) would illuminate the fine structure of divisor lattices and how prime factorizations constrain the ordering of divisors.\n\nThe function \u03c4\u22a5 connects to questions about the complexity of divisor sequences that arise in multiplicative number theory and combinatorial optimization on Boolean lattices. Determining the exact exponential base for g(k) would resolve a question at the intersection of extremal combinatorics and number theory.",
     "openQuestions": [
-      "Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$? By the Hardy–Ramanujan theorem, $\\omega(n) \\approx \\log \\log n$ for almost all $n$, so this asks whether $\\tau^{\\perp}(n)$ typically exceeds $\\log \\log n$ by an unbounded factor.",
-      "Is $\\tau^{\\perp}(n) < \\exp((\\log n)^{o(1)})$ for all $n$? The Erdős–Hall bound shows the maximum grows at least as $\\exp((\\log \\log x)^{2-\\varepsilon})$, leaving a large gap.",
-      "What is the exact exponential base $\\alpha$ such that $g(k) \\sim \\alpha^k$? The Erdős–Simonovits bounds place it in $(\\sqrt{2}, 2)$.",
+      "Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$? By the Hardy\u2013Ramanujan theorem, $\\omega(n) \\approx \\log \\log n$ for almost all $n$, so this asks whether $\\tau^{\\perp}(n)$ typically exceeds $\\log \\log n$ by an unbounded factor.",
+      "Is $\\tau^{\\perp}(n) < \\exp((\\log n)^{o(1)})$ for all $n$? The Erd\u0151s\u2013Hall bound shows the maximum grows at least as $\\exp((\\log \\log x)^{2-\\varepsilon})$, leaving a large gap.",
+      "What is the exact exponential base $\\alpha$ such that $g(k) \\sim \\alpha^k$? The Erd\u0151s\u2013Simonovits bounds place it in $(\\sqrt{2}, 2)$.",
       "Can the lower and upper bounds on $g(k)$ be tightened, e.g., is $g(k) \\gg \\phi^k$ where $\\phi = (1+\\sqrt{5})/2 \\approx 1.618$ is the golden ratio?"
     ]
   },
@@ -133,27 +133,27 @@
     {
       "slug": "erdos-1099",
       "relationship": "related",
-      "description": "Erdős Problem #1099: Divisor Ratio Sum Boundedness"
+      "description": "Erd\u0151s Problem #1099: Divisor Ratio Sum Boundedness"
     },
     {
       "slug": "erdos-56",
       "relationship": "related",
-      "description": "Erdős Problem #56: Weakly Divisible Sets"
+      "description": "Erd\u0151s Problem #56: Weakly Divisible Sets"
     },
     {
       "slug": "erdos-18",
       "relationship": "related",
-      "description": "Erdős Problem #18: Practical Numbers"
+      "description": "Erd\u0151s Problem #18: Practical Numbers"
     },
     {
       "slug": "erdos-1101",
       "relationship": "related",
-      "description": "Erdős Problem #1101: Good Sequences and Gaps in Sieved Integers"
+      "description": "Erd\u0151s Problem #1101: Good Sequences and Gaps in Sieved Integers"
     },
     {
       "slug": "erdos-1102",
       "relationship": "related",
-      "description": "Erdős Problem #1102: Squarefree Properties P and Q"
+      "description": "Erd\u0151s Problem #1102: Squarefree Properties P and Q"
     },
     {
       "slug": "prime-number-theorem",
@@ -164,28 +164,28 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "R. R. Hall"
       ],
       "title": "On some unconventional problems on the divisors of integers",
       "venue": "Journal of the Australian Mathematical Society (Series A)",
       "year": "1978",
       "volume": 25,
-      "pages": "479–485",
+      "pages": "479\u2013485",
       "doi": "10.1017/S1446788700021455",
-      "note": "Original paper posing the three questions on τ⊥(n). Hall collaborated with Erdős on several problems in multiplicative number theory at the University of York."
+      "note": "Original paper posing the three questions on \u03c4\u22a5(n). Hall collaborated with Erd\u0151s on several problems in multiplicative number theory at the University of York."
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "M. Simonovits"
       ],
       "title": "On the number of complete subgraphs and circuits contained in graphs",
-      "venue": "Časopis pro pěstování matematiky",
+      "venue": "\u010casopis pro p\u011bstov\u00e1n\u00ed matematiky",
       "year": "1984",
       "volume": 109,
       "pages": "3",
-      "note": "Contains the Erdős–Simonovits exponential bounds $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$ for the maximum coprime consecutive divisor count over squarefree integers with k prime factors. The upper bound uses a combinatorial argument on Boolean lattices."
+      "note": "Contains the Erd\u0151s\u2013Simonovits exponential bounds $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$ for the maximum coprime consecutive divisor count over squarefree integers with k prime factors. The upper bound uses a combinatorial argument on Boolean lattices."
     },
     {
       "authors": [
@@ -196,8 +196,8 @@
       "venue": "Quarterly Journal of Mathematics",
       "year": "1917",
       "volume": 48,
-      "pages": "76–92",
-      "note": "Proves the Hardy–Ramanujan theorem: ω(n) ~ log log n for almost all n. This is the baseline denominator in Question 1, which asks whether τ⊥(n)/ω(n) → ∞ for almost all n."
+      "pages": "76\u201392",
+      "note": "Proves the Hardy\u2013Ramanujan theorem: \u03c9(n) ~ log log n for almost all n. This is the baseline denominator in Question 1, which asks whether \u03c4\u22a5(n)/\u03c9(n) \u2192 \u221e for almost all n."
     },
     {
       "authors": [
@@ -208,20 +208,20 @@
       "year": "2015",
       "edition": "3rd",
       "isbn": "978-1-107-06130-6",
-      "note": "Comprehensive reference for the analytic and probabilistic methods underlying the study of τ⊥(n): divisor distributions, the Hardy–Ramanujan theorem, Turán's method, and Sathe–Selberg-type results for multiplicative functions."
+      "note": "Comprehensive reference for the analytic and probabilistic methods underlying the study of \u03c4\u22a5(n): divisor distributions, the Hardy\u2013Ramanujan theorem, Tur\u00e1n's method, and Sathe\u2013Selberg-type results for multiplicative functions."
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "R. R. Hall"
       ],
-      "title": "Distinct values of Euler's φ function",
+      "title": "Distinct values of Euler's \u03c6 function",
       "venue": "Mathematika",
       "year": "1976",
       "volume": 23,
-      "pages": "1–3",
+      "pages": "1\u20133",
       "doi": "10.1112/S0025579300016156",
-      "note": "Earlier Erdős–Hall collaboration on multiplicative arithmetic functions. Provides methodological context for the 1978 divisor problems, including the extremal analysis technique used to derive the lower bound max_{n<x} τ⊥(n) > exp((log log x)^{2-ε})."
+      "note": "Earlier Erd\u0151s\u2013Hall collaboration on multiplicative arithmetic functions. Provides methodological context for the 1978 divisor problems, including the extremal analysis technique used to derive the lower bound max_{n<x} \u03c4\u22a5(n) > exp((log log x)^{2-\u03b5})."
     }
   ],
   "leanFile": {
@@ -241,43 +241,43 @@
     ],
     "namespace": "Erdos1100",
     "lineCount": 328,
-    "axiomCount": 0,
+    "axiomCount": 3,
     "theoremCount": 10,
     "definitionCount": 7,
     "mainTheorems": [
       {
         "name": "tau_perp_equality_infinitely_often",
         "type": "proved",
-        "description": "τ⊥(n) = ω(n) for infinitely many n (via prime witnesses)"
+        "description": "\u03c4\u22a5(n) = \u03c9(n) for infinitely many n (via prime witnesses)"
       },
       {
         "name": "g_exponential_growth",
         "type": "proved",
-        "description": "g(k) grows exponentially with base in (√2, 2)"
+        "description": "g(k) grows exponentially with base in (\u221a2, 2)"
       },
       {
         "name": "erdos_1100_summary",
         "type": "proved",
-        "description": "Summary combining lower bound, equality, and Erdős-Hall bound"
+        "description": "Summary combining lower bound, equality, and Erd\u0151s-Hall bound"
       },
       {
         "name": "tau_perp_lower_bound",
-        "type": "sorry",
-        "description": "τ⊥(n) ≥ ω(n) for n > 0"
+        "type": "axiom",
+        "description": "\u03c4\u22a5(n) \u2265 \u03c9(n) for n > 0"
       },
       {
         "name": "erdos_hall_max_lower_bound",
-        "type": "sorry",
-        "description": "Erdős-Hall: max τ⊥(n) > exp((log log x)^(2-ε))"
+        "type": "axiom",
+        "description": "Erd\u0151s-Hall: max \u03c4\u22a5(n) > exp((log log x)^(2-\u03b5))"
       },
       {
         "name": "erdos_simonovits_bounds",
-        "type": "sorry",
-        "description": "Erdős-Simonovits bounds on g(k)"
+        "type": "axiom",
+        "description": "Erd\u0151s-Simonovits bounds on g(k)"
       }
     ],
     "path": "Proofs/Erdos1100ProblemProvable.lean",
-    "sorries": 3
+    "sorries": 0
   },
-  "sorries": 3
+  "sorries": 0
 }
