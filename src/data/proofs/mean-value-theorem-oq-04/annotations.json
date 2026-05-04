@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-ftc-implies-mvt",
+    "type": "theorem",
+    "label": "ftc_implies_mvt",
+    "title": "FTC Implies MVT (via IVT)",
+    "body": "ftc_implies_mvt: for C¹ function f on [a,b], ∃ c ∈ (a,b), f'(c) = (f(b)-f(a))/(b-a). Proof: by FTC, ∫ₐᵇ f' = f(b)-f(a). The integral mean ∫f'/(b-a) lies between min f' and max f' on [a,b] (by the integral monotonicity). By IVT applied to f', there exists c with f'(c) equal to that mean. This derivation shows MVT is a strict consequence of FTC+IVT.",
+    "location": { "line": 165 },
+    "tags": ["mvt", "ftc", "ivt", "structural-connection"]
+  },
+  {
+    "id": "ann-newton-leibniz",
+    "type": "theorem",
+    "label": "newton_leibniz",
+    "title": "Newton-Leibniz Formula",
+    "body": "newton_leibniz: for continuously differentiable F on [a,b], ∫ₐᵇ F' = F(b) - F(a). The fundamental formula connecting integration and differentiation. Used in: ftc_implies_mvt (the integral mean equals (f(b)-f(a))/(b-a)), integration_by_parts (via product rule), and diff_then_integrate.",
+    "location": { "line": 75 },
+    "tags": ["newton-leibniz", "integration", "fundamental"]
+  },
+  {
+    "id": "ann-integration-by-parts",
+    "type": "theorem",
+    "label": "integration_by_parts",
+    "title": "Integration by Parts",
+    "body": "integration_by_parts: for C¹ functions f, g on [a,b]: ∫ₐᵇ f'·g = f(b)·g(b) - f(a)·g(a) - ∫ₐᵇ f·g'. Proved by applying Newton-Leibniz to the product rule: (fg)' = f'g + fg' → ∫(fg)' = ∫f'g + ∫fg', and ∫(fg)' = f(b)g(b) - f(a)g(a) by Newton-Leibniz.",
+    "location": { "line": 200 },
+    "tags": ["integration-by-parts", "product-rule"]
+  },
+  {
+    "id": "ann-ftc-uniqueness",
+    "type": "theorem",
+    "label": "ftc_uniqueness",
+    "title": "Antiderivatives Unique Up to Constant",
+    "body": "ftc_uniqueness: if F' = G' on [a,b] and both are continuous, then F - G is constant. The standard uniqueness theorem for antiderivatives: the derivative being zero everywhere implies constant (by MVT). Together with FTC Part 1, this means ∫ₐˣ f is the unique antiderivative vanishing at a.",
+    "location": { "line": 240 },
+    "tags": ["uniqueness", "antiderivative", "constant"]
+  },
+  {
+    "id": "ann-ftc-part1",
+    "type": "theorem",
+    "label": "ftc_part1",
+    "title": "FTC Part 1: Integral as Antiderivative",
+    "body": "ftc_part1: if f is continuous on [a,b], then x ↦ ∫ₐˣ f is continuously differentiable with derivative f. This is the 'differentiation undoes integration' direction of FTC. Proved from Mathlib's intervalIntegral.integral_hasDerivAt_right, which gives HasDerivAt at each interior point.",
+    "location": { "line": 30 },
+    "tags": ["ftc", "antiderivative", "differentiation"]
+  }
+]
