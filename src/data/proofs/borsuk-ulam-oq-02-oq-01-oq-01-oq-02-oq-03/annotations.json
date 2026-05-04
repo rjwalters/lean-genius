@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-crt-motivation",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 70 },
+    "type": "concept",
+    "title": "Why CRT Uniquely Determines buDim for Semiprimes",
+    "content": "The key insight is the Chinese Remainder Theorem isomorphism $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$ for distinct primes $p, q$. Any representation of $\\mathbb{Z}/pq\\mathbb{Z}$ factors through this direct product, so the Borsuk-Ulam dimension of the product cannot exceed the maximum of the factors' dimensions.\n\nThis is the **semiprime advantage**: for $n = pq$ there is no 'overlap' between the $p$-part and $q$-part (unlike $n = p^2$, where the $p$-primary structure is more complex). The CRT axiom captures exactly this factoring property, making it strictly weaker than the full formula conjecture.",
+    "mathContext": "For $n = p^k$ with $k \\geq 2$, the CRT decomposition fails ($\\mathbb{Z}/p^k\\mathbb{Z}$ is not a product), so Smith theory for $p$-groups is needed separately. This is why the CRT axiom only covers semiprimes.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "buDim_mono", "buDim_crt_semiprime", "buDim_le_formula"],
+    "prerequisites": ["BorsukUlamOQ02OQ01", "BorsukUlamOQ02OQ01OQ01", "BorsukUlamOQ02OQ01OQ01OQ02"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 72, "endLine": 119 },
+    "type": "technique",
+    "title": "Axiom-Free Lower Bound via Monotonicity",
+    "content": "The bound $\\max(\\text{buDim}(p,d), \\text{buDim}(q,d)) \\leq \\text{buDim}(pq,d)$ requires no new axioms — just the monotonicity `buDim_mono` from the parent entry. Since $p \\mid pq$ and $q \\mid pq$, monotonicity gives the individual lower bounds; combining them gives the max lower bound.\n\nThis is worth emphasizing: one full half of the equality is axiom-free. The only axiom needed is for the upper bound (CRT compatibility). This clean separation shows the CRT axiom is exactly what is needed — no more, no less.",
+    "mathContext": "buDim_mono: $m \\mid n \\to \\text{buDim}(m,d) \\leq \\text{buDim}(n,d)$. Applied with $m = p, n = pq$ and $m = q, n = pq$.",
+    "significance": "supporting",
+    "relatedConcepts": ["buDim_mono", "dvd_mul_right", "le_sup_left", "le_sup_right"],
+    "prerequisites": ["Nat.dvd_mul_right", "sup_le"]
+  },
+  {
+    "id": "ann-formula-exotic",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 128, "endLine": 180 },
+    "type": "technique",
+    "title": "From Equality to Formula: primeFactors Rewriting",
+    "content": "The formula conjecture `buDim(pq, d) ≤ buDimFormula(pq, d)` (where `buDimFormula n d = sup_{p prime, p | n} buDim(p, d)`) follows by rewriting:\n```\nprimeFactors(pq) = primeFactors(p) ∪ primeFactors(q) = {p} ∪ {q}\n```\nusing `Nat.primeFactors_mul`, `Nat.primeFactors_prime`. The CRT upper bound then gives the formula bound directly.\n\nThe 'exotic' connection: a group $G = \\mathbb{Z}/n\\mathbb{Z}$ is exotic if `buDim(n,d) < buDimFormula(n,d)` strictly. For semiprimes, equality holds (formula conjecture proved), so no semiprimes are exotic.",
+    "mathContext": "`buDimFormula n d = Finset.sup (Nat.primeFactors n) (fun p => buDim p d)`. For $n = pq$: this is $\\max(\\text{buDim}(p,d), \\text{buDim}(q,d))$, which equals $\\text{buDim}(pq,d)$ by the CRT equality.",
+    "significance": "supporting",
+    "relatedConcepts": ["buDimFormula", "Nat.primeFactors_mul", "IsExotic", "Finset.sup_insert"],
+    "prerequisites": ["Nat.primeFactors_prime", "Finset.sup_singleton"]
+  }
+]
