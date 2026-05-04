@@ -314,7 +314,10 @@ theorem q2_fails_implies (h : ¬Question2) :
         ∀ x ∈ Set.Icc (-1 : ℝ) 1,
           ¬Tendsto (fun m => lagrangeInterp (seq m) f x) atTop
             (nhds (f ⟨x, by sorry⟩)) := by
-  sorry
+  intro seq hdiv
+  by_contra hconv
+  push_neg at hconv
+  exact h ⟨seq, hdiv, hconv⟩
 
 end Erdos671
 
