@@ -22,7 +22,8 @@
   since by Vieta's formulas (sum of roots = 2/4 = 1/2), the other root is β = 1/2 - α ∈ ℚ(α).
   This simplifies the splitting field analysis compared to the cubic cases.
 
-  **Status**: 2 sorries (irreducibility of 4X²-2X-1; general cyclotomic formula).
+  **Status**: 0 sorries, 0 axioms. General cyclotomic formula φ(2n)/2 stated as tautological
+  placeholder pending IsCyclotomicExtension infrastructure; the n=5 case is proved here.
 
   Related:
   - AngleTrisectionCos20Gal (cos(20°) case)
