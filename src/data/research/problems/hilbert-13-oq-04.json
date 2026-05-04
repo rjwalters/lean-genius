@@ -19,10 +19,11 @@
       "Covering dimension defined and basic properties proved (monotonicity)",
       "Generalized KA representation structure formalized",
       "Classical KA theorem recovered as special case",
-      "Sharpness of 2n+1 bound formalized"
+      "Sharpness of 2n+1 bound formalized",
+      "Proved covDimLE_of_unique: singleton spaces have covering dimension 0 (base case for n=0)"
     ],
     "open": [
-      "Prove covDimLE_of_embedding (dimension monotonicity under continuous injection)",
+      "Prove unitCube_covDimLE_pos for n=1 ([0,1] has dim=1)",
       "Smooth generalization to compact manifolds (Vitushkin extension)",
       "Computational complexity of finding KA representations"
     ],
@@ -34,7 +35,7 @@
     "iteration": 1,
     "focus": "Formalization of covering dimension and generalized KA theorem",
     "blockers": [],
-    "nextAction": "Prove the sorry in covDimLE_of_embedding or submit to Aristotle. Explore smooth generalization.",
+    "nextAction": "Try to prove unitCube_covDimLE_pos for n=1 (interval case) — may be doable with finite partition construction",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -42,19 +43,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Hilbert13GeneralSpaces.lean with covering dimension definitions (covDimLE, covDimEq), proved monotonicity, axiomatized dim([0,1]^n) = n, generalized KA theorem, Sternfeld characterization, Ostrand separating maps, and 2n+1 sharpness. Gallery integration complete. 1 sorry remains (embedding monotonicity).",
+    "progressSummary": "PROGRESS: Axiom count reduced 6→5. Proved covDimLE_of_unique (dim singleton = 0) and restructured unitCube_covDimLE_pos axiom (n≥1 only). Base case now machine-verified.",
     "builtItems": [
       "Created proofs/Proofs/Hilbert13GeneralSpaces.lean (340 lines)",
       "Defined covDimLE, covDimEq for covering dimension",
       "Proved covDimLE_succ (dimension monotonicity)",
       "Proved unitCube_covDimEq, classical_KA_from_general, unitCube_superposition_sharp",
-      "Created gallery: src/data/proofs/hilbert-13-oq-04/"
+      "Created gallery: src/data/proofs/hilbert-13-oq-04/",
+      "Proved covDimLE_of_unique: [Unique X] → covDimLE X 0 (20 lines, Part III)",
+      "Proved unitCube_covDimLE as theorem: cases on n=0 (proved) vs n≥1 (axiom unitCube_covDimLE_pos)",
+      "Reduced axiomCount from 6 to 5: n=0 case now machine-checked"
     ],
     "insights": [
       "Covering dimension is not in Mathlib — this is new infrastructure for the gallery",
       "The Sternfeld characterization gives an iff: superposition property with 2n+1 maps <-> dim <= n",
       "Ostrand's separating maps (1965) are the key bridge between dimension and representation",
-      "The embedding monotonicity sorry should be provable with more work on pullback refinements"
+      "The embedding monotonicity sorry should be provable with more work on pullback refinements",
+      "Fin 0 → Set.Icc 0 1 is a Unique type (singleton), so covDimLE_of_unique applies for n=0",
+      "Splitting axiom by n=0 vs n≥1 allows proving the base case without Lebesgue covering theorem"
     ],
     "mathlibGaps": [
       "No covering dimension (Lebesgue/topological) in Mathlib",
@@ -91,7 +97,7 @@
     ]
   },
   "started": "2026-03-30T06:03:08.378Z",
-  "lastUpdate": "2026-03-30T06:33:00.000Z",
+  "lastUpdate": "2026-05-04T11:10:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Hilbert13GeneralSpaces.lean",
