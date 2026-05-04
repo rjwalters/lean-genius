@@ -1,1 +1,118 @@
-{"annotations": []}
+[
+  {
+    "id": "gyori-problem-setup",
+    "proofId": "erdos-1009-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "concept",
+    "title": "Györi's Edge-Disjoint Triangle Problem: Axioms and Context",
+    "content": "Erdős Problem #1009 concerns the function f(c) = the maximum number of edge-disjoint triangles that can be 'missing' in a K₄-free graph with c·n edges (for large n). Györi (1988) proved f(c) ≪ c² for the first time, but the exact optimal constant C in f(c) ≤ Cc² remains unknown.\n\nThe file axiomatizes three results:\n- boundFunction c (def): the function f(c) whose constant is being optimized\n- gyori_quadratic_bound: ∃ C > 0, f(c) ≤ Cc² for all c > 0 (Györi 1988)\n- sauer_lower_bound: f(2) ≥ 1 (Sauer's construction — complete tripartite K_{1,m,m})\n\nThe axiom gyori_quadratic_bound is the deep result: it encodes both the existence of the constant and its positivity. The axiom sauer_lower_bound is used to derive the lower bound C* ≥ 1/4 by evaluating the constraint at c = 2: any valid C must satisfy C × 4 ≥ f(2) ≥ 1.",
+    "mathContext": "The problem: given a $K_4$-free graph $G$ on $n$ vertices with $cn$ edges, how many triangles can be removed to make it triangle-free? Define $f(c) = \\limsup_{n\\to\\infty} \\max_{|E(G)|=cn} \\text{ex}(G)$. Györi proved $f(c) = O(c^2)$. Sauer's construction $K_{1,m,m}$ (complete tripartite graph) gives $f(2) \\geq 1$, implying $C^* \\geq 1/4$ since any valid $C$ satisfies $C \\cdot 4 = C \\cdot 2^2 \\geq f(2) \\geq 1$.",
+    "significance": "critical",
+    "prerequisites": [
+      "K₄-free graphs and edge-disjoint triangles",
+      "Turán-type extremal graph theory",
+      "Lean 4 axiom declarations",
+      "ℝ-valued bound functions"
+    ],
+    "relatedConcepts": [
+      "gyori_quadratic_bound axiom",
+      "sauer_lower_bound axiom",
+      "boundFunction",
+      "erdos-1009",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "validbound-definition",
+    "proofId": "erdos-1009-oq-01",
+    "range": { "startLine": 49, "endLine": 82 },
+    "type": "definition",
+    "title": "ValidBound: The Set of Bound Constants and Its Structural Properties",
+    "content": "ValidBound C is defined as: ∀ c > 0, f(c) ≤ Cc². This is the predicate for membership in the set {C : ℝ | ValidBound C} whose infimum is the optimal constant.\n\nFour structural theorems are proved:\n1. ValidBound.nonneg: any valid C ≥ 0 (from f(c) ≥ 0, evaluated at c=1 giving C·1 ≥ f(1) ≥ 0)\n2. ValidBound.mono: if C is valid and C ≤ C', then C' is valid (proved by transitivity + nlinarith for Cc² ≤ C'c²)\n3. ValidBound.min_valid: if C₁ and C₂ are both valid, then min(C₁,C₂) is valid (proved by split_ifs)\n4. ValidBound.ratio_le: if C is valid then f(c)/c² ≤ C (division rewrite + ValidBound hypothesis)\n\nThe `min_valid` theorem is particularly useful: it shows the set of valid constants is closed under finite minima. This is a prerequisite for the infimum to be finite.",
+    "mathContext": "The set $\\{C : C \\geq 0 \\text{ and } \\forall c > 0, f(c) \\leq Cc^2\\}$ is: upward-closed (from mono), closed under finite min (from min_valid), bounded below by 0 (from nonneg), and nonempty (from gyori_quadratic_bound). These four properties ensure $\\inf\\{C: \\text{ValidBound}(C)\\}$ exists as a real number. The mono and min_valid properties together show the set forms an upper halfline $[C^*, \\infty)$.",
+    "significance": "critical",
+    "prerequisites": [
+      "Lean 4 Prop definitions and universal quantifiers",
+      "nlinarith for polynomial inequalities",
+      "split_ifs for min/max case splits",
+      "Nat.cast_nonneg for nonnegativity of natural number casts"
+    ],
+    "relatedConcepts": [
+      "ValidBound.nonneg",
+      "ValidBound.mono",
+      "ValidBound.min_valid",
+      "optimalBound",
+      "csInf for real infimum"
+    ]
+  },
+  {
+    "id": "optimal-bound-sinf",
+    "proofId": "erdos-1009-oq-01",
+    "range": { "startLine": 84, "endLine": 121 },
+    "type": "definition",
+    "title": "optimalBound as sInf: The Infimum of Valid Constants",
+    "content": "optimalBound is defined as sInf {C : ℝ | ValidBound C} — the real infimum (greatest lower bound) of the set of all valid bound constants. This is noncomputable since sInf on ℝ uses classical logic.\n\nFour properties are proved:\n1. validBounds_bddBelow: the set is bounded below by 0 (from ValidBound.nonneg)\n2. optimalBound_le: for any valid C, optimalBound ≤ C (by csInf_le)\n3. optimalBound_nonneg: optimalBound ≥ 0 (by le_csInf with the valid set nonempty + each member ≥ 0)\n4. lt_optimalBound_not_valid: C < optimalBound → ¬ValidBound C (contrapositive of optimalBound_le)\n\nThe proof of optimalBound_nonneg uses `le_csInf` from Mathlib, which requires: (a) the set is nonempty (from validBound_exists), and (b) every member is ≥ 0 (from ValidBound.nonneg).",
+    "mathContext": "In analysis: $C^* = \\inf\\{C : \\forall c > 0, f(c) \\leq Cc^2\\} = \\sup_{c>0} \\frac{f(c)}{c^2}$. The second equality holds by duality of inf/sup for linear constraints. In Lean: `sInf` on ℝ requires `BddBelow` (≥ 0 suffices) and `Nonempty` (from Györi's theorem). `csInf_le` gives the upper bound property; `le_csInf` gives the lower bound property.",
+    "significance": "critical",
+    "prerequisites": [
+      "csInf and sInf for real-valued infimum in Mathlib",
+      "csInf_le for upper bound property of infimum",
+      "le_csInf for lower bound property of infimum",
+      "BddBelow for real sets",
+      "noncomputable definitions in Lean 4"
+    ],
+    "relatedConcepts": [
+      "optimalBound_nonneg",
+      "optimalBound_le",
+      "validBounds_bddBelow",
+      "ValidBound",
+      "lt_optimalBound_not_valid"
+    ]
+  },
+  {
+    "id": "sauer-lower-bound-proof",
+    "proofId": "erdos-1009-oq-01",
+    "range": { "startLine": 123, "endLine": 142 },
+    "type": "theorem",
+    "title": "optimalBound_ge_quarter: Sauer's Construction Gives C* ≥ 1/4",
+    "content": "The key quantitative theorem: optimalBound ≥ 1/4. The proof uses:\n\n1. validBound_exists to get a valid C (the set is nonempty)\n2. le_csInf to reduce: show every valid D satisfies D ≥ 1/4\n3. For any valid D, evaluate the ValidBound condition at c = 2: D × 4 ≥ f(2)\n4. sauer_lower_bound gives f(2) ≥ 1, so D × 4 ≥ 1, i.e., D ≥ 1/4\n5. exact_mod_cast converts Nat ≥ 1 to ℝ ≥ 1 for linarith\n\nThe norm_num tactic computes 2² = 4 to simplify D × 2² to D × 4. The linarith tactic closes the goal from D × 4 ≥ 1 to D ≥ 1/4.\n\nThis lower bound 1/4 comes from the simplest construction: at c = 2 (bipartite-adjacent), Sauer's K_{1,m,m} shows that 1 triangle may be 'forced' even in K₄-free graphs with ≈ 2n edges.",
+    "mathContext": "Proof template: For valid $C$, the constraint at $c = 2$ gives $f(2) \\leq C \\cdot 4$. Since $f(2) \\geq 1$ (Sauer), we get $C \\geq 1/4$. The infimum $C^* = \\inf\\{C: C \\geq 1/4\\} = 1/4$ only if $1/4$ itself is valid (unknown). The lower bound $C^* \\geq 1/4$ does NOT mean $C^* = 1/4$ — there could be tighter lower bounds from other constructions at different values of $c$.",
+    "significance": "critical",
+    "prerequisites": [
+      "le_csInf for infimum lower bound characterization",
+      "exact_mod_cast for Nat→ℝ coercion in inequalities",
+      "linarith for linear arithmetic over ℝ",
+      "norm_num for 2² = 4"
+    ],
+    "relatedConcepts": [
+      "sauer_lower_bound axiom",
+      "optimalBound",
+      "ValidBound",
+      "le_csInf",
+      "optimalBoundQuestion"
+    ]
+  },
+  {
+    "id": "open-question-formalization",
+    "proofId": "erdos-1009-oq-01",
+    "range": { "startLine": 144, "endLine": 160 },
+    "type": "insight",
+    "title": "Open Question: The Exact Value of C* — What Is Known and Unknown",
+    "content": "The final section formalizes the open problem structure:\n\nerdos_small_c_statement (Def, not axiom): the claim that f(c) = 0 for c < 1/2, meaning the constraint on C only binds for c ≥ 1/2. This is stated as a Prop (not an axiom) — it represents a published theorem (Erdős 1971) that could in principle be proved in Lean, but is not yet formalized.\n\noptimalBoundQuestion: the formal statement of the open problem. It asserts: ∃ C = optimalBound such that 1/4 ≤ C and ValidBound D ↔ C ≤ D (i.e., C is the exact threshold).\n\nThe equivalence ValidBound D ↔ C ≤ D says the set of valid constants is exactly the interval [C, ∞). This would mean C is itself a valid bound constant (the infimum is attained), which is stronger than just knowing C* exists as an infimum.\n\nKnown: C* ≥ 1/4 (Sauer), C* < ∞ (Györi). Unknown: the exact value.",
+    "mathContext": "The open question asks for the precise value of $C^* = \\inf\\{C: f(c) \\leq Cc^2 \\forall c>0\\}$. Current knowledge: $1/4 \\leq C^* < \\infty$. The condition $\\text{ValidBound}(D) \\iff C^* \\leq D$ would mean $C^*$ is itself a valid bound — i.e., $f(c) \\leq C^* c^2$ is tight. This is the distinction between the infimum being attained vs. just existing. In the formalization, `optimalBoundQuestion` asserts this stronger 'attained infimum' form.",
+    "significance": "critical",
+    "prerequisites": [
+      "sInf and csInf in real analysis",
+      "Distinction between infimum and minimum",
+      "Erdős's 1971 result on f(c) = 0 for c < 1/2",
+      "Lean 4 Prop as statement (def) vs axiom"
+    ],
+    "relatedConcepts": [
+      "optimalBound",
+      "optimalBound_ge_quarter",
+      "ValidBound",
+      "erdos-1009",
+      "gyori_quadratic_bound"
+    ]
+  }
+]
