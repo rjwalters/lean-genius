@@ -18,7 +18,7 @@
       "partially-solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 318,
     "erdosUrl": "https://erdosproblems.com/318",
     "erdosProblemStatus": "partially-solved",
@@ -56,8 +56,8 @@
       "Connection to Egyptian fractions"
     ],
     "axiomCount": 5,
-    "lineCount": 321,
-    "assumptions": "5 axioms: erdos_straus_1975, sattler_odd_1975, sattler_1982, counterexample_fails_P1, squares_case_open. 3 sorries.",
+    "lineCount": 409,
+    "assumptions": "5 axioms: erdos_straus_1975, sattler_odd_1975, sattler_1982, counterexample_fails_P1, squares_case_open.",
     "theoremCount": 6
   },
   "overview": {
@@ -177,12 +177,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos318",
-    "lineCount": 321,
+    "lineCount": 409,
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 14,
     "path": "Proofs/Erdos318Problem.lean",
-    "sorries": 3
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -201,5 +201,5 @@
       "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
     }
   ],
-  "sorries": 3
+  "sorries": 0
 }
