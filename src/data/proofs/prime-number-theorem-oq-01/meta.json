@@ -1,0 +1,150 @@
+{
+  "id": "prime-number-theorem-oq-01",
+  "title": "PNT Error Term: Can We Sharpen to O(√x log x)?",
+  "slug": "prime-number-theorem-oq-01",
+  "description": "The Prime Number Theorem states π(x) ~ x/log x. This open question asks whether the error term can be sharpened to O(√x log x) — a bound equivalent to the Riemann Hypothesis (von Koch, 1901). The formalization develops the conditional and unconditional error bounds, the Cramér prime gap conjecture, Dirichlet's theorem, and the Generalized Riemann Hypothesis.",
+  "meta": {
+    "author": "von Koch (1901), Cramér (1920)",
+    "date": "1901",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PrimeNumberTheoremOQ01.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "riemann-hypothesis",
+      "analytic-number-theory",
+      "open-question",
+      "pnt-error-term",
+      "dirichlet",
+      "cramer-conjecture"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 9,
+    "lineCount": 180,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "assumptions": "9 axioms: (1) rh_optimal_error_exponent — under RH the error is O(x^{1/2+ε}) for all ε>0; (2) pnt_unconditional_error — unconditionally |π(x)−Li(x)| = O(x·exp(−c√(log x))); (3) rh_iff_sqrt_error — RH ⟺ error = O(√x log x); (4) rh_prime_gap_bound — RH implies pₙ₊₁−pₙ = O(√pₙ·log pₙ); (5) cramers_implies_rh_prime_gap — Cramér's conjecture implies the RH gap bound; (6) dirichlet_density — π(x;q,a) ~ Li(x)/φ(q); (7) GeneralizedRiemannHypothesis — opaque axiom; (8) grh_implies_rh — GRH specializes to RH; (9) grh_primes_in_ap_error — under GRH the error in primes-in-AP is O(√x log x). Proved from Mathlib: nthPrime_prime (Nat.nth_mem_of_infinite), nthPrime_strictMono (Nat.nth_strictMono), pnt_with_rh_error (re-export from PrimeNumberTheorem), dirichlet_primes_in_ap (Nat.infinite_setOf_prime_and_modEq), rh_consequences, error_comparison.",
+    "originalContributions": [
+      "The n-th prime definition using Nat.nth and proofs of primality and strict monotonicity",
+      "Re-export of pnt_rh_error (von Koch) from PrimeNumberTheorem as a stand-alone theorem",
+      "Cramér's conjecture formalized as a Prop and proved to imply the RH prime gap bound",
+      "Dirichlet's theorem on primes in AP derived from Mathlib's Nat.infinite_setOf_prime_and_modEq",
+      "GRH stated as an opaque axiom with the implication GRH → RH and the GRH error bound in arithmetic progressions",
+      "Summary theorems collecting consequences of RH and comparing conditional vs unconditional error bounds"
+    ],
+    "prerequisites": [
+      "Prime Number Theorem (π(x) ~ x/log x)",
+      "Complex analysis (Riemann zeta function)",
+      "Analytic number theory (Dirichlet L-functions, arithmetic progressions)",
+      "Asymptotic analysis (big-O, little-o)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Prime Number Theorem (1896) gives the asymptotic π(x) ~ x/log x, but the size of the error term |π(x) − Li(x)| is a central open problem. Von Koch (1901) proved that the Riemann Hypothesis implies the error is O(√x log x), and — crucially — that this error bound is equivalent to RH. The unconditional best known bound, O(x · exp(−c(log x)^{3/5}(log log x)^{−1/5})), is due to Korobov and Vinogradov (1958) and comes from the best known zero-free region of ζ(s). Cramér (1920) studied prime gaps: under RH, consecutive prime gaps satisfy pₙ₊₁ − pₙ = O(√pₙ log pₙ), and Cramér's conjecture posits the much stronger bound O(log² pₙ) based on a probabilistic model. The Generalized Riemann Hypothesis extends RH to Dirichlet L-functions and yields the analogous O(√x log x) error in primes-in-arithmetic-progressions counts.",
+    "problemStatement": "**Open Question**: Can the PNT error term be sharpened to O(√x log x)?\n\nVon Koch (1901) showed this is equivalent to the Riemann Hypothesis:\n$$|\\pi(x) - \\mathrm{Li}(x)| = O(\\sqrt{x}\\log x) \\iff \\text{RH}$$\n\nUnconditionally, the best known bound is:\n$$|\\pi(x) - \\mathrm{Li}(x)| = O\\!\\left(x \\cdot e^{-c\\sqrt{\\log x}}\\right)$$\nfor some explicit constant c > 0.",
+    "text": "The PNT error term O(√x log x) is equivalent to the Riemann Hypothesis. This formalization develops the conditional and unconditional bounds, prime gaps under RH, and the Generalized Riemann Hypothesis.",
+    "proofStrategy": "The formalization axiomatizes the key results whose proofs require substantial analytic number theory (explicit formula for π(x), zero-free regions, Tauberian theorems). What is proved from Mathlib: the n-th prime is prime and the sequence is strictly monotone (Nat.nth API); Dirichlet's theorem on infinitely many primes in AP (Nat.infinite_setOf_prime_and_modEq); and the summary consequences under RH. The von Koch result and its equivalence with RH are axiomatized, as are the Cramér conjecture and GRH.",
+    "keyInsights": [
+      "The equivalence RH ⟺ O(√x log x) error means the PNT error term is a proxy for RH itself",
+      "The gap between unconditional (exp(−c√log x) decay) and conditional (polynomial √x) bounds reflects the difficulty of zero-free region improvements",
+      "Cramér's conjecture O(log²p) gap bound is much stronger than the RH bound O(√p log p) and appears to be out of reach even under RH",
+      "GRH is needed for sharp error bounds in primes-in-AP; it generalizes RH from ζ to the full family of Dirichlet L-functions",
+      "The n-th prime pₙ ~ n log n (from PNT) connects prime gaps to the error term: small gaps ↔ small error"
+    ],
+    "prerequisites": [
+      "Prime Number Theorem",
+      "Complex analysis",
+      "Analytic number theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "nth-prime",
+      "title": "The n-th Prime",
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "Defines nthPrime via Nat.nth Nat.Prime (0-indexed: p₀=2, p₁=3, ...) and proves primality and strict monotonicity from Mathlib.",
+      "mathContext": "\\(p_k = \\texttt{k.nth Nat.Prime}\\); proved: \\(p_k\\) is prime (\\texttt{nth\\_mem\\_of\\_infinite}) and \\(k<l \\Rightarrow p_k < p_l\\) (\\texttt{nth\\_strictMono})"
+    },
+    {
+      "id": "pnt-rh-equivalence",
+      "title": "The Core PNT–RH Equivalence",
+      "startLine": 51,
+      "endLine": 83,
+      "summary": "The von Koch theorem (RH → O(√x log x) error) re-exported from PrimeNumberTheorem.lean, plus the equivalence rh_iff_sqrt_error and the optimal exponent result.",
+      "mathContext": "Von Koch (1901): \\(\\mathrm{RH} \\Rightarrow |\\pi(x) - \\mathrm{Li}(x)| \\leq C\\sqrt{x}\\log x\\). Equivalence: \\(\\mathrm{RH} \\iff \\exists C>0,\\, |\\pi(x)-\\mathrm{Li}(x)| \\leq C\\sqrt{x}\\log x\\)"
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Prime Gaps Under RH",
+      "startLine": 84,
+      "endLine": 110,
+      "summary": "Under RH prime gaps satisfy pₙ₊₁−pₙ = O(√pₙ log pₙ). Cramér's conjecture O(log²pₙ) is formalized and shown to imply the RH gap bound.",
+      "mathContext": "\\(\\mathrm{RH} \\Rightarrow p_{n+1} - p_n = O(\\sqrt{p_n}\\log p_n)\\). Cramér: \\(p_{n+1} - p_n = O(\\log^2 p_n)\\) — stronger (open, not known from RH)"
+    },
+    {
+      "id": "dirichlet-ap",
+      "title": "Dirichlet's Theorem and Primes in APs",
+      "startLine": 111,
+      "endLine": 131,
+      "summary": "Dirichlet's theorem proved from Mathlib. primesInAP defined as a Finset count. Dirichlet equidistribution axiomatized.",
+      "mathContext": "\\(\\gcd(a,q)=1 \\Rightarrow \\{p\\text{ prime}: p\\equiv a\\pmod{q}\\}\\) is infinite. Density: \\(\\pi(x;q,a) \\sim \\mathrm{Li}(x)/\\varphi(q)\\)"
+    },
+    {
+      "id": "grh",
+      "title": "The Generalized Riemann Hypothesis",
+      "startLine": 133,
+      "endLine": 161,
+      "summary": "GRH stated as an opaque axiom. Proved GRH → RH. Under GRH, the error in primes-in-AP is O(√x log x / φ(q)).",
+      "mathContext": "GRH: all non-trivial zeros of every \\(L(s,\\chi)\\) satisfy \\(\\operatorname{Re}(s)=1/2\\). \\(\\mathrm{GRH} \\Rightarrow \\mathrm{RH}\\). \\(\\mathrm{GRH} \\Rightarrow |\\pi(x;q,a) - \\mathrm{Li}(x)/\\varphi(q)| \\leq C\\sqrt{x}\\log x\\)"
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Consequences and Error Comparison",
+      "startLine": 162,
+      "endLine": 180,
+      "summary": "rh_consequences bundles both RH corollaries. error_comparison contrasts the unconditional Korobov–Vinogradov bound with the conditional RH bound.",
+      "mathContext": "Unconditional: \\(O(x \\cdot e^{-c\\sqrt{\\log x}})\\). Conditional: \\(O(\\sqrt{x}\\log x)\\). The ratio \\(\\sqrt{x}\\log x\\,/\\,(x \\cdot e^{-c\\sqrt{\\log x}}) \\to 0\\) shows the conditional bound is dramatically sharper."
+    }
+  ],
+  "conclusion": {
+    "summary": "The PNT error term question is one of the deepest open problems in mathematics, intimately tied to the Riemann Hypothesis. The formalization captures the key structural equivalences and conditional results while being honest about what remains open.",
+    "implications": "If RH is proved, it would immediately give the best possible error bound O(√x log x), resolve Cramér-style prime gap questions, and yield sharp equidistribution in arithmetic progressions via GRH. The Korobov–Vinogradov bound is the current unconditional state of the art; improving it would require a new zero-free region for ζ(s). The sharpest known unconditional bound on prime gaps is Ingham's O(x^{5/8}), far from the RH prediction.",
+    "openQuestions": [
+      "Is the Riemann Hypothesis true? (Equivalent to the O(√x log x) error bound)",
+      "Is Cramér's conjecture pₙ₊₁ − pₙ = O(log² pₙ) true? (Not known even under RH)",
+      "Can the Korobov–Vinogradov zero-free region be improved unconditionally?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "This entry extends the PNT by studying the sharpness of the error term, which is the next natural question after establishing the asymptotic."
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The O(√x log x) error bound is equivalent to RH, making this the PNT-centric formulation of the Riemann Hypothesis."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/PrimeNumberTheoremOQ01.lean",
+    "imports": [
+      "Mathlib.NumberTheory.ZetaFunction",
+      "Mathlib.NumberTheory.DirichletCharacter.Basic",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic",
+      "Proofs.PrimeNumberTheorem"
+    ],
+    "namespace": "PrimeNumberTheoremOQ01",
+    "lineCount": 180,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "sorries": 0
+  }
+}

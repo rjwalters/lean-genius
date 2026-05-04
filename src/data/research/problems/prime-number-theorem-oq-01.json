@@ -1,0 +1,70 @@
+{
+  "slug": "prime-number-theorem-oq-01",
+  "title": "PNT Error Term: Can We Sharpen to O(√x log x)?",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "proofs/Proofs/PrimeNumberTheoremOQ01.lean",
+  "problemStatement": {
+    "informal": "Can the Prime Number Theorem error term be sharpened to O(√x log x)? Von Koch (1901) showed this is equivalent to the Riemann Hypothesis.",
+    "formal": "RiemannHypothesis ↔ ∃ C > 0, ∀ x ≥ 2, |(primePi x : ℝ) - logIntegral x| ≤ C * sqrt x * log x"
+  },
+  "knownResults": [
+    "Von Koch (1901): RH ⟺ |π(x) − Li(x)| = O(√x log x)",
+    "Unconditional best: O(x · exp(−c(log x)^{3/5}(log log x)^{−1/5})) — Korobov–Vinogradov (1958)",
+    "Under RH: prime gaps pₙ₊₁ − pₙ = O(√pₙ log pₙ)",
+    "Cramér's conjecture: pₙ₊₁ − pₙ = O(log²pₙ) — open, not known from RH"
+  ],
+  "currentState": "Gallery entry created. Lean file PrimeNumberTheoremOQ01.lean has 0 sorries, 9 axioms, 6 proved theorems.",
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry created 2026-05-04",
+    "insights": [
+      "Nat.nth Nat.Prime gives clean n-th prime; nth_mem_of_infinite and nth_strictMono handle primality/monotonicity",
+      "Nat.infinite_setOf_prime_and_modEq directly proves Dirichlet theorem on primes in AP",
+      "GRH must be opaque axiom — Mathlib lacks full Dirichlet L-function zero formalism",
+      "Von Koch equivalence requires explicit formula for π(x), not in Mathlib — axiomatized",
+      "6 theorems proved from Mathlib; 9 deeper results axiomatized"
+    ],
+    "builtItems": [
+      "nthPrime definition and nthPrime_prime, nthPrime_strictMono theorems",
+      "pnt_with_rh_error re-export from PrimeNumberTheorem.lean",
+      "CramersConjecture as a Prop with implication cramers_implies_rh_prime_gap",
+      "dirichlet_primes_in_ap from Nat.infinite_setOf_prime_and_modEq",
+      "primesInAP as a Finset count definition",
+      "GeneralizedRiemannHypothesis opaque axiom with grh_implies_rh"
+    ],
+    "mathlibGaps": [
+      "Explicit formula for π(x) in terms of zeros of ζ(s) — needed for von Koch proof",
+      "Full Dirichlet L-function zero theory — needed for GRH formal statement",
+      "Unconditional Korobov–Vinogradov zero-free region — needed for unconditional error bound proof"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "riemann-hypothesis",
+    "analytic-number-theory",
+    "open-question",
+    "pnt-error-term",
+    "dirichlet",
+    "cramer-conjecture"
+  ],
+  "relatedProofs": [
+    "prime-number-theorem",
+    "riemann-hypothesis"
+  ],
+  "references": [
+    "von Koch (1901): Sur la distribution des nombres premiers",
+    "Cramér (1920): On the order of magnitude of the difference of consecutive primes",
+    "Korobov & Vinogradov (1958): Zero-free region improvements"
+  ],
+  "started": "2026-05-04",
+  "lastUpdate": "2026-05-04",
+  "completed": "2026-05-04",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    "proofs/Proofs/PrimeNumberTheoremOQ01.lean"
+  ]
+}
