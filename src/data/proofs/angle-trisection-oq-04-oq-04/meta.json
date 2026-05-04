@@ -76,7 +76,8 @@
       "IsTwoThreeNumber: marked-ruler degree characterization",
       "Prime divisibility: prime p | a·b implies p | a or p | b"
     ],
-    "lineCount": 152
+    "lineCount": 152,
+    "parentProofId": "angle-trisection-oq-04"
   },
   "sorries": 0,
   "overview": {
@@ -123,32 +124,61 @@
   ],
   "sections": [
     {
+      "id": "module-setup",
+      "title": "Module Setup: Imports and Constructibility Hierarchy",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports AngleTrisectionOQ04 (IsTwoThreeNumber, neusis criterion) and AngleTrisectionOQ05OQ01 (IsKFoldConstructible, fold hierarchy). Opens both namespaces. Module docstring states the goal: exhibit explicit n-gons constructible with multi-fold origami but not with a marked ruler.",
+      "mathContext": "Dependency: $\\text{IsTwoThreeNumber}(d) \\iff d \\mid 2^a \\cdot 3^b$ (from OQ04). $\\text{IsKFoldConstructible}(d,k) \\iff d$ is $p_k$-smooth where $p_k = \\text{foldPrimeBound}(k)$ (from OQ05OQ01). Constructibility hierarchy: $\\text{IsTwoThreeNumber}(d) = \\text{IsKFoldConstructible}(d,1) \\subsetneq \\text{IsKFoldConstructible}(d,2) \\subsetneq \\cdots$"
+    },
+    {
+      "id": "general-criterion",
       "title": "General Non-Neusis Criterion",
       "startLine": 48,
       "endLine": 62,
-      "description": "The general lemma: if prime q > 3 divides d, then d ∉ IsTwoThreeNumber. Proof by prime divisibility and the impossibility of 5 | 2 or 5 | 3.",
-      "mathContext": "q > 3, q \\text{ prime}, q \\mid d \\implies d \\nmid 2^a \\cdot 3^b \\text{ for any } a, b. \\quad \\text{Via: } q \\mid d \\mid 2^a3^b \\implies q \\mid 2 \\text{ or } q \\mid 3 \\implies q \\leq 3, \\text{ contradiction.}"
+      "summary": "The general lemma: if prime q > 3 divides d, then d ∉ IsTwoThreeNumber. Proof by prime divisibility and the impossibility of 5 | 2 or 5 | 3.",
+      "mathContext": "$q > 3,\\; q \\text{ prime},\\; q \\mid d \\implies d \\nmid 2^a \\cdot 3^b$ for any $a, b$. Via: $q \\mid d \\mid 2^a3^b \\implies q \\mid 2$ or $q \\mid 3 \\implies q \\leq 3$, contradiction."
     },
     {
+      "id": "ngon-11",
       "title": "The Regular 11-Gon",
       "startLine": 64,
       "endLine": 80,
-      "description": "φ(11) = 10 = 2·5. The prime factor 5 > 3 blocks neusis. Since 10 = 2·5 is 5-smooth and foldPrimeBound 2 = 5, the 11-gon is 2-fold origami constructible.",
-      "mathContext": "\\varphi(11) = 10 = 2 \\cdot 5. \\quad 5 > 3 \\implies \\text{not neusis}. \\quad \\text{foldPrimeBound}(2) = 5 \\text{ and } 5 \\mid 10 \\implies \\text{IsKFoldConstructible}(10, 2)."
+      "summary": "φ(11) = 10 = 2·5. The prime factor 5 > 3 blocks neusis. Since 10 = 2·5 is 5-smooth and foldPrimeBound 2 = 5, the 11-gon is 2-fold origami constructible.",
+      "mathContext": "$\\varphi(11) = 10 = 2 \\cdot 5$. Since $5 > 3$, not neusis. Since $\\text{foldPrimeBound}(2) = 5$ and all prime factors of $10$ are $\\leq 5$: $\\text{IsKFoldConstructible}(10, 2)$."
     },
     {
+      "id": "ngon-23",
       "title": "The Regular 23-Gon",
       "startLine": 82,
       "endLine": 103,
-      "description": "φ(23) = 22 = 2·11. The prime factor 11 > 3 blocks neusis. Since 22 = 2·11 is 11-smooth and foldPrimeBound 4 = 11, the 23-gon is 4-fold origami constructible.",
-      "mathContext": "\\varphi(23) = 22 = 2 \\cdot 11. \\quad 11 > 3 \\implies \\text{not neusis}. \\quad \\text{foldPrimeBound}(4) = 11 \\text{ and all prime factors of } 22 \\leq 11 \\implies \\text{IsKFoldConstructible}(22, 4)."
+      "summary": "φ(23) = 22 = 2·11. The prime factor 11 > 3 blocks neusis. Since 22 = 2·11 is 11-smooth and foldPrimeBound 4 = 11, the 23-gon is 4-fold origami constructible.",
+      "mathContext": "$\\varphi(23) = 22 = 2 \\cdot 11$. Since $11 > 3$, not neusis. Since $\\text{foldPrimeBound}(4) = 11$ and all prime factors of $22 \\leq 11$: $\\text{IsKFoldConstructible}(22, 4)$."
     },
     {
+      "id": "main-theorem",
       "title": "Main Theorem and Infinite Family",
       "startLine": 105,
-      "endLine": 140,
-      "description": "multi_fold_strictly_stronger_than_neusis asserts the strict gap; exists_ngon_at_each_level shows that for every fold level k ≥ 2, some n-gon requires that level but not marked ruler.",
-      "mathContext": "\\exists n \\geq 3: \\text{IsKFoldConstructible}(\\varphi(n), k) \\wedge \\neg\\text{IsTwoThreeNumber}(\\varphi(n)). \\quad \\text{Witness: } n = 11 \\text{ for all } k \\geq 2 \\text{ (by constructible\\_mono induction).}"
+      "endLine": 152,
+      "summary": "multi_fold_strictly_stronger_than_neusis asserts the strict gap (witness: 11-gon at level 2); exists_ngon_at_each_level shows that for every fold level k ≥ 2, some n-gon requires that level but not marked ruler. Proved by induction on k using constructible_mono.",
+      "mathContext": "$\\exists n \\geq 3: \\text{IsKFoldConstructible}(\\varphi(n), k) \\wedge \\neg\\text{IsTwoThreeNumber}(\\varphi(n))$. Witness: $n = 11$ for all $k \\geq 2$ by constructible_mono induction. The $\\text{Nat.sub\\_add\\_cancel}$ step bridges the induction index."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "angle-trisection-oq-04",
+      "relationship": "parent",
+      "description": "Provides IsTwoThreeNumber criterion and neusis constructibility theory"
+    },
+    {
+      "proofId": "angle-trisection-oq-05-oq-01",
+      "relationship": "sibling",
+      "description": "Provides IsKFoldConstructible and fold hierarchy monotonicity"
+    },
+    {
+      "proofId": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "Classical angle trisection impossibility — this chain extends those results"
     }
   ]
 }
