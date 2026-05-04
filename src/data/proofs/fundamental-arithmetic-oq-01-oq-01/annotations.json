@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-factorization-finset-prod",
+    "proofId": "fundamental-arithmetic-oq-01-oq-01",
+    "range": { "startLine": 30, "endLine": 55 },
+    "type": "lemma",
+    "title": "factorization_finset_prod: Distributivity Lemma",
+    "content": "This private helper lemma proves that Nat.factorization distributes over Finset products of nonzero naturals: `(∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization`. The proof is by `Finset.induction_on`: the empty case is `Nat.factorization_one` (factorization of 1 is 0); the insert step uses `Nat.factorization_mul` (for nonzero arguments) plus the induction hypothesis. The nonzero condition is propagated carefully: for the product, `Finset.prod_ne_zero` ensures `∏ m ∈ s, m ≠ 0` when all members are nonzero. This lemma is the workhorse that enables the indicator-sum proof in `finsupp_prime_prod_factorization`.",
+    "mathContext": "$\\left(\\prod_{m \\in s} m\\right).\\text{fact} = \\sum_{m \\in s} m.\\text{fact}$ — factorization is a monoid homomorphism from $(\\mathbb{N}^\\times, \\cdot)$ to $(\\mathbb{N} \\to_0 \\mathbb{N}, +)$. Proof by induction on $s$: base $\\text{fact}(1) = 0$; step uses $\\text{fact}(a \\cdot b) = \\text{fact}(a) + \\text{fact}(b)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.factorization_mul", "Finset.induction_on", "Finset.prod_ne_zero", "monoid homomorphism property of factorization"],
+    "prerequisites": ["Finset.induction_on proof pattern", "Nat.factorization_mul for nonzero a,b", "Finset.prod_ne_zero"]
+  },
+  {
+    "id": "ann-support-theorems",
+    "proofId": "fundamental-arithmetic-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 81 },
+    "type": "technique",
+    "title": "Part II: Support Equals Prime Factors",
+    "content": "Three theorems characterize the support of `n.factorization`. `fta_support_eq_primeFactors`: the support equals `n.primeFactors` — a direct delegation to `Nat.support_factorization`. `fta_support_prime`: every p in the support is prime — proved by rewriting support as primeFactors, then using `Nat.prime_of_mem_primeFactors`. `fta_mem_support_iff_dvd`: p is prime and divides n iff p ∈ the support — proved by expanding `Nat.mem_primeFactors`. Together, these three theorems make the Finsupp support explicit: it's exactly the set of prime divisors, no more.",
+    "mathContext": "$\\text{support}(n.\\text{fact}) = \\{p \\text{ prime}: p \\mid n\\}$. Equivalent characterizations: $p \\in \\text{support} \\iff n.\\text{fact}(p) > 0 \\iff p$ prime and $p \\mid n$. The support is always finite (since $n$ has finitely many prime divisors) — this is what makes Finsupp the right type for factorization.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.support_factorization", "Nat.primeFactors", "Nat.prime_of_mem_primeFactors", "Nat.mem_primeFactors", "Finsupp support semantics"],
+    "prerequisites": ["Nat.primeFactors definition", "Nat.mem_primeFactors iff prime and divides", "Finsupp support = {x | f x ≠ 0}"]
+  },
+  {
     "id": "ann-finsupp-representation",
     "proofId": "fundamental-arithmetic-oq-01-oq-01",
     "range": { "startLine": 56, "endLine": 60 },
