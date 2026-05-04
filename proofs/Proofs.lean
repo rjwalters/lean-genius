@@ -458,6 +458,7 @@ import Proofs.CollatzStructuredOQ02OQ01
 import Proofs.CollatzStructuredOQ03
 import Proofs.CombinationsFormula
 import Proofs.CombinationsFormulaOQ01
+import Proofs.CombinationsFormulaOQ01OQ04
 import Proofs.CombinationsFormulaOQ02
 import Proofs.CombinationsFormulaOQ02Aristotle
 import Proofs.CombinationsFormulaOQ03
