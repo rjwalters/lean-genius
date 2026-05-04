@@ -1,0 +1,184 @@
+[
+  {
+    "id": "ann-transccard-01",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Mathematical Context: From Uncountability to Exact Cardinality",
+    "content": "This file answers the natural follow-up to Cantor's 1874 result: not just 'are transcendentals uncountable?' but 'how many are there, exactly?'\n\nThe parent proof (OQ-02) established that the transcendental reals are uncountable (¬Set.Countable transcendentalReals). That is a qualitative result: they cannot be listed by the naturals. This file gives the quantitative answer: #transcendentalReals = 𝔠 = 2^ℵ₀, the same cardinality as ℝ itself.\n\nThe key mathematical point is that the algebraic/transcendental partition ℝ = algebraic ∪ transcendental is maximally asymmetric in cardinality: the algebraics have cardinality ℵ₀ (as proved in the grandparent entry), while the transcendentals have cardinality 𝔠. The strict inequality ℵ₀ < 𝔠 (proved via Cardinal.aleph0_lt_continuum) captures this asymmetry.",
+    "mathContext": "Cardinal arithmetic key fact: for any infinite cardinal κ ≥ ℵ₀, ℵ₀ + κ = κ. This 'absorption law' is why adding the countable algebraics to the transcendentals doesn't change the cardinality — ℵ₀ + 𝔠 = 𝔠.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cardinality",
+      "continuum",
+      "transcendental numbers",
+      "infinite cardinal absorption",
+      "Cantor 1874"
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic",
+      "AlgebraicNumbersCountable",
+      "AlgebraicNumbersCountableOQ02"
+    ]
+  },
+  {
+    "id": "ann-transccard-02",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 61,
+      "endLine": 76
+    },
+    "type": "technique",
+    "title": "Partition via Classical.em",
+    "content": "The algebraic_trans_partition theorem establishes ℝ = algebraic ∪ transcendental at the Set level. The proof is a single `Classical.em`: every real x satisfies `IsAlgebraic ℚ x ∨ ¬IsAlgebraic ℚ x`. This is non-constructive — we cannot decide algebraicity for arbitrary reals — but classically it partitions ℝ into two complementary sets.\n\nThe disjointness (algebraic_trans_disjoint) follows immediately from the definition: transcendentalReals = {x | ¬IsAlgebraic ℚ x}, so algebraic ∩ transcendental = ∅.",
+    "mathContext": "Set.disjoint_left: Disjoint A B ↔ ∀ x ∈ A, x ∉ B. Since transcendentalReals = {x | ¬IsAlgebraic ℚ x}, any x ∈ algebraic satisfies IsAlgebraic ℚ x, so x ∉ transcendentalReals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Classical.em",
+      "Set.disjoint_left",
+      "partition",
+      "IsAlgebraic"
+    ],
+    "prerequisites": [
+      "Classical logic",
+      "Lean 4 Set operations"
+    ]
+  },
+  {
+    "id": "ann-transccard-03",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 78,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "Bridging Set.Countable to Cardinal Bounds",
+    "content": "The lemma `card_algebraic_le_aleph0` converts the parent's `algebraic_reals_countable : Set.Countable {x : ℝ | IsAlgebraic ℚ x}` into the cardinal statement `(#(↑{x : ℝ | IsAlgebraic ℚ x} : Set ℝ) : Cardinal) ≤ ℵ₀`.\n\nThe bridge is `le_aleph0_iff_set_countable.mpr`: it says Set.Countable S → #S ≤ ℵ₀. This is a one-line proof that would otherwise require unfolding the definition of Set.Countable (existence of an injection S ↪ ℕ) and converting it to a cardinal inequality.",
+    "mathContext": "`le_aleph0_iff_set_countable : #S ≤ ℵ₀ ↔ Set.Countable S`. The .mpr direction converts countability to cardinality bounds. Used identically in LebesgueMeasureOQ06 and other gallery proofs — it's the standard bridge lemma.",
+    "significance": "key",
+    "relatedConcepts": [
+      "le_aleph0_iff_set_countable",
+      "Set.Countable",
+      "Cardinal",
+      "ℵ₀"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Data.Set.Countable"
+    ]
+  },
+  {
+    "id": "ann-transccard-04",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 102,
+      "endLine": 109
+    },
+    "type": "technique",
+    "title": "Proving Infinite Cardinal Absorption: ℵ₀ + κ = κ",
+    "content": "The `aleph0_add_of_ge` lemma proves ℵ₀ + κ = κ for any κ ≥ ℵ₀. This is proved via le_antisymm:\n- **Upper bound** (ℵ₀ + κ ≤ κ): We have ℵ₀ ≤ κ (hypothesis), so ℵ₀ + κ ≤ κ + κ = κ. The last equality is `Cardinal.add_eq_self h` where h : ℵ₀ ≤ κ.\n- **Lower bound** (κ ≤ ℵ₀ + κ): Trivially, le_add_left κ ℵ₀.\n\nThis absorption law is the core of the lower bound proof. Without it, the calculation ℵ₀ + 𝔠 → 𝔠 would need separate justification.",
+    "mathContext": "`Cardinal.add_eq_self {κ : Cardinal} (h : ℵ₀ ≤ κ) : κ + κ = κ` is Mathlib's version of the infinite cardinal self-absorption. The lemma here bootstraps from it: ℵ₀ + κ ≤ κ + κ (by adding ℵ₀ ≤ κ to both sides) = κ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.add_eq_self",
+      "infinite cardinal arithmetic",
+      "le_antisymm",
+      "absorption law"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Infinite cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-transccard-05",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 111,
+      "endLine": 137
+    },
+    "type": "technique",
+    "title": "The Lower Bound Chain: 𝔠 ≤ #transcendentals",
+    "content": "The lower bound `continuum_le_card_transcendentals` is the mathematical heart of the proof. The calc chain is:\n```\n𝔠 = #ℝ ≤ #(algebraics ∪ transcendentals) ≤ #algebraics + #transcendentals ≤ ℵ₀ + #transcendentals = #transcendentals\n```\n\nEach step:\n1. `𝔠 = #ℝ`: Cardinal.mk_real.symm\n2. `#ℝ = #(algebraics ∪ transcendentals)`: rewriting with algebraic_trans_partition (union = univ) and Cardinal.mk_univ\n3. `#(A ∪ B) ≤ #A + #B`: Cardinal.mk_union_le\n4. `#algebraics + #transcendentals ≤ ℵ₀ + #transcendentals`: add_le_add_right with card_algebraic_le_aleph0\n5. `ℵ₀ + #transcendentals = #transcendentals`: aleph0_add_of_ge (absorption)\n\nThis is a showcase of chained cardinal inequalities where each step uses a single Mathlib lemma.",
+    "mathContext": "Cardinal.mk_union_le: `#(↑(A ∪ B) : Set α) ≤ #↑A + #↑B` for any sets A, B. After rw [algebraic_trans_partition, Cardinal.mk_univ], the left side of h1 becomes #ℝ (since #Set.univ = #ℝ).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.mk_union_le",
+      "Cardinal.mk_univ",
+      "Cardinal.mk_real",
+      "add_le_add_right",
+      "calc chains"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum"
+    ]
+  },
+  {
+    "id": "ann-transccard-06",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 147,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Main Theorem: One-Line Assembly",
+    "content": "With both bounds established, the main theorem is one line:\n```lean\ntheorem card_transcendentalReals_eq_continuum :\n    (#(↑transcendentalReals : Set ℝ) : Cardinal) = 𝔠 :=\n  le_antisymm card_transcendentals_le_continuum continuum_le_card_transcendentals\n```\n\nThis is the standard pattern for proving cardinality equalities via a double inequality. `le_antisymm` (Lean's version of antisymmetry of ≤) takes the two bounds and produces the equality. The entire mathematical content is in the bound proofs; the assembly is mechanical.",
+    "mathContext": "le_antisymm : a ≤ b → b ≤ a → a = b. Applied at the Cardinal level with a = #transcendentalReals and b = 𝔠.",
+    "significance": "core",
+    "relatedConcepts": [
+      "le_antisymm",
+      "double inequality",
+      "cardinality equality"
+    ],
+    "prerequisites": [
+      "Lean 4 term-mode proofs",
+      "Cardinal partial order"
+    ]
+  },
+  {
+    "id": "ann-transccard-07",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 162,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Strict Inequality: #algebraics < #transcendentals",
+    "content": "The `card_algebraics_lt_card_transcendentals` corollary gives the strict comparison between the two sides of Cantor's partition:\n```\n#algebraics ≤ ℵ₀ < 𝔠 = #transcendentals\n```\n\nThis uses `Cardinal.aleph0_lt_continuum : ℵ₀ < 𝔠` — the abstract diagonal gap — and the already-proved `card_transcendentalReals_eq_continuum`. The proof is a two-step calc chain: bound #algebraics above by ℵ₀, then note ℵ₀ < 𝔠 = #transcendentals.",
+    "mathContext": "Cardinal.aleph0_lt_continuum is proved via Cardinal.cantor (Cantor's theorem κ < 2^κ at κ = ℵ₀): ℵ₀ < 2^ℵ₀ = 𝔠. The strict lt is essential — the weak ≤ version would not give the strict ordering between #algebraics and #transcendentals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.aleph0_lt_continuum",
+      "strict vs weak inequalities",
+      "Cantor's theorem"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Continuum"
+    ]
+  },
+  {
+    "id": "ann-transccard-08",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03",
+    "range": {
+      "startLine": 171,
+      "endLine": 178
+    },
+    "type": "technique",
+    "title": "Corollary: #algebraics = ℵ₀ via Subtype Rewrite",
+    "content": "The `card_algebraics_eq_aleph0` corollary proves (#algebraics : Cardinal) = ℵ₀. The parent file (AlgebraicNumbersCountable) provides `card_algebraic_reals_eq_aleph0 : #{x : ℝ // IsAlgebraic ℚ x} = ℵ₀`, which uses the *subtype* cardinality (#{x : ℝ // P x}), while this entry uses *set* cardinality (#(↑{x : ℝ | P x} : Set ℝ)).\n\nThe key step is `rfl` after rewriting: the two forms are definitionally equal in Lean 4 because the coercion of the set {x | P x} to a type is the subtype {x // P x}.",
+    "mathContext": "In Lean 4, `{x : ℝ // IsAlgebraic ℚ x}` (subtype) and `↑{x : ℝ | IsAlgebraic ℚ x}` (set coerced to type) are definitionally equal as types. The `rfl` closes the goal after the rewrite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subtype vs set coercion",
+      "definitional equality",
+      "Lean 4 type theory"
+    ],
+    "prerequisites": [
+      "Lean 4 subtypes and set coercions"
+    ]
+  }
+]
