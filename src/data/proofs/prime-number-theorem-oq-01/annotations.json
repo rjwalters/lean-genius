@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-pnt-rh-def",
+    "proofId": "prime-number-theorem-oq-01",
+    "range": { "startLine": 62, "endLine": 85 },
+    "type": "definition",
+    "title": "Formal definition of RH via Mathlib's riemannZeta",
+    "content": "Defines `criticalStrip = {s ∈ ℂ : 0 < Re(s) < 1}`, `criticalLine = {s ∈ ℂ : Re(s) = 1/2}`, and `RiemannHypothesis` as the proposition that every zero of riemannZeta in the critical strip lies on the critical line. The companion theorem `rh_iff_re_half` gives an equivalent formulation: for all s with ζ(s) = 0 and 0 < Re(s) < 1, we have Re(s) = 1/2.",
+    "mathContext": "The Riemann Hypothesis states: all non-trivial zeros of $\\zeta(s)$ (i.e., zeros in the critical strip $0 < \\text{Re}(s) < 1$, excluding the trivial zeros at $s = -2, -4, \\ldots$) have $\\text{Re}(s) = 1/2$. In Mathlib, `riemannZeta : ℂ → ℂ` is defined as the analytic continuation of the Dirichlet series $\\sum n^{-s}$, extended to all $s \\neq 1$ by the functional equation. The non-trivial zeros are those in the critical strip; as of 2025, all known zeros ($\\sim 10^{13}$) have been verified to lie on $\\text{Re}(s) = 1/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "critical strip",
+      "critical line",
+      "Riemann zeta function",
+      "non-trivial zeros",
+      "Millennium Prize Problem"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.LSeries.RiemannZeta",
+      "Complex.re",
+      "riemannZeta"
+    ]
+  },
+  {
+    "id": "ann-pnt-zero-free",
+    "proofId": "prime-number-theorem-oq-01",
+    "range": { "startLine": 87, "endLine": 150 },
+    "type": "technique",
+    "title": "Zero-free regions: Euler product and PNT region proved from Mathlib",
+    "content": "Proves four zero-free region theorems from Mathlib lemmas: `no_zeros_euler_product` (Re(s) > 1: Euler product gives ζ(s) ≠ 0), `pnt_zero_free_region` (Re(s) ≥ 1: the PNT-equivalent result), `trivial_zeros` (negative even integers are zeros), and conditionally `rh_strip_zero_free` (under RH, the strip 1/2 < Re(s) < 1 has no zeros). Also proves `zeros_symmetric_in_strip` via the functional equation.",
+    "mathContext": "The hierarchy of zero-free regions and corresponding PNT error bounds: (1) $\\text{Re}(s) > 1$: Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ converges absolutely, giving $\\zeta(s) \\neq 0$ trivially. (2) $\\text{Re}(s) \\geq 1$: PNT-equivalent result (Hadamard-de la Vallée Poussin 1896). (3) Under RH: $\\text{Re}(s) > 1/2$ is zero-free. Each step improves the PNT error bound: $O(x\\exp(-c\\sqrt{\\log x}))$ from (2), $O(\\sqrt{x}\\log x)$ from (3).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler product",
+      "PNT zero-free region",
+      "riemannZeta_ne_zero_of_one_le_re",
+      "functional equation",
+      "zero symmetry"
+    ],
+    "prerequisites": [
+      "riemannZeta_ne_zero_of_one_le_re",
+      "riemannZeta_ne_zero_of_one_lt_re",
+      "riemannZeta_neg_two_mul_nat_add_one",
+      "riemannZeta_one_sub",
+      "RiemannHypothesis"
+    ]
+  },
+  {
+    "id": "ann-pnt-von-koch",
+    "proofId": "prime-number-theorem-oq-01",
+    "range": { "startLine": 162, "endLine": 210 },
+    "type": "context",
+    "title": "Von Koch's theorem: RH ↔ optimal PNT error O(√x log x)",
+    "content": "Axiomatizes `pnt_classical_error` (unconditional: |π(x) - Li(x)| = O(x exp(-c√log x))) and `vonKoch_rh_error` (conditional on RH: |π(x) - Li(x)| = O(√x log x)). The proved theorem `pnt_error_rh` assembles these: under RH, the error is O(√x log x). `rh_sharpens_error` states that RH strictly improves the error exponent from exp(-c√log x) to √x.",
+    "mathContext": "Von Koch (1901) proved: $|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x}\\log x)$ is equivalent to RH. The bound $O(\\sqrt{x}\\log x)$ comes from the explicit formula $\\psi(x) = x - \\sum_\\rho x^\\rho/\\rho + \\ldots$ where under RH each $|x^\\rho| = x^{1/2}$. The unconditional bound $O(x\\exp(-c\\sqrt{\\log x}))$ uses the classical zero-free region $|\\text{Im}(s)| \\leq T \\Rightarrow \\zeta(s) \\neq 0$ for $\\text{Re}(s) \\geq 1 - c/(\\log T)^{2/3}(\\log\\log T)^{1/3}$ (Vinogradov-Korobov, 1958).",
+    "significance": "key",
+    "relatedConcepts": [
+      "von Koch's theorem",
+      "explicit formula",
+      "Vinogradov-Korobov",
+      "Hadamard-de la Vallée Poussin",
+      "prime counting function π(x)"
+    ],
+    "prerequisites": [
+      "primePi",
+      "Li",
+      "vonKoch_rh_error",
+      "pnt_classical_error",
+      "RiemannHypothesis"
+    ]
+  },
+  {
+    "id": "ann-pnt-littlewood",
+    "proofId": "prime-number-theorem-oq-01",
+    "range": { "startLine": 211, "endLine": 240 },
+    "type": "insight",
+    "title": "Littlewood's omega bound: √x is optimal, π(x) > Li(x) infinitely often",
+    "content": "Axiomatizes `littlewood_omega` (|π(x) - Li(x)| = Ω(√x log log log x / log x) infinitely often) and `pi_exceeds_li_infinitely` (π(x) > Li(x) for infinitely many x). These show that the O(√x log x) bound is near-optimal: no improvement below Ω(√x log log log x / log x) is possible. The first prime x with π(x) > Li(x) is enormous (Skewes' number ≈ 10^{316}).",
+    "mathContext": "Littlewood (1914) proved the error $\\pi(x) - \\text{Li}(x)$ changes sign infinitely often and satisfies $\\limsup_{x\\to\\infty} |\\pi(x) - \\text{Li}(x)|/(\\sqrt{x}\\log\\log\\log x/\\log x) \\geq C > 0$. This shows von Koch's O(√x log x) is correct to within doubly logarithmic factors. The first explicit x with $\\pi(x) > \\text{Li}(x)$ (Skewes' number, estimated ≈ $e^{e^{e^{79}}}$ conditionally and ≈ $10^{316}$ unconditionally by Lehman 1966) is far beyond direct computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Littlewood's theorem",
+      "Skewes' number",
+      "sign changes of π(x) - Li(x)",
+      "omega notation",
+      "logarithmic integral Li(x)"
+    ],
+    "prerequisites": [
+      "littlewood_omega",
+      "pi_exceeds_li_infinitely",
+      "primePi",
+      "Li"
+    ]
+  },
+  {
+    "id": "ann-pnt-backlund",
+    "proofId": "prime-number-theorem-oq-01",
+    "range": { "startLine": 228, "endLine": 281 },
+    "type": "context",
+    "title": "Backlund's zero-counting asymptotic and the landscape summary",
+    "content": "Axiomatizes Backlund's asymptotic N(T) ~ (T/2π) log(T/2π) for the count of zeros with |Im(ρ)| ≤ T. Defines `zeroCounting T = #{zeros ρ with Im(ρ) ≤ T}`. Under RH, proves `rh_zeros_all_on_line`: every zero counted by N(T) lies exactly on Re(s) = 1/2. The summary theorem `pnt_rh_landscape` collects all three proved structural results (zero-free strip, zeros on line, zero-counting) into one statement.",
+    "mathContext": "Backlund (1918) proved $N(T) = \\frac{T}{2\\pi}\\log\\frac{T}{2\\pi} - \\frac{T}{2\\pi} + O(\\log T)$ by integrating $\\log\\zeta(s)$ around the rectangle $[0,1]\\times[-T,T]$. Under RH, the $N(T)$ zeros with $|\\text{Im}(\\rho)| \\leq T$ all satisfy $\\text{Re}(\\rho) = 1/2$, so they're precisely $\\{1/2 + it_k : |t_k| \\leq T\\}$. Computing: $\\approx (T/2\\pi)\\log(T/2\\pi) \\sim T\\log T/(2\\pi)$ zeros up to height $T$. For $T = 10^6$: $N(T) \\approx 1.9 \\times 10^6$ zeros.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "zero-counting function N(T)",
+      "Backlund's asymptotic",
+      "critical line zeros",
+      "argument principle",
+      "log ζ integral"
+    ],
+    "prerequisites": [
+      "zeroCounting",
+      "backlund_zero_counting",
+      "rh_zeros_on_half_line",
+      "RiemannHypothesis"
+    ]
+  }
+]

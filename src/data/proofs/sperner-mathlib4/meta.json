@@ -4,103 +4,108 @@
   "slug": "sperner-mathlib4",
   "description": "A Mathlib-contribution-ready formalization of Sperner's lemma for abstract cell complexes. The CellComplex structure encapsulates exactly the adjacency axioms needed for the door-counting proof, without any geometric embedding. This follows the approach suggested by Mathlib maintainer Yaël Dillies: prove the combinatorial core abstractly, then verify that concrete triangulations satisfy the axioms as a separate step.",
   "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "2026",
     "status": "verified",
     "badge": "original",
+    "proofRepoPath": "Proofs/SpernerMathlib4.lean",
     "axiomCount": 0,
+    "sorries": 0,
     "sorryCount": 0,
     "theoremCount": 5,
     "definitionCount": 3,
     "lineCount": 732,
-    "leanFile": "proofs/Proofs/SpernerMathlib4.lean",
+    "leanFile": {
+      "path": "Proofs/SpernerMathlib4.lean",
+      "axiomCount": 0,
+      "sorryCount": 0,
+      "lineCount": 732,
+      "theoremCount": 5,
+      "definitionCount": 3
+    },
+    "tags": ["combinatorics", "topology", "sperner", "parity", "cell-complex", "mathlib"],
+    "assumptions": [],
     "imports": [
       "Mathlib.Algebra.Order.BigOperators.Group.Finset",
       "Mathlib.Algebra.Ring.Parity",
       "Mathlib.Data.Fintype.BigOperators",
       "Mathlib.Data.ZMod.Basic"
-    ],
-    "tags": [
-      "combinatorics",
-      "topology",
-      "sperner",
-      "parity",
-      "cell-complex",
-      "mathlib"
-    ],
-    "assumptions": [],
-    "sorries": 0,
-    "proofRepoPath": "Proofs/SpernerMathlib4.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma was proved by Emanuel Sperner in 1928 as a combinatorial tool for proving Brouwer's fixed-point theorem. In its classical form: any Sperner labeling of a triangulation of an n-simplex (boundary vertices get colors ⊂ {0,...,n} matching their boundary face, interior vertices any color) has an odd number of 'rainbow' (panchromatic) simplices — in particular at least one. The 1D case is the Intermediate Value Theorem. Sperner's lemma implies Brouwer's theorem, the Borsuk-Ulam theorem, and KKM lemma, and is used in fair-division (envy-free cake-cutting), Nash equilibrium existence, and topological game theory. This Lean 4 formalization follows the abstract approach advised by Mathlib maintainer Yaël Dillies (Mathlib4 PR #25231): prove the door-counting argument for an abstract CellComplex, separating the combinatorial core from the geometric instantiation.",
+    "problemStatement": "Let $K$ be a cell complex (a finite collection of $d$-cells with vertex colorings). A vertex coloring $c : V \\to \\{0,\\ldots,d\\}$ is *Sperner* if boundary conditions hold. A $d$-cell is *panchromatic* if it has all $d+1$ colors. A *door* is a codimension-1 face with all of the colors $\\{0,\\ldots,d-1\\}$ (missing only color $d$). Sperner's lemma: the number of panchromatic cells is congruent (mod 2) to the number of boundary doors. In particular, if there are an odd number of boundary doors, there exists a panchromatic cell.",
+    "proofStrategy": "The door-counting argument in four steps: (1) Fixed-point-free involution parity: any involution on a finite set pairing interior doors has even cardinality (proved algebraically via `Finset.sum_involution` over ZMod 2). (2) Door count parity per cell: a cell with $d+1$ vertices colored $c : \\text{Fin}(d+1) \\to \\text{Fin}(d+1)$ contributes an odd number of doors iff $c$ is bijective (hence panchromatic). (3) Interior doors pair: adjacent cells share an interior door; the adjacency map gives a fixed-point-free involution on interior doors. (4) Assembly: summing door counts mod 2 over all cells, interior doors cancel, leaving boundary door count ≡ panchromatic cell count (mod 2).",
+    "keyInsights": [
+      "The `Finset.sum_involution` lemma over ZMod 2 proves fixed-point-free involution parity in one algebraic computation: $\\sum_{x \\in S} f(x) = \\sum_{x \\in S} f(\\sigma(x))$ where $\\sigma$ is the involution, so $2 \\sum f = \\sum f + \\sum f\\circ\\sigma$, giving sum mod 2 = 0.",
+      "The `door_count_parity` theorem is the per-cell parity computation: for $f : \\text{Fin}(d+1) \\to \\text{Fin}(d+1)$, the count of 'door positions' (indices $k$ where removing color $k$ leaves all lower colors covered) is odd iff $f$ is surjective (bijective). This converts the geometric notion of a panchromatic cell to a purely combinatorial predicate.",
+      "The `CellComplex` structure is deliberately minimal: only three axioms — `adj_symm` (adjacency is symmetric), `adj_shared_face` (adjacent cells share the face between them), and `adj_distinct` (a cell is not self-adjacent). This separates the abstract proof from geometric instantiation.",
+      "Interior doors pair exactly: each interior door is shared by exactly two cells (by the `adj_shared_face` axiom), giving a fixed-point-free involution on interior doors. Combined with the involution parity lemma, interior doors contribute 0 mod 2.",
+      "Using only 4 targeted Mathlib imports (no `import Mathlib`) makes this file suitable for direct Mathlib contribution without creating a dependency on all of Mathlib. Each import is chosen to cover exactly the algebraic tools needed: Finset sums, ZMod 2, and parity."
+    ]
   },
   "sections": [
     {
       "id": "fpf-invol",
       "title": "Fixed-Point-Free Involution Parity",
-      "description": "The theorem Finset.even_card_of_fpf_invol proves that any fixed-point-free involution on a finite set has even cardinality. The proof uses Finset.sum_involution over ZMod 2, giving a concise algebraic argument. This is proposed for Mathlib as it appears useful for Tucker's lemma, Borsuk-Ulam, and related combinatorial topology results.",
-      "theorems": [
-        "Finset.even_card_of_fpf_invol"
-      ]
+      "startLine": 11,
+      "endLine": 77,
+      "summary": "Proves `Finset.even_card_of_fpf_invol`: any fixed-point-free involution on a finite set has even cardinality. Uses `Finset.sum_involution` over ZMod 2 for a concise algebraic proof. Proposed for Mathlib as it appears useful for Tucker's lemma, Borsuk-Ulam, and similar results."
     },
     {
-      "id": "door-count",
+      "id": "door-parity",
       "title": "Door Count Parity",
-      "description": "The theorem door_count_parity characterizes the parity of the number of 'door positions' for a coloring f : Fin(d+1) → Fin(d+1): it equals 1 if f is surjective (hence bijective by finiteness), and 0 otherwise. The proof uses a pigeonhole argument to find the unique duplicated fiber when f is surjective over Fin(d).",
-      "theorems": [
-        "door_count_parity"
-      ]
+      "startLine": 78,
+      "endLine": 397,
+      "summary": "Proves `door_count_parity`: for a coloring f : Fin(d+1) → Fin(d+1), the number of door positions is odd iff f is surjective (hence bijective). Three cases: not surjective (0 doors), surjective to Fin(d+1) (1 door), surjective to Fin(d) (2 doors, from duplicated fiber)."
     },
     {
       "id": "cell-complex",
-      "title": "Abstract Cell Complex",
-      "description": "The CellComplex V d structure abstracts the combinatorial data needed for Sperner's lemma: a finite type of top-dimensional cells, a vertex function, and an adjacency map satisfying symmetry, shared-face, and distinctness axioms. The definitions IsPanchromatic (surjective vertex coloring) and IsDoor (codimension-1 face covering all lower colors) are stated in terms of this structure.",
-      "theorems": []
+      "title": "Abstract Cell Complex and Definitions",
+      "startLine": 398,
+      "endLine": 507,
+      "summary": "Defines the CellComplex structure (cells, vertex function, adjacency map with symmetry/shared-face/distinct axioms), IsPanchromatic (bijective coloring), and IsDoor (codimension-1 face covering all lower colors). Sets up the abstract framework for Sperner's lemma."
+    },
+    {
+      "id": "interior-doors",
+      "title": "Interior Doors Pair via Adjacency",
+      "startLine": 508,
+      "endLine": 651,
+      "summary": "Proves `even_card_interiorDoors`: interior doors come in pairs (each shared by two cells), giving even cardinality. Uses the adjacency involution and even_card_of_fpf_invol. This is the key cancellation step in the door-counting argument."
     },
     {
       "id": "sperner-main",
-      "title": "Sperner's Lemma",
-      "description": "The main results: sperner_parity shows the panchromatic cell count is congruent to the boundary door count modulo 2, via a double-counting argument using interior door pairing and per-cell parity. The theorem sperner derives existence of a panchromatic cell from an odd boundary door count.",
-      "theorems": [
-        "even_card_interiorDoors",
-        "sperner_parity",
-        "sperner"
-      ]
+      "title": "Sperner's Lemma (Parity and Existence)",
+      "startLine": 652,
+      "endLine": 732,
+      "summary": "Proves `sperner_parity` (panchromatic cells ≡ boundary doors mod 2) and `sperner` (existence of panchromatic cell from odd boundary door count). Assembles all previous lemmas into the main theorem."
     }
   ],
-  "overview": {
-    "summary": "Sperner's lemma guarantees a 'rainbow' cell exists in any Sperner-colored triangulation of a simplex. This formalization targets Mathlib 4 contribution: it proves the theorem for the abstract CellComplex structure, following guidance from Mathlib maintainer Yaël Dillies (Mathlib4 PR #25231).",
-    "approach": "The proof uses the door-counting parity argument in an abstract setting. Interior doors pair via the adjacency involution (contributing an even count by even_card_interiorDoors). The per-cell parity theorem (door_count_parity) shows panchromatic cells contribute odd door counts and non-panchromatic cells even. Summing modulo 2 gives the parity congruence.",
-    "significance": "This file is designed as a Mathlib contribution. The CellComplex structure is minimal: only three axioms (adjacency symmetry, shared-face property, distinctness) are needed. Concrete instantiations—simplicial complexes, triangulations, interval cells—can be verified separately, separating abstract from geometric concerns."
-  },
   "conclusion": {
-    "summary": "Sperner's lemma is machine-checked for abstract cell complexes with no axioms or sorries. The file uses only four targeted Mathlib imports, making it suitable for Mathlib contribution without full import Mathlib.",
+    "summary": "Sperner's lemma is machine-checked for abstract cell complexes with 0 axioms and 0 sorries. The CellComplex structure is minimal (3 axioms), and the proof uses only 4 targeted Mathlib imports, making it suitable for Mathlib4 contribution (PR #25231).",
+    "implications": "This abstract formulation provides a reusable combinatorial core: any geometric object satisfying the three CellComplex axioms automatically gets Sperner's lemma. Applications include: Brouwer's fixed-point theorem (via triangulation), KKM lemma (via Sperner), Nash equilibrium existence (via Kakutani = infinite-dim Brouwer), and fair division results. The ZMod 2 proof technique generalizes to other parity arguments in combinatorial topology.",
     "openQuestions": [
-      "Does CellComplex admit a Mathlib typeclass hierarchy connecting to existing SimplicialComplex machinery?",
-      "Can the door-counting argument be combined with the Tucker-style antipodal labeling to prove Tucker's lemma in this framework?",
-      "Is the abstract cell complex formulation sufficient to derive fair-division (envy-free cake-cutting) results directly?"
+      "Can the CellComplex structure be connected to Mathlib's existing `SimplicialComplex` type via a typeclass instance, making the concrete triangulation instantiation automatic?",
+      "Does the abstract door-counting argument extend to Tucker's lemma (antipodal Sperner coloring), giving Borsuk-Ulam from the same framework?",
+      "Can the Sperner parity theorem be combined with a fixed-point index computation to prove Brouwer's fixed-point theorem in Lean 4?"
     ]
   },
   "crossReferences": [
     {
       "id": "sperner-mathlib",
-      "relationship": "variants",
-      "description": "Alternative door-counting proof with more explicit combinatorial lemmas"
+      "title": "Sperner's Lemma (Alternative)",
+      "relationship": "Alternative door-counting proof with more explicit combinatorial lemmas."
     },
     {
       "id": "sperner-simplicial-instance",
-      "relationship": "specializes",
-      "description": "Concrete triangulation instantiation of the CellComplex axioms"
+      "title": "Simplicial Instantiation",
+      "relationship": "Concrete triangulation instantiation of the CellComplex axioms."
     },
     {
       "id": "sperner-ndim",
-      "relationship": "related",
-      "description": "n-dimensional Sperner via Freudenthal triangulation"
+      "title": "n-Dimensional Sperner",
+      "relationship": "n-dimensional version via Freudenthal triangulation."
     }
-  ],
-  "sorries": 0,
-  "leanFile": {
-    "path": "Proofs/SpernerMathlib4.lean",
-    "lineCount": 732,
-    "theoremCount": 5,
-    "definitionCount": 2,
-    "axiomCount": 0,
-    "sorries": 0
-  }
+  ]
 }

@@ -4,59 +4,100 @@
   "slug": "erdos-31-primes-density",
   "description": "A machine-checked proof that the prime numbers have natural density zero: π(N)/N → 0 as N → ∞. The proof uses the Chebyshev theta function bound θ(N) ≤ N·log 4 (from the primorial bound 2^N ≤ 4^N ≤ ∏_{p≤N} p^{logN/logp}), which gives π(N) ≤ 2N·log 4/log N + √N + 1, and this upper bound tends to 0. Fully axiom-free from Mathlib.",
   "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_function",
+    "date": "2026",
     "status": "verified",
     "badge": "original",
+    "proofRepoPath": "Proofs/Erdos31PrimesDensity.lean",
     "axiomCount": 0,
+    "sorries": 0,
     "sorryCount": 0,
     "theoremCount": 5,
     "definitionCount": 4,
     "lineCount": 234,
-    "leanFile": "proofs/Proofs/Erdos31PrimesDensity.lean",
-    "imports": [
-      "Mathlib"
-    ],
-    "tags": ["number-theory", "prime-numbers", "density", "chebyshev", "analytic-number-theory"],
+    "leanFile": {
+      "path": "Proofs/Erdos31PrimesDensity.lean",
+      "axiomCount": 0,
+      "sorryCount": 0,
+      "lineCount": 234,
+      "theoremCount": 5,
+      "definitionCount": 4
+    },
+    "tags": ["number-theory", "prime-numbers", "density", "chebyshev", "analytic-number-theory", "erdos"],
     "assumptions": [],
-    "sorries": 0
+    "imports": ["Mathlib"]
+  },
+  "overview": {
+    "historicalContext": "Chebyshev (1848) introduced the theta function θ(N) = Σ_{p≤N} log p and proved the landmark bound N·log(1/2) < θ(N) < N·log 4 (later sharpened), establishing that π(N) lies between cN/logN and CN/logN for explicit constants c < 1 < C. The full prime number theorem (PNT) — π(N) ~ N/logN — was proved independently by Hadamard and de la Vallée Poussin in 1896 using complex analysis. Density zero of the primes is weaker than PNT but can be proved by Chebyshev's elementary approach without complex analysis. Erdős problem #31 concerns arithmetic progressions in sets avoiding primes; density zero is the essential prerequisite. This Lean 4 proof formalizes the Chebyshev-based argument from scratch, using Mathlib's `primorial_le_4_pow` (the central binomial bound) as its main external lemma.",
+    "problemStatement": "Define the natural density of a set $A \\subseteq \\mathbb{N}$ as the limit $d(A) = \\lim_{N\\to\\infty} |A \\cap \\{1,\\ldots,N\\}|/N$ (when it exists). The theorem states $d(\\text{Primes}) = 0$, i.e., $\\pi(N)/N \\to 0$. Via the prime number theorem, this is equivalent to $\\pi(N) = o(N)$. The proof gives the explicit bound $\\pi(N)/N \\leq 2\\log 4/\\log N + 1/\\sqrt{N}$, which tends to 0 as $N\\to\\infty$.",
+    "proofStrategy": "The proof has three stages: (1) Theta bound: prove $\\theta(N) = \\sum_{p\\leq N}\\log p \\leq N\\log 4$ using the primorial bound $n\\# = \\prod_{p\\leq n} p \\leq \\binom{2n}{n} \\leq 4^n$ (each prime $p\\leq n$ divides the central binomial coefficient). (2) Pi bound: for primes $p > \\sqrt{N}$, each contributes $\\log p > (\\log N)/2$ to $\\theta(N)$, so their count is at most $2\\theta(N)/\\log N \\leq 2N\\log 4/\\log N$; adding the $\\leq \\sqrt{N}$ small primes gives $\\pi(N) \\leq 2N\\log 4/\\log N + \\sqrt{N} + 1$. (3) Tendsto: $\\log 4/\\log N \\to 0$ (since $\\log N \\to \\infty$) and $1/\\sqrt{N} \\to 0$, so the bound tends to 0. The density statement follows by squeeze theorem.",
+    "keyInsights": [
+      "The primorial bound $n\\# \\leq 4^n$ is the Chebyshev theta bound in disguise: taking logarithms gives $\\theta(n) \\leq n\\log 4$. Mathlib already has `primorial_le_4_pow`, turning a combinatorial identity into an analytic bound.",
+      "The split at $\\sqrt{N}$ is the key trick: small primes ($p \\leq \\sqrt{N}$) are bounded by $\\sqrt{N}$ in count, while large primes ($p > \\sqrt{N}$) have $\\log p > (\\log N)/2$ so their total count is controlled by the theta bound.",
+      "The density framework is set up over arbitrary $A \\subseteq \\mathbb{N}$ via `HasDensity`, decoupling the limit argument from the specific set. This modularity lets the proof reuse `tendsto_of_tendsto_of_tendsto_of_le_of_le'` (squeeze theorem) cleanly.",
+      "The proof uses Lean 4's `filter_upwards` to handle the 'eventually' quantifiers needed for the tendsto squeeze: for all sufficiently large N, $\\pi(N)/N$ lies between 0 and the Chebyshev bound.",
+      "Density zero is strictly weaker than PNT: it says $\\pi(N) = o(N)$ but not how fast. The explicit rate $\\pi(N)/N \\leq 2\\log 4/\\log N + 1/\\sqrt{N}$ is stronger than just $\\to 0$ and provides quantitative error bounds."
+    ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Namespace",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Imports Mathlib and opens the Erdos31PrimesDensity namespace."
+    },
+    {
       "id": "density-definitions",
-      "title": "Natural Density Definitions",
-      "description": "countingFn A N = |A ∩ {1,...,N}|, HasDensity A d (the limit countingFn A N / N → d), HasDensityZero A (density = 0), and chebyshevTheta N = Σ_{p prime, p≤N} log p (the Chebyshev θ-function). The density framework is set up over arbitrary subsets of ℕ.",
-      "theorems": ["countingFn", "HasDensity", "HasDensityZero", "chebyshevTheta"]
+      "title": "Natural Density Framework",
+      "startLine": 23,
+      "endLine": 49,
+      "summary": "Defines countingFn A N = |A ∩ {1,...,N}|, HasDensity A d (limit countingFn/N → d), HasDensityZero A (density = 0). Proves countingFn_primes_le_primeCounting bridging the custom countingFn with Mathlib's primeCounting (π(N))."
     },
     {
-      "id": "chebyshev-bound",
-      "title": "Chebyshev Theta Bound",
-      "description": "countingFn_primes_le_primeCounting bridges the custom countingFn with Mathlib's primeCounting (π(N)). chebyshevTheta_le: θ(N) ≤ N·log 4, proved using the primorial bound — the product of all primes ≤ N divides the central binomial coefficient C(2N,N) ≤ 4^N. primeCounting_le_chebyshev: π(N) ≤ 2N·log 4/log N + √N + 1, splitting primes into those ≤ √N (crude bound) and those > √N (using θ bound).",
-      "theorems": ["countingFn_primes_le_primeCounting", "chebyshevTheta_le", "primeCounting_le_chebyshev"]
+      "id": "chebyshev-theta",
+      "title": "Chebyshev Theta Function and Bound",
+      "startLine": 50,
+      "endLine": 77,
+      "summary": "Defines chebyshevTheta n = Σ_{p prime, p≤n} log p. Proves chebyshevTheta_le: θ(n) ≤ n·log 4 using primorial_le_4_pow from Mathlib (the central binomial bound n# ≤ 4^n), log_prod to convert product to sum, and linarith."
     },
     {
-      "id": "density-zero",
+      "id": "prime-count-bound",
+      "title": "Upper Bound on π(N) from Chebyshev",
+      "startLine": 78,
+      "endLine": 165,
+      "summary": "Proves primeCounting_le_chebyshev: π(N) ≤ 2N·log 4/log N + √N + 1 for N ≥ 2. Splits into small primes (≤ √N, at most √N of them) and large primes (> √N, each contributing (log N)/2 to θ(N) so bounded by 2θ(N)/log N). This section contains most of the proof work."
+    },
+    {
+      "id": "tendsto",
+      "title": "Limit Arguments",
+      "startLine": 166,
+      "endLine": 208,
+      "summary": "Proves chebyshev_bound_tendsto_zero: the bound 2·log 4/log N + (√N + 1)/N → 0 as N → ∞. Uses tendsto_const_div_atTop (log N → ∞), tendsto_div (1/√N → 0), and arithmetic of filters."
+    },
+    {
+      "id": "main-result",
       "title": "Primes Have Density Zero",
-      "description": "chebyshev_bound_tendsto_zero proves that (2·log 4/log N + 1/√N) → 0 via standard real analysis (log N → ∞, 1/√N → 0). primes_density_zero: the primes have natural density zero, assembled by squeezing π(N)/N between 0 and the upper bound that tends to 0.",
-      "theorems": ["chebyshev_bound_tendsto_zero", "primes_density_zero"]
+      "startLine": 209,
+      "endLine": 234,
+      "summary": "Main theorem primes_density_zero: HasDensityZero {n : ℕ | n.Prime}. Assembled by squeeze theorem (tendsto_of_tendsto_of_tendsto_of_le_of_le'): π(N)/N lies between 0 and the Chebyshev bound that tends to 0."
     }
   ],
-  "overview": {
-    "summary": "Despite being densely distributed in small ranges (by Dirichlet's theorem on primes in arithmetic progressions), the primes thin out rapidly: their natural density — the limit of π(N)/N — is 0. This is equivalent to the prime number theorem (PNT) saying π(N) ~ N/log N, but can be proved by much more elementary means using only the Chebyshev theta function bound.",
-    "approach": "The proof uses the Chebyshev theta bound θ(N) = Σ_{p≤N} log p ≤ N log 4. This comes from the primorial bound: ∏_{p≤N} p divides C(2N,N) ≤ 4^N, so Σ_{p≤N} log p ≤ log 4^N = N log 4. From this, π(N) ≤ 2N log 4/log N + √N + 1 (splitting at √N). Dividing by N gives π(N)/N ≤ 2 log 4/log N + 1/√N → 0.",
-    "significance": "The natural density of the primes being 0 is the qualitative content of the prime number theorem: the primes π(N) grow slower than any constant fraction of N. This result is a prerequisite for many counting problems in additive combinatorics. Erdős problem #31 asks about arithmetic progressions in the primes, for which density zero is a basic prerequisite."
-  },
   "conclusion": {
-    "summary": "The prime numbers have natural density zero, proved from the Chebyshev theta bound without the prime number theorem, fully machine-checked against Mathlib.",
+    "summary": "The prime numbers have natural density zero, proved from the Chebyshev theta bound θ(N) ≤ N log 4 without the prime number theorem. The proof is fully machine-checked against Mathlib, with all steps from the primorial combinatorial bound through the analytic limit argument verified.",
+    "implications": "Density zero of the primes is the qualitative content of the prime number theorem and a prerequisite for many results in additive combinatorics. In particular, it implies that for any fixed k, almost all integers are not prime. The explicit bound π(N)/N ≤ 2 log 4/log N + 1/√N gives quantitative decay rates. This result underpins Erdős problem #31, which studies arithmetic progressions in sets that avoid the primes.",
     "openQuestions": [
-      "Can the prime number theorem π(N) ~ N/log N be formalized as a Lean 4 proof from scratch or using Mathlib's existing analytic number theory?",
-      "Can the stronger result that the primes have logarithmic density 1 (Σ_{p≤N} 1/p ~ log log N) be formalized?",
-      "Can these density bounds be used to prove Erdős problem #31 about arithmetic progressions in prime-free sets?"
+      "Can the prime number theorem π(N) ~ N/log N be formalized in Lean 4? Mathlib has started this but the full statement requires analytic techniques (Riemann zeta function meromorphic continuation).",
+      "Can the stronger Chebyshev lower bound θ(N) ≥ N·log(1/2) be formalized, giving the two-sided bound N/2 < π(N)·log N/N < 2 log 4?",
+      "Can the logarithmic density of primes (Σ_{p≤N} 1/p ~ log log N, equivalently that the primes have logarithmic density 1) be proved from these methods?"
     ]
   },
   "crossReferences": [
     {
-      "targetId": "erdos-31",
-      "relationship": "supports",
-      "description": "Provides the prime density zero result needed for analyzing arithmetic progressions avoiding primes"
+      "id": "erdos-31",
+      "title": "Erdős Problem #31",
+      "relationship": "Provides the prime density zero result needed for analyzing arithmetic progressions avoiding primes."
     }
   ]
 }

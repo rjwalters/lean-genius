@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ann-ch-poly-coeff-def",
+    "proofId": "cayley-hamilton-oq-01-oq-03",
+    "range": { "startLine": 59, "endLine": 85 },
+    "type": "definition",
+    "title": "expPolyCoeff: the coefficient functions p_k(t) as tsum",
+    "content": "Defines `expPolyCoeff M k t = ∑' m : ℕ, t^m / m! * (X^m % minpoly ℝ M).coeff k`. This is the k-th coefficient function in the polynomial expansion exp(t·M) = ∑_{k=0}^{d-1} p_k(t)·M^k. The companion theorem `expPolyCoeff_summable` states the series converges for all t. The section also proves `matrixExp_eq_tsum`: exp(t·M) = ∑' m, t^m/m! · M^m, from `NormedSpace.exp_eq_tsum` and `Algebra.smul_pow`.",
+    "mathContext": "The coefficient $p_k(t) = \\sum_{m=0}^\\infty \\frac{t^m}{m!} c_{m,k}$ where $c_{m,k} = [X^m \\bmod \\mu_M]_k$ (the $k$-th coefficient of $X^m$ reduced modulo the minimal polynomial $\\mu_M$). By Cayley-Hamilton, $M^m = \\sum_{k<d} c_{m,k} M^k$ (minimal polynomial reduction). The series converges because $|c_{m,k}| \\leq \\|C\\|^m$ (companion matrix bound) and $\\sum_m \\|t\\|^m/m! \\|C\\|^m = e^{\\|t\\|\\|C\\|}$ converges. Thus $p_k(t)$ is an entire function of $t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimal polynomial reduction",
+      "companion matrix",
+      "tsum convergence",
+      "NormedSpace.exp_eq_tsum",
+      "Algebra.smul_pow"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff",
+      "Polynomial.X_pow_mod",
+      "NormedSpace.exp_eq_tsum",
+      "Algebra.smul_pow",
+      "tsum"
+    ]
+  },
+  {
+    "id": "ann-ch-basis-expansion",
+    "proofId": "cayley-hamilton-oq-01-oq-03",
+    "range": { "startLine": 88, "endLine": 115 },
+    "type": "technique",
+    "title": "power_eq_basis_sum: M^m as a polynomial in M via minpoly reduction",
+    "content": "Proves `M^m = ∑_{k < d} (X^m mod μ_M).coeff k • M^k`. The proof uses: (1) `power_eq_aeval_mod_minpoly` (from CayleyHamiltonOQ01): `M^m = aeval M (X^m mod μ_M)`; (2) `Polynomial.eval₂_eq_sum_range'`: the evaluation of a polynomial is a finite sum up to its degree. The degree bound `natDegree(X^m mod μ_M) < d` ensures the sum stops at k=d-1.",
+    "mathContext": "Cayley-Hamilton says $\\mu_M(M) = 0$, so $K[M] \\cong K[X]/(\\mu_M)$ as a ring. Since $\\deg(\\mu_M) = d$, every element of $K[M]$ is a polynomial in $M$ of degree $< d$. In particular, $M^m = [X^m \\bmod \\mu_M](M)$. The polynomial evaluation `aeval M q = ∑_{k \\leq \\deg q} q.coeff_k \\cdot M^k` is exactly `Polynomial.eval₂_eq_sum_range'`. Combined with Cayley-Hamilton: $M^m = \\sum_{k<d} c_{m,k} M^k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cayley-Hamilton theorem",
+      "minimal polynomial quotient ring",
+      "Polynomial.eval₂_eq_sum_range'",
+      "aeval M",
+      "CayleyHamiltonOQ01.power_eq_aeval_mod_minpoly"
+    ],
+    "prerequisites": [
+      "CayleyHamiltonOQ01.power_eq_aeval_mod_minpoly",
+      "Polynomial.eval₂_eq_sum_range'",
+      "Polynomial.natDegree_mod_lt",
+      "aeval"
+    ]
+  },
+  {
+    "id": "ann-ch-interchange",
+    "proofId": "cayley-hamilton-oq-01-oq-03",
+    "range": { "startLine": 118, "endLine": 155 },
+    "type": "technique",
+    "title": "exp_tsum_interchange: exchanging ∑' m with ∑_{k<d} entry-wise",
+    "content": "Proves `exp_tsum_interchange`: the entry-wise interchange `∑' m, (∑_{k<d} c_{m,k} a_{m,k}) = ∑_{k<d} (∑' m, c_{m,k} a_{m,k})`. The proof works via `Matrix.ext` (reduce to entries), then applies `tsum_sum` (the real-valued interchange theorem) with summability from `expPolyCoeff_summable`. The `matrixExp_poly_form` main theorem follows by identifying the interchange.",
+    "mathContext": "The interchange of $\\sum_{m=0}^\\infty$ (infinite) with $\\sum_{k=0}^{d-1}$ (finite) is justified by absolute convergence: $\\sum_m |t^m/m! \\cdot c_{m,k}| = p_k(|t|) < \\infty$ (from `expPolyCoeff_summable`). The key Mathlib lemma is `tsum_sum : (∑' m, ∑ k in s, f m k) = ∑ k in s, ∑' m, f m k` when each `fun m => f m k` is summable. Working entry-wise via `Matrix.ext` reduces the matrix-valued interchange to a real-valued one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum_sum",
+      "Matrix.ext",
+      "absolute convergence",
+      "summability",
+      "Fubini for series"
+    ],
+    "prerequisites": [
+      "Matrix.ext",
+      "tsum_sum",
+      "expPolyCoeff_summable",
+      "Summable",
+      "power_eq_basis_sum"
+    ]
+  },
+  {
+    "id": "ann-ch-main-result",
+    "proofId": "cayley-hamilton-oq-01-oq-03",
+    "range": { "startLine": 157, "endLine": 230 },
+    "type": "insight",
+    "title": "matrixExp_poly_form and corollaries: exp(t·M) ∈ K[M]",
+    "content": "The main theorem `matrixExp_poly_form : NormedSpace.exp ℝ (t • M) = ∑ k in Finset.range d, expPolyCoeff M k t • M^k` assembles all steps. Corollaries: `matrixExp_in_span` (exp(t·M) ∈ span{I, M, ..., M^{d-1}}), `matrixExp_zero_eq_one` (exp(0·M) = I, a consistency check), `matrixExp_atMost_n_terms` (at most n terms since deg(minpoly) ≤ n).",
+    "mathContext": "The main result shows $e^{tM} \\in K[M] = K[X]/(\\mu_M)$, a $d$-dimensional vector space over $K$. This is the basis of Putzer's algorithm: instead of summing an infinite series or computing matrix powers, one solves a $d$-dimensional system of scalar ODEs for the $p_k$. The identity $e^{0 \\cdot M} = I$ follows from $p_0(0) = 1$ and $p_k(0) = 0$ for $k > 0$ (since $X^0 \\bmod \\mu = 1$ has only the constant term). The $n$-term bound: $\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$ (minpoly divides charpoly).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Putzer's algorithm",
+      "matrix function as polynomial",
+      "Lagrange-Sylvester interpolation",
+      "matrixExp_in_span",
+      "degree minpoly ≤ degree charpoly"
+    ],
+    "prerequisites": [
+      "exp_tsum_interchange",
+      "NormedSpace.exp",
+      "Submodule.span",
+      "Polynomial.natDegree_minpoly_le"
+    ]
+  }
+]

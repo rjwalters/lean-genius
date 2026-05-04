@@ -1,7 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/Erdos31PrimesDensity.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/CayleyHamiltonOQ01OQ03.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -15,7 +15,7 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-export const erdos31PrimesDensityProof: Proof = {
+export const cayleyHamiltonOq01Oq03Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -28,9 +28,9 @@ export const erdos31PrimesDensityProof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const erdos31PrimesDensityAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const cayleyHamiltonOq01Oq03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const erdos31PrimesDensityData: ProofData = {
-  proof: erdos31PrimesDensityProof,
-  annotations: erdos31PrimesDensityAnnotations,
+export const cayleyHamiltonOq01Oq03Data: ProofData = {
+  proof: cayleyHamiltonOq01Oq03Proof,
+  annotations: cayleyHamiltonOq01Oq03Annotations,
 }

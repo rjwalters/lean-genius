@@ -1,38 +1,140 @@
 [
   {
-    "id": "ann-primes-density-zero",
-    "type": "theorem",
-    "label": "primes_density_zero",
-    "title": "Primes Have Natural Density Zero",
-    "body": "primes_density_zero: HasDensityZero {p : ℕ | p.Prime}. The natural density of the set of primes is 0: countingFn(primes, N) / N → 0. The proof squeezes: 0 ≤ π(N)/N ≤ 2·log 4/log N + 1/√N, and the upper bound tends to 0 by chebyshev_bound_tendsto_zero.",
-    "location": { "line": 220 },
-    "tags": ["main-theorem", "density", "primes", "analytic-number-theory"]
-  },
-  {
-    "id": "ann-chebyshev-theta-bound",
-    "type": "theorem",
-    "label": "chebyshevTheta_le",
-    "title": "Chebyshev Theta Bound: θ(N) ≤ N log 4",
-    "body": "chebyshevTheta_le: for all N, chebyshevTheta N ≤ N * Real.log 4. This uses the primorial bound: the product ∏_{p≤N} p divides the central binomial coefficient C(2N,N), and C(2N,N) ≤ 4^N (since it appears in the expansion of (1+1)^{2N} = 4^N). Taking logarithms: Σ_{p≤N} log p ≤ log(4^N) = N log 4.",
-    "location": { "line": 130 },
-    "tags": ["chebyshev", "theta-function", "primorial", "binomial"]
-  },
-  {
-    "id": "ann-prime-count-bound",
-    "type": "theorem",
-    "label": "primeCounting_le_chebyshev",
-    "title": "Prime Count Bound: π(N) ≤ 2N log 4/log N + √N + 1",
-    "body": "primeCounting_le_chebyshev: π(N) ≤ 2·N·log 4 / log N + √N + 1. Split primes into 'small' (p ≤ √N, at most √N of them) and 'large' (p > √N): for large primes, each contributes log p > (log N)/2 to θ(N), so their count is at most 2θ(N)/log N ≤ 2N log 4/log N. Total: π(N) ≤ 2N log 4/log N + √N.",
-    "location": { "line": 170 },
-    "tags": ["prime-counting", "chebyshev", "analytic"]
-  },
-  {
-    "id": "ann-chebyshev-theta",
+    "id": "ann-e31-density-def",
+    "proofId": "erdos-31-primes-density",
+    "range": { "startLine": 25, "endLine": 48 },
     "type": "definition",
-    "label": "chebyshevTheta",
-    "title": "Chebyshev Theta Function",
-    "body": "chebyshevTheta N = Σ_{p : ℕ | p.Prime ∧ p ≤ N} Real.log p. The Chebyshev θ-function sums the logarithms of all primes up to N. Unlike π(N) which counts primes uniformly, θ(N) weights each prime by its logarithm. The prime number theorem is equivalent to θ(N) ~ N (which is harder than the density bound θ(N) ≤ N log 4 used here).",
-    "location": { "line": 45 },
-    "tags": ["definition", "chebyshev", "theta-function"]
+    "title": "Natural density framework: countingFn, HasDensity, HasDensityZero",
+    "content": "Defines the density infrastructure from scratch. `countingFn A N = |A ∩ {1,...,N}|` counts elements of A up to N. `HasDensity A d` says countingFn A N / N → d (as a real-valued limit at infinity). `HasDensityZero A` specializes to d=0. The bridging theorem `countingFn_primes_le_primeCounting` connects this custom countingFn to Mathlib's built-in `Nat.primeCounting` (π(N)), which is needed because the Chebyshev bound is stated for primeCounting.",
+    "mathContext": "Natural density $d(A) = \\lim_{N\\to\\infty} |A\\cap\\{1,\\ldots,N\\}|/N$ (when it exists) is a standard concept in additive number theory. It satisfies $0 \\leq d(A) \\leq 1$ and $d(A\\cup B) \\leq d(A) + d(B)$ (subadditivity). Not all sets have density: e.g., $A = \\{n : \\lfloor \\log_2 n\\rfloor\\text{ is even}\\}$ oscillates between $1/3$ and $2/3$. The primes have density 0, which is weaker than the prime number theorem $\\pi(N) \\sim N/\\log N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "natural density",
+      "Schnirelmann density",
+      "Nat.primeCounting",
+      "Finset.card",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "Filter.Tendsto",
+      "Nat.primeCounting"
+    ]
+  },
+  {
+    "id": "ann-e31-theta-def",
+    "proofId": "erdos-31-primes-density",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "definition",
+    "title": "Chebyshev theta function θ(N) = Σ_{p≤N} log p",
+    "content": "Defines `chebyshevTheta n = Σ_{p prime, p ≤ n} Real.log p`. Unlike π(N) which counts primes uniformly, θ(N) weights each prime by its logarithm. The prime number theorem is equivalent to θ(N) ~ N (proved by Hadamard/de la Vallée Poussin 1896 via complex analysis). The elementary bound θ(N) ≤ N log 4 is proved here without complex analysis.",
+    "mathContext": "Chebyshev's theta function $\\theta(x) = \\sum_{p \\leq x} \\log p$ satisfies: (a) $\\theta(x) = \\log \\text{lcm}(1,2,\\ldots,\\lfloor x\\rfloor)$ since $e^{\\theta(n)} = \\text{lcm}(1,\\ldots,n)$; (b) PNT $\\Leftrightarrow$ $\\theta(x)/x \\to 1$; (c) Chebyshev proved $0.92 \\leq \\theta(x)/x \\leq 1.11$ for large $x$. The bound $\\theta(n) \\leq n\\log 4 \\approx 1.386 n$ is weaker but elementary. The connection to prime counting: $\\pi(N) \\leq \\sqrt{N} + 2\\theta(N)/\\log N \\leq \\sqrt{N} + 2N\\log 4/\\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "Mangoldt function",
+      "primorial function",
+      "central binomial coefficient"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Nat.Prime",
+      "Real.log",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-e31-theta-bound",
+    "proofId": "erdos-31-primes-density",
+    "range": { "startLine": 56, "endLine": 77 },
+    "type": "technique",
+    "title": "θ(N) ≤ N log 4 via primorial bound and log_prod",
+    "content": "Proves `chebyshevTheta_le`: θ(n) ≤ n·log 4 using the chain: (1) primorial_le_4_pow (Mathlib): n# ≤ 4^n, where n# = ∏_{p≤n} p; (2) taking logs: log(n#) ≤ n·log 4; (3) `Real.log_prod` converts log of product to sum of logs; (4) since log(n#) = Σ_{p≤n} log p = θ(n), the bound follows. The proof handles n=0 separately (empty sum).",
+    "mathContext": "The primorial bound $n\\# \\leq \\binom{2n}{n} \\leq 4^n$ comes from: (a) each prime $p \\leq n$ divides $\\binom{2n}{n}$ (Kummer's theorem), (b) $\\sum_{k=0}^{2n}\\binom{2n}{k} = 4^n \\geq \\binom{2n}{n}$. In Lean, `primorial_le_4_pow` is a Mathlib lemma. The `Real.log_prod` step converts $\\log(\\prod_p p) = \\sum_p \\log p$, using that all primes are positive ($p.Prime \\implies p \\neq 0$) for the logarithm to be well-defined. The `linarith` closes after `Real.log_le_log`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primorial_le_4_pow",
+      "Real.log_prod",
+      "Real.log_le_log",
+      "central binomial coefficient",
+      "Kummer's theorem"
+    ],
+    "prerequisites": [
+      "primorial_le_4_pow",
+      "Real.log_prod",
+      "Real.log_le_log",
+      "Real.log_pow",
+      "Nat.Prime.ne_zero"
+    ]
+  },
+  {
+    "id": "ann-e31-pi-bound",
+    "proofId": "erdos-31-primes-density",
+    "range": { "startLine": 89, "endLine": 165 },
+    "type": "insight",
+    "title": "π(N) ≤ 2N log 4/log N + √N + 1 via the √N split",
+    "content": "Proves `primeCounting_le_chebyshev`: π(N) ≤ 2N·log 4/log N + √N + 1 for N ≥ 2. The proof splits primes into 'small' (p ≤ √N, at most √N of them) and 'large' (p > √N): large primes contribute at least (log N)/2 each to θ(N) (since log p ≥ log(√N) = (log N)/2), so their count ≤ 2θ(N)/log N ≤ 2N·log 4/log N. Adding the ≤ √N + 1 small primes gives the total bound.",
+    "mathContext": "The split at $\\sqrt{N}$: primes in $(\\sqrt{N}, N]$ each satisfy $\\log p > \\log\\sqrt{N} = (\\log N)/2$. If there are $k$ such primes, then $\\theta(N) \\geq k \\cdot (\\log N)/2$, so $k \\leq 2\\theta(N)/\\log N \\leq 2N\\log 4/\\log N$. Primes $\\leq \\sqrt{N}$ number at most $\\lfloor\\sqrt{N}\\rfloor \\leq \\sqrt{N}$. This trick (also used in Bertrand's postulate proofs) avoids needing the full PNT. The Lean proof uses `Nat.sqrt` (integer square root) and careful casting between $\\mathbb{N}$ and $\\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sqrt split trick",
+      "Chebyshev bounds",
+      "Nat.sqrt",
+      "Bertrand's postulate",
+      "prime counting function"
+    ],
+    "prerequisites": [
+      "chebyshevTheta_le",
+      "Nat.sqrt",
+      "Real.log_le_log",
+      "Nat.primeCounting"
+    ]
+  },
+  {
+    "id": "ann-e31-tendsto",
+    "proofId": "erdos-31-primes-density",
+    "range": { "startLine": 168, "endLine": 208 },
+    "type": "technique",
+    "title": "The Chebyshev bound tends to zero via log growth",
+    "content": "Proves `chebyshev_bound_tendsto_zero`: 2·log 4/log N + (√N + 1)/N → 0. The key is that log N → ∞, so 1/log N → 0 and thus (2 log 4)/log N → 0. Similarly (√N + 1)/N ~ 1/√N → 0. These tendsto results are assembled from Mathlib's filter calculus: tendsto_const_div_atTop, Filter.Tendsto.add, etc.",
+    "mathContext": "The limit $\\log N \\to \\infty$ follows from the fact that $\\log$ is an unbounded increasing function. In Lean, this is `Real.tendsto_log_atTop`. From this, `tendsto_const_div_atTop` gives $c/\\log N \\to 0$ for any constant $c$. The $1/\\sqrt{N} \\to 0$ part uses $(\\sqrt{N}+1)/N \\leq 2/\\sqrt{N}$ for large $N$, and $1/\\sqrt{N} \\to 0$ by the standard $(\\sqrt{\\cdot})$ tendsto lemmas. The full statement is assembled using `Filter.Tendsto.add` and `Filter.Tendsto.const_mul`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.tendsto_log_atTop",
+      "tendsto_const_div_atTop",
+      "Filter.Tendsto",
+      "atTop filter"
+    ],
+    "prerequisites": [
+      "Real.tendsto_log_atTop",
+      "Filter.Tendsto.add",
+      "Filter.Tendsto.div_atTop",
+      "tendsto_const_nhds"
+    ]
+  },
+  {
+    "id": "ann-e31-main",
+    "proofId": "erdos-31-primes-density",
+    "range": { "startLine": 211, "endLine": 234 },
+    "type": "insight",
+    "title": "Squeeze theorem closes the proof",
+    "content": "Proves `primes_density_zero`: unfolds HasDensityZero to a Tendsto statement, then applies `tendsto_of_tendsto_of_tendsto_of_le_of_le'` (the squeeze theorem for tendsto). The three ingredients are: (1) 0 ≤ π(N)/N (numerator and denominator nonneg), (2) π(N)/N ≤ Chebyshev bound (from primeCounting_le_chebyshev), (3) Chebyshev bound → 0 (from chebyshev_bound_tendsto_zero). The filter_upwards tactic handles the 'eventually' conditions.",
+    "mathContext": "The squeeze theorem for limits: if $0 \\leq a_N \\leq b_N \\to 0$, then $a_N \\to 0$. In Lean's filter calculus, `tendsto_of_tendsto_of_tendsto_of_le_of_le' h_lower h_upper hle_lower hle_upper` where $h_\\text{lower}$/$h_\\text{upper}$ are the limit statements and $hle$ are the inequality bounds (as `Filter.eventually` propositions). The `filter_upwards [eventually_ge_atTop 2]` provides the hypothesis $N \\geq 2$ needed to apply `primeCounting_le_chebyshev`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squeeze theorem for tendsto",
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le'",
+      "filter_upwards",
+      "eventually_ge_atTop"
+    ],
+    "prerequisites": [
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le'",
+      "filter_upwards",
+      "eventually_ge_atTop",
+      "chebyshev_bound_tendsto_zero",
+      "primeCounting_le_chebyshev",
+      "countingFn_primes_le_primeCounting"
+    ]
   }
 ]

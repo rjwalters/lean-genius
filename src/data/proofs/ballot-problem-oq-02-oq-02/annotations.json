@@ -1,114 +1,132 @@
 [
   {
-    "id": "annotation-brownian-motion",
+    "id": "ann-ballot-brownian-def",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 44, "endLine": 53 },
     "type": "definition",
-    "label": "BrownianMotion",
-    "body": "structure BrownianMotion (Ω) [MeasurableSpace Ω] (μ) [IsProbabilityMeasure μ] where\n  W : ℝ → Ω → ℝ\n  path_continuous : ∀ ω, Continuous (fun t => W t ω)",
-    "note": "A Brownian motion is a stochastic process with almost-surely continuous paths. The `path_continuous` field encodes path continuity as a defining property. This is not a mathematical axiom but a type-level hypothesis — theorems in this file apply to any W satisfying this definition.",
-    "location": { "section": "setup" }
+    "title": "BrownianMotion structure and firstPassageTime definition",
+    "content": "Defines `BrownianMotion` as a structure parametrized by a probability space (Ω, μ): it contains the path function W : ℝ → Ω → ℝ and a hypothesis `continuous_paths : ∀ ω, Continuous (fun t => W t ω)`. The `firstPassageTime bm a ω = sInf {t : ℝ | 0 ≤ t ∧ bm.W t ω ≥ a}` is defined via Lean's `sInf`, which returns 0 for the empty set.",
+    "mathContext": "In classical probability, the first passage time $\\tau_a(\\omega) = \\inf\\{t \\geq 0 : B(t,\\omega) \\geq a\\}$ with the convention $\\inf \\emptyset = +\\infty$. In Lean 4, `sInf (∅ : Set ℝ) = 0` (not $+\\infty$), because `sInf` on ℝ uses the `ConditionallyCompleteLinearOrder` instance where the infimum of sets without a lower bound is defined to be 0. This means `firstPassageTime bm a ω = 0` for paths that never reach level $a$, which is why the characterization requires a nonemptiness hypothesis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ConditionallyCompleteLinearOrder",
+      "sInf convention in Lean",
+      "stopping times",
+      "continuous paths"
+    ],
+    "prerequisites": [
+      "Real.sInf_empty",
+      "ConditionallyCompleteLinearOrder",
+      "Continuous"
+    ]
   },
   {
-    "id": "annotation-fpt",
-    "type": "definition",
-    "label": "firstPassageTime",
-    "body": "firstPassageTime bm a ω = sInf {t | 0 ≤ t ∧ bm.W t ω ≥ a}",
-    "note": "The first passage time to level a: the infimum of times at which the path W(·,ω) first reaches or exceeds a. Lean's sInf convention: sInf ∅ = 0, NOT +∞ as in classical analysis. This creates a subtle discrepancy with the parent file's axiom.",
-    "location": { "section": "setup" }
+    "id": "ann-ballot-closed-hitting-set",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 59, "endLine": 73 },
+    "type": "technique",
+    "title": "Hitting set is closed: preimage of [a,∞) under continuous path",
+    "content": "Proves `hittingSet_isClosed`: the hitting set {t ≥ 0 : W(t,ω) ≥ a} is closed. The proof uses `Continuous.isClosed_preimage`: the preimage of the closed set [a,∞) under the continuous map t ↦ W(t,ω) is closed. The intersection with [0,∞) (also closed) preserves closure. This is the key topological fact: closed sets contain their infima when nonempty and bounded below.",
+    "mathContext": "The hitting set $H = \\{t \\geq 0 : B(t,\\omega) \\geq a\\} = f^{-1}([a,\\infty)) \\cap [0,\\infty)$ where $f(t) = B(t,\\omega)$. Since $[a,\\infty)$ is closed in $\\mathbb{R}$ and $f$ is continuous (by the `continuous_paths` hypothesis), $f^{-1}([a,\\infty))$ is closed. The intersection with $[0,\\infty)$ (closed) is closed. In Lean: `hf.isClosed_preimage isClosed_Ici` where `hf : Continuous (fun t => bm.W t ω)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Continuous.isClosed_preimage",
+      "isClosed_Ici",
+      "topology of preimages",
+      "closed sets and infima"
+    ],
+    "prerequisites": [
+      "Continuous.isClosed_preimage",
+      "isClosed_Ici",
+      "IsClosed.inter",
+      "BrownianMotion.continuous_paths"
+    ]
   },
   {
-    "id": "annotation-max-event",
-    "type": "definition",
-    "label": "maxEvent",
-    "body": "maxEvent bm a T = {ω | ∃ s ∈ Icc 0 T, bm.W s ω ≥ a}",
-    "note": "The event that the path W(·,ω) reaches or exceeds level a at some time in [0,T]. The main theorem shows firstPassageTime bm a ω ≤ T ↔ ω ∈ maxEvent bm a T (under a nonemptiness hypothesis).",
-    "location": { "section": "setup" }
+    "id": "ann-ballot-csinf-empty",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 79, "endLine": 91 },
+    "type": "insight",
+    "title": "csInf ∅ = 0 in ℝ: the critical Lean subtlety",
+    "content": "Proves `csInf_empty_eq_zero : sInf (∅ : Set ℝ) = 0` (from `Real.sInf_empty`) and `hittingSet_csInf_mem`: when the hitting set is nonempty, sInf is achieved — i.e., τ is actually in the hitting set (W(τ,ω) ≥ a). The latter follows from `IsClosed.csInf_mem` applied to the closed, nonempty, bounded-below hitting set.",
+    "mathContext": "In classical analysis: $\\inf \\emptyset = +\\infty$ for first passage times. In Lean's `ConditionallyCompleteLinearOrder` on $\\mathbb{R}$: `sInf ∅ = 0` by `Real.sInf_empty`. `IsClosed.csInf_mem` states: if $S$ is nonempty, closed, and bounded below, then $\\inf S \\in S$. For the hitting set: closed (hittingSet_isClosed), nonempty (by hypothesis), and bounded below by 0 (hittingSet_bddBelow). So $\\tau \\in$ hitset.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sInf_empty",
+      "IsClosed.csInf_mem",
+      "ConditionallyCompleteLinearOrder",
+      "classical vs Lean inf conventions"
+    ],
+    "prerequisites": [
+      "Real.sInf_empty",
+      "IsClosed.csInf_mem",
+      "hittingSet_isClosed",
+      "hittingSet_bddBelow",
+      "csInf_le"
+    ]
   },
   {
-    "id": "annotation-hitting-closed",
-    "type": "theorem",
-    "label": "hittingSet_isClosed",
-    "body": "IsClosed {t : ℝ | 0 ≤ t ∧ bm.W t ω ≥ a}",
-    "note": "The hitting set is closed: it is the intersection of [0,∞) (closed) with the preimage of [a,∞) under the continuous map t ↦ W(t,ω). Closedness is crucial for the key step: a nonempty closed bounded-below set contains its infimum.",
-    "location": { "section": "hitting-set-topology" }
+    "id": "ann-ballot-easy-direction",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 92, "endLine": 101 },
+    "type": "technique",
+    "title": "Easy direction: maxEvent → τ ≤ T via csInf_le",
+    "content": "Proves `maxEvent_implies_fpt_le`: if ω ∈ maxEvent (∃ s ∈ [0,T], W(s,ω) ≥ a), then τ(ω) ≤ T. The proof: s is in the hitting set, so τ = sInf(hitset) ≤ s ≤ T by `csInf_le`. This direction needs no nonemptiness hypothesis — it works because we only need the infimum to be ≤ an explicit element.",
+    "mathContext": "The key lemma: `csInf_le hb hs : sInf S ≤ s` when `s ∈ S` and `S` is bounded below by `hb`. For the hitting set: `hb : BddBelow hitset` (from hittingSet_bddBelow) and `hs : s ∈ hitset` (from maxEvent membership). Since $\\tau = \\text{sInf}(\\text{hitset})$, `csInf_le` gives $\\tau \\leq s \\leq T$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "csInf_le",
+      "BddBelow",
+      "hitting set membership"
+    ],
+    "prerequisites": [
+      "csInf_le",
+      "hittingSet_bddBelow",
+      "maxEvent"
+    ]
   },
   {
-    "id": "annotation-bdd-below",
-    "type": "theorem",
-    "label": "hittingSet_bddBelow",
-    "body": "BddBelow {t : ℝ | 0 ≤ t ∧ bm.W t ω ≥ a}",
-    "note": "The hitting set is bounded below by 0, needed to apply csInf_le and IsClosed.csInf_mem.",
-    "location": { "section": "hitting-set-topology" }
+    "id": "ann-ballot-hard-direction",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 103, "endLine": 121 },
+    "type": "insight",
+    "title": "Hard direction: τ ≤ T → maxEvent under nonemptiness hypothesis",
+    "content": "Proves `fpt_le_implies_maxEvent`: under nonemptiness, τ(ω) ≤ T implies ω ∈ maxEvent. The proof uses `hittingSet_csInf_mem` (nonemptiness → τ ∈ hitset) to get W(τ,ω) ≥ a and τ ≥ 0. Combined with τ ≤ T, this witnesses ω ∈ maxEvent with s = τ. Without nonemptiness, Lean's sInf ∅ = 0 makes τ = 0 ≤ T vacuously, but the conclusion fails.",
+    "mathContext": "The proof chain: (1) nonemptiness $\\Rightarrow$ $\\tau \\in$ hitset (via `hittingSet_csInf_mem`); (2) hitset membership $\\Rightarrow$ $W(\\tau,\\omega) \\geq a$ and $\\tau \\geq 0$; (3) $\\tau \\leq T$ $\\Rightarrow$ witness $s = \\tau \\in [0,T]$ with $W(s,\\omega) \\geq a$ $\\Rightarrow$ $\\omega \\in$ maxEvent. Nonemptiness is necessary: without it, $\\tau = 0 \\leq T$ but $W(0,\\omega) < a$ might hold, giving $0 \\notin$ hitset.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hittingSet_csInf_mem",
+      "nonemptiness hypothesis",
+      "sInf ∅ = 0 failure case",
+      "IsClosed.csInf_mem"
+    ],
+    "prerequisites": [
+      "hittingSet_csInf_mem",
+      "hittingSet_isClosed",
+      "hittingSet_bddBelow",
+      "maxEvent"
+    ]
   },
   {
-    "id": "annotation-csinf-empty",
-    "type": "theorem",
-    "label": "csInf_empty_eq_zero",
-    "body": "sInf (∅ : Set ℝ) = 0",
-    "note": "A critical Lean subtlety: sInf ∅ = 0 in ℝ (via Real.sInf_empty). In classical analysis, inf ∅ = +∞ for first passage times. This difference means: if a path never reaches level a, firstPassageTime = 0 ≤ T for any T > 0, but ω ∉ maxEvent. The parent axiom is therefore technically false without the nonemptiness hypothesis.",
-    "location": { "section": "hitting-set-topology" }
-  },
-  {
-    "id": "annotation-csinf-mem",
-    "type": "theorem",
-    "label": "hittingSet_csInf_mem",
-    "body": "hne : nonempty → sInf {t | 0 ≤ t ∧ W t ω ≥ a} ∈ {t | 0 ≤ t ∧ W t ω ≥ a}",
-    "note": "When the hitting set is nonempty, sInf is achieved (the hitting set is closed and bounded below). This is IsClosed.csInf_mem from Mathlib. The infimum is attained at the first passage time itself.",
-    "location": { "section": "hitting-set-topology" }
-  },
-  {
-    "id": "annotation-max-implies-fpt",
-    "type": "theorem",
-    "label": "maxEvent_implies_fpt_le",
-    "body": "ω ∈ maxEvent bm a T → firstPassageTime bm a ω ≤ T",
-    "note": "Easy direction: if s ∈ [0,T] witnesses W(s,ω) ≥ a, then s is in the hitting set, so sInf ≤ s ≤ T.",
-    "location": { "section": "main-characterization" }
-  },
-  {
-    "id": "annotation-fpt-implies-max",
-    "type": "theorem",
-    "label": "fpt_le_implies_maxEvent",
-    "body": "hne → firstPassageTime bm a ω ≤ T → ω ∈ maxEvent bm a T",
-    "note": "Hard direction: under nonemptiness, sInf is achieved at some time τ ∈ [0, τ] ⊆ [0,T] with W(τ,ω) ≥ a. The witness for maxEvent is τ itself.",
-    "location": { "section": "main-characterization" }
-  },
-  {
-    "id": "annotation-fpt-iff",
-    "type": "theorem",
-    "label": "fpt_le_iff_maxEvent",
-    "body": "hne → (firstPassageTime bm a ω ≤ T ↔ ω ∈ maxEvent bm a T)",
-    "note": "The full bidirectional characterization under nonemptiness. This proves the parent file's axiom firstPassageTime_eq_maxEvent (pointwise version) whenever the hitting set is nonempty.",
-    "location": { "section": "main-characterization" }
-  },
-  {
-    "id": "annotation-fpt-set",
-    "type": "theorem",
-    "label": "fpt_le_set_eq_maxEvent",
-    "body": "(∀ ω, nonempty hitting set) → {ω | τ(ω) ≤ T} = maxEvent bm a T",
-    "note": "Set-level equality: when the hitting set is nonempty for all ω ∈ Ω, the sets {firstPassageTime ≤ T} and maxEvent coincide.",
-    "location": { "section": "main-characterization" }
-  },
-  {
-    "id": "annotation-ivt-crossing",
-    "type": "theorem",
-    "label": "ivt_first_crossing",
-    "body": "W(0,ω) < a ≤ W(T,ω) → ∃ s ∈ (0,T], W(s,ω) = a",
-    "note": "By the Intermediate Value Theorem (isPreconnected_Icc.intermediate_value₂): a continuous path starting below a and ending at or above a must cross level a at some interior time s ∈ (0,T]. The strict positivity of s follows from W(0,ω) < a.",
-    "location": { "section": "ivt-nonemptiness" }
-  },
-  {
-    "id": "annotation-hitting-nonempty",
-    "type": "theorem",
-    "label": "hittingSet_nonempty_of_ivt",
-    "body": "W(0,ω) < a → W(T,ω) ≥ a → ({t | 0 ≤ t ∧ W(t,ω) ≥ a}).Nonempty",
-    "note": "IVT gives a crossing point s ∈ (0,T] with W(s,ω) = a, which witnesses nonemptiness of the hitting set.",
-    "location": { "section": "ivt-nonemptiness" }
-  },
-  {
-    "id": "annotation-fpt-crossing",
-    "type": "theorem",
-    "label": "fpt_le_T_of_crossing",
-    "body": "W(0,ω) < a → W(T,ω) ≥ a → firstPassageTime ≤ T ∧ ω ∈ maxEvent",
-    "note": "For crossing paths (starting below a, ending above), both conditions hold simultaneously: τ ≤ T and ω ∈ maxEvent. This combines IVT nonemptiness with the main characterization.",
-    "location": { "section": "ivt-nonemptiness" }
+    "id": "ann-ballot-ivt",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 142, "endLine": 185 },
+    "type": "technique",
+    "title": "IVT provides nonemptiness for crossing paths",
+    "content": "Proves `ivt_first_crossing`: if W(0,ω) < a ≤ W(T,ω), there exists s ∈ (0,T] with W(s,ω) ≥ a, using `intermediate_value_Icc`. Then `hittingSet_nonempty_of_ivt` gives nonemptiness, and `fpt_le_T_of_crossing` gives both τ ≤ T and ω ∈ maxEvent for crossing paths. This handles the typical case where a path crosses the threshold.",
+    "mathContext": "IVT on $[0,T]$: for continuous $f: [0,T] \\to \\mathbb{R}$ with $f(0) < a \\leq f(T)$, there exists $s \\in [0,T]$ with $f(s) \\geq a$ (specifically $f(s) = a$ is sufficient). The crossing time $s$ witnesses nonemptiness of the hitting set, enabling `hittingSet_csInf_mem` and the full characterization. For paths starting at or above $a$ ($W(0,\\omega) \\geq a$), nonemptiness is immediate ($0$ is in the hitting set).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "intermediate_value_Icc",
+      "IVT for continuous functions",
+      "level crossing",
+      "path continuity"
+    ],
+    "prerequisites": [
+      "intermediate_value_Icc",
+      "Continuous.continuousOn",
+      "hittingSet_isClosed",
+      "fpt_le_iff_maxEvent"
+    ]
   }
 ]
