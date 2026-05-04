@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ann-club",
+    "type": "definition",
+    "label": "IsClubBelow",
+    "title": "Club Set Below an Ordinal",
+    "body": "A club (closed unbounded) set below ordinal o is S ⊆ Iio o that is closed (every limit ordinal below o that is a limit point of S belongs to S) and unbounded (S is cofinal in Iio o). Clubs form a filter that is countably complete for uncountable regular cardinals.",
+    "location": { "line": 53 },
+    "tags": ["definition", "club", "ordinal", "set-theory"]
+  },
+  {
+    "id": "ann-stationary",
+    "type": "definition",
+    "label": "IsStationaryBelow",
+    "title": "Stationary Set",
+    "body": "S is stationary below o if it meets every club below o. Stationary sets cannot be 'avoided' by a club — they are the natural domain of regressive functions in Fodor's lemma.",
+    "location": { "line": 59 },
+    "tags": ["definition", "stationary", "ordinal"]
+  },
+  {
+    "id": "ann-diag-inter",
+    "type": "definition",
+    "label": "diagInter",
+    "title": "Diagonal Intersection",
+    "body": "Δ_{α<o}(f α) = {γ < o | ∀ α < γ, γ ∈ f α}. Unlike ordinary intersection which demands membership for all α, the diagonal intersection only requires membership in f(α) for those α BELOW γ, respecting the ordinal structure.",
+    "location": { "line": 0 },
+    "tags": ["definition", "diagonal-intersection", "ordinal"]
+  },
+  {
+    "id": "ann-diag-club",
+    "type": "theorem",
+    "label": "diagInter_isClubBelow",
+    "title": "Diagonal Intersection of Clubs Is a Club",
+    "body": "If f(α) is a club below κ for every α < κ (κ regular uncountable), then diagInter f is a club. The two-part proof: (1) diagInter_isClosedBelow via closure of each f(α); (2) diagInter_isUnboundedBelow via a zipper argument interleaving elements from each f(α).",
+    "location": { "line": 0 },
+    "tags": ["diagonal-intersection", "club", "key-lemma"]
+  },
+  {
+    "id": "ann-fodor",
+    "type": "theorem",
+    "label": "fodor",
+    "title": "Fodor's Pressing-Down Lemma",
+    "body": "For regular uncountable κ, stationary S ⊆ κ.ord, and regressive f : S → κ.ord (f(α) < α): ∃ β, ∃ T ⊆ S stationary, ∀ α ∈ T, f(α) = β. Proof by contradiction: choose clubs C_β avoiding each fiber, form their diagonal intersection D (a club), derive a contradiction from any γ ∈ S ∩ D.",
+    "location": { "line": 0 },
+    "tags": ["fodor", "pressing-down", "main-theorem"]
+  },
+  {
+    "id": "ann-aleph1",
+    "type": "theorem",
+    "label": "fodor_aleph1",
+    "title": "Fodor's Lemma for ℵ₁",
+    "body": "The ℵ₁ specialization: any regressive function on a stationary subset of ω₁ is constant on some stationary subset. The most commonly used instance in combinatorial and descriptive set theory.",
+    "location": { "line": 0 },
+    "tags": ["fodor", "aleph1", "corollary"]
+  }
+]
