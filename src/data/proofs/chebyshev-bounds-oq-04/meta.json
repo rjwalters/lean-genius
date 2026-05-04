@@ -21,8 +21,8 @@
     "dateAdded": "2026-05-03",
     "axiomCount": 3,
     "assumptions": "3 axioms: (1) chebyshevPsi_upper_bound \u2014 \u03c8(n) \u2264 2n\u00b7log 2 by telescoping the doubling lemma; (2) chebyshevPsi_asymptotic \u2014 \u03c8(n)/n \u2192 1, the Prime Number Theorem for \u03c8; (3) pnt_equivalence \u2014 \u03c8(n)/n \u2192 1 \u2194 \u03c0(n) ~ n/log n, the equivalence of PNT forms. (1 sorry: psi_doubling_le_log_centralBinom \u2014 inner von Mangoldt/Fubini identity, pending Aristotle.)",
-    "lineCount": 214,
-    "theoremCount": 10,
+    "lineCount": 219,
+    "theoremCount": 9,
     "definitionCount": 2,
     "originalContributions": [
       "Definition of the second Chebyshev function \u03c8(n) = \u03a3_{k \u2264 n} \u039b(k) using Mathlib's vonMangoldt function",
@@ -63,35 +63,35 @@
       "id": "sec-psi-definition",
       "title": "Definitions: \u03c8(n) and \u03b8(n)",
       "startLine": 36,
-      "endLine": 63,
+      "endLine": 77,
       "summary": "Defines chebyshevPsi n = \u03a3_{k \u2208 range(n+1)} vonMangoldt k and chebyshevThetaOQ n = \u03a3_{p prime \u2264 n} log p. Proves non-negativity of both (chebyshevPsi_nonneg, chebyshevThetaOQ_nonneg) and the key identity vonMangoldt_prime_eq: \u039b(p) = log p for primes."
     },
     {
       "id": "sec-theta-le-psi",
       "title": "\u03b8(n) \u2264 \u03c8(n)",
-      "startLine": 64,
-      "endLine": 99,
+      "startLine": 78,
+      "endLine": 124,
       "summary": "Proves chebyshevTheta_le_chebyshevPsi via two steps: (1) chebyshevThetaOQ_eq_sumVonMangoldt rewrites log p as vonMangoldt p for primes using Finset.sum_congr; (2) theta_le_psi_via_vonMangoldt applies Finset.sum_le_sum_of_subset_of_nonneg since the prime filter is a subset of the full range."
     },
     {
       "id": "sec-upper-bound",
       "title": "Upper Bound \u03c8(n) \u2264 2n\u00b7log 2",
-      "startLine": 100,
-      "endLine": 119,
+      "startLine": 125,
+      "endLine": 160,
       "summary": "Axiomatizes chebyshevPsi_doubling_le (the key step: \u03c8(2n) \u2212 \u03c8(n) \u2264 2n\u00b7log 2 from the central binomial coefficient C(2n,n) \u2264 4^n) and chebyshevPsi_upper_bound (the full bound by geometric series telescoping)."
     },
     {
       "id": "sec-lower-bound",
       "title": "Lower Bound from Bertrand's Postulate",
-      "startLine": 120,
-      "endLine": 156,
+      "startLine": 161,
+      "endLine": 187,
       "summary": "Proves chebyshevPsi_doubling_lower: \u03c8(2n) \u2212 \u03c8(n) \u2265 log(n+1) for n \u2265 1. Uses Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul_add_one) to find a prime p \u2208 (n, 2n]. The prime p contributes vonMangoldt p = log p \u2265 log(n+1) to \u03c8(2n) but not to \u03c8(n), so the difference is bounded below by Finset.single_le_sum."
     },
     {
       "id": "sec-pnt",
       "title": "PNT Equivalence (Axiomatized)",
-      "startLine": 157,
-      "endLine": 184,
+      "startLine": 188,
+      "endLine": 219,
       "summary": "Axiomatizes chebyshevPsi_asymptotic (\u03c8(n)/n \u2192 1, the PNT for \u03c8) and pnt_equivalence (\u03c8(n)/n \u2192 1 \u2194 \u03c0(n) ~ n/log n). Summary theorem chebyshevPsi_bounds packages \u03b8 \u2264 \u03c8 and the Bertrand lower bound."
     }
   ],
@@ -114,12 +114,12 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevBoundsOQ04",
-    "lineCount": 185,
+    "lineCount": 219,
     "path": "Proofs/ChebyshevBoundsOQ04.lean",
-    "axiomCount": 4,
-    "theoremCount": 8,
+    "axiomCount": 3,
+    "theoremCount": 9,
     "definitionCount": 2,
-    "sorries": 0,
+    "sorries": 1,
     "imports": [
       "Mathlib.NumberTheory.VonMangoldt",
       "Mathlib.NumberTheory.Primorial",
@@ -135,5 +135,5 @@
       "ArithmeticFunction"
     ]
   },
-  "sorries": 0
+  "sorries": 1
 }
