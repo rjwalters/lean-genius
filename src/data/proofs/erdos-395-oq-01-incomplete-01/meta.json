@@ -1,0 +1,106 @@
+{
+  "id": "erdos-395-oq-01-incomplete-01",
+  "title": "Carnielli-Carolino Counterexample: Axiom-Free Proof",
+  "slug": "erdos-395-oq-01-incomplete-01",
+  "description": "Proves the Carnielli-Carolino counterexample (z₁=1, zₖ=i, n even) always gives |sum| ≥ √2. This eliminates one of the two remaining axioms in the erdos-395-oq-01 file, using only parity of integer sums and complex norm computation.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/395",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos395OQ01Incomplete01.lean",
+    "tags": [
+      "erdos",
+      "probability",
+      "complex-analysis",
+      "parity",
+      "counterexample",
+      "extension"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 395,
+    "erdosUrl": "https://erdosproblems.com/395",
+    "erdosProblemStatus": "open-question",
+    "dateAdded": "2026-05-04",
+    "axiomCount": 0,
+    "lineCount": 164,
+    "prerequisites": [
+      "Erdős Problem #395 parent formalization",
+      "Complex numbers and norms",
+      "ZMod 2 parity arithmetic"
+    ],
+    "assumptions": "No axioms. All results proved from first principles using Mathlib.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Axiom-free proof that tail sum of ±1 values is nonzero when count is odd (ZMod 2)",
+      "Signed sum decomposition: e₀ + i·T form for counterexample",
+      "counterexample_always_large_proved: |sum| ≥ √2 for all sign vectors, 0 axioms",
+      "erdos_original_false_proved: original threshold-1 problem is false, 0 axioms"
+    ],
+    "theoremCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-395-oq-01",
+      "relationship": "proves-axiom-of",
+      "description": "Proves counterexample_always_large axiom-free; this eliminates one of two remaining axioms in the erdos-395-oq-01 file"
+    },
+    {
+      "targetId": "erdos-395",
+      "relationship": "extends",
+      "description": "Strengthens the counterexample for Erdős Problem #395"
+    }
+  ],
+  "problemStatement": {
+    "informal": "For the Carnielli-Carolino configuration (z₁=1, zₖ=i for k≥2, n even), prove that every sign choice ε ∈ {-1,1}ⁿ gives |ε₁z₁+...+εₙzₙ| ≥ √2. This was axiomatized in erdos-395-oq-01; prove it theorem-ally.",
+    "formal": "counterexample_always_large_proved : ∀ n hn hn2 ε, isSignVector ε → signedSumAbs (carnielli_carolino_counterexample n hn hn2) ε ≥ √2"
+  },
+  "sections": [
+    {
+      "id": "parity-helpers",
+      "title": "Parity Helpers (Section I)",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Two helper lemmas: (-1 : ZMod 2) = 1 (by decide), and (2*(k-1)+1 : ZMod 2) = 1 (for k ≥ 1). These support the key parity argument."
+    },
+    {
+      "id": "tail-sum-nonzero",
+      "title": "Tail Sum is Nonzero (Section II)",
+      "startLine": 68,
+      "endLine": 102,
+      "summary": "tail_sum_nonzero: the sum T = ε₂+...+εₙ ≠ 0 when n is even. Proof by contradiction: if T=0 then (T:ZMod 2)=0, but T≡(n-1)≡1 (mod 2) since each εᵢ=±1≡1 and n-1 is odd."
+    },
+    {
+      "id": "sum-split",
+      "title": "Sum Decomposition (Section III)",
+      "startLine": 105,
+      "endLine": 127,
+      "summary": "signedSum_split: the signed sum on the counterexample equals e₀ + i·T. Uses Fin.sum_univ_succ to split off the first index."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem and Consequence (Section IV)",
+      "startLine": 130,
+      "endLine": 164,
+      "summary": "counterexample_always_large_proved: |sum|≥√2 for all sign vectors, proved using normSq = 1 + T², T² ≥ 1 (T nonzero integer), and monotonicity of sqrt. Also proves erdos_original_false_proved: the original threshold-1 problem fails for n=2."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file resolves the counterexample_always_large axiom from erdos-395-oq-01 axiom-free. The key insight is that the imaginary component T = ε₂+...+εₙ is a sum of n-1 = odd many ±1 values, hence T ≡ 1 (mod 2) is odd and nonzero. Since T is a nonzero integer, T² ≥ 1, giving normSq = 1 + T² ≥ 2 and |sum| ≥ √2.",
+    "implications": "Reduces the axiom count of erdos-395-oq-01 from 2 to 1 (the remaining axiom extremal_example_tight requires CLT-type bounds). Demonstrates that the counterexample threshold of √2 is mathematically tight in a precise sense: any configuration with z₁=1 and z₂=...=zₙ=i (n even) must exceed √2 by the parity of integer sums.",
+    "openQuestions": [
+      "Can extremal_example_tight (the remaining axiom in erdos-395-oq-01) be proved? It requires: for the extremal example zₖ=1 (k≤n/2) and zₖ=i (k>n/2), P(|sum|≤√2) ~ 1/n. This needs CLT-type Gaussian approximation of the discrete sum.",
+      "What is the exact value of the optimal constant c* in P(|sum|≤√2) ≥ c*/n? HJNS 2024 proves c*>0 but does not determine it."
+    ]
+  },
+  "leanFile": {
+    "axiomCount": 0,
+    "lineCount": 164,
+    "path": "Proofs/Erdos395OQ01Incomplete01.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4
+  },
+  "sorries": 0
+}
