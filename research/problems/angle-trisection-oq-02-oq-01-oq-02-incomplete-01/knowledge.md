@@ -424,3 +424,34 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 2. Consider whether `algClosure.lift` (for algebraic closures) provides the missing bridge
 3. ← direction: FTGT + Sylow composition series; requires IntermediateField.orderIsoOfGal and degree-2 extension ↔ adjoin √ characterization
 4. If → direction proves infeasible, mark wantzel_galois_iff as long-term blocked (500+ lines, Zorn + FTGT)
+
+## Session 2026-05-04 (Session 38) - Tower argument for isConstructible_sup_degree
+
+**Mode**: REVISIT
+**Outcome**: progress — structured full tower proof for isConstructible_sup_degree; one technical sorry on generator property
+
+### What I Did
+- Rewrote the single sorry in `isConstructible_sup_degree` with a complete structured proof:
+  - New helper lemma `finrank_sup_quadratic_dvd_two Ka β (hβ_alg) (hβ_sq_mem)`: proves `finrank Ka (Ka ⊔ ℚ⟮β⟯) ∣ 2` when β is algebraic and β² ∈ Ka
+  - Full induction for `isConstructible_sup_degree` over both cases `rational` and `sqrt_ext`
+  - Tower argument: K → Ka=K⊔ℚ⟮a⟯ → Kaβ=Ka⊔ℚ⟮β⟯ → Kaβ⊔ℚ⟮b⟯, combining n₁, 1, n₂ to give n₁+1+n₂
+  - Divisibility via sub-field containment: K⊔ℚ⟮b+β⟯ ≤ Kaβ⊔ℚ⟮b⟯ (tower law dvd argument)
+- Total sorry count: still 1 (h_top_Ka inside finrank_sup_quadratic_dvd_two)
+
+### Key Findings
+- **h_top_Ka sorry**: `adjoin ↥Ka {β'} = ⊤` in IntermediateField ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) — β' generates Ka⊔ℚ⟮β⟯ over Ka. Mathematically obvious (by definition of simple adjoin), but Lean formalization requires a Ka-AlgHom ↥(Ka⊔ℚ⟮β⟯) →ₐ[↥Ka] ℂ and use of `map_injective`. The fundamental challenge is that adjoin Ka {β} (IntermediateField Ka ℂ) and Ka⊔ℚ⟮β⟯ (IntermediateField ℚ ℂ) have the same carrier but live in different type universes.
+- **Key Mathlib lemmas identified**: `restrictScalars_adjoin_eq_sup`, `coe_restrictScalars`, `map_injective`, `adjoin_map`, `adjoin.finrank`, `minpoly.degree_dvd`, `lift_top`, `lift_adjoin_simple`
+- **Alternative approach**: Show `finrank ≤ 2` directly via spanning {1, β'} — requires showing every element of Ka⊔ℚ⟮β⟯ is of form a+b·β, which reduces to the same generator property
+- **adjoin.finrank goes WRONG direction**: `minpoly.degree_dvd` gives natDegree ∣ finrank (not finrank ∣ 2); the generator property is needed to get finrank = natDegree ≤ 2
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — replaced single sorry with structured 200-line proof (lines ~157-292)
+
+### Current Sorries (1 total)
+1. **h_top_Ka** (line ~202): `adjoin ↥Ka {β'} = ⊤` in IntermediateField ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) — generator property for the quadratic extension step
+2. **wantzel_galois_iff** (line ~713): Full Galois theory (long-term)
+
+### Next Steps
+1. Try `IntermediateField.map_injective ι` approach with explicit Ka-AlgHom ι : ↥(Ka⊔ℚ⟮β⟯) →ₐ[↥Ka] ℂ
+2. Submit h_top_Ka to Aristotle (clear algebraic statement, might be provable by automation)
+3. After h_top_Ka: proof of isConstructible_sup_degree is complete, enabling isConstructible_algebraic_degree finrank part
