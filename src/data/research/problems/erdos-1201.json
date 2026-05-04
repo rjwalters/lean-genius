@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 11: +2 theorems (Sylvester-Schur prime window sizes) + API fix + duplicate removal. 75 public theorems, 0 sorries, 1 axiom. PR #15417.",
+    "progressSummary": "Session 11 (fix): Corrected 3 proof bugs in Sylvester-Schur addition. Fixed theorem ordering, modular arithmetic proof, and \u2115 coprimality via \u2124. 75 theorems, 0 sorries, 1 axiom. Fix PR #15431.",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -100,7 +100,10 @@
       "gpfConsecutive_ge_succ_k_of_prime: P(n,k) >= k+1 for all n >= 1 when k+1 prime \u2014 Erdos1201Problem.lean:~396",
       "gpfConsecutive_gt_k_of_prime_succ: k < P(n,k) for all n >= 1 when k+1 prime \u2014 covers k=1,2,4,6,10,12,... \u2014 Erdos1201Problem.lean:~403",
       "Fixed Nat.coprime_succ_self_right API (renamed in Mathlib) in gpfConsecutive_one_coprime",
-      "Removed duplicate erdos_1201_good_set_mono_eps and erdos_1201_density_mono_eps declarations (session 10 regression)"
+      "Removed duplicate erdos_1201_good_set_mono_eps and erdos_1201_density_mono_eps declarations (session 10 regression)",
+      "exists_dvd_in_consecutive: \u2200 n m, 0 < m \u2192 \u2203 i < m, m \u2223 n + i (via Nat.add_mod chain)",
+      "gpfConsecutive_ge_succ_k_of_prime: k+1 prime \u2192 k+1 \u2264 gpfConsecutive n k (Session 11 PR #15431)",
+      "gpfConsecutive_gt_k_of_prime_succ: k+1 prime \u2192 k < gpfConsecutive n k (Session 11 PR #15431)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' \u2014 cleanly handles n=0,1 by returning 0",
@@ -140,7 +143,11 @@
       "Sylvester-Schur general case follows from factorial approach: among any k+1 consecutive ints, one has prime factor via (k+1)! divisibility",
       "Epsilon-monotonicity: The open problem needs only be proved for e in (0,1/2); the e >= 1/2 case follows from Erdos known result",
       "Threshold sufficient condition: n^(1-e) < k/2 is a sufficient condition for n to be good, giving an explicit parameter range",
-      "Sylvester-Schur for prime window sizes: complete residue system mod (k+1) guarantees a multiple of k+1 among k+1 consecutive integers; when k+1 prime, gives P(n,k) >= k+1 for ALL n >= 1 (no n > k restriction needed)"
+      "Sylvester-Schur for prime window sizes: complete residue system mod (k+1) guarantees a multiple of k+1 among k+1 consecutive integers; when k+1 prime, gives P(n,k) >= k+1 for ALL n >= 1 (no n > k restriction needed)",
+      "dvd_sub'(general) and Nat.dvd_sub' both unavailable for \u2115 coprimality proof (\u2115 not a Ring)",
+      "Coprime n (n+1) proved by lifting gcd to \u2124: dvd_add(dvd_neg(h1), h2) gives gcd | -n + (n+1) = 1",
+      "congr 1; omega fails for descFactorial equality \u2014 use omega rewrite of n+k+1-1=n+k directly",
+      "Sylvester-Schur for prime window sizes: among k+1 consecutive ints, one is \u2261 0 (mod k+1)"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps \u2014 needed for full conjecture",
