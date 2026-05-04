@@ -29,33 +29,40 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 sorry remains (MCT/consistency for g \u2208 Lq). extByZeroCLM + finite-measure Riesz application proved. Awaiting Docker build verification.",
+    "progressSummary": "PROGRESS: 1 sorry remains in localization_existence (consistency+MCT); hext_ind+hagree_n proved this session",
     "builtItems": [
       "integrationCLM_sf: integration CLM for pure SigmaFinite mu",
       "integral_representation_sf: density extension via Lp.induction",
       "riesz_lp_surjective_sigma_finite: main theorem with Step C proved",
       "mem_spanningSets_eventually + pointwise_mul_indicator_tendsto (ported)",
       "lp_truncation_tendsto_zero: Lp truncation DCT proof via ENNReal dominated convergence + continuity of rpow (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:249)",
-      "eLpNorm_indicator_eq_restrict_loc: eLpNorm(S.indicator f, \u03bc) = eLpNorm(f, \u03bc.restrict S) via lintegral_indicator",
-      "memLp_indicator_of_restrict_loc: MemLp(S.indicator f, \u03bc) from MemLp(f, \u03bc.restrict S) + aestronglyMeasurable_indicator_iff",
-      "extByZeroCLM: isometric CLM Lp(\u03bc.restrict S) \u2192L[\u211d] Lp(\u03bc), proved with ae_restrict_iff + coeFn_toLp"
+      "eLpNorm_indicator_eq_restrict_loc: eLpNorm(S.indicator f, μ) = eLpNorm(f, μ.restrict S) via lintegral_indicator",
+      "memLp_indicator_of_restrict_loc: MemLp(S.indicator f, μ) from MemLp(f, μ.restrict S) + aestronglyMeasurable_indicator_iff",
+      "extByZeroCLM: isometric CLM Lp(μ.restrict S) →L[ℝ] Lp(μ), proved with ae_restrict_iff + coeFn_toLp",
+      "hext_ind: AE equality extByZeroCLM indicator = Lp indicator in localization_existence (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:365)",
+      "hagree_n: φ(1_E) = ∫_E g_seq n for E ⊆ Sₙ (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:401)"
     ],
     "insights": [
       "Step C (density extension) proved: Lp.induction is valid for SigmaFinite without IsFiniteMeasure",
-      "integrationCLM does not need IsFiniteMeasure \u2014 Holder inequality suffices",
+      "integrationCLM does not need IsFiniteMeasure — Holder inequality suffices",
       "3 sorries reduced to 2: localization + Vitali remain; density extension proved",
-      "lp_truncation_tendsto_zero uses ENNReal dominated convergence (tendsto_lintegral_of_dominated_convergence) + continuity of x\u21a6x^r at 0 via ENNReal.continuousAt_rpow_const \u2014 no Vitali needed",
+      "lp_truncation_tendsto_zero uses ENNReal dominated convergence (tendsto_lintegral_of_dominated_convergence) + continuity of x↦x^r at 0 via ENNReal.continuousAt_rpow_const — no Vitali needed",
       "localization_existence (last sorry) submitted to Aristotle job 1eb03084-d2a8-4280-ac52-12e23d7ca689 on 2026-05-04. Strategy: spanningSets exhaustion + finite-measure Riesz + MCT gluing. ~150 lines estimated.",
-      "localization_existence needs extByZeroCLM to compose \u03c6 with restriction, then riesz_lp_surjective_from_rn applies to each spanning set",
-      "The MCT/consistency step (g\u2099\u2192g globally in Lq) is the only remaining sorry; all infrastructure is now in place"
+      "localization_existence needs extByZeroCLM to compose φ with restriction, then riesz_lp_surjective_from_rn applies to each spanning set",
+      "The MCT/consistency step (gₙ→g globally in Lq) is the only remaining sorry; all infrastructure is now in place",
+      "ae_restrict_iff type bridge: coeFn_toLp for MemLp f p (μ.restrict S) gives =ᵐ[μ.restrict S]; use (ae_restrict_iff hS).mp to get ∀ᵐ a ∂μ, a ∈ S → f a = ...",
+      "AE chain direction: hlhs.trans hkey |>.trans hrhs.symm avoids circular chains",
+      "hext_ind proved: extByZeroCLM(Sₙ)(1_E^Lp(μₙ)) = 1_E^Lp(μ) for E ⊆ Sₙ via ae chain",
+      "hagree_n proved: φ(1_E) = ∫_E g_seq n dμ for E ⊆ Sₙ with finite measure, via hext_ind + hg_seq_rep + integral_indicator"
     ],
     "mathlibGaps": [
       "Lp restriction map Lp(mu) -> Lp(mu.restrict S) not available as isometric map",
       "Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) API verbosity for unifIntegrable + unifTight"
     ],
     "nextSteps": [
-      "Prove MCT/consistency: g\u2099 (from finite Riesz on \u03bc.restrict S\u2099) are consistent a.e., uniform Lq bound \u2016g\u2099\u2016 \u2264 \u2016\u03c6\u2016, MCT gives g \u2208 Lq(\u03bc)",
-      "Prove indicator agreement: 1_{E\u2229S\u2099} \u2192 1_E in Lp by DCT (\u03bc(E)<\u221e), continuity of \u03c6 + DCT for integral"
+      "Prove consistency: g_seq m =ᵐ[μ.restrict Sₘ] g_seq n via ae_eq_restrict_of_forall_setIntegral_eq (AEEqOfIntegral.lean:403)",
+      "Define global g := lim g_seq pointwise, prove MemLp g q μ via lintegral_iUnion bound",
+      "Prove indicator agreement: φ(1_{E∩Sₙ}) → φ(1_E) via CLM continuity + lp_truncation_tendsto_zero"
     ]
   },
   "tags": [
