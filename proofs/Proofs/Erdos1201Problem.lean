@@ -1267,4 +1267,85 @@ theorem erdos_1201_smooth_decay_implies_conjecture
   intro ε η hε₀ hε₁ hη
   exact erdos_1201_from_bad_density_bound ε hε₀ hε₁ (h ε hε₀ hε₁) η hη
 
+/-
+## Asymptotic Behavior as Window Grows
+-/
+
+/-- **Window GPF tends to infinity**: For fixed n ≥ 2, P(n,k) → +∞ as k → ∞.
+    For any threshold M, the window [n, n+k] eventually contains a prime > M
+    (by infinitude of primes), so gpfConsecutive n k eventually exceeds M. -/
+theorem gpfConsecutive_atTop (n : ℕ) (hn : 2 ≤ n) :
+    Filter.Tendsto (gpfConsecutive n) Filter.atTop Filter.atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro M
+  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (max n M + 1)
+  have hn_lt : n < p := by omega
+  have hM_le : M ≤ p := by omega
+  refine ⟨p - n, fun k hk => ?_⟩
+  have heq : n + (p - n) = p := Nat.add_sub_cancel' (Nat.le_of_lt hn_lt)
+  calc M ≤ p := hM_le
+    _ = n + (p - n) := heq.symm
+    _ ≤ gpfConsecutive n k :=
+        gpfConsecutive_ge_prime_term n k (p - n) hn hk (heq.symm ▸ hp_prime)
+
+/-- **Individual eventual goodness**: For any fixed n ≥ 2 and ε ∈ (0,1), the integer n
+    is eventually "good" for the Erdős problem: for all sufficiently large k,
+    P(n,k) > n^(1-ε). This follows because P(n,k) → +∞ while n^(1-ε) is fixed. -/
+theorem erdos_1201_eventually_good (n : ℕ) (hn : 2 ≤ n) (ε : ℝ)
+    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    ∀ᶠ k in Filter.atTop, (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  obtain ⟨K, hK⟩ := erdos_1201_individual_threshold n hn ε hε₀ hε₁
+  exact Filter.eventually_atTop.mpr
+    ⟨K, fun k hk => hK.trans_le (Nat.cast_le.mpr (gpfConsecutive_le_of_le_k n hn hk))⟩
+
+/-- **Density is eventually large**: If ErdosProblem1201 holds, then for each ε, η > 0,
+    the good-set density is at least 1 - η for ALL sufficiently large k, not just some k.
+    This strengthens ErdosProblem1201 (which guarantees one k) using k-monotonicity. -/
+theorem erdos_1201_density_eventually_large (hE : ErdosProblem1201)
+    (ε η : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) (hη : 0 < η) :
+    ∃ K : ℕ, ∀ k ≥ K,
+      upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η := by
+  obtain ⟨K, hK⟩ := hE ε η hε₀ hε₁ hη
+  refine ⟨K, fun k hk => le_trans hK (upperDensity_mono ?_)⟩
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn ⊢
+  by_cases hn2 : 2 ≤ n
+  · exact hn.trans_le (Nat.cast_le.mpr (gpfConsecutive_le_of_le_k n hn2 hk))
+  · push_neg at hn2
+    interval_cases n
+    · exfalso
+      simp only [Nat.cast_zero] at hn
+      have h0prod : consecutiveProduct 0 K = 0 := by
+        unfold consecutiveProduct
+        apply Finset.prod_eq_zero (Finset.mem_range.mpr (Nat.zero_lt_succ K))
+        simp
+      have h0gpf : (gpfConsecutive 0 K : ℝ) = 0 := by
+        have : gpfConsecutive 0 K = 0 := by
+          unfold gpfConsecutive greatestPrimeFactor
+          rw [h0prod, Nat.primeFactors_zero, dif_neg]
+          exact fun ⟨x, hx⟩ => absurd hx (Finset.notMem_empty x)
+        exact_mod_cast this
+      have h0r : (0 : ℝ) ^ (1 - ε) = 0 := Real.zero_rpow (by linarith)
+      rw [h0r, h0gpf] at hn
+      exact absurd hn (lt_irrefl 0)
+    · simp only [Nat.cast_one, Real.one_rpow] at hn ⊢
+      have h1gpf : greatestPrimeFactor 1 = 0 := by
+        unfold greatestPrimeFactor
+        rw [Nat.primeFactors_one, dif_neg]
+        exact fun ⟨x, hx⟩ => absurd hx (Finset.notMem_empty x)
+      have hgpf_K : 1 < gpfConsecutive 1 K := by exact_mod_cast hn
+      have hK1 : 1 ≤ K := by
+        rcases K with _ | K
+        · exfalso
+          have : gpfConsecutive 1 0 = 0 := by
+            unfold gpfConsecutive; rw [consecutiveProduct_zero, h1gpf]
+          omega
+        · exact Nat.succ_le_succ (Nat.zero_le _)
+      have hk1 : 1 ≤ k := le_trans hK1 hk
+      have h2dvd : 2 ∣ consecutiveProduct 1 k := dvd_consecutiveProduct_term 1 k 1 hk1
+      have h2n : 2 ≤ consecutiveProduct 1 k :=
+        Nat.le_of_dvd (consecutiveProduct_pos 1 k (by omega)) h2dvd
+      linarith [show (2 : ℝ) ≤ gpfConsecutive 1 k from
+                  by exact_mod_cast gpf_ge_prime_dvd _ 2 h2n (by norm_num) h2dvd]
+
 end Erdos1201

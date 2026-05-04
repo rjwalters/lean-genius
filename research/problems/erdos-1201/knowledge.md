@@ -694,3 +694,46 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Docker build verification needed for the limsup_add_le proof
 - The Aristotle job cb09e358 (erdos_1201_half_case) is superseded — mark as resolved_manually
 - Pool status: erdos-1201 now has 0 sorries, 1 axiom — consider completing if Docker passes
+
+---
+
+## Session 2026-05-04 (Session 15) - Asymptotic Window Growth Theorems
+
+**Mode**: REVISIT (branch research/erdos-1201-session-14, rebased on origin/main at 87 thms)
+**Outcome**: progress — 3 new theorems (87→90), 0 new sorries
+
+### What I Did
+- Reset branch to origin/main (070ededd674 - after PR #15472 merged) to avoid merge conflicts
+- Added 3 new structural theorems formalizing asymptotic behavior as window k grows:
+  1. **`gpfConsecutive_atTop`**: P(n,k) → +∞ as k → ∞ for fixed n ≥ 2 (no sorry)
+     - Uses `Filter.tendsto_atTop_atTop` characterization
+     - For threshold M, finds prime p > max(n, M), witnesses k = p - n
+     - Uses `gpfConsecutive_ge_prime_term` + `Nat.exists_infinite_primes`
+  2. **`erdos_1201_eventually_good`**: fixed n ≥ 2 is eventually good (no sorry)
+     - For any ε ∈ (0,1), eventually P(n,k) > n^(1-ε) as k → ∞
+     - Uses `erdos_1201_individual_threshold` + `gpfConsecutive_le_of_le_k` monotonicity
+     - Key: combines individual threshold with k-monotonicity of gpfConsecutive
+  3. **`erdos_1201_density_eventually_large`**: density is eventually ≥ 1-η for ALL large k (no sorry)
+     - Strengthens ErdosProblem1201 (which gives ONE k) to all k ≥ K
+     - Uses gpfConsecutive monotonicity via `gpfConsecutive_le_of_le_k`
+     - Edge cases n=0 (gpfConsecutive = 0) and n=1 handled via interval_cases
+
+### Key Findings
+- `simp only [Nat.cast_zero] at hn` is required before rw after `interval_cases n` to normalize
+  `↑0` (Nat.cast 0) to `(0:ℝ)` literal; syntactic mismatch causes rw to fail silently
+- `Finset.not_mem_empty` is deprecated → use `Finset.notMem_empty`
+- gpfConsecutive_atTop follows cleanly from infinitude of primes + `gpfConsecutive_ge_prime_term`
+- The density-eventually-large strengthening is the right formalization of Erdős's "for all large k"
+- This session resolved Docker build errors from a stale branch base (origin/main moved ahead)
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1270→1351 lines, 87→90 theorems, sorries 1→1 unchanged)
+- `src/data/proofs/erdos-1201/meta.json` (theoremCount 87→90, lineCount 1270→1351, new section)
+- `src/data/research/problems/erdos-1201.json` (updated insights, builtItems, progressSummary)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- Docker verification pending for the 3 new theorems
+- Full Sylvester-Schur for ALL k+1 composite: truly hard (Chebyshev/binomial machinery)
+- Density lower bounds for ε < 1/2: Dickman ρ function — BLOCKED (>1000 lines infra)
+- Aristotle job for `upperDensity_compl_ge` sorry (limsup sub-additivity) still pending
