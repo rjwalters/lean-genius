@@ -191,4 +191,43 @@ axiom ErdosProblem854_many_gaps :
     ∀ k : ℕ, 2 ≤ k →
       c * (maxGap (primorial k) : ℚ) ≤ (distinctGapCount (primorial k) : ℚ)
 
+/- ## Primorial Structure -/
+
+/-- The primorial is always positive. -/
+theorem primorial_pos : ∀ k : ℕ, 0 < primorial k
+  | 0 => by simp [primorial]
+  | k + 1 => Nat.mul_pos (primorial_pos k) (nthPrime_prime k).pos
+
+/-- primorial k divides primorial (k+1). -/
+theorem primorial_dvd_succ (k : ℕ) : primorial k ∣ primorial (k + 1) := by
+  simp only [primorial]
+  exact dvd_mul_right _ _
+
+/-- The i-th prime divides primorial k for any i < k. -/
+theorem nthPrime_dvd_primorial : ∀ (k i : ℕ), i < k → nthPrime i ∣ primorial k
+  | 0, _, h => absurd h (Nat.not_lt_zero _)
+  | k + 1, i, h => by
+    simp only [primorial]
+    rcases Nat.eq_or_lt_of_le (Nat.lt_succ_iff.mp h) with rfl | hi
+    · exact dvd_mul_left _ _
+    · exact dvd_mul_of_dvd_left (nthPrime_dvd_primorial k i hi) _
+
+/- ## Coprime Residue Membership -/
+
+/-- 1 is always a coprime residue of n > 1. -/
+theorem coprimeResidues_one_mem (n : ℕ) (hn : 1 < n) : 1 ∈ coprimeResidues n := by
+  simp only [coprimeResidues, Finset.mem_filter, Finset.mem_range]
+  exact ⟨hn, Nat.one_pos, Nat.gcd_one_left n⟩
+
+/-- n - 1 is coprime to n for n > 1. -/
+theorem coprime_n_sub_one (n : ℕ) (hn : 1 < n) : Nat.Coprime (n - 1) n := by
+  have h : n = n - 1 + 1 := by omega
+  conv_rhs => rw [h]
+  exact Nat.coprime_succ_self (n - 1)
+
+/-- n - 1 is a coprime residue of n for n > 1. -/
+theorem coprimeResidues_nminus1_mem (n : ℕ) (hn : 1 < n) : n - 1 ∈ coprimeResidues n := by
+  simp only [coprimeResidues, Finset.mem_filter, Finset.mem_range]
+  exact ⟨by omega, by omega, coprime_n_sub_one n hn⟩
+
 end Erdos854

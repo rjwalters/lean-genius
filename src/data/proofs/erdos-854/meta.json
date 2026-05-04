@@ -23,8 +23,8 @@
     "erdosUrl": "https://erdosproblems.com/854",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 194,
-    "assumptions": "4 axioms encoding the Erdős conjectures and known bounds: (1) maxGap_bound (Jacobsthal function bound), (2) lacampagne_selfridge_counterexample (computational disproof for n₆=30030), (3) ErdosProblem854_missing_gap_growth (Part 1, open), (4) ErdosProblem854_many_gaps (Part 2, open). 0 sorries. All supporting infrastructure (primorials, coprime residues, gap sets, gap evenness) formally proved without axioms.",
+    "lineCount": 239,
+    "assumptions": "4 axioms encoding the Erdős conjectures and known bounds: (1) maxGap_bound (Jacobsthal function bound), (2) lacampagne_selfridge_counterexample (computational disproof for n₆=30030), (3) ErdosProblem854_missing_gap_growth (Part 1, open), (4) ErdosProblem854_many_gaps (Part 2, open). 0 sorries. All supporting infrastructure proved, including: primorial_pos, primorial_dvd_succ, nthPrime_dvd_primorial (i-th prime divides primorial k for i < k), coprimeResidues_one_mem (1 is always coprime to n>1), coprime_n_sub_one (n-1 is coprime to n), coprimeResidues_nminus1_mem.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -139,9 +139,9 @@
       "Nat"
     ],
     "namespace": "Erdos854",
-    "lineCount": 194,
+    "lineCount": 239,
     "axiomCount": 4,
-    "theoremCount": 16,
+    "theoremCount": 22,
     "definitionCount": 8,
     "path": "Proofs/Erdos854Problem.lean",
     "sorries": 0
