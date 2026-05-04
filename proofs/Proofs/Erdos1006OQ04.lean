@@ -128,6 +128,36 @@ theorem every_graph_has_robust [Fintype V] (G : SimpleGraph V) :
   every_finite_graph_has_robust G
 
 /-
+## Part VI: Transitivity and Non-Reflexivity
+-/
+
+/-- Arc transitivity: if u→v and v→w, then col(u) < col(w).
+    The color ordering is transitive, so multi-hop paths also go strictly upward. -/
+theorem coloringOrientation_trans {k : ℕ} (col : G.Coloring (Fin k)) (u v w : V)
+    (huv : (coloringOrientation G col).arc u v)
+    (hvw : (coloringOrientation G col).arc v w) :
+    (col u).val < (col w).val :=
+  Nat.lt_trans (coloringOrientation_rank_strict col u v huv)
+               (coloringOrientation_rank_strict col v w hvw)
+
+/-- No vertex has an arc to itself: col(v) < col(v) is impossible. -/
+theorem coloringOrientation_arc_irrefl {k : ℕ} (col : G.Coloring (Fin k)) (v : V) :
+    ¬(coloringOrientation G col).arc v v :=
+  fun h => Nat.lt_irrefl _ (coloringOrientation_rank_strict col v v h)
+
+/-- Any arc u→v has u ≠ v (immediate from arc irreflexivity). -/
+theorem coloringOrientation_arc_ne {k : ℕ} (col : G.Coloring (Fin k)) (u v : V)
+    (harc : (coloringOrientation G col).arc u v) : u ≠ v := by
+  intro heq; subst heq
+  exact coloringOrientation_arc_irrefl col v harc
+
+/-- Same-colored vertices are not adjacent: a proper coloring gives distinct colors
+    on adjacent vertices, so equal colors means non-adjacent. -/
+theorem coloring_same_color_not_adj {k : ℕ} (col : G.Coloring (Fin k)) (u v : V)
+    (heq : col u = col v) : ¬G.Adj u v :=
+  fun hadj => col.valid hadj heq
+
+/-
 ## Summary
 
 This file proves 10 theorems with 0 sorries and 0 axioms:
