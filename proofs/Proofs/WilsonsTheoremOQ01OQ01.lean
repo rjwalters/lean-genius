@@ -6,12 +6,11 @@
   exhaustive search below 2 × 10¹³.
 
   Key results:
-  - 5 and 13 are Wilson primes (verified by native_decide)
-  - 563 is a Wilson prime (axiom; Goldberg 1953; too large for native_decide)
+  - 5, 13, and 563 are Wilson primes (verified by native_decide)
   - Open conjecture: infinitely many Wilson primes (axiom)
   - Wieferich primes (1093, 3511) proved for analogy
 
-  Status: 2 axioms (563 is computational; infinite conjecture is open)
+  Status: 1 axiom (infinite conjecture is open)
 -/
 
 import Mathlib.Data.Nat.Factorial.Basic
@@ -49,18 +48,19 @@ theorem thirteen_is_wilson_prime : IsWilsonPrime 13 := by
   · decide
   · native_decide
 
-/-! ## The Third Wilson Prime (Axiom) -/
+/-! ## The Third Wilson Prime -/
 
 /-- **563 is a Wilson prime**: 563² | 562! + 1.
 
     Verified by Goldberg (1953) via electronic computer — the first machine
-    computation of Wilson primality beyond 13. The number 562! has over 1300
-    decimal digits; computing 562! mod 563² = 316969 requires arbitrary-precision
-    arithmetic beyond the reach of Lean's native_decide.
+    computation of Wilson primality beyond 13. Subsequently re-verified by
+    Crandall, Dilcher, and Pomerance (1997) as part of their extended search
+    to 5 × 10⁸.
 
-    Subsequently re-verified by Crandall, Dilcher, and Pomerance (1997) as
-    part of their extended search to 5 × 10⁸. -/
-axiom fiveHundredSixtyThree_is_wilson_prime : IsWilsonPrime 563
+    Lean 4 native_decide evaluates 562! mod 563² = 316969 via native code. -/
+theorem fiveHundredSixtyThree_is_wilson_prime : IsWilsonPrime 563 := by
+  refine ⟨by norm_num, ?_⟩
+  native_decide
 
 /-! ## The Open Conjecture -/
 
