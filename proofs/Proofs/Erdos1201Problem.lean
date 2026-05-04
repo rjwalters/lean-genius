@@ -18,6 +18,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 import Mathlib.NumberTheory.Bertrand
+import Mathlib.Topology.Algebra.Order.LiminfLimsup
 
 namespace Erdos1201
 
@@ -1194,9 +1195,38 @@ theorem upperDensity_compl_ge (S : Set ℕ) : 1 - upperDensity S ≤ upperDensit
                     (((Finset.Icc 1 N).filter (fun n => n ∈ Sᶜ)).card : ℝ) / N)
       Filter.atTop = 1 := by
     exact Filter.limsup_congr h_sum_one |>.trans (Filter.limsup_const 1)
-  -- limsup(f + g) ≤ limsup(f) + limsup(g) [sub-additivity]
-  -- combined with limsup(f + g) = 1, this gives the bound
-  sorry
+  -- Sub-additivity: limsup(f + g) ≤ limsup f + limsup g; combined with limsup(f+g) = 1
+  have hS_bdd_below : Filter.IsBoundedUnder (· ≥ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / N) :=
+    ⟨0, Filter.Eventually.of_forall fun N => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)⟩
+  have hS_bdd_above : Filter.IsBoundedUnder (· ≤ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / N) :=
+    ⟨1, Filter.Eventually.of_forall fun N => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+        have hcard : (Finset.Icc 1 N).card = N := by simp [Finset.Nat.card_Icc]; omega
+        exact_mod_cast (Finset.card_filter_le _ _).trans hcard.le⟩
+  have hSc_cobdd : Filter.IsCoboundedUnder (· ≤ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ Sᶜ)).card : ℝ) / N) := by
+    use 0; intro a ha; by_contra hlt; push_neg at hlt
+    obtain ⟨N, hN⟩ := ha.exists
+    have h0 : (0 : ℝ) ≤ (((Finset.Icc 1 N).filter (fun n => n ∈ Sᶜ)).card : ℝ) / (N : ℝ) :=
+      div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+    linarith
+  have hSc_bdd_above : Filter.IsBoundedUnder (· ≤ ·) Filter.atTop
+      (fun N : ℕ => (((Finset.Icc 1 N).filter (fun n => n ∈ Sᶜ)).card : ℝ) / N) :=
+    ⟨1, Filter.Eventually.of_forall fun N => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+        have hcard : (Finset.Icc 1 N).card = N := by simp [Finset.Nat.card_Icc]; omega
+        exact_mod_cast (Finset.card_filter_le _ _).trans hcard.le⟩
+  exact h_limsup_one.symm.le.trans
+    (limsup_add_le hS_bdd_below hS_bdd_above hSc_cobdd hSc_bdd_above)
 
 /-- **From bad density to good density**: If the upper density of the bad set (windows where all
     terms are n^(1-ε)-smooth) is at most η, then the upper density of the good set is at least 1-η.

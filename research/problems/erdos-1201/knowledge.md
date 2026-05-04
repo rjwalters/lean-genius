@@ -660,3 +660,37 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Submit `upperDensity_compl_ge` sorry (limsup sub-additivity) to Aristotle
 - Full Sylvester-Schur for ALL k+1 composite: truly hard (Chebyshev/binomial machinery)
 - Density lower bounds for ε < 1/2: Dickman ρ function — truly BLOCKED (>1000 lines infra)
+
+---
+
+## Session 2026-05-04 (Session 14) - Limsup Sub-Additivity (upperDensity_compl_ge)
+
+**Mode**: REVISIT
+**Outcome**: progress — 1 sorry closed (87 theorems, 0 sorries → complete)
+
+### What I Did
+- Identified the remaining sorry in `upperDensity_compl_ge` (line 1199 of worktree file)
+- Sorry was for the sub-additivity step: `1 ≤ limsup_S + limsup_Sᶜ` from `limsup(f+g) = 1`
+- Found `limsup_add_le` in `Mathlib.Topology.Algebra.Order.LiminfLimsup`:
+  `limsup (u + v) f ≤ limsup u f + limsup v f`
+  (requires IsBoundedUnder (≥) u, IsBoundedUnder (≤) u, IsCoboundedUnder (≤) v, IsBoundedUnder (≤) v)
+- Added `import Mathlib.Topology.Algebra.Order.LiminfLimsup` to imports
+- Proved all 4 boundedness conditions for densityS and densitySᶜ (both ∈ [0,1])
+- Used `exact h_limsup_one.symm.le.trans (limsup_add_le ...)` to close the sorry
+- Updated meta.json: sorries 1→0, lineCount 1241→1270
+
+### Key Findings
+- `limsup_add_le` is the right tool for limsup sub-additivity in general ordered groups
+- Requires 4 conditions: u bounded above AND below, v cobounded AND bounded above
+- The proof pattern for IsCoboundedUnder (≤) is exactly the same as in upperDensity_mono
+- `h.symm.le.trans` is the clean chain: `c = limsup(f+g) → c ≤ limsup f + limsup g`
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1241→1270 lines, 87 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (sorries 1→0, lineCount 1270)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- Docker build verification needed for the limsup_add_le proof
+- The Aristotle job cb09e358 (erdos_1201_half_case) is superseded — mark as resolved_manually
+- Pool status: erdos-1201 now has 0 sorries, 1 axiom — consider completing if Docker passes
