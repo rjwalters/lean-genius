@@ -164,12 +164,19 @@ The known hierarchy of gap bounds:
 Each arrow represents an implication, with TPC open and EH conditional.
 -/
 
-/-- The full bound hierarchy: TPC gives H=2, EH gives H≤12, unconditional gives H≤246. -/
-theorem gap_bound_hierarchy :
-    (∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ 2) →
+/-- The EH bound implies the unconditional bound (H≤12 → H≤246). -/
+theorem gap_bound_eh_implies_unconditional :
     (∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ 12) →
     (∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ 246) := by
-  intro h2 h12 N
+  intro h12 N
+  obtain ⟨n, hn, hle⟩ := h12 N
+  exact ⟨n, hn, by omega⟩
+
+/-- The TPC bound implies the EH bound (H≤2 → H≤12). -/
+theorem gap_bound_tpc_implies_eh :
+    (∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ 2) →
+    (∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ 12) := by
+  intro h2 N
   obtain ⟨n, hn, hle⟩ := h2 N
   exact ⟨n, hn, by omega⟩
 
