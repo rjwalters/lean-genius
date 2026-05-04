@@ -48,6 +48,30 @@
     "prerequisites": ["Nat.Prime.eq_one_or_self_of_dvd", "Nat.coprime", "gcd properties"]
   },
   {
+    "id": "ann-1210-primesBelow-valid",
+    "proofId": "erdos-1210",
+    "range": { "startLine": 71, "endLine": 85 },
+    "type": "lemma",
+    "title": "primesBelow Is a Valid Pairwise Coprime Subset",
+    "content": "Three derived lemmas confirm that `primesBelow n` satisfies all the constraints for a valid candidate set. `primesBelow_pairwiseCoprime` shows it is pairwise coprime (using `primes_coprime` with membership extraction via `simp`). `primesBelow_valid` shows every element p is in [1,n): p ≥ 2 ≥ 1 (prime), and p < n (from Finset.range n filter). `primesBelow_nonempty` shows the set is nonempty for n ≥ 3: the prime 2 satisfies 2 < n and `by decide` closes the primality check. These three together confirm that `primesBelow n` is a valid candidate for the extremal problem.",
+    "mathContext": "For the conjecture to be nontrivial, $\\text{primesBelow}(n)$ must be: (1) pairwise coprime — ✓ (distinct primes are coprime); (2) a valid subset of $[1,n)$ — ✓ (primes $\\geq 2 \\geq 1$, filter gives $p < n$); (3) nonempty — ✓ for $n \\geq 3$ (prime 2 satisfies $2 < 3 \\leq n$).",
+    "significance": "supporting",
+    "relatedConcepts": ["primesBelow definition", "ValidSubset", "PairwiseCoprime", "Finset.mem_filter"],
+    "prerequisites": ["primes_coprime", "Nat.Prime.two_le", "Finset.range membership"]
+  },
+  {
+    "id": "ann-1210-sum-nonneg",
+    "proofId": "erdos-1210",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "lemma",
+    "title": "Prime Sum Is Nonneg: Each Term 1/(n-p) ≥ 0",
+    "content": "`primesBelow_sum_nonneg` establishes that the right-hand side of the conjecture is nonneg: each term 1/(n-p) ≥ 0 since n-p > 0 (p < n) and 1 ≥ 0. The proof uses `Finset.sum_nonneg`, reducing to showing each summand is nonneg, and `div_nonneg one_nonneg` with a cast and linarith for n-p > 0. This is a weaker statement than `primesBelow_sum_pos` (which requires n ≥ 3), useful for uniform quantification.",
+    "mathContext": "$p < n \\Rightarrow (p : \\mathbb{R}) < (n : \\mathbb{R}) \\Rightarrow n - p > 0 \\Rightarrow \\frac{1}{n-p} \\geq 0$. `Finset.sum_nonneg` applies this pointwise: $\\sum_{p \\in S} f(p) \\geq 0$ when $f(p) \\geq 0$ for all $p \\in S$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_nonneg", "div_nonneg", "Real.cast", "linarith"],
+    "prerequisites": ["Finset.sum_nonneg from Mathlib", "div_nonneg", "primesBelow definition"]
+  },
+  {
     "id": "ann-1210-at-most-one-even",
     "proofId": "erdos-1210",
     "range": { "startLine": 93, "endLine": 102 },
