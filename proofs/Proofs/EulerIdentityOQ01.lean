@@ -66,6 +66,26 @@ theorem I_pow_even (k : ℕ) : (I : ℂ) ^ (2 * k) = (-1) ^ k := by
 theorem I_pow_odd (k : ℕ) : (I : ℂ) ^ (2 * k + 1) = I * (-1) ^ k := by
   rw [pow_succ, I_pow_even]; ring
 
+/-- i^4 = 1: the fourth power of i is unity. -/
+theorem I_pow_four : (I : ℂ) ^ 4 = 1 := by
+  have : (I : ℂ) ^ 4 = (I ^ 2) ^ 2 := by ring
+  rw [this, I_sq]; ring
+
+/-- Powers of i are periodic with period 4: i^(n+4) = i^n. -/
+theorem I_pow_cycle (n : ℕ) : (I : ℂ) ^ (n + 4) = I ^ n := by
+  rw [pow_add, I_pow_four, mul_one]
+
+/-- The zeroth term of the exponential series equals 1. -/
+theorem expTerm_zero (z : ℂ) : expTerm z 0 = 1 := by
+  simp [expTerm]
+
+/-- Consecutive terms satisfy expTerm z (n+1) = expTerm z n · z / (n+1). -/
+theorem expTerm_succ_div (z : ℂ) (n : ℕ) :
+    expTerm z (n + 1) = expTerm z n * z / (n + 1) := by
+  simp only [expTerm, pow_succ, Nat.factorial_succ, Nat.cast_mul]
+  field_simp
+  ring
+
 /-- The even-indexed exp term equals the cosine series term.
     (ix)^{2k}/(2k)! = (-1)^k x^{2k}/(2k)! -/
 theorem expTerm_even (x : ℝ) (k : ℕ) :
