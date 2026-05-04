@@ -29,9 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proof written 153 lines, 0 sorries, 0 axioms. Docker build pending. Gallery entry created.",
+    "builtItems": [
+      "BuffonsNeedleOQ01OQ01OQ04OQ01.lean: cauchyCrofton_step (two-step recurrence c_{n+2} = c_n*n/(n+1))",
+      "BuffonsNeedleOQ01OQ01OQ04OQ01.lean: sqrt_ratio_bound (AM-GM n(n+2) ≤ (n+1)²)",
+      "BuffonsNeedleOQ01OQ01OQ04OQ01.lean: cauchyCrofton_upper_bound (c_n ≤ 2/sqrt(nπ) for n ≥ 2)",
+      "BuffonsNeedleOQ01OQ01OQ04OQ01.lean: cauchyCroftonConst_tendsto_zero (main theorem c_n → 0)"
+    ],
+    "insights": [
+      "c_{n+2} = c_n * n/(n+1) follows algebraically from two applications of sphereArea_recurrence",
+      "AM-GM n(n+2) ≤ (n+1)² enables induction step: n·√((n+2)π) ≤ (n+1)·√(nπ)",
+      "Split even/odd induction (2+2k and 3+2k) simplifies the two-step recurrence structure",
+      "Base cases c_2=2/π ≤ 2/√(2π) and c_3=1/2 ≤ 2/√(3π) verified by nlinarith with sq_sqrt hints",
+      "Squeeze: Real.tendsto_sqrt_atTop ∘ Tendsto.atTop_mul_const + tendsto_inv_atTop_zero gives 2/√(nπ) → 0"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
