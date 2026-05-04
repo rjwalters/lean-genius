@@ -50,7 +50,7 @@
         "relationship": "Alternative proof: uses Taylor series splitting vs Mathlib's Complex.exp_mul_I"
       }
     ],
-    "theoremCount": 7
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Euler published $e^{ix} = \\cos(x) + i\\sin(x)$ in 1748 in *Introductio in analysin infinitorum* (Chapter 8), using precisely this Taylor series splitting argument: he expanded $e^{ix}$ as a power series, separated even and odd terms, and identified them as the cosine and sine series. Euler was working in an era before rigorous convergence theory (Cauchy's work came ~80 years later), treating the manipulation of infinite series as formal algebra. The result was so striking that it connected the five most important constants in mathematics — $e$, $i$, $\\pi$, $1$, and $0$ — in a single equation $e^{i\\pi} + 1 = 0$, which physicist Richard Feynman called 'the most remarkable formula in mathematics.' The formula is foundational to complex analysis, appearing in Fourier analysis, quantum mechanics (where wave functions $e^{ikx}$ encode momentum states), signal processing, and the theory of Lie groups. The modern Lean formalization faces an extra challenge: Mathlib defines $\\cos$ and $\\sin$ via the complex exponential (not via Taylor series), creating a circularity that requires careful handling.",
@@ -156,7 +156,7 @@
     "namespace": "EulerIdentityOQ01",
     "lineCount": 233,
     "axiomCount": 3,
-    "theoremCount": 7,
+    "theoremCount": 11,
     "mainTheorems": [
       {
         "name": "euler_formula_taylor",
