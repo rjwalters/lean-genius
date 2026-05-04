@@ -29,24 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: quadratic_at_most_two_roots + three_pts_two_circles_contra fully proved; int_dist_card_le and anning_erdos_finiteness proved modulo 1 fiber-counting sorry",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. Full Anning–Erdős theorem proved.",
     "builtItems": [
       "quadratic_at_most_two_roots in Erdos100OQ01WIP01.lean:27 — nonzero quadratic has ≤ 2 roots, proved via ring arithmetic",
       "three_pts_two_circles_contra in Erdos100OQ01WIP01.lean:59 — fully proved, no sorry",
-      "int_dist_card_le in Erdos100OQ01WIP01.lean:168 — statement + outline proved, 1 sorry for fiber counting",
-      "anning_erdos_finiteness in Erdos100OQ01WIP01.lean:185 — proved assuming int_dist_card_le"
+      "int_dist_card_le in Erdos100OQ01WIP01.lean:185 — proved via fiber-counting: Finset.card_biUnion_le + Finset.two_lt_card, 0 sorries",
+      "anning_erdos_finiteness in Erdos100OQ01WIP01.lean:256 — proved, no sorry"
     ],
     "insights": [
       "three_pts_two_circles_contra: subtract circle equations → radical axis (linear); case split on dx=0 vs dx≠0; substitution into circle gives quadratic; 3 roots contradict quadratic_at_most_two_roots",
       "linear_combination tactic handles the key algebraic steps: multiplying circle equation by (2dx)^2 and substituting the radical axis expression is a ring identity",
-      "The fiber counting sorry in int_dist_card_le is the main remaining gap: need Finset.card partition argument with disjoint fibers of size ≤ 2",
+      "Fiber counting pattern: T ⊆ pairs.biUnion fibers; Finset.card_le_card + Finset.card_biUnion_le + Finset.sum_le_sum bounds card(T) ≤ d² * 2",
+      "Finset.two_lt_card.mp extracts 3 distinct elements from a Finset with card > 2 — directly feeds three_pts_two_circles_contra for the fiber ≤ 2 bound",
       "quadratic_at_most_two_roots uses only (p-q)*(a*(p+q)+b) = difference of polynomial evaluations, avoiding Polynomial API entirely"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove the fiber counting sorry in int_dist_card_le: use Finset.card_biUnion with disjoint fibers, or construct explicit injection T → {1..d}² × Fin 2",
-      "Consider submitting int_dist_card_le fiber counting sorry to Aristotle (HARD sorry with known proof structure)",
-      "Once fiber counting is done, eliminate the sorry in Erdos100OQ01.lean:149 (anning_erdos_finiteness) by importing from this file"
+      "Update Erdos100OQ01.lean to import anning_erdos_finiteness from Erdos100OQ01WIP01 and eliminate the sorry at line 149"
     ]
   },
   "tags": [

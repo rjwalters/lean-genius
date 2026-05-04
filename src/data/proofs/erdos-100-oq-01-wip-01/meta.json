@@ -7,7 +7,7 @@
     "author": "Anning–Erdős (1945); formalized 2026",
     "sourceUrl": "https://erdosproblems.com/100",
     "date": "1945",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos100OQ01WIP01.lean",
     "tags": [
       "discrete-geometry",
@@ -16,11 +16,11 @@
       "circle-geometry",
       "quadratic-polynomials"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 214,
-    "assumptions": "One sorry remains: the fiber counting argument in int_dist_card_le (bounding |S| ≤ 2d²+2 by counting distance pairs). The three_pts_two_circles_contra theorem is fully proved.",
+    "lineCount": 274,
+    "assumptions": "No assumptions. All theorems including the fiber-counting cardinality bound are fully proved.",
     "dateAdded": "2026-05-04",
     "mathlib_version": "4.26.0",
     "theoremCount": 4
@@ -73,16 +73,16 @@
       "title": "Cardinality Bound and Main Theorem",
       "startLine": 167,
       "endLine": 214,
-      "summary": "Theorem int_dist_card_le: non-collinear integer-distance set S with distances ≤ d has |S| ≤ 2d²+2 (1 sorry for fiber counting). Theorem anning_erdos_finiteness: for any d, every non-collinear integer-distance set with distances ≤ d has size ≤ 2d²+2, so such sets are finite.",
-      "mathContext": "The fiber counting step (sorry): partition $S \\setminus \\{P_1, P_2\\}$ by $(k_1, k_2) \\in \\{1..d\\}^2$. Each fiber $\\{Q : \\text{dist}(Q,P_1)=k_1, \\text{dist}(Q,P_2)=k_2\\}$ has $\\leq 2$ elements by `three_pts_two_circles_contra`. The remaining steps — choosing anchors, bounding |T| = |S|-2, and concluding — are all proved."
+      "summary": "Theorem int_dist_card_le: non-collinear integer-distance set S with distances ≤ d has |S| ≤ 2d²+2 (proved via Finset.card_biUnion_le + Finset.two_lt_card, 0 sorries). Theorem anning_erdos_finiteness: for any d, every non-collinear integer-distance set with distances ≤ d has size ≤ 2d²+2, so such sets are finite.",
+      "mathContext": "Fiber counting proof: extract anchor points P₁, P₂ from non-collinearity; set T = S \\ {P₁, P₂}; cover T by fibers over (k₁,k₂) ∈ {1..d}²; bound each fiber ≤ 2 via Finset.two_lt_card (3 elements → contradiction by three_pts_two_circles_contra); conclude |T| ≤ d² * 2 via Finset.card_biUnion_le; add 2 for anchors."
     }
   ],
   "conclusion": {
-    "summary": "The circle intersection infrastructure for the Anning–Erdős theorem is formalized: `quadratic_at_most_two_roots` and `three_pts_two_circles_contra` are fully proved. The main theorem `anning_erdos_finiteness` is proved modulo one sorry (the Finset cardinality fiber-counting step in `int_dist_card_le`).",
-    "implications": "The `three_pts_two_circles_contra` theorem is the geometric heart of the Anning–Erdős proof: it shows that for any two fixed anchor points, the distance-pair map Q ↦ (dist(Q,P₁), dist(Q,P₂)) has fibers of size ≤ 2. Combined with the fiber counting, this gives the finite bound |S| ≤ 2d²+2.",
+    "summary": "The full Anning–Erdős theorem is formalized with 0 sorries and 0 axioms. All four theorems are proved: `quadratic_at_most_two_roots`, `three_pts_two_circles_contra`, `int_dist_card_le`, and `anning_erdos_finiteness`.",
+    "implications": "This establishes the cardinality bound |S| ≤ 2d²+2 for non-collinear planar point sets with integer distances bounded by d. The fiber counting technique (Finset.card_biUnion_le + Finset.two_lt_card + three_pts_two_circles_contra) is the key pattern.",
     "openQuestions": [
-      "Can the fiber counting sorry in `int_dist_card_le` be eliminated? The proof needs a Lean 4 Finset cardinality argument partitioning T by distance pairs.",
-      "Can `piepmeyer_upper` in the parent file be proved by supplying an explicit 9-point witness? This would eliminate the second sorry in Erdos100OQ01.lean."
+      "Can `anning_erdos_finiteness` be used to eliminate the sorry in Erdos100OQ01.lean:149 by importing from this file?",
+      "Can `piepmeyer_upper` in the parent file be proved by supplying an explicit 9-point witness?"
     ]
   },
   "crossReferences": [
@@ -106,12 +106,12 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic"
     ],
     "namespace": "Erdos100OQ01WIP01",
-    "lineCount": 214,
+    "lineCount": 274,
     "axiomCount": 0,
     "theoremCount": 4,
     "path": "Proofs/Erdos100OQ01WIP01.lean",
-    "sorries": 1,
+    "sorries": 0,
     "definitionCount": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
