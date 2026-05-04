@@ -15,6 +15,34 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 **Known**: Bernstein (1931): ∃ x₀ with limsup λ_n(x₀) = ∞ for any sequence.
 **Known**: Erdős-Vértesi (1980): ∃ continuous f with |L^n f(x)| → ∞ a.e. for any sequence.
 
+## Session 2026-05-04 (Session 2) — Compilation fixes + q2_implies_q1
+
+**Mode**: REVISIT (continued from session 1)
+**Outcome**: progress (1 more sorry eliminated, full compilation fix)
+
+### What I Did
+
+- Resolved rebase conflicts in meta.json (kept `"sorries": 19` from HEAD across 2 conflict sites)
+- Proved `q2_implies_q1`: Q2 ⟹ Q1 via `obtain ⟨seq, hdiv, hconv⟩ := h; exact ⟨seq, fun f => ...⟩`
+- Fixed: `C`/`X` ambiguity — removed `Polynomial` from `open`; use `Polynomial.C`/`Polynomial.X` with `(... : Polynomial ℝ)` annotation
+- Fixed: `Filter.limsup = ⊤` — introduced `LebesgueUnbounded`/`InterpUnbounded` helper defs using `∀ M : ℝ, ∃ᶠ m in atTop, ... ≥ M`
+- Updated meta.json: 18 sorries, 274 lines
+- Created PR #15458 (fixing broken code merged by PR #15444)
+- Docker build running (container lean-build-13630)
+
+### Key Findings
+
+- `q2_implies_q1` trivial: Q2 requires ∀ x divergence + ∃ x convergence; Q1 only needs ∃ x divergence + ∃ x convergence. The same sequence and same x witness both.
+- With `open Polynomial ContinuousMap`, bare `C` is ambiguous between `Polynomial.C` and `ContinuousMap.C`. Fix: remove `Polynomial` from open, use qualified names.
+- `∃ᶠ m in atTop, f m ≥ M` is the correct "frequently ≥ M" formulation capturing limsup = +∞ for ℝ-valued functions.
+
+### Files Modified
+
+- `proofs/Proofs/Erdos671Problem.lean` — q2_implies_q1 proved, compilation fixes
+- `src/data/proofs/erdos-671/meta.json` — 18 sorries, 274 lines, updated assumptions
+
+---
+
 ## Session 2026-05-04 (Session 1) — Initial formalization
 
 **Mode**: FRESH (new gallery entry)
@@ -45,10 +73,11 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 - `proofs/Proofs/Erdos671Problem.lean` (main file)
 - `src/data/proofs/erdos-671/meta.json` (sorries 23→19)
 
-### Remaining Sorries (19)
+### Remaining Sorries (18)
 
 - `lagrangeBasis_self`, `lagrangeBasis_other`, `lagrangeInterp_at_node`: **PROVED**
 - `chebyshevNodes.in_interval`: **PROVED**
+- `q2_implies_q1`: **PROVED**
 - `lagrangeInterp_degree`: degree bound for Lagrange interpolant (HARD)
 - `lebesgueFunction_ge_one`: λ_n ≥ 1 at nodes (HARD — needs partition of unity argument)
 - `bernstein`: Bernstein's 1931 theorem (HARD — needs Baire category or explicit construction)
