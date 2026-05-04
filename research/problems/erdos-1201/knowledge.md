@@ -534,3 +534,44 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Full Sylvester-Schur for ALL k+1 (composite): needs binomial coefficient or Chebyshev Θ (>300 lines)
 - Density lower bounds: truly blocked (Dickman ρ function >1000 lines infra)
 - Can erdos_1201_half_case be proved via Dickman ρ or elementary density argument?
+
+---
+
+## Session 2026-05-04 (Session 12) - Comprehensive Build Fix + Structural Theorems
+
+**Mode**: REVISIT (highest knowledge score 113, branch fix/erdos-1201-desc-factorial)
+**Outcome**: progress — 5 build failures fixed, 5 new theorems (75→80), PR #15439
+
+### What I Did
+- Identified 5 distinct build failures in Erdos1201Problem.lean:
+  1. **Forward reference**: `gpfConsecutive_ge_succ_k_of_prime` (line 396) called `le_gpfConsecutive_of_prime_dvd_term` (line 587) — Lean 4 forbids this
+  2. **`consecutiveProduct_eq_descFactorial`**: broken inductive proof (Nat.descFactorial_succ API change), fixed with prod_range_reflect + Nat.descFactorial_eq_prod_range
+  3. **`consecutiveProduct_one`**: fragile rwa proof, replaced with simp+ring
+  4. **`upperDensity_mono`**: Filter.eventually_of_forall → Filter.Eventually.of_forall; div_le_div_right → div_le_div_of_nonneg_right
+  5. **`gpfConsecutive_gt_half_k`**: linarith couldn't see through opaque def, added unfold
+- Closed PR #15431 (superseded) which fixed only issues 1-2
+- Added 5 new structural theorems:
+  - `gpfConsecutive_prime_gt_k`: P(n,k) > k when n is prime and k < n
+  - `erdos_1201_individual_threshold`: ∃k such that P(n,k) > n^(1-ε) for each fixed n ≥ 2
+  - `erdos_1201_good_set_mono`: pointwise k-monotonicity for arbitrary k₁ ≤ k₂
+  - `gpfConsecutive_two_gt_two`: P(n,2) > 2 for all n ≥ 1
+  - `erdos_1201_equiv_small_eps`: ErdosProblem1201 ↔ restriction to ε ∈ (0, 1/2)
+
+### Key Findings
+- Lean 4 forward references at file scope are always a hard build failure
+- `Filter.Eventually.of_forall` is the current Mathlib API (was `Filter.eventually_of_forall`)
+- `div_le_div_of_nonneg_right` is the current API (replaced `div_le_div_right`)
+- `Nat.descFactorial_eq_prod_range` + `Finset.prod_range_reflect` avoids all descFactorial_succ API issues
+- `erdos_1201_equiv_small_eps` formalizes that the open frontier of Erdős #1201 is exactly ε ∈ (0, 1/2)
+- PRs #15391 and #15415 remain open but DIRTY — deployer cannot auto-merge; their useful content has been salvaged
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1046→1094 lines, 75→80 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (lineCount 1094, theoremCount 80)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- Close PRs #15391 and #15415 (their content has been salvaged in PR #15439)
+- Full Sylvester-Schur for ALL k+1 (composite): needs binomial coefficient or Chebyshev — HARD
+- Density lower bounds for ε < 1/2: requires Dickman ρ function — truly BLOCKED (>1000 lines)
+- The open mathematical frontier is formally documented: `erdos_1201_equiv_small_eps`

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 11: +2 theorems (Sylvester-Schur prime window sizes) + API fix + duplicate removal. 75 public theorems, 0 sorries, 1 axiom. PR #15417.",
+    "progressSummary": "PROGRESS: 80 theorems proved (0 sorries), all build failures fixed, open problem formally reduced to \u03b5\u2208(0,1/2). Density lower bounds truly blocked by Dickman infrastructure.",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -100,7 +100,12 @@
       "gpfConsecutive_ge_succ_k_of_prime: P(n,k) >= k+1 for all n >= 1 when k+1 prime \u2014 Erdos1201Problem.lean:~396",
       "gpfConsecutive_gt_k_of_prime_succ: k < P(n,k) for all n >= 1 when k+1 prime \u2014 covers k=1,2,4,6,10,12,... \u2014 Erdos1201Problem.lean:~403",
       "Fixed Nat.coprime_succ_self_right API (renamed in Mathlib) in gpfConsecutive_one_coprime",
-      "Removed duplicate erdos_1201_good_set_mono_eps and erdos_1201_density_mono_eps declarations (session 10 regression)"
+      "Removed duplicate erdos_1201_good_set_mono_eps and erdos_1201_density_mono_eps declarations (session 10 regression)",
+      "gpfConsecutive_prime_gt_k: P(n,k)>k when n prime, k<n (one-liner)",
+      "erdos_1201_individual_threshold: every n has some finite window making it good",
+      "erdos_1201_good_set_mono: pointwise k-monotonicity for k\u2081\u2264k\u2082 (generalization)",
+      "gpfConsecutive_two_gt_two: P(n,2)>2 for all n\u22651",
+      "erdos_1201_equiv_small_eps: ErdosProblem1201 iff restriction to \u03b5\u2208(0,1/2)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' \u2014 cleanly handles n=0,1 by returning 0",
@@ -140,7 +145,10 @@
       "Sylvester-Schur general case follows from factorial approach: among any k+1 consecutive ints, one has prime factor via (k+1)! divisibility",
       "Epsilon-monotonicity: The open problem needs only be proved for e in (0,1/2); the e >= 1/2 case follows from Erdos known result",
       "Threshold sufficient condition: n^(1-e) < k/2 is a sufficient condition for n to be good, giving an explicit parameter range",
-      "Sylvester-Schur for prime window sizes: complete residue system mod (k+1) guarantees a multiple of k+1 among k+1 consecutive integers; when k+1 prime, gives P(n,k) >= k+1 for ALL n >= 1 (no n > k restriction needed)"
+      "Sylvester-Schur for prime window sizes: complete residue system mod (k+1) guarantees a multiple of k+1 among k+1 consecutive integers; when k+1 prime, gives P(n,k) >= k+1 for ALL n >= 1 (no n > k restriction needed)",
+      "Session 12: forward reference bug (gpfConsecutive_ge_succ_k at line ~396 called le_gpfConsecutive at ~587) was root cause of build failure since PR #15417",
+      "Session 12: erdos_1201_equiv_small_eps formalizes that open mathematical frontier is exactly epsilon in (0, 1/2)",
+      "Session 12: Filter.Eventually.of_forall and div_le_div_of_nonneg_right are current Mathlib API replacements"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps \u2014 needed for full conjecture",
