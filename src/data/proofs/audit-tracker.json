@@ -1365,10 +1365,10 @@
       "result": "clean"
     },
     "buffons-needle-oq-01-oq-01-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:42:48Z",
-      "result": "clean"
+      "lastAudited": "2026-05-04T01:13:36Z",
+      "result": "issues-fixed"
     },
     "buffons-needle-oq-01-oq-02": {
       "auditCount": 2,
@@ -14158,8 +14158,8 @@
       "notes": "Re-audited 2026-05-04: 0 sorries, leanFile.axiomCount=0 (meta.axiomCount=2 from parent imports, by design). covers_unit_cube:=trivial is struct field fill not a True stub. Empty issues array was auditor artifact."
     },
     "chebyshev-bounds-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-03T22:38:59Z",
+      "auditCount": 2,
+      "lastAudited": "2026-05-04T01:13:36Z",
       "result": "clean",
       "issues": [],
       "notes": "Re-audited 2026-05-04: 0 sorries, 4 axioms, all metadata consistent. Empty issues array was auditor artifact."
