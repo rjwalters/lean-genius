@@ -115,5 +115,20 @@
       "relationship": "related",
       "description": "Schönhage's HGCD algorithm — a more sophisticated recursive GCD with better asymptotic complexity"
     }
-  ]
+  ],
+  "leanFile": {
+    "path": "Proofs/BezoutIdentityOQ01OQ01OQ01.lean",
+    "lineCount": 242,
+    "theoremCount": 3,
+    "axiomCount": 2,
+    "definitionCount": 2,
+    "sorries": 0,
+    "namespace": "BezoutIdentityOQ01OQ01OQ01",
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Tactic",
+      "Proofs.BezoutIdentityOQ01OQ01"
+    ]
+  }
 }
