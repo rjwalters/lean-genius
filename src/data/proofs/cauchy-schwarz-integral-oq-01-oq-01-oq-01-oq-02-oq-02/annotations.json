@@ -1,50 +1,110 @@
-{
-  "source": "manual",
-  "annotations": [
-    {
-      "id": "automation-key-insight",
-      "startLine": 87,
-      "endLine": 106,
-      "type": "technique",
-      "title": "ring + positivity replaces nlinarith hints",
-      "body": "The pattern `have key : B - A = E^2 := by ring; rw [key]; positivity` eliminates the need for `nlinarith [sq_nonneg (a-b)]`. ring verifies the algebraic identity; positivity recognizes perfect squares automatically.",
-      "mathContext": "For HM ≤ GM: $ab(a+b)^2 - (2ab)^2 = ab(a-b)^2$. Since $a,b>0$ and $(a-b)^2\\geq 0$, the product $ab(a-b)^2 \\geq 0$ is handled by positivity."
-    },
-    {
-      "id": "gm-am-pattern",
-      "startLine": 111,
-      "endLine": 126,
-      "type": "technique",
-      "title": "The canonical ring+positivity pattern",
-      "body": "For GM ≤ AM: suffices h : 0 ≤ ((a+b)/2)^2 - a*b by linarith, then have key : ... = ((a-b)/2)^2 := by ring, then rw [key]; positivity. No manual witness needed.",
-      "mathContext": "$\\left(\\frac{a+b}{2}\\right)^2 - ab = \\frac{(a-b)^2}{4} = \\left(\\frac{a-b}{2}\\right)^2 \\geq 0$"
-    },
-    {
-      "id": "polyrith-verdict",
-      "startLine": 17,
-      "endLine": 20,
-      "type": "insight",
-      "title": "polyrith not applicable to inequality goals",
-      "body": "polyrith proves polynomial equalities (via Groebner basis / linear algebra over ℚ). For inequality goals like A ≤ B, it cannot be applied directly. positivity is the right tool after ring normalization.",
-      "mathContext": "polyrith would prove e.g. $4a^2b^2 + a b(a-b)^2 = ab(a+b)^2$, but cannot conclude $4a^2b^2 \\leq ab(a+b)^2$ directly."
-    },
-    {
-      "id": "suffices-linarith-pattern",
-      "startLine": 96,
-      "endLine": 100,
-      "type": "technique",
-      "title": "suffices + linarith bridge",
-      "body": "The `suffices h : 0 ≤ B - A by linarith` pattern converts A ≤ B into a nonnegativity goal, making positivity applicable. linarith then closes the original goal from h trivially.",
-      "mathContext": "$A \\leq B$ iff $0 \\leq B - A$. This bridge is the key step enabling positivity automation."
-    },
-    {
-      "id": "hm-gm-degree4",
-      "startLine": 87,
-      "endLine": 106,
-      "type": "insight",
-      "title": "HM ≤ GM requires degree-4 witness",
-      "body": "The HM ≤ GM step requires the degree-4 identity ab(a+b)^2 - (2ab)^2 = ab(a-b)^2. This is why nlinarith [] (no hints) may fail here — it needs to search at degree 4 for the Positivstellensatz certificate, which exceeds nlinarith's default search depth.",
-      "mathContext": "$4a^2b^2 \\leq ab(a+b)^2$. Equivalently $0 \\leq ab(a-b)^2 = (ab)^{1/2} \\cdot ab^{1/2}(a-b)^2$ — a degree-4 SOS not directly recognized by nlinarith at default settings."
-    }
-  ]
-}
+[
+  {
+    "id": "power-mean-definitions",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 51, "endLine": 61 },
+    "type": "definition",
+    "title": "Power Mean Definitions",
+    "content": "The four power means are defined as noncomputable real functions. HM(a,b) = 2ab/(a+b) (harmonic mean), GM(a,b) = √(ab) (geometric mean), AM(a,b) = (a+b)/2 (arithmetic mean), QM(a,b) = √((a²+b²)/2) (quadratic mean, also called RMS). All use Real.sqrt, making them noncomputable — they cannot be evaluated by native_decide, only reasoned about symbolically.",
+    "mathContext": "$\\text{HM}(a,b) = \\frac{2ab}{a+b}$, $\\text{GM}(a,b) = \\sqrt{ab}$, $\\text{AM}(a,b) = \\frac{a+b}{2}$, $\\text{QM}(a,b) = \\sqrt{\\frac{a^2+b^2}{2}}$. These satisfy $\\min(a,b) \\le \\text{HM} \\le \\text{GM} \\le \\text{AM} \\le \\text{QM} \\le \\max(a,b)$ for $a,b>0$.",
+    "significance": "key",
+    "relatedConcepts": ["harmonic mean", "geometric mean", "arithmetic mean", "quadratic mean", "Real.sqrt"],
+    "prerequisites": ["noncomputable definitions in Lean 4", "Real.sqrt", "basic real arithmetic"]
+  },
+  {
+    "id": "polyrith-verdict",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 16, "endLine": 45 },
+    "type": "insight",
+    "title": "polyrith is Not Applicable to Inequalities",
+    "content": "polyrith proves polynomial equalities via Groebner basis computation and linear algebra over ℚ. It cannot directly close inequality goals like A ≤ B. This distinguishes the two automation tactics: polyrith for equalities, positivity for nonnegativity. The answer to the open question is thus: polyrith is inapplicable; positivity (after ring normalization) is the correct tool.",
+    "mathContext": "polyrith would prove e.g. $ab(a+b)^2 - 4a^2b^2 = ab(a-b)^2$ (an equality), but cannot conclude $4a^2b^2 \\leq ab(a+b)^2$ directly. The gap $B-A \\geq 0$ requires a nonnegativity argument, not an algebraic identity.",
+    "significance": "key",
+    "relatedConcepts": ["polyrith tactic", "positivity tactic", "Groebner basis", "sum-of-squares", "inequality automation"],
+    "prerequisites": ["polyrith tactic semantics", "positivity tactic", "SOS certificates"]
+  },
+  {
+    "id": "min-le-hm-proof",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 62, "endLine": 73 },
+    "type": "technique",
+    "title": "min ≤ HM: Case Split with mul_nonneg",
+    "content": "Proved by WLOG case split on a ≤ b (via le_total). In each case: rewrite HM, convert to a linear inequality via le_div_iff₀, then use ring to expose the gap as a product of non-negatives, closed by mul_nonneg. The gap in the a ≤ b case is a*(b-a) ≥ 0, which nlinarith closes after the factors are identified.",
+    "mathContext": "WLOG $a \\le b$: need $a \\le \\frac{2ab}{a+b}$, i.e., $a(a+b) \\le 2ab$, i.e., $0 \\le a(b-a)$. Since $a > 0$ and $b-a \\ge 0$, this holds. The ring step isolates the gap $a(b-a)$; nlinarith closes from $\\text{mul\\_nonneg}(h_a, h_{b-a})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["case split", "le_div_iff₀", "mul_nonneg", "WLOG", "harmonic mean"],
+    "prerequisites": ["le_total", "min_eq_left/right", "mul_nonneg"]
+  },
+  {
+    "id": "automation-key-insight",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 82, "endLine": 105 },
+    "type": "technique",
+    "title": "ring + positivity: The Core Automation Pattern",
+    "content": "The pattern `have key : B - A = E^2 := by ring; rw [key]; positivity` eliminates every explicit sq_nonneg witness from the parent proof. ring verifies the algebraic identity mechanically; positivity recognizes perfect squares automatically. For HM ≤ GM: the gap ab(a+b)² - 4a²b² = ab(a-b)² is degree 4, requiring ha and hb to be in context for positivity to close it (since ab > 0).",
+    "mathContext": "For $\\text{HM} \\le \\text{GM}$: need $\\frac{2ab}{a+b} \\le \\sqrt{ab}$. Squaring: $\\frac{4a^2b^2}{(a+b)^2} \\le ab$. Equivalently $0 \\le ab(a+b)^2 - 4a^2b^2 = ab(a-b)^2$. Since $a,b>0$: positivity closes $ab(a-b)^2 \\ge 0$ automatically.",
+    "significance": "key",
+    "relatedConcepts": ["positivity tactic", "ring tactic", "sum-of-squares", "Real.sqrt_le_sqrt", "perfect square"],
+    "prerequisites": ["suffices tactic", "Real.sqrt_le_sqrt", "Real.sqrt_sq", "div_le_iff₀"]
+  },
+  {
+    "id": "suffices-linarith-pattern",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "technique",
+    "title": "suffices + linarith: Nonnegativity Bridge",
+    "content": "The `suffices h : 0 ≤ B - A by linarith` pattern converts an inequality A ≤ B into a nonnegativity goal, making positivity applicable. linarith then closes the original goal from h trivially (A ≤ B follows from 0 ≤ B - A by algebra). This bridge is the key step enabling positivity automation for inequality goals.",
+    "mathContext": "$A \\le B \\iff 0 \\le B - A$. The suffices tactic replaces the goal $A \\le B$ with $0 \\le B - A$ plus a trivial linarith closure. After ring identifies $B - A = E^2$, positivity handles $0 \\le E^2$.",
+    "significance": "technical",
+    "relatedConcepts": ["suffices tactic", "linarith", "nonnegativity goals", "positivity tactic"],
+    "prerequisites": ["suffices tactic", "linarith tactic", "nonnegativity"]
+  },
+  {
+    "id": "gm-am-pattern",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 98, "endLine": 119 },
+    "type": "technique",
+    "title": "GM ≤ AM and AM ≤ QM: The Canonical ring+positivity Pattern",
+    "content": "Both GM ≤ AM (AM-GM inequality) and AM ≤ QM use the identical ring+positivity pattern. For GM ≤ AM: the gap ((a+b)/2)² - ab = ((a-b)/2)² is already a perfect square, requiring no positivity from hypotheses. For AM ≤ QM: (a²+b²)/2 - ((a+b)/2)² = ((a-b)/2)² again. The ring tactic finds these identities automatically; positivity closes 0 ≤ ((a-b)/2)² without any sq_nonneg hint.",
+    "mathContext": "GM ≤ AM (AM-GM): $\\sqrt{ab} \\le \\frac{a+b}{2}$, equivalently $0 \\le \\left(\\frac{a+b}{2}\\right)^2 - ab = \\left(\\frac{a-b}{2}\\right)^2$. AM ≤ QM: $0 \\le \\frac{a^2+b^2}{2} - \\left(\\frac{a+b}{2}\\right)^2 = \\left(\\frac{a-b}{2}\\right)^2$. Both are perfect squares, closed trivially by positivity.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "QM-AM inequality", "perfect square", "ring tactic", "positivity tactic"],
+    "prerequisites": ["Real.sqrt_le_sqrt", "Real.sqrt_sq", "ring tactic"]
+  },
+  {
+    "id": "hm-gm-degree4",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 82, "endLine": 91 },
+    "type": "insight",
+    "title": "HM ≤ GM: Degree-4 SOS Beyond nlinarith's Default Reach",
+    "content": "The HM ≤ GM inequality requires the degree-4 algebraic identity ab(a+b)² - (2ab)² = ab(a-b)². nlinarith [] (no hints) may fail here because its Positivstellensatz search operates at degree 2 by default — degree-4 SOS certificates are outside its default search space. ring + positivity succeeds because ring explicitly constructs the degree-4 identity and positivity recognizes the monomial ab(a-b)² as non-negative from ha, hb > 0.",
+    "mathContext": "$4a^2b^2 \\le ab(a+b)^2$. The SOS certificate is $ab(a-b)^2 \\ge 0$, which is degree 4 in $(a,b)$. nlinarith's default Positivstellensatz search is degree-bounded; ring provides the explicit witness, enabling positivity to close the degree-4 goal without search.",
+    "significance": "key",
+    "relatedConcepts": ["Positivstellensatz", "sum-of-squares", "degree-4 polynomial", "nlinarith limitations", "positivity tactic"],
+    "prerequisites": ["nlinarith tactic", "Positivstellensatz certificates", "degree bounds in SOS"]
+  },
+  {
+    "id": "qm-le-max-structure",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 127, "endLine": 144 },
+    "type": "technique",
+    "title": "QM ≤ max: Linear Factor Decomposition",
+    "content": "The QM ≤ max step differs from the other inequalities: the gap is a product of linear factors (b-a)(b+a)/2, not a perfect square. This requires mul_nonneg and div_nonneg after ring identifies the factors. For the a ≤ b case: max = b, gap = b² - (a²+b²)/2 = (b-a)(b+a)/2. The div_nonneg + mul_nonneg approach handles this without positivity.",
+    "mathContext": "WLOG $b = \\max(a,b)$: need $\\sqrt{\\frac{a^2+b^2}{2}} \\le b$, i.e., $\\frac{a^2+b^2}{2} \\le b^2$, i.e., $0 \\le b^2 - \\frac{a^2+b^2}{2} = \\frac{(b-a)(b+a)}{2}$. Since $b \\ge a \\ge 0$, both factors are non-negative.",
+    "significance": "supporting",
+    "relatedConcepts": ["max function", "case split", "mul_nonneg", "div_nonneg", "linear factorization"],
+    "prerequisites": ["le_total", "max_eq_right/left", "mul_nonneg", "div_nonneg"]
+  },
+  {
+    "id": "full-chain-assembly",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 148, "endLine": 185 },
+    "type": "proof-structure",
+    "title": "Chain Assembly and Automation Assessment",
+    "content": "power_mean_chain assembles all five inequalities into a single conjunction via anonymous constructor ⟨...⟩, immediately applying each component theorem. The automation assessment table (lines 162-179) compares parent proof tactics vs this file: ring + positivity replaces nlinarith [sq_nonneg ...] for the three core steps (HM≤GM, GM≤AM, AM≤QM), while min≤HM and QM≤max use mul_nonneg/div_nonneg for linear factor structure.",
+    "mathContext": "$\\forall a,b > 0:$ $\\min(a,b) \\le \\text{HM}(a,b) \\le \\text{GM}(a,b) \\le \\text{AM}(a,b) \\le \\text{QM}(a,b) \\le \\max(a,b)$. The 5-link chain is the 2-variable power mean inequality in full generality.",
+    "significance": "key",
+    "relatedConcepts": ["power mean inequality", "conjunction proof", "tactic comparison", "automation assessment"],
+    "prerequisites": ["all five component theorems", "anonymous constructor syntax in Lean 4"]
+  }
+]
