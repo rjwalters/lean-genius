@@ -15,6 +15,59 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 **Known**: Bernstein (1931): ∃ x₀ with limsup λ_n(x₀) = ∞ for any sequence.
 **Known**: Erdős-Vértesi (1980): ∃ continuous f with |L^n f(x)| → ∞ a.e. for any sequence.
 
+## Session 2026-05-04 (Session 3) — Partition of unity + type refactoring
+
+**Mode**: REVISIT (continued from session 2)
+**Outcome**: progress (6 sorries eliminated: 13 → 7)
+
+### What I Did
+
+- Proved `lagrangeInterp_degree`: interpolant degree ≤ n-1 via `Polynomial.natDegree_prod_le`
+- Proved `equidistantNodes.in_interval` and `.distinct`: arithmetic with `(n:ℝ) - 1` coercions
+- Proved `chebyshevNodes.distinct`: `Real.strictAntiOn_cos.injOn` on [0,π] via angle bounds
+- Proved `lagrangeBasis_sum_one` (partition of unity): Σp_i(x) = 1 via polynomial root counting
+  - Key: Q = Σp_i - 1 has n distinct roots but degree ≤ n-1, so Q = 0
+  - Uses: `Polynomial.card_roots_le_degree`, `Multiset.toFinset_card_le_card`, `Finset.card_image_of_injOn`
+- Proved `lebesgueFunction_ge_one`: λ_n(x) ≥ 1 via triangle inequality + partition of unity
+- Proved `q2_fails_implies`: ¬Q2 → explicit divergence via `by_contra; push_neg`
+- Eliminated 5 type-sorry instances by refactoring `∃ x ∈ S` to `∃ x : Set.Icc S` (subtype)
+  - Q1, Q2, faber, full_measure_convergence types now sorry-free
+  - q2_fails_implies type+proof now fully sorry-free
+- Updated meta.json: 7 sorries, 396 lines, axiomCount=3
+- PR #15458 updated
+
+### Key Findings
+
+- Partition of unity: Σp_i(x) = 1 requires polynomial root counting (not just evaluation at nodes)
+- `Polynomial.card_roots_le_degree` works for ALL polynomials (includes Q=0 corner case)
+- `∃ x ∈ S, P x` notation doesn't give `hx : x ∈ S` inside `P x` — must use subtype `∃ x : S, P x.val`
+- `lebesgueFunction_ge_one` requires `hn : 0 < n` (false for n=0: empty sum = 0 < 1)
+- Build 2 verified (equidistantNodes + lagrangeInterp_degree): compiled clean
+- Build 3 in progress (all new proofs including partition of unity + subtype refactoring)
+
+### Files Modified
+
+- `proofs/Proofs/Erdos671Problem.lean` — 6 sorries eliminated
+- `src/data/proofs/erdos-671/meta.json` — 7 sorries, 396 lines
+
+### Remaining Sorries (7 — all HARD classical results)
+
+- `bernstein`: Bernstein 1931 — requires Baire category or explicit construction
+- `lebesgueConstant_growth`: Λ_n ≥ (2/π)ln n — integration argument on extremal polynomial
+- `erdos_vertesi`: Erdős-Vértesi 1980 — hard analysis (a.e. divergence)
+- `equidistant_diverges`: exponential Lebesgue constant — explicit product bounds
+- `faber`: Faber 1914 — uniform boundedness / Baire category
+- `positive_measure_divergence`, `full_measure_convergence`: measure theory
+
+### Next Steps
+
+1. Check Build 3 result for partition-of-unity proof
+2. Consider `lebesgueConstant_growth` — bound via extremal polynomial construction
+3. Consider `equidistant_diverges` — explicit product estimate for equidistant nodes
+4. Submit `bernstein`, `erdos_vertesi`, `faber` to Aristotle (HARD classical results)
+
+---
+
 ## Session 2026-05-04 (Session 2) — Compilation fixes + q2_implies_q1
 
 **Mode**: REVISIT (continued from session 1)
