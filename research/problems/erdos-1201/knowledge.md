@@ -777,3 +777,40 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Docker build verification: PR #15527 needs successful build to merge
 - If Docker OOMs again, investigate splitting `lowerDensity_compl` proof into smaller lemmas
 - Open question: formalize the Dickman ρ density estimate for ε < 1/2 (blocked, >1000 LOC)
+
+---
+
+## Session 2026-05-04 (Session 19) - ErdosProblem1201Strong + Smooth-Decay Biconditional
+
+**Mode**: REVISIT (highest knowledge score 134, fresh branch from origin/main)
+**Outcome**: progress — 4 new theorems/defs (97→100 theorems, 6→7 defs, 1473→1608 lines)
+
+### What I Did
+- Audited open PRs: #15527 (no-op on Lean file, just metadata) and #15529 (has ErdosProblem1201Strong but stale base, conflicts with origin/main)
+- Extracted genuinely new theorems from PR #15529 not yet in origin/main:
+  1. `upperDensity_compl_eq`: upperDensity(Sᶜ) = 1 - lowerDensity(S) (3-line dual of lowerDensity_compl)
+  2. `ErdosProblem1201Strong` (def): Strong version using lowerDensity instead of upperDensity
+  3. `erdos_1201_strong_implies_weak`: Strong → Weak via lowerDensity_le_upperDensity
+  4. `erdos_1201_strong_iff_smooth_decay`: Strong ↔ smooth-window density decays to 0 (key biconditional)
+- Adapted PR #15529's proofs for origin/main: lowerDensity_compl_eq→lowerDensity_compl, Finset.Nat.card_Icc→icc_one_card
+- Created fresh branch `research/erdos-1201-session-19` from origin/main
+
+### Key Findings
+- PR #15529 was stale (pre-lowerDensity merge), so manually extracted the new content
+- `erdos_1201_strong_iff_smooth_decay` backward direction: goodᶜ ∩ [1,N] ⊆ smooth_bad ∩ [1,N] ∪ {1}
+  so densityFun(goodᶜ) ≤ densityFun(smooth_bad) + 1/N, and 1/N → 0 via limsup_add_le
+- ErdosProblem1201Strong makes the lim inf / almost everywhere density claim explicit
+- The biconditional shows "Strong ≡ smooth-window decay" is the precise mathematical content
+- The strong version is genuinely harder (lim inf ≥ 1-η for ALL large N) than weak (lim sup)
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1473→1608 lines, 97→100 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (lineCount 1608, theoremCount 100, defCount 7)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+- `src/data/research/problems/erdos-1201.json` (to be updated)
+
+### Next Steps
+- Close stale PRs #15527 and #15529 (their useful content has been salvaged here)
+- Density lower bounds for ε < 1/2: requires Dickman ρ function — truly BLOCKED (>1000 lines)
+- Full Sylvester-Schur for composite window sizes: needs Chebyshev — HARD
+- ErdosProblem1201Strong for ε ∈ [1/2,1) follows from the erdos_1201_half_case axiom (same as weak)
