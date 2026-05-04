@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "context",
+    "title": "Proof Overview: Anning–Erdős Strategy",
+    "content": "The module imports Mathlib.Tactic (for ring arithmetic, omega, etc.) and Mathlib.Analysis.SpecialFunctions.Log.Basic (available but unused here — likely carried from the parent file). The docstring encodes the entire proof strategy in three sentences: fix two anchor points P₁, P₂; every other Q lies on two circles (dist(Q,P₁)=k₁, dist(Q,P₂)=k₂); two distinct circles meet in at most 2 points; d² distance pairs give at most 2d² remaining points.",
+    "mathContext": "The core counting argument: $|S| \\leq 2 + |\\{Q \\in S : Q \\neq P_1, P_2\\}| \\leq 2 + \\sum_{(k_1,k_2) \\in [d]^2} |\\text{fiber}_{k_1,k_2}| \\leq 2 + d^2 \\cdot 2 = 2d^2+2$.",
+    "significance": "context",
+    "relatedConcepts": ["circle intersection", "fiber counting", "integer distance sets"],
+    "prerequisites": ["Finset cardinality in Lean 4", "circle geometry", "discrete geometry"]
+  },
+  {
+    "id": "ann-quadratic-lemma-statement",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 22, "endLine": 32 },
+    "type": "definition",
+    "title": "Lemma: A Nonzero Quadratic Has At Most Two Roots",
+    "content": "The `quadratic_at_most_two_roots` lemma states: given a nonzero leading coefficient a and two distinct roots p ≠ q of ax²+bx+c=0, any third root r must equal p or q. This avoids the Mathlib Polynomial API entirely, working directly with ring arithmetic over ℝ. The lemma is the algebraic engine that powers the circle intersection proof.",
+    "mathContext": "The polynomial $ax^2 + bx + c$ with $a \\neq 0$ has degree 2 and thus at most 2 roots over $\\mathbb{R}$ (or any field). The proof does not invoke the fundamental theorem of algebra or degree theory — only direct ring identities.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial roots", "quadratic formula", "Vieta's formulas", "ring arithmetic"],
+    "prerequisites": ["basic ring theory", "real number field"]
+  },
+  {
+    "id": "ann-quadratic-sum-identity",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 33, "endLine": 40 },
+    "type": "technique",
+    "title": "Key Ring Identity: Symmetric Sum",
+    "content": "The proof computes (p-q)·(a(p+q)+b) = (ap²+bp+c) - (aq²+bq+c) by ring, then rewrites using hp and hq to get 0-0=0. Since p≠q, the factor (p-q)≠0, forcing a(p+q)+b=0. This is the Vieta-sum relation: for a quadratic with roots p and q, the coefficient sum a(p+q)+b=0 encodes p+q = -b/a. The `linear_combination` or `ring` tactic closes these goals instantly.",
+    "mathContext": "The ring identity: $(x-y)\\bigl(a(x+y)+b\\bigr) = (ax^2+bx+c)-(ay^2+by+c)$. Setting $x=p, y=q$ and using $ap^2+bp+c=0=aq^2+bq+c$ gives $(p-q)\\bigl(a(p+q)+b\\bigr)=0$. Since $p\\neq q$: $a(p+q)+b=0$, i.e., $p+q=-b/a$.",
+    "significance": "key",
+    "relatedConcepts": ["Vieta's formulas", "symmetric polynomials", "mul_eq_zero", "factor theorem"],
+    "prerequisites": ["commutative ring theory", "mul_eq_zero lemma in Mathlib"]
+  },
+  {
+    "id": "ann-quadratic-third-root",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 41, "endLine": 53 },
+    "type": "technique",
+    "title": "Third Root Must Coincide with p or q",
+    "content": "After establishing a(p+q)+b=0 (the sum of p and q is -b/a), the same identity applied to the pair (r,p) gives a(r+p)+b=0 (since r≠p by assumption). Subtracting yields a(p+q)=a(r+p), hence q=r by `mul_left_cancel₀`. The case split on r=p vs r≠p via `eq_or_ne` cleanly separates the two conclusions of the `Or`.",
+    "mathContext": "From $a(p+q)+b=0$ and $a(r+p)+b=0$: subtracting gives $a(p+q-r-p)=0$, i.e., $a(q-r)=0$. Since $a\\neq 0$: $q=r$. The tactic `linarith [mul_left_cancel₀ ha ...]` packages this linear algebra step.",
+    "significance": "supporting",
+    "relatedConcepts": ["mul_left_cancel₀", "linear arithmetic", "Or.inl / Or.inr"],
+    "prerequisites": ["ring cancellation", "linarith tactic"]
+  },
+  {
+    "id": "ann-circle-intersection-setup",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 55, "endLine": 83 },
+    "type": "technique",
+    "title": "Radical Axis: Subtracting Circle Equations",
+    "content": "The theorem `three_pts_two_circles_contra` takes two circles with distinct centers c₁, c₂ and radii r₁, r₂. Subtracting the two circle equations for any point (x,y) on both circles yields a LINEAR equation in x and y — the radical axis. Setting dx=c₂.1-c₁.1, dy=c₂.2-c₁.2, and K=r₁²-r₂²+|c₂|²-|c₁|², every point on both circles satisfies 2·dx·x + 2·dy·y = K. The `nlinarith` tactic closes each hrad_* goal by expanding the circle equations.",
+    "mathContext": "Subtracting $(x-c_{1x})^2+(y-c_{1y})^2=r_1^2$ from $(x-c_{2x})^2+(y-c_{2y})^2=r_2^2$ and expanding: $2(c_{2x}-c_{1x})x+2(c_{2y}-c_{1y})y = r_1^2-r_2^2+c_{2x}^2+c_{2y}^2-c_{1x}^2-c_{1y}^2$. This is the radical axis — a line perpendicular to the line of centers.",
+    "significance": "key",
+    "relatedConcepts": ["radical axis", "coaxial circles", "power of a point", "circle geometry"],
+    "prerequisites": ["Euclidean distance formula", "algebraic manipulation of circle equations"]
+  },
+  {
+    "id": "ann-circle-dx-zero",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 84, "endLine": 114 },
+    "type": "technique",
+    "title": "Case dx = 0: Circles Share y-Coordinate for All Points",
+    "content": "When dx=0, the radical axis 2·dy·y = K forces all three points to share the same y-coordinate (since dy≠0 follows from c₁≠c₂). With fixed y=y₀, circle 1 becomes x²-2c₁.1·x+(c₁.1²+(y₀-c₁.2)²-r₁²)=0, a quadratic in x with leading coefficient 1. The three distinct x-coordinates p.1, q.1, s.1 are three distinct roots of this quadratic — contradiction by `quadratic_at_most_two_roots`.",
+    "mathContext": "With $dx=0$ and $dy\\neq 0$: the radical axis gives $2dy \\cdot y = K$, so $y_{\\text{fixed}} = K/(2dy)$. Substituting into circle 1: $(x - c_{1x})^2 = r_1^2 - (y_{\\text{fixed}} - c_{1y})^2$, i.e., $x^2 - 2c_{1x}x + (c_{1x}^2 + (y_{\\text{fixed}}-c_{1y})^2 - r_1^2) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["vertical line case", "degenerate circles", "quadratic_at_most_two_roots"],
+    "prerequisites": ["radical axis geometry", "Prod.ext for ℝ × ℝ equality"]
+  },
+  {
+    "id": "ann-circle-dx-nonzero",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 115, "endLine": 170 },
+    "type": "technique",
+    "title": "Case dx ≠ 0: Substitute x from Radical Axis into Circle",
+    "content": "When dx≠0, the radical axis gives x·(2dx) = K-2dy·y, expressing x·(2dx) as a linear function of y. To eliminate x from circle 1, multiply circle 1 by (2dx)² and substitute: the term (p.1-c₁.1)·(2dx) = K-2dy·p.2-c₁.1·(2dx) = α-2dy·p.2, where α=K-2dx·c₁.1. This yields a quadratic Ay²+By+C=0 with A=(2dy)²+(2dx)²≠0. The `linear_combination` tactic closes the key quadratic identity using the circle equation multiplied by (2dx)².",
+    "mathContext": "Multiplying $(x-c_{1x})^2+(y-c_{1y})^2=r_1^2$ by $(2dx)^2$ and substituting $x\\cdot 2dx = K-2dy\\cdot y - c_{1x}\\cdot 2dx + c_{1x}\\cdot 2dx$... after algebraic simplification: $[(2dy)^2+(2dx)^2]y^2 + By + C = 0$ where $A=(2dy)^2+(2dx)^2=4(dx^2+dy^2)=4|c_2-c_1|^2>0$.",
+    "significance": "key",
+    "relatedConcepts": ["parametric substitution", "homogenization", "linear_combination tactic", "quadratic_at_most_two_roots"],
+    "prerequisites": ["radical axis", "quadratic substitution", "Lean 4 linear_combination tactic"]
+  },
+  {
+    "id": "ann-linear-combination-key",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 146, "endLine": 166 },
+    "type": "technique",
+    "title": "Using linear_combination to Certify the Quadratic Identity",
+    "content": "The `key_p`, `key_q`, `key_s` intermediate goals state that the substituted expression equals r₁²·(2dx)². The proof first rewrites `K-2dy·y - c₁.1·(2dx) = (p.1-c₁.1)·(2dx)` using `linear_combination -hpx` (a one-line certificate), then closes the goal with `linear_combination (2*dx)^2 * hp1`. This two-step pattern elegantly avoids `nlinarith` for the polynomial identity and is a showcase of Lean 4's `linear_combination` tactic for certified algebra.",
+    "mathContext": "The certificate for `key_p`: $(K - 2dy\\cdot p_y - c_{1x}\\cdot 2dx - (p_x - c_{1x})\\cdot 2dx)$ rearranges to $K - 2dy\\cdot p_y - p_x\\cdot 2dx = 0$, which is exactly $-h_{px}$. Then the full goal reduces to $(2dx)^2\\cdot [(p_x-c_{1x})^2+(p_y-c_{1y})^2-r_1^2]=0$, certified by $(2dx)^2\\cdot h_{p1}$.",
+    "significance": "technical",
+    "relatedConcepts": ["linear_combination tactic", "ring certificates", "Gröbner basis", "algebraic identities"],
+    "prerequisites": ["Lean 4 linear_combination tactic", "polynomial arithmetic"]
+  },
+  {
+    "id": "ann-cardinality-setup",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 172, "endLine": 203 },
+    "type": "insight",
+    "title": "Fiber Counting Setup: Anchor Points and T = S \\ {P₁,P₂}",
+    "content": "The proof of `int_dist_card_le` begins by extracting two non-coincident points P₁, P₂ from the non-collinearity hypothesis. Non-collinearity is negated and pushed: `push_neg at hS_noncol` transforms the universally-quantified collinearity condition into existence of a triple violating it. Only two of those three points are needed as anchors. After establishing |S| ≤ |T|+2 (where T=S∖{P₁,P₂}), it suffices to show |T| ≤ 2d².",
+    "mathContext": "Non-collinearity means $\\exists P_1, P_2, P_3 \\in S$ with $(P_1-P_3) \\times (P_2-P_3) \\neq 0$ (cross-product). Here the cross product is encoded as $(p_x-r_x)(q_y-r_y)\\neq(q_x-r_x)(p_y-r_y)$. The key bound: $|S| = |T| + |\\{P_1, P_2\\}| = |T| + 2$.",
+    "significance": "key",
+    "relatedConcepts": ["non-collinearity", "Finset.card_erase_of_mem", "anchor point method"],
+    "prerequisites": ["Finset operations in Lean 4", "non-collinearity via cross product"]
+  },
+  {
+    "id": "ann-distance-pair-fibers",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 204, "endLine": 231 },
+    "type": "technique",
+    "title": "Distance-Pair Fibers and biUnion Coverage",
+    "content": "The proof covers T by distance-pair fibers: for each (k₁,k₂) ∈ {1..d}², the fiber is the set of Q ∈ T at distance k₁ from P₁ and k₂ from P₂. The coverage proof uses `hS_dist` to extract integers k₁, k₂ for each Q ∈ T, showing Q belongs to the fiber for (k₁,k₂). The cardinality bound on each fiber uses `Finset.two_lt_card` to extract three distinct witnesses, then applies `three_pts_two_circles_contra` for the contradiction.",
+    "mathContext": "The fiber for $(k_1,k_2)$: $F_{k_1,k_2} = \\{Q \\in T : |QP_1|^2 = k_1^2,\\ |QP_2|^2 = k_2^2\\}$. Three distinct points $Q_1,Q_2,Q_3 \\in F_{k_1,k_2}$ lie on circles of radius $k_1$ centered at $P_1$ and radius $k_2$ centered at $P_2$. By `three_pts_two_circles_contra` (with $P_1\\neq P_2$), this is impossible.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_biUnion_le", "Finset.two_lt_card", "distance-pair map", "fiber bundle"],
+    "prerequisites": ["Finset.biUnion in Lean 4", "Finset.filter", "Finset.two_lt_card"]
+  },
+  {
+    "id": "ann-cardinality-chain",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 232, "endLine": 251 },
+    "type": "insight",
+    "title": "Cardinality Chain: |T| ≤ 2d² via calc",
+    "content": "The `calc` block chains four inequalities: (1) |T| ≤ |biUnion fibers| by subset (hT_cover); (2) |biUnion fibers| ≤ ∑ |fiber| by `Finset.card_biUnion_le`; (3) ∑ |fiber| ≤ ∑ 2 by `Finset.sum_le_sum hfiber_le`; (4) ∑ 2 = d²·2 = 2d² using the fact that |pairs| = d². The calculation is clean because Lean's `calc` syntax visually tracks the transitivity chain.",
+    "mathContext": "The chain: $|T| \\leq |\\bigcup_{(k_1,k_2)} F_{k_1,k_2}| \\leq \\sum_{(k_1,k_2)\\in[d]^2} |F_{k_1,k_2}| \\leq \\sum_{(k_1,k_2)\\in[d]^2} 2 = d^2 \\cdot 2 = 2d^2$. Adding the two anchors: $|S| = |T|+2 \\leq 2d^2+2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_biUnion_le", "Finset.sum_le_sum", "Finset.card_product", "Finset.card_Icc"],
+    "prerequisites": ["Lean 4 calc blocks", "Finset sum lemmas"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 252, "endLine": 274 },
+    "type": "insight",
+    "title": "Anning–Erdős Theorem: Existential Finiteness Statement",
+    "content": "The main theorem `anning_erdos_finiteness` states the existential form: for every bound d, there exists N such that no non-collinear integer-distance set with distances ≤ d has more than N points. The proof takes N=2d²+2 and applies `int_dist_card_le`. The hypothesis conversion from k² (ℕ, with cast ↑(k^2)) to (k:ℝ)² uses `push_cast [sq]` followed by `linarith`. The final step `linarith [int_dist_card_le ..., hScard ▸ le_refl ...]` derives n ≤ 2d²+2 < n, a contradiction.",
+    "mathContext": "The theorem: $\\forall d\\in\\mathbb{N},\\ \\exists N\\in\\mathbb{N},\\ \\forall n>N,\\ \\nexists S\\subseteq \\mathbb{R}^2$ finite with $|S|=n$, all pairwise distances in $\\{1,\\ldots,d\\}\\cap\\mathbb{N}$, and $S$ non-collinear. The witness is $N=2d^2+2$. Note: this is the BOUNDED version — the infinite-distance Anning–Erdős theorem (that any infinite integer-distance set is collinear) requires a different argument.",
+    "significance": "key",
+    "relatedConcepts": ["Anning–Erdős theorem 1945", "integer distance sets", "Erdős problem #100", "Piepmeyer bound"],
+    "prerequisites": ["int_dist_card_le", "push_cast tactic", "existential witness construction"]
+  }
+]
