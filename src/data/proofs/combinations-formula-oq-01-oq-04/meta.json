@@ -1,6 +1,6 @@
 {
   "id": "combinations-formula-oq-01-oq-04",
-  "title": "The Lindström-Gessel-Viennot Lemma",
+  "title": "The Lindstr\u00f6m-Gessel-Viennot Lemma",
   "slug": "combinations-formula-oq-01-oq-04",
   "description": "The LGV Lemma: determinants of binomial coefficient matrices count non-intersecting lattice path tuples, unifying classical combinatorial identities.",
   "meta": {
@@ -20,67 +20,97 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 185,
+    "lineCount": 189,
     "theoremCount": 14,
     "definitionCount": 2,
     "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ04.lean",
     "originalContributions": [
-      "lgv_determinant_formula: re-export of the r×r LGV lemma from BallotProblemOQ03OQ02",
+      "lgv_determinant_formula: re-export of the r\u00d7r LGV lemma from BallotProblemOQ03OQ02",
       "lgv_det_nonneg: determinants of well-formed binomial matrices are non-negative",
-      "lgvConfig1 and lgvConfig2: concrete 1×1 and 2×2 LGV configurations",
-      "lgv_one_by_one: 1×1 det = C(m+b-a, m)",
-      "lgv_2x2_det_ex1: concrete 2×2 det = 6 (m=2, sources=[0,1], targets=[2,3])",
+      "lgvConfig1 and lgvConfig2: concrete 1\u00d71 and 2\u00d72 LGV configurations",
+      "lgv_one_by_one: 1\u00d71 det = C(m+b-a, m)",
+      "lgv_2x2_det_ex1: concrete 2\u00d72 det = 6 (m=2, sources=[0,1], targets=[2,3])",
       "lgv_2x2_ni_count_ex1: 6 non-intersecting pairs for the example configuration",
-      "lgv_2x2_det_ex2: 2×2 det = 50 (m=3, sources=[0,1], targets=[3,4])",
+      "lgv_2x2_det_ex2: 2\u00d72 det = 50 (m=3, sources=[0,1], targets=[3,4])",
       "lgv_2x2_ni_count_ex2: 50 non-intersecting pairs for the larger configuration",
-      "lgv_2x2_det_nonneg: non-negativity for all valid 2×2 configurations",
+      "lgv_2x2_det_nonneg: non-negativity for all valid 2\u00d72 configurations",
       "lgv_2x2_not_wellFormed_when_b_zero: well-formedness failure example",
       "lgv_det_is_natural: the determinant is always a natural number"
     ],
     "assumptions": []
   },
   "overview": {
-    "summary": "The Lindström-Gessel-Viennot (LGV) Lemma is a cornerstone theorem in enumerative combinatorics, establishing that determinants of binomial coefficient matrices always count combinatorial objects — namely, non-intersecting lattice path tuples.",
-    "keyInsight": "For strictly ordered source positions a₁ < ... < aᵣ and target positions b₁ < ... < bᵣ, the matrix M with Mᵢⱼ = C(m + bⱼ - aᵢ, m) has its determinant equal to the number of non-intersecting r-tuples of lattice paths. This is proved via the Gessel-Viennot sign-reversing involution (formalized in BallotProblemOQ03OQ02.lean).",
-    "mathematicalContent": "The file presents the LGV theorem and verifies it for concrete 2×2 examples. For m=2 with sources [0,1] and targets [2,3], the path matrix [[6,10],[3,6]] has det = 36-30 = 6, matching the 6 non-intersecting path pairs. For m=3 with sources [0,1] and targets [3,4], the matrix [[20,35],[10,20]] has det = 400-350 = 50."
+    "summary": "The Lindstr\u00f6m-Gessel-Viennot (LGV) Lemma is a cornerstone theorem in enumerative combinatorics, establishing that determinants of binomial coefficient matrices always count combinatorial objects \u2014 namely, non-intersecting lattice path tuples.",
+    "keyInsight": "For strictly ordered source positions a\u2081 < ... < a\u1d63 and target positions b\u2081 < ... < b\u1d63, the matrix M with M\u1d62\u2c7c = C(m + b\u2c7c - a\u1d62, m) has its determinant equal to the number of non-intersecting r-tuples of lattice paths. This is proved via the Gessel-Viennot sign-reversing involution (formalized in BallotProblemOQ03OQ02.lean).",
+    "mathematicalContent": "The file presents the LGV theorem and verifies it for concrete 2\u00d72 examples. For m=2 with sources [0,1] and targets [2,3], the path matrix [[6,10],[3,6]] has det = 36-30 = 6, matching the 6 non-intersecting path pairs. For m=3 with sources [0,1] and targets [3,4], the matrix [[20,35],[10,20]] has det = 400-350 = 50."
   },
   "sections": [
     {
       "title": "Main Theorem",
       "content": "The LGV Lemma: `niTupleCount = det(pathMatrix)` for well-formed configurations.",
-      "theorems": ["lgv_determinant_formula", "lgv_det_nonneg"]
+      "theorems": [
+        "lgv_determinant_formula",
+        "lgv_det_nonneg"
+      ]
     },
     {
-      "title": "1×1 Case",
-      "content": "The 1×1 determinant is simply the path count C(m + b - a, m).",
-      "theorems": ["lgv_one_by_one"]
+      "title": "1\u00d71 Case",
+      "content": "The 1\u00d71 determinant is simply the path count C(m + b - a, m).",
+      "theorems": [
+        "lgv_one_by_one"
+      ]
     },
     {
-      "title": "2×2 Concrete Examples",
+      "title": "2\u00d72 Concrete Examples",
       "content": "For m=2, det=6 paths; for m=3, det=50 paths. Both verified by computation.",
-      "theorems": ["lgv_2x2_det_ex1", "lgv_2x2_ni_count_ex1", "lgv_2x2_det_ex2", "lgv_2x2_ni_count_ex2"]
+      "theorems": [
+        "lgv_2x2_det_ex1",
+        "lgv_2x2_ni_count_ex1",
+        "lgv_2x2_det_ex2",
+        "lgv_2x2_ni_count_ex2"
+      ]
     },
     {
       "title": "Non-Negativity and Well-Formedness",
       "content": "The determinant is always non-negative (it counts path tuples). Well-formedness is essential.",
-      "theorems": ["lgv_2x2_det_nonneg", "lgv_2x2_not_wellFormed_when_b_zero", "lgv_det_is_natural"]
+      "theorems": [
+        "lgv_2x2_det_nonneg",
+        "lgv_2x2_not_wellFormed_when_b_zero",
+        "lgv_det_is_natural"
+      ]
     }
   ],
   "crossReferences": [
     {
       "id": "combinations-formula-oq-01",
       "relationship": "parent",
-      "note": "Extended Binomial Coefficient Identities — this is OQ-04"
+      "note": "Extended Binomial Coefficient Identities \u2014 this is OQ-04"
     },
     {
       "id": "ballot-problem-oq-03-oq-02",
       "relationship": "depends-on",
-      "note": "Imports the r×r LGV proof via Gessel-Viennot involution"
+      "note": "Imports the r\u00d7r LGV proof via Gessel-Viennot involution"
     },
     {
       "id": "ballot-problem-oq-03",
       "relationship": "related",
-      "note": "The 2×2 LGV for ballot problem lattice paths"
+      "note": "The 2\u00d72 LGV for ballot problem lattice paths"
     }
-  ]
+  ],
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ01OQ04.lean",
+    "namespace": "CombinationsFormulaOQ01OQ04",
+    "imports": [
+      "Proofs.BallotProblemOQ03OQ02"
+    ],
+    "opens": [
+      "LGV"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 189,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "additionalFiles": []
+  }
 }
