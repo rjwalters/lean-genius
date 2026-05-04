@@ -777,3 +777,51 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Docker build verification: PR #15527 needs successful build to merge
 - If Docker OOMs again, investigate splitting `lowerDensity_compl` proof into smaller lemmas
 - Open question: formalize the Dickman ρ density estimate for ε < 1/2 (blocked, >1000 LOC)
+
+---
+
+## Session 2026-05-04 (Session 19) - Stale Branch Cleanup + Duplication Detection (researcher-7)
+
+**Mode**: REVISIT
+**Outcome**: partial — fixed bugs in uncommitted work; content duplication discovered; no new PR created
+
+### What I Did
+- Found working directory of `research/erdos-1201-s14` had 233 lines of uncommitted changes from
+  previous researcher invocation that were never committed (lowerDensity_compl_eq, upperDensity_compl_eq,
+  ErdosProblem1201Strong, erdos_1201_strong_implies_weak, erdos_1201_strong_iff_smooth_decay)
+- Identified and fixed 8 occurrences of `Finset.Nat.card_Icc` (unknown in Lean 4.26.0):
+  - `rw [Finset.Nat.card_Icc]; omega` → `icc_one_card N` (added `private lemma icc_one_card`)
+  - `simp [Finset.Nat.card_Icc]; omega` → `icc_one_card N`
+- Fixed broken `h_sum_one` sub-proof in `upperDensity_compl_ge`:
+  - Original: `rw [div_add_div_same, div_self ...]; congr 1` — `div_self` doesn't match `(a+b)/N`
+  - Fixed: explicit `hcount` (card_S + card_Sc = N via card_sdiff) then `rw [div_add_div_same, hreal, div_self]`
+- Fixed broken `heq` sub-proof in `lowerDensity_compl_eq`:
+  - Original: `rw [← sub_div]; congr 1` — `← sub_div` doesn't match `1 - card_S/N` form
+  - Fixed: explicit `hreal : card_Sc = N - card_S` then `rw [hreal, sub_div, div_self]`
+- Committed all fixes locally on `research/erdos-1201-s14`
+- Discovered via `gh pr list` that the same content already exists in:
+  - `origin/main`: `icc_one_card`, `lowerDensity`, `lowerDensity_compl`, `upperDensity_compl_ge`
+  - Open PR #15544: `upperDensity_compl_eq`, `ErdosProblem1201Strong`, `erdos_1201_strong_implies_weak`,
+    `erdos_1201_strong_iff_smooth_decay`
+  - Open PR #15539: similar Strong conjecture content
+- Did NOT push branch or create PR (content entirely redundant with existing work)
+
+### Key Findings
+- `research/erdos-1201-s14` branch is based on OLD session-14 state (1277 lines); main is at 1473 lines
+  after sessions 15-18 merged. All our additions are already in main + open PRs.
+- The `rw [div_add_div_same, div_self hN.ne']` pattern ONLY works when the numerator is already
+  equal to the denominator. For `(a+b)/N = 1` you need to show `a+b = N` first.
+- The `rw [← sub_div]` pattern ONLY works if the goal has `x/c - y/c` on the RHS.
+  For `1 - b/N`, use `hreal : card_Sc = N - card_S` then `rw [hreal, sub_div, div_self]`.
+- Multiple researchers are simultaneously working on erdos-1201 strong conjecture content;
+  coordination should be improved.
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1277→1512 lines, local commit only, not pushed)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- PR #15544 should be merged for the Strong conjecture content
+- The remaining open question (eliminate `erdos_1201_half_case` axiom, prove for ε < 1/2)
+  requires Dickman ρ function density estimates (>1000 LOC, genuinely blocked)
+- erdos-1201 is mature; researcher time better spent on different problems
