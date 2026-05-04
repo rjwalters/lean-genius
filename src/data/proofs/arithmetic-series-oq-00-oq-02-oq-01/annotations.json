@@ -1,0 +1,115 @@
+[
+  {
+    "id": "ann-nicweight-def",
+    "proofId": "arithmetic-series-oq-00-oq-02-oq-01",
+    "range": { "startLine": 42, "endLine": 65 },
+    "type": "definition",
+    "title": "nicWeight: The Unique Rational Weight w(k) = k³/(2k-1)",
+    "content": "The definition `nicWeight k = (k : ℚ)^3 / (2*(k : ℚ) - 1)` captures the unique rational weight satisfying the Nicomachus-type identity. The `noncomputable section` flag is required because ℚ division is not computably decidable in Lean 4.\n\nThe private lemma `denom_pos` establishes 2k-1 > 0 for k ≥ 1 (from k ≥ 1 → (k : ℚ) ≥ 1 via exact_mod_cast, then linarith). This positivity guarantees the denominator is nonzero, making the division valid.\n\nThe key theorem `nicWeight_mul` proves the crucial cancellation: w(k)·(2k-1) = k³ for all k ≥ 1. The proof uses `div_mul_cancel₀` from Mathlib, which says (a/b)·b = a when b ≠ 0, with nonzeroness from ne_of_gt applied to denom_pos. This cancellation is the entire reason why the weight works: the (2k-1) factors from the weight and from the identity cancel exactly, reducing everything to Nicomachus's classical ∑k³ = (∑k)².",
+    "mathContext": "The weight function $w: \\mathbb{N} \\to \\mathbb{Q}$ is defined by $w(k) = \\frac{k^3}{2k-1}$. The key property is $w(k) \\cdot (2k-1) = k^3$ for $k \\geq 1$ (denominator cancels exactly). The denominator $2k-1$ is odd and positive for $k \\geq 1$: the values are $w(1)=1, w(2)=8/3, w(3)=27/5, w(4)=64/7, \\ldots$ The denominator is never 0 over $\\mathbb{Q}$ for $k \\geq 1$.",
+    "significance": "critical",
+    "prerequisites": [
+      "noncomputable section in Lean 4 for ℚ arithmetic",
+      "div_mul_cancel₀ from Mathlib (division cancellation)",
+      "exact_mod_cast for ℕ→ℚ casting inequalities",
+      "ne_of_gt for nonzero from positivity"
+    ],
+    "relatedConcepts": [
+      "nicWeight_mul",
+      "nicWeight_sum_eq",
+      "Nicomachus's theorem (∑k³ = (∑k)²)",
+      "arithmetic-series-oq-00-oq-02",
+      "denom_pos"
+    ]
+  },
+  {
+    "id": "ann-main-identity",
+    "proofId": "arithmetic-series-oq-00-oq-02-oq-01",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "theorem",
+    "title": "nicWeight_sum_eq: ∑w(k)·(2k-1) = (∑k)² via Nicomachus",
+    "content": "The main identity theorem: for all n, the sum ∑_{k=1}^n [k³/(2k-1)] · (2k-1) equals (∑_{k=1}^n k)².\n\nThe proof uses Finset.sum_congr to replace each summand with k³, using nicWeight_mul for every k ∈ Ico 1 (n+1) (bounds checked by mem_Ico.mp hk).1). After the term-by-term simplification, the sum is ∑k³, which equals (∑k)² by sum_cubes_eq_sq_sum from the parent file (NicomachusTheorem, imported via ArithmeticSeriesOQ00).\n\nThis is a two-step proof by reduction: (1) term-by-term cancellation w(k)·(2k-1) = k³, then (2) Nicomachus's theorem ∑k³ = (∑k)². The two-step structure makes the proof a single rw + exact, demonstrating the power of having the cancellation lemma nicWeight_mul factored out.",
+    "mathContext": "$\\sum_{k=1}^n w(k)\\cdot(2k-1) = \\sum_{k=1}^n k^3 = \\left(\\sum_{k=1}^n k\\right)^2$. The first equality uses $w(k)\\cdot(2k-1) = k^3$ term-by-term; the second is Nicomachus's theorem. The parent open question (ArithmeticSeriesOQ00OQ02) showed that the weight $w(k) = k^2$ fails this identity for $n \\geq 2$ — so the weight $w(k) = k^3/(2k-1)$ is a strictly different solution.",
+    "significance": "critical",
+    "prerequisites": [
+      "Finset.sum_congr for term-by-term rewriting",
+      "mem_Ico.mp for membership bounds",
+      "NicomachusTheorem.sum_cubes_eq_sq_sum (parent file)",
+      "nicWeight_mul cancellation lemma"
+    ],
+    "relatedConcepts": [
+      "nicWeight_mul",
+      "NicomachusTheorem.sum_cubes_eq_sq_sum",
+      "arithmetic-series-oq-00",
+      "arithmetic-series-oq-00-oq-02",
+      "Finset.sum_congr"
+    ]
+  },
+  {
+    "id": "ann-concrete-values",
+    "proofId": "arithmetic-series-oq-00-oq-02-oq-01",
+    "range": { "startLine": 81, "endLine": 93 },
+    "type": "theorem",
+    "title": "Concrete Values: w(1)=1, w(2)=8/3, w(3)=27/5 — The Non-Integer Pattern",
+    "content": "Three concrete evaluations establish the weight values by norm_num:\n- nicWeight_one: w(1) = 1 (the only integer value)\n- nicWeight_two: w(2) = 8/3 (not an integer — 8 is not divisible by 3)\n- nicWeight_three: w(3) = 27/5 (not an integer — 27 is not divisible by 5)\n\nAll three are proved by `unfold nicWeight; norm_num`, which reduces to rational arithmetic. The pattern k³/(2k-1) gives values 1, 8/3, 27/5, 64/7, ... — the numerator k³ and denominator 2k-1 are coprime for k ≥ 2 (since gcd(k³, 2k-1) divides gcd(k³, 2) but 2k-1 is odd, and gcd(k³, 2k-1) | gcd(k³, 2k-1) with 2k-1 and k coprime when k is odd).\n\nThe non-integer value w(2) = 8/3 is the key obstruction: it directly gives the impossible equation 3w(2) = 8 in ℤ that drives the no_integer_weight proof.",
+    "mathContext": "The sequence $w(k) = k^3/(2k-1)$ evaluated: $w(1)=1/1=1$, $w(2)=8/3$, $w(3)=27/5$, $w(4)=64/7$, $w(5)=125/9$. The denominator $2k-1$ is always odd, the numerator $k^3$ has 2-adic valuation $3v_2(k)$; since $2k-1$ is odd, $v_2(w(k)) = 3v_2(k) \\geq 0$. For $k$ odd and $k > 1$: $\\gcd(k^3, 2k-1) = \\gcd(k, 2k-1)^3$ but $\\gcd(k, 2k-1) = \\gcd(k, -1) = 1$, so $w(k) = k^3/(2k-1)$ is already in lowest terms.",
+    "significance": "key",
+    "prerequisites": [
+      "norm_num for rational arithmetic evaluation",
+      "unfold tactic to expand definitions",
+      "ℚ field operations"
+    ],
+    "relatedConcepts": [
+      "nicWeight definition",
+      "no_integer_weight",
+      "nicWeight_unique_at_12",
+      "arithmetic-series-oq-00-oq-02"
+    ]
+  },
+  {
+    "id": "ann-integer-obstruction",
+    "proofId": "arithmetic-series-oq-00-oq-02-oq-01",
+    "range": { "startLine": 95, "endLine": 144 },
+    "type": "theorem",
+    "title": "no_integer_weight: Integer Obstruction Proved by omega in ℤ",
+    "content": "The proof shows there is no integer-valued weight by deriving a contradiction from just the n=1 and n=2 cases:\n\n1. From n=1: w(1) = 1 (since Ico 1 2 = {1} by decide, sum = w(1)·1 = 1²)\n2. From n=2: w(1) + 3·w(2) = 9 (since Ico 1 3 = {1,2} by decide, sum = w(1)·1 + w(2)·3 = 1²+2² = 9)\n3. Substituting: 3·w(2) = 8, but 8 is not divisible by 3 in ℤ — omega derives False.\n\nThe proof uses private auxiliary lemmas (lhs_n1, rhs_n1, lhs_n2, rhs_n2) to expand the finite sums via decide and sum_singleton/sum_insert. The integer version works over ℤ to avoid casting issues. The omega tactic handles the linear arithmetic over ℤ: from w(1)=1 and w(1)+3w(2)=9, conclude 3w(2)=8 which is impossible in ℤ.",
+    "mathContext": "The n=1 identity: $w(1) \\cdot (2\\cdot1-1) = (1)^2$, i.e., $w(1)=1$. The n=2 identity: $w(1)\\cdot1 + w(2)\\cdot3 = (1+2)^2 = 9$. Substituting $w(1)=1$: $1 + 3w(2) = 9$, so $3w(2) = 8$. But $8 \\not\\equiv 0 \\pmod{3}$, contradiction. The key: the coefficient of $w(2)$ is $2\\cdot2-1 = 3$, and the residue $8/3 \\notin \\mathbb{Z}$.",
+    "significance": "critical",
+    "prerequisites": [
+      "omega tactic for linear arithmetic over ℤ",
+      "Finset.sum_singleton and sum_insert for finite sum expansion",
+      "decide for small Finset membership and equality",
+      "ℤ-valued functions and integer arithmetic"
+    ],
+    "relatedConcepts": [
+      "nicWeight_two (8/3 is the obstruction)",
+      "nicWeight_unique_at_12",
+      "Finset.sum_insert",
+      "omega tactic",
+      "arithmetic-series-oq-00-oq-02"
+    ]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "arithmetic-series-oq-00-oq-02-oq-01",
+    "range": { "startLine": 146, "endLine": 170 },
+    "type": "theorem",
+    "title": "nicWeight_unique_at_12: Rational Weight is Uniquely Forced at k=1,2",
+    "content": "The final theorem proves that any rational weight satisfying the identity for all n must equal nicWeight at k=1 and k=2. The proof structure mirrors no_integer_weight but over ℚ:\n\n1. From n=1 (lhs_n1_rat, rhs_n1_rat): w(1) = 1 = nicWeight(1), proved by linarith (not omega, since ℚ)\n2. From n=2 (lhs_n2_rat, rhs_n2_rat): w(1) + 3·w(2) = 9, giving w(2) = (9-1)/3 = 8/3 = nicWeight(2), by linarith\n3. The conjunction w 1 = nicWeight 1 ∧ w 2 = nicWeight 2 is returned by the theorem.\n\nThe theorem gives partial uniqueness — at every individual k, the identity for n=k and n=k-1 forces w(k)·(2k-1) = k³ (difference of squares), so w(k) = k³/(2k-1) = nicWeight(k). Full uniqueness at every k would follow by induction on the telescoping identity, but the file formalizes only k=1,2 as representatives.",
+    "mathContext": "Uniqueness via telescoping: if $w$ satisfies $\\sum_{k=1}^n w(k)(2k-1) = (\\sum_{k=1}^n k)^2 = S_n^2$ for all $n$, then $w(k)(2k-1) = S_k^2 - S_{k-1}^2 = \\left(\\frac{k(k+1)}{2}\\right)^2 - \\left(\\frac{(k-1)k}{2}\\right)^2 = k^3$. So $w(k) = k^3/(2k-1) = \\text{nicWeight}(k)$ for all $k \\geq 1$. The file proves this only for $k=1,2$ (representative cases) using linarith over $\\mathbb{Q}$.",
+    "significance": "critical",
+    "prerequisites": [
+      "linarith for linear arithmetic over ℚ (not omega — ℚ-valued)",
+      "Finset.sum_singleton and sum_insert (rational versions)",
+      "nicWeight_one and nicWeight_two for the RHS values",
+      "Telescoping identity S_k² - S_{k-1}² = k³"
+    ],
+    "relatedConcepts": [
+      "nicWeight_one",
+      "nicWeight_two",
+      "no_integer_weight",
+      "nicWeight_mul",
+      "arithmetic-series-oq-00-oq-02"
+    ]
+  }
+]
