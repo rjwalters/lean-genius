@@ -85,18 +85,130 @@ theorem root_image_beta {F : Type*} [Field F] [CharZero F] (a : F)
   have key : 4 * (1/2 - a) ^ 2 - 2 * (1/2 - a) - 1 = 4 * a ^ 2 - 2 * a - 1 := by ring
   rw [key, ha]
 
-/-- 4X²-2X-1 is irreducible over ℚ.
+/-!
+## Part I-C: Eisenstein Infrastructure for Irreducibility
 
-    Proof: By the rational root theorem, possible rational roots are ±1, ±1/2, ±1/4.
-    All are non-roots (checked by norm_num). For degree 2 over a field, no roots ↔ irreducible. -/
+Strategy: r = Y²-5Y+5 is Eisenstein at p=5, hence irreducible over ℤ and ℚ (Gauss).
+The linear substitution Y=2X+2 gives r(2X+2) = 4X²-2X-1 = pCos5.
+Irreducibility is preserved under invertible linear substitutions.
+-/
+
+/-- The Eisenstein polynomial: r = Y² - 5Y + 5 over ℤ. -/
+private noncomputable def r_eis_int_cos5 : ℤ[X] := X ^ 2 - C 5 * X + C 5
+
+private theorem r_eis_int_cos5_natDegree : r_eis_int_cos5.natDegree = 2 := by
+  unfold r_eis_int_cos5; compute_degree!
+
+private theorem r_eis_int_cos5_degree : r_eis_int_cos5.degree = 2 := by
+  unfold r_eis_int_cos5; compute_degree!
+
+private theorem r_eis_int_cos5_monic : r_eis_int_cos5.Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, r_eis_int_cos5_natDegree]
+  unfold r_eis_int_cos5
+  simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  norm_num
+
+/-- r = Y²-5Y+5 is irreducible over ℤ by Eisenstein's criterion at p = 5. -/
+private theorem r_eis_int_cos5_irreducible : Irreducible r_eis_int_cos5 := by
+  apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {(5 : ℤ)})
+  · rw [Ideal.span_singleton_prime (show (5 : ℤ) ≠ 0 from by norm_num)]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+  · rw [show r_eis_int_cos5.leadingCoeff = 1 from r_eis_int_cos5_monic, Ideal.mem_span_singleton]
+    norm_num
+  · intro k hk
+    rw [r_eis_int_cos5_degree] at hk
+    have hkn : k < 2 := WithBot.coe_lt_coe.mp hk
+    simp only [Ideal.mem_span_singleton]
+    unfold r_eis_int_cos5
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    interval_cases k <;> norm_num
+  · rw [r_eis_int_cos5_degree]; exact_mod_cast Nat.zero_lt_succ 1
+  · rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    unfold r_eis_int_cos5
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    norm_num
+  · exact r_eis_int_cos5_monic.isPrimitive
+
+/-- The same polynomial over ℚ. -/
+private noncomputable def r_eis_rat_cos5 : ℚ[X] := X ^ 2 - C 5 * X + C 5
+
+/-- r is irreducible over ℚ (Gauss's lemma). -/
+private theorem r_eis_rat_cos5_irreducible : Irreducible r_eis_rat_cos5 := by
+  have hprim := r_eis_int_cos5_monic.isPrimitive
+  have hirr := (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp r_eis_int_cos5_irreducible
+  have heq : r_eis_rat_cos5 = Polynomial.map (Int.castRingHom ℚ) r_eis_int_cos5 := by
+    unfold r_eis_rat_cos5 r_eis_int_cos5
+    simp only [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul,
+      Polynomial.map_C, Polynomial.map_X, Polynomial.map_pow]
+    norm_num
+  rwa [heq]
+
+/-- Key identity: r(2X+2) = pCos5, i.e., the substitution Y=2X+2 transforms r into pCos5. -/
+private theorem r_comp_eq_pCos5 :
+    r_eis_rat_cos5.comp (C 2 * X + C 2) = pCos5 := by
+  apply Polynomial.funext; intro x
+  simp only [Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_C, Polynomial.eval_X, r_eis_rat_cos5]
+  simp only [pCos5, Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one,
+    Polynomial.eval_ofNat]
+  ring
+
+/-- 4X²-2X-1 is irreducible over ℚ. -/
 private theorem pCos5_irreducible : Irreducible (pCos5 : ℚ[X]) := by
-  -- The roots satisfy (4X-1)²=5; since 5 is not a rational square, no rational roots.
-  -- Rational root theorem: possible roots ∈ {±1, ±1/2, ±1/4}. All fail:
-  -- eval 1 = 4-2-1 = 1 ≠ 0, eval -1 = 4+2-1 = 5 ≠ 0, eval (1/2) = 1-1-1 = -1 ≠ 0,
-  -- eval (-1/2) = 1+1-1 = 1 ≠ 0, eval (1/4) = 1/4-1/2-1 = -5/4 ≠ 0,
-  -- eval (-1/4) = 1/4+1/2-1 = -1/4 ≠ 0.
-  -- Degree 2 + no rational roots → irreducible over ℚ.
-  sorry
+  rw [← r_comp_eq_pCos5]
+  rw [irreducible_iff]
+  refine ⟨?_, ?_⟩
+  · intro h
+    have hd := Polynomial.natDegree_eq_zero_of_isUnit h
+    have : (r_eis_rat_cos5.comp (C 2 * X + C 2)).natDegree = 2 := by
+      rw [r_comp_eq_pCos5]; exact pCos5_natDegree
+    omega
+  · intro a b hab
+    set ℓ := (C (2 : ℚ) * X + C 2 : ℚ[X])
+    set ℓ_inv := (C (2⁻¹ : ℚ) * X - C 1 : ℚ[X])
+    have hq_factor : r_eis_rat_cos5 = (a.comp ℓ_inv) * (b.comp ℓ_inv) := by
+      have h1 : ℓ.comp ℓ_inv = X := by
+        ext n
+        simp only [ℓ, ℓ_inv, Polynomial.add_comp,
+          Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
+        simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X, coeff_C]
+        rcases n with _ | _ | _ <;> simp <;> ring
+      calc r_eis_rat_cos5
+          = r_eis_rat_cos5.comp X := r_eis_rat_cos5.comp_X.symm
+        _ = r_eis_rat_cos5.comp (ℓ.comp ℓ_inv) := by rw [h1]
+        _ = (r_eis_rat_cos5.comp ℓ).comp ℓ_inv := (r_eis_rat_cos5.comp_assoc ℓ ℓ_inv).symm
+        _ = (a * b).comp ℓ_inv := by rw [hab]
+        _ = (a.comp ℓ_inv) * (b.comp ℓ_inv) := Polynomial.mul_comp a b ℓ_inv
+    rcases r_eis_rat_cos5_irreducible.isUnit_or_isUnit hq_factor with ha | hb
+    · left
+      rw [Polynomial.isUnit_iff] at ha
+      obtain ⟨c, hc_ne, hc_eq⟩ := ha
+      have h_inv : ℓ_inv.comp ℓ = X := by
+        ext n
+        simp only [ℓ, ℓ_inv, Polynomial.sub_comp,
+          Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
+        simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X, coeff_C]
+        rcases n with _ | _ | _ <;> simp <;> ring
+      have ha_eq : a = (a.comp ℓ_inv).comp ℓ := by
+        conv_lhs => rw [← a.comp_X, ← h_inv]
+        exact (a.comp_assoc ℓ_inv ℓ).symm
+      rw [Polynomial.isUnit_iff]
+      exact ⟨c, hc_ne, by rw [ha_eq, ← hc_eq, Polynomial.C_comp]⟩
+    · right
+      rw [Polynomial.isUnit_iff] at hb
+      obtain ⟨c, hc_ne, hc_eq⟩ := hb
+      have h_inv : ℓ_inv.comp ℓ = X := by
+        ext n
+        simp only [ℓ, ℓ_inv, Polynomial.sub_comp,
+          Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
+        simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X, coeff_C]
+        rcases n with _ | _ | _ <;> simp <;> ring
+      have hb_eq : b = (b.comp ℓ_inv).comp ℓ := by
+        conv_lhs => rw [← b.comp_X, ← h_inv]
+        exact (b.comp_assoc ℓ_inv ℓ).symm
+      rw [Polynomial.isUnit_iff]
+      exact ⟨c, hc_ne, by rw [hb_eq, ← hc_eq, Polynomial.C_comp]⟩
 
 private theorem pCos5_separable : (pCos5 : ℚ[X]).Separable :=
   pCos5_irreducible.separable
