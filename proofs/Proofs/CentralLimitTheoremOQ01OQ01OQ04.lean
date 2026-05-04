@@ -57,7 +57,7 @@ def gaussCharFun (d : ℕ) (Σ : Matrix (Fin d) (Fin d) ℝ) (ξ : Fin d → ℝ
     for all n ≥ 1 and ξ: φ(Aₙᵀ ξ)^n = φ(ξ) · exp(i⟨b_n, ξ⟩). -/
 def IsOperatorStable (d : ℕ) (φ : (Fin d → ℝ) → ℂ) : Prop :=
   ∃ (A : ℕ → Matrix (Fin d) (Fin d) ℝ) (b : ℕ → Fin d → ℝ),
-  ∀ n : ℕ, ∀ ξ : Fin d → ℝ,
+  ∀ n : ℕ, n ≠ 0 → ∀ ξ : Fin d → ℝ,
     (φ (fun i => ∑ j, A n i j * ξ j)) ^ n =
     φ ξ * exp (I * (vecInner d (b n) ξ : ℝ))
 
@@ -175,7 +175,7 @@ theorem gaussian_is_operator_stable (d : ℕ) (Σ : Matrix (Fin d) (Fin d) ℝ) 
     IsOperatorStable d (gaussCharFun d Σ) := by
   -- Witness: A_n = n^{-1/2}·I (scalar scaling), b_n = 0
   refine ⟨fun n => (n : ℝ) ^ (-(1 / 2 : ℝ)) • (1 : Matrix (Fin d) (Fin d) ℝ),
-          fun _ _ => 0, fun n ξ => ?_⟩
+          fun _ _ => 0, fun n hn ξ => ?_⟩
   simp only [vecInner, mul_zero, sum_const_zero, ofReal_zero, mul_zero, exp_zero, mul_one]
   simp only [Matrix.smul_apply, Matrix.one_apply, smul_ite, smul_zero]
   -- Simplify ∑ j, (if i=j then n^{-1/2} else 0) * ξ j = n^{-1/2} * ξ i
@@ -183,9 +183,7 @@ theorem gaussian_is_operator_stable (d : ℕ) (Σ : Matrix (Fin d) (Fin d) ℝ) 
     arg 1; ext ξ; arg 1; ext i
     rw [Finset.sum_ite_eq' Finset.univ i (fun j => (n : ℝ) ^ (-(1 / 2 : ℝ)) * ξ j)]
     simp [Finset.mem_univ]
-  by_cases hn : n = 0
-  · simp [hn, gaussCharFun, quadForm]
-  · rw [show (fun i => (n : ℝ) ^ (-(1 / 2 : ℝ)) * ξ i) =
+  rw [show (fun i => (n : ℝ) ^ (-(1 / 2 : ℝ)) * ξ i) =
             (fun i => ξ i * (n : ℝ) ^ (-(1 / 2 : ℝ))) from by ext i; ring]
     have := (gaussian_has_scalar_exponent d Σ).choose_spec n hn ξ
     simp only [vecInner, mul_zero, sum_const_zero, ofReal_zero, mul_zero, exp_zero, mul_one] at this
