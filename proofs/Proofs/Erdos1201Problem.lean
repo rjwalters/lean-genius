@@ -1470,6 +1470,13 @@ theorem lowerDensity_compl (S : Set ℕ) : lowerDensity Sᶜ = 1 - upperDensity 
       exact le_trans (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (hN N le_rfl)⟩
   exact Filter.liminf_const_sub 1 hbdd_above hcobdd
 
+/-- **Complement duality for upper density**: upperDensity(Sᶜ) = 1 - lowerDensity(S).
+    Symmetric to `lowerDensity_compl` (which gives lowerDensity(Sᶜ) = 1 - upperDensity(S)). -/
+theorem upperDensity_compl_eq (S : Set ℕ) : upperDensity Sᶜ = 1 - lowerDensity S := by
+  have h := lowerDensity_compl Sᶜ
+  simp only [compl_compl] at h
+  linarith
+
 /-- **Strong Erdős Conjecture #1201**: Like ErdosProblem1201 but uses lower density (lim inf)
     instead of upper density (lim sup). For every ε, η > 0 there exists k such that the
     LOWER density of {n | P(n,k) > n^(1-ε)} is at least 1 - η.
