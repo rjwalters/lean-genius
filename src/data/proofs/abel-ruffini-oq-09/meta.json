@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "theoremCount": 21,
+    "theoremCount": 24,
     "assumptions": "2 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis and extension from polynomial to rational case). The Gaussian non-elementarity (gaussian_not_elementary) is now fully proved as a theorem via the iterated Risch operator degree-raising argument.",
     "dateAdded": "2026-05-03",
     "lineCount": 540,
@@ -201,7 +201,7 @@
     "namespace": "AbelRuffiniOQ09",
     "lineCount": 540,
     "axiomCount": 2,
-    "theoremCount": 21,
+    "theoremCount": 24,
     "definitionCount": 3,
     "path": "Proofs/AbelRuffiniOQ09.lean",
     "sorries": 0
