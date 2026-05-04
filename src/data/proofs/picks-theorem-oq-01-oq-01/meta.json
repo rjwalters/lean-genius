@@ -17,34 +17,62 @@
       "Mathlib.Data.List.Basic",
       "Mathlib.Tactic"
     ],
-    "tags": ["number-theory", "geometry", "lattice", "picks-theorem", "triangulation"],
+    "tags": [
+      "number-theory",
+      "geometry",
+      "lattice",
+      "picks-theorem",
+      "triangulation"
+    ],
     "assumptions": [],
-    "sorries": 0
+    "sorries": 0,
+    "proofRepoPath": "Proofs/PicksTheoremOQ01OQ01.lean"
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Lattice Triangle Definitions",
       "description": "LatticeTriangle (three ℤ² vertices), LatticeTriangle.det (signed determinant = twice signed area), LatticeTriangle.IsPrimitive (|det|=1), LatticeTriangle.NonDegenerate (det≠0), splitLeft and splitRight (subdivide a triangle by introducing a midpoint on an edge).",
-      "theorems": ["LatticeTriangle", "LatticeTriangle.det", "LatticeTriangle.IsPrimitive", "LatticeTriangle.NonDegenerate", "splitLeft", "splitRight"]
+      "theorems": [
+        "LatticeTriangle",
+        "LatticeTriangle.det",
+        "LatticeTriangle.IsPrimitive",
+        "LatticeTriangle.NonDegenerate",
+        "splitLeft",
+        "splitRight"
+      ]
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties and Concrete Examples",
       "description": "Primitivity implies non-degeneracy (IsPrimitive.nonDegenerate), verification that the standard unit triangle {(0,0),(1,0),(0,1)} and the other unit triangle {(0,0),(1,0),(1,1)} are primitive (unit_triangle_primitive, second_unit_triangle_primitive), plus concrete examples for triangles with det=2 and det=12.",
-      "theorems": ["IsPrimitive.nonDegenerate", "unit_triangle_primitive", "second_unit_triangle_primitive", "det2_split_correct", "det12_two_splits", "det_add_example"]
+      "theorems": [
+        "IsPrimitive.nonDegenerate",
+        "unit_triangle_primitive",
+        "second_unit_triangle_primitive",
+        "det2_split_correct",
+        "det12_two_splits",
+        "det_add_example"
+      ]
     },
     {
       "id": "det-additivity",
       "title": "Edge-Splitting Det Additivity",
       "description": "When a triangle is split by a midpoint M on edge v1-v2 with gcd(v2-v1)=g: det(left)+det(right) = det(original) (edge_split_det_add), and natAbs(det(left))+natAbs(det(right)) = natAbs(det(original)) when g divides det (edge_split_det_natAbs_sum). This additivity is the key invariant for the inductive step.",
-      "theorems": ["edge_split_det_add", "edge_split_det_natAbs_sum"]
+      "theorems": [
+        "edge_split_det_add",
+        "edge_split_det_natAbs_sum"
+      ]
     },
     {
       "id": "main-theorem",
       "title": "Primitive Triangulation Existence",
       "description": "The main results: exists_reduction (for |det|>1, one edge-split reduces |det| strictly — proved via the Euclidean algorithm on edge GCDs), exists_primitive_triangulation (strong induction on |det|: a triangle with |det|=n has a primitive triangulation of size n), and has_primitive_triangulation (any non-degenerate lattice triangle has a primitive triangulation).",
-      "theorems": ["exists_reduction", "exists_primitive_triangulation", "has_primitive_triangulation"]
+      "theorems": [
+        "exists_reduction",
+        "exists_primitive_triangulation",
+        "has_primitive_triangulation"
+      ]
     }
   ],
   "overview": {
@@ -67,5 +95,13 @@
       "description": "Provides the primitive triangulation ingredient for the constructive proof of Pick's theorem"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+    "lineCount": 215,
+    "theoremCount": 11,
+    "definitionCount": 5,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }

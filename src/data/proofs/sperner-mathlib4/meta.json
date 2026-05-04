@@ -18,22 +18,34 @@
       "Mathlib.Data.Fintype.BigOperators",
       "Mathlib.Data.ZMod.Basic"
     ],
-    "tags": ["combinatorics", "topology", "sperner", "parity", "cell-complex", "mathlib"],
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "parity",
+      "cell-complex",
+      "mathlib"
+    ],
     "assumptions": [],
-    "sorries": 0
+    "sorries": 0,
+    "proofRepoPath": "Proofs/SpernerMathlib4.lean"
   },
   "sections": [
     {
       "id": "fpf-invol",
       "title": "Fixed-Point-Free Involution Parity",
       "description": "The theorem Finset.even_card_of_fpf_invol proves that any fixed-point-free involution on a finite set has even cardinality. The proof uses Finset.sum_involution over ZMod 2, giving a concise algebraic argument. This is proposed for Mathlib as it appears useful for Tucker's lemma, Borsuk-Ulam, and related combinatorial topology results.",
-      "theorems": ["Finset.even_card_of_fpf_invol"]
+      "theorems": [
+        "Finset.even_card_of_fpf_invol"
+      ]
     },
     {
       "id": "door-count",
       "title": "Door Count Parity",
       "description": "The theorem door_count_parity characterizes the parity of the number of 'door positions' for a coloring f : Fin(d+1) → Fin(d+1): it equals 1 if f is surjective (hence bijective by finiteness), and 0 otherwise. The proof uses a pigeonhole argument to find the unique duplicated fiber when f is surjective over Fin(d).",
-      "theorems": ["door_count_parity"]
+      "theorems": [
+        "door_count_parity"
+      ]
     },
     {
       "id": "cell-complex",
@@ -45,7 +57,11 @@
       "id": "sperner-main",
       "title": "Sperner's Lemma",
       "description": "The main results: sperner_parity shows the panchromatic cell count is congruent to the boundary door count modulo 2, via a double-counting argument using interior door pairing and per-cell parity. The theorem sperner derives existence of a panchromatic cell from an odd boundary door count.",
-      "theorems": ["even_card_interiorDoors", "sperner_parity", "sperner"]
+      "theorems": [
+        "even_card_interiorDoors",
+        "sperner_parity",
+        "sperner"
+      ]
     }
   ],
   "overview": {
@@ -78,5 +94,13 @@
       "description": "n-dimensional Sperner via Freudenthal triangulation"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/SpernerMathlib4.lean",
+    "lineCount": 732,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }

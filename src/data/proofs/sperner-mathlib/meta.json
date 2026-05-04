@@ -12,35 +12,62 @@
     "definitionCount": 3,
     "lineCount": 897,
     "leanFile": "proofs/Proofs/SpernerMathlib.lean",
-    "imports": ["Mathlib"],
-    "tags": ["combinatorics", "topology", "sperner", "parity", "cell-complex"],
+    "imports": [
+      "Mathlib"
+    ],
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "parity",
+      "cell-complex"
+    ],
     "assumptions": [],
-    "sorries": 0
+    "sorries": 0,
+    "proofRepoPath": "Proofs/SpernerMathlib.lean"
   },
   "sections": [
     {
       "id": "fpf-invol",
       "title": "Fixed-Point-Free Involution Parity",
       "description": "A fixed-point-free involution on a finite set has even cardinality, since every element pairs with its distinct image. This foundational lemma applies beyond Sperner: Tucker's lemma, Borsuk-Ulam, and other combinatorial topology results rely on the same parity mechanism.",
-      "theorems": ["even_card_fpf_invol"]
+      "theorems": [
+        "even_card_fpf_invol"
+      ]
     },
     {
       "id": "door-count",
       "title": "Door Count Parity",
       "description": "A 'door' at position k of a cell is a face that, if removed, still covers all remaining colors. The key lemma `door_count_parity` shows the number of door positions has the same parity as the surjectivity indicator of the coloring. The proof uses a pigeonhole argument (`surjection_unique_dup_fiber`) to identify the unique duplicated fiber when the coloring is surjective.",
-      "theorems": ["exists_of_sum_eq_one", "door_count_parity"]
+      "theorems": [
+        "exists_of_sum_eq_one",
+        "door_count_parity"
+      ]
     },
     {
       "id": "interior-pairing",
       "title": "Interior Door Pairing",
       "description": "The adjacency relation pairs interior doors: each interior door of cell s at face k corresponds to a door of the adjacent cell s' at face k'. The adjacency involution (`isDoor_iff_of_adj`) ensures these pairs are distinct, so the total interior door count is even.",
-      "theorems": ["isDoor_of_shared_face", "isDoor_iff_of_adj", "even_card_interior_doors"]
+      "theorems": [
+        "isDoor_of_shared_face",
+        "isDoor_iff_of_adj",
+        "even_card_interior_doors"
+      ]
     },
     {
       "id": "sperner-main",
       "title": "Sperner's Lemma",
       "description": "Summing door counts across all cells and using the interior-door pairing, the panchromatic cell count and the boundary door count are congruent modulo 2. If the boundary doors are odd, at least one panchromatic cell exists. With a Sperner coloring (boundary vertices labeled by the face they miss), every boundary door lies on the last face, and the boundary door count is odd.",
-      "theorems": ["per_cell_door_parity", "sum_mod_congr", "card_doors_eq_sum", "doors_partition", "sperner_parity", "exists_panchromatic", "boundary_doors_on_last_face", "boundary_doors_odd_of_last_face"]
+      "theorems": [
+        "per_cell_door_parity",
+        "sum_mod_congr",
+        "card_doors_eq_sum",
+        "doors_partition",
+        "sperner_parity",
+        "exists_panchromatic",
+        "boundary_doors_on_last_face",
+        "boundary_doors_odd_of_last_face"
+      ]
     },
     {
       "id": "interval-example",
@@ -74,5 +101,13 @@
       "description": "Sperner's lemma instantiated for triangulation data structures"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/SpernerMathlib.lean",
+    "lineCount": 897,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }
