@@ -1,0 +1,171 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+  "title": "Weighted Power Mean Chain: WHM ≤ WGM ≤ WAM ≤ WQM",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+  "description": "The unweighted power mean chain HM ≤ GM ≤ AM ≤ QM generalizes fully to weighted means. For any positive reals a, b and weights w₁, w₂ > 0 with w₁ + w₂ = 1, the weighted harmonic, geometric, arithmetic, and quadratic means satisfy WHM ≤ WGM ≤ WAM ≤ WQM.",
+  "meta": {
+    "author": "Formal verification",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean",
+    "parentProofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "tags": [
+      "inequalities",
+      "power-means",
+      "weighted",
+      "AM-GM",
+      "Jensen",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 176,
+    "assumptions": "No axioms or sorries. All results proved from first principles using Mathlib's weighted AM-GM.",
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.geom_mean_le_arith_mean2_weighted",
+        "description": "Weighted 2-variable AM-GM: a^w₁ · b^w₂ ≤ w₁·a + w₂·b",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "inv_le_comm₀",
+        "description": "Inversion reverses order for positives: x⁻¹ ≤ y ↔ y⁻¹ ≤ x",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proves the weighted power mean chain WHM ≤ WGM ≤ WAM ≤ WQM for all weights w₁ + w₂ = 1",
+      "WGM ≤ WAM: direct from Mathlib's Real.geom_mean_le_arith_mean2_weighted",
+      "WAM ≤ WQM: Jensen's inequality via algebraic identity w₁·a² + w₂·b² - (w₁·a + w₂·b)² = w₁·w₂·(a-b)² ≥ 0",
+      "WHM ≤ WGM: applies WGM ≤ WAM to (1/a, 1/b) then uses inv_le_comm₀ (inversion reverses order)",
+      "Shows unweighted chain HM ≤ GM ≤ AM ≤ QM is the special case w₁ = w₂ = 1/2"
+    ],
+    "theoremCount": 11,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "The power mean $M_p(a,b) = ((a^p + b^p)/2)^{1/p}$ and its weighted generalization $M_p^w(a,b) = (w_1 a^p + w_2 b^p)^{1/p}$ (for $w_1 + w_2 = 1$, $w_i > 0$) are central objects in classical analysis. Hardy, Littlewood, and Pólya proved that $M_p^w$ is monotone increasing in $p$ in their landmark 1934 treatise *Inequalities*. The four classical means HM, GM, AM, QM correspond to $p = -1, 0, 1, 2$ respectively (with GM as the $p \\to 0$ limit). Weighted versions arise naturally in probability (expectations) and information theory (Rényi entropy).\n\nThe weighted AM-GM inequality $a^{w_1} b^{w_2} \\le w_1 a + w_2 b$ is one of the most applied inequalities in mathematics, with proofs via Jensen's inequality (log-concavity), Young's inequality, and algebraic identities. Mathlib formalizes it as `Real.geom_mean_le_arith_mean2_weighted`.",
+    "problemStatement": "Does the power mean chain HM ≤ GM ≤ AM ≤ QM generalize to weighted means WHM ≤ WGM ≤ WAM ≤ WQM for weights w₁, w₂ > 0 with w₁ + w₂ = 1?",
+    "text": "For positive reals a, b and weights w₁ + w₂ = 1, the weighted harmonic, geometric, arithmetic, and quadratic means satisfy WHM ≤ WGM ≤ WAM ≤ WQM. The parent file proved the unweighted case (w₁ = w₂ = 1/2). This file proves the full weighted generalization.",
+    "proofStrategy": "Three-step chain: (1) WGM ≤ WAM is Mathlib's geom_mean_le_arith_mean2_weighted. (2) WAM ≤ WQM follows from Jensen: the algebraic identity w₁a² + w₂b² - (w₁a + w₂b)² = w₁w₂(a-b)² ≥ 0 gives (WAM)² ≤ (WQM)², and sqrt monotonicity closes. (3) WHM ≤ WGM applies WGM ≤ WAM to (1/a, 1/b) to get WGM(a,b)⁻¹ ≤ WHM(a,b)⁻¹, then uses inversion-antitone (inv_le_comm₀) to flip.",
+    "keyInsights": [
+      "WGM ≤ WAM: one-liner via Mathlib's Real.geom_mean_le_arith_mean2_weighted, which handles all the real-rpow bookkeeping",
+      "WAM ≤ WQM: Jensen via the identity w₁a² + w₂b² - (w₁a + w₂b)² = w₁w₂(a-b)². Proved by substituting w₂ = 1 - w₁ and calling ring.",
+      "WHM ≤ WGM: Applying WGM ≤ WAM to reciprocals (1/a, 1/b) gives WGM⁻¹ ≤ WHM⁻¹. Inversion reverses the inequality: WHM ≤ WGM. Key: inv_le_comm₀ encodes x⁻¹ ≤ y ↔ y⁻¹ ≤ x for positives.",
+      "The substitution w₂ = 1 - w₁ (from w₁ + w₂ = 1) enables ring to verify the Jensen identity algebraically.",
+      "Specialization to w₁ = w₂ = 1/2 recovers the unweighted chain as a pure corollary."
+    ],
+    "prerequisites": [
+      "Basic real analysis",
+      "Lean 4 rpow (Real.rpow) for irrational exponents",
+      "Mathlib: Analysis.MeanInequalities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Weighted Mean Definitions",
+      "summary": "Four noncomputable defs: WHM, WGM, WAM, WQM",
+      "startLine": 40,
+      "endLine": 55,
+      "mathContext": "$\\text{WHM}(a,b) = (w_1/a + w_2/b)^{-1}$, $\\text{WGM}(a,b) = a^{w_1} b^{w_2}$, $\\text{WAM}(a,b) = w_1 a + w_2 b$, $\\text{WQM}(a,b) = \\sqrt{w_1 a^2 + w_2 b^2}$."
+    },
+    {
+      "id": "wgm-le-wam",
+      "title": "WGM ≤ WAM (Weighted AM-GM)",
+      "summary": "One-liner from Mathlib's Real.geom_mean_le_arith_mean2_weighted",
+      "startLine": 76,
+      "endLine": 84,
+      "mathContext": "$a^{w_1} b^{w_2} \\le w_1 a + w_2 b$ for $a,b \\ge 0$, $w_1,w_2 \\ge 0$, $w_1+w_2=1$."
+    },
+    {
+      "id": "wam-le-wqm",
+      "title": "WAM ≤ WQM (Jensen for f(x) = x²)",
+      "summary": "Jensen identity: w₁a² + w₂b² - (w₁a + w₂b)² = w₁w₂(a-b)² ≥ 0",
+      "startLine": 87,
+      "endLine": 110,
+      "mathContext": "$w_1 a + w_2 b \\le \\sqrt{w_1 a^2 + w_2 b^2}$. Key: $(w_1 a + w_2 b)^2 \\le w_1 a^2 + w_2 b^2$ with gap $w_1 w_2 (a-b)^2 \\ge 0$."
+    },
+    {
+      "id": "whm-le-wgm",
+      "title": "WHM ≤ WGM (Reciprocal + Inversion)",
+      "summary": "Apply WGM ≤ WAM to (1/a, 1/b); use inv_le_comm₀ to flip",
+      "startLine": 113,
+      "endLine": 145,
+      "mathContext": "$(w_1/a + w_2/b)^{-1} \\le a^{w_1} b^{w_2}$. Apply AM-GM to $(1/a, 1/b)$: $(1/a)^{w_1}(1/b)^{w_2} \\le w_1/a + w_2/b$, i.e., $\\text{WGM}^{-1} \\le \\text{WHM}^{-1}$. Inversion reverses: $\\text{WHM} \\le \\text{WGM}$."
+    },
+    {
+      "id": "main-chain",
+      "title": "Main Chain Theorem",
+      "summary": "WHM ≤ WGM ≤ WAM ≤ WQM combined",
+      "startLine": 148,
+      "endLine": 156,
+      "mathContext": "Full weighted power mean chain for $a,b > 0$ and $w_1, w_2 > 0$ with $w_1 + w_2 = 1$."
+    },
+    {
+      "id": "specialization",
+      "title": "Unweighted Chain as Special Case",
+      "summary": "w₁ = w₂ = 1/2 recovers HM ≤ GM ≤ AM ≤ QM",
+      "startLine": 159,
+      "endLine": 176,
+      "mathContext": "At $w_1 = w_2 = 1/2$: $\\text{WHM} = 2ab/(a+b)$, $\\text{WGM} = \\sqrt{ab}$, $\\text{WAM} = (a+b)/2$, $\\text{WQM} = \\sqrt{(a^2+b^2)/2}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The weighted power mean chain WHM ≤ WGM ≤ WAM ≤ WQM holds for all positive weights w₁ + w₂ = 1. The key tool is Mathlib's Real.geom_mean_le_arith_mean2_weighted for the central WGM ≤ WAM step. The WHM ≤ WGM step via reciprocal inversion (inv_le_comm₀) is the most interesting Lean-specific technique.",
+    "implications": "The weighted generalization subsumes the unweighted chain as the special case w₁ = w₂ = 1/2. It also connects to probability theory: if a, b are outcomes with probabilities w₁, w₂, then WAM is the expected value E[X], WGM is exp(E[log X]), and WQM is √(E[X²]). The chain becomes E[X]² ≤ E[X²] (Cauchy-Schwarz / Jensen) as a special case.",
+    "openQuestions": [
+      "Can the monotonicity M_r^w ≤ M_s^w for all r ≤ s (not just -1, 0, 1, 2) be formalized in Lean? This requires Jensen's inequality for general convex functions.",
+      "Does the equality case WHM = WGM = WAM = WQM ↔ a = b extend to the weighted setting?",
+      "Can the n-variable weighted power mean chain be proved using Finset.sum and Real.geom_mean_le_arith_mean_weighted?"
+    ]
+  },
+  "references": [
+    {
+      "authors": ["G. H. Hardy", "J. E. Littlewood", "G. Pólya"],
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Seminal reference establishing the theory of power means including the monotonicity M_r^w ≤ M_s^w for r ≤ s."
+    },
+    {
+      "authors": ["A.-L. Cauchy"],
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "École Polytechnique",
+      "note": "First systematic algebraic treatment of the AM-GM inequality."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Parent file with unweighted HM ≤ GM ≤ AM ≤ QM chain — this file proves the weighted generalization"
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "OQ02: showed ring + positivity automation for the same unweighted chain"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Real"],
+    "namespace": "WeightedPowerMeanChain",
+    "lineCount": 176,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 4,
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
