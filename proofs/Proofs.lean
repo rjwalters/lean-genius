@@ -128,6 +128,7 @@ import Proofs.BallotProblemOQ01OQ01
 import Proofs.BallotProblemOQ01OQ02
 import Proofs.BallotProblemOQ01OQ02OQ01
 import Proofs.BallotProblemOQ01OQ02OQ01Aristotle
+import Proofs.BallotProblemOQ01OQ02OQ01OQ01
 import Proofs.BallotProblemOQ01OQ02OQ02
 import Proofs.BallotProblemOQ01OQ02OQ04
 import Proofs.BallotProblemOQ01OQ04
