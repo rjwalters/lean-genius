@@ -29,7 +29,7 @@
       "startLine": 64,
       "endLine": 98
     },
-    "type": "proof",
+    "type": "theorem",
     "title": "θ(n) ≤ ψ(n) via Sub-Sum Monotonicity",
     "content": "The proof has two steps. First, `chebyshevThetaOQ_eq_sumVonMangoldt` rewrites `θ(n) = ∑ p ∈ primes ≤ n, log p` as `∑ p ∈ primes ≤ n, Λ(p)` using `vonMangoldt_apply_prime` via `Finset.sum_congr`. Second, `theta_le_psi_via_vonMangoldt` applies `Finset.sum_le_sum_of_subset_of_nonneg`: the prime filter is a subset of `range (n+1)`, and each `Λ(k) ≥ 0`, so the sub-sum ≤ full sum.",
     "mathContext": "The key algebraic fact: $\\{p \\leq n : p \\text{ prime}\\} \\subseteq \\{1, 2, \\ldots, n\\}$ as index sets, and for each prime $p$, $\\Lambda(p) = \\log p \\geq 0$. The Mathlib lemma `Finset.sum_le_sum_of_subset_of_nonneg` handles this cleanly: $\\sum_{p \\in S, \\Lambda \\geq 0} \\Lambda(p) \\leq \\sum_{k \\in T} \\Lambda(k)$ when $S \\subseteq T$. The difference $\\psi(n) - \\theta(n) = \\sum_{p^j \\leq n, j \\geq 2} \\log p = O(\\sqrt{n} \\log n)$.",
@@ -75,7 +75,7 @@
       "startLine": 125,
       "endLine": 155
     },
-    "type": "proof",
+    "type": "theorem",
     "title": "Bertrand Lower Bound: ψ(2n) − ψ(n) ≥ log(n+1)",
     "content": "`chebyshevPsi_doubling_lower` proves the lower bound directly from Bertrand's postulate. The proof: `Nat.exists_prime_lt_and_le_two_mul_add_one` gives a prime `p` with `n < p ≤ 2n`. Then `p ∈ range(2n+1)` but `p ∉ range(n+1)` (since `p > n`). The contribution `Λ(p) = log p ≥ log(n+1)` (since `p > n`) appears in `ψ(2n)` but not `ψ(n)`. The `Finset.single_le_sum` lemma: if `k ∈ S` and all terms are nonneg, then `f(k) ≤ ∑_{i ∈ S} f(i)`. This gives `ψ(2n) - ψ(n) ≥ Λ(p) ≥ log(n+1)`.",
     "mathContext": "Bertrand's postulate (1845, proved by Chebyshev 1852): $\\forall n \\geq 1$, $\\exists$ prime $p$ with $n < p \\leq 2n$. In Mathlib: `Nat.exists_prime_lt_and_le_two_mul_add_one`. The Lean proof chains: $\\log(n+1) \\leq \\log p = \\Lambda(p) \\leq \\sum_{k \\in (n,2n]} \\Lambda(k) = \\psi(2n) - \\psi(n)$. The last step uses `Finset.sum_sdiff` to decompose `range(2n+1) = range(n+1) ∪ (range(2n+1) \\ range(n+1))`, then `Finset.single_le_sum` to isolate the prime `p` term.",
@@ -98,7 +98,7 @@
       "startLine": 157,
       "endLine": 185
     },
-    "type": "context",
+    "type": "concept",
     "title": "PNT Equivalence and Summary Theorem",
     "content": "Two axioms formalize the deep analytic results: `chebyshevPsi_asymptotic` states `ψ(n)/n → 1` (the PNT for ψ, proved by Hadamard and de la Vallée Poussin in 1896 via the non-vanishing of ζ(1+it)). `pnt_equivalence` states `ψ(n)/n → 1 ↔ π(n)/(n/log n) → 1` (the two classical forms of PNT are equivalent via Abel summation). The summary theorem `chebyshevPsi_bounds` packages `θ(n) ≤ ψ(n)` and the Bertrand lower bound `log(n/2+1) ≤ ψ(n)` for `n ≥ 1`.",
     "mathContext": "The Prime Number Theorem states $\\pi(n) \\sim n/\\log n$ or equivalently $\\psi(n) \\sim n$ — both say primes have density $1/\\log n$ near $n$. The $\\psi$-form is analytically cleaner: the Riemann explicit formula $\\psi(x) = x - \\sum_\\rho x^\\rho/\\rho - \\log(2\\pi) + \\ldots$ directly encodes the connection to zeros of $\\zeta$. The RH is equivalent to $|\\psi(n) - n| = O(\\sqrt{n} \\log^2 n)$, a dramatic refinement of PNT.",

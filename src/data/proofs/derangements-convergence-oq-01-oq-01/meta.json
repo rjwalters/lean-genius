@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports and Problem Setup",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Imports DerangementsConvergence (parent, providing derangements_convergence_rate) and Mathlib.Analysis.SpecialFunctions.ExpDeriv. Module docstring states the OQ-01 question: prove D(n) = round(n!/e) and give the three-part proof outline.",
+      "mathContext": "The key imported lemma: $|D(n)/n! - e^{-1}| \\leq 1/(n+1)!$ from DerangementsConvergence. This file scales it by $n!$ to get the absolute bound $|D(n) - n!/e| \\leq 1/(n+1)$."
+    },
+    {
       "id": "scaled-rate-bound",
       "title": "§1: Scaled Rate Bound",
       "startLine": 29,

@@ -42,7 +42,8 @@
       "The key identity vonMangoldt_apply_prime (\u039b(p) = log p for primes) allows rewriting \u03b8 as a sum of vonMangoldt values over primes, making the \u03b8 \u2264 \u03c8 comparison immediate via Finset.sum_le_sum_of_subset_of_nonneg",
       "Bertrand's postulate gives a concrete witness for the gap \u03c8(2n) \u2212 \u03c8(n): the Bertrand prime p falls in range(2n+1) \\ range(n+1), contributing \u039b(p) = log p \u2265 log(n+1) to the difference",
       "The difference \u03c8(n) \u2212 \u03b8(n) consists of contributions from prime powers p^j with j \u2265 2, each contributing log p. The total O(\u221an\u00b7log n) is asymptotically negligible compared to \u03c8(n) ~ n",
-      "The equivalence \u03c8(n) ~ n \u2194 \u03c0(n) ~ n/log n (the two forms of PNT) is a classical result via Abel summation / Mertens' theorem; axiomatizing it captures the statement without the analytic machinery"
+      "The equivalence \u03c8(n) ~ n \u2194 \u03c0(n) ~ n/log n (the two forms of PNT) is a classical result via Abel summation / Mertens' theorem; axiomatizing it captures the statement without the analytic machinery",
+      "The central binomial coefficient C(2n,n) \u2264 4^n (i.e., log C(2n,n) \u2264 2n\u00b7log 2) is the key combinatorial bound for the upper estimate: every prime power p^k in (n,2n] divides C(2n,n), so the product of such prime powers is at most C(2n,n) \u2264 4^n, giving \u03c8(2n) \u2212 \u03c8(n) \u2264 log(4^n) = 2n\u00b7log 2"
     ],
     "prerequisites": [
       "Number theory (von Mangoldt function, prime powers, primorial)",
