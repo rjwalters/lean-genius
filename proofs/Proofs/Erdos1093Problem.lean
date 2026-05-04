@@ -128,10 +128,22 @@ The conjecture asks whether there are only finitely many with deficiency > 1.
 theorem deficiency_44_8 : deficiency 44 8 = 2 := by native_decide
 /-- C(74,10): deficiency 2. -/
 theorem deficiency_74_10 : deficiency 74 10 = 2 := by native_decide
+/-- C(174,12): deficiency 2. -/
+theorem deficiency_174_12 : deficiency 174 12 = 2 := by native_decide
+/-- C(239,14): deficiency 2. -/
+theorem deficiency_239_14 : deficiency 239 14 = 2 := by native_decide
 /-- C(46,10): deficiency 3. -/
 theorem deficiency_46_10 : deficiency 46 10 = 3 := by native_decide
 /-- C(47,10): deficiency 3. -/
 theorem deficiency_47_10 : deficiency 47 10 = 3 := by native_decide
+/-- C(241,16): deficiency 3. -/
+theorem deficiency_241_16 : deficiency 241 16 = 3 := by native_decide
+/-- C(1119,27): deficiency 3. -/
+theorem deficiency_1119_27 : deficiency 1119 27 = 3 := by native_decide
+/-- C(2105,25): deficiency 3. -/
+theorem deficiency_2105_25 : deficiency 2105 25 = 3 := by native_decide
+/-- C(6459,33): deficiency 3. -/
+theorem deficiency_6459_33 : deficiency 6459 33 = 3 := by native_decide
 /-- C(47,11): deficiency 4 — highest known deficiency for small parameters. -/
 theorem deficiency_47_11 : deficiency 47 11 = 4 := by native_decide
 
@@ -158,10 +170,56 @@ theorem deficiency_le (n k : ℕ) : deficiency n k ≤ k := by
 /-- 1 is k-smooth for any k (vacuously: 1 has no prime factors). -/
 theorem isKSmooth_one (k : ℕ) : IsKSmooth k 1 := by
   intro p hp hd
-  exact absurd (Nat.le_of_dvd (by omega) hd) (by omega)
+  have h2 := hp.two_le
+  have h1 := Nat.le_of_dvd one_pos hd
+  omega
 
 /-- 0 is not k-smooth for any k (every prime divides 0). -/
 theorem not_isKSmooth_zero (k : ℕ) : ¬IsKSmooth k 0 := by
   intro h
   obtain ⟨p, hpk, hp⟩ := Nat.exists_infinite_primes (k + 1)
   exact absurd (h p hp (dvd_zero p)) (by omega)
+
+/-- IsKSmooth is monotone in k: a k-smooth number is also j-smooth for j ≥ k. -/
+theorem isKSmooth_mono {k j : ℕ} (hkj : k ≤ j) {m : ℕ} (hm : IsKSmooth k m) :
+    IsKSmooth j m :=
+  fun p hp hd => (hm p hp hd).trans hkj
+
+/-- A prime p is k-smooth if and only if p ≤ k. -/
+theorem isKSmooth_prime_iff {k p : ℕ} (hp : p.Prime) : IsKSmooth k p ↔ p ≤ k := by
+  constructor
+  · intro h; exact h p hp dvd_rfl
+  · intro hpk q hq hqp
+    rcases hp.eq_one_or_self_of_dvd q hqp with h1 | h2
+    · exact absurd h1 hq.one_lt.ne'
+    · rw [h2]; exact hpk
+
+/-- A product of k-smooth numbers is k-smooth. -/
+theorem isKSmooth_mul {k a b : ℕ} (ha : IsKSmooth k a) (hb : IsKSmooth k b) :
+    IsKSmooth k (a * b) :=
+  fun p hp hd => (hp.dvd_mul.mp hd).elim (ha p hp) (hb p hp)
+
+/-- A power of a k-smooth number is k-smooth. -/
+theorem isKSmooth_pow {k a : ℕ} (ha : IsKSmooth k a) (n : ℕ) : IsKSmooth k (a ^ n) :=
+  fun p hp hd => ha p hp (hp.dvd_of_dvd_pow hd)
+
+/-- A divisor of a k-smooth number is k-smooth. -/
+theorem isKSmooth_of_dvd {k a b : ℕ} (hab : a ∣ b) (hb : IsKSmooth k b) : IsKSmooth k a :=
+  fun p hp hd => hb p hp (hd.trans hab)
+
+/-- k-smoothness is characterized by the prime factorization (for positive m). -/
+theorem isKSmooth_iff_primeFactors {k m : ℕ} (hm : m ≠ 0) :
+    IsKSmooth k m ↔ ∀ p ∈ m.primeFactors, p ≤ k := by
+  constructor
+  · intro h p hmem
+    obtain ⟨hp, hd, _⟩ := Nat.mem_primeFactors.mp hmem
+    exact h p hp hd
+  · intro h p hp hd
+    exact h p (Nat.mem_primeFactors.mpr ⟨hp, hd, hm⟩)
+
+/-- If n - i is k-smooth for some i < k, then the deficiency is positive. -/
+theorem deficiency_pos_of_smooth {n k : ℕ} {i : ℕ} (hi : i < k)
+    (hsmooth : IsKSmooth k (n - i)) : 0 < deficiency n k := by
+  unfold deficiency
+  apply Finset.card_pos.mpr
+  exact ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hi, hsmooth⟩⟩
