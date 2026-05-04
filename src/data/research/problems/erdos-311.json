@@ -29,17 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate (PNT, Tang result, open conjecture), 1T proved, 0S.",
+    "progressSummary": "COMPLETE: 3 axioms formally declared (PNT lower bound, Tang upper bound, open conjecture), 3 theorems proved. 0 sorries. Fixed meta.json axiomCount 0→3 consistency issue.",
     "builtItems": [
       "Concrete def delta using Finset.min' over deviations (proofs/Proofs/Erdos311Problem.lean)",
       "Proved theorem delta_pos from the concrete definition",
-      "Helper defs: validCandidates, deviations, empty_mem_validCandidates, deviations_nonempty, deviations_pos"
+      "Helper defs: validCandidates, deviations, empty_mem_validCandidates, deviations_nonempty, deviations_pos",
+      "3 formal axiom declarations in Erdos311Problem.lean (lines 92-114)"
     ],
     "insights": [
       "delta can be defined concretely as Finset.min' over deviations {1 - unitFracSum(A)} for valid A ⊆ {1,...,N}",
       "delta_pos follows from: all deviations are positive (unitFracSum A < 1) and Finset.min' returns an element of the set",
       "Remaining 3 axioms (delta_lower_bound, tang_upper_bound, erdos_311_conjecture) are genuinely deep: PNT-based, research results, and the open conjecture",
-      "3 remaining axioms are all deep/open: no further elimination possible"
+      "3 remaining axioms are all deep/open: no further elimination possible",
+      "Fixed inconsistency: meta.json showed axiomCount:0 with status:axiomatized; now correctly shows 3 axioms",
+      "delta_lower_bound_pnt: ∀ε>0, ∃N₀, ∀N≥N₀, exp(-(1+ε)N) ≤ delta N",
+      "tang_upper_bound: ∃c>0, ∀N≥3, delta N ≤ exp(-cN/(log N · log log N)³)",
+      "erdos_311_conjecture (Tendsto form): ∃c∈(0,1), log(delta N)/N → -c at Filter.atTop"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
