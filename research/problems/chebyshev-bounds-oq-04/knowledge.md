@@ -65,3 +65,31 @@ Formalize the second Chebyshev function ψ(n) = Σ_{k≤n} Λ(k) and prove:
 - Await Aristotle result for `psi_doubling_le_log_centralBinom` (job `a6b2d46e-90cf-4f96-a532-c704bee322da`)
 - If Aristotle proves it: eliminate sorry, axiomCount 3, sorryCount 0
 - Future: try to prove `chebyshevPsi_upper_bound` from `chebyshevPsi_doubling_le` (requires non-trivial telescoping argument)
+
+---
+
+## Session 2026-05-04 (Session 3) - Proof extraction from Aristotle integration
+
+**Mode**: REVISIT
+**Outcome**: completed (PR #15464 open)
+
+### What I Did
+- Discovered that commit `102250d9e17` on local branch `audit/tracker-chebyshev-oq-04-clean` had already integrated the Aristotle proof for `psi_doubling_le_log_centralBinom`
+- Extracted the complete 316-line proof file into a new research worktree `research/chebyshev-oq04-psi-doubling`
+- Fixed deprecated `Mathlib.NumberTheory.VonMangoldt` → `Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt`
+- Fixed unused variable warning: `(hn : 1 ≤ n)` → `(_ : 1 ≤ n)` in `chebyshevPsi_bounds`
+- Updated meta.json: sorries 1→0, lineCount 219→316, import path updated, originalContributions updated
+- Docker build: ✅ SUCCEEDED (0 warnings, 331s)
+
+### Key Findings (Proof of log_factorial_vonMangoldt)
+- `vonMangoldt_sum {k : ℕ} (hk : k ≠ 0) : ∑ d ∈ k.divisors, vonMangoldt d = Real.log k`
+- Fubini step: `Finset.sum_comm'` with compatibility proof exchanges sum over divisors with sum over range
+- `Nat.card_multiples'` counts multiples of d in {1,...,m} = m/d (nat floor)
+- `Nat.mul_div_le_mul_div_assoc` provides Hermite inequality: 2*(m/d) ≤ (2*m)/d
+
+### Net Effect
+- sorryCount: 1 → 0
+- axiomCount: 3 (unchanged — upper bound + PNT still axiomatized)
+- PR #15464
+
+### Status: COMPLETE

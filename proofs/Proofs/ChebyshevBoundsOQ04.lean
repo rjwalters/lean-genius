@@ -14,11 +14,12 @@
   extending the Chebyshev theta function analysis in ChebyshevBounds.lean.
 -/
 
-import Mathlib.NumberTheory.VonMangoldt
+import Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt
 import Mathlib.NumberTheory.Primorial
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.NumberTheory.Bertrand
 import Mathlib.Data.Nat.Choose.Central
+import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
@@ -105,20 +106,116 @@ log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋ (from Σ_{d|k} Λ(d) = log k by Fubini) 
 log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋ - 2⌊n/d⌋) ≥ Σ_{d∈(n,2n]} Λ(d) = ψ(2n)-ψ(n),
 we get ψ(2n) - ψ(n) ≤ log(C(2n,n)) ≤ 2n·log 2. -/
 
-/-- Key step: ψ(2n) - ψ(n) ≤ log(C(2n,n)).
+/-- Fubini step: log(m!) = Σ_{d ∈ range(m+1)} Λ(d) · ⌊m/d⌋.
+    Proof: log(m!) = Σ_k log k = Σ_k Σ_{d|k} Λ(d) = Σ_d Λ(d) · #{k ≤ m : d|k} = Σ_d Λ(d)·⌊m/d⌋. -/
+private lemma log_factorial_vonMangoldt (m : ℕ) :
+    Real.log (m.factorial : ℝ) =
+    ∑ d ∈ Finset.range (m + 1), vonMangoldt d * (m / d : ℕ) := by
+  have hsum_log : ∀ (n : ℕ), Real.log (n.factorial : ℝ) =
+      ∑ k ∈ Finset.range (n + 1), Real.log (k : ℝ) := by
+    intro n
+    induction n with
+    | zero => simp
+    | succ n ih =>
+      rw [Nat.factorial_succ, Nat.cast_mul,
+          Real.log_mul (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero n))
+            (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero n)),
+          Finset.sum_range_succ]
+      linarith
+  rw [hsum_log m]
+  simp_rw [← vonMangoldt_sum]
+  have hcompat : ∀ (k d : ℕ), k ∈ Finset.range (m + 1) ∧ d ∈ k.divisors ↔
+      k ∈ (Finset.range (m + 1)).filter (fun k' => k' ≠ 0 ∧ d ∣ k') ∧
+      d ∈ Finset.range (m + 1) := by
+    intro k d
+    simp only [Finset.mem_range, Nat.mem_divisors, Finset.mem_filter]
+    constructor
+    · rintro ⟨hk, hdvd, hkne⟩
+      exact ⟨⟨hk, hkne, hdvd⟩, (Nat.le_of_dvd (by omega) hdvd).trans_lt hk⟩
+    · rintro ⟨⟨hk, hkne, hdvd⟩, _⟩
+      exact ⟨hk, hdvd, hkne⟩
+  rw [Finset.sum_comm' hcompat]
+  apply Finset.sum_congr rfl
+  intro d _
+  rw [Finset.sum_const, Nat.card_multiples']
+  simp [nsmul_eq_mul, mul_comm]
 
-    Proof sketch:
-    (1) log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋  [from Σ_{d|k} Λ(d) = log k by Fubini over k=1..n]
-    (2) log(C(2n,n)) = log(2n)! - 2·log(n!) = Σ_d Λ(d)·(⌊2n/d⌋ - 2·⌊n/d⌋)
-    (3) Term-by-term: for d ∈ (n,2n], ⌊2n/d⌋=1, ⌊n/d⌋=0, coeff = 1 = ψ-coeff.
-        For d ≤ n, coeff ⌊2n/d⌋ - 2⌊n/d⌋ ≥ 0 ≥ 0 = ψ-coeff. Sum ≥ ψ(2n)-ψ(n). -/
+/-- Key step: ψ(2n) - ψ(n) ≤ log(C(2n,n)).
+    Proof: log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋ - 2⌊n/d⌋). For d ∈ (n,2n]: coeff=1.
+    For d ≤ n: coeff ≥ 0 by Hermite (⌊2x⌋ ≥ 2⌊x⌋). Sum ≥ Σ_{(n,2n]} Λ(d) = ψ(2n)-ψ(n). -/
 private theorem psi_doubling_le_log_centralBinom (n : ℕ) :
     chebyshevPsi (2 * n) - chebyshevPsi n ≤ Real.log (Nat.centralBinom n : ℝ) := by
-  -- The proof uses the vonMangoldt sum identity and a term-by-term comparison.
-  -- vonMangoldt_sum: Σ_{d ∈ n.divisors} Λ d = Real.log n  (Mathlib)
-  -- From this (by Fubini): log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋
-  -- Then: log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋ - 2⌊n/d⌋) ≥ Σ_{d∈(n,2n]} Λ(d) = ψ(2n)-ψ(n)
-  sorry
+  -- Express log(centralBinom n) as difference of log factorials
+  have hbinom : Real.log (Nat.centralBinom n : ℝ) =
+      Real.log ((2 * n).factorial : ℝ) - 2 * Real.log (n.factorial : ℝ) := by
+    have hdvd : n.factorial * n.factorial ∣ (2 * n).factorial := by
+      have h := Nat.factorial_mul_factorial_dvd_factorial (n := 2 * n) (k := n) (by omega)
+      rwa [show 2 * n - n = n by omega] at h
+    rw [Nat.centralBinom, Nat.choose_eq_factorial_div_factorial (by omega : n ≤ 2 * n),
+        show 2 * n - n = n by omega,
+        Nat.cast_div hdvd (by positivity),
+        Real.log_div (by positivity) (by positivity),
+        Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]
+    ring
+  -- Use Fubini identity for log factorials
+  rw [hbinom, log_factorial_vonMangoldt (2 * n), log_factorial_vonMangoldt n]
+  -- Extend second sum range from n+1 to 2*n+1 (extra terms vanish: n/d=0 for d>n)
+  have hextend : ∑ d ∈ Finset.range (n + 1), vonMangoldt d * (n / d : ℕ) =
+      ∑ d ∈ Finset.range (2 * n + 1), vonMangoldt d * (n / d : ℕ) := by
+    apply Finset.sum_subset (Finset.range_mono (by omega))
+    intro d hd hdn
+    simp only [Finset.mem_range, not_lt] at hd hdn
+    have : n / d = 0 := Nat.div_eq_of_lt (by omega)
+    simp [this]
+  rw [hextend]
+  -- ψ(2n) - ψ(n) = Σ_{d ∈ Ioc n (2n)} Λ(d)
+  have hpsi : chebyshevPsi (2 * n) - chebyshevPsi n =
+      ∑ d ∈ Finset.Ioc n (2 * n), vonMangoldt d := by
+    have hle : Finset.range (n + 1) ⊆ Finset.range (2 * n + 1) := Finset.range_mono (by omega)
+    have heq : Finset.range (2 * n + 1) \ Finset.range (n + 1) = Finset.Ioc n (2 * n) := by
+      ext d; simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_Ioc]; omega
+    simp only [chebyshevPsi, ← heq]
+    linarith [Finset.sum_sdiff hle (f := vonMangoldt)]
+  rw [hpsi]
+  -- Goal: Σ_{Ioc n (2n)} Λd ≤ Σ_{range(2n+1)} Λd*(2n/d:ℝ) - 2*Σ_{range(2n+1)} Λd*(n/d:ℝ)
+  have hIoc_sub : Finset.Ioc n (2 * n) ⊆ Finset.range (2 * n + 1) := by
+    intro d hd; simp only [Finset.mem_Ioc] at hd; simp only [Finset.mem_range]; omega
+  -- Each term in Ioc: 2n/d = 1 and n/d = 0
+  have hcoeff_one : ∀ d ∈ Finset.Ioc n (2 * n),
+      (2 * n / d : ℕ) = 1 ∧ (n / d : ℕ) = 0 := by
+    intro d hd
+    simp only [Finset.mem_Ioc] at hd
+    exact ⟨Nat.div_eq_of_lt_le (by omega) (by omega),
+           Nat.div_eq_of_lt (by omega)⟩
+  -- Hermite: 2*(n/d : ℝ) ≤ (2n/d : ℝ), so coeff ≥ 0 everywhere
+  have hcoeff_nonneg : ∀ d ∈ Finset.range (2 * n + 1),
+      0 ≤ (2 * n / d : ℕ) - 2 * (n / d : ℕ) := by
+    intro d _
+    have := Nat.mul_div_le_mul_div_assoc 2 n d
+    omega
+  -- Combine RHS into single sum over ℝ coefficients
+  have hrhs_split : ∑ d ∈ Finset.range (2 * n + 1), vonMangoldt d * (2 * n / d : ℕ) -
+      2 * ∑ d ∈ Finset.range (2 * n + 1), vonMangoldt d * (n / d : ℕ) =
+      ∑ d ∈ Finset.range (2 * n + 1),
+        vonMangoldt d * (((2 * n / d : ℕ) : ℝ) - 2 * ((n / d : ℕ) : ℝ)) := by
+    rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
+    congr 1; ext d; ring
+  rw [hrhs_split]
+  -- Final: Σ_{Ioc} Λd = Σ_{Ioc} Λd*(1-0) ≤ Σ_{range(2n+1)} Λd*coeff_d
+  calc ∑ d ∈ Finset.Ioc n (2 * n), vonMangoldt d
+      = ∑ d ∈ Finset.Ioc n (2 * n),
+            vonMangoldt d * (((2 * n / d : ℕ) : ℝ) - 2 * ((n / d : ℕ) : ℝ)) := by
+          apply Finset.sum_congr rfl
+          intro d hd
+          obtain ⟨h1, h2⟩ := hcoeff_one d hd
+          simp [h1, h2]
+    _ ≤ ∑ d ∈ Finset.range (2 * n + 1),
+            vonMangoldt d * (((2 * n / d : ℕ) : ℝ) - 2 * ((n / d : ℕ) : ℝ)) :=
+          Finset.sum_le_sum_of_subset_of_nonneg hIoc_sub (fun d hd_range _ => by
+            apply mul_nonneg vonMangoldt_nonneg
+            have hh := Nat.mul_div_le_mul_div_assoc 2 n d
+            have hR : (2 * (n / d : ℕ) : ℝ) ≤ ↑(2 * n / d) := by exact_mod_cast hh
+            linarith)
 
 /-- **von Mangoldt doubling bound** (proved): ψ(2n) - ψ(n) ≤ 2n · log 2.
     Key steps: ψ(2n)-ψ(n) ≤ log(C(2n,n)) ≤ log(4^n) = 2n·log 2. -/
@@ -199,7 +296,7 @@ axiom pnt_equivalence :
 
 /-- **Main result**: The second Chebyshev function satisfies
     θ(n) ≤ ψ(n) and ψ(n) ≥ log(⌊n/2⌋+1) for n ≥ 1 (from Bertrand). -/
-theorem chebyshevPsi_bounds (n : ℕ) (hn : 1 ≤ n) :
+theorem chebyshevPsi_bounds (n : ℕ) (_ : 1 ≤ n) :
     chebyshevThetaOQ n ≤ chebyshevPsi n ∧
     Real.log ((n / 2 : ℕ) + 1 : ℝ) ≤ chebyshevPsi n := by
   refine ⟨chebyshevTheta_le_chebyshevPsi n, ?_⟩

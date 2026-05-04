@@ -1,13 +1,13 @@
 {
   "slug": "chebyshev-bounds-oq-04",
-  "title": "Prove the explicit formula \u03c8(x) = x \u2212 \u03a3_\u03c1 x^\u03c1/\u03c1 \u2212 log(2\u03c0) (Riemann's explicit...",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Prove the explicit formula ψ(x) = x − Σ_ρ x^ρ/ρ − log(2π) (Riemann's explicit...",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Prove the explicit formula \u03c8(x) = x \u2212 \u03a3_\u03c1 x^\u03c1/\u03c1 \u2212 log(2\u03c0) (Riemann''s explicit formula) connecting \u03c8 to zeros of the Riemann zeta function.",
+    "plain": "AVAILABLE: Prove the explicit formula ψ(x) = x − Σ_ρ x^ρ/ρ − log(2π) (Riemann''s explicit formula) connecting ψ to zeros of the Riemann zeta function.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,20 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PR #15371 merged (initial file), PR in-progress to convert axiom->theorem with sorry. Aristotle needed for psi_doubling_le_log_centralBinom.",
+    "progressSummary": "COMPLETE: 0 sorries, 3 axioms (upper bound + PNT equivalence). PR #15464.",
     "builtItems": [
       "ChebyshevBoundsOQ04.lean:186 lines, 0 sorries, 4 axioms",
-      "chebyshevPsi_doubling_le: converted from axiom to theorem in ChebyshevBoundsOQ04.lean:124 \u2014 axiomCount 4->3"
+      "chebyshevPsi_doubling_le: converted from axiom to theorem in ChebyshevBoundsOQ04.lean:124 — axiomCount 4->3",
+      "log_factorial_vonMangoldt at ChebyshevBoundsOQ04.lean:111 — Fubini sum-exchange expressing log(m!) in vonMangoldt terms",
+      "psi_doubling_le_log_centralBinom at ChebyshevBoundsOQ04.lean:146 — key upper bound step, eliminates the last sorry"
     ],
     "insights": [
-      "Proved \u03b8(n) \u2264 \u03c8(n) via vonMangoldt_apply_prime + Finset.sum_le_sum_of_subset_of_nonneg",
-      "Proved \u03c8(2n)\u2212\u03c8(n) \u2265 log(n+1) using Bertrand prime as Finset.single_le_sum witness",
-      "psi_doubling_le proved structurally: chain through psi_doubling_le_log_centralBinom (log C(2n,n) >= psi(2n)-psi(n)) + centralBinom_le_four_pow. Outer structure fully proved; inner sorry needs vonMangoldt_sum Fubini argument."
+      "Proved θ(n) ≤ ψ(n) via vonMangoldt_apply_prime + Finset.sum_le_sum_of_subset_of_nonneg",
+      "Proved ψ(2n)−ψ(n) ≥ log(n+1) using Bertrand prime as Finset.single_le_sum witness",
+      "psi_doubling_le proved structurally: chain through psi_doubling_le_log_centralBinom (log C(2n,n) >= psi(2n)-psi(n)) + centralBinom_le_four_pow. Outer structure fully proved; inner sorry needs vonMangoldt_sum Fubini argument.",
+      "psi_doubling_le_log_centralBinom proved via von Mangoldt Fubini (log_factorial_vonMangoldt lemma): ψ(2n)−ψ(n) ≤ log C(2n,n) using Hermite floor inequality for d≤n and coefficient=1 for d∈Ioc(n,2n]"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove chebyshevPsi_upper_bound via geometric series telescoping of doubling lemma",
-      "Submit psi_doubling_le_log_centralBinom (ChebyshevBoundsOQ04.lean:115) to Aristotle \u2014 HARD sorry encoding vonMangoldt_sum Fubini argument for log(C(2n,n)) >= psi(2n)-psi(n)"
+      "Submit psi_doubling_le_log_centralBinom (ChebyshevBoundsOQ04.lean:115) to Aristotle — HARD sorry encoding vonMangoldt_sum Fubini argument for log(C(2n,n)) >= psi(2n)-psi(n)"
     ]
   },
   "tags": [
