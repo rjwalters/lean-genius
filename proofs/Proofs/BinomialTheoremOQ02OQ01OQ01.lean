@@ -46,10 +46,27 @@ structure Composition (α : Type*) [DecidableEq α] (s : Finset α) (n : ℕ) wh
   /-- Counts outside s are zero -/
   counts_outside : ∀ a, a ∉ s → counts a = 0
 
-/-- The set of all compositions of n into parts indexed by s is finite -/
+/-- Helper: two Compositions with equal count functions are equal. -/
+private theorem Composition.ext_counts {α : Type*} [DecidableEq α] {s : Finset α} {n : ℕ}
+    {a b : Composition α s n} (h : a.counts = b.counts) : a = b := by
+  obtain ⟨ca, ha1, ha2⟩ := a
+  obtain ⟨cb, hb1, hb2⟩ := b
+  subst h; rfl
+
+/-- The set of all compositions of n into parts indexed by s is finite,
+    via bijection with the `piAntidiag s n` finset. -/
 instance (α : Type*) [DecidableEq α] (s : Finset α) (n : ℕ) :
-    Fintype (Composition α s n) := by
-  sorry -- Finite since each counts(i) ≤ n and there are finitely many indices
+    Fintype (Composition α s n) :=
+  Fintype.ofEquiv ↥(s.piAntidiag n) {
+    toFun := fun fh =>
+      let h := Finset.mem_piAntidiag.mp fh.2
+      { counts := fh.1, sum_eq := h.1,
+        counts_outside := fun a ha => by_contra fun hne => ha (h.2 a hne) }
+    invFun := fun c =>
+      ⟨c.counts, Finset.mem_piAntidiag.mpr
+        ⟨c.sum_eq, fun i hi => by_contra fun h => hi (c.counts_outside i h)⟩⟩
+    left_inv := fun fh => Subtype.ext rfl
+    right_inv := fun c => Composition.ext_counts rfl }
 
 -- ============================================================
 -- PART 2: Multinomial PMF as ENNReal Function
@@ -211,7 +228,7 @@ The PMF construction itself is straightforward once these are in place.
 theorem dice_six_rolls_all_different :
     Nat.multinomial {0, 1, 2, 3, 4, 5} (fun _ => 1) *
     (1 : ℕ) = Nat.factorial 6 := by
-  sorry -- Computational: multinomial with all counts = 1 equals n!
+  native_decide
 
 -- ============================================================
 -- PART 10: Summary
