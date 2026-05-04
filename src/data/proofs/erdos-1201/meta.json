@@ -28,7 +28,7 @@
     "theoremCount": 83
   },
   "overview": {
-    "historicalContext": "Erd\u0151s posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) \u2192 \u221e as n \u2192 \u221e, but its distribution among products of consecutive integers is much subtler. The \u03b5=1/2 case was established by Erd\u0151s: there exist arbitrarily long windows of consecutive integers containing a prime exceeding \u221an. The full conjecture\u2014that large prime factors dominate for almost all starting points n, for any threshold n^(1-\u03b5)\u2014remains open.",
+    "historicalContext": "Erd\u0151s posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) \u2192 \u221e as n \u2192 \u221e, but its distribution among products of consecutive integers is much subtler. The \u03b5=1/2 case was established by Erd\u0151s himself: there exist arbitrarily long windows of consecutive integers containing a prime exceeding \u221an. This connects to the Sylvester-Schur theorem (1892), which implies P(n,k) \u2265 n+k when k < n \u2014 a stronger statement than Bertrand's postulate. The full conjecture \u2014 that large prime factors dominate for almost all starting points n, for any threshold n^(1-\u03b5) \u2014 remains open and is believed to require new tools from analytic number theory, likely Dickman's \u03c1-function for smooth number counts in intervals.",
     "problemStatement": "For every \u03b5,\u03b7 > 0 there exists k such that the upper density of {n | P(n,k) > n^(1-\u03b5)} is at least 1-\u03b7, where P(n,k) is the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k).",
     "text": "Let P(n,k) be the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k). The main conjecture says for every \u03b5,\u03b7>0 there exists k such that {n | P(n,k) > n^(1-\u03b5)} has upper density \u2265 1-\u03b7. Erd\u0151s proved the \u03b5=1/2 case.",
     "proofStrategy": "We define greatestPrimeFactor using Nat.primeFactors.max', consecutiveProduct as a Finset.prod, and upperDensity via Filter.limsup. The main conjecture and known partial result (\u03b5=1/2) are formalized. The \u03b5=1/2 result is an axiom; all structural properties are proved.",
@@ -178,12 +178,12 @@
   },
   "crossReferences": [
     {
-      "targetId": "erdos-677",
+      "proofId": "erdos-677",
       "relationship": "related",
       "description": "Related Erd\u0151s problem on LCM of consecutive integers \u2014 both study multiplicative structure of consecutive integer blocks"
     },
     {
-      "targetId": "erdos-1083-oq-02",
+      "proofId": "erdos-1083-oq-02",
       "relationship": "related",
       "description": "Related problem on distinct distances \u2014 both involve upper density arguments and structural results about infinite sets"
     }
