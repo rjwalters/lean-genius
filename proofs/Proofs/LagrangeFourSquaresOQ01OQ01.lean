@@ -18,13 +18,16 @@ finding four-square representations. The algorithm reduces the four-square probl
 2. **Three-square subroutine**: represent n − x² as a² + b² + c²
 3. **Combination**: output (x, a, b, c) with x² + a² + b² + c² = n
 
-## Key Results (0 sorries, 2 axioms)
+## Key Results (0 sorries, 0 axioms, 19 theorems)
 
 1. `split_combine_correct`: The split-and-combine step is algebraically exact
 2. `valid_splitter_exists`: Lagrange guarantees a valid x always exists
 3. `obstructed_iff_base_or_step`: Structural decomposition of excluded forms
 4. `not_obstructed_k_mod_8`: Residues 1,2,3,5,6 mod 8 are never excluded
 5. `only_excluded_lt_8`: Exactly one number below 8 is excluded (namely 7)
+6. `density_limit_one_sixth`: Excluded forms have density exactly 1/6
+7. `three_sq_subroutine_correctness`: Three-square oracle is correct (definitionally trivial)
+8. `rabin_shallit_pipeline`: Full algorithm pipeline — 0 axioms
 
 ## References
 - Rabin, M. O. and Shallit, J. O. (1986). "Randomized algorithms in number theory."
