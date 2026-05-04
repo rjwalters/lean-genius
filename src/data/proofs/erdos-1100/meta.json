@@ -21,10 +21,10 @@
     "erdosUrl": "https://erdosproblems.com/1100",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 328,
+    "lineCount": 331,
     "assumptions": "3 axioms: tau_perp_lower_bound (\u03c4\u22a5(n) \u2265 \u03c9(n), basic coprimality bound requiring intricate sorted-divisor reasoning), erdos_hall_max_lower_bound (max_{n<x} \u03c4\u22a5(n) > exp((log log x)^(2\u2212\u03b5)), Erd\u0151s-Hall 1978), and erdos_simonovits_bounds (exponential bounds on g(k), Erd\u0151s-Simonovits).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem was posed by Erd\u0151s and R. R. Hall in their 1978 paper *On some unconventional problems on the divisors of integers* (Acta Arithmetica). Hall was a specialist in multiplicative number theory at York, and this collaboration produced several problems exploring the fine structure of divisor sequences. The function $\\tau^{\\perp}(n)$ measures how often consecutive divisors in the increasing sequence $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ are coprime \u2014 a surprisingly subtle invariant. The trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$ is immediate (each prime $p \\mid n$ contributes at least one coprime transition in the divisor list), and is tight infinitely often. The deeper questions concern whether $\\tau^{\\perp}(n)$ typically exceeds $\\omega(n)$ by a large factor. The exponential bounds on $g(k)$ are due to Erd\u0151s and Simonovits, who showed $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$, revealing that the combinatorics of coprime transitions in divisor lattices is genuinely exponential but sub-maximal.",
@@ -240,9 +240,9 @@
       "Finset"
     ],
     "namespace": "Erdos1100",
-    "lineCount": 328,
+    "lineCount": 331,
     "axiomCount": 3,
-    "theoremCount": 10,
+    "theoremCount": 3,
     "definitionCount": 7,
     "mainTheorems": [
       {

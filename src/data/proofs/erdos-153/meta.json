@@ -21,10 +21,10 @@
     "erdosUrl": "https://erdosproblems.com/153",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 494,
+    "lineCount": 542,
     "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: erdos_153_conjecture (main open conjecture). Proved: sidon_sumset_card (exact cardinality), sidon_sumset_card_eq, sidon_distinct_differences (B₂ distinct differences), sidon_density_bound (√N density), sidon_sumset_range, average_gap_bounded, ess_1994_result, infinite_sidon_gap_from_finite.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "Sidon sets originate from Simon Sidon's 1932 question to Erdős about sets of natural numbers whose pairwise sums are all distinct. Erdős and Turán (1941) proved the foundational density bound: a Sidon set in $\\{1,\\ldots,N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, and perfect difference set constructions (Singer 1938, using projective planes over finite fields) show this is essentially tight. Problem 153 was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I', where they initiated a systematic study of the fine structure of sumsets $A+A$ for Sidon sets $A$. While the average gap in such sumsets is bounded ($\\Theta(1)$ for maximal Sidon sets), they conjectured that the second moment — the mean squared gap — must diverge. This question sits at the intersection of additive combinatorics and the statistical theory of gap distributions, connecting to broader phenomena like the pair correlation conjecture for zeros of the Riemann zeta function and the study of level spacing in random matrix theory.",
@@ -140,9 +140,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 494,
+    "lineCount": 542,
     "axiomCount": 1,
-    "theoremCount": 18,
+    "theoremCount": 14,
     "definitionCount": 8,
     "path": "Proofs/Erdos153Problem.lean",
     "sorries": 0
