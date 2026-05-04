@@ -1365,9 +1365,9 @@
       "result": "clean"
     },
     "buffons-needle-oq-01-oq-01-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-04T01:13:36Z",
+      "lastAudited": "2026-05-04T01:39:50Z",
       "result": "issues-fixed"
     },
     "buffons-needle-oq-01-oq-02": {
@@ -10809,7 +10809,7 @@
       "lastAudited": "2026-05-04T01:00:00Z",
       "result": "issues-fixed",
       "issues": [
-        "IsUntouchable def had empty body (parse error); stale Axiomatizes narratives in 4 sections — fixed via PR #15406"
+        "IsUntouchable def had empty body (parse error); stale Axiomatizes narratives in 4 sections \u2014 fixed via PR #15406"
       ]
     },
     "erdos-956": {
@@ -12095,7 +12095,7 @@
       "lastAudited": "2026-05-03T22:58:18Z",
       "result": "issues-fixed",
       "issues": [
-        "hurwitz_quaternions_euclidean and hurwitz_representation_count True stubs removed; lineCount 410→392, theoremCount 17→15"
+        "hurwitz_quaternions_euclidean and hurwitz_representation_count True stubs removed; lineCount 410\u2192392, theoremCount 17\u219215"
       ]
     },
     "lagrange-four-squares-oq-01": {
@@ -14187,6 +14187,12 @@
       "auditCount": 1,
       "lastAudited": "2026-05-03T23:25:56Z",
       "result": "issues-fixed",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-04T01:51:05Z",
+      "result": "clean",
       "issues": []
     }
   },
