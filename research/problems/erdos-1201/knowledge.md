@@ -575,3 +575,45 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Full Sylvester-Schur for ALL k+1 (composite): needs binomial coefficient or Chebyshev — HARD
 - Density lower bounds for ε < 1/2: requires Dickman ρ function — truly BLOCKED (>1000 lines)
 - The open mathematical frontier is formally documented: `erdos_1201_equiv_small_eps`
+
+---
+
+## Session 2026-05-04 (Session 13) - Smooth-Window Duality and Conditional Reduction
+
+**Mode**: REVISIT (highest knowledge score 113+, branch research/erdos-1201-session-12b)
+**Outcome**: progress — 3 new theorems (80→83)
+
+### What I Did
+- Checked Aristotle: no completed jobs pending
+- Reviewed Session 12 state (80 theorems in origin/main after PR #15439)
+- Created fresh branch `research/erdos-1201-session-12b` from origin/main
+- Added 3 new structural characterization theorems completing the smooth-window analysis:
+  1. **`erdos_1201_not_good_smooth_window`**: n bad ↔ window [n,n+k] is n^(1-ε)-smooth
+     - `¬(P(n,k) > n^(1-ε)) ↔ ∀ i ≤ k, gpf(n+i) ≤ n^(1-ε)`
+     - Uses `gpfConsecutive_le_iff` + `Nat.le_floor` + `Nat.floor_le`
+  2. **`erdos_1201_good_iff_rough_term`**: n good ↔ ∃ rough term in window
+     - `P(n,k) > n^(1-ε) ↔ ∃ i ≤ k, gpf(n+i) > n^(1-ε)`
+     - Negation of smooth-window, uses `push_neg` + `absurd`
+  3. **`erdos_1201_conditional_proof`**: ErdosProblem1201 from Cramér-type prime gap hypothesis
+     - If almost all n have a prime in [n,n+k] exceeding n^(1-ε), then Erdős conjecture holds
+     - Uses `upperDensity_mono` + `erdos_1201_good_of_prime_in_window`
+- Updated meta.json: theoremCount 80→83, lineCount 1094→1153
+
+### Key Findings
+- Smooth-window duality makes the density problem explicit: density of bad n = density of windows
+  where ALL integers n, n+1, ..., n+k are n^(1-ε)-smooth
+- Cramér's conjecture implies prime gaps g_p < (log p)^2 — much weaker than needed for Erdős:
+  we need gaps < n^(1-ε) ≈ exp((1-ε)log n). This is plausible but far from proved.
+- `erdos_1201_conditional_proof` makes explicit that Erdős #1201 follows from prime distribution:
+  it's a consequence of sufficient density of "large primes in short intervals"
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1094→1153 lines, 80→83 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (theoremCount 83, lineCount 1153)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+- `src/data/research/problems/erdos-1201.json` (to be updated in commit)
+
+### Next Steps
+- Full Sylvester-Schur for ALL k+1 (composite): needs binomial machinery — HARD
+- The conditional proof `erdos_1201_conditional_proof` points to the precise hypothesis needed
+- Density lower bounds for ε < 1/2: Dickman ρ function — truly BLOCKED (>1000 lines infra)

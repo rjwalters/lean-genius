@@ -22,10 +22,10 @@
     "erdosUrl": "https://erdosproblems.com/1201",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_1201_half_case (the \u03b5=1/2 partial result, proved by Erd\u0151s). The main conjecture ErdosProblem1201 is open. All 78 structural theorems are fully proved. Includes: Bertrand window bounds, Sylvester-Schur (prime window sizes and special cases), factorial divisibility, \u03b5/k-monotonicity, individual threshold, density-monotonicity.",
-    "lineCount": 1094,
+    "assumptions": "1 axiom: erdos_1201_half_case (the \u03b5=1/2 partial result, proved by Erd\u0151s). The main conjecture ErdosProblem1201 is open. All 81 structural theorems are fully proved. Includes: Bertrand window bounds, Sylvester-Schur (prime window sizes and special cases), factorial divisibility, \u03b5/k-monotonicity, individual threshold, density-monotonicity, smooth-window duality, rough-term characterization, conditional reduction to prime gaps.",
+    "lineCount": 1153,
     "mathlib_version": "4.26.0",
-    "theoremCount": 80
+    "theoremCount": 83
   },
   "overview": {
     "historicalContext": "Erd\u0151s posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) \u2192 \u221e as n \u2192 \u221e, but its distribution among products of consecutive integers is much subtler. The \u03b5=1/2 case was established by Erd\u0151s: there exist arbitrarily long windows of consecutive integers containing a prime exceeding \u221an. The full conjecture\u2014that large prime factors dominate for almost all starting points n, for any threshold n^(1-\u03b5)\u2014remains open.",
@@ -140,10 +140,18 @@
       "endLine": 762,
       "summary": "gpfConsecutive_succ_left: left-endpoint extension P(n,k+1)=max(gpf(n),P(n+1,k)). gpfConsecutive_window_concat: window splitting P(n,j+k+1)=max(P(n,j),P(n+j+1,k)). gpfConsecutive_ge_prime_term: prime term gives lower bound n+i \u2264 P(n,k). erdos_1201_good_of_prime_in_window: sufficient condition for good n. gpfConsecutive_eq_term_gpf: GPF localization when k < P(n,k).",
       "mathContext": "Left extension: $P(n,k+1) = \\max(P(n), P(n+1,k))$ (symmetric to succ_right). Window concat: $P(n,j+k+1) = \\max(P(n,j), P(n+j+1,k))$ (split at position $j$). Prime term: if $(n+i)$ prime and $i \\leq k$ then $n+i \\leq P(n,k)$ (since $P(n+i) = n+i$ and $P(n+i) \\leq P(n,k)$). Good n: if $\\exists i \\leq k$ with $n+i$ prime and $n+i > n^{1-\\varepsilon}$, then $P(n,k) > n^{1-\\varepsilon}$."
+    },
+    {
+      "id": "smooth-window-and-conditional",
+      "title": "Smooth-Window Duality and Conditional Reduction",
+      "startLine": 1097,
+      "endLine": 1153,
+      "summary": "erdos_1201_not_good_smooth_window: n bad \u2194 window is n^(1-\u03b5)-smooth (all gpf(n+i) \u2264 n^(1-\u03b5)). erdos_1201_good_iff_rough_term: n good \u2194 \u2203 rough term in window. erdos_1201_conditional_proof: formal reduction to Cram\u00e9r-type prime gap hypothesis.",
+      "mathContext": "Duality: $\\neg(P(n,k) > n^{1-\\varepsilon}) \\iff \\forall i \\leq k,\\, P(n+i) \\leq n^{1-\\varepsilon}$ (uses gpfConsecutive_le_iff + Nat.floor bound). Rough-term: $P(n,k) > n^{1-\\varepsilon} \\iff \\exists i \\leq k,\\, P(n+i) > n^{1-\\varepsilon}$ (negation of smooth-window). Conditional: if $\\forall \\varepsilon,\\eta>0\\,\\exists k$: $\\overline{d}(\\{n : \\exists i\\leq k, (n+i)\\text{ prime}, n+i>n^{1-\\varepsilon}\\}) \\geq 1-\\eta$, then $\\text{ErdosProblem1201}$ holds."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 55 structural theorems. 0 sorries, 1 axiom (the partial result). Sessions 5-9 add: greatestPrimeFactor_mul (product formula), gpfConsecutive_le_of_le_k (general monotonicity), gpfConsecutive_succ_right (recursive formula), gpfConsecutive_eq_right_iff (biconditional), erdos_1201_prime_right_infinite, erdos_1201_eq_right_infinite, gpfConsecutive_succ_left (left-endpoint extension), gpfConsecutive_window_concat (window concatenation), gpfConsecutive_ge_prime_term, erdos_1201_good_of_prime_in_window, consecutiveProduct_one, gpfConsecutive_one_coprime, gpfConsecutive_one_ne, gpfConsecutive_eq_term_gpf.",
+    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 81 structural theorems (83 total). 0 sorries, 1 axiom (the partial result). Sessions 5-12 add: greatestPrimeFactor_mul, gpfConsecutive_le_of_le_k, gpfConsecutive_succ_right, gpfConsecutive_eq_right_iff, erdos_1201_prime_right_infinite, erdos_1201_eq_right_infinite, gpfConsecutive_succ_left, gpfConsecutive_window_concat, gpfConsecutive_ge_prime_term, erdos_1201_good_of_prime_in_window, consecutiveProduct_one, gpfConsecutive_one_coprime, gpfConsecutive_one_ne, gpfConsecutive_eq_term_gpf, Sylvester-Schur (prime window sizes), factorial divisibility bounds, individual threshold (Bertrand), good-set monotonicity, formal reduction to \u03b5<1/2, smooth-window duality, rough-term characterization, conditional reduction to prime gaps.",
     "implications": "Resolution would advance our understanding of the distribution of prime factors in consecutive integer products and connect to the Sylvester-Schur theorem and smooth number theory.",
     "openQuestions": [
       "Does the full conjecture hold for all \u03b5 > 0?",
@@ -161,9 +169,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1201",
-    "lineCount": 1094,
+    "lineCount": 1153,
     "axiomCount": 1,
-    "theoremCount": 80,
+    "theoremCount": 83,
     "definitionCount": 5,
     "path": "Proofs/Erdos1201Problem.lean",
     "sorries": 0
