@@ -4,16 +4,16 @@
   "status": "blocked",
   "question": "Can the gnwProb_key (Greene-Nijenhuis-Wilf 1979 KEY identity) be formalized to complete the hook-length formula proof for all Young diagrams?",
   "knowledge": {
-    "progressSummary": "PROGRESS: h_ratio_card proved (single-corner hook ratio = card, 117 lines, PR #15599). gnwProb_key has 1 sorry remaining: multi-corner case requires cross product identity + alpha determination. Key insight: gnwProb_key <=> HWI <=> HLF -- all equivalent, GNW walk probabilities are the non-circular bridge.",
+    "progressSummary": "PROGRESS: Exchange identity named + structured; 2 sorries remain (gnwProb_exchange ~100 lines + IH wrapper ~30 lines). PR #15685 open. hookLength_removeCorner_arm at line 4821 is the key tool for gnwProb_exchange.",
     "insights": [
-      "gnwProb_key states: \u03a3_{x \u2208 \u03bc} gnwProb(\u03bc,c,hookLen(x),x) = hookProd(\u03bc)/hookProd(\u03bc\\c) for any corner c",
+      "gnwProb_key states: Σ_{x ∈ μ} gnwProb(μ,c,hookLen(x),x) = hookProd(μ)/hookProd(μ\\c) for any corner c",
       "All supporting lemmas proved: gnwProb_sum_corners, gnwProb_stable, gnwProb_step, hookProd_ratio_formula, strictHookCells_card, strictHookCells_hookLen_lt",
-      "P(x\u2192c)=0 for all x with x.1 > c.1 or x.2 > c.2 (walk can only increase row/col index)",
-      "For single-row \u03bc, all P_j=1 and sum = n (verified by explicit recursion: S_j = n-j)",
-      "For rectangle \u03bc, all probabilities = 1 and sum = a*b",
-      "hookProd_ratio_formula already proved: hookProd(\u03bc)/hookProd(\u03bc\\c) = \u03a0_{s<j} h(i,s)/(h(i,s)-1) * \u03a0_{r<i} h(r,j)/(h(r,j)-1)",
-      "Simple strong induction on |\u03bc| fails for odd n: \u03c8(2m+1) \u2264 (4m+4) log 2 but need \u2264 (4m+2) log 2",
-      "GNW 1979 uses specific recursion relating sum to W(y) = \u03a3_{x non-corner: y\u2208H*(x)} 1/(h(x)-1)",
+      "P(x→c)=0 for all x with x.1 > c.1 or x.2 > c.2 (walk can only increase row/col index)",
+      "For single-row μ, all P_j=1 and sum = n (verified by explicit recursion: S_j = n-j)",
+      "For rectangle μ, all probabilities = 1 and sum = a*b",
+      "hookProd_ratio_formula already proved: hookProd(μ)/hookProd(μ\\c) = Π_{s<j} h(i,s)/(h(i,s)-1) * Π_{r<i} h(r,j)/(h(r,j)-1)",
+      "Simple strong induction on |μ| fails for odd n: ψ(2m+1) ≤ (4m+4) log 2 but need ≤ (4m+2) log 2",
+      "GNW 1979 uses specific recursion relating sum to W(y) = Σ_{x non-corner: y∈H*(x)} 1/(h(x)-1)",
       "HLF and HWI are PROVABLY EQUIVALENT at each level given HLF at lower levels + card_SYT_corner_step: cannot derive one from the other without a direct computation",
       "gnwProb_key for rectangles (single-corner shapes) is provable via gnwProb_sum_corners + hook_walk_identity_rectYD since gnwProb=1 for all cells",
       "The GNW exchange lemma is a SUM identity, not pointwise: F(mu,c)/F(nu,c) = R(mu,c)/R(nu,c) for nu=mu\\c prime verified on [3,1] example",
@@ -26,20 +26,28 @@
       "ALPHA DETERMINATION: The constant alpha = |mu|!/|SYT(mu)| = H(mu) iff HLF holds for mu. To close the proof, need either HLF for mu (circular) or an independent computation of alpha from the walk structure.",
       "NEW CORNER CREATION: Removing corner c from mu may create 0 or 1 new corners. The topmost corner (r1=min row) creates new corner (r1-1,s1) when r1>0 and rowLen(r1-1)=s1+1 (which holds when rows above are uncorned). So corner-count induction is unreliable.",
       "POINTWISE EXCHANGE FALSE: gnwProb(mu,c,h_mu(x),x) != gnwProb(mu\\c_prime,c,h_{mu\\c_prime}(x),x) as shown by L-shape: mu={(0,0),(0,1),(1,0)}, c=(1,0), c_prime=(0,1), x=(0,0): 1/2 in mu vs 1 in mu\\c_prime.",
-      "HOOK RATIO NOT INVARIANT: H(mu)/H(mu\\c) != H(mu\\c_prime)/H(mu\\{c,c_prime}) in general. L-shape: 3/2 vs 2. The inductive step via direct ratio comparison fails."
+      "HOOK RATIO NOT INVARIANT: H(mu)/H(mu\\c) != H(mu\\c_prime)/H(mu\\{c,c_prime}) in general. L-shape: 3/2 vs 2. The inductive step via direct ratio comparison fails.",
+      "isCorner_removeCorner_of_ne (PROVED ~11 lines): distinct corners of μ survive removing the other corner. Proof: c₂ ∈ removeCorner iff c₂∈μ and c₂≠c₁; (c₂.1,c₂.2+1) ∉ removeCorner since ∉ μ; (c₂.1+1,c₂.2) ∉ removeCorner since ∉ μ (c₂ is corner of μ). Only 3 cases needed.",
+      "EXCHANGE IDENTITY (named sorry): F(μ,c)*H(μ\\c)*H(μ\\c`) = F(μ\\c`,c)*H((μ\\c`)\\c)*H(μ). Given gnwProb_key for μ\\c` (IH), substituting IH gives F(μ,c)*H(μ\\c)*H(μ\\c`) = H(μ\\c`)*H(μ), then cancel H(μ\\c`) to get F(μ,c)*H(μ\\c)=H(μ), done.",
+      "ANTI-ORDERING of corners: in a Young diagram, distinct corners c and c` have c.1 > c`.1 iff c.2 < c`.2 (lower rows are longer). Cannot have two corners in same row or column.",
+      "SINGLE AFFECTED CELL: for corners c (row i, col j) and c` (row i`, col j`) with i`>i (so j`<j), removing c` only affects arm-cell (i,j`) of c: its hook decreases by 1. All other arm/leg cells of c are unaffected.",
+      "HOOK_LENGTH_REMOVEKORNER infrastructure: hookLength_removeCorner_arm (line 4821) and hookLength_removeCorner_leg (line 4835) already exist and may directly give the hook decrease formula for gnwProb_exchange.",
+      "MULTI-CORNER PROOF STRUCTURE (session 42): algebraic closure from exchange+IH is complete. Two sorries remain: gnwProb_exchange (~100 lines) and strong induction wrapper (~30 lines)."
     ],
     "builtItems": [
-      "h_ratio_card: 117-line proof that hookProd(mu)/hookProd(mu\\c) = mu.card for single-corner mu. BallotProblemOQ03OQ01OQ02Helpers.lean:13900-14017. PR #15599."
+      "h_ratio_card: 117-line proof that hookProd(mu)/hookProd(mu\\c) = mu.card for single-corner mu. BallotProblemOQ03OQ01OQ02Helpers.lean:13900-14017. PR #15599.",
+      "isCorner_removeCorner_of_ne: BallotProblemOQ03OQ01OQ02Helpers.lean ~line 4365, PR #15685",
+      "gnwProb_exchange: named sorry with correct statement, BallotProblemOQ03OQ01OQ02Helpers.lean ~line 13865, PR #15685",
+      "Multi-corner proof structure: complete skeleton using gnwProb_exchange + IH, BallotProblemOQ03OQ01OQ02Helpers.lean ~line 14046, PR #15685"
     ],
     "mathlibGaps": [
-      "No simple induction on |\u03bc| works without using specific structure of Young diagrams",
-      "Relating gnwProb(\u03bc,c,\u00b7) to gnwProb(\u03bc',c,\u00b7) for \u03bc'=removeCorner(\u03bc,c') requires tracking how absorption at c' affects probabilities"
+      "No simple induction on |μ| works without using specific structure of Young diagrams",
+      "Relating gnwProb(μ,c,·) to gnwProb(μ',c,·) for μ'=removeCorner(μ,c') requires tracking how absorption at c' affects probabilities"
     ],
     "nextSteps": [
-      "Prove cross product identity F(mu,c1)*F(mu\\c1,c2) = F(mu,c2)*F(mu\\c2,c1) by induction on |mu|, using the walk recursion. This is the GNW key exchange. If proved, combined with alpha determination closes gnwProb_key.",
-      "Alpha determination: show Sigma_c 1/H(mu\\c) = |mu|/H(mu) by an independent argument (not via HLF). Could use: mutual induction combining gnwProb_key and HLF, or a direct product formula.",
-      "Aristotle submission: companion file with just gnwProb_key statement and its direct prerequisites, after fixing /-! docstring issues in main file.",
-      "Alternative: bypass gnwProb_key entirely. Prove hook_walk_identity_gnw (Sigma_c H/H\\c = |mu|) directly from corner recursion + IH, using hook_length_formula_Q as the bridge. But this appears circular: HLF(mu) needs HWI(mu) which needs gnwProb_key(mu)."
+      "Strong induction wrapper (~30 lines): restructure gnwProb_key to use Nat.strongRecOn on μ.card, or extract gnwProb_key_ind helper. The h_IH sorry becomes the IH from induction.",
+      "Prove gnwProb_exchange (~100 lines): check hookLength_removeCorner_arm (line 4821) for the key hook decrease. Identify all arm/leg cells of c affected by removing c`. Write walk probability recursion equating μ and μ\\c` versions.",
+      "Use hookLength_removeCorner_arm + hookLength_eq_of_not_arm_leg to classify: cells in H*(x) that are in hook(c`) vs not, and show gnwProb(μ,c,h(x),x) = gnwProb(μ\\c`,c,h_{μ\\c`}(x),x) for x outside hook(c`), with correction term for x inside hook(c`)."
     ]
   },
   "relatedProofs": [

@@ -2,95 +2,78 @@
 
 **Phase**: ACT
 **Since**: 2026-05-04T00:00:00Z
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
 
 Proving `gnwProb_key` (GNW 1979 KEY theorem) — sole remaining sorry in
-`BallotProblemOQ03OQ01OQ02Helpers.lean`. Single-corner case proved (PR #15599).
-Multi-corner case blocked pending cross-product identity proof.
+`BallotProblemOQ03OQ01OQ02Helpers.lean`. Single-corner case proved (PR #15599, merged).
+Multi-corner case structure complete: two named sorries remain.
 
-## Session 41 Progress (2026-05-04)
+## Session 42 Progress (2026-05-04)
 
-**Mathematical structure fully analyzed**. Key findings:
+**Infrastructure added** (PR #15685):
 
-### Equivalence Triangle
+1. `isCorner_removeCorner_of_ne` (PROVED, ~11 lines): distinct corners of μ survive
+   removing the other corner. Enables the IH step in GNW induction.
 
-gnwProb_key (multi-corner) ⟺ HWI (hook walk identity) ⟺ HLF (hook-length formula).
+2. `gnwProb_exchange` (NAMED SORRY): the GNW 1979 exchange identity in product form:
+   `F(μ,c)·H(μ\c)·H(μ\c') = F(μ\c',c)·H((μ\c')\c)·H(μ)`
+   where `F(ν,d) = Σ_{x∈ν} gnwProb(ν,d,h(x),x)` and `H = hookProd`.
+   This is the core GNW 1979 step; avoids division. Verified on L-shape and (3,1).
 
-All three are equivalent given:
-- `card_SYT_corner_step` (SYT corner recursion, proved)
-- `hook_length_formula_Q` uses well-founded recursion requiring HWI for same size μ
-- HWI = Σ_c H(μ)/H(μ\c) = |μ| follows from gnwProb_key for all corners
+3. **Multi-corner proof structure** (COMPLETE MODULO SORRIES): the algebraic chain
+   from gnwProb_exchange + IH to gnwProb_key is fully written out and correct.
+   Steps: pick c'≠c, IH on μ\c', rw h_IH_prod into h_exch, cancel H(μ\c'),
+   conclude via mul_right_cancel₀.
 
-The GNW walk probabilities are the ONLY non-circular bridge.
+## Two Remaining Sorries
 
-### Cross Product Identity (key to multi-corner case)
+### Sorry 1: `gnwProb_exchange` (~100 lines)
 
-For corners c₁, c₂ of μ:
-F(μ,c₁) * F(μ\c₁,c₂) = F(μ,c₂) * F(μ\c₂,c₁)
+The GNW 1979 hook-weight shift argument. Key structure:
+- For corners c and c' of μ (c.1 > c'.1 since YD corners are anti-ordered):
+  c' is in the arm of leg-cell (c.1, c'.2) of c.
+- hookLen_μ(c.1, c'.2) = hookLen_{μ\c'}(c.1, c'.2) + 1 (removing c' decreases this arm-cell's hook by 1)
+- All other arm/leg cells of c: hook lengths unchanged
+- Need: F(μ,c)/F(μ\c',c) = [h_μ(c.1,c'.2) · (h_μ(c.1,c'.2)-2)] / (h_μ(c.1,c'.2)-1)²
+  (ratio from the single affected arm cell)
+- This requires inducting on the walk recursion to propagate the hook-change
 
-where F(μ,c) = Σ_{x∈μ} gnwProb(μ,c,h(x),x).
+### Sorry 2: Strong induction wrapper (~30 lines)
 
-**Verified**: L-shape (3/2)*(2) = (3/2)*(2) = 3 ✓, shape(3,1) (8/3)*(3/2) = (4/3)*(3) = 4 ✓.
+The `h_IH` sorry in the multi-corner case needs access to an IH.
+Current `gnwProb_key` is not set up with induction. Need either:
+(a) Restructure gnwProb_key to use `Nat.strong_rec_on` on μ.card, or
+(b) Add a separate `gnwProb_key_ind` helper that wraps in strong induction
 
-**Consequence**: From cross product identity + IH (gnwProb_key for smaller diagrams):
-- F(μ,c₁)/F(μ,c₂) = H(μ\c₂)/H(μ\c₁) [ratio is inverse hookProd ratio]
-- F(μ,c) = α/H(μ\c) for constant α = |μ|!/|SYT(μ)|
-- To get α = H(μ): need |SYT(μ)| = |μ|!/H(μ) = HLF for μ (CIRCULAR)
+This is ~30 lines of boilerplate.
 
-### Why Induction Fails Directly
+## State of PR `feat/ballot-gnw-exchange` (#15685, 2026-05-04)
 
-1. **Pointwise exchange FALSE**: gnwProb(μ,c,h_μ(x),x) ≠ gnwProb(μ\c',c,h_{μ\c'}(x),x).
-   L-shape counterexample: μ={(0,0),(0,1),(1,0)}, c=(1,0), c'=(0,1), x=(0,0): 1/2 ≠ 1.
+Commits: 6590609fa8 (plus 4 prior merged in #15599)
 
-2. **Hook ratio NOT invariant**: H(μ)/H(μ\c) ≠ H(μ\c')/H(μ\{c,c'}).
-   L-shape: 3/2 ≠ 2.
+### Proved
+- gnwProb = 1 everywhere for single-corner (session 39)
+- h_ratio_card: single-corner hook ratio = μ.card (session 40, 117 lines)
+- isCorner_removeCorner_of_ne (session 42, ~11 lines)
 
-3. **Corner count not monotone**: removing corner c' can create new corners.
-   Shape (3,2): removing c'=(1,1) creates new corner (1,0). The topmost corner
-   (r₁,s₁) with r₁>0 always creates new corner (r₁-1,s₁) since rowLen(r₁-1)=s₁+1.
-
-### What the GNW Proof Needs
-
-The cross product identity + a non-circular determination of α = H(μ).
-
-One path: prove the cross product identity by induction on |μ| using the walk recursion
-(expanding F via gnwProb_step/stable), and simultaneously prove α = H(μ) via a mutual
-induction with hook_length_formula_Q. But the mutual induction structure needs care.
-
-## State of PR `fix/ballot-gnw-key` (#15599, 2026-05-04)
-
-Commits: e36e8a7b8a, 344e1d5f8d, 414a62ae67, c7a1fd9569
-
-**File**: BallotProblemOQ03OQ01OQ02Helpers.lean, ~14,050 lines
-
-### Single-Corner Case: FULLY PROVED (pending Docker build)
-- **gnwProb = 1 everywhere**: PROVED (session 39)
-- **Hook ratio = μ.card**: PROVED (117-line h_ratio_card, session 40)
-
-### Multi-Corner Case: SORRY (line 14024)
-- Requires cross product identity + alpha determination
-
-## Blockers
-
-**Sorry 1** (multi-corner GNW exchange, line 14024):
-- Cross product identity: ~50-80 lines
-- Alpha determination / closing: ~50-100 lines
-- Total: ~150-200 lines
-- Strategy: induction on |μ| using walk recursion, cross product as bridge
-- Aristotle submission blocked by `/-!` docstrings in 14050-line file
+### Remaining Sorries
+- gnwProb_exchange: exchange identity (~100 lines)
+- IH wrapper for multi-corner: strong induction setup (~30 lines)
 
 ## Next Action
 
-1. **Verify Docker build** of PR #15599 (single-corner case)
-2. **Prove cross product identity** F(μ,c₁)*F(μ\c₁,c₂) = F(μ,c₂)*F(μ\c₂,c₁) by
-   induction on |μ| — this is the pure mathematical heart of GNW 1979
-3. **Alpha determination** using cross product + HLF for μ (if mutual induction succeeds)
-4. **Aristotle**: Create companion file with just gnwProb_key after fixing docstring issue
+1. **Strong induction wrapper** (easier, ~30 lines): restructure gnwProb_key to use
+   Nat.strongRecOn, or extract gnwProb_key_ind helper. Should be tractable.
+2. **gnwProb_exchange** (harder, ~100 lines): prove hook-weight shift for the single
+   affected arm-cell. Key lemma: hookLength_removeCorner_arm already exists at line 4821!
+   Check if it gives hookLen_μ(c.1,c'.2) = hookLen_{μ\c'}(c.1,c'.2) + 1.
+3. Check `hookLength_removeCorner_arm` (line 4821) and `hookLength_removeCorner_leg` 
+   (line 4835) for usability in proving gnwProb_exchange.
 
 ## Attempt Counts
 
-- Total attempts: 6
-- Current approach attempts: 2 (direct exchange, cross product identity)
-- Approaches tried: 6 (GNW sketch, direct exchange FALSE, partial proof, case split, rectangle proof, equivalence analysis)
+- Total attempts: 7
+- Current approach attempts: 3 (direct exchange, cross product identity, exchange+IH)
+- Approaches tried: 6 + new structured exchange approach
