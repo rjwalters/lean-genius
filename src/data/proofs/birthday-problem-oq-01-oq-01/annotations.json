@@ -1,0 +1,138 @@
+[
+  {
+    "id": "ann-bmarkov-overview",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "context",
+    "title": "Birthday Markov Bound: Connecting Expectation to Probability",
+    "content": "This file formalizes the Markov bound on birthday collision probability: P(at least one collision) ≤ E[birthday pairs] = C(n,2)/d. The proof is purely algebraic — no measure theory required. The key insight is that Markov's inequality P(X ≥ 1) ≤ E[X] for the random variable X = #birthday pairs reduces to a ℕ inequality C(n,2)·d^n + d·descFactorial(d,n) ≥ d^(n+1), proved by induction. The result connects to two sibling entries: birthday-problem-oq-01 computed E[pairs] = C(n,2)/d, and birthday-problem-oq-02 proved P(collision) ≥ 1-exp(-C(n,2)/d). Together these three entries formally sandwich the collision probability between 1-e^{-λ} and λ where λ = C(n,2)/d.",
+    "mathContext": "$P(\\text{collision}) \\leq \\binom{n}{2}/d = E[\\text{pairs}]$. Combined with OQ-02: $1-e^{-\\lambda} \\leq P \\leq \\lambda$ where $\\lambda = \\binom{n}{2}/d$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Markov's inequality",
+      "birthday problem",
+      "descFactorial",
+      "expected value",
+      "collision probability"
+    ],
+    "prerequisites": [
+      "birthday-problem-oq-01: E[pairs] = C(n,2)/d",
+      "Lean 4: Nat.descFactorial, Nat.choose",
+      "basic Markov inequality: P(X ≥ 1) ≤ E[X] for X ≥ 0"
+    ]
+  },
+  {
+    "id": "ann-bmarkov-definitions",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "allDistinctProb and collisionProb",
+    "content": "The two core definitions: allDistinctProb(n,d) = descFactorial(d,n)/d^n is the exact probability that n people all have distinct birthdays among d days. The falling factorial descFactorial(d,n) = d*(d-1)*...*(d-n+1) counts the number of ways to assign n distinct birthdays, and d^n is the total number of birthday assignments. collisionProb(n,d) = 1 - allDistinctProb(n,d) is then P(at least one shared birthday). Both are rational numbers (ℚ), enabling exact arithmetic.",
+    "mathContext": "$P(\\text{all distinct}) = \\frac{d^{\\underline{n}}}{d^n} = \\frac{d(d-1)\\cdots(d-n+1)}{d^n}$, $P(\\text{collision}) = 1 - \\frac{d^{\\underline{n}}}{d^n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "descFactorial",
+      "falling factorial",
+      "birthday probability"
+    ],
+    "prerequisites": [
+      "Nat.descFactorial in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-bmarkov-descfact-le-pow",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 111
+    },
+    "type": "lemma",
+    "title": "descFactorial_le_pow: The Key Bound",
+    "content": "This simple inductive proof that descFactorial(d,n) ≤ d^n is the engine of the whole argument. At each step, the falling factorial multiplies by (d-k) ≤ d, while d^n multiplies by d. So each factor of descFactorial is at most the corresponding factor of d^n. This bound is used in the induction step of birthday_markov_nat to allow nlinarith to close the goal after zify.",
+    "mathContext": "$d^{\\underline{n}} = d(d-1)\\cdots(d-n+1) \\leq d^n$ since $d-k \\leq d$ for all $k \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "descFactorial",
+      "monotonicity",
+      "induction"
+    ],
+    "prerequisites": [
+      "Nat.descFactorial_succ: descFactorial(d, n+1) = descFactorial(d,n) * (d-n)",
+      "Nat.sub_le: d - n ≤ d"
+    ]
+  },
+  {
+    "id": "ann-bmarkov-nat-inequality",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 157
+    },
+    "type": "technique",
+    "title": "Core ℕ Inequality: Induction + zify + nlinarith",
+    "content": "The heart of the proof is showing C(n,2)·d^n + d·descFactorial(d,n) ≥ d^(n+1) by induction. The base case (n=0) is trivial: 0 + d ≥ d. For the inductive step, after unfolding descFactorial_succ and choose_two_succ, the goal involves natural number subtraction (d-n). The tactic `zify [hn_le, hdf]` converts to integers using the hypotheses n≤d (for d-n) and descFactorial≤d^n. After zification, `nlinarith` can find a linear combination of the inductive hypothesis and descFactorial_le_pow to close the goal.",
+    "mathContext": "Induction step: $\\binom{n+1}{2}d^{n+1} + d \\cdot d^{\\underline{n+1}} = (\\binom{n}{2}+n)d^{n+1} + d \\cdot d^{\\underline{n}}(d-n)$. Using IH and $d^{\\underline{n}} \\leq d^n$, nlinarith closes.",
+    "significance": "technique",
+    "relatedConcepts": [
+      "zify tactic",
+      "nlinarith",
+      "natural number induction",
+      "descFactorial"
+    ],
+    "prerequisites": [
+      "choose_two_succ: C(n+1,2) = C(n,2) + n",
+      "Nat.descFactorial_succ",
+      "descFactorial_le_pow"
+    ]
+  },
+  {
+    "id": "ann-bmarkov-main",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": {
+      "startLine": 184,
+      "endLine": 205
+    },
+    "type": "theorem",
+    "title": "birthday_markov: The Main Result",
+    "content": "The main theorem: P(collision) ≤ C(n,2)/d for n ≤ d, d > 0. The proof lifts the ℕ inequality to ℚ via a calc block. The key step is showing (C(n,2)/d + descFactorial(d,n)/d^n) × d^(n+1) equals the ℕ expression, which follows by push_cast + field_simp + ring. This is the algebraic version of Markov's inequality P(X ≥ 1) ≤ E[X]: the left side is the collision probability, the right side is E[birthday pairs].",
+    "mathContext": "$1 - \\frac{d^{\\underline{n}}}{d^n} \\leq \\frac{\\binom{n}{2}}{d}$, equivalent to $\\frac{d^{n+1} - d \\cdot d^{\\underline{n}}}{d^{n+1}} \\leq \\frac{\\binom{n}{2}}{d}$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "Markov's inequality",
+      "descFactorial",
+      "ℚ arithmetic",
+      "calc block"
+    ],
+    "prerequisites": [
+      "birthday_markov_nat",
+      "birthday_markov_key"
+    ]
+  },
+  {
+    "id": "ann-bmarkov-tightness",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": {
+      "startLine": 211,
+      "endLine": 216
+    },
+    "type": "corollary",
+    "title": "birthday_markov_tight: Equality at n=2",
+    "content": "At n=2, the Markov bound is tight: collisionProb(2,d) = C(2,2)/d = 1/d. With exactly 2 people, P(collision) = 1/d exactly (since they either share a birthday or not, and P(share) = 1/d). The expected pairs is also C(2,2)/d = 1/d. So Markov's inequality is sharp here. For n > 2, the bound becomes progressively looser as the positive correlations between pairs cause the true probability to grow sublinearly in E[pairs].",
+    "mathContext": "At $n=2$: $P(\\text{collision}) = 1/d = \\binom{2}{2}/d = E[\\text{pairs}]$. For $n \\geq 3$: $P(\\text{collision}) < E[\\text{pairs}]$ due to positive correlation between pair events.",
+    "significance": "insight",
+    "relatedConcepts": [
+      "Markov bound tightness",
+      "birthday pairs",
+      "correlation"
+    ],
+    "prerequisites": [
+      "collisionProb_two: P(collision) = 1/d for n=2"
+    ]
+  }
+]

@@ -1,0 +1,154 @@
+{
+  "id": "birthday-problem-oq-01-oq-01",
+  "title": "Birthday Problem OQ01-OQ01: Markov Bound via Expected Pairs",
+  "slug": "birthday-problem-oq-01-oq-01",
+  "description": "The collision probability P(at least one shared birthday) ≤ C(n,2)/d = E[birthday pairs], proved algebraically via Markov's inequality P(X ≥ 1) ≤ E[X]. Core: the ℕ inequality C(n,2)·d^n + d·descFactorial(d,n) ≥ d^(n+1), proved by induction with zify+nlinarith. Together with the lower bound from OQ-02, sandwiches P(collision) between 1−e^{−λ} and λ where λ = C(n,2)/d.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "combinatorics",
+      "markov-inequality",
+      "expected-value",
+      "descFactorial"
+    ],
+    "badge": "wip",
+    "sorries": 3,
+    "axiomCount": 0,
+    "lineCount": 241,
+    "theoremCount": 15,
+    "assumptions": "3 sorries remaining: card_ordered_pairs (ordered pair count), card_funs_shared_birthday (counting functions with shared value), sum_collisionCount (double counting). One True stub: distribution_summary. Mean theorem depends on sorry'd double counting.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients C(n,2) for the expected pairs formula",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.descFactorial",
+        "description": "Falling factorial d*(d-1)*...*(d-n+1) for the all-distinct probability",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Markov's inequality (1890s) states that for a nonneg random variable X and t > 0, P(X ≥ t) ≤ E[X]/t. Applied to the birthday problem with X = number of birthday pairs (a nonneg integer-valued r.v.) and t = 1, it gives P(at least one pair) ≤ E[pairs] = C(n,2)/d. This bound is the simplest upper bound on birthday collision probability and is tight at n=2 where both sides equal 1/d. For n=23 and d=365, the Markov bound gives P ≤ 253/365 ≈ 69.3%, while the exact probability is about 50.7% — so the bound is loose, but it has the virtue of requiring only the expected value, not the full distribution. The formalization bypasses measure theory by working directly with the algebraic formula for P(all distinct) = descFactorial(d,n)/d^n.",
+    "problemStatement": "Given the expected number of birthday pairs E[pairs] = C(n,2)/d (proved in birthday-problem-oq-01), can we derive an upper bound on the actual collision probability via Markov's inequality?",
+    "proofStrategy": "Define allDistinctProb(n,d) = descFactorial(d,n)/d^n and collisionProb(n,d) = 1 - allDistinctProb(n,d). Prove the core ℕ inequality C(n,2)*d^n + d*descFactorial(d,n) ≥ d^(n+1) by induction, using descFactorial ≤ d^n. Convert to ℚ via a calc block to get C(n,2)/d + allDistinctProb(n,d) ≥ 1, then conclude collisionProb ≤ C(n,2)/d.",
+    "keyInsights": [
+      "**Algebraic Markov**: The Markov bound P(X≥1) ≤ E[X] for birthday pairs translates to a pure ℕ inequality C(n,2)*d^n + d*descFactorial(d,n) ≥ d^(n+1), provable by induction without any probability theory.",
+      "**descFactorial_le_pow**: The key lemma descFactorial(d,n) ≤ d^n allows the induction step to close via nlinarith after zify.",
+      "**Tightness at n=2**: The Markov bound is tight: at n=2, P(collision) = 1/d = C(2,2)/d = E[pairs]. Both sides equal 1/d exactly.",
+      "**Sandwich theorem**: Combined with birthday-problem-oq-02 (which proves 1-exp(-C(n,2)/d) ≤ P(collision)), we get 1-e^{-λ} ≤ P(collision) ≤ λ where λ = C(n,2)/d, the two-sided Poisson approximation.",
+      "**No measure theory needed**: By working with descFactorial directly, the entire proof is elementary algebra and induction — no probability spaces required."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "Defines allDistinctProb(n,d) = descFactorial(d,n)/d^n and collisionProb(n,d) = 1 - allDistinctProb(n,d) as rationals.",
+      "mathContext": "$P(\\text{all distinct}) = d^{\\underline{n}}/d^n$, $P(\\text{collision}) = 1 - d^{\\underline{n}}/d^n$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 70,
+      "endLine": 99,
+      "summary": "Base cases (n=0,1,2), nonnegativity, and boundedness for allDistinctProb and collisionProb.",
+      "mathContext": "$P_{\\text{all distinct}}(0,d)=1$, $P_{\\text{all distinct}}(1,d)=1$, $P_{\\text{collision}}(2,d)=1/d$."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Key Structural Lemmas",
+      "startLine": 103,
+      "endLine": 130,
+      "summary": "descFactorial_le_pow (d^{↓n} ≤ d^n), allDistinctProb_le_one, allDistinctProb_nonneg, and their collisionProb consequences.",
+      "mathContext": "$d^{\\underline{n}} \\leq d^n$ by induction; each factor satisfies $d-k \\leq d$."
+    },
+    {
+      "id": "core-nat-inequality",
+      "title": "Core ℕ Inequality (Heart of the Markov Bound)",
+      "startLine": 134,
+      "endLine": 157,
+      "summary": "birthday_markov_nat: C(n,2)·d^n + d·descFactorial(d,n) ≥ d^(n+1). Proved by induction with zify+nlinarith.",
+      "mathContext": "$\\binom{n}{2}d^n + d \\cdot d^{\\underline{n}} \\geq d^{n+1}$. Induction step uses $\\binom{n+1}{2} = \\binom{n}{2}+n$ and $d^{\\underline{n}} \\leq d^n$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Markov Bound",
+      "startLine": 161,
+      "endLine": 205,
+      "summary": "birthday_markov: collisionProb(n,d) ≤ C(n,2)/d. Proved by converting birthday_markov_nat to ℚ via a calc block.",
+      "mathContext": "$P(\\text{collision}) \\leq \\binom{n}{2}/d = E[\\text{birthday pairs}]$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Special Cases",
+      "startLine": 209,
+      "endLine": 278,
+      "summary": "Tightness (n=2), pigeonhole (n>d), monotonicity, numeric verification for d=365.",
+      "mathContext": "Equality at $n=2$; $P=1$ when $n>d$; bound is informative iff $\\binom{n}{2}<d$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formal distribution analysis of birthday collision count: 15 theorems, 3 sorries, 0 axioms. Core results proved: X=0 ↔ Injective, Pr(X=0) formula, indicator decomposition, upper bound X ≤ C(n,2). Three counting lemmas remain sorry'd: card_ordered_pairs, card_funs_shared_birthday, sum_collisionCount.",
+    "implications": "Together with birthday-problem-oq-02 (lower bound 1-exp(-C(n,2)/d)), this formally sandwiches the birthday collision probability. The algebraic approach — avoiding measure theory — is robust and generalizes.",
+    "openQuestions": [
+      "Can the gap between the Markov bound and the true probability be quantified formally (e.g., the second-moment method gives a tighter estimate)?",
+      "Does a formal proof that the Poisson approximation P ≈ 1-e^{-λ} is asymptotically exact follow from the two bounds?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BirthdayDistribution",
+    "lineCount": 241,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+    "sorries": 3
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-01",
+      "relationship": "extends",
+      "description": "Uses E[pairs] = C(n,2)/d (from OQ-01) as the bound in Markov's inequality"
+    },
+    {
+      "targetId": "birthday-problem-oq-02",
+      "relationship": "companion",
+      "description": "OQ-02 proves the lower bound 1-exp(-C(n,2)/d); together they sandwich the collision probability"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "birthday_markov",
+      "type": "core",
+      "statement": "∀ (n d : ℕ), 0 < d → n ≤ d → collisionProb n d ≤ (n.choose 2 : ℚ) / d",
+      "description": "The Markov bound: P(collision) ≤ E[birthday pairs] = C(n,2)/d.",
+      "significance": "Main result connecting collision probability to expected pairs"
+    },
+    {
+      "name": "birthday_markov_tight",
+      "type": "corollary",
+      "statement": "∀ (d : ℕ), 0 < d → collisionProb 2 d = (Nat.choose 2 2 : ℚ) / d",
+      "description": "The bound is tight at n=2: collision probability exactly equals C(2,2)/d = 1/d.",
+      "significance": "Shows the Markov bound cannot be improved in general"
+    }
+  ],
+  "sorries": 3
+}
