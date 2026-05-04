@@ -1,1 +1,132 @@
-[]
+[
+  {
+    "id": "bu-eh-context",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "From Zhang to Maynard-Tao: The Prime Gap Race",
+    "content": "The bounded prime gaps program asks: how small can $\\liminf_{n \\to \\infty}(p_{n+1} - p_n)$ be? The landmark results:\n\n- **Zhang (2013)**: First finite bound, $H \\leq 70{,}000{,}000$\n- **Polymath 8a/8b**: Reduced to $H \\leq 246$ unconditionally via a 50-tuple admissible sieve\n- **Maynard-Tao + EH conjecture**: Reduces to $H \\leq 12$ using a 5-tuple\n\nThis file formalizes the Elliott-Halberstam conditional bound $H \\leq 12$, the optimal 5-tuple witnesses, and the implications TPC → EH → unconditional.",
+    "mathContext": "$H := \\liminf_{n \\to \\infty}(p_{n+1} - p_n)$. Zhang: $H \\leq 7 \\times 10^7$. Polymath 8b unconditional: $H \\leq 246$. Under EH: $H \\leq 12$. Under Twin Prime Conjecture: $H = 2$.",
+    "significance": "context",
+    "prerequisites": [
+      "prime gaps and liminf",
+      "admissible k-tuples",
+      "Bombieri-Vinogradov theorem",
+      "Maynard-Tao sieve"
+    ],
+    "relatedConcepts": [
+      "Zhang's theorem (2013)",
+      "Polymath 8 project",
+      "Twin Prime Conjecture",
+      "Bombieri-Vinogradov equidistribution"
+    ]
+  },
+  {
+    "id": "bu-eh-main-theorem",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 30, "endLine": 64 },
+    "type": "insight",
+    "title": "EH Conditional H ≤ 12: The Core Theorem",
+    "content": "The main theorem `eh_conditional_h_le_12` derives $H \\leq 12$ from the Elliott-Halberstam conjecture.\n\nThe proof strategy:\n1. The 5-tuple $\\{0,2,6,8,12\\}$ is admissible (shown in OQ01)\n2. Under EH at level $\\theta = 1/2$, the Maynard-Tao sieve applies to 5-tuples\n3. Therefore infinitely many translates $n + \\{0,2,6,8,12\\}$ contain at least 2 primes\n4. Hence $\\liminf (p_{n+1} - p_n) \\leq 12$\n\nThe theorem `eh_strictly_improves_on_246` confirms $12 < 246$, showing EH gives a strict improvement.",
+    "mathContext": "`eh_conditional_h_le_12`: EH $\\Rightarrow H \\leq 12$. The admissible 5-tuple $\\{0,2,6,8,12\\}$ has `quintuple_card = 5` and diameter `quintuple_le_12 : \\max - \\min \\leq 12`. Under EH: Maynard-Tao sieve gives $H \\leq \\text{diam}(\\mathcal{H}_5) = 12$.",
+    "significance": "key",
+    "prerequisites": [
+      "Elliott-Halberstam conjecture",
+      "admissible tuples and the Maynard-Tao sieve",
+      "prime gaps and liminf",
+      "OQ01 admissibility proof for {0,2,6,8,12}"
+    ],
+    "relatedConcepts": [
+      "Maynard's theorem (2014)",
+      "sieve theory",
+      "admissible constellations",
+      "Goldston-Pintz-Yıldırım method"
+    ]
+  },
+  {
+    "id": "bu-numerical-comparison",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 65, "endLine": 99 },
+    "type": "insight",
+    "title": "The 234-Gap: EH vs Unconditional Bound",
+    "content": "This section formalizes the numerical gap between the two main bounds:\n\n- `eh_bound_lt_polymath_bound`: $12 < 246$ (EH beats unconditional)\n- `bound_gap`: $246 - 12 = 234$ (the improvement from EH)\n- `eh_improvement_factor`: $246 / 12 = 20$ (roughly 20× improvement)\n\nThis 20× improvement traces entirely to the **sieve level**: BV works at $\\theta < 1/2$ (needing $k \\geq 50$ admissible elements) while EH extends to $\\theta = 1/2$ (only needing $k \\geq 5$). A 10× reduction in required tuple size leads to a 20× reduction in the gap bound.",
+    "mathContext": "$\\text{ehBound} = 12$, $\\text{polymath8bBound} = 246$, $\\text{boundGap} = 234$, $\\text{improvementFactor} = 20$. BV level $\\theta < 1/2 \\Rightarrow k \\geq 50$; EH level $\\theta = 1/2 \\Rightarrow k \\geq 5$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Bombieri-Vinogradov theorem at level θ < 1/2",
+      "Elliott-Halberstam at level θ = 1/2",
+      "minimum admissible tuple size for each level"
+    ],
+    "relatedConcepts": [
+      "Polymath 8b result",
+      "admissible 50-tuple for unconditional bound",
+      "sieve level vs tuple size tradeoff",
+      "Bombieri-Vinogradov theorem"
+    ]
+  },
+  {
+    "id": "bu-sieve-level",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 100, "endLine": 143 },
+    "type": "technique",
+    "title": "Sieve Level: Why BV and EH Share 1/2 but Differ in Application",
+    "content": "A subtlety: both BV and EH have `bvLevel = ehLevel = 1/2` as definitional markers in this formalization. The *substantive* difference is in scope:\n\n- **BV** holds *unconditionally* for $\\theta < 1/2$ (strict)\n- **EH** *conjectures* the bound holds at $\\theta = 1/2$ (non-strict)\n\nThe numeric facts (`bv_level_lt_one`, `eh_level_eq_half`, `eh_strictly_better_than_bv`) clarify that while both levels are annotated as 1/2, EH's equality (vs BV's strict inequality) is exactly what allows the sieve to apply to 5-tuples rather than requiring 50-tuples.",
+    "mathContext": "BV: $\\sum_{q \\leq x^{\\theta}} \\max_{(a,q)=1} |\\psi(x; q, a) - x/\\phi(q)| \\ll x (\\log x)^{-A}$ for all $\\theta < 1/2$ (proven). EH conjectures the same for $\\theta \\leq 1/2$ (with $\\theta = 1/2$ being the critical value).",
+    "significance": "supporting",
+    "prerequisites": [
+      "Bombieri-Vinogradov theorem",
+      "Elliott-Halberstam conjecture",
+      "primes in arithmetic progressions ψ(x; q, a)",
+      "Euler's totient function φ(q)"
+    ],
+    "relatedConcepts": [
+      "distribution of primes in residue classes",
+      "Barban-Davenport-Halberstam theorem",
+      "large sieve inequality",
+      "character sum bounds"
+    ]
+  },
+  {
+    "id": "bu-admissible-witnesses",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 145, "endLine": 170 },
+    "type": "insight",
+    "title": "Two Optimal 5-Tuple Witnesses for H ≤ 12",
+    "content": "The bound $H \\leq 12$ is witnessed by two distinct admissible 5-tuples of diameter 12:\n\n- `eh_witness_1`: $\\{0, 2, 6, 8, 12\\}$\n- `eh_witness_2`: $\\{0, 4, 6, 10, 12\\}$\n\nThe theorem `two_optimal_5_tuples` confirms both are admissible and have diameter exactly 12. This redundancy matters: it shows the bound $H \\leq 12$ is not an artifact of one special tuple but reflects a genuine structural threshold. The minimum possible gap from 5-tuple sieve is 12 — all 5-tuples with diameter $\\leq 10$ are non-admissible (proved exhaustively in OQ01).",
+    "mathContext": "$\\mathcal{H}_1 = \\{0,2,6,8,12\\}$, $\\mathcal{H}_2 = \\{0,4,6,10,12\\}$ both admissible with $|\\mathcal{H}_i| = 5$ and $\\max\\mathcal{H}_i - \\min\\mathcal{H}_i = 12$. No admissible 5-tuple has diameter $< 12$ (shown in OQ01).",
+    "significance": "key",
+    "prerequisites": [
+      "admissible k-tuples (avoidance condition mod p)",
+      "OQ01 non-admissibility below diameter 12",
+      "diameter of a finite set"
+    ],
+    "relatedConcepts": [
+      "admissible constellations",
+      "prime k-tuples conjecture",
+      "Hardy-Littlewood conjecture",
+      "exhaustive admissibility verification"
+    ]
+  },
+  {
+    "id": "bu-open-hierarchy",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 172, "endLine": 218 },
+    "type": "context",
+    "title": "The Implication Hierarchy: TPC → EH → Unconditional",
+    "content": "The formal hierarchy of implications:\n\n1. **TPC (Twin Prime Conjecture)** → $H = 2$ (infinitely many twin primes)\n2. **EH conjecture** → $H \\leq 12$ (this file's main result)\n3. **Unconditional** (Polymath 8b) → $H \\leq 246$\n\nThe theorem `gap_bound_tpc_implies_eh` shows TPC implies EH-level, and `gap_bound_eh_implies_unconditional` shows EH implies the unconditional bound. The theorem `eh_conditional_range` pins $H$ to $[2, 12]$ under EH.\n\nThe `OpenQuestion01OQ02` definition formally records the open status: proving EH to close the gap from 246 to 12.",
+    "mathContext": "TPC $\\Rightarrow H = 2 \\Rightarrow H \\leq 12$ (EH bound) $\\Rightarrow H \\leq 246$ (unconditional). Under EH: $2 \\leq H \\leq 12$. Without EH: $2 \\leq H \\leq 246$. EH itself is open; TPC is open.",
+    "significance": "context",
+    "prerequisites": [
+      "Twin Prime Conjecture",
+      "Elliott-Halberstam conjecture",
+      "Polymath 8b unconditional H ≤ 246",
+      "logical implications in analytic number theory"
+    ],
+    "relatedConcepts": [
+      "Twin Prime Conjecture",
+      "Goldbach conjecture analogy",
+      "conditional vs unconditional results",
+      "Polymath 8 project hierarchy"
+    ]
+  }
+]
