@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #31**: Additive Complements\n\n**Statement**: For any infinite set A ⊆ ℕ, there exists B with density 0 such that A + B covers all but finitely many positive integers.\n\n**Status**: SOLVED (Lorentz 1954)\n\n**Key insight**: Even very sparse infinite sets can be 'completed' to cover almost all of ℕ using another sparse set.\n\n**Origin**: Conjectured by Erdős-Straus.",
-    "mathContext": "This is a fundamental result in additive combinatorics showing the flexibility of additive structure. The sumset A + B = {a + b : a ∈ A, b ∈ B}.",
+    "content": "**Erd\u0151s Problem #31**: Additive Complements\n\n**Statement**: For any infinite set A \u2286 \u2115, there exists B with density 0 such that A + B covers all but finitely many positive integers.\n\n**Status**: SOLVED (Lorentz 1954)\n\n**Key insight**: Even very sparse infinite sets can be 'completed' to cover almost all of \u2115 using another sparse set.\n\n**Origin**: Conjectured by Erd\u0151s-Straus.",
+    "mathContext": "This is a fundamental result in additive combinatorics showing the flexibility of additive structure. The sumset A + B = {a + b : a \u2208 A, b \u2208 B}.",
     "significance": "key",
     "relatedConcepts": [
       "additive-complements",
@@ -17,9 +17,9 @@
       "lorentz-1954"
     ],
     "prerequisites": [
-      "Asymptotic density of subsets of ℕ",
+      "Asymptotic density of subsets of \u2115",
       "Sumset (Minkowski sum) of two sets",
-      "Cofinite subsets of ℕ",
+      "Cofinite subsets of \u2115",
       "Set.Infinite (Mathlib predicate)"
     ]
   },
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Density Definitions",
-    "content": "**countingFn A N** = |A ∩ {1,...,N}| (counting function)\n\n**HasDensity A d**: countingFn(A,N)/N → d as N → ∞\n\n**HasDensityZero A**: HasDensity A 0 (sparse sets)\n\n**upperDensity A** = limsup of countingFn(A,N)/N",
+    "content": "**countingFn A N** = |A \u2229 {1,...,N}| (counting function)\n\n**HasDensity A d**: countingFn(A,N)/N \u2192 d as N \u2192 \u221e\n\n**HasDensityZero A**: HasDensity A 0 (sparse sets)\n\n**upperDensity A** = limsup of countingFn(A,N)/N",
     "mathContext": "Density 0 means the set is asymptotically negligible but may still be infinite. Examples: primes, powers of 2, perfect squares.",
     "significance": "key",
     "relatedConcepts": [
@@ -42,7 +42,7 @@
     ],
     "prerequisites": [
       "Filter.Tendsto (limit along a filter)",
-      "Filter.atTop (cofinite filter on ℕ)",
+      "Filter.atTop (cofinite filter on \u2115)",
       "Set.ncard (cardinality of a set)",
       "Filter.limsup (limit superior along a filter)"
     ]
@@ -56,7 +56,7 @@
     },
     "type": "definition",
     "title": "Sumsets and Coverage",
-    "content": "**Sumset A B** = {n | ∃ a ∈ A, ∃ b ∈ B, n = a + b}\nNotation: A +ₛ B\n\n**CoversCofinite A B**: ∃ N₀, ∀ n ≥ N₀, n ∈ A +ₛ B\n\n**CoversAllButFinitely A B**: (ℕ \\ (A +ₛ B)) ∩ ℕ+ is finite\n\nBoth capture 'covers almost all positive integers'.",
+    "content": "**Sumset A B** = {n | \u2203 a \u2208 A, \u2203 b \u2208 B, n = a + b}\nNotation: A +\u209b B\n\n**CoversCofinite A B**: \u2203 N\u2080, \u2200 n \u2265 N\u2080, n \u2208 A +\u209b B\n\n**CoversAllButFinitely A B**: (\u2115 \\ (A +\u209b B)) \u2229 \u2115+ is finite\n\nBoth capture 'covers almost all positive integers'.",
     "mathContext": "The distinction between CoversCofinite and CoversAllButFinitely is technical - both mean the missing set is finite.",
     "significance": "key",
     "relatedConcepts": [
@@ -68,7 +68,7 @@
       "Set.Finite (finiteness of sets in Mathlib)",
       "Set.Icc (closed interval in an ordered type)",
       "Minkowski sum / additive combinatorics sumset",
-      "Cofinite topology / cofinite filter on ℕ"
+      "Cofinite topology / cofinite filter on \u2115"
     ]
   },
   {
@@ -80,7 +80,7 @@
     },
     "type": "concept",
     "title": "Primes Have Density Zero",
-    "content": "**axiom primes_density_zero**: The primes form an infinite set of density 0.\n\nBy the Prime Number Theorem: π(N) ~ N/log N\nSo π(N)/N ~ 1/log N → 0.",
+    "content": "**axiom primes_density_zero**: The primes form an infinite set of density 0.\n\nBy the Prime Number Theorem: \u03c0(N) ~ N/log N\nSo \u03c0(N)/N ~ 1/log N \u2192 0.",
     "mathContext": "This is a standard result from analytic number theory. The primes are sparse (density 0) but infinite.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -89,9 +89,9 @@
       "primes"
     ],
     "prerequisites": [
-      "Prime Number Theorem: π(N) ~ N / log N",
+      "Prime Number Theorem: \u03c0(N) ~ N / log N",
       "Nat.Prime (primality predicate in Mathlib)",
-      "Nat.primeCounting (prime-counting function π(N))",
+      "Nat.primeCounting (prime-counting function \u03c0(N))",
       "HasDensityZero definition (this file)"
     ]
   },
@@ -102,10 +102,10 @@
       "startLine": 70,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Powers of 2 Bijection (Verified)",
-    "content": "**lemma powers_of_2_in_Icc_eq** ✓\n\n{2^k} ∩ [1,N] = image of [0, log₂N] under k ↦ 2^k\n\n**Proof**:\n- If n = 2^k ∈ [1,N], then k ≤ log₂N\n- If k ≤ log₂N, then 2^k ≤ N\n\nThis bijection enables counting powers of 2.",
-    "mathContext": "The powers of 2 in [1,N] are exactly {1, 2, 4, ..., 2^⌊log₂N⌋}. There are ⌊log₂N⌋ + 1 of them.",
+    "content": "**lemma powers_of_2_in_Icc_eq** \u2713\n\n{2^k} \u2229 [1,N] = image of [0, log\u2082N] under k \u21a6 2^k\n\n**Proof**:\n- If n = 2^k \u2208 [1,N], then k \u2264 log\u2082N\n- If k \u2264 log\u2082N, then 2^k \u2264 N\n\nThis bijection enables counting powers of 2.",
+    "mathContext": "The powers of 2 in [1,N] are exactly {1, 2, 4, ..., 2^\u230alog\u2082N\u230b}. There are \u230alog\u2082N\u230b + 1 of them.",
     "significance": "key",
     "relatedConcepts": [
       "bijection",
@@ -126,9 +126,9 @@
       "startLine": 93,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Powers of 2 Count Bound (Verified)",
-    "content": "**theorem powers_of_2_count_bound** ✓\n\n|{2^k} ∩ [1,N]| ≤ log₂(N) + 1\n\n**Proof**: Uses the bijection to [0, log₂N], then counts that interval.\n\nThis is tight: exactly log₂(N) + 1 powers of 2 in [1,N].",
+    "content": "**theorem powers_of_2_count_bound** \u2713\n\n|{2^k} \u2229 [1,N]| \u2264 log\u2082(N) + 1\n\n**Proof**: Uses the bijection to [0, log\u2082N], then counts that interval.\n\nThis is tight: exactly log\u2082(N) + 1 powers of 2 in [1,N].",
     "mathContext": "The count is O(log N), which is much smaller than N. This is why powers of 2 have density 0.",
     "significance": "key",
     "relatedConcepts": [
@@ -150,10 +150,10 @@
       "startLine": 118,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Log Ratio Limit (Verified)",
-    "content": "**theorem tendsto_log_add_one_div** ✓\n\n(log₂(N) + 1)/N → 0 as N → ∞\n\n**Proof strategy**: Squeeze theorem\n- Lower: 0 ≤ f(N)\n- Upper: f(N) ≤ (Real.log N / Real.log 2 + 1)/N → 0\n\nUses Mathlib's `tendsto_pow_log_div_mul_add_atTop` for log N/N → 0.",
-    "mathContext": "This is the key analytic lemma. The proof carefully bounds Nat.log by Real.log and uses that log N/N → 0.",
+    "content": "**theorem tendsto_log_add_one_div** \u2713\n\n(log\u2082(N) + 1)/N \u2192 0 as N \u2192 \u221e\n\n**Proof strategy**: Squeeze theorem\n- Lower: 0 \u2264 f(N)\n- Upper: f(N) \u2264 (Real.log N / Real.log 2 + 1)/N \u2192 0\n\nUses Mathlib's `tendsto_pow_log_div_mul_add_atTop` for log N/N \u2192 0.",
+    "mathContext": "This is the key analytic lemma. The proof carefully bounds Nat.log by Real.log and uses that log N/N \u2192 0.",
     "significance": "key",
     "relatedConcepts": [
       "squeeze-theorem",
@@ -163,7 +163,7 @@
     "prerequisites": [
       "Filter.Tendsto.squeeze (squeeze theorem for limits)",
       "Real.log (natural logarithm in Mathlib)",
-      "tendsto_pow_log_div_mul_add_atTop (log N / N → 0 in Mathlib)",
+      "tendsto_pow_log_div_mul_add_atTop (log N / N \u2192 0 in Mathlib)",
       "Nat.log_le_clog (Nat.log bounded by Real.log)"
     ]
   },
@@ -174,9 +174,9 @@
       "startLine": 175,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Powers of 2 Have Density Zero (Verified)",
-    "content": "**theorem powers_of_2_density_zero** ✓\n\nHasDensityZero {n | ∃ k, n = 2^k}\n\n**Proof**: Combine the count bound with the log limit:\n\ncountingFn/N ≤ (log₂(N) + 1)/N → 0",
+    "content": "**theorem powers_of_2_density_zero** \u2713\n\nHasDensityZero {n | \u2203 k, n = 2^k}\n\n**Proof**: Combine the count bound with the log limit:\n\ncountingFn/N \u2264 (log\u2082(N) + 1)/N \u2192 0",
     "mathContext": "This verified theorem is a model case for showing sparse sets have density 0. The same pattern applies to other sparse sets.",
     "significance": "key",
     "relatedConcepts": [
@@ -198,10 +198,10 @@
       "startLine": 188,
       "endLine": 215
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Squares Bijection (Verified)",
-    "content": "**lemma squares_in_Icc_eq** ✓\n\n{k²} ∩ [1,N] = image of [1, √N] under k ↦ k²\n\n**Proof**:\n- If n = k² ∈ [1,N], then k ≤ √N\n- If k ≤ √N, then k² ≤ N\n\nUses `Nat.le_sqrt` and `Nat.sqrt_le` from Mathlib.",
-    "mathContext": "The squares in [1,N] are {1, 4, 9, ..., ⌊√N⌋²}. There are ⌊√N⌋ of them.",
+    "content": "**lemma squares_in_Icc_eq** \u2713\n\n{k\u00b2} \u2229 [1,N] = image of [1, \u221aN] under k \u21a6 k\u00b2\n\n**Proof**:\n- If n = k\u00b2 \u2208 [1,N], then k \u2264 \u221aN\n- If k \u2264 \u221aN, then k\u00b2 \u2264 N\n\nUses `Nat.le_sqrt` and `Nat.sqrt_le` from Mathlib.",
+    "mathContext": "The squares in [1,N] are {1, 4, 9, ..., \u230a\u221aN\u230b\u00b2}. There are \u230a\u221aN\u230b of them.",
     "significance": "key",
     "relatedConcepts": [
       "squares",
@@ -210,7 +210,7 @@
     ],
     "prerequisites": [
       "Nat.sqrt (integer square root in Mathlib)",
-      "Nat.le_sqrt (characterization: k ≤ √N ↔ k² ≤ N)",
+      "Nat.le_sqrt (characterization: k \u2264 \u221aN \u2194 k\u00b2 \u2264 N)",
       "Finset.image (image of a function on a Finset)",
       "Set.Icc (closed interval)"
     ]
@@ -224,8 +224,8 @@
     },
     "type": "concept",
     "title": "Squares Count Bound (Verified)",
-    "content": "**theorem squares_count_bound** ✓\n\n|{k²} ∩ [1,N]| ≤ √N + 1\n\n**Proof**: Uses the bijection to [1, √N], then counts.\n\nThe +1 handles the case N = 0.",
-    "mathContext": "The count is O(√N), much smaller than N. This is why squares have density 0.",
+    "content": "**theorem squares_count_bound** \u2713\n\n|{k\u00b2} \u2229 [1,N]| \u2264 \u221aN + 1\n\n**Proof**: Uses the bijection to [1, \u221aN], then counts.\n\nThe +1 handles the case N = 0.",
+    "mathContext": "The count is O(\u221aN), much smaller than N. This is why squares have density 0.",
     "significance": "key",
     "relatedConcepts": [
       "counting",
@@ -248,8 +248,8 @@
     },
     "type": "concept",
     "title": "Square Root Ratio Limit (Verified)",
-    "content": "**theorem tendsto_sqrt_inv** ✓\n\n(√N + 1)/N → 0 as N → ∞\n\n**Proof strategy**: Squeeze theorem\n- Upper bound: (√N + 1)/N ≤ 2/√N → 0\n- Key: √N ≤ N (for N ≥ 1)\n\nUses `tendsto_rpow_atTop` for √N → ∞.",
-    "mathContext": "This is the analytic lemma for squares. The proof bounds (√N + 1)/N by 2/√N and shows that tends to 0.",
+    "content": "**theorem tendsto_sqrt_inv** \u2713\n\n(\u221aN + 1)/N \u2192 0 as N \u2192 \u221e\n\n**Proof strategy**: Squeeze theorem\n- Upper bound: (\u221aN + 1)/N \u2264 2/\u221aN \u2192 0\n- Key: \u221aN \u2264 N (for N \u2265 1)\n\nUses `tendsto_rpow_atTop` for \u221aN \u2192 \u221e.",
+    "mathContext": "This is the analytic lemma for squares. The proof bounds (\u221aN + 1)/N by 2/\u221aN and shows that tends to 0.",
     "significance": "key",
     "relatedConcepts": [
       "squeeze-theorem",
@@ -258,7 +258,7 @@
     ],
     "prerequisites": [
       "Real.sqrt (real square root in Mathlib)",
-      "tendsto_rpow_atTop (x^r → ∞ for r > 0)",
+      "tendsto_rpow_atTop (x^r \u2192 \u221e for r > 0)",
       "Filter.Tendsto.squeeze / tendsto_of_tendsto_of_tendsto_of_le_of_le",
       "Real.sqrt_le_sqrt (monotonicity of sqrt)"
     ]
@@ -270,9 +270,9 @@
       "startLine": 297,
       "endLine": 306
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Squares Have Density Zero (Verified)",
-    "content": "**theorem squares_density_zero** ✓\n\nHasDensityZero {n | ∃ k, n = k²}\n\n**Proof**: Same pattern as powers of 2:\ncountingFn/N ≤ (√N + 1)/N → 0",
+    "content": "**theorem squares_density_zero** \u2713\n\nHasDensityZero {n | \u2203 k, n = k\u00b2}\n\n**Proof**: Same pattern as powers of 2:\ncountingFn/N \u2264 (\u221aN + 1)/N \u2192 0",
     "mathContext": "Another verified density-zero theorem. Together with primes and powers of 2, these are key examples of sparse infinite sets.",
     "significance": "key",
     "relatedConcepts": [
@@ -294,10 +294,10 @@
       "startLine": 310,
       "endLine": 320
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Main Theorem Statement",
-    "content": "**Erdos31Statement**:\n∀ A : Set ℕ, A.Infinite →\n  ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely A B\n\n**axiom lorentz_theorem : Erdos31Statement** ✓\n\nThis is the core result: Lorentz (1954) proved it constructively.",
-    "mathContext": "The theorem says any infinite A can be 'completed' to cover almost all of ℕ using a density-0 set B. The construction builds B by filling gaps.",
+    "content": "**Erdos31Statement**:\n\u2200 A : Set \u2115, A.Infinite \u2192\n  \u2203 B : Set \u2115, HasDensityZero B \u2227 CoversAllButFinitely A B\n\n**axiom lorentz_theorem : Erdos31Statement** \u2713\n\nThis is the core result: Lorentz (1954) proved it constructively.",
+    "mathContext": "The theorem says any infinite A can be 'completed' to cover almost all of \u2115 using a density-0 set B. The construction builds B by filling gaps.",
     "significance": "key",
     "relatedConcepts": [
       "lorentz-theorem",
@@ -320,7 +320,7 @@
     },
     "type": "concept",
     "title": "Lorentz's Density Bound",
-    "content": "**axiom lorentz_B_bound**:\n\nFor infinite A, ∃ B with:\n- HasDensityZero B ✓\n- CoversAllButFinitely A B ✓  \n- |B ∩ [1,N]| ≤ C · N/log N for some C > 0\n\nThe bound O(N/log N) is essentially optimal.",
+    "content": "**axiom lorentz_B_bound**:\n\nFor infinite A, \u2203 B with:\n- HasDensityZero B \u2713\n- CoversAllButFinitely A B \u2713  \n- |B \u2229 [1,N]| \u2264 C \u00b7 N/log N for some C > 0\n\nThe bound O(N/log N) is essentially optimal.",
     "mathContext": "This strengthened version shows B can be quite sparse - growing slower than any polynomial. For most A, B can be even sparser.",
     "significance": "key",
     "relatedConcepts": [
@@ -342,9 +342,9 @@
       "startLine": 340,
       "endLine": 352
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Powers of 2 Example (Verified)",
-    "content": "**example** ✓: ∃ B with density 0 such that {2^k} +ₛ B covers cofinitely.\n\n**Proof**:\n1. Show {2^k} is infinite (injective function)\n2. Apply lorentz_theorem\n\nThe powers of 2 are extremely sparse but still completable!",
+    "content": "**example** \u2713: \u2203 B with density 0 such that {2^k} +\u209b B covers cofinitely.\n\n**Proof**:\n1. Show {2^k} is infinite (injective function)\n2. Apply lorentz_theorem\n\nThe powers of 2 are extremely sparse but still completable!",
     "mathContext": "This example shows even very sparse sets like powers of 2 have additive complements with density 0.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -368,7 +368,7 @@
     },
     "type": "concept",
     "title": "Optimal B-Density is Zero (Verified)",
-    "content": "**OptimalBDensity A** = inf{d : ∃ B with density d covering cofinitely}\n\n**theorem optimal_B_density_zero** ✓:\nFor infinite A, OptimalBDensity A = 0\n\n**Proof**:\n- sInf ≤ 0: Lorentz gives B with density 0\n- 0 ≤ sInf: Densities are ≥ 0 (non-negative)",
+    "content": "**OptimalBDensity A** = inf{d : \u2203 B with density d covering cofinitely}\n\n**theorem optimal_B_density_zero** \u2713:\nFor infinite A, OptimalBDensity A = 0\n\n**Proof**:\n- sInf \u2264 0: Lorentz gives B with density 0\n- 0 \u2264 sInf: Densities are \u2265 0 (non-negative)",
     "mathContext": "This theorem uses real analysis (csInf, le_antisymm) to show that 0 is not just achievable but optimal.",
     "significance": "key",
     "relatedConcepts": [
@@ -378,7 +378,7 @@
     ],
     "prerequisites": [
       "Real.sInf (infimum of a set of reals in Mathlib)",
-      "le_antisymm (antisymmetry of ≤ to prove equality)",
+      "le_antisymm (antisymmetry of \u2264 to prove equality)",
       "lorentz_theorem axiom (this file)",
       "HasDensity / density non-negativity"
     ]
@@ -390,9 +390,9 @@
       "startLine": 415,
       "endLine": 452
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Coverage Requires Infinity (Verified)",
-    "content": "**theorem coverage_requires_density** ✓:\n\nIf A +ₛ B covers cofinitely, then:\n- ¬(HasDensityZero A ∧ HasDensityZero B), OR\n- A.Infinite, OR\n- B.Infinite\n\n**Key insight**: Finite A × Finite B = Finite sumset, which can't cover cofinitely.\n\nProof constructs the finite sumset and shows its complement is infinite.",
+    "content": "**theorem coverage_requires_density** \u2713:\n\nIf A +\u209b B covers cofinitely, then:\n- \u00ac(HasDensityZero A \u2227 HasDensityZero B), OR\n- A.Infinite, OR\n- B.Infinite\n\n**Key insight**: Finite A \u00d7 Finite B = Finite sumset, which can't cover cofinitely.\n\nProof constructs the finite sumset and shows its complement is infinite.",
     "mathContext": "This is a nice structural result: to cover almost everything, you need at least one infinite set. Both being finite is impossible.",
     "significance": "key",
     "relatedConcepts": [
@@ -403,7 +403,7 @@
     "prerequisites": [
       "Set.Finite.image (image of a finite set is finite)",
       "Set.Finite.prod (product of finite sets is finite)",
-      "Set.infinite_of_not_bddAbove (unbounded subsets of ℕ are infinite)",
+      "Set.infinite_of_not_bddAbove (unbounded subsets of \u2115 are infinite)",
       "CoversAllButFinitely / CoversCofinite definitions (this file)"
     ]
   },
@@ -414,10 +414,10 @@
       "startLine": 456,
       "endLine": 471
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Connection to Additive Bases (Verified)",
-    "content": "**IsAsymptoticBasis A h**: A is an asymptotic basis of order h\n(h-fold sums from A cover all large n)\n\n**theorem infinite_set_augmentable** ✓:\nFor infinite A, ∃ B with density 0 such that A ∪ B is an asymptotic basis of order 2.\n\n**Proof**: Apply Lorentz, then use sumset_covers_implies_basis.",
-    "mathContext": "This connects Erdős #31 to the theory of additive bases. Any infinite set becomes a basis of order 2 when augmented appropriately.",
+    "content": "**IsAsymptoticBasis A h**: A is an asymptotic basis of order h\n(h-fold sums from A cover all large n)\n\n**theorem infinite_set_augmentable** \u2713:\nFor infinite A, \u2203 B with density 0 such that A \u222a B is an asymptotic basis of order 2.\n\n**Proof**: Apply Lorentz, then use sumset_covers_implies_basis.",
+    "mathContext": "This connects Erd\u0151s #31 to the theory of additive bases. Any infinite set becomes a basis of order 2 when augmented appropriately.",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic-basis",
@@ -427,7 +427,7 @@
     "prerequisites": [
       "lorentz_theorem axiom (this file)",
       "IsAsymptoticBasis definition (this file)",
-      "Sumset / sumset notation +ₛ (this file)",
+      "Sumset / sumset notation +\u209b (this file)",
       "Set.union_subset (union of sets)"
     ]
   },
@@ -438,9 +438,9 @@
       "startLine": 400,
       "endLine": 408
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strengthened Version",
-    "content": "**Erdos31Strengthened**: ∃ universal C > 0 such that\nfor ALL infinite A, the B from Lorentz satisfies |B ∩ [1,N]| ≤ C · N/log N.\n\n**axiom lorentz_strengthened** ✓\n\nThis shows the O(N/log N) bound works uniformly for all A.",
+    "content": "**Erdos31Strengthened**: \u2203 universal C > 0 such that\nfor ALL infinite A, the B from Lorentz satisfies |B \u2229 [1,N]| \u2264 C \u00b7 N/log N.\n\n**axiom lorentz_strengthened** \u2713\n\nThis shows the O(N/log N) bound works uniformly for all A.",
     "mathContext": "The strengthened version is more useful for applications since the constant C doesn't depend on A.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -464,7 +464,7 @@
     },
     "type": "concept",
     "title": "Summary and Status",
-    "content": "**Erdős Problem #31: SOLVED** (Lorentz 1954)\n\n**Verified theorems**:\n- powers_of_2_density_zero ✓\n- squares_density_zero ✓\n- optimal_B_density_zero ✓\n- coverage_requires_density ✓\n- infinite_set_augmentable ✓\n\n**Key results**:\n1. Any infinite A has a density-0 complement B\n2. B can be chosen with |B ∩ [1,N]| = O(N/log N)\n3. A ∪ B becomes an asymptotic basis of order 2\n\n**Implications**: Sparse sets have flexible additive structure.",
+    "content": "**Erd\u0151s Problem #31: SOLVED** (Lorentz 1954)\n\n**Verified theorems**:\n- powers_of_2_density_zero \u2713\n- squares_density_zero \u2713\n- optimal_B_density_zero \u2713\n- coverage_requires_density \u2713\n- infinite_set_augmentable \u2713\n\n**Key results**:\n1. Any infinite A has a density-0 complement B\n2. B can be chosen with |B \u2229 [1,N]| = O(N/log N)\n3. A \u222a B becomes an asymptotic basis of order 2\n\n**Implications**: Sparse sets have flexible additive structure.",
     "mathContext": "This formalization has 5 verified theorems and comprehensive axiomatization of Lorentz's results. A landmark result in additive combinatorics.",
     "significance": "key",
     "relatedConcepts": [
