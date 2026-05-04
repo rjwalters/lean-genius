@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1151",
-  "title": "Erdős #1151",
+  "title": "Erd\u0151s #1151",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,25 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AUDIT: Corrected stale metadata. File has 2 axioms (both justified), 0 sorries, 3 proved theorems. Well-formalized.",
+    "progressSummary": "PROGRESS: Added limitPointSet_of_tendsto + limitPointSet_const. File: 7 theorems, 2 justified axioms, 0 sorries. Open problem well-documented.",
     "builtItems": [
       "Fixed meta.json axiomCount from 4 to 2 (corrected stale data)",
       "Cleaned vacuous clause from erdos_1941_divergence axiom statement",
-      "Updated assumptions description in meta.json"
+      "Updated assumptions description in meta.json",
+      "limitPointSet_of_tendsto: convergent sequences have singleton limit point set, Erdos1151Problem.lean ~133",
+      "limitPointSet_const: constant sequence limit point, Erdos1151Problem.lean ~155"
     ],
     "insights": [
       "Only 2 axioms (not 4 as metadata claimed): erdos_1941_divergence and erdos_1151_conjecture",
       "chebyshevNodes_injective and limitPointSet_isClosed are fully proved theorems, not axioms",
-      "erdos_1941_divergence is a deep 1941 Erdős result (Ann. of Math.) - not eliminable from Mathlib",
+      "erdos_1941_divergence is a deep 1941 Erd\u0151s result (Ann. of Math.) - not eliminable from Mathlib",
       "erdos_1151_conjecture is the main open problem - inherently an axiom",
-      "The formalization is well-structured: definitions, proved lemmas, and two justified axioms"
+      "The formalization is well-structured: definitions, proved lemmas, and two justified axioms",
+      "limitPointSet_of_tendsto: if seq \u2192 y then limitPointSet seq = {y} \u2014 proved by Metric.tendsto_atTop + triangle inequality + contradiction",
+      "limitPointSet_const: constant sequence has unique limit point \u2014 1-line corollary of limitPointSet_of_tendsto + tendsto_const_nhds"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "erdos_1941_divergence could potentially be proved from a formalized version of the 1941 paper, but this is a deep analysis result",
       "Could add more special cases derived from the main conjecture"
     ],
-    "markdown": "# Erdős #1151 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1151 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"

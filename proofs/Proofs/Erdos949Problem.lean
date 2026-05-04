@@ -94,6 +94,37 @@ theorem sidon_not_implies_sum_free :
   have : (1 : ℝ) + 1 ∉ ({1, 2, 4} : Set ℝ) := hsf 1 (by simp) 1 (by simp)
   simp only [mem_insert_iff, mem_singleton_iff] at this; norm_num at this
 
+-- ## Sidon Structural Properties
+
+/-- A subset of a Sidon set is Sidon. -/
+theorem sidon_subset {S T : Set ℝ} (hT : IsSidonReal T) (hST : S ⊆ T) : IsSidonReal S :=
+  fun a ha b hb c hc d hd hab hcd heq =>
+    hT a (hST ha) b (hST hb) c (hST hc) d (hST hd) hab hcd heq
+
+/-- Any two-element set {a, b} with a ≠ b is Sidon.
+    Proof: all 16 cases for (x,y,z,w) ∈ {a,b}^4 reduce to a = b (contradiction) or rfl. -/
+theorem sidon_two_element {a b : ℝ} (hab : a ≠ b) : IsSidonReal {a, b} := by
+  intro x hx y hy z hz w hw hxy hzw heq
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy hz hw
+  rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;>
+    rcases hz with rfl | rfl <;> rcases hw with rfl | rfl
+  · exact ⟨rfl, rfl⟩                            -- (a,a,a,a)
+  · exfalso; exact hab (by linarith)             -- (a,a,a,b): a+a=a+b → a=b
+  · exfalso; exact hab (by linarith)             -- (a,a,b,a): a+a=b+a → a=b
+  · exfalso; exact hab (by linarith)             -- (a,a,b,b): 2a=2b → a=b
+  · exfalso; exact hab (by linarith)             -- (a,b,a,a): a+b=2a → b=a
+  · exact ⟨rfl, rfl⟩                            -- (a,b,a,b)
+  · exfalso; exact hab (le_antisymm hxy hzw)     -- (a,b,b,a): a≤b∧b≤a → a=b
+  · exfalso; exact hab (by linarith)             -- (a,b,b,b): a+b=2b → a=b
+  · exfalso; exact hab (by linarith)             -- (b,a,a,a): b+a=2a → b=a
+  · exfalso; exact hab (le_antisymm hzw hxy)     -- (b,a,a,b): b≤a∧a≤b → a=b
+  · exact ⟨rfl, rfl⟩                            -- (b,a,b,a)
+  · exfalso; exact hab (by linarith)             -- (b,a,b,b): b+a=2b → a=b
+  · exfalso; exact hab (by linarith)             -- (b,b,a,a): 2b=2a → b=a
+  · exfalso; exact hab (by linarith)             -- (b,b,a,b): 2b=a+b → b=a
+  · exfalso; exact hab (by linarith)             -- (b,b,b,a): 2b=b+a → b=a
+  · exact ⟨rfl, rfl⟩                            -- (b,b,b,b)
+
 -- ## Structural Properties
 
 /-- The empty set is sum-free. -/

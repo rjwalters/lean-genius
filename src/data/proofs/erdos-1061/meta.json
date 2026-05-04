@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos (question via Guy's collection)",
     "sourceUrl": "https://erdosproblems.com/1061",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1061Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "asymptotic-analysis",
       "open-problem"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 1061,
     "erdosUrl": "https://erdosproblems.com/1061",
@@ -58,7 +58,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 380,
-    "assumptions": "None. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "No axioms. 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted \u2014 the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences.",
     "theoremCount": 48
   },
   "overview": {
@@ -174,27 +174,27 @@
   "crossReferences": [
     {
       "relationship": "sibling",
-      "description": "Both problems study equations involving σ(k) and counting solution pairs; #1060 asks how many k satisfy k·σ(k) = n while #1061 asks about pairs with σ(a)+σ(b) = σ(a+b)",
+      "description": "Both problems study equations involving \u03c3(k) and counting solution pairs; #1060 asks how many k satisfy k\u00b7\u03c3(k) = n while #1061 asks about pairs with \u03c3(a)+\u03c3(b) = \u03c3(a+b)",
       "targetId": "erdos-1060"
     },
     {
       "relationship": "related",
-      "description": "Unitary perfect numbers satisfy σ*(n) = 2n; the additive divisor equation σ(a)+σ(b) = σ(a+b) belongs to the same family of problems probing when σ achieves prescribed values",
+      "description": "Unitary perfect numbers satisfy \u03c3*(n) = 2n; the additive divisor equation \u03c3(a)+\u03c3(b) = \u03c3(a+b) belongs to the same family of problems probing when \u03c3 achieves prescribed values",
       "targetId": "erdos-1052"
     },
     {
       "relationship": "related",
-      "description": "k-perfect numbers satisfy σ(n) = k·n; both problems ask about density and growth rates of sets defined by divisor-sum equalities",
+      "description": "k-perfect numbers satisfy \u03c3(n) = k\u00b7n; both problems ask about density and growth rates of sets defined by divisor-sum equalities",
       "targetId": "erdos-1053"
     },
     {
       "relationship": "related",
-      "description": "Abundancy (σ(n)/n) is central to both problems; #277 connects covering systems to σ-values while #1061 probes additive identities of σ",
+      "description": "Abundancy (\u03c3(n)/n) is central to both problems; #277 connects covering systems to \u03c3-values while #1061 probes additive identities of \u03c3",
       "targetId": "erdos-277"
     },
     {
       "relationship": "related",
-      "description": "Both involve analytic properties of the sigma function; #250 studies irrationality of Σ σ(n)/n^s while #1061 studies additive identities of σ at consecutive integers",
+      "description": "Both involve analytic properties of the sigma function; #250 studies irrationality of \u03a3 \u03c3(n)/n^s while #1061 studies additive identities of \u03c3 at consecutive integers",
       "targetId": "erdos-250"
     },
     {
@@ -211,14 +211,14 @@
       "title": "Unsolved Problems in Number Theory, 3rd ed., Problem B15",
       "venue": "Springer",
       "year": "2004",
-      "description": "Original source recording the problem: how many ordered pairs (a,b) satisfy σ(a)+σ(b)=σ(a+b) with a+b ≤ x?"
+      "description": "Original source recording the problem: how many ordered pairs (a,b) satisfy \u03c3(a)+\u03c3(b)=\u03c3(a+b) with a+b \u2264 x?"
     },
     {
       "authors": [
-        "Paul Erdős",
+        "Paul Erd\u0151s",
         "Carl Pomerance"
       ],
-      "title": "On the normal number of prime factors of φ(n)",
+      "title": "On the normal number of prime factors of \u03c6(n)",
       "venue": "Rocky Mountain Journal of Mathematics",
       "year": "1985",
       "description": "Establishes analytic techniques for counting solutions to arithmetic-function equations that underpin the linear-growth question in #1061"
@@ -231,7 +231,7 @@
       "title": "On additive properties of the sum-of-divisors function",
       "venue": "Acta Arithmetica",
       "year": "1975",
-      "description": "Early study of when σ(a)+σ(b) can equal σ(n) for various n; context for the Erdős problem"
+      "description": "Early study of when \u03c3(a)+\u03c3(b) can equal \u03c3(n) for various n; context for the Erd\u0151s problem"
     },
     {
       "authors": [
@@ -241,7 +241,7 @@
       "venue": "OEIS Foundation",
       "year": "2005",
       "url": "https://oeis.org/A110177",
-      "description": "Catalogs integers n = a+b for which σ(a)+σ(b) = σ(a+b); the OEIS sequence directly referenced in the Lean formalization"
+      "description": "Catalogs integers n = a+b for which \u03c3(a)+\u03c3(b) = \u03c3(a+b); the OEIS sequence directly referenced in the Lean formalization"
     },
     {
       "authors": [
