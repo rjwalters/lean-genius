@@ -66,60 +66,36 @@
   },
   "sections": [
     {
-      "id": "definition",
-      "title": "The Engelsma 50-Tuple Definition",
-      "startLine": 46,
-      "endLine": 57,
-      "summary": "Defines `engelsma50Tuple : Finset ℕ` — the public explicit definition of the optimal 50-element admissible set with minimum diameter 246.",
-      "mathContext": "The 50 elements are all even, in increasing order from 0 to 246. The tuple is also called the 'Polymath 50-tuple' in the bounded prime gaps literature."
+      "id": "diameter-table",
+      "title": "Part I: Completing the Minimum Diameter Table at k=50",
+      "startLine": 40,
+      "endLine": 89,
+      "summary": "Provides witnesses for the minimum-diameter admissible k-tuple at k=2 (diameter 2, tuple {0,2}), k=3 (diameter 6, tuple {0,2,6}), k=5 (diameter 12, tuple {0,2,6,8,12}), and k=50 (diameter 246, Engelsma tuple from OQ03). Bundles all four into `complete_diameter_table`.",
+      "mathContext": "The OQ-01 diameter table previously had only an upper bound for k=50. By importing `engelsma50Tuple` from BoundedPrimeGapsOQ03, this file provides the exact witness: card=50, admissible, diameter=246."
     },
     {
-      "id": "structural-properties",
-      "title": "Structural Properties: Card, Min, Max, Diameter",
-      "startLine": 60,
-      "endLine": 86,
-      "summary": "Proves card = 50, nonempty, zero_mem, le_246, min = 0, max = 246, diameter = 246 — all by native_decide except diameter which follows by rewriting min and max.",
-      "mathContext": "The min/max proofs use `Finset.min'` and `Finset.max'` which require a `Nonempty` hypothesis. The diameter (max - min) = 246 - 0 = 246."
+      "id": "bound-tightness",
+      "title": "Part II: The 246 Bound Is Tight",
+      "startLine": 91,
+      "endLine": 114,
+      "summary": "Proves `oq01_upper_bound_is_tight`: no admissible 50-tuple has diameter < 246 (using `engelsma_lower_bound` from OQ03). Also proves `oq01_k50_diameter_is_exactly_246`: combines the upper-bound witness and lower-bound axiom to characterize 246 as the exact minimum.",
+      "mathContext": "The tightness follows by omega from `engelsma_lower_bound`. This corrects the OQ-01 table entry from 'diameter ≤ 246' to 'diameter = 246'."
     },
     {
-      "id": "admissibility",
-      "title": "Admissibility Proof",
-      "startLine": 89,
-      "endLine": 148,
-      "summary": "Proves `IsAdmissible engelsma50Tuple`. The proof checks all primes ≤ 47 by native_decide and handles p ≥ 53 by the automatic cardinality bound (50 < 53 ≤ p).",
-      "mathContext": "IsAdmissible H requires: for every prime p, the image {h % p : h ∈ H} has < p elements. For p > card(H) = 50, this is automatic. The 15 small prime cases (2,3,...,47) are each verified by native_decide."
+      "id": "sieve-connection",
+      "title": "Part III: Sieve Size Connection",
+      "startLine": 116,
+      "endLine": 129,
+      "summary": "Proves `maynard_tao_50_sieve_limit`: the Maynard-Tao 50-tuple sieve approach is completely characterized — it achieves H ≤ 246 unconditionally and cannot be improved within the 50-tuple framework.",
+      "mathContext": "Combines `polymath_achieves_246` (from BoundedPrimeGaps) with `engelsma_lower_bound` to show 246 is the exact sieve limit for k=50."
     },
     {
-      "id": "lower-bound",
-      "title": "Engelsma Lower Bound (Axiom)",
-      "startLine": 151,
-      "endLine": 168,
-      "summary": "Axiomatizes the Engelsma lower bound: every admissible 50-tuple has diameter ≥ 246. This is from Engelsma's 2005 exhaustive computer search.",
-      "mathContext": "The axiom states: for all H with |H| = 50 and H admissible, and for any a,b ∈ H with b ≤ a, we have 246 ≤ a - b. Formalizing this would require a machine-checked certificate for the exhaustive search."
-    },
-    {
-      "id": "minimum-diameter",
-      "title": "Exact Minimum Diameter Theorems",
-      "startLine": 171,
-      "endLine": 215,
-      "summary": "Combines upper bound (Engelsma tuple) and lower bound (Engelsma axiom) to prove: 246 is the exact minimum diameter of admissible 50-tuples. Key theorem: `engelsma_attains_minimum_diameter`.",
-      "mathContext": "Upper bound: the Engelsma tuple is admissible with 50 elements and diameter 246. Lower bound: under the axiom, any admissible 50-tuple has diameter ≥ 246. Together: 246 is the minimum."
-    },
-    {
-      "id": "prime-gaps",
-      "title": "Connection to Bounded Prime Gaps",
-      "startLine": 218,
-      "endLine": 232,
-      "summary": "Shows the Engelsma tuple feeds into the Maynard-Tao sieve to give H ≤ 246, reproducing the Polymath 8b result from the explicit public tuple.",
-      "mathContext": "Uses `maynard_tao_sieve engelsma50Tuple 246` with the proved admissibility and bound. The same gap bound was originally proved using the private tuple in BoundedPrimeGaps.lean."
-    },
-    {
-      "id": "summary",
-      "title": "Complete Summary Theorem",
-      "startLine": 235,
-      "endLine": 245,
-      "summary": "A single conjunction collecting all key properties: admissible, card=50, max=246, min=0, and bounded gaps H ≤ 246.",
-      "mathContext": "Packages the five main results for easy reference."
+      "id": "hierarchy",
+      "title": "Part IV: Gap Bound Hierarchy with Exact Entries",
+      "startLine": 131,
+      "endLine": 154,
+      "summary": "Proves `exact_gap_bound_hierarchy`: collects the full prime gap bound hierarchy — TPC gives H=2, EH-conditional gives H≤12, unconditional gives H≤246 (tight). The 246 entry is now exact, not merely an upper bound.",
+      "mathContext": "The TPC branch uses a standard prime gap argument; the unconditional and tightness branches follow from `polymath_achieves_246` and `engelsma_lower_bound`."
     }
   ],
   "conclusion": {
