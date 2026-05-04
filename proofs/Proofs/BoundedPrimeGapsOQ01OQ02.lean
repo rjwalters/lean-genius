@@ -114,19 +114,32 @@ def bvLevel : ℝ := 1 / 2
 /-- EH level: Elliott-Halberstam conjectures equidistribution up to θ = 1/2. -/
 def ehLevel : ℝ := 1 / 2
 
-/-- BV and EH have the same stated level (1/2), but BV is proved only for strict θ < 1/2. -/
+/-- Definitional marker: `bvLevel` and `ehLevel` are both defined as `1/2`, hence equal by
+    reflexivity. This records the fact that BV and EH share the same numerical level (1/2);
+    the substantive distinction is that BV is proved only for strict `θ < 1/2` while EH
+    conjectures equality at `θ = 1/2`. The encoding here cannot express that finer
+    distinction (real numbers cannot distinguish "all θ < 1/2" from "θ = 1/2"); it merely
+    fixes the level value used by both regimes. -/
 theorem bv_level_eq_eh_level : bvLevel = ehLevel := rfl
 
-/-- Under BV (θ < 1/2), the Maynard-Tao sieve requires k ≥ 50. -/
+/-- Numerical marker: the unconditional Maynard-Tao sieve (Polymath 8b) operates at tuple
+    size k = 50. This theorem is a literal-equality marker (`50 = 50`) recording the value
+    of the BV sieve threshold; it does not formalize the underlying sieve-theoretic claim
+    that 50 elements suffice. The meaningful structural comparisons live in
+    `eh_threshold_lt_bv_threshold` and `eh_threshold_divides_bv` below. -/
 theorem bv_requires_50_elements : (50 : ℕ) = 50 := rfl
 
-/-- Under EH (θ = 1/2), the Maynard-Tao sieve requires only k ≥ 5. -/
+/-- Numerical marker: the EH-conditional Maynard-Tao sieve operates at tuple size k = 5.
+    Like `bv_requires_50_elements`, this is a literal-equality marker recording the value
+    of the EH sieve threshold, not a formalization of the sieve-theoretic content. -/
 theorem eh_requires_5_elements : (5 : ℕ) = 5 := rfl
 
-/-- The EH sieve threshold (5) is strictly less than the BV threshold (50). -/
+/-- The EH sieve threshold (5) is strictly less than the BV threshold (50): the substantive
+    inequality witnessing that EH needs a smaller tuple than BV. -/
 theorem eh_threshold_lt_bv_threshold : (5 : ℕ) < 50 := by norm_num
 
-/-- The EH threshold divides the BV threshold: 5 | 50. -/
+/-- The EH threshold divides the BV threshold (5 | 50): a stronger numeric relation between
+    the two sieve thresholds than mere inequality. -/
 theorem eh_threshold_divides_bv : 5 ∣ 50 := by norm_num
 
 /-
