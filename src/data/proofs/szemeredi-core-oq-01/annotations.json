@@ -1,47 +1,111 @@
 [
   {
-    "id": "ann-energy-increment-step",
-    "type": "theorem",
-    "label": "energy_increment_step",
-    "title": "Energy Increment Step (Main Theorem)",
-    "body": "energy_increment_step: given ε-irregular pair (A,B) in a partition where every part has size ≥ εn, there exists a refined partition with energy ≥ E(current) + ε⁶. The proof: witnesses A'⊆A, B'⊆B give |A'|≥ε|A|≥ε²n and |B'|≥ε²n and |d(A',B')-d(A,B)|>ε, so |A'|·|B'|·δ²>ε²n·ε²n·ε²=ε⁶n². The refined partition is (parts∖{A,B})∪{A',A∖A',B',B∖B'}.",
-    "location": { "line": 742 },
-    "tags": ["main-theorem", "energy-increment", "szemer-edi"]
+    "id": "ann-szem-density-convex",
+    "proofId": "szemeredi-core-oq-01",
+    "range": { "startLine": 78, "endLine": 94 },
+    "type": "technique",
+    "title": "Jensen's inequality for edge density: d² is convex under splitting",
+    "content": "Proves `density_sq_convex_right`: for B = B₁⊔B₂ (disjoint), |B|·d(A,B)² ≤ |B₁|·d(A,B₁)² + |B₂|·d(A,B₂)². This is Jensen's inequality for the convex function f(x)=x²: the weighted average of d² exceeds (weighted average of d)². In energy terms: splitting an argument never decreases the contribution of pair (A,B) to the total energy.",
+    "mathContext": "For edge density $d(A,B) = e(A,B)/(|A||B|)$, the weighted average identity gives $d(A,B) = (|B_1|d(A,B_1) + |B_2|d(A,B_2))/|B|$. Jensen's inequality for $f = x^2$: $f(\\bar{x}) \\leq \\bar{f(x)}$, i.e., $d(A,B)^2 \\leq (|B_1|d(A,B_1)^2 + |B_2|d(A,B_2)^2)/|B|$. Multiplying by $|B|$: $|B|d(A,B)^2 \\leq |B_1|d(A,B_1)^2 + |B_2|d(A,B_2)^2$. In Lean, this is proved algebraically using `nlinarith` after establishing the weighted average identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jensen's inequality",
+      "convexity of x²",
+      "energy non-decrease under refinement",
+      "weighted average identity"
+    ],
+    "prerequisites": [
+      "edgeDensity_union_weighted_avg",
+      "nlinarith",
+      "Finset.card_union_disjoint"
+    ]
   },
   {
-    "id": "ann-energy-increment-packaging",
-    "type": "theorem",
-    "label": "energy_increment_packaging",
-    "title": "Block-Decomposition Core Lemma",
-    "body": "energy_increment_packaging: separates the block-energy accounting from the ε⁶ lower bound. Given the split A={A',A\\A'} and B={B',B\\B'}, the refined partition's energy exceeds the original by at least 2/n²·|A'|·|B'|·(d(A',B')-d(A,B))². The argument decomposes partition energy into S×S (same), S×T and T×S (non-negative by convexity), and T×T (positive increment from irregularity).",
-    "location": { "line": 406 },
-    "tags": ["packaging", "block-decomposition", "energy-increment"]
+    "id": "ann-szem-variance-identity",
+    "proofId": "szemeredi-core-oq-01",
+    "range": { "startLine": 348, "endLine": 372 },
+    "type": "insight",
+    "title": "Variance decomposition: 4-pair energy = original + squared deviations",
+    "content": "Proves `four_subpair_deviation_identity`: for A = A₁⊔A₂, B = B₁⊔B₂, the total energy over the four subpairs equals |A||B|d(A,B)²/n² plus the variance term Σᵢⱼ|Aᵢ||Bⱼ|(d(Aᵢ,Bⱼ)-d(A,B))²/n². This is the 2D analogue of the parallel axis theorem (E[X²] = Var(X) + E[X]²), converting the energy excess into a sum of squared density deviations.",
+    "mathContext": "Expand $\\sum_{i,j}|A_i||B_j|d(A_i,B_j)^2 = \\sum_{i,j}|A_i||B_j|((d(A_i,B_j)-d)+(d))^2$ where $d = d(A,B)$. The cross terms vanish by the weighted average identity ($\\sum_{i,j}|A_i||B_j|(d(A_i,B_j)-d) = 0$), leaving $\\sum|A_i||B_j|d(A_i,B_j)^2 = |A||B|d^2 + \\sum|A_i||B_j|(d(A_i,B_j)-d)^2$. This identity is exact (no approximation), making it the algebraic heart of the proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parallel axis theorem",
+      "variance decomposition",
+      "law of total variance",
+      "Σ(xᵢ - μ)² = Σxᵢ² - nμ²"
+    ],
+    "prerequisites": [
+      "four_subpair_edge_count_identity",
+      "edgeDensity_union_weighted_avg",
+      "ring",
+      "nlinarith"
+    ]
   },
   {
-    "id": "ann-four-subpair-excess",
-    "type": "theorem",
-    "label": "four_subpair_excess_lb",
-    "title": "Per-Pair Energy Excess Lower Bound",
-    "body": "four_subpair_excess_lb: the energy of the four subpairs {A',A\\A'}×{B',B\\B'} exceeds the energy of A×B by at least 2·|A'|·|B'|·(d(A',B')-d(A,B))²/n². This is the key quantitative step converting a density deviation δ into an energy increment proportional to δ². Proved via four_subpair_deviation_identity (variance formula) and the non-negativity of squared terms.",
-    "location": { "line": 373 },
-    "tags": ["variance", "four-subpairs", "energy"]
+    "id": "ann-szem-excess-lb",
+    "proofId": "szemeredi-core-oq-01",
+    "range": { "startLine": 373, "endLine": 405 },
+    "type": "technique",
+    "title": "Energy excess lower bound: variance ≥ 2|A'||B'|δ²/n²",
+    "content": "Proves `four_subpair_excess_lb`: the 4-pair energy exceeds the original pair's energy by at least 2|A'||B'|(d(A',B')-d(A,B))²/n². The proof uses `four_subpair_deviation_identity` and the fact that the variance sum has at least one positive term (the (A',B') subpair), with all other terms non-negative by squaring. The factor 2 comes from the symmetric contribution from (A',B') and the antisymmetric nature of the A-split.",
+    "mathContext": "From the variance identity: excess $= \\sum_{i,j}|A_i||B_j|(d(A_i,B_j)-d)^2/n^2 \\geq |A'||B'|(d(A',B')-d(A,B))^2/n^2$. But actually the bound is $2|A'||B'|\\delta^2/n^2$ (factor of 2) because: due to $d(A\\setminus A', B') = (|B'|d(A,B') - |A'||B'|d(A',B'))/(|A\\setminus A'||B'|)$ and the constraint that the A-split is exact, there's a second contribution from the $(A\\setminus A', B')$ term. This factor of 2 is the key amplification used to get the ε⁶ bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "four_subpair_deviation_identity",
+      "nonnegativity of squared terms",
+      "energy excess",
+      "irregularity witnesses"
+    ],
+    "prerequisites": [
+      "four_subpair_deviation_identity",
+      "sq_nonneg",
+      "mul_nonneg",
+      "Nat.cast_nonneg"
+    ]
   },
   {
-    "id": "ann-variance-decomposition",
-    "type": "theorem",
-    "label": "four_subpair_deviation_identity",
-    "title": "Variance Decomposition (δ-Identity)",
-    "body": "four_subpair_deviation_identity: the energy of the four subpairs equals the energy of A×B plus a non-negative variance term. Formally: Σ_{i,j} |Aᵢ||Bⱼ|d(Aᵢ,Bⱼ)² = |A||B|d(A,B)² + Σ |Aᵢ||Bⱼ|(d(Aᵢ,Bⱼ)-d(A,B))². The identity is the 2D analog of the parallel axis theorem: Var(X) = E[X²] - E[X]².",
-    "location": { "line": 348 },
-    "tags": ["variance", "identity", "algebra"]
+    "id": "ann-szem-packaging",
+    "proofId": "szemeredi-core-oq-01",
+    "range": { "startLine": 406, "endLine": 741 },
+    "type": "technique",
+    "title": "Block-decomposition: energy_increment_packaging separates S×S, S×T, T×T contributions",
+    "content": "The 335-line `energy_increment_packaging` lemma decomposes the partition energy into three block types: (S×S) pairs not involving A or B — unchanged in the refined partition; (S×T and T×S) pairs involving exactly one of A or B — non-negative contribution by convexity of d²; (T×T = {A',A\\A'}×{B',B\\B'}) — positive contribution ≥ 2|A'||B'|δ²/n² from four_subpair_excess_lb. This clean separation of concerns is the technical heart of the proof.",
+    "mathContext": "Let $S = P \\setminus \\{A,B\\}$ be the 'stable' parts and $T = \\{A',A\\setminus A',B',B\\setminus B'\\}$ the 'target' parts. Partition energy: $E(P') = E(S\\times S) + E(S\\times T) + E(T\\times S) + E(T\\times T)$. Here $E(S\\times S) = E_{\\text{old}}(S\\times S)$ (unchanged), $E(S\\times T) + E(T\\times S) \\geq E_{\\text{old}}(S\\times\\{A,B\\}) + E_{\\text{old}}(\\{A,B\\}\\times S)$ (by convexity), and $E(T\\times T) \\geq E_{\\text{old}}(A\\times B) + 2|A'||B'|\\delta^2/n^2$ (by four_subpair_excess_lb). Summing gives $E(P') \\geq E(P) + 2|A'||B'|\\delta^2/n^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum over product",
+      "bipartite energy decomposition",
+      "S×S vs S×T vs T×T blocks",
+      "sub4pair_energy_lower_bound"
+    ],
+    "prerequisites": [
+      "four_subpair_excess_lb",
+      "sub4pair_energy_lower_bound",
+      "density_sq_convex_right",
+      "Finset.sum_union"
+    ]
   },
   {
-    "id": "ann-density-convexity",
-    "type": "theorem",
-    "label": "density_sq_convex_right",
-    "title": "Convexity of d² Under Splitting",
-    "body": "density_sq_convex_right: for B = B₁∪B₂ disjoint, |B|·d(A,B)² ≤ |B₁|·d(A,B₁)² + |B₂|·d(A,B₂)². This says d² is convex under weighted splits of one argument. Combined with edgeDensity_symm, it implies splitting EITHER argument is non-decreasing in total energy, which ensures the refinement never loses energy on the non-T×T blocks.",
-    "location": { "line": 78 },
-    "tags": ["convexity", "edge-density", "splitting"]
+    "id": "ann-szem-main",
+    "proofId": "szemeredi-core-oq-01",
+    "range": { "startLine": 742, "endLine": 843 },
+    "type": "insight",
+    "title": "energy_increment_step: ε-irregularity gives +ε⁶ energy increment",
+    "content": "Main theorem: `energy_increment_step` — from ε-irregular pair (A,B) with witnesses A'⊆A, B'⊆B satisfying |A'|≥ε|A|≥ε²n, |B'|≥ε|B|≥ε²n, |d(A',B')-d(A,B)|>ε, the refined partition has energy ≥ E(P) + ε⁶. Proof: applies `energy_increment_packaging` with the bound 2|A'||B'|δ² ≥ 2(ε²n)(ε²n)(ε²) = 2ε⁶n², giving (2ε⁶n²)/n² = 2ε⁶ ≥ ε⁶.",
+    "mathContext": "The three ε-inequalities multiply: $|A'| \\geq \\varepsilon|A| \\geq \\varepsilon \\cdot \\varepsilon n = \\varepsilon^2 n$ (part size ≥ εn and witness ≥ ε fraction), similarly $|B'| \\geq \\varepsilon^2 n$, and $|d(A',B')-d(A,B)| > \\varepsilon$. So $2|A'||B'|\\delta^2/n^2 \\geq 2(\\varepsilon^2 n)(\\varepsilon^2 n)(\\varepsilon^2)/n^2 = 2\\varepsilon^6$. The factor of $n^2/n^2 = 1$ is the ratio of the term to the energy denominator. The theorem yields $E(P') \\geq E(P) + \\varepsilon^6$ as required.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ε-regular pairs",
+      "irregularity witnesses",
+      "energy_increment_packaging",
+      "tower-type bounds"
+    ],
+    "prerequisites": [
+      "energy_increment_packaging",
+      "IsEpsilonRegular",
+      "SzemerediRegularity",
+      "nlinarith"
+    ]
   }
 ]
