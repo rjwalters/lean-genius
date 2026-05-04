@@ -22,7 +22,7 @@
     "dateAdded": "2026-05-04",
     "axiomCount": 1,
     "assumptions": "shafarevich_inverse_galois: Every finite solvable group G is the Galois group of some number field extension L/ℚ. Shafarevich (1954, Izv. Akad. Nauk). Proof requires class field theory, embedding problems, and Brauer group theory — not currently in Mathlib.",
-    "lineCount": 175,
+    "lineCount": 214,
     "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
@@ -35,40 +35,95 @@
       "quotient_of_solvable_realizable: quotients of solvable groups are realizable",
       "s5_not_solvable_obstruction: S₅ fails solvability criterion (not solvable)"
     ],
-    "proofStrategy": "Shafarevich's theorem is axiomatized. Corollaries are proved via solvability closure properties from the parent file (AbelRuffiniGaloisExtensions.lean): CommGroup.isSolvable for abelian/cyclic, symmetric_solvable_of_le_four for S₃,S₄, subgroup_solvable_of_solvable and quotient_solvable_of_solvable for closure. S₅ non-realizability follows from s5_not_solvable.",
-    "openQuestions": [
-      "Can Shafarevich's theorem be proved in Lean using Mathlib's class field theory?",
-      "Is every finite group (not just solvable) realizable over ℚ? (The Inverse Galois Problem — open)",
-      "Can the specific Galois extensions for S₃ and S₄ be constructed explicitly in Lean?"
-    ],
-    "sections": [
+    "relatedProblems": [
       {
-        "title": "Shafarevich's Core Axiom",
-        "content": "For any finite solvable group G, there exists a Galois extension L/ℚ with Gal(L/ℚ) ≅ G. The proof uses class field theory for abelian steps, then an inductive construction along the derived series using embedding problem theory.",
-        "theorems": ["shafarevich_inverse_galois"]
+        "id": "abel-ruffini-galois-extensions",
+        "relationship": "Parent file: proves S_n solvable ↔ n ≤ 4 and provides symmetric_solvable_of_le_four, s5_not_solvable used here"
       },
       {
-        "title": "Cyclic and Abelian Corollaries",
-        "content": "Cyclic groups ℤ/nℤ and all finite abelian groups are realizable over ℚ. Proof: CommGroup.isSolvable + Shafarevich. For cyclic groups, the classical construction via cyclotomic extensions ℚ(ζₙ) gives explicit realizations, but Shafarevich applies generally.",
-        "theorems": ["cyclic_group_realizable", "abelian_group_realizable"]
-      },
-      {
-        "title": "Symmetric Group Cases",
-        "content": "S₃ and S₄ are both realizable (solvable groups, apply Shafarevich). S₅ fails the solvability criterion — it is the smallest symmetric group that is not solvable, corresponding to the impossibility of solving degree-5 polynomials by radicals.",
-        "theorems": ["s3_realizable", "s4_realizable", "s5_not_solvable_obstruction"]
-      },
-      {
-        "title": "Closure Properties",
-        "content": "The class of groups realizable over ℚ via Shafarevich's theorem is closed under taking subgroups and quotients (since both preserve solvability). This gives a structural picture of the solvable part of the inverse Galois problem.",
-        "theorems": ["subgroup_of_solvable_realizable", "quotient_of_solvable_realizable"]
+        "id": "abel-ruffini",
+        "relationship": "Foundational file: proves polynomials solvable by radicals ↔ Galois group solvable — Abel-Ruffini's theorem"
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Igor Shafarevich proved in 1954 (Izv. Akad. Nauk SSSR) that every finite solvable group is realizable as the Galois group of some number field extension of ℚ. This was a landmark result in inverse Galois theory — the problem of determining which finite groups can arise as Galois groups over ℚ.\n\nShafarevich's theorem completes the Abel-Ruffini framework: Abel (1824) and Ruffini (1799) showed that a polynomial equation is solvable by radicals if and only if its Galois group is solvable. Shafarevich showed the converse: every solvable group actually occurs. The full proof (detailed in Neukirch-Schmidt-Wingberg \"Cohomology of Number Fields\" §9.5) uses class field theory for the abelian base case, then an inductive construction on the derived series using cohomological embedding problem theory and Brauer groups.\n\nThe general inverse Galois problem — whether every finite group (not just solvable ones) arises as a Galois group over ℚ — remains open, despite being settled for many specific families of groups.",
+    "problemStatement": "Can Shafarevich's theorem (every finite solvable group is a Galois group over ℚ) be stated in Lean as a companion to the solvability classification in AbelRuffiniGaloisExtensions.lean?",
+    "proofStrategy": "Axiomatize shafarevich_inverse_galois with the existential statement ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (G ≃* (L ≃ₐ[ℚ] L)). All corollaries follow the same template: (1) construct IsSolvable instance via typeclass inference or parent-file lemmas, (2) apply @shafarevich_inverse_galois via obtain to destructure the existential, (3) package the result. The S₅ obstruction is imported directly from the parent file as s5_not_solvable.",
+    "keyInsights": [
+      "**Converse of Abel-Ruffini**: Shafarevich's theorem makes the solvability criterion an if-and-only-if: G is a radical Galois group over ℚ if and only if G is solvable. This file proves the ← direction; the parent file proves the → direction.",
+      "**Axiomatization depth**: The single axiom `shafarevich_inverse_galois` encapsulates roughly 500+ pages of algebraic number theory (class field theory, profinite groups, Brauer groups). All 7 corollaries are fully proved from this one assumption.",
+      "**inferInstance power**: The cyclic and abelian corollaries are essentially trivial in Lean — `IsSolvable (ZMod n)` and `IsSolvable G` for abelian G are automatically inferred via `CommGroup.isSolvable`. Shafarevich converts this trivial algebraic fact into a deep number-theoretic conclusion.",
+      "**S₅ nuance**: S₅ is not realizable via Shafarevich (non-solvable), but S₅ IS realizable over ℚ by other means (e.g., as Gal(x⁵-2x-5/ℚ)). The obstruction is not to realizability, but to realizability via the solvable-group pathway.",
+      "**Lean representation of Gal(L/ℚ)**: The Galois group is represented as `L ≃ₐ[ℚ] L` — the type of ℚ-algebra automorphisms — which naturally forms a group under composition. `IsGalois ℚ L` ensures this matches the classical Galois group."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-doc",
+      "title": "Imports and Mathematical Background",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports Mathlib field theory, group theory, Galois basics, and the parent file. The module docstring explains the relationship between Abel-Ruffini and Shafarevich's theorem, and lists the four deep ingredients of Shafarevich's proof.",
+      "mathContext": "$G$ solvable $\\Rightarrow$ $\\exists L/\\mathbb{Q}$ Galois with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$ (Shafarevich 1954)."
+    },
+    {
+      "id": "core-axiom",
+      "title": "Shafarevich's Theorem (Axiomatized)",
+      "startLine": 56,
+      "endLine": 83,
+      "summary": "The single axiom shafarevich_inverse_galois: for any [IsSolvable G], there exists a Galois extension L/ℚ with G ≃* Gal(L/ℚ). Comments explain the proof sketch (class field theory, embedding problems, Brauer groups).",
+      "mathContext": "$\\forall G$ finite solvable, $\\exists L/\\mathbb{Q}$ Galois: $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$."
+    },
+    {
+      "id": "specific-corollaries",
+      "title": "Corollaries: Cyclic, Abelian, S₃, S₄",
+      "startLine": 88,
+      "endLine": 131,
+      "summary": "Four proved corollaries: cyclic_group_realizable (ZMod n via CommGroup.isSolvable), abelian_group_realizable (all CommGroups), s3_realizable and s4_realizable (via symmetric_solvable_of_le_four from parent file).",
+      "mathContext": "$\\mathbb{Z}/n\\mathbb{Z}, A, S_3, S_4$ are all solvable, hence realizable over $\\mathbb{Q}$ by Shafarevich."
+    },
+    {
+      "id": "closure-properties",
+      "title": "Closure Under Subgroups and Quotients",
+      "startLine": 133,
+      "endLine": 163,
+      "summary": "solvable_iff_shafarevich_realizable, subgroup_of_solvable_realizable (subgroup preserves solvability), quotient_of_solvable_realizable (quotient by normal subgroup preserves solvability). All proved from Shafarevich + parent lemmas.",
+      "mathContext": "Solvability is closed under subgroups and quotients: if $G$ is solvable and $H \\leq G$ or $H = G/N$, then $H$ is solvable, hence realizable."
+    },
+    {
+      "id": "s5-obstruction",
+      "title": "S₅ Non-Solvability Obstruction",
+      "startLine": 165,
+      "endLine": 214,
+      "summary": "shafarevich_implies_converse (alias of solvable_iff_shafarevich_realizable), s5_not_solvable_obstruction (imported from parent as s5_not_solvable). The summary comment documents the proof status and connection to Abel-Ruffini.",
+      "mathContext": "$S_5$ is not solvable ($A_5$ is simple non-abelian), so Shafarevich does not apply — though $S_5$ is realizable over $\\mathbb{Q}$ by other means."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file axiomatizes Shafarevich's 1954 theorem and formally derives 7 corollaries: cyclic groups, all abelian groups, S₃ and S₄ are realizable over ℚ; the class of realizable solvable groups is closed under subgroups and quotients; and S₅ fails the solvability criterion. All 7 theorems are fully proved from the single axiom using Mathlib's group theory.",
+    "implications": "Together with AbelRuffiniGaloisExtensions.lean, this file completes a formal framework for the solvable inverse Galois problem: a finite group G is the Galois group of a radical extension of ℚ if and only if G is solvable. This is the group-theoretic content of the classical quintic insolvability story. The axiomatization is mathematically honest: it correctly identifies the single deep theorem (Shafarevich's) that requires substantial algebraic number theory, while formalizing all the group-theoretic consequences in full Lean.",
+    "openQuestions": [
+      "Can Shafarevich's theorem be proved in Lean using Mathlib's developing class field theory? The abelian case (realizing ZMod n via cyclotomic extensions) is within reach; the full proof requires embedding problem theory.",
+      "Can the specific Galois extensions for S₃ and S₄ be constructed explicitly in Lean, not just their existence asserted? E.g., x³ + px + q for S₃ and a generic quartic for S₄.",
+      "Is every finite group (not just solvable) realizable as a Galois group over ℚ? This is the full inverse Galois problem — one of the deepest open problems in number theory, settled for many families (symmetric groups, simple groups of Lie type, sporadic groups)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "abel-ruffini-galois-extensions",
+      "relationship": "Parent file: provides symmetric_solvable_of_le_four, s5_not_solvable, and other group-theory lemmas used in the corollaries"
+    },
+    {
+      "proofId": "abel-ruffini",
+      "relationship": "Grandparent: proves the polynomial-theoretic side (solvable by radicals ↔ solvable Galois group), completing the bidirectional characterization"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05.lean",
     "axiomCount": 1,
     "sorryCount": 0,
-    "lineCount": 175,
+    "lineCount": 214,
     "theoremCount": 8,
     "definitionCount": 0
   }
