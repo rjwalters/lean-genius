@@ -215,7 +215,7 @@ theorem cubicEuler_hard {p : ℕ} [Fact p.Prime] (h3 : p % 3 = 1)
     rw [hcub3] at hdvd
     obtain ⟨m, hm⟩ := hdvd
     exact ⟨m, mul_right_cancel₀ hcubPos
-      (calc k * ↑(cubExp p) = m * (3 * ↑(cubExp p)) := hm
+      (calc k * ↑(cubExp p) = 3 * ↑(cubExp p) * m := hm
         _ = 3 * m * ↑(cubExp p) := by ring)⟩
   -- Write k = 3 * j
   obtain ⟨j, hj⟩ := h3k
@@ -375,7 +375,7 @@ theorem quarticEuler_hard {p : ℕ} [Fact p.Prime] (h4 : p % 4 = 1)
   have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
     rw [ZMod.card_units_eq_totient, Nat.totient_prime (Fact.out)]
   have hord : orderOf g = p - 1 := by
-    rw [← hcard]; exact orderOf_eq_card_of_forall_mem_zpowers hg
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcard]
   have hquartPos : (quartExp p : ℤ) ≠ 0 := by
     have : 0 < quartExp p := Nat.div_pos
       (Nat.le_of_dvd (Nat.sub_pos_of_lt (Fact.out : Nat.Prime p).one_lt)
@@ -395,7 +395,7 @@ theorem quarticEuler_hard {p : ℕ} [Fact p.Prime] (h4 : p % 4 = 1)
     rw [hquart4] at hdvd
     obtain ⟨m, hm⟩ := hdvd
     exact ⟨m, mul_right_cancel₀ hquartPos
-      (calc k * ↑(quartExp p) = m * (4 * ↑(quartExp p)) := hm
+      (calc k * ↑(quartExp p) = 4 * ↑(quartExp p) * m := hm
         _ = 4 * m * ↑(quartExp p) := by ring)⟩
   obtain ⟨j, hj⟩ := h4k
   have hquartic : (g ^ j : (ZMod p)ˣ) ^ (4 : ℕ) = a := by
@@ -452,8 +452,8 @@ theorem quarticChar_kernel_card (h4 : p % 4 = 1) :
 -- PART 8: Cubic Reciprocity (Axiomatized with Strategy)
 -- ============================================================
 
-/-- The Eisenstein integers ℤ[ω] are not yet in Mathlib v4.26.0.
-    We describe them and their key properties as axioms. -/
+/- The Eisenstein integers ℤ[ω] are not yet in Mathlib v4.26.0.
+   We describe them and their key properties as axioms. -/
 
 /-- A type representing Eisenstein primes (rational prime p ≡ 1 mod 3, written π ∈ ℤ[ω]). -/
 structure EisensteinPrime where
