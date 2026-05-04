@@ -22,10 +22,10 @@
     "dateAdded": "2025-01-01",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
-    "assumptions": "1 axiom: min_degree_for_distinct (any polynomial with distinct pair sums has degree ≥ 5). distinct_count_eq_binomial now proved (PR #6733). Six former axioms proved: lps_implies_power_distinct (trivial), squares/cubes/quartics_not_distinct (via counterexamples 65/1729/635318657), linear_not_distinct (f(0)+f(3)=f(1)+f(2)).",
-    "lineCount": 272,
-    "dateUpdated": "2026-03-28",
-    "theoremCount": 12
+    "assumptions": "1 axiom: min_degree_for_distinct (any polynomial with distinct pair sums has degree ≥ 5). distinct_count_eq_binomial now proved. Six former axioms proved: lps_implies_power_distinct (trivial), squares/cubes/quartics_not_distinct (via counterexamples 65/1729/635318657), linear_not_distinct (f(0)+f(3)=f(1)+f(2)). New: quadratic_no_linear_not_distinct (ax²+c fails, 1²+8²=4²+7²=65), monic_neg_linear_quad_not_distinct (x²-(n+2)x+c fails, f(0)+f(1)=f(n+1)+f(n+2)).",
+    "lineCount": 303,
+    "dateUpdated": "2026-05-04",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed Problem #324 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 53), describing it as 'very annoying.' The question asks whether any polynomial $f \\in \\mathbb{Z}[X]$ can make all sums $f(a) + f(b)$ with $a < b$ nonnegative integers distinct.\n\nThe problem connects to a rich history of equal-sums-of-powers questions. Diophantus studied representations of numbers as sums of squares. Fermat (1640s) characterized which integers are sums of two squares. The failure of $x^2$: $65 = 1^2 + 8^2 = 4^2 + 7^2$ follows from 65 having prime factors 5 and 13, both $\\equiv 1 \\pmod{4}$. The iconic failure of $x^3$ is the Hardy-Ramanujan taxicab number $1729 = 1^3 + 12^3 = 9^3 + 10^3$, discovered by Ramanujan in 1919 during Hardy's hospital visit. Euler (1772) found $59^4 + 158^4 = 133^4 + 134^4$, showing $x^4$ fails.\n\nThe Lander-Parkin-Selfridge (LPS) conjecture (1967) predicts that $x_1^n + x_2^n = y_1^n + y_2^n$ has no nontrivial solutions for $n \\geq 5$, generalizing Fermat's Last Theorem (the $k = 1$ case, proved by Wiles 1995). LPS would immediately resolve Problem #324 via $f(x) = x^5$. Despite extensive computational searches, no counterexample to $a^5 + b^5 = c^5 + d^5$ has been found, making the quintic the natural candidate.",
@@ -202,9 +202,9 @@
       "Polynomial"
     ],
     "namespace": null,
-    "lineCount": 272,
+    "lineCount": 303,
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 7,
     "path": "Proofs/Erdos324Problem.lean",
     "sorries": 0
