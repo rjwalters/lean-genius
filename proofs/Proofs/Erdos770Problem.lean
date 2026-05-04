@@ -31,6 +31,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
 
 open Finset
@@ -529,3 +530,21 @@ theorem hMinK_succ_of_prime {n : ℕ} (hp : Nat.Prime (n + 1)) : hMinK n = n + 1
 theorem hMinK_unbounded (M : ℕ) : ∃ n, M < hMinK n := by
   obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (M + 1)
   exact ⟨p - 1, hMinK_prime_minus_one hp_prime ▸ by omega⟩
+
+/-- **Q1 (OPEN)**: For each prime p, the natural density of {n : ℕ | hMinK n = p}
+    exists. The conjectured density δ_p is the probability that the smallest
+    prime q with q ∤ (q-1)! satisfying some divisibility condition equals p.
+    [OPEN — requires density theory for multiplicative functions] -/
+axiom erdos_770_q1 : ∀ p : ℕ, Nat.Prime p →
+    ∃ δ : ℝ, 0 ≤ δ ∧ Filter.Tendsto
+      (fun N : ℕ => ((Finset.filter (fun n => hMinK n = p) (Finset.range N)).card : ℝ) / N)
+      Filter.atTop (nhds δ)
+
+/-- **Q3 (OPEN)**: The function hMinK is characterized by the dominant prime divisor.
+    Specifically: if p is the largest prime with (p-1) | n, then hMinK n = p
+    for all sufficiently large n satisfying the dominance condition.
+    [OPEN — no proof exists in the literature] -/
+axiom erdos_770_q3 : ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
+    ∀ p : ℕ, Nat.Prime p → (p - 1) ∣ n →
+    (∀ q : ℕ, Nat.Prime q → (q - 1) ∣ n → q ≤ p) →
+    hMinK n = p

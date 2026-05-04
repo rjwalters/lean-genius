@@ -14,7 +14,7 @@
       "coprimality",
       "open"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/770",
     "erdosUrl": "https://erdosproblems.com/770",
@@ -55,9 +55,9 @@
       "Proved h_eq_succ_of_prime: h(n) = n+1 when n+1 is prime",
       "Bridge lemma zmod_pow_eq_one_of_dvd: converts nat divisibility to ZMod equality"
     ],
-    "axiomCount": 0,
-    "lineCount": 531,
-    "assumptions": "None. 80 theorems fully verified with 0 axioms and 0 sorries. The open density question (Q1) is stated as a comment only. Open conjecture; supporting lemmas fully verified. New: hMinK_prime_minus_one proves h(p-1)=p for all primes p; hMinK_unbounded proves Q2 (upper half: h(n) is unbounded).",
+    "axiomCount": 2,
+    "lineCount": 550,
+    "assumptions": "2 axioms: erdos_770_q1 (density of {n : hMinK n = p} exists for each prime p — OPEN), erdos_770_q3 (hMinK n = p when p is the largest prime with (p-1)|n, for large n — OPEN). Q2 (h(n) unbounded) is fully proved via hMinK_unbounded. 74 theorems, 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 74
   },
@@ -206,8 +206,8 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 531,
-    "axiomCount": 0,
+    "lineCount": 550,
+    "axiomCount": 2,
     "theoremCount": 74,
     "definitionCount": 2,
     "path": "Proofs/Erdos770Problem.lean",
