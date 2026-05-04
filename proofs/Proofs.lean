@@ -479,6 +479,7 @@ import Proofs.CubeRoot2Irrational
 import Proofs.CubeRoot2IrrationalOQ03
 import Proofs.CubeRoot3Irrational
 import Proofs.CubeRoot3IrrationalOQ02
+import Proofs.CubeRoot3IrrationalOQ02OQ01
 import Proofs.CubeRoot5Irrational
 import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational
