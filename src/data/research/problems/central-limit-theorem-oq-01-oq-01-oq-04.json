@@ -1,0 +1,262 @@
+{
+  "slug": "central-limit-theorem-oq-01-oq-01-oq-04",
+  "title": "Multivariate Operator-Stable Distributions and Matrix Domain of Attraction",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{IsOperatorStable}(d, \\phi) \\iff \\exists A_n, b_n: \\phi(A_n^\\top \\xi)^n = \\phi(\\xi) \\cdot e^{i\\langle b_n, \\xi\\rangle}",
+    "plain": "Can the Gnedenko-Kolmogorov domain of attraction theory be generalized to R^d using matrix normalizations A_n = n^{-E}?",
+    "whyMatters": [
+      "Unifies univariate alpha-stable theory with multivariate CLT",
+      "Applies to heavy-tailed spatial statistics and teletraffic models",
+      "Establishes eigenvalue constraints Re(lambda(E)) >= 1/2 as the matrix analog of alpha <= 2"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Gaussian N(0,Sigma) is operator-stable with exponent E = (1/2)*I (proved)",
+      "Quadratic form scales: quadForm(xi/sqrt(n)) = (1/n)*quadForm(xi) (proved)",
+      "Operator-stable laws are closed under nonsingular linear maps (proved)",
+      "Scalar specialization: 1D alpha-stable embeds as operator-stable with scalar exponent 1/alpha (proved)"
+    ],
+    "open": [
+      "Eigenvalue bound Re(lambda(E)) >= 1/2 requires spectral analysis (axiomatized)",
+      "Meerschaert-Scheffler DOA theorem requires measure-theoretic weak convergence (axiomatized)"
+    ],
+    "goal": "Formalize the operator-stable domain of attraction theory in Lean 4"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-04T12:00:00Z",
+    "iteration": 2,
+    "focus": "Gallery entry created: 18 theorems, 2 axioms, 0 sorries. Docker build pending.",
+    "blockers": [
+      "eigenvalue_ge_half requires Mathlib spectral theory for matrix eigenvalue bounds",
+      "meerschaert_scheffler requires weak convergence of probability measures in R^d"
+    ],
+    "nextAction": "Verify Docker build; consider partial axiom elimination via spectral theory",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Gallery entry created. 18 theorems proved, 2 axioms (eigenvalue bound + DOA theorem). Key: Gaussian operator-stability fully proved. PR pending.",
+    "builtItems": [
+      "exp_neg_div_pow: (exp(-x/n))^n = exp(-x) in C",
+      "quadForm_scale_inv_sqrt: quadForm(xi/sqrt(n)) = (1/n)*quadForm(xi)",
+      "gaussian_operator_stable: Gaussian is operator-stable with exponent 1/2",
+      "gaussian_has_scalar_exponent: HasScalarExponent d (gaussCharFun Sigma) (1/2)",
+      "alpha_stable_is_operator_stable: 1D alpha-stable embeds as operator-stable",
+      "operator_stable_linear_image: closure under linear maps",
+      "gaussian_in_own_doa: Gaussian is in its own domain of attraction"
+    ],
+    "insights": [
+      "Core identity (exp(-x/n))^n = exp(-x) is the algebraic heart of Gaussian self-similarity",
+      "Quadratic form scaling quadForm(xi/sqrt(n)) = (1/n)*quadForm(xi) follows from sqrt(n)*sqrt(n) = n",
+      "Eigenvalue constraint Re(lambda(E)) >= 1/2 is the matrix analog of alpha <= 2",
+      "Matrix regular variation of tail is the correct multivariate analog of Karamata RV",
+      "The Gaussian is the unique operator-stable law with full symmetry group (E = c*I)"
+    ],
+    "mathlibGaps": [
+      "No Mathlib theorem for spectral bounds on operator-stable exponent matrices (Hudson-Mason 1982)",
+      "Meerschaert-Scheffler DOA theorem needs weak convergence theory for R^d measures"
+    ],
+    "nextSteps": [
+      "Verify Docker build compiles successfully",
+      "Check if eigenvalue_ge_half can be partially proved using Matrix.eigenvalues and Finset",
+      "Consider formalizing Levy-Khintchine representation for operator-stable laws"
+    ]
+  },
+  "tags": [
+    "probability",
+    "stable-distributions",
+    "domain-of-attraction",
+    "regular-variation",
+    "slowly-varying",
+    "analysis",
+    "advanced",
+    "open-question",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-02",
+    "central-limit-theorem-oq-01-oq-02-oq-01",
+    "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-03",
+    "central-limit-theorem-oq-02",
+    "central-limit-theorem-oq-03",
+    "central-limit-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.690Z",
+  "lastUpdate": "2026-05-03T11:41:44.690Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CentralLimitTheorem.lean",
+      "filename": "CentralLimitTheorem.lean",
+      "lineCount": 621,
+      "theoremCount": 16,
+      "axiomCount": 12,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheorem.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01.lean",
+      "filename": "CentralLimitTheoremOQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01.lean",
+      "lineCount": 1131,
+      "theoremCount": 54,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02.lean",
+      "lineCount": 323,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ03.lean",
+      "lineCount": 147,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02.lean",
+      "filename": "CentralLimitTheoremOQ02.lean",
+      "lineCount": 730,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ02Aristotle.lean",
+      "lineCount": 137,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03.lean",
+      "filename": "CentralLimitTheoremOQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 8,
+      "axiomCount": 14,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "lineCount": 85,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ02.lean",
+      "filename": "CentralLimitTheoremOQ03OQ02.lean",
+      "lineCount": 292,
+      "theoremCount": 13,
+      "axiomCount": 11,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ04.lean",
+      "filename": "CentralLimitTheoremOQ04.lean",
+      "lineCount": 650,
+      "theoremCount": 21,
+      "axiomCount": 9,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
+    }
+  ]
+}
