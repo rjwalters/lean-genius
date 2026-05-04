@@ -20,8 +20,8 @@
     "content": "OQ-03 from infinitude-primes-4k3 asks whether the Euclid-style argument for ≡ 3 (mod 4) can be adapted to ≡ 1 (mod 4). The answer is yes, but the construction differs: instead of N = 4(n+1)! − 1, we use N = (2(n+1)!)² + 1. The ≡ 3 proof exploits that products of residues ≡ 1 (mod 4) stay ≡ 1, forcing a prime factor ≡ 3. For ≡ 1, the key is that any prime p dividing k² + 1 must have −1 as a quadratic residue mod p, which by Euler's criterion forces p ≡ 1 (mod 4). This difference (elementary product argument vs. quadratic residue theory) is what makes the ≡ 1 case slightly deeper.",
     "mathContext": "For $N = (2(n+1)!)^2 + 1$: any odd prime $p \\mid N$ satisfies $(2(n+1)!)^2 \\equiv -1 \\pmod p$, so $\\left(\\frac{-1}{p}\\right) = 1$. Euler's criterion: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, which equals 1 iff $p \\equiv 1 \\pmod 4$.",
     "significance": "key",
-    "relatedConcepts": ["Euler's criterion", "quadratic residues", "Legendre symbol", "Euclid's proof of infinitely many primes"],
-    "prerequisites": ["modular arithmetic", "quadratic reciprocity basics", "Nat.Prime"]
+    "relatedConcepts": ["Euler's criterion", "quadratic residues", "Legendre symbol", "Euclid's proof of infinitely many primes", "Fermat's theorem on sums of two squares", "quadratic reciprocity"],
+    "prerequisites": ["modular arithmetic", "quadratic reciprocity basics", "Nat.Prime", "Legendre symbol definition"]
   },
   {
     "id": "comparison-table",
@@ -44,8 +44,8 @@
     "content": "The main theorem is a one-line delegation to InfinitudePrimes4k1.infinitely_many_primes_1_mod_4. This is the correct design: the actual proof lives in InfinitudePrimes4k1.lean, which is imported here. The OQ-03 file serves as a wrapper that packages the result in the context of the parent proof's open question. The Lean proof term is simply an identifier — no tactics needed — making it maximally transparent. The InfinitudePrimes4k1 proof internally uses Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one from Mathlib's SumTwoSquares module to apply Euler's criterion.",
     "mathContext": "\\forall n \\in \\mathbb{N},\\; \\exists p \\text{ prime},\\; p > n \\wedge p \\equiv 1 \\pmod 4. \\text{ Proof: take } N = (2(n+1)!)^2+1, \\text{ find odd prime } p \\mid N, \\text{ then } p \\equiv 1 \\pmod 4 \\text{ by Euler's criterion, and } p > n \\text{ by divisibility contradiction.}",
     "significance": "key",
-    "relatedConcepts": ["Euler's criterion", "SumTwoSquares", "Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one", "proof delegation"],
-    "prerequisites": ["InfinitudePrimes4k1", "Mathlib.NumberTheory.SumTwoSquares"]
+    "relatedConcepts": ["Euler's criterion", "SumTwoSquares", "Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one", "proof delegation", "Fermat's theorem on sums of two squares", "Gaussian integers"],
+    "prerequisites": ["InfinitudePrimes4k1", "Mathlib.NumberTheory.SumTwoSquares", "quadratic residues"]
   },
   {
     "id": "classification-theorem",
