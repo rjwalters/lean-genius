@@ -1,0 +1,146 @@
+[
+  {
+    "id": "inverse-galois-a5-polynomial",
+    "proofId": "inverse-galois-a5",
+    "type": "definition",
+    "range": {
+      "startLine": 85,
+      "endLine": 200
+    },
+    "title": "The Polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5",
+    "content": "`q : ℚ[X]` is defined explicitly with coefficients. Four key properties are proved:\n\n- **`q_irreducible`**: Proved by Eisenstein's criterion at p=5. Non-leading coefficients are {-5, 25, -10, 10, -5} — all divisible by 5. The constant term -5 is not divisible by 25. Leading coefficient 1 is not divisible by 5. Therefore q is irreducible over ℚ.\n- **`q_natDegree = 5`**: Proved by `norm_num` / computation.\n- **`q_monic`**: Direct from definition (leading coefficient is 1).\n- **`q_separable`**: Follows from irreducibility (`Irreducible.separable`).\n- **`q_rootSet_card = 5`**: The splitting field has exactly 5 distinct roots, proved using Mathlib's `Polynomial.roots` API and separability.",
+    "significance": "key",
+    "mathContext": "Eisenstein's criterion: if $p$ is prime and $p \\mid a_0, \\ldots, a_{n-1}$ but $p^2 \\nmid a_0$ and $p \\nmid a_n$, then $\\sum a_i X^i$ is irreducible over $\\mathbb{Q}$. Here $p=5$, $a_0 = -5$, $a_5 = 1$.",
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "Polynomial.Irreducible",
+      "splitting fields",
+      "degree-5 polynomials"
+    ],
+    "prerequisites": [
+      "polynomial arithmetic in Lean 4",
+      "Polynomial.Irreducible.eisenstein",
+      "Polynomial.Separable"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-order-bounds",
+    "proofId": "inverse-galois-a5",
+    "type": "theorem",
+    "range": {
+      "startLine": 207,
+      "endLine": 328
+    },
+    "title": "Galois Group Order: 5 | |Gal| and |Gal| | 120",
+    "content": "Two key divisibility facts establish bounds on |Gal(q/ℚ)|:\n\n**`five_dvd_gal_card`**: 5 | |Gal|. Since q is irreducible of degree 5, the extension q.SplittingField/ℚ has [q.SplittingField : ℚ] divisible by 5 (a root generates a degree-5 subextension). By Galois theory, 5 | |Gal|.\n\n**`gal_card_dvd_120`**: |Gal| | 120 = 5!. The Galois group acts faithfully on the 5 roots (root permutation action via `Polynomial.Gal.galActionHom`), embedding Gal into S₅ = Perm(Fin 5). Hence |Gal| | |S₅| = 5! = 120.\n\nStructural lemmas about S₅: `perm_fin5_order5_order3_not_commute` shows elements of orders 5 and 3 in S₅ don't commute (used to rule out cyclic subgroups of order 15), and `perm_fin5_no_order_15` shows S₅ has no element of order 15.",
+    "significance": "key",
+    "mathContext": "The divisors of 120 that are divisible by 5 are: 5, 10, 20, 30, 40, 60, 120. The discriminant argument reduces this to divisors of 60: 5, 10, 20, 60. The `three_dvd_gal_card` axiom forces 60.",
+    "relatedConcepts": [
+      "Galois group order",
+      "root permutation action",
+      "Cauchy's theorem",
+      "Polynomial.Gal.galActionHom"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "Fintype.card",
+      "Polynomial.Gal"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-vandermonde",
+    "proofId": "inverse-galois-a5",
+    "type": "theorem",
+    "range": {
+      "startLine": 1097,
+      "endLine": 1650
+    },
+    "title": "Vandermonde Discriminant: vandermondeProduct² = disc(q) = 32000²",
+    "content": "`vandermondeProduct` = Π_{i<j} (root_i - root_j) in q.SplittingField. The discriminant disc(q) = vandermondeProduct².\n\nThe proof proceeds through several stages:\n1. **`vandermondeProduct_ne_zero`**: The Vandermonde product is nonzero (since q is separable — distinct roots).\n2. **Sophie Germain identity** and polynomial arithmetic in q.SplittingField.\n3. **`ordered_root_diff_prod_eq_vandermonde_sq`**: The ordered product of differences equals vandermondeProduct².\n4. **`prod_eval_derivative_eq_resultant`**: The product of q'(αᵢ) over roots equals Res(q, q').\n5. **`resultant_eq_disc_q`**: Res(q, q') = disc(q) (standard formula).\n6. **`vandermondeProduct_sq_eq_proved`**: Combines all steps. disc(q) = 32000².\n\nConsequence: Since disc(q) is a perfect square in ℚ, every Galois automorphism σ satisfies σ(Δ) = Δ (where Δ = vandermondeProduct). The sign homomorphism σ ↦ sgn(σ) therefore maps every σ to +1, so Gal ≤ A₅.",
+    "significance": "critical",
+    "mathContext": "$\\Delta(q) = \\prod_{i < j}(\\alpha_i - \\alpha_j)^2 = \\text{Res}(q, q')$. Since $\\Delta(q) = 32000^2$ is a perfect square, $\\text{Gal}(q/\\mathbb{Q}) \\subseteq A_5$.",
+    "relatedConcepts": [
+      "polynomial discriminant",
+      "Vandermonde determinant",
+      "resultant formula",
+      "Sophie Germain identity"
+    ],
+    "prerequisites": [
+      "polynomial resultant",
+      "splitting field arithmetic",
+      "Polynomial.discriminant"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-axiom",
+    "proofId": "inverse-galois-a5",
+    "type": "definition",
+    "range": {
+      "startLine": 309,
+      "endLine": 327
+    },
+    "title": "Axiom: three_dvd_gal_card (Dedekind's Theorem)",
+    "content": "`three_dvd_gal_card : 3 ∣ Fintype.card q.Gal` is the single remaining axiom, corresponding to Dedekind's theorem applied to the Frobenius element at p=7.\n\nSupporting evidence (verified by `decide` / `native_decide`):\n- q mod 7 factors as (X-5)(X-6)(irreducible cubic): `q_root_mod7_at_5`, `q_root_mod7_at_6`, `cubic_factor_no_roots_mod7`. The irreducible cubic factor implies Gal(q/ℚ) contains an element of order 3 (Frobenius at 7).\n- The resolvent sextic has no rational root (`resolvent_no_positive_root`, `resolvent_no_negative_root`, `resolvent_at_zero`). This rules out Gal being a subgroup of order 5, 10, or 20.\n\nDedekind's theorem itself requires formalizing algebraic number theory (prime decomposition in number fields, Frobenius elements) — not yet in Mathlib 4.26.0.",
+    "significance": "key",
+    "mathContext": "**Dedekind's theorem**: If $f \\in \\mathbb{Z}[X]$ and $f \\equiv \\prod g_i^{e_i} \\pmod{p}$ with $g_i$ distinct irreducible mod $p$ and $p \\nmid \\text{disc}(f)$, then $\\text{Gal}(f/\\mathbb{Q})$ (as a permutation group of roots) contains an element with cycle type $\\deg(g_1), \\ldots, \\deg(g_k)$.",
+    "relatedConcepts": [
+      "Dedekind's theorem",
+      "Frobenius element",
+      "resolvent polynomial",
+      "Galois group computation"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "prime decomposition in number fields",
+      "Frobenius elements"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-main",
+    "proofId": "inverse-galois-a5",
+    "type": "theorem",
+    "range": {
+      "startLine": 1966,
+      "endLine": 2037
+    },
+    "title": "q_gal_iso_a5: Gal(q/ℚ) ≅ A₅",
+    "content": "`q_gal_iso_a5 : Nonempty (q.Gal ≃* alternatingGroup (Fin 5))`.\n\nProof structure:\n1. Build the composite injection φ : Gal →* Perm(Fin 5) via `galActionHom` composed with `permEquiv` (conjugation by a `rootEquiv : rootSet ≃ Fin 5`).\n2. `hinj`: φ is injective (galActionHom is faithful, permEquiv is a MulEquiv).\n3. |φ(Gal)| = 60 (from `q_gal_card = 60`, proved using 5 | |Gal|, |Gal| | 60, and `three_dvd_gal_card`).\n4. φ(Gal) has index 2 in S₅ (since |S₅| = 120 = 2 × 60).\n5. By `Equiv.Perm.eq_alternatingGroup_of_index_eq_two`: φ(Gal) = alternatingGroup (Fin 5).\n6. MulEquiv: Gal ≃* φ(Gal) ≃* A₅.\n\nThis proves the Galois group is EXACTLY A₅ (not just a subgroup).",
+    "significance": "critical",
+    "mathContext": "$[S_5 : A_5] = 2$. Any subgroup of $S_5$ of index 2 is normal and equals the kernel of the sign homomorphism, which is $A_5$. Since $|\\text{Gal}| = 60 = |A_5|$ and $\\text{Gal} \\leq A_5$, we conclude $\\text{Gal} = A_5$.",
+    "relatedConcepts": [
+      "alternating group A₅",
+      "index-2 subgroup characterization",
+      "MulEquiv",
+      "Polynomial.Gal.galActionHom"
+    ],
+    "prerequisites": [
+      "q_gal_card = 60",
+      "Gal embeds into S₅",
+      "Equiv.Perm.eq_alternatingGroup_of_index_eq_two"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-nonsolvable",
+    "proofId": "inverse-galois-a5",
+    "type": "theorem",
+    "range": {
+      "startLine": 2038,
+      "endLine": 2060
+    },
+    "title": "gal_not_solvable: Non-Solvability of the Galois Group",
+    "content": "`gal_not_solvable : ¬IsSolvable q.Gal`.\n\nProof: Assume IsSolvable q.Gal. By `q_gal_iso_a5`, there exists e : q.Gal ≃* A₅. By `solvable_of_surjective`, IsSolvable A₅ follows from solvability of q.Gal and the surjection e. But `a5_not_solvable : ¬IsSolvable (alternatingGroup (Fin 5))` — A₅ is simple and non-abelian. Contradiction.\n\nThis result is significant: Shafarevich's theorem (1954) guarantees that all solvable groups are realizable as Galois groups over ℚ. A₅ lies outside this scope — its Galois realization required a different approach (the explicit polynomial method used here).",
+    "significance": "key",
+    "mathContext": "$A_5$ is the unique non-abelian simple group of order 60. It is not solvable (its derived series never reaches 1). This is the first non-solvable Galois group in the lean-genius gallery.",
+    "relatedConcepts": [
+      "solvable groups",
+      "Shafarevich's theorem",
+      "simple groups",
+      "IsSolvable"
+    ],
+    "prerequisites": [
+      "q_gal_iso_a5",
+      "a5_not_solvable",
+      "solvable_of_surjective"
+    ]
+  }
+]
