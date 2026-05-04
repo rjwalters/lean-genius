@@ -66,7 +66,7 @@
     "type": "concept",
     "title": "constructions_cover_all_odd_primes: rcases Pattern for Classification",
     "content": "The final theorem constructions_cover_all_odd_primes is the most structurally interesting: given any odd prime p, it exhibits a witness showing p lies in an infinite family. The proof uses `rcases InfinitudePrimes4k3.prime_mod_four hp hp2 with h1 | h3` to split on whether p ≡ 1 or p ≡ 3 (mod 4), then `refine ⟨h1, 0, p, hp, hp.two_le, h1, rfl⟩` to provide the witness n=0 (any n works since p > n=0 is p.two_le ≥ 2 > 0). The statement uses a disjunctive type `A ∨ B` with existential witnesses, which is idiomatic Lean for 'the prime belongs to one of two infinite families, and here is the witness'. This pattern shows both sets are covering families, not just abstract infinite sets.",
-    "mathContext": "\\forall p \\text{ prime}, p \\neq 2: \\;(p\\%4=1 \\wedge \\exists n,q.\\; q>n \\wedge q\\%4=1 \\wedge q=p) \\vee (p\\%4=3 \\wedge \\exists n,q.\\; q>n \\wedge q\\%4=3 \\wedge q=p). \\text{ Witness: } n=0, q=p, \\text{ valid since } p \\geq 2 > 0.",
+    "mathContext": "$\\forall p$ prime, $p \\neq 2$: $(p\\%4=1 \\wedge \\exists n,q:q>n \\wedge q\\%4=1 \\wedge q=p) \\vee (p\\%4=3 \\wedge \\exists n,q:q>n \\wedge q\\%4=3 \\wedge q=p)$. Witness: $n=0$, $q=p$; valid since $p \\geq 2 > 0 = n$.",
     "significance": "supporting",
     "relatedConcepts": ["rcases tactic", "refine with anonymous constructor", "disjunctive types", "existential witness"],
     "prerequisites": [
@@ -74,5 +74,17 @@
       "InfinitudePrimes4k3.prime_mod_four",
       "Lean 4 rcases pattern matching"
     ]
+  },
+  {
+    "id": "set-infinite-api",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "technique",
+    "title": "Set.Infinite: The Lean 4 / Mathlib API for Infinite Sets",
+    "content": "In Mathlib, `Set.Infinite S` is the proposition that a set S is not finite — equivalently, for every n, S contains more than n elements. It is weaker than `S ≃ ℕ` (countably infinite) and avoids issues with choice axioms. The proof of `both_classes_infinite` is a conjunction of two Set.Infinite propositions, combined with angle brackets `⟨.., ..⟩`. The two witnesses come directly from the sibling proofs: InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite.",
+    "mathContext": "`Set.Infinite S` ↔ `¬ S.Finite` ↔ `∀ n, ∃ T ⊆ S, T.card ≥ n`. Mathlib's primes_1_mod_4_infinite and primes_3_mod_4_infinite establish this via `Set.infinite_of_injective_forall_mem` or similar: the sequence of witness primes $p_n > n$ gives an injective embedding $\\mathbb{N} \\to S$.",
+    "significance": "technical",
+    "relatedConcepts": ["Set.Infinite", "Set.Finite", "Mathlib set theory API", "cardinality vs infinitude"],
+    "prerequisites": ["Lean 4 Set type", "Set.Infinite vs Set.Finite in Mathlib", "conjunction introduction ⟨.., ..⟩"]
   }
 ]
