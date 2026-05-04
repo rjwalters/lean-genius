@@ -1,0 +1,47 @@
+{
+  "source": "cantors-theorem-oq-01-oq-02",
+  "annotations": [
+    {
+      "id": "beth-recursion",
+      "type": "insight",
+      "title": "Beth Numbers as Iterated Power Sets",
+      "body": "The beth hierarchy is defined recursively: ℶ₀ = ℵ₀, ℶ_{n+1} = 2^ℶₙ. Equivalently, ℶₙ = |𝒫^n(ℕ)| — the n-th iterated power set of ℕ. Since |ℝ| = ℶ₁ = 2^ℵ₀, we have |𝒫ⁿ(ℝ)| = ℶ_{n+1}. In Lean 4, Cardinal.beth_succ captures the recursion: beth (Order.succ o) = 2^(beth o).",
+      "lines": [37, 55]
+    },
+    {
+      "id": "main-proof-chain",
+      "type": "proof-technique",
+      "title": "The Three-Step Proof Chain",
+      "body": "|𝒫(𝒫(ℝ))| = 2^|𝒫(ℝ)|   [Cardinal.mk_set]\n= 2^ℶ₂               [parent: card_powerSet_real_eq_beth_two]\n= ℶ₃                 [beth recursion: Cardinal.beth_succ]\nEach rewrite is a single Mathlib lemma, making the proof a three-line composition.",
+      "lines": [75, 87]
+    },
+    {
+      "id": "ordinal-casting",
+      "type": "lean-technique",
+      "title": "Converting ℕ Indices to Ordinals for Cardinal.beth",
+      "body": "Cardinal.beth takes an Ordinal argument, but n+1 is a natural number. The key lemma beth_nat_succ converts (n+1 : ℕ) cast to Ordinal to Order.succ (n : Ordinal) via: rw [Order.succ_eq_add_one]; push_cast; ring. This pattern appears throughout the file.",
+      "lines": [46, 54]
+    },
+    {
+      "id": "inductive-definition",
+      "type": "architecture",
+      "title": "iteratedPowerSet as a Lean Recursive Definition",
+      "body": "The type iteratedPowerSet : ℕ → Type is defined by well-founded recursion: iteratedPowerSet 0 = ℝ, iteratedPowerSet (n+1) = Set (iteratedPowerSet n). This gives a concrete Lean type for each level of the power set hierarchy, enabling the universal quantification in card_iteratedPowerSet_eq_beth.",
+      "lines": [96, 109]
+    },
+    {
+      "id": "cantor-at-each-level",
+      "type": "mathematical",
+      "title": "Cantor's Theorem Drives Strict Monotonicity",
+      "body": "At each level n, Cantor's theorem gives #(iteratedPowerSet n) < 2^#(iteratedPowerSet n) = #(iteratedPowerSet (n+1)). This is exactly Cardinal.cantor applied to the current cardinality. The strict tower inequality follows by induction, with transitivity handling arbitrary m < n.",
+      "lines": [153, 165]
+    },
+    {
+      "id": "unconditional-vs-independent",
+      "type": "context",
+      "title": "Beth Equalities vs. Aleph-Index Independence",
+      "body": "The beth equalities |𝒫ⁿ(ℝ)| = ℶ_{n+1} are unconditional ZFC theorems — no CH or GCH required. In contrast, the aleph-index questions (is ℶ₂ = ℵ₂? is ℶ₃ = ℵ₃?) are independent of ZFC by Easton's theorem. The beth hierarchy provides a canonical labeling of these cardinalities that is stable across all models of ZFC.",
+      "lines": [195, 205]
+    }
+  ]
+}

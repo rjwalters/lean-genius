@@ -1,0 +1,164 @@
+{
+  "id": "cantors-theorem-oq-01-oq-02",
+  "title": "|𝒫(𝒫(ℝ))| = ℶ₃: The Iterated Power Set Hierarchy",
+  "slug": "cantors-theorem-oq-01-oq-02",
+  "description": "Proves that the doubly-iterated power set of ℝ has cardinality ℶ₃, the third beth number, and establishes the general pattern |𝒫ⁿ(ℝ)| = ℶ_{n+1} for all n. All results follow from ZFC cardinal arithmetic with 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Beth_number",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorsTheoremOQ01OQ02.lean",
+    "tags": [
+      "set-theory",
+      "cardinal-arithmetic",
+      "beth-numbers",
+      "power-set",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 205,
+    "assumptions": "0 axioms, 0 sorries. All results proved from Mathlib's Cardinal.mk_set, Cardinal.beth_succ, and Cardinal.cantor, plus the parent file CantorsTheoremOQ01.lean.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-05-04",
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "originalContributions": [
+      "card_powerSet_powerSet_real_eq_beth_three: |𝒫(𝒫(ℝ))| = ℶ₃",
+      "iteratedPowerSet: definition of the n-th iterated power set of ℝ",
+      "card_iteratedPowerSet_eq_beth: |𝒫ⁿ(ℝ)| = ℶ_{n+1} for all n (proved by induction)",
+      "iteratedPowerSet_strict_mono: the hierarchy |𝒫ⁿ(ℝ)| < |𝒫^{n+1}(ℝ)| is strictly increasing",
+      "iteratedPowerSet_lt_of_lt: m < n implies |𝒫ᵐ(ℝ)| < |𝒫ⁿ(ℝ)|",
+      "beth_tower_0_to_3: ℶ₀ < ℶ₁ < ℶ₂ < ℶ₃ explicitly"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.mk_set",
+        "description": "|𝒫(α)| = 2^|α|: the power set formula",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.beth_succ",
+        "description": "ℶ_{succ(o)} = 2^ℶₒ: the beth recursion",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.beth_strictMono",
+        "description": "The beth hierarchy is strictly increasing",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.cantor",
+        "description": "Cantor's theorem: κ < 2^κ for any cardinal κ",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ],
+    "prerequisites": [
+      "CantorsTheoremOQ01: parent file proving |𝒫(ℝ)| = ℶ₂",
+      "Cardinal arithmetic (beth hierarchy, power set formula)",
+      "Ordinal arithmetic (Order.succ, Nat.cast to Ordinal)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The beth hierarchy was introduced by Georg Cantor to measure the sizes of infinite sets via iterated power sets. ℶ₀ = ℵ₀ (countable infinity), ℶ₁ = 2^ℵ₀ = 𝔠 (the continuum), ℶ₂ = 2^𝔠 (the power set of ℝ), and so on. The parent proof established |𝒫(ℝ)| = ℶ₂. This file extends that one level: |𝒫(𝒫(ℝ))| = ℶ₃ = 2^(2^𝔠). The general formula |𝒫ⁿ(ℝ)| = ℶ_{n+1} shows that iterating the power set operation precisely climbs the beth hierarchy. Unlike the aleph-index questions (which require CH or GCH), these beth equalities are unconditional ZFC theorems.",
+    "problemStatement": "What is the cardinality of $\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))$? More generally, what is $|\\mathcal{P}^n(\\mathbb{R})|$ for each $n \\in \\mathbb{N}$?",
+    "text": "The doubly-iterated power set |𝒫(𝒫(ℝ))| = ℶ₃, and more generally |𝒫ⁿ(ℝ)| = ℶ_{n+1} for all n ≥ 0. Both results are unconditional ZFC theorems (no CH or GCH required).",
+    "proofStrategy": "1. Beth lemmas: establish ℶ₃ = 2^ℶ₂ from Cardinal.beth_succ, and the general ℶ_{n+1} = 2^ℶₙ for natural n. 2. Main theorem: |𝒫(𝒫(ℝ))| = 2^|𝒫(ℝ)| (by Cardinal.mk_set) = 2^ℶ₂ (parent theorem) = ℶ₃. 3. General definition: iteratedPowerSet n by recursion on n (0 maps to ℝ, succ maps to Set of previous). 4. Inductive proof: |iteratedPowerSet n| = ℶ_{n+1} by induction — base case |ℝ| = 𝔠 = ℶ₁, inductive step uses power set formula + beth recursion. 5. Strictness: each level is strictly larger by Cantor's theorem Cardinal.cantor applied to the previous level.",
+    "keyInsights": [
+      "The proof is entirely algebraic: Cardinal.mk_set + Cardinal.beth_succ + Cardinal.cantor suffice for all results. No measure theory, topology, or set construction is needed.",
+      "The natural number index n maps cleanly to Ordinal via Nat.cast, with Order.succ_eq_add_one bridging the successor notation for beth_succ.",
+      "The inductive definition iteratedPowerSet : ℕ → Type allows the general formula to be stated as a typed theorem rather than a meta-theorem about repeated application.",
+      "Unlike the aleph-index questions (independent of ZFC), all beth identities are unconditional — beth numbers are defined constructively from the power set operation, so their equalities need no extra axioms.",
+      "The strict monotonicity |𝒫ⁿ(ℝ)| < |𝒫^{n+1}(ℝ)| follows immediately from Cantor's theorem at each level, giving a purely ZFC proof that no two levels of the hierarchy are equal."
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic (beth numbers, power set formula)",
+      "Ordinal arithmetic (successor ordinals, Nat.cast)",
+      "Cantor's theorem (Cardinal.cantor)",
+      "Lean 4 universe polymorphism (Cardinal.{0})",
+      "Parent proof CantorsTheoremOQ01 (especially card_powerSet_real_eq_beth_two)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "beth-lemmas",
+      "title": "§1: Beth Number Lemmas",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "beth_three_eq: ℶ₃ = 2^ℶ₂. beth_nat_succ: ℶ_{n+1} = 2^ℶₙ for n : ℕ (private lemmas for the main proofs).",
+      "mathContext": "Cardinal.beth_succ states: beth (Order.succ o) = 2^(beth o). The challenge is converting n+1 : ℕ to Order.succ n : Ordinal, handled by Order.succ_eq_add_one + push_cast + ring."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§2: |𝒫(𝒫(ℝ))| = ℶ₃",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "card_powerSet_powerSet_real_eq_beth_three: #(Set (Set ℝ)) = Cardinal.beth 3. powerSet_powerSet_gt_powerSet_real: #(Set ℝ) < #(Set (Set ℝ)). powerSet_powerSet_gt_real: #ℝ < #(Set (Set ℝ)). beth_two_lt_beth_three: ℶ₂ < ℶ₃.",
+      "mathContext": "#(Set (Set ℝ)) = 2^#(Set ℝ) by Cardinal.mk_set, then 2^ℶ₂ = ℶ₃ by beth recursion. Strictness from Cardinal.cantor."
+    },
+    {
+      "id": "general-pattern",
+      "title": "§3: General Formula |𝒫ⁿ(ℝ)| = ℶ_{n+1}",
+      "startLine": 92,
+      "endLine": 150,
+      "summary": "iteratedPowerSet: ℕ → Type definition. card_iteratedPowerSet_eq_beth: ∀ n, #(iteratedPowerSet n) = Cardinal.beth (n+1). Inductive proof: base case |ℝ| = ℶ₁, inductive step uses power set formula + beth recursion.",
+      "mathContext": "Lean 4 well-founded recursion on ℕ defines iteratedPowerSet. The inductive proof uses Nat.cast to convert ℕ indices to Ordinal for Cardinal.beth, with ring_nf closing the arithmetic."
+    },
+    {
+      "id": "strict-tower",
+      "title": "§4: Strict Tower Inequality",
+      "startLine": 152,
+      "endLine": 175,
+      "summary": "iteratedPowerSet_strict_mono: |𝒫ⁿ(ℝ)| < |𝒫^{n+1}(ℝ)| for all n. iteratedPowerSet_lt_of_lt: m < n → |𝒫ᵐ(ℝ)| < |𝒫ⁿ(ℝ)|.",
+      "mathContext": "Each step uses Cardinal.cantor applied to the current level's cardinality. Transitivity handles the general m < n case."
+    },
+    {
+      "id": "summary",
+      "title": "§5: Summary Theorem",
+      "startLine": 177,
+      "endLine": 195,
+      "summary": "beth_tower_0_to_3: ℶ₀ < ℶ₁ < ℶ₂ < ℶ₃ (explicit). cantors_theorem_oq01oq02_summary: packages the three main results.",
+      "mathContext": "Cardinal.beth_strictMono gives ℶₙ < ℶₙ₊₁ for any natural comparison. The summary theorem bundles the main results as a conjunction."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves |𝒫(𝒫(ℝ))| = ℶ₃ and the general formula |𝒫ⁿ(ℝ)| = ℶ_{n+1} for all n ∈ ℕ. All results are unconditional ZFC theorems proved in Lean 4 with 0 axioms and 0 sorries.",
+    "implications": "The beth hierarchy grows strictly at each level of power-set iteration. No matter how many times you apply 𝒫 to ℝ, you get a strictly larger set. The aleph-index of each ℶₙ remains independent of ZFC for n ≥ 2 (by Easton's theorem), but the beth equalities themselves are absolute.",
+    "openQuestions": [
+      "What is the aleph-index of ℶ₃ = |𝒫(𝒫(ℝ))|? (Independent of ZFC by Easton, subject to cf(ℶ₃) > ℶ₂)",
+      "Can König's cofinality constraint cf(2^κ) > κ be formalized for arbitrary κ without axioms? (Mathlib has Cardinal.lt_cof_power)",
+      "Is there a type-theoretic universe analogue of the beth hierarchy in Lean 4's universe polymorphism?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "card_powerSet_powerSet_real_eq_beth_three",
+      "statement": "#(Set (Set ℝ)) = Cardinal.beth 3",
+      "description": "The doubly-iterated power set of ℝ has cardinality ℶ₃",
+      "line": 75
+    },
+    {
+      "name": "card_iteratedPowerSet_eq_beth",
+      "statement": "∀ n : ℕ, #(iteratedPowerSet n) = Cardinal.beth (↑(n + 1) : Ordinal)",
+      "description": "The n-th iterated power set of ℝ has cardinality ℶ_{n+1}",
+      "line": 117
+    },
+    {
+      "name": "iteratedPowerSet_strict_mono",
+      "statement": "∀ n : ℕ, #(iteratedPowerSet n) < #(iteratedPowerSet (n + 1))",
+      "description": "The iterated power set hierarchy is strictly increasing",
+      "line": 153
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/CantorsTheoremOQ01OQ02.lean",
+    "sorryCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "lineCount": 205
+  }
+}
