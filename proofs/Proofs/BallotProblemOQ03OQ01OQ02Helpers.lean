@@ -13898,7 +13898,123 @@ private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ
     -- This gives h(c.1,s) = c.2-s+1 and h(r,c.2) = c.1-r+1; each product telescopes
     -- (via prod_div_telescope) to c.2+1 and c.1+1; product = (c.2+1)*(c.1+1) = μ.card.
     have h_ratio_card : (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) = μ.card := by
-      sorry
+      -- Step A: rowLen 0 = c.2 + 1 (the corner at the bottom of the last column must be c)
+      have hμ_mem : (0, 0) ∈ μ :=
+        μ.isLowerSet (Prod.mk_le_mk.mpr ⟨Nat.zero_le _, Nat.zero_le _⟩) hc.1
+      have hrl0_pos : 0 < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hμ_mem
+      have hC_mem : (0, μ.rowLen 0 - 1) ∈ μ :=
+        YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hcl_C_pos : 0 < μ.colLen (μ.rowLen 0 - 1) :=
+        YoungDiagram.mem_iff_lt_colLen.mp hC_mem
+      set r₀ := μ.colLen (μ.rowLen 0 - 1) - 1 with hr₀_def
+      have hr₀_mem : (r₀, μ.rowLen 0 - 1) ∈ μ :=
+        YoungDiagram.mem_iff_lt_colLen.mpr (by omega)
+      have hrl_r₀ : μ.rowLen r₀ = μ.rowLen 0 :=
+        le_antisymm (μ.rowLen_anti 0 r₀ (Nat.zero_le _))
+          (by have h := YoungDiagram.mem_iff_lt_rowLen.mp hr₀_mem; omega)
+      have hr₀_corner : isCorner μ (r₀, μ.rowLen 0 - 1) := ⟨hr₀_mem,
+        by rw [YoungDiagram.mem_iff_lt_rowLen]; push_neg; rw [hrl_r₀]; omega,
+        by rw [YoungDiagram.mem_iff_lt_colLen]; push_neg; omega⟩
+      have hrC_eq : (r₀, μ.rowLen 0 - 1) = c :=
+        Finset.mem_singleton.mp (h_corners_one ▸ mem_corners.mpr hr₀_corner)
+      have hrl0 : μ.rowLen 0 = c.2 + 1 := by
+        have := congr_arg Prod.snd hrC_eq; simp only [Prod.snd] at this; omega
+      -- Step B: colLen 0 = c.1 + 1 (the corner at the end of the last row must be c)
+      have hcl0_pos : 0 < μ.colLen 0 :=
+        YoungDiagram.mem_iff_lt_colLen.mp hμ_mem
+      set R := μ.colLen 0 - 1 with hR_def
+      have hR_mem : (R, 0) ∈ μ := YoungDiagram.mem_iff_lt_colLen.mpr (by omega)
+      have hrl_R_pos : 0 < μ.rowLen R := YoungDiagram.mem_iff_lt_rowLen.mp hR_mem
+      set c_R := μ.rowLen R - 1 with hcR_def
+      have hcR_mem : (R, c_R) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hcl_cR_le : μ.colLen c_R ≤ μ.colLen 0 := by
+        apply Nat.le_of_not_lt; intro hlt
+        have h1 : (μ.colLen 0, c_R) ∈ μ := YoungDiagram.mem_iff_lt_colLen.mpr hlt
+        have h2 : (μ.colLen 0, 0) ∈ μ :=
+          μ.isLowerSet (Prod.mk_le_mk.mpr ⟨le_refl _, Nat.zero_le _⟩) h1
+        exact absurd (YoungDiagram.mem_iff_lt_colLen.mp h2) (lt_irrefl _)
+      have hcl_cR : μ.colLen c_R = R + 1 :=
+        le_antisymm (hcl_cR_le.trans (by omega))
+          (Nat.succ_le_of_lt (YoungDiagram.mem_iff_lt_colLen.mp hcR_mem))
+      have hR_corner : isCorner μ (R, c_R) := ⟨hcR_mem,
+        by rw [YoungDiagram.mem_iff_lt_rowLen]; push_neg; omega,
+        by rw [YoungDiagram.mem_iff_lt_colLen]; push_neg; rw [hcl_cR]; omega⟩
+      have hRcR_eq : (R, c_R) = c :=
+        Finset.mem_singleton.mp (h_corners_one ▸ mem_corners.mpr hR_corner)
+      have hcl0 : μ.colLen 0 = c.1 + 1 := by
+        have := congr_arg Prod.fst hRcR_eq; simp only [Prod.fst] at this; omega
+      -- Step C: uniform rowLen = c.2+1 for rows ≤ c.1, colLen = c.1+1 for cols ≤ c.2
+      have h_rowLen : ∀ r ≤ c.1, μ.rowLen r = c.2 + 1 := fun r hr =>
+        le_antisymm ((μ.rowLen_anti 0 r (Nat.zero_le _)).trans_eq hrl0)
+          ((μ.rowLen_anti r c.1 hr).trans_eq (rowLen_of_isCorner hc))
+      have h_colLen_anti : ∀ {s t : ℕ}, s ≤ t → μ.colLen t ≤ μ.colLen s := fun {s t} hst => by
+        apply Nat.le_of_not_lt; intro hlt
+        have h1 : (μ.colLen s, t) ∈ μ := YoungDiagram.mem_iff_lt_colLen.mpr hlt
+        have h2 : (μ.colLen s, s) ∈ μ :=
+          μ.isLowerSet (Prod.mk_le_mk.mpr ⟨le_refl _, hst⟩) h1
+        exact absurd (YoungDiagram.mem_iff_lt_colLen.mp h2) (lt_irrefl _)
+      have h_colLen : ∀ s ≤ c.2, μ.colLen s = c.1 + 1 := fun s hs =>
+        le_antisymm ((h_colLen_anti (Nat.zero_le s)).trans_eq hcl0)
+          ((h_colLen_anti hs).trans_eq (colLen_of_isCorner hc))
+      -- Step D: hookLength at arm cells (c.1, s) and leg cells (r, c.2)
+      have h_arm_hook : ∀ s < c.2, hookLength μ c.1 s = c.2 - s + 1 := fun s hs => by
+        unfold hookLength armLen legLen
+        rw [rowLen_of_isCorner hc, h_colLen s (by omega)]; omega
+      have h_leg_hook : ∀ r < c.1, hookLength μ r c.2 = c.1 - r + 1 := fun r hr => by
+        unfold hookLength armLen legLen
+        rw [h_rowLen r (by omega), colLen_of_isCorner hc]; omega
+      -- Step E: arm product ∏_{s<c.2} h/(h-1) = c.2+1 via telescoping
+      have h_arm_prod : ∏ s ∈ Finset.range c.2,
+          ((hookLength μ c.1 s : ℚ) / ((hookLength μ c.1 s : ℚ) - 1)) = ↑c.2 + 1 := by
+        rcases Nat.eq_zero_or_pos c.2 with rfl | _
+        · simp
+        have hconv : ∀ s ∈ Finset.range c.2,
+            (hookLength μ c.1 s : ℚ) / ((hookLength μ c.1 s : ℚ) - 1) =
+            (((c.2 + 1 : ℕ) : ℚ) - ↑s) / (((c.2 + 1 : ℕ) : ℚ) - ↑s - 1) := by
+          intro s hs
+          have hlt : s < c.2 := Finset.mem_range.mp hs
+          rw [h_arm_hook s hlt]
+          push_cast [show s ≤ c.2 from by omega]; ring
+        rw [Finset.prod_congr rfl hconv, prod_div_telescope (c.2 + 1) c.2 (by omega)]
+        push_cast; field_simp
+      -- Step F: leg product ∏_{r<c.1} h/(h-1) = c.1+1 via telescoping
+      have h_leg_prod : ∏ r ∈ Finset.range c.1,
+          ((hookLength μ r c.2 : ℚ) / ((hookLength μ r c.2 : ℚ) - 1)) = ↑c.1 + 1 := by
+        rcases Nat.eq_zero_or_pos c.1 with rfl | _
+        · simp
+        have hconv : ∀ r ∈ Finset.range c.1,
+            (hookLength μ r c.2 : ℚ) / ((hookLength μ r c.2 : ℚ) - 1) =
+            (((c.1 + 1 : ℕ) : ℚ) - ↑r) / (((c.1 + 1 : ℕ) : ℚ) - ↑r - 1) := by
+          intro r hr
+          have hlt : r < c.1 := Finset.mem_range.mp hr
+          rw [h_leg_hook r hlt]
+          push_cast [show r ≤ c.1 from by omega]; ring
+        rw [Finset.prod_congr rfl hconv, prod_div_telescope (c.1 + 1) c.1 (by omega)]
+        push_cast; field_simp
+      -- Step G: μ.cells is the rectangle {0..c.1} × {0..c.2}
+      have h_cells : μ.cells = (Finset.range (c.1 + 1)) ×ˢ (Finset.range (c.2 + 1)) := by
+        ext ⟨r, s⟩
+        simp only [YoungDiagram.mem_cells, Finset.mem_product, Finset.mem_range]
+        constructor
+        · intro hmem
+          exact ⟨by have h : (r, 0) ∈ μ :=
+                       μ.isLowerSet (Prod.mk_le_mk.mpr ⟨le_refl _, Nat.zero_le _⟩) hmem
+                     have := YoungDiagram.mem_iff_lt_colLen.mp h
+                     omega,
+                 by have h : (0, s) ∈ μ :=
+                       μ.isLowerSet (Prod.mk_le_mk.mpr ⟨Nat.zero_le _, le_refl _⟩) hmem
+                     have := YoungDiagram.mem_iff_lt_rowLen.mp h
+                     omega⟩
+        · rintro ⟨hr, hs⟩
+          exact μ.isLowerSet (Prod.mk_le_mk.mpr ⟨by omega, by omega⟩) hc.1
+      have h_card : μ.card = (c.1 + 1) * (c.2 + 1) := by
+        unfold YoungDiagram.card
+        rw [h_cells, Finset.card_product, Finset.card_range, Finset.card_range]
+      -- Assemble: ratio = arm_prod * leg_prod = (c.2+1) * (c.1+1) = μ.card
+      rw [hookProd_ratio_formula hc]
+      simp only [Prod.fst, Prod.snd]
+      rw [h_arm_prod, h_leg_prod]
+      push_cast [h_card]; ring
     rw [h_sum_card, h_ratio_card]
   · -- Multi-corner case: GNW 1979 exchange argument.
     -- For |corners(μ)| ≥ 2, the proof requires the exchange principle from GNW 1979:
