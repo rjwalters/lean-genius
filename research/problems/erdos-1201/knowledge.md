@@ -741,3 +741,39 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - **Assessment**: Gallery formalization enriched with complete density infrastructure.
   The open problem (eliminate axiom, prove conjecture for ε ∈ (0,1/2)) remains genuinely
   blocked on Dickman ρ function density estimates.
+
+---
+
+## Session 2026-05-04 (Session 18) - API Fixes + Memory Optimization
+
+**Mode**: REVISIT
+**Outcome**: progress — fixed compilation errors preventing Docker build
+
+### What I Did
+- Discovered `origin/research/erdos-1201-lower-density` (PR #15527) had 6 broken API calls
+  to `Finset.Nat.card_Icc` (unknown constant in Lean 4.26.0)
+- Added `private lemma icc_one_card (N : ℕ) : (Finset.Icc 1 N).card = N` using range-map
+  construction (proven to work in earlier sessions)
+- Replaced all 6 `by simp [Finset.Nat.card_Icc]; omega` calls with `icc_one_card N`
+- Replaced `lowerDensity_compl`'s `Antitone.map_limsup_of_continuousAt` proof with
+  `Filter.liminf_const_sub` (lighter on memory, avoids ContinuousAt elaboration at limsup)
+- Previous Docker build killed with exit code 137 (OOM) from the Antitone approach
+- Closed superseded PRs #15471, #15501, #15504 (all contained by #15527)
+- Pushed fix commit `6444217927` to `research/erdos-1201-lower-density`
+- PR #15527 is MERGEABLE/CLEAN
+
+### Key Findings
+- `Finset.Nat.card_Icc` is unknown in Lean 4.26.0; robust replacement is range-map construction
+- `Antitone.map_limsup_of_continuousAt` is memory-heavy (ContinuousAt elaboration at limsup)
+  → use `Filter.liminf_const_sub c hbdd hcobdd` instead for `liminf(c - f) = c - limsup f`
+- `Filter.liminf_const_sub` signature: `(hbdd : IsBoundedUnder (·≤·)) (hcobdd : IsCoboundedUnder (·≤·))`
+- `icc_one_card` is now the canonical helper for `(Finset.Icc 1 N).card = N` in this file
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1480→1473 lines, 0 sorries, API fixes)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- Docker build verification: PR #15527 needs successful build to merge
+- If Docker OOMs again, investigate splitting `lowerDensity_compl` proof into smaller lemmas
+- Open question: formalize the Dickman ρ density estimate for ε < 1/2 (blocked, >1000 LOC)
