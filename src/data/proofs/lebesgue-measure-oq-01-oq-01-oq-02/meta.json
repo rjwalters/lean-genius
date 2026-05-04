@@ -38,8 +38,14 @@
     "historicalContext": "Thomae's function (also called the popcorn function or ruler function) was introduced by Carl Johannes Thomae in 1875. It is defined as f(p/q) = 1/q for rationals in reduced form, and f(x) = 0 for irrationals. It became a landmark example in real analysis, being the first known function that is Riemann integrable yet discontinuous on a dense set — namely all rationals. The continuity characterization (continuous at irrationals, discontinuous at rationals) was a key historical insight. It showed that the set of discontinuities can be dense yet have measure zero, which is exactly the Lebesgue criterion for Riemann integrability. The parent proof (lebesgue-measure-oq-01-oq-01) showed the Lebesgue integral is 0; this proof characterizes the exact set of continuity points."
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Set", "Filter"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter"
+    ],
     "namespace": "LebesgueMeasureOQ01OQ01OQ02",
     "lineCount": 240,
     "axiomCount": 0,
@@ -63,7 +69,8 @@
         "statement": "∀ (x : ℝ), ContinuousAt thomae x ↔ Irrational x",
         "description": "The complete characterization: Thomae's function is continuous exactly at the irrationals"
       }
-    ]
+    ],
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "**A Function Continuous Exactly at the Irrationals**\n\nThomaes's function $f : \\mathbb{R} \\to \\mathbb{R}$, introduced in 1875, is defined by:\n$$f(x) = \\begin{cases} \\frac{1}{q} & x = \\frac{p}{q} \\text{ in lowest terms, } q > 0, \\\\ 0 & x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nThe function is historically significant as the first example of a Riemann-integrable function that is discontinuous on a dense set (the rationals). The key property is that $f$ is continuous at every irrational and discontinuous at every rational — making its continuity set a dense $G_\\delta$ set (the irrationals) and its discontinuity set a dense $F_\\sigma$ set (the rationals).",
@@ -131,7 +138,11 @@
       "question": "Is Thomae's function Riemann integrable on [0,1], and can this be formally derived from the continuity characterization?",
       "context": "The Lebesgue criterion for Riemann integrability states that a bounded function is Riemann integrable if and only if its set of discontinuities has Lebesgue measure zero. The continuity characterization just proved shows Thomae's function is discontinuous exactly at the rationals, which have measure zero. Hence Thomae's function is Riemann integrable on [0,1] with integral 0. Mathlib has the Lebesgue criterion (intervalIntegral.integrableOn_iff_ae) — can this chain be formalized?",
       "difficulty": "medium",
-      "tags": ["riemann-integration", "lebesgue-criterion", "measure-zero"]
+      "tags": [
+        "riemann-integration",
+        "lebesgue-criterion",
+        "measure-zero"
+      ]
     }
   ],
   "crossReferences": [
