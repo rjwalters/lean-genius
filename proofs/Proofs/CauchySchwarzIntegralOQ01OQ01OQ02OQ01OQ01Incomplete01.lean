@@ -299,7 +299,7 @@ private noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
             (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).toLp _,
           (Measure.ae_restrict_iff' hS).mp (Lp.coeFn_smul c f)]
           with a hcf hf hsmul hinner
-        rw [hcf, hf, hsmul, RingHom.id_apply]
+        rw [hcf, hsmul, hf, RingHom.id_apply]
         simp only [Set.indicator_apply, Pi.smul_apply]
         split_ifs with ha
         · simp [hinner ha]
