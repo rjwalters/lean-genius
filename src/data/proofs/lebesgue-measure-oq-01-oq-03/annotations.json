@@ -84,6 +84,18 @@
     "prerequisites": ["Measure.restrict", "integral_zero_measure", "f · 𝟙_S as indicator product"]
   },
   {
+    "id": "ann-subsumes-oq01",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": { "startLine": 213, "endLine": 240 },
+    "type": "context",
+    "title": "Part V: OQ-01 Dirichlet Result as a One-Line Corollary",
+    "content": "Part V closes the loop on the motivating question. The OQ-01 result — ∫_{[0,1]} 𝟙_ℚ dλ = 0 — appears as an unnamed `example` whose proof is a one-liner: `integral_indicator_of_null_on_set _ _ (Set.countable_range (Rat.cast : ℚ → ℝ) |>.measure_zero volume)`. This crystallizes the proof architecture: the entire OQ-01 argument that once required its own file is now subsumed in a single term-mode expression. The SUMMARY comment catalogues all 15 theorems with their roles. The five-part structure is pedagogically deliberate: each part peels away one layer of specificity, from abstract measure spaces (Part I) through ℝ (Part II) and countable unions (Part III) and a.e. invariance (Part IV) to the original question (Part V).",
+    "mathContext": "OQ-01 reduced to: `integral_indicator_of_null_on_set (Set.range (Rat.cast : ℚ → ℝ)) (Set.Icc 0 1) (Set.countable_range _ |>.measure_zero volume)`. The chain: `Set.Countable.measure_zero` converts countability to $\\lambda(\\mathbb{Q}) = 0$; then the main theorem applies.",
+    "significance": "supporting",
+    "relatedConcepts": ["integral_indicator_of_null_on_set", "Set.Countable.measure_zero", "Dirichlet function", "OQ-01 parent proof", "term-mode proof composition"],
+    "prerequisites": ["LebesgueMeasureOQ01 (parent proof context)", "Set.countable_range for Rat.cast", "MeasureTheory.NullMeasurableSet"]
+  },
+  {
     "id": "ann-radon-nikodym-connection",
     "proofId": "lebesgue-measure-oq-01-oq-03",
     "range": { "startLine": 61, "endLine": 80 },
