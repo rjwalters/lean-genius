@@ -190,8 +190,8 @@ theorem cubicEuler_hard {p : ℕ} [Fact p.Prime] (h3 : p % 3 = 1)
   have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
     rw [ZMod.card_units_eq_totient, Nat.totient_prime (Fact.out)]
   -- Generator g has order p - 1
-  have hord : orderOf g = p - 1 := by
-    rw [← hcard]; exact orderOf_eq_card_of_forall_mem_zpowers hg
+  have hord : orderOf g = p - 1 :=
+    (orderOf_eq_card_of_forall_mem_zpowers hg).trans (Nat.card_eq_fintype_card.trans hcard)
   -- cubExp p = (p-1)/3 is positive
   have hcubPos : (cubExp p : ℤ) ≠ 0 := by
     have : 0 < cubExp p := Nat.div_pos
@@ -374,8 +374,8 @@ theorem quarticEuler_hard {p : ℕ} [Fact p.Prime] (h4 : p % 4 = 1)
     have := hg a; rwa [Subgroup.mem_zpowers_iff] at this
   have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
     rw [ZMod.card_units_eq_totient, Nat.totient_prime (Fact.out)]
-  have hord : orderOf g = p - 1 := by
-    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcard]
+  have hord : orderOf g = p - 1 :=
+    (orderOf_eq_card_of_forall_mem_zpowers hg).trans (Nat.card_eq_fintype_card.trans hcard)
   have hquartPos : (quartExp p : ℤ) ≠ 0 := by
     have : 0 < quartExp p := Nat.div_pos
       (Nat.le_of_dvd (Nat.sub_pos_of_lt (Fact.out : Nat.Prime p).one_lt)
@@ -499,17 +499,17 @@ axiom cubic_reciprocity (π ρ : EisensteinPrime)
 
 section Examples
 
+private instance fact_prime_7 : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+private instance fact_prime_13 : Fact (Nat.Prime 13) := ⟨by norm_num⟩
+
 -- p = 7: 7 ≡ 1 (mod 3), cubExp 7 = 2
 example : (7 : ℕ) % 3 = 1 := by norm_num
 example : cubExp 7 = 2 := by norm_num [cubExp]
 
 -- Cubic residues mod 7: cubes are {0, 1, 6} since 1³=1, 2³=1, 3³=6, 6³=6 (mod 7)
-example : IsCubicResidue (1 : ZMod 7) := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨1, by decide⟩
-example : IsCubicResidue (6 : ZMod 7) := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨3, by decide⟩  -- 3³ = 27 ≡ 6 mod 7
-example : IsCubicResidue (0 : ZMod 7) := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨0, by simp⟩
+example : IsCubicResidue (1 : ZMod 7) := ⟨1, by decide⟩
+example : IsCubicResidue (6 : ZMod 7) := ⟨3, by decide⟩  -- 3³ = 27 ≡ 6 mod 7
+example : IsCubicResidue (0 : ZMod 7) := ⟨0, by simp⟩
 
 -- Euler criterion for p = 7: cubic residue iff a^2 ≡ 1 (mod 7)
 example : (1 : ZMod 7) ^ 2 = 1 := by decide  -- 1 is cubic residue ✓
@@ -558,5 +558,56 @@ theorem quartic_character_package (h4 : p % 4 = 1) :
   ⟨quarticChar.map_mul, quarticChar_pow_four_eq_one h4,
    fun a => isQuarticResidue_iff_quarticChar_one h4 a,
    quarticChar_kernel_card h4⟩
+
+-- ============================================================
+-- PART 11: Range Cardinality (Character Uniqueness Quantification)
+-- ============================================================
+
+/-- The cubic character has exactly 3 distinct values: the three cube roots of unity in (ZMod p)ˣ.
+    First Isomorphism Theorem: |range cubicChar| = |G| / |ker cubicChar| = (p-1) / ((p-1)/3) = 3.
+    This quantifies character uniqueness: exactly 3 cubic characters exist (1 trivial, 2 nontrivial). -/
+theorem cubicChar_range_card (h3 : p % 3 = 1) :
+    Nat.card (cubicChar.range : Subgroup (ZMod p)ˣ) = 3 := by
+  have hcardG : Nat.card (ZMod p)ˣ = p - 1 := by
+    rw [Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]
+    exact Nat.totient_prime hp.out
+  have hker : Nat.card (cubicChar.ker : Subgroup (ZMod p)ˣ) = (p - 1) / 3 := by
+    rw [Nat.card_eq_fintype_card]
+    exact cubicChar_kernel_card h3
+  have hmul := Subgroup.card_mul_index (cubicChar.ker : Subgroup (ZMod p)ˣ)
+  rw [hcardG, hker] at hmul
+  have hrange : cubicChar.ker.index = Nat.card ↥cubicChar.range := by
+    rw [Subgroup.index]
+    exact Nat.card_congr (QuotientGroup.quotientKerEquivRange cubicChar).toEquiv
+  rw [hrange] at hmul
+  have hpos : 0 < (p - 1) / 3 :=
+    Nat.div_pos (Nat.le_of_dvd (by have := hp.out.one_lt; omega) (three_dvd_of_congr_one h3))
+      (by norm_num)
+  have hprod : (p - 1) / 3 * 3 = p - 1 := by
+    have h := cubExp_mul h3; simp only [cubExp] at h; linarith
+  exact Nat.eq_of_mul_eq_mul_left hpos (by linarith)
+
+/-- The quartic character has exactly 4 distinct values: the four fourth roots of unity in (ZMod p)ˣ.
+    First Isomorphism Theorem: |range quarticChar| = |G| / |ker quarticChar| = (p-1) / ((p-1)/4) = 4. -/
+theorem quarticChar_range_card (h4 : p % 4 = 1) :
+    Nat.card (quarticChar.range : Subgroup (ZMod p)ˣ) = 4 := by
+  have hcardG : Nat.card (ZMod p)ˣ = p - 1 := by
+    rw [Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]
+    exact Nat.totient_prime hp.out
+  have hker : Nat.card (quarticChar.ker : Subgroup (ZMod p)ˣ) = (p - 1) / 4 := by
+    rw [Nat.card_eq_fintype_card]
+    exact quarticChar_kernel_card h4
+  have hmul := Subgroup.card_mul_index (quarticChar.ker : Subgroup (ZMod p)ˣ)
+  rw [hcardG, hker] at hmul
+  have hrange : quarticChar.ker.index = Nat.card ↥quarticChar.range := by
+    rw [Subgroup.index]
+    exact Nat.card_congr (QuotientGroup.quotientKerEquivRange quarticChar).toEquiv
+  rw [hrange] at hmul
+  have hpos : 0 < (p - 1) / 4 :=
+    Nat.div_pos (Nat.le_of_dvd (by have := hp.out.one_lt; omega) (four_dvd_of_congr_one h4))
+      (by norm_num)
+  have hprod : (p - 1) / 4 * 4 = p - 1 := by
+    have h := quartExp_mul h4; simp only [quartExp] at h; linarith
+  exact Nat.eq_of_mul_eq_mul_left hpos (by linarith)
 
 end CubicCharacter

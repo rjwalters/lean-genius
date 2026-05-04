@@ -720,11 +720,7 @@ theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
     Since gcd(n, n+1) = 1 and gpf(n) ∣ n, gpf(n+1) ∣ n+1, the gcd of the gpfs divides 1. -/
 theorem gpfConsecutive_one_coprime (n : ℕ) (hn : 2 ≤ n) :
     Nat.Coprime (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
-  have hcop : Nat.Coprime n (n + 1) := by
-    rw [Nat.Coprime]
-    apply Nat.dvd_one.mp
-    have h := Nat.dvd_sub' (Nat.gcd_dvd_right n (n + 1)) (Nat.gcd_dvd_left n (n + 1))
-    rwa [show n + 1 - n = 1 from by omega] at h
+  have hcop : Nat.Coprime n (n + 1) := Nat.coprime_succ_self n
   exact (hcop.coprime_dvd_left (gpf_dvd n hn)).coprime_dvd_right (gpf_dvd (n + 1) (by omega))
 
 /-- For n ≥ 2, greatestPrimeFactor n ≠ greatestPrimeFactor (n + 1).
@@ -1058,7 +1054,7 @@ theorem gpfConsecutive_two_gt_two (n : ℕ) (hn : 1 ≤ n) : 2 < gpfConsecutive 
     Specifically window k = n works: P(n,n) > n > n^(1-ε) by Bertrand's postulate.
     The CONJECTURE asks for a FIXED window working for density-1 of all n simultaneously. -/
 theorem erdos_1201_individual_threshold (n : ℕ) (hn : 2 ≤ n) (ε : ℝ)
-    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    (hε₀ : 0 < ε) (_hε₁ : ε < 1) :
     ∃ k : ℕ, (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
   refine ⟨n, ?_⟩
   have h_gt : n < gpfConsecutive n n := gpfConsecutive_self_gt n (by omega)
@@ -1090,5 +1086,55 @@ theorem erdos_1201_equiv_small_eps :
     · exact erdos_1201_conjecture_large_eps ε η hε_half hε₁ hη
     · push_neg at hε_half
       exact h ε η hε₀ hε_half hη
+
+/-
+## Pointwise Eventual Goodness via Bertrand's Postulate
+-/
+
+/-- **Pointwise Eventual Goodness**: Every n ≥ 2 eventually satisfies the Erdős condition
+    for any ε ∈ (0, 1). By Bertrand's postulate, there exists a prime p ∈ (n, 2n) with
+    k₀ = p − n < n; then P(n, k₀) = p > n > n^(1−ε), and by window monotonicity,
+    P(n, k) > n^(1−ε) for all k ≥ k₀.
+
+    **Mathematical distinction**: This is a POINTWISE result — each individual n is eventually
+    good. The Erdős conjecture asks for the UNIFORM result: for any ε, η > 0, there exists a
+    single k that makes a (1−η)-fraction of ALL n simultaneously good. That uniform statement
+    remains open for ε ∈ (0, 1/2).
+
+    The strict bound k₀ < n (rather than k₀ ≤ n) uses the fact that 2n is composite for n ≥ 2,
+    so the Bertrand prime lies strictly below 2n. -/
+theorem erdos_1201_eventually_good (n : ℕ) (ε : ℝ) (hn : 2 ≤ n) (hε₀ : 0 < ε) (_hε₁ : ε < 1) :
+    ∃ k₀ : ℕ, k₀ < n ∧ ∀ k : ℕ, k₀ ≤ k → (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  obtain ⟨k₀, hk₀_le, hk₀_prime, hk₀_gpf⟩ := gpfConsecutive_bertrand n (by omega)
+  have hk₀_lt : k₀ < n := by
+    by_contra hge
+    push_neg at hge
+    have heq : k₀ = n := Nat.le_antisymm hk₀_le hge
+    rw [heq, show n + n = 2 * n from by ring] at hk₀_prime
+    cases hk₀_prime.eq_one_or_self_of_dvd 2 (dvd_mul_right 2 n) with
+    | inl h => omega
+    | inr h => omega
+  refine ⟨k₀, hk₀_lt, fun k hk => ?_⟩
+  have hn_real : (1 : ℝ) < (n : ℝ) := by exact_mod_cast show 1 < n from by omega
+  have h_thresh : (n : ℝ) ^ (1 - ε) < (n : ℝ) := by
+    have h := Real.rpow_lt_rpow_of_exponent_lt hn_real (show 1 - ε < 1 from by linarith)
+    simpa [Real.rpow_one] using h
+  have h_n_le_gpf : (n : ℝ) ≤ (gpfConsecutive n k₀ : ℝ) := by
+    rw [hk₀_gpf]; exact_mod_cast Nat.le_add_right n k₀
+  have h_mono : (gpfConsecutive n k₀ : ℝ) ≤ (gpfConsecutive n k : ℝ) :=
+    by exact_mod_cast gpfConsecutive_le_of_le_k n hn hk
+  linarith
+
+/-- **Bertrand Window Bound**: For any n ≥ 2 and ε ∈ (0, 1), the window of size n − 1
+    is always sufficient: P(n, n−1) > n^(1−ε). The window [n, 2n−1] always contains a prime
+    p > n > n^(1−ε) by Bertrand. This gives a concrete universal bound on the witness window:
+    every n needs at most a window of its own size to satisfy the Erdős condition.
+
+    The gap between this (window ≈ n) and the Erdős conjecture (a FIXED window works for
+    density-1 of n) is the essence of the open problem for ε ∈ (0, 1/2). -/
+theorem erdos_1201_window_n_minus_one (n : ℕ) (ε : ℝ) (hn : 2 ≤ n) (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n (n - 1) : ℝ) := by
+  obtain ⟨k₀, hk₀_lt, hk₀_good⟩ := erdos_1201_eventually_good n ε hn hε₀ hε₁
+  exact hk₀_good (n - 1) (by omega)
 
 end Erdos1201
