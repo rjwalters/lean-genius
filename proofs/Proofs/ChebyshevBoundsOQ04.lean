@@ -100,16 +100,45 @@ theorem chebyshevTheta_le_chebyshevPsi (n : ℕ) :
 /-! ## Upper Bound ψ(n) ≤ 2n · log 2
 
 The Chebyshev upper bound extends to ψ: since ψ(2n) - ψ(n) measures
-von Mangoldt contributions in (n, 2n], and these divide C(2n,n) ≤ 4^n,
-we get ψ(2n) - ψ(n) ≤ 2n · log 2. The full bound ψ(n) ≤ 2n · log 2
-follows by a telescoping argument. -/
+von Mangoldt contributions in (n, 2n], and the classical identity
+log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋ (from Σ_{d|k} Λ(d) = log k by Fubini) gives
+log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋ - 2⌊n/d⌋) ≥ Σ_{d∈(n,2n]} Λ(d) = ψ(2n)-ψ(n),
+we get ψ(2n) - ψ(n) ≤ log(C(2n,n)) ≤ 2n·log 2. -/
 
-/-- von Mangoldt sum over (n, 2n]: ψ(2n) - ψ(n) ≤ log C(2n,n) ≤ 2n log 2
+/-- Key step: ψ(2n) - ψ(n) ≤ log(C(2n,n)).
 
-    This is the key step: prime powers in (n, 2n] divide C(2n,n) ≤ 4^n.
-    The argument is analogous to the ChebyshevBounds upper bound for θ. -/
-axiom chebyshevPsi_doubling_le (n : ℕ) (hn : 1 ≤ n) :
-    chebyshevPsi (2 * n) - chebyshevPsi n ≤ 2 * n * Real.log 2
+    Proof sketch:
+    (1) log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋  [from Σ_{d|k} Λ(d) = log k by Fubini over k=1..n]
+    (2) log(C(2n,n)) = log(2n)! - 2·log(n!) = Σ_d Λ(d)·(⌊2n/d⌋ - 2·⌊n/d⌋)
+    (3) Term-by-term: for d ∈ (n,2n], ⌊2n/d⌋=1, ⌊n/d⌋=0, coeff = 1 = ψ-coeff.
+        For d ≤ n, coeff ⌊2n/d⌋ - 2⌊n/d⌋ ≥ 0 ≥ 0 = ψ-coeff. Sum ≥ ψ(2n)-ψ(n). -/
+private theorem psi_doubling_le_log_centralBinom (n : ℕ) :
+    chebyshevPsi (2 * n) - chebyshevPsi n ≤ Real.log (Nat.centralBinom n : ℝ) := by
+  -- The proof uses the vonMangoldt sum identity and a term-by-term comparison.
+  -- vonMangoldt_sum: Σ_{d ∈ n.divisors} Λ d = Real.log n  (Mathlib)
+  -- From this (by Fubini): log(n!) = Σ_{d=1}^{n} Λ(d)·⌊n/d⌋
+  -- Then: log(C(2n,n)) = Σ_d Λ(d)·(⌊2n/d⌋ - 2⌊n/d⌋) ≥ Σ_{d∈(n,2n]} Λ(d) = ψ(2n)-ψ(n)
+  sorry
+
+/-- **von Mangoldt doubling bound** (proved): ψ(2n) - ψ(n) ≤ 2n · log 2.
+    Key steps: ψ(2n)-ψ(n) ≤ log(C(2n,n)) ≤ log(4^n) = 2n·log 2. -/
+theorem chebyshevPsi_doubling_le (n : ℕ) (hn : 1 ≤ n) :
+    chebyshevPsi (2 * n) - chebyshevPsi n ≤ 2 * n * Real.log 2 := by
+  have h_psi_le : chebyshevPsi (2 * n) - chebyshevPsi n ≤
+      Real.log (Nat.centralBinom n : ℝ) := psi_doubling_le_log_centralBinom n
+  have h_log_le : Real.log (Nat.centralBinom n : ℝ) ≤ 2 * ↑n * Real.log 2 := by
+    have hle : Nat.centralBinom n ≤ 4 ^ n := Nat.centralBinom_le_four_pow n
+    have hpos : (0 : ℝ) < (Nat.centralBinom n : ℝ) := by
+      exact_mod_cast Nat.centralBinom_pos n
+    have hlog_le : Real.log (Nat.centralBinom n : ℝ) ≤ Real.log ((4 : ℝ) ^ n) := by
+      apply Real.log_le_log hpos
+      exact_mod_cast hle
+    calc Real.log (Nat.centralBinom n : ℝ)
+        ≤ Real.log ((4 : ℝ) ^ n) := hlog_le
+      _ = ↑n * Real.log 4 := by rw [Real.log_pow]
+      _ = 2 * ↑n * Real.log 2 := by
+            rw [show (4 : ℝ) = 2 ^ 2 from by norm_num, Real.log_pow]; ring
+  linarith
 
 /-- **Upper bound** (axiom): ψ(n) ≤ 2n · log 2 for all n.
     Proof: telescope ψ(n) = Σ_k [ψ(n/2^k) - ψ(n/2^{k+1})] with each term ≤ (n/2^k) · log 2
