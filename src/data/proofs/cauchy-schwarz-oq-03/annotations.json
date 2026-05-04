@@ -7,19 +7,19 @@
       "endLine": 60
     },
     "type": "concept",
-    "title": "Hölder's Inequality for NNReal (One Line)",
-    "content": "**Theorem** `holder_nnreal`: For non-negative sequences $f, g : \\iota \\to \\mathbb{R}_{\\geq 0}$ and Hölder conjugate exponents $p.\\text{HolderConjugate}\\,q$:\n\n$$\\sum_{i \\in s} f_i \\cdot g_i \\leq \\left(\\sum_{i \\in s} f_i^p\\right)^{1/p} \\cdot \\left(\\sum_{i \\in s} g_i^q\\right)^{1/q}$$\n\nThe entire proof is `NNReal.inner_le_Lp_mul_Lq s f g hpq` — Mathlib's built-in Hölder inequality for finite sums over NNReal.\n\n**Why NNReal?** Working with non-negative reals (NNReal) avoids absolute values and sign complications. The signed real version (`holder_real`) follows by lifting $|f_i|$, $|g_i|$ to NNReal.",
+    "title": "H\u00f6lder's Inequality for NNReal (One Line)",
+    "content": "**Theorem** `holder_nnreal`: For non-negative sequences $f, g : \\iota \\to \\mathbb{R}_{\\geq 0}$ and H\u00f6lder conjugate exponents $p.\\text{HolderConjugate}\\,q$:\n\n$$\\sum_{i \\in s} f_i \\cdot g_i \\leq \\left(\\sum_{i \\in s} f_i^p\\right)^{1/p} \\cdot \\left(\\sum_{i \\in s} g_i^q\\right)^{1/q}$$\n\nThe entire proof is `NNReal.inner_le_Lp_mul_Lq s f g hpq` \u2014 Mathlib's built-in H\u00f6lder inequality for finite sums over NNReal.\n\n**Why NNReal?** Working with non-negative reals (NNReal) avoids absolute values and sign complications. The signed real version (`holder_real`) follows by lifting $|f_i|$, $|g_i|$ to NNReal.",
     "mathContext": "\\sum_{i \\in s} f_i \\cdot g_i \\leq \\left(\\sum_{i \\in s} f_i^p\\right)^{1/p} \\cdot \\left(\\sum_{i \\in s} g_i^q\\right)^{1/q}",
     "significance": "key",
     "relatedConcepts": [
-      "Hölder inequality",
+      "H\u00f6lder inequality",
       "NNReal.inner_le_Lp_mul_Lq",
       "conjugate exponents",
       "L^p spaces"
     ],
     "prerequisites": [
       "NNReal.inner_le_Lp_mul_Lq",
-      "Hölder conjugate exponents",
+      "H\u00f6lder conjugate exponents",
       "L^p norm definition"
     ]
   },
@@ -31,8 +31,8 @@
       "endLine": 70
     },
     "type": "concept",
-    "title": "Normalized Hölder: The Key Case 1/p + 1/q = 1",
-    "content": "**Theorem** `holder_normalized`: When both inputs have unit L^p and L^q norms ($\\sum f_i^p = 1$ and $\\sum g_i^q = 1$), the Hölder inequality simplifies to:\n\n$$\\sum_{i \\in s} f_i \\cdot g_i \\leq 1$$\n\nProof: Apply `holder_nnreal` to get $\\sum f_i g_i \\leq (\\sum f_i^p)^{1/p} \\cdot (\\sum g_i^q)^{1/q}$. After substituting $\\sum f_i^p = \\sum g_i^q = 1$ via `NNReal.one_rpow`, we get $1^{1/p} \\cdot 1^{1/q} = 1$.\n\n**Educational value**: This is the normalized form that reveals WHY the conjugate condition $1/p + 1/q = 1$ is essential. After applying Young's inequality to each term and summing, we get $\\sum F_i G_i \\leq 1/p \\cdot 1 + 1/q \\cdot 1 = 1/p + 1/q$. For this to equal 1, we need exactly $1/p + 1/q = 1$!",
+    "title": "Normalized H\u00f6lder: The Key Case 1/p + 1/q = 1",
+    "content": "**Theorem** `holder_normalized`: When both inputs have unit L^p and L^q norms ($\\sum f_i^p = 1$ and $\\sum g_i^q = 1$), the H\u00f6lder inequality simplifies to:\n\n$$\\sum_{i \\in s} f_i \\cdot g_i \\leq 1$$\n\nProof: Apply `holder_nnreal` to get $\\sum f_i g_i \\leq (\\sum f_i^p)^{1/p} \\cdot (\\sum g_i^q)^{1/q}$. After substituting $\\sum f_i^p = \\sum g_i^q = 1$ via `NNReal.one_rpow`, we get $1^{1/p} \\cdot 1^{1/q} = 1$.\n\n**Educational value**: This is the normalized form that reveals WHY the conjugate condition $1/p + 1/q = 1$ is essential. After applying Young's inequality to each term and summing, we get $\\sum F_i G_i \\leq 1/p \\cdot 1 + 1/q \\cdot 1 = 1/p + 1/q$. For this to equal 1, we need exactly $1/p + 1/q = 1$!",
     "mathContext": "\\|f\\|_p = \\|g\\|_q = 1 \\implies \\sum f_i g_i \\leq 1",
     "significance": "key",
     "relatedConcepts": [
@@ -80,8 +80,8 @@
       "endLine": 163
     },
     "type": "concept",
-    "title": "Hölder for Real-Valued Functions via NNReal Lift",
-    "content": "**Theorem** `holder_real`: For real-valued (possibly signed) sequences $f, g : \\iota \\to \\mathbb{R}$:\n\n$$\\left|\\sum_{i \\in s} f_i g_i\\right| \\leq \\left(\\sum_{i \\in s} |f_i|^p\\right)^{1/p} \\cdot \\left(\\sum_{i \\in s} |g_i|^q\\right)^{1/q}$$\n\n**Proof strategy** — NNReal lift:\n1. Package $|f_i|, |g_i|$ as NNReal values: `⟨|f i|, abs_nonneg _⟩ : ℝ≥0`\n2. Apply `holder_nnreal` to get $\\sum |f_i| |g_i| \\leq (\\sum |f_i|^p)^{1/p} \\cdot (\\sum |g_i|^q)^{1/q}$\n3. Cast NNReal inequality to ℝ via `NNReal.coe_le_coe` and `push_cast`\n4. Chain: $|\\sum f_i g_i| \\leq \\sum |f_i g_i| = \\sum |f_i||g_i| \\leq$ Hölder RHS\n\nThe cast step uses `push_cast [NNReal.coe_sum, NNReal.coe_mul, NNReal.coe_rpow]` to align types.",
+    "title": "H\u00f6lder for Real-Valued Functions via NNReal Lift",
+    "content": "**Theorem** `holder_real`: For real-valued (possibly signed) sequences $f, g : \\iota \\to \\mathbb{R}$:\n\n$$\\left|\\sum_{i \\in s} f_i g_i\\right| \\leq \\left(\\sum_{i \\in s} |f_i|^p\\right)^{1/p} \\cdot \\left(\\sum_{i \\in s} |g_i|^q\\right)^{1/q}$$\n\n**Proof strategy** \u2014 NNReal lift:\n1. Package $|f_i|, |g_i|$ as NNReal values: `\u27e8|f i|, abs_nonneg _\u27e9 : \u211d\u22650`\n2. Apply `holder_nnreal` to get $\\sum |f_i| |g_i| \\leq (\\sum |f_i|^p)^{1/p} \\cdot (\\sum |g_i|^q)^{1/q}$\n3. Cast NNReal inequality to \u211d via `NNReal.coe_le_coe` and `push_cast`\n4. Chain: $|\\sum f_i g_i| \\leq \\sum |f_i g_i| = \\sum |f_i||g_i| \\leq$ H\u00f6lder RHS\n\nThe cast step uses `push_cast [NNReal.coe_sum, NNReal.coe_mul, NNReal.coe_rpow]` to align types.",
     "mathContext": "\\left|\\sum_{i \\in s} f_i g_i\\right| \\leq \\left(\\sum_{i \\in s} |f_i|^p\\right)^{1/p} \\cdot \\left(\\sum_{i \\in s} |g_i|^q\\right)^{1/q}",
     "significance": "key",
     "relatedConcepts": [
@@ -105,8 +105,8 @@
       "endLine": 183
     },
     "type": "concept",
-    "title": "Hölder for Lebesgue Integral (Measure Spaces)",
-    "content": "**Theorem** `holder_lintegral`: For a measure space $(\\alpha, \\mathcal{M}, \\mu)$ and AEMeasurable ENNReal-valued functions $f, g$:\n\n$$\\int^\\infty f(a) \\cdot g(a)\\, d\\mu \\leq \\left(\\int^\\infty f(a)^p\\, d\\mu\\right)^{1/p} \\cdot \\left(\\int^\\infty g(a)^q\\, d\\mu\\right)^{1/q}$$\n\nThe proof is a one-line application of `ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq hf hg`.\n\n**Why ENNReal?** The extended non-negative reals $[0, \\infty]$ are the natural domain for Lebesgue integration — they allow infinite values without sign issues, matching the lintegral API.\n\n**Significance**: This is the continuous analogue of `holder_nnreal`. It is fundamental in functional analysis — from here one derives: Minkowski's inequality → L^p is Banach → Riesz-Fischer → Fourier theory.",
+    "title": "H\u00f6lder for Lebesgue Integral (Measure Spaces)",
+    "content": "**Theorem** `holder_lintegral`: For a measure space $(\\alpha, \\mathcal{M}, \\mu)$ and AEMeasurable ENNReal-valued functions $f, g$:\n\n$$\\int^\\infty f(a) \\cdot g(a)\\, d\\mu \\leq \\left(\\int^\\infty f(a)^p\\, d\\mu\\right)^{1/p} \\cdot \\left(\\int^\\infty g(a)^q\\, d\\mu\\right)^{1/q}$$\n\nThe proof is a one-line application of `ENNReal.lintegral_mul_le_Lp_mul_Lq \u03bc hpq hf hg`.\n\n**Why ENNReal?** The extended non-negative reals $[0, \\infty]$ are the natural domain for Lebesgue integration \u2014 they allow infinite values without sign issues, matching the lintegral API.\n\n**Significance**: This is the continuous analogue of `holder_nnreal`. It is fundamental in functional analysis \u2014 from here one derives: Minkowski's inequality \u2192 L^p is Banach \u2192 Riesz-Fischer \u2192 Fourier theory.",
     "mathContext": "\\int_\\alpha f \\cdot g\\, d\\mu \\leq \\left(\\int_\\alpha f^p\\, d\\mu\\right)^{1/p} \\cdot \\left(\\int_\\alpha g^q\\, d\\mu\\right)^{1/q}",
     "significance": "key",
     "relatedConcepts": [
@@ -130,12 +130,12 @@
       "endLine": 213
     },
     "type": "concept",
-    "title": "Cauchy-Schwarz = Hölder at p = q = 2",
-    "content": "**Theorem** `cauchy_schwarz_holder_bridge`: For NNReal sequences $f, g$:\n\n$$\\sum_{i \\in s} f_i g_i \\leq \\left(\\sum_{i \\in s} f_i^2\\right)^{1/2} \\cdot \\left(\\sum_{i \\in s} g_i^2\\right)^{1/2}$$\n\nThis is the square-root form of Cauchy-Schwarz, proved by applying `holder_nnreal` with $p = q = 2$:\n\n```lean\napply holder_nnreal s f g\nconstructor <;> norm_num\n```\n\nThe `constructor <;> norm_num` verifies `HolderConjugate 2 2`, which reduces to checking $1/2 + 1/2 = 1$ (by `norm_num`) and $2 > 1$ (by `norm_num`).\n\n**The bridge**: This theorem makes explicit that Cauchy-Schwarz (the p=q=2 case) is NOT a separate result but a consequence of the general Hölder inequality. The conjugate condition $1/p + 1/q = 1$ at $p = q = 2$ gives $1/2 + 1/2 = 1$ — Pythagoras-meets-analysis!",
-    "mathContext": "\\text{Cauchy-Schwarz} = \\text{Hölder}|_{p=q=2}: \\sum f_i g_i \\leq \\left(\\sum f_i^2\\right)^{1/2} \\cdot \\left(\\sum g_i^2\\right)^{1/2}",
+    "title": "Cauchy-Schwarz = H\u00f6lder at p = q = 2",
+    "content": "**Theorem** `cauchy_schwarz_holder_bridge`: For NNReal sequences $f, g$:\n\n$$\\sum_{i \\in s} f_i g_i \\leq \\left(\\sum_{i \\in s} f_i^2\\right)^{1/2} \\cdot \\left(\\sum_{i \\in s} g_i^2\\right)^{1/2}$$\n\nThis is the square-root form of Cauchy-Schwarz, proved by applying `holder_nnreal` with $p = q = 2$:\n\n```lean\napply holder_nnreal s f g\nconstructor <;> norm_num\n```\n\nThe `constructor <;> norm_num` verifies `HolderConjugate 2 2`, which reduces to checking $1/2 + 1/2 = 1$ (by `norm_num`) and $2 > 1$ (by `norm_num`).\n\n**The bridge**: This theorem makes explicit that Cauchy-Schwarz (the p=q=2 case) is NOT a separate result but a consequence of the general H\u00f6lder inequality. The conjugate condition $1/p + 1/q = 1$ at $p = q = 2$ gives $1/2 + 1/2 = 1$ \u2014 Pythagoras-meets-analysis!",
+    "mathContext": "\\text{Cauchy-Schwarz} = \\text{H\u00f6lder}|_{p=q=2}: \\sum f_i g_i \\leq \\left(\\sum f_i^2\\right)^{1/2} \\cdot \\left(\\sum g_i^2\\right)^{1/2}",
     "significance": "key",
     "relatedConcepts": [
-      "Hölder-Cauchy-Schwarz connection",
+      "H\u00f6lder-Cauchy-Schwarz connection",
       "conjugate exponents",
       "p=q=2",
       "norm_num"
@@ -153,9 +153,9 @@
       "startLine": 185,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Abstract Cauchy-Schwarz for Inner Product Spaces",
-    "content": "**Theorem** `cauchy_schwarz_inner`: For any real inner product space $E$ and vectors $u, v \\in E$:\n\n$$|\\langle u, v \\rangle_{\\mathbb{R}}| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nThe proof is a one-line delegation to Mathlib's `abs_real_inner_le_norm`. Internally, Mathlib proves this via the discriminant argument: $\\|u + tv\\|^2 = \\|u\\|^2 + 2t\\langle u,v\\rangle + t^2\\|v\\|^2 \\geq 0$ for all $t$, so the discriminant $4\\langle u,v\\rangle^2 - 4\\|u\\|^2\\|v\\|^2 \\leq 0$.\n\nThis is the most abstract form of Cauchy-Schwarz in the formalization — it applies to any `InnerProductSpace ℝ E`, including $\\mathbb{R}^n$, $L^2$ spaces, and Sobolev spaces.",
+    "content": "**Theorem** `cauchy_schwarz_inner`: For any real inner product space $E$ and vectors $u, v \\in E$:\n\n$$|\\langle u, v \\rangle_{\\mathbb{R}}| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nThe proof is a one-line delegation to Mathlib's `abs_real_inner_le_norm`. Internally, Mathlib proves this via the discriminant argument: $\\|u + tv\\|^2 = \\|u\\|^2 + 2t\\langle u,v\\rangle + t^2\\|v\\|^2 \\geq 0$ for all $t$, so the discriminant $4\\langle u,v\\rangle^2 - 4\\|u\\|^2\\|v\\|^2 \\leq 0$.\n\nThis is the most abstract form of Cauchy-Schwarz in the formalization \u2014 it applies to any `InnerProductSpace \u211d E`, including $\\mathbb{R}^n$, $L^2$ spaces, and Sobolev spaces.",
     "mathContext": "$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$. Equality holds iff $u$ and $v$ are linearly dependent. Proved via $\\|u + tv\\|^2 \\geq 0$ $\\Rightarrow$ discriminant $\\leq 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -179,8 +179,8 @@
     },
     "type": "concept",
     "title": "Summary: The Complete Proof Chain",
-    "content": "Documents the full hierarchy of 8 theorems proved with 0 sorries:\n\n1. `holder_nnreal` — General Hölder for $\\mathbb{R}_{\\geq 0}$ (Mathlib wrapper)\n2. `holder_normalized` — Hölder for unit-norm inputs\n3. `cauchy_schwarz_finite` — CS via Lagrange identity (elementary)\n4. `cauchy_schwarz_from_holder` — CS as $p=q=2$ Hölder (definitional)\n5. `holder_real` — Hölder for signed reals via NNReal lift\n6. `holder_lintegral` — Integral Hölder for measure spaces (Mathlib wrapper)\n7. `cauchy_schwarz_inner` — Abstract inner product CS (Mathlib wrapper)\n8. `cauchy_schwarz_holder_bridge` — CS = Hölder at $p=q=2$ for NNReal\n\nThe key mathematical insight: the conjugate condition $1/p + 1/q = 1$ appears naturally in the Young normalization — it is the exact condition that makes the bound sharp, not an arbitrary algebraic constraint.",
-    "mathContext": "The chain: Young ($ab \\leq a^p/p + b^q/q$) $\\to$ Normalized Hölder ($\\sum f_i g_i \\leq 1$ when $\\|f\\|_p = \\|g\\|_q = 1$) $\\to$ General Hölder ($\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$) $\\to$ CS ($p=q=2$).",
+    "content": "Documents the full hierarchy of 8 theorems proved with 0 sorries:\n\n1. `holder_nnreal` \u2014 General H\u00f6lder for $\\mathbb{R}_{\\geq 0}$ (Mathlib wrapper)\n2. `holder_normalized` \u2014 H\u00f6lder for unit-norm inputs\n3. `cauchy_schwarz_finite` \u2014 CS via Lagrange identity (elementary)\n4. `cauchy_schwarz_from_holder` \u2014 CS as $p=q=2$ H\u00f6lder (definitional)\n5. `holder_real` \u2014 H\u00f6lder for signed reals via NNReal lift\n6. `holder_lintegral` \u2014 Integral H\u00f6lder for measure spaces (Mathlib wrapper)\n7. `cauchy_schwarz_inner` \u2014 Abstract inner product CS (Mathlib wrapper)\n8. `cauchy_schwarz_holder_bridge` \u2014 CS = H\u00f6lder at $p=q=2$ for NNReal\n\nThe key mathematical insight: the conjugate condition $1/p + 1/q = 1$ appears naturally in the Young normalization \u2014 it is the exact condition that makes the bound sharp, not an arbitrary algebraic constraint.",
+    "mathContext": "The chain: Young ($ab \\leq a^p/p + b^q/q$) $\\to$ Normalized H\u00f6lder ($\\sum f_i g_i \\leq 1$ when $\\|f\\|_p = \\|g\\|_q = 1$) $\\to$ General H\u00f6lder ($\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$) $\\to$ CS ($p=q=2$).",
     "significance": "supporting",
     "relatedConcepts": [
       "proof chain",

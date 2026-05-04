@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Shift Map on Cantor Space: Continuous and Measurable",
-    "content": "Defines the shift T(x)(n) = x(n+1) on Cantor space ℕ → Bool, proves it continuous (via continuous_pi/continuous_apply) and measurable (from continuity), and derives the iteration formula shift^[n](x)(k) = x(k+n) by induction. The continuity proof is a one-liner: each coordinate of shift(x) is (continuous_apply (n+1)) composed with the identity on CantorSpace. Measurability follows immediately from shift_continuous.measurable. The shift_iterate lemma is proved by induction on n, using ring_nf to handle the arithmetic n+k = k+n.",
+    "content": "Defines the shift T(x)(n) = x(n+1) on Cantor space \u2115 \u2192 Bool, proves it continuous (via continuous_pi/continuous_apply) and measurable (from continuity), and derives the iteration formula shift^[n](x)(k) = x(k+n) by induction. The continuity proof is a one-liner: each coordinate of shift(x) is (continuous_apply (n+1)) composed with the identity on CantorSpace. Measurability follows immediately from shift_continuous.measurable. The shift_iterate lemma is proved by induction on n, using ring_nf to handle the arithmetic n+k = k+n.",
     "significance": "key",
     "relatedConcepts": [
       "symbolic dynamics",
@@ -33,11 +33,11 @@
     },
     "type": "definition",
     "title": "Cylinder Sets: Clopen, Measurable, and Shift-Equivariant",
-    "content": "Defines cylinder i b = {x : x(i) = b} and the distinguished cylinder B₀ = cylinder 0 true. Proves cylinder sets are IsClopen: closed because they are the preimage of {b} under the continuous projection (isClosed_eq), open because Bool has the discrete topology (isOpen_discrete). Measurability follows from openness. The key computational lemma shift_preimage_cylinder gives T⁻¹(cylinder i b) = cylinder (i+1) b (proved by simp), and iterate_preimage_cylinderZero gives T^{-n}(B₀) = cylinder n true. These preimage formulas make the combinatorial-dynamical bridge explicit.",
+    "content": "Defines cylinder i b = {x : x(i) = b} and the distinguished cylinder B\u2080 = cylinder 0 true. Proves cylinder sets are IsClopen: closed because they are the preimage of {b} under the continuous projection (isClosed_eq), open because Bool has the discrete topology (isOpen_discrete). Measurability follows from openness. The key computational lemma shift_preimage_cylinder gives T\u207b\u00b9(cylinder i b) = cylinder (i+1) b (proved by simp), and iterate_preimage_cylinderZero gives T^{-n}(B\u2080) = cylinder n true. These preimage formulas make the combinatorial-dynamical bridge explicit.",
     "significance": "key",
     "relatedConcepts": [
       "cylinder sets",
-      "Borel σ-algebra",
+      "Borel \u03c3-algebra",
       "product topology generators",
       "IsClopen"
     ],
@@ -57,8 +57,8 @@
       "endLine": 158
     },
     "type": "definition",
-    "title": "setIndicator: Encoding Subsets of ℕ as Cantor Space Points",
-    "content": "setIndicator A : CantorSpace = fun n => if n ∈ A then true else false encodes any A ⊆ ℕ as a point in Cantor space. The fundamental theorem shift_indicator_zero says: shift^[n](setIndicator A)(0) = true ↔ n ∈ A. This is the precise form of 'reading position 0 of the n-th iterate recovers membership'. indicator_mem_cylinder states the same as setIndicator A ∈ cylinder n true ↔ n ∈ A — the preimage-set form that is used in the return property proofs. These three lemmas together make setIndicator the bridge between the combinatorial world (sets A ⊆ ℕ) and the dynamical world (points in Cantor space and their orbit).",
+    "title": "setIndicator: Encoding Subsets of \u2115 as Cantor Space Points",
+    "content": "setIndicator A : CantorSpace = fun n => if n \u2208 A then true else false encodes any A \u2286 \u2115 as a point in Cantor space. The fundamental theorem shift_indicator_zero says: shift^[n](setIndicator A)(0) = true \u2194 n \u2208 A. This is the precise form of 'reading position 0 of the n-th iterate recovers membership'. indicator_mem_cylinder states the same as setIndicator A \u2208 cylinder n true \u2194 n \u2208 A \u2014 the preimage-set form that is used in the return property proofs. These three lemmas together make setIndicator the bridge between the combinatorial world (sets A \u2286 \u2115) and the dynamical world (points in Cantor space and their orbit).",
     "significance": "key",
     "relatedConcepts": [
       "indicator function",
@@ -81,9 +81,9 @@
       "startLine": 179,
       "endLine": 190
     },
-    "type": "theorem",
-    "title": "k-fold Return Property: Dynamical Intersections ↔ Arithmetic Progressions",
-    "content": "indicator_in_kfold_return is the mathematical heart of the Furstenberg correspondence: setIndicator A ∈ ⋂_{i<k} T^{-i·d}(B₀) iff ∀ i < k, i·d ∈ A. The proof is a single simp using iterate_preimage_cylinderZero and indicator_mem_cylinder — the whole correspondence is packed into two lemmas about preimages and indicators. The consequence: if a T-invariant probability measure μ satisfies μ(B₀) > 0 and some recurrence property (Poincaré recurrence or Van der Waerden-style), then μ(B₀ ∩ T^{-d}(B₀) ∩ ... ∩ T^{-(k-1)d}(B₀)) > 0, which by this lemma means ∃ a with a, a+d, ..., a+(k-1)d ∈ A. Also proves the binary version indicator_in_binary_return for the case k=2.",
+    "type": "insight",
+    "title": "k-fold Return Property: Dynamical Intersections \u2194 Arithmetic Progressions",
+    "content": "indicator_in_kfold_return is the mathematical heart of the Furstenberg correspondence: setIndicator A \u2208 \u22c2_{i<k} T^{-i\u00b7d}(B\u2080) iff \u2200 i < k, i\u00b7d \u2208 A. The proof is a single simp using iterate_preimage_cylinderZero and indicator_mem_cylinder \u2014 the whole correspondence is packed into two lemmas about preimages and indicators. The consequence: if a T-invariant probability measure \u03bc satisfies \u03bc(B\u2080) > 0 and some recurrence property (Poincar\u00e9 recurrence or Van der Waerden-style), then \u03bc(B\u2080 \u2229 T^{-d}(B\u2080) \u2229 ... \u2229 T^{-(k-1)d}(B\u2080)) > 0, which by this lemma means \u2203 a with a, a+d, ..., a+(k-1)d \u2208 A. Also proves the binary version indicator_in_binary_return for the case k=2.",
     "significance": "key",
     "relatedConcepts": [
       "arithmetic progressions",
@@ -91,7 +91,7 @@
       "return times",
       "Furstenberg correspondence"
     ],
-    "mathContext": "$\\mathbf{1}_A \\in \\bigcap_{i < k} T^{-id}(B_0) \\iff \\forall i < k,\\ id \\in A$. If $\\mu(\\bigcap_{i<k} T^{-id}(B_0)) > 0$, then $\\exists a$ s.t. $a, a+d, \\ldots, a+(k-1)d \\in A$ — a $k$-AP in $A$ with common difference $d$.",
+    "mathContext": "$\\mathbf{1}_A \\in \\bigcap_{i < k} T^{-id}(B_0) \\iff \\forall i < k,\\ id \\in A$. If $\\mu(\\bigcap_{i<k} T^{-id}(B_0)) > 0$, then $\\exists a$ s.t. $a, a+d, \\ldots, a+(k-1)d \\in A$ \u2014 a $k$-AP in $A$ with common difference $d$.",
     "prerequisites": [
       "indicator_mem_cylinder",
       "iterate_preimage_cylinderZero",
@@ -108,15 +108,15 @@
     },
     "type": "definition",
     "title": "orbitFinset and orbit_indicator_hits: Orbit Dynamics Count Set Membership",
-    "content": "orbitFinset x N = (Finset.range N).image (fun n => shift^[n] x) is the finite orbit of x up to time N. The theorem orbit_indicator_hits proves that the number of n < N with shift^[n](setIndicator A) ∈ B₀ equals the number of n < N with n ∈ A. In other words, orbit hitting frequency = density of A! This gives the Cesàro average of the indicator function on B₀: (1/N)·|{n < N : T^n(1_A) ∈ B₀}| = |{n < N : n ∈ A}|/N → d*(A). So the orbit of 1_A precisely realizes the upper density of A as the Cesàro limit of indicator values — the dynamical translation of density.",
+    "content": "orbitFinset x N = (Finset.range N).image (fun n => shift^[n] x) is the finite orbit of x up to time N. The theorem orbit_indicator_hits proves that the number of n < N with shift^[n](setIndicator A) \u2208 B\u2080 equals the number of n < N with n \u2208 A. In other words, orbit hitting frequency = density of A! This gives the Ces\u00e0ro average of the indicator function on B\u2080: (1/N)\u00b7|{n < N : T^n(1_A) \u2208 B\u2080}| = |{n < N : n \u2208 A}|/N \u2192 d*(A). So the orbit of 1_A precisely realizes the upper density of A as the Ces\u00e0ro limit of indicator values \u2014 the dynamical translation of density.",
     "significance": "key",
     "relatedConcepts": [
-      "Cesàro averages",
+      "Ces\u00e0ro averages",
       "upper density",
       "orbit",
       "hitting frequency"
     ],
-    "mathContext": "$|\\{n < N : T^n(\\mathbf{1}_A) \\in B_0\\}| = |A \\cap [0, N)|$, so the Cesàro average is $(1/N)|A \\cap [0,N)| \\to d^*(A)$. This connects orbit-time averages to combinatorial density.",
+    "mathContext": "$|\\{n < N : T^n(\\mathbf{1}_A) \\in B_0\\}| = |A \\cap [0, N)|$, so the Ces\u00e0ro average is $(1/N)|A \\cap [0,N)| \\to d^*(A)$. This connects orbit-time averages to combinatorial density.",
     "prerequisites": [
       "orbit_hits_cylinderZero",
       "setIndicator",
@@ -131,18 +131,18 @@
       "startLine": 218,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "orbit_indicator_hits and the Weak-* Convergence Gap",
-    "content": "orbit_indicator_hits proves that orbit hitting frequency on B₀ exactly equals A-membership count: |{n < N : T^n(1_A) ∈ B₀}| = |A ∩ [0,N)|. This makes the Cesàro measure μ_N(B₀) = |A ∩ [0,N)|/N exact. Together with the Tychonoff compactness of Cantor space (Pi.compactSpace) and metrizability (inferInstance), this is the last proved step before the remaining formal gap: weak-* sequential compactness of {μ_N} needs Prokhorov's theorem, then T-invariance of the limit measure, then density lower bound μ(B₀) ≥ d*(A). These remaining steps require ~300-500 lines and depend on Dirac measure and weak-* topology infrastructure not yet in Mathlib as of 2026.",
+    "content": "orbit_indicator_hits proves that orbit hitting frequency on B\u2080 exactly equals A-membership count: |{n < N : T^n(1_A) \u2208 B\u2080}| = |A \u2229 [0,N)|. This makes the Ces\u00e0ro measure \u03bc_N(B\u2080) = |A \u2229 [0,N)|/N exact. Together with the Tychonoff compactness of Cantor space (Pi.compactSpace) and metrizability (inferInstance), this is the last proved step before the remaining formal gap: weak-* sequential compactness of {\u03bc_N} needs Prokhorov's theorem, then T-invariance of the limit measure, then density lower bound \u03bc(B\u2080) \u2265 d*(A). These remaining steps require ~300-500 lines and depend on Dirac measure and weak-* topology infrastructure not yet in Mathlib as of 2026.",
     "significance": "key",
     "relatedConcepts": [
       "Tychonoff theorem",
       "Pi.compactSpace",
       "Prokhorov theorem",
       "weak-* topology",
-      "Cesàro averages"
+      "Ces\u00e0ro averages"
     ],
-    "mathContext": "$|\\{n < N : T^n(\\mathbf{1}_A) \\in B_0\\}| = |A \\cap [0,N)|$. The Cantor space is compact metrizable (Tychonoff), so $\\{\\mu_N\\}$ lie in a compact space and have weak-* cluster points — the T-invariant measures needed for the full correspondence.",
+    "mathContext": "$|\\{n < N : T^n(\\mathbf{1}_A) \\in B_0\\}| = |A \\cap [0,N)|$. The Cantor space is compact metrizable (Tychonoff), so $\\{\\mu_N\\}$ lie in a compact space and have weak-* cluster points \u2014 the T-invariant measures needed for the full correspondence.",
     "prerequisites": [
       "orbit_hits_cylinderZero",
       "setIndicator",

@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Module Header: Carmichael's Function and the Minimal Universal Exponent",
-    "content": "The file opens with `import Mathlib` (line 1) followed by a module docstring (lines 3-24) describing Carmichael's function λ(n). The docstring introduces four key facts: (1) λ(n) is defined as the exponent of (ℤ/nℤ)*; (2) a^λ(n) ≡ 1 (mod n) for all coprime a (Carmichael's theorem); (3) λ(n) | φ(n); and (4) λ(n) is minimal among all universal exponents. Lines 26-28 set up the namespace `CarmichaelFunction` and open `ZMod`, making `ZMod.card_units_eq_totient` and related lemmas accessible without the `ZMod.` prefix.",
-    "mathContext": "The Carmichael function $\\lambda(n)$ (1910) is the exponent of the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$: the smallest positive $e$ with $a^e \\equiv 1 \\pmod{n}$ for all $\\gcd(a,n) = 1$. It satisfies $\\lambda(n) \\mid \\varphi(n)$, with equality iff $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic — i.e., $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd prime $p$.",
+    "content": "The file opens with `import Mathlib` (line 1) followed by a module docstring (lines 3-24) describing Carmichael's function \u03bb(n). The docstring introduces four key facts: (1) \u03bb(n) is defined as the exponent of (\u2124/n\u2124)*; (2) a^\u03bb(n) \u2261 1 (mod n) for all coprime a (Carmichael's theorem); (3) \u03bb(n) | \u03c6(n); and (4) \u03bb(n) is minimal among all universal exponents. Lines 26-28 set up the namespace `CarmichaelFunction` and open `ZMod`, making `ZMod.card_units_eq_totient` and related lemmas accessible without the `ZMod.` prefix.",
+    "mathContext": "The Carmichael function $\\lambda(n)$ (1910) is the exponent of the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$: the smallest positive $e$ with $a^e \\equiv 1 \\pmod{n}$ for all $\\gcd(a,n) = 1$. It satisfies $\\lambda(n) \\mid \\varphi(n)$, with equality iff $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic \u2014 i.e., $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd prime $p$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Carmichael's function",
@@ -33,8 +33,8 @@
     },
     "type": "definition",
     "title": "Carmichael's Function via Monoid.exponent",
-    "content": "`carmichael n` is defined as `Monoid.exponent (ZMod n)ˣ` — the exponent of the multiplicative group (ℤ/nℤ)*. The group exponent is the LCM of the orders of all elements, equivalently the smallest positive e with g^e = 1 for all g. By defining λ(n) this way, all its properties follow immediately from Mathlib's abstract group theory library without any number-theoretic computation.\n\nThe definition is `noncomputable` because `Monoid.exponent` involves classical Finset operations that are not computable in Lean's kernel. The `ZMod n` type is Lean's formalization of ℤ/nℤ, and `(ZMod n)ˣ` is its group of units — the invertible elements, which correspond exactly to the integers coprime to n.",
-    "mathContext": "The exponent of a finite abelian group $G \\cong \\mathbb{Z}/d_1 \\times \\cdots \\times \\mathbb{Z}/d_k$ (invariant factor decomposition) equals the largest invariant factor $d_k = \\text{lcm}(d_1, \\ldots, d_k)$. For $(\\mathbb{Z}/n\\mathbb{Z})^*$: `Monoid.exponent (ZMod n)ˣ` $= \\lambda(n)$, the Carmichael function.",
+    "content": "`carmichael n` is defined as `Monoid.exponent (ZMod n)\u02e3` \u2014 the exponent of the multiplicative group (\u2124/n\u2124)*. The group exponent is the LCM of the orders of all elements, equivalently the smallest positive e with g^e = 1 for all g. By defining \u03bb(n) this way, all its properties follow immediately from Mathlib's abstract group theory library without any number-theoretic computation.\n\nThe definition is `noncomputable` because `Monoid.exponent` involves classical Finset operations that are not computable in Lean's kernel. The `ZMod n` type is Lean's formalization of \u2124/n\u2124, and `(ZMod n)\u02e3` is its group of units \u2014 the invertible elements, which correspond exactly to the integers coprime to n.",
+    "mathContext": "The exponent of a finite abelian group $G \\cong \\mathbb{Z}/d_1 \\times \\cdots \\times \\mathbb{Z}/d_k$ (invariant factor decomposition) equals the largest invariant factor $d_k = \\text{lcm}(d_1, \\ldots, d_k)$. For $(\\mathbb{Z}/n\\mathbb{Z})^*$: `Monoid.exponent (ZMod n)\u02e3` $= \\lambda(n)$, the Carmichael function.",
     "significance": "key",
     "relatedConcepts": [
       "Monoid.exponent",
@@ -56,8 +56,8 @@
       "endLine": 39
     },
     "type": "insight",
-    "title": "Carmichael's Theorem: a^λ(n) ≡ 1 (mod n)",
-    "content": "For any unit a in (ℤ/nℤ)*, we have a^(carmichael n) = 1. This is the defining property of λ(n): every element raised to the group exponent gives the identity. The proof is a single application of `Monoid.pow_exponent_eq_one`, which states that in any monoid, every element raised to the exponent equals one.\n\nCarmichael's theorem generalizes both Euler's theorem (a^φ(n) ≡ 1) and Fermat's little theorem (a^(p-1) ≡ 1 for prime p). The exponent λ(n) is strictly smaller than φ(n) whenever (ℤ/nℤ)* is non-cyclic — for example, λ(8) = 2 but φ(8) = 4.",
+    "title": "Carmichael's Theorem: a^\u03bb(n) \u2261 1 (mod n)",
+    "content": "For any unit a in (\u2124/n\u2124)*, we have a^(carmichael n) = 1. This is the defining property of \u03bb(n): every element raised to the group exponent gives the identity. The proof is a single application of `Monoid.pow_exponent_eq_one`, which states that in any monoid, every element raised to the exponent equals one.\n\nCarmichael's theorem generalizes both Euler's theorem (a^\u03c6(n) \u2261 1) and Fermat's little theorem (a^(p-1) \u2261 1 for prime p). The exponent \u03bb(n) is strictly smaller than \u03c6(n) whenever (\u2124/n\u2124)* is non-cyclic \u2014 for example, \u03bb(8) = 2 but \u03c6(8) = 4.",
     "mathContext": "Carmichael's theorem: $a^{\\lambda(n)} \\equiv 1 \\pmod{n}$ for all $\\gcd(a,n)=1$. Euler's theorem: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$. Since $\\lambda(n) \\mid \\varphi(n)$: $a^{\\varphi(n)} = a^{\\lambda(n) \\cdot k} = (a^{\\lambda(n)})^k = 1^k = 1$. Carmichael's is strictly stronger: $\\lambda(8) = 2$, $a^2 \\equiv 1 \\pmod{8}$ for all odd $a$, but $\\varphi(8) = 4$.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,8 +80,8 @@
       "endLine": 49
     },
     "type": "insight",
-    "title": "λ(n) | φ(n): Carmichael Divides Euler's Totient",
-    "content": "Carmichael's function λ(n) divides Euler's totient φ(n). The proof uses two steps: (1) `Monoid.exponent_dvd_card` says the exponent of any finite group divides its cardinality; (2) `ZMod.card_units_eq_totient n` identifies |(ℤ/nℤ)*| = φ(n). These combine to give λ(n) | |(ℤ/nℤ)*| = φ(n).\n\nThis is an instance of Lagrange's theorem: in any finite group, the order of any subgroup (and hence the exponent) divides the group order. The quotient φ(n)/λ(n) measures how 'non-cyclic' (ℤ/nℤ)* is — it equals 1 iff the group is cyclic.",
+    "title": "\u03bb(n) | \u03c6(n): Carmichael Divides Euler's Totient",
+    "content": "Carmichael's function \u03bb(n) divides Euler's totient \u03c6(n). The proof uses two steps: (1) `Monoid.exponent_dvd_card` says the exponent of any finite group divides its cardinality; (2) `ZMod.card_units_eq_totient n` identifies |(\u2124/n\u2124)*| = \u03c6(n). These combine to give \u03bb(n) | |(\u2124/n\u2124)*| = \u03c6(n).\n\nThis is an instance of Lagrange's theorem: in any finite group, the order of any subgroup (and hence the exponent) divides the group order. The quotient \u03c6(n)/\u03bb(n) measures how 'non-cyclic' (\u2124/n\u2124)* is \u2014 it equals 1 iff the group is cyclic.",
     "mathContext": "$\\lambda(n) \\mid \\varphi(n)$ because: the exponent of any finite group $G$ divides $|G|$. Proof: for any $g \\in G$, $\\text{ord}(g) \\mid |G|$ (Lagrange); $\\text{exp}(G) = \\text{lcm}(\\text{ord}(g))$ divides $|G|$ since each term does. Here $|G| = |(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -104,8 +104,8 @@
       "endLine": 57
     },
     "type": "insight",
-    "title": "Minimality: λ(n) Divides Every Universal Exponent",
-    "content": "If e is any exponent with a^e = 1 for all units a in (ℤ/nℤ)*, then λ(n) | e. This establishes that λ(n) is the order-theoretic infimum of all universal exponents — equivalently, λ(n) = gcd of all e with a^e = 1 for all coprime a. The proof applies `Monoid.exponent_dvd_of_forall_pow_eq_one`, which in any monoid says: if every element satisfies x^e = 1, then the exponent divides e.\n\nCombined with `carmichael_pow_eq_one`, this shows λ(n) is the unique minimal universal exponent. In cryptography, minimality means RSA decryption works if and only if λ(n) | (ed - 1).",
+    "title": "Minimality: \u03bb(n) Divides Every Universal Exponent",
+    "content": "If e is any exponent with a^e = 1 for all units a in (\u2124/n\u2124)*, then \u03bb(n) | e. This establishes that \u03bb(n) is the order-theoretic infimum of all universal exponents \u2014 equivalently, \u03bb(n) = gcd of all e with a^e = 1 for all coprime a. The proof applies `Monoid.exponent_dvd_of_forall_pow_eq_one`, which in any monoid says: if every element satisfies x^e = 1, then the exponent divides e.\n\nCombined with `carmichael_pow_eq_one`, this shows \u03bb(n) is the unique minimal universal exponent. In cryptography, minimality means RSA decryption works if and only if \u03bb(n) | (ed - 1).",
     "mathContext": "The minimality property: $\\{e \\in \\mathbb{N} : \\forall a \\in (\\mathbb{Z}/n\\mathbb{Z})^*, a^e = 1\\} = \\lambda(n) \\cdot \\mathbb{N}_{>0}$. This set is closed under gcd and contains $\\lambda(n)$ as its minimum positive element. In the divisibility poset, $\\lambda(n)$ is the infimum of all universal exponents.",
     "significance": "key",
     "relatedConcepts": [
@@ -127,9 +127,9 @@
       "endLine": 68
     },
     "type": "insight",
-    "title": "λ(p) = p − 1 for Prime p via Cyclic Group Structure",
-    "content": "For a prime p, carmichael p = p − 1. The proof uses `IsCyclic.exponent_eq_card`: (ℤ/pℤ)* is cyclic (Gauss's primitive root theorem, available via the `IsCyclic` instance for `ZMod p`ˣ). For a cyclic group of order m, the exponent equals m (since a generator has order m = lcm of all orders). Thus exponent = |(ℤ/pℤ)*| = φ(p) = p−1.\n\nThe Lean proof chains: `IsCyclic.exponent_eq_card` → `ZMod.card_units_eq_totient` → `Nat.totient_prime`. This is a three-lemma chain, all available in Mathlib.",
-    "mathContext": "Gauss (Disquisitiones §57): $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic for prime $p$. For a cyclic group $G = \\langle g \\rangle$ of order $n$: $\\text{exp}(G) = \\text{ord}(g) = n$ (since $g$ itself has order $n$, and all element orders divide $n$, so $\\text{lcm} = n$). Thus $\\lambda(p) = |(\\mathbb{Z}/p\\mathbb{Z})^*| = \\varphi(p) = p-1$. For odd prime powers: $(\\mathbb{Z}/p^k\\mathbb{Z})^*$ is also cyclic, so $\\lambda(p^k) = \\varphi(p^k) = p^{k-1}(p-1)$.",
+    "title": "\u03bb(p) = p \u2212 1 for Prime p via Cyclic Group Structure",
+    "content": "For a prime p, carmichael p = p \u2212 1. The proof uses `IsCyclic.exponent_eq_card`: (\u2124/p\u2124)* is cyclic (Gauss's primitive root theorem, available via the `IsCyclic` instance for `ZMod p`\u02e3). For a cyclic group of order m, the exponent equals m (since a generator has order m = lcm of all orders). Thus exponent = |(\u2124/p\u2124)*| = \u03c6(p) = p\u22121.\n\nThe Lean proof chains: `IsCyclic.exponent_eq_card` \u2192 `ZMod.card_units_eq_totient` \u2192 `Nat.totient_prime`. This is a three-lemma chain, all available in Mathlib.",
+    "mathContext": "Gauss (Disquisitiones \u00a757): $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic for prime $p$. For a cyclic group $G = \\langle g \\rangle$ of order $n$: $\\text{exp}(G) = \\text{ord}(g) = n$ (since $g$ itself has order $n$, and all element orders divide $n$, so $\\text{lcm} = n$). Thus $\\lambda(p) = |(\\mathbb{Z}/p\\mathbb{Z})^*| = \\varphi(p) = p-1$. For odd prime powers: $(\\mathbb{Z}/p^k\\mathbb{Z})^*$ is also cyclic, so $\\lambda(p^k) = \\varphi(p^k) = p^{k-1}(p-1)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "primitive root theorem",
@@ -151,9 +151,9 @@
       "startLine": 69,
       "endLine": 83
     },
-    "type": "theorem",
-    "title": "Special Values: λ(1) = 1 and λ(2) = 1",
-    "content": "`carmichael_one` (lines 69-73) proves λ(1) = 1: the group (ℤ/1ℤ)* is trivial (contains only the identity), so its exponent is 1. The proof uses `Monoid.exponent_eq_one` for the trivial group or `Fintype.card_eq_one_iff` to establish triviality.\n\n`carmichael_two` (lines 74-82) proves λ(2) = 1: the group (ℤ/2ℤ)* also has order 1 (only 1 is coprime to 2 and reduced mod 2, so the multiplicative group is the trivial group {1}). Both results confirm that λ(n) = 1 iff (ℤ/nℤ)* is trivial — which happens for n ∈ {1, 2}.\n\nLine 83 closes the namespace with `end CarmichaelFunction`.",
+    "type": "insight",
+    "title": "Special Values: \u03bb(1) = 1 and \u03bb(2) = 1",
+    "content": "`carmichael_one` (lines 69-73) proves \u03bb(1) = 1: the group (\u2124/1\u2124)* is trivial (contains only the identity), so its exponent is 1. The proof uses `Monoid.exponent_eq_one` for the trivial group or `Fintype.card_eq_one_iff` to establish triviality.\n\n`carmichael_two` (lines 74-82) proves \u03bb(2) = 1: the group (\u2124/2\u2124)* also has order 1 (only 1 is coprime to 2 and reduced mod 2, so the multiplicative group is the trivial group {1}). Both results confirm that \u03bb(n) = 1 iff (\u2124/n\u2124)* is trivial \u2014 which happens for n \u2208 {1, 2}.\n\nLine 83 closes the namespace with `end CarmichaelFunction`.",
     "mathContext": "$(\\mathbb{Z}/1\\mathbb{Z})^* = \\{0\\}$ (the only element of $\\mathbb{Z}/1\\mathbb{Z}$ is 0 = 1), so $\\lambda(1) = \\text{exp}(\\{0\\}) = 1$. $(\\mathbb{Z}/2\\mathbb{Z})^* = \\{1\\}$ (only 1 is invertible mod 2), so $\\lambda(2) = 1$. In general, $\\lambda(n) = 1$ iff $(\\mathbb{Z}/n\\mathbb{Z})^*$ is the trivial group, iff $\\varphi(n) = 1$, iff $n \\in \\{1, 2\\}$.",
     "significance": "supporting",
     "relatedConcepts": [

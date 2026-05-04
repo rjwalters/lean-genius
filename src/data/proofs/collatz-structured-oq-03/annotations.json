@@ -33,8 +33,8 @@
     },
     "type": "definition",
     "title": "Collatz Map, Iteration, and Stopping Time",
-    "content": "The four core definitions establish the Collatz computational framework. `collatz n` is the Collatz map: n/2 if n is even, 3n+1 if n is odd. `collatzIter k n` applies the map k times via structural recursion (base case returns n, recursive case applies one more step). `reachesOneIn n k` is the predicate 'n reaches 1 in exactly k steps', and `reachesOne n` is the existential 'n eventually reaches 1'. The stopping time `stoppingTime n` uses `Nat.find h` (where h : reachesOne n) to extract the *minimum* such k. The `else 0` branch handles the case where `reachesOne n` is false — returning 0 as a sentinel for potentially divergent orbits.",
-    "mathContext": "The Collatz map $T: \\mathbb{N} \\to \\mathbb{N}$ is $T(n) = n/2$ if $2 \\mid n$ and $T(n) = 3n+1$ if $2 \\nmid n$. The stopping time $\\sigma(n) = \\min\\{k \\geq 0 : T^k(n) = 1\\}$ if this minimum exists, else undefined. Lean's `Nat.find h` extracts this minimum from the proof `h : ∃ k, T^k(n) = 1`. Since termination is unknown for all $n$, `reachesOne` is not computably decidable, making `stoppingTime` necessarily `noncomputable`.",
+    "content": "The four core definitions establish the Collatz computational framework. `collatz n` is the Collatz map: n/2 if n is even, 3n+1 if n is odd. `collatzIter k n` applies the map k times via structural recursion (base case returns n, recursive case applies one more step). `reachesOneIn n k` is the predicate 'n reaches 1 in exactly k steps', and `reachesOne n` is the existential 'n eventually reaches 1'. The stopping time `stoppingTime n` uses `Nat.find h` (where h : reachesOne n) to extract the *minimum* such k. The `else 0` branch handles the case where `reachesOne n` is false \u2014 returning 0 as a sentinel for potentially divergent orbits.",
+    "mathContext": "The Collatz map $T: \\mathbb{N} \\to \\mathbb{N}$ is $T(n) = n/2$ if $2 \\mid n$ and $T(n) = 3n+1$ if $2 \\nmid n$. The stopping time $\\sigma(n) = \\min\\{k \\geq 0 : T^k(n) = 1\\}$ if this minimum exists, else undefined. Lean's `Nat.find h` extracts this minimum from the proof `h : \u2203 k, T^k(n) = 1`. Since termination is unknown for all $n$, `reachesOne` is not computably decidable, making `stoppingTime` necessarily `noncomputable`.",
     "significance": "key",
     "relatedConcepts": [
       "Collatz conjecture",
@@ -56,9 +56,9 @@
       "startLine": 50,
       "endLine": 64
     },
-    "type": "tactic",
-    "title": "Concrete Stopping Times: σ(1) = 0 and σ(2) = 1",
-    "content": "The two concrete theorems verify the definition on small inputs. `stoppingTime_one`: 1 is the fixed terminal value, so σ(1) = 0 — proved by `Nat.find_eq_zero.mpr rfl` after confirming reachesOne 1 holds with witness k=0. `stoppingTime_two`: 2 → 1 in one step (T(2) = 1), so σ(2) = 1. This is more involved: the proof shows (a) reachesOne 2 holds with witness k=1, (b) the minimum is exactly 1 using `Nat.find_eq_iff.mpr` with two obligations — the predicate holds at k=1, and it fails at k=0 (since T⁰(2) = 2 ≠ 1). `interval_cases k` handles the k < 1 case by exhaustion.",
+    "type": "technique",
+    "title": "Concrete Stopping Times: \u03c3(1) = 0 and \u03c3(2) = 1",
+    "content": "The two concrete theorems verify the definition on small inputs. `stoppingTime_one`: 1 is the fixed terminal value, so \u03c3(1) = 0 \u2014 proved by `Nat.find_eq_zero.mpr rfl` after confirming reachesOne 1 holds with witness k=0. `stoppingTime_two`: 2 \u2192 1 in one step (T(2) = 1), so \u03c3(2) = 1. This is more involved: the proof shows (a) reachesOne 2 holds with witness k=1, (b) the minimum is exactly 1 using `Nat.find_eq_iff.mpr` with two obligations \u2014 the predicate holds at k=1, and it fails at k=0 (since T\u2070(2) = 2 \u2260 1). `interval_cases k` handles the k < 1 case by exhaustion.",
     "mathContext": "$\\sigma(1) = 0$ because $T^0(1) = 1$ (0 steps needed). $\\sigma(2) = 1$ because $T^1(2) = T(2) = 2/2 = 1$ and $T^0(2) = 2 \\neq 1$ (1 is minimal). The `Nat.find_eq_iff` characterization requires proving both the existence at $k$ and the non-existence at all $k' < k$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -81,9 +81,9 @@
       "endLine": 69
     },
     "type": "concept",
-    "title": "Part II: Average Stopping Time — Section Header",
-    "content": "The transition from individual stopping times to their average is the core conceptual step. While σ(n) varies wildly (σ(27) = 111 vs σ(28) = 18), the average S(N) is expected to be smoothly growing. This section-level shift from pointwise to aggregate behavior is analogous to the transition in probability theory from individual random variables to their expectation, where wild fluctuations are tamed by averaging.",
-    "mathContext": "The average $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ aggregates the stopping times. The key question is whether this average is asymptotically determined — i.e., whether the 'law of large numbers' holds for Collatz stopping times despite their non-independence.",
+    "title": "Part II: Average Stopping Time \u2014 Section Header",
+    "content": "The transition from individual stopping times to their average is the core conceptual step. While \u03c3(n) varies wildly (\u03c3(27) = 111 vs \u03c3(28) = 18), the average S(N) is expected to be smoothly growing. This section-level shift from pointwise to aggregate behavior is analogous to the transition in probability theory from individual random variables to their expectation, where wild fluctuations are tamed by averaging.",
+    "mathContext": "The average $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ aggregates the stopping times. The key question is whether this average is asymptotically determined \u2014 i.e., whether the 'law of large numbers' holds for Collatz stopping times despite their non-independence.",
     "significance": "supporting",
     "relatedConcepts": [
       "law of large numbers",
@@ -103,7 +103,7 @@
     },
     "type": "definition",
     "title": "Average Stopping Time S(N)",
-    "content": "`totalStoppingTime N = ∑ n in range N, stoppingTime (n+1)` sums stopping times for n=1,...,N. `avgStoppingTime N = totalStoppingTime N / N` (as a real, 0 for N=0) is the average. The cast `(totalStoppingTime N : ℝ)` lifts the ℕ-valued sum to ℝ for real division. Both definitions are `noncomputable` because they depend on `stoppingTime`, which uses classical choice. The special case N=0 returns 0 to avoid division by zero. `avgStoppingTime` is the central object of the open question: does it grow like c·log N?",
+    "content": "`totalStoppingTime N = \u2211 n in range N, stoppingTime (n+1)` sums stopping times for n=1,...,N. `avgStoppingTime N = totalStoppingTime N / N` (as a real, 0 for N=0) is the average. The cast `(totalStoppingTime N : \u211d)` lifts the \u2115-valued sum to \u211d for real division. Both definitions are `noncomputable` because they depend on `stoppingTime`, which uses classical choice. The special case N=0 returns 0 to avoid division by zero. `avgStoppingTime` is the central object of the open question: does it grow like c\u00b7log N?",
     "mathContext": "$S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$. Since `stoppingTime n = 0` for any $n$ where `reachesOne n` fails (a density-0 set by Terras), the sum effectively counts only the terminating orbits. The Terras axiom guarantees these are $(1-o(1))N$ in number, so $S(N)$ asymptotically equals the true average over terminating inputs.",
     "significance": "key",
     "relatedConcepts": [
@@ -116,7 +116,7 @@
       "stoppingTime definition",
       "Finset.sum over range",
       "Real.log",
-      "ℕ-to-ℝ coercion"
+      "\u2115-to-\u211d coercion"
     ]
   },
   {
@@ -128,7 +128,7 @@
     },
     "type": "concept",
     "title": "Part III: Heuristic Derivation of the Growth Constant",
-    "content": "The section comment derives the heuristic constant from the random-walk model. Treating each Collatz step as independent: with probability 1/2 the number halves (even case) and with probability 1/2 it is multiplied by 3/2 (odd case, since 3n+1 is immediately even and halved). The net geometric factor per step is $(1/2 \\cdot 3/2)^{1/2} = (3/4)^{1/2}$, giving expected log-decrease $\\log_2(4/3)/2$ per step. This independence assumption is the central simplification — in reality, successive Collatz values have strong correlations (e.g., 3n+1 is always even, so the next step is deterministically a halving). Despite this, empirical evidence strongly supports the heuristic prediction.",
+    "content": "The section comment derives the heuristic constant from the random-walk model. Treating each Collatz step as independent: with probability 1/2 the number halves (even case) and with probability 1/2 it is multiplied by 3/2 (odd case, since 3n+1 is immediately even and halved). The net geometric factor per step is $(1/2 \\cdot 3/2)^{1/2} = (3/4)^{1/2}$, giving expected log-decrease $\\log_2(4/3)/2$ per step. This independence assumption is the central simplification \u2014 in reality, successive Collatz values have strong correlations (e.g., 3n+1 is always even, so the next step is deterministically a halving). Despite this, empirical evidence strongly supports the heuristic prediction.",
     "mathContext": "Expected steps to reach 1 from $n$: $\\sigma(n) \\approx \\frac{\\log_2 n}{\\log_2(4/3)} \\approx 6.95 \\log_2 n$. The net factor $(3/4)^{1/2}$ means $\\log_2 n$ decreases by $\\approx 0.208$ per step on average, so $\\approx \\log_2 n / 0.208 \\approx 4.82 \\log_2 n$ odd+even steps. With the correction for even-step clustering, the total becomes $\\approx 6.95 \\log_2 n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -151,8 +151,8 @@
       "endLine": 95
     },
     "type": "insight",
-    "title": "Heuristic Constant c = 1/log₂(4/3)",
-    "content": "`heuristicConstant = 1 / (Real.log (4/3) / Real.log 2)` is the probabilistic prediction for the Collatz stopping-time constant. The formula arises from modeling each Collatz step as an independent Bernoulli trial: with probability 1/2 the input is even (halved), and with probability 1/2 it is odd (multiplied by 3/2 after the immediate next halving of 3n+1). The geometric mean factor per step is (1/2 · 3/2)^{1/2} = (3/4)^{1/2}, giving a log-decrease of log(4/3)/2 per step. `heuristicGrowthRate` quantifies convergence: for all ε > 0, |S(N)/log N − c/log 2| < ε for large N.",
+    "title": "Heuristic Constant c = 1/log\u2082(4/3)",
+    "content": "`heuristicConstant = 1 / (Real.log (4/3) / Real.log 2)` is the probabilistic prediction for the Collatz stopping-time constant. The formula arises from modeling each Collatz step as an independent Bernoulli trial: with probability 1/2 the input is even (halved), and with probability 1/2 it is odd (multiplied by 3/2 after the immediate next halving of 3n+1). The geometric mean factor per step is (1/2 \u00b7 3/2)^{1/2} = (3/4)^{1/2}, giving a log-decrease of log(4/3)/2 per step. `heuristicGrowthRate` quantifies convergence: for all \u03b5 > 0, |S(N)/log N \u2212 c/log 2| < \u03b5 for large N.",
     "mathContext": "From the random-walk model: $\\mathbb{E}[\\log n \\text{ after one step}] = \\frac{1}{2}\\log(n/2) + \\frac{1}{2}\\log(3n/2) = \\log n + \\frac{1}{2}\\log(3/4)$. This geometric decrease means reaching $\\log n = 0$ (i.e., $n=1$) takes approximately $\\log n / (\\frac{1}{2}\\log(4/3)) = 2\\log_2 n / \\log_2(4/3) \\approx 6.95 \\log_2 n$ steps on average. In natural log: $\\sigma(n) \\approx c/\\log 2 \\cdot \\log n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -175,7 +175,7 @@
       "endLine": 100
     },
     "type": "concept",
-    "title": "Part IV: Known Density Results — Section Transition",
+    "title": "Part IV: Known Density Results \u2014 Section Transition",
     "content": "This section transitions from conjectural definitions to the one externally-sourced result: Terras's density theorem. The architectural choice to axiomatize Terras rather than leave it as sorry reflects that this is a *known* result (published in Acta Arithmetica, 1976) whose proof requires 2-adic measure theory not yet available in Mathlib, whereas the open questions in Part V are *unknown* results that cannot be proved regardless of Mathlib coverage.",
     "mathContext": "Terras's proof uses the observation that the pre-image set $T^{-k}(1)$ grows exponentially: each element of $T^{-k}(1)$ has at least one pre-image under $T$, and with probability approaching 1, it has two (one even, one odd pre-image). The density follows from the exponential growth of $|T^{-k}(1) \\cap [1,N]|$.",
     "significance": "supporting",
@@ -198,7 +198,7 @@
     },
     "type": "concept",
     "title": "Collatz Conjecture Statement and Terras Density-1 Axiom",
-    "content": "`collatzConjecture` (line 102) formally states the Collatz conjecture: every positive integer eventually reaches 1 under iteration. It is a `def` of type `Prop` — a well-typed Lean statement of the unsolved problem. `terras_density` (lines 105-110) is the only `axiom` in the file: it asserts that for any ε > 0, the fraction of n ≤ N with σ(n) < ∞ exceeds 1−ε for all sufficiently large N. This is Terras's 1976 theorem — the first major unconditional density result toward the Collatz conjecture. It is axiomatized (not proved) because the Lean proof would require 2-adic measure theory.",
+    "content": "`collatzConjecture` (line 102) formally states the Collatz conjecture: every positive integer eventually reaches 1 under iteration. It is a `def` of type `Prop` \u2014 a well-typed Lean statement of the unsolved problem. `terras_density` (lines 105-110) is the only `axiom` in the file: it asserts that for any \u03b5 > 0, the fraction of n \u2264 N with \u03c3(n) < \u221e exceeds 1\u2212\u03b5 for all sufficiently large N. This is Terras's 1976 theorem \u2014 the first major unconditional density result toward the Collatz conjecture. It is axiomatized (not proved) because the Lean proof would require 2-adic measure theory.",
     "mathContext": "Terras proved: $\\lim_{N \\to \\infty} \\frac{1}{N}|\\{1 \\leq n \\leq N : \\sigma(n) < \\infty\\}| = 1$. The proof uses backward iteration: the set of $n$ that reach 1 in $\\leq k$ steps grows as a geometric series in $k$, accumulating density 1 exponentially fast. Krasikov-Lagarias (2003) strengthened the rate to $|\\{n \\leq N : \\sigma(n) < \\infty\\}| \\geq N^{0.84}$. Formalizing Terras in Lean would require Mathlib's `padicVal` and measure theory on pro-2 groups.",
     "significance": "key",
     "relatedConcepts": [
@@ -222,9 +222,9 @@
       "endLine": 116
     },
     "type": "concept",
-    "title": "Part V: The Open Question — Formal Specification",
-    "content": "The section poses the central question: what is the growth rate of S(N)? The following three `def`s formalize three levels of precision for the answer. This is the core contribution of the file — not proving results, but giving mathematically precise Lean types that future proofs would inhabit. The formalization serves as a *specification*: any future proof of S(N) ~ c·log N must produce a term of type `avgStoppingTimeAsymptotic`.",
-    "mathContext": "The three levels form a logical chain: `exactConstant → avgStoppingTimeAsymptotic → logarithmicGrowth` (each implies the previous). The weakest (`logarithmicGrowth`) is itself unknown unconditionally.",
+    "title": "Part V: The Open Question \u2014 Formal Specification",
+    "content": "The section poses the central question: what is the growth rate of S(N)? The following three `def`s formalize three levels of precision for the answer. This is the core contribution of the file \u2014 not proving results, but giving mathematically precise Lean types that future proofs would inhabit. The formalization serves as a *specification*: any future proof of S(N) ~ c\u00b7log N must produce a term of type `avgStoppingTimeAsymptotic`.",
+    "mathContext": "The three levels form a logical chain: `exactConstant \u2192 avgStoppingTimeAsymptotic \u2192 logarithmicGrowth` (each implies the previous). The weakest (`logarithmicGrowth`) is itself unknown unconditionally.",
     "significance": "supporting",
     "relatedConcepts": [
       "formal specification",
@@ -246,8 +246,8 @@
     },
     "type": "insight",
     "title": "Three Levels of the Open Question: Bounds, Convergence, Exact Constant",
-    "content": "The three `def`s formalize the open conjecture at increasing precision. `logarithmicGrowth` is the weakest: ∃c,C > 0 such that c·log N ≤ S(N) ≤ C·log N for all N ≥ 2 (two-sided logarithmic bound). `avgStoppingTimeAsymptotic` is stronger: S(N)/log N converges to some c > 0 (the limit exists and is positive). `exactConstant` is strongest: the limit is exactly heuristicConstant/log 2 (the probabilistic prediction). All three are Lean `def`s of type `Prop` — formally correct statements of what remains to be proved, serving as specifications for future formalization efforts.",
-    "mathContext": "The hierarchy is:\n- `logarithmicGrowth`: $\\exists c,C > 0,\\; c \\log N \\leq S(N) \\leq C \\log N$ for large $N$\n- `avgStoppingTimeAsymptotic`: $\\lim_{N\\to\\infty} S(N)/\\log N = c$ for some $c > 0$\n- `exactConstant`: $\\lim_{N\\to\\infty} S(N)/\\log N = 1/\\log(4/3)$\n\nNone are known unconditionally. Even `logarithmicGrowth` would require bounding the sum $\\sum_{n \\leq N} \\sigma(n)$ from above and below, which requires understanding the distribution of Collatz orbits — tied to the conjecture itself.",
+    "content": "The three `def`s formalize the open conjecture at increasing precision. `logarithmicGrowth` is the weakest: \u2203c,C > 0 such that c\u00b7log N \u2264 S(N) \u2264 C\u00b7log N for all N \u2265 2 (two-sided logarithmic bound). `avgStoppingTimeAsymptotic` is stronger: S(N)/log N converges to some c > 0 (the limit exists and is positive). `exactConstant` is strongest: the limit is exactly heuristicConstant/log 2 (the probabilistic prediction). All three are Lean `def`s of type `Prop` \u2014 formally correct statements of what remains to be proved, serving as specifications for future formalization efforts.",
+    "mathContext": "The hierarchy is:\n- `logarithmicGrowth`: $\\exists c,C > 0,\\; c \\log N \\leq S(N) \\leq C \\log N$ for large $N$\n- `avgStoppingTimeAsymptotic`: $\\lim_{N\\to\\infty} S(N)/\\log N = c$ for some $c > 0$\n- `exactConstant`: $\\lim_{N\\to\\infty} S(N)/\\log N = 1/\\log(4/3)$\n\nNone are known unconditionally. Even `logarithmicGrowth` would require bounding the sum $\\sum_{n \\leq N} \\sigma(n)$ from above and below, which requires understanding the distribution of Collatz orbits \u2014 tied to the conjecture itself.",
     "significance": "key",
     "relatedConcepts": [
       "Filter.Tendsto",
@@ -271,8 +271,8 @@
     },
     "type": "concept",
     "title": "Concrete Stopping Time Values and Type-Checking",
-    "content": "The final section documents concrete stopping times as comments: σ(1)=0, σ(2)=1, σ(3)=7, σ(4)=2, σ(5)=5, σ(6)=8, and corresponding averages S(1)=0, S(2)=0.5, S(3)≈2.67, S(4)=2.5, S(5)=3.0, S(6)≈3.83. These values are commented (not proved) because `stoppingTime` is noncomputable — Lean cannot evaluate it. The three `#check` commands verify that `avgStoppingTimeAsymptotic`, `logarithmicGrowth`, and `exactConstant` are well-typed Props, confirming the formal definitions are syntactically and semantically correct without requiring a proof.",
-    "mathContext": "$\\sigma(3) = 7$: the trajectory $3 \\to 10 \\to 5 \\to 16 \\to 8 \\to 4 \\to 2 \\to 1$ takes 7 steps. $\\sigma(6) = 8$: $6 \\to 3 \\to 10 \\to 5 \\to 16 \\to 8 \\to 4 \\to 2 \\to 1$. The values illustrate the wild variation in stopping times (σ(4)=2 vs σ(3)=7) that makes the average behavior non-trivial to analyze.",
+    "content": "The final section documents concrete stopping times as comments: \u03c3(1)=0, \u03c3(2)=1, \u03c3(3)=7, \u03c3(4)=2, \u03c3(5)=5, \u03c3(6)=8, and corresponding averages S(1)=0, S(2)=0.5, S(3)\u22482.67, S(4)=2.5, S(5)=3.0, S(6)\u22483.83. These values are commented (not proved) because `stoppingTime` is noncomputable \u2014 Lean cannot evaluate it. The three `#check` commands verify that `avgStoppingTimeAsymptotic`, `logarithmicGrowth`, and `exactConstant` are well-typed Props, confirming the formal definitions are syntactically and semantically correct without requiring a proof.",
+    "mathContext": "$\\sigma(3) = 7$: the trajectory $3 \\to 10 \\to 5 \\to 16 \\to 8 \\to 4 \\to 2 \\to 1$ takes 7 steps. $\\sigma(6) = 8$: $6 \\to 3 \\to 10 \\to 5 \\to 16 \\to 8 \\to 4 \\to 2 \\to 1$. The values illustrate the wild variation in stopping times (\u03c3(4)=2 vs \u03c3(3)=7) that makes the average behavior non-trivial to analyze.",
     "significance": "supporting",
     "relatedConcepts": [
       "Collatz trajectories",

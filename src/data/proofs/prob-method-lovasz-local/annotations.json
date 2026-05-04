@@ -7,12 +7,12 @@
       "endLine": 13
     },
     "type": "concept",
-    "title": "The Lovász Local Lemma: Crown Jewel of the Probabilistic Method",
-    "content": "The Lovász Local Lemma (LLL), proved by Erdős and Lovász in their 1975 paper 'Problems and results on 3-chromatic hypergraphs', overcomes the main limitation of the basic probabilistic method: the union bound. When $n$ bad events each have probability $p$, the union bound only guarantees avoidance if $np < 1$. The LLL shows that if the events are mostly independent (sparse dependency graph), avoidance is possible even when $np \\gg 1$. This enables existence proofs for graph coloring, satisfiability, and combinatorial designs that the first moment method cannot reach.",
+    "title": "The Lov\u00e1sz Local Lemma: Crown Jewel of the Probabilistic Method",
+    "content": "The Lov\u00e1sz Local Lemma (LLL), proved by Erd\u0151s and Lov\u00e1sz in their 1975 paper 'Problems and results on 3-chromatic hypergraphs', overcomes the main limitation of the basic probabilistic method: the union bound. When $n$ bad events each have probability $p$, the union bound only guarantees avoidance if $np < 1$. The LLL shows that if the events are mostly independent (sparse dependency graph), avoidance is possible even when $np \\gg 1$. This enables existence proofs for graph coloring, satisfiability, and combinatorial designs that the first moment method cannot reach.",
     "mathContext": "Union bound: $\\Pr[\\bigcup A_i] \\leq \\sum \\Pr[A_i]$. LLL: $\\Pr[\\bigcap \\overline{A_i}] > 0$ even when $\\sum \\Pr[A_i] \\gg 1$, provided dependencies are sparse.",
     "significance": "key",
     "relatedConcepts": [
-      "Lovász Local Lemma",
+      "Lov\u00e1sz Local Lemma",
       "dependency graph",
       "union bound",
       "sparse dependencies"
@@ -54,7 +54,7 @@
       "endLine": 37
     },
     "type": "concept",
-    "title": "General (Asymmetric) Lovász Local Lemma",
+    "title": "General (Asymmetric) Lov\u00e1sz Local Lemma",
     "content": "The general LLL assigns individual witness values $x_i \\in [0,1)$ to each event $i$. The condition $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)} (1 - x_j)$ ensures $\\Pr[\\bigcap \\overline{A_i}] \\geq \\prod_i (1-x_i) > 0$. This is strictly stronger than the symmetric form: it allows events with different probabilities and different dependency degrees. The formalization uses `Fin n` for indexing, `Finset (Fin n)` for adjacency lists, and $\\mathbb{Q}$ for exact probability arithmetic. The conclusion $\\prod_i(1-x_i) > 0$ follows from each $x_i < 1$.",
     "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j) \\implies \\Pr\\left[\\bigcap_i \\overline{A_i}\\right] \\geq \\prod_i(1-x_i) > 0$",
     "significance": "key",
@@ -102,7 +102,7 @@
     },
     "type": "concept",
     "title": "Moser-Tardos Constructive LLL (2010)",
-    "content": "Robin Moser and Gábor Tardos (2010) gave a constructive proof of the LLL via a simple resampling algorithm: while any bad event $A_i$ occurs, pick one and resample its random variables. They proved that the expected number of resampling steps is at most $\\sum_i x_i/(1-x_i)$, which is polynomial in $n$ under the LLL conditions. This resolved a major open problem: Erdős and Lovász's original proof was purely existential and gave no algorithm. The formalization currently only states that this sum is non-negative (a weak bound), with a sorry on a simplified version of the witness condition.",
+    "content": "Robin Moser and G\u00e1bor Tardos (2010) gave a constructive proof of the LLL via a simple resampling algorithm: while any bad event $A_i$ occurs, pick one and resample its random variables. They proved that the expected number of resampling steps is at most $\\sum_i x_i/(1-x_i)$, which is polynomial in $n$ under the LLL conditions. This resolved a major open problem: Erd\u0151s and Lov\u00e1sz's original proof was purely existential and gave no algorithm. The formalization currently only states that this sum is non-negative (a weak bound), with a sorry on a simplified version of the witness condition.",
     "mathContext": "Moser-Tardos: expected resampling steps $\\leq \\sum_{i=1}^n \\frac{x_i}{1-x_i}$",
     "significance": "key",
     "relatedConcepts": [
@@ -127,7 +127,7 @@
     "type": "concept",
     "title": "LLL Probability Bounds and Factor Positivity",
     "content": "`lll_prob_bound`: The LLL condition $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j)$ implies the simpler bound $\\Pr[A_i] \\leq x_i$, since each factor $(1-x_j) \\leq 1$ so the product is $\\leq 1$. The proof uses `Finset.prod_le_one` and `mul_le_mul_of_nonneg_left`.\n\n`lll_factor_pos`: Each factor $1 - x_i > 0$ is immediate from $x_i < 1$. This is the building block for the avoidance product $\\prod_i(1-x_i) > 0$.",
-    "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j}(1-x_j) \\leq x_i \\cdot 1 = x_i$ since each $(1-x_j) \\in (0,1]$.\n\nThe weaker bound $\\Pr[A_i] \\leq x_i$ is often sufficient for applications — the full product form gives the tighter avoidance guarantee.",
+    "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j}(1-x_j) \\leq x_i \\cdot 1 = x_i$ since each $(1-x_j) \\in (0,1]$.\n\nThe weaker bound $\\Pr[A_i] \\leq x_i$ is often sufficient for applications \u2014 the full product form gives the tighter avoidance guarantee.",
     "significance": "supporting",
     "prerequisites": [
       "Finset.prod_le_one",
@@ -172,7 +172,7 @@
     },
     "type": "concept",
     "title": "Symmetric Case: x = 1/(d+1) Specialization",
-    "content": "Four results specializing the general LLL to the symmetric assignment $x_i = 1/(d+1)$ for all $i$:\n\n1. `symmetric_x_in_range`: $0 \\leq 1/(d+1) < 1$ for $d > 0$ — verifies the witness values are valid.\n\n2. `symmetric_avoidance_pos`: $(d/(d+1))^n > 0$ — the avoidance product is positive for any $n$.\n\n3. `symmetric_product_eq`: $\\prod_i(1 - 1/(d+1)) = (d/(d+1))^n$ — unfolds the product using `Finset.prod_const`.\n\n4. `symmetric_moser_tardos_bound`: $\\sum_i \\frac{1/(d+1)}{d/(d+1)} = n/d$ — the Moser-Tardos resampling bound simplifies to $n/d$ in the symmetric case.\n\nThese results show that the symmetric case has clean, closed-form expressions for all the key quantities.",
+    "content": "Four results specializing the general LLL to the symmetric assignment $x_i = 1/(d+1)$ for all $i$:\n\n1. `symmetric_x_in_range`: $0 \\leq 1/(d+1) < 1$ for $d > 0$ \u2014 verifies the witness values are valid.\n\n2. `symmetric_avoidance_pos`: $(d/(d+1))^n > 0$ \u2014 the avoidance product is positive for any $n$.\n\n3. `symmetric_product_eq`: $\\prod_i(1 - 1/(d+1)) = (d/(d+1))^n$ \u2014 unfolds the product using `Finset.prod_const`.\n\n4. `symmetric_moser_tardos_bound`: $\\sum_i \\frac{1/(d+1)}{d/(d+1)} = n/d$ \u2014 the Moser-Tardos resampling bound simplifies to $n/d$ in the symmetric case.\n\nThese results show that the symmetric case has clean, closed-form expressions for all the key quantities.",
     "mathContext": "With $x_i = 1/(d+1)$:\n- Avoidance product: $\\prod_i(1-x_i) = (d/(d+1))^n$\n- Moser-Tardos bound: $\\sum_i x_i/(1-x_i) = n \\cdot \\frac{1/d+1}{d/(d+1)} = n/d$\n- As $d \\to \\infty$: avoidance $\\to 1$ and resampling $\\to 0$, reflecting that sparse dependencies make avoidance easy.",
     "significance": "supporting",
     "prerequisites": [
@@ -195,7 +195,7 @@
     },
     "type": "definition",
     "title": "LLL Threshold T(d) and Dependency Graph",
-    "content": "Defines the **LLL threshold** $T(d) = d^d/(d+1)^{d+1}$, the maximum event probability the symmetric LLL can handle with max degree $d$. Computed for small cases: $T(1) = 1/4$, $T(2) = 4/27$, $T(3) = 27/256$.\n\n`IsValidDepGraph` formalizes a dependency graph: irreflexive (no self-loops) and symmetric (undirected). `HasMaxDegree` bounds the maximum degree.\n\n`symmetric_lll_avoidance` combines the product equality with positivity to give the avoidance bound directly from the dependency graph structure.\n\nThe threshold $T(d)$ decreases as $d$ increases — more dependencies require rarer events — approaching $1/e \\cdot 1/(d+1) \\approx 0.368/(d+1)$ for large $d$.",
+    "content": "Defines the **LLL threshold** $T(d) = d^d/(d+1)^{d+1}$, the maximum event probability the symmetric LLL can handle with max degree $d$. Computed for small cases: $T(1) = 1/4$, $T(2) = 4/27$, $T(3) = 27/256$.\n\n`IsValidDepGraph` formalizes a dependency graph: irreflexive (no self-loops) and symmetric (undirected). `HasMaxDegree` bounds the maximum degree.\n\n`symmetric_lll_avoidance` combines the product equality with positivity to give the avoidance bound directly from the dependency graph structure.\n\nThe threshold $T(d)$ decreases as $d$ increases \u2014 more dependencies require rarer events \u2014 approaching $1/e \\cdot 1/(d+1) \\approx 0.368/(d+1)$ for large $d$.",
     "mathContext": "$T(d) = \\frac{d^d}{(d+1)^{d+1}}$.\n\n$T(1) = 1/4$, $T(2) = 4/27 \\approx 0.148$, $T(3) = 27/256 \\approx 0.105$.\n\nAs $d \\to \\infty$: $T(d) \\sim \\frac{1}{e(d+1)}$, matching the classical $ep(d+1) \\leq 1$ criterion.",
     "significance": "key",
     "prerequisites": [
@@ -218,7 +218,7 @@
       "endLine": 294
     },
     "type": "concept",
-    "title": "Bernoulli's Inequality and Universal Threshold Bound T(d) ≤ 1/4",
+    "title": "Bernoulli's Inequality and Universal Threshold Bound T(d) \u2264 1/4",
     "content": "A self-contained proof of **Bernoulli's inequality** $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ by induction on $n$. The inductive step uses $(1+nx)(1+x) = 1+(n+1)x + nx^2 \\geq 1+(n+1)x$ since $nx^2 \\geq 0$.\n\nThis powers two corollaries:\n1. `one_plus_inv_pow_ge_two`: $(1+1/d)^d \\geq 2$ (from Bernoulli with $x = 1/d$)\n2. `succ_pow_ge_two_mul`: $(d+1)^d \\geq 2 d^d$ (multiplicative form)\n\nThe main result `lllThreshold_le_quarter` proves $T(d) \\leq 1/4$ for ALL $d \\geq 1$:\n- From $(d+1)^d \\geq 2d^d$ and $d+1 \\geq 2$: $(d+1)^{d+1} \\geq 4d^d$\n- Therefore $T(d) = d^d/(d+1)^{d+1} \\leq 1/4$\n\nThis is the **universal threshold bound**: the LLL always guarantees avoidance when each event has probability $\\leq 1/4$ and its dependency degree is arbitrary.",
     "mathContext": "Bernoulli: $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$.\n\nChain: $(1+1/d)^d \\geq 2 \\implies (d+1)^d \\geq 2d^d \\implies (d+1)^{d+1} \\geq 4d^d \\implies T(d) \\leq 1/4$.\n\nThe bound $1/4$ is tight: $T(1) = 1/4$ exactly.",
     "significance": "key",
@@ -244,8 +244,8 @@
     },
     "type": "insight",
     "title": "Formal Connections: Symmetric-General Bridge and Complete LLL",
-    "content": "Three theorems connecting the different formulations:\n\n1. `symmetric_from_general`: The symmetric LLL is a corollary of the general LLL with $x_i = 1/(d+1)$ — formally establishing that the general version subsumes the symmetric.\n\n2. `lllThreshold_eq_product`: $T(d) = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d$ — factoring the threshold into the witness value times the avoidance product.\n\n3. `threshold_satisfies_lll`: If $\\Pr[A_i] \\leq T(d)$ and the dependency graph has max degree $d$, then the symmetric assignment satisfies the general LLL condition. This bridges the threshold-based and witness-based formulations.\n\n4. `symmetric_lll_complete`: The culminating theorem: given probabilities $\\leq T(d)$ and degree $\\leq d$, BOTH the LLL condition and avoidance positivity hold. In the full probabilistic setting, this gives $P[\\bigcap \\overline{A_i}] \\geq (d/(d+1))^n > 0$.",
-    "mathContext": "$T(d) = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d$.\n\n$\\Pr[A_i] \\leq T(d)$ and $\\deg(i) \\leq d$ $\\implies$ $\\Pr[A_i] \\leq \\frac{1}{d+1} \\prod_{j \\in \\Gamma(i)}\\left(1 - \\frac{1}{d+1}\\right)$.\n\nThis is the complete formalization of the symmetric LLL pipeline: threshold → LLL condition → avoidance positivity.",
+    "content": "Three theorems connecting the different formulations:\n\n1. `symmetric_from_general`: The symmetric LLL is a corollary of the general LLL with $x_i = 1/(d+1)$ \u2014 formally establishing that the general version subsumes the symmetric.\n\n2. `lllThreshold_eq_product`: $T(d) = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d$ \u2014 factoring the threshold into the witness value times the avoidance product.\n\n3. `threshold_satisfies_lll`: If $\\Pr[A_i] \\leq T(d)$ and the dependency graph has max degree $d$, then the symmetric assignment satisfies the general LLL condition. This bridges the threshold-based and witness-based formulations.\n\n4. `symmetric_lll_complete`: The culminating theorem: given probabilities $\\leq T(d)$ and degree $\\leq d$, BOTH the LLL condition and avoidance positivity hold. In the full probabilistic setting, this gives $P[\\bigcap \\overline{A_i}] \\geq (d/(d+1))^n > 0$.",
+    "mathContext": "$T(d) = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d$.\n\n$\\Pr[A_i] \\leq T(d)$ and $\\deg(i) \\leq d$ $\\implies$ $\\Pr[A_i] \\leq \\frac{1}{d+1} \\prod_{j \\in \\Gamma(i)}\\left(1 - \\frac{1}{d+1}\\right)$.\n\nThis is the complete formalization of the symmetric LLL pipeline: threshold \u2192 LLL condition \u2192 avoidance positivity.",
     "significance": "key",
     "prerequisites": [
       "general_lll",
@@ -290,10 +290,10 @@
       "startLine": 276,
       "endLine": 294
     },
-    "type": "theorem",
-    "title": "Universal Threshold Bound: T(d) ≤ 1/4",
+    "type": "insight",
+    "title": "Universal Threshold Bound: T(d) \u2264 1/4",
     "content": "`lllThreshold_le_quarter` proves $T(d) = d^d/(d+1)^{d+1} \\leq 1/4$ for all $d \\geq 1$. The proof chain:\n1. Bernoulli: $(d+1)^d \\geq 2d^d$\n2. Obvious: $d+1 \\geq 2$\n3. Multiply: $(d+1)^{d+1} \\geq 4d^d$\n4. Invert: $d^d/(d+1)^{d+1} \\leq 1/4$\n\nThe cross-multiplication strategy avoids division and rational arithmetic complexity.",
-    "mathContext": "$T(d) \\leq 1/4$ is the textbook form of the symmetric LLL: if each event has probability $\\leq 1/(4d)$ and each depends on at most $d$ others, then $\\Pr[\\cap \\bar{A}_i] > 0$. The bound $1/4$ is not tight — the exact threshold is $T(d) = d^d/(d+1)^{d+1} \\to 1/e$ as $d \\to \\infty$.",
+    "mathContext": "$T(d) \\leq 1/4$ is the textbook form of the symmetric LLL: if each event has probability $\\leq 1/(4d)$ and each depends on at most $d$ others, then $\\Pr[\\cap \\bar{A}_i] > 0$. The bound $1/4$ is not tight \u2014 the exact threshold is $T(d) = d^d/(d+1)^{d+1} \\to 1/e$ as $d \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": [
       "LLL threshold",
@@ -312,13 +312,13 @@
       "startLine": 349,
       "endLine": 362
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complete Symmetric LLL: The Final Statement",
-    "content": "`symmetric_lll_complete` combines everything: given $n$ events with $\\Pr[A_i] \\leq T(d)$ and dependency degree $\\leq d$, both the general LLL condition holds (via `threshold_satisfies_lll`) and the avoidance product is positive (via `symmetric_lll_avoidance`). This is the fully formal statement of the symmetric Lovász Local Lemma.\n\nIn the probabilistic setting, this gives $\\Pr[\\cap_i \\bar{A}_i] \\geq (d/(d+1))^n > 0$, proving the existence of an outcome avoiding all bad events.",
+    "content": "`symmetric_lll_complete` combines everything: given $n$ events with $\\Pr[A_i] \\leq T(d)$ and dependency degree $\\leq d$, both the general LLL condition holds (via `threshold_satisfies_lll`) and the avoidance product is positive (via `symmetric_lll_avoidance`). This is the fully formal statement of the symmetric Lov\u00e1sz Local Lemma.\n\nIn the probabilistic setting, this gives $\\Pr[\\cap_i \\bar{A}_i] \\geq (d/(d+1))^n > 0$, proving the existence of an outcome avoiding all bad events.",
     "mathContext": "The symmetric LLL: if $\\Pr[A_i] \\leq T(d) = d^d/(d+1)^{d+1}$ and each $A_i$ is dependent on at most $d$ others, then $\\Pr[\\bigcap_i \\bar{A}_i] \\geq (1 - 1/(d+1))^n = (d/(d+1))^n > 0$.",
     "significance": "key",
     "relatedConcepts": [
-      "Lovász Local Lemma",
+      "Lov\u00e1sz Local Lemma",
       "symmetric form",
       "avoidance probability"
     ],

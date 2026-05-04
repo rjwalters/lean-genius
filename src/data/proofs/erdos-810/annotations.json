@@ -8,14 +8,14 @@
     },
     "type": "concept",
     "title": "Problem Overview and Background",
-    "content": "Erdős Problem #810 is an OPEN problem of Burr, Erdős, Graham, and Sós asking whether dense graphs ($\\geq \\varepsilon n^2$ edges) can be $n$-colored so that every $C_4$ is rainbow (4 distinct edge colors). The header explains the key tension: $C_4$-free graphs vacuously satisfy the rainbow condition but are too sparse by the Kővári-Sós-Turán theorem ($\\text{ex}(n; C_4) = O(n^{3/2})$). Any positive answer requires many $C_4$'s, all rainbow.",
+    "content": "Erd\u0151s Problem #810 is an OPEN problem of Burr, Erd\u0151s, Graham, and S\u00f3s asking whether dense graphs ($\\geq \\varepsilon n^2$ edges) can be $n$-colored so that every $C_4$ is rainbow (4 distinct edge colors). The header explains the key tension: $C_4$-free graphs vacuously satisfy the rainbow condition but are too sparse by the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem ($\\text{ex}(n; C_4) = O(n^{3/2})$). Any positive answer requires many $C_4$'s, all rainbow.",
     "mathContext": "Does $\\exists \\varepsilon > 0$ s.t. for large $n$, $\\exists G$ on $n$ vertices with $\\geq \\varepsilon n^2$ edges and an $n$-coloring where every $C_4$ uses 4 distinct colors?",
     "significance": "supporting",
     "relatedConcepts": [
       "anti-Ramsey theory",
       "rainbow subgraph",
       "extremal graph theory",
-      "Turán number"
+      "Tur\u00e1n number"
     ],
     "prerequisites": [
       "graph edge coloring",
@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Imports and Setup",
-    "content": "Imports Mathlib's simple graph infrastructure with finite graph support, finite set cardinality, and general tactics. The variable `{n : ℕ}` is implicit throughout, making definitions polymorphic in the number of vertices.",
+    "content": "Imports Mathlib's simple graph infrastructure with finite graph support, finite set cardinality, and general tactics. The variable `{n : \u2115}` is implicit throughout, making definitions polymorphic in the number of vertices.",
     "mathContext": "Works on `SimpleGraph (Fin n)` with `edgeFinset` for counting edges",
     "significance": "supporting",
     "relatedConcepts": [
@@ -53,7 +53,7 @@
       "endLine": 69
     },
     "type": "definition",
-    "title": "Edge Colorings, C₄ Structure, and Rainbow Property",
+    "title": "Edge Colorings, C\u2084 Structure, and Rainbow Property",
     "content": "`EdgeColoringN G` assigns a color in `Fin n` to each edge of $G$, using $n$ colors for an $n$-vertex graph. `CycleFour G` is a structure with four vertices ($v_1, v_2, v_3, v_4$), a distinctness proof (the 4-element `Finset` has cardinality 4), and four adjacency proofs forming a cycle $v_1 v_2 v_3 v_4 v_1$. The predicate `CycleFour.isRainbow` checks that the four edge colors form a 4-element `Finset` (i.e., all distinct). `IsRainbowC4Coloring` requires every $C_4$ in $G$ to be rainbow.",
     "mathContext": "A $C_4 = (v_1, v_2, v_3, v_4)$ is rainbow under $\\chi$ iff $|\\{\\chi(v_1v_2), \\chi(v_2v_3), \\chi(v_3v_4), \\chi(v_4v_1)\\}| = 4$",
     "significance": "key",
@@ -77,8 +77,8 @@
       "endLine": 77
     },
     "type": "definition",
-    "title": "HasDenseRainbowC₄: The Combined Condition",
-    "content": "`HasDenseRainbowC4 n ε` asserts the existence of a graph $G$ on $\\text{Fin}\\,n$ vertices with $|E(G)| \\geq \\varepsilon n^2$ edges and an $n$-coloring $\\chi$ making every $C_4$ rainbow. The existential quantifies over both the graph and the coloring, capturing the problem's two-fold challenge: construct the right graph *and* find the right coloring.",
+    "title": "HasDenseRainbowC\u2084: The Combined Condition",
+    "content": "`HasDenseRainbowC4 n \u03b5` asserts the existence of a graph $G$ on $\\text{Fin}\\,n$ vertices with $|E(G)| \\geq \\varepsilon n^2$ edges and an $n$-coloring $\\chi$ making every $C_4$ rainbow. The existential quantifies over both the graph and the coloring, capturing the problem's two-fold challenge: construct the right graph *and* find the right coloring.",
     "mathContext": "$\\exists G, \\chi:\\; |E(G)| \\geq \\varepsilon n^2 \\wedge \\forall C_4 \\subseteq G,\\; C_4 \\text{ is rainbow under } \\chi$",
     "significance": "key",
     "relatedConcepts": [
@@ -124,14 +124,14 @@
       "endLine": 110
     },
     "type": "insight",
-    "title": "Kővári-Sós-Turán and the Density-Structure Tension",
-    "content": "Two axioms capture the key structural constraint. `kovari_sos_turan_C4` states that $C_4$-free graphs on $n$ vertices have at most $C \\cdot n^{3/2}$ edges — the classical Kővári-Sós-Turán bound applied to $K_{2,2}$ (since $C_4 \\cong K_{2,2}$). `dense_graph_has_C4` is the contrapositive: any graph with $\\varepsilon n^2$ edges must contain a $C_4$. Together they show that the trivial strategy (avoid $C_4$'s entirely) fails, and any solution to Problem #810 must handle many $C_4$'s.",
-    "mathContext": "$\\text{ex}(n; C_4) \\leq C \\cdot n^{3/2}$ (Kővári-Sós-Turán); hence $|E| \\geq \\varepsilon n^2 \\Rightarrow G \\supseteq C_4$",
+    "title": "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n and the Density-Structure Tension",
+    "content": "Two axioms capture the key structural constraint. `kovari_sos_turan_C4` states that $C_4$-free graphs on $n$ vertices have at most $C \\cdot n^{3/2}$ edges \u2014 the classical K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n bound applied to $K_{2,2}$ (since $C_4 \\cong K_{2,2}$). `dense_graph_has_C4` is the contrapositive: any graph with $\\varepsilon n^2$ edges must contain a $C_4$. Together they show that the trivial strategy (avoid $C_4$'s entirely) fails, and any solution to Problem #810 must handle many $C_4$'s.",
+    "mathContext": "$\\text{ex}(n; C_4) \\leq C \\cdot n^{3/2}$ (K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n); hence $|E| \\geq \\varepsilon n^2 \\Rightarrow G \\supseteq C_4$",
     "significance": "key",
     "relatedConcepts": [
-      "Kővári-Sós-Turán theorem",
-      "Turán number",
-      "bipartite Turán problem",
+      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem",
+      "Tur\u00e1n number",
+      "bipartite Tur\u00e1n problem",
       "forbidden subgraph density"
     ],
     "prerequisites": [
@@ -148,8 +148,8 @@
       "endLine": 122
     },
     "type": "concept",
-    "title": "C₄-Free Graphs Vacuously Satisfy Rainbow (Proved)",
-    "content": "`c4_free_vacuously_rainbow` proves that if $G$ has no $C_4$ subgraph, then any coloring $\\chi$ is trivially a rainbow-$C_4$ coloring. The proof is one line: `fun C => False.elim (hfree C)` — every $C_4$ is rainbow because there are no $C_4$'s to check. This is a verified theorem (not an axiom), demonstrating that the rainbow condition is only non-trivial for graphs containing $C_4$'s.",
+    "title": "C\u2084-Free Graphs Vacuously Satisfy Rainbow (Proved)",
+    "content": "`c4_free_vacuously_rainbow` proves that if $G$ has no $C_4$ subgraph, then any coloring $\\chi$ is trivially a rainbow-$C_4$ coloring. The proof is one line: `fun C => False.elim (hfree C)` \u2014 every $C_4$ is rainbow because there are no $C_4$'s to check. This is a verified theorem (not an axiom), demonstrating that the rainbow condition is only non-trivial for graphs containing $C_4$'s.",
     "mathContext": "$(\\forall C_4 \\subseteq G,\\; \\bot) \\Rightarrow \\text{IsRainbowC4Coloring}\\,G\\,\\chi$ (vacuous truth)",
     "significance": "supporting",
     "relatedConcepts": [
@@ -169,16 +169,16 @@
       "startLine": 115,
       "endLine": 172
     },
-    "type": "theorem",
-    "title": "Dense Graphs Contain C₄: Kővári-Sós-Turán Application",
-    "content": "`dense_graph_has_C4_large_n` proves: for any $\\varepsilon > 0$, there exists $N_0$ such that any graph on $n \\geq N_0$ vertices with $\\geq \\varepsilon n^2$ edges contains a 4-cycle.\n\nThe proof is a clean application of Kővári-Sós-Turán:\n1. Obtain $C > 0$ from `kovari_sos_turan_C4`: $C_4$-free graphs have $\\leq Cn^{3/2}$ edges\n2. Set $N_0 = \\lceil(C/\\varepsilon)^2\\rceil + 2$\n3. For $n \\geq N_0$: assume $C_4$-free for contradiction\n4. Then $\\varepsilon n^2 \\leq |E| \\leq Cn^{3/2}$\n5. Decompose: $n^{3/2} = n\\sqrt{n}$, $n^2 = n \\cdot n$; cancel $n > 0$; cancel $\\sqrt{n} > 0$\n6. Get $\\varepsilon\\sqrt{n} \\leq C$ contradicting $n > (C/\\varepsilon)^2 \\Rightarrow \\sqrt{n} > C/\\varepsilon$",
-    "mathContext": "The Kővári-Sós-Turán theorem gives $\\text{ex}(n; K_{s,t}) \\leq \\frac{1}{2}(t-1)^{1/s} n^{2-1/s} + \\frac{s-1}{2}n$. For $C_4 = K_{2,2}$: $\\text{ex}(n; C_4) = O(n^{3/2})$. The gap between $n^{3/2}$ (extremal) and $n^2$ (dense) grows as $\\sqrt{n}$, forcing $C_4$ existence in dense graphs.",
+    "type": "insight",
+    "title": "Dense Graphs Contain C\u2084: K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n Application",
+    "content": "`dense_graph_has_C4_large_n` proves: for any $\\varepsilon > 0$, there exists $N_0$ such that any graph on $n \\geq N_0$ vertices with $\\geq \\varepsilon n^2$ edges contains a 4-cycle.\n\nThe proof is a clean application of K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n:\n1. Obtain $C > 0$ from `kovari_sos_turan_C4`: $C_4$-free graphs have $\\leq Cn^{3/2}$ edges\n2. Set $N_0 = \\lceil(C/\\varepsilon)^2\\rceil + 2$\n3. For $n \\geq N_0$: assume $C_4$-free for contradiction\n4. Then $\\varepsilon n^2 \\leq |E| \\leq Cn^{3/2}$\n5. Decompose: $n^{3/2} = n\\sqrt{n}$, $n^2 = n \\cdot n$; cancel $n > 0$; cancel $\\sqrt{n} > 0$\n6. Get $\\varepsilon\\sqrt{n} \\leq C$ contradicting $n > (C/\\varepsilon)^2 \\Rightarrow \\sqrt{n} > C/\\varepsilon$",
+    "mathContext": "The K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem gives $\\text{ex}(n; K_{s,t}) \\leq \\frac{1}{2}(t-1)^{1/s} n^{2-1/s} + \\frac{s-1}{2}n$. For $C_4 = K_{2,2}$: $\\text{ex}(n; C_4) = O(n^{3/2})$. The gap between $n^{3/2}$ (extremal) and $n^2$ (dense) grows as $\\sqrt{n}$, forcing $C_4$ existence in dense graphs.",
     "significance": "key",
     "relatedConcepts": [
-      "Kővári-Sós-Turán theorem",
+      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem",
       "extremal graph theory",
-      "Turán number",
-      "C₄-free graphs",
+      "Tur\u00e1n number",
+      "C\u2084-free graphs",
       "real analysis"
     ],
     "prerequisites": [
@@ -196,8 +196,8 @@
       "endLine": 194
     },
     "type": "insight",
-    "title": "Witness Graphs Must Contain C₄",
-    "content": "`witness_must_contain_C4` proves that any graph serving as a witness for Problem 810 (dense + rainbow-$C_4$ coloring) must contain $C_4$'s. This follows immediately from `dense_graph_has_C4_large_n`: density forces $C_4$ existence regardless of colorings. The theorem establishes that the rainbow condition in Problem 810 is non-vacuous — we are asking about coloring *actual* $C_4$'s, not about vacuously true conditions on $C_4$-free graphs.",
+    "title": "Witness Graphs Must Contain C\u2084",
+    "content": "`witness_must_contain_C4` proves that any graph serving as a witness for Problem 810 (dense + rainbow-$C_4$ coloring) must contain $C_4$'s. This follows immediately from `dense_graph_has_C4_large_n`: density forces $C_4$ existence regardless of colorings. The theorem establishes that the rainbow condition in Problem 810 is non-vacuous \u2014 we are asking about coloring *actual* $C_4$'s, not about vacuously true conditions on $C_4$-free graphs.",
     "mathContext": "The implication chain: $|E| \\geq \\varepsilon n^2$ (density) $\\xRightarrow{\\text{KST}}$ $\\exists C_4$ (subgraph existence). The rainbow coloring $\\chi$ is then a genuine constraint on these existing $C_4$'s, not a vacuous one.",
     "significance": "key",
     "relatedConcepts": [
@@ -216,9 +216,9 @@
       "startLine": 198,
       "endLine": 211
     },
-    "type": "theorem",
-    "title": "Rainbow C₄ Requires ≥ 4 Colors",
-    "content": "`rainbow_C4_needs_4_colors` proves $m \\geq 4$ from the existence of a rainbow $C_4$ with colors in $\\text{Fin}\\, m$. The proof constructs the 4-element Finset of edge colors from `hR : C.isRainbow χ` (which says the Finset has card 4), shows it is a subset of `Finset.univ : Finset (Fin m)` (which has card $m$), and applies `Finset.card_le_card` to get $4 \\leq m$.",
+    "type": "insight",
+    "title": "Rainbow C\u2084 Requires \u2265 4 Colors",
+    "content": "`rainbow_C4_needs_4_colors` proves $m \\geq 4$ from the existence of a rainbow $C_4$ with colors in $\\text{Fin}\\, m$. The proof constructs the 4-element Finset of edge colors from `hR : C.isRainbow \u03c7` (which says the Finset has card 4), shows it is a subset of `Finset.univ : Finset (Fin m)` (which has card $m$), and applies `Finset.card_le_card` to get $4 \\leq m$.",
     "mathContext": "A rainbow $C_4$ has 4 edges with 4 *distinct* colors $c_1, c_2, c_3, c_4 \\in \\text{Fin}\\, m$. Distinctness means $|\\{c_1,c_2,c_3,c_4\\}| = 4$, and $\\{c_1,c_2,c_3,c_4\\} \\subseteq \\text{Fin}\\, m$ gives $m = |\\text{Fin}\\, m| \\geq 4$.",
     "significance": "supporting",
     "relatedConcepts": [

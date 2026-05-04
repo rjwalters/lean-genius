@@ -9,7 +9,7 @@
     "type": "definition",
     "title": "Face Count of the Standard Simplex",
     "content": "Defines `faceCount k j = Nat.choose (k+1) (j+1)`: the number of $j$-dimensional faces of the standard $k$-simplex $\\Delta^k$. Each $j$-face is determined by choosing $j+1$ vertices from the $k+1$ vertices of $\\Delta^k$.",
-    "mathContext": "$f_j(\\Delta^k) = \\binom{k+1}{j+1}$. This counts $(j+1)$-element subsets of a $(k+1)$-element vertex set. In Lean: `def faceCount (k j : ℕ) : ℕ := Nat.choose (k + 1) (j + 1)`.",
+    "mathContext": "$f_j(\\Delta^k) = \\binom{k+1}{j+1}$. This counts $(j+1)$-element subsets of a $(k+1)$-element vertex set. In Lean: `def faceCount (k j : \u2115) : \u2115 := Nat.choose (k + 1) (j + 1)`.",
     "significance": "key",
     "prerequisites": [
       "Nat.choose (binomial coefficients)",
@@ -30,7 +30,7 @@
       "startLine": 46,
       "endLine": 59
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Special Cases of Face Counts",
     "content": "Four structural results: (1) $f_0 = k+1$ vertices, proved via `Nat.choose_one_right`. (2) $f_k = 1$ (the simplex itself), via `Nat.choose_self`. (3) $f_1 = k(k+1)/2$ edges, via `Nat.choose_two_middle`. (4) $f_j = 0$ for $j > k$, since $\\binom{k+1}{j+1} = 0$ when $j+1 > k+1$.",
     "mathContext": "$f_0(\\Delta^k) = k+1$, $f_k(\\Delta^k) = 1$, $f_1(\\Delta^k) = \\binom{k+1}{2} = \\frac{k(k+1)}{2}$, $f_j(\\Delta^k) = 0$ for $j > k$.",
@@ -53,7 +53,7 @@
       "startLine": 82,
       "endLine": 86
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Face Counts Equal Simplicial Numbers",
     "content": "The **main theorem**: for $j \\leq k$, $\\text{faceCount}(k, j) = \\text{simplicial}(j+1, k-j)$. Both sides equal $\\binom{k+1}{j+1}$: the face count by definition, and the simplicial number because $\\binom{(k-j)+(j+1)}{j+1} = \\binom{k+1}{j+1}$. The proof uses `congr 1; omega` to reduce to the arithmetic identity $(k-j) + (j+1) = k+1$.",
     "mathContext": "$f_j(\\Delta^k) = \\binom{k+1}{j+1} = \\binom{(k-j)+(j+1)}{j+1} = S_{j+1}(k-j)$. The `congr 1` tactic reduces the `Nat.choose` equality to equality of arguments, and `omega` handles $(k-j)+(j+1) = k+1$.",
@@ -78,7 +78,7 @@
       "startLine": 98,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Total Face Count: 2^(k+1) - 1",
     "content": "The total number of proper faces of $\\Delta^k$ is $2^{k+1} - 1$. The proof reindexes using `Finset.sum_range_succ'` to shift from $\\sum_{j=0}^k \\binom{k+1}{j+1}$ to $\\sum_{i=1}^{k+1} \\binom{k+1}{i} = 2^{k+1} - \\binom{k+1}{0} = 2^{k+1} - 1$, applying Mathlib's `Nat.sum_range_choose` for the full binomial sum.",
     "mathContext": "$\\sum_{j=0}^k f_j(\\Delta^k) = \\sum_{j=0}^k \\binom{k+1}{j+1} = \\sum_{i=0}^{k+1} \\binom{k+1}{i} - 1 = 2^{k+1} - 1$. The $-1$ removes the empty face ($i = 0$ term).",
@@ -102,16 +102,16 @@
       "startLine": 110,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euler Characteristic of the Simplex (Fully Proved)",
-    "content": "Proves χ(Δ^k) = ∑_{j=0}^k (−1)^j · f_j = 1, reflecting the contractibility of a simplex. The proof uses `Int.alternating_sum_range_choose_of_ne` (Mathlib's statement that ∑_{i=0}^n (−1)^i · C(n,i) = 0 for n ≥ 1), then splits off the i=0 term via `Finset.sum_range_succ'` to get: 1 + ∑_{j=0}^k (−1)^{j+1} · C(k+1,j+1) = 0. The shifted sum is shown to equal the negation of the target sum via `Finset.sum_congr` and the ring identity (−1)^{x+1} = −(−1)^x, and `linarith` closes the goal.",
+    "content": "Proves \u03c7(\u0394^k) = \u2211_{j=0}^k (\u22121)^j \u00b7 f_j = 1, reflecting the contractibility of a simplex. The proof uses `Int.alternating_sum_range_choose_of_ne` (Mathlib's statement that \u2211_{i=0}^n (\u22121)^i \u00b7 C(n,i) = 0 for n \u2265 1), then splits off the i=0 term via `Finset.sum_range_succ'` to get: 1 + \u2211_{j=0}^k (\u22121)^{j+1} \u00b7 C(k+1,j+1) = 0. The shifted sum is shown to equal the negation of the target sum via `Finset.sum_congr` and the ring identity (\u22121)^{x+1} = \u2212(\u22121)^x, and `linarith` closes the goal.",
     "mathContext": "$\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j \\binom{k+1}{j+1} = -\\sum_{j=0}^k (-1)^{j+1} \\binom{k+1}{j+1}$. Using $\\sum_{i=0}^{k+1} (-1)^i \\binom{k+1}{i} = 0$, splitting the $i=0$ term gives $1 + \\sum_{j=0}^k (-1)^{j+1} \\binom{k+1}{j+1} = 0$, so $\\chi = 1$.",
     "significance": "key",
     "prerequisites": [
       "Int.alternating_sum_range_choose_of_ne",
       "Finset.sum_range_succ'",
       "Finset.sum_congr",
-      "Euler-Poincaré formula"
+      "Euler-Poincar\u00e9 formula"
     ],
     "relatedConcepts": [
       "Euler characteristic",

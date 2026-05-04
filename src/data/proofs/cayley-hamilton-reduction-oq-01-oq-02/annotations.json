@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Efficient Minimal Polynomial Reduction: The Open Question",
-    "content": "The header frames the question: can the minimal polynomial reduction — evaluating p(M) as (p mod minpoly(M))(M) — be made efficient for sparse matrices? The answer is yes via three mechanisms: (1) nilpotent M with M^k = 0 → use X^k as modulus directly, bypassing minpoly computation; (2) upper triangular M → minpoly divides the diagonal product ∏(X - M_i_i), which is O(n) to compute; (3) general → the standard reduction holds for any matrix. The nilpotent case is the key efficiency gain: the polynomial evaluation truncates at degree k with just division by X^k (coefficient truncation).",
-    "mathContext": "For nilpotent $M$ ($M^k = 0$): $\\text{minpoly}(M) \\mid X^k$, so any polynomial in $M$ reduces to a polynomial of degree $< k$. The reduction $p(M) = (p \\bmod X^k)(M)$ requires no computation of $\\text{minpoly}(M)$ — just truncate $p$'s coefficients at degree $k$. Compare to general sparse matrices where computing $\\text{minpoly}$ requires $O(n^2)$–$O(n^3)$ operations.",
+    "content": "The header frames the question: can the minimal polynomial reduction \u2014 evaluating p(M) as (p mod minpoly(M))(M) \u2014 be made efficient for sparse matrices? The answer is yes via three mechanisms: (1) nilpotent M with M^k = 0 \u2192 use X^k as modulus directly, bypassing minpoly computation; (2) upper triangular M \u2192 minpoly divides the diagonal product \u220f(X - M_i_i), which is O(n) to compute; (3) general \u2192 the standard reduction holds for any matrix. The nilpotent case is the key efficiency gain: the polynomial evaluation truncates at degree k with just division by X^k (coefficient truncation).",
+    "mathContext": "For nilpotent $M$ ($M^k = 0$): $\\text{minpoly}(M) \\mid X^k$, so any polynomial in $M$ reduces to a polynomial of degree $< k$. The reduction $p(M) = (p \\bmod X^k)(M)$ requires no computation of $\\text{minpoly}(M)$ \u2014 just truncate $p$'s coefficients at degree $k$. Compare to general sparse matrices where computing $\\text{minpoly}$ requires $O(n^2)$\u2013$O(n^3)$ operations.",
     "significance": "key",
     "relatedConcepts": [
       "minimal polynomial",
@@ -30,7 +30,7 @@
       "startLine": 46,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Nilpotent Minpoly Divides X^k",
     "content": "The key divisibility: if M^k = 0, then minpoly K M divides X^k. Proof: apply minpoly.dvd, which requires showing aeval M (X^k) = 0. Since aeval M (X^k) = M^k (polynomial evaluation of X^k at M gives M^k) and M^k = 0 by hypothesis, the annihilation holds.",
     "mathContext": "$\\text{minpoly}(M) \\mid X^k$ iff $X^k \\in I_M := \\{p : p(M) = 0\\}$ and $\\text{minpoly}(M)$ generates $I_M$. The annihilation $M^k = 0$ gives $X^k \\in I_M$, hence divisibility.",
@@ -53,9 +53,9 @@
       "startLine": 74,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Nilpotent Polynomial Reduction (Key Efficiency Theorem)",
-    "content": "For nilpotent M (M^k = 0), polynomial evaluation at M depends only on the polynomial modulo X^k. The proof uses Euclidean division: p = (p mod X^k) + X^k * (p div X^k). Applying aeval M: aeval M p = aeval M (p mod X^k) + aeval M (X^k) * aeval M (p div X^k). Since aeval M (X^k) = M^k = 0, the second term vanishes. The efficiency: p mod X^k is degree truncation — drop all terms of degree ≥ k. This is O(deg p) work with no matrix operations needed.",
+    "content": "For nilpotent M (M^k = 0), polynomial evaluation at M depends only on the polynomial modulo X^k. The proof uses Euclidean division: p = (p mod X^k) + X^k * (p div X^k). Applying aeval M: aeval M p = aeval M (p mod X^k) + aeval M (X^k) * aeval M (p div X^k). Since aeval M (X^k) = M^k = 0, the second term vanishes. The efficiency: p mod X^k is degree truncation \u2014 drop all terms of degree \u2265 k. This is O(deg p) work with no matrix operations needed.",
     "mathContext": "The Euclidean identity $p = (p \\bmod X^k) + X^k \\cdot (p \\div X^k)$ gives $p(M) = (p \\bmod X^k)(M) + M^k \\cdot (p \\div X^k)(M) = (p \\bmod X^k)(M)$ since $M^k = 0$. The modulus $X^k$ is trivially known (just the nilpotency index), requiring no eigenvalue computation.",
     "significance": "key",
     "relatedConcepts": [
@@ -77,10 +77,10 @@
       "startLine": 57,
       "endLine": 67
     },
-    "type": "theorem",
-    "title": "Nilpotent Minpoly Degree Bound: deg(minpoly) ≤ k",
-    "content": "Given that minpoly K M | X^k, the degree bound follows by Polynomial.natDegree_le_of_dvd combined with natDegree_X_pow k = k. The key point: when k is small (e.g., k = 2 for a 100×100 strictly upper triangular block matrix), this gives a degree bound of 2 rather than 100, enabling much shorter Krylov iterations.",
-    "mathContext": "$\\text{minpoly}(M) \\mid X^k \\Rightarrow \\deg(\\text{minpoly}(M)) \\leq \\deg(X^k) = k$. Combined with $k \\leq n$ (nilpotency index ≤ matrix dimension for $n\\times n$ matrices), we get $\\deg(\\text{minpoly}(M)) \\leq k \\leq n$. For strictly upper triangular $n\\times n$ matrices, $k = n$ (the matrix satisfies $M^n = 0$ but $M^{n-1} \\neq 0$).",
+    "type": "insight",
+    "title": "Nilpotent Minpoly Degree Bound: deg(minpoly) \u2264 k",
+    "content": "Given that minpoly K M | X^k, the degree bound follows by Polynomial.natDegree_le_of_dvd combined with natDegree_X_pow k = k. The key point: when k is small (e.g., k = 2 for a 100\u00d7100 strictly upper triangular block matrix), this gives a degree bound of 2 rather than 100, enabling much shorter Krylov iterations.",
+    "mathContext": "$\\text{minpoly}(M) \\mid X^k \\Rightarrow \\deg(\\text{minpoly}(M)) \\leq \\deg(X^k) = k$. Combined with $k \\leq n$ (nilpotency index \u2264 matrix dimension for $n\\times n$ matrices), we get $\\deg(\\text{minpoly}(M)) \\leq k \\leq n$. For strictly upper triangular $n\\times n$ matrices, $k = n$ (the matrix satisfies $M^n = 0$ but $M^{n-1} \\neq 0$).",
     "significance": "supporting",
     "relatedConcepts": [
       "natDegree_le_of_dvd",
@@ -100,9 +100,9 @@
       "startLine": 93,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Power Vanishing and Reduction Equivalence",
-    "content": "Two supporting results. `nilpotent_power_eq_zero` (lines 96-100): if M^k = 0, then M^j = 0 for all j ≥ k. This is the Krylov termination certificate: the Krylov sequence {v, Mv, ..., M^{k-1}v} generates the same subspace as {v, Mv, ..., M^{j}v} for all j ≥ k, since M^k v = 0. The proof uses Nat.exists_eq_add_of_le + pow_add.\n\n`nilpotent_reduction_equiv` (lines 104-111): for nilpotent M, reducing mod X^k gives the same result as reducing mod minpoly K M. This confirms that either modulus can be used equivalently in practice, with X^k being the computationally cheaper choice.",
+    "content": "Two supporting results. `nilpotent_power_eq_zero` (lines 96-100): if M^k = 0, then M^j = 0 for all j \u2265 k. This is the Krylov termination certificate: the Krylov sequence {v, Mv, ..., M^{k-1}v} generates the same subspace as {v, Mv, ..., M^{j}v} for all j \u2265 k, since M^k v = 0. The proof uses Nat.exists_eq_add_of_le + pow_add.\n\n`nilpotent_reduction_equiv` (lines 104-111): for nilpotent M, reducing mod X^k gives the same result as reducing mod minpoly K M. This confirms that either modulus can be used equivalently in practice, with X^k being the computationally cheaper choice.",
     "mathContext": "$M^j = M^{j-k} \\cdot M^k = 0$ for $j \\geq k$. The Krylov sequence $v, Mv, \\ldots, M^{k-1}v$ is a complete basis for the Krylov subspace $\\mathcal{K}_k(M,v) = \\text{span}\\{v, Mv, \\ldots, M^{k-1}v\\}$, since all higher powers vanish. The equivalence $(p \\bmod X^k)(M) = (p \\bmod \\mu_M)(M)$ holds because $\\mu_M \\mid X^k$ implies the two reduction residues agree in evaluation at $M$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -124,9 +124,9 @@
       "startLine": 117,
       "endLine": 143
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Upper Triangular Minpoly Divides Diagonal Product",
-    "content": "For upper triangular M, the minimal polynomial divides ∏ᵢ(X - M i i). This follows from: (1) charpoly_of_upperTriangular gives charpoly M = ∏(X - M i i); (2) minpoly.dvd applied to aeval_self_charpoly gives minpoly | charpoly; (3) combining. The degree bound deg(minpoly) ≤ n then follows from Polynomial.natDegree_le_of_dvd.",
+    "content": "For upper triangular M, the minimal polynomial divides \u220f\u1d62(X - M i i). This follows from: (1) charpoly_of_upperTriangular gives charpoly M = \u220f(X - M i i); (2) minpoly.dvd applied to aeval_self_charpoly gives minpoly | charpoly; (3) combining. The degree bound deg(minpoly) \u2264 n then follows from Polynomial.natDegree_le_of_dvd.",
     "mathContext": "For upper triangular $M$: $\\text{charpoly}(M) = \\prod_i (X - M_{ii})$ (product of linear factors from the diagonal). Since $\\text{minpoly}(M) \\mid \\text{charpoly}(M)$, we get $\\text{minpoly}(M) \\mid \\prod_i (X - M_{ii})$. The degree: $\\deg(\\text{minpoly}) \\leq n$ with the factors explicitly readable from the diagonal.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -148,9 +148,9 @@
       "startLine": 145,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "General Minimal Polynomial Reduction and Degree Truncation",
-    "content": "`minpoly_poly_reduction` (lines 153-158): the general reduction theorem — for any matrix M and polynomial p, aeval M p = aeval M (p %ₘ minpoly K M). This is the same pattern as the nilpotent case but applies universally. The proof is clean: Euclidean division + aeval M (minpoly K M) = 0 (from Mathlib's minpoly.aeval).\n\n`nilpotent_reduction_degree_lt` (lines 163-171): the reduced polynomial p %ₘ X^k has natDegree < k. This confirms that the nilpotent reduction really does compress the polynomial: any polynomial of degree ≥ k in a nilpotent matrix reduces to one of degree < k.",
+    "content": "`minpoly_poly_reduction` (lines 153-158): the general reduction theorem \u2014 for any matrix M and polynomial p, aeval M p = aeval M (p %\u2098 minpoly K M). This is the same pattern as the nilpotent case but applies universally. The proof is clean: Euclidean division + aeval M (minpoly K M) = 0 (from Mathlib's minpoly.aeval).\n\n`nilpotent_reduction_degree_lt` (lines 163-171): the reduced polynomial p %\u2098 X^k has natDegree < k. This confirms that the nilpotent reduction really does compress the polynomial: any polynomial of degree \u2265 k in a nilpotent matrix reduces to one of degree < k.",
     "mathContext": "The general reduction: $p(M) = (p \\bmod \\mu_M)(M)$ holds for any $M$ because $p = (p \\bmod \\mu_M) + \\mu_M \\cdot q$ gives $p(M) = (p \\bmod \\mu_M)(M) + \\mu_M(M) \\cdot q(M) = (p \\bmod \\mu_M)(M) + 0$. The degree bound: $\\deg(p \\bmod X^k) < k$ by the division algorithm.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -174,7 +174,7 @@
     },
     "type": "concept",
     "title": "Summary: Three Efficiency Mechanisms and Algorithmic Impact",
-    "content": "The closing documentation summarizes the three efficiency mechanisms. Note: the summary header says '8 theorems' but the bullet list includes 9 (nilpotent_reduction_equiv is listed but not counted). The meta.json correctly records theoremCount: 9.\n\nFor sparse matrices (banded, block triangular, nearly nilpotent), the minimal polynomial often has degree much smaller than n. Nilpotent matrices — arising in upper Hessenberg decompositions, shift matrices, graph adjacency matrices — benefit most: the reduction becomes pure coefficient truncation with no matrix multiplications.",
+    "content": "The closing documentation summarizes the three efficiency mechanisms. Note: the summary header says '8 theorems' but the bullet list includes 9 (nilpotent_reduction_equiv is listed but not counted). The meta.json correctly records theoremCount: 9.\n\nFor sparse matrices (banded, block triangular, nearly nilpotent), the minimal polynomial often has degree much smaller than n. Nilpotent matrices \u2014 arising in upper Hessenberg decompositions, shift matrices, graph adjacency matrices \u2014 benefit most: the reduction becomes pure coefficient truncation with no matrix multiplications.",
     "mathContext": "Computational complexity: General minpoly computation via Krylov: $O(n^2)$ matrix-vector products. Nilpotent case via $X^k$: $O(k)$ coefficient reads, 0 matrix multiplications for the modulus. Upper triangular: $O(n)$ scalar reads (diagonal). For sparse matrices where $k \\ll n$ (e.g., $k = O(\\log n)$), the savings can be dramatic.",
     "significance": "supporting",
     "relatedConcepts": [

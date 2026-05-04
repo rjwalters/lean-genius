@@ -8,14 +8,14 @@
     },
     "type": "definition",
     "title": "Computable Parameterized Bisection: paramBisectStep, paramBisect, paramBisectMid",
-    "content": "Three computable definitions encode the oracle-parameterized bisection algorithm. paramBisectStep takes a pair (left, right) and an explicit Bool choice: if true, keep (mid, right); if false, keep (left, mid). paramBisect iterates this n times using structural recursion on n. paramBisectMid extracts the midpoint at step n. Crucially, all are regular `def` — not `noncomputable def` — because they take the branching choice as explicit input rather than computing `if f(mid) ≤ 0`.",
+    "content": "Three computable definitions encode the oracle-parameterized bisection algorithm. paramBisectStep takes a pair (left, right) and an explicit Bool choice: if true, keep (mid, right); if false, keep (left, mid). paramBisect iterates this n times using structural recursion on n. paramBisectMid extracts the midpoint at step n. Crucially, all are regular `def` \u2014 not `noncomputable def` \u2014 because they take the branching choice as explicit input rather than computing `if f(mid) \u2264 0`.",
     "mathContext": "$\\text{paramBisectStep}((l, r), c) = \\begin{cases} ((l+r)/2, r) & c = \\mathtt{true} \\\\ (l, (l+r)/2) & c = \\mathtt{false} \\end{cases}$, with $\\text{paramBisect}(\\text{choices}, n, p) = \\text{paramBisectStep}^n(p; \\text{choices})$.",
     "significance": "key",
     "relatedConcepts": [
       "computable def",
       "bisection algorithm",
       "Bool oracle",
-      "ℝ × ℝ pairs"
+      "\u211d \u00d7 \u211d pairs"
     ],
     "prerequisites": [
       "difference from noncomputable bisectStep in IntermediateValueTheoremOQ02",
@@ -30,9 +30,9 @@
       "startLine": 76,
       "endLine": 88
     },
-    "type": "theorem",
-    "title": "paramBisect_width: Width Exactly (b−a)/2ⁿ — No Classical Logic",
-    "content": "After n bisection steps with any choice sequence, the interval width equals exactly (b-a)/2^n. The proof is by induction: the base case `paramBisectStep_width` is a one-line ring computation (both Bool branches give width/2). The inductive step applies the step lemma and ring arithmetic. No classical logic whatsoever — this is the first key constructive result.",
+    "type": "insight",
+    "title": "paramBisect_width: Width Exactly (b\u2212a)/2\u207f \u2014 No Classical Logic",
+    "content": "After n bisection steps with any choice sequence, the interval width equals exactly (b-a)/2^n. The proof is by induction: the base case `paramBisectStep_width` is a one-line ring computation (both Bool branches give width/2). The inductive step applies the step lemma and ring arithmetic. No classical logic whatsoever \u2014 this is the first key constructive result.",
     "mathContext": "$(\\text{paramBisect}(\\text{choices}, n, (a,b)).2 - \\text{paramBisect}(\\text{choices}, n, (a,b)).1) = \\frac{b-a}{2^n}$, proved purely algebraically.",
     "significance": "key",
     "relatedConcepts": [
@@ -42,7 +42,7 @@
       "no classical logic"
     ],
     "prerequisites": [
-      "paramBisectStep_width: cases c ⟨⟩ simp ring",
+      "paramBisectStep_width: cases c \u27e8\u27e9 simp ring",
       "induction on step count"
     ]
   },
@@ -53,9 +53,9 @@
       "startLine": 157,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "SignConsistent + paramBisect_sign: Sign Oracle and Constructive Invariant",
-    "content": "SignConsistent formalizes the key hypothesis: the oracle correctly records f's sign at each midpoint. Given sign-consistency, paramBisect_sign proves by induction that f(left_n) ≤ 0 ≤ f(right_n) at every step. The proof case-splits on the Bool choice. If choices(n) = true (oracle says f(mid) ≤ 0): the new left endpoint is mid, and f(mid) ≤ 0 is given by hcn.mp rfl. If choices(n) = false: f(mid) > 0 follows from the contrapositive of hcn. No classical logic — the sign decision is taken as a hypothesis.",
+    "content": "SignConsistent formalizes the key hypothesis: the oracle correctly records f's sign at each midpoint. Given sign-consistency, paramBisect_sign proves by induction that f(left_n) \u2264 0 \u2264 f(right_n) at every step. The proof case-splits on the Bool choice. If choices(n) = true (oracle says f(mid) \u2264 0): the new left endpoint is mid, and f(mid) \u2264 0 is given by hcn.mp rfl. If choices(n) = false: f(mid) > 0 follows from the contrapositive of hcn. No classical logic \u2014 the sign decision is taken as a hypothesis.",
     "mathContext": "$\\text{SignConsistent}(f, \\text{choices}, p, n) \\Leftrightarrow \\forall k < n,\\ \\text{choices}(k) = \\mathtt{true} \\Leftrightarrow f(\\text{mid}_k) \\leq 0$. Given this, $f(l_n) \\leq 0 \\leq f(r_n)$ for all $n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -77,8 +77,8 @@
       "startLine": 208,
       "endLine": 241
     },
-    "type": "theorem",
-    "title": "paramBisect_endpoints_converge: Classical Step via Completeness of ℝ",
+    "type": "insight",
+    "title": "paramBisect_endpoints_converge: Classical Step via Completeness of \u211d",
     "content": "The first theorem requiring Classical.choice: bounded monotone sequences converge. The left endpoints form a monotone sequence bounded above by b; the right endpoints form an antitone sequence bounded below by a. By Mathlib's tendsto_atTop_ciSup and tendsto_atTop_ciInf, both converge to their sup/inf respectively. The limits coincide because their difference is the width limit = 0. The key classical ingredient: constructing the supremum of a bounded sequence requires Classical.choice (or countable choice), which is not available in fully constructive settings.",
     "mathContext": "$l_n = \\text{paramBisect}(\\text{choices}, n, (a,b)).1 \\nearrow x$ and $r_n = \\text{paramBisect}(\\text{choices}, n, (a,b)).2 \\searrow x$ where $x = \\sup_n l_n = \\inf_n r_n$.",
     "significance": "key",
@@ -86,11 +86,11 @@
       "bounded monotone convergence",
       "Classical.choice",
       "ciSup/ciInf",
-      "completeness of ℝ"
+      "completeness of \u211d"
     ],
     "prerequisites": [
-      "tendsto_atTop_ciSup (Mathlib): Monotone + BddAbove → Tendsto to ciSup",
-      "tendsto_atTop_ciInf: Antitone + BddBelow → Tendsto to ciInf",
+      "tendsto_atTop_ciSup (Mathlib): Monotone + BddAbove \u2192 Tendsto to ciSup",
+      "tendsto_atTop_ciInf: Antitone + BddBelow \u2192 Tendsto to ciInf",
       "paramBisect_nested for monotonicity",
       "paramBisect_contained for boundedness"
     ]
@@ -102,9 +102,9 @@
       "startLine": 247,
       "endLine": 270
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "bisection_limit_is_root: Exact Root via Continuity Squeeze",
-    "content": "Given sign-consistent oracle and continuity of f, the common limit x of the bisection endpoints satisfies f(x) = 0. The proof squeezes: f(left_n) ≤ 0 for all n, so by continuity of f and convergence of left_n to x, we get f(x) ≤ 0. Symmetrically, 0 ≤ f(right_n) and right_n → x give f(x) ≥ 0. Hence f(x) = 0. The right endpoints convergence is derived from width→0 plus left convergence (right_n = left_n + width_n). Classical logic enters via the endpoint convergence result.",
+    "content": "Given sign-consistent oracle and continuity of f, the common limit x of the bisection endpoints satisfies f(x) = 0. The proof squeezes: f(left_n) \u2264 0 for all n, so by continuity of f and convergence of left_n to x, we get f(x) \u2264 0. Symmetrically, 0 \u2264 f(right_n) and right_n \u2192 x give f(x) \u2265 0. Hence f(x) = 0. The right endpoints convergence is derived from width\u21920 plus left convergence (right_n = left_n + width_n). Classical logic enters via the endpoint convergence result.",
     "mathContext": "By sign invariant: $f(l_n) \\leq 0$ for all $n$; by continuity: $f(x) = \\lim_n f(l_n) \\leq 0$. Symmetrically $f(x) \\geq 0$. Hence $f(x) = 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -116,7 +116,7 @@
     "prerequisites": [
       "bisection_limit_is_root uses hf.tendsto x and endpoint limits",
       "le_of_tendsto/ge_of_tendsto: limit of sequence of nonpositive/nonneg is nonpos/nonneg",
-      "width_tendsto_zero + left_convergence → right_convergence"
+      "width_tendsto_zero + left_convergence \u2192 right_convergence"
     ]
   },
   {
@@ -126,9 +126,9 @@
       "startLine": 275,
       "endLine": 307
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "constructive_vs_classical_ivt: Summary of the Constructive Boundary",
-    "content": "The main summary theorem packages four results distinguishing constructive from classical. Constructive (no Classical.em or choice): (1) exact width formula (b-a)/2^n; (2) sign invariant f(left)≤0≤f(right) given oracle; (3) width tends to 0. Classical (uses Classical.choice through Mathlib's completeness): (4) endpoint convergence to common limit. The theorem has a simple proof: each component is a direct invocation of the corresponding lemma proved above.",
+    "content": "The main summary theorem packages four results distinguishing constructive from classical. Constructive (no Classical.em or choice): (1) exact width formula (b-a)/2^n; (2) sign invariant f(left)\u22640\u2264f(right) given oracle; (3) width tends to 0. Classical (uses Classical.choice through Mathlib's completeness): (4) endpoint convergence to common limit. The theorem has a simple proof: each component is a direct invocation of the corresponding lemma proved above.",
     "mathContext": "The theorem is a conjunction: $(\\text{width formula}) \\wedge (\\text{sign invariant}) \\wedge (\\text{width}\\to 0) \\wedge (\\text{endpoint convergence})$. The first three components do not use Classical.em in their proofs.",
     "significance": "main",
     "relatedConcepts": [

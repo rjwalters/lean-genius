@@ -2,73 +2,131 @@
   {
     "id": "ann-emp-dist",
     "proofId": "shannon-source-coding-oq-04",
-    "range": { "startLine": 57, "endLine": 61 },
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
     "type": "definition",
     "title": "Empirical Distribution (Type)",
     "content": "The type $\\tau(x)$ of a sequence $x \\in \\{1,\\ldots,k\\}^n$ is its empirical distribution: $\\tau(x)(i) = |\\{j : x_j = i\\}|$, the number of times symbol $i$ appears. This is the core object in the method of types.",
     "mathContext": "$\\tau(x)(i) = |\\{j \\in \\{1,\\ldots,n\\} : x_j = i\\}|$",
     "significance": "key",
-    "relatedConcepts": ["empirical distribution", "histogram", "type class"],
-    "prerequisites": ["finite sets", "cardinality"]
+    "relatedConcepts": [
+      "empirical distribution",
+      "histogram",
+      "type class"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "cardinality"
+    ]
   },
   {
     "id": "ann-type-class",
     "proofId": "shannon-source-coding-oq-04",
-    "range": { "startLine": 80, "endLine": 83 },
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
     "type": "definition",
     "title": "Type Class",
     "content": "The type class $T_f$ is the set of all sequences with a given empirical distribution $f$. It is the fiber of $\\tau$ over $f$.",
     "mathContext": "$T_f = \\{x \\in \\mathcal{X}^n : \\tau(x) = f\\}$",
     "significance": "key",
-    "relatedConcepts": ["fiber", "partition", "empirical distribution"],
-    "prerequisites": ["type (empirical distribution)"]
+    "relatedConcepts": [
+      "fiber",
+      "partition",
+      "empirical distribution"
+    ],
+    "prerequisites": [
+      "type (empirical distribution)"
+    ]
   },
   {
     "id": "ann-emp-entropy",
     "proofId": "shannon-source-coding-oq-04",
-    "range": { "startLine": 97, "endLine": 103 },
+    "range": {
+      "startLine": 97,
+      "endLine": 103
+    },
     "type": "definition",
     "title": "Empirical Entropy",
     "content": "The Shannon entropy of the empirical distribution $Q = f/n$. This equals $H(Q) = -\\sum_i Q_i \\log Q_i$ where $Q_i = f_i/n$.",
     "mathContext": "$H(f/n) = -\\sum_{i=1}^k \\frac{f_i}{n} \\log \\frac{f_i}{n}$",
     "significance": "key",
-    "relatedConcepts": ["Shannon entropy", "empirical distribution"],
-    "prerequisites": ["Shannon entropy", "type"]
+    "relatedConcepts": [
+      "Shannon entropy",
+      "empirical distribution"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "type"
+    ]
   },
   {
     "id": "ann-type-prob",
     "proofId": "shannon-source-coding-oq-04",
-    "range": { "startLine": 114, "endLine": 116 },
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
     "type": "definition",
     "title": "Type Class Probability Weight",
     "content": "The probability of any single sequence in $T_f$ under the i.i.d. distribution $Q = f/n$. All sequences in the same type class have identical probability under their own empirical distribution.",
     "mathContext": "$Q^n(x) = \\prod_{i=1}^k Q_i^{f_i} = \\exp(-n H(Q))$ for $x \\in T_f$",
     "significance": "key",
-    "relatedConcepts": ["i.i.d. probability", "type class", "entropy"],
-    "prerequisites": ["empirical distribution", "entropy"]
+    "relatedConcepts": [
+      "i.i.d. probability",
+      "type class",
+      "entropy"
+    ],
+    "prerequisites": [
+      "empirical distribution",
+      "entropy"
+    ]
   },
   {
     "id": "ann-log-typeprob",
     "proofId": "shannon-source-coding-oq-04",
-    "range": { "startLine": 119, "endLine": 148 },
-    "type": "theorem",
+    "range": {
+      "startLine": 119,
+      "endLine": 148
+    },
+    "type": "insight",
     "title": "Log-Probability Identity",
     "content": "The identity $\\log Q^n(x) = -n H(Q)$ for $x \\in T_f$ with $Q = f/n$. Proved using Real.log_prod and Real.log_pow from Mathlib, plus the algebraic identity $n \\cdot (f_i/n) = f_i$.",
     "mathContext": "$\\log \\prod_i (f_i/n)^{f_i} = \\sum_i f_i \\log(f_i/n) = -n H(f/n)$",
     "significance": "key",
-    "relatedConcepts": ["probability weight", "entropy", "logarithm identity"],
-    "prerequisites": ["typeProb", "empEntropy", "Real.log_prod"]
+    "relatedConcepts": [
+      "probability weight",
+      "entropy",
+      "logarithm identity"
+    ],
+    "prerequisites": [
+      "typeProb",
+      "empEntropy",
+      "Real.log_prod"
+    ]
   },
   {
     "id": "ann-count-types",
     "proofId": "shannon-source-coding-oq-04",
-    "range": { "startLine": 175, "endLine": 183 },
-    "type": "theorem",
+    "range": {
+      "startLine": 175,
+      "endLine": 183
+    },
+    "type": "insight",
     "title": "Polynomial Bound on Types",
     "content": "There are at most $(n+1)^k$ distinct empirical distributions for block length $n$ over an alphabet of size $k$. Each type is a function $f: \\{1,\\ldots,k\\} \\to \\{0,\\ldots,n\\}$, giving $(n+1)^k$ possibilities.",
     "mathContext": "$|\\{\\text{types}\\}| \\le (n+1)^k$",
     "significance": "supporting",
-    "relatedConcepts": ["empirical distribution", "polynomial complexity", "pigeonhole"],
-    "prerequisites": ["Fintype.card_pi"]
+    "relatedConcepts": [
+      "empirical distribution",
+      "polynomial complexity",
+      "pigeonhole"
+    ],
+    "prerequisites": [
+      "Fintype.card_pi"
+    ]
   }
 ]

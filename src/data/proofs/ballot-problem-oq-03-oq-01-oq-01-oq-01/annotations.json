@@ -2,97 +2,211 @@
   {
     "id": "ann-jt-header",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 29 },
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
     "type": "concept",
     "title": "Jacobi-Trudi Identity: Historical and Mathematical Context",
-    "content": "The Jacobi-Trudi identity (1841) is one of the foundational formulas of algebraic combinatorics. It expresses Schur polynomials — characters of GL(n) representations and a natural basis for symmetric functions — as determinants of complete homogeneous symmetric polynomials h_n. This file provides the first Lean 4 definition of Schur polynomials using this formula as the primary definition. The namespace JacobiTrudi works over a general commutative ring R with a general finite type σ for variables, making all results fully abstract.\n\nThe three imports define the full dependency: `MvPolynomial.Symmetric.Defs` supplies `hsymm` (the h_n polynomials), `rename_hsymm`, and `IsSymmetric`; `Matrix.Determinant.Basic` supplies `Matrix.det`, `det_fin_zero`, `det_fin_one`, `det_fin_two`, and `AlgHom.map_det`; the parent file `BallotProblemOQ03OQ01OQ01` provides the LGV infrastructure that the combinatorial proof ultimately requires. The `open MvPolynomial Matrix Finset` declaration avoids namespace prefixes throughout.",
-    "mathContext": "The Jacobi-Trudi identity states: $s_\\lambda = \\det[h_{\\lambda_i - i + j}]_{1 \\le i,j \\le k}$ where $h_n = \\sum_{|\\alpha|=n} x^\\alpha$ is the $n$-th complete homogeneous symmetric polynomial (sum over all degree-$n$ monomials, no sign). The convention $h_n = 0$ for $n < 0$ is essential for the matrix entries to be well-defined; Lean enforces this via ℕ subtraction with a conditional. There is an analogous dual formula: $s_\\lambda = \\det[e_{\\lambda_i' - i + j}]$ where $\\lambda'$ is the conjugate partition and $e_k$ are elementary symmetric polynomials (alternating-sign determinant of e_k's). This file uses only the h_n version.",
+    "content": "The Jacobi-Trudi identity (1841) is one of the foundational formulas of algebraic combinatorics. It expresses Schur polynomials \u2014 characters of GL(n) representations and a natural basis for symmetric functions \u2014 as determinants of complete homogeneous symmetric polynomials h_n. This file provides the first Lean 4 definition of Schur polynomials using this formula as the primary definition. The namespace JacobiTrudi works over a general commutative ring R with a general finite type \u03c3 for variables, making all results fully abstract.\n\nThe three imports define the full dependency: `MvPolynomial.Symmetric.Defs` supplies `hsymm` (the h_n polynomials), `rename_hsymm`, and `IsSymmetric`; `Matrix.Determinant.Basic` supplies `Matrix.det`, `det_fin_zero`, `det_fin_one`, `det_fin_two`, and `AlgHom.map_det`; the parent file `BallotProblemOQ03OQ01OQ01` provides the LGV infrastructure that the combinatorial proof ultimately requires. The `open MvPolynomial Matrix Finset` declaration avoids namespace prefixes throughout.",
+    "mathContext": "The Jacobi-Trudi identity states: $s_\\lambda = \\det[h_{\\lambda_i - i + j}]_{1 \\le i,j \\le k}$ where $h_n = \\sum_{|\\alpha|=n} x^\\alpha$ is the $n$-th complete homogeneous symmetric polynomial (sum over all degree-$n$ monomials, no sign). The convention $h_n = 0$ for $n < 0$ is essential for the matrix entries to be well-defined; Lean enforces this via \u2115 subtraction with a conditional. There is an analogous dual formula: $s_\\lambda = \\det[e_{\\lambda_i' - i + j}]$ where $\\lambda'$ is the conjugate partition and $e_k$ are elementary symmetric polynomials (alternating-sign determinant of e_k's). This file uses only the h_n version.",
     "significance": "key",
-    "relatedConcepts": ["Schur polynomials", "complete homogeneous symmetric polynomials", "symmetric functions ring", "GL(n) representation characters", "Young tableaux", "hsymm", "AlgHom.map_det"],
-    "prerequisites": ["symmetric polynomials", "determinants", "partitions and Young diagrams", "ring theory", "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"]
+    "relatedConcepts": [
+      "Schur polynomials",
+      "complete homogeneous symmetric polynomials",
+      "symmetric functions ring",
+      "GL(n) representation characters",
+      "Young tableaux",
+      "hsymm",
+      "AlgHom.map_det"
+    ],
+    "prerequisites": [
+      "symmetric polynomials",
+      "determinants",
+      "partitions and Young diagrams",
+      "ring theory",
+      "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"
+    ]
   },
   {
     "id": "ann-jt-matrix-def",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 35, "endLine": 47 },
+    "range": {
+      "startLine": 35,
+      "endLine": 47
+    },
     "type": "definition",
     "title": "Jacobi-Trudi Matrix and Schur Polynomial Definitions",
-    "content": "The Jacobi-Trudi matrix has entry (i,j) = h_{sh_i + j - i} when the index is non-negative, and 0 otherwise. The ℕ subtraction check `if i.val ≤ sh i + j.val` handles the convention h_n = 0 for n < 0 without needing integers. The Schur polynomial is then the determinant of this k×k matrix. Using 0-indexed Fin k, the formula shifts slightly from the 1-indexed textbook version: i goes from 0 to k-1 instead of 1 to k.",
+    "content": "The Jacobi-Trudi matrix has entry (i,j) = h_{sh_i + j - i} when the index is non-negative, and 0 otherwise. The \u2115 subtraction check `if i.val \u2264 sh i + j.val` handles the convention h_n = 0 for n < 0 without needing integers. The Schur polynomial is then the determinant of this k\u00d7k matrix. Using 0-indexed Fin k, the formula shifts slightly from the 1-indexed textbook version: i goes from 0 to k-1 instead of 1 to k.",
     "mathContext": "For a partition $\\lambda = (\\lambda_1, \\ldots, \\lambda_k)$, the Jacobi-Trudi matrix $M$ has entries $M_{ij} = h_{\\lambda_i + j - i}$ for $1 \\le i,j \\le k$, where $h_n = 0$ when $n < 0$. In Lean 4 (0-indexed), this becomes: entry $(i, j) = h_{\\texttt{sh}_i + j - i}$ when $i \\le \\texttt{sh}_i + j$, else $0$. The Schur polynomial $s_\\lambda = \\det(M)$. The `noncomputable` annotation is required because `MvPolynomial.hsymm` involves classical choice.",
     "significance": "key",
-    "relatedConcepts": ["jacobiTrudiMatrix", "schurPolynomial", "MvPolynomial.hsymm", "Matrix.det", "natural number subtraction"],
-    "prerequisites": ["Mathlib.RingTheory.MvPolynomial.Symmetric.Defs", "Mathlib.LinearAlgebra.Matrix.Determinant.Basic", "Lean 4 natural number subtraction semantics"]
+    "relatedConcepts": [
+      "jacobiTrudiMatrix",
+      "schurPolynomial",
+      "MvPolynomial.hsymm",
+      "Matrix.det",
+      "natural number subtraction"
+    ],
+    "prerequisites": [
+      "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Lean 4 natural number subtraction semantics"
+    ]
   },
   {
     "id": "ann-jt-base-cases",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 53, "endLine": 61 },
-    "type": "theorem",
+    "range": {
+      "startLine": 53,
+      "endLine": 61
+    },
+    "type": "insight",
     "title": "Base Cases: Empty and Single-Row Partitions",
-    "content": "Two foundational base cases: (1) the empty partition () gives a 0×0 determinant equal to 1 (by convention); (2) the single-row partition (n) gives a 1×1 determinant equal to h_n, the n-th complete homogeneous symmetric polynomial. These verify the definition against the known boundary cases of the Jacobi-Trudi identity. Both proofs close with `simp` using Mathlib's `det_fin_zero` and `det_fin_one` lemmas.",
+    "content": "Two foundational base cases: (1) the empty partition () gives a 0\u00d70 determinant equal to 1 (by convention); (2) the single-row partition (n) gives a 1\u00d71 determinant equal to h_n, the n-th complete homogeneous symmetric polynomial. These verify the definition against the known boundary cases of the Jacobi-Trudi identity. Both proofs close with `simp` using Mathlib's `det_fin_zero` and `det_fin_one` lemmas.",
     "mathContext": "For the empty partition $\\lambda = ()$: $s_{()} = \\det(\\text{empty matrix}) = 1$ (the $0 \\times 0$ determinant). Lean: `Matrix.det_fin_zero`. For the single-row partition $\\lambda = (n)$: $s_{(n)} = h_n$ (the $n$-th complete homogeneous symmetric polynomial). Lean: `Matrix.det_fin_one` reduces the $1 \\times 1$ determinant to its single entry. In general, $h_n(x_1,\\ldots,x_k) = \\sum_{i_1 \\le i_2 \\le \\cdots \\le i_n} x_{i_1} x_{i_2} \\cdots x_{i_n}$ counts all monomials of degree $n$.",
     "significance": "supporting",
-    "relatedConcepts": ["det_fin_zero", "det_fin_one", "hsymm", "empty partition", "single-row Schur polynomial"],
-    "prerequisites": ["determinant conventions", "complete homogeneous symmetric polynomials", "Lean simp arithmetic"]
+    "relatedConcepts": [
+      "det_fin_zero",
+      "det_fin_one",
+      "hsymm",
+      "empty partition",
+      "single-row Schur polynomial"
+    ],
+    "prerequisites": [
+      "determinant conventions",
+      "complete homogeneous symmetric polynomials",
+      "Lean simp arithmetic"
+    ]
   },
   {
     "id": "ann-jt-entry-symmetry",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 67, "endLine": 71 },
-    "type": "theorem",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "insight",
     "title": "Entry-Level Symmetry: Each h_n is Individually Symmetric",
     "content": "Before proving the full Schur polynomial is symmetric, we first establish that each entry of the Jacobi-Trudi matrix is individually symmetric. The key lemma is `rename_hsymm`: renaming variables in h_n by any permutation leaves it unchanged. The conditional entry (h_n or 0) requires `split_ifs` to handle both branches. This is a sorry pending resolution of a Lean unification issue with `hsymm_isSymmetric`.",
-    "mathContext": "A polynomial $\\phi \\in R[x_i : i \\in \\sigma]$ is symmetric if $\\phi(x_{e(i)}) = \\phi(x_i)$ for all permutations $e : \\sigma \\to \\sigma$. In Lean: `IsSymmetric φ = ∀ e : Equiv.Perm σ, MvPolynomial.rename e φ = φ`. Mathlib's `hsymm_isSymmetric` proves this for $h_n$, and `rename_hsymm` gives the explicit rewrite `rename e (hsymm σ R n) = hsymm σ R n`. The zero case is trivial since `rename e 0 = 0`.",
+    "mathContext": "A polynomial $\\phi \\in R[x_i : i \\in \\sigma]$ is symmetric if $\\phi(x_{e(i)}) = \\phi(x_i)$ for all permutations $e : \\sigma \\to \\sigma$. In Lean: `IsSymmetric \u03c6 = \u2200 e : Equiv.Perm \u03c3, MvPolynomial.rename e \u03c6 = \u03c6`. Mathlib's `hsymm_isSymmetric` proves this for $h_n$, and `rename_hsymm` gives the explicit rewrite `rename e (hsymm \u03c3 R n) = hsymm \u03c3 R n`. The zero case is trivial since `rename e 0 = 0`.",
     "significance": "supporting",
-    "relatedConcepts": ["IsSymmetric", "rename_hsymm", "hsymm_isSymmetric", "MvPolynomial.rename", "Equiv.Perm"],
-    "prerequisites": ["symmetric polynomials", "MvPolynomial.rename", "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"]
+    "relatedConcepts": [
+      "IsSymmetric",
+      "rename_hsymm",
+      "hsymm_isSymmetric",
+      "MvPolynomial.rename",
+      "Equiv.Perm"
+    ],
+    "prerequisites": [
+      "symmetric polynomials",
+      "MvPolynomial.rename",
+      "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"
+    ]
   },
   {
     "id": "ann-jt-symmetry",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 73, "endLine": 77 },
-    "type": "theorem",
+    "range": {
+      "startLine": 73,
+      "endLine": 77
+    },
+    "type": "insight",
     "title": "Full Symmetry of Schur Polynomials via AlgHom.map_det",
     "content": "Symmetry of the Schur polynomial follows from two facts: (1) AlgHom.map_det lifts any ring algebra homomorphism through the determinant, and (2) rename_hsymm shows each h_n is individually symmetric. This is a sorry pending the entry-symmetry result above. Once that is proved, the full symmetry proof is 10 lines: apply AlgHom.map_det, then show each matrix entry is fixed by rename via jacobiTrudiMatrix_entry_isSymmetric.",
     "mathContext": "The key identity: for any $R$-algebra homomorphism $\\phi$, $\\phi(\\det M) = \\det(\\phi \\circ M)$. In Lean: `AlgHom.map_det`. Here $\\phi = \\texttt{rename}\\, e$ for a permutation $e : \\text{Perm}\\, \\sigma$, so $(\\texttt{rename}\\, e)(\\det M_{JT}) = \\det(\\texttt{mapMatrix}\\,(\\texttt{rename}\\, e)\\, M_{JT})$. Each entry satisfies $(\\texttt{rename}\\, e)(h_n) = h_n$, so the mapped matrix equals $M_{JT}$, giving $(\\texttt{rename}\\, e)(s_\\lambda) = s_\\lambda$. Symmetry is the defining property that distinguishes $s_\\lambda$ from ordinary polynomials.",
     "significance": "key",
-    "relatedConcepts": ["AlgHom.map_det", "rename_hsymm", "IsSymmetric", "Matrix.mapMatrix", "symmetric function ring"],
-    "prerequisites": ["algebra homomorphisms", "determinants", "symmetric polynomials", "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"]
+    "relatedConcepts": [
+      "AlgHom.map_det",
+      "rename_hsymm",
+      "IsSymmetric",
+      "Matrix.mapMatrix",
+      "symmetric function ring"
+    ],
+    "prerequisites": [
+      "algebra homomorphisms",
+      "determinants",
+      "symmetric polynomials",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+    ]
   },
   {
     "id": "ann-jt-two-row",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 83, "endLine": 90 },
+    "range": {
+      "startLine": 83,
+      "endLine": 90
+    },
     "type": "insight",
     "title": "Two-Row Schur Polynomial: Explicit Determinant Formula",
-    "content": "For the two-row partition (a, b) with a ≥ b ≥ 0, the Jacobi-Trudi formula gives s_{(a,b)} = h_a * h_b - h_{a+1} * h_{b-1}. This is the 2×2 determinant expansion. When b = 0, the second term vanishes (h_{-1} = 0 by the ℕ convention). Lean's det_fin_two gives the 2×2 expansion mechanically, and Matrix.cons lemmas extract the entries. Currently a sorry due to the complexity of normalizing the conditional entry logic.",
+    "content": "For the two-row partition (a, b) with a \u2265 b \u2265 0, the Jacobi-Trudi formula gives s_{(a,b)} = h_a * h_b - h_{a+1} * h_{b-1}. This is the 2\u00d72 determinant expansion. When b = 0, the second term vanishes (h_{-1} = 0 by the \u2115 convention). Lean's det_fin_two gives the 2\u00d72 expansion mechanically, and Matrix.cons lemmas extract the entries. Currently a sorry due to the complexity of normalizing the conditional entry logic.",
     "mathContext": "For partition $\\lambda = (a, b)$ with $a \\ge b \\ge 0$: $$s_{(a,b)} = \\det\\begin{pmatrix} h_a & h_{a+1} \\\\ h_{b-1} & h_b \\end{pmatrix} = h_a h_b - h_{a+1} h_{b-1}$$ where $h_{-1} = 0$ by convention. This is the simplest non-trivial case of Jacobi-Trudi and illustrates the alternating-sign (determinant) structure. The formula generalizes: for a hook partition $(a, 1^b)$, the Jacobi-Trudi determinant is tridiagonal. The two-row case is also used to prove the Pieri rule.",
     "significance": "supporting",
-    "relatedConcepts": ["det_fin_two", "two-row partition", "Schur polynomial", "complete homogeneous symmetric polynomials", "Pieri rule"],
-    "prerequisites": ["2×2 determinants", "partition notation", "h_n conventions"]
+    "relatedConcepts": [
+      "det_fin_two",
+      "two-row partition",
+      "Schur polynomial",
+      "complete homogeneous symmetric polynomials",
+      "Pieri rule"
+    ],
+    "prerequisites": [
+      "2\u00d72 determinants",
+      "partition notation",
+      "h_n conventions"
+    ]
   },
   {
     "id": "ann-jt-hook-connection",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 96, "endLine": 101 },
+    "range": {
+      "startLine": 96,
+      "endLine": 101
+    },
     "type": "insight",
     "title": "Evaluation at All-Ones: Stars-and-Bars and Symmetric Group",
-    "content": "Evaluating h_n at x₁ = ⋯ = xₖ = 1 gives the number of monomials of degree n in k variables, which equals C(n+k-1, k-1) = |{weak compositions of n into k parts}| = |Sym(Fin k) n|. This connects the algebraic Jacobi-Trudi formula to combinatorial counting, and to the dimension of the degree-n component of the polynomial ring. Currently sorry pending the `Nat.multichoose` = `Nat.choose` reduction.",
-    "mathContext": "For the $n$-th complete homogeneous symmetric polynomial in $k$ variables: $h_n(1,1,\\ldots,1) = \\binom{n+k-1}{k-1}$. This equals $|\\text{Sym}(\\text{Fin}\\, k)\\, n|$ — the number of multisets of size $n$ from a $k$-element set (\"stars and bars\"). In Lean: `eval (fun _ => 1) (hsymm (Fin k) R n) = Nat.choose (n + k - 1) (k - 1)`. When combined with Jacobi-Trudi, evaluating $s_\\lambda(1,\\ldots,1)$ counts the number of SSYT of shape $\\lambda$ with entries in $\\{1,\\ldots,k\\}$, which equals the dimension of the corresponding GL(k) representation.",
+    "content": "Evaluating h_n at x\u2081 = \u22ef = x\u2096 = 1 gives the number of monomials of degree n in k variables, which equals C(n+k-1, k-1) = |{weak compositions of n into k parts}| = |Sym(Fin k) n|. This connects the algebraic Jacobi-Trudi formula to combinatorial counting, and to the dimension of the degree-n component of the polynomial ring. Currently sorry pending the `Nat.multichoose` = `Nat.choose` reduction.",
+    "mathContext": "For the $n$-th complete homogeneous symmetric polynomial in $k$ variables: $h_n(1,1,\\ldots,1) = \\binom{n+k-1}{k-1}$. This equals $|\\text{Sym}(\\text{Fin}\\, k)\\, n|$ \u2014 the number of multisets of size $n$ from a $k$-element set (\"stars and bars\"). In Lean: `eval (fun _ => 1) (hsymm (Fin k) R n) = Nat.choose (n + k - 1) (k - 1)`. When combined with Jacobi-Trudi, evaluating $s_\\lambda(1,\\ldots,1)$ counts the number of SSYT of shape $\\lambda$ with entries in $\\{1,\\ldots,k\\}$, which equals the dimension of the corresponding GL(k) representation.",
     "significance": "supporting",
-    "relatedConcepts": ["stars and bars", "multisets", "binomial coefficients", "evaluation map", "hsymm at 1", "Nat.multichoose"],
-    "prerequisites": ["combinatorics", "MvPolynomial.eval", "Finset.card", "binomial coefficients"]
+    "relatedConcepts": [
+      "stars and bars",
+      "multisets",
+      "binomial coefficients",
+      "evaluation map",
+      "hsymm at 1",
+      "Nat.multichoose"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "MvPolynomial.eval",
+      "Finset.card",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-jt-lgv",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "range": { "startLine": 103, "endLine": 129 },
+    "range": {
+      "startLine": 103,
+      "endLine": 129
+    },
     "type": "concept",
-    "title": "LGV Connection (Open): SSYT ↔ Non-Intersecting Paths via RSK",
-    "content": "The combinatorial proof of the Jacobi-Trudi identity via the LGV lemma proceeds: semistandard Young tableaux (SSYT) of shape λ biject with non-intersecting lattice path systems via RSK correspondence; each lattice path encodes a weakly increasing variable sequence whose monomial weight is a term of h_n; summing over SSYT gives det[h_{sh_i+j-i}]. This sorry represents approximately 400 lines of Lean formalization (SSYT structure ~100 lines + RSK bijection ~200 lines + weight matching ~100 lines). The placeholder theorem is stated as a tautology (schurPolynomial = schurPolynomial) until the RHS can be replaced by the SSYT generating function.\n\nThe comment block (lines 103-118) is a detailed formalization roadmap: Step 1 (SSYT ~100 lines) requires a type for semistandard Young tableaux of shape `sh : Fin k → ℕ` with entries in `Fin n`, plus a monomial weight function that maps a SSYT T to $\\prod_i x_{T(i)}$. Step 2 (RSK ~200 lines) is the Robinson-Schensted-Knuth bijection proving SSYT biject with pairs of non-intersecting lattice paths from the LGV source points $A_i$ to $B_j$. Step 3 (weight matching ~100 lines) proves the LGV determinant (with the edge weights from the parent `BallotProblemOQ03OQ01OQ01` proof) equals the SSYT generating function $\\sum_{T: \\text{SSYT}(\\lambda)} x^T$. The placeholder `schurPolynomial k sh = schurPolynomial k sh` is a true but trivial tautology — not even a statement of the actual theorem — representing work in progress.",
+    "title": "LGV Connection (Open): SSYT \u2194 Non-Intersecting Paths via RSK",
+    "content": "The combinatorial proof of the Jacobi-Trudi identity via the LGV lemma proceeds: semistandard Young tableaux (SSYT) of shape \u03bb biject with non-intersecting lattice path systems via RSK correspondence; each lattice path encodes a weakly increasing variable sequence whose monomial weight is a term of h_n; summing over SSYT gives det[h_{sh_i+j-i}]. This sorry represents approximately 400 lines of Lean formalization (SSYT structure ~100 lines + RSK bijection ~200 lines + weight matching ~100 lines). The placeholder theorem is stated as a tautology (schurPolynomial = schurPolynomial) until the RHS can be replaced by the SSYT generating function.\n\nThe comment block (lines 103-118) is a detailed formalization roadmap: Step 1 (SSYT ~100 lines) requires a type for semistandard Young tableaux of shape `sh : Fin k \u2192 \u2115` with entries in `Fin n`, plus a monomial weight function that maps a SSYT T to $\\prod_i x_{T(i)}$. Step 2 (RSK ~200 lines) is the Robinson-Schensted-Knuth bijection proving SSYT biject with pairs of non-intersecting lattice paths from the LGV source points $A_i$ to $B_j$. Step 3 (weight matching ~100 lines) proves the LGV determinant (with the edge weights from the parent `BallotProblemOQ03OQ01OQ01` proof) equals the SSYT generating function $\\sum_{T: \\text{SSYT}(\\lambda)} x^T$. The placeholder `schurPolynomial k sh = schurPolynomial k sh` is a true but trivial tautology \u2014 not even a statement of the actual theorem \u2014 representing work in progress.",
     "mathContext": "The LGV proof: define a weighted digraph where edge weights encode polynomial variables, with sources $A_i = (0, i-1)$ and targets $B_j = (\\lambda_j - j + k, j-1)$. A system of non-intersecting paths from $(A_1,\\ldots,A_k)$ to $(B_{\\sigma(1)},\\ldots,B_{\\sigma(k)})$ encodes a SSYT of shape $\\lambda$. The LGV lemma (proved in parent entry `ballot-problem-oq-03-oq-01-oq-01`) gives $\\det[e(A_i, B_j)] = \\sum_{\\text{NI paths}} \\text{wt}$. Matching weights shows this equals $\\sum_{T \\in \\text{SSYT}(\\lambda)} x^T = s_\\lambda$ (the combinatorial definition of Schur polynomials via SSYT). The RSK bijection (Step 2) is one of the deepest results in algebraic combinatorics: it establishes that $|\\text{SSYT}(\\lambda, n)| = \\dim V^\\lambda_n$ (the GL(n) representation dimension) via a bijective proof.",
     "significance": "supporting",
-    "relatedConcepts": ["LGV lemma", "RSK correspondence", "semistandard Young tableaux (SSYT)", "non-intersecting lattice paths", "Schur polynomial combinatorial definition", "Robinson-Schensted-Knuth"],
-    "prerequisites": ["LGV lemma (parent proof)", "Young tableaux theory", "RSK correspondence", "generating functions", "ballot-problem-oq-03-oq-01-oq-01"]
+    "relatedConcepts": [
+      "LGV lemma",
+      "RSK correspondence",
+      "semistandard Young tableaux (SSYT)",
+      "non-intersecting lattice paths",
+      "Schur polynomial combinatorial definition",
+      "Robinson-Schensted-Knuth"
+    ],
+    "prerequisites": [
+      "LGV lemma (parent proof)",
+      "Young tableaux theory",
+      "RSK correspondence",
+      "generating functions",
+      "ballot-problem-oq-03-oq-01-oq-01"
+    ]
   }
 ]

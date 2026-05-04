@@ -2,73 +2,152 @@
   {
     "id": "ann-ng-header",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-    "range": { "startLine": 1, "endLine": 28 },
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
     "type": "concept",
     "title": "Newton-Girard Identities: 400 Years from Girard to Lean 4",
-    "content": "The Newton-Girard (or Newton's) identities were discovered by Albert Girard in Invention nouvelle en l'algèbre (1629) and independently restated by Newton around 1666 (published in Arithmetica Universalis, 1707). They express power sums pₖ = Σxᵢᵏ recursively in terms of elementary symmetric polynomials eₖ = Σ_{i₁<...<iₖ} xᵢ₁···xᵢₖ. The Mathlib formalization uses MvPolynomial.psum_eq_mul_esymm_sub_sum, which encodes the general recurrence via a filtered antidiagonal sum. This file derives the three most-used corollaries (k=1,2,3) by instantiating the general recurrence at specific degrees and computing the antidiagonal filters explicitly.",
-    "mathContext": "The general Newton-Girard recurrence: $p_k = (-1)^{k+1} k\\, e_k - \\sum_{\\substack{a+b=k \\\\ 0 < a < k}} (-1)^a e_a\\, p_b$, where $p_k = \\sum_i X_i^k$ and $e_k = \\text{esymm}(\\sigma, R, k)$. Mathlib encodes this as `MvPolynomial.psum_eq_mul_esymm_sub_sum` over a `[CommRing R] [Fintype σ]`.",
+    "content": "The Newton-Girard (or Newton's) identities were discovered by Albert Girard in Invention nouvelle en l'alg\u00e8bre (1629) and independently restated by Newton around 1666 (published in Arithmetica Universalis, 1707). They express power sums p\u2096 = \u03a3x\u1d62\u1d4f recursively in terms of elementary symmetric polynomials e\u2096 = \u03a3_{i\u2081<...<i\u2096} x\u1d62\u2081\u00b7\u00b7\u00b7x\u1d62\u2096. The Mathlib formalization uses MvPolynomial.psum_eq_mul_esymm_sub_sum, which encodes the general recurrence via a filtered antidiagonal sum. This file derives the three most-used corollaries (k=1,2,3) by instantiating the general recurrence at specific degrees and computing the antidiagonal filters explicitly.",
+    "mathContext": "The general Newton-Girard recurrence: $p_k = (-1)^{k+1} k\\, e_k - \\sum_{\\substack{a+b=k \\\\ 0 < a < k}} (-1)^a e_a\\, p_b$, where $p_k = \\sum_i X_i^k$ and $e_k = \\text{esymm}(\\sigma, R, k)$. Mathlib encodes this as `MvPolynomial.psum_eq_mul_esymm_sub_sum` over a `[CommRing R] [Fintype \u03c3]`.",
     "significance": "key",
-    "relatedConcepts": ["elementary symmetric polynomials", "power sums", "MvPolynomial", "symmetric function theory"],
-    "prerequisites": ["multivariate polynomials", "ring theory", "symmetric polynomials"]
+    "relatedConcepts": [
+      "elementary symmetric polynomials",
+      "power sums",
+      "MvPolynomial",
+      "symmetric function theory"
+    ],
+    "prerequisites": [
+      "multivariate polynomials",
+      "ring theory",
+      "symmetric polynomials"
+    ]
   },
   {
     "id": "ann-ng-setup",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-    "range": { "startLine": 24, "endLine": 30 },
+    "range": {
+      "startLine": 24,
+      "endLine": 30
+    },
     "type": "concept",
     "title": "Namespace, Opens, and Variable: Full Algebraic Generality",
-    "content": "Lines 24-30 set up the ambient context for all three theorems:\n\n- `namespace AMGMInequalityOQ02OQ01OQ02OQ01` — scopes the theorems to avoid name conflicts\n- `open MvPolynomial Finset BigOperators Set` — brings `psum`, `esymm`, `∑`, `antidiagonal`, `Ioo` into scope without qualification\n- `variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` — universally quantifies over any commutative ring R and any finite index type σ\n\nThe `variable` declaration makes all three Newton-Girard corollaries hold over any commutative ring — not just ℝ or ℚ — with coefficients indexed by any finite type σ. This is more general than the classical statement (usually specialized to ℝ[x₁,...,xₙ]) and directly applicable in Mathlib's MvPolynomial framework. The `ring` tactic closes each final step because the arithmetic identities are polynomial identities with integer coefficients, valid over any ring.",
-    "mathContext": "$R$ is any commutative ring, $\\sigma$ is any finite type (index set). The power sum $p_k = \\sum_{i : \\sigma} X_i^k \\in \\text{MvPolynomial}(\\sigma, R)$ and $e_k = \\text{esymm}(\\sigma, R, k)$ are elements of `MvPolynomial σ R`. The identity $p_2 = e_1^2 - 2e_2$ is a polynomial identity with integer coefficients (in $\\mathbb{Z}[e_1, e_2]$), hence valid over any commutative ring by base change. `BigOperators` enables the $\\sum$ notation.",
+    "content": "Lines 24-30 set up the ambient context for all three theorems:\n\n- `namespace AMGMInequalityOQ02OQ01OQ02OQ01` \u2014 scopes the theorems to avoid name conflicts\n- `open MvPolynomial Finset BigOperators Set` \u2014 brings `psum`, `esymm`, `\u2211`, `antidiagonal`, `Ioo` into scope without qualification\n- `variable (\u03c3 : Type*) (R : Type*) [CommRing R] [Fintype \u03c3]` \u2014 universally quantifies over any commutative ring R and any finite index type \u03c3\n\nThe `variable` declaration makes all three Newton-Girard corollaries hold over any commutative ring \u2014 not just \u211d or \u211a \u2014 with coefficients indexed by any finite type \u03c3. This is more general than the classical statement (usually specialized to \u211d[x\u2081,...,x\u2099]) and directly applicable in Mathlib's MvPolynomial framework. The `ring` tactic closes each final step because the arithmetic identities are polynomial identities with integer coefficients, valid over any ring.",
+    "mathContext": "$R$ is any commutative ring, $\\sigma$ is any finite type (index set). The power sum $p_k = \\sum_{i : \\sigma} X_i^k \\in \\text{MvPolynomial}(\\sigma, R)$ and $e_k = \\text{esymm}(\\sigma, R, k)$ are elements of `MvPolynomial \u03c3 R`. The identity $p_2 = e_1^2 - 2e_2$ is a polynomial identity with integer coefficients (in $\\mathbb{Z}[e_1, e_2]$), hence valid over any commutative ring by base change. `BigOperators` enables the $\\sum$ notation.",
     "significance": "supporting",
-    "relatedConcepts": ["CommRing", "Fintype", "MvPolynomial", "type-class-generality", "namespace", "open-statement", "BigOperators"],
-    "prerequisites": ["Lean 4 type classes", "MvPolynomial σ R", "namespace keyword", "open keyword", "variable keyword"]
+    "relatedConcepts": [
+      "CommRing",
+      "Fintype",
+      "MvPolynomial",
+      "type-class-generality",
+      "namespace",
+      "open-statement",
+      "BigOperators"
+    ],
+    "prerequisites": [
+      "Lean 4 type classes",
+      "MvPolynomial \u03c3 R",
+      "namespace keyword",
+      "open keyword",
+      "variable keyword"
+    ]
   },
   {
     "id": "ann-ng-k1",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-    "range": { "startLine": 31, "endLine": 41 },
-    "type": "lemma",
+    "range": {
+      "startLine": 31,
+      "endLine": 41
+    },
+    "type": "technique",
     "title": "Corollary k=1: Bridging psum_one and esymm_one by Transitivity",
-    "content": "The k=1 case p₁ = e₁ follows from a one-line proof: psum_one states p₁ = Σ X i, and esymm_one states e₁ = Σ X i. These two Mathlib lemmas each independently give the same Finset sum, so equality is proved by .trans ... .symm — a chain p₁ = Σ X i = e₁ using transitivity and symmetry of equality. No unfolding or ring calculation is needed because both quantities are definitionally equal to the same sum. This lemma is used as the h1 hypothesis in psum_two_eq.",
-    "mathContext": "$p_1 = \\sum_{i : \\sigma} X_i = e_1$. Formally: `(MvPolynomial.psum_one σ R).trans (MvPolynomial.esymm_one σ R).symm`. The antidiagonal for $k=1$ is empty (no $a$ with $0 < a < 1$), so the Newton-Girard recurrence reduces trivially to $p_1 = (-1)^2 \\cdot 1 \\cdot e_1 = e_1$.",
+    "content": "The k=1 case p\u2081 = e\u2081 follows from a one-line proof: psum_one states p\u2081 = \u03a3 X i, and esymm_one states e\u2081 = \u03a3 X i. These two Mathlib lemmas each independently give the same Finset sum, so equality is proved by .trans ... .symm \u2014 a chain p\u2081 = \u03a3 X i = e\u2081 using transitivity and symmetry of equality. No unfolding or ring calculation is needed because both quantities are definitionally equal to the same sum. This lemma is used as the h1 hypothesis in psum_two_eq.",
+    "mathContext": "$p_1 = \\sum_{i : \\sigma} X_i = e_1$. Formally: `(MvPolynomial.psum_one \u03c3 R).trans (MvPolynomial.esymm_one \u03c3 R).symm`. The antidiagonal for $k=1$ is empty (no $a$ with $0 < a < 1$), so the Newton-Girard recurrence reduces trivially to $p_1 = (-1)^2 \\cdot 1 \\cdot e_1 = e_1$.",
     "significance": "supporting",
-    "relatedConcepts": ["psum_one", "esymm_one", "Eq.trans", "MvPolynomial"],
-    "prerequisites": ["MvPolynomial.psum_one", "MvPolynomial.esymm_one", "transitivity of equality"]
+    "relatedConcepts": [
+      "psum_one",
+      "esymm_one",
+      "Eq.trans",
+      "MvPolynomial"
+    ],
+    "prerequisites": [
+      "MvPolynomial.psum_one",
+      "MvPolynomial.esymm_one",
+      "transitivity of equality"
+    ]
   },
   {
     "id": "ann-ng-k2",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-    "range": { "startLine": 44, "endLine": 64 },
-    "type": "theorem",
-    "title": "Corollary k=2: Antidiagonal Filter {(1,1)} Yields p₂ = e₁² − 2e₂",
-    "content": "The k=2 case applies psum_eq_mul_esymm_sub_sum at degree 2. The key step is computing the filtered antidiagonal: among pairs (a,b) with a+b=2 and 0<a<2, the only solution is (1,1). This is proved by ext + simp + omega — the omega tactic handles the arithmetic constraint a+b=2 ∧ 0<a<2 ↔ a=1 ∧ b=1 automatically. After simp [hfilt, sum_singleton, h1], the recurrence collapses to -2·e₂ + e₁·e₁, closed by ring to e₁² − 2e₂. The omega + ring combination cleanly separates the combinatorial filtering from the algebraic simplification.",
+    "range": {
+      "startLine": 44,
+      "endLine": 64
+    },
+    "type": "insight",
+    "title": "Corollary k=2: Antidiagonal Filter {(1,1)} Yields p\u2082 = e\u2081\u00b2 \u2212 2e\u2082",
+    "content": "The k=2 case applies psum_eq_mul_esymm_sub_sum at degree 2. The key step is computing the filtered antidiagonal: among pairs (a,b) with a+b=2 and 0<a<2, the only solution is (1,1). This is proved by ext + simp + omega \u2014 the omega tactic handles the arithmetic constraint a+b=2 \u2227 0<a<2 \u2194 a=1 \u2227 b=1 automatically. After simp [hfilt, sum_singleton, h1], the recurrence collapses to -2\u00b7e\u2082 + e\u2081\u00b7e\u2081, closed by ring to e\u2081\u00b2 \u2212 2e\u2082. The omega + ring combination cleanly separates the combinatorial filtering from the algebraic simplification.",
     "mathContext": "$p_2 = (-1)^3 \\cdot 2 \\cdot e_2 - (-1)^1 \\cdot e_1 \\cdot p_1 = -2e_2 + e_1^2 = e_1^2 - 2e_2$. The antidiagonal filter $\\{(a,b) \\mid a+b=2,\\, 0 < a < 2\\} = \\{(1,1)\\}$ gives a single-term sum. After substituting $p_1 = e_1$ (from `h1`), ring closes $-2e_2 + e_1 \\cdot e_1 = e_1^2 - 2e_2$.",
     "significance": "key",
-    "relatedConcepts": ["psum_eq_mul_esymm_sub_sum", "Finset.antidiagonal", "omega tactic", "ring tactic"],
-    "prerequisites": ["MvPolynomial.psum_eq_mul_esymm_sub_sum", "Finset.Nat.mem_antidiagonal", "omega", "ring"]
+    "relatedConcepts": [
+      "psum_eq_mul_esymm_sub_sum",
+      "Finset.antidiagonal",
+      "omega tactic",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+      "Finset.Nat.mem_antidiagonal",
+      "omega",
+      "ring"
+    ]
   },
   {
     "id": "ann-ng-k3",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-    "range": { "startLine": 67, "endLine": 91 },
-    "type": "theorem",
-    "title": "Corollary k=3: Two-Element Antidiagonal {(1,2),(2,1)} Yields p₃ = e₁p₂ − e₂p₁ + 3e₃",
-    "content": "The k=3 case follows the same pattern as k=2, but the antidiagonal filter has two elements: (1,2) and (2,1). After ext + simp + omega proves {(a,b) | a+b=3, 0<a<3} = {(1,2),(2,1)}, sum_insert separates the two-element sum (verifying (1,2) ∉ {(2,1)} by decide), and ring closes the algebraic expression. The by decide tactic proves the finite disjointness check definitionally. The pattern — omega for antidiagonal arithmetic, sum_insert to expand sums, ring to close — is a reusable template for any fixed k.",
+    "range": {
+      "startLine": 67,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "Corollary k=3: Two-Element Antidiagonal {(1,2),(2,1)} Yields p\u2083 = e\u2081p\u2082 \u2212 e\u2082p\u2081 + 3e\u2083",
+    "content": "The k=3 case follows the same pattern as k=2, but the antidiagonal filter has two elements: (1,2) and (2,1). After ext + simp + omega proves {(a,b) | a+b=3, 0<a<3} = {(1,2),(2,1)}, sum_insert separates the two-element sum (verifying (1,2) \u2209 {(2,1)} by decide), and ring closes the algebraic expression. The by decide tactic proves the finite disjointness check definitionally. The pattern \u2014 omega for antidiagonal arithmetic, sum_insert to expand sums, ring to close \u2014 is a reusable template for any fixed k.",
     "mathContext": "$p_3 = (-1)^4 \\cdot 3 \\cdot e_3 - [(-1)^1 e_1 p_2 + (-1)^2 e_2 p_1] = 3e_3 + e_1 p_2 - e_2 p_1 = e_1 p_2 - e_2 p_1 + 3e_3$. Antidiagonal: $\\{(a,b) \\mid a+b=3, 0 < a < 3\\} = \\{(1,2),(2,1)\\}$. Each pair contributes one term to the sum.",
     "significance": "key",
-    "relatedConcepts": ["psum_eq_mul_esymm_sub_sum", "Finset.sum_insert", "decide tactic", "Newton-Girard recurrence"],
-    "prerequisites": ["MvPolynomial.psum_eq_mul_esymm_sub_sum", "Finset.antidiagonal", "sum_insert", "ring"]
+    "relatedConcepts": [
+      "psum_eq_mul_esymm_sub_sum",
+      "Finset.sum_insert",
+      "decide tactic",
+      "Newton-Girard recurrence"
+    ],
+    "prerequisites": [
+      "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+      "Finset.antidiagonal",
+      "sum_insert",
+      "ring"
+    ]
   },
   {
     "id": "ann-ng-template",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-    "range": { "startLine": 44, "endLine": 91 },
+    "range": {
+      "startLine": 44,
+      "endLine": 91
+    },
     "type": "insight",
     "title": "Reusable Template: Extending to Arbitrary Fixed k",
     "content": "The k=2 and k=3 proofs share a common proof template: (1) apply psum_eq_mul_esymm_sub_sum, (2) prove the antidiagonal filter is a specific finite set via ext + simp + omega, (3) expand the sum via sum_singleton or sum_insert, (4) close with ring. This template scales to any fixed k: for k=4, the antidiagonal filter {(a,b) | a+b=4, 0<a<4} = {(1,3),(2,2),(3,1)} would give three terms. The only cost is additional sum_insert applications and a larger ring goal.",
     "mathContext": "For $k=4$: $p_4 = (-1)^5 \\cdot 4 \\cdot e_4 - [(-1)^1 e_1 p_3 + (-1)^2 e_2 p_2 + (-1)^3 e_3 p_1] = -4e_4 + e_1 p_3 - e_2 p_2 + e_3 p_1$. The antidiagonal $\\{(a,b) \\mid a+b=4, 0<a<4\\} = \\{(1,3),(2,2),(3,1)\\}$ has 3 elements, requiring 2 applications of `sum_insert`. This pattern is the computational core of automated Newton-Girard identity derivation in Lean.",
     "significance": "key",
-    "relatedConcepts": ["psum_eq_mul_esymm_sub_sum", "antidiagonal filter pattern", "Finset.sum_insert", "proof template"],
-    "prerequisites": ["MvPolynomial.psum_eq_mul_esymm_sub_sum", "omega tactic", "ring tactic"]
+    "relatedConcepts": [
+      "psum_eq_mul_esymm_sub_sum",
+      "antidiagonal filter pattern",
+      "Finset.sum_insert",
+      "proof template"
+    ],
+    "prerequisites": [
+      "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+      "omega tactic",
+      "ring tactic"
+    ]
   }
 ]

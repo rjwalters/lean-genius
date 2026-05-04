@@ -33,7 +33,7 @@
     },
     "type": "definition",
     "title": "GeodesicTriangle: Axiomatizing Local Gauss-Bonnet",
-    "content": "The `GeodesicTriangle` structure is the heart of the formalization. It records the three angles $\\alpha,\\beta,\\gamma \\in (0,\\pi)$, the area, and the `integratedCurvature` $= \\int_T K\\,dA$. The critical axiom `gb_local : α + β + γ - π = integratedCurvature` is the local Gauss-Bonnet formula — stated as a structure field rather than as an `axiom` keyword. The `excess` and `angleSum` definitions are derived, and `excess_eq_curvature`, `angleSum_eq_pi_add_excess`, and `angleSum_eq_pi_add_curvature` follow by trivial algebra. This design separates the mathematical content (the axiom) from the algebraic bookkeeping (the derived theorems), making later proofs clean one-liners.",
+    "content": "The `GeodesicTriangle` structure is the heart of the formalization. It records the three angles $\\alpha,\\beta,\\gamma \\in (0,\\pi)$, the area, and the `integratedCurvature` $= \\int_T K\\,dA$. The critical axiom `gb_local : \u03b1 + \u03b2 + \u03b3 - \u03c0 = integratedCurvature` is the local Gauss-Bonnet formula \u2014 stated as a structure field rather than as an `axiom` keyword. The `excess` and `angleSum` definitions are derived, and `excess_eq_curvature`, `angleSum_eq_pi_add_excess`, and `angleSum_eq_pi_add_curvature` follow by trivial algebra. This design separates the mathematical content (the axiom) from the algebraic bookkeeping (the derived theorems), making later proofs clean one-liners.",
     "mathContext": "Structure: $(\\alpha, \\beta, \\gamma, \\text{area}, \\text{IC}) \\in (0,\\pi)^3 \\times \\mathbb{R}_{>0} \\times \\mathbb{R}$ with $\\alpha+\\beta+\\gamma-\\pi = \\text{IC}$; excess $:= \\alpha+\\beta+\\gamma-\\pi$",
     "significance": "key",
     "relatedConcepts": [
@@ -79,9 +79,9 @@
       "startLine": 163,
       "endLine": 207
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Girard's Theorem (1629): Spherical Excess Formula",
-    "content": "`SphericalTriangle` adds a radius $r > 0$ and the spherical curvature constraint `spherical : integratedCurvature = area / radius^2` (since $K = 1/r^2$ on a sphere of radius $r$, so $\\int_T K\\,dA = \\text{Area}(T)/r^2$). `girard_theorem` then follows in one line by rewriting via `spherical` and applying `gb_local`. The corollaries `spherical_area_eq_radius_sq_excess` and `spherical_angle_sum_gt_pi` use `div_pos` and `sq_pos_of_pos` to establish strict inequalities. On the unit sphere ($r=1$), the formula simplifies to area $= \\alpha+\\beta+\\gamma-\\pi$, which is what Girard actually stated in 1629 — predating both calculus and Gaussian curvature by nearly two centuries.",
+    "content": "`SphericalTriangle` adds a radius $r > 0$ and the spherical curvature constraint `spherical : integratedCurvature = area / radius^2` (since $K = 1/r^2$ on a sphere of radius $r$, so $\\int_T K\\,dA = \\text{Area}(T)/r^2$). `girard_theorem` then follows in one line by rewriting via `spherical` and applying `gb_local`. The corollaries `spherical_area_eq_radius_sq_excess` and `spherical_angle_sum_gt_pi` use `div_pos` and `sq_pos_of_pos` to establish strict inequalities. On the unit sphere ($r=1$), the formula simplifies to area $= \\alpha+\\beta+\\gamma-\\pi$, which is what Girard actually stated in 1629 \u2014 predating both calculus and Gaussian curvature by nearly two centuries.",
     "mathContext": "$K = 1/r^2$ on sphere of radius $r$: $\\alpha+\\beta+\\gamma - \\pi = \\text{Area}(T)/r^2 > 0$; unit sphere: $\\text{Area}(T) = \\alpha+\\beta+\\gamma - \\pi$",
     "significance": "key",
     "relatedConcepts": [
@@ -105,9 +105,9 @@
       "startLine": 220,
       "endLine": 250
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Lambert's Theorem (1761): Hyperbolic Angular Defect",
-    "content": "`HyperbolicTriangle` adds `hyperbolic : integratedCurvature = -area` (since $K = -1$ in the standard hyperbolic plane, so $\\int_T K\\,dA = -\\text{Area}(T)$). `lambert_theorem` proves $\\pi - (\\alpha+\\beta+\\gamma) = \\text{area}$: the angular defect equals the area. This has two striking corollaries: (1) `hyperbolic_angle_sum_lt_pi`: all hyperbolic triangles satisfy $\\alpha+\\beta+\\gamma < \\pi$; (2) `hyperbolic_area_lt_pi`: hyperbolic triangle area is always $< \\pi$, so there is a maximum possible area for any hyperbolic triangle (unlike Euclidean or spherical geometry). Lambert deduced these properties in 1761 from the assumption that angle sum $< \\pi$, without constructing a model — he had discovered hyperbolic geometry without realizing it.",
+    "content": "`HyperbolicTriangle` adds `hyperbolic : integratedCurvature = -area` (since $K = -1$ in the standard hyperbolic plane, so $\\int_T K\\,dA = -\\text{Area}(T)$). `lambert_theorem` proves $\\pi - (\\alpha+\\beta+\\gamma) = \\text{area}$: the angular defect equals the area. This has two striking corollaries: (1) `hyperbolic_angle_sum_lt_pi`: all hyperbolic triangles satisfy $\\alpha+\\beta+\\gamma < \\pi$; (2) `hyperbolic_area_lt_pi`: hyperbolic triangle area is always $< \\pi$, so there is a maximum possible area for any hyperbolic triangle (unlike Euclidean or spherical geometry). Lambert deduced these properties in 1761 from the assumption that angle sum $< \\pi$, without constructing a model \u2014 he had discovered hyperbolic geometry without realizing it.",
     "mathContext": "$K = -1$: $\\alpha+\\beta+\\gamma - \\pi = -\\text{Area}(T) < 0$; angular defect $\\delta = \\pi - (\\alpha+\\beta+\\gamma) = \\text{Area}(T) \\in (0, \\pi)$",
     "significance": "key",
     "relatedConcepts": [
@@ -133,7 +133,7 @@
     },
     "type": "definition",
     "title": "RiemannianTriangulation and Discrete Gauss-Bonnet",
-    "content": "`RiemannianTriangulation` encodes a triangulation of a compact closed Riemannian surface. Its key axiom `discrete_gb : (∑ i, (triangles i).excess) = 2 * π * eulerChar` is the discrete Gauss-Bonnet theorem: the total angular excess over all triangles equals $2\\pi$ times the Euler characteristic. From this, `sphere_total_curvature` ($\\chi=2 \\Rightarrow$ total excess $= 4\\pi$), `torus_total_curvature` ($\\chi=0 \\Rightarrow$ total excess $= 0$), and `genus_g_total_curvature` ($\\chi = 2-2g \\Rightarrow$ total excess $= 2\\pi(2-2g)$) all follow by `ring`. The discrete Gauss-Bonnet theorem classically follows from the local version by summing over all triangles and noting that interior angle contributions cancel — but encoding this combinatorial argument requires the full machinery of cellular homology.",
+    "content": "`RiemannianTriangulation` encodes a triangulation of a compact closed Riemannian surface. Its key axiom `discrete_gb : (\u2211 i, (triangles i).excess) = 2 * \u03c0 * eulerChar` is the discrete Gauss-Bonnet theorem: the total angular excess over all triangles equals $2\\pi$ times the Euler characteristic. From this, `sphere_total_curvature` ($\\chi=2 \\Rightarrow$ total excess $= 4\\pi$), `torus_total_curvature` ($\\chi=0 \\Rightarrow$ total excess $= 0$), and `genus_g_total_curvature` ($\\chi = 2-2g \\Rightarrow$ total excess $= 2\\pi(2-2g)$) all follow by `ring`. The discrete Gauss-Bonnet theorem classically follows from the local version by summing over all triangles and noting that interior angle contributions cancel \u2014 but encoding this combinatorial argument requires the full machinery of cellular homology.",
     "mathContext": "Discrete Gauss-Bonnet: $\\sum_{i} (\\alpha_i+\\beta_i+\\gamma_i - \\pi) = 2\\pi\\chi(M)$; for genus $g$: $\\chi = 2-2g$, total excess $= 2\\pi(2-2g)$",
     "significance": "key",
     "relatedConcepts": [
@@ -185,7 +185,7 @@
     },
     "type": "insight",
     "title": "Three Geometries Unified: The Capstone Theorem",
-    "content": "`three_geometries_unified` is the cleanest statement of the entire file: it packages the three angle sum results into a single conjunction. `excess_classifies_curvature` shows the angle excess is in bijection with the sign of the integrated curvature — so reading off the curvature sign immediately tells you whether you are in Euclidean, spherical, or hyperbolic geometry. `euclidean_case` combines `flat_excess_zero` and `flat_angleSum_eq_pi` into the tuple $(\\text{excess}=0, \\text{sum}=\\pi)$. These theorems together formalize the conceptual claim: the triangle angle sum theorem is not an isolated fact but the $K=0$ instance of a one-parameter family indexed by Gaussian curvature.",
+    "content": "`three_geometries_unified` is the cleanest statement of the entire file: it packages the three angle sum results into a single conjunction. `excess_classifies_curvature` shows the angle excess is in bijection with the sign of the integrated curvature \u2014 so reading off the curvature sign immediately tells you whether you are in Euclidean, spherical, or hyperbolic geometry. `euclidean_case` combines `flat_excess_zero` and `flat_angleSum_eq_pi` into the tuple $(\\text{excess}=0, \\text{sum}=\\pi)$. These theorems together formalize the conceptual claim: the triangle angle sum theorem is not an isolated fact but the $K=0$ instance of a one-parameter family indexed by Gaussian curvature.",
     "mathContext": "$K=0 \\Leftrightarrow \\text{excess}=0 \\Leftrightarrow \\alpha+\\beta+\\gamma = \\pi$; $K>0 \\Leftrightarrow \\text{excess}>0 \\Leftrightarrow \\alpha+\\beta+\\gamma > \\pi$; $K<0 \\Leftrightarrow \\text{excess}<0 \\Leftrightarrow \\alpha+\\beta+\\gamma < \\pi$",
     "significance": "key",
     "relatedConcepts": [
@@ -211,8 +211,8 @@
     },
     "type": "concept",
     "title": "Mathlib Anchor: angle_add_angle_add_angle_eq_pi",
-    "content": "The final `example` grounds the abstract axiom system in Mathlib's concrete Euclidean geometry. Given points $p_1, p_2, p_3$ in a normed inner product space $P$ with $p_2 \\neq p_1$, `EuclideanGeometry.angle_add_angle_add_angle_eq_pi` directly proves $\\angle(p_1 p_2 p_3) + \\angle(p_2 p_3 p_1) + \\angle(p_3 p_1 p_2) = \\pi$. This is the Mathlib statement of Euclid's angle sum theorem, expressed via the `angle` function from `Mathlib.Geometry.Euclidean.Triangle`. The type class stack `[NormedAddCommGroup V] [InnerProductSpace ℝ V] [MetricSpace P] [NormedAddTorsor V P]` shows that the theorem holds in any model of Euclidean geometry, not just $\\mathbb{R}^n$. The entire abstract file's axiom system captures 'why it's true in general'; this one-line Mathlib fact confirms it is machine-checked in the concrete case.",
-    "mathContext": "Mathlib: `EuclideanGeometry.angle_add_angle_add_angle_eq_pi : angle p₁ p₂ p₃ + angle p₂ p₃ p₁ + angle p₃ p₁ p₂ = π` for $p_2 \\neq p_1$",
+    "content": "The final `example` grounds the abstract axiom system in Mathlib's concrete Euclidean geometry. Given points $p_1, p_2, p_3$ in a normed inner product space $P$ with $p_2 \\neq p_1$, `EuclideanGeometry.angle_add_angle_add_angle_eq_pi` directly proves $\\angle(p_1 p_2 p_3) + \\angle(p_2 p_3 p_1) + \\angle(p_3 p_1 p_2) = \\pi$. This is the Mathlib statement of Euclid's angle sum theorem, expressed via the `angle` function from `Mathlib.Geometry.Euclidean.Triangle`. The type class stack `[NormedAddCommGroup V] [InnerProductSpace \u211d V] [MetricSpace P] [NormedAddTorsor V P]` shows that the theorem holds in any model of Euclidean geometry, not just $\\mathbb{R}^n$. The entire abstract file's axiom system captures 'why it's true in general'; this one-line Mathlib fact confirms it is machine-checked in the concrete case.",
+    "mathContext": "Mathlib: `EuclideanGeometry.angle_add_angle_add_angle_eq_pi : angle p\u2081 p\u2082 p\u2083 + angle p\u2082 p\u2083 p\u2081 + angle p\u2083 p\u2081 p\u2082 = \u03c0` for $p_2 \\neq p_1$",
     "significance": "supporting",
     "relatedConcepts": [
       "EuclideanGeometry.angle",
@@ -237,7 +237,7 @@
     },
     "type": "concept",
     "title": "Axiom Count: Three Structure-Encoded Assumptions",
-    "content": "The file contains no `axiom` keyword, yet it has `axiomCount: 3` in `meta.json`. The three assumptions are structure fields: `gb_local` (local Gauss-Bonnet for geodesic triangles), `spherical`/`hyperbolic` (spherical and hyperbolic curvature formulas $K=1/r^2$ and $K=-1$), and `discrete_gb` (discrete Gauss-Bonnet for triangulations). All three are classical theorems of Riemannian differential geometry requiring integration on manifolds — infrastructure not yet in Mathlib 4.26. Using structure fields rather than `axiom` declarations is a valid architectural choice: it scopes each assumption to the relevant type, prevents global namespace pollution, and makes the dependency structure explicit. But mathematically, structure fields carrying propositions are axioms.",
+    "content": "The file contains no `axiom` keyword, yet it has `axiomCount: 3` in `meta.json`. The three assumptions are structure fields: `gb_local` (local Gauss-Bonnet for geodesic triangles), `spherical`/`hyperbolic` (spherical and hyperbolic curvature formulas $K=1/r^2$ and $K=-1$), and `discrete_gb` (discrete Gauss-Bonnet for triangulations). All three are classical theorems of Riemannian differential geometry requiring integration on manifolds \u2014 infrastructure not yet in Mathlib 4.26. Using structure fields rather than `axiom` declarations is a valid architectural choice: it scopes each assumption to the relevant type, prevents global namespace pollution, and makes the dependency structure explicit. But mathematically, structure fields carrying propositions are axioms.",
     "mathContext": "3 assumptions: `gb_local` ($\\alpha+\\beta+\\gamma-\\pi = \\int K\\,dA$), `spherical`/`hyperbolic` ($K=1/r^2$, $K=-1$), `discrete_gb` ($\\sum \\text{excess} = 2\\pi\\chi$)",
     "significance": "supporting",
     "relatedConcepts": [

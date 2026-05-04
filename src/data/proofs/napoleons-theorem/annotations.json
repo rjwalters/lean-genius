@@ -8,21 +8,21 @@
     },
     "type": "concept",
     "title": "Napoleon's Theorem: Hidden Equilateral Triangles via Complex Coordinates",
-    "content": "Napoleon's theorem (early 19th century, attributed to Napoleon Bonaparte but possibly apocryphal) states: if equilateral triangles are constructed on the three sides of any triangle, their centroids form a perfect equilateral triangle — the outer Napoleon triangle. The proof strategy uses complex number coordinates, reducing the geometric statement to an algebraic identity. The key insight is the rotation identity: G₃ - G₁ = (G₂ - G₁)·ω where ω = e^{-iπ/3} has |ω| = 1. Since multiplying by a unit-modulus complex number preserves length, |G₃ - G₁| = |G₂ - G₁| immediately. The third side follows from |ω - 1| = 1 (also a rotation). Zero axioms — this is a fully verified proof.",
-    "mathContext": "The complex coordinate approach works because ℂ is the natural language for 2D geometry: rotations are multiplications by $e^{i\\theta}$, translations are additions, and distances are absolute values. The rotation by $-60°$ maps the equilateral triangle construction to an algebraic formula. Specifically, rotating a vector $v$ by $-60°$ gives $v \\cdot e^{-i\\pi/3} = v(\\frac{1}{2} - i\\frac{\\sqrt{3}}{2})$. The Napoleon centroid formula $G = \\frac{b+c}{2} + \\frac{i\\sqrt{3}}{6}(c-b)$ encodes this: the displacement $\\frac{i\\sqrt{3}}{6}(c-b)$ is perpendicular to $bc$ with magnitude $\\frac{|c-b|}{2\\sqrt{3}}$, placing $G$ at the centroid of the outer equilateral triangle.",
+    "content": "Napoleon's theorem (early 19th century, attributed to Napoleon Bonaparte but possibly apocryphal) states: if equilateral triangles are constructed on the three sides of any triangle, their centroids form a perfect equilateral triangle \u2014 the outer Napoleon triangle. The proof strategy uses complex number coordinates, reducing the geometric statement to an algebraic identity. The key insight is the rotation identity: G\u2083 - G\u2081 = (G\u2082 - G\u2081)\u00b7\u03c9 where \u03c9 = e^{-i\u03c0/3} has |\u03c9| = 1. Since multiplying by a unit-modulus complex number preserves length, |G\u2083 - G\u2081| = |G\u2082 - G\u2081| immediately. The third side follows from |\u03c9 - 1| = 1 (also a rotation). Zero axioms \u2014 this is a fully verified proof.",
+    "mathContext": "The complex coordinate approach works because \u2102 is the natural language for 2D geometry: rotations are multiplications by $e^{i\\theta}$, translations are additions, and distances are absolute values. The rotation by $-60\u00b0$ maps the equilateral triangle construction to an algebraic formula. Specifically, rotating a vector $v$ by $-60\u00b0$ gives $v \\cdot e^{-i\\pi/3} = v(\\frac{1}{2} - i\\frac{\\sqrt{3}}{2})$. The Napoleon centroid formula $G = \\frac{b+c}{2} + \\frac{i\\sqrt{3}}{6}(c-b)$ encodes this: the displacement $\\frac{i\\sqrt{3}}{6}(c-b)$ is perpendicular to $bc$ with magnitude $\\frac{|c-b|}{2\\sqrt{3}}$, placing $G$ at the centroid of the outer equilateral triangle.",
     "significance": "supporting",
     "relatedConcepts": [
       "Napoleon's theorem",
       "Morley's theorem",
       "complex coordinate geometry",
       "outer/inner Napoleon triangle",
-      "rotation by e^{-iπ/3}"
+      "rotation by e^{-i\u03c0/3}"
     ],
     "prerequisites": [
       "complex numbers in Lean 4",
       "Complex.abs",
       "Real.sqrt",
-      "rotation in ℂ"
+      "rotation in \u2102"
     ]
   },
   {
@@ -34,19 +34,19 @@
     },
     "type": "concept",
     "title": "napoleonCenter: The Centroid Formula for Outer Equilateral Triangles",
-    "content": "`napoleonCenter b c : ℂ := (b + c) / 2 + I * √3 / 6 * (c - b)` encodes the centroid of the outer equilateral triangle on side bc. The formula has two parts: `(b+c)/2` is the midpoint of bc (base of the centroid calculation), and `I * √3/6 * (c - b)` is the outward displacement perpendicular to bc. The three Napoleon centroids G₁, G₂, G₃ are defined for each side: G₁ = napoleonCenter z₂ z₃ (opposite vertex z₁), G₂ = napoleonCenter z₃ z₁, G₃ = napoleonCenter z₁ z₂. The `algebraic lemma` `sqrt3_sq : (↑(Real.sqrt 3) : ℂ)^2 = 3` is extracted as a named lemma because it is used three times in the `nlinarith` proofs — sharing it avoids repeated unfolding.",
-    "mathContext": "The centroid of the outer equilateral triangle on side $bc$: the third vertex $D$ is obtained by rotating $c-b$ by $-90°$ and scaling: $D = b + (c-b) \\cdot e^{-i\\pi/3}$. The centroid is $G = (b + c + D)/3$. Substituting: $G = (b+c)/3 + (b + (c-b)e^{-i\\pi/3})/3 = (2b+c)/3 + e^{-i\\pi/3}(c-b)/3$... simplifying to $(b+c)/2 + i\\sqrt{3}(c-b)/6$. The factor $i = e^{i\\pi/2}$ accounts for the $90°$ rotation component, while $\\sqrt{3}/6 = \\tan(60°)/6$ accounts for the height of the equilateral triangle.",
+    "content": "`napoleonCenter b c : \u2102 := (b + c) / 2 + I * \u221a3 / 6 * (c - b)` encodes the centroid of the outer equilateral triangle on side bc. The formula has two parts: `(b+c)/2` is the midpoint of bc (base of the centroid calculation), and `I * \u221a3/6 * (c - b)` is the outward displacement perpendicular to bc. The three Napoleon centroids G\u2081, G\u2082, G\u2083 are defined for each side: G\u2081 = napoleonCenter z\u2082 z\u2083 (opposite vertex z\u2081), G\u2082 = napoleonCenter z\u2083 z\u2081, G\u2083 = napoleonCenter z\u2081 z\u2082. The `algebraic lemma` `sqrt3_sq : (\u2191(Real.sqrt 3) : \u2102)^2 = 3` is extracted as a named lemma because it is used three times in the `nlinarith` proofs \u2014 sharing it avoids repeated unfolding.",
+    "mathContext": "The centroid of the outer equilateral triangle on side $bc$: the third vertex $D$ is obtained by rotating $c-b$ by $-90\u00b0$ and scaling: $D = b + (c-b) \\cdot e^{-i\\pi/3}$. The centroid is $G = (b + c + D)/3$. Substituting: $G = (b+c)/3 + (b + (c-b)e^{-i\\pi/3})/3 = (2b+c)/3 + e^{-i\\pi/3}(c-b)/3$... simplifying to $(b+c)/2 + i\\sqrt{3}(c-b)/6$. The factor $i = e^{i\\pi/2}$ accounts for the $90\u00b0$ rotation component, while $\\sqrt{3}/6 = \\tan(60\u00b0)/6$ accounts for the height of the equilateral triangle.",
     "significance": "supporting",
     "relatedConcepts": [
       "napoleonCenter definition",
-      "G₁, G₂, G₃ definitions",
+      "G\u2081, G\u2082, G\u2083 definitions",
       "sqrt3_sq lemma",
       "sqrt3_mul_self lemma",
       "midpoint formula"
     ],
     "prerequisites": [
       "Complex.I in Lean 4",
-      "Real.sqrt 3 coercion to ℂ",
+      "Real.sqrt 3 coercion to \u2102",
       "ofReal_pow",
       "Real.sq_sqrt"
     ]
@@ -60,7 +60,7 @@
     },
     "type": "concept",
     "title": "The Rotation Identity: Algebraic Heart of Napoleon's Theorem",
-    "content": "The key theorem `napoleon_rotation` states G₃ - G₁ = (G₂ - G₁) · rotationFactor where `rotationFactor = 1/2 - I·√3/2 = e^{-iπ/3}`. The proof proceeds by `Complex.ext` (splitting into real and imaginary parts) then `nlinarith` with the key fact `sqrt 3 * sqrt 3 = 3`. Both sides, when expanded algebraically, simplify to the same polynomial expression in z₁.re, z₂.re, z₃.re, z₁.im, z₂.im, z₃.im and √3. The `rotationFactor_normSq` lemma proves |ω|² = 1 via `(1/2)² + (√3/2)² = 1/4 + 3/4 = 1`, again using `sqrt3_sq`.",
+    "content": "The key theorem `napoleon_rotation` states G\u2083 - G\u2081 = (G\u2082 - G\u2081) \u00b7 rotationFactor where `rotationFactor = 1/2 - I\u00b7\u221a3/2 = e^{-i\u03c0/3}`. The proof proceeds by `Complex.ext` (splitting into real and imaginary parts) then `nlinarith` with the key fact `sqrt 3 * sqrt 3 = 3`. Both sides, when expanded algebraically, simplify to the same polynomial expression in z\u2081.re, z\u2082.re, z\u2083.re, z\u2081.im, z\u2082.im, z\u2083.im and \u221a3. The `rotationFactor_normSq` lemma proves |\u03c9|\u00b2 = 1 via `(1/2)\u00b2 + (\u221a3/2)\u00b2 = 1/4 + 3/4 = 1`, again using `sqrt3_sq`.",
     "mathContext": "Direct verification: $G_3 - G_1 = \\text{napoleonCenter}(z_1,z_2) - \\text{napoleonCenter}(z_2,z_3)$. Expanding both sides and comparing with $(G_2 - G_1) \\cdot \\omega$ where $\\omega = \\frac{1}{2} - i\\frac{\\sqrt{3}}{2}$: both reduce to $\\frac{z_1-z_3}{2} + \\frac{i\\sqrt{3}(2z_2-z_1-z_3)}{6}$. The algebraic verification requires $\\sqrt{3}^2 = 3$ to cancel cross-terms. The `nlinarith` tactic handles these degree-2 polynomial identities automatically once `h3` provides $\\sqrt{3}\\cdot\\sqrt{3} = 3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -84,10 +84,10 @@
       "startLine": 180,
       "endLine": 230
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Napoleon's Theorem: Equilaterality via Unit-Modulus Multiplication",
-    "content": "The equilaterality proof is a one-liner built on `napoleon_rotation`: `napoleon_sides_12_eq` rewrites `G₃ - G₁ = (G₂ - G₁) · ω`, then applies `map_mul` (|xy| = |x|·|y|) and `rotationFactor_abs` (|ω| = 1), giving |G₃ - G₁| = |G₂ - G₁| · 1 = |G₂ - G₁|. The third side `napoleon_sides_23_eq` needs the additional fact `|ω - 1| = 1`: since G₃ - G₂ = (G₂ - G₁)(ω - 1), the proof proceeds identically. The main theorem `napoleons_theorem` packages both pairs as a conjunction, giving the full equilateral property.",
-    "mathContext": "$|G_3 - G_1| = |(G_2 - G_1) \\cdot \\omega| = |G_2 - G_1| \\cdot |\\omega| = |G_2 - G_1| \\cdot 1 = |G_2 - G_1|$. For the third side: $G_3 - G_2 = (G_3 - G_1) - (G_2 - G_1) = (G_2 - G_1)(\\omega - 1)$, so $|G_3 - G_2| = |G_2 - G_1| \\cdot |\\omega - 1|$. The fact $|\\omega - 1| = 1$: $\\omega - 1 = -\\frac{1}{2} - i\\frac{\\sqrt{3}}{2}$, and $(-\\frac{1}{2})^2 + (\\frac{\\sqrt{3}}{2})^2 = \\frac{1}{4} + \\frac{3}{4} = 1$. This is $e^{i \\cdot 4\\pi/3}$ — another rotation.",
+    "content": "The equilaterality proof is a one-liner built on `napoleon_rotation`: `napoleon_sides_12_eq` rewrites `G\u2083 - G\u2081 = (G\u2082 - G\u2081) \u00b7 \u03c9`, then applies `map_mul` (|xy| = |x|\u00b7|y|) and `rotationFactor_abs` (|\u03c9| = 1), giving |G\u2083 - G\u2081| = |G\u2082 - G\u2081| \u00b7 1 = |G\u2082 - G\u2081|. The third side `napoleon_sides_23_eq` needs the additional fact `|\u03c9 - 1| = 1`: since G\u2083 - G\u2082 = (G\u2082 - G\u2081)(\u03c9 - 1), the proof proceeds identically. The main theorem `napoleons_theorem` packages both pairs as a conjunction, giving the full equilateral property.",
+    "mathContext": "$|G_3 - G_1| = |(G_2 - G_1) \\cdot \\omega| = |G_2 - G_1| \\cdot |\\omega| = |G_2 - G_1| \\cdot 1 = |G_2 - G_1|$. For the third side: $G_3 - G_2 = (G_3 - G_1) - (G_2 - G_1) = (G_2 - G_1)(\\omega - 1)$, so $|G_3 - G_2| = |G_2 - G_1| \\cdot |\\omega - 1|$. The fact $|\\omega - 1| = 1$: $\\omega - 1 = -\\frac{1}{2} - i\\frac{\\sqrt{3}}{2}$, and $(-\\frac{1}{2})^2 + (\\frac{\\sqrt{3}}{2})^2 = \\frac{1}{4} + \\frac{3}{4} = 1$. This is $e^{i \\cdot 4\\pi/3}$ \u2014 another rotation.",
     "significance": "key",
     "relatedConcepts": [
       "napoleons_theorem",
@@ -111,8 +111,8 @@
     },
     "type": "concept",
     "title": "Inner Napoleon Triangle: Reflected Construction and Opposite Rotation",
-    "content": "The inner Napoleon triangle is constructed by building equilateral triangles INWARD on the sides instead of outward. `innerNapoleonCenter b c = (b+c)/2 - I·√3/6·(c-b)` — the only change from `napoleonCenter` is the sign flip: `-I` instead of `+I`. The corresponding rotation factor is `conjRotationFactor = 1/2 + I·√3/2 = e^{iπ/3}` (complex conjugate of rotationFactor). The proof of `inner_napoleons_theorem` mirrors the outer case exactly, using `inner_napoleon_rotation` and `conjRotationFactor_abs`. Both Napoleon triangles (inner and outer) have the same centroid as the original triangle.",
-    "mathContext": "The **outer Napoleon triangle** uses rotation by $-60°$ (clockwise); the **inner Napoleon triangle** uses rotation by $+60°$ (counterclockwise). The outer triangle always contains the inner triangle, and the area difference equals the area of the original triangle: $\\text{Area}(\\text{outer}) - \\text{Area}(\\text{inner}) = \\text{Area}(\\text{original})$. This remarkable identity holds for ANY triangle. The two Napoleon triangles and the original triangle all share the same centroid $\\frac{z_1+z_2+z_3}{3}$ — proved by `napoleon_centroid_eq_original` via straightforward ring simplification.",
+    "content": "The inner Napoleon triangle is constructed by building equilateral triangles INWARD on the sides instead of outward. `innerNapoleonCenter b c = (b+c)/2 - I\u00b7\u221a3/6\u00b7(c-b)` \u2014 the only change from `napoleonCenter` is the sign flip: `-I` instead of `+I`. The corresponding rotation factor is `conjRotationFactor = 1/2 + I\u00b7\u221a3/2 = e^{i\u03c0/3}` (complex conjugate of rotationFactor). The proof of `inner_napoleons_theorem` mirrors the outer case exactly, using `inner_napoleon_rotation` and `conjRotationFactor_abs`. Both Napoleon triangles (inner and outer) have the same centroid as the original triangle.",
+    "mathContext": "The **outer Napoleon triangle** uses rotation by $-60\u00b0$ (clockwise); the **inner Napoleon triangle** uses rotation by $+60\u00b0$ (counterclockwise). The outer triangle always contains the inner triangle, and the area difference equals the area of the original triangle: $\\text{Area}(\\text{outer}) - \\text{Area}(\\text{inner}) = \\text{Area}(\\text{original})$. This remarkable identity holds for ANY triangle. The two Napoleon triangles and the original triangle all share the same centroid $\\frac{z_1+z_2+z_3}{3}$ \u2014 proved by `napoleon_centroid_eq_original` via straightforward ring simplification.",
     "significance": "key",
     "relatedConcepts": [
       "innerNapoleonCenter",
@@ -136,7 +136,7 @@
     },
     "type": "insight",
     "title": "Side Length Formula: Napoleon Triangle Size from Original Triangle Data",
-    "content": "`napoleon_side_sq` gives the squared side length of the Napoleon triangle in terms of the original triangle's complex coordinates: |G₂ - G₁|² = |z₁ - z₂|²/4 + |z₁ + z₂ - 2z₃|²/12 + (√3/6)·Im[(z₁-z₂)·conj(z₁+z₂-2z₃)]. The last term is (√3/6) times twice the signed area of the parallelogram spanned by (z₁-z₂) and (z₁+z₂-2z₃). In classical terms, this formula gives the Napoleon side length as √((a²+b²+c²)/6 ± 2√3·Δ) where a,b,c are sides and Δ is the area (+/- for outer/inner). The proof is `nlinarith` with `h3` and `sq_nonneg` hints.",
+    "content": "`napoleon_side_sq` gives the squared side length of the Napoleon triangle in terms of the original triangle's complex coordinates: |G\u2082 - G\u2081|\u00b2 = |z\u2081 - z\u2082|\u00b2/4 + |z\u2081 + z\u2082 - 2z\u2083|\u00b2/12 + (\u221a3/6)\u00b7Im[(z\u2081-z\u2082)\u00b7conj(z\u2081+z\u2082-2z\u2083)]. The last term is (\u221a3/6) times twice the signed area of the parallelogram spanned by (z\u2081-z\u2082) and (z\u2081+z\u2082-2z\u2083). In classical terms, this formula gives the Napoleon side length as \u221a((a\u00b2+b\u00b2+c\u00b2)/6 \u00b1 2\u221a3\u00b7\u0394) where a,b,c are sides and \u0394 is the area (+/- for outer/inner). The proof is `nlinarith` with `h3` and `sq_nonneg` hints.",
     "mathContext": "The classical formula for the Napoleon triangle side length: $s^2 = \\frac{a^2+b^2+c^2}{6} + \\frac{2\\Delta}{\\sqrt{3}}$ (outer, $+$) or $\\frac{a^2+b^2+c^2}{6} - \\frac{2\\Delta}{\\sqrt{3}}$ (inner, $-$), where $\\Delta$ is the signed area of the original triangle. When the original triangle has area 0 (degenerate), the inner Napoleon triangle degenerates to a point. The formula in complex coordinates: the cross-term $\\text{Im}[(z_1-z_2)\\overline{(z_1+z_2-2z_3)}]$ equals twice the area of the triangle with vertices $0$, $z_1-z_2$, and $z_1+z_2-2z_3$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -160,7 +160,7 @@
     },
     "type": "insight",
     "title": "Centroid Preservation: All Three Triangles Share a Common Center",
-    "content": "`napoleon_centroid_eq_original` proves (G₁ + G₂ + G₃)/3 = (z₁ + z₂ + z₃)/3: the centroid of the outer Napoleon triangle equals the centroid of the original triangle. The proof uses `Complex.ext` splitting into re/im parts, then `simp` + `ring` to simplify the arithmetic. Similarly for the inner triangle. This means: the three triangles (original, outer Napoleon, inner Napoleon) are all concentric at the same point. Geometrically: the Napoleon triangles are obtained by rotating + scaling the original triangle's medial structure, which preserves the centroid.",
+    "content": "`napoleon_centroid_eq_original` proves (G\u2081 + G\u2082 + G\u2083)/3 = (z\u2081 + z\u2082 + z\u2083)/3: the centroid of the outer Napoleon triangle equals the centroid of the original triangle. The proof uses `Complex.ext` splitting into re/im parts, then `simp` + `ring` to simplify the arithmetic. Similarly for the inner triangle. This means: the three triangles (original, outer Napoleon, inner Napoleon) are all concentric at the same point. Geometrically: the Napoleon triangles are obtained by rotating + scaling the original triangle's medial structure, which preserves the centroid.",
     "mathContext": "$(G_1+G_2+G_3)/3 = \\frac{1}{3}[\\text{napoleonCenter}(z_2,z_3) + \\text{napoleonCenter}(z_3,z_1) + \\text{napoleonCenter}(z_1,z_2)]$. Expanding: $= \\frac{1}{3}[\\frac{z_1+z_2+z_3+z_3+z_1+z_2}{2} + \\frac{i\\sqrt{3}}{6}((z_3-z_2)+(z_1-z_3)+(z_2-z_1))] = \\frac{z_1+z_2+z_3}{3} + \\frac{i\\sqrt{3}}{18} \\cdot 0 = \\frac{z_1+z_2+z_3}{3}$. The $i\\sqrt{3}$ term telescopes to 0! This is the algebraic miracle behind centroid preservation.",
     "significance": "key",
     "relatedConcepts": [

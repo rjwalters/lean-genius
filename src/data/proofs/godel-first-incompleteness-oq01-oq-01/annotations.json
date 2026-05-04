@@ -2,14 +2,17 @@
   {
     "id": "ann-rosser-setup",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
-    "range": { "startLine": 66, "endLine": 98 },
+    "range": {
+      "startLine": 66,
+      "endLine": 98
+    },
     "type": "definition",
     "title": "Shared Infrastructure: Formula, Provability, Consistency, Completeness",
-    "content": "The infrastructure is identical to `GodelFirstIncompletenessOQ01.lean`:\n\n**`Formula`** is a `structure` with a single `Nat` field `code`. The `deriving DecidableEq` is critical — it enables `native_decide` and equality reasoning on formula codes. **`neg`** (prefix `¬ᶠ`) maps code `n` to code `n+1`; this simplified encoding means negation is just arithmetic increment.\n\n**`Provable`**: the opaque axiom `Provable : Formula → Prop` prevents the trivial interpretation `Provable := fun _ => False` (which would make every system consistent). Without this axiom being opaque, all theorems would be vacuously true.\n\n**`Consistent`** states: for no formula φ does the system prove both φ and ¬φ. **`Complete`** states: for every formula, at least one of φ, ¬φ is provable. The incompleteness theorem says Consistent → ¬Complete.",
+    "content": "The infrastructure is identical to `GodelFirstIncompletenessOQ01.lean`:\n\n**`Formula`** is a `structure` with a single `Nat` field `code`. The `deriving DecidableEq` is critical \u2014 it enables `native_decide` and equality reasoning on formula codes. **`neg`** (prefix `\u00ac\u1da0`) maps code `n` to code `n+1`; this simplified encoding means negation is just arithmetic increment.\n\n**`Provable`**: the opaque axiom `Provable : Formula \u2192 Prop` prevents the trivial interpretation `Provable := fun _ => False` (which would make every system consistent). Without this axiom being opaque, all theorems would be vacuously true.\n\n**`Consistent`** states: for no formula \u03c6 does the system prove both \u03c6 and \u00ac\u03c6. **`Complete`** states: for every formula, at least one of \u03c6, \u00ac\u03c6 is provable. The incompleteness theorem says Consistent \u2192 \u00acComplete.",
     "mathContext": "$\\text{Consistent}(F) \\iff \\forall \\varphi,\\; \\neg(F \\vdash \\varphi \\land F \\vdash \\neg\\varphi)$. $\\text{Complete}(F) \\iff \\forall \\varphi,\\; F \\vdash \\varphi \\lor F \\vdash \\neg\\varphi$. Rosser's theorem: $\\text{Consistent}(F) \\implies \\neg\\text{Complete}(F)$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Gödel numbering: formulas as natural numbers",
+      "G\u00f6del numbering: formulas as natural numbers",
       "Opaque axiom pattern to prevent trivial models",
       "Lean 4 deriving DecidableEq",
       "GodelFirstIncompletenessOQ01 (parallel file with same infrastructure)"
@@ -23,63 +26,72 @@
   {
     "id": "ann-rosser-sentence",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
-    "range": { "startLine": 100, "endLine": 149 },
+    "range": {
+      "startLine": 100,
+      "endLine": 149
+    },
     "type": "definition",
     "title": "The Rosser Sentence R and Two Key Axioms: The Heart of the Improvement",
-    "content": "**The Rosser sentence** `R : Formula := ⟨43⟩` is constructed (in a full formalization) by the **Diagonal Lemma** applied to:\n$$\\psi(x) = \\forall p[\\text{ProofOf}(x, p) \\to \\exists q \\leq p,\\, \\text{DisproofOf}(x, q)]$$\nR says: *'For every proof of me, there is an equally short or shorter disproof.'* This is strictly stronger than Gödel's G (code 42), which says only 'I have no proof.'\n\n**Axiom 1** (`R_prov_gives_formal_disproof`): If ⊢ R via proof code $p_0$, then by Σ₁-completeness of ProofOf, the system can verify this. R's self-referential content yields $\\exists q \\leq p_0$, DisproofOf(⌜R⌝, q). By Σ₁-soundness (the system cannot falsely assert bounded existentials), a meta-level disproof code exists, so ⊢ ¬R.\n\n**Axiom 2** (`R_disproof_gives_formal_prov`): If ⊢ ¬R via proof code $q_0$, then ¬R asserts $\\exists p <q_0$ with ProofOf(⌜R⌝, p) and no shorter disproof — the system derives such a proof exists, so ⊢ R.\n\nAxiom 2 **replaces `omega_consistency_G`** from Gödel's proof. Gödel needed ω-consistency to go from '¬G is provable' to 'the system cannot prove Prov(⌜G⌝)'. Rosser's R encodes enough structure to make this implication direct.",
-    "mathContext": "Rosser sentence via Diagonal Lemma: $R \\iff \\forall p[\\text{ProofOf}(\\ulcorner R \\urcorner, p) \\to \\exists q \\leq p,\\, \\text{DisproofOf}(\\ulcorner R \\urcorner, q)]$. Gödel's G: $G \\iff \\neg\\text{Prov}(\\ulcorner G \\urcorner)$. The proof-length comparison in R is what makes the biconditional $(\\vdash R) \\iff (\\vdash \\neg R)$ provable without ω-consistency.",
+    "content": "**The Rosser sentence** `R : Formula := \u27e843\u27e9` is constructed (in a full formalization) by the **Diagonal Lemma** applied to:\n$$\\psi(x) = \\forall p[\\text{ProofOf}(x, p) \\to \\exists q \\leq p,\\, \\text{DisproofOf}(x, q)]$$\nR says: *'For every proof of me, there is an equally short or shorter disproof.'* This is strictly stronger than G\u00f6del's G (code 42), which says only 'I have no proof.'\n\n**Axiom 1** (`R_prov_gives_formal_disproof`): If \u22a2 R via proof code $p_0$, then by \u03a3\u2081-completeness of ProofOf, the system can verify this. R's self-referential content yields $\\exists q \\leq p_0$, DisproofOf(\u231cR\u231d, q). By \u03a3\u2081-soundness (the system cannot falsely assert bounded existentials), a meta-level disproof code exists, so \u22a2 \u00acR.\n\n**Axiom 2** (`R_disproof_gives_formal_prov`): If \u22a2 \u00acR via proof code $q_0$, then \u00acR asserts $\\exists p <q_0$ with ProofOf(\u231cR\u231d, p) and no shorter disproof \u2014 the system derives such a proof exists, so \u22a2 R.\n\nAxiom 2 **replaces `omega_consistency_G`** from G\u00f6del's proof. G\u00f6del needed \u03c9-consistency to go from '\u00acG is provable' to 'the system cannot prove Prov(\u231cG\u231d)'. Rosser's R encodes enough structure to make this implication direct.",
+    "mathContext": "Rosser sentence via Diagonal Lemma: $R \\iff \\forall p[\\text{ProofOf}(\\ulcorner R \\urcorner, p) \\to \\exists q \\leq p,\\, \\text{DisproofOf}(\\ulcorner R \\urcorner, q)]$. G\u00f6del's G: $G \\iff \\neg\\text{Prov}(\\ulcorner G \\urcorner)$. The proof-length comparison in R is what makes the biconditional $(\\vdash R) \\iff (\\vdash \\neg R)$ provable without \u03c9-consistency.",
     "significance": "critical",
     "relatedConcepts": [
       "Diagonal Lemma (Fixed-Point Lemma for arithmetic formulas)",
-      "ProofOf and DisproofOf predicates (Σ₁ predicates)",
-      "Σ₁-completeness of Robinson arithmetic Q",
+      "ProofOf and DisproofOf predicates (\u03a3\u2081 predicates)",
+      "\u03a3\u2081-completeness of Robinson arithmetic Q",
       "omega_consistency_G axiom in GodelFirstIncompletenessOQ01",
-      "Gödel's G sentence (code 42) vs Rosser's R (code 43)"
+      "G\u00f6del's G sentence (code 42) vs Rosser's R (code 43)"
     ],
     "prerequisites": [
       "Diagonal Lemma / Fixed-Point Lemma in arithmetic",
-      "Gödel numbering of proofs and disproofs",
-      "Σ₁-completeness and Σ₁-soundness of formal systems",
-      "ω-consistency: if ⊢ ∃x P(x), then no ⊢ ¬P(n̄)"
+      "G\u00f6del numbering of proofs and disproofs",
+      "\u03a3\u2081-completeness and \u03a3\u2081-soundness of formal systems",
+      "\u03c9-consistency: if \u22a2 \u2203x P(x), then no \u22a2 \u00acP(n\u0304)"
     ]
   },
   {
     "id": "ann-r-not-provable",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
-    "range": { "startLine": 151, "endLine": 168 },
-    "type": "theorem",
+    "range": {
+      "startLine": 151,
+      "endLine": 168
+    },
+    "type": "insight",
     "title": "R_not_provable: Three Lines Using Only Plain Consistency",
-    "content": "```lean\ntheorem R_not_provable (h : Consistent) : ¬ Provable R := by\n  intro hR\n  have hNR : ⊢ ¬ᶠ R := R_prov_gives_formal_disproof hR\n  exact h R ⟨hR, hNR⟩\n```\n\nThe proof has three logical steps:\n1. Assume `⊢ R` (hypothesis `hR`)\n2. Apply Axiom 1: `⊢ ¬R` (by `R_prov_gives_formal_disproof`)\n3. Apply consistency: `¬(⊢ R ∧ ⊢ ¬R)` gives a contradiction\n\nThis direction (`⊢ R → ⊢ ¬R`) was already present in Gödel's proof too (Gödel's G has: if ⊢ G, then ⊢ Prov(⌜G⌝), which contradicts G's meaning). The analogous Rosser axiom is R_prov_gives_formal_disproof. **The real innovation is the other direction** — `R_not_disprovable`.",
-    "mathContext": "Proof: $(\\vdash R) \\xrightarrow{\\text{Ax.1}} (\\vdash \\neg R) \\xrightarrow{\\text{Consistent}} \\bot$. Compare Gödel: $(\\vdash G) \\to (\\vdash \\text{Prov}(\\ulcorner G \\urcorner)) \\to (\\vdash \\neg G) \\to \\bot$. Both are 3-step consistency arguments. The difference is in the other direction.",
+    "content": "```lean\ntheorem R_not_provable (h : Consistent) : \u00ac Provable R := by\n  intro hR\n  have hNR : \u22a2 \u00ac\u1da0 R := R_prov_gives_formal_disproof hR\n  exact h R \u27e8hR, hNR\u27e9\n```\n\nThe proof has three logical steps:\n1. Assume `\u22a2 R` (hypothesis `hR`)\n2. Apply Axiom 1: `\u22a2 \u00acR` (by `R_prov_gives_formal_disproof`)\n3. Apply consistency: `\u00ac(\u22a2 R \u2227 \u22a2 \u00acR)` gives a contradiction\n\nThis direction (`\u22a2 R \u2192 \u22a2 \u00acR`) was already present in G\u00f6del's proof too (G\u00f6del's G has: if \u22a2 G, then \u22a2 Prov(\u231cG\u231d), which contradicts G's meaning). The analogous Rosser axiom is R_prov_gives_formal_disproof. **The real innovation is the other direction** \u2014 `R_not_disprovable`.",
+    "mathContext": "Proof: $(\\vdash R) \\xrightarrow{\\text{Ax.1}} (\\vdash \\neg R) \\xrightarrow{\\text{Consistent}} \\bot$. Compare G\u00f6del: $(\\vdash G) \\to (\\vdash \\text{Prov}(\\ulcorner G \\urcorner)) \\to (\\vdash \\neg G) \\to \\bot$. Both are 3-step consistency arguments. The difference is in the other direction.",
     "significance": "supporting",
     "relatedConcepts": [
       "intro tactic for negation proofs",
-      "Lean 4 ⟨hR, hNR⟩ anonymous constructor syntax",
+      "Lean 4 \u27e8hR, hNR\u27e9 anonymous constructor syntax",
       "R_prov_gives_formal_disproof (Axiom 1)",
-      "Consistent h : ∀ φ, ¬(Provable φ ∧ Provable (neg φ))"
+      "Consistent h : \u2200 \u03c6, \u00ac(Provable \u03c6 \u2227 Provable (neg \u03c6))"
     ],
     "prerequisites": [
       "Lean 4 by intro / have / exact proof style",
-      "Consistency definition: ∀ φ, ¬(⊢φ ∧ ⊢¬φ)"
+      "Consistency definition: \u2200 \u03c6, \u00ac(\u22a2\u03c6 \u2227 \u22a2\u00ac\u03c6)"
     ]
   },
   {
     "id": "ann-r-not-disprovable",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
-    "range": { "startLine": 170, "endLine": 188 },
-    "type": "theorem",
-    "title": "R_not_disprovable: Rosser's Key Innovation Over Gödel",
-    "content": "```lean\ntheorem R_not_disprovable (h : Consistent) : ¬ Provable (neg R) := by\n  intro hNR\n  have hR : ⊢ R := R_disproof_gives_formal_prov hNR\n  exact h R ⟨hR, hNR⟩\n```\n\nThis **3-line proof replaces what required 5 lines and the `omega_consistency_G` axiom in Gödel's version**. In `GodelFirstIncompletenessOQ01.lean`, proving `not_neg_G_provable` required:\n1. Assume ⊢ ¬G\n2. Apply `neg_G_prov_G`: ⊢ Prov(⌜G⌝) \n3. Apply `omega_consistency_G`: this contradicts ¬(⊢ G) via ω-consistency\n\nFor Rosser's R, step 2–3 collapse into one axiom (`R_disproof_gives_formal_prov`), and **ω-consistency is never invoked**. The proof-length comparison in R encodes enough to recover a proof of R from any disproof, purely through Σ₁-soundness.",
-    "mathContext": "Gödel's route to $\\neg(\\vdash \\neg G)$: $(\\vdash \\neg G) \\to (\\vdash \\text{Prov}(\\ulcorner G \\urcorner)) \\xrightarrow{\\omega\\text{-cons}} \\neg(\\vdash G) \\to \\bot$. Rosser's route: $(\\vdash \\neg R) \\xrightarrow{\\text{Ax.2}} (\\vdash R) \\xrightarrow{\\text{Consistent}} \\bot$. Ax.2 absorbs all the ω-consistency machinery.",
+    "range": {
+      "startLine": 170,
+      "endLine": 188
+    },
+    "type": "insight",
+    "title": "R_not_disprovable: Rosser's Key Innovation Over G\u00f6del",
+    "content": "```lean\ntheorem R_not_disprovable (h : Consistent) : \u00ac Provable (neg R) := by\n  intro hNR\n  have hR : \u22a2 R := R_disproof_gives_formal_prov hNR\n  exact h R \u27e8hR, hNR\u27e9\n```\n\nThis **3-line proof replaces what required 5 lines and the `omega_consistency_G` axiom in G\u00f6del's version**. In `GodelFirstIncompletenessOQ01.lean`, proving `not_neg_G_provable` required:\n1. Assume \u22a2 \u00acG\n2. Apply `neg_G_prov_G`: \u22a2 Prov(\u231cG\u231d) \n3. Apply `omega_consistency_G`: this contradicts \u00ac(\u22a2 G) via \u03c9-consistency\n\nFor Rosser's R, step 2\u20133 collapse into one axiom (`R_disproof_gives_formal_prov`), and **\u03c9-consistency is never invoked**. The proof-length comparison in R encodes enough to recover a proof of R from any disproof, purely through \u03a3\u2081-soundness.",
+    "mathContext": "G\u00f6del's route to $\\neg(\\vdash \\neg G)$: $(\\vdash \\neg G) \\to (\\vdash \\text{Prov}(\\ulcorner G \\urcorner)) \\xrightarrow{\\omega\\text{-cons}} \\neg(\\vdash G) \\to \\bot$. Rosser's route: $(\\vdash \\neg R) \\xrightarrow{\\text{Ax.2}} (\\vdash R) \\xrightarrow{\\text{Consistent}} \\bot$. Ax.2 absorbs all the \u03c9-consistency machinery.",
     "significance": "critical",
     "relatedConcepts": [
-      "R_disproof_gives_formal_prov (Axiom 2) — the pivotal axiom",
+      "R_disproof_gives_formal_prov (Axiom 2) \u2014 the pivotal axiom",
       "omega_consistency_G in GodelFirstIncompletenessOQ01 (what this replaces)",
-      "Σ₁-soundness: the system cannot assert false existentials",
-      "neg_G_prov_G in GodelFirstIncompletenessOQ01 (parallel Gödel axiom)"
+      "\u03a3\u2081-soundness: the system cannot assert false existentials",
+      "neg_G_prov_G in GodelFirstIncompletenessOQ01 (parallel G\u00f6del axiom)"
     ],
     "prerequisites": [
-      "ω-consistency definition: ¬(⊢∃x P(x) ∧ ∀n, ⊢¬P(n̄))",
+      "\u03c9-consistency definition: \u00ac(\u22a2\u2203x P(x) \u2227 \u2200n, \u22a2\u00acP(n\u0304))",
       "GodelFirstIncompletenessOQ01 not_neg_G_provable proof structure",
       "Lean 4 by intro / have / exact"
     ]
@@ -87,17 +99,20 @@
   {
     "id": "ann-equi-decidability",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
-    "range": { "startLine": 189, "endLine": 246 },
+    "range": {
+      "startLine": 189,
+      "endLine": 246
+    },
     "type": "insight",
-    "title": "Equi-Decidability: (⊢ R) ↔ (⊢ ¬R) — the Algebraic Heart",
-    "content": "The structural innovations in this section:\n\n**`rosser_first_incompleteness`** (lines 206–210): The main theorem reduces to a case split on `hComplete R`. Either ⊢ R (refuted by `R_not_provable`) or ⊢ ¬R (refuted by `R_not_disprovable`). The proof is 4 lines and uses only consistency.\n\n**`R_prov_iff_disprova`** (lines 235–236): The **equi-decidability biconditional** $(\\vdash R) \\iff (\\vdash \\neg^f R)$, proved in one line by combining the two axioms. This is the algebraic heart of Rosser's trick:\n- Gödel's G satisfies: $(\\vdash G) \\to (\\vdash \\neg G)$ — only one direction without extra axioms\n- Rosser's R satisfies: $(\\vdash R) \\iff (\\vdash \\neg R)$ — both directions from the sentence's structure\n\n**`consistent_iff_R_undecidable`** (lines 244–246): An internal characterization — the system is consistent *if and only if* R is undecidable. This gives a Rosser-sentence-based test for consistency.\n\nThe equi-decidability property shows R is 'self-refuting in both directions', a strictly stronger self-reference than Gödel's G which is 'self-refuting in only one direction'.",
+    "title": "Equi-Decidability: (\u22a2 R) \u2194 (\u22a2 \u00acR) \u2014 the Algebraic Heart",
+    "content": "The structural innovations in this section:\n\n**`rosser_first_incompleteness`** (lines 206\u2013210): The main theorem reduces to a case split on `hComplete R`. Either \u22a2 R (refuted by `R_not_provable`) or \u22a2 \u00acR (refuted by `R_not_disprovable`). The proof is 4 lines and uses only consistency.\n\n**`R_prov_iff_disprova`** (lines 235\u2013236): The **equi-decidability biconditional** $(\\vdash R) \\iff (\\vdash \\neg^f R)$, proved in one line by combining the two axioms. This is the algebraic heart of Rosser's trick:\n- G\u00f6del's G satisfies: $(\\vdash G) \\to (\\vdash \\neg G)$ \u2014 only one direction without extra axioms\n- Rosser's R satisfies: $(\\vdash R) \\iff (\\vdash \\neg R)$ \u2014 both directions from the sentence's structure\n\n**`consistent_iff_R_undecidable`** (lines 244\u2013246): An internal characterization \u2014 the system is consistent *if and only if* R is undecidable. This gives a Rosser-sentence-based test for consistency.\n\nThe equi-decidability property shows R is 'self-refuting in both directions', a strictly stronger self-reference than G\u00f6del's G which is 'self-refuting in only one direction'.",
     "mathContext": "$(\\vdash R) \\iff (\\vdash \\neg R)$ means provability and disprovability of R are equivalent. Under $\\text{Consistent}(F)$, neither holds. The biconditional is the Iff.intro of the two axioms: $\\langle\\text{R\\_prov\\_gives\\_formal\\_disproof},\\, \\text{R\\_disproof\\_gives\\_formal\\_prov}\\rangle$.",
     "significance": "key",
     "relatedConcepts": [
-      "R_prov_iff_disprova: ⊢R ↔ ⊢¬R (equi-decidability)",
+      "R_prov_iff_disprova: \u22a2R \u2194 \u22a2\u00acR (equi-decidability)",
       "rosser_first_incompleteness proof by rcases on Complete",
       "consistent_iff_R_undecidable (internal characterization)",
-      "Gödel's G: asymmetric self-reference vs Rosser's R: symmetric self-reference"
+      "G\u00f6del's G: asymmetric self-reference vs Rosser's R: symmetric self-reference"
     ],
     "prerequisites": [
       "Lean 4 rcases on disjunctions",
@@ -108,15 +123,18 @@
   {
     "id": "ann-godel-comparison",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
-    "range": { "startLine": 247, "endLine": 308 },
+    "range": {
+      "startLine": 247,
+      "endLine": 308
+    },
     "type": "context",
     "title": "Axiom Comparison Table and Independence Theorems",
-    "content": "The comparison section documents the structural improvement explicitly:\n\n**Axiom table** (from the file header, lines 47–56):\n\n| Gödel (1931) | Rosser (1936) |\n|---|---|\n| `Provable` (opaque) | `Provable` (opaque) |\n| `d1_representability` | *(not needed)* |\n| `G_self_reference` | `R_prov_gives_formal_disproof` |\n| **`omega_consistency_G`** | `R_disproof_gives_formal_prov` |\n| `neg_G_prov_G` | *(absorbed into Ax.2)* |\n\nRosser's 3 axioms encode more content per axiom (each Rosser axiom bundles both the self-referential implication AND the Σ₁-completeness consequence), but there are fewer of them.\n\n**`R_witness_incompleteness`** (line 280): Provides an explicit undecidable formula `R` satisfying `¬⊢φ ∧ ¬⊢¬φ`. This is the existential witness form of incompleteness, useful for applications.\n\n**`rosser_explicit_undecidable`** (lines 298–300): Combines the undecidability with the explicit code `R.code = 43`, providing maximal concreteness — we know the exact Gödel number of the witness sentence.",
-    "mathContext": "Gödel uses 5 assumptions: $\\{\\text{Provable}, d_1, G_{\\text{self}}, \\omega\\text{-con}, \\neg G \\text{-prov}\\}$. Rosser uses 3: $\\{\\text{Provable}, R_{\\text{prov}\\to\\text{disp}}, R_{\\text{disp}\\to\\text{prov}}\\}$. The two Rosser axioms together are strictly weaker than the combination of $\\omega$-consistency + the two Gödel axioms they replace — they only need to hold for the specific sentence R, not globally.",
+    "content": "The comparison section documents the structural improvement explicitly:\n\n**Axiom table** (from the file header, lines 47\u201356):\n\n| G\u00f6del (1931) | Rosser (1936) |\n|---|---|\n| `Provable` (opaque) | `Provable` (opaque) |\n| `d1_representability` | *(not needed)* |\n| `G_self_reference` | `R_prov_gives_formal_disproof` |\n| **`omega_consistency_G`** | `R_disproof_gives_formal_prov` |\n| `neg_G_prov_G` | *(absorbed into Ax.2)* |\n\nRosser's 3 axioms encode more content per axiom (each Rosser axiom bundles both the self-referential implication AND the \u03a3\u2081-completeness consequence), but there are fewer of them.\n\n**`R_witness_incompleteness`** (line 280): Provides an explicit undecidable formula `R` satisfying `\u00ac\u22a2\u03c6 \u2227 \u00ac\u22a2\u00ac\u03c6`. This is the existential witness form of incompleteness, useful for applications.\n\n**`rosser_explicit_undecidable`** (lines 298\u2013300): Combines the undecidability with the explicit code `R.code = 43`, providing maximal concreteness \u2014 we know the exact G\u00f6del number of the witness sentence.",
+    "mathContext": "G\u00f6del uses 5 assumptions: $\\{\\text{Provable}, d_1, G_{\\text{self}}, \\omega\\text{-con}, \\neg G \\text{-prov}\\}$. Rosser uses 3: $\\{\\text{Provable}, R_{\\text{prov}\\to\\text{disp}}, R_{\\text{disp}\\to\\text{prov}}\\}$. The two Rosser axioms together are strictly weaker than the combination of $\\omega$-consistency + the two G\u00f6del axioms they replace \u2014 they only need to hold for the specific sentence R, not globally.",
     "significance": "key",
     "relatedConcepts": [
       "GodelFirstIncompletenessOQ01 (5-axiom version)",
-      "R_witness_incompleteness: existential form ∃φ, ¬⊢φ ∧ ¬⊢¬φ",
+      "R_witness_incompleteness: existential form \u2203\u03c6, \u00ac\u22a2\u03c6 \u2227 \u00ac\u22a2\u00ac\u03c6",
       "rosser_explicit_undecidable: R.code = 43 (concrete witness)",
       "complete_implies_inconsistent_rosser (contrapositive)",
       "Rosser 1936 original paper in JSL 1(3)"
@@ -124,28 +142,31 @@
     "prerequisites": [
       "GodelFirstIncompletenessOQ01 axiom structure",
       "Robinson arithmetic Q and its recursive extensions",
-      "Lean 4 ∃ witnesses via ⟨R, proof⟩ syntax"
+      "Lean 4 \u2203 witnesses via \u27e8R, proof\u27e9 syntax"
     ]
   },
   {
     "id": "ann-rosser-significance",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
-    "range": { "startLine": 1, "endLine": 65 },
+    "range": {
+      "startLine": 1,
+      "endLine": 65
+    },
     "type": "concept",
-    "title": "Why Rosser's Improvement Matters: From ω-Consistency to Plain Consistency",
-    "content": "**Why ω-consistency was considered 'unnatural'**: Gödel's original hypothesis requires that if the system proves ∃n P(n), it does not also disprove every specific instance P(0̄), P(1̄), P(2̄), ... This is a 'global' condition on the system's behavior across infinitely many formulas, and was seen by Kleene, Rosser, and others as stronger than necessary.\n\n**Why plain consistency is 'natural'**: Plain consistency says only that the system doesn't simultaneously prove φ and ¬φ for any single formula. This is the minimal reasonable requirement for a formal system.\n\n**Modern relevance**: Every contemporary statement of Gödel's First Incompleteness Theorem (in textbooks by Boolos-Burgess-Jeffrey, Smorynski, Kunen, etc.) uses plain consistency. Rosser's improvement is often invisible in modern treatments — the theorem is simply stated with 'consistent' — but it represents a genuine mathematical advance that took 5 years after Gödel's 1931 paper.\n\n**Scope**: Rosser's theorem applies to every consistent recursively axiomatizable extension of Robinson arithmetic Q, including PA, ZFC, and all standard foundations. The incompleteness phenomenon is universal, not an artifact of unusual consistency assumptions.",
-    "mathContext": "$\\omega$-consistent $\\implies$ consistent, but not conversely. Specifically: a consistent but $\\omega$-inconsistent system exists (take PA + $\\neg\\text{Con}(\\text{PA})$). Rosser's theorem applies to both $\\omega$-consistent and merely consistent systems. Gödel's theorem applied only to $\\omega$-consistent systems. The logical gap is: $\\omega$-consistent $\\supsetneq$ consistent.",
+    "title": "Why Rosser's Improvement Matters: From \u03c9-Consistency to Plain Consistency",
+    "content": "**Why \u03c9-consistency was considered 'unnatural'**: G\u00f6del's original hypothesis requires that if the system proves \u2203n P(n), it does not also disprove every specific instance P(0\u0304), P(1\u0304), P(2\u0304), ... This is a 'global' condition on the system's behavior across infinitely many formulas, and was seen by Kleene, Rosser, and others as stronger than necessary.\n\n**Why plain consistency is 'natural'**: Plain consistency says only that the system doesn't simultaneously prove \u03c6 and \u00ac\u03c6 for any single formula. This is the minimal reasonable requirement for a formal system.\n\n**Modern relevance**: Every contemporary statement of G\u00f6del's First Incompleteness Theorem (in textbooks by Boolos-Burgess-Jeffrey, Smorynski, Kunen, etc.) uses plain consistency. Rosser's improvement is often invisible in modern treatments \u2014 the theorem is simply stated with 'consistent' \u2014 but it represents a genuine mathematical advance that took 5 years after G\u00f6del's 1931 paper.\n\n**Scope**: Rosser's theorem applies to every consistent recursively axiomatizable extension of Robinson arithmetic Q, including PA, ZFC, and all standard foundations. The incompleteness phenomenon is universal, not an artifact of unusual consistency assumptions.",
+    "mathContext": "$\\omega$-consistent $\\implies$ consistent, but not conversely. Specifically: a consistent but $\\omega$-inconsistent system exists (take PA + $\\neg\\text{Con}(\\text{PA})$). Rosser's theorem applies to both $\\omega$-consistent and merely consistent systems. G\u00f6del's theorem applied only to $\\omega$-consistent systems. The logical gap is: $\\omega$-consistent $\\supsetneq$ consistent.",
     "significance": "key",
     "relatedConcepts": [
-      "ω-consistency: if ⊢ ∃x P(x), no ⊢ ¬P(n̄) for any n",
+      "\u03c9-consistency: if \u22a2 \u2203x P(x), no \u22a2 \u00acP(n\u0304) for any n",
       "Robinson arithmetic Q (minimal base for incompleteness)",
-      "PA + ¬Con(PA): consistent but ω-inconsistent",
-      "Gödel 1931 vs Rosser 1936 historical context",
+      "PA + \u00acCon(PA): consistent but \u03c9-inconsistent",
+      "G\u00f6del 1931 vs Rosser 1936 historical context",
       "Boolos-Burgess-Jeffrey Chapter 17 (modern treatment)"
     ],
     "prerequisites": [
-      "Gödel's First Incompleteness Theorem 1931",
-      "ω-consistency definition",
+      "G\u00f6del's First Incompleteness Theorem 1931",
+      "\u03c9-consistency definition",
       "Recursively axiomatizable formal systems",
       "Robinson arithmetic Q"
     ]

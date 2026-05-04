@@ -2,85 +2,160 @@
   {
     "id": "ann-bgcd-int-header",
     "proofId": "binary-gcd-oq-02",
-    "range": { "startLine": 1, "endLine": 30 },
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
     "type": "context",
     "title": "Module Header and Imports",
-    "content": "The module opens by explaining its purpose: extend the Binary GCD algorithm (Stein 1967) from `ℕ` to all integers `ℤ`. The header situates this as the *integer half* of open question OQ-02 — the bignum half is acknowledged but deferred. Three imports bring in the necessary machinery: Mathlib's integer GCD theory, the standard tactic library, and critically the prior proof file `GcdAlgorithmOQ02` which already established correctness of binary GCD on `ℕ`.",
-    "mathContext": "Lean 4's module system lets this file import `Proofs.GcdAlgorithmOQ02` and inherit the theorem `binaryGcd_eq_gcd : binaryGcd m n = Nat.gcd m n`. This is the only mathematical content needed beyond Mathlib — the integer extension reduces entirely to the ℕ case.",
+    "content": "The module opens by explaining its purpose: extend the Binary GCD algorithm (Stein 1967) from `\u2115` to all integers `\u2124`. The header situates this as the *integer half* of open question OQ-02 \u2014 the bignum half is acknowledged but deferred. Three imports bring in the necessary machinery: Mathlib's integer GCD theory, the standard tactic library, and critically the prior proof file `GcdAlgorithmOQ02` which already established correctness of binary GCD on `\u2115`.",
+    "mathContext": "Lean 4's module system lets this file import `Proofs.GcdAlgorithmOQ02` and inherit the theorem `binaryGcd_eq_gcd : binaryGcd m n = Nat.gcd m n`. This is the only mathematical content needed beyond Mathlib \u2014 the integer extension reduces entirely to the \u2115 case.",
     "significance": "context",
-    "relatedConcepts": ["binary-gcd", "Stein algorithm", "modular proof design"],
-    "prerequisites": ["Lean 4 imports", "Mathlib.Data.Int.GCD", "GcdAlgorithmOQ02"]
+    "relatedConcepts": [
+      "binary-gcd",
+      "Stein algorithm",
+      "modular proof design"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib.Data.Int.GCD",
+      "GcdAlgorithmOQ02"
+    ]
   },
   {
     "id": "ann-bgcd-int-definition",
     "proofId": "binary-gcd-oq-02",
-    "range": { "startLine": 32, "endLine": 34 },
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
     "type": "definition",
     "title": "binaryGcdInt: The Core Definition",
-    "content": "The one-line definition `binaryGcdInt a b := binaryGcd a.natAbs b.natAbs` captures the canonical strategy for lifting any non-negative ℕ-valued function to ℤ: apply absolute value first, then delegate. The return type is `ℕ` (not `ℤ`) because GCD is always non-negative — returning `ℕ` makes this self-documenting and avoids a gratuitous coercion at every call site.\n\nThis mirrors how Mathlib itself defines `Int.gcd m n := m.natAbs.gcd n.natAbs`, making the correctness proof essentially definitional.",
+    "content": "The one-line definition `binaryGcdInt a b := binaryGcd a.natAbs b.natAbs` captures the canonical strategy for lifting any non-negative \u2115-valued function to \u2124: apply absolute value first, then delegate. The return type is `\u2115` (not `\u2124`) because GCD is always non-negative \u2014 returning `\u2115` makes this self-documenting and avoids a gratuitous coercion at every call site.\n\nThis mirrors how Mathlib itself defines `Int.gcd m n := m.natAbs.gcd n.natAbs`, making the correctness proof essentially definitional.",
     "mathContext": "For $a, b \\in \\mathbb{Z}$, the function is $\\text{binaryGcdInt}(a, b) := \\text{binaryGcd}(|a|, |b|) \\in \\mathbb{N}$. Since $\\gcd(a,b) = \\gcd(|a|,|b|)$ for all $a, b \\in \\mathbb{Z}$, this definition is mathematically correct by construction.",
     "significance": "key",
-    "relatedConcepts": ["Int.natAbs", "GcdAlgorithmOQ02.binaryGcd", "Int.gcd"],
-    "prerequisites": ["Int.natAbs definition", "binaryGcd on ℕ"]
+    "relatedConcepts": [
+      "Int.natAbs",
+      "GcdAlgorithmOQ02.binaryGcd",
+      "Int.gcd"
+    ],
+    "prerequisites": [
+      "Int.natAbs definition",
+      "binaryGcd on \u2115"
+    ]
   },
   {
     "id": "ann-bgcd-int-natabs-reduction",
     "proofId": "binary-gcd-oq-02",
-    "range": { "startLine": 36, "endLine": 46 },
+    "range": {
+      "startLine": 36,
+      "endLine": 46
+    },
     "type": "technique",
     "title": "Reduction Lemmas: The natAbs Bridge",
-    "content": "Two lemmas establish the reduction bridge:\n\n- `binaryGcdInt_natAbs` is `@[simp]` tagged and proved by `rfl` — because `binaryGcdInt` is *definitionally equal* to `binaryGcd a.natAbs b.natAbs`, this lemma fires automatically in `simp` calls and enables rewriting in both directions.\n- `binaryGcdInt_natCast` handles the common case where integer inputs come from casting natural numbers: `(↑a : ℤ).natAbs = a`, so the reduction is exact.\n\nTagging `binaryGcdInt_natAbs` as `@[simp]` is a deliberate API design choice: it means all subsequent proofs can forget about the definition and work purely through `simp`.",
-    "mathContext": "The key identity underlying both lemmas is $(\\uparrow n : \\mathbb{Z}).\\text{natAbs} = n$ for $n : \\mathbb{N}$, which Mathlib provides as `Int.natAbs_natCast`. Combined with the definitional unfolding, `binaryGcdInt (↑a) (↑b) = binaryGcd a b` holds by `simp`.",
+    "content": "Two lemmas establish the reduction bridge:\n\n- `binaryGcdInt_natAbs` is `@[simp]` tagged and proved by `rfl` \u2014 because `binaryGcdInt` is *definitionally equal* to `binaryGcd a.natAbs b.natAbs`, this lemma fires automatically in `simp` calls and enables rewriting in both directions.\n- `binaryGcdInt_natCast` handles the common case where integer inputs come from casting natural numbers: `(\u2191a : \u2124).natAbs = a`, so the reduction is exact.\n\nTagging `binaryGcdInt_natAbs` as `@[simp]` is a deliberate API design choice: it means all subsequent proofs can forget about the definition and work purely through `simp`.",
+    "mathContext": "The key identity underlying both lemmas is $(\\uparrow n : \\mathbb{Z}).\\text{natAbs} = n$ for $n : \\mathbb{N}$, which Mathlib provides as `Int.natAbs_natCast`. Combined with the definitional unfolding, `binaryGcdInt (\u2191a) (\u2191b) = binaryGcd a b` holds by `simp`.",
     "significance": "supporting",
-    "relatedConcepts": ["@[simp] attribute", "definitional equality", "Int.natAbs_natCast"],
-    "prerequisites": ["Lean simp lemmas", "Int.natAbs"]
+    "relatedConcepts": [
+      "@[simp] attribute",
+      "definitional equality",
+      "Int.natAbs_natCast"
+    ],
+    "prerequisites": [
+      "Lean simp lemmas",
+      "Int.natAbs"
+    ]
   },
   {
     "id": "ann-bgcd-int-correctness",
     "proofId": "binary-gcd-oq-02",
-    "range": { "startLine": 48, "endLine": 54 },
-    "type": "theorem",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "type": "insight",
     "title": "Correctness: binaryGcdInt Equals Int.gcd",
-    "content": "This is the heart of the file. `binaryGcdInt_eq_intGcd` proves that the new definition computes the same value as Mathlib's canonical `Int.gcd`. The proof is two lines:\n\n1. `unfold binaryGcdInt Int.gcd` — expand both definitions, revealing that both sides reduce to `binaryGcd a.natAbs b.natAbs` and `Nat.gcd a.natAbs b.natAbs` respectively.\n2. `exact binaryGcd_eq_gcd a.natAbs b.natAbs` — apply the already-proved ℕ-level correctness theorem from `GcdAlgorithmOQ02`.\n\nThis is the textbook example of modular proof reuse: all algorithmic complexity was handled once at the ℕ level, and the ℤ extension is purely bookkeeping.",
+    "content": "This is the heart of the file. `binaryGcdInt_eq_intGcd` proves that the new definition computes the same value as Mathlib's canonical `Int.gcd`. The proof is two lines:\n\n1. `unfold binaryGcdInt Int.gcd` \u2014 expand both definitions, revealing that both sides reduce to `binaryGcd a.natAbs b.natAbs` and `Nat.gcd a.natAbs b.natAbs` respectively.\n2. `exact binaryGcd_eq_gcd a.natAbs b.natAbs` \u2014 apply the already-proved \u2115-level correctness theorem from `GcdAlgorithmOQ02`.\n\nThis is the textbook example of modular proof reuse: all algorithmic complexity was handled once at the \u2115 level, and the \u2124 extension is purely bookkeeping.",
     "mathContext": "Mathlib defines $\\text{Int.gcd}(m, n) := \\text{Nat.gcd}(|m|, |n|)$. We need $\\text{binaryGcdInt}(a, b) = \\text{Int.gcd}(a, b)$, i.e., $\\text{binaryGcd}(|a|, |b|) = \\text{Nat.gcd}(|a|, |b|)$. This is exactly `binaryGcd_eq_gcd` applied to $|a|$ and $|b|$.",
     "significance": "key",
-    "relatedConcepts": ["binaryGcd_eq_gcd", "Int.gcd", "proof composition"],
-    "prerequisites": ["GcdAlgorithmOQ02.binaryGcd_eq_gcd", "Int.gcd definition"]
+    "relatedConcepts": [
+      "binaryGcd_eq_gcd",
+      "Int.gcd",
+      "proof composition"
+    ],
+    "prerequisites": [
+      "GcdAlgorithmOQ02.binaryGcd_eq_gcd",
+      "Int.gcd definition"
+    ]
   },
   {
     "id": "ann-bgcd-int-sign-invariance",
     "proofId": "binary-gcd-oq-02",
-    "range": { "startLine": 56, "endLine": 71 },
+    "range": {
+      "startLine": 56,
+      "endLine": 71
+    },
     "type": "technique",
     "title": "Sign Invariance: @[simp] for Free Normalization",
-    "content": "Three lemmas prove that negating inputs does not change `binaryGcdInt`. All three are essentially one-liners via `simp` because `(-a).natAbs = a.natAbs` is already in Mathlib's simp set.\n\nThe first two (`neg_left`, `neg_right`) are marked `@[simp]`, making them available for automatic normalization. The third (`neg_neg`) follows from composing the first two and is therefore derivable by `simp` without needing its own tag.\n\n**API design insight**: marking `neg_left` and `neg_right` as `@[simp]` means that any downstream proof working with `binaryGcdInt (-a) b` never needs to invoke sign-invariance manually — `simp` handles it silently.",
+    "content": "Three lemmas prove that negating inputs does not change `binaryGcdInt`. All three are essentially one-liners via `simp` because `(-a).natAbs = a.natAbs` is already in Mathlib's simp set.\n\nThe first two (`neg_left`, `neg_right`) are marked `@[simp]`, making them available for automatic normalization. The third (`neg_neg`) follows from composing the first two and is therefore derivable by `simp` without needing its own tag.\n\n**API design insight**: marking `neg_left` and `neg_right` as `@[simp]` means that any downstream proof working with `binaryGcdInt (-a) b` never needs to invoke sign-invariance manually \u2014 `simp` handles it silently.",
     "mathContext": "The mathematical fact is $\\gcd(-a, b) = \\gcd(a, b)$ for all $a, b \\in \\mathbb{Z}$, which follows from $|-a| = |a|$. In Lean, this is `Int.natAbs_neg : (-a).natAbs = a.natAbs`, which is itself `@[simp]`, so the proofs reduce to single `simp` calls.",
     "significance": "supporting",
-    "relatedConcepts": ["Int.natAbs_neg", "@[simp] design", "sign invariance of GCD"],
-    "prerequisites": ["Int.natAbs_neg", "Lean simp set architecture"]
+    "relatedConcepts": [
+      "Int.natAbs_neg",
+      "@[simp] design",
+      "sign invariance of GCD"
+    ],
+    "prerequisites": [
+      "Int.natAbs_neg",
+      "Lean simp set architecture"
+    ]
   },
   {
     "id": "ann-bgcd-int-edge-cases",
     "proofId": "binary-gcd-oq-02",
-    "range": { "startLine": 73, "endLine": 113 },
+    "range": {
+      "startLine": 73,
+      "endLine": 113
+    },
     "type": "technique",
     "title": "Edge Cases, Algebraic Properties, and Universal Property",
-    "content": "This section establishes that `binaryGcdInt` satisfies all the standard GCD axioms on ℤ. Every proof follows the same one-step pattern: rewrite via `binaryGcdInt_eq_intGcd` to reduce to `Int.gcd`, then apply the corresponding Mathlib lemma.\n\n**Properties proved:**\n- `binaryGcdInt 0 b = b.natAbs` and `binaryGcdInt a 0 = a.natAbs` (identity elements)\n- `binaryGcdInt a b = binaryGcdInt b a` (commutativity)\n- `binaryGcdInt a a = a.natAbs` (idempotence)\n- `(binaryGcdInt a b : ℤ) ∣ a` and `∣ b` (divisibility)\n- **Universal property**: if `c ∣ a` and `c ∣ b` then `c ∣ binaryGcdInt a b`\n\nThe universal property is the defining characterization of GCD: it is the *greatest* common divisor in the divisibility lattice.",
+    "content": "This section establishes that `binaryGcdInt` satisfies all the standard GCD axioms on \u2124. Every proof follows the same one-step pattern: rewrite via `binaryGcdInt_eq_intGcd` to reduce to `Int.gcd`, then apply the corresponding Mathlib lemma.\n\n**Properties proved:**\n- `binaryGcdInt 0 b = b.natAbs` and `binaryGcdInt a 0 = a.natAbs` (identity elements)\n- `binaryGcdInt a b = binaryGcdInt b a` (commutativity)\n- `binaryGcdInt a a = a.natAbs` (idempotence)\n- `(binaryGcdInt a b : \u2124) \u2223 a` and `\u2223 b` (divisibility)\n- **Universal property**: if `c \u2223 a` and `c \u2223 b` then `c \u2223 binaryGcdInt a b`\n\nThe universal property is the defining characterization of GCD: it is the *greatest* common divisor in the divisibility lattice.",
     "mathContext": "The universal property states: for any $c \\in \\mathbb{Z}$, if $c \\mid a$ and $c \\mid b$, then $c \\mid \\gcd(a,b)$. Combined with the two divisibility lemmas, this pins down $\\text{binaryGcdInt}(a,b)$ as a GCD in the lattice-theoretic sense: it is a greatest lower bound in the divisibility partial order on $\\mathbb{Z}$.",
     "significance": "supporting",
-    "relatedConcepts": ["Int.gcd_dvd_left", "Int.dvd_gcd", "GCD as lattice meet", "divisibility lattice"],
-    "prerequisites": ["GCD universal property", "Int.gcd Mathlib API", "divisibility in ℤ"]
+    "relatedConcepts": [
+      "Int.gcd_dvd_left",
+      "Int.dvd_gcd",
+      "GCD as lattice meet",
+      "divisibility lattice"
+    ],
+    "prerequisites": [
+      "GCD universal property",
+      "Int.gcd Mathlib API",
+      "divisibility in \u2124"
+    ]
   },
   {
     "id": "ann-bgcd-int-decide-examples",
     "proofId": "binary-gcd-oq-02",
-    "range": { "startLine": 115, "endLine": 132 },
+    "range": {
+      "startLine": 115,
+      "endLine": 132
+    },
     "type": "insight",
     "title": "Kernel-Level Verification via decide",
-    "content": "Eight concrete examples cover every combination of sign (positive/negative) and special case (zero, self-application) and verify that `binaryGcdInt` computes the expected value. Each uses `by decide` — Lean's kernel-level decision procedure — meaning the Lean type-checker itself runs the computation and confirms the output.\n\nThis is distinct from unit tests: `decide` proofs are part of the formal proof certificate. The kernel evaluates `binaryGcdInt (-12) 18` step-by-step using the definitional unfolding and confirms the result is `6`. Since `binaryGcdInt` is a concrete computable definition, `decide` can fully reduce it.\n\nThe closing summary comment articulates the scope: integer extension is complete and verified; bignum extension is deferred because Lean's `Nat` already uses GMP under the hood.",
+    "content": "Eight concrete examples cover every combination of sign (positive/negative) and special case (zero, self-application) and verify that `binaryGcdInt` computes the expected value. Each uses `by decide` \u2014 Lean's kernel-level decision procedure \u2014 meaning the Lean type-checker itself runs the computation and confirms the output.\n\nThis is distinct from unit tests: `decide` proofs are part of the formal proof certificate. The kernel evaluates `binaryGcdInt (-12) 18` step-by-step using the definitional unfolding and confirms the result is `6`. Since `binaryGcdInt` is a concrete computable definition, `decide` can fully reduce it.\n\nThe closing summary comment articulates the scope: integer extension is complete and verified; bignum extension is deferred because Lean's `Nat` already uses GMP under the hood.",
     "mathContext": "For example: $\\gcd(-12, 18) = \\gcd(12, 18) = 6$ since $12 = 2^2 \\cdot 3$ and $18 = 2 \\cdot 3^2$, giving $\\gcd = 2^{\\min(2,1)} \\cdot 3^{\\min(1,2)} = 2 \\cdot 3 = 6$. The binary GCD computes this via bit-shift steps: since both are even, factor out 2; since 12 is even and 9 odd, halve 12; continue until termination at 6.",
     "significance": "supporting",
-    "relatedConcepts": ["Lean decide tactic", "kernel evaluation", "definitional reduction", "GMP bignum"],
-    "prerequisites": ["Lean 4 decide tactic", "kernel computation", "computability of binaryGcd"]
+    "relatedConcepts": [
+      "Lean decide tactic",
+      "kernel evaluation",
+      "definitional reduction",
+      "GMP bignum"
+    ],
+    "prerequisites": [
+      "Lean 4 decide tactic",
+      "kernel computation",
+      "computability of binaryGcd"
+    ]
   }
 ]

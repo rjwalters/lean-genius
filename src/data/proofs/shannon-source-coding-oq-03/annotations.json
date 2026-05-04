@@ -2,205 +2,409 @@
   {
     "id": "ann-module-header",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 1, "endLine": 54 },
+    "range": {
+      "startLine": 1,
+      "endLine": 54
+    },
     "type": "context",
     "title": "Module Header: AEP Problem Statement and Development History",
-    "content": "The module opens with the open question from `shannon-source-coding-oq-03`: can the AEP be formalized using Mathlib's probability infrastructure? It defines empirical entropy empEnt(x) = -(1/n)∑log p(xᵢ) = -(1/n)log P(x₁,...,xₙ) and states the McMillan (1953) theorem: P(|empEnt - H| > ε) ≤ Var[-log p]/nε². The 'Mathematical Status' section at lines 36-40 is a historical artifact recording the original sorry structure — noting that `expVal_marginal` and `empEnt_variance` were unproved when the file was first committed. These sorries were subsequently eliminated in PR #15161. The module header connects AEP to source coding: the typical set T_ε^(n) has |T_ε| ≤ exp(n(H+ε)), enabling compression to rate H(p).",
+    "content": "The module opens with the open question from `shannon-source-coding-oq-03`: can the AEP be formalized using Mathlib's probability infrastructure? It defines empirical entropy empEnt(x) = -(1/n)\u2211log p(x\u1d62) = -(1/n)log P(x\u2081,...,x\u2099) and states the McMillan (1953) theorem: P(|empEnt - H| > \u03b5) \u2264 Var[-log p]/n\u03b5\u00b2. The 'Mathematical Status' section at lines 36-40 is a historical artifact recording the original sorry structure \u2014 noting that `expVal_marginal` and `empEnt_variance` were unproved when the file was first committed. These sorries were subsequently eliminated in PR #15161. The module header connects AEP to source coding: the typical set T_\u03b5^(n) has |T_\u03b5| \u2264 exp(n(H+\u03b5)), enabling compression to rate H(p).",
     "mathContext": "AEP: $\\Pr\\left(\\left|\\frac{-\\log P(\\mathbf{X}_1^n)}{n} - H(p)\\right| > \\varepsilon\\right) \\leq \\frac{\\mathrm{Var}_p[-\\log p(X)]}{n\\varepsilon^2}$. Empirical entropy: $\\mathrm{empEnt}(\\mathbf{x}) = -\\frac{1}{n}\\sum_{i=1}^n \\log p(x_i)$. McMillan's theorem (1953) first proved this almost surely; the Chebyshev approach here gives explicit finite-$n$ rates.",
     "significance": "context",
-    "relatedConcepts": ["Asymptotic Equipartition Property", "McMillan theorem", "typical sequences", "source coding theorem", "empirical entropy"],
-    "prerequisites": ["Shannon entropy H(p) = -∑ p log p", "discrete memoryless source model", "Chebyshev concentration inequality"]
+    "relatedConcepts": [
+      "Asymptotic Equipartition Property",
+      "McMillan theorem",
+      "typical sequences",
+      "source coding theorem",
+      "empirical entropy"
+    ],
+    "prerequisites": [
+      "Shannon entropy H(p) = -\u2211 p log p",
+      "discrete memoryless source model",
+      "Chebyshev concentration inequality"
+    ]
   },
   {
     "id": "ann-discrete-dist",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 59, "endLine": 80 },
+    "range": {
+      "startLine": 59,
+      "endLine": 80
+    },
     "type": "definition",
     "title": "Discrete Probability Distribution and Entropy Non-negativity",
-    "content": "A probability distribution on a finite alphabet of size k: a function p : Fin k → ℝ with p(i) ≥ 0 for all i and ∑ p(i) = 1. The Lean formulation as a `structure` bundles the function with its proofs, avoiding MeasureTheory overhead for a self-contained treatment. `shannonH_nonneg` proves H(D) ≥ 0 by noting p(i) ∈ [0,1] implies log p(i) ≤ 0, so each term -p(i) log p(i) ≥ 0. The proof uses `Finset.single_le_sum` to bound p(i) ≤ ∑ p = 1.",
+    "content": "A probability distribution on a finite alphabet of size k: a function p : Fin k \u2192 \u211d with p(i) \u2265 0 for all i and \u2211 p(i) = 1. The Lean formulation as a `structure` bundles the function with its proofs, avoiding MeasureTheory overhead for a self-contained treatment. `shannonH_nonneg` proves H(D) \u2265 0 by noting p(i) \u2208 [0,1] implies log p(i) \u2264 0, so each term -p(i) log p(i) \u2265 0. The proof uses `Finset.single_le_sum` to bound p(i) \u2264 \u2211 p = 1.",
     "mathContext": "H(D) = -\\sum_{i} p(i) \\log p(i) \\geq 0 since $p(i) \\in [0,1]$ implies $\\log p(i) \\leq 0$, so each summand $-p(i)\\log p(i) \\geq 0$.",
     "significance": "key",
-    "relatedConcepts": ["Shannon entropy", "information content", "Gibbs inequality", "KL divergence"],
-    "prerequisites": ["elementary real analysis", "logarithm inequalities", "Finset.sum in Lean 4"]
+    "relatedConcepts": [
+      "Shannon entropy",
+      "information content",
+      "Gibbs inequality",
+      "KL divergence"
+    ],
+    "prerequisites": [
+      "elementary real analysis",
+      "logarithm inequalities",
+      "Finset.sum in Lean 4"
+    ]
   },
   {
     "id": "ann-shannon-entropy",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 64, "endLine": 67 },
+    "range": {
+      "startLine": 64,
+      "endLine": 67
+    },
     "type": "definition",
     "title": "Shannon Entropy: Convention 0 log 0 = 0",
-    "content": "H(D) = -∑ p(i) log p(i), with the convention 0 log 0 = 0 (encoded as `if D.p i = 0 then 0 else ...`). This convention is necessary because log p(i) is undefined when p(i) = 0. In Lean, Real.log 0 = 0 by convention, so `D.p i * Real.log (D.p i)` would be 0 when p(i) = 0 anyway — but the explicit `if` makes the intent clear and avoids reliance on this coincidence.",
+    "content": "H(D) = -\u2211 p(i) log p(i), with the convention 0 log 0 = 0 (encoded as `if D.p i = 0 then 0 else ...`). This convention is necessary because log p(i) is undefined when p(i) = 0. In Lean, Real.log 0 = 0 by convention, so `D.p i * Real.log (D.p i)` would be 0 when p(i) = 0 anyway \u2014 but the explicit `if` makes the intent clear and avoids reliance on this coincidence.",
     "mathContext": "H(D) = -\\sum_{i} p(i) \\log p(i)$ where $0 \\cdot \\log 0 := 0$ by convention (the limit $\\lim_{p \\to 0^+} p \\log p = 0$).",
     "significance": "key",
-    "relatedConcepts": ["information content", "entropy maximization", "log-sum inequality"],
-    "prerequisites": ["real logarithm", "0 log 0 convention", "Lean 4 if-then-else in definitions"]
+    "relatedConcepts": [
+      "information content",
+      "entropy maximization",
+      "log-sum inequality"
+    ],
+    "prerequisites": [
+      "real logarithm",
+      "0 log 0 convention",
+      "Lean 4 if-then-else in definitions"
+    ]
   },
   {
     "id": "ann-joint-prob",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 85, "endLine": 103 },
+    "range": {
+      "startLine": 85,
+      "endLine": 103
+    },
     "type": "definition",
     "title": "Joint i.i.d. Distribution: Product Measure Without Measure Theory",
-    "content": "P(x₁,...,xₙ) = ∏ᵢ p(xᵢ). This is the product measure for i.i.d. random variables, encoded directly as a finite product. `jointProb_nonneg` follows from non-negativity of p and `Finset.prod_nonneg`. The design choice to avoid MeasureTheory is deliberate: it makes all proofs elementary and keeps the formalization self-contained at the undergraduate level. The type `Fin n → Fin k` represents all n-length sequences over the k-symbol alphabet.",
+    "content": "P(x\u2081,...,x\u2099) = \u220f\u1d62 p(x\u1d62). This is the product measure for i.i.d. random variables, encoded directly as a finite product. `jointProb_nonneg` follows from non-negativity of p and `Finset.prod_nonneg`. The design choice to avoid MeasureTheory is deliberate: it makes all proofs elementary and keeps the formalization self-contained at the undergraduate level. The type `Fin n \u2192 Fin k` represents all n-length sequences over the k-symbol alphabet.",
     "mathContext": "P(\\mathbf{x}) = \\prod_{i=1}^{n} p(x_i) \\text{ for } \\mathbf{x} = (x_1, \\ldots, x_n) \\in (\\text{Fin}\\, k)^n.$",
     "significance": "key",
-    "relatedConcepts": ["product measure", "i.i.d. random variables", "discrete memoryless source", "stochastic sequences"],
-    "prerequisites": ["product measure definition", "Finset.prod in Lean 4", "Fin n → Fin k as sequence type"]
+    "relatedConcepts": [
+      "product measure",
+      "i.i.d. random variables",
+      "discrete memoryless source",
+      "stochastic sequences"
+    ],
+    "prerequisites": [
+      "product measure definition",
+      "Finset.prod in Lean 4",
+      "Fin n \u2192 Fin k as sequence type"
+    ]
   },
   {
     "id": "ann-joint-sum-one",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 93, "endLine": 116 },
+    "range": {
+      "startLine": 93,
+      "endLine": 116
+    },
     "type": "technique",
     "title": "Normalization: Joint Probability Sums to 1 via Induction",
-    "content": "∑_{x : Fin n → Fin k} ∏ᵢ p(xᵢ) = 1. Proved by induction on n: the base case n=0 is trivial (empty product = 1). The successor step uses `Fintype.sum_piFinset_succ` to peel off the first coordinate, then `Fin.prod_univ_succ` to factor the product, and finally the inductive hypothesis plus D.sum_one. This induction on sequence length is the discrete Fubini theorem: the product measure is normalized.",
+    "content": "\u2211_{x : Fin n \u2192 Fin k} \u220f\u1d62 p(x\u1d62) = 1. Proved by induction on n: the base case n=0 is trivial (empty product = 1). The successor step uses `Fintype.sum_piFinset_succ` to peel off the first coordinate, then `Fin.prod_univ_succ` to factor the product, and finally the inductive hypothesis plus D.sum_one. This induction on sequence length is the discrete Fubini theorem: the product measure is normalized.",
     "mathContext": "\\sum_{\\mathbf{x} \\in (\\text{Fin}\\,k)^n} \\prod_{i=1}^n p(x_i) = \\prod_{i=1}^n \\sum_{a \\in \\text{Fin}\\,k} p(a) = 1^n = 1.",
     "significance": "supporting",
-    "relatedConcepts": ["discrete Fubini theorem", "product measure normalization", "Fintype.sum_piFinset_succ"],
-    "prerequisites": ["induction on natural numbers in Lean 4", "Fintype.sum_piFinset_succ", "product of independent sums"]
+    "relatedConcepts": [
+      "discrete Fubini theorem",
+      "product measure normalization",
+      "Fintype.sum_piFinset_succ"
+    ],
+    "prerequisites": [
+      "induction on natural numbers in Lean 4",
+      "Fintype.sum_piFinset_succ",
+      "product of independent sums"
+    ]
   },
   {
     "id": "ann-emp-ent",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 105, "endLine": 115 },
+    "range": {
+      "startLine": 105,
+      "endLine": 115
+    },
     "type": "definition",
     "title": "Empirical Entropy: The Sample Average of Surprisal",
-    "content": "empEnt(x) := -(1/n) ∑ᵢ log p(xᵢ) = -(1/n) log P(x). This is the average surprisal, or negative log-probability per symbol. The lemma `empEnt_eq_neg_log_joint` makes the connection to the joint probability explicit: empEnt(x) = -(1/n) log P(x) when all p(xᵢ) > 0, proved via `Real.log_prod`. The AEP says this average concentrates around H(p) as n → ∞.",
+    "content": "empEnt(x) := -(1/n) \u2211\u1d62 log p(x\u1d62) = -(1/n) log P(x). This is the average surprisal, or negative log-probability per symbol. The lemma `empEnt_eq_neg_log_joint` makes the connection to the joint probability explicit: empEnt(x) = -(1/n) log P(x) when all p(x\u1d62) > 0, proved via `Real.log_prod`. The AEP says this average concentrates around H(p) as n \u2192 \u221e.",
     "mathContext": "\\mathrm{empEnt}(\\mathbf{x}) = -\\frac{1}{n} \\sum_{i=1}^n \\log p(x_i) = -\\frac{1}{n} \\log P(\\mathbf{x}).",
     "significance": "key",
-    "relatedConcepts": ["surprisal", "information content", "law of large numbers", "typical sequences"],
-    "prerequisites": ["Real.log_prod in Lean 4", "empirical average", "surprisal = -log p"]
+    "relatedConcepts": [
+      "surprisal",
+      "information content",
+      "law of large numbers",
+      "typical sequences"
+    ],
+    "prerequisites": [
+      "Real.log_prod in Lean 4",
+      "empirical average",
+      "surprisal = -log p"
+    ]
   },
   {
     "id": "ann-expval-def",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 121, "endLine": 124 },
+    "range": {
+      "startLine": 121,
+      "endLine": 124
+    },
     "type": "definition",
     "title": "Expected Value Over the Joint Distribution",
-    "content": "expVal D n f = ∑_{x : Fin n → Fin k} P(x) · f(x). This defines the expected value of any function f of the n-length sequence. The key design: the domain is `Fin n → Fin k`, a Fintype, making the sum finite and all manipulations algebraic (no measurability required). All subsequent lemmas — marginal factorization, entropy mean, variance — are expressed in terms of expVal.",
+    "content": "expVal D n f = \u2211_{x : Fin n \u2192 Fin k} P(x) \u00b7 f(x). This defines the expected value of any function f of the n-length sequence. The key design: the domain is `Fin n \u2192 Fin k`, a Fintype, making the sum finite and all manipulations algebraic (no measurability required). All subsequent lemmas \u2014 marginal factorization, entropy mean, variance \u2014 are expressed in terms of expVal.",
     "mathContext": "\\mathbb{E}[f(X_1, \\ldots, X_n)] = \\sum_{\\mathbf{x} \\in (\\text{Fin}\\,k)^n} P(\\mathbf{x}) \\cdot f(\\mathbf{x}).",
     "significance": "supporting",
-    "relatedConcepts": ["expectation", "finite probability space", "discrete integration"],
-    "prerequisites": ["Fintype summation", "jointProb definition", "function type Fin n → Fin k"]
+    "relatedConcepts": [
+      "expectation",
+      "finite probability space",
+      "discrete integration"
+    ],
+    "prerequisites": [
+      "Fintype summation",
+      "jointProb definition",
+      "function type Fin n \u2192 Fin k"
+    ]
   },
   {
     "id": "ann-expval-marginal",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 125, "endLine": 165 },
+    "range": {
+      "startLine": 125,
+      "endLine": 165
+    },
     "type": "technique",
     "title": "Marginal Factorization: The Algebraic Core of i.i.d.",
-    "content": "E[g(Xⱼ)] = ∑_a p(a)·g(a) for any function g and coordinate j. This lemma encodes independence: in an i.i.d. sequence, the marginal distribution of any single coordinate Xⱼ is p, regardless of j. The proof strategy: rewrite (∏ᵢ p(xᵢ))·g(xⱼ) = ∏ᵢ hᵢ(xᵢ) where hᵢ = p·g on coordinate j, else p. Then Fintype.prod_sum (in reverse) exchanges sum-over-sequences with product-over-coordinates. The j-th factor gives ∑_a p(a)g(a); all other factors give ∑_a p(a) = 1.",
+    "content": "E[g(X\u2c7c)] = \u2211_a p(a)\u00b7g(a) for any function g and coordinate j. This lemma encodes independence: in an i.i.d. sequence, the marginal distribution of any single coordinate X\u2c7c is p, regardless of j. The proof strategy: rewrite (\u220f\u1d62 p(x\u1d62))\u00b7g(x\u2c7c) = \u220f\u1d62 h\u1d62(x\u1d62) where h\u1d62 = p\u00b7g on coordinate j, else p. Then Fintype.prod_sum (in reverse) exchanges sum-over-sequences with product-over-coordinates. The j-th factor gives \u2211_a p(a)g(a); all other factors give \u2211_a p(a) = 1.",
     "mathContext": "\\mathbb{E}[g(X_j)] = \\sum_{\\mathbf{x}} P(\\mathbf{x}) \\cdot g(x_j) = \\prod_{i \\neq j} \\left(\\sum_a p(a)\\right) \\cdot \\left(\\sum_a p(a) g(a)\\right) = \\sum_a p(a) g(a).",
     "significance": "key",
-    "relatedConcepts": ["Fintype.prod_sum", "independence", "marginal distribution", "sum-product exchange"],
-    "prerequisites": ["Fintype.prod_sum identity", "Finset.mul_prod_erase", "i.i.d. independence"]
+    "relatedConcepts": [
+      "Fintype.prod_sum",
+      "independence",
+      "marginal distribution",
+      "sum-product exchange"
+    ],
+    "prerequisites": [
+      "Fintype.prod_sum identity",
+      "Finset.mul_prod_erase",
+      "i.i.d. independence"
+    ]
   },
   {
     "id": "ann-prod-sum",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 152, "endLine": 154 },
+    "range": {
+      "startLine": 152,
+      "endLine": 154
+    },
     "type": "technique",
     "title": "Fintype.prod_sum: The Discrete Fubini Theorem",
-    "content": "The key identity: ∏_a (∑_b f(a,b)) = ∑_{g:α→β} ∏_a f(a, g(a)). Applied in reverse: a sum over all functions x : Fin n → Fin k of a product-over-coordinates factors into a product of independent single-coordinate sums. This is exactly the i.i.d. property in algebraic form — each coordinate contributes independently to the product. The one-line `rw [← Fintype.prod_sum h]` is the heart of the `expVal_marginal` proof.",
+    "content": "The key identity: \u220f_a (\u2211_b f(a,b)) = \u2211_{g:\u03b1\u2192\u03b2} \u220f_a f(a, g(a)). Applied in reverse: a sum over all functions x : Fin n \u2192 Fin k of a product-over-coordinates factors into a product of independent single-coordinate sums. This is exactly the i.i.d. property in algebraic form \u2014 each coordinate contributes independently to the product. The one-line `rw [\u2190 Fintype.prod_sum h]` is the heart of the `expVal_marginal` proof.",
     "mathContext": "\\prod_{\\alpha} \\sum_{\\beta} f(\\alpha, \\beta) = \\sum_{g: \\alpha \\to \\beta} \\prod_{\\alpha} f(\\alpha, g(\\alpha))$. In the AEP context: $\\sum_{\\mathbf{x}} \\prod_i h_i(x_i) = \\prod_i \\sum_a h_i(a).",
     "significance": "key",
-    "relatedConcepts": ["discrete Fubini theorem", "independence factorization", "sum-product exchange", "Fintype.prod_sum"],
-    "prerequisites": ["Fintype.prod_sum in Mathlib", "finite product-sum exchange", "function types in Lean 4"]
+    "relatedConcepts": [
+      "discrete Fubini theorem",
+      "independence factorization",
+      "sum-product exchange",
+      "Fintype.prod_sum"
+    ],
+    "prerequisites": [
+      "Fintype.prod_sum in Mathlib",
+      "finite product-sum exchange",
+      "function types in Lean 4"
+    ]
   },
   {
     "id": "ann-expval-empent",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 167, "endLine": 197 },
+    "range": {
+      "startLine": 167,
+      "endLine": 197
+    },
     "type": "insight",
     "title": "E[empEnt] = H(p): The LLN Heart of AEP",
-    "content": "E[empEnt(X₁,...,Xₙ)] = H(p). Proof: expand empEnt = -(1/n)∑ᵢ log p(Xᵢ), apply linearity to get -(1/n)∑ᵢ E[log p(Xᵢ)]. By expVal_marginal with g = log ∘ p, each E[log p(Xᵢ)] = ∑_a p(a) log p(a). Summing n equal terms: -(1/n)·n·∑_a p(a) log p(a) = H(p). This is the LLN property: empEnt is an average of n i.i.d. terms each with expectation H(p).",
+    "content": "E[empEnt(X\u2081,...,X\u2099)] = H(p). Proof: expand empEnt = -(1/n)\u2211\u1d62 log p(X\u1d62), apply linearity to get -(1/n)\u2211\u1d62 E[log p(X\u1d62)]. By expVal_marginal with g = log \u2218 p, each E[log p(X\u1d62)] = \u2211_a p(a) log p(a). Summing n equal terms: -(1/n)\u00b7n\u00b7\u2211_a p(a) log p(a) = H(p). This is the LLN property: empEnt is an average of n i.i.d. terms each with expectation H(p).",
     "mathContext": "\\mathbb{E}[\\mathrm{empEnt}] = -\\frac{1}{n} \\sum_{i=1}^n \\mathbb{E}[\\log p(X_i)] = -\\frac{1}{n} \\cdot n \\cdot \\sum_a p(a) \\log p(a) = H(p).",
     "significance": "key",
-    "relatedConcepts": ["law of large numbers", "linearity of expectation", "information theory mean", "ergodic theorem"],
-    "prerequisites": ["expVal_marginal", "linearity of expectation", "Finset.sum_comm"]
+    "relatedConcepts": [
+      "law of large numbers",
+      "linearity of expectation",
+      "information theory mean",
+      "ergodic theorem"
+    ],
+    "prerequisites": [
+      "expVal_marginal",
+      "linearity of expectation",
+      "Finset.sum_comm"
+    ]
   },
   {
     "id": "ann-chebyshev",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 204, "endLine": 223 },
+    "range": {
+      "startLine": 204,
+      "endLine": 223
+    },
     "type": "technique",
     "title": "Chebyshev's Inequality for Finite Distributions",
-    "content": "P(|f(X)-μ| > ε) ≤ E[(f(X)-μ)²]/ε². Proved elementarily: on the event {|f(x)-μ| > ε}, we have ε² ≤ (f(x)-μ)², so ε² * P(event) ≤ ∑_{|f-μ|>ε} P(x)·(f(x)-μ)² ≤ E[(f-μ)²]. The Lean proof uses `le_div_iff` to rearrange, then `Finset.sum_le_sum` for the pointwise bound, and `Finset.sum_le_univ_sum_of_nonneg` to extend from filtered sum to full expectation.",
+    "content": "P(|f(X)-\u03bc| > \u03b5) \u2264 E[(f(X)-\u03bc)\u00b2]/\u03b5\u00b2. Proved elementarily: on the event {|f(x)-\u03bc| > \u03b5}, we have \u03b5\u00b2 \u2264 (f(x)-\u03bc)\u00b2, so \u03b5\u00b2 * P(event) \u2264 \u2211_{|f-\u03bc|>\u03b5} P(x)\u00b7(f(x)-\u03bc)\u00b2 \u2264 E[(f-\u03bc)\u00b2]. The Lean proof uses `le_div_iff` to rearrange, then `Finset.sum_le_sum` for the pointwise bound, and `Finset.sum_le_univ_sum_of_nonneg` to extend from filtered sum to full expectation.",
     "mathContext": "\\Pr(|f(X) - \\mu| > \\varepsilon) \\leq \\frac{\\mathbb{E}[(f(X)-\\mu)^2]}{\\varepsilon^2} = \\frac{\\mathrm{Var}[f(X)]}{\\varepsilon^2}.",
     "significance": "key",
-    "relatedConcepts": ["Chebyshev's inequality", "variance bound", "concentration inequality", "Markov's inequality"],
-    "prerequisites": ["variance definition", "finite probability spaces", "Finset.sum_le_sum in Lean 4"]
+    "relatedConcepts": [
+      "Chebyshev's inequality",
+      "variance bound",
+      "concentration inequality",
+      "Markov's inequality"
+    ],
+    "prerequisites": [
+      "variance definition",
+      "finite probability spaces",
+      "Finset.sum_le_sum in Lean 4"
+    ]
   },
   {
     "id": "ann-logvar-marginal-product",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 228, "endLine": 270 },
+    "range": {
+      "startLine": 228,
+      "endLine": 270
+    },
     "type": "technique",
     "title": "logVar and 2D Independence: expVal_marginal_product",
-    "content": "`logVar D` is the variance of the single-symbol surprisal: Var[-log p(X)] = E[(log p(X))²] - H(p)². The private lemma `expVal_marginal_product` extends marginal factorization to two distinct coordinates: for j₁ ≠ j₂, E[g₁(X_{j₁}) · g₂(X_{j₂})] = E[g₁] · E[g₂]. This bilinear independence fact is proved by a 2D extension of `expVal_marginal`: extract j₁ and j₂ from the product via two calls to `Finset.mul_prod_erase`, then apply `Fintype.prod_sum`. All remaining factors contribute ∑_a p(a) = 1.",
+    "content": "`logVar D` is the variance of the single-symbol surprisal: Var[-log p(X)] = E[(log p(X))\u00b2] - H(p)\u00b2. The private lemma `expVal_marginal_product` extends marginal factorization to two distinct coordinates: for j\u2081 \u2260 j\u2082, E[g\u2081(X_{j\u2081}) \u00b7 g\u2082(X_{j\u2082})] = E[g\u2081] \u00b7 E[g\u2082]. This bilinear independence fact is proved by a 2D extension of `expVal_marginal`: extract j\u2081 and j\u2082 from the product via two calls to `Finset.mul_prod_erase`, then apply `Fintype.prod_sum`. All remaining factors contribute \u2211_a p(a) = 1.",
     "mathContext": "\\mathrm{logVar}(D) = \\mathbb{E}[(\\log p(X))^2] - H(p)^2 = \\mathrm{Var}[-\\log p(X)]$. Independence: $j_1 \\neq j_2 \\Rightarrow \\mathbb{E}[g_1(X_{j_1}) \\cdot g_2(X_{j_2})] = \\mathbb{E}[g_1] \\cdot \\mathbb{E}[g_2].",
     "significance": "supporting",
-    "relatedConcepts": ["variance", "independence of coordinates", "bilinear factorization", "covariance"],
-    "prerequisites": ["expVal_marginal", "Finset.mul_prod_erase", "bilinear independence"]
+    "relatedConcepts": [
+      "variance",
+      "independence of coordinates",
+      "bilinear factorization",
+      "covariance"
+    ],
+    "prerequisites": [
+      "expVal_marginal",
+      "Finset.mul_prod_erase",
+      "bilinear independence"
+    ]
   },
   {
     "id": "ann-empent-variance",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 271, "endLine": 363 },
-    "type": "proof",
+    "range": {
+      "startLine": 271,
+      "endLine": 363
+    },
+    "type": "technique",
     "title": "Variance of empEnt = logVar/n: The Crucial Calculation",
-    "content": "E[(empEnt - H)²] = logVar D / n. This is the variance of the sample mean of n i.i.d. Zᵢ = -log p(Xᵢ) - H with mean 0 and variance logVar. The Lean proof expands (empEnt - H)² = (1/n)² · (∑ᵢ Zᵢ)² and splits into diagonal (i=j) and off-diagonal (i≠j) terms. Diagonal: E[Z(Xᵢ)²] = logVar by `expVal_marginal`. Off-diagonal: E[Z(Xᵢ)·Z(Xⱼ)] = E[Z]² = 0 by `expVal_marginal_product` + mean-centering. Sum: n·logVar diagonal + 0 off-diagonal, times (1/n)², gives logVar/n.",
+    "content": "E[(empEnt - H)\u00b2] = logVar D / n. This is the variance of the sample mean of n i.i.d. Z\u1d62 = -log p(X\u1d62) - H with mean 0 and variance logVar. The Lean proof expands (empEnt - H)\u00b2 = (1/n)\u00b2 \u00b7 (\u2211\u1d62 Z\u1d62)\u00b2 and splits into diagonal (i=j) and off-diagonal (i\u2260j) terms. Diagonal: E[Z(X\u1d62)\u00b2] = logVar by `expVal_marginal`. Off-diagonal: E[Z(X\u1d62)\u00b7Z(X\u2c7c)] = E[Z]\u00b2 = 0 by `expVal_marginal_product` + mean-centering. Sum: n\u00b7logVar diagonal + 0 off-diagonal, times (1/n)\u00b2, gives logVar/n.",
     "mathContext": "\\mathrm{Var}[\\mathrm{empEnt}] = \\frac{1}{n^2} \\sum_{i,j} \\mathrm{Cov}[Z_i, Z_j] = \\frac{1}{n^2} \\cdot n \\cdot \\mathrm{logVar} = \\frac{\\mathrm{logVar}}{n}$.",
     "significance": "key",
-    "relatedConcepts": ["variance of sample mean", "independent random variables", "diagonal dominance", "centered random variables"],
-    "prerequisites": ["expVal_marginal_product", "variance calculation", "diagonal vs off-diagonal splitting", "Finset.add_sum_erase"]
+    "relatedConcepts": [
+      "variance of sample mean",
+      "independent random variables",
+      "diagonal dominance",
+      "centered random variables"
+    ],
+    "prerequisites": [
+      "expVal_marginal_product",
+      "variance calculation",
+      "diagonal vs off-diagonal splitting",
+      "Finset.add_sum_erase"
+    ]
   },
   {
     "id": "ann-aep-concentration",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 365, "endLine": 377 },
-    "type": "proof",
+    "range": {
+      "startLine": 365,
+      "endLine": 377
+    },
+    "type": "technique",
     "title": "AEP Concentration Bound: Chebyshev Applied to empEnt",
-    "content": "P(|empEnt - H| > ε) ≤ logVar(D)/(n·ε²). The proof is a two-step `calc`: first apply `chebyshev_finite` to get ≤ Var[empEnt]/ε², then substitute `empEnt_variance` (E[(empEnt-H)²] = logVar/n) to get logVar/(n·ε²). Historical note: the original version incorrectly used `expVal_empEnt` (which rewrites E[empEnt] = H, not the variance) — the fix was to use `empEnt_variance` instead.",
+    "content": "P(|empEnt - H| > \u03b5) \u2264 logVar(D)/(n\u00b7\u03b5\u00b2). The proof is a two-step `calc`: first apply `chebyshev_finite` to get \u2264 Var[empEnt]/\u03b5\u00b2, then substitute `empEnt_variance` (E[(empEnt-H)\u00b2] = logVar/n) to get logVar/(n\u00b7\u03b5\u00b2). Historical note: the original version incorrectly used `expVal_empEnt` (which rewrites E[empEnt] = H, not the variance) \u2014 the fix was to use `empEnt_variance` instead.",
     "mathContext": "\\Pr\\left(\\left|\\frac{-\\log P(\\mathbf{X})}{n} - H(p)\\right| > \\varepsilon\\right) \\leq \\frac{\\mathrm{Var}[-\\log p(X)]}{n \\varepsilon^2} \\to 0 \\text{ as } n \\to \\infty.",
     "significance": "key",
-    "relatedConcepts": ["asymptotic equipartition property", "concentration inequality", "Chebyshev bound", "McMillan theorem"],
-    "prerequisites": ["chebyshev_finite", "empEnt_variance", "logVar definition"]
+    "relatedConcepts": [
+      "asymptotic equipartition property",
+      "concentration inequality",
+      "Chebyshev bound",
+      "McMillan theorem"
+    ],
+    "prerequisites": [
+      "chebyshev_finite",
+      "empEnt_variance",
+      "logVar definition"
+    ]
   },
   {
     "id": "ann-typical-set",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 382, "endLine": 421 },
-    "type": "proof",
+    "range": {
+      "startLine": 382,
+      "endLine": 421
+    },
+    "type": "technique",
     "title": "Typical Set: Definition and Size Upper Bound",
-    "content": "`typicalSet D n ε` is the set of sequences with |empEnt - H| ≤ ε. `typical_prob_lower_bound` shows each x ∈ T_ε has P(x) ≥ exp(-n(H+ε)) — by typicality, empEnt(x) ≤ H+ε, so -log P(x) = n·empEnt(x) ≤ n(H+ε). `typical_set_size_upper` follows: |T_ε| · exp(-n(H+ε)) ≤ ∑_{x∈T_ε} P(x) ≤ 1, so |T_ε| ≤ exp(n(H+ε)). This is the achievability direction of Shannon's source coding theorem.",
+    "content": "`typicalSet D n \u03b5` is the set of sequences with |empEnt - H| \u2264 \u03b5. `typical_prob_lower_bound` shows each x \u2208 T_\u03b5 has P(x) \u2265 exp(-n(H+\u03b5)) \u2014 by typicality, empEnt(x) \u2264 H+\u03b5, so -log P(x) = n\u00b7empEnt(x) \u2264 n(H+\u03b5). `typical_set_size_upper` follows: |T_\u03b5| \u00b7 exp(-n(H+\u03b5)) \u2264 \u2211_{x\u2208T_\u03b5} P(x) \u2264 1, so |T_\u03b5| \u2264 exp(n(H+\u03b5)). This is the achievability direction of Shannon's source coding theorem.",
     "mathContext": "T_\\varepsilon^{(n)} = \\{\\mathbf{x} : |\\mathrm{empEnt}(\\mathbf{x}) - H| \\leq \\varepsilon\\}$. For $\\mathbf{x} \\in T_\\varepsilon$: $P(\\mathbf{x}) \\geq e^{-n(H+\\varepsilon)}$. Hence $|T_\\varepsilon^{(n)}| \\leq e^{n(H+\\varepsilon)}.",
     "significance": "key",
-    "relatedConcepts": ["typical sequences", "Shannon source coding theorem", "channel capacity", "data compression"],
-    "prerequisites": ["Real.exp monotonicity", "typical_prob_lower_bound", "Finset.sum_le_univ_sum_of_nonneg"]
+    "relatedConcepts": [
+      "typical sequences",
+      "Shannon source coding theorem",
+      "channel capacity",
+      "data compression"
+    ],
+    "prerequisites": [
+      "Real.exp monotonicity",
+      "typical_prob_lower_bound",
+      "Finset.sum_le_univ_sum_of_nonneg"
+    ]
   },
   {
     "id": "ann-concrete-verification",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 426, "endLine": 445 },
+    "range": {
+      "startLine": 426,
+      "endLine": 445
+    },
     "type": "context",
     "title": "Concrete Example: Fair Coin (uniformBin) with H = log 2",
-    "content": "`uniformBin` is the fair coin distribution: p(0) = p(1) = 1/2 on Fin 2. `uniformBin_entropy` proves H(uniformBin) = log 2 using `Fin.sum_univ_two` and `Real.log_one_div`. This is the textbook sanity check: the binary entropy is log 2 ≈ 0.693 nats (or 1 bit in base-2 log). The AEP says long sequences of fair coin flips will have empirical entropy close to log 2.",
+    "content": "`uniformBin` is the fair coin distribution: p(0) = p(1) = 1/2 on Fin 2. `uniformBin_entropy` proves H(uniformBin) = log 2 using `Fin.sum_univ_two` and `Real.log_one_div`. This is the textbook sanity check: the binary entropy is log 2 \u2248 0.693 nats (or 1 bit in base-2 log). The AEP says long sequences of fair coin flips will have empirical entropy close to log 2.",
     "mathContext": "H(\\text{Uniform}(\\text{Fin}\\,2)) = -\\frac{1}{2}\\log\\frac{1}{2} - \\frac{1}{2}\\log\\frac{1}{2} = \\log 2 \\approx 0.693 \\text{ nats} = 1 \\text{ bit}.",
     "significance": "context",
-    "relatedConcepts": ["binary entropy", "bits vs nats", "uniform distribution", "maximum entropy"],
-    "prerequisites": ["Fin.sum_univ_two", "Real.log_one_div", "uniformBin structure"]
+    "relatedConcepts": [
+      "binary entropy",
+      "bits vs nats",
+      "uniform distribution",
+      "maximum entropy"
+    ],
+    "prerequisites": [
+      "Fin.sum_univ_two",
+      "Real.log_one_div",
+      "uniformBin structure"
+    ]
   },
   {
     "id": "ann-aep-summary",
     "proofId": "shannon-source-coding-oq-03",
-    "range": { "startLine": 446, "endLine": 476 },
+    "range": {
+      "startLine": 446,
+      "endLine": 476
+    },
     "type": "insight",
-    "title": "Section VIII: Bug Fix Record — Variance vs Mean in Chebyshev",
-    "content": "The closing summary documents a subtle proof repair that reveals a common pitfall in formalizing concentration inequalities. The original `aep_concentration` proof used `rw [expVal_empEnt]`, which rewrites E[empEnt] = H(p) — the mean identity. But Chebyshev's inequality bounds P(|X - μ| > ε) ≤ Var[X]/ε² — it needs the variance, not the mean. The fix was `rw [empEnt_variance]`, which rewrites E[(empEnt - H)²] = logVar/n. The original rewrite would have introduced H into the expression without actually bounding the fluctuations. This is a pedagogically important bug: the mean and variance are both correct equalities, but only the variance is relevant for the Chebyshev application.",
-    "mathContext": "Wrong: `rw [expVal_empEnt]` uses $\\mathbb{E}[\\mathrm{empEnt}] = H$ — this rewrites $H$ in the expression but does not bound $\\mathrm{Var}[\\mathrm{empEnt}]$. Correct: `rw [empEnt_variance]` uses $\\mathbb{E}[(\\mathrm{empEnt}-H)^2] = \\mathrm{logVar}/n$, which IS the numerator in Chebyshev: $\\Pr(|\\mathrm{empEnt}-H| > \\varepsilon) \\leq \\mathbb{E}[(\\mathrm{empEnt}-H)^2]/\\varepsilon^2 = \\mathrm{logVar}/(n\\varepsilon^2)$.",
+    "title": "Section VIII: Bug Fix Record \u2014 Variance vs Mean in Chebyshev",
+    "content": "The closing summary documents a subtle proof repair that reveals a common pitfall in formalizing concentration inequalities. The original `aep_concentration` proof used `rw [expVal_empEnt]`, which rewrites E[empEnt] = H(p) \u2014 the mean identity. But Chebyshev's inequality bounds P(|X - \u03bc| > \u03b5) \u2264 Var[X]/\u03b5\u00b2 \u2014 it needs the variance, not the mean. The fix was `rw [empEnt_variance]`, which rewrites E[(empEnt - H)\u00b2] = logVar/n. The original rewrite would have introduced H into the expression without actually bounding the fluctuations. This is a pedagogically important bug: the mean and variance are both correct equalities, but only the variance is relevant for the Chebyshev application.",
+    "mathContext": "Wrong: `rw [expVal_empEnt]` uses $\\mathbb{E}[\\mathrm{empEnt}] = H$ \u2014 this rewrites $H$ in the expression but does not bound $\\mathrm{Var}[\\mathrm{empEnt}]$. Correct: `rw [empEnt_variance]` uses $\\mathbb{E}[(\\mathrm{empEnt}-H)^2] = \\mathrm{logVar}/n$, which IS the numerator in Chebyshev: $\\Pr(|\\mathrm{empEnt}-H| > \\varepsilon) \\leq \\mathbb{E}[(\\mathrm{empEnt}-H)^2]/\\varepsilon^2 = \\mathrm{logVar}/(n\\varepsilon^2)$.",
     "significance": "key",
-    "relatedConcepts": ["Chebyshev's inequality", "variance vs mean", "empEnt_variance", "expVal_empEnt", "concentration proof patterns"],
-    "prerequisites": ["chebyshev_finite (variance bound)", "empEnt_variance (E[(empEnt-H)²]=logVar/n)", "expVal_empEnt (E[empEnt]=H)"]
+    "relatedConcepts": [
+      "Chebyshev's inequality",
+      "variance vs mean",
+      "empEnt_variance",
+      "expVal_empEnt",
+      "concentration proof patterns"
+    ],
+    "prerequisites": [
+      "chebyshev_finite (variance bound)",
+      "empEnt_variance (E[(empEnt-H)\u00b2]=logVar/n)",
+      "expVal_empEnt (E[empEnt]=H)"
+    ]
   }
 ]

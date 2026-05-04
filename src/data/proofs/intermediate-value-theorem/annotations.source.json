@@ -6,7 +6,7 @@
       "type": "section-doc",
       "contains": "The Classical Statement"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Main IVT Statement",
     "content": "**Continuous functions on closed intervals hit all intermediate values.**\n\nThis is the core IVT: if $f$ is continuous on $[a, b]$, then the image $f([a, b])$ contains the entire interval $[f(a), f(b)]$.\n\nThe proof is a direct application of Mathlib's `intermediate_value_Icc`.",
     "mathContext": "$f : \\mathbb{R} \\to \\mathbb{R}$ continuous on $[a, b]$\n\n$\\Rightarrow [f(a), f(b)] \\subseteq f([a, b])$",
@@ -30,9 +30,9 @@
       "name": "ivt",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Symmetric Version",
-    "content": "**The IVT also works when f(b) ≤ f(a).**\n\nThis version handles the case where the function values are in the opposite order: $[f(b), f(a)] \\subseteq f([a, b])$.\n\nTogether with the main theorem, this covers all cases regardless of which endpoint has the larger value.",
+    "content": "**The IVT also works when f(b) \u2264 f(a).**\n\nThis version handles the case where the function values are in the opposite order: $[f(b), f(a)] \\subseteq f([a, b])$.\n\nTogether with the main theorem, this covers all cases regardless of which endpoint has the larger value.",
     "mathContext": "If $f(b) \\leq f(a)$:\n\n$[f(b), f(a)] \\subseteq f([a, b])$",
     "significance": "key",
     "relatedConcepts": [
@@ -52,7 +52,7 @@
       "name": "exists_eq_of_mem_Icc",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Explicit Existence Form",
     "content": "**For any c between f(a) and f(b), there exists x with f(x) = c.**\n\nThis is the 'textbook' formulation: given a target value $c$ in the interval $[f(a), f(b)]$, we can assert the existence of a point $x$ where $f$ achieves that value.\n\nNote: IVT gives existence but not uniqueness - there may be multiple such $x$ values.",
     "mathContext": "$c \\in [f(a), f(b)] \\Rightarrow \\exists x \\in [a, b], f(x) = c$",
@@ -76,7 +76,7 @@
       "name": "bolzano",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Bolzano's Theorem (Root-Finding)",
     "content": "**If f(a) < 0 < f(b), then f has a root in (a, b).**\n\nThis is the most famous corollary of IVT, often called Bolzano's theorem after Bernard Bolzano who first stated IVT rigorously in 1817.\n\nThe proof shows not just existence in $[a, b]$, but that the root is in the **open** interval $(a, b)$ - it cannot be at the endpoints since $f(a) \\neq 0$ and $f(b) \\neq 0$.",
     "mathContext": "$f(a) < 0$ and $f(b) > 0$\n\n$\\Rightarrow \\exists x \\in (a, b), f(x) = 0$",
@@ -100,9 +100,9 @@
       "name": "bolzano",
       "kind": "theorem"
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Bolzano Proof Strategy",
-    "content": "The proof has two parts:\n\n1. **Get existence in [a, b]**: Since 0 is between f(a) and f(b), IVT gives us some x in [a, b] with f(x) = 0.\n\n2. **Show x is in (a, b)**: We prove x ≠ a because f(a) < 0 ≠ f(x) = 0, and similarly x ≠ b because f(b) > 0 ≠ f(x) = 0.\n\nThis is a common pattern: use IVT for the closed interval, then refine to the open interval using the hypothesis values.",
+    "content": "The proof has two parts:\n\n1. **Get existence in [a, b]**: Since 0 is between f(a) and f(b), IVT gives us some x in [a, b] with f(x) = 0.\n\n2. **Show x is in (a, b)**: We prove x \u2260 a because f(a) < 0 \u2260 f(x) = 0, and similarly x \u2260 b because f(b) > 0 \u2260 f(x) = 0.\n\nThis is a common pattern: use IVT for the closed interval, then refine to the open interval using the hypothesis values.",
     "mathContext": "Strategy:\n1. $0 \\in [f(a), f(b)]$ since $f(a) < 0 < f(b)$\n2. Apply IVT to get $x \\in [a, b]$\n3. $x \\neq a$ since $f(x) = 0 \\neq f(a)$\n4. $x \\neq b$ since $f(x) = 0 \\neq f(b)$",
     "significance": "key",
     "relatedConcepts": [
@@ -123,9 +123,9 @@
       "name": "root_of_opposite_signs",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Root from Opposite Signs",
-    "content": "**If f(a) · f(b) < 0, then f has a root in (a, b).**\n\nThis generalizes Bolzano's theorem: instead of specifying which endpoint is positive and which is negative, we just require that they have opposite signs (their product is negative).\n\nThe proof splits into cases: either f(a) > 0 and f(b) < 0, or f(a) < 0 and f(b) > 0.",
+    "content": "**If f(a) \u00b7 f(b) < 0, then f has a root in (a, b).**\n\nThis generalizes Bolzano's theorem: instead of specifying which endpoint is positive and which is negative, we just require that they have opposite signs (their product is negative).\n\nThe proof splits into cases: either f(a) > 0 and f(b) < 0, or f(a) < 0 and f(b) > 0.",
     "mathContext": "$f(a) \\cdot f(b) < 0 \\Leftrightarrow $ opposite signs\n\n$\\Rightarrow \\exists x \\in (a, b), f(x) = 0$",
     "significance": "key",
     "relatedConcepts": [
@@ -146,7 +146,7 @@
       "name": "continuous_image_connected",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Continuous Images of Connected Sets",
     "content": "**Continuous functions preserve connectedness.**\n\nThis is the topological principle underlying IVT. If $S$ is connected and $f$ is continuous, then $f(S)$ is connected.\n\nFor subsets of $\\mathbb{R}$, connected means 'interval-like': if two points are in the set, all points between them are too.",
     "mathContext": "$S$ connected, $f$ continuous\n\n$\\Rightarrow f(S)$ connected\n\nConnected in $\\mathbb{R}$ = interval",
@@ -170,7 +170,7 @@
       "name": "odd_degree_poly_has_root",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Odd-Degree Polynomials Have Roots",
     "content": "**Every odd-degree real polynomial has at least one real root.**\n\nThe proof uses the fact that odd-degree polynomials tend to $+\\infty$ in one direction and $-\\infty$ in the other (or vice versa). Therefore there exist points where the polynomial is positive and negative, and Bolzano's theorem gives a root.\n\nThis generalizes to any continuous function that takes both positive and negative values.",
     "mathContext": "For odd degree $n$:\n\n$\\lim_{x \\to +\\infty} p(x) = +\\infty$\n$\\lim_{x \\to -\\infty} p(x) = -\\infty$\n\n(or vice versa)\n\n$\\Rightarrow p$ has a real root",
@@ -194,9 +194,9 @@
       "name": "odd_degree_poly_has_root",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fixed Point Theorem for Intervals",
-    "content": "**If f : [a,b] → [a,b] is continuous, it has a fixed point.**\n\nA fixed point is a value $x$ where $f(x) = x$. The proof applies IVT to the function $g(x) = f(x) - x$:\n- At $x = a$: $g(a) = f(a) - a \\geq 0$ (since $f(a) \\geq a$)\n- At $x = b$: $g(b) = f(b) - b \\leq 0$ (since $f(b) \\leq b$)\n\nBy IVT, $g$ has a zero, which is a fixed point of $f$.\n\nThis is the 1-dimensional case of Brouwer's fixed point theorem.",
+    "content": "**If f : [a,b] \u2192 [a,b] is continuous, it has a fixed point.**\n\nA fixed point is a value $x$ where $f(x) = x$. The proof applies IVT to the function $g(x) = f(x) - x$:\n- At $x = a$: $g(a) = f(a) - a \\geq 0$ (since $f(a) \\geq a$)\n- At $x = b$: $g(b) = f(b) - b \\leq 0$ (since $f(b) \\leq b$)\n\nBy IVT, $g$ has a zero, which is a fixed point of $f$.\n\nThis is the 1-dimensional case of Brouwer's fixed point theorem.",
     "mathContext": "$f : [a, b] \\to [a, b]$ continuous\n\n$\\Rightarrow \\exists x \\in [a, b], f(x) = x$",
     "significance": "key",
     "relatedConcepts": [

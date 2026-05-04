@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Overview: The Exponential Limit",
-    "content": "The file proves the classical limit $\\lim_{n \\to \\infty} (1 + x/n)^n = e^x$ from first principles in 215 lines with 0 axioms and 0 sorries. The proof strategy is stated upfront: three ingredients from Mathlib — the derivative of log at 1, the slope-to-limit conversion, and continuity of exp — are composed to obtain the result. The file is organized into four parts: the main limit (Part I), Euler's number specializations (Part II), compound interest interpretation (Part III), and the tangent-line inequality (Part III-b). The `open Filter Topology` makes filter operations (`atTop`, `nhdsWithin`, `Tendsto`) and topology lemmas available unqualified.",
+    "content": "The file proves the classical limit $\\lim_{n \\to \\infty} (1 + x/n)^n = e^x$ from first principles in 215 lines with 0 axioms and 0 sorries. The proof strategy is stated upfront: three ingredients from Mathlib \u2014 the derivative of log at 1, the slope-to-limit conversion, and continuity of exp \u2014 are composed to obtain the result. The file is organized into four parts: the main limit (Part I), Euler's number specializations (Part II), compound interest interpretation (Part III), and the tangent-line inequality (Part III-b). The `open Filter Topology` makes filter operations (`atTop`, `nhdsWithin`, `Tendsto`) and topology lemmas available unqualified.",
     "mathContext": "The limit $(1 + x/n)^n \\to e^x$ is the fundamental bridge between discrete compounding $(1 + x/n)^n$ and continuous growth $e^x$. Euler explored this in *Introductio in analysin infinitorum* (1748). The proof reduces to: $\\log'(1) = 1 \\Rightarrow \\log(1+h)/h \\to 1 \\Rightarrow n\\log(1+x/n) \\to x \\Rightarrow (1+x/n)^n \\to e^x$.",
     "significance": "key",
     "relatedConcepts": [
@@ -29,10 +29,10 @@
       "startLine": 33,
       "endLine": 46
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Derivative of log(1+t) at t=0",
     "content": "`hasDerivAt_log_one_plus` proves $\\frac{d}{dt}\\log(1+t)\\big|_{t=0} = 1$ by composing the chain rule: the inner function $t \\mapsto 1+t$ has derivative 1 at $t=0$ (`hasDerivAt_id.const_add`), and $\\log$ has derivative $1/x$ at $x=1$ (`Real.hasDerivAt_log one_ne_zero`). Composing via `HasDerivAt.comp` gives $\\frac{d}{dt}\\log(1+t) = \\frac{1}{1+t} \\cdot 1$, which at $t=0$ simplifies to $1^{-1} \\cdot 1 = 1$ via `inv_one` and `mul_one`.",
-    "mathContext": "$\\text{HasDerivAt}(t \\mapsto \\log(1+t), 1, 0)$. By the chain rule: $\\frac{d}{dt}\\log(1+t) = \\frac{1}{1+t}$, so at $t=0$: $\\frac{1}{1+0} = 1$. This single fact — that the logarithm has unit slope at 1 — is the foundation for the entire file.",
+    "mathContext": "$\\text{HasDerivAt}(t \\mapsto \\log(1+t), 1, 0)$. By the chain rule: $\\frac{d}{dt}\\log(1+t) = \\frac{1}{1+t}$, so at $t=0$: $\\frac{1}{1+0} = 1$. This single fact \u2014 that the logarithm has unit slope at 1 \u2014 is the foundation for the entire file.",
     "significance": "key",
     "relatedConcepts": [
       "chain rule",
@@ -52,9 +52,9 @@
       "startLine": 48,
       "endLine": 59
     },
-    "type": "theorem",
-    "title": "Slope Form: log(1+h)/h → 1",
-    "content": "`tendsto_log_one_plus_div` converts the derivative to a slope limit: $\\log(1+h)/h \\to 1$ as $h \\to 0$ through nonzero values. The key step is `hasDerivAtFilter_iff_tendsto_slope`, which translates $\\text{HasDerivAt}(f, f', x)$ into $\\text{slope}(f, x) \\to f'$ in `nhdsWithin`. The `congr` step rewrites the slope function — which Mathlib defines as $(f(x+h) - f(x)) \\cdot h^{-1}$ — into the familiar $\\log(1+h)/h$ using `sub_zero`, `Real.log_one`, and `inv_mul_eq_div`.",
+    "type": "insight",
+    "title": "Slope Form: log(1+h)/h \u2192 1",
+    "content": "`tendsto_log_one_plus_div` converts the derivative to a slope limit: $\\log(1+h)/h \\to 1$ as $h \\to 0$ through nonzero values. The key step is `hasDerivAtFilter_iff_tendsto_slope`, which translates $\\text{HasDerivAt}(f, f', x)$ into $\\text{slope}(f, x) \\to f'$ in `nhdsWithin`. The `congr` step rewrites the slope function \u2014 which Mathlib defines as $(f(x+h) - f(x)) \\cdot h^{-1}$ \u2014 into the familiar $\\log(1+h)/h$ using `sub_zero`, `Real.log_one`, and `inv_mul_eq_div`.",
     "mathContext": "$\\text{Tendsto}\\left(h \\mapsto \\frac{\\log(1+h)}{h}\\right)(\\text{nhdsWithin}\\,0\\,\\{0\\}^c)(\\text{nhds}\\,1)$. This is the difference quotient form of $\\log'(1) = 1$: $\\lim_{h \\to 0, h \\neq 0} \\frac{\\log(1+h) - \\log 1}{h} = \\lim_{h \\to 0} \\frac{\\log(1+h)}{h} = 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -75,8 +75,8 @@
       "startLine": 61,
       "endLine": 82
     },
-    "type": "theorem",
-    "title": "The Main Limit: (1+x/n)^n → exp(x) — Statement and Trivial Case",
+    "type": "insight",
+    "title": "The Main Limit: (1+x/n)^n \u2192 exp(x) \u2014 Statement and Trivial Case",
     "content": "`tendsto_one_plus_div_pow_exp` is the central theorem. The `x = 0` case is immediate: $(1 + 0/n)^n = 1^n = 1 = e^0$ by `tendsto_const_nhds`. The `x \\neq 0$ case requires the six-step argument in the remainder of the proof. The docstring gives the complete proof roadmap: compose $x/n \\to 0$ with the slope limit, multiply by $x$ to get $n\\log(1+x/n) \\to x$, apply continuity of exp, and convert $\\exp(n\\log(1+x/n))$ back to $(1+x/n)^n$ via `exp_nat_mul` and `exp_log`.",
     "mathContext": "$\\forall x \\in \\mathbb{R}: \\text{Tendsto}(n \\mapsto (1+x/n)^n)(\\text{atTop})(\\text{nhds}(e^x))$. The $x=0$ case: $(1+0)^n = 1 \\to e^0 = 1$. The $x \\neq 0$ case uses the chain $\\log(1+h)/h \\to 1$ composed with $h = x/n \\to 0$.",
     "significance": "key",
@@ -98,8 +98,8 @@
       "endLine": 93
     },
     "type": "concept",
-    "title": "Step 1-2: x/n → 0 and Composition with Slope Limit",
-    "content": "**Step 1**: $x/n \\to 0$ in `nhdsWithin 0 {0}^c` — the limit approaches 0 through nonzero values. The proof splits via `tendsto_inf`: the limit part uses `tendsto_const_div_atTop_nhds_zero_nat`, and the nonzero part uses `div_ne_zero hx (Nat.cast_ne_zero ...)`.\n\n**Step 2**: Composing the slope limit $\\log(1+h)/h \\to 1$ with $h = x/n \\to 0$ gives $\\log(1+x/n)/(x/n) \\to 1$. This is the standard filter composition `Tendsto.comp`.",
+    "title": "Step 1-2: x/n \u2192 0 and Composition with Slope Limit",
+    "content": "**Step 1**: $x/n \\to 0$ in `nhdsWithin 0 {0}^c` \u2014 the limit approaches 0 through nonzero values. The proof splits via `tendsto_inf`: the limit part uses `tendsto_const_div_atTop_nhds_zero_nat`, and the nonzero part uses `div_ne_zero hx (Nat.cast_ne_zero ...)`.\n\n**Step 2**: Composing the slope limit $\\log(1+h)/h \\to 1$ with $h = x/n \\to 0$ gives $\\log(1+x/n)/(x/n) \\to 1$. This is the standard filter composition `Tendsto.comp`.",
     "mathContext": "$x/n \\in \\text{nhdsWithin}\\,0\\,\\{0\\}^c$ for $n \\geq 1$ and $x \\neq 0$, because $x/n \\neq 0$ but $x/n \\to 0$. Composing: $\\frac{\\log(1+x/n)}{x/n} \\to 1$ as $n \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": [
@@ -109,7 +109,7 @@
     ],
     "prerequisites": [
       "Filter.Tendsto.comp",
-      "nhdsWithin 0 {0}ᶜ"
+      "nhdsWithin 0 {0}\u1d9c"
     ]
   },
   {
@@ -120,7 +120,7 @@
       "endLine": 109
     },
     "type": "concept",
-    "title": "Steps 3-4: Algebraic Rewrite and n·log(1+x/n) → x",
+    "title": "Steps 3-4: Algebraic Rewrite and n\u00b7log(1+x/n) \u2192 x",
     "content": "**Step 3**: The algebraic identity $n \\cdot \\log(1+x/n) = x \\cdot [\\log(1+x/n)/(x/n)]$ holds for $n \\geq 1$ (so $n \\neq 0$), proved via `field_simp` and `calc` with `ring` steps. The rewriting $x/(x/n) = n$ requires $x \\neq 0$.\n\n**Step 4**: Since $\\log(1+x/n)/(x/n) \\to 1$ (Step 2) and the constant factor is $x$, the product $x \\cdot [\\log(1+x/n)/(x/n)] \\to x \\cdot 1 = x$. The proof uses `Tendsto.mul` of `tendsto_const_nhds` with `hcomp`, then `congr'` to replace via the algebraic identity from Step 3.",
     "mathContext": "$n\\log(1+x/n) = x \\cdot \\frac{\\log(1+x/n)}{x/n} \\to x \\cdot 1 = x$. The key algebraic manipulation: dividing and multiplying by $x/n$ cancels $n$, converting the product $n \\cdot \\log(\\ldots)$ into $x \\cdot \\text{(slope)}$.",
     "significance": "key",
@@ -166,9 +166,9 @@
       "startLine": 131,
       "endLine": 138
     },
-    "type": "theorem",
-    "title": "Euler's Number: (1+1/n)^n → e",
-    "content": "`tendsto_euler` is the $x=1$ specialization: $(1+1/n)^n \\to e^1 = e$. The proof is a one-liner applying the main theorem to $x=1$. This is Euler's original definition of $e$ from *Introductio* (1748) — he computed the numerical value to 23 decimal places via partial evaluation of this limit.",
+    "type": "insight",
+    "title": "Euler's Number: (1+1/n)^n \u2192 e",
+    "content": "`tendsto_euler` is the $x=1$ specialization: $(1+1/n)^n \\to e^1 = e$. The proof is a one-liner applying the main theorem to $x=1$. This is Euler's original definition of $e$ from *Introductio* (1748) \u2014 he computed the numerical value to 23 decimal places via partial evaluation of this limit.",
     "mathContext": "$\\lim_{n \\to \\infty} \\left(1 + \\frac{1}{n}\\right)^n = e \\approx 2.71828\\ldots$. The sequence is monotonically increasing and bounded above by $e$ (proved in `one_plus_div_pow_le_exp`).",
     "significance": "key",
     "relatedConcepts": [
@@ -187,7 +187,7 @@
       "startLine": 140,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Reciprocal and Decay Limits",
     "content": "`tendsto_one_minus_div_pow_inv_e` proves $(1-1/n)^n \\to e^{-1}$ (the $x=-1$ case), and `tendsto_one_minus_div_pow_exp_neg` generalizes to $(1-x/n)^n \\to e^{-x}$. Both use `neg_div` to rewrite $1 + (-x)/n = 1 - x/n$ and `ring_nf` to simplify. These model exponential decay: if a quantity decreases by $x/n$ per step over $n$ steps, the result converges to $e^{-x}$.",
     "mathContext": "$\\left(1 - \\frac{1}{n}\\right)^n \\to e^{-1}$ and $\\left(1 - \\frac{x}{n}\\right)^n \\to e^{-x}$. In probability: the Poisson limit for the probability that a Poisson($\\lambda$) random variable is 0 is $e^{-\\lambda} = \\lim (1-\\lambda/n)^n$.",
@@ -230,15 +230,15 @@
       "startLine": 169,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Tangent Line Inequality and Compounding Bound",
-    "content": "`one_plus_le_exp` restates the fundamental inequality $1+x \\leq e^x$ from Mathlib (`Real.add_one_le_exp`). `one_plus_div_pow_le_exp` deduces $(1+x/n)^n \\leq e^x$ for $x \\geq 0$: each factor satisfies $1+x/n \\leq e^{x/n}$, so the $n$-th power satisfies $(1+x/n)^n \\leq (e^{x/n})^n = e^x$ via `pow_le_pow_left₀` and `exp_nat_mul`. The calc chain expresses this multiplicative argument cleanly.",
+    "content": "`one_plus_le_exp` restates the fundamental inequality $1+x \\leq e^x$ from Mathlib (`Real.add_one_le_exp`). `one_plus_div_pow_le_exp` deduces $(1+x/n)^n \\leq e^x$ for $x \\geq 0$: each factor satisfies $1+x/n \\leq e^{x/n}$, so the $n$-th power satisfies $(1+x/n)^n \\leq (e^{x/n})^n = e^x$ via `pow_le_pow_left\u2080` and `exp_nat_mul`. The calc chain expresses this multiplicative argument cleanly.",
     "mathContext": "$1 + x \\leq e^x$ is the tangent line inequality: the exponential lies above its tangent at 0 (by convexity). Iterating: $\\left(1+\\frac{x}{n}\\right)^n \\leq \\left(e^{x/n}\\right)^n = e^x$. Combined with the limit theorem, this shows $(1+x/n)^n \\nearrow e^x$ from below for $x \\geq 0$.",
     "significance": "key",
     "relatedConcepts": [
       "convexity of exp",
       "tangent line inequality",
-      "pow_le_pow_left₀",
+      "pow_le_pow_left\u2080",
       "Real.add_one_le_exp"
     ],
     "prerequisites": [
@@ -253,7 +253,7 @@
       "startLine": 197,
       "endLine": 215
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Summary: All Main Results Packaged",
     "content": "`exponential_limit_summary` packages the three main limits into a conjunction: (1) the general exponential limit $(1+x/n)^n \\to e^x$, (2) Euler's number $(1+1/n)^n \\to e$, and (3) the reciprocal $(1-1/n)^n \\to e^{-1}$. The proof is a triple application of the main theorem and its specializations. The `end ExponentialLimit` closes the namespace.",
     "mathContext": "The three limits are:\n$\\forall x: (1+x/n)^n \\to e^x$, $(1+1/n)^n \\to e$, $(1-1/n)^n \\to e^{-1}$.\nTogether they characterize the exponential function as the limit of discrete compounding.",

@@ -8,14 +8,14 @@
     },
     "type": "concept",
     "title": "Module Docstring: Open Question Setup and Imports",
-    "content": "The file opens with a block comment (lines 1-21) establishing the mathematical context: h(n) is the abelian covering number, Pyber (1987) proved exponential bounds $c_1^n < h(n) < c_2^n$ with $c_2 > c_1 > 1$, giving $\\log h(n)/n \\in (\\log c_1, \\log c_2)$ for all $n > 0$. The open question is whether $\\lim_{n\\to\\infty} \\log h(n)/n$ exists — equivalently, whether $h(n) = \\Theta(c^n)$ for a single base $c$. Lines 23-27: `import Mathlib` (full library), `open Real Filter` (Real.log and Filter.atTop), `namespace Erdos117OQ01`.",
+    "content": "The file opens with a block comment (lines 1-21) establishing the mathematical context: h(n) is the abelian covering number, Pyber (1987) proved exponential bounds $c_1^n < h(n) < c_2^n$ with $c_2 > c_1 > 1$, giving $\\log h(n)/n \\in (\\log c_1, \\log c_2)$ for all $n > 0$. The open question is whether $\\lim_{n\\to\\infty} \\log h(n)/n$ exists \u2014 equivalently, whether $h(n) = \\Theta(c^n)$ for a single base $c$. Lines 23-27: `import Mathlib` (full library), `open Real Filter` (Real.log and Filter.atTop), `namespace Erdos117OQ01`.",
     "mathContext": "The normalized logarithm $r(n) = \\log h(n)/n$ is known to lie in $(\\log c_1, \\log c_2)$ by Pyber's bounds. Both $\\liminf r(n)$ and $\\limsup r(n)$ are thus well-defined real numbers in this interval. The open question: $\\liminf r(n) = \\limsup r(n)$? The `open Real Filter` makes `Real.log`, `Real.exp`, `Filter.atTop`, `Filter.liminf`, and `Filter.limsup` available unqualified.",
     "significance": "supporting",
     "relatedConcepts": [
       "abelian covering number h(n)",
       "Pyber bounds (1987)",
       "open Real Filter",
-      "Erdős Problem #117"
+      "Erd\u0151s Problem #117"
     ],
     "prerequisites": [
       "group theory (abelian subgroups)",
@@ -33,7 +33,7 @@
     },
     "type": "concept",
     "title": "Part I Setup: Three Axioms Encoding Pyber's Theorem",
-    "content": "Lines 28-34 are the Part I block comment explaining that h and its bounds are axiomatized. Three `axiom` declarations follow: `h : ℕ → ℕ` (the abelian covering number function, axiomatized as it is not constructively defined), `h_pos : ∀ n ≥ 1, h n ≥ 1` (trivially needed since at least one subgroup is required), and `pyber_bounds` (the key: $\\exists c_1, c_2, 1 < c_1 < c_2$ and $c_1^n \\leq h(n) \\leq c_2^n$ for all $n \\geq 1$). These 3 axioms account for the file's `axiomCount: 3` and `badge: \"axiom\"` status. Pyber's actual proof is a deep combinatorial argument in group theory — axiomatizing it is the appropriate Lean approach for an open problem.",
+    "content": "Lines 28-34 are the Part I block comment explaining that h and its bounds are axiomatized. Three `axiom` declarations follow: `h : \u2115 \u2192 \u2115` (the abelian covering number function, axiomatized as it is not constructively defined), `h_pos : \u2200 n \u2265 1, h n \u2265 1` (trivially needed since at least one subgroup is required), and `pyber_bounds` (the key: $\\exists c_1, c_2, 1 < c_1 < c_2$ and $c_1^n \\leq h(n) \\leq c_2^n$ for all $n \\geq 1$). These 3 axioms account for the file's `axiomCount: 3` and `badge: \"axiom\"` status. Pyber's actual proof is a deep combinatorial argument in group theory \u2014 axiomatizing it is the appropriate Lean approach for an open problem.",
     "mathContext": "The growth rate sequence $a_n = \\log h(n)/n$ lies in $[\\log c_1, \\log c_2]$. Fekete's subadditive lemma (applied if $h$ is submultiplicative) would guarantee convergence. But submultiplicativity of $h$ is itself open. The connection to the abelian covering problem: $h(n)$ counts the minimum covers, and exponential behavior reflects the complexity of non-abelian group structure in the $n$-commuting class.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -58,7 +58,7 @@
     },
     "type": "concept",
     "title": "Three Axioms: The Abelian Covering Number and Pyber's Bounds",
-    "content": "The file axiomatizes the abelian covering number h : ℕ → ℕ and its key properties. h(n) is the minimum number of abelian subgroups needed to cover any group with the n-commuting property (where any n+2 elements include two that commute). This is a subtle combinatorial group theory function that Erdős studied.\n\nThe axiom h_pos asserts h(n) ≥ 1 for n ≥ 1, which is trivially true since at least one covering subgroup is needed. The crucial axiom pyber_bounds encodes Pyber's 1987 theorem: there exist constants c₂ > c₁ > 1 such that c₁ⁿ ≤ h(n) ≤ c₂ⁿ for all n ≥ 1. This establishes that h(n) grows exponentially — it is not polynomial — but leaves open whether the rate converges to a single base.",
+    "content": "The file axiomatizes the abelian covering number h : \u2115 \u2192 \u2115 and its key properties. h(n) is the minimum number of abelian subgroups needed to cover any group with the n-commuting property (where any n+2 elements include two that commute). This is a subtle combinatorial group theory function that Erd\u0151s studied.\n\nThe axiom h_pos asserts h(n) \u2265 1 for n \u2265 1, which is trivially true since at least one covering subgroup is needed. The crucial axiom pyber_bounds encodes Pyber's 1987 theorem: there exist constants c\u2082 > c\u2081 > 1 such that c\u2081\u207f \u2264 h(n) \u2264 c\u2082\u207f for all n \u2265 1. This establishes that h(n) grows exponentially \u2014 it is not polynomial \u2014 but leaves open whether the rate converges to a single base.",
     "mathContext": "Pyber (1987): $\\exists c_1, c_2 > 1$ with $c_1 < c_2$, such that $c_1^n \\leq h(n) \\leq c_2^n$ for all $n \\geq 1$. Equivalently, $\\log c_1 \\leq \\frac{\\log h(n)}{n} \\leq \\log c_2$. The $n$-commuting property: a group $G$ is $n$-commuting if among any $n+2$ elements, at least two commute. Equivalently, $G$ is not $(n+1)$-fold non-abelian.",
     "significance": "key",
     "relatedConcepts": [
@@ -69,7 +69,7 @@
     ],
     "prerequisites": [
       "group theory (abelian subgroups, subgroup covers)",
-      "Erdős Problem #117 statement"
+      "Erd\u0151s Problem #117 statement"
     ]
   },
   {
@@ -81,7 +81,7 @@
     },
     "type": "definition",
     "title": "The Logarithmic Growth Rate and Lower Bound",
-    "content": "The definition growthRate(n) = log(h(n))/n (with growthRate(0) = 0 by convention) is the central object of study. This is the standard 'normalized logarithm' that reveals exponential growth rates. If h(n) ~ cⁿ, then growthRate(n) → log c.\n\nThe theorem growthRate_lower_bound proves ∃ L > 0, ∀ n ≥ 1, growthRate(n) ≥ L using Pyber's lower bound c₁ⁿ ≤ h(n). The proof extracts c₁ from pyber_bounds via obtain, then computes: growthRate(n) = log(h(n))/n ≥ log(c₁ⁿ)/n = n·log(c₁)/n = log(c₁). Since c₁ > 1, log(c₁) > 0. The Lean proof chains through Real.log_pos, div_le_div_iff, and Real.log_le_log.",
+    "content": "The definition growthRate(n) = log(h(n))/n (with growthRate(0) = 0 by convention) is the central object of study. This is the standard 'normalized logarithm' that reveals exponential growth rates. If h(n) ~ c\u207f, then growthRate(n) \u2192 log c.\n\nThe theorem growthRate_lower_bound proves \u2203 L > 0, \u2200 n \u2265 1, growthRate(n) \u2265 L using Pyber's lower bound c\u2081\u207f \u2264 h(n). The proof extracts c\u2081 from pyber_bounds via obtain, then computes: growthRate(n) = log(h(n))/n \u2265 log(c\u2081\u207f)/n = n\u00b7log(c\u2081)/n = log(c\u2081). Since c\u2081 > 1, log(c\u2081) > 0. The Lean proof chains through Real.log_pos, div_le_div_iff, and Real.log_le_log.",
     "mathContext": "$r(n) = \\frac{\\log h(n)}{n}$ for $n \\geq 1$. Lower bound: $r(n) \\geq \\log c_1 > 0$ from Pyber. Proof: $r(n) = \\frac{\\log h(n)}{n} \\geq \\frac{\\log(c_1^n)}{n} = \\frac{n \\log c_1}{n} = \\log c_1$ using $\\log$ monotonicity and $h(n) \\geq c_1^n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,9 +103,9 @@
       "startLine": 80,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Upper Bound from Pyber's Second Inequality",
-    "content": "The theorem growthRate_upper_bound proves ∃ U, ∀ n ≥ 1, growthRate(n) ≤ U, with U = log(c₂). The proof mirrors the lower bound argument, using the upper branch of Pyber's bounds: h(n) ≤ c₂ⁿ → log(h(n)) ≤ log(c₂ⁿ) = n·log(c₂) → growthRate(n) = log(h(n))/n ≤ log(c₂). An intermediate step establishes (h n : ℝ) ≥ 1 using exact_mod_cast to coerce the natural number h_pos into real numbers.\n\nTogether, the lower and upper bound theorems show log(c₁) ≤ growthRate(n) ≤ log(c₂) for all n ≥ 1 — the growth rate sequence is bounded within the interval [log c₁, log c₂], a necessary condition for the limit to exist.",
+    "content": "The theorem growthRate_upper_bound proves \u2203 U, \u2200 n \u2265 1, growthRate(n) \u2264 U, with U = log(c\u2082). The proof mirrors the lower bound argument, using the upper branch of Pyber's bounds: h(n) \u2264 c\u2082\u207f \u2192 log(h(n)) \u2264 log(c\u2082\u207f) = n\u00b7log(c\u2082) \u2192 growthRate(n) = log(h(n))/n \u2264 log(c\u2082). An intermediate step establishes (h n : \u211d) \u2265 1 using exact_mod_cast to coerce the natural number h_pos into real numbers.\n\nTogether, the lower and upper bound theorems show log(c\u2081) \u2264 growthRate(n) \u2264 log(c\u2082) for all n \u2265 1 \u2014 the growth rate sequence is bounded within the interval [log c\u2081, log c\u2082], a necessary condition for the limit to exist.",
     "mathContext": "$r(n) \\leq \\log c_2$ from $h(n) \\leq c_2^n$: $r(n) = \\frac{\\log h(n)}{n} \\leq \\frac{\\log(c_2^n)}{n} = \\log c_2$. Combined: $\\log c_1 \\leq r(n) \\leq \\log c_2$ for all $n \\geq 1$. This means $\\liminf r(n)$ and $\\limsup r(n)$ are both well-defined real numbers in $[\\log c_1, \\log c_2]$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -129,14 +129,14 @@
     },
     "type": "definition",
     "title": "liminf and limsup of the Growth Rate via Mathlib's Filter API",
-    "content": "The definitions growthRateLimInf and growthRateLimSup use Mathlib's Filter.liminf and Filter.limsup with atTop — the filter of 'eventually large' natural numbers. This is the standard formalization of liminf/limsup in Lean 4: rather than working with explicit sequences and ε-δ definitions, Mathlib uses the more abstract filter framework.\n\nThe theorem limInf_le_limSup proves the always-true inequality liminf ≤ limsup, but requires supplying boundedness witnesses: (1) growthRate is eventually bounded above (witness: U from growthRate_upper_bound), and (2) a cobounded-under witness (essentially that no lower bound is eventually exceeded). The proof uses Filter.eventually_atTop.mpr and Filter.liminf_le_limsup from Mathlib.",
+    "content": "The definitions growthRateLimInf and growthRateLimSup use Mathlib's Filter.liminf and Filter.limsup with atTop \u2014 the filter of 'eventually large' natural numbers. This is the standard formalization of liminf/limsup in Lean 4: rather than working with explicit sequences and \u03b5-\u03b4 definitions, Mathlib uses the more abstract filter framework.\n\nThe theorem limInf_le_limSup proves the always-true inequality liminf \u2264 limsup, but requires supplying boundedness witnesses: (1) growthRate is eventually bounded above (witness: U from growthRate_upper_bound), and (2) a cobounded-under witness (essentially that no lower bound is eventually exceeded). The proof uses Filter.eventually_atTop.mpr and Filter.liminf_le_limsup from Mathlib.",
     "mathContext": "Mathlib: $\\liminf_{n \\to \\infty} r(n) = \\inf\\{L : r(n) \\geq L \\text{ eventually}\\}$, $\\limsup_{n \\to \\infty} r(n) = \\sup\\{L : r(n) \\leq L \\text{ eventually}\\}$. Always: $\\liminf \\leq \\limsup$. Convergence $\\Leftrightarrow$ $\\liminf = \\limsup$. The Filter.atTop approach: $p$ holds 'eventually' iff $\\exists N, \\forall n \\geq N, p(n)$.",
     "significance": "key",
     "relatedConcepts": [
       "Filter.liminf in Mathlib",
       "Filter.limsup in Mathlib",
       "Filter.atTop",
-      "liminf ≤ limsup",
+      "liminf \u2264 limsup",
       "IsBoundedUnder"
     ],
     "prerequisites": [
@@ -154,14 +154,14 @@
     },
     "type": "definition",
     "title": "Formalizing the Open Question: Convergence and Exponential Behavior",
-    "content": "Three propositions formalize different facets of the open question:\n\n**growthRateConverges**: ∃ L, Filter.Tendsto growthRate atTop (nhds L) — the standard Lean formalization of 'lim growthRate(n) = L'.\n\n**exponentialBaseExists**: ∃ c > 1, Tendsto growthRate atTop (nhds (log c)) — exists a single exponential base c such that h(n) ~ cⁿ.\n\n**ExponentialBehavior(c)**: For all ε > 0, eventually (c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ — the pointwise quantitative version of h(n) = Θ(cⁿ).\n\nThe theorem limit_determines_base proves that if growthRate(n) → L > 0, then c = exp(L) gives exponentialBaseExists. The proof constructs c = exp(L) and uses Real.log_exp to convert back. This chain makes precise what 'resolving the open question' means formally.",
+    "content": "Three propositions formalize different facets of the open question:\n\n**growthRateConverges**: \u2203 L, Filter.Tendsto growthRate atTop (nhds L) \u2014 the standard Lean formalization of 'lim growthRate(n) = L'.\n\n**exponentialBaseExists**: \u2203 c > 1, Tendsto growthRate atTop (nhds (log c)) \u2014 exists a single exponential base c such that h(n) ~ c\u207f.\n\n**ExponentialBehavior(c)**: For all \u03b5 > 0, eventually (c-\u03b5)\u207f \u2264 h(n) \u2264 (c+\u03b5)\u207f \u2014 the pointwise quantitative version of h(n) = \u0398(c\u207f).\n\nThe theorem limit_determines_base proves that if growthRate(n) \u2192 L > 0, then c = exp(L) gives exponentialBaseExists. The proof constructs c = exp(L) and uses Real.log_exp to convert back. This chain makes precise what 'resolving the open question' means formally.",
     "mathContext": "Open question: $\\lim_{n \\to \\infty} r(n) = \\lim_{n \\to \\infty} \\frac{\\log h(n)}{n}$ exists. If $L = \\lim r(n)$ exists, then $c = e^L > 1$ (since $L > \\log c_1 > 0$) and $h(n) = c^{n+o(n)}$. The exponential behavior condition $|\\log h(n)/n - \\log c| < \\epsilon$ is equivalent to $e^{(\\log c - \\epsilon)n} \\leq h(n) \\leq e^{(\\log c + \\epsilon)n} = (c \\cdot e^{\\epsilon})^n$.",
     "significance": "key",
     "relatedConcepts": [
       "Filter.Tendsto in Mathlib",
       "nhds (neighborhood filter)",
       "exponential growth base",
-      "Θ-notation",
+      "\u0398-notation",
       "Real.log_exp"
     ],
     "prerequisites": [
@@ -177,10 +177,10 @@
       "startLine": 166,
       "endLine": 185
     },
-    "type": "theorem",
-    "title": "Part V: Implications of Convergence — Base Behavior and Multiplicativity",
-    "content": "Two results about what convergence of the growth rate would imply. `base_implies_behavior`: if the growth rate converges to $\\log c$, then $h$ has `ExponentialBehavior c` — the formal statement that $h(n)$ grows at rate $c^n$. The proof is sorry'd ('follows from definition of limit + exponential'). `AsymptoticallyMultiplicative` defines an asymptotic near-multiplicativity condition: $h(m+n) \\leq (1+\\varepsilon) \\cdot h(m) \\cdot c \\cdot h(n)$ for large $m, n$. This weakens the exact submultiplicativity in Fekete's lemma, asking only for approximate multiplicativity up to multiplicative constants.",
-    "mathContext": "`ExponentialBehavior c` formalizes '$h$ grows like $c^n$' in the asymptotic sense. The connection to the open question: if `exponentialBaseExists` (Erdős OQ-01 answer is YES), then $h$ has `ExponentialBehavior c` for the limiting base $c$. `AsymptoticallyMultiplicative` is a structural condition interpolating between exact submultiplicativity (strong, enough for Fekete) and arbitrary exponential growth (weak, only gives bounds).",
+    "type": "insight",
+    "title": "Part V: Implications of Convergence \u2014 Base Behavior and Multiplicativity",
+    "content": "Two results about what convergence of the growth rate would imply. `base_implies_behavior`: if the growth rate converges to $\\log c$, then $h$ has `ExponentialBehavior c` \u2014 the formal statement that $h(n)$ grows at rate $c^n$. The proof is sorry'd ('follows from definition of limit + exponential'). `AsymptoticallyMultiplicative` defines an asymptotic near-multiplicativity condition: $h(m+n) \\leq (1+\\varepsilon) \\cdot h(m) \\cdot c \\cdot h(n)$ for large $m, n$. This weakens the exact submultiplicativity in Fekete's lemma, asking only for approximate multiplicativity up to multiplicative constants.",
+    "mathContext": "`ExponentialBehavior c` formalizes '$h$ grows like $c^n$' in the asymptotic sense. The connection to the open question: if `exponentialBaseExists` (Erd\u0151s OQ-01 answer is YES), then $h$ has `ExponentialBehavior c` for the limiting base $c$. `AsymptoticallyMultiplicative` is a structural condition interpolating between exact submultiplicativity (strong, enough for Fekete) and arbitrary exponential growth (weak, only gives bounds).",
     "significance": "supporting",
     "relatedConcepts": [
       "base_implies_behavior",
@@ -201,9 +201,9 @@
       "startLine": 186,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fekete's Lemma: The Submultiplicativity Path to Convergence",
-    "content": "The theorem submultiplicative_implies_convergence shows that if h(m+n) ≤ h(m)·h(n) for all m,n, then growthRateConverges. The proof is a sorry marked as 'Fekete's subadditive lemma applied to log h'.\n\nFekete's lemma (1923): if f : ℕ → ℝ is subadditive (f(m+n) ≤ f(m)+f(n)), then lim f(n)/n exists and equals inf f(n)/n. Applied here: if h is submultiplicative, then log h is subadditive (log h(m+n) ≤ log(h(m)·h(n)) = log h(m) + log h(n)), so lim (log h(n))/n = inf (log h(n))/n exists.\n\nThe submultiplicativity of h is the key open structural question: does the covering number behave multiplicatively across scales? If covering an n-commuting group requires h(n) subgroups and an m-commuting group requires h(m), does an (m+n)-commuting group require at most h(m)·h(n)? This is a natural but non-obvious algebraic property.",
+    "content": "The theorem submultiplicative_implies_convergence shows that if h(m+n) \u2264 h(m)\u00b7h(n) for all m,n, then growthRateConverges. The proof is a sorry marked as 'Fekete's subadditive lemma applied to log h'.\n\nFekete's lemma (1923): if f : \u2115 \u2192 \u211d is subadditive (f(m+n) \u2264 f(m)+f(n)), then lim f(n)/n exists and equals inf f(n)/n. Applied here: if h is submultiplicative, then log h is subadditive (log h(m+n) \u2264 log(h(m)\u00b7h(n)) = log h(m) + log h(n)), so lim (log h(n))/n = inf (log h(n))/n exists.\n\nThe submultiplicativity of h is the key open structural question: does the covering number behave multiplicatively across scales? If covering an n-commuting group requires h(n) subgroups and an m-commuting group requires h(m), does an (m+n)-commuting group require at most h(m)\u00b7h(n)? This is a natural but non-obvious algebraic property.",
     "mathContext": "Fekete (1923): $f: \\mathbb{N} \\to \\mathbb{R}$ subadditive ($f(m+n) \\leq f(m)+f(n)$) $\\Rightarrow$ $\\lim_{n\\to\\infty} f(n)/n = \\inf_{n\\geq 1} f(n)/n \\in [-\\infty, \\infty)$. Here: $h$ submultiplicative $\\Rightarrow$ $g = \\log \\circ h$ subadditive $\\Rightarrow$ $\\lim g(n)/n = \\lim \\frac{\\log h(n)}{n}$ exists. The sorry awaits Mathlib's `Subadditive.tendsto_div_atTop` or equivalent.",
     "significance": "key",
     "relatedConcepts": [
@@ -225,10 +225,10 @@
       "startLine": 191,
       "endLine": 204
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Trivial Case and the Open Question Declaration",
-    "content": "The theorem growthRate_1 handles the edge case h(1) = 1 → growthRate(1) = 0. Since log(1) = 0, this is immediate from simp and Real.log_one. Mathematically, h(1) = 1 means a single abelian subgroup covers any 1-commuting group (any group where some pair commutes), which can be trivially satisfied by taking the whole group if it is abelian, or just the center.\n\nThe definition `erdos117OQ01 : Prop := exponentialBaseExists` packages the open problem as a named Lean Prop. Lines 199-202 use `#check` to verify the types of the four key definitions (`growthRateConverges`, `exponentialBaseExists`, `ExponentialBehavior`, `erdos117OQ01`) — these are documentation/verification commands that produce no runtime output but confirm the definitions are well-typed. Finally `end Erdos117OQ01` closes the namespace.",
-    "mathContext": "Boundary value: if $h(1) = 1$, then $r(1) = \\log(1)/1 = 0$. Note $0 < \\log c_1$, so the lower bound theorem gives $r(1) \\geq \\log c_1 > 0$ — but only for $h(1) \\geq c_1 > 1$. The condition $h(1) = 1$ means the 1-commuting case is trivial. The definition `erdos117OQ01 := exponentialBaseExists` packages Erdős Problem #117 OQ-01 as `∃ c > 1, Tendsto growthRate atTop (nhds (log c))`.",
+    "content": "The theorem growthRate_1 handles the edge case h(1) = 1 \u2192 growthRate(1) = 0. Since log(1) = 0, this is immediate from simp and Real.log_one. Mathematically, h(1) = 1 means a single abelian subgroup covers any 1-commuting group (any group where some pair commutes), which can be trivially satisfied by taking the whole group if it is abelian, or just the center.\n\nThe definition `erdos117OQ01 : Prop := exponentialBaseExists` packages the open problem as a named Lean Prop. Lines 199-202 use `#check` to verify the types of the four key definitions (`growthRateConverges`, `exponentialBaseExists`, `ExponentialBehavior`, `erdos117OQ01`) \u2014 these are documentation/verification commands that produce no runtime output but confirm the definitions are well-typed. Finally `end Erdos117OQ01` closes the namespace.",
+    "mathContext": "Boundary value: if $h(1) = 1$, then $r(1) = \\log(1)/1 = 0$. Note $0 < \\log c_1$, so the lower bound theorem gives $r(1) \\geq \\log c_1 > 0$ \u2014 but only for $h(1) \\geq c_1 > 1$. The condition $h(1) = 1$ means the 1-commuting case is trivial. The definition `erdos117OQ01 := exponentialBaseExists` packages Erd\u0151s Problem #117 OQ-01 as `\u2203 c > 1, Tendsto growthRate atTop (nhds (log c))`.",
     "significance": "supporting",
     "relatedConcepts": [
       "Real.log_one in Mathlib",

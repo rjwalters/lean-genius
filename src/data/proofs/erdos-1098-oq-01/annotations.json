@@ -2,7 +2,7 @@
   {
     "line": 1,
     "type": "concept",
-    "content": "**Non-Commuting Graphs and Clique Structure**: The non-commuting graph Γ(G) has vertex set G and an edge between g and h iff gh ≠ hg. Cliques in Γ(G) are sets of pairwise non-commuting elements. The clique number ω(Γ(G)) measures the maximum such set. This file proves that ω = 0 iff G is abelian, center elements can't appear in cliques of size ≥ 2, and finite center index implies finite clique number — the foundational structure theory.",
+    "content": "**Non-Commuting Graphs and Clique Structure**: The non-commuting graph \u0393(G) has vertex set G and an edge between g and h iff gh \u2260 hg. Cliques in \u0393(G) are sets of pairwise non-commuting elements. The clique number \u03c9(\u0393(G)) measures the maximum such set. This file proves that \u03c9 = 0 iff G is abelian, center elements can't appear in cliques of size \u2265 2, and finite center index implies finite clique number \u2014 the foundational structure theory.",
     "mathContext": "The non-commuting graph $\\Gamma(G)$ is a special case of a **Cayley graph** construction. Its complement (the commuting graph) has been studied by Brauer-Fowler (1955) in the context of classifying finite simple groups. The clique number $\\omega(\\Gamma(G))$ is related to the **breadth** of the group: $b(G) = \\max_{g \\in G} |\\{[g,h] : h \\in G\\}|$. Neumann's theorem (1976): $\\omega(\\Gamma(G)) < \\infty \\iff [G : Z(G)] < \\infty$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -22,7 +22,7 @@
   {
     "line": 34,
     "type": "definition",
-    "content": "**nonCommuting**: g and h are non-commuting if gh ≠ hg. The companion `commuting` predicate (gh = hg) makes `nonCommuting g h ↔ ¬commuting g h` (theorem nonCommuting_iff). Both are defined pointwise rather than via the quotient G/Z(G).",
+    "content": "**nonCommuting**: g and h are non-commuting if gh \u2260 hg. The companion `commuting` predicate (gh = hg) makes `nonCommuting g h \u2194 \u00accommuting g h` (theorem nonCommuting_iff). Both are defined pointwise rather than via the quotient G/Z(G).",
     "mathContext": "The **commutator** of $g$ and $h$ is $[g,h] = g^{-1}h^{-1}gh$. Then $\\text{nonCommuting}(g,h) \\iff [g,h] \\neq 1 \\iff g \\notin C_G(h)$ (centralizer). The commuting predicate $gh = hg$ is equivalent to $g \\in C_G(h)$, which is equivalent to $h \\in C_G(g)$ (centralization is symmetric).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -40,9 +40,9 @@
   },
   {
     "line": 48,
-    "type": "theorem",
-    "content": "**center_commutes**: Every element z ∈ Z(G) commutes with every h ∈ G. Lean proof: unfold `commuting` and `Subgroup.mem_center_iff`, then apply the center membership condition `∀ h, z*h = h*z`. This is the key fact enabling center_not_nonCommuting.",
-    "mathContext": "The **center** of a group is $Z(G) = \\{z \\in G : \\forall h \\in G, zh = hz\\}$. Lean: `Subgroup.center G` with membership via `Subgroup.mem_center_iff : z ∈ center G ↔ ∀ g, g * z = z * g`. Note the Lean convention swaps the order: `g * z = z * g` rather than `z * g = g * z` — so the `hz h` application requires tracking the order.",
+    "type": "insight",
+    "content": "**center_commutes**: Every element z \u2208 Z(G) commutes with every h \u2208 G. Lean proof: unfold `commuting` and `Subgroup.mem_center_iff`, then apply the center membership condition `\u2200 h, z*h = h*z`. This is the key fact enabling center_not_nonCommuting.",
+    "mathContext": "The **center** of a group is $Z(G) = \\{z \\in G : \\forall h \\in G, zh = hz\\}$. Lean: `Subgroup.center G` with membership via `Subgroup.mem_center_iff : z \u2208 center G \u2194 \u2200 g, g * z = z * g`. Note the Lean convention swaps the order: `g * z = z * g` rather than `z * g = g * z` \u2014 so the `hz h` application requires tracking the order.",
     "significance": "key",
     "relatedConcepts": [
       "Subgroup.center",
@@ -60,8 +60,8 @@
   {
     "line": 64,
     "type": "definition",
-    "content": "**IsClique**: A Finset S is a clique in Γ(G) if every two distinct elements of S are non-commuting. Formally: ∀ g h ∈ S, g ≠ h → nonCommuting g h. This is a finite clique (using Finset rather than Set) to enable cardinality reasoning.",
-    "mathContext": "A **clique** in a graph is a set of pairwise adjacent vertices. In $\\Gamma(G)$, adjacency = non-commuting. The clique number is $\\omega(\\Gamma(G)) = \\sup\\{|S| : S \\text{ is a clique}\\}$. Using `Finset G` (vs `Set G`) allows `Finset.card` to count the clique size and `Finset.one_lt_card` to extract distinct elements from a set of cardinality ≥ 2.",
+    "content": "**IsClique**: A Finset S is a clique in \u0393(G) if every two distinct elements of S are non-commuting. Formally: \u2200 g h \u2208 S, g \u2260 h \u2192 nonCommuting g h. This is a finite clique (using Finset rather than Set) to enable cardinality reasoning.",
+    "mathContext": "A **clique** in a graph is a set of pairwise adjacent vertices. In $\\Gamma(G)$, adjacency = non-commuting. The clique number is $\\omega(\\Gamma(G)) = \\sup\\{|S| : S \\text{ is a clique}\\}$. Using `Finset G` (vs `Set G`) allows `Finset.card` to count the clique size and `Finset.one_lt_card` to extract distinct elements from a set of cardinality \u2265 2.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset",
@@ -79,9 +79,9 @@
   },
   {
     "line": 69,
-    "type": "theorem",
-    "content": "**clique_zero_iff_abelian**: The clique number ω(Γ(G)) = 0 iff G is abelian (∀ g h, commuting g h). Forward: if ∃ non-commuting pair, construct a 2-element clique {g₁, g₂} contradicting ω = 0. Backward: if G is abelian, no clique can have card > 1 (two elements in the clique would need to be non-commuting, contradicting abelianness).",
-    "mathContext": "The formal statement says: all cliques have card ≤ 1 iff all pairs commute. The forward direction constructs the clique `{g₁, g₂}` and uses `Finset.card_pair heq` (which gives `|{a,b}| = 2` when `a ≠ b`) to derive a contradiction. The backward direction uses `Finset.one_lt_card.mp hgt` to extract the non-commuting pair from the assumed large clique.",
+    "type": "insight",
+    "content": "**clique_zero_iff_abelian**: The clique number \u03c9(\u0393(G)) = 0 iff G is abelian (\u2200 g h, commuting g h). Forward: if \u2203 non-commuting pair, construct a 2-element clique {g\u2081, g\u2082} contradicting \u03c9 = 0. Backward: if G is abelian, no clique can have card > 1 (two elements in the clique would need to be non-commuting, contradicting abelianness).",
+    "mathContext": "The formal statement says: all cliques have card \u2264 1 iff all pairs commute. The forward direction constructs the clique `{g\u2081, g\u2082}` and uses `Finset.card_pair heq` (which gives `|{a,b}| = 2` when `a \u2260 b`) to derive a contradiction. The backward direction uses `Finset.one_lt_card.mp hgt` to extract the non-commuting pair from the assumed large clique.",
     "significance": "key",
     "relatedConcepts": [
       "abelian group",
@@ -99,8 +99,8 @@
   },
   {
     "line": 102,
-    "type": "theorem",
-    "content": "**center_not_in_clique**: If S is a clique with |S| ≥ 2, no center element z ∈ Z(G) can be in S. Proof by contradiction: if z ∈ S, pick another element in S (using |S| ≥ 2), then z must be non-commuting with it — contradicting z ∈ Z(G) which forces z to commute with everything.",
+    "type": "insight",
+    "content": "**center_not_in_clique**: If S is a clique with |S| \u2265 2, no center element z \u2208 Z(G) can be in S. Proof by contradiction: if z \u2208 S, pick another element in S (using |S| \u2265 2), then z must be non-commuting with it \u2014 contradicting z \u2208 Z(G) which forces z to commute with everything.",
     "mathContext": "The proof uses the case analysis: either $z = g$ (the first element from `one_lt_card`) or $z \\neq g$. In the first case, pick $h$ (the second element); in the second, pick $g$ itself. In both cases, `center_not_nonCommuting` gives the contradiction since $z \\in Z(G)$ and the clique condition forces $z$ to be non-commuting with the chosen element.",
     "significance": "key",
     "relatedConcepts": [
@@ -118,9 +118,9 @@
   },
   {
     "line": 115,
-    "type": "theorem",
-    "content": "**abelian_clique_bound**: In a CommGroup (abelian group), every clique has card ≤ 1. This is a typeclass-based version of one direction of clique_zero_iff_abelian: using [CommGroup G] directly in the typeclass gives mul_comm as a proof of commutativity.",
-    "mathContext": "The proof uses `Finset.one_lt_card.mp hgt` to extract distinct $g, h \\in S$ from the assumption $|S| > 1$, then derives `nonCommuting g h` from `IsClique S`, and contradicts this with `mul_comm g h : g * h = h * g` (available from the `CommGroup` instance). The key: in Lean, `[CommGroup G]` gives `mul_comm : ∀ a b, a * b = b * a`.",
+    "type": "insight",
+    "content": "**abelian_clique_bound**: In a CommGroup (abelian group), every clique has card \u2264 1. This is a typeclass-based version of one direction of clique_zero_iff_abelian: using [CommGroup G] directly in the typeclass gives mul_comm as a proof of commutativity.",
+    "mathContext": "The proof uses `Finset.one_lt_card.mp hgt` to extract distinct $g, h \\in S$ from the assumption $|S| > 1$, then derives `nonCommuting g h` from `IsClique S`, and contradicts this with `mul_comm g h : g * h = h * g` (available from the `CommGroup` instance). The key: in Lean, `[CommGroup G]` gives `mul_comm : \u2200 a b, a * b = b * a`.",
     "significance": "key",
     "relatedConcepts": [
       "CommGroup",

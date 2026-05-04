@@ -7,16 +7,16 @@
       "endLine": 48
     },
     "type": "concept",
-    "title": "Historical Context: Archimedes to Viète and the Convergence Rate",
-    "content": "This file addresses the quantitative question behind Archimedes' method: not just that inscribed polygon areas converge to πr², but *how fast*. Archimedes used 96-gon bounds (lines 37-39 of the header document this connection). The O(1/n²) convergence rate formalized here has deep roots: it follows from the cubic term x³/6 in the Taylor expansion sin(x) = x - x³/6 + O(x⁵). The header's reference to Viète's product is significant — Viète (1593) derived 2/π = √2/2 · √(2+√2)/2 · ... by recording the half-angle doubling process for inscribed polygons, which is essentially iterating the same convergence argument. Liu Hui (263 CE) reached π ≈ 3.14159 using a 3072-gon; the bound from this file would give error ≤ 2π³/(3·3072²) ≈ 2.2×10⁻⁶, consistent with his 5-decimal accuracy.",
-    "mathContext": "O(1/n²) rate: $|\\pi r^2 - A_n| \\leq \\frac{2\\pi^3 r^2}{3n^2}$. For $n=96$ (Archimedes): bound $\\approx 0.00225 \\cdot r^2$, relative error $< 0.072\\%$. For $n=3072$ (Liu Hui): bound $\\approx 2.2 \\times 10^{-6} \\cdot r^2$, relative error $< 0.000071\\%$. The `noncomputable section` is needed throughout because `Real.pi` is not computable in Lean.",
+    "title": "Historical Context: Archimedes to Vi\u00e8te and the Convergence Rate",
+    "content": "This file addresses the quantitative question behind Archimedes' method: not just that inscribed polygon areas converge to \u03c0r\u00b2, but *how fast*. Archimedes used 96-gon bounds (lines 37-39 of the header document this connection). The O(1/n\u00b2) convergence rate formalized here has deep roots: it follows from the cubic term x\u00b3/6 in the Taylor expansion sin(x) = x - x\u00b3/6 + O(x\u2075). The header's reference to Vi\u00e8te's product is significant \u2014 Vi\u00e8te (1593) derived 2/\u03c0 = \u221a2/2 \u00b7 \u221a(2+\u221a2)/2 \u00b7 ... by recording the half-angle doubling process for inscribed polygons, which is essentially iterating the same convergence argument. Liu Hui (263 CE) reached \u03c0 \u2248 3.14159 using a 3072-gon; the bound from this file would give error \u2264 2\u03c0\u00b3/(3\u00b73072\u00b2) \u2248 2.2\u00d710\u207b\u2076, consistent with his 5-decimal accuracy.",
+    "mathContext": "O(1/n\u00b2) rate: $|\\pi r^2 - A_n| \\leq \\frac{2\\pi^3 r^2}{3n^2}$. For $n=96$ (Archimedes): bound $\\approx 0.00225 \\cdot r^2$, relative error $< 0.072\\%$. For $n=3072$ (Liu Hui): bound $\\approx 2.2 \\times 10^{-6} \\cdot r^2$, relative error $< 0.000071\\%$. The `noncomputable section` is needed throughout because `Real.pi` is not computable in Lean.",
     "significance": "supporting",
     "relatedConcepts": [
       "Archimedes 96-gon",
       "Liu Hui 3072-gon",
-      "Viète product",
+      "Vi\u00e8te product",
       "Taylor expansion",
-      "O(1/n²) convergence"
+      "O(1/n\u00b2) convergence"
     ],
     "prerequisites": [
       "Real.pi in Lean",
@@ -54,7 +54,7 @@
     "id": "sin-sq-cos-chain",
     "line": 62,
     "endLine": 92,
-    "type": "theorem",
+    "type": "insight",
     "label": "sin_sq_le_sq / cos_ge_one_sub_sq_div_two",
     "mathContext": "**Step 1** ($\\sin^2 x \\leq x^2$): Factor $x^2 - \\sin^2 x = (x - \\sin x)(x + \\sin x)$. Both factors are non-negative: $x - \\sin x \\geq 0$ from `Real.sin_lt` ($\\sin x < x$ for $x > 0$), and $x + \\sin x \\geq 0$ from `abs_sin_le_one`.\n\n**Step 2** ($\\cos x \\geq 1 - x^2/2$): Apply the half-angle identity $\\cos x = 1 - 2\\sin^2(x/2)$ and substitute Step 1 at $x/2$: $\\sin^2(x/2) \\leq x^2/4$, so $\\cos x = 1 - 2\\sin^2(x/2) \\geq 1 - x^2/2$.",
     "significance": "key",
@@ -70,7 +70,7 @@
       "abs_sin_le_one",
       "cos_sq_half_angle"
     ],
-    "content": "The half-angle identity $\\cos x = 1 - 2\\sin^2(x/2)$ is the crucial bridge: it converts a bound on $\\sin^2$ into an additive lower bound on $\\cos$. This two-step chain is more elementary than citing the Taylor remainder formula — it works from first principles using only `Real.sin_lt` and `abs_sin_le_one`.",
+    "content": "The half-angle identity $\\cos x = 1 - 2\\sin^2(x/2)$ is the crucial bridge: it converts a bound on $\\sin^2$ into an additive lower bound on $\\cos$. This two-step chain is more elementary than citing the Taylor remainder formula \u2014 it works from first principles using only `Real.sin_lt` and `abs_sin_le_one`.",
     "proofId": "area-of-circle-oq-03-oq-01",
     "range": {
       "startLine": 62,
@@ -81,8 +81,8 @@
     "id": "sin-lb-mvt",
     "line": 99,
     "endLine": 137,
-    "type": "theorem",
-    "label": "sin_ge_sub_cube_div_six (sin(x) ≥ x - x³/6)",
+    "type": "insight",
+    "label": "sin_ge_sub_cube_div_six (sin(x) \u2265 x - x\u00b3/6)",
     "mathContext": "Let $g(x) = \\sin x - x + x^3/6$. Then $g'(x) = \\cos x - 1 + x^2/2 \\geq 0$ (by Step 2). The `HasDerivAt` chain: `h1 = hasDerivAt_sin x`, `h2 = hasDerivAt_id x`, `h3 = (hasDerivAt_pow 3 x).div_const 6`, combined as `(h1.sub h2).add h3`. The `convert` tactic handles $3x^2/6 = x^2/2$. By MVT (`exists_hasDerivAt_eq_slope`): $g(x) - g(0) = g'(c) \\cdot x \\geq 0$. Since $g(0) = 0$, we get $\\sin x \\geq x - x^3/6$.",
     "significance": "key",
     "relatedConcepts": [
@@ -109,12 +109,12 @@
     "id": "rate-bound",
     "line": 143,
     "endLine": 201,
-    "type": "theorem",
-    "label": "inscribed_area_rate_bound (0 ≤ πr² - Aₙ ≤ 2π³r²/3n²)",
+    "type": "insight",
+    "label": "inscribed_area_rate_bound (0 \u2264 \u03c0r\u00b2 - A\u2099 \u2264 2\u03c0\u00b3r\u00b2/3n\u00b2)",
     "mathContext": "Set $u = 2\\pi/n$. Using $\\sin u \\geq u - u^3/6$:\n$$A_n = \\frac{nr^2}{2}\\sin u \\geq \\frac{nr^2}{2}\\left(u - \\frac{u^3}{6}\\right) = \\pi r^2 - \\frac{nr^2}{2}\\cdot\\frac{8\\pi^3}{6n^3} = \\pi r^2 - \\frac{2\\pi^3 r^2}{3n^2}$$\nThe upper bound $A_n \\leq \\pi r^2$ uses `Real.sin_lt` (since $A_n = nr^2/2 \\cdot \\sin(u)$ and $\\sin u < u$ for $u > 0$ gives $A_n < \\pi r^2$). Combined: $0 \\leq \\pi r^2 - A_n \\leq 2\\pi^3 r^2/(3n^2)$. Algebra: `field_simp; ring` handles the cancellation.",
     "significance": "key",
     "relatedConcepts": [
-      "O(1/n²) convergence",
+      "O(1/n\u00b2) convergence",
       "Taylor cubic term",
       "Archimedes 96-gon",
       "explicit constants",
@@ -136,9 +136,9 @@
     "id": "error-positive",
     "line": 204,
     "endLine": 228,
-    "type": "theorem",
-    "label": "inscribed_area_error_positive (πr² - Aₙ > 0 for n≥3, r>0)",
-    "mathContext": "For $n \\geq 3$ and $r > 0$: $\\sin(2\\pi/n) < 2\\pi/n$ (from `Real.sin_lt`, since $2\\pi/n > 0$), so $A_n = nr^2/2 \\cdot \\sin(2\\pi/n) < nr^2/2 \\cdot 2\\pi/n = \\pi r^2$. The condition $n \\geq 3$ ensures $2\\pi/n \\leq 2\\pi/3$, keeping the argument of $\\sin$ in a valid range. The $n \\geq 3$ threshold is tight: $n=1$ (monogon) and $n=2$ (digon) are degenerate — the polygon has zero area, so $A_1 = A_2 = 0 < \\pi r^2$ holds trivially.",
+    "type": "insight",
+    "label": "inscribed_area_error_positive (\u03c0r\u00b2 - A\u2099 > 0 for n\u22653, r>0)",
+    "mathContext": "For $n \\geq 3$ and $r > 0$: $\\sin(2\\pi/n) < 2\\pi/n$ (from `Real.sin_lt`, since $2\\pi/n > 0$), so $A_n = nr^2/2 \\cdot \\sin(2\\pi/n) < nr^2/2 \\cdot 2\\pi/n = \\pi r^2$. The condition $n \\geq 3$ ensures $2\\pi/n \\leq 2\\pi/3$, keeping the argument of $\\sin$ in a valid range. The $n \\geq 3$ threshold is tight: $n=1$ (monogon) and $n=2$ (digon) are degenerate \u2014 the polygon has zero area, so $A_1 = A_2 = 0 < \\pi r^2$ holds trivially.",
     "significance": "key",
     "relatedConcepts": [
       "strict inequality",
@@ -150,7 +150,7 @@
     "prerequisites": [
       "Real.sin_lt",
       "inscribed_area_convergence_rate",
-      "n ≥ 3 condition"
+      "n \u2265 3 condition"
     ],
     "content": "Strict positivity confirms that **inscribed polygons always underestimate** the circle area. Geometrically this is obvious (an inscribed polygon is contained in the circle), but the Lean proof makes it formal via `Real.sin_lt`. The $n \\geq 3$ condition marks the first genuine polygon (equilateral triangle). Combined with the upper bound, this gives a **two-sided squeeze**: the inscribed area is neither zero nor the full circle area, and is within $2\\pi^3r^2/(3n^2)$ of $\\pi r^2$.",
     "proofId": "area-of-circle-oq-03-oq-01",

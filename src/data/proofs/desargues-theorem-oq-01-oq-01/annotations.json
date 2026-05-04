@@ -2,73 +2,143 @@
   {
     "id": "ann-moulton-line-def",
     "proofId": "desargues-theorem-oq-01-oq-01",
-    "range": { "startLine": 48, "endLine": 88 },
+    "range": {
+      "startLine": 48,
+      "endLine": 88
+    },
     "type": "definition",
     "title": "The Moulton Line: A Piecewise-Bent Affine Line",
-    "content": "`onMoultonLine m b P` is a piecewise predicate using classical if-then-else. For m ≤ 0: ordinary line y = mx + b for all x. For m > 0 with P.1 ≤ 0 (left half-plane): also y = mx + b. For m > 0 with P.1 > 0 (right half-plane): slope is halved, y = (m/2)·x + b. The meeting point is x = 0 where both expressions give y = b — so the bent line is continuous at the y-axis. `MoultonCollinear` disjunctively covers vertical lines (shared x-coordinate) and Moulton non-vertical lines. Six helper lemmas split cases for convenient use: three for constructing membership, three for extracting the equation from membership.",
+    "content": "`onMoultonLine m b P` is a piecewise predicate using classical if-then-else. For m \u2264 0: ordinary line y = mx + b for all x. For m > 0 with P.1 \u2264 0 (left half-plane): also y = mx + b. For m > 0 with P.1 > 0 (right half-plane): slope is halved, y = (m/2)\u00b7x + b. The meeting point is x = 0 where both expressions give y = b \u2014 so the bent line is continuous at the y-axis. `MoultonCollinear` disjunctively covers vertical lines (shared x-coordinate) and Moulton non-vertical lines. Six helper lemmas split cases for convenient use: three for constructing membership, three for extracting the equation from membership.",
     "mathContext": "$\\text{onMoultonLine}(m,b,P) := \\begin{cases} P_y = mP_x + b & m \\leq 0 \\\\ P_y = mP_x + b & m > 0,\\ P_x \\leq 0 \\\\ P_y = \\frac{m}{2}P_x + b & m > 0,\\ P_x > 0 \\end{cases}$ The bend at $x=0$ preserves continuity ($y = b$ at $x=0$ from both sides). Vertical lines use shared $x$-coordinate.",
     "significance": "critical",
-    "prerequisites": ["affine plane axioms", "Classical.propDecidable for if-then-else on Prop", "real arithmetic"],
-    "relatedConcepts": ["Desargues's theorem", "non-Desarguesian planes", "piecewise line definition", "Lean 4 Classical.propDecidable"]
+    "prerequisites": [
+      "affine plane axioms",
+      "Classical.propDecidable for if-then-else on Prop",
+      "real arithmetic"
+    ],
+    "relatedConcepts": [
+      "Desargues's theorem",
+      "non-Desarguesian planes",
+      "piecewise line definition",
+      "Lean 4 Classical.propDecidable"
+    ]
   },
   {
     "id": "ann-counterexample-points",
     "proofId": "desargues-theorem-oq-01-oq-01",
-    "range": { "startLine": 90, "endLine": 101 },
+    "range": {
+      "startLine": 90,
+      "endLine": 101
+    },
     "type": "concept",
     "title": "The Moulton Counterexample: Rational-Coordinate Data",
-    "content": "Nine rational-coordinate points define the counterexample. Center of perspectivity O = (0,0). First triangle: A = (-2,3), B = (3,1), C = (0,-1). Second triangle: A' = (-4,6), B' = (9,3), C' = (0,-4). Note A' = 2A (on the same ray from O), B' = 3B (same ray), C' = 4C (same ray) — this makes perspectivity from O straightforward to verify. Intersection points: P = AB ∩ A'B' = (-17,9), Q = BC ∩ B'C' = (27,17), R = CA ∩ C'A' = (-6,11). All defined as `private def` since they are only used in the theorems below.",
+    "content": "Nine rational-coordinate points define the counterexample. Center of perspectivity O = (0,0). First triangle: A = (-2,3), B = (3,1), C = (0,-1). Second triangle: A' = (-4,6), B' = (9,3), C' = (0,-4). Note A' = 2A (on the same ray from O), B' = 3B (same ray), C' = 4C (same ray) \u2014 this makes perspectivity from O straightforward to verify. Intersection points: P = AB \u2229 A'B' = (-17,9), Q = BC \u2229 B'C' = (27,17), R = CA \u2229 C'A' = (-6,11). All defined as `private def` since they are only used in the theorems below.",
     "mathContext": "$A' = 2A$, $B' = 3B$, $C' = 4C$ (scalar multiples from origin $O$), so $O,A,A'$ are collinear, etc. Intersections: $P = \\text{line}(A,B) \\cap \\text{line}(A',B') = (-17,9)$; $Q = \\text{line}(B,C) \\cap \\text{line}(B',C') = (27,17)$; $R = \\text{line}(C,A) \\cap \\text{line}(C',A') = (-6,11)$.",
     "significance": "key",
-    "prerequisites": ["affine coordinates in ℝ²", "perspectivity from a point", "line intersection computation"],
-    "relatedConcepts": ["perspectivity from a point", "Desargues's theorem statement", "rational counterexamples"]
+    "prerequisites": [
+      "affine coordinates in \u211d\u00b2",
+      "perspectivity from a point",
+      "line intersection computation"
+    ],
+    "relatedConcepts": [
+      "perspectivity from a point",
+      "Desargues's theorem statement",
+      "rational counterexamples"
+    ]
   },
   {
     "id": "ann-perspectivity",
     "proofId": "desargues-theorem-oq-01-oq-01",
-    "range": { "startLine": 103, "endLine": 129 },
-    "type": "theorem",
+    "range": {
+      "startLine": 103,
+      "endLine": 129
+    },
+    "type": "insight",
     "title": "Perspectivity Verified: O,A,A'; O,B,B'; O,C,C'",
-    "content": "Three lemmas establish that ABC and A'B'C' are in Moulton perspective from O. `collinear_OAA'`: slope -3/2 ≤ 0 → ordinary line, all three points verified by norm_num. `collinear_OBB'`: left-slope 2/3 > 0; O is at x=0 (left boundary, onML_pos_left), B and B' are at x>0 (onML_pos_right with right-slope 1/3). `collinear_OCC'`: vertical case (x=0 for all three) → left branch of MoultonCollinear. Each proof uses the corresponding helper lemma with norm_num closing all arithmetic goals.",
-    "mathContext": "Line $OA$: slope $\\frac{3-0}{-2-0} = -\\frac{3}{2} \\leq 0$ (ordinary). Line $OB$: slope $\\frac{1}{3} > 0$, left-slope $m = \\frac{2}{3}$; $B = (3,1)$ at $x>0$ uses right-slope $\\frac{1}{3}$: $1 = \\frac{1}{3} \\cdot 3 + 0$. ✓. Line $OC$: $C = C' = (0,*)$, vertical $x=0$.",
+    "content": "Three lemmas establish that ABC and A'B'C' are in Moulton perspective from O. `collinear_OAA'`: slope -3/2 \u2264 0 \u2192 ordinary line, all three points verified by norm_num. `collinear_OBB'`: left-slope 2/3 > 0; O is at x=0 (left boundary, onML_pos_left), B and B' are at x>0 (onML_pos_right with right-slope 1/3). `collinear_OCC'`: vertical case (x=0 for all three) \u2192 left branch of MoultonCollinear. Each proof uses the corresponding helper lemma with norm_num closing all arithmetic goals.",
+    "mathContext": "Line $OA$: slope $\\frac{3-0}{-2-0} = -\\frac{3}{2} \\leq 0$ (ordinary). Line $OB$: slope $\\frac{1}{3} > 0$, left-slope $m = \\frac{2}{3}$; $B = (3,1)$ at $x>0$ uses right-slope $\\frac{1}{3}$: $1 = \\frac{1}{3} \\cdot 3 + 0$. \u2713. Line $OC$: $C = C' = (0,*)$, vertical $x=0$.",
     "significance": "key",
-    "prerequisites": ["onML_neg_slope / onML_pos_left / onML_pos_right helper lemmas", "norm_num", "simp with point definitions"],
-    "relatedConcepts": ["Moulton collinearity cases", "perspectivity from a point", "bent line positive-slope verification"]
+    "prerequisites": [
+      "onML_neg_slope / onML_pos_left / onML_pos_right helper lemmas",
+      "norm_num",
+      "simp with point definitions"
+    ],
+    "relatedConcepts": [
+      "Moulton collinearity cases",
+      "perspectivity from a point",
+      "bent line positive-slope verification"
+    ]
   },
   {
     "id": "ann-intersection-points",
     "proofId": "desargues-theorem-oq-01-oq-01",
-    "range": { "startLine": 131, "endLine": 210 },
+    "range": {
+      "startLine": 131,
+      "endLine": 210
+    },
     "type": "concept",
     "title": "Intersection Points: Ordinary Lines for P and R, Bent for Q",
-    "content": "18 incidence lemmas verify that P, Q, R lie on the corresponding side pairs. P = (-17,9): sides AB (slope -2/5) and A'B' (slope -3/13) both have negative slope → ordinary Moulton lines → onML_neg_slope. R = (-6,11): sides CA (slope -2) and C'A' (slope -5/2) also negative → ordinary. Q = (27,17): sides BC (left-slope 4/3, right-slope 2/3) and B'C' (left-slope 14/9, right-slope 7/9) have positive slope and Q is at x=27 > 0 → right-half Moulton lines via onML_pos_right. The key point: P and R are computed by ordinary linear algebra (the Moulton bending is invisible for negative-slope lines). Q is on the positive-slope right half.",
-    "mathContext": "Line $AB$: slope $\\frac{1-3}{3-(-2)} = -\\frac{2}{5}$, intercept $b = 3 - (-\\frac{2}{5})(-2) = \\frac{11}{5}$. Check $P = (-17,9)$: $(-\\frac{2}{5})(-17) + \\frac{11}{5} = \\frac{34+11}{5} = 9$. ✓. Line $BC$: slope $\\frac{-1-1}{0-3} = \\frac{4}{3}$ (left-slope); right-slope $= \\frac{2}{3}$; check $Q=(27,17)$: $\\frac{2}{3} \\cdot 27 - 1 = 18-1 = 17$. ✓.",
+    "content": "18 incidence lemmas verify that P, Q, R lie on the corresponding side pairs. P = (-17,9): sides AB (slope -2/5) and A'B' (slope -3/13) both have negative slope \u2192 ordinary Moulton lines \u2192 onML_neg_slope. R = (-6,11): sides CA (slope -2) and C'A' (slope -5/2) also negative \u2192 ordinary. Q = (27,17): sides BC (left-slope 4/3, right-slope 2/3) and B'C' (left-slope 14/9, right-slope 7/9) have positive slope and Q is at x=27 > 0 \u2192 right-half Moulton lines via onML_pos_right. The key point: P and R are computed by ordinary linear algebra (the Moulton bending is invisible for negative-slope lines). Q is on the positive-slope right half.",
+    "mathContext": "Line $AB$: slope $\\frac{1-3}{3-(-2)} = -\\frac{2}{5}$, intercept $b = 3 - (-\\frac{2}{5})(-2) = \\frac{11}{5}$. Check $P = (-17,9)$: $(-\\frac{2}{5})(-17) + \\frac{11}{5} = \\frac{34+11}{5} = 9$. \u2713. Line $BC$: slope $\\frac{-1-1}{0-3} = \\frac{4}{3}$ (left-slope); right-slope $= \\frac{2}{3}$; check $Q=(27,17)$: $\\frac{2}{3} \\cdot 27 - 1 = 18-1 = 17$. \u2713.",
     "significance": "supporting",
-    "prerequisites": ["onML_neg_slope / onML_pos_right helper lemmas", "norm_num", "rational linear algebra"],
-    "relatedConcepts": ["ordinary vs. bent Moulton lines", "side intersection computation", "negative-slope symmetry"]
+    "prerequisites": [
+      "onML_neg_slope / onML_pos_right helper lemmas",
+      "norm_num",
+      "rational linear algebra"
+    ],
+    "relatedConcepts": [
+      "ordinary vs. bent Moulton lines",
+      "side intersection computation",
+      "negative-slope symmetry"
+    ]
   },
   {
     "id": "ann-desargues-fails",
     "proofId": "desargues-theorem-oq-01-oq-01",
-    "range": { "startLine": 226, "endLine": 261 },
-    "type": "theorem",
+    "range": {
+      "startLine": 226,
+      "endLine": 261
+    },
+    "type": "insight",
     "title": "desargues_fails: The Key Contradiction via Linear Algebra",
-    "content": "The proof proceeds by contradiction assuming MoultonCollinear P Q R. Three cases: (1) **Vertical**: P.1 = -17 ≠ 27 = Q.1, closed by norm_num. (2) **m ≤ 0**: All three points lie on an ordinary line. But hP' (9 = m(-17)+b) and hQ' (17 = m·27+b) give 8 = 44m, so m = 2/11 > 0, contradicting m ≤ 0 — closed by linarith. (3) **m > 0**: P.1=-17 and R.1=-6 are ≤ 0 (left half), Q.1=27 > 0 (right half). From P: 9 = m(-17)+b; from Q: 17 = (m/2)·27+b; `linear_combination hP' - hR'` gives 11m = 2 (i.e., m = 2/11). Then `linear_combination 2*hP' - 2*hQ'` gives 61m = 16 (i.e., m = 16/61). Since 11·(16/61) ≠ 2·61/61, `linarith` closes the contradiction.",
+    "content": "The proof proceeds by contradiction assuming MoultonCollinear P Q R. Three cases: (1) **Vertical**: P.1 = -17 \u2260 27 = Q.1, closed by norm_num. (2) **m \u2264 0**: All three points lie on an ordinary line. But hP' (9 = m(-17)+b) and hQ' (17 = m\u00b727+b) give 8 = 44m, so m = 2/11 > 0, contradicting m \u2264 0 \u2014 closed by linarith. (3) **m > 0**: P.1=-17 and R.1=-6 are \u2264 0 (left half), Q.1=27 > 0 (right half). From P: 9 = m(-17)+b; from Q: 17 = (m/2)\u00b727+b; `linear_combination hP' - hR'` gives 11m = 2 (i.e., m = 2/11). Then `linear_combination 2*hP' - 2*hQ'` gives 61m = 16 (i.e., m = 16/61). Since 11\u00b7(16/61) \u2260 2\u00b761/61, `linarith` closes the contradiction.",
     "mathContext": "From $P$-eq and $Q$-eq: $9 = m(-17)+b$ and $17 = \\frac{m}{2}(27)+b$. Subtract: $-8 = -17m - \\frac{27m}{2} = -\\frac{61m}{2}$, so $m = \\frac{16}{61}$. From $P$-eq and $R$-eq: $9 - 11 = m(-17+6) = -11m$, so $m = \\frac{2}{11}$. But $\\frac{16}{61} \\neq \\frac{2}{11}$ (cross-multiply: $16 \\cdot 11 = 176 \\neq 122 = 2 \\cdot 61$). Contradiction.",
     "significance": "critical",
-    "prerequisites": ["onML_eq_neg / onML_eq_pos_left / onML_eq_pos_right helper lemmas", "linarith for linear arithmetic", "linear_combination tactic", "by_cases on m ≤ 0"],
-    "relatedConcepts": ["Moulton line equations", "linear_combination tactic in Lean 4", "contradiction by linear system", "linarith for numeric contradictions"]
+    "prerequisites": [
+      "onML_eq_neg / onML_eq_pos_left / onML_eq_pos_right helper lemmas",
+      "linarith for linear arithmetic",
+      "linear_combination tactic",
+      "by_cases on m \u2264 0"
+    ],
+    "relatedConcepts": [
+      "Moulton line equations",
+      "linear_combination tactic in Lean 4",
+      "contradiction by linear system",
+      "linarith for numeric contradictions"
+    ]
   },
   {
     "id": "ann-full-counterexample",
     "proofId": "desargues-theorem-oq-01-oq-01",
-    "range": { "startLine": 263, "endLine": 296 },
-    "type": "theorem",
+    "range": {
+      "startLine": 263,
+      "endLine": 296
+    },
+    "type": "insight",
     "title": "moulton_counterexample: Full Desargues Failure Certificate",
-    "content": "`moulton_counterexample` is a single large conjunction packaging the complete certificate: (1) three perspectivity facts (collinear_OAA', collinear_OBB', collinear_OCC'), (2) eighteen incidence facts (each of P, Q, R on both corresponding sides of both triangles), and (3) the non-collinearity fact `desargues_fails`. The proof is a term-mode anonymous constructor ⟨..., ...⟩ listing all 21 components. This makes the counterexample machine-checkable and self-contained — a single theorem whose type is the negation of Desargues's theorem in the Moulton plane.",
-    "mathContext": "Desargues's theorem asserts: if two triangles $ABC$, $A'B'C'$ are in perspective from a point (i.e., $O,A,A'$; $O,B,B'$; $O,C,C'$ collinear), then their side-intersection points $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. `moulton_counterexample` exhibits all hypotheses ✓ and conclusion ✗, formally refuting Desargues in the Moulton affine plane.",
+    "content": "`moulton_counterexample` is a single large conjunction packaging the complete certificate: (1) three perspectivity facts (collinear_OAA', collinear_OBB', collinear_OCC'), (2) eighteen incidence facts (each of P, Q, R on both corresponding sides of both triangles), and (3) the non-collinearity fact `desargues_fails`. The proof is a term-mode anonymous constructor \u27e8..., ...\u27e9 listing all 21 components. This makes the counterexample machine-checkable and self-contained \u2014 a single theorem whose type is the negation of Desargues's theorem in the Moulton plane.",
+    "mathContext": "Desargues's theorem asserts: if two triangles $ABC$, $A'B'C'$ are in perspective from a point (i.e., $O,A,A'$; $O,B,B'$; $O,C,C'$ collinear), then their side-intersection points $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. `moulton_counterexample` exhibits all hypotheses \u2713 and conclusion \u2717, formally refuting Desargues in the Moulton affine plane.",
     "significance": "key",
-    "prerequisites": ["all Part III/IV lemmas", "desargues_fails", "Lean 4 anonymous constructor syntax"],
-    "relatedConcepts": ["Desargues's theorem statement", "Lean 4 conjunction packaging", "machine-checkable counterexamples", "affine perspective from a point"]
+    "prerequisites": [
+      "all Part III/IV lemmas",
+      "desargues_fails",
+      "Lean 4 anonymous constructor syntax"
+    ],
+    "relatedConcepts": [
+      "Desargues's theorem statement",
+      "Lean 4 conjunction packaging",
+      "machine-checkable counterexamples",
+      "affine perspective from a point"
+    ]
   }
 ]

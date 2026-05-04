@@ -8,7 +8,7 @@
       "endLine": 20
     },
     "title": "Module Documentation and Problem Statement",
-    "content": "The module docstring introduces Erdős Problem #278 on the maximum covering density of congruence systems. Given moduli $A = \\{n_1 < \\cdots < n_r\\}$, choose residues $a_1, \\ldots, a_r$ to maximize the density of integers $m$ satisfying $m \\equiv a_i \\pmod{n_i}$ for some $i$. Simpson (1986) settled the minimum density case: it is achieved when all residues are equal, yielding the inclusion-exclusion formula $\\sum 1/n_i - \\sum 1/\\text{lcm}(n_i, n_j) + \\cdots$. The maximum density question remains OPEN.",
+    "content": "The module docstring introduces Erd\u0151s Problem #278 on the maximum covering density of congruence systems. Given moduli $A = \\{n_1 < \\cdots < n_r\\}$, choose residues $a_1, \\ldots, a_r$ to maximize the density of integers $m$ satisfying $m \\equiv a_i \\pmod{n_i}$ for some $i$. Simpson (1986) settled the minimum density case: it is achieved when all residues are equal, yielding the inclusion-exclusion formula $\\sum 1/n_i - \\sum 1/\\text{lcm}(n_i, n_j) + \\cdots$. The maximum density question remains OPEN.",
     "mathContext": "Coverage density: $d(A, \\mathbf{a}) = \\lim_{N \\to \\infty} |\\{m \\in [0,N) : \\exists i,\\, m \\equiv a_i \\pmod{n_i}\\}|/N$. Min density = inclusion-exclusion sum (Simpson). Max density is open.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -99,7 +99,7 @@
     },
     "title": "Congruence System",
     "content": "A congruence system consists of a finite set of moduli $\\{n_1, \\ldots, n_r\\}$ with chosen residues $a_i$ for each modulus $n_i$. Each pair $(n_i, a_i)$ defines an arithmetic progression $\\{m : m \\equiv a_i \\pmod{n_i}\\}$. The positivity condition $n_i > 0$ ensures well-defined modular arithmetic.",
-    "mathContext": "A congruence system $\\mathcal{S} = \\{a_i \\pmod{n_i}\\}_{i=1}^r$ covers $m$ if $m \\equiv a_i \\pmod{n_i}$ for some $i$. This is the setup for **covering systems** studied by Erdős from the 1950s onward.",
+    "mathContext": "A congruence system $\\mathcal{S} = \\{a_i \\pmod{n_i}\\}_{i=1}^r$ covers $m$ if $m \\equiv a_i \\pmod{n_i}$ for some $i$. This is the setup for **covering systems** studied by Erd\u0151s from the 1950s onward.",
     "significance": "key",
     "relatedConcepts": [
       "covering systems",
@@ -231,8 +231,8 @@
       "startLine": 126,
       "endLine": 145
     },
-    "title": "Density Bounds: 0 ≤ δ ≤ 1",
-    "content": "Three proved results: density is non-negative (ratio of naturals), at most 1 (filtered set is a subset of the range), and the combined bound $0 \\leq \\delta \\leq 1$. These are the only fully proved theorems in the file — everything else is axiomatized.",
+    "title": "Density Bounds: 0 \u2264 \u03b4 \u2264 1",
+    "content": "Three proved results: density is non-negative (ratio of naturals), at most 1 (filtered set is a subset of the range), and the combined bound $0 \\leq \\delta \\leq 1$. These are the only fully proved theorems in the file \u2014 everything else is axiomatized.",
     "mathContext": "$0 \\leq \\delta(\\mathcal{S}) \\leq 1$ because $0 \\leq |S| \\leq L$ for $S \\subseteq \\{0, \\ldots, L-1\\}$. The proof of $\\delta \\leq 1$ uses `div_le_one` with the cast $L > 0$ from `systemLCM_pos`.",
     "significance": "key",
     "relatedConcepts": [
@@ -260,7 +260,7 @@
     "significance": "supporting",
     "relatedConcepts": [
       "inclusion-exclusion principle",
-      "Möbius function",
+      "M\u00f6bius function",
       "sieve methods"
     ],
     "prerequisites": [
@@ -366,7 +366,7 @@
       "startLine": 263,
       "endLine": 373
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complement Count via CRT (Main Technical Lemma)",
     "content": "The file's largest proved result (~110 lines): for pairwise coprime moduli $n_1, \\ldots, n_k$, the number of integers in $[0, \\prod n_i)$ not covered by the congruence system with residues $a_i$ is exactly $\\prod(n_i - 1)$. The proof uses `Finset.induction` on the moduli set, with the inductive step establishing that each modulus $n$ contributes a factor of $(n-1)/n$ to the uncovered proportion via the CRT-based residue shift argument. This is the heart of the coprime density formula.",
     "mathContext": "For pairwise coprime $n_1, \\ldots, n_k$: $|\\{m \\in [0, \\prod n_i) : m \\not\\equiv a_i \\pmod{n_i} \\; \\forall i\\}| = \\prod_{i=1}^k (n_i - 1)$. Dividing by $\\prod n_i$: uncovered fraction $= \\prod(1 - 1/n_i)$, so coverage density $= 1 - \\prod(1 - 1/n_i)$.",
@@ -390,7 +390,7 @@
       "startLine": 474,
       "endLine": 490
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Equal Residues Minimize Density (Simpson's Application)",
     "content": "Proves that choosing all residues equal ($a_i = a$ for all $i$) minimizes the coverage density: `equal_residues_minimize` shows $\\delta(\\text{sys}_{\\text{all-}a}) \\leq \\delta(\\text{sys})$ for any system. This uses `simpson_theorem` (axiomatized): Simpson proved that the minimum density over all residue choices equals $1 - \\prod(1 - 1/n_i)$, achieved exactly when all residues are equal (maximizing overlaps between congruence classes).",
     "mathContext": "$\\delta_{\\min}(n_1, \\ldots, n_k) = 1 - \\prod_{i=1}^k (1 - 1/n_i)$, achieved by $a_1 = a_2 = \\cdots = a_k = a$ (any common $a$). Equal residues maximize overlaps between arithmetic progressions.",
@@ -414,7 +414,7 @@
       "startLine": 497,
       "endLine": 551
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Coprime Density Formula: All Residue Choices Give Same Density",
     "content": "`coprime_density_formula`: for **pairwise coprime** moduli, every choice of residues gives the same coverage density $1 - \\prod(1 - 1/n_i)$. This is the CRT uniformity result: when moduli are coprime, the covering pattern is determined solely by the moduli (not the residues), because CRT gives a bijection between residue tuples and elements of $\\mathbb{Z}/\\prod n_i$. The proof uses `complement_count_coprime` to show uncovered count is $\\prod(n_i-1)$ regardless of residues.",
     "mathContext": "For coprime $n_1, \\ldots, n_k$: $\\delta(a_1, \\ldots, a_k) = 1 - \\prod(1 - 1/n_i)$ for ALL choices of $a_i$. Equivalently: $\\delta_{\\max} = \\delta_{\\min} = 1 - \\prod(1 - 1/n_i)$.",
@@ -437,9 +437,9 @@
       "startLine": 560,
       "endLine": 575
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Coprime Moduli: Max = Min Density",
-    "content": "`coprime_max_eq_min`: for pairwise coprime moduli, the maximum and minimum coverage densities coincide. This is a direct corollary of `coprime_density_formula` — if all residue choices give the same density, then the supremum and infimum over choices are trivially equal. This makes the non-coprime case the interesting one for Problem #278.",
+    "content": "`coprime_max_eq_min`: for pairwise coprime moduli, the maximum and minimum coverage densities coincide. This is a direct corollary of `coprime_density_formula` \u2014 if all residue choices give the same density, then the supremum and infimum over choices are trivially equal. This makes the non-coprime case the interesting one for Problem #278.",
     "mathContext": "Coprime $\\Rightarrow$ $\\delta_{\\max}(n_1, \\ldots, n_k) = \\delta_{\\min}(n_1, \\ldots, n_k) = 1 - \\prod(1 - 1/n_i)$. The gap $\\delta_{\\max} - \\delta_{\\min} > 0$ only occurs for non-coprime moduli.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -460,7 +460,7 @@
       "startLine": 603,
       "endLine": 644
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Singleton and Single-Modulus Density Results",
     "content": "Three results for the simplest cases: `singleton_coverage_density` proves $\\delta(\\{n\\}, a) = 1/n$ for any modulus $n$ and residue $a$. `single_modulus_density` proves max = min = $1/n$ for a single modulus. These establish the base case from which the general coprime density formula builds by induction.",
     "mathContext": "For $k = 1$: $\\delta(\\{n\\}) = 1/n$, $\\delta_{\\max}(\\{n\\}) = \\delta_{\\min}(\\{n\\}) = 1/n$. The formula $1 - (1 - 1/n) = 1/n$ matches.",

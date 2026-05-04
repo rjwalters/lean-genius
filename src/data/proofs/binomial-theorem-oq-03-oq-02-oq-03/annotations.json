@@ -6,10 +6,10 @@
       "startLine": 43,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Key Inequality: log(1+t) > t/(1+t)",
-    "content": "For t > 0, t/(1+t) < log(1+t). Proof: apply Real.add_one_lt_exp to x = -t/(1+t) ≠ 0. Get 1/(1+t) < exp(-t/(1+t)). Take log of both sides (1/(1+t) > 0), then use log_inv to rewrite log(1/(1+t)) = -log(1+t).",
-    "mathContext": "Real.add_one_lt_exp: x ≠ 0 → 1+x < exp(x). Applied to -t/(1+t) and then log taken of both sides.",
+    "content": "For t > 0, t/(1+t) < log(1+t). Proof: apply Real.add_one_lt_exp to x = -t/(1+t) \u2260 0. Get 1/(1+t) < exp(-t/(1+t)). Take log of both sides (1/(1+t) > 0), then use log_inv to rewrite log(1/(1+t)) = -log(1+t).",
+    "mathContext": "Real.add_one_lt_exp: x \u2260 0 \u2192 1+x < exp(x). Applied to -t/(1+t) and then log taken of both sides.",
     "significance": "key",
     "relatedConcepts": [
       "logarithm inequality",
@@ -29,10 +29,10 @@
       "startLine": 74,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Derivative of g(t) = log(1+t)/t is Negative",
-    "content": "HasDerivAt (log(1+·)/·) ((t/(1+t) - log(1+t))/t²) t, and this derivative is strictly negative. The HasDerivAt is computed via the quotient rule (HasDerivAt.div). The negativity uses the key inequality: t/(1+t) < log(1+t) implies the numerator is negative.",
-    "mathContext": "g'(t) = (1/(1+t)·t - log(1+t))/t². The numerator equals t/(1+t) - log(1+t) < 0 by log_one_plus_gt.",
+    "content": "HasDerivAt (log(1+\u00b7)/\u00b7) ((t/(1+t) - log(1+t))/t\u00b2) t, and this derivative is strictly negative. The HasDerivAt is computed via the quotient rule (HasDerivAt.div). The negativity uses the key inequality: t/(1+t) < log(1+t) implies the numerator is negative.",
+    "mathContext": "g'(t) = (1/(1+t)\u00b7t - log(1+t))/t\u00b2. The numerator equals t/(1+t) - log(1+t) < 0 by log_one_plus_gt.",
     "significance": "key",
     "relatedConcepts": [
       "quotient rule",
@@ -51,9 +51,9 @@
       "startLine": 113,
       "endLine": 123
     },
-    "type": "theorem",
-    "title": "g(t) = log(1+t)/t is Strictly Decreasing on (0,∞)",
-    "content": "StrictAntiOn (log(1+·)/·) (Ioi 0). The proof applies strictAntiOn_of_deriv_neg (convex_Ioi 0), providing continuity (ContinuousOn) and the negative derivative (via HasDerivAt.deriv to convert HasDerivAt to deriv).",
+    "type": "insight",
+    "title": "g(t) = log(1+t)/t is Strictly Decreasing on (0,\u221e)",
+    "content": "StrictAntiOn (log(1+\u00b7)/\u00b7) (Ioi 0). The proof applies strictAntiOn_of_deriv_neg (convex_Ioi 0), providing continuity (ContinuousOn) and the negative derivative (via HasDerivAt.deriv to convert HasDerivAt to deriv).",
     "mathContext": "strictAntiOn_of_deriv_neg: on a convex set, continuous f with negative deriv everywhere is strictly anti-monotone.",
     "significance": "key",
     "relatedConcepts": [
@@ -75,8 +75,8 @@
       "endLine": 147
     },
     "type": "concept",
-    "title": "Bridge Lemma: n·log(1+1/n) = g(1/n) is Strictly Increasing",
-    "content": "nlog_strictMono converts the discrete monotonicity problem to continuous analysis. The key rewrite: n·log(1+1/n) = log(1+1/n)/(1/n), which equals g(1/n) where g(t) = log(1+t)/t. Since g is strictly decreasing (Part III) and 1/n < 1/m for m < n, we get g(1/n) > g(1/m), hence n·log(1+1/n) > m·log(1+1/m). The field_simp tactic handles the algebraic rewrite m·log(1+1/m) = log(1+1/m)/(1/m), and one_div_lt_one_div_of_lt converts m < n to 1/n < 1/m.",
+    "title": "Bridge Lemma: n\u00b7log(1+1/n) = g(1/n) is Strictly Increasing",
+    "content": "nlog_strictMono converts the discrete monotonicity problem to continuous analysis. The key rewrite: n\u00b7log(1+1/n) = log(1+1/n)/(1/n), which equals g(1/n) where g(t) = log(1+t)/t. Since g is strictly decreasing (Part III) and 1/n < 1/m for m < n, we get g(1/n) > g(1/m), hence n\u00b7log(1+1/n) > m\u00b7log(1+1/m). The field_simp tactic handles the algebraic rewrite m\u00b7log(1+1/m) = log(1+1/m)/(1/m), and one_div_lt_one_div_of_lt converts m < n to 1/n < 1/m.",
     "mathContext": "$n \\cdot \\log(1+1/n) = \\frac{\\log(1+1/n)}{1/n} = g(1/n)$. Since $g$ is strictly decreasing and $1/n < 1/m$ when $m < n$: $g(1/n) > g(1/m)$, i.e., $n \\cdot \\log(1+1/n) > m \\cdot \\log(1+1/m)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -97,10 +97,10 @@
       "startLine": 147,
       "endLine": 159
     },
-    "type": "theorem",
-    "title": "Main: (1+1/m)^m < (1+1/n)^n for 1 ≤ m < n",
-    "content": "one_plus_inv_pow_strictMono: for 1 ≤ m < n, (1+1/m)^m < (1+1/n)^n. Proof: rewrite both sides as exp(log(...)), use exp_lt_exp + log_pow + push_cast, then apply nlog_strictMono which compares g(1/m) < g(1/n) via the strict anti-monotonicity of g and 1/n < 1/m.",
-    "mathContext": "(1+1/n)^n = exp(n·log(1+1/n)) = exp(g(1/n)). StrictAntiOn g + 1/n < 1/m ⟹ g(1/n) > g(1/m) ⟹ exp comparison.",
+    "type": "insight",
+    "title": "Main: (1+1/m)^m < (1+1/n)^n for 1 \u2264 m < n",
+    "content": "one_plus_inv_pow_strictMono: for 1 \u2264 m < n, (1+1/m)^m < (1+1/n)^n. Proof: rewrite both sides as exp(log(...)), use exp_lt_exp + log_pow + push_cast, then apply nlog_strictMono which compares g(1/m) < g(1/n) via the strict anti-monotonicity of g and 1/n < 1/m.",
+    "mathContext": "(1+1/n)^n = exp(n\u00b7log(1+1/n)) = exp(g(1/n)). StrictAntiOn g + 1/n < 1/m \u27f9 g(1/n) > g(1/m) \u27f9 exp comparison.",
     "significance": "key",
     "relatedConcepts": [
       "strict monotonicity",
@@ -120,10 +120,10 @@
       "startLine": 167,
       "endLine": 203
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Bounds: 2 < (1+1/n)^n < 3",
-    "content": "Lower bound: (1+1/1)^1 = 2, so strict monotonicity gives 2 < (1+1/n)^n for n ≥ 2. Upper bound: 1+1/n ≤ exp(1/n) by Real.add_one_le_exp, so (1+1/n)^n ≤ exp(1/n)^n = exp(n·(1/n)) = exp(1). Since exp(1) < 3 by Real.exp_one_lt_d9, the bound follows.",
-    "mathContext": "The upper bound uses (1+x)^n ≤ exp(x·n) via the Bernoulli-type inequality, then Real.exp_nat_mul to simplify exp(1/n)^n = exp(1).",
+    "content": "Lower bound: (1+1/1)^1 = 2, so strict monotonicity gives 2 < (1+1/n)^n for n \u2265 2. Upper bound: 1+1/n \u2264 exp(1/n) by Real.add_one_le_exp, so (1+1/n)^n \u2264 exp(1/n)^n = exp(n\u00b7(1/n)) = exp(1). Since exp(1) < 3 by Real.exp_one_lt_d9, the bound follows.",
+    "mathContext": "The upper bound uses (1+x)^n \u2264 exp(x\u00b7n) via the Bernoulli-type inequality, then Real.exp_nat_mul to simplify exp(1/n)^n = exp(1).",
     "significance": "supporting",
     "relatedConcepts": [
       "bounds",

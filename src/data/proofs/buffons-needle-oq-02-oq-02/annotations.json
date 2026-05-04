@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "3D Arc Length via Component Integration",
-    "content": "Defines the arc length of a 3D curve γ : ℝ → ℝ × ℝ × ℝ over interval [a,b] as the integral of the speed ‖γ'(t)‖. The speed is computed component-wise using Prod.fst and Prod.snd projections to extract x(t), y(t), z(t), then deriv to differentiate each component. The Euclidean norm in ℝ³ becomes √(x'² + y'² + z'²) under the product type encoding.",
+    "content": "Defines the arc length of a 3D curve \u03b3 : \u211d \u2192 \u211d \u00d7 \u211d \u00d7 \u211d over interval [a,b] as the integral of the speed \u2016\u03b3'(t)\u2016. The speed is computed component-wise using Prod.fst and Prod.snd projections to extract x(t), y(t), z(t), then deriv to differentiate each component. The Euclidean norm in \u211d\u00b3 becomes \u221a(x'\u00b2 + y'\u00b2 + z'\u00b2) under the product type encoding.",
     "mathContext": "$$L(\\gamma, a, b) = \\int_a^b \\sqrt{x'(t)^2 + y'(t)^2 + z'(t)^2}\\, dt$$\nwhere $x = \\texttt{Prod.fst} \\circ \\gamma$, $y = \\texttt{Prod.fst} \\circ \\texttt{Prod.snd} \\circ \\gamma$, $z = \\texttt{Prod.snd} \\circ \\texttt{Prod.snd} \\circ \\gamma$.\n\nLean encodes $\\mathbb{R}^3$ as $\\mathbb{R} \\times (\\mathbb{R} \\times \\mathbb{R})$, so projections are nested.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -33,7 +33,7 @@
     },
     "type": "concept",
     "title": "3D Polygonal Path",
-    "content": "Defines a polygonal path in ℝ³ as a finite collection of n segments, each with a nonneg length. The segment directions are not stored — only lengths matter for the Buffon formula, reflecting the shape-independence principle. This matches the fully verified theory in BuffonsNeedleOQ02.lean: E[crossings] = totalLength/(2d) depends only on the sum of segment lengths, not their orientations.",
+    "content": "Defines a polygonal path in \u211d\u00b3 as a finite collection of n segments, each with a nonneg length. The segment directions are not stored \u2014 only lengths matter for the Buffon formula, reflecting the shape-independence principle. This matches the fully verified theory in BuffonsNeedleOQ02.lean: E[crossings] = totalLength/(2d) depends only on the sum of segment lengths, not their orientations.",
     "mathContext": "A 3D polygonal path with $n$ segments stores: segment lengths $L_1, \\ldots, L_n \\geq 0$. Expected crossings = $\\sum_i L_i / (2d)$ by linearity of expectation applied to individual segments, each contributing $L_i \\cdot E_{S^2}[|\\cos\\varphi|]/(2d) = L_i/(2 \\cdot 2d)$... wait, more precisely:\n$$E[\\text{crossings}] = \\frac{\\sum_i L_i}{2d}$$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -57,7 +57,7 @@
     },
     "type": "concept",
     "title": "Smooth 3D Expected Crossings Primitive",
-    "content": "Axiomatizes the expected number of crossings of a smooth C¹ curve with parallel planes as a noncomputable function. This is the primitive notion that smooth3D_buffon_eq constrains. The need for axiomatization reflects the Mathlib gap: computing this quantity formally requires the kinematic measure on the Grassmannian Gr(2,3) ≅ S², which is not yet in Mathlib.",
+    "content": "Axiomatizes the expected number of crossings of a smooth C\u00b9 curve with parallel planes as a noncomputable function. This is the primitive notion that smooth3D_buffon_eq constrains. The need for axiomatization reflects the Mathlib gap: computing this quantity formally requires the kinematic measure on the Grassmannian Gr(2,3) \u2245 S\u00b2, which is not yet in Mathlib.",
     "mathContext": "$$\\text{smooth3DExpectedCrossings}(\\gamma, a, b, d) \\in \\mathbb{R}$$\nThis represents $E_\\mu[\\#(\\gamma([a,b]) \\cap H)]$ where the expectation is over random parallel planes $H$ (spacing $d$) with respect to the translational-equivariant measure $\\mu$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -67,7 +67,7 @@
       "integral geometry"
     ],
     "prerequisites": [
-      "ContDiff ℝ 1 γ",
+      "ContDiff \u211d 1 \u03b3",
       "parallel plane measure",
       "integral geometry"
     ]
@@ -81,19 +81,19 @@
     },
     "type": "concept",
     "title": "Buffon-Barbier Theorem (Smooth 3D Case)",
-    "content": "The central axiom: for a C¹ curve γ of arc length L on [a,b] dropped on parallel planes with spacing d > 0, the expected number of crossings equals L/(2d). The crossing factor 1/2 = α₃ = E_{S²}[|cos φ|] was proved in BuffonsNeedleOQ02.lean for polygonal paths; here it is axiomatized for the smooth limit. The full proof requires arc length approximation by polygonal paths and continuity of the crossing functional.",
+    "content": "The central axiom: for a C\u00b9 curve \u03b3 of arc length L on [a,b] dropped on parallel planes with spacing d > 0, the expected number of crossings equals L/(2d). The crossing factor 1/2 = \u03b1\u2083 = E_{S\u00b2}[|cos \u03c6|] was proved in BuffonsNeedleOQ02.lean for polygonal paths; here it is axiomatized for the smooth limit. The full proof requires arc length approximation by polygonal paths and continuity of the crossing functional.",
     "mathContext": "$$E[\\text{crossings}] = \\frac{L}{2d} = \\frac{\\text{arcLength3D}(\\gamma, a, b)}{2d}$$\nwhere $L = \\int_a^b \\sqrt{x'^2+y'^2+z'^2}\\,dt$.\n\nProof sketch (axiomatized): $\\gamma$ is approximated by polygonal paths $P_k$ with $|P_k| \\to L$. By BuffonsNeedleOQ02: $E[\\text{crossings}(P_k)] = |P_k|/(2d) \\to L/(2d)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Barbier (1860)",
       "Cauchy-Crofton formula",
-      "3D crossing factor α₃ = 1/2",
-      "C¹ approximation by polygonal paths"
+      "3D crossing factor \u03b1\u2083 = 1/2",
+      "C\u00b9 approximation by polygonal paths"
     ],
     "prerequisites": [
       "arcLength3D",
       "smooth3DExpectedCrossings",
-      "ContDiff ℝ 1 γ",
+      "ContDiff \u211d 1 \u03b3",
       "BuffonsNeedleOQ02"
     ]
   },
@@ -104,9 +104,9 @@
       "startLine": 169,
       "endLine": 177
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Shape Independence in 3D",
-    "content": "Proves that two C¹ curves in ℝ³ with equal arc lengths have identical expected crossing counts, regardless of shape. The proof is a two-line rewrite: apply smooth3D_buffon_eq twice to reduce both expectations to arcLength/(2d), then substitute the hypothesis hSameLen. This is the 3D version of Barbier's theorem's most surprising corollary: a curved noodle of any shape dropped on parallel planes has the same expected crossings as a straight needle of equal length.",
+    "content": "Proves that two C\u00b9 curves in \u211d\u00b3 with equal arc lengths have identical expected crossing counts, regardless of shape. The proof is a two-line rewrite: apply smooth3D_buffon_eq twice to reduce both expectations to arcLength/(2d), then substitute the hypothesis hSameLen. This is the 3D version of Barbier's theorem's most surprising corollary: a curved noodle of any shape dropped on parallel planes has the same expected crossings as a straight needle of equal length.",
     "mathContext": "$$\\text{arcLength3D}(\\gamma_1) = \\text{arcLength3D}(\\gamma_2) \\implies E_1 = E_2$$\nThis is immediate from $E_i = L_i/(2d)$: the formula depends only on $L$, encoding shape independence.\n\nHistorically this meant: a wound-up thread has the same expected crossings as a straight thread of the same length.",
     "significance": "key",
     "relatedConcepts": [
@@ -127,9 +127,9 @@
       "startLine": 207,
       "endLine": 220
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Polygonal Approximation Convergence",
-    "content": "Proves that if a sequence of 3D polygonal paths has total lengths converging to L, then their expected crossings converge to L/(2d). The proof uses the continuity of the linear map x ↦ x/(2d): since expectedCrossings(P) = totalLength(P)/(2d), convergence of lengths implies convergence of expected crossings by Continuous.continuousAt.tendsto. This theorem is the formal justification for the smooth Buffon theorem's proof sketch.",
+    "content": "Proves that if a sequence of 3D polygonal paths has total lengths converging to L, then their expected crossings converge to L/(2d). The proof uses the continuity of the linear map x \u21a6 x/(2d): since expectedCrossings(P) = totalLength(P)/(2d), convergence of lengths implies convergence of expected crossings by Continuous.continuousAt.tendsto. This theorem is the formal justification for the smooth Buffon theorem's proof sketch.",
     "mathContext": "$$|P_k| \\to L \\implies E[\\text{crossings}(P_k)] \\to \\frac{L}{2d}$$\nwhere $|P_k| = \\sum_i L_i^{(k)}$.\n\nProof: $E_k = |P_k|/(2d)$ by polygonal3D_noodle (rfl). Since $x \\mapsto x/(2d)$ is continuous (continuous_id.div_const), $|P_k| \\to L$ implies $|P_k|/(2d) \\to L/(2d)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -151,13 +151,13 @@
       "startLine": 253,
       "endLine": 264
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "3D Crossings Strictly Less Than 2D",
-    "content": "Proves L/(2d) < 2L/(πd) for L, d > 0: a smooth curve in ℝ³ has fewer expected plane crossings than the same curve in ℝ². The inequality reduces to 1/2 < 2/π, which is π < 4, proved via pi_lt_four from Mathlib. The proof chain uses ring arithmetic to normalize both sides and mul_lt_mul_of_pos_right to reduce to the crossing factor comparison.",
-    "mathContext": "$$\\frac{L}{2d} < \\frac{2L}{\\pi d}$$\n$\\iff 1/2 < 2/\\pi \\iff \\pi < 4$.\n\nThe crossing factors: $\\alpha_3 = E_{S^2}[|\\cos\\varphi|] = 1/2$ vs $\\alpha_2 = E_{S^1}[|\\cos\\varphi|] = 2/\\pi \\approx 0.637$. Higher dimension → smaller average projection → fewer expected crossings.",
+    "content": "Proves L/(2d) < 2L/(\u03c0d) for L, d > 0: a smooth curve in \u211d\u00b3 has fewer expected plane crossings than the same curve in \u211d\u00b2. The inequality reduces to 1/2 < 2/\u03c0, which is \u03c0 < 4, proved via pi_lt_four from Mathlib. The proof chain uses ring arithmetic to normalize both sides and mul_lt_mul_of_pos_right to reduce to the crossing factor comparison.",
+    "mathContext": "$$\\frac{L}{2d} < \\frac{2L}{\\pi d}$$\n$\\iff 1/2 < 2/\\pi \\iff \\pi < 4$.\n\nThe crossing factors: $\\alpha_3 = E_{S^2}[|\\cos\\varphi|] = 1/2$ vs $\\alpha_2 = E_{S^1}[|\\cos\\varphi|] = 2/\\pi \\approx 0.637$. Higher dimension \u2192 smaller average projection \u2192 fewer expected crossings.",
     "significance": "key",
     "relatedConcepts": [
-      "crossing factor α_n",
+      "crossing factor \u03b1_n",
       "pi_lt_four",
       "integral geometry crossing factors",
       "dimension reduction"
@@ -176,15 +176,15 @@
       "startLine": 267,
       "endLine": 273
     },
-    "type": "theorem",
-    "title": "Universal 2D/3D Crossing Ratio = 4/π",
-    "content": "Proves that the ratio of 2D to 3D expected crossings for any smooth curve of length L > 0 equals exactly 4/π ≈ 1.273. The proof is pure algebra: field_simp clears denominators and ring verifies the identity. This universal constant 4/π = (2/π)/(1/2) is the ratio of the 2D and 3D crossing factors α₂/α₃.",
-    "mathContext": "$$\\frac{2L/(\\pi d)}{L/(2d)} = \\frac{4}{\\pi}$$\n$\\alpha_2/\\alpha_3 = (2/\\pi)/(1/2) = 4/\\pi \\approx 1.273$.\n\nThis ratio is independent of L and d. It measures how much more frequently a curve crosses lines in ℝ² than planes in ℝ³.",
+    "type": "insight",
+    "title": "Universal 2D/3D Crossing Ratio = 4/\u03c0",
+    "content": "Proves that the ratio of 2D to 3D expected crossings for any smooth curve of length L > 0 equals exactly 4/\u03c0 \u2248 1.273. The proof is pure algebra: field_simp clears denominators and ring verifies the identity. This universal constant 4/\u03c0 = (2/\u03c0)/(1/2) is the ratio of the 2D and 3D crossing factors \u03b1\u2082/\u03b1\u2083.",
+    "mathContext": "$$\\frac{2L/(\\pi d)}{L/(2d)} = \\frac{4}{\\pi}$$\n$\\alpha_2/\\alpha_3 = (2/\\pi)/(1/2) = 4/\\pi \\approx 1.273$.\n\nThis ratio is independent of L and d. It measures how much more frequently a curve crosses lines in \u211d\u00b2 than planes in \u211d\u00b3.",
     "significance": "key",
     "relatedConcepts": [
-      "Santaló's integral geometry",
+      "Santal\u00f3's integral geometry",
       "crossing factor ratio",
-      "α₂/α₃",
+      "\u03b1\u2082/\u03b1\u2083",
       "dimension invariant"
     ],
     "prerequisites": [

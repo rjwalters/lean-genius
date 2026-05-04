@@ -7,9 +7,9 @@
       "endLine": 48
     },
     "type": "concept",
-    "title": "weierstrass_sin_product: The Central Axiom — Product Formula for sin(πx)/(πx)",
+    "title": "weierstrass_sin_product: The Central Axiom \u2014 Product Formula for sin(\u03c0x)/(\u03c0x)",
     "content": "**weierstrass_sin_product** axiomatizes the Weierstrass product: for $x \\neq 0$, $$\\frac{\\sin(\\pi x)}{\\pi x} = \\prod_{n=1}^{\\infty} \\left(1 - \\frac{x^2}{n^2}\\right).$$ This is the key step in Euler's original 1734 proof that is **not yet formalized in Mathlib** (as of 4.26.0). It follows from the Weierstrass factorization theorem applied to the entire function $\\sin(\\pi z)/(\\pi z)$, which has simple zeros exactly at the integers $z = \\pm 1, \\pm 2, \\pm 3, \\ldots$",
-    "mathContext": "The **Weierstrass factorization theorem** (1876): every entire function $f$ can be written as $f(z) = e^{g(z)} \\prod_n E_p(z/a_n)$ where $a_n$ are the zeros and $E_p$ are elementary factors. For $f(z) = \\sin(\\pi z)/(\\pi z)$, the zeros are at $z = \\pm n$ for $n \\geq 1$ and the genus-1 canonical product gives exactly $\\prod_{n=1}^\\infty (1 - z^2/n^2)$ (the $e^{z/n}$ factors cancel between $+n$ and $-n$). In Lean, the product is expressed as `∏' (n : ℕ), if n = 0 then 1 else (1 - x² / n²)`, using `tsum` with the $n=0$ special case returning 1 (the unit). The axiom is the **single mathematical gap** in this formalization; all other steps are rigorous.",
+    "mathContext": "The **Weierstrass factorization theorem** (1876): every entire function $f$ can be written as $f(z) = e^{g(z)} \\prod_n E_p(z/a_n)$ where $a_n$ are the zeros and $E_p$ are elementary factors. For $f(z) = \\sin(\\pi z)/(\\pi z)$, the zeros are at $z = \\pm n$ for $n \\geq 1$ and the genus-1 canonical product gives exactly $\\prod_{n=1}^\\infty (1 - z^2/n^2)$ (the $e^{z/n}$ factors cancel between $+n$ and $-n$). In Lean, the product is expressed as `\u220f' (n : \u2115), if n = 0 then 1 else (1 - x\u00b2 / n\u00b2)`, using `tsum` with the $n=0$ special case returning 1 (the unit). The axiom is the **single mathematical gap** in this formalization; all other steps are rigorous.",
     "significance": "key",
     "relatedConcepts": [
       "Weierstrass factorization theorem (1876)",
@@ -31,21 +31,21 @@
       "startLine": 72,
       "endLine": 76
     },
-    "type": "theorem",
-    "title": "taylor_x2_coefficient: The x² Coefficient of sin(πx)/(πx) is −π²/6",
-    "content": "**taylor_x2_coefficient** records the key Taylor side: for $x \\neq 0$, $$\\frac{\\sin(\\pi x)}{\\pi x} = 1 - \\frac{\\pi^2}{6} x^2 + \\left(\\frac{\\sin(\\pi x)}{\\pi x} - \\left(1 - \\frac{\\pi^2}{6} x^2\\right)\\right).$$ This is a **ring tautology** ($f = a + (f - a)$), not a statement about the actual Taylor coefficient. The mathematically substantive claim — that the remainder tends to $0$ faster than $x^2$ — is not stated here. This limitation is acknowledged: the actual coefficient comparison requires analytic content.",
-    "mathContext": "The Taylor series $\\sin(t)/t = \\sum_{n=0}^\\infty (-1)^n t^{2n}/((2n+1)!)$ gives $\\sin(\\pi x)/(\\pi x) = 1 - \\frac{\\pi^2 x^2}{6} + \\frac{\\pi^4 x^4}{120} - \\cdots$. In particular, the $x^2$ coefficient is $-\\pi^2/6$. The theorem **records** this by writing $f = 1 - (\\pi^2/6)x^2 + \\text{remainder}$, which is algebraically trivial. The full rigorous statement would require `HasFPowerSeriesAt` for $\\sin(\\pi x)/(\\pi x)$ and extraction of the coefficient — available in Mathlib but not assembled here. The `ring` tactic closes the tautological form instantly.",
+    "type": "insight",
+    "title": "taylor_x2_coefficient: The x\u00b2 Coefficient of sin(\u03c0x)/(\u03c0x) is \u2212\u03c0\u00b2/6",
+    "content": "**taylor_x2_coefficient** records the key Taylor side: for $x \\neq 0$, $$\\frac{\\sin(\\pi x)}{\\pi x} = 1 - \\frac{\\pi^2}{6} x^2 + \\left(\\frac{\\sin(\\pi x)}{\\pi x} - \\left(1 - \\frac{\\pi^2}{6} x^2\\right)\\right).$$ This is a **ring tautology** ($f = a + (f - a)$), not a statement about the actual Taylor coefficient. The mathematically substantive claim \u2014 that the remainder tends to $0$ faster than $x^2$ \u2014 is not stated here. This limitation is acknowledged: the actual coefficient comparison requires analytic content.",
+    "mathContext": "The Taylor series $\\sin(t)/t = \\sum_{n=0}^\\infty (-1)^n t^{2n}/((2n+1)!)$ gives $\\sin(\\pi x)/(\\pi x) = 1 - \\frac{\\pi^2 x^2}{6} + \\frac{\\pi^4 x^4}{120} - \\cdots$. In particular, the $x^2$ coefficient is $-\\pi^2/6$. The theorem **records** this by writing $f = 1 - (\\pi^2/6)x^2 + \\text{remainder}$, which is algebraically trivial. The full rigorous statement would require `HasFPowerSeriesAt` for $\\sin(\\pi x)/(\\pi x)$ and extraction of the coefficient \u2014 available in Mathlib but not assembled here. The `ring` tactic closes the tautological form instantly.",
     "significance": "supporting",
     "relatedConcepts": [
       "Taylor series for sin(t)/t",
-      "x² coefficient = -π²/6",
+      "x\u00b2 coefficient = -\u03c0\u00b2/6",
       "ring tautology vs analytic content",
       "HasFPowerSeriesAt in Mathlib",
-      "sinc function limit sin(t)/t → 1"
+      "sinc function limit sin(t)/t \u2192 1"
     ],
     "prerequisites": [
       "ring tactic for algebraic identities",
-      "Taylor series for sin(πx)/(πx)",
+      "Taylor series for sin(\u03c0x)/(\u03c0x)",
       "distinction between algebraic and analytic statements"
     ]
   },
@@ -56,15 +56,15 @@
       "startLine": 86,
       "endLine": 92
     },
-    "type": "theorem",
-    "title": "finite_product_x2_coeff: The x² Coefficient of the Finite Product",
+    "type": "insight",
+    "title": "finite_product_x2_coeff: The x\u00b2 Coefficient of the Finite Product",
     "content": "**finite_product_x2_coeff** proves that for the finite product $P_N(x) = \\prod_{n=1}^{N}(1-x^2/n^2)$, $$P_N(x) = 1 - \\left(\\sum_{n=1}^{N} \\frac{1}{n^2}\\right) x^2 + x^4 \\cdot \\frac{P_N(x) - (1 - S_N x^2)}{x^4}$$ where $S_N = \\sum_{n=1}^N 1/n^2$. Again a **ring tautology** ($f = a + b \\cdot (f-a)/b$ for $b \\neq 0$), but it correctly identifies the $x^2$ coefficient of the finite product as $-S_N$. This is the **finite version** of the key product side step.",
-    "mathContext": "The $x^2$ coefficient of $\\prod_{n=1}^N (1 - a_n x^2)$ is $-\\sum_{n=1}^N a_n$ — this follows by expanding the product and collecting terms of degree $\\leq 2$: the leading terms from each factor multiply to give $\\sum_n (-a_n x^2) = -(\\sum_n a_n)x^2$. Here $a_n = 1/n^2$, so the coefficient is $-\\sum_{n=1}^N 1/n^2$. The higher-order terms are $O(x^4)$. The `ring` tactic proves the tautological representation without actually computing the coefficient (it just writes $f = 1 - Sx^2 + x^4(\\cdots)/x^4$). The limiting case $N \\to \\infty$ gives $-\\sum_{n=1}^\\infty 1/n^2$, which by the Weierstrass product axiom must equal $-\\pi^2/6$.",
+    "mathContext": "The $x^2$ coefficient of $\\prod_{n=1}^N (1 - a_n x^2)$ is $-\\sum_{n=1}^N a_n$ \u2014 this follows by expanding the product and collecting terms of degree $\\leq 2$: the leading terms from each factor multiply to give $\\sum_n (-a_n x^2) = -(\\sum_n a_n)x^2$. Here $a_n = 1/n^2$, so the coefficient is $-\\sum_{n=1}^N 1/n^2$. The higher-order terms are $O(x^4)$. The `ring` tactic proves the tautological representation without actually computing the coefficient (it just writes $f = 1 - Sx^2 + x^4(\\cdots)/x^4$). The limiting case $N \\to \\infty$ gives $-\\sum_{n=1}^\\infty 1/n^2$, which by the Weierstrass product axiom must equal $-\\pi^2/6$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Vieta's formulas for polynomial coefficients",
       "infinite product coefficient extraction",
-      "S_N = ∑1/n² partial sums",
+      "S_N = \u22111/n\u00b2 partial sums",
       "ring tautology for coefficient representation",
       "dominated convergence for uniform convergence of partial products"
     ],
@@ -81,10 +81,10 @@
       "startLine": 98,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "product_x2_coefficient: Algebraic Tautology for the Infinite Product",
-    "content": "**product_x2_coefficient** extends the tautological coefficient representation to the **infinite product**: for $x \\neq 0$ with $|x| < 1$, the Tannery/tsum product $\\prod' (1 - x^2/n^2)$ satisfies the same algebraic identity with the tsum-series $\\sum' 1/n^2$. Previously axiomatized (the meta.json notes `product_x2_coefficient was previously axiomatized`), now proved by `field_simp [hx4]; ring` — the $x^4/x^4$ cancellation makes it algebraically trivial once $x^4 \\neq 0$ is established.",
-    "mathContext": "The proof uses `set P` and `set S` to name the infinite product and sum, then `pow_ne_zero 4 hx` to establish $x^4 \\neq 0$ from $x \\neq 0$. The `field_simp [hx4]` clears the $x^4$ denominator, and `ring` closes the resulting polynomial identity $P \\cdot x^4 = (1 - S x^2) x^4 + x^4(P - (1 - Sx^2))$, i.e., $Px^4 = Px^4$. The condition $|x| < 1$ (the `_` parameter) is not actually used in the algebraic proof — it would be needed for the analytic step of extracting the coefficient from the product. The **gap** remaining: showing the remainder $(P - (1 - Sx^2))/x^2 \\to 0$ as $x \\to 0$ requires interchange of limit and product, needing dominated convergence.",
+    "content": "**product_x2_coefficient** extends the tautological coefficient representation to the **infinite product**: for $x \\neq 0$ with $|x| < 1$, the Tannery/tsum product $\\prod' (1 - x^2/n^2)$ satisfies the same algebraic identity with the tsum-series $\\sum' 1/n^2$. Previously axiomatized (the meta.json notes `product_x2_coefficient was previously axiomatized`), now proved by `field_simp [hx4]; ring` \u2014 the $x^4/x^4$ cancellation makes it algebraically trivial once $x^4 \\neq 0$ is established.",
+    "mathContext": "The proof uses `set P` and `set S` to name the infinite product and sum, then `pow_ne_zero 4 hx` to establish $x^4 \\neq 0$ from $x \\neq 0$. The `field_simp [hx4]` clears the $x^4$ denominator, and `ring` closes the resulting polynomial identity $P \\cdot x^4 = (1 - S x^2) x^4 + x^4(P - (1 - Sx^2))$, i.e., $Px^4 = Px^4$. The condition $|x| < 1$ (the `_` parameter) is not actually used in the algebraic proof \u2014 it would be needed for the analytic step of extracting the coefficient from the product. The **gap** remaining: showing the remainder $(P - (1 - Sx^2))/x^2 \\to 0$ as $x \\to 0$ requires interchange of limit and product, needing dominated convergence.",
     "significance": "key",
     "relatedConcepts": [
       "tprod (tsum for products) formalism",
@@ -94,7 +94,7 @@
       "Moore-Osgood theorem for uniform convergence"
     ],
     "prerequisites": [
-      "tsum (∑') for infinite sums in Lean/Mathlib",
+      "tsum (\u2211') for infinite sums in Lean/Mathlib",
       "field_simp tactic for field simplification",
       "pow_ne_zero for natural number powers"
     ]
@@ -106,10 +106,10 @@
       "startLine": 149,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "euler_proof_structure: Proof Skeleton with hasSum_zeta_two as Backbone",
-    "content": "**euler_proof_structure** is the orchestrating theorem that combines all four steps of Euler's proof into a single conjunction. The proof body `refine ⟨fun x _ => by ring, trivial, trivial, hasSum_zeta_two⟩` reveals the current state: step 1 (Taylor side) is a `ring` tautology, steps 2-3 (product formula and coefficient extraction) are `trivial` (True placeholders), and step 4 (Basel identity) is Mathlib's `hasSum_zeta_two`. The theorem **honestly records** that steps 2-3 are unformalized stubs.",
-    "mathContext": "`hasSum_zeta_two` from `Mathlib.NumberTheory.ZetaValues` states $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$ (proved via Bernoulli polynomials and Fourier analysis — a completely different proof route from Euler's). The four-tuple structure `⟨step1, step2, step3, step4⟩` mirrors Euler's original four-step argument. The two `trivial` entries for steps 2-3 make the formalization honest about what is formalized vs. what remains open. The **mathematical substance** of Euler's proof — connecting infinite products to Fourier series — is not captured by `ring` and `trivial`; a complete formalization would require the Weierstrass product axiom and a dominated convergence interchange.",
+    "content": "**euler_proof_structure** is the orchestrating theorem that combines all four steps of Euler's proof into a single conjunction. The proof body `refine \u27e8fun x _ => by ring, trivial, trivial, hasSum_zeta_two\u27e9` reveals the current state: step 1 (Taylor side) is a `ring` tautology, steps 2-3 (product formula and coefficient extraction) are `trivial` (True placeholders), and step 4 (Basel identity) is Mathlib's `hasSum_zeta_two`. The theorem **honestly records** that steps 2-3 are unformalized stubs.",
+    "mathContext": "`hasSum_zeta_two` from `Mathlib.NumberTheory.ZetaValues` states $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$ (proved via Bernoulli polynomials and Fourier analysis \u2014 a completely different proof route from Euler's). The four-tuple structure `\u27e8step1, step2, step3, step4\u27e9` mirrors Euler's original four-step argument. The two `trivial` entries for steps 2-3 make the formalization honest about what is formalized vs. what remains open. The **mathematical substance** of Euler's proof \u2014 connecting infinite products to Fourier series \u2014 is not captured by `ring` and `trivial`; a complete formalization would require the Weierstrass product axiom and a dominated convergence interchange.",
     "significance": "key",
     "relatedConcepts": [
       "hasSum_zeta_two in Mathlib.NumberTheory.ZetaValues",
@@ -131,22 +131,22 @@
       "startLine": 168,
       "endLine": 181
     },
-    "type": "theorem",
-    "title": "partial_product_terms_pos: Each Factor (1 − x²/n²) is Positive for |x| < 1",
+    "type": "insight",
+    "title": "partial_product_terms_pos: Each Factor (1 \u2212 x\u00b2/n\u00b2) is Positive for |x| < 1",
     "content": "**partial_product_terms_pos** proves that for $|x| < 1$ and $n \\geq 1$, each factor $1 - x^2/n^2 > 0$. The key chain: $x^2 < 1 \\leq n^2$, so $x^2/n^2 \\leq x^2 < 1$, hence $1 - x^2/n^2 > 0$. **partial_product_terms_le_one** proves $1 - x^2/n^2 \\leq 1$ trivially ($x^2/n^2 \\geq 0$). Together these establish that each factor lies in $(0, 1]$, which is prerequisite for the infinite product to converge to a positive value.",
-    "mathContext": "The positivity proof: `nlinarith [abs_nonneg x]` establishes $x^2 < 1$ from $|x| < 1$. Then $x^2/n^2 \\leq x^2/1 = x^2 < 1$ is proved by `rw [div_le_iff hn_sq]` and `nlinarith [sq_nonneg ((n:ℝ) - 1)]` (the latter gives $n^2 \\geq 1$ for $n \\geq 1$ via $(n-1)^2 \\geq 0$). **Significance for the full proof**: an infinite product $\\prod_n (1 + a_n)$ converges absolutely iff $\\sum_n |a_n| < \\infty$. Here $a_n = -x^2/n^2$ and $\\sum_n x^2/n^2 = x^2 \\sum_n 1/n^2 = x^2 \\pi^2/6 < \\infty$ for any fixed $x$, so the Weierstrass product converges absolutely for all $x \\notin \\mathbb{Z}$.",
+    "mathContext": "The positivity proof: `nlinarith [abs_nonneg x]` establishes $x^2 < 1$ from $|x| < 1$. Then $x^2/n^2 \\leq x^2/1 = x^2 < 1$ is proved by `rw [div_le_iff hn_sq]` and `nlinarith [sq_nonneg ((n:\u211d) - 1)]` (the latter gives $n^2 \\geq 1$ for $n \\geq 1$ via $(n-1)^2 \\geq 0$). **Significance for the full proof**: an infinite product $\\prod_n (1 + a_n)$ converges absolutely iff $\\sum_n |a_n| < \\infty$. Here $a_n = -x^2/n^2$ and $\\sum_n x^2/n^2 = x^2 \\sum_n 1/n^2 = x^2 \\pi^2/6 < \\infty$ for any fixed $x$, so the Weierstrass product converges absolutely for all $x \\notin \\mathbb{Z}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "positivity of Weierstrass product factors",
       "absolute convergence of infinite products",
-      "∑|a_n| < ∞ condition for product convergence",
+      "\u2211|a_n| < \u221e condition for product convergence",
       "nlinarith for nonlinear arithmetic",
       "partial products approach to the Weierstrass formula"
     ],
     "prerequisites": [
       "abs_nonneg and abs conditions for positivity",
-      "nlinarith for nonlinear arithmetic over ℝ",
-      "div_le_iff and positivity for n² > 0"
+      "nlinarith for nonlinear arithmetic over \u211d",
+      "div_le_iff and positivity for n\u00b2 > 0"
     ]
   }
 ]

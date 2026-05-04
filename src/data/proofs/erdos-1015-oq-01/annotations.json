@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Documentation",
-    "content": "This module addresses Open Question 1 from the parent Erdős #1015 formalization: computing exact bounds on $f(t)$ for small values $t \\geq 4$. The key tool is the Burr-Erdős-Spencer (1975) exact formula $f(t) = R(t, t-1) + x$ with $0 \\leq x < t$, which reduces the problem of computing $f(t)$ to determining a single remainder $x$. Using known Ramsey numbers $R(4,3) = 9$ (Greenwood-Gleason 1955) and $R(5,4) = 25$ (McKay-Radziszowski 1995), the formalization pins $f(4) \\in \\{9,10,11,12\\}$ and $f(5) \\in \\{25,\\ldots,29\\}$, proves exponential growth, and answers both of Erdős's questions about $f(t)^{1/t}$ and linearity.",
+    "content": "This module addresses Open Question 1 from the parent Erd\u0151s #1015 formalization: computing exact bounds on $f(t)$ for small values $t \\geq 4$. The key tool is the Burr-Erd\u0151s-Spencer (1975) exact formula $f(t) = R(t, t-1) + x$ with $0 \\leq x < t$, which reduces the problem of computing $f(t)$ to determining a single remainder $x$. Using known Ramsey numbers $R(4,3) = 9$ (Greenwood-Gleason 1955) and $R(5,4) = 25$ (McKay-Radziszowski 1995), the formalization pins $f(4) \\in \\{9,10,11,12\\}$ and $f(5) \\in \\{25,\\ldots,29\\}$, proves exponential growth, and answers both of Erd\u0151s's questions about $f(t)^{1/t}$ and linearity.",
     "mathContext": "$f(t) = \\min_n \\max_{\\chi} \\text{leftover}(K_n, \\chi, K_t)$, where the minimum is over $n$ and the maximum is over all 2-colorings $\\chi$ of $K_n$, and 'leftover' counts vertices not covered by any monochromatic $K_t$ in an optimal partition.",
     "significance": "key",
     "prerequisites": [
@@ -17,7 +17,7 @@
       "clique partitions"
     ],
     "relatedConcepts": [
-      "Burr-Erdős-Spencer formula",
+      "Burr-Erd\u0151s-Spencer formula",
       "Ramsey numbers",
       "monochromatic clique partitions"
     ]
@@ -53,9 +53,9 @@
       "endLine": 69
     },
     "type": "concept",
-    "title": "Foundational Results: Moon, Erdős, and BES",
-    "content": "Five axioms encoding known results:\n\n- **Moon (1966)**: $f(3) = 4$. Any 2-coloring of $K_n$ leaves at most 4 vertices uncovered by vertex-disjoint monochromatic triangles.\n- **Erdős bound**: $f(t) < R(t,t)$, connecting the leftover function to diagonal Ramsey numbers.\n- **Erdős-Szekeres (1935)**: $R(t,t) \\leq 4^t$, the classical upper bound from the double-counting argument.\n- **BES (1975)**: $f(t) = R(t, t-1) + x$ for some $0 \\leq x < t$ — the exact formula reducing $f(t)$ to a single remainder.\n- **Growth axioms**: $f(t)^{1/t} \\to 4$ and $f(t) \\neq O(t)$.",
-    "mathContext": "The BES formula $f(t) = R(t, t-1) + x$ with $0 \\leq x < t$ is the central tool. It decomposes $f(t)$ into the off-diagonal Ramsey number $R(t, t-1)$ (computable for small $t$) plus a remainder $x < t$ (the hard unknown). The limit $f(t)^{1/t} \\to 4$ follows from $R(t,t-1) \\sim R(t,t) \\sim 4^t / \\sqrt{t}$ (Erdős-Szekeres upper bound).",
+    "title": "Foundational Results: Moon, Erd\u0151s, and BES",
+    "content": "Five axioms encoding known results:\n\n- **Moon (1966)**: $f(3) = 4$. Any 2-coloring of $K_n$ leaves at most 4 vertices uncovered by vertex-disjoint monochromatic triangles.\n- **Erd\u0151s bound**: $f(t) < R(t,t)$, connecting the leftover function to diagonal Ramsey numbers.\n- **Erd\u0151s-Szekeres (1935)**: $R(t,t) \\leq 4^t$, the classical upper bound from the double-counting argument.\n- **BES (1975)**: $f(t) = R(t, t-1) + x$ for some $0 \\leq x < t$ \u2014 the exact formula reducing $f(t)$ to a single remainder.\n- **Growth axioms**: $f(t)^{1/t} \\to 4$ and $f(t) \\neq O(t)$.",
+    "mathContext": "The BES formula $f(t) = R(t, t-1) + x$ with $0 \\leq x < t$ is the central tool. It decomposes $f(t)$ into the off-diagonal Ramsey number $R(t, t-1)$ (computable for small $t$) plus a remainder $x < t$ (the hard unknown). The limit $f(t)^{1/t} \\to 4$ follows from $R(t,t-1) \\sim R(t,t) \\sim 4^t / \\sqrt{t}$ (Erd\u0151s-Szekeres upper bound).",
     "significance": "key",
     "prerequisites": [
       "Ramsey number bounds",
@@ -63,7 +63,7 @@
       "Moon's theorem"
     ],
     "relatedConcepts": [
-      "Erdős-Szekeres bound",
+      "Erd\u0151s-Szekeres bound",
       "off-diagonal Ramsey numbers",
       "asymptotic growth"
     ]
@@ -77,13 +77,13 @@
     },
     "type": "concept",
     "title": "Known Ramsey Numbers and Off-Diagonal Bounds",
-    "content": "Four axioms encoding known small Ramsey numbers and the probabilistic lower bound:\n\n- $R(3,2) = 3$: trivial (any edge is monochromatic).\n- $R(4,3) = 9$ (Greenwood-Gleason 1955): the Paley graph on $\\mathbb{F}_8$ gives a $(3,3)$-free coloring of $K_8$; exhaustive analysis shows $R(4,3) \\leq 9$.\n- $R(5,4) = 25$ (McKay-Radziszowski 1995): determined by computational enumeration of critical colorings.\n- $R(t, t-1) \\geq 2^{(t-2)/2}$: from Erdős's 1947 probabilistic argument $R(k,k) \\geq 2^{k/2}$ and monotonicity $R(t, t-1) \\geq R(t-1, t-1)$.",
-    "mathContext": "The off-diagonal lower bound chains two facts: (1) $R(t, t-1) \\geq R(t-1, t-1)$ by Ramsey monotonicity (removing a color requirement weakens the condition), and (2) $R(k, k) \\geq 2^{k/2}$ by Erdős's probabilistic method (a random 2-coloring of $K_n$ has expected number of monochromatic $K_k$'s less than 1 when $n < 2^{k/2}$).",
+    "content": "Four axioms encoding known small Ramsey numbers and the probabilistic lower bound:\n\n- $R(3,2) = 3$: trivial (any edge is monochromatic).\n- $R(4,3) = 9$ (Greenwood-Gleason 1955): the Paley graph on $\\mathbb{F}_8$ gives a $(3,3)$-free coloring of $K_8$; exhaustive analysis shows $R(4,3) \\leq 9$.\n- $R(5,4) = 25$ (McKay-Radziszowski 1995): determined by computational enumeration of critical colorings.\n- $R(t, t-1) \\geq 2^{(t-2)/2}$: from Erd\u0151s's 1947 probabilistic argument $R(k,k) \\geq 2^{k/2}$ and monotonicity $R(t, t-1) \\geq R(t-1, t-1)$.",
+    "mathContext": "The off-diagonal lower bound chains two facts: (1) $R(t, t-1) \\geq R(t-1, t-1)$ by Ramsey monotonicity (removing a color requirement weakens the condition), and (2) $R(k, k) \\geq 2^{k/2}$ by Erd\u0151s's probabilistic method (a random 2-coloring of $K_n$ has expected number of monochromatic $K_k$'s less than 1 when $n < 2^{k/2}$).",
     "significance": "supporting",
     "prerequisites": [
       "Ramsey number computation",
       "probabilistic method",
-      "Erdős 1947"
+      "Erd\u0151s 1947"
     ],
     "relatedConcepts": [
       "Paley graph",
@@ -99,7 +99,7 @@
       "startLine": 92,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Direct Consequences of the BES Formula",
     "content": "Three theorems extracted from the BES formula:\n\n- `f_lower_bound`: $f(t) \\geq R(t, t-1)$ (since $x \\geq 0$)\n- `f_upper_bound`: $f(t) < R(t, t-1) + t$ (since $x < t$)\n- `bes_remainder_bound`: $f(t) - R(t, t-1) < t$\n\nAll three are proved by destructing the BES existential and applying `omega`. These form the backbone of the concrete computations for $t = 4$ and $t = 5$.",
     "mathContext": "From $f(t) = R(t, t-1) + x$ with $0 \\leq x < t$:\n$R(t, t-1) \\leq f(t) < R(t, t-1) + t$\n\nThe window $[R(t,t-1),\\, R(t,t-1) + t - 1]$ contains exactly $t$ integers.",
@@ -143,7 +143,7 @@
       "startLine": 128,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "f(4): The Tetrahedron Case",
     "content": "Four theorems compute the BES window for $f(4)$. Using $R(4,3) = 9$ (Greenwood-Gleason 1955):\n\n- `f_4_ge`: $f(4) \\geq 9$ (from BES lower bound)\n- `f_4_le`: $f(4) \\leq 12$ (from BES upper bound, $9 + 4 - 1 = 12$)\n- `f_4_in_range`: $f(4) \\in \\{9, 10, 11, 12\\}$ (from `omega` on the bounds)\n- `f_4_bes_decomposition`: $f(4) = 9 + x$ for some $0 \\leq x < 4$\n\nThe proofs instantiate the general BES bounds at $t = 4$, substituting $R(4, 3) = 9$ via `ramsey_4_3`. The exact value of $f(4)$ remains open: it requires analyzing extremal 2-colorings of $K_n$ for monochromatic $K_4$ packings.",
     "mathContext": "$f(4) = R(4, 3) + x = 9 + x$ with $0 \\leq x < 4$, so $f(4) \\in \\{9, 10, 11, 12\\}$.\n\nThe Greenwood-Gleason value $R(4,3) = 9$ was established in 1955: the Paley graph $P_8$ (quadratic residues in $\\mathbb{F}_8$) gives a 2-coloring of $K_8$ with no monochromatic $K_4$ or $K_3$ (resp.), and exhaustive search confirms $K_9$ must contain one.",
@@ -156,7 +156,7 @@
     "relatedConcepts": [
       "Greenwood-Gleason",
       "Paley graph",
-      "monochromatic K₄ partitions"
+      "monochromatic K\u2084 partitions"
     ]
   },
   {
@@ -166,7 +166,7 @@
       "startLine": 156,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "f(5): Cliques of Order 5",
     "content": "Four theorems compute the BES window for $f(5)$. Using $R(5,4) = 25$ (McKay-Radziszowski 1995):\n\n- `f_5_ge`: $f(5) \\geq 25$\n- `f_5_le`: $f(5) \\leq 29$\n- `f_5_in_range`: $f(5) \\in \\{25, 26, 27, 28, 29\\}$\n- `f_5_bes_decomposition`: $f(5) = 25 + x$ for some $0 \\leq x < 5$\n\nThe BES formula narrows the range dramatically: without it, the crude bound $f(5) < R(5,5) \\leq 4^5 = 1024$ would give 1024 candidates. BES reduces this to just 5.",
     "mathContext": "$f(5) = R(5, 4) + x = 25 + x$ with $0 \\leq x < 5$, so $f(5) \\in \\{25, 26, 27, 28, 29\\}$.\n\n$R(5,4) = 25$ was determined computationally by McKay and Radziszowski (1995) using a combination of theoretical bounds and exhaustive search over critical colorings of $K_{24}$.",
@@ -189,14 +189,14 @@
       "startLine": 182,
       "endLine": 203
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Superlinear and Exponential Growth",
-    "content": "Five theorems demonstrate that $f(t)$ grows far beyond linear:\n\n- `f_3_gt`, `f_4_gt`, `f_5_gt`: concrete witnesses $f(t) > t$ for $t = 3, 4, 5$.\n- `f_exponential_lower`: the general bound $f(t) \\geq 2^{(t-2)/2}$ for $t \\geq 3$, proved by chaining the BES lower bound with the Erdős probabilistic bound on Ramsey numbers.\n\nThe `calc` proof of `f_exponential_lower` is the cleanest chain in the file: $f(t) \\geq R(t, t-1) \\geq 2^{(t-2)/2}$, lifting from $\\mathbb{N}$ to $\\mathbb{R}$ via `exact_mod_cast`.",
-    "mathContext": "$f(t) \\geq R(t, t-1) \\geq R(t-1, t-1) \\geq 2^{(t-2)/2}$.\n\nThe first inequality is BES ($x \\geq 0$). The second is Ramsey monotonicity ($R(s,t)$ is non-decreasing in both arguments). The third is Erdős's 1947 probabilistic lower bound.",
+    "content": "Five theorems demonstrate that $f(t)$ grows far beyond linear:\n\n- `f_3_gt`, `f_4_gt`, `f_5_gt`: concrete witnesses $f(t) > t$ for $t = 3, 4, 5$.\n- `f_exponential_lower`: the general bound $f(t) \\geq 2^{(t-2)/2}$ for $t \\geq 3$, proved by chaining the BES lower bound with the Erd\u0151s probabilistic bound on Ramsey numbers.\n\nThe `calc` proof of `f_exponential_lower` is the cleanest chain in the file: $f(t) \\geq R(t, t-1) \\geq 2^{(t-2)/2}$, lifting from $\\mathbb{N}$ to $\\mathbb{R}$ via `exact_mod_cast`.",
+    "mathContext": "$f(t) \\geq R(t, t-1) \\geq R(t-1, t-1) \\geq 2^{(t-2)/2}$.\n\nThe first inequality is BES ($x \\geq 0$). The second is Ramsey monotonicity ($R(s,t)$ is non-decreasing in both arguments). The third is Erd\u0151s's 1947 probabilistic lower bound.",
     "significance": "key",
     "prerequisites": [
       "BES lower bound",
-      "Erdős probabilistic bound",
+      "Erd\u0151s probabilistic bound",
       "calc tactic"
     ],
     "relatedConcepts": [
@@ -212,9 +212,9 @@
       "startLine": 205,
       "endLine": 232
     },
-    "type": "theorem",
-    "title": "Resolving Erdős's Questions",
-    "content": "Three theorems answering Erdős's questions:\n\n- `f_root_not_one`: $f(t)^{1/t} \\not\\to 1$. Proof: since $f(t)^{1/t} \\to 4$ (axiom `f_root_limit`) and $\\mathbb{R}$ is Hausdorff, `tendsto_nhds_unique` gives $1 = 4$, contradicted by `norm_num`.\n- `f_superlinear`: $f(t) \\neq O(t)$. Direct delegation to `f_not_linear`.\n- `f_lt_four_pow`: $f(t) < 4^t$ for $t \\geq 2$. Chains `erdos_ramsey_bound` with `ramsey_upper_bound`.\n\nThe proof of `f_root_not_one` is notable for using topology (Hausdorff uniqueness of limits) to resolve a combinatorial question — a clean application of Mathlib's `tendsto_nhds_unique`.",
+    "type": "insight",
+    "title": "Resolving Erd\u0151s's Questions",
+    "content": "Three theorems answering Erd\u0151s's questions:\n\n- `f_root_not_one`: $f(t)^{1/t} \\not\\to 1$. Proof: since $f(t)^{1/t} \\to 4$ (axiom `f_root_limit`) and $\\mathbb{R}$ is Hausdorff, `tendsto_nhds_unique` gives $1 = 4$, contradicted by `norm_num`.\n- `f_superlinear`: $f(t) \\neq O(t)$. Direct delegation to `f_not_linear`.\n- `f_lt_four_pow`: $f(t) < 4^t$ for $t \\geq 2$. Chains `erdos_ramsey_bound` with `ramsey_upper_bound`.\n\nThe proof of `f_root_not_one` is notable for using topology (Hausdorff uniqueness of limits) to resolve a combinatorial question \u2014 a clean application of Mathlib's `tendsto_nhds_unique`.",
     "mathContext": "If $\\lim_{t \\to \\infty} f(t)^{1/t} = 4$ and $\\lim_{t \\to \\infty} f(t)^{1/t} = 1$, then $4 = 1$ by uniqueness of limits in Hausdorff spaces. Since $4 \\neq 1$, the second limit is impossible.\n\nThe crude upper bound $f(t) < 4^t$ places $f(t)$ between $2^{(t-2)/2}$ and $4^t$, i.e., $f(t) \\in [2^{\\Theta(t)}, 4^t]$.",
     "significance": "key",
     "prerequisites": [
@@ -225,7 +225,7 @@
     "relatedConcepts": [
       "limit uniqueness",
       "Hausdorff topology",
-      "Erdős questions",
+      "Erd\u0151s questions",
       "growth rate classification"
     ]
   },

@@ -10,8 +10,8 @@
     },
     "type": "concept",
     "title": "NormedAddTorsor: The Abstract Setting for Euclidean Geometry",
-    "content": "The variables declaration establishes the proof's setting: a `NormedAddTorsor V P` — the abstract framework for Euclidean geometry in Lean 4/Mathlib. A torsor separates points ($P$, no privileged origin) from vectors ($V$, a vector space). The key operations are `vsub : P → P → V` (point subtraction, $A -_v B \\in V$) and `vadd : V → P → P` (translation, $v +_v A \\in P$). This is the mathematically clean way to do affine/Euclidean geometry: points don't have an origin, but differences of points are vectors.\n\nBy using `NormedAddTorsor` with `[InnerProductSpace ℝ V]`, the proof works in any Euclidean space of any dimension — not just $\\mathbb{R}^2$. The isosceles triangle theorem (Euclid I.5) is thus proved once, for all Euclidean spaces simultaneously. The inner product structure `[InnerProductSpace ℝ V]` is what gives meaning to `InnerProductGeometry.angle` and provides the algebraic machinery for the proof.",
-    "mathContext": "The `NormedAddTorsor V P` abstraction: $P$ is a torsor over vector space $V$; `vsub` and `vadd` satisfy $(v +_v p) -_v p = v$ and $p -_v q +_v q = p$. The `InnerProductSpace ℝ V` provides the inner product $\\langle \\cdot, \\cdot \\rangle$ needed to define angles: $\\angle(u, v) = \\arccos(\\langle u,v \\rangle / (\\|u\\| \\cdot \\|v\\|))$.",
+    "content": "The variables declaration establishes the proof's setting: a `NormedAddTorsor V P` \u2014 the abstract framework for Euclidean geometry in Lean 4/Mathlib. A torsor separates points ($P$, no privileged origin) from vectors ($V$, a vector space). The key operations are `vsub : P \u2192 P \u2192 V` (point subtraction, $A -_v B \\in V$) and `vadd : V \u2192 P \u2192 P` (translation, $v +_v A \\in P$). This is the mathematically clean way to do affine/Euclidean geometry: points don't have an origin, but differences of points are vectors.\n\nBy using `NormedAddTorsor` with `[InnerProductSpace \u211d V]`, the proof works in any Euclidean space of any dimension \u2014 not just $\\mathbb{R}^2$. The isosceles triangle theorem (Euclid I.5) is thus proved once, for all Euclidean spaces simultaneously. The inner product structure `[InnerProductSpace \u211d V]` is what gives meaning to `InnerProductGeometry.angle` and provides the algebraic machinery for the proof.",
+    "mathContext": "The `NormedAddTorsor V P` abstraction: $P$ is a torsor over vector space $V$; `vsub` and `vadd` satisfy $(v +_v p) -_v p = v$ and $p -_v q +_v q = p$. The `InnerProductSpace \u211d V` provides the inner product $\\langle \\cdot, \\cdot \\rangle$ needed to define angles: $\\angle(u, v) = \\arccos(\\langle u,v \\rangle / (\\|u\\| \\cdot \\|v\\|))$.",
     "significance": "supporting",
     "relatedConcepts": [
       "NormedAddTorsor in Mathlib",
@@ -36,7 +36,7 @@
     },
     "type": "concept",
     "title": "vsub_eq_apex_diff: The Apex Vector Decomposition",
-    "content": "The lemma `vsub_eq_apex_diff` proves $C -_v B = (A -_v B) - (A -_v C)$ — the base vector equals the difference of the two apex vectors. Setting $p = A -_v B$ and $q = A -_v C$ (the 'apex vectors' pointing from the base vertices back to the apex), this says the base vector $C -_v B = p - q$. This is the algebraic key to Pappus's proof: the angle $\\angle ABC$ (between $A -_v B$ and $C -_v B$) equals $\\text{angle}(p, p-q)$, and $\\angle ACB$ equals $\\text{angle}(q, q-p)$, which are equal when $\\|p\\| = \\|q\\|$.\n\nThe proof of this lemma uses two torsor identities: `vsub_add_vsub_cancel C A B : (C -_v A) + (A -_v B) = C -_v B` and `neg_vsub_eq_vsub_rev A C : -(A -_v C) = C -_v A`. The `abel` tactic handles the abelian group arithmetic to assemble these.",
+    "content": "The lemma `vsub_eq_apex_diff` proves $C -_v B = (A -_v B) - (A -_v C)$ \u2014 the base vector equals the difference of the two apex vectors. Setting $p = A -_v B$ and $q = A -_v C$ (the 'apex vectors' pointing from the base vertices back to the apex), this says the base vector $C -_v B = p - q$. This is the algebraic key to Pappus's proof: the angle $\\angle ABC$ (between $A -_v B$ and $C -_v B$) equals $\\text{angle}(p, p-q)$, and $\\angle ACB$ equals $\\text{angle}(q, q-p)$, which are equal when $\\|p\\| = \\|q\\|$.\n\nThe proof of this lemma uses two torsor identities: `vsub_add_vsub_cancel C A B : (C -_v A) + (A -_v B) = C -_v B` and `neg_vsub_eq_vsub_rev A C : -(A -_v C) = C -_v A`. The `abel` tactic handles the abelian group arithmetic to assemble these.",
     "mathContext": "The lemma proves $C -_v B = (A -_v B) - (A -_v C)$. Proof: $(A -_v B) - (A -_v C) = (A -_v B) + -(A-_v C) = (A -_v B) + (C -_v A) = C -_v B$ by `vsub_add_vsub_cancel`. Setting $p = A-_v B$, $q = A-_v C$: $\\angle ABC = \\angle(p, p-q)$, $\\angle ACB = \\angle(q, q-p)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -60,10 +60,10 @@
       "startLine": 89,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "pappus_isosceles: Four Lines Capturing 2000 Years of Insight",
-    "content": "The main theorem `pappus_isosceles` proves $\\angle ABC = \\angle ACB$ from $d(A,B) = d(A,C)$ in 4 lines. This is Pappus's self-congruence proof of Euclid I.5 (Pons Asinorum). The proof works by:\n(1) `show` unfolds `EuclideanGeometry.angle` to `InnerProductGeometry.angle (A -_v B) (C -_v B) = ...` — necessary because Lean's unifier needs the two angle definitions explicitly equated.\n(2) `rw [vsub_eq_apex_diff, vsub_neg_eq_apex_diff]` rewrites both base vectors as $p-q$ and $q-p$ where $p = A-_v B$, $q = A-_v C$.\n(3) `apply InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq` — the Mathlib lemma that says $\\text{angle}(p, p-q) = \\text{angle}(q, q-p)$ when $\\|p\\| = \\|q\\|$. This is the algebraic crystallization of Pappus's SAS argument.\n(4) `simpa only [← dist_eq_norm_vsub]` converts the distance hypothesis to the norm hypothesis.",
-    "mathContext": "The Mathlib lemma used: `InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq : ‖x‖ = ‖y‖ → angle x (x-y) = angle y (y-x)`. Applied with $x = p = A-_v B$ and $y = q = A-_v C$: since $d(A,B) = d(A,C) \\Leftrightarrow \\|p\\| = \\|q\\|$ (via `dist_eq_norm_vsub`), we get $\\angle(p, p-q) = \\angle(q, q-p)$, i.e., $\\angle ABC = \\angle ACB$.",
+    "content": "The main theorem `pappus_isosceles` proves $\\angle ABC = \\angle ACB$ from $d(A,B) = d(A,C)$ in 4 lines. This is Pappus's self-congruence proof of Euclid I.5 (Pons Asinorum). The proof works by:\n(1) `show` unfolds `EuclideanGeometry.angle` to `InnerProductGeometry.angle (A -_v B) (C -_v B) = ...` \u2014 necessary because Lean's unifier needs the two angle definitions explicitly equated.\n(2) `rw [vsub_eq_apex_diff, vsub_neg_eq_apex_diff]` rewrites both base vectors as $p-q$ and $q-p$ where $p = A-_v B$, $q = A-_v C$.\n(3) `apply InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq` \u2014 the Mathlib lemma that says $\\text{angle}(p, p-q) = \\text{angle}(q, q-p)$ when $\\|p\\| = \\|q\\|$. This is the algebraic crystallization of Pappus's SAS argument.\n(4) `simpa only [\u2190 dist_eq_norm_vsub]` converts the distance hypothesis to the norm hypothesis.",
+    "mathContext": "The Mathlib lemma used: `InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq : \u2016x\u2016 = \u2016y\u2016 \u2192 angle x (x-y) = angle y (y-x)`. Applied with $x = p = A-_v B$ and $y = q = A-_v C$: since $d(A,B) = d(A,C) \\Leftrightarrow \\|p\\| = \\|q\\|$ (via `dist_eq_norm_vsub`), we get $\\angle(p, p-q) = \\angle(q, q-p)$, i.e., $\\angle ABC = \\angle ACB$.",
     "significance": "key",
     "relatedConcepts": [
       "InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq",
@@ -73,7 +73,7 @@
     ],
     "prerequisites": [
       "show tactic for unfolding definitions",
-      "simpa with ← rewrite",
+      "simpa with \u2190 rewrite",
       "dist_eq_norm_vsub for the dist-to-norm conversion"
     ]
   },
@@ -114,8 +114,8 @@
     },
     "type": "concept",
     "title": "euclid_i5: The Alias Connecting Both Names to One Proof",
-    "content": "`theorem euclid_i5 ... := pappus_isosceles h` is a one-line alias making the theorem discoverable under both names. The theorem statement is identical: `dist A B = dist A C → ∠ A B C = ∠ A C B`. The `#check @pappus_isosceles` and `#check @euclid_i5` commands serve as type documentation.\n\nNaming the same result twice reflects the historical duality: the theorem statement is Euclid's (Elements I.5, ~300 BCE) but Pappus's proof (~340 AD) is simpler. In modern mathematics, the theorem is known as the *Pons Asinorum* ('Bridge of Asses') — the medieval name given because it was the first theorem in Euclid that separated students who could reason geometrically from those who could not. The 'bridge' had to be crossed to proceed further in Euclidean geometry.",
-    "mathContext": "`euclid_i5 = pappus_isosceles`: identical statement `dist A B = dist A C → ∠ A B C = ∠ A C B`. Both names are in the `IsoscelesTriangleOQ01` namespace and are registered in Lean's type-checking environment via `#check`.",
+    "content": "`theorem euclid_i5 ... := pappus_isosceles h` is a one-line alias making the theorem discoverable under both names. The theorem statement is identical: `dist A B = dist A C \u2192 \u2220 A B C = \u2220 A C B`. The `#check @pappus_isosceles` and `#check @euclid_i5` commands serve as type documentation.\n\nNaming the same result twice reflects the historical duality: the theorem statement is Euclid's (Elements I.5, ~300 BCE) but Pappus's proof (~340 AD) is simpler. In modern mathematics, the theorem is known as the *Pons Asinorum* ('Bridge of Asses') \u2014 the medieval name given because it was the first theorem in Euclid that separated students who could reason geometrically from those who could not. The 'bridge' had to be crossed to proceed further in Euclidean geometry.",
+    "mathContext": "`euclid_i5 = pappus_isosceles`: identical statement `dist A B = dist A C \u2192 \u2220 A B C = \u2220 A C B`. Both names are in the `IsoscelesTriangleOQ01` namespace and are registered in Lean's type-checking environment via `#check`.",
     "significance": "supporting",
     "relatedConcepts": [
       "pappus_isosceles",

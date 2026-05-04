@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Documentation and Imports",
-    "content": "This module formalizes Newton's identities, which express power sums $p_k = \\sum x_i^k$ in terms of elementary symmetric polynomials $e_j$ and vice versa. Newton stated these in *Arithmetica Universalis* (1707), though Albert Girard had earlier versions in *Invention nouvelle en l'algèbre* (1629).\n\nThe single import `Mathlib.Tactic` provides the `ring` and `field_simp` tactics that close all 31 theorems automatically — every Newton identity is a polynomial identity verifiable by normalization.",
+    "content": "This module formalizes Newton's identities, which express power sums $p_k = \\sum x_i^k$ in terms of elementary symmetric polynomials $e_j$ and vice versa. Newton stated these in *Arithmetica Universalis* (1707), though Albert Girard had earlier versions in *Invention nouvelle en l'alg\u00e8bre* (1629).\n\nThe single import `Mathlib.Tactic` provides the `ring` and `field_simp` tactics that close all 31 theorems automatically \u2014 every Newton identity is a polynomial identity verifiable by normalization.",
     "mathContext": "Newton's identities: $p_k = \\sum_{i=1}^{\\min(k,n)} (-1)^{i-1} e_i \\cdot p_{k-i} + (-1)^{k-1} k \\cdot e_k$ for $k \\leq n$, and $p_k = \\sum_{i=1}^{n} (-1)^{i-1} e_i \\cdot p_{k-i}$ for $k > n$. The generating function form: $\\sum_{k=1}^{\\infty} p_k t^{k-1} = \\frac{d}{dt} \\log \\prod_{i=1}^{n} \\frac{1}{1 - x_i t}$.",
     "significance": "key",
     "prerequisites": [
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Two-Variable Setup and First Identity",
-    "content": "The simplest case: two variables $x, y$ with elementary symmetric polynomials $e_1 = x + y$ and $e_2 = xy$. The first identity $p_1 = e_1$ is trivially `rfl`. This section works over an arbitrary commutative ring $R$, requiring no field or characteristic assumptions.\n\nThe two-variable case is the workhorse of the formalization — the recurrence $p_k = e_1 \\cdot p_{k-1} - e_2 \\cdot p_{k-2}$ is a linear recurrence with constant coefficients, and its characteristic polynomial is $t^2 - e_1 t + e_2 = (t - x)(t - y)$.",
+    "content": "The simplest case: two variables $x, y$ with elementary symmetric polynomials $e_1 = x + y$ and $e_2 = xy$. The first identity $p_1 = e_1$ is trivially `rfl`. This section works over an arbitrary commutative ring $R$, requiring no field or characteristic assumptions.\n\nThe two-variable case is the workhorse of the formalization \u2014 the recurrence $p_k = e_1 \\cdot p_{k-1} - e_2 \\cdot p_{k-2}$ is a linear recurrence with constant coefficients, and its characteristic polynomial is $t^2 - e_1 t + e_2 = (t - x)(t - y)$.",
     "mathContext": "For $n = 2$: $e_1 = x + y$, $e_2 = xy$, $e_k = 0$ for $k \\geq 3$. The recurrence simplifies to $p_k = e_1 \\cdot p_{k-1} - e_2 \\cdot p_{k-2}$, a second-order linear recurrence whose solution is $p_k = x^k + y^k$.",
     "significance": "key",
     "prerequisites": [
@@ -53,8 +53,8 @@
       "endLine": 85
     },
     "type": "concept",
-    "title": "Two-Variable Newton Identities (p₂ through p₄, Pure Forms)",
-    "content": "Newton's identities for $n = 2$, proved both in recursive form (each $p_k$ from previous power sums and elementary symmetric polynomials) and pure form (each $p_k$ expressed solely in $e_1, e_2$).\n\nAll proofs are one-liners using `ring`, which normalizes both sides to a canonical polynomial form and checks equality. This demonstrates that Newton's identities are purely algebraic — they hold in any commutative ring, not just over fields or $\\mathbb{Z}$.",
+    "title": "Two-Variable Newton Identities (p\u2082 through p\u2084, Pure Forms)",
+    "content": "Newton's identities for $n = 2$, proved both in recursive form (each $p_k$ from previous power sums and elementary symmetric polynomials) and pure form (each $p_k$ expressed solely in $e_1, e_2$).\n\nAll proofs are one-liners using `ring`, which normalizes both sides to a canonical polynomial form and checks equality. This demonstrates that Newton's identities are purely algebraic \u2014 they hold in any commutative ring, not just over fields or $\\mathbb{Z}$.",
     "mathContext": "Recursive: $p_2 = e_1^2 - 2e_2$, $p_3 = e_1 p_2 - e_2 p_1$, $p_4 = e_1 p_3 - e_2 p_2$.\n\nPure: $p_3 = e_1^3 - 3e_1 e_2$, $p_4 = e_1^4 - 4e_1^2 e_2 + 2e_2^2$.\n\nThe pure forms are obtained by substituting the recurrence repeatedly, eliminating all intermediate $p_j$.",
     "significance": "key",
     "prerequisites": [
@@ -76,7 +76,7 @@
     },
     "type": "definition",
     "title": "Three-Variable Setup and Abbreviations",
-    "content": "The three-variable case introduces the third elementary symmetric polynomial $e_3 = xyz$, which appears with an explicit coefficient in the identities. Private abbreviations `e1_3`, `e2_3`, `e3_3`, `p1_3`, `p2_3`, `p3_3`, `p4_3` keep theorem statements readable.\n\nThe use of `private abbrev` rather than `def` ensures these are definitionally transparent — the `unfold` tactic can expand them inline before `ring` closes the goal. This is a practical Lean 4 pattern for naming sub-expressions without introducing opaque definitions.",
+    "content": "The three-variable case introduces the third elementary symmetric polynomial $e_3 = xyz$, which appears with an explicit coefficient in the identities. Private abbreviations `e1_3`, `e2_3`, `e3_3`, `p1_3`, `p2_3`, `p3_3`, `p4_3` keep theorem statements readable.\n\nThe use of `private abbrev` rather than `def` ensures these are definitionally transparent \u2014 the `unfold` tactic can expand them inline before `ring` closes the goal. This is a practical Lean 4 pattern for naming sub-expressions without introducing opaque definitions.",
     "mathContext": "For $n = 3$: $e_1 = x + y + z$, $e_2 = xy + xz + yz$, $e_3 = xyz$, $e_k = 0$ for $k \\geq 4$. The recurrence: $p_k = e_1 p_{k-1} - e_2 p_{k-2} + e_3 p_{k-3}$ for $k > 3$.",
     "significance": "supporting",
     "prerequisites": [
@@ -96,7 +96,7 @@
       "startLine": 119,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Three-Variable Newton Identities (Recursive and Pure)",
     "content": "Newton's identities for three variables, in both forms. The key new feature at $n = 3$ is that $p_3$ gets an explicit $3e_3$ term: $p_3 = e_1 p_2 - e_2 p_1 + 3e_3$.\n\nThe proof pattern is uniform: `unfold` all abbreviations, then `ring`. The pure forms eliminate intermediate power sums, expressing each $p_k$ directly in $e_1, e_2, e_3$. These pure forms are what matrix trace computations use in practice: given the characteristic polynomial (whose coefficients are $\\pm e_k$), compute $\\text{tr}(A^k) = p_k$ directly.",
     "mathContext": "Recursive: $p_2 = e_1^2 - 2e_2$, $p_3 = e_1^3 - 3e_1 e_2 + 3e_3$, $p_4 = e_1^4 - 4e_1^2 e_2 + 2e_2^2 + 4e_1 e_3$.\n\nThe coefficient of $e_3$ in $p_3$ is $+3$ (not $+1$), reflecting the general pattern: the explicit $e_k$ term in $p_k$ has coefficient $(-1)^{k-1} k$.",
@@ -118,9 +118,9 @@
       "startLine": 162,
       "endLine": 204
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Four-Variable Newton Identities",
-    "content": "The four-variable case introduces $e_4 = abcd$ and the full fourth identity: $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$. The coefficient $-4$ on $e_4$ follows the general pattern $(-1)^{k-1} k \\cdot e_k$.\n\nThis section demonstrates that Newton's identities scale to arbitrary variable counts with the same recurrence structure. The `ring` tactic handles the increasing polynomial complexity automatically — the four-variable $p_4$ identity involves 35 monomial terms when fully expanded.",
+    "content": "The four-variable case introduces $e_4 = abcd$ and the full fourth identity: $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$. The coefficient $-4$ on $e_4$ follows the general pattern $(-1)^{k-1} k \\cdot e_k$.\n\nThis section demonstrates that Newton's identities scale to arbitrary variable counts with the same recurrence structure. The `ring` tactic handles the increasing polynomial complexity automatically \u2014 the four-variable $p_4$ identity involves 35 monomial terms when fully expanded.",
     "mathContext": "For $n = 4$: $e_1 = a+b+c+d$, $e_2 = \\sum_{i<j} a_i a_j$ (6 terms), $e_3 = \\sum_{i<j<k} a_i a_j a_k$ (4 terms), $e_4 = abcd$.\n\n$p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$. The alternating signs $+, -, +, -$ and the explicit coefficient $-4e_4$ are the hallmarks of the general Newton identity at $k = n$.",
     "significance": "supporting",
     "prerequisites": [
@@ -172,7 +172,7 @@
     "significance": "key",
     "prerequisites": [
       "polynomial discriminant",
-      "Galois group containment in Aₙ",
+      "Galois group containment in A\u2099",
       "symmetric function"
     ],
     "relatedConcepts": [
@@ -192,7 +192,7 @@
     "type": "insight",
     "title": "Application: Matrix Traces and Cayley-Hamilton",
     "content": "For an $n \\times n$ matrix $A$ with eigenvalues $\\lambda_1, \\ldots, \\lambda_n$, the trace of $A^k$ equals the power sum $p_k(\\lambda_1, \\ldots, \\lambda_n)$. Newton's identities then recover the characteristic polynomial $\\det(xI - A)$ from traces alone.\n\nThe theorem `cayley_hamilton_trace_2x2` shows that for $2 \\times 2$ matrices, Newton's second identity $p_2 - e_1 p_1 + 2e_2 = 0$ is precisely the Cayley-Hamilton theorem $A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$ evaluated at the trace level. This connection is the basis for the Faddeev-LeVerrier algorithm for computing characteristic polynomials.",
-    "mathContext": "$\\text{tr}(A^k) = p_k(\\lambda_1, \\ldots, \\lambda_n) = \\sum_{i=1}^n \\lambda_i^k$.\n\nCayley-Hamilton in trace form (2×2): $p_2 - e_1 p_1 + 2e_2 = 0$, i.e., $\\text{tr}(A^2) - \\text{tr}(A)^2 + 2\\det(A) = 0$.\n\nFaddeev-LeVerrier: computes $e_1, e_2, \\ldots, e_n$ from $p_1, p_2, \\ldots, p_n$ using Newton's identities in $O(n^4)$ operations.",
+    "mathContext": "$\\text{tr}(A^k) = p_k(\\lambda_1, \\ldots, \\lambda_n) = \\sum_{i=1}^n \\lambda_i^k$.\n\nCayley-Hamilton in trace form (2\u00d72): $p_2 - e_1 p_1 + 2e_2 = 0$, i.e., $\\text{tr}(A^2) - \\text{tr}(A)^2 + 2\\det(A) = 0$.\n\nFaddeev-LeVerrier: computes $e_1, e_2, \\ldots, e_n$ from $p_1, p_2, \\ldots, p_n$ using Newton's identities in $O(n^4)$ operations.",
     "significance": "key",
     "prerequisites": [
       "matrix eigenvalues",
@@ -220,7 +220,7 @@
     "significance": "supporting",
     "prerequisites": [
       "Newton identity recurrence",
-      "vanishing of higher eₖ"
+      "vanishing of higher e\u2096"
     ],
     "relatedConcepts": [
       "linear recurrence",

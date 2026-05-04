@@ -7,16 +7,16 @@
       "endLine": 51
     },
     "type": "concept",
-    "title": "Erdős #1021: Extremal Numbers for Bipartite Pair Graphs G_k",
-    "content": "**Erdős Problem #1021** asks: for every $k \\geq 3$, does there exist $c_k > 0$ such that $\\text{ex}(n, G_k) \\ll n^{3/2-c_k}$? **OQ-01** focuses on the weaker form: for any fixed $k \\geq 4$, is $\\text{ex}(n, G_k) = o(n^{3/2})$? The bipartite pair graph $G_k$ has $k$ primary vertices $\\{y_1,\\ldots,y_k\\}$ and $\\binom{k}{2}$ pair vertices, each adjacent to exactly one pair $\\{y_a, y_b\\}$.",
+    "title": "Erd\u0151s #1021: Extremal Numbers for Bipartite Pair Graphs G_k",
+    "content": "**Erd\u0151s Problem #1021** asks: for every $k \\geq 3$, does there exist $c_k > 0$ such that $\\text{ex}(n, G_k) \\ll n^{3/2-c_k}$? **OQ-01** focuses on the weaker form: for any fixed $k \\geq 4$, is $\\text{ex}(n, G_k) = o(n^{3/2})$? The bipartite pair graph $G_k$ has $k$ primary vertices $\\{y_1,\\ldots,y_k\\}$ and $\\binom{k}{2}$ pair vertices, each adjacent to exactly one pair $\\{y_a, y_b\\}$.",
     "mathContext": "The **extremal number** $\\text{ex}(n, H) = $ max edges in an $n$-vertex $H$-free graph. For $G_k$: the **KST theorem** gives $\\text{ex}(n, G_k) = O(n^{3/2})$ since $G_k \\supseteq K_{2, \\binom{k}{2}}$. The probabilistic lower bound is $\\text{ex}(n, G_k) \\geq c \\cdot n^{3/2-1/(k-1)}$. The **Zarankiewicz problem** $z(n; s, t) = \\text{ex}(n, K_{s,t})$ is the bipartite case. The key open question: can the exponent $3/2$ be beaten for $G_k$-free graphs?",
     "significance": "supporting",
     "relatedConcepts": [
       "extremal graph theory",
-      "Turán-type problems",
+      "Tur\u00e1n-type problems",
       "bipartite pair graph G_k",
       "Zarankiewicz problem",
-      "Kővári-Sós-Turán theorem"
+      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem"
     ],
     "prerequisites": [
       "exGk function from Proofs.Erdos1021Problem",
@@ -55,10 +55,10 @@
       "startLine": 74,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Big-O Does Not Imply Little-o: The KST Gap",
-    "content": "**big_O_not_implies_little_o** (proved, no sorry): There exists a function $O(n^{3/2})$ that is NOT $o(n^{3/2})$ — specifically, $f(n) = n^{3/2}$ itself. This formally establishes that the KST trivial bound ($O(n^{3/2})$) does **not** imply the conjecture ($o(n^{3/2})$). The proof witnesses $f(n) = n^{3/2}$, shows $f \\leq 1 \\cdot n^{3/2}$, then derives a contradiction from $f/n^{3/2} \\to 0$.",
-    "mathContext": "The `isLittleO` predicate in Lean: $f = o(g)$ means $\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |f(n)| \\leq \\varepsilon \\cdot |g(n)|$. For $f(n) = n^{3/2}$, the ratio $f(n)/n^{3/2} = 1 \\not\\to 0$. The proof uses `obtain ⟨N, hN⟩ := h (1/2) (by norm_num)` to extract the asymptotic bound at $\\varepsilon = 1/2$, then `Real.rpow_pos_of_pos` to get a concrete $m \\geq N$ with $f(m) > 0$, and `linarith` to close. This is the only **fully proved** theorem in the file (no axiom, no sorry).",
+    "content": "**big_O_not_implies_little_o** (proved, no sorry): There exists a function $O(n^{3/2})$ that is NOT $o(n^{3/2})$ \u2014 specifically, $f(n) = n^{3/2}$ itself. This formally establishes that the KST trivial bound ($O(n^{3/2})$) does **not** imply the conjecture ($o(n^{3/2})$). The proof witnesses $f(n) = n^{3/2}$, shows $f \\leq 1 \\cdot n^{3/2}$, then derives a contradiction from $f/n^{3/2} \\to 0$.",
+    "mathContext": "The `isLittleO` predicate in Lean: $f = o(g)$ means $\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |f(n)| \\leq \\varepsilon \\cdot |g(n)|$. For $f(n) = n^{3/2}$, the ratio $f(n)/n^{3/2} = 1 \\not\\to 0$. The proof uses `obtain \u27e8N, hN\u27e9 := h (1/2) (by norm_num)` to extract the asymptotic bound at $\\varepsilon = 1/2$, then `Real.rpow_pos_of_pos` to get a concrete $m \\geq N$ with $f(m) > 0$, and `linarith` to close. This is the only **fully proved** theorem in the file (no axiom, no sorry).",
     "significance": "key",
     "relatedConcepts": [
       "isLittleO definition",
@@ -81,14 +81,14 @@
       "endLine": 112
     },
     "type": "concept",
-    "title": "KST Trivial Bound Axiom and o→O Implication",
-    "content": "**kst_trivial_bound** (axiom): For $k \\geq 4$, $\\text{ex}(n, G_k) \\leq C n^{3/2}$ for some $C > 0$ — the KST theorem applied to $G_k$ (which contains $K_{2, \\binom{k}{2}}$). **oq01_strictly_beyond_kst** (sorry): if OQ-01 holds then $O(n^{3/2})$ follows (the $o \\Rightarrow O$ direction). The sorry is in the finset argument for bounding the initial cases $n < N$.",
-    "mathContext": "KST theorem (1954): for $s \\leq t$, $\\text{ex}(n, K_{s,t}) \\leq \\frac{1}{2}(t-1)^{1/s} n^{2-1/s} + \\frac{s-1}{2} n$. For $s=2$, $t = \\binom{k}{2}$: $\\text{ex}(n, K_{2,t}) \\leq \\sqrt{t-1}\\, n^{3/2} + \\frac{1}{2}n$. Since $G_k \\supseteq K_{2,t}$ (each pair vertex has exactly 2 primary neighbors), $G_k$-free implies $K_{2,t}$-free. The sorry in `oq01_strictly_beyond_kst` needs to bound $\\text{ex}(n, G_k)$ for $n < N$ using a finset supremum — routine but requires careful Lean arithmetic.",
+    "title": "KST Trivial Bound Axiom and o\u2192O Implication",
+    "content": "**kst_trivial_bound** (axiom): For $k \\geq 4$, $\\text{ex}(n, G_k) \\leq C n^{3/2}$ for some $C > 0$ \u2014 the KST theorem applied to $G_k$ (which contains $K_{2, \\binom{k}{2}}$). **oq01_strictly_beyond_kst** (sorry): if OQ-01 holds then $O(n^{3/2})$ follows (the $o \\Rightarrow O$ direction). The sorry is in the finset argument for bounding the initial cases $n < N$.",
+    "mathContext": "KST theorem (1954): for $s \\leq t$, $\\text{ex}(n, K_{s,t}) \\leq \\frac{1}{2}(t-1)^{1/s} n^{2-1/s} + \\frac{s-1}{2} n$. For $s=2$, $t = \\binom{k}{2}$: $\\text{ex}(n, K_{2,t}) \\leq \\sqrt{t-1}\\, n^{3/2} + \\frac{1}{2}n$. Since $G_k \\supseteq K_{2,t}$ (each pair vertex has exactly 2 primary neighbors), $G_k$-free implies $K_{2,t}$-free. The sorry in `oq01_strictly_beyond_kst` needs to bound $\\text{ex}(n, G_k)$ for $n < N$ using a finset supremum \u2014 routine but requires careful Lean arithmetic.",
     "significance": "key",
     "relatedConcepts": [
-      "Kővári-Sós-Turán theorem",
+      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem",
       "K_{s,t} subgraph containment",
-      "o → O implication",
+      "o \u2192 O implication",
       "Finset.sup for initial bound",
       "axiom declaration"
     ],
@@ -106,8 +106,8 @@
       "endLine": 136
     },
     "type": "definition",
-    "title": "k=3 Settled (G_3 = C_6); k≥4 All Open",
-    "content": "**k3_weak_holds** (sorry): $\\text{ex}(n, G_3) = o(n^{3/2})$. The $k=3$ case is settled via $G_3 \\cong C_6$ and the Bondy-Simonovits theorem: $\\text{ex}(n, C_6) \\ll n^{7/6}$. The sorry uses `strong_implies_weak` but depends on `k3_case_solved` (a sorry in the parent). **ex_not_obviously_monotone_in_k** (sorry): $\\text{ex}(n, G_k)$ is not obviously monotone in $k$ — the bipartite pair graph relationship is non-trivial.",
+    "title": "k=3 Settled (G_3 = C_6); k\u22654 All Open",
+    "content": "**k3_weak_holds** (sorry): $\\text{ex}(n, G_3) = o(n^{3/2})$. The $k=3$ case is settled via $G_3 \\cong C_6$ and the Bondy-Simonovits theorem: $\\text{ex}(n, C_6) \\ll n^{7/6}$. The sorry uses `strong_implies_weak` but depends on `k3_case_solved` (a sorry in the parent). **ex_not_obviously_monotone_in_k** (sorry): $\\text{ex}(n, G_k)$ is not obviously monotone in $k$ \u2014 the bipartite pair graph relationship is non-trivial.",
     "mathContext": "Why $G_3 \\cong C_6$: $G_3$ has primary vertices $\\{y_1, y_2, y_3\\}$ and pair vertices $\\{z_{12}, z_{13}, z_{23}\\}$, each pair vertex connected to its pair. The graph is the hexagonal cycle $y_1 - z_{12} - y_2 - z_{23} - y_3 - z_{13} - y_1$, i.e., $C_6$. Bondy-Simonovits (1974): $\\text{ex}(n, C_{2k}) = O(n^{1+1/k})$; for $k=3$: $\\text{ex}(n, C_6) = O(n^{7/6})$. This gives the exponent $c_3 = 1/3$ in the strong conjecture.",
     "significance": "key",
     "relatedConcepts": [
@@ -133,15 +133,15 @@
     },
     "type": "concept",
     "title": "Probabilistic Lower Bound and Exponent Tendsto 3/2",
-    "content": "**probabilistic_lower_bound** (axiom): $\\text{ex}(n, G_k) \\geq c \\cdot n^{3/2-1/(k-1)}$ for some $c > 0$. **lower_bound_exponent_approach** (proved): $3/2 - 1/(k-1) < 3/2$ — the lower bound exponent is strictly less than $3/2$. **lower_bound_exponent_tendsto** (one sorry): $3/2 - 1/(k-1) \\to 3/2$ as $k \\to \\infty$ — the gap shrinks.",
-    "mathContext": "The lower bound uses the **probabilistic method**: a random graph $G(n, p)$ with $p = c n^{-1/(k-1)}$ has expected degree $pn = c n^{(k-2)/(k-1)}$ and expected copies of $G_k$ proportional to $p^{\\binom{k}{2}}$. Setting the expected copy count below 1 and taking expectation gives a $G_k$-free subgraph with $\\Omega(n^{3/2-1/(k-1)})$ edges. The sorry in `lower_bound_exponent_tendsto` needs `1/(k-1) \\to 0` via `Filter.Tendsto` — a routine analysis result but requires the right Mathlib lemmas for reciprocal tendsto.",
+    "content": "**probabilistic_lower_bound** (axiom): $\\text{ex}(n, G_k) \\geq c \\cdot n^{3/2-1/(k-1)}$ for some $c > 0$. **lower_bound_exponent_approach** (proved): $3/2 - 1/(k-1) < 3/2$ \u2014 the lower bound exponent is strictly less than $3/2$. **lower_bound_exponent_tendsto** (one sorry): $3/2 - 1/(k-1) \\to 3/2$ as $k \\to \\infty$ \u2014 the gap shrinks.",
+    "mathContext": "The lower bound uses the **probabilistic method**: a random graph $G(n, p)$ with $p = c n^{-1/(k-1)}$ has expected degree $pn = c n^{(k-2)/(k-1)}$ and expected copies of $G_k$ proportional to $p^{\\binom{k}{2}}$. Setting the expected copy count below 1 and taking expectation gives a $G_k$-free subgraph with $\\Omega(n^{3/2-1/(k-1)})$ edges. The sorry in `lower_bound_exponent_tendsto` needs `1/(k-1) \\to 0` via `Filter.Tendsto` \u2014 a routine analysis result but requires the right Mathlib lemmas for reciprocal tendsto.",
     "significance": "key",
     "relatedConcepts": [
       "probabilistic method for extremal bounds",
       "random graph G(n,p)",
       "Filter.Tendsto for limits",
       "Real.rpow continuity",
-      "1/(k-1) → 0 as k → ∞"
+      "1/(k-1) \u2192 0 as k \u2192 \u221e"
     ],
     "prerequisites": [
       "probabilistic method in combinatorics",
@@ -158,15 +158,15 @@
     },
     "type": "concept",
     "title": "Complete Status: Survey and Infrastructure",
-    "content": "The file provides: 2 proved results (`big_O_not_implies_little_o`, `lower_bound_exponent_approach`), 2 axioms (`kst_trivial_bound`, `probabilistic_lower_bound`), 3 sorries (uniformity of o→O, k3 weak from parent, exponent tendsto). This is a **survey and infrastructure** file — it formally documents the state of the problem, the known tools, and the precise gap between what is known ($O(n^{3/2})$) and what is conjectured ($o(n^{3/2})$).",
+    "content": "The file provides: 2 proved results (`big_O_not_implies_little_o`, `lower_bound_exponent_approach`), 2 axioms (`kst_trivial_bound`, `probabilistic_lower_bound`), 3 sorries (uniformity of o\u2192O, k3 weak from parent, exponent tendsto). This is a **survey and infrastructure** file \u2014 it formally documents the state of the problem, the known tools, and the precise gap between what is known ($O(n^{3/2})$) and what is conjectured ($o(n^{3/2})$).",
     "mathContext": "The complete status table: (1) $k = 3$: SOLVED (Bondy-Simonovits, $\\text{ex}(n, C_6) \\ll n^{7/6}$, exponent $= 7/6 < 3/2$); (2) $k \\geq 4$: OPEN for **both** the strong ($c_k > 0$) and weak ($o(n^{3/2})$) forms; (3) Lower bound: $c \\cdot n^{3/2-1/(k-1)}$, exponent $\\to 3/2$; (4) Upper bound: $O(n^{3/2})$ from KST. The $\\Omega(n^{3/2-1/(k-1)})$ lower bound means the gap shrinks as $k$ grows, making the problem **harder for larger k**.",
     "significance": "supporting",
     "relatedConcepts": [
       "survey formalization",
       "open problem infrastructure",
       "O vs o gap for extremal numbers",
-      "Erdős prize problems",
-      "bipartite Turán theory"
+      "Erd\u0151s prize problems",
+      "bipartite Tur\u00e1n theory"
     ],
     "prerequisites": [
       "KST trivial bound",

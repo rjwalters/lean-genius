@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "q-Analog Infrastructure: Gaussian Binomials from Scratch",
-    "content": "This file builds the complete theory of Gaussian binomial coefficients over an arbitrary CommRing, filling a gap in Mathlib 4. The structural choice to work over a general commutative ring (not just ℤ[q] or a polynomial ring) enables direct specialization to roots of unity, finite fields, or any ring without additional casting lemmas.",
+    "content": "This file builds the complete theory of Gaussian binomial coefficients over an arbitrary CommRing, filling a gap in Mathlib 4. The structural choice to work over a general commutative ring (not just \u2124[q] or a polynomial ring) enables direct specialization to roots of unity, finite fields, or any ring without additional casting lemmas.",
     "mathContext": "Gaussian binomial coefficients $\\binom{n}{k}_q$ count $k$-dimensional subspaces of $\\mathbb{F}_q^n$. As polynomials in $q$, they interpolate between 0 (when $k > n$) and $C(n,k)$ (at $q=1$). The definition uses the q-Pascal recurrence $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$, making inductive proofs natural.",
     "significance": "key",
     "relatedConcepts": [
@@ -57,8 +57,8 @@
     },
     "type": "concept",
     "title": "Vanishing and Self-Choice Lemmas",
-    "content": "gaussBinom_eq_zero_of_lt proves [n choose k]_q = 0 when k > n by induction: at n+1, if k = m+1 with m > n, the recursive case gives q^(m+1)·0 + 0 = 0. gaussBinom_self proves [n choose n]_q = 1 by induction: the first term of the recurrence vanishes (by gaussBinom_eq_zero_of_lt, since n+1 > n+1 is false — actually n < n+1), leaving only the second term 1.",
-    "mathContext": "Vanishing: $\\binom{n}{k}_q = 0$ for $k > n$. Self-choice: $\\binom{n}{n}_q = 1$. These are essential infrastructure — without them, neither the base case of q_vandermonde nor the inductive step could identify which summands are zero. The `by omega` calls handle the natural number arithmetic for the inductive hypotheses.",
+    "content": "gaussBinom_eq_zero_of_lt proves [n choose k]_q = 0 when k > n by induction: at n+1, if k = m+1 with m > n, the recursive case gives q^(m+1)\u00b70 + 0 = 0. gaussBinom_self proves [n choose n]_q = 1 by induction: the first term of the recurrence vanishes (by gaussBinom_eq_zero_of_lt, since n+1 > n+1 is false \u2014 actually n < n+1), leaving only the second term 1.",
+    "mathContext": "Vanishing: $\\binom{n}{k}_q = 0$ for $k > n$. Self-choice: $\\binom{n}{n}_q = 1$. These are essential infrastructure \u2014 without them, neither the base case of q_vandermonde nor the inductive step could identify which summands are zero. The `by omega` calls handle the natural number arithmetic for the inductive hypotheses.",
     "significance": "supporting",
     "relatedConcepts": [
       "vanishing coefficients",
@@ -78,7 +78,7 @@
       "startLine": 67,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Classical Limit: gaussBinom_one",
     "content": "gaussBinom_one proves that setting q = 1 recovers the classical binomial coefficient: gaussBinom 1 n k = Nat.choose n k (as an element of R via Nat.cast). The proof is by induction on n: the inductive step at (n+1, k+1) uses gaussBinom_succ_succ, applies IH to both components, simplifies 1^(k+1) = 1 via one_pow, and closes by Nat.choose_succ_succ + Nat.cast_add.",
     "mathContext": "At $q = 1$: $\\binom{n+1}{k+1}_1 = 1^{k+1} \\cdot \\binom{n}{k+1}_1 + \\binom{n}{k}_1 = C(n,k+1) + C(n,k) = C(n+1,k+1)$ by Pascal's rule. The cast from $\\mathbb{N}$ to $R$ uses Nat.cast_add. This is the key lemma for vandermonde_from_q: it allows specializing q_vandermonde at $q=1$ to get the classical result.",
@@ -104,7 +104,7 @@
     },
     "type": "concept",
     "title": "Per-Term Identity: q_vand_step_term",
-    "content": "This private lemma is the algebraic engine of the inductive proof. It proves that for k ≤ s, the q-Pascal rule applied to GB(n+1, s+1-k) decomposes each term T(n+1,s+1,k) into q^(s+1)·T(n,s+1,k) + T(n,s,k). The case split on n < j+1 (where j = s-k) handles boundary terms: if n = j then GB(n,j+1) = 0 and GB(n,j) = GB(n,n) = 1; if n < j then both vanish. In the main case (n ≥ j+1), pow_add handles the exponent matching.",
+    "content": "This private lemma is the algebraic engine of the inductive proof. It proves that for k \u2264 s, the q-Pascal rule applied to GB(n+1, s+1-k) decomposes each term T(n+1,s+1,k) into q^(s+1)\u00b7T(n,s+1,k) + T(n,s,k). The case split on n < j+1 (where j = s-k) handles boundary terms: if n = j then GB(n,j+1) = 0 and GB(n,j) = GB(n,n) = 1; if n < j then both vanish. In the main case (n \u2265 j+1), pow_add handles the exponent matching.",
     "mathContext": "Setting $j = s - k$, the identity becomes: $q^{s+1} \\cdot \\binom{m}{k}_q\\binom{n}{j+1}_q q^{k(n+k-s-1)} + \\binom{m}{k}_q\\binom{n}{j}_q q^{k(n+k-s)} = \\binom{m}{k}_q(q^{j+1}\\binom{n}{j+1}_q + \\binom{n}{j}_q) q^{k(n+k-s)}$. The key calculation is $q^{s+1} \\cdot q^{k(n+k-s-1)} = q^{j+1} \\cdot q^{k(n+k-s)}$, which uses $s+1+k(n+k-s-1) = j+1+k(n+k-s)$ from the hexp_in have-clause.",
     "significance": "key",
     "relatedConcepts": [
@@ -128,7 +128,7 @@
     },
     "type": "concept",
     "title": "Base Case Helper: q_vandermonde_base",
-    "content": "The n=0 case of q_vandermonde is isolated here for clarity. The key observation is that GB(0, s+1-k) = 0 for all k < s+1 (since s+1-k ≥ 1 = 0+1), so Finset.sum_eq_zero applies to the first s+1 terms. The remaining k=s+1 term reduces to GB(m, s+1) · 1 · 1 = GB(m, s+1) via gaussBinom_self.",
+    "content": "The n=0 case of q_vandermonde is isolated here for clarity. The key observation is that GB(0, s+1-k) = 0 for all k < s+1 (since s+1-k \u2265 1 = 0+1), so Finset.sum_eq_zero applies to the first s+1 terms. The remaining k=s+1 term reduces to GB(m, s+1) \u00b7 1 \u00b7 1 = GB(m, s+1) via gaussBinom_self.",
     "mathContext": "At $n=0$: $\\sum_{k=0}^{r} \\binom{m}{k}_q \\binom{0}{r-k}_q q^{k(0+k-r)} = \\binom{m}{r}_q \\cdot \\binom{0}{0}_q \\cdot q^{r(r-r)} = \\binom{m}{r}_q$. All other terms vanish since $\\binom{0}{j+1}_q = 0$ for $j \\geq 0$. This base case would be trivial to inline, but extracting it as a lemma keeps the main q_vandermonde proof readable.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -150,10 +150,10 @@
       "startLine": 139,
       "endLine": 208
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "q-Vandermonde Identity: Full Inductive Proof",
-    "content": "The main theorem, proved by induction on n. The base case n=0 is delegated to q_vandermonde_base. The inductive step (n+1, r=s+1) uses gaussBinom_succ_succ to split GB(m+n+1, s+1) into a q^(s+1) term and a non-q term, applies IH to each sum, and uses Finset.mul_sum to distribute q^(s+1). Four have-clauses set up the assembly: sum_lhs_peel and sum_rhs_peel isolate the k=s+1 boundary terms; hbd_lhs and hbd_rhs show these boundary terms are equal (both = GB(m,s+1)·q^((s+1)(n+1))); and the key have-clause applies q_vand_step_term term-by-term.",
-    "mathContext": "The 'key' have-clause: $\\sum_{k<s+1} \\binom{m}{k}_q\\binom{n+1}{s+1-k}_q q^{k(n+1+k-s-1)} = \\sum_{k<s+1} q^{s+1}\\binom{m}{k}_q\\binom{n}{s+1-k}_q q^{k(n+k-s-1)} + \\sum_{k<s+1}\\binom{m}{k}_q\\binom{n}{s-k}_q q^{k(n+k-s)}$. This uses Finset.sum_add_distrib ← to split one sum into two, then Finset.sum_congr to apply q_vand_step_term at each index. After substituting back, ring closes the equality.",
+    "content": "The main theorem, proved by induction on n. The base case n=0 is delegated to q_vandermonde_base. The inductive step (n+1, r=s+1) uses gaussBinom_succ_succ to split GB(m+n+1, s+1) into a q^(s+1) term and a non-q term, applies IH to each sum, and uses Finset.mul_sum to distribute q^(s+1). Four have-clauses set up the assembly: sum_lhs_peel and sum_rhs_peel isolate the k=s+1 boundary terms; hbd_lhs and hbd_rhs show these boundary terms are equal (both = GB(m,s+1)\u00b7q^((s+1)(n+1))); and the key have-clause applies q_vand_step_term term-by-term.",
+    "mathContext": "The 'key' have-clause: $\\sum_{k<s+1} \\binom{m}{k}_q\\binom{n+1}{s+1-k}_q q^{k(n+1+k-s-1)} = \\sum_{k<s+1} q^{s+1}\\binom{m}{k}_q\\binom{n}{s+1-k}_q q^{k(n+k-s-1)} + \\sum_{k<s+1}\\binom{m}{k}_q\\binom{n}{s-k}_q q^{k(n+k-s)}$. This uses Finset.sum_add_distrib \u2190 to split one sum into two, then Finset.sum_congr to apply q_vand_step_term at each index. After substituting back, ring closes the equality.",
     "significance": "key",
     "relatedConcepts": [
       "Finset.sum_congr",
@@ -176,9 +176,9 @@
       "startLine": 210,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Classical Vandermonde as Corollary",
-    "content": "vandermonde_from_q derives the classical Vandermonde convolution C(m+n,r) = Σ_k C(m,k)·C(n,r-k) as a free corollary by setting q=1 in q_vandermonde and applying gaussBinom_one. The proof is three lines: have h := q_vandermonde 1 m n r; simp [gaussBinom_one, one_pow, mul_one] at h; exact h.",
+    "content": "vandermonde_from_q derives the classical Vandermonde convolution C(m+n,r) = \u03a3_k C(m,k)\u00b7C(n,r-k) as a free corollary by setting q=1 in q_vandermonde and applying gaussBinom_one. The proof is three lines: have h := q_vandermonde 1 m n r; simp [gaussBinom_one, one_pow, mul_one] at h; exact h.",
     "mathContext": "At $q = 1$: $q^{k(n+k-r)} = 1^{\\ldots} = 1$ and $\\binom{n}{k}_1 = C(n,k)$. So q-Vandermonde reduces to $C(m+n,r) = \\sum_k C(m,k)\\cdot C(n,r-k)$. This demonstrates the power of the q-analog approach: proving the general identity first gives the classical result for free. The `simp` call rewrites all gaussBinom 1 to Nat.choose casts and eliminates the 1-powers.",
     "significance": "supporting",
     "relatedConcepts": [

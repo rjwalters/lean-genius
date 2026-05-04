@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "The Gauss-Wantzel Theorem: Complete Characterization of Constructible Polygons",
-    "content": "This file formalizes the Gauss-Wantzel theorem, the complete characterization of which regular polygons are constructible by compass and straightedge. Gauss discovered (1796) that the 17-gon is constructible; Wantzel proved (1837) the converse direction and the general equivalence. The proof strategy has three steps: (1) a regular n-gon is constructible iff cos(2π/n) is constructible over ℚ; (2) cos(2π/n) is constructible iff the degree [ℚ(cos(2π/n)):ℚ] = φ(n)/2 is a power of 2; (3) φ(n)/2 is a power of 2 iff all odd prime factors of n are Fermat primes appearing to the first power.",
+    "content": "This file formalizes the Gauss-Wantzel theorem, the complete characterization of which regular polygons are constructible by compass and straightedge. Gauss discovered (1796) that the 17-gon is constructible; Wantzel proved (1837) the converse direction and the general equivalence. The proof strategy has three steps: (1) a regular n-gon is constructible iff cos(2\u03c0/n) is constructible over \u211a; (2) cos(2\u03c0/n) is constructible iff the degree [\u211a(cos(2\u03c0/n)):\u211a] = \u03c6(n)/2 is a power of 2; (3) \u03c6(n)/2 is a power of 2 iff all odd prime factors of n are Fermat primes appearing to the first power.",
     "mathContext": "The degree formula: $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\phi(n)/2$. This follows from cyclotomic field theory: $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\phi(n)$, and $\\mathbb{Q}(\\cos(2\\pi/n)) = \\mathbb{Q}(\\zeta_n + \\zeta_n^{-1})$ has degree $\\phi(n)/2$ (the maximal real subfield). So n-gon constructible $\\iff \\phi(n)/2 = 2^k \\iff \\phi(n) = 2^{k+1}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "IsConstructibleFromQ: The Formal Constructibility Predicate",
-    "content": "IsConstructibleFromQ (α : ℝ) defines α as constructible over ℚ: there exists a finite intermediate field K of ℝ over ℚ with degree a power of 2, containing α. This is identical to the DegreeCriterion from OQ-04 and is both necessary and sufficient for constructibility (by Wantzel). In this file, the n-gon constructibility is then α = cos(2π/n) satisfying this predicate.",
+    "content": "IsConstructibleFromQ (\u03b1 : \u211d) defines \u03b1 as constructible over \u211a: there exists a finite intermediate field K of \u211d over \u211a with degree a power of 2, containing \u03b1. This is identical to the DegreeCriterion from OQ-04 and is both necessary and sufficient for constructibility (by Wantzel). In this file, the n-gon constructibility is then \u03b1 = cos(2\u03c0/n) satisfying this predicate.",
     "mathContext": "$\\text{IsConstructibleFromQ}(\\alpha) :\\equiv \\exists K \\in \\text{IntermField}(\\mathbb{Q},\\mathbb{R}),\\; [K:\\mathbb{Q}] < \\infty \\;\\wedge\\; \\exists n,\\; [K:\\mathbb{Q}] = 2^n \\;\\wedge\\; \\alpha \\in K.$",
     "significance": "key",
     "relatedConcepts": [
@@ -43,7 +43,7 @@
     ],
     "prerequisites": [
       "FiniteDimensional",
-      "IntermediateField ℚ ℝ",
+      "IntermediateField \u211a \u211d",
       "Module.finrank"
     ]
   },
@@ -56,12 +56,12 @@
     },
     "type": "definition",
     "title": "Fermat Numbers and Fermat Primes",
-    "content": "Two definitions: IsFermatNumber (f) asserts f = 2^(2^k) + 1 for some k, and IsFermatPrime (p) asserts p is both a Fermat number and prime. The known Fermat primes are F₀=3, F₁=5, F₂=17, F₃=257, F₄=65537. Fermat conjectured in 1640 that all Fₙ = 2^(2^n) + 1 are prime, but F₅ = 4294967297 = 641 × 6700417 was shown composite by Euler in 1732. No new Fermat primes have been found since F₄.",
+    "content": "Two definitions: IsFermatNumber (f) asserts f = 2^(2^k) + 1 for some k, and IsFermatPrime (p) asserts p is both a Fermat number and prime. The known Fermat primes are F\u2080=3, F\u2081=5, F\u2082=17, F\u2083=257, F\u2084=65537. Fermat conjectured in 1640 that all F\u2099 = 2^(2^n) + 1 are prime, but F\u2085 = 4294967297 = 641 \u00d7 6700417 was shown composite by Euler in 1732. No new Fermat primes have been found since F\u2084.",
     "mathContext": "Fermat numbers: $F_k = 2^{2^k} + 1$. Known values: $F_0 = 3$, $F_1 = 5$, $F_2 = 17$, $F_3 = 257$, $F_4 = 65537$. For $k \\geq 5$, all Fermat numbers checked so far are composite. If $2^m + 1$ is prime, then $m$ must be a power of 2 (if $m = ab$ with $a$ odd $> 1$, then $2^b + 1 \\mid 2^{ab} + 1$).",
     "significance": "key",
     "relatedConcepts": [
       "Fermat's conjecture",
-      "Euler's factorization of F₅",
+      "Euler's factorization of F\u2085",
       "constructible polygon criterion"
     ],
     "prerequisites": [
@@ -77,10 +77,10 @@
       "startLine": 76,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Verification of the Five Known Fermat Primes and Totient Properties",
-    "content": "Five theorems verify that 3, 5, 17, 257, 65537 are Fermat primes using norm_num. Three key algebraic lemmas then follow: fermat_prime_pred shows φ(p)-1 = 2^(2^k) for a Fermat prime p = 2^(2^k)+1; totient_fermat_prime delegates to Nat.totient_prime; and fermat_prime_totient_is_pow_two combines both to show φ(p) is a power of 2. Two auxiliary lemmas (fermat_prime_ge_three, fermat_prime_ne_two) are needed for later non-constructibility proofs.",
-    "mathContext": "For a Fermat prime $p = 2^{2^k} + 1$: $\\phi(p) = p - 1 = 2^{2^k}$, which is a power of 2. In Lean: `norm_num` verifies $3 = 2^{2^0}+1$, etc. algebraically. `Nat.totient_prime : Nat.Prime p → Nat.totient p = p - 1` (from Mathlib). The combination `fermat_prime_pred + totient_fermat_prime` gives `∃ m, φ(p) = 2^m` with $m = 2^k$ where $p = 2^{2^k}+1$.",
+    "content": "Five theorems verify that 3, 5, 17, 257, 65537 are Fermat primes using norm_num. Three key algebraic lemmas then follow: fermat_prime_pred shows \u03c6(p)-1 = 2^(2^k) for a Fermat prime p = 2^(2^k)+1; totient_fermat_prime delegates to Nat.totient_prime; and fermat_prime_totient_is_pow_two combines both to show \u03c6(p) is a power of 2. Two auxiliary lemmas (fermat_prime_ge_three, fermat_prime_ne_two) are needed for later non-constructibility proofs.",
+    "mathContext": "For a Fermat prime $p = 2^{2^k} + 1$: $\\phi(p) = p - 1 = 2^{2^k}$, which is a power of 2. In Lean: `norm_num` verifies $3 = 2^{2^0}+1$, etc. algebraically. `Nat.totient_prime : Nat.Prime p \u2192 Nat.totient p = p - 1` (from Mathlib). The combination `fermat_prime_pred + totient_fermat_prime` gives `\u2203 m, \u03c6(p) = 2^m` with $m = 2^k$ where $p = 2^{2^k}+1$.",
     "significance": "key",
     "relatedConcepts": [
       "norm_num",
@@ -104,7 +104,7 @@
     },
     "type": "definition",
     "title": "The Core Axiom: Cyclotomic Field Degree Connection",
-    "content": "gauss_wantzel_theorem is stated as an axiom: the n-gon is constructible (cos(2π/n) ∈ some degree-2^k field) iff φ(n) is a power of 2. This is the mathematical heart that requires cyclotomic field theory to prove — specifically, the fact that [ℚ(cos(2π/n)):ℚ] = φ(n)/2. All polygon-specific theorems use this axiom as their sole non-trivial ingredient, reducing constructibility questions to finite arithmetic that native_decide can verify. The axiomCount of 1 reflects this single assumption.",
+    "content": "gauss_wantzel_theorem is stated as an axiom: the n-gon is constructible (cos(2\u03c0/n) \u2208 some degree-2^k field) iff \u03c6(n) is a power of 2. This is the mathematical heart that requires cyclotomic field theory to prove \u2014 specifically, the fact that [\u211a(cos(2\u03c0/n)):\u211a] = \u03c6(n)/2. All polygon-specific theorems use this axiom as their sole non-trivial ingredient, reducing constructibility questions to finite arithmetic that native_decide can verify. The axiomCount of 1 reflects this single assumption.",
     "mathContext": "$\\cos(2\\pi/n) \\text{ constructible} \\iff \\exists k, \\phi(n) = 2^k.$ The proof requires: (1) $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\phi(n)$ (cyclotomic polynomial degree); (2) $\\mathbb{Q}(\\cos(2\\pi/n)) = \\mathbb{Q}(\\zeta_n)^+$ (maximal real subfield); (3) $[\\mathbb{Q}(\\zeta_n)^+:\\mathbb{Q}] = \\phi(n)/2$; (4) constructibility iff this degree is a power of 2. Steps (1)-(3) require ~200 lines of Mathlib API glue.",
     "significance": "key",
     "relatedConcepts": [
@@ -127,10 +127,10 @@
       "startLine": 148,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Constructible Polygons: Uniform Pattern via native_decide",
-    "content": "Ten theorems prove specific polygons constructible: triangle (3), square (4), pentagon (5), hexagon (6), heptadecagon (17), 257-gon, 65537-gon, and products 15=3·5, 51=3·17, 85=5·17. Each proof follows the same two-step pattern: (1) apply gauss_wantzel_theorem to reduce to showing ∃k, φ(n) = 2^k; (2) provide the explicit exponent k and verify φ(n) = 2^k by native_decide. The 17-gon proof formalizes Gauss's 1796 discovery; the 257 and 65537-gon proofs cover the two largest Fermat prime cases.",
-    "mathContext": "Pattern: `(gauss_wantzel_theorem n hn).mpr ⟨k, by native_decide⟩`. Here `native_decide` runs the kernel evaluator on the decidable proposition `Nat.totient n = 2^k` — it evaluates both sides to natural number values and checks equality. For $n = 17$: $\\phi(17) = 16 = 2^4$ (verified by native_decide with $k=4$). For $n = 15 = 3 \\cdot 5$: $\\phi(15) = \\phi(3) \\cdot \\phi(5) = 2 \\cdot 4 = 8 = 2^3$ (verified with $k=3$, using multiplicativity of $\\phi$ on coprime inputs).",
+    "content": "Ten theorems prove specific polygons constructible: triangle (3), square (4), pentagon (5), hexagon (6), heptadecagon (17), 257-gon, 65537-gon, and products 15=3\u00b75, 51=3\u00b717, 85=5\u00b717. Each proof follows the same two-step pattern: (1) apply gauss_wantzel_theorem to reduce to showing \u2203k, \u03c6(n) = 2^k; (2) provide the explicit exponent k and verify \u03c6(n) = 2^k by native_decide. The 17-gon proof formalizes Gauss's 1796 discovery; the 257 and 65537-gon proofs cover the two largest Fermat prime cases.",
+    "mathContext": "Pattern: `(gauss_wantzel_theorem n hn).mpr \u27e8k, by native_decide\u27e9`. Here `native_decide` runs the kernel evaluator on the decidable proposition `Nat.totient n = 2^k` \u2014 it evaluates both sides to natural number values and checks equality. For $n = 17$: $\\phi(17) = 16 = 2^4$ (verified by native_decide with $k=4$). For $n = 15 = 3 \\cdot 5$: $\\phi(15) = \\phi(3) \\cdot \\phi(5) = 2 \\cdot 4 = 8 = 2^3$ (verified with $k=3$, using multiplicativity of $\\phi$ on coprime inputs).",
     "significance": "key",
     "relatedConcepts": [
       "native_decide",
@@ -151,9 +151,9 @@
       "startLine": 205,
       "endLine": 259
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Non-Constructible Polygons: Bounded Exhaustion via interval_cases",
-    "content": "Four theorems prove 7, 9, 11, 13-gons non-constructible. The helper pow_two_bound provides: if 2^k = m and m < 2^(e+1), then k ≤ e. For each non-constructible case, the proof: (1) applies not_constructible_of_totient (which applies gauss_wantzel_theorem); (2) assumes ∃k, φ(n) = 2^k for contradiction; (3) computes φ(n) = m by native_decide; (4) bounds k ≤ e via pow_two_bound; (5) uses interval_cases to check all k ∈ {0,...,e} and obtain a contradiction via norm_num.",
+    "content": "Four theorems prove 7, 9, 11, 13-gons non-constructible. The helper pow_two_bound provides: if 2^k = m and m < 2^(e+1), then k \u2264 e. For each non-constructible case, the proof: (1) applies not_constructible_of_totient (which applies gauss_wantzel_theorem); (2) assumes \u2203k, \u03c6(n) = 2^k for contradiction; (3) computes \u03c6(n) = m by native_decide; (4) bounds k \u2264 e via pow_two_bound; (5) uses interval_cases to check all k \u2208 {0,...,e} and obtain a contradiction via norm_num.",
     "mathContext": "Example (7-gon): $\\phi(7) = 6 = 2 \\cdot 3$ (not a power of 2). Proof: assume $2^k = 6$, then by `pow_two_bound` with $6 < 2^3 = 8$, we get $k \\leq 2$. `interval_cases k` tries $k = 0, 1, 2$: gives $1, 2, 4 \\neq 6$, contradiction. For 9: $\\phi(9) = 6$ (since $9 = 3^2$, $\\phi(9) = 9 \\cdot (1 - 1/3) = 6$). For 11: $\\phi(11) = 10$. For 13: $\\phi(13) = 12$.",
     "significance": "key",
     "relatedConcepts": [
@@ -178,12 +178,12 @@
     },
     "type": "insight",
     "title": "Corollaries: Powers of 2, Gauss's Discovery, and Product Structure",
-    "content": "Three corollaries illustrate the theorem's structure. totient_two_pow_is_pow_two shows φ(2^k) is a power of 2 for all k (by Nat.totient_prime_pow), explaining why powers of 2 alone always give constructible polygons. gauss_1796_heptadecagon formalizes Gauss's specific 1796 result as a corollary of fermat_prime_totient_is_pow_two: since 17 is a Fermat prime, its totient is a power of 2. totient_three_times_five shows φ(3)·φ(5) = 8 = 2^3 by native_decide, illustrating how products of distinct Fermat primes give constructible combinations.",
+    "content": "Three corollaries illustrate the theorem's structure. totient_two_pow_is_pow_two shows \u03c6(2^k) is a power of 2 for all k (by Nat.totient_prime_pow), explaining why powers of 2 alone always give constructible polygons. gauss_1796_heptadecagon formalizes Gauss's specific 1796 result as a corollary of fermat_prime_totient_is_pow_two: since 17 is a Fermat prime, its totient is a power of 2. totient_three_times_five shows \u03c6(3)\u00b7\u03c6(5) = 8 = 2^3 by native_decide, illustrating how products of distinct Fermat primes give constructible combinations.",
     "mathContext": "$\\phi(2^k) = 2^{k-1}$ for $k \\geq 1$ (proved via `Nat.totient_prime_pow`). Gauss 1796: $\\phi(17) = 16 = 2^4$ (the key fact behind the 17-gon). Product structure: for coprime $m, n$, $\\phi(mn) = \\phi(m) \\cdot \\phi(n)$; for distinct Fermat primes $p_1, \\ldots, p_r$, $\\phi(p_1 \\cdots p_r) = \\prod_{i}(p_i - 1) = \\prod_{i} 2^{2^{k_i}}$, a product of powers of 2 hence itself a power of 2.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.totient_prime_pow",
-      "multiplicativity of φ",
+      "multiplicativity of \u03c6",
       "Gauss's 1796 discovery",
       "Fermat prime products"
     ],

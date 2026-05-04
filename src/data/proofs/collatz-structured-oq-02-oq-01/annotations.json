@@ -6,9 +6,9 @@
       "startLine": 44,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "j=1 Cycle Equation Has Unique Solution",
-    "content": "Proves that the equation 3n+1 = 2^M·n has the unique natural number solution n=1, M=2. The proof: first show M ≥ 2 by contradiction (if 2^M ≤ 3 then 2^M·n ≤ 3n < 3n+1). Then rearrange to n·(2^M−3) = 1 (valid in ℕ since 2^M ≥ 4). Since n divides 1, n=1. Then 2^M = 4, proved M ≤ 2 by pow monotonicity, then interval_cases M to get M=2. Each step uses omega or norm_num.",
+    "content": "Proves that the equation 3n+1 = 2^M\u00b7n has the unique natural number solution n=1, M=2. The proof: first show M \u2265 2 by contradiction (if 2^M \u2264 3 then 2^M\u00b7n \u2264 3n < 3n+1). Then rearrange to n\u00b7(2^M\u22123) = 1 (valid in \u2115 since 2^M \u2265 4). Since n divides 1, n=1. Then 2^M = 4, proved M \u2264 2 by pow monotonicity, then interval_cases M to get M=2. Each step uses omega or norm_num.",
     "mathContext": "$$3n + 1 = 2^M \\cdot n \\implies n(2^M - 3) = 1 \\implies n = 1,\\; M = 2$$\nThis identifies the unique 1-odd-step cycle: $1 \\xrightarrow{\\times 3+1} 4 \\xrightarrow{\\div 2} 2 \\xrightarrow{\\div 2} 1$, with 1 odd step and $M = 2$ halvings.",
     "significance": "key",
     "relatedConcepts": [
@@ -31,9 +31,9 @@
       "startLine": 69,
       "endLine": 72
     },
-    "type": "theorem",
-    "title": "No 1-Odd-Step Cycle of Period ≥ 4",
-    "content": "Proves by contradiction that no Collatz cycle with exactly j=1 odd step can have period M ≥ 3 (total length ≥ 4). If such a cycle existed at n ≥ 1, the equation 3n+1 = 2^M·n would hold with M ≥ 3. But j1_cycle_equation_unique forces M=2, contradicting M ≥ 3 by omega. This immediately rules out all period-4-or-longer 1-odd-step cycles.",
+    "type": "insight",
+    "title": "No 1-Odd-Step Cycle of Period \u2265 4",
+    "content": "Proves by contradiction that no Collatz cycle with exactly j=1 odd step can have period M \u2265 3 (total length \u2265 4). If such a cycle existed at n \u2265 1, the equation 3n+1 = 2^M\u00b7n would hold with M \u2265 3. But j1_cycle_equation_unique forces M=2, contradicting M \u2265 3 by omega. This immediately rules out all period-4-or-longer 1-odd-step cycles.",
     "mathContext": "$$3n+1 = 2^M n,\\; M \\geq 3 \\implies \\text{False}$$\nCombined with j1_cycle_equation_unique: the only 1-odd-step cycle equation solution is $n=1, M=2$, giving the known cycle $\\{1, 2, 4\\}$ of length 3.",
     "significance": "key",
     "relatedConcepts": [
@@ -53,10 +53,10 @@
       "startLine": 91,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "No Period-4 Cycle with j=1 Odd Step",
-    "content": "Proves the period-4, j=1 case directly: if n is odd, the 3n+1 map applies once, then three halvings return to n, giving (3n+1)/8 = n. This rearranges to 3n+1 = 8n, i.e., 5n = 1, which has no natural number solution. The proof is immediate from omega given the hypotheses — no case analysis needed. The hypotheses h1, h2, h3 are the parity conditions confirming three consecutive halvings.",
-    "mathContext": "If $n$ is odd and $(3n+1)/8 = n$, then $3n+1 = 8n$, so $5n = 1$ — impossible for $n \\in \\mathbb{N}$.\n\nThis rules out a cycle of the form $n \\to 3n+1 \\to (3n+1)/2 \\to (3n+1)/4 \\to (3n+1)/8 = n$ where all three halvings are exact.",
+    "content": "Proves the period-4, j=1 case directly: if n is odd, the 3n+1 map applies once, then three halvings return to n, giving (3n+1)/8 = n. This rearranges to 3n+1 = 8n, i.e., 5n = 1, which has no natural number solution. The proof is immediate from omega given the hypotheses \u2014 no case analysis needed. The hypotheses h1, h2, h3 are the parity conditions confirming three consecutive halvings.",
+    "mathContext": "If $n$ is odd and $(3n+1)/8 = n$, then $3n+1 = 8n$, so $5n = 1$ \u2014 impossible for $n \\in \\mathbb{N}$.\n\nThis rules out a cycle of the form $n \\to 3n+1 \\to (3n+1)/2 \\to (3n+1)/4 \\to (3n+1)/8 = n$ where all three halvings are exact.",
     "significance": "key",
     "relatedConcepts": [
       "parity sequence analysis",
@@ -77,15 +77,15 @@
       "startLine": 103,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "j=5 Odd Steps Require at Least 8 Halvings",
-    "content": "Proves that 2^M > 3^5 implies M ≥ 8. The proof: by contradiction, if M < 8 then M ≤ 7. Use interval_cases M (trying M = 0,1,2,...,7) and for each value, norm_num verifies 2^M ≤ 243 = 3^5, contradicting the hypothesis. Since 2^8 = 256 > 243 = 3^5 and 2^7 = 128 < 243, M ≥ 8 is tight. The pattern (interval_cases + norm_num) is used for all j=5..8 bounds.",
+    "content": "Proves that 2^M > 3^5 implies M \u2265 8. The proof: by contradiction, if M < 8 then M \u2264 7. Use interval_cases M (trying M = 0,1,2,...,7) and for each value, norm_num verifies 2^M \u2264 243 = 3^5, contradicting the hypothesis. Since 2^8 = 256 > 243 = 3^5 and 2^7 = 128 < 243, M \u2265 8 is tight. The pattern (interval_cases + norm_num) is used for all j=5..8 bounds.",
     "mathContext": "$$2^M > 3^5 = 243 \\implies M \\geq 8$$\nTight: $2^7 = 128 < 243 < 256 = 2^8$.\n\nThis follows from $\\lceil 5 \\log_2 3 \\rceil = \\lceil 7.925 \\rceil = 8$.",
     "significance": "key",
     "relatedConcepts": [
       "Lagarias algebraic constraint",
       "interval_cases",
-      "log₂3 ≈ 1.585",
+      "log\u20823 \u2248 1.585",
       "cycle length lower bound"
     ],
     "prerequisites": [
@@ -104,7 +104,7 @@
     "type": "definition",
     "title": "Number of Parity Cases for a k-Cycle",
     "content": "Defines parityCases k = 2^k as the number of distinct parity sequences to check when ruling out k-cycles by direct case analysis. Each of the k orbit elements can independently be odd or even (though the Collatz structure constrains which sequences are valid), giving at most 2^k patterns to verify. The parity_cases_lower_bound theorem proves this grows at least linearly.",
-    "mathContext": "$$\\text{parityCases}(k) = 2^k$$\nFor $k = 4$: 16 patterns; $k = 10$: 1024; $k = 20$: $\\sim 10^6$.\n\nIn practice, many patterns are impossible (e.g., if $n$ is odd then $n+1$ must be even), but even after filtering, the count grows exponentially — ruling out large $k$ by enumeration is infeasible.",
+    "mathContext": "$$\\text{parityCases}(k) = 2^k$$\nFor $k = 4$: 16 patterns; $k = 10$: 1024; $k = 20$: $\\sim 10^6$.\n\nIn practice, many patterns are impossible (e.g., if $n$ is odd then $n+1$ must be even), but even after filtering, the count grows exponentially \u2014 ruling out large $k$ by enumeration is infeasible.",
     "significance": "supporting",
     "relatedConcepts": [
       "parity sequence",
@@ -124,20 +124,20 @@
       "startLine": 154,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Parity Cases Grow at Least as Fast as k",
-    "content": "Proves 2^k ≥ k+1 for all k by simple induction. Base: 2^0 = 1 = 0+1. Step: 2^(n+1) = 2·2^n ≥ 2(n+1) = 2n+2 ≥ n+2 by the inductive hypothesis. The proof establishes the strict exponential dominance of the parity case count over the cycle length. The examples (k=4→16, k=10→1024, k=20→1048576) demonstrate the concrete explosion.",
+    "content": "Proves 2^k \u2265 k+1 for all k by simple induction. Base: 2^0 = 1 = 0+1. Step: 2^(n+1) = 2\u00b72^n \u2265 2(n+1) = 2n+2 \u2265 n+2 by the inductive hypothesis. The proof establishes the strict exponential dominance of the parity case count over the cycle length. The examples (k=4\u219216, k=10\u21921024, k=20\u21921048576) demonstrate the concrete explosion.",
     "mathContext": "$$2^k \\geq k+1 \\text{ for all } k \\in \\mathbb{N}$$\nIn fact $2^k$ grows exponentially while $k+1$ grows linearly. The specific examples:\n- $k=4$: $16$ vs $5$ (factor 3.2)\n- $k=10$: $1024$ vs $11$ (factor 93)\n- $k=20$: $1{,}048{,}576$ vs $21$ (factor 49,932)",
     "significance": "key",
     "relatedConcepts": [
       "exponential vs linear growth",
-      "induction on ℕ",
+      "induction on \u2115",
       "computational complexity lower bounds"
     ],
     "prerequisites": [
       "Nat.pow",
       "linarith",
-      "induction on ℕ"
+      "induction on \u2115"
     ]
   },
   {
@@ -149,7 +149,7 @@
     },
     "type": "concept",
     "title": "Eliahou (1993): Non-Trivial Cycles Have Period > 17 Billion",
-    "content": "Axiomatizes Eliahou's 1993 theorem: for any natural number n ≥ 1 that is periodic under the Collatz map with period k ≥ 1, either n = 1 (the trivial cycle) or k > 17×10^9. This completely supersedes case analysis for all finite k ≤ 17 billion. Eliahou's proof uses algebraic sum bounds on the 2^M_i and 3^j contributions from each orbit element, avoiding the exponential parity case explosion.",
+    "content": "Axiomatizes Eliahou's 1993 theorem: for any natural number n \u2265 1 that is periodic under the Collatz map with period k \u2265 1, either n = 1 (the trivial cycle) or k > 17\u00d710^9. This completely supersedes case analysis for all finite k \u2264 17 billion. Eliahou's proof uses algebraic sum bounds on the 2^M_i and 3^j contributions from each orbit element, avoiding the exponential parity case explosion.",
     "mathContext": "**Eliahou (1993)**: $\\forall n \\geq 1, \\forall k \\geq 1$: if $n$ is $k$-periodic under the Collatz map, then $n = 1$ or $k > 1.7 \\times 10^{10}$.\n\nThe key idea: summing the Collatz equations over one full cycle gives $\\sum_{i} 3^{j_i} n_i \\cdot 2^{-M_i} = \\sum n_i$, from which contradictions arise for small $k$ via careful bounds.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -171,9 +171,9 @@
       "startLine": 182,
       "endLine": 192
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "OQ-01 Resolution: All Short Cycles Reduce to {1,4,2}",
-    "content": "Proves from eliahou_cycle_bound that for any periodic n with period k ≤ 17 billion, n must be 1, 4, or 2. The proof: apply eliahou_cycle_bound to get n=1 or k > 17×10^9. In the second case, the hypothesis k ≤ 17×10^9 gives a contradiction via omega. The three possible values (1, 4, 2) represent the elements of the unique known Collatz cycle {1, 4, 2}.",
+    "content": "Proves from eliahou_cycle_bound that for any periodic n with period k \u2264 17 billion, n must be 1, 4, or 2. The proof: apply eliahou_cycle_bound to get n=1 or k > 17\u00d710^9. In the second case, the hypothesis k \u2264 17\u00d710^9 gives a contradiction via omega. The three possible values (1, 4, 2) represent the elements of the unique known Collatz cycle {1, 4, 2}.",
     "mathContext": "$$k \\leq 1.7 \\times 10^{10} \\implies \\text{periodic } n \\in \\{1, 2, 4\\}$$\nThis is an immediate consequence of eliahou_cycle_bound. The proof: if $n = 1$, done. If $k > 1.7 \\times 10^{10}$, contradicts $k \\leq 1.7 \\times 10^{10}$.\n\nNote: the theorem only outputs $n = 1$ from eliahou; the $\\{1,2,4\\}$ conclusion requires knowing the full cycle structure.",
     "significance": "key",
     "relatedConcepts": [

@@ -8,7 +8,7 @@
     },
     "type": "insight",
     "title": "Imports, Documentation, and Setup",
-    "content": "Six Mathlib imports provide the topological and analytic foundations:\n- `Topology.Basic` and `MetricSpace.Basic`: Continuity, open/closed sets, metric sphere definition\n- `Compactness.Compact` and `Connected.PathConnected`: Compactness and path-connectedness\n- `InnerProductSpace.Basic` and `PiL2`: Inner product on `EuclideanSpace ℝ (Fin n)` and its norm\n\nThe module docstring outlines the proof strategy: define the gadget function $g(x) = f(x) - f(-x)$, show it's odd and continuous, then invoke the topological impossibility of an odd nonzero map $S^n \\to \\mathbb{R}^n$. The file axiomatizes the covering space argument, which requires algebraic topology beyond Mathlib's current scope.\n\nThe file has 0 sorries but 1 axiom (`no_continuous_odd_nonzero_on_sphere`), which encodes the deep topological obstruction from covering space theory.",
+    "content": "Six Mathlib imports provide the topological and analytic foundations:\n- `Topology.Basic` and `MetricSpace.Basic`: Continuity, open/closed sets, metric sphere definition\n- `Compactness.Compact` and `Connected.PathConnected`: Compactness and path-connectedness\n- `InnerProductSpace.Basic` and `PiL2`: Inner product on `EuclideanSpace \u211d (Fin n)` and its norm\n\nThe module docstring outlines the proof strategy: define the gadget function $g(x) = f(x) - f(-x)$, show it's odd and continuous, then invoke the topological impossibility of an odd nonzero map $S^n \\to \\mathbb{R}^n$. The file axiomatizes the covering space argument, which requires algebraic topology beyond Mathlib's current scope.\n\nThe file has 0 sorries but 1 axiom (`no_continuous_odd_nonzero_on_sphere`), which encodes the deep topological obstruction from covering space theory.",
     "mathContext": "The formalization models $S^n$ as `Metric.sphere 0 1` in `EuclideanSpace \\mathbb{R} (\\text{Fin}\\;(n+1))$, using the $\\ell^2$ norm $\\|x\\| = \\sqrt{\\sum x_i^2}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -83,7 +83,7 @@
     },
     "type": "definition",
     "title": "Continuous Functions and the Antipodal Pair Predicate",
-    "content": "**SphereFun**: A structure bundling a function $f: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ with a proof of continuity. This is a standard Lean pattern: bundling data with its properties.\n\nNote that $f$ is defined on all of $\\mathbb{R}^{n+1}$, not just $S^n$, avoiding subtype complications — the theorem restricts attention via the `HasAntipodalPair` predicate.\n\n**HasAntipodalPair**: $\\exists x \\in S^n,\\; f(x) = f(-x)$. This is the conclusion of the Borsuk-Ulam theorem. The predicate asserts existence without specifying location — the proof is inherently non-constructive.",
+    "content": "**SphereFun**: A structure bundling a function $f: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ with a proof of continuity. This is a standard Lean pattern: bundling data with its properties.\n\nNote that $f$ is defined on all of $\\mathbb{R}^{n+1}$, not just $S^n$, avoiding subtype complications \u2014 the theorem restricts attention via the `HasAntipodalPair` predicate.\n\n**HasAntipodalPair**: $\\exists x \\in S^n,\\; f(x) = f(-x)$. This is the conclusion of the Borsuk-Ulam theorem. The predicate asserts existence without specifying location \u2014 the proof is inherently non-constructive.",
     "mathContext": "`SphereFun n` models $f: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ continuous. `HasAntipodalPair` asserts $\\exists x \\in S^n,\\; f(x) = f(-x)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -108,7 +108,7 @@
     },
     "type": "concept",
     "title": "The Gadget Function: The Heart of the Proof",
-    "content": "The **gadget function** is the proof's key construction. Given $f: S^n \\to \\mathbb{R}^n$, define:\n$$g(x) = f(x) - f(-x)$$\n\n**The crucial property** — $g$ is **odd**:\n$$g(-x) = f(-x) - f(x) = -(f(x) - f(-x)) = -g(x)$$\n\nThe Lean proof of `gadget_odd` is elegant: `simp only [gadget, antipode, neg_neg, neg_sub]` unfolds definitions and uses $-(-x) = x$ and $a - b = -(b - a)$.\n\n**Strategy shift**: If no antipodal pair exists, $g$ is everywhere nonzero on $S^n$. We can normalize: $h(x) = g(x)/\\|g(x)\\|: S^n \\to S^{n-1}$ is continuous and odd. But no such map can exist! This reframing connects point-set topology to covering space theory.",
+    "content": "The **gadget function** is the proof's key construction. Given $f: S^n \\to \\mathbb{R}^n$, define:\n$$g(x) = f(x) - f(-x)$$\n\n**The crucial property** \u2014 $g$ is **odd**:\n$$g(-x) = f(-x) - f(x) = -(f(x) - f(-x)) = -g(x)$$\n\nThe Lean proof of `gadget_odd` is elegant: `simp only [gadget, antipode, neg_neg, neg_sub]` unfolds definitions and uses $-(-x) = x$ and $a - b = -(b - a)$.\n\n**Strategy shift**: If no antipodal pair exists, $g$ is everywhere nonzero on $S^n$. We can normalize: $h(x) = g(x)/\\|g(x)\\|: S^n \\to S^{n-1}$ is continuous and odd. But no such map can exist! This reframing connects point-set topology to covering space theory.",
     "mathContext": "$g(x) = f(x) - f(-x)$, $g(-x) = -g(x)$. If $g(x) \\neq 0$ on $S^n$, normalize: $h = g/\\|g\\|: S^n \\to S^{n-1}$ is odd.",
     "significance": "key",
     "relatedConcepts": [
@@ -157,9 +157,9 @@
       "name": "no_continuous_odd_nonzero_on_sphere",
       "kind": "axiom"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Topological Obstruction (Axiom)",
-    "content": "**The axiom** `no_continuous_odd_nonzero_on_sphere`: For $n \\geq 1$, there is no continuous function $h: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ that is simultaneously continuous, odd ($h(-x) = -h(x)$), and nonzero on $S^n$.\n\nThis is the deep topological result that powers Borsuk-Ulam. The classical proof uses covering spaces:\n- Normalize to get $\\hat{h}: S^n \\to S^{n-1}$\n- Since $\\hat{h}$ is odd, it descends to $\\bar{h}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$\n- $\\bar{h}_*: \\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$ must be injective (covering theory)\n- But $S^n$ simply connected ($n \\geq 2$) forces $\\bar{h}_*$ trivial — contradiction\n- For $n = 1$: $S^1$ connected, $S^0 = \\{\\pm 1\\}$ discrete, no continuous odd surjection\n\n**Why axiomatized**: Mathlib lacks covering space theory, fundamental groups of projective spaces, and lifting criteria.",
+    "content": "**The axiom** `no_continuous_odd_nonzero_on_sphere`: For $n \\geq 1$, there is no continuous function $h: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ that is simultaneously continuous, odd ($h(-x) = -h(x)$), and nonzero on $S^n$.\n\nThis is the deep topological result that powers Borsuk-Ulam. The classical proof uses covering spaces:\n- Normalize to get $\\hat{h}: S^n \\to S^{n-1}$\n- Since $\\hat{h}$ is odd, it descends to $\\bar{h}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$\n- $\\bar{h}_*: \\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$ must be injective (covering theory)\n- But $S^n$ simply connected ($n \\geq 2$) forces $\\bar{h}_*$ trivial \u2014 contradiction\n- For $n = 1$: $S^1$ connected, $S^0 = \\{\\pm 1\\}$ discrete, no continuous odd surjection\n\n**Why axiomatized**: Mathlib lacks covering space theory, fundamental groups of projective spaces, and lifting criteria.",
     "mathContext": "For $n \\geq 1$: $\\nexists h: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ continuous, odd, nonzero on $S^n$. Uses $\\bar{h}_*: \\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$ injective yet trivial.",
     "significance": "key",
     "relatedConcepts": [
@@ -183,9 +183,9 @@
       "name": "borsuk_ulam",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Borsuk-Ulam Theorem: Main Proof",
-    "content": "**`borsuk_ulam`**: For $n \\geq 1$ and continuous $f: S^n \\to \\mathbb{R}^n$, there exists $x \\in S^n$ with $f(x) = f(-x)$.\n\n**Proof** (by contradiction via `by_contra`):\n1. Assume $\\neg$`HasAntipodalPair n f`\n2. Construct $g = $ `gadget n f` (the difference function)\n3. $g$ is continuous (`gadget_continuous`)\n4. $g$ is nonzero on $S^n$ (`gadget_nonzero_of_no_antipodal` — uses `push_neg` to transform $\\neg\\exists$ into $\\forall\\neg$)\n5. $g$ is odd (`gadget_odd`)\n6. But `no_odd_map_to_lower_sphere` says no such $g$ exists!\n7. Contradiction: package $\\langle g, \\text{hcont}, \\text{hnonzero}, \\text{hodd}\\rangle$ as witness\n\nThe proof is clean and modular: each property of $g$ is established by a separate lemma, and the final contradiction just packages them together.",
+    "content": "**`borsuk_ulam`**: For $n \\geq 1$ and continuous $f: S^n \\to \\mathbb{R}^n$, there exists $x \\in S^n$ with $f(x) = f(-x)$.\n\n**Proof** (by contradiction via `by_contra`):\n1. Assume $\\neg$`HasAntipodalPair n f`\n2. Construct $g = $ `gadget n f` (the difference function)\n3. $g$ is continuous (`gadget_continuous`)\n4. $g$ is nonzero on $S^n$ (`gadget_nonzero_of_no_antipodal` \u2014 uses `push_neg` to transform $\\neg\\exists$ into $\\forall\\neg$)\n5. $g$ is odd (`gadget_odd`)\n6. But `no_odd_map_to_lower_sphere` says no such $g$ exists!\n7. Contradiction: package $\\langle g, \\text{hcont}, \\text{hnonzero}, \\text{hodd}\\rangle$ as witness\n\nThe proof is clean and modular: each property of $g$ is established by a separate lemma, and the final contradiction just packages them together.",
     "mathContext": "Assume $\\forall x \\in S^n,\\; f(x) \\neq f(-x)$. Then $g = f(x) - f(-x)$ is continuous, odd, nonzero on $S^n$. Contradicts `no_continuous_odd_nonzero_on_sphere`. Therefore $\\exists x \\in S^n,\\; f(x) = f(-x)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -233,7 +233,7 @@
     },
     "type": "insight",
     "title": "Dimension 2: The Weather Theorem",
-    "content": "**`borsuk_ulam_dim_2`**: The famous **weather theorem** — at any moment, there exist two antipodal points on Earth with identical temperature AND atmospheric pressure. Any continuous $f: S^2 \\to \\mathbb{R}^2$ has an antipodal pair.\n\nThis is the most intuitive statement of Borsuk-Ulam: if you measure any two continuous quantities (temperature, pressure, humidity, etc.) on the surface of a sphere, some pair of diametrically opposite points will have identical measurements.\n\nThe $n = 0$ case is excluded: $S^0 = \\{-1, 1\\}$ is discrete, making the theorem vacuous.",
+    "content": "**`borsuk_ulam_dim_2`**: The famous **weather theorem** \u2014 at any moment, there exist two antipodal points on Earth with identical temperature AND atmospheric pressure. Any continuous $f: S^2 \\to \\mathbb{R}^2$ has an antipodal pair.\n\nThis is the most intuitive statement of Borsuk-Ulam: if you measure any two continuous quantities (temperature, pressure, humidity, etc.) on the surface of a sphere, some pair of diametrically opposite points will have identical measurements.\n\nThe $n = 0$ case is excluded: $S^0 = \\{-1, 1\\}$ is discrete, making the theorem vacuous.",
     "mathContext": "$\\forall f: S^2 \\to \\mathbb{R}^2$ continuous, $\\exists x \\in S^2,\\; f(x) = f(-x)$",
     "significance": "supporting",
     "relatedConcepts": [

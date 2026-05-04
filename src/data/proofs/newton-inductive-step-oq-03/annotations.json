@@ -21,7 +21,7 @@
     "prerequisites": [
       "Ordinary binomial coefficients",
       "q-analogs in combinatorics",
-      "Monotonicity of q^n for q ∈ (0,1)"
+      "Monotonicity of q^n for q \u2208 (0,1)"
     ]
   },
   {
@@ -40,7 +40,7 @@
       "q-Pochhammer product",
       "q-factorial",
       "Finset.prod in Lean 4",
-      "noncomputable for ℝ"
+      "noncomputable for \u211d"
     ],
     "prerequisites": [
       "Finset.range in Lean 4",
@@ -62,7 +62,7 @@
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.prod_pos",
-      "pow_lt_one for q ∈ (0,1)",
+      "pow_lt_one for q \u2208 (0,1)",
       "div_pos"
     ],
     "prerequisites": [
@@ -104,10 +104,10 @@
     "type": "technique",
     "title": "Key q-Power Inequality: Two Applications of pow_le_pow_of_le_one",
     "content": "**q_pow_key_ineq** proves $q^{n-k} + q^k \\geq q^n + q^{n+1}$ for $q \\in (0,1)$ and $k \\leq n$. The proof applies `pow_le_pow_of_le_one` twice: $q^{n-k} \\geq q^n$ (since $n-k \\leq n$) and $q^k \\geq q^{n+1}$ (since $k \\leq n < n+1$). Then `add_le_add` combines them. This is the arithmetically essential inequality for the log-concavity proof.",
-    "mathContext": "The inequality says: summing the two 'extreme' exponents $n-k$ and $k$ (which average to $n/2$) dominates summing $n$ and $n+1$ (which are both $\\geq n/2$ when $k \\leq n/2$, and one is ≥ and one is equal). The Chebyshev-rearrangement perspective: $q^a + q^b \\geq q^c + q^d$ when $\\{a,b\\}$ is 'more spread' than $\\{c,d\\}$ and $a+b = c+d$.",
+    "mathContext": "The inequality says: summing the two 'extreme' exponents $n-k$ and $k$ (which average to $n/2$) dominates summing $n$ and $n+1$ (which are both $\\geq n/2$ when $k \\leq n/2$, and one is \u2265 and one is equal). The Chebyshev-rearrangement perspective: $q^a + q^b \\geq q^c + q^d$ when $\\{a,b\\}$ is 'more spread' than $\\{c,d\\}$ and $a+b = c+d$.",
     "significance": "key",
     "relatedConcepts": [
-      "pow_le_pow_of_le_one for q ∈ (0,1)",
+      "pow_le_pow_of_le_one for q \u2208 (0,1)",
       "add_le_add",
       "monotone decrease of geometric sequences"
     ],
@@ -127,7 +127,7 @@
     "type": "technique",
     "title": "Ratio Antitone via Algebraic Identity + q-Power Inequality",
     "content": "**ratio_ineq** proves $(1-q^{n-k})(1-q^k) \\leq (1-q^{n-k+1})(1-q^{k+1})$, establishing that the consecutive ratio $G(k+1)/G(k) = (1-q^{n-k})/(1-q^{k+1})$ is *antitone* (decreasing) in $k$. The key tool is the helper `expand_ratio_diff`, a pure ring identity, combined with `q_pow_key_ineq`. Setting $A = q^{n-k}$ and $B = q^k$, the identity $(1-Aq)(1-Bq) - (1-A)(1-B) = (1-q)(A+B-AB-ABq)$ transforms the ratio inequality into showing $(1-q)(q^{n-k}+q^k-q^n-q^{n+1}) \\geq 0$, which follows immediately from $1-q > 0$ and the key q-power inequality.",
-    "mathContext": "The algebraic factorization $(1-Aq)(1-Bq)-(1-A)(1-B) = (1-q)(A+B-AB-ABq)$ with $A=q^{n-k}$, $B=q^k$, $AB=q^n$, $ABq=q^{n+1}$ reduces the ratio inequality to $q^{n-k}+q^k \\geq q^n+q^{n+1}$ — exactly `q_pow_key_ineq`. This factorization technique, expressing a difference of products as a single product of a simpler sum, is a standard tool in q-series and combinatorics. The Lean proof uses `linarith` after unfolding both the ring identity and the key inequality.",
+    "mathContext": "The algebraic factorization $(1-Aq)(1-Bq)-(1-A)(1-B) = (1-q)(A+B-AB-ABq)$ with $A=q^{n-k}$, $B=q^k$, $AB=q^n$, $ABq=q^{n+1}$ reduces the ratio inequality to $q^{n-k}+q^k \\geq q^n+q^{n+1}$ \u2014 exactly `q_pow_key_ineq`. This factorization technique, expressing a difference of products as a single product of a simpler sum, is a standard tool in q-series and combinatorics. The Lean proof uses `linarith` after unfolding both the ring identity and the key inequality.",
     "significance": "key",
     "relatedConcepts": [
       "q-series algebraic identities",
@@ -138,7 +138,7 @@
     "prerequisites": [
       "q_pow_key_ineq (lines 107-117)",
       "expand_ratio_diff ring lemma",
-      "linarith for linear arithmetic over ℝ"
+      "linarith for linear arithmetic over \u211d"
     ]
   },
   {
@@ -148,10 +148,10 @@
       "startLine": 154,
       "endLine": 208
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Log-Concavity via linear_combination + ratio recurrences",
     "content": "**gaussBinom_log_concave** (the main theorem) proves $G(k+1)^2 \\geq G(k) \\cdot G(k+2)$ by: (1) applying two ratio recurrences to get $G_1 D_1 = G_0 N_0$ and $G_2 D_2 = G_1 N_1$; (2) computing via `linear_combination` that $G_1^2 D_1 D_2 - G_0 G_2 D_1 D_2 = G_0 G_1 (N_0 D_2 - N_1 D_1)$; (3) using `ratio_ineq` to get $N_1 D_1 \\leq N_0 D_2$; (4) dividing by $D_1 D_2 > 0$.",
-    "mathContext": "The algebraic core: $G_1^2 D_1 D_2 - G_0 G_2 D_1 D_2 = G_0 G_1(N_0 D_2 - N_1 D_1)$ follows from substituting the ratio recurrences. This is proved by `linear_combination G1 * D2 * hrec1 - G0 * D1 * hrec2` — a single linear combination tactic. The final step divides by $D_1 D_2 > 0$ using `field_simp` after establishing the nonnegativity of the right side.",
+    "mathContext": "The algebraic core: $G_1^2 D_1 D_2 - G_0 G_2 D_1 D_2 = G_0 G_1(N_0 D_2 - N_1 D_1)$ follows from substituting the ratio recurrences. This is proved by `linear_combination G1 * D2 * hrec1 - G0 * D1 * hrec2` \u2014 a single linear combination tactic. The final step divides by $D_1 D_2 > 0$ using `field_simp` after establishing the nonnegativity of the right side.",
     "significance": "breakthrough",
     "relatedConcepts": [
       "linear_combination tactic in Lean 4",

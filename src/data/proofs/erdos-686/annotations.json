@@ -8,7 +8,7 @@
       "endLine": 18
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem #686 [Er79d]: Can every integer $N \\geq 2$ be written as $\\prod_{i=1}^k (m+i) / \\prod_{i=1}^k (n+i)$ for some $k \\geq 2$ and $m \\geq n + k$? The ratio equals $\\binom{m+k}{k}/\\binom{n+k}{k}$, connecting to deep divisibility properties of binomial coefficients. This cannot be resolved by finite computation — the universality claim requires covering all $N \\geq 2$. **Status: OPEN.**",
+    "content": "Erd\u0151s Problem #686 [Er79d]: Can every integer $N \\geq 2$ be written as $\\prod_{i=1}^k (m+i) / \\prod_{i=1}^k (n+i)$ for some $k \\geq 2$ and $m \\geq n + k$? The ratio equals $\\binom{m+k}{k}/\\binom{n+k}{k}$, connecting to deep divisibility properties of binomial coefficients. This cannot be resolved by finite computation \u2014 the universality claim requires covering all $N \\geq 2$. **Status: OPEN.**",
     "mathContext": "The ratio $P(m,k)/P(n,k) = \\binom{m+k}{k}/\\binom{n+k}{k}$. For this to equal an integer $N$, we need $\\binom{n+k}{k} \\mid \\binom{m+k}{k}$, a non-trivial divisibility condition on binomial coefficients.",
     "significance": "key",
     "relatedConcepts": [
@@ -39,7 +39,7 @@
       "endLine": 72
     },
     "title": "Consecutive Products and Identities",
-    "content": "`consecutiveProduct(n,k) = ∏_{i ∈ Icc 1 k} (n+i)` defines the product of $k$ consecutive integers starting at $n+1$. Three theorems proved: (1) `consecutiveProduct_succ` — recursion $P(n,k+1) = P(n,k) \\cdot (n+k+1)$ via `Finset.prod_Icc_succ_top`; (2) `consecutiveProduct_eq_factorial` — $P(n,k) \\cdot n! = (n+k)!$ by induction on $k$; (3) `product_binomial_relation` — $P(n,k) = k! \\binom{n+k}{k}$ using `Nat.choose_mul_factorial_mul_factorial`.",
+    "content": "`consecutiveProduct(n,k) = \u220f_{i \u2208 Icc 1 k} (n+i)` defines the product of $k$ consecutive integers starting at $n+1$. Three theorems proved: (1) `consecutiveProduct_succ` \u2014 recursion $P(n,k+1) = P(n,k) \\cdot (n+k+1)$ via `Finset.prod_Icc_succ_top`; (2) `consecutiveProduct_eq_factorial` \u2014 $P(n,k) \\cdot n! = (n+k)!$ by induction on $k$; (3) `product_binomial_relation` \u2014 $P(n,k) = k! \\binom{n+k}{k}$ using `Nat.choose_mul_factorial_mul_factorial`.",
     "mathContext": "$P(n,k) = \\prod_{i=1}^k (n+i) = \\frac{(n+k)!}{n!} = k! \\binom{n+k}{k}$. The inductive proof telescopes: $P(n,0) \\cdot n! = n!$ base, $P(n,k+1) \\cdot n! = P(n,k) \\cdot (n+k+1) \\cdot n! = (n+k)! \\cdot (n+k+1) = (n+k+1)!$ step.",
     "significance": "key",
     "relatedConcepts": [
@@ -129,7 +129,7 @@
       "endLine": 133
     },
     "title": "Structural Properties (Proved)",
-    "content": "Three fully proved structural theorems: (1) `numerator_gt_denominator` — when $m > n$, factor-by-factor comparison via `Finset.prod_lt_prod_of_nonempty` gives $P(m,k) > P(n,k)$; (2) `consecutiveProduct_pos` — each factor $n + i \\geq 1$, so the product is positive via `Finset.prod_pos`; (3) `consecutiveProduct_mono` — $n_1 \\leq n_2 \\implies P(n_1,k) \\leq P(n_2,k)$ via `Finset.prod_le_prod`. These ensure the ratio is well-defined and $\\geq 2$.",
+    "content": "Three fully proved structural theorems: (1) `numerator_gt_denominator` \u2014 when $m > n$, factor-by-factor comparison via `Finset.prod_lt_prod_of_nonempty` gives $P(m,k) > P(n,k)$; (2) `consecutiveProduct_pos` \u2014 each factor $n + i \\geq 1$, so the product is positive via `Finset.prod_pos`; (3) `consecutiveProduct_mono` \u2014 $n_1 \\leq n_2 \\implies P(n_1,k) \\leq P(n_2,k)$ via `Finset.prod_le_prod`. These ensure the ratio is well-defined and $\\geq 2$.",
     "mathContext": "Strict monotonicity: $m > n \\implies \\forall i \\in [1,k],\\, m+i > n+i$, so $\\prod (m+i) > \\prod (n+i)$ by the product strict monotonicity lemma. Positivity: $n + i \\geq 1 > 0$ for $i \\geq 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -158,7 +158,7 @@
       "endLine": 146
     },
     "title": "Verified Examples: N = 2 and N = 6",
-    "content": "Two computationally verified examples: (1) $N = 2$: `IsIntegerRatio 1 2 2` proved by `decide` — $\\frac{3 \\cdot 4}{2 \\cdot 3} = \\frac{12}{6} = 2$; (2) $N = 6$: `IsIntegerRatio 0 2 2` with quotient 6 proved by `native_decide` — $\\frac{3 \\cdot 4}{1 \\cdot 2} = \\frac{12}{2} = 6$. Both use $k = 2$ (products of 2 consecutive integers).",
+    "content": "Two computationally verified examples: (1) $N = 2$: `IsIntegerRatio 1 2 2` proved by `decide` \u2014 $\\frac{3 \\cdot 4}{2 \\cdot 3} = \\frac{12}{6} = 2$; (2) $N = 6$: `IsIntegerRatio 0 2 2` with quotient 6 proved by `native_decide` \u2014 $\\frac{3 \\cdot 4}{1 \\cdot 2} = \\frac{12}{2} = 6$. Both use $k = 2$ (products of 2 consecutive integers).",
     "mathContext": "The `decide` tactic checks decidable propositions in the kernel; `native_decide` compiles to native code for faster evaluation. Both provide machine-checked verification of the divisibility and quotient computations.",
     "significance": "key",
     "relatedConcepts": [
@@ -186,7 +186,7 @@
       "endLine": 156
     },
     "title": "Follow-Up: Fixed Parameter Sets",
-    "content": "`RepresentableSet(n,k)` = $\\{N : \\exists m \\geq n+k,\\, P(m,k)/P(n,k) = N\\}$. `representable_set_infinite` (axiom): for $k \\geq 2$, this set is infinite. The proof idea: as $m \\to \\infty$, $P(m,k)/P(n,k) \\to \\infty$ by the monotonicity theorem, giving arbitrarily large representable values. This is Erdős's secondary question about the structure of representable integers.",
+    "content": "`RepresentableSet(n,k)` = $\\{N : \\exists m \\geq n+k,\\, P(m,k)/P(n,k) = N\\}$. `representable_set_infinite` (axiom): for $k \\geq 2$, this set is infinite. The proof idea: as $m \\to \\infty$, $P(m,k)/P(n,k) \\to \\infty$ by the monotonicity theorem, giving arbitrarily large representable values. This is Erd\u0151s's secondary question about the structure of representable integers.",
     "mathContext": "For fixed $n, k \\geq 2$: $\\frac{P(m,k)}{P(n,k)} = \\frac{\\binom{m+k}{k}}{\\binom{n+k}{k}} \\sim \\frac{m^k}{(n+k)!/(k! \\cdot n!)} \\to \\infty$ as $m \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": [
@@ -216,7 +216,7 @@
       "endLine": 163
     },
     "title": "Connection to Problem #677",
-    "content": "`problem_677_special_case(N)`: $\\exists n, k \\geq 2$ with $P(n,k) = N$ — asking which integers are products of consecutive integers. This is a special case of #686 where the denominator product is trivial ($n = 0$ in the denominator gives $P(0,k) = k!$). The reduction shows #686's ratio representation is strictly more general.",
+    "content": "`problem_677_special_case(N)`: $\\exists n, k \\geq 2$ with $P(n,k) = N$ \u2014 asking which integers are products of consecutive integers. This is a special case of #686 where the denominator product is trivial ($n = 0$ in the denominator gives $P(0,k) = k!$). The reduction shows #686's ratio representation is strictly more general.",
     "mathContext": "Problem #677 representation: $N = (n+1)(n+2)\\cdots(n+k)$. This embeds into #686 via $N = \\frac{(n+1)\\cdots(n+k)}{1 \\cdot 2 \\cdots k} \\cdot k!$, though the exact reduction depends on choosing appropriate denominator parameters.",
     "significance": "key",
     "relatedConcepts": [
@@ -244,8 +244,8 @@
       "endLine": 174
     },
     "title": "Summary and Formal Statement",
-    "content": "`erdos_686_equiv` (proved by `simp only [Representable, IsRepresentable]`): confirms that `∀ N ≥ 2, Representable N` unfolds to $\\forall N \\geq 2, \\exists n\\, m\\, k,\\, k \\geq 2 \\wedge m \\geq n + k \\wedge \\text{ratioExpression}\\, n\\, m\\, k = N$. The `simp` proof automatically unfolds the definition chain `ErdosConjecture686 → Representable → IsRepresentable` to confirm correctness. Problem remains **OPEN** since [Er79d].",
-    "mathContext": "The definitional unfolding verifies that the layered formalization (conjecture → representability → specific constraints) correctly captures the intended mathematical statement. No mathematical content is proved — this is a sanity check on the formalization itself.",
+    "content": "`erdos_686_equiv` (proved by `simp only [Representable, IsRepresentable]`): confirms that `\u2200 N \u2265 2, Representable N` unfolds to $\\forall N \\geq 2, \\exists n\\, m\\, k,\\, k \\geq 2 \\wedge m \\geq n + k \\wedge \\text{ratioExpression}\\, n\\, m\\, k = N$. The `simp` proof automatically unfolds the definition chain `ErdosConjecture686 \u2192 Representable \u2192 IsRepresentable` to confirm correctness. Problem remains **OPEN** since [Er79d].",
+    "mathContext": "The definitional unfolding verifies that the layered formalization (conjecture \u2192 representability \u2192 specific constraints) correctly captures the intended mathematical statement. No mathematical content is proved \u2014 this is a sanity check on the formalization itself.",
     "significance": "key",
     "relatedConcepts": [
       "Definitional unfolding",
@@ -295,7 +295,7 @@
       "startLine": 209,
       "endLine": 216
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Consecutive Product Injectivity",
     "content": "`consecutiveProduct_inj` proves $P(n_1, k) = P(n_2, k) \\Rightarrow n_1 = n_2$ for $k \\geq 1$. The proof is by contradiction: if $n_1 \\neq n_2$, then WLOG $n_1 < n_2$, and `numerator_gt_denominator` gives $P(n_2, k) > P(n_1, k)$, contradicting equality.\n\nThis is the key lemma enabling the infinitude proof: it ensures the function $t \\mapsto P(n + (t+1)P(n,k), k)$ is injective, so its values in the representable set are all distinct.",
     "mathContext": "Strict monotonicity implies injectivity: $n_1 < n_2 \\Rightarrow \\prod_{i=0}^{k-1}(n_1+1+i) < \\prod_{i=0}^{k-1}(n_2+1+i)$ since each factor is strictly smaller. This is a standard argument for products of strictly increasing sequences.",
@@ -316,14 +316,14 @@
       "startLine": 256,
       "endLine": 283
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Representable Set Is Infinite (Now Proved)",
     "content": "`representable_set_infinite` proves that for fixed $n, k$ with $k \\geq 2$, infinitely many integers arise as ratios of consecutive products. **This was previously axiomatized and is now fully proved.**\n\nThe proof constructs an injection $\\mathbb{N} \\hookrightarrow \\text{RepresentableSet}(n,k)$ via:\n- `repValue_mem`: each $t$ gives a valid representable integer\n- `repValue_injective`: distinct $t$ give distinct integers (via `consecutiveProduct_inj`)\n- `Set.infinite_range_of_injective`: injective map from $\\mathbb{N}$ implies infinite image",
     "mathContext": "The injection: $t \\mapsto P(n + (t+1)P(n,k), k) / P(n,k)$. Injectivity chain: equal quotients $\\Rightarrow$ equal products $\\Rightarrow$ equal arguments $\\Rightarrow$ equal $t$. The key cancellation uses $P(n,k) > 0$ (from `consecutiveProduct_pos`) for the division step.",
     "significance": "key",
     "relatedConcepts": [
       "Set.infinite_range_of_injective",
-      "injection from ℕ",
+      "injection from \u2115",
       "previously axiomatized"
     ],
     "prerequisites": [

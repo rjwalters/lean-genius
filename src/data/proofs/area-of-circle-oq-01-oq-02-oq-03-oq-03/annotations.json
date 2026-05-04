@@ -2,73 +2,144 @@
   {
     "id": "ann-definitions",
     "proofId": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
-    "range": { "startLine": 69, "endLine": 83 },
+    "range": {
+      "startLine": 69,
+      "endLine": 83
+    },
     "type": "definition",
     "title": "n-Ball Volume and Sphere Surface Area Definitions",
-    "content": "Three core definitions form the foundation. `unitBallVolume n = π^(n/2)/Γ(n/2+1)` is the unit n-ball volume constant ω_n. `nBallVol n r = ω_n · r^n` is the n-ball volume function — a monomial in r with coefficient ω_n. `nSphereArea n r = n · ω_n · r^(n-1)` is the (n-1)-sphere surface area. The relationship between these three definitions is the heart of Steiner's formula: nSphereArea is exactly the derivative of nBallVol.",
-    "mathContext": "$\\omega_n = \\frac{\\pi^{n/2}}{\\Gamma(n/2+1)}$, $\\quad V_n(r) = \\omega_n r^n$, $\\quad S_n(r) = n\\omega_n r^{n-1}$. Note $S_n(r) = \\frac{d}{dr}[V_n(r)]$ by the power rule — this is the mathematical content of Steiner's formula.",
+    "content": "Three core definitions form the foundation. `unitBallVolume n = \u03c0^(n/2)/\u0393(n/2+1)` is the unit n-ball volume constant \u03c9_n. `nBallVol n r = \u03c9_n \u00b7 r^n` is the n-ball volume function \u2014 a monomial in r with coefficient \u03c9_n. `nSphereArea n r = n \u00b7 \u03c9_n \u00b7 r^(n-1)` is the (n-1)-sphere surface area. The relationship between these three definitions is the heart of Steiner's formula: nSphereArea is exactly the derivative of nBallVol.",
+    "mathContext": "$\\omega_n = \\frac{\\pi^{n/2}}{\\Gamma(n/2+1)}$, $\\quad V_n(r) = \\omega_n r^n$, $\\quad S_n(r) = n\\omega_n r^{n-1}$. Note $S_n(r) = \\frac{d}{dr}[V_n(r)]$ by the power rule \u2014 this is the mathematical content of Steiner's formula.",
     "significance": "key",
-    "relatedConcepts": ["unit ball volume", "Gamma function", "surface area", "polynomial functions"],
-    "prerequisites": ["Real.Gamma", "Real.pi", "noncomputable section"]
+    "relatedConcepts": [
+      "unit ball volume",
+      "Gamma function",
+      "surface area",
+      "polynomial functions"
+    ],
+    "prerequisites": [
+      "Real.Gamma",
+      "Real.pi",
+      "noncomputable section"
+    ]
   },
   {
     "id": "ann-steiners-formula",
     "proofId": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
-    "range": { "startLine": 143, "endLine": 148 },
-    "type": "theorem",
+    "range": {
+      "startLine": 143,
+      "endLine": 148
+    },
+    "type": "insight",
     "title": "Steiner's Formula via the Power Rule",
-    "content": "The proof of `steiners_formula` is a three-line argument: (1) apply `hasDerivAt_pow n r` to get HasDerivAt for r^n, (2) lift with `.const_mul (unitBallVolume n)` to get HasDerivAt for ω_n · r^n, (3) use `convert ... using 1; ring` to reconcile the syntactic form. The `convert` handles the difference between `ω_n * (↑n * r^(n-1))` (what Mathlib produces) and `n * ω_n * r^(n-1)` (the definition of nSphereArea). The `ring` tactic closes the gap by commutativity and associativity.",
-    "mathContext": "$\\frac{d}{dr}[\\omega_n r^n] = \\omega_n \\cdot n r^{n-1} = n\\omega_n r^{n-1} = S_n(r)$. Formally: `hasDerivAt_pow n r : HasDerivAt (· ^ n) (↑n * r^(n-1)) r`, then `const_mul` lifts to `HasDerivAt (ω_n * · ^ n) (ω_n * (↑n * r^(n-1))) r`.",
+    "content": "The proof of `steiners_formula` is a three-line argument: (1) apply `hasDerivAt_pow n r` to get HasDerivAt for r^n, (2) lift with `.const_mul (unitBallVolume n)` to get HasDerivAt for \u03c9_n \u00b7 r^n, (3) use `convert ... using 1; ring` to reconcile the syntactic form. The `convert` handles the difference between `\u03c9_n * (\u2191n * r^(n-1))` (what Mathlib produces) and `n * \u03c9_n * r^(n-1)` (the definition of nSphereArea). The `ring` tactic closes the gap by commutativity and associativity.",
+    "mathContext": "$\\frac{d}{dr}[\\omega_n r^n] = \\omega_n \\cdot n r^{n-1} = n\\omega_n r^{n-1} = S_n(r)$. Formally: `hasDerivAt_pow n r : HasDerivAt (\u00b7 ^ n) (\u2191n * r^(n-1)) r`, then `const_mul` lifts to `HasDerivAt (\u03c9_n * \u00b7 ^ n) (\u03c9_n * (\u2191n * r^(n-1))) r`.",
     "significance": "key",
-    "relatedConcepts": ["HasDerivAt", "power rule", "const_mul", "ring normalization"],
-    "prerequisites": ["hasDerivAt_pow", "HasDerivAt.const_mul", "convert tactic"]
+    "relatedConcepts": [
+      "HasDerivAt",
+      "power rule",
+      "const_mul",
+      "ring normalization"
+    ],
+    "prerequisites": [
+      "hasDerivAt_pow",
+      "HasDerivAt.const_mul",
+      "convert tactic"
+    ]
   },
   {
     "id": "ann-shell-limit",
     "proofId": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
-    "range": { "startLine": 173, "endLine": 196 },
-    "type": "theorem",
+    "range": {
+      "startLine": 173,
+      "endLine": 196
+    },
+    "type": "insight",
     "title": "The Archimedes Shell Limit",
-    "content": "The `shell_limit` theorem gives the Archimedes interpretation: as h → 0, the ratio [V_n(r+h) - V_n(r)] / h → S_n(r). The proof translates between two equivalent formulations of derivative: the standard slope limit (as y → r, (f(y) - f(r))/(y-r) → f'(r)) and the h-shift limit (as h → 0, (f(r+h) - f(r))/h → f'(r)). The key steps: (1) `hasDerivAt_iff_tendsto_slope` extracts the slope limit from `steiners_formula`, (2) `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` shows the map h ↦ r+h sends the punctured neighborhood of 0 to the punctured neighborhood of r, (3) `simp_rw [heq]` rewrites the ratio as slope evaluated at r+h, (4) `hd.comp hmap` composes the two limits.",
+    "content": "The `shell_limit` theorem gives the Archimedes interpretation: as h \u2192 0, the ratio [V_n(r+h) - V_n(r)] / h \u2192 S_n(r). The proof translates between two equivalent formulations of derivative: the standard slope limit (as y \u2192 r, (f(y) - f(r))/(y-r) \u2192 f'(r)) and the h-shift limit (as h \u2192 0, (f(r+h) - f(r))/h \u2192 f'(r)). The key steps: (1) `hasDerivAt_iff_tendsto_slope` extracts the slope limit from `steiners_formula`, (2) `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` shows the map h \u21a6 r+h sends the punctured neighborhood of 0 to the punctured neighborhood of r, (3) `simp_rw [heq]` rewrites the ratio as slope evaluated at r+h, (4) `hd.comp hmap` composes the two limits.",
     "mathContext": "$\\lim_{h \\to 0, h \\neq 0} \\frac{V_n(r+h) - V_n(r)}{h} = V_n'(r) = S_n(r)$. The ratio equals $\\text{slope}(V_n, r, r+h) = \\frac{V_n(r+h) - V_n(r)}{(r+h) - r}$, and $\\text{Tendsto}(\\text{slope}\\ V_n\\ r) (\\mathcal{N}[\\neq r]\\, r) (\\mathcal{N}(S_n(r)))$ by `hasDerivAt_iff_tendsto_slope`.",
     "significance": "supporting",
-    "relatedConcepts": ["slope limit", "nhdsWithin", "filter composition", "Archimedes principle"],
-    "prerequisites": ["hasDerivAt_iff_tendsto_slope", "tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within", "Filter.Tendsto.comp"]
+    "relatedConcepts": [
+      "slope limit",
+      "nhdsWithin",
+      "filter composition",
+      "Archimedes principle"
+    ],
+    "prerequisites": [
+      "hasDerivAt_iff_tendsto_slope",
+      "tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within",
+      "Filter.Tendsto.comp"
+    ]
   },
   {
     "id": "ann-volume-from-steiner",
     "proofId": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
-    "range": { "startLine": 206, "endLine": 213 },
-    "type": "theorem",
+    "range": {
+      "startLine": 206,
+      "endLine": 213
+    },
+    "type": "insight",
     "title": "Volume from Surface Area via FTC",
-    "content": "FTC Part 2 converts the derivative relationship d/dr V_n = S_n into the integral formula V_n(r) = ∫₀ʳ S_n(ρ) dρ. The proof uses `integral_eq_sub_of_hasDerivAt` with the derivative from `steiners_formula` and integrability from `continuous_nSphereArea`. The boundary condition V_n(0) = 0 (for n ≥ 1) is needed to simplify V_n(r) - V_n(0) = V_n(r).",
+    "content": "FTC Part 2 converts the derivative relationship d/dr V_n = S_n into the integral formula V_n(r) = \u222b\u2080\u02b3 S_n(\u03c1) d\u03c1. The proof uses `integral_eq_sub_of_hasDerivAt` with the derivative from `steiners_formula` and integrability from `continuous_nSphereArea`. The boundary condition V_n(0) = 0 (for n \u2265 1) is needed to simplify V_n(r) - V_n(0) = V_n(r).",
     "mathContext": "FTC: since $\\frac{d}{d\\rho}[V_n(\\rho)] = S_n(\\rho)$ and $S_n$ is continuous, $\\int_0^r S_n(\\rho)\\,d\\rho = V_n(r) - V_n(0) = V_n(r) - 0 = V_n(r)$. Specifically for $r > 0$: $\\int_0^r n\\omega_n \\rho^{n-1}\\,d\\rho = \\omega_n r^n$.",
     "significance": "key",
-    "relatedConcepts": ["Fundamental Theorem of Calculus", "intervalIntegral", "IntervalIntegrable", "FTC Part 2"],
-    "prerequisites": ["integral_eq_sub_of_hasDerivAt", "Continuous.intervalIntegrable", "nBallVol_zero"]
+    "relatedConcepts": [
+      "Fundamental Theorem of Calculus",
+      "intervalIntegral",
+      "IntervalIntegrable",
+      "FTC Part 2"
+    ],
+    "prerequisites": [
+      "integral_eq_sub_of_hasDerivAt",
+      "Continuous.intervalIntegrable",
+      "nBallVol_zero"
+    ]
   },
   {
     "id": "ann-special-cases",
     "proofId": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
-    "range": { "startLine": 236, "endLine": 270 },
-    "type": "theorem",
+    "range": {
+      "startLine": 236,
+      "endLine": 270
+    },
+    "type": "insight",
     "title": "Special Cases: n=2 (Circle) and n=3 (Sphere)",
-    "content": "The explicit theorems `steiner_2d_explicit` and `steiner_3d_explicit` directly express the familiar formulas: d/dr[πr²] = 2πr (the classical circumference = dA/dr duality) and d/dr[(4π/3)r³] = 4πr² (sphere surface area = dV/dr). These are proved by converting `steiners_formula` for n=2,3 using the computed values ω₂ = π and ω₃ = 4π/3 from `unitBallVolume_two` and `unitBallVolume_three`. The `push_cast; ring` pattern handles the natural number cast ↑3 = (3:ℝ).",
+    "content": "The explicit theorems `steiner_2d_explicit` and `steiner_3d_explicit` directly express the familiar formulas: d/dr[\u03c0r\u00b2] = 2\u03c0r (the classical circumference = dA/dr duality) and d/dr[(4\u03c0/3)r\u00b3] = 4\u03c0r\u00b2 (sphere surface area = dV/dr). These are proved by converting `steiners_formula` for n=2,3 using the computed values \u03c9\u2082 = \u03c0 and \u03c9\u2083 = 4\u03c0/3 from `unitBallVolume_two` and `unitBallVolume_three`. The `push_cast; ring` pattern handles the natural number cast \u21913 = (3:\u211d).",
     "mathContext": "n=2: $\\frac{d}{dr}[\\pi r^2] = 2\\pi r$ (circumference). n=3: $\\frac{d}{dr}\\left[\\frac{4\\pi}{3}r^3\\right] = 4\\pi r^2$ (sphere surface area). Both follow from $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$, and the general formula $\\frac{d}{dr}[\\omega_n r^n] = n\\omega_n r^{n-1}$.",
     "significance": "supporting",
-    "relatedConcepts": ["unitBallVolume_two", "unitBallVolume_three", "Gamma function values"],
-    "prerequisites": ["unitBallVolume_two", "unitBallVolume_three", "push_cast", "ring"]
+    "relatedConcepts": [
+      "unitBallVolume_two",
+      "unitBallVolume_three",
+      "Gamma function values"
+    ],
+    "prerequisites": [
+      "unitBallVolume_two",
+      "unitBallVolume_three",
+      "push_cast",
+      "ring"
+    ]
   },
   {
     "id": "ann-surface-volume-ratio",
     "proofId": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
-    "range": { "startLine": 272, "endLine": 285 },
-    "type": "theorem",
+    "range": {
+      "startLine": 272,
+      "endLine": 285
+    },
+    "type": "insight",
     "title": "The Surface-to-Volume Ratio S_n(r)/V_n(r) = n/r",
-    "content": "A geometric consequence of Steiner's formula: since V_n(r) = ω_n r^n and S_n(r) = n ω_n r^(n-1), their ratio is S_n(r)/V_n(r) = n/r. This is the n-dimensional generalization of the 2D result C/A = 2πr / (πr²) = 2/r. Geometrically: scaling a ball by factor λ scales its surface area by λ^(n-1) and volume by λ^n, so surface/volume scales as λ^(-1), giving S/V ∝ 1/r.",
-    "mathContext": "$\\frac{S_n(r)}{V_n(r)} = \\frac{n\\omega_n r^{n-1}}{\\omega_n r^n} = \\frac{n}{r}$. For n=2: C(r)/A(r) = 2πr/(πr²) = 2/r. For n=3: S(r)/V(r) = 4πr²/((4π/3)r³) = 3/r.",
+    "content": "A geometric consequence of Steiner's formula: since V_n(r) = \u03c9_n r^n and S_n(r) = n \u03c9_n r^(n-1), their ratio is S_n(r)/V_n(r) = n/r. This is the n-dimensional generalization of the 2D result C/A = 2\u03c0r / (\u03c0r\u00b2) = 2/r. Geometrically: scaling a ball by factor \u03bb scales its surface area by \u03bb^(n-1) and volume by \u03bb^n, so surface/volume scales as \u03bb^(-1), giving S/V \u221d 1/r.",
+    "mathContext": "$\\frac{S_n(r)}{V_n(r)} = \\frac{n\\omega_n r^{n-1}}{\\omega_n r^n} = \\frac{n}{r}$. For n=2: C(r)/A(r) = 2\u03c0r/(\u03c0r\u00b2) = 2/r. For n=3: S(r)/V(r) = 4\u03c0r\u00b2/((4\u03c0/3)r\u00b3) = 3/r.",
     "significance": "supporting",
-    "relatedConcepts": ["surface-to-volume ratio", "scaling laws", "geometric inequalities"],
-    "prerequisites": ["field_simp", "pow_ne_zero", "pow_sub₀"]
+    "relatedConcepts": [
+      "surface-to-volume ratio",
+      "scaling laws",
+      "geometric inequalities"
+    ],
+    "prerequisites": [
+      "field_simp",
+      "pow_ne_zero",
+      "pow_sub\u2080"
+    ]
   }
 ]

@@ -8,8 +8,8 @@
     },
     "type": "definition",
     "title": "IsPSD: Positive Semidefinite Polynomial",
-    "content": "IsPSD defines a univariate real polynomial as PSD: it evaluates nonnegatively at every real point. This is the propositional formulation of the analytic concept of global nonnegativity. The definition uses Polynomial.eval rather than specializing to specific types, making it compatible with all Mathlib polynomial results. The classical Artin theorem (resolving Hilbert's 17th problem) states that PSD polynomials over a real closed field can always be written as a sum of squares of rational functions — IsPSD is the precise formalization of the 'PSD' hypothesis in that theorem.",
-    "mathContext": "$$\\text{IsPSD}(p) \\iff \\forall x \\in \\mathbb{R},\\; p(x) \\geq 0$$ This is distinct from being a sum of polynomial squares: Motzkin's polynomial $M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1$ is PSD but not a polynomial SOS — it is a rational-function SOS (two squares of rational functions).",
+    "content": "IsPSD defines a univariate real polynomial as PSD: it evaluates nonnegatively at every real point. This is the propositional formulation of the analytic concept of global nonnegativity. The definition uses Polynomial.eval rather than specializing to specific types, making it compatible with all Mathlib polynomial results. The classical Artin theorem (resolving Hilbert's 17th problem) states that PSD polynomials over a real closed field can always be written as a sum of squares of rational functions \u2014 IsPSD is the precise formalization of the 'PSD' hypothesis in that theorem.",
+    "mathContext": "$$\\text{IsPSD}(p) \\iff \\forall x \\in \\mathbb{R},\\; p(x) \\geq 0$$ This is distinct from being a sum of polynomial squares: Motzkin's polynomial $M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1$ is PSD but not a polynomial SOS \u2014 it is a rational-function SOS (two squares of rational functions).",
     "significance": "supporting",
     "relatedConcepts": [
       "Polynomial.eval",
@@ -31,13 +31,13 @@
     },
     "type": "definition",
     "title": "IsSumOfKSquares: Exact Count SOS Decomposition",
-    "content": "IsSumOfKSquares p k says there exist exactly k polynomials q₀, ..., q_{k-1} such that p = q₀² + ... + q_{k-1}². The representation uses Fin k → Polynomial ℝ (a k-tuple of polynomials indexed by Fin k) and ∑ i, q i ^ 2 (the BigOperators sum). This exact-count formulation is more informative than just IsSOS: it allows reasoning about the minimum number of squares needed (Pfister's question), and enables induction on k via sum_of_k_squares_mono (padding with 0² to go from k to k+1).",
+    "content": "IsSumOfKSquares p k says there exist exactly k polynomials q\u2080, ..., q_{k-1} such that p = q\u2080\u00b2 + ... + q_{k-1}\u00b2. The representation uses Fin k \u2192 Polynomial \u211d (a k-tuple of polynomials indexed by Fin k) and \u2211 i, q i ^ 2 (the BigOperators sum). This exact-count formulation is more informative than just IsSOS: it allows reasoning about the minimum number of squares needed (Pfister's question), and enables induction on k via sum_of_k_squares_mono (padding with 0\u00b2 to go from k to k+1).",
     "mathContext": "$$\\text{IsSumOfKSquares}(p, k) \\iff \\exists q_0, \\ldots, q_{k-1} \\in \\mathbb{R}[x],\\; p = \\sum_{i=0}^{k-1} q_i^2$$ The minimum such $k$ is the 'SOS number' of $p$; Pfister's theorem bounds it by $2^n$ for $n$-variate polynomials.",
     "significance": "supporting",
     "relatedConcepts": [
       "Pfister's theorem",
       "SOS number",
-      "Fin k → Polynomial ℝ",
+      "Fin k \u2192 Polynomial \u211d",
       "BigOperators sum"
     ],
     "prerequisites": [
@@ -52,9 +52,9 @@
       "startLine": 94,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Soundness: Sum of k Squares Implies PSD",
-    "content": "sum_of_k_squares_is_psd proves that any k-SOS polynomial is PSD: for any real x, p(x) = ∑ q_i(x)² ≥ 0. The proof unfolds the IsSumOfKSquares definition (getting q : Fin k → Polynomial ℝ and p = ∑ i, q i ^ 2), then evaluates at x using eval_finset_sum and eval_pow to get p(x) = ∑ (q_i(x))². The sum of squares of reals is nonneg by Finset.sum_nonneg + sq_nonneg. This soundness direction is easy; the hard direction (PSD → rational-SOS) is Artin's theorem.",
+    "content": "sum_of_k_squares_is_psd proves that any k-SOS polynomial is PSD: for any real x, p(x) = \u2211 q_i(x)\u00b2 \u2265 0. The proof unfolds the IsSumOfKSquares definition (getting q : Fin k \u2192 Polynomial \u211d and p = \u2211 i, q i ^ 2), then evaluates at x using eval_finset_sum and eval_pow to get p(x) = \u2211 (q_i(x))\u00b2. The sum of squares of reals is nonneg by Finset.sum_nonneg + sq_nonneg. This soundness direction is easy; the hard direction (PSD \u2192 rational-SOS) is Artin's theorem.",
     "mathContext": "$$\\text{IsSumOfKSquares}(p, k) \\implies \\text{IsPSD}(p)$$ since $p(x) = \\sum_{i<k} q_i(x)^2 \\geq 0$ for all $x \\in \\mathbb{R}$ as each $q_i(x)^2 \\geq 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -75,9 +75,9 @@
       "startLine": 110,
       "endLine": 114
     },
-    "type": "theorem",
-    "title": "SOS Monotonicity: k-SOS Implies m-SOS for m ≥ k",
-    "content": "sum_of_squares_le proves: if p is k-SOS and k ≤ m, then p is m-SOS. The proof is by induction on the ≤ relation: the base case is reflexivity (k = m, done), and the step case is sum_of_k_squares_mono (which adds one extra 0² term via Fin.cons 0). This induction on Nat.le is elegant: each step adds exactly one zero polynomial as an extra summand. The theorem lets us state Pfister's bound in terms of IsSumOfKSquares (p) (2^n): for any n-variate PSD p, it is 2^n-SOS, and hence m-SOS for any m ≥ 2^n.",
+    "type": "insight",
+    "title": "SOS Monotonicity: k-SOS Implies m-SOS for m \u2265 k",
+    "content": "sum_of_squares_le proves: if p is k-SOS and k \u2264 m, then p is m-SOS. The proof is by induction on the \u2264 relation: the base case is reflexivity (k = m, done), and the step case is sum_of_k_squares_mono (which adds one extra 0\u00b2 term via Fin.cons 0). This induction on Nat.le is elegant: each step adds exactly one zero polynomial as an extra summand. The theorem lets us state Pfister's bound in terms of IsSumOfKSquares (p) (2^n): for any n-variate PSD p, it is 2^n-SOS, and hence m-SOS for any m \u2265 2^n.",
     "mathContext": "$$k \\leq m \\implies (\\text{IsSumOfKSquares}(p, k) \\implies \\text{IsSumOfKSquares}(p, m))$$ proved by adding $0^2$ terms: $p = \\sum_{i<k} q_i^2 = \\sum_{i<k} q_i^2 + 0^2 + \\cdots + 0^2$ (with $m-k$ zeros appended).",
     "significance": "key",
     "relatedConcepts": [
@@ -98,9 +98,9 @@
       "startLine": 139,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Brahmagupta-Fibonacci Identity: Products of 2-Squares",
-    "content": "brahmagupta_fibonacci proves the real-number identity: (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)². This is proved in one line by ring — purely algebraic manipulation of commutativity, associativity, and distributivity. The identity has a deep algebraic interpretation: it is the norm multiplicativity of Gaussian integers, |z₁z₂|² = |z₁|²|z₂|² for z₁ = a+bi, z₂ = c+di. The 4-variable case of this identity (Euler's 4-square identity) extends to quaternions, and Cayley's 8-square identity to octonions — explaining why Pfister's bounds are exactly powers of 2.",
+    "content": "brahmagupta_fibonacci proves the real-number identity: (a\u00b2+b\u00b2)(c\u00b2+d\u00b2) = (ac-bd)\u00b2 + (ad+bc)\u00b2. This is proved in one line by ring \u2014 purely algebraic manipulation of commutativity, associativity, and distributivity. The identity has a deep algebraic interpretation: it is the norm multiplicativity of Gaussian integers, |z\u2081z\u2082|\u00b2 = |z\u2081|\u00b2|z\u2082|\u00b2 for z\u2081 = a+bi, z\u2082 = c+di. The 4-variable case of this identity (Euler's 4-square identity) extends to quaternions, and Cayley's 8-square identity to octonions \u2014 explaining why Pfister's bounds are exactly powers of 2.",
     "mathContext": "$$(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$$ This is the norm form $N(z_1 z_2) = N(z_1) N(z_2)$ for $z_j = a_j + b_j i \\in \\mathbb{Z}[i]$: multiplication of Gaussian integers preserves the sum-of-two-squares property.",
     "significance": "key",
     "relatedConcepts": [
@@ -121,9 +121,9 @@
       "startLine": 151,
       "endLine": 157
     },
-    "type": "theorem",
-    "title": "Product Closure: 2-SOS × 2-SOS = 2-SOS",
-    "content": "sos2_mul proves: if p and q are each sums of 2 squares, then their product pq is also a sum of 2 squares. The proof extracts the 2-tuples fp : Fin 2 → Polynomial ℝ and fq : Fin 2 → Polynomial ℝ from the hypotheses, then provides the explicit witness: the new decomposition is ![fp 0 * fq 0 - fp 1 * fq 1, fp 0 * fq 1 + fp 1 * fq 0] (the polynomial analogue of Brahmagupta-Fibonacci). The ring tactic closes the resulting polynomial identity. This is the direct polynomial lifting of brahmagupta_fibonacci via brahmagupta_fibonacci_poly.",
+    "type": "insight",
+    "title": "Product Closure: 2-SOS \u00d7 2-SOS = 2-SOS",
+    "content": "sos2_mul proves: if p and q are each sums of 2 squares, then their product pq is also a sum of 2 squares. The proof extracts the 2-tuples fp : Fin 2 \u2192 Polynomial \u211d and fq : Fin 2 \u2192 Polynomial \u211d from the hypotheses, then provides the explicit witness: the new decomposition is ![fp 0 * fq 0 - fp 1 * fq 1, fp 0 * fq 1 + fp 1 * fq 0] (the polynomial analogue of Brahmagupta-Fibonacci). The ring tactic closes the resulting polynomial identity. This is the direct polynomial lifting of brahmagupta_fibonacci via brahmagupta_fibonacci_poly.",
     "mathContext": "$$\\text{IsSumOfKSquares}(p, 2) \\wedge \\text{IsSumOfKSquares}(q, 2) \\implies \\text{IsSumOfKSquares}(pq, 2)$$ via $(p_0^2 + p_1^2)(q_0^2 + q_1^2) = (p_0 q_0 - p_1 q_1)^2 + (p_0 q_1 + p_1 q_0)^2$.",
     "significance": "key",
     "relatedConcepts": [

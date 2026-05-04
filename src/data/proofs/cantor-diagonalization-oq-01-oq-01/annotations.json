@@ -8,13 +8,13 @@
     },
     "type": "concept",
     "title": "The Continuum Hypothesis: Independence Framework",
-    "content": "The file imports Mathlib's cardinal and ordinal infrastructure, plus a companion file `ContinuumHypothesis.lean` that formalizes the Gödel-Cohen independence results. The namespace `CantorDiagOQ01OQ01` opens `Cardinal` and `ContinuumHypothesis`. The doc-comment outlines two categories: (1) ZFC-provable facts (no axioms) including the CH ↔ no-intermediate equivalence and König's constraint, and (2) axiomatized facts (Easton's theorem, large cardinal connections) for which the full proofs require advanced forcing theory.",
+    "content": "The file imports Mathlib's cardinal and ordinal infrastructure, plus a companion file `ContinuumHypothesis.lean` that formalizes the G\u00f6del-Cohen independence results. The namespace `CantorDiagOQ01OQ01` opens `Cardinal` and `ContinuumHypothesis`. The doc-comment outlines two categories: (1) ZFC-provable facts (no axioms) including the CH \u2194 no-intermediate equivalence and K\u00f6nig's constraint, and (2) axiomatized facts (Easton's theorem, large cardinal connections) for which the full proofs require advanced forcing theory.",
     "mathContext": "The key definitions from `ContinuumHypothesis.lean`: `CH : Prop` (the Continuum Hypothesis $2^{\\aleph_0} = \\aleph_1$), `GCH : Prop` (the Generalized Continuum Hypothesis $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all $\\alpha$), `continuum := (2 : Cardinal) ^ \\aleph_0$, `aleph_one := Cardinal.aleph 1`. The independence results `ch_consistent_with_zfc` and `not_ch_consistent_with_zfc` are imported from the companion file.",
     "significance": "supporting",
     "relatedConcepts": [
       "Continuum Hypothesis",
       "ZFC set theory",
-      "Gödel constructible universe",
+      "G\u00f6del constructible universe",
       "Cohen forcing"
     ],
     "prerequisites": [
@@ -31,14 +31,14 @@
       "endLine": 76
     },
     "type": "definition",
-    "title": "ℵ₁ and the Continuum: Two Foundational Inequalities",
+    "title": "\u2135\u2081 and the Continuum: Two Foundational Inequalities",
     "content": "`aleph_one_gt_aleph_zero` proves $\\aleph_0 < \\aleph_1$ by showing $\\aleph_1 = \\mathrm{succ}(\\aleph_0)$ (via `Cardinal.aleph_succ` and the fact that $1 = \\mathrm{succ}(0)$ in ordinals), then applying `Order.lt_succ`. `aleph_one_le_continuum` proves $\\aleph_1 \\leq 2^{\\aleph_0}$: first shows $\\aleph_1 = \\mathrm{succ}(\\aleph_0)$, then uses `Order.succ_le_of_lt` with `Cardinal.cantor` ($\\aleph_0 < 2^{\\aleph_0}$). Together these establish the fundamental sandwich $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0}$ that makes CH a meaningful question.",
     "mathContext": "Cantor's theorem states $\\kappa < 2^\\kappa$ for any cardinal $\\kappa$. The **successor cardinal** $\\aleph_1 = \\mathrm{succ}(\\aleph_0)$ is the least cardinal greater than $\\aleph_0$. Since $\\aleph_0 < 2^{\\aleph_0}$, the minimality of the successor gives $\\aleph_1 = \\mathrm{succ}(\\aleph_0) \\leq 2^{\\aleph_0}$. CH asks whether this $\\leq$ is $=$.",
     "significance": "key",
     "relatedConcepts": [
       "Cantor's theorem",
       "successor cardinal",
-      "ℵ hierarchy",
+      "\u2135 hierarchy",
       "Cardinal.aleph_succ",
       "Order.succ_le_of_lt"
     ],
@@ -55,10 +55,10 @@
       "startLine": 83,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Under CH: No Intermediate and All Uncountable Sets Are Continuum-Sized",
-    "content": "`ch_no_intermediate` assumes `CH` and proves there is no $\\kappa$ with $\\aleph_0 < \\kappa < \\text{continuum}$, delegating to `ch_implies_no_intermediate` from the companion file. `ch_continuum_is_successor` shows CH implies $\\text{continuum} = \\mathrm{succ}(\\aleph_0)$, unwrapping the `CH` and `continuum` definitions. `ch_uncountable_sets` is the most striking: under CH, every uncountable cardinal $\\leq \\text{continuum}$ equals the continuum — there are no 'intermediate sizes' for uncountable subsets of the reals. The proof uses `by_contra` to get $\\kappa < \\text{continuum}$, then applies `ch_implies_no_intermediate`.",
-    "mathContext": "Under CH ($2^{\\aleph_0} = \\aleph_1$), the cardinal line jumps directly from $\\aleph_0$ to $\\aleph_1 = 2^{\\aleph_0}$, leaving no room for intermediate cardinals. This means every uncountable subset $S$ of $\\mathbb{R}$ satisfies $|S| = |\\mathbb{R}| = 2^{\\aleph_0}$ — the 'perfect set property' holds for all uncountable sets (every uncountable $S \\subseteq \\mathbb{R}$ contains a perfect subset of the same cardinality).",
+    "content": "`ch_no_intermediate` assumes `CH` and proves there is no $\\kappa$ with $\\aleph_0 < \\kappa < \\text{continuum}$, delegating to `ch_implies_no_intermediate` from the companion file. `ch_continuum_is_successor` shows CH implies $\\text{continuum} = \\mathrm{succ}(\\aleph_0)$, unwrapping the `CH` and `continuum` definitions. `ch_uncountable_sets` is the most striking: under CH, every uncountable cardinal $\\leq \\text{continuum}$ equals the continuum \u2014 there are no 'intermediate sizes' for uncountable subsets of the reals. The proof uses `by_contra` to get $\\kappa < \\text{continuum}$, then applies `ch_implies_no_intermediate`.",
+    "mathContext": "Under CH ($2^{\\aleph_0} = \\aleph_1$), the cardinal line jumps directly from $\\aleph_0$ to $\\aleph_1 = 2^{\\aleph_0}$, leaving no room for intermediate cardinals. This means every uncountable subset $S$ of $\\mathbb{R}$ satisfies $|S| = |\\mathbb{R}| = 2^{\\aleph_0}$ \u2014 the 'perfect set property' holds for all uncountable sets (every uncountable $S \\subseteq \\mathbb{R}$ contains a perfect subset of the same cardinality).",
     "significance": "key",
     "relatedConcepts": [
       "perfect set property",
@@ -78,15 +78,15 @@
       "startLine": 115,
       "endLine": 138
     },
-    "type": "theorem",
-    "title": "Under ¬CH: ℵ₁ Is Explicit — and Multiple Intermediates Exist",
-    "content": "`not_ch_has_intermediate` provides the explicit witness: under ¬CH, `Cardinal.aleph 1` is intermediate between $\\aleph_0$ and $2^{\\aleph_0}$. The proof has two parts: $\\aleph_0 < \\aleph_1$ (by `aleph_one_gt_aleph_zero`) and $\\aleph_1 < 2^{\\aleph_0}$ (by combining $\\aleph_1 \\leq 2^{\\aleph_0}$ with $\\aleph_1 \\neq 2^{\\aleph_0}$ from ¬CH using `lt_of_le_of_ne`). `not_ch_multiple_intermediates` extends this: if $2^{\\aleph_0} > \\aleph_2$, then both $\\aleph_1$ and $\\aleph_2$ are intermediate, produced via `aleph_strictly_increasing`.",
-    "mathContext": "Under ¬CH, ZFC allows many possible values for $2^{\\aleph_0}$: it could be $\\aleph_2$ (as PFA implies), $\\aleph_{\\omega_1}$, or any other regular uncountable cardinal. The minimum under ¬CH is $2^{\\aleph_0} = \\aleph_2$, giving exactly one intermediate ($\\aleph_1$). In a model where $2^{\\aleph_0} = \\aleph_{\\omega_1}$, there are uncountably many intermediate cardinals $\\{\\aleph_1, \\aleph_2, \\ldots, \\aleph_\\omega, \\aleph_{\\omega+1}, \\ldots\\}$.",
+    "type": "insight",
+    "title": "Under \u00acCH: \u2135\u2081 Is Explicit \u2014 and Multiple Intermediates Exist",
+    "content": "`not_ch_has_intermediate` provides the explicit witness: under \u00acCH, `Cardinal.aleph 1` is intermediate between $\\aleph_0$ and $2^{\\aleph_0}$. The proof has two parts: $\\aleph_0 < \\aleph_1$ (by `aleph_one_gt_aleph_zero`) and $\\aleph_1 < 2^{\\aleph_0}$ (by combining $\\aleph_1 \\leq 2^{\\aleph_0}$ with $\\aleph_1 \\neq 2^{\\aleph_0}$ from \u00acCH using `lt_of_le_of_ne`). `not_ch_multiple_intermediates` extends this: if $2^{\\aleph_0} > \\aleph_2$, then both $\\aleph_1$ and $\\aleph_2$ are intermediate, produced via `aleph_strictly_increasing`.",
+    "mathContext": "Under \u00acCH, ZFC allows many possible values for $2^{\\aleph_0}$: it could be $\\aleph_2$ (as PFA implies), $\\aleph_{\\omega_1}$, or any other regular uncountable cardinal. The minimum under \u00acCH is $2^{\\aleph_0} = \\aleph_2$, giving exactly one intermediate ($\\aleph_1$). In a model where $2^{\\aleph_0} = \\aleph_{\\omega_1}$, there are uncountably many intermediate cardinals $\\{\\aleph_1, \\aleph_2, \\ldots, \\aleph_\\omega, \\aleph_{\\omega+1}, \\ldots\\}$.",
     "significance": "key",
     "relatedConcepts": [
       "explicit intermediate",
       "lt_of_le_of_ne",
-      "aleph hierarchy under ¬CH",
+      "aleph hierarchy under \u00acCH",
       "Proper Forcing Axiom"
     ],
     "prerequisites": [
@@ -103,14 +103,14 @@
       "endLine": 165
     },
     "type": "insight",
-    "title": "The Iff: 'Intermediate Exists' Exactly Equals '¬CH'",
-    "content": "`intermediate_iff_not_ch` proves the logical equivalence: $\\exists \\kappa, \\aleph_0 < \\kappa < 2^{\\aleph_0}$ iff ¬CH. Forward: if such $\\kappa$ exists and CH holds, `ch_implies_no_intermediate` gives a contradiction. Backward: `not_ch_has_intermediate` provides ℵ₁ as witness. `intermediate_cardinal_independent` bundles both directions with the independence fact into one statement: neither direction is provable or refutable in ZFC alone. The proof is a one-liner: `exact ⟨ch_no_intermediate, not_ch_has_intermediate⟩`.",
-    "mathContext": "The equivalence $\\text{intermediate} \\leftrightarrow \\neg \\text{CH}$ shows that asking 'does an intermediate cardinal exist?' IS the Continuum Hypothesis question. This transforms the research question from 'find a cardinal between $\\aleph_0$ and $2^{\\aleph_0}$' into 'is $2^{\\aleph_0} = \\aleph_1$?'. The independence means neither ZFC ⊢ CH nor ZFC ⊢ ¬CH.",
+    "title": "The Iff: 'Intermediate Exists' Exactly Equals '\u00acCH'",
+    "content": "`intermediate_iff_not_ch` proves the logical equivalence: $\\exists \\kappa, \\aleph_0 < \\kappa < 2^{\\aleph_0}$ iff \u00acCH. Forward: if such $\\kappa$ exists and CH holds, `ch_implies_no_intermediate` gives a contradiction. Backward: `not_ch_has_intermediate` provides \u2135\u2081 as witness. `intermediate_cardinal_independent` bundles both directions with the independence fact into one statement: neither direction is provable or refutable in ZFC alone. The proof is a one-liner: `exact \u27e8ch_no_intermediate, not_ch_has_intermediate\u27e9`.",
+    "mathContext": "The equivalence $\\text{intermediate} \\leftrightarrow \\neg \\text{CH}$ shows that asking 'does an intermediate cardinal exist?' IS the Continuum Hypothesis question. This transforms the research question from 'find a cardinal between $\\aleph_0$ and $2^{\\aleph_0}$' into 'is $2^{\\aleph_0} = \\aleph_1$?'. The independence means neither ZFC \u22a2 CH nor ZFC \u22a2 \u00acCH.",
     "significance": "key",
     "relatedConcepts": [
       "logical equivalence",
       "ZFC independence",
-      "Gödel-Cohen theorem",
+      "G\u00f6del-Cohen theorem",
       "relative consistency"
     ],
     "prerequisites": [
@@ -128,13 +128,13 @@
       "endLine": 198
     },
     "type": "concept",
-    "title": "König's Constraint: The Only ZFC-Provable Bound on 2^ℵ₀",
-    "content": "`KonigConstraint` states that if $2^{\\aleph_0} = \\aleph_\\alpha$, then $\\mathrm{cf}(\\aleph_\\alpha) > \\aleph_0$: the continuum must have uncountable cofinality. This rules out $2^{\\aleph_0} = \\aleph_\\omega$ (since $\\mathrm{cf}(\\aleph_\\omega) = \\omega = \\aleph_0$). `easton_consistent_values` is a placeholder (trivially true) representing Easton's 1970 theorem: every regular uncountable cardinal is a consistent value for $2^{\\aleph_0}$. Together these give the complete ZFC picture: $2^{\\aleph_0}$ can be any regular uncountable cardinal, and König's constraint is the only restriction.",
-    "mathContext": "König's theorem (1905): $\\mathrm{cf}(\\sum_i \\kappa_i) > \\sup_i \\kappa_i$ for any increasing sequence. Applied to $2^{\\aleph_0} = \\aleph_\\omega$: $\\aleph_\\omega = \\sum_{n < \\omega} \\aleph_n$, so $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, but $2^{\\aleph_0} \\geq \\aleph_n^{\\aleph_0} \\geq \\aleph_n$ for all $n$ gives $\\mathrm{cf}(2^{\\aleph_0}) > \\omega$. Contradiction. Easton's complement: for regular $\\kappa \\geq \\aleph_1$, there's a class forcing model where $2^{\\aleph_0} = \\kappa$.",
+    "title": "K\u00f6nig's Constraint: The Only ZFC-Provable Bound on 2^\u2135\u2080",
+    "content": "`KonigConstraint` states that if $2^{\\aleph_0} = \\aleph_\\alpha$, then $\\mathrm{cf}(\\aleph_\\alpha) > \\aleph_0$: the continuum must have uncountable cofinality. This rules out $2^{\\aleph_0} = \\aleph_\\omega$ (since $\\mathrm{cf}(\\aleph_\\omega) = \\omega = \\aleph_0$). `easton_consistent_values` is a placeholder (trivially true) representing Easton's 1970 theorem: every regular uncountable cardinal is a consistent value for $2^{\\aleph_0}$. Together these give the complete ZFC picture: $2^{\\aleph_0}$ can be any regular uncountable cardinal, and K\u00f6nig's constraint is the only restriction.",
+    "mathContext": "K\u00f6nig's theorem (1905): $\\mathrm{cf}(\\sum_i \\kappa_i) > \\sup_i \\kappa_i$ for any increasing sequence. Applied to $2^{\\aleph_0} = \\aleph_\\omega$: $\\aleph_\\omega = \\sum_{n < \\omega} \\aleph_n$, so $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, but $2^{\\aleph_0} \\geq \\aleph_n^{\\aleph_0} \\geq \\aleph_n$ for all $n$ gives $\\mathrm{cf}(2^{\\aleph_0}) > \\omega$. Contradiction. Easton's complement: for regular $\\kappa \\geq \\aleph_1$, there's a class forcing model where $2^{\\aleph_0} = \\kappa$.",
     "significance": "key",
     "relatedConcepts": [
       "cofinality",
-      "König's theorem",
+      "K\u00f6nig's theorem",
       "Easton's theorem",
       "regular cardinal",
       "singular cardinal"
@@ -154,8 +154,8 @@
     },
     "type": "concept",
     "title": "Large Cardinals and CH: Independence Persists",
-    "content": "`martins_axiom_neutral_on_ch` and `pfa_implies_not_ch` are placeholder theorems (both `trivial`) representing deep forcing results. MA (Martin's Axiom) is consistent with both CH and ¬CH — it doesn't decide the question. PFA (Proper Forcing Axiom) DOES imply ¬CH: specifically $2^{\\aleph_0} = \\aleph_2$. The doc-comment discusses Woodin's program: assuming large cardinals, CH fails in all 'Wadge-generic' extensions, and the Ultimate-L conjecture would make $2^{\\aleph_0} = \\aleph_1$ canonical. This represents the frontier of current research.",
-    "mathContext": "Martin's Axiom is the statement that for any c.c.c. forcing $\\mathbb{P}$ and any $\\kappa < 2^{\\aleph_0}$ many dense sets, there is a generic filter meeting them all. MA is consistent with CH (trivially — CH is consistent) and with $2^{\\aleph_0} = \\aleph_2$ (the usual MA + ¬CH). PFA is much stronger and uniquely determines $2^{\\aleph_0} = \\aleph_2$ (Todorcevic-Velickovic). Woodin's $\\Omega$-conjecture and Ultimate-L would give $2^{\\aleph_0} = \\aleph_1$.",
+    "content": "`martins_axiom_neutral_on_ch` and `pfa_implies_not_ch` are placeholder theorems (both `trivial`) representing deep forcing results. MA (Martin's Axiom) is consistent with both CH and \u00acCH \u2014 it doesn't decide the question. PFA (Proper Forcing Axiom) DOES imply \u00acCH: specifically $2^{\\aleph_0} = \\aleph_2$. The doc-comment discusses Woodin's program: assuming large cardinals, CH fails in all 'Wadge-generic' extensions, and the Ultimate-L conjecture would make $2^{\\aleph_0} = \\aleph_1$ canonical. This represents the frontier of current research.",
+    "mathContext": "Martin's Axiom is the statement that for any c.c.c. forcing $\\mathbb{P}$ and any $\\kappa < 2^{\\aleph_0}$ many dense sets, there is a generic filter meeting them all. MA is consistent with CH (trivially \u2014 CH is consistent) and with $2^{\\aleph_0} = \\aleph_2$ (the usual MA + \u00acCH). PFA is much stronger and uniquely determines $2^{\\aleph_0} = \\aleph_2$ (Todorcevic-Velickovic). Woodin's $\\Omega$-conjecture and Ultimate-L would give $2^{\\aleph_0} = \\aleph_1$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Martin's Axiom",
@@ -179,8 +179,8 @@
     },
     "type": "insight",
     "title": "Complete Answer: A Three-Part Conjunction",
-    "content": "`complete_answer` bundles the full resolution into one theorem with three conjuncts: (1) `intermediate_iff_not_ch` (equivalence), (2) `⟨ch_consistent_with_zfc, not_ch_consistent_with_zfc⟩` (independence), (3) under ¬CH, $\\aleph_1$ is explicitly intermediate. The third conjunct requires care: `not_ch_has_intermediate` produces some $\\kappa$, but we need $\\aleph_1$ specifically. The proof uses `.choose_spec.2` to extract the upper bound from the witness produced in `not_ch_has_intermediate` (which uses `aleph 1` directly).",
-    "mathContext": "The three-part structure captures the complete mathematical situation: the question has an exact equivalent (¬CH), both answers are consistent (so neither can be proved from ZFC), and the negative answer has an explicit witness ($\\aleph_1$). This is the gold standard for an independence result: not just 'we can't prove either direction' but 'here is exactly what each direction means and an explicit construction under one direction'.",
+    "content": "`complete_answer` bundles the full resolution into one theorem with three conjuncts: (1) `intermediate_iff_not_ch` (equivalence), (2) `\u27e8ch_consistent_with_zfc, not_ch_consistent_with_zfc\u27e9` (independence), (3) under \u00acCH, $\\aleph_1$ is explicitly intermediate. The third conjunct requires care: `not_ch_has_intermediate` produces some $\\kappa$, but we need $\\aleph_1$ specifically. The proof uses `.choose_spec.2` to extract the upper bound from the witness produced in `not_ch_has_intermediate` (which uses `aleph 1` directly).",
+    "mathContext": "The three-part structure captures the complete mathematical situation: the question has an exact equivalent (\u00acCH), both answers are consistent (so neither can be proved from ZFC), and the negative answer has an explicit witness ($\\aleph_1$). This is the gold standard for an independence result: not just 'we can't prove either direction' but 'here is exactly what each direction means and an explicit construction under one direction'.",
     "significance": "key",
     "relatedConcepts": [
       "independence result",
@@ -204,8 +204,8 @@
     },
     "type": "concept",
     "title": "GCH: A Universal No-Gap Principle",
-    "content": "`gch_no_intermediates_anywhere` proves that under GCH, no cardinal exists strictly between $\\aleph_\\alpha$ and $\\aleph_{\\alpha+1}$ for ANY ordinal $\\alpha$. The proof shows $\\aleph_{\\alpha+1} = \\mathrm{succ}(\\aleph_\\alpha)$ (via `Cardinal.aleph_succ` and ordinal successor), then uses `Order.succ_le_of_lt` to get $\\aleph_{\\alpha+1} \\leq \\kappa$ from $\\aleph_\\alpha < \\kappa$, contradicting $\\kappa < \\aleph_{\\alpha+1}$. `not_gch_from_intermediate` is a one-liner: intermediate at level 0 (¬CH) implies ¬GCH (since GCH → CH by `gch_implies_ch`).",
-    "mathContext": "GCH ($2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all $\\alpha$) is the 'tightest possible' universe: the continuum function takes the minimal allowed values everywhere. CH is the special case $\\alpha = 0$. GCH is consistent with ZFC (Gödel showed it holds in $L$), and so is ¬GCH. Like CH, GCH is independent of ZFC. The formalization shows the clean logical relationship: GCH ⊢ CH (trivially), and intermediate cardinals at level 0 ⊢ ¬CH ⊢ ¬GCH.",
+    "content": "`gch_no_intermediates_anywhere` proves that under GCH, no cardinal exists strictly between $\\aleph_\\alpha$ and $\\aleph_{\\alpha+1}$ for ANY ordinal $\\alpha$. The proof shows $\\aleph_{\\alpha+1} = \\mathrm{succ}(\\aleph_\\alpha)$ (via `Cardinal.aleph_succ` and ordinal successor), then uses `Order.succ_le_of_lt` to get $\\aleph_{\\alpha+1} \\leq \\kappa$ from $\\aleph_\\alpha < \\kappa$, contradicting $\\kappa < \\aleph_{\\alpha+1}$. `not_gch_from_intermediate` is a one-liner: intermediate at level 0 (\u00acCH) implies \u00acGCH (since GCH \u2192 CH by `gch_implies_ch`).",
+    "mathContext": "GCH ($2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all $\\alpha$) is the 'tightest possible' universe: the continuum function takes the minimal allowed values everywhere. CH is the special case $\\alpha = 0$. GCH is consistent with ZFC (G\u00f6del showed it holds in $L$), and so is \u00acGCH. Like CH, GCH is independent of ZFC. The formalization shows the clean logical relationship: GCH \u22a2 CH (trivially), and intermediate cardinals at level 0 \u22a2 \u00acCH \u22a2 \u00acGCH.",
     "significance": "supporting",
     "relatedConcepts": [
       "Generalized Continuum Hypothesis",

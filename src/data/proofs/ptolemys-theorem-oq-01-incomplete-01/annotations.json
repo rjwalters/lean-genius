@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Module Overview: Completing the Ptolemy Concyclicity Characterization",
-    "content": "This file proves the converse direction missing from PtolemysTheoremOQ01.lean: if four distinct unit-circle points satisfy Ptolemy's equality, they must be in CCW or CW cyclic order. Combined with the forward direction (CCW → equality) from PtolemysTheoremOQ01.lean, this gives the full biconditional `ptolemy_equality_iff_ccw_or_cw`. The key technique is deriving a sine ratio identity for the Ptolemy ratio t, then using sign analysis to recover the angle ordering.",
-    "mathContext": "Equivalence chain: Ptolemy equality ↔ ∃ t > 0, (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄) ↔ t = (sin products) > 0 ↔ CCW or CW order.",
+    "content": "This file proves the converse direction missing from PtolemysTheoremOQ01.lean: if four distinct unit-circle points satisfy Ptolemy's equality, they must be in CCW or CW cyclic order. Combined with the forward direction (CCW \u2192 equality) from PtolemysTheoremOQ01.lean, this gives the full biconditional `ptolemy_equality_iff_ccw_or_cw`. The key technique is deriving a sine ratio identity for the Ptolemy ratio t, then using sign analysis to recover the angle ordering.",
+    "mathContext": "Equivalence chain: Ptolemy equality \u2194 \u2203 t > 0, (z\u2082-z\u2083)(z\u2081-z\u2084) = t\u00b7(z\u2081-z\u2082)(z\u2083-z\u2084) \u2194 t = (sin products) > 0 \u2194 CCW or CW order.",
     "significance": "supporting",
     "relatedConcepts": [
       "Ptolemy's theorem",
@@ -31,9 +31,9 @@
       "endLine": 81
     },
     "type": "concept",
-    "title": "Angle Extraction: Unit-Circle Points as exp(iθ)",
-    "content": "The helper `unit_circle_eq_exp_arg` converts any unit-circle point to its exponential form using `Complex.abs_mul_exp_arg_mul_I`. For distinct points, `arg_ne_of_ne` shows distinctness implies distinct args — the contrapositive: if args agree, then exp(i·arg(z)) = exp(i·arg(w)), so z = w.",
-    "mathContext": "Complex.arg maps ℂ → (-π, π]. On the unit circle this is injective (up to the branch cut at -π). The arg-extraction setup gives 4 angles θ₁, θ₂, θ₃, θ₄ ∈ (-π, π] with all pairwise differences in (-2π, 2π).",
+    "title": "Angle Extraction: Unit-Circle Points as exp(i\u03b8)",
+    "content": "The helper `unit_circle_eq_exp_arg` converts any unit-circle point to its exponential form using `Complex.abs_mul_exp_arg_mul_I`. For distinct points, `arg_ne_of_ne` shows distinctness implies distinct args \u2014 the contrapositive: if args agree, then exp(i\u00b7arg(z)) = exp(i\u00b7arg(w)), so z = w.",
+    "mathContext": "Complex.arg maps \u2102 \u2192 (-\u03c0, \u03c0]. On the unit circle this is injective (up to the branch cut at -\u03c0). The arg-extraction setup gives 4 angles \u03b8\u2081, \u03b8\u2082, \u03b8\u2083, \u03b8\u2084 \u2208 (-\u03c0, \u03c0] with all pairwise differences in (-2\u03c0, 2\u03c0).",
     "significance": "supporting",
     "relatedConcepts": [
       "Complex.arg",
@@ -53,10 +53,10 @@
       "startLine": 82,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Half-Angle Sine Sign Lemmas: Nonzero Sine and Sign-Angle Correspondence",
-    "content": "Two private lemmas forming the sign-analysis foundation:\n\n**sin_half_ne_zero_of_ne** (lines 85-103): For θ ≠ φ with (θ-φ) ∈ (-2π, 2π), sin((θ-φ)/2) ≠ 0. Proved via `Real.sin_ne_zero_iff`: if sin((θ-φ)/2) = 0, then (θ-φ)/2 = n·π for some integer n. Bounding (θ-φ)/2 ∈ (-π,π) forces n=0, giving θ=φ, contradiction.\n\n**sin_half_sign_iff** (lines 107-145): For the same range, sin((θ-φ)/2) > 0 ↔ φ < θ, and sin((θ-φ)/2) < 0 ↔ θ < φ. The proof uses `Real.sin_pos_of_pos_of_lt_pi` (sin > 0 on (0,π)) for the positive direction and `Real.sin_neg_of_neg_of_neg_pi_lt` (sin < 0 on (-π,0)) for the negative direction. Both return biconditionals that the 8-case analysis applies directly.",
-    "mathContext": "Since the difference (θ-φ)/2 ∈ (-π, π), sin is positive exactly on (0,π) (corresponding to φ < θ) and negative on (-π,0) (corresponding to θ < φ). The integer zero classification: sin(x) = 0 iff x = n·π for n ∈ ℤ, so on (-π,π) the only zero is at x=0 (i.e., θ=φ).",
+    "content": "Two private lemmas forming the sign-analysis foundation:\n\n**sin_half_ne_zero_of_ne** (lines 85-103): For \u03b8 \u2260 \u03c6 with (\u03b8-\u03c6) \u2208 (-2\u03c0, 2\u03c0), sin((\u03b8-\u03c6)/2) \u2260 0. Proved via `Real.sin_ne_zero_iff`: if sin((\u03b8-\u03c6)/2) = 0, then (\u03b8-\u03c6)/2 = n\u00b7\u03c0 for some integer n. Bounding (\u03b8-\u03c6)/2 \u2208 (-\u03c0,\u03c0) forces n=0, giving \u03b8=\u03c6, contradiction.\n\n**sin_half_sign_iff** (lines 107-145): For the same range, sin((\u03b8-\u03c6)/2) > 0 \u2194 \u03c6 < \u03b8, and sin((\u03b8-\u03c6)/2) < 0 \u2194 \u03b8 < \u03c6. The proof uses `Real.sin_pos_of_pos_of_lt_pi` (sin > 0 on (0,\u03c0)) for the positive direction and `Real.sin_neg_of_neg_of_neg_pi_lt` (sin < 0 on (-\u03c0,0)) for the negative direction. Both return biconditionals that the 8-case analysis applies directly.",
+    "mathContext": "Since the difference (\u03b8-\u03c6)/2 \u2208 (-\u03c0, \u03c0), sin is positive exactly on (0,\u03c0) (corresponding to \u03c6 < \u03b8) and negative on (-\u03c0,0) (corresponding to \u03b8 < \u03c6). The integer zero classification: sin(x) = 0 iff x = n\u00b7\u03c0 for n \u2208 \u2124, so on (-\u03c0,\u03c0) the only zero is at x=0 (i.e., \u03b8=\u03c6).",
     "significance": "key",
     "relatedConcepts": [
       "Real.sin_pos_of_pos_of_lt_pi",
@@ -76,10 +76,10 @@
       "startLine": 147,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "t_eq_sine_ratio: Deriving the Ratio from exp Factorization",
-    "content": "The key algebraic lemma: if (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄) with zₖ = exp(iθₖ), then t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)). The proof applies the half-angle factorization `hha` to all four differences, then uses the phase cancellation identity E₂₃·E₁₄ = E₁₂·E₃₄ (proved by `rw [← Complex.exp_add]; congr 1; push_cast; ring`). After canceling -4·E², the complex equation reduces to the sine ratio over ℝ. The step from complex to real equation uses `exact_mod_cast`. **1 sorry remains** in the complex cancellation step `hcx`.",
-    "mathContext": "The half-angle factorization gives exp(ia)-exp(ib) = 2I·sin((a-b)/2)·exp(i(a+b)/2). Applying this to all four differences and collecting: LHS = -4·s₂₃·s₁₄·E₂₃E₁₄, RHS = t·(-4)·s₁₂·s₃₄·E₁₂E₃₄. The phase cancellation hE: E₂₃·E₁₄ = E₁₂·E₃₄ (since (θ₂+θ₃)/2 + (θ₁+θ₄)/2 = (θ₁+θ₂)/2 + (θ₃+θ₄)/2) gives s₂₃·s₁₄ = t·s₁₂·s₃₄.",
+    "content": "The key algebraic lemma: if (z\u2082-z\u2083)(z\u2081-z\u2084) = t\u00b7(z\u2081-z\u2082)(z\u2083-z\u2084) with z\u2096 = exp(i\u03b8\u2096), then t = sin((\u03b8\u2082-\u03b8\u2083)/2)\u00b7sin((\u03b8\u2081-\u03b8\u2084)/2) / (sin((\u03b8\u2081-\u03b8\u2082)/2)\u00b7sin((\u03b8\u2083-\u03b8\u2084)/2)). The proof applies the half-angle factorization `hha` to all four differences, then uses the phase cancellation identity E\u2082\u2083\u00b7E\u2081\u2084 = E\u2081\u2082\u00b7E\u2083\u2084 (proved by `rw [\u2190 Complex.exp_add]; congr 1; push_cast; ring`). After canceling -4\u00b7E\u00b2, the complex equation reduces to the sine ratio over \u211d. The step from complex to real equation uses `exact_mod_cast`. **1 sorry remains** in the complex cancellation step `hcx`.",
+    "mathContext": "The half-angle factorization gives exp(ia)-exp(ib) = 2I\u00b7sin((a-b)/2)\u00b7exp(i(a+b)/2). Applying this to all four differences and collecting: LHS = -4\u00b7s\u2082\u2083\u00b7s\u2081\u2084\u00b7E\u2082\u2083E\u2081\u2084, RHS = t\u00b7(-4)\u00b7s\u2081\u2082\u00b7s\u2083\u2084\u00b7E\u2081\u2082E\u2083\u2084. The phase cancellation hE: E\u2082\u2083\u00b7E\u2081\u2084 = E\u2081\u2082\u00b7E\u2083\u2084 (since (\u03b8\u2082+\u03b8\u2083)/2 + (\u03b8\u2081+\u03b8\u2084)/2 = (\u03b8\u2081+\u03b8\u2082)/2 + (\u03b8\u2083+\u03b8\u2084)/2) gives s\u2082\u2083\u00b7s\u2081\u2084 = t\u00b7s\u2081\u2082\u00b7s\u2083\u2084.",
     "significance": "key",
     "relatedConcepts": [
       "exp_diff_factor",
@@ -101,10 +101,10 @@
       "startLine": 217,
       "endLine": 419
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ptolemy_equality_implies_ccw_or_cw: 8-Case Sign Analysis",
-    "content": "The main converse theorem. After extracting t > 0 via `ptolemy_equality_implies_proportional` and deriving the sine ratio via `t_eq_sine_ratio`, the proof does a complete sign analysis. Since t > 0 ↔ (numerator > 0 ∧ denominator > 0) ∨ (numerator < 0 ∧ denominator < 0), and each factor is a product of two sines, `mul_pos_iff` and `mul_neg_iff` split into 8 cases. Each case extracts angle inequalities via `sin_half_sign_iff`, then constructs the CCW witnesses — sometimes using shifted angles θ±2π with period lemmas (`hexp_add2pi`, `hexp_sub2pi`) to place angles in the required ordering θ₁' < θ₂' < θ₃' < θ₄' < θ₁' + 2π.",
-    "mathContext": "The 8 cases are: (A) θ₄<θ₃<θ₂<θ₁ → CW with witnesses (θ₁-2π, θ₄, θ₃, θ₂); (B) θ₃<θ₄<θ₁<θ₂ → CCW with witnesses (θ₁, θ₂, θ₃+2π, θ₄+2π); (C) θ₂<θ₁<θ₄<θ₃ → CW with (θ₁, θ₄, θ₃, θ₂+2π); (D) θ₁<θ₂<θ₃<θ₄ → CCW direct; (E) θ₃<θ₂<θ₁<θ₄ → CW with (θ₁, θ₄, θ₃+2π, θ₂+2π); (F) θ₁<θ₄<θ₃<θ₂ → CW direct; (G) θ₂<θ₃<θ₄<θ₁ → CCW with (θ₁-2π, θ₂, θ₃, θ₄); (H) θ₄<θ₁<θ₂<θ₃ → CCW with (θ₁, θ₂, θ₃, θ₄+2π).",
+    "content": "The main converse theorem. After extracting t > 0 via `ptolemy_equality_implies_proportional` and deriving the sine ratio via `t_eq_sine_ratio`, the proof does a complete sign analysis. Since t > 0 \u2194 (numerator > 0 \u2227 denominator > 0) \u2228 (numerator < 0 \u2227 denominator < 0), and each factor is a product of two sines, `mul_pos_iff` and `mul_neg_iff` split into 8 cases. Each case extracts angle inequalities via `sin_half_sign_iff`, then constructs the CCW witnesses \u2014 sometimes using shifted angles \u03b8\u00b12\u03c0 with period lemmas (`hexp_add2pi`, `hexp_sub2pi`) to place angles in the required ordering \u03b8\u2081' < \u03b8\u2082' < \u03b8\u2083' < \u03b8\u2084' < \u03b8\u2081' + 2\u03c0.",
+    "mathContext": "The 8 cases are: (A) \u03b8\u2084<\u03b8\u2083<\u03b8\u2082<\u03b8\u2081 \u2192 CW with witnesses (\u03b8\u2081-2\u03c0, \u03b8\u2084, \u03b8\u2083, \u03b8\u2082); (B) \u03b8\u2083<\u03b8\u2084<\u03b8\u2081<\u03b8\u2082 \u2192 CCW with witnesses (\u03b8\u2081, \u03b8\u2082, \u03b8\u2083+2\u03c0, \u03b8\u2084+2\u03c0); (C) \u03b8\u2082<\u03b8\u2081<\u03b8\u2084<\u03b8\u2083 \u2192 CW with (\u03b8\u2081, \u03b8\u2084, \u03b8\u2083, \u03b8\u2082+2\u03c0); (D) \u03b8\u2081<\u03b8\u2082<\u03b8\u2083<\u03b8\u2084 \u2192 CCW direct; (E) \u03b8\u2083<\u03b8\u2082<\u03b8\u2081<\u03b8\u2084 \u2192 CW with (\u03b8\u2081, \u03b8\u2084, \u03b8\u2083+2\u03c0, \u03b8\u2082+2\u03c0); (F) \u03b8\u2081<\u03b8\u2084<\u03b8\u2083<\u03b8\u2082 \u2192 CW direct; (G) \u03b8\u2082<\u03b8\u2083<\u03b8\u2084<\u03b8\u2081 \u2192 CCW with (\u03b8\u2081-2\u03c0, \u03b8\u2082, \u03b8\u2083, \u03b8\u2084); (H) \u03b8\u2084<\u03b8\u2081<\u03b8\u2082<\u03b8\u2083 \u2192 CCW with (\u03b8\u2081, \u03b8\u2082, \u03b8\u2083, \u03b8\u2084+2\u03c0).",
     "significance": "key",
     "relatedConcepts": [
       "IsCCWOrder",
@@ -126,10 +126,10 @@
       "startLine": 420,
       "endLine": 465
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "ptolemy_equality_iff_ccw_or_cw: The Full Biconditional",
-    "content": "Closes the equivalence chain from PtolemysTheoremOQ01.lean. The forward direction is `ptolemy_equality_implies_ccw_or_cw`. The backward direction handles CCW and CW separately: CCW uses `ptolemy_ratio_pos_of_ccw` + `ptolemy_equality_of_proportional` directly. CW applies these to the reversed labeling (z₁, z₄, z₃, z₂), then uses `norm_sub_rev` to convert ‖zᵢ-zⱼ‖ = ‖zⱼ-zᵢ‖ and `linarith` to reorder the sum.",
-    "mathContext": "The CW direction: IsCCWOrder z₁ z₄ z₃ z₂ → ptolemy_ratio_pos_of_ccw gives (z₄-z₃)(z₁-z₂) = t·(z₁-z₄)(z₃-z₂). Then ptolemy_equality_of_proportional for (z₁,z₄,z₃,z₂) gives ‖z₁-z₃‖·‖z₄-z₂‖ = ‖z₁-z₄‖·‖z₃-z₂‖ + ‖z₄-z₃‖·‖z₁-z₂‖. After norm_sub_rev this equals the target ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖ (up to commutativity of ·, handled by linarith).",
+    "content": "Closes the equivalence chain from PtolemysTheoremOQ01.lean. The forward direction is `ptolemy_equality_implies_ccw_or_cw`. The backward direction handles CCW and CW separately: CCW uses `ptolemy_ratio_pos_of_ccw` + `ptolemy_equality_of_proportional` directly. CW applies these to the reversed labeling (z\u2081, z\u2084, z\u2083, z\u2082), then uses `norm_sub_rev` to convert \u2016z\u1d62-z\u2c7c\u2016 = \u2016z\u2c7c-z\u1d62\u2016 and `linarith` to reorder the sum.",
+    "mathContext": "The CW direction: IsCCWOrder z\u2081 z\u2084 z\u2083 z\u2082 \u2192 ptolemy_ratio_pos_of_ccw gives (z\u2084-z\u2083)(z\u2081-z\u2082) = t\u00b7(z\u2081-z\u2084)(z\u2083-z\u2082). Then ptolemy_equality_of_proportional for (z\u2081,z\u2084,z\u2083,z\u2082) gives \u2016z\u2081-z\u2083\u2016\u00b7\u2016z\u2084-z\u2082\u2016 = \u2016z\u2081-z\u2084\u2016\u00b7\u2016z\u2083-z\u2082\u2016 + \u2016z\u2084-z\u2083\u2016\u00b7\u2016z\u2081-z\u2082\u2016. After norm_sub_rev this equals the target \u2016z\u2081-z\u2083\u2016\u00b7\u2016z\u2082-z\u2084\u2016 = \u2016z\u2081-z\u2082\u2016\u00b7\u2016z\u2083-z\u2084\u2016 + \u2016z\u2082-z\u2083\u2016\u00b7\u2016z\u2081-z\u2084\u2016 (up to commutativity of \u00b7, handled by linarith).",
     "significance": "key",
     "relatedConcepts": [
       "ptolemy_ratio_pos_of_ccw",

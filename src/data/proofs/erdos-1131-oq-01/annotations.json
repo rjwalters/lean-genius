@@ -8,12 +8,12 @@
     },
     "type": "concept",
     "title": "Module Documentation: Variance Decomposition Approach",
-    "content": "This file investigates Erdős Problem #1131 through a variance decomposition that separates the Lagrange basis integral $I = \\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx$ into a 'uniform floor' $2/n$ and an 'excess' measuring non-uniformity. The key structural insight: $I = 2/n + \\int \\text{variance}$, where the integrated variance captures how far the basis functions deviate from the uniform distribution $1/n$. This decomposition immediately shows the Cauchy-Schwarz bound $I \\geq 2/n$ is never tight for $n \\geq 2$, because the variance is strictly positive at every node point.\n\nThe parent file `Erdos1131Problem.lean` establishes the Cauchy-Schwarz lower bound $I \\geq 2/n$ and defines the basic infrastructure (Lagrange basis, partition of unity). This file goes deeper by proving the bound is strict.",
-    "mathContext": "$I = \\int_{-1}^{1} \\sum_{k=1}^n l_k(x)^2\\,dx = \\frac{2}{n} + \\int_{-1}^{1} \\sum_{k=1}^n \\left(l_k(x) - \\frac{1}{n}\\right)^2 dx$\n\nThe Erdős conjecture $\\min I = 2 - (1+o(1))/n$ is reformulated as $\\min \\int \\text{var} = 2 - (3+o(1))/n$.",
+    "content": "This file investigates Erd\u0151s Problem #1131 through a variance decomposition that separates the Lagrange basis integral $I = \\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx$ into a 'uniform floor' $2/n$ and an 'excess' measuring non-uniformity. The key structural insight: $I = 2/n + \\int \\text{variance}$, where the integrated variance captures how far the basis functions deviate from the uniform distribution $1/n$. This decomposition immediately shows the Cauchy-Schwarz bound $I \\geq 2/n$ is never tight for $n \\geq 2$, because the variance is strictly positive at every node point.\n\nThe parent file `Erdos1131Problem.lean` establishes the Cauchy-Schwarz lower bound $I \\geq 2/n$ and defines the basic infrastructure (Lagrange basis, partition of unity). This file goes deeper by proving the bound is strict.",
+    "mathContext": "$I = \\int_{-1}^{1} \\sum_{k=1}^n l_k(x)^2\\,dx = \\frac{2}{n} + \\int_{-1}^{1} \\sum_{k=1}^n \\left(l_k(x) - \\frac{1}{n}\\right)^2 dx$\n\nThe Erd\u0151s conjecture $\\min I = 2 - (1+o(1))/n$ is reformulated as $\\min \\int \\text{var} = 2 - (3+o(1))/n$.",
     "significance": "key",
     "prerequisites": [
       "Lagrange interpolation",
-      "Erdős Problem #1131",
+      "Erd\u0151s Problem #1131",
       "partition of unity for Lagrange basis"
     ],
     "relatedConcepts": [
@@ -53,7 +53,7 @@
       "startLine": 49,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Variance Identity: The Core Decomposition",
     "content": "**Theorem**: $\\sum_k l_k(x)^2 = 1/n + \\sum_k (l_k(x) - 1/n)^2$.\n\nThis is the pointwise identity that drives the entire file. The proof expands $(l_k - 1/n)^2 = l_k^2 - 2l_k/n + 1/n^2$, sums over $k$, and uses the partition of unity $\\sum l_k = 1$ (from the parent file) to simplify the cross terms:\n\n$\\sum_k (l_k - 1/n)^2 = \\sum_k l_k^2 - 2/(n) \\cdot \\underbrace{\\sum_k l_k}_{=1} + n \\cdot 1/n^2 = \\sum_k l_k^2 - 1/n$\n\nThe Lean proof orchestrates this algebraic manipulation using `ring`, `Finset.sum_add_distrib`, `Finset.mul_sum`, and `field_simp`. The final `linarith` combines the algebraic identity with the sufficiency hypothesis.",
     "mathContext": "$\\sum_{k=1}^n l_k(x)^2 = \\frac{1}{n} + \\sum_{k=1}^n \\left(l_k(x) - \\frac{1}{n}\\right)^2$\n\nThis is analogous to the statistical identity $\\text{E}[X^2] = (\\text{E}[X])^2 + \\text{Var}(X)$ applied to the discrete distribution where $X$ takes values $l_1(x), \\ldots, l_n(x)$ with uniform weights $1/n$. The 'mean' is $\\bar{l} = \\frac{1}{n}\\sum l_k = 1/n$ (by partition of unity), and the 'variance' is $\\frac{1}{n}\\sum(l_k - 1/n)^2$.",
@@ -76,7 +76,7 @@
       "startLine": 81,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Node Evaluation: Kronecker Delta Identity",
     "content": "**Theorem**: $\\sum_k l_k(x_j)^2 = 1$ at each node $x_j$.\n\nThis follows from the cardinal basis property: $l_j(x_j) = 1$ and $l_k(x_j) = 0$ for $k \\neq j$ (the Kronecker delta). So the sum of squares is $1^2 + 0^2 + \\cdots + 0^2 = 1$.\n\nThe Lean proof rewrites 1 as $\\sum_k \\text{if } k = j \\text{ then } 1 \\text{ else } 0$ using `Finset.sum_ite_eq'`, then shows each term matches by case-splitting on $k = j$ and applying `lagrangeBasis_self` and `lagrangeBasis_other` from the parent file.",
     "mathContext": "$\\sum_{k=1}^n l_k(x_j)^2 = \\sum_k \\delta_{kj}^2 = 1$\n\nwhere $l_k(x_j) = \\delta_{kj}$ is the interpolation property (cardinal basis condition).",
@@ -99,7 +99,7 @@
       "startLine": 100,
       "endLine": 126
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Variance at Nodes and Positivity",
     "content": "**`variance_at_node`**: At each node $x_j$, the pointwise variance equals $(n-1)/n$.\n\nProof: Combine `variance_identity` (which gives $\\sum l_k^2 = 1/n + \\text{var}$) with `sum_sq_at_node` (which gives $\\sum l_k(x_j)^2 = 1$) to get $\\text{var}(x_j) = 1 - 1/n = (n-1)/n$.\n\n**`variance_pos_at_node`**: For $n \\geq 2$, the variance at each node is strictly positive: $(n-1)/n > 0$. This uses `positivity` after establishing $(n-1) > 0$ and $n > 0$.\n\nThese results are the foundation for the strict lower bound: the variance function is continuous, non-negative, and strictly positive at interior points of $[-1,1]$.",
     "mathContext": "$\\text{pointwiseVariance}(x_j) = \\left(1 - \\frac{1}{n}\\right)^2 + (n-1)\\left(\\frac{1}{n}\\right)^2 = \\frac{(n-1)^2 + (n-1)}{n^2} = \\frac{n-1}{n}$\n\nFor $n \\geq 2$: $\\frac{n-1}{n} \\geq \\frac{1}{2} > 0$.",
@@ -122,7 +122,7 @@
       "startLine": 128,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Integral Decomposition and Variance Non-negativity",
     "content": "**`integral_decomposition`**: $I = 2/n + \\int \\text{variance}$. Integrates the pointwise variance identity over $[-1,1]$ using linearity of the integral. The proof uses `intervalIntegral.integral_add` with integrability of constants and of the continuous variance function, plus `intervalIntegral.integral_const` to evaluate $\\int_{-1}^{1} 1/n\\,dx = 2/n$.\n\n**`integratedVariance_nonneg`**: $\\int \\text{variance} \\geq 0$, since the integrand is a sum of squares. Uses `intervalIntegral.integral_nonneg` with the pointwise bound from `sq_nonneg`.\n\nTogether: $I = 2/n + (\\text{something} \\geq 0)$, recovering the Cauchy-Schwarz bound $I \\geq 2/n$ as a corollary. The strict improvement comes in Part V.",
     "mathContext": "$I = \\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx = \\int_{-1}^{1} \\left(\\frac{1}{n} + \\text{var}(x)\\right)dx = \\frac{2}{n} + \\int_{-1}^{1} \\text{var}(x)\\,dx$\n\nwhere $\\int_{-1}^{1} \\frac{1}{n}\\,dx = \\frac{2}{n}$ and $\\int \\text{var} \\geq 0$.",
@@ -145,7 +145,7 @@
       "startLine": 164,
       "endLine": 261
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strict Lower Bound: The Main Technical Achievement",
     "content": "**`integratedVariance_strictly_pos`** (lines 181-252): The file's most substantial proof. Shows $\\int \\text{variance} > 0$ for $n \\geq 2$ via a classical epsilon-delta argument:\n\n1. **Continuity + positivity at a point**: The variance is continuous and equals $(n-1)/n > 0$ at $x_0 = \\text{nodes}(0)$.\n2. **Epsilon-delta**: By `Metric.continuousAt_iff`, there exists $\\delta > 0$ such that $|y - x_0| < \\delta \\Rightarrow |\\text{var}(y) - c| < c/2$, hence $\\text{var}(y) > c/2$.\n3. **Subinterval construction**: Define $[a, b] = [\\max(-1, x_0 - \\delta/2), \\min(1, x_0 + \\delta/2)]$, ensuring $[a,b] \\subseteq [-1,1]$ and $a < b$.\n4. **Integral splitting**: Decompose $\\int_{-1}^{1} = \\int_{-1}^{a} + \\int_a^b + \\int_b^{1}$ and bound each piece: the left and right pieces are $\\geq 0$ (non-negative integrand), the middle piece is $\\geq (c/2)(b-a) > 0$.\n\n**`lagrangeIntegral_strict_lower`** (lines 257-261): The main result $I > 2/n$, combining `integral_decomposition` with `integratedVariance_strictly_pos` via `linarith`.",
     "mathContext": "The argument: Let $c = \\text{var}(x_0) = (n-1)/n > 0$. By continuity, $\\exists\\,\\delta > 0$ with $\\text{var}(y) > c/2$ for $|y - x_0| < \\delta$. Then:\n\n$\\int_{-1}^{1} \\text{var} \\geq \\int_a^b \\text{var} \\geq \\frac{c}{2}(b-a) > 0$\n\nwhere $[a,b] \\ni x_0$ has length $\\geq \\min(\\delta, \\text{dist}(x_0, \\{-1,1\\})) > 0$.\n\nTherefore $I = 2/n + \\int \\text{var} > 2/n$.",
@@ -172,7 +172,7 @@
     },
     "type": "concept",
     "title": "Conjecture Reformulation in Variance Form",
-    "content": "Reformulates the Erdős conjecture $\\min I = 2 - (1+o(1))/n$ in terms of integrated variance. Since $I = 2/n + \\int\\text{var}$ and $\\min I \\approx 2 - 1/n$, we get $\\min \\int\\text{var} \\approx 2 - 1/n - 2/n = 2 - 3/n$.\n\n**`minIntegratedVariance`**: Defined as the infimum over all node configurations of the integrated variance.\n\n**`erdos_1131_variance_conjecture`**: The single axiom in this file — states that $|\\min \\int\\text{var} - (2 - 3/n)| \\leq \\varepsilon/n$ for all $\\varepsilon > 0$ and sufficiently large $n$. This is an equivalent reformulation of the original Erdős conjecture, separating the well-understood floor $2/n$ from the open problem about the variance excess.",
+    "content": "Reformulates the Erd\u0151s conjecture $\\min I = 2 - (1+o(1))/n$ in terms of integrated variance. Since $I = 2/n + \\int\\text{var}$ and $\\min I \\approx 2 - 1/n$, we get $\\min \\int\\text{var} \\approx 2 - 1/n - 2/n = 2 - 3/n$.\n\n**`minIntegratedVariance`**: Defined as the infimum over all node configurations of the integrated variance.\n\n**`erdos_1131_variance_conjecture`**: The single axiom in this file \u2014 states that $|\\min \\int\\text{var} - (2 - 3/n)| \\leq \\varepsilon/n$ for all $\\varepsilon > 0$ and sufficiently large $n$. This is an equivalent reformulation of the original Erd\u0151s conjecture, separating the well-understood floor $2/n$ from the open problem about the variance excess.",
     "mathContext": "Original: $\\min_I = 2 - \\frac{1+o(1)}{n}$.\n\nDecomposition: $I = \\frac{2}{n} + \\int\\text{var}$.\n\nReformulated: $\\min\\int\\text{var} = 2 - \\frac{3+o(1)}{n}$ (since $\\min I - 2/n = \\min\\int\\text{var}$, and $2 - 1/n - 2/n = 2 - 3/n$).",
     "significance": "supporting",
     "prerequisites": [
@@ -181,7 +181,7 @@
       "asymptotic notation"
     ],
     "relatedConcepts": [
-      "Erdős conjecture",
+      "Erd\u0151s conjecture",
       "infimum",
       "asymptotic equivalence",
       "axiom declaration"
@@ -194,9 +194,9 @@
       "startLine": 280,
       "endLine": 293
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Result: I > 2/n (Strict)",
-    "content": "**`erdos_1131_oq01`**: The headline theorem — for $n \\geq 2$ distinct nodes in $[-1,1]$, $I > 2/n$ strictly. This is a direct delegation to `lagrangeIntegral_strict_lower`, named to match the gallery entry ID convention.\n\nThis theorem answers the natural question: is the Cauchy-Schwarz bound $I \\geq 2/n$ ever achieved? No — the variance decomposition shows the bound has an irremovable gap of at least $\\int\\text{var} > 0$. The true minimum is approximately $2 - 1/n \\gg 2/n$ for large $n$, but characterizing the exact leading term remains the open Erdős conjecture.",
+    "content": "**`erdos_1131_oq01`**: The headline theorem \u2014 for $n \\geq 2$ distinct nodes in $[-1,1]$, $I > 2/n$ strictly. This is a direct delegation to `lagrangeIntegral_strict_lower`, named to match the gallery entry ID convention.\n\nThis theorem answers the natural question: is the Cauchy-Schwarz bound $I \\geq 2/n$ ever achieved? No \u2014 the variance decomposition shows the bound has an irremovable gap of at least $\\int\\text{var} > 0$. The true minimum is approximately $2 - 1/n \\gg 2/n$ for large $n$, but characterizing the exact leading term remains the open Erd\u0151s conjecture.",
     "mathContext": "$\\forall n \\geq 2,\\;\\forall\\,\\text{distinct}\\,x_1, \\ldots, x_n \\in [-1,1]:\\quad I = \\int_{-1}^{1} \\sum_{k=1}^n l_k(x)^2\\,dx > \\frac{2}{n}$",
     "significance": "key",
     "prerequisites": [
@@ -207,7 +207,7 @@
     "relatedConcepts": [
       "strict inequality",
       "gap in Cauchy-Schwarz",
-      "Erdős conjecture"
+      "Erd\u0151s conjecture"
     ]
   }
 ]

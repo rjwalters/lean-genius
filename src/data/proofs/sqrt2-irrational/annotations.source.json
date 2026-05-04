@@ -7,8 +7,8 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "Three Mathlib modules power this formalization:\n\n1. **`Mathlib.Data.Real.Irrational`**: Defines the `Irrational` predicate (`x : ℝ` is irrational iff `x ∉ ℚ` embedded in `ℝ`) and supplies the key lemmas: `irrational_sqrt_two` (main result), `Nat.Prime.irrational_sqrt` (√p is irrational for prime p), and `irrational_sqrt_natCast_iff` (√n irrational iff n is not a perfect square).\n\n2. **`Mathlib.Algebra.Ring.Parity`**: Provides the `Even` and `Odd` predicates and their algebraic properties — in particular `Odd.pow` (odd^n = odd) and `Int.odd_iff_not_even`, which are essential for the classical parity argument.\n\n3. **`Mathlib.Tactic`**: Imports all standard Lean 4 tactics (`omega`, `ring`, `decide`, `by_contra`, `by_cases`, `obtain`, etc.) used throughout the pedagogical proof demonstrations.",
-    "mathContext": "The central Mathlib predicate: $x \\in \\mathbb{R}$ is **irrational** iff $x \\notin \\iota(\\mathbb{Q})$ where $\\iota : \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ is the canonical embedding. In Lean: `Irrational x ↔ x ∉ Set.range ((↑) : ℚ → ℝ)`. The key Mathlib theorem `irrational_sqrt_two : Irrational (Real.sqrt 2)` is available directly; this file wraps and extends it with pedagogical proofs.",
+    "content": "Three Mathlib modules power this formalization:\n\n1. **`Mathlib.Data.Real.Irrational`**: Defines the `Irrational` predicate (`x : \u211d` is irrational iff `x \u2209 \u211a` embedded in `\u211d`) and supplies the key lemmas: `irrational_sqrt_two` (main result), `Nat.Prime.irrational_sqrt` (\u221ap is irrational for prime p), and `irrational_sqrt_natCast_iff` (\u221an irrational iff n is not a perfect square).\n\n2. **`Mathlib.Algebra.Ring.Parity`**: Provides the `Even` and `Odd` predicates and their algebraic properties \u2014 in particular `Odd.pow` (odd^n = odd) and `Int.odd_iff_not_even`, which are essential for the classical parity argument.\n\n3. **`Mathlib.Tactic`**: Imports all standard Lean 4 tactics (`omega`, `ring`, `decide`, `by_contra`, `by_cases`, `obtain`, etc.) used throughout the pedagogical proof demonstrations.",
+    "mathContext": "The central Mathlib predicate: $x \\in \\mathbb{R}$ is **irrational** iff $x \\notin \\iota(\\mathbb{Q})$ where $\\iota : \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ is the canonical embedding. In Lean: `Irrational x \u2194 x \u2209 Set.range ((\u2191) : \u211a \u2192 \u211d)`. The key Mathlib theorem `irrational_sqrt_two : Irrational (Real.sqrt 2)` is available directly; this file wraps and extends it with pedagogical proofs.",
     "significance": "supporting",
     "prerequisites": [],
     "relatedConcepts": [
@@ -28,7 +28,7 @@
     "type": "definition",
     "title": "Definition of Irrational",
     "content": "A real number $x$ is **irrational** if for all integers $p, q$ with $q \\neq 0$, we have $x \\neq p/q$. This is the negation of rationality: there is no way to express $x$ as a ratio of integers.",
-    "mathContext": "In Lean, this is a universal statement: `∀ p q : ℤ, q ≠ 0 → x ≠ p / q`. The proof will show this holds for $x = \\sqrt{2}$ by contradiction.",
+    "mathContext": "In Lean, this is a universal statement: `\u2200 p q : \u2124, q \u2260 0 \u2192 x \u2260 p / q`. The proof will show this holds for $x = \\sqrt{2}$ by contradiction.",
     "significance": "key",
     "relatedConcepts": [
       "rational numbers",
@@ -46,7 +46,7 @@
     "type": "definition",
     "title": "Definition of Coprime",
     "content": "Two integers $p$ and $q$ are **coprime** (or relatively prime) if their greatest common divisor is 1: $\\gcd(p, q) = 1$. Equivalently, they share no prime factors.",
-    "mathContext": "Every rational number can be written in lowest terms $p/q$ where $p$ and $q$ are coprime. This is crucial for the contradiction—if both are even, they're not coprime.",
+    "mathContext": "Every rational number can be written in lowest terms $p/q$ where $p$ and $q$ are coprime. This is crucial for the contradiction\u2014if both are even, they're not coprime.",
     "significance": "key",
     "relatedConcepts": [
       "GCD",
@@ -61,7 +61,7 @@
       "type": "section-doc",
       "contains": "What This Proves"
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Even Square Implies Even Root",
     "content": "**The key lemma**: If $n^2$ is even, then $n$ is even. The proof uses the contrapositive: assume $n$ is odd, show $n^2$ is odd, contradicting that $n^2$ is even.",
     "mathContext": "Why does odd$^2$ = odd? Write $n = 2k+1$. Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which is odd. The tactic `Odd.pow` handles this in Lean.",
@@ -79,7 +79,7 @@
       "type": "section-doc",
       "contains": "What This Proves"
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Square of Odd is Odd",
     "content": "A direct proof that odd$^2$ = odd. If $n = 2k + 1$ (odd), then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which has the form $2m + 1$ (odd).",
     "mathContext": "The `ring` tactic handles the algebraic manipulation automatically. The `obtain` tactic destructs the existential in the definition of `Odd`.",
@@ -99,10 +99,10 @@
       "type": "section-doc",
       "contains": "What This Proves"
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Divisibility by 2 Preserved by Squaring",
     "content": "A bidirectional lemma: $2 \\mid n^2 \\iff 2 \\mid n$. The forward direction uses `even_of_even_sq`; the reverse is direct calculation: if $n = 2k$, then $n^2 = 4k^2 = 2(2k^2)$.",
-    "mathContext": "The `↔` (iff) in Lean requires proving both directions. The `constructor` tactic splits this into two goals.",
+    "mathContext": "The `\u2194` (iff) in Lean requires proving both directions. The `constructor` tactic splits this into two goals.",
     "significance": "key",
     "prerequisites": [
       "ann-sqrt2-even-of-even-sq"
@@ -119,10 +119,10 @@
       "type": "section-doc",
       "contains": "Supporting Lemmas -/"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Supporting Lemmas and Main Theorem: Parity Argument",
-    "content": "This section contains the classical parity-based proof machinery:\n\n**`even_of_sq_even`**: The key lemma — if $n^2$ is even, then $n$ is even. Proved by contradiction via `by_contra`: assume $n$ is odd, derive $n^2$ is odd (`Odd.pow`), contradict the hypothesis.\n\n**`sq_even_div_four`**: If $n$ is even (write $n = k + k$), then $n^2 = 4k^2$, so $4 \\mid n^2$. Proved by `calc` with `ring`.\n\n**`irrational_sqrt_two_classic`**: The main theorem — `Irrational (Real.sqrt 2)` — proved in one line: `exact irrational_sqrt_two` (delegating to Mathlib). The docstring spells out the classical argument: $\\sqrt{2} = a/b$ coprime $\\Rightarrow a^2 = 2b^2 \\Rightarrow a$ even $\\Rightarrow a = 2k \\Rightarrow b^2 = 2k^2 \\Rightarrow b$ even $\\Rightarrow$ both even, contradicting coprimality.",
-    "mathContext": "The classical parity argument formalizes as:\n1. Assume $\\sqrt{2} = a/b$ with $\\gcd(a,b) = 1$ (coprime).\n2. $a^2 = 2b^2$, so $a^2$ is even, so $a$ is even (`even_of_sq_even`): write $a = 2k$.\n3. $4k^2 = 2b^2$, so $b^2 = 2k^2$, so $b$ is even.\n4. Contradiction: $2 \\mid a$ and $2 \\mid b$ contradicts $\\gcd(a,b) = 1$.\n\nThis file has **0 sorries** — the main theorem is fully proved via Mathlib's `irrational_sqrt_two`.",
+    "content": "This section contains the classical parity-based proof machinery:\n\n**`even_of_sq_even`**: The key lemma \u2014 if $n^2$ is even, then $n$ is even. Proved by contradiction via `by_contra`: assume $n$ is odd, derive $n^2$ is odd (`Odd.pow`), contradict the hypothesis.\n\n**`sq_even_div_four`**: If $n$ is even (write $n = k + k$), then $n^2 = 4k^2$, so $4 \\mid n^2$. Proved by `calc` with `ring`.\n\n**`irrational_sqrt_two_classic`**: The main theorem \u2014 `Irrational (Real.sqrt 2)` \u2014 proved in one line: `exact irrational_sqrt_two` (delegating to Mathlib). The docstring spells out the classical argument: $\\sqrt{2} = a/b$ coprime $\\Rightarrow a^2 = 2b^2 \\Rightarrow a$ even $\\Rightarrow a = 2k \\Rightarrow b^2 = 2k^2 \\Rightarrow b$ even $\\Rightarrow$ both even, contradicting coprimality.",
+    "mathContext": "The classical parity argument formalizes as:\n1. Assume $\\sqrt{2} = a/b$ with $\\gcd(a,b) = 1$ (coprime).\n2. $a^2 = 2b^2$, so $a^2$ is even, so $a$ is even (`even_of_sq_even`): write $a = 2k$.\n3. $4k^2 = 2b^2$, so $b^2 = 2k^2$, so $b$ is even.\n4. Contradiction: $2 \\mid a$ and $2 \\mid b$ contradicts $\\gcd(a,b) = 1$.\n\nThis file has **0 sorries** \u2014 the main theorem is fully proved via Mathlib's `irrational_sqrt_two`.",
     "significance": "key",
     "prerequisites": [
       "ann-sqrt2-irrational-def",
@@ -144,7 +144,7 @@
     },
     "type": "insight",
     "title": "Pedagogical Tactic Examples",
-    "content": "This section contains six standalone educational theorems demonstrating core Lean 4 proof techniques. These are NOT part of the main irrationality argument — they serve as a teaching supplement showing how different tactic paradigms apply to simple mathematical facts:\n\n- **`int_sq_nonneg`**: `by_cases` on sign of $n$; uses `sq_nonneg` and `sq_pos_of_neg`. Demonstrates case splitting on a decidable condition.\n- **`sq_add_formula`**: $(a+b)^2 = a^2 + 2ab + b^2$; closed by `ring`. Shows algebraic identity verification.\n- **`imp_trans`**: If $P \\to Q$ and $Q \\to R$, then $P \\to R$; proved by `intro`/`apply` chains. Demonstrates basic propositional logic.\n- **`not_and_iff_or_not`**: De Morgan's law $\\neg(P \\wedge Q) \\iff \\neg P \\vee \\neg Q$; proved with `by_cases` and `cases`. Shows logical equivalence reasoning.\n- **`add_zero_nat`**: $n + 0 = n$; proved by `induction` with `rfl` and `simp`. Demonstrates structural induction on `ℕ`.\n- **`exists_gt_nat`**: $\\forall n \\in \\mathbb{N}, \\exists m > n$; proved via `use n + 1` and `omega`. Shows existential witness construction.",
+    "content": "This section contains six standalone educational theorems demonstrating core Lean 4 proof techniques. These are NOT part of the main irrationality argument \u2014 they serve as a teaching supplement showing how different tactic paradigms apply to simple mathematical facts:\n\n- **`int_sq_nonneg`**: `by_cases` on sign of $n$; uses `sq_nonneg` and `sq_pos_of_neg`. Demonstrates case splitting on a decidable condition.\n- **`sq_add_formula`**: $(a+b)^2 = a^2 + 2ab + b^2$; closed by `ring`. Shows algebraic identity verification.\n- **`imp_trans`**: If $P \\to Q$ and $Q \\to R$, then $P \\to R$; proved by `intro`/`apply` chains. Demonstrates basic propositional logic.\n- **`not_and_iff_or_not`**: De Morgan's law $\\neg(P \\wedge Q) \\iff \\neg P \\vee \\neg Q$; proved with `by_cases` and `cases`. Shows logical equivalence reasoning.\n- **`add_zero_nat`**: $n + 0 = n$; proved by `induction` with `rfl` and `simp`. Demonstrates structural induction on `\u2115`.\n- **`exists_gt_nat`**: $\\forall n \\in \\mathbb{N}, \\exists m > n$; proved via `use n + 1` and `omega`. Shows existential witness construction.",
     "mathContext": "These examples illustrate the main Lean 4 proof paradigms: (1) case analysis (`by_cases`, `by_contra`), (2) algebraic automation (`ring`, `omega`), (3) structural induction (`induction ... with`), (4) existential/universal reasoning (`use`, `intro`), and (5) logical connective manipulation (`constructor`, `cases`). Collectively they show that Lean 4 proofs span a spectrum from near-automatic (`ring`, `decide`) to fully explicit (`intro`/`apply` chains).",
     "significance": "supporting",
     "prerequisites": [],
@@ -165,10 +165,10 @@
       "name": "even_of_sq_even",
       "kind": "theorem"
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Squaring Both Sides",
     "content": "From $\\sqrt{2} = p/q$, we square both sides to get $2 = p^2/q^2$, hence $p^2 = 2q^2$. This eliminates the square root and gives us an equation in integers.",
-    "mathContext": "This is the key algebraic step. In Lean, `congrArg (·^2)` applies squaring to both sides of an equation.",
+    "mathContext": "This is the key algebraic step. In Lean, `congrArg (\u00b7^2)` applies squaring to both sides of an equation.",
     "significance": "key",
     "relatedConcepts": [
       "algebraic manipulation",
@@ -185,7 +185,7 @@
     "type": "insight",
     "title": "p Must Be Even",
     "content": "From $p^2 = 2q^2$, we see $p^2$ is even (it's $2 \\times$ something). By our key lemma, this means $p$ itself is even. We write $p = 2k$ for some integer $k$.",
-    "mathContext": "The `obtain ⟨k, hk⟩` tactic extracts the witness $k$ from the existential statement that $p$ is even.",
+    "mathContext": "The `obtain \u27e8k, hk\u27e9` tactic extracts the witness $k$ from the existential statement that $p$ is even.",
     "significance": "key",
     "prerequisites": [
       "ann-sqrt2-even-of-even-sq",
@@ -201,12 +201,12 @@
     "proofId": "sqrt2-irrational",
     "anchor": {
       "type": "doc-comment",
-      "contains": "Irrationality of √2**"
+      "contains": "Irrationality of \u221a2**"
     },
     "type": "insight",
     "title": "q Must Also Be Even",
     "content": "Substituting $p = 2k$ into $p^2 = 2q^2$ gives $4k^2 = 2q^2$, so $q^2 = 2k^2$. Now $q^2$ is even, so by the same lemma, $q$ is even.",
-    "mathContext": "We've now shown both $p$ and $q$ are divisible by 2. But we assumed they were coprime—a contradiction is imminent!",
+    "mathContext": "We've now shown both $p$ and $q$ are divisible by 2. But we assumed they were coprime\u2014a contradiction is imminent!",
     "significance": "key",
     "prerequisites": [
       "ann-sqrt2-p-even"
@@ -221,12 +221,12 @@
     "proofId": "sqrt2-irrational",
     "anchor": {
       "type": "section-doc",
-      "contains": "Generalization: √n is irrational for non-perfect squares"
+      "contains": "Generalization: \u221an is irrational for non-perfect squares"
     },
     "type": "insight",
     "title": "The Generalization Insight",
-    "content": "The √2 proof works because 2 is prime and appears exactly once in its factorization (odd multiplicity). The key insight is: **if any prime $p$ appears to odd multiplicity in $n$, then $\\sqrt{n}$ is irrational**.",
-    "mathContext": "If $n = p^{2k+1} \\cdot m$ where $p \\nmid m$, and $\\sqrt{n} = a/b$ in lowest terms, then looking at $p$'s multiplicity in $n \\cdot b^2 = a^2$ gives: $(2k+1) + 2 \\cdot \\text{mult}(p,b) = 2 \\cdot \\text{mult}(p,a)$. The left side is odd, the right side is even—contradiction!",
+    "content": "The \u221a2 proof works because 2 is prime and appears exactly once in its factorization (odd multiplicity). The key insight is: **if any prime $p$ appears to odd multiplicity in $n$, then $\\sqrt{n}$ is irrational**.",
+    "mathContext": "If $n = p^{2k+1} \\cdot m$ where $p \\nmid m$, and $\\sqrt{n} = a/b$ in lowest terms, then looking at $p$'s multiplicity in $n \\cdot b^2 = a^2$ gives: $(2k+1) + 2 \\cdot \\text{mult}(p,b) = 2 \\cdot \\text{mult}(p,a)$. The left side is odd, the right side is even\u2014contradiction!",
     "significance": "key",
     "prerequisites": [
       "ann-sqrt2-contradiction"
@@ -242,12 +242,12 @@
     "proofId": "sqrt2-irrational",
     "anchor": {
       "type": "doc-comment",
-      "contains": "Irrationality of √3**"
+      "contains": "Irrationality of \u221a3**"
     },
-    "type": "theorem",
-    "title": "Irrationality of √3",
-    "content": "Since 3 is prime, it appears to multiplicity 1 (odd) in 3. By the same multiplicity argument that proved √2 irrational, √3 is also irrational.",
-    "mathContext": "In Lean, we use `Nat.Prime.irrational_sqrt` which proves √p is irrational for any prime p. The proof reduces to showing 3 is prime via `Nat.prime_three`.",
+    "type": "insight",
+    "title": "Irrationality of \u221a3",
+    "content": "Since 3 is prime, it appears to multiplicity 1 (odd) in 3. By the same multiplicity argument that proved \u221a2 irrational, \u221a3 is also irrational.",
+    "mathContext": "In Lean, we use `Nat.Prime.irrational_sqrt` which proves \u221ap is irrational for any prime p. The proof reduces to showing 3 is prime via `Nat.prime_three`.",
     "significance": "key",
     "prerequisites": [
       "ann-generalization-intro"
@@ -262,12 +262,12 @@
     "proofId": "sqrt2-irrational",
     "anchor": {
       "type": "doc-comment",
-      "contains": "Irrationality of √5**"
+      "contains": "Irrationality of \u221a5**"
     },
-    "type": "theorem",
-    "title": "Irrationality of √5",
-    "content": "5 is prime, so it appears to odd multiplicity in 5. Therefore √5 is irrational.",
-    "mathContext": "Same pattern as √3. Mathlib provides `Nat.prime_five` to establish that 5 is prime.",
+    "type": "insight",
+    "title": "Irrationality of \u221a5",
+    "content": "5 is prime, so it appears to odd multiplicity in 5. Therefore \u221a5 is irrational.",
+    "mathContext": "Same pattern as \u221a3. Mathlib provides `Nat.prime_five` to establish that 5 is prime.",
     "significance": "supporting",
     "prerequisites": [
       "ann-generalization-intro"
@@ -282,12 +282,12 @@
     "proofId": "sqrt2-irrational",
     "anchor": {
       "type": "doc-comment",
-      "contains": "Irrationality of √6**"
+      "contains": "Irrationality of \u221a6**"
     },
-    "type": "theorem",
-    "title": "Irrationality of √6",
-    "content": "6 = 2 × 3. Both primes 2 and 3 appear to multiplicity 1 (odd). The same argument applies: √6 is irrational.",
-    "mathContext": "This example shows the theorem works for composite numbers too. We use `irrational_sqrt_natCast_iff.mpr` with the fact that 6 is not a perfect square (`¬ IsSquare 6`). The `decide` tactic verifies this computationally.",
+    "type": "insight",
+    "title": "Irrationality of \u221a6",
+    "content": "6 = 2 \u00d7 3. Both primes 2 and 3 appear to multiplicity 1 (odd). The same argument applies: \u221a6 is irrational.",
+    "mathContext": "This example shows the theorem works for composite numbers too. We use `irrational_sqrt_natCast_iff.mpr` with the fact that 6 is not a perfect square (`\u00ac IsSquare 6`). The `decide` tactic verifies this computationally.",
     "significance": "key",
     "prerequisites": [
       "ann-generalization-intro"
@@ -306,9 +306,9 @@
       "name": "irrational_sqrt_seven",
       "kind": "theorem"
     },
-    "type": "theorem",
-    "title": "Irrationality of √7",
-    "content": "7 is prime, so √7 is irrational by the same reasoning.",
+    "type": "insight",
+    "title": "Irrationality of \u221a7",
+    "content": "7 is prime, so \u221a7 is irrational by the same reasoning.",
     "mathContext": "We use `by decide : Nat.Prime 7` to verify primality computationally, then apply `Nat.Prime.irrational_sqrt`.",
     "significance": "supporting",
     "prerequisites": [
@@ -326,10 +326,10 @@
       "type": "section-doc",
       "contains": "The General Theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The General Theorem",
-    "content": "**Main Result**: For any natural number $n$ that is not a perfect square, $\\sqrt{n}$ is irrational. This single theorem subsumes all the specific cases: √2, √3, √5, √6, √7, √8, √10, ...",
-    "mathContext": "The theorem `irrational_sqrt_of_not_square` uses Mathlib's `irrational_sqrt_natCast_iff` which establishes the result based on `¬ IsSquare n`.",
+    "content": "**Main Result**: For any natural number $n$ that is not a perfect square, $\\sqrt{n}$ is irrational. This single theorem subsumes all the specific cases: \u221a2, \u221a3, \u221a5, \u221a6, \u221a7, \u221a8, \u221a10, ...",
+    "mathContext": "The theorem `irrational_sqrt_of_not_square` uses Mathlib's `irrational_sqrt_natCast_iff` which establishes the result based on `\u00ac IsSquare n`.",
     "significance": "key",
     "prerequisites": [
       "ann-sqrt3-proof",
@@ -349,10 +349,10 @@
       "name": "irrational_sqrt_of_not_square",
       "kind": "theorem"
     },
-    "type": "example",
+    "type": "context",
     "title": "Perfect Squares vs Non-Squares",
-    "content": "The `decide` tactic can verify whether a number is a perfect square. Non-squares: 2, 3, 5, 6, 7, 8, 10, ... Perfect squares: 1 = 1², 4 = 2², 9 = 3², 16 = 4², ...",
-    "mathContext": "For perfect squares, we provide explicit witnesses: `IsSquare 4` is proven by `⟨2, by ring⟩` showing $4 = 2 \\cdot 2$. The `decide` tactic handles non-squares by computation.",
+    "content": "The `decide` tactic can verify whether a number is a perfect square. Non-squares: 2, 3, 5, 6, 7, 8, 10, ... Perfect squares: 1 = 1\u00b2, 4 = 2\u00b2, 9 = 3\u00b2, 16 = 4\u00b2, ...",
+    "mathContext": "For perfect squares, we provide explicit witnesses: `IsSquare 4` is proven by `\u27e82, by ring\u27e9` showing $4 = 2 \\cdot 2$. The `decide` tactic handles non-squares by computation.",
     "significance": "supporting",
     "prerequisites": [
       "ann-general-theorem"

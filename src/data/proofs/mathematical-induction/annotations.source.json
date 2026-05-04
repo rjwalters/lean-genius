@@ -60,7 +60,7 @@
       "name": "weak_induction",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Weak Induction (Standard Form)",
     "content": "**Weak Induction**: The standard form of mathematical induction.\n\n```lean\ntheorem weak_induction (P : \u2115 \u2192 Prop)\n    (base : P 0)\n    (step : \u2200 n, P n \u2192 P (n + 1)) :\n    \u2200 n, P n\n```\n\nThe proof uses Lean's `induction` tactic, which applies the `Nat.rec` recursor. This is the most common form of induction used in practice.",
     "mathContext": "In Lean 4, the `induction n with` tactic desugars to an application of `Nat.rec`. The `| zero => exact base` branch fills in the base case, and `| succ k ih => exact step k ih` fills in the inductive step with `ih : P k`. This is definitionally equal to `Nat.rec base step n`. Lean checks that the two constructors cover all cases of the `Nat` inductive type, giving totality. The `\u2200 n, P n` conclusion is a dependent function type `(n : \u2115) \u2192 P n`.",
@@ -117,7 +117,7 @@
       "name": "strong_induction",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strong Induction (Complete Induction)",
     "content": "**Strong Induction**: Instead of assuming just $P(n)$, we assume $P(k)$ for **all** $k < n$.\n\n```lean\ntheorem strong_induction (P : \u2115 \u2192 Prop)\n    (step : \u2200 n, (\u2200 k, k < n \u2192 P k) \u2192 P n) :\n    \u2200 n, P n\n```\n\n**Key insight**: The base case is implicit! When $n = 0$, the hypothesis '$\\forall k < 0, P(k)$' is vacuously true (there are no such $k$), so we must prove $P(0)$ directly.",
     "mathContext": "The Lean proof uses `Nat.strong_induction_on` from Mathlib, which has signature `Nat.strong_induction_on : \u2200 {P : \u2115 \u2192 Sort*} (n : \u2115), (\u2200 m, (\u2200 a, a < m \u2192 P a) \u2192 P m) \u2192 P n`. Internally, this is proved by weak induction on the auxiliary predicate `Q(n) := \u2200 k < n, P k`, then extracting `P n` from `Q(n+1)`. The `step` function in strong induction takes a proof of `\u2200 k < n, P k` \u2014 when `n = 0`, this is the empty function (proof of `False.elim` applied to `Nat.not_lt_zero`), so `P 0` must still be established from the step alone using the vacuously true hypothesis.",
@@ -172,7 +172,7 @@
       "name": "strong_from_weak",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Weak Induction Implies Strong",
     "content": "**Weak \u2192 Strong**: Strengthen the predicate to $Q(n) = \\forall k < n. P(k)$.\n\n1. **Base**: $Q(0)$ is vacuously true (no $k < 0$).\n2. **Step**: If $Q(n)$ holds (i.e., $P(k)$ for all $k < n$), then by the strong step hypothesis, $P(n)$ holds, so $Q(n+1)$ holds.\n3. By weak induction on $Q$, we get $Q(n)$ for all $n$, which gives $P(n)$.\n\nThis is a classic proof technique: strengthening the induction hypothesis.",
     "mathContext": "The key move is introducing the auxiliary predicate `Q(n) := \u2200 k < n, P k`. In Lean: `let Q : \u2115 \u2192 Prop := fun n => \u2200 k, k < n \u2192 P k`. The weak induction hypothesis gives `Q_base : Q 0` (vacuously, since `k < 0` is false by `Nat.not_lt_zero`) and `Q_step : \u2200 n, Q n \u2192 Q (n+1)` (using `Nat.lt_succ_iff_lt_or_eq` to split `k < n+1` into `k < n` or `k = n`). This technique of strengthening the induction hypothesis is a fundamental proof strategy: when the obvious induction hypothesis is too weak to close the inductive step, add more structure to the predicate.",
@@ -200,7 +200,7 @@
       "name": "weak_from_strong",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Strong Induction Implies Weak",
     "content": "**Strong \u2192 Weak**: This direction is straightforward.\n\nWeak induction is a special case of strong induction where we only use the hypothesis at $n-1$.\n\nGiven base case $P(0)$ and step $P(n) \\to P(n+1)$, we can construct the strong step: assuming $P(k)$ for all $k < n$, use only $P(n-1)$ (when $n > 0$) to get $P(n)$.\n\nThis shows both principles have the same expressive power!",
     "mathContext": "The proof unfolds by case analysis on `n`. For `n = 0`, use `base` directly (no inductive hypothesis needed). For `n = succ m`, the strong hypothesis gives `\u2200 k < m+1, P k`; applying it at `k = m` (using `Nat.lt_succ_self m : m < m+1`) yields `P m`, and then `step m : P m \u2192 P (m+1)` closes the case. This exhibits weak induction as the restriction of strong induction where only the immediately preceding value is used. The logical equivalence confirms both principles are equally expressive: they axiomatize the same class of structures (the standard model \u2115 plus non-standard models of Peano arithmetic).",
@@ -227,7 +227,7 @@
       "name": "sum_first_n",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Example: Sum of First n Natural Numbers",
     "content": "A classic application of weak induction:\n\n$$2 \\cdot \\sum_{i=0}^{n} i = n(n+1)$$\n\nOr equivalently: $0 + 1 + 2 + \\cdots + n = \\frac{n(n+1)}{2}$\n\n**Base case** ($n = 0$): $2 \\cdot 0 = 0 \\cdot 1$ \u2713\n\n**Inductive step**: Assuming the formula for $n$, we verify it for $n+1$ using `ring` to handle the algebra.",
     "mathContext": "In Lean, `\u2211 i \u2208 Finset.range (n+1), i` computes the sum using `Finset.sum`. The proof uses `Finset.sum_range_succ : \u2211 i \u2208 Finset.range (n+1), f i = (\u2211 i \u2208 Finset.range n, f i) + f n` to unfold the last term, then the inductive hypothesis rewrites the prefix sum, and `ring` closes the remaining arithmetic identity. The factor of 2 avoids division in \u2115 (which truncates in Lean). Lean's `ring` tactic handles polynomial identities over commutative (semi)rings, including \u2115. This is entry #74 in Wiedijk's 100 Theorems list.",
@@ -256,7 +256,7 @@
       "name": "exists_prime_divisor",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Example: Existence of Prime Divisors",
     "content": "Every natural number $n \\geq 2$ has a prime divisor.\n\nThis requires strong induction because if $n = ab$ is composite, we apply the hypothesis to $a$, which could be much smaller than $n-1$.\n\nWe use Mathlib's `Nat.exists_prime_and_dvd` which encapsulates this strong induction argument.",
     "mathContext": "Mathlib's `Nat.exists_prime_and_dvd` has signature `Nat.exists_prime_and_dvd : n \u2260 1 \u2192 \u2203 p, Nat.Prime p \u2227 p \u2223 n`. The condition `n \u2260 1` is equivalent to `2 \u2264 n` for `n : \u2115` (since `n = 0` gives divisor 2 via convention, or we need `n \u2265 2`). Internally, Mathlib proves this by strong induction: if `n` is prime, `n \u2223 n`; if `n = a * b` with `1 < a, b < n`, apply the induction hypothesis to `a`. In Lean, `omega` or `Nat.lt_of_dvd_of_lt` are used to verify that proper divisors are strictly smaller, satisfying the strong induction decrease condition. This is a prototypical use of strong induction in number theory.",
@@ -285,7 +285,7 @@
       "name": "well_ordering",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Well-Ordering Principle",
     "content": "**Well-Ordering Principle**: Every nonempty subset of $\\mathbb{N}$ has a least element.\n\nIn Lean, this is captured by `Nat.find`: given a decidable predicate $P$ and a proof that some $n$ satisfies $P$, `Nat.find` returns the smallest such $n$.\n\n```lean\ntheorem well_ordering (P : \u2115 \u2192 Prop) [DecidablePred P]\n    (hne : \u2203 n, P n) :\n    \u2203 m, P m \u2227 \u2200 n, P n \u2192 m \u2264 n\n```",
     "mathContext": "`Nat.find` in Lean has type `(h : \u2203 n, P n) \u2192 \u2115` where `P` must be `DecidablePred`. It requires a proof of existence to return the minimum witness. `Nat.find_spec h : P (Nat.find h)` and `Nat.find_min' h : P n \u2192 Nat.find h \u2264 n` provide the minimality. The `DecidablePred` typeclass constraint means the predicate must be computably decidable \u2014 this is necessary because `Nat.find` is implemented by linear search from 0. For non-computable predicates (requiring `Classical.choice`), one uses `Nat.find` with `Classical.decideEq` or works with `Nat.sInf` from order theory.",
@@ -315,7 +315,7 @@
       "name": "strong_induction_from_well_ordering",
       "kind": "theorem"
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Well-Ordering Implies Strong Induction",
     "content": "**Proof by contraposition**: If $\\neg \\forall n. P(n)$, then the set $S = \\{n : \\neg P(n)\\}$ is nonempty.\n\nBy well-ordering, $S$ has a minimum $m$. But then $P(k)$ holds for all $k < m$, so by the strong induction hypothesis, $P(m)$ should hold\u2014contradiction!\n\nThis shows well-ordering and induction are equivalent principles.",
     "mathContext": "The Lean proof uses `by_contra h; push_neg at h` to obtain `\u2203 n, \u00acP n`. Then `well_ordering (fun n => \u00acP n) h` gives the minimal counterexample `m` with `hm : \u00acP m` and `hmin : \u2200 n, \u00acP n \u2192 m \u2264 n`. The key step: `intro k hkm` with `hkm : k < m` gives `by_contra hk; exact Nat.not_lt.mpr (hmin k hk) hkm` \u2014 the minimality of `m` says `m \u2264 k`, contradicting `k < m`. So all `k < m` satisfy `P k`, and the strong induction `step` gives `P m`, contradicting `hm`. This is the standard proof that WOP \u2194 strong induction, formalized with Lean's contradiction tactics.",

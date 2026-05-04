@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Hypergraph Structure: Uniform Simplicial Complex",
-    "content": "The Hypergraph structure captures an r-uniform hypergraph: a collection of edges (Finset of Finsets) where every edge has exactly r vertices. The uniformity field `uniform : ∀ e ∈ edges, e.card = r` is a proof-valued field encoding the mathematical constraint directly in the type. This models an r-uniform hypergraph as an (r-1)-dimensional simplicial complex: each edge is an (r-1)-simplex, and the uniformity constraint ensures the complex is pure. The formalization uses Finset (Finset V) rather than Finset (Fin r → V) to make the edge-as-subset perspective natural.",
+    "content": "The Hypergraph structure captures an r-uniform hypergraph: a collection of edges (Finset of Finsets) where every edge has exactly r vertices. The uniformity field `uniform : \u2200 e \u2208 edges, e.card = r` is a proof-valued field encoding the mathematical constraint directly in the type. This models an r-uniform hypergraph as an (r-1)-dimensional simplicial complex: each edge is an (r-1)-simplex, and the uniformity constraint ensures the complex is pure. The formalization uses Finset (Finset V) rather than Finset (Fin r \u2192 V) to make the edge-as-subset perspective natural.",
     "mathContext": "$$H = (V, E) \\text{ with } E \\subseteq \\binom{V}{r}$$, i.e., $\\forall e \\in E, |e| = r$. As a simplicial complex: $H$ is the pure $(r-1)$-dimensional complex with $(r-1)$-simplices given by $E$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -31,7 +31,7 @@
     },
     "type": "concept",
     "title": "van Kampen-Flores Theorem: K_{2r+1}^(r) is Not Embeddable",
-    "content": "vanKampen_Flores axiomatizes the van Kampen-Flores theorem (proved independently by van Kampen and Flores, both 1933): for r ≥ 2, the complete r-uniform hypergraph on 2r+1 vertices cannot be embedded in R^(2(r-1)) as a simplicial complex. This is the direct generalization of K₅ being non-planar (r=2: K₅ not in R²). The proof uses the Borsuk-Ulam theorem via Z/2-equivariant topology: the deleted product construction of K_{2r+1}^(r) has a non-trivial Z/2-map to S^{2(r-1)-1}, which by Borsuk-Ulam cannot exist for an embeddable complex.",
+    "content": "vanKampen_Flores axiomatizes the van Kampen-Flores theorem (proved independently by van Kampen and Flores, both 1933): for r \u2265 2, the complete r-uniform hypergraph on 2r+1 vertices cannot be embedded in R^(2(r-1)) as a simplicial complex. This is the direct generalization of K\u2085 being non-planar (r=2: K\u2085 not in R\u00b2). The proof uses the Borsuk-Ulam theorem via Z/2-equivariant topology: the deleted product construction of K_{2r+1}^(r) has a non-trivial Z/2-map to S^{2(r-1)-1}, which by Borsuk-Ulam cannot exist for an embeddable complex.",
     "mathContext": "$$K_{2r+1}^{(r)} \\not\\hookrightarrow \\mathbb{R}^{2(r-1)}$$ for $r \\geq 2$, where the embedding is as an $(r-1)$-dimensional simplicial complex. Special cases: $K_5 \\not\\hookrightarrow \\mathbb{R}^2$ (Kuratowski), $K_7^{(3)} \\not\\hookrightarrow \\mathbb{R}^4$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -54,14 +54,14 @@
       "startLine": 167,
       "endLine": 172
     },
-    "type": "theorem",
-    "title": "Graph Case Recovery: K₅ is Non-Planar",
-    "content": "vanKampen_Flores_graph recovers the classical K₅ non-planarity result as a corollary of the van Kampen-Flores axiom for r=2. The proof instantiates vanKampen_Flores at r=2, uses simp to unfold criticalDim 2 = 2*(2-1) = 2, and uses convert to match K₅ = completeHypergraph 5 2 (since 2*2+1 = 5). The convert tactic handles the numerical matching, and norm_num closes the arithmetic goals. This shows the framework correctly reduces to the known graph case.",
+    "type": "insight",
+    "title": "Graph Case Recovery: K\u2085 is Non-Planar",
+    "content": "vanKampen_Flores_graph recovers the classical K\u2085 non-planarity result as a corollary of the van Kampen-Flores axiom for r=2. The proof instantiates vanKampen_Flores at r=2, uses simp to unfold criticalDim 2 = 2*(2-1) = 2, and uses convert to match K\u2085 = completeHypergraph 5 2 (since 2*2+1 = 5). The convert tactic handles the numerical matching, and norm_num closes the arithmetic goals. This shows the framework correctly reduces to the known graph case.",
     "mathContext": "$$K_5 = K_{2\\cdot 2+1}^{(2)} \\not\\hookrightarrow \\mathbb{R}^{2(2-1)} = \\mathbb{R}^2$$ recovered from \\texttt{vanKampen\\_Flores 2}: \\texttt{criticalDim 2 = 2} and $2 \\cdot 2 + 1 = 5$.",
     "significance": "key",
     "relatedConcepts": [
       "Kuratowski's theorem",
-      "K₅ non-planarity",
+      "K\u2085 non-planarity",
       "convert tactic",
       "criticalDim"
     ],
@@ -80,7 +80,7 @@
     },
     "type": "definition",
     "title": "hypergraph_kostochka_pyber: The Generalized Open Conjecture",
-    "content": "hypergraph_kostochka_pyber formalizes the open conjecture: for every r ≥ 2 and ε > 0, there exists a constant C = C_{r,ε} such that every r-uniform hypergraph on sufficiently many vertices (n ≥ N) with ≥ n^{r-1+ε} edges contains a sub-hypergraph on ≤ C vertices that is not embeddable in R^{2(r-1)}. The nested quantifiers capture: universality over uniformity r, a ε-threshold, existence of a bounded-size obstruction C and a threshold N, then universality over all large enough vertex sets and dense enough hypergraphs. This is an OPEN problem for r ≥ 3.",
+    "content": "hypergraph_kostochka_pyber formalizes the open conjecture: for every r \u2265 2 and \u03b5 > 0, there exists a constant C = C_{r,\u03b5} such that every r-uniform hypergraph on sufficiently many vertices (n \u2265 N) with \u2265 n^{r-1+\u03b5} edges contains a sub-hypergraph on \u2264 C vertices that is not embeddable in R^{2(r-1)}. The nested quantifiers capture: universality over uniformity r, a \u03b5-threshold, existence of a bounded-size obstruction C and a threshold N, then universality over all large enough vertex sets and dense enough hypergraphs. This is an OPEN problem for r \u2265 3.",
     "mathContext": "$$\\forall r \\geq 2, \\forall \\varepsilon > 0, \\exists C, N:\\; \\forall H \\text{ r-uniform on } n \\geq N \\text{ vertices},\\; |E(H)| \\geq n^{r-1+\\varepsilon} \\implies \\exists S \\subseteq V(H),\\; |S| \\leq C,\\; K_{2r+1}^{(r)} \\hookrightarrow H[S] \\text{ non-embeddably}$$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -103,16 +103,16 @@
       "startLine": 247,
       "endLine": 251
     },
-    "type": "theorem",
-    "title": "K₇^(3) is Not Embeddable in R⁴",
-    "content": "K7_3_nonembeddable proves that the complete 3-uniform hypergraph on 7 vertices is not embeddable in R⁴. This is the r=3 instance of the van Kampen-Flores theorem. The proof follows the same pattern as vanKampen_Flores_graph: instantiate vanKampen_Flores at r=3, unfold criticalDim 3 = 2*(3-1) = 4, and use convert + norm_num to match K₇^(3) = completeHypergraph 7 3 (since 2*3+1 = 7). K₇^(3) has C(7,3) = 35 edges (proved by K7_3_edge_count via decide), making it the simplest non-planar object in 3-uniform hypergraph theory.",
+    "type": "insight",
+    "title": "K\u2087^(3) is Not Embeddable in R\u2074",
+    "content": "K7_3_nonembeddable proves that the complete 3-uniform hypergraph on 7 vertices is not embeddable in R\u2074. This is the r=3 instance of the van Kampen-Flores theorem. The proof follows the same pattern as vanKampen_Flores_graph: instantiate vanKampen_Flores at r=3, unfold criticalDim 3 = 2*(3-1) = 4, and use convert + norm_num to match K\u2087^(3) = completeHypergraph 7 3 (since 2*3+1 = 7). K\u2087^(3) has C(7,3) = 35 edges (proved by K7_3_edge_count via decide), making it the simplest non-planar object in 3-uniform hypergraph theory.",
     "mathContext": "$$K_7^{(3)} = K_{2\\cdot 3+1}^{(3)} \\not\\hookrightarrow \\mathbb{R}^{2(3-1)} = \\mathbb{R}^4$$ with $|E(K_7^{(3)})| = \\binom{7}{3} = 35$. The analogy: $K_5$ (10 edges) is non-planar, $K_7^{(3)}$ (35 edges) is the 3-uniform non-$\\mathbb{R}^4$-embeddable analogue.",
     "significance": "key",
     "relatedConcepts": [
       "3-uniform hypergraphs",
       "van Kampen-Flores for r=3",
       "K7_3_edge_count",
-      "R⁴ embeddability"
+      "R\u2074 embeddability"
     ],
     "prerequisites": [
       "van Kampen-Flores axiom",
@@ -128,19 +128,19 @@
       "endLine": 278
     },
     "type": "concept",
-    "title": "Super-Linear Density Exceeds All Turán Numbers",
-    "content": "density_exceeds_turan axiomatizes the key comparison: for r ≥ 2, t > r, and ε > 0, the super-linear density n^{r-1+ε} eventually exceeds the Turán number ex(n, K_t^(r)) for any fixed t. This connects the edge density threshold n^{r-1+ε} to the Turán extremal framework: when a hypergraph is too dense to be K_t^(r)-free (for some bounded t), it must contain complete sub-hypergraphs, which are candidates for the non-embeddable sub-hypergraphs. The turanNumber function is defined with sorry (the exact Turán numbers for r ≥ 3 are largely unknown — the Turán density problem for K₄^(3) is one of the most famous open problems in combinatorics).",
+    "title": "Super-Linear Density Exceeds All Tur\u00e1n Numbers",
+    "content": "density_exceeds_turan axiomatizes the key comparison: for r \u2265 2, t > r, and \u03b5 > 0, the super-linear density n^{r-1+\u03b5} eventually exceeds the Tur\u00e1n number ex(n, K_t^(r)) for any fixed t. This connects the edge density threshold n^{r-1+\u03b5} to the Tur\u00e1n extremal framework: when a hypergraph is too dense to be K_t^(r)-free (for some bounded t), it must contain complete sub-hypergraphs, which are candidates for the non-embeddable sub-hypergraphs. The turanNumber function is defined with sorry (the exact Tur\u00e1n numbers for r \u2265 3 are largely unknown \u2014 the Tur\u00e1n density problem for K\u2084^(3) is one of the most famous open problems in combinatorics).",
     "mathContext": "$$\\forall t > r,\\; \\forall \\varepsilon > 0:\\; n^{r-1+\\varepsilon} > \\text{ex}(n, K_t^{(r)}) \\text{ for large } n$$ where $\\text{ex}(n, K_t^{(r)})$ is the maximum edges in an $r$-uniform $K_t^{(r)}$-free hypergraph on $n$ vertices.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Turán problem for hypergraphs",
+      "Tur\u00e1n problem for hypergraphs",
       "turanNumber (sorry)",
-      "K₄^(3) Turán density problem",
+      "K\u2084^(3) Tur\u00e1n density problem",
       "extremal numbers"
     ],
     "prerequisites": [
-      "Turán numbers for hypergraphs",
-      "Hypergraph Turán densities (mostly unknown for r ≥ 3)"
+      "Tur\u00e1n numbers for hypergraphs",
+      "Hypergraph Tur\u00e1n densities (mostly unknown for r \u2265 3)"
     ]
   }
 ]

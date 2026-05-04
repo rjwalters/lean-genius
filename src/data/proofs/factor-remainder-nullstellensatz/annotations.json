@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Preamble: Bridge from Factor Theorem to Nullstellensatz",
-    "content": "Five imports supply the polynomial algebra infrastructure: `Polynomial.Div` (polynomial division and Factor Theorem), `Polynomial.FieldDivision` (division in field polynomials), `IsAlgClosed.Basic` (algebraically closed fields and `IsAlgClosed.exists_root`), `MvPolynomial.Basic` (multivariate polynomials), and `RingTheory.Ideal.Basic` (ideal theory for `vanishingIdeal`). The `open Polynomial` declaration avoids the namespace prefix on all univariate polynomial results. The module docblock outlines the four-part structure: Factor Theorem as ideal membership → weak Nullstellensatz → multivariate zero loci → V-I Galois connection. The status checklist explicitly marks the multivariate weak Nullstellensatz as TODO (requires Jacobson ring theory not yet in Mathlib).",
+    "content": "Five imports supply the polynomial algebra infrastructure: `Polynomial.Div` (polynomial division and Factor Theorem), `Polynomial.FieldDivision` (division in field polynomials), `IsAlgClosed.Basic` (algebraically closed fields and `IsAlgClosed.exists_root`), `MvPolynomial.Basic` (multivariate polynomials), and `RingTheory.Ideal.Basic` (ideal theory for `vanishingIdeal`). The `open Polynomial` declaration avoids the namespace prefix on all univariate polynomial results. The module docblock outlines the four-part structure: Factor Theorem as ideal membership \u2192 weak Nullstellensatz \u2192 multivariate zero loci \u2192 V-I Galois connection. The status checklist explicitly marks the multivariate weak Nullstellensatz as TODO (requires Jacobson ring theory not yet in Mathlib).",
     "mathContext": "The chain connecting Factor Theorem to Nullstellensatz: $f(a) = 0 \\iff (X-a) \\mid f$ (Factor Theorem, 1 var) $\\Rightarrow$ every nonconstant polynomial over $\\bar{k}$ has a root (weak Nullstellensatz, 1 var) $\\Rightarrow$ every proper ideal in $\\bar{k}[\\mathbf{x}]$ has a common zero (weak Nullstellensatz, n vars) $\\Rightarrow$ $I(V(J)) = \\sqrt{J}$ (strong Nullstellensatz). This file proves the first two steps completely and lays infrastructure (zeroLocus, vanishingIdeal, V-I Galois connection) for the remaining steps.\n\nThe variable declaration `variable {k : Type*} [Field k]` makes the field implicit throughout, so all univariate theorems work for any field. The algebraic closure hypothesis `[IsAlgClosed k]` is added locally where needed (weak Nullstellensatz, linear factor existence, nonconstant non-unit).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -32,10 +32,10 @@
       "startLine": 57,
       "endLine": 67
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "factor_theorem_ideal: Factor Theorem as Ideal Membership",
-    "content": "`factor_theorem_ideal` restates the Factor Theorem as `f.eval a = 0 ↔ (X - C a) ∣ f`, proved in one line by `(dvd_iff_isRoot).symm`. This is the bridge between evaluation-based algebra and divisibility-based ring theory. The iff direction 'evaluation zero ↔ polynomial divisibility' is the key algebraic fact underlying algebraic geometry: 'a ∈ V(f)' (point lies on variety) becomes 'f ∈ (X-a)' (polynomial in ideal). `nonroot_iff_not_in_ideal` gives the contrapositive.",
-    "mathContext": "The Mathlib theorem `Polynomial.dvd_iff_isRoot : (X - C a) ∣ f ↔ f.IsRoot a` and `f.IsRoot a = (f.eval a = 0)` by definition. So `factor_theorem_ideal` is just the symmetric restatement. In algebraic geometry: the zero set $V(I) = \\{v \\mid \\forall f \\in I, f(v) = 0\\}$; the Factor Theorem gives $V((X - C a)) = \\{a\\}$, making the principal ideal $(X - a)$ the ideal-theoretic version of the point $a$.",
+    "content": "`factor_theorem_ideal` restates the Factor Theorem as `f.eval a = 0 \u2194 (X - C a) \u2223 f`, proved in one line by `(dvd_iff_isRoot).symm`. This is the bridge between evaluation-based algebra and divisibility-based ring theory. The iff direction 'evaluation zero \u2194 polynomial divisibility' is the key algebraic fact underlying algebraic geometry: 'a \u2208 V(f)' (point lies on variety) becomes 'f \u2208 (X-a)' (polynomial in ideal). `nonroot_iff_not_in_ideal` gives the contrapositive.",
+    "mathContext": "The Mathlib theorem `Polynomial.dvd_iff_isRoot : (X - C a) \u2223 f \u2194 f.IsRoot a` and `f.IsRoot a = (f.eval a = 0)` by definition. So `factor_theorem_ideal` is just the symmetric restatement. In algebraic geometry: the zero set $V(I) = \\{v \\mid \\forall f \\in I, f(v) = 0\\}$; the Factor Theorem gives $V((X - C a)) = \\{a\\}$, making the principal ideal $(X - a)$ the ideal-theoretic version of the point $a$.",
     "significance": "key",
     "relatedConcepts": [
       "Polynomial.dvd_iff_isRoot",
@@ -57,10 +57,10 @@
       "startLine": 73,
       "endLine": 84
     },
-    "type": "theorem",
-    "title": "weak_nullstellensatz_univariate: Algebraic Closure → Existence of Root",
-    "content": "`weak_nullstellensatz_univariate` proves: for an algebraically closed field k, every nonconstant polynomial has a root. The proof reduces directly to `IsAlgClosed.exists_root`: the algebraic closure condition says every nonconstant polynomial has a root. The `degree_eq_natDegree` lemma bridges between `Polynomial.natDegree > 0` and the `Polynomial.degree ≠ ⊥` condition that `IsAlgClosed.exists_root` requires. `exists_linear_factor` then chains this with the Factor Theorem to get a linear factor.",
-    "mathContext": "The general weak Nullstellensatz: if $k$ is algebraically closed and $I \\subsetneq k[x_1, \\ldots, x_n]$ is proper, then $V(I) \\neq \\emptyset$. For $n = 1$: $k[x]$ is a PID, so every proper ideal is $(f)$ for some $f$. `IsAlgClosed.exists_root` gives a root $a$, and the Factor Theorem gives $(X - a) \\mid f$, so $a \\in V(f)$. The proof chains: `weak_nullstellensatz_univariate` → `exists_linear_factor` → full factorization over $\\overline{k}$.",
+    "type": "insight",
+    "title": "weak_nullstellensatz_univariate: Algebraic Closure \u2192 Existence of Root",
+    "content": "`weak_nullstellensatz_univariate` proves: for an algebraically closed field k, every nonconstant polynomial has a root. The proof reduces directly to `IsAlgClosed.exists_root`: the algebraic closure condition says every nonconstant polynomial has a root. The `degree_eq_natDegree` lemma bridges between `Polynomial.natDegree > 0` and the `Polynomial.degree \u2260 \u22a5` condition that `IsAlgClosed.exists_root` requires. `exists_linear_factor` then chains this with the Factor Theorem to get a linear factor.",
+    "mathContext": "The general weak Nullstellensatz: if $k$ is algebraically closed and $I \\subsetneq k[x_1, \\ldots, x_n]$ is proper, then $V(I) \\neq \\emptyset$. For $n = 1$: $k[x]$ is a PID, so every proper ideal is $(f)$ for some $f$. `IsAlgClosed.exists_root` gives a root $a$, and the Factor Theorem gives $(X - a) \\mid f$, so $a \\in V(f)$. The proof chains: `weak_nullstellensatz_univariate` \u2192 `exists_linear_factor` \u2192 full factorization over $\\overline{k}$.",
     "significance": "key",
     "relatedConcepts": [
       "IsAlgClosed.exists_root",
@@ -83,7 +83,7 @@
     },
     "type": "concept",
     "title": "Nullstellensatz Hierarchy: From Factor Theorem to Combinatorics",
-    "content": "The documentation (lines 119-151) outlines four levels: (1) Factor Theorem (1 var, 1 poly); (2) Weak Nullstellensatz (n vars, proper ideal has a zero); (3) Strong Nullstellensatz (I(V(J)) = √J); (4) Combinatorial Nullstellensatz (Alon 1999, coefficient condition → nonvanishing). Each level requires more machinery: Level 2 needs Jacobson ring theory, Level 3 needs radical ideals, Level 4 needs polynomial degree arguments. The formalization proves Level 2 (univariate) and defines the infrastructure for Levels 2-3 via zeroLocus and vanishingIdeal.",
+    "content": "The documentation (lines 119-151) outlines four levels: (1) Factor Theorem (1 var, 1 poly); (2) Weak Nullstellensatz (n vars, proper ideal has a zero); (3) Strong Nullstellensatz (I(V(J)) = \u221aJ); (4) Combinatorial Nullstellensatz (Alon 1999, coefficient condition \u2192 nonvanishing). Each level requires more machinery: Level 2 needs Jacobson ring theory, Level 3 needs radical ideals, Level 4 needs polynomial degree arguments. The formalization proves Level 2 (univariate) and defines the infrastructure for Levels 2-3 via zeroLocus and vanishingIdeal.",
     "mathContext": "The hierarchy: (1) $f(a) = 0 \\iff (X-a) \\mid f$ (Factor Theorem). (2) Weak Nullstellensatz: $I \\subsetneq k[\\mathbf{x}] \\Rightarrow V(I) \\neq \\emptyset$ (algebraically closed $k$). (3) Strong Nullstellensatz: $I(V(J)) = \\sqrt{J}$ for any ideal $J$. (4) Combinatorial Nullstellensatz (Alon): if coeff of $\\prod x_i^{t_i}$ in $f$ is nonzero and $|S_i| > t_i$, then $\\exists s \\in \\prod S_i$ with $f(s) \\neq 0$. Level 4 has applications to combinatorics (graph coloring, sum-sets, Chevalley-Warning).",
     "significance": "key",
     "relatedConcepts": [
@@ -108,8 +108,8 @@
     },
     "type": "definition",
     "title": "zeroLocus: The Geometric Side of the V-I Galois Connection",
-    "content": "`zeroLocus S` is the set of points where every polynomial in S evaluates to zero: `{ v | ∀ f ∈ S, MvPolynomial.eval v f = 0 }`. This is the fundamental geometric object in algebraic geometry — an algebraic variety. The function V: (Sets of polynomials) → (Sets of points) is the first half of the Galois connection V ⊣ I. Key property proved: `zeroLocus_antimono` (S ⊆ T → V(T) ⊆ V(S)) — more equations means fewer solutions.",
-    "mathContext": "The zero locus of $S \\subseteq k[x_1, \\ldots, x_n]$ is $V(S) = \\{v : \\sigma \\to k \\mid \\forall f \\in S, f(v) = 0\\}$. In the Lean formalization, $\\sigma$ is a `Type*` (not necessarily finite), $k$ is a `CommRing`, and `MvPolynomial σ k` is the multivariate polynomial ring. `MvPolynomial.eval v f` computes $f(v)$ by substituting $v(i)$ for the $i$-th variable. The antimonotonicity: $S \\subseteq T \\Rightarrow V(T) \\subseteq V(S)$ follows directly from the universal quantifier.",
+    "content": "`zeroLocus S` is the set of points where every polynomial in S evaluates to zero: `{ v | \u2200 f \u2208 S, MvPolynomial.eval v f = 0 }`. This is the fundamental geometric object in algebraic geometry \u2014 an algebraic variety. The function V: (Sets of polynomials) \u2192 (Sets of points) is the first half of the Galois connection V \u22a3 I. Key property proved: `zeroLocus_antimono` (S \u2286 T \u2192 V(T) \u2286 V(S)) \u2014 more equations means fewer solutions.",
+    "mathContext": "The zero locus of $S \\subseteq k[x_1, \\ldots, x_n]$ is $V(S) = \\{v : \\sigma \\to k \\mid \\forall f \\in S, f(v) = 0\\}$. In the Lean formalization, $\\sigma$ is a `Type*` (not necessarily finite), $k$ is a `CommRing`, and `MvPolynomial \u03c3 k` is the multivariate polynomial ring. `MvPolynomial.eval v f` computes $f(v)$ by substituting $v(i)$ for the $i$-th variable. The antimonotonicity: $S \\subseteq T \\Rightarrow V(T) \\subseteq V(S)$ follows directly from the universal quantifier.",
     "significance": "key",
     "relatedConcepts": [
       "MvPolynomial",
@@ -133,7 +133,7 @@
     },
     "type": "definition",
     "title": "vanishingIdeal: The Algebraic Side, Proved to be an Ideal",
-    "content": "`vanishingIdeal W` collects all polynomials vanishing on every point in W, and is directly constructed as an `Ideal (MvPolynomial σ k)`. The construction proves all three ideal axioms inline: `add_mem'` (sum of vanishing polynomials vanishes), `zero_mem'` (zero polynomial vanishes), `smul_mem'` (scalar multiple of vanishing polynomial vanishes). All proofs use the ring homomorphism property of `MvPolynomial.eval v` via `map_add`, `map_zero`, `map_mul`.",
+    "content": "`vanishingIdeal W` collects all polynomials vanishing on every point in W, and is directly constructed as an `Ideal (MvPolynomial \u03c3 k)`. The construction proves all three ideal axioms inline: `add_mem'` (sum of vanishing polynomials vanishes), `zero_mem'` (zero polynomial vanishes), `smul_mem'` (scalar multiple of vanishing polynomial vanishes). All proofs use the ring homomorphism property of `MvPolynomial.eval v` via `map_add`, `map_zero`, `map_mul`.",
     "mathContext": "The vanishing ideal $I(W) = \\{f \\in k[\\mathbf{x}] \\mid \\forall v \\in W, f(v) = 0\\}$ is always an ideal (not just a set). Proof that it is closed under addition: if $f(v) = g(v) = 0$ then $(f+g)(v) = f(v) + g(v) = 0$. Proof of `smul_mem'`: $(c \\cdot f)(v) = c \\cdot f(v) = c \\cdot 0 = 0$. In Lean, the `Ideal` type is a `Submodule` over the ring acting on itself, so `smul_mem'` has signature `smul_mem' c {f} hf`. This is more general than the usual ring-ideal definition.",
     "significance": "key",
     "relatedConcepts": [
@@ -156,9 +156,9 @@
       "startLine": 201,
       "endLine": 211
     },
-    "type": "theorem",
-    "title": "V-I Galois Connection: S ⊆ V(I(S)) and S ⊆ I(V(S))",
-    "content": "Two single-line proofs establish the fundamental Galois connection. `subset_zeroLocus_vanishingIdeal`: `W ⊆ V(I(W))` — every point of W lies in the zero locus of all polynomials vanishing on W. `subset_vanishingIdeal_zeroLocus`: `S ⊆ I(V(S))` — every polynomial in S vanishes on all zeros of S. Both are proved by `fun v hv f hf => hf v hv` and `fun f hf v hv => hv f hf` — just reordering the universal quantifiers. This captures the fundamental duality of algebraic geometry.",
+    "type": "insight",
+    "title": "V-I Galois Connection: S \u2286 V(I(S)) and S \u2286 I(V(S))",
+    "content": "Two single-line proofs establish the fundamental Galois connection. `subset_zeroLocus_vanishingIdeal`: `W \u2286 V(I(W))` \u2014 every point of W lies in the zero locus of all polynomials vanishing on W. `subset_vanishingIdeal_zeroLocus`: `S \u2286 I(V(S))` \u2014 every polynomial in S vanishes on all zeros of S. Both are proved by `fun v hv f hf => hf v hv` and `fun f hf v hv => hv f hf` \u2014 just reordering the universal quantifiers. This captures the fundamental duality of algebraic geometry.",
     "mathContext": "The Galois connection $V \\dashv I$: $S \\subseteq I(V(S))$ and $W \\subseteq V(I(W))$. More precisely: $I(V(S)) \\supseteq S$ and $V(I(W)) \\supseteq W$, i.e., $V$ and $I$ are order-reversing and $(V \\circ I \\circ V = V)$ and $(I \\circ V \\circ I = I)$. These are proved as `zeroLocus_vanishingIdeal_zeroLocus` and `vanishingIdeal_zeroLocus_vanishingIdeal` (the idempotence theorems). The strong Nullstellensatz sharpens $I(V(J)) \\supseteq J$ to equality $I(V(J)) = \\sqrt{J}$ over algebraically closed fields.",
     "significance": "key",
     "relatedConcepts": [
@@ -182,16 +182,16 @@
       "startLine": 101,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Degree Bounds: At Most n Roots and Nonconstant Non-Units",
     "content": "`root_count_le_degree` proves that a nonzero polynomial of degree n has at most n roots (by `Polynomial.card_roots_le_degree`). `nonconstant_not_unit` proves that over an algebraically closed field, nonconstant polynomials are not units. The proof: if f were a unit, `Polynomial.natDegree_eq_zero_of_isUnit` would give natDegree f = 0, contradicting the assumption 0 < f.natDegree via `omega`. These two lemmas together establish the fundamental dichotomy: a polynomial is either a unit (constant, no roots in general) or has a root (by algebraic closure) and hence a linear factor.",
-    "mathContext": "The root count bound $|\\text{roots}(f)| \\leq \\deg(f)$ over a field is the algebraic counterpart of Bézout's theorem: a curve of degree $n$ meets a line in at most $n$ points. For $\\mathbb{R}$ or $\\mathbb{Q}$, this bound is sharp — but `roots` counts roots with multiplicity (in the splitting field sense). In Lean: `f.roots` is a `Multiset k` containing roots counted with multiplicity, and `f.roots.card` counts the total (with multiplicity).\n\nThe non-unit result is geometrically significant: over algebraically closed fields, nonconstant polynomials are never invertible in the polynomial ring $k[x]$ (only nonzero constants are units). This is because any nonconstant polynomial has a root $a$, so $(X-a) \\mid f$, making $f$ non-invertible. The proof in this file uses the more direct path: units in $k[x]$ are constant (degree 0), so a nonconstant polynomial cannot be a unit.",
+    "mathContext": "The root count bound $|\\text{roots}(f)| \\leq \\deg(f)$ over a field is the algebraic counterpart of B\u00e9zout's theorem: a curve of degree $n$ meets a line in at most $n$ points. For $\\mathbb{R}$ or $\\mathbb{Q}$, this bound is sharp \u2014 but `roots` counts roots with multiplicity (in the splitting field sense). In Lean: `f.roots` is a `Multiset k` containing roots counted with multiplicity, and `f.roots.card` counts the total (with multiplicity).\n\nThe non-unit result is geometrically significant: over algebraically closed fields, nonconstant polynomials are never invertible in the polynomial ring $k[x]$ (only nonzero constants are units). This is because any nonconstant polynomial has a root $a$, so $(X-a) \\mid f$, making $f$ non-invertible. The proof in this file uses the more direct path: units in $k[x]$ are constant (degree 0), so a nonconstant polynomial cannot be a unit.",
     "significance": "supporting",
     "relatedConcepts": [
       "Polynomial.card_roots_le_degree",
       "Polynomial.natDegree_eq_zero_of_isUnit",
       "units in polynomial rings",
-      "Bézout's theorem"
+      "B\u00e9zout's theorem"
     ],
     "prerequisites": [
       "Polynomial.card_roots_le_degree from Mathlib",
@@ -206,17 +206,17 @@
       "startLine": 215,
       "endLine": 235
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Set Operations on Zero Loci: Empty Set, Singletons, Unions",
-    "content": "Three structural properties of the zero locus map V: (1) `vanishingIdeal_empty`: I(∅) = k[x₁,...,xₙ] — every polynomial vacuously vanishes on the empty set (the `∀ v ∈ ∅` condition is vacuously true), so the vanishing ideal of the empty set is the entire ring ⊤. Proved by extension and `Submodule.mem_top`. (2) `zeroLocus_singleton`: V({f}) = {v | f(v) = 0} — the zero locus of a single polynomial is just its vanishing set. Proved by `simp [zeroLocus]`. (3) `zeroLocus_union`: V(S ∪ T) = V(S) ∩ V(T) — more equations mean fewer solutions. The proof decomposes the membership condition and uses `Set.mem_union` with the conjunction.",
-    "mathContext": "These properties reflect the algebra-geometry duality: (1) $I(\\emptyset) = k[\\mathbf{x}]$ corresponds geometrically to: the variety of the entire ring is empty — the whole ring constrains every point so severely that no point satisfies all constraints. (2) The singleton formula $V(\\{f\\}) = \\{v \\mid f(v) = 0\\}$ is the definition unwrapped. (3) The union formula $V(S \\cup T) = V(S) \\cap V(T)$ captures the key geometric principle: adding more polynomial constraints shrinks the solution set. Dually, $I(W \\cup W') = I(W) \\cap I(W')$ (the vanishing ideal of a union is the intersection of vanishing ideals).\n\nNote: $V(S \\cap T) \\supseteq V(S) \\cup V(T)$ but equality need not hold. The correspondence between intersection of varieties and products/sums of ideals is captured by the strong Nullstellensatz.",
+    "content": "Three structural properties of the zero locus map V: (1) `vanishingIdeal_empty`: I(\u2205) = k[x\u2081,...,x\u2099] \u2014 every polynomial vacuously vanishes on the empty set (the `\u2200 v \u2208 \u2205` condition is vacuously true), so the vanishing ideal of the empty set is the entire ring \u22a4. Proved by extension and `Submodule.mem_top`. (2) `zeroLocus_singleton`: V({f}) = {v | f(v) = 0} \u2014 the zero locus of a single polynomial is just its vanishing set. Proved by `simp [zeroLocus]`. (3) `zeroLocus_union`: V(S \u222a T) = V(S) \u2229 V(T) \u2014 more equations mean fewer solutions. The proof decomposes the membership condition and uses `Set.mem_union` with the conjunction.",
+    "mathContext": "These properties reflect the algebra-geometry duality: (1) $I(\\emptyset) = k[\\mathbf{x}]$ corresponds geometrically to: the variety of the entire ring is empty \u2014 the whole ring constrains every point so severely that no point satisfies all constraints. (2) The singleton formula $V(\\{f\\}) = \\{v \\mid f(v) = 0\\}$ is the definition unwrapped. (3) The union formula $V(S \\cup T) = V(S) \\cap V(T)$ captures the key geometric principle: adding more polynomial constraints shrinks the solution set. Dually, $I(W \\cup W') = I(W) \\cap I(W')$ (the vanishing ideal of a union is the intersection of vanishing ideals).\n\nNote: $V(S \\cap T) \\supseteq V(S) \\cup V(T)$ but equality need not hold. The correspondence between intersection of varieties and products/sums of ideals is captured by the strong Nullstellensatz.",
     "significance": "supporting",
     "relatedConcepts": [
       "Submodule.mem_top",
       "Set.mem_union",
       "Galois connection",
       "algebraic variety",
-      "V(S∪T) = V(S) ∩ V(T)"
+      "V(S\u222aT) = V(S) \u2229 V(T)"
     ],
     "prerequisites": [
       "zeroLocus definition",
@@ -232,10 +232,10 @@
       "startLine": 236,
       "endLine": 255
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Idempotence: V(I(V(S))) = V(S) and I(V(I(W))) = I(W)",
-    "content": "Two idempotence theorems complete the Galois connection structure. `zeroLocus_vanishingIdeal_zeroLocus`: V(I(V(S))) = V(S) — applying V then I then V again returns the original zero set. `vanishingIdeal_zeroLocus_vanishingIdeal`: I(V(I(W))) = I(W) — applying I then V then I again returns the original vanishing ideal. These follow from the Galois connection inclusions: V(S) ⊇ V(I(V(S))) (from S ⊆ I(V(S)) and V antimonotone) and V(S) ⊆ V(I(V(S))) (from V(S) ⊆ V(I(V(S))) via `subset_zeroLocus_vanishingIdeal`).",
-    "mathContext": "Idempotence of a Galois connection: if $f \\dashv g$ then $f \\circ g \\circ f = f$ and $g \\circ f \\circ g = g$. Here $f = V$ and $g = I$. The proof of $V(I(V(S))) = V(S)$: (⊆) from $S \\subseteq I(V(S))$ and $V$ antimonotone gives $V(I(V(S))) \\subseteq V(S)$; (⊇) from $W = V(S) \\subseteq V(I(W))$ with $W = V(S)$ gives $V(S) \\subseteq V(I(V(S)))$. Note: $I(V(J)) = J$ would be the strong Nullstellensatz (true only when $J$ is radical), but $I(V(I(W))) = I(W)$ always holds since $I(W)$ is a vanishing ideal.",
+    "content": "Two idempotence theorems complete the Galois connection structure. `zeroLocus_vanishingIdeal_zeroLocus`: V(I(V(S))) = V(S) \u2014 applying V then I then V again returns the original zero set. `vanishingIdeal_zeroLocus_vanishingIdeal`: I(V(I(W))) = I(W) \u2014 applying I then V then I again returns the original vanishing ideal. These follow from the Galois connection inclusions: V(S) \u2287 V(I(V(S))) (from S \u2286 I(V(S)) and V antimonotone) and V(S) \u2286 V(I(V(S))) (from V(S) \u2286 V(I(V(S))) via `subset_zeroLocus_vanishingIdeal`).",
+    "mathContext": "Idempotence of a Galois connection: if $f \\dashv g$ then $f \\circ g \\circ f = f$ and $g \\circ f \\circ g = g$. Here $f = V$ and $g = I$. The proof of $V(I(V(S))) = V(S)$: (\u2286) from $S \\subseteq I(V(S))$ and $V$ antimonotone gives $V(I(V(S))) \\subseteq V(S)$; (\u2287) from $W = V(S) \\subseteq V(I(W))$ with $W = V(S)$ gives $V(S) \\subseteq V(I(V(S)))$. Note: $I(V(J)) = J$ would be the strong Nullstellensatz (true only when $J$ is radical), but $I(V(I(W))) = I(W)$ always holds since $I(W)$ is a vanishing ideal.",
     "significance": "key",
     "relatedConcepts": [
       "idempotence",
@@ -259,14 +259,14 @@
     },
     "type": "insight",
     "title": "Concrete Examples: Algebraic Closure Necessity and Factor Theorem in Action",
-    "content": "Six examples verify the Factor Theorem and demonstrate why algebraic closure is necessary for the weak Nullstellensatz. (1) `x² - 1` has roots ±1 over ℚ: `eval 1 = 0` and `eval (-1) = 0`, verified by `norm_num`. (2) `x² + 1` has NO rational roots: `¬IsRoot 0`, `¬IsRoot 1`, `¬IsRoot (-1)`, all proved by `decide`. This polynomial has no roots in ℚ (or ℝ), demonstrating that algebraic closure is genuinely necessary — over ℝ, the weak Nullstellensatz fails. Over ℂ (algebraically closed), x² + 1 = (x - i)(x + i) does factor.",
-    "mathContext": "The example $x^2 + 1$ over $\\mathbb{Q}$ or $\\mathbb{R}$ is the canonical witness that the weak Nullstellensatz requires algebraic closure:\n- Over $\\mathbb{Q}$: $x^2 + 1 > 0$ for all $x \\in \\mathbb{Q}$, so no rational root exists.\n- Over $\\mathbb{R}$: $x^2 + 1 > 0$ for all $x \\in \\mathbb{R}$, so no real root exists.\n- Over $\\mathbb{C}$: $x^2 + 1 = (x - i)(x + i)$, roots $\\pm i \\in \\mathbb{C}$. ✓\n\nThe `decide` tactic for `¬(X^2+1 : ℚ[X]).IsRoot 1` works because `Polynomial.IsRoot` reduces to evaluating the polynomial at a rational number, which is a decidable computation. `norm_num` handles the arithmetic for the positive examples. The `#check` statements at the end verify all theorems were successfully elaborated without sorry.",
+    "content": "Six examples verify the Factor Theorem and demonstrate why algebraic closure is necessary for the weak Nullstellensatz. (1) `x\u00b2 - 1` has roots \u00b11 over \u211a: `eval 1 = 0` and `eval (-1) = 0`, verified by `norm_num`. (2) `x\u00b2 + 1` has NO rational roots: `\u00acIsRoot 0`, `\u00acIsRoot 1`, `\u00acIsRoot (-1)`, all proved by `decide`. This polynomial has no roots in \u211a (or \u211d), demonstrating that algebraic closure is genuinely necessary \u2014 over \u211d, the weak Nullstellensatz fails. Over \u2102 (algebraically closed), x\u00b2 + 1 = (x - i)(x + i) does factor.",
+    "mathContext": "The example $x^2 + 1$ over $\\mathbb{Q}$ or $\\mathbb{R}$ is the canonical witness that the weak Nullstellensatz requires algebraic closure:\n- Over $\\mathbb{Q}$: $x^2 + 1 > 0$ for all $x \\in \\mathbb{Q}$, so no rational root exists.\n- Over $\\mathbb{R}$: $x^2 + 1 > 0$ for all $x \\in \\mathbb{R}$, so no real root exists.\n- Over $\\mathbb{C}$: $x^2 + 1 = (x - i)(x + i)$, roots $\\pm i \\in \\mathbb{C}$. \u2713\n\nThe `decide` tactic for `\u00ac(X^2+1 : \u211a[X]).IsRoot 1` works because `Polynomial.IsRoot` reduces to evaluating the polynomial at a rational number, which is a decidable computation. `norm_num` handles the arithmetic for the positive examples. The `#check` statements at the end verify all theorems were successfully elaborated without sorry.",
     "significance": "supporting",
     "relatedConcepts": [
       "algebraic closure necessity",
       "norm_num for polynomial evaluation",
       "decide for non-root verification",
-      "ℂ vs ℝ vs ℚ"
+      "\u2102 vs \u211d vs \u211a"
     ],
     "prerequisites": [
       "Polynomial.IsRoot evaluation",

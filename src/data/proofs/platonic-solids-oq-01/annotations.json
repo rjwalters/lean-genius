@@ -8,12 +8,12 @@
     },
     "type": "concept",
     "title": "Regular Polytopes in Higher Dimensions: The Complete Classification",
-    "content": "This file proves the complete classification of regular polytopes in all dimensions: 4D has exactly 6, while n ≥ 5 has exactly 3 for any fixed n. The approach uses the Schläfli symbol {p₁,...,pₙ₋₁} and the Coxeter-Schläfli determinant condition: a regular n-polytope exists iff (a) each consecutive pair {pᵢ,pᵢ₊₁} is a valid (n-1)D symbol, and (b) the Gram matrix determinant is positive. The 4D case has 6 polytopes including the mysterious 24-cell {3,4,3} — unique to 4D with no analog in other dimensions. The proof uses exact ℤ[√5] arithmetic (for p=5 symbols) and `native_decide` for finite enumeration. Zero sorries, zero axioms.",
-    "mathContext": "The **Schläfli symbol** $\\{p_1, p_2, \\ldots, p_{n-1}\\}$ encodes a regular polytope: $p_i$ is the number of facets around each $(i-1)$-face. Valid symbols satisfy: (1) all $p_i \\geq 3$, (2) each $\\{p_i, p_{i+1}\\}$ is a valid 2-step sub-symbol, and (3) the Coxeter matrix determinant $>0$. In 3D: $(p-2)(q-2) < 4$ gives the 5 Platonic solids. In 4D: the $4 \\times 4$ Gram matrix determinant $\\Delta_4(p,q,r) = \\sin^2(\\pi/p)\\sin^2(\\pi/r) - \\cos^2(\\pi/q) > 0$ gives 6 polytopes. For $n \\geq 5$: only the simplex $\\{3^{n-1}\\}$, hypercube $\\{4,3^{n-2}\\}$, and cross-polytope $\\{3^{n-2},4\\}$ survive.",
+    "content": "This file proves the complete classification of regular polytopes in all dimensions: 4D has exactly 6, while n \u2265 5 has exactly 3 for any fixed n. The approach uses the Schl\u00e4fli symbol {p\u2081,...,p\u2099\u208b\u2081} and the Coxeter-Schl\u00e4fli determinant condition: a regular n-polytope exists iff (a) each consecutive pair {p\u1d62,p\u1d62\u208a\u2081} is a valid (n-1)D symbol, and (b) the Gram matrix determinant is positive. The 4D case has 6 polytopes including the mysterious 24-cell {3,4,3} \u2014 unique to 4D with no analog in other dimensions. The proof uses exact \u2124[\u221a5] arithmetic (for p=5 symbols) and `native_decide` for finite enumeration. Zero sorries, zero axioms.",
+    "mathContext": "The **Schl\u00e4fli symbol** $\\{p_1, p_2, \\ldots, p_{n-1}\\}$ encodes a regular polytope: $p_i$ is the number of facets around each $(i-1)$-face. Valid symbols satisfy: (1) all $p_i \\geq 3$, (2) each $\\{p_i, p_{i+1}\\}$ is a valid 2-step sub-symbol, and (3) the Coxeter matrix determinant $>0$. In 3D: $(p-2)(q-2) < 4$ gives the 5 Platonic solids. In 4D: the $4 \\times 4$ Gram matrix determinant $\\Delta_4(p,q,r) = \\sin^2(\\pi/p)\\sin^2(\\pi/r) - \\cos^2(\\pi/q) > 0$ gives 6 polytopes. For $n \\geq 5$: only the simplex $\\{3^{n-1}\\}$, hypercube $\\{4,3^{n-2}\\}$, and cross-polytope $\\{3^{n-2},4\\}$ survive.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Schläfli symbol",
-      "Coxeter-Schläfli determinant",
+      "Schl\u00e4fli symbol",
+      "Coxeter-Schl\u00e4fli determinant",
       "24-cell as unique 4D polytope",
       "Platonic solids classification",
       "regular polytope families"
@@ -33,8 +33,8 @@
       "endLine": 123
     },
     "type": "concept",
-    "title": "Exact Arithmetic in ℤ[√5]: The Key to Handling {5,·,·} Symbols",
-    "content": "The `QSqrt5` structure represents a+b√5 with a,b : Int, enabling exact computation without floating-point error. The `isPositive` function uses case analysis: when a and b have the same sign, directly obvious; when mixed, compare a² with 5b² (squaring avoids √5). The trig values `sinSqScaled` and `cosSqScaled` store 8·sin²(π/p) and 8·cos²(π/p) as QSqrt5: for p=3,4 these are rational (b=0); for p=5: sin²(π/5) = (5-√5)/8 → 8·sin²(π/5) = 5-√5, i.e., QSqrt5 ⟨5,-1⟩. The scale factor 8 clears denominators for all three cases (p=3,4,5).",
+    "title": "Exact Arithmetic in \u2124[\u221a5]: The Key to Handling {5,\u00b7,\u00b7} Symbols",
+    "content": "The `QSqrt5` structure represents a+b\u221a5 with a,b : Int, enabling exact computation without floating-point error. The `isPositive` function uses case analysis: when a and b have the same sign, directly obvious; when mixed, compare a\u00b2 with 5b\u00b2 (squaring avoids \u221a5). The trig values `sinSqScaled` and `cosSqScaled` store 8\u00b7sin\u00b2(\u03c0/p) and 8\u00b7cos\u00b2(\u03c0/p) as QSqrt5: for p=3,4 these are rational (b=0); for p=5: sin\u00b2(\u03c0/5) = (5-\u221a5)/8 \u2192 8\u00b7sin\u00b2(\u03c0/5) = 5-\u221a5, i.e., QSqrt5 \u27e85,-1\u27e9. The scale factor 8 clears denominators for all three cases (p=3,4,5).",
     "mathContext": "Exact values: $\\sin^2(\\pi/3) = 3/4$, $\\cos^2(\\pi/3) = 1/4$; $\\sin^2(\\pi/4) = 1/2 = \\cos^2(\\pi/4)$; $\\sin^2(\\pi/5) = (5-\\sqrt{5})/8$, $\\cos^2(\\pi/5) = (3+\\sqrt{5})/8$. The last two come from $\\cos(2\\pi/5) = (\\sqrt{5}-1)/4$ (golden ratio geometry). The `isPositive` sign test for mixed-sign $a+b\\sqrt{5}$: positive iff $\\text{sign}(b)\\cdot 5b^2 > \\text{sign}(b)\\cdot a^2$, implemented as integer comparisons. This enables the `native_decide` proofs to work: the entire computation is integer arithmetic.",
     "significance": "key",
     "relatedConcepts": [
@@ -42,11 +42,11 @@
       "sinSqScaled",
       "cosSqScaled",
       "isPositive sign test",
-      "exact arithmetic for Schläfli"
+      "exact arithmetic for Schl\u00e4fli"
     ],
     "prerequisites": [
-      "ℤ[√5] as a ring extension",
-      "sin²(π/5) exact value",
+      "\u2124[\u221a5] as a ring extension",
+      "sin\u00b2(\u03c0/5) exact value",
       "golden ratio and 5-fold symmetry"
     ]
   },
@@ -58,9 +58,9 @@
       "endLine": 242
     },
     "type": "concept",
-    "title": "Schläfli Determinant: 64·Δ₄ in ℤ[√5] and the 11→6 Reduction",
-    "content": "The `schlaefliDet4 p q r` computes 64·Δ₄(p,q,r) = sinSqScaled(p)·sinSqScaled(r) - 8·cosSqScaled(q) in ℤ[√5]. Starting from 11 combinatorial candidates (pairs of valid 3D symbols), the positivity test filters to exactly 6. The failing cases include: {4,3,4} with Δ=0 (the cubic tiling of Euclidean space — valid but infinite), {5,3,4} with Δ<0, {3,5,3} with Δ<0, {4,3,5}/{5,3,4} with Δ<0. The det values for 120-cell and 600-cell both give ⟨14,-6⟩ (14-6√5 > 0 since 196 > 180), confirmed by `native_decide`.",
-    "mathContext": "The Coxeter-Schläfli determinant for $\\{p,q,r\\}$: $\\Delta_4 = \\sin^2(\\pi/p)\\sin^2(\\pi/r) - \\cos^2(\\pi/q)$. Scaled by 64: $64\\Delta_4 = (8\\sin^2(\\pi/p))(8\\sin^2(\\pi/r)) - 8(8\\cos^2(\\pi/q))$. The special case $\\Delta_4 = 0$ (i.e., 64Δ=0) gives the **infinite Euclidean tessellation**: $\\{4,3,4\\}$ is the 3D cubic tiling, which tiles flat 3-space perfectly (angle defect = 0). The case $\\{3,5,3\\}$ gives $64\\Delta = 12-8\\sqrt{5} < 0$ (since $12^2 = 144 < 320 = 5 \\cdot 8^2$), so this symbol is invalid (hyperbolic geometry analog).",
+    "title": "Schl\u00e4fli Determinant: 64\u00b7\u0394\u2084 in \u2124[\u221a5] and the 11\u21926 Reduction",
+    "content": "The `schlaefliDet4 p q r` computes 64\u00b7\u0394\u2084(p,q,r) = sinSqScaled(p)\u00b7sinSqScaled(r) - 8\u00b7cosSqScaled(q) in \u2124[\u221a5]. Starting from 11 combinatorial candidates (pairs of valid 3D symbols), the positivity test filters to exactly 6. The failing cases include: {4,3,4} with \u0394=0 (the cubic tiling of Euclidean space \u2014 valid but infinite), {5,3,4} with \u0394<0, {3,5,3} with \u0394<0, {4,3,5}/{5,3,4} with \u0394<0. The det values for 120-cell and 600-cell both give \u27e814,-6\u27e9 (14-6\u221a5 > 0 since 196 > 180), confirmed by `native_decide`.",
+    "mathContext": "The Coxeter-Schl\u00e4fli determinant for $\\{p,q,r\\}$: $\\Delta_4 = \\sin^2(\\pi/p)\\sin^2(\\pi/r) - \\cos^2(\\pi/q)$. Scaled by 64: $64\\Delta_4 = (8\\sin^2(\\pi/p))(8\\sin^2(\\pi/r)) - 8(8\\cos^2(\\pi/q))$. The special case $\\Delta_4 = 0$ (i.e., 64\u0394=0) gives the **infinite Euclidean tessellation**: $\\{4,3,4\\}$ is the 3D cubic tiling, which tiles flat 3-space perfectly (angle defect = 0). The case $\\{3,5,3\\}$ gives $64\\Delta = 12-8\\sqrt{5} < 0$ (since $12^2 = 144 < 320 = 5 \\cdot 8^2$), so this symbol is invalid (hyperbolic geometry analog).",
     "significance": "key",
     "relatedConcepts": [
       "schlaefliDet4",
@@ -84,7 +84,7 @@
     },
     "type": "concept",
     "title": "The Six Regular 4-Polytopes: Data, Euler Characteristic, and Duality",
-    "content": "Each of the six 4-polytopes is encoded as a `Polytope4Data` structure with V, E, F, C (vertices, edges, faces, 3D-cells) satisfying the 4D Euler relation V + F = E + C (equivalently V-E+F-C=0). The 24-cell {3,4,3} is the unique 4D polytope with no 3D analog: it has 24 vertices, 96 edges, 96 faces, 24 cells, all with octahedral symmetry. Duality is encoded as `dual4D (p,q,r) = (r,q,p)` (reversing the Schläfli symbol). The 5-cell and 24-cell are self-dual; {8-cell, 16-cell} and {120-cell, 600-cell} are dual pairs. `dual4D_involution` proves (dual∘dual = id) by `simp [dual4D]`.",
+    "content": "Each of the six 4-polytopes is encoded as a `Polytope4Data` structure with V, E, F, C (vertices, edges, faces, 3D-cells) satisfying the 4D Euler relation V + F = E + C (equivalently V-E+F-C=0). The 24-cell {3,4,3} is the unique 4D polytope with no 3D analog: it has 24 vertices, 96 edges, 96 faces, 24 cells, all with octahedral symmetry. Duality is encoded as `dual4D (p,q,r) = (r,q,p)` (reversing the Schl\u00e4fli symbol). The 5-cell and 24-cell are self-dual; {8-cell, 16-cell} and {120-cell, 600-cell} are dual pairs. `dual4D_involution` proves (dual\u2218dual = id) by `simp [dual4D]`.",
     "mathContext": "The **4D Euler characteristic**: for a convex 4-polytope, $V - E + F - C = 0$ (the 4D analog of Euler's $V-E+F=2$ for 3D polytopes). For even-dimensional polytopes, the Euler number is 0; for odd-dimensional, it's 2. The **24-cell** is exceptional: it is the only regular 4-polytope that is simultaneously self-dual AND has no analog in other dimensions. Its 24 vertices form the vertices of a 4D polytope with $F_4$ symmetry, related to the root system of the exceptional Lie algebra $F_4$. It tiles 4D space analogously to the cube tiling 3D space.",
     "significance": "key",
     "relatedConcepts": [
@@ -97,7 +97,7 @@
     "prerequisites": [
       "Euler characteristic in Lean 4",
       "duality for regular polytopes",
-      "F₄ symmetry group"
+      "F\u2084 symmetry group"
     ]
   },
   {
@@ -109,8 +109,8 @@
     },
     "type": "insight",
     "title": "The 5D Classification: Why the 24-Cell Has No Analog",
-    "content": "The 5D analysis starts from 11 combinatorial candidates (pairs of valid 4D symbols where the middle 3-symbol overlaps) and filters via the 5D determinant Δ₅ = Δ₄(p,q,r)·Δ₄(q,r,s)/Δ₃(q,r) - cos²(π/s)·Δ₄(p,q,r) (the Coxeter recurrence). The result: exactly 3 valid 5D symbols — {3,3,3,3} (5-simplex), {4,3,3,3} (5-cube), {3,3,3,4} (5-orthoplex). The {3,4,3} middle piece (24-cell analog) cannot be extended to 5D: {3,4,3,3} has Δ₅<0. This is the **stabilization phenomenon** — the 4D exceptional cases vanish in 5D.",
-    "mathContext": "The reason {3,4,3} doesn't extend: for {3,4,3,r}, we need {4,3,r} to be a valid 3D symbol, which requires $r \\in \\{3,4,5\\}$. For $r=3$: $\\Delta_5(3,4,3,3) < 0$. For $r=4$: $\\{3,4,3,4\\}$ is Euclidean (tiles 4D space). For $r=5$: $\\Delta_5(3,4,3,5) < 0$. Similarly, the 120-cell and 600-cell do not extend to 5D: $\\Delta_5(5,3,3,3) < 0$ (computed exactly as $\\langle 64,-32 \\rangle$ with $64^2 = 4096 < 5120 = 5 \\cdot 32^2$). This is why 4D is the exceptional dimension — the last where new regular polytopes exist.",
+    "content": "The 5D analysis starts from 11 combinatorial candidates (pairs of valid 4D symbols where the middle 3-symbol overlaps) and filters via the 5D determinant \u0394\u2085 = \u0394\u2084(p,q,r)\u00b7\u0394\u2084(q,r,s)/\u0394\u2083(q,r) - cos\u00b2(\u03c0/s)\u00b7\u0394\u2084(p,q,r) (the Coxeter recurrence). The result: exactly 3 valid 5D symbols \u2014 {3,3,3,3} (5-simplex), {4,3,3,3} (5-cube), {3,3,3,4} (5-orthoplex). The {3,4,3} middle piece (24-cell analog) cannot be extended to 5D: {3,4,3,3} has \u0394\u2085<0. This is the **stabilization phenomenon** \u2014 the 4D exceptional cases vanish in 5D.",
+    "mathContext": "The reason {3,4,3} doesn't extend: for {3,4,3,r}, we need {4,3,r} to be a valid 3D symbol, which requires $r \\in \\{3,4,5\\}$. For $r=3$: $\\Delta_5(3,4,3,3) < 0$. For $r=4$: $\\{3,4,3,4\\}$ is Euclidean (tiles 4D space). For $r=5$: $\\Delta_5(3,4,3,5) < 0$. Similarly, the 120-cell and 600-cell do not extend to 5D: $\\Delta_5(5,3,3,3) < 0$ (computed exactly as $\\langle 64,-32 \\rangle$ with $64^2 = 4096 < 5120 = 5 \\cdot 32^2$). This is why 4D is the exceptional dimension \u2014 the last where new regular polytopes exist.",
     "significance": "key",
     "relatedConcepts": [
       "schlaefliDet5",
@@ -121,7 +121,7 @@
     ],
     "prerequisites": [
       "4D classification results",
-      "Schläfli determinant recurrence",
+      "Schl\u00e4fli determinant recurrence",
       "native_decide for 5D enumeration"
     ]
   },
@@ -133,20 +133,20 @@
       "endLine": 505
     },
     "type": "concept",
-    "title": "High-Dimensional Stabilization: Three Families Persist for All n ≥ 5",
-    "content": "The `RegularFamily` inductive type encodes the three infinite families: `.simplex` ({3,...,3}), `.hypercube` ({4,3,...,3}), `.crossPoly` ({3,...,3,4}). The `familySymbol` function generates the Schläfli symbol for any dimension n. The key observation: the Schläfli determinant for the n-simplex satisfies the recurrence aₙ = aₙ₋₁ - (1/4)aₙ₋₂ with a₁=1, a₂=3/4, giving aₙ = (n+1)/2ⁿ > 0 for all n. The {4,3,...,3,4} symbol always has Δ=0 (Euclidean tiling of n-space). The 6D verification demonstrates the pattern: exactly {3,3,3,3,3}, {4,3,3,3,3}, {3,3,3,3,4} are valid, all others (including {4,3,3,3,4}) are Euclidean or hyperbolic.",
-    "mathContext": "The **Schläfli determinant recurrence**: $\\Delta_n(p_1,\\ldots,p_{n-1}) = \\Delta_{n-1}(p_1,\\ldots,p_{n-2}) - \\cos^2(\\pi/p_{n-1}) \\cdot \\Delta_{n-2}(p_1,\\ldots,p_{n-3})$. For the simplex $\\{3^{n-1}\\}$: $\\cos^2(\\pi/3) = 1/4$, so $a_n = a_{n-1} - \\frac{1}{4}a_{n-2}$. Closed form: $a_n = \\frac{n+1}{2^n}$ (by induction). For $n=4$: $5/16 > 0$ ✓. For the hypercube: $\\Delta_n(\\{4,3^{n-2}\\}) = 1/2^{n-1} > 0$ (also by recurrence). For the cross-polytope (dual): same determinant by duality.",
+    "title": "High-Dimensional Stabilization: Three Families Persist for All n \u2265 5",
+    "content": "The `RegularFamily` inductive type encodes the three infinite families: `.simplex` ({3,...,3}), `.hypercube` ({4,3,...,3}), `.crossPoly` ({3,...,3,4}). The `familySymbol` function generates the Schl\u00e4fli symbol for any dimension n. The key observation: the Schl\u00e4fli determinant for the n-simplex satisfies the recurrence a\u2099 = a\u2099\u208b\u2081 - (1/4)a\u2099\u208b\u2082 with a\u2081=1, a\u2082=3/4, giving a\u2099 = (n+1)/2\u207f > 0 for all n. The {4,3,...,3,4} symbol always has \u0394=0 (Euclidean tiling of n-space). The 6D verification demonstrates the pattern: exactly {3,3,3,3,3}, {4,3,3,3,3}, {3,3,3,3,4} are valid, all others (including {4,3,3,3,4}) are Euclidean or hyperbolic.",
+    "mathContext": "The **Schl\u00e4fli determinant recurrence**: $\\Delta_n(p_1,\\ldots,p_{n-1}) = \\Delta_{n-1}(p_1,\\ldots,p_{n-2}) - \\cos^2(\\pi/p_{n-1}) \\cdot \\Delta_{n-2}(p_1,\\ldots,p_{n-3})$. For the simplex $\\{3^{n-1}\\}$: $\\cos^2(\\pi/3) = 1/4$, so $a_n = a_{n-1} - \\frac{1}{4}a_{n-2}$. Closed form: $a_n = \\frac{n+1}{2^n}$ (by induction). For $n=4$: $5/16 > 0$ \u2713. For the hypercube: $\\Delta_n(\\{4,3^{n-2}\\}) = 1/2^{n-1} > 0$ (also by recurrence). For the cross-polytope (dual): same determinant by duality.",
     "significance": "key",
     "relatedConcepts": [
       "RegularFamily inductive type",
       "familySymbol function",
-      "Schläfli determinant recurrence",
-      "n-simplex determinant (n+1)/2ⁿ",
+      "Schl\u00e4fli determinant recurrence",
+      "n-simplex determinant (n+1)/2\u207f",
       "6D verification"
     ],
     "prerequisites": [
       "5D classification",
-      "Schläfli determinant recurrence",
+      "Schl\u00e4fli determinant recurrence",
       "native_decide for 6D"
     ]
   },
@@ -157,10 +157,10 @@
       "startLine": 507,
       "endLine": 628
     },
-    "type": "theorem",
-    "title": "Main Classification Theorems: 6 in 4D, 3 in nD for n ≥ 5",
-    "content": "The main theorems establish the complete classification by two `native_decide` computations. The 4D theorem `valid4D_count : validTriples4D.card = 6` confirms exactly 6 regular 4-polytopes. The n≥5 stabilization is confirmed by explicit verification at 5D and 6D (the inductive pattern is demonstrated rather than formally proved by induction — the 628-line file establishes the computational framework). The theorems `invalid4D_det_nonpositive` and `valid4D_det_positive` provide the completeness witnesses: every valid symbol passes the test and every invalid candidate fails. Combined with `valid4D_subset_candidates`, this gives a machine-verified count.",
-    "mathContext": "The formal proof strategy: (1) Enumerate all combinatorial candidates (pairs of consecutive valid symbols) — finite computation by `native_decide`. (2) Test each via the Schläfli determinant — exact ℤ[√5] arithmetic. (3) Count survivors. This avoids proving the general classification theorem (which would require more abstract Coxeter group theory) by reducing to finite enumeration in each dimension. The `native_decide` tactic compiles the computation to native code and runs it — fast enough for small Finsets (up to ~100 elements in 5D, ~50 in 6D).",
+    "type": "insight",
+    "title": "Main Classification Theorems: 6 in 4D, 3 in nD for n \u2265 5",
+    "content": "The main theorems establish the complete classification by two `native_decide` computations. The 4D theorem `valid4D_count : validTriples4D.card = 6` confirms exactly 6 regular 4-polytopes. The n\u22655 stabilization is confirmed by explicit verification at 5D and 6D (the inductive pattern is demonstrated rather than formally proved by induction \u2014 the 628-line file establishes the computational framework). The theorems `invalid4D_det_nonpositive` and `valid4D_det_positive` provide the completeness witnesses: every valid symbol passes the test and every invalid candidate fails. Combined with `valid4D_subset_candidates`, this gives a machine-verified count.",
+    "mathContext": "The formal proof strategy: (1) Enumerate all combinatorial candidates (pairs of consecutive valid symbols) \u2014 finite computation by `native_decide`. (2) Test each via the Schl\u00e4fli determinant \u2014 exact \u2124[\u221a5] arithmetic. (3) Count survivors. This avoids proving the general classification theorem (which would require more abstract Coxeter group theory) by reducing to finite enumeration in each dimension. The `native_decide` tactic compiles the computation to native code and runs it \u2014 fast enough for small Finsets (up to ~100 elements in 5D, ~50 in 6D).",
     "significance": "key",
     "relatedConcepts": [
       "valid4D_count = 6",

@@ -6,9 +6,9 @@
       "startLine": 46,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Bernoulli Polynomial is Monic of Degree k+1",
-    "content": "bernoulli_poly_leading proves two properties of the Bernoulli polynomial B_{k+1}: its leading coefficient is 1 (monic) and its degree is exactly k+1. The proof works in two steps: the private bernoulli_coeff_top lemma first establishes that the (k+1)-th coefficient is 1 via coeff_bernoulli (which gives coeff(B_n, i) = bernoulli(n-i) * C(n,i) for i ≤ n; at i = n this is bernoulli(0) * 1 = 1). Then natDegree is pinned by an antisymmetry argument: coeff_above shows coefficients at positions > k+1 are zero (via coeff_bernoulli returning 0 for out-of-range indices), and le_natDegree_of_ne_zero shows the degree is at least k+1.",
+    "content": "bernoulli_poly_leading proves two properties of the Bernoulli polynomial B_{k+1}: its leading coefficient is 1 (monic) and its degree is exactly k+1. The proof works in two steps: the private bernoulli_coeff_top lemma first establishes that the (k+1)-th coefficient is 1 via coeff_bernoulli (which gives coeff(B_n, i) = bernoulli(n-i) * C(n,i) for i \u2264 n; at i = n this is bernoulli(0) * 1 = 1). Then natDegree is pinned by an antisymmetry argument: coeff_above shows coefficients at positions > k+1 are zero (via coeff_bernoulli returning 0 for out-of-range indices), and le_natDegree_of_ne_zero shows the degree is at least k+1.",
     "mathContext": "$$\\text{leadingCoeff}(B_{k+1}) = 1,\\quad \\deg(B_{k+1}) = k+1$$ where $B_{k+1}(x) = \\sum_{j=0}^{k+1} \\binom{k+1}{j} b_{k+1-j} x^j$ and $b_0 = 1$. The leading term $\\binom{k+1}{k+1} b_0 x^{k+1} = x^{k+1}$ gives monicity.",
     "significance": "key",
     "relatedConcepts": [
@@ -31,7 +31,7 @@
     },
     "type": "definition",
     "title": "powerSumRatio: The Normalized Power Sum",
-    "content": "powerSumRatio k n is the ratio (∑_{i=0}^{n-1} i^k) / n^{k+1}, defined over ℚ with the convention that the value is 0 when n = 0 (to make it a total function). The denominator n^{k+1} normalizes the sum to the scale of 1/(k+1): by the Riemann sum interpretation, this ratio approximates ∫₀¹ x^k dx = 1/(k+1) for large n. The definition uses noncomputable because it involves rational division.",
+    "content": "powerSumRatio k n is the ratio (\u2211_{i=0}^{n-1} i^k) / n^{k+1}, defined over \u211a with the convention that the value is 0 when n = 0 (to make it a total function). The denominator n^{k+1} normalizes the sum to the scale of 1/(k+1): by the Riemann sum interpretation, this ratio approximates \u222b\u2080\u00b9 x^k dx = 1/(k+1) for large n. The definition uses noncomputable because it involves rational division.",
     "mathContext": "$$R_k(n) = \\begin{cases} 0 & n = 0 \\\\ \\dfrac{\\displaystyle\\sum_{i=0}^{n-1} i^k}{n^{k+1}} & n > 0 \\end{cases}$$ which is a discrete approximation to $\\int_0^1 x^k\\,dx = \\frac{1}{k+1}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -55,7 +55,7 @@
     },
     "type": "concept",
     "title": "Monic Polynomial Ratio Tends to 1",
-    "content": "monic_poly_ratio_tendsto is the single remaining axiom: for any monic polynomial p of degree d ≥ 1 over ℚ, the ratio p(n)/n^d converges to 1 as n → ∞. The comment describes the proof strategy: write p = X^d + q with deg(q) < d, so p(n)/n^d = 1 + q(n)/n^d. Each term of q(n)/n^d has the form c/n^m with m ≥ 1, which tends to 0. The obstacle to proving this in Lean is the need to manipulate polynomial evaluation of lower-degree terms in the filter limit API — a nontrivial analytic argument not currently automated in Mathlib.",
+    "content": "monic_poly_ratio_tendsto is the single remaining axiom: for any monic polynomial p of degree d \u2265 1 over \u211a, the ratio p(n)/n^d converges to 1 as n \u2192 \u221e. The comment describes the proof strategy: write p = X^d + q with deg(q) < d, so p(n)/n^d = 1 + q(n)/n^d. Each term of q(n)/n^d has the form c/n^m with m \u2265 1, which tends to 0. The obstacle to proving this in Lean is the need to manipulate polynomial evaluation of lower-degree terms in the filter limit API \u2014 a nontrivial analytic argument not currently automated in Mathlib.",
     "mathContext": "$$\\frac{p(n)}{n^d} \\xrightarrow{n\\to\\infty} 1 \\quad \\text{for monic } p \\text{ of degree } d \\geq 1$$ since $p(n) = n^d + a_{d-1}n^{d-1} + \\cdots + a_0 = n^d\\left(1 + \\frac{a_{d-1}}{n} + \\cdots + \\frac{a_0}{n^d}\\right) \\to n^d \\cdot 1$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -66,7 +66,7 @@
     ],
     "prerequisites": [
       "Filter limits in Mathlib topology",
-      "Polynomial evaluation over ℚ",
+      "Polynomial evaluation over \u211a",
       "atTop filter"
     ]
   },
@@ -77,9 +77,9 @@
       "startLine": 105,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Theorem: Power Sum Ratio Converges to 1/(k+1)",
-    "content": "powerSumRatio_tendsto is the main result: Tendsto (powerSumRatio k) atTop (nhds (1/(k+1))). The four-step proof is a masterclass in filter manipulation: Step 1 uses filter_upwards to rewrite powerSumRatio for large n using Faulhaber's formula (sum_range_pow_eq_bernoulli_sub), expressing the ratio as (B_{k+1}(n) - c) / ((k+1) · n^{k+1}) where c = B_{k+1}(0). Step 2 targets this rewritten limit. Step 3 splits via sub_div and applies Filter.Tendsto.sub. Step 4 handles the two terms: B_{k+1}(n)/((k+1)·n^{k+1}) → 1/(k+1) using monic_poly_ratio_tendsto divided by the constant (k+1); and c/((k+1)·n^{k+1}) → 0 using const_div_pow_tendsto_zero.",
+    "content": "powerSumRatio_tendsto is the main result: Tendsto (powerSumRatio k) atTop (nhds (1/(k+1))). The four-step proof is a masterclass in filter manipulation: Step 1 uses filter_upwards to rewrite powerSumRatio for large n using Faulhaber's formula (sum_range_pow_eq_bernoulli_sub), expressing the ratio as (B_{k+1}(n) - c) / ((k+1) \u00b7 n^{k+1}) where c = B_{k+1}(0). Step 2 targets this rewritten limit. Step 3 splits via sub_div and applies Filter.Tendsto.sub. Step 4 handles the two terms: B_{k+1}(n)/((k+1)\u00b7n^{k+1}) \u2192 1/(k+1) using monic_poly_ratio_tendsto divided by the constant (k+1); and c/((k+1)\u00b7n^{k+1}) \u2192 0 using const_div_pow_tendsto_zero.",
     "mathContext": "$$R_k(n) = \\frac{B_{k+1}(n) - B_{k+1}(0)}{(k+1) n^{k+1}} \\xrightarrow{n\\to\\infty} \\frac{1}{k+1} - 0 = \\frac{1}{k+1}$$ since $B_{k+1}(n)/n^{k+1} \\to 1$ (monic axiom) and $B_{k+1}(0)/n^{k+1} \\to 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -102,9 +102,9 @@
       "startLine": 141,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Exact Formula k=0: Power Sum Ratio Equals 1",
-    "content": "powerSumRatio_k0 proves: for n ≠ 0, powerSumRatio 0 n = 1. The proof uses simp to compute ∑_{i<n} i⁰ = n (each term is 1, and there are n terms), then the denominator n^1 = n, so the ratio n/n = 1 by div_self. This is the degenerate case confirming that the constant function 1 has a power sum ratio identically 1, consistent with 1/(0+1) = 1.",
+    "content": "powerSumRatio_k0 proves: for n \u2260 0, powerSumRatio 0 n = 1. The proof uses simp to compute \u2211_{i<n} i\u2070 = n (each term is 1, and there are n terms), then the denominator n^1 = n, so the ratio n/n = 1 by div_self. This is the degenerate case confirming that the constant function 1 has a power sum ratio identically 1, consistent with 1/(0+1) = 1.",
     "mathContext": "$$R_0(n) = \\frac{\\sum_{i=0}^{n-1} 1}{n^1} = \\frac{n}{n} = 1 = \\frac{1}{0+1}$$ exactly, for all $n \\geq 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -124,9 +124,9 @@
       "startLine": 159,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Exact Formula k=1: Gauss Sum Ratio Is (n-1)/(2n)",
-    "content": "powerSumRatio_k1 proves: for n > 0, powerSumRatio 1 n = (n-1)/(2n). The proof uses the private gauss_sum_rat lemma: 2 · ∑_{i<n} i = n·(n-1) (proved by induction). From this, ∑ i = n(n-1)/2, and dividing by n² gives (n-1)/(2n). As n → ∞, this converges to 1/2 = 1/(1+1), confirming the main theorem in this special case. The proof uses field_simp + nlinarith to close the algebraic identity.",
+    "content": "powerSumRatio_k1 proves: for n > 0, powerSumRatio 1 n = (n-1)/(2n). The proof uses the private gauss_sum_rat lemma: 2 \u00b7 \u2211_{i<n} i = n\u00b7(n-1) (proved by induction). From this, \u2211 i = n(n-1)/2, and dividing by n\u00b2 gives (n-1)/(2n). As n \u2192 \u221e, this converges to 1/2 = 1/(1+1), confirming the main theorem in this special case. The proof uses field_simp + nlinarith to close the algebraic identity.",
     "mathContext": "$$R_1(n) = \\frac{\\sum_{i=0}^{n-1} i}{n^2} = \\frac{n(n-1)/2}{n^2} = \\frac{n-1}{2n} \\xrightarrow{n\\to\\infty} \\frac{1}{2} = \\frac{1}{1+1}$$ using the Gauss sum $\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$.",
     "significance": "key",
     "relatedConcepts": [

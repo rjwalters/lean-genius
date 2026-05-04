@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Header: Parity via Conjugate Root Theory",
-    "content": "The imports (lines 1-3) use:\n- `Mathlib.Analysis.SpecialFunctions.Complex.Analytic`: analytic properties of complex polynomials, includes conjugate roots of real polynomials\n- `Mathlib.FieldTheory.IsAlgClosed.Basic`: algebraic closure, fundamental theorem of algebra (FTA)\n- `Mathlib.Tactic`: proof automation\n\nThe docstring (lines 5-39) explains the alternative proof strategy for Descartes' parity result: instead of the inductive coefficient-factoring approach (OQ01), this file uses the **conjugate root theorem**:\n\n1. FTA: every degree-n real polynomial has exactly n complex roots (counting multiplicity)\n2. Conjugate pair theorem: if p ∈ ℝ[X] and p(z) = 0, then p(z̄) = 0\n3. Non-real roots come in pairs (z, z̄) — so the count of non-real roots is even\n4. Therefore: count(real roots) ≡ count(all roots) = degree (mod 2)",
+    "content": "The imports (lines 1-3) use:\n- `Mathlib.Analysis.SpecialFunctions.Complex.Analytic`: analytic properties of complex polynomials, includes conjugate roots of real polynomials\n- `Mathlib.FieldTheory.IsAlgClosed.Basic`: algebraic closure, fundamental theorem of algebra (FTA)\n- `Mathlib.Tactic`: proof automation\n\nThe docstring (lines 5-39) explains the alternative proof strategy for Descartes' parity result: instead of the inductive coefficient-factoring approach (OQ01), this file uses the **conjugate root theorem**:\n\n1. FTA: every degree-n real polynomial has exactly n complex roots (counting multiplicity)\n2. Conjugate pair theorem: if p \u2208 \u211d[X] and p(z) = 0, then p(z\u0304) = 0\n3. Non-real roots come in pairs (z, z\u0304) \u2014 so the count of non-real roots is even\n4. Therefore: count(real roots) \u2261 count(all roots) = degree (mod 2)",
     "mathContext": "The key Mathlib tool is `Polynomial.aeval_conj`: if f has real coefficients, then `aeval (conj z) f = conj (aeval z f)`. Setting `aeval z f = 0` gives `aeval (conj z) f = conj 0 = 0`, proving the conjugate is also a root. The parity arithmetic then follows from the partition of roots into real singletons and conjugate pairs.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -34,13 +34,13 @@
     },
     "type": "concept",
     "title": "eval_conj_eq_conj_eval: Polynomial Induction over h_add and h_monomial",
-    "content": "eval_conj_eq_conj_eval proves p(z̄) = p̄(z) for any real polynomial p, using Polynomial.induction_on' with two cases. The h_add case is trivial: both sides distribute over addition. The h_monomial case is the key: the coefficient a ∈ ℝ satisfies starRingEnd ℂ (algebraMap ℝ ℂ a) = algebraMap ℝ ℂ a (by Complex.conj_ofReal), and starRingEnd ℂ (z^n) = (starRingEnd ℂ z)^n (by map_pow). The simp + congr 1 closing steps handle the remaining algebraic manipulation.",
-    "mathContext": "For $p = a_0 + a_1 X + \\cdots + a_n X^n$ with $a_i \\in \\mathbb{R}$: $p(\\bar{z}) = \\sum a_i \\bar{z}^i = \\sum \\bar{a_i} \\bar{z}^i = \\overline{\\sum a_i z^i} = \\overline{p(z)}$. The key step: $\\bar{a} = a$ for real $a$ (conjugation fixes ℝ). In Lean: \\texttt{Complex.conj\\_ofReal} states \\texttt{starRingEnd ℂ (r : ℂ) = r} for \\texttt{r : ℝ} coerced to \\texttt{ℂ}.",
+    "content": "eval_conj_eq_conj_eval proves p(z\u0304) = p\u0304(z) for any real polynomial p, using Polynomial.induction_on' with two cases. The h_add case is trivial: both sides distribute over addition. The h_monomial case is the key: the coefficient a \u2208 \u211d satisfies starRingEnd \u2102 (algebraMap \u211d \u2102 a) = algebraMap \u211d \u2102 a (by Complex.conj_ofReal), and starRingEnd \u2102 (z^n) = (starRingEnd \u2102 z)^n (by map_pow). The simp + congr 1 closing steps handle the remaining algebraic manipulation.",
+    "mathContext": "For $p = a_0 + a_1 X + \\cdots + a_n X^n$ with $a_i \\in \\mathbb{R}$: $p(\\bar{z}) = \\sum a_i \\bar{z}^i = \\sum \\bar{a_i} \\bar{z}^i = \\overline{\\sum a_i z^i} = \\overline{p(z)}$. The key step: $\\bar{a} = a$ for real $a$ (conjugation fixes \u211d). In Lean: \\texttt{Complex.conj\\_ofReal} states \\texttt{starRingEnd \u2102 (r : \u2102) = r} for \\texttt{r : \u211d} coerced to \\texttt{\u2102}.",
     "significance": "key",
     "relatedConcepts": [
       "Polynomial.induction_on'",
       "Complex.conj_ofReal",
-      "starRingEnd ℂ",
+      "starRingEnd \u2102",
       "ring homomorphism commutes with conjugation"
     ],
     "prerequisites": [
@@ -56,10 +56,10 @@
       "startLine": 58,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Conjugate Root Theorem: Three-Line Proof",
-    "content": "isRoot_conj_of_isRoot is the conjugate root theorem: if z is a root of p ∈ ℝ[X], then z̄ is also a root. The proof is three lines: rw [eval_conj_eq_conj_eval] rewrites the goal to starRingEnd ℂ (p(z)) = 0; then hz fills in p(z) = 0; then map_zero closes with (star 0 = 0). This is a textbook example of a theorem that reduces to a one-line proof once the right lemma (eval_conj_eq_conj_eval) is established.",
-    "mathContext": "Proof: $p(\\bar{z}) = \\overline{p(z)} = \\bar{0} = 0$. The three steps correspond to: (1) \\texttt{rw [eval\\_conj\\_eq\\_conj\\_eval]} gives goal \\texttt{starRingEnd ℂ (aeval z (p.map ...)) = 0}; (2) \\texttt{rw [hz]} gives \\texttt{starRingEnd ℂ 0 = 0}; (3) \\texttt{map\\_zero} closes. The structural insight: the conjugate root theorem is a corollary of the commutativity of evaluation with conjugation.",
+    "content": "isRoot_conj_of_isRoot is the conjugate root theorem: if z is a root of p \u2208 \u211d[X], then z\u0304 is also a root. The proof is three lines: rw [eval_conj_eq_conj_eval] rewrites the goal to starRingEnd \u2102 (p(z)) = 0; then hz fills in p(z) = 0; then map_zero closes with (star 0 = 0). This is a textbook example of a theorem that reduces to a one-line proof once the right lemma (eval_conj_eq_conj_eval) is established.",
+    "mathContext": "Proof: $p(\\bar{z}) = \\overline{p(z)} = \\bar{0} = 0$. The three steps correspond to: (1) \\texttt{rw [eval\\_conj\\_eq\\_conj\\_eval]} gives goal \\texttt{starRingEnd \u2102 (aeval z (p.map ...)) = 0}; (2) \\texttt{rw [hz]} gives \\texttt{starRingEnd \u2102 0 = 0}; (3) \\texttt{map\\_zero} closes. The structural insight: the conjugate root theorem is a corollary of the commutativity of evaluation with conjugation.",
     "significance": "supporting",
     "relatedConcepts": [
       "conjugate root theorem",
@@ -81,7 +81,7 @@
     },
     "type": "insight",
     "title": "Non-Real Root Pairing: The Core Parity Explanation",
-    "content": "nonreal_roots_paired packages two facts: (1) the conjugate of a non-real root is also a root (from isRoot_conj_of_isRoot); (2) the conjugate is distinct from the original root (ne_conj_of_nonreal). Together, these imply that non-real roots come in disjoint pairs {z, z̄}. isReal_iff_eq_conj characterizes when z = z̄: the forward direction extracts z.im = 0 from congr_arg Complex.im, and the backward direction reconstructs the equality. ne_conj_of_nonreal uses contrapositive of isReal_iff_eq_conj.",
+    "content": "nonreal_roots_paired packages two facts: (1) the conjugate of a non-real root is also a root (from isRoot_conj_of_isRoot); (2) the conjugate is distinct from the original root (ne_conj_of_nonreal). Together, these imply that non-real roots come in disjoint pairs {z, z\u0304}. isReal_iff_eq_conj characterizes when z = z\u0304: the forward direction extracts z.im = 0 from congr_arg Complex.im, and the backward direction reconstructs the equality. ne_conj_of_nonreal uses contrapositive of isReal_iff_eq_conj.",
     "mathContext": "If $z$ is a non-real root (Im $z \\ne 0$), then $\\bar{z}$ is also a root and $z \\ne \\bar{z}$. This means non-real roots partition into pairs $\\{z, \\bar{z}\\}$, so their count is even. Formally: $|\\{z \\in \\text{roots}(p) : z.\\text{im} \\ne 0\\}|$ is even. Thus $\\deg(p) = |\\text{real roots}| + |\\text{non-real roots}|$ with the non-real count even, giving $\\deg(p) \\equiv |\\text{real roots}| \\pmod{2}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -105,18 +105,18 @@
     },
     "type": "concept",
     "title": "Parity Framework: omega Closes Natural Number Arithmetic",
-    "content": "parity_of_real_roots and parity_diff are pure arithmetic lemmas: given n = r + c and c even (c = 2k), prove n and r have the same parity. The Lean proofs use omega after destructuring Even c to get c = 2k. The omega tactic handles all linear arithmetic over ℕ, including the subtraction in parity_diff (n - r = c when n = r + c). These lemmas are the abstract arithmetic backbone; the geometric content (why the non-real count is even) is provided by nonreal_roots_paired.",
-    "mathContext": "$n = r + c$, $c = 2k$ $\\Rightarrow$ $n = r + 2k$. Then $n$ even $\\iff$ $r + 2k$ even $\\iff$ $r$ even (since $2k$ is always even). Lean: \\texttt{obtain ⟨k, hk⟩ := heven; rw [hk]; omega}. The omega tactic understands that adding an even number preserves parity. \\texttt{parity\\_diff} uses $n - r = c$ (when $n = r + c$ in ℕ) and similarly closes with omega.",
+    "content": "parity_of_real_roots and parity_diff are pure arithmetic lemmas: given n = r + c and c even (c = 2k), prove n and r have the same parity. The Lean proofs use omega after destructuring Even c to get c = 2k. The omega tactic handles all linear arithmetic over \u2115, including the subtraction in parity_diff (n - r = c when n = r + c). These lemmas are the abstract arithmetic backbone; the geometric content (why the non-real count is even) is provided by nonreal_roots_paired.",
+    "mathContext": "$n = r + c$, $c = 2k$ $\\Rightarrow$ $n = r + 2k$. Then $n$ even $\\iff$ $r + 2k$ even $\\iff$ $r$ even (since $2k$ is always even). Lean: \\texttt{obtain \u27e8k, hk\u27e9 := heven; rw [hk]; omega}. The omega tactic understands that adding an even number preserves parity. \\texttt{parity\\_diff} uses $n - r = c$ (when $n = r + c$ in \u2115) and similarly closes with omega.",
     "significance": "supporting",
     "relatedConcepts": [
-      "omega tactic for ℕ arithmetic",
+      "omega tactic for \u2115 arithmetic",
       "Even in Lean 4",
       "parity via subtraction",
       "natural number arithmetic"
     ],
     "prerequisites": [
-      "omega tactic capabilities (ℕ linear arithmetic)",
-      "Even n = ∃ k, n = 2*k",
+      "omega tactic capabilities (\u2115 linear arithmetic)",
+      "Even n = \u2203 k, n = 2*k",
       "Nat subtraction vs integer subtraction"
     ]
   },
@@ -129,7 +129,7 @@
     },
     "type": "insight",
     "title": "Cubic and Quartic Examples: omega from Parity + Sum Constraints",
-    "content": "cubic_real_root_parity and quartic_real_root_parity specialize the parity framework to degree 3 and 4. Both proofs are omega after destructuring Even c = ⟨k, hk⟩ — the tactic handles the small-case enumeration (3 = r + 2k → r ∈ {1, 3}; 4 = r + 2k → r ∈ {0, 2, 4}). These are concrete, interpretable results: a cubic over ℝ always has 1 or 3 real roots, and a quartic always has 0, 2, or 4. The omega tactic's power to enumerate valid natural number solutions makes these proofs trivial.",
+    "content": "cubic_real_root_parity and quartic_real_root_parity specialize the parity framework to degree 3 and 4. Both proofs are omega after destructuring Even c = \u27e8k, hk\u27e9 \u2014 the tactic handles the small-case enumeration (3 = r + 2k \u2192 r \u2208 {1, 3}; 4 = r + 2k \u2192 r \u2208 {0, 2, 4}). These are concrete, interpretable results: a cubic over \u211d always has 1 or 3 real roots, and a quartic always has 0, 2, or 4. The omega tactic's power to enumerate valid natural number solutions makes these proofs trivial.",
     "mathContext": "Cubic ($n=3$): $3 = r + 2k$ with $r, k \\ge 0$. Solutions: $(r=3, k=0)$ or $(r=1, k=1)$. So $r \\in \\{1, 3\\}$. Quartic ($n=4$): $4 = r + 2k$. Solutions: $(r=4,k=0)$, $(r=2,k=1)$, $(r=0,k=2)$. So $r \\in \\{0,2,4\\}$. Lean's omega handles both enumeration and the disjunction in the conclusion. The file also includes a discussion of the gap to the full Descartes rule (steps 1 and 4 in the comment require additional setup not provided here).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -140,7 +140,7 @@
     "prerequisites": [
       "omega tactic for case enumeration",
       "natural number constraints",
-      "Even c = ⟨k, hk⟩ destructuring"
+      "Even c = \u27e8k, hk\u27e9 destructuring"
     ]
   }
 ]

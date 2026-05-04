@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Split Map: lowPart and highPart Definitions",
-    "content": "lowPart m S = S.filter (· < m) retains elements of S strictly below the threshold m. highPart m S = (S.filter (m ≤ ·)).image (· - m) retains elements ≥ m then shifts them down by m. Together these define the split map S ↦ (lowPart m S, highPart m S), which is the forward direction of the bijection. The shift in highPart is what makes the high part a subset of range(n) when S ⊆ range(m+n): if y ∈ S with y ≥ m and y < m+n, then y-m ∈ {0,...,n-1}. This 'normalize by shifting' technique is fundamental to Finset bijections involving ranges.",
+    "content": "lowPart m S = S.filter (\u00b7 < m) retains elements of S strictly below the threshold m. highPart m S = (S.filter (m \u2264 \u00b7)).image (\u00b7 - m) retains elements \u2265 m then shifts them down by m. Together these define the split map S \u21a6 (lowPart m S, highPart m S), which is the forward direction of the bijection. The shift in highPart is what makes the high part a subset of range(n) when S \u2286 range(m+n): if y \u2208 S with y \u2265 m and y < m+n, then y-m \u2208 {0,...,n-1}. This 'normalize by shifting' technique is fundamental to Finset bijections involving ranges.",
     "mathContext": "$\\text{lowPart}(m, S) = \\{x \\in S : x < m\\}$, $\\text{highPart}(m, S) = \\{x - m : x \\in S, x \\geq m\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -20,7 +20,7 @@
     ],
     "prerequisites": [
       "Finset.filter in Mathlib",
-      "Finset.image (· - m)",
+      "Finset.image (\u00b7 - m)",
       "Nat subtraction semantics"
     ]
   },
@@ -33,20 +33,20 @@
     },
     "type": "definition",
     "title": "Merge Map: Inverse of the Split",
-    "content": "merge m A B = A ∪ B.image (· + m) is the inverse of the split: it combines A ⊆ range(m) and B ⊆ range(n) into a subset of range(m+n) by 'upshifting' B by m. The union is disjoint because A ⊆ range(m) and B.image(·+m) ⊆ {m,...,m+n-1}; this disjointness is established in merge_card using Finset.disjoint_left. The merge and split are mutually inverse: merge_lowPart_highPart and lowPart_merge + highPart_merge establish both directions of the bijection roundtrip.",
+    "content": "merge m A B = A \u222a B.image (\u00b7 + m) is the inverse of the split: it combines A \u2286 range(m) and B \u2286 range(n) into a subset of range(m+n) by 'upshifting' B by m. The union is disjoint because A \u2286 range(m) and B.image(\u00b7+m) \u2286 {m,...,m+n-1}; this disjointness is established in merge_card using Finset.disjoint_left. The merge and split are mutually inverse: merge_lowPart_highPart and lowPart_merge + highPart_merge establish both directions of the bijection roundtrip.",
     "mathContext": "$\\text{merge}(m, A, B) = A \\cup \\{b + m : b \\in B\\}$",
     "significance": "key",
     "relatedConcepts": [
       "Finset.union",
-      "Finset.image (· + m)",
+      "Finset.image (\u00b7 + m)",
       "disjoint union",
       "inverse map",
       "upshift"
     ],
     "prerequisites": [
-      "Finset.image with (· + m)",
+      "Finset.image with (\u00b7 + m)",
       "disjoint union = disjoint + card additive",
-      "range(m) ∩ {m,...} = ∅"
+      "range(m) \u2229 {m,...} = \u2205"
     ]
   },
   {
@@ -56,9 +56,9 @@
       "startLine": 70,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "lowPart_card_add_highPart_card: Card Partition",
-    "content": "Proves |lowPart m S| + |highPart m S| = |S|: the split preserves total cardinality. The proof partition S into two disjoint pieces (below and above threshold) via S = S.filter(·<m) ∪ S.filter(m≤·), uses Finset.card_union_of_disjoint (disjointness holds by ω arithmetic on the filter conditions), then shows highPart has the same cardinality as the high-filter via Finset.card_image_of_injOn (the subtraction (·-m) is injective on elements where m ≤ x, proved by omega). This cardinality result is used in card_fiber to verify the fiber has the right size.",
+    "content": "Proves |lowPart m S| + |highPart m S| = |S|: the split preserves total cardinality. The proof partition S into two disjoint pieces (below and above threshold) via S = S.filter(\u00b7<m) \u222a S.filter(m\u2264\u00b7), uses Finset.card_union_of_disjoint (disjointness holds by \u03c9 arithmetic on the filter conditions), then shows highPart has the same cardinality as the high-filter via Finset.card_image_of_injOn (the subtraction (\u00b7-m) is injective on elements where m \u2264 x, proved by omega). This cardinality result is used in card_fiber to verify the fiber has the right size.",
     "mathContext": "$|\\text{lowPart}(m,S)| + |\\text{highPart}(m,S)| = |S|$. The split $(S_{<m}, S_{\\geq m} - m)$ partitions $S$ without duplication.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -69,7 +69,7 @@
     ],
     "prerequisites": [
       "Finset.disjoint_filter",
-      "omega for ≤/< conditions on ℕ",
+      "omega for \u2264/< conditions on \u2115",
       "Set.InjOn and Finset.card_image_of_injOn"
     ]
   },
@@ -80,9 +80,9 @@
       "startLine": 98,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Round-Trip Properties: Split and Merge are Mutually Inverse",
-    "content": "Three theorems establish the bijection roundtrip. lowPart_merge (hA, hB): lowPart m (merge m A B) = A — when merging A ⊆ range(m) with B shifted up, the low part recovers exactly A (the B-elements exceed m, so they're excluded). highPart_merge (hA, hB): highPart m (merge m A B) = B — the high-filter picks exactly the shifted B elements, and shifting down recovers B. merge_lowPart_highPart (hS): merge m (lowPart m S) (highPart m S) = S — splitting then merging recovers the original set (by cases: if x < m it's in the low part, else it's in the high part and the ±m shifts cancel). Together these three theorems certify that split and merge are inverse bijections on their respective domains.",
+    "content": "Three theorems establish the bijection roundtrip. lowPart_merge (hA, hB): lowPart m (merge m A B) = A \u2014 when merging A \u2286 range(m) with B shifted up, the low part recovers exactly A (the B-elements exceed m, so they're excluded). highPart_merge (hA, hB): highPart m (merge m A B) = B \u2014 the high-filter picks exactly the shifted B elements, and shifting down recovers B. merge_lowPart_highPart (hS): merge m (lowPart m S) (highPart m S) = S \u2014 splitting then merging recovers the original set (by cases: if x < m it's in the low part, else it's in the high part and the \u00b1m shifts cancel). Together these three theorems certify that split and merge are inverse bijections on their respective domains.",
     "mathContext": "$\\text{lowPart}(m, \\text{merge}(m,A,B)) = A$, $\\text{highPart}(m, \\text{merge}(m,A,B)) = B$, $\\text{merge}(m, \\text{lowPart}(m,S), \\text{highPart}(m,S)) = S$",
     "significance": "key",
     "relatedConcepts": [
@@ -107,7 +107,7 @@
     },
     "type": "insight",
     "title": "Fiber Decomposition: card_fiber is the Combinatorial Heart",
-    "content": "fiber m n r k = ((range(m+n)).powersetCard r).filter(fun S => (lowPart m S).card = k) is the k-th fiber: r-subsets of range(m+n) whose low part has exactly k elements. The main combinatorial fact is card_fiber: |fiber m n r k| = C(m,k)·C(n,r-k). The proof uses Finset.card_bij with the bijection (A,B) ↔ merge m A B. The three conditions — maps into target (uses lowPart_subset_range, highPart_subset_range, and lowPart_card_add_highPart_card for the cardinality constraint), injectivity (via the calc chain S₁ = merge(low S₁, high S₁) = merge(low S₂, high S₂) = S₂), and surjectivity (witness merge m A B) — are all verified using the roundtrip theorems. The powersetCard_eq_biUnion_fiber lemma decomposes all r-subsets into disjoint fibers over k ∈ {0,...,r}.",
+    "content": "fiber m n r k = ((range(m+n)).powersetCard r).filter(fun S => (lowPart m S).card = k) is the k-th fiber: r-subsets of range(m+n) whose low part has exactly k elements. The main combinatorial fact is card_fiber: |fiber m n r k| = C(m,k)\u00b7C(n,r-k). The proof uses Finset.card_bij with the bijection (A,B) \u2194 merge m A B. The three conditions \u2014 maps into target (uses lowPart_subset_range, highPart_subset_range, and lowPart_card_add_highPart_card for the cardinality constraint), injectivity (via the calc chain S\u2081 = merge(low S\u2081, high S\u2081) = merge(low S\u2082, high S\u2082) = S\u2082), and surjectivity (witness merge m A B) \u2014 are all verified using the roundtrip theorems. The powersetCard_eq_biUnion_fiber lemma decomposes all r-subsets into disjoint fibers over k \u2208 {0,...,r}.",
     "mathContext": "$|\\text{fiber}(m,n,r,k)| = \\binom{m}{k}\\binom{n}{r-k}$. Decomposition: $\\binom{m+n}{r}\\text{-subsets} = \\bigsqcup_{k=0}^r \\text{fiber}(m,n,r,k)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -118,7 +118,7 @@
       "PairwiseDisjoint fibers"
     ],
     "prerequisites": [
-      "Finset.card_bij (bijection → equal cardinality)",
+      "Finset.card_bij (bijection \u2192 equal cardinality)",
       "Finset.card_powersetCard = Nat.choose",
       "PairwiseDisjoint for disjoint biUnion card"
     ]
@@ -132,7 +132,7 @@
     },
     "type": "insight",
     "title": "vandermonde_combinatorial: Main Theorem via Fiber Counting",
-    "content": "vandermonde_combinatorial m n r proves C(m+n,r) = Σ_{k=0}^r C(m,k)·C(n,r-k) by a clean three-step argument: (1) rewrite LHS as |powersetCard r (range(m+n))| using card_powersetCard + card_range; (2) rewrite as |biUnion over k of fiber m n r k| using powersetCard_eq_biUnion_fiber; (3) apply card_biUnion (valid since fibers are pairwise disjoint by fiber_disjoint) and then Finset.sum_congr to reduce each term to card_fiber. The proof is just 4 lines after the lemmas are available. This exemplifies the Lean approach to combinatorial bijection proofs: build up the bijection infrastructure (split/merge/fiber), then the main theorem is essentially bookkeeping.",
+    "content": "vandermonde_combinatorial m n r proves C(m+n,r) = \u03a3_{k=0}^r C(m,k)\u00b7C(n,r-k) by a clean three-step argument: (1) rewrite LHS as |powersetCard r (range(m+n))| using card_powersetCard + card_range; (2) rewrite as |biUnion over k of fiber m n r k| using powersetCard_eq_biUnion_fiber; (3) apply card_biUnion (valid since fibers are pairwise disjoint by fiber_disjoint) and then Finset.sum_congr to reduce each term to card_fiber. The proof is just 4 lines after the lemmas are available. This exemplifies the Lean approach to combinatorial bijection proofs: build up the bijection infrastructure (split/merge/fiber), then the main theorem is essentially bookkeeping.",
     "mathContext": "$\\binom{m+n}{r} = \\left|\\bigsqcup_{k=0}^{r} \\text{fiber}(m,n,r,k)\\right| = \\sum_{k=0}^{r} \\left|\\text{fiber}(m,n,r,k)\\right| = \\sum_{k=0}^{r} \\binom{m}{k}\\binom{n}{r-k}$",
     "significance": "key",
     "relatedConcepts": [
@@ -156,8 +156,8 @@
       "endLine": 299
     },
     "type": "insight",
-    "title": "sum_squares_combinatorial: C(2n,n) = Σ C(n,k)²",
-    "content": "sum_squares_combinatorial n proves C(2n,n) = Σ_{k=0}^n C(n,k)² by specializing Vandermonde with m = n. The key step: set m = n in vandermonde_combinatorial to get C(2n,n) = Σ_{k=0}^n C(n,k)·C(n,n-k). Then apply Nat.choose_symm (C(n,n-k) = C(n,k)) to convert C(n,n-k) to C(n,k), giving C(n,k)·C(n,k) = C(n,k)². This identity has a natural combinatorial interpretation: an n-subset of a 2n-element set can be constructed by choosing k elements from the first n and n-k from the second n; summing over k gives the total count. The central binomial coefficient C(2n,n) is central to Catalan numbers, random walks, and the Wallis product for π.",
+    "title": "sum_squares_combinatorial: C(2n,n) = \u03a3 C(n,k)\u00b2",
+    "content": "sum_squares_combinatorial n proves C(2n,n) = \u03a3_{k=0}^n C(n,k)\u00b2 by specializing Vandermonde with m = n. The key step: set m = n in vandermonde_combinatorial to get C(2n,n) = \u03a3_{k=0}^n C(n,k)\u00b7C(n,n-k). Then apply Nat.choose_symm (C(n,n-k) = C(n,k)) to convert C(n,n-k) to C(n,k), giving C(n,k)\u00b7C(n,k) = C(n,k)\u00b2. This identity has a natural combinatorial interpretation: an n-subset of a 2n-element set can be constructed by choosing k elements from the first n and n-k from the second n; summing over k gives the total count. The central binomial coefficient C(2n,n) is central to Catalan numbers, random walks, and the Wallis product for \u03c0.",
     "mathContext": "$\\binom{2n}{n} = \\sum_{k=0}^{n} \\binom{n}{k}^2$. Specialization of Vandermonde at $m = n$, using $\\binom{n}{n-k} = \\binom{n}{k}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -169,7 +169,7 @@
     ],
     "prerequisites": [
       "vandermonde_combinatorial",
-      "Nat.choose_symm (Nat.choose n (n-k) = Nat.choose n k for k ≤ n)",
+      "Nat.choose_symm (Nat.choose n (n-k) = Nat.choose n k for k \u2264 n)",
       "sq (a^2 = a*a)"
     ]
   },
@@ -182,7 +182,7 @@
     },
     "type": "concept",
     "title": "Concrete Verifications via native_decide",
-    "content": "Four concrete examples verify the split-merge bijection computationally. (1) C(8,4) = 70 — the value of C(5+3,4). (2) lowPart 5 {0,1,4,6} = {0,1,4}: elements below threshold 5 are {0,1,4}. (3) highPart 5 {0,1,4,6} = {1}: the element 6 ≥ 5, shifted down: 6-5=1. (4) merge 5 {0,1,4} {1} = {0,1,4,6}: the upshift puts 1+5=6 back. The last example also verifies C(2·4,4) = Σ C(4,k)² = 70 (sum: 1+16+36+16+1 = 70). native_decide uses kernel evaluation for decidable propositions — it's fast for small Finsets and provides a sanity check that the definitions behave as intended.",
+    "content": "Four concrete examples verify the split-merge bijection computationally. (1) C(8,4) = 70 \u2014 the value of C(5+3,4). (2) lowPart 5 {0,1,4,6} = {0,1,4}: elements below threshold 5 are {0,1,4}. (3) highPart 5 {0,1,4,6} = {1}: the element 6 \u2265 5, shifted down: 6-5=1. (4) merge 5 {0,1,4} {1} = {0,1,4,6}: the upshift puts 1+5=6 back. The last example also verifies C(2\u00b74,4) = \u03a3 C(4,k)\u00b2 = 70 (sum: 1+16+36+16+1 = 70). native_decide uses kernel evaluation for decidable propositions \u2014 it's fast for small Finsets and provides a sanity check that the definitions behave as intended.",
     "mathContext": "$\\text{lowPart}(5, \\{0,1,4,6\\}) = \\{0,1,4\\}$, $\\text{highPart}(5, \\{0,1,4,6\\}) = \\{1\\}$ (since $6-5=1$), $\\text{merge}(5, \\{0,1,4\\}, \\{1\\}) = \\{0,1,4,6\\}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -193,7 +193,7 @@
     ],
     "prerequisites": [
       "native_decide for Finset decidability",
-      "DecidableEq ℕ",
+      "DecidableEq \u2115",
       "Finset equality is decidable"
     ]
   }

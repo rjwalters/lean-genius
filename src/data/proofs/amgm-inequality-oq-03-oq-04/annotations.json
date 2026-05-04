@@ -106,7 +106,7 @@
       "startLine": 115,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Identity: H_\u03b1(p) = \u2212log(M_{\u03b1\u22121}(p,p))",
     "content": "The proof of `renyi_eq_neg_log_powerMean` has three steps:\n\n1. Replace \u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1) with \u03a3 p\u1d62^\u03b1 using `renyi_sum_eq_powerMean_sum`.\n2. Apply `Real.log_rpow` to get log((\u03a3 p\u1d62^\u03b1)^(1/(\u03b1-1))) = (1/(\u03b1-1))\u00b7log(\u03a3 p\u1d62^\u03b1). This requires positivity of the sum, which we get from `renyi_sum_pos`.\n3. Simplify the arithmetic: (1/(1-\u03b1))\u00b7L = \u2212(1/(\u03b1-1))\u00b7L, which `field_simp` + `ring` handles.\n\nThe result is that unfolding definitions and applying these three steps closes the goal.",
     "mathContext": "$\\log M_{\\alpha-1}(p,p) = \\log\\left((\\sum p_i^\\alpha)^{1/(\\alpha-1)}\\right) = \\frac{1}{\\alpha-1}\\log\\sum p_i^\\alpha = -\\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha = -H_\\alpha(p)$",
@@ -128,7 +128,7 @@
       "startLine": 140,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Biconditional Equivalence of Monotonicity",
     "content": "Three theorems establish the biconditional:\n\n`renyi_decreasing_of_powerMean_increasing` (M\u2192H): Assume M_r \u2264 M_s for r \u2264 s. For \u03b1 \u2264 \u03b2, apply M_{\u03b1-1} \u2264 M_{\u03b2-1}, take logs (log is monotone), negate (neg_le_neg). Combined with the identity, H_\u03b2 \u2264 H_\u03b1.\n\n`powerMean_increasing_of_renyi_decreasing` (H\u2192M): Assume H_\u03b1 \u2264 H_\u03b2 for \u03b1 \u2264 \u03b2. Set \u03b1 = r+1, \u03b2 = t+1. The hypothesis gives H_{t+1} \u2264 H_{r+1}, i.e., \u2212log(M_t) \u2264 \u2212log(M_r). Flip to log(M_r) \u2264 log(M_t). Use exp/log round-trip (exp_log, exp_le_exp) to conclude M_r \u2264 M_t.\n\n`renyi_monotone_iff_powerMean_monotone`: The biconditional packages both directions.",
     "mathContext": "The exp/log round-trip: $M_r = \\exp(\\log M_r) \\leq \\exp(\\log M_t) = M_t$ since exp is monotone. This uses `Real.exp_log` (requiring positivity) and `Real.exp_le_exp`.",

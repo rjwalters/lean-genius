@@ -2,61 +2,125 @@
   {
     "id": "ann-resolvent-ring-id",
     "proofId": "solution-of-cubic-oq-03-oq-03",
-    "range": {"startLine": 76, "endLine": 88},
+    "range": {
+      "startLine": 76,
+      "endLine": 88
+    },
     "type": "insight",
     "title": "The Core Ring Identity: Tschirnhaus Substitution via ring",
-    "content": "The fundamental algebraic fact: after substituting m = t - 5p/6 into the resolvent cubic, the result equals exactly 8 times the depressed cubic t^3 + At + B. This is verified purely by the ring tactic, which handles the expansion and simplification automatically. The ring tactic closes polynomial identities over commutative rings (here ℂ) without any manual algebra — a key advantage of formalizing over ℂ rather than ℝ.",
+    "content": "The fundamental algebraic fact: after substituting m = t - 5p/6 into the resolvent cubic, the result equals exactly 8 times the depressed cubic t^3 + At + B. This is verified purely by the ring tactic, which handles the expansion and simplification automatically. The ring tactic closes polynomial identities over commutative rings (here \u2102) without any manual algebra \u2014 a key advantage of formalizing over \u2102 rather than \u211d.",
     "mathContext": "$8(t - 5p/6)^3 + 20p(t - 5p/6)^2 + (16p^2 - 8r)(t - 5p/6) + (4p^3 - 4pr - q^2) = 8(t^3 + At + B)$ where $A = -p^2/12 - r$ and $B = -p^3/108 + pr/3 - q^2/8$. The ring tactic verifies this by normalizing both sides to canonical monomial form.",
     "significance": "key",
-    "relatedConcepts": ["Tschirnhaus transformation", "polynomial depression", "ring tactic in Lean 4", "commutative ring"],
-    "prerequisites": ["ring tactic", "Complex.CommRing", "polynomial algebra over ℂ"]
+    "relatedConcepts": [
+      "Tschirnhaus transformation",
+      "polynomial depression",
+      "ring tactic in Lean 4",
+      "commutative ring"
+    ],
+    "prerequisites": [
+      "ring tactic",
+      "Complex.CommRing",
+      "polynomial algebra over \u2102"
+    ]
   },
   {
     "id": "ann-resolvent-depresses",
     "proofId": "solution-of-cubic-oq-03-oq-03",
-    "range": {"startLine": 90, "endLine": 115},
+    "range": {
+      "startLine": 90,
+      "endLine": 115
+    },
     "type": "insight",
     "title": "Depression Theorem: Iff via mul_eq_zero",
-    "content": "The iff theorem: m = t - 5p/6 is a resolvent root iff t satisfies the depressed cubic. The forward direction uses mul_eq_zero (since 8 ≠ 0, the factor 8 in 8·(depressed cubic) must be zero, so the depressed cubic is zero). The backward direction multiplies by zero. This is the key architectural theorem connecting the quartic's resolvent cubic to the Cardano-solvable depressed form.",
+    "content": "The iff theorem: m = t - 5p/6 is a resolvent root iff t satisfies the depressed cubic. The forward direction uses mul_eq_zero (since 8 \u2260 0, the factor 8 in 8\u00b7(depressed cubic) must be zero, so the depressed cubic is zero). The backward direction multiplies by zero. This is the key architectural theorem connecting the quartic's resolvent cubic to the Cardano-solvable depressed form.",
     "mathContext": "$m = t - 5p/6$ satisfies $8m^3 + 20pm^2 + (16p^2 - 8r)m + (4p^3 - 4pr - q^2) = 0$ iff $t^3 + At + B = 0$. Proof: uses ring identity $\\text{resolvent}(t - 5p/6) = 8 \\cdot (t^3 + At + B)$ and $8 \\neq 0$ to apply mul_eq_zero.",
     "significance": "key",
-    "relatedConcepts": ["depression substitution", "Cardano's form", "mul_eq_zero", "iff structure in Lean 4"],
-    "prerequisites": ["resolvent_ring_identity", "mul_eq_zero in CommRing", "ne_of_gt for 8 ≠ 0"]
+    "relatedConcepts": [
+      "depression substitution",
+      "Cardano's form",
+      "mul_eq_zero",
+      "iff structure in Lean 4"
+    ],
+    "prerequisites": [
+      "resolvent_ring_identity",
+      "mul_eq_zero in CommRing",
+      "ne_of_gt for 8 \u2260 0"
+    ]
   },
   {
     "id": "ann-cube-root-unity",
     "proofId": "solution-of-cubic-oq-03-oq-03",
-    "range": {"startLine": 152, "endLine": 184},
-    "type": "theorem",
-    "title": "ω = exp(2πi/3): Primitive Cube Root of Unity",
-    "content": "ω is defined as exp(2πi/3) using Lean's Complex.exp. The two key properties are proved: omega_cubed (ω³ = 1) uses exp_nat_mul and exp_two_pi_mul_I; omega_sum (1 + ω + ω² = 0) uses the factored form ω³ - 1 = (ω-1)(ω²+ω+1) and proves ω ≠ 1 by showing Im(ω) = sin(2π/3) = √3/2 ≠ 0. The cube roots of unity are needed to express all three solutions of the depressed cubic, corresponding to the three branches of the cube root in Cardano's formula.",
+    "range": {
+      "startLine": 152,
+      "endLine": 184
+    },
+    "type": "insight",
+    "title": "\u03c9 = exp(2\u03c0i/3): Primitive Cube Root of Unity",
+    "content": "\u03c9 is defined as exp(2\u03c0i/3) using Lean's Complex.exp. The two key properties are proved: omega_cubed (\u03c9\u00b3 = 1) uses exp_nat_mul and exp_two_pi_mul_I; omega_sum (1 + \u03c9 + \u03c9\u00b2 = 0) uses the factored form \u03c9\u00b3 - 1 = (\u03c9-1)(\u03c9\u00b2+\u03c9+1) and proves \u03c9 \u2260 1 by showing Im(\u03c9) = sin(2\u03c0/3) = \u221a3/2 \u2260 0. The cube roots of unity are needed to express all three solutions of the depressed cubic, corresponding to the three branches of the cube root in Cardano's formula.",
     "mathContext": "$\\omega = e^{2\\pi i/3} = -\\frac{1}{2} + \\frac{\\sqrt{3}}{2}i$. Properties: $\\omega^3 = 1$ and $1 + \\omega + \\omega^2 = 0$. The three cube roots of $c$ are $\\sqrt[3]{c},\\; \\omega\\sqrt[3]{c},\\; \\omega^2\\sqrt[3]{c}$. Lean proof: $\\text{Im}(\\omega) = \\sin(2\\pi/3) = \\sqrt{3}/2 \\neq 0$ (via Real.sin_pi_div_three), hence $\\omega \\neq 1$.",
     "significance": "key",
-    "relatedConcepts": ["primitive roots of unity", "Complex.exp", "exp_two_pi_mul_I", "Real.sin_pi_div_three", "cubic roots"],
-    "prerequisites": ["Complex.exp", "exp_nat_mul lemma", "Real.sin_pi_div_three", "positivity tactic"]
+    "relatedConcepts": [
+      "primitive roots of unity",
+      "Complex.exp",
+      "exp_two_pi_mul_I",
+      "Real.sin_pi_div_three",
+      "cubic roots"
+    ],
+    "prerequisites": [
+      "Complex.exp",
+      "exp_nat_mul lemma",
+      "Real.sin_pi_div_three",
+      "positivity tactic"
+    ]
   },
   {
     "id": "ann-cardano-roots",
     "proofId": "solution-of-cubic-oq-03-oq-03",
-    "range": {"startLine": 185, "endLine": 193},
+    "range": {
+      "startLine": 185,
+      "endLine": 193
+    },
     "type": "definition",
-    "title": "resolventRoot: Three Cardano Roots as ωᵏu + ω²ᵏv",
-    "content": "resolventRoot k u v p = ω^k·u + ω^(2k)·v + resolventShift p defines the k-th Cardano root (k ∈ {0,1,2}) of the depressed resolvent cubic. Here u³ = (-B + √Δ)/2 and v = -A/(3u) for the depressed cubic's discriminant Δ = B² + 4A³/27. The index k selects which cube root of (-B + √Δ)/2 to use: k=0 gives u itself, k=1 gives ω·u, k=2 gives ω²·u. The resolventShift p = -5p/6 maps the depressed root back to the original resolvent root m.",
+    "title": "resolventRoot: Three Cardano Roots as \u03c9\u1d4fu + \u03c9\u00b2\u1d4fv",
+    "content": "resolventRoot k u v p = \u03c9^k\u00b7u + \u03c9^(2k)\u00b7v + resolventShift p defines the k-th Cardano root (k \u2208 {0,1,2}) of the depressed resolvent cubic. Here u\u00b3 = (-B + \u221a\u0394)/2 and v = -A/(3u) for the depressed cubic's discriminant \u0394 = B\u00b2 + 4A\u00b3/27. The index k selects which cube root of (-B + \u221a\u0394)/2 to use: k=0 gives u itself, k=1 gives \u03c9\u00b7u, k=2 gives \u03c9\u00b2\u00b7u. The resolventShift p = -5p/6 maps the depressed root back to the original resolvent root m.",
     "mathContext": "$r_k = \\omega^k u + \\omega^{2k} v + (-5p/6)$ for $k = 0, 1, 2$. Here $u^3 + v^3 = -B$ and $uv = -A/3$ (Cardano's conditions). Verification for $k=0$: $r_0^3 + Ar_0 + B = 0$ iff $u^3 + v^3 = -B$ and $3uv = -A$ (resolved by resolvent_root_zero_correct).",
     "significance": "supporting",
-    "relatedConcepts": ["Cardano's formula", "cube root branches", "Fin 3 type", "resolventShift", "depressed cubic roots"],
-    "prerequisites": ["ω primitive root", "resolventShift definition", "Fin 3 as {0,1,2}", "Cardano conditions u³+v³=-B and uv=-A/3"]
+    "relatedConcepts": [
+      "Cardano's formula",
+      "cube root branches",
+      "Fin 3 type",
+      "resolventShift",
+      "depressed cubic roots"
+    ],
+    "prerequisites": [
+      "\u03c9 primitive root",
+      "resolventShift definition",
+      "Fin 3 as {0,1,2}",
+      "Cardano conditions u\u00b3+v\u00b3=-B and uv=-A/3"
+    ]
   },
   {
     "id": "ann-quartic-chain",
     "proofId": "solution-of-cubic-oq-03-oq-03",
-    "range": {"startLine": 218, "endLine": 240},
+    "range": {
+      "startLine": 218,
+      "endLine": 240
+    },
     "type": "insight",
     "title": "The Complete Quartic-Cubic-Cardano Chain",
-    "content": "The culminating theorem: for any depressed quartic, the resolvent cubic depresses to a Cardano-solvable form, and any root of this depressed cubic gives a valid Ferrari parameter. This formally connects all pieces of the radical solution chain: quartic → Ferrari → resolvent cubic → Cardano → explicit radicals. The theorem quartic_to_cardano closes the main formalization gap identified in the parent file.",
+    "content": "The culminating theorem: for any depressed quartic, the resolvent cubic depresses to a Cardano-solvable form, and any root of this depressed cubic gives a valid Ferrari parameter. This formally connects all pieces of the radical solution chain: quartic \u2192 Ferrari \u2192 resolvent cubic \u2192 Cardano \u2192 explicit radicals. The theorem quartic_to_cardano closes the main formalization gap identified in the parent file.",
     "mathContext": "Quartic $y^4 + py^2 + qy + r = 0$ $\\xrightarrow{\\text{Ferrari}}$ resolvent cubic $8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2) = 0$ $\\xrightarrow{m = t - 5p/6}$ depressed cubic $t^3 + At + B = 0$ $\\xrightarrow{\\text{Cardano}}$ explicit radicals $t = \\sqrt[3]{-B/2 + \\sqrt{\\Delta}} + \\sqrt[3]{-B/2 - \\sqrt{\\Delta}}$.",
     "significance": "key",
-    "relatedConcepts": ["solvability by radicals", "Ferrari's method", "Cardano's formula", "quartic solution chain"],
-    "prerequisites": ["resolvent_depresses", "recoverM_is_resolvent_root", "cardanoP/Q definitions"]
+    "relatedConcepts": [
+      "solvability by radicals",
+      "Ferrari's method",
+      "Cardano's formula",
+      "quartic solution chain"
+    ],
+    "prerequisites": [
+      "resolvent_depresses",
+      "recoverM_is_resolvent_root",
+      "cardanoP/Q definitions"
+    ]
   }
 ]

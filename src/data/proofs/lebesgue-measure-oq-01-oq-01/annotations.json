@@ -9,7 +9,7 @@
     "type": "definition",
     "title": "Thomae's Function via Classical Choice",
     "content": "Thomae's function is defined by case-splitting on whether x is rational: if x = p/q in reduced form, return 1/q; otherwise return 0. The Lean definition uses `h.choose.den` to extract the denominator of the canonical rational representative, exploiting Lean's classical choice principle.",
-    "mathContext": "$$f(x) = \\begin{cases} \\frac{1}{q} & \\text{if } x = \\frac{p}{q} \\text{ in lowest terms}, \\\\ 0 & \\text{if } x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nIn Lean: `if h : ∃ q : ℚ, (q : ℝ) = x then 1 / (h.choose.den : ℝ) else 0`.",
+    "mathContext": "$$f(x) = \\begin{cases} \\frac{1}{q} & \\text{if } x = \\frac{p}{q} \\text{ in lowest terms}, \\\\ 0 & \\text{if } x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nIn Lean: `if h : \u2203 q : \u211a, (q : \u211d) = x then 1 / (h.choose.den : \u211d) else 0`.",
     "significance": "supporting",
     "relatedConcepts": [
       "rational-number-representation",
@@ -19,8 +19,8 @@
     ],
     "prerequisites": [
       "Lean 4 classical choice",
-      "ℚ.den field",
-      "Rat.cast embedding ℚ → ℝ"
+      "\u211a.den field",
+      "Rat.cast embedding \u211a \u2192 \u211d"
     ]
   },
   {
@@ -30,9 +30,9 @@
       "startLine": 61,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Zero at Irrationals, Nonneg and Bounded",
-    "content": "Three basic properties are established: (1) f vanishes at every irrational by the `dif_neg` rewrite — the `else` branch triggers. (2) f ≥ 0 everywhere: both branches give nonneg values (`1/q > 0` and `0`). (3) f ≤ 1 since `1/q ≤ 1` for positive integer denominators `q ≥ 1`.",
+    "content": "Three basic properties are established: (1) f vanishes at every irrational by the `dif_neg` rewrite \u2014 the `else` branch triggers. (2) f \u2265 0 everywhere: both branches give nonneg values (`1/q > 0` and `0`). (3) f \u2264 1 since `1/q \u2264 1` for positive integer denominators `q \u2265 1`.",
     "mathContext": "For $x \\in \\mathbb{R} \\setminus \\mathbb{Q}$: $f(x) = 0$. For all $x$: $0 \\leq f(x) \\leq 1$. In particular $f(1/q) = 1/q \\leq 1$ since $\\mathrm{den}(p/q) \\geq 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -54,8 +54,8 @@
     },
     "type": "insight",
     "title": "Support is Contained in the Countable Rationals",
-    "content": "The key structural lemma: the support of Thomae's function (set where f ≠ 0) is a subset of ℚ, embedded in ℝ. The proof is by contraposition — if x has no rational representative, the `dif_neg` branch sets f(x) = 0. Since ℚ is countable and countable sets have Lebesgue measure zero, the support has measure zero.",
-    "mathContext": "$$\\{x \\in \\mathbb{R} : f(x) \\neq 0\\} \\subseteq \\mathbb{Q} \\hookrightarrow \\mathbb{R}$$\n$$\\lambda(\\mathbb{Q}) = 0 \\implies \\lambda(\\{f \\neq 0\\}) = 0 \\implies f = 0 \\text{ a.e.}$$\nIn Lean: `measure_mono_null thomae_support_subset_rationals (Set.Countable.measure_zero ...)` gives `volume {x | thomae x ≠ 0} = 0`.",
+    "content": "The key structural lemma: the support of Thomae's function (set where f \u2260 0) is a subset of \u211a, embedded in \u211d. The proof is by contraposition \u2014 if x has no rational representative, the `dif_neg` branch sets f(x) = 0. Since \u211a is countable and countable sets have Lebesgue measure zero, the support has measure zero.",
+    "mathContext": "$$\\{x \\in \\mathbb{R} : f(x) \\neq 0\\} \\subseteq \\mathbb{Q} \\hookrightarrow \\mathbb{R}$$\n$$\\lambda(\\mathbb{Q}) = 0 \\implies \\lambda(\\{f \\neq 0\\}) = 0 \\implies f = 0 \\text{ a.e.}$$\nIn Lean: `measure_mono_null thomae_support_subset_rationals (Set.Countable.measure_zero ...)` gives `volume {x | thomae x \u2260 0} = 0`.",
     "significance": "key",
     "relatedConcepts": [
       "support-of-function",
@@ -76,10 +76,10 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Main Result: Lebesgue Integral Equals Zero",
     "content": "The main theorem `thomae_integral_zero` follows in one line from `integral_eq_zero_of_ae thomae_ae_zero`. The unit interval restriction `thomae_integral_unit_interval` follows from `ae_restrict_of_ae`, which transfers the global a.e. zero property to any measurable subset.",
-    "mathContext": "$$\\int_{\\mathbb{R}} f \\, d\\lambda = 0, \\qquad \\int_0^1 f \\, d\\lambda = 0.$$\nProof sketch: $f = 0$ a.e. $\\Longrightarrow$ $\\int f = \\int 0 = 0$. Formally: `integral_eq_zero_of_ae : (∀ᵐ x, f x = 0) → ∫ f = 0`.",
+    "mathContext": "$$\\int_{\\mathbb{R}} f \\, d\\lambda = 0, \\qquad \\int_0^1 f \\, d\\lambda = 0.$$\nProof sketch: $f = 0$ a.e. $\\Longrightarrow$ $\\int f = \\int 0 = 0$. Formally: `integral_eq_zero_of_ae : (\u2200\u1d50 x, f x = 0) \u2192 \u222b f = 0`.",
     "significance": "key",
     "relatedConcepts": [
       "integral_eq_zero_of_ae",
@@ -101,8 +101,8 @@
     },
     "type": "insight",
     "title": "Riemann vs Lebesgue: The Key Contrast",
-    "content": "Thomae's function is a canonical example distinguishing Riemann and Lebesgue integration. It is Riemann integrable with integral 0 — provable by the ε-δ argument that for any ε > 0, only finitely many denominators q satisfy 1/q > ε. Yet the Lebesgue proof is far simpler: f = 0 a.e. requires no epsilon-delta reasoning, just countability of ℚ.",
-    "mathContext": "Riemann: For all $\\varepsilon > 0$, $|\\{q \\in \\mathbb{N} : 1/q > \\varepsilon\\}|$ is finite, so the set of jump discontinuities above $\\varepsilon$ is finite — manageable for Riemann sums. This gives $\\int_0^1 f \\, dx = 0$ (Riemann).\n\nLebesgue: $f = 0$ $\\lambda$-a.e. since $\\lambda(\\mathbb{Q}) = 0$. The integral follows trivially, without any epsilon-delta argument.",
+    "content": "Thomae's function is a canonical example distinguishing Riemann and Lebesgue integration. It is Riemann integrable with integral 0 \u2014 provable by the \u03b5-\u03b4 argument that for any \u03b5 > 0, only finitely many denominators q satisfy 1/q > \u03b5. Yet the Lebesgue proof is far simpler: f = 0 a.e. requires no epsilon-delta reasoning, just countability of \u211a.",
+    "mathContext": "Riemann: For all $\\varepsilon > 0$, $|\\{q \\in \\mathbb{N} : 1/q > \\varepsilon\\}|$ is finite, so the set of jump discontinuities above $\\varepsilon$ is finite \u2014 manageable for Riemann sums. This gives $\\int_0^1 f \\, dx = 0$ (Riemann).\n\nLebesgue: $f = 0$ $\\lambda$-a.e. since $\\lambda(\\mathbb{Q}) = 0$. The integral follows trivially, without any epsilon-delta argument.",
     "significance": "key",
     "relatedConcepts": [
       "Riemann-integrability",
@@ -124,8 +124,8 @@
       "endLine": 153
     },
     "type": "concept",
-    "title": "Pointwise Ordering: Thomae ≤ Dirichlet",
-    "content": "The standard Dirichlet function is the indicator 1_ℚ (returns 1 for rationals, 0 for irrationals). Thomae refines this: at rational p/q it returns 1/q ≤ 1. The theorem `thomae_le_dirichlet` captures this pointwise inequality, and `dirichlet_integral_zero` shows both integrate to 0. The comparison reinforces that the integral vanishes independently for each function by the same measure-zero argument.",
+    "title": "Pointwise Ordering: Thomae \u2264 Dirichlet",
+    "content": "The standard Dirichlet function is the indicator 1_\u211a (returns 1 for rationals, 0 for irrationals). Thomae refines this: at rational p/q it returns 1/q \u2264 1. The theorem `thomae_le_dirichlet` captures this pointwise inequality, and `dirichlet_integral_zero` shows both integrate to 0. The comparison reinforces that the integral vanishes independently for each function by the same measure-zero argument.",
     "mathContext": "Define the standard Dirichlet function $D(x) = \\mathbf{1}_{\\mathbb{Q}}(x)$. Then:\n$$f(x) = \\frac{1}{q} \\leq 1 = D(x) \\quad \\text{for } x = p/q,$$\n$$f(x) = 0 = D(x) \\quad \\text{for } x \\in \\mathbb{R} \\setminus \\mathbb{Q}.$$\nSo $f \\leq D$ pointwise. Both satisfy $\\int f = \\int D = 0$ since $\\lambda(\\mathbb{Q}) = 0$.",
     "significance": "supporting",
     "relatedConcepts": [

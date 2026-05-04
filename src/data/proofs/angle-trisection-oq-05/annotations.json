@@ -8,19 +8,19 @@
     },
     "type": "concept",
     "title": "Line as (a, b, c) with ax + by + c = 0",
-    "content": "A `Line` is represented as a triple (a, b, c) with the non-degeneracy condition `a ≠ 0 ∨ b ≠ 0`, ensuring the line is well-defined. The `contains` method checks ax + by + c = 0 for a given point. This representation is standard in projective geometry and is well-suited for the origami formalization: fold operations are defined via reflection across a line, and the algebraic form makes reflection computable. The `nondeg` field ensures `(a, b) ≠ (0, 0)`, which is necessary for the reflection formula (division by a² + b²) to be non-degenerate.",
+    "content": "A `Line` is represented as a triple (a, b, c) with the non-degeneracy condition `a \u2260 0 \u2228 b \u2260 0`, ensuring the line is well-defined. The `contains` method checks ax + by + c = 0 for a given point. This representation is standard in projective geometry and is well-suited for the origami formalization: fold operations are defined via reflection across a line, and the algebraic form makes reflection computable. The `nondeg` field ensures `(a, b) \u2260 (0, 0)`, which is necessary for the reflection formula (division by a\u00b2 + b\u00b2) to be non-degenerate.",
     "mathContext": "Line $\\ell: ax + by + c = 0$ with $(a, b) \\neq (0, 0)$. Point $P = (p_x, p_y)$ lies on $\\ell$ iff $ap_x + bp_y + c = 0$. The direction normal to $\\ell$ is $(a, b)/\\sqrt{a^2+b^2}$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "affine geometry in ℝ²",
+      "affine geometry in \u211d\u00b2",
       "line equation ax+by+c=0",
       "reflectAcross",
       "projective coordinates"
     ],
     "prerequisites": [
-      "Point abbrev ℝ × ℝ",
+      "Point abbrev \u211d \u00d7 \u211d",
       "Lean 4 structure with fields",
-      "nondeg : a ≠ 0 ∨ b ≠ 0"
+      "nondeg : a \u2260 0 \u2228 b \u2260 0"
     ]
   },
   {
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Reflection Across a Line: The Geometric Core of Origami",
-    "content": "`reflectAcross ℓ P` computes the reflection of point P across line ℓ: ax + by + c = 0. The formula P' = P - 2·t·(a,b) where t = (aP_x + bP_y + c)/(a² + b²) projects P onto ℓ and doubles the projection. This is the geometric interpretation of folding: when you fold along ℓ, every point P maps to its mirror image across ℓ. All seven Huzita-Hatori axioms are expressed in terms of `reflectAcross`, making it the foundational operation of the entire origami system.",
+    "content": "`reflectAcross \u2113 P` computes the reflection of point P across line \u2113: ax + by + c = 0. The formula P' = P - 2\u00b7t\u00b7(a,b) where t = (aP_x + bP_y + c)/(a\u00b2 + b\u00b2) projects P onto \u2113 and doubles the projection. This is the geometric interpretation of folding: when you fold along \u2113, every point P maps to its mirror image across \u2113. All seven Huzita-Hatori axioms are expressed in terms of `reflectAcross`, making it the foundational operation of the entire origami system.",
     "mathContext": "Reflection formula: $P' = P - 2\\frac{aP_x + bP_y + c}{a^2 + b^2}(a, b)$. This satisfies: (1) $P' \\in \\ell$ iff $P \\in \\ell$; (2) $P'$ is on the opposite side of $\\ell$ from $P$ when $P \\notin \\ell$; (3) the midpoint of $P$ and $P'$ lies on $\\ell$.",
     "significance": "key",
     "relatedConcepts": [
@@ -56,8 +56,8 @@
     },
     "type": "concept",
     "title": "The Seven Huzita-Hatori Axioms as a Lean Structure",
-    "content": "The `HHAxioms` structure packages all 7 origami axioms as existential statements: each axiom asserts that given certain points and lines, a fold line EXISTS satisfying the stated constraints. HH-1 through HH-5 and HH-7 provide at most quadratic extensions (equivalent to compass-and-straightedge). The critical axiom is **HH-6 (Beloch fold)**: given P₁, P₂, ℓ₁, ℓ₂, there exists a fold ℓ simultaneously reflecting P₁ onto ℓ₁ AND P₂ onto ℓ₂. This simultaneous constraint reduces to finding common tangents to two parabolas — a cubic problem — giving origami its extra algebraic power.",
-    "mathContext": "HH-1: fold through 2 points (line through points). HH-2: fold mapping P₁ to P₂ (perpendicular bisector). HH-3: fold mapping ℓ₁ to ℓ₂ (angle bisector). HH-4: fold through P perpendicular to ℓ. HH-5: fold through P₂ placing P₁ on ℓ. **HH-6**: fold placing P₁ on ℓ₁ AND P₂ on ℓ₂ simultaneously. HH-7: fold perpendicular to ℓ₂ placing P on ℓ₁.",
+    "content": "The `HHAxioms` structure packages all 7 origami axioms as existential statements: each axiom asserts that given certain points and lines, a fold line EXISTS satisfying the stated constraints. HH-1 through HH-5 and HH-7 provide at most quadratic extensions (equivalent to compass-and-straightedge). The critical axiom is **HH-6 (Beloch fold)**: given P\u2081, P\u2082, \u2113\u2081, \u2113\u2082, there exists a fold \u2113 simultaneously reflecting P\u2081 onto \u2113\u2081 AND P\u2082 onto \u2113\u2082. This simultaneous constraint reduces to finding common tangents to two parabolas \u2014 a cubic problem \u2014 giving origami its extra algebraic power.",
+    "mathContext": "HH-1: fold through 2 points (line through points). HH-2: fold mapping P\u2081 to P\u2082 (perpendicular bisector). HH-3: fold mapping \u2113\u2081 to \u2113\u2082 (angle bisector). HH-4: fold through P perpendicular to \u2113. HH-5: fold through P\u2082 placing P\u2081 on \u2113. **HH-6**: fold placing P\u2081 on \u2113\u2081 AND P\u2082 on \u2113\u2082 simultaneously. HH-7: fold perpendicular to \u2113\u2082 placing P on \u2113\u2081.",
     "significance": "key",
     "relatedConcepts": [
       "Beloch fold",
@@ -79,8 +79,8 @@
       "endLine": 188
     },
     "type": "definition",
-    "title": "IsOrigamiConstructible: Degree Divides 2^a·3^b",
-    "content": "`IsOrigamiConstructible α d` encodes the Alperin-Lang algebraic characterization: α is origami-constructible iff its minimal polynomial degree d satisfies d | 2^a·3^b for some a, b ≥ 0. The parameter α is unused (marked `_α`) because constructibility is purely a degree condition — this is a common pattern in Lean when the type carries information but the predicate doesn't inspect the value. Compare with `IsConstructible α d`: d | 2^n (compass), which is strictly weaker since every 2^n also divides 2^n·3^0.",
+    "title": "IsOrigamiConstructible: Degree Divides 2^a\u00b73^b",
+    "content": "`IsOrigamiConstructible \u03b1 d` encodes the Alperin-Lang algebraic characterization: \u03b1 is origami-constructible iff its minimal polynomial degree d satisfies d | 2^a\u00b73^b for some a, b \u2265 0. The parameter \u03b1 is unused (marked `_\u03b1`) because constructibility is purely a degree condition \u2014 this is a common pattern in Lean when the type carries information but the predicate doesn't inspect the value. Compare with `IsConstructible \u03b1 d`: d | 2^n (compass), which is strictly weaker since every 2^n also divides 2^n\u00b73^0.",
     "mathContext": "Alperin-Lang (2006): $\\alpha \\in \\mathbb{R}$ is origami-constructible $\\iff [\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ divides $2^a \\cdot 3^b$ for some $a, b \\geq 0$. The 3-smooth numbers (of the form $2^a 3^b$) are: $1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, \\ldots$",
     "significance": "key",
     "relatedConcepts": [
@@ -91,8 +91,8 @@
     ],
     "prerequisites": [
       "Nat.dvd",
-      "pow in ℕ",
-      "_α unused parameter pattern",
+      "pow in \u2115",
+      "_\u03b1 unused parameter pattern",
       "IsConstructible definition"
     ]
   },
@@ -103,10 +103,10 @@
       "startLine": 269,
       "endLine": 281
     },
-    "type": "theorem",
-    "title": "3 ∤ 2^n for All n: Key Number-Theoretic Lemma",
-    "content": "This inductive proof that 3 never divides any power of 2 is the number-theoretic backbone of the impossibility results. The induction step: if 3 | 2^(k+1) = 2·2^k, then since 3 is prime, 3 | 2 or 3 | 2^k (by `Nat.Prime.dvd_mul`). Since 3 ∤ 2, we get 3 | 2^k, contradicting the induction hypothesis. The `omega` tactic closes `p ≤ 2` from 3 being prime. This lemma is reused for both `cos_20_not_constructible` and `cube_root_two_not_constructible`.",
-    "mathContext": "$3 \\nmid 2^n$ for all $n \\geq 0$. Proof: $3 \\nmid 2$ (easy), and if $3 \\mid 2^k$ then $3 \\mid 2$ (by primality of 3 and $2^k = 2 \\cdot 2^{k-1}$) — contradiction. This is Euclid's lemma applied inductively.",
+    "type": "insight",
+    "title": "3 \u2224 2^n for All n: Key Number-Theoretic Lemma",
+    "content": "This inductive proof that 3 never divides any power of 2 is the number-theoretic backbone of the impossibility results. The induction step: if 3 | 2^(k+1) = 2\u00b72^k, then since 3 is prime, 3 | 2 or 3 | 2^k (by `Nat.Prime.dvd_mul`). Since 3 \u2224 2, we get 3 | 2^k, contradicting the induction hypothesis. The `omega` tactic closes `p \u2264 2` from 3 being prime. This lemma is reused for both `cos_20_not_constructible` and `cube_root_two_not_constructible`.",
+    "mathContext": "$3 \\nmid 2^n$ for all $n \\geq 0$. Proof: $3 \\nmid 2$ (easy), and if $3 \\mid 2^k$ then $3 \\mid 2$ (by primality of 3 and $2^k = 2 \\cdot 2^{k-1}$) \u2014 contradiction. This is Euclid's lemma applied inductively.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.Prime.dvd_mul",
@@ -128,15 +128,15 @@
       "startLine": 327,
       "endLine": 330
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Angle Trisection IS Possible with Origami",
-    "content": "The main theorem of the file: angle trisection (specifically, trisecting 60°) IS possible with origami. The proof is a one-liner: `⟨cos_20_origami_constructible, cos_20_not_constructible⟩`. This pairs two earlier theorems — cos(20°) is origami-constructible (degree 3 divides 3^1) and cos(20°) is NOT compass-constructible (degree 3 never divides a power of 2). The result directly answers the impossibility from `AngleTrisection.lean`, showing that the classical impossibility depends entirely on the tool chosen.",
-    "mathContext": "cos(20°) = cos(π/9) satisfies the irreducible cubic $8x^3 - 6x - 1 = 0$ over $\\mathbb{Q}$, giving degree 3. Since $3 = 2^0 \\cdot 3^1$, it is origami-constructible. Since $3 \\nmid 2^n$ for any $n$, it is NOT compass-constructible. Trisecting 60° is equivalent to constructing cos(20°).",
+    "content": "The main theorem of the file: angle trisection (specifically, trisecting 60\u00b0) IS possible with origami. The proof is a one-liner: `\u27e8cos_20_origami_constructible, cos_20_not_constructible\u27e9`. This pairs two earlier theorems \u2014 cos(20\u00b0) is origami-constructible (degree 3 divides 3^1) and cos(20\u00b0) is NOT compass-constructible (degree 3 never divides a power of 2). The result directly answers the impossibility from `AngleTrisection.lean`, showing that the classical impossibility depends entirely on the tool chosen.",
+    "mathContext": "cos(20\u00b0) = cos(\u03c0/9) satisfies the irreducible cubic $8x^3 - 6x - 1 = 0$ over $\\mathbb{Q}$, giving degree 3. Since $3 = 2^0 \\cdot 3^1$, it is origami-constructible. Since $3 \\nmid 2^n$ for any $n$, it is NOT compass-constructible. Trisecting 60\u00b0 is equivalent to constructing cos(20\u00b0).",
     "significance": "key",
     "relatedConcepts": [
-      "cos(π/9) minimal polynomial",
+      "cos(\u03c0/9) minimal polynomial",
       "angle trisection impossibility",
-      "degree 3 over ℚ",
+      "degree 3 over \u211a",
       "Beloch fold"
     ],
     "prerequisites": [
@@ -152,13 +152,13 @@
       "startLine": 350,
       "endLine": 353
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Cube Doubling IS Possible with Origami",
-    "content": "By the same pattern as angle trisection: ∛2 satisfies x³ - 2 = 0 (irreducible, degree 3), so it is origami-constructible (3 | 2^0·3^1) but not compass-constructible (3 ∤ 2^n). The ancient problem of doubling the cube — finding ∛2 — is impossible with compass and straightedge (Wantzel 1837) but trivially within reach of the Beloch fold. Abe's origami construction for cube doubling was discovered around the same time as his trisection (1980s), by reducing to a Menaechmus-style conic intersection.",
+    "content": "By the same pattern as angle trisection: \u221b2 satisfies x\u00b3 - 2 = 0 (irreducible, degree 3), so it is origami-constructible (3 | 2^0\u00b73^1) but not compass-constructible (3 \u2224 2^n). The ancient problem of doubling the cube \u2014 finding \u221b2 \u2014 is impossible with compass and straightedge (Wantzel 1837) but trivially within reach of the Beloch fold. Abe's origami construction for cube doubling was discovered around the same time as his trisection (1980s), by reducing to a Menaechmus-style conic intersection.",
     "mathContext": "$\\sqrt[3]{2}$ has minimal polynomial $x^3 - 2$ (irreducible over $\\mathbb{Q}$ by Eisenstein at $p=2$). $[\\mathbb{Q}(\\sqrt[3]{2}):\\mathbb{Q}] = 3 = 2^0 \\cdot 3^1$ divides $2^0 \\cdot 3^1$, so $\\sqrt[3]{2}$ is origami-constructible but not compass-constructible.",
     "significance": "key",
     "relatedConcepts": [
-      "∛2 not compass-constructible",
+      "\u221b2 not compass-constructible",
       "Wantzel 1837",
       "Menaechmus conic intersection",
       "Beloch fold for cubics"
@@ -176,9 +176,9 @@
       "startLine": 420,
       "endLine": 431
     },
-    "type": "theorem",
-    "title": "Prime p > 3 Never Divides 2^a·3^b: Origami's Fundamental Limitation",
-    "content": "This is the general limitation theorem. For any prime p > 3 and any a, b, p ∤ 2^a·3^b. The proof: if p | 2^a·3^b, then by Euclid's lemma (prime divisibility), p | 2^a or p | 3^b. If p | 2^a, then p | 2 (by `Nat.Prime.dvd_of_dvd_pow`), so p ≤ 2, contradicting p > 3. Similarly if p | 3^b. The `omega` and `interval_cases p` tactics clean up the boundary cases. This theorem implies that degrees 5, 7, 11, 13, ... are never origami-constructible — only 3-smooth degrees are allowed.",
+    "type": "insight",
+    "title": "Prime p > 3 Never Divides 2^a\u00b73^b: Origami's Fundamental Limitation",
+    "content": "This is the general limitation theorem. For any prime p > 3 and any a, b, p \u2224 2^a\u00b73^b. The proof: if p | 2^a\u00b73^b, then by Euclid's lemma (prime divisibility), p | 2^a or p | 3^b. If p | 2^a, then p | 2 (by `Nat.Prime.dvd_of_dvd_pow`), so p \u2264 2, contradicting p > 3. Similarly if p | 3^b. The `omega` and `interval_cases p` tactics clean up the boundary cases. This theorem implies that degrees 5, 7, 11, 13, ... are never origami-constructible \u2014 only 3-smooth degrees are allowed.",
     "mathContext": "If $p > 3$ is prime: $p \\nmid 2$ (since $p > 3 > 2$) and $p \\nmid 3$ (since $p > 3$). By Euclid's lemma, $p \\nmid 2^a$ and $p \\nmid 3^b$, hence $p \\nmid 2^a \\cdot 3^b$. This generalizes `three_not_dvd_power_of_two` to all large primes.",
     "significance": "key",
     "relatedConcepts": [
@@ -201,9 +201,9 @@
       "startLine": 487,
       "endLine": 489
     },
-    "type": "theorem",
-    "title": "Origami ≡ Neusis: Definitional Equality",
-    "content": "The Alperin-Lang theorem is proved by `Iff.rfl` — the two definitions `IsOrigamiConstructible` and `IsNeusisConstructible` are definitionally equal! Both are defined as `d > 0 ∧ ∃ a b : ℕ, d ∣ 2^a * 3^b`. This is the Lean encoding of the deep theoretical result: the algebraic characterization is the same for both methods. The proof reduces to the observation that `IsOrigamiConstructible α d` and `IsNeusisConstructible α d` have identical Lean definitions, so `Iff.rfl` closes the goal immediately.",
+    "type": "insight",
+    "title": "Origami \u2261 Neusis: Definitional Equality",
+    "content": "The Alperin-Lang theorem is proved by `Iff.rfl` \u2014 the two definitions `IsOrigamiConstructible` and `IsNeusisConstructible` are definitionally equal! Both are defined as `d > 0 \u2227 \u2203 a b : \u2115, d \u2223 2^a * 3^b`. This is the Lean encoding of the deep theoretical result: the algebraic characterization is the same for both methods. The proof reduces to the observation that `IsOrigamiConstructible \u03b1 d` and `IsNeusisConstructible \u03b1 d` have identical Lean definitions, so `Iff.rfl` closes the goal immediately.",
     "mathContext": "Alperin-Lang (2006): $\\text{Origami-constructible}(\\alpha, d) \\iff \\text{Neusis-constructible}(\\alpha, d)$. In Lean, both are defined as $d > 0 \\land \\exists a\\ b,\\ d \\mid 2^a \\cdot 3^b$, so their equivalence is definitional (holds by `rfl`). This captures a non-trivial mathematical theorem via a judicious choice of definitions.",
     "significance": "key",
     "relatedConcepts": [
@@ -225,10 +225,10 @@
       "startLine": 562,
       "endLine": 568
     },
-    "type": "theorem",
-    "title": "Complete Constructibility Hierarchy: Compass ⊊ Origami ⊊ Multi-fold",
-    "content": "The summary theorem proves the complete strict chain compass ⊊ origami ⊊ multi-fold origami, with concrete witnesses for both strict inclusions: (1) cos(20°) ∈ Origami \\ Compass; (2) ∛(2^(1/5)) ∈ MultiFold \\ Origami (degree 5). The proof assembles `angle_trisection_possible_with_origami` and `multifold_strictly_stronger`. This captures the theoretical landscape in a single Lean theorem: each tool strictly extends the previous one's algebraic reach.",
-    "mathContext": "Strict inclusions: $\\{\\text{compass}\\} \\subsetneq \\{\\text{origami}\\} \\subsetneq \\{\\text{multi-fold}\\}$. Witnesses: cos(π/9) separates compass from origami; degree-5 numbers separate origami from multi-fold. The hierarchy extends: $n$-fold origami solves equations of degree dividing $2^a \\cdot 3^b \\cdot \\ldots$ with $n$ prime factors.",
+    "type": "insight",
+    "title": "Complete Constructibility Hierarchy: Compass \u228a Origami \u228a Multi-fold",
+    "content": "The summary theorem proves the complete strict chain compass \u228a origami \u228a multi-fold origami, with concrete witnesses for both strict inclusions: (1) cos(20\u00b0) \u2208 Origami \\ Compass; (2) \u221b(2^(1/5)) \u2208 MultiFold \\ Origami (degree 5). The proof assembles `angle_trisection_possible_with_origami` and `multifold_strictly_stronger`. This captures the theoretical landscape in a single Lean theorem: each tool strictly extends the previous one's algebraic reach.",
+    "mathContext": "Strict inclusions: $\\{\\text{compass}\\} \\subsetneq \\{\\text{origami}\\} \\subsetneq \\{\\text{multi-fold}\\}$. Witnesses: cos(\u03c0/9) separates compass from origami; degree-5 numbers separate origami from multi-fold. The hierarchy extends: $n$-fold origami solves equations of degree dividing $2^a \\cdot 3^b \\cdot \\ldots$ with $n$ prime factors.",
     "significance": "key",
     "relatedConcepts": [
       "strict containment",
@@ -249,10 +249,10 @@
       "startLine": 575,
       "endLine": 615
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Origami Degree Classification Up to 12",
-    "content": "A comprehensive classification theorem: for degrees 1–12, exactly the 3-smooth degrees are origami-constructible — i.e., {1, 2, 3, 4, 6, 8, 9, 12}. Non-constructible: {5, 7, 10, 11}. The proof uses `refine ⟨..., ...⟩` to split the 12-part conjunction, providing explicit witnesses (a, b such that d | 2^a·3^b) for constructible degrees and citing `prime_gt_three_not_two_three` for non-constructible ones. The degree-10 case is handled via 5 | 10, 5 is prime > 3, so 5 ∤ 2^a·3^b → 10 ∤ 2^a·3^b.",
-    "mathContext": "3-smooth numbers ≤ 12: $1=2^0 3^0, 2=2^1 3^0, 3=2^0 3^1, 4=2^2 3^0, 6=2^1 3^1, 8=2^3 3^0, 9=2^0 3^2, 12=2^2 3^1$. Non-constructible: 5, 7, 10 (has factor 5), 11 are all non-3-smooth. This matches OEIS A051037 (3-smooth numbers).",
+    "content": "A comprehensive classification theorem: for degrees 1\u201312, exactly the 3-smooth degrees are origami-constructible \u2014 i.e., {1, 2, 3, 4, 6, 8, 9, 12}. Non-constructible: {5, 7, 10, 11}. The proof uses `refine \u27e8..., ...\u27e9` to split the 12-part conjunction, providing explicit witnesses (a, b such that d | 2^a\u00b73^b) for constructible degrees and citing `prime_gt_three_not_two_three` for non-constructible ones. The degree-10 case is handled via 5 | 10, 5 is prime > 3, so 5 \u2224 2^a\u00b73^b \u2192 10 \u2224 2^a\u00b73^b.",
+    "mathContext": "3-smooth numbers \u2264 12: $1=2^0 3^0, 2=2^1 3^0, 3=2^0 3^1, 4=2^2 3^0, 6=2^1 3^1, 8=2^3 3^0, 9=2^0 3^2, 12=2^2 3^1$. Non-constructible: 5, 7, 10 (has factor 5), 11 are all non-3-smooth. This matches OEIS A051037 (3-smooth numbers).",
     "significance": "supporting",
     "relatedConcepts": [
       "3-smooth numbers (OEIS A051037)",

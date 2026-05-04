@@ -7,8 +7,8 @@
       "endLine": 75
     },
     "type": "definition",
-    "title": "Parameterized Board: SquareN n as Fin n × Fin n",
-    "content": "SquareN n = Fin n × Fin n is the n×n chessboard, where coordinates are elements of Fin n (integers 0 through n−1). This finite type encoding is essential: all coordinate arithmetic is modular, and coordinates can never be negative. knightGraphN n is the simple graph on SquareN n where two squares are adjacent iff their coordinate difference is an L-shaped knight move — specifically (±1,±2) or (±2,±1). The parameterization replaces all prior 8×8-specific definitions with one family indexed by n, enabling the universal statement ∀ n ≥ 5.",
+    "title": "Parameterized Board: SquareN n as Fin n \u00d7 Fin n",
+    "content": "SquareN n = Fin n \u00d7 Fin n is the n\u00d7n chessboard, where coordinates are elements of Fin n (integers 0 through n\u22121). This finite type encoding is essential: all coordinate arithmetic is modular, and coordinates can never be negative. knightGraphN n is the simple graph on SquareN n where two squares are adjacent iff their coordinate difference is an L-shaped knight move \u2014 specifically (\u00b11,\u00b12) or (\u00b12,\u00b11). The parameterization replaces all prior 8\u00d78-specific definitions with one family indexed by n, enabling the universal statement \u2200 n \u2265 5.",
     "mathContext": "$\\text{SquareN}\\, n = \\text{Fin}\\, n \\times \\text{Fin}\\, n$; $(a,b) \\sim (c,d) \\iff \\{|a-c|,|b-d|\\} = \\{1,2\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -32,8 +32,8 @@
       "endLine": 102
     },
     "type": "definition",
-    "title": "Oblique Turn via Dot Product: isOblique ↔ Entry·Exit < 0",
-    "content": "A turn is oblique if the angle between incoming and outgoing move vectors exceeds 90°, captured algebraically by a negative dot product. MoveVector is ℤ² (signed offsets), and dot product of (a,b)·(c,d) = ac + bd encodes the cosine up to magnitudes. isOblique (v₁, v₂) := v₁·v₂ < 0. Knight offsets (±1,±2) and (±2,±1) have magnitude √5 each, so the dot product criterion exactly characterizes the angle. getMoveVector extracts the signed ℤ² offset between consecutive tour positions.",
+    "title": "Oblique Turn via Dot Product: isOblique \u2194 Entry\u00b7Exit < 0",
+    "content": "A turn is oblique if the angle between incoming and outgoing move vectors exceeds 90\u00b0, captured algebraically by a negative dot product. MoveVector is \u2124\u00b2 (signed offsets), and dot product of (a,b)\u00b7(c,d) = ac + bd encodes the cosine up to magnitudes. isOblique (v\u2081, v\u2082) := v\u2081\u00b7v\u2082 < 0. Knight offsets (\u00b11,\u00b12) and (\u00b12,\u00b11) have magnitude \u221a5 each, so the dot product criterion exactly characterizes the angle. getMoveVector extracts the signed \u2124\u00b2 offset between consecutive tour positions.",
     "mathContext": "$\\text{dot}((a,b),(c,d))=ac+bd$; $\\text{isOblique}(v_1,v_2) \\iff v_1\\cdot v_2 < 0 \\iff \\theta > 90^\\circ$; $|v|^2=5$ for all knight moves",
     "significance": "key",
     "relatedConcepts": [
@@ -57,7 +57,7 @@
     },
     "type": "definition",
     "title": "Corner Degree-2: Six of Eight Offsets Eliminated by Fin Non-Negativity",
-    "content": "For n ≥ 5, each corner has exactly 2 knight-adjacent squares. For corner (0,0): of the 8 offsets {(±1,±2),(±2,±1)}, any offset with a negative component requires a negative Fin n value — impossible. This eliminates 6 of 8 offsets, leaving only (1,2) and (2,1). Both are valid since n ≥ 5 > 2. The proof uses omega to derive contradictions from hypothetical negative coordinates; no native_decide or enumeration is needed. The same argument applies to all four corners by the symmetry of the knight's move set.",
+    "content": "For n \u2265 5, each corner has exactly 2 knight-adjacent squares. For corner (0,0): of the 8 offsets {(\u00b11,\u00b12),(\u00b12,\u00b11)}, any offset with a negative component requires a negative Fin n value \u2014 impossible. This eliminates 6 of 8 offsets, leaving only (1,2) and (2,1). Both are valid since n \u2265 5 > 2. The proof uses omega to derive contradictions from hypothetical negative coordinates; no native_decide or enumeration is needed. The same argument applies to all four corners by the symmetry of the knight's move set.",
     "mathContext": "$(0,0)$'s neighbors (n\\geq 5): $\\{(1,2),(2,1)\\}$; 6 offsets require negative coords, impossible in Fin $n\\geq 0$",
     "significance": "key",
     "relatedConcepts": [
@@ -79,9 +79,9 @@
       "startLine": 224,
       "endLine": 310
     },
-    "type": "theorem",
-    "title": "Corner Dot Product is Always −4: The Algebraic Forcing Argument",
-    "content": "corner_forces_oblique proves the entry·exit dot product at any corner is exactly −4 < 0, independent of n. At corner (0,0), entry must come from one of {(1,2),(2,1)} and exit to the other. Entry direction is the reverse: arriving from (1,2) gives entry vector (−1,−2); exit to (2,1) gives dot (−1)(2)+(−2)(1) = −4. Symmetrically: (−2,−1)·(1,2) = −2−2 = −4. Always −4. The Lean proof case-splits on which neighbor is prev/next, then resolves by linarith.",
+    "type": "insight",
+    "title": "Corner Dot Product is Always \u22124: The Algebraic Forcing Argument",
+    "content": "corner_forces_oblique proves the entry\u00b7exit dot product at any corner is exactly \u22124 < 0, independent of n. At corner (0,0), entry must come from one of {(1,2),(2,1)} and exit to the other. Entry direction is the reverse: arriving from (1,2) gives entry vector (\u22121,\u22122); exit to (2,1) gives dot (\u22121)(2)+(\u22122)(1) = \u22124. Symmetrically: (\u22122,\u22121)\u00b7(1,2) = \u22122\u22122 = \u22124. Always \u22124. The Lean proof case-splits on which neighbor is prev/next, then resolves by linarith.",
     "mathContext": "Entry reversed: $(-\\Delta x,-\\Delta y)\\cdot(\\Delta x',\\Delta y')$; $(-1)(2)+(-2)(1)=-4$; $(-2)(1)+(-1)(2)=-4$; all $< 0$",
     "significance": "key",
     "relatedConcepts": [
@@ -105,7 +105,7 @@
     },
     "type": "insight",
     "title": "Main Theorem: Four Distinct Oblique Positions via Tour Injectivity",
-    "content": "four_oblique_corners: every ClosedTourN n (n ≥ 5) has 4 distinct positions with oblique turns. Proof: (1) each corner appears exactly once in the Hamiltonian cycle — find positions i₁,i₂,i₃,i₄ for the 4 corners; (2) corner_forces_oblique gives oblique turns at each; (3) the four corner squares are distinct (n ≥ 5 ensures n−1 ≥ 4 > 0), so positions are distinct by the nodup property. The n ≥ 5 hypothesis (vs n ≥ 3) is used only here: to guarantee the 4 corners are genuinely different squares.",
+    "content": "four_oblique_corners: every ClosedTourN n (n \u2265 5) has 4 distinct positions with oblique turns. Proof: (1) each corner appears exactly once in the Hamiltonian cycle \u2014 find positions i\u2081,i\u2082,i\u2083,i\u2084 for the 4 corners; (2) corner_forces_oblique gives oblique turns at each; (3) the four corner squares are distinct (n \u2265 5 ensures n\u22121 \u2265 4 > 0), so positions are distinct by the nodup property. The n \u2265 5 hypothesis (vs n \u2265 3) is used only here: to guarantee the 4 corners are genuinely different squares.",
     "mathContext": "$\\forall n\\geq 5,\\, t: \\exists i_1\\neq i_2\\neq i_3\\neq i_4,\\; \\text{isOblique}(\\text{turn}_{i_j})$; corners distinct since $n-1 \\geq 4 > 0$",
     "significance": "key",
     "relatedConcepts": [
@@ -128,10 +128,10 @@
       "startLine": 59,
       "endLine": 62
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Tightness and Knuth's 2025 Christmas Lecture",
-    "content": "The bound of 4 oblique turns is tight: Knuth's December 2025 Christmas lecture proved (via native_decide enumeration of all 8×8 closed tours) that the minimum is exactly 4, achieved by a unique tour up to D4 symmetry. This generalization proves the lower bound 4 algebraically for all n ≥ 5, without enumeration. Where Knuth's proof explored ~13 trillion 8×8 tours computationally, the algebraic proof uses only 6 lines of omega arithmetic on corner geometry. Open: does the minimum stay exactly 4 for all n ≥ 5, or does it grow with n?",
-    "mathContext": "Knuth 2025: min = 4 (8×8, native_decide). This file: $\\geq 4$ for all $n\\geq 5$ (algebraic). Tightness: 8×8 achieves 4.",
+    "content": "The bound of 4 oblique turns is tight: Knuth's December 2025 Christmas lecture proved (via native_decide enumeration of all 8\u00d78 closed tours) that the minimum is exactly 4, achieved by a unique tour up to D4 symmetry. This generalization proves the lower bound 4 algebraically for all n \u2265 5, without enumeration. Where Knuth's proof explored ~13 trillion 8\u00d78 tours computationally, the algebraic proof uses only 6 lines of omega arithmetic on corner geometry. Open: does the minimum stay exactly 4 for all n \u2265 5, or does it grow with n?",
+    "mathContext": "Knuth 2025: min = 4 (8\u00d78, native_decide). This file: $\\geq 4$ for all $n\\geq 5$ (algebraic). Tightness: 8\u00d78 achieves 4.",
     "significance": "supporting",
     "relatedConcepts": [
       "Knuth Christmas lecture 2025",

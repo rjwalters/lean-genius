@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Casus Irreducibilis: The First Historical Encounter with Necessity of Complex Numbers",
-    "content": "The casus irreducibilis ('irreducible case') is historically the first instance where complex numbers proved necessary — not merely convenient — even when all answers are real. For x³ + px + q = 0 with three distinct real roots (Δ = -4p³ - 27q² > 0), Cardano's formula (1545) necessarily passes through complex cube roots: x = ∛(-q/2 + √D) + ∛(-q/2 - √D) where D = q²/4 + p³/27 < 0. Since D < 0, the √D is purely imaginary. The complex cube roots cancel to give real results, but cannot be avoided. Rafael Bombelli (1572) first showed the complex routes were valid; Pierre Wantzel (1843) proved that no real-valued radical expression exists for all three roots.",
+    "content": "The casus irreducibilis ('irreducible case') is historically the first instance where complex numbers proved necessary \u2014 not merely convenient \u2014 even when all answers are real. For x\u00b3 + px + q = 0 with three distinct real roots (\u0394 = -4p\u00b3 - 27q\u00b2 > 0), Cardano's formula (1545) necessarily passes through complex cube roots: x = \u221b(-q/2 + \u221aD) + \u221b(-q/2 - \u221aD) where D = q\u00b2/4 + p\u00b3/27 < 0. Since D < 0, the \u221aD is purely imaginary. The complex cube roots cancel to give real results, but cannot be avoided. Rafael Bombelli (1572) first showed the complex routes were valid; Pierre Wantzel (1843) proved that no real-valued radical expression exists for all three roots.",
     "mathContext": "The relationship: $\\Delta = -4p^3 - 27q^2 = -108D$, so $\\Delta > 0 \\Leftrightarrow D < 0$. When $D < 0$: $\\sqrt{D} = i\\sqrt{-D} \\in i\\mathbb{R}_{>0}$, making Cardano's cube root arguments $z_{1,2} = -q/2 \\pm i\\sqrt{-D}$ strictly complex. Yet their sum $\\sqrt[3]{z_1} + \\sqrt[3]{z_2} \\in \\mathbb{R}$ (the complex parts cancel). Wantzel's 1843 theorem (a precursor to Galois theory): the splitting field of $x^3+px+q$ over $\\mathbb{Q}(p,q)$ has Galois group $S_3$ or $A_3$, and no real radical tower resolves all three roots simultaneously.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -33,7 +33,7 @@
     },
     "type": "concept",
     "title": "Depressed Cubic, Discriminant, and Cardano's D: The Algebraic Setup",
-    "content": "Four definitions capture the algebraic setup. `depressedCubic p q x` is x³+px+q, the standard reduced form of any cubic after eliminating the x² term. `discriminant p q` is Δ = −4p³ − 27q², the sign of which determines root structure: Δ > 0 gives three distinct real roots, Δ = 0 gives repeated roots, Δ < 0 gives one real and two complex conjugate roots. `cardanoD p q` is D = q²/4 + p³/27, the quantity appearing under the square root in Cardano's formula — related to the discriminant by D = −Δ/108. `isCasusIrreducibilis` simply asserts Δ > 0.",
+    "content": "Four definitions capture the algebraic setup. `depressedCubic p q x` is x\u00b3+px+q, the standard reduced form of any cubic after eliminating the x\u00b2 term. `discriminant p q` is \u0394 = \u22124p\u00b3 \u2212 27q\u00b2, the sign of which determines root structure: \u0394 > 0 gives three distinct real roots, \u0394 = 0 gives repeated roots, \u0394 < 0 gives one real and two complex conjugate roots. `cardanoD p q` is D = q\u00b2/4 + p\u00b3/27, the quantity appearing under the square root in Cardano's formula \u2014 related to the discriminant by D = \u2212\u0394/108. `isCasusIrreducibilis` simply asserts \u0394 > 0.",
     "mathContext": "$\\Delta = -4p^3 - 27q^2,\\quad D = \\frac{q^2}{4} + \\frac{p^3}{27} = -\\frac{\\Delta}{108}$. The depressed cubic form arises from $x^3 + px + q = 0$ via the substitution $x \\to x - a/3$ in the general cubic $x^3 + ax^2 + bx + c = 0$. Any cubic can be reduced to the depressed form. The discriminant $\\Delta$ is related to the resultant of $f$ and $f'$: $\\Delta = -\\text{Res}(f, f')/a$ for monic $f$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -57,9 +57,9 @@
       "endLine": 74
     },
     "type": "insight",
-    "title": "Δ > 0 Forces D < 0 and p < 0: The Algebraic Heart of Casus Irreducibilis",
-    "content": "The core algebraic fact: when the cubic has three distinct real roots (Δ > 0), Cardano's intermediate quantity D = q²/4 + p³/27 is necessarily negative. Since Δ = -108D, the proof is a single `nlinarith`. The companion theorem `p_neg_of_casus` shows p < 0 is also forced: since Δ = −4p³ − 27q² > 0 and −27q² ≤ 0, we need −4p³ > 27q² ≥ 0, hence p³ < 0, so p < 0. The negativity of p guarantees √(-p/3) is real (needed for Viète's form).",
-    "mathContext": "$D < 0$ means $\\sqrt{D} = i\\sqrt{-D}$, making Cardano's arguments $z_{1,2} = -q/2 \\pm i\\sqrt{-D}$ non-real with $|z_{1,2}| = \\sqrt{(q/2)^2 + (-D)} = \\sqrt{-p^3/27}$. So the modulus of the cube root arguments is $|z| = (-p/3)^{3/2}$, which is real since $p < 0$. The argument is $\\theta = \\pm\\arctan(\\sqrt{-D}/(q/2))$ — this is what becomes the $\\theta/3$ in the trigonometric form.",
+    "title": "\u0394 > 0 Forces D < 0 and p < 0: The Algebraic Heart of Casus Irreducibilis",
+    "content": "The core algebraic fact: when the cubic has three distinct real roots (\u0394 > 0), Cardano's intermediate quantity D = q\u00b2/4 + p\u00b3/27 is necessarily negative. Since \u0394 = -108D, the proof is a single `nlinarith`. The companion theorem `p_neg_of_casus` shows p < 0 is also forced: since \u0394 = \u22124p\u00b3 \u2212 27q\u00b2 > 0 and \u221227q\u00b2 \u2264 0, we need \u22124p\u00b3 > 27q\u00b2 \u2265 0, hence p\u00b3 < 0, so p < 0. The negativity of p guarantees \u221a(-p/3) is real (needed for Vi\u00e8te's form).",
+    "mathContext": "$D < 0$ means $\\sqrt{D} = i\\sqrt{-D}$, making Cardano's arguments $z_{1,2} = -q/2 \\pm i\\sqrt{-D}$ non-real with $|z_{1,2}| = \\sqrt{(q/2)^2 + (-D)} = \\sqrt{-p^3/27}$. So the modulus of the cube root arguments is $|z| = (-p/3)^{3/2}$, which is real since $p < 0$. The argument is $\\theta = \\pm\\arctan(\\sqrt{-D}/(q/2))$ \u2014 this is what becomes the $\\theta/3$ in the trigonometric form.",
     "significance": "key",
     "relatedConcepts": [
       "cardanoD_neg_of_casus",
@@ -68,7 +68,7 @@
       "sign of discriminant"
     ],
     "prerequisites": [
-      "Δ = -108D algebraic identity",
+      "\u0394 = -108D algebraic identity",
       "nlinarith tactic",
       "sq_nonneg in Lean 4"
     ]
@@ -80,10 +80,10 @@
       "startLine": 76,
       "endLine": 105
     },
-    "type": "theorem",
-    "title": "Cardano's Arguments Are Genuinely Complex: im ≠ 0 via Real.sqrt_pos",
-    "content": "The theorems `cardanoArg_not_real` and `cardanoArgConj_not_real` prove the imaginary part of Cardano's cube root arguments is nonzero. For `cardanoArg p q = (-q/2 : ℝ) + I * √(-D)`, the imaginary part is `√(-D)` after simp. `Real.sqrt_pos.mpr` converts this to: `√(-D) > 0 ↔ -D > 0 ↔ D < 0`, which follows from `cardanoD_neg_of_casus`. The `linarith` closes the chain. The argument for the conjugate `cardanoArgConj` is identical since the sign change only affects im = -√(-D) which is also nonzero.",
-    "mathContext": "$(\\text{cardanoArg}).\\text{im} = \\sqrt{-D} > 0$ since $D < 0 \\Rightarrow -D > 0$. In Lean: `Complex.add_im`, `Complex.mul_im`, `Complex.I_im = 1` reduce the imaginary part to `Real.sqrt(-cardanoD p q)`. Then `Real.sqrt_pos : 0 < Real.sqrt x ↔ 0 < x` (for real x) finishes. The `ne_of_gt` gives `≠ 0` from `> 0`. This is the proof that Cardano's formula is **necessarily** complex in the casus irreducibilis — not an artifact of the formula but a mathematical necessity.",
+    "type": "insight",
+    "title": "Cardano's Arguments Are Genuinely Complex: im \u2260 0 via Real.sqrt_pos",
+    "content": "The theorems `cardanoArg_not_real` and `cardanoArgConj_not_real` prove the imaginary part of Cardano's cube root arguments is nonzero. For `cardanoArg p q = (-q/2 : \u211d) + I * \u221a(-D)`, the imaginary part is `\u221a(-D)` after simp. `Real.sqrt_pos.mpr` converts this to: `\u221a(-D) > 0 \u2194 -D > 0 \u2194 D < 0`, which follows from `cardanoD_neg_of_casus`. The `linarith` closes the chain. The argument for the conjugate `cardanoArgConj` is identical since the sign change only affects im = -\u221a(-D) which is also nonzero.",
+    "mathContext": "$(\\text{cardanoArg}).\\text{im} = \\sqrt{-D} > 0$ since $D < 0 \\Rightarrow -D > 0$. In Lean: `Complex.add_im`, `Complex.mul_im`, `Complex.I_im = 1` reduce the imaginary part to `Real.sqrt(-cardanoD p q)`. Then `Real.sqrt_pos : 0 < Real.sqrt x \u2194 0 < x` (for real x) finishes. The `ne_of_gt` gives `\u2260 0` from `> 0`. This is the proof that Cardano's formula is **necessarily** complex in the casus irreducibilis \u2014 not an artifact of the formula but a mathematical necessity.",
     "significance": "key",
     "relatedConcepts": [
       "cardanoArg_not_real",
@@ -105,19 +105,19 @@
       "endLine": 147
     },
     "type": "concept",
-    "title": "Viète's Trigonometric Form: Three Real Roots Without Complex Numbers",
-    "content": "The `trigRoot p q k` formula for k ∈ {0,1,2} gives three explicitly real roots via x_k = 2√(-p/3) · cos((θ + 2πk)/3) where θ = arccos(-q/(2r³)) and r = √(-p/3). This bypasses complex numbers entirely: both √(-p/3) and arccos are real (p < 0 guarantees -p/3 > 0; the arccos argument lies in [-1,1] when Δ > 0). The proof that these satisfy x³+px+q = 0 requires the **triple angle identity** 4cos³φ - 3cosφ = cos(3φ), which reduces the verification to a direct computation. Wantzel's theorem (stated in comments, not as a Lean axiom) says this trigonometric form cannot be algebraically simplified to avoid complex numbers in a radical expression.",
+    "title": "Vi\u00e8te's Trigonometric Form: Three Real Roots Without Complex Numbers",
+    "content": "The `trigRoot p q k` formula for k \u2208 {0,1,2} gives three explicitly real roots via x_k = 2\u221a(-p/3) \u00b7 cos((\u03b8 + 2\u03c0k)/3) where \u03b8 = arccos(-q/(2r\u00b3)) and r = \u221a(-p/3). This bypasses complex numbers entirely: both \u221a(-p/3) and arccos are real (p < 0 guarantees -p/3 > 0; the arccos argument lies in [-1,1] when \u0394 > 0). The proof that these satisfy x\u00b3+px+q = 0 requires the **triple angle identity** 4cos\u00b3\u03c6 - 3cos\u03c6 = cos(3\u03c6), which reduces the verification to a direct computation. Wantzel's theorem (stated in comments, not as a Lean axiom) says this trigonometric form cannot be algebraically simplified to avoid complex numbers in a radical expression.",
     "mathContext": "Substituting $x = 2r\\cos\\phi$ with $r = \\sqrt{-p/3}$ into $x^3+px+q=0$: $8r^3\\cos^3\\phi + 2pr\\cos\\phi + q = 0$. Dividing by $2r^3$: $4\\cos^3\\phi + \\frac{2p}{2r^2}\\cos\\phi + \\frac{q}{2r^3} = 0$. Since $p = -3r^2$: $4\\cos^3\\phi - 3\\cos\\phi = -\\frac{q}{2r^3}$, i.e., $\\cos(3\\phi) = -q/(2r^3)$. So $3\\phi = \\arccos(-q/(2r^3)) + 2\\pi k$, giving $\\phi_k = (\\theta + 2\\pi k)/3$.",
     "significance": "key",
     "relatedConcepts": [
       "trigRoot definition",
-      "Viète's substitution",
+      "Vi\u00e8te's substitution",
       "triple angle identity",
       "Real.arccos in Mathlib",
       "Wantzel's theorem"
     ],
     "prerequisites": [
-      "triple angle identity 4cos³φ-3cosφ=cos(3φ)",
+      "triple angle identity 4cos\u00b3\u03c6-3cos\u03c6=cos(3\u03c6)",
       "Real.arccos in Lean 4",
       "Fin 3 in Lean 4"
     ]
@@ -130,9 +130,9 @@
       "endLine": 178
     },
     "type": "insight",
-    "title": "Concrete Example: x³ - 7x + 6 = 0 — Three Real Roots via Complex Cube Roots",
-    "content": "The equation x³-7x+6 = 0 (p=-7, q=6) factors as (x-1)(x-2)(x+3), with roots 1, 2, -3 — all real. Verification: Δ = -4(-7)³ - 27(36) = 1372 - 972 = 400 > 0 (casus irreducibilis, proved by `norm_num`). Cardano's D = 36/4 + (-343)/27 = 9 - 343/27 < 0 (proved by `norm_num`). The three root verifications close with `ring`. The `example_three_real_roots` packages them as `∃ x₁ x₂ x₃ : ℝ, distinct ∧ all satisfy the cubic`. This concrete example illustrates the paradox: the three roots are integers (maximally real!), yet Cardano's formula requires √(-D) = i√(343/27 - 9) ≈ 1.76i.",
-    "mathContext": "For $x^3 - 7x + 6 = 0$: Cardano's formula gives $x = \\sqrt[3]{-3 + i\\sqrt{343/27 - 9}} + \\sqrt[3]{-3 - i\\sqrt{343/27 - 9}}$. Both cube roots are complex numbers of modulus $\\sqrt[3]{9 + (343/27-9)} = \\sqrt[3]{343/27} = 7/(3\\sqrt[3]{3})$ and argument $\\pm\\arctan(\\sqrt{343/27-9}/3)$. Their sum equals 1, 2, or -3 depending on which cube root branch is chosen — demonstrating that the choice of branch is the mechanism by which the three distinct roots emerge from Cardano's formula.",
+    "title": "Concrete Example: x\u00b3 - 7x + 6 = 0 \u2014 Three Real Roots via Complex Cube Roots",
+    "content": "The equation x\u00b3-7x+6 = 0 (p=-7, q=6) factors as (x-1)(x-2)(x+3), with roots 1, 2, -3 \u2014 all real. Verification: \u0394 = -4(-7)\u00b3 - 27(36) = 1372 - 972 = 400 > 0 (casus irreducibilis, proved by `norm_num`). Cardano's D = 36/4 + (-343)/27 = 9 - 343/27 < 0 (proved by `norm_num`). The three root verifications close with `ring`. The `example_three_real_roots` packages them as `\u2203 x\u2081 x\u2082 x\u2083 : \u211d, distinct \u2227 all satisfy the cubic`. This concrete example illustrates the paradox: the three roots are integers (maximally real!), yet Cardano's formula requires \u221a(-D) = i\u221a(343/27 - 9) \u2248 1.76i.",
+    "mathContext": "For $x^3 - 7x + 6 = 0$: Cardano's formula gives $x = \\sqrt[3]{-3 + i\\sqrt{343/27 - 9}} + \\sqrt[3]{-3 - i\\sqrt{343/27 - 9}}$. Both cube roots are complex numbers of modulus $\\sqrt[3]{9 + (343/27-9)} = \\sqrt[3]{343/27} = 7/(3\\sqrt[3]{3})$ and argument $\\pm\\arctan(\\sqrt{343/27-9}/3)$. Their sum equals 1, 2, or -3 depending on which cube root branch is chosen \u2014 demonstrating that the choice of branch is the mechanism by which the three distinct roots emerge from Cardano's formula.",
     "significance": "key",
     "relatedConcepts": [
       "example_casus",

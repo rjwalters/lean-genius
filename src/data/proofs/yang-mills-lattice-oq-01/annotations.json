@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Yang-Mills Lattice OQ-01: OS Reconstruction Route to the Millennium Problem",
     "content": "The module header establishes the scope: this file formalizes the Osterwalder-Schrader reconstruction route from 4D lattice Yang-Mills to a Wightman QFT with mass gap. The five OS axioms (Euclidean covariance OS1, reflection positivity OS2, regularity OS3, symmetry OS4, cluster decomposition OS5) are encoded as concrete Lean structures. The proof strategy is five-staged: (1) lattice OS data structure, (2) transfer matrix spectral analysis, (3) axiomatized GNS reconstruction, (4) 2D exact solution via Migdal's formula, (5) precise Lean formulation of the Clay Millennium Prize. Imports chain: Proofs.YangMills.Quantum (WightmanQFT, hasMassGap, CompactSimpleGaugeGroup).",
-    "mathContext": "The OS reconstruction theorem (Osterwalder-Schrader 1973): a system $\\{S_n\\}$ of Schwinger functions satisfying OS1-OS5 analytically continues (Wick rotation $\\tau \\mapsto it$) to Wightman distributions. The GNS Hilbert space $\\mathcal{H} = \\overline{\\mathcal{F}_+}/\\mathcal{N}$ is constructed from the reflection-positive form. Cluster decomposition (OS5) ensures the vacuum is unique. For lattice Yang-Mills, Wilson's lattice action satisfies all axioms except the continuum limit — the content of the $1M Clay problem.",
+    "mathContext": "The OS reconstruction theorem (Osterwalder-Schrader 1973): a system $\\{S_n\\}$ of Schwinger functions satisfying OS1-OS5 analytically continues (Wick rotation $\\tau \\mapsto it$) to Wightman distributions. The GNS Hilbert space $\\mathcal{H} = \\overline{\\mathcal{F}_+}/\\mathcal{N}$ is constructed from the reflection-positive form. Cluster decomposition (OS5) ensures the vacuum is unique. For lattice Yang-Mills, Wilson's lattice action satisfies all axioms except the continuum limit \u2014 the content of the $1M Clay problem.",
     "significance": "supporting",
     "relatedConcepts": [
       "Osterwalder-Schrader axioms",
@@ -33,7 +33,7 @@
     },
     "type": "concept",
     "title": "Lattice OS Data Package: Five Axioms as Lean Structure Fields",
-    "content": "LatticeOSData formalizes the five Osterwalder-Schrader axioms as concrete fields: OS2 (reflection_positive) requires the quadratic form ∑f(x)S₂(x,y)f(y) ≥ 0 for test functions supported in positive time; OS5 (clustering) requires S₂(x,y) → 0 as temporal separation grows; OS3 (growth_bound) bounds |S₂| by exponential growth. This is the precise input package needed for the GNS reconstruction. The structure also includes LatticeSite4D and LatticeSchwingerFunction types ensuring symmetry (S₂(x,y) = S₂(y,x)) and diagonal non-negativity (S₂(x,x) ≥ 0).",
+    "content": "LatticeOSData formalizes the five Osterwalder-Schrader axioms as concrete fields: OS2 (reflection_positive) requires the quadratic form \u2211f(x)S\u2082(x,y)f(y) \u2265 0 for test functions supported in positive time; OS5 (clustering) requires S\u2082(x,y) \u2192 0 as temporal separation grows; OS3 (growth_bound) bounds |S\u2082| by exponential growth. This is the precise input package needed for the GNS reconstruction. The structure also includes LatticeSite4D and LatticeSchwingerFunction types ensuring symmetry (S\u2082(x,y) = S\u2082(y,x)) and diagonal non-negativity (S\u2082(x,x) \u2265 0).",
     "mathContext": "LatticeOSData(L) for a 4D hypercubic lattice of size $L^4$. OS2: $\\forall f$ with $\\text{supp}(f)$ in positive time: $\\sum_{x,y} f(x) S_2(x,y) f(y) \\geq 0$. OS5: $\\forall\\varepsilon > 0, \\exists T, |x_0 - y_0| \\geq T \\Rightarrow |S_2(x,y)| < \\varepsilon$. OS3: $\\exists C, \\mu > 0, |S_2(x,y)| \\leq Ce^{\\mu|x_0 - y_0|}$. Together, these encode that $S_2$ is the 2-point Schwinger function of a reflection-positive Euclidean theory.",
     "significance": "key",
     "relatedConcepts": [
@@ -58,7 +58,7 @@
     },
     "type": "concept",
     "title": "Transfer Matrix: OS2 Equivalence and Hamiltonian Construction",
-    "content": "OSTransferMatrix extends TransferMatrix with positive eigenvalues (from OS2) and vacuum normalization. The Hamiltonian H = -ln(T)/a ≥ 0 is constructed from the transfer matrix; vacuum energy = 0 when the largest eigenvalue λ₀ = 1. The key structural result: reflection positivity (OS2) is equivalent to T being positive semi-definite. This reduces the abstract functional-analytic OS2 condition to a concrete spectral inequality on a finite-dimensional matrix — computable in principle for any finite L.",
+    "content": "OSTransferMatrix extends TransferMatrix with positive eigenvalues (from OS2) and vacuum normalization. The Hamiltonian H = -ln(T)/a \u2265 0 is constructed from the transfer matrix; vacuum energy = 0 when the largest eigenvalue \u03bb\u2080 = 1. The key structural result: reflection positivity (OS2) is equivalent to T being positive semi-definite. This reduces the abstract functional-analytic OS2 condition to a concrete spectral inequality on a finite-dimensional matrix \u2014 computable in principle for any finite L.",
     "mathContext": "Transfer matrix $T$ encodes one time-step propagation: $\\langle\\phi_1|T|\\phi_2\\rangle = e^{-S[\\phi_1,\\phi_2]/2}$ for adjacent time slices. OS2 iff $T$ positive semi-definite (Osterwalder-Seiler 1978). Hamiltonian: $H = -\\ln(T)/a$ (lattice spacing $a$). Eigenvalues $1 = \\lambda_0 \\geq \\lambda_1 \\geq \\ldots$ (normalized to vacuum). Vacuum normalization: $\\lambda_0 = 1 \\Rightarrow H|\\Omega\\rangle = 0$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -81,9 +81,9 @@
       "startLine": 145,
       "endLine": 194
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Spectral Mass Gap: Transfer Matrix Eigenvalue Separation",
-    "content": "The spectral mass gap Δ = -ln(λ₁/λ₀)/a is strictly positive when the transfer matrix has a spectral gap λ₁ < λ₀. This is proved directly from Real.log_neg (log r < 0 when 0 < r < 1). The proof connects the abstract OS2 condition to a concrete spectral inequality on the finite-dimensional transfer matrix. The correlation length ξ = 1/(-ln(λ₁/λ₀)) is positive and satisfies Δ·ξ·a = 1. Continuum limit: as a → 0 at fixed Δ, the eigenvalue ratio exp(-Δa) → 1 (gapless in lattice units) while the physical mass gap stays finite.",
+    "content": "The spectral mass gap \u0394 = -ln(\u03bb\u2081/\u03bb\u2080)/a is strictly positive when the transfer matrix has a spectral gap \u03bb\u2081 < \u03bb\u2080. This is proved directly from Real.log_neg (log r < 0 when 0 < r < 1). The proof connects the abstract OS2 condition to a concrete spectral inequality on the finite-dimensional transfer matrix. The correlation length \u03be = 1/(-ln(\u03bb\u2081/\u03bb\u2080)) is positive and satisfies \u0394\u00b7\u03be\u00b7a = 1. Continuum limit: as a \u2192 0 at fixed \u0394, the eigenvalue ratio exp(-\u0394a) \u2192 1 (gapless in lattice units) while the physical mass gap stays finite.",
     "mathContext": "$\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a > 0 \\iff \\lambda_1 < \\lambda_0$. Proof: $-\\ln(\\lambda_1/\\lambda_0) > 0 \\iff \\ln(\\lambda_1/\\lambda_0) < 0 \\iff \\lambda_1/\\lambda_0 < 1$ (Real.log_neg) $\\iff \\lambda_1 < \\lambda_0$. Correlation length $\\xi = 1/(-\\ln(\\lambda_1/\\lambda_0))$. Reciprocal: $\\Delta \\cdot \\xi \\cdot a = 1$. The Schwinger 2-point function: $S_2(x,y) \\sim (\\lambda_1/\\lambda_0)^{|x_0-y_0|} = e^{-\\Delta a \\cdot |x_0-y_0|/a} = e^{-\\Delta|x_0-y_0|_{\\text{phys}}}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,10 +103,13 @@
   {
     "id": "ym-lattice-oq01-corr-length",
     "proofId": "yang-mills-lattice-oq-01",
-    "range": { "startLine": 165, "endLine": 218 },
+    "range": {
+      "startLine": 165,
+      "endLine": 218
+    },
     "type": "insight",
-    "title": "Correlation Length and the Mass Gap–ξ Reciprocal Relation",
-    "content": "The correlation length ξ = 1/(-log(λ₁/λ₀)) measures how quickly the Schwinger function S₂(x,y) decays with temporal separation. The theorem mass_gap_times_corr_length establishes the exact reciprocal relation: Δ·ξ·a = 1, meaning a larger mass gap corresponds to a shorter correlation length and vice versa. This is the lattice encoding of the physical principle that a massive particle has a finite interaction range. The continuum limit requires ξ → ∞ in lattice units (a → 0) while the physical mass gap Δ stays finite — this is a second-order phase transition. The proof uses algebraic cancellation: (L/a)·(a/L) = 1 after unfolding the definition of correlationLengthLog.",
+    "title": "Correlation Length and the Mass Gap\u2013\u03be Reciprocal Relation",
+    "content": "The correlation length \u03be = 1/(-log(\u03bb\u2081/\u03bb\u2080)) measures how quickly the Schwinger function S\u2082(x,y) decays with temporal separation. The theorem mass_gap_times_corr_length establishes the exact reciprocal relation: \u0394\u00b7\u03be\u00b7a = 1, meaning a larger mass gap corresponds to a shorter correlation length and vice versa. This is the lattice encoding of the physical principle that a massive particle has a finite interaction range. The continuum limit requires \u03be \u2192 \u221e in lattice units (a \u2192 0) while the physical mass gap \u0394 stays finite \u2014 this is a second-order phase transition. The proof uses algebraic cancellation: (L/a)\u00b7(a/L) = 1 after unfolding the definition of correlationLengthLog.",
     "mathContext": "$\\xi = 1/(-\\ln(\\lambda_1/\\lambda_0)) > 0$ when $\\lambda_1 < \\lambda_0$. Reciprocal: $\\Delta \\cdot \\xi \\cdot a = \\frac{-\\ln(\\lambda_1/\\lambda_0)}{a} \\cdot a \\cdot \\frac{1}{-\\ln(\\lambda_1/\\lambda_0)} = 1$. As $a \\to 0$: $\\xi \\to \\infty$ (long-range correlations), but $\\Delta = 1/(\\xi \\cdot a)$ stays finite if $a \\cdot \\xi \\to \\text{const}$ (renormalization group running).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -131,8 +134,8 @@
     },
     "type": "insight",
     "title": "OS Reconstruction Axioms: GNS and Mass Gap Transfer",
-    "content": "Two axioms encode mathematically proven but Mathlib-unavailable results: (1) os_reconstruction: given LatticeOSData, the GNS construction produces a WightmanQFT; (2) os_mass_gap_transfer: exponential decay of Schwinger functions implies a Wightman mass gap. Both are proved theorems in the mathematical literature (Osterwalder-Schrader 1973, 1975; Osterwalder-Seiler 1978) but require functional analysis machinery (Bochner's theorem, spectral theorem for unbounded operators, Sobolev bounds) not yet in Mathlib. The OSforGFF project (Douglas et al. 2026) achieves this for the free scalar field in 32K lines of Lean 4 — establishing that full formalization is feasible.",
-    "mathContext": "os_reconstruction: LatticeOSData L → WightmanQFT (GNS construction: Hilbert space $\\mathcal{H} = \\overline{\\mathcal{F}_+}/\\mathcal{N}$, time evolution $U(t) = e^{-iHt}$, Wightman fields as operator-valued distributions). os_mass_gap_transfer: $|S_2(x,y)| \\leq S_2(x,x) e^{-\\Delta|x_0-y_0|} \\Rightarrow$ hasMassGap(os_reconstruction data, $\\Delta$). The transfer uses the Kallen-Lehmann spectral representation and the cluster decomposition OS5.",
+    "content": "Two axioms encode mathematically proven but Mathlib-unavailable results: (1) os_reconstruction: given LatticeOSData, the GNS construction produces a WightmanQFT; (2) os_mass_gap_transfer: exponential decay of Schwinger functions implies a Wightman mass gap. Both are proved theorems in the mathematical literature (Osterwalder-Schrader 1973, 1975; Osterwalder-Seiler 1978) but require functional analysis machinery (Bochner's theorem, spectral theorem for unbounded operators, Sobolev bounds) not yet in Mathlib. The OSforGFF project (Douglas et al. 2026) achieves this for the free scalar field in 32K lines of Lean 4 \u2014 establishing that full formalization is feasible.",
+    "mathContext": "os_reconstruction: LatticeOSData L \u2192 WightmanQFT (GNS construction: Hilbert space $\\mathcal{H} = \\overline{\\mathcal{F}_+}/\\mathcal{N}$, time evolution $U(t) = e^{-iHt}$, Wightman fields as operator-valued distributions). os_mass_gap_transfer: $|S_2(x,y)| \\leq S_2(x,x) e^{-\\Delta|x_0-y_0|} \\Rightarrow$ hasMassGap(os_reconstruction data, $\\Delta$). The transfer uses the Kallen-Lehmann spectral representation and the cluster decomposition OS5.",
     "significance": "key",
     "relatedConcepts": [
       "GNS construction",
@@ -155,10 +158,10 @@
       "startLine": 250,
       "endLine": 268
     },
-    "type": "theorem",
-    "title": "Lattice Mass Gap → Wightman Mass Gap (Core Conditional)",
-    "content": "The key theorem: if lattice OS data has a Schwinger function decaying as |S₂(x,y)| ≤ S₂(x,x)·exp(-Δt) with Δ > 0, then the reconstructed Wightman QFT satisfies hasSomeMassGap. The proof is a direct application of the two reconstruction axioms, composing the GNS construction with the Kallen-Lehmann spectral transfer. This is the formal statement of 'Euclidean mass gap = Minkowski mass gap' — reducing the physical question to a statement about Schwinger function decay.",
-    "mathContext": "$|S_2| \\leq S_2(0) e^{-\\Delta t} \\Rightarrow$ hasSomeMassGap(os_reconstruction data). Proof: apply os_mass_gap_transfer to get hasMassGap $\\Delta$, then wrap in existential for hasSomeMassGap. The equivalence 'Euclidean exponential decay ↔ Minkowski mass gap' is the content of the Kallen-Lehmann representation: $S_2(t) = \\int_0^\\infty d\\rho(m^2) e^{-mt}$ implies spectral measure supported away from 0 iff $S_2$ decays exponentially.",
+    "type": "insight",
+    "title": "Lattice Mass Gap \u2192 Wightman Mass Gap (Core Conditional)",
+    "content": "The key theorem: if lattice OS data has a Schwinger function decaying as |S\u2082(x,y)| \u2264 S\u2082(x,x)\u00b7exp(-\u0394t) with \u0394 > 0, then the reconstructed Wightman QFT satisfies hasSomeMassGap. The proof is a direct application of the two reconstruction axioms, composing the GNS construction with the Kallen-Lehmann spectral transfer. This is the formal statement of 'Euclidean mass gap = Minkowski mass gap' \u2014 reducing the physical question to a statement about Schwinger function decay.",
+    "mathContext": "$|S_2| \\leq S_2(0) e^{-\\Delta t} \\Rightarrow$ hasSomeMassGap(os_reconstruction data). Proof: apply os_mass_gap_transfer to get hasMassGap $\\Delta$, then wrap in existential for hasSomeMassGap. The equivalence 'Euclidean exponential decay \u2194 Minkowski mass gap' is the content of the Kallen-Lehmann representation: $S_2(t) = \\int_0^\\infty d\\rho(m^2) e^{-mt}$ implies spectral measure supported away from 0 iff $S_2$ decays exponentially.",
     "significance": "key",
     "relatedConcepts": [
       "hasMassGap",
@@ -181,10 +184,10 @@
       "startLine": 281,
       "endLine": 375
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "2D Migdal Formula: Explicit Mass Gap, SU(2) String Tension",
-    "content": "The 2D Yang-Mills theory provides a complete, explicit example of OS data satisfying the mass gap condition. The Schwinger function S₂(t) = dim(R)·exp(-σt) decays exponentially with rate σ = g²C₂/(2 dim R) > 0. The proof uses only Mathlib (no axioms): positivity from exp_pos, decay from mul_le_mul_of_nonpos_left (multiplying by negative constant reverses inequality). For SU(2): σ = 3g²/16. The 2D partition function factorizes over plaquettes, making all OS axioms trivially satisfied — a stark contrast with 4D where plaquette correlations prevent factorization.",
-    "mathContext": "$S_2(t) = d_R e^{-\\sigma_R t}$, $\\sigma_R = g^2 C_2/(2d_R) > 0$. SU(2) fundamental: $d_R = 2$ (spin-1/2), $C_2 = 3/4$ (quadratic Casimir), $\\sigma = g^2 \\cdot (3/4)/(2 \\cdot 2) = 3g^2/16$. Antitone: $\\sigma > 0$ and $s \\leq t$ implies $-\\sigma t \\leq -\\sigma s$ by mul_le_mul_of_nonpos_left (with nonpos factor $-\\sigma < 0$). All proofs axiom-free — the 2D solution is a complete formalization.",
+    "content": "The 2D Yang-Mills theory provides a complete, explicit example of OS data satisfying the mass gap condition. The Schwinger function S\u2082(t) = dim(R)\u00b7exp(-\u03c3t) decays exponentially with rate \u03c3 = g\u00b2C\u2082/(2 dim R) > 0. The proof uses only Mathlib (no axioms): positivity from exp_pos, decay from mul_le_mul_of_nonpos_left (multiplying by negative constant reverses inequality). For SU(2): \u03c3 = 3g\u00b2/16. The 2D partition function factorizes over plaquettes, making all OS axioms trivially satisfied \u2014 a stark contrast with 4D where plaquette correlations prevent factorization.",
+    "mathContext": "$S_2(t) = d_R e^{-\\sigma_R t}$, $\\sigma_R = g^2 C_2/(2d_R) > 0$. SU(2) fundamental: $d_R = 2$ (spin-1/2), $C_2 = 3/4$ (quadratic Casimir), $\\sigma = g^2 \\cdot (3/4)/(2 \\cdot 2) = 3g^2/16$. Antitone: $\\sigma > 0$ and $s \\leq t$ implies $-\\sigma t \\leq -\\sigma s$ by mul_le_mul_of_nonpos_left (with nonpos factor $-\\sigma < 0$). All proofs axiom-free \u2014 the 2D solution is a complete formalization.",
     "significance": "key",
     "relatedConcepts": [
       "Migdal formula",
@@ -209,7 +212,7 @@
     },
     "type": "concept",
     "title": "Millennium Problem: Precise Lean Formulation of the Clay Problem",
-    "content": "YangMillsContinuumLimitProblem is the precise Lean Prop encoding the Clay Millennium Prize: ∃ Δ∞ > 0, ∀ L ≥ 2, ∃ lattice OS data with mass gap ≥ Δ∞. The theorem millennium_implies_os_formulation shows this implies a concrete finite-lattice Wightman QFT with mass gap. This is OPEN for 4D (G = SU(2) or SU(3)) and PROVED for 2D (by MigdalData results). The LatticeEuclideanMassGap structure bundles OS data + exponential decay certificate, making the Euclidean condition checkable.",
+    "content": "YangMillsContinuumLimitProblem is the precise Lean Prop encoding the Clay Millennium Prize: \u2203 \u0394\u221e > 0, \u2200 L \u2265 2, \u2203 lattice OS data with mass gap \u2265 \u0394\u221e. The theorem millennium_implies_os_formulation shows this implies a concrete finite-lattice Wightman QFT with mass gap. This is OPEN for 4D (G = SU(2) or SU(3)) and PROVED for 2D (by MigdalData results). The LatticeEuclideanMassGap structure bundles OS data + exponential decay certificate, making the Euclidean condition checkable.",
     "mathContext": "YangMillsContinuumLimitProblem G $\\mathfrak{g}$ = $\\exists \\Delta_\\infty > 0, \\forall L \\geq 2, \\exists$ data : LatticeOSData L, $\\exists$ mg : LatticeEuclideanMassGap L data, $\\Delta_\\infty \\leq$ mg.gap. The uniform lower bound $\\Delta_\\infty$ on the mass gap across all volumes L is the precise content of 'mass gap survives the thermodynamic limit'. Open 4D: requires non-perturbative control of Wilson action correlations. Proved 2D: MigdalData gives explicit $\\Delta_\\infty = \\sigma = g^2 C_2/(2 d_R)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -233,10 +236,10 @@
       "startLine": 431,
       "endLine": 492
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Continuum Limit Infrastructure: Monotonicity and Eigenvalue Behavior",
-    "content": "Three supporting theorems about the continuum limit: (1) continuum_limit_eigenvalue_ratio: as a→0 at fixed Δ > 0, the eigenvalue ratio exp(-Δa) approaches 1 from below (the lattice becomes gapless in lattice units while the physical gap Δ is finite); (2) larger_gap_larger_mass: larger spectral eigenvalue separation → larger physical mass gap (monotonicity); (3) coarser_lattice_gap_bound: the mass gap for refined OS data (larger L or finer a) is bounded below by that of coarser data — providing the uniform bound needed for the Millennium Problem.",
-    "mathContext": "(1) $\\text{continuum\\_limit\\_eigenvalue\\_ratio}$: $a \\cdot \\Delta < 1 \\Rightarrow e^{-\\Delta a} \\in (0,1)$; as $a \\to 0$: $e^{-\\Delta a} \\to 1^-$ (ratio approaches 1, lattice-unit gap $\\to 0$), but $\\Delta = -\\ln(e^{-\\Delta a})/a \\to \\Delta$ (physical gap is invariant). (2) $\\lambda_1 < \\lambda_1' < \\lambda_0 \\Rightarrow -\\ln(\\lambda_1/\\lambda_0) > -\\ln(\\lambda_1'/\\lambda_0)$ (larger eigenvalue separation → larger gap). (3) Monotone refinement: $\\Delta_{L_1} \\leq \\Delta_{L_2}$ for $L_1 \\leq L_2$ (larger lattice cannot decrease the gap — required for the inf$_{L\\to\\infty}$ to be positive).",
+    "content": "Three supporting theorems about the continuum limit: (1) continuum_limit_eigenvalue_ratio: as a\u21920 at fixed \u0394 > 0, the eigenvalue ratio exp(-\u0394a) approaches 1 from below (the lattice becomes gapless in lattice units while the physical gap \u0394 is finite); (2) larger_gap_larger_mass: larger spectral eigenvalue separation \u2192 larger physical mass gap (monotonicity); (3) coarser_lattice_gap_bound: the mass gap for refined OS data (larger L or finer a) is bounded below by that of coarser data \u2014 providing the uniform bound needed for the Millennium Problem.",
+    "mathContext": "(1) $\\text{continuum\\_limit\\_eigenvalue\\_ratio}$: $a \\cdot \\Delta < 1 \\Rightarrow e^{-\\Delta a} \\in (0,1)$; as $a \\to 0$: $e^{-\\Delta a} \\to 1^-$ (ratio approaches 1, lattice-unit gap $\\to 0$), but $\\Delta = -\\ln(e^{-\\Delta a})/a \\to \\Delta$ (physical gap is invariant). (2) $\\lambda_1 < \\lambda_1' < \\lambda_0 \\Rightarrow -\\ln(\\lambda_1/\\lambda_0) > -\\ln(\\lambda_1'/\\lambda_0)$ (larger eigenvalue separation \u2192 larger gap). (3) Monotone refinement: $\\Delta_{L_1} \\leq \\Delta_{L_2}$ for $L_1 \\leq L_2$ (larger lattice cannot decrease the gap \u2014 required for the inf$_{L\\to\\infty}$ to be positive).",
     "significance": "supporting",
     "relatedConcepts": [
       "continuum limit",

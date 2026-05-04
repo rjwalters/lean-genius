@@ -78,7 +78,7 @@
       "startLine": 89,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Modularity Theorem",
     "content": "**Wiles' Main Theorem**: Every semi-stable elliptic curve over $\\mathbb{Q}$ is modular. This means there exists a modular form $f$ of weight 2 such that $L(E, s) = L(f, s)$ - the L-functions match.",
     "mathContext": "Modularity connects geometry (elliptic curves) to analysis (modular forms). The L-function encodes how many points $E$ has over each finite field $\\mathbb{F}_p$. This deep connection is part of the Langlands program.",
@@ -118,7 +118,7 @@
       "startLine": 139,
       "endLine": 142
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Fermat's Case n = 4",
     "content": "Fermat himself proved the n=4 case using **infinite descent**: assume the smallest solution exists, construct a strictly smaller solution, contradiction. This is the only case Fermat definitely proved.",
     "mathContext": "The proof actually shows $x^4 + y^4 = z^2$ has no positive solutions, which is stronger. Fermat's descent uses the parameterization of Pythagorean triples repeatedly.",
@@ -136,7 +136,7 @@
       "startLine": 151,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Euler's Case n = 3",
     "content": "Euler proved n=3 in 1770 using the **Eisenstein integers** $\\mathbb{Z}[\\omega]$ where $\\omega = e^{2\\pi i/3}$. This ring has unique factorization, enabling a descent argument. The proof is fully formalized in Mathlib!",
     "mathContext": "The key is that $x^3 + y^3 = (x + y)(x + \\omega y)(x + \\omega^2 y)$ factors in $\\mathbb{Z}[\\omega]$. Analyzing this factorization leads to a contradiction.",
@@ -154,10 +154,10 @@
       "startLine": 157,
       "endLine": 169
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Reduction to Primes",
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
-    "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
+    "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n \u2265 3 is divisible by 4 or an odd prime, this covers everything.",
     "significance": "supporting",
     "relatedConcepts": [
       "reduction",
@@ -172,9 +172,9 @@
       "startLine": 193,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Full Theorem",
-    "content": "Combining n=4 (Fermat), n=3 (Euler), odd primes (Wiles), and reduction to primes, we get the full theorem: for all n ≥ 3, there are no positive integer solutions to $a^n + b^n = c^n$.",
+    "content": "Combining n=4 (Fermat), n=3 (Euler), odd primes (Wiles), and reduction to primes, we get the full theorem: for all n \u2265 3, there are no positive integer solutions to $a^n + b^n = c^n$.",
     "mathContext": "The theorem is currently axiomatized in this formalization. The Lean FLT project at Imperial College London is working on a complete formalization of Wiles' proof.",
     "significance": "key",
     "prerequisites": [
