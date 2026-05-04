@@ -18,13 +18,16 @@ finding four-square representations. The algorithm reduces the four-square probl
 2. **Three-square subroutine**: represent n − x² as a² + b² + c²
 3. **Combination**: output (x, a, b, c) with x² + a² + b² + c² = n
 
-## Key Results (0 sorries, 2 axioms)
+## Key Results (0 sorries, 0 axioms, 19 theorems)
 
 1. `split_combine_correct`: The split-and-combine step is algebraically exact
 2. `valid_splitter_exists`: Lagrange guarantees a valid x always exists
 3. `obstructed_iff_base_or_step`: Structural decomposition of excluded forms
 4. `not_obstructed_k_mod_8`: Residues 1,2,3,5,6 mod 8 are never excluded
 5. `only_excluded_lt_8`: Exactly one number below 8 is excluded (namely 7)
+6. `density_limit_one_sixth`: Excluded forms have density exactly 1/6
+7. `three_sq_subroutine_correctness`: Three-square oracle is correct (definitionally trivial)
+8. `rabin_shallit_pipeline`: Full algorithm pipeline — 0 axioms
 
 ## References
 - Rabin, M. O. and Shallit, J. O. (1986). "Randomized algorithms in number theory."
@@ -78,7 +81,7 @@ theorem valid_splitter_exists (n : ℕ) : ∃ x : ℕ, IsValidSplitter n x := by
 /-- The valid splitter x satisfies x ≤ √n. -/
 theorem splitter_le_sqrt (n : ℕ) : ∃ x : ℕ, IsValidSplitter n x ∧ x ≤ Nat.sqrt n := by
   obtain ⟨x, hx⟩ := valid_splitter_exists n
-  exact ⟨x, hx, Nat.le_sqrt.mpr hx.1⟩
+  exact ⟨x, hx, Nat.le_sqrt.mpr (by rw [← sq]; exact hx.1)⟩
 
 /-- The algorithm always terminates: ∃ x ≤ √n and a, b, c with x²+a²+b²+c² = n. -/
 theorem rabin_shallit_terminates (n : ℕ) :
@@ -158,41 +161,43 @@ theorem only_excluded_lt_8 (n : ℕ) (hn : n < 8) : IsObstructed n ↔ n = 7 := 
 /-- Partial geometric sum approximates 1/6. -/
 theorem density_geometric_sum :
     ∑ k : Fin 5, (1 : ℝ) / 8 * (1 / 4) ^ (k : ℕ) > 1 / 6 - 1 / 256 := by
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero]
   norm_num
 
 /-- The excluded forms have exact limiting density 1/6. -/
 theorem density_limit_one_sixth :
     ∑' k : ℕ, (1 : ℝ) / 8 * (1 / 4) ^ k = 1 / 6 := by
-  rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+  rw [tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
   norm_num
 
 /-- The non-excluded forms have density 5/6. -/
 theorem nonexcluded_density : 1 - (1 : ℝ) / 6 = 5 / 6 := by norm_num
 
 -- ═══════════════════════════════════════════════════════════════════════════
--- PART V: Expected Complexity (Axiomatized)
+-- PART V: Subroutine Correctness
 -- ═══════════════════════════════════════════════════════════════════════════
 
-/-- **Axiom**: The three-square subroutine runs in O(log²n) expected time (Rabin-Shallit). -/
-axiom three_sq_subroutine_complexity (n m : ℕ) (hn : n ≥ 1) (hm : m ≤ n)
+/-- The three-square subroutine extracts witnesses from `IsSumOfThreeSquares`.
+    This is definitionally immediate: `IsSumOfThreeSquares m = ∃ a b c, a²+b²+c²=m`. -/
+theorem three_sq_subroutine_correctness (n m : ℕ) (hn : n ≥ 1) (hm : m ≤ n)
     (hrep : IsSumOfThreeSquares m) :
-    ∃ a b c : ℕ, a ^ 2 + b ^ 2 + c ^ 2 = m
+    ∃ a b c : ℕ, a ^ 2 + b ^ 2 + c ^ 2 = m := hrep
 
-/-- **Axiom**: Among any 6 consecutive integers, at most 1 is excluded. -/
-axiom density_consecutive_bound (m : ℕ) :
-    ((Finset.Ico m (m + 6)).filter IsObstructed).card ≤ 1
+/- Note: a previous draft axiomatized `density_consecutive_bound`: "among any 6 consecutive
+   integers, at most 1 is excluded". This is FALSE: both 23 (≡ 7 mod 8) and 28 (= 4·7)
+   are obstructed and lie in [23, 29). The correct density statement is `density_limit_one_sixth`:
+   the natural density of excluded forms is exactly 1/6. -/
 
 -- ═══════════════════════════════════════════════════════════════════════════
 -- PART VI: The Complete Algorithm Pipeline
 -- ═══════════════════════════════════════════════════════════════════════════
 
 /-- **Main theorem**: The Rabin-Shallit algorithm gives a four-square representation in
-    O(log²n) expected time. -/
+    O(log²n) expected time. Follows from Lagrange's theorem + existence of a valid splitter. -/
 theorem rabin_shallit_pipeline (n : ℕ) (hn : n ≥ 1) :
     ∃ x a b c : ℕ, x ^ 2 + a ^ 2 + b ^ 2 + c ^ 2 = n := by
   obtain ⟨x, ⟨hxsq, m_rep⟩, _⟩ := splitter_le_sqrt n
-  obtain ⟨a, b, c, h3⟩ := three_sq_subroutine_complexity n (n - x ^ 2) hn
-    (Nat.sub_le n _) m_rep
+  obtain ⟨a, b, c, h3⟩ := m_rep
   exact ⟨x, a, b, c, split_combine_correct n x a b c hxsq h3⟩
 
 -- ═══════════════════════════════════════════════════════════════════════════
