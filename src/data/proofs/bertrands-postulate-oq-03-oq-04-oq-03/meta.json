@@ -61,7 +61,7 @@
     ],
     "dateAdded": "2026-04-14",
     "axiomCount": 1,
-    "lineCount": 1338,
+    "lineCount": 213,
     "assumptions": "Relies on `axiom primeNumberTheorem : PrimeNumberTheorem_Ratio` declared in `Proofs.PrimeNumberTheorem`. All three main theorems (pnt_at_scaled_point, pnt_density_long_interval, pnt_density_gap_summary) depend on this axiom. 0 sorries.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
@@ -185,7 +185,7 @@
       "PrimeNumberTheorem"
     ],
     "namespace": "BertrandsPostulateOQ03OQ04OQ03",
-    "lineCount": 1338,
+    "lineCount": 213,
     "axiomCount": 1,
     "sorries": 0,
     "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",

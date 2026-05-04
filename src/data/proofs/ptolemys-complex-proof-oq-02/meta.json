@@ -59,7 +59,7 @@
     ],
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "lineCount": 833,
+    "lineCount": 351,
     "assumptions": "Core result derived via Mathlib's Real.sin_add (line 199 of PtolemysComplexProofOQ02.lean): the key chord-length lemma norm_exp_diff uses Real.sin_add to establish ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β). All other steps — Ptolemy equality application, CCW order verification, remaining chord lemmas, and non-degeneracy conditions — are independently formalized. 0 axiom declarations, 0 sorries.",
     "theoremCount": 11
   },
@@ -160,7 +160,7 @@
       "Real"
     ],
     "namespace": "PtolemysComplexProofOQ02",
-    "lineCount": 833,
+    "lineCount": 351,
     "axiomCount": 0,
     "theoremCount": 11,
     "substantiveTheoremCount": 1,
