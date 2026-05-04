@@ -1,0 +1,41 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+  "title": "Fermat's Two-Square Theorem",
+  "parentId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+  "status": "verified",
+  "badge": "original",
+  "statement": "A prime p is expressible as p = a² + b² (integers a, b) if and only if p = 2 or p ≡ 1 (mod 4). Equivalently, prime p is NOT a sum of two squares if and only if p ≡ 3 (mod 4).",
+  "overview": "Fermat conjectured this result in 1640 and Euler gave the first complete proof in 1749. The key insight is that whether a prime splits, stays inert, or ramifies in the Gaussian integers ℤ[i] determines exactly whether it is a sum of two squares. The proof uses two main ingredients: (1) squares mod 4 are only 0 or 1, so a²+b² cannot be ≡ 3 (mod 4), giving the impossibility direction; (2) Mathlib's `Nat.Prime.sq_add_sq` (from the Gaussian integer theory) gives existence when p ≢ 3 (mod 4).",
+  "openQuestion": "Fermat's two-square theorem follows directly: p is a sum of two squares iff p = 2, p ≡ 1 (mod 4).",
+  "leanFile": {
+    "path": "proofs/Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ02.lean",
+    "imports": [
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic",
+      "Proofs.BezoutIdentityOQ02OQ01OQ02OQ02"
+    ],
+    "opens": ["GaussianInt"],
+    "namespace": "FermatTwoSquare",
+    "lineCount": 140,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "axiomCount": 0,
+    "sorryCount": 0
+  },
+  "keyResults": [
+    "fermat_two_squares_prime: full biconditional p prime is sum of two squares ↔ p=2 or p%4=1",
+    "fermat_two_squares_3mod4: primes ≡ 3 (mod 4) are never sums of two squares",
+    "fermat_two_squares_1mod4: primes ≡ 1 (mod 4) are always sums of two squares",
+    "fermat_iff_not_3mod4: equivalent reformulation via negation",
+    "Concrete: 5=2²+1², 13=3²+2², 17=4²+1², 29=5²+2²",
+    "Non-examples: 3, 7, 11, 19 (≡3 mod 4) proved not to be sums of two squares"
+  ],
+  "assumptions": [],
+  "historicalContext": "Fermat stated this theorem in a letter to Mersenne in December 1640 without proof. Euler proved it in 1749 after 7 years of effort. The modern proof via Gaussian integers (ℤ[i]) was given by Dedekind. The key insight is that primes ≡ 1 (mod 4) split in ℤ[i] while primes ≡ 3 (mod 4) are inert.",
+  "mathLibDependencies": [
+    "Nat.Prime.sq_add_sq",
+    "ZMod.natCast_eq_natCast_iff",
+    "Nat.Prime.odd_of_ne_two"
+  ]
+}
