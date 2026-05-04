@@ -1,78 +1,122 @@
-{
-  "proofId": "birthday-problem-oq-01-oq-01",
-  "version": "1.0",
-  "annotations": [
-    {
-      "id": "ann-1",
-      "type": "insight",
-      "lineStart": 59,
-      "lineEnd": 61,
-      "title": "Collision count as a Finset cardinality",
-      "body": "X(f) is defined as the cardinality of the filtered set of ordered pairs (i,j) with i < j and f(i) = f(j). Using Finset.card of a filtered univ is the canonical Lean 4 way to count elements satisfying a decidable predicate.",
-      "significance": 8
-    },
-    {
-      "id": "ann-2",
-      "type": "technique",
-      "lineStart": 71,
-      "lineEnd": 82,
-      "title": "X=0 ↔ Injective via filter_eq_empty",
-      "body": "The key step is Finset.card_eq_zero ↔ filter is empty ↔ the predicate fails for all elements. Then bijectivity between the two directions uses lt_or_gt_of_ne to case-split on the ordering of distinct indices.",
-      "significance": 9
-    },
-    {
-      "id": "ann-3",
-      "type": "insight",
-      "lineStart": 98,
-      "lineEnd": 111,
-      "title": "Equiv chain from subtype to embedding",
-      "body": "The proof of #{f|X=0} = descFactorial uses two equivalences: {f|X=0} ≃ {f|injective} (via subtypeEquivRight and the iff) then {f|injective} ≃ (Fin n ↪ Fin d) (explicit bidirectional map). Fintype.card_congr + card_embedding_eq then gives descFactorial d n.",
-      "significance": 9
-    },
-    {
-      "id": "ann-4",
-      "type": "connection",
-      "lineStart": 126,
-      "lineEnd": 131,
-      "title": "Unification with birthday paradox",
-      "body": "zero_collision_fraction proves that the collision-count approach (counting f with X(f)=0) and the birthday paradox approach (counting injections) give the same probability descFactorial(d,n)/d^n. This connects BirthdayProblemOQ01OQ01.lean with BirthdayProblem.lean.",
-      "significance": 8
-    },
-    {
-      "id": "ann-5",
-      "type": "technique",
-      "lineStart": 138,
-      "lineEnd": 146,
-      "title": "Indicator decomposition via sum_filter",
-      "body": "The proof rewrites Finset.card_filter as Finset.sum using ← Finset.sum_filter, then applies sum_congr to handle each element. A case split on i<j and f(i)=f(j) covers all four combinations via simp.",
-      "significance": 7
-    },
-    {
-      "id": "ann-6",
-      "type": "open-question",
-      "lineStart": 153,
-      "lineEnd": 159,
-      "title": "card_ordered_pairs sorry — approach via offDiag",
-      "body": "The proof that #{(i,j) ∈ Fin n × Fin n | i<j} = C(n,2) can likely use Finset.card_offDiag (which counts i≠j pairs = n(n-1)) combined with the bijection between i<j and unordered {i,j} pairs. Alternatively, an explicit induction on n should work.",
-      "significance": 7
-    },
-    {
-      "id": "ann-7",
-      "type": "open-question",
-      "lineStart": 184,
-      "lineEnd": 186,
-      "title": "card_funs_shared_birthday sorry — bijection approach",
-      "body": "#{f : Fin n → Fin d | f(i)=f(j)} = d^{n-1} for i≠j. The bijection maps each such f to (v, g) where v = f(i) ∈ Fin d and g : Fin(n-1) → Fin d assigns the remaining values. The hard part in Lean is constructing the Fin(n-1) ≃ Fin n \\ {j} equivalence.",
-      "significance": 8
-    },
-    {
-      "id": "ann-8",
-      "type": "insight",
-      "lineStart": 204,
-      "lineEnd": 217,
-      "title": "E[X] proof structure: field_simp + ring",
-      "body": "The mean_collisionCount proof handles the n=0 case separately (simp), then for n+1 uses Nat.succ_sub_one to simplify (n+1)-1=n, followed by field_simp and ring for the algebraic identity. The key is casting sum_collisionCount (a ℕ equality) via push_cast.",
-      "significance": 6
-    }
-  ]
-}
+[
+  {
+    "id": "ann-header",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "From Paradox to Distribution: Formalizing X",
+    "content": "The classical birthday problem asks for $P(X=0)$ — the probability of no collision. But the full story requires formalizing $X$ itself: the random variable counting how many pairs of people share a birthday.\n\nThis file goes beyond computing $P(X=0)$ to give $X$ a precise Lean definition as a `Finset.card`, then proves a complete distributional picture: the exact zero-collision probability, the indicator decomposition, the bound $X \\leq \\binom{n}{2}$, and the expected value $E[X] = \\binom{n}{2}/d$.\n\nThe file imports `BirthdayProblemOQ01` to reuse `expectedPairs`, `variancePairs`, and their proved bounds — building a layered formalization where each file extends the previous.",
+    "mathContext": "$X: (\\text{Fin}\\,n \\to \\text{Fin}\\,d) \\to \\mathbb{N}$, where $X(f) = |\\{(i,j) : i < j,\\, f(i) = f(j)\\}|$.",
+    "significance": "key",
+    "relatedConcepts": ["random variable", "birthday paradox", "distributional analysis", "Finset.card"],
+    "prerequisites": ["BirthdayProblem.lean", "BirthdayProblemOQ01.lean", "Finset.filter"]
+  },
+  {
+    "id": "ann-1",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 59, "endLine": 65 },
+    "type": "definition",
+    "title": "Collision count and indicator as Lean definitions",
+    "content": "$X(f)$ is defined as the cardinality of the filtered set of ordered pairs $(i,j)$ with $i < j$ and $f(i) = f(j)$. Using `Finset.card` of a filtered `univ` is the canonical Lean 4 way to count elements satisfying a decidable predicate over a `Fintype`.\n\nThe `collisionIndicator` $I_{ij}(f)$ is the 0-1 function returning 1 exactly when $f(i)=f(j)$, enabling the indicator decomposition $X(f) = \\sum_{i<j} I_{ij}(f)$ which is the foundation for linearity-of-expectation arguments.",
+    "mathContext": "$X(f) = |\\{(i,j) : i < j,\\; f(i) = f(j)\\}|$; $\\;I_{ij}(f) = \\mathbf{1}[f(i)=f(j)]$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card", "Finset.filter", "indicator function", "ordered pairs"],
+    "prerequisites": ["Finset.univ", "Fintype instance for Fin n × Fin n", "decidable equality"]
+  },
+  {
+    "id": "ann-2",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 88 },
+    "type": "technique",
+    "title": "X=0 ↔ Injective via filter_eq_empty",
+    "content": "The key step is `Finset.card_eq_zero ↔ filter is empty ↔ the predicate fails for all elements`. Then the two directions use `lt_or_gt_of_ne` to case-split on the ordering of distinct indices:\n\n- Forward: if $X(f)=0$, the filter is empty, so no $(a,b)$ with $a<b$ satisfies $f(a)=f(b)$. Given $f(a)=f(b)$ with $a \\neq b$, use `lt_or_gt_of_ne` to find the ordered pair.\n- Backward: injectivity means $f(a)=f(b) \\implies a=b$, contradicting $a<b$ via `ne_of_lt`.\n\nThis proof reveals the semantic connection between 'no collisions' (a counting property) and injectivity (a functional property).",
+    "mathContext": "$X(f) = 0 \\iff f$ injective. Key: `Finset.card_eq_zero ↔ Finset.filter P = ∅` and `lt_or_gt_of_ne`.",
+    "significance": "key",
+    "relatedConcepts": ["injectivity", "Finset.card_eq_zero", "Finset.filter_eq_empty", "lt_or_gt_of_ne"],
+    "prerequisites": ["Finset.card_eq_zero", "Function.Injective", "ne_of_lt"]
+  },
+  {
+    "id": "ann-3",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 116 },
+    "type": "technique",
+    "title": "Equiv chain from subtype to embedding",
+    "content": "The proof of `#{f|X=0} = descFactorial` uses two equivalences:\n1. `{f|X=0} ≃ {f|injective}` via `Equiv.subtypeEquivRight` and the iff from `collisionCount_eq_zero_iff`\n2. `{f|injective} ≃ (Fin n ↪ Fin d)` by an explicit bidirectional map (packing/unpacking the injectivity proof)\n\n`Fintype.card_congr (e1.trans e2)` transfers the cardinality, then `Fintype.card_embedding_eq` gives `descFactorial d n`. This pattern — chain two equivs and transfer cardinality — is a reusable technique for counting subtypes of function types.",
+    "mathContext": "$|\\{f : [n]\\to[d] \\mid X(f)=0\\}| = d^{\\underline{n}}$. Chain: $\\{f : X=0\\} \\simeq \\{f : \\text{inj}\\} \\simeq (\\text{Fin}\\,n \\hookrightarrow \\text{Fin}\\,d)$.",
+    "significance": "key",
+    "relatedConcepts": ["Equiv chain", "Fintype.card_congr", "Fintype.card_embedding_eq", "descFactorial"],
+    "prerequisites": ["Equiv.subtypeEquivRight", "Function.Embedding", "Nat.descFactorial"]
+  },
+  {
+    "id": "ann-4",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 122, "endLine": 131 },
+    "type": "insight",
+    "title": "Unification theorem: two approaches, same probability",
+    "content": "`zero_collision_fraction` is a **unification theorem**: two apparently different formalizations of the birthday problem agree on the probability $d^{\\underline{n}}/d^n$.\n\n- `BirthdayProblem.lean` counts injective functions directly\n- This file counts functions with $X(f)=0$ via `collisionCount`\n\nOnce `card_zero_collision` is established, the proof is trivial: just `push_cast; rfl`. The mathematical content is entirely in `card_zero_collision`. This pattern — a theorem whose proof is trivial but whose *statement* has nontrivial mathematical content — is common in formal verification.",
+    "mathContext": "$\\Pr(X=0) = d^{\\underline{n}}/d^n$. Follows from $|\\{f: X(f)=0\\}| = d^{\\underline{n}}$ and $|\\text{Fin}\\,n \\to \\text{Fin}\\,d| = d^n$.",
+    "significance": "key",
+    "relatedConcepts": ["probability", "descFactorial", "birthday-problem", "formal unification"],
+    "prerequisites": ["card_zero_collision", "card_all_assignments", "push_cast"]
+  },
+  {
+    "id": "ann-5",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 138, "endLine": 146 },
+    "type": "technique",
+    "title": "Indicator decomposition via sum_filter",
+    "content": "The proof rewrites `Finset.card_filter` as `Finset.sum` using `← Finset.sum_filter`, then applies `sum_congr rfl` to handle each element. A case split on `i<j` and `f(i)=f(j)` covers all four combinations via `simp`.\n\nThis is the Lean 4 encoding of the classical identity $X(f) = \\sum_{i<j} I_{ij}(f)$, which is the bridge from the definition of $X$ to the linearity-of-expectation argument for $E[X]$.",
+    "mathContext": "$X(f) = \\sum_{(i,j):i<j} I_{ij}(f)$ via $|\\text{filter}\\,P| = \\sum_x \\mathbf{1}[P(x)]$.",
+    "significance": "key",
+    "relatedConcepts": ["indicator function", "linearity of expectation", "Finset.sum_filter", "sum_congr"],
+    "prerequisites": ["Finset.card_filter", "Finset.sum_congr", "BigOperators"]
+  },
+  {
+    "id": "ann-6",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 152, "endLine": 170 },
+    "type": "technique",
+    "title": "Upper bound X ≤ C(n,2) and card_ordered_pairs sorry",
+    "content": "The bound $X(f) \\leq \\binom{n}{2}$ uses `Finset.card_le_card` with `filter_subset_filter`. The key dependency is `card_ordered_pairs n`, which is left as a sorry.\n\n**Proof sketch**: $|\\{(i,j) : i<j \\in \\text{Fin}\\,n\\}|$. By symmetry, $|\\{i<j\\}| = |\\{i>j\\}|$, and $|\\{i=j\\}| = n$, so $|\\{i<j\\}| = (n^2 - n)/2 = \\binom{n}{2}$. In Lean: `Finset.card_offDiag` gives $|\\{i \\neq j\\}| = n(n-1)$; then a bijection $(i,j) \\leftrightarrow (j,i)$ on the strict-order filter halves this count.",
+    "mathContext": "$X(f) \\leq \\binom{n}{2}$ since $\\{(i,j):i<j,f(i)=f(j)\\} \\subseteq \\{(i,j):i<j\\}$ and the latter has size $\\binom{n}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_le_card", "Finset.card_offDiag", "binomial coefficient", "Nat.choose"],
+    "prerequisites": ["Nat.choose", "Finset.filter_subset_filter", "card_ordered_pairs"]
+  },
+  {
+    "id": "ann-7",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 176, "endLine": 198 },
+    "type": "technique",
+    "title": "Double counting: the two core sorries",
+    "content": "The expected value proof rests on two sorry'd lemmas:\n\n1. **`card_funs_shared_birthday`**: $|\\{f : f(i)=f(j)\\}| = d^{n-1}$ for $i \\neq j$. Bijection: fix shared value $v$ ($d$ choices), assign remaining $n-2$ positions freely ($d^{n-2}$ options), total $d \\cdot d^{n-2} = d^{n-1}$. The hard Lean step is constructing the index equivalence `Fin(n-1) ≃ Fin n \\ {j}`.\n\n2. **`sum_collisionCount`**: $\\sum_f X(f) = \\binom{n}{2} \\cdot d^{n-1}$. Strategy: `simp_rw [collisionCount_eq_sum_indicators, ← Finset.sum_comm]` then apply `card_funs_shared_birthday` to each pair term.",
+    "mathContext": "$\\sum_f X(f) = \\sum_{i<j}\\sum_f I_{ij}(f) = \\binom{n}{2} \\cdot d^{n-1}$. Dividing by $d^n$ gives $E[X] = \\binom{n}{2}/d$.",
+    "significance": "key",
+    "relatedConcepts": ["double counting", "Fubini for finite sums", "Finset.sum_comm", "bijection"],
+    "prerequisites": ["sum_collisionCount", "card_funs_shared_birthday", "card_ordered_pairs"]
+  },
+  {
+    "id": "ann-8",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 200, "endLine": 217 },
+    "type": "technique",
+    "title": "E[X] via field_simp + ring assuming double counting",
+    "content": "The `mean_collisionCount` proof handles $n=0$ separately (`simp`), then for $n+1$ uses `Nat.succ_sub_one` to simplify $(n+1)-1=n$, followed by `field_simp` and `ring` for the algebraic identity. The key is casting `sum_collisionCount` (a $\\mathbb{N}$ equality) to $\\mathbb{Q}$ via `push_cast`.\n\nThe result formally connects this file's bottom-up approach (summing $X(f)$ over all assignments and dividing by $d^n$) with `BirthdayProblemOQ01.lean`'s top-down approach (linearity of expectation), showing both yield `expectedPairs n d`.",
+    "mathContext": "$E[X] = \\frac{\\sum_f X(f)}{d^n} = \\frac{\\binom{n}{2} \\cdot d^{n-1}}{d^n} = \\frac{\\binom{n}{2}}{d} = \\text{expectedPairs}\\,n\\,d$.",
+    "significance": "supporting",
+    "relatedConcepts": ["expected value", "field_simp", "ring", "push_cast", "BirthdayProblemOQ01"],
+    "prerequisites": ["sum_collisionCount", "expectedPairs", "Nat.cast", "Nat.succ_sub_one"]
+  },
+  {
+    "id": "ann-concentration",
+    "proofId": "birthday-problem-oq-01-oq-01",
+    "range": { "startLine": 223, "endLine": 241 },
+    "type": "context",
+    "title": "Concentration: Var(X) ≤ E[X] (sub-Poisson)",
+    "content": "The final section imports variance bounds from `BirthdayProblemOQ01.lean`. The result $\\text{Var}(X) \\leq E[X]$ means the collision count is **sub-Poisson** — more concentrated than a Poisson with the same mean.\n\nThis is intuitively expected: the indicators $I_{ij}$ are negatively correlated (if pair $(i,j)$ collides, it's slightly less likely for $(i,k)$ to also collide), reducing variance below the Poisson benchmark.\n\nThe final `distribution_summary : True := trivial` serves as structured documentation: it collects the full distributional picture ($X \\in [0,\\binom{n}{2}]$, $\\Pr(X=0)$, $E[X]$, $\\text{Var}(X)$, $\\text{Var}(X) \\leq E[X]$) in one readable place.",
+    "mathContext": "$\\text{Var}(X) = \\binom{n}{2}\\frac{d-1}{d^2} \\leq \\frac{\\binom{n}{2}}{d} = E[X]$ when $d \\geq 1$, since $\\frac{d-1}{d^2} \\leq \\frac{1}{d} \\iff d-1 \\leq d$.",
+    "significance": "supporting",
+    "relatedConcepts": ["variance", "sub-Poisson", "negative correlation", "concentration inequality"],
+    "prerequisites": ["variancePairs", "variancePairs_le_expected", "BirthdayProblemOQ01"]
+  }
+]
