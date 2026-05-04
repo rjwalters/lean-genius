@@ -1,0 +1,51 @@
+[
+  {
+    "id": "ann-bridge-lemmas",
+    "line": 40,
+    "type": "insight",
+    "content": "Two bridge lemmas connect hardware to math: `shiftRight_one_eq_div_two` (n >>> 1 = n / 2) and `even_iff_testBit_zero_false` (n % 2 = 0 ↔ n.testBit 0 = false). These are the only lemmas needed to translate between the bit-level and arithmetic formulations.",
+    "latex": "n \\mathbin{>>>} 1 = \\lfloor n/2 \\rfloor \\quad\\text{and}\\quad n\\%2=0 \\iff n.\\mathrm{testBit}(0)=\\mathrm{false}"
+  },
+  {
+    "id": "ann-shiftright",
+    "line": 40,
+    "type": "technique",
+    "content": "`shiftRight_one_eq_div_two` uses `Nat.shiftRight_succ n 0` which says `n >>> (0+1) = (n >>> 0) / 2`, then `Nat.shiftRight_zero` to get `n >>> 1 = n / 2`. The proof is 3 lines.",
+    "latex": "n \\mathbin{>>>} 1 = n \\mathbin{>>>} (0+1) = (n \\mathbin{>>>} 0)/2 = n/2"
+  },
+  {
+    "id": "ann-testbit-zero",
+    "line": 46,
+    "type": "insight",
+    "content": "`Nat.mod_two_eq_zero_iff_testBit_zero` is a built-in Lean 4 core theorem (not Mathlib): `x % 2 = 0 ↔ x.testBit 0 = false`. This makes the bridge lemma a one-liner.",
+    "latex": null
+  },
+  {
+    "id": "ann-definition",
+    "line": 62,
+    "type": "definition",
+    "content": "`binaryGcdBit` mirrors `binaryGcd` exactly but replaces `(a+1) % 2 = 0` with `(a+1).testBit 0 = false` and `(a+1) / 2` with `(a+1) >>> 1`. The termination argument is the same: `a + b` decreases since `(a+1) >>> 1 = (a+1) / 2 < a+1`.",
+    "latex": null
+  },
+  {
+    "id": "ann-correctness",
+    "line": 89,
+    "type": "technique",
+    "content": "The correctness proof uses `binaryGcd.induct` (the induction principle generated from `binaryGcd`'s recursive structure). This gives exactly the 7 cases needed and provides the inductive hypothesis for each recursive subcall. The proof then translates bit conditions to arithmetic at each case using `dif_pos`/`dif_neg`.",
+    "latex": null
+  },
+  {
+    "id": "ann-case3",
+    "line": 102,
+    "type": "key-step",
+    "content": "Case 3 (both even): `(a+1).testBit 0 = false` and `(b+1).testBit 0 = false` translate from `ha : (a+1) % 2 = 0` and `hb : (b+1) % 2 = 0`. After applying the IH and rewriting `a+1 = 2*((a+1)/2)`, the goal reduces to `gcd_two_mul.symm`.",
+    "latex": "\\gcd(2a, 2b) = 2\\gcd(a,b)"
+  },
+  {
+    "id": "ann-sanity",
+    "line": 158,
+    "type": "verification",
+    "content": "Five concrete examples verified by `decide`: gcd(12,18)=6, gcd(48,36)=12, gcd(17,13)=1, gcd(0,7)=7, gcd(100,75)=25. These cover typical cases (even/odd mix, coprime, large common factor).",
+    "latex": null
+  }
+]

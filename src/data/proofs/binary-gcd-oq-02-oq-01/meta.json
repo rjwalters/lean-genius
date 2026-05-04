@@ -1,0 +1,129 @@
+{
+  "id": "binary-gcd-oq-02-oq-01",
+  "title": "Binary GCD via Bit Operations: testBit/shiftRight Formulation",
+  "slug": "binary-gcd-oq-02-oq-01",
+  "description": "Proves that Stein's binary GCD algorithm, when expressed using hardware-level bit operations (`Nat.testBit 0` for parity and `Nat.shiftRight 1` for halving), computes the same result as `Nat.gcd`. This formalizes the bit-level specification used in bignum GCD implementations.",
+  "parent": "binary-gcd-oq-02",
+  "openQuestion": "Can the binary GCD algorithm be equivalently expressed using native bit operations (testBit/shiftRight) instead of arithmetic (%2, /2), and proved correct?",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinaryGcdOQ02OQ01.lean",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "bit-operations",
+      "bignum",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 0,
+    "assumptions": "None. 0 axiom declarations, 0 sorries.",
+    "lineCount": 163,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.testBit_zero",
+        "description": "testBit x 0 = decide (x % 2 = 1)",
+        "module": "Init.Data.Nat.Bitwise.Lemmas"
+      },
+      {
+        "theorem": "Nat.mod_two_eq_zero_iff_testBit_zero",
+        "description": "x % 2 = 0 ↔ x.testBit 0 = false",
+        "module": "Init.Data.Nat.Bitwise.Lemmas"
+      },
+      {
+        "theorem": "Nat.shiftRight_succ",
+        "description": "n >>> (k+1) = (n >>> k) / 2",
+        "module": "Init.Data.Nat.Bitwise.Basic"
+      },
+      {
+        "theorem": "Nat.shiftRight_zero",
+        "description": "n >>> 0 = n",
+        "module": "Init.Data.Nat.Bitwise.Basic"
+      },
+      {
+        "theorem": "Nat.gcd_comm",
+        "description": "Commutativity of Nat.gcd",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of `binaryGcdBit : ℕ → ℕ → ℕ` using testBit 0 and shiftRight 1 (BinaryGcdOQ02OQ01.lean:62)",
+      "Bridge lemma `shiftRight_one_eq_div_two`: n >>> 1 = n / 2 (BinaryGcdOQ02OQ01.lean:40)",
+      "Bridge lemma `even_iff_testBit_zero_false`: n % 2 = 0 ↔ n.testBit 0 = false (BinaryGcdOQ02OQ01.lean:46)",
+      "Main correctness theorem `binaryGcdBit_eq_gcd`: binaryGcdBit a b = Nat.gcd a b (BinaryGcdOQ02OQ01.lean:89)"
+    ],
+    "prerequisites": [
+      "Binary GCD on ℕ (Proofs/GcdAlgorithmOQ02.lean) and correctness proof",
+      "Lean 4 built-in testBit and shiftRight for Nat",
+      "Basic parity and halving lemmas"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Stein's binary GCD algorithm (1967) was designed for binary computers where division by 2 is a single right-shift instruction and parity testing is a single AND-with-1 instruction. Modern bignum GCD implementations in GMP (GNU Multiple Precision Arithmetic Library) and cryptographic libraries like OpenSSL use exactly these bit operations for efficiency. Formalizing the bit-level specification bridges the gap between the hardware-efficient algorithm and its mathematical correctness.",
+    "problemStatement": "The arithmetic formulation of binary GCD uses `n % 2 = 0` to test parity and `n / 2` to halve. The bit-level formulation uses `n.testBit 0 = false` (LSB test via AND) and `n >>> 1` (right shift). Are these equivalent, and can the bit-level version be proved to compute `Nat.gcd`?",
+    "proofStrategy": "1. Establish bridge lemmas: `shiftRight_one_eq_div_two` (n >>> 1 = n/2 from Nat.shiftRight_succ) and `even_iff_testBit_zero_false` (wrapping Nat.mod_two_eq_zero_iff_testBit_zero). 2. Define `binaryGcdBit` using these bit operations. 3. Prove correctness by induction on the same recursive structure as `binaryGcd` (via `binaryGcd.induct`), translating bit conditions to arithmetic conditions at each case.",
+    "keyInsights": [
+      "The key bridge: n >>> 1 = n / 2 follows from Nat.shiftRight_succ applied at k=0, since n >>> 1 = (n >>> 0) / 2 = n / 2.",
+      "testBit 0 = false ↔ n % 2 = 0 is exactly Nat.mod_two_eq_zero_iff_testBit_zero, already proved in Lean 4 core.",
+      "Once the bridge lemmas are established, the proof is case-by-case structural: each of the 7 cases of binaryGcd.induct reduces to translating bit conditions to arithmetic conditions, then matching the existing correctness proof of binaryGcd.",
+      "The `dif_pos`/`dif_neg` lemmas for dependent if-then-else are essential for reducing the nested conditions in binaryGcdBit."
+    ]
+  },
+  "sections": [
+    {
+      "id": "bridge-lemmas",
+      "title": "I. Bit Operation Bridge Lemmas",
+      "startLine": 38,
+      "endLine": 50,
+      "summary": "Proves shiftRight_one_eq_div_two (n >>> 1 = n / 2) and even_iff_testBit_zero_false (n % 2 = 0 ↔ n.testBit 0 = false). These connect hardware-level operations to arithmetic.",
+      "mathContext": "$n \\mathbin{>>>} 1 = n / 2$ follows from the fact that right-shifting by $k+1$ equals right-shifting by $k$ then dividing by 2. For $k=0$: $n \\mathbin{>>>} 1 = (n \\mathbin{>>>} 0) / 2 = n / 2$. The testBit bridge wraps the Lean 4 core theorem."
+    },
+    {
+      "id": "definition",
+      "title": "II. The Bit-Level Binary GCD Algorithm",
+      "startLine": 52,
+      "endLine": 80,
+      "summary": "Defines binaryGcdBit using testBit 0 for parity and >>> 1 for halving. Structurally mirrors binaryGcd but with bit operations.",
+      "mathContext": "The algorithm uses $n.\\mathrm{testBit}\\ 0 = \\mathrm{false}$ to test if $n$ is even (LSB = 0), and $n \\mathbin{>>>} 1$ to halve $n$. The termination measure $a + b$ decreases in each recursive call since $a \\mathbin{>>>} 1 = \\lfloor a/2 \\rfloor < a$ for $a \\geq 1$."
+    },
+    {
+      "id": "correctness",
+      "title": "III. Correctness: binaryGcdBit = Nat.gcd",
+      "startLine": 82,
+      "endLine": 152,
+      "summary": "Proves binaryGcdBit_eq_gcd by induction on the 7-case recursive structure of binaryGcd. Each case translates bit conditions to arithmetic conditions using the bridge lemmas.",
+      "mathContext": "The 7 cases cover: (1-2) base cases a=0 or b=0; (3) both even: $2\\gcd(a/2,b/2)=\\gcd(a,b)$; (4) a even, b odd: $\\gcd(a/2,b)=\\gcd(a,b)$ since $\\gcd(2,\\mathrm{odd})=1$; (5) a odd, b even: symmetric; (6-7) both odd, subtract-and-halve: $\\gcd((a-b)/2,b)=\\gcd(a,b)$ since $a-b$ is even."
+    },
+    {
+      "id": "properties",
+      "title": "IV. Properties and Sanity Checks",
+      "startLine": 154,
+      "endLine": 163,
+      "summary": "Proves commutativity and identity elements (binaryGcdBit_comm, binaryGcdBit_zero_left, binaryGcdBit_zero_right), and verifies concrete examples via decide.",
+      "mathContext": "Properties follow by reducing to Nat.gcd properties via binaryGcdBit_eq_gcd. Sanity checks include gcd(12,18)=6, gcd(48,36)=12, gcd(17,13)=1, gcd(100,75)=25."
+    }
+  ],
+  "conclusion": {
+    "summary": "The bit-level binary GCD algorithm (`binaryGcdBit`), using `testBit 0` for parity and `>>> 1` for halving, is proved equivalent to `Nat.gcd` with 0 sorries and 0 axioms. The formal proof establishes the mathematical correctness of hardware-efficient bignum GCD implementations.",
+    "implications": "This result bridges the computational description of Stein's algorithm (using single-instruction bit operations) to its mathematical specification. Any software component implementing binary GCD via testBit/shiftRight on Lean's Nat (which uses GMP internally) can be formally verified against Nat.gcd."
+  },
+  "leanFile": {
+    "path": "Proofs/BinaryGcdOQ02OQ01.lean",
+    "namespace": "BinaryGcdBit",
+    "imports": ["Mathlib", "Proofs.GCDAlgorithmOQ02"],
+    "axiomCount": 0,
+    "lineCount": 163,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "sorries": 0
+}

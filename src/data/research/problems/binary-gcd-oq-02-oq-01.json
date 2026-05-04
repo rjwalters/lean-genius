@@ -1,0 +1,149 @@
+{
+  "slug": "binary-gcd-oq-02-oq-01",
+  "title": "Bignum bit-sequence equivalence: prove the binary GCD on `Nat` (computed via ...",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Bignum bit-sequence equivalence: prove the binary GCD on `Nat` (computed via ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-04T16:38:18.104Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: binaryGcdBit proved equal to Nat.gcd via testBit/shiftRight bridge lemmas",
+    "builtItems": [
+      "binaryGcdBit: ℕ → ℕ → ℕ using testBit 0 and >>> 1 (BinaryGcdOQ02OQ01.lean:62)",
+      "shiftRight_one_eq_div_two: n >>> 1 = n / 2 (line 40)",
+      "even_iff_testBit_zero_false: n % 2 = 0 ↔ testBit 0 = false (line 46)",
+      "binaryGcdBit_eq_gcd: main correctness theorem (line 89)",
+      "binaryGcdBit_comm, _zero_left, _zero_right: corollaries (lines 154-160)"
+    ],
+    "insights": [
+      "Nat.mod_two_eq_zero_iff_testBit_zero is already in Lean 4 core (Init.Data.Nat.Bitwise.Lemmas)",
+      "Nat.shiftRight_succ : n >>> (k+1) = (n >>> k) / 2 is also in core, so n >>> 1 = n / 2 follows directly",
+      "binaryGcd.induct gives exactly the 7 cases needed; using it for binaryGcdBit avoids re-proving termination",
+      "dif_pos/dif_neg lemmas are essential for reducing nested dependent if-then-else after unfold"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "binary-gcd-oq-01",
+    "binary-gcd-oq-01-oq-04",
+    "binary-gcd-oq-02",
+    "binary-gcd-oq-03",
+    "binary-gcd-oq-03-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T16:38:18.104Z",
+  "lastUpdate": "2026-05-04T16:38:18.104Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinaryGcdOQ01.lean",
+      "filename": "BinaryGcdOQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ03.lean",
+      "filename": "BinaryGcdOQ01OQ03.lean",
+      "lineCount": 226,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ04.lean",
+      "filename": "BinaryGcdOQ01OQ04.lean",
+      "lineCount": 158,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ02.lean",
+      "filename": "BinaryGcdOQ02.lean",
+      "lineCount": 135,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03.lean",
+      "filename": "BinaryGcdOQ03.lean",
+      "lineCount": 491,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ01.lean",
+      "filename": "BinaryGcdOQ03OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02.lean",
+      "filename": "BinaryGcdOQ03OQ02.lean",
+      "lineCount": 1021,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02.lean"
+    }
+  ]
+}
