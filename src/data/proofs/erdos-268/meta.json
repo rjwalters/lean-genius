@@ -54,11 +54,13 @@
       "Erdős-Straus (d=2), Kovač (d=3), Kovač-Tao (general) as layered axioms",
       "Coordinate monotonicity and positivity theorems",
       "Dimension monotonicity via projection maps",
-      "Concrete examples: squares (Basel problem) and powers of 2 (geometric series)"
+      "Concrete examples: squares (Basel problem) and powers of 2 (geometric series)",
+      "harmonicPointSet_one_eq: X₁ = {x : Fin 1 → ℝ | 0 < x 0} (full characterization of dimension-1 image)",
+      "harmonicSubseriesSum_surjective_on_pos: every s > 0 is achievable as a harmonic subseries sum"
     ],
     "axiomCount": 2,
-    "lineCount": 951,
-    "assumptions": "2 axioms: erdos_268_solved (main interior result for all dimensions), harmonicPointSet_path_connected_large (path-connectedness for d ≥ 2, Kovač-Tao structural analysis). 0 sorries. Proved: shifted_summable (decomposition at n=0), harmonicPointSet_nonempty (powers-of-2 witness), harmonicPointSet_dense_somewhere (directly from interior axiom), coordinate_decreasing (tsum_lt_tsum; requires 0 ∉ A), first_coordinate_largest (from coordinate_decreasing), squares_convergent (bijection + p-series), powers_convergent (bijection + geometric series)."
+    "lineCount": 979,
+    "assumptions": "2 axioms: erdos_268_solved (main interior result for all dimensions), harmonicPointSet_path_connected_large (path-connectedness for d ≥ 2, Kovač-Tao structural analysis). 0 sorries. Proved: shifted_summable (decomposition at n=0), harmonicPointSet_nonempty (powers-of-2 witness), harmonicPointSet_dense_somewhere (directly from interior axiom), coordinate_decreasing (tsum_lt_tsum; requires 0 ∉ A), first_coordinate_largest (from coordinate_decreasing), squares_convergent (bijection + p-series), powers_convergent (bijection + geometric series), harmonicPointSet_one_eq (X₁ = positive half-line via greedy construction), harmonicSubseriesSum_surjective_on_pos (every s > 0 is achievable)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #268: Interior of Harmonic Subseries Points**\n\nThis problem lies at the intersection of harmonic analysis, number theory, and point-set topology. It originates from a classical question about which real numbers can be represented as sums of distinct unit fractions — a topic with roots in ancient Egyptian mathematics (the Rhind Papyrus, c. 1650 BCE, contains tables of such decompositions, now called Ahmes series or Egyptian fractions).\n\nThe modern formulation involves the set of all infinite subsets A ⊆ ℕ with convergent harmonic subseries Σ_{n∈A} 1/n < ∞. Such sets must be very 'thin' — the harmonic series diverges (proved by Nicole Oresme c. 1350), so A cannot contain too many elements. Examples include {n²} (with sum π²/6, the Basel problem solved by Euler in 1734) and {2ᵏ} (with sum 2, a geometric series).\n\nThe twist in Problem #268 is the passage to higher dimensions: for each qualifying set A, form the d-dimensional point (Σ 1/n, Σ 1/(n+1), ..., Σ 1/(n+d-1)). The set X of all such points is the object of study. Erdős asked: does X have nonempty interior?\n\n**Timeline:**\n- 1950s–60s: Erdős poses the problem, motivated by his work on thin sets and additive number theory\n- Erdős-Straus: Prove the d=2 case using properties of the digamma function ψ(x) and telescoping sum representations\n- Decades of partial results on the 1-dimensional structure of achievable harmonic subseries sums\n- 2024: Kovač proves d=3 with an explicit construction of an open ball inside X₃, giving quantitative geometric information\n- 2024: Kovač and Tao prove the full result for all d ≥ 1, connecting the problem to the theory of Ahmes series and showing that the richness of Egyptian fraction representations guarantees interior in every dimension\n\nThe result is surprising: despite the severe sparsity constraint on A, the resulting points fill out an open region in ℝᵈ. This reflects a deep phenomenon — the space of 'thin' infinite subsets of ℕ is itself rich enough to parameterize open sets in arbitrary dimension.",
@@ -91,10 +93,10 @@
     {
       "id": "harmonic",
       "title": "Harmonic Subseries",
-      "summary": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite sets trivially converge (sorry) and shifted summability follows from comparison (sorry). The subtype-based summation pattern is standard Mathlib.",
+      "summary": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite_has_convergent (Fintype instance + hasSum_fintype) and shifted_summable (case split on k=0 vs k>0, dominated comparison using 1/(n+k) ≤ 1/n). Both fully proved.",
       "startLine": 38,
       "endLine": 62,
-      "mathContext": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite sets trivially converge (sorry) and shifted summability follows from comparison (sorry). The subtype-based summation pattern is standard Mathlib."
+      "mathContext": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite_has_convergent (Fintype instance + hasSum_fintype) and shifted_summable (dominated by original series). Both fully proved."
     },
     {
       "id": "point-set",
@@ -139,34 +141,34 @@
     {
       "id": "properties",
       "title": "Properties of X",
-      "summary": "States harmonicPointSet_nonempty (sorry — would use squares example), harmonicPointSet_path_connected (sorry — involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partially proved from the main axiom using isOpen_interior, with one remaining sorry).",
+      "summary": "Fully proves harmonicPointSet_nonempty (powers-of-2 witness via infinite range), harmonicPointSet_path_connected (d=0: singleton via Fin.elim0; d=1: convexity of positive half-line via greedy construction; d≥2: harmonicPointSet_path_connected_large axiom), harmonicPointSet_dense_somewhere (direct from erdos_268_solved + isOpen_interior).",
       "startLine": 156,
       "endLine": 184,
-      "mathContext": "States harmonicPointSet_nonempty (sorry — would use squares example), harmonicPointSet_path_connected (sorry — involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partially proved from the main axiom using isOpen_interior, with one remaining sorry)."
+      "mathContext": "Fully proves harmonicPointSet_nonempty (powers-of-2 witness), harmonicPointSet_path_connected (d=0 singleton, d=1 convex, d≥2 axiom), harmonicPointSet_dense_somewhere (interior axiom). All three theorems proved with no sorries."
     },
     {
       "id": "coordinates",
       "title": "Coordinate Properties",
-      "summary": "States coordinate_decreasing: shifted sums decrease with shift index (sorry — needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for nonempty A (sorry — needs tsum_pos). Together these show X lies in the cone {x₀ > x₁ > ··· > x_{d-1} > 0}.",
+      "summary": "Fully proves coordinate_decreasing (tsum_lt_tsum with strict inequality witness at a positive element of A; requires 0 ∉ A), first_coordinate_largest (corollary via Fin.val case split), and all_coordinates_positive (tsum_pos with element witness). Together: X lies in the strict cone {x₀ > x₁ > ··· > x_{d-1} > 0}.",
       "startLine": 185,
       "endLine": 206,
-      "mathContext": "States coordinate_decreasing: shifted sums decrease with shift index (sorry — needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for nonempty A (sorry — needs tsum_pos)."
+      "mathContext": "Fully proves coordinate_decreasing (tsum_lt_tsum), first_coordinate_largest (corollary), all_coordinates_positive (tsum_pos). All proved with no sorries."
     },
     {
       "id": "monotonicity",
       "title": "Dimension Monotonicity",
-      "summary": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. States projection_preserves: the image of X_{d₂} under projection lies in X_{d₁} (sorry — requires showing the same set A generates both points).",
+      "summary": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. Proves projection_preserves: the same set A generating a d₂-dimensional point also generates its d₁-dimensional projection. Fully proved (Fin lifting via Nat.lt_of_lt_of_le).",
       "startLine": 207,
       "endLine": 217,
-      "mathContext": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. States projection_preserves: the image of X_{d₂} under projection lies in X_{d₁} (sorry — requires showing the same set A generates both points)."
+      "mathContext": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. Proves projection_preserves: the projected point is still in harmonicPointSet d₁."
     },
     {
       "id": "examples",
       "title": "Specific Examples",
-      "summary": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Basel problem (Σ 1/n² = π²/6); the powers-of-2 example is a geometric series (Σ 1/2ᵏ = 2).",
+      "summary": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. Proves squares_convergent (bijection ℕ ≃ squaresSet + p-series for p=2) and powers_convergent (bijection ℕ ≃ powersOf2Set + geometric series). Defines squaresPoint and powers2Point as concrete elements of X. Adds harmonicPointSet_one_eq (X₁ = positive half-line) and harmonicSubseriesSum_surjective_on_pos (every s > 0 achievable).",
       "startLine": 218,
-      "endLine": 278,
-      "mathContext": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Basel problem (Σ 1/n² = π²/6); the powers-of-2 example is a geometric series (Σ 1/2ᵏ = 2)."
+      "endLine": 979,
+      "mathContext": "Proves squares_convergent and powers_convergent. Adds two new public theorems: harmonicPointSet_one_eq and harmonicSubseriesSum_surjective_on_pos."
     }
   ],
   "conclusion": {
@@ -207,9 +209,9 @@
       "Topology"
     ],
     "namespace": "Erdos268",
-    "lineCount": 951,
+    "lineCount": 979,
     "axiomCount": 2,
-    "theoremCount": 32,
+    "theoremCount": 34,
     "definitionCount": 16,
     "sorries": 0,
     "path": "Proofs/Erdos268Problem.lean"
