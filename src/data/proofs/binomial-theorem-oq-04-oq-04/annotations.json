@@ -1,0 +1,106 @@
+[
+  {
+    "id": "annotation-lgv-e",
+    "type": "definition",
+    "label": "lgvE",
+    "body": "lgvE m a b = Nat.choose (m + (b - a)) m",
+    "note": "The LGV e-function: number of lattice paths from height a to height b using exactly m East steps. A path consists of m East steps and (b-a) North steps, freely interleaved, giving C(m+(b-a), m) arrangements.",
+    "location": { "section": "lgv-path-matrix" }
+  },
+  {
+    "id": "annotation-lgv-det2",
+    "type": "definition",
+    "label": "lgvDet2",
+    "body": "lgvDet2 m a₁ b₁ a₂ b₂ = lgvE m a₁ b₁ * lgvE m a₂ b₂ - lgvE m a₁ b₂ * lgvE m a₂ b₁",
+    "note": "The 2×2 LGV determinant. In the LGV lemma, this equals the signed count of non-intersecting path pairs: (A₁→B₁, A₂→B₂) paths minus (A₁→B₂, A₂→B₁) crossing paths. The Lindström involution pairs crossing path-tuples with cancellation.",
+    "location": { "section": "lgv-path-matrix" }
+  },
+  {
+    "id": "annotation-lgve-zero-source",
+    "type": "theorem",
+    "label": "lgvE_zero_source",
+    "body": "lgvE m 0 k = Nat.choose (m + k) m",
+    "note": "When the source is at height 0, lgvE simplifies to C(m+k, m). This is the standard formula for lattice paths from the origin to (m, k) — choosing which m of the m+k steps are East.",
+    "location": { "section": "lgv-path-matrix" }
+  },
+  {
+    "id": "annotation-lgve-same",
+    "type": "theorem",
+    "label": "lgvE_same",
+    "body": "lgvE m a a = 1",
+    "note": "There is exactly 1 path from height a back to height a: the flat path with m East steps and 0 North steps (b-a=0 so C(m,m)=1).",
+    "location": { "section": "lgv-path-matrix" }
+  },
+  {
+    "id": "annotation-lgvdet2-no-cross",
+    "type": "theorem",
+    "label": "lgvDet2_when_no_cross_path",
+    "body": "b₁ < a₂ → lgvDet2 m a₁ b₁ a₂ b₂ = lgvE m a₁ b₁ * lgvE m a₂ b₂ - lgvE m a₁ b₂ * C(m,m)",
+    "note": "When sources are above targets (b₁ < a₂), the cross path a₂ → b₁ goes downward — impossible with only North and East steps — so saturated subtraction gives lgvE m a₂ b₁ = C(m+0,m) = 1.",
+    "location": { "section": "lgv-path-matrix" }
+  },
+  {
+    "id": "annotation-vandermonde",
+    "type": "theorem",
+    "label": "vandermonde",
+    "body": "C(m+n, r) = Σ_{k=0}^{r} C(m,k) · C(n,r-k)",
+    "note": "The Vandermonde convolution identity, proved via Mathlib's polynomial framework (Nat.add_choose_eq + antidiagonal sum). This is the algebraic baseline for the combinatorial and path-theoretic proofs below.",
+    "location": { "section": "vandermonde-combinatorial" }
+  },
+  {
+    "id": "annotation-vandermonde-powerset",
+    "type": "theorem",
+    "label": "vandermonde_via_powersetCard",
+    "body": "(powersetCard r (range (m+n))).card = Σ_k (powersetCard k (range m)).card * (powersetCard (r-k) (Ico m (m+n))).card",
+    "note": "The combinatorial LGV proof: every r-element subset of {0,...,m+n-1} uniquely decomposes into a k-element subset of {0,...,m-1} and an (r-k)-element subset of {m,...,m+n-1}. The two segments are disjoint (non-crossing in LGV terminology), so all contributions are positive with no cancellation.",
+    "location": { "section": "vandermonde-combinatorial" }
+  },
+  {
+    "id": "annotation-vandermonde-term",
+    "type": "theorem",
+    "label": "vandermonde_term_combinatorial",
+    "body": "C(m,k) * C(n,r-k) = (powersetCard k (range m)).card * (powersetCard (r-k) (range n)).card",
+    "note": "Each term in the Vandermonde sum is a product of independent subset counts: k-subsets of a first block times (r-k)-subsets of a second block. In LGV language: the path counts in disjoint grid segments multiply.",
+    "location": { "section": "vandermonde-combinatorial" }
+  },
+  {
+    "id": "annotation-lgv-path-count",
+    "type": "theorem",
+    "label": "lgv_path_count_identity",
+    "body": "lgvE m 0 r = C(m+r, m)",
+    "note": "In the LGV e-function model, the path count from y=0 to y=r in m East steps is C(m+r,m) — not C(m,r) as in the Bool-vector model. This distinction explains why sequential LGV matrix multiplication gives the Chu-Vandermonde identity rather than standard Vandermonde.",
+    "location": { "section": "lgv-connection" }
+  },
+  {
+    "id": "annotation-vandermonde-sequential",
+    "type": "theorem",
+    "label": "vandermonde_sequential_lgv_principle",
+    "body": "C(m+n, r) = Σ_k C(m,k) * C(n,r-k)",
+    "note": "The 1×1 degenerate LGV principle: a Bool vector of length m+n with r Ones decomposes at position m into a k-One prefix and an (r-k)-One suffix. In the general LGV lemma, path-pairs cancel via the Lindström involution; in the 1×1 case there are no pairs to swap, so all terms count positively.",
+    "location": { "section": "lgv-connection" }
+  },
+  {
+    "id": "annotation-lgvdet2-staircase",
+    "type": "theorem",
+    "label": "lgvDet2_staircase",
+    "body": "lgvDet2 m 0 r 1 (r+1) = C(m+r,m)² - C(m+r+1,m) * C(m+(r-1),m)",
+    "note": "For the 'staircase' source-target configuration {(0,r),(1,r+1)}, the 2×2 LGV determinant gives C(m+r,m)² - C(m+r+1,m)·C(m+r-1,m). By the LGV lemma, this counts non-intersecting path pairs — related to Catalan numbers and the ballot problem (see BallotProblemOQ03).",
+    "location": { "section": "lgv-connection" }
+  },
+  {
+    "id": "annotation-vandermonde-chu",
+    "type": "theorem",
+    "label": "vandermonde_chu_from_lgv",
+    "body": "Σ_k lgvE m₁ 0 k * lgvE m₂ 0 (r-k) = Σ_k C(m₁+k,m₁) * C(m₂+(r-k),m₂)",
+    "note": "Sequential LGV matrix multiplication: composing two 1×1 LGV matrices (first m₁ East steps, then m₂ East steps) gives the Vandermonde-Chu identity, distinct from standard Vandermonde because lgvE(m,0,k) = C(m+k,m) ≠ C(m,k).",
+    "location": { "section": "vandermonde-chu" }
+  },
+  {
+    "id": "annotation-lgv-summary",
+    "type": "theorem",
+    "label": "vandermonde_lgv_connection_summary",
+    "body": "C(m+n, r) = Σ_k C(m,k) * C(n,r-k)",
+    "note": "The master result: Vandermonde's identity as the 1×1 LGV theorem. The general r×r LGV lemma (with the Lindström involution producing signed cancellations) specializes to this positive-only identity when r=1.",
+    "location": { "section": "vandermonde-chu" }
+  }
+]
