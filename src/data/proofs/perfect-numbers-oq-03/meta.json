@@ -1,0 +1,130 @@
+{
+  "id": "perfect-numbers-oq-03",
+  "title": "Mersenne Prime Distribution: Necessity and Lucas Congruence",
+  "slug": "perfect-numbers-oq-03",
+  "description": "Formalizes two classical results on Mersenne primes M(p) = 2^p - 1: (1) the necessity theorem — M(n) prime implies n prime; (2) the Lucas congruence — prime q dividing M(p) satisfies p | q-1. Also states the Lenstra-Pomerance-Wagstaff conjecture on the asymptotic count of Mersenne primes. All 14 theorems fully verified with 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mersenne_prime",
+    "date": "Classical results (necessity: 18th century; congruence: Lucas 1876); LPW heuristic: 1980s",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "mersenne-primes",
+      "perfect-numbers",
+      "prime-distribution",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/PerfectNumbersOQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 14 theorems fully verified with 0 sorries and 0 axioms. The Lenstra-Pomerance-Wagstaff conjecture is stated as a definition (LPWConjecture : Prop), not an axiom.",
+    "originalContributions": [
+      "mersenne_prime_exp_prime: M(n) prime implies n prime (via divisibility M(a) | M(b) when a | b)",
+      "factor_cong_one_mod_p: prime q divides M(p) implies p | q-1 (via ZMod order and Fermat's little theorem)",
+      "composite_exp_implies_composite: Composite n (n≥2) implies M(n) composite",
+      "mersenne_equiv: Equivalent characterization — M(n) prime iff n prime and M(n) prime",
+      "LPWConjecture: Formal statement of Lenstra-Pomerance-Wagstaff density conjecture",
+      "Small case computations: M(2), M(3), M(5), M(7) prime; M(1), M(4), M(11) composite"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 260,
+    "theoremCount": 14,
+    "definitionCount": 5,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Mersenne primes — primes of the form 2^p - 1 — have fascinated mathematicians since antiquity due to their connection with perfect numbers (Euclid: n is even perfect ↔ n = 2^(p-1)(2^p-1) where 2^p-1 is prime). The necessity theorem (2^n-1 prime implies n prime) was known to Euler. The Lucas congruence (prime factor q of 2^p-1 satisfies q ≡ 1 (mod p)) was proved by Lucas in 1876 and underlies the Lucas-Lehmer primality test.\n\nAs of 2024, only 51 Mersenne primes are known, the largest being 2^(136279841)-1 (discovered 2024 by GIMPS). Whether there are infinitely many Mersenne primes is a famous open problem. The Lenstra-Pomerance-Wagstaff (LPW) conjecture gives a heuristic count: the number of Mersenne primes with exponent ≤ N grows as (e^γ/log 2) · log log N ≈ 2.57 · log log N where γ ≈ 0.5772 is the Euler-Mascheroni constant.",
+    "problemStatement": "**Open Question (OQ-03 from Perfect Numbers)**: What is the distribution of Mersenne primes? Is the LPW conjecture — that the count of Mersenne primes with exponent ≤ N is asymptotically (e^γ/log 2)·log log N — correct?\n\n**Formalized**: The classical necessary conditions (exponent prime, factor congruence) are fully proved. The LPW conjecture is formally stated as a Lean proposition.",
+    "text": "A 260-line formalization proving the two classical necessary conditions for Mersenne primality and stating the LPW density conjecture. The key theorems are `mersenne_prime_exp_prime` (divisibility argument: if a|b then M(a)|M(b)) and `factor_cong_one_mod_p` (ZMod order: ord_q(2)|p by primality, ord_q(2)≠1, Fermat gives ord_q(2)|q-1). All 14 theorems compile with 0 sorries.",
+    "proofStrategy": "**Necessity (mersenne_prime_exp_prime)**: If M(n) is prime and n is composite with factor a|n (1<a<n), then M(a)|M(n) via mersenne_dvd_of_dvd, giving 1 < M(a) < M(n), contradicting primality. Proof: `omega` for divisibility lemma, contradiction from Nat.Prime.eq_one_or_self.\n\n**Lucas Congruence (factor_cong_one_mod_p)**: If prime q|M(p) = 2^p-1, then 2^p ≡ 1 (mod q). The order of 2 in (ZMod q)* divides p. Since p is prime, ord(2) = 1 or p. If ord(2)=1 then 2≡1 (mod q) so q|1, contradiction. So ord(2)=p, and by Fermat ord(2)|q-1, giving p|q-1.\n\n**Small Cases**: `native_decide`/`norm_num`/`decide` directly compute M(1)=1 (not prime), M(2)=3, M(3)=7, M(5)=31, M(7)=127 (all prime), M(4)=15 (not prime), M(11)=2047=23×89 (not prime).",
+    "keyInsights": [
+      "**Divisibility Telescope**: M(a) | M(b) when a | b follows from the algebraic identity 2^b - 1 = (2^a)^(b/a) - 1 = (2^a - 1)·((2^a)^(b/a-1) + ... + 1). In Lean: `mersenne_dvd_of_dvd` via `Nat.pow_sub_one_dvd`.",
+      "**Order-Theoretic Approach**: The factor congruence proof uses ZMod order theory: (ZMod q)* has order q-1 (Fermat), and ord_q(2) divides both p (since 2^p≡1) and q-1. Primality of p forces ord=p.",
+      "**LPWConjecture as Def**: The conjecture is formalized as `def LPWConjecture : Prop := ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, ...` using Filter.atTop asymptotics. This is a definition, not an axiom — correctly giving axiomCount = 0.",
+      "**Sparsity Evidence**: M(11) = 2047 = 23 × 89 shows that even when p is prime, M(p) may be composite (the factor 23 ≡ 1 (mod 11) per the Lucas congruence)."
+    ],
+    "prerequisites": [
+      "Mersenne primes and perfect numbers",
+      "Multiplicative order in ZMod",
+      "Fermat's little theorem",
+      "Divisibility in natural numbers"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "extends",
+      "description": "Parent formalization proving the Euclid-Euler theorem connecting perfect numbers and Mersenne primes"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.NumberTheory.LucasPrimality",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "MersennePrimeDist",
+    "lineCount": 260,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 5,
+    "path": "Proofs/PerfectNumbersOQ03.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-basic",
+      "title": "Part I: Basic Mersenne Number Properties",
+      "startLine": 44,
+      "endLine": 81,
+      "summary": "Defines M(n) = 2^n - 1 and IsMersennePrime. Proves small cases by norm_num: M(1)=1 not prime, M(2)=3, M(3)=7, M(5)=31, M(7)=127 prime, M(4)=15 not prime. Proves mersenne_dvd_of_dvd: a|b → M(a)|M(b) via the factoring identity.",
+      "mathContext": "$M(n) = 2^n - 1$. The key divisibility: if $a \\mid b$ then $2^a - 1 \\mid 2^b - 1$ (factoring $2^b - 1$ as $(2^a)^{b/a} - 1$)."
+    },
+    {
+      "id": "sec-necessity",
+      "title": "Part II: Necessity of Exponent Primality",
+      "startLine": 83,
+      "endLine": 125,
+      "summary": "Proves mersenne_prime_exp_prime: M(n) prime → n prime. If n has proper divisor a (1<a<n), then 1 < M(a) | M(n) < M(n), contradicting primality of M(n). Uses Nat.Prime.eq_one_or_self and mersenne_dvd_of_dvd.",
+      "mathContext": "If $a \\mid n$ with $1 < a < n$, then $1 < 2^a - 1 < 2^n - 1$ and $M(a) \\mid M(n)$, so $M(n)$ is composite."
+    },
+    {
+      "id": "sec-factor-cong",
+      "title": "Part III: Lucas Factor Congruence",
+      "startLine": 127,
+      "endLine": 175,
+      "summary": "Proves factor_cong_one_mod_p: prime q | M(p) → p | q-1 for prime p. Strategy: 2^p ≡ 1 (mod q), so ord_q(2) | p; since p is prime ord=1 or p; ord=1 forces q|1 (contradiction); so ord=p and Fermat gives p|q-1. Uses ZMod.orderOf_dvd_of_pow_eq_one and Nat.orderOf_dvd_of_pow_eq_one.",
+      "mathContext": "Prime $q \\mid 2^p - 1 \\implies 2^p \\equiv 1 \\pmod{q} \\implies \\text{ord}_q(2) \\mid p \\implies \\text{ord}_q(2) = p \\implies p \\mid q-1$ (Fermat)."
+    },
+    {
+      "id": "sec-lpw",
+      "title": "Part IV: LPW Conjecture",
+      "startLine": 177,
+      "endLine": 200,
+      "summary": "Defines mersennePrimeCount N = #{primes p ≤ N : M(p) prime}, lpwConstant = e^γ/log 2 ≈ 2.57, and LPWConjecture asserting mersennePrimeCount N ~ lpwConstant · log log N. The conjecture is stated as a Prop (not an axiom) using filter asymptotics.",
+      "mathContext": "The LPW heuristic: $|\\{p \\leq N : 2^p - 1 \\text{ prime}\\}| \\sim \\frac{e^\\gamma}{\\log 2} \\cdot \\log \\log N \\approx 2.57 \\log \\log N$."
+    },
+    {
+      "id": "sec-small-cases",
+      "title": "Parts V-VI: Composite Criterion and Known Values",
+      "startLine": 201,
+      "endLine": 260,
+      "summary": "Proves composite_exp_implies_composite (converse: n composite, n≥2 → M(n) composite via mersenne_dvd_of_dvd), mersenne_equiv (M(n) prime ↔ n prime ∧ M(n) prime), first_four_mersenne_prime_exponents (exponents 2,3,5,7), first_four_mersenne_primes (3,7,31,127 all prime), M_eleven_composite (2047=23×89 not prime via decide).",
+      "mathContext": "$M(11) = 2047 = 23 \\times 89$; the factor $23 \\equiv 1 \\pmod{11}$ confirms the Lucas congruence."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves the two classical necessary conditions for Mersenne primality: the exponent must be prime (mersenne_prime_exp_prime) and prime factors satisfy the Lucas congruence p|q-1 (factor_cong_one_mod_p). States the LPW density conjecture as a formal Lean proposition. All 14 theorems verified with 0 sorries and 0 axioms.",
+    "implications": "The Lucas factor congruence is the foundation of the Lucas-Lehmer primality test, which has discovered all known Mersenne primes. Formalizing it provides the theoretical basis for formalizing the Lucas-Lehmer test itself. The LPW conjecture, if proved, would explain the observed logarithmic sparsity of Mersenne primes.",
+    "openQuestions": [
+      "Are there infinitely many Mersenne primes? (One of the major open problems in number theory)",
+      "Does the LPW asymptotic count hold? Current evidence is consistent but far from proof",
+      "Formalize the Lucas-Lehmer primality test using the factor congruence as a key ingredient"
+    ]
+  },
+  "sorries": 0
+}
