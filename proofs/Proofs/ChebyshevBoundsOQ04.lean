@@ -243,11 +243,81 @@ theorem chebyshevPsi_doubling_le (n : ℕ) (hn : 1 ≤ n) :
             rw [show (4 : ℝ) = 2 ^ 2 from by norm_num, Real.log_pow]; ring
   linarith
 
-/-- **Upper bound** (axiom): ψ(n) ≤ 2n · log 2 for all n.
-    Proof: telescope ψ(n) = Σ_k [ψ(n/2^k) - ψ(n/2^{k+1})] with each term ≤ (n/2^k) · log 2
-    from `chebyshevPsi_doubling_le`, sum the geometric series to get ≤ 2n · log 2. -/
-axiom chebyshevPsi_upper_bound (n : ℕ) :
-    chebyshevPsi n ≤ 2 * n * Real.log 2
+set_option maxHeartbeats 800000 in
+private theorem psi_odd_le_log_choose (m : ℕ) :
+    chebyshevPsi (2 * m + 1) - chebyshevPsi (m + 1) ≤
+    Real.log (Nat.choose (2 * m + 1) m : ℝ) := by
+  have h_log_choose : Real.log (Nat.choose (2 * m + 1) m) = Real.log (Nat.factorial (2 * m + 1)) - Real.log (Nat.factorial m) - Real.log (Nat.factorial (m + 1)) := by
+    rw [ Nat.cast_choose ] <;> try linarith;
+    rw [ Real.log_div, Real.log_mul ] <;> first | positivity | norm_num [ two_mul, add_assoc ] ; ring;
+  have h_log_factorial (n : ℕ) : Real.log (Nat.factorial n) = ∑ d ∈ Finset.Icc 1 n, vonMangoldt d * ⌊(n : ℝ) / (d : ℝ)⌋ := by
+    convert log_factorial_vonMangoldt n using 1;
+    erw [ Finset.sum_Ico_eq_sub _ _ ] <;> norm_num [ Finset.sum_range_succ' ];
+    exact Finset.sum_congr rfl fun x hx => by congr; exact Int.floor_eq_iff.mpr ⟨ by rw [ le_div_iff₀ ] <;> norm_cast <;> linarith [ Nat.div_mul_le_self n ( x + 1 ) ], by rw [ div_lt_iff₀ ] <;> norm_cast <;> linarith [ Nat.div_add_mod n ( x + 1 ), Nat.mod_lt n ( Nat.succ_pos x ) ] ⟩ ;
+  have h_apply_log_factorial : ∑ d ∈ Finset.Icc 1 (2 * m + 1), vonMangoldt d * ⌊(2 * m + 1 : ℝ) / (d : ℝ)⌋ - ∑ d ∈ Finset.Icc 1 m, vonMangoldt d * ⌊(m : ℝ) / (d : ℝ)⌋ - ∑ d ∈ Finset.Icc 1 (m + 1), vonMangoldt d * ⌊((m + 1) : ℝ) / (d : ℝ)⌋ ≥ ∑ d ∈ Finset.Ioc (m + 1) (2 * m + 1), vonMangoldt d := by
+    have h_separate_sums : ∑ d ∈ Finset.Icc 1 (2 * m + 1), vonMangoldt d * (⌊(2 * m + 1 : ℝ) / (d : ℝ)⌋ - ⌊(m : ℝ) / (d : ℝ)⌋ - ⌊((m + 1) : ℝ) / (d : ℝ)⌋) ≥ ∑ d ∈ Finset.Ioc (m + 1) (2 * m + 1), vonMangoldt d := by
+      have h_separate_sums : ∀ d ∈ Finset.Icc 1 (2 * m + 1), vonMangoldt d * (⌊(2 * m + 1 : ℝ) / (d : ℝ)⌋ - ⌊(m : ℝ) / (d : ℝ)⌋ - ⌊((m + 1) : ℝ) / (d : ℝ)⌋) ≥ if d ∈ Finset.Ioc (m + 1) (2 * m + 1) then vonMangoldt d else 0 := by
+        intro d hd; split_ifs <;> simp_all +decide [ Nat.cast_add, Nat.cast_mul, Nat.cast_one, div_eq_mul_inv ] ;
+        · have h_floor : ⌊(2 * m + 1 : ℝ) / d⌋ = 1 ∧ ⌊(m : ℝ) / d⌋ = 0 ∧ ⌊((m + 1) : ℝ) / d⌋ = 0 := by
+            norm_num [ Int.floor_eq_iff ];
+            exact ⟨ ⟨ by rw [ le_div_iff₀ ( by norm_cast; linarith ) ] ; norm_cast; linarith, by rw [ div_lt_iff₀ ( by norm_cast; linarith ) ] ; norm_cast; linarith ⟩, ⟨ by positivity, by rw [ div_lt_iff₀ ( by norm_cast; linarith ) ] ; norm_cast; linarith ⟩, by positivity, by rw [ div_lt_iff₀ ( by norm_cast; linarith ) ] ; norm_cast; linarith ⟩;
+          simp_all +decide [ div_eq_mul_inv ];
+          norm_num [ show ⌊ ( m : ℝ ) * ( d : ℝ ) ⁻¹⌋ = 0 by exact Int.floor_eq_iff.mpr ⟨ by norm_num; linarith, by norm_num; linarith ⟩, show ⌊ ( m + 1 : ℝ ) * ( d : ℝ ) ⁻¹⌋ = 0 by exact Int.floor_eq_iff.mpr ⟨ by norm_num; linarith, by norm_num; linarith ⟩ ];
+        · refine mul_nonneg ( ?_ ) ( ?_ );
+          · exact vonMangoldt_nonneg;
+          · norm_num [ add_mul, mul_add ];
+            norm_cast;
+            exact Int.le_of_lt_add_one ( by rw [ ← @Int.cast_lt ℝ ] ; push_cast; linarith [ Int.floor_le ( ( m : ℝ ) * ( d : ℝ ) ⁻¹ + ( d : ℝ ) ⁻¹ ), Int.lt_floor_add_one ( ( m : ℝ ) * ( d : ℝ ) ⁻¹ + ( d : ℝ ) ⁻¹ ), Int.floor_le ( ( 2 * m : ℝ ) * ( d : ℝ ) ⁻¹ + ( d : ℝ ) ⁻¹ ), Int.lt_floor_add_one ( ( 2 * m : ℝ ) * ( d : ℝ ) ⁻¹ + ( d : ℝ ) ⁻¹ ), Int.floor_le ( ( m : ℝ ) * ( d : ℝ ) ⁻¹ ), Int.lt_floor_add_one ( ( m : ℝ ) * ( d : ℝ ) ⁻¹ ) ] );
+      refine' le_trans _ ( Finset.sum_le_sum h_separate_sums );
+      simp +decide [ Finset.sum_ite ];
+      refine' le_of_eq _;
+      refine' Finset.sum_bij ( fun x hx => x ) _ _ _ _ <;> simp +arith +decide;
+      lia;
+    convert h_separate_sums using 1 ; norm_num [ mul_sub, Finset.sum_sub_distrib ];
+    congr! 1;
+    · norm_num [ Finset.sum_Ioc_succ_top, (Nat.succ_eq_succ ▸ Finset.Icc_succ_left_eq_Ioc) ];
+      rw [ ← Finset.sum_subset ( Finset.Ioc_subset_Ioc_right ( by linarith : m ≤ 2 * m ) ) ] <;> norm_num;
+      · exact Or.inr ⟨ by positivity, by rw [ div_lt_iff₀ ] <;> linarith ⟩;
+      · exact fun x hx₁ hx₂ hx₃ => Or.inr ⟨ by positivity, by rw [ div_lt_one ( by positivity ) ] ; exact_mod_cast hx₃ hx₁ ⟩;
+    · refine' Finset.sum_subset _ _ <;> intro d hd <;> norm_num at *;
+      · grind;
+      · exact fun h => Or.inr ⟨ by positivity, by rw [ div_lt_one ( by norm_cast; linarith ) ] ; exact_mod_cast by linarith [ h hd.1 ] ⟩;
+  simp_all +decide [ Finset.sum_Ioc_succ_top, (Nat.succ_eq_succ ▸ Finset.Icc_succ_left_eq_Ioc) ];
+  convert add_le_add_right h_apply_log_factorial ( chebyshevPsi ( m + 1 ) ) using 1;
+  · unfold chebyshevPsi; rw [ ← Finset.sum_union ] <;> norm_num [ Finset.disjoint_right ] ;
+    · rcongr x ; norm_num ; omega;
+    · grind;
+  · ring
+
+private theorem chebyshevPsi_odd_step (m : ℕ) :
+    chebyshevPsi (2 * m + 1) - chebyshevPsi (m + 1) ≤ 2 * ↑m * Real.log 2 := by
+  have h1 : (chebyshevPsi (2 * m + 1) - chebyshevPsi (m + 1)) ≤
+      Real.log (Nat.choose (2 * m + 1) m : ℝ) := psi_odd_le_log_choose m
+  have h2 : Nat.choose (2 * m + 1) m ≤ 2 ^ (2 * m) := by
+    calc Nat.choose (2 * m + 1) m ≤ 4 ^ m := Nat.choose_middle_le_pow m
+      _ = 2 ^ (2 * m) := by ring
+  exact h1.trans ( by simpa using Real.log_le_log ( Nat.cast_pos.mpr <| Nat.choose_pos <| by linarith ) <| Nat.cast_le.mpr h2 )
+
+/-- **Upper bound** (proved): ψ(n) ≤ 2n · log 2 for all n.
+    Strong induction: even case uses `chebyshevPsi_doubling_le`,
+    odd case uses `chebyshevPsi_odd_step` (via central binomial bound on C(2m+1,m)). -/
+theorem chebyshevPsi_upper_bound (n : ℕ) :
+    chebyshevPsi n ≤ 2 * n * Real.log 2 := by
+  induction' n using Nat.strong_induction_on with n ih;
+  by_cases hn_even : Even n;
+  · obtain ⟨ k, rfl ⟩ := hn_even;
+    by_cases hk : k = 0;
+    · unfold chebyshevPsi; norm_num [ hk ];
+    · have := chebyshevPsi_doubling_le k ( Nat.pos_of_ne_zero hk );
+      rw [ two_mul ] at this; specialize ih k ( by linarith [ Nat.pos_of_ne_zero hk ] ) ; push_cast at *; linarith;
+  · rcases Nat.even_or_odd' n with ⟨ k, rfl | rfl ⟩ <;> simp_all +decide;
+    have h_step : chebyshevPsi (2 * k + 1) ≤ chebyshevPsi (k + 1) + 2 * k * Real.log 2 := by
+      have := chebyshevPsi_odd_step k;
+      linarith;
+    rcases k with ( _ | k ) <;> norm_num at *;
+    · unfold chebyshevPsi; norm_num [ Finset.sum_range_succ ];
+      positivity;
+    · exact h_step.trans ( by have := ih ( k + 1 + 1 ) ( by linarith ) ; norm_num at * ; nlinarith [ Real.log_nonneg one_le_two ] )
 
 /-! ## Lower Bound ψ(n) ≥ (n/2) · log 2
 
