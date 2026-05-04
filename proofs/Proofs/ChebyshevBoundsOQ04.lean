@@ -155,8 +155,7 @@ so θ(2n) - θ(n) ≥ log(n+1). Combined with θ(n) ≤ ψ(n), this gives a lowe
 theorem chebyshevPsi_doubling_lower (n : ℕ) (hn : 1 ≤ n) :
     Real.log (n + 1) ≤ chebyshevPsi (2 * n) - chebyshevPsi n := by
   -- There exists a prime p with n < p ≤ 2n (Bertrand's postulate)
-  have hbert := Nat.exists_prime_lt_and_le_two_mul_add_one hn
-  obtain ⟨p, hp_prime, hp_lt, hp_le⟩ := hbert
+  obtain ⟨p, hp_prime, hp_lt, hp_le⟩ := Nat.bertrand n hn
   -- Λ(p) = log p ≥ log(n+1) since p > n
   have hp_ge : (n : ℝ) + 1 ≤ p := by exact_mod_cast Nat.succ_le_of_lt hp_lt
   -- p contributes to ψ(2n) but not ψ(n) since n < p ≤ 2n
@@ -204,11 +203,19 @@ axiom pnt_equivalence :
 theorem chebyshevPsi_bounds (n : ℕ) (hn : 1 ≤ n) :
     chebyshevThetaOQ n ≤ chebyshevPsi n ∧
     Real.log (n / 2 + 1) ≤ chebyshevPsi n := by
-  constructor
-  · exact chebyshevTheta_le_chebyshevPsi n
-  · -- From Bertrand: ψ(2*(n/2)) - ψ(n/2) ≥ log(n/2+1)
-    -- And ψ is non-decreasing (von Mangoldt ≥ 0)
-    have h := chebyshevPsi_doubling_lower (n / 2) (by omega)
+  refine ⟨chebyshevTheta_le_chebyshevPsi n, ?_⟩
+  rcases Nat.eq_zero_or_pos (n / 2) with h0 | hpos
+  · -- n = 1: log(0+1) = 0 ≤ psi(n)
+    simp only [h0, Nat.cast_zero, zero_add, Real.log_one]
+    exact chebyshevPsi_nonneg n
+  · -- n ≥ 2: apply Bertrand to n/2, then use psi monotonicity
+    have hle : 2 * (n / 2) ≤ n := Nat.mul_div_le n 2
+    have hmono : chebyshevPsi (2 * (n / 2)) ≤ chebyshevPsi n := by
+      unfold chebyshevPsi
+      apply Finset.sum_le_sum_of_subset_of_nonneg
+      · intro k; simp only [Finset.mem_range]; omega
+      · intro k _ _; exact vonMangoldt_nonneg
+    have h := chebyshevPsi_doubling_lower (n / 2) hpos
     linarith [chebyshevPsi_nonneg (n / 2)]
 
 end ChebyshevBoundsOQ04
