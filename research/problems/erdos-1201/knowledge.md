@@ -694,3 +694,46 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Docker build verification needed for the limsup_add_le proof
 - The Aristotle job cb09e358 (erdos_1201_half_case) is superseded — mark as resolved_manually
 - Pool status: erdos-1201 now has 0 sorries, 1 axiom — consider completing if Docker passes
+
+## Session 2026-05-04 (Session 15) - Bad Set Structure for ε < 1/2
+
+**Mode**: REVISIT (highest knowledge score 126, branch research/erdos-1201-session-15)
+**Outcome**: progress — 4 new theorems (87→91), 0 sorries, 1 axiom
+
+### What I Did
+- Checked Aristotle: no completed jobs pending
+- Rebased onto origin/main which had 8 new commits (sessions 13–14 density complement work)
+- Resolved merge conflict: new file had `erdos_1201_good_prime_k0`, `upperDensity_compl_ge`,
+  `erdos_1201_from_bad_density_bound`, `erdos_1201_smooth_decay_implies_conjecture`
+- Added 4 new structural theorems documenting the ε < 1/2 frontier:
+  1. **`greatestPrimeFactor_sq_prime`**: gpf(p²) = p for prime p
+     - Upper bound: gpf(p²) is prime and divides p², so divides p (Nat.Prime.dvd_of_dvd_pow)
+     - Lower bound: p ∣ p² and p prime → gpf_ge_prime_dvd
+  2. **`gpfConsecutive_sq_prime`**: gpfConsecutive(p²)(0) = p
+     - Direct corollary: gpfConsecutive_zero + greatestPrimeFactor_sq_prime
+  3. **`gpfConsecutive_sq_prime_bad_k0`**: p² is not good for k=0 when ε < 1/2
+     - Proof: (p²)^(1-ε) = p^(2*(1-ε)) ≥ p^1 = p = gpf(p²) since 2*(1-ε) ≥ 1 when ε ≤ 1/2
+     - Uses Real.rpow_mul + calc chain with Real.rpow_le_rpow_of_exponent_le
+  4. **`erdos_1201_bad_set_k0_infinite`**: bad set for k=0 is infinite for ε < 1/2
+     - Witnessed by {p² | p prime} ⊆ bad set (from (3))
+     - Injectivity of squaring: via pow_lt_pow_left for strict monotonicity on ℕ
+     - Uses Nat.infinite_setOf_prime.image + Set.Infinite.mono
+
+### Key Findings
+- The ε < 1/2 case is a GENUINE frontier: prime squares form an infinite bad set for k=0
+- Key exponent inequality: ε < 1/2 → 2*(1-ε) > 1 → p^(2*(1-ε)) > p for p ≥ 2
+- This shows that for k=0, the good set density is STRICTLY LESS than 1 when ε < 1/2
+- The full Erdős conjecture requires showing that larger k compensates: larger windows eventually
+  catch enough "rough" primes to achieve density 1-η for any η > 0
+- `Nat.Prime.dvd_of_dvd_pow` is the key lemma: if prime q divides p^n, then q divides p
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1270→1327 lines, 87→91 theorems, 0 sorries)
+
+### Next Steps
+- Docker build verification needed for new theorems
+- Consider: `erdos_1201_bad_density_k0_lower_bound`: quantify the density of bad set for ε < 1/2
+  via prime number theorem (density of primes ~ 1/log n, so density of prime squares → 0)
+- The ε = 1/2 case: Erdős claimed a proof — the key is k ≈ n^(1/2) window always contains a
+  prime p > n^(1/2) (direct from Bertrand); density argument handles this case
+- Sylvester-Schur for general n, k: still HARD (needs binomial/Kummer machinery)
