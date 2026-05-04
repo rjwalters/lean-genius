@@ -17,12 +17,12 @@
       "gamma-function"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
     "assumptions": "2 structure-encoded assumptions in AngularAverageData: angularAvg_eq (the angular average on RP^{n-1} is proportional to norm with constant sigma_{n-2}/(n-1)), angularAvg_nonneg (non-negativity). These encode integration on the unit sphere which Mathlib lacks.",
-    "lineCount": 332,
-    "theoremCount": 20,
+    "lineCount": 394,
+    "theoremCount": 25,
     "definitionCount": 5,
     "originalContributions": [
       "sphereArea: sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) with n=0,1,2 computed",
@@ -32,11 +32,16 @@
       "expectedCrossings_dim2: recovers 2L/(pi*d) for n=2",
       "expectedCrossings_dim3: gives L/(2d) for n=3",
       "unit_circle_crossings: unit circle crosses unit grid 4 times on average",
-      "sphereArea_recurrence: sigma_n = 2*pi/n * sigma_{n-2}",
+      "sphereArea_recurrence: sigma_n = 2*pi/(n-1) * sigma_{n-2}",
       "cauchyCrofton_le_one_dim2: c_2 <= 1",
       "sphereArea_three: sigma_3 = 2*pi^2 (S^3 surface area)",
       "cauchyCrofton_four: c_4 = 4/(3*pi) (4D crossing constant)",
-      "expectedCrossings_dim4: gives 4L/(3*pi*d) for n=4"
+      "expectedCrossings_dim4: gives 4L/(3*pi*d) for n=4",
+      "sphereArea_four: sigma_4 = 8*pi^2/3 (surface area of S^4)",
+      "sphereArea_five: sigma_5 = pi^3 (surface area of S^5)",
+      "cauchyCrofton_five: c_5 = 3/8 (5D crossing constant)",
+      "cauchyCrofton_six: c_6 = 16/(15*pi) (6D crossing constant)",
+      "cauchyCroftonConst_tendsto_zero: c_n → 0 as n → ∞ (reduction to sorry)"
     ]
   },
   "overview": {
@@ -45,10 +50,10 @@
     "proofStrategy": "**Part I** (lines 36-100): Defines sphere surface area sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) using Mathlib's Gamma function. Proves specific values sigma_0 = 2, sigma_1 = 2*pi, sigma_2 = 4*pi using Gamma computations (Gamma_one_half_eq, Gamma_add_one).\n\n**Part II** (lines 102-140): Defines the Cauchy-Crofton constant c_n = 2*sigma_{n-2}/((n-1)*sigma_{n-1}). Computes c_2 = 2/pi and c_3 = 1/2 by substituting the sphere area values.\n\n**Part III** (lines 142-165): Axiomatizes the angular averaging identity on RP^{n-1} via AngularAverageData structure. The key property: the average of |<v, omega>| over hyperplane normals equals sigma_{n-2}/(n-1) * ||v||.\n\n**Parts IV-VI** (lines 167-255): Proves the n-dimensional expected crossings formula, linearity, scaling, and dimensional specializations. Verifies n=2 gives 2L/(pi*d), n=3 gives L/(2d). Proves the sphere area recurrence and the unit circle crossing count.",
     "keyInsights": [
       "**Dimension-dependent crossing constant**: c_n = 2*sigma_{n-2}/((n-1)*sigma_{n-1}) decreases as n grows: c_2 = 2/pi ~ 0.637, c_3 = 1/2, c_4 = 4/(3*pi) ~ 0.424. In higher dimensions, random hyperplanes are 'less likely' to cross a curve, geometrically because most directions are perpendicular to the curve.",
-      "**Sphere surface areas via Gamma**: The formula sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) unifies diverse geometric constants: sigma_0 = 2 (two points), sigma_1 = 2*pi (circle), sigma_2 = 4*pi (sphere). The Gamma function recurrence gives sigma_n = (2*pi/n)*sigma_{n-2}.",
+      "**Sphere surface areas via Gamma**: The formula sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) unifies diverse geometric constants: sigma_0 = 2 (two points), sigma_1 = 2*pi (circle), sigma_2 = 4*pi (sphere). The Gamma function recurrence gives sigma_n = (2*pi/(n-1))*sigma_{n-2}.",
       "**The angular average is the bridge**: The integral geometry formula reduces to a single analytic identity: the average of |<v, omega>| over the projective sphere. In 2D this is the integral from the parent proof: integral_0^pi |sin(theta + c)| dtheta = 2. In n dimensions, the constant 2 generalizes to sigma_{n-2}/(n-1).",
       "**Unit circle sanity check**: A unit circle (perimeter 2*pi) crossing a line grid with unit spacing should cross 4 times on average (2 entries + 2 exits). The formula gives c_2 * 2*pi / 1 = (2/pi) * 2*pi = 4.",
-      "**Sphere area recurrence proves the dimension ladder**: `sphereArea_recurrence` proves sigma_n = 2*pi/n * sigma_{n-2} using the Gamma function identity Gamma((n+1)/2) = ((n-1)/2) * Gamma((n-1)/2). The proof chains `Gamma_add_one`, `rpow_add`, `push_cast`, and `omega` — a non-trivial mix of analytic and algebraic reasoning. This recurrence is the key to computing c_n for all n: c_4 = 4/(3*pi), c_5 = 2/(3*pi^2), and in general c_n → 0 as n → ∞."
+      "**Sphere area recurrence proves the dimension ladder**: `sphereArea_recurrence` proves sigma_n = 2*pi/(n-1) * sigma_{n-2} using the Gamma function identity Gamma((n+1)/2) = ((n-1)/2) * Gamma((n-1)/2). The proof chains `Gamma_add_one`, `rpow_add`, `push_cast`, and `omega` — a non-trivial mix of analytic and algebraic reasoning. This recurrence is the key to computing c_n for all n: c_4 = 4/(3*pi), c_5 = 3/8, c_6 = 16/(15*pi), and in general c_n → 0 as n → ∞."
     ]
   },
   "sections": [
@@ -88,9 +93,9 @@
       "id": "dimension-ladder",
       "title": "Part V-VI: Sphere Recurrence and Consistency Checks",
       "startLine": 267,
-      "endLine": 331,
-      "summary": "sphereArea_recurrence proves sigma_n = 2*pi/n * sigma_{n-2}. Consistency: angular_constant_dim2 verifies sigma_0/1 = 2. unit_circle_crossings verifies a unit circle crosses 4 times. cauchyCrofton_le_one_dim2 proves c_2 <= 1 (using pi > 3).",
-      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n} \\sigma_{n-2}$ (proved via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$). Corollaries: $c_4 = 4/(3\\pi)$, $c_2 \\leq 1$."
+      "endLine": 394,
+      "summary": "sphereArea_recurrence proves sigma_n = 2*pi/(n-1) * sigma_{n-2}. Consistency: angular_constant_dim2 verifies sigma_0/1 = 2. unit_circle_crossings verifies a unit circle crosses 4 times. cauchyCrofton_le_one_dim2 proves c_2 <= 1 (using pi > 3). cauchyCroftonConst_tendsto_zero reduces c_n → 0 to a single sorry.",
+      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n-1} \\sigma_{n-2}$ (proved via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$). Corollaries: $c_4 = 4/(3\\pi)$, $c_5 = 3/8$, $c_6 = 16/(15\\pi)$, $c_2 \\leq 1$."
     }
   ],
   "conclusion": {
@@ -98,18 +103,18 @@
     "implications": "This formalization provides the dimensional framework for integral geometry in Lean. The angular averaging identity, once proved from sphere integration theory, would make the formalization complete. The sphere surface area computations are independently useful for geometric measure theory applications.",
     "openQuestions": [
       "Prove the angular averaging identity from sphere measure theory (requires Haar measure on S^{n-1})",
-      "Compute c_n for dimensions 5-10 and prove c_n -> 0 as n -> infinity (c_4 = 4/(3pi) now proved)",
+      "Discharge the cauchyCroftonConst_tendsto_zero sorry (c_n -> 0 as n -> infinity); c_5 = 3/8 and c_6 = 16/(15*pi) now proved",
       "Formalize the Cauchy-Crofton formula for surfaces in R^n (codimension > 1 intersections)"
     ]
   },
   "leanFile": {
     "namespace": "CauchyCrofton",
-    "lineCount": 332,
+    "lineCount": 394,
     "axiomCount": 0,
-    "theoremCount": 20,
-    "definitionCount": 4,
+    "theoremCount": 25,
+    "definitionCount": 5,
     "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -128,5 +133,5 @@
       "description": "N-ball volumes use the same Gamma function framework as sphere surface areas"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
