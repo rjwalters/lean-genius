@@ -270,7 +270,7 @@ private noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
     { toFun := fun f =>
         (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).toLp _
       map_add' := fun f₁ f₂ => by
-        apply Lp.ext
+        rw [Lp.ext_iff]
         filter_upwards [
           (memLp_indicator_of_restrict_loc hS hp hptop
             (Lp.memLp (f₁ + f₂))).coeFn_toLp,
@@ -289,7 +289,7 @@ private noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
         · exact hinner ha
         · ring
       map_smul' := fun c f => by
-        apply Lp.ext
+        rw [Lp.ext_iff]
         filter_upwards [
           (memLp_indicator_of_restrict_loc hS hp hptop
             (Lp.memLp (c • f))).coeFn_toLp,
