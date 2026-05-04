@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-ae-header",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "context",
+    "title": "Module Setup: Anning–Erdős Proof Strategy",
+    "content": "The module header gives the proof strategy in miniature: fix two anchor points P₁, P₂ ∈ S; every other point Q lies on the intersection of circles dist(Q,P₁)=k₁ and dist(Q,P₂)=k₂; two circles with distinct centers intersect in at most 2 points; there are d² distance-pair choices, so |S|−2 ≤ 2d². The imports are minimal: Mathlib.Tactic for standard tactics and Mathlib.Analysis.SpecialFunctions.Log.Basic. The namespace Erdos100OQ01WIP01 isolates this proof from the parent infrastructure file.",
+    "mathContext": "Proof of $|S| \\leq 2d^2 + 2$: fix anchors $P_1, P_2 \\in S$. Map $Q \\mapsto (\\text{dist}(Q,P_1), \\text{dist}(Q,P_2)) \\in \\{1,\\ldots,d\\}^2$. Each fiber has $\\leq 2$ elements (circle intersection). Count: $|S| - 2 \\leq 2d^2$.",
+    "significance": "context",
+    "relatedConcepts": ["integer distance sets", "Anning-Erdős theorem 1945", "Erdős Problem #100", "fiber counting"],
+    "prerequisites": ["Euclidean geometry", "circle intersection", "Finset.card bounds in Lean 4"]
+  },
+  {
+    "id": "ann-ae-quadratic",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 22, "endLine": 56 },
+    "type": "technique",
+    "title": "quadratic_at_most_two_roots: Avoiding the Polynomial API",
+    "content": "This lemma proves that a nonzero quadratic ax²+bx+c=0 has at most 2 roots, working entirely by ring arithmetic without invoking Mathlib's Polynomial library. The key ring identity: (p−q)(a(p+q)+b) = (ap²+bp+c) − (aq²+bq+c). When both roots satisfy the equation, the right side is 0; since p ≠ q, the factor (p−q) is non-zero, forcing a(p+q)+b = 0. The same argument applied to the pair (r,p) gives a(r+p)+b = 0. Combined: a(p+q) = a(r+p), so q = r by mul_left_cancel₀. The proof uses rcases/Or splitting rather than omega or nlinarith — this is essentially Vieta's formula approach encoded as ring arithmetic.",
+    "mathContext": "Key identity: $(x-y)(a(x+y)+b) = (ax^2+bx+c) - (ay^2+by+c)$. Given $p \\neq q$ both roots: $a(p+q)+b=0$. Given $r$ any root with $r \\neq p$: $a(r+p)+b=0$. Subtract: $a(q-r)=0$, so $q=r$ (since $a \\neq 0$). Equivalently: the quadratic factors as $a(x-p)(x-q)$, so roots are exactly $p, q$.",
+    "significance": "key",
+    "relatedConcepts": ["Vieta's formulas", "polynomial root bounds", "ring tactic", "linear_combination in Lean 4"],
+    "prerequisites": ["ring arithmetic in Lean 4", "mul_eq_zero (zero product property)", "mul_left_cancel₀"]
+  },
+  {
+    "id": "ann-ae-radical-axis",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 58, "endLine": 90 },
+    "type": "technique",
+    "title": "Radical Axis: Subtracting Circle Equations",
+    "content": "The first step of three_pts_two_circles_contra is deriving the radical axis. Define K = r₁²−r₂²+|c₂|²−|c₁|², dx = c₂.1−c₁.1, dy = c₂.2−c₁.2. Subtracting the two circle equations for any point on both circles gives 2·dx·x + 2·dy·y = K. This is proved for all three points via nlinarith after unfolding K, dx, dy. The non-degeneracy (dx,dy) ≠ (0,0) follows from c₁ ≠ c₂: if both were 0, then c₁.1 = c₂.1 and c₁.2 = c₂.2, contradicting hc via Prod.ext.",
+    "mathContext": "Radical axis: $[(x-c_{1x})^2 + (y-c_{1y})^2 = r_1^2] - [(x-c_{2x})^2 + (y-c_{2y})^2 = r_2^2]$ simplifies to $2(c_{2x}-c_{1x})x + 2(c_{2y}-c_{1y})y = r_1^2-r_2^2+|c_2|^2-|c_1|^2$. This line is perpendicular to the segment joining the two centers — the classical radical axis of two circles.",
+    "significance": "key",
+    "relatedConcepts": ["radical axis of two circles", "coaxial pencil", "nlinarith in Lean 4", "Prod.ext"],
+    "prerequisites": ["circle equation in ℝ²", "nlinarith for quadratic arithmetic", "Prod.ext for ℝ × ℝ equality"]
+  },
+  {
+    "id": "ann-ae-circle-cases",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 91, "endLine": 176 },
+    "type": "technique",
+    "title": "Circle Intersection: Case Split on dx=0 vs dx≠0",
+    "content": "After the radical axis, the proof splits on dx = 0 vs dx ≠ 0. In the dx=0 case (dy≠0): the radical axis forces all three points to share the same y-coordinate (hpeqq, hpeqs via mul_right_cancel₀), reducing to a quadratic in x with coefficients A=1, B=−2c₁.1, C=c₁.1²+(p.2−c₁.2)²−r₁². Three distinct x-values as roots of a degree-2 polynomial contradict quadratic_at_most_two_roots. In the dx≠0 case: the radical axis gives x·(2dx) = K−2dy·y (i.e., x as affine function of y). Substituting into circle 1 and multiplying by (2dx)² gives a quadratic in y with A=(2dy)²+(2dx)²≠0 (since (dx,dy)≠(0,0)). The linear_combination tactic proves the key quadratic identity.",
+    "mathContext": "Case $dx \\neq 0$: substitute $x = (K - 2dy \\cdot y)/(2dx)$ into $(x-c_{1x})^2+(y-c_{1y})^2=r_1^2$, multiply by $(2dx)^2$: $[(K-2dy \\cdot y) - c_{1x}(2dx)]^2 + (2dx)^2(y-c_{1y})^2 = r_1^2(2dx)^2$. Expanding: $Ay^2+By+C=0$ with $A = (2dy)^2+(2dx)^2 \\neq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination tactic", "algebraic substitution method", "case split on zero", "quadratic_at_most_two_roots"],
+    "prerequisites": ["linear_combination for polynomial identities", "mul_left_cancel₀ for coordinate uniqueness", "Prod.ext for pair equality"]
+  },
+  {
+    "id": "ann-ae-fiber-cover",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 178, "endLine": 230 },
+    "type": "technique",
+    "title": "Fiber Covering: T ⊆ biUnion of Distance-Pair Fibers",
+    "content": "The cardinality proof: extract anchor points P₁, P₂ from the non-collinearity assumption via push_neg + obtain (¬∀ → ∃ witnesses). Set T = S∖{P₁,P₂}. The index set is pairs = {1..d}×{1..d}. For each Q ∈ T, hS_dist gives k₁,k₂ ∈ {1..d} satisfying the distance equations, placing Q in the (k₁,k₂) fiber. The covering T ⊆ biUnion is proved via Finset.mem_biUnion and Finset.mem_filter. The card reduction S.card ≤ T.card+2 follows from Finset.card_erase_of_mem applied twice plus omega.",
+    "mathContext": "Cover: $T = S \\setminus \\{P_1,P_2\\} \\subseteq \\bigcup_{(k_1,k_2) \\in \\{1..d\\}^2} F_{k_1,k_2}$ where $F_{k_1,k_2} = \\{Q \\in T : |Q-P_1|^2 = k_1^2,\\, |Q-P_2|^2 = k_2^2\\}$. Each $F_{k_1,k_2}$ is the intersection of two circles centered at $P_1, P_2$ — with distinct centers since $P_1 \\neq P_2$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.mem_biUnion", "push_neg + obtain for non-collinearity", "Finset.mem_filter", "Finset.card_erase_of_mem"],
+    "prerequisites": ["push_neg tactic on ∀ quantifiers", "Finset.mem_biUnion", "Finset.card_erase_of_mem"]
+  },
+  {
+    "id": "ann-ae-fiber-bound",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 231, "endLine": 254 },
+    "type": "technique",
+    "title": "Fiber Size ≤ 2 and the Calc Chain",
+    "content": "Each fiber has card ≤ 2 (hfiber_le): if it had ≥ 3 elements, Finset.two_lt_card extracts three distinct points Q₁, Q₂, Q₃ all satisfying both circle equations, contradicting three_pts_two_circles_contra P₁ P₂ k₁ k₂ hP₁₂ Q₁ Q₂ Q₃. The final calc chain: |T| ≤ |biUnion| (card_le_card with hT_cover) ≤ ∑|fibers| (card_biUnion_le) ≤ ∑2 (sum_le_sum with hfiber_le) = d²·2 (rw sum_const, smul_eq_mul) = 2d² (ring). The pairs cardinality d² uses Finset.card_product and Finset.card_Icc.",
+    "mathContext": "Chain: $|T| \\leq |\\bigcup_k F_k| \\leq \\sum_k |F_k| \\leq \\sum_k 2 = |\\{1..d\\}^2| \\cdot 2 = d^2 \\cdot 2 = 2d^2$. Therefore $|S| = |T| + 2 \\leq 2d^2 + 2$. The key Finset lemmas: card_le_card (monotonicity), card_biUnion_le (subadditivity), sum_le_sum (pointwise bound), sum_const (constant sum).",
+    "significance": "key",
+    "relatedConcepts": ["Finset.two_lt_card", "Finset.card_biUnion_le", "Finset.sum_le_sum", "Finset.sum_const"],
+    "prerequisites": ["Finset.two_lt_card to extract 3 witnesses", "Finset.card_biUnion_le", "Finset.card_product + Finset.card_Icc"]
+  },
+  {
+    "id": "ann-ae-main",
+    "proofId": "erdos-100-oq-01-wip-01",
+    "range": { "startLine": 256, "endLine": 274 },
+    "type": "insight",
+    "title": "anning_erdos_finiteness: The Completed Theorem",
+    "content": "The main theorem wraps int_dist_card_le into a universally quantified finiteness statement: ∀d, ∃N=2d²+2, for any n > N, no non-collinear integer-distance set of size n with distances ≤ d exists. The proof is a clean reductio: given S with |S|=n > 2d²+2, apply int_dist_card_le to get |S| ≤ 2d²+2 and derive the contradiction n ≤ 2d²+2 < n via linarith. The only technical step is push_cast [sq] to convert the distance hypothesis from k^2 : ℕ to (k:ℝ)^2. This closes the anning_erdos_finiteness sorry that appeared in the parent file Erdos100OQ01.lean.",
+    "mathContext": "Statement: $\\forall d \\in \\mathbb{N}, \\exists N, \\forall n > N, \\nexists S \\subseteq \\mathbb{R}^2$ non-collinear with $|S|=n$ and all pairwise integer distances $\\leq d$. The theorem is tight: the bound $2d^2+2$ is not optimal (the true maximum is around $d + \\sqrt{2d} + O(1)$), but it suffices to prove finiteness. The infinite case (no bound on d) requires a separate limit argument handled in the parent file.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős Problem #100", "integer distance sets", "erdos-100-oq-01", "sorry elimination"],
+    "prerequisites": ["int_dist_card_le", "push_cast [sq] for ℕ→ℝ coercions", "rintro for existential destructuring"]
+  }
+]
