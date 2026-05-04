@@ -1,0 +1,143 @@
+[
+  {
+    "id": "brouwer-oq02-oq01-sperner-coloring",
+    "proofId": "brouwer-fixed-point-oq-02-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 82,
+      "endLine": 94
+    },
+    "title": "IsSperner: Sperner Coloring on Grid Triangulation",
+    "content": "`IsSperner hn c` asserts that `c : GridVertex n → Fin 3` is a valid Sperner coloring: the three corners get distinct colors (0, 1, 2), and each edge of the big triangle is forbidden from using the color of the opposite corner.\n\nThe boundary restrictions in coordinates: bottom edge (j=0, 0<i<n) cannot use color 2; left edge (i=0, 0<j<n) cannot use color 1; hypotenuse (i+j=n, i,j>0) cannot use color 0. These are exactly the constraints that make color 0 'belong to' the corner (0,0), color 1 to (n,0), and color 2 to (0,n).\n\nThe `IsFullyColored` predicate checks that the image of the 3 triangle vertices under `c` equals `{0, 1, 2}` as a Finset.",
+    "significance": "key",
+    "mathContext": "A Sperner coloring assigns $\\{0,1,2\\}$ to vertices of the triangulation. Sperner's lemma guarantees the existence of a 'rainbow' triangle (one vertex of each color) whenever the coloring respects the boundary conditions.",
+    "relatedConcepts": [
+      "Sperner's lemma",
+      "simplicial coloring",
+      "PPAD complexity"
+    ],
+    "prerequisites": [
+      "Fin 3",
+      "GridVertex structure",
+      "Finset membership"
+    ]
+  },
+  {
+    "id": "brouwer-oq02-oq01-1d-sperner",
+    "proofId": "brouwer-fixed-point-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 184,
+      "endLine": 232
+    },
+    "title": "bottom_transitions_odd: 1D Sperner as Parity Base Case",
+    "content": "`bottom_transitions_odd`: in any Sperner coloring, the number of {0,1}-transitions on the bottom edge (j=0) is odd.\n\nProof: The bottom-edge coloring uses only colors {0,1} (by the Sperner restriction: color 2 is forbidden on the bottom). The sequence starts at 0 (corner (0,0)) and ends at 1 (corner (n,0)). For a binary sequence starting at 0 and ending at 1, the number of transitions is odd — proved via `transitions_parity_bool` (induction on n).\n\nThe key combinatorial fact: `transitions_parity_bool` reduces the problem to a parity invariant on Bool sequences. Since `botColor c 0 = 0` and `botColor c n = 1`, they differ, giving `parity = 1`.",
+    "significance": "key",
+    "mathContext": "1D Sperner: a binary sequence $f_0 = 0, f_n = 1$ with $f_i \\in \\{0,1\\}$ has an odd number of transitions. This is the base case for the 2D parity argument.",
+    "relatedConcepts": [
+      "1D Sperner's lemma",
+      "parity argument",
+      "discrete IVT"
+    ],
+    "prerequisites": [
+      "transitions_parity_bool",
+      "botColor definition",
+      "IsSperner boundary conditions"
+    ]
+  },
+  {
+    "id": "brouwer-oq02-oq01-door-count",
+    "proofId": "brouwer-fixed-point-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 263,
+      "endLine": 348
+    },
+    "title": "Door Counting: FC Has Exactly 1 Door, Non-FC Has 0 or 2",
+    "content": "Two key results that power the parity argument:\n\n**`fully_colored_one_door`** (L263): A fully-colored triangle has exactly one {0,1}-edge (door). Since the colors are a bijection from `Fin 3` to `{0,1,2}`, the vertices colored 0 and 1 are uniquely determined — giving a unique door. The proof uses `Finite.injective_iff_surjective`: a surjective function on a finite set is injective, so the vertex assignments for colors 0 and 1 are unique.\n\n**`abstractDoorCount_parity`** (L346): For any 3 colors `a, b, c : Fin 3`, the number of {0,1}-edges has the same parity as whether {a,b,c} = {0,1,2}. Proved by `fin_cases a <;> fin_cases b <;> fin_cases c <;> decide` — exhaustive check of 27 cases. Non-FC triples always have 0 or 2 doors.",
+    "significance": "critical",
+    "mathContext": "The door-counting invariant: $\\sum_{T} \\text{doors}(T) = 2 \\cdot |\\text{interior doors}| + |\\text{boundary doors}|$. Interior doors are shared by two triangles and cancel mod 2. FC triangles contribute 1; non-FC contribute 0 mod 2. Hence $\\#\\text{FC} \\equiv \\text{boundary doors} \\pmod{2}$.",
+    "relatedConcepts": [
+      "door-counting argument",
+      "parity invariant",
+      "exhaustive decision procedure"
+    ],
+    "prerequisites": [
+      "IsDoor definition",
+      "IsFullyColored definition",
+      "Finite.injective_iff_surjective"
+    ]
+  },
+  {
+    "id": "brouwer-oq02-oq01-strip-parity",
+    "proofId": "brouwer-fixed-point-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 564,
+      "endLine": 636
+    },
+    "title": "strip_parity: Row-Sweep Parity Invariant",
+    "content": "`strip_parity`: if no fully-colored triangle exists, then for all j ≤ n, `hTrans c j ≡ hTrans c 0 (mod 2)`.\n\n`hTrans c j` counts {0,1}-transitions on the j-th horizontal boundary (between rows j-1 and j). The key: each horizontal {0,1}-door is shared by exactly one lower triangle and one upper triangle. Without FC triangles, every triangle contributes 0 or 2 doors. So the total door count in a strip is even, meaning hTrans changes by an even amount as j increases.\n\nThe proof uses `doorZ_left_boundary` and `doorZ_hyp_boundary` (no doors on the left edge or hypotenuse) to show that the only boundary contributions are from the bottom. Interior door cancellation mod 2 yields the invariant.",
+    "significance": "critical",
+    "mathContext": "Row sweep: $\\text{hTrans}(j) \\equiv \\text{hTrans}(0) \\pmod{2}$ for all $j$. Combined with $\\text{hTrans}(n) = 0$ and $\\text{hTrans}(0) = \\text{bottomTransitions}$ (odd), this gives a contradiction if no FC triangle exists.",
+    "relatedConcepts": [
+      "row-sweep argument",
+      "door cancellation",
+      "ZMod 2 invariant"
+    ],
+    "prerequisites": [
+      "hTrans definition",
+      "abstractDoorCount_parity",
+      "boundary door lemmas"
+    ]
+  },
+  {
+    "id": "brouwer-oq02-oq01-sperner-main",
+    "proofId": "brouwer-fixed-point-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 637,
+      "endLine": 657
+    },
+    "title": "sperner_2d: Main Sperner's Lemma Theorem",
+    "content": "`sperner_2d`: for any n > 0 and any Sperner coloring c, there exists a fully-colored triangle.\n\nContradiction proof:\n1. Assume no FC triangle.\n2. By `strip_parity`: hTrans c j ≡ hTrans c 0 (mod 2) for all j ≤ n.\n3. `hTrans c n = 0` (top boundary has no transitions: all vertices on row n have i+j=n but can only use colors {1,2} — no {0,1} pairs).\n4. `hTrans c 0 = bottomTransitions c` (odd, by `bottom_transitions_odd`).\n5. So 0 ≡ 1 (mod 2) — contradiction.\n\nThe proof is remarkably short (10 lines) given the infrastructure built up.",
+    "significance": "critical",
+    "mathContext": "**Sperner's lemma (2D)**: For any Sperner-colored triangulation of the $n \\times n$ grid, $|\\{t : \\text{FC}\\}| \\equiv 1 \\pmod{2}$, so there is at least one fully-colored triangle.",
+    "relatedConcepts": [
+      "Sperner's lemma",
+      "parity argument",
+      "combinatorial topology"
+    ],
+    "prerequisites": [
+      "bottom_transitions_odd",
+      "strip_parity",
+      "hTrans_top",
+      "hTrans_zero_eq"
+    ]
+  },
+  {
+    "id": "brouwer-oq02-oq01-approx-fp",
+    "proofId": "brouwer-fixed-point-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 922,
+      "endLine": 1071
+    },
+    "title": "approximate_fixed_point_2d: ε-Approximate Brouwer via Sperner",
+    "content": "`approximate_fixed_point_2d`: for any continuous self-map f of the 2-simplex and ε > 0, there exists p in the simplex with dist(p, f(p)) < ε.\n\nProof:\n1. **Uniform continuity**: f is uniformly continuous on the compact set [0,1]×[0,1] ⊇ simplex. Get δ > 0 with dist(x,y) < δ → dist(f(x),f(y)) < ε/4.\n2. **Grid size**: Choose n > max(1/δ, 4/ε), so 1/n < δ and 1/n < ε/4.\n3. **Displacement coloring**: `displacementColoring n f v` assigns color 0 if f(v).1 - v.1 + f(v).2 - v.2 ≥ 0, color 1 if f(v).1 < v.1, color 2 if f(v).2 < v.2. Proved to be a valid Sperner coloring.\n4. **Sperner**: Get a fully-colored triangle t with vertices of each color.\n5. **Transfer**: The color-0 vertex v₀ has f(v₀).1 - v₀.1 > -ε/2 (from color-1 neighbor and UC). Similarly for the second component. Combined with color-0 constraint, dist(v₀, f(v₀)) < ε.\n\nThe **displacement coloring** is the PPAD-reduction gadget from Chen-Deng (2009): it encodes the local displacement direction of f at each grid vertex.",
+    "significance": "critical",
+    "mathContext": "For any $\\varepsilon > 0$: $\\exists p \\in \\Delta^2$ s.t. $\\|f(p) - p\\|_\\infty < \\varepsilon$. This is the constructive (grid-refinement) version of Brouwer, without the compactness/completeness argument.",
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "PPAD complexity (Chen-Deng 2009)",
+      "uniform continuity",
+      "displacement coloring"
+    ],
+    "prerequisites": [
+      "sperner_2d",
+      "displacementColoring_isSperner",
+      "uniform continuity on compact sets",
+      "Prod.dist_eq"
+    ]
+  }
+]

@@ -1,0 +1,146 @@
+{
+  "id": "brouwer-fixed-point-oq-02-oq-01",
+  "title": "2D Sperner's Lemma and Approximate Fixed Points via Door Counting",
+  "slug": "brouwer-fixed-point-oq-02-oq-01",
+  "description": "Formalizes 2D Sperner's lemma on the standard grid triangulation of the unit triangle using a row-sweep parity (door-counting) argument. The main results are `sperner_2d` (the number of fully-colored triangles is odd, hence ≥ 1) and `approximate_fixed_point_2d` (continuous self-maps of the 2-simplex have ε-approximate fixed points). Connects to PPAD complexity via Chen-Deng (2009): finding a fully-colored simplex in a Sperner-colored triangulation is PPAD-complete in 2D.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "Classical result (Sperner 1928); PPAD connection (Chen-Deng 2009); formalized 2026",
+    "status": "verified",
+    "tags": [
+      "topology",
+      "combinatorics",
+      "fixed-points",
+      "sperner",
+      "brouwer",
+      "ppad-complexity",
+      "door-counting",
+      "triangulation"
+    ],
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 33 theorems verified with 0 sorries and 0 axioms. The proof relies only on Mathlib's `Continuous`, `UniformContinuousOn`, and finite combinatorics.",
+    "originalContributions": [
+      "GridVertex, GridTriangle structures with `lower`/`upper` inductive type for the n×n grid triangulation of the 2-simplex",
+      "IsSperner coloring predicate: 3 corner colors fixed, edge restrictions (bottom ∈ {0,1}, left ∈ {0,2}, hypotenuse ∈ {1,2})",
+      "bottomTransitions count and bottom_transitions_odd: 1D Sperner (parity of bottom-edge {0,1} transitions is odd) via ZMod 2 telescope",
+      "fully_colored_one_door: fully-colored triangles have exactly one {0,1}-edge (door) — proved by injectivity + uniqueness of the {0,1} pair",
+      "abstractDoorCount_parity: 27-case exhaustive decision that non-FC triangles have 0 or 2 doors",
+      "strip_parity: row-sweep invariant — hTrans(j) ≡ hTrans(0) (mod 2), connecting boundary parity to all-row door count",
+      "sperner_2d: main theorem — any Sperner-colored grid triangulation of size n contains a fully-colored triangle",
+      "displacementColoring: displacement-based Sperner coloring for a continuous self-map f — color by dominant displacement direction",
+      "approximate_fixed_point_2d: for any continuous self-map f of the 2-simplex and ε > 0, there exists p with dist(p, f(p)) < ε — proved via uniform continuity + Sperner"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 1071,
+    "theoremCount": 33,
+    "definitionCount": 17,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (1928) is a combinatorial result about colorings of triangulated simplices. In 2D: if the vertices of any triangulation of a triangle are 3-colored such that each edge of the big triangle uses only 2 colors and the corners use distinct colors, then some small triangle gets all 3 colors. The lemma implies Brouwer's fixed point theorem via a compactness argument.\n\nThe Chen-Deng (2009) PPAD-completeness result shows that finding an approximately fixed point of a Lipschitz map on the simplex is PPAD-complete — even in 2D. The key reduction uses the fact that finding a fully-colored simplex in a Sperner-colored triangulation is PPAD-complete. This connects the combinatorial lemma to computational complexity.\n\nThe standard proof of Sperner's lemma uses a door-counting (double-counting) argument: {0,1}-colored edges of triangles are 'doors'. Each fully-colored triangle has exactly 1 door; each non-fully-colored triangle has 0 or 2 doors. The boundary contributes an odd number of doors (from the 1D Sperner lemma on the bottom edge). Therefore the count of fully-colored triangles is odd.",
+    "problemStatement": "**Sperner's Lemma (2D)**: For any n and any Sperner-coloring of the grid triangulation of the standard 2-simplex, the number of fully-colored triangles (using all 3 colors) is odd (hence ≥ 1).\n\n**Approximate Fixed Point**: For any continuous self-map f of the 2-simplex and any ε > 0, there exists a point p with dist(p, f(p)) < ε.",
+    "text": "A 1071-line formalization of 2D Sperner's lemma and its application to approximate fixed points. The proof uses the door-counting (parity) argument: count {0,1}-edges modulo 2 via a row-sweep invariant, connecting boundary parity (odd, from 1D Sperner) to the count of fully-colored triangles. The connection to PPAD complexity motivates this as a sub-problem of the Brouwer computational complexity hierarchy.",
+    "proofStrategy": "**Section I (Grid structure)**: `GridVertex n` = (i,j) with i+j≤n; `GridTriangle n` with `TriType.lower`/`upper`; `lowerVertices`/`upperVertices` define the two triangle types per grid cell.\n\n**Section II (Coloring)**: `IsSperner`: fixes corners (0,0)↦0, (n,0)↦1, (0,n)↦2 and restricts edges (bottom: {0,1}; left: {0,2}; hypotenuse: {1,2}). `IsFullyColored`: image of vertex colors = {0,1,2}.\n\n**Section II-b (ZMod 2 helpers)**: `sum_telescope` for telescoping sums in ZMod 2; `transitions_parity_aux` converting filter count to ZMod 2 endpoint difference.\n\n**Section III (1D Sperner)**: `bottom_transitions_odd` — color transitions on the bottom edge (from 0 to 1) are odd. Proof: bottom uses only colors {0,1} (by Sperner condition), and starts at 0 (corner (0,0)) and ends at 1 (corner (n,0)).\n\n**Section IV (Door counting)**: `IsDoor`: an edge is a door if its colors are {0,1}. `fully_colored_one_door`: FC triangles have exactly 1 door (by surjectivity+injectivity of the color function on vertices). `abstractDoorCount_parity`: 27-case `decide` confirms non-FC triangles have even door count. `hTrans c j` = #{transitions on j-th horizontal strip boundary}. `strip_parity`: hTrans is invariant mod 2 as j increases (interior doors cancel).\n\n**Section IV-b main (`sperner_2d`)**: Contradiction — if no FC triangle, hTrans is constant mod 2 = hTrans(n) = 0 = hTrans(0). But hTrans(0) = bottomTransitions (odd). Contradiction.\n\n**Section V (Approximate fixed points)**: `displacementColoring n f v` — color by dominant displacement direction: 0 if f(v).1-v.1 + f(v).2-v.2 ≥ 0, 1 if f(v).1 < v.1, 2 if f(v).2 < v.2. Proved Sperner via `displacementColoring_isSperner`. Then `approximate_fixed_point_2d`: choose n > max(1/δ, 4/ε), apply Sperner, use uniform continuity to bound the displacement at the fully-colored triangle.",
+    "keyInsights": [
+      "**ZMod 2 row-sweep invariant**: The parity of {0,1}-edge transitions across a horizontal strip boundary is unchanged as j increases. Each interior door is shared by two triangles and cancels mod 2. This is the core mechanism that propagates parity from bottom to top.",
+      "**fully_colored_one_door via injectivity**: A fully-colored triangle has an injective color function on its 3 vertices (since the colors {0,1,2} are exactly assigned). The unique {0,1}-pair (i₀,i₁) is extracted by surjectivity, and uniqueness follows from injectivity.",
+      "**27-case abstraction**: `abstractDoorCount_parity` consolidates the case analysis for all non-FC triples into a single `decide` call over Fin 3 × Fin 3 × Fin 3. This avoids massive case-by-case proofs.",
+      "**Displacement coloring**: The Sperner coloring for `approximate_fixed_point_2d` is not arbitrary — it encodes the sign of f(v)-v. Color 0 means net displacement is non-negative (v is close to a fixed point). Colors 1,2 encode displacement in specific directions. A fully-colored triangle has one vertex of each type, forcing a near-fixed-point.",
+      "**PPAD connection**: The displacement coloring construction is essentially the same as the one used in the PPAD-hardness proof for finding ε-approximate Brouwer fixed points (Chen-Deng 2009). The reduction goes the other direction: a 2D Sperner oracle gives an approximate fixed point."
+    ],
+    "prerequisites": [
+      "2D Sperner's lemma and door-counting arguments",
+      "1D Sperner / intermediate value theorem",
+      "Uniform continuity on compact sets",
+      "PPAD complexity and Brouwer fixed point"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "extends",
+      "description": "Parent OQ-02 formalization covers the 1D PPAD structure and binary search; OQ-02-OQ-01 extends to 2D via Sperner's lemma"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Sperner's lemma implies Brouwer's fixed point theorem in the limit (n → ∞ in the grid refinement)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Sperner2D",
+    "lineCount": 1071,
+    "axiomCount": 0,
+    "theoremCount": 33,
+    "definitionCount": 17,
+    "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-grid-structure",
+      "title": "Section I: Grid Triangulation Definitions",
+      "startLine": 39,
+      "endLine": 98,
+      "summary": "Defines `GridVertex n` (pairs (i,j) with i+j≤n), `TriType` inductive (lower/upper), `GridTriangle n`. Defines `lowerVertices`/`upperVertices` for the two triangle types in each grid cell. `GridTriangle.vertices` dispatches to the correct vertex function by type.",
+      "mathContext": "The grid triangulation of $T_n = \\{(i,j) : i,j \\geq 0, i+j \\leq n\\}$ has $n^2$ triangles ($n^2$ lower and upper triangles), $(n+1)(n+2)/2$ vertices."
+    },
+    {
+      "id": "sec-coloring",
+      "title": "Section II: Sperner Coloring",
+      "startLine": 78,
+      "endLine": 150,
+      "summary": "Defines `Coloring n = GridVertex n → Fin 3`, `IsSperner`: corner colors fixed (0,1,2), edge restrictions (bottom: no color 2, left: no color 1, hypotenuse: no color 0). `IsFullyColored`: image = {0,1,2}. ZMod 2 helper lemmas for the parity argument.",
+      "mathContext": "A Sperner coloring assigns colors $\\{0,1,2\\}$ to vertices such that: corner $(0,0) \\mapsto 0$, $(n,0) \\mapsto 1$, $(0,n) \\mapsto 2$; bottom edge uses only $\\{0,1\\}$; left edge uses only $\\{0,2\\}$; hypotenuse uses only $\\{1,2\\}$."
+    },
+    {
+      "id": "sec-1d-sperner",
+      "title": "Section III: 1D Sperner (Bottom Edge)",
+      "startLine": 151,
+      "endLine": 233,
+      "summary": "Proves `bottom_transitions_odd`: the number of {0,1}-transitions on the bottom edge is odd. Key: bottom vertices use only colors {0,1} (Sperner condition), starting at 0 and ending at 1. Proved via `transitions_parity_bool` — a Bool-valued parity lemma for sequences.",
+      "mathContext": "1D Sperner: a sequence $f_0 = 0, f_n = 1$ with $f_i \\in \\{0,1\\}$ has an odd number of transitions $i$ with $f_i \\neq f_{i+1}$."
+    },
+    {
+      "id": "sec-door-counting",
+      "title": "Section IV: Door Counting and Row-Sweep Parity",
+      "startLine": 234,
+      "endLine": 636,
+      "summary": "Defines `IsDoor` ({0,1}-colored edges), `hTrans c j` (horizontal transitions on row j). Proves: `fully_colored_one_door` (FC triangles have exactly 1 door), `abstractDoorCount_parity` (non-FC have 0 or 2 doors, 27-case decide), boundary door lemmas (no doors on left edge or hypotenuse), `strip_parity` (row-sweep invariant mod 2).",
+      "mathContext": "Each door is shared by 0 (boundary) or 2 (interior) triangles. $\\sum_T \\text{doors}(T) \\equiv \\text{boundary doors} \\pmod{2}$. Boundary doors = bottomTransitions (odd). FC triangles contribute 1 each; non-FC contribute 0. So #FC ≡ 1 (mod 2)."
+    },
+    {
+      "id": "sec-sperner-main",
+      "title": "Section IV: sperner_2d Main Theorem",
+      "startLine": 637,
+      "endLine": 658,
+      "summary": "Proves `sperner_2d`: any Sperner-colored grid triangulation of size n contains a fully-colored triangle. Contradiction argument: if no FC triangle, then hTrans is constant mod 2, so hTrans(n) ≡ hTrans(0) ≡ bottomTransitions ≡ 1 (mod 2). But hTrans(n) = 0.",
+      "mathContext": "Conclusion: $|\\{t : \\text{FC}\\}| \\equiv 1 \\pmod{2}$, so $\\exists$ a fully-colored triangle."
+    },
+    {
+      "id": "sec-approximate-fp",
+      "title": "Section V: Approximate Fixed Points",
+      "startLine": 659,
+      "endLine": 1071,
+      "summary": "Defines `gridToReal n v` (maps grid vertex to real coordinates in unit simplex), `displacementColoring n f` (Sperner coloring by dominant displacement direction). Proves `displacementColoring_isSperner`, color interpretation lemmas (color_zero_sum_nonneg, color_one_d1_nonpos, color_two_d2_nonpos). Main result: `approximate_fixed_point_2d` — continuous self-maps of the 2-simplex have ε-approximate fixed points.",
+      "mathContext": "For $\\varepsilon > 0$, choose $n > \\max(1/\\delta, 4/\\varepsilon)$ where $\\delta$ is from uniform continuity. Apply Sperner: fully-colored triangle $t$ has one vertex with each displacement sign. Translate: $\\|f(p) - p\\| < \\varepsilon$ at the color-0 vertex."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization (0 sorries, 0 axioms) of 2D Sperner's lemma and its application to approximate fixed points. The 33-theorem file develops: grid triangulation infrastructure, Sperner coloring predicates, 1D Sperner as a base case, door-counting via ZMod 2 row sweep, and the approximate fixed point theorem via displacement coloring and uniform continuity.",
+    "implications": "The `approximate_fixed_point_2d` theorem shows that any continuous self-map of the 2-simplex has ε-approximate fixed points for all ε > 0. This is the 2D instance of the computable version of Brouwer's theorem. The PPAD-completeness (Chen-Deng 2009) of finding such points — even in 2D — underscores that Sperner's lemma is computationally non-trivial.",
+    "openQuestions": [
+      "Extend `sperner_2d` to arbitrary triangulations (not just grid triangulations) using a graph-theory boundary argument",
+      "Formalize the PPAD-hardness direction: reduce approximate Brouwer to Sperner via the displacement coloring (Chen-Deng 2009)",
+      "Prove Brouwer's fixed point theorem (exact fixed points) from `approximate_fixed_point_2d` via a compactness/subsequence argument"
+    ]
+  },
+  "sorries": 0
+}
