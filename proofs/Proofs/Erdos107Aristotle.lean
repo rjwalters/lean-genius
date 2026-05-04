@@ -24,7 +24,13 @@ open Erdos107 Finset
     so no 3-element subset T ⊆ pts can exist, contradicting HasConvexNGon 3.
     Routine: uses Finset.card_le_card and omega. -/
 theorem cardSet_three_lower_bound : ∀ m ∈ CardSet 3, 3 ≤ m := by
-  sorry
+  intro m hm
+  -- ersz_lower_bound at n=3: 2^(3-2)+1 = 3 ≤ f 3 = sInf (CardSet 3) ≤ m
+  have h3 : 3 ≤ f 3 := by
+    have := ersz_lower_bound 3 (by norm_num)
+    norm_num at this ⊢
+    exact this
+  exact le_trans h3 (Nat.sInf_le hm)
 
 /-- Lower bound: 3 ≤ f 3.
     Direct corollary of the Erdős-Szekeres lower bound axiom at n=3:
