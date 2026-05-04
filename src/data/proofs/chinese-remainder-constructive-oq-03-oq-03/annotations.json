@@ -8,7 +8,7 @@
     },
     "type": "insight",
     "title": "Powers of 2 are Coprime to Odd Numbers",
-    "content": "`pow2_coprime_odd` proves `Nat.Coprime (2^k) m` for any odd `m` (i.e., `m % 2 = 1`). The proof chains three Mathlib lemmas: `Nat.odd_iff.mpr hm` converts the mod-2 condition to `Odd m`; `Nat.coprime_two_right.mpr` lifts this to `Nat.Coprime 2 m`; `Nat.Coprime.pow_left k` extends coprimality to `2^k`. The entire proof is a single term-mode chain \u2014 no tactics needed.",
+    "content": "`pow2_coprime_odd` proves `Nat.Coprime (2^k) m` for any odd `m` (i.e., `m % 2 = 1`). The proof chains three Mathlib lemmas: `Nat.odd_iff.mpr hm` converts the mod-2 condition to `Odd m`; `Nat.coprime_two_right.mpr` lifts this to `Nat.Coprime 2 m`; `Nat.Coprime.pow_left k` extends coprimality to `2^k`. The entire proof is a single term-mode chain — no tactics needed.",
     "mathContext": "$\\gcd(2^k, m) = 1$ whenever $m$ is odd, because any common divisor divides $2^k$ (so is a power of 2) and also divides $m$ (which is odd), forcing it to be 1. This is the fundamental fact making power-of-2 RNS channels compatible with odd channels: $2^k$ contributes a factor of 2 to the dynamic range without conflicting with any odd modulus.",
     "significance": "key",
     "relatedConcepts": [
@@ -30,8 +30,8 @@
     },
     "type": "insight",
     "title": "Two Positive Powers of 2 are Never Coprime",
-    "content": "`pow2_not_coprime_pow2` proves `\u00ac Nat.Coprime (2^k) (2^j)` when `k \u2265 1` and `j \u2265 1`. Since `2 \u2223 2^k` and `2 \u2223 2^j`, we have `2 \u2223 gcd(2^k, 2^j)`, so the gcd is at least 2, not 1. This establishes the uniqueness constraint: an RNS base can contain **at most one** power of 2 as a modulus.",
-    "mathContext": "In the residue number system, the moduli must be pairwise coprime to guarantee the Chinese Remainder Theorem (CRT) applies \u2014 each residue vector has a unique integer representative in $[0, M)$ where $M$ is the dynamic range. Since $\\gcd(2^k, 2^j) = 2^{\\min(k,j)} \\geq 2$, two powers of 2 cannot both appear as moduli.",
+    "content": "`pow2_not_coprime_pow2` proves `¬ Nat.Coprime (2^k) (2^j)` when `k ≥ 1` and `j ≥ 1`. Since `2 ∣ 2^k` and `2 ∣ 2^j`, we have `2 ∣ gcd(2^k, 2^j)`, so the gcd is at least 2, not 1. This establishes the uniqueness constraint: an RNS base can contain **at most one** power of 2 as a modulus.",
+    "mathContext": "In the residue number system, the moduli must be pairwise coprime to guarantee the Chinese Remainder Theorem (CRT) applies — each residue vector has a unique integer representative in $[0, M)$ where $M$ is the dynamic range. Since $\\gcd(2^k, 2^j) = 2^{\\min(k,j)} \\geq 2$, two powers of 2 cannot both appear as moduli.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.Coprime",
@@ -52,7 +52,7 @@
     },
     "type": "definition",
     "title": "Pow2RNSBase: Structure for Power-of-2 RNS Bases",
-    "content": "`Pow2RNSBase` is a structure with fields: `power : \u2115` (the exponent, so the power-of-2 channel is `2^power`), `oddMods : List \u2115` (the odd channels), `power_pos : 1 \u2264 power` (so the channel is \u2265 2), `mods_ge_three : \u2200 m \u2208 oddMods, 3 \u2264 m` (odd channels are proper moduli, \u2265 3), `mods_odd : \u2200 m \u2208 oddMods, m % 2 = 1`, and `mods_coprime : oddMods.Pairwise Nat.Coprime`. The `moduli` field (computed) is `[2^power] ++ oddMods`. Together with `pow2_coprime_odd`, the constraints make the full moduli list pairwise coprime.",
+    "content": "`Pow2RNSBase` is a structure with fields: `power : ℕ` (the exponent, so the power-of-2 channel is `2^power`), `oddMods : List ℕ` (the odd channels), `power_pos : 1 ≤ power` (so the channel is ≥ 2), `mods_ge_three : ∀ m ∈ oddMods, 3 ≤ m` (odd channels are proper moduli, ≥ 3), `mods_odd : ∀ m ∈ oddMods, m % 2 = 1`, and `mods_coprime : oddMods.Pairwise Nat.Coprime`. The `moduli` field (computed) is `[2^power] ++ oddMods`. Together with `pow2_coprime_odd`, the constraints make the full moduli list pairwise coprime.",
     "mathContext": "Hardware RNS systems like the {4, 3, 5, 7} base (used in DSP chips) have one power-of-2 channel for efficient modular reduction via bitwise AND. The structure formalizes this hardware design pattern: one channel of the form $2^k$ (cheap to implement: `x mod 2^k = x &&& (2^k - 1)`) plus several odd prime channels (implemented via Montgomery reduction or lookup tables).",
     "significance": "key",
     "relatedConcepts": [
@@ -74,7 +74,7 @@
     },
     "type": "insight",
     "title": "Pow2RNSBase Gives a Pairwise Coprime Moduli List",
-    "content": "`Pow2RNSBase.pairwise_coprime` proves the full moduli list `[2^power, m\u2081, ..., m\u2099]` is pairwise coprime. The proof uses `List.Pairwise.cons`: the head `2^power` must be coprime to each `m\u1d62` in `oddMods`, which follows from `pow2_coprime_odd` since each `m\u1d62` is odd (by `mods_odd`); the tail `oddMods` is pairwise coprime by `mods_coprime`. This satisfies the CRT hypothesis for the full moduli list.",
+    "content": "`Pow2RNSBase.pairwise_coprime` proves the full moduli list `[2^power, m₁, ..., mₙ]` is pairwise coprime. The proof uses `List.Pairwise.cons`: the head `2^power` must be coprime to each `mᵢ` in `oddMods`, which follows from `pow2_coprime_odd` since each `mᵢ` is odd (by `mods_odd`); the tail `oddMods` is pairwise coprime by `mods_coprime`. This satisfies the CRT hypothesis for the full moduli list.",
     "mathContext": "For CRT to give a unique representation, the moduli must be pairwise coprime: $\\gcd(m_i, m_j) = 1$ for all $i \\neq j$. The `Pow2RNSBase` constraints exactly encode this: within the odd channels (`mods_coprime`), between the power-of-2 channel and each odd channel (`pow2_coprime_odd` + `mods_odd`). The dynamic range is then $M = 2^k \\cdot \\prod m_i$ and every integer in $[0, M)$ has a unique residue vector.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,8 +96,8 @@
     },
     "type": "insight",
     "title": "Dynamic Range Formula and Hardware Efficiency Comparison",
-    "content": "`dynamicRange_eq` proves `b.toRNSBase.dynamicRange = 2^b.power * b.oddMods.prod` \u2014 the dynamic range factors as the power-of-2 channel times the product of odd channels. `pow2_channel_doubles_range` proves `[4,3,5,7].prod = 2 * [2,3,5,7].prod`: replacing the channel 2 with 4 = 2\u00b2 doubles the dynamic range from 210 to 420 with no change in channel count. Concrete examples verify: `base_4_3_5_7_coprime` (by `decide`), `base_4_3_5_7_range` (by `norm_num`), `base_16_3_5_7_11_13_range = 240240` (by `norm_num`).",
-    "mathContext": "For a base $\\{2^k, m_1, \\ldots, m_n\\}$, the dynamic range is $M = 2^k \\cdot \\prod m_i$. Increasing $k$ by 1 doubles $M$. Hardware benefit: `x mod 2^k` is computed as `x & (2^k - 1)`, a single instruction. Increasing $k$ from 1 to 4 (using 16 instead of 2) increases the range by $16/2 = 8\\times$ at the cost of a wider AND mask \u2014 essentially free in hardware. The {16, 3, 5, 7, 11, 13} base gives range 240240, covering a 17.9-bit integer range with only 6 modular reduction operations.",
+    "content": "`dynamicRange_eq` proves `b.toRNSBase.dynamicRange = 2^b.power * b.oddMods.prod` — the dynamic range factors as the power-of-2 channel times the product of odd channels. `pow2_channel_doubles_range` proves `[4,3,5,7].prod = 2 * [2,3,5,7].prod`: replacing the channel 2 with 4 = 2² doubles the dynamic range from 210 to 420 with no change in channel count. Concrete examples verify: `base_4_3_5_7_coprime` (by `decide`), `base_4_3_5_7_range` (by `norm_num`), `base_16_3_5_7_11_13_range = 240240` (by `norm_num`).",
+    "mathContext": "For a base $\\{2^k, m_1, \\ldots, m_n\\}$, the dynamic range is $M = 2^k \\cdot \\prod m_i$. Increasing $k$ by 1 doubles $M$. Hardware benefit: `x mod 2^k` is computed as `x & (2^k - 1)`, a single instruction. Increasing $k$ from 1 to 4 (using 16 instead of 2) increases the range by $16/2 = 8\\times$ at the cost of a wider AND mask — essentially free in hardware. The {16, 3, 5, 7, 11, 13} base gives range 240240, covering a 17.9-bit integer range with only 6 modular reduction operations.",
     "significance": "supporting",
     "relatedConcepts": [
       "List.prod",
@@ -117,11 +117,11 @@
       "startLine": 168,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Invalidity Witnesses and Hardware Bit-Width Verification",
-    "content": "`base_2_4_invalid` and `base_4_8_invalid` are concrete witnesses for the uniqueness constraint: `\u00ac [2, 4].Pairwise Nat.Coprime` and `\u00ac [4, 8].Pairwise Nat.Coprime`, both proved by `decide` (kernel computation of `gcd(2,4) = 2` and `gcd(4,8) = 4`). `pow2_bit_length` proves `Nat.log 2 (2^k) = k` via `Nat.log_pow`: this confirms the `2^k` channel requires exactly a `k`-bit AND mask for modular reduction, with `x mod 2^k = x &&& (2^k - 1)`. These results ground the hardware efficiency claims in formal verification.",
-    "mathContext": "The `decide` tactic delegates to the kernel's definitional reduction: for small lists, it computes `Nat.gcd 2 4 = 2 \u2260 1` directly. `Nat.log 2 (2^k) = k` is a key formula: the bit-width of the modulus equals its binary logarithm. In hardware, the reduction `x mod 2^k` costs one AND instruction; the full modulus needs `k` bits of storage. Compare: `x mod 7` requires a division or Montgomery multiplication \u2014 roughly $O(k^2)$ gate area. The power-of-2 channel is asymptotically cheaper.",
-    "significance": "technical",
+    "content": "`base_2_4_invalid` and `base_4_8_invalid` are concrete witnesses for the uniqueness constraint: `¬ [2, 4].Pairwise Nat.Coprime` and `¬ [4, 8].Pairwise Nat.Coprime`, both proved by `decide` (kernel computation of `gcd(2,4) = 2` and `gcd(4,8) = 4`). `pow2_bit_length` proves `Nat.log 2 (2^k) = k` via `Nat.log_pow`: this confirms the `2^k` channel requires exactly a `k`-bit AND mask for modular reduction, with `x mod 2^k = x &&& (2^k - 1)`. These results ground the hardware efficiency claims in formal verification.",
+    "mathContext": "The `decide` tactic delegates to the kernel's definitional reduction: for small lists, it computes `Nat.gcd 2 4 = 2 ≠ 1` directly. `Nat.log 2 (2^k) = k` is a key formula: the bit-width of the modulus equals its binary logarithm. In hardware, the reduction `x mod 2^k` costs one AND instruction; the full modulus needs `k` bits of storage. Compare: `x mod 7` requires a division or Montgomery multiplication — roughly $O(k^2)$ gate area. The power-of-2 channel is asymptotically cheaper.",
+    "significance": "supporting",
     "relatedConcepts": [
       "decide tactic",
       "Nat.log_pow",

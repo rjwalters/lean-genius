@@ -6,9 +6,9 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Deriving the Correct Formula Before Lean",
-    "content": "The module comment front-loads the complete mathematical derivation before any Lean code appears. This unusual pattern \u2014 presenting the closed-form derivation in a comment \u2014 serves two purposes: it documents the mathematical insight motivating the induction, and it lets readers verify the algebra independently before checking the Lean proof.\n\nThe derivation uses two known closed forms: \u2211k\u00b3 = (n(n+1)/2)\u00b2 (Nicomachus) and \u2211k\u00b2 = n(n+1)(2n+1)/6. The key algebraic step is \u2211(2k-1)k\u00b2 = 2\u2211k\u00b3 - \u2211k\u00b2 \u2014 obtained by distributing (2k-1)k\u00b2 = 2k\u00b3 - k\u00b2. Substituting the closed forms and simplifying gives n(n+1)(3n\u00b2+n-1)/6.\n\nThe 'subtraction-free formulation' 6\u2211(2k-1)k\u00b2 + n(n+1) = n\u00b2(n+1)(3n+1) is chosen for the Lean proof because Lean's natural numbers lack subtraction. Using \u2124 avoids the subtraction issue entirely, and the formulation with + rather than - on the left side makes the inductive step a purely additive computation.",
+    "content": "The module comment front-loads the complete mathematical derivation before any Lean code appears. This unusual pattern — presenting the closed-form derivation in a comment — serves two purposes: it documents the mathematical insight motivating the induction, and it lets readers verify the algebra independently before checking the Lean proof.\n\nThe derivation uses two known closed forms: ∑k³ = (n(n+1)/2)² (Nicomachus) and ∑k² = n(n+1)(2n+1)/6. The key algebraic step is ∑(2k-1)k² = 2∑k³ - ∑k² — obtained by distributing (2k-1)k² = 2k³ - k². Substituting the closed forms and simplifying gives n(n+1)(3n²+n-1)/6.\n\nThe 'subtraction-free formulation' 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1) is chosen for the Lean proof because Lean's natural numbers lack subtraction. Using ℤ avoids the subtraction issue entirely, and the formulation with + rather than - on the left side makes the inductive step a purely additive computation.",
     "mathContext": "Algebraic derivation: $\\sum_{k=1}^n (2k-1)k^2 = 2\\sum_{k=1}^n k^3 - \\sum_{k=1}^n k^2 = 2\\cdot\\left(\\frac{n(n+1)}{2}\\right)^2 - \\frac{n(n+1)(2n+1)}{6} = \\frac{n(n+1)}{6}[3n(n+1) - (2n+1)] = \\frac{n(n+1)(3n^2+n-1)}{6}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -21,7 +21,7 @@
     "prerequisites": [
       "Nicomachus sum_k^3 formula",
       "Gauss sum_k formula",
-      "Lean \u2124 vs \u2115 arithmetic"
+      "Lean ℤ vs ℕ arithmetic"
     ]
   },
   {
@@ -33,7 +33,7 @@
     },
     "type": "insight",
     "title": "Counterexample Section: Why decide Suffices",
-    "content": "The three theorems `counterexample_n2`, `holds_n1`, and `counterexample_n3` are all proved by `decide`. This works because all quantities are concrete natural number computations with small bounds: Lean's kernel can evaluate \u2211_{k\u2208Ico 1 3} (2k-1)k\u00b2 = 13 and (\u2211_{k\u2208Ico 1 3} k)\u00b2 = 9 directly.\n\nThe proof of `counterexample_n2` is the decisive result: it fully answers the open question in one line. The n=1 case (`holds_n1`) is included to explain the plausibility of the conjecture \u2014 the identity does hold for n=1, making it natural to guess it might hold for all n. The n=3 case (`counterexample_n3`) confirms the pattern of failure persists (LHS=58, RHS=36).\n\nUsing `Ico 1 (n+1)` rather than `range n` with a shift matches the mathematical notation \u2211_{k=1}^n more naturally, though it requires casting between `k : \u2115` and the arithmetic expressions.",
+    "content": "The three theorems `counterexample_n2`, `holds_n1`, and `counterexample_n3` are all proved by `decide`. This works because all quantities are concrete natural number computations with small bounds: Lean's kernel can evaluate ∑_{k∈Ico 1 3} (2k-1)k² = 13 and (∑_{k∈Ico 1 3} k)² = 9 directly.\n\nThe proof of `counterexample_n2` is the decisive result: it fully answers the open question in one line. The n=1 case (`holds_n1`) is included to explain the plausibility of the conjecture — the identity does hold for n=1, making it natural to guess it might hold for all n. The n=3 case (`counterexample_n3`) confirms the pattern of failure persists (LHS=58, RHS=36).\n\nUsing `Ico 1 (n+1)` rather than `range n` with a shift matches the mathematical notation ∑_{k=1}^n more naturally, though it requires casting between `k : ℕ` and the arithmetic expressions.",
     "mathContext": "$n=2$: LHS $= 1 \\cdot 1^2 + 3 \\cdot 2^2 = 1 + 12 = 13$, RHS $= (1+2)^2 = 9$. $n=3$: LHS $= 1 + 12 + 5 \\cdot 9 = 58$, RHS $= 6^2 = 36$. The gap grows: $\\text{LHS} - \\text{RHS} = 4$ at $n=2$, $22$ at $n=3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -58,7 +58,7 @@
     },
     "type": "insight",
     "title": "Main Inductive Proof: nlinarith with ring-Proved Witness",
-    "content": "The core theorem `weighted_sum_closed_form` is proved by induction on n. The base case (n=0) is `simp`. The inductive step follows the pattern:\n1. `rw [sum_range_succ]`: peels off the last term of the range sum, giving `\u2211_{k\u2208range n} ... + (2(n+1)-1)(n+1)\u00b2`.\n2. `push_cast`: coerces the natural number n to \u2124 throughout.\n3. `nlinarith [ih, sq_nonneg ..., show ... from by ring]`: closes the goal using the IH and a `ring`-proved algebraic identity as a hint.\n\nThe `nlinarith` hint is the polynomial identity: `n\u00b2(n+1)(3n+1) + 6(2n+1)(n+1)\u00b2 + (n+1)(n+2) - n(n+1) = (n+1)\u00b2(n+2)(3n+4)`. This is the algebraic content of the inductive step \u2014 `nlinarith` cannot derive it on its own, but can close the goal once given this linear arithmetic witness. The `ring` sub-proof confirms the identity.",
+    "content": "The core theorem `weighted_sum_closed_form` is proved by induction on n. The base case (n=0) is `simp`. The inductive step follows the pattern:\n1. `rw [sum_range_succ]`: peels off the last term of the range sum, giving `∑_{k∈range n} ... + (2(n+1)-1)(n+1)²`.\n2. `push_cast`: coerces the natural number n to ℤ throughout.\n3. `nlinarith [ih, sq_nonneg ..., show ... from by ring]`: closes the goal using the IH and a `ring`-proved algebraic identity as a hint.\n\nThe `nlinarith` hint is the polynomial identity: `n²(n+1)(3n+1) + 6(2n+1)(n+1)² + (n+1)(n+2) - n(n+1) = (n+1)²(n+2)(3n+4)`. This is the algebraic content of the inductive step — `nlinarith` cannot derive it on its own, but can close the goal once given this linear arithmetic witness. The `ring` sub-proof confirms the identity.",
     "mathContext": "Inductive step: assume $6S_n + n(n+1) = n^2(n+1)(3n+1)$. Add the $(n+1)$-th term $(2(n+1)-1)(n+1)^2 = (2n+1)(n+1)^2$. New boundary: $(n+1)(n+2)$ instead of $n(n+1)$. Need: $6S_n + 6(2n+1)(n+1)^2 + (n+1)(n+2) = (n+1)^2(n+2)(3n+4)$, i.e., $n^2(n+1)(3n+1) + 6(2n+1)(n+1)^2 + (n+1)(n+2) - n(n+1) = (n+1)^2(n+2)(3n+4)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -66,7 +66,7 @@
       "push_cast",
       "nlinarith",
       "ring-witness",
-      "induction-on-\u2115"
+      "induction-on-ℕ"
     ],
     "prerequisites": [
       "Finset.sum_range_succ",
@@ -82,10 +82,10 @@
       "startLine": 72,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Spot Checks: Concrete Verification at n=1,2,3,4",
-    "content": "The four `form_n*` theorems verify the closed form at small cases by `decide`. While the inductive proof already covers all n, these spot checks serve several purposes:\n1. **Sanity check**: a wrong formula might pass induction due to a sign error in the ring identity; explicit spot checks catch such errors independently.\n2. **Documentation**: reading `6 * \u2211_{k\u2208Ico 1 3} ... + 2*3 = 4*3*7` immediately confirms the n=2 instance without tracing through the induction.\n3. **Interface consistency**: the spot checks use `Ico 1 (n+1)` (matching the problem statement) rather than `range n` (used in the inductive proof), demonstrating the two are equivalent.\n\nNote the formulation: `6 * \u2211 k \u2208 Ico 1 2 ... + 1*2 = 1^2 * 2 * 4`. The product `n^2 * (n+1) * (3n+1)` at n=1 gives 1 * 2 * 4 = 8; the left side 6*1 + 1*2 = 8. \u2713",
-    "mathContext": "Spot check verification: $n=1$: $6 \\cdot 1 + 1 \\cdot 2 = 8 = 1^2 \\cdot 2 \\cdot 4$ \u2713. $n=2$: $6 \\cdot 13 + 2 \\cdot 3 = 84 = 4 \\cdot 3 \\cdot 7$ \u2713. $n=3$: $6 \\cdot 58 + 3 \\cdot 4 = 360 = 9 \\cdot 4 \\cdot 10$ \u2713. $n=4$: $6 \\cdot 130 + 4 \\cdot 5 = 800 = 16 \\cdot 5 \\cdot 10$... wait, $n=4$: $3n+1 = 13$, so $16 \\cdot 5 \\cdot 13 = 1040$ \u2260 800. Let Lean verify this.",
+    "content": "The four `form_n*` theorems verify the closed form at small cases by `decide`. While the inductive proof already covers all n, these spot checks serve several purposes:\n1. **Sanity check**: a wrong formula might pass induction due to a sign error in the ring identity; explicit spot checks catch such errors independently.\n2. **Documentation**: reading `6 * ∑_{k∈Ico 1 3} ... + 2*3 = 4*3*7` immediately confirms the n=2 instance without tracing through the induction.\n3. **Interface consistency**: the spot checks use `Ico 1 (n+1)` (matching the problem statement) rather than `range n` (used in the inductive proof), demonstrating the two are equivalent.\n\nNote the formulation: `6 * ∑ k ∈ Ico 1 2 ... + 1*2 = 1^2 * 2 * 4`. The product `n^2 * (n+1) * (3n+1)` at n=1 gives 1 * 2 * 4 = 8; the left side 6*1 + 1*2 = 8. ✓",
+    "mathContext": "Spot check verification: $n=1$: $6 \\cdot 1 + 1 \\cdot 2 = 8 = 1^2 \\cdot 2 \\cdot 4$ ✓. $n=2$: $6 \\cdot 13 + 2 \\cdot 3 = 84 = 4 \\cdot 3 \\cdot 7$ ✓. $n=3$: $6 \\cdot 58 + 3 \\cdot 4 = 360 = 9 \\cdot 4 \\cdot 10$ ✓. $n=4$: $6 \\cdot 130 + 4 \\cdot 5 = 800 = 16 \\cdot 5 \\cdot 10$... wait, $n=4$: $3n+1 = 13$, so $16 \\cdot 5 \\cdot 13 = 1040$ ≠ 800. Let Lean verify this.",
     "significance": "supporting",
     "relatedConcepts": [
       "decide-tactic",
@@ -108,7 +108,7 @@
     },
     "type": "insight",
     "title": "Nicomachus Contrast: Proving the Correct Identity for Comparison",
-    "content": "The final section proves Nicomachus's theorem (`nicomachus`: 4\u2211k\u00b3 = (n(n+1))\u00b2) directly in Lean, both to contrast with the false conjecture and to complete the mathematical picture. Like `weighted_sum_closed_form`, it uses induction with a `ring`-proved witness for `linarith`.\n\nThe theorem `cubes_minus_weighted` computes \u2211k\u00b3 - \u2211(2k-1)k\u00b2 = \u2211(k\u00b2 - k\u00b3) = -\u2211k\u00b2(k-1). This is negative for n\u22652 (since k\u22652 \u2192 k-1\u22651 \u2192 k\u00b2(k-1)>0), showing the conjectured sum is strictly larger than \u2211k\u00b3 for n\u22652. Combined with Nicomachus (\u2211k\u00b3 = (\u2211k)\u00b2), this means the conjectured sum is strictly larger than (\u2211k)\u00b2 for n\u22652, giving a clean quantitative explanation for why the conjecture fails.\n\nThe proof of `cubes_minus_weighted` uses `\u2190 sum_sub_distrib` to convert the difference of sums to a sum of differences, then `congr 1; ext k; ring` to verify the pointwise identity k\u00b3 - (2k-1)k\u00b2 = k\u00b2(1-k).",
+    "content": "The final section proves Nicomachus's theorem (`nicomachus`: 4∑k³ = (n(n+1))²) directly in Lean, both to contrast with the false conjecture and to complete the mathematical picture. Like `weighted_sum_closed_form`, it uses induction with a `ring`-proved witness for `linarith`.\n\nThe theorem `cubes_minus_weighted` computes ∑k³ - ∑(2k-1)k² = ∑(k² - k³) = -∑k²(k-1). This is negative for n≥2 (since k≥2 → k-1≥1 → k²(k-1)>0), showing the conjectured sum is strictly larger than ∑k³ for n≥2. Combined with Nicomachus (∑k³ = (∑k)²), this means the conjectured sum is strictly larger than (∑k)² for n≥2, giving a clean quantitative explanation for why the conjecture fails.\n\nThe proof of `cubes_minus_weighted` uses `← sum_sub_distrib` to convert the difference of sums to a sum of differences, then `congr 1; ext k; ring` to verify the pointwise identity k³ - (2k-1)k² = k²(1-k).",
     "mathContext": "Nicomachus: $4\\sum_{k=1}^n k^3 = (n(n+1))^2$, proved by induction. Gap: $\\sum k^3 - \\sum(2k-1)k^2 = \\sum k^2(1-k) < 0$ for $n \\geq 2$ (each term $k^2(1-k) \\leq 0$ for $k \\geq 1$, strictly negative for $k \\geq 2$). So the conjectured sum $> \\sum k^3 = (\\sum k)^2$, explaining the failure.",
     "significance": "key",
     "relatedConcepts": [

@@ -9,11 +9,11 @@
     "type": "definition",
     "title": "Binary Sequences as Functions",
     "content": "A **binary sequence** is modeled as a function from natural numbers to booleans: `Nat -> Bool`. Each sequence assigns either `true` (1) or `false` (0) to every position.\n\nThese correspond to real numbers in $[0, 1]$ via binary expansion: the sequence $(b_0, b_1, b_2, \\ldots)$ represents $0.b_0b_1b_2\\ldots$ in binary.",
-    "mathContext": "In Lean 4: `def BinarySeq := \u2115 \u2192 Bool`. The set of all binary sequences $2^{\\mathbb{N}} = \\{f : \\mathbb{N} \\to \\{0,1\\}\\}$ has cardinality $2^{\\aleph_0} = \\mathfrak{c}$ (the cardinality of the continuum). The bijection with $[0,1]$: $(b_0, b_1, b_2, \\ldots) \\mapsto \\sum_{k=0}^{\\infty} b_k/2^{k+1}$ is almost a bijection (dyadic rationals have two representations, but this is a countable exception). The Cantor set $C \\subset [0,1]$ (remove middle thirds) is itself bijective with $2^{\\mathbb{N}}$ via the ternary expansion using $\\{0,2\\}$ instead of $\\{0,1\\}$. Example: $1, 0, 1, 0, \\ldots \\mapsto 0.10101_2 = 2/3$.",
+    "mathContext": "In Lean 4: `def BinarySeq := ℕ → Bool`. The set of all binary sequences $2^{\\mathbb{N}} = \\{f : \\mathbb{N} \\to \\{0,1\\}\\}$ has cardinality $2^{\\aleph_0} = \\mathfrak{c}$ (the cardinality of the continuum). The bijection with $[0,1]$: $(b_0, b_1, b_2, \\ldots) \\mapsto \\sum_{k=0}^{\\infty} b_k/2^{k+1}$ is almost a bijection (dyadic rationals have two representations, but this is a countable exception). The Cantor set $C \\subset [0,1]$ (remove middle thirds) is itself bijective with $2^{\\mathbb{N}}$ via the ternary expansion using $\\{0,2\\}$ instead of $\\{0,1\\}$. Example: $1, 0, 1, 0, \\ldots \\mapsto 0.10101_2 = 2/3$.",
     "significance": "key",
     "prerequisites": [
       "Lean 4 def keyword",
-      "function types (\u2115 \u2192 Bool)",
+      "function types (ℕ → Bool)",
       "basic set theory"
     ],
     "relatedConcepts": [
@@ -34,7 +34,7 @@
     "type": "definition",
     "title": "The Diagonal Function",
     "content": "Given any enumeration $f$ of binary sequences, we construct a **diagonal sequence** by:\n\n1. Look at position $n$ of sequence $n$\n2. Flip that bit (0 becomes 1, 1 becomes 0)\n\nThis ensures our new sequence differs from $f(n)$ at position $n$ for every $n$.",
-    "mathContext": "In Lean 4: `def diagonal (f : \u2115 \u2192 BinarySeq) : BinarySeq := fun n => !(f n n)`. The key property: $\\text{diagonal}(f)(n) = \\lnot f(n)(n)$, so the diagonal is defined by composition $\\text{diagonal} = \\lnot \\circ \\Delta$ where $\\Delta(f)(n) = f(n)(n)$ is the 'diagonal evaluation' map. This construction avoids any fixed point: if $s = \\text{diagonal}(f)$, then $s(n) \\neq f(n)(n)$ for all $n$, so $s$ cannot equal any $f(n)$ (they differ at position $n$). The `!` in Lean is `Bool.not`, and `fun n => !(f n n)` is a lambda constructing the flipped diagonal pointwise.",
+    "mathContext": "In Lean 4: `def diagonal (f : ℕ → BinarySeq) : BinarySeq := fun n => !(f n n)`. The key property: $\\text{diagonal}(f)(n) = \\lnot f(n)(n)$, so the diagonal is defined by composition $\\text{diagonal} = \\lnot \\circ \\Delta$ where $\\Delta(f)(n) = f(n)(n)$ is the 'diagonal evaluation' map. This construction avoids any fixed point: if $s = \\text{diagonal}(f)$, then $s(n) \\neq f(n)(n)$ for all $n$, so $s$ cannot equal any $f(n)$ (they differ at position $n$). The `!` in Lean is `Bool.not`, and `fun n => !(f n n)` is a lambda constructing the flipped diagonal pointwise.",
     "significance": "key",
     "prerequisites": [
       "BinarySeq definition",
@@ -56,10 +56,10 @@
       "startLine": 55,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Diagonal Differs at Each Position",
     "content": "The key lemma: our constructed diagonal sequence differs from $f(n)$ specifically at position $n$.\n\nSince `diagonal f n = !(f n n)`, we have `diagonal f n != f n n` by the fact that `!b != b` for any boolean.\n\nThis one-line observation is the heart of the proof.",
-    "mathContext": "The Lean proof: `unfold diagonal` replaces `diagonal f n` with `!(f n n)`, then `cases f n n <;> simp` performs case analysis on both `Bool.true` and `Bool.false`. In each case `simp` discharges the goal: `!true \u2260 true` becomes `false \u2260 true` (true by `Bool.false_ne_true`), and `!false \u2260 false` becomes `true \u2260 false` (true by `Bool.true_ne_false`). The `<;>` combinator applies `simp` to both cases simultaneously. This lemma encapsulates the one-line core of Cantor's argument: $\\lnot b \\neq b$ for any $b \\in \\{0, 1\\}$, which holds because boolean negation is a fixed-point-free involution.",
+    "mathContext": "The Lean proof: `unfold diagonal` replaces `diagonal f n` with `!(f n n)`, then `cases f n n <;> simp` performs case analysis on both `Bool.true` and `Bool.false`. In each case `simp` discharges the goal: `!true ≠ true` becomes `false ≠ true` (true by `Bool.false_ne_true`), and `!false ≠ false` becomes `true ≠ false` (true by `Bool.true_ne_false`). The `<;>` combinator applies `simp` to both cases simultaneously. This lemma encapsulates the one-line core of Cantor's argument: $\\lnot b \\neq b$ for any $b \\in \\{0, 1\\}$, which holds because boolean negation is a fixed-point-free involution.",
     "significance": "key",
     "prerequisites": [
       "diagonal definition",
@@ -84,7 +84,7 @@
     "type": "insight",
     "title": "Cantor's Diagonalization Theorem",
     "content": "**For any function $f : \\mathbb{N} \\to \\text{BinarySeq}$, there exists a sequence $s$ not in the range of $f$.**\n\nIn other words, no enumeration of binary sequences can be complete. There will always be a sequence we missed.",
-    "mathContext": "Lean statement: `\u2200 f : \u2115 \u2192 BinarySeq, \u2203 s : BinarySeq, \u2200 n : \u2115, f n \u2260 s`. Proof walkthrough: `intro f` introduces the enumeration; `use diagonal f` provides the witness; `intro n` introduces the index; `intro h` assumes for contradiction that `f n = diagonal f`; `have key : f n n = diagonal f n := congrFun h n` applies congruence (if two functions are equal, they agree pointwise); `have contra := diagonal_differs f n` gives `diagonal f n \u2260 f n n`; `exact contra key.symm` closes: `key.symm : diagonal f n = f n n` contradicts `contra`. The proof is constructive: `diagonal f` is an explicit witness, not obtained by excluded middle. This is 15 lines for one of the most important theorems in mathematical logic.",
+    "mathContext": "Lean statement: `∀ f : ℕ → BinarySeq, ∃ s : BinarySeq, ∀ n : ℕ, f n ≠ s`. Proof walkthrough: `intro f` introduces the enumeration; `use diagonal f` provides the witness; `intro n` introduces the index; `intro h` assumes for contradiction that `f n = diagonal f`; `have key : f n n = diagonal f n := congrFun h n` applies congruence (if two functions are equal, they agree pointwise); `have contra := diagonal_differs f n` gives `diagonal f n ≠ f n n`; `exact contra key.symm` closes: `key.symm : diagonal f n = f n n` contradicts `contra`. The proof is constructive: `diagonal f` is an explicit witness, not obtained by excluded middle. This is 15 lines for one of the most important theorems in mathematical logic.",
     "significance": "key",
     "prerequisites": [
       "diagonal definition",
@@ -106,10 +106,10 @@
       "startLine": 66,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Constructing the Witness",
     "content": "We exhibit the diagonal sequence as our witness. The `use` tactic provides this existential witness.\n\nNow we must prove this sequence differs from every $f(n)$.",
-    "mathContext": "The `use diagonal f` tactic in Lean 4 discharges the `\u2203 s : BinarySeq, ...` goal by substituting `s := diagonal f`, leaving the goal `\u2200 n : \u2115, f n \u2260 diagonal f`. This is a *constructive* witness \u2014 the diagonal sequence is given explicitly as `fun n => !(f n n)`. Classical logic would allow a non-constructive existence proof (by excluded middle, assuming no such sequence and deriving a contradiction), but this proof constructs the witness directly. The `use` tactic corresponds to the existential introduction rule: from `P(t)`, conclude `\u2203 x, P(x)`.",
+    "mathContext": "The `use diagonal f` tactic in Lean 4 discharges the `∃ s : BinarySeq, ...` goal by substituting `s := diagonal f`, leaving the goal `∀ n : ℕ, f n ≠ diagonal f`. This is a *constructive* witness — the diagonal sequence is given explicitly as `fun n => !(f n n)`. Classical logic would allow a non-constructive existence proof (by excluded middle, assuming no such sequence and deriving a contradiction), but this proof constructs the witness directly. The `use` tactic corresponds to the existential introduction rule: from `P(t)`, conclude `∃ x, P(x)`.",
     "significance": "supporting",
     "prerequisites": [
       "diagonal definition",
@@ -130,10 +130,10 @@
       "startLine": 88,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Deriving the Contradiction",
     "content": "Suppose for contradiction that $f(n) = \\text{diagonal}(f)$ for some $n$.\n\nThen at position $n$: $f(n)(n) = \\text{diagonal}(f)(n)$.\n\nBut $\\text{diagonal}(f)(n) = \\neg f(n)(n)$ by definition.\n\nSo $f(n)(n) = \\neg f(n)(n)$, which is impossible for any boolean.\n\nContradiction! Therefore $f(n) \\neq \\text{diagonal}(f)$ for all $n$.",
-    "mathContext": "In `no_surjection_nat_to_binary`: `intro \u27e8f, hf\u27e9` destructs the assumed surjection; `obtain \u27e8s, hs\u27e9 := cantor_diagonalization f` gives the diagonal sequence not in range; `obtain \u27e8n, hn\u27e9 := hf s` uses surjectivity to find $n$ with $f(n) = s$; `exact hs n hn` applies `hs : \u2200 n, f n \u2260 s` to `hn : f n = s`, deriving `False` from `f n \u2260 s` and `f n = s`. The key tactic pattern is `exact hs n hn`: `hs n : f n \u2260 s` is a function `f n = s \u2192 False`, and `hn : f n = s` is the input. The `exact` tactic applies the former to the latter. This is a 4-line proof that neatly separates concerns: Cantor proves non-surjectivity for any enumeration; this theorem packages it as '\u00ac\u2203 surjection'.",
+    "mathContext": "In `no_surjection_nat_to_binary`: `intro ⟨f, hf⟩` destructs the assumed surjection; `obtain ⟨s, hs⟩ := cantor_diagonalization f` gives the diagonal sequence not in range; `obtain ⟨n, hn⟩ := hf s` uses surjectivity to find $n$ with $f(n) = s$; `exact hs n hn` applies `hs : ∀ n, f n ≠ s` to `hn : f n = s`, deriving `False` from `f n ≠ s` and `f n = s`. The key tactic pattern is `exact hs n hn`: `hs n : f n ≠ s` is a function `f n = s → False`, and `hn : f n = s` is the input. The `exact` tactic applies the former to the latter. This is a 4-line proof that neatly separates concerns: Cantor proves non-surjectivity for any enumeration; this theorem packages it as '¬∃ surjection'.",
     "significance": "key",
     "prerequisites": [
       "cantor_diagonalization theorem",
@@ -156,9 +156,9 @@
       "endLine": 98
     },
     "type": "insight",
-    "title": "No Surjection \u2115 \u2192 BinarySeq",
+    "title": "No Surjection ℕ → BinarySeq",
     "content": "The classic formulation: there is no surjective function from $\\mathbb{N}$ to the binary sequences (equivalently, to $\\mathbb{R}$).\n\nThis follows immediately from Cantor's theorem: if $f$ were surjective, every sequence would be in its range, but we just showed one isn't.",
-    "mathContext": "Lean statement: `\u00ac\u2203 f : \u2115 \u2192 BinarySeq, Function.Surjective f`. This reformulates `cantor_diagonalization` from '\u2203 sequence not in range' to '\u00ac surjective'. The logical equivalence: `\u00acSurjective f \u2194 \u2203 s, \u2200 n, f n \u2260 s`. `Function.Surjective f` is defined as `\u2200 s, \u2203 n, f n = s`. Its negation (by `intro \u27e8f, hf\u27e9` and contradiction) gives the target. Note: `reals_uncountable` at line 105 is a one-line alias for this theorem (`no_surjection_nat_to_binary`), making explicit the informal bridge to $\\mathbb{R}$ via binary expansion \u2014 but the Lean type is still `\u00ac\u2203 f : \u2115 \u2192 BinarySeq, Function.Surjective f`, not a statement literally about $\\mathbb{R}$.",
+    "mathContext": "Lean statement: `¬∃ f : ℕ → BinarySeq, Function.Surjective f`. This reformulates `cantor_diagonalization` from '∃ sequence not in range' to '¬ surjective'. The logical equivalence: `¬Surjective f ↔ ∃ s, ∀ n, f n ≠ s`. `Function.Surjective f` is defined as `∀ s, ∃ n, f n = s`. Its negation (by `intro ⟨f, hf⟩` and contradiction) gives the target. Note: `reals_uncountable` at line 105 is a one-line alias for this theorem (`no_surjection_nat_to_binary`), making explicit the informal bridge to $\\mathbb{R}$ via binary expansion — but the Lean type is still `¬∃ f : ℕ → BinarySeq, Function.Surjective f`, not a statement literally about $\\mathbb{R}$.",
     "significance": "key",
     "prerequisites": [
       "cantor_diagonalization theorem",
@@ -179,10 +179,10 @@
       "startLine": 102,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proof of Uncountability",
     "content": "Assume for contradiction that some surjective $f$ exists.\n\nBy Cantor's theorem, there exists $s$ with $f(n) \\neq s$ for all $n$.\n\nBut surjectivity says every $s$ equals some $f(n)$.\n\nThese contradict: $s = f(n)$ but also $f(n) \\neq s$.",
-    "mathContext": "`reals_uncountable` is a one-line alias: `no_surjection_nat_to_binary`. Its docstring explains the informal bridge: binary sequences $(b_n) \\in \\{0,1\\}^{\\mathbb{N}}$ map to reals via $\\sum b_n/2^{n+1} \\in [0,1]$, and $|[0,1]| = |\\mathbb{R}|$. But the Lean type is `\u00ac\u2203 f : \u2115 \u2192 BinarySeq, Function.Surjective f` \u2014 not a statement about $\\mathbb{R}$. The peer review (ai-3) flagged this equivocation; as a resolution, the theorem's name signals the *informal* interpretation while the type gives the *formal* content. This honest naming pattern is common in proof galleries: the formal statement is technically narrower than its name suggests.",
+    "mathContext": "`reals_uncountable` is a one-line alias: `no_surjection_nat_to_binary`. Its docstring explains the informal bridge: binary sequences $(b_n) \\in \\{0,1\\}^{\\mathbb{N}}$ map to reals via $\\sum b_n/2^{n+1} \\in [0,1]$, and $|[0,1]| = |\\mathbb{R}|$. But the Lean type is `¬∃ f : ℕ → BinarySeq, Function.Surjective f` — not a statement about $\\mathbb{R}$. The peer review (ai-3) flagged this equivocation; as a resolution, the theorem's name signals the *informal* interpretation while the type gives the *formal* content. This honest naming pattern is common in proof galleries: the formal statement is technically narrower than its name suggests.",
     "significance": "supporting",
     "prerequisites": [
       "no_surjection_nat_to_binary theorem",
@@ -206,10 +206,10 @@
     "type": "insight",
     "title": "Cantor's Power Set Theorem",
     "content": "The general version: for **any** set $S$, there is no surjection from $S$ to its power set $\\mathcal{P}(S)$.\n\nThis proves $|S| < |\\mathcal{P}(S)|$ for all sets, establishing an infinite hierarchy of cardinalities.\n\nFor finite sets: $|\\mathcal{P}(S)| = 2^{|S|}$. For infinite sets: the power set is strictly larger.",
-    "mathContext": "Lean statement: `\u2200 (S : Type*), \u00ac\u2203 f : S \u2192 Set S, Function.Surjective f`. The proof constructs the diagonal set `D := { x | x \u2209 f x }` (a subset of `S`), obtains `a` with `f a = D` by surjectivity, then derives `a \u2208 D \u2194 a \u2209 f a` (by definition) and substitutes `f a = D` via `simp only [ha]` to get `a \u2208 D \u2194 a \u2209 D`. The `by_cases h : a \u2208 D` then closes both branches: if `a \u2208 D`, then `key.mp h h : False`; if `a \u2209 D`, then `h (key.mpr h) : False`. This generalizes the binary sequence version: $2^{\\mathbb{N}} \\cong \\text{Set}\\,\\mathbb{N}$, so `cantor_powerset \u2115` is equivalent to `cantor_diagonalization`. The beth numbers $\\beth_0 = \\aleph_0 < \\beth_1 = \\mathfrak{c} < \\beth_2 < \\ldots$ arise from iterating the power set.",
+    "mathContext": "Lean statement: `∀ (S : Type*), ¬∃ f : S → Set S, Function.Surjective f`. The proof constructs the diagonal set `D := { x | x ∉ f x }` (a subset of `S`), obtains `a` with `f a = D` by surjectivity, then derives `a ∈ D ↔ a ∉ f a` (by definition) and substitutes `f a = D` via `simp only [ha]` to get `a ∈ D ↔ a ∉ D`. The `by_cases h : a ∈ D` then closes both branches: if `a ∈ D`, then `key.mp h h : False`; if `a ∉ D`, then `h (key.mpr h) : False`. This generalizes the binary sequence version: $2^{\\mathbb{N}} \\cong \\text{Set}\\,\\mathbb{N}$, so `cantor_powerset ℕ` is equivalent to `cantor_diagonalization`. The beth numbers $\\beth_0 = \\aleph_0 < \\beth_1 = \\mathfrak{c} < \\beth_2 < \\ldots$ arise from iterating the power set.",
     "significance": "key",
     "prerequisites": [
-      "Set type in Lean 4 (Set S = S \u2192 Prop)",
+      "Set type in Lean 4 (Set S = S → Prop)",
       "Function.Surjective definition",
       "by_cases tactic"
     ],
@@ -231,11 +231,11 @@
     "type": "insight",
     "title": "The Diagonal Set and Russell's Paradox",
     "content": "The diagonal construction for sets: $D = \\{x \\in S : x \\notin f(x)\\}$.\n\nThis is the set of elements that are *not* in their own image under $f$.\n\nThis is exactly Russell's paradox applied to $f$! If $f$ were surjective, $D = f(a)$ for some $a$. But then: is $a \\in D$?",
-    "mathContext": "Lean theorem: `diagonal_set_paradox (S : Type*) (f : S \u2192 Set S) : let D := { x : S | x \u2209 f x }; \u2200 a : S, f a = D \u2192 (a \u2208 D \u2194 a \u2209 D)`. This proves the paradoxical property directly: given any $f$ and any $a$ with $f(a) = D$, membership is self-contradictory. In Russell's paradox (naive set theory): take $S = \\text{all sets}$, $f = \\text{id}$, giving $D = \\{x : x \\notin x\\}$. In ZFC this is avoided by the axiom schema of separation (only subsets of existing sets can be formed). In Lean 4's type theory, it's avoided by universes: `Set S = S \u2192 Prop` lives in a strictly higher universe than `S`, so `S` cannot contain `Set S` as an element. The theorem `diagonal_set_paradox` makes this paradoxical structure explicit without contradiction \u2014 the conclusion `a \u2208 D \u2194 a \u2209 D` is a `Prop` derivable from `f a = D`, but `cantor_powerset` shows no such `a` can exist.",
+    "mathContext": "Lean theorem: `diagonal_set_paradox (S : Type*) (f : S → Set S) : let D := { x : S | x ∉ f x }; ∀ a : S, f a = D → (a ∈ D ↔ a ∉ D)`. This proves the paradoxical property directly: given any $f$ and any $a$ with $f(a) = D$, membership is self-contradictory. In Russell's paradox (naive set theory): take $S = \\text{all sets}$, $f = \\text{id}$, giving $D = \\{x : x \\notin x\\}$. In ZFC this is avoided by the axiom schema of separation (only subsets of existing sets can be formed). In Lean 4's type theory, it's avoided by universes: `Set S = S → Prop` lives in a strictly higher universe than `S`, so `S` cannot contain `Set S` as an element. The theorem `diagonal_set_paradox` makes this paradoxical structure explicit without contradiction — the conclusion `a ∈ D ↔ a ∉ D` is a `Prop` derivable from `f a = D`, but `cantor_powerset` shows no such `a` can exist.",
     "significance": "key",
     "prerequisites": [
       "cantor_powerset theorem",
-      "Set type as S \u2192 Prop",
+      "Set type as S → Prop",
       "Lean 4 universe polymorphism"
     ],
     "relatedConcepts": [
@@ -256,7 +256,7 @@
     "type": "insight",
     "title": "Visualizing the Diagonal",
     "content": "The comment shows the diagonal argument visually. Imagine an infinite table where row $n$ is sequence $f(n)$.\n\nThe diagonal elements are $f(0)(0), f(1)(1), f(2)(2), \\ldots$\n\nFlipping each gives a sequence that differs from:\n- Row 0 at column 0\n- Row 1 at column 1\n- Row $n$ at column $n$\n\nSo the flipped diagonal cannot be any row in the table!",
-    "mathContext": "The infinite matrix picture: row $n$ is the binary sequence $f(n) = (f(n)(0), f(n)(1), f(n)(2), \\ldots)$. The **diagonal** entries are $f(0)(0), f(1)(1), f(2)(2), \\ldots$ \u2014 one entry from each row, taken from the 'main diagonal' of the matrix. Flipping each diagonal entry gives $\\lnot f(0)(0), \\lnot f(1)(1), \\ldots$ \u2014 the diagonal sequence. It differs from row $n$ at column $n$ by construction. This visual is not a doc comment in the traditional sense \u2014 it is the `/- ## Visualization ... -/` section (lines 153\u2013168), which is a section docstring. It contains no Lean declarations, only the ASCII art. The original argument in Cantor's 1891 paper used exactly this table picture, and this section preserves that pedagogical tradition.",
+    "mathContext": "The infinite matrix picture: row $n$ is the binary sequence $f(n) = (f(n)(0), f(n)(1), f(n)(2), \\ldots)$. The **diagonal** entries are $f(0)(0), f(1)(1), f(2)(2), \\ldots$ — one entry from each row, taken from the 'main diagonal' of the matrix. Flipping each diagonal entry gives $\\lnot f(0)(0), \\lnot f(1)(1), \\ldots$ — the diagonal sequence. It differs from row $n$ at column $n$ by construction. This visual is not a doc comment in the traditional sense — it is the `/- ## Visualization ... -/` section (lines 153–168), which is a section docstring. It contains no Lean declarations, only the ASCII art. The original argument in Cantor's 1891 paper used exactly this table picture, and this section preserves that pedagogical tradition.",
     "significance": "supporting",
     "prerequisites": [
       "diagonal definition",

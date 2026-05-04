@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Overview: Packing as Dissection Relaxation",
     "content": "This file extends DissectionOfCubes.lean (Wiedijk #82 base impossibility) with a richer analysis of packing problems. The module docstring enumerates 6 key results: (1) the packing/dissection hierarchy (packings relax coverage), (2) volume bound infrastructure, (3) the dissection-packing bridge theorem, (4) geometric coverage formalization (replacing `covers_unit_cube : True`), (5) corrected de Bruijn tiling formulation, (6) the 2D vs 3D dimension contrast. The `open DissectionOfCubes` namespace on line 43 imports the base impossibility result `dissection_of_cubes` that drives most of the new theorems.",
     "mathContext": "Architecture: $\\mathtt{DissectionOfCubes.lean}$ (base file) $\\hookrightarrow$ $\\mathtt{DissectionOfCubesOQ03.lean}$ (this file). The base file proves the core impossibility $\\mathtt{dissection\\_of\\_cubes}: \\forall d, d.\\mathrm{cubes}.\\mathrm{Nonempty} \\to \\neg d.\\mathrm{allDifferentSizes}$, leaving $\\mathtt{covers\\_unit\\_cube} := \\mathtt{True}$ as a placeholder. This file replaces that placeholder with a proper geometric predicate and builds the packing infrastructure on top.",

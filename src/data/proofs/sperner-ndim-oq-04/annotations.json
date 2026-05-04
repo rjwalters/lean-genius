@@ -200,7 +200,7 @@
     "title": "Termination and Walk Correctness: The Non-Revisiting Invariant",
     "content": "Two sorry-using theorems capture what remains formally unproved:\n\n1. `kuhn_path_terminates`: An FC simplex exists. Currently sorry'd but could be filled by applying sperner_ndim directly — the parity of boundary doors implies FC existence without any algorithm argument.\n\n2. `kuhn_walk_reaches_fc`: The kuhnWalk with sufficient fuel actually reaches an FC simplex. This requires the **non-revisiting invariant**: the door graph path from a boundary vertex has no cycles. This is the core open sorry.\n\nThe non-revisiting invariant is why Kuhn's algorithm works: the door graph component containing a boundary door is a path (not a cycle). Any cycle would require an even number of boundary vertices; but each path component has exactly 2 endpoints and the boundary door provides only 1, forcing the other endpoint to be an FC simplex.",
     "mathContext": "Door graph G: interior edges from K.adj, boundary half-edges from K.adj = none. Under IsKuhnCompatible, max degree ≤ 2, so G is a disjoint union of paths and cycles. Boundary vertex (K.adj s₀ k₀ = none) has degree 1 in G, forcing its component to be a path (not a cycle). Both endpoints of a path in G have degree 1: either FC simplices (degree 1 by fc_door_count_eq_one) or boundary doors. Since the path starts at a boundary door, the other endpoint is an FC simplex.",
-    "significance": "main-result",
+    "significance": "critical",
     "relatedConcepts": [
       "non-revisiting invariant",
       "path-cycle decomposition",

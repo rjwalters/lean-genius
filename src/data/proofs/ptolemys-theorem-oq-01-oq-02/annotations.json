@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 70
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Module Documentation",
     "content": "Imports `Proofs.PtolemysTheorem` (the Euclidean Ptolemy theorem wrapping Mathlib), `InnerProductSpace.Basic` for `norm_sub_sq_real` and Cauchy-Schwarz, `Trigonometric.Inverse` for `Real.cos_arccos` and `arccos_nonneg`/`arccos_le_pi`, and `Trigonometric.Basic` for `Real.cos_two_mul` and `Real.sin_sq_add_cos_sq`. The module document explains the proof strategy: spherical Ptolemy = Euclidean Ptolemy ÷ 4 after chord-arc substitution.",
     "mathContext": "The key Mathlib dependency is `EuclideanGeometry.mul_dist_add_mul_dist_eq_mul_dist_of_cospherical` (Wiedijk #95, wrapped in `PtolemysTheorem.lean`). The inner product space imports give access to the Cauchy-Schwarz inequality $|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\|$ and the norm expansion $\\|a - b\\|^2 = \\|a\\|^2 - 2\\langle a, b \\rangle + \\|b\\|^2$. The trigonometric imports provide the half-angle identity: $\\cos(2\\theta) = 2\\cos^2\\theta - 1$ and the inverse function $\\cos(\\arccos x) = x$ for $x \\in [-1, 1]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "NormedAddTorsor",
       "inner product space",
@@ -31,7 +31,7 @@
       "startLine": 72,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cauchy-Schwarz Bound for Unit Vectors",
     "content": "For unit vectors $a, b$ with $\\|a\\| = \\|b\\| = 1$, `abs_real_inner_le_norm` gives $|\\langle a, b \\rangle| \\leq 1$, so $\\langle a, b \\rangle \\in [-1, 1]$. This is needed to apply `Real.cos_arccos : cos(arccos x) = x for x ∈ [-1,1]` and to ensure `arccos` lies in its proper domain.",
     "mathContext": "Cauchy-Schwarz for real inner products: $|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\|$. For unit vectors $\\|a\\| = \\|b\\| = 1$, this gives $|\\langle a, b \\rangle| \\leq 1$, i.e., $\\langle a, b \\rangle \\in [-1, 1]$. This is the domain condition for `Real.arccos`, which maps $[-1,1]$ to $[0, \\pi]$. The lemma `inner_unit_mem_Icc` is a `private` helper — it is not part of the public API but is essential for the chord-arc identity below.",
@@ -117,7 +117,7 @@
     "title": "Hyperbolic Case: Mathematical Survey",
     "content": "The Poincaré disk hyperbolic chord-arc identity is $\\sinh(d_H(a,b)/2) = |a−b|/\\sqrt{(1−|a|^2)(1−|b|^2)}$. Unlike the spherical case where $\\|a\\|=1$ makes the denominator 1 uniformly, the hyperbolic denominators depend on the point. For four interior points of D on a common hyperbolic circle, the factors $\\sqrt{(1−|x|^2)}$ do not cancel symmetrically, making the derivation more complex. Ideal boundary points ($|x|=1$) degenerate to Euclidean Ptolemy on the unit circle.\n\nThe unified curvature-$\\kappa$ framework: $\\text{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}t)/\\sqrt{\\kappa}$ (spherical), $t$ (Euclidean), or $\\sinh(\\sqrt{|\\kappa|}t)/\\sqrt{|\\kappa|}$ (hyperbolic). This file proves the $\\kappa=1$ case. Infrastructure needed for $\\kappa=-1$: Poincaré metric, Möbius isometries, hyperbolic circles (~800-1200 lines).",
     "mathContext": "In the Poincaré disk $D = \\{z \\in \\mathbb{C} : |z| < 1\\}$ with metric $d_H(a,b) = 2\\operatorname{arctanh}(|\\varphi_a(b)|)$ where $\\varphi_a(b) = (b-a)/(1-\\bar{a}b)$, the chord-arc identity is:\n$$\\sinh\\frac{d_H(a,b)}{2} = \\frac{|a-b|}{\\sqrt{(1-|a|^2)(1-|b|^2)}}$$\nFor four points on a common hyperbolic circle, the Euclidean Ptolemy theorem applies to their complex coordinates (since hyperbolic circles are Euclidean circles inside $D$). However, the conformal factors $(1-|x|^2)$ do not cancel unless all four points lie on the ideal boundary $|x|=1$. The unified $\\kappa$-geometry statement uses the generalized sine: $\\operatorname{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}\\,t)/\\sqrt{\\kappa}$ for $\\kappa > 0$, $t$ for $\\kappa = 0$, and $\\sinh(\\sqrt{|\\kappa|}\\,t)/\\sqrt{|\\kappa|}$ for $\\kappa < 0$. This file formalizes $\\kappa = 1$; $\\kappa = 0$ is in Mathlib; $\\kappa = -1$ requires new Poincaré disk infrastructure.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Poincaré disk model",
       "hyperbolic geometry",
@@ -147,7 +147,7 @@
     "title": "Public API Summary",
     "content": "The `#check` commands verify that `spherical_ptolemy` and `unit_sphere_chord_via_sin` are accessible as public theorems (not `private`) from the `SphericalPtolemy` namespace. The `end SphericalPtolemy` on the final line closes the namespace.\n\nAfter `import Proofs.PtolemysTheoremOQ01OQ02`, downstream proofs can use:\n- `SphericalPtolemy.unit_sphere_chord_via_sin ha hb : ‖a - b‖ = 2 * sin(arccos(⟨a,b⟩)/2)`\n- `SphericalPtolemy.spherical_ptolemy h_cosph h_apc h_bpd ha hb hc hd : sin(...)·sin(...) = ...`\n\nUnlike `inner_unit_mem_Icc` (which is `private`), these two theorems are exportable and suitable for use in further Ptolemy-related formalizations.",
     "mathContext": "The `#check` commands in Lean confirm that the given terms have the expected types. For `@spherical_ptolemy`, the `@` makes all implicit arguments explicit, revealing the full type signature:\n```\nspherical_ptolemy : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V]\n  {a b c d p : V}, Cospherical {a, b, c, d} → ∠ a p c = π → ∠ b p d = π →\n  ‖a‖ = 1 → ‖b‖ = 1 → ‖c‖ = 1 → ‖d‖ = 1 →\n  sin(arccos⟪a,c⟫_ℝ/2) * sin(arccos⟪b,d⟫_ℝ/2) = ...\n```\nThe universe-polymorphic type variable `V : Type u_1` confirms the theorem holds in any real inner product space.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lean 4 namespace system",
       "public API design",

@@ -154,10 +154,10 @@
       "startLine": 157,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reduction to Primes",
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
-    "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n \u2265 3 is divisible by 4 or an odd prime, this covers everything.",
+    "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
     "significance": "supporting",
     "relatedConcepts": [
       "reduction",
@@ -174,7 +174,7 @@
     },
     "type": "insight",
     "title": "The Full Theorem",
-    "content": "Combining n=4 (Fermat), n=3 (Euler), odd primes (Wiles), and reduction to primes, we get the full theorem: for all n \u2265 3, there are no positive integer solutions to $a^n + b^n = c^n$.",
+    "content": "Combining n=4 (Fermat), n=3 (Euler), odd primes (Wiles), and reduction to primes, we get the full theorem: for all n ≥ 3, there are no positive integer solutions to $a^n + b^n = c^n$.",
     "mathContext": "The theorem is currently axiomatized in this formalization. The Lean FLT project at Imperial College London is working on a complete formalization of Wiles' proof.",
     "significance": "key",
     "prerequisites": [

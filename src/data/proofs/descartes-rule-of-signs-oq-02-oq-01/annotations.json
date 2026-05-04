@@ -12,7 +12,7 @@
       "Polynomial.derivative in Mathlib",
       "Recursive definitions in Lean 4"
     ],
-    "content": "iterDeriv is a recursive definition of iterated polynomial differentiation: iterDeriv p 0 = p, iterDeriv p (k+1) = derivative (iterDeriv p k). This is the foundation for the Budan-Fourier sign-variation count V_p(x) = #{i : sign(p^(i)(x)) \u2260 sign(p^(i+1)(x))}. Marked noncomputable because polynomial evaluation at arbitrary real values is noncomputable.\n\niterDeriv is restated here (rather than imported from OQ-02) because the proof scaffold is self-contained. In a full implementation, this would be imported directly from OQ-02's namespace.",
+    "content": "iterDeriv is a recursive definition of iterated polynomial differentiation: iterDeriv p 0 = p, iterDeriv p (k+1) = derivative (iterDeriv p k). This is the foundation for the Budan-Fourier sign-variation count V_p(x) = #{i : sign(p^(i)(x)) ≠ sign(p^(i+1)(x))}. Marked noncomputable because polynomial evaluation at arbitrary real values is noncomputable.\n\niterDeriv is restated here (rather than imported from OQ-02) because the proof scaffold is self-contained. In a full implementation, this would be imported directly from OQ-02's namespace.",
     "proofId": "descartes-rule-of-signs-oq-02-oq-01",
     "range": {
       "startLine": 53,
@@ -23,7 +23,7 @@
     "title": "iterDeriv is a recursive definition of iterated polynomial differentiation: iter"
   },
   {
-    "mathContext": "natDegree 0 (the zero polynomial) is defined as 0 in Mathlib, not -\u221e as in classical algebra. The hypothesis p \u2260 0 is needed to distinguish the zero polynomial (which technically has natDegree 0 but has all values 0) from genuine constants. eq_C_of_natDegree_eq_zero : natDegree p = 0 \u2192 p = C (p.coeff 0).",
+    "mathContext": "natDegree 0 (the zero polynomial) is defined as 0 in Mathlib, not -∞ as in classical algebra. The hypothesis p ≠ 0 is needed to distinguish the zero polynomial (which technically has natDegree 0 but has all values 0) from genuine constants. eq_C_of_natDegree_eq_zero : natDegree p = 0 → p = C (p.coeff 0).",
     "significance": "supporting",
     "relatedConcepts": [
       "eq_C_of_natDegree_eq_zero",
@@ -34,7 +34,7 @@
       "Polynomial.natDegree in Mathlib",
       "eq_C_of_natDegree_eq_zero"
     ],
-    "content": "constant_no_roots proves that if natDegree(p) = 0 and p \u2260 0, then p(x) \u2260 0 for all x. Key step: eq_C_of_natDegree_eq_zero rewrites p as C c (a constant polynomial), then eval_C gives p(x) = c, and since p \u2260 0 means c \u2260 0 (via map_zero), we conclude p(x) \u2260 0.\n\nThis is the base case for the Budan bound induction: a constant nonzero polynomial has 0 roots, and V_p(a) - V_p(b) \u2265 0, so the bound trivially holds.",
+    "content": "constant_no_roots proves that if natDegree(p) = 0 and p ≠ 0, then p(x) ≠ 0 for all x. Key step: eq_C_of_natDegree_eq_zero rewrites p as C c (a constant polynomial), then eval_C gives p(x) = c, and since p ≠ 0 means c ≠ 0 (via map_zero), we conclude p(x) ≠ 0.\n\nThis is the base case for the Budan bound induction: a constant nonzero polynomial has 0 roots, and V_p(a) - V_p(b) ≥ 0, so the bound trivially holds.",
     "proofId": "descartes-rule-of-signs-oq-02-oq-01",
     "range": {
       "startLine": 62,
@@ -42,10 +42,10 @@
     },
     "id": "ann-descartes-oq02oq01-constant-roots",
     "type": "insight",
-    "title": "constant_no_roots proves that if natDegree(p) = 0 and p \u2260 0, then p(x) \u2260 0 for a"
+    "title": "constant_no_roots proves that if natDegree(p) = 0 and p ≠ 0, then p(x) ≠ 0 for a"
   },
   {
-    "mathContext": "card_roots_le_degree : p.roots.card \u2264 p.natDegree. Here natDegree p = 1. The proof chain: 2 \u2264 {x,y}.card \u2264 p.roots.toFinset.card \u2264 p.roots.card \u2264 natDegree p = 1. The middle inequality uses Multiset.toFinset_card_le_card (a Finset has \u2264 as many elements as the corresponding multiset, counting multiplicities). rw [hp] at hcard refers to hp : p.natDegree = 1, and omega closes 2 \u2264 1.",
+    "mathContext": "card_roots_le_degree : p.roots.card ≤ p.natDegree. Here natDegree p = 1. The proof chain: 2 ≤ {x,y}.card ≤ p.roots.toFinset.card ≤ p.roots.card ≤ natDegree p = 1. The middle inequality uses Multiset.toFinset_card_le_card (a Finset has ≤ as many elements as the corresponding multiset, counting multiplicities). rw [hp] at hcard refers to hp : p.natDegree = 1, and omega closes 2 ≤ 1.",
     "significance": "supporting",
     "relatedConcepts": [
       "Polynomial.card_roots_le_degree",
@@ -58,7 +58,7 @@
       "Multiset.toFinset and its cardinality",
       "Set.ncard for infinite types"
     ],
-    "content": "linear_at_most_one_root proves #{x \u2208 (a,b] : p(x) = 0} \u2264 1 when natDegree(p) = 1. Strategy: Set.Subsingleton.ncard_le_one reduces to showing any two roots are equal. By contradiction (by_contra hne), if x \u2260 y are both roots, build {x,y} as a Finset \u211d with card = 2 (Finset.card_pair hne), embed it in p.roots.toFinset, compare with card_roots_le_degree \u2264 1 = natDegree, giving 2 \u2264 1, contradiction via omega.\n\nThis is the degree-1 base case for the Budan induction. The proof elegantly avoids polynomial division and coefficient extraction, working instead at the level of root counting \u2014 which is what the Budan bound is about.",
+    "content": "linear_at_most_one_root proves #{x ∈ (a,b] : p(x) = 0} ≤ 1 when natDegree(p) = 1. Strategy: Set.Subsingleton.ncard_le_one reduces to showing any two roots are equal. By contradiction (by_contra hne), if x ≠ y are both roots, build {x,y} as a Finset ℝ with card = 2 (Finset.card_pair hne), embed it in p.roots.toFinset, compare with card_roots_le_degree ≤ 1 = natDegree, giving 2 ≤ 1, contradiction via omega.\n\nThis is the degree-1 base case for the Budan induction. The proof elegantly avoids polynomial division and coefficient extraction, working instead at the level of root counting — which is what the Budan bound is about.",
     "proofId": "descartes-rule-of-signs-oq-02-oq-01",
     "range": {
       "startLine": 72,
@@ -66,10 +66,10 @@
     },
     "id": "ann-descartes-oq02oq01-linear-root",
     "type": "insight",
-    "title": "linear_at_most_one_root proves #{x \u2208 (a,b] : p(x) = 0} \u2264 1 when natDegree(p) = 1"
+    "title": "linear_at_most_one_root proves #{x ∈ (a,b] : p(x) = 0} ≤ 1 when natDegree(p) = 1"
   },
   {
-    "mathContext": "Mathlib has two notions of derivative for polynomials: the calculus deriv (defined as Fr\u00e9chet derivative) and the algebraic Polynomial.derivative. Polynomial.deriv (or Polynomial.hasDerivAt) shows these agree. The simp lemma [Polynomial.deriv] does this translation. exists_deriv_eq_zero : r\u2081 < r\u2082 \u2192 ContinuousOn f [r\u2081,r\u2082] \u2192 f r\u2081 = f r\u2082 \u2192 \u2203 c \u2208 (r\u2081,r\u2082), deriv f c = 0.",
+    "mathContext": "Mathlib has two notions of derivative for polynomials: the calculus deriv (defined as Fréchet derivative) and the algebraic Polynomial.derivative. Polynomial.deriv (or Polynomial.hasDerivAt) shows these agree. The simp lemma [Polynomial.deriv] does this translation. exists_deriv_eq_zero : r₁ < r₂ → ContinuousOn f [r₁,r₂] → f r₁ = f r₂ → ∃ c ∈ (r₁,r₂), deriv f c = 0.",
     "significance": "supporting",
     "relatedConcepts": [
       "exists_deriv_eq_zero",
@@ -82,18 +82,18 @@
       "Polynomial.continuous (all polynomials are continuous)",
       "deriv vs Polynomial.derivative"
     ],
-    "content": "rolle_polynomial bridges Mathlib's analytic Rolle theorem (exists_deriv_eq_zero for continuous real functions) with the algebraic polynomial derivative. Given roots p(r\u2081) = p(r\u2082) = 0 with r\u2081 < r\u2082: (1) p.continuous.continuousOn gives continuity on [r\u2081,r\u2082], (2) exists_deriv_eq_zero produces c \u2208 (r\u2081,r\u2082) with deriv p c = 0, (3) simp [Polynomial.deriv] translates `deriv p c = 0` to `(derivative p).eval c = 0`.\n\nRolle's theorem is the engine of the Budan induction: between consecutive roots r\u2081 < r\u2082 of p lies a root of p'. This interleaving of roots of p and p' is what gives the derivative enough roots to 'pay for' the sign variations.",
+    "content": "rolle_polynomial bridges Mathlib's analytic Rolle theorem (exists_deriv_eq_zero for continuous real functions) with the algebraic polynomial derivative. Given roots p(r₁) = p(r₂) = 0 with r₁ < r₂: (1) p.continuous.continuousOn gives continuity on [r₁,r₂], (2) exists_deriv_eq_zero produces c ∈ (r₁,r₂) with deriv p c = 0, (3) simp [Polynomial.deriv] translates `deriv p c = 0` to `(derivative p).eval c = 0`.\n\nRolle's theorem is the engine of the Budan induction: between consecutive roots r₁ < r₂ of p lies a root of p'. This interleaving of roots of p and p' is what gives the derivative enough roots to 'pay for' the sign variations.",
     "proofId": "descartes-rule-of-signs-oq-02-oq-01",
     "range": {
       "startLine": 100,
       "endLine": 107
     },
     "id": "ann-descartes-oq02oq01-rolle-bridge",
-    "type": "technique",
+    "type": "concept",
     "title": "rolle_polynomial bridges Mathlib's analytic Rolle theorem (exists_deriv_eq_zero "
   },
   {
-    "mathContext": "intermediate_value_Icc : a \u2264 b \u2192 ContinuousOn f [a,b] \u2192 Set.Icc (f a) (f b) \u2286 f '' Set.Icc a b (or equivalent). The membership check h0_mem : 0 \u2208 Set.Icc (p.eval a) (p.eval b) uses 0 \u2265 p.eval a (by linarith from ha : p.eval a < 0) and 0 \u2264 p.eval b (from hb). The endpoint exclusion uses rcases eq_or_lt_of_le.",
+    "mathContext": "intermediate_value_Icc : a ≤ b → ContinuousOn f [a,b] → Set.Icc (f a) (f b) ⊆ f '' Set.Icc a b (or equivalent). The membership check h0_mem : 0 ∈ Set.Icc (p.eval a) (p.eval b) uses 0 ≥ p.eval a (by linarith from ha : p.eval a < 0) and 0 ≤ p.eval b (from hb). The endpoint exclusion uses rcases eq_or_lt_of_le.",
     "significance": "supporting",
     "relatedConcepts": [
       "intermediate_value_Icc",
@@ -106,7 +106,7 @@
       "Polynomial.continuous",
       "linarith for order arithmetic"
     ],
-    "content": "root_of_sign_change proves that if p(a) < 0 < p(b), there exists c \u2208 (a,b) with p(c) = 0. Uses intermediate_value_Icc: since 0 \u2208 [p(a), p(b)] and p is continuous on [a,b], there exists c \u2208 [a,b] with p(c) = 0. Sharpening [a,b] to (a,b) uses sign conditions: p(a) < 0 \u2260 0 = p(c) so c \u2260 a; p(b) > 0 \u2260 0 = p(c) so c \u2260 b.\n\nThis is an IVT-based existence theorem: sign change implies root. In the Budan induction, this would be used to show that when V_p(x) decreases, it corresponds to a real root (not just a sign-change artifact).",
+    "content": "root_of_sign_change proves that if p(a) < 0 < p(b), there exists c ∈ (a,b) with p(c) = 0. Uses intermediate_value_Icc: since 0 ∈ [p(a), p(b)] and p is continuous on [a,b], there exists c ∈ [a,b] with p(c) = 0. Sharpening [a,b] to (a,b) uses sign conditions: p(a) < 0 ≠ 0 = p(c) so c ≠ a; p(b) > 0 ≠ 0 = p(c) so c ≠ b.\n\nThis is an IVT-based existence theorem: sign change implies root. In the Budan induction, this would be used to show that when V_p(x) decreases, it corresponds to a real root (not just a sign-change artifact).",
     "proofId": "descartes-rule-of-signs-oq-02-oq-01",
     "range": {
       "startLine": 115,
@@ -114,10 +114,10 @@
     },
     "id": "ann-descartes-oq02oq01-sign-change",
     "type": "insight",
-    "title": "root_of_sign_change proves that if p(a) < 0 < p(b), there exists c \u2208 (a,b) with "
+    "title": "root_of_sign_change proves that if p(a) < 0 < p(b), there exists c ∈ (a,b) with "
   },
   {
-    "mathContext": "A placeholder proving `True` is mathematically sound (True is always true) but mathematically vacuous \u2014 it does not prove the stated pre-conditions or conclusion. This pattern is distinct from `sorry` (which accepts any goal) in that it commits to a specific theorem statement (`True`) that happens to be trivial. The leanFile metadata tracks these as 'type: placeholder' to distinguish from genuine proofs.",
+    "mathContext": "A placeholder proving `True` is mathematically sound (True is always true) but mathematically vacuous — it does not prove the stated pre-conditions or conclusion. This pattern is distinct from `sorry` (which accepts any goal) in that it commits to a specific theorem statement (`True`) that happens to be trivial. The leanFile metadata tracks these as 'type: placeholder' to distinguish from genuine proofs.",
     "significance": "supporting",
     "relatedConcepts": [
       "proof scaffold",
@@ -130,7 +130,7 @@
       "Strong induction in Lean 4",
       "Polynomial factorization theorems"
     ],
-    "content": "sign_changes_factor and inductive_step_derivative are architectural placeholders proving `True := trivial`. They document where the remaining proof gaps are without introducing sorry or unsound axioms. sign_changes_factor should state how removing a root (x - r) from p affects the sign-variation count V_p. inductive_step_derivative should formalize the IH application to p' on sub-intervals. The docstrings describe the intended mathematics.\n\nThe proof roadmap in \u00a7 4 (lines 170-204) identifies the remaining 240-410 lines needed: sign-change accounting (80-120 lines) is the hardest and most novel part; the rest follows from combining the proved building blocks. This file serves as a research survey identifying the open subproblems.",
+    "content": "sign_changes_factor and inductive_step_derivative are architectural placeholders proving `True := trivial`. They document where the remaining proof gaps are without introducing sorry or unsound axioms. sign_changes_factor should state how removing a root (x - r) from p affects the sign-variation count V_p. inductive_step_derivative should formalize the IH application to p' on sub-intervals. The docstrings describe the intended mathematics.\n\nThe proof roadmap in § 4 (lines 170-204) identifies the remaining 240-410 lines needed: sign-change accounting (80-120 lines) is the hardest and most novel part; the rest follows from combining the proved building blocks. This file serves as a research survey identifying the open subproblems.",
     "proofId": "descartes-rule-of-signs-oq-02-oq-01",
     "range": {
       "startLine": 139,

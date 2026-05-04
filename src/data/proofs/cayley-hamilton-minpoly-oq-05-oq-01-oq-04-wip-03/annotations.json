@@ -2,181 +2,341 @@
   {
     "id": "ann-wip03-lean-setup",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 33, "endLine": 44 },
-    "type": "context",
+    "range": {
+      "startLine": 33,
+      "endLine": 44
+    },
+    "type": "concept",
     "title": "Lean 4 Technical Setup",
     "content": "The file imports all of Mathlib (for access to polynomial algebra, matrix theory, and UFD machinery), marks the section as `noncomputable` (since polynomial decidability and classical logic are used), and opens the `Matrix` and `Polynomial` namespaces. The `Classical.propDecidable` instance enables decidable equality for propositions — essential for the `by_contra` and case-splitting tactics used throughout the Bézout argument. The proof is parametric in a field $K$ and dimension $n$, with no finiteness or cardinality constraints on $K$.",
     "mathContext": "Variables: $K$ a field, $n : \\mathbb{N}$, matrices in $\\text{Matrix}(\\text{Fin}\\, n)(\\text{Fin}\\, n)\\, K$. The `noncomputable` annotation is needed because `K[X]` division (used in Bézout's identity) requires classical choice.",
-    "significance": "context",
-    "relatedConcepts": ["noncomputable definitions", "classical logic", "type-class inference", "universe polymorphism"],
-    "prerequisites": ["Lean 4 syntax", "Mathlib conventions"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "noncomputable definitions",
+      "classical logic",
+      "type-class inference",
+      "universe polymorphism"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib conventions"
+    ]
   },
   {
     "id": "ann-wip03-docstring",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 1, "endLine": 32 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
     "title": "Prime Power Case Overview",
     "content": "This file proves the cyclic vector theorem for nonderogatory matrices whose minimal polynomial is a prime power $p^e$ with $p$ irreducible and $e \\geq 1$. The proof is entirely axiom-free, avoiding the PID structure theorem by using an elementary induction on the exponent $e$. Together with WIP02 (squarefree case), this covers both structural pillars of the general nonderogatory cyclic vector theorem.",
     "mathContext": "A matrix $M \\in K^{n \\times n}$ is nonderogatory if $\\mu_M = \\chi_M$ (minimal polynomial equals characteristic polynomial). The theorem states: if $\\mu_M = p^e$ with $p$ monic irreducible and $e \\geq 1$, then $M$ has a cyclic vector $v$ such that $\\{v, Mv, \\ldots, M^{n-1}v\\}$ spans $K^n$.",
-    "significance": "context",
-    "relatedConcepts": ["nonderogatory matrix", "cyclic vector", "minimal polynomial", "prime power decomposition", "rational canonical form"],
-    "prerequisites": ["field theory", "polynomial rings", "matrix algebra", "unique factorization"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nonderogatory matrix",
+      "cyclic vector",
+      "minimal polynomial",
+      "prime power decomposition",
+      "rational canonical form"
+    ],
+    "prerequisites": [
+      "field theory",
+      "polynomial rings",
+      "matrix algebra",
+      "unique factorization"
+    ]
   },
   {
     "id": "ann-wip03-setup",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 33, "endLine": 44 },
-    "type": "context",
+    "range": {
+      "startLine": 33,
+      "endLine": 44
+    },
+    "type": "concept",
     "title": "Imports and Environment Setup",
     "content": "The file imports the full Mathlib library, opens the `Matrix` and `Polynomial` namespaces for concise notation, and declares `noncomputable section` since `Field K` instances are generally noncomputable in Lean 4. The `Classical.propDecidable` attribute enables classical reasoning (`by_contra`, decidable equality on propositions) throughout the file. The field `K` and dimension `n` are introduced as universe-polymorphic implicit variables, allowing the results to apply to any field and matrix size.",
     "mathContext": "The `noncomputable` declaration is necessary because field operations and polynomial evaluation in Lean 4 are defined noncomputably via classical axioms. The `open Matrix Polynomial` allows writing `mulVec`, `aeval`, `natDegree`, etc. without module prefixes.",
-    "significance": "context",
-    "relatedConcepts": ["Lean 4 noncomputable", "classical logic", "universe polymorphism"],
-    "prerequisites": ["Lean 4 module system", "Mathlib library structure"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 noncomputable",
+      "classical logic",
+      "universe polymorphism"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-wip03-cyclic-def",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 49, "endLine": 51 },
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
     "type": "definition",
     "title": "Cyclic Vector Definition",
     "content": "A vector $v$ is cyclic for $M$ if the only polynomial $r$ with $\\deg(r) < n$ and $r(M)v = 0$ is $r = 0$. Equivalently, the vectors $v, Mv, M^2 v, \\ldots, M^{n-1}v$ are linearly independent and hence form a basis of $K^n$. This means $K^n = K[M] \\cdot v$, making $K^n$ a cyclic $K[X]$-module via the action $X \\mapsto M$.",
     "mathContext": "$\\text{IsCyclicVector}(M, v) \\;\\Leftrightarrow\\; \\forall r \\in K[X],\\; \\deg(r) < n \\wedge r(M)v = 0 \\;\\Rightarrow\\; r = 0$",
     "significance": "key",
-    "relatedConcepts": ["cyclic module", "Krylov subspace", "companion matrix", "rational canonical form"],
-    "prerequisites": ["polynomial evaluation at matrices", "linear independence"]
+    "relatedConcepts": [
+      "cyclic module",
+      "Krylov subspace",
+      "companion matrix",
+      "rational canonical form"
+    ],
+    "prerequisites": [
+      "polynomial evaluation at matrices",
+      "linear independence"
+    ]
   },
   {
     "id": "ann-wip03-nonderog-def",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 53, "endLine": 55 },
+    "range": {
+      "startLine": 53,
+      "endLine": 55
+    },
     "type": "definition",
     "title": "Nonderogatory Matrix Definition",
     "content": "A matrix is nonderogatory when its minimal polynomial equals its characteristic polynomial. This is equivalent to each eigenvalue having geometric multiplicity 1, or equivalently, each Jordan block size being maximal. For the prime power case, $\\mu_M = p^e$ means $M$ acts on $K^n$ like a single indecomposable block in the primary decomposition.",
     "mathContext": "$\\text{IsNonderogatory}(M) \\;\\Leftrightarrow\\; \\mu_M = \\chi_M$. Since $\\mu_M \\mid \\chi_M$ and both are monic of degree $\\leq n$, this forces $\\deg(\\mu_M) = n$.",
     "significance": "key",
-    "relatedConcepts": ["minimal polynomial", "characteristic polynomial", "Jordan normal form", "geometric multiplicity"],
-    "prerequisites": ["Cayley-Hamilton theorem", "minimal polynomial theory"]
+    "relatedConcepts": [
+      "minimal polynomial",
+      "characteristic polynomial",
+      "Jordan normal form",
+      "geometric multiplicity"
+    ],
+    "prerequisites": [
+      "Cayley-Hamilton theorem",
+      "minimal polynomial theory"
+    ]
   },
   {
     "id": "ann-wip03-bezout",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 61, "endLine": 81 },
-    "type": "technique",
+    "range": {
+      "startLine": 61,
+      "endLine": 81
+    },
+    "type": "concept",
     "title": "Bézout Coprimality Argument",
     "content": "This lemma establishes: if $p$ is irreducible, $v \\neq 0$, $p(M)v = 0$, and $r(M)v = 0$, then $p \\mid r$. The proof is a clean contrapositive: if $p \\nmid r$, then since $p$ is prime (irreducible in a UFD), $\\gcd(p, r) = 1$, giving Bézout coefficients $a, b$ with $ap + br = 1$. Evaluating at $M$ and applying to $v$: $v = (a(M)p(M) + b(M)r(M))v = 0 + 0 = 0$, contradicting $v \\neq 0$. This Bézout trick is the workhorse reused in both the base case and the $p$-divisibility step of the main induction.",
     "mathContext": "If $p \\nmid r$ and $p$ is prime, Bézout gives $a \\cdot p + b \\cdot r = 1$ in $K[X]$. Then $v = 1 \\cdot v = (a(M)p(M) + b(M)r(M))v = a(M) \\cdot 0 + b(M) \\cdot 0 = 0$.",
     "significance": "key",
-    "relatedConcepts": ["Bézout identity", "coprimality", "irreducible implies prime in UFD", "Chinese remainder theorem"],
-    "prerequisites": ["unique factorization domain", "Bézout's identity for polynomials", "polynomial evaluation ring homomorphism"]
+    "relatedConcepts": [
+      "Bézout identity",
+      "coprimality",
+      "irreducible implies prime in UFD",
+      "Chinese remainder theorem"
+    ],
+    "prerequisites": [
+      "unique factorization domain",
+      "Bézout's identity for polynomials",
+      "polynomial evaluation ring homomorphism"
+    ]
   },
   {
     "id": "ann-wip03-nonzero-image",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 83, "endLine": 92 },
-    "type": "technique",
+    "range": {
+      "startLine": 83,
+      "endLine": 92
+    },
+    "type": "concept",
     "title": "Nonzero Matrix Has Nonzero Image",
     "content": "A nonzero matrix $M$ has some vector $v$ with $Mv \\neq 0$. The proof is by contradiction using standard basis vectors: if $M e_j = 0$ for all $j$, then $M_{ij} = (M e_j)_i = 0$ for all $i, j$, so $M = 0$. This elementary fact bridges the gap between 'the matrix $p^{e-1}(M)$ is nonzero' and 'there exists a vector $v$ with $p^{e-1}(M)v \\neq 0$'.",
     "mathContext": "$M \\neq 0 \\;\\Rightarrow\\; \\exists v,\\; Mv \\neq 0$. Proof: $M_{ij} = (M e_j)_i$ where $e_j = \\pi_j(1)$ is the $j$-th standard basis vector.",
     "significance": "supporting",
-    "relatedConcepts": ["standard basis", "kernel of a linear map", "matrix-vector product"],
-    "prerequisites": ["finite-dimensional linear algebra"]
+    "relatedConcepts": [
+      "standard basis",
+      "kernel of a linear map",
+      "matrix-vector product"
+    ],
+    "prerequisites": [
+      "finite-dimensional linear algebra"
+    ]
   },
   {
     "id": "ann-wip03-minpoly-minimality",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 94, "endLine": 101 },
-    "type": "technique",
+    "range": {
+      "startLine": 94,
+      "endLine": 101
+    },
+    "type": "concept",
     "title": "Minimality of the Minimal Polynomial",
     "content": "If a nonzero polynomial $r$ has degree strictly less than $\\deg(\\mu_M)$, then $r(M) \\neq 0$ as a matrix. The proof is by contradiction: if $r(M) = 0$, then $\\mu_M \\mid r$ by the defining property of the minimal polynomial, so $\\deg(\\mu_M) \\leq \\deg(r)$, contradicting $\\deg(r) < \\deg(\\mu_M)$. This is applied to show $p^{e-1}(M) \\neq 0$ since $\\deg(p^{e-1}) = (e-1)\\deg(p) < e \\cdot \\deg(p) = n = \\deg(\\mu_M)$.",
     "mathContext": "$r \\neq 0,\\; \\deg(r) < \\deg(\\mu_M) \\;\\Rightarrow\\; r(M) \\neq 0$. Contrapositive: $r(M) = 0 \\Rightarrow \\mu_M \\mid r \\Rightarrow \\deg(\\mu_M) \\leq \\deg(r)$.",
     "significance": "supporting",
-    "relatedConcepts": ["minimal polynomial", "polynomial divisibility", "degree bounds"],
-    "prerequisites": ["minimal polynomial divides annihilating polynomials"]
+    "relatedConcepts": [
+      "minimal polynomial",
+      "polynomial divisibility",
+      "degree bounds"
+    ],
+    "prerequisites": [
+      "minimal polynomial divides annihilating polynomials"
+    ]
   },
   {
     "id": "ann-wip03-key-lemma-statement",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 106, "endLine": 120 },
+    "range": {
+      "startLine": 106,
+      "endLine": 120
+    },
     "type": "insight",
     "title": "Key Lemma: Prime Power Divisibility from Annihilation",
     "content": "This is the core new contribution of the file. The lemma states: if $p$ is irreducible and $p^e(M)v \\neq 0$ but $p^{e+1}(M)v = 0$, then any polynomial $r$ with $r(M)v = 0$ must satisfy $p^{e+1} \\mid r$. Intuitively, the vector $v$ 'lives at level $e$' in the $p$-adic filtration of $K^n$, and any polynomial annihilating $v$ must have $p$-adic valuation at least $e+1$. The lemma replaces the heavy machinery of the PID structure theorem ($K[X]$-module decomposition) with an elementary inductive argument.",
     "mathContext": "$p$ irreducible, $p^e(M)v \\neq 0$, $p^{e+1}(M)v = 0$, $r(M)v = 0 \\;\\Rightarrow\\; p^{e+1} \\mid r$",
     "significance": "key",
-    "relatedConcepts": ["p-adic valuation", "filtration", "PID structure theorem", "strong induction", "primary decomposition"],
-    "prerequisites": ["irreducibility in polynomial rings", "polynomial evaluation commutativity"]
+    "relatedConcepts": [
+      "p-adic valuation",
+      "filtration",
+      "PID structure theorem",
+      "strong induction",
+      "primary decomposition"
+    ],
+    "prerequisites": [
+      "irreducibility in polynomial rings",
+      "polynomial evaluation commutativity"
+    ]
   },
   {
     "id": "ann-wip03-base-case",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 122, "endLine": 128 },
-    "type": "technique",
+    "range": {
+      "startLine": 122,
+      "endLine": 128
+    },
+    "type": "concept",
     "title": "Base Case: Level Zero Annihilation",
     "content": "When $e = 0$: $p^0(M)v = v \\neq 0$, $p(M)v = 0$, and $r(M)v = 0$. The conclusion $p \\mid r$ follows directly from the Bézout lemma `irreducible_dvd_of_annihilated`. This is the foundation of the induction — at level zero, the vector $v$ is annihilated by $p$ itself, and the coprimality argument gives $p$-divisibility of any other annihilator.",
     "mathContext": "Base case ($e = 0$): $v \\neq 0$, $p(M)v = 0$, $r(M)v = 0 \\Rightarrow p \\mid r$ by Bézout.",
     "significance": "supporting",
-    "relatedConcepts": ["base case of induction", "Bézout identity"],
-    "prerequisites": ["irreducible_dvd_of_annihilated"]
+    "relatedConcepts": [
+      "base case of induction",
+      "Bézout identity"
+    ],
+    "prerequisites": [
+      "irreducible_dvd_of_annihilated"
+    ]
   },
   {
     "id": "ann-wip03-inductive-step",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 129, "endLine": 174 },
+    "range": {
+      "startLine": 129,
+      "endLine": 174
+    },
     "type": "insight",
     "title": "Inductive Step: The Shift Trick",
     "content": "The inductive step is the mathematical heart of the proof. Given $p^{e+1}(M)v \\neq 0$ and $p^{e+2}(M)v = 0$, the goal is $p^{e+2} \\mid r$. **Step 1**: Let $w = p^{e+1}(M)v \\neq 0$. Since $p(M)w = p^{e+2}(M)v = 0$ and $r(M)w = p^{e+1}(M)(r(M)v) = 0$ (by commutativity), the Bézout argument gives $p \\mid r$, so $r = p \\cdot r_1$. **Step 2** (the shift trick): Let $u = p(M)v$. Then $p^e(M)u = p^{e+1}(M)v \\neq 0$ and $p^{e+1}(M)u = p^{e+2}(M)v = 0$, and $r_1(M)u = r_1(M)p(M)v = (r_1 p)(M)v = r(M)v = 0$. The induction hypothesis (on $e$) gives $p^{e+1} \\mid r_1$, so $p^{e+2} \\mid p \\cdot r_1 = r$. The shift $v \\mapsto p(M)v$ decreases the 'level' by one, enabling the induction.",
     "mathContext": "Inductive step: $w = p^{e+1}(M)v$ gives $p \\mid r$. Write $r = p r_1$, set $u = p(M)v$. Then $p^e(M)u \\neq 0$, $p^{e+1}(M)u = 0$, $r_1(M)u = 0$, so IH gives $p^{e+1} \\mid r_1$, hence $p^{e+2} \\mid r$.",
     "significance": "key",
-    "relatedConcepts": ["strong induction", "polynomial evaluation commutativity", "p-adic filtration", "descent argument"],
-    "prerequisites": ["induction on natural numbers", "commutativity of polynomial evaluations"]
+    "relatedConcepts": [
+      "strong induction",
+      "polynomial evaluation commutativity",
+      "p-adic filtration",
+      "descent argument"
+    ],
+    "prerequisites": [
+      "induction on natural numbers",
+      "commutativity of polynomial evaluations"
+    ]
   },
   {
     "id": "ann-wip03-commutativity",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 141, "endLine": 145 },
-    "type": "technique",
+    "range": {
+      "startLine": 141,
+      "endLine": 145
+    },
+    "type": "concept",
     "title": "Polynomial Evaluation Commutativity",
     "content": "The identity $r(M)(p^k(M)v) = p^k(M)(r(M)v)$ is used repeatedly throughout the induction. It holds because $r(M)$ and $p^k(M)$ are both polynomials in $M$, and the polynomial evaluation map $\\text{aeval}_M : K[X] \\to K^{n \\times n}$ is a ring homomorphism. In Lean, this is expressed via `map_mul (aeval M)` and the commutativity $r \\cdot p^k = p^k \\cdot r$ in the commutative ring $K[X]$.",
     "mathContext": "$r(M) \\cdot p^k(M) = (r \\cdot p^k)(M) = (p^k \\cdot r)(M) = p^k(M) \\cdot r(M)$",
     "significance": "supporting",
-    "relatedConcepts": ["ring homomorphism", "algebra evaluation map", "commutative algebra"],
-    "prerequisites": ["ring homomorphism properties of aeval", "commutativity of polynomial multiplication"]
+    "relatedConcepts": [
+      "ring homomorphism",
+      "algebra evaluation map",
+      "commutative algebra"
+    ],
+    "prerequisites": [
+      "ring homomorphism properties of aeval",
+      "commutativity of polynomial multiplication"
+    ]
   },
   {
     "id": "ann-wip03-main-thm",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 180, "endLine": 238 },
+    "range": {
+      "startLine": 180,
+      "endLine": 238
+    },
     "type": "insight",
     "title": "Main Theorem: Nonderogatory Prime Power Has Cyclic Vector",
     "content": "The main theorem assembles the pieces into a clean four-step argument. (1) Since $\\deg(p^{e-1}) = (e-1)\\deg(p) < e \\cdot \\deg(p) = n = \\deg(\\mu_M)$, the matrix $p^{e-1}(M) \\neq 0$ by minimality. (2) Pick $v$ with $p^{e-1}(M)v \\neq 0$. Since $\\mu_M = p^e$ annihilates all vectors, $p^e(M)v = 0$. (3) For any $r$ with $r(M)v = 0$, the key lemma gives $p^e \\mid r$. (4) If additionally $\\deg(r) < n = \\deg(p^e)$, then $p^e \\mid r$ forces $\\deg(r) \\geq \\deg(p^e) = n$, contradicting $\\deg(r) < n$, so $r = 0$. This proves $v$ is cyclic.",
     "mathContext": "Choose $v$ with $p^{e-1}(M)v \\neq 0$. If $r(M)v = 0$ with $\\deg(r) < n$, then $p^e \\mid r$ gives $n = \\deg(p^e) \\leq \\deg(r) < n$, contradiction. So $r = 0$.",
     "significance": "key",
-    "relatedConcepts": ["degree counting", "minimal polynomial annihilation", "proof by contradiction"],
-    "prerequisites": ["pow_irred_dvd_of_annihilated", "exists_mulVec_ne_zero", "aeval_ne_zero_of_lt_minpoly"]
+    "relatedConcepts": [
+      "degree counting",
+      "minimal polynomial annihilation",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "pow_irred_dvd_of_annihilated",
+      "exists_mulVec_ne_zero",
+      "aeval_ne_zero_of_lt_minpoly"
+    ]
   },
   {
     "id": "ann-wip03-degree-setup",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 196, "endLine": 219 },
-    "type": "technique",
+    "range": {
+      "startLine": 196,
+      "endLine": 219
+    },
+    "type": "concept",
     "title": "Degree Arithmetic and Vector Selection",
     "content": "The proof begins with careful degree bookkeeping. From $\\mu_M = p^e$ and nonderogatory ($\\mu_M = \\chi_M$), we get $\\deg(\\mu_M) = n$. Then $\\deg(p^e) = e \\cdot \\deg(p) = n$ (via `Polynomial.natDegree_pow`). Since $p$ is irreducible and monic, $\\deg(p) > 0$, so $(e-1) \\cdot \\deg(p) < e \\cdot \\deg(p) = n$. This means $p^{e-1}(M) \\neq 0$ (by `aeval_ne_zero_of_lt_minpoly`), and we can pick $v$ with $p^{e-1}(M)v \\neq 0$ (by `exists_mulVec_ne_zero`). The edge case $n = 0$ is handled separately: `Fin 0` is empty, so `Fin.elim0` is vacuously cyclic.",
     "mathContext": "$\\deg(p^{e-1}) = (e-1)\\deg(p) < e \\cdot \\deg(p) = \\deg(p^e) = n = \\deg(\\mu_M)$, so $p^{e-1}(M) \\neq 0$.",
     "significance": "supporting",
-    "relatedConcepts": ["polynomial degree arithmetic", "natDegree_pow", "Fintype.card_fin", "charpoly_natDegree_eq_dim"],
-    "prerequisites": ["Cayley-Hamilton theorem", "characteristic polynomial degree"]
+    "relatedConcepts": [
+      "polynomial degree arithmetic",
+      "natDegree_pow",
+      "Fintype.card_fin",
+      "charpoly_natDegree_eq_dim"
+    ],
+    "prerequisites": [
+      "Cayley-Hamilton theorem",
+      "characteristic polynomial degree"
+    ]
   },
   {
     "id": "ann-wip03-finite-corollary",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 240, "endLine": 249 },
-    "type": "context",
+    "range": {
+      "startLine": 240,
+      "endLine": 249
+    },
+    "type": "concept",
     "title": "Corollary: Finite Fields",
     "content": "The finite field corollary makes explicit that the main theorem applies to all finite fields, not just infinite ones. Earlier results in the gallery (e.g., the `oq-05-oq-01` infinite field version) required $|K| > n$ because their proofs used a Vandermonde or counting argument. The prime power case proved here has no cardinality restriction — it works purely from the algebraic structure of $K[X]$ as a UFD. This is significant because finite fields are the natural setting for applications in coding theory and combinatorics.",
     "mathContext": "The theorem holds for all fields $K$, including $\\mathbb{F}_q$ for any prime power $q$, with no restriction on $q$ relative to $n$.",
-    "significance": "context",
-    "relatedConcepts": ["finite fields", "coding theory", "Vandermonde argument", "field cardinality"],
-    "prerequisites": ["Fintype instance for fields"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite fields",
+      "coding theory",
+      "Vandermonde argument",
+      "field cardinality"
+    ],
+    "prerequisites": [
+      "Fintype instance for fields"
+    ]
   }
 ]

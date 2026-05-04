@@ -8,7 +8,7 @@
     },
     "type": "insight",
     "title": "Mathlib Imports",
-    "content": "This proof uses Mathlib's established definitions for primes and factorials. `Nat.Prime` provides a robust prime definition, `Nat.factorial` gives the factorial function with all its key properties already proven, and `Nat.exists_prime_and_dvd` guarantees that every integer $\\geq 2$ has a prime divisor \u2014 the existence result that makes Euclid's construction work.",
+    "content": "This proof uses Mathlib's established definitions for primes and factorials. `Nat.Prime` provides a robust prime definition, `Nat.factorial` gives the factorial function with all its key properties already proven, and `Nat.exists_prime_and_dvd` guarantees that every integer $\\geq 2$ has a prime divisor — the existence result that makes Euclid's construction work.",
     "mathContext": "Mathlib provides `Nat.Prime p` ($p \\geq 2$ and $p$'s only divisors are $1$ and $p$), `n.factorial` ($n! = 1 \\cdot 2 \\cdots n$), `Nat.dvd_factorial` ($0 < k \\leq n \\Rightarrow k \\mid n!$), and `Nat.exists_prime_and_dvd` ($n \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid n$).",
     "significance": "supporting",
     "prerequisites": [],
@@ -65,9 +65,9 @@
       "startLine": 50,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "n! + 1 Is at Least 2",
-    "content": "For any $n$, we have $n! + 1 \\geq 2$. Since $n! \\geq 1$ (factorials are always positive), adding 1 gives us at least 2. This ensures that $n! + 1$ has at least one prime divisor, which is needed for the existence step in Euclid's argument. The proof uses the `omega` tactic \u2014 Lean's decision procedure for Presburger arithmetic (the first-order theory of $(\\mathbb{Z}, +, <)$) \u2014 which handles the linear inequality $n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$ automatically.",
+    "content": "For any $n$, we have $n! + 1 \\geq 2$. Since $n! \\geq 1$ (factorials are always positive), adding 1 gives us at least 2. This ensures that $n! + 1$ has at least one prime divisor, which is needed for the existence step in Euclid's argument. The proof uses the `omega` tactic — Lean's decision procedure for Presburger arithmetic (the first-order theory of $(\\mathbb{Z}, +, <)$) — which handles the linear inequality $n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$ automatically.",
     "mathContext": "$n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$. Combined with `Nat.exists_prime_and_dvd`: $n! + 1 \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid (n! + 1)$.",
     "significance": "supporting",
     "prerequisites": [
@@ -86,7 +86,7 @@
       "startLine": 56,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Key Divisibility Lemma",
     "content": "If $p$ divides both $a$ and $a+1$, then $p$ divides 1. This is the heart of Euclid's proof. The proof: if $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid ((a+1) - a) = 1$. Since no prime divides 1 (primes satisfy $p \\geq 2$), this creates the contradiction we need. The Lean proof applies `Nat.dvd_sub'` (if $p \\mid b$ and $p \\mid a$ with $a \\leq b$, then $p \\mid (b - a)$) and simplifies $(a+1) - a = 1$.",
     "mathContext": "$p \\mid a \\land p \\mid (a+1) \\Rightarrow p \\mid ((a+1) - a) = 1$. Equivalently: consecutive integers are coprime. This is the structural reason why $n!$ and $n! + 1$ cannot share any prime factors.",
@@ -109,8 +109,8 @@
     },
     "type": "insight",
     "title": "Euclid's Theorem: Unbounded Primes",
-    "content": "**For any $n$, there exists a prime $p > n$.** The proof constructs $Q = n! + 1$ and reasons: (1) $Q \\geq 2$, so $Q$ has a prime divisor $p$ via `Nat.exists_prime_and_dvd`; (2) suppose for contradiction that $p \\leq n$; (3) then $p \\mid n!$ since $p$ is a factor in $1 \\cdot 2 \\cdots n$; (4) but $p \\mid Q = n! + 1$; (5) so $p \\mid ((n!+1) - n!) = 1$ by `dvd_of_dvd_add_one`; (6) since $p \\mid 1$ implies $p \\leq 1$, but $p$ is prime so $p \\geq 2$ \u2014 contradiction. Therefore $p > n$.\n\nThe Lean proof uses `by_contra` to assume $p \\leq n$, `push_neg` to simplify the negation, then chains the divisibility arguments to reach `p = 1`, contradicting `Nat.Prime.one_lt`.",
-    "mathContext": "$\\forall n, \\exists p$ prime, $p > n$. Construction: let $Q = n! + 1 \\geq 2$. Take $p \\mid Q$ prime. If $p \\leq n$, then $p \\mid n!$ and $p \\mid (n!+1)$, so $p \\mid 1$ \u2014 contradicting $p \\geq 2$. Hence $p > n$.",
+    "content": "**For any $n$, there exists a prime $p > n$.** The proof constructs $Q = n! + 1$ and reasons: (1) $Q \\geq 2$, so $Q$ has a prime divisor $p$ via `Nat.exists_prime_and_dvd`; (2) suppose for contradiction that $p \\leq n$; (3) then $p \\mid n!$ since $p$ is a factor in $1 \\cdot 2 \\cdots n$; (4) but $p \\mid Q = n! + 1$; (5) so $p \\mid ((n!+1) - n!) = 1$ by `dvd_of_dvd_add_one`; (6) since $p \\mid 1$ implies $p \\leq 1$, but $p$ is prime so $p \\geq 2$ — contradiction. Therefore $p > n$.\n\nThe Lean proof uses `by_contra` to assume $p \\leq n$, `push_neg` to simplify the negation, then chains the divisibility arguments to reach `p = 1`, contradicting `Nat.Prime.one_lt`.",
+    "mathContext": "$\\forall n, \\exists p$ prime, $p > n$. Construction: let $Q = n! + 1 \\geq 2$. Take $p \\mid Q$ prime. If $p \\leq n$, then $p \\mid n!$ and $p \\mid (n!+1)$, so $p \\mid 1$ — contradicting $p \\geq 2$. Hence $p > n$.",
     "significance": "key",
     "prerequisites": [
       "ann-why-factorial",
@@ -134,7 +134,7 @@
     },
     "type": "insight",
     "title": "Infinitude of Primes (Alternative Statement)",
-    "content": "The theorem `primes_infinite` is an alias for `unbounded_primes`, restating the result to emphasize infinitude: for any bound $n$, there exists a prime exceeding it. This alternative phrasing \u2014 while logically equivalent \u2014 is useful because it directly expresses the set-theoretic infinitude of primes rather than the number-theoretic unboundedness.",
+    "content": "The theorem `primes_infinite` is an alias for `unbounded_primes`, restating the result to emphasize infinitude: for any bound $n$, there exists a prime exceeding it. This alternative phrasing — while logically equivalent — is useful because it directly expresses the set-theoretic infinitude of primes rather than the number-theoretic unboundedness.",
     "mathContext": "$|\\{p \\in \\mathbb{N} \\mid p \\text{ prime}\\}| = \\infty$. Equivalent to: $\\forall n, \\exists p > n$ prime.",
     "significance": "supporting",
     "prerequisites": [

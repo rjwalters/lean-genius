@@ -94,9 +94,9 @@
       "startLine": 200,
       "endLine": 240
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sym2 Induction",
-    "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : \u00ace.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
+    "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
     "mathContext": "$\\text{Sym2}(V) = V \\times V / \\sim$ where $(u,v) \\sim (v,u)$. An edge $e \\in E(G)$ satisfies $\\neg e.\\text{IsDiag}$, meaning $e = \\{u, v\\}$ with $u \\neq v$. Induction on the quotient gives representatives.",
     "significance": "supporting",
     "prerequisites": [
@@ -120,7 +120,7 @@
     "type": "insight",
     "title": "Theorem 4: Expected Cut Size (Main Result)",
     "content": "**The Central Theorem**: $\\mathbb{E}[|C|] = |E|/2$. The expected size of a random cut equals half the number of edges.",
-    "mathContext": "The proof chains the previous results:\n$$\\mathbb{E}[|C|] = \\mathbb{E}\\left[\\sum_e \\chi_e\\right] = \\sum_e \\mathbb{E}[\\chi_e] = \\sum_e \\frac{1}{2} = \\frac{|E|}{2}$$\n\nThe key step is swapping $\\sum_{\\text{assignments}} \\sum_{\\text{edges}}$ to $\\sum_{\\text{edges}} \\sum_{\\text{assignments}}$\u2014this is linearity of expectation.",
+    "mathContext": "The proof chains the previous results:\n$$\\mathbb{E}[|C|] = \\mathbb{E}\\left[\\sum_e \\chi_e\\right] = \\sum_e \\mathbb{E}[\\chi_e] = \\sum_e \\frac{1}{2} = \\frac{|E|}{2}$$\n\nThe key step is swapping $\\sum_{\\text{assignments}} \\sum_{\\text{edges}}$ to $\\sum_{\\text{edges}} \\sum_{\\text{assignments}}$—this is linearity of expectation.",
     "significance": "key",
     "prerequisites": [
       "ann-maxcut-theorem1",
@@ -141,7 +141,7 @@
     },
     "type": "insight",
     "title": "Linearity of Expectation",
-    "content": "The crucial step: `Finset.sum_comm` swaps the order of summation. This is linearity of expectation\u2014it works even when random variables are dependent!",
+    "content": "The crucial step: `Finset.sum_comm` swaps the order of summation. This is linearity of expectation—it works even when random variables are dependent!",
     "mathContext": "Unlike variance or higher moments, expectation is always linear: $\\mathbb{E}[X + Y] = \\mathbb{E}[X] + \\mathbb{E}[Y]$, regardless of dependence. This is why the proof is so elegant.",
     "significance": "key",
     "prerequisites": [

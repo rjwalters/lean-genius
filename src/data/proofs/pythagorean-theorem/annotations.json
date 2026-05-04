@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "The Most Famous Theorem",
-    "content": "The Pythagorean theorem\u2014$a^2 + b^2 = c^2$\u2014is arguably the most recognized mathematical result in the world. Nearly everyone learns it in school, and it's been known for over 4000 years.\n\nOur proof takes a modern approach using **inner product spaces**. Instead of rearranging areas (as in visual proofs) or using similar triangles (as Euclid did), we leverage the algebraic structure of vector spaces.",
+    "content": "The Pythagorean theorem—$a^2 + b^2 = c^2$—is arguably the most recognized mathematical result in the world. Nearly everyone learns it in school, and it's been known for over 4000 years.\n\nOur proof takes a modern approach using **inner product spaces**. Instead of rearranging areas (as in visual proofs) or using similar triangles (as Euclid did), we leverage the algebraic structure of vector spaces.",
     "mathContext": "The Pythagorean theorem: $a^2 + b^2 = c^2$ for a right triangle with legs $a, b$ and hypotenuse $c$. Formalized using inner products: $\\|u\\|^2 + \\|v\\|^2 = \\|u + v\\|^2$ when $\\langle u, v \\rangle = 0$.",
     "significance": "key",
     "prerequisites": [
@@ -50,8 +50,8 @@
       "endLine": 55
     },
     "type": "insight",
-    "title": "Euclidean Plane Setup: Vec2 as \u211d\u00b2",
-    "content": "`Vec2` is defined as `EuclideanSpace \u211d (Fin 2)` \u2014 Mathlib's formalization of $\\mathbb{R}^2$ as an inner product space. This single `abbrev` provides: the vector space structure ($+$, scalar $\\cdot$), the inner product $\\langle \\cdot, \\cdot \\rangle$ inherited from `RealInnerProductSpace`, and the Euclidean norm $\\|\\cdot\\|$.\n\nThe `open scoped RealInnerProductSpace` makes the notation $\\langle v, w \\rangle$ available for `@inner \u211d Vec2`. The `set_option linter.unusedVariables false` suppresses warnings from intermediate `#check` declarations used for documentation.",
+    "title": "Euclidean Plane Setup: Vec2 as ℝ²",
+    "content": "`Vec2` is defined as `EuclideanSpace ℝ (Fin 2)` — Mathlib's formalization of $\\mathbb{R}^2$ as an inner product space. This single `abbrev` provides: the vector space structure ($+$, scalar $\\cdot$), the inner product $\\langle \\cdot, \\cdot \\rangle$ inherited from `RealInnerProductSpace`, and the Euclidean norm $\\|\\cdot\\|$.\n\nThe `open scoped RealInnerProductSpace` makes the notation $\\langle v, w \\rangle$ available for `@inner ℝ Vec2`. The `set_option linter.unusedVariables false` suppresses warnings from intermediate `#check` declarations used for documentation.",
     "mathContext": "$\\text{Vec2} = \\mathbb{R}^{\\text{Fin}\\,2} \\cong \\mathbb{R}^2$ with inner product $\\langle (x_1, x_2), (y_1, y_2) \\rangle = x_1 y_1 + x_2 y_2$ and norm $\\|(x_1, x_2)\\| = \\sqrt{x_1^2 + x_2^2}$.",
     "significance": "supporting",
     "prerequisites": [
@@ -95,7 +95,7 @@
     },
     "type": "definition",
     "title": "Perpendicularity Definition and Notation",
-    "content": "`perpendicular v w` is defined as `inner v w = (0 : \u211d)`. The custom notation `v \u22a5 w` makes the mathematical intent readable. This single-line definition captures the key geometric concept: perpendicularity is zero inner product.\n\nThe definition works in any inner product space, not just $\\mathbb{R}^2$. In $\\mathbb{R}^n$, $\\langle v, w \\rangle = \\sum_i v_i w_i$, so perpendicularity means the componentwise products cancel. In function spaces, $\\langle f, g \\rangle = \\int f \\cdot g$, so perpendicularity means the functions are 'uncorrelated' \u2014 the foundation of Fourier analysis.",
+    "content": "`perpendicular v w` is defined as `inner v w = (0 : ℝ)`. The custom notation `v ⊥ w` makes the mathematical intent readable. This single-line definition captures the key geometric concept: perpendicularity is zero inner product.\n\nThe definition works in any inner product space, not just $\\mathbb{R}^2$. In $\\mathbb{R}^n$, $\\langle v, w \\rangle = \\sum_i v_i w_i$, so perpendicularity means the componentwise products cancel. In function spaces, $\\langle f, g \\rangle = \\int f \\cdot g$, so perpendicularity means the functions are 'uncorrelated' — the foundation of Fourier analysis.",
     "mathContext": "$v \\perp w \\stackrel{\\text{def}}{\\iff} \\langle v, w \\rangle = 0$. For $v = (v_1, v_2)$, $w = (w_1, w_2)$: $v \\perp w \\iff v_1 w_1 + v_2 w_2 = 0$.",
     "significance": "key",
     "prerequisites": [
@@ -136,7 +136,7 @@
       "startLine": 86,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bilinearity of Inner Product",
     "content": "The inner product is **bilinear**, meaning it distributes over addition in both arguments:\n\n$$\\langle \\vec{u} + \\vec{v}, \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{w} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle$$\n$$\\langle \\vec{u}, \\vec{v} + \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{v} \\rangle + \\langle \\vec{u}, \\vec{w} \\rangle$$\n\nThis property is what makes the Pythagorean theorem work: when we expand $\\|\\vec{v} + \\vec{w}\\|^2$, the bilinearity gives us all four terms.\n\nThe theorem states: if $\\vec{v} \\perp \\vec{w}$, then\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$\n\nThe proof is a beautiful application of bilinearity:\n\n1. $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$ (by definition)\n2. $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$ (bilinearity)\n3. $= \\|\\vec{v}\\|^2 + 0 + 0 + \\|\\vec{w}\\|^2$ (perpendicularity!)\n4. $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThe cross terms vanish because the vectors are perpendicular.",
     "mathContext": "Bilinearity: linear in each argument",
@@ -163,7 +163,7 @@
     },
     "type": "definition",
     "title": "RightTriangle Structure: Classical Formulation",
-    "content": "The `RightTriangle` structure bridges the inner product proof to the classical $a^2 + b^2 = c^2$ formulation. It bundles three positive reals ($a, b, c$) with positivity proofs and the Pythagorean relation as a field.\n\nThis is a *dependent type*: a `RightTriangle` is not just three numbers but three numbers *together with proof* that they satisfy the relation. You cannot construct a `RightTriangle` with sides that violate $a^2 + b^2 = c^2$ \u2014 the type system enforces geometric validity.",
+    "content": "The `RightTriangle` structure bridges the inner product proof to the classical $a^2 + b^2 = c^2$ formulation. It bundles three positive reals ($a, b, c$) with positivity proofs and the Pythagorean relation as a field.\n\nThis is a *dependent type*: a `RightTriangle` is not just three numbers but three numbers *together with proof* that they satisfy the relation. You cannot construct a `RightTriangle` with sides that violate $a^2 + b^2 = c^2$ — the type system enforces geometric validity.",
     "mathContext": "A right triangle is a triple $(a, b, c) \\in \\mathbb{R}^3_{>0}$ satisfying $a^2 + b^2 = c^2$. This structure encodes both the data and the constraint. By the AM-GM inequality, $c > \\max(a, b)$ since $c^2 = a^2 + b^2 > a^2$ implies $c > a$ (and similarly $c > b$).",
     "significance": "key",
     "prerequisites": [
@@ -207,7 +207,7 @@
       "endLine": 152
     },
     "type": "insight",
-    "title": "Classical Formulation: a\u00b2 + b\u00b2 = c\u00b2",
+    "title": "Classical Formulation: a² + b² = c²",
     "content": "The classical theorem states that for a right triangle with legs $a, b$ and hypotenuse $c$:\n\n$$a^2 + b^2 = c^2$$\n\nIn our vector notation:\n- $a = \\|\\text{legB}\\|$ (length of leg B)\n- $b = \\|\\text{legA}\\|$ (length of leg A)  \n- $c = \\|\\text{legA} - \\text{legB}\\|$ (length of hypotenuse)\n\nThe theorem follows directly from our vector form.\n\nA **Pythagorean triple** is a set of three positive integers $(a, b, c)$ satisfying $a^2 + b^2 = c^2$. The most famous is $(3, 4, 5)$:\n\n$$3^2 + 4^2 = 9 + 16 = 25 = 5^2 \\checkmark$$\n\nOther common triples:\n- $(5, 12, 13)$: $25 + 144 = 169$\n- $(8, 15, 17)$: $64 + 225 = 289$\n- $(7, 24, 25)$: $49 + 576 = 625$\n\nAll **primitive** triples (where $\\gcd(a,b,c) = 1$) are generated by:\n$$a = m^2 - n^2, \\quad b = 2mn, \\quad c = m^2 + n^2$$\nwhere $m > n > 0$ are coprime with different parity.",
     "mathContext": "$a^2 + b^2 = c^2$",
     "significance": "key",
@@ -253,9 +253,9 @@
       "startLine": 171,
       "endLine": 209
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Verification",
-    "content": "Lean can **compute** that these are valid Pythagorean triples using `native_decide`. This tactic evaluates the arithmetic and checks that both sides equal the same value.\n\nFor $(3, 4, 5)$:\n- Left side: $3^2 + 4^2 = 9 + 16 = 25$\n- Right side: $5^2 = 25$\n- Equal? Yes! Proof complete.\n\nThis is one of Lean's strengths: verifiable computation meets rigorous proof.\n\nThe **converse** of the Pythagorean theorem states:\n\n*If the sides of a triangle satisfy $a^2 + b^2 = c^2$, then the angle opposite $c$ is a right angle.*\n\nThis appears as Proposition 48 in Book I of Euclid's Elements. It means we can *test* whether an angle is 90\u00b0 using only length measurements\u2014no protractor needed!\n\nThe converse is crucial in surveying, construction, and navigation.\n\nThe Pythagorean theorem has an extraordinary history:\n\n**Ancient Origins:**\n- ~1800 BCE: Babylonian tablet Plimpton 322 lists Pythagorean triples\n- ~1100 BCE: Chinese mathematicians knew the $(3, 4, 5)$ triple\n- ~570 BCE: Pythagoras (or his school) gave a general proof\n\n**Mathematical Developments:**\n- ~300 BCE: Euclid's *Elements* includes the theorem (I.47) and converse (I.48)\n- 1876: James Garfield discovers a new proof (later becomes US President!)\n- 1940: Elisha Loomis catalogs 367 distinct proofs\n\n**Generalizations:**\n- **Law of Cosines:** $c^2 = a^2 + b^2 - 2ab\\cos(C)$\n- **Higher dimensions:** $\\|\\vec{v}\\|^2 = \\sum_i v_i^2$\n- **Non-Euclidean:** The theorem *fails* in hyperbolic/spherical geometry\u2014it's a defining property of flat space!",
+    "content": "Lean can **compute** that these are valid Pythagorean triples using `native_decide`. This tactic evaluates the arithmetic and checks that both sides equal the same value.\n\nFor $(3, 4, 5)$:\n- Left side: $3^2 + 4^2 = 9 + 16 = 25$\n- Right side: $5^2 = 25$\n- Equal? Yes! Proof complete.\n\nThis is one of Lean's strengths: verifiable computation meets rigorous proof.\n\nThe **converse** of the Pythagorean theorem states:\n\n*If the sides of a triangle satisfy $a^2 + b^2 = c^2$, then the angle opposite $c$ is a right angle.*\n\nThis appears as Proposition 48 in Book I of Euclid's Elements. It means we can *test* whether an angle is 90° using only length measurements—no protractor needed!\n\nThe converse is crucial in surveying, construction, and navigation.\n\nThe Pythagorean theorem has an extraordinary history:\n\n**Ancient Origins:**\n- ~1800 BCE: Babylonian tablet Plimpton 322 lists Pythagorean triples\n- ~1100 BCE: Chinese mathematicians knew the $(3, 4, 5)$ triple\n- ~570 BCE: Pythagoras (or his school) gave a general proof\n\n**Mathematical Developments:**\n- ~300 BCE: Euclid's *Elements* includes the theorem (I.47) and converse (I.48)\n- 1876: James Garfield discovers a new proof (later becomes US President!)\n- 1940: Elisha Loomis catalogs 367 distinct proofs\n\n**Generalizations:**\n- **Law of Cosines:** $c^2 = a^2 + b^2 - 2ab\\cos(C)$\n- **Higher dimensions:** $\\|\\vec{v}\\|^2 = \\sum_i v_i^2$\n- **Non-Euclidean:** The theorem *fails* in hyperbolic/spherical geometry—it's a defining property of flat space!",
     "mathContext": "Lean's `native_decide` tactic evaluates decidable propositions by computation, e.g., $3^2 + 4^2 = 25 = 5^2$ is verified by reduction.",
     "significance": "supporting",
     "prerequisites": [

@@ -2,61 +2,122 @@
   {
     "id": "ann-imports-docstring",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
-    "range": {"startLine": 1, "endLine": 56},
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "concept",
     "title": "Module Header: Closing the Equivalence Chain",
     "content": "The file imports three parents: Mathlib.Tactic (core tactics), Mathlib.Analysis.InnerProductSpace.PiL2 (the Euclidean space model for R^n), and the two preceding files in the Brouwer chain: BrouwerFixedPoint.lean (providing the geometric ray construction and classical BFP structure) and BrouwerFixedPointOQ01OQ02.lean (providing the singular homology no-retraction theorem). The docstring lays out the complete three-step equivalence chain: singular_homology_retraction_split → no_retraction_singular_homology (in OQ01OQ02.lean) → brouwer_fixed_point_via_singular_homology (this file). The axiom accounting is careful: 0 new axioms are introduced here — the total count of 2 axioms is the same as in BrouwerFixedPoint.lean, but the opaque no_retraction_axiom is replaced by the more explanatory singular_homology_retraction_split.",
     "mathContext": "The file works in the namespace `BrouwerOQ01OQ02OQ03` with `EuclideanSpace ℝ (Fin n)` as the model of $\\mathbb{R}^n$. The closed ball $B^n = \\{x \\in \\mathbb{R}^n : \\|x\\| \\leq 1\\}$ is `Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1` and the sphere $S^{n-1} = \\{x : \\|x\\| = 1\\}$ is `Metric.sphere 0 1`.",
-    "significance": "context",
-    "relatedConcepts": ["Brouwer fixed point theorem", "no-retraction theorem", "singular homology", "axiom accounting"],
-    "prerequisites": ["BrouwerFixedPoint.lean", "BrouwerFixedPointOQ01OQ02.lean", "EuclideanSpace in Lean 4"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "no-retraction theorem",
+      "singular homology",
+      "axiom accounting"
+    ],
+    "prerequisites": [
+      "BrouwerFixedPoint.lean",
+      "BrouwerFixedPointOQ01OQ02.lean",
+      "EuclideanSpace in Lean 4"
+    ]
   },
   {
     "id": "ann-namespace-setup",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
-    "range": {"startLine": 57, "endLine": 63},
-    "type": "technique",
+    "range": {
+      "startLine": 57,
+      "endLine": 63
+    },
+    "type": "concept",
     "title": "Namespace and Linter Setup: Suppressing an Intentional Unused Variable",
     "content": "`set_option linter.unusedVariables false` is required because `no_retraction_from_bfp` (Part III) has a BFP hypothesis `(_ : ∀ f : Brouwer.SelfMap n, Brouwer.HasFixedPoint n f)` that is deliberately unused — the no-retraction conclusion follows directly from singular homology axioms without invoking BFP. The linter would flag this as a warning without the suppression. The namespace `BrouwerOQ01OQ02OQ03` scopes all five theorems in this file. `open Metric Set` brings `closedBall`, `sphere`, and set-builder notation into scope, matching the conventions of the parent files.",
     "mathContext": "In Lean 4, `set_option linter.unusedVariables false` suppresses diagnostics for bound variables appearing in a type but not in the proof term. The pattern `fun (_ : P) => proof_not_using_P` is logically sound but the linter warns. This is intentional here: the theorem has the correct logical type (BFP → no-retraction) but the proof is a direct shortcut via the stronger singular homology result.",
     "significance": "supporting",
-    "relatedConcepts": ["Lean 4 linter", "unusedVariables", "namespace scoping", "open declaration in Lean 4"],
-    "prerequisites": ["Lean 4 set_option", "namespace in Lean 4", "Metric namespace in Mathlib"]
+    "relatedConcepts": [
+      "Lean 4 linter",
+      "unusedVariables",
+      "namespace scoping",
+      "open declaration in Lean 4"
+    ],
+    "prerequisites": [
+      "Lean 4 set_option",
+      "namespace in Lean 4",
+      "Metric namespace in Mathlib"
+    ]
   },
   {
     "id": "ann-type-conversion",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
-    "range": {"startLine": 64, "endLine": 96},
-    "type": "technique",
+    "range": {
+      "startLine": 64,
+      "endLine": 96
+    },
+    "type": "concept",
     "title": "Retraction Type Conversion: Definitional Equality Bridge",
     "content": "The key technical lemma is `toSingularRetraction`: a function converting a `Brouwer.Retraction n` (from BrouwerFixedPoint.lean) to a `BrouwerOQ01OQ02.Retraction n` (from BrouwerFixedPointOQ01OQ02.lean). Both structure types have four identical fields: `toFun`, `continuous'`, `maps_to_sphere`, and `fixes_sphere`. The field types are definitionally equal across namespaces because `Brouwer.ClosedBall n` and `BrouwerOQ01OQ02.ClosedBall n` both unfold to `Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1`, and similarly for `UnitSphere`. In Lean 4, definitional equality is checked by the kernel (not the elaborator), so no explicit coercion tactic is needed — just copy the fields directly. The companion theorem `toSingularRetraction_toFun` (line 94) confirms the underlying function is preserved: the proof is literally `rfl`, because the underlying function is literally the same object (not just propositionally equal). This is definitional equality being used as a proof engineering tool: the two independently developed API layers happen to reduce to the same types, allowing field-copy construction with zero proof overhead.",
     "mathContext": "Lean 4's kernel equality: two types $A$ and $B$ are definitionally equal if they reduce to the same normal form. Here, $\\text{Brouwer.ClosedBall}(n) = \\text{Metric.closedBall}(0, 1) = \\text{BrouwerOQ01OQ02.ClosedBall}(n)$. This means any term of type $\\text{Brouwer.Retraction}(n)$ is automatically accepted where type $\\text{BrouwerOQ01OQ02.Retraction}(n)$ is expected at the field level. The `rfl` proof of `toSingularRetraction_toFun` holds because `.toFun = r.toFun` is definitionally true — no rewriting needed.",
-    "significance": "technical",
-    "relatedConcepts": ["definitional equality", "structure field copy", "type isomorphism", "Lean 4 kernel"],
-    "prerequisites": ["Lean 4 structure types", "definitional equality vs propositional equality", "Metric.closedBall"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "definitional equality",
+      "structure field copy",
+      "type isomorphism",
+      "Lean 4 kernel"
+    ],
+    "prerequisites": [
+      "Lean 4 structure types",
+      "definitional equality vs propositional equality",
+      "Metric.closedBall"
+    ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
-    "range": {"startLine": 98, "endLine": 127},
+    "range": {
+      "startLine": 98,
+      "endLine": 127
+    },
     "type": "insight",
     "title": "BFP via Singular Homology: The 4-Step Contradiction",
     "content": "The main theorem `brouwer_fixed_point_via_singular_homology` is a 4-line proof by contradiction:\n1. `by_contra h` — assume f has no fixed point.\n2. `let r_brouwer := Brouwer.retraction_construction f h` — the geometric ray construction: if f(x) ≠ x for all x ∈ B^n, draw a ray from f(x) through x, extending to the boundary S^{n-1}. This gives a continuous retraction r: B^n → S^{n-1} of type `Brouwer.Retraction n`. The geometric argument requires solving ‖f(x) + t·(x-f(x))‖² = 1 for t > 0 — a quadratic equation whose positive root varies continuously with x.\n3. `let r_sh := toSingularRetraction r_brouwer` — convert to `BrouwerOQ01OQ02.Retraction n`.\n4. `exact BrouwerOQ01OQ02.no_retraction_singular_homology n hn ⟨r_sh, trivial⟩` — the homological contradiction: a retraction r∘i = id on S^{n-1} forces H_{n-1}(r) ∘ H_{n-1}(i) = id on H_{n-1}(S^{n-1}) ≅ ℤ, but H_{n-1}(B^n) = 0 makes any such factorization through the trivial group impossible.",
     "mathContext": "The contradiction is: a retraction $r: B^n \\to S^{n-1}$ with $r \\circ i = \\mathrm{id}$ (where $i: S^{n-1} \\hookrightarrow B^n$ is inclusion) would give $H_{n-1}(r) \\circ H_{n-1}(i) = \\mathrm{id}$ on $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$. But $H_{n-1}(B^n) = 0$ (the ball is contractible), so $H_{n-1}(i) = 0$, making $H_{n-1}(r) \\circ 0 = \\mathrm{id}$ on $\\mathbb{Z}$ — absurd since $0 \\neq \\mathrm{id}$ as maps $\\mathbb{Z} \\to \\mathbb{Z}$.",
     "significance": "key",
-    "relatedConcepts": ["Brouwer fixed point theorem", "retraction", "singular homology", "ray construction", "by_contra"],
-    "prerequisites": ["no-retraction theorem", "singular homology functoriality", "retraction_construction axiom"]
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "retraction",
+      "singular homology",
+      "ray construction",
+      "by_contra"
+    ],
+    "prerequisites": [
+      "no-retraction theorem",
+      "singular homology functoriality",
+      "retraction_construction axiom"
+    ]
   },
   {
     "id": "ann-equivalence",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
-    "range": {"startLine": 129, "endLine": 171},
+    "range": {
+      "startLine": 129,
+      "endLine": 171
+    },
     "type": "concept",
     "title": "The Complete Equivalence: No-Retraction ↔ BFP",
     "content": "Part III establishes the full logical equivalence between the two formulations of BFP. Three theorems:\n\n1. `no_retraction_from_bfp`: nominally BFP → No-Retraction, but note that the BFP hypothesis `(_ : ∀ f : Brouwer.SelfMap n, Brouwer.HasFixedPoint n f)` is entirely UNUSED in the proof — the proof is just `BrouwerOQ01OQ02.no_retraction_singular_homology n hn` directly. This is why `set_option linter.unusedVariables false` appears at the top of the file. The no-retraction result is independently available from singular homology axioms, so the BFP assumption is vacuous. This is an intentional design choice: the theorem has the right logical type, but the proof is a shortcut.\n\n2. `singular_homology_implies_bfp`: a named alias for `brouwer_fixed_point_via_singular_homology`, making the full logical chain `singular homology axiom → BFP` explicit and directly referenceable.\n\n3. `no_retraction_axiom_iff_sh`: both no-retraction propositions are equivalent. Forward direction: convert Brouwer.Retraction to BrouwerOQ01OQ02.Retraction via inline structure literal (the same definitional equality used by `toSingularRetraction`, but inlined); backward: use `toSingularRetraction`. This establishes that the two `Retraction` types are interchangeable for the no-retraction statement.",
     "mathContext": "The equivalence $\\neg\\exists r: \\text{Brouwer.Retraction}(n) \\leftrightarrow \\neg\\exists r: \\text{BrouwerOQ01OQ02.Retraction}(n)$ holds because the two types have the same definitional structure. In classical topology: no-retraction ↔ BFP is the standard equivalence. The ray construction provides no-retraction → BFP; a retraction $r: B^n \\to S^{n-1}$ would give $r \\circ (\\mathrm{include} \\circ r): B^n \\to B^n$ as a fixed-point-free map (its value $r(r(x))$ lies on $S^{n-1}$ hence $\\neq r(x)$ generically), giving BFP → no-retraction.",
     "significance": "key",
-    "relatedConcepts": ["no-retraction theorem", "Brouwer fixed point theorem", "logical equivalence", "Iff in Lean 4"],
-    "prerequisites": ["retraction_construction", "no_retraction_singular_homology", "Iff constructor in Lean 4"]
+    "relatedConcepts": [
+      "no-retraction theorem",
+      "Brouwer fixed point theorem",
+      "logical equivalence",
+      "Iff in Lean 4"
+    ],
+    "prerequisites": [
+      "retraction_construction",
+      "no_retraction_singular_homology",
+      "Iff constructor in Lean 4"
+    ]
   }
 ]

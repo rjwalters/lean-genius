@@ -7,8 +7,8 @@
       "endLine": 23
     },
     "type": "definition",
-    "title": "piRatSpan: Rational Multiples of \u03c0",
-    "content": "Defines piRatSpan as the \u211a-submodule of \u211d spanned by {\u03c0}, i.e., the set {q\u00b7\u03c0 | q : \u211a}. This is the 'modulus' for the Dehn invariant: an angle \u03b8 contributes zero to the invariant iff \u03b8 \u2208 piRatSpan, i.e., iff \u03b8/\u03c0 is rational. The Submodule.span \u211a {Real.pi} construction uses Lean 4's Submodule.span which takes the \u211a-module structure on \u211d.",
+    "title": "piRatSpan: Rational Multiples of π",
+    "content": "Defines piRatSpan as the ℚ-submodule of ℝ spanned by {π}, i.e., the set {q·π | q : ℚ}. This is the 'modulus' for the Dehn invariant: an angle θ contributes zero to the invariant iff θ ∈ piRatSpan, i.e., iff θ/π is rational. The Submodule.span ℚ {Real.pi} construction uses Lean 4's Submodule.span which takes the ℚ-module structure on ℝ.",
     "mathContext": "$\\pi\\mathbb{Q} := \\{q \\cdot \\pi \\mid q \\in \\mathbb{Q}\\} = \\mathrm{span}_{\\mathbb{Q}}\\{\\pi\\} \\subset \\mathbb{R}$ as a $\\mathbb{Q}$-submodule.",
     "significance": "key",
     "relatedConcepts": [
@@ -18,7 +18,7 @@
       "Dehn invariant modulus"
     ],
     "prerequisites": [
-      "\u211a-module structure on \u211d",
+      "ℚ-module structure on ℝ",
       "Submodule.span"
     ]
   },
@@ -30,8 +30,8 @@
       "endLine": 27
     },
     "type": "definition",
-    "title": "angleClass: Map to \u211d/\u03c0\u211a",
-    "content": "The angleClass function sends each real angle \u03b8 to its equivalence class [\u03b8] in the quotient module \u211d \u29f8 piRatSpan. Two angles have the same class iff their difference is a rational multiple of \u03c0. This is the Dehn invariant's sensitivity: it cannot distinguish angles that differ by rational multiples of \u03c0, but can detect irrational multiples.",
+    "title": "angleClass: Map to ℝ/πℚ",
+    "content": "The angleClass function sends each real angle θ to its equivalence class [θ] in the quotient module ℝ ⧸ piRatSpan. Two angles have the same class iff their difference is a rational multiple of π. This is the Dehn invariant's sensitivity: it cannot distinguish angles that differ by rational multiples of π, but can detect irrational multiples.",
     "mathContext": "$\\mathrm{angleClass}(\\theta) = [\\theta] \\in \\mathbb{R}/\\pi\\mathbb{Q}$, where $\\theta \\sim \\theta'$ iff $\\theta - \\theta' \\in \\pi\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -53,7 +53,7 @@
     },
     "type": "definition",
     "title": "dehnElement: Tensor Product Dehn Contribution",
-    "content": "dehnElement n \u03b8 = n \u2297 [\u03b8] in \u211d \u2297_\u211a (\u211d/\u03c0\u211a), representing the contribution of n edges of dihedral angle \u03b8 to the Dehn invariant. The scalar multiplication `(n : \u211a) \u2022 (1 \u2297\u209c angleClass \u03b8)` uses the \u211a-module structure: multiplying the \u211d factor by the integer edge count n. For the cube: n=12 (12 edges), \u03b8=\u03c0/2. For the tetrahedron: n=6 (6 edges), \u03b8=arccos(1/3).",
+    "content": "dehnElement n θ = n ⊗ [θ] in ℝ ⊗_ℚ (ℝ/πℚ), representing the contribution of n edges of dihedral angle θ to the Dehn invariant. The scalar multiplication `(n : ℚ) • (1 ⊗ₜ angleClass θ)` uses the ℚ-module structure: multiplying the ℝ factor by the integer edge count n. For the cube: n=12 (12 edges), θ=π/2. For the tetrahedron: n=6 (6 edges), θ=arccos(1/3).",
     "mathContext": "$D_n(\\theta) = n \\cdot (1 \\otimes_{\\mathbb{Q}} [\\theta]) = (n : \\mathbb{Q}) \\cdot (1 \\otimes [\\theta]) \\in \\mathbb{R} \\otimes_{\\mathbb{Q}} (\\mathbb{R}/\\pi\\mathbb{Q})$.",
     "significance": "key",
     "relatedConcepts": [
@@ -62,7 +62,7 @@
       "Dehn invariant formula"
     ],
     "prerequisites": [
-      "tensor product over \u211a",
+      "tensor product over ℚ",
       "TensorProduct.tmul",
       "scalar multiplication"
     ]
@@ -74,9 +74,9 @@
       "startLine": 32,
       "endLine": 43
     },
-    "type": "technique",
-    "title": "Cube Angle: \u03c0/2 Has Zero Class",
-    "content": "Two lemmas establish that the cube's dihedral angle \u03c0/2 vanishes in \u211d/\u03c0\u211a. First, pi_half_mem_piRatSpan shows \u03c0/2 \u2208 piRatSpan since \u03c0/2 = (1/2)\u00b7\u03c0 (via Algebra.smul_def and Submodule.mem_span_singleton). Second, cube_angle_class_zero deduces [\u03c0/2] = 0 from the membership via Submodule.Quotient.mk_eq_zero.",
+    "type": "concept",
+    "title": "Cube Angle: π/2 Has Zero Class",
+    "content": "Two lemmas establish that the cube's dihedral angle π/2 vanishes in ℝ/πℚ. First, pi_half_mem_piRatSpan shows π/2 ∈ piRatSpan since π/2 = (1/2)·π (via Algebra.smul_def and Submodule.mem_span_singleton). Second, cube_angle_class_zero deduces [π/2] = 0 from the membership via Submodule.Quotient.mk_eq_zero.",
     "mathContext": "$\\pi/2 = (1/2)\\pi \\in \\pi\\mathbb{Q} \\Rightarrow [\\pi/2] = 0 \\in \\mathbb{R}/\\pi\\mathbb{Q}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -94,9 +94,9 @@
       "startLine": 44,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tetrahedron Angle: arccos(1/3) Has Nonzero Class",
-    "content": "arccos_third_not_mem_piRatSpan derives arccos(1/3) \u2209 piRatSpan from tetrahedron_angle_irrational_pi (the Chebyshev recurrence proof in the parent file). If arccos(1/3) = q\u00b7\u03c0 for some q : \u211a, then arccos(1/3)/\u03c0 = q \u2208 \u211a \u2014 contradicting irrationality. The proof extracts the rational q from membership in Submodule.mem_span_singleton and converts the smul to multiplication. tetra_angle_class_ne_zero then follows by contraposition.",
+    "content": "arccos_third_not_mem_piRatSpan derives arccos(1/3) ∉ piRatSpan from tetrahedron_angle_irrational_pi (the Chebyshev recurrence proof in the parent file). If arccos(1/3) = q·π for some q : ℚ, then arccos(1/3)/π = q ∈ ℚ — contradicting irrationality. The proof extracts the rational q from membership in Submodule.mem_span_singleton and converts the smul to multiplication. tetra_angle_class_ne_zero then follows by contraposition.",
     "mathContext": "$\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$ (Niven's theorem) $\\Rightarrow \\arccos(1/3) \\notin \\pi\\mathbb{Q} \\Rightarrow [\\arccos(1/3)] \\neq 0 \\in \\mathbb{R}/\\pi\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -116,9 +116,9 @@
       "startLine": 61,
       "endLine": 84
     },
-    "type": "technique",
-    "title": "Tensor Product Nonzero: 1 \u2297 m \u2260 0",
-    "content": "This is the key algebraic lemma. For any \u211a-module M and nonzero m : M, the tensor 1 \u2297\u209c m is nonzero in \u211d \u2297_\u211a M. The proof constructs a separating \u211a-linear functional \u03c6 : M \u2192 \u211a with \u03c6(m) \u2260 0. Since M is a \u211a-vector space (free \u211a-module), choose a basis B and take \u03c6 = B.coord b where B.repr m b \u2260 0. Then apply the map id \u2297 \u03c6 : \u211d \u2297_\u211a M \u2192 \u211d \u2297_\u211a \u211a \u2245 \u211d (via TensorProduct.rid), which sends 1 \u2297 m to 1\u00b7\u03c6(m) \u2260 0. This reflects that \u211d is faithfully flat over \u211a.",
+    "type": "concept",
+    "title": "Tensor Product Nonzero: 1 ⊗ m ≠ 0",
+    "content": "This is the key algebraic lemma. For any ℚ-module M and nonzero m : M, the tensor 1 ⊗ₜ m is nonzero in ℝ ⊗_ℚ M. The proof constructs a separating ℚ-linear functional φ : M → ℚ with φ(m) ≠ 0. Since M is a ℚ-vector space (free ℚ-module), choose a basis B and take φ = B.coord b where B.repr m b ≠ 0. Then apply the map id ⊗ φ : ℝ ⊗_ℚ M → ℝ ⊗_ℚ ℚ ≅ ℝ (via TensorProduct.rid), which sends 1 ⊗ m to 1·φ(m) ≠ 0. This reflects that ℝ is faithfully flat over ℚ.",
     "mathContext": "Proof: $\\exists \\phi \\in \\mathrm{Hom}_{\\mathbb{Q}}(M, \\mathbb{Q})$ with $\\phi(m) \\neq 0$ (basis coordinate). Then $(\\mathrm{id}_{\\mathbb{R}} \\otimes \\phi)(1 \\otimes m) = 1 \\cdot \\phi(m) \\neq 0$ in $\\mathbb{R} \\otimes_{\\mathbb{Q}} \\mathbb{Q} \\cong \\mathbb{R}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -143,7 +143,7 @@
     },
     "type": "insight",
     "title": "D(cube) = 0",
-    "content": "cube_dehn_zero proves dehnElement 12 (\u03c0/2) = 0. Since angleClass(\u03c0/2) = 0 (proved earlier), and tensoring with 0 gives 0, the scalar multiple 12 \u2297 [\u03c0/2] = 12 \u2297 0 = 0. The proof unfolds dehnElement, rewrites using cube_angle_class_zero, then simplifies with simp.",
+    "content": "cube_dehn_zero proves dehnElement 12 (π/2) = 0. Since angleClass(π/2) = 0 (proved earlier), and tensoring with 0 gives 0, the scalar multiple 12 ⊗ [π/2] = 12 ⊗ 0 = 0. The proof unfolds dehnElement, rewrites using cube_angle_class_zero, then simplifies with simp.",
     "mathContext": "$D(\\text{cube}) = 12 \\cdot (1 \\otimes [\\pi/2]) = 12 \\cdot (1 \\otimes 0) = 0$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -163,8 +163,8 @@
       "endLine": 103
     },
     "type": "insight",
-    "title": "D(tetrahedron) \u2260 0 and Invariant Separation",
-    "content": "tetra_dehn_ne_zero proves dehnElement 6 (arccos(1/3)) \u2260 0 using smul_ne_zero: the scalar 6 \u2260 0 (by norm_num) and the base element 1 \u2297 [arccos(1/3)] \u2260 0 (by one_tmul_ne_zero with tetra_angle_class_ne_zero). dehn_invariants_differ then combines cube_dehn_zero and tetra_dehn_ne_zero: D(cube) = 0 but D(tet) \u2260 0, so D(cube) \u2260 D(tet). This is the invariant separation that underlies Hilbert's Third Problem.",
+    "title": "D(tetrahedron) ≠ 0 and Invariant Separation",
+    "content": "tetra_dehn_ne_zero proves dehnElement 6 (arccos(1/3)) ≠ 0 using smul_ne_zero: the scalar 6 ≠ 0 (by norm_num) and the base element 1 ⊗ [arccos(1/3)] ≠ 0 (by one_tmul_ne_zero with tetra_angle_class_ne_zero). dehn_invariants_differ then combines cube_dehn_zero and tetra_dehn_ne_zero: D(cube) = 0 but D(tet) ≠ 0, so D(cube) ≠ D(tet). This is the invariant separation that underlies Hilbert's Third Problem.",
     "mathContext": "$D(\\text{tet}) = 6 \\cdot (1 \\otimes [\\arccos(1/3)]) \\neq 0$ by smul_ne_zero, since $6 \\neq 0$ and $1 \\otimes [\\arccos(1/3)] \\neq 0$. Thus $D(\\text{cube}) = 0 \\neq D(\\text{tet})$.",
     "significance": "key",
     "relatedConcepts": [

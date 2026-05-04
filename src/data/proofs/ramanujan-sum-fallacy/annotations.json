@@ -33,7 +33,7 @@
     "type": "definition",
     "title": "How Mathlib Handles Infinite Sums",
     "content": "Mathlib's `tsum` (topological sum) function is the standard way to express infinite sums in Lean. Crucially, `tsum f` only equals the expected limit if the sum **converges**. For divergent series, `tsum` returns **0** by convention.",
-    "mathContext": "Formally: `tsum f = if h : Summable f then (h.choose : \u03b1) else 0`. This junk-value convention means all lemmas that do useful things \u2014 `tsum_add`, `tsum_eq_zero_add`, `tsum_geometric_two` \u2014 carry a `Summable f` hypothesis. Without it, `tsum f = 0` and you can only prove $0 = 0$.",
+    "mathContext": "Formally: `tsum f = if h : Summable f then (h.choose : α) else 0`. This junk-value convention means all lemmas that do useful things — `tsum_add`, `tsum_eq_zero_add`, `tsum_geometric_two` — carry a `Summable f` hypothesis. Without it, `tsum f = 0` and you can only prove $0 = 0$.",
     "significance": "key",
     "prerequisites": [
       "real analysis",
@@ -57,7 +57,7 @@
     "type": "definition",
     "title": "Defining the Natural Number Series",
     "content": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean).",
-    "mathContext": "The function `naturals : \u2115 \u2192 \u211d` defined by `naturals n = \u2191(n + 1)` gives the series $\\sum_{n=0}^{\\infty} (n+1) = 1 + 2 + 3 + \\cdots$. The cast `\u2191` coerces `\u2115` to `\u211d`. This offset-by-one indexing is standard in Lean/Mathlib: `Finset.range n = {0, 1, ..., n-1}`, so `\u2211 k in Finset.range n, naturals k = \\frac{n(n+1)}{2}`.",
+    "mathContext": "The function `naturals : ℕ → ℝ` defined by `naturals n = ↑(n + 1)` gives the series $\\sum_{n=0}^{\\infty} (n+1) = 1 + 2 + 3 + \\cdots$. The cast `↑` coerces `ℕ` to `ℝ`. This offset-by-one indexing is standard in Lean/Mathlib: `Finset.range n = {0, 1, ..., n-1}`, so `∑ k in Finset.range n, naturals k = \\frac{n(n+1)}{2}`.",
     "significance": "supporting",
     "prerequisites": [
       "natural numbers",
@@ -79,7 +79,7 @@
     "type": "insight",
     "title": "The False Claim Would Require Convergence",
     "content": "This theorem shows that IF we could prove $\\sum n = -\\frac{1}{12}$, THEN the series would need to be `Summable`. But the series diverges, so this implication is vacuously true - we can never satisfy the hypothesis.",
-    "mathContext": "The argument uses the contrapositive of `tsum_eq_zero_of_not_summable`: if `\u00ac Summable f`, then `tsum f = 0`. So `tsum naturals = -1/12` would force `tsum naturals \u2260 0`, hence `Summable naturals` \u2014 but we prove `\u00ac Summable naturals` by showing partial sums are unbounded. The `sorry` marks the exact point where the informal argument breaks the formal rules.",
+    "mathContext": "The argument uses the contrapositive of `tsum_eq_zero_of_not_summable`: if `¬ Summable f`, then `tsum f = 0`. So `tsum naturals = -1/12` would force `tsum naturals ≠ 0`, hence `Summable naturals` — but we prove `¬ Summable naturals` by showing partial sums are unbounded. The `sorry` marks the exact point where the informal argument breaks the formal rules.",
     "significance": "key",
     "prerequisites": [
       "real analysis",
@@ -102,7 +102,7 @@
     "type": "definition",
     "title": "The Grandi Series",
     "content": "The **Grandi series** $1-1+1-1+\\cdots$ has partial sums that alternate forever between 0 and 1. It does not converge in any standard sense.",
-    "mathContext": "Defined as `grandi n = (-1)^n`. The partial sums are $S_n = \\frac{1-(-1)^{n+1}}{2}$, oscillating between 0 and 1. The **Ces\u00e0ro mean** is $\\lim_{N\\to\\infty}\\frac{1}{N}\\sum_{n=0}^{N-1} S_n = \\frac{1}{2}$, which the Numberphile video conflates with the series limit. In Mathlib: `\u00ac Summable grandi` because the partial sums do not converge.",
+    "mathContext": "Defined as `grandi n = (-1)^n`. The partial sums are $S_n = \\frac{1-(-1)^{n+1}}{2}$, oscillating between 0 and 1. The **Cesàro mean** is $\\lim_{N\\to\\infty}\\frac{1}{N}\\sum_{n=0}^{N-1} S_n = \\frac{1}{2}$, which the Numberphile video conflates with the series limit. In Mathlib: `¬ Summable grandi` because the partial sums do not converge.",
     "significance": "key",
     "prerequisites": [
       "real analysis",
@@ -126,7 +126,7 @@
     "type": "insight",
     "title": "FALLACY: Cannot Prove Grandi = 1/2",
     "content": "Here we attempt to prove the Numberphile claim that $1-1+1-1+\\cdots = \\frac{1}{2}$. **This is impossible** - the `sorry` can never be filled in. Since the series isn't summable, `tsum grandi = 0` by definition, and $0 \\neq \\frac{1}{2}$.",
-    "mathContext": "Formally: `tsum_eq_zero_of_not_summable : \u00ac Summable f \u2192 tsum f = 0`. Since `\u00ac Summable grandi`, we get `tsum grandi = 0`. The goal `tsum grandi = 1/2` reduces to `(0 : \u211d) = 1/2`, which `norm_num` immediately refutes. Any `sorry`-free proof here would yield `False`.",
+    "mathContext": "Formally: `tsum_eq_zero_of_not_summable : ¬ Summable f → tsum f = 0`. Since `¬ Summable grandi`, we get `tsum grandi = 0`. The goal `tsum grandi = 1/2` reduces to `(0 : ℝ) = 1/2`, which `norm_num` immediately refutes. Any `sorry`-free proof here would yield `False`.",
     "significance": "key",
     "prerequisites": [
       "Grandi series",
@@ -148,7 +148,7 @@
     "type": "concept",
     "title": "The Shift-and-Add Trick",
     "content": "The Numberphile proof adds $S_2$ to a shifted copy of itself:\n$$2S_2 = (1-2+3-4+\\cdots) + (0+1-2+3+\\cdots)$$\nThis term-by-term addition is ONLY valid for convergent series!",
-    "mathContext": "The **Riemann series theorem** (Riemann, 1853) states that any conditionally convergent series can be rearranged to converge to any value in $\\mathbb{R} \\cup \\{\\pm\\infty\\}$. For *divergent* series, term-by-term operations are completely undefined. The shift operation in Mathlib is `tsum_eq_zero_add : Summable f \u2192 tsum f = f 0 + tsum (f \u2218 Nat.succ)`, which requires a summability witness.",
+    "mathContext": "The **Riemann series theorem** (Riemann, 1853) states that any conditionally convergent series can be rearranged to converge to any value in $\\mathbb{R} \\cup \\{\\pm\\infty\\}$. For *divergent* series, term-by-term operations are completely undefined. The shift operation in Mathlib is `tsum_eq_zero_add : Summable f → tsum f = f 0 + tsum (f ∘ Nat.succ)`, which requires a summability witness.",
     "significance": "key",
     "prerequisites": [
       "infinite series",
@@ -169,10 +169,10 @@
       "startLine": 78,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alternating Naturals Don't Converge Either",
     "content": "The series $1-2+3-4+5-6+\\cdots$ also diverges. Its partial sums grow without bound in absolute value: $1, -1, 2, -2, 3, -3, \\ldots$",
-    "mathContext": "Define `alternatingNaturals n = (-1)^n * (n + 1)`. The partial sums satisfy $|S_{2k}| = k+1$ and $|S_{2k+1}| = k+1$ \u2014 both grow without bound. `\u00ac Summable alternatingNaturals` follows from the necessary condition: if `Summable f`, then `Filter.Tendsto f atTop (nhds 0)`. But `|alternatingNaturals n| = n+1 \u2192 \u221e`, so it cannot tend to 0.",
+    "mathContext": "Define `alternatingNaturals n = (-1)^n * (n + 1)`. The partial sums satisfy $|S_{2k}| = k+1$ and $|S_{2k+1}| = k+1$ — both grow without bound. `¬ Summable alternatingNaturals` follows from the necessary condition: if `Summable f`, then `Filter.Tendsto f atTop (nhds 0)`. But `|alternatingNaturals n| = n+1 → ∞`, so it cannot tend to 0.",
     "significance": "key",
     "prerequisites": [
       "real analysis",
@@ -195,7 +195,7 @@
     "type": "insight",
     "title": "Shifting Requires Convergence Proof",
     "content": "Mathlib's lemmas for manipulating series (like `tsum_eq_zero_add`) all require a `Summable` hypothesis. This is the **type-level gatekeeper** that prevents invalid reasoning.",
-    "mathContext": "The relevant Mathlib lemma: `theorem tsum_eq_zero_add {f : \u2115 \u2192 \u03b1} (hf : Summable f) : \u2211' n, f n = f 0 + \u2211' n, f (n + 1)`. Without `hf`, both sides equal 0 by `tsum_eq_zero_of_not_summable`, making the equation trivially `0 = 0 + 0`. The `Summable` term is a **proof witness** \u2014 it cannot be faked; you must construct it from first principles.",
+    "mathContext": "The relevant Mathlib lemma: `theorem tsum_eq_zero_add {f : ℕ → α} (hf : Summable f) : ∑' n, f n = f 0 + ∑' n, f (n + 1)`. Without `hf`, both sides equal 0 by `tsum_eq_zero_of_not_summable`, making the equation trivially `0 = 0 + 0`. The `Summable` term is a **proof witness** — it cannot be faked; you must construct it from first principles.",
     "significance": "key",
     "prerequisites": [
       "Lean 4 dependent types",
@@ -217,7 +217,7 @@
     "type": "insight",
     "title": "FALLACY: Shift-Add Blocked by Type System",
     "content": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**. We would need `Summable alternatingNaturals`, but we proved this is false!",
-    "mathContext": "The attempted proof calls `tsum_eq_zero_add h` where `h : Summable alternatingNaturals`. But `alternatingNaturals_not_summable : \u00ac Summable alternatingNaturals` makes it impossible to construct such `h` without `sorry`. Lean's elaborator rejects the proof: there is no term of type `Summable alternatingNaturals` to supply. The `sorry` here is a permanent red flag \u2014 it marks the exact location where the informal argument breaks the formal rules.",
+    "mathContext": "The attempted proof calls `tsum_eq_zero_add h` where `h : Summable alternatingNaturals`. But `alternatingNaturals_not_summable : ¬ Summable alternatingNaturals` makes it impossible to construct such `h` without `sorry`. Lean's elaborator rejects the proof: there is no term of type `Summable alternatingNaturals` to supply. The `sorry` here is a permanent red flag — it marks the exact location where the informal argument breaks the formal rules.",
     "significance": "key",
     "prerequisites": [
       "Lean 4 type checking",
@@ -236,10 +236,10 @@
       "startLine": 110,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Partial Sums Grow Without Bound",
     "content": "The sum $1+2+\\cdots+n = \\frac{n(n+1)}{2}$, which grows without bound as $n \\to \\infty$. This is the formal statement that the series diverges.",
-    "mathContext": "The triangular number formula $T_n = \\frac{n(n+1)}{2}$ gives `\u2211 k in Finset.range n, (k+1) = n*(n+1)/2`. For any bound $M$, choosing $n > 2M$ gives $T_n > M$. Formally: `\u2200 M : \u211d, \u2203 N : \u2115, \u2200 n \u2265 N, M < \u2211 k in Finset.range n, naturals k`. This implies `\u00ac Summable naturals` since summable sequences must have terms tending to 0, but `naturals n = n+1 \u2192 \u221e`.",
+    "mathContext": "The triangular number formula $T_n = \\frac{n(n+1)}{2}$ gives `∑ k in Finset.range n, (k+1) = n*(n+1)/2`. For any bound $M$, choosing $n > 2M$ gives $T_n > M$. Formally: `∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < ∑ k in Finset.range n, naturals k`. This implies `¬ Summable naturals` since summable sequences must have terms tending to 0, but `naturals n = n+1 → ∞`.",
     "significance": "key",
     "prerequisites": [
       "real analysis",
@@ -261,7 +261,7 @@
     "type": "insight",
     "title": "MAIN RESULT: The Sum Does NOT Equal -1/12",
     "content": "Here's the key theorem: $\\sum_{n=1}^{\\infty} n \\neq -\\frac{1}{12}$. The proof is almost trivial once we know the series doesn't converge:\n1. `naturals` is not summable\n2. Therefore `tsum naturals = 0` (by Mathlib convention)\n3. $0 \\neq -\\frac{1}{12}$ (by `norm_num`)",
-    "mathContext": "Proof sketch: `have h0 : tsum naturals = 0 := tsum_eq_zero_of_not_summable naturals_not_summable; have h1 : (0 : \u211d) \u2260 -1/12 := by norm_num; rw [h0]; exact h1`. The three-step argument reflects the mathematical reality: **standard summation assigns no value to this series** \u2014 not $-1/12$, not $+\\infty$, just the junk value 0.",
+    "mathContext": "Proof sketch: `have h0 : tsum naturals = 0 := tsum_eq_zero_of_not_summable naturals_not_summable; have h1 : (0 : ℝ) ≠ -1/12 := by norm_num; rw [h0]; exact h1`. The three-step argument reflects the mathematical reality: **standard summation assigns no value to this series** — not $-1/12$, not $+\\infty$, just the junk value 0.",
     "significance": "key",
     "prerequisites": [
       "real analysis",
@@ -283,7 +283,7 @@
     "type": "concept",
     "title": "What -1/12 Actually Means",
     "content": "The value $-\\frac{1}{12}$ is real - it comes from the **Riemann zeta function** $\\zeta(s) = \\sum n^{-s}$ analytically continued to $s = -1$. But this is a DIFFERENT mathematical operation than ordinary summation.",
-    "mathContext": "The Riemann zeta function $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$ converges for $\\text{Re}(s) > 1$ and extends uniquely to a meromorphic function on $\\mathbb{C} \\setminus \\{1\\}$. At $s = -1$: $\\zeta(-1) = -\\frac{1}{12}$. In Lean, this would be a *different function type*: `riemannZeta : \u2102 \u2192 \u2102` vs `tsum : (\u2115 \u2192 \u211d) \u2192 \u211d`. The Lean type system makes the distinction **syntactically enforced** \u2014 you cannot accidentally confuse ordinary summation with zeta regularization.",
+    "mathContext": "The Riemann zeta function $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$ converges for $\\text{Re}(s) > 1$ and extends uniquely to a meromorphic function on $\\mathbb{C} \\setminus \\{1\\}$. At $s = -1$: $\\zeta(-1) = -\\frac{1}{12}$. In Lean, this would be a *different function type*: `riemannZeta : ℂ → ℂ` vs `tsum : (ℕ → ℝ) → ℝ`. The Lean type system makes the distinction **syntactically enforced** — you cannot accidentally confuse ordinary summation with zeta regularization.",
     "significance": "key",
     "prerequisites": [
       "complex analysis",
@@ -307,7 +307,7 @@
     "type": "insight",
     "title": "Step 2 Fails: Cannot Shift Divergent Series",
     "content": "The second step uses the shift-and-add manipulation. **BLOCKED**: This requires `Summable` which we cannot prove for divergent series.",
-    "mathContext": "Step 2 of the Numberphile argument claims $2S_2 = \\frac{1}{4}$ by shifting and adding. In Lean: `tsum alternatingNaturals + tsum (fun n => alternatingNaturals (n+1)) = 1/4`. By `tsum_eq_zero_of_not_summable`, both `tsum`s equal 0, giving `0 + 0 = 0 \u2260 1/4`. The shift lemma `tsum_eq_zero_add` is unavailable since `\u00ac Summable alternatingNaturals`. Step 2 thus fails in two independent ways: the computed value is wrong, and the manipulation is illegal.",
+    "mathContext": "Step 2 of the Numberphile argument claims $2S_2 = \\frac{1}{4}$ by shifting and adding. In Lean: `tsum alternatingNaturals + tsum (fun n => alternatingNaturals (n+1)) = 1/4`. By `tsum_eq_zero_of_not_summable`, both `tsum`s equal 0, giving `0 + 0 = 0 ≠ 1/4`. The shift lemma `tsum_eq_zero_add` is unavailable since `¬ Summable alternatingNaturals`. Step 2 thus fails in two independent ways: the computed value is wrong, and the manipulation is illegal.",
     "significance": "key",
     "prerequisites": [
       "alternating series",
@@ -329,7 +329,7 @@
     "type": "insight",
     "title": "Step 3 'Works' But Is Useless",
     "content": "Interestingly, the equation $S - S_2 = 4S$ **does typecheck** - but it's trivially true because both sides equal 0! This shows how Mathlib's convention prevents false conclusions: we can prove $0 - 0 = 4 \\cdot 0$, but this tells us nothing about $-\\frac{1}{12}$.",
-    "mathContext": "The algebraic step $S - S_2 = 4S$ typechecks as: `tsum naturals - tsum alternatingNaturals = 4 * tsum naturals`. Since both `tsum` values are 0 by `tsum_eq_zero_of_not_summable`, this becomes `0 - 0 = 4 * 0`, i.e., `0 = 0` \u2014 provable by `ring`. The Numberphile argument uses this *form* to conclude $S = -\\frac{1}{12}$, but Lean sees only `0 = 0`: no information about the actual series value is transmitted.",
+    "mathContext": "The algebraic step $S - S_2 = 4S$ typechecks as: `tsum naturals - tsum alternatingNaturals = 4 * tsum naturals`. Since both `tsum` values are 0 by `tsum_eq_zero_of_not_summable`, this becomes `0 - 0 = 4 * 0`, i.e., `0 = 0` — provable by `ring`. The Numberphile argument uses this *form* to conclude $S = -\\frac{1}{12}$, but Lean sees only `0 = 0`: no information about the actual series value is transmitted.",
     "significance": "key",
     "prerequisites": [
       "Mathlib tsum API",
@@ -351,7 +351,7 @@
     "type": "concept",
     "title": "Conclusion: Type Systems Enforce Rigor",
     "content": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1. **Summable typeclass**: Acts as proof obligation before series manipulation\n2. **tsum = 0 convention**: Prevents arithmetic on divergent 'values'\n3. **Distinct types**: Regularization would be a different function entirely\n\nThe -1/12 result is useful in physics, but it requires different mathematical machinery that Lean would model with appropriate types.",
-    "mathContext": "The `Summable` typeclass is a **proof-carrying data** pattern: before calling `tsum_add (h1 : Summable f) (h2 : Summable g)`, you must supply witnesses `h1` and `h2` \u2014 real mathematical proofs that cannot be fabricated. Lean's kernel verifies proof correctness definitionally, making it impossible to accidentally apply series lemmas to divergent series. This is the fundamental difference between informal mathematics (where errors propagate undetected) and formal verification (where each step is machine-checked).",
+    "mathContext": "The `Summable` typeclass is a **proof-carrying data** pattern: before calling `tsum_add (h1 : Summable f) (h2 : Summable g)`, you must supply witnesses `h1` and `h2` — real mathematical proofs that cannot be fabricated. Lean's kernel verifies proof correctness definitionally, making it impossible to accidentally apply series lemmas to divergent series. This is the fundamental difference between informal mathematics (where errors propagate undetected) and formal verification (where each step is machine-checked).",
     "significance": "key",
     "prerequisites": [
       "Lean 4 type system",

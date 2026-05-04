@@ -8,8 +8,8 @@
     },
     "type": "insight",
     "title": "The Banach-Tarski Paradox: Duplicating a Ball",
-    "content": "The module docstring frames the paradox: the closed unit ball in \u211d\u00b3 can be cut into finitely many pieces (5 suffice) and those pieces rearranged \u2014 using only rotations and translations \u2014 into two complete copies of the original ball. This violates naive conservation of volume, but the pieces are non-measurable (constructed via Axiom of Choice) so Lebesgue measure cannot be assigned to them. The key ingredients are listed: the free subgroup F\u2082 in SO(3) (Hausdorff 1914), the paradoxical decomposition of F\u2082, extension to S\u00b2, and extension to B\u00b3.",
-    "mathContext": "Banach-Tarski is a theorem of ZFC (Zermelo-Fraenkel set theory with Axiom of Choice). In ZF alone, it is independent. The pieces are constructed as coset representatives of the free group $F_2 = \\langle \\varphi, \\psi \\rangle \\subset \\text{SO}(3)$ acting on $S^2$, requiring an uncountable choice function. The minimum number of pieces is 5 (Straus\u2013von Neumann), achievable using 2 pieces for one copy and 3 for the other.",
+    "content": "The module docstring frames the paradox: the closed unit ball in ℝ³ can be cut into finitely many pieces (5 suffice) and those pieces rearranged — using only rotations and translations — into two complete copies of the original ball. This violates naive conservation of volume, but the pieces are non-measurable (constructed via Axiom of Choice) so Lebesgue measure cannot be assigned to them. The key ingredients are listed: the free subgroup F₂ in SO(3) (Hausdorff 1914), the paradoxical decomposition of F₂, extension to S², and extension to B³.",
+    "mathContext": "Banach-Tarski is a theorem of ZFC (Zermelo-Fraenkel set theory with Axiom of Choice). In ZF alone, it is independent. The pieces are constructed as coset representatives of the free group $F_2 = \\langle \\varphi, \\psi \\rangle \\subset \\text{SO}(3)$ acting on $S^2$, requiring an uncountable choice function. The minimum number of pieces is 5 (Straus–von Neumann), achievable using 2 pieces for one copy and 3 for the other.",
     "significance": "key",
     "relatedConcepts": [
       "Axiom of Choice",
@@ -33,7 +33,7 @@
     },
     "type": "definition",
     "title": "G-Equidecomposability: The Abstract Framework",
-    "content": "The definition captures 'cutting and rearranging using group elements' precisely: A and B are G-equidecomposable if A can be partitioned into n pieces, each piece moved by a group element g_i, so the images form a partition of B. The group G represents the allowed moves (rotations, translations, etc.). The notation A \u2243\u1d33[G] B is introduced. Reflexivity is proved: every set A is G-equidecomposable to itself via 1 piece and the identity element.",
+    "content": "The definition captures 'cutting and rearranging using group elements' precisely: A and B are G-equidecomposable if A can be partitioned into n pieces, each piece moved by a group element g_i, so the images form a partition of B. The group G represents the allowed moves (rotations, translations, etc.). The notation A ≃ᴳ[G] B is introduced. Reflexivity is proved: every set A is G-equidecomposable to itself via 1 piece and the identity element.",
     "mathContext": "$A \\sim_G B$ iff $\\exists n \\in \\mathbb{N}$, $(P_i)_{i < n}$ with each $P_i \\subseteq A$, pairwise disjoint, $A = \\bigsqcup_i P_i$, and $(g_i)_{i < n}$ in $G$ with $B = \\bigsqcup_i g_i P_i$. This is an equivalence relation on subsets of any $G$-set (the symmetry and transitivity proofs are non-trivial; only reflexivity is proved here). Equidecomposability preserves Haar measure (when G is measure-preserving), which is why paradoxical sets violate measure theory.",
     "significance": "key",
     "relatedConcepts": [
@@ -82,7 +82,7 @@
     },
     "type": "insight",
     "title": "Paradoxical Sets Have No Finite Invariant Measure",
-    "content": "This theorem proves the key measure-theoretic consequence: if A is G-paradoxical, any G-invariant finitely-additive measure \u03bc must assign A measure 0 or \u221e. The proof structure: equidecomposability forces \u03bc(A) = \u03bc(B) and \u03bc(A) = \u03bc(C), then finite additivity of disjoint subsets gives \u03bc(A) \u2265 \u03bc(B) + \u03bc(C) = 2\u03bc(A), so \u03bc(A) + \u03bc(A) = \u03bc(A). The helper lemma ENNReal.eq_zero_or_top_of_add_eq_self (fully proved) then gives the result.",
+    "content": "This theorem proves the key measure-theoretic consequence: if A is G-paradoxical, any G-invariant finitely-additive measure μ must assign A measure 0 or ∞. The proof structure: equidecomposability forces μ(A) = μ(B) and μ(A) = μ(C), then finite additivity of disjoint subsets gives μ(A) ≥ μ(B) + μ(C) = 2μ(A), so μ(A) + μ(A) = μ(A). The helper lemma ENNReal.eq_zero_or_top_of_add_eq_self (fully proved) then gives the result.",
     "mathContext": "In $\\mathbb{R}_{\\geq 0}^\\infty$: $a + a = a$ implies $a = 0$ or $a = \\top$ (infinity). Proof: lift $a$ to $\\mathbb{R}_{\\geq 0}$ (using finiteness), then $a + a = a$ in $\\mathbb{R}_{\\geq 0}$ gives $a = 0$ by linarith. The main argument has one sorry: showing $\\mu(A) + \\mu(A) = \\mu(A)$ requires knowing $\\mu(B \\cup C) = \\mu(A)$ (not just $B \\cup C \\subseteq A$). The full argument uses the covering from the equidecomposability of $A$ with $B \\cup C$ (plus possibly extra pieces), handled by monotonicity.",
     "significance": "key",
     "relatedConcepts": [
@@ -105,15 +105,15 @@
       "endLine": 144
     },
     "type": "insight",
-    "title": "ENNReal Helper: a + a = a implies a = 0 or \u221e (Proved)",
-    "content": "This lemma is fully proved (no sorry). In \u211d\u22650\u221e (extended non-negative reals), if a + a = a then a must be 0 or \u22a4 (infinity). The proof lifts a to \u211d\u22650 using the finiteness assumption (a \u2260 \u22a4), then derives a = 0 from a + a = a by linarith. This captures the essential arithmetic of the paradox: 'measure doubled = original measure' forces extremal values.",
-    "mathContext": "The proof uses: (1) push_neg to separate the \u00ac(a = 0 \u2228 a = \u22a4) into a \u2260 0 \u2227 a \u2260 \u22a4; (2) lift a to \u211d\u22650 using a \u2260 \u22a4; (3) cast the ENNReal equation to \u211d\u22650 using ENNReal.coe_add and ENNReal.coe_inj; (4) linarith to conclude a = 0, contradicting a \u2260 0. The key coercion: \u2191a + \u2191a = \u2191a in \u211d\u22650 gives 2\u00b7a = a (in \u211d\u22650), hence a = 0.",
-    "significance": "important",
+    "title": "ENNReal Helper: a + a = a implies a = 0 or ∞ (Proved)",
+    "content": "This lemma is fully proved (no sorry). In ℝ≥0∞ (extended non-negative reals), if a + a = a then a must be 0 or ⊤ (infinity). The proof lifts a to ℝ≥0 using the finiteness assumption (a ≠ ⊤), then derives a = 0 from a + a = a by linarith. This captures the essential arithmetic of the paradox: 'measure doubled = original measure' forces extremal values.",
+    "mathContext": "The proof uses: (1) push_neg to separate the ¬(a = 0 ∨ a = ⊤) into a ≠ 0 ∧ a ≠ ⊤; (2) lift a to ℝ≥0 using a ≠ ⊤; (3) cast the ENNReal equation to ℝ≥0 using ENNReal.coe_add and ENNReal.coe_inj; (4) linarith to conclude a = 0, contradicting a ≠ 0. The key coercion: ↑a + ↑a = ↑a in ℝ≥0 gives 2·a = a (in ℝ≥0), hence a = 0.",
+    "significance": "key",
     "relatedConcepts": [
       "ENNReal arithmetic",
       "extended reals",
       "measure paradoxes",
-      "linarith in \u211d\u22650"
+      "linarith in ℝ≥0"
     ],
     "prerequisites": [
       "ENNReal.coe_add",
@@ -130,8 +130,8 @@
     },
     "type": "insight",
     "title": "Hausdorff's Theorem: Free Subgroup of SO(3)",
-    "content": "Section III defines the geometric objects: `RigidMotion3` (isometric equivalences of \u211d\u00b3, a proxy for SE(3)), `unitBall3 = Metric.closedBall 0 1`, and `unitSphere3 = Metric.sphere 0 1`. Section IV states Hausdorff's theorem (1914): the rotation group SO(3) contains a free subgroup of rank 2. Specifically, \u03c6 = rotation by arccos(1/3) around the z-axis and \u03c8 = rotation by arccos(1/3) around the x-axis freely generate a copy of F\u2082 inside SO(3). The proof is axiomatized (sorry); the full proof requires 300+ lines showing that nontrivial words in \u03c6 and \u03c8 produce isometries with irrational entries, hence \u2260 identity. In Lean, the statement uses `LinearIsometryEquiv \u211d (Fin 3)` and expresses freeness via the injectivity of `FreeGroup.lift`.",
-    "mathContext": "Hausdorff's theorem: $\\exists \\varphi, \\psi \\in \\text{SO}(3)$ such that $\\text{FreeGroup.lift}(b \\mapsto \\text{if } b \\text{ then } \\varphi \\text{ else } \\psi)$ is injective. The rotations are $\\varphi_z = R_z(\\arccos(1/3))$ and $\\psi_x = R_x(\\arccos(1/3))$. The number-theoretic freeness argument: any nontrivial reduced word $w(\\varphi, \\psi)$ applied to $(0,0,1)^\\top$ produces a vector with irrational $y$-component of the form $p + q\\sqrt{2}\\sqrt{1-1/9} = p + 2q\\sqrt{2}/3$ (for integers $p, q$ with $q \\neq 0$), which is \u2260 $(0,0,1)^\\top$.",
+    "content": "Section III defines the geometric objects: `RigidMotion3` (isometric equivalences of ℝ³, a proxy for SE(3)), `unitBall3 = Metric.closedBall 0 1`, and `unitSphere3 = Metric.sphere 0 1`. Section IV states Hausdorff's theorem (1914): the rotation group SO(3) contains a free subgroup of rank 2. Specifically, φ = rotation by arccos(1/3) around the z-axis and ψ = rotation by arccos(1/3) around the x-axis freely generate a copy of F₂ inside SO(3). The proof is axiomatized (sorry); the full proof requires 300+ lines showing that nontrivial words in φ and ψ produce isometries with irrational entries, hence ≠ identity. In Lean, the statement uses `LinearIsometryEquiv ℝ (Fin 3)` and expresses freeness via the injectivity of `FreeGroup.lift`.",
+    "mathContext": "Hausdorff's theorem: $\\exists \\varphi, \\psi \\in \\text{SO}(3)$ such that $\\text{FreeGroup.lift}(b \\mapsto \\text{if } b \\text{ then } \\varphi \\text{ else } \\psi)$ is injective. The rotations are $\\varphi_z = R_z(\\arccos(1/3))$ and $\\psi_x = R_x(\\arccos(1/3))$. The number-theoretic freeness argument: any nontrivial reduced word $w(\\varphi, \\psi)$ applied to $(0,0,1)^\\top$ produces a vector with irrational $y$-component of the form $p + q\\sqrt{2}\\sqrt{1-1/9} = p + 2q\\sqrt{2}/3$ (for integers $p, q$ with $q \\neq 0$), which is ≠ $(0,0,1)^\\top$.",
     "significance": "key",
     "relatedConcepts": [
       "free group",
@@ -142,7 +142,7 @@
       "Hausdorff paradox"
     ],
     "prerequisites": [
-      "EuclideanSpace \u211d (Fin 3)",
+      "EuclideanSpace ℝ (Fin 3)",
       "LinearIsometryEquiv",
       "FreeGroup",
       "Metric.closedBall"
@@ -157,8 +157,8 @@
     },
     "type": "insight",
     "title": "Banach-Tarski: The Main Theorem (Axiomatized)",
-    "content": "The main theorem states: the unit ball B\u00b3 in \u211d\u00b3 can be partitioned into n pieces, moved by isometries g\u2081 and g\u2082, to form two copies of B\u00b3 (the second copy translated by 2\u00b7e\u2081). The statement uses IsometryEquiv for rigid motions, Fin n for indexing pieces, and image ('' notation) for applying maps to sets. The proof is axiomatized with sorry; the full proof requires ~800 lines via Hausdorff's free subgroup.",
-    "mathContext": "The pieces are not unique. Wagon (1985) shows 5 pieces suffice: 2 pieces from the free group action on one copy, 3 for the other. The pieces are constructed via a transfinite choice (Axiom of Choice) and are necessarily non-measurable (as proved in banach_tarski_pieces_nonmeasurable). In Lean, RigidMotion3 is defined as EuclideanSpace \u211d (Fin 3) \u2243\u1d62 EuclideanSpace \u211d (Fin 3) (isometric equivalences), which includes rotations and translations.",
+    "content": "The main theorem states: the unit ball B³ in ℝ³ can be partitioned into n pieces, moved by isometries g₁ and g₂, to form two copies of B³ (the second copy translated by 2·e₁). The statement uses IsometryEquiv for rigid motions, Fin n for indexing pieces, and image ('' notation) for applying maps to sets. The proof is axiomatized with sorry; the full proof requires ~800 lines via Hausdorff's free subgroup.",
+    "mathContext": "The pieces are not unique. Wagon (1985) shows 5 pieces suffice: 2 pieces from the free group action on one copy, 3 for the other. The pieces are constructed via a transfinite choice (Axiom of Choice) and are necessarily non-measurable (as proved in banach_tarski_pieces_nonmeasurable). In Lean, RigidMotion3 is defined as EuclideanSpace ℝ (Fin 3) ≃ᵢ EuclideanSpace ℝ (Fin 3) (isometric equivalences), which includes rotations and translations.",
     "significance": "key",
     "relatedConcepts": [
       "isometry",
@@ -183,7 +183,7 @@
     },
     "type": "insight",
     "title": "Corollary: Banach-Tarski Pieces Are Non-Measurable",
-    "content": "The theorem `banach_tarski_pieces_nonmeasurable` states that the unit ball contains a non-Lebesgue-measurable subset. The statement is axiomatized (sorry) as a consequence of `banach_tarski`. The docstring explains the argument: if all pieces were measurable, then countable additivity of Lebesgue measure would give \u03bb(B\u00b3) = \u03a3\u1d62 \u03bb(p\u1d62); but the two reassemblies give \u03a3\u1d62 \u03bb(g\u2081\u1d62(p\u1d62)) = \u03bb(B\u00b3) and \u03a3\u1d62 \u03bb(g\u2082\u1d62(p\u1d62)) = \u03bb(B\u00b3); since isometries preserve measure, \u03a3\u1d62 \u03bb(p\u1d62) = 2\u03bb(B\u00b3) = 2\u00b7(4\u03c0/3), contradicting \u03a3\u1d62 \u03bb(p\u1d62) = \u03bb(B\u00b3). This impossibility proves at least one piece must be non-measurable.",
+    "content": "The theorem `banach_tarski_pieces_nonmeasurable` states that the unit ball contains a non-Lebesgue-measurable subset. The statement is axiomatized (sorry) as a consequence of `banach_tarski`. The docstring explains the argument: if all pieces were measurable, then countable additivity of Lebesgue measure would give λ(B³) = Σᵢ λ(pᵢ); but the two reassemblies give Σᵢ λ(g₁ᵢ(pᵢ)) = λ(B³) and Σᵢ λ(g₂ᵢ(pᵢ)) = λ(B³); since isometries preserve measure, Σᵢ λ(pᵢ) = 2λ(B³) = 2·(4π/3), contradicting Σᵢ λ(pᵢ) = λ(B³). This impossibility proves at least one piece must be non-measurable.",
     "mathContext": "Formal argument: if pieces $P_i$ are Lebesgue measurable, $\\lambda(B^3) = \\sum_i \\lambda(P_i)$ (partition). Isometry-preservation: $\\lambda(g_j^{(i)}(P_i)) = \\lambda(P_i)$. Two covers: $\\sum_i \\lambda(g_1^{(i)}(P_i)) = \\lambda(B^3)$ and $\\sum_i \\lambda(g_2^{(i)}(P_i)) = \\lambda(B^3 + 2e_1) = \\lambda(B^3)$. So $\\lambda(B^3) = \\sum_i \\lambda(P_i) = \\sum_i \\lambda(P_i) = \\lambda(B^3)$, i.e., $\\lambda(B^3) = 2\\lambda(B^3)$. Since $\\lambda(B^3) = 4\\pi/3 \\in (0,\\infty)$, contradiction.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -208,9 +208,9 @@
     },
     "type": "definition",
     "title": "Amenable Groups: The Group-Theoretic Obstruction",
-    "content": "IsAmenable G defines amenability: the group G admits a finitely-additive left-invariant probability measure on ALL subsets of G. Amenable groups include \u2124 (via Ces\u00e0ro means, stated as int_amenable with sorry) and all finite groups, but NOT F\u2082 (free group on 2 generators, stated as free_group_not_amenable with sorry). The non-amenability of F\u2082 is the group-theoretic root cause of Banach-Tarski: F\u2082 \u21aa SO(3) \u2192 SO(3) not amenable \u2192 unit ball paradoxical.",
-    "mathContext": "Day's theorem (1949): a group $G$ is amenable iff every $G$-set has no paradoxical subset. Equivalently (Tarski), every $G$-set admits a $G$-invariant finitely-additive probability measure. The free group $F_2$ has a paradoxical decomposition: $F_2 = W(a) \\sqcup aW(a^{-1})$ where $F_2 \\sim W(a)$ (via $a$) and $F_2 \\sim aW(a^{-1})$ directly. The Ces\u00e0ro mean construction for \u2124: $\\mu(A) = \\lim_{N \\to \\infty} |A \\cap [-N, N]| / (2N+1)$ (when the limit exists; extend via Banach limits).",
-    "significance": "important",
+    "content": "IsAmenable G defines amenability: the group G admits a finitely-additive left-invariant probability measure on ALL subsets of G. Amenable groups include ℤ (via Cesàro means, stated as int_amenable with sorry) and all finite groups, but NOT F₂ (free group on 2 generators, stated as free_group_not_amenable with sorry). The non-amenability of F₂ is the group-theoretic root cause of Banach-Tarski: F₂ ↪ SO(3) → SO(3) not amenable → unit ball paradoxical.",
+    "mathContext": "Day's theorem (1949): a group $G$ is amenable iff every $G$-set has no paradoxical subset. Equivalently (Tarski), every $G$-set admits a $G$-invariant finitely-additive probability measure. The free group $F_2$ has a paradoxical decomposition: $F_2 = W(a) \\sqcup aW(a^{-1})$ where $F_2 \\sim W(a)$ (via $a$) and $F_2 \\sim aW(a^{-1})$ directly. The Cesàro mean construction for ℤ: $\\mu(A) = \\lim_{N \\to \\infty} |A \\cap [-N, N]| / (2N+1)$ (when the limit exists; extend via Banach limits).",
+    "significance": "key",
     "relatedConcepts": [
       "Day's theorem",
       "Tarski's theorem",

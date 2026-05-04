@@ -102,7 +102,7 @@
     "title": "Complete Platonic Solid Classification",
     "content": "The theorem cube_isolated_dehn_invariant packages the complete 5-solid classification into a single conjunction. The cube (12 edges, π/2 dihedral) has D = 0; all other Platonic solids have D ≠ 0. The tetrahedron and octahedron results come from OQ02OQ02; the dodecahedron is new in this file; the icosahedron uses the axiomatized angle irrationality. The classification has an immediate geometric consequence: no scissors-congruence exists between the cube and any other Platonic solid.",
     "mathContext": "Five Platonic solids (V-E+F = 2): Cube (8-12+6=2, π/2), Tetrahedron (4-6+4=2, arccos(1/3)), Octahedron (6-12+8=2, arccos(-1/3)), Dodecahedron (20-30+12=2, arccos(-1/√5)), Icosahedron (12-30+20=2, arccos(-√5/3)). All non-cube angles are irrational multiples of π, giving nonzero Dehn invariants. The cube's angle π/2 = (1/2)π is rational, giving D = 0.",
-    "significance": "main-result",
+    "significance": "critical",
     "relatedConcepts": [
       "Platonic solids",
       "Dehn invariant",

@@ -6,15 +6,15 @@
       "startLine": 1,
       "endLine": 28
     },
-    "type": "context",
+    "type": "concept",
     "title": "Decomposing Gauss-Wantzel into Five Verifiable Steps",
-    "content": "The Gauss-Wantzel theorem reduces to verifying five logical steps for any candidate n. This file's header makes the decomposition explicit: (a) [\u211a(\u03b6\u2099):\u211a] = \u03c6(n) \u2014 available in Mathlib as IsCyclotomicExtension.finrank; (b) cos(2\u03c0/n) generates the maximal real subfield \u211a(\u03b6\u2099)\u207a \u2014 geometric fact needing assembly; (c) [\u211a(cos 2\u03c0/n):\u211a] = \u03c6(n)/2 \u2014 follows from (a)+(b); (d) n-gon constructible \u2194 [\u211a(cos 2\u03c0/n):\u211a] is a power of 2 \u2014 proved in OQ02; (e) \u03c6(n)/2 = 2^k \u2194 \u03c6(n) = 2^{k+1} \u2014 **proved in this file**. Step (e) is the arithmetic bridge missing from OQ02-OQ03 that this extension supplies. The main contribution is that once Mathlib's cyclotomic field machinery is assembled for steps (a)-(d), step (e) is already formalized here and needs no additional work.",
+    "content": "The Gauss-Wantzel theorem reduces to verifying five logical steps for any candidate n. This file's header makes the decomposition explicit: (a) [ℚ(ζₙ):ℚ] = φ(n) — available in Mathlib as IsCyclotomicExtension.finrank; (b) cos(2π/n) generates the maximal real subfield ℚ(ζₙ)⁺ — geometric fact needing assembly; (c) [ℚ(cos 2π/n):ℚ] = φ(n)/2 — follows from (a)+(b); (d) n-gon constructible ↔ [ℚ(cos 2π/n):ℚ] is a power of 2 — proved in OQ02; (e) φ(n)/2 = 2^k ↔ φ(n) = 2^{k+1} — **proved in this file**. Step (e) is the arithmetic bridge missing from OQ02-OQ03 that this extension supplies. The main contribution is that once Mathlib's cyclotomic field machinery is assembled for steps (a)-(d), step (e) is already formalized here and needs no additional work.",
     "mathContext": "Chain: $n$-gon constructible $\\Leftrightarrow$ $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ (Mathlib) $\\Leftrightarrow$ $[\\mathbb{Q}(\\cos 2\\pi/n):\\mathbb{Q}] = \\varphi(n)/2$ (real subfield) $\\Leftrightarrow$ $\\varphi(n)/2 = 2^k$ (OQ02) $\\Leftrightarrow$ $\\varphi(n) = 2^{k+1}$ (this file) $\\Leftrightarrow$ $n = 2^a \\cdot \\prod p_i$ (Fermat primes).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gauss-Wantzel theorem decomposition",
       "IsCyclotomicExtension.finrank",
-      "maximal real subfield \u211a(\u03b6\u2099)\u207a",
+      "maximal real subfield ℚ(ζₙ)⁺",
       "compass-straightedge constructibility",
       "Fermat primes"
     ],
@@ -32,18 +32,18 @@
       "endLine": 76
     },
     "type": "insight",
-    "title": "The Arithmetic Bridge: \u03c6(n)/2 = 2^(k\u22121) iff \u03c6(n) = 2^k",
-    "content": "Section I proves the key arithmetic bridge: totient_pow2_iff_half_pow2 (for n \u2265 3): \u03c6(n) = 2^k iff \u03c6(n)/2 = 2^j. The proof uses two helper lemmas. pow2_of_half_pow2: if 2 | m and m/2 = 2^k then m = 2^{k+1}, proved by rewriting m = 2\u00b7(m/2) using Nat.mul_div_cancel'. half_pow2_of_pow2: 2^{k+1}/2 = 2^k, proved by rewriting pow_succ then Nat.mul_div_cancel_left. totient_even_of_ge_three: 2 | \u03c6(n) for n \u2265 3, proved by Nat.totient_even (which captures that -1 \u2208 (\u2124/n\u2124)* has order 2). The iff proof: (\u2192) if \u03c6(n) = 2^k with k \u2265 1 (ensured because totient is positive for n \u2265 1 and equals 1 only for n = 1,2), then \u03c6(n)/2 = 2^{k-1}; (\u2190) if \u03c6(n)/2 = 2^j, use pow2_of_half_pow2 with totient_even_of_ge_three to get \u03c6(n) = 2^{j+1}. The case k = 0 (\u03c6(n) = 1) is ruled out for n \u2265 3 by totient_pos.",
+    "title": "The Arithmetic Bridge: φ(n)/2 = 2^(k−1) iff φ(n) = 2^k",
+    "content": "Section I proves the key arithmetic bridge: totient_pow2_iff_half_pow2 (for n ≥ 3): φ(n) = 2^k iff φ(n)/2 = 2^j. The proof uses two helper lemmas. pow2_of_half_pow2: if 2 | m and m/2 = 2^k then m = 2^{k+1}, proved by rewriting m = 2·(m/2) using Nat.mul_div_cancel'. half_pow2_of_pow2: 2^{k+1}/2 = 2^k, proved by rewriting pow_succ then Nat.mul_div_cancel_left. totient_even_of_ge_three: 2 | φ(n) for n ≥ 3, proved by Nat.totient_even (which captures that -1 ∈ (ℤ/nℤ)* has order 2). The iff proof: (→) if φ(n) = 2^k with k ≥ 1 (ensured because totient is positive for n ≥ 1 and equals 1 only for n = 1,2), then φ(n)/2 = 2^{k-1}; (←) if φ(n)/2 = 2^j, use pow2_of_half_pow2 with totient_even_of_ge_three to get φ(n) = 2^{j+1}. The case k = 0 (φ(n) = 1) is ruled out for n ≥ 3 by totient_pos.",
     "mathContext": "For $n \\geq 3$: $\\varphi(n)$ is even (since $-1 \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ has order 2). Iff: $\\varphi(n) = 2^k \\Leftrightarrow \\varphi(n)/2 = 2^{k-1}$. Key: $k \\geq 1$ is forced because $\\varphi(n) \\geq 2$ for $n \\geq 3$.",
     "significance": "key",
     "relatedConcepts": [
-      "Nat.totient_even (\u03c6(n) even for n \u2265 3)",
-      "pow_succ for 2^(k+1) = 2\u00b72^k",
+      "Nat.totient_even (φ(n) even for n ≥ 3)",
+      "pow_succ for 2^(k+1) = 2·2^k",
       "Nat.mul_div_cancel' for exact division",
-      "Nat.totient_pos for \u03c6(n) \u2265 1"
+      "Nat.totient_pos for φ(n) ≥ 1"
     ],
     "prerequisites": [
-      "Euler's totient function \u03c6(n)",
+      "Euler's totient function φ(n)",
       "Nat.totient_even in Mathlib",
       "integer division exactness for powers of 2"
     ]
@@ -55,21 +55,21 @@
       "startLine": 77,
       "endLine": 157
     },
-    "type": "technique",
-    "title": "Non-Constructibility via Odd Prime Divisors of \u03c6(n)",
-    "content": "Section II provides the non-constructibility criterion and applies it to all non-constructible n \u2264 50. not_totient_pow2_of_odd_prime_dvd: if prime p \u2260 2 divides \u03c6(n), then TotientIsPow2 n is false. Proof: suppose \u03c6(n) = 2^k; then p | 2^k; by Nat.Prime.dvd_of_dvd_pow: p | 2; since p is prime and p \u2260 2: contradiction. The applications follow a template: `not_totient_pow2_of_odd_prime_dvd (by decide) (by decide) (show q \u2223 Nat.totient n by decide)`. For each non-constructible n, an explicit odd prime divisor is exhibited: e.g., for n=19: 3 | \u03c6(19) = 18 (via `show 3 \u2223 Nat.totient 19 by decide`); for n=23: 11 | \u03c6(23) = 22; for n=29: 7 | \u03c6(29) = 28; for n=47: 23 | \u03c6(47) = 46. This approach \u2014 exhibiting a single odd prime factor in \u03c6(n) \u2014 gives one-line non-constructibility proofs for all 31 non-constructible n \u2264 50.",
+    "type": "concept",
+    "title": "Non-Constructibility via Odd Prime Divisors of φ(n)",
+    "content": "Section II provides the non-constructibility criterion and applies it to all non-constructible n ≤ 50. not_totient_pow2_of_odd_prime_dvd: if prime p ≠ 2 divides φ(n), then TotientIsPow2 n is false. Proof: suppose φ(n) = 2^k; then p | 2^k; by Nat.Prime.dvd_of_dvd_pow: p | 2; since p is prime and p ≠ 2: contradiction. The applications follow a template: `not_totient_pow2_of_odd_prime_dvd (by decide) (by decide) (show q ∣ Nat.totient n by decide)`. For each non-constructible n, an explicit odd prime divisor is exhibited: e.g., for n=19: 3 | φ(19) = 18 (via `show 3 ∣ Nat.totient 19 by decide`); for n=23: 11 | φ(23) = 22; for n=29: 7 | φ(29) = 28; for n=47: 23 | φ(47) = 46. This approach — exhibiting a single odd prime factor in φ(n) — gives one-line non-constructibility proofs for all 31 non-constructible n ≤ 50.",
     "mathContext": "Non-constructibility criterion: $\\exists$ odd prime $p$ with $p \\mid \\varphi(n)$ $\\Rightarrow$ $\\varphi(n) \\neq 2^k$. Contrapositive of: $\\varphi(n) = 2^k$ $\\Rightarrow$ all prime factors of $\\varphi(n)$ are 2. Template: for $n = 19$, $\\varphi(19) = 18 = 2 \\cdot 3^2$, so $3 \\mid \\varphi(19)$.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.Prime.dvd_of_dvd_pow (prime divisor of prime power)",
       "decide for small computations",
       "TotientIsPow2 predicate",
-      "prime factorization of \u03c6(n)"
+      "prime factorization of φ(n)"
     ],
     "prerequisites": [
       "Nat.Prime.dvd_of_dvd_pow in Mathlib",
       "decide tactic for decidable propositions",
-      "\u03c6(n) formula for primes and prime powers"
+      "φ(n) formula for primes and prime powers"
     ]
   },
   {
@@ -81,18 +81,18 @@
     },
     "type": "insight",
     "title": "Multiplicativity of TotientIsPow2: Products Preserve Powers of 2",
-    "content": "Sections IV\u2013V develop structural results for the totient function. totient_multiplicative wraps Nat.totient_mul: \u03c6(mn) = \u03c6(m)\u00b7\u03c6(n) when gcd(m,n) = 1. totient_pow2_mul: if TotientIsPow2 m and TotientIsPow2 n and gcd(m,n) = 1, then TotientIsPow2 (m\u00b7n). Proof: \u03c6(m) = 2^a, \u03c6(n) = 2^b gives \u03c6(mn) = 2^a \u00b7 2^b = 2^{a+b} by pow_add. The contrapositive not_totient_pow2_factor: if \u00acTotientIsPow2 (m\u00b7n) then \u00acTotientIsPow2 m \u2228 \u00acTotientIsPow2 n, proved by by_contra then push_neg and applying totient_pow2_mul. totient_pow2_prime_iff: for prime p, TotientIsPow2 p \u2194 p-1 = 2^k. This is the Fermat prime characterization: p is a Fermat prime (p = 2^{2^j}+1) iff \u03c6(p) = p-1 is a power of 2. Together these structural results explain why constructibility reduces to the prime factorization: n is constructible iff its odd prime factors are all Fermat primes and appear to the first power.",
+    "content": "Sections IV–V develop structural results for the totient function. totient_multiplicative wraps Nat.totient_mul: φ(mn) = φ(m)·φ(n) when gcd(m,n) = 1. totient_pow2_mul: if TotientIsPow2 m and TotientIsPow2 n and gcd(m,n) = 1, then TotientIsPow2 (m·n). Proof: φ(m) = 2^a, φ(n) = 2^b gives φ(mn) = 2^a · 2^b = 2^{a+b} by pow_add. The contrapositive not_totient_pow2_factor: if ¬TotientIsPow2 (m·n) then ¬TotientIsPow2 m ∨ ¬TotientIsPow2 n, proved by by_contra then push_neg and applying totient_pow2_mul. totient_pow2_prime_iff: for prime p, TotientIsPow2 p ↔ p-1 = 2^k. This is the Fermat prime characterization: p is a Fermat prime (p = 2^{2^j}+1) iff φ(p) = p-1 is a power of 2. Together these structural results explain why constructibility reduces to the prime factorization: n is constructible iff its odd prime factors are all Fermat primes and appear to the first power.",
     "mathContext": "$\\varphi$ multiplicative: $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n)=1$. Powers of 2 are closed under multiplication: $2^a \\cdot 2^b = 2^{a+b}$. Fermat prime: $p$ is Fermat $\\Leftrightarrow$ $p - 1 = 2^{2^j}$ for some $j$ $\\Leftrightarrow$ $p - 1$ is a power of 2.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.totient_mul (multiplicativity)",
       "Nat.Coprime for gcd=1 condition",
-      "pow_add for 2^a \u00b7 2^b = 2^{a+b}",
+      "pow_add for 2^a · 2^b = 2^{a+b}",
       "Fermat prime characterization",
       "by_contra and push_neg for contrapositive"
     ],
     "prerequisites": [
-      "Euler's \u03c6 function multiplicativity",
+      "Euler's φ function multiplicativity",
       "Nat.totient_prime and Nat.totient_prime_pow in Mathlib",
       "Fermat primes: 3, 5, 17, 257, 65537"
     ]
@@ -104,9 +104,9 @@
       "startLine": 209,
       "endLine": 274
     },
-    "type": "context",
-    "title": "Complete n \u2208 [3,50] Classification: 17 Constructible, 31 Not",
-    "content": "Section VI completes the classification for all n from 3 to 50 not handled in the parent OQ02-OQ03 file. The constructible n in [3,50] are exactly: {3,4,5,6,8,10,12,15,16,17,20,24,30,32,34,40,48}. These are n = 2^a \u00d7 (distinct Fermat primes from {3,5,17}): 3=3, 4=2\u00b2, 5=5, 6=2\u00d73, 8=2\u00b3, 10=2\u00d75, 12=4\u00d73, 15=3\u00d75, 16=2\u2074, 17=17, 20=4\u00d75, 24=8\u00d73, 30=2\u00d715=2\u00d73\u00d75, 32=2\u2075, 34=2\u00d717, 40=8\u00d75, 48=16\u00d73. Note: 3\u00d717=51 > 50, 5\u00d717=85 > 50, 3\u00d75\u00d717=255 > 50, so no further Fermat prime products appear in range. The 31 non-constructible values each have an odd prime factor in \u03c6(n) that is NOT 2, certified by exhibiting such a prime via `decide`. Key examples: \u03c6(31) = 30 = 2\u00d73\u00d75 (3|30), \u03c6(37) = 36 = 4\u00d79 (3|36), \u03c6(47) = 46 = 2\u00d723 (23|46 \u2014 a large prime divisor).",
+    "type": "concept",
+    "title": "Complete n ∈ [3,50] Classification: 17 Constructible, 31 Not",
+    "content": "Section VI completes the classification for all n from 3 to 50 not handled in the parent OQ02-OQ03 file. The constructible n in [3,50] are exactly: {3,4,5,6,8,10,12,15,16,17,20,24,30,32,34,40,48}. These are n = 2^a × (distinct Fermat primes from {3,5,17}): 3=3, 4=2², 5=5, 6=2×3, 8=2³, 10=2×5, 12=4×3, 15=3×5, 16=2⁴, 17=17, 20=4×5, 24=8×3, 30=2×15=2×3×5, 32=2⁵, 34=2×17, 40=8×5, 48=16×3. Note: 3×17=51 > 50, 5×17=85 > 50, 3×5×17=255 > 50, so no further Fermat prime products appear in range. The 31 non-constructible values each have an odd prime factor in φ(n) that is NOT 2, certified by exhibiting such a prime via `decide`. Key examples: φ(31) = 30 = 2×3×5 (3|30), φ(37) = 36 = 4×9 (3|36), φ(47) = 46 = 2×23 (23|46 — a large prime divisor).",
     "mathContext": "Constructible $n \\leq 50$: $n = 2^a \\cdot \\prod_{i} p_i$ with $p_i \\in \\{3, 5, 17\\}$ distinct. $|\\{n \\leq 50 \\text{ constructible}\\}| = 17$. $\\varphi(30) = \\varphi(2)\\varphi(3)\\varphi(5) = 1\\cdot 2\\cdot 4 = 8 = 2^3$. $\\varphi(48) = \\varphi(16)\\varphi(3) = 8\\cdot 2 = 16 = 2^4$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -117,7 +117,7 @@
     ],
     "prerequisites": [
       "Gauss-Wantzel: constructible iff Fermat prime structure",
-      "\u03c6 multiplicativity for products",
+      "φ multiplicativity for products",
       "decide tactic"
     ]
   },
@@ -130,7 +130,7 @@
     },
     "type": "insight",
     "title": "constructible_up_to_50: All 17 Constructible n-gons in One Theorem",
-    "content": "The summary theorem constructible_up_to_50 packages all 17 TotientIsPow2 proofs into a single conjunction. The proof uses `refine \u27e8\u27e81, by decide\u27e9, \u27e81, by decide\u27e9, ..., \u27e84, by decide\u27e9\u27e9` \u2014 each TotientIsPow2 n is witnessed by the explicit exponent k with \u03c6(n) = 2^k: TotientIsPow2 3 witnessed by k=1 (\u03c6(3)=2=2\u00b9), TotientIsPow2 17 by k=4 (\u03c6(17)=16=2\u2074), TotientIsPow2 48 by k=4 (\u03c6(48)=16=2\u2074). The conjunction theorem makes the complete classification a single statement that downstream users (e.g., an angle-trisection decision procedure) can import as one dependency. Importantly, this theorem does NOT cover n > 50; generalizing to all n requires either the Fermat prime structure theorem or an infinite enumeration, which remains an open problem (conditional on the infinitely-many-Fermat-primes question).",
+    "content": "The summary theorem constructible_up_to_50 packages all 17 TotientIsPow2 proofs into a single conjunction. The proof uses `refine ⟨⟨1, by decide⟩, ⟨1, by decide⟩, ..., ⟨4, by decide⟩⟩` — each TotientIsPow2 n is witnessed by the explicit exponent k with φ(n) = 2^k: TotientIsPow2 3 witnessed by k=1 (φ(3)=2=2¹), TotientIsPow2 17 by k=4 (φ(17)=16=2⁴), TotientIsPow2 48 by k=4 (φ(48)=16=2⁴). The conjunction theorem makes the complete classification a single statement that downstream users (e.g., an angle-trisection decision procedure) can import as one dependency. Importantly, this theorem does NOT cover n > 50; generalizing to all n requires either the Fermat prime structure theorem or an infinite enumeration, which remains an open problem (conditional on the infinitely-many-Fermat-primes question).",
     "mathContext": "17 constructible $n$-gons in $[3,50]$: $\\{n \\mid \\varphi(n) = 2^k\\} \\cap [3,50] = \\{3, 4, 5, 6, 8, 10, 12, 15, 16, 17, 20, 24, 30, 32, 34, 40, 48\\}$. Witnesses: $k = 1$ for $n \\in \\{3, 4, 6\\}$; $k=2$ for $n \\in \\{5, 8, 10, 12\\}$; $k=3$ for $n \\in \\{15, 16, 20, 24, 30\\}$; $k=4$ for $n \\in \\{17, 32, 34, 40, 48\\}$.",
     "significance": "key",
     "relatedConcepts": [

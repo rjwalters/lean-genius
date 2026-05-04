@@ -2,56 +2,124 @@
   {
     "id": "ann-bpg-mathlib-inventory",
     "proofId": "bounded-prime-gaps-oq-04-oq-02",
-    "range": { "startLine": 15, "endLine": 64 },
-    "type": "context",
+    "range": {
+      "startLine": 15,
+      "endLine": 64
+    },
+    "type": "concept",
     "significance": "key",
     "content": "The module header is a structured gap analysis: it inventories what Mathlib v4.26.0 already provides for analytic number theory and identifies the 6 missing theorems. The available infrastructure includes DirichletCharacter, LFunction, vonMangoldt, Nat.totient, dirichlet_modEq (qualitative), and L-series convergence — everything qualitative. The 6 gaps are all quantitative: character sum bounds (GaussSumBound, PolyaVinogradov), sieve machinery (LargeSieve, VaughanIdentity), and analytic core (SiegelWalfisz, ZeroDensityEstimate). The estimated total is ~5500 lines, versus the parent OQ04's estimate of 12000 — the difference reflects OQ04 counting scaffolding while this entry counts only essential new mathematical content.",
     "mathContext": "The Bombieri-Vinogradov (BV) theorem states: $\\sum_{q \\leq \\sqrt{x}} \\max_{\\gcd(a,q)=1} |\\psi(x;q,a) - x/\\phi(q)| \\ll x/(\\log x)^A$ for every $A > 0$, where $\\psi(x;q,a) = \\sum_{n \\leq x, n \\equiv a \\pmod{q}} \\Lambda(n)$. This is an 'averaged' Generalized Riemann Hypothesis (GRH) that holds unconditionally. The 6 additions fill the gap between Mathlib's qualitative Dirichlet theorem (infinitely many primes in each AP) and this quantitative averaged equidistribution.",
-    "relatedConcepts": ["Bombieri-Vinogradov theorem", "Dirichlet characters", "von Mangoldt function", "Chebyshev psi function", "Mathlib gap analysis"],
-    "prerequisites": ["DirichletCharacter in Mathlib", "ArithmeticFunction.vonMangoldt", "Nat.totient", "dirichlet_modEq"]
+    "relatedConcepts": [
+      "Bombieri-Vinogradov theorem",
+      "Dirichlet characters",
+      "von Mangoldt function",
+      "Chebyshev psi function",
+      "Mathlib gap analysis"
+    ],
+    "prerequisites": [
+      "DirichletCharacter in Mathlib",
+      "ArithmeticFunction.vonMangoldt",
+      "Nat.totient",
+      "dirichlet_modEq"
+    ]
   },
   {
     "id": "ann-bpg-bridging-lemmas",
     "proofId": "bounded-prime-gaps-oq-04-oq-02",
-    "range": { "startLine": 83, "endLine": 125 },
-    "type": "technique",
+    "range": {
+      "startLine": 83,
+      "endLine": 125
+    },
+    "type": "concept",
     "significance": "supporting",
     "content": "Part I proves 6 bridging lemmas from existing Mathlib with zero sorries and zero axioms. The proofs are short but structurally important: vonMangoldt_nonneg' wraps vonMangoldt_nonneg for real casting; chebyshevPsi_mono uses Finset.sum_le_sum_of_subset_of_nonneg with range_mono; chebyshevPsiAP_le_chebyshevPsi uses filter_subset since the AP is a filtered range; expectedMainTerm_pos uses div_pos with Nat.totient_pos; expectedMainTerm_q_one uses Nat.totient_one (φ(1)=1). The technique pattern across all 6 is: unfold to Finset sums, then apply monotonicity/positivity lemmas from Mathlib. These 6 theorems serve as the interface between the Mathlib API and the BV axiom framework from OQ04.",
     "mathContext": "The Chebyshev $\\psi$ function restricted to an AP is $\\psi(x;q,a) = \\sum_{n \\leq x, n \\equiv a \\pmod{q}} \\Lambda(n)$, where $\\Lambda(n) \\geq 0$ for all $n$. Monotonicity $\\psi(x) \\leq \\psi(y)$ for $x \\leq y$ follows from extending the finite sum over $\\{1,\\ldots,x\\}$ to $\\{1,\\ldots,y\\}$ with nonneg terms. The domination $\\psi(x;q,a) \\leq \\psi(x)$ follows because the AP-restricted sum is a filter of the full sum, so $\\text{filter} \\subseteq \\text{range}$.",
-    "relatedConcepts": ["Chebyshev psi function", "von Mangoldt function nonnegativity", "Euler totient", "Finset monotonicity"],
-    "prerequisites": ["vonMangoldt_nonneg", "Finset.sum_le_sum_of_subset_of_nonneg", "Finset.range_mono", "Nat.totient_pos", "Nat.totient_one"]
+    "relatedConcepts": [
+      "Chebyshev psi function",
+      "von Mangoldt function nonnegativity",
+      "Euler totient",
+      "Finset monotonicity"
+    ],
+    "prerequisites": [
+      "vonMangoldt_nonneg",
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "Finset.range_mono",
+      "Nat.totient_pos",
+      "Nat.totient_one"
+    ]
   },
   {
     "id": "ann-bpg-gauss-polya-chain",
     "proofId": "bounded-prime-gaps-oq-04-oq-02",
-    "range": { "startLine": 135, "endLine": 230 },
+    "range": {
+      "startLine": 135,
+      "endLine": 230
+    },
     "type": "insight",
     "significance": "key",
     "content": "The first two of the 6 additions — gaussSumBound and polyaVinogradov — form the foundational character sum chain. GaussSumBound states |τ(χ)| = √q for primitive χ mod q, where τ(χ) = Σ_{t mod q} χ(t)·e(t/q). Its Lean type is a norm equality over a complex exponential sum, directly expressible using Mathlib's DirichletCharacter and Complex.exp. PolyaVinogradov then uses GaussSumBound: the proof expresses Σ_{n=M+1}^{M+N} χ(n) via completion (Fourier expansion over characters), applies the Gauss sum bound |τ(χ)| = √q, and bounds the geometric series. Both are rated HIGH tractability — the Lean types fit naturally into existing Mathlib infrastructure. The key Mathlib gap: ZMod.gaussSum exists but lacks the primitive-character norm formula |τ(χ)|² = q.",
     "mathContext": "The Gauss sum bound $|\\tau(\\chi)| = \\sqrt{q}$ is proved by computing $\\tau(\\chi)\\overline{\\tau(\\chi)} = q$ via the double-sum evaluation $\\sum_{t,s} \\chi(t)\\overline{\\chi(s)}e((t-s)/q) = q$ using orthogonality of additive characters. The Pólya-Vinogradov inequality then follows: $\\left|\\sum_{n=M+1}^{M+N} \\chi(n)\\right| \\leq \\frac{1}{q}\\sum_{t=1}^{q} |\\tau(\\chi)| \\cdot |\\sum_{n=M+1}^{M+N} e(nt/q)| \\leq \\sqrt{q}\\log q$, where the last step bounds the geometric series by $\\min(N, q/(\\pi|t|))$ and sums over residues $t$.",
-    "relatedConcepts": ["Gauss sums", "Pólya-Vinogradov inequality", "primitive Dirichlet characters", "character sum bounds", "exponential sums"],
-    "prerequisites": ["DirichletCharacter ℂ q", "ZMod.gaussSum", "Complex.exp", "roots of unity orthogonality"]
+    "relatedConcepts": [
+      "Gauss sums",
+      "Pólya-Vinogradov inequality",
+      "primitive Dirichlet characters",
+      "character sum bounds",
+      "exponential sums"
+    ],
+    "prerequisites": [
+      "DirichletCharacter ℂ q",
+      "ZMod.gaussSum",
+      "Complex.exp",
+      "roots of unity orthogonality"
+    ]
   },
   {
     "id": "ann-bpg-dependency-tractability",
     "proofId": "bounded-prime-gaps-oq-04-oq-02",
-    "range": { "startLine": 353, "endLine": 412 },
-    "type": "technique",
+    "range": {
+      "startLine": 353,
+      "endLine": 412
+    },
+    "type": "concept",
     "significance": "supporting",
     "content": "Part III encodes the dependency structure as a Lean inductive type MinimalAddition with 6 constructors, then defines three computable functions: estimatedLines (300/500/800/2000/400/1500), tractability (5/4/3/1/4/2 on a 5-point scale), and prPriority (1-6). The total_new_code theorem (= 5500) is proved by native_decide. The tractability scoring is a key research output: gaussSumBound (5/5) and vaughanIdentity (4/5) are recommended as the first two parallel Mathlib PRs because they have no cross-dependencies and high tractability. SiegelWalfisz (1/5) is last because it requires Siegel's theorem on exceptional zeros — the only result with an ineffective constant, making formalization particularly delicate. The first_two_independent theorem (prPriority.gaussSumBound = 1 ∧ prPriority.vaughanIdentity = 2) is proved by rfl, documenting the parallel-start strategy.",
     "mathContext": "The dependency order is: $\\text{GaussSumBound} \\to \\text{PolyaVinogradov} \\to \\text{SiegelWalfisz}$ (character sum chain) and $\\text{VaughanIdentity} \\to \\text{LargeSieve} \\to \\text{BV}$ (sieve chain), with ZeroDensityEstimate handling exceptional moduli independently. The tractability scores reflect: HIGH (5) = direct algebraic identity in existing Mathlib structure; MEDIUM (3) = needs new combinatorial infrastructure (Farey fractions); LOW (1-2) = requires deep complex analysis (Jensen's formula, Hadamard factorization) or ineffective constants (Siegel's theorem).",
-    "relatedConcepts": ["MinimalAddition inductive type", "Mathlib PR strategy", "Siegel's theorem ineffective constant", "Vaughan's identity algebraic", "dependency graph"],
-    "prerequisites": ["native_decide for norm computation", "inductive types in Lean 4", "DecidableEq deriving"]
+    "relatedConcepts": [
+      "MinimalAddition inductive type",
+      "Mathlib PR strategy",
+      "Siegel's theorem ineffective constant",
+      "Vaughan's identity algebraic",
+      "dependency graph"
+    ],
+    "prerequisites": [
+      "native_decide for norm computation",
+      "inductive types in Lean 4",
+      "DecidableEq deriving"
+    ]
   },
   {
     "id": "ann-bpg-bv-reduction",
     "proofId": "bounded-prime-gaps-oq-04-oq-02",
-    "range": { "startLine": 428, "endLine": 480 },
+    "range": {
+      "startLine": 428,
+      "endLine": 480
+    },
     "type": "insight",
     "significance": "key",
     "content": "The reduction theorem bv_from_minimal_additions proves that the 6 axioms suffice to derive the BV theorem — and the proof is a one-line application of the parent's bombieriVinogradov axiom (exact bombieriVinogradov). This is the entry's central conceptual contribution: it confirms that the BV axiom in OQ04 can be promoted to a theorem once the 6 additions are in Mathlib. The subsequent comment (lines 450-457) states the full chain: 6 additions → BV theorem → BV + sieve weights → maynard_tao_sieve. This would reduce BoundedPrimeGaps.lean from 3 axioms to 2, since the bombieriVinogradov axiom is eliminated. The entry thus provides a concrete roadmap for axiom elimination: 5500 lines of new Mathlib content replaces one axiom.",
     "mathContext": "The BV theorem stated here is: for every $A > 0$, $\\exists C > 0$ such that $\\sum_{q \\leq \\sqrt{x}} |\\psi(x;q,1) - x/\\phi(q)| \\leq Cx/(\\log x)^A$ for all large $x$. This is BV for the coprime class $a=1$ (the general case follows by symmetry). The reduction chain: $\\text{GaussSumBound} + \\text{PolyaVinogradov} + \\text{LargeSieve} + \\text{SiegelWalfisz} + \\text{VaughanIdentity} + \\text{ZeroDensityEstimate} \\Rightarrow \\text{BV} \\Rightarrow \\text{MaynardTaoSieve}$. Each implication corresponds to a classical proof strategy (Davenport §28 for BV; Zhang/Maynard for bounded gaps).",
-    "relatedConcepts": ["Bombieri-Vinogradov theorem", "axiom elimination", "Maynard-Tao sieve", "bounded prime gaps axiom count reduction"],
-    "prerequisites": ["bombieriVinogradov axiom from BoundedPrimeGapsOQ04", "BoundedPrimeGaps namespace", "chebyshevPsiAP", "expectedMainTerm"]
+    "relatedConcepts": [
+      "Bombieri-Vinogradov theorem",
+      "axiom elimination",
+      "Maynard-Tao sieve",
+      "bounded prime gaps axiom count reduction"
+    ],
+    "prerequisites": [
+      "bombieriVinogradov axiom from BoundedPrimeGapsOQ04",
+      "BoundedPrimeGaps namespace",
+      "chebyshevPsiAP",
+      "expectedMainTerm"
+    ]
   }
 ]

@@ -2,85 +2,170 @@
   {
     "id": "ann-brouwer-setup",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
-    "range": { "startLine": 1, "endLine": 21 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
     "title": "Setup: Eliminating the retraction_construction Axiom",
     "content": "This file imports `BrouwerFixedPoint` — the parent gallery entry where Brouwer's Fixed Point Theorem is proved using two axioms: `no_retraction_axiom` (no continuous retraction B^n → S^{n-1} exists, requiring algebraic topology) and `retraction_construction` (if f: B^n → B^n has no fixed point, a retraction exists). This file eliminates the second axiom by constructing the retraction explicitly via the geometric ray construction. The `EuclideanSpace ℝ (Fin n)` type from Mathlib gives the n-dimensional real inner product space, providing all the norm and inner product infrastructure needed.",
     "mathContext": "Setting: $E = \\mathbb{R}^n$ (EuclideanSpace ℝ (Fin n)), $B^n = \\{x : \\|x\\| \\leq 1\\}$ (ClosedBall), $S^{n-1} = \\{x : \\|x\\| = 1\\}$ (UnitSphere). A SelfMap $f: B^n \\to B^n$ is continuous. Goal: if $f$ has no fixed point, build a continuous retraction $r: B^n \\to S^{n-1}$ with $r|_{S^{n-1}} = \\text{id}$.",
-    "significance": "context",
-    "relatedConcepts": ["Brouwer fixed point theorem", "No-retraction theorem", "EuclideanSpace in Mathlib", "axiom elimination"],
-    "prerequisites": ["Brouwer's Fixed Point Theorem", "retractions and deformation retracts", "inner product spaces"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "No-retraction theorem",
+      "EuclideanSpace in Mathlib",
+      "axiom elimination"
+    ],
+    "prerequisites": [
+      "Brouwer's Fixed Point Theorem",
+      "retractions and deformation retracts",
+      "inner product spaces"
+    ]
   },
   {
     "id": "ann-brouwer-ballclamp",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
-    "range": { "startLine": 14, "endLine": 46 },
-    "type": "technique",
+    "range": {
+      "startLine": 14,
+      "endLine": 46
+    },
+    "type": "concept",
     "title": "Ball Clamping: Projecting ℝⁿ Radially onto the Unit Ball",
     "content": "`ballClamp(x) = (max 1 ‖x‖)⁻¹ • x` projects any point in ℝⁿ onto the closed unit ball. For x inside the ball (‖x‖ ≤ 1), max(1, ‖x‖) = 1 and ballClamp(x) = x. For x outside (‖x‖ > 1), max(1, ‖x‖) = ‖x‖ and ballClamp(x) = x/‖x‖ ∈ S^{n-1}. This radial projection is crucial: it lets us extend f (defined only on B^n) to all of ℝⁿ while maintaining the no-fixed-point property outside the ball. Continuity (`ballClamp_continuous`) follows from `Continuous.smul` applied to the composition of the inverse and max with the norm — both continuous.",
     "mathContext": "$\\text{ballClamp}(x) = \\frac{x}{\\max(1, \\|x\\|)}$. Properties: $\\|\\text{ballClamp}(x)\\| \\leq 1$ (norm bound), $\\text{ballClamp}(x) = x$ for $x \\in B^n$ (identity on ball), $\\text{ballClamp} \\in C(\\mathbb{R}^n, B^n)$ (continuous).",
     "significance": "supporting",
-    "relatedConcepts": ["radial projection", "deformation retract", "continuous extension", "norm in inner product spaces"],
-    "prerequisites": ["EuclideanSpace norms", "smul and scalar multiplication", "Continuous.smul in Mathlib"]
+    "relatedConcepts": [
+      "radial projection",
+      "deformation retract",
+      "continuous extension",
+      "norm in inner product spaces"
+    ],
+    "prerequisites": [
+      "EuclideanSpace norms",
+      "smul and scalar multiplication",
+      "Continuous.smul in Mathlib"
+    ]
   },
   {
     "id": "ann-brouwer-no-fixed-pts",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
-    "range": { "startLine": 48, "endLine": 68 },
+    "range": {
+      "startLine": 48,
+      "endLine": 68
+    },
     "type": "insight",
     "title": "Global No-Fixed-Point: The Key Topological Fact",
     "content": "`gClamp_ne_id` proves that the extended map g = f ∘ ballClamp has NO fixed points anywhere in ℝⁿ (not just in B^n). Inside the ball: if g(x) = x, then f(x) = x (since ballClamp is identity on the ball), contradicting the no-fixed-point hypothesis. Outside the ball: ‖x‖ > 1 but ‖g(x)‖ = ‖f(ballClamp(x))‖ ≤ 1 (f maps into B^n), so ‖g(x)‖ < ‖x‖, hence g(x) ≠ x. This global property ensures that w = x - g(x) ≠ 0 everywhere, which is essential for the quadratic formula denominator ‖w‖² ≠ 0.",
     "mathContext": "$\\forall x \\in \\mathbb{R}^n: g(x) = f(\\text{ballClamp}(x)) \\neq x$. Inside: by hypothesis on $f$. Outside: $\\|g(x)\\| \\leq 1 < \\|x\\|$ forces $g(x) \\neq x$. Consequence: $w = x - g(x) \\neq 0$ everywhere, so $\\|w\\|^2 > 0$.",
     "significance": "key",
-    "relatedConcepts": ["fixed points", "norm bounds", "topological extension", "gClamp"],
-    "prerequisites": ["no-fixed-point maps", "norm comparison", "case analysis"]
+    "relatedConcepts": [
+      "fixed points",
+      "norm bounds",
+      "topological extension",
+      "gClamp"
+    ],
+    "prerequisites": [
+      "no-fixed-point maps",
+      "norm comparison",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-brouwer-quadratic",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
-    "range": { "startLine": 70, "endLine": 103 },
-    "type": "technique",
+    "range": {
+      "startLine": 70,
+      "endLine": 103
+    },
+    "type": "concept",
     "title": "The Quadratic Formula: Ray-Sphere Intersection via Inner Products",
     "content": "`tPlus v w` is the larger root t > 0 of ‖v + t·w‖² = 1. Expanding via `norm_sq_lin` gives: ‖w‖²·t² + 2⟪v,w⟫·t + (‖v‖² - 1) = 0. With a = ‖w‖², b = ⟪v,w⟫, discriminant D = b² + a(1-‖v‖²), the larger root is t₊ = (-b + √D)/a. The discriminant is non-negative when ‖v‖ ≤ 1 (proved in `disc_nonneg` without Cauchy-Schwarz: D ≥ a(1-‖v‖²) ≥ 0). `tPlus_sphere` verifies that ‖v + t₊·w‖² = 1 via algebraic identity using `Real.sq_sqrt` and `nlinarith`.",
     "mathContext": "$\\|v + tw\\|^2 = \\|v\\|^2 + 2tb + t^2 a = 1$ gives $t_+ = \\frac{-b + \\sqrt{b^2 + a(1-\\|v\\|^2)}}{a}$ where $a = \\|w\\|^2 > 0$, $b = \\langle v, w\\rangle$. Discriminant: $D = b^2 + a(1-\\|v\\|^2) \\geq 0$ since $\\|v\\| \\leq 1$.",
     "significance": "key",
-    "relatedConcepts": ["quadratic formula", "ray-sphere intersection", "inner product expansion", "discriminant"],
-    "prerequisites": ["norm_add_sq_real in Mathlib", "real_inner_smul_right", "Real.sqrt and sq_sqrt"]
+    "relatedConcepts": [
+      "quadratic formula",
+      "ray-sphere intersection",
+      "inner product expansion",
+      "discriminant"
+    ],
+    "prerequisites": [
+      "norm_add_sq_real in Mathlib",
+      "real_inner_smul_right",
+      "Real.sqrt and sq_sqrt"
+    ]
   },
   {
     "id": "ann-brouwer-sphere-fixing",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
-    "range": { "startLine": 105, "endLine": 135 },
+    "range": {
+      "startLine": 105,
+      "endLine": 135
+    },
     "type": "insight",
     "title": "Sphere-Fixing Algebraic Identity: tPlus = 1 on S^{n-1}",
     "content": "`tPlus_one_on_sphere` is the algebraic heart: when x ∈ S^{n-1} (‖v + w‖ = 1 with v = g(x), w = x - v), the formula gives t₊ = 1. The key steps: (1) ‖v+w‖ = 1 gives a + 2b = 1 - ‖v‖² (expanding the norm). (2) The discriminant factors as a perfect square: D = b² + a(a+2b) = b² + a² + 2ab = (a+b)². (3) To take √((a+b)²) = a+b (not |a+b|), we need a+b ≥ 0, proved by Cauchy-Schwarz: a+b = 1 - ⟪v+w,v⟫ ≥ 1 - ‖v+w‖·‖v‖ = 1 - 1·‖v‖ ≥ 0. (4) Then t₊ = (-b + (a+b))/a = 1. This ensures the retraction fixes the sphere.",
     "mathContext": "When $\\|v+w\\| = 1$: $a + 2b = 1 - \\|v\\|^2$, $D = (a+b)^2$, $a+b = 1 - \\langle v+w, v\\rangle \\geq 0$ (Cauchy-Schwarz). Then $t_+ = (-b + \\sqrt{(a+b)^2})/a = (-b+a+b)/a = 1$.",
     "significance": "key",
-    "relatedConcepts": ["perfect square discriminant", "Cauchy-Schwarz inequality", "sphere fixing", "retraction properties"],
-    "prerequisites": ["abs_real_inner_le_norm", "Real.sqrt_sq", "Cauchy-Schwarz in Lean 4"]
+    "relatedConcepts": [
+      "perfect square discriminant",
+      "Cauchy-Schwarz inequality",
+      "sphere fixing",
+      "retraction properties"
+    ],
+    "prerequisites": [
+      "abs_real_inner_le_norm",
+      "Real.sqrt_sq",
+      "Cauchy-Schwarz in Lean 4"
+    ]
   },
   {
     "id": "ann-brouwer-retraction-def",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
-    "range": { "startLine": 137, "endLine": 192 },
-    "type": "technique",
+    "range": {
+      "startLine": 137,
+      "endLine": 192
+    },
+    "type": "concept",
     "title": "The Retraction: Assembly, Sphere-Mapping, and Continuity Without IFT",
     "content": "`retractionFun f x = v + t₊(v, x-v)·(x-v)` where v = f(ballClamp(x)) is the assembled retraction. Three properties are proved: (1) `retractionFun_maps_to_sphere`: for x ∈ B^n, the output lies on S^{n-1}, using `tPlus_sphere` and the fact that ‖v+t₊w·w‖² = 1 implies ‖v+t₊w·w‖ = 1 via `nlinarith`. (2) `retractionFun_fixes_sphere`: for x ∈ S^{n-1}, t₊ = 1 by `tPlus_one_on_sphere`, so v + 1·(x-v) = x. (3) `retractionFun_continuous`: continuity is proved by explicit function composition — the denominator ‖w‖² = ‖x - g(x)‖² > 0 everywhere (no fixed points), so division is safe. No implicit function theorem needed.",
     "mathContext": "$r(x) = g(x) + t_+(g(x), x-g(x)) \\cdot (x - g(x))$. Continuity: $g(x) = f(\\text{ballClamp}(x))$ is continuous; $w(x) = x - g(x)$ is continuous; $t_+(g(x), w(x))$ is continuous since $\\|w(x)\\|^2 > 0$ everywhere (no fixed points); $r(x) = g(x) + t_+ \\cdot w(x)$ is a continuous composition.",
     "significance": "key",
-    "relatedConcepts": ["retraction definition", "continuous function composition", "Continuous.smul", "implicit function theorem bypass"],
-    "prerequisites": ["Brouwer.Retraction structure", "Continuous.add", "Continuous.smul", "norm_ne_zero_iff"]
+    "relatedConcepts": [
+      "retraction definition",
+      "continuous function composition",
+      "Continuous.smul",
+      "implicit function theorem bypass"
+    ],
+    "prerequisites": [
+      "Brouwer.Retraction structure",
+      "Continuous.add",
+      "Continuous.smul",
+      "norm_ne_zero_iff"
+    ]
   },
   {
     "id": "ann-brouwer-main",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
-    "range": { "startLine": 194, "endLine": 214 },
+    "range": {
+      "startLine": 194,
+      "endLine": 214
+    },
     "type": "insight",
     "title": "Main Theorem: Axiom Elimination and the Brouwer FPT Chain",
     "content": "`retraction_construction_theorem` packages the retraction as a `Brouwer.Retraction n` structure, satisfying the interface required by the parent file. `brouwer_fixed_point_explicit` then completes the BFP chain: assume f has no fixed point, construct a retraction via `retraction_construction_theorem`, pass it to `Brouwer.no_retraction` (the remaining axiom), and derive a contradiction. The result eliminates `retraction_construction` from the axiom list of BFP, reducing the unprovable axiom count from 2 to 1. The remaining axiom `no_retraction_axiom` requires homological machinery (H_{n-1}(B^n) = 0, H_{n-1}(S^{n-1}) ≅ ℤ), still beyond this formalization.",
     "mathContext": "Proof chain: $f$ has no fixed point $\\Rightarrow$ \\texttt{retraction\\_construction\\_theorem} builds $r: B^n \\to S^{n-1}$ continuous retraction $\\Rightarrow$ \\texttt{no\\_retraction} derives contradiction (requires algebraic topology) $\\Rightarrow$ $f$ must have a fixed point. Axiom count: BFP requires \\texttt{no\\_retraction\\_axiom} only.",
     "significance": "key",
-    "relatedConcepts": ["Brouwer fixed point theorem", "no-retraction theorem", "homology and degree theory", "axiom count"],
-    "prerequisites": ["Brouwer.Retraction structure", "Brouwer.no_retraction", "algebraic topology background"]
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "no-retraction theorem",
+      "homology and degree theory",
+      "axiom count"
+    ],
+    "prerequisites": [
+      "Brouwer.Retraction structure",
+      "Brouwer.no_retraction",
+      "algebraic topology background"
+    ]
   }
 ]

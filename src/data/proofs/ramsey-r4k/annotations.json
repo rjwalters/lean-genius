@@ -2,85 +2,174 @@
   {
     "id": "ann-ramsey-prop-def",
     "proofId": "ramsey-r4k",
-    "range": { "startLine": 38, "endLine": 96 },
+    "range": {
+      "startLine": 38,
+      "endLine": 96
+    },
     "type": "definition",
     "title": "RamseyProp: The Formal 2-Coloring Condition",
     "content": "RamseyProp n r s encodes: every symmetric Bool-valued function f : Fin n → Fin n → Bool (an edge-2-coloring of K_n, with f x y = true for 'red' and false for 'blue', symmetric and irreflexive) contains either a red r-clique (S with |S| ≥ r and all edges red) or a blue s-clique. The monotonicity theorem ramseyProp_mono_n proves: if K_n has the property, so does K_m for m ≥ n. The proof embeds Fin n → Fin m via i ↦ ⟨i.val, by omega⟩, restricts the coloring to the embedded copy, applies the hypothesis, and lifts the resulting clique via Finset.map. The symmetry theorem ramseyProp_symm negates the coloring (g i j = !f i j for i≠j) to swap red and blue, then inverts the clique type.",
     "mathContext": "$R(r,s) = \\min\\{n : \\text{RamseyProp}(n,r,s)\\}$. The definition uses $f : \\text{Fin}_n \\times \\text{Fin}_n \\to \\{0,1\\}$ with symmetry and irreflexivity, representing a complete graph 2-coloring.",
     "significance": "key",
-    "relatedConcepts": ["Ramsey theory", "2-coloring of complete graphs", "Finset.map embedding", "Bool-valued functions", "clique number"],
-    "prerequisites": ["Finset and Fintype in Lean 4", "Bool.not operations", "graph embeddings"]
+    "relatedConcepts": [
+      "Ramsey theory",
+      "2-coloring of complete graphs",
+      "Finset.map embedding",
+      "Bool-valued functions",
+      "clique number"
+    ],
+    "prerequisites": [
+      "Finset and Fintype in Lean 4",
+      "Bool.not operations",
+      "graph embeddings"
+    ]
   },
   {
     "id": "ann-base-cases",
     "proofId": "ramsey-r4k",
-    "range": { "startLine": 141, "endLine": 191 },
-    "type": "technique",
+    "range": {
+      "startLine": 141,
+      "endLine": 191
+    },
+    "type": "concept",
     "title": "Base Cases: R(1,s)=1, R(r,1)=1, R(2,s)=s",
     "content": "Three base cases anchor the Ramsey framework. ramseyProp_one_left proves R(n, 1, s) for any n ≥ 1: any single vertex forms a 1-clique, so the trivially red vertex {⟨0,_⟩} is a 1-red-clique. Similarly ramseyProp_one_right for blue. ramseyProp_two_left proves R(s, 2, s): in any coloring of K_s, either there exists a red edge (giving a 2-red-clique) or all edges are blue (giving the entire K_s as a blue s-clique). The proof uses by_cases on the existence of a red edge — a clean classical logic argument. The case 'no red edge' uses push_neg to get a universal 'all edges are not red' statement, then Bool.noConfusion converts 'not true' to 'false'.",
     "mathContext": "$R(1,s) = R(r,1) = 1$; $R(2,s) = s$. These anchor the Pascal recursion: $R(r,s) \\leq R(r-1,s) + R(r,s-1)$ requires the base case $R(1,s) = 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["Ramsey base cases", "pigeonhole principle", "complete graph coloring", "classical logic in Lean 4"],
-    "prerequisites": ["Finset.univ", "Bool.noConfusion", "push_neg tactic"]
+    "relatedConcepts": [
+      "Ramsey base cases",
+      "pigeonhole principle",
+      "complete graph coloring",
+      "classical logic in Lean 4"
+    ],
+    "prerequisites": [
+      "Finset.univ",
+      "Bool.noConfusion",
+      "push_neg tactic"
+    ]
   },
   {
     "id": "ann-binomial-bound",
     "proofId": "ramsey-r4k",
-    "range": { "startLine": 192, "endLine": 226 },
-    "type": "technique",
+    "range": {
+      "startLine": 192,
+      "endLine": 226
+    },
+    "type": "concept",
     "title": "Binomial Upper Bound: R(4,k) ≤ C(k+2,3) via ramseyUpperBound",
     "content": "The function ramseyUpperBound r s = C(r+s-2, r-1) encodes the classical upper bound R(r,s) ≤ C(r+s-2, r-1), which follows from the Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1) and the binomial identity C(n,k) + C(n,k+1) = C(n+1,k+1). For r=4: ramseyUpperBound 4 k = C(k+2, 3). Concrete values: R(4,3) ≤ 10 (exact: 9), R(4,4) ≤ 20 (exact: 18), R(4,5) ≤ 35 (exact: 25), R(4,6) ≤ 56 (best known: 36-41), R(4,7) ≤ 84 (best known: 43-61). The gap between the binomial bound and exact values grows with k. The theorem ramseyUpperBound_mono_s proves the bound is monotone in s using Nat.choose_mono.",
     "mathContext": "$R(r,s) \\leq \\binom{r+s-2}{r-1}$; for $r=4$: $R(4,k) \\leq \\binom{k+2}{3} = \\frac{k(k+1)(k+2)}{6}$. Concrete gap: $R(4,5) = 25 \\ll 35 = \\binom{7}{3}$.",
     "significance": "key",
-    "relatedConcepts": ["Pascal identity for binomials", "Nat.choose_mono", "Ramsey number table", "binomial coefficients in combinatorics"],
-    "prerequisites": ["Nat.choose in Mathlib", "Pascal's identity", "Ramsey recursion R(r,s) ≤ R(r-1,s)+R(r,s-1)"]
+    "relatedConcepts": [
+      "Pascal identity for binomials",
+      "Nat.choose_mono",
+      "Ramsey number table",
+      "binomial coefficients in combinatorics"
+    ],
+    "prerequisites": [
+      "Nat.choose in Mathlib",
+      "Pascal's identity",
+      "Ramsey recursion R(r,s) ≤ R(r-1,s)+R(r,s-1)"
+    ]
   },
   {
     "id": "ann-ramsey-recursion",
     "proofId": "ramsey-r4k",
-    "range": { "startLine": 228, "endLine": 415 },
-    "type": "technique",
+    "range": {
+      "startLine": 228,
+      "endLine": 415
+    },
+    "type": "concept",
     "title": "Ramsey Recursion: Pigeonhole on Neighbor Colorings",
     "content": "The theorem ramsey_recursion proves: if RamseyProp n1 (r-1) s and RamseyProp n2 r (s-1), then RamseyProp (n1+n2) r s. This encodes R(r,s) ≤ R(r-1,s) + R(r,s-1). The proof is the standard Ramsey argument: fix vertex v = ⟨0, _⟩; partition all other vertices into red neighbors Nred = {w : f v w = true ∧ w ≠ v} and blue neighbors Nblue = {w : f v w = false ∧ w ≠ v}. By hpart (which counts via Finset.card_union_of_disjoint and erase), |Nred| + |Nblue| = n1 + n2 - 1. Pigeonhole: either |Nred| ≥ n1 or |Nblue| ≥ n2. In the first case, apply h1 (RamseyProp n1 (r-1) s) to the restriction of f to n1 red neighbors; if a red (r-1)-clique S is found, extend with v to get an r-clique. The extension uses card_union_of_disjoint and Finset.map for careful cardinality reasoning. The embed_from_finset lemma extracts an injection from any sufficiently large Finset, using Finset.exists_subset_card_eq and Finset.orderIsoOfFin.",
     "mathContext": "Pigeonhole step: $|N_{\\text{red}}| + |N_{\\text{blue}}| = n_1 + n_2 - 1 \\Rightarrow |N_{\\text{red}}| \\geq n_1$ or $|N_{\\text{blue}}| \\geq n_2$. Extension: $(r-1)$-red-clique $S$ in $N_{\\text{red}}$ gives $r$-red-clique $S \\cup \\{v\\}$ since $v$ is red to all of $S$.",
     "significance": "key",
-    "relatedConcepts": ["pigeonhole principle", "Finset.orderIsoOfFin", "Ramsey recursion", "clique extension", "neighbor coloring partition"],
-    "prerequisites": ["Finset.card_union_of_disjoint", "Finset.exists_subset_card_eq", "Finset.orderIsoOfFin", "Ramsey property definition"]
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Finset.orderIsoOfFin",
+      "Ramsey recursion",
+      "clique extension",
+      "neighbor coloring partition"
+    ],
+    "prerequisites": [
+      "Finset.card_union_of_disjoint",
+      "Finset.exists_subset_card_eq",
+      "Finset.orderIsoOfFin",
+      "Ramsey property definition"
+    ]
   },
   {
     "id": "ann-concrete-values",
     "proofId": "ramsey-r4k",
-    "range": { "startLine": 417, "endLine": 466 },
-    "type": "context",
+    "range": {
+      "startLine": 417,
+      "endLine": 466
+    },
+    "type": "concept",
     "title": "Concrete Values and Strict Monotonicity",
     "content": "The full R(4,k) bound table (k=3 through 10) is verified by native_decide: [10, 20, 35, 56, 84, 120, 165, 220]. These are exactly the binomial coefficients C(5,3), C(6,3), C(7,3), ..., C(12,3). The r4k_bound_strict_mono theorem proves the bound is strictly increasing: ramseyUpperBound 4 k < ramseyUpperBound 4 (k+1). The proof applies Nat.choose_succ_succ to get C(k+3,3) = C(k+2,2) + C(k+3,3), then uses Nat.choose_pos to show C(k+2,2) > 0 for k ≥ 1. The r4k_upper_bound theorem proves ramseyUpperBound 4 k = C(k+2,3) by reducing the general definition via arithmetic on indices (4+k-2 = k+2, 4-1 = 3).",
     "mathContext": "$R(4,k) \\leq \\binom{k+2}{3} = \\{10, 20, 35, 56, 84, 120, 165, 220\\}$ for $k = 3,\\ldots,10$. Exact known values: $R(4,3)=9, R(4,4)=18, R(4,5)=25$.",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.choose_succ_succ (Pascal)", "strict monotonicity", "native_decide verification", "Ramsey number table"],
-    "prerequisites": ["Nat.choose_pos", "Pascal's identity", "native_decide tactic"]
+    "relatedConcepts": [
+      "Nat.choose_succ_succ (Pascal)",
+      "strict monotonicity",
+      "native_decide verification",
+      "Ramsey number table"
+    ],
+    "prerequisites": [
+      "Nat.choose_pos",
+      "Pascal's identity",
+      "native_decide tactic"
+    ]
   },
   {
     "id": "ann-probabilistic-framework",
     "proofId": "ramsey-r4k",
-    "range": { "startLine": 480, "endLine": 514 },
-    "type": "context",
+    "range": {
+      "startLine": 480,
+      "endLine": 514
+    },
+    "type": "concept",
     "title": "Probabilistic Lower Bound Framework",
     "content": "The probabilistic lower bound for Ramsey numbers uses the first-moment method: in a uniformly random 2-coloring of K_n, the expected number of monochromatic r-cliques is C(n,r) · 2^{1-C(r,2)} (each set of r vertices forms a clique with probability 2^{1-C(r,2)}, where C(r,2) is the number of edges in K_r). The completeEdges definition computes K_r's edge count via Nat.choose r 2: K_4 has 6 edges, K_3 has 3, K_5 has 10. The expectedCliqueTerm function returns (C(n,r), 2^{C(r,2)-1}) as numerator/denominator. For K_4 cliques: C(n,4) / 32. The verification prob_bound_r4_example shows C(8,4) = 70, so at n=8 the expected count is 70/32 > 1, meaning random colorings of K_8 likely have a red K_4 — the probabilistic bound cannot show R(4,4) > 8 this way. The actual R(4,4) = 18 shows a large gap.",
     "mathContext": "$\\mathbb{E}[\\#\\text{red } K_r\\text{-cliques in random }K_n] = \\binom{n}{r} \\cdot 2^{1-\\binom{r}{2}}$. For $K_4$: factor $2^{1-6} = 1/32$. If this $+ \\mathbb{E}[\\text{blue } K_s] < 1$, then $R(r,s) > n$.",
-    "significance": "context",
-    "relatedConcepts": ["probabilistic method in combinatorics", "first moment method", "expected value", "Erdős probabilistic lower bound", "K_4 edge count"],
-    "prerequisites": ["first moment method", "Nat.choose r 2 for edge count", "expected clique count formula"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probabilistic method in combinatorics",
+      "first moment method",
+      "expected value",
+      "Erdős probabilistic lower bound",
+      "K_4 edge count"
+    ],
+    "prerequisites": [
+      "first moment method",
+      "Nat.choose r 2 for edge count",
+      "expected clique count formula"
+    ]
   },
   {
     "id": "ann-cubic-bound",
     "proofId": "ramsey-r4k",
-    "range": { "startLine": 516, "endLine": 564 },
+    "range": {
+      "startLine": 516,
+      "endLine": 564
+    },
     "type": "insight",
     "title": "Cubic Upper Bound: R(4,k) ≤ (k+2)³",
     "content": "The theorem r4k_cubic_upper proves R(4,k) ≤ (k+2)³ by the chain: ramseyUpperBound 4 k = C(k+2,3) ≤ (k+2)³. The bound C(n,3) ≤ n³ is proved by induction using choose_le_pow_three: base case is trivial; inductive step applies the identity C(n+1,3) = C(n,2) + C(n,3), then choose_le_pow_two (C(n,2) ≤ n²) and the inductive hypothesis to bound n² + n³ ≤ (n+1)³ via nlinarith. The cubic growth O(k³) is weaker than the best known upper bound O(k³/log²k) from Ajtai-Komlos-Szemeredi (1980), but it is a clean formal result. The theorem r4k_bound_ge_k proves the complementary lower linear bound C(k+2,3) ≥ k via the Pascal decomposition C(k+2,3) = C(k+1,2) + C(k+1,3) ≥ C(k+1,2) = k + C(k,2) ≥ k.",
     "mathContext": "$R(4,k) \\leq \\binom{k+2}{3} \\leq (k+2)^3$; the formal bound is $O(k^3)$. Best known: $R(4,k) = O(k^3 / \\log^2 k)$ (AKS 1980). Lower bound: $R(4,k) \\geq \\Omega(k^{5/2}/\\log^2 k)$ (probabilistic method).",
     "significance": "key",
-    "relatedConcepts": ["cubic growth rate", "Ajtai-Komlos-Szemeredi bound", "Nat.choose induction", "nlinarith polynomial arithmetic", "growth rate of Ramsey numbers"],
-    "prerequisites": ["Nat.choose_succ_succ (Pascal)", "nlinarith tactic", "polynomial arithmetic"]
+    "relatedConcepts": [
+      "cubic growth rate",
+      "Ajtai-Komlos-Szemeredi bound",
+      "Nat.choose induction",
+      "nlinarith polynomial arithmetic",
+      "growth rate of Ramsey numbers"
+    ],
+    "prerequisites": [
+      "Nat.choose_succ_succ (Pascal)",
+      "nlinarith tactic",
+      "polynomial arithmetic"
+    ]
   }
 ]

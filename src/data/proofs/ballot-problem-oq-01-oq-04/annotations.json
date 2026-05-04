@@ -149,26 +149,52 @@
   {
     "id": "ann-three-file-architecture",
     "proofId": "ballot-problem-oq-01-oq-04",
-    "range": { "startLine": 1, "endLine": 49 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 49
+    },
+    "type": "concept",
     "title": "Three-File Architecture: Eliminating an Axiom via Re-export",
     "content": "The file header documents a notable software architecture pattern for formal proofs: a placeholder axiom was eliminated by splitting the proof into three files. The problem was a circular dependency — `chung_feller_uniform` needed to live in the gallery face file (for naming), but the bijection proof that establishes it needed to import the gallery face to access shared definitions. The solution was to extract those shared definitions into a `Core` file that both can import, then have the gallery face import the bijection file and re-export the theorem under its conventional name. This is a clean way to handle what would otherwise be an unsolvable import cycle in Lean 4.",
     "mathContext": "Import chain: `Core ← OQ01 (bijection) ← Gallery face`. `Core` defines `IsBalancedPath`, `upstepsAboveAxis`, etc. `OQ01` proves `chung_feller_uniform'` using the explicit bijection. The gallery face re-exports it as `chung_feller_uniform`. No axiom use at any level.",
-    "significance": "context",
-    "relatedConcepts": ["modular proof architecture", "import cycles", "re-export pattern", "axiom elimination", "Core module pattern"],
-    "prerequisites": ["Lean 4 import system", "namespace re-export", "BallotProblemOQ01OQ04Core.lean"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular proof architecture",
+      "import cycles",
+      "re-export pattern",
+      "axiom elimination",
+      "Core module pattern"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "namespace re-export",
+      "BallotProblemOQ01OQ04Core.lean"
+    ]
   },
   {
     "id": "ann-reexport-theorem",
     "proofId": "ballot-problem-oq-01-oq-04",
-    "range": { "startLine": 50, "endLine": 73 },
+    "range": {
+      "startLine": 50,
+      "endLine": 73
+    },
     "type": "insight",
     "title": "Gallery Face: Re-exporting the Proved Chung-Feller Theorem",
     "content": "The gallery face file is intentionally thin — it exists to provide a stable named entry point `chung_feller_uniform` in the `ChungFeller` namespace while the actual proof lives in the companion bijection file. The re-export is a single invocation of `ChungFellerBijection.chung_feller_uniform'`. This pattern is widely used in Mathlib: a 'face' module exposes a stable API while the underlying proof is in a separate module that can evolve independently. The key claim in the docstring is that the bijection proof has 0 sorries and 0 axiom uses, which any `#check @chung_feller_uniform` at the top of a downstream file can verify.",
     "mathContext": "Final statement: $\\forall j, k \\leq n,\\; |\\text{balancedPathsOfType}(n, j)| = |\\text{balancedPathsOfType}(n, k)|$. With `balanced_path_total` ($\\binom{2n}{n} = C_n \\cdot (n+1)$), each of the $n+1$ path types has exactly $C_n$ balanced paths.",
     "significance": "key",
-    "relatedConcepts": ["Chung-Feller theorem", "gallery face pattern", "stable API", "ChungFellerBijection", "proof re-export"],
-    "prerequisites": ["ChungFellerBijection.chung_feller_uniform'", "balanced_path_total", "upstepsAboveAxis"]
+    "relatedConcepts": [
+      "Chung-Feller theorem",
+      "gallery face pattern",
+      "stable API",
+      "ChungFellerBijection",
+      "proof re-export"
+    ],
+    "prerequisites": [
+      "ChungFellerBijection.chung_feller_uniform'",
+      "balanced_path_total",
+      "upstepsAboveAxis"
+    ]
   },
   {
     "id": "ann-chung-feller-axiom",

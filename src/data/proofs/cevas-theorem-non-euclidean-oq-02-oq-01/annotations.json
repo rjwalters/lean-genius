@@ -2,145 +2,292 @@
   {
     "id": "ann-ceva-neuc-oq02-oq01-sin-odd",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 49, "endLine": 53 },
+    "range": {
+      "startLine": 49,
+      "endLine": 53
+    },
     "type": "insight",
     "title": "sin_is_odd: Signed-Ratio Framework via Oddness",
     "content": "sin_is_odd is the foundational property enabling the signed-ratio framework. For external division of arc BC at D, the signed arc lengths BD and DC have opposite signs. Since sin(-x) = -sin(x), the ratio sin(BD)/sin(DC) is negative for external division, just as BD/DC < 0 in Euclidean geometry. The one-line proof `sin_neg x` delegates entirely to Mathlib's Real.sin_neg — the entire signed framework rests on this single trigonometric identity.",
     "mathContext": "\\sin(-x) = -\\sin(x) \\implies \\frac{\\sin(BD)}{\\sin(DC)} < 0 \\text{ when } D \\text{ externally divides } \\overarc{BC}.",
     "significance": "key",
-    "relatedConcepts": ["signed arc lengths", "external division", "Real.sin_neg", "odd functions"],
-    "prerequisites": ["signed ratio framework", "Menelaus theorem geometry", "Real.sin API"]
+    "relatedConcepts": [
+      "signed arc lengths",
+      "external division",
+      "Real.sin_neg",
+      "odd functions"
+    ],
+    "prerequisites": [
+      "signed ratio framework",
+      "Menelaus theorem geometry",
+      "Real.sin API"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-sin-pos",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 55, "endLine": 65 },
-    "type": "technique",
+    "range": {
+      "startLine": 55,
+      "endLine": 65
+    },
+    "type": "concept",
     "title": "sin_pos_of_proper_arc: Well-Formedness for Physical Arc Lengths",
     "content": "sin_pos_of_proper_arc uses Real.sin_pos_of_pos_of_lt_pi from Mathlib. The range (0,π) exactly captures proper undirected side lengths of non-degenerate spherical triangles: sides can't be 0 (collapsed vertex) or π (antipodal vertices, which would make two vertices coincide on the sphere). The corollary sin_ne_zero_of_proper_arc (lines 61-65) follows immediately via ne_of_gt, and is the key hypothesis that makes the SphericalMenelausConfig automatically well-formed for physical inputs.",
     "mathContext": "0 < x < \\pi \\implies \\sin(x) > 0 \\implies \\sin(x) \\neq 0. \\quad \\text{(config well-formedness is automatic for proper side lengths)}",
     "significance": "supporting",
-    "relatedConcepts": ["Real.sin_pos_of_pos_of_lt_pi", "SphericalMenelausConfig", "proper spherical triangles", "ne_of_gt"],
-    "prerequisites": ["Mathlib Real.sin API", "spherical triangle geometry", "non-degeneracy conditions"]
+    "relatedConcepts": [
+      "Real.sin_pos_of_pos_of_lt_pi",
+      "SphericalMenelausConfig",
+      "proper spherical triangles",
+      "ne_of_gt"
+    ],
+    "prerequisites": [
+      "Mathlib Real.sin API",
+      "spherical triangle geometry",
+      "non-degeneracy conditions"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-sin-neg",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 67, "endLine": 75 },
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
     "type": "insight",
     "title": "sin_neg_of_neg_arc: Covering All Signed Arc Lengths",
     "content": "sin_neg_of_neg_arc leverages the oddness of sin: sin(x) = -sin(-x) for x < 0, and -x ∈ (0,π), so sin(-x) > 0 and sin(x) < 0. This symmetric argument means sin is nonzero on all of (-π,π) except 0 — exactly the signed arc lengths of a proper spherical triangle. The proof uses linarith twice: once to establish -x ∈ (0,π) from x ∈ (-π,0), and once to combine sin(-x) > 0 with sin_neg to get sin(x) < 0. Together with sin_pos_of_proper_arc, this completes the coverage: sin ≠ 0 on all of (-π,0) ∪ (0,π).",
     "mathContext": "x \\in (-\\pi, 0) \\implies -x \\in (0, \\pi) \\implies \\sin(-x) > 0 \\implies \\sin(x) = -\\sin(-x) < 0 \\implies \\sin(x) \\neq 0.",
     "significance": "supporting",
-    "relatedConcepts": ["sin_neg", "signed arc coverage", "linarith tactic", "sin_pos_of_proper_arc"],
-    "prerequisites": ["sin oddness (sin_is_odd)", "sin_pos_of_proper_arc", "linarith in Lean 4"]
+    "relatedConcepts": [
+      "sin_neg",
+      "signed arc coverage",
+      "linarith tactic",
+      "sin_pos_of_proper_arc"
+    ],
+    "prerequisites": [
+      "sin oddness (sin_is_odd)",
+      "sin_pos_of_proper_arc",
+      "linarith in Lean 4"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-algebraic-core",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 90, "endLine": 96 },
-    "type": "technique",
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
+    "type": "concept",
     "title": "menelaus_algebraic_core: Shared Algebraic Engine for All Menelaus Variants",
     "content": "menelaus_algebraic_core is the algebraic heart of the proof — and it is independent of geometry. The theorem reduces the three-ratio product condition a/b · c/d · e/f = -1 to a simple multiplicative identity a·c·e = -(b·d·f). The theorem statement takes six real numbers plus three nonzero proofs. The first proof step combines them into a single product nonzero witness hD = b*d*f ≠ 0 via mul_ne_zero, then uses field_simp + ring to rewrite the three-ratio product as a single fraction a*c*e/(b*d*f). This normalization is the key step: it converts the messy product-of-fractions into a single fraction ready for the iff proof.",
     "mathContext": "\\frac{a}{b} \\cdot \\frac{c}{d} \\cdot \\frac{e}{f} = \\frac{ace}{bdf}. \\quad \\text{Proved via } \\texttt{field\\_simp}[hb, hd, hf]\\text{; ring}. \\text{ Then: } \\frac{ace}{bdf} = -1 \\iff ace = -(bdf).",
     "significance": "key",
-    "relatedConcepts": ["field_simp tactic", "mul_ne_zero", "algebraic abstraction", "single-fraction normalization"],
-    "prerequisites": ["Lean 4 field_simp", "mul_ne_zero lemma", "ring tactic", "nonzero hypotheses"]
+    "relatedConcepts": [
+      "field_simp tactic",
+      "mul_ne_zero",
+      "algebraic abstraction",
+      "single-fraction normalization"
+    ],
+    "prerequisites": [
+      "Lean 4 field_simp",
+      "mul_ne_zero lemma",
+      "ring tactic",
+      "nonzero hypotheses"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-iff-proof",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 97, "endLine": 103 },
-    "type": "technique",
+    "range": {
+      "startLine": 97,
+      "endLine": 103
+    },
+    "type": "concept",
     "title": "Iff Proof Pattern: div_eq_iff + linarith for Both Directions",
     "content": "After normalizing to a*c*e/(b*d*f) = -1 (via field_simp + ring), the iff proof uses div_eq_iff to convert both directions to multiplicative form. The forward direction extracts a*c*e = -1*(b*d*f) via (div_eq_iff hD).mp h, then closes with linarith (since -1*x = -x). The backward direction reverses: rw [div_eq_iff hD] followed by linarith again. This two-step pattern (div_eq_iff → linarith) avoids needing ring in the iff body and generalizes cleanly to any scalar target (not just -1).",
     "mathContext": "\\text{div\\_eq\\_iff}(hD): \\frac{p}{q} = r \\iff p = r \\cdot q. \\quad \\text{Then linarith handles } r \\cdot q = -1 \\cdot q \\iff r \\cdot q = -q.",
     "significance": "supporting",
-    "relatedConcepts": ["div_eq_iff", "linarith", "iff proofs in Lean 4", "field arithmetic"],
-    "prerequisites": ["div_eq_iff lemma", "linarith arithmetic solver", "Lean 4 iff proof structure"]
+    "relatedConcepts": [
+      "div_eq_iff",
+      "linarith",
+      "iff proofs in Lean 4",
+      "field arithmetic"
+    ],
+    "prerequisites": [
+      "div_eq_iff lemma",
+      "linarith arithmetic solver",
+      "Lean 4 iff proof structure"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-config-struct",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 109, "endLine": 126 },
+    "range": {
+      "startLine": 109,
+      "endLine": 126
+    },
     "type": "definition",
     "title": "SphericalMenelausConfig: Encoding Nonzero Conditions as Structure Invariants",
     "content": "SphericalMenelausConfig bundles six signed arc lengths (bd, dc, ce, ea, af, fb) together with three hypothesis fields (hdc, hea, hfb) asserting sin(DC) ≠ 0, sin(EA) ≠ 0, sin(FB) ≠ 0. Encoding these nonzero conditions as structure fields — rather than as separate theorem hypotheses — means Lean enforces them at construction time: any cfg : SphericalMenelausConfig carries the proofs automatically. The companion definition sphericalMenelausProduct is noncomputable (sin is a real transcendental function, not computably decidable) and takes a config as its sole argument. This directly mirrors HyperbolicMenelausConfig from the parent file OQ-02, with sin replacing sinh and sin(·) ≠ 0 replacing the simpler dc ≠ 0.",
     "mathContext": "\\text{Config}: (bd, dc, ce, ea, af, fb) \\in \\mathbb{R}^6,\\; \\sin(dc) \\neq 0,\\; \\sin(ea) \\neq 0,\\; \\sin(fb) \\neq 0. \\quad P(\\text{cfg}) = \\frac{\\sin(bd)}{\\sin(dc)} \\cdot \\frac{\\sin(ce)}{\\sin(ea)} \\cdot \\frac{\\sin(af)}{\\sin(fb)}. \\text{ The three nonzero conditions exclude arc lengths } k\\pi \\text{ (antipodal points).}",
     "significance": "key",
-    "relatedConcepts": ["structure fields as invariants", "noncomputable definitions", "HyperbolicMenelausConfig", "sin vs sinh zero sets"],
-    "prerequisites": ["Lean 4 structures", "noncomputable in Lean 4", "sin periodic zeros at kπ"]
+    "relatedConcepts": [
+      "structure fields as invariants",
+      "noncomputable definitions",
+      "HyperbolicMenelausConfig",
+      "sin vs sinh zero sets"
+    ],
+    "prerequisites": [
+      "Lean 4 structures",
+      "noncomputable in Lean 4",
+      "sin periodic zeros at kπ"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-main-theorem",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 132, "endLine": 148 },
+    "range": {
+      "startLine": 132,
+      "endLine": 148
+    },
     "type": "insight",
     "title": "spherical_menelaus: One-Line Delegation to Algebraic Core",
     "content": "The main theorem spherical_menelaus is a single-line proof: it immediately delegates to menelaus_algebraic_core with the SphericalMenelausConfig's three sin nonzero hypotheses (cfg.hdc, cfg.hea, cfg.hfb). This is the power of the 'measure function' abstraction — the geometric content (choice of measure function sin, its nonzero conditions, the spherical triangle setup) is captured entirely in the config struct, and the algebraic backbone is factored out. The main theorem becomes a definitional unfolding plus a call to the algebraic lemma.",
     "mathContext": "\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1 \\iff \\sin(BD)\\cdot\\sin(CE)\\cdot\\sin(AF) = -\\sin(DC)\\cdot\\sin(EA)\\cdot\\sin(FB).",
     "significance": "key",
-    "relatedConcepts": ["SphericalMenelausConfig", "measure function abstraction", "sphericalMenelausProduct", "menelaus_algebraic_core"],
-    "prerequisites": ["menelaus_algebraic_core", "SphericalMenelausConfig structure", "Lean 4 structure fields"]
+    "relatedConcepts": [
+      "SphericalMenelausConfig",
+      "measure function abstraction",
+      "sphericalMenelausProduct",
+      "menelaus_algebraic_core"
+    ],
+    "prerequisites": [
+      "menelaus_algebraic_core",
+      "SphericalMenelausConfig structure",
+      "Lean 4 structure fields"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-hyperbolic-compare",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 153, "endLine": 166 },
-    "type": "context",
+    "range": {
+      "startLine": 153,
+      "endLine": 166
+    },
+    "type": "concept",
     "title": "Spherical vs Hyperbolic: The sin/sinh Zero Condition Difference",
     "content": "The key distinction from the hyperbolic parent file (OQ-02) is in the nonzero condition. For hyperbolic geometry, sinh(x) = 0 ↔ x = 0, so the config requires only dc ≠ 0 — any nonzero arc length works. For spherical geometry, sin(x) = 0 ↔ x ∈ πℤ, so the config requires sin(dc) ≠ 0, which excludes dc ∈ πℤ (antipodal configurations). For proper spherical triangles with side lengths in (0,π), this is automatic (sin > 0 in this range), so proper_arcs_valid confirms the config is well-formed with no extra effort.",
     "mathContext": "\\sinh(x) = 0 \\iff x = 0. \\quad \\sin(x) = 0 \\iff x \\in \\pi\\mathbb{Z}. \\quad \\text{For } dc \\in (0,\\pi): \\sin(dc) > 0 \\text{ automatically.}",
-    "significance": "context",
-    "relatedConcepts": ["hyperbolic Menelaus (OQ-02)", "sinh vs sin zero structure", "proper_arcs_valid", "antipodal points"],
-    "prerequisites": ["periodic zeros of sin", "Real.sinh nonzero property", "spherical triangle geometry"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hyperbolic Menelaus (OQ-02)",
+      "sinh vs sin zero structure",
+      "proper_arcs_valid",
+      "antipodal points"
+    ],
+    "prerequisites": [
+      "periodic zeros of sin",
+      "Real.sinh nonzero property",
+      "spherical triangle geometry"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-midpoint",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 169, "endLine": 188 },
-    "type": "context",
+    "range": {
+      "startLine": 169,
+      "endLine": 188
+    },
+    "type": "concept",
     "title": "Midpoint Example: 3-Factor Condition Reduces to 2-Factor",
     "content": "When D is the arc midpoint of BC (BD = DC = d), sin(BD)/sin(DC) = sin(d)/sin(d) = 1 by div_self, and the Menelaus condition reduces to sin(CE)/sin(EA) · sin(AF)/sin(FB) = -1. The proof uses simp only to unfold sphericalMenelausProduct, rw [div_self hd, one_mul] to reduce the first ratio to 1, and exact hprod to close with the remaining 2-factor hypothesis. This mirrors the hyperbolic midpoint example in the parent file (OQ-02) with sinh replaced by sin throughout — the proof structure is identical.",
     "mathContext": "BD = DC = d \\implies \\frac{\\sin(BD)}{\\sin(DC)} = 1 \\implies \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1.",
-    "significance": "context",
-    "relatedConcepts": ["div_self", "spherical_menelaus_midpoint", "2-factor Menelaus", "simp + rw proof pattern"],
-    "prerequisites": ["spherical_menelaus", "div_self lemma", "one_mul simplification"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "div_self",
+      "spherical_menelaus_midpoint",
+      "2-factor Menelaus",
+      "simp + rw proof pattern"
+    ],
+    "prerequisites": [
+      "spherical_menelaus",
+      "div_self lemma",
+      "one_mul simplification"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-universality",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 191, "endLine": 208 },
+    "range": {
+      "startLine": 191,
+      "endLine": 208
+    },
     "type": "insight",
     "title": "menelaus_measure_universality: Menelaus Holds for Any Measure Function",
     "content": "menelaus_measure_universality is the most conceptually far-reaching result in this file. It shows that the Menelaus condition (m(BD)/m(DC)) · (m(CE)/m(EA)) · (m(AF)/m(FB)) = -1 holds — and is equivalent to the multiplicative cross-product identity — for ANY function m: ℝ → ℝ. The only requirement is m(denominator) ≠ 0. Instantiating m = id gives Euclidean Menelaus, m = sinh gives Hyperbolic (OQ-02), m = sin gives Spherical (this file). The proof is a one-line application of menelaus_algebraic_core, confirming the algebraic structure is fully geometry-independent.",
     "mathContext": "\\forall m: \\mathbb{R} \\to \\mathbb{R},\\; m(dc),m(ea),m(fb) \\neq 0:\\quad \\frac{m(bd)}{m(dc)}\\cdot\\frac{m(ce)}{m(ea)}\\cdot\\frac{m(af)}{m(fb)} = -1 \\iff m(bd)\\cdot m(ce)\\cdot m(af) = -m(dc)\\cdot m(ea)\\cdot m(fb).",
     "significance": "key",
-    "relatedConcepts": ["measure function abstraction", "menelaus_algebraic_core", "Euclidean/hyperbolic/spherical Menelaus", "geometry-independent algebra"],
-    "prerequisites": ["menelaus_algebraic_core", "function abstraction in Lean 4", "Menelaus theorem in all geometries"]
+    "relatedConcepts": [
+      "measure function abstraction",
+      "menelaus_algebraic_core",
+      "Euclidean/hyperbolic/spherical Menelaus",
+      "geometry-independent algebra"
+    ],
+    "prerequisites": [
+      "menelaus_algebraic_core",
+      "function abstraction in Lean 4",
+      "Menelaus theorem in all geometries"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-duality",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 210, "endLine": 235 },
+    "range": {
+      "startLine": 210,
+      "endLine": 235
+    },
     "type": "insight",
     "title": "Ceva–Menelaus Duality: Both Product Conditions Proved Simultaneously",
     "content": "spherical_ceva_menelaus_duality proves both the Ceva condition (product = +1, concurrent cevians) and the Menelaus condition (product = -1, collinear transversal) in a single theorem with a conjunction return. Both reduce to the same algebraic structure via field_simp + ring to normalize to p/q form, then div_eq_iff → linarith to close each direction. The Lean proof uses refine ⟨?_, menelaus_algebraic_core ... ⟩ to handle the Menelaus part by direct delegation, while proving the Ceva part manually with the same div_eq_iff + linarith pattern. The algebraic difference between Ceva and Menelaus is simply the target value (+1 vs -1), reflecting the deep projective duality.",
     "mathContext": "\\text{Ceva: } \\prod \\frac{\\sin(P_i)}{\\sin(Q_i)} = +1 \\iff \\prod \\sin(P_i) = \\prod \\sin(Q_i). \\quad \\text{Menelaus: product} = -1 \\iff \\prod \\sin(P_i) = -\\prod \\sin(Q_i).",
     "significance": "key",
-    "relatedConcepts": ["Ceva theorem", "Menelaus theorem", "projective duality", "div_eq_iff", "menelaus_algebraic_core"],
-    "prerequisites": ["spherical_menelaus", "Ceva's theorem statement", "div_eq_iff + linarith pattern", "refine tactic with conjunction"]
+    "relatedConcepts": [
+      "Ceva theorem",
+      "Menelaus theorem",
+      "projective duality",
+      "div_eq_iff",
+      "menelaus_algebraic_core"
+    ],
+    "prerequisites": [
+      "spherical_menelaus",
+      "Ceva's theorem statement",
+      "div_eq_iff + linarith pattern",
+      "refine tactic with conjunction"
+    ]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-summary",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 237, "endLine": 272 },
-    "type": "context",
+    "range": {
+      "startLine": 237,
+      "endLine": 272
+    },
+    "type": "concept",
     "title": "Module Summary: Completing the Euclidean/Hyperbolic/Spherical Menelaus Triad",
     "content": "The closing summary section (/-! ... -/ doc syntax) catalogues all 10 theorems and confirms 0 sorries, 0 axioms. The architecture section makes the 'measure function' pattern explicit: (1) establish sin properties, (2) prove the algebraic core once (geometry-free), (3) define a config struct encoding the nonzero constraints, (4) main theorem reduces to the core by definition unfolding. The connection section links to the four related files: CevasTheoremNonEuclidean.lean (spherical Ceva via abstract arcs), CevasTheoremNonEuclideanOQ02.lean (hyperbolic Menelaus via sinh, the direct parent), CevasTheoremOQ02OQ01.lean (spherical Ceva via unit vectors), and this file (spherical Menelaus via sin). Together these four files formalize the complete non-Euclidean Ceva/Menelaus landscape.",
     "mathContext": "Measure triad: $m = \\mathrm{id}$ (Euclidean, no specialized file), $m = \\sinh$ (hyperbolic, OQ-02), $m = \\sin$ (spherical, this file). The /-! ... -/ notation produces Lean 4 doc comments visible in generated documentation. The summary is not executable code — it is an informational block placed after the end CevasTheoremNonEuclideanOQ02OQ01 namespace.",
-    "significance": "context",
-    "relatedConcepts": ["measure function triad", "/-! docstring syntax", "Lean 4 doc comments", "Ceva-Menelaus correspondence"],
-    "prerequisites": ["all theorems in this file", "Lean 4 documentation syntax", "parent file structure"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "measure function triad",
+      "/-! docstring syntax",
+      "Lean 4 doc comments",
+      "Ceva-Menelaus correspondence"
+    ],
+    "prerequisites": [
+      "all theorems in this file",
+      "Lean 4 documentation syntax",
+      "parent file structure"
+    ]
   }
 ]

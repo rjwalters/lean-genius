@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "The Most Famous 'Trivial' Proof",
-    "content": "The claim that Principia Mathematica took 362 pages to prove $1+1=2$ has become legendary\u2014and somewhat misleading. Those pages weren't proving a single equation; they were constructing the entire logical framework needed to give rigorous meaning to the symbols '1', '+', '=', and '2'.\n\nIn modern type theory, this proof is definitionally true: the computation $1+1$ *reduces to* $2$ by the very definitions of the symbols involved. The `rfl` tactic (reflexivity) captures this.",
-    "mathContext": "Principia Mathematica (1910) defines $1$ as the class of all unit classes: $1 = \\hat{\\alpha}(\\exists x.\\alpha = \\iota'x)$. Modern type theory takes $1 \\stackrel{\\text{def}}{=} S(0)$\u2014a structural definition that makes $1+1=2$ reduce to $S(S(0)) = S(S(0))$ by computation, proved by `rfl`.",
+    "content": "The claim that Principia Mathematica took 362 pages to prove $1+1=2$ has become legendary—and somewhat misleading. Those pages weren't proving a single equation; they were constructing the entire logical framework needed to give rigorous meaning to the symbols '1', '+', '=', and '2'.\n\nIn modern type theory, this proof is definitionally true: the computation $1+1$ *reduces to* $2$ by the very definitions of the symbols involved. The `rfl` tactic (reflexivity) captures this.",
+    "mathContext": "Principia Mathematica (1910) defines $1$ as the class of all unit classes: $1 = \\hat{\\alpha}(\\exists x.\\alpha = \\iota'x)$. Modern type theory takes $1 \\stackrel{\\text{def}}{=} S(0)$—a structural definition that makes $1+1=2$ reduce to $S(S(0)) = S(S(0))$ by computation, proved by `rfl`.",
     "significance": "key",
     "prerequisites": [],
     "relatedConcepts": [
@@ -27,8 +27,8 @@
     },
     "type": "definition",
     "title": "Peano Natural Numbers",
-    "content": "The natural numbers are defined as an **inductive type** with exactly two constructors:\n\n1. `zero` \u2014 the base case, representing 0\n2. `succ` \u2014 the successor function, taking any natural to its successor\n\nThis is Peano's original insight: we don't need to say *what* numbers are, only *how they behave*. Zero exists, and every number has a successor. From these two building blocks, we get all of $\\mathbb{N}$.",
-    "mathContext": "$\\mathbb{N} = \\{0, S(0), S(S(0)), S(S(S(0))), \\ldots\\}$. In Lean 4: `inductive \u2115 where | zero : \u2115 | succ : \u2115 \u2192 \u2115`. The two constructors are the *only* way to build a natural number; pattern matching on them is exhaustive and well-founded by structural recursion.",
+    "content": "The natural numbers are defined as an **inductive type** with exactly two constructors:\n\n1. `zero` — the base case, representing 0\n2. `succ` — the successor function, taking any natural to its successor\n\nThis is Peano's original insight: we don't need to say *what* numbers are, only *how they behave*. Zero exists, and every number has a successor. From these two building blocks, we get all of $\\mathbb{N}$.",
+    "mathContext": "$\\mathbb{N} = \\{0, S(0), S(S(0)), S(S(S(0))), \\ldots\\}$. In Lean 4: `inductive ℕ where | zero : ℕ | succ : ℕ → ℕ`. The two constructors are the *only* way to build a natural number; pattern matching on them is exhaustive and well-founded by structural recursion.",
     "significance": "key",
     "prerequisites": [],
     "relatedConcepts": [
@@ -46,7 +46,7 @@
     },
     "type": "definition",
     "title": "Numeric Notation",
-    "content": "We define convenient names for the first few numbers:\n\n- $1 = S(0)$ (one successor of zero)\n- $2 = S(S(0))$ (two successors of zero)\n- $3 = S(S(S(0)))$ (three successors)\n\nThese are just syntactic sugar\u2014`one` is literally defined to *be* `succ zero`, not merely equal to it.",
+    "content": "We define convenient names for the first few numbers:\n\n- $1 = S(0)$ (one successor of zero)\n- $2 = S(S(0))$ (two successors of zero)\n- $3 = S(S(S(0)))$ (three successors)\n\nThese are just syntactic sugar—`one` is literally defined to *be* `succ zero`, not merely equal to it.",
     "mathContext": "$1 \\stackrel{\\text{def}}{=} S(0), \\quad 2 \\stackrel{\\text{def}}{=} S(S(0))$. These are *definitional equalities* (not propositional), meaning Lean's kernel reduces `one` to `succ zero` without any proof step. Numeric literals in Lean's `Nat` use the same encoding: `(1 : Nat)` is `Nat.succ Nat.zero`.",
     "significance": "supporting",
     "prerequisites": [
@@ -89,7 +89,7 @@
     },
     "type": "insight",
     "title": "The Main Theorem",
-    "content": "Here it is\u2014the theorem that launched a thousand memes. We claim that $1 + 1 = 2$, or more precisely, that `one + one = two` where these are our defined Peano naturals.\n\nThe proof will show that both sides compute to the same thing.",
+    "content": "Here it is—the theorem that launched a thousand memes. We claim that $1 + 1 = 2$, or more precisely, that `one + one = two` where these are our defined Peano naturals.\n\nThe proof will show that both sides compute to the same thing.",
     "mathContext": "$S(0) + S(0) = S(S(0))$. Expanding by the recursive case: $S(0) + S(0) = S(S(0) + 0)$. Then by the base case: $S(S(0) + 0) = S(S(0)) = 2$. Each step is a *definitional* reduction, so the kernel closes the proof without any runtime computation.",
     "significance": "key",
     "prerequisites": [
@@ -110,9 +110,9 @@
       "startLine": 59,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Unfolding the Computation",
-    "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition\u2014no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
+    "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition—no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
     "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$. The `unfold` tactic makes each definitional step explicit: first expanding `one` and `two`, then applying the recursive and base cases of `add`. After unfolding, both sides are syntactically identical, so `rfl` closes the goal.",
     "significance": "key",
     "prerequisites": [
@@ -133,8 +133,8 @@
     },
     "type": "insight",
     "title": "The Power of 'rfl'",
-    "content": "This alternative proof using just `rfl` shows the true elegance of type theory. The term `rfl` (reflexivity) proves any goal of the form `a = a`.\n\nBut here's the magic: type theory has **definitional equality** built in. If `a` and `b` compute to the same normal form, then `a = b` is proved by `rfl`. Since `one + one` and `two` both reduce to `succ (succ zero)`, they're definitionally equal.\n\nThis is why the proof is 'trivial'\u2014it's not that we're avoiding work, it's that the *definitions themselves* do the work.",
-    "mathContext": "In dependent type theory, the `Eq` type has a single constructor `refl : Eq a a`. The term `rfl` proves `a = b` whenever $a$ and $b$ are *definitionally equal*\u2014i.e., reduce to the same normal form under the kernel's reduction rules. This is distinct from *propositional equality*, which requires a proof term.",
+    "content": "This alternative proof using just `rfl` shows the true elegance of type theory. The term `rfl` (reflexivity) proves any goal of the form `a = a`.\n\nBut here's the magic: type theory has **definitional equality** built in. If `a` and `b` compute to the same normal form, then `a = b` is proved by `rfl`. Since `one + one` and `two` both reduce to `succ (succ zero)`, they're definitionally equal.\n\nThis is why the proof is 'trivial'—it's not that we're avoiding work, it's that the *definitions themselves* do the work.",
+    "mathContext": "In dependent type theory, the `Eq` type has a single constructor `refl : Eq a a`. The term `rfl` proves `a = b` whenever $a$ and $b$ are *definitionally equal*—i.e., reduce to the same normal form under the kernel's reduction rules. This is distinct from *propositional equality*, which requires a proof term.",
     "significance": "key",
     "prerequisites": [
       "ann-unfold-proof"
@@ -154,7 +154,7 @@
     },
     "type": "insight",
     "title": "Right Identity",
-    "content": "Zero is a right identity for addition: $n + 0 = n$. This follows immediately from the definition of `add`\u2014it's the base case! The proof is `rfl` because `n + zero` *reduces to* `n` by definition.",
+    "content": "Zero is a right identity for addition: $n + 0 = n$. This follows immediately from the definition of `add`—it's the base case! The proof is `rfl` because `n + zero` *reduces to* `n` by definition.",
     "mathContext": "$\\forall n \\in \\mathbb{N}: n + 0 = n$. This is the base case of the `add` definition, so it holds *definitionally*: `add n zero` reduces to `n` by the first equation of the pattern match, making the proof a direct `rfl` with no computation needed.",
     "significance": "supporting",
     "prerequisites": [
@@ -176,8 +176,8 @@
     },
     "type": "insight",
     "title": "Left Identity (Requires Induction)",
-    "content": "Zero is also a left identity: $0 + n = n$. But this requires **induction**! Why?\n\nOur addition is defined by recursion on the *second* argument, so `zero + n` doesn't immediately reduce. We must prove it for all `n` by induction:\n\n- **Base case:** `zero + zero = zero` \u2713 (by definition)\n- **Inductive step:** If `zero + n = n`, then `zero + succ n = succ (zero + n) = succ n` \u2713",
-    "mathContext": "$\\forall n \\in \\mathbb{N}: 0 + n = n$. Unlike the right identity, `add zero n` does NOT reduce definitionally\u2014the pattern match is on the second argument, so `add zero (succ m)` reduces to `succ (add zero m)`, not directly to `succ m`. Induction on $n$ bridges this gap, with the base `rfl` and inductive step using `rw [ih]`.",
+    "content": "Zero is also a left identity: $0 + n = n$. But this requires **induction**! Why?\n\nOur addition is defined by recursion on the *second* argument, so `zero + n` doesn't immediately reduce. We must prove it for all `n` by induction:\n\n- **Base case:** `zero + zero = zero` ✓ (by definition)\n- **Inductive step:** If `zero + n = n`, then `zero + succ n = succ (zero + n) = succ n` ✓",
+    "mathContext": "$\\forall n \\in \\mathbb{N}: 0 + n = n$. Unlike the right identity, `add zero n` does NOT reduce definitionally—the pattern match is on the second argument, so `add zero (succ m)` reduces to `succ (add zero m)`, not directly to `succ m`. Induction on $n$ bridges this gap, with the base `rfl` and inductive step using `rw [ih]`.",
     "significance": "key",
     "prerequisites": [
       "ann-add-definition"
@@ -242,7 +242,7 @@
     },
     "type": "concept",
     "title": "Extending the Pattern",
-    "content": "Once we have the machinery, more arithmetic facts fall out immediately:\n\n- $2 + 1 = 3$ \u2014 `rfl`\n- $1 + 2 = 3$ \u2014 `rfl` \n- $2 + 2 = 4$ \u2014 `rfl`\n\nAll definitionally true, requiring no proof beyond reflexivity. The pattern extends to any concrete computation with natural numbers.",
+    "content": "Once we have the machinery, more arithmetic facts fall out immediately:\n\n- $2 + 1 = 3$ — `rfl`\n- $1 + 2 = 3$ — `rfl` \n- $2 + 2 = 4$ — `rfl`\n\nAll definitionally true, requiring no proof beyond reflexivity. The pattern extends to any concrete computation with natural numbers.",
     "mathContext": "For concrete numerals, all arithmetic facts are *definitionally true*: $2+1=3$ because both sides reduce to $S(S(S(0)))$ via the recursive equations of `add`. Lean's kernel handles these computations at type-checking time, requiring no explicit proof terms.",
     "significance": "supporting",
     "prerequisites": [
@@ -265,8 +265,8 @@
     },
     "type": "concept",
     "title": "Lean's Built-in Naturals",
-    "content": "Lean's standard library defines `Nat` identically to our `Peano.\u2115`:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat \u2192 Nat\n```\n\nThe numeric literals `1`, `2`, etc. are notation for `Nat.succ Nat.zero`, `Nat.succ (Nat.succ Nat.zero)`, etc. And `Nat.add` is defined exactly as our `add`. So the proof `(1 : Nat) + 1 = 2` is also just `rfl`.",
-    "mathContext": "Lean's `Nat` satisfies the same inductive specification as `Peano.\u2115`, making the two types *definitionally isomorphic*. Crucially, `Nat.add` is implemented in the Lean kernel as a compiled C++ function for efficiency\u2014but its behavior is provably equivalent to the recursive definition, so `(1 : Nat) + 1 = 2` is still proved by `rfl`.",
+    "content": "Lean's standard library defines `Nat` identically to our `Peano.ℕ`:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat → Nat\n```\n\nThe numeric literals `1`, `2`, etc. are notation for `Nat.succ Nat.zero`, `Nat.succ (Nat.succ Nat.zero)`, etc. And `Nat.add` is defined exactly as our `add`. So the proof `(1 : Nat) + 1 = 2` is also just `rfl`.",
+    "mathContext": "Lean's `Nat` satisfies the same inductive specification as `Peano.ℕ`, making the two types *definitionally isomorphic*. Crucially, `Nat.add` is implemented in the Lean kernel as a compiled C++ function for efficiency—but its behavior is provably equivalent to the recursive definition, so `(1 : Nat) + 1 = 2` is still proved by `rfl`.",
     "significance": "supporting",
     "prerequisites": [
       "ann-peano-inductive"
@@ -287,8 +287,8 @@
     },
     "type": "concept",
     "title": "Understanding Principia Mathematica",
-    "content": "Russell and Whitehead weren't trying to prove $1+1=2$ in isolation\u2014they were building a complete logical foundation for all of mathematics.\n\nTheir approach was radically different from ours:\n\n- **Numbers as sets:** 1 was defined as *the set of all singleton sets*, 2 as *the set of all two-element sets*\n- **Addition via unions:** $a + b$ meant taking the union of disjoint representatives\n- **Ramified type theory:** To avoid paradoxes, they used a complex type hierarchy\n\nIn contrast, modern type theory treats natural numbers as a primitive inductive type, making the foundations far simpler. We're not cheating\u2014we've just found a better foundation.",
-    "mathContext": "In Principia, $1 \\stackrel{\\text{def}}{=} \\hat{\\alpha}(\\exists x.\\alpha = \\iota'x)$ (the class of unit classes) and addition $a+b$ requires constructing a disjoint union representative. Proposition $\\ast110.643$ (the famous '1+1=2') depends on $\\ast110$ (cardinal arithmetic) which depends on $\\ast100$ (definition of cardinals)\u2014the 362 pages are the dependency chain, not a single linear argument.",
+    "content": "Russell and Whitehead weren't trying to prove $1+1=2$ in isolation—they were building a complete logical foundation for all of mathematics.\n\nTheir approach was radically different from ours:\n\n- **Numbers as sets:** 1 was defined as *the set of all singleton sets*, 2 as *the set of all two-element sets*\n- **Addition via unions:** $a + b$ meant taking the union of disjoint representatives\n- **Ramified type theory:** To avoid paradoxes, they used a complex type hierarchy\n\nIn contrast, modern type theory treats natural numbers as a primitive inductive type, making the foundations far simpler. We're not cheating—we've just found a better foundation.",
+    "mathContext": "In Principia, $1 \\stackrel{\\text{def}}{=} \\hat{\\alpha}(\\exists x.\\alpha = \\iota'x)$ (the class of unit classes) and addition $a+b$ requires constructing a disjoint union representative. Proposition $\\ast110.643$ (the famous '1+1=2') depends on $\\ast110$ (cardinal arithmetic) which depends on $\\ast100$ (definition of cardinals)—the 362 pages are the dependency chain, not a single linear argument.",
     "significance": "key",
     "prerequisites": [
       "ann-intro"
@@ -306,9 +306,9 @@
       "startLine": 83,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Successor Distributes Left",
-    "content": "This lemma shows that $S(n) + m = S(n + m)$\u2014the successor can be 'factored out' from the left argument.\n\nThis is NOT definitionally true (unlike `add_succ`) because our `add` recurses on the *right* argument. We need induction on `m` to prove it.\n\nThis asymmetry\u2014one direction is trivial, the other requires proof\u2014reflects the inherent asymmetry in our recursive definition.",
+    "content": "This lemma shows that $S(n) + m = S(n + m)$—the successor can be 'factored out' from the left argument.\n\nThis is NOT definitionally true (unlike `add_succ`) because our `add` recurses on the *right* argument. We need induction on `m` to prove it.\n\nThis asymmetry—one direction is trivial, the other requires proof—reflects the inherent asymmetry in our recursive definition.",
     "mathContext": "$S(n) + m = S(n + m)$. This lemma is the key asymmetry: `add_succ` ($n + S(m) = S(n+m)$) is *definitional* (it IS the recursive case), but `succ_add` ($S(n)+m = S(n+m)$) requires induction. Lean's `simp` and `omega` tactics know both forms, but proving it from scratch requires understanding which direction the recursion unfolds.",
     "significance": "supporting",
     "prerequisites": [

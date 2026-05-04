@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Why Avoid Division? Binary GCD on Hardware",
-    "content": "Euclid's GCD algorithm uses modular division at every step: gcd(a,b) = gcd(a mod b, b). On binary hardware, integer division is expensive \u2014 it requires multiple clock cycles or a dedicated divider circuit. Stein (1967) replaced every division with right-shifts (halving) and subtractions, which are O(1) bit operations available in a single cycle on all hardware. The file header documents this motivation directly in the Lean source. This makes the algorithm particularly valuable for microcontrollers, FPGAs, and cryptographic co-processors where hardware dividers are absent or slow.",
+    "content": "Euclid's GCD algorithm uses modular division at every step: gcd(a,b) = gcd(a mod b, b). On binary hardware, integer division is expensive — it requires multiple clock cycles or a dedicated divider circuit. Stein (1967) replaced every division with right-shifts (halving) and subtractions, which are O(1) bit operations available in a single cycle on all hardware. The file header documents this motivation directly in the Lean source. This makes the algorithm particularly valuable for microcontrollers, FPGAs, and cryptographic co-processors where hardware dividers are absent or slow.",
     "mathContext": "Euclid: $\\gcd(a,b) = \\gcd(a \\bmod b,\\ b)$, each step uses division. Stein: replaces $a \\bmod b$ with bit-shifts ($a \\mapsto a/2$) and subtraction ($a \\mapsto a-b$), both $O(1)$. Complexity: $O(\\log^2 \\max(a,b))$ bit operations (Knuth).",
     "significance": "supporting",
     "prerequisites": [
@@ -30,9 +30,9 @@
       "startLine": 36,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even-Even and Even-Odd Reductions: Coprimality of 2",
-    "content": "Three lemmas handle the even/odd cases. `gcd_double_double`: gcd(2a,2b) = 2\u00b7gcd(a,b) \u2014 a one-liner via Nat.gcd_mul_left 2. `coprime_two_of_odd`: if n is odd then gcd(2,n)=1 \u2014 proved via Nat.coprime_two_right.mpr \u2218 Nat.odd_iff.mpr. `gcd_two_mul_of_odd`: if b is odd then gcd(2a,b)=gcd(a,b) \u2014 this is the key coprimality step, using Nat.Coprime.gcd_mul_left_cancel. `gcd_of_odd_two_mul` handles the symmetric case by commutativity. These lemmas implement the algorithm's core insight: factors of 2 can be stripped when the other argument is odd.",
+    "content": "Three lemmas handle the even/odd cases. `gcd_double_double`: gcd(2a,2b) = 2·gcd(a,b) — a one-liner via Nat.gcd_mul_left 2. `coprime_two_of_odd`: if n is odd then gcd(2,n)=1 — proved via Nat.coprime_two_right.mpr ∘ Nat.odd_iff.mpr. `gcd_two_mul_of_odd`: if b is odd then gcd(2a,b)=gcd(a,b) — this is the key coprimality step, using Nat.Coprime.gcd_mul_left_cancel. `gcd_of_odd_two_mul` handles the symmetric case by commutativity. These lemmas implement the algorithm's core insight: factors of 2 can be stripped when the other argument is odd.",
     "mathContext": "$\\gcd(2a,2b) = 2\\gcd(a,b)$ (Nat.gcd_mul_left). If $n$ odd: $\\gcd(2,n)=1$ (coprime). If $b$ odd: $\\gcd(2a,b) = \\gcd(a,b)$ since $2 \\nmid b$ implies $\\gcd(2,b)=1$, then $\\gcd(2a,b) = \\gcd(2,b) \\cdot \\gcd(a,b)$... more precisely via Nat.Coprime.gcd_mul_left_cancel: $k \\perp b \\Rightarrow \\gcd(ka,b)=\\gcd(a,b)$.",
     "significance": "key",
     "prerequisites": [
@@ -54,9 +54,9 @@
       "startLine": 56,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Modular Subtraction: gcd(a, b-a) = gcd(a, b)",
-    "content": "`mod_sub_self` establishes (b-a) % a = b % a when a \u2264 b, by splitting on a=0 and otherwise using Nat.add_mod_right after rewriting b = (b-a) + a. `gcd_sub_right` then uses Nat.gcd_rec (which reduces gcd(a,b) to gcd(b%a, a)) on both sides: gcd(a, b-a) = gcd((b-a)%a, a) = gcd(b%a, a) = gcd(a, b). This is the subtraction-based variant of the Euclidean algorithm's step.",
+    "content": "`mod_sub_self` establishes (b-a) % a = b % a when a ≤ b, by splitting on a=0 and otherwise using Nat.add_mod_right after rewriting b = (b-a) + a. `gcd_sub_right` then uses Nat.gcd_rec (which reduces gcd(a,b) to gcd(b%a, a)) on both sides: gcd(a, b-a) = gcd((b-a)%a, a) = gcd(b%a, a) = gcd(a, b). This is the subtraction-based variant of the Euclidean algorithm's step.",
     "mathContext": "$(b-a) \\bmod a = b \\bmod a$ when $a \\leq b$: rewrite $b = (b-a)+a$, then $(b-a+a) \\bmod a = (b-a) \\bmod a + a \\bmod a = (b-a) \\bmod a$ (Nat.add_mod_right). Euclid: $\\gcd(a,b) = \\gcd(a, b \\bmod a) = \\gcd(a, (b-a) \\bmod a)$.",
     "significance": "supporting",
     "prerequisites": [
@@ -77,9 +77,9 @@
       "startLine": 67,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Both-Odd Reduction: Halving After Subtraction",
-    "content": "`gcd_odd_sub_half` is the most sophisticated helper. When both a and b are odd with a \u2264 b: first note that b-a is even (odd minus odd), so b-a = 2\u00b7((b-a)/2). Then gcd(a,(b-a)/2) = gcd(a,2\u00b7((b-a)/2)) by gcd_of_odd_two_mul (since a is odd, factor-2 can be discarded) = gcd(a,b-a) = gcd(a,b) by gcd_sub_right. The proof uses a `calc` chain making each step explicit. `gcd_odd_sub_half_left` handles a>b by commutativity.",
+    "content": "`gcd_odd_sub_half` is the most sophisticated helper. When both a and b are odd with a ≤ b: first note that b-a is even (odd minus odd), so b-a = 2·((b-a)/2). Then gcd(a,(b-a)/2) = gcd(a,2·((b-a)/2)) by gcd_of_odd_two_mul (since a is odd, factor-2 can be discarded) = gcd(a,b-a) = gcd(a,b) by gcd_sub_right. The proof uses a `calc` chain making each step explicit. `gcd_odd_sub_half_left` handles a>b by commutativity.",
     "mathContext": "Both $a,b$ odd, $a \\leq b$: $b-a$ even $\\Rightarrow b-a = 2k$ where $k = (b-a)/2$. Then: $\\gcd(a,k) = \\gcd(a,2k) = \\gcd(a,b-a) = \\gcd(a,b)$, using (1) $a$ odd $\\Rightarrow \\gcd(a,2k)=\\gcd(a,k)$ and (2) $\\gcd(a,b-a)=\\gcd(a,b)$.",
     "significance": "key",
     "prerequisites": [
@@ -104,7 +104,7 @@
     },
     "type": "definition",
     "title": "Stein's Algorithm: Seven Branches with Automated Termination",
-    "content": "The `binaryGcd` definition has seven mutually exclusive branches covering all cases for (a,b) based on parity and order. The `termination_by a + b` declaration specifies the decreasing measure. The `decreasing_by all_goals simp_wf; all_goals omega` block proves all seven termination obligations automatically: simp_wf unfolds the termination hypothesis format and omega closes each linear arithmetic goal (e.g., a/2 + b/2 < a+b when a,b\u22600; (a-b)/2 + b < a+b when a,b odd, a>b).",
+    "content": "The `binaryGcd` definition has seven mutually exclusive branches covering all cases for (a,b) based on parity and order. The `termination_by a + b` declaration specifies the decreasing measure. The `decreasing_by all_goals simp_wf; all_goals omega` block proves all seven termination obligations automatically: simp_wf unfolds the termination hypothesis format and omega closes each linear arithmetic goal (e.g., a/2 + b/2 < a+b when a,b≠0; (a-b)/2 + b < a+b when a,b odd, a>b).",
     "mathContext": "Seven cases: $\\gcd(0,b)=b$; $\\gcd(a,0)=a$; both even: $2\\gcd(a/2,b/2)$; $a$ even: $\\gcd(a/2,b)$; $b$ even: $\\gcd(a,b/2)$; both odd, $a\\leq b$: $\\gcd(a,(b-a)/2)$; both odd, $a>b$: $\\gcd((a-b)/2,b)$. Termination measure: $a+b$ decreases in all recursive cases.",
     "significance": "critical",
     "prerequisites": [
@@ -129,7 +129,7 @@
     },
     "type": "concept",
     "title": "Correctness Proof: Well-Founded Induction Mirrors the Algorithm",
-    "content": "The main correctness theorem `binaryGcd_eq_gcd` is proved by well-founded induction on a+b, exactly mirroring the algorithm's recursive structure. For each branch: `unfold binaryGcd` exposes the branch, `split_ifs` creates 7 goals matching the algorithm's 7 cases, and each goal is closed by applying the induction hypothesis to smaller arguments, then the corresponding helper lemma. The proof's structure proves that each branch of the algorithm correctly computes the GCD \u2014 if binaryGcd(smaller_args) = gcd(smaller_args), then the branch formula gives gcd(a,b).",
+    "content": "The main correctness theorem `binaryGcd_eq_gcd` is proved by well-founded induction on a+b, exactly mirroring the algorithm's recursive structure. For each branch: `unfold binaryGcd` exposes the branch, `split_ifs` creates 7 goals matching the algorithm's 7 cases, and each goal is closed by applying the induction hypothesis to smaller arguments, then the corresponding helper lemma. The proof's structure proves that each branch of the algorithm correctly computes the GCD — if binaryGcd(smaller_args) = gcd(smaller_args), then the branch formula gives gcd(a,b).",
     "mathContext": "Proof by WF induction on $a+b$: for each branch $f(a,b) = \\text{op}(\\text{binaryGcd}(a',b'))$ where $a'+b' < a+b$, apply IH to get binaryGcd$(a',b') = \\gcd(a',b')$, then verify $\\text{op}(\\gcd(a',b')) = \\gcd(a,b)$ using the helper lemmas. E.g., both-even: $2 \\cdot \\text{binaryGcd}(a/2,b/2) = 2 \\cdot \\gcd(a/2,b/2) = \\gcd(a,b)$.",
     "significance": "critical",
     "prerequisites": [
@@ -153,7 +153,7 @@
     },
     "type": "insight",
     "title": "Derived Properties: All Reduce to Nat.gcd Equivalence",
-    "content": "The four GCD properties (symmetry, left divisibility, right divisibility, universality) all have one-line proofs: rewrite binaryGcd as Nat.gcd using `binaryGcd_eq_gcd`, then appeal to the corresponding Mathlib theorem. This is the power of the correctness theorem \u2014 once binaryGcd = Nat.gcd is established, all Mathlib GCD lemmas become immediately available for binaryGcd without re-proving them. The pattern is: `simp only [binaryGcd_eq_gcd]` or `rw [binaryGcd_eq_gcd]` followed by the Mathlib result.",
+    "content": "The four GCD properties (symmetry, left divisibility, right divisibility, universality) all have one-line proofs: rewrite binaryGcd as Nat.gcd using `binaryGcd_eq_gcd`, then appeal to the corresponding Mathlib theorem. This is the power of the correctness theorem — once binaryGcd = Nat.gcd is established, all Mathlib GCD lemmas become immediately available for binaryGcd without re-proving them. The pattern is: `simp only [binaryGcd_eq_gcd]` or `rw [binaryGcd_eq_gcd]` followed by the Mathlib result.",
     "mathContext": "Four properties: (1) $\\gcd(a,b) = \\gcd(b,a)$ (Nat.gcd_comm); (2,3) $\\gcd(a,b) \\mid a$, $\\gcd(a,b) \\mid b$ (Nat.gcd_dvd_left/right); (4) $k \\mid a \\wedge k \\mid b \\Rightarrow k \\mid \\gcd(a,b)$ (Nat.dvd_gcd). All follow by substituting binaryGcd = Nat.gcd.",
     "significance": "key",
     "prerequisites": [
@@ -177,9 +177,9 @@
       "endLine": 186
     },
     "type": "insight",
-    "title": "B\u00e9zout Corollary and Computational Verification",
-    "content": "`bezout_via_binaryGcd` proves \u2203 x y : \u2124, binaryGcd a b = a*x + b*y. The proof: rewrite binaryGcd as Nat.gcd, then construct the witnesses x = Int.gcdA a b and y = Int.gcdB a b using Int.gcd_eq_gcd_ab (the Mathlib B\u00e9zout identity). The cast from Nat.gcd to Int.gcd goes via `Int.natCast_gcd`. This shows that the division-free algorithm inherits the full algebraic theory of GCD, including B\u00e9zout's theorem. The five `native_decide` examples (gcd 12 8, gcd 35 15, gcd 17 5, gcd 252 198, and equality with Nat.gcd for 1071 462) provide computational ground-truth verification.",
-    "mathContext": "B\u00e9zout: $\\exists x,y \\in \\mathbb{Z},\\ \\gcd(a,b) = ax+by$ (Bezout's theorem). Here: x = Int.gcdA $a$ $b$, y = Int.gcdB $a$ $b$, with Int.gcd_eq_gcd_ab: $\\uparrow(\\text{Int.gcd}\\ a\\ b) = a \\cdot \\text{gcdA} + b \\cdot \\text{gcdB}$. Cast: Nat.gcd $a$ $b$ $\\xrightarrow{\\text{Int.natCast\\_gcd}}$ Int.gcd $\\uparrow a$ $\\uparrow b$.",
+    "title": "Bézout Corollary and Computational Verification",
+    "content": "`bezout_via_binaryGcd` proves ∃ x y : ℤ, binaryGcd a b = a*x + b*y. The proof: rewrite binaryGcd as Nat.gcd, then construct the witnesses x = Int.gcdA a b and y = Int.gcdB a b using Int.gcd_eq_gcd_ab (the Mathlib Bézout identity). The cast from Nat.gcd to Int.gcd goes via `Int.natCast_gcd`. This shows that the division-free algorithm inherits the full algebraic theory of GCD, including Bézout's theorem. The five `native_decide` examples (gcd 12 8, gcd 35 15, gcd 17 5, gcd 252 198, and equality with Nat.gcd for 1071 462) provide computational ground-truth verification.",
+    "mathContext": "Bézout: $\\exists x,y \\in \\mathbb{Z},\\ \\gcd(a,b) = ax+by$ (Bezout's theorem). Here: x = Int.gcdA $a$ $b$, y = Int.gcdB $a$ $b$, with Int.gcd_eq_gcd_ab: $\\uparrow(\\text{Int.gcd}\\ a\\ b) = a \\cdot \\text{gcdA} + b \\cdot \\text{gcdB}$. Cast: Nat.gcd $a$ $b$ $\\xrightarrow{\\text{Int.natCast\\_gcd}}$ Int.gcd $\\uparrow a$ $\\uparrow b$.",
     "significance": "key",
     "prerequisites": [
       "Int.gcd_eq_gcd_ab",
@@ -188,7 +188,7 @@
       "native_decide"
     ],
     "relatedConcepts": [
-      "B\u00e9zout's theorem",
+      "Bézout's theorem",
       "extended GCD coefficients",
       "Int.gcdA/gcdB Mathlib API",
       "natCast coercion"
