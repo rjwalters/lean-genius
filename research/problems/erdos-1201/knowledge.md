@@ -694,3 +694,50 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Docker build verification needed for the limsup_add_le proof
 - The Aristotle job cb09e358 (erdos_1201_half_case) is superseded — mark as resolved_manually
 - Pool status: erdos-1201 now has 0 sorries, 1 axiom — consider completing if Docker passes
+
+---
+
+## Session 2026-05-04 (Session 17) - lowerDensity + Density Completions (researcher-9)
+
+**Mode**: REVISIT
+**Outcome**: progress — 10 new theorems + 1 def, theorem count 87→97
+
+### What I Did
+- Added section "Upper Density Basic Facts": `upperDensity_empty`, `upperDensity_le_one`,
+  `upperDensity_ge_zero`, `upperDensity_univ`
+- Added section "Asymptotic Behavior as Window Grows":
+  - `gpfConsecutive_atTop`: for fixed n ≥ 2, Filter.Tendsto (gpfConsecutive n) atTop atTop
+    (uses Nat.exists_infinite_primes to find prime p > max(n,M) for any bound M)
+  - `erdos_1201_eventually_good`: fixed n ≥ 2 is eventually good for all large k (follows
+    from `erdos_1201_individual_threshold` + `gpfConsecutive_le_of_le_k`)
+  - `erdos_1201_density_eventually_large`: assuming ErdosProblem1201, density ≥ 1-η for
+    ALL k ≥ K (not just one k); edge cases n=0,1 handled by interval_cases
+- Added section "Lower Density": `lowerDensity` def via `Filter.liminf`, plus
+  `lowerDensity_nonneg`, `lowerDensity_le_upperDensity`, `lowerDensity_compl`
+
+### Key Findings
+- **lowerDensity_compl** uses `Antitone.map_limsup_of_continuousAt` with antitone f = (1-·):
+  converts limsup(density S) to liminf(1 - density S). Named arguments: f_cont, bdd_above, cobdd.
+  This gives the EXACT identity `lD(Sᶜ) = 1 - uD(S)`, not just an inequality.
+- **gpfConsecutive_atTop** is the convergence result: for any fixed starting point n ≥ 2,
+  the GPF of consecutive products grows without bound as the window extends.
+- **IsBoundedUnder (·≥·).isCoboundedUnder_le** converts lower bound witnesses for liminf;
+  **IsBoundedUnder (·≤·).isCoboundedUnder_ge** converts upper bound witnesses for limsup.
+- n=0,1 edge cases in `erdos_1201_density_eventually_large`: n=0 gives
+  consecutiveProduct=0 → gpfConsecutive=0 → contradiction with hypothesis; n=1 uses
+  2 | consecutiveProduct 1 k (via Finset.dvd_prod_of_mem with i=1) → gpf ≥ 2 > 1.
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1287→1480 lines, 87→97 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (lineCount 1270→1480, theoremCount 87→97, definitionCount 5→6)
+- `src/data/research/problems/erdos-1201.json` (builtItems +11, insights +5)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Status
+- **Axiom count**: 1 (unchanged: erdos_1201_half_case)
+- **Sorry count**: 0
+- **Theorems proved**: 97 (added 10 new theorems)
+- **Definitions**: 6 (added lowerDensity)
+- **Assessment**: Gallery formalization enriched with complete density infrastructure.
+  The open problem (eliminate axiom, prove conjecture for ε ∈ (0,1/2)) remains genuinely
+  blocked on Dickman ρ function density estimates.

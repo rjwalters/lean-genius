@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 87 structural theorems (1 sorry → Aristotle, 1 axiom). Formal reduction: ErdosProblem1201 ← smooth-window density decays to 0 as k→∞ (erdos_1201_smooth_decay_implies_conjecture). Frontier: ε∈(0,1/2) via erdos_1201_equiv_small_eps. Truly blocked on density lower bounds (Dickman ρ).",
+    "progressSummary": "PROGRESS: 97 theorems + 6 defs, 0 sorries, 1 axiom. lowerDensity added with exact complement duality. upperDensity basic facts. gpfConsecutive_atTop (Tendsto to infinity). Session 17 (2026-05-04).",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -112,7 +112,18 @@
       "erdos_1201_good_prime_k0 (Erdos1201Problem.lean:1159): primes are good for k=0 — rpow_lt_rpow_of_exponent_lt gives n^(1-ε)<n",
       "upperDensity_compl_ge (Erdos1201Problem.lean:1172): 1-upperDensity(S) ≤ upperDensity(Sᶜ) — 1 sorry for limsup sub-additivity",
       "erdos_1201_from_bad_density_bound (Erdos1201Problem.lean:1205): bad density ≤ η implies good density ≥ 1-η — uses upperDensity_mono + upperDensity_compl_ge",
-      "erdos_1201_smooth_decay_implies_conjecture (Erdos1201Problem.lean:1231): ErdosProblem1201 follows from smooth-window density decay — one-line reduction"
+      "erdos_1201_smooth_decay_implies_conjecture (Erdos1201Problem.lean:1231): ErdosProblem1201 follows from smooth-window density decay — one-line reduction",
+      "upperDensity_empty: upperDensity ∅ = 0 via limsup_const 0 (Erdos1201Problem.lean:~1295)",
+      "upperDensity_le_one: upperDensity S ≤ 1 via limsup_le_of_le (Erdos1201Problem.lean:~1305)",
+      "upperDensity_ge_zero: 0 ≤ upperDensity S via upperDensity_mono empty_subset (Erdos1201Problem.lean:~1318)",
+      "upperDensity_univ: upperDensity Set.univ = 1 via limsup_const + filter_true (Erdos1201Problem.lean:~1322)",
+      "gpfConsecutive_atTop: Filter.Tendsto (gpfConsecutive n) atTop atTop for n ≥ 2 via Nat.exists_infinite_primes (Erdos1201Problem.lean:~1340)",
+      "erdos_1201_eventually_good: ∀ᶠ k, n^(1-ε) < gpfConsecutive n k for fixed n ≥ 2 (Erdos1201Problem.lean:~1357)",
+      "erdos_1201_density_eventually_large: ErdosProblem1201 → density ≥ 1-η for ALL k ≥ K (Erdos1201Problem.lean:~1367)",
+      "lowerDensity (def): Filter.liminf of counting ratio (Erdos1201Problem.lean:~1405)",
+      "lowerDensity_nonneg: 0 ≤ lowerDensity S via le_liminf_of_le + IsCoboundedUnder_ge (Erdos1201Problem.lean:~1414)",
+      "lowerDensity_le_upperDensity: lowerDensity S ≤ upperDensity S via Filter.liminf_le_limsup (Erdos1201Problem.lean:~1428)",
+      "lowerDensity_compl: lowerDensity Sᶜ = 1 - upperDensity S via Antitone.map_limsup_of_continuousAt (Erdos1201Problem.lean:~1443)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
@@ -160,7 +171,12 @@
       "erdos_1201_conditional_proof: Erdős #1201 is a formal consequence of prime gap density hypothesis",
       "Density complement: 1 - upperDensity(S) ≤ upperDensity(Sᶜ) follows from density_S + density_Sᶜ = 1 (exact for each N) + limsup sub-additivity",
       "n<2 edge case avoided by proving bad⊆complement(good) not complement(bad)⊆good — gpfConsecutive 0 k = 0 ≤ 0^(1-ε) so n=0 is not good",
-      "erdos_1201_smooth_decay_implies_conjecture: the formal reduction makes the Dickman function gap mathematically precise and minimal"
+      "erdos_1201_smooth_decay_implies_conjecture: the formal reduction makes the Dickman function gap mathematically precise and minimal",
+      "gpfConsecutive_atTop: Filter.tendsto_atTop_atTop + Nat.exists_infinite_primes gives explicit witnesses; for any M find prime p > max(n,M) then k = p-n suffices",
+      "lowerDensity via Filter.liminf is the exact dual of upperDensity (Filter.limsup); same counting ratio function",
+      "lowerDensity_compl uses Antitone.map_limsup_of_continuousAt with f = (1-·): liminf(1-x) = 1 - limsup(x) for antitone continuous f. Named args: f_cont, bdd_above, cobdd",
+      "IsBoundedUnder (· ≥ ·) .isCoboundedUnder_le converts lower bound to CoBounded for liminf; IsBoundedUnder (· ≤ ·) .isCoboundedUnder_ge for limsup",
+      "erdos_1201_density_eventually_large strengthens ErdosProblem1201: not just one k but all k ≥ K. Proof: monotone set inclusion via gpfConsecutive_le_of_le_k. Edge cases n=0,1 handled separately."
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
