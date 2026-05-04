@@ -26,7 +26,7 @@ import Mathlib
 
 namespace Erdos671
 
-open Polynomial ContinuousMap MeasureTheory
+open ContinuousMap MeasureTheory Filter
 
 /- ## Part I: Basic Definitions -/
 
@@ -41,8 +41,9 @@ def PointSequence := (n : ℕ) → InterpolationPoints n
 
 /-- The Lagrange basis polynomial p_i^n: degree n-1, p_i(a_i) = 1, p_i(a_j) = 0 for j ≠ i. -/
 noncomputable def lagrangeBasis (pts : InterpolationPoints n) (i : Fin n) : Polynomial ℝ :=
-  ∏ j in Finset.univ.filter (· ≠ i),
-    C (1 / (pts.points i - pts.points j)) * (X - C (pts.points j))
+  ∏ j ∈ (Finset.univ : Finset (Fin n)).filter (fun k => k ≠ i),
+    (Polynomial.C (1 / (pts.points i - pts.points j)) *
+     (Polynomial.X - Polynomial.C (pts.points j)) : Polynomial ℝ)
 
 /-- p_i^n(a_i) = 1. -/
 theorem lagrangeBasis_self (pts : InterpolationPoints n) (i : Fin n) :
@@ -61,25 +62,30 @@ theorem lagrangeBasis_other (pts : InterpolationPoints n) (i j : Fin n) (hij : i
     (lagrangeBasis pts i).eval (pts.points j) = 0 := by
   simp only [lagrangeBasis, Polynomial.eval_prod, Polynomial.eval_mul,
              Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]
-  apply Finset.prod_eq_zero (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hij.symm⟩)
-  simp [sub_self]
+  apply Finset.prod_eq_zero
+  · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hij.symm⟩
+  · simp [sub_self]
 
 /- ## Part II: Lagrange Interpolation -/
 
-/-- The Lagrange interpolation operator L^n f(x) = Σ f(a_i) p_i(x). -/
-noncomputable def lagrangeInterp (pts : InterpolationPoints n) (f : ℝ → ℝ) (x : ℝ) : ℝ :=
-  ∑ i : Fin n, f (pts.points i) * (lagrangeBasis pts i).eval x
+/-- The Lagrange interpolation operator L^n f(x) = Σ f(a_i) p_i(x).
+    Takes f on the domain [-1,1] since nodes are always in this interval. -/
+noncomputable def lagrangeInterp (pts : InterpolationPoints n)
+    (f : Set.Icc (-1 : ℝ) 1 → ℝ) (x : ℝ) : ℝ :=
+  ∑ i : Fin n, f ⟨pts.points i, pts.in_interval i⟩ * (lagrangeBasis pts i).eval x
 
 /-- L^n interpolates f at the nodes: L^n f(a_i) = f(a_i). -/
-theorem lagrangeInterp_at_node (pts : InterpolationPoints n) (f : ℝ → ℝ) (i : Fin n) :
-    lagrangeInterp pts f (pts.points i) = f (pts.points i) := by
+theorem lagrangeInterp_at_node (pts : InterpolationPoints n)
+    (f : Set.Icc (-1 : ℝ) 1 → ℝ) (i : Fin n) :
+    lagrangeInterp pts f (pts.points i) = f ⟨pts.points i, pts.in_interval i⟩ := by
   unfold lagrangeInterp
   rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ _)
     (fun k _ hki => by rw [lagrangeBasis_other pts k i hki, mul_zero])]
   rw [lagrangeBasis_self, mul_one]
 
 /-- L^n f is a polynomial of degree ≤ n - 1. -/
-theorem lagrangeInterp_degree (pts : InterpolationPoints n) (f : ℝ → ℝ) :
+theorem lagrangeInterp_degree (pts : InterpolationPoints n)
+    (f : Set.Icc (-1 : ℝ) 1 → ℝ) :
     ∃ p : Polynomial ℝ, p.natDegree ≤ n - 1 ∧
       ∀ x, lagrangeInterp pts f x = p.eval x := by
   sorry
@@ -88,7 +94,7 @@ theorem lagrangeInterp_degree (pts : InterpolationPoints n) (f : ℝ → ℝ) :
 
 /-- The Lebesgue function λ_n(x) = Σ |p_i^n(x)|. -/
 noncomputable def lebesgueFunction (pts : InterpolationPoints n) (x : ℝ) : ℝ :=
-  ∑ i : Fin n, |((lagrangeBasis pts i).eval x)|
+  ∑ i : Fin n, |(lagrangeBasis pts i).eval x|
 
 /-- λ_n(x) ≥ 1 for all x ∈ [-1, 1]. -/
 theorem lebesgueFunction_ge_one (pts : InterpolationPoints n) (x : ℝ)
@@ -106,10 +112,13 @@ This shows Lebesgue constant controls interpolation quality.
 
 /- ## Part IV: Bernstein's Theorem -/
 
+/-- limsup λ_n(x) = ∞ means: for every M, infinitely many n have λ_n(x) ≥ M. -/
+def LebesgueUnbounded (seq : PointSequence) (x : ℝ) : Prop :=
+  ∀ M : ℝ, ∃ᶠ m in atTop, lebesgueFunction (seq m) x ≥ M
+
 /-- Bernstein (1931): For any point sequence, ∃ x₀ where limsup λ_n(x₀) = ∞. -/
 theorem bernstein (seq : PointSequence) :
-    ∃ x₀ ∈ Set.Icc (-1 : ℝ) 1,
-      Filter.limsup (fun n => lebesgueFunction (seq n) x₀) Filter.atTop = ⊤ := by
+    ∃ x₀ ∈ Set.Icc (-1 : ℝ) 1, LebesgueUnbounded seq x₀ := by
   sorry
 
 /-- The Lebesgue constant grows: Λ_n ≥ (2/π) log n + O(1). -/
@@ -121,44 +130,50 @@ theorem lebesgueConstant_growth (pts : InterpolationPoints n) (hn : n ≥ 2) :
 
 /- ## Part V: Erdős-Vértesi Theorem -/
 
+/-- |L^n f(x)| → ∞ means: for every M, infinitely many n have |L^n f(x)| ≥ M. -/
+def InterpUnbounded (seq : PointSequence) (f : Set.Icc (-1 : ℝ) 1 → ℝ) (x : ℝ) : Prop :=
+  ∀ M : ℝ, ∃ᶠ m in atTop, |lagrangeInterp (seq m) f x| ≥ M
+
 /-- Erdős-Vértesi (1980): For any points, ∃ continuous f where |L^n f(x)| → ∞ a.e. -/
 theorem erdos_vertesi (seq : PointSequence) :
     ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
       ∀ᵐ x ∂volume.restrict (Set.Icc (-1 : ℝ) 1),
-        Filter.limsup (fun n => |lagrangeInterp (seq n) f x|) Filter.atTop = ⊤ := by
+        InterpUnbounded seq f x := by
   sorry
 
 -- Divergence is generic: Most continuous functions diverge a.e. (Baire category argument).
 
 /- ## Part VI: Question 1 -/
 
-/-- Question 1: Can λ_n(x) → ∞ yet L^n f(x) → f(x) for some x? -/
+/-- Question 1: Can limsup λ_n(x) = ∞ yet L^n f(x) → f(x) for some x? -/
 def Question1 : Prop :=
   ∃ seq : PointSequence, ∀ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
     ∃ x ∈ Set.Icc (-1 : ℝ) 1,
-      Filter.limsup (fun n => lebesgueFunction (seq n) x) Filter.atTop = ⊤ ∧
-      Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩))
+      LebesgueUnbounded seq x ∧
+      Tendsto (fun m => lagrangeInterp (seq m) f x) atTop (nhds (f ⟨x, by sorry⟩))
 
 /-- Question 1 is OPEN. -/
 axiom question1_open : Question1
 
 /- ## Part VII: Question 2 -/
 
-/-- Question 2: Can λ_n(x) → ∞ for ALL x, yet still have some convergence? -/
+/-- Question 2: Can limsup λ_n(x) = ∞ for ALL x, yet still have some convergence? -/
 def Question2 : Prop :=
   ∃ seq : PointSequence,
-    (∀ x ∈ Set.Icc (-1 : ℝ) 1,
-      Filter.limsup (fun n => lebesgueFunction (seq n) x) Filter.atTop = ⊤) ∧
+    (∀ x ∈ Set.Icc (-1 : ℝ) 1, LebesgueUnbounded seq x) ∧
     (∀ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
       ∃ x ∈ Set.Icc (-1 : ℝ) 1,
-        Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩)))
+        Tendsto (fun m => lagrangeInterp (seq m) f x) atTop (nhds (f ⟨x, by sorry⟩)))
 
 /-- Question 2 is OPEN. -/
 axiom question2_open : Question2
 
 /-- Question 2 implies Question 1. -/
 theorem q2_implies_q1 (h : Question2) : Question1 := by
-  sorry
+  obtain ⟨seq, hdiv, hconv⟩ := h
+  exact ⟨seq, fun f => by
+    obtain ⟨x, hx, htend⟩ := hconv f
+    exact ⟨x, hx, hdiv x hx, htend⟩⟩
 
 /- ## Part VIII: Special Point Sequences -/
 
@@ -194,7 +209,7 @@ theorem equidistant_diverges (n : ℕ) (hn : n ≥ 2) :
 theorem faber :
     ∀ seq : PointSequence, ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
       ¬∃ x ∈ Set.Icc (-1 : ℝ) 1,
-        Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩)) := by
+        Tendsto (fun m => lagrangeInterp (seq m) f x) atTop (nhds (f ⟨x, by sorry⟩)) := by
   sorry
 
 -- Pointwise convergence is more delicate than uniform (can succeed where uniform fails).
@@ -204,16 +219,16 @@ theorem faber :
 /-- For typical f, divergence occurs on a set of positive measure. -/
 theorem positive_measure_divergence (seq : PointSequence) :
     ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
-      volume {x ∈ Set.Icc (-1 : ℝ) 1 |
-        Filter.limsup (fun n => |lagrangeInterp (seq n) f x|) Filter.atTop = ⊤} > 0 := by
+      volume {x ∈ Set.Icc (-1 : ℝ) 1 | InterpUnbounded seq f x} > 0 := by
   sorry
 
 /-- Convergence set can have full measure for specific f. -/
 theorem full_measure_convergence :
     ∃ seq : PointSequence, ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
       volume {x ∈ Set.Icc (-1 : ℝ) 1 |
-        Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩))} =
-          volume (Set.Icc (-1 : ℝ) 1) := by
+        Tendsto (fun m => lagrangeInterp (seq m) f x) atTop
+          (nhds (f ⟨x, by sorry⟩))} =
+            volume (Set.Icc (-1 : ℝ) 1) := by
   sorry
 
 /- ## Part XII: The Main Conjecture -/
@@ -228,11 +243,11 @@ axiom main_conjecture_open : MainConjecture
 /-- If Question 2 fails, understanding why would resolve Question 1. -/
 theorem q2_fails_implies (h : ¬Question2) :
     ∀ seq : PointSequence,
-      (∀ x ∈ Set.Icc (-1 : ℝ) 1,
-        Filter.limsup (fun n => lebesgueFunction (seq n) x) Filter.atTop = ⊤) →
+      (∀ x ∈ Set.Icc (-1 : ℝ) 1, LebesgueUnbounded seq x) →
       ∃ f : C(Set.Icc (-1 : ℝ) 1, ℝ),
         ∀ x ∈ Set.Icc (-1 : ℝ) 1,
-          ¬Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩)) := by
+          ¬Tendsto (fun m => lagrangeInterp (seq m) f x) atTop
+            (nhds (f ⟨x, by sorry⟩)) := by
   sorry
 
 end Erdos671
