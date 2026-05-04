@@ -1,0 +1,104 @@
+{
+  "slug": "prime-number-theorem-oq-01",
+  "title": "The Riemann Hypothesis: do all non-trivial zeros of \u03b6(s) have real part 1/2",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: The Riemann Hypothesis: do all non-trivial zeros of \u03b6(s) have real part 1/2?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-04T16:38:18.114Z",
+    "iteration": 2,
+    "focus": "PR #15813 open: 281-line Lean file, 0 sorries, 5 axioms. Docker verification in progress.",
+    "blockers": [],
+    "nextAction": "Await Docker build confirmation and PR merge by deployer.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Lean file written (281 lines, 0 sorries, 5 axioms). Proved: RH extends zero-free region, zeros symmetric about Re=1/2. Axiomatized: von Koch, Littlewood, Backlund. PR pending Docker verification.",
+    "builtItems": [
+      "PrimeNumberTheoremOQ01.lean: RiemannHypothesis definition (formal, line 52)",
+      "PrimeNumberTheoremOQ01.lean: rh_strip_zero_free (RH \u2192 1/2<Re<1 zero-free, line 112)",
+      "PrimeNumberTheoremOQ01.lean: rh_zeros_on_half_line (proved, line 121)",
+      "PrimeNumberTheoremOQ01.lean: zeros_symmetric_in_strip (functional equation, line 130)",
+      "PrimeNumberTheoremOQ01.lean: pnt_error_rh and rh_sharpens_error (under RH, lines 196-212)",
+      "PrimeNumberTheoremOQ01.lean: pnt_rh_landscape summary (line 264)"
+    ],
+    "insights": [
+      "RH formally defined as: all non-trivial zeros in 0 < Re(s) < 1 have Re(s) = 1/2",
+      "PNT zero-free region (Re(s) \u2265 1, Mathlib) proven; RH extends this to 1/2 < Re(s) < 1",
+      "Functional equation gives zero symmetry s \u2194 1-s; uses riemannZeta_one_sub from Mathlib",
+      "Von Koch 1901: RH \u2194 |\u03c0(x)-Li(x)| = O(\u221ax log x); needs explicit formula (axiomatized)",
+      "Littlewood 1914: error is \u03a9(\u221ax log log log x), showing \u221ax is the right exponent"
+    ],
+    "mathlibGaps": [
+      "Explicit formula \u03c8(x) = x - \u03a3_\u03c1 x^\u03c1/\u03c1 + ... not in Mathlib \u2192 von Koch axiomatized",
+      "Backlund zero-counting N(T) ~ (T/2\u03c0) log(T/2\u03c0) needs contour integration \u2192 axiomatized",
+      "Littlewood omega result needs oscillation theory for L-functions \u2192 axiomatized"
+    ],
+    "nextSteps": [
+      "Docker build verification (build running); check for type errors",
+      "If build passes: create PR and submit to gallery",
+      "Future: formalize the explicit formula \u03c8(x) when Mathlib has more complex analysis"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "analysis",
+    "primes",
+    "asymptotic",
+    "wiedijk-100",
+    "classic",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "prime-number-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T16:38:18.114Z",
+  "lastUpdate": "2026-05-04T16:38:18.114Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/PrimeNumberTheorem.lean",
+      "filename": "PrimeNumberTheorem.lean",
+      "lineCount": 461,
+      "theoremCount": 15,
+      "axiomCount": 8,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheorem.lean"
+    },
+    {
+      "path": "Proofs/PrimeNumberTheoremOQ01.lean",
+      "filename": "PrimeNumberTheoremOQ01.lean",
+      "lineCount": 282,
+      "theoremCount": 12,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheoremOQ01.lean"
+    }
+  ]
+}
