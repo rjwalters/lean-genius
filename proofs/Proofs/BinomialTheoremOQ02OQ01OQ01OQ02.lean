@@ -318,16 +318,23 @@ theorem multinomialEntropy_upper_bound {α : Type*} [DecidableEq α]
     have hzero : ∑ k ∈ s.piAntidiag n,
         (multinomialProb s p n k - (N : ℝ)⁻¹) = 0 := by
       rw [Finset.sum_sub_distrib, hPsum, Finset.sum_const, nsmul_eq_mul]
-      field_simp [ne_of_gt hNR, hN_def]
+      field_simp [hNR.ne']
     linarith [Finset.sum_le_sum per_term, hzero.symm.le]
   -- Conclude: H(P) ≤ log N
+  -- The sum in sum_lb equals log N + ∑ entropy_term, so 0 ≤ log N + ∑ entropy_term,
+  -- giving -∑ entropy_term ≤ log N = H(P) ≤ log N.
+  have expand : ∑ k ∈ s.piAntidiag n,
+      (Real.log (N : ℝ) * multinomialProb s p n k +
+        (if multinomialProb s p n k = 0 then 0
+         else multinomialProb s p n k * Real.log (multinomialProb s p n k))) =
+      Real.log (N : ℝ) +
+      ∑ k ∈ s.piAntidiag n,
+        (if multinomialProb s p n k = 0 then 0
+         else multinomialProb s p n k * Real.log (multinomialProb s p n k)) := by
+    rw [Finset.sum_add_distrib, ← Finset.mul_sum, hPsum, mul_one]
   unfold multinomialEntropy
   simp only []
-  -- Goal: -∑ entropy_term ≤ log N
-  -- Rewrite log N = log N * ∑ P k = ∑ log N * P k
-  rw [show Real.log N = Real.log N * 1 from (mul_one _).symm,
-      ← hPsum, Finset.mul_sum, ← Finset.sum_add_distrib] at *
-  linarith [sum_lb]
+  linarith [expand ▸ sum_lb]
 
 -- ============================================================
 -- PART 6: Binomial Entropy as 2-Category Special Case
