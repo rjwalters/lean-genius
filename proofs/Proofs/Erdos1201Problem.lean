@@ -858,4 +858,121 @@ theorem gpfConsecutive_eq_term_gpf (n k : ℕ) (hn : 2 ≤ n) (hk : k < gpfConse
     (gpf_ge_prime_dvd _ (greatestPrimeFactor (n + j)) hcp (gpf_prime _ hnj)
       (dvd_trans (gpf_dvd _ hnj) (dvd_consecutiveProduct_term n k j (by omega))))⟩
 
+/-
+## Factorial Divisibility and Universal Lower Bound
+-/
+
+/-- The consecutive product n(n+1)···(n+k) equals the descending factorial (n+k)↓(k+1). -/
+private lemma consecutiveProduct_eq_descFactorial (n k : ℕ) :
+    consecutiveProduct n k = (n + k).descFactorial (k + 1) := by
+  induction k with
+  | zero => simp [consecutiveProduct_zero, Nat.descFactorial_one]
+  | succ k ih =>
+    have hright : consecutiveProduct n (k + 1) = consecutiveProduct n k * (n + k + 1) := by
+      simp only [consecutiveProduct, Finset.prod_range_succ]; ring
+    have hstep : (n + (k + 1)).descFactorial (k + 2) =
+        (n + k + 1) * (n + k).descFactorial (k + 1) := by
+      rw [show n + (k + 1) = n + k + 1 from by ring, Nat.descFactorial_succ]
+      congr 1; omega
+    rw [hright, ih, hstep]; ring
+
+/-- **(k+1)! divides every product of k+1 consecutive integers**, for any starting point n.
+    This is the identity n(n+1)···(n+k) = C(n+k, k+1) · (k+1)!, which follows from
+    expressing the product as a descending factorial. -/
+theorem factorial_dvd_consecutiveProduct (n k : ℕ) :
+    (k + 1).factorial ∣ consecutiveProduct n k := by
+  rw [consecutiveProduct_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose]
+  exact dvd_mul_right _ _
+
+/-- **Universal GPF Lower Bound from Factorial**: P(n,k) ≥ GPF((k+1)!) for all n ≥ 1, k ≥ 1.
+    Since (k+1)! divides the consecutive product, GPF((k+1)!) divides the product,
+    so GPF((k+1)!) ≤ P(n,k). By Bertrand, GPF((k+1)!) > k/2. -/
+theorem gpfConsecutive_ge_factorial_gpf (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) :
+    greatestPrimeFactor (k + 1).factorial ≤ gpfConsecutive n k := by
+  have hfact_dvd := factorial_dvd_consecutiveProduct n k
+  have hfact_ge2 : 2 ≤ (k + 1).factorial :=
+    le_trans (by omega) (Nat.self_le_factorial (k + 1))
+  have hcp_ge2 : 2 ≤ consecutiveProduct n k :=
+    Nat.le_trans hfact_ge2 (Nat.le_of_dvd (consecutiveProduct_pos n k hn) hfact_dvd)
+  exact gpf_ge_prime_dvd _ _ hcp_ge2 (gpf_prime _ hfact_ge2)
+    (dvd_trans (gpf_dvd _ hfact_ge2) hfact_dvd)
+
+/-- **Universal Half-Window Lower Bound**: 2 · P(n,k) > k for any n ≥ 1 and k ≥ 2.
+    By Bertrand, there is a prime p with k/2 < p ≤ k ≤ k+1, so p | (k+1)! | consecutive product,
+    giving P(n,k) ≥ p > k/2. This holds for ALL starting points n ≥ 1, with no n > k condition. -/
+theorem gpfConsecutive_gt_half_k (n k : ℕ) (hn : 1 ≤ n) (hk : 2 ≤ k) :
+    k < 2 * gpfConsecutive n k := by
+  obtain ⟨p, hp_prime, hm_lt, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul (k / 2) (by omega)
+  have hp_le_k1 : p ≤ k + 1 := by omega
+  have hp_dvd_fact : p ∣ (k + 1).factorial := hp_prime.dvd_factorial.mpr hp_le_k1
+  have hfact_dvd := factorial_dvd_consecutiveProduct n k
+  have hp_dvd_cp : p ∣ consecutiveProduct n k := dvd_trans hp_dvd_fact hfact_dvd
+  have hfact_ge2 : 2 ≤ (k + 1).factorial :=
+    le_trans (by omega) (Nat.self_le_factorial (k + 1))
+  have hcp_ge2 : 2 ≤ consecutiveProduct n k :=
+    Nat.le_trans hfact_ge2 (Nat.le_of_dvd (consecutiveProduct_pos n k hn) hfact_dvd)
+  linarith [gpf_ge_prime_dvd _ _ hcp_ge2 hp_prime hp_dvd_cp, show k < 2 * p from by omega]
+
+/-- **Threshold Bound**: If n^(1-ε) < k/2, then P(n,k) > n^(1-ε).
+    Combining `gpfConsecutive_gt_half_k` (P > k/2) with the hypothesis n^(1-ε) < k/2
+    gives n^(1-ε) < k/2 ≤ P(n,k). This gives a concrete sufficient condition for the
+    Erdős property: all n with n^(1-ε) < k/2 are automatically good. -/
+theorem erdos_1201_threshold_bound (n k : ℕ) (ε : ℝ) (hn : 1 ≤ n) (hk : 2 ≤ k)
+    (hbound : (n : ℝ) ^ (1 - ε) < (k : ℝ) / 2) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  have h_half : (k : ℝ) / 2 ≤ (gpfConsecutive n k : ℝ) := by
+    have h_real : (k : ℝ) < 2 * (gpfConsecutive n k : ℝ) :=
+      by exact_mod_cast gpfConsecutive_gt_half_k n k hn hk
+    linarith
+  linarith
+
+/-
+## Monotonicity in ε (Smaller ε Is Harder)
+-/
+
+/-- **ε-Monotonicity of good set**: for ε ≤ ε', the ε-good set ⊆ ε'-good set.
+    Since ε ≤ ε' implies 1-ε ≥ 1-ε', and n ≥ 1, we have n^(1-ε) ≥ n^(1-ε').
+    So the harder condition P(n,k) > n^(1-ε) implies the easier P(n,k) > n^(1-ε'). -/
+theorem erdos_1201_good_set_mono_eps (k : ℕ) (ε ε' : ℝ) (h : ε ≤ ε') :
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ⊆
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε') < (gpfConsecutive n k : ℝ)} := by
+  intro n ⟨hn2, hgood⟩
+  exact ⟨hn2, (Real.rpow_le_rpow_of_exponent_le
+    (by exact_mod_cast (show 1 ≤ n by omega)) (by linarith)).trans_lt hgood⟩
+
+/-- Upper density of the good set is non-decreasing in ε. -/
+theorem erdos_1201_density_mono_eps (k : ℕ) (ε ε' : ℝ) (h : ε ≤ ε') :
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≤
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε') < (gpfConsecutive n k : ℝ)} :=
+  upperDensity_mono (erdos_1201_good_set_mono_eps k ε ε' h)
+
+/-- For ε ≥ 1, any n ≥ 2 is automatically good: n^(1-ε) ≤ n^0 = 1 < 2 ≤ P(n,k). -/
+theorem erdos_1201_trivially_good_of_large_eps (n k : ℕ) (ε : ℝ) (hn : 2 ≤ n) (hε : 1 ≤ ε) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  have h_pow_le : (n : ℝ) ^ (1 - ε) ≤ 1 :=
+    (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (show 1 ≤ n by omega))
+      (by linarith)).trans_eq (Real.rpow_zero _)
+  linarith [show (2 : ℝ) ≤ (gpfConsecutive n k : ℝ) from
+    by exact_mod_cast gpfConsecutive_ge_two n k hn]
+
+/-- **Reduction to ε = 1/2**: For ε ∈ [1/2, 1), the Erdős conjecture follows from
+    Erdős's known result (axiom `erdos_1201_half_case`).
+    Since n^(1-ε) ≤ n^(1/2) = √n for ε ≥ 1/2 and n ≥ 1, any n with √n < P(n,k)
+    automatically satisfies n^(1-ε) < P(n,k). The open problem reduces to ε ∈ (0, 1/2). -/
+theorem erdos_1201_conjecture_large_eps (ε η : ℝ) (hε_lb : 1 / 2 ≤ ε) (hε_ub : ε < 1)
+    (hη : 0 < η) :
+    ∃ k : ℕ,
+      upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η := by
+  obtain ⟨k, hk⟩ := erdos_1201_half_case η hη
+  refine ⟨k, le_trans hk (upperDensity_mono ?_)⟩
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn ⊢
+  rcases Nat.eq_zero_or_pos n with rfl | hn_pos
+  · simp only [Nat.cast_zero, Real.sqrt_zero,
+               Real.zero_rpow (show (0 : ℝ) < 1 - ε from by linarith).ne'] at hn ⊢
+    exact hn
+  · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn_pos
+    rw [Real.sqrt_eq_rpow] at hn
+    exact (Real.rpow_le_rpow_of_exponent_le hn1 (by linarith)).trans_lt hn
+
 end Erdos1201
