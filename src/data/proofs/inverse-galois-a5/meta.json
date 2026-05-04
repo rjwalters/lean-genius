@@ -1,0 +1,142 @@
+{
+  "id": "inverse-galois-a5",
+  "title": "A₅ as a Galois Group over ℚ: The First Non-Solvable Realization",
+  "slug": "inverse-galois-a5",
+  "description": "Formalizes that the alternating group A₅ (order 60, the smallest non-solvable simple group) is realizable as a Galois group over ℚ. Uses the polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5, proven irreducible via Eisenstein at p=5, with Galois group identified as A₅ by: (1) the Vandermonde discriminant proof showing Gal ≤ A₅, and (2) a single axiom (three_dvd_gal_card, from Dedekind's theorem) to force |Gal| = 60. Demonstrates that the Inverse Galois Problem extends beyond the solvable case.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Inverse_Galois_problem",
+    "date": "Classical result (Hilbert 1892 for S_n, A₅ folklore); formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "galois-theory",
+      "inverse-galois-problem",
+      "alternating-group",
+      "polynomial-irreducibility",
+      "discriminant",
+      "non-solvable"
+    ],
+    "proofRepoPath": "Proofs/InverseGaloisA5.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: `three_dvd_gal_card` (3 ∣ |Gal(q/ℚ)|), representing Dedekind's theorem (cycle structure of Frobenius at primes forces divisibility) — not yet in Mathlib 4.26.0. This axiom is supported by two distinct computations: (1) q factors mod 7 as (linear)(linear)(irreducible cubic), implying a 3-cycle in the Galois group; (2) the resolvent sextic has no rational root, excluding order-15 and order-30 subgroups.",
+    "originalContributions": [
+      "q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5: Eisenstein irreducibility at p=5 (q_irreducible), degree, monicness, separability",
+      "q_rootSet_card: |roots of q in q.SplittingField| = 5 (proved via Mathlib's Polynomial.roots API)",
+      "five_dvd_gal_card: 5 | |Gal(q/ℚ)| (from irreducibility degree ≤ |Gal| and Cauchy)",
+      "gal_card_dvd_120: |Gal| | 120 = 5! (Gal embeds into S₅ via root permutation action)",
+      "no_subgroup_order_15, no_subgroup_order_30: S₅ has no subgroup of order 15 or 30 (proved by combining transitivity and odd-element structure)",
+      "Vandermonde discriminant chain (Parts VIII–XV): vandermondeProduct, Sophie Germain identity, resultant formula, and a 400-line proof that vandermondeProduct² = disc(q) = 32000²; hence Gal ≤ A₅",
+      "gal_card_dvd_60_of_all_even: |Gal| | 60 from the discriminant being a perfect square",
+      "q_gal_iso_a5: Gal(q/ℚ) ≅ A₅ using index-2 subgroup identification (Equiv.Perm.eq_alternatingGroup_of_index_eq_two)",
+      "a5_realizable_iso: A₅ is realizable as a Galois group over ℚ (main theorem)",
+      "gal_not_solvable: Gal(q/ℚ) is not solvable (transfers non-solvability through the isomorphism)"
+    ],
+    "dateAdded": "2026-05-04",
+    "lineCount": 2067,
+    "theoremCount": 65,
+    "definitionCount": 8,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Inverse Galois Problem (IGP) asks: for which finite groups G does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G? Hilbert (1892) proved S_n and A_n are realizable for all n using Hilbert's irreducibility theorem. Shafarevich (1954) proved every solvable group is realizable. Whether every finite group is realizable remains open.\n\nA₅ (order 60) is the smallest non-solvable simple group — the alternating group on 5 elements. It is the Galois group of many polynomials of degree 5 with non-square discriminant. The polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5 is a translate of p(x) = x⁵ + 20x + 16, a classical example. The key steps are: prove Gal ≤ A₅ via the perfect-square discriminant, then force |Gal| = 60 via divisibility constraints from Cauchy's theorem and the structure of subgroups of S₅.",
+    "problemStatement": "**Inverse Galois Problem for A₅**: There exists a Galois field extension K/ℚ such that Gal(K/ℚ) ≅ A₅ (the alternating group on 5 elements, of order 60).\n\nFormalized as: `∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K) (_ : IsGalois ℚ K), Nonempty (alternatingGroup (Fin 5) ≃* (K ≃ₐ[ℚ] K))`.",
+    "text": "A 2067-line formalization of the A₅ Inverse Galois theorem using the polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5. Parts I–IV establish the polynomial's properties (irreducible, degree 5, monic, separable). Parts V–VII bound |Gal|: 5 | |Gal| from Cauchy, |Gal| | 120 from root permutation action. Parts VIII–XV develop the Vandermonde discriminant argument showing Gal ≤ A₅. Parts XVI–XVII conclude Gal ≅ A₅ and prove non-solvability.",
+    "proofStrategy": "**Part I–IV (Polynomial q)**: q is defined as `x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5`. `q_irreducible`: Eisenstein at p=5 (all non-leading coefficients divisible by 5; constant term -5 not divisible by 25). `q_monic`, `q_natDegree = 5`, `q_separable` follow.\n\n**Part V–VII (Galois group order bounds)**: `q_rootSet_card = 5` (5 distinct roots in the splitting field). `five_dvd_gal_card`: |Gal| ≡ 0 (mod 5) from Cauchy (since |Gal| is divisible by 5 via the irreducibility degree bound). `gal_card_dvd_120`: Gal embeds into S₅ via the root permutation action, so |Gal| | 5! = 120.\n\n**Parts VIII–XV (Vandermonde discriminant)**: Defines `vandermondeProduct = Π_{i<j} (root_i - root_j)` in q.SplittingField. Proves the Sophie Germain identity. Shows `vandermondeProduct² = resultant(q, q') = disc(q)`. Computes `disc(q) = 32000²` (a perfect square). Therefore `galSign σ = +1` for all σ ∈ Gal, so Gal ≤ A₅.\n\n**Parts IX–XI (No small subgroups)**: S₅ has no subgroup of order 15 or 30. Combined with 5 | |Gal| and |Gal| | 60, plus `three_dvd_gal_card` (axiom): |Gal| = 60.\n\n**Part XVI (Isomorphism)**: `q_gal_iso_a5`: composing the root-action injection φ : Gal →* S₅ with the permCongr equivalence gives |φ(Gal)| = 60 = 120/2, so φ(Gal) has index 2 in S₅. By `Equiv.Perm.eq_alternatingGroup_of_index_eq_two`, φ(Gal) = A₅.\n\n**Part XVII (Non-solvability)**: `gal_not_solvable` transfers non-solvability through the isomorphism.",
+    "keyInsights": [
+      "**Eisenstein criterion for irreducibility**: The polynomial q = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5 satisfies Eisenstein at p=5. In Lean, `q_irreducible` is proved using `Polynomial.Irreducible.eisenstein_of_irreducible` (or equivalent), leveraging that non-leading coefficients are all divisible by 5 while the constant term is not divisible by 25.",
+      "**Vandermonde discriminant proof (Parts VIII–XV)**: The 400-line proof that vandermondeProduct² = disc(q) = 32000² is the core computational achievement. It uses the Sophie Germain identity, the resultant-discriminant formula, and careful polynomial arithmetic in q.SplittingField. This eliminates the discriminant axiom from earlier sessions.",
+      "**Index-2 subgroup characterization**: The Lean lemma `Equiv.Perm.eq_alternatingGroup_of_index_eq_two` states that the unique subgroup of index 2 in S₅ is A₅. This is the key algebraic fact that bridges |Gal| = 60 to Gal ≅ A₅, without needing to explicitly construct the isomorphism.",
+      "**Axiom evidence (Dedekind's theorem)**: `three_dvd_gal_card` (3 | |Gal|) is supported by two computations: (1) q ≡ (X-5)(X-6)(cubic) mod 7 implies a Frobenius element of order 3; (2) the resolvent sextic has no rational root, ruling out Gal ≤ subgroup of order dividing 20. Either would suffice to show 3 | 60; Dedekind's theorem is the standard proof but not yet in Mathlib.",
+      "**Non-solvability extends Shafarevich**: `gal_not_solvable` shows Gal(q) is not solvable. This is significant: Shafarevich's theorem (1954) guarantees realizations for all solvable groups, but A₅ (being simple and non-abelian) lies outside that scope. The A₅ realization is the first step into non-solvable territory."
+    ],
+    "prerequisites": [
+      "Galois theory and splitting fields",
+      "Polynomial discriminant and Vandermonde product",
+      "Alternating group A₅ and its simplicity",
+      "Eisenstein's criterion for irreducibility"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "inverse-galois",
+      "relationship": "extends",
+      "description": "Parent formalization covers S₃ (solvable); A₅ extends to the first non-solvable realization"
+    },
+    {
+      "targetId": "inverse-galois-d4",
+      "relationship": "related",
+      "description": "D₄ realization (order 8, solvable) — contrast with the non-solvable A₅ case"
+    },
+    {
+      "targetId": "inverse-galois-f20",
+      "relationship": "related",
+      "description": "F₂₀ realization (order 20, solvable) — another solvable predecessor"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "InverseGaloisA5",
+    "lineCount": 2067,
+    "axiomCount": 1,
+    "theoremCount": 65,
+    "definitionCount": 8,
+    "path": "Proofs/InverseGaloisA5.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "sec-iga5-polynomial",
+      "title": "Parts I–IV: The Polynomial q and Its Properties",
+      "startLine": 53,
+      "endLine": 215,
+      "summary": "Defines q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5. Proves irreducibility via Eisenstein at p=5, natDegree=5, monic, separable. Computes |rootSet| = 5.",
+      "mathContext": "$q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. Eisenstein: non-leading coefficients divisible by 5; constant $-5$ not divisible by 25. Hence $q$ is irreducible over $\\mathbb{Q}$."
+    },
+    {
+      "id": "sec-iga5-order-bounds",
+      "title": "Parts V–VII: Galois Group Order Bounds",
+      "startLine": 207,
+      "endLine": 330,
+      "summary": "Proves: 5 | |Gal| (Cauchy from irreducibility); |Gal| | 120 (Gal embeds into S₅). Establishes perm_fin5_order5_order3_not_commute and perm_fin5_no_order_15 as structural lemmas about S₅.",
+      "mathContext": "$|\\text{Gal}(q/\\mathbb{Q})|$ divides $5! = 120$ and is divisible by 5. Together with the discriminant argument, this forces $|\\text{Gal}| \\in \\{60\\}$."
+    },
+    {
+      "id": "sec-iga5-no-small-subgroups",
+      "title": "Parts IX–XI: No Subgroups of Order 15 or 30 in S₅",
+      "startLine": 329,
+      "endLine": 566,
+      "summary": "Proves no_subgroup_order_15 and no_subgroup_order_30: S₅ = Equiv.Perm (Fin 5) has no subgroup of order 15 or 30. Consequences: gal_card_ne_15 and gal_card_ne_30.",
+      "mathContext": "Order-15 subgroups of $S_5$ would contain an element of order 15, but $S_5$ has none ($\\text{lcm}(3,5) = 15$ requires a $15$-cycle impossible in $S_5$). Similarly for order 30."
+    },
+    {
+      "id": "sec-iga5-vandermonde",
+      "title": "Parts VIII–XV: Vandermonde Discriminant Proof",
+      "startLine": 618,
+      "endLine": 1770,
+      "summary": "Defines p(x) = x⁵ + 20x + 16, vandermondeProduct = Π_{i<j}(root_i - root_j). Proves Sophie Germain identity, disc(q) = resultant(q,q'), vandermondeProduct² = disc(q) = 32000². Hence all Galois automorphisms are even: Gal ≤ A₅.",
+      "mathContext": "$\\Delta(q) = \\prod_{i < j}(\\alpha_i - \\alpha_j)^2 = \\text{Res}(q, q')/\\text{lc}(q)^{2\\deg(q)-1}$. Since $\\Delta(q) = 32000^2$ is a perfect square, $\\sigma(\\Delta^{1/2}) = \\Delta^{1/2}$ for all $\\sigma \\in \\text{Gal}(q/\\mathbb{Q})$, so every automorphism is even."
+    },
+    {
+      "id": "sec-iga5-isomorphism",
+      "title": "Parts XVI–XVII: Galois Isomorphism and Non-Solvability",
+      "startLine": 1960,
+      "endLine": 2067,
+      "summary": "Proves q_gal_iso_a5: Gal(q/ℚ) ≅ A₅ via index-2 subgroup characterization. Main theorem a5_realizable_iso: A₅ is realizable as a Galois group over ℚ. gal_not_solvable: transfers non-solvability from A₅ through the isomorphism.",
+      "mathContext": "$|\\text{Gal}(q/\\mathbb{Q})| = 60$ and the image in $S_5$ has index 2, so it equals $A_5$ (unique index-2 subgroup of $S_5$)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 2067-line axiomatized formalization (1 axiom, 0 sorries) of the A₅ Inverse Galois theorem. The main theorem `a5_realizable_iso` establishes that A₅ is realizable as a Galois group over ℚ via q(x). The Vandermonde discriminant proof (Parts VIII–XV) is the central technical contribution, spanning 1100 lines to establish that disc(q) = 32000². The one remaining axiom, `three_dvd_gal_card`, corresponds to Dedekind's theorem applied to the Frobenius at 7.",
+    "implications": "This is the first non-solvable Galois group formalized in the lean-genius gallery. A₅ being simple and non-solvable means it lies outside the scope of Shafarevich's theorem. The methods — Eisenstein criterion, discriminant via Vandermonde, index-2 subgroup characterization — are representative of Galois group computation for degree-5 polynomials.",
+    "openQuestions": [
+      "Prove three_dvd_gal_card using Dedekind's theorem on Frobenius elements at prime ideals (requires Mathlib's algebraic number theory)",
+      "Extend to PSL(2,7) (order 168) — the next 'sporadic' realization beyond A₅",
+      "Formalize the Hilbert irreducibility theorem to give uniform realizations of S_n and A_n for all n"
+    ]
+  },
+  "sorries": 0
+}
