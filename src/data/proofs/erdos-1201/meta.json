@@ -145,13 +145,53 @@
       "id": "smooth-window-and-conditional",
       "title": "Smooth-Window Duality and Conditional Reduction",
       "startLine": 1097,
-      "endLine": 1153,
+      "endLine": 1168,
       "summary": "erdos_1201_not_good_smooth_window: n bad \u2194 window is n^(1-\u03b5)-smooth (all gpf(n+i) \u2264 n^(1-\u03b5)). erdos_1201_good_iff_rough_term: n good \u2194 \u2203 rough term in window. erdos_1201_conditional_proof: formal reduction to Cram\u00e9r-type prime gap hypothesis.",
       "mathContext": "Duality: $\\neg(P(n,k) > n^{1-\\varepsilon}) \\iff \\forall i \\leq k,\\, P(n+i) \\leq n^{1-\\varepsilon}$ (uses gpfConsecutive_le_iff + Nat.floor bound). Rough-term: $P(n,k) > n^{1-\\varepsilon} \\iff \\exists i \\leq k,\\, P(n+i) > n^{1-\\varepsilon}$ (negation of smooth-window). Conditional: if $\\forall \\varepsilon,\\eta>0\\,\\exists k$: $\\overline{d}(\\{n : \\exists i\\leq k, (n+i)\\text{ prime}, n+i>n^{1-\\varepsilon}\\}) \\geq 1-\\eta$, then $\\text{ErdosProblem1201}$ holds."
+    },
+    {
+      "id": "density-complement",
+      "title": "Density Complement and Smooth-Decay Reduction",
+      "startLine": 1169,
+      "endLine": 1286,
+      "summary": "erdos_1201_good_prime_k0: primes are good for k=0. upperDensity_compl_ge: 1 - uD(S) \u2264 uD(S\u1d9c) (complement density lower bound). upperDensity_mono: density is monotone under inclusion up to finite sets. erdos_1201_from_bad_density_bound: density(bad) \u2264 \u03b7 \u2192 density(good) \u2265 1-\u03b7. erdos_1201_smooth_decay_implies_conjecture: ErdosProblem1201 follows from smooth-window density decaying to 0.",
+      "mathContext": "Complement bound: $\\overline{d}(S) + \\overline{d}(S^c) \\geq 1$ (via limsup sub-additivity; both densities are in $[0,1]$). Smooth-decay reduction: if for every $\\varepsilon,\\eta>0$ there exists $k$ with $\\overline{d}(\\{n \\geq 2 : \\forall i \\leq k,\\, P(n+i) \\leq n^{1-\\varepsilon}\\}) \\leq \\eta$, then ErdosProblem1201 holds. This makes the connection to Dickman $\\rho$ density estimates precise."
+    },
+    {
+      "id": "upper-density-basic",
+      "title": "Upper Density Basic Facts",
+      "startLine": 1287,
+      "endLine": 1332,
+      "summary": "upperDensity_empty: uD(\u2205)=0. upperDensity_le_one: uD(S) \u2264 1. upperDensity_ge_zero: 0 \u2264 uD(S). upperDensity_univ: uD(\u2115)=1.",
+      "mathContext": "$\\overline{d}(\\emptyset) = 0$ (limsup of 0), $\\overline{d}(\\mathbb{N}) = 1$ (limsup of 1), $0 \\leq \\overline{d}(S) \\leq 1$ for all $S$. These are the density analogs of measure-theoretic normalization and monotonicity."
+    },
+    {
+      "id": "asymptotic-and-convergence",
+      "title": "Asymptotic Behavior as Window Grows",
+      "startLine": 1333,
+      "endLine": 1399,
+      "summary": "gpfConsecutive_atTop: for fixed n \u2265 2, P(n,k) \u2192 +\u221e as k \u2192 \u221e. erdos_1201_eventually_good: fixed n \u2265 2 is eventually good for all large k. erdos_1201_density_eventually_large: assuming ErdosProblem1201, density of good set \u2265 1-\u03b7 for ALL k \u2265 K (not just one k).",
+      "mathContext": "$P(n,k) \\to +\\infty$ as $k \\to \\infty$ for fixed $n \\geq 2$: for any bound $M$, find prime $p > \\max(n, M)$ by Euclid; then $p \\in [n+1, n+(p-n)]$, so $P(n, p-n) \\geq p > M$. Individual goodness: for any $n \\geq 2$, $\\varepsilon \\in (0,1)$, eventually $P(n,k) > n^{1-\\varepsilon}$. Density: ErdosProblem1201 $\\Rightarrow$ $\\exists K$: $\\forall k \\geq K$, $\\overline{d}(\\text{good}_k) \\geq 1-\\eta$."
+    },
+    {
+      "id": "lower-density",
+      "title": "Lower Density and Complement Duality",
+      "startLine": 1400,
+      "endLine": 1486,
+      "summary": "lowerDensity (def via Filter.liminf). lowerDensity_nonneg: lD(S) \u2265 0. lowerDensity_le_upperDensity: lD(S) \u2264 uD(S). lowerDensity_compl: lD(S\u1d9c) = 1 - uD(S) (exact duality). upperDensity_compl_eq: uD(S\u1d9c) = 1 - lD(S).",
+      "mathContext": "$\\underline{d}(S) = \\liminf_{N\\to\\infty} |S\\cap[1,N]|/N$. Exact duality: $\\underline{d}(S^c) = 1 - \\overline{d}(S)$ (uses Filter.liminf_const_sub for $\\liminf(1-f) = 1 - \\limsup f$). Ordering: $\\underline{d}(S) \\leq \\overline{d}(S)$ (liminf \u2264 limsup). These are the density analogs of inner/outer measure relations."
+    },
+    {
+      "id": "strong-conjecture",
+      "title": "Strong Conjecture and Equivalence",
+      "startLine": 1487,
+      "endLine": 1615,
+      "summary": "ErdosProblem1201Strong (def via lowerDensity): strong form uses lD \u2265 1-\u03b7. erdos_1201_strong_implies_weak: Strong \u2192 ErdosProblem1201 (lD \u2265 1-\u03b7 \u27f9 uD \u2265 1-\u03b7). erdos_1201_strong_iff_smooth_decay: ErdosProblem1201Strong \u2194 smooth-window density decays to 0.",
+      "mathContext": "Strong conjecture: $\\forall\\varepsilon,\\eta>0\\,\\exists k: \\underline{d}(\\{n : P(n,k)>n^{1-\\varepsilon}\\}) \\geq 1-\\eta$ (holds for ALL large $N$, not just $\\limsup$). Strong implies weak via $\\underline{d} \\leq \\overline{d}$. Equivalence: Strong $\\iff$ $\\forall\\varepsilon,\\eta>0\\,\\exists k$: $\\overline{d}(\\{n\\geq 2: \\forall i\\leq k, P(n+i) \\leq n^{1-\\varepsilon}\\}) \\leq \\eta$. Forward uses lowerDensity_compl; backward uses limsup sub-additivity + the $1/N \\to 0$ correction."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 96 structural theorems (97 total). 0 sorries, 1 axiom (the partial result). Sessions 5-14 add window algebra, density machinery, smooth-window duality, and the formal reduction ErdosProblem1201 \u2190 smooth-decay. Sessions 15-16 add: upperDensity_empty/le_one/ge_zero/univ, gpfConsecutive_atTop (tendsto \u221e), erdos_1201_eventually_good, erdos_1201_density_eventually_large, lowerDensity (def via liminf), lowerDensity_nonneg, lowerDensity_le_upperDensity, lowerDensity_compl (exact: lD(S\u1d9c) = 1 - uD(S)).",
+    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 99 structural theorems (100 total including 7 definitions). 0 sorries, 1 axiom (erdos_1201_half_case: the \u03b5=1/2 partial result proved by Erd\u0151s). Sessions 5-14 add window algebra, density machinery, smooth-window duality, and the formal reduction ErdosProblem1201 \u2190 smooth-decay. Sessions 15-19 add: upperDensity basic facts, gpfConsecutive_atTop (tendsto \u221e), erdos_1201_eventually_good, erdos_1201_density_eventually_large, lowerDensity (def via liminf), lD/uD complement duality (exact identities), density complement machinery, and ErdosProblem1201Strong with full equivalence to smooth-decay.",
     "implications": "Resolution would advance our understanding of the distribution of prime factors in consecutive integer products and connect to the Sylvester-Schur theorem and smooth number theory.",
     "openQuestions": [
       "Does the full conjecture hold for all \u03b5 > 0?",
