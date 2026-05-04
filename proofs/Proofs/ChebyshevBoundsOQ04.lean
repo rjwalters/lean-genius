@@ -127,7 +127,13 @@ theorem chebyshevPsi_doubling_le (n : ℕ) (hn : 1 ≤ n) :
   have h_psi_le : chebyshevPsi (2 * n) - chebyshevPsi n ≤
       Real.log (Nat.centralBinom n : ℝ) := psi_doubling_le_log_centralBinom n
   have h_log_le : Real.log (Nat.centralBinom n : ℝ) ≤ 2 * ↑n * Real.log 2 := by
-    have hle : Nat.centralBinom n ≤ 4 ^ n := Nat.centralBinom_le_four_pow n
+    have hle : Nat.centralBinom n ≤ 4 ^ n := by
+      calc Nat.centralBinom n = Nat.choose (2 * n) n := rfl
+        _ ≤ ∑ k ∈ range (2 * n + 1), Nat.choose (2 * n) k :=
+            Finset.single_le_sum (fun k _ => Nat.zero_le _) (Finset.mem_range.mpr (by omega))
+        _ = 2 ^ (2 * n) := by rw [Nat.sum_range_choose]
+        _ = (2 ^ 2) ^ n := by rw [pow_mul]
+        _ = 4 ^ n := by norm_num
     have hpos : (0 : ℝ) < (Nat.centralBinom n : ℝ) := by
       exact_mod_cast Nat.centralBinom_pos n
     have hlog_le : Real.log (Nat.centralBinom n : ℝ) ≤ Real.log ((4 : ℝ) ^ n) := by
@@ -154,7 +160,7 @@ so θ(2n) - θ(n) ≥ log(n+1). Combined with θ(n) ≤ ψ(n), this gives a lowe
 /-- From Bertrand: ψ(2n) - ψ(n) ≥ log(n+1) for n ≥ 1 -/
 theorem chebyshevPsi_doubling_lower (n : ℕ) (hn : 1 ≤ n) :
     Real.log (n + 1) ≤ chebyshevPsi (2 * n) - chebyshevPsi n := by
-  obtain ⟨p, hp_prime, hp_lt, hp_le⟩ := Nat.bertrand n hn
+  obtain ⟨p, hp_prime, hp_lt, hp_le⟩ := Nat.bertrand n (by omega)
   have hp_ge : (n : ℝ) + 1 ≤ p := by exact_mod_cast Nat.succ_le_of_lt hp_lt
   have hsubset : range (n + 1) ⊆ range (2 * n + 1) := Finset.range_mono (by omega)
   have hmem : p ∈ range (2 * n + 1) \ range (n + 1) := by
@@ -163,9 +169,11 @@ theorem chebyshevPsi_doubling_lower (n : ℕ) (hn : 1 ≤ n) :
   unfold chebyshevPsi
   have key : vonMangoldt p ≤
       ∑ k ∈ range (2 * n + 1), vonMangoldt k - ∑ k ∈ range (n + 1), vonMangoldt k := by
+    have hf : ∀ k ∈ range (2 * n + 1) \ range (n + 1), (0 : ℝ) ≤ vonMangoldt k :=
+      fun k _ => vonMangoldt_nonneg
     have hle : vonMangoldt p ≤
         ∑ k ∈ range (2 * n + 1) \ range (n + 1), vonMangoldt k :=
-      Finset.single_le_sum (fun k _ => vonMangoldt_nonneg) hmem
+      Finset.single_le_sum hf hmem
     linarith [Finset.sum_sdiff hsubset (f := vonMangoldt)]
   calc Real.log (n + 1)
       ≤ Real.log p := Real.log_le_log (by norm_cast; omega) hp_ge
