@@ -893,6 +893,37 @@ private lemma tan_half_chebyshev_pos (n : ℕ) (hn : 0 < n) (k : Fin n) :
   · exact Real.sin_pos_of_pos_of_lt_pi hangle_pos (by linarith [Real.pi_pos])
   · exact Real.cos_pos_of_mem_Ioo ⟨by linarith, hangle_lt⟩
 
+/-- Cosine is 1-Lipschitz: |cos α - cos β| ≤ |α - β|.
+    Used to upper-bound |cos θ - chebyshevNode n k| by the angular distance. -/
+private lemma cos_dist_le (α β : ℝ) : |Real.cos α - Real.cos β| ≤ |α - β| := by
+  have h := Real.lipschitzWith_cos.dist_le_mul α β
+  simp only [Real.dist_eq, NNReal.coe_one, one_mul] at h
+  exact h
+
+/-- For d ∈ (0, π/2] and θ ∈ [d, π-d]: sin d ≤ sin θ.
+    Proof: sin is increasing on [0, π/2] (for θ ≤ π/2) and by symmetry sin(π-θ) = sin θ
+    (for θ > π/2, use π - θ ∈ [d, π/2] so sin(π-θ) ≥ sin d). -/
+private lemma sin_ge_sin_of_mem_Icc {d θ : ℝ} (hd_pos : 0 < d) (hd_le : d ≤ Real.pi / 2)
+    (hθ_ge : d ≤ θ) (hθ_le : θ ≤ Real.pi - d) :
+    Real.sin d ≤ Real.sin θ := by
+  have hpi := Real.pi_pos
+  have hθ_nonneg : 0 ≤ θ := le_trans hd_pos.le hθ_ge
+  by_cases hθ_le_half : θ ≤ Real.pi / 2
+  · -- θ ∈ [d, π/2] ⊆ [-π/2, π/2]: use monotonicity of sin
+    apply Real.strictMonoOn_sin.monotoneOn
+    · exact Set.mem_Icc.mpr ⟨by linarith, hd_le⟩
+    · exact Set.mem_Icc.mpr ⟨by linarith, hθ_le_half⟩
+    · exact hθ_ge
+  · -- θ ∈ (π/2, π-d]: sin θ = sin(π-θ) and π-θ ∈ [d, π/2]
+    push_neg at hθ_le_half
+    have hπθ_le : Real.pi - θ ≤ Real.pi / 2 := by linarith
+    have hπθ_nonneg : 0 ≤ Real.pi - θ := by linarith [hθ_le]
+    rw [← Real.sin_pi_sub]
+    apply Real.strictMonoOn_sin.monotoneOn
+    · exact Set.mem_Icc.mpr ⟨by linarith, hd_le⟩
+    · exact Set.mem_Icc.mpr ⟨by linarith, hπθ_le⟩
+    · linarith
+
 /-- Odd harmonic partial sum bound: ∑_{j=0}^{m-1} 1/(2j+1) ≥ (1/2)·log(m+1).
     Uses 1/(2j+1) ≥ 1/(2(j+1)) and Mathlib's harmonic bound. -/
 private lemma odd_harmonic_sum_lb (m : ℕ) (hm : 0 < m) :
