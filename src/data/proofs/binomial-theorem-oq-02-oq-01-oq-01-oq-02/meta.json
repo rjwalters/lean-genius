@@ -147,14 +147,14 @@
       "BinomialTheoremOQ02OQ01"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ02",
-    "lineCount": 261,
+    "lineCount": 316,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "substantiveTheoremCount": 6,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 7,
     "duplicateTheorems": 0,
     "definitionCount": 1,
     "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean",
-    "sorries": 2
+    "sorries": 1
   },
   "mainTheorems": [
     {
@@ -176,5 +176,5 @@
       "leanType": "multinomialProb s p 1 (fun i => if i = j then 1 else 0) = p j"
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }

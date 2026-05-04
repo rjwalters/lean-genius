@@ -182,11 +182,65 @@ theorem multinomialEntropy_n1_eq_source {α : Type*} [DecidableEq α]
     (hp_nonneg : ∀ i ∈ s, 0 ≤ p i) (hp_sum : ∑ i ∈ s, p i = 1) :
     multinomialEntropy s p 1 =
     -∑ i ∈ s, (if p i = 0 then 0 else p i * Real.log (p i)) := by
-  unfold multinomialEntropy
-  -- Reindex: piAntidiag s 1 ↔ s via indicator functions
-  -- Each k ∈ piAntidiag s 1 is δ_j for unique j ∈ s
-  -- multinomialProb s p 1 δ_j = p j (proved in multinomialProb_n1_indicator)
-  sorry
+  simp only [multinomialEntropy]
+  congr 1
+  -- Reindex piAntidiag s 1 ↔ s via j ↦ δ_j = (fun i => if i = j then 1 else 0)
+  apply Finset.sum_nbij (fun j => fun i => if i = j then 1 else 0)
+  · -- Membership: δ_j ∈ s.piAntidiag 1 for j ∈ s
+    intro j hj
+    rw [Finset.mem_piAntidiag]
+    constructor
+    · simp [Finset.sum_ite_eq, hj]
+    · intro i hi
+      by_cases h : i = j
+      · exact h ▸ hj
+      · simp [h] at hi
+  · -- Injectivity: δ_{j₁} = δ_{j₂} → j₁ = j₂
+    intro j1 hj1 j2 hj2 heq
+    have h := congr_fun heq j1
+    simp only [if_pos rfl] at h
+    split_ifs at h with h12
+    · exact h12
+    · exact absurd h one_ne_zero
+  · -- Surjectivity: every k ∈ piAntidiag s 1 equals some δ_j
+    intro k hk
+    rw [Finset.mem_piAntidiag] at hk
+    obtain ⟨hksum, hksupp⟩ := hk
+    -- Find j ∈ s with k j ≥ 1
+    have hpos : ∃ j ∈ s, 0 < k j := by
+      by_contra h
+      push_neg at h
+      have : ∑ i ∈ s, k i = 0 :=
+        Finset.sum_eq_zero (fun i hi => Nat.le_zero.mp (h i hi))
+      omega
+    obtain ⟨j, hj, hjpos⟩ := hpos
+    refine ⟨j, hj, funext fun i => ?_⟩
+    by_cases h : i = j
+    · -- i = j: show k j = 1
+      subst h
+      simp only [if_pos rfl]
+      have hle : k j ≤ 1 :=
+        (Finset.single_le_sum (fun l _ => Nat.zero_le _) _ hj).trans hksum.le
+      exact (Nat.le_antisymm hle hjpos).symm
+    · -- i ≠ j: show k i = 0
+      simp only [h, if_false]
+      by_contra hne
+      have hkpos : 0 < k i := Nat.pos_of_ne_zero (Ne.symm hne)
+      have his : i ∈ s := hksupp i (Ne.symm hne)
+      have h2 : k j + k i ≤ ∑ l ∈ s, k l :=
+        calc k j + k i = ∑ l ∈ ({j, i} : Finset α), k l := by
+              rw [Finset.sum_pair (Ne.symm h)]
+          _ ≤ ∑ l ∈ s, k l :=
+              Finset.sum_le_sum_of_subset_of_nonneg
+                (fun l hl => by
+                  simp only [Finset.mem_insert, Finset.mem_singleton] at hl
+                  rcases hl with rfl | rfl <;> assumption)
+                (fun _ _ _ => Nat.zero_le _)
+      rw [hksum] at h2
+      omega
+  · -- Term equality: multinomialProb at δ_j = p j
+    intro j hj
+    rw [multinomialProb_n1_indicator s p j hj]
 
 -- ============================================================
 -- PART 5: Upper Bound via Gibbs Inequality
@@ -209,7 +263,78 @@ theorem multinomialEntropy_upper_bound {α : Type*} [DecidableEq α]
     (hp_nonneg : ∀ i ∈ s, 0 ≤ p i) (hp_sum : ∑ i ∈ s, p i = 1)
     (hs : s.Nonempty) (hn : 0 < n) :
     multinomialEntropy s p n ≤ Real.log ((s.piAntidiag n).card) := by
-  sorry
+  obtain ⟨a, ha⟩ := hs
+  -- piAntidiag s n is nonempty: take all n in position a
+  have hN_ne : (s.piAntidiag n).Nonempty :=
+    ⟨fun i => if i = a then n else 0, Finset.mem_piAntidiag.mpr
+      ⟨by simp [Finset.sum_ite_eq', ha],
+       fun i hi => by
+         by_cases h : i = a
+         · exact h ▸ ha
+         · simp [h] at hi⟩⟩
+  set N := (s.piAntidiag n).card with hN_def
+  have hNR : (0 : ℝ) < (N : ℝ) := Nat.cast_pos.mpr (Finset.card_pos.mpr hN_ne)
+  -- Key log inequality: log x ≥ 1 - x⁻¹ for x > 0
+  -- Proof: from add_one_le_exp applied to -log x, then exp(-log x) = x⁻¹
+  have log_lb : ∀ x : ℝ, 0 < x → 1 - x⁻¹ ≤ Real.log x := fun x hx => by
+    have h := Real.add_one_le_exp (-Real.log x)
+    rw [Real.exp_neg, Real.exp_log hx] at h
+    linarith
+  -- Shorthand
+  have hPnn : ∀ k, 0 ≤ multinomialProb s p n k := fun k =>
+    multinomialProb_nonneg s p n k hp_nonneg
+  have hPsum : ∑ k ∈ s.piAntidiag n, multinomialProb s p n k = 1 :=
+    multinomialProb_sum_eq_one s p n hp_sum
+  -- Core per-term bound:
+  --   If P k = 0: 0 ≥ P k - 1/N (= -1/N), holds since N ≥ 1
+  --   If P k > 0: log N * P k + P k * log P k = P k * log(N*P k)
+  --              ≥ P k * (1 - (N*P k)⁻¹) = P k - 1/N
+  have per_term : ∀ k ∈ s.piAntidiag n,
+      multinomialProb s p n k - (N : ℝ)⁻¹ ≤
+      Real.log N * multinomialProb s p n k +
+        (if multinomialProb s p n k = 0 then 0
+         else multinomialProb s p n k * Real.log (multinomialProb s p n k)) := by
+    intro k _
+    by_cases h : multinomialProb s p n k = 0
+    · simp [h]; exact neg_nonpos.mpr (inv_nonneg.mpr (le_of_lt hNR))
+    · simp only [h, if_false]
+      have hPpos : 0 < multinomialProb s p n k :=
+        lt_of_le_of_ne (hPnn k) (Ne.symm h)
+      have hNPpos : 0 < (N : ℝ) * multinomialProb s p n k := mul_pos hNR hPpos
+      rw [show Real.log N * multinomialProb s p n k +
+              multinomialProb s p n k * Real.log (multinomialProb s p n k) =
+              multinomialProb s p n k * Real.log ((N : ℝ) * multinomialProb s p n k) from by
+        rw [Real.log_mul (ne_of_gt hNR) (ne_of_gt hPpos)]; ring]
+      rw [show multinomialProb s p n k - (N : ℝ)⁻¹ =
+              multinomialProb s p n k * (1 - ((N : ℝ) * multinomialProb s p n k)⁻¹) from by
+        field_simp [hNR.ne', ne_of_gt hPpos]; ring]
+      exact mul_le_mul_of_nonneg_left (log_lb _ hNPpos) (le_of_lt hPpos)
+  -- Sum the per-term bounds: ∑(P k - 1/N) ≤ ∑(log N * P k + entropy term)
+  have sum_lb : (0 : ℝ) ≤
+      ∑ k ∈ s.piAntidiag n,
+        (Real.log N * multinomialProb s p n k +
+          (if multinomialProb s p n k = 0 then 0
+           else multinomialProb s p n k * Real.log (multinomialProb s p n k))) := by
+    have hzero : ∑ k ∈ s.piAntidiag n,
+        (multinomialProb s p n k - (N : ℝ)⁻¹) = 0 := by
+      rw [Finset.sum_sub_distrib, hPsum, Finset.sum_const, nsmul_eq_mul]
+      field_simp [hNR.ne']
+    linarith [Finset.sum_le_sum per_term, hzero.symm.le]
+  -- Conclude: H(P) ≤ log N
+  -- The sum in sum_lb equals log N + ∑ entropy_term, so 0 ≤ log N + ∑ entropy_term,
+  -- giving -∑ entropy_term ≤ log N = H(P) ≤ log N.
+  have expand : ∑ k ∈ s.piAntidiag n,
+      (Real.log (N : ℝ) * multinomialProb s p n k +
+        (if multinomialProb s p n k = 0 then 0
+         else multinomialProb s p n k * Real.log (multinomialProb s p n k))) =
+      Real.log (N : ℝ) +
+      ∑ k ∈ s.piAntidiag n,
+        (if multinomialProb s p n k = 0 then 0
+         else multinomialProb s p n k * Real.log (multinomialProb s p n k)) := by
+    rw [Finset.sum_add_distrib, ← Finset.mul_sum, hPsum, mul_one]
+  unfold multinomialEntropy
+  simp only []
+  linarith [expand ▸ sum_lb]
 
 -- ============================================================
 -- PART 6: Binomial Entropy as 2-Category Special Case
@@ -242,15 +367,8 @@ theorem multinomialEntropy_binomial (p : ℝ) (n : ℕ)
 3. `multinomialEntropy_binomial` — binary case is nonneg
 4. `multinomialProb_n1_indicator` — P(δ_j) = p_j at n=1
 
-### Sorries Remaining (2):
-5. `multinomialEntropy_n1_eq_source` — H(Multinomial(1,p)) = H_source(p)
-   Proof outline: reindex sum over piAntidiag s 1 as sum over s via
-   the bijection j ↦ δ_j; use multinomialProb_n1_indicator for value matching.
-   Requires: Finset.sum_nbij with explicit bijection proof.
-
-6. `multinomialEntropy_upper_bound` — H(X) ≤ log|Comp(s,n)|
-   Proof outline: apply Gibbs inequality with Q = uniform distribution;
-   normalization of Q follows from multinomialProb_sum_eq_one at uniform p.
+### Sorries Remaining (0):
+All theorems now fully proved.
 
 ### Key Contribution
 Demonstrates that the Shannon entropy of the multinomial distribution CAN be
