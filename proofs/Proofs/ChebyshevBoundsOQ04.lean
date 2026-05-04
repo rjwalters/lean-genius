@@ -165,7 +165,7 @@ theorem chebyshevPsi_doubling_lower (n : ℕ) (hn : 1 ≤ n) :
       ∑ k ∈ range (2 * n + 1), vonMangoldt k - ∑ k ∈ range (n + 1), vonMangoldt k := by
     have hle : vonMangoldt p ≤
         ∑ k ∈ range (2 * n + 1) \ range (n + 1), vonMangoldt k :=
-      Finset.single_le_sum (fun k _ => vonMangoldt_nonneg) _ hmem
+      Finset.single_le_sum (fun k _ => vonMangoldt_nonneg) hmem
     linarith [Finset.sum_sdiff hsubset (f := vonMangoldt)]
   calc Real.log (n + 1)
       ≤ Real.log p := Real.log_le_log (by norm_cast; omega) hp_ge
