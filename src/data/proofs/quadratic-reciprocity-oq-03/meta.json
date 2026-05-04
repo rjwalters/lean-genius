@@ -77,7 +77,14 @@
       "endLine": 64,
       "summary": "Three reduction steps: multiplicativity (`legendreSym_mul_eq`), first supplementary law (`legendreSym_neg_one_eq`), and the reciprocity swap (`reciprocity_swap`). Each is a one-line wrapper presenting the Mathlib result in the form needed by the algorithm.",
       "mathContext": "Multiplicativity: $\\left(\\tfrac{ab}{p}\\right) = \\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{b}{p}\\right)$ (from `map_mul`). First supplementary law: $\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2}$ (from `legendreSym.at_neg_one`). Reciprocity swap: $\\left(\\tfrac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}\\left(\\tfrac{p}{q}\\right)$ (from `legendreSym.quadratic_reciprocity'`).",
-      "relatedConcepts": ["Legendre symbol", "multiplicativity", "first supplementary law", "Quadratic Reciprocity", "legendreSym.quadratic_reciprocity'", "map_mul"]
+      "relatedConcepts": [
+        "Legendre symbol",
+        "multiplicativity",
+        "first supplementary law",
+        "Quadratic Reciprocity",
+        "legendreSym.quadratic_reciprocity'",
+        "map_mul"
+      ]
     },
     {
       "id": "examples",
@@ -86,7 +93,13 @@
       "endLine": 95,
       "summary": "Seven concrete Legendre symbol computations verified by `decide`: (3/7)=−1, (2/7)=1, (5/13)=−1, (7/11)=−1, (3/5)=−1, (2/17)=1, (6/7)=−1. Each example is annotated with the QR-based hand calculation that `decide` corroborates.",
       "mathContext": "$(3/7) = -1$ (by swap: $(3/7) \\cdot (7/3) = -1$, $(7/3) = (1/3) = 1$); $(2/7) = 1$ ($7 \\equiv -1 \\pmod{8}$); $(6/7) = (2/7)\\cdot(3/7) = 1\\cdot(-1) = -1$ (multiplicativity). `decide` evaluates each via Euler's criterion in `ZMod p` at elaboration time.",
-      "relatedConcepts": ["decide tactic", "Euler's criterion", "second supplementary law", "ZMod decidability", "elaboration-time computation"]
+      "relatedConcepts": [
+        "decide tactic",
+        "Euler's criterion",
+        "second supplementary law",
+        "ZMod decidability",
+        "elaboration-time computation"
+      ]
     },
     {
       "id": "descent",
@@ -95,7 +108,12 @@
       "endLine": 108,
       "summary": "Proves `algorithm_descent`: under `q < p`, the reciprocity swap (q/p) = ±(p/q) reduces the modulus from p to q. The `hqp` hypothesis is unused in the proof body (one-line `exact reciprocity_swap`) but encodes the termination contract at the type level, forcing callers to supply a decreasing measure.",
       "mathContext": "Termination: `hqp : q < p` guarantees modulus decrease. After the swap, $p \\bmod q < q < p$, so each call to `algorithm_descent` strictly reduces the modulus — the decreasing measure for well-founded recursion.",
-      "relatedConcepts": ["well-founded recursion", "algorithm_descent", "decreasing_by", "Euclidean algorithm analogy"]
+      "relatedConcepts": [
+        "well-founded recursion",
+        "algorithm_descent",
+        "decreasing_by",
+        "Euclidean algorithm analogy"
+      ]
     },
     {
       "id": "exports",
@@ -154,5 +172,14 @@
       "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
       "Mathlib.NumberTheory.LegendreSymbol.Basic"
     ]
+  },
+  "leanFile": {
+    "namespace": "QRAlgorithm",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/QuadraticReciprocityOQ03.lean",
+    "sorries": 0
   }
 }
