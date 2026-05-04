@@ -189,18 +189,15 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
   -- and coe_restrictScalars is rfl, so adjoin Ka {β} and Ka ⊔ ℚ⟮β⟯ have the same carrier
   -- Thus adjoin Ka {β'} = ⊤ in Ka ⊔ ℚ⟮β⟯ follows from the set equality
   have h_top_Ka : IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯)) = ⊤ := by
-    -- Ka_in = preimage of Ka inside ↥(Ka ⊔ ℚ⟮β⟯)
-    let Ka_in : IntermediateField ℚ ↥(Ka ⊔ ℚ⟮β⟯) := Ka.comap (Ka ⊔ ℚ⟮β⟯).val
-    -- val maps Ka_in onto Ka
-    have h_img : (Ka ⊔ ℚ⟮β⟯).val '' (↑Ka_in : Set ↥(Ka ⊔ ℚ⟮β⟯)) = ↑Ka := by
+    -- Ka_set = {y : ↥(Ka ⊔ ℚ⟮β⟯) | ↑y ∈ Ka} as a plain set (avoids IntermediateField.comap)
+    let Ka_set : Set ↥(Ka ⊔ ℚ⟮β⟯) := {y | (Ka ⊔ ℚ⟮β⟯).val y ∈ Ka}
+    -- val maps Ka_set bijectively onto ↑Ka
+    have h_img : (Ka ⊔ ℚ⟮β⟯).val '' Ka_set = ↑Ka := by
       ext x; constructor
-      · rintro ⟨⟨y, _⟩, hmem, rfl⟩
-        exact IntermediateField.mem_comap.mp (SetLike.mem_coe.mp hmem)
-      · intro hx
-        exact ⟨⟨x, le_sup_left hx⟩,
-               SetLike.mem_coe.mpr (IntermediateField.mem_comap.mpr hx), rfl⟩
-    -- adjoin ℚ (↑Ka_in ∪ {β'}) = ⊤ via injectivity of val
-    have h_adj_ℚ : IntermediateField.adjoin ℚ (↑Ka_in ∪ {β'}) = ⊤ := by
+      · rintro ⟨⟨y, _⟩, hmem, rfl⟩; exact hmem
+      · intro hx; exact ⟨⟨x, le_sup_left hx⟩, hx, rfl⟩
+    -- adjoin ℚ (Ka_set ∪ {β'}) = ⊤ via injectivity of val
+    have h_adj_ℚ : IntermediateField.adjoin ℚ (Ka_set ∪ {β'}) = ⊤ := by
       apply IntermediateField.map_injective (Ka ⊔ ℚ⟮β⟯).val
       rw [← AlgHom.fieldRange_eq_map, IntermediateField.fieldRange_val,
           IntermediateField.adjoin_map, Set.image_union, Set.image_singleton,
@@ -220,14 +217,12 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
               (Set.mem_union_right ↑Ka (Set.mem_singleton_self β)))))
     -- tower law: adjoin ℚ S = ⊤ implies adjoin ↥Ka S = ⊤
     have h_adj_Ka := IntermediateField.adjoin_eq_top_of_adjoin_eq_top h_adj_ℚ
-    -- Ka_in elements are algebraMap images, so they lie in adjoin ↥Ka {β'} already
-    have h_le : IntermediateField.adjoin ↥Ka (↑Ka_in ∪ {β'}) ≤
+    -- Ka_set elements are algebraMap images, so they lie in adjoin ↥Ka {β'} already
+    have h_le : IntermediateField.adjoin ↥Ka (Ka_set ∪ {β'}) ≤
                 IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯)) :=
       IntermediateField.adjoin_le_iff.mpr (Set.union_subset
         (fun y hmem =>
-          let k : ↥Ka :=
-            ⟨(Ka ⊔ ℚ⟮β⟯).val y,
-             IntermediateField.mem_comap.mp (SetLike.mem_coe.mp hmem)⟩
+          let k : ↥Ka := ⟨(Ka ⊔ ℚ⟮β⟯).val y, hmem⟩
           have hyk : y = algebraMap ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) k := Subtype.ext rfl
           hyk ▸ IntermediateField.algebraMap_mem
             (IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯))) k)
