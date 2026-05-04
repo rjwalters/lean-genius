@@ -44,19 +44,22 @@
       "Formalized the totient-step iteration g(n) = n + φ(n) and its k-fold iterate",
       "Defined DoublingRelation and GeneralRatioRelation capturing the eventual scaling property",
       "Proved known r = 2 solutions (n = 10, 94) via native_decide base case + doubling_propagation induction",
-      "Proved Cambie's ratio-3 case g_{k+4}(738) = 3·g_k(738) for all k via strong induction over k mod 4 using totientStep_triple (axiom-free)",
+      "Proved Cambie's ratio-3 case g_{k+4}(738) = 3·g_k(738) for all k via strong induction using totientStep_triple (axiom-free)",
+      "totientStep_quadruple: proved g(4m) = 4·g(m) when 4|m via double application of Nat.totient_mul_of_prime_of_dvd with p=2",
+      "cambie_ratio4_148646: proved g_{k+4}(148646) = 4·g_k(148646) for all k≥1 via strong induction (native_decide base cases k=1..4)",
+      "cambie_ratio4_4325798: proved g_{k+4}(4325798) = 4·g_k(4325798) for all k≥1 via same structure",
       "Stated Steinerberger's (2025) reduction (DoublingRelation n 2 ↔ φ(n) + φ(n + φ(n)) = n) as a definition; equivalence proof not yet formalized",
       "Proved even preservation under g using Mathlib's Nat.totient_even",
       "Stated Cambie's structural conjecture (n = 2^l·p with p ∈ {2,3,5,7,35,47}) as a definition; conjecture itself is open"
     ],
     "axiomCount": 0,
-    "lineCount": 216,
-    "assumptions": "No axioms. All results (cambie_ratio3, r=2 solutions n=10/94) are proved. Open conjecture stated as definition, not axiom.",
-    "theoremCount": 12
+    "lineCount": 303,
+    "assumptions": "No axioms. All results (cambie_ratio3, cambie_ratio4_148646, cambie_ratio4_4325798, r=2 solutions n=10/94) are proved. Open conjecture stated as definition, not axiom.",
+    "theoremCount": 17
   },
   "leanFile": {
     "path": "Proofs/Erdos411Problem.lean",
-    "lineCount": 216,
+    "lineCount": 303,
     "namespace": "root",
     "imports": [
       "Mathlib.Data.Nat.Totient",
@@ -77,7 +80,7 @@
       "CambieConjecture"
     ],
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 17,
     "sorries": 0,
     "definitionCount": 6
   },
