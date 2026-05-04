@@ -777,3 +777,45 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Docker build verification: PR #15527 needs successful build to merge
 - If Docker OOMs again, investigate splitting `lowerDensity_compl` proof into smaller lemmas
 - Open question: formalize the Dickman ρ density estimate for ε < 1/2 (blocked, >1000 LOC)
+
+---
+
+## Session 2026-05-04 (Session 19) - Strong Conjecture + Complement Duality
+
+**Mode**: REVISIT (highest knowledge score 150)
+**Outcome**: progress — 3 new theorems + 1 def (97→100), PR #15539
+
+### What I Did
+- Checked Aristotle: no completed jobs pending
+- Identified two open PRs with stale/conflicting content vs main:
+  - PR #15527: completely superseded (all 87→97 content already on main) → closed
+  - PR #15529: unique content (ErdosProblem1201Strong, upperDensity_compl_eq) conflicting → closed
+- Found already-written working-tree changes in main repo matching exact content needed
+- Ported unique content from PR #15529 to fresh branch from origin/main:
+  1. `upperDensity_compl_eq`: symmetric dual of lowerDensity_compl (uD(Sᶜ)=1-lD(S))
+  2. `ErdosProblem1201Strong`: lower-density form of conjecture
+  3. `erdos_1201_strong_implies_weak`: Strong ⟹ Weak via lowerDensity_le_upperDensity
+  4. `erdos_1201_strong_iff_smooth_decay`: Strong ↔ smooth-decay (full equivalence)
+- Created PR #15539
+
+### Key Findings
+- Strong and Weak forms are EQUI-DIFFICULT: both reduce to smooth-decay (density of
+  fully-smooth windows → 0). lim inf vs lim sup distinction disappears at the conjecture level.
+- `erdos_1201_strong_iff_smooth_decay` backward direction: goodᶜ ∩ [1,N] ⊆ smooth_bad ∪ {1}
+  gives dgc(N) ≤ dbad(N) + 1/N, then limsup(1/N)=0 gives the bound
+- Fixed `Finset.Nat.card_Icc` → `icc_one_card` (private lemma) in proof
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1473→1608 lines, 97→100 theorems)
+- `src/data/proofs/erdos-1201/meta.json` (counts updated)
+- `src/data/research/problems/erdos-1201.json` (knowledge updated)
+
+### Status
+- **Axiom count**: 1 (unchanged: erdos_1201_half_case)
+- **Sorry count**: 0
+- **Theorems**: 100
+- **Genuine blockers**: Dickman ρ function for density lower bounds (>1000 LOC)
+
+### Next Steps
+- Docker build verification for PR #15539
+- No further structural theorems of comparable value visible without Dickman ρ infrastructure
