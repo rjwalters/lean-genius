@@ -17,12 +17,12 @@
       "gamma-function"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
     "assumptions": "2 structure-encoded assumptions in AngularAverageData: angularAvg_eq (the angular average on RP^{n-1} is proportional to norm with constant sigma_{n-2}/(n-1)), angularAvg_nonneg (non-negativity). These encode integration on the unit sphere which Mathlib lacks.",
-    "lineCount": 332,
-    "theoremCount": 20,
+    "lineCount": 394,
+    "theoremCount": 25,
     "definitionCount": 5,
     "originalContributions": [
       "sphereArea: sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) with n=0,1,2 computed",
@@ -88,7 +88,7 @@
       "id": "dimension-ladder",
       "title": "Part V-VI: Sphere Recurrence and Consistency Checks",
       "startLine": 267,
-      "endLine": 331,
+      "endLine": 394,
       "summary": "sphereArea_recurrence proves sigma_n = 2*pi/n * sigma_{n-2}. Consistency: angular_constant_dim2 verifies sigma_0/1 = 2. unit_circle_crossings verifies a unit circle crosses 4 times. cauchyCrofton_le_one_dim2 proves c_2 <= 1 (using pi > 3).",
       "mathContext": "$\\sigma_n = \\frac{2\\pi}{n} \\sigma_{n-2}$ (proved via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$). Corollaries: $c_4 = 4/(3\\pi)$, $c_2 \\leq 1$."
     }
@@ -104,12 +104,12 @@
   },
   "leanFile": {
     "namespace": "CauchyCrofton",
-    "lineCount": 332,
+    "lineCount": 394,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 25,
     "definitionCount": 4,
     "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -128,5 +128,5 @@
       "description": "N-ball volumes use the same Gamma function framework as sphere surface areas"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
