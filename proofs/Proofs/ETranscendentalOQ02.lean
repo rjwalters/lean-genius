@@ -211,12 +211,46 @@ axiom rational_digits_eventually_periodic (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
 
 /-- In a sequence with period T, at most T distinct k-tuples appear after the period starts.
     If bᵏ > T, some k-tuple never appears.
-    Proof sketch: the orbit map n ↦ (f(n),...,f(n+k-1)) is periodic with period T on ℕ≥N₀,
-    so its image has cardinality ≤ T. But |Fin k → Fin b| = bᵏ > T, so some tuple is absent. -/
-axiom periodic_has_missing_ktuple (b T k : ℕ) (hb : 2 ≤ b) (hT : 0 < T)
+    Proof: the orbit {(f(N₀+j),...,f(N₀+j+k-1)) : j < T} has card ≤ T < bᵏ = |Fin k → Fin b|,
+    so some tuple s is absent. For n ≥ N₀, periodicity maps n back to N₀ + j (mod T),
+    so f(n+·) matches f(N₀+j+·) ∈ orbit, contradicting s ∉ orbit. -/
+theorem periodic_has_missing_ktuple (b T k : ℕ) (hb : 2 ≤ b) (hT : 0 < T)
     (hk : T < b ^ k) (f : ℕ → Fin b) (N₀ : ℕ)
     (hperiod : ∀ n ≥ N₀, f (n + T) = f n) :
-    ∃ s : Fin k → Fin b, ∀ n ≥ N₀, ∃ i : Fin k, f (n + i.val) ≠ s i
+    ∃ s : Fin k → Fin b, ∀ n ≥ N₀, ∃ i : Fin k, f (n + i.val) ≠ s i := by
+  let orbit : Finset (Fin k → Fin b) :=
+    (Finset.range T).image (fun j => fun i : Fin k => f (N₀ + j + i.val))
+  have horbit_le : orbit.card ≤ T := by
+    calc orbit.card ≤ (Finset.range T).card := Finset.card_image_le
+      _ = T := Finset.card_range T
+  have huniv : (Finset.univ : Finset (Fin k → Fin b)).card = b ^ k := by
+    simp [Finset.card_univ, Fintype.card_fun, Fintype.card_fin]
+  obtain ⟨s, hs⟩ : ∃ s : Fin k → Fin b, s ∉ orbit := by
+    by_contra hall
+    push_neg at hall
+    have : b ^ k ≤ orbit.card := by
+      rw [← huniv]; exact Finset.card_le_card (fun s _ => hall s)
+    linarith
+  exact ⟨s, fun n hn => by
+    by_contra hall
+    push_neg at hall
+    -- Iterated periodicity: f(N₀ + j + m*T + i) = f(N₀ + j + i) for j = (n-N₀)%T
+    have hperiod_rep : ∀ (m i : ℕ),
+        f (N₀ + (n - N₀) % T + m * T + i) = f (N₀ + (n - N₀) % T + i) := by
+      intro m i
+      induction m with
+      | zero => simp
+      | succ p ih =>
+        rw [show N₀ + (n - N₀) % T + (p + 1) * T + i =
+              (N₀ + (n - N₀) % T + p * T + i) + T from by ring,
+            hperiod _ (by omega), ih]
+    -- f(n + i) = f(N₀ + (n-N₀)%T + i) for all i (by reducing mod T)
+    have hfn_eq : ∀ i : Fin k, f (n + i.val) = f (N₀ + (n - N₀) % T + i.val) := fun i => by
+      rw [show n + i.val = N₀ + (n - N₀) % T + (n - N₀) / T * T + i.val from by omega]
+      exact hperiod_rep ((n - N₀) / T) i.val
+    -- So (fun i => f(N₀+(n-N₀)%T+i)) = s, meaning s ∈ orbit: contradiction
+    exact hs (Finset.mem_image.mpr ⟨(n - N₀) % T, Finset.mem_range.mpr (Nat.mod_lt _ hT),
+      funext fun i => (hfn_eq i).symm.trans (hall i)⟩)⟩
 
 /-- Normal numbers must be irrational.
     Proof: if x = p/q is rational, its expansion has period T ≤ q (by rational_digits_eventually_periodic).
