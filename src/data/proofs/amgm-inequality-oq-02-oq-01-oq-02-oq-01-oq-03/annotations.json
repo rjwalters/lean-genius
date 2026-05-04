@@ -1,0 +1,106 @@
+[
+  {
+    "id": "ann-ng-inductive-docstring",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Independent Inductive Newton-Girard: The Alternative Path",
+    "content": "This file proves Newton-Girard by induction on the number of variables, without calling Mathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum`. This is the key contrast with the sibling entry `amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01`, which dispatches to that Mathlib theorem for k=4 and k=5.\n\nWhy does an independent proof matter?\n\n- **Pedagogical transparency**: The inductive proof exposes the mechanism — one variable at a time — rather than reducing to an abstract algebra fact. The structure mirrors the combinatorial definition of eₖ.\n- **Independence**: If Mathlib's theorem were ever refactored or its interface changed, this entry would remain valid.\n- **Scope**: The inductive proof handles all k and all n simultaneously, while the sibling proves only specific small values of k.\n\nThe proof strategy stated in the docstring is precise: base case n=0 is trivial (all sums over empty Finset are zero), and the inductive step uses the variable-adding recurrences `elemSymm_succ` and `powerSum_succ` together with the sign-cancellation auxiliary `cancel_sum`.\n\nThe concrete setting (`Fin n → ℝ`) matches the parent file `AmgmInequalityOQ02`, where `elemSymm` was first defined. The abstract MvPolynomial setting (used by the sibling) is strictly more general but requires a different import chain.",
+    "mathContext": "Newton-Girard identity (Newton's form): $k \\cdot e_k(x) = \\sum_{j=0}^{k-1} (-1)^j e_{k-1-j}(x) p_{j+1}(x)$, where $e_k : (\\text{Fin}\\,n \\to \\mathbb{R}) \\to \\mathbb{R}$ and $p_k(x) = \\sum_i x_i^k$. Both sides are zero when $n=0$ (no variables). For $n+1$ variables: $e_k(x', Y) = e_k(x') + Y e_{k-1}(x')$ and $p_k(x', Y) = p_k(x') + Y^k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Newton-Girard recurrence",
+      "elementary symmetric polynomial",
+      "power sum",
+      "induction on number of variables",
+      "elemSymm_succ"
+    ],
+    "prerequisites": [
+      "elemSymm definition in AmgmInequalityOQ02",
+      "elemSymm_succ in AmgmInequalityOQ02OQ01OQ02",
+      "Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum (for comparison)"
+    ]
+  },
+  {
+    "id": "ann-power-sum-def",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 31,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Power Sum: Definition and Variable-Adding Recurrence",
+    "content": "The file defines its own `powerSum k x = ∑ i : Fin n, x i ^ k` locally — this is the concrete real-valued power sum, distinct from Mathlib's abstract `MvPolynomial.psum` which lives in a polynomial ring.\n\n`powerSum_succ` proves that appending a variable adds its k-th power: $p_k(x_1,\\ldots,x_{n+1}) = p_k(x_1,\\ldots,x_n) + x_{n+1}^k$. The proof is one line: `simp [powerSum, Fin.sum_univ_castSucc]`. The key lemma is `Fin.sum_univ_castSucc`, which splits a sum over `Fin (n+1)` into a sum over `Fin n` (via `Fin.castSucc`) plus the last term (via `Fin.last n`).\n\nThis recurrence mirrors `elemSymm_succ` from the parent file, which does the same for elementary symmetric polynomials. Together, these two recurrences are the building blocks for the inductive expansion in the main theorem.\n\nNote the asymmetry: `elemSymm_succ` is more complex (two terms: $e_k(x') + Y \\cdot e_{k-1}(x')$) while `powerSum_succ` is simpler ($p_k(x') + Y^k$, no cross-product). This reflects the fact that power sums are 'diagonal' (only $x_i^k$ contributes) while elementary symmetric polynomials are 'off-diagonal' (products of distinct $x_i$).",
+    "mathContext": "$p_k(x) = \\sum_{i : \\text{Fin}\\,n} x_i^k$. Variable-adding recurrence: $p_k(x', Y) = p_k(x') + Y^k$ where $x' = x \\circ \\text{Fin.castSucc} : \\text{Fin}\\,n \\to \\mathbb{R}$ and $Y = x(\\text{Fin.last}\\,n)$. Proved by `Fin.sum_univ_castSucc : \\sum_{i : \\text{Fin}(n+1)} f(i) = \\sum_{i : \\text{Fin}\\,n} f(\\text{castSucc}(i)) + f(\\text{last}\\,n)`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "powerSum definition",
+      "Fin.sum_univ_castSucc",
+      "Fin.castSucc and Fin.last",
+      "elemSymm_succ (analogous for e_k)",
+      "variable-adding recurrences"
+    ],
+    "prerequisites": [
+      "Finset.sum over Fin n",
+      "Fin.castSucc and Fin.last",
+      "Mathlib: Fin.sum_univ_castSucc"
+    ]
+  },
+  {
+    "id": "ann-cancel-sum",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "Sign-Cancellation Lemma: The Algebraic Heart of the Induction",
+    "content": "**Lemma** `cancel_sum` (private): For any function $e : \\mathbb{N} \\to \\mathbb{R}$ and any $Y \\in \\mathbb{R}$,\n$$\\sum_{j=0}^k (-1)^j e(k-j) Y^j + \\sum_{j=0}^{k-1} (-1)^j e(k-1-j) Y^{j+1} = e(k)$$\n\nThis is the algebraic identity that makes the inductive step of `newton_girard` close. When we expand Newton-Girard for $n+1$ variables, the RHS generates four sums via the cross-products of the $e_j(x) = e_j(x') + Y e_{j-1}(x')$ and $p_{j+1}(x) = p_{j+1}(x') + Y^{j+1}$ expansions. After applying the inductive hypothesis to cancel the 'diagonal' parts, we are left with two sums involving powers of $Y$ times $e_j(x')$ — exactly the sums in `cancel_sum` instantiated with $e(j) = e_j(x')$.\n\n**Proof structure** (induction on k):\n\n- **Base** k=0: LHS = $(-1)^0 e(0) Y^0 + 0 = e(0)$ ✓\n- **Successor** k+1: Split off the top terms (j=k+1 from first sum, j=k from second sum). These boundary terms are $(-1)^{k+1} e(0) Y^{k+1}$ and $(-1)^k e(0) Y^{k+1}$, which cancel because $(-1)^{k+1} + (-1)^k = 0$ (proved by `rw [pow_succ]; ring`). The remaining bracket is the same identity at degree $k$ applied to $e' = j \\mapsto e(j+1)$, which equals $e'(k) = e(k+1)$ by the inductive hypothesis. The two index-shifting steps (`hconv1`, `hconv2`) rewrite $e(k+1-j)$ as $e'(k-j)$ and $e(k-j)$ as $e'(k-1-j)$, using `omega` for the arithmetic. Final combination by `linarith`.\n\n**The shifted-IH pattern**: Applying the inductive hypothesis to $e' = j \\mapsto e(j+1)$ instead of $e$ is a standard technique when the recurrence involves a shift in the function argument. Lean requires explicit `congr 2; omega` rewrites to convert between $e(k+1-j)$ and $e'(k-j)$ because the subtraction is over `ℕ` (which saturates at 0).",
+    "mathContext": "The identity $\\sum_{j \\le k}(-1)^j e(k-j) Y^j + \\sum_{j < k}(-1)^j e(k-1-j) Y^{j+1} = e(k)$ arises from expanding $Y \\cdot e_k(x')$ using Newton-Girard for $x'$ (the IH). Specifically, let $F_1 = \\sum_{j \\le k}(-1)^j e_j(x') Y^{k-j}$ and $F_2 = \\sum_{j < k} (-1)^j e_j(x') Y^{k-1-j+1}$; then $Y(F_1 + F_2) = Y e_k(x')$ by the identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "alternating sign cancellation",
+      "induction with shifted parameter",
+      "pow_succ sign identity",
+      "linarith for linear arithmetic closure",
+      "omega for natural number arithmetic"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ",
+      "pow_succ (ring identity for (-1)^(k+1))",
+      "linear_combination tactic",
+      "shifted IH pattern"
+    ]
+  },
+  {
+    "id": "ann-newton-girard-main",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 86,
+      "endLine": 179
+    },
+    "type": "insight",
+    "title": "newton_girard: Induction on n with Four-Sum Expansion",
+    "content": "**Theorem** `newton_girard`: For all $n, k : \\mathbb{N}$ and $x : \\text{Fin}\\,n \\to \\mathbb{R}$,\n$$k \\cdot e_k(x) = \\sum_{j=0}^{k-1} (-1)^j e_{k-1-j}(x) p_{j+1}(x)$$\n\nThe proof is by induction on $n$.\n\n**Base case** $n=0$: For $k=0$, both sides are 0 by `simp`. For $k \\ge 1$, `elemSymm_fin_zero` gives $e_k(x) = 0$ and each $e_{k-1-j}(x) = 0$, so both sides are 0.\n\n**Inductive step** $n+1$: Let $Y = x(\\text{Fin.last}\\,n)$ and $x' = x \\circ \\text{Fin.castSucc}$. For $k=0$ both sides are 0. For $k+1$:\n\n1. **Expand LHS**: Apply `elemSymm_succ k x` to get $(k+1)(e_{k+1}(x') + Y e_k(x'))$.\n2. **Expand each RHS term**: For each $j < k$, $e_{k-j}(x) = e_{k-j}(x') + Y e_{k-j-1}(x')$ (elemSymm_succ) and $p_{j+1}(x) = p_{j+1}(x') + Y^{j+1}$ (powerSum_succ). Expanding the product gives four cross-terms.\n3. **Collect into four sums** $A, B', C, D'$:\n   - $A = \\sum_{j<k}(-1)^j e_{k-j}(x') p_{j+1}(x')$ — same as IH at k+1 (up to the extra $(-1)^k p_{k+1}(x')$ term)\n   - $B' = \\sum_{j<k}(-1)^j e_{k-1-j}(x') p_{j+1}(x')$ — IH at k gives $k e_k(x')$\n   - $C = \\sum_{j<k}(-1)^j e_{k-j}(x') Y^{j+1}$ — part of cancel_sum\n   - $D' = \\sum_{j<k}(-1)^j e_{k-1-j}(x') Y^{j+1}$ — part of cancel_sum\n4. **Apply three identities**:\n   - `hA`: $A + (-1)^k p_{k+1}(x') = (k+1) e_{k+1}(x')$ (by IH at k+1, after re-indexing)\n   - `hB`: $Y B' = Y k e_k(x')$ (by IH at k, scaled by Y)\n   - `hCD`: $C + Y D' + (-1)^k Y^{k+1} = Y e_k(x')$ (by cancel_sum)\n5. **Combine with `linarith`**: $(k+1)(e_{k+1}(x') + Y e_k(x')) = (k+1)e_{k+1}(x') + Y k e_k(x') + Y e_k(x')$ ✓\n\nThe four-sum expansion (`h_inner`) is the most technical step, using `simp_rw [← Finset.sum_add_distrib]` to factor out $Y$ and distribute the product, plus `elemSymm_succ` and `powerSum_succ` applied termwise.",
+    "mathContext": "For $n+1$ variables $x = (x_1,\\ldots,x_n, Y)$: $e_k(x) = e_k(x') + Y e_{k-1}(x')$ and $p_k(x) = p_k(x') + Y^k$. Expanding the RHS of Newton-Girard for $n+1$ at degree $k+1$:\n$$\\sum_{j<k+1}(-1)^j e_{k-j}(x) p_{j+1}(x) = \\underbrace{\\sum_{j<k}(-1)^j e_{k-j}(x') p_{j+1}(x')}_A + Y \\underbrace{\\sum_{j<k}(-1)^j e_{k-1-j}(x') p_{j+1}(x')}_{B'} + \\underbrace{\\sum_{j<k}(-1)^j e_{k-j}(x') Y^{j+1}}_C + Y \\underbrace{\\sum_{j<k}(-1)^j e_{k-1-j}(x') Y^{j+1}}_{D'} + (-1)^k e_0(x') p_{k+1}(x')$$\nThe last term simplifies: $e_0 = 1$, giving $(-1)^k p_{k+1}(x')$. Then $A + (-1)^k p_{k+1}(x') = (k+1) e_{k+1}(x')$ by IH; $Y B' = Yk e_k(x')$ by IH; $C + Y D' + (-1)^k Y^{k+1} = Y e_k(x')$ by cancel_sum.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on number of variables",
+      "elemSymm_succ",
+      "powerSum_succ",
+      "cancel_sum",
+      "Finset.sum_range_succ",
+      "linarith"
+    ],
+    "prerequisites": [
+      "elemSymm_succ: eₖ(x',Y) = eₖ(x') + Y·eₖ₋₁(x')",
+      "powerSum_succ: pₖ(x',Y) = pₖ(x') + Yᵏ",
+      "cancel_sum (this file)",
+      "elemSymm_fin_zero: eₖ(x) = 0 for n=0, k≥1",
+      "elemSymm_zero: e₀ = 1"
+    ]
+  }
+]
