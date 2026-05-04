@@ -494,3 +494,43 @@ The latter connects to the well-studied Dickman function and smooth number densi
 ---
 
 *Generated from erdosproblems.com on 2026-04-16*
+
+## Session 2026-05-04 (Session 11) - Sylvester-Schur for Prime Window Sizes
+
+**Mode**: REVISIT (claimed erdos-1201 directly — highest knowledge score)
+**Outcome**: progress — 2 new theorems, 2 bug fixes, PR #15417
+
+### What I Did
+- Identified tractable special case of Sylvester-Schur: when k+1 is PRIME
+  - General Sylvester-Schur (P(n,k) > k for all n > k) needs Chebyshev/binomial infra
+  - For prime k+1: elementary residue argument suffices, works for ALL n ≥ 1
+- Proved `exists_dvd_in_consecutive` (private): offset `(m - n%m) % m` witnesses multiple of m
+  - Case n % m = 0: trivially n is divisible by m (offset = 0)
+  - Case n % m > 0: offset < m, and n + (m - n%m) = m*(n/m+1) by division algorithm
+- Proved `gpfConsecutive_ge_succ_k_of_prime`: P(n,k) ≥ k+1 for all n ≥ 1 when k+1 prime
+  - Uses `exists_dvd_in_consecutive` + `le_gpfConsecutive_of_prime_dvd_term`
+- Proved `gpfConsecutive_gt_k_of_prime_succ`: k < P(n,k) when k+1 prime (strict)
+  - Covers k = 1, 2, 4, 6, 10, 12, 16, 18, ... (infinitely many k values)
+- Fixed pre-existing bug: `Nat.coprime_succ_self_right` removed from current Mathlib
+  - New proof: `(Nat.coprime_succ_self n).coprime_dvd_left (...) |>.coprime_dvd_right (...)`
+- Fixed pre-existing bug: duplicate declarations of `erdos_1201_good_set_mono_eps` and
+  `erdos_1201_density_mono_eps` (session 10 added ≤ versions alongside existing < versions)
+  - Removed second (≤) declarations; first (strict <) versions remain
+
+### Key Findings
+- Complete residue system: k+1 consecutive integers cover ALL residues mod k+1
+- `le_gpfConsecutive_of_prime_dvd_term` is the key bridge for prime factor bounds
+- `Nat.coprime_succ_self_right` renamed to `Nat.coprime_succ_self` in current Mathlib
+- `Nat.Coprime.coprime_dvd_left/right` is the clean API for transferring coprimality
+- Session 10 introduced duplicate theorem names — always check for existing names before adding
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1044→1043 lines, 75 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (lineCount 1044→1043, bug fixes noted in assumptions)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+
+### Next Steps
+- Full Sylvester-Schur for ALL k+1 (composite): needs binomial coefficient or Chebyshev Θ (>300 lines)
+- Density lower bounds: truly blocked (Dickman ρ function >1000 lines infra)
+- Can erdos_1201_half_case be proved via Dickman ρ or elementary density argument?
