@@ -1,0 +1,61 @@
+{
+  "id": "borsuk-ulam-oq-03-oq-04",
+  "title": "Quantitative 1D Borsuk-Ulam: Effective Bounds on Antipodal Pairs",
+  "slug": "borsuk-ulam-oq-03-oq-04",
+  "description": "For a K-Lipschitz function f : [-1,1] → ℝ with |f(1) - f(-1)| = δ > 0, any antipodal zero x₀ (where f(x₀) = f(-x₀)) satisfies -1 + δ/(2K) ≤ x₀ ≤ 1 - δ/(2K). This gives an effective, computable location bound for antipodal pairs beyond the mere existence guaranteed by the classical 1D Borsuk-Ulam theorem.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "lineCount": 235,
+    "leanFile": "proofs/Proofs/BorsukUlamOQ03OQ04.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "tags": ["topology", "borsuk-ulam", "lipschitz", "quantitative", "antipodal"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "anti-diff",
+      "title": "Antisymmetric Difference",
+      "description": "antiDiff f = f(x) - f(-x) is the antisymmetric part of f. Key properties: antiDiff_antisymm (antiDiff(-x) = -antiDiff(x)), antiDiff_at_one_sum (antiDiff(-1) + antiDiff(1) = 0), antiDiff_at_one_eq_diff (antiDiff(1) = f(1) - f(-1) = δ), antiDiff_zero_iff (antiDiff(x₀) = 0 iff f(x₀) = f(-x₀)), and antisymm_diff_lipschitz_two (antiDiff is 2K-Lipschitz when f is K-Lipschitz).",
+      "theorems": ["antiDiff_antisymm", "antiDiff_at_one_sum", "antiDiff_at_one_eq_diff", "antiDiff_zero_iff", "antisymm_diff_lipschitz_two"]
+    },
+    {
+      "id": "existence-and-bounds",
+      "title": "Existence and Location Bounds",
+      "description": "antiDiff_has_zero: antiDiff has a zero in [-1,1] (follows from IVT — antiDiff changes sign since antiDiff(-1) = -δ, antiDiff(1) = δ). quantitative_borsuk_ulam_1d: the zero x₀ satisfies |x₀| ≤ 1 - δ/(2K). antipodal_location_tight: the full two-sided bound -1 + δ/(2K) ≤ x₀ ≤ 1 - δ/(2K).",
+      "theorems": ["antiDiff_has_zero", "quantitative_borsuk_ulam_1d", "antipodal_location_tight"]
+    },
+    {
+      "id": "bisection",
+      "title": "Bisection Localization",
+      "description": "A constructive bisection algorithm to locate antipodal pairs within ε: bisection_bracket_induction (the bisection invariant — at each step the interval contains a zero), antipodal_bisection_localization (after n steps, the interval has length ≤ 2/(2^n)), antipodal_midpoint_error (midpoint error ≤ 2/(2^n)), antipodal_within_epsilon (given tolerance ε, achieve |x - x₀| < ε in ⌈log₂(2/ε)⌉ steps), and quantitative_bu_summary (complete summary theorem).",
+      "theorems": ["bisection_bracket_induction", "antipodal_bisection_localization", "antipodal_midpoint_error", "antipodal_within_epsilon", "quantitative_bu_summary"]
+    }
+  ],
+  "overview": {
+    "summary": "The 1D Borsuk-Ulam theorem says every continuous f : [-1,1] → ℝ has an antipodal pair (f(x) = f(-x)). This file adds quantitative information: if f is K-Lipschitz, the antipodal pair can't be too close to the endpoints, and there's a bisection algorithm that finds it within ε in O(log(1/ε)) steps.",
+    "approach": "Define g(x) = f(x) - f(-x) (the antisymmetric part). Note g(-1) = f(-1) - f(1) = -δ and g(1) = δ. By IVT, g has a zero x₀. Since g is 2K-Lipschitz and g(1) = δ, the Lipschitz condition forces |g(1) - g(x₀)| = δ ≤ 2K·(1 - x₀), giving x₀ ≤ 1 - δ/(2K). Similarly x₀ ≥ -1 + δ/(2K). The bisection algorithm uses this two-sided bound at each step.",
+    "significance": "Quantitative Borsuk-Ulam bounds have applications in computational topology (finding antipodal pairs algorithmically), approximation theory (understanding where continuous functions must take equal values on antipodal points), and optimization (determining how far from endpoints the optimal antipodal pair can be)."
+  },
+  "conclusion": {
+    "summary": "The quantitative 1D Borsuk-Ulam theorem and a bisection algorithm for locating antipodal pairs within ε are machine-checked, extending the classical existence result with effective location bounds.",
+    "openQuestions": [
+      "Can the bound δ/(2K) be shown to be tight — is there a K-Lipschitz f where the antipodal pair is exactly at ±(1 - δ/(2K))?",
+      "Can the higher-dimensional Borsuk-Ulam theorem (f : S^n → ℝ^n always has an antipodal pair) be strengthened with similar quantitative bounds via Lipschitz assumptions?",
+      "Does the bisection algorithm extend to higher dimensions via a Sperner-type recursive decomposition?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "extends",
+      "description": "Adds quantitative location bounds to the 1D Borsuk-Ulam existence result"
+    }
+  ]
+}

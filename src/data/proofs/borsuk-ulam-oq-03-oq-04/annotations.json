@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-quantitative-bu",
+    "type": "theorem",
+    "label": "quantitative_borsuk_ulam_1d",
+    "title": "Quantitative 1D Borsuk-Ulam",
+    "body": "quantitative_borsuk_ulam_1d: for K-Lipschitz f and any antipodal zero x₀ (f(x₀)=f(-x₀)) with |f(1)-f(-1)| = δ, we have |x₀| ≤ 1 - δ/(2K). The proof: antiDiff g = f(x) - f(-x) is 2K-Lipschitz with g(1)=δ, g(x₀)=0. Then δ = |g(1)-g(x₀)| ≤ 2K·|1-x₀| = 2K·(1-x₀), giving x₀ ≤ 1-δ/(2K). By symmetry (antiDiff antisymmetry), also x₀ ≥ -1+δ/(2K).",
+    "location": { "line": 100 },
+    "tags": ["main-theorem", "borsuk-ulam", "quantitative", "lipschitz"]
+  },
+  {
+    "id": "ann-anti-diff-lipschitz",
+    "type": "theorem",
+    "label": "antisymm_diff_lipschitz_two",
+    "title": "Antisymmetric Difference is 2K-Lipschitz",
+    "body": "antisymm_diff_lipschitz_two: if f is K-Lipschitz, then antiDiff f (= f(x) - f(-x)) is 2K-Lipschitz. This is the key amplification: the Lipschitz constant doubles because negating x contributes another factor of K. The factor of 2 is tight — for f(x) = Kx, antiDiff(x) = 2Kx has constant 2K.",
+    "location": { "line": 65 },
+    "tags": ["lipschitz", "anti-diff", "amplification"]
+  },
+  {
+    "id": "ann-bisection",
+    "type": "theorem",
+    "label": "antipodal_within_epsilon",
+    "title": "Bisection Finds Antipodal Pair Within ε",
+    "body": "antipodal_within_epsilon: for K-Lipschitz f with δ>0 and any ε>0, the bisection algorithm finds x' with |x' - x₀| < ε (where x₀ is an antipodal zero) in O(log(1/ε)) steps. The algorithm maintains a bracket [a,b] containing a zero of antiDiff, halving at each step. After n steps, the bracket has length ≤ 2/2ⁿ, giving the midpoint error ≤ 1/2ⁿ.",
+    "location": { "line": 195 },
+    "tags": ["bisection", "algorithm", "effective"]
+  },
+  {
+    "id": "ann-anti-diff-def",
+    "type": "definition",
+    "label": "antiDiff",
+    "title": "Antisymmetric Difference",
+    "body": "antiDiff f = fun x => f x - f (-x). This is the antisymmetric part of f: antiDiff(-x) = -antiDiff(x). Antipodal zeros of f (where f(x₀) = f(-x₀)) correspond exactly to zeros of antiDiff. The IVT applies because antiDiff(-1) = f(-1)-f(1) and antiDiff(1) = f(1)-f(-1) have opposite signs when δ > 0.",
+    "location": { "line": 25 },
+    "tags": ["definition", "antisymmetric", "antipodal"]
+  }
+]
