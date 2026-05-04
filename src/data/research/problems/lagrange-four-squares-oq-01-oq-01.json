@@ -1,0 +1,145 @@
+{
+  "slug": "lagrange-four-squares-oq-01-oq-01",
+  "title": "Can the Rabin-Shallit randomized O(log\u00b2n) algorithm be formalized and its exp...",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the Rabin-Shallit randomized O(log\u00b2n) algorithm be formalized and its expected complexity proved?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T11:41:44.695Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry created. 0 sorries, 0 axioms (false density_consecutive_bound refuted by {23,28} counterexample). rabin_shallit_pipeline proved via Lagrange + definitional unfolding. PR #15505.",
+    "builtItems": [
+      "Gallery entry: src/data/proofs/lagrange-four-squares-oq-01-oq-01/ (meta.json, annotations.json, index.ts)",
+      "PR #15505: research/lagrange-four-squares-oq-01-oq-01 branch"
+    ],
+    "insights": [
+      "density_consecutive_bound is FALSE: {23,28} in [23,29) are both obstructed (23=4^0*(8*2+7), 28=4^1*7)",
+      "three_sq_subroutine_correctness is definitionally trivial: IsSumOfThreeSquares m = \u2203 a b c, a^2+b^2+c^2=m, so obtain suffices",
+      "valid_splitter_exists uses Nat.sum_four_squares: any Lagrange decomposition n=a^2+b^2+c^2+d^2 gives x=d as valid splitter",
+      "density_limit_one_sixth: excluded forms have density 1/6 via tsum_geometric_of_lt_one (geometric series (1/8)/(1-1/4)=1/6)",
+      "obstructed_iff_base_or_step: self-similar recurrence enables structural induction on excluded forms"
+    ],
+    "mathlibGaps": [
+      "Legendre three-square theorem not in Mathlib \u2014 would make density analysis more direct",
+      "Probabilistic complexity analysis of Rabin-Shallit requires GRH \u2014 not formalizable yet"
+    ],
+    "nextSteps": [
+      "Prove density_consecutive_bound counterpart: among any 8 consecutive, at most 1 is excluded at base level",
+      "Check if Legendre three-square theorem is now in Mathlib to replace existence reasoning"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "four-squares",
+    "lagrange-theorem",
+    "quadratic-forms",
+    "sums-of-squares",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "lagrange-four-squares",
+    "lagrange-four-squares-oq-01",
+    "lagrange-four-squares-oq-02",
+    "lagrange-four-squares-oq-04",
+    "lagrange-four-squares-waring-g2"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.695Z",
+  "lastUpdate": "2026-05-03T11:41:44.695Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeFourSquares.lean",
+      "filename": "LagrangeFourSquares.lean",
+      "lineCount": 393,
+      "theoremCount": 15,
+      "axiomCount": 5,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquares.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01.lean",
+      "filename": "LagrangeFourSquaresOQ01.lean",
+      "lineCount": 396,
+      "theoremCount": 71,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01OQ01.lean",
+      "filename": "LagrangeFourSquaresOQ01OQ01.lean",
+      "lineCount": 209,
+      "theoremCount": 18,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ02.lean",
+      "filename": "LagrangeFourSquaresOQ02.lean",
+      "lineCount": 652,
+      "theoremCount": 105,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ04.lean",
+      "filename": "LagrangeFourSquaresOQ04.lean",
+      "lineCount": 227,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ04.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2.lean",
+      "filename": "LagrangeFourSquaresWaringG2.lean",
+      "lineCount": 443,
+      "theoremCount": 68,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2.lean"
+    }
+  ]
+}
