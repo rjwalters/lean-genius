@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-primes-density-zero",
+    "type": "theorem",
+    "label": "primes_density_zero",
+    "title": "Primes Have Natural Density Zero",
+    "body": "primes_density_zero: HasDensityZero {p : ℕ | p.Prime}. The natural density of the set of primes is 0: countingFn(primes, N) / N → 0. The proof squeezes: 0 ≤ π(N)/N ≤ 2·log 4/log N + 1/√N, and the upper bound tends to 0 by chebyshev_bound_tendsto_zero.",
+    "location": { "line": 220 },
+    "tags": ["main-theorem", "density", "primes", "analytic-number-theory"]
+  },
+  {
+    "id": "ann-chebyshev-theta-bound",
+    "type": "theorem",
+    "label": "chebyshevTheta_le",
+    "title": "Chebyshev Theta Bound: θ(N) ≤ N log 4",
+    "body": "chebyshevTheta_le: for all N, chebyshevTheta N ≤ N * Real.log 4. This uses the primorial bound: the product ∏_{p≤N} p divides the central binomial coefficient C(2N,N), and C(2N,N) ≤ 4^N (since it appears in the expansion of (1+1)^{2N} = 4^N). Taking logarithms: Σ_{p≤N} log p ≤ log(4^N) = N log 4.",
+    "location": { "line": 130 },
+    "tags": ["chebyshev", "theta-function", "primorial", "binomial"]
+  },
+  {
+    "id": "ann-prime-count-bound",
+    "type": "theorem",
+    "label": "primeCounting_le_chebyshev",
+    "title": "Prime Count Bound: π(N) ≤ 2N log 4/log N + √N + 1",
+    "body": "primeCounting_le_chebyshev: π(N) ≤ 2·N·log 4 / log N + √N + 1. Split primes into 'small' (p ≤ √N, at most √N of them) and 'large' (p > √N): for large primes, each contributes log p > (log N)/2 to θ(N), so their count is at most 2θ(N)/log N ≤ 2N log 4/log N. Total: π(N) ≤ 2N log 4/log N + √N.",
+    "location": { "line": 170 },
+    "tags": ["prime-counting", "chebyshev", "analytic"]
+  },
+  {
+    "id": "ann-chebyshev-theta",
+    "type": "definition",
+    "label": "chebyshevTheta",
+    "title": "Chebyshev Theta Function",
+    "body": "chebyshevTheta N = Σ_{p : ℕ | p.Prime ∧ p ≤ N} Real.log p. The Chebyshev θ-function sums the logarithms of all primes up to N. Unlike π(N) which counts primes uniformly, θ(N) weights each prime by its logarithm. The prime number theorem is equivalent to θ(N) ~ N (which is harder than the density bound θ(N) ≤ N log 4 used here).",
+    "location": { "line": 45 },
+    "tags": ["definition", "chebyshev", "theta-function"]
+  }
+]
