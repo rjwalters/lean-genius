@@ -22,7 +22,7 @@
     "assumptions": "1 axiom: nonderogatory_has_cyclic_vector — the converse direction: if M is nonderogatory (minpoly = charpoly), then there exists a cyclic vector v with {v, Mv, ..., M^{n-1}v} a basis. This requires constructing the cyclic vector from the rational canonical form, which is not yet fully formalized in Mathlib.",
     "lineCount": 316,
     "theoremCount": 8,
-    "definitionCount": 0,
+    "definitionCount": 3,
     "originalContributions": [
       "IsCyclicVector: predicate — v is cyclic for M if {v,Mv,...,M^{n-1}v} spans K^n",
       "IsNonderogatory: predicate — minpoly M = charpoly M",
