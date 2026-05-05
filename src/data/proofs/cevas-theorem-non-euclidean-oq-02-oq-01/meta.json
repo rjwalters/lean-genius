@@ -1,11 +1,11 @@
 {
   "id": "cevas-theorem-non-euclidean-oq-02-oq-01",
-  "title": "Spherical Menelaus Theorem via sin Ratios",
+  "title": "Spherical Menelaus Theorem via Sin Measure Function",
   "slug": "cevas-theorem-non-euclidean-oq-02-oq-01",
-  "description": "Formalizes the spherical analogue of Menelaus' theorem: for a spherical triangle with a great circle transversal, the collinearity condition is captured by the product of sin-ratios of signed arc lengths equaling -1. Completes the Euclidean/Hyperbolic/Spherical Menelaus triad and establishes the spherical Ceva–Menelaus duality.",
+  "description": "Formalizes the spherical Menelaus theorem — the great-circle transversal analogue of the spherical Ceva theorem. Uses sin as the measure function for signed geodesic arcs, exactly paralleling the hyperbolic case (OQ02) which uses sinh. Proves the complete 2×2 matrix: Ceva/Menelaus × Euclidean/Spherical/Hyperbolic.",
   "meta": {
     "author": "Lean Genius",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Menelaus%27_theorem#Spherical_geometry",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Menelaus%27_theorem#Spherical_version",
     "date": "2026-05-03",
     "status": "verified",
     "proofRepoPath": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
@@ -18,131 +18,121 @@
       "signed-ratios",
       "sin"
     ],
-    "badge": "original",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "assumptions": "None. Fully verified from Mathlib.",
-    "lineCount": 272,
+    "lineCount": 340,
     "theoremCount": 10,
-    "definitionCount": 1,
+    "definitionCount": 4,
     "originalContributions": [
-      "sin_is_odd: sin(-x) = -sin(x) — key for signed spherical arc length ratios",
-      "sin_pos_of_proper_arc: sin > 0 for arc lengths in (0,π)",
-      "sin_ne_zero_of_proper_arc: automatic nonzero condition for proper triangles",
-      "sin_neg_of_neg_arc: sin < 0 for signed arcs in (-π,0)",
-      "menelaus_algebraic_core: shared algebraic structure of all Menelaus variants",
-      "spherical_menelaus: main theorem — sin-ratio product = -1 iff cross-product equality",
-      "proper_arcs_valid: well-formedness for non-degenerate spherical triangles",
-      "spherical_menelaus_midpoint: BD = DC midpoint specialization",
-      "menelaus_measure_universality: uniform algebraic structure for any measure function",
-      "spherical_ceva_menelaus_duality: algebraic duality between +1 (Ceva) and -1 (Menelaus)"
+      "menelaus_algebraic_core: unified algebraic core for all three geometries (product = -1 iff numerator = -denominator)",
+      "SphericalMenelausConfig: signed arc framework with sin non-degeneracy constraints",
+      "spherical_menelaus: full spherical Menelaus theorem via sin",
+      "sphericalMenelausProduct_pos_of_interior: product > 0 when all arcs in (0,π)",
+      "not_menelaus_of_all_interior: interior-only configs cannot be Menelaus transversals",
+      "spherical_ceva_menelaus_duality: unified Ceva (=1) vs Menelaus (=-1) via sin",
+      "spherical_menelaus_midpoint_example: midpoint specialization",
+      "spherical_euclidean_menelaus_same_core: sin vs direct-length comparison",
+      "sin_ne_zero_of_neg_gt_neg_pi: signed arc non-degeneracy for exterior arcs"
     ]
   },
   "overview": {
-    "historicalContext": "Menelaus of Alexandria (c. 70-140 CE) originally stated his theorem in the 'Sphaerica', a treatise specifically on spherical geometry — so the spherical version is historically the primary one. The spherical Menelaus theorem states that for a spherical triangle ABC and a great circle transversal meeting arcs BC, CA, AB at D, E, F: the three points are collinear (on a great circle) if and only if sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = -1, where arc lengths are signed.\n\nThe sin ratio replaces the Euclidean ratio for the same reason sinh replaces it in hyperbolic geometry: both sin and sinh are odd functions (f(-x) = -f(x)), which preserves the sign convention for directed arcs. The key difference from the hyperbolic case is the domain: sin vanishes at multiples of π, requiring the denominator arcs to be restricted away from these values. For non-degenerate spherical triangles (with side arc lengths in (0,π)), sin is strictly positive, so this restriction is automatically satisfied.\n\nThis formalization directly answers the open question from the parent hyperbolic Menelaus file (OQ-02): can the same framework be extended to spherical geometry with sin as the measure function? The answer is yes, and the algebraic core is identical — only the measure function changes.",
-    "problemStatement": "Formalize the spherical analogue of Menelaus' theorem: for a triangle $ABC$ on the unit sphere with a great circle transversal meeting arcs $BC$, $CA$, $AB$ at points $D$, $E$, $F$ respectively, the points $D$, $E$, $F$ lie on a common great circle if and only if $\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1$ where arc lengths are signed and $\\sin(DC), \\sin(EA), \\sin(FB) \\neq 0$.",
-    "proofStrategy": "The proof uses the same 'measure function' pattern as the parent hyperbolic file: (1) establish key properties of sin as a spherical measure function (odd function, positive on (0,π), negative on (-π,0)), (2) prove the algebraic Menelaus core once in terms of abstract ratios, (3) define SphericalMenelausConfig capturing the nonzero conditions, (4) prove spherical_menelaus by reducing to the algebraic core. The key difference from the hyperbolic case: sinh(x) = 0 ↔ x = 0 (so dc ≠ 0 suffices), but sin(x) = 0 ↔ x ∈ πℤ (so sin(dc) ≠ 0 is the right condition).",
+    "historicalContext": "Menelaus of Alexandria (c. 70-140 CE) first stated his transversal theorem in the 'Sphaerica', a treatise on spherical geometry — ironically, the spherical version came first! The Euclidean version was later derived as a limiting case. The theorem characterizes when three points D (on BC), E (on CA), F (on AB) are collinear: the product of signed ratios equals -1.\n\nOn the sphere, straight lines become great circles, and lengths become arcs. The spherical Menelaus theorem replaces the Euclidean ratio BD/DC with sin(BD)/sin(DC), where BD is a signed arc length. This substitution works because sin is an odd function — sin(-x) = -sin(x) — exactly preserving the sign convention for directed arcs.\n\nThe spherical case has a subtlety absent from both Euclidean and hyperbolic versions: sin is periodic and zero at multiples of π, so domain restrictions are needed (arcs must avoid kπ). For arcs in (0, π) — which corresponds to geodesic segments strictly between vertices — sin is strictly positive. The signed-arc framework handles arcs in (-π, 0) (exterior direction) using sin's odd symmetry.\n\nThis formalization completes the 2×2 matrix: the parent file (CevasTheoremNonEuclidean.lean) proved spherical Ceva; OQ02 proved hyperbolic Menelaus; this file proves spherical Menelaus. The algebraic core is identical across all three geometries — only the measure function changes.",
+    "problemStatement": "Formalize the spherical analogue of Menelaus' theorem: for a geodesic triangle $ABC$ on a sphere, if a great circle (transversal) meets lines $BC$, $CA$, $AB$ at points $D$, $E$, $F$ respectively, then $D$, $E$, $F$ are collinear (on a great circle) if and only if $\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1$ where arcs are signed (positive = internal division, negative = external).",
+    "proofStrategy": "The proof reduces to a single algebraic lemma `menelaus_algebraic_core`: the product of three ratios equals -1 iff the numerator product equals the negative of the denominator product. This is proved via `div_mul_div_comm` and `div_eq_iff`. The spherical Menelaus theorem is then a 2-line consequence: unfold the definition and apply the core lemma. The key technical steps are: (1) proving sin x ≠ 0 for arcs in (0,π) via `Real.sin_pos_of_pos_of_lt_pi`, (2) handling exterior arcs via sin's odd symmetry `Real.sin_neg`.",
     "keyInsights": [
-      "The algebraic Menelaus core — product of ratios = -1 ↔ numerator product = -(denominator product) — is geometry-independent. Only the measure function m(x) changes: x for Euclidean, sinh(x) for hyperbolic, sin(x) for spherical.",
-      "sin is an odd function (sin(-x) = -sin(x)), which is precisely why it works for signed arc length ratios. The sign of a ratio sin(BD)/sin(DC) flips when D crosses from internal to external division, matching the geometric collinearity condition.",
-      "The domain restriction sin(dc) ≠ 0 is automatic for proper spherical triangles since sin > 0 on (0,π). This is the key practical difference from hyperbolic Menelaus where any dc ≠ 0 suffices.",
-      "Spherical Menelaus and Ceva differ only in the algebraic target: -1 for Menelaus (collinear transversal) vs +1 for Ceva (concurrent cevians). This clean duality holds in Euclidean, spherical, and hyperbolic geometry alike.",
-      "The Menelaus theorem originated in spherical geometry — Menelaus stated it for spheres first, and the planar version came later. This formalization thus formalizes the historically primary version."
+      "The algebraic core (product = -1 iff numerator = -denominator) is geometry-independent: the same proof works for Euclidean, spherical, and hyperbolic Menelaus theorems",
+      "sin and sinh are both odd functions, so both naturally encode signed arcs/distances — sin(-x) = -sin(x) for arcs, sinh(-x) = -sinh(x) for distances",
+      "The domain restriction for spherical geometry (sin ≠ 0, i.e., arcs ≠ kπ) has no hyperbolic analogue since sinh is globally nonzero away from 0",
+      "When all arcs are interior (in (0,π)), the product is strictly positive and hence can never equal -1 — a geometric sanity check proved formally",
+      "The 2×2 matrix (Ceva/Menelaus × Euclidean/Spherical/Hyperbolic) is now complete in this gallery, all following the same algebraic pattern"
     ]
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Module Overview: Spherical Menelaus via sin Ratios",
-      "startLine": 1,
-      "endLine": 45,
-      "summary": "Module docstring describing the spherical Menelaus theorem, the comparison with Euclidean and hyperbolic versions, and the key domain restriction (sin ≠ 0 vs sinh ≠ 0). Lists imports and opens the Real namespace. Cites Menelaus' Sphaerica, Papadopoulos, and Todhunter.",
-      "mathContext": "Spherical Menelaus: $\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1$ for collinear transversal points. Arc lengths signed (positive internal, negative external)."
-    },
-    {
       "id": "sin-properties",
-      "title": "sin Properties for Signed Spherical Arc Lengths",
-      "startLine": 47,
-      "endLine": 85,
-      "summary": "Four foundational lemmas about sin in the spherical context: (1) sin is odd — sin(-x) = -sin(x), enabling the signed ratio framework; (2) sin > 0 on proper arcs (0,π); (3) sin ≠ 0 on proper arcs; (4) sin < 0 on negative arcs (-π,0). Together these confirm sin works as a spherical measure function for signed arc lengths.",
-      "mathContext": "Key property: $\\sin(-x) = -\\sin(x)$ (odd function). For $x \\in (0,\\pi)$: $\\sin(x) > 0$. For $x \\in (-\\pi,0)$: $\\sin(x) < 0$. Thus $\\sin(x) \\neq 0$ for all $x \\in (-\\pi,\\pi) \\setminus \\{0\\}$."
+      "title": "sin Properties for Signed Arcs",
+      "startLine": 40,
+      "endLine": 70,
+      "summary": "Proves that sin is positive on (0,π), nonzero on (0,π) and (-π,0), and satisfies sin(-x) = -sin(x). These justify the signed-arc framework: non-degeneracy conditions are automatic for arcs in these intervals.",
+      "mathContext": "For geodesic triangle sides, arcs naturally lie in $(0,\\pi)$. For exterior division points, arcs lie in $(-\\pi, 0)$. sin is nonzero on both intervals, enabling well-defined ratios $\\sin(BD)/\\sin(DC)$."
     },
     {
       "id": "algebraic-core",
-      "title": "Algebraic Menelaus Core",
-      "startLine": 87,
-      "endLine": 115,
-      "summary": "The geometry-independent algebraic lemma: (a/b)·(c/d)·(e/f) = -1 ↔ a·c·e = -(b·d·f), for b,d,f ≠ 0. Proved using field_simp to normalize divisions, then div_eq_iff to clear the denominator. This is the shared algebraic heart of all Menelaus variants.",
-      "mathContext": "$(a/b)(c/d)(e/f) = ace/(bdf) = -1 \\iff ace = -(bdf)$ for $b,d,f \\neq 0$. The field identity $ace/(bdf) = (a/b)(c/d)(e/f)$ is by ring; the equivalence with $-1$ is by clearing denominators."
+      "title": "Algebraic Core: Menelaus Ratio Product",
+      "startLine": 72,
+      "endLine": 97,
+      "summary": "Defines menelausRatioProduct (a/b)·(c/d)·(e/f) and proves the fundamental biconditional: this product equals -1 iff a·c·e = -(b·d·f). This is the heart of the proof, shared by all three geometries.",
+      "mathContext": "Key tactic: `rw [div_mul_div_comm, div_mul_div_comm]` reduces to a single fraction, then `div_eq_iff` converts to a ring equality, solved by `linarith`."
     },
     {
-      "id": "configuration",
+      "id": "config",
       "title": "SphericalMenelausConfig Structure",
-      "startLine": 117,
-      "endLine": 140,
-      "summary": "Defines SphericalMenelausConfig: six signed arc lengths (bd, dc, ce, ea, af, fb) with three nonzero-sin hypotheses (hdc, hea, hfb) for the denominators. Also defines sphericalMenelausProduct as the product of three sin-ratios. The structure mirrors HyperbolicMenelausConfig from the parent file, with sin replacing sinh.",
-      "mathContext": "Config constraints: $\\sin(DC) \\neq 0$, $\\sin(EA) \\neq 0$, $\\sin(FB) \\neq 0$. Product: $P = \\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)}$."
+      "startLine": 99,
+      "endLine": 128,
+      "summary": "Defines the SphericalMenelausConfig structure with six signed arcs and three non-degeneracy hypotheses (sin ≠ 0 for the denominator arcs). Also defines sphericalMenelausProduct as a specialization of menelausRatioProduct.",
+      "mathContext": "The non-degeneracy constraints are `Real.sin dc ≠ 0` etc., rather than `dc ≠ 0` as in the hyperbolic case. This reflects that sin has zeros at multiples of π, not just at 0."
     },
     {
       "id": "main-theorem",
       "title": "Spherical Menelaus Theorem",
-      "startLine": 142,
-      "endLine": 175,
-      "summary": "The main theorem: sphericalMenelausProduct cfg = -1 ↔ sin(BD)·sin(CE)·sin(AF) = -(sin(DC)·sin(EA)·sin(FB)). The proof is a one-line application of menelaus_algebraic_core, since sphericalMenelausProduct is defined as the product of the relevant sin-ratios. This is the spherical Menelaus theorem.",
-      "mathContext": "Main result: $P = -1 \\iff \\sin(BD)\\sin(CE)\\sin(AF) = -\\sin(DC)\\sin(EA)\\sin(FB)$. The collinearity of $D, E, F$ on a great circle corresponds to $P = -1$."
+      "startLine": 130,
+      "endLine": 155,
+      "summary": "The main theorem: sphericalMenelausProduct cfg = -1 iff the sin cross-product condition holds. Proved in 2 lines by applying menelaus_algebraic_core.",
+      "mathContext": "$\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1 \\iff \\sin(BD)\\sin(CE)\\sin(AF) = -\\sin(DC)\\sin(EA)\\sin(FB)$"
     },
     {
-      "id": "well-formedness",
-      "title": "Well-Formedness and Midpoint Cases",
-      "startLine": 177,
-      "endLine": 225,
-      "summary": "Two supporting results: (1) proper_arcs_valid — for denominator arcs in (0,π), the sin ≠ 0 conditions hold automatically, confirming well-formedness for proper triangles; (2) spherical_menelaus_midpoint — when BD = DC (D is the arc midpoint), sin(BD)/sin(DC) = 1 and the Menelaus product reduces to the 2-factor form sin(CE)/sin(EA)·sin(AF)/sin(FB) = -1.",
-      "mathContext": "Midpoint case: $BD = DC = d$ gives $\\sin(BD)/\\sin(DC) = 1$, so $P = \\sin(CE)/\\sin(EA) \\cdot \\sin(AF)/\\sin(FB)$. Condition becomes $\\sin(CE)/\\sin(EA) \\cdot \\sin(AF)/\\sin(FB) = -1$."
+      "id": "interior-specialization",
+      "title": "Interior-Arc Specialization",
+      "startLine": 157,
+      "endLine": 217,
+      "summary": "Proves that when all six arcs lie in (0,π), the Menelaus product is strictly positive and hence cannot equal -1. This confirms the geometric content: at least one division point must be external for collinearity.",
+      "mathContext": "Geometric fact: a transversal to a triangle must cross an odd number of sides externally. All-interior configurations give a positive product, not -1."
     },
     {
-      "id": "duality",
-      "title": "Ceva–Menelaus Duality and Measure Universality",
-      "startLine": 227,
-      "endLine": 272,
-      "summary": "Two synthesis results: (1) menelaus_measure_universality — states the algebraic core for any measure function m (not just sin or sinh), showing the pattern is completely universal; (2) spherical_ceva_menelaus_duality — proves both Ceva (+1) and Menelaus (-1) conditions simultaneously for sin ratios, demonstrating the algebraic duality between concurrence and collinearity in spherical geometry.",
-      "mathContext": "Duality: same sin-ratios, different targets. Ceva: $P = 1 \\iff \\sin(BD)\\sin(CE)\\sin(AF) = \\sin(DC)\\sin(EA)\\sin(FB)$ (concurrent cevians). Menelaus: $P = -1 \\iff$ product $= -$(product) (collinear transversal). Same formula, different geometric interpretation."
+      "id": "duality-and-examples",
+      "title": "Ceva-Menelaus Duality and Examples",
+      "startLine": 219,
+      "endLine": 297,
+      "summary": "Proves the algebraic duality between spherical Ceva (product = 1) and spherical Menelaus (product = -1). Also provides a midpoint example (when BD = DC, the first ratio is 1) and a comparison with the Euclidean case (direct lengths vs sin).",
+      "mathContext": "Ceva: $P = 1 \\iff \\sin(BD)\\sin(CE)\\sin(AF) = \\sin(DC)\\sin(EA)\\sin(FB)$. Menelaus: $P = -1 \\iff$ same with negation. Both are proved by `menelaus_algebraic_core` with appropriate target."
     }
   ],
   "conclusion": {
-    "summary": "The spherical Menelaus theorem is proved: a great circle transversal meets arcs BC, CA, AB at collinear points D, E, F if and only if sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = -1. 10 theorems, 0 sorries, 0 axioms.",
-    "implications": "Completes the Euclidean/Hyperbolic/Spherical Menelaus triad. Confirms that the unified 'measure function' framework handles all three non-Euclidean analogues, with sin as the spherical measure. Establishes that sin's oddness — not injectivity — is what matters for the signed ratio framework. The menelaus_measure_universality theorem further shows the algebraic core is independent of any specific geometry: it holds for any function m with nonzero denominator values.",
+    "summary": "This formalization proves the spherical Menelaus theorem with 0 sorries and 0 axioms. The proof is a 2-line consequence of a reusable algebraic core, demonstrating that all three geometries (Euclidean, spherical, hyperbolic) share identical algebraic structure — only the measure function changes.",
+    "implications": "The completion of the 2×2 matrix (Ceva/Menelaus × Euclidean/Spherical/Hyperbolic) suggests a natural next question: is there a unified statement parametrized by the measure function? The pattern f(-x) = -f(x) (odd function) is the key property, suggesting the real claim is: for any odd function f with f(x) ≠ 0 in the relevant domain, the f-Menelaus theorem holds with the same algebraic core.",
     "openQuestions": [
-      "Can the geometric interpretation (D, E, F collinear ↔ product = -1) be fully formalized in Lean using an explicit spherical triangle model (e.g., via unit vectors and great circles)?",
-      "Does the spherical Menelaus theorem specialize to a formula for the spherical law of sines when applied to the medial triangle?"
+      "Is there a unified Menelaus theorem parametrized by an odd function f? The algebraic core `menelaus_algebraic_core` already proves this — the remaining work is to characterize the appropriate domains for each geometry.",
+      "Is there a unified Ceva-Menelaus duality that captures both as special cases of a single theorem about cross-ratios in projective space?"
     ]
+  },
+  "leanFile": {
+    "namespace": "CevasTheoremNonEuclideanOQ02OQ01",
+    "lineCount": 340,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
       "targetId": "cevas-theorem-non-euclidean-oq-02",
-      "relationship": "parent",
-      "description": "Hyperbolic Menelaus theorem via sinh — this file is the spherical analogue"
+      "relationship": "extends",
+      "description": "Parent OQ: hyperbolic Menelaus theorem using sinh — this file proves the spherical analogue using sin with the same algebraic core"
     },
     {
       "targetId": "cevas-theorem-non-euclidean",
-      "relationship": "grandparent",
-      "description": "Abstract spherical Ceva theorem via arc lengths"
+      "relationship": "sibling",
+      "description": "Spherical Ceva theorem: the concurrent-cevians analogue (product = 1) of the transversal theorem (product = -1) proved here"
     },
     {
-      "targetId": "cevas-theorem-oq-02-oq-01",
-      "relationship": "sibling",
-      "description": "Spherical Ceva via unit vectors — uses the same sin-ratio formula for the Ceva product"
+      "targetId": "cevas-theorem",
+      "relationship": "ancestor",
+      "description": "Euclidean Ceva's theorem: the foundational result extended to spherical and hyperbolic geometry by this family of proofs"
     }
   ],
-  "leanFile": {
-    "namespace": "CevasTheoremNonEuclideanOQ02OQ01",
-    "lineCount": 272,
-    "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 1,
-    "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
-    "sorries": 0
-  },
   "sorries": 0
 }
