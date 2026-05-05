@@ -17,10 +17,15 @@
       "l2-spaces",
       "parseval"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
+      {
+        "theorem": "FourierSeries.fourierCoeff_tendsto_zero",
+        "description": "Core L² Riemann-Lebesgue theorem (from Proofs.FourierSeries): for f ∈ L²(AddCircle T), Fourier coefficients tend to zero via Parseval summability. This is the engine of the proof.",
+        "module": "Proofs.FourierSeries"
+      },
       {
         "theorem": "hasSum_sq_fourierCoeff",
         "description": "Parseval's identity: Σ‖ĉ_n(f)‖² converges to ‖f‖² for f ∈ L²(AddCircle T)",
@@ -63,8 +68,9 @@
       }
     ],
     "originalContributions": [
-      "riemannLebesgue_of_holder_via_L2: Hölder → ĉ_n → 0 via Parseval/L² in ~15 lines",
-      "Key insight: ĉ_n → 0 requires only L²-membership; quantitative bounds are not needed"
+      "Bridge infrastructure: chain Hölder → Continuous → MemLp 2 → L² lift to invoke fourierCoeff_tendsto_zero",
+      "Coefficient transfer: integral_congr_ae proof that fourierCoeff (⇑f_Lp) n = fourierCoeff f n",
+      "Key insight: ĉ_n → 0 requires only L²-membership; quantitative bounds are not needed for the qualitative result"
     ],
     "dateAdded": "2026-04-21",
     "lineCount": 83,
