@@ -2,38 +2,37 @@
   "id": "fodor-pressing-down",
   "title": "Fodor's Pressing-Down Lemma",
   "slug": "fodor-pressing-down",
-  "description": "A complete formalization of Fodor's Pressing-Down Lemma (1956): any regressive function on a stationary subset of a regular uncountable cardinal is constant on some stationary subset. The proof uses the diagonal intersection technique—defining infrastructure for club sets, stationary sets, and diagonal intersections that is not yet in Mathlib.",
+  "description": "A complete formalization of Fodor's Pressing-Down Lemma (1956): any regressive function on a stationary subset of a regular uncountable cardinal is constant on some stationary subset. The proof uses the diagonal intersection technique\u2014defining infrastructure for club sets, stationary sets, and diagonal intersections that is not yet in Mathlib.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-04",
     "status": "verified",
     "badge": "original",
     "proofRepoPath": "Proofs/FodorPressingDown.lean",
-    "tags": ["set-theory", "ordinals", "cardinals", "clubs", "stationary", "fodor"],
+    "tags": [
+      "set-theory",
+      "ordinals",
+      "cardinals",
+      "clubs",
+      "stationary",
+      "fodor"
+    ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 386,
+    "lineCount": 385,
     "theoremCount": 12,
-    "definitionCount": 3,
-    "leanFile": {
-      "path": "Proofs/FodorPressingDown.lean",
-      "axiomCount": 0,
-      "sorryCount": 0,
-      "lineCount": 386,
-      "theoremCount": 12,
-      "definitionCount": 3
-    }
+    "definitionCount": 3
   },
   "overview": {
-    "historicalContext": "Fodor's Pressing-Down Lemma was proved by Géza Fodor in 1956, and is sometimes also called the Fodor-Neumer theorem. It is one of the most useful tools in combinatorial and descriptive set theory. The lemma asserts that any regressive function (f(α) < α) on a stationary subset of a regular uncountable cardinal κ must be constant on some stationary subset — the function cannot 'press down' uniformly. The key technique is the **diagonal intersection**: if f⁻¹(β) is non-stationary for every β, we can find clubs C_β avoiding each fiber, and their diagonal intersection Δ_{β<κ}(C_β) is still a club (since diagonal intersections of clubs are clubs), contradicting the stationarity of the domain.",
+    "historicalContext": "Fodor's Pressing-Down Lemma was proved by G\u00e9za Fodor in 1956, and is sometimes also called the Fodor-Neumer theorem. It is one of the most useful tools in combinatorial and descriptive set theory. The lemma asserts that any regressive function (f(\u03b1) < \u03b1) on a stationary subset of a regular uncountable cardinal \u03ba must be constant on some stationary subset \u2014 the function cannot 'press down' uniformly. The key technique is the **diagonal intersection**: if f\u207b\u00b9(\u03b2) is non-stationary for every \u03b2, we can find clubs C_\u03b2 avoiding each fiber, and their diagonal intersection \u0394_{\u03b2<\u03ba}(C_\u03b2) is still a club (since diagonal intersections of clubs are clubs), contradicting the stationarity of the domain.",
     "problemStatement": "Let $\\kappa$ be a regular uncountable cardinal. Let $S \\subseteq \\kappa$ be a stationary set, and let $f : S \\to \\kappa$ be regressive (meaning $f(\\alpha) < \\alpha$ for all $\\alpha \\in S$ with $\\alpha > 0$). **Prove**: there exists $\\beta < \\kappa$ such that $f^{-1}(\\beta) \\cap S$ is stationary.",
-    "proofStrategy": "Proof by contradiction. Assume f⁻¹(β) ∩ S is non-stationary for every β < κ. Then for each β, there exists a club C_β ⊆ κ with C_β ∩ f⁻¹(β) ∩ S = ∅, i.e., f(α) ≠ β for all α ∈ C_β ∩ S. Form the diagonal intersection D = Δ_{β<κ}(C_β) = {γ | ∀ β < γ, γ ∈ C_β}. Since each C_β is a club and κ is regular uncountable, D is a club (by diagInter_isClubBelow). Take any γ ∈ S ∩ D. By regressiveness, f(γ) = β < γ. Since γ ∈ D, γ ∈ C_β, so f(γ) ≠ β — contradiction.",
+    "proofStrategy": "Proof by contradiction. Assume f\u207b\u00b9(\u03b2) \u2229 S is non-stationary for every \u03b2 < \u03ba. Then for each \u03b2, there exists a club C_\u03b2 \u2286 \u03ba with C_\u03b2 \u2229 f\u207b\u00b9(\u03b2) \u2229 S = \u2205, i.e., f(\u03b1) \u2260 \u03b2 for all \u03b1 \u2208 C_\u03b2 \u2229 S. Form the diagonal intersection D = \u0394_{\u03b2<\u03ba}(C_\u03b2) = {\u03b3 | \u2200 \u03b2 < \u03b3, \u03b3 \u2208 C_\u03b2}. Since each C_\u03b2 is a club and \u03ba is regular uncountable, D is a club (by diagInter_isClubBelow). Take any \u03b3 \u2208 S \u2229 D. By regressiveness, f(\u03b3) = \u03b2 < \u03b3. Since \u03b3 \u2208 D, \u03b3 \u2208 C_\u03b2, so f(\u03b3) \u2260 \u03b2 \u2014 contradiction.",
     "keyInsights": [
-      "The diagonal intersection Δ_{α<o}(f α) = {γ | ∀ α < γ, γ ∈ f α} is the key new concept: unlike the ordinary intersection (membership required for ALL α), diagonal intersection only requires membership in f(α) for α BELOW γ — this respects the ordinal order",
-      "diagInter_isClubBelow: the diagonal intersection of κ-many clubs is still a club (for regular uncountable κ). This requires both a closure argument and a 'zipper' construction to prove unboundedness",
-      "The zipper construction for unboundedness: to find a large element of Δ(C_α), build an increasing sequence γ_0 < γ_1 < ... where γ_{n+1} ∈ C_{γ_n} (each step is inside the club for the previous ordinal), then the limit is in the diagonal intersection by closure",
+      "The diagonal intersection \u0394_{\u03b1<o}(f \u03b1) = {\u03b3 | \u2200 \u03b1 < \u03b3, \u03b3 \u2208 f \u03b1} is the key new concept: unlike the ordinary intersection (membership required for ALL \u03b1), diagonal intersection only requires membership in f(\u03b1) for \u03b1 BELOW \u03b3 \u2014 this respects the ordinal order",
+      "diagInter_isClubBelow: the diagonal intersection of \u03ba-many clubs is still a club (for regular uncountable \u03ba). This requires both a closure argument and a 'zipper' construction to prove unboundedness",
+      "The zipper construction for unboundedness: to find a large element of \u0394(C_\u03b1), build an increasing sequence \u03b3_0 < \u03b3_1 < ... where \u03b3_{n+1} \u2208 C_{\u03b3_n} (each step is inside the club for the previous ordinal), then the limit is in the diagonal intersection by closure",
       "This infrastructure (IsClubBelow, IsStationaryBelow, diagInter) is not yet formalized in Mathlib, making this a genuine contribution to the set-theoretic library",
-      "The ℵ₁ corollary (fodor_aleph1) is the most commonly used instance: regressive functions on stationary subsets of ω₁ are constant on a stationary subset"
+      "The \u2135\u2081 corollary (fodor_aleph1) is the most commonly used instance: regressive functions on stationary subsets of \u03c9\u2081 are constant on a stationary subset"
     ]
   },
   "sections": [
@@ -49,24 +48,47 @@
       "title": "Diagonal Intersection Definition and Properties",
       "startLine": 87,
       "endLine": 258,
-      "summary": "Defines diagInter f o = {γ < o | ∀ α < γ, γ ∈ f α}. Lemmas: mem_diagInter (iff characterization), diagInter_subset_Iio (stays below o), diagInter_isClosedBelow (closure from closedness of each f α), diagInter_isUnboundedBelow (zipper construction), diagInter_isClubBelow (main: diagonal intersection of clubs is a club)."
+      "summary": "Defines diagInter f o = {\u03b3 < o | \u2200 \u03b1 < \u03b3, \u03b3 \u2208 f \u03b1}. Lemmas: mem_diagInter (iff characterization), diagInter_subset_Iio (stays below o), diagInter_isClosedBelow (closure from closedness of each f \u03b1), diagInter_isUnboundedBelow (zipper construction), diagInter_isClubBelow (main: diagonal intersection of clubs is a club)."
     },
     {
       "id": "fodors-lemma",
       "title": "Fodor's Pressing-Down Lemma",
       "startLine": 259,
       "endLine": 386,
-      "summary": "fodor: main theorem for regular uncountable κ. fodor_aleph1: corollary for κ = ℵ₁. Additional lemmas: IsStationaryBelow.nonempty, IsStationaryBelow.of_subset."
+      "summary": "fodor: main theorem for regular uncountable \u03ba. fodor_aleph1: corollary for \u03ba = \u2135\u2081. Additional lemmas: IsStationaryBelow.nonempty, IsStationaryBelow.of_subset."
     }
   ],
   "conclusion": {
     "summary": "Fodor's Pressing-Down Lemma is machine-checked with zero axioms and zero sorries. The proof builds club, stationary, and diagonal intersection infrastructure currently absent from Mathlib, forming reusable set-theoretic library code.",
-    "implications": "Fodor's lemma is a foundational tool in infinitary combinatorics. It implies that the club filter on a regular uncountable cardinal is normal (closed under diagonal intersections). It is used in Shelah's proper forcing theory, in the proof of Solovay's theorem that every stationary set can be split into κ stationary pieces, and in many reflection principles. The infrastructure proved here — club sets, stationary sets, diagonal intersections — is directly reusable for these applications.",
+    "implications": "Fodor's lemma is a foundational tool in infinitary combinatorics. It implies that the club filter on a regular uncountable cardinal is normal (closed under diagonal intersections). It is used in Shelah's proper forcing theory, in the proof of Solovay's theorem that every stationary set can be split into \u03ba stationary pieces, and in many reflection principles. The infrastructure proved here \u2014 club sets, stationary sets, diagonal intersections \u2014 is directly reusable for these applications.",
     "openQuestions": [
       "Can the club and stationary set infrastructure be contributed to Mathlib as a standalone library, analogous to the existing Ordinal.Topology module?",
-      "Can the Diamond principle ◇_κ (a combinatorial statement about predicting functions on ordinals) be proved from club filter normality using this infrastructure?",
-      "Does the formalization extend to the more general Shelah-style reflection principles (e.g., □_κ sequences, which use the non-club structure)?"
+      "Can the Diamond principle \u25c7_\u03ba (a combinatorial statement about predicting functions on ordinals) be proved from club filter normality using this infrastructure?",
+      "Does the formalization extend to the more general Shelah-style reflection principles (e.g., \u25a1_\u03ba sequences, which use the non-club structure)?"
     ]
   },
-  "crossReferences": []
+  "crossReferences": [],
+  "leanFile": {
+    "path": "Proofs/FodorPressingDown.lean",
+    "lineCount": 385,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "imports": [
+      "import Mathlib.SetTheory.Cardinal.Ordinal",
+      "import Mathlib.SetTheory.Cardinal.Cofinality",
+      "import Mathlib.SetTheory.Cardinal.Regular",
+      "import Mathlib.SetTheory.Ordinal.Arithmetic",
+      "import Mathlib.SetTheory.Ordinal.Topology",
+      "import Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Order",
+      "Ordinal",
+      "Set"
+    ],
+    "namespace": "FodorPressingDown"
+  }
 }

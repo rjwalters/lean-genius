@@ -22,15 +22,7 @@
     "axiomCount": 0,
     "lineCount": 208,
     "theoremCount": 6,
-    "definitionCount": 0,
-    "leanFile": {
-      "path": "Proofs/DissectionOfCubesOQ03OQ02.lean",
-      "axiomCount": 0,
-      "sorryCount": 0,
-      "lineCount": 208,
-      "theoremCount": 6,
-      "definitionCount": 0
-    }
+    "definitionCount": 0
   },
   "openQuestion": {
     "id": "dissection-of-cubes-oq-03-oq-02",
@@ -45,8 +37,8 @@
     "keyInsights": [
       "The 1-cube edge case makes global_min_not_reaching_top provably false: allDifferentSizes is vacuously true for singleton sets, so the 1-cube dissection (with the full unit cube) satisfies all hypotheses of the sorry-goal yet has z + side = 1.",
       "The fix is not to add card >= 2 to global_min_not_reaching_top, but to use the bottom-floor minimum: its z = 0 means z + side = side, and side < 1 follows from the pairwise_disjoint contradiction.",
-      "The pairwise_disjoint proof is clean: if any cube c has side = 1, it fills [0,1]^3 with interior (0,1)^3. Any second cube c' is in [0,1]^3 with positive side, so c' has its interior in (0,1)^3 — both interiors overlap, violating interiorDisjoint across all 6 separation conditions.",
-      "Littlewood's original proof naturally starts from the bottom floor, not the global minimum. The descent argument never needs the globally minimum cube — it only needs the floor-by-floor minimum, starting from z = 0.",
+      "The pairwise_disjoint proof is clean: if any cube c has side = 1, it fills [0,1]^3 with interior (0,1)^3. Any second cube c' is in [0,1]^3 with positive side, so c' has its interior in (0,1)^3 \u2014 both interiors overlap, violating interiorDisjoint across all 6 separation conditions.",
+      "Littlewood's original proof naturally starts from the bottom floor, not the global minimum. The descent argument never needs the globally minimum cube \u2014 it only needs the floor-by-floor minimum, starting from z = 0.",
       "The remaining gap for the complete descent is smallest_above_is_smaller in OQ-03: showing that the cubes covering the top face of the bottom-floor minimum are strictly smaller. This entry provides the provably-correct starting point for that argument."
     ]
   },
@@ -110,8 +102,26 @@
   "highlights": [
     "Identifies and formally proves why global_min_not_reaching_top (the OQ-03 sorry) is false as stated",
     "Proves the correct bottom-floor formulation: z = 0 minimum has z + side < 1, all machine-checked",
-    "No sorries, no axioms — 6 theorems with complete Lean 4 proofs",
+    "No sorries, no axioms \u2014 6 theorems with complete Lean 4 proofs",
     "Provides the correct starting point for Littlewood's infinite descent argument"
   ],
-  "assumptions": []
+  "assumptions": [],
+  "leanFile": {
+    "path": "Proofs/DissectionOfCubesOQ03OQ02.lean",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib.Tactic",
+      "import Proofs.DissectionOfCubes",
+      "import Proofs.DissectionOfCubesOQ03"
+    ],
+    "opens": [
+      "DissectionOfCubes",
+      "DissectionOfCubesOQ03"
+    ],
+    "namespace": "DissectionOfCubesOQ03OQ02"
+  }
 }

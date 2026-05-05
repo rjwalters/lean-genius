@@ -14,27 +14,31 @@
     "sorries": 0,
     "sorryCount": 0,
     "theoremCount": 11,
-    "definitionCount": 6,
+    "definitionCount": 5,
     "lineCount": 215,
-    "leanFile": {
-      "path": "Proofs/PicksTheoremOQ01OQ01.lean",
-      "axiomCount": 0,
-      "sorryCount": 0,
-      "lineCount": 215,
-      "theoremCount": 11,
-      "definitionCount": 6
-    },
-    "tags": ["number-theory", "geometry", "lattice", "picks-theorem", "triangulation", "gcd", "determinant"],
+    "tags": [
+      "number-theory",
+      "geometry",
+      "lattice",
+      "picks-theorem",
+      "triangulation",
+      "gcd",
+      "determinant"
+    ],
     "assumptions": [],
-    "imports": ["Mathlib.Data.Int.GCD", "Mathlib.Data.List.Basic", "Mathlib.Tactic"]
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Tactic"
+    ]
   },
   "overview": {
-    "historicalContext": "Georg Alexander Pick (1859–1942) discovered his eponymous formula in 1899: for a lattice polygon (vertices at integer points), Area = I + B/2 - 1, where I is the number of interior lattice points and B the number of boundary lattice points. The formula is elegant and elementary but its proof requires connecting area to lattice point counts. One clean approach, due to the Euclidean algorithm tradition, triangulates any lattice polygon into primitive triangles (area 1/2, the smallest non-degenerate lattice triangles) and uses that each has exactly one interior lattice point's worth of area. The key step — that any lattice triangle decomposes into exactly |det| primitive triangles — is essentially the theory of the Smith normal form for 2×2 integer matrices. Pick's theorem has applications in toric algebraic geometry (where it controls the number of lattice points in polygons) and in computational geometry (efficient area computation for integer-coordinate polygons).",
+    "historicalContext": "Georg Alexander Pick (1859\u20131942) discovered his eponymous formula in 1899: for a lattice polygon (vertices at integer points), Area = I + B/2 - 1, where I is the number of interior lattice points and B the number of boundary lattice points. The formula is elegant and elementary but its proof requires connecting area to lattice point counts. One clean approach, due to the Euclidean algorithm tradition, triangulates any lattice polygon into primitive triangles (area 1/2, the smallest non-degenerate lattice triangles) and uses that each has exactly one interior lattice point's worth of area. The key step \u2014 that any lattice triangle decomposes into exactly |det| primitive triangles \u2014 is essentially the theory of the Smith normal form for 2\u00d72 integer matrices. Pick's theorem has applications in toric algebraic geometry (where it controls the number of lattice points in polygons) and in computational geometry (efficient area computation for integer-coordinate polygons).",
     "problemStatement": "Let $T$ be a lattice triangle with vertices $v_1, v_2, v_3 \\in \\mathbb{Z}^2$. Define $\\det(T) = (v_2 - v_1) \\times (v_3 - v_1)$ (the 2D cross product, equal to twice the signed area). $T$ is called *primitive* if $|\\det(T)| = 1$ (area $= 1/2$). The theorem states: if $T$ is non-degenerate ($\\det(T) \\neq 0$), then $T$ can be triangulated into exactly $|\\det(T)|$ primitive triangles.",
-    "proofStrategy": "The proof uses strong induction on $|\\det(T)|$. Base case: $|\\det(T)| = 1$ — $T$ is already primitive, triangulated by itself. Inductive step: if $|\\det(T)| > 1$, the reduction lemma `exists_reduction` finds an edge vector $(v_j - v_i)$ with $\\gcd > 1$: taking $M = v_i + (v_j - v_i)/g$ where $g = \\gcd(v_j - v_i)$ gives a midpoint that splits $T$ into two sub-triangles with $|\\det(L)| + |\\det(R)| = |\\det(T)|$ and both $|\\det(L)|, |\\det(R)| < |\\det(T)|$. By induction, each sub-triangle has a primitive triangulation, and their concatenation gives the full triangulation. The GCD existence step mirrors the Euclidean algorithm: if no edge has $\\gcd > 1$, then $|\\det(T)| = 1$, contradicting $|\\det(T)| > 1$.",
+    "proofStrategy": "The proof uses strong induction on $|\\det(T)|$. Base case: $|\\det(T)| = 1$ \u2014 $T$ is already primitive, triangulated by itself. Inductive step: if $|\\det(T)| > 1$, the reduction lemma `exists_reduction` finds an edge vector $(v_j - v_i)$ with $\\gcd > 1$: taking $M = v_i + (v_j - v_i)/g$ where $g = \\gcd(v_j - v_i)$ gives a midpoint that splits $T$ into two sub-triangles with $|\\det(L)| + |\\det(R)| = |\\det(T)|$ and both $|\\det(L)|, |\\det(R)| < |\\det(T)|$. By induction, each sub-triangle has a primitive triangulation, and their concatenation gives the full triangulation. The GCD existence step mirrors the Euclidean algorithm: if no edge has $\\gcd > 1$, then $|\\det(T)| = 1$, contradicting $|\\det(T)| > 1$.",
     "keyInsights": [
       "The determinant $\\det(T) = (v_2-v_1)\\times(v_3-v_1)$ is exactly the 2D cross product: it measures twice the signed area in integer arithmetic. Primitivity ($|\\det|=1$) means the triangle has the minimum possible non-zero lattice area.",
-      "The GCD condition drives the reduction: if $g = \\gcd(v_j - v_i) > 1$, the midpoint $M = v_i + (v_j-v_i)/g$ is a lattice point on the edge. Splitting there creates two triangles whose determinants sum to the original — a strict reduction in each piece.",
+      "The GCD condition drives the reduction: if $g = \\gcd(v_j - v_i) > 1$, the midpoint $M = v_i + (v_j-v_i)/g$ is a lattice point on the edge. Splitting there creates two triangles whose determinants sum to the original \u2014 a strict reduction in each piece.",
       "The proof uses `List` (not `Finset`) for the triangulation, because List concatenation naturally represents the union of two triangulations without needing to prove disjointness. The inductive structure directly mirrors the recursive concatenation.",
       "The reduction step relies on the fact that if $|\\det(T)| > 1$, then NOT all edges can have $\\gcd = 1$ simultaneously: if all three edge GCDs were 1, the determinant formula forces $|\\det| = 1$. This is the key number-theoretic content.",
       "The concrete examples (det=2 split, det=12 needing multiple splits) serve as proof-of-concept for the algorithmic nature of the decomposition: the splitting process terminates and produces the right count."
@@ -53,7 +57,7 @@
       "title": "Lattice Triangle Definitions",
       "startLine": 30,
       "endLine": 82,
-      "summary": "Defines LatticeTriangle (structure with v1, v2, v3 : ℤ×ℤ), LatticeTriangle.det (signed 2D cross product), IsPrimitive (|det|=1), NonDegenerate (det≠0), splitLeft and splitRight (sub-triangles after edge split). Proves unit triangle examples and IsPrimitive.nonDegenerate."
+      "summary": "Defines LatticeTriangle (structure with v1, v2, v3 : \u2124\u00d7\u2124), LatticeTriangle.det (signed 2D cross product), IsPrimitive (|det|=1), NonDegenerate (det\u22600), splitLeft and splitRight (sub-triangles after edge split). Proves unit triangle examples and IsPrimitive.nonDegenerate."
     },
     {
       "id": "det-additivity",
@@ -99,5 +103,19 @@
       "title": "Pick's Theorem (Parent)",
       "relationship": "This file provides the primitive triangulation ingredient for the constructive proof of Pick's theorem."
     }
-  ]
+  ],
+  "leanFile": {
+    "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 11,
+    "definitionCount": 5,
+    "imports": [
+      "import Mathlib.Data.Int.GCD",
+      "import Mathlib.Data.List.Basic",
+      "import Mathlib.Tactic"
+    ],
+    "namespace": "PicksTheoremOQ01OQ01"
+  }
 }

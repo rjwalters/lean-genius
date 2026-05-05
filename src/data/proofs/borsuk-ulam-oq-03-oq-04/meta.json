@@ -2,7 +2,7 @@
   "id": "borsuk-ulam-oq-03-oq-04",
   "title": "Quantitative 1D Borsuk-Ulam: Effective Bounds on Antipodal Pairs",
   "slug": "borsuk-ulam-oq-03-oq-04",
-  "description": "For a K-Lipschitz function f : [-1,1] → ℝ with |f(1) - f(-1)| = δ > 0, any antipodal zero x₀ (where f(x₀) = f(-x₀)) satisfies -1 + δ/(2K) ≤ x₀ ≤ 1 - δ/(2K). This gives an effective, computable location bound for antipodal pairs beyond the mere existence guaranteed by the classical 1D Borsuk-Ulam theorem.",
+  "description": "For a K-Lipschitz function f : [-1,1] \u2192 \u211d with |f(1) - f(-1)| = \u03b4 > 0, any antipodal zero x\u2080 (where f(x\u2080) = f(-x\u2080)) satisfies -1 + \u03b4/(2K) \u2264 x\u2080 \u2264 1 - \u03b4/(2K). This gives an effective, computable location bound for antipodal pairs beyond the mere existence guaranteed by the classical 1D Borsuk-Ulam theorem.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
@@ -13,28 +13,30 @@
     "axiomCount": 0,
     "sorries": 0,
     "sorryCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 1,
+    "theoremCount": 16,
+    "definitionCount": 2,
     "lineCount": 235,
-    "leanFile": {
-      "path": "Proofs/BorsukUlamOQ03OQ04.lean",
-      "axiomCount": 0,
-      "sorryCount": 0,
-      "lineCount": 235,
-      "theoremCount": 13,
-      "definitionCount": 1
-    },
-    "tags": ["topology", "borsuk-ulam", "lipschitz", "quantitative", "antipodal", "bisection", "ivt"],
+    "tags": [
+      "topology",
+      "borsuk-ulam",
+      "lipschitz",
+      "quantitative",
+      "antipodal",
+      "bisection",
+      "ivt"
+    ],
     "assumptions": [],
-    "imports": ["Mathlib"]
+    "imports": [
+      "Mathlib"
+    ]
   },
   "overview": {
-    "historicalContext": "The Borsuk-Ulam theorem (conjectured by Borsuk in 1930, proved by Lyusternik-Schnirelmann) states that every continuous map f : S^n → R^n maps some antipodal pair to the same point. In 1D, this reduces to a consequence of the Intermediate Value Theorem: any continuous f : [-1,1] → R satisfies f(x₀) = f(-x₀) for some x₀. The quantitative question — how close to the boundary can the antipodal pair be? — arises in computational topology (algorithms for finding antipodal pairs), the ham sandwich theorem (which relies on antipodal structures), and topological game theory. Lipschitz bounds providing effective location estimates were studied by Bárány, Füredi, and others in the context of computational complexity of topological theorems. This formalization provides machine-verified bounds and a bisection algorithm that locates antipodal pairs within ε in O(log(1/ε)) steps.",
+    "historicalContext": "The Borsuk-Ulam theorem (conjectured by Borsuk in 1930, proved by Lyusternik-Schnirelmann) states that every continuous map f : S^n \u2192 R^n maps some antipodal pair to the same point. In 1D, this reduces to a consequence of the Intermediate Value Theorem: any continuous f : [-1,1] \u2192 R satisfies f(x\u2080) = f(-x\u2080) for some x\u2080. The quantitative question \u2014 how close to the boundary can the antipodal pair be? \u2014 arises in computational topology (algorithms for finding antipodal pairs), the ham sandwich theorem (which relies on antipodal structures), and topological game theory. Lipschitz bounds providing effective location estimates were studied by B\u00e1r\u00e1ny, F\u00fcredi, and others in the context of computational complexity of topological theorems. This formalization provides machine-verified bounds and a bisection algorithm that locates antipodal pairs within \u03b5 in O(log(1/\u03b5)) steps.",
     "problemStatement": "Let $f : [-1,1] \\to \\mathbb{R}$ be $K$-Lipschitz with $|f(1) - f(-1)| = \\delta > 0$. The classical 1D Borsuk-Ulam theorem guarantees the existence of $x_0 \\in [-1,1]$ with $f(x_0) = f(-x_0)$. The quantitative version asks: how close to $\\pm 1$ can $x_0$ be? The answer: $x_0 \\in [-1 + \\delta/(2K),\\, 1 - \\delta/(2K)]$. That is, the antipodal pair is at least $\\delta/(2K)$ away from both endpoints. This bound is tight: for $f(x) = x$ ($K=1$, $\\delta=2$), the unique antipodal pair is $x_0 = 0 = \\pm(1 - 1)$.",
     "proofStrategy": "Define the antisymmetric difference $g(x) = f(x) - f(-x)$. Then $g$ is continuous, $g(-1) = -\\delta$, $g(1) = \\delta$, and $g(x_0) = 0 \\iff f(x_0) = f(-x_0)$. By IVT, $g$ has a zero $x_0 \\in [-1,1]$. Since $f$ is $K$-Lipschitz and negation is $1$-Lipschitz, $g = f - f \\circ \\text{neg}$ is $(K+K)$-Lipschitz. The Lipschitz bound $|g(1) - g(x_0)| \\leq 2K|1 - x_0|$ gives $\\delta \\leq 2K(1-x_0)$, i.e., $x_0 \\leq 1 - \\delta/(2K)$. Symmetry (g is antisymmetric) gives the lower bound. The bisection algorithm then maintains a bracket $[a,b]$ where $g(a) \\leq 0 \\leq g(b)$, halving at each step to locate the zero within $2/2^n$ after $n$ steps.",
     "keyInsights": [
       "The antisymmetric difference $g(x) = f(x) - f(-x)$ converts the antipodal problem into a zero-finding problem: $f(x_0) = f(-x_0)$ iff $g(x_0) = 0$, and $g$ automatically changes sign at $\\pm 1$ when $\\delta > 0$.",
-      "The Lipschitz constant of $g$ is exactly $2K$, not $K$: composing with the negation map (1-Lipschitz) contributes an extra factor. This doubling is tight — for $f(x) = Kx$, $g(x) = 2Kx$ achieves constant $2K$.",
+      "The Lipschitz constant of $g$ is exactly $2K$, not $K$: composing with the negation map (1-Lipschitz) contributes an extra factor. This doubling is tight \u2014 for $f(x) = Kx$, $g(x) = 2Kx$ achieves constant $2K$.",
       "The bound $\\delta/(2K)$ has a clear geometric meaning: $\\delta$ is the 'gap' between antipodal endpoint values, and $2K$ is the maximum rate at which $g$ can cross zero. The ratio is the minimum distance to the boundary that guarantees a crossing.",
       "The tightness example ($f(x) = x$, $\\delta = 2$, $K = 1$, $x_0 = 0$) is machine-checked via a one-line `norm_num` proof, confirming the bound is not improvable.",
       "The bisection localization applies to any continuous $f$ (not just Lipschitz): since $g$ is continuous on $[-1,1]$ and changes sign, IVT gives a bracket that bisection can refine to arbitrary precision in $O(\\log(1/\\varepsilon))$ steps."
@@ -53,7 +55,7 @@
       "title": "Antisymmetric Difference",
       "startLine": 25,
       "endLine": 43,
-      "summary": "Defines antiDiff f x = f x - f(-x) and proves four basic properties: antiDiff_antisymm (g(-x) = -g(x)), antiDiff_at_one_sum (g(-1) + g(1) = 0), antiDiff_at_one_eq_diff (g(1) = f(1) - f(-1)), and antiDiff_zero_iff (g(x₀) = 0 iff f(x₀) = f(-x₀))."
+      "summary": "Defines antiDiff f x = f x - f(-x) and proves four basic properties: antiDiff_antisymm (g(-x) = -g(x)), antiDiff_at_one_sum (g(-1) + g(1) = 0), antiDiff_at_one_eq_diff (g(1) = f(1) - f(-1)), and antiDiff_zero_iff (g(x\u2080) = 0 iff f(x\u2080) = f(-x\u2080))."
     },
     {
       "id": "lipschitz-bound",
@@ -67,36 +69,36 @@
       "title": "Zero Existence via IVT",
       "startLine": 57,
       "endLine": 71,
-      "summary": "Proves antiDiff_has_zero: for continuous f, antiDiff f has a zero in [-1,1]. Uses intermediate_value_Icc, splitting on whether g(-1) ≤ 0 or g(-1) > 0 to apply IVT in the correct direction."
+      "summary": "Proves antiDiff_has_zero: for continuous f, antiDiff f has a zero in [-1,1]. Uses intermediate_value_Icc, splitting on whether g(-1) \u2264 0 or g(-1) > 0 to apply IVT in the correct direction."
     },
     {
       "id": "main-theorem",
       "title": "Quantitative Borsuk-Ulam + Tightness",
       "startLine": 73,
       "endLine": 131,
-      "summary": "Main theorem quantitative_borsuk_ulam_1d: any antipodal pair lies in [-1 + δ/(2K), 1 - δ/(2K)]. The proof combines IVT (for the zero) with Lipschitz distance bounds on g. Followed by antipodal_location_tight confirming the bound is achieved at x₀=0 for f(x)=x."
+      "summary": "Main theorem quantitative_borsuk_ulam_1d: any antipodal pair lies in [-1 + \u03b4/(2K), 1 - \u03b4/(2K)]. The proof combines IVT (for the zero) with Lipschitz distance bounds on g. Followed by antipodal_location_tight confirming the bound is achieved at x\u2080=0 for f(x)=x."
     },
     {
       "id": "bisection-internals",
       "title": "Bisection Bracket Infrastructure",
       "startLine": 133,
       "endLine": 157,
-      "summary": "Private definitions: IsBracket g a b (g(a)≤0≤g(b)), bisection_step (halving a bracket), bracket_zero (extracting a zero from a bracket via IVT), and antiDiff_has_bracket (the initial bracket for antiDiff or its negation)."
+      "summary": "Private definitions: IsBracket g a b (g(a)\u22640\u2264g(b)), bisection_step (halving a bracket), bracket_zero (extracting a zero from a bracket via IVT), and antiDiff_has_bracket (the initial bracket for antiDiff or its negation)."
     },
     {
       "id": "bisection-main",
       "title": "Bisection Localization Theorems",
       "startLine": 159,
       "endLine": 235,
-      "summary": "bisection_bracket_induction (after n steps, bracket width ≤ (b-a)/2^n), antipodal_bisection_localization (width ≤ 2/2^n), antipodal_midpoint_error (midpoint within 1/2^n), antipodal_within_epsilon (achieves any ε > 0 precision), and quantitative_bu_summary (trivial summary theorem)."
+      "summary": "bisection_bracket_induction (after n steps, bracket width \u2264 (b-a)/2^n), antipodal_bisection_localization (width \u2264 2/2^n), antipodal_midpoint_error (midpoint within 1/2^n), antipodal_within_epsilon (achieves any \u03b5 > 0 precision), and quantitative_bu_summary (trivial summary theorem)."
     }
   ],
   "conclusion": {
-    "summary": "The quantitative 1D Borsuk-Ulam theorem is machine-verified: for any K-Lipschitz f with |f(1)-f(-1)|=δ>0, every antipodal pair lies in [-1+δ/(2K), 1-δ/(2K)], and this bound is tight. The bisection algorithm is also formalized: it locates an antipodal pair within ε in O(log(1/ε)) steps using only continuity.",
-    "implications": "These results have direct applications in computational topology: they transform an existence proof into an algorithm with computable error bounds. The Lipschitz version gives absolute guarantees (distance from boundary), while the continuous-only bisection gives relative guarantees (precision to within ε). Together, they show that 1D Borsuk-Ulam is not merely existential but constructively effective. The higher-dimensional case (f: S^n → R^n) remains harder: quantitative bounds there involve the spectral gap of Laplacians on spheres and Cheeger constants.",
+    "summary": "The quantitative 1D Borsuk-Ulam theorem is machine-verified: for any K-Lipschitz f with |f(1)-f(-1)|=\u03b4>0, every antipodal pair lies in [-1+\u03b4/(2K), 1-\u03b4/(2K)], and this bound is tight. The bisection algorithm is also formalized: it locates an antipodal pair within \u03b5 in O(log(1/\u03b5)) steps using only continuity.",
+    "implications": "These results have direct applications in computational topology: they transform an existence proof into an algorithm with computable error bounds. The Lipschitz version gives absolute guarantees (distance from boundary), while the continuous-only bisection gives relative guarantees (precision to within \u03b5). Together, they show that 1D Borsuk-Ulam is not merely existential but constructively effective. The higher-dimensional case (f: S^n \u2192 R^n) remains harder: quantitative bounds there involve the spectral gap of Laplacians on spheres and Cheeger constants.",
     "openQuestions": [
-      "Is there an analogue for the full n-dimensional Borsuk-Ulam theorem? For f: S^n → R^n K-Lipschitz, can one bound how far the antipodal pair must be from the 'boundary' (e.g., how close x₀ can be to a great circle)?",
-      "The bound δ/(2K) is tight for linear f. Is it tight for all K-Lipschitz f in the sense that: for any K, δ, and ε > 0, there exists a K-Lipschitz f with |f(1)-f(-1)|=δ having an antipodal pair within ε of 1-δ/(2K)?",
+      "Is there an analogue for the full n-dimensional Borsuk-Ulam theorem? For f: S^n \u2192 R^n K-Lipschitz, can one bound how far the antipodal pair must be from the 'boundary' (e.g., how close x\u2080 can be to a great circle)?",
+      "The bound \u03b4/(2K) is tight for linear f. Is it tight for all K-Lipschitz f in the sense that: for any K, \u03b4, and \u03b5 > 0, there exists a K-Lipschitz f with |f(1)-f(-1)|=\u03b4 having an antipodal pair within \u03b5 of 1-\u03b4/(2K)?",
       "Can the bisection algorithm be made adaptive: starting from the Lipschitz bound and refining it? This would give an algorithm that is faster when the true antipodal pair is far from the Lipschitz-guaranteed region."
     ]
   },
@@ -111,5 +113,21 @@
       "title": "Borsuk-Ulam Theorem",
       "relationship": "The classical n-dimensional theorem of which this is the 1D quantitative refinement."
     }
-  ]
+  ],
+  "leanFile": {
+    "path": "Proofs/BorsukUlamOQ03OQ04.lean",
+    "lineCount": 235,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 16,
+    "definitionCount": 2,
+    "imports": [
+      "import Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real"
+    ],
+    "namespace": "BorsukUlamOQ03OQ04"
+  }
 }

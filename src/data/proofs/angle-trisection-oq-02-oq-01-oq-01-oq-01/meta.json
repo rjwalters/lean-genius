@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
   "title": "Extension Beyond CharZero: natDegree_dvd_card for Separable Polynomials",
   "slug": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
-  "description": "Extends the natDegree | |Gal| theorem from CharZero fields to any field with an explicit separability hypothesis. Identifies separability — not CharZero — as the exact condition needed for the tower-law argument, and shows the theorem fails for inseparable irreducibles.",
+  "description": "Extends the natDegree | |Gal| theorem from CharZero fields to any field with an explicit separability hypothesis. Identifies separability \u2014 not CharZero \u2014 as the exact condition needed for the tower-law argument, and shows the theorem fails for inseparable irreducibles.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "",
@@ -38,7 +38,7 @@
     ],
     "originalContributions": [
       "natDegree_dvd_card_gal_of_sep: extends the tower-law proof to any field with Separable hypothesis",
-      "Identifies separability as the exact necessary condition — not CharZero",
+      "Identifies separability as the exact necessary condition \u2014 not CharZero",
       "galois_2group_implies_degree_pow2_sep: 2-group Galois criterion for separable polynomials over any field",
       "galois_2group_implies_degree_is_pow2_sep: degree = 2^k for separable polynomials over any field",
       "Axiomatized inseparable counterexample: insep_gal_trivial and natDeg_notDvd_gal_of_insep"
@@ -51,21 +51,21 @@
   },
   "leanFile": {
     "axiomCount": 1,
-    "sorryCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
-    "lineCount": 165
+    "lineCount": 165,
+    "sorries": 0
   },
   "overview": {
-    "historicalContext": "The theorem $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ for irreducible polynomials follows from the tower law in field theory: if $\\alpha$ is a root of $p$ in the splitting field $E$, then $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$, where $[F(\\alpha):F] = \\deg(p)$. This argument is characteristic-free — it does not use the field's characteristic at all. The CharZero hypothesis in prior formalizations entered only to ensure that the irreducible polynomial $p$ is separable, which is needed for $\\text{Gal}(p)$ to be defined and for $\\text{Gal}(p)$ to have the expected cardinality via `Gal.card_of_separable`. In characteristic $p > 0$, the story splits: separable irreducibles behave exactly as in characteristic 0, but inseparable irreducibles (e.g., $X^p - t$ over $\\mathbb{F}_p(t)$) have trivial Galois groups despite having degree $p$, so the divisibility fails. The boundary between characteristic-0 behavior and characteristic-$p$ pathology is precisely separability.",
-    "problemStatement": "**Question**: Does $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ hold for irreducible polynomials beyond characteristic zero?\\n\\n**Answer**: Yes, for *separable* irreducible polynomials over any field. No in general: in characteristic $p$, an inseparable irreducible (e.g., $X^p - t$ over $\\mathbb{F}_p(t)$) has $|\\text{Gal}| = 1$ and $\\text{natDegree} = p$, so $p \\nmid 1$.\\n\\n**Key theorem**: `natDegree_dvd_card_gal_of_sep` — for any field $F$ and any irreducible separable $p \\in F[X]$, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.",
+    "historicalContext": "The theorem $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ for irreducible polynomials follows from the tower law in field theory: if $\\alpha$ is a root of $p$ in the splitting field $E$, then $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$, where $[F(\\alpha):F] = \\deg(p)$. This argument is characteristic-free \u2014 it does not use the field's characteristic at all. The CharZero hypothesis in prior formalizations entered only to ensure that the irreducible polynomial $p$ is separable, which is needed for $\\text{Gal}(p)$ to be defined and for $\\text{Gal}(p)$ to have the expected cardinality via `Gal.card_of_separable`. In characteristic $p > 0$, the story splits: separable irreducibles behave exactly as in characteristic 0, but inseparable irreducibles (e.g., $X^p - t$ over $\\mathbb{F}_p(t)$) have trivial Galois groups despite having degree $p$, so the divisibility fails. The boundary between characteristic-0 behavior and characteristic-$p$ pathology is precisely separability.",
+    "problemStatement": "**Question**: Does $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ hold for irreducible polynomials beyond characteristic zero?\\n\\n**Answer**: Yes, for *separable* irreducible polynomials over any field. No in general: in characteristic $p$, an inseparable irreducible (e.g., $X^p - t$ over $\\mathbb{F}_p(t)$) has $|\\text{Gal}| = 1$ and $\\text{natDegree} = p$, so $p \\nmid 1$.\\n\\n**Key theorem**: `natDegree_dvd_card_gal_of_sep` \u2014 for any field $F$ and any irreducible separable $p \\in F[X]$, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.",
     "keyInsights": [
       "The CharZero hypothesis is only a proxy for separability: over CharZero every irreducible is separable, but separability is the true structural requirement.",
       "The tower-law argument (Gal.card_of_separable + IntermediateField.adjoin.finrank) is entirely characteristic-free once separability is assumed.",
       "Separability is both sufficient (the theorem holds) and necessary (inseparable counterexamples exist in char p) for the divisibility.",
       "The 2-group Galois criterion for constructibility extends verbatim to any characteristic, covering e.g. separable cubic trisection obstructions over finite fields."
     ],
-    "proofStrategy": "1. **Rewrite |Gal(p)| via Gal.card_of_separable**: Apply `Gal.card_of_separable p_sep` to convert |Gal(p)| to Module.finrank F (SplittingField p). This is the only step that uses any characteristic information — it requires p.Separable, not CharZero.\n2. **Pick a root α**: Obtain α : SplittingField p as a root of p (which is nonconstant by irreducibility). Then SplittingField p = F(α) as intermediate fields.\n3. **Apply the tower law**: [SplittingField p : F] = [SplittingField p : F(α)] · [F(α) : F]. The factor [F(α) : F] equals natDegree(minpoly F α) = natDegree(p) (since p is the minimal polynomial of α over F by irreducibility).\n4. **Conclude divisibility**: natDegree(p) | [SplittingField p : F] = |Gal(p)|.\n5. **CharZero corollary**: Over CharZero, `Irreducible.separable` supplies p.Separable for free.\n6. **Counterexample**: Axiomatize that inseparable irreducibles have trivial Galois groups (|Gal| = 1), then natDegree(p) > 1 gives natDegree ∤ |Gal|."
+    "proofStrategy": "1. **Rewrite |Gal(p)| via Gal.card_of_separable**: Apply `Gal.card_of_separable p_sep` to convert |Gal(p)| to Module.finrank F (SplittingField p). This is the only step that uses any characteristic information \u2014 it requires p.Separable, not CharZero.\n2. **Pick a root \u03b1**: Obtain \u03b1 : SplittingField p as a root of p (which is nonconstant by irreducibility). Then SplittingField p = F(\u03b1) as intermediate fields.\n3. **Apply the tower law**: [SplittingField p : F] = [SplittingField p : F(\u03b1)] \u00b7 [F(\u03b1) : F]. The factor [F(\u03b1) : F] equals natDegree(minpoly F \u03b1) = natDegree(p) (since p is the minimal polynomial of \u03b1 over F by irreducibility).\n4. **Conclude divisibility**: natDegree(p) | [SplittingField p : F] = |Gal(p)|.\n5. **CharZero corollary**: Over CharZero, `Irreducible.separable` supplies p.Separable for free.\n6. **Counterexample**: Axiomatize that inseparable irreducibles have trivial Galois groups (|Gal| = 1), then natDegree(p) > 1 gives natDegree \u2224 |Gal|."
   },
   "sections": [
     {
@@ -78,10 +78,10 @@
     },
     {
       "id": "main-theorem",
-      "title": "Part I: Main Theorem — Separability Suffices",
+      "title": "Part I: Main Theorem \u2014 Separability Suffices",
       "startLine": 36,
       "endLine": 74,
-      "summary": "Proves natDegree_dvd_card_gal_of_sep: for any irreducible separable polynomial over any field, natDegree(p) | |Gal(p)|. Proof: rewrite |Gal(p)| via Gal.card_of_separable, pick root α, apply tower law with minpoly(F,α) = p by irreducibility.",
+      "summary": "Proves natDegree_dvd_card_gal_of_sep: for any irreducible separable polynomial over any field, natDegree(p) | |Gal(p)|. Proof: rewrite |Gal(p)| via Gal.card_of_separable, pick root \u03b1, apply tower law with minpoly(F,\u03b1) = p by irreducibility.",
       "mathContext": "$|\\text{Gal}(p)| = \\text{finrank}(F, \\text{Split}(p)) = \\text{finrank}(F, F(\\alpha)) \\cdot \\text{finrank}(F(\\alpha), \\text{Split}(p)) = \\text{natDeg}(p) \\cdot [\\text{Split}(p):F(\\alpha)]$"
     },
     {
@@ -105,7 +105,7 @@
       "title": "Part IV: The Inseparable Obstruction",
       "startLine": 114,
       "endLine": 149,
-      "summary": "Axiomatizes that inseparable irreducibles have trivial Galois groups (|Gal| = 1). The concrete example is X^p - t over F_p(t): irreducible (Eisenstein), inseparable (derivative = 0), with only one root t^{1/p} in the purely inseparable splitting field. Proves natDegree ∤ |Gal| when natDegree > 1.",
+      "summary": "Axiomatizes that inseparable irreducibles have trivial Galois groups (|Gal| = 1). The concrete example is X^p - t over F_p(t): irreducible (Eisenstein), inseparable (derivative = 0), with only one root t^{1/p} in the purely inseparable splitting field. Proves natDegree \u2224 |Gal| when natDegree > 1.",
       "mathContext": "$f = X^p - t \\in \\mathbb{F}_p(t)[X]$: irred, insep, $|\\text{Gal}| = 1$ (only root $t^{1/p}$, only automorphism is id), $\\text{natDeg} = p$. So $p \\nmid 1$."
     },
     {
@@ -122,7 +122,7 @@
     "implications": "Identifies the precise structural boundary: the theorem holds in any characteristic for separable irreducibles, fails for inseparable ones. The 2-group Galois criterion for angle trisection obstructions now applies in any characteristic, not just CharZero.",
     "openQuestions": [
       "Can insep_gal_trivial be proved in Lean using Mathlib's purely inseparable extension theory?",
-      "Does the same argument yield a bound natDegree(p) / p^k | |Gal(p)| for inseparable irreducibles of degree p^k · d (separable degree d)?"
+      "Does the same argument yield a bound natDegree(p) / p^k | |Gal(p)| for inseparable irreducibles of degree p^k \u00b7 d (separable degree d)?"
     ]
   },
   "sorries": 0

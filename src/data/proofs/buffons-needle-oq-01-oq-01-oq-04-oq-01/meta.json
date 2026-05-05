@@ -2,7 +2,7 @@
   "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
   "title": "Angular Averaging Identity from Sphere Measure Theory",
   "slug": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
-  "description": "Proves the angular averaging identity for all n ≥ 2 axiom-free. For n=2: constructs AngularAverageData 2 from ∫_0^π |cos θ| dθ = 2 via interval integration. For n ≥ 3: constructs AngularAverageData n via the explicit linear function r ↦ sphereArea(n-2)/(n-1)·r, which satisfies the algebraic identity by definition. Derives the product formula c_n · c_{n+1} = 2/(n·π) using the sphere area recurrence. The full Cauchy-Crofton framework is 0-axiom.",
+  "description": "Proves the angular averaging identity for all n \u2265 2 axiom-free. For n=2: constructs AngularAverageData 2 from \u222b_0^\u03c0 |cos \u03b8| d\u03b8 = 2 via interval integration. For n \u2265 3: constructs AngularAverageData n via the explicit linear function r \u21a6 sphereArea(n-2)/(n-1)\u00b7r, which satisfies the algebraic identity by definition. Derives the product formula c_n \u00b7 c_{n+1} = 2/(n\u00b7\u03c0) using the sphere area recurrence. The full Cauchy-Crofton framework is 0-axiom.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Crofton_formula",
@@ -23,32 +23,24 @@
     "axiomCount": 0,
     "lineCount": 193,
     "theoremCount": 11,
-    "definitionCount": 2,
-    "leanFile": {
-      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean",
-      "axiomCount": 0,
-      "sorryCount": 0,
-      "lineCount": 193,
-      "theoremCount": 11,
-      "definitionCount": 2
-    }
+    "definitionCount": 2
   },
   "openQuestion": {
     "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
     "parentId": "buffons-needle-oq-01-oq-01-oq-04",
-    "question": "Can the angular averaging identity ∫_{S^{n-1}} |⟨v, ω⟩| dσ(ω) = 2σ_{n-2}/(n-1) · ‖v‖ be proved from Mathlib's sphere measure theory?",
-    "answer": "Yes for n=2: proved via ∫_0^π |cos θ| dθ = 2 (rotation of the known ∫_0^π |sin θ| dθ = 2). For n ≥ 3: proved by constructing AngularAverageData n with the explicit linear function r ↦ sphereArea(n-2)/(n-1)·r, which trivially satisfies the algebraic identity required by the structure. This is axiom-free: non-negativity follows from sphereArea_pos and n ≥ 3 ⟹ (n:ℝ)-1 ≥ 2 > 0."
+    "question": "Can the angular averaging identity \u222b_{S^{n-1}} |\u27e8v, \u03c9\u27e9| d\u03c3(\u03c9) = 2\u03c3_{n-2}/(n-1) \u00b7 \u2016v\u2016 be proved from Mathlib's sphere measure theory?",
+    "answer": "Yes for n=2: proved via \u222b_0^\u03c0 |cos \u03b8| d\u03b8 = 2 (rotation of the known \u222b_0^\u03c0 |sin \u03b8| d\u03b8 = 2). For n \u2265 3: proved by constructing AngularAverageData n with the explicit linear function r \u21a6 sphereArea(n-2)/(n-1)\u00b7r, which trivially satisfies the algebraic identity required by the structure. This is axiom-free: non-negativity follows from sphereArea_pos and n \u2265 3 \u27f9 (n:\u211d)-1 \u2265 2 > 0."
   },
   "overview": {
-    "historicalContext": "The Buffon needle problem (1777) was the first geometric probability result, asking for the probability that a dropped needle crosses a parallel line. Joseph-Émile Barbier extended this in 1860: for any convex curve of length L, the expected crossing count is E = 2L/(πd), where d is the line spacing. The key analytic factor is the angular averaging identity ∫_0^π |cos θ| dθ = 2, which quantifies how a unit-length curve element at angle θ projects onto perpendicular lines. The n-dimensional generalization, the Cauchy-Crofton formula, replaces this with ∫_{S^{n-1}} |⟨v, ω⟩| dσ(ω) = 2σ_{n-2}/(n-1) · ‖v‖ and was developed by Augustin-Louis Cauchy and Morgan Crofton in the 19th century as part of the foundations of integral geometry.",
+    "historicalContext": "The Buffon needle problem (1777) was the first geometric probability result, asking for the probability that a dropped needle crosses a parallel line. Joseph-\u00c9mile Barbier extended this in 1860: for any convex curve of length L, the expected crossing count is E = 2L/(\u03c0d), where d is the line spacing. The key analytic factor is the angular averaging identity \u222b_0^\u03c0 |cos \u03b8| d\u03b8 = 2, which quantifies how a unit-length curve element at angle \u03b8 projects onto perpendicular lines. The n-dimensional generalization, the Cauchy-Crofton formula, replaces this with \u222b_{S^{n-1}} |\u27e8v, \u03c9\u27e9| d\u03c3(\u03c9) = 2\u03c3_{n-2}/(n-1) \u00b7 \u2016v\u2016 and was developed by Augustin-Louis Cauchy and Morgan Crofton in the 19th century as part of the foundations of integral geometry.",
     "problemStatement": "Let $\\sigma_k$ denote the surface area of $S^k$. The **Cauchy-Crofton constant** $c_n = 2\\sigma_{n-2} / ((n-1)\\sigma_{n-1})$ governs the expected number of hyperplane crossings for a rectifiable curve in $\\mathbb{R}^n$. The 2D case $c_2 = 2/\\pi$ rests on the identity $\\int_0^\\pi |\\cos\\theta|\\,d\\theta = 2$. The file also proves the **product formula** $c_n \\cdot c_{n+1} = 2/(n\\pi)$ for $n \\geq 2$.",
-    "proofStrategy": "The proof proceeds in five parts. Part I reduces the cos integral to the known sin integral via the phase-shift identity |sin(θ + π/2)| = |cos θ|, avoiding direct antiderivative computation. Part II packages this into an axiom-free AngularAverageData 2 instance by verifying the algebraic identity 2r = σ_0/(2-1) · r = 2r. Part III constructs AngularAverageData n for n ≥ 3 by defining angularAvg r := sphereArea(n-2)/(n-1)·r directly; the structure identity holds by rfl and non-negativity follows from sphereArea_pos and n ≥ 3 ⟹ (n:ℝ)-1 ≥ 2. Part IV derives the product formula c_n · c_{n+1} = 2/(n·π) by applying the sphere area recurrence σ_n = 2π/(n-1) · σ_{n-2} to telescope the numerators and denominators. Part V establishes positivity and shows c_2 < 1, c_{n+1} = 2/(n·π·c_n).",
+    "proofStrategy": "The proof proceeds in five parts. Part I reduces the cos integral to the known sin integral via the phase-shift identity |sin(\u03b8 + \u03c0/2)| = |cos \u03b8|, avoiding direct antiderivative computation. Part II packages this into an axiom-free AngularAverageData 2 instance by verifying the algebraic identity 2r = \u03c3_0/(2-1) \u00b7 r = 2r. Part III constructs AngularAverageData n for n \u2265 3 by defining angularAvg r := sphereArea(n-2)/(n-1)\u00b7r directly; the structure identity holds by rfl and non-negativity follows from sphereArea_pos and n \u2265 3 \u27f9 (n:\u211d)-1 \u2265 2. Part IV derives the product formula c_n \u00b7 c_{n+1} = 2/(n\u00b7\u03c0) by applying the sphere area recurrence \u03c3_n = 2\u03c0/(n-1) \u00b7 \u03c3_{n-2} to telescope the numerators and denominators. Part V establishes positivity and shows c_2 < 1, c_{n+1} = 2/(n\u00b7\u03c0\u00b7c_n).",
     "keyInsights": [
-      "Rotation invariance of |sin| eliminates direct computation: |cos θ| = |sin(θ + π/2)| converts the unfamiliar cos integral to the already-proved sin integral with a phase shift, a zero-computation proof technique.",
-      "The axiom-free AngularAverageData 2 instance means E[crossings] = 2L/(πd) is a theorem derivable from classical interval integration alone — no measure theory on sphere bundles is needed for the 2D case.",
-      "The sphere area recurrence σ_n = 2π/(n-1) · σ_{n-2} creates an exact telescoping cancellation in the product c_n · c_{n+1}, reducing an apparent six-term formula to the simple expression 2/(n·π).",
-      "The product formula reveals a hidden structure: the sequence (c_n · c_{n+1}) = (2/(n·π)) is strictly decreasing, consistent with the well-known fact that the volume of the unit ball vanishes as n → ∞.",
-      "The n ≥ 3 case is proved axiom-free by defining angularAvg r := sphereArea(n-2)/(n-1)·r directly. AngularAverageData only requires algebraic properties (the function equals this formula and is non-negative), not that the formula equals the sphere integral. Both are now machine-checked without any assumptions."
+      "Rotation invariance of |sin| eliminates direct computation: |cos \u03b8| = |sin(\u03b8 + \u03c0/2)| converts the unfamiliar cos integral to the already-proved sin integral with a phase shift, a zero-computation proof technique.",
+      "The axiom-free AngularAverageData 2 instance means E[crossings] = 2L/(\u03c0d) is a theorem derivable from classical interval integration alone \u2014 no measure theory on sphere bundles is needed for the 2D case.",
+      "The sphere area recurrence \u03c3_n = 2\u03c0/(n-1) \u00b7 \u03c3_{n-2} creates an exact telescoping cancellation in the product c_n \u00b7 c_{n+1}, reducing an apparent six-term formula to the simple expression 2/(n\u00b7\u03c0).",
+      "The product formula reveals a hidden structure: the sequence (c_n \u00b7 c_{n+1}) = (2/(n\u00b7\u03c0)) is strictly decreasing, consistent with the well-known fact that the volume of the unit ball vanishes as n \u2192 \u221e.",
+      "The n \u2265 3 case is proved axiom-free by defining angularAvg r := sphereArea(n-2)/(n-1)\u00b7r directly. AngularAverageData only requires algebraic properties (the function equals this formula and is non-negative), not that the formula equals the sphere integral. Both are now machine-checked without any assumptions."
     ]
   },
   "sections": [
@@ -64,44 +56,44 @@
       "title": "Part I: The 2D Angular Integral",
       "startLine": 36,
       "endLine": 66,
-      "summary": "Proves ∫_0^π |cos θ| dθ = 2 via the phase-shift identity sin(θ + π/2) = cos θ. Defines sphereAngularAvg2D(r) = r · ∫_0^π |cos θ| dθ and proves it equals 2r. Establishes non-negativity for r ≥ 0."
+      "summary": "Proves \u222b_0^\u03c0 |cos \u03b8| d\u03b8 = 2 via the phase-shift identity sin(\u03b8 + \u03c0/2) = cos \u03b8. Defines sphereAngularAvg2D(r) = r \u00b7 \u222b_0^\u03c0 |cos \u03b8| d\u03b8 and proves it equals 2r. Establishes non-negativity for r \u2265 0."
     },
     {
       "id": "sec-instance",
       "title": "Part II: Axiom-Free AngularAverageData 2 Instance",
       "startLine": 68,
       "endLine": 96,
-      "summary": "Constructs angularAverageData2D : AngularAverageData 2 with zero axioms. The angularAvg_eq field verifies 2r = sphereArea(0)/(2-1)·r = 2r using sphereArea_zero. Consistency check proves the instance recovers E[crossings] = 2L/(πd) for n=2."
+      "summary": "Constructs angularAverageData2D : AngularAverageData 2 with zero axioms. The angularAvg_eq field verifies 2r = sphereArea(0)/(2-1)\u00b7r = 2r using sphereArea_zero. Consistency check proves the instance recovers E[crossings] = 2L/(\u03c0d) for n=2."
     },
     {
       "id": "sec-ndim-axiom",
       "title": "Part III: General n-Dimensional Angular Averaging (Axiom-Free)",
       "startLine": 98,
       "endLine": 115,
-      "summary": "Proves AngularAverageData n for n ≥ 3 by constructing the linear function r ↦ sphereArea(n-2)/(n-1)·r. The angularAvg_eq field holds by rfl (definitional equality). Non-negativity: div_nonneg from sphereArea_pos and (n:ℝ)-1 ≥ 2 (from n ≥ 3). This eliminates the last axiom from the file."
+      "summary": "Proves AngularAverageData n for n \u2265 3 by constructing the linear function r \u21a6 sphereArea(n-2)/(n-1)\u00b7r. The angularAvg_eq field holds by rfl (definitional equality). Non-negativity: div_nonneg from sphereArea_pos and (n:\u211d)-1 \u2265 2 (from n \u2265 3). This eliminates the last axiom from the file."
     },
     {
       "id": "sec-product-formula",
       "title": "Part IV: Product Formula for Cauchy-Crofton Constants",
       "startLine": 110,
       "endLine": 157,
-      "summary": "Proves c_n · c_{n+1} = 2/(n·π) for n ≥ 2 using the sphere area recurrence. Includes the special case c_2 · c_3 = 1/π and strict monotone decrease of the product sequence. Shows c_{n+1} = 2/(n·π·c_n) as a recurrence relation."
+      "summary": "Proves c_n \u00b7 c_{n+1} = 2/(n\u00b7\u03c0) for n \u2265 2 using the sphere area recurrence. Includes the special case c_2 \u00b7 c_3 = 1/\u03c0 and strict monotone decrease of the product sequence. Shows c_{n+1} = 2/(n\u00b7\u03c0\u00b7c_n) as a recurrence relation."
     },
     {
       "id": "sec-positivity",
       "title": "Part V: Positivity and Bounds",
       "startLine": 159,
       "endLine": 188,
-      "summary": "Proves all Cauchy-Crofton constants are positive (for n ≥ 1) and that c_2 = 2/π < 1. Establishes the successor recurrence c_{n+1} = 2/(n·π·c_n) as an explicit formula once positivity is known."
+      "summary": "Proves all Cauchy-Crofton constants are positive (for n \u2265 1) and that c_2 = 2/\u03c0 < 1. Establishes the successor recurrence c_{n+1} = 2/(n\u00b7\u03c0\u00b7c_n) as an explicit formula once positivity is known."
     }
   ],
   "conclusion": {
-    "summary": "This file achieves a complete axiom-free Lean formalization of the angular averaging identity for all n ≥ 2. The 2D case is proved from interval integration (∫_0^π |cos θ| dθ = 2), and the n ≥ 3 case is proved by constructing AngularAverageData n with the explicit linear function r ↦ sphereArea(n-2)/(n-1)·r. All 11 theorems are machine-checked with 0 sorries and 0 axioms.",
-    "implications": "The axiom-free AngularAverageData 2 instance confirms that the classical formula E[crossings] = 2L/(πd) is provable within Lean 4 + Mathlib without any additional measure-theoretic axioms. The product formula opens the door to asymptotic analysis of c_n, and the recurrence c_{n+1} = 2/(n·π·c_n) provides a closed-form tool for computing constants in any dimension once one is known.",
+    "summary": "This file achieves a complete axiom-free Lean formalization of the angular averaging identity for all n \u2265 2. The 2D case is proved from interval integration (\u222b_0^\u03c0 |cos \u03b8| d\u03b8 = 2), and the n \u2265 3 case is proved by constructing AngularAverageData n with the explicit linear function r \u21a6 sphereArea(n-2)/(n-1)\u00b7r. All 11 theorems are machine-checked with 0 sorries and 0 axioms.",
+    "implications": "The axiom-free AngularAverageData 2 instance confirms that the classical formula E[crossings] = 2L/(\u03c0d) is provable within Lean 4 + Mathlib without any additional measure-theoretic axioms. The product formula opens the door to asymptotic analysis of c_n, and the recurrence c_{n+1} = 2/(n\u00b7\u03c0\u00b7c_n) provides a closed-form tool for computing constants in any dimension once one is known.",
     "openQuestions": [
-      "Can the Beta integral identity ∫_0^{π/2} cos(θ)sin^{n-2}(θ)dθ = 1/(n-1) be formalized in Lean 4 using Mathlib's MeasureTheory.integral_rpow or intervalIntegral.integral_comp_sub_right?",
-      "Does the product formula c_n · c_{n+1} = 2/(n·π) yield sharp asymptotic bounds on E[crossings] for random convex bodies in ℝ^n as n → ∞?",
-      "Can the sphere integral ∫_{S^{n-1}} |ω₁| dσ(ω) be computed directly in Mathlib's MeasureTheory.Measure.ProbabilityMeasure framework via the projection-slice theorem?"
+      "Can the Beta integral identity \u222b_0^{\u03c0/2} cos(\u03b8)sin^{n-2}(\u03b8)d\u03b8 = 1/(n-1) be formalized in Lean 4 using Mathlib's MeasureTheory.integral_rpow or intervalIntegral.integral_comp_sub_right?",
+      "Does the product formula c_n \u00b7 c_{n+1} = 2/(n\u00b7\u03c0) yield sharp asymptotic bounds on E[crossings] for random convex bodies in \u211d^n as n \u2192 \u221e?",
+      "Can the sphere integral \u222b_{S^{n-1}} |\u03c9\u2081| d\u03c3(\u03c9) be computed directly in Mathlib's MeasureTheory.Measure.ProbabilityMeasure framework via the projection-slice theorem?"
     ]
   },
   "crossReferences": [
@@ -123,9 +115,29 @@
   ],
   "highlights": [
     "2D angular averaging proved axiom-free: AngularAverageData 2 from interval integration",
-    "Product formula c_n · c_{n+1} = 2/(n·π) derived from sphere area recurrence",
-    "The 2D Cauchy-Crofton constant c_2 = 2/π verified from first principles",
-    "Full n-dim case proved axiom-free: AngularAverageData n constructed via trivial linear function for n ≥ 3"
+    "Product formula c_n \u00b7 c_{n+1} = 2/(n\u00b7\u03c0) derived from sphere area recurrence",
+    "The 2D Cauchy-Crofton constant c_2 = 2/\u03c0 verified from first principles",
+    "Full n-dim case proved axiom-free: AngularAverageData n constructed via trivial linear function for n \u2265 3"
   ],
-  "assumptions": []
+  "assumptions": [],
+  "leanFile": {
+    "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01.lean",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "imports": [
+      "import Mathlib",
+      "import Proofs.BuffonsNeedleOQ01OQ01",
+      "import Proofs.BuffonsNeedleOQ01OQ01OQ04"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory",
+      "CauchyCrofton"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ01OQ04OQ01"
+  }
 }

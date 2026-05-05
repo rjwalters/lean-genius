@@ -1,11 +1,11 @@
 {
   "id": "prime-reciprocal-divergence-oq-03",
-  "title": "Erdős's Elementary Proof of Prime Divergence",
+  "title": "Erd\u0151s's Elementary Proof of Prime Divergence",
   "slug": "prime-reciprocal-divergence-oq-03",
-  "description": "Erdős's elementary proof that there are infinitely many primes via smooth number counting, without analytic infrastructure.",
+  "description": "Erd\u0151s's elementary proof that there are infinitely many primes via smooth number counting, without analytic infrastructure.",
   "meta": {
-    "author": "Paul Erdős",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_theorem#Erdős's_proof",
+    "author": "Paul Erd\u0151s",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_theorem#Erd\u0151s's_proof",
     "date": "1938",
     "status": "verified",
     "proofRepoPath": "Proofs/PrimeReciprocalDivergenceOQ03.lean",
@@ -46,14 +46,6 @@
       "Alternative proof path avoiding Mathlib's analytic machinery"
     ],
     "dateAdded": "2026-03-30",
-    "leanFile": {
-      "lineCount": 388,
-      "structures": 0,
-      "axioms": 0,
-      "theorems": 13,
-      "definitions": 7,
-      "instances": 0
-    },
     "axiomCount": 0,
     "lineCount": 388,
     "assumptions": "0 axioms. 0 sorries. Fully verified.",
@@ -61,25 +53,25 @@
     "theoremCount": 13
   },
   "overview": {
-    "historicalContext": "Erdős's 1938 paper 'Über die Reihe Σ1/p' (On the series Σ1/p) introduced a purely combinatorial proof that the sum of reciprocals of primes diverges. Euler had proved this in 1737 using his product formula for ζ(s) and analysis. Erdős's contribution was to show the result — and even the infinitude of primes — follows from simple counting: the squarefree decomposition k = b²·a shows that N-smooth numbers up to n number at most √n · 2^{π(N)}. If all primes were ≤ N, then [1..n] would be entirely smooth, but √n · 2^{π(N)} < n for large n — contradiction. The proof exemplified Erdős's 'BOOK proof' philosophy: find the most elegant, elementary argument. The squarefree decomposition it uses was known since Gauss; the smooth number counting bound prefigures the theory of friable numbers (Ψ(x, y)) central to modern analytic number theory and integer factorization algorithms (quadratic sieve, ECM).",
-    "problemStatement": "Prove that there are infinitely many primes using only combinatorial counting, without real analysis. The proof gives the combinatorial core of Erdős's Σ1/p = ∞ argument.",
-    "text": "The squarefree decomposition k = b²·a (Nat.sq_mul_squarefree_of_pos) injects N-smooth numbers in [1,n] into range(√n) × powerset(primesUpTo N), giving |smoothSet N n| ≤ √n · 2^{π(N)}. If all primes ≤ N, every integer is smooth, but for n = (2^{π(N)+1})² + 1 the bound √n · 2^{π(N)} ≤ 2^{π(N)+1} · 2^{π(N)} = 2^{2π(N)+1} < 2^{2π(N)+2} + 1 = n — contradiction. The injection's injectivity uses squarefree_eq_of_prime_dvd_iff: two squarefree numbers with the same prime support are equal.",
-    "proofStrategy": "By contradiction: if all primes ≤ N, then every integer is N-smooth. But smooth numbers up to n are bounded by √n · 2^{π(N)}, which is < n for large n (taking n = (2^{K+1})² + 1 with K = π(N)).",
+    "historicalContext": "Erd\u0151s's 1938 paper '\u00dcber die Reihe \u03a31/p' (On the series \u03a31/p) introduced a purely combinatorial proof that the sum of reciprocals of primes diverges. Euler had proved this in 1737 using his product formula for \u03b6(s) and analysis. Erd\u0151s's contribution was to show the result \u2014 and even the infinitude of primes \u2014 follows from simple counting: the squarefree decomposition k = b\u00b2\u00b7a shows that N-smooth numbers up to n number at most \u221an \u00b7 2^{\u03c0(N)}. If all primes were \u2264 N, then [1..n] would be entirely smooth, but \u221an \u00b7 2^{\u03c0(N)} < n for large n \u2014 contradiction. The proof exemplified Erd\u0151s's 'BOOK proof' philosophy: find the most elegant, elementary argument. The squarefree decomposition it uses was known since Gauss; the smooth number counting bound prefigures the theory of friable numbers (\u03a8(x, y)) central to modern analytic number theory and integer factorization algorithms (quadratic sieve, ECM).",
+    "problemStatement": "Prove that there are infinitely many primes using only combinatorial counting, without real analysis. The proof gives the combinatorial core of Erd\u0151s's \u03a31/p = \u221e argument.",
+    "text": "The squarefree decomposition k = b\u00b2\u00b7a (Nat.sq_mul_squarefree_of_pos) injects N-smooth numbers in [1,n] into range(\u221an) \u00d7 powerset(primesUpTo N), giving |smoothSet N n| \u2264 \u221an \u00b7 2^{\u03c0(N)}. If all primes \u2264 N, every integer is smooth, but for n = (2^{\u03c0(N)+1})\u00b2 + 1 the bound \u221an \u00b7 2^{\u03c0(N)} \u2264 2^{\u03c0(N)+1} \u00b7 2^{\u03c0(N)} = 2^{2\u03c0(N)+1} < 2^{2\u03c0(N)+2} + 1 = n \u2014 contradiction. The injection's injectivity uses squarefree_eq_of_prime_dvd_iff: two squarefree numbers with the same prime support are equal.",
+    "proofStrategy": "By contradiction: if all primes \u2264 N, then every integer is N-smooth. But smooth numbers up to n are bounded by \u221an \u00b7 2^{\u03c0(N)}, which is < n for large n (taking n = (2^{K+1})\u00b2 + 1 with K = \u03c0(N)).",
     "keyInsights": [
-      "Squarefree decomposition k = b²·a: b ≤ √n (sqRtPart_le_sqrt) and a ⊆ powerset of primes ≤ N, giving the injection into √n × 2^{π(N)} target",
-      "Two squarefree numbers with the same prime divisors are equal (squarefree_eq_of_prime_dvd_iff) — this is the injectivity core",
-      "n = (2^{K+1})² + 1 is chosen so Nat.sqrt n ≤ 2^{K+1}, making the arithmetic clean for omega",
-      "The file proves infinitely many primes (combinatorial core) but not Σ1/p = ∞ — that requires real-valued series in the parent proof",
-      "Zero analysis required: no limits, no topology, no measure theory — only Finset.card, Nat.sqrt, and ring arithmetic"
+      "Squarefree decomposition k = b\u00b2\u00b7a: b \u2264 \u221an (sqRtPart_le_sqrt) and a \u2286 powerset of primes \u2264 N, giving the injection into \u221an \u00d7 2^{\u03c0(N)} target",
+      "Two squarefree numbers with the same prime divisors are equal (squarefree_eq_of_prime_dvd_iff) \u2014 this is the injectivity core",
+      "n = (2^{K+1})\u00b2 + 1 is chosen so Nat.sqrt n \u2264 2^{K+1}, making the arithmetic clean for omega",
+      "The file proves infinitely many primes (combinatorial core) but not \u03a31/p = \u221e \u2014 that requires real-valued series in the parent proof",
+      "Zero analysis required: no limits, no topology, no measure theory \u2014 only Finset.card, Nat.sqrt, and ring arithmetic"
     ]
   },
   "conclusion": {
-    "summary": "Erdős's combinatorial proof of infinitely many primes formalized with 0 sorries. Squarefree decomposition injection gives smooth count ≤ √n · 2^{π(N)}, yielding contradiction for n = (2^{π(N)+1})² + 1. 5 public theorems, 8 private lemmas, 7 definitions, 0 axioms, 388 lines.",
-    "implications": "The combinatorial core of Erdős's Σ1/p divergence proof can be formalized without analytic machinery. The squarefree decomposition and smooth number counting are templates for sieve theory and integer factorization algorithms. This file stands alone as a complete elementary proof of infinitely many primes, complementing both Euclid's classical argument and Mathlib's analytic approach.",
+    "summary": "Erd\u0151s's combinatorial proof of infinitely many primes formalized with 0 sorries. Squarefree decomposition injection gives smooth count \u2264 \u221an \u00b7 2^{\u03c0(N)}, yielding contradiction for n = (2^{\u03c0(N)+1})\u00b2 + 1. 5 public theorems, 8 private lemmas, 7 definitions, 0 axioms, 388 lines.",
+    "implications": "The combinatorial core of Erd\u0151s's \u03a31/p divergence proof can be formalized without analytic machinery. The squarefree decomposition and smooth number counting are templates for sieve theory and integer factorization algorithms. This file stands alone as a complete elementary proof of infinitely many primes, complementing both Euclid's classical argument and Mathlib's analytic approach.",
     "openQuestions": [
-      "Formalize the full Erdős proof of Σ1/p = ∞ using the smooth/rough dichotomy and real-valued sums",
-      "Prove the Mertens theorem: Σ_{p≤x} 1/p = log log x + M + o(1), connecting the divergence rate to the Mertens constant M",
-      "Extend smooth number counting to prove Ψ(x, y) ≥ x^{ρ+o(1)} where ρ = u⁻¹ and u = log x / log y — the Canfield-Erdős-Pomerance theorem"
+      "Formalize the full Erd\u0151s proof of \u03a31/p = \u221e using the smooth/rough dichotomy and real-valued sums",
+      "Prove the Mertens theorem: \u03a3_{p\u2264x} 1/p = log log x + M + o(1), connecting the divergence rate to the Mertens constant M",
+      "Extend smooth number counting to prove \u03a8(x, y) \u2265 x^{\u03c1+o(1)} where \u03c1 = u\u207b\u00b9 and u = log x / log y \u2014 the Canfield-Erd\u0151s-Pomerance theorem"
     ]
   },
   "sections": [
@@ -88,7 +80,7 @@
       "title": "Imports and Proof Overview",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Imports Mathlib basics (including Squarefree) and documents Erdős's elementary proof strategy."
+      "summary": "Imports Mathlib basics (including Squarefree) and documents Erd\u0151s's elementary proof strategy."
     },
     {
       "id": "definitions",
@@ -109,7 +101,7 @@
       "title": "Smooth Count Bound",
       "startLine": 179,
       "endLine": 243,
-      "summary": "Proves |smoothSet N n| ≤ √n · 2^{π(N)} via injection into range(√n) × powerset(primesUpTo N). Fully proved, no sorries."
+      "summary": "Proves |smoothSet N n| \u2264 \u221an \u00b7 2^{\u03c0(N)} via injection into range(\u221an) \u00d7 powerset(primesUpTo N). Fully proved, no sorries."
     },
     {
       "id": "rough-count",
@@ -120,7 +112,7 @@
     },
     {
       "id": "main-theorem",
-      "title": "Infinitely Many Primes (Erdős's Argument)",
+      "title": "Infinitely Many Primes (Erd\u0151s's Argument)",
       "startLine": 288,
       "endLine": 353,
       "summary": "Proves infinitely_many_primes_erdos by contradiction and derives prime_reciprocals_unbounded."
@@ -130,26 +122,39 @@
     {
       "targetId": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "Parent proof using Mathlib's analytic Nat.Primes.not_summable_one_div — same result via real series vs combinatorial counting"
+      "description": "Parent proof using Mathlib's analytic Nat.Primes.not_summable_one_div \u2014 same result via real series vs combinatorial counting"
     },
     {
       "targetId": "infinitude-primes-4k3",
       "relationship": "related",
-      "description": "Another elementary proof of infinitely many primes (≡3 mod 4), using Euclid-style factorial construction vs smooth number counting"
+      "description": "Another elementary proof of infinitely many primes (\u22613 mod 4), using Euclid-style factorial construction vs smooth number counting"
     },
     {
       "targetId": "gcd-algorithm-oq-01-oq-03",
       "relationship": "related",
-      "description": "Binet's formula and Fibonacci: smooth numbers appear in the Lamé complexity argument via Fibonacci growth"
+      "description": "Binet's formula and Fibonacci: smooth numbers appear in the Lam\u00e9 complexity argument via Fibonacci growth"
     }
   ],
   "leanFile": {
-    "lineCount": 388,
     "path": "Proofs/PrimeReciprocalDivergenceOQ03.lean",
+    "lineCount": 388,
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 4,
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 7,
+    "imports": [
+      "import Mathlib.Data.Nat.Prime.Basic",
+      "import Mathlib.Data.Nat.Squarefree",
+      "import Mathlib.Data.Finset.Basic",
+      "import Mathlib.Data.Finset.Card",
+      "import Mathlib.Data.Finset.Powerset",
+      "import Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "ErdosElementary"
   },
   "sorries": 0
 }

@@ -1,8 +1,8 @@
 {
   "id": "ramsey-r4k-oq-01",
-  "title": "Ramsey R(4,k): AKS Upper Bound O(k³/log²k) and Mattheus-Verstraëte Lower Bound",
+  "title": "Ramsey R(4,k): AKS Upper Bound O(k\u00b3/log\u00b2k) and Mattheus-Verstra\u00ebte Lower Bound",
   "slug": "ramsey-r4k-oq-01",
-  "description": "Formalizes the Ajtai-Komlós-Szemerédi (1980) upper bound R(4,k) = O(k³/(log k)²) and the Mattheus-Verstraëte (2024) lower bound R(4,k) = Ω(k³/(log k)⁴) using Real.log. Together these establish that the polynomial exponent of R(4,k) is exactly 3, with the log exponent c ∈ [2,4] remaining as the main open problem. Key results: gap ratio = C/c·(log k)² (polylogarithmic), AKS bound strictly improves over plain cubic, and 17 structural theorems with 3 axioms, 0 sorries.",
+  "description": "Formalizes the Ajtai-Koml\u00f3s-Szemer\u00e9di (1980) upper bound R(4,k) = O(k\u00b3/(log k)\u00b2) and the Mattheus-Verstra\u00ebte (2024) lower bound R(4,k) = \u03a9(k\u00b3/(log k)\u2074) using Real.log. Together these establish that the polynomial exponent of R(4,k) is exactly 3, with the log exponent c \u2208 [2,4] remaining as the main open problem. Key results: gap ratio = C/c\u00b7(log k)\u00b2 (polylogarithmic), AKS bound strictly improves over plain cubic, and 17 structural theorems with 3 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius Researcher",
     "status": "axiomatized",
@@ -20,11 +20,11 @@
     "axiomCount": 3,
     "lineCount": 190,
     "theoremCount": 17,
-    "assumptions": "3 axioms: (1) ramseyR4k_classical_upper — classical binomial bound R(4,k) ≤ C(k+2,3), proved in parent file; (2) aks_r4k_upper — AKS probabilistic deletion bound R(4,k) ≤ C·k³/(log k)², requires triangle-free process; (3) mv_r4k_lower — Mattheus-Verstraëte algebraic geometry bound R(4,k) ≥ c·k³/(log k)⁴, requires Hermitian varieties over F_q.",
+    "assumptions": "3 axioms: (1) ramseyR4k_classical_upper \u2014 classical binomial bound R(4,k) \u2264 C(k+2,3), proved in parent file; (2) aks_r4k_upper \u2014 AKS probabilistic deletion bound R(4,k) \u2264 C\u00b7k\u00b3/(log k)\u00b2, requires triangle-free process; (3) mv_r4k_lower \u2014 Mattheus-Verstra\u00ebte algebraic geometry bound R(4,k) \u2265 c\u00b7k\u00b3/(log k)\u2074, requires Hermitian varieties over F_q.",
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pos",
-        "description": "Used to establish log k > 0 for k ≥ 4",
+        "description": "Used to establish log k > 0 for k \u2265 4",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
@@ -34,20 +34,20 @@
       },
       {
         "theorem": "Real.exp_one_lt_d9",
-        "description": "Upper bound exp(1) < 2.718... used to prove exp(1) < 4 ≤ k",
+        "description": "Upper bound exp(1) < 2.718... used to prove exp(1) < 4 \u2264 k",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "div_lt_self",
-        "description": "Used in aks_bound_lt_cubic: C·k³/(log k)² < C·k³ when (log k)² > 1",
+        "description": "Used in aks_bound_lt_cubic: C\u00b7k\u00b3/(log k)\u00b2 < C\u00b7k\u00b3 when (log k)\u00b2 > 1",
         "module": "Mathlib.Algebra.Order.Field.Basic"
       }
     ],
     "originalContributions": [
-      "First formalization of AKS R(4,k) bound with proper Real.log denominator — existing RamseyR4kExtensions only stated r4k_upper_bound ≤ C·k³ without log",
-      "log_k_gt_one proof: log k > 1 for k ≥ 4 via exp(1) < 4 ≤ k using Real.exp_one_lt_d9",
-      "r4k_gap_ratio: (C·k³/log²k) / (c·k³/log⁴k) = C/c·(log k)² — algebraically exact polylog gap",
-      "Structural framework pairing AKS upper and MV lower bounds, showing k³ polynomial degree is exact",
+      "First formalization of AKS R(4,k) bound with proper Real.log denominator \u2014 existing RamseyR4kExtensions only stated r4k_upper_bound \u2264 C\u00b7k\u00b3 without log",
+      "log_k_gt_one proof: log k > 1 for k \u2265 4 via exp(1) < 4 \u2264 k using Real.exp_one_lt_d9",
+      "r4k_gap_ratio: (C\u00b7k\u00b3/log\u00b2k) / (c\u00b7k\u00b3/log\u2074k) = C/c\u00b7(log k)\u00b2 \u2014 algebraically exact polylog gap",
+      "Structural framework pairing AKS upper and MV lower bounds, showing k\u00b3 polynomial degree is exact",
       "r4_upper_log_exp_le_two and r4_lower_log_exp_ge_four: formal witness theorems for the log exponent interval [2,4]"
     ],
     "dateAdded": "2026-05-04",
@@ -59,21 +59,21 @@
     ]
   },
   "overview": {
-    "historicalContext": "The off-diagonal Ramsey number R(4,k) has a rich history of progressively improving bounds. The classical Erdős-Szekeres binomial recursion gives R(4,k) ≤ C(k+2,3) ≈ k³/6. In 1980, Ajtai, Komlós, and Szemerédi proved R(4,k) = O(k³/(log k)²) using the probabilistic deletion method — a sharp improvement over the binomial bound by a factor of (log k)².\n\nFor decades, the best lower bound was R(4,k) = Ω(k^(5/2)/log²k) (Bohman-Keevash 2010 via the triangle-free process), leaving a polynomial gap between k^(5/2) and k³. A dramatic 2024 breakthrough by Sam Mattheus and Jacques Verstraëte used algebraic geometry over finite fields — specifically the incidence structure of Hermitian varieties over F_q — to prove R(4,k) = Ω(k³/log⁴k). This closed the polynomial gap entirely: both bounds now have the same k³ structure, differing only in the log exponent (2 for AKS upper, 4 for MV lower).\n\nThe current state of R(4,k) is thus: k³/(log k)⁴ ≲ R(4,k) ≲ k³/(log k)². The exact value of the log exponent c in R(4,k) = Θ(k³/(log k)^c) is the main open problem — specifically, does c = 2 (AKS is tight), c = 4 (MV is tight), or some intermediate value?",
-    "problemStatement": "The open question from the `ramsey-r4k` gallery proof: Can the Ajtai-Komlós-Szemerédi upper bound R(4,k) = O(k³/(log k)²) be formalized? The `ramsey-r4k` and `ramsey-r4k-extensions` files already have an integer-valued bound (≤ C·k³), but not the sharper form with Real.log denominator.\n\nThis file formalizes:\n1. The AKS upper bound with Real.log: R(4,k) ≤ C·k³/(log k)² (axiom with AKS proof sketch)\n2. The Mattheus-Verstraëte lower bound: R(4,k) ≥ c·k³/(log k)⁴ (axiom with MV proof sketch)\n3. The gap ratio theorem: upper/lower = C/c·(log k)² — a polylogarithmic gap\n4. Log exponent witnesses: current best bounds on the log exponent are [2, 4]\n5. Structural comparisons: AKS beats the plain cubic by (log k)², concrete classical bounds",
-    "proofStrategy": "Three-layer proof structure. Layer 1 (log basics): establish log k > 1 for k ≥ 4 via Real.exp_one_lt_d9 (e < 2.718... < 4 ≤ k) and Real.log_lt_log; derive log k > 0, (log k)² > 1, (log k)⁴ > 0 as corollaries. These four lemmas form the numerical foundation for everything else. Layer 2 (AKS improvement): prove C·k³/(log k)² < C·k³ by div_lt_self (x/d < x when d > 1) with d = (log k)², formally verifying the AKS bound beats the plain cubic. Layer 3 (gap algebra): prove the gap ratio (C·k³/log²k)/(c·k³/log⁴k) = C/c·(log k)² via field_simp (clearing denominators using log_pos and k > 0 as nonzero witnesses) followed by ring (polynomial identity). The existential witnesses r4k_upper_log_exp_le_two and r4k_lower_log_exp_ge_four package the axioms in uniform log-exponent format, formally encoding c ∈ [2,4] as the open problem range.",
+    "historicalContext": "The off-diagonal Ramsey number R(4,k) has a rich history of progressively improving bounds. The classical Erd\u0151s-Szekeres binomial recursion gives R(4,k) \u2264 C(k+2,3) \u2248 k\u00b3/6. In 1980, Ajtai, Koml\u00f3s, and Szemer\u00e9di proved R(4,k) = O(k\u00b3/(log k)\u00b2) using the probabilistic deletion method \u2014 a sharp improvement over the binomial bound by a factor of (log k)\u00b2.\n\nFor decades, the best lower bound was R(4,k) = \u03a9(k^(5/2)/log\u00b2k) (Bohman-Keevash 2010 via the triangle-free process), leaving a polynomial gap between k^(5/2) and k\u00b3. A dramatic 2024 breakthrough by Sam Mattheus and Jacques Verstra\u00ebte used algebraic geometry over finite fields \u2014 specifically the incidence structure of Hermitian varieties over F_q \u2014 to prove R(4,k) = \u03a9(k\u00b3/log\u2074k). This closed the polynomial gap entirely: both bounds now have the same k\u00b3 structure, differing only in the log exponent (2 for AKS upper, 4 for MV lower).\n\nThe current state of R(4,k) is thus: k\u00b3/(log k)\u2074 \u2272 R(4,k) \u2272 k\u00b3/(log k)\u00b2. The exact value of the log exponent c in R(4,k) = \u0398(k\u00b3/(log k)^c) is the main open problem \u2014 specifically, does c = 2 (AKS is tight), c = 4 (MV is tight), or some intermediate value?",
+    "problemStatement": "The open question from the `ramsey-r4k` gallery proof: Can the Ajtai-Koml\u00f3s-Szemer\u00e9di upper bound R(4,k) = O(k\u00b3/(log k)\u00b2) be formalized? The `ramsey-r4k` and `ramsey-r4k-extensions` files already have an integer-valued bound (\u2264 C\u00b7k\u00b3), but not the sharper form with Real.log denominator.\n\nThis file formalizes:\n1. The AKS upper bound with Real.log: R(4,k) \u2264 C\u00b7k\u00b3/(log k)\u00b2 (axiom with AKS proof sketch)\n2. The Mattheus-Verstra\u00ebte lower bound: R(4,k) \u2265 c\u00b7k\u00b3/(log k)\u2074 (axiom with MV proof sketch)\n3. The gap ratio theorem: upper/lower = C/c\u00b7(log k)\u00b2 \u2014 a polylogarithmic gap\n4. Log exponent witnesses: current best bounds on the log exponent are [2, 4]\n5. Structural comparisons: AKS beats the plain cubic by (log k)\u00b2, concrete classical bounds",
+    "proofStrategy": "Three-layer proof structure. Layer 1 (log basics): establish log k > 1 for k \u2265 4 via Real.exp_one_lt_d9 (e < 2.718... < 4 \u2264 k) and Real.log_lt_log; derive log k > 0, (log k)\u00b2 > 1, (log k)\u2074 > 0 as corollaries. These four lemmas form the numerical foundation for everything else. Layer 2 (AKS improvement): prove C\u00b7k\u00b3/(log k)\u00b2 < C\u00b7k\u00b3 by div_lt_self (x/d < x when d > 1) with d = (log k)\u00b2, formally verifying the AKS bound beats the plain cubic. Layer 3 (gap algebra): prove the gap ratio (C\u00b7k\u00b3/log\u00b2k)/(c\u00b7k\u00b3/log\u2074k) = C/c\u00b7(log k)\u00b2 via field_simp (clearing denominators using log_pos and k > 0 as nonzero witnesses) followed by ring (polynomial identity). The existential witnesses r4k_upper_log_exp_le_two and r4k_lower_log_exp_ge_four package the axioms in uniform log-exponent format, formally encoding c \u2208 [2,4] as the open problem range.",
     "keyInsights": [
-      "Polynomial degree is resolved: both AKS upper and MV lower bounds have the same k³ polynomial structure. Mattheus-Verstraëte 2024 raised the lower bound's exponent from 5/2 to 3, settling a 40-year open question. The remaining open problem is purely logarithmic: R(4,k) = Θ(k³/(log k)^c) for some c ∈ [2,4].",
-      "The gap ratio formula (C·k³/log²k)/(c·k³/log⁴k) = C/c·(log k)² shows the bounds differ by only a square logarithm times a constant. For k = 10⁶, this gap is roughly (6 ln 10)² ≈ 191 (times C/c) — polynomial bounds typically differ by much larger factors.",
-      "log k > 1 requires k > e ≈ 2.718, which k ≥ 4 satisfies with room to spare. This single numerical fact (exp 1 < 4) is the bridge between the formal analysis and the concrete condition k ≥ 4 under which the AKS bound is stated. The tactic nlinarith closes (log k)² > 1 from log k > 1 via (log k - 1)² ≥ 0.",
-      "The opaque+axiom design: ramseyR4k is declared opaque (no reduction rule) and the three bounds are axioms. This is mathematically honest — the actual values are not computable from a closed formula. The axioms are 'assumed true with sketch' rather than formally proved, avoiding the 100+ page proofs of AKS and MV while still enabling formal reasoning about the bounds.",
-      "Contrast with R(3,k): Kim (1995) proved R(3,k) = Θ(k²/log k) exactly, resolving the c=1 log exponent for R(3,k). For R(4,k), Mattheus-Verstraëte 2024 is the analogue of Kim's lower bound — but the matching upper bound (proving c=4) or improved lower bound (proving c=2) remains open."
+      "Polynomial degree is resolved: both AKS upper and MV lower bounds have the same k\u00b3 polynomial structure. Mattheus-Verstra\u00ebte 2024 raised the lower bound's exponent from 5/2 to 3, settling a 40-year open question. The remaining open problem is purely logarithmic: R(4,k) = \u0398(k\u00b3/(log k)^c) for some c \u2208 [2,4].",
+      "The gap ratio formula (C\u00b7k\u00b3/log\u00b2k)/(c\u00b7k\u00b3/log\u2074k) = C/c\u00b7(log k)\u00b2 shows the bounds differ by only a square logarithm times a constant. For k = 10\u2076, this gap is roughly (6 ln 10)\u00b2 \u2248 191 (times C/c) \u2014 polynomial bounds typically differ by much larger factors.",
+      "log k > 1 requires k > e \u2248 2.718, which k \u2265 4 satisfies with room to spare. This single numerical fact (exp 1 < 4) is the bridge between the formal analysis and the concrete condition k \u2265 4 under which the AKS bound is stated. The tactic nlinarith closes (log k)\u00b2 > 1 from log k > 1 via (log k - 1)\u00b2 \u2265 0.",
+      "The opaque+axiom design: ramseyR4k is declared opaque (no reduction rule) and the three bounds are axioms. This is mathematically honest \u2014 the actual values are not computable from a closed formula. The axioms are 'assumed true with sketch' rather than formally proved, avoiding the 100+ page proofs of AKS and MV while still enabling formal reasoning about the bounds.",
+      "Contrast with R(3,k): Kim (1995) proved R(3,k) = \u0398(k\u00b2/log k) exactly, resolving the c=1 log exponent for R(3,k). For R(4,k), Mattheus-Verstra\u00ebte 2024 is the analogue of Kim's lower bound \u2014 but the matching upper bound (proving c=4) or improved lower bound (proving c=2) remains open."
     ],
     "prerequisites": [
       "Ramsey R(4,k) definition and basic bounds (ramsey-r4k gallery entry)",
       "Real logarithm and exponential in Lean 4",
       "Probabilistic deletion method (AKS 1980)",
-      "Hermitian varieties over finite fields (Mattheus-Verstraëte 2024)"
+      "Hermitian varieties over finite fields (Mattheus-Verstra\u00ebte 2024)"
     ]
   },
   "sections": [
@@ -82,76 +82,76 @@
       "title": "Ramsey Number and Bound Axioms",
       "startLine": 21,
       "endLine": 60,
-      "summary": "Opaque definition of ramseyR4k(k) as the actual Ramsey number, plus three axioms: classical binomial upper bound ≤ C(k+2,3), AKS upper bound O(k³/log²k), and Mattheus-Verstraëte lower bound Ω(k³/log⁴k)."
+      "summary": "Opaque definition of ramseyR4k(k) as the actual Ramsey number, plus three axioms: classical binomial upper bound \u2264 C(k+2,3), AKS upper bound O(k\u00b3/log\u00b2k), and Mattheus-Verstra\u00ebte lower bound \u03a9(k\u00b3/log\u2074k)."
     },
     {
       "id": "log-basics",
-      "title": "Logarithmic Basics for k ≥ 4",
+      "title": "Logarithmic Basics for k \u2265 4",
       "startLine": 64,
       "endLine": 96,
-      "summary": "Four lemmas establishing log k > 1 (using exp_one_lt_d9), log k > 0, (log k)² > 1, and (log k)⁴ > 0 for k ≥ 4. These underpin all subsequent structural results."
+      "summary": "Four lemmas establishing log k > 1 (using exp_one_lt_d9), log k > 0, (log k)\u00b2 > 1, and (log k)\u2074 > 0 for k \u2265 4. These underpin all subsequent structural results."
     },
     {
       "id": "aks-vs-cubic",
       "title": "AKS Bound vs Plain Cubic",
       "startLine": 100,
       "endLine": 120,
-      "summary": "aks_bound_lt_cubic: C·k³/(log k)² < C·k³ for k ≥ 4. The AKS bound is strictly better than the plain cubic by a factor of (log k)². Also proves positivity of the AKS bound."
+      "summary": "aks_bound_lt_cubic: C\u00b7k\u00b3/(log k)\u00b2 < C\u00b7k\u00b3 for k \u2265 4. The AKS bound is strictly better than the plain cubic by a factor of (log k)\u00b2. Also proves positivity of the AKS bound."
     },
     {
       "id": "gap-structure",
       "title": "Polylogarithmic Gap Structure",
       "startLine": 124,
       "endLine": 160,
-      "summary": "The core structural results: r4k_gap_ratio proves the exact algebraic identity (upper)/(lower) = C/c·(log k)². The gap between AKS and MV bounds is polylogarithmic — both bounds share k³ polynomial structure."
+      "summary": "The core structural results: r4k_gap_ratio proves the exact algebraic identity (upper)/(lower) = C/c\u00b7(log k)\u00b2. The gap between AKS and MV bounds is polylogarithmic \u2014 both bounds share k\u00b3 polynomial structure."
     },
     {
       "id": "log-exp-witnesses",
       "title": "Log Exponent Witnesses",
       "startLine": 164,
       "endLine": 178,
-      "summary": "Formal witnesses for the log exponent bounds: upper exponent = 2 (AKS), lower exponent = 4 (MV). The open problem is determining the exact c ∈ [2,4]."
+      "summary": "Formal witnesses for the log exponent bounds: upper exponent = 2 (AKS), lower exponent = 4 (MV). The open problem is determining the exact c \u2208 [2,4]."
     },
     {
       "id": "concrete-bounds",
       "title": "Concrete Classical Upper Bounds",
       "startLine": 182,
       "endLine": 190,
-      "summary": "Classical binomial values C(6,3)=20, C(12,3)=220, C(22,3)=1540, C(52,3)=22100 for k=4,10,20,50 via native_decide. Also R(4,4) ≤ 20 and R(4,10) ≤ 220 from the classical bound."
+      "summary": "Classical binomial values C(6,3)=20, C(12,3)=220, C(22,3)=1540, C(52,3)=22100 for k=4,10,20,50 via native_decide. Also R(4,4) \u2264 20 and R(4,10) \u2264 220 from the classical bound."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the current state of R(4,k) bounds with proper logarithmic precision. The AKS upper bound O(k³/log²k) and Mattheus-Verstraëte lower bound Ω(k³/log⁴k) together establish that R(4,k) = Θ(k³/(log k)^c) for some c ∈ [2,4]. The polylogarithmic gap ratio C/c·(log k)² is an algebraically exact result. The 17 proved theorems and 0 sorries confirm the formal consistency of the framework.",
-    "implications": "The 2024 Mattheus-Verstraëte result represents the most significant progress on R(4,k) in over 40 years. By raising the lower bound exponent from 5/2 to 3, it established that the polynomial degree of R(4,k) is exactly 3 — a previously open question. This formalization provides a machine-checked record of this milestone and sets up the formal framework for future improvements. The log exponent problem c ∈ [2,4] is now the precise frontier: proving c=2 would require showing the probabilistic deletion method's constants are optimal; proving c=4 would require a matching upper bound via algebraic geometry. The opaque+axiom approach taken here is the natural way to formalize results whose proofs require techniques (Hermitian varieties over F_q, triangle-free process analysis) not yet available in Mathlib.",
+    "summary": "This formalization captures the current state of R(4,k) bounds with proper logarithmic precision. The AKS upper bound O(k\u00b3/log\u00b2k) and Mattheus-Verstra\u00ebte lower bound \u03a9(k\u00b3/log\u2074k) together establish that R(4,k) = \u0398(k\u00b3/(log k)^c) for some c \u2208 [2,4]. The polylogarithmic gap ratio C/c\u00b7(log k)\u00b2 is an algebraically exact result. The 17 proved theorems and 0 sorries confirm the formal consistency of the framework.",
+    "implications": "The 2024 Mattheus-Verstra\u00ebte result represents the most significant progress on R(4,k) in over 40 years. By raising the lower bound exponent from 5/2 to 3, it established that the polynomial degree of R(4,k) is exactly 3 \u2014 a previously open question. This formalization provides a machine-checked record of this milestone and sets up the formal framework for future improvements. The log exponent problem c \u2208 [2,4] is now the precise frontier: proving c=2 would require showing the probabilistic deletion method's constants are optimal; proving c=4 would require a matching upper bound via algebraic geometry. The opaque+axiom approach taken here is the natural way to formalize results whose proofs require techniques (Hermitian varieties over F_q, triangle-free process analysis) not yet available in Mathlib.",
     "openQuestions": [
-      "What is the exact log exponent c ∈ [2,4] in R(4,k) = Θ(k³/(log k)^c)?",
+      "What is the exact log exponent c \u2208 [2,4] in R(4,k) = \u0398(k\u00b3/(log k)^c)?",
       "Can the AKS probabilistic deletion argument be fully formalized in Lean 4, eliminating the aks_r4k_upper axiom?",
-      "Can the Mattheus-Verstraëte proof (using Hermitian varieties over F_q) be formalized, eliminating the mv_r4k_lower axiom?",
-      "Is R(4,k) = Θ(k³/log²k) (AKS tight) or Θ(k³/log⁴k) (MV tight)?"
+      "Can the Mattheus-Verstra\u00ebte proof (using Hermitian varieties over F_q) be formalized, eliminating the mv_r4k_lower axiom?",
+      "Is R(4,k) = \u0398(k\u00b3/log\u00b2k) (AKS tight) or \u0398(k\u00b3/log\u2074k) (MV tight)?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "ramsey-r4k",
       "relationship": "parent",
-      "description": "Defines RamseyProp, ramseyUpperBound, Pascal recursion, and C(k+2,3) upper bound — the classical cubic bound this file improves on"
+      "description": "Defines RamseyProp, ramseyUpperBound, Pascal recursion, and C(k+2,3) upper bound \u2014 the classical cubic bound this file improves on"
     },
     {
       "targetId": "ramsey-r4k-extensions",
       "relationship": "related",
-      "description": "Sibling file: contains r4k_upper_bound (integer ≤ C·k³), r4k_lower_bound, and off-diagonal theory without the precise Real.log denominator"
+      "description": "Sibling file: contains r4k_upper_bound (integer \u2264 C\u00b7k\u00b3), r4k_lower_bound, and off-diagonal theory without the precise Real.log denominator"
     },
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Grandparent: proves existence of all R(r,s) via induction on r+s — the foundational existence theorem this file extends"
+      "description": "Grandparent: proves existence of all R(r,s) via induction on r+s \u2014 the foundational existence theorem this file extends"
     }
   ],
   "sorries": 0,
   "leanFile": {
     "axiomCount": 3,
     "theoremCount": 17,
-    "sorryCount": 0,
-    "lineCount": 190
+    "lineCount": 190,
+    "sorries": 0
   }
 }

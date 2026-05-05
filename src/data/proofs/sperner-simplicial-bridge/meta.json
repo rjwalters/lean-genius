@@ -2,7 +2,7 @@
   "id": "sperner-simplicial-bridge",
   "title": "Sperner's Lemma for Pseudomanifold Simplicial Complexes",
   "slug": "sperner-simplicial-bridge",
-  "description": "A bridge proof that derives Sperner's lemma for finite sets of simplices satisfying a pseudomanifold condition from the abstract door-counting theorem in SpernerMathlib. The key construction converts geometric simplicial data—unordered vertex sets, codimension-1 face adjacency—into the abstract CellComplex-style axioms required by the door-counting proof, using vertex ordering via Finset.sort and a full verification of the three adjacency axioms.",
+  "description": "A bridge proof that derives Sperner's lemma for finite sets of simplices satisfying a pseudomanifold condition from the abstract door-counting theorem in SpernerMathlib. The key construction converts geometric simplicial data\u2014unordered vertex sets, codimension-1 face adjacency\u2014into the abstract CellComplex-style axioms required by the door-counting proof, using vertex ordering via Finset.sort and a full verification of the three adjacency axioms.",
   "meta": {
     "status": "verified",
     "badge": "original",
@@ -11,7 +11,6 @@
     "theoremCount": 21,
     "definitionCount": 5,
     "lineCount": 611,
-    "leanFile": "proofs/Proofs/SpernerSimplicialBridge.lean",
     "imports": [
       "Proofs.SpernerMathlib"
     ],
@@ -75,9 +74,9 @@
     }
   ],
   "overview": {
-    "summary": "This file bridges abstract and geometric Sperner's lemma. The abstract version (SpernerMathlib) works with any adjacency data satisfying three axioms. This bridge verifies that pure pseudomanifold simplicial complexes—finite sets of equal-cardinality simplices where each codimension-1 face belongs to at most 2 simplices—satisfy exactly those axioms.",
+    "summary": "This file bridges abstract and geometric Sperner's lemma. The abstract version (SpernerMathlib) works with any adjacency data satisfying three axioms. This bridge verifies that pure pseudomanifold simplicial complexes\u2014finite sets of equal-cardinality simplices where each codimension-1 face belongs to at most 2 simplices\u2014satisfy exactly those axioms.",
     "approach": "The key challenge is converting unordered finsets (geometric simplices) into ordered vertex arrays (needed for the abstract framework). Finset.sort with a LinearOrder provides a canonical ordering. The pseudomanifold condition directly implies the adjacency axioms: symmetry (sharing a face is symmetric), shared-face property (adjacent cells share the d-face), and distinctness (a cell can't be adjacent to itself).",
-    "significance": "This bridge is the geometric-to-combinatorial interface layer for Sperner's lemma. It connects Mathlib's geometric simplicial complex infrastructure to the abstract door-counting proof, enabling application to any specific triangulation—the standard d-simplex, barycentric subdivisions, etc.—once the pseudomanifold condition is verified."
+    "significance": "This bridge is the geometric-to-combinatorial interface layer for Sperner's lemma. It connects Mathlib's geometric simplicial complex infrastructure to the abstract door-counting proof, enabling application to any specific triangulation\u2014the standard d-simplex, barycentric subdivisions, etc.\u2014once the pseudomanifold condition is verified."
   },
   "conclusion": {
     "summary": "Sperner's lemma for pseudomanifold simplicial complexes is machine-checked with no axioms or sorries. The bridge relies only on SpernerMathlib (not the full Mathlib import), keeping the dependency chain minimal.",
@@ -108,9 +107,16 @@
   "leanFile": {
     "path": "Proofs/SpernerSimplicialBridge.lean",
     "lineCount": 611,
+    "axiomCount": 0,
+    "sorries": 0,
     "theoremCount": 21,
     "definitionCount": 5,
-    "axiomCount": 0,
-    "sorries": 0
+    "imports": [
+      "import Proofs.SpernerMathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Sperner.SimplicialComplex"
   }
 }
