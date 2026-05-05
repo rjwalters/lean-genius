@@ -1,0 +1,132 @@
+[
+  {
+    "id": "gauss-sum-open-question",
+    "proofId": "elementary-quadratic-reciprocity-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "context",
+    "title": "Open Question: From Axiom to Theorem in ℂ",
+    "content": "The parent proof ElementaryQuadraticReciprocityOQ02.lean axiomatized the Gauss sum evaluation as ∃ τ : ℤ, τ² = (-1)^(p/2)·p. This axiom is mathematically false over ℤ — no integer square root of ±p exists for a prime p. The classical Gauss sum τ = Σ_{a : ZMod p} χ(a)·ψ(a) lives in ℂ, not ℤ. This file resolves OQ-02-OQ-01 by proving the correct ℂ-valued statement using Mathlib's gaussSum_sq theorem, replacing a false axiom with a genuine Lean theorem.",
+    "mathContext": "The Gauss sum $\\tau = \\sum_{a \\in \\mathbb{Z}/p\\mathbb{Z}} \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p} \\in \\mathbb{C}$ satisfies $\\tau^2 = \\chi(-1) \\cdot p$ where $\\chi(-1) = \\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$. The key insight is that $|\\tau|^2 = p$ but $\\tau \\notin \\mathbb{Z}$; the correct domain is $\\mathbb{C}$ (or $\\mathbb{Q}(\\zeta_p)$). The axiom $\\exists \\tau : \\mathbb{Z}, \\tau^2 = \\pm p$ was a type error: the square root of $\\pm p$ is irrational.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss sums",
+      "quadratic reciprocity",
+      "multiplicative characters",
+      "cyclotomic fields",
+      "Legendre symbol"
+    ],
+    "prerequisites": [
+      "Legendre symbol (·/p)",
+      "primitive p-th roots of unity",
+      "quadratic residues mod p"
+    ]
+  },
+  {
+    "id": "imports-setup",
+    "proofId": "elementary-quadratic-reciprocity-oq-02-oq-01",
+    "range": { "startLine": 51, "endLine": 63 },
+    "type": "technical",
+    "title": "Imports: Gauss Sum and Character Machinery",
+    "content": "Four Mathlib imports bring in the necessary machinery: GaussSum for the gaussSum_sq theorem itself; QuadraticChar.Basic for the quadraticChar multiplicative character; LegendreSymbol.Basic for legendreSym.at_neg_one (the first supplementary law); and CircleAddChar for ZMod.stdAddChar (the standard additive character e^{2πi·/p}). The variable declaration fixes a prime p throughout the namespace.",
+    "mathContext": "The four key Mathlib theorems used: (1) $\\text{gaussSum\\_sq}$: for nontrivial quadratic $\\chi$ and primitive $\\psi$, $(\\text{gaussSum}\\, \\chi\\, \\psi)^2 = \\chi(-1) \\cdot |R|$; (2) $\\text{quadraticChar\\_isQuadratic}$: values in $\\{0, 1, -1\\}$; (3) $\\text{legendreSym.at\\_neg\\_one}$: $\\left(\\frac{-1}{p}\\right) = \\chi_4(p)$; (4) $\\text{ZMod.isPrimitive\\_stdAddChar}$: the standard exponential character is primitive.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Mathlib.NumberTheory.GaussSum",
+      "multiplicative characters",
+      "additive characters",
+      "stdAddChar"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "quad-char-c-definition",
+    "proofId": "elementary-quadratic-reciprocity-oq-02-oq-01",
+    "range": { "startLine": 65, "endLine": 78 },
+    "type": "definition",
+    "title": "quadCharC: Promoting the Legendre Symbol to ℂ",
+    "content": "The key definition: quadCharC is the Legendre symbol (quadraticChar (ZMod p)) composed with the ring homomorphism Int.castRingHom ℂ : ℤ →+* ℂ. This produces a MulChar (ZMod p) ℂ — a multiplicative character from ZMod p to ℂ. The private lemma char_ZMod_ne_two shows ringChar (ZMod p) = p ≠ 2 for odd primes, which is needed to establish that the character is nontrivial.",
+    "mathContext": "Composition of characters via ring homomorphisms: if $\\chi: R \\to \\mathbb{Z}$ is a MulChar and $f: \\mathbb{Z} \\to \\mathbb{C}$ is a ring homomorphism, then $f \\circ \\chi: R \\to \\mathbb{C}$ is a MulChar. Here $R = \\mathbb{Z}/p\\mathbb{Z}$, $\\chi = $ quadraticChar (Legendre symbol), and $f = $ Int.cast. The resulting quadCharC takes values in $\\{0, 1, -1\\} \\subset \\mathbb{C}$, where $0$ for non-units, $\\pm 1$ for quadratic (non)residues.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative characters",
+      "Legendre symbol",
+      "ring homomorphisms",
+      "MulChar.ringHomComp",
+      "Int.castRingHom"
+    ],
+    "prerequisites": [
+      "MulChar typeclass",
+      "quadraticChar definition",
+      "Int.castRingHom ℂ"
+    ]
+  },
+  {
+    "id": "quadratic-and-nontrivial",
+    "proofId": "elementary-quadratic-reciprocity-oq-02-oq-01",
+    "range": { "startLine": 80, "endLine": 116 },
+    "type": "technique",
+    "title": "Key Properties: Quadratic and Nontrivial",
+    "content": "Two properties are needed to apply gaussSum_sq: (1) quadCharC_isQuadratic shows the character is quadratic (IsQuadratic: χ(a)² = 1 for units) by lifting quadraticChar_isQuadratic through Int.cast via MulChar.IsQuadratic.comp. (2) quadCharC_ne_one shows the character is nontrivial for odd prime p, proven by contradiction: if quadCharC = 1, then Int.cast injectivity forces quadraticChar = 1, contradicting quadraticChar_ne_one (which requires ringChar ≠ 2).",
+    "mathContext": "For gaussSum_sq to apply, two hypotheses are required: $\\chi \\neq 1$ (nontrivial) and $\\chi$ is quadratic ($\\chi^2 = \\epsilon$, the trivial character). The quadratic property is preserved under ring homomorphisms: if $\\chi(a) \\in \\{0, \\pm 1\\}$ then $f(\\chi(a)) \\in \\{0, \\pm 1\\}$. Nontriviality follows from injectivity of $\\mathbb{Z} \\hookrightarrow \\mathbb{C}$: a nontrivial $\\mathbb{Z}$-valued character remains nontrivial after embedding into $\\mathbb{C}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsQuadratic property",
+      "MulChar nontriviality",
+      "Int.cast injectivity",
+      "quadraticChar_ne_one",
+      "ringChar condition"
+    ],
+    "prerequisites": [
+      "MulChar.IsQuadratic",
+      "quadraticChar_isQuadratic",
+      "Int.cast_injective"
+    ]
+  },
+  {
+    "id": "gauss-sum-sq-main",
+    "proofId": "elementary-quadratic-reciprocity-oq-02-oq-01",
+    "range": { "startLine": 118, "endLine": 176 },
+    "type": "insight",
+    "title": "Main Theorem: Gauss Sum Squared Formula in ℂ",
+    "content": "The central result: (gaussSum χ ψ)² = (-1)^(p/2)·p in ℂ. The proof has three main steps: (1) apply gaussSum_sq to get χ(-1)·|ZMod p|; (2) simplify |ZMod p| = p via ZMod.card; (3) compute χ(-1) = (-1)^(p/2) via the chain quadCharC → Int.cast(quadraticChar) → legendreSym p (-1) → χ₄(p) → (-1)^(p/2). The first supplementary law of quadratic reciprocity (legendreSym.at_neg_one) and χ₄_eq_neg_one_pow are the key evaluation lemmas.",
+    "mathContext": "The Gauss sum squared formula: $(\\text{gaussSum}\\, \\chi\\, \\psi)^2 = \\chi(-1) \\cdot |\\mathbb{Z}/p\\mathbb{Z}| = \\chi(-1) \\cdot p$. Computing $\\chi(-1)$: $$\\chi(-1) = \\text{Int.cast}(\\text{quadraticChar}(-1)) = \\text{Int.cast}\\left(\\left(\\frac{-1}{p}\\right)\\right) = \\text{Int.cast}(\\chi_4(p)) = (-1)^{p/2}$$ where the last equality uses $\\chi_4(p) = (-1)^{(p-1)/2}$ for odd $p$ and the identification $\\lfloor p/2 \\rfloor = (p-1)/2$ for odd $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gaussSum_sq theorem",
+      "first supplementary law",
+      "chi_4 character mod 4",
+      "legendreSym.at_neg_one",
+      "Fintype.card ZMod"
+    ],
+    "prerequisites": [
+      "gaussSum definition",
+      "MulChar.IsQuadratic",
+      "AddChar.IsPrimitive",
+      "Legendre symbol first supplement"
+    ]
+  },
+  {
+    "id": "existential-and-verifications",
+    "proofId": "elementary-quadratic-reciprocity-oq-02-oq-01",
+    "range": { "startLine": 178, "endLine": 199 },
+    "type": "insight",
+    "title": "Existential Form and Concrete Verifications",
+    "content": "gauss_sum_sq_exists packages the main theorem in existential form ∃ τ : ℂ, τ² = (-1)^(p/2)·p, with the explicit witness τ = gaussSum(quadCharC p, stdAddChar). Three examples verify the formula for small primes: p=3 gives τ² = -3 (since (-1)^1·3 = -3); p=5 gives τ² = 5 (since (-1)^2·5 = 5); p=7 gives τ² = -7 (since (-1)^3·7 = -7). These examples are proved by norm_num from the general theorem, illustrating the alternating sign pattern controlled by (-1)^(p/2).",
+    "mathContext": "The alternating sign pattern: for $p \\equiv 1 \\pmod 4$ (like $p=5$), $\\tau^2 = p > 0$, so $\\tau = \\pm\\sqrt{p} \\in \\mathbb{R}$. For $p \\equiv 3 \\pmod 4$ (like $p=3, 7$), $\\tau^2 = -p < 0$, so $\\tau = \\pm i\\sqrt{p}$ is purely imaginary. This beautiful pattern: the Gauss sum is real iff $-1$ is a quadratic residue mod $p$, i.e., iff $p \\equiv 1 \\pmod 4$ — exactly the first supplementary law in geometric form.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existential witnesses",
+      "norm_num tactic",
+      "quadratic residues mod 4",
+      "Gaussian integers",
+      "first supplementary law"
+    ],
+    "prerequisites": [
+      "gauss_sum_sq_in_complex",
+      "p ≡ 1 vs 3 (mod 4) classification"
+    ]
+  }
+]
