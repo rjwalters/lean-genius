@@ -1,0 +1,133 @@
+[
+  {
+    "id": "ann-cantor-oq04-header",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "range": { "startLine": 39, "endLine": 54 },
+    "type": "context",
+    "title": "Module Setup: Constructive vs Classical Cantor",
+    "content": "The module imports the parent proof `CantorDiagonalizationOQ03OQ01` (which uses propext) and then opens its namespace. This creates an instructive contrast: the parent file proves `cantor_recovery` classically, and this file proves the same impossibility constructively by weakening the surjectivity hypothesis.\n\nThe key difference between the two approaches:\n- **Classical** (`cantor_recovery`): uses `Function.Surjective e`, i.e., `∀ P, ∃ a, e a = P` (function equality, triggers propext via `rwa`)\n- **Constructive** (this file): uses `IsPointwiseSurjective e`, i.e., `∀ P, ∃ a, ∀ x, e a x ↔ P x` (pointwise Iff, no propext needed)\n\nThe namespace `CantorDiagonalizationOQ03OQ01OQ04` follows the convention of appending the open question identifier to the parent.",
+    "mathContext": "In Lean 4, the three non-constructive axioms of the standard library are `propext` (propositional extensionality: $P = Q \\iff (P \\leftrightarrow Q)$), `Quot.sound` (quotient soundness), and `Classical.choice` (choice axiom). `#print axioms` reports exactly which of these a proof depends on. This file uses none — verified by the `#print axioms` commands at lines 149 and 153.",
+    "significance": "context",
+    "relatedConcepts": [
+      "propositional extensionality",
+      "constructive vs classical logic",
+      "Lean 4 axiom system",
+      "#print axioms"
+    ],
+    "prerequisites": [
+      "cantor-diagonalization-oq-03-oq-01 (parent entry)",
+      "Lean 4 import system",
+      "namespace and open declarations"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-pointwise-def",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "range": { "startLine": 55, "endLine": 83 },
+    "type": "definition",
+    "title": "IsPointwiseSurjective: The Constructive Surjectivity Condition",
+    "content": "`IsPointwiseSurjective e` requires: for every predicate `P : A → Prop`, there exists `a : A` such that `∀ x, e a x ↔ P x` (pointwise logical equivalence). This is strictly WEAKER than classical surjectivity `Function.Surjective e`, which requires `e a = P` (function equality in `A → Prop`).\n\nThe theorem `surjective_implies_pointwise` shows the implication: classical surjectivity → pointwise surjectivity. Proof: given `⟨a, ha⟩` where `ha : e a = P`, use `iff_of_eq (congr_fun ha x)` to convert the function equality into pointwise Iff at each `x`.\n\nThe converse fails: going from `∀ x, e a x ↔ P x` to `e a = P` (as a function equality) requires `funext` composed with `propext`, both of which are non-constructive. So `IsPointwiseSurjective` is the minimal constructively usable surjectivity condition.\n\nThis definition is motivated by Lawvere's point-surjectivity: in a cartesian closed category, the relevant notion of surjectivity for the diagonal argument is 'hitting all global elements (points)', which in the Prop case corresponds to being an Iff-surjection rather than a strict equality-surjection.",
+    "mathContext": "Classical surjectivity: $\\forall P : A \\to \\mathrm{Prop}, \\exists a, e(a) = P$ (equality in $A \\to \\mathrm{Prop}$). Constructive surjectivity: $\\forall P : A \\to \\mathrm{Prop}, \\exists a, \\forall x, e(a)(x) \\leftrightarrow P(x)$ (pointwise biconditional). The Lean proof that `e a = P → ∀ x, e a x ↔ P x` uses `congr_fun ha x : e a x = P x` followed by `iff_of_eq` to convert `Eq` to `Iff`. The notation `fun x => iff_of_eq (congr_fun ha x)` is a concise term-mode proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Function.Surjective",
+      "pointwise logical equivalence",
+      "Lawvere point-surjectivity",
+      "funext and propext",
+      "iff_of_eq"
+    ],
+    "prerequisites": [
+      "congr_fun (function equality → pointwise equality)",
+      "iff_of_eq",
+      "constructive logic fundamentals"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-main-theorem",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "range": { "startLine": 84, "endLine": 109 },
+    "type": "insight",
+    "title": "Constructive Cantor: The Diagonal Contradiction Without propext",
+    "content": "The main theorem `cantor_constructive` is the answer to OQ-04: any `IsPointwiseSurjective` encoding leads to contradiction in pure intuitionistic logic.\n\n**The four-step proof**:\n1. `obtain ⟨d, hd⟩ := he (fun a => ¬e a a)` — apply surjectivity to the **diagonal predicate** `D(a) = ¬(e a a)`. This gives `d : A` with `hd : ∀ x, e d x ↔ ¬(e x x)`.\n2. `have hdd : e d d ↔ ¬e d d := hd d` — specialize to `x = d`. This is the **self-referential diagonal equation**: the element `d` encodes exactly which elements are NOT in their own encoding.\n3. `exact iff_not_self.mp hdd` — the Iff `e d d ↔ ¬(e d d)` is directly contradictory. `iff_not_self : ¬(p ↔ ¬p)` is valid in intuitionistic logic.\n\n**Why no propext**: the classical proof gets `hb : ¬b = b` (a propositional equality) and uses `rwa [← hb]` to convert it to an Iff (which secretly uses `propext` via `Eq.mpr`). Here, `hdd` is already an `Iff`, so no conversion is needed.\n\nThe theorem `cantor_no_pointwise_surjection` is the negation form: `¬IsPointwiseSurjective e`, proved as a one-liner wrapping `cantor_constructive`.",
+    "mathContext": "The diagonal construction: define $D : A \\to \\mathrm{Prop}$ by $D(a) = \\neg e(a)(a)$. If $e$ is pointwise surjective, there exists $d$ with $e(d)(x) \\leftrightarrow D(x) = \\neg e(x)(x)$ for all $x$. Setting $x = d$: $e(d)(d) \\leftrightarrow \\neg e(d)(d)$. This is a propositional version of Russell's paradox ($d \\in [d] \\leftrightarrow d \\notin [d]$), and it yields False via $\\mathrm{iff\\_not\\_self} : \\neg(p \\leftrightarrow \\neg p)$. The lemma $\\mathrm{iff\\_not\\_self}$ follows from: if $p \\leftrightarrow \\neg p$, then $p \\to \\neg p \\to \\bot$ and $\\neg p \\to p \\to \\bot$, giving $\\neg p$ and $p$ simultaneously.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal argument",
+      "Russell's paradox",
+      "iff_not_self",
+      "intuitionistic logic",
+      "self-referential predicates"
+    ],
+    "prerequisites": [
+      "iff_not_self from Mathlib.Logic.Basic",
+      "IsPointwiseSurjective (defined above)",
+      "Lean 4 obtain tactic",
+      "constructive negation"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-explicit",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "range": { "startLine": 118, "endLine": 141 },
+    "type": "technique",
+    "title": "Explicit Proof: Making the Contradiction Fully Transparent",
+    "content": "`cantor_constructive_explicit` expands the `iff_not_self.mp hdd` step to show the exact contradiction in term mode. After obtaining `hdd : e d d ↔ ¬(e d d)`:\n\n```lean\nhave nev : ¬e d d := fun h => hdd.mp h h\nexact nev (hdd.mpr nev)\n```\n\n**Step-by-step analysis**:\n- `hdd.mp : e d d → ¬(e d d)` — the forward direction says: IF `d` is in its own encoding, THEN it is NOT.\n- `fun h => hdd.mp h h` — given `h : e d d`, apply `hdd.mp h` to get `¬(e d d)`, then apply that to `h` to get `False`. This builds `nev : ¬(e d d)` constructively.\n- `hdd.mpr nev : e d d` — the backward direction says: IF `d` is NOT in its own encoding, THEN it IS.\n- `nev (hdd.mpr nev)` — applying `nev : ¬(e d d)` to `hdd.mpr nev : e d d` gives `False`.\n\nThis is the Lean 4 version of the Russell paradox construction, written as a term-mode proof without any tactics. The `h h` pattern (applying a function to itself) is characteristic of Curry-style paradoxes in type theory.",
+    "mathContext": "The contradiction follows the pattern: let $N = \\neg e(d)(d)$ (\"d does not encode itself\"). Then:\n- $N$ is false $\\Rightarrow$ $e(d)(d)$ $\\Rightarrow$ $\\neg e(d)(d) = N$ is true: contradiction.\n- $N$ is true $\\Rightarrow$ $e(d)(d)$ (backward direction) $\\Rightarrow$ $N$ is false: contradiction.\n\nIn Lean, `fun h => hdd.mp h h` is the Girard-Reynolds Y-combinator applied to `hdd.mp`: it produces a proof of $N$ from the assumption of $\\neg N$... wait, it produces $N$ from $e(d)(d)$ by self-application: `hdd.mp h : ¬(e d d)` applied to `h : e d d` gives False. So `fun h => hdd.mp h h : e d d → False = ¬(e d d)`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Russell's paradox",
+      "Curry paradox",
+      "self-application in type theory",
+      "term-mode proofs in Lean 4",
+      "Iff.mp and Iff.mpr"
+    ],
+    "prerequisites": [
+      "Iff introduction and elimination",
+      "Lean 4 term-mode proofs",
+      "negation as implication to False"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-propext-analysis",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "range": { "startLine": 142, "endLine": 160 },
+    "type": "insight",
+    "title": "Why propext Appears in the Classical Proof",
+    "content": "The `example : True := trivial` is a placeholder comment anchor for Part IV. The docstring above it explains precisely where propext enters `cantor_recovery`:\n\n1. `cantor_recovery` uses `Function.Surjective e`, giving `∃ a, e a = Not` (function equality: `e a : A → Prop` equals `Not : Prop → Prop`)\n2. This produces `hb : ¬b = b` — an equation between Props.\n3. The tactic `rwa [← hb]` rewrites `b` to `¬b` using this equation. This step implicitly calls `Eq.mpr (propext ...)` to lift the `Eq` to an `Iff` for the rewrite.\n\nThe `#print axioms cantor_constructive` and `#print axioms cantor_constructive_explicit` commands verify that the constructive versions use NONE of the three non-constructive axioms (propext, Quot.sound, Classical.choice). This makes the file self-certifying: the axiom check is part of the formal proof record.\n\nInterestingly, `iff_not_self` itself (used in `cantor_constructive`) is provable without any axioms — it's a pure intuitionistic tautology.",
+    "mathContext": "Propositional extensionality states: if $P \\leftrightarrow Q$ then $P = Q$ (as types/propositions). In Lean 4, `propext : (P ↔ Q) → P = Q`. The `rwa [← hb]` in `cantor_recovery` uses this: given `hb : ¬b = b` (Prop equality), it rewrites the goal from `b` to `¬b` using `Eq.mpr`. Without propext, you cannot use an `Eq Prop` for rewriting — it would need to be an `Iff` directly. This is the exact gap that `IsPointwiseSurjective` bridges: by using Iff from the start, the constructive proof never needs to convert Eq to Iff.",
+    "significance": "key",
+    "relatedConcepts": [
+      "propositional extensionality (propext)",
+      "Eq.mpr",
+      "rwa tactic",
+      "#print axioms",
+      "Lean 4 kernel axioms"
+    ],
+    "prerequisites": [
+      "propext in Lean 4",
+      "rwa vs rw tactics",
+      "Function.Surjective"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-instances",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "range": { "startLine": 162, "endLine": 176 },
+    "type": "concept",
+    "title": "Concrete Instances: Equality, Bool, and ℕ",
+    "content": "Three corollaries instantiate `cantor_no_pointwise_surjection` at specific types:\n\n**`eq_not_pointwise_surjective`**: The equality relation `(a, b) ↦ (a = b)` on any type `A` is not constructively surjective. Proof: apply `cantor_no_pointwise_surjection` to the identity-encoded relation. Concretely, for `a = 0` there's no `a` with `∀ x, (a = x) ↔ ¬(x = x)`, since `¬(a = a)` would be required (but `a = a` is true by refl).\n\n**`bool_not_pointwise_surjective`**: No encoding `e : Bool → Bool → Prop` can be constructively surjective. This applies to all 2-element type encodings.\n\n**`nat_not_pointwise_surjective`**: No encoding `e : ℕ → ℕ → Prop` can be constructively surjective. This is the most practically relevant case: it implies no program can enumerate all decidable properties of natural numbers up to logical equivalence.\n\nAll three are one-line applications of `cantor_no_pointwise_surjection`. They demonstrate the theorem is not vacuous — it applies to concrete, familiar types.",
+    "mathContext": "The non-constructive surjectivity of the equality relation is related to Cantor's theorem that $|\\mathcal{P}(A)| > |A|$: identifying predicates $A \\to \\mathrm{Prop}$ with subsets, the theorem says there is no surjection $A \\to \\mathcal{P}(A)$. The constructive version says: there is no pointwise-Iff-surjection. Since $\\{\\text{Bool-valued predicates}\\} \\cong \\mathcal{P}_{\\text{dec}}(\\mathbb{N})$ (decidable subsets), this gives the undecidability-like result that no computable enumeration covers all decidable properties up to equivalence.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cantor's power set theorem",
+      "decidable subsets of ℕ",
+      "equality relation as encoding",
+      "Bool and ℕ as base types"
+    ],
+    "prerequisites": [
+      "cantor_no_pointwise_surjection",
+      "Lean 4 type instantiation",
+      "rfl for reflexivity"
+    ]
+  }
+]
