@@ -1,0 +1,41 @@
+{
+  "source": "researcher-1",
+  "version": "1.0",
+  "annotations": [
+    {
+      "id": "ann-01",
+      "type": "key-insight",
+      "title": "The Central Reduction",
+      "content": "The entire proof rests on one arithmetic identity: cos(π/n) = cos(2π/(2n)). This connects the cos(π/n) family to the cos(2π/m) family via m = 2n, allowing the IsCyclotomicExtension machinery of AngleTrisectionOQ02OQ03OQ01 to apply directly.",
+      "location": "§1"
+    },
+    {
+      "id": "ann-02",
+      "type": "proof-technique",
+      "title": "Substitution in Parametric Families",
+      "content": "A common technique for relating parametric families: identify an arithmetic relationship between parameters (here n → 2n), then lift theorems from one family to the other. The key is that the proof of the target theorem only depends on the parameter through the cosine value, not the parameter itself.",
+      "location": "§2"
+    },
+    {
+      "id": "ann-03",
+      "type": "mathematical-fact",
+      "title": "IsCyclotomicExtension Gives the Degree",
+      "content": "The core Mathlib theorem used is IsCyclotomicExtension.finrank: [CyclotomicField m ℚ : ℚ] = φ(m). Combined with the fixed-field construction (maxRealSubfield has degree φ(m)/2), this gives natDegree(minpoly(cos(π/n))) = φ(2n)/2 without any manual computation.",
+      "location": "§2"
+    },
+    {
+      "id": "ann-04",
+      "type": "open-problem",
+      "title": "Remaining Sorry: Normality of ℚ(cos(π/n))",
+      "content": "The one sorry is on showing finrank SplittingField = φ(2n)/2. This requires: ℚ(cos(π/n))/ℚ is Galois (it is the fixed field of conjSubgroup, which is normal in the abelian group (ℤ/2nℤ)×), hence minpoly splits completely over ℚ(cos(π/n)), hence SplittingField = ℚ(cos(π/n)). Estimated ~80 lines to formalize.",
+      "location": "§4"
+    },
+    {
+      "id": "ann-05",
+      "type": "consistency-check",
+      "title": "Verified Against Known Cases",
+      "content": "The general formula φ(2n)/2 is cross-checked against all three previously proved cases: n=5 gives 2, n=7 gives 3, n=9 gives 3. These match the gallery entries AngleTrisectionCos20GalOQ01OQ02, AngleTrisectionCos20GalOQ01, and AngleTrisectionCos20Gal respectively.",
+      "location": "§6"
+    }
+  ]
+}
