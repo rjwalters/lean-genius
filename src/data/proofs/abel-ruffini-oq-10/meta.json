@@ -51,62 +51,118 @@
       "s5_a5_split_density_differ: 1/120 ≠ 1/60 (S₅ and A₅ have distinct split densities)",
       "s5_z5_irred_density_differ: 1/5 ≠ 4/5 (statistical distinguishability)",
       "a5_is_simple: A₅ is simple (alternatingGroup.isSimpleGroup_five)"
-    ],
-    "proofStrategy": "Chebotarev's density theorem is axiomatized. The completely split density (1/|G|) is proved by applying the axiom with C = {identity} and Finset.card_singleton. S₅ and A₅ statistics are verified computationally by native_decide using Equiv.Perm.cycleType. All density fractions are verified by norm_num. The Dirichlet density axiom is applied to primes ≡ 1 (mod n) with isUnit_one. Non-solvability of S₅ is imported from AbelRuffiniGaloisExtensions. A₅ simplicity uses alternatingGroup.isSimpleGroup_five.",
-    "openQuestions": [
-      "Can Chebotarev's density theorem be proved in Lean using Mathlib's Dedekind domain theory?",
-      "Can the Frobenius element be formally defined in Lean for number fields?",
-      "Does the Frobenius density signature (all conjugacy class densities) uniquely determine the Galois group?"
-    ],
-    "sections": [
-      {
-        "title": "Prime Density Predicate",
-        "content": "PrimeDensity P δ is defined via Filter.Tendsto: the ratio of P-primes to all primes up to N converges to δ. This formalizes the natural density of a set of primes.",
-        "startLine": 1,
-        "endLine": 60
-      },
-      {
-        "title": "Chebotarev Density Theorem (Axiomatized)",
-        "content": "The core axiom: for a Galois extension L/ℚ with group G and conjugacy class C, there exists a set of primes with natural density |C|/|G|. The proof requires Dedekind domains, Frobenius elements, and L-function analysis beyond current Mathlib.",
-        "startLine": 61,
-        "endLine": 120,
-        "theorems": ["chebotarev_density"]
-      },
-      {
-        "title": "Completely Split Primes",
-        "content": "Applying Chebotarev with C = {identity} gives that primes splitting completely in L/ℚ have density 1/|G| = 1/[L:ℚ]. This is the analytic-number-theory formulation of the reciprocity principle for Galois extensions.",
-        "startLine": 121,
-        "endLine": 160,
-        "theorems": ["split_completely_density"]
-      },
-      {
-        "title": "S₅ Conjugacy Class Statistics",
-        "content": "All 7 conjugacy classes of S₅ = Sym(5) are counted computationally. The cycle types (using Mathlib's Equiv.Perm.cycleType, which omits fixed points) are verified by native_decide, giving counts 24, 30, 20, 15, 20, 10, 1 summing to 120.",
-        "startLine": 161,
-        "endLine": 230,
-        "theorems": ["s5_card", "s5_fivecycles_count", "s5_fourcycles_count", "s5_threecycles_count", "s5_transpositions_count", "s5_double_transpositions_count", "s5_three_two_count", "s5_identity_count"]
-      },
-      {
-        "title": "A₅ Statistics and Simplicity",
-        "content": "A₅ has 5 conjugacy classes (unlike S₅ where all 24 five-cycles form one class, in A₅ they split into two classes of 12 each). A₅ is simple, proved via alternatingGroup.isSimpleGroup_five.",
-        "startLine": 231,
-        "endLine": 270,
-        "theorems": ["a5_card", "a5_order5_count", "a5_order3_count", "a5_order2_count", "a5_is_simple"]
-      },
-      {
-        "title": "Density Signatures and Solvability Detection",
-        "content": "The Chebotarev density distribution provides a statistical fingerprint of the Galois group. For degree-5 polynomials, the irreducibility density is 1/5 (S₅), 2/5 (A₅ or D₅), or 4/5 (ℤ/5ℤ). The split-complete density 1/120 (S₅) ≠ 1/60 (A₅) distinguishes these non-solvable groups.",
-        "startLine": 271,
-        "endLine": 369
-      }
-    ],
-    "mathContext": {
-      "field": "Analytic Number Theory / Galois Theory",
-      "keyTheorem": "Chebotarev Density Theorem (1922): For a Galois extension L/K with group G and conjugacy class C ⊆ G, the Dirichlet density of primes with Frobenius in C is |C|/|G|.",
-      "historicalBackground": "Frobenius (1880) proved the special case for cyclic groups; Chebotarev (1922) extended it to all Galois extensions using a topological argument over function fields. This theorem simultaneously proves Dirichlet's theorem on primes in arithmetic progressions and gives the analytic foundation for Galois theory's relationship to prime splitting.",
-      "significance": "Chebotarev's theorem is the bridge between Galois theory and analytic number theory. It shows that the Galois group is encoded in the statistical distribution of primes. In the Abel-Ruffini context, it gives a probabilistic criterion for detecting non-solvability: if the density of irreducible primes for a degree-5 polynomial is 1/5, the Galois group is S₅ (non-solvable)."
-    }
+    ]
   },
+  "overview": {
+    "historicalContext": "Nicolai Chebotarev (1894–1947) proved his density theorem in 1922 while in Odessa, resolving a conjecture of Ferdinand Georg Frobenius that had stood open since 1880. Frobenius had proved a density statement for prime splitting in cyclic Galois extensions and conjectured the general non-abelian case. Chebotarev's breakthrough was a reduction argument: he transformed the density problem over number fields into the analogous statement over function fields Fq(t), where the Frobenius element is the literal q-power map and density arguments are more tractable via Hurwitz's theorem on curve coverings. Lifting the function-field result back to number fields completed the proof. This technique prefigured key ideas in Weil's 1949 work on zeta functions of curves and the later Langlands program. The theorem simultaneously subsumes Dirichlet's 1837 theorem on primes in arithmetic progressions (as the special case of cyclotomic extensions ℚ(ζn)/ℚ with Galois group (ℤ/nℤ)×), Frobenius's density theorem for cyclic groups, and Dedekind's theorem connecting polynomial factorization types mod p to cycle types in the Galois group. Its role in Abel-Ruffini: for a degree-5 polynomial with Galois group S₅ (non-solvable), exactly 24/120 = 1/5 of primes make the polynomial irreducible mod p — a statistical fingerprint of non-solvability.",
+    "problemStatement": "For a Galois extension $L/\\mathbb{Q}$ with Galois group $G \\cong \\text{Gal}(L/\\mathbb{Q})$ and conjugacy class $C \\subseteq G$, the natural density of primes $p$ whose Frobenius element $\\text{Frob}_p \\in G$ lies in $C$ equals $|C|/|G|$: $$\\delta\\bigl(\\{p \\text{ prime (unramified in } L\\text{)} : \\text{Frob}_p \\in C\\}\\bigr) = \\frac{|C|}{|G|}.$$ In the Lean formalization, `PrimeDensity P δ` encodes natural density via `Filter.Tendsto`: the ratio of $P$-primes to all primes up to $N$ converges to $\\delta$ as $N \\to \\infty$. The axiom `chebotarev_density` asserts existence of such a prime predicate for every conjugacy class $C$ in a Galois extension.",
+    "proofStrategy": "The Chebotarev density theorem is axiomatized at the core. From this single axiom, 23 theorems are derived in a three-layer structure. Layer 1 (applications): split_completely_density applies chebotarev_density with C = {identity}, proving density 1/|G| by Finset.card_singleton; primes_one_mod_n_density applies dirichlet_density (a second axiom for cyclotomic fields) via isUnit_one. Layer 2 (computational): all S₅ and A₅ conjugacy class statistics are verified by native_decide using Equiv.Perm.cycleType — Lean's kernel-level computation gives machine-checked counts for all 7 S₅ classes (total 120) and all A₅ order-statistics (total 60). Layer 3 (arithmetic): density fractions are verified by norm_num, and the solvability detection theorems prove key inequalities (1/120 ≠ 1/60, 1/5 ≠ 4/5) that distinguish Galois group signatures. Non-solvability of S₅ is imported from AbelRuffiniGaloisExtensions, completing the Abel-Ruffini connection.",
+    "keyInsights": [
+      "The Frobenius element Frob_p is defined (up to conjugacy) for each prime p unramified in L: it is the unique σ ∈ Gal(L/ℚ) satisfying σ(x) ≡ x^p (mod 𝔓) for prime ideals 𝔓 above p. Chebotarev's theorem asserts that as p ranges over primes, Frob_p equidistributes across conjugacy classes — each class C attracts density |C|/|G| of all primes. This equidistribution encodes the full Galois group in prime arithmetic.",
+      "The theorem simultaneously generalizes three classical results: Frobenius density (1880) for prime splitting in cyclic extensions; Dirichlet's theorem on primes in arithmetic progressions (cyclotomic special case G = (ℤ/nℤ)×); and Dedekind's cycle-type factorization theorem connecting f's factorization mod p to the cycle type of Frob_p. The unification demonstrates that abstract Galois groups are precisely the statistical invariants governing prime arithmetic.",
+      "The native_decide verification of S₅ and A₅ conjugacy class sizes showcases Lean's kernel-level computation: Lean's type checker directly evaluates finite group operations over Fin 5, providing formal certificates that 1+10+15+20+20+30+24 = 120 = 5! and that Mathlib's cycleType encoding correctly classifies each element. This machine-checked foundation guarantees the density fractions derived by norm_num are grounded in correct group-theoretic counts.",
+      "In A₅, the 24 five-cycles split into TWO conjugacy classes of 12 each, unlike S₅ where they form one class of 24. This splitting occurs because |C_{A₅}(σ)| = 5 for a 5-cycle σ (giving orbit size 60/5 = 12 in A₅), while S₅-conjugation uses both even and odd permutations to reach all 24 elements. This structural difference is the key distinguisher between S₅ and A₅ in their Chebotarev density fingerprints.",
+      "The density signature (full distribution of Frobenius densities across all conjugacy classes) uniquely identifies the Galois group among transitive subgroups of Sn, but single statistics are insufficient: D₅ (solvable) and A₅ (non-solvable) both have 5-cycle density 2/5 and are indistinguishable by this one number. The complete density profile — all conjugacy class fractions together — is required. This connects Chebotarev's theorem to practical Galois group computation algorithms used in computer algebra systems."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Imports and Mathematical Background",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Eight imports establish the mathematical infrastructure: AbelRuffini (field theory + radical solvability), Solvable (IsSolvable predicate), Alternating (alternatingGroup and A₅ simplicity), Galois.Basic (IsGalois typeclass), PrimeCounting (Nat.primeCounting), SpecificLimits (Filter.Tendsto), and two parent Abel-Ruffini files (GaloisExtensions and OQ05). The module docstring describes Chebotarev's theorem and includes the full S₅ conjugacy class table with Chebotarev densities using Mathlib's Equiv.Perm.cycleType encoding, which lists only cycle lengths ≥ 2 and omits fixed points."
+    },
+    {
+      "id": "prime-density-predicate",
+      "title": "Prime Density Predicate (PrimeDensity)",
+      "startLine": 66,
+      "endLine": 80,
+      "summary": "Defines `PrimeDensity P δ` via `Filter.Tendsto`: the ratio of P-primes to all primes up to N converges to δ ∈ ℝ as N → ∞. `Nat.primeCounting N` counts primes ≤ N; the if-guard `if (Nat.primeCounting N : ℝ) = 0 then 0` prevents division by zero when N < 2. This noncomputable definition requires a `DecidablePred` instance for P, allowing the filter numerator to be computed as a Finset cardinality."
+    },
+    {
+      "id": "chebotarev-axiom-section",
+      "title": "Chebotarev Density Theorem (Axiomatized)",
+      "startLine": 81,
+      "endLine": 109,
+      "summary": "The core axiom `chebotarev_density`: for a Galois extension L/ℚ with group G equipped with `hG : Nonempty (G ≃* (L ≃ₐ[ℚ] L))` and conjugacy class C (with `hC_conj : ∀ g ∈ C, ∀ h, h * g * h⁻¹ ∈ C`), there exists a prime predicate `frobIn` with `PrimeDensity frobIn (|C|/|G|)`. Axiomatized because Dedekind domain theory, Frobenius elements for unramified primes, and L-function analytic continuation are not yet formalized in Mathlib.",
+      "theorems": ["chebotarev_density"]
+    },
+    {
+      "id": "split-completely-section",
+      "title": "Completely Split Primes: Density 1/|G|",
+      "startLine": 110,
+      "endLine": 134,
+      "summary": "Applies `chebotarev_density` with C = {1} (the identity conjugacy class). The `hconj` hypothesis is proved by `simp [mem_singleton]` + `group`: h·1·h⁻¹ = 1 for all h ∈ G. `Finset.card_singleton` gives |{1}| = 1, so the density is 1/|G|. Primes that split completely in L have Frob_p = id — these are the primes where every prime ideal above p has inertia degree 1, meaning the minimal polynomial of a primitive element splits into [L:ℚ] distinct linear factors mod p.",
+      "theorems": ["split_completely_density"]
+    },
+    {
+      "id": "dirichlet-theorem-section",
+      "title": "Dirichlet's Theorem as Chebotarev Special Case",
+      "startLine": 135,
+      "endLine": 159,
+      "summary": "Axiomatizes `dirichlet_density`: for gcd(a,n) = 1 (i.e., `IsUnit a` in ZMod n), the density of primes p ≡ a (mod n) is 1/φ(n). This is the Chebotarev special case with L = ℚ(ζn), G = (ℤ/nℤ)×, C = {[a]}. The theorem `primes_one_mod_n_density` specializes to a = 1 via `isUnit_one`. Derivation from `chebotarev_density` would require: constructing ℚ(ζn) as a Galois extension, identifying Gal(ℚ(ζn)/ℚ) ≃ (ℤ/nℤ)× via the cyclotomic character, and computing Frobenius at p as [p] ∈ (ℤ/nℤ)×.",
+      "theorems": ["dirichlet_density", "primes_one_mod_n_density"]
+    },
+    {
+      "id": "s5-conjugacy-classes-section",
+      "title": "S₅ Conjugacy Class Statistics (native_decide)",
+      "startLine": 160,
+      "endLine": 221,
+      "summary": "Verifies the 7 conjugacy classes of S₅ = Equiv.Perm (Fin 5) computationally by native_decide using `Equiv.Perm.cycleType : Multiset ℕ` (omitting fixed points, listing only cycle lengths ≥ 2): ∅ (identity, 1), {2} (transpositions, 10), {2,2} (double transpositions, 15), {3} (3-cycles, 20), {3,2} ((3+2)-cycles, 20), {4} (4-cycles, 30), {5} (5-cycles, 24). Sum: 1+10+15+20+20+30+24 = 120 = 5!. Each count gives the Chebotarev density for the corresponding polynomial factorization type.",
+      "theorems": ["s5_card", "s5_fivecycles_count", "s5_fourcycles_count", "s5_threecycles_count", "s5_transpositions_count", "s5_double_transpositions_count", "s5_three_two_count", "s5_identity_count"]
+    },
+    {
+      "id": "a5-conjugacy-classes-section",
+      "title": "A₅ Conjugacy Classes and Simplicity",
+      "startLine": 222,
+      "endLine": 261,
+      "summary": "Verifies A₅ = alternatingGroup (Fin 5) statistics: 24 order-5 elements (splitting into two conjugacy classes of 12 each), 20 order-3 elements (3-cycles), 15 order-2 elements (double transpositions), |A₅| = 60. The five-cycle splitting reflects |C_{A₅}(σ)| = 5, giving orbit size 60/5 = 12. A₅ simplicity follows from `alternatingGroup.isSimpleGroup_five` (Mathlib's certified proof). All counts verified by native_decide.",
+      "theorems": ["a5_card", "a5_order5_count", "a5_order3_count", "a5_order2_count", "a5_is_simple"]
+    },
+    {
+      "id": "density-fractions-section",
+      "title": "Chebotarev Density Fraction Arithmetic",
+      "startLine": 262,
+      "endLine": 307,
+      "summary": "Verifies by norm_num: all 7 S₅ Chebotarev density fractions (24/120=1/5, 30/120=1/4, 20/120=1/6, 15/120=1/8, 20/120=1/6, 10/120=1/12, 1/120=1/120) and their sum = 1. All 5 A₅ density fractions (12/60=1/5 twice, 20/60=1/3, 15/60=1/4, 1/60=1/60) and their sum = 1. The degree-5 irreducibility density table: 4/5 (ℤ/5ℤ), 2/5 (D₅), 2/5 (A₅), 1/5 (S₅). Key inequalities: 1/120 ≠ 1/60 and 1/5 ≠ 4/5.",
+      "theorems": ["s5_chebotarev_densities", "s5_densities_sum_to_one", "a5_chebotarev_densities", "a5_densities_sum_to_one", "degree5_irreducibility_densities", "s5_a5_split_density_differ", "s5_z5_irred_density_differ"]
+    },
+    {
+      "id": "solvability-detection-section",
+      "title": "Solvability Detection via Density Signatures",
+      "startLine": 308,
+      "endLine": 369,
+      "summary": "Imports `s5_not_solvable` from AbelRuffiniGaloisExtensions, completing the Abel-Ruffini connection. Documents that A₅ is non-solvable: as a non-abelian simple group, [A₅,A₅] = A₅ so its derived series is constant and never reaches {1}. Explains the key limitation: A₅ (non-solvable) and D₅ (solvable) share 5-cycle density 2/5, so single density statistics cannot always detect solvability — the full Frobenius density signature over all conjugacy classes is required for group identification.",
+      "theorems": ["s5_not_solvable"]
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalizes Chebotarev's density theorem as the analytic-number-theoretic complement to Abel-Ruffini. Using a Filter.Tendsto prime density predicate, it axiomatizes the fundamental equidistribution of Frobenius elements across conjugacy classes, then derives 23 consequences including completely split prime density, all S₅ and A₅ conjugacy class sizes (machine-verified by native_decide), and the full density fraction arithmetic. The entry demonstrates that the Frobenius density signature of a degree-5 polynomial's Galois group is a computationally verifiable object — with the split-complete density 1/120 (S₅) ≠ 1/60 (A₅) providing a provably correct distinguisher between these non-solvable groups.",
+    "implications": "Chebotarev's density theorem is the bridge between Galois theory and analytic number theory, encoding the abstract structure of the Galois group in the statistics of prime splitting. In the Abel-Ruffini context, it provides a concrete, probabilistic criterion for non-solvability: any degree-5 polynomial with Galois group S₅ will have exactly 1/5 of primes making it irreducible mod p. The machine-checked conjugacy class counts make this a computationally verifiable test. More broadly, this formalization demonstrates how deep analytic results (axiomatized here for L-function reasons) can serve as foundations from which combinatorial and arithmetic consequences are formally derived, establishing the pattern for future Mathlib formalizations of Chebotarev's theorem itself once Frobenius elements for number fields are in Mathlib.",
+    "openQuestions": [
+      "Can Chebotarev's density theorem be proved from scratch in Lean 4 using Mathlib's Dedekind domain theory, Frobenius element formalism for number fields, and Dirichlet series? This would require algebraic number theory infrastructure — particularly the theory of ramification, inertia groups, and Frobenius elements — not yet in Mathlib.",
+      "Does the full Frobenius density signature uniquely determine the Galois group of a polynomial over ℚ among all transitive subgroups of Sn? Formalizing this uniqueness requires the theory of transitive group actions and the relationship between conjugacy class sizes and group structure.",
+      "Can the density argument be extended to count primes with prescribed Frobenius in non-Galois extensions, using Chebotarev's density theorem applied to the Galois closure? This would generalize the polynomial factorization density results to relative extensions."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "companion",
+      "description": "Abel-Ruffini theorem — Galois insolvability of degree-5 polynomials; this entry provides the Chebotarev density complement, linking the abstract Galois group to the statistical distribution of primes"
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "uses",
+      "description": "Provides the S₅ non-solvability theorem imported here as s5_not_solvable, connecting Chebotarev density signatures back to the Abel-Ruffini impossibility result"
+    },
+    {
+      "targetId": "abel-ruffini-oq-09",
+      "relationship": "companion",
+      "description": "Liouville's theorem on non-elementary integration — another analytic companion to Abel-Ruffini, showing that just as some polynomials have no radical solutions, some integrals have no elementary antiderivatives"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.FieldTheory.AbelRuffini",
