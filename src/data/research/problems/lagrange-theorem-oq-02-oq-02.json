@@ -44,7 +44,10 @@
       "conj_stabilizer_eq_centralizer proved cleanly using group tactic for g*x*g⁻¹ = x ↔ g*x = x*g equivalence",
       "card_conjClass_eq_one_iff_mem_center proved via orbit uniqueness: unique orbit ↔ all elements fixed by conjugation ↔ central",
       "IsPGroup.commGroupOfCardEqPrimeSq gives groups of order p² are abelian directly from Mathlib",
-      "A4 has 4 conjugacy classes (sizes 1,3,4,4) and trivial center — verified by native_decide"
+      "A4 has 4 conjugacy classes (sizes 1,3,4,4) and trivial center — verified by native_decide",
+      "ConjAct.stabilizer_eq_centralizer (Mathlib): stabilizer (ConjAct G) x = centralizer {toConjAct x} — the key lemma connecting stabilizer to centralizer",
+      "MulAction.orbitEquivQuotientStabilizer gives orbit ≃ G ⧸ stabilizer — use for card_conjClass_eq_centralizer_index",
+      "ConjAct G is definitionally G as a type synonym, so ConjAct.toConjAct x = x by rfl — closes the centralizer equality"
     ],
     "mathlibGaps": [
       "card_conjClass_eq_centralizer_index needs orbit Nat.card to centralizer index connection — technical gap in orbit-stabilizer API"
