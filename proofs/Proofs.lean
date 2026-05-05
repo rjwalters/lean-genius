@@ -2198,6 +2198,7 @@ import Proofs.FundamentalTheoremAlgebraOQ04
 import Proofs.FundamentalTheoremCalculus
 import Proofs.FundamentalTheoremCalculusLebesgue
 import Proofs.FundamentalTheoremCalculusLebesgueOQ01
+import Proofs.FundamentalTheoremCalculusLebesgueOQ04
 import Proofs.FundamentalTheoremCalculusOQ04
 import Proofs.FundamentalTheoremCalculusStokes
 import Proofs.FundamentalTheoremCalculusStokesAristotle
