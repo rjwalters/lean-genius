@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-counterexample-docstring",
+    "proofId": "dissection-of-cubes-oq-03-oq-02",
+    "range": { "startLine": 5, "endLine": 50 },
+    "type": "insight",
+    "title": "The 1-Cube Counterexample: Why global_min_not_reaching_top Is False",
+    "content": "The module docstring presents the key mathematical insight before any code: the 1-cube dissection d = {unit_cube} satisfies all hypotheses of global_min_not_reaching_top (CoversUnitCube, allDifferentSizes vacuously, Nonempty) yet has c_min.z + c_min.side = 0 + 1 = 1, violating the sorry-goal. This is the counterexample that invalidates the OQ-03 approach. The fix: restrict attention to the bottom floor (z = 0), where z=0 and side<1 together give z+side<1.",
+    "mathContext": "Let $d = \\{C\\}$ with $C = (x,y,z,s) = (0,0,0,1)$. Then $\\text{allDifferentSizes}$ holds vacuously and $C$ covers $[0,1]^3$, but $C.z + C.\\text{side} = 1 \\not< 1$.",
+    "significance": "key",
+    "relatedConcepts": ["vacuous truth", "edge cases in geometric descent", "counterexample construction", "infinite descent"],
+    "prerequisites": ["Littlewood's cube dissection argument", "allDifferentSizes definition", "CoversUnitCube definition"]
+  },
+  {
+    "id": "ann-no-unit-cube",
+    "proofId": "dissection-of-cubes-oq-03-oq-02",
+    "range": { "startLine": 65, "endLine": 101 },
+    "type": "technique",
+    "title": "No Unit-Side Cube: Pairwise Disjoint Contradiction in 6 Cases",
+    "content": "The proof extracts the x,y,z=0 coordinates from inUnitCube + side=1, finds a second cube c' using Finset.card_erase_of_mem (erase c, check nonempty via card≥2), then calls pairwise_disjoint which provides 6 disjuncts (one for each axis direction: c before c', c' before c). Each linarith call derives contradiction from c'.side>0 (from side_pos) and the forced zero/one coordinates. The 6-case rcases pattern exactly matches the 6-disjunct interiorDisjoint definition.",
+    "mathContext": "If $c.\\text{side} = 1$ then $c = [0,1]^3$. For any $c' \\neq c$ in $d$: $c'.\\text{side} > 0$ and $c' \\subset [0,1]^3$, so $\\text{int}(c) \\cap \\text{int}(c') \\neq \\emptyset$, contradicting \\text{interiorDisjoint}$(c, c')$.",
+    "significance": "key",
+    "relatedConcepts": ["pairwise_disjoint", "interiorDisjoint", "Finset.card_erase_of_mem", "6-case axis separation"],
+    "prerequisites": ["CubeDissection.pairwise_disjoint", "Cube.interiorDisjoint definition", "Finset.exists_min_image"]
+  },
+  {
+    "id": "ann-all-lt-one",
+    "proofId": "dissection-of-cubes-oq-03-oq-02",
+    "range": { "startLine": 107, "endLine": 115 },
+    "type": "technique",
+    "title": "All Cubes Have Side < 1: Dichotomy via lt_or_eq_of_le",
+    "content": "The corollary uses the classical trichotomy trick: side ≤ 1 (from inUnitCube, z-coordinate bounds), then rcases lt_or_eq_of_le splits into side < 1 (done) or side = 1 (apply no_unit_cube_in_multi_dissection to get False, then elim). The pattern `(· ).elim` converts False to any goal. This is cleaner than contra or by_contra because it makes the logical structure explicit.",
+    "mathContext": "$c.\\text{side} \\leq 1$ (from containment) and $c.\\text{side} \\neq 1$ (from no-unit-cube), so $c.\\text{side} < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lt_or_eq_of_le", "False.elim", "trichotomy in Lean 4"],
+    "prerequisites": ["Lean 4 rcases patterns", "lt_or_eq_of_le lemma", "no_unit_cube_in_multi_dissection"]
+  },
+  {
+    "id": "ann-bottom-floor-not-top",
+    "proofId": "dissection-of-cubes-oq-03-oq-02",
+    "range": { "startLine": 136, "endLine": 140 },
+    "type": "insight",
+    "title": "z=0 + side<1 Gives z+side<1: The Key Geometric Observation",
+    "content": "This theorem is a one-liner (linarith) once the preconditions are set up: c_min.z = 0 and c_min.side < 1 immediately give c_min.z + c_min.side = c_min.side < 1. The mathematical insight is that the bottom floor condition (z=0) eliminates the problematic case where z > 0 and z + side = 1 — exactly the case the counterexample exploits.",
+    "mathContext": "$z = 0 \\implies z + s = s$; and $s < 1$, so $z + s < 1$. The global minimum could have $z > 0$ and $z + s = 1$, but floor cubes cannot.",
+    "significance": "key",
+    "relatedConcepts": ["bottom floor (z=0)", "linarith", "geometric constraint satisfaction"],
+    "prerequisites": ["bottom_floor_min_side_lt_one", "real arithmetic (linarith)"]
+  },
+  {
+    "id": "ann-descent-ready",
+    "proofId": "dissection-of-cubes-oq-03-oq-02",
+    "range": { "startLine": 154, "endLine": 166 },
+    "type": "technique",
+    "title": "Descent-Ready Existence: Finset.exists_min_image on the Bottom Floor",
+    "content": "The existence proof uses Finset.exists_min_image to extract the minimum-side cube from cubesTouchingBottom (the Finset of cubes with z=0). The filter gives both the membership (c_min ∈ d.cubes via mem_filter.1) and the z=0 fact (via mem_filter.2). The minimum condition (hc_min_min) is not needed for this theorem — only membership and z=0 are used, making the proof robust.",
+    "mathContext": "From $\\text{CoversUnitCube}$, the bottom floor $\\{c \\in d.\\text{cubes} : c.z = 0\\}$ is nonempty. Take the minimum-side cube; it satisfies $z = 0$ and $z + \\text{side} < 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.exists_min_image", "cubesTouchingBottom", "bottom_floor_nonempty", "descent starting point"],
+    "prerequisites": ["Finset.exists_min_image", "Finset.mem_filter", "CoversUnitCube → bottom floor nonempty"]
+  },
+  {
+    "id": "ann-formal-counterexample",
+    "proofId": "dissection-of-cubes-oq-03-oq-02",
+    "range": { "startLine": 177, "endLine": 186 },
+    "type": "insight",
+    "title": "Machine-Checked Counterexample: A Formally Proved False Theorem",
+    "content": "global_min_false_for_unit_cube formally proves that the sorry-goal is false: given d = singleton with unit cube, any c_min ∈ d.cubes must be the unit cube (Finset.mem_singleton), and after subst, c_min.z + c_min.side = 0 + 1 = 1 by norm_num. This is an unusual theorem type: a formally proved refutation of a claimed theorem. It shows that OQ-03's sorry is not merely unproved but unprovable without additional hypotheses.",
+    "mathContext": "Machine-checked: $\\exists d$ with all OQ-03 hypotheses satisfied such that $c_{\\min}.z + c_{\\min}.\\text{side} = 1$. The sorry-goal is false as stated.",
+    "significance": "key",
+    "relatedConcepts": ["formal counterexample", "Finset.mem_singleton", "subst tactic", "refutation in Lean 4"],
+    "prerequisites": ["Lean 4 subst tactic", "Finset.mem_singleton", "norm_num"]
+  },
+  {
+    "id": "ann-descent-context",
+    "proofId": "dissection-of-cubes-oq-03-oq-02",
+    "range": { "startLine": 188, "endLine": 208 },
+    "type": "context",
+    "title": "Littlewood's Descent: The Remaining Gap and Next Steps",
+    "content": "The closing summary section (comment, not code) explains the 5-step descent argument. Steps 1-4 are fully machine-checked by this file. Step 5 — applying exists_smaller_cube to non-bottom-floor cubes — requires showing c₂.z + c₂.side < 1, which needs smallest_above_is_smaller: the cubes covering the top face of the floor minimum are strictly smaller than it. This 2D tiling argument (smallest cube in a covering of a rectangle is strictly smaller than the rectangle) is the remaining mathematical gap.",
+    "mathContext": "Complete descent: $c_1$ (floor min, side $s_1$) $\\to c_2$ (above, side $s_2 < s_1$) $\\to c_3 < s_2 \\to \\cdots$ (strictly decreasing sequence in a finite dissection — contradiction).",
+    "significance": "context",
+    "relatedConcepts": ["infinite descent", "Wiedijk #82 impossibility", "smallest_above_is_smaller (open)", "floor-by-floor argument"],
+    "prerequisites": ["exists_smaller_cube (from DissectionOfCubesOQ03)", "2D tiling argument", "well-ordering principle"]
+  }
+]
