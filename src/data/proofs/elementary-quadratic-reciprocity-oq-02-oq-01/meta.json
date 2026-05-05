@@ -1,0 +1,86 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-02-oq-01",
+  "title": "Gauss Sum Squared Formula: Corrected Proof via Mathlib",
+  "slug": "elementary-quadratic-reciprocity-oq-02-oq-01",
+  "description": "Corrects and proves the Gauss sum squared formula from the parent entry (OQ-02). The parent axiomatized ∃ τ : ℤ, τ² = (-1)^{(p-1)/2} · p — a false claim since primes are not perfect squares. The correct formula: gaussSum χ ψ ^ 2 = χ(-1) · p, where τ = gaussSum χ ψ lives in the codomain R' of the characters (not in ℤ). Proved directly from Mathlib's `gaussSum_sq` theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "gauss-sums",
+      "character-theory",
+      "finite-fields",
+      "legendre-symbol",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-05",
+    "axiomCount": 0,
+    "assumptions": "No axioms. All results proved from Mathlib foundations.",
+    "lineCount": 156,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "gauss_sum_sq_corrected: gaussSum χ ψ ^ 2 = χ(-1) * p for quadratic characters — proved from Mathlib's gaussSum_sq [line 68]",
+      "legendreSym_eq_quadChar: legendreSym p a = quadraticChar (ZMod p) a — definitional equality [line 83]",
+      "legendre_gauss_sum_sq: Gauss sum formula for the specific Legendre character embedded via ring hom [line 89]",
+      "parent_axiom_is_false: ¬ ∃ τ : ℤ, τ² = (-1)^(p/2) * p for odd primes p — proves parent's OQ-02 axiom is false [line 108]",
+      "gauss_sum_analysis: Summary conjunction of the proved formula and the falsity of the integer axiom [line 145]"
+    ],
+    "openQuestions": [
+      "Provide a concrete construction: exhibit a primitive additive character ψ : AddChar (ZMod p) ℂ using complex exponentials, and prove the resulting Gauss sum equals √{(-1)^{(p-1)/2} · p} exactly",
+      "Formalize the full Gauss sum proof of quadratic reciprocity: from τ² = χ(-1)·p, derive QR via Frobenius lifting in Mathlib's cyclotomic infrastructure"
+    ],
+    "mathContext": "The Gauss sum G(χ, ψ) = Σ_{a ∈ ZMod p} χ(a) · ψ(a) for a nontrivial quadratic character χ and primitive additive character ψ satisfies G² = χ(-1) · p. This corrects a false axiom in the parent entry (OQ-02) which incorrectly claimed the sum lay in ℤ. The formula is a key step in the Gauss sum proof of quadratic reciprocity (third QR pathway after Eisenstein's and Zolotarev's).",
+    "proofStrategy": "gauss_sum_sq_corrected applies Mathlib.NumberTheory.GaussSum.gaussSum_sq and rewrites Fintype.card (ZMod p) to p via ZMod.card. parent_axiom_is_false uses Nat.Prime to show primes are not perfect squares (case τ² = p) and sq_nonneg to rule out τ² = -p.",
+    "historicalContext": "Gauss (Disquisitiones Arithmeticae, 1801, §356) introduced the Gauss sum G = Σ χ(a) ζ^a ∈ ℤ[ζ_p] and proved G² = (-1)^{(p-1)/2} · p. This is the key identity enabling the fourth proof of quadratic reciprocity. The confusion over whether G lives in ℤ (no) vs ℤ[ζ_p] or ℂ (yes) was corrected here.",
+    "problemStatement": "The parent entry OQ-02 axiomatized gauss_sum_sq claiming ∃ τ : ℤ, τ² = (-1)^{(p/2)} · p. Is this correct? If not, what is the correct statement and can it be proved?",
+    "sections": [
+      {
+        "id": "sec-main-formula",
+        "title": "Corrected Gauss Sum Formula",
+        "summary": "The main theorem: gaussSum χ ψ ^ 2 = χ(-1) * p for any nontrivial quadratic character over ZMod p and primitive additive character, with values in a domain R'. Proved via Mathlib's gaussSum_sq.",
+        "theorems": ["gauss_sum_sq_corrected"]
+      },
+      {
+        "id": "sec-legendre-connection",
+        "title": "Legendre Symbol Connection",
+        "summary": "The Legendre symbol is the quadratic character of ZMod p by definition. The Gauss sum of the Legendre character embedded via φ : ℤ →+* R' satisfies the corrected formula.",
+        "theorems": ["legendreSym_eq_quadChar", "legendre_gauss_sum_sq"]
+      },
+      {
+        "id": "sec-axiom-falsity",
+        "title": "Parent Axiom Is False",
+        "summary": "The parent entry's axiom gauss_sum_sq (claiming τ : ℤ) is proved false for all odd primes p. Case p ≡ 1 (mod 4): need τ² = p but p is not a perfect square. Case p ≡ 3 (mod 4): need τ² = -p < 0 but τ² ≥ 0.",
+        "theorems": ["parent_axiom_is_false"]
+      },
+      {
+        "id": "sec-summary",
+        "title": "Complete Analysis",
+        "summary": "Summary theorem combining both results: the correct formula is proved, and the parent's incorrect axiom is disproved.",
+        "theorems": ["gauss_sum_analysis"]
+      }
+    ]
+  },
+  "leanFile": {
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "lineCount": 156,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean",
+    "imports": [
+      "Mathlib.NumberTheory.GaussSum",
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticChar.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol.Basic",
+      "Mathlib.Algebra.Ring.Commute",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "GaussSumSquaredCorrection"
+  }
+}
