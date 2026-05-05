@@ -48,6 +48,13 @@
       "The domain restriction for spherical geometry (sin ≠ 0, i.e., arcs ≠ kπ) has no hyperbolic analogue since sinh is globally nonzero away from 0",
       "When all arcs are interior (in (0,π)), the product is strictly positive and hence can never equal -1 — a geometric sanity check proved formally",
       "The 2×2 matrix (Ceva/Menelaus × Euclidean/Spherical/Hyperbolic) is now complete in this gallery, all following the same algebraic pattern"
+    ],
+    "prerequisites": [
+      "Menelaus theorem (Euclidean version)",
+      "Spherical trigonometry and great circle arcs",
+      "Parent spherical Ceva theorem (cevas-theorem-non-euclidean)",
+      "Hyperbolic Menelaus (OQ02 sibling) for the sinh analogy",
+      "Real.sin properties in Mathlib"
     ]
   },
   "sections": [
@@ -119,17 +126,17 @@
   },
   "crossReferences": [
     {
-      "targetId": "cevas-theorem-non-euclidean-oq-02",
+      "proofId": "cevas-theorem-non-euclidean-oq-02",
       "relationship": "extends",
       "description": "Parent OQ: hyperbolic Menelaus theorem using sinh — this file proves the spherical analogue using sin with the same algebraic core"
     },
     {
-      "targetId": "cevas-theorem-non-euclidean",
+      "proofId": "cevas-theorem-non-euclidean",
       "relationship": "sibling",
       "description": "Spherical Ceva theorem: the concurrent-cevians analogue (product = 1) of the transversal theorem (product = -1) proved here"
     },
     {
-      "targetId": "cevas-theorem",
+      "proofId": "cevas-theorem",
       "relationship": "ancestor",
       "description": "Euclidean Ceva's theorem: the foundational result extended to spherical and hyperbolic geometry by this family of proofs"
     }
