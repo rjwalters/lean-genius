@@ -1,0 +1,145 @@
+{
+  "id": "cantor-diagonalization-oq-03-oq-01-oq-04",
+  "title": "Constructive Cantor Diagonal: Eliminating Propositional Extensionality",
+  "slug": "cantor-diagonalization-oq-03-oq-01-oq-04",
+  "description": "Proves that Cantor's diagonal theorem holds in purely constructive logic, answering OQ-04 from the Lawvere FPT entry. By replacing function equality (which requires propext) with pointwise Iff witnesses, the impossibility of 'constructively surjective' encodings follows without any non-constructive axioms.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01OQ04.lean",
+    "tags": [
+      "logic",
+      "constructive",
+      "cantor",
+      "diagonalization",
+      "type-theory",
+      "propext-free"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 163,
+    "dateAdded": "2026-05-05",
+    "assumptions": "None. Uses only Lean 4 core type theory (no propext, funext, or Classical.choice).",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "iff_not_self",
+        "description": "¬(p ↔ ¬p) — used for the final contradiction step",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsPointwiseSurjective: constructive surjectivity condition using pointwise Iff instead of function equality",
+      "cantor_constructive: Cantor diagonal theorem proved without propext using IsPointwiseSurjective",
+      "cantor_constructive_explicit: fully expanded proof showing exact contradiction",
+      "surjective_implies_pointwise: classical surjectivity implies constructive surjectivity (one direction only)",
+      "cantor_recovery_from_constructive: classical cantor_recovery derived from constructive version"
+    ],
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "sections": [
+    {
+      "id": "constructive-surjectivity",
+      "title": "The Constructive Surjectivity Condition",
+      "startLine": 47,
+      "endLine": 75,
+      "summary": "Defines IsPointwiseSurjective using pointwise Iff witnesses instead of function equality. Shows classical surjectivity implies constructive surjectivity via congr_fun.",
+      "mathContext": "Function.Surjective e requires ∀ P, ∃ a, e a = P (function equality). IsPointwiseSurjective only requires ∀ P, ∃ a, ∀ x, e a x ↔ P x (pointwise logical equivalence). The latter never invokes propext."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Constructive Cantor Diagonal Theorem",
+      "startLine": 78,
+      "endLine": 110,
+      "summary": "Proves cantor_constructive: any constructively surjective e : A → A → Prop leads to contradiction, using only intuitionistic logic. The diagonal predicate D(a) = ¬(e a a) yields hdd : e d d ↔ ¬(e d d), which is directly contradictory.",
+      "mathContext": "The key step: specializing the witness at x = d gives e d d ↔ ¬(e d d). This is immediately contradictory via iff_not_self without any propext. Compare: in cantor_recovery, the equation ¬b = b requires propext to use for contradiction."
+    },
+    {
+      "id": "propext-analysis",
+      "title": "Why propext Appears in the Classical Proof",
+      "startLine": 131,
+      "endLine": 145,
+      "summary": "Explains precisely where propositional extensionality enters cantor_recovery: the rwa [← hb] step rewrites under hb : ¬b = b, which is a Prop-equality requiring propext to use as an Iff.",
+      "mathContext": "The classical proof gets hb : ¬b = b as a proposition equality from Function.Surjective. Then rwa [← hb] implicitly uses Eq.mpr (propext ...) to convert between b and ¬b. Our constructive version bypasses this by working with Iff from the start."
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances",
+      "startLine": 148,
+      "endLine": 163,
+      "summary": "Applies cantor_no_pointwise_surjection to equality relation (A → A → Prop), Bool, and ℕ.",
+      "mathContext": "These instantiate the abstract theorem to concrete types, confirming no e : A → A → Prop with any A can be constructively surjective."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Cantor's 1891 diagonal argument showed no function from a set to its power set is surjective. In type theory, the standard formalization uses propositional extensionality to derive the contradiction from the diagonal fixed-point equation. This entry resolves whether propext is truly necessary: it is not. The constructive analogue replaces function equality with pointwise logical equivalence (Iff), giving a proof valid in purely intuitionistic type theory.\n\nThe connection to Lawvere's categorical fixed-point theorem (1969) is illuminating: Lawvere's theorem works in any cartesian closed category, where 'surjection' means 'point-surjective' (hitting global elements). Our IsPointwiseSurjective is the Prop-valued version of this: requiring only Iff witnesses rather than equality, we capture the minimal data needed for the diagonal contradiction.",
+    "problemStatement": "**Open Question OQ-04**: Can Cantor's theorem (no surjection A → (A → Prop)) be proved without propositional extensionality, by restating surjectivity using explicit Iff witnesses?",
+    "text": "The answer is YES. By replacing the surjectivity condition ∀ P : A → Prop, ∃ a, e a = P (function equality, needs propext) with the constructively valid ∀ P : A → Prop, ∃ a, ∀ x, e a x ↔ P x (pointwise Iff), the diagonal argument goes through in pure intuitionistic logic.",
+    "proofStrategy": "1. Define IsPointwiseSurjective: ∀ P : A → Prop, ∃ a : A, ∀ x : A, e a x ↔ P x\n2. Apply to D(a) = ¬(e a a) to get d with ∀ x, e d x ↔ ¬(e x x)\n3. Specialize to x = d: hdd : e d d ↔ ¬(e d d)\n4. Derive False: nev := fun h => hdd.mp h h; exact nev (hdd.mpr nev)\nNo rewriting under Prop-equalities at any step → no propext.",
+    "keyInsights": [
+      "The standard surjectivity condition (function equality) requires propext to USE: rewriting e a = D under rwa implicitly invokes propext. By weakening to pointwise Iff, we never need to rewrite Prop-equalities.",
+      "The constructive version is strictly weaker than classical: IsPointwiseSurjective follows from Function.Surjective (via congr_fun + iff_of_eq), but not conversely. So the constructive impossibility result is stronger.",
+      "iff_not_self : ¬(p ↔ ¬p) is the sole logical principle needed for the contradiction, and it holds in intuitionistic logic without any axioms.",
+      "The explicit proof (cantor_constructive_explicit) shows: nev := fun h => hdd.mp h h builds ¬(e d d) from the forward direction, then hdd.mpr nev : e d d, giving the contradiction directly."
+    ],
+    "prerequisites": [
+      "Cantor Diagonalization OQ-03-OQ-01 (CantorDiagonalizationOQ03OQ01.lean): parent entry with cantor_recovery",
+      "Intuitionistic logic: Iff, not, constructive reasoning without Classical.choice or propext",
+      "Lawvere fixed-point theorem: abstract categorical setting for diagonal arguments"
+    ]
+  },
+  "conclusion": {
+    "summary": "Proved constructive Cantor diagonal (0 sorries, 0 axioms): by replacing function equality with pointwise Iff witnesses, Cantor's impossibility theorem holds in pure intuitionistic type theory. This answers OQ-04 definitively.",
+    "implications": "Any formal system where Iff (bidirectional implication) is available can express and prove Cantor's diagonal theorem without propositional extensionality. This includes predicative type theories and constructive mathematics. The pointwise-Iff surjectivity condition is the minimal logical requirement for the diagonal argument.",
+    "openQuestions": [
+      "Can the Lawvere abstract fixed-point theorem (lawvere_abstract in the parent file) itself be restated without propext, replacing EvalStructure's equality conditions with Iff conditions?",
+      "Does removing propext affect the provability of Russell's paradox or Rice's theorem when formalized as Lawvere instances?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01",
+      "relationship": "answers-oq",
+      "description": "Answers OQ-04 from the Lawvere FPT entry: Yes, cantor_recovery can be restated without propext."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "related",
+      "description": "Type-theoretic Lawvere theorem; this entry is the constructive/propext-free version"
+    }
+  ],
+  "references": [
+    {
+      "title": "Diagonal Arguments and Cartesian Closed Categories",
+      "author": "F. William Lawvere",
+      "year": "1969",
+      "venue": "Lecture Notes in Mathematics 92",
+      "description": "Original categorical formulation of the fixed-point theorem"
+    },
+    {
+      "title": "Ueber eine elementare Frage der Mannigfaltigkeitslehre",
+      "author": "Georg Cantor",
+      "year": "1891",
+      "venue": "Jahresbericht der DMV",
+      "description": "Cantor's original diagonal argument"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.CantorDiagonalizationOQ03OQ01",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "CantorDiagonalizationOQ03OQ01OQ04",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
