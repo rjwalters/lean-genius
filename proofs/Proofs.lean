@@ -576,6 +576,7 @@ import Proofs.ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ01OQ02
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ02
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ02OQ01
+import Proofs.ElementaryQuadraticReciprocityOQ03OQ02OQ03
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ03
 import Proofs.Erdos1000OQ01
 import Proofs.Erdos1000OQ01Aristotle
@@ -2194,6 +2195,7 @@ import Proofs.FundamentalTheoremAlgebraOQ02
 import Proofs.FundamentalTheoremAlgebraOQ04
 import Proofs.FundamentalTheoremCalculus
 import Proofs.FundamentalTheoremCalculusLebesgue
+import Proofs.FundamentalTheoremCalculusLebesgueOQ01
 import Proofs.FundamentalTheoremCalculusOQ04
 import Proofs.FundamentalTheoremCalculusStokes
 import Proofs.FundamentalTheoremCalculusStokesAristotle

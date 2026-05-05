@@ -1,0 +1,112 @@
+{
+  "id": "fundamental-theorem-calculus-oq-01-oq-01",
+  "title": "AC → BV: Absolutely Continuous implies Bounded Variation",
+  "slug": "fundamental-theorem-calculus-oq-01-oq-01",
+  "description": "Proves that every absolutely continuous function on [a,b] has bounded variation, answering OQ-01 from the Lebesgue FTC entry. The ε-δ definition of absolute continuity directly implies the eVariationOn bound without additional Mathlib infrastructure.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-05-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean",
+    "tags": [
+      "absolute-continuity",
+      "bounded-variation",
+      "lebesgue-ftc",
+      "real-analysis",
+      "eVariationOn"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-05",
+    "axiomCount": 0,
+    "assumptions": "None — fully verified from definitions.",
+    "lineCount": 185,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "originalContributions": [
+      "ac_implies_bv: BoundedVariationOn F (Icc a b) proved from AbsolutelyContinuousOn via the ε-δ definition"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The implication AC → BV (absolutely continuous implies bounded variation) is a classical result in real analysis, originally due to Vitali (1905) and Lebesgue. It is the critical first step in proving the Lebesgue FTC: every AC function is BV, hence decomposes as a difference of monotone functions, each differentiable a.e., recovering the integral.",
+    "problemStatement": "**Open Question OQ-01** from `fundamental-theorem-calculus-oq-01`:\n\nThe parent entry states the Lebesgue FTC as an axiom and notes that proving it would require AC → BV as a first step. The question: can AC → BV be proved directly from the ε-δ definition of absolute continuity, using only the infrastructure already present in `Mathlib.Analysis.BoundedVariation`?\n\n**This file answers yes.** The ε-δ AC condition directly bounds every partition sum of edists via a counting argument, giving `eVariationOn F (Icc a b) ≤ n < ⊤`.",
+    "proofStrategy": "**Split-and-bound argument:**\n\n1. Take ε = 1 from the AC condition, getting δ > 0.\n2. Choose n = ⌈(b-a)/δ⌉ + 1 so each piece has length step = (b-a)/n < δ.\n3. **Short-interval key lemma**: For any [c,d] with d-c < δ, and any monotone sequence u in [c,d]:\n   - Total interval length = u(m) - u(0) ≤ d-c < δ\n   - By AC: ∑|F(u(i+1)) - F(u(i))| < 1\n   - Converting edist → ofReal|·| via ENNReal: eVariationOn F (Icc c d) ≤ 1\n4. Apply `eVariationOn.Icc_add_Icc` n-1 times: total ≤ n.\n5. n is finite, so eVariationOn ≠ ⊤, giving BoundedVariationOn.",
+    "keyInsights": [
+      "The key is that eVariationOn is a supremum over partition sums; to bound it, it suffices to bound every individual sum (via iSup_le applied to the definition)",
+      "For a short interval [c,d] with d-c < δ, the total length of any partition is ≤ d-c < δ, so the AC condition applies to give sum < 1",
+      "The telescoping sum ∑_k (u(k+1) - u(k)) = u(n) - u(0) is the key to bounding the total interval length",
+      "Converting real-valued sum bounds to ENNReal uses ENNReal.ofReal_sum_of_nonneg and ofReal_le_ofReal",
+      "The inductive eVariationOn.Icc_add_Icc application gives the global bound from local bounds"
+    ],
+    "prerequisites": [
+      "FundamentalTheoremCalculusLebesgue.lean: AbsolutelyContinuousOn definition",
+      "Mathlib: eVariationOn definition (iSup over monotone sequences), BoundedVariationOn",
+      "Mathlib: eVariationOn.Icc_add_Icc (additivity), eVariationOn.eq_zero_iff",
+      "ENNReal: ofReal_sum_of_nonneg, ofReal_le_ofReal, natCast_ne_top"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-helpers",
+      "title": "Helper Lemmas",
+      "startLine": 30,
+      "endLine": 75,
+      "summary": "Four helper lemmas: (1) edist on ℝ equals ENNReal.ofReal|x-y|; (2) upper-bound criterion for eVariationOn via iSup_le; (3) telescoping sum for Fin n; (4) short-interval variation ≤ 1 from AC.",
+      "mathContext": "The upper-bound criterion unfolds eVariationOn as a supremum and applies iSup_le. The short-interval lemma applies the AC condition to the n intervals [u(i), u(i+1)] of a monotone partition, using the telescoping sum to bound total length."
+    },
+    {
+      "id": "sec-inductive",
+      "title": "Inductive Splitting Lemma",
+      "startLine": 118,
+      "endLine": 151,
+      "summary": "Proves eVariationOn F (Icc a (a+n*step)) ≤ n by induction, using eVariationOn.Icc_add_Icc to split at each intermediate point.",
+      "mathContext": "Base case n=0: variation = 0 ≤ 0 by eq_zero_iff. Inductive step: split at a+m*step, bound left ≤ m by IH and right ≤ 1 by the short-interval lemma, conclude m+1."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem: AC → BV",
+      "startLine": 154,
+      "endLine": 185,
+      "summary": "Proves BoundedVariationOn F (Icc a b) from AbsolutelyContinuousOn F a b by constructing n pieces of step (b-a)/n < δ, applying the inductive splitting lemma, and concluding eVariationOn ≤ n ≠ ⊤.",
+      "mathContext": "The degenerate case a=b is handled separately (point interval, variation = 0). For a < b: n = ⌈(b-a)/δ⌉+1 ensures step < δ; the n pieces cover [a,b] exactly (a + n*step = b); each piece has variation ≤ 1; total ≤ n < ⊤."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry proving the Lebesgue FTC. This file resolves OQ-01 by proving the AC → BV step that the parent axiomatizes."
+    }
+  ],
+  "conclusion": {
+    "summary": "AC → BV proved in 185 lines, 0 sorries, 0 axioms. Directly from the ε-δ definition using iSup_le on eVariationOn's definition.",
+    "implications": "**First step toward axiom-free Lebesgue FTC**: This removes the first of the parent's axioms. The remaining steps — Jordan decomposition of BV functions and the integral recovery theorem — require deeper Mathlib infrastructure but are now within reach.\n\n**Infrastructure lesson**: The key was that eVariationOn is defined as a supremum, so bounding it reduces to bounding individual partition sums, which the AC condition handles directly.",
+    "openQuestions": [
+      "Can the Jordan decomposition (BV → difference of monotone functions) be proved from scratch in Lean 4, completing the next step toward the full Lebesgue FTC?",
+      "Does Mathlib have `BoundedVariationOn.jordanDecomposition` or similar, enabling a shorter path to the Lebesgue FTC?"
+    ]
+  },
+  "leanFile": {
+    "lineCount": 185,
+    "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 1
+  },
+  "references": [
+    {
+      "authors": "Vitali, G.",
+      "title": "Sulle funzioni integrali",
+      "year": "1905",
+      "note": "Original proof that absolutely continuous functions have bounded variation"
+    },
+    {
+      "authors": "Mathlib Contributors",
+      "title": "Mathlib.Analysis.BoundedVariation",
+      "year": "2024",
+      "note": "eVariationOn, BoundedVariationOn, and Icc_add_Icc used in this proof"
+    }
+  ],
+  "sorries": []
+}
