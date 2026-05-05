@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "open-question-strategy",
+    "proofId": "cube-root-3-irrational-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "context",
+    "title": "Open Question: Linear Independence from Irrationality",
+    "content": "The parent entry (cube-root-3-irrational-oq-02) proves ∛3 is irrational: the polynomial X³-3 has no rational roots. This file answers the natural follow-up: is the stronger statement true that {1, ∛3, (∛3)²} is linearly independent over ℚ? The strategy uses a degree comparison: the minimal polynomial of ∛3 has degree 3, so any ℚ-polynomial of degree ≤ 2 that vanishes at ∛3 must be the zero polynomial. This gives linear independence of {α⁰, α¹, α²} over ℚ without invoking the full field extension machinery.",
+    "mathContext": "Linear independence of $\\{1, \\alpha, \\alpha^2\\}$ over $\\mathbb{Q}$ means: $c_0 + c_1 \\alpha + c_2 \\alpha^2 = 0$ with $c_i \\in \\mathbb{Q}$ implies $c_0 = c_1 = c_2 = 0$. This is strictly stronger than irrationality ($\\alpha \\notin \\mathbb{Q}$, which only rules out $c_0 + c_1 \\alpha = 0$). Equivalently, $\\{1, \\alpha, \\alpha^2\\}$ is a $\\mathbb{Q}$-basis for $\\mathbb{Q}(\\alpha) \\cong \\mathbb{Q}[X]/(X^3-3)$, the splitting field contribution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear independence over fields",
+      "minimal polynomial degree",
+      "field extension basis",
+      "Eisenstein's criterion",
+      "algebraic degree"
+    ],
+    "prerequisites": [
+      "irrationality of ∛3",
+      "Eisenstein irreducibility criterion",
+      "minimal polynomial theory"
+    ]
+  },
+  {
+    "id": "minpoly-degree-setup",
+    "proofId": "cube-root-3-irrational-oq-02-oq-02",
+    "range": { "startLine": 32, "endLine": 48 },
+    "type": "technique",
+    "title": "Setup: Minimal Polynomial Degree = 3",
+    "content": "The private abbreviation α = (3:ℝ)^(1/3) names the cube root of 3. The key helper lemma α_minpoly_deg proves natDegree(minpoly ℚ α) = 3 in one line by calling minpoly_nthRoot_natDegree 3 3 3 from CubeRoot2IrrationalOQ03. The five norm_num arguments verify the Eisenstein conditions for n=3, m=3, p=3: (1) 2 ≤ 3; (2) Prime 3; (3) 3 | 3; (4) ¬9 | 3; (5) 0 < 3.",
+    "mathContext": "The Eisenstein criterion for $X^n - m$: if a prime $p$ divides $m$ but $p^2$ does not divide $m$, then $X^n - m$ is irreducible over $\\mathbb{Q}$. For $\\alpha = \\sqrt[3]{3}$: $\\text{minpoly}_{\\mathbb{Q}}(\\alpha) = X^3 - 3$ (irreducible by Eisenstein at $p=3$), so $\\deg(\\text{minpoly}_{\\mathbb{Q}}(\\alpha)) = 3$. This degree is the critical bound: any nonzero divisor of $\\text{minpoly}_{\\mathbb{Q}}(\\alpha)$ has degree $\\geq 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein's irreducibility criterion",
+      "minimal polynomial",
+      "nthRoot minimal polynomial",
+      "natDegree",
+      "norm_num tactic"
+    ],
+    "prerequisites": [
+      "CubeRoot2IrrationalOQ03.minpoly_nthRoot_natDegree",
+      "Eisenstein criterion conditions",
+      "Lean 4 norm_num"
+    ]
+  },
+  {
+    "id": "polynomial-construction",
+    "proofId": "cube-root-3-irrational-oq-02-oq-02",
+    "range": { "startLine": 50, "endLine": 68 },
+    "type": "technique",
+    "title": "Encoding the Linear Combination as a Polynomial",
+    "content": "Given a hypothetical dependence relation Σ cᵢ • αⁱ = 0, the proof constructs the polynomial p = C(c₀) + C(c₁)X + C(c₂)X² ∈ ℚ[X]. The have haeval proves aeval α p = 0 by rewriting via simp and ring: unfolding p into a sum over Fin 3, the evaluation at α gives exactly Σᵢ cᵢ • αⁱ, which equals hc (the hypothesis). This converts a vector space equation into a polynomial evaluation statement.",
+    "mathContext": "The map $\\mathbb{Q}[X] \\to \\mathbb{R}$ given by $p \\mapsto \\text{aeval}(\\alpha, p)$ is a $\\mathbb{Q}$-algebra homomorphism. The polynomial $p = c_0 + c_1 X + c_2 X^2$ has $\\text{aeval}(\\alpha, p) = c_0 \\cdot \\alpha^0 + c_1 \\cdot \\alpha^1 + c_2 \\cdot \\alpha^2 = \\sum_{i < 3} c_i \\cdot \\alpha^i$. Converting the linear algebra hypothesis $\\sum c_i \\alpha^i = 0$ into the polynomial condition $p(\\alpha) = 0$ enables application of minimal polynomial theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.aeval",
+      "algebra homomorphism",
+      "Fintype.linearIndependent_iff",
+      "polynomial evaluation",
+      "Fin.sum_univ_three"
+    ],
+    "prerequisites": [
+      "Polynomial.C (constant polynomial)",
+      "Polynomial.aeval",
+      "Lean 4 ring tactic"
+    ]
+  },
+  {
+    "id": "degree-argument",
+    "proofId": "cube-root-3-irrational-oq-02-oq-02",
+    "range": { "startLine": 69, "endLine": 89 },
+    "type": "insight",
+    "title": "Core Degree Contradiction: 3 ≤ 2",
+    "content": "Two key steps: (1) hdvd: minpoly ℚ α | p follows from minpoly.dvd applied to haeval (aeval α p = 0). (2) The degree argument by_contra hne: if p ≠ 0, then natDegree_le_of_dvd gives natDegree(minpoly ℚ α) ≤ natDegree(p). But natDegree(minpoly ℚ α) = 3 (from α_minpoly_deg) and natDegree(p) ≤ 2 (proven by natDegree_add_le + natDegree_mul_le + natDegree_C/X_pow induction). So 3 ≤ 2, contradicted by omega.",
+    "mathContext": "The key Mathlib lemma: $\\text{minpoly.dvd}: p(\\alpha) = 0 \\Rightarrow \\text{minpoly}_{\\mathbb{Q}}(\\alpha) \\mid p$. Combined with $\\text{natDegree\\_le\\_of\\_dvd}: q \\mid p \\wedge p \\neq 0 \\Rightarrow \\deg q \\leq \\deg p$, we get $3 = \\deg(\\text{minpoly}) \\leq \\deg(p) \\leq 2$, contradiction. The degree bound $\\deg(c_0 + c_1 X + c_2 X^2) \\leq 2$ is proved by unfolding: $\\deg(A + B) \\leq \\max(\\deg A, \\deg B)$, $\\deg(C(c) \\cdot X^n) \\leq 0 + n = n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minpoly.dvd",
+      "natDegree_le_of_dvd",
+      "natDegree_add_le",
+      "natDegree_mul_le",
+      "degree bound arithmetic"
+    ],
+    "prerequisites": [
+      "minimal polynomial divisibility property",
+      "polynomial degree inequalities",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "coefficient-extraction",
+    "proofId": "cube-root-3-irrational-oq-02-oq-02",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "technique",
+    "title": "Coefficient Extraction and Explicit Form",
+    "content": "Once p = 0 is established, the coefficients are extracted: c i = coeff(p, i) is verified by fin_cases i and simp [hp_def] (the polynomial C(c₀) + C(c₁)X + C(c₂)X² has exactly cᵢ at position i). Then coeff(0, i) = 0 by rw [hp0]; simp. The second theorem one_cbrt3_cbrt3_sq_linearIndependent restates the result for the explicit vector ![1, α, α²] via convert + fin_cases + simp, connecting the abstract Fin 3 indexing to the concrete vector notation.",
+    "mathContext": "Coefficient reading for $p = c_0 + c_1 X + c_2 X^2 \\in \\mathbb{Q}[X]$: $[X^i] p = c_i$ for $i \\in \\{0,1,2\\}$. Verified by polynomial arithmetic: $[X^0](c_0 + c_1 X + c_2 X^2) = c_0$, etc. The matrix notation $![1, \\alpha, \\alpha^2] : \\text{Fin } 3 \\to \\mathbb{R}$ is Lean's vector literal; $[\\cdot]_i = \\alpha^i$ is proved by fin_cases and the identities $\\alpha^0 = 1$, $\\alpha^1 = \\alpha$, $\\alpha^2 = \\alpha^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.coeff",
+      "fin_cases tactic",
+      "Matrix.cons notation",
+      "convert tactic",
+      "vector literals in Lean 4"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff for explicit polynomials",
+      "Lean 4 fin_cases",
+      "matrix/vector notation"
+    ]
+  }
+]
