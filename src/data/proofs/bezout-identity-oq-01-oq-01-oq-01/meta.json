@@ -24,7 +24,7 @@
     "axiomCount": 2,
     "dateAdded": "2026-05-04",
     "lineCount": 242,
-    "theoremCount": 3,
+    "theoremCount": 7,
     "definitionCount": 2,
     "assumptions": "stepBitOps_le: each recursive step uses at most 3·(log₂(max a b)+1) bit operations (one comparison, one subtraction or shift, one parity test). This models the idealized bit-RAM cost; it is independent of Lean's actual computation.",
     "originalContributions": [

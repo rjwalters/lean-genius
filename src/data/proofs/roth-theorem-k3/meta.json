@@ -61,7 +61,7 @@
     "lineCount": 1401,
     "assumptions": "No axioms, no sorries. Fully verified. Main theorem roth_density_bound proved via Mathlib's corners-theorem chain (Regularity Lemma \u2192 Triangle Removal \u2192 Corners \u2192 Roth). Fourier-analytic density increment infrastructure (Parts I-V) independently verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 42
   },
   "overview": {
     "historicalContext": "Roth's theorem, proved by Klaus Friedrich Roth in 1953, was a landmark achievement in number theory and combinatorics. It confirmed the k=3 case of the Erdos-Turan conjecture (1936) that every dense subset of the integers contains arithmetic progressions of any length.\n\nRoth introduced Fourier-analytic methods to additive combinatorics, a revolutionary approach that opened an entirely new toolbox. His key insight was the density increment strategy: if a set A of density delta in [N] has no 3-term AP, then there exists a long arithmetic progression P where A has density at least delta + c*delta^2. Iterating this increment (which can only happen O(1/delta) times before density exceeds 1) yields a contradiction.\n\nThe quantitative bounds have been dramatically improved over the decades: Bourgain (1999, 2008), Sanders (2011), and most recently Bloom and Sisask (2020) achieved r_3(N) = O(N/(log N)^{1+c}). In 2023, Kelley and Meka achieved the breakthrough bound r_3(N) = O(N * exp(-c * (log N)^{1/12})).\n\nRoth's theorem is the natural starting point for the Szemeredi program because it introduces the core techniques (Fourier analysis, density increment) in their simplest setting.",

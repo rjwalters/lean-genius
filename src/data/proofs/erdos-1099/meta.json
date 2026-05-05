@@ -66,7 +66,7 @@
     "axiomCount": 0,
     "lineCount": 723,
     "assumptions": "Fully verified: 0 axioms, 0 sorries. vose_bounded_sequence proved via trivial witness (constant sequence n_k = 2, h_α(2) = 1). All 34 theorems machine-checked.",
-    "theoremCount": 23
+    "theoremCount": 36
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1099** was posed by Erdős in 1981 as part of his study of divisor structure. The problem asks about the regularity of divisor gaps: can we find integers whose consecutive divisor ratios are all close to 1?\n\n**Historical Development:**\n- **1981 (Erdős [Er81h]):** Posed the problem, noting that n! and lcm{1,...,n} seem like good candidates.\n- **1984 (Vose [Vo84]):** Resolved the problem affirmatively by constructing a specific sequence with bounded h_α.\n\n**Key Insight:** The question is about how \"smooth\" the divisor structure of integers can be. While primes have terrible divisor gaps (ratio = p), and even powers of 2 grow linearly in h_α, Vose showed there exist numbers with much smoother divisor distributions.",
