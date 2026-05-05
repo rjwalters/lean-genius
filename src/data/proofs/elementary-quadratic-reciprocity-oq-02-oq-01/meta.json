@@ -3,8 +3,6 @@
   "slug": "elementary-quadratic-reciprocity-oq-02-oq-01",
   "title": "Gauss Sum Squared: Proving the Axiom in ℂ via Mathlib",
   "description": "Proves the parent proof's gauss_sum_sq axiom using Mathlib's gaussSum_sq theorem. The axiom was incorrectly typed over ℤ (no integer square root of ±p exists); the correct formulation in ℂ is proved here via the quadratic character machinery.",
-  "overview": "The parent proof `ElementaryQuadraticReciprocityOQ02.lean` axiomatized the Gauss sum evaluation: ∃ τ ∈ ℤ, τ² = (-1)^(p/2)·p. This axiom is actually FALSE over ℤ — no integer square root of ±p exists for a prime p. However, the correct statement in ℂ is a genuine theorem: the classical Gauss sum τ = Σ_{a:ZMod p} (a/p)·e^{2πia/p} satisfies τ² = χ(-1)·p = (-1)^(p/2)·p in ℂ.\n\nThis proof uses Mathlib's `gaussSum_sq` theorem with the quadratic character χ = quadraticChar(ZMod p) ∘ Int.cast as a MulChar (ZMod p) ℂ, and ψ = ZMod.stdAddChar as the primitive additive character. The formula χ(-1) = (-1)^(p/2) is derived via legendreSym.at_neg_one and χ₄_eq_neg_one_pow.",
-  "conclusion": "The Gauss sum τ = gaussSum(χ, ψ) ∈ ℂ provides an explicit witness for ∃ τ : ℂ, τ² = (-1)^(p/2)·p, correcting and proving the parent axiom in its proper domain ℂ.",
   "meta": {
     "author": "Lean Genius Researcher",
     "date": "2026-05-05",
@@ -43,20 +41,71 @@
     "definitionCount": 1,
     "sorries": 0
   },
+  "overview": {
+    "historicalContext": "Gauss sums were central to Carl Friedrich Gauss's own proof of the law of quadratic reciprocity in the early 19th century. The sum τ = Σ_{a=0}^{p-1} (a/p)·e^{2πia/p}, where (a/p) is the Legendre symbol, appears in Gauss's Disquisitiones Arithmeticae (1801). Gauss proved τ² = (-1)^{(p-1)/2}·p and used this to establish the quadratic reciprocity law. The evaluation of Gauss sums became a paradigmatic example of how character sums encode deep arithmetic structure. This proof corrects a domain error in the parent formalization: the Gauss sum lives naturally in ℂ (or the cyclotomic field ℚ(ζ_p)), not ℤ, and Mathlib's formal machinery for multiplicative and additive characters is designed for this complex-valued setting.",
+    "problemStatement": "For any odd prime $p$, let $\\chi = $ quadCharC be the Legendre symbol $(\\cdot/p)$ promoted to $\\mathbb{C}$, and let $\\psi = $ ZMod.stdAddChar be the standard additive character $a \\mapsto e^{2\\pi i a/p}$. Then the Gauss sum $\\tau = \\text{gaussSum}(\\chi, \\psi) = \\sum_{a \\in \\mathbb{Z}/p\\mathbb{Z}} \\chi(a) \\cdot \\psi(a)$ satisfies $\\tau^2 = (-1)^{\\lfloor p/2 \\rfloor} \\cdot p$.",
+    "proofStrategy": "The proof proceeds in three phases: (1) Character setup — define quadCharC : MulChar (ZMod p) ℂ as the Legendre symbol composed with Int.cast, then verify it is quadratic (values in {0,±1}) and nontrivial (for odd prime p, the character is not the trivial indicator of units). (2) Apply gaussSum_sq — Mathlib's theorem states (gaussSum χ ψ)² = χ(-1)·|ZMod p| for any nontrivial quadratic χ and primitive ψ. The cardinality simplifies to p. (3) Evaluate χ(-1) — unfold through the chain quadCharC(-1) = Int.cast(quadraticChar(-1)) = Int.cast(legendreSym p (-1)) = Int.cast(χ₄(p)) = (-1)^(p/2), using the first supplementary law of quadratic reciprocity.",
+    "keyInsights": [
+      "The parent axiom ∃ τ : ℤ, τ² = (-1)^(p/2)·p is mathematically false — no integer has squared absolute value equal to a prime p. Correcting the domain from ℤ to ℂ turns a false axiom into a genuine theorem, a case study in how type errors in formal mathematics can masquerade as unproven lemmas.",
+      "The composition MulChar.ringHomComp enables lifting the Legendre symbol from ℤ-valued to ℂ-valued while preserving both the quadratic property (values in {0,±1}) and non-triviality, because Int.cast : ℤ → ℂ is an injective ring homomorphism.",
+      "Mathlib's gaussSum_sq is a clean abstraction: once χ is verified to be nontrivial and quadratic, and ψ primitive, the formula (gaussSum χ ψ)² = χ(-1)·|ZMod p| is immediate — the hard combinatorial work of expanding the double sum and applying character orthogonality is already encapsulated in Mathlib.",
+      "The evaluation of χ(-1) via legendreSym.at_neg_one and χ₄_eq_neg_one_pow is precisely the first supplementary law of quadratic reciprocity, here appearing as a computational lemma in the Gauss sum proof rather than as the main result.",
+      "The alternating sign pattern in the examples (p=3: τ²=-3, p=5: τ²=5, p=7: τ²=-7) reflects whether -1 is a quadratic residue mod p — the Gauss sum is real iff p ≡ 1 (mod 4), and purely imaginary iff p ≡ 3 (mod 4), illustrating the first supplementary law geometrically."
+    ]
+  },
   "sections": [
     {
+      "id": "open-question-header",
+      "title": "Open Question and Proof Strategy",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring explaining OQ-02-OQ-01: the parent axiom gauss_sum_sq is false over ℤ but true in ℂ. Outlines the three-step proof strategy using Mathlib's gaussSum_sq with the Legendre symbol and stdAddChar."
+    },
+    {
+      "id": "imports-and-namespace",
+      "title": "Imports, Opens, and Variable Declaration",
+      "startLine": 51,
+      "endLine": 63,
+      "summary": "Imports GaussSum, QuadraticChar, LegendreSymbol, and CircleAddChar from Mathlib. Declares variable p : ℕ [Fact p.Prime] for use throughout the noncomputable namespace GaussSumQRCyclotomic."
+    },
+    {
+      "id": "quad-char-c",
       "title": "Setup: The Quadratic Character in ℂ",
-      "content": "Define quadCharC : MulChar (ZMod p) ℂ as the composition of quadraticChar (ZMod p) : MulChar (ZMod p) ℤ with the canonical ring homomorphism Int.castRingHom ℂ : ℤ →+* ℂ. This promotes the Legendre symbol from ℤ-valued to ℂ-valued, enabling use of Mathlib's gaussSum_sq theorem."
+      "startLine": 65,
+      "endLine": 78,
+      "summary": "Defines quadCharC : MulChar (ZMod p) ℂ as quadraticChar (ZMod p) composed with Int.castRingHom ℂ. Private lemma char_ZMod_ne_two shows ringChar (ZMod p) = p ≠ 2 for odd prime p."
     },
     {
+      "id": "char-properties",
       "title": "Properties: Quadratic and Nontrivial",
-      "content": "quadCharC_isQuadratic: the composed character is quadratic (values in {0,1,-1} ⊆ ℂ) by lifting quadraticChar_isQuadratic via Int.cast. quadCharC_ne_one: for odd prime p, the character is nontrivial since quadraticChar (ZMod p) ≠ 1 (as ringChar ≠ 2) and Int.cast is injective."
+      "startLine": 80,
+      "endLine": 116,
+      "summary": "quadCharC_isQuadratic: character is quadratic (IsQuadratic) by lifting via Int.cast. quadCharC_ne_one: nontrivial for odd prime p, proved by contradiction using Int.cast injectivity to transfer from the ℤ-valued quadraticChar_ne_one."
     },
     {
-      "title": "Main Theorem: gaussSum_sq Applied",
-      "content": "Apply Mathlib's gaussSum_sq with χ = quadCharC and ψ = ZMod.stdAddChar. The primitivity ZMod.isPrimitive_stdAddChar requires [NeZero p] which follows from p being prime. The result τ² = χ(-1)·|ZMod p| = χ(-1)·p is then computed by: χ(-1) = Int.cast(legendreSym p (-1)) = Int.cast(χ₄ p) = (-1)^(p/2) via legendreSym.at_neg_one and χ₄_eq_neg_one_pow."
+      "id": "main-theorem",
+      "title": "Main Theorem: Gauss Sum Squared Formula",
+      "startLine": 118,
+      "endLine": 176,
+      "summary": "gauss_sum_sq_in_complex: applies gaussSum_sq, simplifies cardinality |ZMod p| = p, and evaluates χ(-1) = (-1)^(p/2) via legendreSym.at_neg_one and χ₄_eq_neg_one_pow."
+    },
+    {
+      "id": "existential-and-examples",
+      "title": "Existential Form and Concrete Verifications",
+      "startLine": 178,
+      "endLine": 199,
+      "summary": "gauss_sum_sq_exists wraps the main theorem as ∃ τ:ℂ, τ²=(-1)^(p/2)·p. Three norm_num examples verify the formula for p=3 (τ²=-3), p=5 (τ²=5), and p=7 (τ²=-7)."
     }
   ],
+  "conclusion": {
+    "summary": "This proof resolves OQ-02-OQ-01 by replacing the parent's false ℤ-valued axiom with a genuine Lean theorem in ℂ: for any odd prime p, the classical Gauss sum τ = Σ_{a ∈ ZMod p} χ(a)·ψ(a) satisfies τ² = (-1)^(p/2)·p. The proof uses Mathlib's gaussSum_sq with the Legendre symbol promoted to a ℂ-valued multiplicative character via ringHomComp.",
+    "implications": "This correction demonstrates that careful attention to mathematical domains is essential in formalization: the parent axiom was a type error masquerading as a mathematical statement. The fix reveals how Mathlib's layered character infrastructure (MulChar.ringHomComp, gaussSum_sq, ZMod.isPrimitive_stdAddChar) naturally accommodates the classical Gauss sum evaluation. The result connects directly to two pillar theorems of algebraic number theory: quadratic reciprocity (the parent proof's goal) and the structure of cyclotomic fields. The evaluation τ² = ±p shows that √p or i√p lies in ℚ(ζ_p), a special case of the Kronecker-Weber theorem.",
+    "openQuestions": [
+      "Can the full Gauss sum evaluation be extended to Dirichlet characters χ mod q (not just the Legendre symbol), proving |τ(χ)|² = q for primitive χ? Mathlib has some infrastructure for this via MulChar over ZMod q.",
+      "The parent proof (elementary-quadratic-reciprocity-oq-02) still carries the false ℤ-typed axiom — can a follow-up proof import this result and eliminate that last axiom from the QR proof chain?",
+      "Can Lean verify the Kronecker-Weber theorem that τ = √((-1)^{(p-1)/2}·p) ∈ ℚ(ζ_p), making the Gauss sum an explicit algebraic integer in the cyclotomic field?"
+    ]
+  },
   "crossReferences": [
     {
       "id": "elementary-quadratic-reciprocity-oq-02",
@@ -66,6 +115,5 @@
       "id": "elementary-quadratic-reciprocity",
       "relationship": "grandparent — the main QR formalization"
     }
-  ],
-  "openQuestions": null
+  ]
 }
