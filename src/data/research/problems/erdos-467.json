@@ -29,18 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom count reduced from 3 to 1. CRT proved via Nat.chineseRemainder, Mertens placeholder proved trivially. Fixed 3 pre-existing build errors. Only open conjecture remains as axiom.",
+    "progressSummary": "PROGRESS: Added 2 necessary conditions for dual covering. Total: 25 theorems, 1 axiom (open conjecture). Zero assignment provably fails. Any valid covering must have 1-compatible primes on both partition sides.",
     "builtItems": [
       "Proved crt_for_primes theorem (Erdos467Problem.lean:220-224)",
       "Proved mertens_product theorem (Erdos467Problem.lean:233-236)",
       "Fixed coverage_density (line 90)",
       "Fixed prime_factor_le_x (line 103-107)",
-      "Fixed one_not_covered_by_zero (line 116-121)"
+      "Fixed one_not_covered_by_zero (line 116-121)",
+      "zero_assign_no_dual_cover theorem (Erdos467Problem.lean:244-251)",
+      "dual_cover_needs_unit_class theorem (Erdos467Problem.lean:255-265)"
     ],
     "insights": [
       "CRT for distinct primes (crt_for_primes) proved from Mathlib Nat.chineseRemainder + Nat.coprime_primes",
       "Mertens product axiom had vacuous conclusion (just x > 0 for large x) - proved trivially",
-      "Fixed 3 pre-existing build errors: coverage_density (mul_comm), prime_factor_le_x (needed Nat.le_of_dvd in context), one_not_covered_by_zero (needed hp.two_le in context)"
+      "Fixed 3 pre-existing build errors: coverage_density (mul_comm), prime_factor_le_x (needed Nat.le_of_dvd in context), one_not_covered_by_zero (needed hp.two_le in context)",
+      "zero_assign_no_dual_cover: zero assignment cannot achieve dual covering — any valid assignment must be non-trivial on at least one prime in each partition half",
+      "dual_cover_needs_unit_class: necessary condition for dual coverage — each partition half must have a prime with assignment ≡ 1 (mod p), constraining valid assignment choices"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

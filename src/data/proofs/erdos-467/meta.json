@@ -47,7 +47,9 @@
       "Separate CoveredByA/CoveredByB definitions enabling independent coverage analysis",
       "18 fully proved theorems covering modular arithmetic, zero-assignment analysis, and partition properties",
       "CRT for distinct primes proved via Nat.chineseRemainder from Mathlib",
-      "Mertens placeholder proved (vacuous conclusion identified and discharged)"
+      "Mertens placeholder proved (vacuous conclusion identified and discharged)",
+      "zero_assign_no_dual_cover: zero assignment cannot achieve dual covering (no prime in any zero-class covers n=1)",
+      "dual_cover_needs_unit_class: any dual covering must have 1-compatible primes in both A and B"
     ],
     "axiomCount": 1,
     "lineCount": 277,
@@ -122,6 +124,13 @@
       "startLine": 215,
       "endLine": 241,
       "summary": "Two now-proved results: `crt_for_primes` proved via `Nat.chineseRemainder` from Mathlib (CRT for distinct primes), and `mertens_product` proved trivially (the placeholder conclusion `x > 0` for large `x` is vacuous). CRT establishes independence of coverage events."
+    },
+    {
+      "id": "necessary-conditions",
+      "title": "Necessary Conditions for Dual Covering",
+      "startLine": 241,
+      "endLine": 265,
+      "summary": "Two structural constraints on any dual covering. `zero_assign_no_dual_cover` proves the zero assignment cannot achieve dual coverage (n=1 is uncovered). `dual_cover_needs_unit_class` proves any dual covering requires both A and B to contain a prime with assignment congruent to 1 mod p — a direct constraint on the class selection."
     }
   ],
   "conclusion": {
@@ -132,7 +141,8 @@
       "What is the optimal partition of small primes (2, 3, 5, 7, ...) for dual coverage?",
       "How does the minimum threshold $x_0$ depend on the partition structure?",
       "Can the Lovász Local Lemma or probabilistic methods establish the conjecture?",
-      "What is the connection to Hough's theorem on minimum modulus covering systems?"
+      "What is the connection to Hough's theorem on minimum modulus covering systems?",
+      "Is the 1-compatibility condition sufficient with the right partition of small primes?"
     ]
   },
   "leanFile": {
