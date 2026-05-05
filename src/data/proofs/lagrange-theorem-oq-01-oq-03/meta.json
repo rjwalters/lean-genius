@@ -93,70 +93,100 @@
   },
   "crossReferences": [
     {
-      "id": "lagrange-theorem-oq-01",
-      "title": "Converse to Lagrange's Theorem",
-      "relationship": "parent"
+      "proofId": "lagrange-theorem-oq-01",
+      "relationship": "extends",
+      "description": "OQ-03 answers the OQ-01 question of the strongest converse to Lagrange, proving Hall's theorem characterizes solvability"
     },
     {
-      "id": "lagrange-theorem",
-      "title": "Lagrange's Theorem",
-      "relationship": "ancestor"
+      "proofId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Lagrange's theorem (every subgroup order divides |G|) is the starting point; Hall's theorem is the deepest partial converse"
+    },
+    {
+      "proofId": "cauchy-theorem",
+      "relationship": "uses",
+      "description": "Cauchy's theorem provides the prime case of Hall's theorem directly"
     }
   ],
   "sections": [
     {
+      "id": "sec-hall-module-header",
+      "title": "Module Header: Hall's Theorem Context",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring explaining Hall's theorem (Philip Hall, 1928), the Hall divisor condition gcd(d,|G|/d)=1, the significance for solvability characterization, and a table of results. References Hall's original paper and Gorenstein's Finite Groups."
+    },
+    {
+      "id": "sec-definitions",
       "title": "Definitions: Hall Divisors and Hall Subgroups",
       "startLine": 48,
       "endLine": 59,
-      "description": "IsHallDivisor d n formalizes the condition d | n ∧ gcd(d, n/d) = 1 — the prime factors of n are partitioned between d and n/d. IsHallSubgroup H requires gcd(|H|, [G:H]) = 1, making H a Hall subgroup carrying a complete subset of the prime factors of |G|."
+      "summary": "IsHallDivisor d n formalizes d | n ∧ gcd(d, n/d) = 1 — the prime factors of n are partitioned between d and n/d. IsHallSubgroup H requires gcd(|H|, [G:H]) = 1, making H a Hall subgroup carrying a complete subset of the prime factors of |G|.",
+      "mathContext": "$d$ is a Hall divisor of $n$ iff $d \\mid n$ and $\\gcd(d, n/d) = 1$. Equivalently, the prime factors of $d$ and $n/d$ are disjoint. $H$ is a Hall subgroup iff $\\gcd(|H|, [G:H]) = 1$."
     },
     {
+      "id": "sec-hall-divisor-lemmas",
       "title": "Hall Divisor Lemmas",
       "startLine": 62,
       "endLine": 77,
-      "description": "Basic properties: 1 and n are always Hall divisors; a prime p is a Hall divisor of n exactly when p | n but p² ∤ n (p appears with multiplicity 1). These are proved by direct coprimality arguments."
+      "summary": "Basic properties: 1 and n are always Hall divisors; a prime p is a Hall divisor of n exactly when p | n but p² ∤ n (p appears with multiplicity 1). These are proved by direct coprimality arguments.",
+      "mathContext": "$\\gcd(1, n) = 1$ always; $\\gcd(n, 1) = 1$ always. For prime $p$: $\\gcd(p, n/p) = 1 \\iff p \\nmid (n/p) \\iff p^2 \\nmid n$."
     },
     {
+      "id": "sec-trivial-subgroups",
       "title": "Trivial Hall Subgroups",
       "startLine": 79,
       "endLine": 97,
-      "description": "The trivial subgroup ⊥ (order 1) and G itself (index 1) are always Hall subgroups. Proved by Nat.card_unique for ⊥ and Subgroup.index_top for G."
+      "summary": "The trivial subgroup ⊥ (order 1) and G itself (index 1) are always Hall subgroups. Proved by Nat.card_unique for ⊥ and Subgroup.index_top for G.",
+      "mathContext": "⊥ has $|\\bot| = 1$ and $\\gcd(1, [G:\\bot]) = 1$. $G = \\top$ has $[G:\\top] = 1$ and $\\gcd(|G|, 1) = 1$."
     },
     {
+      "id": "sec-prime-case",
       "title": "Prime Case via Cauchy's Theorem",
       "startLine": 99,
       "endLine": 107,
-      "description": "For prime p dividing |G|, Cauchy's theorem (exists_prime_orderOf_dvd_card) yields an element x of order p; the cyclic subgroup zpowers(x) has order p. This covers Hall's theorem for all prime Hall divisors."
+      "summary": "For prime p dividing |G|, Cauchy's theorem (exists_prime_orderOf_dvd_card) yields an element x of order p; the cyclic subgroup zpowers(x) has order p. This covers Hall's theorem for all prime Hall divisors.",
+      "mathContext": "Cauchy: if prime $p \\mid |G|$, then $\\exists x \\in G$ with $\\text{ord}(x) = p$. Then $\\langle x \\rangle$ has order $p$."
     },
     {
+      "id": "sec-cyclic-case",
       "title": "Cyclic Case: Fully Proved",
       "startLine": 109,
       "endLine": 140,
-      "description": "Hall's theorem for cyclic groups. The private lemma orderOf_pow_div_of_dvd computes ord(g^(n/d)) = d via orderOf_pow'. Then hall_cyclic produces zpowers(g^(n/d)) as the required subgroup, using IsCyclic.exists_generator to get a generator of order |G|."
+      "summary": "Hall's theorem for cyclic groups. The private lemma orderOf_pow_div_of_dvd computes ord(g^(n/d)) = d via orderOf_pow'. Then hall_cyclic produces zpowers(g^(n/d)) as the required subgroup, using IsCyclic.exists_generator to get a generator of order |G|.",
+      "mathContext": "For $G$ cyclic with generator $g$ of order $n$: $\\text{ord}(g^{n/d}) = n/\\gcd(n, n/d) = d$ since $d \\mid n$ implies $\\gcd(n, n/d) = n/d$."
     },
     {
-      "title": "General Solvable Case: Axiom with Sketch",
+      "id": "sec-solvable-axiom",
+      "title": "General Solvable Case: Axiom with Proof Sketch",
       "startLine": 142,
       "endLine": 159,
-      "description": "hall_solvable is axiomatized. The proof sketch in the docstring is mathematically complete: induct on |G|, use minimal normal N ≅ (ℤ/pℤ)^k, split on p|d or p∤d, apply Schur–Zassenhaus. Blocked on Schur–Zassenhaus not being in Mathlib."
+      "summary": "hall_solvable is axiomatized with a mathematically complete proof sketch: induct on |G|, use minimal normal N ≅ (ℤ/pℤ)^k, split on p|d or p∤d, apply Schur–Zassenhaus. Blocked on Schur–Zassenhaus not being in Mathlib.",
+      "mathContext": "Schur–Zassenhaus: if $N \\unlhd G$ with $\\gcd(|N|, [G:N]) = 1$, then $G \\cong N \\rtimes H$ for some $H$ with $|H| = [G:N]$. Hall's induction lifts Hall subgroups from $G/N$ to $G$ using this complement existence."
     },
     {
+      "id": "sec-sharpness",
       "title": "Sharpness: A₅ Lacks a Subgroup of Order 15",
       "startLine": 161,
       "endLine": 172,
-      "description": "A₅ (order 60, not solvable) witnesses that solvability is necessary. 15 = 3·5 is a Hall divisor of 60, but A₅ has no subgroup of order 15. Proved using alternatingGroup.not_solvable."
+      "summary": "A₅ (order 60, not solvable) witnesses that solvability is necessary. 15 = 3·5 is a Hall divisor of 60, but A₅ has no subgroup of order 15. Proved using alternatingGroup.not_solvable.",
+      "mathContext": "$|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$. $\\gcd(15, 4) = 1$ so 15 is a Hall divisor. But $A_5$ is simple, hence not solvable, hence has no subgroup of order 15."
     },
     {
+      "id": "sec-converse-axiom",
       "title": "Hall's Converse: Solvability Criterion",
       "startLine": 174,
       "endLine": 184,
-      "description": "hall_characterizes_solvability axiomatizes the biconditional: G solvable ↔ Hall subgroups exist for all Hall divisors. The forward direction is hall_solvable; the converse requires the Feit–Thompson odd-order theorem."
+      "summary": "hall_characterizes_solvability axiomatizes the biconditional: G solvable ↔ Hall subgroups exist for all Hall divisors. The forward direction is hall_solvable; the converse requires the Feit–Thompson odd-order theorem.",
+      "mathContext": "$G$ solvable $\\iff$ Hall subgroups exist for all Hall divisors of $|G|$. The converse uses Feit–Thompson (1963): groups of odd order are solvable."
     },
     {
+      "id": "sec-numerical-examples",
       "title": "Numerical Examples",
       "startLine": 186,
       "endLine": 211,
-      "description": "Concrete Hall divisor computations for n = 12, 30, and 60, all verified by norm_num. Shows squarefree n (like 30) has all divisors as Hall divisors, while n = 12 has restricted Hall divisors {1, 3, 4, 12}."
+      "summary": "Concrete Hall divisor computations for n = 12, 30, and 60, all verified by norm_num. Shows squarefree n (like 30) has all divisors as Hall divisors, while n = 12 has restricted Hall divisors {1, 3, 4, 12}.",
+      "mathContext": "Squarefree $n = 30$: all divisors are Hall divisors. $n = 12 = 2^2 \\cdot 3$: Hall divisors are $\\{1, 3, 4, 12\\}$ only; $\\gcd(2, 6) = 2 \\neq 1$ and $\\gcd(6, 2) = 2 \\neq 1$."
     }
   ]
 }

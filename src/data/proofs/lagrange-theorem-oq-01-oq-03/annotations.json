@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-hall-module-header",
+    "proofId": "lagrange-theorem-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "concept",
+    "title": "Hall's Theorem: The Strongest Converse to Lagrange's Theorem",
+    "content": "This module formalizes Philip Hall's 1928 theorem, one of the foundational results of finite group theory. Lagrange's theorem guarantees that subgroup orders must divide |G|, but says nothing about which divisors are realized. Sylow's theorem (1872) says every prime-power divisor p^k has a realizing subgroup. Hall (1928) found the correct generalization: in solvable groups, every 'Hall divisor' d (a divisor with gcd(d, |G|/d) = 1) has a realizing subgroup. The coprimeness condition separates the prime factors of |G| into two disjoint groups — those dividing d and those not. The theorem's deep significance is its biconditional: Hall subgroups exist for all Hall divisors if and only if the group is solvable.",
+    "mathContext": "The subgroup existence hierarchy: Lagrange $\\subset$ Cauchy $\\subset$ Sylow $\\subset$ Hall. **Lagrange**: orders divide $|G|$. **Cauchy**: each prime $p \\mid |G|$ gives a subgroup of order $p$. **Sylow**: each prime power $p^k \\mid |G|$ gives a subgroup of order $p^k$. **Hall**: each Hall divisor $d$ of $|G|$ (with $\\gcd(d, |G|/d)=1$) gives a subgroup of order $d$ — but only in solvable groups.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's theorem", "Sylow's theorem", "Cauchy's theorem", "solvable groups", "Hall divisors"],
+    "prerequisites": ["finite group theory", "Lagrange's theorem", "Sylow theory", "solvable groups"]
+  },
+  {
     "id": "ann-hall-divisor-def",
     "proofId": "lagrange-theorem-oq-01-oq-03",
     "range": { "startLine": 52, "endLine": 58 },
