@@ -59,7 +59,9 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 404
+    "lineCount": 467,
+    "theoremCount": 15,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Liouville's 1844 theorem — the first proof that specific transcendental numbers exist — uses the Archimedean property $|N|_{\\infty} \\geq 1$ for nonzero integers. The p-adic number system was developed by Kurt Hensel around 1897, motivated by the analogy between number fields and function fields. P-adic Liouville-type results appear in Mahler's work (1930s–1950s) on p-adic transcendence and in the theory of p-adic Diophantine approximation. The Archimedean Complement Lemma $|N|_p \\geq 1/|N|$ is a weak form of the **adelic product formula** $\\prod_v |N|_v = 1$ (Artin-Whaples, 1945), which underlies all of modern algebraic number theory — the product over all places (one Archimedean + one p-adic for each prime) equals 1. The p-adic Liouville theorem belongs to the broader program of Diophantine approximation in non-Archimedean metrics, developed by Mahler, Ridout, and Roth (Roth's theorem, 1955, Fields Medal). The use of **naive height** $H(r/s) = \\max(|r|, |s|)$ — rather than just the denominator — is the key departure from the classical theory, forced by the non-Archimedean structure where the numerator's p-adic content cannot be ignored.",
