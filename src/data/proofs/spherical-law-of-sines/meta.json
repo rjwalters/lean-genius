@@ -23,7 +23,7 @@
     "assumptions": "None. Fully machine-verified.",
     "lineCount": 323,
     "theoremCount": 21,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "originalContributions": [
       "dot, normSq, arcLen, tripleProduct, projPerp definitions using Fin 3 → ℝ framework (compatible with Mathlib's crossProduct)",
       "Lagrange's identity: |u×v|² = |u|²|v|² − (u·v)², proved via simp+ring over Fin.sum_univ_three",

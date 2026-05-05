@@ -22,7 +22,7 @@
     "assumptions": "None. Fully machine-verified.",
     "lineCount": 209,
     "theoremCount": 13,
-    "definitionCount": 3,
+    "definitionCount": 2,
     "originalContributions": [
       "CycleConfig structure: encodes j-step Collatz cycle with odd elements, halving counts, and step relation 2^mᵢ · n_{i+1} = 3nᵢ + 1",
       "cycle_product_equation: ∏ᵢ(3nᵢ+1) = 2^M · ∏ᵢnᵢ via cyclic permutation (σ is bijection on Fin j)",

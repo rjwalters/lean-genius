@@ -24,7 +24,7 @@
     "assumptions": "3 axiom declarations: (1) BSD_rank2_Lderiv2: rank-2 BSD formula (L''(E,1)/2 = BSDConstant), encoding the strong BSD conjecture for rank-2 curves; (2) curve389a_second_L_derivative: the second L-derivative of 389a at s=1, whose existence is established by the Buhler-Gross-Zagier computation; (3) curve389a_BGZ_computation: bounds 0.7557 < L''(389a,1)/2 < 0.7558, from the numerical verification of Buhler-Gross-Zagier (1985). The main BSD axioms (analyticRank, L-function, regulator positivity) are inherited from the parent BirchSwinnertonDyer.lean.",
     "lineCount": 273,
     "theoremCount": 27,
-    "definitionCount": 2
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Curve 389a1 (Cremona label) — the elliptic curve y² + y = x³ + x² - 2x — holds the distinction of being the smallest-conductor elliptic curve with algebraic rank 2 (conductor N = 389, a prime). Established by Cremona's systematic enumeration of elliptic curves by conductor. The Birch and Swinnerton-Dyer conjecture predicts a deep relationship between the arithmetic structure of the curve (Mordell-Weil group, regulator, Shafarevich-Tate group) and the analytic behavior of its L-function L(E, s) at s = 1. For a rank-2 curve, L(E, 1) = L'(E, 1) = 0, and BSD predicts: L''(E, 1)/2 = Ω · R · |Ш| · ∏cₚ / |tors|². Buhler, Gross, and Zagier (Math. Comp. 44, 1985) computed L''(389a, 1) to high precision and confirmed that L''(389a, 1)/2 ≈ 0.7558 matches the predicted value 4.959 × 0.1524 × 1 × 1 / 1 ≈ 0.7558, providing the first explicit numerical verification of BSD for a rank-2 curve.",

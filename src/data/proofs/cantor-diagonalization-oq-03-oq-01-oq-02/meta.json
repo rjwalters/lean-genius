@@ -23,7 +23,7 @@
     "assumptions": "ClassicalRiceModel encodes 2 mathematical assumptions as structure fields: (1) h_compile — every behavior has a canonical code (universality); (2) kleene_rec — Kleene's recursion theorem (every code transformer has a semantic fixed point). These are hypotheses to classical_rice_abstract, not global Lean axioms. The 5 abstract theorems (abstract_rice through no_halting_model) are fully axiom-free.",
     "lineCount": 275,
     "theoremCount": 8,
-    "definitionCount": 4,
+    "definitionCount": 3,
     "originalContributions": [
       "abstract_rice: no Bool-evaluation structure can be point-surjective (direct from Lawvere)",
       "rice_induced_obstruction: any d : Val → Bool applied to a point-surjective structure gives a non-surjective Bool structure",

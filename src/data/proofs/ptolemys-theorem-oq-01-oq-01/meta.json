@@ -52,7 +52,7 @@
     ],
     "lineCount": 288,
     "theoremCount": 8,
-    "definitionCount": 2
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Ptolemy's theorem (c. 150 AD) states that for a cyclic quadrilateral ABCD in convex position, AC·BD = AB·CD + BC·DA. The question of whether equality alone characterizes concyclic order — the *converse* — was implicit in Ptolemy's work but requires careful proof. In modern terms, it follows from the cross-ratio characterization: for four points on a circle, the cross-ratio R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) is always real, and R > 0 precisely when the points are in CCW or CW order. This file provides the Lean 4 formalization of the converse direction, completing the full biconditional characterization.",
