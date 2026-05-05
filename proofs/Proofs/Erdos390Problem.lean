@@ -495,6 +495,26 @@ theorem factorizationMax_8_ge : ∀ vf : ValidFactorization 8, vf.maxFactor ≥ 
                         (Nat.mul_le_mul (by omega) (Nat.mul_le_mul (by omega) (by omega))))
             rw [hprod] at hprod_ge; norm_num at hprod_ge
 
+/-- f(7) = 20: combines upper bound (witness) and lower bound (case analysis). -/
+theorem factorizationMax_7_eq : factorizationMax 7 = 20 := by
+  unfold factorizationMax
+  simp only [show ∃ _ : ValidFactorization 7, True from ⟨vf7, trivial⟩, dite_true]
+  apply Nat.le_antisymm
+  · exact Nat.sInf_le ⟨vf7, by native_decide⟩
+  · apply Nat.le_sInf ⟨vf7.maxFactor, ⟨vf7, rfl⟩⟩
+    rintro m ⟨vf, rfl⟩
+    exact factorizationMax_7_ge vf
+
+/-- f(8) = 16: combines upper bound (witness) and lower bound (case analysis). -/
+theorem factorizationMax_8_eq : factorizationMax 8 = 16 := by
+  unfold factorizationMax
+  simp only [show ∃ _ : ValidFactorization 8, True from ⟨vf8, trivial⟩, dite_true]
+  apply Nat.le_antisymm
+  · exact Nat.sInf_le ⟨vf8, by native_decide⟩
+  · apply Nat.le_sInf ⟨vf8.maxFactor, ⟨vf8, rfl⟩⟩
+    rintro m ⟨vf, rfl⟩
+    exact factorizationMax_8_ge vf
+
 /- ## Section III: Basic Structural Properties -/
 
 /-- For any valid factorization of n!, the maximum factor is > n. -/

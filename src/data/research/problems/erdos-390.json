@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-13T01:10:23.917Z",
     "iteration": 2,
     "focus": "Proved exact values for f(n), n=3..6, with tight bounds",
@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Added f(7)≥20 and f(8)≥16 lower bounds. File now 538 lines, 14T, 1A, 0S. Exact values: f(3)=6, f(4)=24, f(5)=12, f(6)=10, f(7)=20, f(8)=16.",
+    "progressSummary": "COMPLETED: Added exact value theorems factorizationMax_7_eq (f(7)=20) and factorizationMax_8_eq (f(8)=16) via Nat.sInf_le + Nat.le_sInf. File now 557 lines, 16T, 1A, 0S.",
     "builtItems": [
       "factorizationMax_4_ge: tight lower bound f(4)≥24 via product argument",
       "factorizationMax_5_ge: tight lower bound f(5)≥12 via 3-case analysis",
       "factorizationMax_6_ge: tight lower bound f(6)≥10 via 4-case analysis",
       "vf4, vf8: new witnesses for n=4 (f(4)≤24) and n=8 (f(8)≤16)",
       "factorizationMax_7_ge: f(7)≥20 via 4-case analysis",
-      "factorizationMax_8_ge: f(8)≥16 via 5-case analysis"
+      "factorizationMax_8_ge: f(8)≥16 via 5-case analysis",
+      "factorizationMax_7_eq: f(7)=20 (proved via Nat.sInf_le + Nat.le_sInf from existing bounds)",
+      "factorizationMax_8_eq: f(8)=16 (proved via same pattern)"
     ],
     "insights": [
       "Only axiom (factorizationMax_asymptotic) is the Erdos-Guy-Selfridge 1982 theorem: f(n)-2n is between c*n/logn and C*n/logn. Deep result requiring full paper formalization.",
@@ -53,10 +55,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove f(7)=20 (lower bound: check no factorization of 5040 with factors>7 achieves max<20)",
-      "Prove f(8)=16 (lower bound: no subset of {9..15} has product 40320)",
       "Add witnesses for n=9,10 to extend numerical table",
-      "The sequence f(n)-2n shows non-monotonic behavior that could inform the conjecture"
+      "Study f(n)-2n sequence for non-monotonic pattern"
     ],
     "markdown": "# Erdős #390 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the minimal $m$ such that\\[n! = a_1\\cdots a_k\\]with $n< a_1<\\cdots <a_k=m$. Is there (and what is it) a constant $c$ such that\\[f(n)-2n \\sim c\\frac{n}{\\log n}?\\]\n\n\n\nErd\\H{o}s, Guy, and Selfridge \\cite{EGS82} have shown that\\[f(n)-2n \\asymp \\frac{n}{\\log n}.\\]\n\n\n\n\nReferences\n\n\n[EGS82] Erd\\H{o}s, P. and Guy, R. K. and Selfridge, J. L., Another property of {$239$} and some related questions. Congr. Numer. (1982), 243-257.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #389\n- Problem #391\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- EGS82\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },

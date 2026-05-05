@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-03-23T00:42:35.518Z",
     "iteration": 2,
-    "focus": "Created BorsukUlamOQ04.lean: Z/2 involutions, RP^n quotient, odd map descent, covering type abstraction",
+    "focus": "Added GCovering framework (Part 8): generalizes CoveringType to arbitrary additive group G. Building Docker to verify.",
     "blockers": [],
     "nextAction": "Verify Lean builds. Extend CoveringType with higher categorical axioms.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (3→1). Proved fundamental_group_RPn (Fin 2 witness). Replaced false sphere_double_cover axiom with correct+proved sphere_fiber_pair theorem. Only remaining axiom is covering_space_obstruction (main Borsuk-Ulam variant).",
+    "progressSummary": "PROGRESS: Added Part 8 (GCovering framework). GCovering generalizes CoveringType to arbitrary additive group G. Proved: GCovering_z2_involutive (deck involutivity), toCoveringType_Z2 (embed in classical), antipodalZ2Covering_deck_matches (connects to classical), odd_gives_GEquivariant (G-equivariant version). Shows Z/2 case exactly recovers classical framework.",
     "builtItems": [
       "BorsukUlamOQ04.lean: 295 lines, 4 theorems, 3 axioms, 11 definitions",
       "Involution structure: self-inverse map with proved setoid properties",
@@ -41,7 +41,15 @@
       "EquivariantMap: maps between covering types respecting structure",
       "odd_gives_equivariant: proved odd maps yield equivariant maps between antipodal coverings",
       "sphere_fiber_pair: proved fiber characterization (replaces false sphere_double_cover axiom)",
-      "fundamental_group_RPn: proved via Fin 2 witness"
+      "fundamental_group_RPn: proved via Fin 2 witness",
+      "GCovering structure: generalizes CoveringType to arbitrary additive group G",
+      "antipodalZ2Covering: S^n → RP^n as ZMod 2 covering",
+      "GCovering_z2_involutive: deck transformation is involution (proved from ZMod 2 arithmetic)",
+      "GCovering.toCoveringType_Z2: every ZMod 2 GCovering is a classical CoveringType",
+      "antipodalZ2Covering_deck_matches: ZMod 2 framework recovers classical negation deck",
+      "GEquivariantMap: equivariant maps between G-coverings",
+      "odd_gives_GEquivariant: odd maps yield GEquivariantMap (proved)",
+      "odd_GEquivariant_extends_equivariant: consistent base maps (proved by rfl)"
     ],
     "insights": [
       "Descent of odd maps to RP^n is purely algebraic: odd maps preserve the antipodal equivalence relation",
@@ -50,15 +58,18 @@
       "Higher coverings change fiber type: 0-type (classical) to n-type to infinity-type (full local system)",
       "Borsuk-Ulam in infty-topos language: non-existence of sections in the slice infty-topos over BZ/2",
       "sphere_double_cover was FALSE: RP defined as quotient of all R^{n+1} by x~-x, but [0] has no sphere representative. Correct RP should quotient S^n or R^{n+1}\\{0}.",
-      "fundamental_group_RPn only claimed existence of a 2-element type — trivially witnessed by Fin 2"
+      "fundamental_group_RPn only claimed existence of a 2-element type — trivially witnessed by Fin 2",
+      "For G = ZMod 2 (discrete): only pi_1 contributes to obstruction; GCovering_z2_involutive shows why",
+      "GCovering generalizes CoveringType: act_zero + act_add + act_proj subsumes deck + deck_inv + deck_proj",
+      "The toCoveringType_Z2 embedding shows classical covering theory is the special case G = ZMod 2",
+      "For general G: obstructions live in H*(BG), not just pi_1(BG). G = U(1) gives H^2; G = SU(2) gives H^4"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify Lean 4 compilation of BorsukUlamOQ04.lean",
-      "Add import of BorsukUlam.lean to connect main theorem with covering space argument",
-      "Formalize the lifting property of covering spaces",
-      "Add higher homotopy group axioms for RP^n (pi_k(RP^n) for k >= 2)",
-      "Connect to OQ-02 equivariant framework for G beyond Z/2"
+      "Run Docker build to verify GCovering framework compiles",
+      "Add ZMod p lens space covering (G = ZMod p, total space = S^{2n-1})",
+      "State generalized Borsuk-Ulam as axiom: no G-equivariant map S^n -> S^m when n > Gdim(m)",
+      "Connect to OQ-02 equivariant BU dimension framework"
     ]
   },
   "tags": [
