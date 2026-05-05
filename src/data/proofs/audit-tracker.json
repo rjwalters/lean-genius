@@ -14685,6 +14685,14 @@
       "issues": [
         "lineCount mismatch: claims 221, actual 226; theoremCount mismatch: claims 10, actual 12 \u2014 fixed in this PR"
       ]
+    },
+    "fundamental-theorem-calculus-oq-01-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-05T03:05:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "lineCount mismatch: claims 253, actual 311; theoremCount mismatch: claims 7, actual 8 (real_ac_implies_normed_ac undercounted) \u2014 fixed in PR #15948"
+      ]
     }
   },
   "erdos-1097-oq-01": {
