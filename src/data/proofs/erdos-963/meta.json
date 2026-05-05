@@ -24,7 +24,8 @@
     "lineCount": 706,
     "assumptions": "0 axioms. trivial_upper_bound now proved (f(n) ≤ n - 1 for n ≥ 1, via worst-case witness A = {0,...,n-1} and zero_not_in_dissociated). greedy_lower_bound fully proved via greedy_dissociated + Nat.log arithmetic. The conjectured tight bound f(n) ≤ ⌊log₂ n⌋ + 1 remains open in the formalization (the trivial bound n − 1 is much weaker but axiom-free). The main Erdős conjecture f(n) ≥ ⌊log₂ n⌋ is stated as `def ErdosProblem963` (open).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 23
+    "theoremCount": 23,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős formulated this problem in the 1960s as part of his extensive work on additive combinatorics and subset sum structures. The concept of dissociated sets (also called *Sidon sets of order 1* or *$B_1$ sequences*) originated with Simon Sidon's 1932 study of sets whose pairwise sums are all distinct. Dissociated sets generalize this: not just pairwise sums but *all* $2^k$ subset sums must be distinct. The problem appears as [Va99, 1.22] in Vaughan's compilation. Erdős proved the greedy lower bound $f(n) \\ge \\lfloor\\log_3 n\\rfloor$ himself, observing that after selecting $k$ elements for a dissociated subset, at most $3^k - 1$ further values are excluded (each element of the ambient set can be expressed as a sum-or-difference involving at most one new element per existing subset sum). The conjectured improvement to $\\lfloor\\log_2 n\\rfloor$ would be essentially tight, since the trivial upper bound gives $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$. This problem connects deeply to the work of Halász (1977) on discrepancy of subset sums, Freiman's structure theorem for sets with small sumsets, and the modern probabilistic combinatorics program of Alon, Kleitman, and others on distinct subset sums (cf. Erdős Problem #1, the \\$500 problem on distinct subset sums).",

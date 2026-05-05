@@ -85,7 +85,8 @@
     "axiomCount": 0,
     "lineCount": 272,
     "assumptions": "0 axioms, 0 sorries. Core diagonal argument is original; infrastructure relies on Mathlib's Cardinal.isRegular_aleph_one (regularity of ℵ₁) and Cardinal.lt_ord (ordinal/cardinal correspondence).",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**The First Uncountable Ordinal**\n\nCantor's development of transfinite ordinals in 1883 culminated in the definition of ω₁ — the first ordinal that cannot be put in bijection with ℕ. The collection of all countable ordinals {α | α.card ≤ ℵ₀} forms a well-ordered set of extraordinary richness: it contains ω, ω², ω^ω, ε₀, and all other 'small' infinite ordinals.\n\n**Why ℵ₁?**\n\nThe cardinality of this collection is ℵ₁, the first uncountable cardinal. This is not a coincidence: ω₁ is defined as the initial ordinal of ℵ₁, meaning it is the smallest ordinal of cardinality ℵ₁. The set of ordinals below ω₁ (i.e., the countable ordinals) then has exactly ℵ₁ many elements.\n\n**The Diagonal Argument Connection**\n\nThe uncountability of the countable ordinals admits a beautiful diagonal proof: if f : ℕ → Ordinal claimed to enumerate all countable ordinals, we could form β = sSup(range f) + 1. Since ω₁ is regular (a countable union of countable sets is countable), β < ω₁. But β > f(n) for all n, contradicting surjectivity.",

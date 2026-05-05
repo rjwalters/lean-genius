@@ -53,7 +53,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The Szemerédi regularity lemma (1975/1978) is one of the most influential results in modern combinatorics. Endre Szemerédi first developed the regularity method as a tool within his proof that every dense subset of the integers contains arbitrarily long arithmetic progressions (1975), settling a conjecture of Erdős and Turán from 1936. The regularity lemma itself was then published separately in 1978, and rapidly became a cornerstone of extremal graph theory.\n\nThe key conceptual innovation was the notion of epsilon-regularity: a pair of vertex sets that behaves pseudorandomly in that all large sub-pairs have approximately the same edge density. This allowed Szemerédi to replace complicated dense graphs with simpler 'reduced graphs' that retain the essential combinatorial structure. The partition energy function, formalized here following the exposition of Komlós and Simonovits (1996), provides the potential argument that drives the regularity lemma: energy lies in $[0,1]$, increases by at least $\\varepsilon^5$ at each refinement step, and therefore the refinement process must terminate.\n\nThis core module extracts the shared definitions used by the full Szemerédi pipeline (regularity, counting, removal, and the main theorem on arithmetic progressions), preventing definition drift across files. The modularity mirrors the mathematical structure: the same definitions of edge density and epsilon-regularity appear in applications ranging from the triangle removal lemma (Ruzsa-Szemerédi 1978) to the Green-Tao theorem on primes in arithmetic progressions (2008).",

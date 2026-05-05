@@ -55,7 +55,8 @@
     "lineCount": 1130,
     "assumptions": "3 axiom(s): gnedenko_kolmogorov_forward, gnedenko_kolmogorov_gaussian, gnedenko_kolmogorov_converse. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 55
+    "theoremCount": 55,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The Central Limit Theorem, first rigorously proved by Lyapunov (1901) and Lindeberg (1922), characterizes Gaussian limits for sums of independent random variables with finite variance. The natural question — what happens when variance is infinite? — was resolved by Boris Gnedenko and Andrey Kolmogorov in their 1954 monograph 'Limit Distributions for Sums of Independent Random Variables.' They proved that every possible limit law for normalized sums must be a stable distribution, parameterized by an index $\\alpha \\in (0, 2]$, and that membership in the domain of attraction of $S_\\alpha$ is completely characterized by regularly varying tails. The theory rests on Jovan Karamata's (1930) framework of slowly and regularly varying functions, which provides the precise language for 'power-law tails with logarithmic corrections.' Paul Lévy (1925) had independently discovered stable distributions via characteristic function methods. William Feller's treatment in Volume 2 of his probability textbook (1971) made the theory accessible to a broad audience. The formalization here builds the Karamata framework from scratch in Lean 4 and axiomatizes the deep analytic core (Lévy continuity theorem, Abelian-Tauberian connections) while fully proving the algebraic and structural results.",

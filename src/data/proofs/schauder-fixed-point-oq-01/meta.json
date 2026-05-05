@@ -46,7 +46,8 @@
     "proofRepoPath": "Proofs/SchauderFixedPointOQ01.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 315,
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The Schauder projection lemma is a key technical tool in functional analysis, introduced by Juliusz Schauder in 1930. It provides the crucial finite-dimensional approximation step in the proof of the Schauder fixed point theorem, which generalizes Brouwer's theorem to infinite-dimensional spaces.\n\nThe lemma says that any compact set in a normed space can be 'almost projected' onto a finite-dimensional convex hull. This bridge between infinite and finite dimensions is what allows the Brouwer theorem (which only works in finite dimensions) to be leveraged in the infinite-dimensional setting.",

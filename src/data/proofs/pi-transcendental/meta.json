@@ -42,7 +42,8 @@
     "lineCount": 457,
     "assumptions": "1 axiom: lindemann_theorem (Lindemann-Weierstrass theorem). pi_transcendental now proved from lindemann_theorem via Euler's identity. All other results proved from these.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The problem of squaring the circle dates to the Rhind Papyrus (c. 1650 BCE) and was a central challenge in ancient Greek mathematics, studied by Anaxagoras, Hippocrates of Chios, and Archimedes. In 1761, Johann Heinrich Lambert proved $\\pi$ is irrational, but transcendence required entirely new methods. Charles Hermite's landmark 1873 proof that $e$ is transcendental introduced the auxiliary polynomial technique. Ferdinand von Lindemann, building directly on Hermite's method, proved $\\pi$ transcendental in 1882, definitively resolving the 2,000-year-old circle-squaring problem. Karl Weierstrass later generalized Lindemann's result to the full Lindemann-Weierstrass theorem (1885), establishing that $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent when $\\alpha_1, \\ldots, \\alpha_n$ are linearly independent algebraic numbers. This line of work opened transcendental number theory as a distinct field, leading to Gelfond-Schneider (1934), Baker's theorem (1966), and modern Diophantine analysis.",

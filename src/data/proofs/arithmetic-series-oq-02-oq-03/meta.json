@@ -20,7 +20,8 @@
     "lineCount": 163,
     "assumptions": "0 axioms, 0 sorries. Fully verified: all 11 theorems proved from Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The connection between simplicial numbers and face counts of simplices is classical. The f-vector (f\u2080, f\u2081, ..., f_k) of a simplicial complex records the number of faces in each dimension. For the standard k-simplex \u0394^k (the convex hull of k+1 vertices), each j-face is a (j+1)-element subset of the vertex set, giving f_j = C(k+1, j+1). The simplicial numbers S_m(n) = C(n+m, m), introduced as higher-dimensional analogues of triangular numbers, are precisely these face counts under appropriate reindexing.",

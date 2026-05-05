@@ -58,7 +58,8 @@
     "axiomCount": 1,
     "lineCount": 329,
     "assumptions": "1 axiom (Hooley's theorem), 0 sorries.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "**Erdős Problem #235** was posed by Paul Erdős and Ronald Graham in connection with the distribution of integers coprime to highly composite numbers. The question asks whether the gaps between consecutive totatives of primorials $N_k = 2 \\cdot 3 \\cdots p_k$ have a limiting distribution when normalized by the average gap $N_k/\\varphi(N_k)$.\n\nChristopher Hooley, in his 1965 paper 'On the difference between consecutive numbers prime to n. II' (Mathematika 12, 171-185), proved the affirmative: the normalized gaps converge in distribution to $\\text{Exp}(1)$ with CDF $f(c) = 1 - e^{-c}$. Hooley's proof uses a sieve-theoretic approach, estimating the count of coprimes in short intervals via inclusion-exclusion.\n\nThe result connects to Mertens' third theorem (1874) via the average gap asymptotics: $N_k/\\varphi(N_k) \\sim e^\\gamma \\log p_k$, where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant. The appearance of the exponential distribution reflects a deep pseudo-randomness: sieved integers behave like a Poisson process with decreasing rate, and the memorylessness of the exponential captures the local independence of coprimality conditions for distinct primes.",

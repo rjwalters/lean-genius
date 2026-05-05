@@ -55,7 +55,8 @@
       "Parity arithmetic (mod 2)"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Descartes' Rule of Signs (1637) bounds the number of positive real roots by the number of sign variations in the coefficient sequence. The stronger parity result — that the difference is always even — has been known since Fourier and Budan in the early 19th century. The parity result is harder to formalize than the bound because it requires understanding how sign variations transform under root extraction.\n\nThe open question from OQ01 asked whether complex conjugate pairing (non-real roots come in pairs) is sufficient for the parity proof, or whether the exact sign variation change analysis is also needed. This file answers definitively: both are required.",

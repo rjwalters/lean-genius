@@ -91,7 +91,8 @@
     ],
     "lineCount": 335,
     "assumptions": "1 axiom (bergelson_richter). The Bergelson-Richter theorem is axiomatized (deep ergodic theory); random_coprime_density proved via BaselProblemOQ04OQ03 Möbius+Tannery.",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 5
   },
   "overview": {
     "summary": "Formalizes Erdős Problem #1149, solved by Bergelson and Richter (2017): for non-integer α > 0, the natural density of integers n with gcd(n, ⌊n^α⌋) = 1 is exactly 6/π². The main theorem is axiomatized (deep ergodic theory), with 18 proved theorems including density bounds, coprime set properties, Möbius inversion identity, coprime pair counting, and random_coprime_density (classical 6/π² density). 0 sorries, 1 axiom.",

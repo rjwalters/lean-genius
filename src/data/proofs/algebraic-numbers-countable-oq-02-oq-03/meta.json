@@ -85,7 +85,8 @@
         "id": "algebraic-numbers-countable",
         "relationship": "Grandparent: proves algebraic numbers are countable with cardinality ℵ₀"
       }
-    ]
+    ],
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Cantor's 1874 paper established two things: (1) algebraic numbers are countable (cardinality ℵ₀), and (2) real numbers are uncountable. Together these imply transcendental numbers are uncountable, but they don't pin down the exact cardinality of the transcendentals. The natural completion of Cantor's result — proved here — is that the transcendental reals have *exactly* 𝔠 = 2^ℵ₀ elements, the same as ℝ itself.\n\nThis sharpening says the algebraic/transcendental dichotomy is maximally asymmetric in cardinality: the algebraic reals (cardinality ℵ₀) are negligible compared to the transcendental reals (cardinality 𝔠), and removing the algebraic reals from ℝ leaves a set of equal cardinality. The formula 𝔠 = ℵ₀ + 𝔠 = #algebraics + #transcendentals reflects this absorption: adding a countable set to an uncountable set doesn't change cardinality.",

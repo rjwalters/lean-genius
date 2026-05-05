@@ -50,7 +50,8 @@
     "axiomCount": 3,
     "lineCount": 167,
     "assumptions": "3 axioms: R_cycle_graph, triangle_constant_bound, efrs_upper_bound. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #569: Odd Cycle Ramsey Numbers Linear in Edges**\n\nThis problem was posed by Erdős, Faudree, Rousseau, and Schelp in 1993 (referenced as [EFRS93]). It asks a fundamental question about Ramsey numbers: how does the two-color Ramsey number R(C_{2k+1}, H) scale with the number of edges m of a graph H that has no isolated vertices?\n\n**Historical Development:**\n- **Classical Ramsey theory** establishes that R(G₁, G₂) exists for all finite graphs G₁, G₂. The challenge is finding tight bounds.\n- **Triangle case (k=1):** R(C_3, H) ≤ 2m + 1 is known, giving c_1 ≤ 3. This follows from Turán-type arguments.\n- **EFRS93:** The general bound R(C_{2k+1}, H) ≤ c · k · m was established, showing linearity in m but with a k-dependent factor.\n- **Burr-Erdős (proved by Lee 2017):** R(G, G) ≤ c(d) · n for d-degenerate G on n vertices, a related but distinct result.\n\n**Current Status:**\nThe problem remains OPEN. No exact value of c_k is known for any k ≥ 1. The restriction to odd cycles is essential — even cycles have fundamentally different Ramsey behavior. The problem cannot be resolved by finite computation.",

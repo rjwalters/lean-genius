@@ -54,7 +54,8 @@
     "axiomCount": 4,
     "lineCount": 205,
     "assumptions": "4 axioms: threshold_tight, haxell_theorem, haxell_szabo_theorem, threshold_sharp. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Bollobás, Erdős, and Szemerédi conjectured in 1975 that in balanced r-partite graphs, minimum degree at least (r - 3/2 - o(1))n forces a complete r-clique K_r. They also constructed examples showing the constant r - 3/2 is best possible, with extremal graphs avoiding K_r via subtle parity arguments.\n\nHaxell proved the conjecture in 2001 using connections to list coloring theory. Her proof showed that the minimum degree condition forces a rainbow clique through a reduction to vertex list coloring problems, resolving the question after 25 years.\n\nHaxell and Szabó determined the exact sharp threshold in 2006: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋. This precise formula reveals the role of parity in the problem — the floor of r/2 appears because the extremal constructions depend on whether r is even or odd. Asymptotically, ⌈sn/(2s-1)⌉ ≈ n/2, recovering the (r - 3/2)n threshold.",

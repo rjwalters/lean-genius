@@ -38,7 +38,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Erdős Problem #1006 asks about *robustly acyclic orientations*: orientations where reversing any single arc preserves acyclicity. While this is open for general graphs, the coloring orientation (orient $u \\to v$ when $\\text{col}(u) < \\text{col}(v)$ for a proper $k$-coloring) provides an explicit, well-structured family of robustly acyclic orientations.\n\nThis file (OQ04) is the fourth in a series: OQ03 proved the coloring orientation is robustly acyclic and every finite graph admits such an orientation (via the four-color theorem / Mathlib's graph coloring). OQ04 goes further and characterizes the *internal structure* of these orientations — showing they are *graded DAGs* in the sense that every arc goes strictly from a lower color level to a higher one.\n\nThe graded DAG structure is the key reason why reversing any single arc preserves acyclicity: any directed path must monotonically increase in color value, so no cycle is possible even after a single reversal.",

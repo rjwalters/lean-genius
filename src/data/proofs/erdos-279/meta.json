@@ -36,7 +36,8 @@
     ],
     "assumptions": "2 axioms: ErdosProblem279 (main conjecture for k ≥ 3) and ErdosProblem279_generalized (generalization to dense sets). Both are open conjectures. The density conditions HasPrimeLikeDensity and HasLogLogDivergence use placeholder True bodies.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (Σ 1/p = ∞, proved by Euler in 1737) suffice to show covering. The case k ≥ 3 introduces a qualitatively different obstacle: the constraint t ≥ k means each prime p can only cover integers n ≡ aₚ (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erdős noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",

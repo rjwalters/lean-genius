@@ -93,7 +93,8 @@
     "axiomCount": 2,
     "lineCount": 253,
     "assumptions": "2 axioms: sylvester_schur (Sylvester-Schur — largest prime factor P(n,k) > k for 1≤k, 2k≤n), erdos_1955_bound (Erdős 1955 — P(C(n,k)) ≥ c·k·log k). 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Origins: Sylvester and Schur (1892–1929)**\n\nJ.J. Sylvester (1892) proved that among any $k$ consecutive integers greater than $k$, at least one has a prime factor exceeding $k$. Issai Schur (1929) refined this to show that the binomial coefficient $\\binom{n}{k}$ itself has a prime divisor $> k$ when $k \\le n/2$. The key insight is that $\\binom{n}{k} = \\frac{(n-k+1) \\cdots n}{k!}$, and primes $> k$ in the numerator survive division by $k!$.\n\n**Erdős's Contributions (1934–1979)**\n\nErdős gave a new proof of the Sylvester-Schur theorem in 1934, using elementary methods. In 1955, he achieved a breakthrough by proving $P(\\binom{n}{k}) \\ge c \\cdot k \\log k$ using the prime number theorem and a counting argument on prime factors in consecutive products. By 1979, in 'Some unconventional problems in number theory,' Erdős conjectured the far stronger bound $P(\\binom{n}{k}) \\ge \\min(n-k+1, k^{1+c})$ and wrote that it 'seems certain' that $P > k^{1+c}$ for ANY $c > 0$ with only finitely many exceptions.\n\n**Current Status and Heuristics**\n\nThe problem remains open after 45+ years. The gap from $k \\log k$ (Erdős 1955) to $k^{1+c}$ (the conjecture) is enormous. Cramér-type probabilistic heuristics based on the random model of primes suggest the even stronger stretched exponential bound $P > e^{c\\sqrt{k}}$, which dwarfs any polynomial. The problem is essentially equivalent to Erdős Problem #961 on smooth numbers in consecutive intervals.",

@@ -57,7 +57,8 @@
         "relationship": "The Bool variant (cantor_bool) mirrors the diagonal pattern used in Turing's halting argument, though this file formalizes the algebraic structure rather than the full computational undecidability result"
       }
     ],
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "problemStatement": "Prove the Lawvere fixed-point theorem as a categorical generalization of Cantor's diagonal argument: if a surjection $e : A \\to (A \\to B)$ exists, then every endomorphism $f : B \\to B$ has a fixed point. Derive Cantor's theorem as a corollary.",

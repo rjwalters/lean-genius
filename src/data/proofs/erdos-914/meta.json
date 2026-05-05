@@ -88,7 +88,8 @@
         "description": "Tightness of the degree bound: for every r >= 2 and m >= 1, there exists a graph on rm vertices with minimum degree exactly m(r-1) - 1 that contains no m vertex-disjoint K_r's. The extremal construction uses an unbalanced Turan graph T(rm, r) with one part of size m+1."
       }
     ],
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem asks when a graph must contain many vertex-disjoint cliques, and is one of the most important results in extremal graph theory about spanning substructures.\n\nThe story begins with **Dirac's theorem (1952)**: every graph on $n \\ge 3$ vertices with $\\delta(G) \\ge n/2$ has a Hamiltonian cycle, which implies the $r = 2$ case (perfect matchings). **Corrádi and Hajnal (1963)** proved the triangle case: every graph on $3m$ vertices with $\\delta(G) \\ge 2m$ contains $m$ vertex-disjoint triangles, in their paper \"On the maximal number of independent circuits in a graph\" (Acta Mathematica Hungarica).\n\nErdős conjectured the general statement for all $r \\ge 2$: every graph on $rm$ vertices with $\\delta(G) \\ge m(r-1)$ contains $m$ vertex-disjoint copies of $K_r$. **Hajnal and Szemerédi (1970)** proved this conjecture in their landmark paper \"Proof of a conjecture of P. Erdős\" (Combinatorial Theory and its Applications), though the original proof was notoriously long and complex.\n\n**Kierstead and Kostochka (2008)** gave a significantly shorter proof via **equitable colorings**: a proper $r$-coloring of the complement $\\overline{G}$ with color classes of equal size $m$ yields the desired $K_r$-factor. **Kierstead, Kostochka, Molla, and Yeager (2010)** found a polynomial-time $O(n^5)$ algorithm. The theorem has been generalized by **Alon and Yuster (1996)** and by **Komlós, Sárközy, and Szemerédi (2001)** to arbitrary $H$-factors.",

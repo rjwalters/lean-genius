@@ -61,7 +61,8 @@
     "axiomCount": 6,
     "lineCount": 275,
     "assumptions": "6 axioms: liouville_multiplicative, liouville_pm_one, wintner_renyi_counterexample, wirsing_theorem, halasz_characterization, liouville_mean_zero. 0 sorries.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "**The Mean Value Problem for Multiplicative Functions**\n\nErdos asked (1961, 1965, 1973) whether multiplicative functions taking values only in {-1, 1} always have convergent mean values. Wintner had observed that for complex-valued multiplicative functions on the unit circle, the limit need not exist - Renyi's example f(n) = n^i oscillates without converging.\n\n**Wirsing's Resolution (1967):**\nIn a landmark paper, Wirsing proved that the restriction to real values {-1, 1} forces convergence. The proof uses analytic methods involving Dirichlet series and careful estimates on sums over primes.\n\n**Halasz's Generalization (1968):**\nHalasz extended Wirsing's work to characterize exactly when the mean limit is zero versus non-zero, in terms of the sum sum_p (1 - f(p))/p over primes.",

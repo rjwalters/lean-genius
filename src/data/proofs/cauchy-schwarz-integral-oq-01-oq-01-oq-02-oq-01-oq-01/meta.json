@@ -20,7 +20,8 @@
     "lineCount": 208,
     "assumptions": "0 axioms, 0 sorries. All 3 sorries eliminated by importing proofs from CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean (namespace RieszSigmaFiniteComplete). The theorems have identical signatures; delegation via exact calls.",
     "dateAdded": "2026-05-03",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 0
   },
   "overview": {
     "problemStatement": "Can Mathlib's sigma-finite infrastructure (`spanningSets`, `SigmaFinite`) be composed with the finite-measure Riesz representation proof to eliminate the `IsFiniteMeasure` hypothesis?",

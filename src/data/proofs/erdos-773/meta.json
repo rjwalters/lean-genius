@@ -35,7 +35,8 @@
     "axiomCount": 2,
     "lineCount": 236,
     "assumptions": "2 axioms: lower_bound, upper_bound. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #773 (Sidon Subsets of Squares)**\n\nSimon Sidon, a Hungarian mathematician and friend of Erdős, introduced B₂ sequences in 1932 while studying Fourier series: a set $A$ is *Sidon* if all pairwise sums $a + b$ ($a \\le b$, $a, b \\in A$) are distinct. Erdős and Turán (1941) proved the foundational result that the maximum Sidon subset of $\\{1, \\ldots, N\\}$ has size $\\sim \\sqrt{N}$, establishing a bridge between additive combinatorics and extremal set theory.\n\nProblem #773, posed by Alon and Erdős in 1985, restricts the Sidon question to perfect squares: how large can a Sidon subset of $\\{1^2, 2^2, \\ldots, N^2\\}$ be? The restriction to squares introduces number-theoretic constraints absent in the general setting — specifically, the sums $a^2 + b^2$ are governed by Fermat's theorem on sums of two squares and Landau's 1908 asymptotic for their counting function.\n\n**Key Results:**\n- **Alon–Erdős (1985):** Lower bound $N^{2/3 - o(1)}$ via probabilistic random selection; upper bound $N/(\\log N)^{1/4}$ using Landau's theorem\n- **Lefmann–Thiele (1995):** Refined the probabilistic argument to achieve $N^{2/3}$ without the $o(1)$ loss\n- **Landau (1908):** The count of integers $\\le N$ representable as sums of two squares is $\\sim c \\cdot N/\\sqrt{\\log N}$, where $c \\approx 0.7642$ is the Landau–Ramanujan constant\n\n**Status:** OPEN — the gap between $N^{2/3}$ and $N/(\\log N)^{1/4}$ remains one of the central open problems connecting additive combinatorics with analytic number theory.",

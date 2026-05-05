@@ -59,7 +59,8 @@
     "axiomCount": 3,
     "lineCount": 316,
     "assumptions": "3 axioms: gEps, basic_lower_bound, erdos_hall_upper. 0 sorries.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1179: Uniform Subset Sum Representations**\n\n**Background: Additive Combinatorics in Groups**\nThis problem lies at the intersection of additive combinatorics and probabilistic number theory. It concerns how well a random subset of a finite abelian group can 'represent' all group elements via subset sums.\n\n**The Representation Function:**\nFor a subset $A$ of a finite abelian group $G$ with $|G| = N$, define $F_A(g) = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ for each $g \\in G$. If $|A| = k$, there are $2^k$ subsets total, so the 'expected' count is $2^k/N$ per element.\n\n**Erdős-Rényi (1965):**\nPaul Erdős and Alfréd Rényi studied random subsets of abelian groups in their foundational paper on probabilistic group theory. They showed that a random set of size $k \\approx 2\\log_2 N$ gives approximately uniform representations, establishing $g_\\varepsilon(N) \\leq (2 + o(1))\\log_2 N$. Their proof uses the second moment method.\n\n**Erdős-Hall (1976):**\nErdős and Richard R. Hall improved the bound to $g_\\varepsilon(N) \\leq (1 + o(1))\\log_2 N$ using character sum estimates (discrete Fourier analysis on $G$) and large deviation bounds. This reduced the leading coefficient from 2 to $1 + o(1)$.\n\n**Main Result:**\nCombined with the trivial lower bound $g_\\varepsilon(N) \\geq \\log_2 N$ (counting argument), this gives $g_\\varepsilon(N) \\sim \\log_2 N$: the answer to Erdős's question is YES.\n\n**Connection to Problem #543:**\nProblem #543 asks about *spanning* (every element represented at least once), while #1179 asks for *uniform* representations. Uniformity is stronger but, remarkably, requires the same leading term $\\log_2 N$.",

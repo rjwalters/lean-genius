@@ -56,7 +56,8 @@
     "axiomCount": 1,
     "lineCount": 717,
     "assumptions": "1 axiom: erdos_831_growing (h(n) → ∞ as n → ∞ — the central open question). h(4)=1 (corrected), h_upper_bound, and h_three all proved. 23 theorems, 0 sorries.",
-    "theoremCount": 23
+    "theoremCount": 23,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "**Erdős Problem #831**\n\nThis geometric extremal problem was posed by Erdős in the 1970s and revisited in the 1990s, documented in [Er75h] and [Er92e].\n\n**Key History:**\n- Erdős asked about the minimum number of distinct circumradii from point configurations\n- Related to classical problems about point-line and point-circle incidences\n- Connects to the unit distance problem and orchard problem\n\n**Mathematical Setting:**\nGiven n points in general position (no three collinear, no four concyclic), each triple determines a unique circumcircle. The question is: over all such configurations, what is the minimum number of distinct radii among these circles?",

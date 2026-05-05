@@ -57,7 +57,8 @@
     "lineCount": 279,
     "assumptions": "1 axiom: engelsma_lower_bound (Engelsma's lower bound on diameter of optimal 50-tuple). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 21
+    "theoremCount": 21,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Zhang (2013) proved the first bounded prime gaps result: liminf(p_{n+1} - p_n) ≤ 70,000,000. The Polymath 8 project (2013-2014) systematically reduced this bound. Polymath 8b, led by Maynard and Tao, achieved liminf ≤ 246 using the 'admissible k-tuple sieve.'\n\nThe key insight: if we can find an admissible k-tuple with small diameter, we get a prime gap bound equal to that diameter. A set H = {h₁,...,hₖ} is admissible if for every prime p, not all residues mod p are represented in H.\n\nEngelsma (2013) conducted an exhaustive computer search showing that the minimum diameter among all admissible 50-tuples is exactly 246, achieved by the tuple {0,4,6,...,244,246}. This makes 246 the exact optimal bound for the 50-tuple Maynard-Tao approach.\n\nThe 'open question' aspect: while 246 is optimal for the 50-tuple approach, the true value of liminf(p_{n+1} - p_n) may be 2 (Twin Prime Conjecture) — this is still open. Larger k-tuples could improve the unconditional bound further.",

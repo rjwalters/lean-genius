@@ -50,7 +50,8 @@
     "axiomCount": 2,
     "lineCount": 392,
     "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for details.",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #355 asks whether a lacunary sequence (where consecutive terms have ratio at least λ > 1) can have its finite reciprocal sums cover all rationals in some open interval.\n\nBleicher and Erdős originally conjectured the answer was NO [BlEr76, p.167]. They reasoned that sparse sequences like powers of 2 have reciprocal sums that form a discrete set (dyadic rationals), unable to fill any interval.\n\nThe problem was resolved in 2025 by van Doorn and Kovač, who proved that for any lacunarity constant λ ∈ (1, 2), there exist sequences whose reciprocal sums do cover all rationals in an interval. Crucially, λ = 2 is the sharp boundary: powers of 2 (λ = 2) cannot achieve this, but any λ < 2 suffices.\n\nThe proof constructs explicit sequences that balance being sparse enough to be lacunary while having enough 'overlap' between levels to achieve density in reciprocal sums.",

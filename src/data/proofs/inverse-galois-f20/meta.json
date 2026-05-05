@@ -34,7 +34,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The Inverse Galois Problem asks: which finite groups arise as Galois groups over ℚ? While the full problem is open, many groups are known to be realizable. The Frobenius group F₂₀ = ℤ/5ℤ ⋊ ℤ/4ℤ (order 20) is the Galois group of X⁵−2 over ℚ. This is a classical result: X⁵−2 has roots ⁵√2·ζ₅ᵏ (k=0,...,4), so its splitting field is ℚ(⁵√2, ζ₅) of degree 20. Since X⁵−2 is irreducible (Eisenstein at p=2) and Φ₅ is irreducible (cyclotomic), both 5 and 4 divide |Gal|, giving 20 | |Gal|. The splitting field has degree exactly 20, so |Gal| = 20.",

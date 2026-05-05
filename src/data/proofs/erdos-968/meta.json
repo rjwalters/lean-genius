@@ -56,7 +56,8 @@
     "axiomCount": 2,
     "lineCount": 236,
     "assumptions": "2 axioms: Set.HasPosDensity, erdos_prachar_decreasing_density. 0 sorries.",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The 'normalized prime sequence' uₙ = pₙ/n was studied by Erdős and Prachar in their 1961/62 paper 'Sätze und Probleme über pₖ/k'. By the Prime Number Theorem, pₙ ~ n log n, so uₙ ~ log n. The sequence grows slowly on average but oscillates due to irregularities in prime gaps.\n\nErdős and Prachar proved two key results:\n1. The total variation Σ|uₙ₊₁ - uₙ| is asymptotic to (log x)², showing substantial oscillation\n2. The set of 'decreasing steps' {n : uₙ > uₙ₊₁} has positive density\n\nHowever, the analogous question for 'increasing steps' {n : uₙ < uₙ₊₁} remained open. This asymmetry is surprising given that the sets partition ℕ (except for the negligible 'flat' set). Erdős also asked about increasing and decreasing triples.",

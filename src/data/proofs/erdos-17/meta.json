@@ -55,7 +55,8 @@
     "lineCount": 218,
     "assumptions": "2 axioms: ninety_seven_not_cluster (97 is not a cluster prime), primes_below_97_are_cluster (all primes below 97 are cluster primes). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in his collection of combinatorial and number-theoretic questions, likely in the 1970s–1980s, as part of his broader program studying the additive structure of primes. The concept of cluster primes captures when the primes up to $p$ are 'dense enough' that their pairwise differences cover all small even numbers — a far stronger condition than merely having small gaps.\n\nThe prize of $97 cleverly matches the first non-cluster prime, a hallmark of Erdős's playful yet precise problem-setting style. Blecksmith, Erdős, and Selfridge (1999) proved the definitive upper bound $\\pi_{\\text{cluster}}(x) \\ll x/(\\log x)^A$ for all $A > 0$ using sieve-theoretic methods, showing cluster primes are superpolynomially sparse in $\\log x$. Elsholtz (2003) sharpened this to $x \\cdot \\exp(-c(\\log \\log x)^2)$ for $c < 1/8$, the strongest known bound. Despite this extreme rarity, neither bound rules out infinitude. Terence Tao has identified the problem as 'difficult', noting that controlling all prime differences simultaneously requires techniques beyond current methods. The problem appears as C1 in Richard Guy's *Unsolved Problems in Number Theory*.",

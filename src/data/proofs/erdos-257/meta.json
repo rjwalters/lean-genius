@@ -49,7 +49,8 @@
     "axiomCount": 3,
     "lineCount": 123,
     "assumptions": "3 axiom(s): lambert_series_identity, erdos_divisor_sum_irrational, erdos_257_conjecture. See Lean source for complete statements.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "This problem connects to Lambert series, named after Johann Heinrich Lambert (1728-1777), which have the form ∑ aₙ xⁿ/(1-xⁿ). When x = 1/2, the term 1/(2ⁿ - 1) arises naturally.\n\nErdős proved the fundamental case A = ℕ in 1948, showing that ∑ d(n)/2ⁿ is irrational. The key insight is the beautiful identity: ∑ 1/(2ⁿ-1) = ∑ d(n)/2ⁿ, which transforms the problem into one about the divisor function.\n\nRecent progress by Tao and Teräväinen (2025) settled the prime case, showing ∑_{p prime} 1/(2ᵖ-1) is irrational. The general case for arbitrary infinite sets remains open, making this a partially solved problem with active research interest.",

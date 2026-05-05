@@ -39,7 +39,8 @@
       "MVT as first-order Taylor (n=0 specialization)",
       "Second-order Taylor with explicit remainder"
     ],
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Taylor's theorem has a layered history. Brook Taylor (1715) published the series formula in *Methodus Incrementorum*, though similar expansions appeared in work of Gregory (1668) and Newton. Taylor's original argument was formal and lacked rigorous error bounds. The crucial improvement came from Joseph-Louis Lagrange (1797), who introduced the remainder term $R_n = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$, making the theorem quantitatively useful for approximation. Augustin-Louis Cauchy (1823) gave the integral remainder $R_n = \\int_a^b \\frac{(b-t)^n}{n!} f^{(n+1)}(t)\\,dt$, which Mathlib uses as its primary form.\n\nThe Mean Value Theorem (also Lagrange, 1797; with precursors in Rolle 1691 and Cauchy) is the $n=0$ case of Taylor's theorem. This connection unifies two of the most important results of calculus under a single framework. Weierstrass's later work on rigorous foundations (1850s) put all of this on the $\\varepsilon$-$\\delta$ footing that modern analysis and formalization require.\n\nModern formalizations of Taylor's theorem in proof assistants typically use the integral remainder form because it arises naturally from the fundamental theorem of calculus. Converting to the Lagrange form requires applying the *mean value theorem for integrals* to the integral remainder, which explains why this file must axiomatize that step.",

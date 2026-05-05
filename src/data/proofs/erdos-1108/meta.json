@@ -51,7 +51,8 @@
     "axiomCount": 0,
     "lineCount": 171,
     "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "This problem was asked by Erdős at Oberwolfach in 1988, motivated by discussions with Mahler shortly before Mahler's death that same year. Mahler had posed a related question about finite sums of powers of a base k: for k >= 5, does A_k contain only finitely many squares?\n\nMahler showed that for k <= 4, there are infinitely many squares in A_k. For k >= 5, he found only one square: 1 + 7 + 7² + 7³ = 400 = 20².\n\nBrindza and Erdős (1991) proved a partial result: for any fixed number r of terms, if n₁! + ... + nᵣ! is powerful, then the largest term n₁ is bounded by a constant depending only on r. This doesn't resolve the main question because the number of terms is unbounded.",

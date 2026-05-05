@@ -28,7 +28,8 @@
     "axiomCount": 0,
     "lineCount": 490,
     "assumptions": "",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Derrick Henry Lehmer proposed his GCD acceleration in 1938, motivated by the observation that the leading digits of two numbers determine the first several quotients in the Euclidean algorithm. Instead of performing expensive full-precision divisions, Lehmer's method extracts the top w bits of a and b, runs the cheap single-precision Euclidean algorithm on these approximations, and records the sequence of quotients as a 2×2 integer cofactor matrix M = [[α,β],[γ,δ]]. One matrix-vector multiply (a',b') = M·(a,b) then performs all those quotient steps at once on the full-precision numbers. Arnold Schönhage (1971) took this further: by recursively applying Lehmer's idea (computing HGCD on the top half of the bits, applying, then recursing), one achieves O(M(n) log n) bit complexity using fast multiplication M(n). The GMP library's mpn_gcd uses this Lehmer-Schönhage hybrid, switching between plain Euclidean (≤64 bits), Lehmer's method (64–few thousand bits), and recursive HGCD (very large inputs). The key mathematical invariant is that unimodular matrices (det = ±1) preserve GCD — a direct consequence of Cramer's rule showing the inverse exists over ℤ.",

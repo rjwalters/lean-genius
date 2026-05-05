@@ -53,7 +53,8 @@
     "axiomCount": 3,
     "lineCount": 158,
     "assumptions": "3 axiom(s): folkman_superlinear, folkman_counterexample, szemeredi_vu_2006. See Lean source for complete statements.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #343 is a problem of Folkman about subcompleteness of dense multisets. A set A ⊆ ℕ is called subcomplete if its sumset P(A) = {finite subset sums} contains an infinite arithmetic progression.\n\nFolkman (1966) proved that superlinear density (|A ∩ {1,...,N}| ≫ N^{1+ε}) implies subcompleteness. He also showed the opposite direction: for any ε > 0, there exist multisets with density ~N^{1-ε} that are NOT subcomplete. This left open the critical case of linear density.\n\nSzemerédi and Vu (2006) resolved the problem in their influential paper 'Long arithmetic progressions in sumsets: thresholds and bounds', proving that linear density suffices. This completed the characterization: linear density is the sharp threshold.",

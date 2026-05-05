@@ -66,7 +66,8 @@
     "axiomCount": 1,
     "lineCount": 538,
     "assumptions": "1 axiom: nesterenko_algebraic_independence (Nesterenko 1996: π, e^π, Γ(1/4) are algebraically independent over ℚ). Former open problem axioms schanuel_conjecture, e_plus_pi_transcendental, e_times_pi_transcendental, e_plus_pi_irrational now proved as theorems from Nesterenko's theorem.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "In 1873, Charles Hermite proved that e is transcendental — the first proof that a 'naturally occurring' constant is not a root of any polynomial with integer coefficients. In 1882, Ferdinand von Lindemann extended the method to prove π is transcendental, finally settling the ancient problem of squaring the circle.\n\nYet despite knowing both e and π are transcendental, the arithmetic combination e + π = 5.8598... has resisted all attempts at classification for over 140 years. The difficulty is fundamental: our tools for proving transcendence (Hermite-Lindemann, Gelfond-Schneider, Baker's theorem) work by showing a number cannot satisfy ANY polynomial equation. For a sum like e + π, we'd need to show both e and π cannot conspire to produce an algebraic value — and current theory lacks the tools for this.\n\nThe best conditional result is Schanuel's Conjecture (1966), which if proven would immediately give that e and π are algebraically independent, hence e + π is transcendental. But Schanuel remains unproven despite decades of effort. In 1996, Yuri Nesterenko proved the spectacular result that π, e^π, and Γ(1/4) are algebraically independent — but this involves e^π ≈ 23.14, not e ≈ 2.71.",

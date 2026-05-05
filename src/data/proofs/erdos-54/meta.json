@@ -59,7 +59,8 @@
     "axiomCount": 0,
     "lineCount": 78,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The concept of **Ramsey 2-complete sequences** was introduced by **Burr and Erdős** (1985), who asked how thin a set $A \\subseteq \\mathbb{N}$ can be while ensuring that every 2-colouring leaves a colour class whose subset sums cover all large integers. They proved a lower bound $c(\\log N)^2$ using digit-extraction colourings and an upper bound $(2\\log_2 N)^3$ via a greedy construction. The gap between quadratic and cubic bounds in $\\log N$ remained open for 36 years. Erdős (1995) specifically asked for improvement. In 2021, **Conlon, Fox, and Pham** resolved the problem completely by constructing a Ramsey 2-complete set with growth $O((\\log N)^2)$ using the **probabilistic method**, matching the lower bound and establishing $\\Theta((\\log N)^2)$ as the exact order of magnitude.",

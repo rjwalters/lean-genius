@@ -23,7 +23,8 @@
     "lineCount": 392,
     "assumptions": "None. All 4 theorems (normalization, mean, cross-moment, covariance) are fully machine-verified with 0 sorries and 0 axioms.",
     "theoremCount": 7,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The multinomial distribution traces to Jacob Bernoulli's *Ars Conjectandi* (1713) and was studied extensively by Abraham de Moivre and later Laplace as a natural generalization of the binomial. Its covariance structure became central with Karl Pearson's landmark 1900 paper introducing the chi-squared goodness-of-fit test: the asymptotic distribution of $\\chi^2 = \\sum_i (O_i - E_i)^2/E_i$ depends on the multinomial covariance matrix $\\Sigma = n(\\text{diag}(p) - pp^T)$, whose off-diagonal entries are precisely $-np_ip_j$. R.A. Fisher refined this theory in the 1920s while developing maximum likelihood estimation and contingency table analysis. For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$, the negative covariance $\\text{Cov}(X_i, X_j) = -np_ip_j$ for $i \\neq j$ reflects the fundamental constraint $\\sum X_l = n$: if more trials yield outcome $i$, fewer must yield outcome $j$. The Lean formalization machine-checks the fiber-grouping argument used to compute $E[X_i] = np_i$ — a technique that reduces the multinomial mean to the binomial mean via the marginal PMF.",

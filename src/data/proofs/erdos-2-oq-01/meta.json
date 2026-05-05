@@ -50,7 +50,8 @@
       "Gap narrowing framework for future bound improvements"
     ],
     "assumptions": "3 axiom(s) inherited from imported Lean file. 0 sorry(s).",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erd\u0151s Problem #2 asked whether the minimum modulus of a covering system can be arbitrarily large. This was resolved negatively by Hough (2015) and improved by Balister et al. (2022), giving the upper bound M \u2264 616,000. The best construction, by Owens (2014), achieves minimum modulus 42. The exact value of M remains one of the most prominent open questions in covering system theory. This formalization proves that M exists as a well-defined mathematical object and constrains it to the interval [42, 616000], establishing the structural framework for any future narrowing of the gap.",

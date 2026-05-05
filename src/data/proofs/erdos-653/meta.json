@@ -66,7 +66,8 @@
     "axiomCount": 3,
     "lineCount": 253,
     "assumptions": "3 axioms: csizmadia_bound, upper_bound, g_le_n. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "**Erdős Problem #653**\n\nThis problem studies how the \"distance richness\" of individual points in a configuration can vary. For each point xᵢ, R(xᵢ) counts how many distinct distances emanate from it. The question asks: how many different values can R take across all points?\n\n**Key History:**\n- Erdős [Er97e]: Original problem formulation\n- Erdős-Fishburn: Proved g(n) > (3/8)n\n- Csizmadia: Improved to g(n) > (7/10)n\n- Both groups: Proved g(n) < n - cn^{2/3}\n\n**Mathematical Setting:**\n- Related to the famous Erdős distinct distances problem\n- Measures local distance diversity rather than global count\n- Connection to unit distance graphs and extremal combinatorics",

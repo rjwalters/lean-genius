@@ -69,7 +69,8 @@
     "axiomCount": 2,
     "lineCount": 181,
     "assumptions": "2 axioms: small_primes_divide (small primes divide relevant binomial coefficients), erdos_457 (Erdős conjecture 457 — axiomatized as open). 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #457** was posed by Erdős and Pomerance in the late 1970s, appearing in [Er79d] and [ErGr80, p.91]. The problem explores a fundamental question about the prime factorization of products of consecutive integers: how many small primes can simultaneously divide such a product? This sits at the intersection of multiplicative number theory, sieve methods, and smooth number theory.\n\nThe key function q(n, k) — the least prime not dividing ∏_{i=1}^{k}(n+i) — was introduced to make the problem precise. Since any k consecutive integers contain a multiple of every prime p ≤ k, we trivially have q(n, k) > k. For k = ⌊log n⌋, the question becomes: how much larger than log(n) can q be? Erdős and Pomerance showed that choosing n as a product of primes between log(n) and (2+o(1))log(n) gives q(n, log n) ≥ (2+o(1))log(n), but whether a fixed ε > 0 improvement over the factor 2 is possible remains open.\n\nThe problem is related to Erdős Problem #663, which also concerns prime divisors of consecutive products. Both problems connect to the broader study of smooth numbers (numbers whose prime factors are all small) and the distribution of primes in short intervals. The OEIS sequence A391668 is related to this problem.",

@@ -66,7 +66,8 @@
     "axiomCount": 3,
     "lineCount": 286,
     "assumptions": "3 axioms: huber_1957, zhang_1977, lewis_rossi_weitsman_1984. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "This problem originates in the study of growth and value distribution of entire functions, a central topic in complex analysis since Picard's theorems. Huber (1957), in his influential paper 'On subharmonic functions and differential geometry in the large,' proved that for each fixed $\\lambda > 0$ and any transcendental entire $f$, there exists a path $C_\\lambda \\to \\infty$ with $\\int_{C_\\lambda} |f|^{-\\lambda} < \\infty$. The path could depend on $\\lambda$.\n\nErdős asked the stronger question: can a single path work for all $\\lambda > 0$ simultaneously? This is a quantifier swap from $\\forall \\lambda \\, \\exists C$ to $\\exists C \\, \\forall \\lambda$, which is typically much harder in analysis.\n\nZhang (1977) proved the intermediate case: for entire functions of finite order $\\rho$ (meaning $|f(z)| \\le C \\exp(|z|^\\rho)$), a single path suffices. The key was that finite-order functions have controlled zero density, allowing a path to be constructed that avoids all zeros while maintaining rapid growth.\n\nLewis, Rossi, and Weitsman resolved the general case in 1984 in their paper 'On the growth of subharmonic functions along paths' (Ark. Mat.). Their proof works not just for $\\log|f|$ but for any subharmonic function $u$, showing that the result is fundamentally about potential theory: the path selects directions of maximal growth of $u$, and the maximum principle guarantees this growth is sufficient for integrability. The subharmonic generalization was key — it stripped away the complex-analytic structure to reveal the underlying potential-theoretic principle.",

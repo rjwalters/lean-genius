@@ -65,7 +65,8 @@
     ],
     "lineCount": 303,
     "assumptions": "2 axioms: hartter_nathanson_existence, erdos_nathanson_k2. 2 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 18
   },
   "overview": {
     "historicalContext": "This problem asks about additive bases — sets A ⊆ N where every large integer is a sum of at most k elements from A. A minimal basis has no proper subset that is also a basis. Erdős and Nathanson (1979) proved that for k = 2, if representations grow logarithmically, the basis contains a minimal basis. Härtter (1956) and Nathanson (1974) showed that without growth conditions, bases may contain no minimal bases. The theory of additive bases originates with Waring's problem (1770) and Goldbach's conjecture (1742); Lagrange's four-square theorem (1770) shows the squares form a basis of order 4. The distinction between bases and minimal bases captures a fundamental redundancy phenomenon: most natural bases (squares, cubes, primes) are far from minimal.",

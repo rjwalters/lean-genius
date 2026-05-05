@@ -58,7 +58,8 @@
     "axiomCount": 7,
     "lineCount": 268,
     "assumptions": "7 axioms: cycleSet, f, trivial_upper_bound, erdos_faudree_lower_bound, part1_solved, nenadov_theorem, and 1 more. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The cycle set of a graph -- the set of lengths of cycles it contains -- is a fundamental invariant in structural graph theory. Erdős and Faudree posed the counting question: among all subsets $A \\subseteq \\{3, \\ldots, n\\}$, how many can actually be realized as the cycle set of some graph on $n$ vertices?\n\nThey established the initial bounds $2^{n/2} < f(n) \\le 2^{n-2}$. The upper bound is trivial ($|\\{3,\\ldots,n\\}| = n-2$, so there are $2^{n-2}$ subsets). The lower bound uses an elegant construction: take $\\lfloor n/2 \\rfloor$ cycle lengths that can be independently controlled by disjoint graph components, yielding $2^{\\lfloor n/2 \\rfloor}$ distinct cycle sets.\n\nThe key breakthrough came from Verstraëte (2004), who showed $f(n) \\le 2^{n - n^{1/10}}$, proving Part 1: $f(n) = o(2^n)$. His insight was that cycle lengths in a graph are not independent -- structural constraints (related to Bondy's pancyclicity theorem and Ramsey-type phenomena) force dependencies that reduce the effective number of 'free choices.' Nenadov dramatically improved this in 2025 to $f(n) \\le 2^{n - n^{1/2 - o(1)}}$, pushing the savings from $n^{0.1}$ to nearly $\\sqrt{n}$.\n\nPart 2 -- whether $f(n)/2^{n/2} \\to \\infty$ -- remains open. This asks whether the constructive lower bound can be improved, which requires finding new families of achievable cycle sets beyond the Erdős-Faudree construction. The related question of whether $\\lim f(n)^{1/n}$ exists is also open.",

@@ -43,7 +43,8 @@
         "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The Borsuk-Ulam theorem (Borsuk 1933, proved by Lyusternik and Schnirelmann) states that every continuous map f: Sⁿ → Rⁿ sends some antipodal pair to the same point — equivalently, no odd map Sⁿ → Sⁿ⁻¹ exists. Generalizations to cyclic group actions of prime order were proved by Chung-Tao Yang (1954) and Ky Fan (1952). In 1983, Albrecht Dold unified these results with a single cohomological framework: the 'cohomological index' ind_G(X) — defined via Borel equivariant cohomology — measures the topological complexity of a free G-space, and equivariant maps can only go from lower to higher index. This reformulation, together with the transfer map in equivariant cohomology, simultaneously yields Borsuk-Ulam, Yang-Borsuk, and bounds for all finite cyclic groups. Matousek's 2003 textbook 'Using the Borsuk-Ulam Theorem' has brought Dold's approach to a wide combinatorial and topological audience, and Fadell-Husseini (1988) developed an ideal-valued refinement for more general G.",

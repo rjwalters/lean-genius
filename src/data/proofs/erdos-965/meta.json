@@ -62,7 +62,8 @@
     "axiomCount": 4,
     "lineCount": 241,
     "assumptions": "4 axioms: counterexample_exists, hindman_leader_strauss_ch, komjath_unconditional, and 1 more. See Lean source for complete statements.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #965: A Failed Ramsey Property**\n\nThis problem asks whether the Ramsey property for sums extends to uncountable sets. For countable infinite sets, we can always find a set with monochromatic pairwise sums. Erdős asked: does this extend to sets of cardinality ℵ₁?\n\n**Timeline:**\n- 1975: Erdős reports in [Er75b] that he proved this false assuming CH, using methods from his work with Hajnal and Rado\n- 2016: Komjáth proves the result without assuming CH\n- 2016: Soukup and Weiss independently prove the unconditional result\n- 2017: Hindman, Leader, and Strauss prove the stronger k-sum version under CH\n\nThe problem reveals a fundamental boundary in Ramsey theory at the transition from countable to uncountable.",

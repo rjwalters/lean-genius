@@ -62,7 +62,8 @@
     "axiomCount": 3,
     "lineCount": 479,
     "assumptions": "3 axioms: ford_luca_pomerance (Ford-Luca-Pomerance — totient-sigma pairs are infinite), commonValues_infinite (common values of φ and σ are infinite), garaev_improvement (Garaev improvement). 0 sorries.",
-    "theoremCount": 40
+    "theoremCount": 40,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**Erdos Problem #48**\n\nThis problem asks about common values of two fundamental arithmetic functions.\n\n**Key History:**\n- Erdos [Er59c], [Er74b], [Er95]: Original problem formulations\n- Ford-Luca-Pomerance (2010): Proved infinitely many pairs exist\n- Garaev (2011): Improved density bounds\n\n**Mathematical Setting:**\n- phi(n) = Euler's totient = count of integers 1 to n coprime to n\n- sigma(n) = sum of all positive divisors of n\n\nBoth are multiplicative functions with very different behavior: phi(n) < n for n > 1 (shrinks), while sigma(n) > n for n > 1 (grows).",

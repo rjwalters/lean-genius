@@ -59,7 +59,8 @@
     "axiomCount": 0,
     "lineCount": 628,
     "assumptions": "0 axioms, 0 sorries. Core quadratic reciprocity and related results (exists_sq_eq_neg_one_iff, exists_sq_eq_two_iff) from Mathlib; original work is elementary proof machinery using permutation signs.",
-    "theoremCount": 31
+    "theoremCount": 31,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity is Gauss's 'golden theorem' — he gave the first proof in 1796 and published six more over his lifetime. By 2026, over 240 proofs have been published, each illuminating different mathematical structures. Egor Ivanovich Zolotarev published his proof in 1872 as 'Nouvelle démonstration de la loi de réciprocité de Legendre,' introducing the idea that the Legendre symbol equals the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$. This was the first proof to connect QR to permutation theory rather than lattice-point counting (Eisenstein 1844) or Gauss sums (Gauss 1801). Georg Frobenius simplified Zolotarev's argument in 1914, and George Rousseau gave a further simplification in the American Mathematical Monthly (1991). The approach is considered the most algebraic elementary proof and generalizes naturally to higher reciprocity laws via Artin symbols and class field theory.",

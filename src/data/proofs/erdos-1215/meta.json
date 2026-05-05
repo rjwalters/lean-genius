@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "This problem sits at the intersection of complex analysis and topology. Polynomials $P$ with all roots on the unit circle and $P(0) = 1$ arise naturally in number theory (Mahler measure, cyclotomic polynomials, Lehmer's problem) and harmonic analysis. The sublevel set $\\{z : |P(z)| < 1\\}$ is bounded by a polynomial lemniscate $\\{|P(z)| = 1\\}$, which can have complex topology—up to $\\deg(P) - 1$ connected components of the boundary. Erdős asked whether a simple path from the origin region to the unit circle in the sublevel set has bounded length depending on $\\deg(P)$. Mac Lane [Ma53] resolved this negatively: the sublevel sets can form labyrinthine structures forcing any path to be arbitrarily long. This connects to the theory of polynomial lemniscates developed by Walsh, Szegő, and others.",

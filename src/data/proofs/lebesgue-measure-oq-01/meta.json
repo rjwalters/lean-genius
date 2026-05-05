@@ -63,7 +63,8 @@
     "axiomCount": 0,
     "lineCount": 197,
     "assumptions": "0 axioms, 0 sorries. Core measure theory results (integral_eq_zero_of_ae, Set.Countable.measure_zero) from Mathlib; original work is the application to Dirichlet-type functions.",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "**Dirichlet** (1829) introduced $\\mathbf{1}_{\\mathbb{Q}}$ to show that not all functions are representable by Fourier series, and it later became the canonical counterexample to Riemann integrability. **Riemann** (1854) formalized his integral, under which $\\mathbf{1}_{\\mathbb{Q}}$ fails: the upper Darboux sum is 1 and the lower is 0 on every subinterval, since both $\\mathbb{Q}$ and $\\mathbb{R} \\setminus \\mathbb{Q}$ are dense. **Lebesgue** (1902) resolved this with his measure-theoretic integral: since $\\mathbb{Q}$ is countable (hence measure zero), $\\mathbf{1}_{\\mathbb{Q}} = 0$ almost everywhere, giving $\\int_0^1 \\mathbf{1}_{\\mathbb{Q}} = 0$. This example demonstrates the strict superiority of Lebesgue's integral over Riemann's.",

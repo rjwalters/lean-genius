@@ -40,7 +40,8 @@
     "lineCount": 235,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "This proof is attributed to Hippasus of Metapontum (~500 BCE), a member of the Pythagorean school who discovered that the diagonal of a unit square cannot be expressed as a ratio of integers. According to legend, Hippasus was thrown overboard while at sea for revealing this truth, which shook the Pythagorean doctrine that 'all is number' — meaning rational number.\n\nThe Greeks called such lengths *incommensurable* with the side: no common unit of measurement can divide both exactly. The result appears formally in Euclid's *Elements* Book X (c. 300 BCE). Theaetetus (~400 BCE) extended it, proving √n is irrational for any non-perfect-square n.\n\nThe proof exemplifies *infinite descent*: assuming √2 = a/b in lowest terms forces both a and b to be even, contradicting 'lowest terms'. This parity argument became a template replicated across number theory — the same structure proves √p irrational for any prime p.",

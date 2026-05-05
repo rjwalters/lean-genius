@@ -51,7 +51,8 @@
     "lineCount": 391,
     "assumptions": "0 axioms, 0 sorries. 1D fixed point existence uses Mathlib's exists_mem_Icc_isFixedPt_of_mapsTo (Brouwer FPT).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The computational complexity of finding fixed points interweaves topology, analysis, and computational complexity theory across a century of development. L.E.J. Brouwer (1911) proved existence non-constructively using degree theory, sparking foundational debates about constructive mathematics — Brouwer himself later rejected his own proof's methods. Stefan Banach (1922) provided the first constructive algorithm: iterate a contraction and converge geometrically, yielding explicit error bounds. Emanuel Sperner (1928) supplied the combinatorial foundation with his simplex labeling lemma, which Knaster, Kuratowski, and Mazurkiewicz used to give an independent proof of Brouwer's theorem. The complexity-theoretic revolution came with Christos Papadimitriou's introduction of PPAD (1994), identifying a class of total search problems whose totality follows from the 'parity argument on directed graphs.' Xi Chen and Xiaotie Deng (2009) proved that computing approximate Brouwer fixed points is PPAD-complete in dimensions $\\geq 2$, resolving a major open question. In 1D, however, the bisection method achieves optimal $O(\\log(1/\\varepsilon))$ query complexity — a dramatic complexity gap between one and higher dimensions. John Nash's proof (1950) that every finite game has an equilibrium relies on Brouwer's theorem, and the PPAD-completeness of Nash equilibrium computation (Daskalakis-Goldberg-Papadimitriou 2009) is a direct descendant of this line of work.",

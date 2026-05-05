@@ -42,7 +42,8 @@
     "axiomCount": 0,
     "lineCount": 129,
     "assumptions": "0 axioms. 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem traces to Sun Zi's Suanjing (3rd–5th century CE), where the problem of simultaneous integer congruences first appeared. Qin Jiushao gave a constructive algorithm (Da Yan Qiu Yi Shu) in 1247. Euler (1734) and Gauss (Disquisitiones Arithmeticae, 1801) cast the result in modular arithmetic over $\\mathbb{Z}$. The leap to arbitrary commutative rings came with Dedekind (1871), who introduced ideals, and Emmy Noether (1920s), whose abstract ring theory provided the language of coprimality in general rings. In modern commutative algebra, the CRT is stated for coprime ideals $I + J = R$; the formulation here, using Mathlib's `IsCoprime` predicate ($\\exists s,t,\\, sm + tn = 1$), is the element-level equivalent. This generalization matters because it applies uniformly to polynomial rings $k[X]$ (where CRT yields Lagrange interpolation), Gaussian integers $\\mathbb{Z}[i]$, and any principal ideal domain.",

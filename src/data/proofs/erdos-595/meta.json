@@ -63,7 +63,8 @@
     "axiomCount": 3,
     "lineCount": 229,
     "assumptions": "3 axiom(s): folkman_finite_resistance, nesetril_rodl_finite_resistance, c4_free_countable_trees. See Lean source for complete statements.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "This problem originated from Erdős and Hajnal around 1967, exploring the chromatic properties of infinite graphs. It asks whether a 'local' constraint (K₄-free) can coexist with 'global' resistance to decomposition into countably many triangle-free parts.\n\nThe finite case is completely solved: Folkman (1970) and Nešetřil-Rödl (1975) proved that for every n ≥ 1, there exists a K₄-free graph that cannot be covered by n triangle-free graphs. The jump to countably infinite covers introduces fundamentally new difficulties.\n\nThe problem connects to a broader family of questions about (G₁, G₂) decomposition pairs (Problem #596) and to Folkman numbers (Problem #582). Erdős offered a $250 prize, reflecting the problem's significance and difficulty.",

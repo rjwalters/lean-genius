@@ -48,7 +48,8 @@
     "lineCount": 326,
     "assumptions": "7 axioms: bayes_theorem, total_probability, born_probability_le_one, and 4 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "In 1900, David Hilbert presented his famous 23 problems to guide 20th-century mathematics. The sixth problem called for 'a mathematical treatment of the axioms of physics,' analogous to his own axiomatization of geometry (1899).\n\nThis problem has a unique status among the 23: rather than having a definitive solution, it has led to multiple successful axiomatizations of individual physical theories:\n\n- **Probability Theory** (Kolmogorov, 1933): Built on measure theory, the Kolmogorov axioms provide rigorous foundations for probability\n- **Quantum Mechanics** (von Neumann, 1932): Hilbert space formulation with observables as self-adjoint operators\n- **Thermodynamics** (Caratheodory, 1909): Accessibility relations replace traditional entropy postulates\n- **Classical Mechanics** (Arnold et al.): Symplectic geometry and variational principles\n\nNo unified axiomatization of 'all physics' exists, and some argue this is philosophically impossible.",

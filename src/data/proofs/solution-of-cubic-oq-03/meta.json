@@ -65,7 +65,8 @@
     "lineCount": 187,
     "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Vieta's formulas, published by François Viète in his *De aequationum recognitione et emendatione tractatus duo* (1591, published posthumously 1615), were the first systematic statement that polynomial coefficients are elementary symmetric functions of the roots. This insight — that the coefficients 'encode' the roots in a structured way — was revolutionary: it shifted the focus from finding individual roots to understanding the symmetric relationships between all roots simultaneously.\n\nFor the depressed cubic $x^3 + px + q = 0$ (obtained by the substitution $x \\mapsto x - a_2/3$ to eliminate the $x^2$ term), the three elementary symmetric polynomials of the roots are $\\sigma_1 = 0$ (sum), $\\sigma_2 = p$ (pairwise products), and $\\sigma_3 = -q$ (triple product). Cardano's formula, published in his *Ars Magna* (1545) but discovered by Scipione del Ferro (c. 1515) and communicated via Niccolò Tartaglia, gives the roots explicitly as $x_k = \\omega^k u + \\omega^{2k} v$ where $u, v$ are cube roots satisfying $u^3 + v^3 = -q$ and $uv = -p/3$.\n\nThe verification of Vieta's formulas for Cardano's roots is a concrete algebraic computation hinging on the identity $1 + \\omega + \\omega^2 = 0$ for the primitive cube root of unity $\\omega = e^{2\\pi i/3}$. This identity, the minimal polynomial equation $\\Phi_3(\\omega) = 0$ of the cyclotomic polynomial, systematically kills all 'cross terms' in the symmetric sums, leaving only the desired expressions in $u^3 + v^3$ and $uv$. Newton later generalized Vieta's relations via the Newton-Girard identities (1666/1707), expressing power sums $p_k = \\sum x_i^k$ recursively in terms of the elementary symmetric polynomials.",

@@ -59,7 +59,8 @@
     "lineCount": 155,
     "assumptions": "1 axiom: rudin_theorem_ch. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős posed two questions about connected subsets of $\\mathbb{R}^n$ in the 1940s, expecting affirmative answers based on the intuition that connected sets should possess rich internal structure. For typical connected sets — intervals, disks, manifolds — there are continuum-many connected subsets, and most proper connected subsets are not homeomorphic to the whole. Mary Ellen Rudin, in her landmark 1958 paper 'A connected subset of the plane' (Fundamenta Mathematicae 46), provided a stunning counterexample to both conjectures simultaneously. Working under the Continuum Hypothesis (CH), she constructed a connected subset $X \\subseteq \\mathbb{R}^2$ with the extraordinary property that every proper connected subset of $X$ is either a single point or homeomorphic to $X$ itself. Moreover, $X$ has exactly $2^{\\aleph_0}$ connected subsets, not more. The construction uses transfinite induction of length $\\aleph_1$, which equals $2^{\\aleph_0}$ under CH, to build $X$ point by point while maintaining both the connectivity and the self-similarity property at each stage. Rudin's result was one of her first major contributions to point-set topology; she later became one of the most influential topologists of the 20th century. The dependence on CH remains a fundamental aspect of this problem — it is still unknown whether a ZFC counterexample exists.",

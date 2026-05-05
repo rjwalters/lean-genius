@@ -58,7 +58,8 @@
       "Upper bound ν_p(n!) ≤ n/(p-1) from digit sums",
       "Pedagogical computations for ν₂(10!), ν₃(9!), ν₅(25!), ν₇(49!)"
     ],
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Adrien-Marie Legendre introduced his formula in *Théorie des nombres* (1808) to compute the highest power of a prime $p$ dividing $n!$. The formula was essential for computing binomial coefficients and understanding prime factorizations of large factorials.\n\nLegendre's insight was elegant: $\\nu_p(n!)$ counts the number of multiples of $p$ in $\\{1,\\ldots,n\\}$ (that's $\\lfloor n/p \\rfloor$), then multiples of $p^2$ (each counted an extra time), etc. The digit-sum form $(p-1)\\nu_p(n!) = n - S_p(n)$ was derived later by connecting the geometric series $\\sum_{i\\geq 1} \\lfloor n/p^i \\rfloor = (n - S_p(n))/(p-1)$ to the base-$p$ digit expansion.\n\nThe formula was later extended by Ernst Kummer (1852) to prove his theorem on binomial coefficients: $\\nu_p(\\binom{m+n}{m})$ equals the number of carries when adding $m$ and $n$ in base $p$. This is an immediate corollary of applying Legendre's formula to $\\binom{m+n}{m} = (m+n)!/(m! \\cdot n!)$.",

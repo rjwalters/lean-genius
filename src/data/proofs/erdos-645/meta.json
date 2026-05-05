@@ -54,7 +54,8 @@
     "axiomCount": 1,
     "lineCount": 251,
     "assumptions": "1 axiom: erdos645_threshold (a ℕ-valued threshold constant placeholder for N₀, not an assertion that the conjecture holds). 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős Problem #645 is a beautiful question about the structure of arithmetic progressions in Ramsey theory. While **van der Waerden's theorem** (1927) guarantees that any 2-coloring of ℕ contains arbitrarily long monochromatic arithmetic progressions, it says nothing about the relationship between the first term and common difference.\n\nErdős asked whether we can always find a monochromatic 3-AP where the 'jump' (common difference d) exceeds the 'start' (first term x). This is a structural constraint beyond mere existence.\n\nThe answer is **YES** (established in the mathematical literature by combinatorial methods). This Lean file formalizes the problem statement and proves that Erdős #645 implies van der Waerden's theorem for 2-colorings, but does not include a machine-checked proof of the conjecture itself.",

@@ -60,7 +60,8 @@
     "axiomCount": 1,
     "assumptions": "1 axiom declaration: coppersmith_phillips_lower (Coppersmith-Phillips 1996: maximum sum-free density >= 13/24). Former axioms upperHalf_density, upperHalf_sumFree, adenwalla_dyadic_bound, adenwalla_upper_bound, freud_construction, coppersmith_phillips_upper, problem_839_connection, erdos_867_conjecture_false now proved as theorems or definitions.",
     "lineCount": 288,
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #867 in 1992 [Er92c, p.43] as a finitary companion to Problem #839, asking whether a set $A = \\{a_1 < \\cdots < a_t\\} \\subseteq \\{1, \\ldots, N\\}$ with no consecutive subsequence sum $a_i + a_{i+1} + \\cdots + a_j$ lying in $A$ must satisfy $|A| \\leq N/2 + O(1)$. The upper half construction $A = (N/2, N]$ achieves density $1/2$ and is sum-free since any pair sum exceeds $N$, so the conjecture would be tight if true. Adenwalla gave the first non-trivial upper bound $|A| \\leq (2/3 + o(1))N$ using a dyadic interval argument: in each interval $[x, 2x]$, consecutive pair sums land in $(2x, 4x]$ and are forbidden, limiting density to $2/3$. Freud (1993) disproved the conjecture by explicitly constructing consecutive sum-free sets with density $19/36 \\approx 0.5278 > 1/2$, published in the James Cook Mathematical Notes. Coppersmith and Phillips (1996) in SIAM J. Discrete Math. sharpened both sides: their improved construction achieved density $13/24 \\approx 0.5417$ and their refined analysis of the dyadic argument lowered the upper bound to $2/3 - 1/512 \\approx 0.6647$. The exact maximum density remains unknown, and the gap between $13/24$ and $2/3 - 1/512$ is one of the open problems in additive combinatorics related to the Erdős legacy.",

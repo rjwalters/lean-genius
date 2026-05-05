@@ -24,7 +24,8 @@
     "lineCount": 333,
     "assumptions": "2 axioms: steinhaus_finite, unbounded_avoidable. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The Similarity Problem asks whether infinite sets are 'avoidable' — whether positive-measure sets can be constructed that contain no translated-scaled copy. Steinhaus (1920) showed finite sets are universal: every positive-measure set contains a similar copy of any finite set.\n\nErdős conjectured that infinite sets behave fundamentally differently and offered a $100 prize. Unbounded sets and sets dense in intervals are known to be avoidable. The hard case is bounded, nowhere-dense infinite sets, with the geometric sequence {1, 1/2, 1/4, ...} as the key test case (also Problem 94 on Ben Green's list).\n\nSvetic (2000) surveyed the problem comprehensively. Jung, Lai, and Mooroogen (2024) provided recent progress. The problem connects measure theory, Ramsey-type combinatorics, and the fine structure of the real line.",

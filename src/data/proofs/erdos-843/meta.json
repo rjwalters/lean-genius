@@ -27,7 +27,8 @@
     "lineCount": 256,
     "assumptions": "2 axioms: conlon_fox_pham_2021, subset_ramsey_complete. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "This problem was posed by Burr and Erdős around 1985. A set A ⊆ ℕ is **Ramsey r-complete** if for every r-coloring of A, all sufficiently large integers can be written as a monochromatic sum of distinct elements from A.\n\nErdős reported in 1995 that Burr had proved k-th powers are Ramsey r-complete for all r,k ≥ 2, but this result was never published. The question remained officially open until Conlon, Fox, and Pham (2021) proved a stronger result: k-th powers contain a SPARSE Ramsey r-complete subsequence with counting function ~(log N)², which is optimal.\n\nThe problem is part of a family of three Ramsey completeness problems for which Erdős offered a combined $350 prize.",

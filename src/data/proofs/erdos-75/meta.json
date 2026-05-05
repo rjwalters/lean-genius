@@ -25,7 +25,8 @@
     "lineCount": 214,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Szemerédi posed this question in the context of infinite graph colouring theory, a field Erdős helped create. The classical bound α(G)·χ(G) ≥ |V(G)| shows that for finite graphs, large chromatic number forces small independence ratio. For infinite graphs with uncountable chromatic number (χ(G) ≥ ℵ₁), the situation is fundamentally different: the global colouring complexity does not directly constrain the independence structure of finite subgraphs. Known constructions of graphs with χ ≥ ℵ₁ include shift graphs on ordinals, Todorčević's partition graphs, and forcing-based constructions, but these typically have finite subgraphs with poor independence ratios (α(H) = O(√n) or O(n/log n)). Problem 75 asks whether there exists a graph combining uncountable chromatic number with near-linear independence (α(H) > n^{1-ε} for all ε > 0) in every large finite subgraph. Erdős suggested this might even hold with linear independence (α ≥ cn), and offered $1000 for a complete solution—one of the largest Erdős prizes, reflecting the problem's difficulty and importance. The problem connects to the Erdős-Hajnal conjecture (polynomial clique/independent set in H-free graphs), Ramsey theory on uncountable sets, and the set-theoretic foundations of infinite combinatorics.",

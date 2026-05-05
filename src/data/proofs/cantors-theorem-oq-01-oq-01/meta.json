@@ -19,7 +19,8 @@
     "lineCount": 171,
     "assumptions": "0 axioms, 0 sorries. Core cardinal facts via Mathlib (Cardinal.cantor, mk_set, aleph_one_le_continuum) and parent file CantorsTheoremOQ01.lean (CH/GCH definitions, conditional results). The main equivalence theorem has no hypotheses; CH and GCH appear as logical propositions in the iff statement rather than as axioms.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The question '|𝒫(ℝ)| = ℵ₂?' sits at the intersection of two celebrated independence results. Cantor (1878) introduced the Continuum Hypothesis (𝔠 = ℵ₁), conjectured it was true, and it became Hilbert's first problem in 1900. Gödel (1938) constructed the constructible universe L to show CH is consistent with ZFC — his 1940 monograph 'The Consistency of the Axiom of Choice and of the Generalized Continuum-Hypothesis' proved both at once. Cohen (1963) invented forcing to show ¬CH is also consistent, a breakthrough that won the Fields Medal. Easton (1970) extended Cohen's work to show the power function on regular cardinals can take almost any value subject to König's theorem constraints. The specific question |𝒫(ℝ)| = ℵ₂ asks for the precise value, packaging both CH and GCH at the continuum into one equation. This formalization proves the complete equivalence: |𝒫(ℝ)| = ℵ₂ holds iff both CH and GCH at 𝔠 hold simultaneously.",

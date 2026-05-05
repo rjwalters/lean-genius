@@ -24,7 +24,8 @@
     "lineCount": 132,
     "assumptions": "1 axiom: powerful_density. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976 [Er76d], asking whether the representation function $r(n)$ for sums of two powerful numbers grows subpolynomially. Powerful numbers (also called squarefull numbers) were first systematically studied by Golomb (1970), who proved the key characterization $n = a^2 b^3$ for $a, b \\geq 1$. The density of powerful numbers up to $x$ is asymptotically $(\\zeta(3/2)/\\zeta(3))\\sqrt{x} \\approx 1.943\\sqrt{x}$, a classical result following from the $a^2 b^3$ representation and Euler product methods. The question belongs to additive number theory: given a structured set $\\mathcal{A}$ with known density, how large can the representation function $r(n) = (\\mathbf{1}_\\mathcal{A} * \\mathbf{1}_\\mathcal{A})(n)$ be? For the analogous problem with perfect squares, Jacobi's two-square theorem gives $r_2(n) = 4(d_1(n) - d_3(n)) = O(n^\\varepsilon)$ via the divisor bound. For powerful numbers, the irregular multiplicative structure (not closed under addition, not a group) makes the problem fundamentally harder. The trivial bound $r(n) \\leq c\\sqrt{n}$ follows from density, corresponding to exponent $1/2$. The conjecture asks for improvement to any $\\varepsilon > 0$. Related work includes Heath-Brown's 1988 result that every sufficiently large integer is the sum of at most three powerful numbers (the ternary case), and Baker-Brüdern's 1994 density-zero result for sums of two cubes of squarefull numbers.",

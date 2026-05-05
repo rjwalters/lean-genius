@@ -30,7 +30,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Ehrhart theory studies lattice point counting in polytopes. The Ehrhart polynomial L(P, n) = |nP ∩ ℤ^d| was introduced by Eugène Ehrhart in the 1960s; for an integer polytope P of dimension d, L(P, n) is a polynomial in n of degree d with leading coefficient vol(P). The product formula L(P×Q, n) = L(P,n)·L(Q,n) follows from the fact that integer points in a product polytope are products of integer points. Quasipolynomials arise when polytopes have rational (non-integer) vertices: L(P, t) is a quasipolynomial with period equal to the LCM of denominators. Zonotopes (Minkowski sums of line segments) were studied by Zaslavsky and others; their Ehrhart theory is captured by the theory of mixed volumes. The valuation property connects Ehrhart theory to the broader theory of lattice polytope valuations studied by McMullen (1978).",

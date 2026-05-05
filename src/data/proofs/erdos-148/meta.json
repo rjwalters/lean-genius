@@ -52,7 +52,8 @@
     "axiomCount": 3,
     "lineCount": 232,
     "assumptions": "3 axioms: konyagin_lower_bound (F(k) ≥ 2^(c·k/log k) for some c > 0), elsholtz_planitzer_upper_bound (Elsholtz-Planitzer 2021 — F(k) ≤ c₀^((1/5+ε)·2^k)), vardi_constant (the Vardi constant c₀ ≈ 1.264). 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdos and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' [ErGr80, p.32].\n\nUnit fractions (Egyptian fractions) have been studied since ancient Egypt - the Rhind Papyrus (c. 1650 BCE) contains tables of unit fraction representations. The question of counting decompositions of 1 connects ancient mathematics to modern combinatorics.\n\nThe problem has seen significant progress: Konyagin (2014) improved lower bounds, and Elsholtz-Planitzer (2021) gave the best current upper bounds involving the Vardi constant.",

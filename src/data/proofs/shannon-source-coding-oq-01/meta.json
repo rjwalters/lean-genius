@@ -83,7 +83,8 @@
         "id": "shannon-channel-coding-oq-02",
         "relationship": "Related: channel capacity for specific models — the C parameter in the separation theorem"
       }
-    ]
+    ],
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Shannon's 1948 paper established the entropy H(X) as the fundamental limit of lossless data compression. But most practical communication involves lossy compression: images, audio, and video are routinely compressed with acceptable quality loss. In 1959, Shannon published 'Coding Theorems for a Discrete Source with a Fidelity Criterion' in IRE National Convention Record, extending source coding theory to the lossy regime.\n\nThe key insight was to parametrize the quality-rate tradeoff by a distortion measure d(x, x̂) and seek the minimum mutual information I(X; X̂) over all conditional distributions p(x̂|x) satisfying the distortion constraint E[d(X, X̂)] ≤ D. This infimum R(D) — the rate-distortion function — is the lossy analogue of entropy: it gives the minimum number of bits per source symbol needed for reproduction at distortion level D.\n\nShannon proved that R(D) is convex and non-increasing in D, with R(0) = H(X) (recovering the lossless theorem) and R(D_max) = 0. For a Gaussian source with squared-error distortion, R(D) = ½ log(σ²/D), which is the theoretical foundation for all modern lossy codecs (JPEG, MP3, H.264, etc.).\n\nThe rate-distortion coding theorem — achievability and converse — shows that R(D) is both achievable (via random coding) and tight (via the data processing inequality). Berger (1971) provided a comprehensive treatment in his monograph 'Rate Distortion Theory', and Blahut (1972) gave the iterative algorithm (Blahut-Arimoto) for computing R(D) numerically.",

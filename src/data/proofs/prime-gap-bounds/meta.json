@@ -62,7 +62,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Joseph Bertrand conjectured in 1845 that for every $n \\geq 1$, there exists a prime between $n$ and $2n$, after verifying it computationally for $n < 6{,}000{,}000$. Pafnuty Chebyshev gave the first proof in 1852, using bounds on the Chebyshev function $\\theta(x) = \\sum_{p \\leq x} \\ln p$. Ramanujan found a shorter proof in 1919 using properties of the Gamma function, and in 1932, Paul Erdős — then only 19 years old — gave a celebrated elementary proof using only properties of the central binomial coefficient $\\binom{2n}{n}$. It is Erdős's approach that underpins most modern formalizations, including Mathlib's.\n\nWhile the Prime Number Theorem (proved independently by Hadamard and de la Vallée Poussin in 1896) gives the asymptotic $\\pi(n) \\sim n / \\ln n$ and $p_n \\sim n \\ln n$, Bertrand's postulate provides explicit, non-asymptotic bounds requiring no analytic machinery. This module derives the exponential bound $p_n \\leq 2^{n+1}$ by elementary induction from Bertrand, along with quantitative doubling bounds on $\\pi(n)$. The exponential bound is weaker than the PNT estimate but has the virtue of being fully elementary and is imported by the Bounded Prime Gaps formalization for its prime gap infrastructure.",

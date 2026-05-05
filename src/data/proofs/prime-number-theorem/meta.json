@@ -64,7 +64,8 @@
       "Number theory (prime counting function, arithmetic functions)",
       "Logarithmic integral and asymptotic notation"
     ],
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798, in the form π(x) ≈ x/(ln x − 1.08366)) and Gauss (1849, in the form π(x) ~ Li(x) based on logarithm tables). Chebyshev (1852) made the first rigorous progress, proving 0.92 < π(x)ln(x)/x < 1.11 using the central binomial coefficient, and showing that if the limit exists it must equal 1. Riemann's 1859 memoir introduced the zeta function for complex s, the explicit formula connecting π(x) to zeros of ζ, and the Riemann Hypothesis — laying the entire framework used 37 years later. Hadamard and de la Vallée Poussin independently proved PNT in 1896, each establishing a zero-free region for ζ(s) on Re(s) = 1 via the trigonometric identity 3 + 4cos θ + cos 2θ ≥ 0 and Tauberian methods. Erdős and Selberg gave independent elementary proofs in 1949, avoiding complex analysis entirely — the priority dispute is one of the most famous controversies in 20th century mathematics. Newman (1980) and Zagier (1997) gave streamlined analytic proofs fitting on one or two pages. Korobov and Vinogradov (1958) independently established the best known zero-free region, giving the error bound π(x) = Li(x) + O(x·exp(−c(ln x)^{3/5}(ln ln x)^{−1/5})). Avigad et al. provided the first formal proof in Isabelle (2007), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project.",

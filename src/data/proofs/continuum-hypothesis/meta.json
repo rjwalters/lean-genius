@@ -42,7 +42,8 @@
     "assumptions": "4 axiom declarations: L_exists (constructible universe L exists as ZFC model), L_satisfies_CH (L satisfies CH), forcing_extension_exists (Cohen forcing extension exists), forcing_violates_CH (forcing model violates CH). Previously 6 axioms; ch_implies_no_intermediate and no_intermediate_implies_ch are now proved from Mathlib cardinal arithmetic.",
     "lineCount": 395,
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Cantor first posed the Continuum Hypothesis in his 1878 paper *Ein Beitrag zur Mannigfaltigkeitslehre*, conjecturing that $2^{\\aleph_0} = \\aleph_1$ after proving the reals are uncountable (1873). Hilbert placed it as Problem #1 in his famous 1900 Paris address, calling it the most important open problem in mathematics. After decades of failed attempts, Gödel resolved half the question in 1940 by constructing the *Constructible Universe* L—a minimal model of ZFC in which CH holds—proving Con(ZFC) → Con(ZFC+CH). Cohen revolutionised logic in 1963 by inventing *forcing*, a general method for extending set-theoretic models, and used it to produce models where CH fails (Con(ZFC) → Con(ZFC+¬CH)). Cohen received the Fields Medal in 1966, the only one awarded for work in logic. Together, Gödel and Cohen showed CH is *independent* of ZFC—Hilbert's first problem was answered, but not by deciding its truth.",

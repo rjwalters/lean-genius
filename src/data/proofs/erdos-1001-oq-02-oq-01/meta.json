@@ -65,7 +65,8 @@
     ],
     "lineCount": 313,
     "theoremCount": 6,
-    "defCount": 3
+    "defCount": 3,
+    "definitionCount": 7
   },
   "conclusion": {
     "summary": "The O(A log N / N) convergence rate from OQ-02 is NOT sharp: by Walfisz's 1963 theorem, the true rate is the strictly smaller O(A (log N)^(2/3) (log log N)^(4/3) / N) = o(A log N / N). This is proved via IsBigO.trans_isLittleO from four axioms and six theorems (4 sorries remain for rpow manipulations, all Aristotle candidates). The diophantine approximation rate is thus fully governed by the Vinogradov–Korobov zero-free region for ζ(s), not merely by the elementary Mertens bound.",

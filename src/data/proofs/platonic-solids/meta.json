@@ -43,7 +43,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 24
+    "theoremCount": 24,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The Platonic solids were known to the ancient Greeks and studied extensively by Plato (hence the name). Euclid proved in Elements Book XIII that these are the only five regular convex polyhedra. The classification relies on Euler's polyhedral formula V - E + F = 2 combined with regularity constraints: all faces are congruent regular p-gons and q faces meet at each vertex. The five solids correspond to the finite subgroups of SO(3) acting on the sphere, a connection fully developed by Klein (1884). Schläfli (1852) classified regular polytopes in higher dimensions, finding six in dimension 4 and only three (the simplex, hypercube, and cross-polytope) in each dimension 5 and above.",

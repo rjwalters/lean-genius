@@ -56,7 +56,8 @@
     "axiomCount": 0,
     "lineCount": 137,
     "theoremCount": 0,
-    "assumptions": "0 axioms. Structure IsRademacherMultiplicative defines the mathematical object (5 fields: map_one, prob_of_prime, indep_primes, map_mul_coprime, map_non_squarefree). No axiom declarations. Open conjecture; supporting lemmas fully verified."
+    "assumptions": "0 axioms. Structure IsRademacherMultiplicative defines the mathematical object (5 fields: map_one, prob_of_prime, indep_primes, map_mul_coprime, map_non_squarefree). No axiom declarations. Open conjecture; supporting lemmas fully verified.",
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Rademacher multiplicative functions are random {-1, 0, 1}-valued multiplicative functions where prime values are independent fair coin flips. Wintner (1944) initiated their study, proving the partial sums grow like √N almost surely.\n\nThe conjecture asks whether there's a universal constant c such that the normalized partial sums S_N/√(N log log N) have limsup = c almost surely. This is analogous to the classical law of the iterated logarithm (LIL), which gives c = √2 for i.i.d. random walks.\n\nRecent work by Harper, Caich, and others has narrowed the gap between upper and lower bounds, but the exact behavior remains open. Harper even conjectures the original statement may be FALSE—the sum might grow slower than √(N log log N).",

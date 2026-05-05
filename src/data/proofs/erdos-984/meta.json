@@ -48,7 +48,8 @@
     "lineCount": 177,
     "assumptions": "3 axioms: spencer_1975, erdos_partial_construction, hunter_theorem. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős Problem #984 concerns the fine structure of monochromatic arithmetic progressions under 2-colorings of ℕ. Van der Waerden's theorem (1927) guarantees that any finite coloring of the integers contains arbitrarily long monochromatic APs, but says nothing about where they occur or how their length relates to their starting position.\n\nErdős asked whether the growth of monochromatic AP lengths can be made subpolynomial: specifically, whether there exists a 2-coloring such that any monochromatic k-term AP starting at a satisfies k ≪_ε a^ε for all ε > 0. This is the strongest possible polynomial control—k must grow slower than every positive power of a.\n\nSpencer (1975) first showed this is achievable with 3 colors, using a bound related to the inverse van der Waerden function W⁻¹(3,a), which grows unimaginably slowly due to the tower-function growth of W(3,k). Erdős himself established partial progress for 2 colors, constructing a 2-coloring achieving the weaker bound k ≪ a^{1-c} for some absolute constant c > 0, but he could not push the exponent to match the full subpolynomial condition.\n\nZach Hunter resolved the problem completely using refined probabilistic methods, proving that 2 colors suffice for the full k ≪_ε a^ε bound. Combined with the elementary observation that 1 color trivially fails (every set is monochromatic), this establishes 2 as the exact chromatic number for this problem. Hunter's work builds on the Lovász Local Lemma framework and careful combinatorial analysis of AP structure.",

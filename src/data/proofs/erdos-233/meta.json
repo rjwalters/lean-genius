@@ -47,7 +47,8 @@
     "axiomCount": 1,
     "lineCount": 147,
     "assumptions": "1 axiom: first_prime_gaps. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of prime gaps dₙ = pₙ₊₁ - pₙ. The prime number theorem tells us that the average gap near x is approximately log x, but individual gaps can be much larger or smaller.\n\nThe conjecture that Σ dₙ² ≪ N(log N)² is sometimes attributed to Heath-Brown. It says that, on average, prime gaps are 'typically' of size log p - the squares don't accumulate faster than expected.\n\nCramér (1936) proved that, assuming the Riemann Hypothesis, Σ dₙ² = O(N(log N)⁴). Selberg (1943) improved this to Σ dₙ²/n = O((log N)⁴). The prime number theorem immediately gives the matching lower bound N(log N)², so the gap between lower and upper bounds is (log N)².\n\nThis problem is intimately connected to Cramér's famous conjecture that dₙ = O((log pₙ)²), which remains one of the most important open problems about prime gaps.",

@@ -70,7 +70,8 @@
     "axiomCount": 7,
     "lineCount": 200,
     "assumptions": "7 axioms: sawCount, limit_exists, connective_lower_bound, connective_upper_bound, kesten_asymptotic, conway_guttmann_lower, alm_upper. See Lean source for complete statements.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "**Erdős Problem #528: Connective Constant for Self-Avoiding Walks**\n\nA self-avoiding walk (SAW) is a path on a lattice that never revisits any vertex — this models polymers in chemistry and physics. The connective constant C_k = lim f(n,k)^{1/n} measures the exponential growth rate of the number of n-step SAWs in ℤ^k.\n\n**Historical Development:**\n- **Hammersley-Morton (1954):** Proved the limit C_k exists using submultiplicativity (f(m+n,k) ≤ f(m,k)·f(n,k)) and Fekete's lemma\n- **Kesten (1963):** Proved the asymptotic C_k = 2k-1 - 1/(2k) + O(1/k²), showing C_k is close to 2k-1 for large k\n- **Conway-Guttmann (1993):** Rigorous lower bound C_2 ≥ 2.62\n- **Alm (1993):** Rigorous upper bound C_2 ≤ 2.696\n- **Duminil-Copin-Smirnov (2012):** Proved the exact value μ_honeycomb = √(2+√2) for the honeycomb lattice, contributing to Smirnov's Fields Medal\n- **Jacobsen-Scullard-Guttmann (2016):** High-precision computation C_2 = 2.6381585303279... to 12+ decimal places\n\n**Key Insight:** The submultiplicativity of SAW counts is the crucial property guaranteeing the limit exists — it follows because concatenating two SAWs at the origin gives a walk that is at least as constrained as the two original walks.",

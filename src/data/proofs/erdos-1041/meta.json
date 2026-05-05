@@ -56,7 +56,8 @@
     "axiomCount": 0,
     "lineCount": 156,
     "assumptions": "0 axioms, 0 sorries. Infrastructure file: sublevel sets, paths in ℂ, and supporting lemmas fully proved. Main conjecture not axiomatized; badge updated from 'axiom' to 'wip'.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "This problem originates from the 1958 paper 'Metric properties of polynomials' by Erdős, Herzog, and Piranian. They studied the geometry of polynomial level sets—specifically the sublevel set {z : |f(z)| < 1} for monic polynomials with roots in the unit disk.\n\nThe authors proved that this sublevel set always has a connected component containing at least two roots (the Component Lemma). The open problem asks for a quantitative strengthening: can we find not just connectivity, but a SHORT path of length less than 2 connecting two roots?\n\nThe constant 2 is sharp—it's the diameter of the unit disk, so roots could be nearly 2 apart. The conjecture asks whether the sublevel set always provides an efficient shortcut.",

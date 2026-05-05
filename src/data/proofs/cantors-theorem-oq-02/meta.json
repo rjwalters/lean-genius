@@ -57,7 +57,8 @@
     ],
     "assumptions": "Fully verified. 0 axioms, 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "In 1969, F. William Lawvere published 'Diagonal Arguments and Cartesian Closed Categories', revealing that Cantor's theorem, Russell's paradox, Gödel's incompleteness theorem, and Tarski's undefinability theorem all follow from a single categorical fixed-point theorem.\n\nThe key insight: ALL diagonal arguments have the same structure. Given a function f : α → (α → β), define the 'diagonal map' q : α → β by q x = g(f x x). If f is surjective, then q = f a for some a, giving g(f a a) = q a = f a a — a fixed point of g. Therefore, if g has NO fixed points, no surjection f can exist.\n\nThis subsumes:\n- **Cantor** (1891): g = ¬ on Prop. Negation has no fixed points (¬p = p is contradictory), so no surjection α → (α → Prop) exists.\n- **Russell** (1902): g = ¬ on membership. The 'set of all non-self-members' requires a fixed point of negation.\n- **Gödel** (1931): g = ¬ on provability predicates. The diagonal gives an unprovable-but-true statement.\n- **Tarski** (1936): g = ¬ on truth predicates. The truth predicate is not arithmetically definable.\n- **Girard** (1972): Type : Type would give a type U with U ≅ U → Prop, forcing every g : Prop → Prop to have a fixed point — impossible since ¬ has none.",

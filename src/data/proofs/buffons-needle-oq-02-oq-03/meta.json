@@ -66,7 +66,9 @@
     "axiomCount": 3,
     "lineCount": 286,
     "assumptions": "3 axioms: kinematicMeasure (existence of kinematic measure on AffineHyperplane n), cauchy_crofton_segment (single-segment Cauchy-Crofton formula E_μ[crossing(s)] = α_n · length(s)), crossing_integrable (crossing indicator is integrable w.r.t. kinematic measure). No sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 7,
+    "theoremCount": 27
   },
   "overview": {
     "historicalContext": "The Cauchy-Crofton formula is a centerpiece of integral geometry, named for Augustin-Louis Cauchy (1850) and Morgan Crofton (1868). Cauchy used measure-theoretic methods to compute surface areas via projections; Crofton applied this to compute lengths and curvatures via line intersections. The general form E[#(C ∩ H)] = c_μ · length(C) for any motion-invariant measure on hyperplanes was developed in the 20th century by Blaschke, Santaló, and others as part of kinematic integral geometry.\n\nThe abstract formulation—for any measure μ satisfying the single-segment formula—reveals that shape independence is a purely linear-algebraic consequence of the measure property, requiring no geometric structure beyond the calibration condition. The crossing factor α_n (previously studied in BuffonsNeedleOQ02OQ01.lean for the parallel-hyperplane case) appears here as the universal constant encoding the geometry of the kinematic measure in ℝⁿ.\n\nBuffon's 2D needle (α₂ = 2/π) and the 3D noodle (α₃ = 1/2) are the canonical instances. The abstract Cauchy-Crofton formula unifies these and extends to arbitrary dimensions, arbitrary motion-invariant measures, and arbitrary polygonal paths.",

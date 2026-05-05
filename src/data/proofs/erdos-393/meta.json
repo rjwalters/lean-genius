@@ -57,7 +57,8 @@
     "axiomCount": 4,
     "lineCount": 177,
     "assumptions": "4 axioms: f_exists, berend_osgood_1992, bpz_2023, luca_2002. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "**Erdős Problem #393** concerns how factorials can be expressed as products of distinct integers.\n\n**Historical Development:**\n- **Erdős-Graham:** Posed the question, noted they didn't even know if f(n) = 1 infinitely often.\n- **1992 (Berend-Osgood):** Proved F_m(N) = o(N) for each fixed m.\n- **2002 (Luca):** Showed f(n) → ∞ conditionally on ABC conjecture.\n- **2023 (Bui-Pratt-Zaharescu):** Proved power saving F_m(N) ≪ N^{33/34}.\n\nThe problem connects to polynomial-factorial equations and the ABC conjecture.",

@@ -52,7 +52,8 @@
     "axiomCount": 1,
     "lineCount": 336,
     "assumptions": "1 axiom: eberhard_theorem. 0 sorries.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "This problem asks whether consecutive divisor function values can have any prescribed ratio. The prime k-tuple conjecture would imply YES, but Eberhard (2025) proved it unconditionally. In fact, Eberhard proved the stronger result that ALL positive rationals appear as τ(n+1)/τ(n). The divisor function τ has been central to analytic number theory since Dirichlet's 1849 work on the average order τ(1)+⋯+τ(n) ≈ n log n. Questions about the range and distribution of τ(n+1)/τ(n) are part of a broader study of multiplicative functions at consecutive integers, a notoriously difficult area since τ is not additive and consecutive integers are coprime.",

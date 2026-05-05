@@ -68,7 +68,8 @@
     "axiomCount": 0,
     "lineCount": 79,
     "theoremCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Isaac Schoenberg proved in 1928 that for every $c \\in [0,1]$, the natural density $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ exists, giving a well-defined continuous distribution function on $[0,1]$. Erdős studied this function intensively and proved a remarkable result: $f$ is purely singular—continuous and non-decreasing from 0 to 1, yet $f'(x) = 0$ for Lebesgue-almost every $x$. This makes $f$ analogous to the classical Cantor function (devil's staircase), which climbs from 0 to 1 on the Cantor set while having zero derivative almost everywhere. Erdős offered a $250 prize for the following strengthening: is it true that there is no $x$ at all where $f'(x)$ exists and is positive? This is the subtle distinction between 'zero derivative almost everywhere' (which allows a measure-zero exceptional set) and 'zero derivative everywhere it exists' (no exceptions). The problem connects Euler's totient function—one of the oldest objects in number theory, studied by Euler in the 1760s—to deep questions in real analysis about the differentiability of singular measures. The multiplicative structure $\\varphi(n)/n = \\prod_{p \\mid n}(1-1/p)$ ties the distribution to probabilistic number theory and Mertens' theorem on products over primes.",

@@ -56,7 +56,8 @@
     ],
     "lineCount": 240,
     "assumptions": "5 axioms: chromaticNumber, cliqueNumber, cochromaticNumber, steiner_counterexample, egs_general_theorem. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum colors needed where each color class induces either a complete graph or independent set. Erdős, Gimbel, and Straight (1990) conjectured that χ(G) ≤ ζ(G) + 2 for K₅-free graphs with ζ(G) ≥ 4. This was disproved by Steiner in 2024. The cochromatic number was introduced by Erdős and Gimbel in the late 1980s as a natural relaxation of proper coloring, and the EGS paper established the general bounded-gap result χ(G) ≤ ζ(G) + f(ω(G)) for some function f. Determining the optimal function f remains open; Steiner's 2024 counterexample showed f(4) ≥ 3, ruling out the originally conjectured value of 2.",

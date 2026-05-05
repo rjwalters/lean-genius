@@ -59,7 +59,8 @@
     "axiomCount": 6,
     "lineCount": 240,
     "assumptions": "6 axioms: W, graham_conjecture_false, green_lower_bound, hunter_lower_bound, schoen_upper_bound, bloom_sisask_upper_bound. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #721 asks for bounds on the off-diagonal van der Waerden number W(3,k) — the minimum n such that any 2-coloring of {1,...,n} contains either a red 3-term arithmetic progression or a blue k-term AP. Van der Waerden proved these numbers exist in 1927, but his original bounds were astronomically large (Ackermann-type). Erdős posed the challenge in 1980-81 to find reasonable bounds.\n\nGraham famously conjectured W(3,k) ≪ k², suggesting polynomial growth. This was spectacularly disproved by Green in 2022, who established the first superpolynomial lower bound: W(3,k) ≥ exp(c(log k)^{4/3}/(log log k)^{1/3}). Hunter improved this in the same year to exp(c(log k)²/log log k), raising the logarithmic exponent from 4/3 to 2.\n\nOn the upper bound side, Schoen (2021) first proved W(3,k) < exp(k^c) for c < 1, answering Erdős's second challenge. The Kelley-Meka breakthrough (2023) on sets without 3-term APs led to dramatic further improvements, culminating in Bloom-Sisask's bound W(3,k) ≤ exp(C(log k)^9). The exact growth rate, believed to be exp((log k)^{2+o(1)}), remains an open question.",

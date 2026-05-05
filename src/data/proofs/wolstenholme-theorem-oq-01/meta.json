@@ -69,7 +69,8 @@
       "Modular arithmetic and prime divisibility",
       "Wieferich primes and Fermat's little theorem"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "A Wolstenholme prime is a prime $p$ where $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^4}$, strengthening Wolstenholme's 1862 theorem (which gives $\\pmod{p^3}$ for all primes $p \\geq 5$). Richard McIntosh discovered the first, $p = 16843$, in 1995 via the Bernoulli number characterization $p \\mid B_{p-3}$. The second, $p = 2124679$, was found by McIntosh and Roettger in 2007. Their exhaustive search confirmed no others exist below $10^9$.\n\nThe heuristic for infinitude rests on the probabilistic model: the \"probability\" that a random prime $p$ is Wolstenholme is approximately $1/p$. Since $\\sum_{p \\text{ prime}} 1/p$ diverges (Euler), one expects the set of Wolstenholme primes to be infinite — but with extremely slow growth, roughly $\\ln(\\ln N)$ examples below $N$. This is the same heuristic that predicts infinitely many Wieferich primes ($2^{p-1} \\equiv 1 \\pmod{p^2}$), of which only 1093 and 3511 are known.\n\nBoth conjectures remain wide open. The parallel is striking: each concerns a congruence that holds modulo $p^k$ for all primes (Fermat/Wolstenholme), and asks when it strengthens to $p^{k+1}$. In each case, exactly two examples are known, searches have reached billions, and the heuristic predicts infinitude.",

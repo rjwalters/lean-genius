@@ -58,7 +58,8 @@
     "axiomCount": 3,
     "lineCount": 3552,
     "assumptions": "3 axiom(s): rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity_corrected. See Lean source for complete statements.",
-    "theoremCount": 143
+    "theoremCount": 143,
+    "definitionCount": 40
   },
   "overview": {
     "historicalContext": "The Rogers-Ramanujan identities are among the most remarkable results in partition theory. Rogers discovered them in 1894 in a paper on continued fractions that went largely unnoticed. Ramanujan independently rediscovered them around 1913 in his notebooks, and communicated them to Hardy, who recognized their depth but could not prove them; Hardy later found Rogers' forgotten proof. MacMahon (1916) verified the first identity computationally for $n \\leq 89$ in his treatise on combinatory analysis. Schur (1926) proved a related identity for partitions with gap $\\geq 3$ and parts $\\equiv \\pm 1 \\pmod{3}$. The identities found unexpected applications in statistical mechanics when Baxter (1981) showed the Rogers-Ramanujan identities give the exact solution of the hard hexagon model in lattice gas theory. Lepowsky and Wilson (1984) connected them to representations of affine Lie algebras and vertex operator algebras, revealing deep algebraic structure behind the combinatorial identities. Andrews' monograph (1976) systematized the theory and developed the general framework of partition identities via q-difference equations.",

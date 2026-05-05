@@ -45,7 +45,8 @@
     "axiomCount": 0,
     "lineCount": 135,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Ptolemy's theorem (c. 150 AD) characterizes cyclic quadrilaterals: the product of diagonals equals the sum of products of opposite sides. The classical proof in Euclid's spirit uses similar triangles inscribed in a circle. The complex-number formulation (19th century) reduces everything to an algebraic identity: $(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4) = (z_1-z_3)(z_2-z_4)$, turning the geometric statement into a norm inequality $\\|a+b\\| \\leq \\|a\\| + \\|b\\|$ with equality characterizing the cyclic case. The equality characterization — when exactly does Ptolemy's equality hold, not just the inequality? — remained as an open question in `PtolemysComplexProof.lean`. This file resolves it using the modern Mathlib infrastructure for strictly convex spaces, where the equality case of the triangle inequality is characterized precisely by `SameRay ℝ a b` via `sameRay_iff_norm_add`.",

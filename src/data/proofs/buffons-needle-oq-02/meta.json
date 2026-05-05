@@ -65,7 +65,8 @@
     "lineCount": 262,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Buffon's original 1777 needle problem asks: if a needle of length ℓ is dropped on a floor ruled with parallel lines spaced d apart, what is the probability of crossing a line? The answer is 2ℓ/(πd).\n\nThe 3D generalization replaces parallel lines with parallel planes. For a needle (or polygonal path) of length L dropped on parallel planes spaced d apart, the expected number of crossings is L/(2d). The factor changes from 2/π ≈ 0.637 (2D) to 1/2 = 0.5 (3D).\n\nThe 3D formula follows from the sphere-averaged projection: E_{S²}[|cos φ|] = 1/2, where φ is the polar angle. This distinguishes 3D from 2D, where the analogous average over S¹ gives 2/π.",

@@ -88,7 +88,8 @@
       "Sumset theory"
     ],
     "assumptions": "6 axioms: ruzsa_essential_component_lower_bound, ruzsa_essential_component_construction, erdos_37_disproved, and 3 more. See Lean source for complete statements.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**Essential components** were introduced in additive number theory to describe sets that 'help' increase Schnirelmann density. A set A is essential if adding it to any B with positive density strictly increases the density: d_s(A + B) > d_s(B).\n\n**Lacunary sets** have exponentially growing elements (like powers of 2). They are extremely sparse but have rich structure in harmonic analysis.\n\n**Erdős's Question**: Can such sparse sets still be essential components?\n\n**Ruzsa's Resolution (1987)**: NO. Ruzsa proved that essential components must grow at least as (log N)^{1+c}, which rules out lacunary sets (growing only as log N). Furthermore, this bound is tight.\n\n**Remaining Open Problem**: Ruzsa (1999) asked whether {2^m · 3^n : m,n ∈ ℕ} is an essential component. This set grows as (log N)², which is faster than lacunary but doesn't meet the (log N)^{1+c} threshold. The answer remains unknown.",

@@ -37,7 +37,8 @@
     ],
     "lineCount": 317,
     "theoremCount": 43,
-    "defCount": 2
+    "defCount": 2,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The exact birthday probability requires counting functions f : Fin n → Fin d with all fibers of size ≤ k-1 (for k-way coincidence). For k=3, this is |{f : Fin n → Fin d : all fibers ≤ 2}|. Flajolet and Sedgewick (Analytic Combinatorics, 2009) give exponential generating functions for these counts. The threshold for d=365 days (n=88 for k=3) was computed by Diaconis and Mosteller (1989). The computational challenge is that d^n grows exponentially while the counting problem has only O(n²) degrees of freedom — a gap exploitable by dynamic programming on the day-type state.",

@@ -62,7 +62,8 @@
       "Extremal problems in complex analysis"
     ],
     "lineCount": 287,
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Turán's power sum problem originates from Pál Turán's extensive work on extremal problems in analysis during the 1940s and 1950s. Turán initially studied power sums in connection with his 'power sum method' — a technique he developed as an alternative to Vinogradov's method of exponential sums, with applications to the Riemann zeta function and prime number theory. Turán proved the weaker result that $\\max_{1 \\le k \\le n} |\\sum z_i^k| \\ge c/n$, where $c > 0$ depends on the configuration. The crucial question was whether the dependence on $n$ could be eliminated entirely. F.V. Atkinson resolved this in 1961, proving $c = 1/6$ as an absolute lower bound — the first proof that the maximum power sum is bounded away from zero independently of $n$. Biró (1994) substantially improved this to $c = 1/2$ using refined analytic methods, and in 2000 pushed past the $1/2$ barrier. Computational experiments by several researchers suggest the optimal constant is approximately $0.7$, but no rigorous proof of this value exists. The problem is closely related to Turán's power sum method, which has deep connections to the distribution of zeros of the Riemann zeta function, Dirichlet $L$-functions, and the theory of almost periodic functions.",

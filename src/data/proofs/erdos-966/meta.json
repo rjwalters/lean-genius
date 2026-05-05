@@ -57,7 +57,8 @@
     "axiomCount": 6,
     "lineCount": 294,
     "assumptions": "6 axioms: SpencerSet, spencer_AP_free, spencer_forces_mono_AP, spencer_theorem, upperDensity, spencer_zero_density. 0 sorries.",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #966**\n\nThis problem combines arithmetic progressions with Ramsey-type coloring questions, bridging additive combinatorics and Ramsey theory.\n\n**Key History:**\n- Van der Waerden (1927): Proved any r-coloring of ℕ contains arbitrarily long monochromatic APs\n- Erdős [Er75b] (1975): Posed this refined question about (k+1)-AP-free sets\n- Spencer (~1975): Proved the affirmative answer, as reported by Erdős\n\n**Mathematical Setting:**\nThe problem asks whether we can find sets that are \"barely\" AP-free: they avoid (k+1)-term progressions but still force k-term monochromatic progressions in any coloring. This is a delicate balance between structure and randomness.",

@@ -90,7 +90,8 @@
     "axiomCount": 6,
     "lineCount": 557,
     "assumptions": "6 axioms: real_cpow_eq_rpow, neg_one_cpow_neg_I, cbrt_two_algebraic, cbrt_two_irrational, log_algebraic_transcendental, gelfond_schneider. See Lean source for complete statements.",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**Gelfond-Schneider Theorem — Hilbert's 7th Problem, Wiedijk #60**\n\nIn 1900, David Hilbert posed his famous 23 problems at the International Congress of Mathematicians. Problem #7 asked: *Is $a^b$ always transcendental when $a$ is algebraic ($\\neq 0, 1$) and $b$ is irrational algebraic?*\n\n**Historical Development:**\n- **1900**: Hilbert posed the problem, citing $2^{\\sqrt{2}}$ as the motivating example\n- **1929**: Aleksandr Gelfond proved special cases (e.g., $e^\\pi$)\n- **1934**: Gelfond (*Sur le septième problème de Hilbert*) and Theodor Schneider (*Transzendenzuntersuchungen periodischer Funktionen*) independently proved the full theorem\n- **1966**: Alan Baker generalized to linear forms in logarithms, earning the Fields Medal (1970)\n\n**Famous corollaries**: $2^{\\sqrt{2}}$ (the Gelfond-Schneider constant) and $e^\\pi$ (Gelfond's constant) are both transcendental. The $e^\\pi$ result uses the clever observation $e^\\pi = (-1)^{-i}$ from Euler's identity.",

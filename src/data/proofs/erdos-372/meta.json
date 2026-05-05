@@ -59,7 +59,8 @@
     "axiomCount": 3,
     "lineCount": 219,
     "assumptions": "3 axiom(s): erdos_pomerance_ascending, balog_quantitative, balog_descending_infinite. See Lean source for complete statements.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and Carl Pomerance in their influential 1978 paper on largest prime factors of consecutive integers. They noted a fundamental asymmetry: while they could prove infinitely many ascending triplets exist (P(n) < P(n+1) < P(n+2)), the descending case remained elusive.\n\nThe difficulty lies in the nature of prime factors. Large primes tend to be \"rare\" divisors, so finding three consecutive integers with strictly decreasing largest prime factors requires careful analysis. The ascending case is easier because smooth numbers (numbers with only small prime factors) are relatively common, and transitioning from smooth to rough is natural.\n\nAntal Balog resolved the conjecture in 2001 using sophisticated sieve methods. His proof established not just existence but a quantitative lower bound: at least c√x such triplets exist up to x. This sparked further research into the exact density, which Balog conjectured to be 1/6 based on symmetry arguments.",

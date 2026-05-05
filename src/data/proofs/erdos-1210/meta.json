@@ -25,7 +25,8 @@
     "assumptions": "1 axiom: erdos_1210 (the main conjecture: primes maximize ∑ 1/(n-a) among pairwise coprime subsets of [1,n)). All 11 structural theorems are fully proved.",
     "lineCount": 178,
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős conjectured (references Er77c, Er80) that among all pairwise coprime subsets A of {1,...,n-1}, the set of primes below n maximizes the sum ∑_{a∈A} 1/(n-a). This is an extremal problem in additive-multiplicative number theory: it asks whether the primes are 'optimal' for a specific density measure among all multiplicatively independent sets.\n\nThe intuition is that pairwise coprime sets are sparse — any two elements share no common prime factor — and the primes, being the atoms of multiplication, are the canonical extremal example. The weighting 1/(n-a) gives more importance to elements close to n; the conjecture says primes up to n are 'spread out' in a way that maximizes this proximity measure.\n\nThe problem remains open as of 2026. Connections to Mertens' theorem (∑_{p≤n} 1/p ~ log log n) and rough number estimates suggest analytic tools may be needed for a full proof.",
@@ -104,7 +105,10 @@
       "Mathlib.Data.Real.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat", "BigOperators"],
+    "opens": [
+      "Nat",
+      "BigOperators"
+    ],
     "namespace": "Erdos1210",
     "lineCount": 178,
     "axiomCount": 1,

@@ -49,7 +49,8 @@
     "lineCount": 260,
     "assumptions": "No axioms. 7 sorries remain in the formalization.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "**Erd\u0151s Problem #895: Independent Additive Triples in Triangle-Free Graphs**\n\nThis problem sits at the beautiful intersection of graph theory and additive combinatorics. **Paul Erd\u0151s and Andr\u00e1s Hajnal** posed it in 1995: if $G$ is a triangle-free graph on the integers $\\{1,\\ldots,n\\}$, must there exist vertices $a$, $b$, $a+b$ forming an independent set?\n\n**Historical Background:**\n- **Frank Ramsey (1930)**: proved $R(3,3) = 6$ \u2014 any 2-coloring of $K_6$ has a monochromatic triangle, establishing the fundamental bound $\\alpha(G) \\geq 3$ for triangle-free $G$ on $n \\geq 6$ vertices\n- **Issai Schur (1916)**: proved that any $k$-coloring of $\\{1,\\ldots,n\\}$ for $n > S(k)$ (the Schur number) contains a monochromatic triple $(a,b,a+b)$; Problem #895 asks about the intersection of these two structures\n- **Ben Barber (2015)**: settled the Erd\u0151s-Hajnal question using SAT solver verification, finding the threshold is exactly $n = 18$ \u2014 remarkably small for such a threshold result\n- **Schur numbers**: $S(2)=4$, $S(3)=13$, $S(4)=44$, $S(5)=160$ (Heule 2017, an 800-core, 14.8 TB SAT proof)\n\n**The Answer:** YES for $n \\geq 18$. The threshold 18 is sharp: a SAT-found triangle-free graph on $\\{1,\\ldots,17\\}$ has no independent additive triple.\n\n**Open generalization (Hajnal):** Does every large triangle-free graph contain an independent **Hindman set** (all finite sums of some base set)? This remains unsolved as of 2026.",

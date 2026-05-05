@@ -25,7 +25,8 @@
     "lineCount": 327,
     "assumptions": "1 axiom: ulam35_contains_all_odd_primes_conjecture. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 30
+    "theoremCount": 30,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "This problem originated with Stanisław Ulam and appears in the Erdős–Graham collection (1980). Ulam studied iterative constructions on number sequences extensively, including his famous Ulam numbers (integers uniquely representable as sums of two earlier terms). Problem 472 applies a related greedy principle specifically to primes: given a finite seed of primes, extend by always choosing the smallest prime of the form q_n + q_i − 1. The shift by −1 (rather than plain addition) creates a subtle parity structure: when both operands are odd, the candidate is odd and hence potentially prime. The seed [3, 5] produces the sequence 3, 5, 7, 11, 13, 17, 19, 23, ... which computationally matches all odd primes through 23. Whether any seed produces an infinite sequence remains open. The problem connects to questions about additive bases among primes, Goldbach-type phenomena, and the distribution of primes in arithmetic progressions.",

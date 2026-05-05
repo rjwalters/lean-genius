@@ -71,7 +71,8 @@
     "axiomCount": 2,
     "lineCount": 336,
     "assumptions": "2 axioms: sarkozy_szemeredi_1965, halasz_1977. 0 sorries.",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #362** is about the concentration function in additive combinatorics. Given a finite set A, how many of its subsets can sum to a fixed target t?\n\n**Historical Development:**\n- **Erdős-Moser (1965):** First proved a bound of O(2^N / N^(3/2) · (log N)^(3/2))\n- **Sárközy-Szemerédi (1965):** Removed the log factor, giving the sharp bound 2^N / N^(3/2)\n- **Halász (1977):** With fixed cardinality constraint, proved 2^N / N²\n- **Stanley (1980):** Using algebraic geometry (hard Lefschetz), showed the symmetric set centered at 0 maximizes concentration\n\n**Key Insight:** The Central Limit Theorem explains why concentration is ~2^N / N^(3/2): subset sums are approximately Gaussian with variance ~N, so the peak height is ~1/√N, giving N^(3/2) in the denominator.",

@@ -24,7 +24,8 @@
     "lineCount": 381,
     "assumptions": "2 axiom declarations: komlos_sulyok_szemeredi (KSS improved N^{1/2} lower bound, deep known result), alon_erdos_partition_conjecture (Sidon partition, open problem). ErdosProblem530Corrected proved from KSS + interval sum counting (erdos530_corrected_proof). 16 theorems proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Originally posed by Riddell in 1969 and studied extensively by Erdős, this problem asks for the order of growth of $\\ell(N)$, the maximum size of a Sidon subset of any $N$-element set. A Sidon set (also called a $B_2$-set) has all pairwise sums distinct, a property introduced by Simon Sidon in the 1930s in connection with Fourier analysis. Erdős first proved the lower bound $\\ell(N) \\geq c N^{1/3}$ using a greedy argument. Komlós, Sulyok, and Szemerédi then improved this to $\\ell(N) \\geq c \\sqrt{N}$ using a probabilistic deletion method. The upper bound $\\ell(N) \\leq (1+o(1))\\sqrt{N}$ follows from the observation that a Sidon set of size $k$ produces $k(k+1)/2$ distinct pairwise sums, which must fit within the ambient sumset. Together these give $\\sqrt{N} \\ll \\ell(N) \\leq (1+o(1))\\sqrt{N}$, so the order of growth is determined but the exact leading constant remains open. Alon and Erdős also conjectured a dual result: any $N$-element set can be partitioned into $O(\\sqrt{N})$ Sidon sets. The problem connects to the broader theory of $B_h$-sets, sum-free sets, and additive bases, and has applications in coding theory (error-correcting codes with good distance properties) and harmonic analysis (thin sets of integers with good Fourier properties).",

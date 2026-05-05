@@ -51,7 +51,8 @@
     "axiomCount": 4,
     "lineCount": 77,
     "assumptions": "4 axioms: vertexCount, minDegree, chromaticNumber, edgeCount. 0 sorries.",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem over 20 years before 1993, asking whether 4-chromatic critical graphs can have minimum degree proportional to the number of vertices. A graph G is k-chromatic critical if χ(G) = k and removing any edge reduces the chromatic number to k-1. These are the 'minimal' graphs requiring k colours.\n\nFor k = 6, Dirac constructed k-chromatic critical graphs achieving the optimal minimum degree δ > n/2. However, for k = 4 and k = 5, the situation is dramatically different and poorly understood. Simonovits and Toft achieved δ ≫ n^{1/3} for 4-chromatic critical graphs, but the gap between n^{1/3} and the desired linear bound n is enormous.\n\nToft conjectured that every 4-chromatic critical graph on n vertices has at least (5/3 + o(1))n edges. If true, this would provide important structural constraints on such graphs. The edge conjecture is related to but distinct from the minimum degree question — a graph can have many edges without having high minimum degree if the degree distribution is uneven.",

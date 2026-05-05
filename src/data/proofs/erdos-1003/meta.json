@@ -51,7 +51,8 @@
     "axiomCount": 0,
     "lineCount": 261,
     "assumptions": "0 axioms, 0 sorries. Open problem formalized as Lean Prop definitions. Conjecture stated as def (not axiom). Specific small cases verified via native_decide. Prior axioms removed in refactor; badge updated from 'axiom' to 'wip'.",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem asks whether the equation φ(n) = φ(n+1) has infinitely many solutions, where φ is the Euler totient function. The first examples are n = 1, 3, 15, 104, 164, 194, 255, ...\n\nErdős made an even stronger conjecture: for every k ≥ 1, the equation φ(n) = φ(n+1) = ... = φ(n+k) should have infinitely many solutions. Remarkably, triples of consecutive equal totients exist—for example, φ(5186) = φ(5187) = φ(5188) = 1728.\n\nErdős, Pomerance, and Sárközy [EPS87] proved an upper bound: the number of n ≤ x with φ(n) = φ(n+1) is at most x/exp((log x)^(1/3)). This shows solutions are sparse.\n\nFord, Luca, and Pomerance [FLP07] proved a lower bound showing at least x^(1-ε) solutions up to x for any ε > 0, which would imply the set is infinite. The question remains formally open.",

@@ -29,7 +29,8 @@
     "lineCount": 779,
     "assumptions": "1 axiom: maTang_counterexample. 3 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 22
   },
   "overview": {
     "historicalContext": "**Turán's Theorem and Triangle Structure**\n\nPál Turán's seminal 1941 theorem established that the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This launched extremal graph theory. A natural follow-up: when a graph *exceeds* the Turán threshold, what structural properties must its triangles have?\n\n**The Erdős-Faudree Conjecture**: Paul Erdős and Ralph Faudree conjectured that every graph with $> n^2/4$ edges contains a triangle $T$ with $> (1/2 - o(1))n$ 'good neighbors' — vertices adjacent to at least two of $T$'s three vertices. Erdős himself was skeptical, writing 'perhaps this conjecture is a bit too optimistic.'\n\n**Ma-Tang Disproof (2020)**: Jie Ma and Zixiang Tang disproved the conjecture by constructing explicit graph families where every triangle has at most $(2 - \\sqrt{5/2} + o(1))n \\approx 0.419n$ good neighbors. The **book lemma** (a classical result in graph theory) provides the lower bound $h(n) \\ge n/6$: every dense graph has a 'book' — a triangle with $\\ge n/6$ common neighbors of all three vertices. The exact value of $h(n)$ between $n/6$ and $(2 - \\sqrt{5/2})n$ remains open.",

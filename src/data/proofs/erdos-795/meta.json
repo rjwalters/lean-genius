@@ -25,7 +25,8 @@
     "lineCount": 499,
     "assumptions": "14 sorry(s).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős introduced the function $g(n)$ in a 1966 paper 'Remarks on number theory V' published in Matematikai Lapok, as part of his broader program studying multiplicative structures in sets of integers. The problem arose naturally from the observation that the set of all primes up to $n$ has distinct subset products (by unique factorization), giving $g(n) \\geq \\pi(n)$. Erdős proved the first non-trivial upper bound $g(n) \\leq \\pi(n) + O(\\sqrt{n}/\\ln n)$ in the same paper, showing that at most $O(\\pi(\\sqrt{n}))$ non-prime elements could participate. The gap between the lower bound $\\pi(n)$ and upper bound $\\pi(n) + O(\\pi(\\sqrt{n}))$ suggested that squares of small primes (contributing $\\pi(\\sqrt{n})$ additional elements) might close the gap. This remained open for nearly 60 years until Raghavan's 2025 resolution. The problem is the multiplicative counterpart of Erdős Problem #1 on distinct subset sums, where $f(n, N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\text{all subset sums distinct}\\}$ and the Conway-Guy conjecture similarly identifies optimal sets. The distinct products problem connects to Sidon sets in multiplicative groups, $B_h$ sequences, and the broader study of sum-free and product-free sets in additive combinatorics.",

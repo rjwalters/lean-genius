@@ -39,7 +39,8 @@
       "Proof of the 3D Euler line relation: centroid divides circumcenter-Monge point segment in ratio 3:1",
       "Proof that the six edge midpoints of an orthocentric tetrahedron are equidistant from the centroid (the midedge-sphere result; also shown not to be Feuerbach-tangent at T\u2080)"
     ],
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 48
   },
   "overview": {
     "historicalContext": "Feuerbach's theorem (1822) that the nine-point circle is tangent to the incircle and all three excircles is considered one of the most beautiful results in classical triangle geometry. The natural question of its 3D analogue was studied by Court (1934) and Murakami (1952): for orthocentric tetrahedra, a sphere related to the circumcenter and Monge point should play the role of the nine-point circle. This formalization began with the candidate `(N\u2082\u2084, R/3)`-sphere (center = midpoint of circumcenter and Monge point, radius R/3 vs R/2 for the nine-point circle). Numerical experiments (sessions 1\u20132, April 2026) flagged the candidate as suspect; on 2026-05-02 a closed-form symbolic computation at the orthocentric tetrahedron T\u2080 = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) refuted the candidate outright, and the previously sorry-stated tangency theorems were removed. Identifying and formalizing the correct 3D Feuerbach sphere \u2014 Murakami's construction uses face circumcircles \u2014 remains open.",

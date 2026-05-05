@@ -60,7 +60,8 @@
     "axiomCount": 5,
     "assumptions": "5 axiom declarations: erdos_kakutani_equivalence (CH iff countable Q-independent union), ch_implies_1d_image_distinct (CH implies 1D distinct distances), ch_implies_1d_union_cover (CH implies 1D countable cover), davies_theorem (CH implies 2D decomposition), kunen_theorem (CH implies all-n decomposition).",
     "lineCount": 279,
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "This problem connects geometry to set theory in a surprising way. Erdős and Kakutani (1943) showed that for n=1, the decomposition exists if and only if the Continuum Hypothesis holds. Davies (1972) proved the n=2 case under CH, and Kunen (1987) proved it for all dimensions. Erdős and Hajnal showed that CH is necessary - without it, even finite partitions fail. The interplay between geometric decomposition problems and set-theoretic axioms is characteristic of mid-20th century descriptive set theory: the Axiom of Choice enables wild decompositions (as in the Banach-Tarski paradox), while the Continuum Hypothesis provides the precise combinatorial power needed to partition space into countably many sets each intersecting every line in at most 1 point.",

@@ -47,7 +47,8 @@
     "axiomCount": 2,
     "lineCount": 175,
     "assumptions": "2 axioms: OrdinalRamseyProperty, schipperus_darby_omega_omega_squared. 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Ordinal Ramsey theory extends the classical Ramsey theorem to infinite ordinals. The classical theorem guarantees monochromatic cliques in large finite graphs; ordinal Ramsey theory asks which infinite ordinals have analogous properties.\n\nSpecker (1957) made a surprising discovery: the Ramsey property α → (α, 3)² holds for α = ω² but FAILS for α = ω³, ω⁴, and all ω^n with n ≥ 3. This shows that larger ordinals can have worse Ramsey properties!\n\nChang later proved the property holds again for α = ω^ω, the first limit of limit ordinals. Schipperus (2010) and Darby independently proved the property also holds for α = ω^(ω²), confirming the pattern that limit ordinal exponents restore the Ramsey property.\n\nErdős offered $250 for its resolution, which was claimed when the problem was solved.",

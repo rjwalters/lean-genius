@@ -74,7 +74,8 @@
         "relationship": "Foundation; both theorems here are direct consequences of PNT via filter composition"
       }
     ],
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Prime Number Theorem (PNT, 1896) establishes $\\pi(x) \\sim x/\\ln x$, independently proved by Hadamard and de la Vallée Poussin using properties of the Riemann zeta function. The density corollary for proportional intervals — that $(x, (1+c)x]$ contains $\\sim cx/\\log x$ primes — was implicit in the 19th-century analytic program. Chebyshev (1848) had already established $0.92 x/\\log x < \\pi(x) < 1.11 x/\\log x$ via his theta and psi functions; the proportional-interval density follows formally from PNT in exactly the filter-algebraic manner proved here. The filter-algebraic proof of this density requires two modular steps: (1) expressing PNT at $(1+c)x$ using $\\log(x)$ rather than $\\log((1+c)x)$, and (2) algebraically combining two PNT estimates to get the interval density. These steps were first embedded inline in the OQ-04 proof; this entry isolates them as clean standalone theorems.",

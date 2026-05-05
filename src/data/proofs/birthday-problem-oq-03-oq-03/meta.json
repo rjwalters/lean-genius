@@ -48,7 +48,8 @@
       "Convergence to a limit"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 20
+    "theoremCount": 20,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The birthday problem — how many people are needed for a 50% chance of a shared birthday? — was popularized by Richard von Mises in 1939. The surprising answer n ≈ 23 (for d=365 days) reflects the square-root scaling n ~ √d: not √365 ≈ 19 people, but √(2d ln 2) ≈ 23. The k-way generalization (k people sharing a birthday) was studied by Diaconis and Mosteller (1989) in the context of coincidences, and more recently by Arratia, Goldstein, and Gordon using Poisson approximation. The k-way threshold scales as n_k ~ d^{(k-1)/k}, with the exponent (k-1)/k interpolating between the trivial case (k=1) and the pigeonhole bound (k→∞). This interpolation connects elementary combinatorics to asymptotic analysis.",

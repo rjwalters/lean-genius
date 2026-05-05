@@ -69,7 +69,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 845
+    "theoremCount": 845,
+    "definitionCount": 104
   },
   "overview": {
     "historicalContext": "The two-dimensional Navier-Stokes equations have been known to have global smooth solutions since Ladyzhenskaya's work in 1969. The key is that vortex stretching — the primary mechanism that might cause blowup in 3D — is absent in 2D. In 2D, the vorticity ω satisfies a transport-diffusion equation without the dangerous (ω·∇)u stretching term.\n\nThe enstrophy E(t) = ∫|ω(x,t)|² dx is the squared L² norm of vorticity. In 2D, enstrophy satisfies the ODE dE/dt = -2νP where P = ∫|∇ω|² is the palinstrophy. Under a Poincaré inequality P ≥ μ₁E (where μ₁ is the first eigenvalue of -Δ on the domain), this becomes dE/dt ≤ -2νμ₁E, giving exponential decay.\n\nThis formalization extends the existing NavierStokes.lean (which already proved the asymptotic bound E(t) ≤ E(0)·exp(-2νμ₁t)) with new quantitative results: decay between arbitrary times, exact FTC integration of the enstrophy ODE, and total dissipation bounds.",

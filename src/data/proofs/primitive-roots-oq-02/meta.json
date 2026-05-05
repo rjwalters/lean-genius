@@ -57,7 +57,8 @@
       "Concrete primeFactors computations for p = 3, 5, 7, 11, 13, 23, 1000003"
     ],
     "dateAdded": "2026-04-12",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The existence of primitive roots modulo primes was first proved by Euler (1773), and Gauss gave a complete characterization in Disquisitiones Arithmeticae (1801): primitive roots exist modulo n if and only if n = 1, 2, 4, p^k, or 2p^k for odd prime p.\n\nThe practical question of *finding* a primitive root efficiently arose with the development of number-theoretic algorithms and cryptography. The naive test (checking that no power g^k = 1 for 0 < k < p-1) requires O(p) multiplications. The prime factor criterion, while not stated as a theorem by any single historical source, is a direct consequence of the structure of cyclic groups and has been known informally since the 19th century.\n\nIn modern cryptography, primitive roots (called 'generators') are essential for Diffie-Hellman key exchange and discrete logarithm-based schemes. Efficient generator finding is thus of practical importance.",

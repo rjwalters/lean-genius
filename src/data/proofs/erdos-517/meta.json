@@ -63,7 +63,8 @@
     "assumptions": [
       "biernacki_theorem: Under Fejér gaps (∑1/nₖ < ∞), entire functions assume every value infinitely often. Deep complex analysis result beyond Mathlib."
     ],
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "This problem concerns lacunary power series - series f(z) = ∑ aₖz^{nₖ} where the exponents have gaps. The question of how these gaps affect value distribution goes back to the early 20th century.\n\nFejér (1908) proved that if ∑1/nₖ < ∞, the function assumes every value at least once. Biernacki (1928) strengthened this to show every value is assumed infinitely often under the same condition.\n\nThe Fejér-Pólya conjecture asks whether the weaker Fabry gap condition (nₖ/k → ∞) is sufficient. Pólya (1929) proved partial results for functions of finite order, but the general case remains open. This is a fundamental question connecting gap conditions in power series to complex function theory.",

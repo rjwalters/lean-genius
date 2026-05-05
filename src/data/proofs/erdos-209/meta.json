@@ -50,7 +50,8 @@
     "axiomCount": 1,
     "lineCount": 241,
     "assumptions": "1 axiom: escudero_2016. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #209** is a question in incidence geometry about the structure of line arrangements. The classical Sylvester-Gallai theorem (1893) guarantees that any finite set of points not all collinear determines at least one \"ordinary line\" (containing exactly 2 points). Erdős asked: can we extend this to triangles?\n\n**Historical Development:**\n- **1893 (Sylvester-Gallai):** Ordinary points/lines must exist.\n- **1984 (Füredi-Palásti):** Disproved the conjecture for most d.\n- **2016 (Escudero):** Completed the disproof for ALL d ≥ 4.\n\n**Key Insight:** While ordinary points always exist, they can be positioned to avoid forming triangles with only ordinary vertices.",

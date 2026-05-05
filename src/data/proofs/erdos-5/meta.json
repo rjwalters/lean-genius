@@ -24,7 +24,8 @@
     "lineCount": 572,
     "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), hildebrand_maier_large_limit_points (arbitrarily large finite limit points, 1988). 0 sorries. Proves 22 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_isClosed, limitPointSet_unbounded, erdos_5_from_dense_values (reduction to distributional density).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 29
+    "theoremCount": 29,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős studied the distribution of prime gaps normalized by log(p_n) throughout his career, building on the prime number theorem's prediction that the average gap is ~log(p_n). The question of which values arise as limit points of g(n) = (p_{n+1} − p_n)/log(p_n) captures the full range of prime gap fluctuations. Westzynthius (1931) first showed the gaps can be arbitrarily large (∞ ∈ S). The landmark GPY theorem (2009) proved lim inf g(n) = 0, establishing 0 ∈ S and initiating the chain of breakthroughs: Zhang (2013, first finite bound on gap), Maynard-Tao (2013, gap ≤ 600), Polymath 8 (gap ≤ 246). For the interior of S, Erdős and Ricci showed S has positive Lebesgue measure, Banks-Freiberg-Maynard improved this to ≥ 12.5%, and Merikoski (2020) reached ≥ 1/3 of [0, ∞). The conjecture S = [0, ∞) remains one of the most fundamental open problems about prime distribution, closely related to the Hardy-Littlewood prime k-tuples conjecture and Cramér's probabilistic model of primes.",

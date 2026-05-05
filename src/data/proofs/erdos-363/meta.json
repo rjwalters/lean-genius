@@ -61,7 +61,8 @@
     "axiomCount": 3,
     "lineCount": 293,
     "assumptions": "3 axioms: pomerance_observation, ulas_theorem, erdos_selfridge. 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "This problem connects to the famous Erdős-Selfridge theorem (1975), which states that the product of consecutive integers is never a perfect power. Erdős asked whether this constraint could be circumvented using multiple disjoint blocks of consecutive integers.\n\nPomerance observed that if we allow intervals of size 3, there are infinitely many counterexamples using blocks built from powers of 2. This motivated the condition |Iᵢ| ≥ 4.\n\nThe conjecture was spectacularly disproved in the 2000s. Ulas (2005) found infinitely many solutions for most values of n using size-4 intervals. Bauer-Bennett (2007) filled in the remaining cases n=3 and n=5. Bennett-Van Luijk (2012) extended the result to size-5 intervals, suggesting a general pattern.",

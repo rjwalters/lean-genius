@@ -64,7 +64,8 @@
     "axiomCount": 1,
     "lineCount": 240,
     "assumptions": "1 axiom: yip_counterexample. 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**The Erdős-Ingham Paper (1964)**\n\nThis problem originates from 'Arithmetical Tauberian Theorems' by Erdős and Ingham (1964). They discovered a remarkable equivalence: the non-vanishing of 1 + ∑ₖ 1/aₖ^(1+it) for all t is equivalent to a Tauberian implication about functional equations. If f(x) + ∑ₖ f(x/aₖ) = (C + o(1))x for non-decreasing f, does f(x) = (1 + o(1))x follow? The answer depends on whether the Dirichlet sum has zeros.\n\n**The Simplest Unsolved Case (1964-2025)**\n\nRemarkably, Erdős and Ingham could not resolve even the simplest finite case: {2, 3, 5}. Does 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it) = 0 for some real t? This connects to deep questions in transcendence theory - specifically the Four Exponentials Conjecture. If 4EC holds, the {2,3,5} sum never vanishes.\n\n**Yip's Breakthrough (2025)**\n\nAfter 60 years, Chi Hoi Yip (arXiv:2512.16528) settled the infinite sequence case definitively: the conjecture is FALSE. For any nonzero t, Yip constructs a sequence where the sum equals zero. The construction exploits the oscillatory nature of a^(it) to achieve precise phase cancellation. However, the finite sequence case - including {2,3,5} - remains tantalizingly open.",

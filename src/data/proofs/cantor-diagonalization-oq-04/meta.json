@@ -73,7 +73,8 @@
         "relationship": "The Y combinator extracted here connects to the fixed-point structure underlying undecidability"
       }
     ],
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 3
   },
   "overview": {
     "problemStatement": "Prove the retraction formulation of Lawvere's fixed-point theorem: if a type $Y$ codes its own endomorphisms (i.e., $Y \\to Y$ retracts into $Y$ via encode/decode with $\\text{decode} \\circ \\text{encode} = \\text{id}$), then every endomorphism $f : Y \\to Y$ has a fixed point.",

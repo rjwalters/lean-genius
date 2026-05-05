@@ -61,7 +61,8 @@
     "axiomCount": 3,
     "lineCount": 171,
     "assumptions": "3 axiom(s): weisenberg_theorem, weisenberg_lacunary, admissibility_necessary. See Lean source for complete statements.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this question in their 1980 monograph (p. 85), asking whether sparsity combined with admissibility is sufficient to guarantee a prime shift. An admissible set A avoids at least one residue class mod p for every prime p, which means simple mod-p arguments cannot rule out the existence of n with all n + a prime. The Hardy-Littlewood prime tuples conjecture predicts that finite admissible sets should have infinitely many prime shifts.\n\nThe question was whether this extends to infinite but sparse sets: if A ⊆ ℕ has zero density and is admissible, must some shift n + A consist entirely of primes? This combines two conditions that each seem favorable: admissibility removes the obvious obstruction, and sparsity means fewer simultaneous primality constraints.\n\nWeisenberg (2024) resolved this decisively: NO. He constructed arbitrarily sparse admissible sets — even lacunary ones where consecutive term ratios grow without bound — for which no prime shift exists. The construction uses covering congruences: for each potential shift n, some element a ∈ A forces n + a to be divisible by a specific prime, and these primes collectively cover all possible shifts. This reveals a fundamental gap between the finite and infinite cases of the admissibility condition.",

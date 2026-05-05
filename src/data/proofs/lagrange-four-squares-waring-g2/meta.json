@@ -34,7 +34,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Waring's problem (1770) asks: for each positive integer $k$, what is the smallest $g(k)$ such that every positive integer is a sum of at most $g(k)$ perfect $k$-th powers? For $k=2$ (squares), the answer is $g(2) = 4$.\n\n**Upper bound** ($g(2) \\leq 4$): Lagrange proved in 1770 that every positive integer is a sum of at most 4 squares. This was a major advance over Bachet's 1621 conjecture and Fermat's partial results.\n\n**Lower bound** ($g(2) \\geq 4$): Legendre proved in 1798 that $n$ is NOT a sum of 3 squares if and only if $n = 4^a(8b+7)$ for non-negative integers $a, b$. In particular, $7 = 4^0(8 \\cdot 0 + 7)$ requires exactly 4 squares: $4 + 1 + 1 + 1$.\n\n**Big-G and little-g**: Hilbert (1909) proved $g(k)$ exists for all $k$ (Waring's conjecture). For squares, $G(2) = g(2) = 4$: not only does every number need at most 4 squares, but infinitely many need exactly 4.",

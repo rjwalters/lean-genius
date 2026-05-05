@@ -25,7 +25,8 @@
     "lineCount": 225,
     "assumptions": "2 axioms: elementary_upper_bound, evelyn_linfoot_lower_bound. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of squarefree integers, which are integers not divisible by any perfect square greater than 1. The density of squarefree integers converges to 6/π² ≈ 0.6079, a beautiful fact connected to the Basel problem and ζ(2) = π²/6. The question of how the actual count Q(x) deviates from this asymptotic is intimately tied to some of the deepest problems in analytic number theory, including the Riemann Hypothesis. The problem has attracted work from Evelyn-Linfoot (1931), Walfisz (1963), and Liu (2016), but remains fundamentally open.",

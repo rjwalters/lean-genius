@@ -93,7 +93,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The **extended Euclidean algorithm** has roots in Euclid's *Elements* (~300 BCE, Book VII, Propositions 1-2), where the alternating subtraction method computes GCDs. The extension to computing Bézout coefficients was first published by **Bachet de Méziriac** in *Problèmes plaisants et délectables* (1624), well before Bézout's own treatise (1779). The Indian mathematician **Aryabhata** (5th century CE) independently described a similar algorithm (*kuṭṭaka*) for solving linear Diophantine equations.\n\nThe algorithm has $O(\\log \\min(a,b))$ bit complexity, making it one of the oldest known efficient algorithms. Knuth (1997) gives a thorough modern treatment, and the algorithm is foundational in computational number theory: it underlies RSA key generation (computing modular inverses), the Chinese Remainder Theorem, and continued fraction expansions.\n\nWhile Euclid's lemma (if $\\gcd(a,b) = 1$ and $a \\mid bc$, then $a \\mid c$, Elements VII.30) is classical, its **constructive content** — actually computing the quotient $c/a$ — is often overlooked in standard treatments. This formalization makes the construction explicit: given Bézout coefficients $u, v$ and a divisibility witness $k$, the quotient $q = uc + vk$ is extracted by a simple algebraic formula valid in any commutative ring. The core formula $q = uc + vk$ (where $ua + vb = 1$ and $bc = ak$) works in any commutative ring, and is instantiated over $\\mathbb{N}/\\mathbb{Z}$ via the extended GCD.",

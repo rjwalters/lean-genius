@@ -37,7 +37,8 @@
     ],
     "lineCount": 327,
     "theoremCount": 17,
-    "defCount": 2
+    "defCount": 2,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Newton's identities (also called Newton-Girard identities) express the power sums pₖ = x₁ᵏ + ··· + xₙᵏ in terms of the elementary symmetric polynomials e₁,...,eₙ. They were first stated by Albert Girard in 1629 and rediscovered by Isaac Newton in 1666. For matrices, the eigenvalues λ₁,...,λₙ play the role of the xᵢ, giving the relation between tr(Mᵏ) and the coefficients of the characteristic polynomial det(λI − M). The large-k case (k > n) follows from Cayley-Hamilton: once χ_M(M) = 0, multiplying by M^{k−n} and taking trace yields a linear recurrence for pₖ. This connects the algebraic structure of Cramer's Rule (the adjugate identity behind Cayley-Hamilton) to the analytic theory of spectral sequences and the Faddeev-LeVerrier algorithm for computing characteristic polynomials in O(n²) matrix-trace operations.",

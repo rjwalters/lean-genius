@@ -24,7 +24,8 @@
     "assumptions": "0 axioms, 0 sorries. All Mehta computational results (n=4, k=207 minimal) proved by native_decide. Main conjecture stated as def (open problem). Open conjecture; supporting lemmas fully verified.",
     "lineCount": 121,
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and Ernst Straus, appearing in the influential monograph *Old and New Problems and Results in Combinatorial Number Theory* by Erdős and Ronald Graham (1980). The question asks whether for every starting point $n$, one can always find a block length $k$ such that the product of $k$ consecutive integers starting at $n$ divides the product of the next $k$ consecutive integers. The problem connects to classical questions about the multiplicative structure of consecutive integers, studied since Chebyshev's 1852 work on prime gaps and Sylvester's 1892 theorem that the product of $k$ consecutive integers greater than $k$ always has a prime factor exceeding $k$. The problem remained computationally intractable for decades due to the apparent irregularity of the minimal $k$ values. A breakthrough came when Bhavik Mehta (a Lean community contributor and Cambridge mathematician) computed that the minimal $k$ for $n = 4$ is 207 — an unexpectedly large value given that $n = 1, 2, 3$ require only $k = 1, 5, 4$ respectively. Mehta's computation, using careful prime factorization tracking, led to the creation of OEIS sequence A375071 cataloging these minimal values. The erratic behavior of this sequence suggests deep connections to the distribution of prime powers among consecutive integers.",

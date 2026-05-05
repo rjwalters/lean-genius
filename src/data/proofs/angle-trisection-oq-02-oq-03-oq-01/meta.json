@@ -74,7 +74,8 @@
       "Galois theory of cyclotomic extensions"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 32
+    "theoremCount": 32,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Gauss-Wantzel Theorem and Cyclotomic Fields**\n\nThe Gauss-Wantzel theorem (Gauss 1796, Wantzel 1837) characterizes which regular polygons are constructible: a regular n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes. The key algebraic fact is that cos(2π/n) is constructible iff its minimal polynomial has degree a power of 2, and this degree equals φ(n)/2.\n\nThis file bridges the axiomized Gauss-Wantzel theorem to Mathlib's cyclotomic field infrastructure, proving the connection between exp(2πi/n), cyclotomic polynomials, and cos(2π/n).",

@@ -56,7 +56,8 @@
       "Basic analytic number theory (square root barriers)"
     ],
     "assumptions": "1 axiom: erdos_sidon_upper_bound. 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #39 asks one of the central questions in additive combinatorics: how dense can an infinite Sidon set be? A Sidon set (also called a B₂ sequence) is a set where all pairwise sums are distinct. For finite Sidon sets in {1,...,N}, the maximum size is approximately √N (see Problem #30). But for infinite Sidon sets, the situation is more subtle.\n\nErdős proved a fundamental upper bound: for any infinite Sidon set A, the limit inferior of A(N)/√N equals zero. This means no infinite Sidon set can have counting function consistently above c√N. The natural question is whether we can achieve A(N) >> N^{1/2-ε} for all ε > 0.\n\nProgress has been slow but steady. The trivial greedy algorithm gives N^{1/3}. Ajtai, Komlós, and Szemerédi (1981) achieved (N log N)^{1/3}, earning $25 from Erdős. Ruzsa (1998) broke the 1/3 barrier with N^{√2-1} ≈ N^{0.414}, earning $100. The gap to N^{1/2-ε} remains open, with a $500 prize.",

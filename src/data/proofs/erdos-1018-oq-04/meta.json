@@ -37,7 +37,8 @@
       "Recovery of the graph case (r=2) from the general framework",
       "Explicit 3-uniform case as the first non-trivial instance (K₇³ in R⁴)"
     ],
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős Problem #1018 asked whether every dense graph (with n^{1+ε} edges) must contain a non-planar subgraph on only O_ε(1) vertices. Kostochka and Pyber (1988) answered affirmatively: n^{1+ε} edges force a K₅ topological minor on a bounded number of vertices. The key insight was that K₅ non-planarity is the topological obstruction for graphs: by Kuratowski, every non-planar graph contains K₅ or K_{3,3} as a minor. For r-uniform hypergraphs viewed as (r-1)-dimensional simplicial complexes, the natural analogue of planarity is embeddability in R^{2(r-1)}: a generic (r-1)-dimensional complex embeds in R^{2(r-1)+1} by general position, so R^{2(r-1)} is the first dimension where non-embeddability can occur. The van Kampen-Flores theorem, proved independently by van Kampen and Flores in 1933 using the newly proved Borsuk-Ulam theorem, establishes the minimal obstruction: K_{2r+1}^{(r)} is not embeddable in R^{2(r-1)}. The proof uses deleted products and Z/2-equivariant topology — the same framework used by Lovász in his proof of the Kneser conjecture (1978). For r=2 this gives K₅ non-planarity; for r=3 it gives K₇^{(3)} non-embeddability in R⁴. The Turán density of K₄^{(3)} — asking for the maximum edges in a K₄^{(3)}-free 3-uniform hypergraph — is one of the most famous open problems in extremal combinatorics (Turán 1941, still unsolved). The super-linear density threshold n^{r-1+ε} exceeds these Turán numbers for large n, making the conjecture well-motivated.",

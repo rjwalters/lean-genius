@@ -48,7 +48,8 @@
     "axiomCount": 3,
     "lineCount": 277,
     "assumptions": "3 axioms: chvatal_tree_ramsey (Chvatal 1977), connected_min_edges (standard), bigF_lower_linear (BEFRS 1980). 0 sorries.",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Erdos Problem #1182**\n\nThis problem was posed by Burr, Erdos, Faudree, Rousseau, and Schelp (BEFRS) in their 1980 paper on Ramsey-theoretic edge thresholds.\n\n**Historical Background:**\n- Chvatal (1977): For any tree T on n vertices, R(K_3, T) = 2n - 1\n- This means trees are 'Ramsey-minimal' for the triangle -- they achieve the smallest possible Ramsey number\n- BEFRS (1980) asked: how many more edges can a graph have while still achieving R(K_3, G) = 2n - 1?\n\n**Known bounds:**\n- F(n) >= n - 1 (trees, by Chvatal)\n- (17n + 1)/15 <= F(n) <= (27/4 + o(1)) * n * (log n)^2\n- sqrt(log n) * n^{3/2} << f(n) << n^{5/3} * (log n)^{2/3}\n\n**Status:** OPEN -- the central question F(n)/n -> infinity remains unresolved.",

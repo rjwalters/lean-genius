@@ -49,7 +49,8 @@
     ],
     "lineCount": 142,
     "assumptions": "2 axioms: nesetril_rodl_c4_c6, erdos_hajnal_c4_trees. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős Problem #596, posed in [Er87], addresses a subtle tension between finite and countable combinatorics in Ramsey theory. The problem grew out of the structural Ramsey theory program initiated by Jaroslav Nešetřil and Vojtěch Rödl in the 1970s. Their foundational 1977 paper established that for any relational structure, Ramsey-type partition theorems hold within classes of structures omitting specified substructures — a far-reaching generalization of the classical Ramsey theorem.\n\nThe specific dichotomy question emerged from a surprising discovery. Erdős and András Hajnal initially conjectured that no pairs $(G_1, G_2)$ could simultaneously satisfy both the finite Ramsey property (any finite coloring forces monochromatic $G_2$ in $G_1$-free graphs) and the countable coloring property (countably many colors suffice to avoid monochromatic $G_2$). The pair $(C_4, C_6)$ disproved this conjecture: Nešetřil-Rödl showed the finite Ramsey property holds, while Erdős-Hajnal proved that $C_4$-free graphs decompose into countably many forests (a deep result about the structure of sparse graphs). The natural follow-up question — which pairs have this dichotomy? — became Problem #596.\n\nThe related Problem #595, asking specifically about $(K_4, K_3)$, remains open and is considered a key test case. The broader context connects to the Hales-Jewett theorem, the Graham-Rothschild theorem, and the general theory of partition regularity in combinatorics.",

@@ -66,7 +66,8 @@
     "lineCount": 405,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22
+    "theoremCount": 22,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**The Convergence Rate of Derangements**\n\nA derangement is a permutation with no fixed points. The probability that a random permutation of $n$ elements is a derangement is $D(n)/n!$, which famously converges to $1/e \\approx 36.79\\%$ as $n \\to \\infty$.\n\nThis convergence is remarkably precise: Euler showed in 1751 that\n$$\\frac{D(n)}{n!} = \\sum_{k=0}^n \\frac{(-1)^k}{k!}$$\nwhich is exactly the $n$-th partial sum of the Taylor series for $e^{-1} = \\sum_{k=0}^\\infty (-1)^k/k!$.\n\nBy the **Alternating Series Estimation Theorem** (Leibniz 1682), the error in an alternating series with decreasing terms is bounded by the first omitted term. This immediately gives the sharp bound:\n$$\\left|\\frac{D(n)}{n!} - \\frac{1}{e}\\right| \\leq \\frac{1}{(n+1)!}$$\n\nMoreover, the approximation alternates: even-index partial sums (n=0,2,4,...) overshoot $1/e$ from above, while odd-index partial sums undershoot from below.",

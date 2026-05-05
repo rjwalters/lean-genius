@@ -49,7 +49,8 @@
     "axiomCount": 1,
     "lineCount": 173,
     "assumptions": "1 axiom: connection_101. 0 sorries.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős and Purdy posed this problem in their foundational surveys of combinatorial geometry in the 1970s–1980s, building on the Sylvester–Gallai tradition of studying collinearity in finite point sets. The question asks: if a planar point set of size $n$ has 'many' rich lines (at least $cn^2$ lines each containing $\\ge 4$ points), how large must the maximum collinear subset be?\n\nErdős conjectured that $h_c(n) \\gg \\sqrt{n}$, meaning that many rich lines force a large collinear subset of roughly square-root size. This was disproved by Zach Hunter, who constructed lattice-point configurations in $\\{1,\\ldots,m\\}^d$ showing $h_c(n) \\ll n^{1/\\log(1/c)}$ — much slower growth than $\\sqrt{n}$ for small $c$. Hunter's construction exploits the arithmetic structure of integer lattice points and the abundance of collinear quadruples in high-dimensional lattices projected to the plane.\n\nThe upper bound $h_c(n) \\le C\\sqrt{n}$ follows from the Szemerédi–Trotter incidence theorem (1983), the landmark result of Endre Szemerédi and William T. Trotter bounding point-line incidences by $O(n^{2/3}m^{2/3} + n + m)$. This was later reproved by László Székely (1997) using the crossing number inequality, and is now one of the central tools in discrete geometry. The fundamental question — whether $h_c(n) \\to \\infty$ at all for fixed $c$ — remains open and is closely connected to Problem #101 about the count of 4-point lines, to Problem #588 on $k$-rich lines, and to the Orchard Problem (#669).",

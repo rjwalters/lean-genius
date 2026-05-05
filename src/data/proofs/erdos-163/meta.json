@@ -50,7 +50,8 @@
     "axiomCount": 1,
     "lineCount": 198,
     "assumptions": "1 axiom: lee_theorem (Lee 2017 — for d-degenerate H on n vertices, ∃C>0 s.t. ramseyNumber H ≤ C·|V(H)|). Burr-Erdős conjecture proved via lee_theorem. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "The Burr-Erdős Conjecture was posed by Stefan Burr and Paul Erdős in 1975, asking whether $d$-degenerate graphs have linear Ramsey numbers. It became one of the most influential open problems in Ramsey theory, remaining unsolved for 42 years. The conjecture was motivated by the observation that cliques $K_n$ have exponentially large Ramsey numbers ($2^{n/2} \\le R(K_n) \\le 4^n$, Erdős–Szekeres 1935), while sparse graphs like paths satisfy $R(P_n) = n$ exactly.\n\nPartial results accumulated over decades. Chvátal, Rödl, Szemerédi, and Trotter (1983) proved the conjecture for bounded-degree graphs using the regularity lemma. Kostochka and Sudakov (2003) established it for graphs of bounded pathwidth. The general case was finally resolved by Choongbum Lee in 2017, who proved $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$ on $n$ vertices. Lee's proof combined the Szemerédi regularity lemma with the dependent random choice technique, a powerful probabilistic method popularized by Fox and Sudakov.\n\nThe constant $C_d = 2^{2^{O(d)}}$ in Lee's bound is doubly exponential in $d$. It is conjectured that the optimal bound is singly exponential: $R(H) \\le 2^{O(d)} \\cdot n$. Closing this gap remains a major open problem in extremal graph theory.",

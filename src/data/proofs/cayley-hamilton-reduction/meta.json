@@ -58,7 +58,8 @@
     "lineCount": 358,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 20
+    "theoremCount": 20,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Cayley-Hamilton theorem (1858) states that every matrix satisfies its characteristic polynomial. A powerful corollary is that any polynomial function of an n×n matrix can be reduced to a polynomial of degree at most n-1. This reduction is the algebraic foundation for efficient computation of matrix exponentials, powers, and other matrix functions.\n\nThis principle is essential in control theory (computing e^{At} for linear systems dx/dt = Ax), signal processing, and numerical ODE solvers. Instead of computing A^100 directly, one reduces X^100 modulo charpoly(A) to get a polynomial of degree < n.",

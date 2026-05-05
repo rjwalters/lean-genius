@@ -55,7 +55,8 @@
     "lineCount": 201,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Fermat stated this theorem around 1640 in a letter to Mersenne, claiming he had an \"irrefutable proof\" but, as with many of his claims, never published it. The theorem remained unproven for over a century until Euler provided the first complete proof in 1747.\n\nIn 1990, Don Zagier published what he called a \"one-sentence proof\" - an extraordinarily elegant argument that fits on a single page. This proof has become famous in mathematical circles for its beauty and brevity.\n\nThe theorem connects number theory to algebra in profound ways. It's closely related to factorization in the Gaussian integers Z[i], where p = a^2 + b^2 corresponds to p = (a+bi)(a-bi) splitting in Z[i]. This connection to algebraic number theory makes it a gateway to deeper results like Lagrange's four squares theorem.",

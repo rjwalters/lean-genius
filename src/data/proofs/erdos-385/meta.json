@@ -68,7 +68,8 @@
     "axiomCount": 0,
     "lineCount": 196,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #385 was posed by Erdős, Eggleton, and Selfridge and appears in [Er79d, p.73] and in the Erdős-Graham monograph [ErGr80, p.74]. It studies the function F(n) = max{m + p(m) : m < n, m composite}, where p(m) denotes the least prime divisor of m.\n\nThe problem asks two questions of increasing strength about the growth of F(n). Question 1 asks whether F(n) > n for all sufficiently large n — in other words, whether we can always find a composite m < n whose sum with its least prime factor exceeds n. Question 2 asks the stronger question of whether F(n) - n → ∞.\n\nSarosh Adenwalla observed that Question 1 is equivalent to Erdős Problem #430. In 2024, Terry Tao discussed this problem in a blog post, connecting it to Siegel zeros and the parity problem in sieve theory. The trivial upper bound F(n) ≤ n + √n is easy to establish, and Erdős conjectured that the matching lower bound F(n) ≥ n + (1 - o(1))√n also holds.",

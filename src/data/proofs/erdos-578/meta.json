@@ -63,7 +63,8 @@
     "axiomCount": 2,
     "lineCount": 151,
     "assumptions": "2 axioms: erdos_bollobas_proved, threshold_at_quarter. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős and Béla Bollobás conjectured that random graphs $G(2^d, 1/2)$ almost surely contain the $d$-dimensional hypercube $Q_d$ as a subgraph. This was part of the broader program initiated by Erdős and Rényi (1959-1960) studying threshold phenomena in random graphs: at what edge probability does a given subgraph first appear? For spanning subgraphs like $Q_d$ (which uses all $2^d$ vertices), the question is particularly delicate because the expected number of copies involves a subtle cancellation between the $\\binom{2^d}{2^d} = 1$ ways to choose the vertex set and the $d! \\cdot 2^d$ automorphisms of $Q_d$. Oliver Riordan (2000) resolved the conjecture affirmatively in 'Spanning subgraphs of random graphs' (Combinatorics, Probability & Computing), proving the stronger result that $p > 1/4$ suffices. His proof uses the second moment method: showing the variance of the number of $Q_d$ copies is dominated by the square of the expected value. The threshold $p = 1/4$ is essentially tight. Riordan also established that the number of $Q_d$ copies converges to a normal distribution, a distributional refinement going well beyond mere almost-sure existence.",

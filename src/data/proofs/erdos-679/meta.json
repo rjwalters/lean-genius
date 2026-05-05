@@ -88,7 +88,8 @@
     "lineCount": 259,
     "assumptions": "0 axiom(s) and 10 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 18
   },
   "overview": {
     "historicalContext": "Erd\u0151s posed this problem in 1979 about the distribution of distinct prime factors across differences n-k. The question asks whether infinitely many integers n exist such that all predecessors n-k (for large k) have \u03c9 below the threshold (1+\u03b5) log k / log log k.\n\nThe problem has a subtle two-part structure. The stronger version \u2014 with an additive O(1) error instead of the multiplicative (1+\u03b5) factor \u2014 has been disproven: for every large n, some k < n gives \u03c9(n-k) \u2265 log k/log log k + c\u00b7log k/(log log k)\u00b2. But the main question with the (1+\u03b5) slack remains open.\n\nThe Hardy-Ramanujan theorem (1917) provides the context: \u03c9(n) ~ log log n for 'typical' n, while the maximum of \u03c9 for n \u2264 x is ~ log x/log log x. The threshold is (1+\u03b5) times this maximum, so the question asks whether all predecessors can simultaneously stay below (1+\u03b5) times the extremal order. Probabilistic heuristics suggest special n should be rare (count ~ x/log x), and the problem provably cannot be resolved by finite computation.",

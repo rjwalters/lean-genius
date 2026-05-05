@@ -41,7 +41,8 @@
     "lineCount": 233,
     "assumptions": "2 axioms: erdos_265_doubleExp_necessary, kovac_tao_theorem. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Georg Cantor discovered in the 19th century that the triangular numbers $a_n = \\binom{n}{2} = n(n-1)/2$ produce a sequence where both $\\sum 1/a_n$ and $\\sum 1/(a_n - 1)$ are rational. This elegant example grows only polynomially ($a_n \\sim n^2/2$), so $a_n^{1/n} \\to 1$. Erdős asked a deeper question: how fast can such sequences grow?\n\nErdős conjectured two things: (1) that sequences with $a_n^{1/n} \\to \\infty$ (super-exponential growth) exist, and (2) that $a_n^{1/2^n} \\to 1$ is necessary (double-exponential growth is the limit). The first conjecture was confirmed in a landmark 2024 paper by Vjekoslav Kovač and Terence Tao, who constructed sequences achieving doubly exponential growth $a_n^{1/\\beta^n} \\to \\infty$ for some $\\beta > 1$, published in the *Annals of Mathematics*.\n\nThe second conjecture — whether $\\beta = 2$ is a hard barrier — remains one of the most intriguing open problems at the intersection of number theory and analysis. A folklore result shows that if $a_n^{1/2^n} \\to c > 1$, then $\\sum 1/a_n$ is automatically irrational, suggesting $\\beta = 2$ is indeed special. The problem connects rationality of infinite series to growth rates via transcendence theory.",

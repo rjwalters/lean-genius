@@ -46,7 +46,8 @@
     "lineCount": 220,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "In 1736, Leonhard Euler solved the Königsberg bridge problem, asking whether one could walk through the city crossing each of its seven bridges exactly once. Königsberg (now Kaliningrad, Russia) was built on both sides of the Pregel River with two islands in the middle, connected by seven bridges.\n\nEuler's key insight was to abstract away the geographical details and focus only on the connection structure. He represented each landmass as a point and each bridge as a line connecting two points. This abstraction created what we now call a graph.\n\nEuler observed that in any successful walk, each intermediate landmass must be entered and exited the same number of times, requiring an even number of bridges. Only the start and end points can have odd numbers of bridges. Since all four Königsberg landmasses had odd numbers of bridges, no such walk exists.\n\nThis paper, 'Solutio problematis ad geometriam situs pertinentis' (Solution of a problem relating to the geometry of position), is considered the first paper in graph theory and an early work in topology.",

@@ -22,7 +22,8 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 156,
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The impossibility of trisecting a general angle with compass and straightedge was proved by Pierre Wantzel in 1837 using Galois theory: an angle θ is trisectable iff 8x³ − 6x − cos θ has a rational root or splits into linear factors over the iterated quadratic extensions of ℚ. The OQ-03 companion entry formalizes an O(log d) algorithm to check whether a denominator d (determining the angle π/d) satisfies the constructibility conditions by counting halvings of d until it becomes odd. This entry (OQ-03-OQ-02) closes the complexity question: the O(log d) bound is not just an upper bound — it is tight. The halvings algorithm performs exactly Nat.log 2 (2^k) = k steps on inputs d = 2^k, and no algorithm can process these inputs in sub-logarithmic time. The proof connects the constructibility check to the 2-adic valuation v₂(d) — the exact power of 2 dividing d — which is the information-theoretically required number of halvings.",

@@ -45,7 +45,8 @@
     "lineCount": 250,
     "assumptions": "1 axiom: erdos_281_proved. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system of congruences is a finite set of residue classes whose union is all integers; Erdős conjectured (and it was proved by Hough in 2015) that no covering system exists with all moduli distinct and greater than any given bound. Problem 281 is a density-theoretic variant: Erdős asked in 1980 whether the full-covering condition (every choice of congruence classes leaves density-0 uncovered) automatically gives *uniform* finite approximation. The affirmative resolution uses the Davenport–Erdős theorem (1951) — that upper and lower density coincide for divisibility-defined sets — and Rogers' maximization theorem from Halberstam–Roth's 'Sequences' (1966).",

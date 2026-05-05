@@ -58,7 +58,8 @@
       "Convergence to 1/e from DerangementsOQ03"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 24
+    "theoremCount": 24,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The ratio $D(n)/n!$ equals the $n$-th partial sum of the Taylor series $e^{-1} = \\sum (-1)^k/k!$, a connection known since at least the 18th century through the work of de Moivre (1718) and later Euler, who characterized the number of derangements combinatorially. The error $D(n)/n! - 1/e$ is therefore the negative tail of this alternating series. While previous formalizations (DerangementsOQ03, DerangementsOQ03OQ01) established bounds on this error via Leibniz's alternating series test, this entry computes the exact closed-form expression as a signed alternating sum, completely characterizing the error's value — not merely its absolute magnitude. The key result is that $(-1)^n \\cdot (D(n)/n! - 1/e)$ is always a positive multiple of $1/(n+1)!$, revealing the precise arithmetic structure of the approximation error.",

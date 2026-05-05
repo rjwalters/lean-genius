@@ -67,7 +67,8 @@
     "axiomCount": 0,
     "lineCount": 157,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed Problem #478 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 96), asking about the distribution of factorial residues $\\{k! \\bmod p\\}$ modulo primes. The conjecture $|A_p| \\sim (1-1/e)p$ is motivated by modeling factorials as a multiplicative random walk on $(\\mathbb{Z}/p\\mathbb{Z})^*$, where the birthday-problem heuristic predicts coverage fraction $1 - 1/e \\approx 0.6321$. Hardy and Subbarao (2002) studied the structure of $A_p$. Klurman and Munsch (2017) confirmed the conjecture holds on average over primes. Grebennikov, Sagdeev, Semchankau, and Vasilevskii (GSSV, 2024) established the current best unconditional lower bound $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$ using product-set estimates. The enormous gap between $\\sqrt{p}$ and the conjectured $0.63p$ makes this one of the most tantalizing open problems in combinatorial number theory. The problem also connects to Wilson's theorem ($(p-1)! \\equiv -1$), the sum-product phenomenon, and random matrix theory.",

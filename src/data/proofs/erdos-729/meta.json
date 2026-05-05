@@ -48,7 +48,8 @@
     "lineCount": 217,
     "assumptions": "4 axioms: erdos_1968_classical, barreto_leeham_theorem, barreto_leeham_bound, legendre_identity. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős proved in 1968 that if $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$, using an elegant argument based on Legendre's formula for $v_2(n!) = n - s_2(n)$, where $s_2(n)$ is the binary digit sum. Problem 729, posed later, asks whether this logarithmic bound can be defeated by \"ignoring\" small primes: specifically, whether there are infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ such that $n!/(a!b!)$ has denominator divisible only by primes $\\leq C$. Barreto and Leeham resolved the problem negatively, showing that large primes alone carry sufficient information to enforce the bound. Their proof adapts the technique from Problem #728, extending it to show that for any prime $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ already implies $a + b \\leq n + O(\\log n)$. This reveals a fundamental rigidity in factorial arithmetic: the divisibility structure is controlled by all primes collectively, and no finite set of exceptions can weaken it.",

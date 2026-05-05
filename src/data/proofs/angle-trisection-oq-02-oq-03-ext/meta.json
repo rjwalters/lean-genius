@@ -35,7 +35,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Gauss announced in 1796 (at age 18) that the regular 17-gon is constructible with compass and straightedge, proving it in his 1801 Disquisitiones Arithmeticae. He identified the criterion: the n-gon is constructible iff n = 2^a × (distinct Fermat primes), where Fermat primes are primes of the form 2^{2^j}+1. Pierre Wantzel (1837) proved the converse (necessity), completing the characterization now called the Gauss-Wantzel theorem. The algebraic proof proceeds through three equivalences: (1) n-gon constructible iff [ℚ(cos 2π/n):ℚ] is a power of 2 (constructibility criterion); (2) [ℚ(cos 2π/n):ℚ] = φ(n)/2 (real subfield degree); (3) φ(n)/2 = 2^k iff φ(n) = 2^{k+1} (arithmetic step — proved here using Nat.totient_even). The arithmetic bridge in step (3) requires that φ(n) is always even for n ≥ 3, since -1 ∈ (ℤ/nℤ)* has order 2. Only 5 Fermat primes are known (3, 5, 17, 257, 65537); whether infinitely many exist remains open.",

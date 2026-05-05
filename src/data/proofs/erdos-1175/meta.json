@@ -24,7 +24,8 @@
     "lineCount": 186,
     "assumptions": "2 axioms: cardinalChromaticNumber (axiomatized cardinal chromatic number to avoid universe/decidability issues), shelah_consistency (Shelah's ZFC-consistency result: ∃ G with χ(G) = ℵ₁ whose triangle-free subgraphs all have countable chromatic number). See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #1175 as part of his broader program on chromatic number and graph structure, asking whether large chromatic number forces the existence of triangle-free subgraphs with large chromatic number. The question sits at the intersection of infinite combinatorics and set theory. Mycielski (1955) showed that for every finite $k$, triangle-free graphs with $\\chi = k$ exist, via an iterative construction producing graphs $M_k$ on $3 \\cdot 2^{k-2} - 1$ vertices. Erdős (1959) proved the stronger result that for every $k \\geq 1$ and $g \\geq 3$, there exist finite graphs with girth $\\geq g$ and $\\chi \\geq k$, using the probabilistic method — one of its earliest applications. These results show the finite case of the conjecture holds (via Ramsey-type arguments), but the uncountable case is fundamentally different. Shelah proved that a negative answer is consistent with ZFC for $\\kappa = \\lambda = \\aleph_1$: there consistently exists a graph $G$ with $\\chi(G) = \\aleph_1$ whose every triangle-free induced subgraph has countable chromatic number. This uses sophisticated forcing techniques and demonstrates that the problem is genuinely set-theoretic — its answer may depend on which axioms of set theory one adopts beyond ZFC.",

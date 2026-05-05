@@ -62,7 +62,8 @@
     "axiomCount": 12,
     "lineCount": 192,
     "assumptions": "12 axiom(s) and 0 sorries. See the Lean source for details.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #392 asks about the most efficient way to express n! as a product of bounded factors. Given the constraint that each factor aᵢ ≤ n², what is the minimum number of factors needed?\n\nThe answer involves a beautiful interplay between Stirling's approximation and factor pairing. Stirling tells us log(n!) ≈ n log n, so if each factor is at most n², contributing at most 2 log n to the logarithm, we need roughly (n log n)/(2 log n) = n/2 factors.\n\nCambie observed that the problem with bound n² can be reduced to the variant with bound n via factor pairing. If a₁...aₜ = n! with each aᵢ ≤ n, define a'ᵢ = a₂ᵢ₋₁ · a₂ᵢ. Then each a'ᵢ ≤ n² and we have roughly t/2 factors. The variant with bound n is solved by a greedy algorithm: use n as often as possible, then n-1, and so on.",

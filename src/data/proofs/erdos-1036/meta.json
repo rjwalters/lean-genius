@@ -28,7 +28,8 @@
     "lineCount": 243,
     "assumptions": "2 axioms: shelah_1998 (Shelah 1998, main exponential bound) and nonRamseyExists (Erdős 1947, probabilistic method). All theorems fully proved from these axioms.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem originates from a question of Erdős and Rényi about the structural complexity of graphs that avoid large homogeneous (trivial) subgraphs. By Ramsey's theorem (1930), every n-vertex graph contains a clique or independent set of size at least (1/2) log₂ n. Erdős (1947) showed via the probabilistic method that random graphs G(n,1/2) achieve the opposite extreme: their largest clique and independent set are both O(log n). Such 'non-Ramsey' graphs exist in abundance but must be structurally complex. Erdős and Hajnal (1989) proved the first result in this direction: graphs avoiding K_{k,k} in both G and its complement have 2^{Ω(n)} distinct induced subgraphs. Alon and Hajnal (1991) extended this to all non-Ramsey graphs, proving a sub-exponential bound of exp(n·(log n)^{-O(log log n)}) using Szemerédi's regularity lemma. The full exponential bound 2^{Ω(n)} remained open until Shelah (1998) proved it using a deep partition argument connected to the Hales-Jewett theorem. Independently, Prömel and Rödl (1999) proved the related result that non-Ramsey graphs are c·log(n)-universal (Problem 1031), which gives a weaker but conceptually elegant approach to induced subgraph diversity.",

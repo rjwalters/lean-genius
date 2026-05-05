@@ -66,7 +66,8 @@
     "axiomCount": 4,
     "lineCount": 234,
     "assumptions": "4 axioms: konieczny_disproof, konieczny_generalized, sqrt2_not_basis, and 1 more. See Lean source for complete statements.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #1147 comes from the intersection of Diophantine approximation and additive combinatorics. The problem asks whether the set of integers where αn² is 'close' to an integer (within 1/log(n)) has enough additive structure to form a basis of order 2.\n\nThe distance to nearest integer ‖x‖ = min(fract(x), 1 - fract(x)) measures how close x is to an integer. By Dirichlet's approximation theorem, for any irrational α, there are infinitely many n with ‖αn²‖ small, so the set A is always infinite.\n\nKonieczny [Ko16b] disproved the conjecture by showing that despite being infinite, the set A is too sparse and irregularly distributed to form a basis for almost every α.",

@@ -33,7 +33,8 @@
     "lineCount": 418,
     "assumptions": "2 axioms: erdos_218a (gap increasing density 1/2), erdos_218b (gap decreasing density 1/2). 0 sorries. Previously had 5+ axioms; erdos_218c, green_tao, average_gap_growth removed; infinite_of_hasDensity_pos now fully proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25
+    "theoremCount": 25,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vallée-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior — whether consecutive gaps tend to increase, decrease, or stay equal — is far subtler. Cramér's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",

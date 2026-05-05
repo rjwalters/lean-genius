@@ -52,7 +52,8 @@
     "lineCount": 469,
     "assumptions": "1 axiom: ffllw_classical (Fisher-Fraughnaugh-Langley-West classical lower bound for non-robust graphs). Previously axiomatized k3_egirth_eq_3 and k3_chromaticNumber_eq_3 are now proved from Mathlib. 0 sorries remain.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #1006 concerns robustly acyclic orientations — acyclic orientations of an undirected graph that remain acyclic after any single edge reversal. Nešetřil and Rödl (1978) disproved the conjecture that all high-girth graphs admit such orientations, showing counterexamples exist for all girths g ≥ 3.\n\nThe natural follow-up asks: for graphs of girth g that do fail robust orientability, how large must the chromatic number be? Fisher, Fraughnaugh, Langley, and West (1997) proved the key sufficient condition: if χ(G) < girth(G), then G admits a robustly acyclic orientation. This establishes a lower bound: any girth-g graph without robust orientation must satisfy χ(G) ≥ g.\n\nThe bound is tight: the Grötzsch graph (11 vertices, girth 4, χ = 4) admits no robustly acyclic orientation, matching χ = girth = 4. More generally, for each g ≥ 3, constructions combining the Nešetřil-Rödl approach with chromatic minimization yield girth-g graphs with χ(G) = g failing robust orientability.",

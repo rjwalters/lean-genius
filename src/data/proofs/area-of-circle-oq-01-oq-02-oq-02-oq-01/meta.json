@@ -54,7 +54,8 @@
     "lineCount": 419,
     "assumptions": "Five axioms: (1) fourier_decomp_exists (Fourier decomposition for periodic C¹ functions), (2) exists_nice_reparam (arc-length reparametrization with zero mean), (3) wirtinger_sum_bound (Wirtinger applied to coordinate functions), (4) area_cauchy_schwarz_bound (Green’s theorem + Cauchy–Schwarz), (5) integral_cauchy_schwarz_sq (L² Cauchy–Schwarz). Of these, #1 and #3 are proved in AreaOfCircleOQ01OQ03.lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The isoperimetric inequality C² ≥ 4πA states that among all simple closed curves of given circumference, the circle encloses the maximum area. Known since antiquity (Zenodorus, ~200 BC), the first rigorous proof was given by Weierstrass (1870s) using the calculus of variations. Hurwitz (1901) gave a substantially simpler proof using Fourier analysis: the key insight is that Wirtinger’s inequality (itself a consequence of Parseval’s identity + integration by parts) provides the analytical bound that, combined with Cauchy-Schwarz, yields the geometric inequality. Wirtinger’s inequality — $\\int f^2 \\leq \\int (f’)^2$ for mean-zero periodic functions — was first proved in this context, though Wilhelm Wirtinger published it independently in 1904. The isoperimetric inequality has deep connections to Sobolev inequalities in PDE theory and to the Cheeger constant in Riemannian geometry.",

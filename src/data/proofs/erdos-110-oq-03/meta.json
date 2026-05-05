@@ -53,7 +53,8 @@
     "axiomCount": 1,
     "lineCount": 261,
     "assumptions": "1 axiom: successor_cardinal_counterexample (generalization via Todorcevic walks). The ℵ₁ case (Lambie-Hanson 2020) is proved as a special case at α=0. All 8 theorems derive from this single axiom.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "**Higher Cardinals and the EHS Conjecture**\n\nThe Erdős-Hajnal-Szemerédi conjecture (1982) asked about ℵ₁-chromatic graphs specifically. After Lambie-Hanson's 2020 disproof, the natural follow-up is: what happens at ℵ₂, ℵ₃, and beyond?\n\nThe key technique — Todorcevic's walks on ordinals — uses the combinatorial structure of ordinal sequences (C-sequences) to construct incompatible colorings. On successor ordinals ω_{α+1}, C-sequences have the right properties for the construction. On limit ordinals, the situation is fundamentally different.",

@@ -59,7 +59,8 @@
     "lineCount": 271,
     "assumptions": "2 axioms: k2_bounded_gaps, k_ge_3_unbounded_gaps. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem was posed by Burr and Erdős and addresses a fundamental question in additive combinatorics: how does the restriction to distinct summands affect the gap structure of additive bases? An additive basis $A$ of order $k$ satisfies $kA \\supseteq [N_0, \\infty)$ — every large integer is a sum of at most $k$ elements of $A$ (with repetition). The restricted sumset $k \\times A$ allows only sums of distinct elements. Burr and Erdős asked: if $kA \\sim \\mathbb{N}$, must $\\Delta(k \\times A) < \\infty$? Hegyvári, Hennecart, and Plagne completely resolved this in their 2007 paper, discovering a surprising dichotomy. For $k = 2$, the answer is YES with the tight bound $\\Delta(2 \\times A) \\leq 2$, proved by an elegant parity argument: sums $a + a$ are always even, so every odd number in $2A$ must be $a + b$ with $a \\neq b$, hence in $2 \\times A$. Since $2A$ contains all large integers of both parities, odd numbers appear densely in $2 \\times A$, bounding gaps to $2$. For $k \\geq 3$, the answer is NO: there exist bases $A$ with $kA \\sim \\mathbb{N}$ but $\\Delta(k \\times A) = \\infty$. The parity trick fails because sums of $3$ or more distinct elements have no forced parity structure, allowing carefully constructed counterexamples. This result beautifully illustrates how the 'distinct elements' constraint can fundamentally alter combinatorial behavior.",

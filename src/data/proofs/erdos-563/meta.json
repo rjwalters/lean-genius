@@ -24,7 +24,8 @@
     "lineCount": 65,
     "theoremCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er90b, p. 21], asking for the precise asymptotic constant in $F(n, \\alpha) \\sim c_\\alpha \\log n$. Given a 2-coloring of $K_n$ (edges colored red or blue), define $F(n, \\alpha)$ as the smallest $m$ such that some coloring ensures every subset of $\\geq m$ vertices has $> \\alpha$ fraction of its edges in each color. The probabilistic method shows $F(n, \\alpha) = \\Theta(\\log n)$ for $0 < \\alpha < 1/2$: a random coloring concentrates the edge proportions near $1/2$ in large subsets, and Chernoff bounds give the $O(\\log n)$ upper bound. The lower bound follows from the impossibility of balancing all subsets below logarithmic size. The boundary cases are illuminating: $\\alpha = 0$ reduces to the diagonal Ramsey number problem (avoid monochromatic cliques), connecting $F(n, 0) \\sim (1/2) \\log_2 n$ to Erdős's 1947 probabilistic bound on $R(m, m)$. At $\\alpha = 1/2$, balance is impossible — by pigeonhole, one color has $\\leq$ half the edges. The problem generalizes to hypergraphs (Problem #161). The precise constant $c_\\alpha$ as a function of $\\alpha \\in [0, 1/2)$ remains undetermined for any $\\alpha > 0$, making this a problem about refining the probabilistic method from order-of-magnitude bounds to exact asymptotics.",

@@ -60,7 +60,8 @@
     "axiomCount": 3,
     "lineCount": 155,
     "assumptions": "3 axioms: f, adenwalla_lower_bound, bss_bound. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #788 asks about sum-free subsets in specific intervals. Given a 'forbidden' set B in the interval (2n, 4n), we seek a large set C in (n, 2n) whose pairwise sums avoid B. The function f(n) measures the maximum guaranteed combined size |C| + |B|. The natural interval pairing arises because elements c₁, c₂ ∈ (n, 2n) with c₁ ≠ c₂ always sum to values in (2n, 4n).\n\nChoi (1971) initiated the study, proving f(n) ≪ n^{3/4} and conjecturing f(n) ≤ n^{1/2+o(1)}. Adenwalla proved the lower bound f(n) ≫ n^{1/2} using Sidon sets — sets where all pairwise sums are distinct, existing with size ~√n in intervals of length n. Hunter improved the upper bound to n^{2/3+o(1)} via counting arguments.\n\nThe current best bound is due to Baltz, Schoen, and Srivastav (2000), who proved f(n) ≪ (n log n)^{2/3} using probabilistic construction of large Sidon sets. The gap between n^{1/2} and (n log n)^{2/3} has remained open for over 50 years, and Choi's conjecture f(n) ≤ n^{1/2+o(1)} is still unresolved.",

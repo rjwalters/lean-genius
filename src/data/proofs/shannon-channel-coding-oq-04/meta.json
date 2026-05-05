@@ -58,7 +58,8 @@
       "Basic real analysis inequalities"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The binary entropy function h(p) = -p log p - (1-p) log(1-p) is arguably the single most important function in information theory. It measures the uncertainty (entropy) of a binary random variable with probability p of being 1. Shannon introduced it in 1948 as a special case of his general entropy formula, and it appears throughout coding theory: in the channel capacity of the binary symmetric channel (C = 1 - h(p)), in Fano's inequality, and in the sphere-packing bound.\n\nDespite its simplicity, the binary entropy function encodes deep mathematical content: its concavity reflects the fundamental principle that mixing distributions increases uncertainty, while its maximum at p = 1/2 captures the intuition that a fair coin is maximally unpredictable. The upper bound h(p) ≤ log 2 (= 1 bit) is a special case of the maximum entropy principle.",

@@ -56,7 +56,8 @@
     "axiomCount": 1,
     "lineCount": 387,
     "assumptions": "1 axiom (bloom_theorem: Bloom's 2021 result on positive density sets). 0 sorries.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #299 asks whether there exists an infinite sequence a₁ < a₂ < ... with bounded gaps (a_{i+1} - a_i = O(1)) such that no finite subset has reciprocals summing to exactly 1.\n\nThis question connects to the ancient study of Egyptian fractions (representing 1 as sums of distinct unit fractions) and modern density arguments. The key insight is that sequences with bounded gaps have positive density.\n\nThe problem was resolved by Thomas Bloom in 2021, who proved the stronger result (Problem #298) that any set of positive upper density contains a finite subset whose reciprocals sum to 1. Since bounded-gap sequences necessarily have positive density, no such sequence can avoid containing a unit fraction sum.\n\nBloom's work built on deep techniques from additive combinatorics and resolved a long-standing conjecture of Erdős and Graham.",

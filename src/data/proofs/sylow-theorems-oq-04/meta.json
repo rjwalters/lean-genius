@@ -22,7 +22,8 @@
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All results fully verified. Exact Sylow numbers computed by native_decide. Simplicity uses Mathlib's alternatingGroup.isSimpleGroup_five.",
     "lineCount": 276,
-    "theoremCount": 21
+    "theoremCount": 21,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The simplicity of A₅ was first understood by Galois (1832), who recognized that A₅ is the smallest non-abelian simple group. The Sylow counting approach, using theorems from Sylow's 1872 paper, provides a concrete arithmetic proof: for |A₅| = 60 = 2²·3·5, the Sylow constraints force n₂ = 5, n₃ = 10, n₅ = 6, meaning no Sylow subgroup is normal. Combined with the conjugacy class sizes {1, 12, 12, 15, 20} (no subset sum divides 60), this proves A₅ has no proper nontrivial normal subgroups. This result is foundational for the Abel-Ruffini theorem (unsolvability of the quintic) and the classification of finite simple groups.",

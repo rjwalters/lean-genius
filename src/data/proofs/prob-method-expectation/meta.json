@@ -57,7 +57,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The probabilistic method is one of the most powerful techniques in combinatorics, pioneered by Paul Erdos beginning in 1947. The core idea is strikingly simple: to prove that an object with a desired property exists, show that a randomly chosen object has the property with positive probability. No explicit construction is needed.\n\nErdos's first major application was his 1947 proof that the Ramsey number R(k,k) grows at least exponentially: R(k,k) >= 2^(k/2). He colored the edges of the complete graph K_n randomly, showing that with positive probability no monochromatic K_k appears, thus proving the existence of such a coloring. This was revolutionary because it proved existence without construction.\n\nThe first moment method (or expectation argument) is the simplest incarnation of the probabilistic method. If a random variable X has E[X] > t, then X > t for at least one outcome in the sample space. Despite its simplicity, this principle yields deep results in graph theory, number theory, and combinatorial geometry.",

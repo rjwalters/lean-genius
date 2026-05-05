@@ -25,7 +25,8 @@
     "erdosUrl": "https://erdosproblems.com/1098",
     "erdosProblemStatus": "solved",
     "lineCount": 122,
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**Non-Commuting Graphs and Group Structure**\n\nThe non-commuting graph Γ(G) has all group elements as vertices, with edges between non-commuting pairs. Its complement — the **commuting graph** of G — first appeared in Brauer-Fowler (1955) in the context of classifying finite simple groups: they proved that the structure of the centralizer of an involution determines the group up to finitely many exceptions, a result that shaped the Classification of Finite Simple Groups.\n\nB.H. Neumann proved in 1976 the foundational theorem for Γ(G): the clique number ω(Γ(G)) is finite iff the center Z(G) has finite index in G, i.e., [G:Z(G)] < ∞. Moreover, the bound ω(Γ(G)) ≤ [G:Z(G)] gives a quantitative relationship.\n\nAbdollahi, Akbari, and Maimani (2006) further characterized groups by the isomorphism type of their non-commuting graph, asking when two groups with isomorphic Γ(G) must be isomorphic themselves — a non-commuting graph analogue of spectral graph theory.\n\n**Erdős Problem #1098** asks for a more refined structural understanding: given that ω = k for small k, what can be deduced about G? The known characterizations are: ω = 0 iff G is abelian; ω = 1 never occurs (any two non-commuting elements form a 2-clique); ω = 2 iff G/Z(G) ≅ ℤ/2×ℤ/2 (Klein four-group). This OQ formalizes the foundational results supporting these characterizations.",

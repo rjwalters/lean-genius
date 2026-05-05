@@ -26,7 +26,8 @@
     "lineCount": 337,
     "assumptions": "5 axioms: turanNumber, countFreeGraphs, turanNumber_pos, erdos_frankl_rodl_nonbipartite, morris_saxton_c6_counterexample. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős conjectured that the number of labeled H-free graphs on n vertices is at most 2^{(1+o(1))ex(n;H)}, where ex(n;H) is the Turán number. This connects extremal graph theory (how dense can an H-free graph be?) with graph enumeration (how many H-free graphs exist?). Erdős, Frankl, and Rödl proved in 1986 that the bound holds for all non-bipartite H, using the Szemerédi regularity lemma to show that most H-free graphs resemble the Turán graph. The bipartite case remained open until Morris and Saxton (2016) found a striking counterexample: the 6-cycle C_6. Using algebraic constructions related to projective planes, they showed there are superpolynomially more C_6-free graphs than the conjecture predicts. Specifically, for C_6 with ex(n;C_6) = Θ(n^{4/3}), the count exceeds 2^{(1+c)n^{4/3}}. This disproved the conjecture but left open the weaker question (Morris-Saxton conjecture): does 2^{O(ex(n;H))} hold for all H? The dichotomy between bipartite and non-bipartite forbidden subgraphs is fundamental and persists across extremal combinatorics.",

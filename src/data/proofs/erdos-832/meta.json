@@ -48,7 +48,8 @@
     "axiomCount": 3,
     "lineCount": 140,
     "assumptions": "3 axioms: alon_disproof, m, cherkashin_petrov_limit. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős conjectured that for r ≥ 3 and k sufficiently large, every r-uniform hypergraph with chromatic number k must have at least C((r-1)(k-1)+1, r) edges, with equality only for the complete hypergraph. For graphs (r = 2), this reduces to the classical result that chromatic number k implies at least C(k, 2) edges, achieved by the complete graph K_k.\n\nAlon disproved the conjecture for r ≥ 4 in 1985, using connections to Turán numbers to construct r-uniform hypergraphs with high chromatic number but only (7/8)^r times the conjectured number of edges. For r = 3, the Fano plane (a Steiner triple system on 7 vertices with 7 edges and chromatic number 3) provides a small counterexample, since the conjecture predicts C(5,3) = 10 edges. Whether the conjecture holds for r = 3 with large k remains open.\n\nSubsequent work established the asymptotic behavior of m(r, k), the minimum number of edges in an r-uniform hypergraph with chromatic number exceeding k. Akolzin and Shabanov (2016) proved (r/log r) · k^r ≪ m(r,k) ≪ (r³ log r) · k^r, and Cherkashin and Petrov (2020) showed that m(r,k)/k^r converges to a constant c_r for each fixed r.",

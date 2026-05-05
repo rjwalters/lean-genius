@@ -35,7 +35,8 @@
             "finite_rat_bounded: finiteness of rationals with bounded denominator in a bounded interval",
             "pos_min_dist: positive minimum distance from an irrational to any finite set of rationals"
         ],
-        "historicalContext": "Thomae's function (also called the popcorn function or ruler function) was introduced by Carl Johannes Thomae in 1875. It is defined as f(p/q) = 1/q for rationals in reduced form, and f(x) = 0 for irrationals. It became a landmark example in real analysis, being the first known function that is Riemann integrable yet discontinuous on a dense set — namely all rationals. The continuity characterization (continuous at irrationals, discontinuous at rationals) was a key historical insight. It showed that the set of discontinuities can be dense yet have measure zero, which is exactly the Lebesgue criterion for Riemann integrability. The parent proof (lebesgue-measure-oq-01-oq-01) showed the Lebesgue integral is 0; this proof characterizes the exact set of continuity points."
+        "historicalContext": "Thomae's function (also called the popcorn function or ruler function) was introduced by Carl Johannes Thomae in 1875. It is defined as f(p/q) = 1/q for rationals in reduced form, and f(x) = 0 for irrationals. It became a landmark example in real analysis, being the first known function that is Riemann integrable yet discontinuous on a dense set — namely all rationals. The continuity characterization (continuous at irrationals, discontinuous at rationals) was a key historical insight. It showed that the set of discontinuities can be dense yet have measure zero, which is exactly the Lebesgue criterion for Riemann integrability. The parent proof (lebesgue-measure-oq-01-oq-01) showed the Lebesgue integral is 0; this proof characterizes the exact set of continuity points.",
+        "definitionCount": 1
     },
     "leanFile": {
         "imports": [

@@ -71,7 +71,8 @@
     "axiomCount": 3,
     "lineCount": 298,
     "assumptions": "3 axioms: turjanyi_counterexample (Turjányi counterexample), ruzsa_turjanyi_generalization (Ruzsa-Turjányi generalization for h ≥ 2), scaled_conjecture_open (scaled version remains open). 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Additive bases are sets $A \\subseteq \\mathbb{N}$ such that every sufficiently large integer is a sum of $h$ elements from $A$ (for some fixed $h$). Classical examples include the squares (Lagrange's four-square theorem, $h=4$) and the primes (Goldbach-type results). The study of sumsets $A+A = \\{a+b : a,b \\in A\\}$ is central to additive combinatorics, with Freiman's theorem (1966) and the Plünnecke-Ruzsa inequality providing structural control when $|A+A|$ is small relative to $|A|$.\n\nErdős and Graham [ErGr80, ErGr80b] posed Problem #337: for a sparse additive basis $A$ (meaning $|A \\cap [1,N]| = o(N)$), must the sumset grow faster than $A$ itself? Specifically, is $|A+A \\cap [1,N]|/|A \\cap [1,N]| \\to \\infty$? The natural intuition says yes—if $A$ is thin, the sumset should be much richer. But Turjányi (1984) [Tu84] constructed a stunning counterexample: a sparse additive basis where the ratio $|A+A \\cap [1,N]|/|A \\cap [1,N]|$ stays bounded. Imre Z. Ruzsa and Turjányi (1985) [RT85] generalized this to all $h$-fold sumsets $hA$, while proving the positive result that $|3A \\cap [1,3N]|/|A \\cap [1,N]| \\to \\infty$. The scaled conjecture for $|2A \\cap [1,2N]|/|A \\cap [1,N]|$ remains open.",

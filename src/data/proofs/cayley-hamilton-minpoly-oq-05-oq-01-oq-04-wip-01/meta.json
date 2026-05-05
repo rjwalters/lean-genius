@@ -60,7 +60,8 @@
         "module": "Mathlib.Algebra.Polynomial.Module.AEval"
       }
     ],
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Companion matrices have been a cornerstone of linear algebra since the 19th century, appearing naturally in the theory of eigenvalues (Cayley, Weierstrass) and the rational canonical form (Frobenius, 1879). The nonderogatory property — that the minimal polynomial equals the characteristic polynomial — was identified as the condition for a matrix to have a single invariant factor, making K^n a cyclic module over K[X]. The equivalence 'nonderogatory ↔ similar to companion matrix' is the central theorem of rational canonical form theory, but its proof requires the structure theorem for finitely generated modules over K[X], a principal ideal domain. Unlike the Jordan canonical form (valid only over algebraically closed fields), the rational canonical form works over any field. Despite its classical status, the PID structure theorem for K[X]-modules had not been formalized in Mathlib as of version 4.26. The parent file CayleyHamiltonMinpolyOQ05OQ01OQ04.lean attempts the general theorem via the module-theoretic route but carries a sorry at the key step. This WIP file pursues a companion-matrix-first strategy: the Krylov orbit C^k e0 = e_k is a concrete, purely computational fact about matrix powers that can be verified without any abstract module theory, providing an unconditional proof of the companion matrix half.",

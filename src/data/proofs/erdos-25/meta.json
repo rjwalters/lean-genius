@@ -24,7 +24,8 @@
     "lineCount": 166,
     "assumptions": "3 axioms inherited from Erdos25LogDensity.lean: naturalDensity_implies_logDensity (natural density implies logarithmic density), exists_logDensity_no_naturalDensity (existence of sets with log density but no natural density), davenport_erdos (Davenport-Erdős theorem on log density). 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1995 (reference [Er95]), asking about a fundamental property of sets defined by congruence exclusions. The question connects to a rich tradition in analytic number theory: the study of how sieve-theoretic constructions interact with different notions of density. Logarithmic density, which weights each integer $m$ by $1/m$, is a weaker notion than natural density—it exists more often. For example, the set of integers whose prime factorization has an odd number of factors (related to the Liouville function) has logarithmic density $1/2$ even though its natural density oscillates. The classical sieve of Eratosthenes produces congruence-sieved sets (with prime moduli and residue 0), and the density of primes can be understood through this lens. Erdős's question generalizes this to arbitrary moduli and residues, asking whether the logarithmic density is always well-defined. The problem is a special case of the broader Problem 486, which asks the same question for more general sieve constructions. The key difficulty is that while finite sieves yield periodic sets (whose density trivially exists), infinite sieves can produce sets with complex, non-periodic structure where the limit defining the density may oscillate.",

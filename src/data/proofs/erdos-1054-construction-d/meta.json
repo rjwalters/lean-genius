@@ -28,7 +28,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #1054 asks: define $f(n)$ as the smallest $m \\geq 1$ such that $n$ is a partial sum of the sorted divisors of $m$. Which $n$ are representable (f(n) exists), and does $f(n)/n \\to 0$? This sub-entry develops **Construction D**, the prime-square family: for any prime $p$, the number $p^2$ has exactly 3 divisors $\\{1, p, p^2\\}$ with sorted order $1 < p < p^2$, giving partial sums $[1, p+1, 1+p+p^2]$. Thus $1+p+p^2$ is representable for every prime $p$, providing an infinite explicit family.\n\nThe values $1+p+p^2 = (p^3-1)/(p-1)$ are partial sums of the geometric series with ratio $p$. More generally, $m = p^k$ contributes the representable number $1+p+\\cdots+p^k = (p^{k+1}-1)/(p-1)$. For $p=2$, these are the **Mersenne numbers** $M_{k+1} = 2^{k+1}-1$; the file verifies all Mersenne numbers up to $M_9 = 511$ and establishes $f(M_{k+1}) \\leq 2^k$, giving ratio $f(n)/n \\to 1/2$.\n\nConstruction D complements OQ-02 (prime-product witnesses, covering $1+q+p$ for distinct primes $q < p$) and together they provide conditional near-complete coverage of all integers via Goldbach's conjecture.",

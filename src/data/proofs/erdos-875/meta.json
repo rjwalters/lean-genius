@@ -26,7 +26,8 @@
     "lineCount": 212,
     "assumptions": "No axioms, no sorries. All theorems fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, pow2_small_example (native_decide), finite_version_connection. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**Deshouillers and Erdős** posed this as an infinite variant of Problem #874. An **admissible sequence** $a_1 < a_2 < \\cdots$ has the property that the $r$-fold sumsets $S_r = \\{a_{i_1} + \\cdots + a_{i_r} : i_1 < \\cdots < i_r\\}$ are pairwise disjoint for distinct $r \\geq 1$. The simplest example is powers of 2 ($a_n = 2^n$), where binary representation ensures disjointness via popcount. The central question is **how slowly** an admissible sequence can grow. Erdős noted that the ratio-one property $a_{n+1}/a_n \\to 1$ (subexponential growth) is achievable but 'not completely trivial.' The problem connects to **Sidon sets** (where sumsets of different sizes are automatically separated by parity of the number of terms) and to the **subset sum problem** in computational complexity.",

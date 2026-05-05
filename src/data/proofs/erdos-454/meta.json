@@ -105,7 +105,8 @@
     "axiomCount": 3,
     "lineCount": 335,
     "assumptions": "3 axiom(s) and 3 sorry(s). See the Lean source for details.",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "Erd\u0151s Problem #454 concerns the behavior of symmetric prime sums, arising from Erd\u0151s and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The function f(n) computes the minimum of p_{n+i} + p_{n-i} over all i < n. If primes were perfectly evenly spaced (like an arithmetic progression), this minimum would equal exactly 2p_n for all n.\n\nCarl Pomerance (born 1947), a distinguished American number theorist known for his work on computational number theory and the AKS primality test, studied this problem in his 1979 paper 'The Prime Number Graph' in Mathematics of Computation. He introduced a graph structure on natural numbers where vertices n and m are connected if p_n + p_m is itself prime. Using properties of this graph \u2014 specifically, bounding its chromatic number \u2014 Pomerance proved that the limsup of f(n) - 2p_n is at least 2. This means infinitely many n have the property that ALL symmetric prime sums p_{n+i} + p_{n-i} exceed 2p_n + 2.\n\nThe open question is whether these deviations can be arbitrarily large \u2014 that is, whether the limsup is infinite. This connects to deep questions about prime gap irregularity. By the Prime Number Theorem (Hadamard and de la Vall\u00e9e-Poussin, 1896), p_n ~ n log n, so consecutive prime gaps average about log(p_n). But gaps fluctuate wildly: Maier's theorem (1985) shows that short-interval prime counts deviate from their expected values, suggesting the kind of irregularity that could produce large deviations. The Cram\u00e9r conjecture (1936) predicts gaps as large as (log p_n)^2, which would give deviations of order (log p_n)^2 \u2014 far from bounded.",

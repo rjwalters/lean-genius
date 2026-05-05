@@ -24,7 +24,8 @@
     "theoremCount": 8,
     "defCount": 0,
     "assumptions": "None. Previous axiom gauss_sum_sq removed: it incorrectly stated the Gauss sum squared identity over ℤ instead of ℤ[ζ_p] (no integer τ has τ²=±p for prime p). All QR pathways proved using legendreSym.quadratic_reciprocity from Mathlib.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Gauss's fourth proof of quadratic reciprocity (1801, published 1818) used the Gauss sum τ_p = Σ_{a=0}^{p-1} (a/p)·e^{2πia/p}. The key evaluation τ_p² = (-1)^{(p-1)/2}·p was proved by Gauss via a double-sum argument using character orthogonality. Combined with the Frobenius action τ_p^q ≡ (p/q)·τ_p (mod q), this yields quadratic reciprocity. Eisenstein gave a cleaner version in 1844 using the Gaussian integers. The supplementary laws — (-1/p) and (2/p) — also follow elegantly from Gauss sums. This approach is deeper than Eisenstein's lattice argument and Zolotarev's permutation approach, connecting QR to algebraic number theory and the theory of L-functions.",

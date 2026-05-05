@@ -34,7 +34,8 @@
         "module": "Mathlib.Data.Nat.Digits"
       }
     ],
-    "theoremCount": 21
+    "theoremCount": 21,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The technique of 'casting out nines' — replacing a number with its digit sum repeatedly until reaching a single digit — was known to Indian mathematicians by the 6th century CE and appeared in Arabic arithmetic texts by the 9th century. It was widely used in medieval Europe for checking multiplication: since $n \\equiv \\text{digitSum}(n) \\pmod{9}$ (because $10 \\equiv 1 \\pmod{9}$), errors in multiplication can be detected by checking $dr(a \\times b) = dr(dr(a) \\times dr(b))$. The closed-form formula $dr(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$ was known implicitly through the $\\bmod 9$ characterization but became explicit when algorithmic efficiency was considered. The formula works because the digital root is exactly $n \\bmod 9$, adjusted for the ambiguity between 0 and 9: when $9 \\mid n$ (and $n > 0$), the digital root is 9, not 0. The Lean formalization uses `Nat.modEq_nine_digits_sum` (from Mathlib's `Data.Nat.Digits` module) as the key congruence, and proves the multiplicative and additive homomorphism properties that make the digital root a ring homomorphism $\\mathbb{Z}/9\\mathbb{Z} \\to \\{1,\\ldots,9\\}$.",

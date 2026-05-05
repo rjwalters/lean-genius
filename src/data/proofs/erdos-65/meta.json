@@ -24,7 +24,8 @@
     "lineCount": 217,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Posed by Erdős and Hajnal, this problem connects edge density to cycle structure in extremal graph theory. The first part was proved by Gyárfás, Komlós, and Szemerédi in their 1984 paper 'On a problem of K. Zarankiewicz,' establishing that Σ 1/aᵢ grows at least logarithmically with edge density. Liu and Montgomery (2020) proved the sharp constant is (1/2 - o(1)), resolving the quantitative question completely. The second part — whether complete bipartite graphs minimize the cycle variety — remains open and connects to deep questions about the interaction between graph symmetry and cycle structure.",

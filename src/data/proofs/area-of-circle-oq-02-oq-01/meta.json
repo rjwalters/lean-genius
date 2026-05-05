@@ -34,7 +34,8 @@
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"
       }
     ],
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The n-ball scaling law Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) is a classical consequence of the homogeneity of Lebesgue measure: under the dilation x ↦ rx, the n-dimensional Lebesgue measure scales as rⁿ (a change-of-variables formula). The general formula Vol(Bⁿ(1)) = π^(n/2)/Γ(n/2+1) was computed by Liouville in the 19th century via Gaussian integral techniques and the reflection formula for the Gamma function.\n\nIn Lean's Mathlib library, the result `EuclideanSpace.volume_ball` formalizes the n-ball volume using the form `√π^n/Γ(n/2+1)` rather than `π^(n/2)/Γ(n/2+1)`. These are mathematically equal (since √π = π^(1/2)), but their formal representations differ: `√π^n` is a natural power of a square root, while `π^(n/2)` is a real power of π. The bridge lemma (√π)^n = π^(n/2) — a simple 4-line proof using Lean's `rpow` laws — is the only technical content of this file.\n\nThe parent entry (area-of-circle-oq-02) had axiomatized the scaling law rather than proved it, because the Mathlib API for n-ball volumes was not yet surfaced in the gallery's proof infrastructure. This entry closes that gap, reducing the parent's axiom count from 1 to 0 for all practical applications (n ≥ 1).",

@@ -66,7 +66,8 @@
     ],
     "lineCount": 188,
     "assumptions": "2 axioms: lower_bound_6, upper_bound_exists. 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "This problem belongs to the field of Euclidean Ramsey theory, initiated by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The six authors systematically studied which geometric configurations are unavoidable under finite colorings of $\\mathbb{R}^d$, extending classical Ramsey theory from graphs and integers to continuous geometric settings.\n\nThe original formulation of Problem #188 asked whether there exists a 2-coloring of $\\mathbb{R}^2$ with no red unit distance and no blue arithmetic progression of any length. Noga Alon observed that this version has no solution: van der Waerden's theorem forces arbitrarily long monochromatic APs in any finite coloring of $\\mathbb{Z}$, and one can embed $\\mathbb{Z}$ into any blue set via unit-step translations.\n\nThe corrected formulation restricts to APs with consecutive terms at unit distance. The lower bound $k \\geq 5$ was established in the original EGMRSS paper using explicit small configurations that force 5-term blue APs. Tsaturian (2017) improved this to $k \\geq 6$ by constructing a more intricate unit-distance configuration that forces 6-term blue APs regardless of the coloring. Erdős and Graham (1980) claimed $k \\leq 10{,}000{,}000$ via a stripe-based construction, though the full details were never published. The enormous gap between 6 and $10^7$ remains one of the most striking open problems in Euclidean Ramsey theory.",

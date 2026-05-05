@@ -25,7 +25,8 @@
     "lineCount": 318,
     "assumptions": "3 axiom(s): powers23_repr, erdos_123_conjecture, erdos_lewin_357. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22
+    "theoremCount": 22,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #123 concerns d-complete sequences — sets where every sufficiently large integer is the sum of distinct elements forming a divisibility antichain (no element divides another). Erdős introduced this concept in 1992, calling it a 'nice and difficult' problem.\n\nThe simplest case {2^k · 3^l} (3-smooth numbers) was quickly proved by Jansen using an elegant even/odd induction: for even n, halve and double all summands; for odd n, subtract the largest power of 3 and recurse on the even remainder. The parity separation — 3 provides odd elements while 2 provides the doubling — is the key insight.\n\nErdős and Lewin (1996) extended this to {3^i · 5^j · 7^k} using more complex residue analysis, since all three generators are odd (no parity trick available). The general conjecture for arbitrary pairwise coprime triples remains OPEN.\n\nThe formalization was processed by Aristotle, which verified the structural lemmas (divisibility characterization, antichain preservation, parity arguments) but flagged the main representation lemma powers23_repr as an unexpected axiom — the full Finset bookkeeping was not completed.",

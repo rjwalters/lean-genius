@@ -58,7 +58,8 @@
     "axiomCount": 4,
     "lineCount": 234,
     "assumptions": "4 axioms: h_1_exact, cgtt_1990, h_3_3, improved_upper_bound. 8 sorries.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erd\u0151s Problem #934** was posed by Erd\u0151s and Ne\u0161et\u0159il, studying edge separation in bounded-degree graphs.\n\n**Historical Development:**\n- **1983 (Bermond-Bond-Paoli-Peyrat):** Conjectured h_2(d) \u2264 5d\u00b2/4 + 1, with equality for even d.\n- **1988 (Erd\u0151s):** Wrote 'This problem seems interesting only if there is a nice expression for h_t(d).'\n- **1990 (Chung-Gy\u00e1rf\u00e1s-Tuza-Trotter):** Proved h_2(d) = \u230a5d\u00b2/4\u230b + 1 exactly.\n- **2022 (Cambie et al.):** Proved h_3(3) = 23, conjectured h_3(d) \u2264 d\u00b3-d\u00b2+d+2, and established general bounds.\n\nThe problem connects to 2K\u2082-free graphs and line graph diameter problems.",

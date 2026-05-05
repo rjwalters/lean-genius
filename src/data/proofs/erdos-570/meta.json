@@ -54,7 +54,8 @@
       "Extremal graph theory: Turán-type results",
       "Natural number arithmetic: ceiling function, divisibility"
     ],
-    "assumptions": "1 axiom: erdos_570_resolved. 0 sorries."
+    "assumptions": "1 axiom: erdos_570_resolved. 0 sorries.",
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #570** asks for an upper bound on the Ramsey number R(C_k, H), where C_k is a k-cycle and H is an arbitrary graph without isolated vertices. The conjectured bound R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉, where m = |E(H)|, was first proposed in the context of 'Ramsey size linear graphs' by Erdős, Faudree, Rousseau, and Schelp.\n\nThe resolution spanned over three decades. EFRS themselves proved the even k case in 1993. That same year, Sidorenko handled k = 3 (triangles). Jayawardene extended the result to k = 5 in 1999. The remaining cases - all odd k ≥ 7 - were finally resolved by Cambie, Freschi, Morawski, Petrova, and Pokrovskiy in 2024.\n\nThe problem is notable for requiring fundamentally different techniques for even and odd cycles, and for the 25-year gap between the k = 5 result and the final resolution.",

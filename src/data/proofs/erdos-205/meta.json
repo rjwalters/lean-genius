@@ -63,7 +63,8 @@
     "lineCount": 444,
     "assumptions": "6 axioms: barreto_leeham_counterexample, threshold_dominates_loglog, romanoff_positive_density, and 3 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 44
+    "theoremCount": 44,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "The question of representing integers as $2^k + m$ with arithmetic restrictions on $m$ has roots stretching to de Polignac (1849), who conjectured every odd number is $2^k + p$ for some prime $p$. Romanoff (1934) proved a positive proportion of integers have the form $2^k + p$, establishing the first density result. Erdős (1950) dramatically showed de Polignac's conjecture fails: using covering systems — finite collections of congruence classes covering all integers — he constructed a positive density of odd counterexamples. The primes $\\{3, 5, 7, 13, 17, 241\\}$ whose orders of $2$ form a covering of $\\mathbb{Z}/24\\mathbb{Z}$ yield modulus $5{,}592{,}405$ such that every $n$ in a suitable arithmetic progression has all remainders $n - 2^k$ divisible by one of these primes. Crocker (1971) extended this to show infinitely many odd numbers fail $n = 2^a + 2^b + p$. Problem 205 asked whether the vastly weaker condition $\\Omega(m) < \\log\\log m$ — allowing $m$ to have many prime factors, just fewer than 'typical' — suffices for all large $n$. The Hardy-Ramanujan theorem (1917) shows $\\Omega(n) \\approx \\log\\log n$ on average, making this threshold natural. The Erdős-Kac theorem (1940) refined this to Gaussian concentration. Nevertheless, the conjecture was disproved in 2026: counterexamples exist where ALL remainders $n - 2^k$ have $\\Omega$ far exceeding $\\log\\log n$.",

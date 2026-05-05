@@ -34,7 +34,8 @@
     "axiomCount": 0,
     "lineCount": 303,
     "assumptions": "0 axioms. 0 sorries.",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "F. William Lawvere's 1969 paper 'Diagonal Arguments and Cartesian Closed Categories' unified Cantor's theorem, Gödel's incompleteness theorem, and Turing's undecidability result as a single categorical fixed-point theorem. The key insight is that all diagonal arguments arise from the same categorical mechanism: a morphism e : A → B^A in a cartesian closed category (CCC) that is 'point-surjective' (every global element of B^A factors through e) forces every endomorphism f : B → B to have a fixed point. Cantor's theorem corresponds to B = Ω (the subobject classifier), f = ¬ (negation, which has no fixed points); Gödel's diagonal lemma corresponds to a provability predicate; Turing's halting problem corresponds to the characteristic function of a decision procedure. This formalization captures the three-level hierarchy: abstract (EvalStructure, no category theory), type-theoretic (Type, ×, →), and categorical (CCC global elements, CategoricalEval). The topos-level formalization awaits Mathlib's topos infrastructure.",

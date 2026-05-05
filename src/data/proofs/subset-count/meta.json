@@ -43,7 +43,8 @@
     "lineCount": 178,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The fact that a set with n elements has 2^n subsets is one of the most fundamental results in combinatorics. The power set P(S) has cardinality 2^|S|, with applications in set theory, probability, computer science (n bits represent 2^n states), and algebra (Boolean algebras). The bijection between subsets and binary strings of length n is used throughout discrete mathematics. Cantor's theorem (1891) generalizes this: |P(S)| > |S| for any set S, even infinite ones, establishing that 2^{aleph_0} > aleph_0 and launching modern set theory. The sum of binomial coefficients ∑_{k=0}^{n} C(n,k) = 2^n, which follows by setting x=1 in the binomial theorem, unifies the subset-count result with polynomial identities.",

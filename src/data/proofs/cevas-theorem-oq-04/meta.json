@@ -58,7 +58,8 @@
     ],
     "assumptions": "Fully verified. 0 axioms, 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22
+    "theoremCount": 22,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Mass point geometry traces its roots to Archimedes' lever principle (c. 250 BCE): a lever balances when $m_1 d_1 = m_2 d_2$. August Ferdinand Möbius formalized barycentric coordinates in 'Der barycentrische Calcul' (1827), giving the first rigorous algebraic framework for mass-weighted point combinations. Giovanni Ceva's original theorem (De lineis rectis, 1678) states that cevians $AD$, $BE$, $CF$ of triangle $ABC$ are concurrent if and only if $(BD/DC)(CE/EA)(AF/FB) = 1$.\n\nThe mass point technique assigns positive real masses $m_A, m_B, m_C$ to vertices and computes cevian foot positions as centers of mass. This approach is widely taught in mathematical olympiad preparation (AMC/AIME/Olympiad curricula) as an elementary method for solving concurrence and ratio problems without coordinates. The key insight is that mass assignments ARE barycentric coordinates, so mass points provide a constructive algebraic certificate for Ceva configurations.\n\nThis formalization proves the complete biconditional: the Ceva condition $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$ holds if and only if there exists a mass assignment realizing the ratios. Both directions are constructive, using only basic real arithmetic (field_simp, ring, nlinarith) — no affine geometry infrastructure needed.",

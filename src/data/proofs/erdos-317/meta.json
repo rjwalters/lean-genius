@@ -55,7 +55,8 @@
     "axiomCount": 0,
     "lineCount": 192,
     "assumptions": "None. All theorems fully machine-checked. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #317: Signed Unit Fraction Approximations**\n\nFrom Erdős-Graham (1980), p.42. This problem asks how small a nonzero signed combination of the first n unit fractions can be.\n\n**Two Questions:**\n1. Can we achieve exponentially small sums < c/2^n for some universal constant c?\n2. For large n, is 1/lcm(1,...,n) a strict lower bound for nonzero sums?\n\n**Known Results:** Kovac and van Doorn achieved 2^{-n·(log log log n)^{1+o(1)}/log n}, far from c/2^n. Van Doorn's heuristic suggests this may be optimal, which would make Question 1 false. Question 2 fails for small n: 1/2 - 1/3 - 1/4 = -1/12 achieves exactly 1/lcm(1,2,3,4).",

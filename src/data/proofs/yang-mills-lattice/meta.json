@@ -37,7 +37,8 @@
     ],
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1787
+    "theoremCount": 1787,
+    "definitionCount": 641
   },
   "overview": {
     "historicalContext": "Kenneth Wilson introduced lattice gauge theory in 1974, providing the first non-perturbative definition of Yang-Mills theory and earning the 1982 Nobel Prize in Physics. By discretizing spacetime into a hypercubic lattice and placing gauge group elements $U_\\ell \\in G$ on links (edges), Wilson showed that gauge invariance is exact on the lattice — not an approximate symmetry that must be recovered in a limit, but an exact property of the discretized theory. Wilson's key insight was that confinement (area law for Wilson loops) emerges naturally in the strong coupling regime: at large $g^2$, the lattice path integral is dominated by disordered configurations that produce area-law decay $\\langle W(C) \\rangle \\sim e^{-\\sigma A}$ with positive string tension $\\sigma$. This framework enabled Michael Creutz's pioneering Monte Carlo simulations (1980), which provided the first numerical evidence for confinement in SU(2) and SU(3) gauge theories. Today, lattice QCD is the standard tool for non-perturbative calculations in the Standard Model — hadronic spectra, decay constants, and form factors computed on the lattice agree with experiment to percent-level precision. The Clay Millennium Prize problem asks whether the continuum limit ($a \\to 0$) of lattice Yang-Mills exists rigorously and exhibits a mass gap, connecting Wilson's practical framework to fundamental questions in mathematical physics.",

@@ -74,7 +74,8 @@
     ],
     "lineCount": 289,
     "assumptions": "4 axioms: chromaticNumber (graph chromatic number function), subdivisionNumber (subdivision number function), catlin_counterexamples (existence of χ=k graphs without K_k subdivision for k≥7), fox_lee_sudakov_theorem (Fox-Lee-Sudakov theorem answering Problem 717 affirmatively). 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #717**\n\nThis problem concerns the relationship between chromatic number and clique subdivisions.\n\n**Key History:**\n- Hajós (1961): Conjectured χ(G) ≤ σ(G)\n- Dirac (1952): Proved Hajós for χ = 4\n- Catlin (1974): Disproved Hajós for χ ≥ 7\n- Erdős-Fajtlowicz (1981): Strong disproof - χ/σ can be Ω(√n/log n)\n- Fox-Lee-Sudakov (2013): Proved χ/σ is O(√n/log n)\n\n**The Setting:**\nσ(G) is the max k such that G contains a subdivision of K_k. The Erdős-Fajtlowicz lower bound was obtained by analysing the random graph G(n, 1/2): with high probability its chromatic number is Θ(n/log n) while its subdivision number is only Θ(√n/log n), giving ratio Θ(√n/log n). The Fox-Lee-Sudakov upper bound matched this extremal case, thereby resolving Erdős's question and showing that random graphs are the extremal examples for the chromatic-to-subdivision ratio.",

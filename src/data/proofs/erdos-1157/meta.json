@@ -23,7 +23,8 @@
     "lineCount": 378,
     "assumptions": "2 axioms: brown_erdos_sos_lower_bound (BES 1973 lower bound), delcourt_postle_theorem (Delcourt-Postle 2024, full 3-uniform BES). Previously axiomatized extremalNumber, monotonicity in k/s now proved constructively from sSup definition.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 27
+    "theoremCount": 27,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Brown, Erdős, and Sós introduced the general extremal number $f^{(r)}(n; k, s)$ in 1973, proving the foundational lower bound $f^{(r)}(n; k, s) \\gg n^{(rs-k)/(s-1)}$ for $k > r$ and $s > 1$ using probabilistic and algebraic constructions over finite fields. The BES conjecture—that $f^{(t)}(n; k, s) = o(n^t)$ when $k \\geq (r-t)s + t + 1$—predicts a sharp phase transition in the growth rate. The first case resolved was the $(6,3)$-problem by Ruzsa and Szemerédi (1978), who established $f^{(3)}(n; 6, 3) = o(n^2)$ via the Triangle Removal Lemma (a consequence of Szemerédi's regularity lemma). This special case is independently famous as Erdős Problem #716 and connects to Roth's theorem on 3-term arithmetic progressions. Glock (2019) resolved the $(7,4)$-case. The breakthrough came from Delcourt and Postle (2024), who proved the full 3-uniform BES conjecture: $f^{(3)}(n; k, s) = o(n^2)$ for all $s \\geq 3$ and $k \\geq s + 3$. Problem #1076 (the $k = s + 2$ case) was solved separately by Bohman-Warnke (2019), lying beyond the BES threshold. The conjecture remains wide open for uniformities $t \\geq 3$.",

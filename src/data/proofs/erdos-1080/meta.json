@@ -62,7 +62,8 @@
     "axiomCount": 2,
     "lineCount": 335,
     "assumptions": "2 axioms: luw_superlinear (Lazebnik-Ustimenko-Woldar superlinear construction), erdos_c8_observation (Erdős C₈ observation). 1 sorry: c4_free_iff_no_K22 (C₄-free iff no K₂₂ subgraph).",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1080**\n\nThis problem explores the threshold for forcing six-cycles in bipartite graphs with an imbalanced partition.\n\n**Key History:**\n- Erdős [Er75]: Posed the problem; noted that C_8 is forced\n- De Caen & Székely [DeSz92]: Disproved the conjecture, established bounds on f(n,m)\n- Faudree & Simonovits: Independently proved the general upper bound\n- Lazebnik, Ustimenko & Woldar [LUW94]: Improved the lower bound using algebraic constructions\n\n**Mathematical Setting:**\nThe problem concerns bipartite graphs G = (X ∪ Y, E) where |X| = ⌊n^(2/3)⌋ and the total vertex count is n. The question asks whether O(n) edges suffice to guarantee a 6-cycle.",

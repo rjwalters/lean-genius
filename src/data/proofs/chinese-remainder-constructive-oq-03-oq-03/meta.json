@@ -23,7 +23,8 @@
     "assumptions": "None. All theorems fully proved. pow2_coprime_odd proved via Nat.Coprime.pow_left and Nat.coprime_two_right. pow2_not_coprime_pow2 proved via dvd_pow_self and Nat.dvd_gcd. All concrete examples verified by decide/norm_num.",
     "mathlib_version": "4.26.0",
     "theoremCount": 19,
-    "dateAdded": "2026-05-03"
+    "dateAdded": "2026-05-03",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Residue Number Systems were introduced by Harvey Garner in 1959 for parallel computer arithmetic. The question of which moduli to use is critical for hardware efficiency. Power-of-2 moduli are attractive because x mod 2^k reduces to a bitwise AND operation (x &&& (2^k - 1)), requiring a single hardware instruction. However, the CRT foundation requires pairwise coprimality, which limits how many powers of 2 can appear in a base. This entry resolves the question by proving that exactly one power of 2 can appear alongside any collection of pairwise coprime odd moduli.",

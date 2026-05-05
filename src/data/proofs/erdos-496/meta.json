@@ -24,7 +24,8 @@
     "lineCount": 94,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Oppenheim conjectured in 1929 that any indefinite irrational quadratic form in $n \\geq 3$ variables takes values arbitrarily close to zero at integer points. Meyer (1884) had already shown that indefinite integral (rational) forms in $\\geq 5$ variables represent zero exactly, but the irrational case is fundamentally different. Davenport and Heilbronn (1946) proved the conjecture for $n \\geq 5$ using the Hardy–Littlewood circle method. The cases $n = 3, 4$ resisted analytic approaches for decades. Margulis achieved the breakthrough in 1987 by translating the problem into dynamics on homogeneous spaces: values of the quadratic form at integer points correspond to orbits of $\\mathrm{SO}(2,1)$ on $\\mathrm{SL}(3,\\mathbb{R})/\\mathrm{SL}(3,\\mathbb{Z})$, and Ratner-type results on unipotent flows show these orbits are either closed (rational form) or dense (irrational form). This was one of the results cited for Margulis's 1978 Fields Medal work on dynamics of lattice subgroups. Eskin, Margulis, and Mozes (1998) obtained quantitative refinements, showing the number of integer solutions with $|Q| < \\delta$ and $\\max|x_i| \\leq T$ grows as $c \\cdot \\delta \\cdot T$ for large $T$.",

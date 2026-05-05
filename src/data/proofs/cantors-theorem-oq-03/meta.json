@@ -66,7 +66,8 @@
     ],
     "mathlib_version": "4.26.0",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "König's theorem (1905) is one of the deepest results in cardinal arithmetic. Julius König proved that if κᵢ < λᵢ for all i in an index set I, then Σᵢ κᵢ < Πᵢ λᵢ. The proof uses a diagonal argument: at each index i, the 'column' from the sum maps κᵢ elements into λᵢ, missing at least one. Collecting the missed elements gives the diagonal witness.\n\nThis generalizes Cantor's theorem (1891) — take κᵢ = 1, λᵢ = 2 to get |I| < 2^|I| — and Lawvere's Fixed-Point Theorem (1969), which uses a single fixed-point-free map applied uniformly.\n\nThe three form a hierarchy of increasing generality:\n- **Lawvere** (Level 1): One fixed-point-free g : β → β, applied uniformly\n- **Coordinate Diagonal** (Level 2): Different dodge values at each index\n- **König** (Level 3): Different TYPES and dodges at each index",

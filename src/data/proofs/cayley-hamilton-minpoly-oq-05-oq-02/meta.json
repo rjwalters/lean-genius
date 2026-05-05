@@ -84,7 +84,8 @@
     "lineCount": 262,
     "mathlib_version": "4.26.0",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The connection between minimal polynomial degree and field extension degree traces back to the foundational period of abstract algebra in the early 20th century, building on 19th-century work by Galois, Dedekind, and Kronecker.\n\nKronecker (1882) showed that for an irreducible polynomial $p(x)$ of degree $d$ over a field $K$, the quotient ring $K[x]/(p(x))$ is a field extension of dimension $d$ over $K$ — effectively proving $[K(x):K] = \\deg(\\text{minpoly}_K(x))$ in modern language, though without the tower law formalism. The tower law itself, $[E:K] = [E:L] \\cdot [L:K]$, was systematized by Emmy Noether and her school in the 1920s-30s as part of the abstract algebraic approach to field theory.\n\nThe divisibility consequence $\\deg(\\text{minpoly}_K(x)) \\mid [L:K]$ has profound implications: it immediately proves that $\\sqrt{2} \\notin \\mathbb{Q}(\\sqrt[3]{2})$ (degree 2 does not divide degree 3), and more generally constrains which algebraic numbers can live in which extensions. The degree drop in towers — the fact that the minimal polynomial degree can only decrease when the base field is enlarged — is the algebraic manifestation of the fact that more roots become available in larger fields. Galois's original insight was that the structure of these degree drops encodes the symmetry group of the extension.\n\nThe splitting field connection formalized here relates to the fundamental theorem of Galois theory: $\\deg(p) \\mid [\\text{SF}(p):K]$, with equality precisely for cyclic extensions. Lang's *Algebra* (Ch. V) and Dummit-Foote (Ch. 13) are standard references.",

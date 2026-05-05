@@ -38,7 +38,8 @@
     ],
     "lineCount": 388,
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Mathieu groups, discovered by \u00c9mile Mathieu in 1861 and 1873, were the first sporadic simple groups to be identified. There are five: $M_{11}$, $M_{12}$, $M_{22}$, $M_{23}$, and $M_{24}$, with orders ranging from 7,920 to 244,823,040. They arise as automorphism groups of Steiner systems and are deeply connected to coding theory through the Golay codes.\n\nIn the context of the Inverse Galois Problem, the sporadic simple groups represent the most challenging frontier. Thompson (1984) established realizability for many sporadics, including the Monster group. Matzat (1984, 1987) handled most Mathieu groups: $M_{11}$, $M_{12}$, and $M_{24}$ were shown realizable in 1984, and $M_{22}$ followed in 1987. However, $M_{23}$ has resisted all known methods.\n\nThe difficulty is structural: Thompson's rigidity criterion\u2014the main tool for sporadic realizability\u2014requires finding conjugacy class triples $(C_1, C_2, C_3)$ that are simultaneously compatible (product $= 1$), generating, rigid (unique solution up to conjugation), and rational (invariant under outer automorphisms). For $M_{23}$, with its 17 conjugacy classes and trivial outer automorphism group, no such triple exists.\n\nDettweiler and Reiter (1999) achieved a partial result: $M_{23}$ is a regular Galois group over $\\mathbb{Q}(t)$, the rational function field. This means $M_{23}$ occurs as a Galois group over a transcendental extension of $\\mathbb{Q}$, but specializing from $\\mathbb{Q}(t)$ to $\\mathbb{Q}$ requires additional number-theoretic arguments that remain incomplete.",

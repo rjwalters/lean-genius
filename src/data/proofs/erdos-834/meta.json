@@ -56,7 +56,8 @@
     "lineCount": 197,
     "assumptions": "3 axiom(s): li_bound, lovasz_construction, tight_bound_exists. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Lovász in their influential 1973 paper 'Problems and results on 3-chromatic hypergraphs and some related questions', which initiated the systematic study of hypergraph coloring extremal problems. The question asks about the minimum degree achievable in 3-critical 3-uniform hypergraphs. A key subtlety, discovered over decades of study, is that the answer depends entirely on the interpretation of '3-critical': the transversal interpretation ($\\tau(H) = 3$, every edge essential for the cover) gives a fundamentally different answer than the chromatic interpretation ($\\chi(H) = 3$, every edge essential for the coloring). Lovász had already shown that chromatic-critical hypergraphs can have arbitrarily high minimum degree via product constructions. The transversal case remained open until Li (2025) proved the tight bound $\\delta(H) \\le 6$, completing the picture for both interpretations.",

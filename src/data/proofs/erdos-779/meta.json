@@ -54,7 +54,8 @@
     "axiomCount": 1,
     "lineCount": 218,
     "assumptions": "1 axiom: oeis_A005235. 0 sorries.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem was posed by Marian Deaconescu and appeared in Erdős's problem collection. The primorial n# = p₁·p₂·...·pₙ is the product of the first n primes, a fundamental object in number theory.\n\nDeaconescu computationally verified the conjecture for all n ≤ 1000. Erdős made a stronger conjecture: not only does such a prime p exist, but the smallest one satisfies p ≤ n^O(1) (polynomial in n, not exponential).\n\nThe heuristic argument is compelling: since primorials grow very fast (roughly e^(n log n)), there are many primes to try in the interval (pₙ, P). Each has 'probability' about 1/log(P) of making P + p prime, so the chance that ALL fail is exponentially small.",

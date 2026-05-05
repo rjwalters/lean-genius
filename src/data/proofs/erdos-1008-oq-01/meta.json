@@ -28,7 +28,8 @@
     "lineCount": 374,
     "assumptions": "One axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem). folkman_upper_bound now proved via completeGraph(Fin 2) specialization. 18 theorems fully proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The question of optimal constants in C₄-free subgraph bounds traces back to Bollobás and Erdős at the 1966 Tihany colloquium, where they originally conjectured the exponent 3/4. Jon Folkman quickly disproved this using the complete bipartite graph $K_{n,n^2}$: it has $n^3$ edges but by the Kővári-Sós-Turán theorem (1954), any $C_4$-free subgraph has at most $O(n^2) = O(m^{2/3})$ edges, not $O(m^{3/4})$. Erdős revised the conjecture to exponent 2/3 in 1971, noting that Szemerédi had obtained this bound unpublished. The problem remained formally open for four decades until Conlon, Fox, and Sudakov proved it in 2014 using dependent random choice. Once the exponent was settled, the natural refinement became: what is the optimal multiplicative constant $c^*$? The upper bound $c^* \\leq 1$ comes from Folkman's $K_{n,n^2}$ (the ratio of $C_4$-free edges to $m^{2/3}$ tends to 1). The lower bound $c^* > 0$ is the CFS theorem itself. Whether $c^* = 1/2$ (matching the Kővári-Sós-Turán coefficient) or some other value remains open, making this a precise quantitative frontier in extremal graph theory.",

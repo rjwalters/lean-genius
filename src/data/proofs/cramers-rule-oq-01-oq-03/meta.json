@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All definitions and key theorems are fully proved including gaussian_cubic_bound (O(n³) bound via term-by-term bounding) and factorial_ge_cube (n! >= n³ for n >= 6).",
     "lineCount": 228,
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**Why Cramer's Rule is Beautiful but Impractical**\n\nCramer's Rule was published by Gabriel Cramer in 1750 in his treatise on algebraic curves, providing the first explicit closed-form formula for solving systems of linear equations via ratios of determinants. The rule was considered a triumph of 18th-century algebra. However, the Leibniz formula for determinants (independently developed by Leibniz in the 1690s and later systematized) sums over all n! permutations, making it computationally prohibitive for large n.\n\nGaussian elimination, developed systematically by Carl Friedrich Gauss in the early 1800s (though known in Chinese mathematics as early as 179 CE), solves the same problem in O(n³) operations. The complexity gap — n! vs n³ — was not formalized until the 20th century with the development of computational complexity theory. Modern numerical linear algebra uses LU decomposition (a refined Gaussian elimination) with O(n³) arithmetic and robust pivoting strategies.\n\nDespite its impracticality for computation, Cramer's Rule remains theoretically essential: it provides the adjugate matrix identity A⁻¹ = adj(A)/det(A), underlies the proof of the Cayley-Hamilton theorem, and gives explicit differentiability of solutions with respect to parameters.",

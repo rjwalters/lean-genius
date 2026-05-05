@@ -56,7 +56,8 @@
     "axiomCount": 0,
     "lineCount": 235,
     "assumptions": "0 axioms, 0 sorries. All supporting theorems fully proved. Main conjecture stated as definition (open problem). Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "This problem sits at the intersection of geometric measure theory and combinatorial geometry. It asks a fundamental question: how much measure is needed to guarantee the existence of a 'large' geometric configuration?\n\nErdős posed this problem in his papers [Er78d] (1978/79) and [Er83d] (1984). He proved two special cases: (1) sets of infinite measure contain unit triangles, and (2) unbounded sets of positive measure contain unit triangles. Both follow from the Lebesgue density theorem, which says that almost every point of a measurable set is a 'density point'.\n\nErdős conjectured that the optimal threshold is c = 4pi/sqrt(27) ≈ 2.418. This is witnessed by a circle of radius r = 2·3^{-3/4}: its area is exactly 4pi/sqrt(27), and the largest inscribed triangle is equilateral with area (3sqrt(3)/4)r^2 < 1. Freiling and Mauldin made significant progress, proving the conjecture for compact convex sets and for unions of at most 3 compact convex sets.",

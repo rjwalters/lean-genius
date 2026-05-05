@@ -65,7 +65,8 @@
     "axiomCount": 0,
     "lineCount": 400,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 29
+    "theoremCount": 29,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "**Erdős Problem #891**\n\nThis problem was posed by Erdős and Selfridge in 1967 [ErSe67, p.430] and connects the distribution of prime factors to the structure of short intervals.\n\n**Key History:**\n- Erdős-Selfridge (1967): Original problem formulation\n- Schinzel: Proved a weaker version using Pólya's theorem on smooth numbers\n- Weisenberg: Showed conditional counterexample with interval length p₁···pₖ - 1\n\n**Mathematical Setting:**\nThe primorial p₁···pₖ (product of first k primes) gives natural interval lengths: 2, 6, 30, 210, 2310, ...\nThe question asks whether these specific lengths guarantee finding integers with many prime factors.\n\nThe problem remains open even for k = 2, asking whether every interval of 6 consecutive integers (for large n) contains a number with at least 3 prime factors.",

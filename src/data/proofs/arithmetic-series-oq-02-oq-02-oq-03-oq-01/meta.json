@@ -51,7 +51,8 @@
       "Pólya formula n·|Necklaces| = Σ φ(d)·k^{n/d} verified for n=2,3,4,6",
       "Explicit necklace counts necklaceCount n 2 for n=1,...,6 via Burnside helper",
       "Key proof technique: use Eq.trans to avoid binder-name mismatch in Burnside sum"
-    ]
+    ],
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Pólya's enumeration theorem was published by George Pólya in 1937 ('Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen', Acta Mathematica 68). It gave a systematic method for counting combinatorial objects up to symmetry, with applications ranging from necklace counting to chemical isomer enumeration. The theorem generalizes Burnside's lemma (1897, also called the Cauchy-Frobenius lemma) from counting orbits to counting orbits weighted by color frequencies. Pólya's insight was the 'cycle index' of a group action: Z(G; x₁,...,xₖ) = (1/|G|) Σ_{g∈G} ∏_j xⱼ^{cⱼ(g)}, where cⱼ(g) counts j-cycles in the permutation g. Setting all variables to k gives the number of distinct k-colorings.",

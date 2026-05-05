@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "This problem is in the tradition of Erdős's combinatorial number theory questions about arithmetic properties of integer sequences. The idea that any sufficiently long sequence with bounded gaps must have two sub-intervals with equal sums is a pigeonhole-type result: the number of possible interval sums is bounded by the range of the sequence, while the number of intervals grows quadratically. Hegyvári proved in 1986 that the threshold $f(a,K)$ exists and satisfies $f(a,K) \\ll a \\cdot e^{O(K)}$, but the exponential dependence on $K$ seems too large. The problem is marked as solved—meaning the existence of $f(a,K)$ is confirmed—but the optimal bound is an open refinement.",

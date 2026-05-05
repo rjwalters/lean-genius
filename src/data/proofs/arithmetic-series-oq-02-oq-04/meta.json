@@ -51,7 +51,8 @@
     "lineCount": 158,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The ascending factorial (Pochhammer symbol) $n^{(k)} = n(n+1)\\cdots(n+k-1)$ was systematically studied by Leo August Pochhammer in his 1870 paper 'Ueber hypergeometrische Reihen n-ter Ordnung' in Crelle's journal, though the concept appeared earlier in the work of Euler on hypergeometric series and Vandermonde's 1772 memoir on determinants. The notation remains notoriously inconsistent: combinatorialists write $n^{\\overline{k}}$ for the rising factorial, while the Pochhammer symbol $(a)_k$ denotes the rising factorial in the theory of special functions but the falling factorial in some combinatorics texts. The identity $\\binom{n+k}{k} \\cdot k! = (n+1)^{(k)}$ is one of the most fundamental relationships in enumerative combinatorics, bridging the unordered world of binomial coefficients to the ordered world of permutations. It explains why $\\binom{n}{k}$ is always an integer: the product of any $k$ consecutive positive integers is always divisible by $k!$, because the quotient counts a combinatorial object — the number of $k$-element subsets. This integrality principle was known to Pascal and appears implicitly in his 1654 'Traité du triangle arithmétique'.",

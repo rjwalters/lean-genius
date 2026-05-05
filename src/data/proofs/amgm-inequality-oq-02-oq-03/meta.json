@@ -29,7 +29,8 @@
     "lineCount": 226,
     "assumptions": "1 axiom: newton_log_concavity (Newton's log-concavity of elementary symmetric polynomials, inherited from AmgmInequalityOQ02.lean). The maclaurin_step axiom is eliminated by this file — proved here as maclaurin_step_proved. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Newton's inequalities on log-concavity of elementary symmetric polynomials appear in Newton's Arithmetica Universalis (1707): if $e_k$ are elementary symmetric polynomials then $e_k^2 \\geq e_{k-1} e_{k+1}$ (with suitable normalization). Colin Maclaurin (1729) used these inequalities to establish the chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$, where $M_k = (e_k/\\binom{n}{k})^{1/k}$ is the $k$-th Maclaurin mean. This chain interpolates between the arithmetic mean ($M_1$) and geometric mean ($M_n$), giving a strengthening of AM-GM. The derivation via the power inequality $a_k^{k+1} \\geq a_{k+1}^k$ is standard, appearing in Hardy-Littlewood-Pólya 'Inequalities' (1934), §2.22. The key step — reducing the Maclaurin chain to log-concavity by induction — is the main content of this formalization. Newton's own proof was non-rigorous by modern standards; rigorous proofs using symmetric function theory became standard after the 19th century. The Lean formalization eliminates the `maclaurin_step` axiom from the parent file by carrying out this classical inductive derivation formally.",

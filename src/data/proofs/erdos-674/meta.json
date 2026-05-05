@@ -24,7 +24,8 @@
     "lineCount": 283,
     "assumptions": "No axioms. 22 sorry(s) remain in the formalization.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25
+    "theoremCount": 25,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erd\u0151s Problem #674 concerns the exponential Diophantine equation x^x \u00b7 y^y = z^z. Chao Ko (1940) discovered the first solutions and proved that no coprime solutions exist, establishing that gcd(x,y) > 1 is necessary. Schinzel (1958) strengthened this by showing that every prime dividing x must also divide y, and conjectured all three variables share identical prime factors. Dem'janenko (1975) proved Schinzel's conjecture using p-adic valuation arguments and properties of the function x\u00b7log(x). Mills extended the analysis by proving no solutions satisfy 4xy > z\u00b2 and showed only Ko's parametric family achieves equality 4xy = z\u00b2. Uchiyama (1984) proved that for each fixed ratio Q = xy/z\u00b2 < 1/4, only finitely many solutions exist, using Baker's theory of linear forms in logarithms. The equation connects to transcendence theory, the ABC conjecture (which would imply finiteness results), and the broader study of exponential Diophantine equations initiated by Pillai and Herschfeld.",

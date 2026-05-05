@@ -45,7 +45,8 @@
     "lineCount": 484,
     "assumptions": "1 axiom: picks_theorem (the main theorem statement). Removed inconsistent area_bounded_by_box_axiom (claimed A(P) ≤ w_x*w_y for all w_x,w_y without containment hypothesis).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 15
   },
   "overview": {
     "historicalContext": "Georg Alexander Pick (1859-1942) was an Austrian mathematician who studied under Leo Konigsberger and Felix Klein. He published this theorem in 1899 in the journal *Sitzungsberichte der kaiserlichen Akademie der Wissenschaften*. The result remained obscure for over 60 years until Hugo Steinhaus popularized it in his 1960 book *Mathematical Snapshots*. Pick was murdered in the Theresienstadt concentration camp in 1942.\n\nThe theorem connects two seemingly different mathematical worlds: discrete counting (lattice points) and continuous measurement (area). This connection foreshadowed the development of Ehrhart theory (1962), which generalizes Pick's formula to higher-dimensional lattice polytopes using Ehrhart polynomials.\n\nPick's theorem has a natural proof via triangulation and additivity: verify for the unit right triangle ($i=0, b=3, A=1/2$), then show the formula is preserved when combining polygons along shared edges. An alternative proof uses Euler's formula $V - E + F = 2$ for planar graphs, counting how vertices and edges contribute to interior, boundary, and face counts.\n\nPick's theorem appears as #92 in Freek Wiedijk's list of 100 greatest theorems. It is one of the most accessible results on the list, requiring only basic arithmetic, yet it reveals deep structure connecting discrete and continuous mathematics.",

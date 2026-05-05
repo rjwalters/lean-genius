@@ -60,7 +60,8 @@
     "axiomCount": 3,
     "lineCount": 230,
     "assumptions": "3 axioms: maxEquidistantPoints_le_card_sub_one, achievableValues_nonempty, eventually_exponent_small. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem concerns the equidistance structure of point sets in the plane. For each point x in a set A, we count how many other points lie on a single circle centered at x (i.e., are equidistant from x).\n\nThe function f(n) is the maximum k such that some n-point set has at least k equidistant points from EVERY point in the set. This is a 'stronger form' of the unit distance problem (#90).\n\nThe √n × √n integer lattice achieves f(n) > n^{c/log log n}, while the best upper bound is f(n) ≪ n^{4/11} from recent work by Janzer, Janzer, Methuku, and Tardos (2024).",

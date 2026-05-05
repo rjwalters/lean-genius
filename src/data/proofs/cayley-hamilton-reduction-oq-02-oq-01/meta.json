@@ -43,7 +43,8 @@
     "lineCount": 396,
     "assumptions": "0 axioms, 0 sorries. All three key theorems fully proved: aeval_companionMatrix (orbit argument), charpoly_companionMatrix, and minpoly_companionMatrix. Uses Mathlib supporting lemmas.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The companion matrix appears implicitly in Arthur Cayley's 1858 work on linear transformations, and was codified by Ferdinand Frobenius in his 1878 paper '\u00dcber lineare Substitutionen und bilineare Formen', where the rational canonical form (Frobenius normal form) was established. Unlike the Jordan canonical form (Jordan 1870), which requires the characteristic polynomial to split into linear factors over the base field, the rational canonical form works over any field: it is the canonical block-diagonal decomposition using invariant factors rather than eigenvalues. The companion matrix C(p) is the matrix representation of multiplication by x on the quotient module F[X]/(p), making it the elementary algebraic object from which all F[X]-modules are built (via the primary decomposition theorem for modules over PIDs). The orbit argument \u2014 that {e\u2080, Ce\u2080, ..., C^{d-1}e\u2080} is the standard basis \u2014 is the key fact, and was known to Frobenius. The full RCF formalization in a proof assistant has been completed in Coq by Cano-D\u00e9n\u00e8s (2012) and in Isabelle/HOL by Divas\u00f3n-Thiemann (2016); a Lean 4 formalization is an active gap in Mathlib.",

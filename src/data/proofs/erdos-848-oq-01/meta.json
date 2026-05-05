@@ -25,7 +25,8 @@
     "theoremCount": 15,
     "defCount": 1,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Erdős and Sárközy (1992) posed the problem of finding the maximum set A ⊆ {1,...,N} with ab+1 non-squarefree for all a,b ∈ A. The answer involves the residues 7 and 18 modulo 25. This file gives the algebraic explanation: 7² = 49 ≡ -1 (mod 25) and 18² = 324 ≡ -1 (mod 25), making these the two square roots of -1 in ℤ/25ℤ. The connection is: for a ≡ b ≡ x (mod 25), ab+1 ≡ x²+1 (mod 25). This is 0 (mod 25) exactly when x² ≡ -1 (mod 25), i.e., when x ∈ {7, 18}. No other residue class mod 25 works. Furthermore, the two classes cannot be combined: for a ≡ 7 and b ≡ 18 (mod 25), ab+1 ≡ 127 ≡ 2 (mod 25), so 5 ∤ ab+1.",

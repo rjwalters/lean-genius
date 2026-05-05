@@ -53,7 +53,8 @@
     "lineCount": 460,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 28
+    "theoremCount": 28,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The Euclidean algorithm, described in Book VII of Euclid's *Elements* (c. 300 BCE), is one of the oldest algorithms still in active use. Gabriel Lamé proved in 1844 that the algorithm requires at most $5k$ division steps when the smaller input has $k$ decimal digits, making this one of the first computational complexity results in history. Lamé's key insight was that consecutive Fibonacci numbers are worst-case inputs: $\\gcd(F_{n+2}, F_{n+1})$ requires exactly $n$ steps, and since $F_n \\sim \\varphi^n/\\sqrt{5}$ (where $\\varphi = (1+\\sqrt{5})/2$), inputs with $k$ digits satisfy $n \\leq 5k$. The connection between Fibonacci numbers and the Euclidean algorithm was noted even earlier by Léger (1837). The average-case analysis came much later: Dixon (1970) proved the average number of steps is $(12 \\ln 2 / \\pi^2) \\ln N \\approx 0.8427 \\ln N$ using the ergodic theory of the Gauss map $T(x) = \\{1/x\\}$ and its invariant measure $d\\mu = (\\ln 2)^{-1}(1+x)^{-1}dx$. Heilbronn (1969) obtained the leading constant independently. The variance was computed by Hensley (1994).",

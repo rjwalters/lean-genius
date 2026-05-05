@@ -25,7 +25,8 @@
     "lineCount": 189,
     "assumptions": "1 axiom: sidon_variant_solved (Sidon variant proved by Dillies/AlphaProof, deep result not yet in Mathlib). Removed unsound erdos_949_open which falsely asserted the open conjecture as true.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erd\u0151s posed this problem asking whether the complement of a sum-free set in $\\mathbb{R}$ always contains a continuum-sized subset whose sumset avoids the original set. The problem lies at the intersection of additive combinatorics and set-theoretic cardinal arithmetic. Sum-free sets have been studied since Schur (1916), who proved that for any $r$-coloring of $\\{1, \\ldots, n\\}$, some color class contains a monochromatic solution to $a + b = c$ when $n$ is large enough. The complement question reverses this perspective: given a set avoiding such solutions, how much additive structure remains outside? The Sidon variant was proved by Yael Dillies using a technique discovered by AlphaProof. The proof splits into two cases based on whether $|S| < \\mathfrak{c}$ or $|S| = \\mathfrak{c}$. In the small case, Zorn's lemma produces a maximal sumset-avoiding subset of $S^c$, and maximality forces continuum cardinality. In the continuum case, the shift construction $A = ((S \\setminus \\{a\\}) - a/2) \\setminus S$ exploits the Sidon property to ensure $|A \\cap S| \\leq 1$. The general sum-free case remains open because sum-free sets can be much denser than Sidon sets ($n/2$ vs. $\\sqrt{n}$ in $[n]$), and the injectivity of the sum map\u2014crucial to the Sidon proof\u2014fails for general sum-free sets. The file also corrects a previous unsound axiom by proving that Sidon sets are NOT necessarily sum-free, with $\\{1, 2, 4\\}$ as counterexample.",

@@ -72,7 +72,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Ceva's theorem (1678) states that in a triangle ABC, cevians AD, BE, CF are concurrent iff (BD/DC)·(CE/EA)·(AF/FB) = 1. The spherical version replaces length ratios with sin-ratios: sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = 1, where BD, DC etc. are arc lengths on the sphere.\n\nThis formalization answers the open question OQ-02-OQ-01: can the spherical Ceva theorem be stated using concrete unit vectors in a real inner product space? The answer is YES, via weight parameters. A point D on arc BC is defined as D = normalize(α·B + β·C), and the sin-ratio sin(BD)/sin(DC) equals β/α — a purely algebraic criterion independent of the specific positions of B and C (as long as they are distinct non-antipodal points).\n\nThis bridges two earlier formalizations: CevasTheoremSinRatio.lean (which proves the sin-ratio formula for one cevian) and CevasTheoremNonEuclidean.lean (which uses abstract arc lengths for the full spherical Ceva condition).",

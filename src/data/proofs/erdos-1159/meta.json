@@ -25,7 +25,8 @@
     "lineCount": 144,
     "assumptions": "1 axiom: ess_log_blocking_set. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "This problem was formulated by Erdos in 1981 and connects to fundamental questions in finite geometry. A blocking set in a projective plane is a set of points that intersects every line. Trivially, any line is a blocking set, but with n+1 points per line intersection. The question is whether one can find blocking sets with uniformly bounded line intersections. Erdos, Silverman, and Stein (1983) proved that every projective plane of order n admits a blocking set meeting each line in at most O(log n) points, using the probabilistic method: include each point independently with probability c*log(n)/n. The open question is whether the logarithmic dependence on n can be eliminated entirely, replaced by an absolute constant C independent of the plane's order. This connects to deep questions about the structure of non-Desarguesian planes and whether 'exotic' projective planes might force large intersections. Problem 664 extends this to general block designs.",

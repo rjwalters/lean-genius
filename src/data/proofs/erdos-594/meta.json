@@ -55,7 +55,8 @@
     "axiomCount": 3,
     "lineCount": 245,
     "assumptions": "3 axioms: erdos_hajnal_shelah, countable_chromatic_insufficient, contains_all_finite_bipartite. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "This problem is part of the Erdős-Hajnal program studying infinite chromatic numbers, which began in the 1960s. The central question: what substructures must appear in graphs with uncountable chromatic number?\n\nThe **De Bruijn-Erdős theorem** (1951) provides the foundational result: a graph has finite chromatic number $k$ if and only if every finite subgraph has chromatic number $\\leq k$. For infinite chromatic numbers, the landscape is richer. Erdős and Hajnal first proved that graphs with $\\chi(G) \\geq \\aleph_2$ contain all sufficiently large odd cycles. The key difficulty in improving this to $\\aleph_1$ is that $\\aleph_1$ is the first uncountable cardinal, so one cannot use simple counting arguments that work for $\\aleph_2$.\n\nErdős, Hajnal, and Saharon Shelah proved the full result for $\\chi(G) \\geq \\aleph_1$ in their 1974 paper 'On some general properties of chromatic number' (Colloquia Math. Soc. János Bolyai, Topics in Topology). Shelah's contribution was crucial: his set-theoretic techniques (partition calculus and the Erdős-Rado theorem) bridged the gap between $\\aleph_2$ and $\\aleph_1$.\n\nCarsten Thomassen (1983) later strengthened the result: not only do such graphs contain all large odd cycles, but the cycles can be found passing through any specified edge. The threshold $\\aleph_1$ is optimal — Erdős constructed graphs with chromatic number $\\aleph_0$ that avoid arbitrarily long odd cycles. The $\\$500$ prize Problem #593 asks the analogous question for 3-uniform hypergraphs and remains open.",

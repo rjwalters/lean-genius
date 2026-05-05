@@ -55,7 +55,8 @@
                 "module": "Mathlib.Data.Int.GCD"
             }
         ],
-        "mathlib_version": "4.26.0"
+        "mathlib_version": "4.26.0",
+        "definitionCount": 1
     },
     "overview": {
         "historicalContext": "Josef Stein published the binary GCD algorithm in 1967 while working on FORTRAN numerical programs. The algorithm predates Stein — binary GCD procedures appear in ancient Chinese mathematics (《九章算術》, ~1st century BCE) — but Stein's 1967 paper gave the first rigorous modern analysis and popularized the method for digital computers. The key motivation: on binary computers, integer division requires multiple clock cycles, while right-shift (halving) and subtraction are single-cycle O(1) operations. Stein's algorithm replaces every modular reduction step in Euclid's algorithm with a subtraction and at least one halving. Donald Knuth analyzed the algorithm's complexity in TAOCP (Vol. 2): it runs in O(log²(max(a,b))) bit operations, matching Euclid but with smaller constants in hardware implementations.",

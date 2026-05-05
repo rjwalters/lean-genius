@@ -69,7 +69,8 @@
     "lineCount": 151,
     "assumptions": "0 axioms, 0 sorries. All theorems fully proved: ballot_discrete_ivt (via Finset.max' argument), cycle_lemma_lower_bound_via_ivt (via goodRotations_card_ge), and rightmost_is_good_rotation (via rightmostAtLevel_good). No placeholders remain.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**The Discrete IVT and the Cycle Lemma**\n\nThe Dvoretzky-Motzkin Cycle Lemma (1947) states: given a sequence with $a$ copies of $+1$ and $b$ copies of $-k$ satisfying $a > kb$, exactly $a - kb$ of the $a + b$ cyclic rotations have all partial sums positive.\n\nThe proof has two parts:\n- **Upper bound** ($|\\text{goodRotations}| \\leq a-kb$): Via an injection from good rotations to distinct prefix sum levels — proved in BallotProblemOQ01.lean via `goodRotations_card_le`.\n- **Lower bound** ($|\\text{goodRotations}| \\geq a-kb$): Requires showing that for each level $v$ in $[\\mu, \\mu + S)$ (where $\\mu$ is the minimum prefix sum and $S$ is the total sum), there exists a good rotation achieving level $v$. This uses:\n  1. A **discrete IVT** to show every level is achieved by some prefix\n  2. The **rightmost position** at each level is a good rotation\n\nThe discrete IVT formalized here (`ballot_discrete_ivt`) captures the essential analytic content: if a {+1, -k}-sequence achieves prefix sum $v$ at some position, and the final sum exceeds $v$, then the rightmost position with prefix sum $\\leq v$ actually has prefix sum exactly $v$. This is because the rightmost such position must be followed by $+1$ (not $-k$, which would give prefix sum $\\leq v-k < v$).",

@@ -24,7 +24,8 @@
     "lineCount": 264,
     "assumptions": "0 axioms, 0 sorries. Graph theory definitions and supporting lemmas formalized. Open conjectures not formalized as axioms; badge updated from 'axiom' to 'wip'.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem originates from the Erdős–Hajnal program (1966, *Acta Math. Acad. Sci. Hungar.* 17:61–99) connecting chromatic number with structural graph properties. Erdős and Hajnal conjectured that uncountable chromatic number forces subgraphs of infinite connectivity. The specific formulation about countable subgraphs appears in Vatter's 1999 problem collection (Problem 7.90) and is catalogued as Problem B24-adjacent in Guy's survey. Soukup (2015, *Combinatorica*) gave the first ZFC construction of an uncountably chromatic graph where every uncountable vertex set is only finitely connected, using ladder systems on non-special $\\omega_1$-trees. This disproved Problem 1067 but left Problem 1068 (the countable case) open. Bowler and Pitz (2024, *Electronic J. Combinatorics*) simplified Soukup's construction using elementary ladder graphs. Earlier, Komjáth (2013, *Israel J. Math.*) had shown a related question is independent of ZFC, highlighting the set-theoretic depth of the problem. The infinite Menger theorem, proved by Aharoni and Berger (2009, *Inventiones mathematicae*), provides the key characterization: infinite connectivity is equivalent to the absence of finite vertex separators. The De Bruijn–Erdős theorem (1951) connects infinite and finite graph coloring, ensuring $\\chi(G) \\geq \\aleph_1$ implies arbitrarily large finite chromatic number.",

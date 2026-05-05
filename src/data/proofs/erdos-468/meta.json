@@ -25,7 +25,8 @@
     "axiomCount": 0,
     "lineCount": 56,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' For each positive integer n, the set D_n consists of the cumulative sums of the divisors of n greater than 1, sorted in increasing order. For example, 6 has divisors 2, 3, 6, so D_6 = {2, 2+3, 2+3+6} = {2, 5, 11}.\n\nThe problem has two parts. First, how many elements of D_n are genuinely new — not appearing in any D_m for m < n? This asks about the rate at which the union ⋃_n D_n grows. Second, for a given target N, what is the smallest n such that N ∈ D_n? If this first-appearance function f(N) satisfies f(N) = o(N), then most partial sums arise from relatively small integers.\n\nThe problem connects several themes in number theory: the additive structure of divisor sets, the distribution of the sum-of-divisors function σ(n), and the combinatorics of ordered partitions. The OEIS sequences A167485, A387502, and A387503 track related quantities. Despite its elementary formulation, the problem remains completely open.",

@@ -58,7 +58,8 @@
     "axiomCount": 2,
     "lineCount": 179,
     "assumptions": "2 axioms: szemeredi_trotter, kRich_bound. Structure fields are object definitions, not assumptions.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Erdős, Croft, and Purdy, and described by Erdős in his 1987 paper 'Some combinatorial and metric problems in geometry'. The question asks for the maximum number of k-rich lines (lines containing at least k points) through a set of n points in the plane.\n\nThe result follows from the celebrated Szemerédi-Trotter theorem (1983), which bounds the number of incidences between points and lines in ℝ². This theorem is a cornerstone of incidence geometry: I(P,L) ≤ O(|P|^{2/3}|L|^{2/3} + |P| + |L|). The k-rich lines bound O(n²/k³) is a direct consequence via a counting argument.\n\nThe bound is nearly tight. For k = √n, lattice points on an m × m grid show there can be at least (2+o(1))√n many √n-rich lines. The optimal constant in the bound remains unknown and is an active area of research in combinatorial geometry.",

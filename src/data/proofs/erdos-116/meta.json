@@ -23,7 +23,8 @@
     "lineCount": 74,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "This conjecture was posed by Paul Erdős, Fritz Herzog, and George Piranian in their 1958 paper on metric properties of polynomials. They asked: for a monic polynomial $p(z) = \\prod(z - z_i)$ of degree $n$ with all roots in the closed unit disk $\\overline{\\mathbb{D}}$, how small can the 2D Lebesgue measure of the sublevel set $\\{z \\in \\mathbb{C} : |p(z)| < 1\\}$ be? They conjectured the measure is at least $n^{-O(1)}$, or even $(\\log n)^{-O(1)}$.\n\nThe sublevel set $\\{|p(z)| < 1\\}$ is a polynomial lemniscate — the region where the polynomial is small. Its geometry depends intricately on the root configuration: when roots cluster, the lemniscate concentrates into a single blob of area $\\pi$; when roots spread across the disk, it fragments into many small components whose total area shrinks.\n\nThe first major progress came from Pommerenke, who proved the measure is at least $c/n^4$ using logarithmic potential theory and transfinite diameter estimates. This established the polynomial decay rate but left a large gap.\n\nThe problem was fully resolved by Manjunath Krishnapur, Erik Lundberg, and Koushik Ramachandran, who proved the optimal lower bound $c/\\log n$. Their proof combined probabilistic methods with careful estimates on the polynomial's value distribution. They also showed this is nearly tight by constructing polynomials achieving measure at most $C/\\log\\log n$, leaving only a small gap between $1/\\log n$ and $1/\\log\\log n$.",

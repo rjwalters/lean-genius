@@ -72,7 +72,8 @@
     "theoremCount": 7,
     "lineCount": 179,
     "assumptions": "3 axioms: prime_ap_pnt_upper (PNT upper bound), green_tao (Green-Tao 2008), erdos_200 (open conjecture). 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this question in the late 1970s [ErGr79, ErGr80], asking whether the longest prime AP in $\\{1, \\ldots, N\\}$ grows sublogarithmically. The Prime Number Theorem gives a natural upper bound: $\\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$, since primes have density $\\sim 1/\\log N$. For decades, even the existence of arbitrarily long prime APs was unknown. The breakthrough came in 2008 when Green and Tao proved that primes contain APs of every length, using a transference principle that lifts Szemerédi's theorem to the primes. However, their quantitative bounds are tower-type ($N(k) \\leq \\exp^{(3)}(ck)$), far from establishing the growth rate of $\\text{longestPrimeAP}(N)$. The Hardy-Littlewood $k$-tuple conjecture predicts $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ for some $c \\in (0,1)$, suggesting the answer to Erdős's question may be NO. This tension between the conjecture and the heuristic makes Problem #200 particularly delicate and deep.",

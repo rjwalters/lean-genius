@@ -31,7 +31,8 @@
     "lineCount": 275,
     "assumptions": "1 axiom: IsPlanar. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Zsolt Tuza conjectured in 1981 that $\\tau(G) \\leq 2\\nu(G)$ for every graph $G$, where $\\tau(G)$ is the minimum number of edges whose removal destroys all triangles and $\\nu(G)$ is the maximum number of edge-disjoint triangles. The trivial bound $\\tau \\leq 3\\nu$ follows from removing all three edges of each triangle in a maximum packing. Penny Haxell and Yoshiharu Kohayakawa (1998) proved $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ using probabilistic and structural methods. Haxell (1999) verified the conjecture for $K_4$-free graphs. The conjecture also holds for planar graphs (Tuza 1994, Krivelevich 1995) and Erdős-Rényi random graphs $G(n,p)$ for most $p$. The fractional relaxation $\\tau^*(G) \\leq 2\\nu^*(G)$ was proved by Krivelevich via LP duality. Despite four decades of work, the integral conjecture remains open, and the gap between the best general bound 2.87 and the conjectured 2 has resisted improvement.",

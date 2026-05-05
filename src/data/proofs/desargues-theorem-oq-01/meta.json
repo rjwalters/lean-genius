@@ -48,7 +48,8 @@
     "lineCount": 285,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The original Desargues theorem formalization in this gallery (DesarguesTheorem.lean) relied on Mathlib.LinearAlgebra.CrossProduct, which was deprecated and removed in Mathlib v4.26.0. The open question was: can the proof be redone without this dependency, and can it be made more general?\n\nThis formalization answers both questions: YES, and the proof naturally generalizes from ℝ to any commutative ring K. The key insight is that the entire proof is a polynomial identity — no field properties, continuity, or topology are needed.",

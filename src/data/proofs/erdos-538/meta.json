@@ -24,7 +24,8 @@
     "lineCount": 504,
     "assumptions": "Mertens' second theorem: Σ_{p≤N} 1/p ≥ c·log(log N) for some c > 0 and N ≥ 3",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22
+    "theoremCount": 22,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1973, studying the interplay between multiplicative constraints and additive density. Given a set $A \\subseteq \\{1, \\ldots, N\\}$ where each integer $m$ has at most $r$ representations as $m = p \\cdot a$ with $p$ prime and $a \\in A$, how large can the reciprocal sum $\\sum_{n \\in A} 1/n$ be? Erdős proved the bound $O(r \\cdot \\log N / \\log\\log N)$ using a double counting argument combined with Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). The idea is elegant: multiplying the reciprocal sum by the prime reciprocal sum produces terms $1/(pa)$ that are controlled by the representation constraint. The harmonic sum $\\sum_{m \\leq N} 1/m \\sim \\log N$ then closes the argument. Whether this bound is optimal remains open. The problem is related to Problems 536 and 537 on multiplicative representations, and connects to the broader study of multiplicative energy in additive combinatorics. The case $r = 1$ (each integer has at most one prime factorization involving an element of $A$) forces $A$ to be 'multiplicatively thin', strengthening the bound to $O(\\log N / \\log\\log N)$.",

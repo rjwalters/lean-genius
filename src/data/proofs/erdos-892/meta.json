@@ -62,7 +62,8 @@
     "lineCount": 333,
     "assumptions": "2 axioms: (1) primitive_reciprocal_log_convergent — Erdős 1935, convergence of Σ 1/(aₙ log aₙ) for primitive sequences; (2) harmonic_log_plus2_diverges — Cauchy condensation test gives Σ 1/((n+2)·log(n+2)) → +∞ (standard analysis, not in Mathlib). The hbound step is now proved via Finset.sum_congr + cast arithmetic.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 6
   },
   "sections": [
     {

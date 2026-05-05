@@ -62,7 +62,8 @@
     "sorryCount": 0,
     "lineCount": 594,
     "assumptions": "2 axioms: f_lower_bound, f_mono_k. f_case_k_eq_1 fully proved (no sorry: existsGraphWithPropertyP uses Fin n canonically, transport-free). f_upper_bound proved via complete graph construction. f_n_minus_2_upper_bound proved via partial-star construction (tight, vs complete-graph bound n*(n-1)/2).",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #614** is an extremal graph theory problem asking for the minimum number of edges needed in a graph to guarantee that every sufficiently large induced subgraph has high maximum degree.\n\n**Background:** The problem combines ideas from Turán-type extremal theory (minimizing edges while forcing structure) with a Ramsey-theoretic flavor (guaranteeing properties in ALL subsets of a given size). It was referenced in [FRS97] by Füredi, Ruszinkó, and Selkow.\n\n**Current Status:** The problem remains OPEN. No closed-form formula for f(n,k) is known, and even the asymptotic behavior is not fully understood. Basic bounds and monotonicity properties have been established, but the exact determination of f(n,k) for general n, k is an unsolved problem.",

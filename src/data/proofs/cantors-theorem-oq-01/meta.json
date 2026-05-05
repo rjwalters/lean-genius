@@ -64,7 +64,8 @@
     "axiomCount": 0,
     "lineCount": 272,
     "assumptions": "0 axioms, 0 sorries. Core cardinal facts (Cantor's theorem, mk_set, mk_real, beth hierarchy) from Mathlib; original work combines these to establish |𝒫(ℝ)| = ℶ₂ and conditional CH/GCH results.",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Cantor's 1891 diagonal argument proved |ℝ| < |𝒫(ℝ)|, establishing that the power set of any set is strictly larger. Combined with the identification |ℝ| = 2^ℵ₀ = 𝔠 (the continuum), this gives |𝒫(ℝ)| = 2^𝔠.\n\nThe beth number hierarchy (Sierpiński, 1947) organizes this: ℶ₀ = ℵ₀ = |ℕ|, ℶ₁ = 2^ℵ₀ = 𝔠 = |ℝ|, ℶ₂ = 2^𝔠 = |𝒫(ℝ)|, and so on. So |𝒫(ℝ)| = ℶ₂ is a clean, definitive ZFC theorem.\n\nHowever, the question of which aleph number equals ℶ₂ is deeply non-trivial. Gödel (1938) showed CH is consistent with ZFC; Cohen (1963) showed ¬CH is consistent. Easton (1970) showed that 2^κ for regular κ can be almost anything consistent with König's theorem: cf(2^κ) > κ. In particular, |𝒫(ℝ)| can consistently equal ℵ₂, ℵ₃, ℵ_{ω₁+1}, or many other values — but never ℵ_ω (since cf(ℵ_ω) = ω ≤ 𝔠).",

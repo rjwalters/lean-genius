@@ -48,7 +48,8 @@
     "lineCount": 231,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core reciprocity law delegates to Mathlib's `legendreSym.quadratic_reciprocity` (proved via Gauss sums and Eisenstein's lemma). The supplementary laws use `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`. Original contributions are pedagogical wrappers providing four forms of the main law and explicit worked examples.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity is one of the most celebrated theorems in number theory. Euler first observed the pattern numerically around 1744–1772, stating special cases (e.g., the first supplementary law and partial forms of reciprocity) without a complete proof. Legendre formulated the general statement clearly in 1785 and attempted a proof, but his argument was circular — it unknowingly assumed Dirichlet's theorem on primes in arithmetic progressions (not proved until 1837). Gauss (1796), age 19, gave the first complete and rigorous proof, calling it the *theorema aureum* (golden theorem). He ultimately published 6 proofs in his lifetime, with a 7th and 8th appearing posthumously. Eisenstein (1844) gave a particularly elegant proof using lattice-point counting in the plane, which generalizes via Gaussian integers to cubic and biquadratic reciprocity. Kummer (1850s) extended reciprocity to higher power residues in cyclotomic fields, and Hilbert (1897) posed the search for the most general reciprocity law as his 9th problem. Artin (1927) resolved it with his general reciprocity law for abelian extensions, and the complete theory of class field theory was developed throughout the 20th century. Over 300 distinct proofs of quadratic reciprocity are now known — more than for any other theorem — reflecting its centrality to number theory.",

@@ -61,7 +61,8 @@
     "axiomCount": 3,
     "lineCount": 320,
     "assumptions": "3 axioms: selection_exists_large, erdos_pomerance_lower_bound, erdos_pomerance_upper_bound. 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #710**\n\nThis problem concerns the minimal interval length needed for divisibility matching, a combinatorial problem at the intersection of number theory and extremal combinatorics.\n\n**Key History:**\n- Erdős and Pomerance (1980): Established upper and lower bounds in \"Matching the natural numbers up to n with distinct multiples of another interval\"\n- Erdős [Er92c] (1992): \"Some of my forgotten problems in number theory\" - offered 2000 rupees prize\n- The problem remains OPEN - exact asymptotics unknown\n\n**Mathematical Setting:**\n- Given n, we seek distinct integers a₁,...,aₙ in a short interval starting at n\n- The k-th integer must be divisible by k\n- f(n) = minimal interval length for this to be possible\n- The challenge is finding the precise asymptotic growth rate of f(n)",

@@ -49,7 +49,8 @@
       "Fully degenerate case: when p₁ = p₂ = p₃, sum = 3π/2 (unique exceptional configuration)",
       "Unconditional formula using Classical.em (no DecidableEq hypothesis needed)"
     ],
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Euclid proved the triangle angle sum theorem in Book I, Proposition 32 of the *Elements* (c. 300 BCE): the interior angles of a triangle sum to two right angles. This was a cornerstone of Euclidean geometry and its failure in non-Euclidean settings — where the sum exceeds $\\pi$ on a sphere and falls short in hyperbolic geometry — became the defining diagnostic for these geometries in the 19th century. Legendre attempted to prove the Parallel Postulate using this theorem; Gauss and Bolyai–Lobachevsky independently showed it was independent.\n\nIn formal mathematics, angle functions must handle degenerate inputs gracefully. The Mathlib definition `EuclideanGeometry.angle p₁ p₂ p₃` measures the angle at vertex $p_2$ between directions to $p_1$ and $p_3$. It is defined via `InnerProductGeometry.angle`, using $\\arccos(\\langle u,v\\rangle / (\\|u\\| \\cdot \\|v\\|))$. When a direction vector is zero (i.e., when a non-vertex argument equals the vertex), the inner product ratio is $0/0 = 0$ by Lean's convention, so $\\arccos(0) = \\pi/2$.\n\nThis junk-value convention was chosen by Mathlib for analytic cleanliness — the function is defined everywhere without case analysis. The consequence is a beautiful and somewhat surprising theorem discovered during systematic exploration: the angle sum formula extends far beyond its original non-degenerate domain, and the Mathlib theorem `angle_add_angle_add_angle_eq_pi` has a weaker hypothesis than previously documented (only $p_2 \\neq p_1$ is needed, not both $p_2 \\neq p_1$ and $p_3 \\neq p_1$).",

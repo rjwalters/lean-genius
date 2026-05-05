@@ -53,7 +53,8 @@
     "lineCount": 249,
     "assumptions": "0 axioms, 0 sorries. k-fold CRT ring isomorphism constructed by recursive composition of Mathlib ZMod.chineseRemainder.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem originates in Sunzi Suanjing (~3rd century CE), which posed: 'find a number giving remainders 2, 3, 2 when divided by 3, 5, 7.' The first general algorithm for arbitrary moduli was given by Qin Jiushao in his 1247 Shushu Jiuzhang (Mathematical Treatise in Nine Sections), predating European treatments by centuries. Euler stated the k-fold version for pairwise coprime moduli, and Gauss gave it systematic treatment in Disquisitiones Arithmeticae (1801, Articles 32-36). The modern ring-theoretic formulation as an isomorphism $\\mathbb{Z}/(\\prod n_i)\\mathbb{Z} \\cong \\prod_i \\mathbb{Z}/n_i\\mathbb{Z}$ captures both existence and uniqueness of solutions plus the full multiplicative structure. This k-fold generalization is foundational in modern cryptography: RSA key generation relies on the CRT decomposition $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$ for efficient decryption, and multi-prime RSA uses the k-fold version directly.",

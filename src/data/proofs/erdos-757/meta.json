@@ -51,7 +51,8 @@
     "axiomCount": 0,
     "lineCount": 243,
     "assumptions": "0 axioms, 0 sorries. almostSidon_of_sidon proved via Sidon injectivity on off-diagonal pairs. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "A **Sidon set** (or B₂ sequence) is a set where all pairwise sums are distinct. Equivalently, all non-zero differences are distinct. For a 4-element Sidon set, the difference set B - B has exactly 13 elements (including 0).\n\nErdős asked: if every 4-element subset of A has 'almost' this property (|B - B| ≥ 11, missing at most one pair of differences), must A contain a large Sidon subset?\n\nErdős and Sós first proved c ≥ 1/2. Gyárfás and Lehel (1995) improved this to strict bounds:\n- **Lower bound**: c > 1/2 (greedy construction)\n- **Upper bound**: c < 3/5 (Fibonacci numbers as counterexample)\n\nThe exact value of c remains OPEN.",

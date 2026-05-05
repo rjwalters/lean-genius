@@ -51,7 +51,8 @@
     "axiomCount": 2,
     "lineCount": 225,
     "assumptions": "2 axioms: erdos_selfridge_theorem, erdos_powerful_conjecture. See Lean source for complete statements.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #137 concerns the arithmetic structure of products of consecutive integers. A number n is **powerful** if every prime p dividing n also satisfies p² | n. Equivalently, n = a²b³ for some positive integers.\n\nThe related **Erdős-Selfridge Theorem** (1975) proves that the product of k ≥ 2 consecutive positive integers is never a perfect power (like m² or m³). This is a landmark result in number theory.\n\nThe powerful version is strictly weaker: perfect powers are powerful, but not vice versa. The conjecture that products of k ≥ 3 consecutive integers are never powerful remains OPEN. For k = 2, counterexamples exist: n(n+1) can be powerful for infinitely many n (e.g., 8 × 9 = 72 = 2³ × 3²).",

@@ -53,7 +53,8 @@
       "Basic Galois theory for discriminant applications"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 15
   },
   "overview": {
     "historicalContext": "Newton's identities were first published by Isaac Newton in *Arithmetica Universalis* (1707), though Albert Girard had stated equivalent results without proof in *Invention nouvelle en l'algèbre* (1629). The identities provide an algorithmic bridge between two fundamental bases of symmetric function theory: the elementary symmetric polynomials $e_k$ (which appear as polynomial coefficients via Vieta's formulas) and the power sums $p_k$ (which appear as matrix traces and moment-generating invariants).\n\nThe historical significance extends far beyond polynomial manipulation. In the 18th century, Edward Waring used Newton's identities to study symmetric functions systematically, leading to the 'Waring problem' of representing integers as sums of powers. In the 19th century, the connection between Newton's identities and matrix theory became central through Cayley and Sylvester's invariant theory. The Faddeev-LeVerrier algorithm (1840, 1853) directly applies Newton's identities to compute characteristic polynomials from matrix traces, a method still used in numerical linear algebra.\n\nIn modern mathematics, Newton's identities are a special case of the theory of symmetric functions developed by Schur, Littlewood, and Macdonald. The ring of symmetric functions $\\Lambda$ has multiple bases (monomial, elementary, power sum, Schur), and Newton's identities describe the change-of-basis between $e_k$ and $p_k$. This perspective connects to representation theory via the Frobenius characteristic map, which sends characters of symmetric groups to symmetric functions.",

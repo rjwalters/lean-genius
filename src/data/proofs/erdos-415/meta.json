@@ -74,7 +74,8 @@
     "lineCount": 222,
     "assumptions": "1 axiom(s) and 14 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 20
   },
   "overview": {
     "historicalContext": "This problem concerns the remarkable regularity of ordering patterns in sequences of Euler's totient function. Given k consecutive values \u03c6(m+1), ..., \u03c6(m+k), their relative ordering is one of k! possible permutations. Erd\u0151s asked: how large can k be such that ALL k! patterns appear somewhere in \u03c6(1), ..., \u03c6(n)?\n\nIn 1936, Erd\u0151s proved F(n) \u224d log log log n \u2014 an astonishingly slow growth rate, answering a question of Chowla. Sarvadaman Chowla had asked about consecutive values of arithmetic functions in the early 1930s at the Punjab University in Lahore. Erd\u0151s, then 23, solved the problem using sieve methods and published it in the Proceedings of the National Institute of Sciences of India.\n\nThe same triple-log behavior holds for other arithmetic functions like \u03c3(n), \u03c4(n), and \u03c9(n), suggesting a universal phenomenon rooted in the combinatorial structure of arithmetic functions rather than any specific number-theoretic property.\n\nThe problem connects two seemingly unrelated areas: the combinatorics of permutation patterns (studied intensively since the Stanley-Wilf conjecture, proved by Marcus and Tardos in 2004) and the distribution of values of multiplicative functions (a central topic in analytic number theory since Erd\u0151s and Kac's foundational 1940 paper). Despite nearly 90 years of work, three fundamental questions remain open.",

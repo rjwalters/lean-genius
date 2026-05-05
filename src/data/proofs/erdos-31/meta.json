@@ -64,7 +64,8 @@
       "Analytic number theory"
     ],
     "assumptions": "1 axiom(s) and 0 sorry(s). Axiom: lorentz_theorem (Lorentz's 1954 result axiomatized). No sorries remain.",
-    "theoremCount": 22
+    "theoremCount": 22,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős and Straus conjectured that any infinite set A can be 'completed' to cover almost all of ℕ using only a very sparse set B (density 0).\n\nLorentz proved this in 1954, showing that the additive structure of infinite sets is quite flexible. The proof constructs B by filling in 'gaps' in the sumset, and the sparseness of the construction depends on the distribution of A.\n\nThis result is fundamental to additive combinatorics: it shows that even very sparse sets can have rich additive structure when combined appropriately.",

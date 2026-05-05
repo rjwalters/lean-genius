@@ -57,7 +57,8 @@
       "Binomial coefficients (Pascal's identity, hockey stick)",
       "Basic algebra (exponent laws in monoids)"
     ],
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**The Vandermonde Identity and the Power of Generating Functions**\n\nAlexandre-Théophile Vandermonde (1735–1796) was a French mathematician who introduced what is now called the Vandermonde identity in his 1772 mémoire on combinations. The classical Vandermonde identity states Σ_{k=0}^r C(m,k)·C(n,r-k) = C(m+n,r); the parallel Vandermonde (or Vandermonde convolution for simplicial numbers) Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1) is a generalization. Both identities have traditionally been proved by induction on n or by counting arguments.\n\nGenerating functions as a proof technique were pioneered by Leonhard Euler in the 18th century and systematized by Pierre-Simon Laplace. The formal power series ring — where convergence is never needed — emerged in the 19th and 20th centuries as the algebraically clean foundation. Herbert Wilf's 1990 book *generatingfunctionology* popularized the approach for combinatorics: 'a generating function is a clothesline on which we hang up a sequence of numbers for display.'\n\nThe key principle illustrated here: an n-dimensional combinatorial identity (the 2D convolution) becomes a 0-dimensional algebraic identity (exponent addition) in the power series ring. This 'algebra replaces combinatorics' phenomenon is characteristic of the generating function method — and in Lean 4, the formal power series ring PowerSeries ℕ with Mathlib's API makes it fully rigorous.",

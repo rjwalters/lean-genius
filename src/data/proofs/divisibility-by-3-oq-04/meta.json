@@ -62,7 +62,8 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib's Nat.modEq_digits_sum and standard modular arithmetic properties.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Casting out nines is one of the oldest known methods for checking arithmetic. Al-Khwārizmī described the technique in his *Kitāb al-Jabr* (c. 825 CE) for verifying multiplication results. The method spread to medieval Europe via Fibonacci's *Liber Abaci* (1202) and remained the standard way to check hand calculations for over a millennium — well into the 20th century, when electronic calculators finally made it obsolete.\n\nThe algebraic principle is simple: since $10 \\equiv 1 \\pmod{9}$, every digit's positional weight disappears modulo 9, so $n \\equiv \\mathrm{digitsum}(n) \\pmod{9}$. This means arithmetic operations on the original numbers are mirrored by the same operations on digit sums. Any discrepancy proves the original computation was wrong — though the method cannot catch errors that happen to be multiples of 9.\n\nThis formalization generalizes the principle to arbitrary bases and moduli: for any $b$ and $d$ with $b \\equiv 1 \\pmod{d}$, digit sums in base $b$ respect both addition and multiplication modulo $d$. This subsumes casting out nines ($b{=}10, d{=}9$), casting out sevens in octal ($b{=}8, d{=}7$), casting out fifteens in hexadecimal ($b{=}16, d{=}15$), and all similar methods.",

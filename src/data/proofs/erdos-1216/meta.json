@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Tournament theory is a classical area of graph theory, with tournaments arising naturally from round-robin competitions where every player beats or loses to every other. The question of how large a 'totally ordered' (transitive) sub-tournament exists in any tournament is the directed analogue of the Ramsey problem for cliques. Stearns (1959) proved the elegant lower bound $f(n) \\geq \\lfloor \\log_2 n \\rfloor + 1$ by a greedy algorithm. Erdős and Moser (1964) proved $f(n) \\leq 2\\lfloor \\log_2 n \\rfloor + 1$ and noted $f(7) = 3$. Erdős asked whether $f(n) = \\lfloor \\log_2 n \\rfloor + 1$ exactly. Reid and Parker (1970) answered NO for $n \\geq 14$: $f(n) \\geq \\lfloor \\log_2 n + 4 - \\log_2 7 \\rfloor > \\lfloor \\log_2 n \\rfloor + 1$, with further improvements by Sanchez-Flores (1994). The exact growth rate of $f(n)$ between $\\log_2 n$ and $2\\log_2 n$ remains open.",

@@ -25,7 +25,8 @@
     "lineCount": 210,
     "assumptions": "7 axioms: collinear_is_magic, general_position_is_magic, magic_classification, three_collinear_card, three_collinear_collinear, triangle_card, triangle_general_position. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 17
   },
   "overview": {
     "historicalContext": "Murty conjectured in the 1970s that only four types of point configurations in the plane can be 'magic' — admitting positive weights with equal sums on all lines through at least two points. The conjecture remained open for decades until Ackerman, Buchin, Knauer, Pinchasi, and Rote proved it in their 2008 paper 'There are not too many magic configurations.' Their proof analyzes the linear system of equations $Aw = c\\mathbf{1}$ (where $A$ is the point-line incidence matrix) and shows that for configurations outside the four classes, the positive orthant intersected with this affine subspace is empty. The problem connects to classical topics in incidence geometry: the Sylvester-Gallai theorem (every non-collinear set has an ordinary line), the Melchior-Hirzebruch inequality on line arrangements, and the theory of weighted incidence structures in projective geometry. The four magic classes are: (1) collinear, (2) general position (no 3 collinear), (3) near-pencil ($n-1$ points on a line), and (4) projective images of the triangle-incenter configuration.",

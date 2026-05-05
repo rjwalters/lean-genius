@@ -26,7 +26,8 @@
     "lineCount": 199,
     "assumptions": "5 axiom(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1938 paper 'On sequences of integers no one of which divides the product of two others', one of his earliest contributions to multiplicative number theory and extremal combinatorics. The concept of primitive sets — where no element divides another — goes back to Besicovitch (1934) and Behrend (1935), who studied their density properties. Erdős strengthened the condition: instead of just pairwise non-divisibility, he required that no element $a$ divides the product $bc$ of any two other distinct elements. In his 1969 paper 'Some applications of graph theory to number theory', Erdős introduced an elegant bipartite graph construction to prove the upper bound, pioneering the use of extremal graph theory in number-theoretic problems. The graph has small integers and large primes as vertices, with edges encoding products in the set; the divisibility condition forces this graph to be $P_3$-free (no path of length 3), hence a forest. This technique — reducing a number theory problem to a forbidden subgraph problem — became a template for many later results in combinatorial number theory, including work by Pomerance and Alon on primitive sets and their generalizations. The exact constant $C$ in the secondary term remains open, connecting to deep questions about the distribution of smooth numbers and the multiplicative structure of integers.",

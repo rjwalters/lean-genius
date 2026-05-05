@@ -61,7 +61,8 @@
     ],
     "lineCount": 216,
     "assumptions": "2 axioms: erdos_sarkozy_odd_cycles, sarkozy_tripartite. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #883 studies cycle structure in the coprime graph on subsets of integers. Erdős-Sárkőzy (1997) proved odd cycles of length cn exist above the threshold. Sárkőzy (1999) solved Question 2 on tripartite subgraphs. The threshold floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion on multiples of 2 and 3. The coprimality graph on {1,...,n} connects integers with GCD 1, and its structure reflects multiplicative number theory through graph theory. The critical threshold mirrors the Euler product formula; understanding when such graphs contain long odd cycles connects to the Dirichlet density of integers coprime to a given set of primes.",

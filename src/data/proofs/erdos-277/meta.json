@@ -60,7 +60,8 @@
     "axiomCount": 1,
     "lineCount": 275,
     "assumptions": "1 axiom: haight_theorem. 0 sorries.",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 17
   },
   "overview": {
     "historicalContext": "Covering systems of congruences were introduced by Erdős in 1950 in his proof that there exist odd integers not representable as a prime plus a power of 2. The concept became central to his research program in combinatorial number theory. In the 1970s, Erdős formulated Problem #277 as part of a cluster of questions (#273-#279) exploring the interplay between covering systems and number-theoretic properties.\n\nThe problem connects two classical threads: the sum of divisors function $\\sigma(n) = \\sum_{d \\mid n} d$, studied since Euler, and the combinatorics of congruence coverings. Gronwall (1913) proved $\\limsup \\sigma(n)/(n \\ln\\ln n) = e^\\gamma$, showing highly abundant numbers exist at every threshold. The question is whether such numbers can simultaneously resist being covered.\n\nJ.A. Haight resolved the problem in 1979 ('Covering systems of congruences, a negative result', Mathematika 26, 53-61). His constructive proof builds $n$ as a product of carefully chosen large primes, ensuring high abundancy while structurally preventing any covering system from using only divisors of $n$ as moduli. The key insight exploits the reciprocal sum constraint: a covering system with distinct moduli $m_1, \\ldots, m_k$ requires $\\sum 1/m_i \\geq 1$, but Haight's numbers have divisors too sparse to satisfy this.\n\nThe result connects to Ramanujan's highly composite numbers (1915), Alaoglu and Erdős's superabundant numbers (1944), and later work by Hough (2015) resolving Erdős's minimum modulus conjecture for covering systems with distinct moduli.",

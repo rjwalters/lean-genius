@@ -42,7 +42,8 @@
         "module": "Mathlib.Probability.IdentDistrib"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The Glivenko-Cantelli theorem, proved independently by Valery Glivenko and Francesco Cantelli in 1933, establishes the fundamental statistical fact that the empirical distribution function is a uniformly consistent estimator of the true distribution function. This result is foundational for nonparametric statistics, as it guarantees that the empirical CDF—the most natural nonparametric estimator—converges to the true CDF not just at each individual point, but uniformly over all thresholds simultaneously. The theorem is often called the 'fundamental theorem of statistics'. It was later substantially generalized by Vapnik and Chervonenkis (1971) to classes of sets beyond half-lines, leading to VC theory and statistical learning theory.",

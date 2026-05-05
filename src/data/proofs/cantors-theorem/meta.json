@@ -57,7 +57,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Georg Cantor published this theorem in his 1891 paper *Über eine elementare Frage der Mannigfaltigkeitslehre* in *Jahresbericht der Deutschen Mathematiker-Vereinigung*. This was actually Cantor's second proof that the reals are uncountable — his first (1874) used a nested interval argument, but the 1891 diagonal proof was far more general and elegant.\n\nThe theorem was revolutionary: it proved that not all infinities are equal, establishing the hierarchy $|A| < |\\mathcal{P}(A)| = 2^{|A|}$ for every set $A$. Starting from $\\aleph_0 = |\\mathbb{N}|$, Cantor showed there exist infinities $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ — an endless tower of transfinite cardinals.\n\nCantor's work provoked fierce opposition. Leopold Kronecker, his former teacher at Berlin, famously declared 'God made the integers; all else is the work of man' and actively blocked Cantor's career. Henri Poincaré called set theory 'a disease from which mathematics will eventually recover.' The controversy contributed to Cantor's recurring bouts of depression; he died in a sanatorium in 1918. Yet within decades, Cantor's ideas became the foundation of modern mathematics: Zermelo axiomatized set theory (1908), and today ZFC set theory — built on Cantor's concepts — is the standard foundation.\n\nThe diagonal argument's versatility is remarkable: Gödel used a variant for his incompleteness theorems (1931), Turing for the undecidability of the halting problem (1936), and it appears in proofs of the Baire category theorem, the uncountability of the reals, and the non-computability of Kolmogorov complexity.",

@@ -52,7 +52,8 @@
     "lineCount": 185,
     "assumptions": "4 axioms: upperDensity, lowerDensity, kra_moreira_richter_robertson, MeasurePreservingSystem. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "**The Density Version of Hindman's Theorem**\n\nHindman's theorem (1974) is a cornerstone of Ramsey theory: for any finite coloring of ℕ, there exists an infinite set B such that all finite sums of distinct elements of B (the set FS(B)) are monochromatic.\n\nErdős (1975) asked whether a density analogue holds. Instead of coloring, consider a set A ⊆ ℕ with positive upper density. Must A contain a shifted sumset B + B + t for some infinite B?\n\n**Timeline:**\n- **1974**: Hindman proves his finite sums theorem\n- **1975**: Erdős poses the density conjecture in 'Problems and results in combinatorial number theory'\n- **1991**: Bergelson-Furstenberg-Weiss make partial progress using ergodic theory\n- **2024**: Kra, Moreira, Richter, and Robertson prove the conjecture!\n\nThe proof uses deep techniques from ergodic theory and dynamics on nilmanifolds.",

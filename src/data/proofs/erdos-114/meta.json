@@ -52,7 +52,8 @@
     "lineCount": 49,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Erdős, Herzog, and Piranian posed this problem in 1958, asking which monic polynomial of degree $n$ produces the longest lemniscate $\\{z : |p(z)| = 1\\}$. The conjectured answer $p(z) = z^n - 1$ has $n$-fold dihedral symmetry and lemniscate length $\\sim 2n$. Dolzhenko (1961) gave the first bound $f(n) \\leq 4\\pi n$ using argument-variation techniques. Danchenko (2007) halved this to $2\\pi n$ via potential theory. The breakthrough came from Fryntov and Nazarov (2009), who proved both local optimality of $z^n - 1$ (negative-definite Hessian of the length functional) and the near-optimal bound $f(n) \\leq 2n + O(n^{7/8})$, showing $f(n)/n \\to 2$. Eremenko and Hayman (1999) resolved the case $n = 2$ using conformal mapping techniques specific to the Bernoulli lemniscate. Terence Tao (2025) achieved the major breakthrough, proving $z^n - 1$ is the unique global maximum for all sufficiently large $n$, reducing the full conjecture to finitely many small cases. The problem carries a $\\$250$ Erdős bounty and remains open for all $n$.",

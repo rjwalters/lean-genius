@@ -54,7 +54,8 @@
     "axiomCount": 2,
     "lineCount": 219,
     "assumptions": "2 axioms: erdos_newman_lower_bound, alon_bukh_sudakov_upper_bound. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #806** was posed by Erdős and Newman in 1977 as part of their study of additive bases. The question asks: given a \"small\" set A (of size at most √n), can we find an even smaller set B whose sumset B + B covers A?\n\n**Historical Development:**\n- **1977 (Erdős-Newman):** Posed the problem and proved a lower bound. They showed there exist sets A with |A| ≈ √n requiring any covering basis B to have |B| ≥ c · (log log n / log n) · √n.\n- **2009 (Alon-Bukh-Sudakov):** Resolved the problem after 32 years! They proved the matching upper bound, showing that EVERY A of size ≤ √n has a basis B of size O((log log n / log n) · √n).\n\nThe resolution came through connections to discrete Kakeya-type problems, demonstrating unexpected links between additive combinatorics and geometric combinatorics.",

@@ -49,7 +49,8 @@
     "axiomCount": 0,
     "lineCount": 148,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "This problem, posed by Erdős and Mirsky in their 1952 paper on the distribution of the divisor function, asks a natural question: how long can consecutive integers maintain distinct divisor counts?\n\nThe divisor function τ(n) counts divisors of n. While τ varies considerably—primes have τ = 2, highly composite numbers have large τ—the question is whether collisions (τ(a) = τ(b) for distinct a, b) must occur within short intervals.\n\nErdős and Mirsky established both lower and upper bounds in 1952, but the gap between them has resisted closure for over 70 years. Beker later improved the upper bound, and connections to Cramér's conjecture on prime gaps have been observed.",

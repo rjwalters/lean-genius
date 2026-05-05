@@ -56,7 +56,8 @@
     "axiomCount": 1,
     "lineCount": 238,
     "assumptions": "1 axiom: h_superlinear. 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The sum of divisors function σ(n) = Σ_{d|n} d is one of the most classical functions in number theory, studied since antiquity in connection with perfect numbers (σ(n) = 2n) and amicable pairs. Erdős Problem #824 asks about the density of coprime pairs (a, b) with gcd(a,b) = 1 and σ(a) = σ(b). The coprimality constraint is crucial: without it, one could manufacture σ-equal pairs by multiplying both arguments by common factors.\n\nErdős (1974) proved limsup h(x)/x = ∞, showing that the ratio of coprime σ-equal pairs to x is unbounded. Pollack and Pomerance (2016) strengthened this to h(x)/x → ∞ — not just that the ratio occasionally exceeds any bound, but that it eventually stays above any bound. Their result appears in Trans. Amer. Math. Soc. Ser. B and uses deep results on the distribution of values of σ.\n\nThe strong conjecture asks whether h(x) > x^{2-o(1)}, meaning coprime σ-equal pairs are nearly as common as all pairs (since h(x) ≤ x² trivially). The gap between the known linear-surpassing growth and the conjectured near-quadratic growth is enormous: we don't even know h(x) > x^{1.01} for large x. Closing this gap would require fundamentally new understanding of σ-value collisions among coprime arguments.",

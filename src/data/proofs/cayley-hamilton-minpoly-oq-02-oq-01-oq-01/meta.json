@@ -76,7 +76,8 @@
     "lineCount": 570,
     "assumptions": "0 axioms, 0 sorries. Uses Mathlib's minpoly.algEquiv_eq for minimal polynomial invariance under algebra equivalences.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 26
+    "theoremCount": 26,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**The Skolem-Noether Theorem**\n\nThe Skolem-Noether theorem, proved independently by Thoralf Skolem (1927) and Emmy Noether (1929), is a cornerstone of the theory of central simple algebras. In its most general form, it states that every automorphism of a central simple algebra over a field is inner.\n\nFor the matrix algebra $M_n(K)$, this says: every $K$-algebra automorphism $\\varphi : M_n(K) \\to M_n(K)$ has the form $\\varphi(A) = P^{-1}AP$ for some invertible matrix $P$. In other words, the only way to rearrange $M_n(K)$ while preserving its $K$-algebra structure is by a change of basis.\n\nThe standard proof uses the theory of simple modules: $K^n$ is the unique simple $M_n(K)$-module up to isomorphism. Given an automorphism $\\varphi$, one constructs a 'twisted' module where $M$ acts as $\\varphi(M)$. By uniqueness of simple modules (Artin-Wedderburn theory), the original and twisted modules are isomorphic, and the isomorphism gives the conjugating matrix.\n\nThis result has deep consequences: it shows that $\\text{Aut}_K(M_n(K)) \\cong \\text{PGL}_n(K)$, connecting algebra automorphisms to projective geometry.",

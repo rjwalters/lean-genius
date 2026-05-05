@@ -29,7 +29,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Gauss-Wantzel theorem (1801/1837) characterizes compass-and-straightedge constructible regular polygons via Fermat primes: n-gon constructible iff φ(n) = 2^k. Neusis (marked ruler) constructions were used in antiquity for angle trisection — the ancient Greeks knew that neusis can trisect any angle, while compass-straightedge cannot trisect 60°. The modern algebraic characterization of neusis-constructible polygons was worked out by Andrew Gleason in 'Angle Trisection, the Heptagon, and the Triskaidecagon' (American Mathematical Monthly, 1988): n-gon is neusis-constructible iff φ(n) = 2^u · 3^v, equivalently n = 2^a · 3^b × (distinct Pierpont primes > 3). Pierpont primes — primes p with p−1 = 2^u · 3^v — are the neusis analog of Fermat primes. Unlike Fermat primes (of which only 5 are known: 3, 5, 17, 257, 65537), infinitely many Pierpont primes are expected (OEIS A005109: 2, 3, 5, 7, 13, 17, 19, 37, 73, 97, 109, 163, 193, 257, ...). The key new polygon enabled by neusis: the regular 7-gon (heptagon), since φ(7)=6=2·3 is 3-smooth but not a power of 2.",

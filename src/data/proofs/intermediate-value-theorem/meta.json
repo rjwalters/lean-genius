@@ -47,7 +47,8 @@
     "axiomCount": 0,
     "lineCount": 221,
     "assumptions": "0 axioms, 0 sorries. Core IVT (intermediate_value_Icc) from Mathlib; original work is pedagogical infrastructure and corollaries.",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Intermediate Value Theorem (IVT) is one of the foundational results in real analysis, first rigorously stated by Bernard Bolzano in 1817. Bolzano's work was largely ignored in his time, and Augustin-Louis Cauchy independently presented a more complete treatment in 1821.\n\nHowever, both Bolzano's and Cauchy's proofs relied on properties of real numbers that weren't rigorously established until later. The theorem essentially requires the completeness of the real numbers - the property that every bounded set has a supremum. This was finally formalized by Richard Dedekind and Georg Cantor in the 1870s through their constructions of the real numbers from the rationals.\n\nThe IVT is intimately connected to the topological notion of connectedness: it expresses the fact that continuous images of connected sets are connected, and connected subsets of ℝ are intervals.",

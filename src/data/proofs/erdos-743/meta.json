@@ -52,7 +52,8 @@
     "axiomCount": 8,
     "lineCount": 162,
     "assumptions": "8 axioms: TreeType, canPack, maxDegree, isStar, isPath, gyarfasLehel_starsPaths, fishburn_small_n, jkko_boundedDegree. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The Tree Packing Conjecture was posed by Gyárfás and Lehel in 1978. It asks whether any collection of trees T₂, T₃, ..., Tₙ (where Tₖ has k vertices) can be packed edge-disjointly into the complete graph Kₙ. A necessary condition is that the total number of edges matches: Σ(k-1) = n(n-1)/2 = |E(Kₙ)|, and this is indeed satisfied. Gyárfás and Lehel proved the conjecture when all trees are stars and/or paths.\n\nThe problem attracted major attention over four decades. Fishburn (1983) verified small cases (n ≤ 9). Bollobás (1983) showed the smallest ⌊n/√2⌋ trees can always be packed greedily, handling roughly 70% of the collection. The breakthrough came with Joos, Kim, Kühn, and Osthus (2019), who proved the conjecture for bounded-degree tree collections using regularity methods. Allen et al. (2021) extended this to trees with max degree ≤ cn/log n.\n\nMost recently, Janzer and Montgomery (2024) proved that the largest cn trees can always be packed, complementing Bollobás's result for small trees. However, trees of intermediate size (roughly 0.7n to (1-c)n vertices) remain unresolved. The related Ringel Conjecture — decomposing K_{2n+1} into copies of a single tree — was proved by Montgomery, Pokrovskiy, and Sudakov (2021), but that result does not directly imply the tree packing conjecture.",

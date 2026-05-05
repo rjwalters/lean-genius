@@ -58,7 +58,8 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries. Base-b digit-sum congruence derived from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Divisibility rules based on digit sums trace back to medieval Islamic mathematics: al-Khwārizmī (c. 825) described 'casting out nines' for verifying arithmetic. The method was widely transmitted to Europe via Fibonacci's *Liber Abaci* (1202). The underlying algebraic principle—that $b \\equiv 1 \\pmod{b-1}$ makes every positional digit-sum a modular invariant—was understood by Euler and Gauss in the 18th century as a consequence of modular arithmetic. This formalization generalizes the base-10 rule (parent proof) to arbitrary bases, revealing that 'casting out nines' is just one instance of a universal phenomenon: in any base $b$, digit sums determine remainders modulo $b-1$ and its factors. The cross-base theorem (Part VI) appears to be a novel formalization, connecting digit-sum tests across different bases.",

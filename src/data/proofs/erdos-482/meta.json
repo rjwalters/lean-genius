@@ -31,7 +31,8 @@
       "Two proved theorems synthesizing the original and generalized results"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #482 concerns a remarkable connection between integer sequences and binary expansions. Graham and Pollak discovered that for the sequence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋, the differences a_{2n+1} - 2a_{2n-1} yield the binary digits of √2. Erdős asked for similar results for √m and other algebraic numbers. Stoll (2005, 2006) provided wide-ranging generalizations of this phenomenon, connecting integer floor sequences to digit expansions of algebraic irrationals, settling the problem in a broader context than originally posed.",

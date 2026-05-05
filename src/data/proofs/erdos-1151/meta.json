@@ -49,7 +49,8 @@
       "Trigonometric functions (Chebyshev nodes)",
       "Point-set topology (closed sets, limit points)"
     ],
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Lagrange interpolation has a troubled history: Runge (1901) famously showed that interpolation at equally-spaced nodes for f(x) = 1/(1+25x²) diverges as n → ∞, despite f being analytic. Chebyshev nodes were introduced precisely to avoid this: by placing nodes at the roots of the Chebyshev polynomials, the interpolation error for smooth functions is dramatically reduced. Chebyshev (1854) showed these nodes minimize the ∞-norm of the Lebesgue function among all choices of n nodes. However, Erdős (1941) proved something deeper and disturbing: even at Chebyshev nodes, Lagrange interpolation can diverge for continuous (not just analytic) functions. Specifically, for x = cos(πp/q) with odd p, q, there exists a continuous f whose interpolation values diverge to ∞. Erdős (1943) then claimed — without proof — that the limit-point behavior is completely flexible: any closed subset of [−1, 1] can arise as the set of limit points of 𝓛ⁿf(x) for some continuous f. This conjecture was listed as open by Vértesi in his 1999 problem compilation [Va99, Problem 2.41]. As of 2026, it remains unresolved.",

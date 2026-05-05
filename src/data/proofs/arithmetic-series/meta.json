@@ -54,7 +54,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The formula for 1 + 2 + ... + n = n(n+1)/2 is famously attributed to Carl Friedrich Gauss, who allegedly discovered it as a schoolboy around 1785. The story goes that when his teacher J.G. Büttner asked the class to sum the numbers 1 to 100 (hoping for a quiet classroom), young Gauss immediately answered 5050. The earliest known source for this anecdote is Wolfgang Sartorius von Waltershausen's 1856 biography of Gauss, written decades after the alleged event — the story has been embellished in many retellings.\n\nGauss realized that pairing 1+100, 2+99, 3+98, etc. gives 50 pairs, each summing to 101, yielding 50 × 101 = 5050. This pairing argument is the essence of the proof and illustrates a fundamental principle: algebraic insight (symmetry) defeats brute-force computation.\n\nThe formula was known long before Gauss. It appears in Archimedes' work (c. 250 BCE), in Aryabhata's *Aryabhatiya* (499 CE, India) as the formula for *saṅkalita*, and in Babylonian mathematics. The Pythagoreans studied triangular numbers T(n) = n(n+1)/2 as figurate numbers — dots arranged in triangular patterns — connecting arithmetic to geometry. In China, the formula appears in the *Jiuzhang Suanshu* (Nine Chapters on the Mathematical Art, c. 200 BCE).",

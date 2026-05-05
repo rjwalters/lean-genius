@@ -70,7 +70,8 @@
     "axiomCount": 2,
     "lineCount": 357,
     "assumptions": "2 axioms: gafni_tao_upper_bound, gafni_tao_main_theorem. 0 sorries.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The distribution of prime gaps $g_n = p_{n+1} - p_n$ is a central topic in analytic number theory. By the Prime Number Theorem, the average gap near $p_n$ is $\\sim \\log p_n$, but individual gaps vary widely. Erdős studied the **composite numbers** within prime gaps, asking about their factorization structure.\n\nProblem #682 asks: for almost all $n$, does the gap $(p_n, p_{n+1})$ contain an integer $m$ whose smallest prime factor $p(m) \\geq g_n$? Such $m$ are called $g_n$-rough. Erdős initially believed this should hold for ALL large $n$, but discovered a conditional counterexample via **Dickson's conjecture** (1904): the primorial $13\\# = 30030$ ensures every integer in $[2184, 2200]$ is divisible by a prime $\\leq 13$, so if $2183 + 30030d$ and $2201 + 30030d$ are consecutive primes (gap 18), no 18-rough number exists in the gap.\n\nAlon Gafni and Terence Tao (2025, arXiv:2508.06463) resolved the problem affirmatively: the exceptional set $E(X) = |\\{n \\leq X : n \\text{ exceptional}\\}|$ satisfies $E(X) \\ll X/(\\log X)^2$, so exceptions have density 0. Conditionally on the prime tuples conjecture, $E(X) \\sim c \\cdot X/(\\log X)^2$ for an explicit constant $c > 0$. Their proof uses sieve methods and estimates for smooth numbers (numbers with all small prime factors), extending de Bruijn's (1966) foundational work on the distribution of smooth numbers.",

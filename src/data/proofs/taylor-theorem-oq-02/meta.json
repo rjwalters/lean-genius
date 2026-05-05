@@ -54,7 +54,8 @@
       "Proved analyticAt_taylor_convergence: existential form for AnalyticAt hypothesis"
     ],
     "dateAdded": "2026-04-12",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Brook Taylor (1685–1731) published his theorem in 1715 in *Methodus Incrementorum*, showing that smooth functions can be approximated by polynomials with an explicit remainder. Colin Maclaurin (1742) popularized the special case expanded at 0, which now bears his name. The theorem as stated guarantees only an *asymptotic* expansion: the remainder $R_n(h) = O(h^n)$ as $h \\to 0$, which does NOT imply $R_n \\to 0$ as $n \\to \\infty$.\n\nAugustin-Louis Cauchy (1821) exhibited the now-famous counterexample $f(x) = e^{-1/x^2}$ (extended by $f(0)=0$): every derivative at 0 is zero, so the Taylor series at 0 is identically 0, yet $f(x) > 0$ for $x \\neq 0$. This showed that $C^\\infty$ smoothness is insufficient for Taylor series convergence to the function — a strictly stronger condition is needed.\n\nThe correct condition is **analyticity**: Weierstrass (1870s) established that a real function is analytic if and only if it is locally representable by a convergent power series. In modern Lean/Mathlib terms, this is `AnalyticAt \\mathbb{R} f x_0` — the existence of a formal multilinear series (FPS) $p$ with $f(x_0 + y) = \\sum_n p_n(y, \\ldots, y)$ for $y$ in a ball.\n\nThis proof file answers the open question: does Mathlib's `HasFPowerSeriesAt` machinery produce the classical Taylor series in terms of `iteratedDeriv`? The answer is yes, via a bridge lemma connecting the multilinear FPS evaluation to the scalar $\\partial^n f(x_0)/n! \\cdot y^n$ form.",

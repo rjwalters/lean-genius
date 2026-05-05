@@ -51,7 +51,8 @@
     "lineCount": 141,
     "assumptions": "0 axioms, 0 sorries. Area derivation uses Mathlib's integral_eq_sub_of_hasDerivAt (FTC Part 2).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Archimedes of Syracuse (~287–212 BCE) conceived of the disk as being composed of infinitely many concentric circular rings (annuli). Each ring at radius ρ has circumference $2\\pi\\rho$ and infinitesimal width $d\\rho$, contributing area $2\\pi\\rho\\, d\\rho$ to the total. Summing all rings from $\\rho = 0$ to $\\rho = r$ gives the total area $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. This argument—though not stated in integral notation by Archimedes—is the conceptual foundation of his proof in *Measurement of a Circle* and anticipates Leibniz's integral calculus by nearly two millennia. The formal statement $A(r) = \\int_0^r C(\\rho)\\, d\\rho$ follows from the Fundamental Theorem of Calculus (Newton–Leibniz, 1660s–1680s): since $\\frac{dA}{dr} = C(r)$, which was proved in the companion entry (*Circumference via Area Differentiation*), the FTC gives $A(r) - A(0) = \\int_0^r C(\\rho)\\, d\\rho$, and $A(0) = 0$ yields the formula.",

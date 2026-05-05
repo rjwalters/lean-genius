@@ -54,7 +54,8 @@
     "lineCount": 903,
     "assumptions": "Fully verified. 0 axioms, 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 60
+    "theoremCount": 60,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "**Euler's formula** $V - E + F = 2$ for connected planar graphs (equivalently, convex polyhedra) was first proved by Euler in 1758, though anticipated by Descartes. The formula has profound implications:\n\n- **Planarity**: $E \\leq 3V - 6$ and $E \\leq 2V - 4$ (bipartite), enabling planarity tests\n- **Coloring**: Average degree $< 6$ implies a vertex of degree $\\leq 5$, driving the Six Color Theorem and (via Kempe chains) the Five Color Theorem\n- **Topology**: For surfaces of genus $g$, $V - E + F = 2 - 2g$ (Euler characteristic)\n\nThe **Four Color Theorem** (1976, Appel-Haken; computer-verified by Gonthier 2005) shows planar graphs are actually 4-colorable, but the Six Color Theorem has an elegant elementary proof via degeneracy. The Five Color Theorem has a clean Kempe-chain proof.\n\nThis formalization extends the base `EulerPolyhedralFormula.lean` with deeper structural results: the spanning-tree construction of Euler's formula, graph degeneracy theory, and the Six Color Theorem.",

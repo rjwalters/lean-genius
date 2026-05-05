@@ -47,7 +47,8 @@
     "lineCount": 250,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Cayley-Hamilton theorem is named after Arthur Cayley (1821–1895) and William Rowan Hamilton (1805–1865). Hamilton proved a version for quaternions in his 1853 *Lectures on Quaternions*: every quaternion $q$ satisfies $q^2 - 2\\text{Re}(q)\\cdot q + |q|^2 = 0$, which is the characteristic equation of the $2\\times 2$ complex matrix representation. Cayley stated the general theorem for matrices in his 1858 *Memoir on the Theory of Matrices* (Philosophical Transactions), but verified it only for $2\\times 2$ and $3\\times 3$ cases, writing that the general proof was 'not necessary.' Ferdinand Frobenius gave the first rigorous proof for arbitrary $n\\times n$ matrices in 1878 using the adjugate matrix identity.\n\nThe theorem is fundamental across mathematics: in control theory, it proves that the state transition matrix $e^{At}$ can be expressed as a degree-$(n{-}1)$ polynomial in $A$; in quantum mechanics, it constrains the algebra of observables; and in numerical analysis, it underpins the Krylov subspace methods (Lanczos, Arnoldi) for eigenvalue computation. The Lean formalization uses Mathlib's `Matrix.aeval_self_charpoly`, which proves the theorem algebraically via the adjugate identity $p(A) = \\det(A - tI) \\cdot I$ evaluated at $t = A$.",

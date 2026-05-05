@@ -56,7 +56,8 @@
     "axiomCount": 4,
     "lineCount": 202,
     "assumptions": "4 axioms: coloursUsed, r_3_solved, r_4_solved, r_2_false. See Lean source for complete statements.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős and Gyárfás posed this conjecture in their 1999 paper 'Split and balanced colorings of complete graphs'. A balanced r-colouring of a complete graph means every induced K_{r+1} uses all r colours on its edges. The conjecture asserts that no such balanced colouring exists for K_{r²+1} when r ≥ 3.\n\nErdős and Gyárfás proved the conjecture for the cases r = 3 (K₁₀) and r = 4 (K₁₇) using counting arguments on the edge-colour distribution. They also showed the result fails for r = 2, where the Petersen graph complement provides a balanced 2-colouring of K₅. The general conjecture for r ≥ 5 remains open.\n\nThe threshold r²+1 is known to be tight: for infinitely many values of r, balanced r-colourings of K_{r²} exist. This means that the single extra vertex is precisely what forces the non-existence of balanced colourings, revealing a sharp combinatorial threshold.",

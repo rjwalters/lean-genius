@@ -61,7 +61,8 @@
     "axiomCount": 3,
     "lineCount": 336,
     "assumptions": "3 axioms: question1_affirmative, question2_negative, question3_affirmative. 0 sorries.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erdos Problem #777: Comparable Pairs in Set Families**\n\nThis problem was posed by Daykin and Erdos in the early 1980s, exploring the structure of families of sets through their comparability graphs.\n\n**Key History:**\n- Daykin and Erdos [Gu83]: Original problem formulation with three questions\n- Daykin and Frankl: Proved that if almost all pairs are comparable, then |F|^{1/n} approaches 1\n- Alon-Frankl [AlFr85]: Resolved Questions 2 (no) and 3 (yes)\n- Alon-Das-Glebov-Sudakov [ADGS15]: Resolved Question 1 (yes)\n\n**Mathematical Setting:**\nGiven a family F of subsets of {1,...,n}, the comparability graph G_F has F as vertices and connects A to B if they are comparable (one contains the other). The problem asks about the maximum number of edges possible under various size constraints on F.",

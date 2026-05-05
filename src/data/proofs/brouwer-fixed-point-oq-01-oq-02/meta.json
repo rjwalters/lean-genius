@@ -51,7 +51,8 @@
     "dateAdded": "2026-04-04",
     "lineCount": 233,
     "assumptions": "1 axiom: singular_homology_retraction_split — encoding H_{n-1}(S^{n-1}) ≅ ℤ, H_{n-1}(B^n) = 0, functoriality r ∘ i = id → r* ∘ i* = id*. no_retraction_axiom appears only in a block-comment example (showing the parent file's approach), not as an actual axiom in this file. The algebraic argument (Part II) is fully proved with 0 axioms.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The **No-Retraction Theorem** was proved by Karol Borsuk in 1931, predating Brouwer's 1912 fixed-point theorem (which came first chronologically, with various proofs following). The two results are equivalent: a retraction $r: B^n \\to S^{n-1}$ would yield a continuous map $f = i \\circ r: B^n \\to B^n$ with no fixed point (since $f(x) \\in S^{n-1}$ but $f(x) \\neq x$ for interior points), contradicting Brouwer.\n\nThe **singular homology proof** was developed in the 1920s-1940s following the emergence of algebraic topology. The key steps were laid out by Lefschetz (1930) and formalized in Eilenberg-Steenrod axioms (1945). The crucial computations are: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ (proved via Mayer-Vietoris by covering $S^{n-1}$ with two hemispheres) and $H_{n-1}(B^n) = 0$ (since $B^n$ is contractible and contractible spaces have trivial reduced homology).\n\nThis file implements the **refined axiomatization** of the homological proof, cleanly separating the algebraic component (provable with 0 axioms) from the analytic component (1 axiom encoding Mathlib gaps). The algebraic fact — that $\\mathrm{id}: \\mathbb{Z} \\to \\mathbb{Z}$ cannot factor through the trivial group — is the categorical heart of the entire argument.",

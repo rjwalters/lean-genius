@@ -42,7 +42,8 @@
     ],
     "dateAdded": "2026-05-03",
     "lineCount": 103,
-    "assumptions": "0 new axioms — all results follow from InfinitudePrimes4k1 and InfinitudePrimes4k3, which together use only standard Mathlib and the SumTwoSquares module."
+    "assumptions": "0 new axioms — all results follow from InfinitudePrimes4k1 and InfinitudePrimes4k3, which together use only standard Mathlib and the SumTwoSquares module.",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The infinitude of primes congruent to 1 (mod 4) is a special case of **Dirichlet's theorem** (1837), which requires analytic machinery (Dirichlet L-functions). However, the specific case $p \\equiv 1 \\pmod 4$ has an **elementary proof** using Fermat's theorem that $-1$ is a quadratic residue mod $p$ if and only if $p \\equiv 1 \\pmod 4$.\n\nThis result completes the elementary classification of primes by their residue mod 4:\n- $p = 2$ (the unique even prime)\n- $p \\equiv 1 \\pmod 4$ (infinitely many, proved here)\n- $p \\equiv 3 \\pmod 4$ (infinitely many, proved in `infinitude-primes-4k3`)\n\nThe two elementary proofs are parallel in structure but differ in their key lemma: the ≡ 3 case uses a simple product argument, while the ≡ 1 case requires Euler's criterion for quadratic residues.\n\nThe **sum of two squares** connection makes the $p \\equiv 1 \\pmod 4$ case especially rich. Fermat conjectured in 1640 that a prime $p$ is a sum of two integer squares ($p = a^2 + b^2$) if and only if $p = 2$ or $p \\equiv 1 \\pmod 4$. Euler proved this in 1749 using infinite descent — the same Euler whose quadratic residue criterion appears in this proof. The bridge is direct: $(-1/p) = 1$ (i.e., $-1$ is a square mod $p$) is equivalent to both conditions simultaneously. Mathlib's `NumberTheory.SumTwoSquares` module formalizes exactly this connection, and `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` used here is the machine-checked form of Euler's 1749 argument.",

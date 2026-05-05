@@ -72,7 +72,8 @@
     "axiomCount": 8,
     "lineCount": 403,
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
-    "theoremCount": 34
+    "theoremCount": 34,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The Goemans-Williamson algorithm (1995) was a landmark result in combinatorial optimization, achieving a 0.878-approximation ratio for the Maximum Cut problem using semidefinite programming (SDP). This substantially improved the simple randomized 1/2-approximation.\n\nThe key insight is to relax the integer programming formulation of MaxCut to a semidefinite program, where each vertex is assigned a unit vector on a high-dimensional sphere instead of a binary ±1 value. The SDP can be solved in polynomial time, and a random hyperplane is used to round the continuous solution back to a discrete cut.\n\nRemarkably, under the Unique Games Conjecture (Khot et al. 2007), α_GW ≈ 0.878 is the best possible approximation ratio achievable in polynomial time, making this algorithm conditionally optimal.",

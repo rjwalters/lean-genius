@@ -56,7 +56,8 @@
     "axiomCount": 2,
     "lineCount": 118,
     "assumptions": "2 axioms: g, g_d. Structure fields are object definitions, not assumptions.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "This problem concerns unit distance graphs in the plane, where n points at minimum pairwise distance 1 are connected by edges if exactly at distance 1. Such graphs are always planar (edges cannot cross without forcing points closer than 1). The key quantity g(n) measures the guaranteed independent set size.\n\nErdős initially conjectured g(n) = n/3, but this was disproved by Chung, Graham, and Pach who showed g(n) ≤ 6n/19 ≈ 0.316n. The baseline lower bound g(n) ≥ n/4 follows from planarity and the Four Colour Theorem (observed by Pollack in 1985). This was improved by Csizmadia (1998) to 9n/35 and then by Swanepoel (2002) to the current best 8n/31.\n\nThe current best upper bound is due to Pach and Tóth (1996): g(n) ≤ 5n/16 = 0.3125n. The gap between 8/31 ≈ 0.258 and 5/16 = 0.3125 remains to be closed. The problem also generalizes to higher dimensions, where g_d(n) ~ n/d is conjectured.",

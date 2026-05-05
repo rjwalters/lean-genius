@@ -77,7 +77,8 @@
     ],
     "lineCount": 290,
     "assumptions": "1 axiom: enr_conjecture_false. 0 sorries.",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdos, Nesetril, and Rodl [Er92b]. It asks about the structure of infinite sets with a specific property related to AP-free subsets.\n\nThe problem connects deeply to Szemeredi's theorem (1975), which shows that any dense subset of the integers contains arbitrarily long arithmetic progressions. Consequently, AP-free sets have density 0.\n\nThe question explores whether having uniformly large AP-free subsets forces a simple structure (finite union of AP-free sets). The conjecture was ultimately DISPROVED: the ENR condition (every n-element subset contains an AP-free subset of size at least epsilon*n) is strictly weaker than being a finite union of AP-free sets. This parallels a broader theme in additive combinatorics where local density conditions do not force global structural decompositions. The Kelley-Meka theorem (2023) giving near-optimal bounds of |A| ≤ N·exp(-c(log N)^{1/12}) for AP-free sets in [N] further sharpened the quantitative landscape surrounding such problems.",

@@ -33,7 +33,8 @@
       }
     ],
     "lineCount": 299,
-    "assumptions": "None. OmegaContinuous.monotone proved via chain construction: c 0 = a, c (n+1) = b gives f(a) \u2264 \u2294\u2099 f(c\u2099) = f(b) by \u03c9-continuity."
+    "assumptions": "None. OmegaContinuous.monotone proved via chain construction: c 0 = a, c (n+1) = b gives f(a) \u2264 \u2294\u2099 f(c\u2099) = f(b) by \u03c9-continuity.",
+    "definitionCount": 6
   },
   "parent": "cantor-diagonalization-oq-04",
   "openQuestion": "How does Lawvere's categorical fixed-point theorem connect to domain-theoretic fixed points (Kleene chain, Scott's theorem, Y combinator)?",

@@ -63,7 +63,8 @@
     "axiomCount": 4,
     "lineCount": 175,
     "assumptions": "4 axioms: sumFEps, elliott_1969, sumFEpsAlt, tang_zhang_2025. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #981 concerns the stabilization of character sums involving the Legendre symbol (n/p). For an odd prime p, the Legendre symbol takes values +1 (quadratic residue), -1 (non-residue), and 0 (divisible by p). The partial sums ∑_{n≤N} (n/p) exhibit cancellation due to the equidistribution of quadratic residues and non-residues modulo p. The stabilization threshold f_ε(p) is the smallest m such that |∑_{n≤N} (n/p)| < εN for all N ≥ m, measuring when this cancellation becomes permanently effective.\n\nThe problem was posed by Erdős in [Er65b, p. 232] and asks for the asymptotic behavior of ∑_{p<x} f_ε(p) as x → ∞. P.D.T.A. Elliott resolved this completely in 1969, proving that ∑_{p<x} f_ε(p) ~ c_ε · x/log x for some constant c_ε > 0 depending on ε. The appearance of x/log x mirrors the Prime Number Theorem and suggests a deep connection between character sum stabilization and the distribution of primes.\n\nThe problem sits within the broader theory of character sum bounds. The Pólya-Vinogradov inequality (1918) gives |∑_{n≤N} χ(n)| ≤ c√p log p, providing a crude upper bound on f_ε(p). Burgess (1962) improved these bounds for short character sums. More recently, Tang and Zhang (2025) studied an alternative 'first-passage' formulation where f_ε(p) is the first m with |∑_{n≤m} (n/p)| < εm, and showed it also has a PNT-form asymptotic.",

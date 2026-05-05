@@ -62,7 +62,8 @@
     "axiomCount": 4,
     "lineCount": 192,
     "assumptions": "4 axioms: G_upper_bound, G_lower_bound, gap_grows, and 1 more. See Lean source for complete statements.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős Problem #879, posed by Paul Erdős in collaboration with J.H. van Lint, investigates the maximum sum achievable by a pairwise coprime subset of {1,...,n}. The problem first appeared in [Er84e] and was revisited in [Er98]. It sits at the intersection of additive combinatorics and analytic number theory, connecting the structure of coprime sets to the distribution of primes.\n\nErdős and Van Lint defined the comparison function H(n) = Σ_{p<n} p + n·π(√n), which represents the sum one would obtain by taking all primes below n plus a correction term for semiprimes involving small primes. They proved the bounds H(n) - n^{3/2-o(1)} < G(n) < H(n), showing that the primes-plus-semiprimes strategy is nearly optimal. They also showed that (H(n) - G(n))/n → ∞, meaning the gap grows faster than linearly.\n\nThe problem poses two open questions. Question 1 asks whether the gap can be tightened to n^{1+o(1)}, which Erdős and Van Lint showed holds under plausible (but unproven) assumptions about prime distribution related to the twin prime conjecture. Question 2 asks whether optimal admissible sets must contain integers with arbitrarily many prime factors; the k=2 case (semiprimes) is proved, but k ≥ 3 remains open. The problem is closely related to Problem #878 and connects to OEIS sequence A186736.",

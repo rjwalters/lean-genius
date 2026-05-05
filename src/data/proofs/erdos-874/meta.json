@@ -61,7 +61,8 @@
     "axiomCount": 2,
     "lineCount": 227,
     "assumptions": "2 axioms: deshouillers_freiman_main, k_limit_is_two. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "This problem asks about admissible sets A ⊆ {1,...,N} where sums of r distinct elements form disjoint sets for each r. Straus (1966) introduced the term and established that 2 ≤ liminf k(N)/√N ≤ limsup k(N)/√N ≤ 4/√3. Erdős-Nicolas-Sárközy (1991) improved the upper bound to √(143/27). Finally, Deshouillers-Freiman (1999) proved the conjecture: k(N) ~ 2√N. Admissible sets generalize Sidon sets (B_2 sets, where only pairwise sums must be distinct) to all r-fold sums, placing them in the broader B_h set theory initiated by Sidon in 1932 and developed by Erdős and Turán. The precise √N asymptotics reflect a fundamental density constraint: packing many elements while keeping all r-fold sum sets disjoint requires near-optimal spread within {1,...,N}.",

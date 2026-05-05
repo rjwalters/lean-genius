@@ -48,7 +48,8 @@
     "axiomCount": 0,
     "lineCount": 145,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem 1077 was posed by Erdős and Simonovits (1970) in the context of extremal graph theory. A graph is D-balanced if the ratio of maximum to minimum degree is at most D. The question asks: given a dense graph (one with n^{1+α} edges), how large a balanced subgraph can we guarantee?\n\nThe original statement had ambiguities: the exponent 1-α suggested in [ErSi70] decreases as α increases, which is counterintuitive. The erdosproblems.com entry clarifies that this was likely a typo.\n\nJiang and Longbrake (2025) provided a complete resolution: the optimal number of vertices is Θ(n^α). They proved every such graph has a 6-balanced subgraph on Ω(n^α) vertices, and complete bipartite graphs show this is tight.",

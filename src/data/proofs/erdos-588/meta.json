@@ -76,7 +76,8 @@
     "axiomCount": 2,
     "lineCount": 87,
     "assumptions": "2 axioms: f, sylvester_k3. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "**Erdős Problem #588: k-Point Lines in General Position**\n\nThis problem, posed by Paul Erdős in the 1970s with a $100 prize, generalizes Problem #101 (the $k=4$ case). It asks about the maximum number of '$k$-rich' lines (lines containing $\\ge k$ points) when no $k+1$ points are collinear.\n\n**The Function $f_k(n)$**: Given $n$ points in $\\mathbb{R}^2$ with no $k+1$ collinear, $f_k(n)$ is the maximum number of lines through $\\ge k$ points.\n\n**Key Developments:**\n- **Sylvester**: Established $f_3(n) = n^2/6 + O(n)$ — the $k=3$ case is quadratic, motivating the question for $k \\ge 4$\n- **Kárteszi (1963)**: Proved $f_k(n) \\ge \\Omega(n \\log n)$ using combinatorial constructions, showing the function grows superlinearly\n- **Grünbaum (1976)**: Improved to $f_k(n) \\ge \\Omega(n^{1+1/(k-2)})$ using algebraic configurations. For $k=4$ this gives $\\Omega(n^{3/2})$\n- **Solymosi-Stojaković (2013)**: Achieved $f_k(n) \\ge n^{2-O(1/\\sqrt{\\log n})}$ via lattice-point constructions with projective transformations. This is $n^{2-o(1)}$, tantalizingly close to $n^2$\n\n**The Conjecture**: Is $f_k(n) = o(n^2)$ for $k \\ge 4$? Despite the Solymosi-Stojaković lower bound being extremely close to $n^2$, the conjecture asserts $f_k(n)/n^2 \\to 0$. The $\\$100$ prize remains unclaimed.\n\n**Connection to Szemerédi-Trotter**: The incidence theorem gives $O(n^2/k^3)$ as an upper bound for $k$-rich lines, which is $O(n^2)$ — matching the trivial bound. Going below quadratic requires structural arguments beyond incidence counting.",

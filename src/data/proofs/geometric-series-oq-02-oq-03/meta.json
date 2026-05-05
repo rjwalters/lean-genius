@@ -39,7 +39,8 @@
       "Local boundedness of inversion near identity",
       "Left and right inverse identities near 1"
     ],
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The openness of the unit group in a Banach algebra is a cornerstone of functional analysis, first established rigorously by Gelfand (1941) in his foundational work on commutative Banach algebras. Gelfand recognized that the Neumann series — the operator-theoretic generalization of the scalar geometric series $\\sum r^n = (1-r)^{-1}$ — provides a constructive proof of invertibility for small perturbations of the identity. This idea traces back to Neumann himself (1877), who used it to study integral equations arising in mathematical physics. Kato's comprehensive perturbation theory (1966) systematically develops the consequences for eigenvalues and resolvents: if $A$ is invertible and $B$ is close enough to $A$, the Neumann series for $A^{-1}(A-B)$ converges, giving an explicit inverse for $B$. Rudin's 'Functional Analysis' (1991, Theorem 10.7) presents this as a foundational result of Banach algebra theory. The quantitative norm bound $\\|B^{-1}\\| \\le (1 - \\|1-B\\|)^{-1}$ is essential for resolvent estimates, numerical stability analysis of linear systems, and holomorphic functional calculus. In numerical linear algebra, this estimate appears as the Banach perturbation lemma and underpins backward stability analysis for matrix computations.",

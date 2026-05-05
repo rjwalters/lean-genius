@@ -48,7 +48,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Charles Hermite proved $e$ is transcendental in 1873, making it the first \"naturally occurring\" constant shown to be transcendental—Joseph Liouville had constructed artificial transcendental numbers in 1844, but those were designed to satisfy Liouville's approximation criterion. Hermite's method used an auxiliary polynomial $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$ combined with integral estimates to derive a contradiction from an assumed algebraic relation for $e$. Nine years later, Ferdinand von Lindemann (1882) extended Hermite's technique to prove $\\pi$ is transcendental, resolving the ancient Greek problem of squaring the circle. The full generalization—the **Lindemann-Weierstrass theorem** (1885)—states that $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent whenever $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraic numbers. This deep result remains unformalized in Mathlib, so the main theorem here is axiomatized.",

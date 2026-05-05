@@ -25,7 +25,8 @@
     "lineCount": 146,
     "assumptions": "5 axioms: erdos_135_false (the five-distance conjecture is false, Tao 2024), tao_counterexample (Tao's explicit randomized parabola counterexample), guth_katz_lower_bound (any n points determine ≥ cn/√(log n) distinct distances, Guth-Katz 2015), parallelogram_few_distances (parallelograms determine ≤ 3 distances), tao_avoids_parallelograms (five-distance sets contain no parallelogram). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős and Gyárfás conjectured that local constraints on 4-point configurations would force global distance diversity: if any 4 points determine at least 5 of the 6 possible distinct distances, the total number of distances should be quadratic. This $250-prize problem remained open for decades until Terence Tao disproved it in September 2024 (arXiv:2409.01343). Tao's counterexample, using randomized algebraic curves over finite fields, was part of his broader exploration of erdosproblems.com, partly as a test case for AI-assisted mathematics. The result shows that local constraints on small point subsets cannot guarantee global distance diversity.",

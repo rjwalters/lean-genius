@@ -41,7 +41,8 @@
     ],
     "assumptions": "None. All lemmas proved directly. kelly_distance_lemma proved via 6-case analysis on foot parameter s=(u*v)/D.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "James Joseph Sylvester posed the problem in 1893 in the Educational Times: must every finite non-collinear point set have a line through exactly two of its points? No solution appeared for nearly 50 years until Tibor Gallai (born Tibor Grünwald) proved it in 1944 using a topological argument. L.M. Kelly published his celebrated one-paragraph proof in 1948 in the American Mathematical Monthly, using a purely extremal argument that has become a staple of combinatorial geometry courses. The theorem occupies a central place in incidence geometry, with deep connections to the Hesse configuration (the unique non-realizable arrangement over $\\mathbb{R}$ but realizable over $\\mathbb{C}$) and to the Green-Tao theorem (2013), which establishes that $n$ non-collinear points determine at least $n/2$ ordinary lines for sufficiently large $n$. The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the inflection points of a smooth cubic curve provide a counterexample.",

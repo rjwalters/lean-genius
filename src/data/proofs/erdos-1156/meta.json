@@ -47,7 +47,8 @@
     "axiomCount": 3,
     "lineCount": 124,
     "assumptions": "3 axioms: erdosRenyi (random graph model), chromaticNumberRV (measurability), erdos_1156_q1_conjecture (open conjecture). 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1156: A 35-Year Journey Toward Constant Concentration**\n\nThe chromatic number $\\chi(G)$ of the Erdős–Rényi random graph $G(n, 1/2)$ has been a central subject in probabilistic combinatorics since the 1970s.\n\n**Bollobás (1988)** proved the asymptotic formula $\\chi(G(n,1/2)) \\sim n/(2\\log_2 n)$ almost surely — establishing that the chromatic number grows, but sublinearly. His proof used the second moment method and the observation that dense subgraphs dominate the coloring barrier.\n\n**Shamir–Spencer (1987)** showed $\\chi$ concentrates within $O(n^{1/2})$ values using the martingale method: the Azuma–Hoeffding inequality applied to a vertex exposure martingale (revealing vertices one at a time) gives $|\\chi - \\mathbb{E}[\\chi]| = O(n^{1/2})$ with high probability.\n\n**Alon–Krivelevich (1997)** tightened this to $O(n^{1/2}/\\log n)$ using a more careful analysis of 'color-critical' subgraphs and the structure of the chromatic number near its expectation.\n\n**Heckel (2021)** achieved the breakthrough result: for at least half of all $n$, $\\chi(G(n,1/2))$ concentrates on just *two consecutive values* — meaning $C = 1$ suffices for a density-1 subsequence of $n$. Her proof exploited the 'jumping' behavior of the chromatic number as $n$ increases, related to changes in the structure of extremal color-critical subgraphs.\n\n**Status (2026):** The general conjecture ($C = O(1)$ for ALL $n$) remains open. The gap between Alon–Krivelevich's $O(n^{1/2}/\\log n)$ and the conjectured $O(1)$ is a polynomial factor, with no conditional results known.",

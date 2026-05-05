@@ -54,7 +54,8 @@
     "axiomCount": 1,
     "lineCount": 226,
     "assumptions": "1 axiom: hall_theorem. 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Origins and History**\n\nErdős posed this problem in his 1979 paper \"Some unconventional problems in number theory\" in Astérisque. The question concerns divisibility by numbers d that are congruent to 1 modulo m, a fundamental topic in multiplicative number theory.\n\n**Trivial Bounds**\n\nFor α < 1, a simple counting argument shows δ(m, α) → 0 as m → ∞. Erdős claimed in 1979 that the same holds for α = 1.\n\n**Hall's Resolution (1992)**\n\nR.R. Hall proved in \"On some conjectures of P. Erdős in Astérisque I\" (J. Number Theory, 1992) that the sharp threshold exists at β = 1/log 2 ≈ 1.443.\n\n**Connection to Problem #696**\n\nThis problem is closely related to Erdős Problem #696, which concerns similar questions about divisibility by d ≡ 1 (mod m).",

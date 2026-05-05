@@ -25,7 +25,8 @@
     "lineCount": 335,
     "assumptions": "6 axioms: tauB, tauB_le_edges, tau1_le_tauB, and 3 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős, Gallai, and Tuza posed this conjecture in their influential 1996 paper 'Covering and independence in triangle structures,' published in Discrete Mathematics. They noted the problem 'is probably quite difficult,' placing it alongside a suite of conjectures on triangle packings and covers that extended Gallai's earlier work on transversals in hypergraphs. The parameters $\\alpha_1(G)$ and $\\tau_1(G)$ generalize the classical matching number and vertex cover number from edges to triangles, mirroring the Gallai identity $\\alpha(G) + \\tau(G) = n$ at the edge level. Haxell (1999) made partial progress, establishing asymptotic bounds. The full conjecture was resolved by Sergey Norin and Hehui Wu (later published as Norin-Sun, 2016), who proved the stronger result $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$, where $\\tau_B$ denotes the bipartite edge deletion number. Their proof leveraged the Kruskal-Katona theorem and structural analysis of near-extremal graphs. The bound $n^2/4$ is the same as in Mantel's theorem (1907) and Turán's theorem (1941), revealing a deep unity in extremal graph theory where triangle-related invariants are governed by the same quadratic threshold.",

@@ -44,7 +44,8 @@
     "dateAdded": "2026-03-19",
     "lineCount": 165,
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "This identity extends the classical result ∑2/(n(n+1)) = 2 (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series ln(2) = 1 - 1/2 + 1/3 - ⋯ was first computed by Nicolaus Mercator in his 1668 work *Logarithmotechnia*, where he integrated the geometric series 1/(1+x) = 1 - x + x² - ⋯ term by term to obtain the power series for log(1+x). The boundary evaluation at x = 1 was later justified by Abel's 1826 theorem on continuity of power series sums. The triangular numbers T_n = n(n+1)/2 were studied by the Pythagoreans (c. 500 BCE) and appear as the figurate numbers of the first kind. The alternating triangular reciprocal series combines partial fractions (a technique systematized by Johann Bernoulli around 1702) with the Mercator series, yielding the transcendental value 4·ln(2) - 2.",

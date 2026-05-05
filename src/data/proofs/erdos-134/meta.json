@@ -60,7 +60,8 @@
     "axiomCount": 2,
     "lineCount": 270,
     "assumptions": "2 axioms: alon_theorem, alon_implies_conjecture. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "**Erdős Problem #134: Triangle-Free Graphs with Diameter 2**\n\nThis problem was posed by Erdős and Gyárfás in the context of extremal graph theory, asking how sparse a triangle-free graph can be while still admitting a cheap extension to diameter 2. The question lies at the intersection of forbidden subgraph theory (triangle-freeness) and distance properties (diameter).\n\nErdős and Gyárfás initially proved the result for graphs with maximum degree ≪ log n / log log n — an extremely restrictive condition allowing only very sparse graphs. This original proof likely used direct counting arguments. Simonovits then established a counterexample at the threshold: for some constant C, there exist triangle-free graphs with max degree ≤ C√n that cannot be extended to diameter 2 triangle-free with o(n²) edges. This showed the critical exponent is exactly 1/2.\n\nThe definitive solution came from Noga Alon, who proved a much stronger result: only O(n^{2-ε}) edges are needed (rather than δn²), closing the gap between the weak original result and the sharp threshold. Alon's proof uses probabilistic methods — randomly adding edges while controlling triangle formation via the degree constraint. The result demonstrates the power of the probabilistic method in extremal graph theory, where constructive approaches have failed.\n\nThe problem is referenced as [Er97b] in Erdős's 'Problems and results in combinatorics,' and is closely related to Problem #618 (a variant formulation) and Problem #133 (the dual question about maximum degree in triangle-free diameter-2 graphs).",

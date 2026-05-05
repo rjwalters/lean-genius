@@ -41,7 +41,8 @@
     "lineCount": 258,
     "assumptions": "2 axioms: erdos_761_question1 (OPEN), erdos_761_question2 (OPEN). Eliminated complete_dichrom (incorrect formula). Fixed IsAcyclicColoring definition from 'no monochromatic directed edge' to correct 'no monochromatic directed cycle' (Neumann-Lara 1982). Proved: isAcyclicColoring_of_no_mono_edge, dichrom_le_chrom, cochrom_le_chrom, bipartite_dichrom_le_two, odd_cycle_dichrom, dichrom_mono, acyclic_orientation_exists.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 6
   },
   "sections": [
     {

@@ -85,7 +85,8 @@
     "lineCount": 233,
     "assumptions": "20 sorry(s). No axioms.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 21
+    "theoremCount": 21,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erd\u0151s posed this problem about G(n) = \u03a3 d\u1d62/d\u1d62\u208a\u2081 in the late 1970s, asking two questions: whether G(n) \u2192 \u221e for almost all n (trivially yes), and what is the asymptotic formula for \u03a3 G(n). The problem connects to deep questions about the multiplicative structure of integers.\n\nTerence Tao established the key bounds \u03c4(n/m)/m \u2264 G(n) \u2264 \u03c4(n), showing G(n) is controlled by the divisor function. For even n (density 1/2 of integers), taking m = 2 gives G(n) \u2265 \u03c4(n)/4, immediately implying G(n) \u2192 \u221e almost surely since \u03c4(n) \u2192 \u221e for almost all n by Hardy-Ramanujan.\n\nErd\u0151s and Tenenbaum proved the deeper result that G(n)/\u03c4(n) has a continuous distribution function \u2014 analogous to the Erd\u0151s-Kac theorem for \u03c9(n). This means the 'efficiency' of divisor ratio accumulation has well-defined statistics. The asymptotic \u03a3 G(n) ~ c X log X parallels Dirichlet's \u03a3 \u03c4(n) ~ X log X, with the exact constant c still unknown.",

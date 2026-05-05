@@ -59,7 +59,8 @@
     "axiomCount": 4,
     "lineCount": 211,
     "assumptions": "4 axioms: f_k, suk_2017, pohoata_zakharov_2022, subexponential_bound. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #651: Convex Polyhedra in Higher Dimensions**\n\nThis problem generalizes the famous Erdős-Klein-Szekeres \"happy ending problem\" to higher dimensions.\n\n**Key History:**\n- Erdős-Szekeres (1935): Proved f_2(n) exists and gave bounds\n- The \"happy ending problem\": Any 5 points in general position contain a convex quadrilateral\n- Suk (2017): Proved the ES conjecture f_2(n) = 2^{n-2} + 1\n- Pohoata-Zakharov (2022): Disproved the exponential conjecture for k ≥ 3\n\n**Mathematical Setting:**\n- f_k(n) = smallest N such that any N points in general position in ℝ^k contain n in convex position\n- General position: no k+1 points on a (k-1)-dimensional hyperplane\n- The function decreases: f_2(n) > f_3(n) > f_4(n) > ...",

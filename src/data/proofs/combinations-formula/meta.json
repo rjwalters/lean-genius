@@ -47,7 +47,8 @@
     "lineCount": 400,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 26
+    "theoremCount": 26,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The binomial coefficient formula has roots in multiple ancient civilizations. In China, Yang Hui's triangle (1261 CE) displayed the same pattern now known as Pascal's triangle in the West. The Persian mathematician Al-Karaji (953–1029 CE) and Omar Khayyam (1048–1131) studied binomial expansions, and Pingala's Meru-prastaara from ancient India (around 200 BCE) encoded the same combinatorial structure in a different form.\n\nBlaise Pascal's 1654 treatise 'Traité du Triangle Arithmétique' gave the first systematic Western treatment, proving the recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) and connecting the triangle to combinatorics, probability, and the binomial theorem. The factorial formula n!/(k!(n-k)!) emerged as the algebraic expression of the combinatorial count, with the divisibility n!/(k!(n-k)!) ∈ ℕ being a non-trivial fact requiring proof.\n\nIn modern mathematics, binomial coefficients appear throughout combinatorics (subset counting, multinomials), algebra (polynomial identities, generating functions), number theory (Lucas's theorem mod p, Kummer's theorem), and analysis (integral formulas for the Beta function, Vandermonde's identity). The Lean formalization as Wiedijk #58 uses Mathlib's `Nat.choose_eq_factorial_div_factorial` and `Finset.powersetCard` to connect the algebraic formula to the combinatorial interpretation.",

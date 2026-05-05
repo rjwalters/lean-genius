@@ -28,7 +28,8 @@
     "lineCount": 545,
     "assumptions": "3 axioms: ramsey_trivial_bound, promel_rodl, ramsey_upper_bound. 1 sorry.",
     "mathlib_version": "4.29.0",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 18
   },
   "overview": {
     "historicalContext": "**Ramsey Theory and Non-Ramsey Graphs**\n\nFrank Ramsey's theorem (1930) guarantees that every graph on $n$ vertices contains either a clique or independent set of size $\\ge \\frac{1}{2}\\log_2 n$. The Erdős-Szekeres bound (1935) $R(k,k) \\le \\binom{2k-2}{k-1}$ and Erdős's probabilistic lower bound (1947) $R(k,k) \\ge 2^{k/2}$ establish $\\log n$ as the natural scale. Graphs where the largest trivial (empty or complete) induced subgraph has size only $O(\\log n)$ are called **non-Ramsey** or **Ramsey-extremal**.\n\n**The Erdős-Fajtlowicz-Staton Question (1988)**: In their paper on regular subgraphs of random graphs, Erdős, Fajtlowicz, and Staton asked: if $G$ on $n$ vertices has no trivial subgraph on $\\ge 10\\log n$ vertices, must $G$ contain an induced non-trivial regular subgraph on $\\gg \\log n$ vertices? The intuition: forbidding simple structure should force complex structure.\n\n**Prömel-Rödl Resolution (1999)**: Hans Jürgen Prömel and Vojtěch Rödl proved the far stronger result in 'Non-Ramsey graphs are $c\\log n$-universal' (J. Combin. Theory Ser. A 88, 379–384): such graphs contain ALL graphs on $O(\\log n)$ vertices as induced subgraphs. The proof uses Szemerédi's regularity lemma to extract diverse edge structure from the non-Ramsey hypothesis. This universality trivially implies the existence of non-trivial regular subgraphs of size $\\Theta(\\log n)$.",

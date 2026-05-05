@@ -56,7 +56,8 @@
     "axiomCount": 4,
     "lineCount": 166,
     "assumptions": "4 axioms: independenceNumber, R_3_3, erdos_925_disproved, easy_lower_bound. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #925**\n\nThis problem connects Ramsey theory to independent set sizes.\n\n**History:**\n- Erdős posed this problem, probably in the 1960s-70s\n- The \"easy\" result: non-Ramsey graphs have independent sets of size Ω(n^(1/3))\n- The question: can we improve this to n^(1/3+δ) for some δ > 0?\n- Equivalently: is R(3,3,m) ≪ m^(3-c) for some c > 0?\n\n**Resolution (Alon-Rödl 2005):**\nThe answer is NO. They proved:\n- Lower bound: R(3,3,m) ≥ m³/(log m)^(4+o(1))\n- Upper bound: R(3,3,m) ≤ m³(log log m)/(log m)²\n\nSudakov later improved the upper bound by removing the log log factor.",

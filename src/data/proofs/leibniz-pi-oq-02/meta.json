@@ -42,7 +42,8 @@
       "Complete table of Leibniz-type formulas: \u03b2(1)=\u03c0/4, \u03b2(2)=G, \u03b2(3)=\u03c0\u00b3/32, \u03b7(1)=ln2, \u03b7(2)=\u03c0\u00b2/12",
       "Documented irrationality status of each constant"
     ],
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Leibniz discovered $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ in 1676 (though the Kerala school knew equivalent results centuries earlier via Gregory's series). The alternating harmonic series $\\ln 2 = 1 - 1/2 + 1/3 - \\cdots$ was known to Mercator (1668). Euler systematically evaluated these series in the 1730s-40s, connecting $\\beta(3) = \\pi^3/32$ to Fourier-type expansions. Dirichlet (1837) revealed the deeper structure: $\\beta(s) = L(s, \\chi_4)$, a Dirichlet $L$-function for the non-principal character mod 4, whose non-vanishing at $s=1$ proves infinitely many primes $\\equiv 1 \\pmod{4}$. Catalan introduced $G = \\beta(2) \\approx 0.9159$ in 1865; its irrationality remains open despite partial results by Zudilin (2001, at least one of $\\beta(2)$, $\\beta(4)$ is irrational) and Rivoal. The eta-zeta relation $\\eta(s) = (1-2^{1-s})\\zeta(s)$ was known to Euler and provides the bridge between alternating and non-alternating series.",

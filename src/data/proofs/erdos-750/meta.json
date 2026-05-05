@@ -50,7 +50,8 @@
     "lineCount": 110,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős conjectured in 1969 that for any function f(m) tending to infinity, there should exist a graph with infinite chromatic number where every m-vertex subgraph has an independent set of size at least m/2 − f(m). Such a graph would be 'almost bipartite' locally (since bipartite graphs achieve exactly ⌈m/2⌉) while being infinitely far from 2-colorable globally. This is a striking instance of the local-vs-global phenomenon in chromatic graph theory.\n\nThe first progress came from Erdős and Hajnal in 1967, who proved the conjecture for f(m) = cm with c > 1/4, using shift graphs — graphs whose vertices are k-element subsets of ℕ, with edges between interleaving pairs. These graphs have chromatic number k but large independence numbers in every induced subgraph. In 1982, Erdős, Hajnal, and Szemerédi extended this to all ε > 0, fully resolving the linear case f(m) = εm. Their proof combines shift graph constructions with the Lovász Local Lemma to control coloring properties of random subgraphs.\n\nThe sublinear case f(m) = o(m) remains completely open. Even the specific instances f(m) = √m and f(m) = C log m are unresolved. The difficulty is that sublinear almost-bipartiteness imposes much stronger constraints: for f(m) = √m, each m-vertex subgraph must be within √m of bipartite, leaving very little room for odd cycles. New constructions — perhaps from topological combinatorics, Kneser-type graphs, or algebraic methods — may be needed to make progress.",

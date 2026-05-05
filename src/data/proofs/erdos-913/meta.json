@@ -23,7 +23,8 @@
     "lineCount": 344,
     "assumptions": "1 axiom: infinite_8p_sq_minus_1_primes (Bunyakovsky-type conjecture: infinitely many primes p with 8p²-1 also prime). Both conditional results (8p²-1 path and Mersenne path) and all exponent structure lemmas are fully proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem appears in Erdős's 1982 collection [Er82c, p.28], part of his extensive study of the multiplicative structure of products of consecutive integers. The question connects to a deep theme in number theory: understanding the exponent structure of $n(n+1)$. Since $\\gcd(n, n+1) = 1$, the prime factorizations of $n$ and $n+1$ are completely independent, and the exponents in $n(n+1)$ are the disjoint union of exponents from each factor. The conditional approach via $n = 8p^2 - 1$ was identified as a natural path, producing the clean exponent pattern $\\{1, 2, 3\\}$. This connects to the Bunyakovsky conjecture (1857) and the more quantitative Bateman-Horn conjecture (1962) on prime values of polynomials. The problem illustrates a common theme in Erdős's work: reducing a seemingly difficult number-theoretic question to a (conjecturally true but currently unproven) statement about prime values of a specific polynomial.",

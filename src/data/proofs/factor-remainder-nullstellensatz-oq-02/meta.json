@@ -63,7 +63,8 @@
     ],
     "assumptions": "Two axioms: (1) grid_nonvanishing - bounded-degree polynomial doesn't vanish on product grids (provable by induction + single-variable case), (2) combinatorial_nullstellensatz - the full theorem (needs multivariate polynomial division infrastructure not in Mathlib).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Noga Alon introduced the Combinatorial Nullstellensatz in 1999 as a unifying algebraic tool for combinatorial problems. The result distills the essence of the polynomial method: if a polynomial has a nonzero coefficient at a specific monomial and we evaluate on sufficiently large sets, some evaluation must be nonzero.\n\nThe name references Hilbert's Nullstellensatz from algebraic geometry, but the result is fundamentally different: it applies over arbitrary fields (not just algebraically closed) and concerns explicit non-vanishing rather than ideal-variety correspondence. Alon used it to give elegant proofs of the Cauchy-Davenport theorem, permanent bounds, and graph coloring results.\n\nHistorical predecessors: Chevalley (1935) and Warning (1936) proved that a system of low-degree polynomials over a finite field ℤ/pℤ with more variables than the sum of degrees must have a nontrivial solution — the Chevalley-Warning theorem. The Combinatorial Nullstellensatz generalizes this: it applies to arbitrary fields and gives explicit non-vanishing (not just existence of solutions). The polynomial method, of which the Combinatorial Nullstellensatz is a cornerstone, has produced major advances in combinatorics, additive number theory (Gowers 2001), and computer science (hash functions, derandomization) over the past three decades.",

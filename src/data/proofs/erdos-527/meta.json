@@ -69,7 +69,8 @@
     "axiomCount": 3,
     "lineCount": 136,
     "assumptions": "3 axioms: signMeasure, michelen_sawhney_2025, hausdorff_dimension_one. See Lean source for complete statements.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #527, posed in 1961 (p. 254), concerns the behavior of random power series on the unit circle. Given a sequence of real coefficients aₙ with divergent sum of squares and |aₙ| = o(1/√n), Erdős asked whether random sign choices almost surely yield convergence at some point on the unit circle.\n\nThe problem sits at the intersection of harmonic analysis, probability theory, and fractal geometry. Dvoretzky and Erdős (1959) had established that if coefficients decay no faster than c/√n, the random series diverges everywhere on the unit circle for almost all sign choices. This showed that the decay condition |aₙ| = o(1/√n) is sharp — any slower decay destroys convergence entirely.\n\nThe problem remained open for over 60 years until Michelen and Sawhney (2025) resolved it affirmatively. Their proof showed not merely that convergence occurs somewhere, but that the convergence set has Hausdorff dimension 1 — the largest possible geometric size for a measure-zero subset of the circle. This dramatic result reveals that even when divergence dominates almost everywhere, convergence persists on a rich fractal set.",

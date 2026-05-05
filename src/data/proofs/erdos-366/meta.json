@@ -57,7 +57,8 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "lineCount": 209,
-    "assumptions": "None. All numerical claims (8 is cubeful, 9 is powerful, 12167 is cubeful, 12168 is powerful) are fully proved. The open conjecture is stated as a definition, not assumed. Open conjecture; supporting lemmas fully verified."
+    "assumptions": "None. All numerical claims (8 is cubeful, 9 is powerful, 12167 is cubeful, 12168 is powerful) are fully proved. The open conjecture is stated as a definition, not assumed. Open conjecture; supporting lemmas fully verified.",
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "A natural number n is **k-full** (or k-powerful) if every prime factor of n appears with multiplicity at least k. Special cases:\n- **2-full = powerful**: Every prime appears at least squared (4, 8, 9, 16, 25, 27, 32, 36, ...)\n- **3-full = cubeful**: Every prime appears at least cubed (8, 16, 27, 32, 64, 81, ...)\n\n**Historical Background**:\nErdős originally asked Mahler about consecutive powerful numbers. Mahler immediately showed infinitely many exist via the Pell equation x² = 8y² + 1, which yields solutions like (8,9), (288,289), etc.\n\nThe harder question: What about mixed consecutive pairs?\n- **(n 3-full, n+1 2-full)**: Two known examples\n  - (8, 9): 8 = 2³ is cubeful, 9 = 3² is powerful\n  - (12167, 12168): 12167 = 23³ is cubeful, 12168 = 2³ × 3² × 13² is powerful (Golomb 1970)\n- **(n 2-full, n+1 3-full)**: NO KNOWN EXAMPLES (the main open question)\n\nOEIS A060355 lists 3-full n with 2-full n+1. Only {8, 12167} are known below 10²².",

@@ -33,7 +33,8 @@
     "lineCount": 261,
     "assumptions": "4 axioms: kelley_meka_bound (r₃(N) ≤ N·exp(−c(log N)^(1/12)), Kelley-Meka 2023), gowers_bound (r_k(N) ≤ N/(log log N)^c for k≥4, Gowers 2001), behrend_lower_bound (r₃(N) ≥ N·exp(−c√(log N)), Behrend 1946), szemeredi_theorem (sets with positive density contain k-APs for all k). 1 sorry: main density-to-zero proof.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Pál Turán conjectured in 1936 that any set of integers with positive upper density contains arbitrarily long arithmetic progressions. Klaus Roth proved the $k=3$ case in 1953 (earning a Fields Medal in 1958 partly for this work), and Endre Szemerédi proved the full conjecture in 1975 using a groundbreaking combinatorial regularity lemma, receiving the $\\$1000$ prize from Erdős.\n\nHillel Furstenberg gave a fundamentally different proof in 1977 using ergodic theory (the Furstenberg correspondence principle), opening a new bridge between combinatorics and dynamics. Timothy Gowers (2001) gave a quantitative proof using higher-order Fourier analysis, introducing the Gowers norms $\\|f\\|_{U^k}$. The quantitative bounds have been dramatically improved: Green and Tao (2017) gave polynomial bounds for $k=4$, and Kelley and Meka (2023) achieved the breakthrough bound $r_3(N) \\leq N \\cdot \\exp(-c(\\log N)^{1/12})$ for 3-term progressions, nearly matching the Behrend (1946) lower bound.",

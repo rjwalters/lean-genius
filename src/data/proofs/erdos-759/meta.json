@@ -65,7 +65,8 @@
     ],
     "lineCount": 295,
     "assumptions": "6 axioms: cochromaticNumber, chromaticNumber, maxCochromaticNumber, gimbel_lower_bound, gimbel_thomassen_theorem, heawood_number. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 19
   },
   "overview": {
     "historicalContext": "Erdős Problem #759, posed by Erdős and John Gimbel, asks for the growth rate of the maximum cochromatic number on orientable surfaces of genus $n$. The cochromatic number $\\zeta(G)$, introduced by Lesniak and Straight (1977), partitions vertices into classes that are each either a clique or an independent set — a natural generalization of chromatic coloring where classes must be independent. On orientable surfaces $S_n$ (connected sums of $n$ tori), graph embedding constraints from Euler's formula ($V - E + F = 2 - 2n$) limit the density of embeddable graphs, which in turn bounds their cochromatic number.\n\nGimbel (1986) established the initial bounds $c_1 \\sqrt{n}/\\log n \\leq z(S_n) \\leq c_2 \\sqrt{n}$ in his paper 'Three extremal problems in cochromatic theory'. The lower bound used probabilistic arguments to construct high-girth graphs embeddable on $S_n$ with large cochromatic number. Eleven years later, Gimbel and Carsten Thomassen (1997) closed the gap by proving $z(S_n) = \\Theta(\\sqrt{n}/\\log n)$ in 'Coloring graphs with fixed genus and girth' (Trans. Amer. Math. Soc.), showing the log factor in Gimbel's lower bound was essential. The contrast with the Heawood number $H(n) = \\Theta(\\sqrt{n})$ (maximum chromatic number on $S_n$, resolved by the Ringel-Youngs theorem in 1968) shows that cochromatic number grows more slowly by a factor of $\\log n$.",

@@ -23,7 +23,8 @@
     "lineCount": 201,
     "assumptions": "None. 0 axioms, 0 sorries. All 13 theorems proved from Lean primitives. The open conjecture (cᵣ ≠ c'ᵣ for r ≥ 2) is described in comments — not stated as an axiom or theorem.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Sidon sets (B₂[1] sets) are among the most studied objects in additive combinatorics: a set A where all pairwise sums a+b (a ≤ b) are distinct. The classical result that the maximum Sidon set in {1,...,N} has size ~√N dates to Erdős and Turán (1941), with the upper bound sharpened by Lindström (1969) and the lower bound achieved by Singer's difference set construction (1938). B₂[r] sets generalize this by allowing each integer to have at most r representations as a sum a+b. Erdős posed Problem 863 in conversation with Berend, and independently with Freud, around 1992 [Er92c]. The key question is whether the symmetry between sums and differences, which holds perfectly for r=1, breaks for r ≥ 2. Erdős conjectured that for r ≥ 2, the difference constant c'ᵣ is strictly less than the sum constant cᵣ. The intuition is that the ordered nature of sums (a+b with a ≤ b) and the unordered nature of differences (a-b for any a,b) create fundamentally different counting behaviors when multiple representations are allowed. Cilleruelo, Ruzsa, and Trujillo (2002) established |A| ≤ (rN)^{1/2} + O(r^{1/2}N^{1/4}) for B₂[r] sets, showing the growth rate is Θ(√(rN)). Ruzsa showed c_r ≤ √r with constructions giving c_r ≥ √r - o(1), but analogous precision for c'_r has not been achieved. Even the existence of the limiting constants cᵣ and c'ᵣ is nontrivial for r ≥ 2.",

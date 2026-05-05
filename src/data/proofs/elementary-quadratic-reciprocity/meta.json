@@ -60,7 +60,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Eisenstein discovered this proof in 1844, simplifying Gauss's third proof (1808). It is considered one of the most elegant proofs of quadratic reciprocity because it reduces the theorem to a **lattice point counting argument** requiring only elementary arithmetic.\n\nThere are now over 240 known proofs of QR. This Eisenstein proof stands out because:\n- It uses no algebraic number theory or Gauss sums\n- The key insight is purely geometric (counting points in triangles)\n- Each step is independently verifiable with basic modular arithmetic\n\nGauss himself published 8 proofs; Eisenstein's approach builds on Gauss's third proof but achieves greater clarity through the floor function reformulation.",

@@ -75,7 +75,8 @@
     "lineCount": 315,
     "assumptions": "0 axioms, 0 sorries. Core ring isomorphism derived from Mathlib's ZMod.chineseRemainder.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25
+    "theoremCount": 25,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "**Chinese Remainder Theorem as Ring Isomorphism**\n\nThe Chinese Remainder Theorem (CRT) dates to Sun Zi's Suanjing (~3rd century). In its modern algebraic form, for coprime ideals $I, J$ of a ring $R$, the natural map $R/(I \\cap J) \\to R/I \\times R/J$ is a ring isomorphism. For $R = \\mathbb{Z}$, $I = m\\mathbb{Z}$, $J = n\\mathbb{Z}$ with $\\gcd(m,n) = 1$: $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.\n\nThis formalization wraps Mathlib's `ZMod.chineseRemainder` and extends it with applications: orthogonal idempotent decomposition, explicit Bézout solutions, and unit group characterization.",

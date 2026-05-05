@@ -64,7 +64,8 @@
     "lineCount": 152,
     "assumptions": "8 axioms: convex_implies_no_collinear (convex position implies no three collinear), sum_multiplicities (Σf(u) = C(n,2) identity), fishburn_theorem (O(n³) bound for convex polygons), lefmann_theile_theorem (O(n³) under no-three-collinear, Lefmann-Theile 1995), regularNGon (regular n-gon construction), regularNGon_card (n-gon has n points), regularNGon_convex (n-gon in convex position), regularNGon_cubic (Θ(n³) lower/upper bound for n-gon). See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős posed this $44 prize problem asking whether $\\sum f(u_i)^2 = O(n^3)$ for $n$ points in convex position, where $f(u)$ counts pairs at distance $u$. The question connects to the broader study of distance distributions in discrete geometry. Fishburn resolved it affirmatively, establishing the cubic upper bound. Lefmann and Theile (1995) strengthened the result by proving the same bound under the weaker assumption that no three points are collinear — a strict generalization since convex position implies no-three-collinear but not conversely. The trivial identity $\\sum f(u) = \\binom{n}{2}$ means the problem asks about the 'concentration' of distances: by Cauchy-Schwarz, $\\sum f(u)^2 \\geq \\binom{n}{2}^2 / |d(P)|$, so the $O(n^3)$ bound constrains how clustered the distance distribution can be. Erdős and Fishburn conjectured that the regular $n$-gon maximizes $\\sum f(u)^2$ among all convex $n$-gons for large $n$, verified computationally for $n \\leq 10$ (OEIS A387858). The formalization includes an Aristotle-proved theorem ($\\sum f(u) = \\binom{n}{2}$) alongside 12 axiomatized results.",

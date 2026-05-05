@@ -75,7 +75,8 @@
       "Cauchy-Crofton integral geometry formula",
       "Mean width of convex bodies"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Buffon's needle problem (1777) asks for the probability that a needle dropped on a floor of parallel lines crosses one. The answer, $2\\ell/(\\pi d)$, was one of the first results in geometric probability. Cauchy (1850) gave a systematic framework via integral geometry, and Barbier (1860) extended it to arbitrary curves.\n\nThe natural higher-dimensional generalization replaces the 2D floor of parallel lines with $n$-dimensional Euclidean space containing parallel hyperplanes. A 'needle' (line segment of length $L$) is dropped uniformly at random, and we ask for the expected number of hyperplane crossings.\n\nThe answer involves the **dimensional constant** $c_n = 2 \\cdot \\text{Vol}(S^{n-2})/\\text{Vol}(S^{n-1})$, which equals the expected absolute cosine of a random direction with any fixed axis. Using the Gamma function: $c_n = 2\\Gamma(n/2)/(\\sqrt{\\pi} \\cdot \\Gamma((n-1)/2))$. The formula $E = c_n \\cdot L/d$ connects to the **mean width** of integral geometry: for any convex body, expected crossings = mean width / spacing.",

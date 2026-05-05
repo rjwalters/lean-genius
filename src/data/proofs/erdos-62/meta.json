@@ -58,7 +58,8 @@
     ],
     "assumptions": "3 axiom(s): oddCycle, oddCycle_chromatic, erdos_hajnal_shelah. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős posed this problem at the intersection of infinite combinatorics and chromatic graph theory. The question asks whether graphs with uncountable chromatic number (χ = ℵ₁) must share 'rich' common subgraphs. The Erdős-Hajnal-Shelah theorem (1974) provides the key partial answer: every graph with χ = ℵ₁ contains all sufficiently large odd cycles, so any two such graphs share common subgraphs with χ = 3. The gap between χ = 3 (achieved) and χ = 4 (conjectured) represents a fundamental barrier in infinite combinatorics. Erdős generalized the problem to finite collections (1987) and raised it repeatedly through the 1990s. The problem connects to partition calculus, the De Bruijn-Erdős compactness theorem, and the structure theory of graphs with large chromatic number. Under ZFC, graphs with χ = ℵ₁ exist (e.g., shift graphs on ω₁), but controlling their common subgraph structure remains elusive.",

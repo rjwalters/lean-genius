@@ -69,7 +69,8 @@
     "axiomCount": 2,
     "lineCount": 152,
     "assumptions": "2 axioms: erdos_turan_lower, erdos_turan_upper. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**Origins and Early Work**\n\nErdős Problem #126 originates from the first joint paper of Paul Erdős and Pál Turán, published in 1934 in the American Mathematical Monthly. The investigation was prompted by questions from László Lázár and Tibor Grünwald (later Gallai). The paper studied the arithmetic structure of pairwise sums from finite subsets of the natural numbers.\n\n**The Extremal Function and Known Bounds**\n\nThe central object is the function f(n): the maximum value such that for any n-element subset A ⊆ ℕ, the product ∏_{a≠b∈A}(a+b) has at least f(n) distinct prime factors. Erdős and Turán established the bounds log(n) ≪ f(n) ≪ n/log(n). The upper bound is obtained trivially by taking A = {1, 2, …, n}, where all pairwise sums are at most 2n−1, so there are at most π(2n−1) ∼ 2n/log(n) possible prime factors by the prime number theorem.\n\n**Current Status and Prize**\n\nThe conjecture that f(n)/log(n) → ∞ remains open and carries a $250 Erdős prize. Erdős also noted that even the weaker statement f(n) = o(n/log(n)) — showing the upper bound is not tight — has \"never been seriously attacked.\" No significant progress has been made on narrowing the gap between log(n) and n/log(n) since the original 1934 paper. References: [ErTu34], [Er95c], [Er97], [Er97e].",

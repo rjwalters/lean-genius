@@ -62,7 +62,8 @@
     "lineCount": 309,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 23
+    "theoremCount": 23,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Buffon's needle problem, posed by Georges-Louis Leclerc, Comte de Buffon in 1777, is one of the earliest problems in geometric probability and the first problem to yield a connection between probability and π. The classical 2D result P = 2ℓ/(πd) was extended to curves by Barbier (1860), who proved that expected crossings depend only on arc length — the celebrated noodle theorem.\n\nThe n-dimensional generalization arises naturally from integral geometry. The crossing factor αₙ = E_{S^{n-1}}[|u₁|] represents the expected absolute projection of a uniformly random unit vector onto a fixed axis, a quantity central to the Cauchy-Crofton formula. Santaló's foundational work on integral geometry in arbitrary dimension (1976) established the framework for these formulas, connecting them to the kinematic formula and intrinsic volumes.\n\nThe crossing factor's closed form αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) follows from the surface area formula for spherical caps. The recurrence α_{n+2} = (n/(n+1))·αₙ is a consequence of the Gamma function's functional equation Γ(z+1) = z·Γ(z), yielding a Wallis-type product. The even/odd dichotomy — even-dimensional factors involve π while odd-dimensional ones are rational — reflects the fundamental distinction between Γ at integers (factorials) and half-integers (involving √π). This file extends the 2D and 3D formalizations (BuffonsNeedle.lean, BuffonsNeedleOQ02.lean) to a unified dimension-parametric framework.",

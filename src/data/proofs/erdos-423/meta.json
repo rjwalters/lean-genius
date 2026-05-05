@@ -31,7 +31,8 @@
     "lineCount": 409,
     "assumptions": "3 axioms: excess_nondecreasing, excess_unbounded, infinitely_many_missing. 0 sorries.",
     "mathlib_version": "4.29.0",
-    "theoremCount": 42
+    "theoremCount": 42,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Sums of Consecutive Terms Sequence**\n\nThis problem belongs to a family of greedy integer sequences studied by Erdős, where each term is determined by a minimality condition. The construction is reminiscent of the Ulam sequence (Problem #342, 1964), where terms are integers uniquely representable as a sum of two earlier terms. Problem #423 appeared in Erdős's 1977 paper [Er77c, p.71] and was included in the 1980 Erdős-Graham monograph [ErGr80, p.83]. The sequence $a_1 = 1, a_2 = 2$, and $a_k = \\min\\{m > a_{k-1} : m = a_i + a_{i+1} + \\cdots + a_j \\text{ for some } i \\leq j < k\\}$ is catalogued as OEIS A005243.\n\n**Chronological Development:**\n- **1964 (Ulam):** Introduced the Ulam sequence, the prototype for greedy additive sequence constructions\n- **1977 (Erdős):** Problem posed in [Er77c], asking about the asymptotic behavior of $a(n)$\n- **1980 (Erdős-Graham):** Included as Problem #423 in the monograph\n- **2024-2025 (Bolan, Tang):** Major progress — proved that the excess $a(n) - n$ is nondecreasing and unbounded, and that infinitely many integers are missing from the sequence\n\nThe sequence begins $1, 2, 3, 5, 6, 8, 10, 11, 14, 16, 17, 18, 19, 21, 22, \\ldots$ — note the gaps at $4, 7, 9, 12, 13, 15, 20, \\ldots$ The number 4 is the first missing integer because at the time it would be needed, no contiguous block of earlier terms sums to 4. Despite recent progress establishing superlinear growth, the precise asymptotic behavior — whether $a(n)/n$ converges, and to what — remains completely open.",

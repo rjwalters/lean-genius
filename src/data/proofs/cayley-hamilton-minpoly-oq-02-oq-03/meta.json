@@ -19,7 +19,8 @@
     "lineCount": 136,
     "assumptions": "0 axioms, 0 sorries. Core results (charpoly_conj_of_isUnit, minpoly_conj_of_isUnit) from Mathlib; this file provides the similarity-framed API.",
     "theoremCount": 3,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The classification of square matrices up to similarity was a central problem of 19th-century algebra. Weierstrass (1867) studied the problem for bilinear forms; Jordan (1870) proved his canonical form over algebraically closed fields, where every matrix decomposes into Jordan blocks. But Jordan form fails over general fields: the real matrix $\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$ has no real Jordan form. The solution — valid over any field — is the **Rational Canonical Form** (RCF), developed by Frobenius (1878–1879) using the theory of **invariant factors**. Henry John Stephen Smith (1861) had already developed the Smith normal form for integer matrices, and its extension to polynomial matrices over a PID provides the key computational tool for extracting invariant factors from the matrix $xI - A$. The RCF theorem states: every matrix is similar to a unique block-diagonal matrix of companion matrices $C(p_1), C(p_2), \\ldots, C(p_k)$ where $p_1 \\mid p_2 \\mid \\cdots \\mid p_k$ are the invariant factors.",

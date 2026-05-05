@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 307,
     "assumptions": "2 axioms: erdos_graham_three_sets (deep combinatorial result), stanley_avoids_3AP (greedy construction). Previously 5 axioms; 3 eliminated by proving powers_of_2_avoid_3AP, erdos_197_conjecture (from classical logic), and removing malformed erdos_197_not_finite_checkable.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #197**\n\nThis problem originates from Erdős and Graham's foundational work on arithmetic progressions in the late 1970s and early 1980s, documented in [ErGr79] and [ErGr80].\n\n**Key History:**\n- Erdős and Graham posed the original question about partitioning ℕ\n- The three-set version was proved solvable by Erdős-Graham\n- The two-set version remains open and cannot be resolved by finite computation\n\n**Mathematical Setting:**\nA monotone 3-term arithmetic progression (3-AP) in a sequence f is a triple (i, j, k) with i < j < k where f(i), f(j), f(k) form an arithmetic progression. The question asks whether ℕ can be split into two parts, each rearrangeable to avoid such patterns.",

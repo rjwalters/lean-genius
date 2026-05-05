@@ -35,7 +35,8 @@
     ],
     "lineCount": 207,
     "theoremCount": 3,
-    "defCount": 5
+    "defCount": 5,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős posed problem #659 asking whether point sets with the 4-point property (every 4-subset determines ≥ 3 distances) could have unusually few distinct distances. The 4-point property excludes all six 'two-distance configurations' — those special arrangements where only 2 distinct distances appear among 4 points. Moree and Osburn (2006) resolved this affirmatively by analyzing the lattice {(a, b√2) : a,b ∈ ℤ}: the distances in this lattice correspond to integers representable as x² + 2y², and by Landau's 1908 theorem the count of such integers up to N is Θ(N/√(log N)). This gives O(n/√(log n)) distinct distances — far fewer than the Θ(n^(1/2)) lower bound in the general Erdős distinct distances conjecture (proved by Guth-Katz 2015). The natural follow-up (OQ-01) is whether O(n/√(log n)) is tight or can be improved. The answer is No: Landau's theorem also gives the matching lower bound, since the 4-point property forces squared distances into a quadratic form value set whose counting function is Ω(N/√(log N)) by the same Landau result. The optimal rate Θ(n/√(log n)) is one of the rare cases in extremal combinatorics where both upper and lower bounds are determined precisely.",

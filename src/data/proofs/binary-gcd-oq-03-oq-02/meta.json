@@ -53,7 +53,8 @@
       "cofactor_apply_shift_decomp: apply(aHi·2^s + ea, bHi·2^s + eb) = 2^s·apply(aHi,bHi) + apply(ea,eb) — the key algebraic identity for the Lehmer perturbation argument",
       "cofactor_apply_err_bound: given |entries| ≤ C and |errors| ≤ B, the perturbation component is ≤ 2·C·B",
       "hgcdShift_top_lt: the top-half truncation a/2^s is strictly less than a — the induction-measure decrease for Step 4 strong induction"
-    ]
+    ],
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Arnold Schönhage (1971) extended Lehmer's hybrid GCD to achieve optimal O(M(n)·log n) bit complexity, where M(n) is the cost of multiplying n-bit integers. The key innovation is recursion: instead of running Lehmer's single-level approximation once, HGCD recurses on the top half of the bits to compute a cofactor matrix M₁, applies M₁ to the full inputs to get a half-size pair, then recurses again. This two-level recursion gives O(log n) levels, each costing O(M(n)), for total O(M(n)·log n). The algorithm underlies GMP's mpn_hgcd implementation and is the standard GCD algorithm for cryptographic-size integers (thousands of bits).",

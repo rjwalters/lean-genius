@@ -30,7 +30,8 @@
     ],
     "assumptions": "0 axioms, 0 sorries. The main conjecture (Erdős Problem 42) and Sedov's partial results are referenced in comments but not formally stated as Lean axioms or theorems. Open problem.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Sidon sets (also called B₂ sets) were introduced by Simon Sidon in the 1930s through correspondence with Erdős. A Sidon set is a set of integers where all pairwise sums are distinct. Erdős and Turán (1941) proved the fundamental size bound |A| ≤ √(2N) for Sidon subsets of {1,...,N}. Problem 42 asks about the rigidity of maximal Sidon sets: even though adding any new element to a maximal Sidon set creates a repeated sum, the conjecture asserts that the difference set A−A cannot monopolize all available differences. Sedov proved the cases M = 2 (by pigeonhole counting) and M = 3 (by combining analytic estimates with computational verification). The problem connects to broader questions in additive combinatorics about the structure of B₂ sets, including the Erdős–Turán conjecture on the maximum size of Sidon sets and Ruzsa's constructions of near-optimal Sidon sets.",

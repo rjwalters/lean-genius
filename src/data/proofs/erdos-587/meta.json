@@ -47,7 +47,8 @@
     "axiomCount": 2,
     "lineCount": 160,
     "assumptions": "2 axioms: erdos_lower_bound, nguyen_vu_upper_bound. See Lean source for complete statements.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős, who famously asked a young Terence Tao about it in 1985 during a mathematics conference. Erdős was interested in understanding the structure of sets where subset sums avoid being perfect squares.\n\nErdős himself showed that sets of size N^{1/3} are achievable by a clever construction: taking approximately N^{1/3} multiples of a prime p near N^{2/3}. The key insight is that sums of distinct multiples of p are divisible by p but not by p², hence cannot be perfect squares.\n\nThe problem was essentially solved by Hoi H. Nguyen and Van H. Vu in their 2010 paper \"Squares in sumsets\" published in the Szemerédi 70th birthday volume \"An irregular mind\". They proved the matching upper bound of O(N^{1/3}·(log N)^{O(1)}), confirming that Erdős's simple construction is essentially optimal.",

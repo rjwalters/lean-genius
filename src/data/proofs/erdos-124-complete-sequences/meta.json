@@ -50,7 +50,8 @@
     "lineCount": 507,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**The 30-Year Problem**\n\nIn 1996, Stefan Burr, Paul Erdos, Ronald Graham, and Wen-Ching Li published \"Complete sequences of sets of integer powers\" in Acta Arithmetica. A year later, Erdos reformulated the problem in two separate publications, inadvertently creating ambiguity about the exact conditions.\n\nThe problem remained open for nearly 30 years until November 2025, when Harmonic's AI system \"Aristotle\" became the first to solve it autonomously. Boris Alexeev selected several Erdos problems for testing, launched Aristotle overnight, and woke up to find Problem #124 solved.\n\n**The AI Breakthrough**: Aristotle took 6 hours to find the proof with 100% autonomy. Lean verified it in 1 minute. This marked the first time an AI system autonomously solved an open mathematical conjecture.",

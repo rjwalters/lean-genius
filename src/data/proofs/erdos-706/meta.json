@@ -69,7 +69,8 @@
     "axiomCount": 3,
     "lineCount": 71,
     "assumptions": "3 axioms: multiDistChromatic, erdos_706_base_case, erdos_706_monotone. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1981 as a natural generalization of the Hadwiger-Nelson problem (1950). The Hadwiger-Nelson problem asks for the chromatic number of the unit distance graph of ℝ² — the single-distance case r = 1. For 65 years the bounds were 4 ≤ χ ≤ 7, until Aubrey de Grey's 2018 breakthrough showing χ ≥ 5 via a computer-found 1581-vertex unit distance graph. The upper bound 7 (from Isbell's hexagonal 7-coloring) has stood since the 1950s.\n\nFor multiple distances, the question becomes far harder. The function L(r) = max_{|A|=r} χ(G_A) captures the worst-case chromatic number over all distance sets of size r. The known upper bound is exponential (L(r) ≤ C^r, from Frankl-Wilson type methods), while the conjecture asks for polynomial growth. Closing the gap between polynomial and exponential would be a landmark result in combinatorial geometry.",

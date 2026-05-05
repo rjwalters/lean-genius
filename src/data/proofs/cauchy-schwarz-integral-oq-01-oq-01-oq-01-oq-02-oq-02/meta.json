@@ -42,7 +42,8 @@
       "Answers the open question: polyrith not needed; positivity suffices after ring normalization",
       "Provides cleaner, more structured proofs where the algebraic identity is made explicit"
     ],
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The power mean chain HM ≤ GM ≤ AM ≤ QM is a cornerstone of classical analysis. The AM-GM inequality appears in Euclid (geometric construction proof) and was first stated algebraically by Cauchy in 1821. Hardy, Littlewood, and Pólya systematized the theory of power means in their landmark 1934 book *Inequalities*, establishing the complete hierarchy of power means $M_r(a,b) = ((a^r + b^r)/2)^{1/r}$ and proving that $M_r$ is monotone increasing in $r$. The HM-GM-AM-QM chain is the special case $r \\in \\{-1, 0, 1, 2\\}$ (with GM as the $r \\to 0$ limit).\n\nFrom a **proof automation perspective**, each link in the chain is a quadratic or quartic polynomial inequality. The parent file (OQ02) used `nlinarith` with explicit `sq_nonneg` hints — a manually-guided approach that works but is fragile. This file answers the automation open question: the `ring + positivity` pattern completely eliminates manual witnesses. `ring` finds the sum-of-squares certificate algebraically; `positivity` closes the nonnegativity goal by structural recognition. This demonstrates a general principle: for polynomial inequalities that reduce to perfect squares or products of non-negatives, `ring + positivity` provides a complete and clean automation.",

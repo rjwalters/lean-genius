@@ -25,7 +25,8 @@
     "theoremCount": 27,
     "defCount": 6,
     "assumptions": "Two axioms (both require Eisenstein integers ℤ[ω] not in Mathlib): (1) cubicResidueSymbol — definition of the cubic residue symbol (ρ/π)₃ for Eisenstein primes. (2) cubic_reciprocity — (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via Jacobi sums. All 27 theorems proved; 0 sorries remain. Key: cubicChar_kernel_card and quarticChar_kernel_card (|ker χ| = (p-1)/3 and (p-1)/4 via IsCyclic.card_pow_eq_one_le), cubicEuler_hard and quarticEuler_hard (both Euler criterion hard directions via discrete log).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Cubic reciprocity was discovered by Gauss and proved by Eisenstein in 1844 using the Eisenstein integers ℤ[ω] where ω = e^{2πi/3}. The law states that for primary Eisenstein primes π and ρ, the cubic residue symbol (ρ/π)₃ equals (π/ρ)₃. This extends the Zolotarev character uniqueness argument: for primes p ≡ 1 (mod 3), the group (ZMod p)ˣ is cyclic of order p-1 divisible by 3, giving exactly two non-trivial cubic characters (plus the trivial one). The cubic Euler criterion — a is a cube mod p iff a^((p-1)/3) = 1 — is the natural generalization of Euler's quadratic criterion. Ireland and Rosen's book (Ch. 9) gives the definitive modern treatment via Jacobi sums.",

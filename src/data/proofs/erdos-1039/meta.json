@@ -59,7 +59,8 @@
       "klr_area_bound axiom: sublevelArea \u2265 c/n\u00b2 (area lower bound driving the KLR result)",
       "random_polynomial_expected axiom: expected inscribed disc radius for random roots \u226b 1/n"
     ],
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 16
   },
   "overview": {
     "historicalContext": "This problem was posed by Erd\u0151s, Herzog, and Piranian around 1958, motivated by the geometry of polynomial lemniscates \u2014 the level curves {z : |f(z)| = c} of complex polynomials. For a monic polynomial f(z) = \u220f(z - z\u1d62) with all roots in the closed unit disc, the sublevel set {z : |f(z)| < 1} is a bounded open region in the complex plane. The problem asks how large a disc can be inscribed in this sublevel set. The benchmark is the polynomial z\u207f - 1, whose n roots are equally spaced on the unit circle: its sublevel set consists of n thin petals, and the largest inscribed disc has radius at most \u03c0/(2n). Pommerenke (1961) proved the first general lower bound \u03c1(f) \u2265 1/(2en\u00b2) using potential theory and properties of Green's functions, establishing that the inscribed disc radius is at least quadratically small. This left a large gap between the O(1/n\u00b2) lower bound and the conjectured O(1/n) behavior. The problem attracted attention from researchers in potential theory, approximation theory, and complex dynamics. After decades of incremental progress, Krishnapur, Lundberg, and Ramachandran (2025) achieved a major breakthrough, proving \u03c1(f) \u2265 c/(n\u221a(log n)) using area bounds for sublevel sets derived from potential-theoretic estimates on logarithmic capacity. This nearly closes the gap, leaving only a \u221a(log n) factor between the best known lower bound and the conjectured 1/n rate. The problem connects to transfinite diameter (Problem 1040), sublevel set measure (Problem 1038), and the broader study of polynomial inequalities in complex analysis.",

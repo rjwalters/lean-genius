@@ -65,7 +65,8 @@
     "axiomCount": 2,
     "assumptions": "2 axioms: alon_frankl_lovasz_1986 (Alon-Frankl-Lovász 1986 matching bound), kneser_conjecture (chromatic number of Kneser graph KG(n,r) = n-2r+2, Lovász 1978). 0 sorries.",
     "lineCount": 221,
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős Problem #780 generalizes the famous Kneser conjecture to hypergraphs. **Kneser (1955)** conjectured that $\\chi(KG(n,r)) = n - 2r + 2$, i.e., any $(n - 2r + 1)$-coloring of the $r$-subsets of $[n]$ must contain two disjoint sets of the same color. This remained open until **Lovász's landmark 1978 proof** (*J. Comb. Theory A* 25, 319-324), which was the **first major application of algebraic topology to combinatorics**, using the Borsuk-Ulam theorem via the neighborhood complex $\\mathcal{N}(KG(n,r))$. Schrijver simultaneously found a vertex-critical subgraph (the stable Kneser graph) with the same chromatic number.\n\n**Alon, Frankl, and Lovász (1986)** extended this to $r$-uniform hypergraphs (*Trans. AMS* 298, 359-370): if $n \\geq kr + (t-1)(k-1)$, any $t$-coloring of $\\binom{[n]}{r}$ contains $k$ pairwise disjoint monochromatic edges. Their proof generalizes the topological approach using the independence complex and a Borsuk-Ulam-type argument via the Lusternik-Schnirelmann category. **Matoušek (2004)** later gave a purely combinatorial proof using Tucker's lemma. The problem connects to the Erdős-Ko-Rado theorem (1961): the maximum intersecting family gives $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number is $\\chi_f(KG(n,r)) = n/r$.",

@@ -47,7 +47,8 @@
         "description": "Multiplicativity of ring hom-like maps; specializes to (a·b/p) = (a/p)·(b/p) for the Legendre symbol",
         "module": "Mathlib.Algebra.GroupWithZero.Hom"
       }
-    ]
+    ],
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Law of Quadratic Reciprocity was first conjectured by Euler and Legendre and proved by Gauss in 1796 (published in *Disquisitiones Arithmeticae*, 1801). Gauss called it the 'aureum theorema' (golden theorem) and gave six different proofs over his lifetime. The law states that for distinct odd primes $p, q$: $\\left(\\tfrac{p}{q}\\right)\\left(\\tfrac{q}{p}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$. Combined with the supplementary laws for $-1$ and $2$, it yields a finite procedure for evaluating any Legendre symbol — analogous to the Euclidean algorithm, where reciprocity swaps replace the division step.",

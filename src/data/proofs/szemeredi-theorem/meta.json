@@ -48,7 +48,8 @@
     "lineCount": 374,
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Szemerédi's theorem is one of the crown jewels of combinatorics. The progression of proofs reflects major developments across mathematics:\n\n- 1936: Erdős and Turán conjecture that any set of integers with positive upper density contains arbitrarily long arithmetic progressions\n- 1953: Roth proves k=3 using exponential sums (analytic number theory), establishing a bound of $|S| \\leq CN / \\log\\log N$\n- 1969: Szemerédi proves k=4 via an intricate combinatorial argument\n- 1975: Szemerédi proves the general case, introducing the Regularity Lemma — which became one of the most influential tools in combinatorics\n- 1977: Furstenberg gives an entirely different proof via ergodic theory, launching the field of ergodic Ramsey theory\n- 2001: Gowers proves the theorem with the first effective bounds for general k using higher-order Fourier analysis and the Gowers uniformity norms\n- 2004: Green and Tao use Szemerédi's theorem (via a transference principle) to prove the primes contain arbitrarily long APs\n- 2020: Bloom and Sisask improve Roth's bound to $|S| \\leq N(\\log N)^{-1+\\varepsilon}$\n- 2023: Kelley and Meka achieve a breakthrough bound of $|S| \\leq N \\exp(-c(\\log N)^{1/12})$ for 3-AP-free sets, nearly matching the Behrend lower bound of $N \\exp(-c\\sqrt{\\log N})$\n\nThe Regularity Lemma, developed for the 1975 proof, became a foundational tool in graph theory, property testing, and theoretical computer science. Szemerédi received the Abel Prize in 2012 for his contributions.",

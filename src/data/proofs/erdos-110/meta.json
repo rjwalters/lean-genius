@@ -54,7 +54,8 @@
     "axiomCount": 3,
     "lineCount": 273,
     "assumptions": "3 axioms: de_bruijn_erdos (compactness for colorings), lambie_hanson_counterexample (ZFC disproof), graph_compactness (fixed-k coloring compactness). Shelah's consistency and ℵ₀ failure are proved from Lambie-Hanson; an unsound compactness variant was removed.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "**Finite Subgraphs of Infinite Chromatic Graphs**\n\nThe de Bruijn-Erdős theorem (1951) states that a graph with infinite chromatic number contains finite subgraphs of every finite chromatic number. But how efficiently? This problem asks whether there's a universal bound F(n) on the size needed to achieve chromatic number n.\n\n**The Conjecture (Erdős-Hajnal-Szemerédi 1982)**: For graphs with chromatic number ℵ₁ (the first uncountable cardinal), there should exist F(n) such that an n-chromatic subgraph exists on at most F(n) vertices. This was already known to fail for ℵ₀-chromatic graphs.\n\n**The Disproof**: Shelah (2005) showed the negative answer is consistent with ZFC. Lambie-Hanson (2020) then constructed an actual ZFC counterexample—no set-theoretic assumptions needed! This completely resolves the problem.",

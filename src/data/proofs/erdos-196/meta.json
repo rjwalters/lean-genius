@@ -24,7 +24,8 @@
     "lineCount": 155,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Davis, Entringer, Graham, and Simmons (DEGS) initiated the study of monotone arithmetic progressions in permutations in their 1977 paper, proving that every permutation of $\\mathbb{N}$ contains a monotone 3-term AP and constructing one avoiding monotone 5-term APs. The $k = 4$ case was left as an open problem, later highlighted by Erdős and Graham in their 1979 and 1980 monographs on combinatorial number theory. The problem sat largely untouched until LeSaulnier and Vijay (2011) achieved the key structural reduction: they showed that monotone 4-APs with odd common difference can be avoided, reducing the conjecture to the even-CD case. This parity decomposition is the deepest known structural insight into the problem. The question connects to Szemerédi's theorem on APs in dense sets and to the Erdős–Szekeres theorem on monotone subsequences, though neither directly implies the result for permutations.",

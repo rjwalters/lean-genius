@@ -106,7 +106,8 @@
     "additionalFiles": [
       "Proofs/FourierSeriesOQ02Incomplete01.lean",
       "Proofs/FourierSeriesOQ02OQ04.lean"
-    ]
+    ],
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",

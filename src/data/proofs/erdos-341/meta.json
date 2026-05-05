@@ -36,7 +36,8 @@
       "Sequences and recurrences: greedy algorithms, eventual periodicity",
       "Elementary number theory: natural number arithmetic"
     ],
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This is an old problem of Dickson from the early 20th century, brought to wider attention by Erdős and Graham in their 1980 monograph (p. 53). The construction is beautifully simple: start with any finite set of positive integers, then repeatedly adjoin the smallest integer not expressible as a sum of two elements already in the set. The resulting sequence always appears to develop eventually periodic differences, but proving this has resisted all attempts. The problem connects greedy algorithms to questions of periodicity in dynamical systems — a theme that appears throughout number theory (Collatz conjecture, continued fractions, digit patterns). Even starting from the first five perfect squares {1,4,9,16,25}, periodicity takes thousands of terms to emerge, making computational verification impractical for all but small starting sets. Ben Green includes this as Problem 7 on his influential open problems list, reflecting its position at the frontier of additive combinatorics. The singleton starting set {1} produces the Mian-Chowla sequence (Problem #340), creating a direct link between the two problems.",

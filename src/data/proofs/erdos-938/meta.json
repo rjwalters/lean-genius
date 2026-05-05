@@ -62,7 +62,8 @@
     "axiomCount": 0,
     "lineCount": 218,
     "assumptions": "0 axiom declarations. Three conjectures/results stated as Prop definitions (not assumed true): erdos_938_conjecture (open), erdos_364_conjecture (open), powerful_count_asymptotic_theorem (known result, unused).",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Erdős Problem #938 was posed by Paul Erdős in 1976 [Er76d] and concerns the distribution of powerful numbers (also called squarefull numbers). A positive integer n is powerful if p | n implies p² | n for every prime p, or equivalently n = a²b³ for some positive integers a, b. The sequence of powerful numbers begins 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ... (OEIS A001694).\n\nThe problem sits at the intersection of multiplicative number theory and additive combinatorics. While the global distribution of powerful numbers is well understood — the count up to x is asymptotically (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x — the local structure of gaps between consecutive powerful numbers is far more mysterious. The question of whether three consecutive powerful numbers can form an arithmetic progression infinitely often probes this local irregularity.\n\nThe problem is closely related to Erdős Problem #364, which makes the stronger conjecture that no three consecutive integers n, n+1, n+2 can all be powerful. If Problem #364 is true, it would forbid the simplest type of three-term AP (with common difference 1) among consecutive powerful numbers. Problem #938 remains open and cannot be resolved by finite computation alone.",

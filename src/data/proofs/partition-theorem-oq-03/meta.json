@@ -27,7 +27,8 @@
     "axiomCount": 1,
     "assumptions": "1 axiom: numOverpartitions. 0 sorries.",
     "lineCount": 62,
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Euler (1748) proved his famous partition identity in Introductio in Analysin Infinitorum: the number of partitions of n into odd parts equals the number of partitions of n into distinct parts. This was proved by the bijection between the two sets, or algebraically via generating functions: ∏(1+x^k) = ∏ 1/(1-x^(2k-1)). Overpartitions were formally introduced by Corteel and Lovejoy in 2004 as a natural generalization: an overpartition of n allows the first occurrence of each part size to be optionally 'overlined' (marked). The overlined parts are exactly the distinct parts that can be treated as a separate population. Corteel-Lovejoy proved that the number of overpartitions of n equals 2^ω(n) times the number of ordinary partitions (where ω(n) depends on the partition type), and established many Euler-like identities for overpartitions. The key combinatorial fact: for a partition with d distinct part sizes, there are 2^d overpartition choices (each distinct part size can independently be overlined or not). This connects directly to the generating function (1+q^k)/(1-q^k) = (1+q^k) × 1/(1-q^k) for each part size k.",

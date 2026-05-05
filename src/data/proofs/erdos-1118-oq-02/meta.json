@@ -23,7 +23,8 @@
     "assumptions": "0 axioms. 0 sorries. All theorems fully proved. The three docstring blocks (Camera-Gol'dberg criterion, SCV differences, plurisubharmonicity) are documentation, not axiom declarations.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem 1118 (published in the 1960s–70s) asks: for a non-constant entire function $f: \\mathbb{C} \\to \\mathbb{C}$ such that the superlevel set $E(c) = \\{z \\in \\mathbb{C} : |f(z)| > c\\}$ has finite area, what minimum growth rate must $f$ satisfy? This was resolved independently by Camera (1977) and Gol'dberg (1979): the criterion is $\\int_0^\\infty \\frac{r}{\\log\\log M(r)}\\, dr < \\infty$, where $M(r) = \\max_{|z|=r} |f(z)|$. This open question (OQ-02) asks: what is the correct generalization to several complex variables (SCV)? SCV is a field developed primarily by Kiyoshi Oka in the 1930s–50s, whose theorem that domains of holomorphy coincide with pseudoconvex domains fundamentally changed complex analysis. The several-variable theory diverges dramatically from one variable: Hartogs' theorem (1906) shows holomorphic functions in $\\mathbb{C}^n$ ($n \\geq 2$) extend automatically across isolated singularities — an impossibility in one dimension.",

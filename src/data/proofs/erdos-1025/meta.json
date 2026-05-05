@@ -26,7 +26,8 @@
     "lineCount": 246,
     "assumptions": "4 axioms: erdos_hajnal_lower, erdos_hajnal_upper, spencer_lower, cfs_upper. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Erdős Problem #1025 concerns pair functions: functions f that assign to each unordered pair {x,y} from {1,...,n} an element f(x,y) ∈ {1,...,n} \\ {x,y}. A set X is independent if f(x,y) ∉ X whenever both x and y are in X. The question asks for g(n), the minimum over all valid pair functions of the maximum independent set size.\n\nErdős and Hajnal (1958) established initial bounds n^{1/3} ≪ g(n) ≪ (n log n)^{1/2}, leaving a significant gap. The lower bound used a greedy argument, while the upper bound came from connections to hypergraph coloring. Spencer (1972) improved the lower bound to n^{1/2} using the probabilistic method: randomly including each vertex with probability p ≈ n^{-1/2} and deleting vertices hit by pair images gives an independent set of expected size Ω(n^{1/2}).\n\nThe matching upper bound g(n) = O(n^{1/2}) was proved by Conlon, Fox, and Sudakov (2016), completing the determination g(n) = Θ(n^{1/2}) after 58 years. Their construction used algebraic methods to build pair functions with provably small independent sets. The problem is closely related to Erdős-Hajnal's theory of set mappings, where each element maps to a subset avoiding itself, and free sets are the analogue of independent sets.",

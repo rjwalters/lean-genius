@@ -37,7 +37,8 @@
       "riesz_lp_surjective_sigma_finite: main theorem assembled with Step C proved — only localization (Step A) remains as sorry",
       "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: reduces 3 sorries to 2 with clean proof",
       "lp_truncation_tendsto_zero: Step B proved via Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) — |f - f·1_{Sₙ}| ≤ |f| pointwise enables unifIntegrable_const + unifTight_const, giving eLpNorm(f - f·1_{Sₙ}) → 0"
-    ]
+    ],
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Lp Riesz representation theorem — identifying (Lp(μ))* with Lq(μ) for 1/p + 1/q = 1 — is a central result in functional analysis. The sigma-finite generalization (dropping the IsFiniteMeasure hypothesis) requires additional work to construct the representing element g ∈ Lq(μ). The classical proof strategy (Folland §6.2) localizes via the sigma-finite exhaustion, applies the finite-measure result on each piece, and glues via MCT. This entry resolves the density extension step (Step C), showing it requires only sigma-finiteness, not finite total measure.",
