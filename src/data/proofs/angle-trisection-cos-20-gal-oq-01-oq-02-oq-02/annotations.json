@@ -1,41 +1,62 @@
-{
-  "source": "researcher-1",
-  "version": "1.0",
-  "annotations": [
-    {
-      "id": "ann-01",
-      "type": "key-insight",
-      "title": "The Central Reduction",
-      "content": "The entire proof rests on one arithmetic identity: cos(π/n) = cos(2π/(2n)). This connects the cos(π/n) family to the cos(2π/m) family via m = 2n, allowing the IsCyclotomicExtension machinery of AngleTrisectionOQ02OQ03OQ01 to apply directly.",
-      "location": "§1"
-    },
-    {
-      "id": "ann-02",
-      "type": "proof-technique",
-      "title": "Substitution in Parametric Families",
-      "content": "A common technique for relating parametric families: identify an arithmetic relationship between parameters (here n → 2n), then lift theorems from one family to the other. The key is that the proof of the target theorem only depends on the parameter through the cosine value, not the parameter itself.",
-      "location": "§2"
-    },
-    {
-      "id": "ann-03",
-      "type": "mathematical-fact",
-      "title": "IsCyclotomicExtension Gives the Degree",
-      "content": "The core Mathlib theorem used is IsCyclotomicExtension.finrank: [CyclotomicField m ℚ : ℚ] = φ(m). Combined with the fixed-field construction (maxRealSubfield has degree φ(m)/2), this gives natDegree(minpoly(cos(π/n))) = φ(2n)/2 without any manual computation.",
-      "location": "§2"
-    },
-    {
-      "id": "ann-04",
-      "type": "open-problem",
-      "title": "Remaining Sorry: Normality of ℚ(cos(π/n))",
-      "content": "The one sorry is on showing finrank SplittingField = φ(2n)/2. This requires: ℚ(cos(π/n))/ℚ is Galois (it is the fixed field of conjSubgroup, which is normal in the abelian group (ℤ/2nℤ)×), hence minpoly splits completely over ℚ(cos(π/n)), hence SplittingField = ℚ(cos(π/n)). Estimated ~80 lines to formalize.",
-      "location": "§4"
-    },
-    {
-      "id": "ann-05",
-      "type": "consistency-check",
-      "title": "Verified Against Known Cases",
-      "content": "The general formula φ(2n)/2 is cross-checked against all three previously proved cases: n=5 gives 2, n=7 gives 3, n=9 gives 3. These match the gallery entries AngleTrisectionCos20GalOQ01OQ02, AngleTrisectionCos20GalOQ01, and AngleTrisectionCos20Gal respectively.",
-      "location": "§6"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-angle-header",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "General Galois Formula via IsCyclotomicExtension: Module Overview",
+    "content": "This entry answers the open question from AngleTrisectionCos20GalOQ01OQ02: yes, IsCyclotomicExtension is sufficient to prove the general formula |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2 for all n ≥ 3. The Lean file is structured in 6 sections: (1) the cosine identity, (2) the degree theorem (sorry-free), (3) extension degree (sorry-free), (4) splitting field degree (1 sorry), (5) Galois order, and (6) consistency checks. The header identifies the key reduction: cos(π/n) = cos(2π/(2n)), which allows the cos(2π/m) machinery from AngleTrisectionOQ02OQ03OQ01 to be applied with m = 2n.",
+    "mathContext": "$\\mathbb{Q}(\\cos(\\pi/n)) = \\mathbb{Q}(\\zeta_{2n})^+$ (maximal real subfield of $n$-th cyclotomic field). $[\\mathbb{Q}(\\cos(\\pi/n)):\\mathbb{Q}] = \\varphi(2n)/2$. Galois group: $(\\mathbb{Z}/2n\\mathbb{Z})^\\times / \\{\\pm 1\\}$ of order $\\varphi(2n)/2$. For $n=5$: degree 2 (cos(36°) satisfies a quadratic). For $n=7$: degree 3 (cos(π/7) is a root of a cubic). For $n=9$: degree 3.",
+    "significance": "key",
+    "relatedConcepts": ["IsCyclotomicExtension", "maxRealSubfield", "Galois group of cyclotomic field", "angle trisection"],
+    "prerequisites": ["cyclotomic fields", "Galois theory", "Euler's totient function", "parent AngleTrisectionOQ02OQ03OQ01 file"]
+  },
+  {
+    "id": "ann-cosine-identity",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+    "range": { "startLine": 37, "endLine": 55 },
+    "type": "technique",
+    "title": "The Central Reduction: cos(π/n) = cos(2π/(2n))",
+    "content": "The lemma cos_pi_eq_cos_2pi_div_2n proves cos(π/n) = cos(2π/(2n)) by `congr 1; push_cast; ring`. This is arithmetically trivial (π/n = 2π/(2n)) but mathematically decisive: it reduces the cos(π/n) problem to the cos(2π/m) problem with m = 2n, which is exactly what AngleTrisectionOQ02OQ03OQ01 formalizes. The entire proof of the degree theorem flows from this single identity. The `NeZero (2*n)` instance is needed downstream to satisfy cyclotomic field infrastructure requirements.",
+    "mathContext": "$\\cos(\\pi/n) = \\cos(2\\pi/(2n))$ since $\\pi/n = 2\\pi/(2n)$. After `congr 1`, the goal is $\\pi/n = 2\\pi/(2n)$; `push_cast` handles the coercions $n : \\mathbb{N} \\to \\mathbb{R}$; `ring` closes. The cosine value at $2\\pi/(2n)$ is exactly $\\text{alphaCos}(2n)$ in the notation of AngleTrisectionOQ02OQ03OQ01.",
+    "significance": "key",
+    "relatedConcepts": ["cosine identity", "push_cast tactic", "congr tactic", "alphaCos notation"],
+    "prerequisites": ["Real.cos in Mathlib", "push_cast for coercions", "ring tactic"]
+  },
+  {
+    "id": "ann-degree-theorem",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+    "range": { "startLine": 57, "endLine": 98 },
+    "type": "technique",
+    "title": "Degree Theorem (Sorry-Free): natDegree = φ(2n)/2",
+    "content": "cos_pi_minpoly_natDegree is the main mathematical result, proved with 0 sorries. The proof chain: (1) `haveI : NeZero (2*n) := ⟨by omega⟩` to enable cyclotomic field instances; (2) `rw [cos_pi_eq_cos_2pi_div_2n]` to rewrite as cos(2π/(2n)); (3) `rw [← minpoly_alphaCos_eq_minpoly_cos]` to transfer to the alphaCos element; (4) `exact minpoly_alphaCos_natDegree` from AngleTrisectionOQ02OQ03OQ01. The entire mathematical content is in the parent file — this theorem is a direct corollary via the cosine identity.",
+    "mathContext": "`natDegree(minpoly ℚ (\\cos(\\pi/n))) = \\varphi(2n)/2`. The key parent lemmas: `minpoly_alphaCos_eq_minpoly_cos (m : ℕ)`: minpoly ℚ (alphaCos m) = minpoly ℚ (Real.cos (2π/m)). `minpoly_alphaCos_natDegree (m : ℕ)`: natDegree(minpoly ℚ (alphaCos m)) = φ(m)/2. Applying these with m = 2n and using the cosine identity gives the result.",
+    "significance": "key",
+    "relatedConcepts": ["minpoly in Mathlib", "alphaCos notation", "IsCyclotomicExtension.finrank", "Euler's totient"],
+    "prerequisites": ["minpoly properties", "AngleTrisectionOQ02OQ03OQ01 parent file", "NeZero typeclass"]
+  },
+  {
+    "id": "ann-sorry-explanation",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+    "range": { "startLine": 132, "endLine": 165 },
+    "type": "context",
+    "title": "The One Sorry: Normality of ℚ(cos(π/n)) over ℚ",
+    "content": "The splitting field degree sorry requires showing that ℚ(cos(π/n)) = SplittingField(minpoly(cos(π/n))). The mathematical argument: (1) ℚ(cos(π/n)) is Galois over ℚ (it is the fixed field of conjSubgroup = ⟨complex conjugation⟩ in the abelian Galois group (ℤ/2nℤ)×, and every subgroup of an abelian group is normal, so the fixed field is Galois over ℚ by the fundamental theorem of Galois theory); (2) Galois extensions have the property that every element's minimal polynomial splits completely over the extension; (3) ℚ(cos(π/n)) is generated by one root of minpoly(cos(π/n)), so SplittingField = ℚ(cos(π/n)). Lean 4 formalization requires about 80 additional lines of intermediate field and Galois correspondence lemmas.",
+    "mathContext": "**Key step**: conjSubgroup $\\leq (\\mathbb{Z}/2n\\mathbb{Z})^\\times$ (generated by $k \\mapsto -k$) is normal since the Galois group is abelian. By Galois correspondence: $\\text{Fix}(\\text{conjSubgroup}) = \\mathbb{Q}(\\cos(2\\pi/(2n))) = \\mathbb{Q}(\\cos(\\pi/n))$ is Galois over $\\mathbb{Q}$. Galois $\\Rightarrow$ SplittingField(minpoly) = $\\mathbb{Q}(\\cos(\\pi/n))$.",
+    "significance": "key",
+    "relatedConcepts": ["Galois correspondence", "conjSubgroup", "abelian Galois group", "SplittingField", "normality and Galois extensions"],
+    "prerequisites": ["Galois theory fundamentals", "intermediate fields", "fundamental theorem of Galois theory"]
+  },
+  {
+    "id": "ann-consistency-checks",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+    "range": { "startLine": 196, "endLine": 232 },
+    "type": "context",
+    "title": "Cross-Checking Against Known Cases",
+    "content": "The consistency check section verifies the general formula φ(2n)/2 against three previously proved specific cases. n=5: φ(10)/2 = 4/2 = 2 matches the degree-2 result for cos(36°) = (1+√5)/4 proved in AngleTrisectionCos20GalOQ01OQ02. n=7: φ(14)/2 = 6/2 = 3 matches the degree-3 result proved in AngleTrisectionCos20GalOQ01. n=9: φ(18)/2 = 6/2 = 3 matches the degree-3 result proved in AngleTrisectionCos20Gal. These checks serve two purposes: (1) mathematical confidence that the formula is correct, (2) testing that the general theorem specializes correctly.",
+    "mathContext": "Euler's totient: $\\varphi(2n) = \\varphi(2)\\varphi(n) = \\varphi(n)$ when $n$ is odd, and $\\varphi(2n) = 2\\varphi(n)$ when $n$ is even (for $n \\geq 3$). Specifically: $\\varphi(10) = 4$ (units of $\\mathbb{Z}/10\\mathbb{Z}$: $\\{1,3,7,9\\}$); $\\varphi(14) = 6$ ($\\{1,3,5,9,11,13\\}$); $\\varphi(18) = 6$ ($\\{1,5,7,11,13,17\\}$). Each halved: 2, 3, 3.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's totient function", "consistency verification", "specific Galois computations"],
+    "prerequisites": ["Euler's totient formula", "angle trisection specific cases"]
+  }
+]
