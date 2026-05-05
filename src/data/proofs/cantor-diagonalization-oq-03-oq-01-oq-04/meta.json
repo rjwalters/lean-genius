@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 163,
+    "lineCount": 176,
     "dateAdded": "2026-05-05",
     "assumptions": "None. Uses only Lean 4 core type theory (no propext, funext, or Classical.choice).",
     "mathlib_version": "4.26.0",
@@ -38,7 +38,7 @@
       "surjective_implies_pointwise: classical surjectivity implies constructive surjectivity (one direction only)",
       "cantor_recovery_from_constructive: classical cantor_recovery derived from constructive version"
     ],
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 1
   },
   "sections": [
@@ -134,9 +134,9 @@
       "Mathlib.Tactic"
     ],
     "namespace": "CantorDiagonalizationOQ03OQ01OQ04",
-    "lineCount": 163,
+    "lineCount": 176,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 1,
     "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ04.lean",
     "sorries": 0
