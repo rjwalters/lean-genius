@@ -61,7 +61,7 @@
     "lineCount": 1553,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 71
+    "theoremCount": 103
   },
   "overview": {
     "historicalContext": "Karl Wilhelm Feuerbach proved the tangency of the nine-point circle with the incircle in his 1822 monograph 'Eigenschaften einiger merkw\u00fcrdigen Punkte des geradlinigen Dreiecks', one of the most beautiful results in classical triangle geometry. The nine-point circle itself was independently discovered by Brianchon-Poncelet (1821) and Feuerbach (1822), passing through the three side midpoints, three altitude feet, and three midpoints from vertices to orthocenter. The main Feuerbach formalization (feuerbachs-theorem) had axiomatized 8 distance relations due to algebraic complexity. This companion file resolves the open question of whether those axioms could be proved by direct coordinate computation in Lean. The answer is yes: all 8 axioms are eliminated. The key innovation is expressing the NI vector via barycentric-style weights $2s(N-I) = \\sum(s-k)(V_k - O)$, expanding the bilinear form, and applying the algebraic chain $R^2s^2 - \\sigma = (Rs - 2\\text{Area})^2$ which uses the extended law of sines $abc = 4R \\cdot \\text{Area}$ as the decisive substitution. This approach, combining coordinate geometry with classical algebraic identities (Heron, law of sines), avoids the need for Mathlib's inner product infrastructure.",
