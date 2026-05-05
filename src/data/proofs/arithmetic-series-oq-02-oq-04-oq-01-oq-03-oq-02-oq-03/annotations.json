@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-qmultichoose-definition",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 40, "endLine": 50 },
+    "type": "definition",
+    "title": "qMultichoose: Gaussian Binomial as q-Analog of Multisets",
+    "content": "The definition is a single line: qMultichoose q n k := qBinom q (n+k-1) k. The index shift n+k-1 encodes the classical identity Nat.multichoose n k = C(n+k-1, k): the q-analog replaces C(n+k-1, k) with the Gaussian binomial [n+k-1 choose k]_q. The noncomputable annotation reflects that qBinom involves polynomial evaluation over a general CommRing.",
+    "mathContext": "$$\\text{qMultichoose}(q, n, k) := \\binom{n+k-1}{k}_q = \\frac{(q;q)_{n+k-1}}{(q;q)_k (q;q)_{n-1}}$$",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian binomial coefficients", "multiset coefficients", "q-analogs", "q-Pochhammer symbol"],
+    "prerequisites": ["Gaussian binomial definition", "Nat.multichoose", "combinatorics of multisets"]
+  },
+  {
+    "id": "ann-boundary-cases",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 52, "endLine": 100 },
+    "type": "technique",
+    "title": "Boundary Cases via Gaussian Binomial Properties",
+    "content": "Four boundary cases are proved by reducing to known qBinom identities: (1) k=0: qBinom q m 0 = 1 for any m (via simp [qMultichoose]); (2) n=0, k≥1: the index 0+(k+1)-1=k < k+1 puts us in the zero region of qBinom (qBinom_eq_zero_of_lt); (3) n=1, k: index 1+k-1=k, so qBinom q k k = 1 (qBinom_self); (4) k=1: index n+1-1=n, qBinom q n 1 = qNumber q n (qBinom_one_right).",
+    "mathContext": "$$\\text{qMultichoose}(q,n,0)=1,\\quad \\text{qMultichoose}(q,0,k+1)=0,\\quad \\text{qMultichoose}(q,1,k)=1,\\quad \\text{qMultichoose}(q,n,1)=[n]_q$$",
+    "significance": "supporting",
+    "relatedConcepts": ["qBinom_self", "qBinom_eq_zero_of_lt", "qNumber", "boundary conditions"],
+    "prerequisites": ["qBinom boundary lemmas", "omega tactic for index arithmetic"]
+  },
+  {
+    "id": "ann-q-pascal",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 102, "endLine": 130 },
+    "type": "technique",
+    "title": "q-Pascal Recurrence: The q-Deformation of Multichoose",
+    "content": "The proof unfolds qMultichoose, rewrites the three shifted indices (n+1+(k+1)-1=n+k+1, n+1+k-1=n+k, n+(k+1)-1=n+k) using omega, then applies qBinom_pascal at index n+k. The key algebraic insight is that the index arithmetic makes all three qMultichoose terms refer to qBinom at the same base index n+k, allowing a direct application of the already-proved qBinom Pascal recurrence.",
+    "mathContext": "$$\\text{qMultichoose}(q, n+1, k+1) = \\text{qMultichoose}(q, n+1, k) + q^{k+1} \\cdot \\text{qMultichoose}(q, n, k+1)$$",
+    "significance": "key",
+    "relatedConcepts": ["Pascal's triangle", "q-Pascal identity", "qBinom_pascal", "recurrence relations"],
+    "prerequisites": ["qBinom_pascal", "index arithmetic (omega)", "q-deformation of Pascal's rule"]
+  },
+  {
+    "id": "ann-double-induction",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 132, "endLine": 165 },
+    "type": "insight",
+    "title": "Double Induction: Recovering Nat.multichoose at q=1",
+    "content": "The main theorem uses double induction on n then k. The key equation at the inductive step is qMultichoose_pascal (at q=1) combined with Nat.multichoose_succ_succ: both satisfy the same Pascal recurrence with the same boundary conditions, forcing equality. The one_pow and one_mul simplifications reduce the q-weight q^(k+1) to 1, collapsing the q-Pascal to the ordinary Pascal. The norm_cast and omega discharge the nat-cast arithmetic.",
+    "mathContext": "Both satisfy $f(n+1, k+1) = f(n+1, k) + f(n, k+1)$ with $f(n,0)=1$ and $f(0,k+1)=0$, so they agree by induction.",
+    "significance": "key",
+    "relatedConcepts": ["double induction", "Nat.multichoose_succ_succ", "uniqueness from recurrence", "q→1 limit"],
+    "prerequisites": ["structural induction in Lean 4", "Nat.multichoose Pascal", "norm_cast for nat/ring coercions"]
+  },
+  {
+    "id": "ann-specialization-q1",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 167, "endLine": 188 },
+    "type": "insight",
+    "title": "Two Paths to q=1: Via multichoose and Via Nat.choose",
+    "content": "Section V (qMultichoose_at_one) provides a second path to the q=1 specialization: directly via qBinom_at_one which gives qBinom 1 n k = Nat.choose n k. This is consistent with Section IV since Nat.multichoose n k = Nat.choose (n+k-1) k. Section VI (qMultichoose_eq_gaussBinom) is definitionally true (rfl), confirming the Gaussian binomial interpretation is built into the definition.",
+    "mathContext": "$$\\text{qMultichoose}(1, n, k) = \\binom{n+k-1}{k} = \\text{multichoose}(n, k)$$ via two paths: double induction, and `qBinom_at_one` directly.",
+    "significance": "supporting",
+    "relatedConcepts": ["qBinom_at_one", "Nat.choose vs Nat.multichoose", "definitional equality (rfl)"],
+    "prerequisites": ["qBinom_at_one lemma", "classical identity multichoose n k = C(n+k-1,k)"]
+  },
+  {
+    "id": "ann-two-left-penult",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 190, "endLine": 220 },
+    "type": "technique",
+    "title": "qMultichoose(q,2,k) = [k+1]_q via Penultimate Gaussian Binomial",
+    "content": "qMultichoose q 2 k = qBinom q (k+1) k = qNumber q (k+1). The lemma qBinom_penult gives qBinom q (n+1) n = qNumber q (n+1) — the penultimate Gaussian binomial equals the q-number. Classically: C(k+1,k) = k+1, and qNumber q (k+1) = 1+q+...+q^k is the q-integer [k+1]_q. This is the n=2 case because multichoose 2 k = k+1.",
+    "mathContext": "$$\\text{qMultichoose}(q, 2, k) = \\binom{k+1}{k}_q = [k+1]_q = 1 + q + q^2 + \\cdots + q^k$$",
+    "significance": "supporting",
+    "relatedConcepts": ["qNumber (q-integer)", "qBinom_penult", "q-analog of k+1", "penultimate Gaussian binomial"],
+    "prerequisites": ["qBinom_penult lemma", "qNumber definition as q-integer"]
+  },
+  {
+    "id": "ann-vandermonde-link",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 222, "endLine": 240 },
+    "type": "context",
+    "title": "Link to Multiset Vandermonde and Classical q-Vandermonde",
+    "content": "The consistency theorem qMultichoose_recovers_classical_int instantiates qMultichoose_eq_multichoose at R=ℤ, confirming the classical identity in the integer ring. This closes the connection to the parent entry (ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02), where the multiset Vandermonde identity ∑ multichoose n k = multichoose (n+r) k was proved. The q-analog of this Vandermonde identity (using qMultichoose) would be a q-deformed Vandermonde convolution.",
+    "mathContext": "Classical: $\\sum_{k} \\text{multichoose}(n, k) \\cdot \\text{multichoose}(m, r-k) = \\text{multichoose}(n+m, r)$. The q-analog replaces each factor with $\\text{qMultichoose}(q, \\cdot, \\cdot)$ and introduces q-weights.",
+    "significance": "context",
+    "relatedConcepts": ["Vandermonde convolution", "multiset Vandermonde", "q-Vandermonde identity", "Chu-Vandermonde"],
+    "prerequisites": ["multiset Vandermonde identity", "q-Vandermonde (Gaussian binomial form)"]
+  },
+  {
+    "id": "ann-fq-vector-space",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "concept",
+    "title": "Combinatorial Meaning: Subspaces of 𝔽_q-Vector Spaces",
+    "content": "The Gaussian binomial [n+k-1 choose k]_q counts the number of k-dimensional subspaces of an (n+k-1)-dimensional vector space over the finite field 𝔽_q. As q → 1, each subspace 'degenerates' to a subset, and the count [n+k-1 choose k]_q → C(n+k-1, k) = multichoose n k. The q-weight q^(k+1) in the Pascal recurrence tracks the additional dimension contributed by each extension, reflecting the structure of 𝔽_q^m as a tower of field extensions.",
+    "mathContext": "$$\\binom{n+k-1}{k}_q = |\\{V \\leq \\mathbb{F}_q^{n+k-1} : \\dim V = k\\}|, \\quad \\lim_{q \\to 1} \\binom{n+k-1}{k}_q = \\binom{n+k-1}{k}$$",
+    "significance": "key",
+    "relatedConcepts": ["finite fields 𝔽_q", "Grassmannian", "q-analog philosophy", "subspace counting"],
+    "prerequisites": ["finite fields", "vector space dimension", "Grassmannian variety"]
+  }
+]
