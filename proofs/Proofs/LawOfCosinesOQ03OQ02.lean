@@ -26,7 +26,7 @@ we derive: the triple-ratio form, cross-multiplication identities, the isoceles
 theorem (a = b ↔ A = B) via arccos injectivity on [0, π], and right-angle
 and equilateral specializations.
 
-## Summary: 15 theorems, 0 sorries, 6 structure-encoded axioms
+## Summary: 14 theorems, 0 sorries, 6 structure-encoded axioms
 
 Tags: hyperbolic-geometry, law-of-sines, trigonometry, real-analysis
 
