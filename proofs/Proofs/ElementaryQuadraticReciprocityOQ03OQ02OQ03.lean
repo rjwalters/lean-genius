@@ -1,3 +1,4 @@
+import Proofs.ElementaryQuadraticReciprocityOQ03
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ02
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ02OQ01
 import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
@@ -123,7 +124,169 @@ theorem kronecker_sign_three_mod_four
   exact jacobiSym.quadratic_reciprocity_three_mod_four hD₁ hD₂
 
 -- ============================================================
--- Part III: General Kronecker QR — Axiom
+-- Part III: General Kronecker QR
+-- ============================================================
+
+-- ============================================================
+-- Part III.A: Helpers for odd fundamental discriminant QR
+-- ============================================================
+
+private lemma natAbs_mod4_of_pos {D : ℤ} (hD4 : D % 4 = 1) (hDpos : 0 < D) :
+    D.natAbs % 4 = 1 := by
+  have h : (D.natAbs : ℤ) = D := Int.natAbs_of_nonneg (le_of_lt hDpos)
+  exact_mod_cast show (D.natAbs : ℤ) % 4 = 1 by rw [h]; exact hD4
+
+private lemma natAbs_mod4_of_neg {D : ℤ} (hD4 : D % 4 = 1) (hDneg : D < 0) :
+    D.natAbs % 4 = 3 := by
+  have h : (D.natAbs : ℤ) = -D := Int.natAbs_of_neg hDneg
+  exact_mod_cast show (D.natAbs : ℤ) % 4 = 3 by rw [h]; omega
+
+private lemma jac_neg1_one {n : ℕ} (hn_odd : n % 2 = 1) (hn_mod4 : n % 4 = 1) :
+    jacobiSym (-1 : ℤ) n = 1 := by
+  by_cases hn1 : 1 < n
+  · rw [JacobiQR.jacobiSym_neg_one n hn_odd hn1]
+    exact Even.neg_one_pow ⟨n / 4, by omega⟩
+  · have : n = 1 := by omega
+    subst this; decide
+
+private lemma jac_neg1_neg_one {n : ℕ} (hn_odd : n % 2 = 1) (hn_mod4 : n % 4 = 3) :
+    jacobiSym (-1 : ℤ) n = -1 := by
+  have hn1 : 1 < n := by omega
+  rw [JacobiQR.jacobiSym_neg_one n hn_odd hn1]
+  exact Odd.neg_one_pow ⟨n / 4, by omega⟩
+
+-- ============================================================
+-- Part III.B: Proved QR for ODD fundamental discriminants
+-- ============================================================
+
+/-- **Generalized Kronecker QR for ODD Fundamental Discriminants** (proved)
+
+    For coprime ODD fundamental discriminants D₁ and D₂, the Kronecker
+    symbol satisfies the full QR law:
+
+      (D₁/|D₂|)_K = ε(D₁,D₂) · (D₂/|D₁|)_K
+
+    where ε = -1 iff both negative, ε = 1 otherwise.
+
+    Proof sketch (4 cases on signs of D₁, D₂):
+    - Both > 0: D₁.natAbs ≡ 1 (mod 4). Jacobi QR (D₁.natAbs ≡ 1) gives J(D₁,D₂) = J(D₂,D₁).
+    - D₁ < 0, D₂ > 0: D₁.natAbs ≡ 3, D₂.natAbs ≡ 1. Factor J(D₁,D₂) = J(-1,D₂)·J(|D₁|,D₂).
+      J(-1,D₂) = 1 (D₂.natAbs ≡ 1). Jacobi QR with D₂.natAbs ≡ 1 gives equality.
+    - D₁ > 0, D₂ < 0: symmetric to above.
+    - Both < 0: D₁.natAbs ≡ D₂.natAbs ≡ 3 (mod 4). Two sign factors J(-1,·) = -1 each.
+      Jacobi QR (both ≡ 3 mod 4) gives extra -1. Net: (-1)·(-1)·(-1) → overall sign flip = -1 correction. -/
+theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
+    (h₁ : IsFundamentalDiscriminant D₁) (h₁_odd : ¬Even D₁)
+    (h₂ : IsFundamentalDiscriminant D₂) (h₂_odd : ¬Even D₂)
+    (hcop : Int.gcd D₁.natAbs D₂.natAbs = 1) :
+    kronecker D₁ D₂.natAbs =
+      if D₁ < 0 ∧ D₂ < 0 then -(kronecker D₂ D₁.natAbs)
+      else kronecker D₂ D₁.natAbs := by
+  have h₁_mod4 : D₁ % 4 = 1 := by
+    rcases h₁ with ⟨h, _⟩ | ⟨h, _⟩
+    · exact h
+    · exact absurd (Int.even_iff.mpr (by omega)) h₁_odd
+  have h₂_mod4 : D₂ % 4 = 1 := by
+    rcases h₂ with ⟨h, _⟩ | ⟨h, _⟩
+    · exact h
+    · exact absurd (Int.even_iff.mpr (by omega)) h₂_odd
+  have hD₁_ne : D₁ ≠ 0 := by omega
+  have hD₂_ne : D₂ ≠ 0 := by omega
+  have hD₁_pos' : 0 < D₁.natAbs := Int.natAbs_pos.mpr hD₁_ne
+  have hD₂_pos' : 0 < D₂.natAbs := Int.natAbs_pos.mpr hD₂_ne
+  have hD₁_nat_odd : D₁.natAbs % 2 = 1 :=
+    Nat.odd_iff.mp (Int.odd_natAbs.mpr (Int.odd_iff.mpr (by omega)))
+  have hD₂_nat_odd : D₂.natAbs % 2 = 1 :=
+    Nat.odd_iff.mp (Int.odd_natAbs.mpr (Int.odd_iff.mpr (by omega)))
+  rw [kronecker_eq_jacobi D₁ D₂.natAbs hD₂_pos' hD₂_nat_odd,
+      kronecker_eq_jacobi D₂ D₁.natAbs hD₁_pos' hD₁_nat_odd]
+  by_cases hD₁neg : D₁ < 0 <;> by_cases hD₂neg : D₂ < 0
+  · simp only [hD₁neg, hD₂neg, and_self, ite_true]
+    have hm₁ : D₁.natAbs % 4 = 3 := natAbs_mod4_of_neg h₁_mod4 hD₁neg
+    have hm₂ : D₂.natAbs % 4 = 3 := natAbs_mod4_of_neg h₂_mod4 hD₂neg
+    have hfac₁ : jacobiSym D₁ D₂.natAbs =
+        jacobiSym (-1 : ℤ) D₂.natAbs * jacobiSym (D₁.natAbs : ℤ) D₂.natAbs := by
+      conv_lhs => rw [show D₁ = (-1 : ℤ) * D₁.natAbs from by
+        linarith [Int.natAbs_of_neg hD₁neg]]
+      exact jacobiSym.mul_left _ _ _
+    have hfac₂ : jacobiSym D₂ D₁.natAbs =
+        jacobiSym (-1 : ℤ) D₁.natAbs * jacobiSym (D₂.natAbs : ℤ) D₁.natAbs := by
+      conv_lhs => rw [show D₂ = (-1 : ℤ) * D₂.natAbs from by
+        linarith [Int.natAbs_of_neg hD₂neg]]
+      exact jacobiSym.mul_left _ _ _
+    have hs₁ : jacobiSym (-1 : ℤ) D₂.natAbs = -1 := jac_neg1_neg_one hD₂_nat_odd hm₂
+    have hs₂ : jacobiSym (-1 : ℤ) D₁.natAbs = -1 := jac_neg1_neg_one hD₁_nat_odd hm₁
+    have hqr : jacobiSym (D₁.natAbs : ℤ) D₂.natAbs =
+        -(jacobiSym (D₂.natAbs : ℤ) D₁.natAbs) :=
+      jacobiSym.quadratic_reciprocity_three_mod_four hm₁ hm₂
+    rw [hfac₁, hfac₂, hs₁, hs₂, hqr]; ring
+  · have hD₂nonneg : 0 ≤ D₂ := le_of_not_lt hD₂neg
+    simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨_, h⟩ => hD₂neg h, ite_false]
+    have hD₂pos : 0 < D₂ := lt_of_le_of_ne hD₂nonneg (Ne.symm hD₂_ne)
+    have hm₁ : D₁.natAbs % 4 = 3 := natAbs_mod4_of_neg h₁_mod4 hD₁neg
+    have hm₂ : D₂.natAbs % 4 = 1 := natAbs_mod4_of_pos h₂_mod4 hD₂pos
+    have hfac₁ : jacobiSym D₁ D₂.natAbs =
+        jacobiSym (-1 : ℤ) D₂.natAbs * jacobiSym (D₁.natAbs : ℤ) D₂.natAbs := by
+      conv_lhs => rw [show D₁ = (-1 : ℤ) * D₁.natAbs from by
+        linarith [Int.natAbs_of_neg hD₁neg]]
+      exact jacobiSym.mul_left _ _ _
+    have hD₂eq : D₂ = (D₂.natAbs : ℤ) := (Int.natAbs_of_nonneg (le_of_lt hD₂pos)).symm
+    have hs₁ : jacobiSym (-1 : ℤ) D₂.natAbs = 1 := jac_neg1_one hD₂_nat_odd hm₂
+    have hqr : jacobiSym (D₂.natAbs : ℤ) D₁.natAbs = jacobiSym (D₁.natAbs : ℤ) D₂.natAbs :=
+      jacobiSym.quadratic_reciprocity_one_mod_four hm₂ (Nat.odd_iff.mpr hD₁_nat_odd)
+    rw [hfac₁, hs₁, one_mul, hD₂eq, hqr]
+  · have hD₁nonneg : 0 ≤ D₁ := le_of_not_lt hD₁neg
+    simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨h, _⟩ => hD₁neg h, ite_false]
+    have hD₁pos : 0 < D₁ := lt_of_le_of_ne hD₁nonneg (Ne.symm hD₁_ne)
+    have hm₁ : D₁.natAbs % 4 = 1 := natAbs_mod4_of_pos h₁_mod4 hD₁pos
+    have hm₂ : D₂.natAbs % 4 = 3 := natAbs_mod4_of_neg h₂_mod4 hD₂neg
+    have hD₁eq : D₁ = (D₁.natAbs : ℤ) := (Int.natAbs_of_nonneg (le_of_lt hD₁pos)).symm
+    have hfac₂ : jacobiSym D₂ D₁.natAbs =
+        jacobiSym (-1 : ℤ) D₁.natAbs * jacobiSym (D₂.natAbs : ℤ) D₁.natAbs := by
+      conv_lhs => rw [show D₂ = (-1 : ℤ) * D₂.natAbs from by
+        linarith [Int.natAbs_of_neg hD₂neg]]
+      exact jacobiSym.mul_left _ _ _
+    have hs₂ : jacobiSym (-1 : ℤ) D₁.natAbs = 1 := jac_neg1_one hD₁_nat_odd hm₁
+    have hqr : jacobiSym (D₁.natAbs : ℤ) D₂.natAbs = jacobiSym (D₂.natAbs : ℤ) D₁.natAbs :=
+      jacobiSym.quadratic_reciprocity_one_mod_four hm₁ (Nat.odd_iff.mpr hD₂_nat_odd)
+    rw [hD₁eq, hfac₂, hs₂, one_mul, ← hqr]
+  · have hD₁nonneg : 0 ≤ D₁ := le_of_not_lt hD₁neg
+    have hD₂nonneg : 0 ≤ D₂ := le_of_not_lt hD₂neg
+    simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨h, _⟩ => hD₁neg h, ite_false]
+    have hD₁pos : 0 < D₁ := lt_of_le_of_ne hD₁nonneg (Ne.symm hD₁_ne)
+    have hD₂pos : 0 < D₂ := lt_of_le_of_ne hD₂nonneg (Ne.symm hD₂_ne)
+    have hm₁ : D₁.natAbs % 4 = 1 := natAbs_mod4_of_pos h₁_mod4 hD₁pos
+    have hD₁eq : D₁ = (D₁.natAbs : ℤ) := (Int.natAbs_of_nonneg (le_of_lt hD₁pos)).symm
+    have hD₂eq : D₂ = (D₂.natAbs : ℤ) := (Int.natAbs_of_nonneg (le_of_lt hD₂pos)).symm
+    have hqr : jacobiSym (D₁.natAbs : ℤ) D₂.natAbs = jacobiSym (D₂.natAbs : ℤ) D₁.natAbs :=
+      jacobiSym.quadratic_reciprocity_one_mod_four hm₁ (Nat.odd_iff.mpr hD₂_nat_odd)
+    rw [hD₁eq, hD₂eq, hqr]
+
+-- ============================================================
+-- Part III.C: Axiom for EVEN fundamental discriminants
+-- ============================================================
+
+/-- **Generalized QR for EVEN Fundamental Discriminants** (axiomatized)
+
+    For coprime fundamental discriminants D₁, D₂ where at least one is even
+    (discriminants of the form 4m with m ≡ 2,3 (mod 4) squarefree, such as ±4, 8, -8, 12):
+
+      (D₁/|D₂|)_K = ε(D₁,D₂) · (D₂/|D₁|)_K
+
+    The key reduction is: kronecker 4 n = (jacobiSym 2 n)² = 1 for odd n, so the
+    even part of the discriminant contributes trivially. The remaining odd part
+    then satisfies QR. Full proof would use genus theory or Artin reciprocity. -/
+axiom kronecker_qr_even_fundamental (D₁ D₂ : ℤ)
+    (h₁ : IsFundamentalDiscriminant D₁)
+    (h₂ : IsFundamentalDiscriminant D₂)
+    (hcop : Int.gcd D₁.natAbs D₂.natAbs = 1)
+    (heven : Even D₁ ∨ Even D₂) :
+    kronecker D₁ D₂.natAbs =
+      if D₁ < 0 ∧ D₂ < 0 then -(kronecker D₂ D₁.natAbs)
+      else kronecker D₂ D₁.natAbs
+
+-- ============================================================
+-- Part III.D: General case (proved for odd, axiom for even)
 -- ============================================================
 
 /-- **Generalized Quadratic Reciprocity for Fundamental Discriminants**
@@ -135,28 +298,27 @@ theorem kronecker_sign_three_mod_four
 
     where ε(D₁,D₂) = -1 if both D₁ < 0 and D₂ < 0, else ε = 1.
 
+    - ODD discriminants (D ≡ 1 mod 4): fully proved via Jacobi QR (Part III.B)
+    - EVEN discriminants (4 | D): axiomatized (Part III.C), pending genus theory
+
     Examples confirming the sign flip:
       (-7/3)_K = -1  and  (-3/7)_K = 1  →  (-7/3) = -(-3/7) [verified by native_decide]
       (-4/3)_K = -1  and  (-3/4)_K = 1  →  (-4/3) = -(-3/4)
 
     The sign correction arises from the Dirichlet character interpretation: χ_D is an
-    ODD character when D < 0 (χ_D(-1) = -1). For D₂ < 0:
-      χ_{D₁}(D₂) = χ_{D₁}(-1) · χ_{D₁}(|D₂|) = -χ_{D₁}(|D₂|)  when D₁ < 0
-    So for both D₁, D₂ < 0:  χ_{D₁}(D₂) = χ_{D₂}(D₁)  gives the sign flip.
-
-    This covers the cases not handled by the proved theorems above:
-    - Mixed-sign: one of D₁, D₂ negative (equality holds)
-    - Even discriminants: 4 | D (equality holds when at most one is negative)
-    - Both negative: sign flip
-
-    Proof requires genus theory or class field theory (Artin reciprocity). -/
-axiom kronecker_qr_fundamental (D₁ D₂ : ℤ)
+    ODD character when D < 0 (χ_D(-1) = -1). Via Artin reciprocity, this gives
+    the ε sign when evaluating at |D| rather than the signed integer D. -/
+theorem kronecker_qr_fundamental (D₁ D₂ : ℤ)
     (h₁ : IsFundamentalDiscriminant D₁)
     (h₂ : IsFundamentalDiscriminant D₂)
     (hcop : Int.gcd D₁.natAbs D₂.natAbs = 1) :
     kronecker D₁ D₂.natAbs =
       if D₁ < 0 ∧ D₂ < 0 then -(kronecker D₂ D₁.natAbs)
-      else kronecker D₂ D₁.natAbs
+      else kronecker D₂ D₁.natAbs := by
+  by_cases heven : Even D₁ ∨ Even D₂
+  · exact kronecker_qr_even_fundamental D₁ D₂ h₁ h₂ hcop heven
+  · push_neg at heven
+    exact kronecker_qr_odd_fundamental D₁ D₂ h₁ heven.1 h₂ heven.2 hcop
 
 -- ============================================================
 -- Part IV: Numerical Verifications
