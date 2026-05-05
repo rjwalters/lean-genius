@@ -1,0 +1,131 @@
+[
+  {
+    "id": "ann-prim-header",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "Module Setup: Primitive Element Theorem in Lean 4",
+    "content": "The module imports `import Mathlib` (the full Mathlib library) and establishes the identity chain at the heart of the primitive element theorem:\n\n```\ndeg(minpoly K α) = finrank K K⟮α⟯   [IntermediateField.adjoin.finrank]\n                = finrank K ↥⊤       [since K⟮α⟯ = ⊤ for primitive α]\n                = finrank K L         [IntermediateField.topEquiv]\n```\n\nThe `open` declarations bring `Polynomial` (for `natDegree`, `minpoly`), `IntermediateField` (for `K⟮α⟯`, `adjoin`, `topEquiv`), `Module` (for `finrank`), and `FiniteDimensional` (for `finrank` lemmas). The `variable {K L : Type*} [Field K] [Field L] [Algebra K L]` sets up the ambient field extension for all theorems.\n\nThe file has `badge: mathlib` because `primitive_element_exists` directly wraps `Field.exists_primitive_element` from Mathlib — the core primitive element theorem is not proved from scratch, but connected to the minimal polynomial degree framework.",
+    "mathContext": "The key Mathlib theorem: `Field.exists_primitive_element : ∀ (K L : Type*) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsSeparable K L] [Infinite K], ∃ α : L, K⟮α⟯ = ⊤`. This requires: (1) finite dimensional extension, (2) separable extension, (3) infinite base field. For finite fields, a different argument (Frobenius/cyclic structure) is needed.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Field.exists_primitive_element",
+      "IntermediateField",
+      "K⟮α⟯ notation",
+      "IsSeparable",
+      "Infinite K hypothesis"
+    ],
+    "prerequisites": [
+      "field extensions in Lean 4",
+      "IntermediateField.adjoin",
+      "FiniteDimensional",
+      "minimal polynomial (minpoly)"
+    ]
+  },
+  {
+    "id": "ann-prim-finrank-top",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+    "range": { "startLine": 49, "endLine": 64 },
+    "type": "technique",
+    "title": "finrank_top_eq: Bridging ↥⊤ and L",
+    "content": "`finrank_top_eq`: `finrank K ↥(⊤ : IntermediateField K L) = finrank K L`.\n\nThe top intermediate field `⊤ : IntermediateField K L` is the full field L viewed as a subfield of itself. As a Lean type, `↥⊤` is the subtype `{x : L | x ∈ ⊤}`, which is isomorphic but not definitionally equal to `L`. The lemma bridges this: `IntermediateField.topEquiv` is the canonical K-algebra isomorphism `↥⊤ ≃ₐ[K] L`, and `LinearEquiv.finrank_eq` converts any K-linear equivalence to a finrank equality.\n\nOne-line proof: `LinearEquiv.finrank_eq IntermediateField.topEquiv.toLinearEquiv`.\n\nThis bridging lemma is needed because `adjoin.finrank` gives `finrank K K⟮α⟯` while the target is `finrank K L`. When `K⟮α⟯ = ⊤`, rewriting gives `finrank K ↥⊤`, not `finrank K L` — the top-eq lemma closes the gap.",
+    "mathContext": "The coercion `↥(⊤ : IntermediateField K L)` creates the type `{x : L // x ∈ ⊤}`. This is a subtype inclusion, and Lean treats it as a different type from `L` even though they are canonically isomorphic. The isomorphism `IntermediateField.topEquiv : ↥⊤ ≃ₐ[K] L` is the bundled algebraic equivalence; `.toLinearEquiv` extracts the K-linear part needed for `LinearEquiv.finrank_eq`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IntermediateField.topEquiv",
+      "LinearEquiv.finrank_eq",
+      "subtype coercion ↥",
+      "K-algebra isomorphism"
+    ],
+    "prerequisites": [
+      "IntermediateField.topEquiv",
+      "LinearEquiv.finrank_eq",
+      "subtype vs ambient type in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-prim-bridge-lemma",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+    "range": { "startLine": 65, "endLine": 94 },
+    "type": "insight",
+    "title": "Bridge Lemma + Primitive Element Theorem",
+    "content": "**`minpoly_deg_of_generator`** (lines 65-72): If `K⟮α⟯ = ⊤` (α generates L over K), then `deg(minpoly K α) = finrank K L`.\n\nProof in 4 steps:\n1. `hα_int : IsIntegral K α` from `IsIntegral.of_finite K α` (finite extensions have integral elements)\n2. `h : finrank K ↥K⟮α⟯ = (minpoly K α).natDegree` from `IntermediateField.adjoin.finrank hα_int`\n3. Rewrite via `hgen : K⟮α⟯ = ⊤` and `finrank_top_eq` to get `finrank K L = natDegree`\n4. Conclude by `omega`\n\n**`primitive_element_exists`** (lines 91-94): One-line wrapper around `Field.exists_primitive_element K L`, displaying the full hypothesis list for clarity. This makes the Mathlib dependency explicit and serves as documentation of what the primitive element theorem requires.\n\nThe combination of these two lemmas — bridge + existence — is the entire logical content of the main theorem. The proof is purely assembly: get α from Mathlib, apply the bridge to convert K(α)=⊤ to the degree equality.",
+    "mathContext": "The identity `finrank K K⟮α⟯ = natDegree (minpoly K α)`: Proof. $K⟮\\alpha\\rangle \\cong K[X]/(\\mathrm{minpoly}_K(\\alpha))$ as $K$-algebras, and this quotient has dimension equal to $\\deg(\\mathrm{minpoly}_K(\\alpha))$ over $K$ (basis: $1, \\alpha, \\ldots, \\alpha^{n-1}$ where $n = \\deg$). So $[K(\\alpha):K] = \\deg(\\mathrm{minpoly}_K(\\alpha))$. In Mathlib, this is `IntermediateField.adjoin.finrank : finrank K K⟮α⟯ = natDegree (minpoly K α)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IntermediateField.adjoin.finrank",
+      "IsIntegral.of_finite",
+      "Field.exists_primitive_element",
+      "simple extension K(α)"
+    ],
+    "prerequisites": [
+      "IntermediateField.adjoin.finrank",
+      "finrank_top_eq",
+      "IsIntegral.of_finite",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-prim-main",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+    "range": { "startLine": 106, "endLine": 127 },
+    "type": "insight",
+    "title": "Main Theorem and Degree Bound",
+    "content": "**`primitive_element_minpoly`** (lines 106-110): The main result — ∃ α ∈ L, deg(minpoly K α) = [L:K].\n\nThree-line proof:\n1. `obtain ⟨α, hα⟩ := primitive_element_exists` — get the primitive element\n2. `exact ⟨α, minpoly_deg_of_generator α hα⟩` — apply bridge lemma\n\nThis directly answers OQ-03: YES, the primitive element theorem is formalizable in Lean 4. The conciseness of the proof demonstrates that Mathlib already has the hard part; connecting it to the minimal polynomial degree framework requires only the finrank identity chain.\n\n**`minpoly_deg_le_finrank`** (lines 120-127): deg(minpoly K α) ≤ [L:K] for all α ∈ L. This is the universal bound — every element has degree at most the extension degree, with equality only for primitive elements. Proof: `finrank K K⟮α⟯ ≤ finrank K L` by subspace monotonicity, combined with `adjoin.finrank`.",
+    "mathContext": "The three-line proof of `primitive_element_minpoly` is the formal analog of: (1) primitive element exists by Artin's theorem; (2) for the primitive element $\\alpha$, $K(\\alpha) = L$; (3) $[K(\\alpha):K] = \\deg(\\mathrm{minpoly}_K(\\alpha))$; (4) $[K(\\alpha):K] = [L:K]$ since $K(\\alpha)=L$. The Lean proof compresses steps (1)-(4) into 3 lines using the intermediate lemmas. The degree bound $\\deg(\\mathrm{minpoly}_K(\\alpha)) \\leq [L:K]$ follows from $K(\\alpha) \\subseteq L$ as $K$-vector spaces, giving $[K(\\alpha):K] \\leq [L:K]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive element theorem (OQ-03 answer)",
+      "degree bound for all elements",
+      "subspace monotonicity of finrank",
+      "three-line proof via Mathlib"
+    ],
+    "prerequisites": [
+      "primitive_element_exists",
+      "minpoly_deg_of_generator",
+      "finrank monotonicity"
+    ]
+  },
+  {
+    "id": "ann-prim-biconditional",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+    "range": { "startLine": 129, "endLine": 200 },
+    "type": "technique",
+    "title": "Characterizations: Non-Generators, Biconditional, Tower Formula",
+    "content": "**`not_generator_of_deg_lt`** (lines 129-137): If deg(minpoly K α) < [L:K], then α does not generate L (K⟮α⟯ ≠ ⊤). Contrapositive of the bridge lemma: if K⟮α⟯ = ⊤, then deg = [L:K], so deg < [L:K] implies K⟮α⟯ ≠ ⊤.\n\n**`primitive_has_max_minpoly_deg`** (lines 139-169): Among all elements of L, primitive elements achieve the maximum degree [L:K]. This packages the degree bound + attainment.\n\n**`generator_iff_minpoly_maxdeg`** (lines 171-188): `K⟮α⟯ = ⊤ ↔ deg(minpoly K α) = [L:K]`. The backward direction uses `IntermediateField.eq_top_of_finrank_eq`: if finrank K K⟮α⟯ = finrank K L, then K⟮α⟯ = ⊤ (a subspace of the same finite dimension equals the whole space).\n\n**`tower_formula_via_primitive`** (lines 190-200): [L:K] = deg(minpoly β) · [L:K(β)] for any β ∈ L. This is the tower law applied to the chain K ⊂ K(β) ⊂ L, with finrank K K(β) = deg(minpoly β) by adjoin.finrank.",
+    "mathContext": "The biconditional `K⟮α⟯ = ⊤ ↔ deg(minpoly K α) = [L:K]` is the definitive characterization of primitive elements in terms of their minimal polynomial. Backward direction: $\\deg(\\mathrm{minpoly}_K(\\alpha)) = [L:K]$ $\\Rightarrow$ $[K(\\alpha):K] = [L:K]$ $\\Rightarrow$ $K(\\alpha) = L$ (equal-dimensional subspace equals whole space). The tower formula $[L:K] = [K(\\beta):K] \\cdot [L:K(\\beta)] = \\deg(\\mathrm{minpoly}_K(\\beta)) \\cdot [L:K(\\beta)]$ connects divisibility (deg | [L:K]) to the multiplicative structure of the tower.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IntermediateField.eq_top_of_finrank_eq",
+      "tower law for field extensions",
+      "characterization of primitive elements",
+      "not_generator_of_deg_lt"
+    ],
+    "prerequisites": [
+      "IntermediateField.eq_top_of_finrank_eq",
+      "tower law (finrank multiplicativity)",
+      "IntermediateField.adjoin.finrank"
+    ]
+  },
+  {
+    "id": "ann-prim-divisibility",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+    "range": { "startLine": 202, "endLine": 244 },
+    "type": "concept",
+    "title": "Degree Divisibility and Summary",
+    "content": "**`primitive_elem_deg_dvd_finrank`** (lines 202-231): For any β ∈ L, deg(minpoly K β) divides deg(primitive element) = [L:K].\n\nProof: by the tower formula, [L:K] = deg(minpoly β) · [L:K(β)], so deg(minpoly β) | [L:K]. The primitive element α satisfies deg(minpoly α) = [L:K], so deg(minpoly β) | deg(minpoly α).\n\nThis divisibility result connects all elements of L: every element's minimal polynomial degree divides the primitive element's degree [L:K]. Elements with deg = [L:K] ARE primitive; elements with smaller degree generate proper subfields.\n\nThe file concludes with `end PrimitiveElementOQ03`, closing the namespace. Together, the 10 theorems give a complete picture of the primitive element theorem's relationship to minimal polynomial degrees: existence, characterization (iff), bounds, non-generators, tower formula, and divisibility.",
+    "mathContext": "The divisibility chain: $\\deg(\\mathrm{minpoly}_K(\\beta)) \\mid [L:K(\\beta)+1] \\cdot \\deg(\\beta) = [L:K]$... More precisely: $[L:K] = [L:K(\\beta)] \\cdot [K(\\beta):K] = [L:K(\\beta)] \\cdot \\deg(\\mathrm{minpoly}_K(\\beta))$, so $\\deg(\\mathrm{minpoly}_K(\\beta)) \\mid [L:K]$. Since $[L:K] = \\deg(\\mathrm{minpoly}_K(\\alpha))$ for a primitive $\\alpha$, we get $\\deg(\\mathrm{minpoly}_K(\\beta)) \\mid \\deg(\\mathrm{minpoly}_K(\\alpha))$. This is the quantitative form of the fact that primitive elements have maximum-degree minimal polynomials.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "degree divisibility in field extensions",
+      "tower law",
+      "minimal polynomial degrees",
+      "complete characterization of primitive elements"
+    ],
+    "prerequisites": [
+      "tower_formula_via_primitive",
+      "minpoly_deg_of_generator",
+      "Nat.dvd_intro"
+    ]
+  }
+]
