@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-a4-header",
+    "proofId": "lagrange-theorem-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "A₄: The Canonical Counterexample to Lagrange's Converse",
+    "content": "This module proves the canonical counterexample to the converse of Lagrange's theorem. Lagrange (1771) showed that subgroup orders must divide the group order; the natural question is whether every divisor gives a subgroup. The answer is NO, and A₄ is the smallest and cleanest counterexample: |A₄| = 12, but A₄ has no subgroup of order 6. The module docstring gives both the computational proof strategy (native_decide exhaustive enumeration) and the elegant conjugacy-class argument: A₄'s conjugacy classes have sizes {1, 3, 4, 4}, and no subset of these sizes containing 1 sums to 6.",
+    "mathContext": "$A_4 = \\{\\sigma \\in S_4 \\mid \\text{sgn}(\\sigma) = +1\\}$, the alternating group on 4 elements. Order $|A_4| = 4!/2 = 12$. Element structure: $1$ identity (order 1), $3$ double transpositions (order 2), $8$ three-cycles (order 3). Conjugacy classes: $\\{e\\}$ (size 1), $\\{(12)(34), (13)(24), (14)(23)\\}$ (size 3), two classes of 3-cycles (size 4 each). Any $H \\unlhd A_4$ is a union of conjugacy classes containing $e$; sizes $\\{1,1+3\\}=\\{1,4\\}$ and $\\{1,3,4,4\\}$ but never summing to 6.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's theorem", "converse of Lagrange", "alternating group A₄", "conjugacy classes"],
+    "prerequisites": ["Lagrange's theorem", "alternating group structure", "conjugacy classes in finite groups"]
+  },
+  {
+    "id": "ann-a4-element-orders",
+    "proofId": "lagrange-theorem-oq-01-oq-02",
+    "range": { "startLine": 33, "endLine": 52 },
+    "type": "technique",
+    "title": "Element Order Distribution via native_decide",
+    "content": "Four theorems establish A₄'s complete element structure by native_decide. A4_card computes |A₄| = 12. A4_no_element_order6 shows no element has order 6 — immediately ruling out cyclic subgroups ℤ₆. A4_three_order2_elements counts exactly 3 order-2 elements (the double transpositions). A4_eight_order3_elements counts exactly 8 order-3 elements (the 3-cycles). These facts are all decided computationally since A₄ is a concrete finite type in Lean 4 via `alternatingGroup (Fin 4)`. The native_decide tactic compiles the decision procedure to native code for efficiency.",
+    "mathContext": "Order distribution in $A_4$: $1$ element of order $1$, $3$ elements of order $2$, $8$ elements of order $3$, total $12$. These are the ONLY orders in $A_4$ — no order-4 or order-6 elements. Consequence: $A_4$ contains no $\\mathbb{Z}_6$, $\\mathbb{Z}_4$, $S_3$, or $\\mathbb{Z}_2 \\times \\mathbb{Z}_2 \\times \\mathbb{Z}_2$ as subgroups.",
+    "significance": "key",
+    "relatedConcepts": ["orderOf in Lean", "native_decide tactic", "alternatingGroup (Fin 4)", "element orders in finite groups"],
+    "prerequisites": ["finite group theory", "orderOf function in Mathlib", "native_decide tactic"]
+  },
+  {
+    "id": "ann-finset-enumeration",
+    "proofId": "lagrange-theorem-oq-01-oq-02",
+    "range": { "startLine": 54, "endLine": 68 },
+    "type": "technique",
+    "title": "Exhaustive Finset Enumeration: native_decide Over 4096 Subsets",
+    "content": "A4_no_subgroup_order6_finset is the computational core. It states a universal property over Finset A4: for any S with |S|=6 satisfying the three subgroup axioms (1∈S, multiplication-closed, inverse-closed), we can derive False. The proof is simply `native_decide`. Lean's kernel verifies this by computationally checking all 2¹² = 4096 subsets of the 12-element group. Formally, the proposition has the form ∀ S : Finset A4, S.card = 6 → (conditions) → False, which is decidable since A4 is a Fintype with decidable equality and group operations.",
+    "mathContext": "The check: enumerate all $2^{12} = 4096$ subsets of $A_4$; filter to those of size 6 ($\\binom{12}{6} = 924$ subsets); for each, check closure under $\\cdot$ and $(\\cdot)^{-1}$. None pass. The `native_decide` tactic compiles this to compiled Lean code, avoiding the kernel's slow definitional reduction. This is ~924 closure checks × 36 pairs per check = ~33,000 multiplications verified.",
+    "significance": "key",
+    "relatedConcepts": ["native_decide tactic", "Finset enumeration", "decidable propositions", "subgroup axioms"],
+    "prerequisites": ["Finset in Mathlib", "native_decide vs decide performance", "decidable equality"]
+  },
+  {
+    "id": "ann-subgroup-lift",
+    "proofId": "lagrange-theorem-oq-01-oq-02",
+    "range": { "startLine": 70, "endLine": 98 },
+    "type": "technique",
+    "title": "Lifting Finset Result to Subgroup Type",
+    "content": "A4_no_subgroup_order6 bridges the gap between the Finset theorem and the Subgroup type. Given H : Subgroup A4 with [Fintype H] and Fintype.card H = 6, we construct S = Finset.univ.filter (· ∈ H). The key steps: (1) S.card = 6 via `have hcard : Fintype.card H = S.card := by simp [Fintype.card_subtype]` and `omega`; (2) 1 ∈ S via `simp [H.one_mem]`; (3) multiplication closure via `H.mul_mem`; (4) inverse closure via `H.inv_mem`. Then A4_no_subgroup_order6_finset gives the contradiction. The Fintype.card_subtype bridge is the crucial lemma.",
+    "mathContext": "The bridge: $\\text{Fintype.card}\\, H = |\\{x \\in A_4 \\mid x \\in H\\}|$. This converts a `Subgroup` (with its carrier `Set`) to a `Finset` (with decidable membership), enabling the Finset theorem to be applied. The subgroup axioms (`H.one_mem`, `H.mul_mem`, `H.inv_mem`) directly certify the three conditions.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card_subtype", "Finset.filter", "Subgroup axioms", "Subgroup.one_mem, mul_mem, inv_mem"],
+    "prerequisites": ["Subgroup type in Mathlib", "Fintype vs Finset distinction", "Fintype.card_subtype lemma"]
+  },
+  {
+    "id": "ann-index2-corollary",
+    "proofId": "lagrange-theorem-oq-01-oq-02",
+    "range": { "startLine": 100, "endLine": 121 },
+    "type": "insight",
+    "title": "Index-2 Corollary and the Formal Counterexample",
+    "content": "A4_no_index2_subgroup derives that A₄ has no index-2 subgroup. The argument: if H has index 2, then |H|·2 = |A₄| = 12 (from H.card_mul_index with Nat.card_eq_fintype_card), so |H| = 6, contradicting A4_no_subgroup_order6. The omega tactic handles the arithmetic. lagrange_converse_fails packages the complete counterexample: 6 | 12 (witnessed by ⟨2, by simp [A4_card]⟩) AND ∀H ≤ A₄, |H| ≠ 6 (from A4_no_subgroup_order6). This is a precise Lean statement of 'the converse of Lagrange fails for A₄'.",
+    "mathContext": "Index-2 corollary: $[A_4:H] = 2 \\Rightarrow |H| = 12/2 = 6 \\Rightarrow$ contradiction. Note: any index-2 subgroup is automatically normal (since $H$ has only 2 cosets, so both left and right cosets are the same). The counterexample: $6 \\mid |A_4| = 12$ but $\\nexists H \\leq A_4,\\, |H| = 6$. This shows Lagrange's theorem is **not reversible** for $A_4$.",
+    "significance": "key",
+    "relatedConcepts": ["index of a subgroup", "H.card_mul_index", "Lagrange's theorem converse", "index-2 subgroups are normal"],
+    "prerequisites": ["subgroup index", "Lagrange's theorem", "normal subgroups"]
+  },
+  {
+    "id": "ann-mathematical-context",
+    "proofId": "lagrange-theorem-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Conjugacy-Class Argument: An Alternative to Enumeration",
+    "content": "The module docstring describes an elegant alternative proof that doesn't need exhaustive enumeration. Any subgroup of index 2 is normal. A normal subgroup is a union of conjugacy classes (invariant under conjugation). A₄ has conjugacy class sizes {1, 3, 4, 4}. A union of these containing 1 (the identity) must have size in {1, 1+3, 1+4, 1+3+4, 1+4+4, 1+3+4+4} = {1, 4, 5, 8, 9, 12}. The value 6 is not achievable. Therefore A₄ has no normal subgroup of order 6, and since any index-2 subgroup is normal, A₄ has no subgroup of order 6. The Lean proof uses native_decide instead — this alternative argument would require formalizing conjugacy class theory.",
+    "mathContext": "Conjugacy classes in $A_4$: $\\{e\\}$ (size 1), $\\{(12)(34),(13)(24),(14)(23)\\}$ (size 3), $\\{(123),(134),(243),(142)\\}$ (size 4), $\\{(132),(143),(234),(124)\\}$ (size 4). Achievable sizes for unions containing $\\{e\\}$: $1, 4, 5, 8, 9, 12$. Since $6 \\notin \\{1,4,5,8,9,12\\}$, no normal subgroup of order 6 exists.",
+    "significance": "context",
+    "relatedConcepts": ["conjugacy classes", "normal subgroups", "union of conjugacy classes", "class equation"],
+    "prerequisites": ["conjugacy classes in finite groups", "normal subgroup characterization", "A₄ conjugacy class structure"]
+  }
+]
