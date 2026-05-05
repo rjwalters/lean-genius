@@ -186,7 +186,19 @@ theorem pair_0_1_valid : (0, 1) ∈ validPairs := by
     · exact powersOf2_not_1_robust
 
 /-- Fibonacci sequence is 1-robust: removing one element doesn't break completeness.
-    Deep result about the redundancy structure of Fibonacci representations. -/
+    Deep result about the redundancy structure of Fibonacci representations.
+
+    CORRECTNESS ISSUE: This axiom is FALSE for the current fib definition (fib 0 = 1, fib 1 = 2).
+    Removing index 0 leaves {fib i | i ≥ 1} = {2,3,5,8,...} which is NOT complete:
+    numbers 4, 12, 33, ... (= fib(2k-1)-1 for k≥2) are not representable as sums of
+    distinct elements from {2,3,5,8,...}, and these grow without bound.
+
+    Root cause: the classical 1-robustness result requires Fibonacci starting 1,1,2,3,5,8,...
+    (two copies of value 1). With fib 1 = 1 (instead of 2), removing index 0 still leaves
+    value 1 available from fib 1, giving the complete set {1,2,3,5,8,...}.
+
+    Fix: change fib 1 from 2 to 1. This requires updating fib_strictMono (no longer globally
+    strict at index 0) and fib_ge_succ (fails for k=1,2 with new definition). -/
 axiom fib_1_robust : IsRobust fib 1
 
 /-- Fibonacci is monotone at each step. -/
