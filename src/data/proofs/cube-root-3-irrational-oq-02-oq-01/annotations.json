@@ -1,1 +1,54 @@
-[]
+[
+  {
+    "id": "ann-field-degree",
+    "proofId": "cube-root-3-irrational-oq-02-oq-01",
+    "range": { "startLine": 44, "endLine": 62 },
+    "type": "result",
+    "title": "[ℚ(∛3):ℚ] = 3 via One-Line Corollary",
+    "content": "cbrt3_fieldExtDegree proves Module.finrank ℚ ℚ⟮∛3⟯ = 3 as a direct one-line corollary of adjoin_nthRoot_finrank 3 3 3. The five norm_num calls discharge: 2 ≤ 3 (n ≥ 2), Prime 3, 3|3 (p|m), ¬9|3 (p²∤m), and 0 < 3. The proof elegantly reduces a nontrivial algebraic statement to five arithmetic inequalities, all handled by norm_num's decision procedure.",
+    "mathContext": "$[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}] = \\text{Module.finrank}\\, \\mathbb{Q}\\, \\mathbb{Q}\\!\\left[\\!\\left[(3:\\mathbb{R})^{1/3}\\right]\\!\\right] = 3$. From $\\texttt{adjoin\\_nthRoot\\_finrank}(n{=}3, m{=}3, p{=}3)$: Eisenstein conditions $3 \\mid 3$ and $9 \\nmid 3$ confirm $X^3 - 3$ is irreducible, so $[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}] = \\deg(X^3-3) = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["field extension degree", "adjoin_nthRoot_finrank", "Eisenstein criterion", "minimal polynomial"],
+    "prerequisites": ["field extensions", "Galois theory basics", "polynomial irreducibility"],
+    "tags": ["field-extension-degree", "eisenstein", "norm_num"]
+  },
+  {
+    "id": "ann-minpoly-degree",
+    "proofId": "cube-root-3-irrational-oq-02-oq-01",
+    "range": { "startLine": 64, "endLine": 75 },
+    "type": "result",
+    "title": "natDegree(minpoly ℚ ∛3) = 3 as Direct Corollary",
+    "content": "minpoly_cbrt3_natDeg establishes natDegree(minpoly ℚ (∛3)) = 3 via minpoly_nthRoot_natDegree 3 3 3. This is the minimal polynomial degree form of the same Eisenstein result, complementing cbrt3_fieldExtDegree. The two results are closely related via IntermediateField.adjoin.finrank, which connects the extension degree to the minimal polynomial degree.",
+    "mathContext": "$\\text{natDegree}(\\text{minpoly}\\, \\mathbb{Q}\\, \\sqrt[3]{3}) = 3$. Since $\\text{minpoly}\\, \\mathbb{Q}\\, \\sqrt[3]{3} = X^3 - 3$ (Eisenstein-irreducible, monic, vanishes at $\\sqrt[3]{3}$), and $\\text{natDegree}(X^3 - 3) = 3$. Also: $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\text{natDegree}(\\text{minpoly}\\, \\mathbb{Q}\\, \\alpha)$ by $\\texttt{IntermediateField.adjoin.finrank}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial", "natDegree", "IntermediateField.adjoin.finrank", "degree-extension link"],
+    "prerequisites": ["minimal polynomial theory", "field extension degree"],
+    "tags": ["minimal-polynomial-degree", "eisenstein", "corollary"]
+  },
+  {
+    "id": "ann-irrational-from-degree",
+    "proofId": "cube-root-3-irrational-oq-02-oq-01",
+    "range": { "startLine": 77, "endLine": 101 },
+    "type": "technique",
+    "title": "Third Proof of ∛3 Irrationality: Degree Argument",
+    "content": "cbrt3_irrational_from_degree provides a third proof of ∛3 ∉ ℚ via field degree. The argument: assume ∛3 = q ∈ ℚ. Then minpoly.eq_X_sub_C ℚ q gives minpoly ℚ ∛3 = X - C q (degree 1). But minpoly_cbrt3_natDeg says degree = 3. Rewriting hmin into hdeg3 and comparing with natDegree_X_sub_C = 1 gives 3 = 1, a contradiction discharged by norm_num.",
+    "mathContext": "Proof by contradiction: $\\sqrt[3]{3} = q \\in \\mathbb{Q} \\Rightarrow \\text{minpoly}\\, \\mathbb{Q}\\, \\sqrt[3]{3} = X - Cq$ (by $\\texttt{minpoly.eq\\_X\\_sub\\_C}$) $\\Rightarrow \\text{natDegree} = 1$. But $\\text{natDegree}(\\text{minpoly}\\, \\mathbb{Q}\\, \\sqrt[3]{3}) = 3$. Contradiction: $3 = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["minpoly.eq_X_sub_C", "irrationality", "proof by contradiction", "degree argument"],
+    "prerequisites": ["minimal polynomial theory", "Lean 4 intro/obtain tactics"],
+    "tags": ["irrationality", "degree-argument", "minpoly-eq-X-sub-C"]
+  },
+  {
+    "id": "ann-general-principle",
+    "proofId": "cube-root-3-irrational-oq-02-oq-01",
+    "range": { "startLine": 103, "endLine": 133 },
+    "type": "insight",
+    "title": "General Principle: Degree > 1 Implies Irrationality",
+    "content": "irrational_of_degree_gt_one captures the fundamental algebraic fact: for any algebraic α : ℝ over ℚ, α ∈ ℚ ↔ [ℚ(α):ℚ] = 1. The proof applies the same minpoly.eq_X_sub_C argument but in full generality, using IntermediateField.adjoin.finrank to connect the degree to natDegree(minpoly). cbrt3_irrational_via_principle then applies this to ∛3 in two lines: isIntegral_nthRoot gives integrality, and cbrt3_fieldExtDegree gives degree 3 > 1.",
+    "mathContext": "General principle: $\\alpha \\in \\mathbb{Q} \\Leftrightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 1$. Proof of $\\Rightarrow$: $\\alpha = q \\Rightarrow \\text{minpoly}\\, \\mathbb{Q}\\, \\alpha = X - Cq \\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\text{natDegree}(X-Cq) = 1$ via $\\texttt{IntermediateField.adjoin.finrank}$. Application: $[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}] = 3 > 1 \\Rightarrow \\sqrt[3]{3} \\notin \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["IntermediateField.adjoin.finrank", "isIntegral_nthRoot", "rationality criterion", "algebraic degree"],
+    "prerequisites": ["algebraic integers", "field extensions", "Lean 4 linarith tactic"],
+    "tags": ["general-principle", "degree-one-iff-rational", "algebraic-number-theory"]
+  }
+]
