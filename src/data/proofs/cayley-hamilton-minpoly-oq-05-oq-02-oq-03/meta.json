@@ -1,0 +1,189 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+  "title": "The Primitive Element Theorem: deg(minpoly K α) = [L:K]",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-02-oq-03",
+  "description": "Answers OQ-03: the primitive element theorem is formalizable in Lean 4 via Mathlib's Field.exists_primitive_element. Proves that in a finite separable extension over an infinite field, there exists α with deg(minpoly K α) = [L:K], using the chain: adjoin.finrank + topEquiv. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Primitive_element_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "galois-theory",
+      "minimal-polynomial",
+      "primitive-element"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 244,
+    "dateAdded": "2026-05-04",
+    "assumptions": "No axioms. All results proved from Mathlib's Field.exists_primitive_element, IntermediateField.adjoin.finrank, and IntermediateField.topEquiv.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Field.exists_primitive_element",
+        "description": "∃ α ∈ L, K(α) = L for finite separable extensions over infinite fields",
+        "module": "Mathlib.FieldTheory.PrimitiveElement"
+      },
+      {
+        "theorem": "IntermediateField.adjoin.finrank",
+        "description": "finrank K K⟮α⟯ = natDegree(minpoly K α)",
+        "module": "Mathlib.FieldTheory.Adjoin"
+      },
+      {
+        "theorem": "IntermediateField.topEquiv",
+        "description": "K-algebra isomorphism between ↥(⊤ : IntermediateField K L) and L",
+        "module": "Mathlib.FieldTheory.IntermediateField.Basic"
+      },
+      {
+        "theorem": "IntermediateField.eq_top_of_finrank_eq",
+        "description": "finrank K E = finrank K L → E = ⊤",
+        "module": "Mathlib.FieldTheory.IntermediateField.Basic"
+      }
+    ],
+    "originalContributions": [
+      "finrank_top_eq: finrank K ↥⊤ = finrank K L via topEquiv (bridge lemma)",
+      "minpoly_deg_of_generator: K(α)=⊤ ⟹ deg(minpoly K α) = [L:K] (proved)",
+      "primitive_element_minpoly: main theorem — ∃ α, deg(minpoly K α) = [L:K] (proved)",
+      "generator_iff_minpoly_maxdeg: K(α)=⊤ ↔ deg(minpoly K α) = [L:K] (proved)",
+      "tower_formula_via_primitive: [L:K] = deg(minpoly β) · [L:K(β)] (proved)"
+    ],
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "finrank-top",
+      "title": "Finrank of the Top Intermediate Field",
+      "startLine": 42,
+      "endLine": 48,
+      "summary": "Proves finrank K ↥(⊤ : IntermediateField K L) = finrank K L using IntermediateField.topEquiv and LinearEquiv.finrank_eq.",
+      "mathContext": "The top intermediate field ⊤ = L is K-isomorphic to L itself via topEquiv. The linear equivalence converts this to a finrank equality, bridging the subtype ↥⊤ and the ambient field L."
+    },
+    {
+      "id": "bridge-lemma",
+      "title": "Primitive Element Implies Maximal Degree",
+      "startLine": 50,
+      "endLine": 70,
+      "summary": "If K(α) = ⊤ (α generates L over K), then deg(minpoly K α) = finrank K L. Uses adjoin.finrank and finrank_top_eq.",
+      "mathContext": "The key identity chain: deg(minpoly K α) = finrank K K(α) [by adjoin.finrank] = finrank K ⊤ [since K(α)=⊤] = finrank K L [by topEquiv]. This is the forward direction of the main biconditional."
+    },
+    {
+      "id": "primitive-element-theorem",
+      "title": "The Primitive Element Theorem (Mathlib)",
+      "startLine": 72,
+      "endLine": 100,
+      "summary": "States Field.exists_primitive_element from Mathlib: for finite separable K⊂L over infinite K, ∃ α with K(α)=L.",
+      "mathContext": "Artin's proof: for any finite set of intermediate fields {E₁,...,Eₖ} ⊊ L, the set of bad scalars c with K(β+c·γ)∈{E₁,...,Eₖ} is finite. Since K is infinite, some c avoids all bad values, giving a generator by induction."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: ∃ α with deg(minpoly K α) = [L:K]",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "Combines Field.exists_primitive_element with minpoly_deg_of_generator to prove the main result.",
+      "mathContext": "This directly answers OQ-03: YES, the primitive element theorem is formalizable. The proof is three lines: get α from Mathlib's theorem, then apply the bridge lemma."
+    },
+    {
+      "id": "degree-bounds",
+      "title": "Degree Bounds and Non-Generator Characterization",
+      "startLine": 117,
+      "endLine": 155,
+      "summary": "Proves deg(minpoly K α) ≤ [L:K] always, and deg < [L:K] characterizes non-generators. Shows primitive elements have maximum degree.",
+      "mathContext": "Since K(α) ⊆ L as K-vector spaces, finrank K K(α) ≤ finrank K L. Equality holds iff K(α) = L. Elements with strictly smaller degree generate proper subfields."
+    },
+    {
+      "id": "iff-characterization",
+      "title": "Biconditional: Generator ↔ Maximal Degree",
+      "startLine": 157,
+      "endLine": 175,
+      "summary": "Proves K(α)=⊤ ↔ deg(minpoly K α) = [L:K]. The backward direction uses IntermediateField.eq_top_of_finrank_eq.",
+      "mathContext": "This biconditional characterizes primitive elements purely in terms of their minimal polynomial degree. It shows that primitive elements are exactly the degree-maximizing elements of L."
+    },
+    {
+      "id": "applications",
+      "title": "Tower Formula and Degree Divisibility",
+      "startLine": 177,
+      "endLine": 220,
+      "summary": "Proves the tower formula [L:K] = deg(minpoly β) · [L:K(β)] and that deg(minpoly β) | deg(primitive element).",
+      "mathContext": "The tower law finrank K L = finrank K K(β) · finrank K(β) L, combined with adjoin.finrank, gives the tower formula. The divisibility follows because deg(primitive) = [L:K] and deg(minpoly β) | [L:K]."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**The Primitive Element Theorem: Galois, Artin, and Lean**\n\nThe primitive element theorem (also called the theorem of the primitive element or Artin's theorem) states that every finite separable field extension K ⊂ L over an infinite field K is *simple*: there exists a single element α ∈ L (a *primitive element* or *generator*) such that L = K(α).\n\nThe theorem was known in special cases to Lagrange (1770) and Galois (1830), who used it implicitly in their development of Galois theory. The modern proof via separability and the Galois correspondence is due to Artin (1944), who showed that the key hypothesis is separability (not just characteristic 0).\n\nThe quantitative form — deg(minpoly K α) = [L:K] — is an immediate consequence: since L = K(α), the tower law gives [L:K] = [K(α):K] = deg(minpoly K α).",
+    "problemStatement": "**OQ-03**: Can we formalize the primitive element theorem in Lean 4: every finite separable extension K ⊂ L over an infinite field has an element α with deg(minpoly K α) = [L:K]?\n\nThis asks two things: (1) does Mathlib have the primitive element theorem? (2) can we connect it to the minimal polynomial degree framework of `CayleyHamiltonMinpolyOQ05OQ02.lean`?",
+    "text": "Answers OQ-03 by proving that Mathlib's Field.exists_primitive_element directly yields the desired element, with deg(minpoly K α) = [L:K] following from the finrank identity chain.",
+    "proofStrategy": "1. **finrank_top_eq**: Prove finrank K ↥⊤ = finrank K L via IntermediateField.topEquiv.toLinearEquiv and LinearEquiv.finrank_eq.\n2. **Bridge lemma**: K(α)=⊤ ⟹ deg(minpoly K α) = finrank K L, using adjoin.finrank then finrank_top_eq.\n3. **Primitive element**: Apply Mathlib's Field.exists_primitive_element to get α with K(α)=⊤.\n4. **Combine**: Get deg(minpoly K α) = [L:K] from steps 2+3.\n5. **Biconditional**: Use IntermediateField.eq_top_of_finrank_eq for the backward direction.",
+    "keyInsights": [
+      "The key identity is deg(minpoly K α) = finrank K K(α), which connects the polynomial world to linear algebra over K. This is IntermediateField.adjoin.finrank.",
+      "The top intermediate field ⊤ is K-isomorphic to L via topEquiv, giving finrank K ↥⊤ = finrank K L. This is the bridge between the intermediate field universe and the ambient field.",
+      "The primitive element theorem is constructive in spirit: Artin's proof actually produces the primitive element by avoiding finitely many 'bad' scalars. For infinite K, such avoidance is always possible.",
+      "The biconditional K(α)=⊤ ↔ deg(minpoly K α)=[L:K] shows that primitive elements are exactly the degree-maximizing elements. Every element β ∈ L has deg(minpoly K β) ≤ [L:K], with equality characterizing generators."
+    ],
+    "prerequisites": [
+      "CayleyHamiltonMinpolyOQ05OQ02.lean: adjoin.finrank, divisibility, tower law",
+      "Mathlib.FieldTheory.PrimitiveElement: Field.exists_primitive_element",
+      "Mathlib.FieldTheory.Adjoin: IntermediateField.adjoin, topEquiv",
+      "Module theory: finrank, LinearEquiv.finrank_eq"
+    ]
+  },
+  "conclusion": {
+    "summary": "Formalizes the primitive element theorem in the context of minimal polynomial degrees. 10 theorems, 0 sorries, 0 axioms. The main result ∃ α, deg(minpoly K α) = [L:K] follows in three lines from Mathlib's Field.exists_primitive_element.",
+    "implications": "The primitive element theorem is now verified in Lean 4 (via Mathlib). Combined with `CayleyHamiltonMinpolyOQ05OQ02.lean`, the full picture of minimal polynomial degrees in field extensions is formalized: deg(minpoly K x) | [L:K] always, with equality characterizing generators, and generators existing whenever K is infinite and L/K is separable.",
+    "openQuestions": [
+      "Can the primitive element theorem be proved without the Infinite K hypothesis? For finite fields, every extension is cyclic (generated by the Frobenius), so separable implies simple — but the proof requires different techniques.",
+      "What is the explicit connection between primitive elements and the Galois group? If L/K is Galois, primitive elements α are those not fixed by any non-identity automorphism of Gal(L/K).",
+      "Can the proof be made constructive in a stronger sense? Artin's argument is not fully effective — it shows existence but doesn't give an explicit primitive element. For specific extensions, there are algorithms."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-02",
+      "relationship": "extends",
+      "description": "Proves OQ-03 of this parent, using its adjoin.finrank framework"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "related",
+      "description": "Grandparent: minimal polynomial reduction in K-algebras"
+    }
+  ],
+  "references": [
+    {
+      "title": "Algebra",
+      "author": "Emil Artin",
+      "year": "1944",
+      "venue": "Notre Dame Mathematical Lectures",
+      "description": "Artin's reformulation of Galois theory including the primitive element theorem via separability"
+    },
+    {
+      "title": "Abstract Algebra",
+      "author": "David S. Dummit and Richard M. Foote",
+      "year": "2004",
+      "venue": "Wiley",
+      "description": "Modern treatment of the primitive element theorem (Theorem 14.4.6)"
+    },
+    {
+      "title": "Mathlib.FieldTheory.PrimitiveElement",
+      "author": "Mathlib Contributors",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "description": "Lean 4 formalization of Field.exists_primitive_element"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "PrimitiveElementOQ03",
+    "lineCount": 244,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
