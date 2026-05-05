@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-entropy-definition",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 55, "endLine": 71 },
+    "type": "definition",
+    "title": "Shannon Entropy of the Multinomial Distribution",
+    "content": "multinomialEntropy is defined as a finite sum over piAntidiag s n — all compositions of n into |s| parts indexed by elements of s. Each term is -P(k)·log P(k) with the convention 0·log(0) = 0. The convention is automatic because Real.log 0 = 0 in Mathlib, so 0 * Real.log 0 = 0 without special-casing. The `if prob = 0 then 0 else ...` guard is belt-and-suspenders — it handles the analytic fact that the function t ↦ -t·log t extends continuously to 0 by defining 0·log 0 = 0.",
+    "mathContext": "$$H(X) = -\\sum_{k \\in \\text{Comp}(s,n)} P(X=k) \\log P(X=k)$$ where $P(X=k) = \\text{multinomialProb}(s, p, n, k) = \\binom{n}{k_1,\\ldots,k_r} \\prod_{i \\in s} p_i^{k_i}$ and $\\text{Comp}(s,n) = \\{k : s \\to \\mathbb{N} \\mid \\sum_{i \\in s} k_i = n\\}$ (the Lean `piAntidiag s n`). The convention $0 \\cdot \\log 0 = 0$ makes entropy continuous at the boundary of the probability simplex.",
+    "significance": "key",
+    "relatedConcepts": ["Shannon entropy", "multinomial distribution", "piAntidiag", "information theory"],
+    "prerequisites": ["probability theory", "information theory", "Finset.piAntidiag", "Real.log"]
+  },
+  {
+    "id": "ann-entropy-term-nonneg",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "technique",
+    "title": "Per-Term Non-negativity: -t·log(t) ≥ 0 for t ∈ [0,1]",
+    "content": "The private lemma entropy_term_nonneg establishes that each term of the entropy sum is non-negative. For t = 0, the guard returns 0 directly. For 0 < t ≤ 1, Real.log_nonpos gives log t ≤ 0 (since t ≤ 1 and 0 ≤ t), so t·log t ≤ 0, giving -(t·log t) ≥ 0 via neg_nonneg. The `split_ifs` tactic dispatches the two cases from the entropy definition's guard.",
+    "mathContext": "For $t \\in [0, 1]$: $\\log t \\leq \\log 1 = 0$ (log is monotone), so $t \\log t \\leq 0$ (product of non-negative and non-positive), giving $-t \\log t \\geq 0$. This is the key analytical fact behind entropy non-negativity: each term contributes a non-negative amount to the sum.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.log_nonpos", "neg_nonneg", "mul_nonpos_of_nonneg_of_nonpos"],
+    "prerequisites": ["real analysis", "log function properties", "sign arithmetic"]
+  },
+  {
+    "id": "ann-multinomial-entropy-nonneg",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 87, "endLine": 111 },
+    "type": "insight",
+    "title": "Core Theorem: Multinomial Entropy is Non-Negative",
+    "content": "The main non-negativity theorem proves H(X) ≥ 0 by establishing P(k) ∈ [0,1] for each composition k. Lower bound: multinomialProb_nonneg from the parent file. Upper bound: Finset.single_le_sum (each term ≤ sum) combined with multinomialProb_sum_eq_one (total probability = 1). With P(k) ∈ [0,1], entropy_term_nonneg gives -P(k)·log P(k) ≥ 0 for each k, and Finset.sum_nonpos collects these into ∑ ≤ 0, giving -∑ ≥ 0.",
+    "mathContext": "The proof chain: (1) $P(k) \\geq 0$ from `multinomialProb_nonneg`, (2) $P(k) \\leq \\sum_{k'} P(k') = 1$ from `Finset.single_le_sum` + `multinomialProb_sum_eq_one`, (3) $-P(k)\\log P(k) \\geq 0$ for each $k$ since $P(k) \\in [0,1]$, (4) $H = -\\sum_k P(k)\\log P(k) \\geq 0$ by summing non-negative terms.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.single_le_sum", "multinomialProb_nonneg", "multinomialProb_sum_eq_one", "Finset.sum_nonpos"],
+    "prerequisites": ["probability normalization", "finset summation", "non-negativity bounds"]
+  },
+  {
+    "id": "ann-multinomial-zero-lemma",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 116, "endLine": 123 },
+    "type": "technique",
+    "title": "Zero Multinomial Coefficient Helper",
+    "content": "The private lemma multinomial_zero_eq_one computes Nat.multinomial s (fun _ => 0) = 1 — the multinomial coefficient for distributing 0 trials is 1 (there is exactly one way: the empty composition). The proof uses Nat.multinomial_spec which gives the identity n! = multinomial s k · ∏ k_i!, then specializes to n=0 where 0! = 1 and each k_i! = 0! = 1, leaving 1 = multinomial s (0..0) · 1, hence multinomial = 1. The omega tactic finishes from the Nat arithmetic.",
+    "mathContext": "$\\binom{0}{0,0,\\ldots,0} = \\frac{0!}{0! \\cdot 0! \\cdots 0!} = \\frac{1}{1} = 1$. This is a special case of the multinomial coefficient formula: for zero trials, the only composition is the all-zeros one, and it has coefficient 1.",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.multinomial_spec", "multinomial coefficient", "factorial"],
+    "prerequisites": ["combinatorics", "multinomial coefficients", "Nat arithmetic"]
+  },
+  {
+    "id": "ann-zero-trials-entropy",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 124, "endLine": 135 },
+    "type": "insight",
+    "title": "Zero-Trial Entropy = 0: Complete Certainty",
+    "content": "With 0 trials, there is exactly one outcome — the all-zeros composition — which occurs with probability 1. The entropy is -1·log 1 = 0. The proof unfolds the definitions and uses piAntidiag_zero (which gives {0}), then evaluates multinomialProb at the unique element: multinomial coefficient is 1 (from the helper), powers are all p_i^0 = 1, so probability is 1, and log 1 = 0.",
+    "mathContext": "$\\text{piAntidiag}(s, 0) = \\{\\mathbf{0}\\}$ (one composition: the zero function). $P(X = \\mathbf{0}) = \\text{multinomial}(s, \\mathbf{0}) \\cdot \\prod_i p_i^0 = 1 \\cdot 1 = 1$. Therefore $H = -(1 \\cdot \\log 1) = 0$. This confirms the information-theoretic principle: a deterministic outcome (probability 1) carries zero information.",
+    "significance": "key",
+    "relatedConcepts": ["piAntidiag_zero", "Real.log_one", "deterministic distributions", "information"],
+    "prerequisites": ["information theory", "probability", "Finset.piAntidiag"]
+  },
+  {
+    "id": "ann-n1-indicator-helper",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 140, "endLine": 171 },
+    "type": "technique",
+    "title": "Indicator Probability Helper: P(δ_j) = p_j at n=1",
+    "content": "The private helper multinomialProb_n1_indicator computes the probability of the indicator function δ_j (which assigns 1 to j and 0 to all other elements). At n=1, the multinomial coefficient is 1!/1!·∏(0!) = 1, and the product of powers is ∏ p_i^{δ_j(i)} = p_j^1 · ∏_{i≠j} p_i^0 = p_j. The proof uses Finset.prod_ite_eq' to evaluate the product with a conditional exponent.",
+    "mathContext": "For $j \\in s$ and $\\delta_j(i) = \\begin{cases}1 & i=j \\\\ 0 & i\\neq j\\end{cases}$: $$P(X = \\delta_j) = \\binom{1}{\\delta_j} \\cdot \\prod_{i \\in s} p_i^{\\delta_j(i)} = 1 \\cdot p_j^1 \\cdot \\prod_{i \\neq j} p_i^0 = p_j$$",
+    "significance": "supporting",
+    "relatedConcepts": ["indicator functions", "multinomial coefficient at n=1", "Finset.prod_ite_eq'"],
+    "prerequisites": ["multinomial distribution", "indicator functions", "product telescoping"]
+  },
+  {
+    "id": "ann-source-entropy-recovery",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 172, "endLine": 244 },
+    "type": "insight",
+    "title": "Source Entropy Recovery: H(Multinomial(1,p)) = -∑ p_i·log p_i",
+    "content": "The key structural theorem establishes that with 1 trial, the multinomial distribution IS the source distribution. The proof uses Finset.sum_nbij to construct a bijection j ↦ δ_j from s to piAntidiag s 1, proving membership (δ_j is a valid composition of 1), injectivity (different j give different indicator functions), surjectivity (every composition of 1 is some δ_j), and term equality (multinomialProb at δ_j equals p_j from the helper). The surjectivity is the most involved part: given k ∈ piAntidiag s 1, find the unique j with k(j) = 1 (which must exist since ∑ k = 1).",
+    "mathContext": "The bijection $j \\mapsto \\delta_j : s \\to \\text{piAntidiag}(s, 1)$ gives $$H(\\text{Multinomial}(1,p)) = -\\sum_{k \\in \\text{piAntidiag}(s,1)} P(k)\\log P(k) = -\\sum_{j \\in s} p_j \\log p_j = H(p)$$ This is the fundamental link between multinomial entropy and source entropy: Multinomial$(1, p)$ is exactly the source distribution $p$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_nbij", "source entropy", "indicator functions", "bijection reindexing"],
+    "prerequisites": ["information theory", "bijective counting", "finset operations"]
+  },
+  {
+    "id": "ann-gibbs-upper-bound",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 249, "endLine": 338 },
+    "type": "technique",
+    "title": "Entropy Upper Bound via Gibbs Inequality",
+    "content": "The upper bound H(X) ≤ log|Comp(s,n)| uses a direct application of the Gibbs inequality technique: compare P with the uniform distribution Q = 1/N on the N = |piAntidiag s n| compositions. The key per-term estimate uses log x ≥ 1 - x⁻¹ (from Real.add_one_le_exp applied to -log x), with x = N·P(k). Summing over k, the 1-terms telescope via ∑P(k)=1, leaving the entropy terms. The log_lb lemma (log x ≥ 1 - 1/x for x > 0) is proved from the Mathlib lemma add_one_le_exp applied to -log x.",
+    "mathContext": "For any distribution $Q$ on $\\text{Comp}(s,n)$, the **Gibbs inequality** gives $H(P) \\leq -\\sum_k P(k)\\log Q(k)$. Taking $Q = 1/N$ (uniform): $H(P) \\leq \\log N$. The Lean proof uses $\\log x \\geq 1 - 1/x$ (from $e^y \\geq 1+y$ applied to $y = -\\log x$): $$\\log N \\cdot P(k) + P(k)\\log P(k) = P(k)\\log(N \\cdot P(k)) \\geq P(k)(1 - (N\\cdot P(k))^{-1}) = P(k) - 1/N$$",
+    "significance": "key",
+    "relatedConcepts": ["Gibbs inequality", "relative entropy", "KL divergence", "uniform distribution", "Real.add_one_le_exp"],
+    "prerequisites": ["information theory", "Jensen's inequality", "log inequalities", "finset summation"]
+  },
+  {
+    "id": "ann-binomial-special-case",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 343, "endLine": 356 },
+    "type": "context",
+    "title": "Binomial Entropy as 2-Category Special Case",
+    "content": "The binomial special case sets s = {false, true} and p(true) = p, p(false) = 1-p. The entropy of Multinomial(n, [p, 1-p]) is H(X) = -∑_{k=0}^n C(n,k)·p^k·(1-p)^(n-k)·log[C(n,k)·p^k·(1-p)^(n-k)]. The theorem proves this is ≥ 0 directly by applying multinomialEntropy_nonneg with the probability conditions verified: p(true) = p ≥ 0, p(false) = 1-p ≥ 0, and sum = p + (1-p) = 1.",
+    "mathContext": "The binary case: $s = \\{\\mathtt{false}, \\mathtt{true}\\}$, $p(\\mathtt{true}) = p$, $p(\\mathtt{false}) = 1-p$. The entropy is $$H(X) = -\\sum_{k=0}^{n} \\binom{n}{k} p^k(1-p)^{n-k} \\log\\left(\\binom{n}{k}p^k(1-p)^{n-k}\\right) \\geq 0$$ which is non-negative by the general theorem. At $n=1$: $H = -p\\log p - (1-p)\\log(1-p)$, the binary entropy function.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial distribution", "binary entropy", "Bernoulli trials"],
+    "prerequisites": ["binomial distribution", "probability", "information theory"]
+  }
+]
