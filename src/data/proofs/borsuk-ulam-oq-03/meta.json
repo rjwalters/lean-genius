@@ -71,7 +71,7 @@
     "mathlib_version": "4.26.0",
     "axioms": 4,
     "lineCount": 5139,
-    "theoremCount": 220
+    "theoremCount": 222
   },
   "overview": {
     "historicalContext": "**Constructive Borsuk-Ulam**\n\nThe Borsuk-Ulam theorem states that every continuous map f: S^n -> R^n has an antipodal pair: a point x with f(x) = f(-x). The classical proof for n >= 2 uses algebraic topology (Brouwer degree or homology), which is inherently non-constructive.\n\nFor n = 1, however, the theorem reduces to the Intermediate Value Theorem: define g(x) = f(x) - f(-x), observe g is antisymmetric (g(-a) = -g(a)), and apply IVT to find a zero. This argument is constructive in the sense that it produces a witness via IVT.\n\n**Tucker's Lemma**\n\nThe combinatorial analog: any signed labeling of a subdivided interval with opposite signs at the endpoints must have a sign-change edge. This is the discrete foundation for constructive Borsuk-Ulam proofs.",
@@ -202,7 +202,7 @@
     "namespace": "BorsukUlamOQ03",
     "lineCount": 5139,
     "axiomCount": 1,
-    "theoremCount": 220,
+    "theoremCount": 222,
     "definitionCount": 35,
     "path": "Proofs/BorsukUlamOQ03.lean",
     "sorries": 0

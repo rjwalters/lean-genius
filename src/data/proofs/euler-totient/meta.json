@@ -58,7 +58,7 @@
     "lineCount": 135,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "**From Fermat to Euler to RSA**\n\n**Pierre de Fermat** stated his 'little theorem' $a^{p-1} \\equiv 1 \\pmod{p}$ for prime $p$ in a 1640 letter to Frénicle de Bessy, without proof. **Leonhard Euler** first proved it in 1736 and then generalized it in 1763 to arbitrary moduli: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$, introducing the totient function $\\varphi(n)$.\n\n**The Group-Theoretic Proof**\n\nThe modern proof uses **Lagrange's theorem**: the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so any element raised to the group order equals the identity. This elegant one-line proof, used in the formalization, replaced Euler's original inductive argument.\n\n**RSA Cryptography**\n\nEuler's theorem is the mathematical foundation of **RSA encryption** (Rivest-Shamir-Adleman, 1977). For primes $p, q$ with $n = pq$: $\\varphi(n) = (p-1)(q-1)$. Choosing $ed \\equiv 1 \\pmod{\\varphi(n)}$, the encryption $m \\mapsto m^e \\pmod{n}$ is inverted by $c \\mapsto c^d \\pmod{n}$ because $m^{ed} = m^{1+k\\varphi(n)} = m \\cdot (m^{\\varphi(n)})^k \\equiv m \\pmod{n}$.\n\nThis is #10 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",
@@ -199,7 +199,7 @@
     "namespace": "EulerTotient",
     "lineCount": 135,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 0,
     "path": "Proofs/EulerTotient.lean",
     "sorries": 0

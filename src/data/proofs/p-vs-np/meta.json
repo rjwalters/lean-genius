@@ -129,7 +129,7 @@
     "axiomCount": 121,
     "sorries": 0,
     "definitionCount": 66,
-    "theoremCount": 302
+    "theoremCount": 303
   },
   "overview": {
     "historicalContext": "The P vs NP problem is one of the most important unsolved problems in mathematics and computer science, designated a Clay Mathematics Institute Millennium Prize Problem in 2000 with a $1,000,000 reward.\n\nThe foundations were laid by Alan Turing (1936) with the formalization of computation, and by Juris Hartmanis and Richard Stearns (1965) who established computational complexity theory with the Time Hierarchy Theorem. Stephen Cook (1971) formulated the P vs NP question and proved the Cook-Levin theorem, showing that the Boolean satisfiability problem (SAT) is NP-complete — the first problem shown to have this property. Leonid Levin independently proved the same result in 1973 in the Soviet Union.\n\nRichard Karp (1972) demonstrated the practical significance by showing 21 natural combinatorial problems are NP-complete via reduction chains from SAT, including CLIQUE, VERTEX COVER, HAMILTONIAN PATH, and SUBSET SUM. Russell Ladner (1975) proved that if P ≠ NP, then NP-intermediate problems must exist — problems in NP that are neither in P nor NP-complete.\n\nDespite over 50 years of effort, the problem remains open. Three major 'barrier results' explain why traditional proof techniques have failed: relativization (Baker-Gill-Solovay, 1975), natural proofs (Razborov-Rudich, 1994), and algebrization (Aaronson-Wigderson, 2009). Any proof must circumvent all three barriers simultaneously.",

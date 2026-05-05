@@ -73,7 +73,7 @@
     "lineCount": 584,
     "assumptions": "2 axioms: bounding_number_uncountable, MA_implies_b_eq_continuum. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 32
+    "theoremCount": 33
   },
   "overview": {
     "historicalContext": "After Cohen's 1963 forcing proof showed the independence of CH, a natural question emerged: what values CAN 2^aleph_0 take? Konig (1905) had already shown a cofinality constraint: cf(2^kappa) > kappa, ruling out singular cardinals. Easton (1970) proved the dramatic result that for regular cardinals, the continuum function is essentially unconstrained by ZFC. Meanwhile, the bounding and dominating numbers (b and d) emerged in the 1970s-80s as intermediate cardinal invariants between aleph_1 and 2^aleph_0, leading to the rich combinatorial study of Cichon's diagram.",
@@ -182,7 +182,7 @@
     "namespace": "ContinuumHypothesisOQ02",
     "lineCount": 584,
     "axiomCount": 2,
-    "theoremCount": 32,
+    "theoremCount": 33,
     "definitionCount": 6,
     "path": "Proofs/ContinuumHypothesisOQ02.lean",
     "sorries": 0

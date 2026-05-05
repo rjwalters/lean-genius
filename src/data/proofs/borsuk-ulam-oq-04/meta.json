@@ -18,10 +18,10 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 300,
+    "lineCount": 448,
     "assumptions": "1 axiom inherited from BorsukUlam.lean: no_continuous_odd_nonzero_on_sphere (no continuous odd function from sphere is everywhere nonzero — the Borsuk-Ulam theorem). 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "The Borsuk-Ulam theorem (1933) asserts that every continuous map $S^n \\to \\mathbb{R}^n$ identifies a pair of antipodal points. Karol Borsuk posed the conjecture in 1933 and Stanisław Ulam is credited with the original formulation. The covering space proof, developed in the 1950s-60s through the work of algebraic topologists including Eilenberg and Steenrod, reduces the problem to showing no continuous odd map $S^n \\to S^{n-1}$ exists. The key idea is descent: an odd map $g$ induces $\\bar{g}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$, and the induced homomorphism $\\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$, i.e., $\\mathbb{Z}/2\\mathbb{Z} \\to \\mathbb{Z}/2\\mathbb{Z}$, must be both surjective (by the lifting property) and trivial (by geometric constraints) — contradiction. The higher categorical perspective emerged from Grothendieck's Pursuing Stacks (1983) and was systematized by Lurie in Higher Topos Theory (2009): classical covering spaces are functors $\\Pi_1(X) \\to \\mathbf{Set}$, while $\\infty$-coverings are local systems $\\Pi_\\infty(X) \\to \\mathbf{Space}$, capturing all homotopical information. Whether these higher-categorical tools yield genuinely stronger Borsuk-Ulam-type results remains an active research question, connecting to equivariant stable homotopy theory and the Hill-Hopkins-Ravenel solution of the Kervaire invariant problem (2016).",
@@ -138,9 +138,9 @@
     ],
     "opens": [],
     "namespace": "BorsukUlamOQ04",
-    "lineCount": 300,
+    "lineCount": 448,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 12,
     "definitionCount": 8,
     "path": "Proofs/BorsukUlamOQ04.lean",
     "sorries": 0

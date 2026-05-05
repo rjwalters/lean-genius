@@ -42,30 +42,30 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 4,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "lineCount": 404,
     "assumptions": "4 axioms: Birkhoff ergodic theorem (general and ergodic case), maximal ergodic lemma, von Neumann mean ergodic theorem. These are deep analytical results requiring substantial proof infrastructure.",
     "originalContributions": [
       "Complete formalization of Birkhoff sums and ergodic averages with algebraic properties",
       "Proof that iterates of measure-preserving maps are measure-preserving",
-      "Cocycle relation for Birkhoff sums (S_{n+m} = S_n + S_m \u2218 T^n)",
+      "Cocycle relation for Birkhoff sums (S_{n+m} = S_n + S_m ∘ T^n)",
       "Linearity, scaling, and constant properties of Birkhoff averages",
       "Telescoping identity for shifted Birkhoff sums",
-      "Formal hierarchy: i.i.d. \u2282 mixing \u2282 ergodic \u2282 stationary",
+      "Formal hierarchy: i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary",
       "Documented connection showing classical SLLN as special case of Birkhoff"
     ]
   },
   "overview": {
-    "historicalContext": "Birkhoff's Ergodic Theorem (1931) is one of the foundational results of ergodic theory and mathematical physics. It extends the Strong Law of Large Numbers from independent to dependent random variables by replacing i.i.d. sampling with iteration of a measure-preserving transformation T \u2014 formalizing Boltzmann's ergodic hypothesis that time averages equal space averages. Von Neumann proved the L\u00b2 mean ergodic theorem shortly before Birkhoff's almost-sure result in 1932; both appeared in the same issue of PNAS, their competition accelerating the field. Hopf's maximal ergodic lemma (1954) provided a cleaner proof route that is now standard. The theorem unifies several classical LLN results: the SLLN for i.i.d. sequences is the Bernoulli shift special case, and the ergodic theorem for continued fractions (Gauss-Kuzmin law) follows from the Gauss map being ergodic with respect to the Gauss measure.",
+    "historicalContext": "Birkhoff's Ergodic Theorem (1931) is one of the foundational results of ergodic theory and mathematical physics. It extends the Strong Law of Large Numbers from independent to dependent random variables by replacing i.i.d. sampling with iteration of a measure-preserving transformation T — formalizing Boltzmann's ergodic hypothesis that time averages equal space averages. Von Neumann proved the L² mean ergodic theorem shortly before Birkhoff's almost-sure result in 1932; both appeared in the same issue of PNAS, their competition accelerating the field. Hopf's maximal ergodic lemma (1954) provided a cleaner proof route that is now standard. The theorem unifies several classical LLN results: the SLLN for i.i.d. sequences is the Bernoulli shift special case, and the ergodic theorem for continued fractions (Gauss-Kuzmin law) follows from the Gauss map being ergodic with respect to the Gauss measure.",
     "problemStatement": "What about dependent random variables? How does the Law of Large Numbers extend beyond the i.i.d. setting?",
-    "text": "Birkhoff's Ergodic Theorem extends the SLLN to stationary sequences: for any measure-preserving T and integrable f, the time averages (1/n)\u03a3f(T^i \u03c9) converge almost surely",
+    "text": "Birkhoff's Ergodic Theorem extends the SLLN to stationary sequences: for any measure-preserving T and integrable f, the time averages (1/n)Σf(T^i ω) converge almost surely",
     "proofStrategy": "Define Birkhoff sums and averages as concrete functions, prove their algebraic properties (linearity, cocycle, telescoping), then state the deep convergence theorems (Birkhoff, von Neumann, maximal ergodic) as axioms. Show the classical SLLN is a special case via the shift map on product spaces.",
     "keyInsights": [
       "The classical SLLN is a special case of Birkhoff: take T = left shift on the product space",
-      "Ergodicity means the invariant \u03c3-algebra is trivial \u2014 this is what forces convergence to a constant",
+      "Ergodicity means the invariant σ-algebra is trivial — this is what forces convergence to a constant",
       "Without ergodicity, the limit is a conditional expectation (still well-defined but random)",
-      "The hierarchy i.i.d. \u2282 mixing \u2282 ergodic \u2282 stationary captures increasingly weak dependence",
-      "The cocycle relation S_{n+m}f = S_nf + S_mf\u2218T^n is the key algebraic identity"
+      "The hierarchy i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary captures increasingly weak dependence",
+      "The cocycle relation S_{n+m}f = S_nf + S_mf∘T^n is the key algebraic identity"
     ],
     "prerequisites": [
       "Measure theory and probability",
@@ -81,7 +81,7 @@
       "startLine": 50,
       "endLine": 70,
       "summary": "Introduction of measure-preserving maps using Mathlib's MeasurePreserving, with proof that iterates are measure-preserving.",
-      "mathContext": "A measure-preserving transformation T satisfies \u03bc(T\u207b\u00b9A) = \u03bc(A). The iterates T^n inherit this property by induction."
+      "mathContext": "A measure-preserving transformation T satisfies μ(T⁻¹A) = μ(A). The iterates T^n inherit this property by induction."
     },
     {
       "id": "ergodicity",
@@ -97,7 +97,7 @@
       "startLine": 90,
       "endLine": 125,
       "summary": "Definitions of birkhoffSum and birkhoffAverage with the cocycle relation.",
-      "mathContext": "The Birkhoff sum S_n f(\u03c9) = \u03a3 f(T^i \u03c9) satisfies the cocycle property S_{n+m} = S_n + S_m \u2218 T^n, which is fundamental for the proof of Birkhoff's theorem."
+      "mathContext": "The Birkhoff sum S_n f(ω) = Σ f(T^i ω) satisfies the cocycle property S_{n+m} = S_n + S_m ∘ T^n, which is fundamental for the proof of Birkhoff's theorem."
     },
     {
       "id": "birkhoff-theorem",
@@ -113,7 +113,7 @@
       "startLine": 175,
       "endLine": 200,
       "summary": "Explanation of how the classical SLLN is a special case of Birkhoff's theorem.",
-      "mathContext": "For i.i.d. X_i, define T = left shift on \u211d^\u2115 and f = first coordinate projection. Then f(T^i \u03c9) = X_{i+1}(\u03c9), and Birkhoff gives the SLLN."
+      "mathContext": "For i.i.d. X_i, define T = left shift on ℝ^ℕ and f = first coordinate projection. Then f(T^i ω) = X_{i+1}(ω), and Birkhoff gives the SLLN."
     },
     {
       "id": "mixing",
@@ -121,7 +121,7 @@
       "startLine": 225,
       "endLine": 255,
       "summary": "Definition of strong mixing with examples of irrational rotation and doubling map.",
-      "mathContext": "Mixing means \u03bc(A \u2229 T^{-n}B) \u2192 \u03bc(A)\u03bc(B). It is strictly stronger than ergodicity and gives faster convergence rates."
+      "mathContext": "Mixing means μ(A ∩ T^{-n}B) → μ(A)μ(B). It is strictly stronger than ergodicity and gives faster convergence rates."
     },
     {
       "id": "algebraic-properties",
@@ -151,12 +151,12 @@
     {
       "targetId": "shannon-channel-coding-oq-02-oq-04",
       "relationship": "related",
-      "description": "Shannon channel coding capacity proof uses the ergodic/typicality argument \u2014 stationary ergodic sources have the AEP (Asymptotic Equipartition Property) which follows from the ergodic theorem applied to the log-probability process"
+      "description": "Shannon channel coding capacity proof uses the ergodic/typicality argument — stationary ergodic sources have the AEP (Asymptotic Equipartition Property) which follows from the ergodic theorem applied to the log-probability process"
     }
   ],
   "conclusion": {
     "summary": "The Birkhoff Ergodic Theorem is the definitive extension of the Strong Law of Large Numbers to dependent random variables. For measure-preserving transformations, time averages converge almost surely to conditional expectations, and for ergodic transformations they converge to the space average. The classical SLLN is the special case where T is the left shift on a product space.",
-    "implications": "Ergodic theory provides a unifying framework for all laws of large numbers. The hierarchy i.i.d. \u2282 mixing \u2282 ergodic \u2282 stationary shows exactly how much dependence can be tolerated while preserving convergence.",
+    "implications": "Ergodic theory provides a unifying framework for all laws of large numbers. The hierarchy i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary shows exactly how much dependence can be tolerated while preserving convergence.",
     "openQuestions": [
       "Can Birkhoff's theorem be proved in Lean using Mathlib's ergodic theory infrastructure?",
       "What are the quantitative rates of convergence for specific ergodic systems (irrational rotations, Bernoulli shifts)?"
@@ -182,7 +182,7 @@
     "namespace": "LawsOfLargeNumbersOQ03",
     "lineCount": 404,
     "axiomCount": 4,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "substantiveTheoremCount": 8,
     "duplicateTheorems": 0,
     "definitionCount": 5,
@@ -197,25 +197,25 @@
       "name": "birkhoff_ergodic_theorem",
       "type": "core",
       "description": "Birkhoff's Ergodic Theorem: time averages converge a.s. to conditional expectation",
-      "leanType": "(T : \u03a9 \u2192 \u03a9) \u2192 MeasurePreserving T \u03bc \u03bc \u2192 Measurable T \u2192 (f : \u03a9 \u2192 \u211d) \u2192 Integrable f \u03bc \u2192 \u2203 f_star, (a.s. convergence) \u2227 (Integrable) \u2227 (\u222b f_star = \u222b f) \u2227 (T-invariant)"
+      "leanType": "(T : Ω → Ω) → MeasurePreserving T μ μ → Measurable T → (f : Ω → ℝ) → Integrable f μ → ∃ f_star, (a.s. convergence) ∧ (Integrable) ∧ (∫ f_star = ∫ f) ∧ (T-invariant)"
     },
     {
       "name": "birkhoff_ergodic_constant",
       "type": "core",
       "description": "Ergodic case: time averages converge a.s. to E[f]",
-      "leanType": "(T : \u03a9 \u2192 \u03a9) \u2192 Ergodic T \u03bc \u2192 Measurable T \u2192 (f : \u03a9 \u2192 \u211d) \u2192 Integrable f \u03bc \u2192 \u2200\u1d50 \u03c9, S\u2099f/n \u2192 \u222bf"
+      "leanType": "(T : Ω → Ω) → Ergodic T μ → Measurable T → (f : Ω → ℝ) → Integrable f μ → ∀ᵐ ω, Sₙf/n → ∫f"
     },
     {
       "name": "birkhoffSum_add",
       "type": "supporting",
-      "description": "Cocycle relation: S_{n+m}f = S_nf + S_mf\u2218T^n",
-      "leanType": "(T : \u03a9 \u2192 \u03a9) \u2192 (f : \u03a9 \u2192 \u211d) \u2192 (n m : \u2115) \u2192 (\u03c9 : \u03a9) \u2192 birkhoffSum T f (n+m) \u03c9 = birkhoffSum T f n \u03c9 + birkhoffSum T f m (T^[n] \u03c9)"
+      "description": "Cocycle relation: S_{n+m}f = S_nf + S_mf∘T^n",
+      "leanType": "(T : Ω → Ω) → (f : Ω → ℝ) → (n m : ℕ) → (ω : Ω) → birkhoffSum T f (n+m) ω = birkhoffSum T f n ω + birkhoffSum T f m (T^[n] ω)"
     },
     {
       "name": "iterate_measure_preserving",
       "type": "supporting",
       "description": "Iterates of measure-preserving maps are measure-preserving",
-      "leanType": "(T : \u03a9 \u2192 \u03a9) \u2192 MeasurePreserving T \u03bc \u03bc \u2192 (n : \u2115) \u2192 MeasurePreserving (T^[n]) \u03bc \u03bc"
+      "leanType": "(T : Ω → Ω) → MeasurePreserving T μ μ → (n : ℕ) → MeasurePreserving (T^[n]) μ μ"
     }
   ],
   "sorries": 0

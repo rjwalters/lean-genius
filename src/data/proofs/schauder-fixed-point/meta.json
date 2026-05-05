@@ -60,7 +60,7 @@
     "proofRepoPath": "Proofs/SchauderFixedPoint.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 601,
-    "theoremCount": 9
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Juliusz Schauder proved the normed space version in 1930, answering: what happens to Brouwer's theorem in infinite dimensions? The key insight is that compactness, not finite-dimensionality, is the essential ingredient.\n\nBrouwer's theorem fails in infinite dimensions because the closed unit ball is not compact (Riesz's lemma). There exist continuous self-maps of the unit ball in l2 with no fixed point. Schauder showed that if we add the compactness hypothesis back, fixed points are guaranteed.\n\nAndrei Tychonoff generalized to locally convex spaces in 1935. Shizuo Kakutani proved the set-valued version in 1941, which John Nash used to prove existence of Nash equilibria in 1950.",
@@ -218,7 +218,7 @@
     "lineCount": 601,
     "structureCount": 0,
     "axiomCount": 5,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "lemmaCount": 0,
     "imports": [
       "Mathlib.Topology.Basic",

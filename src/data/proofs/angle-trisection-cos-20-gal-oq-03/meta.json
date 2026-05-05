@@ -1,151 +1,151 @@
 {
-    "id": "angle-trisection-cos-20-gal-oq-03",
-    "title": "Galois Group of cos(40°) Minimal Polynomial has Order 3",
-    "slug": "angle-trisection-cos-20-gal-oq-03",
-    "description": "Proves that the Galois group of 8X³−6X+1 over ℚ has cardinality 3. This polynomial is the minimal polynomial of cos(40°) = cos(2π/9), with roots cos(40°), cos(80°), cos(160°). Mirrors the AngleTrisectionCos20Gal approach (which handled cos(20°) = cos(π/9)), using Eisenstein at 3 via the substitution Y=2X−2 (shifting to Y³+6Y²+9Y+3) instead of Y=2X+2. 0 sorries, 0 axioms.",
-    "meta": {
-        "author": "Researcher-13",
-        "date": "2026",
-        "status": "verified",
-        "proofRepoPath": "Proofs/AngleTrisectionCos20GalOQ03.lean",
-        "tags": [
-            "galois-theory",
-            "field-extensions",
-            "angle-trisection",
-            "irreducibility",
-            "research"
-        ],
-        "badge": "mathlib",
-        "sorries": 0,
-        "axiomCount": 0,
-        "lineCount": 434,
-        "assumptions": "None. All results proved from Mathlib axioms only.",
-        "dateAdded": "2026-04-13",
-        "mathlib_version": "4.26.0",
-        "originalContributions": [
-            "Proof that 8X³−6X+1 is irreducible over ℚ via Eisenstein criterion on Y³+6Y²+9Y+3",
-            "Root images: β=2α²−1 (cos 80°), γ=−2α²−α+1 (cos 160°) proved as ring identities",
-            "Factored form identity: 8a³−6a+1 = 8(a−α)(a−β)(a−γ) when 8α³−6α+1=0",
-            "Splitting field degree 3 theorem for 8X³−6X+1",
-            "Main theorem: |Gal(8X³−6X+1/ℚ)| = 3"
-        ],
-        "theoremCount": 5
-    },
-    "overview": {
-        "historicalContext": "The impossibility of angle trisection by compass and straightedge was proved by Wantzel (1837), using the then-new theory of algebraic extensions. The key insight: a 60° angle cannot be trisected because 20° has cosine satisfying the irreducible cubic 8X³−6X−1 = 0, and [ℚ(cos(20°)):ℚ] = 3 is not a power of 2. Galois theory, developed by Évariste Galois before his death in 1832 (but published posthumously in 1846), gave a more conceptual framework: the Galois group of the minimal polynomial determines constructibility.\n\nThe polynomial 8X³−6X+1 is the minimal polynomial of cos(40°) = cos(2π/9) over ℚ. Its three roots are cos(40°), cos(80°), cos(160°), arising from the triple-angle identity cos(3·40°) = cos(120°) = −1/2. The Eisenstein irreducibility argument uses the shift Y=2X−2, which transforms the polynomial into Y³+6Y²+9Y+3 — Eisenstein at p=3. The analogous shift Y=2X+2 works for the cos(20°) polynomial 8X³−6X−1. Both shifts are discovered by looking at where the polynomial takes the value 0: the roots of 8X³−6X±1 are close to ±1/2, and centering the variable near these values produces the p-divisibility structure needed for Eisenstein.\n\nThis result is part of a family: the Galois groups of 8X³−6X−1 (cos(20°)/cos(π/9)), 8X³−6X+1 (cos(40°)/cos(2π/9)), and 8X³−4X²−4X+1 (cos(π/7)) all have order 3. In all three cases, the splitting field is a cyclic extension of degree 3 over ℚ, and the Galois group is ℤ/3ℤ. This is the minimal non-trivial case of the general pattern for cos(2π/p) with odd prime p: the Galois group is cyclic of order (p−1)/2 = 1, 3, 5, ... for p = 3, 7, 11, ...",
-        "problemStatement": "Prove that the Galois group of 8X³−6X+1 over ℚ has cardinality 3. Equivalently, the splitting field of 8X³−6X+1 has degree 3 over ℚ, and the extension is cyclic of order 3.",
-        "proofStrategy": "1. Prove root_image_beta and root_image_gamma: if 8α³−6α+1=0, then β=2α²−1 and γ=−2α²−α+1 are also roots (pure ring identities). 2. Prove 8X³−6X+1 irreducible by Eisenstein: the substitution Y=2X−2 gives Y³+6Y²+9Y+3 which is Eisenstein at 3. 3. Show all roots lie in ℚ(α) via the factored form identity. 4. Conclude [SplittingField:ℚ]=3, hence |Gal|=3.",
-        "keyInsights": [
-            "The double-angle formula cos(80°)=2cos²(40°)−1 directly gives β=2α²−1 as a polynomial in α.",
-            "Since α+β+γ=0 by Vieta (the X² coefficient of 8X³−6X+1 is 0), γ=−α−β=−2α²−α+1.",
-            "The Eisenstein shift uses Y=2X−2 (not Y=2X+2 as for cos(20°)), reflecting the sign change in the constant term: (2X−2)³+6(2X−2)²+9(2X−2)+3 = 8X³−6X+1.",
-            "The factored form identity 8a³−6a+1=8(a−α)(a−β)(a−γ) has ring-theory cofactor ((4α+2)·a+(−4α²−2α+1))·(8α³−6α+1), enabling the splitting field argument.",
-            "The `CommRing R` generality in `root_image_beta/gamma` is not just elegance: it enables direct application in the splitting field (a field extension of ℚ), and in polynomial quotient rings ℚ[X]/(p), where abstract roots live without needing real number coordinates."
-        ],
-        "prerequisites": [
-            "AngleTrisectionCos20Gal.lean (structural template)",
-            "Polynomial.irreducible_of_eisenstein_criterion (Mathlib)",
-            "Polynomial.Gal.card_of_separable (Mathlib)",
-            "IntermediateField.adjoin.finrank (Mathlib)"
-        ]
-    },
-    "sections": [
-        {
-            "id": "ring-identities",
-            "title": "§1: Root Images",
-            "startLine": 34,
-            "endLine": 58,
-            "summary": "Ring identities showing β=2α²−1 and γ=−2α²−α+1 are roots when α is.",
-            "mathContext": "If $8\\alpha^3-6\\alpha+1=0$, then $\\beta=2\\alpha^2-1$ satisfies $8(2\\alpha^2-1)^3-6(2\\alpha^2-1)+1=(8\\alpha^3-6\\alpha-1)(8\\alpha^3-6\\alpha+1)=0$. Similarly for $\\gamma=-2\\alpha^2-\\alpha+1$ with cofactor $-8\\alpha^3-12\\alpha^2+3$."
-        },
-        {
-            "id": "irreducibility",
-            "title": "§2: Irreducibility via Eisenstein",
-            "startLine": 62,
-            "endLine": 200,
-            "summary": "8X³−6X+1 is irreducible over ℚ via Eisenstein criterion on Y³+6Y²+9Y+3.",
-            "mathContext": "The substitution $Y=2X-2$ (inverse $X=(Y+2)/2$) transforms $r(Y)=Y^3+6Y^2+9Y+3$ to $8X^3-6X+1$. Since $r$ is Eisenstein at $p=3$ (with $3|6,3|9,3|3$ and $9\\nmid 3$), it is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma."
-        },
-        {
-            "id": "splitting-field-structure",
-            "title": "§3-4: Splitting Field Structure",
-            "startLine": 204,
-            "endLine": 310,
-            "summary": "Factorization over ℚ(α): shows β and γ are the other two roots, all roots lie in ℚ(α), and establishes the splitting field equals ℚ(α).",
-            "mathContext": "The factored form $8a^3-6a+1=8(a-\\alpha)(a-\\beta)(a-\\gamma)$ shows every root of $p$ lies in $\\mathbb{Q}(\\alpha)$, so $\\text{SplittingField}(p) = \\mathbb{Q}(\\alpha)$."
-        },
-        {
-            "id": "splitting-field-degree",
-            "title": "§5: Galois Degree Bounds",
-            "startLine": 311,
-            "endLine": 395,
-            "summary": "Galois group order bounds: |Gal| divides and equals [SplittingField:ℚ] = 3. Combines finrank tower law with deg-p = 3 and splitting field degree argument.",
-            "mathContext": "$[\\mathbb{Q}(\\alpha):\\mathbb{Q}]=3$ equals $[\\text{SplittingField}:\\mathbb{Q}]$, so $|\\text{Gal}(p)|=3$."
-        },
-        {
-            "id": "main-theorem",
-            "title": "§6: Main Theorem",
-            "startLine": 397,
-            "endLine": 434,
-            "summary": "cos40_gal_card: |Gal(8X³−6X+1/ℚ)| = 3.",
-            "mathContext": "$|\\text{Gal}(p)|=\\text{finrank}_{\\mathbb{Q}}(\\text{SplittingField})=3$."
-        }
+  "id": "angle-trisection-cos-20-gal-oq-03",
+  "title": "Galois Group of cos(40°) Minimal Polynomial has Order 3",
+  "slug": "angle-trisection-cos-20-gal-oq-03",
+  "description": "Proves that the Galois group of 8X³−6X+1 over ℚ has cardinality 3. This polynomial is the minimal polynomial of cos(40°) = cos(2π/9), with roots cos(40°), cos(80°), cos(160°). Mirrors the AngleTrisectionCos20Gal approach (which handled cos(20°) = cos(π/9)), using Eisenstein at 3 via the substitution Y=2X−2 (shifting to Y³+6Y²+9Y+3) instead of Y=2X+2. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Researcher-13",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionCos20GalOQ03.lean",
+    "tags": [
+      "galois-theory",
+      "field-extensions",
+      "angle-trisection",
+      "irreducibility",
+      "research"
     ],
-    "conclusion": {
-        "summary": "The Galois group of 8X³−6X+1 (minimal polynomial of cos(40°)) over ℚ has order exactly 3. The proof uses Eisenstein irreducibility and the splitting field structure theorem. This completes the Galois group computation for all three polynomials arising from cos(3θ)=±1/2: the θ=20° case (8X³−6X−1, already in gallery), the θ=40° case (8X³−6X+1, this entry), and the cos(π/7) case (8X³−4X²−4X+1).",
-        "openQuestions": [
-            "Can the Galois group computation be generalized to cos(2π/p) for all odd primes p, showing |Gal| = (p-1)/2 and the group is cyclic?",
-            "Is there a uniform Lean proof template that handles all cos(π/p) cases simultaneously via cyclotomic field theory?"
-        ],
-        "implications": "Together with AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01, this establishes the Galois group for three classical cubic polynomials arising from angle trisection. All three have |Gal|=3 (cyclic of order 3), confirming the general pattern for irreducible cubics with three real roots and square discriminant."
-    },
-    "crossReferences": [
-        {
-            "targetId": "angle-trisection-cos-20-gal",
-            "relationship": "sibling",
-            "description": "cos(20°) = cos(π/9) case: 8X³−6X−1, same method, |Gal|=3"
-        },
-        {
-            "targetId": "angle-trisection-cos-20-gal-oq-01",
-            "relationship": "sibling",
-            "description": "cos(π/7) case: 8X³−4X²−4X+1, same method, |Gal|=3"
-        },
-        {
-            "targetId": "angle-trisection",
-            "relationship": "application",
-            "description": "The Galois group order 3 proves non-constructibility for 40° trisection"
-        },
-        {
-            "targetId": "angle-trisection-oq-02-oq-04-oq-01",
-            "relationship": "related",
-            "description": "Tower-Galois Equivalence: proves abstractly that constructibility requires a Galois 2-group; this file provides a concrete order-3 obstruction demonstrating the non-2-group case that the abstract theory characterizes as non-constructible"
-        }
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 434,
+    "assumptions": "None. All results proved from Mathlib axioms only.",
+    "dateAdded": "2026-04-13",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Proof that 8X³−6X+1 is irreducible over ℚ via Eisenstein criterion on Y³+6Y²+9Y+3",
+      "Root images: β=2α²−1 (cos 80°), γ=−2α²−α+1 (cos 160°) proved as ring identities",
+      "Factored form identity: 8a³−6a+1 = 8(a−α)(a−β)(a−γ) when 8α³−6α+1=0",
+      "Splitting field degree 3 theorem for 8X³−6X+1",
+      "Main theorem: |Gal(8X³−6X+1/ℚ)| = 3"
     ],
-    "references": [
-        {
-            "author": "Wantzel, P.L.",
-            "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
-            "year": 1837,
-            "note": "First proof of impossibility of angle trisection; degree argument"
-        },
-        {
-            "author": "Cox, D.A.",
-            "title": "Galois Theory",
-            "year": 2004,
-            "note": "Chapter on constructibility and Galois groups of cubic polynomials"
-        }
+    "theoremCount": 32
+  },
+  "overview": {
+    "historicalContext": "The impossibility of angle trisection by compass and straightedge was proved by Wantzel (1837), using the then-new theory of algebraic extensions. The key insight: a 60° angle cannot be trisected because 20° has cosine satisfying the irreducible cubic 8X³−6X−1 = 0, and [ℚ(cos(20°)):ℚ] = 3 is not a power of 2. Galois theory, developed by Évariste Galois before his death in 1832 (but published posthumously in 1846), gave a more conceptual framework: the Galois group of the minimal polynomial determines constructibility.\n\nThe polynomial 8X³−6X+1 is the minimal polynomial of cos(40°) = cos(2π/9) over ℚ. Its three roots are cos(40°), cos(80°), cos(160°), arising from the triple-angle identity cos(3·40°) = cos(120°) = −1/2. The Eisenstein irreducibility argument uses the shift Y=2X−2, which transforms the polynomial into Y³+6Y²+9Y+3 — Eisenstein at p=3. The analogous shift Y=2X+2 works for the cos(20°) polynomial 8X³−6X−1. Both shifts are discovered by looking at where the polynomial takes the value 0: the roots of 8X³−6X±1 are close to ±1/2, and centering the variable near these values produces the p-divisibility structure needed for Eisenstein.\n\nThis result is part of a family: the Galois groups of 8X³−6X−1 (cos(20°)/cos(π/9)), 8X³−6X+1 (cos(40°)/cos(2π/9)), and 8X³−4X²−4X+1 (cos(π/7)) all have order 3. In all three cases, the splitting field is a cyclic extension of degree 3 over ℚ, and the Galois group is ℤ/3ℤ. This is the minimal non-trivial case of the general pattern for cos(2π/p) with odd prime p: the Galois group is cyclic of order (p−1)/2 = 1, 3, 5, ... for p = 3, 7, 11, ...",
+    "problemStatement": "Prove that the Galois group of 8X³−6X+1 over ℚ has cardinality 3. Equivalently, the splitting field of 8X³−6X+1 has degree 3 over ℚ, and the extension is cyclic of order 3.",
+    "proofStrategy": "1. Prove root_image_beta and root_image_gamma: if 8α³−6α+1=0, then β=2α²−1 and γ=−2α²−α+1 are also roots (pure ring identities). 2. Prove 8X³−6X+1 irreducible by Eisenstein: the substitution Y=2X−2 gives Y³+6Y²+9Y+3 which is Eisenstein at 3. 3. Show all roots lie in ℚ(α) via the factored form identity. 4. Conclude [SplittingField:ℚ]=3, hence |Gal|=3.",
+    "keyInsights": [
+      "The double-angle formula cos(80°)=2cos²(40°)−1 directly gives β=2α²−1 as a polynomial in α.",
+      "Since α+β+γ=0 by Vieta (the X² coefficient of 8X³−6X+1 is 0), γ=−α−β=−2α²−α+1.",
+      "The Eisenstein shift uses Y=2X−2 (not Y=2X+2 as for cos(20°)), reflecting the sign change in the constant term: (2X−2)³+6(2X−2)²+9(2X−2)+3 = 8X³−6X+1.",
+      "The factored form identity 8a³−6a+1=8(a−α)(a−β)(a−γ) has ring-theory cofactor ((4α+2)·a+(−4α²−2α+1))·(8α³−6α+1), enabling the splitting field argument.",
+      "The `CommRing R` generality in `root_image_beta/gamma` is not just elegance: it enables direct application in the splitting field (a field extension of ℚ), and in polynomial quotient rings ℚ[X]/(p), where abstract roots live without needing real number coordinates."
     ],
-    "leanFile": {
-        "imports": [
-            "Mathlib"
-        ],
-        "namespace": "AngleTrisectionCos20GalOQ03",
-        "lineCount": 434,
-        "axiomCount": 0,
-        "theoremCount": 32,
-        "definitionCount": 0,
-        "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
-        "sorries": 0
+    "prerequisites": [
+      "AngleTrisectionCos20Gal.lean (structural template)",
+      "Polynomial.irreducible_of_eisenstein_criterion (Mathlib)",
+      "Polynomial.Gal.card_of_separable (Mathlib)",
+      "IntermediateField.adjoin.finrank (Mathlib)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ring-identities",
+      "title": "§1: Root Images",
+      "startLine": 34,
+      "endLine": 58,
+      "summary": "Ring identities showing β=2α²−1 and γ=−2α²−α+1 are roots when α is.",
+      "mathContext": "If $8\\alpha^3-6\\alpha+1=0$, then $\\beta=2\\alpha^2-1$ satisfies $8(2\\alpha^2-1)^3-6(2\\alpha^2-1)+1=(8\\alpha^3-6\\alpha-1)(8\\alpha^3-6\\alpha+1)=0$. Similarly for $\\gamma=-2\\alpha^2-\\alpha+1$ with cofactor $-8\\alpha^3-12\\alpha^2+3$."
     },
+    {
+      "id": "irreducibility",
+      "title": "§2: Irreducibility via Eisenstein",
+      "startLine": 62,
+      "endLine": 200,
+      "summary": "8X³−6X+1 is irreducible over ℚ via Eisenstein criterion on Y³+6Y²+9Y+3.",
+      "mathContext": "The substitution $Y=2X-2$ (inverse $X=(Y+2)/2$) transforms $r(Y)=Y^3+6Y^2+9Y+3$ to $8X^3-6X+1$. Since $r$ is Eisenstein at $p=3$ (with $3|6,3|9,3|3$ and $9\\nmid 3$), it is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma."
+    },
+    {
+      "id": "splitting-field-structure",
+      "title": "§3-4: Splitting Field Structure",
+      "startLine": 204,
+      "endLine": 310,
+      "summary": "Factorization over ℚ(α): shows β and γ are the other two roots, all roots lie in ℚ(α), and establishes the splitting field equals ℚ(α).",
+      "mathContext": "The factored form $8a^3-6a+1=8(a-\\alpha)(a-\\beta)(a-\\gamma)$ shows every root of $p$ lies in $\\mathbb{Q}(\\alpha)$, so $\\text{SplittingField}(p) = \\mathbb{Q}(\\alpha)$."
+    },
+    {
+      "id": "splitting-field-degree",
+      "title": "§5: Galois Degree Bounds",
+      "startLine": 311,
+      "endLine": 395,
+      "summary": "Galois group order bounds: |Gal| divides and equals [SplittingField:ℚ] = 3. Combines finrank tower law with deg-p = 3 and splitting field degree argument.",
+      "mathContext": "$[\\mathbb{Q}(\\alpha):\\mathbb{Q}]=3$ equals $[\\text{SplittingField}:\\mathbb{Q}]$, so $|\\text{Gal}(p)|=3$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§6: Main Theorem",
+      "startLine": 397,
+      "endLine": 434,
+      "summary": "cos40_gal_card: |Gal(8X³−6X+1/ℚ)| = 3.",
+      "mathContext": "$|\\text{Gal}(p)|=\\text{finrank}_{\\mathbb{Q}}(\\text{SplittingField})=3$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Galois group of 8X³−6X+1 (minimal polynomial of cos(40°)) over ℚ has order exactly 3. The proof uses Eisenstein irreducibility and the splitting field structure theorem. This completes the Galois group computation for all three polynomials arising from cos(3θ)=±1/2: the θ=20° case (8X³−6X−1, already in gallery), the θ=40° case (8X³−6X+1, this entry), and the cos(π/7) case (8X³−4X²−4X+1).",
+    "openQuestions": [
+      "Can the Galois group computation be generalized to cos(2π/p) for all odd primes p, showing |Gal| = (p-1)/2 and the group is cyclic?",
+      "Is there a uniform Lean proof template that handles all cos(π/p) cases simultaneously via cyclotomic field theory?"
+    ],
+    "implications": "Together with AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01, this establishes the Galois group for three classical cubic polynomials arising from angle trisection. All three have |Gal|=3 (cyclic of order 3), confirming the general pattern for irreducible cubics with three real roots and square discriminant."
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "sibling",
+      "description": "cos(20°) = cos(π/9) case: 8X³−6X−1, same method, |Gal|=3"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-01",
+      "relationship": "sibling",
+      "description": "cos(π/7) case: 8X³−4X²−4X+1, same method, |Gal|=3"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "application",
+      "description": "The Galois group order 3 proves non-constructibility for 40° trisection"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Tower-Galois Equivalence: proves abstractly that constructibility requires a Galois 2-group; this file provides a concrete order-3 obstruction demonstrating the non-2-group case that the abstract theory characterizes as non-constructible"
+    }
+  ],
+  "references": [
+    {
+      "author": "Wantzel, P.L.",
+      "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": 1837,
+      "note": "First proof of impossibility of angle trisection; degree argument"
+    },
+    {
+      "author": "Cox, D.A.",
+      "title": "Galois Theory",
+      "year": 2004,
+      "note": "Chapter on constructibility and Galois groups of cubic polynomials"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "AngleTrisectionCos20GalOQ03",
+    "lineCount": 434,
+    "axiomCount": 0,
+    "theoremCount": 32,
+    "definitionCount": 0,
+    "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
     "sorries": 0
+  },
+  "sorries": 0
 }

@@ -1,6 +1,6 @@
 {
   "id": "erdos-795",
-  "title": "Erd\u0151s Problem #795",
+  "title": "Erdős Problem #795",
   "slug": "erdos-795",
   "description": "Determine tight bounds for g(n), the maximum size of a subset of {1,...,n} with all subset products distinct.",
   "meta": {
@@ -28,14 +28,14 @@
     "theoremCount": 14
   },
   "overview": {
-    "historicalContext": "Erd\u0151s introduced the function $g(n)$ in a 1966 paper 'Remarks on number theory V' published in Matematikai Lapok, as part of his broader program studying multiplicative structures in sets of integers. The problem arose naturally from the observation that the set of all primes up to $n$ has distinct subset products (by unique factorization), giving $g(n) \\geq \\pi(n)$. Erd\u0151s proved the first non-trivial upper bound $g(n) \\leq \\pi(n) + O(\\sqrt{n}/\\ln n)$ in the same paper, showing that at most $O(\\pi(\\sqrt{n}))$ non-prime elements could participate. The gap between the lower bound $\\pi(n)$ and upper bound $\\pi(n) + O(\\pi(\\sqrt{n}))$ suggested that squares of small primes (contributing $\\pi(\\sqrt{n})$ additional elements) might close the gap. This remained open for nearly 60 years until Raghavan's 2025 resolution. The problem is the multiplicative counterpart of Erd\u0151s Problem #1 on distinct subset sums, where $f(n, N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\text{all subset sums distinct}\\}$ and the Conway-Guy conjecture similarly identifies optimal sets. The distinct products problem connects to Sidon sets in multiplicative groups, $B_h$ sequences, and the broader study of sum-free and product-free sets in additive combinatorics.",
+    "historicalContext": "Erdős introduced the function $g(n)$ in a 1966 paper 'Remarks on number theory V' published in Matematikai Lapok, as part of his broader program studying multiplicative structures in sets of integers. The problem arose naturally from the observation that the set of all primes up to $n$ has distinct subset products (by unique factorization), giving $g(n) \\geq \\pi(n)$. Erdős proved the first non-trivial upper bound $g(n) \\leq \\pi(n) + O(\\sqrt{n}/\\ln n)$ in the same paper, showing that at most $O(\\pi(\\sqrt{n}))$ non-prime elements could participate. The gap between the lower bound $\\pi(n)$ and upper bound $\\pi(n) + O(\\pi(\\sqrt{n}))$ suggested that squares of small primes (contributing $\\pi(\\sqrt{n})$ additional elements) might close the gap. This remained open for nearly 60 years until Raghavan's 2025 resolution. The problem is the multiplicative counterpart of Erdős Problem #1 on distinct subset sums, where $f(n, N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\text{all subset sums distinct}\\}$ and the Conway-Guy conjecture similarly identifies optimal sets. The distinct products problem connects to Sidon sets in multiplicative groups, $B_h$ sequences, and the broader study of sum-free and product-free sets in additive combinatorics.",
     "problemStatement": "Let $g(n)$ be the maximal size of $A \\subseteq \\{1,\\ldots,n\\}$ such that the products $\\prod_{a \\in S} a$ are distinct for all $S \\subseteq A$. Is it true that $g(n) \\leq \\pi(n) + \\pi(n^{1/2}) + o(n^{1/2}/\\ln n)$?",
     "text": "Determine tight bounds for g(n), the maximum size of a subset of {1,...,n} with all subset products distinct.",
     "proofStrategy": "Raghavan's 2025 proof establishes both tight upper and lower bounds. The upper bound $g(n) \\leq \\pi(n) + \\pi(\\sqrt{n}) + O(n^{5/12+o(1)})$ uses a multi-layered argument: first, a structural decomposition shows that optimal sets consist almost entirely of primes and prime squares; second, careful sieve-theoretic estimates bound the contribution of remaining elements. The exponent $5/12$ comes from balancing the multiplicative energy of the non-prime-power remainder against the counting constraint. The lower bound $g(n) \\geq \\pi(n) + \\pi(\\sqrt{n}) + \\pi(\\sqrt[3]{n})/3 - O(1)$ is established by explicit construction: take all primes $\\leq n$, add $p^2$ for each prime $p \\leq \\sqrt{n}$, and additionally include $p^3$ for roughly a third of primes $p \\leq n^{1/3}$. The key observation is that including $p$, $p^2$, and $p^3$ for the same prime $p$ gives four distinguishable exponent values (0, 1, 2, 3), but only a third of cube primes can be added due to interaction constraints.",
     "keyInsights": [
       "Unique factorization is the engine: any set of distinct primes automatically has distinct products, establishing the baseline $g(n) \\geq \\pi(n)$ with no extra work",
       "Prime squares exploit exponent distinguishability: including both $p$ and $p^2$ gives exponents $\\{0, 1, 2, 3\\}$ for $p$ in subset products, all yielding different values modulo higher primes",
-      "The structural decomposition $A = P \\cup P^2 \\cup R$ with $|R| = O(\\pi(n^{1/3}))$ shows composites with multiple distinct prime factors are wasteful\u2014they consume multiple prime 'slots' for one element",
+      "The structural decomposition $A = P \\cup P^2 \\cup R$ with $|R| = O(\\pi(n^{1/3}))$ shows composites with multiple distinct prime factors are wasteful—they consume multiple prime 'slots' for one element",
       "The exponent $5/12$ in the error term is not arbitrary: it arises from the critical threshold where multiplicative energy bounds (from additive combinatorics) intersect with sieve upper bounds",
       "The cube root contribution $\\pi(n^{1/3})/3$ in the lower bound is sharp up to a constant factor, pinning the third-order term to $\\Theta(\\pi(n^{1/3}))$",
       "The problem bridges number theory and combinatorics: the upper bound needs sieve methods and multiplicative energy, while the lower bound uses explicit constructions from prime factorization theory"
@@ -52,8 +52,8 @@
       "title": "Problem Overview and References",
       "startLine": 1,
       "endLine": 49,
-      "summary": "File documentation including Aristotle proof annotations, problem statement, Erd\u0151s's original bound, Raghavan's resolution, historical context, and references to [Er66] and [Ra25]. Imports Mathlib for access to the full mathematical library.",
-      "mathContext": "File documentation including Aristotle proof annotations, problem statement, Erd\u0151s's original bound, Raghavan's resolution, historical context, and references to [Er66] and [Ra25]. Imports Mathlib for access to the full mathematical library."
+      "summary": "File documentation including Aristotle proof annotations, problem statement, Erdős's original bound, Raghavan's resolution, historical context, and references to [Er66] and [Ra25]. Imports Mathlib for access to the full mathematical library.",
+      "mathContext": "File documentation including Aristotle proof annotations, problem statement, Erdős's original bound, Raghavan's resolution, historical context, and references to [Er66] and [Ra25]. Imports Mathlib for access to the full mathematical library."
     },
     {
       "id": "sec-795-basic",
@@ -68,56 +68,56 @@
       "title": "Prime Counting Function",
       "startLine": 78,
       "endLine": 83,
-      "summary": "Defines primePi(n) = \u03c0(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions.",
-      "mathContext": "Formal definition: Defines primePi(n) = \u03c0(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions."
+      "summary": "Defines primePi(n) = π(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions.",
+      "mathContext": "Formal definition: Defines primePi(n) = π(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions."
     },
     {
       "id": "sec-795-erdos-bound",
-      "title": "Erd\u0151s's 1966 Upper Bound",
+      "title": "Erdős's 1966 Upper Bound",
       "startLine": 84,
       "endLine": 109,
-      "summary": "States Erd\u0151s's original result g(n) \u2264 \u03c0(n) + O(\u221an/log n) as a Lean theorem with explicit existential constant. Sorry'd\u2014this is a deep analytic number theory result.",
-      "mathContext": "States Erd\u0151s's original result g(n) $\\leq$ \u03c0(n) + $O(\u221an/$\\log n$)$ as a Lean theorem with explicit existential constant. Sorry'd\u2014this is a deep analytic number theory result."
+      "summary": "States Erdős's original result g(n) ≤ π(n) + O(√n/log n) as a Lean theorem with explicit existential constant. Sorry'd—this is a deep analytic number theory result.",
+      "mathContext": "States Erdős's original result g(n) $\\leq$ π(n) + $O(√n/$\\log n$)$ as a Lean theorem with explicit existential constant. Sorry'd—this is a deep analytic number theory result."
     },
     {
       "id": "sec-795-conjecture",
       "title": "The Main Conjecture",
       "startLine": 110,
       "endLine": 121,
-      "summary": "Formalizes Erd\u0151s's conjecture as a Lean definition: for all \u03b5 > 0, eventually g(n) \u2264 \u03c0(n) + \u03c0(\u221an) + \u03b5\u00b7\u221an/log n. Uses \u03b5-N formulation of the little-o condition.",
-      "mathContext": "Formalizes Erd\u0151s's conjecture as a Lean definition: for all \u03b5 > 0, eventually g(n) $\\leq$ \u03c0(n) + \u03c0(\u221an) + \u03b5\u00b7\u221an/$\\log n$. Uses \u03b5-N formulation of the little-o condition."
+      "summary": "Formalizes Erdős's conjecture as a Lean definition: for all ε > 0, eventually g(n) ≤ π(n) + π(√n) + ε·√n/log n. Uses ε-N formulation of the little-o condition.",
+      "mathContext": "Formalizes Erdős's conjecture as a Lean definition: for all ε > 0, eventually g(n) $\\leq$ π(n) + π(√n) + ε·√n/$\\log n$. Uses ε-N formulation of the little-o condition."
     },
     {
       "id": "sec-795-raghavan",
       "title": "Raghavan's Solution (2025)",
       "startLine": 122,
       "endLine": 207,
-      "summary": "The heart of the formalization: Raghavan's upper bound (with n^{5/12} error), lower bound (with \u03c0(\u221bn)/3 term), and the main theorem confirming the conjecture. The solved theorem chains from the upper bound through the error comparison.",
-      "mathContext": "The heart of the formalization: Raghavan's upper bound (with n^{5/12} error), lower bound (with \u03c0(\u221bn)/3 term), and the main theorem confirming the conjecture. The solved theorem chains from the upper bound through the error comparison."
+      "summary": "The heart of the formalization: Raghavan's upper bound (with n^{5/12} error), lower bound (with π(∛n)/3 term), and the main theorem confirming the conjecture. The solved theorem chains from the upper bound through the error comparison.",
+      "mathContext": "The heart of the formalization: Raghavan's upper bound (with n^{5/12} error), lower bound (with π(∛n)/3 term), and the main theorem confirming the conjecture. The solved theorem chains from the upper bound through the error comparison."
     },
     {
       "id": "sec-795-constructions",
       "title": "Natural Constructions",
       "startLine": 210,
       "endLine": 291,
-      "summary": "Formal statements about the building blocks: primes have distinct products (by unique factorization), adding prime squares preserves the property, and the combined construction achieves g(n) \u2265 \u03c0(n) + \u03c0(\u221an).",
-      "mathContext": "Formal statements about the building blocks: primes have distinct products (by unique factorization), adding prime squares preserves the property, and the combined construction achieves g(n) \u2265 \u03c0(n) + \u03c0(\u221an)."
+      "summary": "Formal statements about the building blocks: primes have distinct products (by unique factorization), adding prime squares preserves the property, and the combined construction achieves g(n) ≥ π(n) + π(√n).",
+      "mathContext": "Formal statements about the building blocks: primes have distinct products (by unique factorization), adding prime squares preserves the property, and the combined construction achieves g(n) ≥ π(n) + π(√n)."
     },
     {
       "id": "sec-795-structure",
       "title": "Structure of Optimal Sets",
       "startLine": 292,
       "endLine": 328,
-      "summary": "The structural decomposition theorem: any optimal set A decomposes as P \u222a P\u00b2 \u222a R where P is primes, P\u00b2 is prime squares, and the remainder R has size \u2264 \u03c0(n^{1/3})/2.",
-      "mathContext": "The structural decomposition theorem: any optimal set A decomposes as P \u222a P\u00b2 \u222a R where P is primes, P\u00b2 is prime squares, and the remainder R has size $\\leq$ \u03c0(n^{1/3})/2."
+      "summary": "The structural decomposition theorem: any optimal set A decomposes as P ∪ P² ∪ R where P is primes, P² is prime squares, and the remainder R has size ≤ π(n^{1/3})/2.",
+      "mathContext": "The structural decomposition theorem: any optimal set A decomposes as P ∪ P² ∪ R where P is primes, P² is prime squares, and the remainder R has size $\\leq$ π(n^{1/3})/2."
     },
     {
       "id": "sec-795-error",
       "title": "Error Term Comparison",
       "startLine": 332,
       "endLine": 357,
-      "summary": "Two comparison theorems: Erd\u0151s's error vs \u03c0(\u221an), and Raghavan's n^{5/12} vs \u221an/log n. The latter was proved by Aristotle, making it the only non-sorry theorem in the file.",
-      "mathContext": "Two comparison theorems: Erd\u0151s's error vs \u03c0(\u221an), and Raghavan's n^{5/12} vs \u221an/$\\log n$. The latter was proved by Aristotle, making it the only non-sorry theorem in the file."
+      "summary": "Two comparison theorems: Erdős's error vs π(√n), and Raghavan's n^{5/12} vs √n/log n. The latter was proved by Aristotle, making it the only non-sorry theorem in the file.",
+      "mathContext": "Two comparison theorems: Erdős's error vs π(√n), and Raghavan's n^{5/12} vs √n/$\\log n$. The latter was proved by Aristotle, making it the only non-sorry theorem in the file."
     },
     {
       "id": "sec-795-sidon",
@@ -132,15 +132,15 @@
       "title": "Related Problem #786",
       "startLine": 416,
       "endLine": 423,
-      "summary": "A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to \u03c0(n) + \u03c0(\u221an) + \u0398(\u03c0(\u221bn)).",
-      "mathContext": "Bound: A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to \u03c0(n) + \u03c0(\u221an) + \u0398(\u03c0(\u221bn))."
+      "summary": "A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to π(n) + π(√n) + Θ(π(∛n)).",
+      "mathContext": "Bound: A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to π(n) + π(√n) + Θ(π(∛n))."
     },
     {
       "id": "sec-795-examples",
       "title": "Examples and Small Values",
       "startLine": 424,
       "endLine": 490,
-      "summary": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)\u22655.",
+      "summary": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)≥5.",
       "mathContext": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)$\\geq$5."
     },
     {
@@ -148,17 +148,17 @@
       "title": "Summary",
       "startLine": 491,
       "endLine": 496,
-      "summary": "Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = \u03c0(n) + \u03c0(\u221an) + \u0398(\u03c0(\u221bn)), and the key insight about primes and prime powers forming optimal sets.",
-      "mathContext": "Mathematical content: Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = \u03c0(n) + \u03c0(\u221an) + \u0398(\u03c0(\u221bn)), and the key insight about primes and prime powers forming optimal sets."
+      "summary": "Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets.",
+      "mathContext": "Mathematical content: Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #795 is SOLVED. Raghavan (2025) proved $g(n) = \\pi(n) + \\pi(n^{1/2}) + \\Theta(\\pi(n^{1/3}))$, confirming that the natural construction of primes plus prime squares is essentially optimal, with a precisely quantified contribution from cube roots of primes. The formalization captures the full problem structure, from definitions through Erd\u0151s's original bound to Raghavan's resolution, with one theorem (the error comparison) proved by Aristotle.",
-    "implications": "**Theoretical Significance**: This result closes a 60-year-old question in multiplicative combinatorics, definitively characterizing which subsets of $\\{1,\\ldots,n\\}$ maximize the number of elements while maintaining distinct subset products.\n\nThe techniques developed\u2014combining sieve methods with multiplicative energy bounds from additive combinatorics\u2014have potential applications to other extremal problems involving multiplicative structure. The structural decomposition into primes, prime squares, and a small remainder gives a template for analyzing optimal sets in similar problems.",
+    "summary": "Erdős Problem #795 is SOLVED. Raghavan (2025) proved $g(n) = \\pi(n) + \\pi(n^{1/2}) + \\Theta(\\pi(n^{1/3}))$, confirming that the natural construction of primes plus prime squares is essentially optimal, with a precisely quantified contribution from cube roots of primes. The formalization captures the full problem structure, from definitions through Erdős's original bound to Raghavan's resolution, with one theorem (the error comparison) proved by Aristotle.",
+    "implications": "**Theoretical Significance**: This result closes a 60-year-old question in multiplicative combinatorics, definitively characterizing which subsets of $\\{1,\\ldots,n\\}$ maximize the number of elements while maintaining distinct subset products.\n\nThe techniques developed—combining sieve methods with multiplicative energy bounds from additive combinatorics—have potential applications to other extremal problems involving multiplicative structure. The structural decomposition into primes, prime squares, and a small remainder gives a template for analyzing optimal sets in similar problems.",
     "openQuestions": [
       "What is the exact leading constant in the $\\pi(n^{1/3})$ term? Raghavan's bounds give $\\pi(n^{1/3})/3$ from below and $O(n^{5/12})$ from above, but the precise coefficient remains unknown.",
       "Can the error exponent $5/12$ in the upper bound be improved to match the lower bound's $1/3$? Closing this gap would fully determine the third-order term.",
-      "What are the analogues for distinct subset sums vs. products? Erd\u0151s Problem #1 addresses the additive case, but the relationship between optimal additive and multiplicative constructions is not well understood.",
+      "What are the analogues for distinct subset sums vs. products? Erdős Problem #1 addresses the additive case, but the relationship between optimal additive and multiplicative constructions is not well understood.",
       "How does $g(n)$ behave for restricted sets, such as subsets of arithmetic progressions $\\{a, a+d, \\ldots, a+kd\\}$?"
     ]
   },
@@ -170,7 +170,7 @@
     "namespace": "Erdos795",
     "lineCount": 499,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 14,
     "definitionCount": 7,
     "path": "Proofs/Erdos795Problem.lean",
     "sorries": 14,
@@ -182,17 +182,17 @@
     {
       "targetId": "erdos-983",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, number-theory, prime-counting"
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, prime-counting"
     },
     {
       "targetId": "erdos-1005",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
     },
     {
       "targetId": "erdos-1138",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
     }
   ],
   "sorries": 14

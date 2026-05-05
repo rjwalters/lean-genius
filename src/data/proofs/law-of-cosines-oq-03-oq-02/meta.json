@@ -13,11 +13,13 @@
       "Mathlib.Tactic",
       "Proofs.LawOfCosinesOQ03"
     ],
-    "opens": ["Real"],
+    "opens": [
+      "Real"
+    ],
     "axiomCount": 6,
     "sorries": 0,
     "lineCount": 264,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 1
   },
   "openQuestion": {
@@ -178,7 +180,7 @@
     "sorries": 0,
     "axiomCount": 6,
     "lineCount": 264,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 1,
     "originalContributions": [
       "HyperbolicSineTriangle structure with 6 axiom fields encoding the hyperbolic law of sines",
@@ -209,28 +211,46 @@
         "content": "sinh_pos_of_pos, sinh_pos_ne_zero (denominator clearing). law_sines_ac (A/a=C/c), law_sines_all (all three equal).",
         "startLine": 74,
         "endLine": 103,
-        "theorems": ["sinh_pos_of_pos", "sinh_pos_ne_zero", "law_sines_ac", "law_sines_all"]
+        "theorems": [
+          "sinh_pos_of_pos",
+          "sinh_pos_ne_zero",
+          "law_sines_ac",
+          "law_sines_all"
+        ]
       },
       {
         "title": "Cross-Multiplication and Defect",
         "content": "law_sines_cross_ab, law_sines_cross_bc, law_sines_cross_ac. angle_sum_lt_pi, angular_defect_pos.",
         "startLine": 105,
         "endLine": 152,
-        "theorems": ["law_sines_cross_ab", "law_sines_cross_bc", "law_sines_cross_ac", "angle_sum_lt_pi", "angular_defect_pos"]
+        "theorems": [
+          "law_sines_cross_ab",
+          "law_sines_cross_bc",
+          "law_sines_cross_ac",
+          "angle_sum_lt_pi",
+          "angular_defect_pos"
+        ]
       },
       {
         "title": "sin Injectivity and Isoceles Theorem",
         "content": "sin_eq_of_lt_pi (injectivity lemma), isoceles_iff (main isoceles result).",
         "startLine": 155,
         "endLine": 236,
-        "theorems": ["sin_eq_of_lt_pi", "isoceles_iff"]
+        "theorems": [
+          "sin_eq_of_lt_pi",
+          "isoceles_iff"
+        ]
       },
       {
         "title": "Special Cases",
         "content": "right_angle_sines (C=π/2), equilateral_angles (a=b=c → A=B=C), ratio_pos.",
         "startLine": 238,
         "endLine": 264,
-        "theorems": ["right_angle_sines", "equilateral_angles", "ratio_pos"]
+        "theorems": [
+          "right_angle_sines",
+          "equilateral_angles",
+          "ratio_pos"
+        ]
       }
     ],
     "mathContext": {

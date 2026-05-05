@@ -66,7 +66,7 @@
     ],
     "mathlib_version": "4.26.0",
     "lineCount": 6594,
-    "theoremCount": 364
+    "theoremCount": 365
   },
   "overview": {
     "historicalContext": "The Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ was first studied by Euler (1737), who discovered the Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ — the key link between $\\zeta$ and prime numbers. But it was Bernhard Riemann who, in his extraordinary 1859 paper 'Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse' (just 8 pages), transformed the subject by extending $\\zeta$ to a meromorphic function on all of $\\mathbb{C}$, establishing the functional equation $\\xi(s) = \\xi(1-s)$, and stating the hypothesis that all non-trivial zeros have $\\text{Re}(s) = 1/2$.\n\nRiemann's paper was revolutionary: he showed that the distribution of primes is governed by the zeros of $\\zeta(s)$ through his explicit formula $\\psi(x) = x - \\sum_\\rho x^\\rho/\\rho - \\log(2\\pi) - \\frac{1}{2}\\log(1-x^{-2})$. The Prime Number Theorem — proved independently by Hadamard and de la Vallée Poussin in 1896 — is equivalent to $\\zeta(s) \\neq 0$ on $\\text{Re}(s) = 1$, while RH is the far stronger assertion that the zero-free region extends to $\\text{Re}(s) > 1/2$.\n\nHardy (1914) proved infinitely many zeros lie on the critical line, using the Hardy Z-function $Z(t) = e^{i\\theta(t)}\\zeta(1/2+it)$ which is real for real $t$. Selberg (1942) showed a positive proportion of zeros are on the critical line, Levinson (1974) proved $>1/3$, and Conrey (1989) improved this to $>40\\%$ — the current record. Montgomery (1973) discovered that the pair correlation of zeta zeros matches that of eigenvalues of random GUE matrices, inaugurating the deep connection to random matrix theory (Keating-Snaith 2000). Rodgers and Tao (2018) proved the de Bruijn-Newman constant $\\Lambda \\geq 0$, establishing that RH, if true, is 'just barely' true.\n\nIn 2000, the Clay Mathematics Institute designated RH as one of seven Millennium Prize Problems, offering $1,000,000 for its resolution. Despite 166 years of effort and the verification of the first $10^{13}$ zeros (Platt 2004, Gourdon 2004), the hypothesis remains open. Hilbert listed it as the 8th of his 23 problems (1900), and it appears on virtually every list of the most important open problems in mathematics.",
@@ -355,7 +355,7 @@
     "namespace": "RiemannHypothesis",
     "lineCount": 6594,
     "axiomCount": 32,
-    "theoremCount": 363,
+    "theoremCount": 365,
     "definitionCount": 38,
     "path": "Proofs/RiemannHypothesis.lean",
     "sorries": 0
