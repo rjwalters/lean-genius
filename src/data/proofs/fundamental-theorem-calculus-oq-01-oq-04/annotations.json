@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-definition",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 55, "endLine": 68 },
+    "type": "definition",
+    "title": "AbsolutelyContinuousOnNormed: The ε-δ Definition",
+    "content": "The definition mirrors classical AC: for every ε > 0 there exists δ > 0 such that any finite collection of pairwise disjoint subintervals with total length < δ has total oscillation (measured in norm) < ε. The key change from the real-valued case is replacing |f(b)-f(a)| with ‖f(b)-f(a)‖, which makes sense for any NormedAddCommGroup.",
+    "mathContext": "$$f \\text{ is normed-AC on } [a,b] \\iff \\forall \\varepsilon > 0,\\ \\exists \\delta > 0 \\text{ s.t. } \\sum_k (b_k - a_k) < \\delta \\implies \\sum_k \\|f(b_k) - f(a_k)\\| < \\varepsilon$$",
+    "significance": "key",
+    "relatedConcepts": ["absolute continuity", "bounded variation", "NormedAddCommGroup", "epsilon-delta definition"],
+    "prerequisites": ["normed vector spaces", "real analysis", "epsilon-delta arguments"]
+  },
+  {
+    "id": "ann-const-normed-ac",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "technique",
+    "title": "Constant Functions Are Normed-AC",
+    "content": "For a constant function f = c, each term ‖f(bₖ) - f(aₖ)‖ = ‖c - c‖ = 0, so the sum is 0 < ε regardless of δ. The proof extracts δ = 1 (any positive value works) and closes with simp [hε] which discharges the goal that 0 < ε.",
+    "mathContext": "$\\|c - c\\| = 0 < \\varepsilon$ for all $\\varepsilon > 0$, so any $\\delta > 0$ works — choose $\\delta = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["constant functions", "degenerate case"],
+    "prerequisites": ["norm axioms"]
+  },
+  {
+    "id": "ann-lipschitz-normed-ac",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 79, "endLine": 103 },
+    "type": "technique",
+    "title": "Lipschitz Functions Are Normed-AC",
+    "content": "If ‖f(x) - f(y)‖ ≤ K|x - y|, choose δ = ε/(K+1). The denominator K+1 avoids division-by-zero for K=0 (constant functions) while keeping K·δ < ε. The calc block chains: pointwise norm bound → multiply by sum → nlinarith gives K·∑(bₖ-aₖ) + ε/(K+1) < ε.",
+    "mathContext": "$$\\sum_k \\|f(b_k) - f(a_k)\\| \\leq K \\sum_k (b_k - a_k) < K \\cdot \\frac{\\varepsilon}{K+1} + \\frac{\\varepsilon}{K+1} = \\varepsilon$$",
+    "significance": "key",
+    "relatedConcepts": ["Lipschitz continuity", "Hölder continuity", "uniform continuity"],
+    "prerequisites": ["Lipschitz condition", "triangle inequality", "norm sub commutativity"]
+  },
+  {
+    "id": "ann-real-ac-equiv",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 109, "endLine": 134 },
+    "type": "insight",
+    "title": "Equivalence with Classical AC at E = ℝ",
+    "content": "The two directions normed_ac_implies_real_ac and real_ac_implies_normed_ac each use simp_rw [Real.norm_eq_abs] to rewrite ‖x‖ = |x| on ℝ, then forward the hypothesis. This shows the generalization is conservative: no ℝ-valued AC function is excluded or added.",
+    "mathContext": "On $\\mathbb{R}$: $\\|x - y\\| = |x - y|$ (via `Real.norm_eq_abs`), so $\\text{normed-AC} \\iff \\text{classical AC}$ for $f : \\mathbb{R} \\to \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": ["real norm equals absolute value", "conservative generalization", "special cases"],
+    "prerequisites": ["real numbers as normed space", "norm vs absolute value on ℝ"]
+  },
+  {
+    "id": "ann-subinterval",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 140, "endLine": 150 },
+    "type": "technique",
+    "title": "Subinterval Restriction Preserves Normed-AC",
+    "content": "If f is normed-AC on [a,b] and [c,d] ⊆ [a,b], any collection of disjoint subintervals of [c,d] is also a collection within [a,b]. The proof forwards the AC hypothesis with bounds widened by hca : a ≤ c and hdb : d ≤ b via transitivity.",
+    "mathContext": "If $[a_k, b_k] \\subset [c, d] \\subset [a, b]$, then $\\sum \\|f(b_k) - f(a_k)\\| < \\varepsilon$ still holds using the original $\\delta$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity of AC", "interval restriction", "localization"],
+    "prerequisites": ["subset containment", "real ordering"]
+  },
+  {
+    "id": "ann-edist-identity",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "technique",
+    "title": "Key Bridge: edist = ENNReal.ofReal ‖x - y‖",
+    "content": "This private lemma is the linchpin of the whole proof. Mathlib's eVariationOn is defined via edist (the extended metric), while absolute continuity is stated via the norm ‖·‖. The chain edist_dist (converts edist to real dist) and dist_norm (dist x y = ‖x - y‖) bridges the two, enabling norm-stated AC to control edist-stated variation.",
+    "mathContext": "$$\\mathrm{edist}(x, y) \\xrightarrow{\\text{edist\\_dist}} \\mathrm{ENNReal.ofReal}(\\mathrm{dist}(x,y)) \\xrightarrow{\\text{dist\\_norm}} \\mathrm{ENNReal.ofReal}(\\|x - y\\|)$$",
+    "significance": "key",
+    "relatedConcepts": ["extended metric", "ENNReal", "normed space metric", "eVariationOn"],
+    "prerequisites": ["extended nonnegative reals (ENNReal)", "metric vs norm", "Mathlib eVariationOn"]
+  },
+  {
+    "id": "ann-variation-le-one",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 178, "endLine": 214 },
+    "type": "technique",
+    "title": "Short-Interval Variation Bounded by 1",
+    "content": "For a subinterval [c,d] with d-c < δ, normed-AC with ε=1 gives ∑‖f(u(i+1))-f(u(i))‖ < 1 for any increasing partition u. After simp_rw [edist_norm_ofReal] and ENNReal.ofReal_sum_of_nonneg, this converts to eVariationOn f [c,d] ≤ 1. The partition u from the iSup definition maps directly to the AC condition via Fin indices.",
+    "mathContext": "For $d - c < \\delta$: $\\mathrm{eVariation}_f([c,d]) = \\sup_u \\sum_i \\mathrm{edist}(f(u_{i+1}), f(u_i)) \\leq \\sup_u \\sum_i \\|f(u_{i+1}) - f(u_i)\\| < 1$",
+    "significance": "key",
+    "relatedConcepts": ["eVariationOn", "supremum over partitions", "Finset.range"],
+    "prerequisites": ["eVariationOn definition as iSup", "ENNReal.ofReal monotonicity", "Fin vs ℕ indexing"]
+  },
+  {
+    "id": "ann-inductive-combination",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 216, "endLine": 242 },
+    "type": "technique",
+    "title": "Inductive Combination: n Pieces Give Variation ≤ n",
+    "content": "By induction on n: the base case n=0 uses eVariationOn.eq_zero_iff (degenerate interval [a,a] has variation 0); the inductive step applies eVariationOn.Icc_add_Icc to split [a, a+n·step] = [a, a+(n-1)·step] ∪ [a+(n-1)·step, a+n·step], then adds the inductive hypothesis (≤ n-1) and the last-piece bound (≤ 1) to get ≤ n.",
+    "mathContext": "$$\\mathrm{eVariation}_f([a, a + n\\cdot s]) \\leq \\sum_{k=0}^{n-1} \\mathrm{eVariation}_f([a+k\\cdot s, a+(k+1)\\cdot s]) \\leq n \\cdot 1 = n$$",
+    "significance": "key",
+    "relatedConcepts": ["eVariationOn.Icc_add_Icc", "interval splitting", "structural induction", "ENNReal arithmetic"],
+    "prerequisites": ["eVariationOn additivity", "ENNReal.natCast", "induction principle"]
+  },
+  {
+    "id": "ann-main-theorem-setup",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 258, "endLine": 285 },
+    "type": "insight",
+    "title": "Main Theorem Setup: Choosing the Partition",
+    "content": "The proof handles the degenerate case a=b first (variation 0, not ⊤). For a < b, AC with ε=1 yields δ > 0, then n = ⌈(b-a)/δ⌉ + 1 and step = (b-a)/n. The +1 ensures n > (b-a)/δ so step = (b-a)/n < δ. The identity a + n·step = b (proved via mul_div_cancel₀) ensures the partition covers exactly [a,b].",
+    "mathContext": "Set $n = \\lceil(b-a)/\\delta\\rceil + 1$, $\\mathrm{step} = (b-a)/n$. Then $\\mathrm{step} < \\delta$ since $n > (b-a)/\\delta$, and $a + n \\cdot \\mathrm{step} = b$.",
+    "significance": "key",
+    "relatedConcepts": ["ceiling function", "Nat.ceil", "partition refinement", "constructive finiteness"],
+    "prerequisites": ["Nat.ceil (Nat.ceil_div_le)", "positivity", "div_lt_iff"]
+  },
+  {
+    "id": "ann-main-theorem-conclusion",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-04",
+    "range": { "startLine": 286, "endLine": 310 },
+    "type": "insight",
+    "title": "Main Theorem Conclusion: BV from the Partition Bound",
+    "content": "Each of the n pieces [a+k·step, a+(k+1)·step] has length step < δ, so eVariationOn_le_one_normed gives variation ≤ 1 per piece. Applying eVariationOn_le_n_normed yields eVariationOn f [a,b] ≤ n, and since n is a natural number, ENNReal.natCast_ne_top gives n < ⊤, proving BoundedVariationOn.",
+    "mathContext": "$$\\mathrm{eVariation}_f([a, b]) \\leq n < \\top \\implies f \\in BV([a, b])$$",
+    "significance": "key",
+    "relatedConcepts": ["BoundedVariationOn", "ne_top_of_le_ne_top", "ENNReal.natCast_ne_top", "finiteness"],
+    "prerequisites": ["BoundedVariationOn definition (eVariationOn ≠ ⊤)", "ENNReal ordering", "natCast in ENNReal"]
+  }
+]
