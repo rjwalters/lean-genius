@@ -1,0 +1,117 @@
+{
+  "id": "dissection-of-cubes-oq-03-oq-02",
+  "title": "Bottom-Floor Descent: Correcting the Global Minimum Argument",
+  "slug": "dissection-of-cubes-oq-03-oq-02",
+  "description": "Proves that the bottom-floor minimum cube in any multi-cube dissection satisfies side < 1 (equivalently z + side < 1), resolving the key gap in the parent's sorry-filled global_min_not_reaching_top. Identifies a concrete counterexample showing the global minimum version is false, then proves the correct bottom-floor formulation using pairwise_disjoint. All 6 theorems are machine-checked with 0 sorries and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DissectionOfCubesOQ03OQ02.lean",
+    "tags": [
+      "cube-dissection",
+      "geometric-descent",
+      "infinite-descent",
+      "pairwise-disjoint",
+      "wiedijk-82",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 208,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "leanFile": {
+      "path": "Proofs/DissectionOfCubesOQ03OQ02.lean",
+      "axiomCount": 0,
+      "sorryCount": 0,
+      "lineCount": 208,
+      "theoremCount": 6,
+      "definitionCount": 0
+    }
+  },
+  "openQuestion": {
+    "id": "dissection-of-cubes-oq-03-oq-02",
+    "parentId": "dissection-of-cubes-oq-03",
+    "question": "Is the globally minimum cube in a dissection always constrained to not reach the top face of the unit cube?",
+    "answer": "No: the globally minimum cube can have z + side = 1 (e.g., in a 1-cube dissection where the unit cube itself is the only element, allDifferentSizes holds vacuously but side = 1). The correct theorem uses the bottom-floor minimum: the minimum-side cube with z = 0 satisfies side < 1 whenever card >= 2, proved via pairwise_disjoint (any second cube would have overlapping interior with a unit-cube)."
+  },
+  "overview": {
+    "historicalContext": "Littlewood's proof of Wiedijk #82 (cube dissection impossibility) proceeds by infinite descent: the smallest cube on the bottom floor generates a new, smaller floor above it. The parent entry DissectionOfCubesOQ03 attempted to formalize this via a globally minimum cube lemma, but the formulation has a subtle edge case: a 1-cube 'dissection' trivially satisfies all hypotheses yet the globally minimum cube reaches the top boundary (z + side = 1). This entry corrects the argument by restricting to the bottom floor.",
+    "problemStatement": "Can the geometric sorry in DissectionOfCubesOQ03.global_min_not_reaching_top be resolved? The sorry claims: in any dissection with CoversUnitCube and allDifferentSizes, the globally minimum-side cube satisfies z + side < 1. Is this provable?",
+    "proofStrategy": "Identify the counterexample: the 1-cube dissection with unit cube shows allDifferentSizes (vacuously) and CoversUnitCube hold, yet the global minimum has z + side = 1. The fix: restrict to the bottom floor (z = 0). Prove no cube in a >=2-cube dissection has side = 1 via pairwise_disjoint: if side = 1 then the cube fills [0,1]^3, and any second cube would have its interior inside the first cube's interior, violating disjointness. Corollary: bottom-floor cubes have side < 1, so z + side = side < 1.",
+    "keyInsights": [
+      "The 1-cube edge case makes global_min_not_reaching_top provably false: allDifferentSizes is vacuously true for singleton sets, so the 1-cube dissection (with the full unit cube) satisfies all hypotheses of the sorry-goal yet has z + side = 1.",
+      "The fix is not to add card >= 2 to global_min_not_reaching_top, but to use the bottom-floor minimum: its z = 0 means z + side = side, and side < 1 follows from the pairwise_disjoint contradiction.",
+      "The pairwise_disjoint proof is clean: if any cube c has side = 1, it fills [0,1]^3 with interior (0,1)^3. Any second cube c' is in [0,1]^3 with positive side, so c' has its interior in (0,1)^3 — both interiors overlap, violating interiorDisjoint across all 6 separation conditions.",
+      "Littlewood's original proof naturally starts from the bottom floor, not the global minimum. The descent argument never needs the globally minimum cube — it only needs the floor-by-floor minimum, starting from z = 0.",
+      "The remaining gap for the complete descent is smallest_above_is_smaller in OQ-03: showing that the cubes covering the top face of the bottom-floor minimum are strictly smaller. This entry provides the provably-correct starting point for that argument."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-no-unit-cube",
+      "title": "Part 1: No Unit-Side Cube in a Multi-Cube Dissection",
+      "startLine": 47,
+      "endLine": 86,
+      "summary": "Proves no_unit_cube_in_multi_dissection: if any cube c has side = 1 and card >= 2, contradiction follows from pairwise_disjoint. The cube c = [0,1]^3 and any other cube c' has nonempty interior in (0,1)^3, so interiorDisjoint fails for all 6 possible separation conditions."
+    },
+    {
+      "id": "sec-all-lt-one",
+      "title": "Part 2: All Cubes Have Side < 1",
+      "startLine": 88,
+      "endLine": 98,
+      "summary": "Corollary: all cubes in a multi-cube dissection have side strictly less than 1. Follows from inUnitCube (side <= 1) and no_unit_cube_in_multi_dissection (side != 1)."
+    },
+    {
+      "id": "sec-bottom-min",
+      "title": "Parts 3-4: Bottom-Floor Minimum Does Not Reach the Top",
+      "startLine": 100,
+      "endLine": 118,
+      "summary": "bottom_floor_min_side_lt_one and bottom_floor_min_not_reaching_top: the minimum-side cube on z = 0 has side < 1, so z + side < 1. This is the h_not_top precondition for exists_smaller_cube from DissectionOfCubesOQ03."
+    },
+    {
+      "id": "sec-descent-ready",
+      "title": "Part 5: Descent-Ready Starting Point",
+      "startLine": 120,
+      "endLine": 143,
+      "summary": "bottom_floor_min_is_descent_ready: if card >= 2 and CoversUnitCube, there exists c_start in d.cubes with c_start.z = 0 and c_start.z + c_start.side < 1. This is the correct starting point for Littlewood's infinite descent."
+    },
+    {
+      "id": "sec-counterexample",
+      "title": "Part 6: Formal Counterexample",
+      "startLine": 145,
+      "endLine": 163,
+      "summary": "global_min_false_for_unit_cube: formally proves the 1-cube dissection satisfies all hypotheses of global_min_not_reaching_top yet has c_min.z + c_min.side = 1. Machine-checked proof that the sorry in OQ-03 is a false theorem as stated."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file identifies a subtle edge case that makes the sorry in DissectionOfCubesOQ03.global_min_not_reaching_top provably false, then proves the correct bottom-floor formulation: the minimum-side cube on z = 0 satisfies z + side < 1 in any multi-cube dissection. All 6 theorems are machine-checked with 0 sorries and 0 axioms.",
+    "implications": "The corrected descent starting point provides clean infrastructure for the remaining OQ-03 sorries: the argument should proceed floor-by-floor from the bottom rather than via the global minimum. The smallest_above_is_smaller sorry remains but is now correctly scoped: it applies to floor minima, and the bottom-floor case is fully machine-verified here.",
+    "openQuestions": [
+      "Can smallest_above_is_smaller (the 2D tiling argument showing the cube directly above the floor minimum is smaller) be proved using Lean's Finset.exists_min_image and geometric bounds?",
+      "Does the successive-floor descent produce arbitrarily long strictly-decreasing chains, completing the proof of dissection_of_cubes_from_coverage?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "dissection-of-cubes-oq-03",
+      "title": "Packing vs Dissection: Connections to Cube Packing Problems",
+      "relationship": "Parent entry containing global_min_not_reaching_top (sorry); this entry provides the corrected formulation"
+    },
+    {
+      "id": "dissection-of-cubes",
+      "title": "Dissection of Cubes (Wiedijk #82)",
+      "relationship": "Base entry defining CubeDissection and the main impossibility theorem"
+    }
+  ],
+  "highlights": [
+    "Identifies and formally proves why global_min_not_reaching_top (the OQ-03 sorry) is false as stated",
+    "Proves the correct bottom-floor formulation: z = 0 minimum has z + side < 1, all machine-checked",
+    "No sorries, no axioms — 6 theorems with complete Lean 4 proofs",
+    "Provides the correct starting point for Littlewood's infinite descent argument"
+  ],
+  "assumptions": []
+}
