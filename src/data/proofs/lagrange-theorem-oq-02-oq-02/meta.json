@@ -131,28 +131,58 @@
       "title": "The Class Equation",
       "startLine": 55,
       "endLine": 65,
-      "description": "Main theorem: |Z(G)| + Σ_{noncenter} |c| = |G|, directly from Mathlib."
+      "summary": "class_equation_basic: |Z(G)| + Σ_{noncenter} |c| = |G|, directly from Mathlib's Group.nat_card_center_add_sum_card_noncenter_eq_card.",
+      "mathContext": "$|G| = |Z(G)| + \\sum_{[x] \\text{ non-central}} |[x]|$ where $[x]$ denotes the conjugacy class of $x$. Mathlib handles the partition: center elements form singleton classes, non-central elements form larger classes."
     },
     {
       "id": "orbit-stabilizer",
       "title": "Orbit-Stabilizer for Conjugation",
       "startLine": 72,
       "endLine": 165,
-      "description": "Connects ConjAct orbits to conjugacy class carriers and centralizers."
+      "summary": "conj_orbit_eq_carrier, conj_stabilizer_eq_centralizer, card_conjClass_eq_centralizer_index (with 1 sorry). Connects ConjAct G orbits to conjugacy class carriers and identifies the stabilizer as the centralizer C_G(x).",
+      "mathContext": "Conjugation action: $(g, x) \\mapsto gxg^{-1}$. Orbit of $x$ = conjugacy class $[x]$. Stabilizer of $x$ = $\\{g \\mid gxg^{-1} = x\\} = C_G(x)$ (centralizer). Orbit-stabilizer: $|[x]| = [G : C_G(x)]$. The sorry: connecting `Nat.card (orbit)` to `Subgroup.index (centralizer)` via arithmetic."
     },
     {
       "id": "p-groups",
       "title": "p-Group Applications",
       "startLine": 170,
       "endLine": 205,
-      "description": "Fixed point theorem, center nontriviality, groups of order p² are abelian."
+      "summary": "IsPGroup.center_nontrivial, commGroupOfCardEqPrimeSq (groups of order p² are abelian), IsPGroup.card_modEq_card_fixedPoints. All from Mathlib; class equation provides the mod-p argument for center nontriviality.",
+      "mathContext": "p-group center argument: $p \\mid |G| = p^k$; each non-central class has $p \\mid |[x]|$ (since $|[x]| \\mid |G|$ and $|[x]| > 1$). Class equation mod $p$: $0 \\equiv |Z(G)| + 0 \\pmod p$, so $p \\mid |Z(G)|$, hence $Z(G) \\neq \\{e\\}$."
     },
     {
       "id": "a4-examples",
       "title": "Concrete Computations for A₄",
       "startLine": 210,
-      "endLine": 235,
-      "description": "A₄ has 4 conjugacy classes (sizes 1+3+4+4=12), trivial center, is not abelian."
+      "endLine": 257,
+      "summary": "A₄ class equation: 4 conjugacy classes of sizes 1+3+4+4=12 verified by native_decide. Trivial center: Z(A₄) = {e}. A₄ is not abelian (checked by native_decide). Demonstrates the class equation concretely.",
+      "mathContext": "In $A_4$: $|Z(A_4)| = 1$, non-central classes: $\\{(12)(34),(13)(24),(14)(23)\\}$ (size 3) and two classes of 3-cycles (size 4 each). Class equation: $12 = 1 + 3 + 4 + 4 = 12$ ✓. Confirms $A_4$ is not a p-group ($12 = 2^2 \\cdot 3$, not a prime power)."
     }
-  ]
+  ],
+  "crossReferences": [
+    {
+      "proofId": "lagrange-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Parent: conjugacy classes and the class equation setup. This entry proves the class equation and its p-group corollaries."
+    },
+    {
+      "proofId": "lagrange-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling: Sylow's theorem — p-group subgroup existence. The p-group center nontriviality here is a precursor to Sylow theory."
+    },
+    {
+      "proofId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Base Lagrange's theorem. The class equation is a refined counting of group elements using conjugacy classes."
+    }
+  ],
+  "conclusion": {
+    "summary": "The class equation |G| = |Z(G)| + Σ [G:C_G(x)] is formalized with 1 sorry (the orbit-to-centralizer-index arithmetic connection) and 0 axioms. All p-group corollaries (center nontriviality, p²-groups are abelian) are proved from Mathlib. The A₄ concrete verification confirms 4 classes of sizes 1+3+4+4=12.",
+    "implications": "The class equation is the quantitative engine of p-group theory and ultimately of the Sylow theorems. The center nontriviality argument (p | |Z(G)| when G is a p-group) is the key step in proving that p-groups are nilpotent, that groups of order p² are abelian, and in the inductive structure of the upper central series. The formalization here demonstrates that Lean 4 + Mathlib already has the class equation as a top-level theorem, reducing the proof to a simple application, while the orbit-stabilizer connection remains the subtle computational piece.",
+    "openQuestions": [
+      "Can card_conjClass_eq_centralizer_index be proved without sorry, completing the orbit-to-centralizer-index connection in Lean 4?",
+      "Can the class equation be used to formally prove the Burnside lemma (number of orbits = average number of fixed points) in Lean 4?",
+      "Is the p-group fixed point theorem IsPGroup.card_modEq_card_fixedPoints sufficient to recover the class equation as a special case (conjugation action fixed points = center)?"
+    ]
+  }
 }
