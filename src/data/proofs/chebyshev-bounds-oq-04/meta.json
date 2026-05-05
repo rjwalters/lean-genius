@@ -22,7 +22,7 @@
         "axiomCount": 2,
         "assumptions": "2 axioms: (1) chebyshevPsi_asymptotic — ψ(n)/n → 1, the Prime Number Theorem for ψ; (2) pnt_equivalence — ψ(n)/n → 1 ↔ π(n) ~ n/log n. chebyshevPsi_upper_bound is now proved (strong induction via psi_odd_le_log_choose + Nat.choose_middle_le_pow).",
         "lineCount": 386,
-        "theoremCount": 10,
+        "theoremCount": 14,
         "definitionCount": 2,
         "originalContributions": [
             "Definition of the second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) using Mathlib's vonMangoldt function",
