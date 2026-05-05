@@ -27,7 +27,7 @@
     "dateAdded": "2026-03-30",
     "lineCount": 175,
     "theoremCount": 6,
-    "definitionCount": 5
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Three-place (relative) identity was introduced by Peter Geach in his 1967 paper 'Identity' (Review of Metaphysics), where he argued against the absoluteness of identity: the same object can be 'the same F' but 'a different G' for sortals F and G. This challenged Leibniz's law and sparked decades of philosophical debate between Geach and W.V.O. Quine, who insisted that numerical identity must be absolute. Tom Etter, working at the Boundary Institute, proposed a formal reconciliation in his 2001 paper 'Equalities and Quine Identities': two equivalence relations ('stereo equality', by analogy with stereoscopic vision) suffice to model relative identity, providing a two-predicate foundation that avoids Quine's objections. This formalization proves Etter's theorem in Lean 4, establishing both the forward construction (stereo pair → relative identity) and the reverse (relative identity → stereo pair), along with the negative result that a single equivalence relation is insufficient — it produces only a 'flat' (viewpoint-independent) identity.",

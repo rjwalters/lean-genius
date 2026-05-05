@@ -25,7 +25,7 @@
     "assumptions": "1 axiom: martingale_clt (McLeish 1974, Brown 1971) \u2014 the martingale CLT itself, stating that MDA satisfying Lindeberg condition and conditional variance convergence has row sums converging in distribution to Gaussian. Requires characteristic function methods and deep martingale theory not yet formalized in Mathlib. 3 sorries: (1) nested ciSup of zeros = 0 for independent sequences, (2) i.i.d. Lindeberg condition via dominated convergence for truncated moments, (3) i.i.d. Lyapunov condition via rpow moment decay.",
     "lineCount": 729,
     "theoremCount": 20,
-    "definitionCount": 6,
+    "definitionCount": 11,
     "originalContributions": [
       "MartingaleDiffArray: triangular array {X_{n,k}} with martingale difference property and square integrability",
       "lindebergCondition: Lindeberg criterion \u2014 sum of truncated second moments vanishes",

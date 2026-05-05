@@ -39,7 +39,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "lineCount": 601,
     "theoremCount": 26,
-    "definitionCount": 4,
+    "definitionCount": 2,
     "originalContributions": [
       "Mathlib bridge: gamma_isEquivalent_stirling delegates directly to Stirling.factorial_isEquivalent_stirling via Γ(n+1)=n!; the primary asymptotic result is Mathlib's",
       "gamma_lower_bound: Γ(n+1) ≥ √(2πn)·(n/e)^n for n ≥ 1 (from stirlingSeq antitonicity, original packaging)",

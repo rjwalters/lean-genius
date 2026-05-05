@@ -22,7 +22,7 @@
     "assumptions": "15 axioms covering: erdos_probabilistic_lower_bound (R(k,k)≥2^(k/2) via first moment method), aks_r3k_upper_bound and kim_r3k_lower_bound (R(3,k) bounds), r4k_upper_bound and r4k_lower_bound (R(4,k) bounds), spencer_diagonal_lower_bound (Spencer's improvement), r4k_quadratic_lower (Ω(k²/log k) lower bound), cgms_diagonal_upper_bound and cgms_epsilon_estimate (Conlon-Fox-Sudakov 2009), book_algorithm_structure, and several supporting analytic bounds. These represent the state of the art in Ramsey theory, proofs of which require probabilistic method machinery not yet in Mathlib.",
     "lineCount": 1142,
     "theoremCount": 74,
-    "definitionCount": 10,
+    "definitionCount": 13,
     "originalContributions": [
       "IsRamseyColoring: 2-coloring of K_n edges avoiding monochromatic K_r or K_s",
       "ramsey_number_bound: R(r,s) ≤ C(r+s-2, r-1) (Pascal triangle bound, proved)",

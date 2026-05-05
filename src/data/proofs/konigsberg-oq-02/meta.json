@@ -22,7 +22,7 @@
     "assumptions": "2 axioms: directed_euler_circuit_sufficient (balanced digraph → Eulerian circuit exists) and directed_euler_path_sufficient (exactly one source + one sink → Eulerian path exists). The necessary conditions are fully proved; the sufficiency requires an Eulerian circuit construction algorithm (e.g., Hierholzer's algorithm) not yet in Mathlib.",
     "lineCount": 813,
     "theoremCount": 35,
-    "definitionCount": 8,
+    "definitionCount": 11,
     "originalContributions": [
       "Digraph: directed graph definition with finite vertex and edge types",
       "inDegree/outDegree: in-degree and out-degree for each vertex",
