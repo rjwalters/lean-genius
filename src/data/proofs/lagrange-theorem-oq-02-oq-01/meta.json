@@ -23,14 +23,6 @@
     "theoremCount": 6,
     "definitionCount": 2,
     "dateAdded": "2026-05-04",
-    "leanFile": {
-      "lineCount": 226,
-      "sorries": 0,
-      "axiomCount": 0,
-      "theoremCount": 6,
-      "definitionCount": 2,
-      "imports": ["Mathlib", "Proofs.LagrangeTheoremOQ02"]
-    },
     "mathlibDependencies": [
       {
         "theorem": "MulAction.card_orbit_mul_card_stabilizer_eq_card_group",
@@ -126,6 +118,24 @@
       "Does the double-counting bijection sigma_fixedBy_equiv_sigma_stabilizer generalize to monoid actions (where stabilizers are not necessarily subgroups)?",
       "Can the Burnside formula be used in Lean 4 to give a machine-verified proof of Pólya's enumeration theorem, which counts equivalence classes of colorings under group symmetry?"
     ]
+  },
+  "leanFile": {
+    "path": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+    "namespace": "LagrangeTheoremOQ02OQ01",
+    "imports": [
+      "Mathlib",
+      "Proofs.LagrangeTheoremOQ02"
+    ],
+    "opens": [
+      "MulAction",
+      "Finset",
+      "BigOperators"
+    ],
+    "lineCount": 226,
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2
   },
   "crossReferences": [
     {
