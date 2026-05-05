@@ -1,0 +1,86 @@
+{
+  "id": "lagrange-theorem-oq-01-oq-02",
+  "title": "A₄ Has No Subgroup of Order 6: Counterexample to Lagrange's Converse",
+  "slug": "lagrange-theorem-oq-01-oq-02",
+  "description": "Proves that the alternating group A₄ of order 12 has no subgroup of order 6, giving the canonical counterexample to the converse of Lagrange's theorem. Although 6 divides 12, no H ≤ A₄ satisfies |H| = 6. Verified by exhaustive finite enumeration (native_decide over all 2¹² subsets) and lifted to the Subgroup type.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ01OQ02.lean",
+    "tags": [
+      "group-theory",
+      "lagrange",
+      "alternating-group",
+      "counterexample",
+      "finite-groups",
+      "subgroup-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-05",
+    "axiomCount": 0,
+    "assumptions": "None — fully verified by finite enumeration via native_decide.",
+    "lineCount": 121,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "originalContributions": [
+      "A4_no_subgroup_order6: exhaustive finite proof that no 6-element subgroup exists in A₄",
+      "A4_no_subgroup_order6_finset: native_decide over all 2¹² subsets of the 12-element group",
+      "A4_no_element_order6: all elements of A₄ have order 1, 2, or 3",
+      "lagrange_converse_fails: explicit witness that Lagrange's converse fails for A₄"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/LagrangeTheoremOQ01OQ02.lean",
+    "namespace": "LagrangeOQ01OQ02",
+    "imports": ["Mathlib"],
+    "opens": ["Subgroup", "Fintype"],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 121,
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "summary": "The alternating group A₄ (even permutations of 4 elements) has order 12. Lagrange's theorem says subgroup orders divide the group order, so a subgroup of order 6 is not ruled out by divisibility. But A₄ has no such subgroup — a celebrated counterexample showing the converse of Lagrange fails.",
+    "mathematicalContext": "A₄ consists of: 1 identity, 3 double transpositions (12)(34), (13)(24), (14)(23) of order 2, and 8 three-cycles of order 3 (two conjugacy classes of size 4). The conjugacy class sizes are 1, 3, 4, 4. A normal subgroup must be a union of conjugacy classes, and no subset of {1, 3, 4, 4} containing 1 sums to 6.",
+    "keyInsight": "Finite enumeration: check all C(12,6) = 924 size-6 subsets of A₄ for closure under multiplication and inverses — none pass. This mechanical verification is both complete and rigorous."
+  },
+  "conclusion": {
+    "statement": "For every subgroup H of A₄, |H| ≠ 6.",
+    "mathematicalSignificance": "The smallest group where Lagrange's converse fails. Motivates Sylow theory, Hall's theorem, and the study of which divisors actually realize subgroup orders."
+  },
+  "sections": [
+    {
+      "id": "basics",
+      "title": "A₄ Card and Element Orders",
+      "description": "Establishes |A₄| = 12 and that elements have orders 1, 2, or 3.",
+      "theorems": ["A4_card", "A4_no_element_order6", "A4_three_order2_elements", "A4_eight_order3_elements"]
+    },
+    {
+      "id": "finset",
+      "title": "Finite Enumeration",
+      "description": "No 6-element subset of A₄ is closed under the subgroup axioms (native_decide).",
+      "theorems": ["A4_no_subgroup_order6_finset"]
+    },
+    {
+      "id": "main",
+      "title": "Main Theorem and Corollaries",
+      "description": "Lifts the Finset result to the Subgroup type, derives corollaries.",
+      "theorems": ["A4_no_subgroup_order6", "A4_no_index2_subgroup", "lagrange_converse_fails"]
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the full classification of all subgroups of A₄ be formalized in Lean 4, showing the complete subgroup lattice: {e}, three Z₂'s, four Z₃'s, one V₄, and A₄ itself?",
+      "status": "open"
+    },
+    {
+      "id": "oq-02",
+      "question": "Is Hall's theorem for solvable groups (the strongest converse to Lagrange) provable in Lean 4 without Schur–Zassenhaus as a black box?",
+      "status": "open"
+    }
+  ]
+}
