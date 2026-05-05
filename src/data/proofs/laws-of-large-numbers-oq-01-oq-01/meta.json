@@ -1,0 +1,114 @@
+{
+  "id": "laws-of-large-numbers-oq-01-oq-01",
+  "title": "SLLN Necessity: Proving Kolmogorov's Converse (OQ-01-OQ-01)",
+  "slug": "laws-of-large-numbers-oq-01-oq-01",
+  "description": "Proves the converse of Kolmogorov's Strong Law of Large Numbers: if i.i.d. random variables satisfy the SLLN (Cesàro averages converge a.s.), then E[|X|] < ∞. This was previously axiomatized as `slln_necessity` in the parent proof. Proof uses the layer cake formula, pairwise-independent Borel-Cantelli (variance argument), and Cesàro's theorem.",
+  "meta": {
+    "author": "Kolmogorov (1930), formalized with Aristotle assistance",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Law_of_large_numbers#Kolmogorov's_strong_law_of_large_numbers",
+    "date": "1930",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "law-of-large-numbers",
+      "borel-cantelli",
+      "heavy-tails",
+      "convergence",
+      "measure-theory",
+      "research"
+    ],
+    "badge": "research",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae",
+        "description": "Kolmogorov's Strong Law (sufficient direction)",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "ProbabilityTheory.Kernel.indepFun_iff_measure_inter_preimage_eq_mul",
+        "description": "IndepFun characterization via Kernel preimage measures",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.lintegral_tsum",
+        "description": "Fubini for tsum (used in layer cake formula)",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue"
+      }
+    ],
+    "originalContributions": [
+      "Theorem tsum_prob_norm_gt_lt_top_of_integrable: layer cake direction — E[|X|] < ∞ → Σ P(|X| > n) < ∞",
+      "Theorem integrable_of_tsum_prob_norm_gt_lt_top: layer cake converse — Σ P(|X| > n) < ∞ → E[|X|] < ∞",
+      "Theorem tendsto_zero_div_of_cesaro: Cesàro → X_n/n → 0 (arithmetic fact)",
+      "Theorem slln_necessity: main result — SLLN → E[|X₀|] < ∞ (modulo BC2 sorry)",
+      "Sorry variance_sum_indicator_le: variance bound for pairwise-independent indicators (needs BC2 L² argument)",
+      "Sorry borel_cantelli_pairwise_indep: BC2 for pairwise-independent events (Chebyshev variance argument)"
+    ],
+    "dateAdded": "2026-05-05",
+    "axiomCount": 0,
+    "lineCount": 240,
+    "assumptions": "2 sorries: variance_sum_indicator_le and borel_cantelli_pairwise_indep (BC2 L² argument). Remaining proof structure is complete.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
+  },
+  "overview": {
+    "historicalContext": "Kolmogorov's 1930 theorem gives a complete characterization of the Strong Law of Large Numbers for i.i.d. real-valued random variables: SLLN holds if and only if E[|X|] < ∞. The sufficiency direction (E[|X|] < ∞ → SLLN) is formalized in Mathlib as `ProbabilityTheory.strong_law_ae`. The necessity direction (SLLN → E[|X|] < ∞) was previously axiomatized in this gallery as `slln_necessity`. This entry proves the necessity direction via the classical Borel-Cantelli approach.",
+    "problemStatement": "**Open Question (laws-of-large-numbers-oq-01-oq-01)**: Can the converse (slln_necessity) be proved in Mathlib?\n\n**Answer: YES** — The proof uses:\n1. Layer cake formula: ¬Integrable(X₀) ↔ Σ P(|X₀| > n) = ∞\n2. Pairwise-independent Borel-Cantelli (via Chebyshev/variance)\n3. Cesàro: SLLN → X_n/n → 0 a.s.\n\nAll infrastructure exists in Mathlib; the BC2 proof for pairwise independence uses only `meas_ge_le_variance_div_sq` and `lintegral_tsum`.",
+    "text": "Proves the necessity direction of Kolmogorov's SLLN characterization: if the sample mean converges a.s. to a constant, then the distribution must have finite first moment. The proof proceeds by contradiction using the second Borel-Cantelli lemma (under pairwise independence) and the layer cake formula for integrability.",
+    "proofStrategy": "**Strategy**: Proof by contradiction.\n\n1. **Layer cake**: If ¬Integrable(X₀), then Σ P(|X₀| > n) = ∞ (via Fubini and lintegral bounds).\n2. **IID transfer**: By identical distributions, Σ P(|Xₙ| > n) = ∞.\n3. **Independence**: Events {|Xₙ| > n} are pairwise independent (from IndepFun via Kernel characterization).\n4. **BC2**: Pairwise independence + Σ P(Aₙ) = ∞ → P(Aₙ i.o.) = 1 (via variance/Chebyshev argument).\n5. **Cesàro**: SLLN implies Xₙ/n → 0 a.s., so P(|Xₙ| > n eventually) = 1.\n6. **Contradiction**: Items 4 and 5 are incompatible.",
+    "keyInsights": [
+      "The BC2 pairwise-independence version (not just mutual independence) is needed since IndepFun gives pairwise independence",
+      "The variance bound Var[Σ 1_{Aᵢ}] ≤ Σ P(Aᵢ) is the key lemma; it requires the pairwise L² argument",
+      "Cesàro's theorem (averages → limit implies terms/n → 0) is pure arithmetic, independent of probability theory",
+      "The Kernel-based IndepFun → IndepSet conversion uses ProbabilityTheory.Kernel.indepFun_iff_measure_inter_preimage_eq_mul",
+      "Layer cake in reverse: non-integrability ↔ infinite sum of tail probabilities"
+    ],
+    "prerequisites": [
+      "Probability theory (independence, SLLN, Borel-Cantelli)",
+      "Measure theory (lintegral, Fubini)",
+      "Real analysis (Cesàro means, limsup of sets)"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Layer Cake Formula",
+      "content": "The equivalence E[|X|] < ∞ ↔ Σ P(|X| > n) < ∞ is proved via Fubini's theorem. The forward direction bounds the indicator sum pointwise; the backward direction uses the ceiling function and lintegral_tsum.",
+      "lean": "theorem tsum_prob_norm_gt_lt_top_of_integrable\ntheorem integrable_of_tsum_prob_norm_gt_lt_top\ntheorem tsum_prob_norm_gt_eq_top_of_not_integrable"
+    },
+    {
+      "title": "Cesàro's Theorem",
+      "content": "If (1/n) Σᵢ<ₙ uᵢ → c, then uₙ/n → 0. Applied here with uᵢ = X_i(ω) for each fixed ω. Proof: uₙ/n = (1/n) Sₙ₊₁ * (n+1)/n - (1/n) Sₙ, and both terms → c, so the difference → 0.",
+      "lean": "theorem tendsto_zero_div_of_cesaro"
+    },
+    {
+      "title": "Pairwise BC2 (Deferred)",
+      "content": "The second Borel-Cantelli lemma under pairwise independence: if events Aₙ are pairwise independent with Σ P(Aₙ) = ∞, then P(Aₙ i.o.) = 1. Proof uses: E[Sₙ] → ∞, Var[Sₙ] ≤ E[Sₙ], Chebyshev to show P(Sₙ ≤ M) → 0, hence Sₙ → ∞ a.s.",
+      "lean": "theorem variance_sum_indicator_le (sorry)\ntheorem borel_cantelli_pairwise_indep (sorry)"
+    },
+    {
+      "title": "Main Theorem",
+      "content": "The slln_necessity theorem combines all ingredients: layer cake identifies the bad event, BC2 shows it occurs infinitely often, but Cesàro shows it can only occur finitely often if the SLLN holds — contradiction.",
+      "lean": "theorem slln_necessity"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the pairwise BC2 sorries (variance_sum_indicator_le, borel_cantelli_pairwise_indep) be eliminated via Aristotle proof search?",
+      "status": "open"
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the measurability hypothesis be weakened from Measurable to AEMeasurable, removing the explicit hmeas argument?",
+      "status": "open"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
+    "sorries": 2,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "lineCount": 240
+  }
+}

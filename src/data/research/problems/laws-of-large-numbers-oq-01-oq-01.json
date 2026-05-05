@@ -1,0 +1,155 @@
+{
+  "slug": "laws-of-large-numbers-oq-01-oq-01",
+  "title": "Can the converse (slln_necessity) be proved in Mathlib",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can the converse (slln_necessity) be proved in Mathlib.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-05T02:57:44.816Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proof structure complete, 2 sorries (BC2 L\u00b2 argument). Gallery entry created 2026-05-05.",
+    "builtItems": [
+      "Proofs/LawsOfLargeNumbersOQ01OQ01.lean: slln_necessity theorem structure (~240 lines)",
+      "Layer cake: tsum_prob_norm_gt_lt_top_of_integrable, integrable_of_tsum_prob_norm_gt_lt_top, tsum_prob_norm_gt_eq_top_of_not_integrable",
+      "Cesaro: tendsto_zero_div_of_cesaro",
+      "Gallery entry: src/data/proofs/laws-of-large-numbers-oq-01-oq-01/"
+    ],
+    "insights": [
+      "SLLN necessity follows from contradiction: assume not integrable, get BC2 contradiction with Cesaro",
+      "The BC2 pairwise-independence version is needed (not just mutual independence) since IndepFun gives pairwise",
+      "Layer cake formula: E[|X|] = \u221e \u2194 \u03a3 P(|X| > n) = \u221e; both directions proved cleanly",
+      "Cesaro theorem is pure arithmetic: (1/n) \u03a3_i<n u_i \u2192 c implies u_n/n \u2192 0",
+      "IndepFun \u2192 IndepSet conversion uses Kernel.indepFun_iff_measure_inter_preimage_eq_mul + Kernel.indepSet_iff_measure_inter_eq_mul",
+      "Measurability (hmeas) is extra vs axiom signature; follows from IdentDistrib.aemeasurable_fst in practice"
+    ],
+    "mathlibGaps": [
+      "variance_sum_indicator_le: variance bound for pairwise-independent indicators \u2014 needs L\u00b2 proof (~80 lines)",
+      "borel_cantelli_pairwise_indep: BC2 under pairwise independence \u2014 uses Chebyshev variance argument (~80 lines)"
+    ],
+    "nextSteps": [
+      "Submit variance_sum_indicator_le and borel_cantelli_pairwise_indep to Aristotle for proof search",
+      "Check that ProbabilityTheory.Kernel.indepSet_iff_measure_inter_eq_mul compiles in current Mathlib",
+      "After Aristotle returns proofs, run docker-build.sh to verify compilation",
+      "Update LawsOfLargeNumbersOQ01.lean to replace axiom slln_necessity with theorem"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers",
+    "laws-of-large-numbers-oq-01",
+    "laws-of-large-numbers-oq-03",
+    "laws-of-large-numbers-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.815Z",
+  "lastUpdate": "2026-05-05T02:57:44.815Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawsOfLargeNumbers.lean",
+      "filename": "LawsOfLargeNumbers.lean",
+      "lineCount": 397,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbers.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01.lean",
+      "lineCount": 404,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ01Aristotle.lean",
+      "lineCount": 724,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
+      "filename": "LawsOfLargeNumbersOQ02.lean",
+      "lineCount": 339,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ02.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03.lean",
+      "filename": "LawsOfLargeNumbersOQ03.lean",
+      "lineCount": 405,
+      "theoremCount": 9,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ03Aristotle.lean",
+      "lineCount": 72,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
+      "filename": "LawsOfLargeNumbersOQ04.lean",
+      "lineCount": 209,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04.lean"
+    }
+  ]
+}
