@@ -2,7 +2,7 @@
   "id": "law-of-cosines-oq-03-oq-02",
   "title": "Hyperbolic Law of Sines",
   "slug": "law-of-cosines-oq-03-oq-02",
-  "description": "Formalizes the hyperbolic law of sines sin(A)/sinh(a) = sin(B)/sinh(b) = sin(C)/sinh(c) for hyperbolic triangles. Packages the law as a HyperbolicSineTriangle structure with 6 axiom fields. Derives cross-multiplication forms, the isoceles theorem (a=b ↔ A=B) via arccos injectivity on [0,π], and right-angle specialization. 15 theorems, 6 structure-encoded axioms, 0 sorries.",
+  "description": "Formalizes the hyperbolic law of sines sin(A)/sinh(a) = sin(B)/sinh(b) = sin(C)/sinh(c) for hyperbolic triangles. Packages the law as a HyperbolicSineTriangle structure with 6 axiom fields. Derives cross-multiplication forms, the isoceles theorem (a=b ↔ A=B) via arccos injectivity on [0,π], and right-angle specialization. 14 theorems, 6 structure-encoded axioms, 0 sorries.",
   "leanFile": {
     "path": "Proofs/LawOfCosinesOQ03OQ02.lean",
     "namespace": "HyperbolicLawOfSines",
@@ -17,7 +17,7 @@
     "axiomCount": 6,
     "sorries": 0,
     "lineCount": 264,
-    "theoremCount": 15,
+    "theoremCount": 14,
     "definitionCount": 1
   },
   "openQuestion": {
@@ -178,7 +178,7 @@
     "sorries": 0,
     "axiomCount": 6,
     "lineCount": 264,
-    "theoremCount": 15,
+    "theoremCount": 14,
     "definitionCount": 1,
     "originalContributions": [
       "HyperbolicSineTriangle structure with 6 axiom fields encoding the hyperbolic law of sines",
