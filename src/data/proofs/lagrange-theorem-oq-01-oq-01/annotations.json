@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-pq-imports",
+    "proofId": "lagrange-theorem-oq-01-oq-01",
+    "range": { "startLine": 35, "endLine": 43 },
+    "type": "explanation",
+    "content": "Imports Mathlib (full library) and Proofs.SylowTheoremOQ01 which contains the complete pq-classification in namespace SylowPQ. Opens SylowPQ for direct access to IsPQGroup, pq_cyclic_classification, and the Sylow counting lemmas.",
+    "summary": "Import structure: delegates all heavy proofs to SylowPQ"
+  },
+  {
+    "id": "ann-pq-sylow-counts",
+    "proofId": "lagrange-theorem-oq-01-oq-01",
+    "range": { "startLine": 46, "endLine": 59 },
+    "type": "mathematical",
+    "content": "The fundamental counting theorem: for |G| = pq (p < q primes), n_q = 1 always and n_p ∈ {1, q}. This follows from Sylow III: n_q ≡ 1 mod q and n_q | p (the index [G:Q] = p). Since p < q, the only options for n_q satisfying both n_q | p and n_q ≡ 1 mod q are n_q = 1 (since n_q = p would require p ≡ 1 mod q, i.e., q | p-1, but p-1 < q).",
+    "summary": "n_q = 1 and n_p ∈ {1, q} for any pq-group"
+  },
+  {
+    "id": "ann-pq-unique-normal-q",
+    "proofId": "lagrange-theorem-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 92 },
+    "type": "mathematical",
+    "content": "The Sylow q-subgroup Q is unique (n_q = 1) and hence normal in G. This holds for ALL groups of order pq regardless of whether p | (q-1). The proof: n_q | p (by Sylow III, since index [G:Q] = pq/q = p), and n_q ≡ 1 mod q. If n_q = p, then p ≡ 1 mod q forces q | (p-1). But p < q implies p-1 < q, so p-1 cannot be divisible by q. Thus n_q = 1. A unique Sylow subgroup is always normal (it equals its own conjugate).",
+    "summary": "Q is the unique normal Sylow q-subgroup — this holds for all pq-groups"
+  },
+  {
+    "id": "ann-pq-cyclic-case",
+    "proofId": "lagrange-theorem-oq-01-oq-01",
+    "range": { "startLine": 95, "endLine": 128 },
+    "type": "mathematical",
+    "content": "When p ∤ (q-1): n_p = 1 too (if n_p = q, then q ≡ 1 mod p, i.e., p | q-1, contradicting the hypothesis). With both P ⊴ G and Q ⊴ G, coprime orders |P| = p, |Q| = q: (a) P ∩ Q = {1} (since any x in both has order dividing gcd(p,q) = 1); (b) elements commute: for g ∈ P, h ∈ Q, the commutator [g,h] ∈ P ∩ Q = {1}, so gh = hg; (c) orderOf(gh) = pq (by Commute.orderOf_mul_eq_mul_orderOf_of_coprime); (d) the cyclic subgroup ⟨gh⟩ has order pq = |G|, so G = ⟨gh⟩.",
+    "summary": "p ∤ (q-1) implies G is cyclic — the commutator trick gives an element of order pq"
+  },
+  {
+    "id": "ann-pq-nonabelian-case",
+    "proofId": "lagrange-theorem-oq-01-oq-01",
+    "range": { "startLine": 130, "endLine": 141 },
+    "type": "mathematical",
+    "content": "When p | (q-1) and G is not cyclic: n_p must be q (since n_p = 1 would force both Sylow subgroups to be normal, making G cyclic by the argument above). This characterizes the non-abelian case: it has exactly q Sylow p-subgroups. The non-abelian group is the semidirect product ℤ/q ⋊_φ ℤ/p where φ: ℤ/p → (ℤ/q)× is a nontrivial homomorphism (which exists since p | (q-1) = |(ℤ/q)×|).",
+    "summary": "Non-cyclic pq-groups have q Sylow p-subgroups and are semidirect products"
+  },
+  {
+    "id": "ann-pq-examples",
+    "proofId": "lagrange-theorem-oq-01-oq-01",
+    "range": { "startLine": 143, "endLine": 169 },
+    "type": "example",
+    "content": "Six concrete applications: Order 15 (3 × 5, 3 ∤ 4 → cyclic), 35 (5 × 7, 5 ∤ 6 → cyclic), 77 (7 × 11, 7 ∤ 10 → cyclic) are proven via pq_cyclic_classification. Order 6 (2 × 3, 2 | 2 → two groups: ℤ/6 and S₃), 21 (3 × 7, 3 | 6 → two groups: ℤ/21 and the non-abelian group of order 21), 55 (5 × 11, 5 | 10 → two groups). The cyclic cases are machine-verified theorems; the non-unique cases prove the divisibility condition.",
+    "summary": "Cyclic orders 15, 35, 77 and non-unique orders 6, 21, 55 verified concretely"
+  }
+]
