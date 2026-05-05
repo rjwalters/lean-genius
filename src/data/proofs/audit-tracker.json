@@ -14669,6 +14669,22 @@
       "lastAudited": "2026-05-05T02:03:59Z",
       "result": "clean",
       "issues": []
+    },
+    "lagrange-theorem-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-05T02:55:34Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorries mismatch: claims 1, actual 0 (uses axiom declarations not sorry); lineCount mismatch: claims 224, actual 211 \u2014 fixed in PR #15942"
+      ]
+    },
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-05T02:55:34Z",
+      "result": "issues-fixed",
+      "issues": [
+        "lineCount mismatch: claims 221, actual 226; theoremCount mismatch: claims 10, actual 12 \u2014 fixed in this PR"
+      ]
     }
   },
   "erdos-1097-oq-01": {
