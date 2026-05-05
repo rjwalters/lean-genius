@@ -50,19 +50,6 @@
       "real_ac_iff_normed_ac: the real-valued AC is exactly the E=ℝ special case",
       "normed_ac_mono_subinterval: restriction to subintervals preserves normed-AC"
     ],
-    "openQuestions": [
-      {
-        "id": "oq-01",
-        "question": "Does normed-AC imply Fréchet differentiability a.e. for Banach space-valued functions? (The Lebesgue FTC would then extend to f : ℝ → E.)",
-        "difficulty": "hard"
-      },
-      {
-        "id": "oq-02",
-        "question": "Can Jordan decomposition (BV = difference of two monotone functions) be stated for normed-valued BV functions? What replaces monotone?",
-        "difficulty": "medium"
-      }
-    ],
-    "proofStrategy": "The proof of normed_ac_implies_bv mirrors the real-valued case (FundamentalTheoremCalculusLebesgueOQ01) exactly. The key substitution: the ℝ identity |x-y| = dist x y becomes the normed-space identity ‖x-y‖ = dist x y = (edist x y by ofReal). This allows the same partition argument: (1) choose n = ⌈(b-a)/δ⌉+1 pieces, (2) each piece has eVariationOn ≤ 1 by AC with ε=1, (3) inductively combine n pieces to get eVariationOn[a,b] ≤ n < ⊤.",
     "dateAdded": "2026-05-05",
     "mathlib_version": "4.26.0",
     "parentEntry": "fundamental-theorem-calculus-oq-01",
@@ -71,51 +58,81 @@
       "fundamental-theorem-calculus-oq-01-oq-01"
     ]
   },
-  "content": {
-    "title": "Absolute Continuity for Normed Space-Valued Functions: AC → BV",
-    "summary": "Proves that absolute continuity generalizes naturally from ℝ-valued to E-valued functions (E any NormedAddCommGroup) by replacing |·| with ‖·‖, and that this normed-AC condition implies bounded variation. The proof uses the same partition argument as the real-valued case.",
-    "whyMatters": "Absolute continuity and bounded variation are foundational concepts in analysis. The normed-space extension is needed for: (1) vector-valued Lebesgue FTC (f : ℝ → E differentiable a.e. and ∫f' = f(b)-f(a)), (2) curves in Banach spaces (mechanics, control theory), (3) matrix-valued processes. The definition is non-trivial because the norm in E replaces the absolute value on ℝ, but the eVariationOn infrastructure in Mathlib already works for arbitrary metric spaces.",
+  "overview": {
+    "historicalContext": "Absolute continuity was introduced by Giuseppe Vitali in 1905 as the precise analytic condition characterizing indefinite Lebesgue integrals: a function $f : [a,b] \\to \\mathbb{R}$ is absolutely continuous if and only if it is differentiable almost everywhere and $f(x) - f(a) = \\int_a^x f'(t)\\,dt$ for all $x$. This characterization — the Lebesgue Fundamental Theorem of Calculus — made absolute continuity central to 20th-century analysis. The extension to Banach-space-valued functions was driven by Stefan Banach's foundational work (1932) and Stefan Bochner's 1933 definition of the Bochner integral, which enabled the vector-valued FTC: for $f : \\mathbb{R} \\to E$ Bochner integrable, absolute continuity implies $f(x) - f(a) = \\int_a^x f'(t)\\,dt$. The bounded-variation property (AC implies BV) is the essential first step in this program, since BV functions admit Lebesgue-Stieltjes integration and Jordan decomposition. Mathlib's `eVariationOn` infrastructure, which handles metric-space-valued functions uniformly, makes this generalization particularly natural in Lean 4.",
+    "problemStatement": "For a `NormedAddCommGroup` $E$, define $f : \\mathbb{R} \\to E$ to be **normed-absolutely-continuous** on $[a, b]$ if for every $\\varepsilon > 0$ there exists $\\delta > 0$ such that for every finite collection of pairwise disjoint subintervals $[a_k, b_k] \\subset [a, b]$ with $\\sum_k (b_k - a_k) < \\delta$, we have $\\sum_k \\|f(b_k) - f(a_k)\\| < \\varepsilon$. Prove: (1) this generalizes the classical AC; (2) Lipschitz functions are normed-AC; (3) normed-AC is equivalent to classical AC when $E = \\mathbb{R}$; (4) every normed-AC function has **bounded variation** on $[a, b]$.",
+    "proofStrategy": "The proof of `normed_ac_implies_bv` mirrors the real-valued case (`FundamentalTheoremCalculusLebesgueOQ01`) exactly. The key substitution: the identity $|x - y| = \\mathrm{dist}(x, y)$ on $\\mathbb{R}$ becomes $\\|x - y\\| = \\mathrm{dist}(x, y) = \\mathrm{edist}(x, y)$ (via `ENNReal.ofReal`) in any `NormedAddCommGroup`. This allows the same partition argument: (1) apply AC with $\\varepsilon = 1$ to get $\\delta > 0$; (2) choose $n = \\lceil(b - a)/\\delta\\rceil + 1$ equal pieces; (3) each piece of length $< \\delta$ has `eVariationOn f ≤ 1` by normed-AC; (4) combine inductively via `eVariationOn.Icc_add_Icc` to get `eVariationOn f [a,b] ≤ n < ⊤`.",
     "keyInsights": [
-      "The key identity edist x y = ENNReal.ofReal ‖x - y‖ (for NormedAddCommGroup E) replaces the ℝ identity edist x y = ENNReal.ofReal |x - y|, making the partition proof go through identically",
-      "Mathlib's eVariationOn and BoundedVariationOn are already defined for functions to PseudoEMetricSpace (which includes NormedAddCommGroup), so no new infrastructure is needed",
-      "The real-valued AC is exactly the E=ℝ special case: |x-y| = ‖x-y‖ on ℝ"
+      "The single identity `edist x y = ENNReal.ofReal ‖x - y‖` (proved from `edist_dist` and `dist_norm`) is the complete bridge between the norm and Mathlib's extended-metric variation machinery. Once this identity is in hand, the real-valued proof transfers line-for-line.",
+      "Mathlib's `eVariationOn` is already defined for functions valued in any `PseudoEMetricSpace` — which includes every `NormedAddCommGroup` — so the normed-space generalization requires zero new infrastructure beyond the definition and this one identity.",
+      "The Lipschitz estimate `‖f(b_k) - f(a_k)‖ ≤ K|b_k - a_k|` yields δ = ε/(K+1). The denominator K+1 (rather than K) avoids division by zero for constant functions (K=0) while still satisfying K · δ < ε.",
+      "The partition argument is constructive: it gives an explicit finite upper bound `eVariationOn f [a,b] ≤ n` where $n = \\lceil(b-a)/\\delta\\rceil + 1$. This contrasts with non-constructive proofs from abstract BV theory that only assert finiteness.",
+      "The bidirectional equivalence `real_ac_iff_normed_ac` (proved via `Real.norm_eq_abs`) shows that the normed definition is a *conservative* extension: it does not accidentally exclude any real-valued AC function, nor does it admit new ones."
     ]
   },
   "sections": [
     {
+      "id": "sec-preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring explaining the open question answered (OQ-04), the approach (replace |·| with ‖·‖), and the main results. Imports Mathlib's BoundedVariation and NormedSpace modules, and opens the parent FTCLebesgue namespace."
+    },
+    {
       "id": "sec-definition",
-      "title": "Definition",
+      "title": "Definition: AbsolutelyContinuousOnNormed",
       "startLine": 51,
-      "endLine": 74,
+      "endLine": 68,
       "summary": "AbsolutelyContinuousOnNormed: replace |f(b)-f(a)| with ‖f(b)-f(a)‖ in the ε-δ condition, generalizing real-valued AC to functions f : ℝ → E for any NormedAddCommGroup E."
     },
     {
       "id": "sec-basic-examples",
       "title": "Basic Examples",
       "startLine": 70,
-      "endLine": 109,
-      "summary": "Constant functions are normed-AC (trivially); Lipschitz functions are normed-AC with δ = ε/(K+1), proved using the Lipschitz bound ‖f(b)-f(a)‖ ≤ K|b-a|."
+      "endLine": 103,
+      "summary": "Constant functions are normed-AC (trivially, δ=1 works); Lipschitz functions are normed-AC with δ = ε/(K+1), proved using the Lipschitz bound ‖f(b)-f(a)‖ ≤ K|b-a| and Finset.sum_le_sum."
     },
     {
       "id": "sec-equivalence",
-      "title": "Equivalence at E=ℝ",
+      "title": "Equivalence at E = ℝ and Subinterval Restriction",
       "startLine": 105,
-      "endLine": 151,
-      "summary": "AbsolutelyContinuousOnNormed is equivalent to AbsolutelyContinuousOn when E=ℝ, since the norm on ℝ equals the absolute value. Also proves restriction to subintervals preserves normed-AC."
+      "endLine": 150,
+      "summary": "AbsolutelyContinuousOnNormed is equivalent to AbsolutelyContinuousOn when E=ℝ (since Real.norm_eq_abs gives ‖x‖=|x|). Also proves restriction to subintervals [c,d] ⊆ [a,b] preserves normed-AC by containment."
     },
     {
       "id": "sec-helpers",
-      "title": "Private Helpers",
+      "title": "Private Helper Lemmas",
       "startLine": 152,
-      "endLine": 257,
-      "summary": "Private helper lemmas for the main theorem: edist on ℝ equals ENNReal.ofReal|x-y|; short-interval variation ≤ 1 from AC; and an inductive splitting lemma proving eVariationOn ≤ n over n equal intervals."
+      "endLine": 242,
+      "summary": "Four private lemmas: (1) edist_norm_ofReal: edist x y = ENNReal.ofReal ‖x-y‖ on normed groups; (2) eVariationOn_le_of_forall_normed: iSup bound from pointwise bounds; (3) fin_telescoping_normed: telescoping sum identity; (4) eVariationOn_le_one_normed: variation ≤ 1 on short intervals via AC; (5) eVariationOn_le_n_normed: inductive splitting over n pieces."
     },
     {
       "id": "sec-main-theorem",
-      "title": "Main Theorem: AC → BV",
+      "title": "Main Theorem: Normed-AC → BV",
       "startLine": 244,
       "endLine": 311,
-      "summary": "Every normed-AC function f : ℝ → E has bounded variation on [a,b]: eVariationOn f [a,b] < ⊤. The partition argument chooses n = ⌈(b-a)/δ⌉+1 pieces, bounds each by 1, and combines inductively."
+      "summary": "normed_ac_implies_bv: every normed-AC function on [a,b] has eVariationOn < ⊤ (i.e., BoundedVariationOn). The partition argument constructs n = ⌈(b-a)/δ⌉+1 equal pieces, bounds each by 1, and combines via eVariationOn_le_n_normed to get total ≤ n. The corollary normed_bv_ne_top restates this as eVariationOn ≠ ⊤."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry proves that absolute continuity generalizes naturally from ℝ-valued to E-valued functions (any NormedAddCommGroup) by replacing |·| with ‖·‖, that this normed-AC condition implies bounded variation, and that the generalization is conservative — reducing exactly to classical AC when E = ℝ.",
+    "implications": "The normed-AC → BV result is the foundational step toward the vector-valued Lebesgue FTC: if f : ℝ → E is normed-AC, then f is differentiable a.e. (in Banach spaces, by the Rademacher-Stepanov theorem) and ∫_a^b f'(t) dt = f(b) - f(a). This enables rigorous treatment of (1) curves in Banach spaces used in evolution equations and control theory; (2) Bochner-integrable processes in probability; (3) matrix-valued paths in quantum mechanics. The Lean formalization demonstrates that Mathlib's eVariationOn infrastructure, designed for metric-space-valued functions, already subsumes the normed-space case with minimal additional proof work.",
+    "openQuestions": [
+      "Does normed-AC imply Fréchet differentiability a.e. for Banach space-valued functions, enabling a full vector-valued Lebesgue FTC (f : ℝ → E with f(b)-f(a) = ∫f')? This is classical theory (Bochner 1933) but not yet formalized in Mathlib.",
+      "Can Jordan decomposition (BV = difference of two monotone functions) be stated for normed-space-valued BV functions? Monotonicity has no direct analogue in E, but one can use total variation as a substitute (Hahn decomposition for vector measures).",
+      "Does the Mathlib definition of eVariationOn already capture all BV functions for general metric-space targets, or are there edge cases (e.g., non-separable spaces) where the sup definition differs from the classical BV definition?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "fundamental-theorem-calculus-oq-01",
+      "title": "Lebesgue Fundamental Theorem of Calculus",
+      "relationship": "parent — this entry answers OQ-04 from the Lebesgue FTC entry, which asked whether AbsolutelyContinuousOn should be generalized to normed spaces"
+    },
+    {
+      "id": "fundamental-theorem-calculus-oq-01-oq-01",
+      "title": "AC → BV: Absolutely Continuous implies Bounded Variation",
+      "relationship": "real-valued analogue — the same partition argument for f : ℝ → ℝ; this entry generalizes it to f : ℝ → E by replacing |·| with ‖·‖"
     }
   ],
   "leanFile": {
