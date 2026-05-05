@@ -126,10 +126,15 @@ theorem conj_stabilizer_eq_centralizer (x : G) :
 theorem card_conjClass_eq_centralizer_index [Fintype G] (x : G) :
     Nat.card (ConjClasses.mk x).carrier = (centralizer {x}).index := by
   rw [← conj_orbit_eq_carrier]
-  -- orbit-stabilizer: Nat.card orbit * Nat.card stabilizer = Nat.card G
-  -- with stabilizer (via toConjAct) = centralizer {x}
-  -- so Nat.card orbit = centralizer index
-  sorry -- HARD: finalize via Nat.card orbit-stabilizer and index arithmetic
+  -- orbit (ConjAct G) x ≃ ConjAct G ⧸ stabilizer (ConjAct G) x (orbit-stabilizer)
+  rw [Nat.card_congr (MulAction.orbitEquivQuotientStabilizer (ConjAct G) x)]
+  -- stabilizer (ConjAct G) x = centralizer {x} as subgroups
+  -- (ConjAct.stabilizer_eq_centralizer gives = centralizer {toConjAct x}, and toConjAct x = x)
+  have hstab : stabilizer (ConjAct G) x = centralizer {x} := by
+    rw [ConjAct.stabilizer_eq_centralizer]; rfl
+  rw [hstab]
+  -- Nat.card (ConjAct G ⧸ centralizer {x}) = (centralizer {x}).index by definition
+  rfl
 
 /-- A conjugacy class is a singleton iff the element is central. -/
 theorem card_conjClass_eq_one_iff_mem_center [Fintype G] (x : G) :

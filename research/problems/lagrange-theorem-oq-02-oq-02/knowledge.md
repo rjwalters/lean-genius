@@ -34,3 +34,28 @@ Formalize the class equation |G| = |Z(G)| + Σ_{non-central conj classes [x]} [G
 - Prove `card_conjClass_eq_centralizer_index`: use `Nat.card_orbit_mul_card_stabilizer_eq_card_group` + index arithmetic
 - Run Docker build to verify compilation
 - If all compiles: update status to `verified` (0 sorries target)
+
+## Session 2026-05-05 (Session 2) - Fix sorry: card_conjClass_eq_centralizer_index
+
+**Mode**: REVISIT
+**Outcome**: progress (pending Docker verification)
+
+### What I Did
+- Identified the 1 remaining sorry: `card_conjClass_eq_centralizer_index`
+- Researched Mathlib API: `ConjAct.stabilizer_eq_centralizer`, `MulAction.orbitEquivQuotientStabilizer`, `Subgroup.index`
+- Wrote proof using orbit-stabilizer equivalence + Mathlib's ConjAct stabilizer lemma
+
+### Key Findings
+- `ConjAct.stabilizer_eq_centralizer x : stabilizer (ConjAct G) x = centralizer {ConjAct.toConjAct x}`
+- `MulAction.orbitEquivQuotientStabilizer (ConjAct G) x : orbit ≃ ConjAct G ⧸ stabilizer`
+- `Subgroup.index H = Nat.card (G ⧸ H)` by definition — so quotient card = index
+- `ConjAct.toConjAct x = x` definitionally (ConjAct G is type synonym for G)
+- Full proof: `rw [← conj_orbit_eq_carrier, Nat.card_congr (orbitEquivQuotientStabilizer ...)]` then rewrite stabilizer to centralizer via `ConjAct.stabilizer_eq_centralizer`, close by `rfl`
+
+### Files Modified
+- `proofs/Proofs/LagrangeTheoremOQ02OQ02.lean` (sorry resolved)
+
+### Next Steps
+- Confirm Docker build succeeds with 0 sorries
+- Update meta.json: sorries → 0, status → "verified"
+- Create PR
