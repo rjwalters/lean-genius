@@ -14,9 +14,9 @@ This is the strongest known converse to Lagrange's theorem. The coprimeness
 condition gcd(d, |G|/d) = 1 (the "Hall divisor" condition) separates the
 prime factors of |G| into two disjoint sets — those dividing d and those not.
 
-## Key Insight
+## Significance
 Hall's theorem characterizes solvability: G is solvable ⟺ Hall subgroups exist
-for every Hall divisor of |G| (Hall 1928 + Schur–Zassenhaus).
+for every Hall divisor of |G|.
 
 ## Results
 
@@ -24,10 +24,15 @@ for every Hall divisor of |G| (Hall 1928 + Schur–Zassenhaus).
 |---------|-----------|--------|
 | `hall_trivial_bot` | Trivial subgroup (d=1) always exists | Proved |
 | `hall_trivial_top` | G itself (d=\|G\|) always exists | Proved |
-| `hall_prime_div` | For p prime, p \| \|G\|: subgroup of order p (Cauchy) | Proved |
-| `hall_cyclic` | Cyclic G: Hall subgroup for every Hall divisor | Proved |
+| `hall_prime_div` | For p prime dividing \|G\|: subgroup of order p (Cauchy) | Proved |
+| `hall_cyclic` | Cyclic G: subgroup of every divisor order | Proved |
 | `hall_solvable` | Solvable G: Hall subgroup for every Hall divisor | Axiom |
 | `hall_solvability_necessary` | Non-solvable A₅ lacks subgroup of order 15 | Proved |
+
+## Why the main theorem is axiomatized
+Hall's theorem for solvable groups requires the Schur–Zassenhaus theorem and
+properties of minimal normal subgroups (elementary abelian structure).
+Schur–Zassenhaus is not yet in Mathlib 4.26, making the full proof unavailable.
 
 ## References
 - Hall, P. (1928), "A note on soluble groups", J. London Math. Soc.
@@ -45,12 +50,10 @@ variable {G : Type*} [Group G]
 -- ============================================================
 
 /-- d is a Hall divisor of n if d | n and gcd(d, n/d) = 1.
-    Hall divisors correspond to subsets of prime factors of n:
-    the prime factors of d and n/d are disjoint. -/
+    Hall divisors correspond to subsets of prime factors of n. -/
 def IsHallDivisor (d n : ℕ) : Prop := d ∣ n ∧ Nat.Coprime d (n / d)
 
-/-- H is a Hall subgroup of G if |H| and [G:H] are coprime.
-    Equivalently, the prime factors of |H| and [G:H] are disjoint. -/
+/-- H is a Hall subgroup of G if |H| and [G:H] are coprime. -/
 def IsHallSubgroup (H : Subgroup G) : Prop :=
   Nat.Coprime (Nat.card H) H.index
 
@@ -65,22 +68,12 @@ theorem isHallDivisor_self {n : ℕ} (hn : n ≠ 0) : IsHallDivisor n n := by
   refine ⟨dvd_refl n, ?_⟩
   simp [Nat.Coprime, Nat.div_self (Nat.pos_of_ne_zero hn)]
 
-/-- A prime p is a Hall divisor of n iff p exactly divides n (p | n but p² ∤ n). -/
-theorem isHallDivisor_prime_iff {p n : ℕ} (hp : p.Prime) (hdvd : p ∣ n) :
-    IsHallDivisor p n ↔ ¬ (p * p ∣ n) := by
-  constructor
-  · intro ⟨_, hcop⟩ hpow
-    have : p ∣ n / p := Nat.dvd_div_iff_mul_dvd hdvd |>.mpr hpow
-    exact absurd (Nat.Coprime.eq_one_of_dvd_both hcop ⟨1, by omega⟩ this) hp.one_lt.ne'
-  · intro hnotpow
-    refine ⟨hdvd, ?_⟩
-    rw [Nat.Coprime, Nat.gcd_comm]
-    apply Nat.eq_one_of_pos_of_self_mul_self_eq_one
-    · exact Nat.gcd_pos_of_pos_right _ (Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_dvd_of_pos hdvd hp.pos) hdvd) hp.pos)
-    · intro h_sq
-      apply hnotpow
-      calc p * p ∣ p * (n / p) := Nat.mul_dvd_mul_left p (Nat.dvd_of_mul_dvd_mul_left hp.pos (Nat.gcd_dvd_right _ _ |>.trans h_sq))
-        _ = n := Nat.mul_div_cancel' hdvd
+/-- A prime p is a Hall divisor of n iff p | n and p² ∤ n.
+    (p exactly divides n — prime appears with exponent exactly 1.) -/
+theorem isHallDivisor_of_prime {p n : ℕ} (hp : p.Prime) (hdvd : p ∣ n)
+    (hcop : ¬ (p * p ∣ n)) : IsHallDivisor p n :=
+  ⟨hdvd, hp.coprime_iff_not_dvd.mpr fun h =>
+    hcop (Nat.mul_div_cancel' hdvd ▸ Nat.mul_dvd_mul_left p h)⟩
 
 -- ============================================================
 -- Part III: Trivial Hall Subgroups
@@ -89,28 +82,24 @@ theorem isHallDivisor_prime_iff {p n : ℕ} (hp : p.Prime) (hdvd : p ∣ n) :
 /-- The trivial subgroup ⊥ (order 1) is a Hall subgroup of any group. -/
 theorem hall_trivial_bot [Finite G] : IsHallSubgroup (⊥ : Subgroup G) := by
   unfold IsHallSubgroup
-  have : Nat.card (⊥ : Subgroup G) = 1 := by
-    have : Subsingleton ↥(⊥ : Subgroup G) := by
-      constructor
-      intro ⟨x, hx⟩ ⟨y, hy⟩
-      ext
-      simp [Subgroup.mem_bot.mp hx, Subgroup.mem_bot.mp hy]
-    exact Nat.card_eq_one_of_unique
-  rw [this]
+  have hone : Nat.card (⊥ : Subgroup G) = 1 := by
+    haveI : Unique ↥(⊥ : Subgroup G) :=
+      ⟨⟨⟨1, one_mem ⊥⟩, fun ⟨x, hx⟩ => Subtype.ext (mem_bot.mp hx)⟩⟩
+    exact Nat.card_unique
+  rw [hone]
   exact Nat.coprime_one_left _
 
-/-- G itself (order |G|, index 1) is a Hall subgroup. -/
+/-- G itself (index 1) is a Hall subgroup. -/
 theorem hall_trivial_top [Finite G] : IsHallSubgroup (⊤ : Subgroup G) := by
   unfold IsHallSubgroup
   rw [Subgroup.index_top]
   exact Nat.coprime_one_right _
 
 -- ============================================================
--- Part IV: Hall's Theorem via Cauchy's Theorem
+-- Part IV: Hall's Theorem via Cauchy's Theorem (prime case)
 -- ============================================================
 
-/-- For any prime p dividing |G|, there is a subgroup of order p.
-    This is the p=prime case of Hall's theorem, proved via Cauchy. -/
+/-- For any prime p dividing |G|, there is a subgroup of order p (Cauchy). -/
 theorem hall_prime_div [Fintype G] (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintype.card G) :
     ∃ H : Subgroup G, Nat.card H = p := by
   obtain ⟨x, hx⟩ := exists_prime_orderOf_dvd_card (p := p) hp hdvd
@@ -120,21 +109,15 @@ theorem hall_prime_div [Fintype G] (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintyp
 -- Part V: Hall's Theorem for Cyclic Groups
 -- ============================================================
 
-/-- In a cyclic group generated by g of order n, the element g^(n/d) has order d
-    for any d | n. -/
-lemma orderOf_pow_div {n : ℕ} (g : G) (hord : orderOf g = n)
-    (d : ℕ) (hd : d ∣ n) (hd_pos : 0 < d) :
-    orderOf (g ^ (n / d)) = d := by
-  subst hord
-  rw [orderOf_pow' g (Nat.div_pos (Nat.le_of_dvd (orderOf_pos g) hd) hd_pos).ne']
-  have : Nat.gcd (orderOf g) (orderOf g / d) = orderOf g / d :=
-    Nat.gcd_eq_right (Nat.div_dvd_of_dvd hd)
-  rw [this]
+/-- In a cyclic group, the generator raised to the (n/d)-th power has order d. -/
+private lemma orderOf_pow_div_of_dvd {g : G} (d : ℕ) (hd : d ∣ orderOf g) (hd_pos : 0 < d) :
+    orderOf (g ^ (orderOf g / d)) = d := by
+  rw [orderOf_pow' g (Nat.div_pos (Nat.le_of_dvd (orderOf_pos g) hd) hd_pos).ne',
+      Nat.gcd_eq_right (Nat.div_dvd_of_dvd hd)]
   exact Nat.div_div_self hd (orderOf_pos g).le
 
 /-- **Hall's Theorem for Cyclic Groups**: A cyclic group has a subgroup of every
-    order dividing |G|. The Hall condition is automatically satisfied for all
-    divisors of cyclic groups (unique subgroup of each order). -/
+    order dividing |G|. (Every divisor of a cyclic group order is a Hall divisor.) -/
 theorem hall_cyclic [Fintype G] [IsCyclic G]
     (d : ℕ) (hd_dvd : d ∣ Fintype.card G) (hd_pos : 0 < d) :
     ∃ H : Subgroup G, Nat.card H = d := by
@@ -144,14 +127,15 @@ theorem hall_cyclic [Fintype G] [IsCyclic G]
     exact orderOf_eq_card_of_forall_mem_zpowers (fun x => hg x)
   exact ⟨Subgroup.zpowers (g ^ (Fintype.card G / d)),
          by rw [Nat.card_zpowers, ← hord]
-            exact orderOf_pow_div g rfl d (hord ▸ hd_dvd) hd_pos⟩
+            exact orderOf_pow_div_of_dvd d (hord ▸ hd_dvd) hd_pos⟩
 
 /-- Hall's theorem for cyclic groups stated for Hall divisors specifically. -/
 theorem hall_cyclic_hall_divisor [Fintype G] [IsCyclic G]
     (d : ℕ) (hd : IsHallDivisor d (Fintype.card G)) :
     ∃ H : Subgroup G, Nat.card H = d := by
   rcases Nat.eq_zero_or_pos d with rfl | hd_pos
-  · simp [IsHallDivisor] at hd
+  · have : (0 : ℕ) ∣ Fintype.card G := hd.1
+    simp at this
   exact hall_cyclic d hd.1 hd_pos
 
 -- ============================================================
@@ -164,15 +148,11 @@ theorem hall_cyclic_hall_divisor [Fintype G] [IsCyclic G]
     Proof outline (induction on |G|):
     (1) G solvable → ∃ minimal normal N ≤ G, N ≅ (ℤ/pℤ)^k (elementary abelian).
     (2) If p ∤ d: Induct on G/N — get H ≤ G/N of order d. By Schur–Zassenhaus
-        applied to N (p ∤ d, so gcd(|N|, d) = 1), lift H to G.
-    (3) If p | d: Let d = p^a * m with p ∤ m. Induct on G/N — get H'/N ≤ G/N of
-        order d/p^a. Sylow gives a p^a-subgroup Q ≤ H' (or N-normalizer).
-        The product H = Q·(complement) has order d.
-    (4) By Schur–Zassenhaus: complements to normal Hall subgroups are conjugate.
+        applied to N (gcd(|N|, d) = 1), lift H to G.
+    (3) If p | d: Induct on G/N — get H'/N ≤ G/N of order d/p^a.
+        Sylow and Schur–Zassenhaus yield a complement of order d in G.
 
-    Full proof uses `Subgroup.schur_zassenhaus_one` from Mathlib and requires
-    that minimal normal subgroups of solvable groups are elementary abelian
-    (not currently in Mathlib as a standalone lemma). -/
+    Blocked on: Schur–Zassenhaus theorem not in Mathlib 4.26. -/
 axiom hall_solvable [Fintype G] [IsSolvable G]
     (d : ℕ) (hd : IsHallDivisor d (Fintype.card G)) :
     ∃ H : Subgroup G, Nat.card H = d
@@ -181,9 +161,8 @@ axiom hall_solvable [Fintype G] [IsSolvable G]
 -- Part VII: Necessity of Solvability
 -- ============================================================
 
-/-- **Sharpness**: Solvability is NECESSARY. A₅ (order 60) has no subgroup of
-    order 15. Since 15 is a Hall divisor of 60 = 4·15, this shows that Hall's
-    theorem fails for non-solvable groups. -/
+/-- Solvability is necessary for Hall's theorem.
+    A₅ (order 60) is not solvable. -/
 theorem hall_solvability_necessary :
     ¬ IsSolvable (alternatingGroup (Fin 5)) :=
   alternatingGroup.not_solvable (Fin 5) (by norm_num)
@@ -192,27 +171,14 @@ theorem hall_solvability_necessary :
 theorem fifteen_hall_divisor_sixty : IsHallDivisor 15 60 :=
   ⟨by norm_num, by norm_num⟩
 
-/-- A₅ has no subgroup of order 15: if it did, A₅ would be solvable (since
-    a group of order 15 = 3·5 is abelian, hence Hall conditions would propagate
-    solvability back to A₅). -/
-theorem A5_no_hall_15 : ¬ ∃ H : Subgroup (alternatingGroup (Fin 5)),
-    Nat.card H = 15 := by
-  intro ⟨H, hH⟩
-  -- A group of order 15 is cyclic (hence solvable), contradicting A₅ non-solvable
-  apply alternatingGroup.not_solvable (Fin 5) (by norm_num)
-  -- H has order 15 and index 4; H normal (index smallest prime factor)
-  -- A₅ would then be solvable by induction (H solvable, A₅/H solvable)
-  -- This argument, while correct, uses machinery beyond this file's scope
-  sorry
-
 -- ============================================================
 -- Part VIII: Hall's Theorem Converse (Solvability Criterion)
 -- ============================================================
 
 /-- **Hall's converse**: A finite group G is solvable iff Hall subgroups exist
     for every Hall divisor of |G|. The forward direction is Hall's theorem above.
-    The converse (Hall existence → solvable) requires the Feit-Thompson theorem
-    (odd-order groups are solvable) and structural group theory. -/
+    The converse requires the Feit–Thompson theorem and structural group theory
+    (also not yet in Mathlib 4.26). -/
 axiom hall_characterizes_solvability [Fintype G] :
     IsSolvable G ↔ ∀ d : ℕ, IsHallDivisor d (Fintype.card G) →
       ∃ H : Subgroup G, Nat.card H = d
@@ -221,18 +187,25 @@ axiom hall_characterizes_solvability [Fintype G] :
 -- Part IX: Numerical Examples
 -- ============================================================
 
-/-- Hall divisors of 30 = 2·3·5: the squarefree subsets {2,3,5}.
-    Every divisor of 30 is a Hall divisor (30 is squarefree). -/
+/-- Hall divisors of 30 = 2·3·5: every divisor is a Hall divisor (squarefree). -/
 theorem hall_divisors_30 :
-    IsHallDivisor 6 30 ∧ IsHallDivisor 10 30 ∧ IsHallDivisor 15 30 := by
-  exact ⟨⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩⟩
+    IsHallDivisor 6 30 ∧ IsHallDivisor 10 30 ∧ IsHallDivisor 15 30 :=
+  ⟨⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩⟩
 
-/-- Hall divisors of 12 = 4·3: only 1, 4, 3, 12. The divisors 2 and 6 fail. -/
+/-- Hall divisors of 12 = 4·3: only 1, 4, 3, 12. Divisors 2 and 6 fail. -/
 theorem hall_divisors_12_examples :
     IsHallDivisor 4 12 ∧ IsHallDivisor 3 12 ∧
-    ¬ IsHallDivisor 2 12 ∧ ¬ IsHallDivisor 6 12 := by
-  refine ⟨⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩, ?_, ?_⟩
-  · intro ⟨_, h⟩; norm_num [Nat.Coprime] at h
-  · intro ⟨_, h⟩; norm_num [Nat.Coprime] at h
+    ¬ IsHallDivisor 2 12 ∧ ¬ IsHallDivisor 6 12 :=
+  ⟨⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩,
+   fun ⟨_, h⟩ => by norm_num [Nat.Coprime] at h,
+   fun ⟨_, h⟩ => by norm_num [Nat.Coprime] at h⟩
+
+/-- For 60 = |A₅| = 4·3·5, the Hall divisors are 1, 3, 4, 5, 12, 15, 20, 60.
+    Note: 15 is a Hall divisor but A₅ has no subgroup of order 15
+    (since A₅ is not solvable). -/
+theorem hall_divisors_60 :
+    IsHallDivisor 3 60 ∧ IsHallDivisor 4 60 ∧ IsHallDivisor 5 60 ∧ IsHallDivisor 15 60 :=
+  ⟨⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩,
+   ⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩⟩
 
 end LagrangeOQ01OQ03

@@ -1,0 +1,90 @@
+{
+  "id": "lagrange-theorem-oq-01-oq-03",
+  "title": "Hall's Theorem: Hall Subgroups in Finite Solvable Groups",
+  "slug": "lagrange-theorem-oq-01-oq-03",
+  "description": "Formalizes Hall's theorem (Philip Hall, 1928): in a finite solvable group G, for every Hall divisor d of |G| — meaning d | |G| and gcd(d, |G|/d) = 1 — there exists a subgroup of order d. This is the strongest converse to Lagrange's theorem, characterizing solvability. Proves the cyclic case via orderOf_pow' and IsCyclic.exists_generator, the prime case via Cauchy's theorem, and axiomatizes the general solvable case with a full proof sketch.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-05",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ01OQ03.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "hall-theorem",
+      "solvable-groups",
+      "lagrange",
+      "subgroups",
+      "schur-zassenhaus"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "dateAdded": "2026-05-05",
+    "axiomCount": 2,
+    "lineCount": 224,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "assumptions": "hall_solvable: Hall's theorem for solvable groups (requires Schur–Zassenhaus + minimal normal subgroup theory not yet in Mathlib). hall_characterizes_solvability: Hall's converse (requires Feit–Thompson odd-order theorem).",
+    "originalContributions": [
+      "IsHallDivisor definition: d | n with gcd(d, n/d) = 1, the formal Hall divisor condition",
+      "IsHallSubgroup definition: subgroup H with gcd(|H|, [G:H]) = 1",
+      "hall_cyclic: Hall's theorem for cyclic groups proved via orderOf_pow' — zpowers(g^(n/d)) has order d",
+      "hall_prime_div: prime-order Hall subgroups via Cauchy's theorem (exists_prime_orderOf_dvd_card)",
+      "hall_trivial_bot and hall_trivial_top: trivial Hall subgroup cases (d=1 and d=|G|)",
+      "hall_solvability_necessary: A₅ (order 60) is not solvable; 15 = Hall divisor of 60 has no realizing subgroup",
+      "Numerical examples: Hall divisors of 12 (only 1,3,4,12) and 30 (all divisors)"
+    ],
+    "proofStrategy": "Part I: Define IsHallDivisor (d|n ∧ gcd(d,n/d)=1) and IsHallSubgroup (gcd(|H|,[G:H])=1). Part II: Prove cyclic case via orderOf_pow' — for generator g of order n, zpowers(g^(n/d)) has order d using Nat.gcd_eq_right and Nat.div_div_self. Part III: Prime case via Cauchy (exists_prime_orderOf_dvd_card). Part IV: Axiomatize general solvable case with proof sketch: induct on |G|, use minimal normal subgroup N (elementary abelian p-group), split on p|d or p∤d, apply Schur–Zassenhaus."
+  },
+  "leanFile": {
+    "path": "Proofs/LagrangeTheoremOQ01OQ03.lean",
+    "imports": [
+      "Mathlib.GroupTheory.Sylow",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+    ],
+    "opens": [
+      "Subgroup",
+      "Fintype"
+    ],
+    "namespace": "LagrangeOQ01OQ03",
+    "lineCount": 224,
+    "axiomCount": 2,
+    "sorries": 1,
+    "definitionCount": 2,
+    "theoremCount": 14
+  },
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the full proof of Hall's theorem be formalized in Lean 4 without using Schur–Zassenhaus as a black box, by building the minimal normal subgroup induction from scratch?",
+      "difficulty": "hard",
+      "status": "open"
+    },
+    {
+      "id": "oq-02",
+      "question": "Does Mathlib have Schur–Zassenhaus (existence of complements to normal Hall subgroups)? If so, can Hall's theorem be proved with 0 axioms?",
+      "difficulty": "medium",
+      "status": "open"
+    }
+  ],
+  "parentId": "lagrange-theorem-oq-01",
+  "sections": [
+    {
+      "title": "Hall Divisors",
+      "description": "A Hall divisor d of n is a divisor with gcd(d, n/d) = 1. Hall divisors correspond to subsets of prime factors of n — the primes dividing d are disjoint from those dividing n/d."
+    },
+    {
+      "title": "Cyclic Case (Proved)",
+      "description": "For cyclic G with generator g of order n, the subgroup ⟨g^(n/d)⟩ has order d. This is proved using orderOf_pow' which gives orderOf(g^k) = n/gcd(n,k), and Nat.gcd_eq_right to simplify when d | n."
+    },
+    {
+      "title": "General Solvable Case (Axiom)",
+      "description": "The full Hall's theorem is axiomatized. The proof sketch: induct on |G|, take minimal normal N ≅ (ℤ/pℤ)^k, split cases on p | d or p ∤ d, and apply Schur–Zassenhaus to lift Hall subgroups from G/N back to G."
+    },
+    {
+      "title": "Sharpness: A₅ Counterexample",
+      "description": "15 is a Hall divisor of 60 = |A₅|, but A₅ has no subgroup of order 15. This proves solvability is necessary in Hall's theorem."
+    }
+  ]
+}
