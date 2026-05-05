@@ -297,4 +297,151 @@ These questions connect to active research in:
 - Topological combinatorics
 -/
 
+-- ============================================================
+-- PART 8: General G-Coverings and Higher Categorical Structure
+-- ============================================================
+/-
+The CoveringType from Part 5 uses a single involution (deck transformation
+of order 2). For higher categorical analogues, the deck group G can be any
+abelian group, giving a richer family of covering spaces.
+
+Key insight about the Z/2 case:
+- G = ZMod 2 is discrete: all π_k(ZMod 2) = 0 for k ≥ 1
+- So the obstruction lives entirely in π₁(base) → Aut(fiber); only π₁ is needed
+
+For general G (with nontrivial π_k):
+- G = ZMod p (prime): lens space S^{2n-1} → L^{2n-1}(p) gives Z/p-coverings
+- G = U(1): circle bundles, obstruction in H²(base; Z)
+- G = SU(2): quaternionic bundles, obstruction in H⁴(base; Z)
+
+This is the "higher categorical" content: replacing ZMod 2 with richer G
+accesses genuinely new homotopical obstructions captured by H*(BG).
+-/
+
+/-- A G-equivariant covering with G as the additive deck transformation group.
+    Generalizes CoveringType (which assumes a single involution, i.e., G = ZMod 2)
+    to any additive group G. -/
+structure GCovering (G : Type*) [AddGroup G] where
+  Base : Type*
+  Total : Type*
+  proj : Total → Base
+  act : G → Total → Total
+  act_zero : ∀ x, act 0 x = x
+  act_add : ∀ g h x, act (g + h) x = act g (act h x)
+  act_proj : ∀ (g : G) x, proj (act g x) = proj x
+
+/-- The antipodal double cover Sⁿ → RPⁿ viewed as a ZMod 2 covering.
+    The nontrivial element (1 : ZMod 2) acts by negation. -/
+def antipodalZ2Covering (n : ℕ) : GCovering (ZMod 2) where
+  Base := RP n
+  Total := EuclideanSpace ℝ (Fin (n + 1))
+  proj := projMap n
+  act g x := if g = 0 then x else -x
+  act_zero x := if_pos rfl
+  act_add g h x := by fin_cases g <;> fin_cases h <;> simp [neg_neg]
+  act_proj g x := by
+    fin_cases g
+    · simp [if_pos rfl]
+    · simp only [show (1 : ZMod 2) ≠ 0 from one_ne_zero, ite_false]
+      exact projMap_neg n x
+
+/-- In any ZMod 2 covering, acting twice by the generator (1 : ZMod 2) is the identity.
+    This is the algebraic content of "deck transformation is an involution". -/
+theorem GCovering_z2_involutive (C : GCovering (ZMod 2)) (x : C.Total) :
+    C.act 1 (C.act 1 x) = x := by
+  have h : (1 : ZMod 2) + 1 = 0 := by decide
+  calc C.act 1 (C.act 1 x) = C.act (1 + 1) x := (C.act_add 1 1 x).symm
+    _ = C.act 0 x := by rw [h]
+    _ = x := C.act_zero x
+
+/-- Every ZMod 2 GCovering is a CoveringType in the classical sense.
+    This embeds the general G-covering framework into the classical one. -/
+def GCovering.toCoveringType_Z2 (C : GCovering (ZMod 2)) : CoveringType where
+  Base := C.Base
+  Total := C.Total
+  proj := C.proj
+  fiber_card := 2
+  deck := C.act 1
+  deck_inv := GCovering_z2_involutive C
+  deck_proj := C.act_proj 1
+
+/-- The deck transformation of the ZMod 2 antipodal covering is negation. -/
+theorem antipodalZ2Covering_deck_is_neg (n : ℕ) (x : EuclideanSpace ℝ (Fin (n + 1))) :
+    (antipodalZ2Covering n).act 1 x = -x := by
+  simp only [antipodalZ2Covering, show (1 : ZMod 2) ≠ 0 from one_ne_zero, ite_false]
+
+/-- The ZMod 2 GCovering framework recovers the classical antipodal deck:
+    the deck transformation in the ZMod 2 covering is exactly negation,
+    matching antipodalCovering. -/
+theorem antipodalZ2Covering_deck_matches (n : ℕ) :
+    ∀ x, (antipodalZ2Covering n).toCoveringType_Z2.deck x = (antipodalCovering n).deck x :=
+  antipodalZ2Covering_deck_is_neg n
+
+/-- An equivariant map of G-coverings: a map of total spaces that commutes
+    with the group action and descends to a map of base spaces. -/
+structure GEquivariantMap {G : Type*} [AddGroup G] (C₁ C₂ : GCovering G) where
+  totalMap : C₁.Total → C₂.Total
+  baseMap : C₁.Base → C₂.Base
+  commutes : ∀ x, C₂.proj (totalMap x) = baseMap (C₁.proj x)
+  equivariant : ∀ (g : G) x, totalMap (C₁.act g x) = C₂.act g (totalMap x)
+
+/-- A GEquivariantMap for ZMod 2 coverings induces a classical EquivariantMap.
+    This shows the G-equivariant framework strictly extends the classical one. -/
+def GEquivariantMap.toEquivariantMap_Z2 {C₁ C₂ : GCovering (ZMod 2)}
+    (φ : GEquivariantMap C₁ C₂) :
+    EquivariantMap C₁.toCoveringType_Z2 C₂.toCoveringType_Z2 where
+  totalMap := φ.totalMap
+  baseMap := φ.baseMap
+  commutes := φ.commutes
+  equivariant := φ.equivariant 1
+
+/-- An odd map gives a GEquivariantMap between the antipodal ZMod 2 coverings.
+    This is the G-equivariant strengthening of odd_gives_equivariant. -/
+theorem odd_gives_GEquivariant {n m : ℕ}
+    (f : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin (m + 1)))
+    (hf : IsOdd f) :
+    GEquivariantMap (antipodalZ2Covering n) (antipodalZ2Covering m) where
+  totalMap := f
+  baseMap := descendOdd f hf
+  commutes x := (descendOdd_comm f hf x).symm
+  equivariant g x := by
+    fin_cases g
+    · simp only [antipodalZ2Covering, if_pos rfl]
+    · simp only [antipodalZ2Covering, show (1 : ZMod 2) ≠ 0 from one_ne_zero, ite_false]
+      exact hf x
+
+/-- The GEquivariantMap from an odd map reduces to the classical EquivariantMap.
+    Both produce the same base map (descendOdd). -/
+theorem odd_GEquivariant_extends_equivariant {n m : ℕ}
+    (f : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin (m + 1)))
+    (hf : IsOdd f) :
+    (odd_gives_GEquivariant f hf).toEquivariantMap_Z2.baseMap =
+    (odd_gives_equivariant f hf).baseMap :=
+  rfl
+
+/-
+Summary of the G-covering framework for higher categorical analogues:
+
+CLASSICAL (Parts 1–6 above):
+  CoveringType with G = ZMod 2:
+  - Deck transformation is an involution (1 + 1 = 0 in ZMod 2)
+  - Equivariant maps are odd maps
+  - Obstruction: no continuous equivariant map S^n → S^{n-1} (Borsuk-Ulam)
+
+G-COVERING GENERALIZATION (Part 8 above):
+  GCovering G for any additive G:
+  - Multiple deck transformations (one per element of G)
+  - G-equivariant maps generalize odd maps
+  - Higher obstructions: from H*(BG), not just π₁(BG)
+  - For G = ZMod 2: recovers classical framework exactly (toCoveringType_Z2)
+
+NEXT LEVEL (requires Mathlib algebraic topology):
+  G = ZMod p (prime): lens spaces L^{2n-1}(p) = S^{2n-1}/(ZMod p)
+  G = U(1): classifying space BU(1) = CP^∞, H*(BU(1); Z) = Z[c₁]
+  G = SU(2): classifying space BSU(2) = HP^∞, H*(BSU(2); Z) = Z[p₁]
+  In each case, the obstruction to G-equivariant maps lives in H*(BG).
+  This is the ∞-categorical content: BG classifies G-bundles,
+  and the full obstruction theory is cohomology of BG.
+-/
+
 end BorsukUlamOQ04
