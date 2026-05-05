@@ -22,7 +22,7 @@
     "nextAction": "Build-verify with Docker, then bridge custom Lattice n to ZSpan for general case"
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated the last axiom (minkowski_fundamental) from MinkowskiFundamentalTheorem.lean. File now has 0 axioms, 0 sorries. Added volume_eq to HasVolume typeclass, built Lattice.toModuleBasis bridge from Matrix to Module.Basis, proved main theorem via Mathlib GeometryOfNumbers. Docker build verification pending.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (dirichletSet_convex, dirichletSet_measurable). 1 axiom remains (dirichletSet_volume — change-of-variables for shear map, requires MeasureTheory infrastructure). Docker build pending.",
     "builtItems": [
       "MinkowskiProved.stdBasis — standard basis for Fin n → ℝ",
       "MinkowskiProved.stdLattice — ℤⁿ as ZSpan of standard basis",
@@ -32,7 +32,9 @@
       "MinkowskiProved.minkowski_general_lattice_proved — general Minkowski for any basis (from Mathlib)",
       "Lattice.toModuleBasis: Matrix → Module.Basis bridge (lines ~195-210)",
       "Lattice.toModuleBasis_matrix: proves Matrix.of b = L.basis (lines ~212-220)",
-      "theorem minkowski_fundamental: full proof from Mathlib (lines ~275-310)"
+      "theorem minkowski_fundamental: full proof from Mathlib (lines ~275-310)",
+      "dirichletSet_convex: proved via triangle inequality (3 axioms → 1 axiom) [MinkowskiTheoremOQ02.lean:107]",
+      "dirichletSet_measurable: proved via isOpen_lt + continuous_abs composition [MinkowskiTheoremOQ02.lean:131]"
     ],
     "insights": [
       "Mathlib has exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure — the core Minkowski theorem",
@@ -51,7 +53,9 @@
       "Lattice.toModuleBasis constructed via LinearEquiv.ofLinear using matrix transpose and its inverse",
       "Lattice.toModuleBasis_matrix: Matrix.of (toModuleBasis) = L.basis — key for volume condition",
       "Volume condition bridged via ENNReal.ofReal monotonicity and ENNReal.ofReal_mul/pow",
-      "Lattice points bridged via Submodule.mem_span_range_iff_exists_fun and zsmul_eq_smul_cast"
+      "Lattice points bridged via Submodule.mem_span_range_iff_exists_fun and zsmul_eq_smul_cast",
+      "Proved dirichletSet_convex via triangle inequality: |a*x+b*y| ≤ a*|x|+b*|y| < a*c+b*c = c when a+b=1",
+      "Proved dirichletSet_measurable: the set is open (isOpen_lt applied twice for continuous abs compositions)"
     ],
     "nextSteps": [
       "Docker build verification of the new proof",

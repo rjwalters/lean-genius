@@ -102,13 +102,42 @@ By the change-of-variables formula, vol(S) = vol(T⁻¹(R)) = vol(R) / |det(T)| 
 vol(R) = 2(Q+1) · (2/Q) = 4(Q+1)/Q.
 -/
 
-/-- The Dirichlet parallelogram is convex (intersection of two halfplanes). -/
-axiom dirichletSet_convex (α : ℝ) (Q : ℕ) :
-    Convex ℝ (dirichletSet α Q)
+/-- The Dirichlet parallelogram is convex (intersection of two halfplanes).
+    Triangle inequality: |a*x + b*y| ≤ a*|x| + b*|y| < a*c + b*c = c when a+b=1. -/
+theorem dirichletSet_convex (α : ℝ) (Q : ℕ) :
+    Convex ℝ (dirichletSet α Q) := by
+  intro x hx y hy a b ha hb hab
+  simp only [dirichletSet, Set.mem_setOf_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at *
+  obtain ⟨hx0, hx1⟩ := hx
+  obtain ⟨hy0, hy1⟩ := hy
+  constructor
+  · calc |a * x 0 + b * y 0|
+        ≤ |a * x 0| + |b * y 0| := abs_add _ _
+      _ = a * |x 0| + b * |y 0| := by rw [abs_mul, abs_mul, abs_of_nonneg ha, abs_of_nonneg hb]
+      _ < a * ((Q : ℝ) + 1) + b * ((Q : ℝ) + 1) :=
+          add_lt_add (mul_lt_mul_of_nonneg_left hx0 ha) (mul_lt_mul_of_nonneg_left hy0 hb)
+      _ = (Q : ℝ) + 1 := by rw [← add_mul, hab, one_mul]
+  · calc |α * (a * x 0 + b * y 0) - (a * x 1 + b * y 1)|
+        = |a * (α * x 0 - x 1) + b * (α * y 0 - y 1)| := by ring_nf
+      _ ≤ |a * (α * x 0 - x 1)| + |b * (α * y 0 - y 1)| := abs_add _ _
+      _ = a * |α * x 0 - x 1| + b * |α * y 0 - y 1| := by
+          rw [abs_mul, abs_mul, abs_of_nonneg ha, abs_of_nonneg hb]
+      _ < a * (1 / (Q : ℝ)) + b * (1 / (Q : ℝ)) :=
+          add_lt_add (mul_lt_mul_of_nonneg_left hx1 ha) (mul_lt_mul_of_nonneg_left hy1 hb)
+      _ = 1 / (Q : ℝ) := by rw [← add_mul, hab, one_mul]
 
-/-- The Dirichlet parallelogram is Lebesgue measurable. -/
-axiom dirichletSet_measurable (α : ℝ) (Q : ℕ) :
-    MeasurableSet (dirichletSet α Q)
+/-- The Dirichlet parallelogram is open (preimage of open set under continuous map),
+    hence Lebesgue measurable. -/
+theorem dirichletSet_measurable (α : ℝ) (Q : ℕ) :
+    MeasurableSet (dirichletSet α Q) := by
+  apply IsOpen.measurableSet
+  unfold dirichletSet
+  simp only [Set.setOf_and]
+  apply IsOpen.inter
+  · exact isOpen_lt (continuous_abs.comp (continuous_apply 0)) continuous_const
+  · exact isOpen_lt
+      (continuous_abs.comp ((continuous_const.mul (continuous_apply 0)).sub (continuous_apply 1)))
+      continuous_const
 
 /-- The Lebesgue measure of the Dirichlet parallelogram equals 4(Q+1)/Q.
 
