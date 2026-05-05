@@ -1,0 +1,71 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-02-oq-01",
+  "slug": "elementary-quadratic-reciprocity-oq-02-oq-01",
+  "title": "Gauss Sum Squared: Proving the Axiom in ℂ via Mathlib",
+  "description": "Proves the parent proof's gauss_sum_sq axiom using Mathlib's gaussSum_sq theorem. The axiom was incorrectly typed over ℤ (no integer square root of ±p exists); the correct formulation in ℂ is proved here via the quadratic character machinery.",
+  "overview": "The parent proof `ElementaryQuadraticReciprocityOQ02.lean` axiomatized the Gauss sum evaluation: ∃ τ ∈ ℤ, τ² = (-1)^(p/2)·p. This axiom is actually FALSE over ℤ — no integer square root of ±p exists for a prime p. However, the correct statement in ℂ is a genuine theorem: the classical Gauss sum τ = Σ_{a:ZMod p} (a/p)·e^{2πia/p} satisfies τ² = χ(-1)·p = (-1)^(p/2)·p in ℂ.\n\nThis proof uses Mathlib's `gaussSum_sq` theorem with the quadratic character χ = quadraticChar(ZMod p) ∘ Int.cast as a MulChar (ZMod p) ℂ, and ψ = ZMod.stdAddChar as the primitive additive character. The formula χ(-1) = (-1)^(p/2) is derived via legendreSym.at_neg_one and χ₄_eq_neg_one_pow.",
+  "conclusion": "The Gauss sum τ = gaussSum(χ, ψ) ∈ ℂ provides an explicit witness for ∃ τ : ℂ, τ² = (-1)^(p/2)·p, correcting and proving the parent axiom in its proper domain ℂ.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "date": "2026-05-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "gauss-sums",
+      "legendre-symbol",
+      "cyclotomic-fields",
+      "multiplicative-characters"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-05",
+    "axiomCount": 0,
+    "assumptions": "None. This proof uses only Mathlib theorems: gaussSum_sq, quadraticChar_isQuadratic, quadraticChar_ne_one, ZMod.isPrimitive_stdAddChar, legendreSym.at_neg_one, χ₄_eq_neg_one_pow.",
+    "lineCount": 122,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "originalContributions": [
+      "gauss_sum_sq_in_complex: proof that gaussSum(χ,ψ)² = (-1)^(p/2)·p in ℂ (replaces axiom from parent)",
+      "gauss_sum_sq_exists: existential form ∃ τ:ℂ, τ²=(-1)^(p/2)·p",
+      "quadCharC: the Legendre symbol as MulChar (ZMod p) ℂ",
+      "Identification: the parent axiom gauss_sum_sq is false over ℤ; correct domain is ℂ",
+      "Concrete verifications for p=3,5,7 via the proven theorem"
+    ]
+  },
+  "leanFile": {
+    "namespace": "GaussSumQRCyclotomic",
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "title": "Setup: The Quadratic Character in ℂ",
+      "content": "Define quadCharC : MulChar (ZMod p) ℂ as the composition of quadraticChar (ZMod p) : MulChar (ZMod p) ℤ with the canonical ring homomorphism Int.castRingHom ℂ : ℤ →+* ℂ. This promotes the Legendre symbol from ℤ-valued to ℂ-valued, enabling use of Mathlib's gaussSum_sq theorem."
+    },
+    {
+      "title": "Properties: Quadratic and Nontrivial",
+      "content": "quadCharC_isQuadratic: the composed character is quadratic (values in {0,1,-1} ⊆ ℂ) by lifting quadraticChar_isQuadratic via Int.cast. quadCharC_ne_one: for odd prime p, the character is nontrivial since quadraticChar (ZMod p) ≠ 1 (as ringChar ≠ 2) and Int.cast is injective."
+    },
+    {
+      "title": "Main Theorem: gaussSum_sq Applied",
+      "content": "Apply Mathlib's gaussSum_sq with χ = quadCharC and ψ = ZMod.stdAddChar. The primitivity ZMod.isPrimitive_stdAddChar requires [NeZero p] which follows from p being prime. The result τ² = χ(-1)·|ZMod p| = χ(-1)·p is then computed by: χ(-1) = Int.cast(legendreSym p (-1)) = Int.cast(χ₄ p) = (-1)^(p/2) via legendreSym.at_neg_one and χ₄_eq_neg_one_pow."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "elementary-quadratic-reciprocity-oq-02",
+      "relationship": "parent — provides the axiom gauss_sum_sq that this proof proves/corrects"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "grandparent — the main QR formalization"
+    }
+  ],
+  "openQuestions": null
+}
