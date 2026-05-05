@@ -68,6 +68,13 @@
       "The Lipschitz estimate `‖f(b_k) - f(a_k)‖ ≤ K|b_k - a_k|` yields δ = ε/(K+1). The denominator K+1 (rather than K) avoids division by zero for constant functions (K=0) while still satisfying K · δ < ε.",
       "The partition argument is constructive: it gives an explicit finite upper bound `eVariationOn f [a,b] ≤ n` where $n = \\lceil(b-a)/\\delta\\rceil + 1$. This contrasts with non-constructive proofs from abstract BV theory that only assert finiteness.",
       "The bidirectional equivalence `real_ac_iff_normed_ac` (proved via `Real.norm_eq_abs`) shows that the normed definition is a *conservative* extension: it does not accidentally exclude any real-valued AC function, nor does it admit new ones."
+    ],
+    "prerequisites": [
+      "Absolute continuity (classical definition for f : ℝ → ℝ)",
+      "Bounded variation and eVariationOn in Mathlib",
+      "NormedAddCommGroup and basic functional analysis",
+      "Lebesgue integration and the parent Lebesgue FTC entry",
+      "ENNReal arithmetic and ofReal conversions"
     ]
   },
   "sections": [
@@ -125,14 +132,19 @@
   },
   "crossReferences": [
     {
-      "id": "fundamental-theorem-calculus-oq-01",
-      "title": "Lebesgue Fundamental Theorem of Calculus",
-      "relationship": "parent — this entry answers OQ-04 from the Lebesgue FTC entry, which asked whether AbsolutelyContinuousOn should be generalized to normed spaces"
+      "proofId": "fundamental-theorem-calculus-oq-01",
+      "relationship": "extends",
+      "description": "Parent Lebesgue FTC entry: OQ-04 asked whether AbsolutelyContinuousOn should be generalized to normed spaces; this entry answers YES"
     },
     {
-      "id": "fundamental-theorem-calculus-oq-01-oq-01",
-      "title": "AC → BV: Absolutely Continuous implies Bounded Variation",
-      "relationship": "real-valued analogue — the same partition argument for f : ℝ → ℝ; this entry generalizes it to f : ℝ → E by replacing |·| with ‖·‖"
+      "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Real-valued AC → BV proof; this entry generalizes it to f : ℝ → E for any NormedAddCommGroup by replacing |·| with ‖·‖"
+    },
+    {
+      "proofId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "Base FTC entry; this entry extends the AC framework from real-valued to vector-valued functions"
     }
   ],
   "leanFile": {
