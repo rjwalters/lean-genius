@@ -293,18 +293,6 @@ The maximum number of edges in a bipartite graph with parts of size n
 and m that contains no K_{s,t} is at most
   (1/2) · (t-1)^(1/s) · m · n^(1-1/s) + (s-1)n/2.
 -/
-/--
-A bipartite graph with no C_4 is the same as a graph with no K_{2,2}.
--/
-theorem c4_free_iff_no_K22 {V : Type*} (G : SimpleGraph V) (X Y : Set V)
-    (h : IsBipartition G X Y) :
-    C4Free G ↔
-    ∀ (a₁ a₂ : V) (b₁ b₂ : V),
-      a₁ ∈ X → a₂ ∈ X → a₁ ≠ a₂ →
-      b₁ ∈ Y → b₂ ∈ Y → b₁ ≠ b₂ →
-      ¬(G.Adj a₁ b₁ ∧ G.Adj a₁ b₂ ∧ G.Adj a₂ b₁ ∧ G.Adj a₂ b₂) := by
-  sorry
-
 /-
 ## Part IX: Summary
 -/
