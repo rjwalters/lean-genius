@@ -87,8 +87,8 @@ theorem cantor_constructive {A : Type*} (e : A → A → Prop)
   obtain ⟨d, hd⟩ := he (fun a => ¬e a a)
   -- Step 2: Specialize to x = d to get the self-referential Iff
   have hdd : e d d ↔ ¬e d d := hd d
-  -- Step 3: Direct contradiction — no propext needed
-  exact iff_not_self.mp hdd
+  -- Step 3: Direct contradiction — iff_not_self : ¬(p ↔ ¬p)
+  exact iff_not_self hdd
 
 /-- **Cantor No-Surjection (Constructive)**:
 
@@ -147,8 +147,7 @@ example : True := trivial  -- placeholder comment anchor
 
 -- The constructive theorems use NO non-constructive axioms:
 #print axioms cantor_constructive
--- Expected: no axioms beyond 'propext', 'Quot.sound', 'Classical.choice'
--- (These are Lean 4 kernel axioms — cantor_constructive uses none of them.)
+-- Expected output: 'cantor_constructive' does not depend on any axioms
 
 #print axioms cantor_constructive_explicit
 -- Same: uses no axioms
