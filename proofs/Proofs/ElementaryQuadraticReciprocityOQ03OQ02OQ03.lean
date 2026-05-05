@@ -128,25 +128,35 @@ theorem kronecker_sign_three_mod_four
 
 /-- **Generalized Quadratic Reciprocity for Fundamental Discriminants**
 
-    For coprime fundamental discriminants D₁ and D₂:
-      (D₁/|D₂|)_K = (D₂/|D₁|)_K
+    For coprime fundamental discriminants D₁ and D₂, the Kronecker symbol satisfies
+    a generalized QR law with a sign correction when both discriminants are negative:
 
-    This extends the Jacobi-QR proofs above to:
-    - Negative fundamental discriminants (D < 0, e.g., D = -3, -4, -7)
-    - Even fundamental discriminants (D divisible by 4, e.g., -4, ±8, 12)
+      (D₁/|D₂|)_K = ε(D₁,D₂) · (D₂/|D₁|)_K
 
-    The proof of the general case requires:
-    - Genus theory for binary quadratic forms (Gauss), OR
-    - Class field theory via Artin reciprocity: the primitive character
-      χ_D₁(n) = (D₁/n)_K of conductor |D₁| satisfies χ_D₁(D₂) = χ_D₂(D₁).
+    where ε(D₁,D₂) = -1 if both D₁ < 0 and D₂ < 0, else ε = 1.
 
-    Note: The cases D₁, D₂ both positive and odd are covered by the proved
-    theorems above. This axiom handles the remaining cases (negative D, 4 | D). -/
+    Examples confirming the sign flip:
+      (-7/3)_K = -1  and  (-3/7)_K = 1  →  (-7/3) = -(-3/7) [verified by native_decide]
+      (-4/3)_K = -1  and  (-3/4)_K = 1  →  (-4/3) = -(-3/4)
+
+    The sign correction arises from the Dirichlet character interpretation: χ_D is an
+    ODD character when D < 0 (χ_D(-1) = -1). For D₂ < 0:
+      χ_{D₁}(D₂) = χ_{D₁}(-1) · χ_{D₁}(|D₂|) = -χ_{D₁}(|D₂|)  when D₁ < 0
+    So for both D₁, D₂ < 0:  χ_{D₁}(D₂) = χ_{D₂}(D₁)  gives the sign flip.
+
+    This covers the cases not handled by the proved theorems above:
+    - Mixed-sign: one of D₁, D₂ negative (equality holds)
+    - Even discriminants: 4 | D (equality holds when at most one is negative)
+    - Both negative: sign flip
+
+    Proof requires genus theory or class field theory (Artin reciprocity). -/
 axiom kronecker_qr_fundamental (D₁ D₂ : ℤ)
     (h₁ : IsFundamentalDiscriminant D₁)
     (h₂ : IsFundamentalDiscriminant D₂)
     (hcop : Int.gcd D₁.natAbs D₂.natAbs = 1) :
-    kronecker D₁ D₂.natAbs = kronecker D₂ D₁.natAbs
+    kronecker D₁ D₂.natAbs =
+      if D₁ < 0 ∧ D₂ < 0 then -(kronecker D₂ D₁.natAbs)
+      else kronecker D₂ D₁.natAbs
 
 -- ============================================================
 -- Part IV: Numerical Verifications
@@ -187,6 +197,17 @@ theorem kronecker_3_7_sign : kronecker 3 7 = -(kronecker 7 3) :=
 theorem kronecker_3_7_vals : kronecker 3 7 = 1 ∧ kronecker 7 3 = -1 := by
   constructor <;> native_decide
 
+/-- Both-negative sign flip: (-7/3)_K = -1, (-3/7)_K = 1.
+    D₁ = -7 and D₂ = -3 are coprime fundamental discriminants (both ≡ 1 mod 4).
+    The Kronecker symbol is NOT equal: (-7/3) = -1 while (-3/7) = 1.
+    This confirms the axiom's sign correction for the both-negative case. -/
+theorem kronecker_neg7_neg3_vals : kronecker (-7) 3 = -1 ∧ kronecker (-3) 7 = 1 := by
+  constructor <;> native_decide
+
+/-- The sign flip (-7/3)_K = -(-3/7)_K follows from the vals above. -/
+theorem kronecker_neg7_neg3_sign : kronecker (-7) 3 = -(kronecker (-3) 7) := by
+  have := kronecker_neg7_neg3_vals; simp [this.1, this.2]
+
 -- ============================================================
 -- Part V: Complete Summary
 -- ============================================================
@@ -197,11 +218,14 @@ theorem kronecker_3_7_vals : kronecker 3 7 = 1 ∧ kronecker 7 3 = -1 := by
 
     Case 1 [proved]: D₁ ≡ 1 (mod 4), D₂ odd positive → (D₁/D₂)_K = (D₂/D₁)_K
     Case 2 [proved]: D₁ ≡ D₂ ≡ 3 (mod 4) positive → (D₁/D₂)_K = -(D₂/D₁)_K
-    Case 3 [axiom]:  D₁, D₂ coprime fund. disc. → (D₁/|D₂|)_K = (D₂/|D₁|)_K
+    Case 3 [axiom]:  D₁, D₂ coprime fund. disc. → (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K
+                     where ε = -1 iff both D₁ < 0 and D₂ < 0
 
-    Algebraic interpretation: (D/n)_K is the unique real primitive character
-    of conductor |D|. Via class field theory, χ_D₁(D₂) = χ_D₂(D₁) for
-    coprime fundamental discriminants — this is the quadratic Artin reciprocity. -/
+    Algebraic interpretation: (D/n)_K is the unique real primitive character of
+    conductor |D|. For D < 0 it is an odd character (χ_D(-1) = -1). Via class
+    field theory, χ_D₁(D₂) = χ_D₂(D₁) for coprime fundamental discriminants
+    (quadratic Artin reciprocity), which translates to the ε sign correction
+    when evaluating at |D| rather than the signed integer D. -/
 theorem kronecker_qr_all_cases :
     (∀ D₁ D₂ : ℕ, D₁ % 4 = 1 → D₂ % 2 = 1 → 0 < D₂ →
       kronecker ↑D₁ ↑D₂ = kronecker ↑D₂ ↑D₁) ∧
@@ -209,7 +233,8 @@ theorem kronecker_qr_all_cases :
       kronecker ↑D₁ ↑D₂ = -(kronecker ↑D₂ ↑D₁)) ∧
     (∀ D₁ D₂ : ℤ, IsFundamentalDiscriminant D₁ → IsFundamentalDiscriminant D₂ →
       Int.gcd D₁.natAbs D₂.natAbs = 1 →
-      kronecker D₁ D₂.natAbs = kronecker D₂ D₁.natAbs) :=
+      kronecker D₁ D₂.natAbs =
+        if D₁ < 0 ∧ D₂ < 0 then -(kronecker D₂ D₁.natAbs) else kronecker D₂ D₁.natAbs) :=
   ⟨fun D₁ D₂ h₁ h₂ hpos => kronecker_symm_pos_one_mod_four D₁ D₂ h₁ h₂ hpos,
    fun D₁ D₂ h₁ h₂ hpos₁ hpos₂ => kronecker_sign_three_mod_four D₁ D₂ h₁ h₂ hpos₁ hpos₂,
    fun D₁ D₂ h₁ h₂ hcop => kronecker_qr_fundamental D₁ D₂ h₁ h₂ hcop⟩

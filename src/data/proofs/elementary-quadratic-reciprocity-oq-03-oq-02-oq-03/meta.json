@@ -1,198 +1,200 @@
 {
-  "id": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
-  "title": "Generalized Quadratic Reciprocity for Fundamental Discriminants (Kronecker Symbol)",
-  "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
-  "description": "Formalizes the generalized quadratic reciprocity law for the Kronecker symbol and fundamental discriminants. For coprime fundamental discriminants D₁ and D₂, proves (D₁/|D₂|)_K = (D₂/|D₁|)_K. The case D₁ ≡ 1 (mod 4) is proved from Jacobi QR via jacobiSym.quadratic_reciprocity_one_mod_four. The case both ≡ 3 (mod 4) gives a sign flip. The general case (negative or even discriminants) is axiomatized, requiring class field theory or genus theory.",
-  "leanFile": {
-    "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
-    "imports": [
-      "Proofs.ElementaryQuadraticReciprocityOQ03OQ02",
-      "Proofs.ElementaryQuadraticReciprocityOQ03OQ02OQ01"
+    "id": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
+    "title": "Generalized Quadratic Reciprocity for Fundamental Discriminants (Kronecker Symbol)",
+    "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-03",
+    "description": "Formalizes the generalized quadratic reciprocity law for the Kronecker symbol and fundamental discriminants. For coprime fundamental discriminants D₁ and D₂, the law is: (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K where ε = -1 if both are negative, else ε = 1. The positive-odd cases are proved from Jacobi QR. Numerical verification confirms the both-negative sign flip (e.g. (-7/3)=-1 but (-3/7)=1). The general case is axiomatized requiring class field theory or genus theory.",
+    "leanFile": {
+        "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
+        "imports": [
+            "Proofs.ElementaryQuadraticReciprocityOQ03OQ02",
+            "Proofs.ElementaryQuadraticReciprocityOQ03OQ02OQ01"
+        ],
+        "opens": [
+            "Int",
+            "jacobiSym"
+        ],
+        "namespace": "KroneckerSymbol",
+        "lineCount": 242,
+        "axiomCount": 1,
+        "sorries": 0,
+        "definitionCount": 1,
+        "theoremCount": 19
+    },
+    "mainTheorems": [
+        {
+            "name": "kronecker_symm_pos_one_mod_four",
+            "statement": "∀ (D₁ D₂ : ℕ), D₁ % 4 = 1 → D₂ % 2 = 1 → 0 < D₂ → kronecker ↑D₁ ↑D₂ = kronecker ↑D₂ ↑D₁",
+            "description": "Kronecker QR symmetry when D₁ ≡ 1 (mod 4): proved from jacobiSym.quadratic_reciprocity_one_mod_four."
+        },
+        {
+            "name": "kronecker_symm_both_one_mod_four",
+            "statement": "∀ (D₁ D₂ : ℕ), D₁ % 4 = 1 → D₂ % 4 = 1 → kronecker ↑D₁ ↑D₂ = kronecker ↑D₂ ↑D₁",
+            "description": "Corollary: both discriminants ≡ 1 (mod 4) implies Kronecker symmetry."
+        },
+        {
+            "name": "kronecker_sign_three_mod_four",
+            "statement": "∀ (D₁ D₂ : ℕ), D₁ % 4 = 3 → D₂ % 4 = 3 → 0 < D₁ → 0 < D₂ → kronecker ↑D₁ ↑D₂ = -(kronecker ↑D₂ ↑D₁)",
+            "description": "Sign flip when both discriminants ≡ 3 (mod 4): proved from jacobiSym.quadratic_reciprocity_three_mod_four."
+        },
+        {
+            "name": "kronecker_qr_fundamental",
+            "statement": "∀ (D₁ D₂ : ℤ), IsFundamentalDiscriminant D₁ → IsFundamentalDiscriminant D₂ → Int.gcd D₁.natAbs D₂.natAbs = 1 → kronecker D₁ D₂.natAbs = if D₁ < 0 ∧ D₂ < 0 then -(kronecker D₂ D₁.natAbs) else kronecker D₂ D₁.natAbs",
+            "description": "Corrected general Kronecker QR axiom: equality when at most one discriminant is negative; sign flip when both are negative. The original false claim of unconditional equality fails for e.g. D₁=-7, D₂=-3: (-7/3)=-1 ≠ 1=(-3/7). Requires class field theory for proof."
+        },
+        {
+            "name": "kronecker_qr_all_cases",
+            "statement": "All three cases of Kronecker QR bundled together",
+            "description": "Summary theorem: three QR cases — symmetry for D₁≡1(4), sign flip for both≡3(4), and corrected general axiom (with sign ε=-1 when both negative)."
+        }
     ],
-    "opens": [
-      "Int",
-      "jacobiSym"
+    "meta": {
+        "author": "Kronecker (1885), Jacobi (1837); formalized in Lean 4",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Kronecker_symbol#Relation_to_quadratic_residues",
+        "date": "1885",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
+        "tags": [
+            "number-theory",
+            "quadratic-reciprocity",
+            "kronecker-symbol",
+            "fundamental-discriminants",
+            "jacobi-symbol",
+            "class-field-theory",
+            "research"
+        ],
+        "badge": "axiom",
+        "axiomCount": 1,
+        "sorries": 0,
+        "assumptions": "kronecker_qr_fundamental: The generalized Kronecker QR with sign correction: (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K for coprime fundamental discriminants, where ε=-1 if both D₁<0 and D₂<0, else ε=1. Proved for positive odd discriminants via Jacobi QR. The sign correction for both-negative is confirmed numerically ((-7/3)=-(-3/7)). Full proof requires Artin reciprocity or genus theory.",
+        "mathlibDependencies": [
+            {
+                "theorem": "jacobiSym.quadratic_reciprocity_one_mod_four",
+                "description": "Jacobi QR symmetry when a ≡ 1 (mod 4): J(a,n) = J(n,a)",
+                "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+            },
+            {
+                "theorem": "jacobiSym.quadratic_reciprocity_three_mod_four",
+                "description": "Jacobi QR sign flip when a ≡ n ≡ 3 (mod 4): J(a,n) = -J(n,a)",
+                "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+            },
+            {
+                "theorem": "kronecker_eq_jacobi",
+                "description": "Kronecker symbol equals Jacobi for odd positive moduli (from OQ03OQ02)",
+                "module": "Proofs.ElementaryQuadraticReciprocityOQ03OQ02"
+            }
+        ],
+        "originalContributions": [
+            "IsFundamentalDiscriminant: formal Lean 4 definition of fundamental discriminants (D ≡ 1 mod 4 and squarefree, or D = 4m with m ≡ 2,3 mod 4 and squarefree)",
+            "kronecker_symm_pos_one_mod_four: proved Kronecker QR for D₁ ≡ 1 (mod 4) using kronecker_eq_jacobi + Jacobi QR",
+            "kronecker_symm_both_one_mod_four: symmetry when both discriminants ≡ 1 (mod 4)",
+            "kronecker_sign_three_mod_four: sign flip when both ≡ 3 (mod 4) from Jacobi QR",
+            "kronecker_qr_fundamental: axiom for the general case (negative/even discriminants)",
+            "Numerical verifications: (5/3)=(3/5)=-1, (5/7)=(7/5), (3/7)=-(7/3), etc.",
+            "kronecker_neg7_neg3_vals: numerical verification that (-7/3)=-1 and (-3/7)=1, confirming the both-negative sign flip via native_decide",
+            "kronecker_neg7_neg3_sign: (-7/3)_K = -(-3/7)_K, demonstrating that the original unconditional equality axiom was false"
+        ],
+        "proofStrategy": "For positive D₁ ≡ 1 (mod 4): reduce kronecker to jacobiSym via kronecker_eq_jacobi, then apply jacobiSym.quadratic_reciprocity_one_mod_four. For both ≡ 3 (mod 4): same reduction, apply quadratic_reciprocity_three_mod_four (gives sign flip). General case axiomatized: requires Artin reciprocity for quadratic extensions (equivalent to χ_D₁(D₂) = χ_D₂(D₁) for primitive characters mod |D|).",
+        "openQuestions": [
+            "Can the Kronecker QR axiom be proved in Lean using genus theory for binary quadratic forms? The Gauss genus theory provides an elementary (if lengthy) proof of (D₁/|D₂|) = (D₂/|D₁|) for discriminants.",
+            "Is Artin reciprocity for quadratic extensions available in Mathlib? That would allow removing the kronecker_qr_fundamental axiom entirely.",
+            "Can the Kronecker symbol (D/·) be formalized as a Dirichlet character of conductor |D| in Lean? This would connect the QR law to the theory of L-functions."
+        ],
+        "lineCount": 242,
+        "theoremCount": 19,
+        "definitionCount": 1
+    },
+    "sections": [
+        {
+            "id": "fund-disc-def",
+            "title": "Fundamental Discriminants",
+            "startLine": 57,
+            "endLine": 88,
+            "summary": "Definition of IsFundamentalDiscriminant: D ≡ 1 (mod 4) and squarefree, OR D = 4m with m ≡ 2,3 (mod 4) and m squarefree. Proved instances: D=1 (trivial) and D=-4 (discriminant of ℚ(i))."
+        },
+        {
+            "id": "kronecker-qr-proved",
+            "title": "Proved Kronecker QR Cases",
+            "startLine": 89,
+            "endLine": 145,
+            "summary": "Two proved QR theorems: kronecker_symm_pos_one_mod_four (D₁ ≡ 1 mod 4 gives symmetry) and kronecker_sign_three_mod_four (both ≡ 3 mod 4 gives sign flip). Both reduce to Jacobi QR via kronecker_eq_jacobi."
+        },
+        {
+            "id": "kronecker-qr-axiom",
+            "title": "General Kronecker QR — Axiom",
+            "startLine": 146,
+            "endLine": 165,
+            "summary": "kronecker_qr_fundamental: corrected axiom for coprime fundamental discriminants. States (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K with ε=-1 iff both negative. The original false claim of unconditional equality is corrected here."
+        },
+        {
+            "id": "numerical-verifications",
+            "title": "Numerical Verifications",
+            "startLine": 166,
+            "endLine": 213,
+            "summary": "Numerical checks via native_decide: positive examples plus the key both-negative verification kronecker_neg7_neg3_vals showing (-7/3)=-1 ≠ (-3/7)=1, confirming the axiom's sign correction."
+        },
+        {
+            "id": "summary-theorem",
+            "title": "Complete Summary",
+            "startLine": 214,
+            "endLine": 242,
+            "summary": "kronecker_qr_all_cases bundles all three QR cases: symmetry for ≡1(4), sign flip for ≡3(4), and general axiom. Algebraic meaning: the Kronecker character χ_D is self-dual under Artin reciprocity."
+        }
     ],
-    "namespace": "KroneckerSymbol",
-    "lineCount": 217,
-    "axiomCount": 1,
-    "sorries": 0,
-    "definitionCount": 1,
-    "theoremCount": 17
-  },
-  "mainTheorems": [
-    {
-      "name": "kronecker_symm_pos_one_mod_four",
-      "statement": "∀ (D₁ D₂ : ℕ), D₁ % 4 = 1 → D₂ % 2 = 1 → 0 < D₂ → kronecker ↑D₁ ↑D₂ = kronecker ↑D₂ ↑D₁",
-      "description": "Kronecker QR symmetry when D₁ ≡ 1 (mod 4): proved from jacobiSym.quadratic_reciprocity_one_mod_four."
+    "conclusion": {
+        "summary": "Generalizes the Kronecker symbol's quadratic reciprocity to fundamental discriminants with the correct sign: ε=1 when at most one discriminant is negative, ε=-1 when both negative. Two cases proved from Mathlib's Jacobi QR; the general case axiomatized (class field theory). Numerical verification of the both-negative sign flip distinguishes this from the naïvely stated (and false) unconditional equality.",
+        "implications": "The Kronecker QR law is the quadratic case of Artin's general reciprocity law. It states that the primitive character χ_D₁ of conductor |D₁| evaluates the same value at D₂ as χ_D₂ evaluates at D₁ — a deep symmetry connecting different quadratic fields. In practice, this allows computing (D₁/n)_K by switching the roles of discriminant and argument, which is essential for prime splitting calculations in quadratic number fields.",
+        "openQuestions": [
+            "Can the Kronecker QR axiom be proved from genus theory for quadratic forms (elementary but lengthy)?",
+            "Is Artin reciprocity for quadratic extensions available in Lean/Mathlib?",
+            "Can (D/·)_K be formalized as a Dirichlet character of conductor |D|?"
+        ]
     },
-    {
-      "name": "kronecker_symm_both_one_mod_four",
-      "statement": "∀ (D₁ D₂ : ℕ), D₁ % 4 = 1 → D₂ % 4 = 1 → kronecker ↑D₁ ↑D₂ = kronecker ↑D₂ ↑D₁",
-      "description": "Corollary: both discriminants ≡ 1 (mod 4) implies Kronecker symmetry."
+    "overview": {
+        "text": "The Kronecker symbol generalizes the Jacobi symbol to all integer moduli. This file proves the generalized quadratic reciprocity law with sign correction: for coprime fundamental discriminants D₁ and D₂, (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K where ε = -1 iff both are negative. The positive-odd cases follow from Jacobi QR. Numerical verification confirms the sign flip for (-7,-3). The general case is axiomatized.",
+        "proofStrategy": "Reduce to Jacobi symbol via kronecker_eq_jacobi for odd positive moduli. Apply jacobiSym.quadratic_reciprocity_one_mod_four for the ≡1(4) case. Axiomatize the general case (negative/even discriminants).",
+        "keyInsights": [
+            "When D₁ ≡ 1 (mod 4), the Jacobi QR factor (-1)^{(D₁-1)/2·(D₂-1)/2} equals 1 (since (D₁-1)/2 is even), giving exact symmetry J(D₁,D₂) = J(D₂,D₁).",
+            "When both D₁ ≡ D₂ ≡ 3 (mod 4), the QR factor is (-1)^{odd·odd} = -1, giving a sign flip: J(D₁,D₂) = -J(D₂,D₁).",
+            "The Kronecker symbol (D/n) agrees with the Jacobi symbol for odd positive n, so the Jacobi QR directly implies the Kronecker QR for positive odd discriminants."
+        ],
+        "historicalContext": "The quadratic reciprocity law for the Kronecker symbol was established by Kronecker (1885) as part of his theory of quadratic forms and class field theory. It generalizes Gauss's original QR (for the Legendre symbol) and Jacobi's generalization (for products of Legendre symbols) to discriminants of arbitrary quadratic fields, including imaginary ones (negative discriminants) and those of even conductor (even discriminants).",
+        "problemStatement": "Does the Kronecker symbol satisfy generalized quadratic reciprocity for fundamental discriminants? Specifically: for coprime fundamental discriminants D₁, D₂, does (D₁/|D₂|)_K = (D₂/|D₁|)_K when at most one is negative, and (D₁/|D₂|)_K = -(D₂/|D₁|)_K when both are negative?"
     },
-    {
-      "name": "kronecker_sign_three_mod_four",
-      "statement": "∀ (D₁ D₂ : ℕ), D₁ % 4 = 3 → D₂ % 4 = 3 → 0 < D₁ → 0 < D₂ → kronecker ↑D₁ ↑D₂ = -(kronecker ↑D₂ ↑D₁)",
-      "description": "Sign flip when both discriminants ≡ 3 (mod 4): proved from jacobiSym.quadratic_reciprocity_three_mod_four."
-    },
-    {
-      "name": "kronecker_qr_fundamental",
-      "statement": "∀ (D₁ D₂ : ℤ), IsFundamentalDiscriminant D₁ → IsFundamentalDiscriminant D₂ → Int.gcd D₁.natAbs D₂.natAbs = 1 → kronecker D₁ D₂.natAbs = kronecker D₂ D₁.natAbs",
-      "description": "General Kronecker QR axiom for coprime fundamental discriminants (requires class field theory)."
-    },
-    {
-      "name": "kronecker_qr_all_cases",
-      "statement": "All three cases of Kronecker QR bundled together",
-      "description": "Summary theorem consolidating the two proved cases and the general axiom."
-    }
-  ],
-  "meta": {
-    "author": "Kronecker (1885), Jacobi (1837); formalized in Lean 4",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Kronecker_symbol#Relation_to_quadratic_residues",
-    "date": "1885",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
-    "tags": [
-      "number-theory",
-      "quadratic-reciprocity",
-      "kronecker-symbol",
-      "fundamental-discriminants",
-      "jacobi-symbol",
-      "class-field-theory",
-      "research"
+    "references": [
+        {
+            "title": "Zur Theorie der elliptischen Functionen",
+            "authors": "L. Kronecker",
+            "year": 1885
+        },
+        {
+            "title": "A Course in Computational Algebraic Number Theory",
+            "authors": "H. Cohen",
+            "year": 1993,
+            "note": "Algorithm 1.4.4 for Kronecker symbol computation"
+        },
+        {
+            "title": "Algebraic Number Theory",
+            "authors": "J. Neukirch",
+            "year": 1999,
+            "note": "Ch. II §5: Artin reciprocity for quadratic extensions"
+        }
     ],
-    "badge": "axiom",
-    "axiomCount": 1,
-    "sorries": 0,
-    "assumptions": "kronecker_qr_fundamental: The generalized Kronecker QR for fundamental discriminants (D₁/|D₂|)_K = (D₂/|D₁|)_K for coprime D₁, D₂. Proven here for positive discriminants ≡ 1 (mod 4) via Jacobi QR; axiomatized for the general case (negative and even discriminants) which requires Artin reciprocity or genus theory for quadratic forms.",
-    "mathlibDependencies": [
-      {
-        "theorem": "jacobiSym.quadratic_reciprocity_one_mod_four",
-        "description": "Jacobi QR symmetry when a ≡ 1 (mod 4): J(a,n) = J(n,a)",
-        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
-      },
-      {
-        "theorem": "jacobiSym.quadratic_reciprocity_three_mod_four",
-        "description": "Jacobi QR sign flip when a ≡ n ≡ 3 (mod 4): J(a,n) = -J(n,a)",
-        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
-      },
-      {
-        "theorem": "kronecker_eq_jacobi",
-        "description": "Kronecker symbol equals Jacobi for odd positive moduli (from OQ03OQ02)",
-        "module": "Proofs.ElementaryQuadraticReciprocityOQ03OQ02"
-      }
+    "crossReferences": [
+        {
+            "targetId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+            "relationship": "extends",
+            "description": "Parent proof: defines the Kronecker symbol and axiomatizes kronecker_mul_left; this file proves the QR symmetry for its discriminants"
+        },
+        {
+            "targetId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
+            "relationship": "related",
+            "description": "Sibling: proves multiplicativity of the Kronecker symbol; this file uses the multiplicativity to derive QR"
+        },
+        {
+            "targetId": "elementary-quadratic-reciprocity-oq-03",
+            "relationship": "related",
+            "description": "Grandparent: Zolotarev QR proof; both use the Jacobi symbol as the algebraic backbone"
+        }
     ],
-    "originalContributions": [
-      "IsFundamentalDiscriminant: formal Lean 4 definition of fundamental discriminants (D ≡ 1 mod 4 and squarefree, or D = 4m with m ≡ 2,3 mod 4 and squarefree)",
-      "kronecker_symm_pos_one_mod_four: proved Kronecker QR for D₁ ≡ 1 (mod 4) using kronecker_eq_jacobi + Jacobi QR",
-      "kronecker_symm_both_one_mod_four: symmetry when both discriminants ≡ 1 (mod 4)",
-      "kronecker_sign_three_mod_four: sign flip when both ≡ 3 (mod 4) from Jacobi QR",
-      "kronecker_qr_fundamental: axiom for the general case (negative/even discriminants)",
-      "Numerical verifications: (5/3)=(3/5)=-1, (5/7)=(7/5), (3/7)=-(7/3), etc."
-    ],
-    "proofStrategy": "For positive D₁ ≡ 1 (mod 4): reduce kronecker to jacobiSym via kronecker_eq_jacobi, then apply jacobiSym.quadratic_reciprocity_one_mod_four. For both ≡ 3 (mod 4): same reduction, apply quadratic_reciprocity_three_mod_four (gives sign flip). General case axiomatized: requires Artin reciprocity for quadratic extensions (equivalent to χ_D₁(D₂) = χ_D₂(D₁) for primitive characters mod |D|).",
-    "openQuestions": [
-      "Can the Kronecker QR axiom be proved in Lean using genus theory for binary quadratic forms? The Gauss genus theory provides an elementary (if lengthy) proof of (D₁/|D₂|) = (D₂/|D₁|) for discriminants.",
-      "Is Artin reciprocity for quadratic extensions available in Mathlib? That would allow removing the kronecker_qr_fundamental axiom entirely.",
-      "Can the Kronecker symbol (D/·) be formalized as a Dirichlet character of conductor |D| in Lean? This would connect the QR law to the theory of L-functions."
-    ],
-    "lineCount": 217,
-    "theoremCount": 17,
-    "definitionCount": 1
-  },
-  "sections": [
-    {
-      "id": "fund-disc-def",
-      "title": "Fundamental Discriminants",
-      "startLine": 57,
-      "endLine": 88,
-      "summary": "Definition of IsFundamentalDiscriminant: D ≡ 1 (mod 4) and squarefree, OR D = 4m with m ≡ 2,3 (mod 4) and m squarefree. Proved instances: D=1 (trivial) and D=-4 (discriminant of ℚ(i))."
-    },
-    {
-      "id": "kronecker-qr-proved",
-      "title": "Proved Kronecker QR Cases",
-      "startLine": 89,
-      "endLine": 145,
-      "summary": "Two proved QR theorems: kronecker_symm_pos_one_mod_four (D₁ ≡ 1 mod 4 gives symmetry) and kronecker_sign_three_mod_four (both ≡ 3 mod 4 gives sign flip). Both reduce to Jacobi QR via kronecker_eq_jacobi."
-    },
-    {
-      "id": "kronecker-qr-axiom",
-      "title": "General Kronecker QR — Axiom",
-      "startLine": 146,
-      "endLine": 165,
-      "summary": "kronecker_qr_fundamental: axiom for coprime fundamental discriminants (D₁/|D₂|)=(D₂/|D₁|). Covers negative and even discriminants, requires class field theory for the full proof."
-    },
-    {
-      "id": "numerical-verifications",
-      "title": "Numerical Verifications",
-      "startLine": 166,
-      "endLine": 197,
-      "summary": "Numerical checks via native_decide: (5/3)=(3/5)=-1, (5/7)=(7/5), (5/11)=(11/5), (5/13)=(13/5), (13/17)=(17/13), (3/7)=-(7/3). Confirms the QR law for small discriminants."
-    },
-    {
-      "id": "summary-theorem",
-      "title": "Complete Summary",
-      "startLine": 198,
-      "endLine": 217,
-      "summary": "kronecker_qr_all_cases bundles all three QR cases: symmetry for ≡1(4), sign flip for ≡3(4), and general axiom. Algebraic meaning: the Kronecker character χ_D is self-dual under Artin reciprocity."
-    }
-  ],
-  "conclusion": {
-    "summary": "Generalizes the Kronecker symbol's quadratic reciprocity to fundamental discriminants. Two cases are proved from Mathlib's Jacobi QR: symmetry when D₁ ≡ 1 (mod 4), and sign flip when both ≡ 3 (mod 4). The general case (negative/even discriminants) is axiomatized, with the proof requiring class field theory.",
-    "implications": "The Kronecker QR law is the quadratic case of Artin's general reciprocity law. It states that the primitive character χ_D₁ of conductor |D₁| evaluates the same value at D₂ as χ_D₂ evaluates at D₁ — a deep symmetry connecting different quadratic fields. In practice, this allows computing (D₁/n)_K by switching the roles of discriminant and argument, which is essential for prime splitting calculations in quadratic number fields.",
-    "openQuestions": [
-      "Can the Kronecker QR axiom be proved from genus theory for quadratic forms (elementary but lengthy)?",
-      "Is Artin reciprocity for quadratic extensions available in Lean/Mathlib?",
-      "Can (D/·)_K be formalized as a Dirichlet character of conductor |D|?"
-    ]
-  },
-  "overview": {
-    "text": "The Kronecker symbol generalizes the Jacobi symbol to all integer moduli. This file proves the generalized quadratic reciprocity law: for coprime fundamental discriminants D₁ and D₂, the Kronecker symbols satisfy (D₁/|D₂|)_K = (D₂/|D₁|)_K. The case D₁ ≡ 1 (mod 4) follows from Jacobi QR (proved); the general case is axiomatized.",
-    "proofStrategy": "Reduce to Jacobi symbol via kronecker_eq_jacobi for odd positive moduli. Apply jacobiSym.quadratic_reciprocity_one_mod_four for the ≡1(4) case. Axiomatize the general case (negative/even discriminants).",
-    "keyInsights": [
-      "When D₁ ≡ 1 (mod 4), the Jacobi QR factor (-1)^{(D₁-1)/2·(D₂-1)/2} equals 1 (since (D₁-1)/2 is even), giving exact symmetry J(D₁,D₂) = J(D₂,D₁).",
-      "When both D₁ ≡ D₂ ≡ 3 (mod 4), the QR factor is (-1)^{odd·odd} = -1, giving a sign flip: J(D₁,D₂) = -J(D₂,D₁).",
-      "The Kronecker symbol (D/n) agrees with the Jacobi symbol for odd positive n, so the Jacobi QR directly implies the Kronecker QR for positive odd discriminants."
-    ],
-    "historicalContext": "The quadratic reciprocity law for the Kronecker symbol was established by Kronecker (1885) as part of his theory of quadratic forms and class field theory. It generalizes Gauss's original QR (for the Legendre symbol) and Jacobi's generalization (for products of Legendre symbols) to discriminants of arbitrary quadratic fields, including imaginary ones (negative discriminants) and those of even conductor (even discriminants).",
-    "problemStatement": "Does the Kronecker symbol satisfy generalized quadratic reciprocity for fundamental discriminants? Specifically: for coprime fundamental discriminants D₁, D₂, does (D₁/|D₂|)_K = (D₂/|D₁|)_K?"
-  },
-  "references": [
-    {
-      "title": "Zur Theorie der elliptischen Functionen",
-      "authors": "L. Kronecker",
-      "year": 1885
-    },
-    {
-      "title": "A Course in Computational Algebraic Number Theory",
-      "authors": "H. Cohen",
-      "year": 1993,
-      "note": "Algorithm 1.4.4 for Kronecker symbol computation"
-    },
-    {
-      "title": "Algebraic Number Theory",
-      "authors": "J. Neukirch",
-      "year": 1999,
-      "note": "Ch. II §5: Artin reciprocity for quadratic extensions"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-02",
-      "relationship": "extends",
-      "description": "Parent proof: defines the Kronecker symbol and axiomatizes kronecker_mul_left; this file proves the QR symmetry for its discriminants"
-    },
-    {
-      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
-      "relationship": "related",
-      "description": "Sibling: proves multiplicativity of the Kronecker symbol; this file uses the multiplicativity to derive QR"
-    },
-    {
-      "targetId": "elementary-quadratic-reciprocity-oq-03",
-      "relationship": "related",
-      "description": "Grandparent: Zolotarev QR proof; both use the Jacobi symbol as the algebraic backbone"
-    }
-  ],
-  "sorries": 0
+    "sorries": 0
 }

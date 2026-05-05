@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 217-line Lean file written. IsFundamentalDiscriminant definition. Proved: kronecker_symm_pos_one_mod_four (D₁≡1 mod 4 from Jacobi QR), kronecker_sign_three_mod_four (both ≡3 mod 4, sign flip). Axiom: kronecker_qr_fundamental (general case). 12 numerical examples via native_decide.",
+    "progressSummary": "CORRECTED: Fixed mathematically false axiom from PR #15884. Original claim 'unconditional equality for all coprime fund. disc.' was wrong (both-negative case has sign flip). New axiom correctly states ε=-1 for both-negative, ε=1 otherwise. Numerical verification added. PR submitted to fix.",
     "builtItems": [
       "IsFundamentalDiscriminant: formal definition (D≡1 mod 4 squarefree OR D=4m with m≡2,3 mod 4 squarefree) (ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean:64-68)",
       "isFund_one: D=1 is fundamental discriminant (line 70)",
@@ -39,14 +39,20 @@
       "kronecker_sign_three_mod_four: sign flip when both ≡3(4) via jacobiSym.quadratic_reciprocity_three_mod_four (line 128)",
       "kronecker_qr_fundamental: axiom for general fundamental discriminants (line 152)",
       "12 numerical verifications via native_decide: (5/3)=(3/5)=-1, (13/17)=(17/13), (3/7)=-(7/3), etc.",
-      "kronecker_qr_all_cases: summary theorem bundling all three QR cases (line 198)"
+      "kronecker_qr_all_cases: summary theorem bundling all three QR cases (line 198)",
+      "Fixed axiom kronecker_qr_fundamental: corrected to include if D1<0∧D2<0 then neg else eq (ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean:153-165)",
+      "kronecker_neg7_neg3_vals: native_decide verification that (-7/3)=-1 and (-3/7)=1 (line 204)",
+      "kronecker_neg7_neg3_sign: theorem (-7/3) = -(-3/7) proving the both-negative sign flip (line 208)",
+      "Fixed kronecker_qr_all_cases third conjunct: now states correct sign-corrected QR (line 229)"
     ],
     "insights": [
       "When D₁≡1(4), Jacobi QR factor (-1)^{(D₁-1)/2·(D₂-1)/2}=1 (since (D₁-1)/2 is even), giving exact symmetry J(D₁,D₂)=J(D₂,D₁)",
       "When both D₁≡D₂≡3(4), both (D-1)/2 are odd so the factor is -1, giving sign flip",
       "kronecker_eq_jacobi reduces Kronecker to Jacobi for odd positive moduli, enabling direct use of Jacobi QR theorems",
       "The general case (negative/even discriminants like -4, ±8) requires Artin reciprocity or genus theory - not yet in Mathlib",
-      "Proof structure: rw [kronecker_eq_jacobi, kronecker_eq_jacobi], then exact jacobiSym.quadratic_reciprocity_one_mod_four - 3 lines"
+      "Proof structure: rw [kronecker_eq_jacobi, kronecker_eq_jacobi], then exact jacobiSym.quadratic_reciprocity_one_mod_four - 3 lines",
+      "The original axiom kronecker_qr_fundamental was MATHEMATICALLY INCORRECT: it claimed unconditional equality (D1/|D2|)=(D2/|D1|) but this fails for both-negative discriminants. Example: D1=-7, D2=-3 gives (-7/3)=-1 ≠ 1=(-3/7). The correct theorem has ε=-1 sign correction when both D1<0 and D2<0.",
+      "The sign correction arises from the Dirichlet character interpretation: χ_D is an ODD character when D<0 (χ_D(-1)=-1), so evaluating at negative D2 introduces an extra factor of -1 from each negative discriminant."
     ],
     "mathlibGaps": [
       "Artin reciprocity for quadratic extensions not in Mathlib - would allow proving kronecker_qr_fundamental",
@@ -54,9 +60,9 @@
       "jacobiSym for even moduli not fully handled - Kronecker symbol at 2 uses separate kronecker2 definition"
     ],
     "nextSteps": [
-      "Await Docker build confirmation",
-      "Create PR with label 'research'",
-      "Future: prove kronecker_qr_fundamental from genus theory if that infrastructure is added to Mathlib"
+      "Prove the mixed-sign case (D1<0, D2>0) from existing Jacobi QR infrastructure + multiplicativity",
+      "Prove the even discriminant case (4|D1, D2 odd) using kronecker 4 D2 = (kronecker 2 D2)^2 = 1",
+      "Try to eliminate the axiom entirely using genus theory if that becomes available in Mathlib"
     ]
   },
   "tags": [
