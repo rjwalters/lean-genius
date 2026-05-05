@@ -31,7 +31,7 @@
       "Recovery theorems: K=1 gives spherical law, K=-1 gives hyperbolic law",
       "Algebraic equivalences: unified formula ↔ scaled spherical/hyperbolic laws for all K≠0"
     ],
-    "theoremCount": 15
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "The question of whether the Euclidean, spherical, and hyperbolic laws of cosines can be unified into a single formula has been understood geometrically since the 19th century, with the development of non-Euclidean geometry by Lobachevsky, Bolyai, and later Riemann. The key insight is that constant-curvature spaces admit a unified trigonometry parametrized by the sectional curvature K. For K > 0 (spherical), the natural trigonometric functions are circular; for K < 0 (hyperbolic), they are hyperbolic; and for K = 0 (Euclidean), the functions degenerate to their linear/constant limits. This parametric approach was formalized in the context of Riemannian geometry by Killing, Clifford, and others. The unified law cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C) appears in modern treatments of Riemannian geometry, differential geometry textbooks (e.g., Thurston), and is closely related to the Jacobi equation for geodesic deviation. The Lean formalization presented here gives a purely algebraic treatment: defining cs_K and sn_K as piecewise functions of K and proving key identities from Mathlib's existing circular and hyperbolic trigonometry.",
