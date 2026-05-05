@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-structure-axioms",
+    "proofId": "law-of-cosines-oq-03-oq-02",
+    "range": { "startLine": 49, "endLine": 74 },
+    "type": "definition",
+    "title": "HyperbolicSineTriangle: 6 Structure-Encoded Axioms",
+    "content": "The structure has 13 fields: 3 side lengths (a,b,c), 3 angles (A,B,C), 3 positivity proofs for sides (ha,hb,hc), 3 angle bounds (hA/hA_lt etc), 1 angular defect field, and 2 ratio equality fields. The CLAUDE.md axiom policy counts structure-encoded hypotheses: the 6 mathematical axioms are ha/hb/hc (side positivity — these are geometric facts, not trivially true), defect_pos (angular defect), law_sines (A/a=B/b), law_sines_bc (B/b=C/c). The angle positivity/boundedness fields are additional but follow from basic hyperbolic geometry.",
+    "mathContext": "$$\\text{HyperbolicSineTriangle}: 0 < a, 0 < b, 0 < c,\\ A+B+C < \\pi,\\ \\frac{\\sin A}{\\sinh a} = \\frac{\\sin B}{\\sinh b} = \\frac{\\sin C}{\\sinh c}$$",
+    "significance": "key",
+    "relatedConcepts": ["structure-encoded axioms", "axiomatization strategy", "hyperbolic triangle", "circumradius"],
+    "prerequisites": ["Lean 4 structure syntax", "axiom counting policy", "hyperbolic geometry basics"]
+  },
+  {
+    "id": "ann-sinh-positivity",
+    "proofId": "law-of-cosines-oq-03-oq-02",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "technique",
+    "title": "sinh Positivity: The Denominator Clearing Tool",
+    "content": "sinh_pos_of_pos uses Real.sinh_pos_iff (from Mathlib) to prove sinh x > 0 for x > 0. The nonzero form (sinh_pos_ne_zero) converts this to sinh x ≠ 0, needed for div_eq_div_iff to clear denominators. This two-lemma pattern (pos → ne_of_gt) is a standard Lean idiom: div_eq_div_iff requires ≠ 0 not > 0, so ne_of_gt provides the bridge.",
+    "mathContext": "$$\\sinh x > 0 \\iff x > 0 \\quad (\\text{since } \\sinh x = \\frac{e^x - e^{-x}}{2} \\text{ and } e^x > e^{-x} \\text{ for } x > 0)$$",
+    "significance": "technical",
+    "relatedConcepts": ["Real.sinh_pos_iff", "ne_of_gt", "div_eq_div_iff", "denominator clearing"],
+    "prerequisites": ["Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic", "ne_of_gt pattern"]
+  },
+  {
+    "id": "ann-cross-mult-ac",
+    "proofId": "law-of-cosines-oq-03-oq-02",
+    "range": { "startLine": 121, "endLine": 128 },
+    "type": "technique",
+    "title": "Cross-Multiplication AC: nlinarith from Two Pairwise Laws",
+    "content": "The AC cross-multiplication (sin A · sinh c = sin C · sinh a) cannot be derived by a single div_eq_div_iff — that would need the AC ratio directly, which isn't a hypothesis. Instead, the proof uses nlinarith with the AB law (sin A · sinh b = sin B · sinh a) and BC law (sin B · sinh c = sin C · sinh b), and the positivity witnesses sinA_pos, sinB_pos, shb_pos. The nlinarith call eliminates sin B · sinh b by multiplying through: (sin A · sinh b) · sinh c = (sin B · sinh a) · sinh c and (sin B · sinh b) · sinh a = (sin C · sinh b) · sinh a, then canceling sin B · sinh b.",
+    "mathContext": "From $\\sin A \\cdot \\sinh b = \\sin B \\cdot \\sinh a$ and $\\sin B \\cdot \\sinh c = \\sin C \\cdot \\sinh b$: multiply first by $\\sinh c$ and second by $\\sinh a$, then use $\\sin B \\cdot \\sinh b > 0$ to cancel.",
+    "significance": "supporting",
+    "relatedConcepts": ["nlinarith with witnesses", "chain of equalities", "elimination of middle term"],
+    "prerequisites": ["nlinarith tactic", "positivity witnesses", "div_eq_div_iff"]
+  },
+  {
+    "id": "ann-angular-defect",
+    "proofId": "law-of-cosines-oq-03-oq-02",
+    "range": { "startLine": 135, "endLine": 141 },
+    "type": "insight",
+    "title": "Angular Defect: The Gauss-Bonnet Invariant",
+    "content": "The angular defect δ = π - (A+B+C) is the core invariant of hyperbolic geometry. By Gauss-Bonnet for hyperbolic space (curvature κ = -1), the area of a hyperbolic triangle equals |κ|·δ = δ. So a triangle with angles summing to 0 would have area π (the ideal triangle), and one summing to π would have area 0. The defect also enables the isoceles proof by ruling out the supplement: sin A = sin B and A+B < π (from defect_pos + C > 0) forces A = B.",
+    "mathContext": "$$\\text{Area}(\\triangle) = \\pi - (A + B + C) = \\delta > 0 \\quad (\\text{Gauss-Bonnet, curvature} = -1)$$",
+    "significance": "key",
+    "relatedConcepts": ["angular defect", "Gauss-Bonnet theorem", "hyperbolic area", "ideal triangles"],
+    "prerequisites": ["Gauss-Bonnet theorem", "hyperbolic geometry", "curvature of space"]
+  },
+  {
+    "id": "ann-sin-injectivity",
+    "proofId": "law-of-cosines-oq-03-oq-02",
+    "range": { "startLine": 154, "endLine": 201 },
+    "type": "technique",
+    "title": "sin Injectivity on (0,π): The Supplement-Exclusion Argument",
+    "content": "The proof has two main steps: (1) derive cos A = cos B from sin A = sin B; (2) conclude A = B via Real.cos_injOn_Icc. For step 1: sin²A = sin²B gives cos²A = cos²B (Pythagorean); so cos A = ±cos B. If cos A = -cos B, then the product-to-sum formula gives cos(A+B) = cos A·cos B - sin A·sin B = -cos²B - sin²B = -1, forcing A+B = π — contradicted by hAB_lt. The by_contra structure: assuming A ≠ B, derive contradiction via arccos_neg_one.",
+    "mathContext": "Steps: $\\sin A = \\sin B \\Rightarrow \\sin^2 A = \\sin^2 B \\Rightarrow \\cos^2 A = \\cos^2 B$. If $\\cos A = -\\cos B$: $\\cos(A+B) = \\cos A \\cos B - \\sin A \\sin B = -\\cos^2 B - \\sin^2 B = -1 \\Rightarrow A+B = \\pi$. Contradiction. So $\\cos A = \\cos B \\Rightarrow A = B$ by `cos_injOn_Icc`.",
+    "significance": "key",
+    "relatedConcepts": ["Real.cos_injOn_Icc", "product-to-sum formula", "supplement exclusion", "sq_eq_sq_iff_eq_or_eq_neg"],
+    "prerequisites": ["Real.sin_sq_add_cos_sq", "Real.cos_add (product-to-sum)", "arccos_neg_one", "Real.cos_lt_one_of_ne_zero"]
+  },
+  {
+    "id": "ann-isoceles",
+    "proofId": "law-of-cosines-oq-03-oq-02",
+    "range": { "startLine": 215, "endLine": 230 },
+    "type": "insight",
+    "title": "Isoceles Theorem: Two-Direction Chain Using Injectivity",
+    "content": "Forward (a=b→A=B): a=b gives sinh a = sinh b (by rw [hab]). Then rw [hsinh] in t.law_sines gives sin A / sinh a = sin A / sinh a, and div_left_inj' extracts sin A = sin B. Finally sin_eq_of_lt_pi (with A+B < π from defect+C>0) gives A=B. Backward (A=B→a=b): hAB gives sin A = sin B. Then law_sines_cross_ab + nlinarith with sinA_pos gives sinh a = sinh b. Then Real.sinh_injective (strict monotonicity) gives a=b.",
+    "mathContext": "$$a = b \\iff \\sinh a = \\sinh b \\iff \\frac{\\sin A}{\\sinh a} = \\frac{\\sin B}{\\sinh a} \\iff \\sin A = \\sin B \\xrightarrow{A+B < \\pi} A = B$$",
+    "significance": "key",
+    "relatedConcepts": ["Real.sinh_injective", "div_left_inj'", "isoceles triangle", "biconditional proof"],
+    "prerequisites": ["Real.sinh_injective (strict monotonicity)", "div_left_inj' (injective division)", "sin_eq_of_lt_pi (local lemma)"]
+  },
+  {
+    "id": "ann-right-angle",
+    "proofId": "law-of-cosines-oq-03-oq-02",
+    "range": { "startLine": 236, "endLine": 263 },
+    "type": "context",
+    "title": "Special Cases: Right Angle and Equilateral Triangle",
+    "content": "right_angle_sines specializes to C=π/2: law_sines_ac gives sin A/sinh a = sin C/sinh c, then rw [hC, Real.sin_pi_div_two] makes sin C = 1, giving 1/sinh c. This is the hyperbolic analogue of sin(A) = a/c in Euclidean right triangles. equilateral_angles applies isoceles_iff twice (for AB and BC pairs), with the BC case using the direct law_sines_bc + div_left_inj' chain from sin injectivity. Both theorems exemplify how the axiomatized structure enables specialization without re-proving from scratch.",
+    "mathContext": "$C = \\pi/2 \\Rightarrow \\sin C = 1 \\Rightarrow \\frac{\\sin A}{\\sinh a} = \\frac{1}{\\sinh c}$. Analogy: Euclidean right triangle $\\sin A = a/c$ (opposite over hypotenuse).",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.sin_pi_div_two", "right hyperbolic triangle", "equilateral hyperbolic triangle", "specialization of general law"],
+    "prerequisites": ["law_sines_ac (AC ratio)", "isoceles_iff (main theorem)", "Real.sin_pi_div_two"]
+  }
+]
