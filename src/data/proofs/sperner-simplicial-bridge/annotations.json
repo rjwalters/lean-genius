@@ -1,92 +1,134 @@
 [
   {
     "id": "ann-vertex-enum",
+    "proofId": "sperner-simplicial-bridge",
+    "range": { "startLine": 65, "endLine": 113 },
     "type": "definition",
-    "label": "vertexEnum",
     "title": "Canonical Vertex Enumeration via Sorting",
-    "body": "vertexEnum s hs k returns the k-th vertex of simplex s in sorted order, using Finset.sort with the LinearOrder on E. This converts unordered finset data into ordered arrays compatible with the abstract CellComplex/Sperner framework, where cells have Fin(d+1)-indexed vertices.",
-    "location": { "line": 65 },
-    "tags": ["definition", "sorting", "vertex", "finset"]
-  },
-  {
-    "id": "ann-vertex-inj",
-    "type": "theorem",
-    "label": "vertexEnum_injective",
-    "title": "Vertex Enumeration Is Injective",
-    "body": "For a simplex s with d+1 vertices, vertexEnum s hs is injective as a function Fin(d+1) → E. This follows from Nodup property of Finset.sort: since the sorted list has no duplicate elements, distinct indices give distinct vertices.",
-    "location": { "line": 80 },
-    "tags": ["injectivity", "sorting", "nodup"]
+    "content": "`vertexEnum s hs k` returns the k-th vertex of simplex `s` in sorted order, using `Finset.sort` with the `LinearOrder` on `E`. This converts unordered finset data into ordered arrays compatible with the abstract `Sperner.exists_panchromatic` framework, where cells have `Fin(d+1)`-indexed vertices.\n\nThree supporting lemmas complete the vertex enumeration section:\n- `vertexEnum_mem`: the k-th sorted vertex belongs to the simplex (follows from `List.get_mem` + `Finset.mem_sort`)\n- `vertexEnum_injective`: enumeration is injective (follows from `Nodup` property of `Finset.sort`)\n- `vertexEnum_image_univ`: the image of `Finset.univ` under `vertexEnum` equals `s` (follows from surjectivity onto the sorted list)\n\nThe key technical challenge: Lean's `Finset.sort` returns a `List E`, so we use `List.get` with a carefully cast `Fin` index. The cast uses the fact that `List.length (s.sort (≤)) = s.card = d+1`.",
+    "mathContext": "For a simplex $s \\in \\mathcal{F}(E)$ with $|s| = d+1$, `vertexEnum s hs : Fin(d+1) → E` gives the bijection $k \\mapsto s_{(k)}$ where $s_{(0)} \\leq s_{(1)} \\leq \\cdots \\leq s_{(d)}$ is the sorted order. Injectivity follows from the sorted list having no duplicates (`List.Nodup`), which holds because $s$ is a finset (all elements distinct).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sort",
+      "List.get",
+      "LinearOrder",
+      "Fin(d+1) indexing",
+      "List.Nodup"
+    ],
+    "prerequisites": [
+      "Finset.sort and its properties",
+      "List.get_mem",
+      "LinearOrder on vertex type E"
+    ]
   },
   {
     "id": "ann-face-machinery",
-    "type": "theorem",
-    "label": "vertexEnum_image_erase",
-    "title": "Face Image Equals Simplex with Vertex Erased",
-    "body": "The image of Fin(d+1) \\ {k} under vertexEnum equals s.erase (vertexEnum s hs k). This is the core identity connecting the abstract face notion (removing index k) to the geometric face notion (removing a specific vertex from the finset).",
-    "location": { "line": 134 },
-    "tags": ["face", "erase", "image", "geometric"]
+    "proofId": "sperner-simplicial-bridge",
+    "range": { "startLine": 115, "endLine": 170 },
+    "type": "definition",
+    "title": "Face Construction: faceOf and vertexEnum_image_erase",
+    "content": "`faceOf s hs k` constructs the codimension-1 face opposite vertex k: it returns the image of `Finset.univ.erase k` under `vertexEnum s hs`. This is the abstract face: erasing index k from the vertex ordering gives the opposite face.\n\nThe key lemma `vertexEnum_image_erase` (line 134) shows: `(Finset.univ.erase k).image (vertexEnum s hs) = s.erase (vertexEnum s hs k)`. This is the core identity connecting abstract face notation (erasing index k) to geometric face notation (erasing a specific vertex from the finset). The proof uses:\n- `Finset.image_erase` with injectivity of `vertexEnum`\n- `vertexEnum_image_univ` to identify the full image with `s`\n\nAdditional lemmas: `faceOf_card` (the face has `d` vertices), `faceOf_subset` (the face is a subset of `s`), `vertexEnum_not_mem_faceOf_iff` (the erased vertex is not in the face).",
+    "mathContext": "The face $F_k(s) = s \\setminus \\{v_k\\}$ (removing the $k$-th sorted vertex) has cardinality $d$. In Lean: `faceOf s hs k := (Finset.univ.erase k).image (vertexEnum s hs)`. The identity `vertexEnum_image_erase` says this equals `s.erase (vertexEnum s hs k)`, connecting the abstract (index-based) and geometric (vertex-based) descriptions of the same face.",
+    "significance": "key",
+    "relatedConcepts": [
+      "codimension-1 face",
+      "Finset.image_erase",
+      "Finset.erase",
+      "face opposite to a vertex"
+    ],
+    "prerequisites": [
+      "vertexEnum_injective",
+      "vertexEnum_image_univ",
+      "Finset.image_erase"
+    ]
   },
   {
     "id": "ann-containers",
+    "proofId": "sperner-simplicial-bridge",
+    "range": { "startLine": 171, "endLine": 276 },
     "type": "definition",
-    "label": "containersOf",
-    "title": "Container Cells for a Face",
-    "body": "containersOf topCells f returns the finset of top-dimensional cells in topCells that contain the face f as a subset. The pseudomanifold condition requires containersOf f to have cardinality at most 2 for every codimension-1 face f.",
-    "location": { "line": 0 },
-    "tags": ["definition", "containers", "pseudomanifold"]
-  },
-  {
-    "id": "ann-containers-le-two",
-    "type": "theorem",
-    "label": "containersOf_card_le_two",
-    "title": "Pseudomanifold: At Most 2 Containers per Face",
-    "body": "Under the pseudomanifold hypothesis, every d-element face has at most 2 cells containing it. This is the direct formalization of the pseudomanifold condition and is the key premise for all adjacency lemmas.",
-    "location": { "line": 304 },
-    "tags": ["pseudomanifold", "containers", "cardinality"]
+    "title": "containersOf and findOppositeIdx: The Adjacency Infrastructure",
+    "content": "Two key definitions enable the adjacency construction:\n\n**`containersOf topCells f`** (line 171): returns the finset of top-dimensional cells in `topCells` that contain face `f` as a subset. Defined as `topCells.filter (fun s => f ⊆ s)`. The pseudomanifold condition requires `(containersOf topCells f).card ≤ 2` for every codimension-1 face.\n\n**`findOppositeIdx t ht f hf_sub hf_card`** (line 200): Given a cell `t` containing face `f`, returns the index `k' : Fin(d+1)` such that `faceOf t ht k' = f`. This is needed to compute the 'return direction' when moving from cell s to adjacent cell t: if we entered through face f, the index k' identifies which vertex of t is opposite to f (and thus which face index to use in t for the adjacency axiom).\n\n**`self_mem_containersOf`** (line 177): the cell itself contains its own face, ensuring containers is always nonempty. `sdiff_nonempty_of_card` (line 188) shows that when containers has ≥ 2 elements, the complement of the current cell is nonempty.",
+    "mathContext": "The `containersOf` definition: $\\mathrm{Cont}(F) = \\{s \\in \\mathcal{T} \\mid F \\subset s\\}$. Pseudomanifold condition: $|\\mathrm{Cont}(F)| \\leq 2$ for all codimension-1 faces $F$. This means each interior face is shared by exactly 2 cells (interior) or 1 cell (boundary). `findOppositeIdx` solves: given $t$ and $F \\subset t$ with $|F| = d$, find $k'$ such that $t \\setminus \\{v_{k'}\\} = F$, i.e., $v_{k'} = t \\setminus F$ (the unique vertex of $t$ not in $F$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pseudomanifold condition",
+      "codimension-1 face",
+      "adjacency in simplicial complexes",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "faceOf",
+      "Finset.filter (containersOf)",
+      "Finset.Nonempty.choose"
+    ]
   },
   {
     "id": "ann-adjfn",
+    "proofId": "sperner-simplicial-bridge",
+    "range": { "startLine": 277, "endLine": 345 },
     "type": "definition",
-    "label": "adjFn",
-    "title": "Adjacency Function for Simplicial Data",
-    "body": "adjFn topCells hcard s k looks up the face opposite vertex k in cell s (via the erased-vertex construction), finds all cells containing that face, and returns Some(s', k') where s' is the other cell and k' is the index of the shared face vertex in s'. Returns None if the face is on the boundary (only 1 container).",
-    "location": { "line": 0 },
-    "tags": ["definition", "adjacency", "simplicial"]
+    "title": "adjFn: The Adjacency Function for Pseudomanifold Complexes",
+    "content": "`adjFn topCells hcard s k` looks up the cell adjacent to `s` across the face opposite vertex `k`:\n1. Compute `f = faceOf s hs k` (the codimension-1 face)\n2. Find `cs = containersOf topCells f` (all cells containing f)\n3. If `cs.card ≤ 1`: return `none` (boundary face, no neighbor)\n4. Otherwise: `cs_without_s = cs.erase s` is nonempty, giving cell `t ≠ s` containing f\n5. Use `findOppositeIdx t ht f` to get `k'` (which vertex of t is opposite to f)\n6. Return `some(⟨t, ht⟩, k')`\n\nThe `containersOf_card_le_two` lemma (line 304) immediately follows: the pseudomanifold hypothesis gives the bound. `containersOf_card_one_or_two` shows it's exactly 1 or 2 (never 0, since the cell itself is always a container).",
+    "mathContext": "The adjacency function $\\mathrm{adj}(s, k) = (t, k')$ where $t$ is the unique other cell sharing face $F_k(s)$ with $s$, and $k'$ is the index such that $F_{k'}(t) = F_k(s)$. Returns `None` if $F_k(s)$ is a boundary face (only $s$ contains it). The pseudomanifold condition ensures at most one such $t$ exists. The `adjFn` is `noncomputable` because `findOppositeIdx` uses classical choice (`Finset.Nonempty.choose`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "noncomputable definition",
+      "Finset.Nonempty.choose",
+      "boundary vs interior faces",
+      "pseudomanifold adjacency"
+    ],
+    "prerequisites": [
+      "containersOf",
+      "findOppositeIdx",
+      "faceOf",
+      "containersOf_card_le_two"
+    ]
   },
   {
-    "id": "ann-adjfn-symm",
-    "type": "theorem",
-    "label": "adjFn_symm",
-    "title": "Adjacency Is Symmetric",
-    "body": "If adjFn s k = Some(s', k'), then adjFn s' k' = Some(s, k). This is the first adjacency axiom needed for the abstract Sperner framework. The proof uses the symmetric structure of containersOf: if s and s' both contain the face, then s' is the other cell when looking from s, and vice versa.",
-    "location": { "line": 447 },
-    "tags": ["adjacency", "symmetry", "axiom"]
-  },
-  {
-    "id": "ann-adjfn-vertex",
-    "type": "theorem",
-    "label": "adjFn_vertex",
-    "title": "Adjacent Cells Share a Codimension-1 Face",
-    "body": "If adjFn s k = Some(s', k'), then the vertex images of Fin(d+1) \\ {k} under vertexEnum for s equals the vertex image of Fin(d+1) \\ {k'} for s'. This is the second adjacency axiom: adjacent cells share their common (d-1)-face. The proof uses vertexEnum_image_erase to convert between the abstract and geometric face representations.",
-    "location": { "line": 347 },
-    "tags": ["adjacency", "shared-face", "axiom"]
-  },
-  {
-    "id": "ann-adjfn-ne",
-    "type": "theorem",
-    "label": "adjFn_ne",
-    "title": "Adjacent Cells Are Distinct",
-    "body": "If adjFn s k = Some(s', k'), then s ≠ s' (as finsets). This is the third adjacency axiom. The proof uses adjFn_s': the other container is specifically a cell DIFFERENT from s, enforced by Finset.exists_ne.",
-    "location": { "line": 384 },
-    "tags": ["adjacency", "distinctness", "axiom"]
+    "id": "ann-adjacency-axioms",
+    "proofId": "sperner-simplicial-bridge",
+    "range": { "startLine": 347, "endLine": 562 },
+    "type": "insight",
+    "title": "Three Adjacency Axioms: vertex, ne, symm",
+    "content": "The three lemmas verify that `adjFn` satisfies the axioms required by the abstract `Sperner.exists_panchromatic` theorem:\n\n**`adjFn_vertex`** (line 347): If `adjFn s k = some(s', k')`, then `(univ.erase k).image (vertexEnum s hs) = (univ.erase k').image (vertexEnum s' hs')`. This says adjacent cells share their common (d-1)-face. Proof: both equal `faceOf s hs k`, using `vertexEnum_image_erase` for the conversion.\n\n**`adjFn_ne`** (line 384): If `adjFn s k = some(s', k')`, then `s ≠ s'`. The neighbor is a genuinely different cell. Proof: `t ∈ cs_without_s = cs.erase s` means `t ≠ s`.\n\n**`adjFn_symm`** (line 447): If `adjFn s k = some(s', k')`, then `adjFn s' k' = some(s, k)`. Adjacency is symmetric. This is the hardest axiom: knowing that `s` is the 'other container' when looking from `s'` at face `faceOf s' hs' k'` (which equals `faceOf s hs k`), and that `k` corresponds to the opposite vertex of `s` from that face.\n\nThe proofs unfold `adjFn` using `split_ifs`, extracting the components from the `Option` and `Prod` structures via `Option.some.injEq` and `Prod.mk.injEq`.",
+    "mathContext": "The three axioms for `adjFn` in the abstract Sperner theorem:\n1. **Shared face**: $\\mathrm{adj}(s,k) = (s',k') \\Rightarrow F_k(s) = F_{k'}(s')$ (the shared face)\n2. **Different cell**: $\\mathrm{adj}(s,k) = (s',k') \\Rightarrow s \\neq s'$\n3. **Symmetry**: $\\mathrm{adj}(s,k) = (s',k') \\Rightarrow \\mathrm{adj}(s',k') = (s,k)$\n\nThese three axioms are exactly what the abstract Sperner proof requires to set up the door-counting parity argument. The `adjFn_symm` proof is the most involved: it requires showing that when `adjFn s k = some(s',k')`, the containersOf set for `faceOf s' hs' k'` equals `containersOf topCells (faceOf s hs k)` (same face), and that looking from s' finds s as the other cell.",
+    "significance": "key",
+    "relatedConcepts": [
+      "adjacency axioms",
+      "door-counting argument",
+      "split_ifs tactic",
+      "Option.some.injEq",
+      "Prod.mk.injEq"
+    ],
+    "prerequisites": [
+      "adjFn",
+      "vertexEnum_image_erase",
+      "containersOf_card_eq_two_of_adjFn",
+      "findOppositeIdx_eq"
+    ]
   },
   {
     "id": "ann-main-theorem",
-    "type": "theorem",
-    "label": "exists_panchromatic",
+    "proofId": "sperner-simplicial-bridge",
+    "range": { "startLine": 564, "endLine": 612 },
+    "type": "insight",
     "title": "Sperner's Lemma for Pseudomanifold Simplicial Complexes",
-    "body": "Given a finite set topCells of (d+1)-vertex simplices satisfying the pseudomanifold condition, a vertex coloring c, and an odd count of boundary door-face pairs, there exists a panchromatic cell—one whose vertices collectively receive all d+1 colors. The proof instantiates Sperner.exists_panchromatic from SpernerMathlib by providing adjFn and the three verified adjacency axioms.",
-    "location": { "line": 564 },
-    "tags": ["sperner", "existence", "panchromatic", "main-result"]
+    "content": "`exists_panchromatic`: given `topCells` (a finite set of (d+1)-vertex simplices satisfying the pseudomanifold condition), a vertex coloring `c : E → Fin(d+1)`, and an odd number of boundary door-face pairs, there exists a panchromatic cell — one whose vertices collectively receive all d+1 colors.\n\nThe proof instantiates `Sperner.exists_panchromatic` from `SpernerMathlib` by providing:\n- `adjFn topCells hcard` as the adjacency function\n- The three verified axioms: `adjFn_vertex`, `adjFn_ne`, `adjFn_symm`\n\nThis is the bridge payoff: all the geometric machinery (vertex sorting, face construction, adjacency via containers) exists to satisfy the abstract axioms of the Sperner theorem in `SpernerMathlib`. Once the axioms are met, the combinatorial proof runs automatically.\n\nThe parity condition (odd boundary doors) is the discrete analog of Sperner's boundary condition: in the original Sperner's lemma, the boundary coloring must be 'Sperner-proper', which ensures an odd count of boundary simplices with d-1 distinct colors.",
+    "mathContext": "**Sperner's Lemma** (1928): In any triangulation of a $d$-simplex with a Sperner-proper vertex coloring, there exists at least one panchromatic (rainbow) simplex — a simplex whose $d+1$ vertices receive all $d+1$ different colors. The abstract version in `SpernerMathlib` works for any pure pseudomanifold with a parity condition on boundary door-faces, unifying Sperner's original result with its generalizations (e.g., Kuhn's triangulation, topological generalizations). The existence of panchromatic simplices is the combinatorial core of Brouwer's fixed-point theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sperner's lemma",
+      "panchromatic simplex",
+      "door-counting parity",
+      "Brouwer fixed-point theorem",
+      "SpernerMathlib"
+    ],
+    "prerequisites": [
+      "Sperner.exists_panchromatic (SpernerMathlib)",
+      "adjFn and its three axioms",
+      "pseudomanifold condition",
+      "boundary door-face pairs"
+    ]
   }
 ]
