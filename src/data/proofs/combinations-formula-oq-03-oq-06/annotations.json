@@ -1,0 +1,114 @@
+[
+  {
+    "id": "quantum-group-context",
+    "proofId": "combinations-formula-oq-03-oq-06",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Quantum Groups and the Verma Module Divided Power Formula",
+    "content": "U_q(𝔰𝔩₂) is the quantum group deforming the Lie algebra 𝔰𝔩₂ with generators E, F, K, K⁻¹ satisfying quantum Serre relations. Its Verma module V(λ) has basis {v₀, v₁, ...} where F·vₙ = [n+1]_q · vₙ₊₁ with q-integer scaling. The open question is whether this structure can be formalized in Lean 4 using the qNumber and qFactorial infrastructure from combinations-formula-oq-03. This file answers affirmatively: the divided power formula F^n·v₀ = [n]_q!·vₙ is proved rigorously.",
+    "mathContext": "$U_q(\\mathfrak{sl}_2)$ generators satisfy: $KE = q^2 EK$, $KF = q^{-2} FK$, $EF - FE = \\frac{K - K^{-1}}{q - q^{-1}}$. The Verma module $V(\\lambda)$ has basis $\\{v_0, v_1, \\ldots\\}$ with $F \\cdot v_n = [n+1]_q v_{n+1}$ where $[n]_q = \\frac{q^n - q^{-n}}{q - q^{-1}}$ (generic $q$) or $[n]_q = 1 + q + \\cdots + q^{n-1}$ (polynomial $q$). The divided power formula: $F^n \\cdot v_0 = [n]_q! \\cdot v_n$ where $[n]_q! = [1]_q [2]_q \\cdots [n]_q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantum groups",
+      "Verma modules",
+      "q-integers",
+      "quantum Serre relations",
+      "Jones polynomial"
+    ],
+    "prerequisites": [
+      "qNumber from combinations-formula-oq-03",
+      "qFactorial from combinations-formula-oq-03",
+      "Lie algebra 𝔰𝔩₂",
+      "representation theory basics"
+    ]
+  },
+  {
+    "id": "verma-data-structure",
+    "proofId": "combinations-formula-oq-03-oq-06",
+    "range": { "startLine": 45, "endLine": 63 },
+    "type": "definition",
+    "title": "VermaData: Abstract Verma Module over CommRing",
+    "content": "The VermaData structure captures the essential data of a U_q(𝔰𝔩₂) Verma module in maximal generality: (1) a sequence v : ℕ → V of basis vectors in any k-module V; (2) a linear map F : V →ₗ[k] V (the lowering operator); (3) the action axiom F_action stating F(vₙ) = qNumber q (n+1) • vₙ₊₁. Working over an arbitrary CommRing k (not requiring a field with q⁻¹) avoids the invertibility issues that arise in the full quantum Serre relation, making this structure universally applicable.",
+    "mathContext": "The abstract structure approach: rather than constructing $U_q(\\mathfrak{sl}_2)$ as a non-commutative algebra (which requires defining a tensor product with non-commutative multiplication), we abstract the Verma module action directly. The key axiom $F(v_n) = [n+1]_q \\cdot v_{n+1}$ is all that's needed for the divided power formula. Over a CommRing $k$ with $q \\in k$, $[n]_q = \\text{qNumber}\\, q\\, n = 1 + q + \\cdots + q^{n-1} \\in k$ (no division needed).",
+    "significance": "key",
+    "relatedConcepts": [
+      "structure definitions in Lean 4",
+      "LinearMap over CommRing",
+      "module axioms",
+      "qNumber definition",
+      "abstraction over type class hierarchies"
+    ],
+    "prerequisites": [
+      "CommRing and Module typeclasses",
+      "LinearMap (→ₗ[k])",
+      "qNumber q n from OQ-03"
+    ]
+  },
+  {
+    "id": "divided-power-induction",
+    "proofId": "combinations-formula-oq-03-oq-06",
+    "range": { "startLine": 65, "endLine": 95 },
+    "type": "insight",
+    "title": "Divided Power Formula: F^n·v₀ = [n]_q!·vₙ by Induction",
+    "content": "The central result verma_Fpower_eq_qFactorial is proved by induction. Base case n=0: F^0·v₀ = v₀ = 1·v₀ = [0]_q!·v₀ (since qFactorial q 0 = 1). Inductive step n→n+1: unfold F^{n+1} via Function.iterate_succ, apply IH to get [n]_q!·vₙ, apply map_smul (F is linear: F(c·v) = c·F(v)), apply F_action to get [n]_q!·[n+1]_q·vₙ₊₁, use smul_smul to combine scalars, and rewrite with qFactorial_succ: [n]_q!·[n+1]_q = [n+1]_q!.",
+    "mathContext": "The inductive chain: $F^{n+1} v_0 = F(F^n v_0) \\stackrel{IH}{=} F([n]_q! \\cdot v_n) \\stackrel{\\text{linear}}{=} [n]_q! \\cdot F(v_n) \\stackrel{\\text{action}}{=} [n]_q! \\cdot [n+1]_q \\cdot v_{n+1} \\stackrel{\\text{assoc}}{=} ([n]_q! \\cdot [n+1]_q) \\cdot v_{n+1} \\stackrel{\\text{def}}{=} [n+1]_q! \\cdot v_{n+1}$. The key lemma $\\text{qFactorial\\_succ}$: $[n+1]_q! = [n]_q! \\cdot [n+1]_q$ mirrors the classical factorial recurrence $n! = (n-1)! \\cdot n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Function.iterate_succ",
+      "LinearMap.map_smul",
+      "smul_smul",
+      "qFactorial_succ",
+      "structural induction"
+    ],
+    "prerequisites": [
+      "VermaData.F_action axiom",
+      "qFactorial definition",
+      "Lean 4 induction tactic"
+    ]
+  },
+  {
+    "id": "q-number-results",
+    "proofId": "combinations-formula-oq-03-oq-06",
+    "range": { "startLine": 97, "endLine": 131 },
+    "type": "technique",
+    "title": "q-Number Scaling Factors and Product Formula",
+    "content": "Three related results: (1) F_squared_action directly applies F_action twice to get F(F(vₙ)) = [n+1]_q·[n+2]_q·vₙ₊₂. (2) verma_spinOne_F_middle specializes to n=1: F(v₁) = [2]_q·v₂ = (1+q)·v₂, using the explicit computation [2]_q = 1+q. (3) verma_qFactorial_product proves [n]_q! = ∏_{i<n} [i+1]_q by induction using Finset.prod_range_succ, connecting qFactorial to individual qNumber multiplicands.",
+    "mathContext": "The product formula $[n]_q! = \\prod_{i=0}^{n-1} [i+1]_q = [1]_q \\cdot [2]_q \\cdots [n]_q$ shows that qFactorial is literally the product of q-integers, mirroring $n! = 1 \\cdot 2 \\cdots n$. For $n=2$: $[2]_q! = [1]_q \\cdot [2]_q = 1 \\cdot (1+q) = 1+q$. The spin-1 representation has $\\dim = 3$ with basis $\\{v_0, v_1, v_2\\}$; the middle scaling $F(v_1) = [2]_q \\cdot v_2 = (1+q) v_2$ is the quantum deformation of the classical factor 2 in $F \\cdot e_1 = 2 e_2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.prod_range_succ",
+      "qNumber_succ",
+      "q-factorial as product",
+      "spin-1 representation",
+      "q-integer values"
+    ],
+    "prerequisites": [
+      "verma_Fpower_eq_qFactorial",
+      "qFactorial_succ",
+      "Finset.prod induction"
+    ]
+  },
+  {
+    "id": "classical-limit",
+    "proofId": "combinations-formula-oq-03-oq-06",
+    "range": { "startLine": 133, "endLine": 193 },
+    "type": "insight",
+    "title": "Classical Limit q=1 and Concrete Computations",
+    "content": "verma_at_q_one and verma_Fpower_at_q_one specialize to q=1 using qNumber_at_one (qNumber k 1 n = n) and qFactorial_at_one (qFactorial k 1 n = n!). At q=1, U_q(𝔰𝔩₂) reduces to the classical 𝔰𝔩₂, and F^n·v₀ = n!·vₙ recovers the classical Verma formula. The concrete computations verify [2]_q=1+q, [3]_q=1+q+q², [2]_q!=1+q, and apply these to get F²·v₀=(1+q)·v₂ and F³·v₀=(1+q+q²)(1+q)·v₃.",
+    "mathContext": "The specialization $q \\to 1$: $[n]_q = 1 + q + \\cdots + q^{n-1} \\to n$ and $[n]_q! \\to n!$, so the Verma formula $F^n v_0 = [n]_q! v_n \\to n! v_n$. This is the classical 𝔰𝔩₂ divided power formula where normalized basis vectors $f_n = v_n / n!$ satisfy $F(f_n) = f_{n+1}$ (unit action). The concrete values $[2]_q = 1+q$ and $[3]_q = 1+q+q^2$ are the first two non-trivial quantum integers, with $\\lim_{q\\to 1} [n]_q = n$ as expected.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "qNumber_at_one",
+      "qFactorial_at_one",
+      "classical 𝔰𝔩₂ representation",
+      "divided powers",
+      "specialization of quantum groups"
+    ],
+    "prerequisites": [
+      "verma_Fpower_eq_qFactorial",
+      "qNumber_at_one",
+      "qFactorial_at_one",
+      "simp with ring"
+    ]
+  }
+]

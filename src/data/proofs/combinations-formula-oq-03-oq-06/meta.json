@@ -12,6 +12,7 @@
     "axiomCount": 0,
     "lineCount": 241,
     "theoremCount": 11,
+    "definitionCount": 1,
     "assumptions": "None. All theorems proved for arbitrary CommRing k with parameter q : k. The VermaData structure is abstract (universal); no invertibility hypotheses needed for the Verma module action proofs.",
     "tags": [
       "quantum-groups",
@@ -21,101 +22,97 @@
       "verma-modules",
       "algebra"
     ],
-    "mathlibDependencies": [
-      {
-        "theorem": "LinearMap.map_smul",
-        "description": "Linearity of the F operator: F(c·v) = c·F(v)",
-        "module": "Mathlib.Algebra.Module.LinearMap.Basic"
-      },
-      {
-        "theorem": "Function.iterate_succ",
-        "description": "Decomposing iterate: F^(n+1) = F ∘ F^n",
-        "module": "Mathlib.Logic.Function.Iterate"
-      },
-      {
-        "theorem": "smul_smul",
-        "description": "Associativity of scalar multiplication: c·(d·v) = (c·d)·v",
-        "module": "Mathlib.Algebra.Module.Basic"
-      },
-      {
-        "theorem": "Finset.prod_range_succ",
-        "description": "Splitting a product: ∏_{i<n+1} f(i) = (∏_{i<n} f(i)) · f(n)",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      }
-    ],
+    "dateAdded": "2026-05-05",
     "originalContributions": [
       "Abstract VermaData structure formalizing U_q(𝔰𝔩₂) Verma module bases over CommRing",
       "Proof that F^n·v₀ = qFactorial q n · vₙ by induction, directly using OQ-03 q-factorial",
       "q-Factorial product formula: [n]_q! = ∏_{i<n} [i+1]_q — algebraic connection to q-numbers",
       "Specialization theorem: at q=1, F^n·v₀ = n!·vₙ (classical representation theory)",
       "Explicit spin-1 computations: F²·v₀ = (1+q)·v₂, F³·v₀ = (1+q+q²)(1+q)·v₃"
-    ],
-    "openQuestions": [
-      {
-        "id": "oq-01",
-        "question": "Can the full EF-FE quantum Serre relation be formalized? This requires a field with q, q⁻¹ and q ≠ ±1 (the denominator q - q⁻¹ must be nonzero).",
-        "difficulty": "medium"
-      },
-      {
-        "id": "oq-02",
-        "question": "Can the K weight operator and its eigenvalues be incorporated into VermaData? This adds the grading q^{λ-2n}·vₙ structure.",
-        "difficulty": "easy"
-      },
-      {
-        "id": "oq-03",
-        "question": "Does the quantum binomial theorem (using qBinom from OQ-03) hold for nilpotent quantum group actions?",
-        "difficulty": "hard"
-      }
-    ],
-    "proofStrategy": "The VermaData structure abstracts the key data: a sequence of basis vectors and a linear operator F satisfying F(vₙ) = qNumber q (n+1) · vₙ₊₁. The divided power formula F^n·v₀ = qFactorial q n · vₙ is then proved by structural induction, using linearity of F and associativity of scalar multiplication at each step. This directly uses qFactorial from OQ-03 as the divided power coefficient.",
-    "sections": [
-      {
-        "title": "Abstract Verma Module Data",
-        "description": "The VermaData structure: basis {vₙ} and linear F with F(vₙ) = [n+1]_q·vₙ₊₁"
-      },
-      {
-        "title": "Divided Power Formula",
-        "description": "F^n·v₀ = [n]_q!·vₙ, proved by induction using qFactorial"
-      },
-      {
-        "title": "q-Factorial as Product",
-        "description": "[n]_q! = [1]_q·[2]_q·...·[n]_q, connecting qFactorial to qNumber factors"
-      },
-      {
-        "title": "Specialization at q=1",
-        "description": "At q=1, Verma module action reduces to classical: F^n·v₀ = n!·vₙ"
-      },
-      {
-        "title": "Concrete q-Number Values",
-        "description": "[2]_q = 1+q, [3]_q = 1+q+q², [2]_q! = 1+q appear in spin-1 rep"
-      }
-    ],
-    "dateAdded": "2026-05-05",
-    "mathlib_version": "4.26.0",
-    "parentEntry": "combinations-formula-oq-03",
-    "relatedEntries": [
-      "combinations-formula-oq-03",
-      "combinations-formula-oq-02",
-      "combinations-formula-oq-01"
-    ]
-  },
-  "content": {
-    "title": "Quantum Group U_q(𝔰𝔩₂): Partial Formalization via q-Numbers",
-    "summary": "Proves the Verma module divided power formula F^n·v₀ = [n]_q!·vₙ using q-factorial infrastructure from OQ-03. Demonstrates that U_q(𝔰𝔩₂) can be partially formalized with 11 theorems, 0 sorries, 0 axioms.",
-    "whyMatters": "Quantum groups are fundamental in modern mathematics and physics, underlying quantum topology, integrable systems, and knot invariants. The q-deformation parameter q connects to physical models (XXZ spin chains, 6-vertex model). Formalizing even partial quantum group structure demonstrates that Lean 4's algebra infrastructure, combined with q-number tools from OQ-03, is sufficient for quantum representation theory.",
-    "keyInsights": [
-      "The q-factorial [n]_q! naturally emerges as the divided power coefficient in Verma modules",
-      "The abstract VermaData structure captures Verma module data without requiring a non-commutative algebra type",
-      "At q=1, the quantum formulas specialize correctly to classical representation theory",
-      "The spin-1 scaling factor [2]_q = 1+q is a concrete manifestation of q-number deformation"
     ]
   },
   "leanFile": {
     "path": "Proofs/CombinationsFormulaOQ03OQ06.lean",
+    "namespace": "QuantumGroupSlTwo",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 241,
     "theoremCount": 11,
-    "defCount": 1
-  }
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Quantum groups were introduced by Drinfeld and Jimbo in 1985-1986, arising from the study of integrable systems and the quantum Yang-Baxter equation. The quantum group U_q(𝔰𝔩₂) is the prototypical example: a one-parameter deformation of the universal enveloping algebra of 𝔰𝔩₂ that reduces to the classical case when q=1. Verma modules for quantum groups were studied extensively in the 1990s; their structure — particularly the divided power formula F^n·v₀ = [n]_q!·vₙ — is foundational for quantum representation theory and connects to knot invariants, quantum topology, and the Jones polynomial. This formalization uses the q-number (qNumber) and q-factorial (qFactorial) infrastructure from combinations-formula-oq-03.",
+    "problemStatement": "Open Question OQ-03-OQ-06: Can the quantum group $U_q(\\mathfrak{sl}_2)$ be partially formalized using the q-binomial coefficient infrastructure from OQ-03? Specifically, can the **divided power formula** $F^n \\cdot v_0 = [n]_q! \\cdot v_n$ for the Verma module be proved rigorously in Lean 4, where $[n]_q! = \\text{qFactorial}\\, q\\, n$ from OQ-03?",
+    "proofStrategy": "The VermaData structure abstracts the key data: a sequence of basis vectors {vₙ} in a k-module and a linear operator F satisfying F(vₙ) = qNumber q (n+1) · vₙ₊₁. The divided power formula F^n·v₀ = qFactorial q n · vₙ is proved by induction: base case n=0 uses qFactorial=1; inductive step rewrites F^{n+1}·v₀ = F(F^n·v₀) = F([n]_q!·vₙ) = [n]_q!·F(vₙ) (linearity) = [n]_q!·[n+1]_q·vₙ₊₁ = [n+1]_q!·vₙ₊₁ (qFactorial_succ). Additional results connect qFactorial to a product of qNumbers and specialize to q=1.",
+    "keyInsights": [
+      "The q-factorial [n]_q! naturally emerges as the divided power coefficient in Verma modules — this is not a coincidence but reflects deep combinatorial structure: the quantum binomial coefficients count dimensions of weight spaces.",
+      "The abstract VermaData structure captures Verma module data without requiring a non-commutative algebra type — the key data is just the action axiom F(vₙ) = [n+1]_q · vₙ₊₁, which works over any CommRing.",
+      "The inductive step uses exactly two Lean lemmas: map_smul (linearity of F) and smul_smul (associativity of scalar action) — the algebraic structure is remarkably clean.",
+      "At q=1, qNumber q n reduces to n : k (the natural number cast), so the quantum Verma formula reduces to the classical F^n·v₀ = n!·vₙ — a clean specialization connecting quantum and classical representation theory.",
+      "The product formula [n]_q! = ∏_{i<n} [i+1]_q (verma_qFactorial_product) connects qFactorial to individual qNumber factors, explaining why the q-factorial coefficient appears at each inductive step."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Header establishing OQ-03-OQ-06: can U_q(𝔰𝔩₂) be partially formalized via q-numbers? Introduces the Verma module structure (basis {vₙ}, operators E/F/K) and states the divided power formula F^n·v₀ = [n]_q!·vₙ as the key result."
+    },
+    {
+      "id": "verma-data",
+      "title": "Part I: Abstract Verma Module Structure",
+      "startLine": 45,
+      "endLine": 63,
+      "summary": "Defines the VermaData structure: basis vectors v : ℕ → V, linear operator F : V →ₗ[k] V, and the action axiom F_action : F(vₙ) = qNumber q (n+1) • vₙ₊₁. Parametrized over arbitrary CommRing k and module V."
+    },
+    {
+      "id": "divided-power",
+      "title": "Part II: Divided Power Formula F^n·v₀ = [n]_q!·vₙ",
+      "startLine": 65,
+      "endLine": 95,
+      "summary": "verma_Fpower_eq_qFactorial: core result by induction. Base n=0: F^0·v₀ = v₀ = [0]_q!·v₀. Inductive step uses Function.iterate_succ, map_smul (linearity), F_action, smul_smul, and qFactorial_succ."
+    },
+    {
+      "id": "q-number-scaling",
+      "title": "Parts III-IV: q-Number Scaling Factors and Product Formula",
+      "startLine": 97,
+      "endLine": 131,
+      "summary": "F_squared_action: F(F(vₙ)) = [n+1]_q·[n+2]_q·vₙ₊₂. verma_spinOne_F_middle: F(v₁) = (1+q)·v₂ using [2]_q=1+q. verma_qFactorial_product: [n]_q! = ∏_{i<n} [i+1]_q proved by induction with prod_range_succ."
+    },
+    {
+      "id": "specialization",
+      "title": "Part V: Classical Limit at q=1",
+      "startLine": 133,
+      "endLine": 153,
+      "summary": "verma_at_q_one: F(vₙ) = (n+1)·vₙ₊₁ when q=1, using qNumber_at_one. verma_Fpower_at_q_one: F^n·v₀ = n!·vₙ when q=1, using qFactorial_at_one."
+    },
+    {
+      "id": "computations",
+      "title": "Part VI: Concrete q-Number Computations",
+      "startLine": 155,
+      "endLine": 193,
+      "summary": "Explicit values: [2]_q = 1+q, [3]_q = 1+q+q², [2]_q! = 1+q. Applied: F²·v₀ = (1+q)·v₂, F³·v₀ = (1+q+q²)(1+q)·v₃ by rewriting with verma_Fpower_eq_qFactorial and the q-number values."
+    }
+  ],
+  "conclusion": {
+    "summary": "11 theorems, 1 structure, 0 sorries, 0 axioms. The VermaData structure and divided power formula F^n·v₀ = [n]_q!·vₙ demonstrate that U_q(𝔰𝔩₂) Verma module actions can be partially formalized using the q-number infrastructure from OQ-03, working over arbitrary CommRing.",
+    "implications": "This formalization shows that q-factorial and q-integer infrastructure (developed in combinations-formula-oq-03 for combinatorial purposes) is exactly the right tool for quantum representation theory. The same coefficients [n]_q that count lattice paths and appear in Gaussian binomial coefficients also appear in the quantum group Verma module action — this is the algebraic unity underlying quantum combinatorics. A full formalization of U_q(𝔰𝔩₂) (including the quantum Serre relation EF - FE = (K-K⁻¹)/(q-q⁻¹)) would require approximately 200-400 additional lines with field-level infrastructure for q⁻¹.",
+    "openQuestions": [
+      "Can the full EF-FE quantum Serre relation EF - FE = (K-K⁻¹)/(q-q⁻¹) be formalized? This requires a field with invertible q-q⁻¹, a non-trivial invertibility hypothesis not needed for the Verma module proofs.",
+      "Can the K weight operator and its eigenvalues K·vₙ = q^{λ-2n}·vₙ be incorporated into VermaData? This adds a grading structure requiring q-power functions over the CommRing.",
+      "Does the quantum binomial theorem (E+F)^n via qBinom from OQ-03 hold for the non-commutative U_q(𝔰𝔩₂) algebra action? The non-commutativity makes this significantly harder than the classical case."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "combinations-formula-oq-03",
+      "relationship": "parent — provides qNumber, qFactorial, qBinom infrastructure used throughout"
+    },
+    {
+      "id": "combinations-formula-oq-02",
+      "relationship": "grandparent — the original combinations formula entry"
+    }
+  ]
 }
