@@ -1,0 +1,150 @@
+{
+  "slug": "combinations-formula-oq-03-oq-06",
+  "title": "Can the quantum group U_q(\\mathfrak{sl}_2) be partially formalized using th...",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can the quantum group U_q(\\mathfrak{sl}_2) be partially formalized using th....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-04T17:47:35.843Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED 2026-05-05: 11 theorems, 0 sorries, 0 axioms. PR #15911 submitted. Core result: F^n·v0 = qFactorial q n · vn. Docker build pending.",
+    "builtItems": [
+      "verma_Fpower_eq_qFactorial: F^n·v0 = qFactorial q n · vn (CombinationsFormulaOQ03OQ06.lean)",
+      "VermaData structure with F_action axiom",
+      "verma_qFactorial_product: [n]_q! as ordered product of q-numbers"
+    ],
+    "insights": [
+      "qFactorial from OQ-03 is the natural divided power coefficient in Verma modules",
+      "VermaData abstract structure captures Verma module without non-commutative algebra type",
+      "Spin-1 scaling factor [2]_q = 1+q confirmed computationally"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Complete EF-FE quantum Serre relation (needs field with invertible q-q^{-1})",
+      "Add K weight operator with q^{lambda-2n} eigenvalue structure",
+      "Prove quantum binomial theorem using qBinom from OQ-03"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "combinations-formula",
+    "combinations-formula-oq-01",
+    "combinations-formula-oq-01-oq-04",
+    "combinations-formula-oq-02",
+    "combinations-formula-oq-03",
+    "combinations-formula-oq-03-oq-06"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T17:47:35.843Z",
+  "lastUpdate": "2026-05-04T17:47:35.843Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CombinationsFormula.lean",
+      "filename": "CombinationsFormula.lean",
+      "lineCount": 401,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormula.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ01.lean",
+      "filename": "CombinationsFormulaOQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ01OQ04.lean",
+      "filename": "CombinationsFormulaOQ01OQ04.lean",
+      "lineCount": 190,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ02.lean",
+      "filename": "CombinationsFormulaOQ02.lean",
+      "lineCount": 313,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ02.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ02Aristotle.lean",
+      "filename": "CombinationsFormulaOQ02Aristotle.lean",
+      "lineCount": 101,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03.lean",
+      "filename": "CombinationsFormulaOQ03.lean",
+      "lineCount": 751,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03OQ06.lean",
+      "filename": "CombinationsFormulaOQ03OQ06.lean",
+      "lineCount": 242,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03OQ06.lean"
+    }
+  ]
+}
