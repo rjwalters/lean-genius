@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY+FORMALIZATION: Created OQ-01 formalization. Established logical hierarchy and key bounds. Problem open for k≥4. 2 axioms (known results), 4 sorries.",
+    "progressSummary": "PROGRESS: 4→3 sorries. Proved lower_bound_exponent_tendsto via tendsto_inv_atTop_zero composition. 3 remaining sorries: o() bound uniformity (line 112), k3_case dependency (line 127), monotonicity (line 136). Docker verification pending.",
     "builtItems": [
       "Created Erdos1021OQ01.lean with 8 theorems, 2 axioms, 4 sorries",
       "Defined weakConjectureK4 = ∀ k ≥ 4, isLittleO (exGk k) n^{3/2}",
       "Proved strong→weak→OQ-01 chain",
       "Proved O(n^{3/2}) ≠ o(n^{3/2}) (separating trivial bound from the question)",
       "Proved lower bound exponent < 3/2 and approaches 3/2 as k→∞",
-      "Created src/data/proofs/erdos-1021-oq-01/ gallery entry"
+      "Created src/data/proofs/erdos-1021-oq-01/ gallery entry",
+      "lower_bound_exponent_tendsto: proved (4→3 sorries) [Erdos1021OQ01.lean:159-179]"
     ],
     "insights": [
       "OQ-01 asks: for k≥4, does ex(n,G_k) = o(n^{3/2})?",
@@ -45,7 +46,8 @@
       "Probabilistic lower bound: ex(n,G_k) ≥ c·n^{3/2-1/(k-1)}",
       "O(n^{3/2}) ≠ o(n^{3/2}): KST alone insufficient to resolve OQ-01",
       "Problem is harder for larger k: lower bound exponent approaches 3/2",
-      "Both strong and weak forms open for ALL k ≥ 4"
+      "Both strong and weak forms open for ALL k ≥ 4",
+      "lower_bound_exponent_tendsto proved: tendsto_inv_atTop_zero.comp h_sub where h_sub proves (k:ℝ)-1→∞ via Nat.ceil bound"
     ],
     "mathlibGaps": [],
     "nextSteps": [

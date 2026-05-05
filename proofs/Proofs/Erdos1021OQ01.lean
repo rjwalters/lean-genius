@@ -158,13 +158,20 @@ theorem lower_bound_exponent_approach (k : ℕ) (hk : k ≥ 2) :
 /-- As k → ∞, the lower bound exponent 3/2 - 1/(k-1) → 3/2. -/
 theorem lower_bound_exponent_tendsto :
     Filter.Tendsto (fun k : ℕ => (3 : ℝ)/2 - 1/((k : ℝ) - 1)) Filter.atTop (nhds (3/2)) := by
-  have : Filter.Tendsto (fun k : ℕ => (3 : ℝ)/2 - 1/((k : ℝ) - 1)) Filter.atTop
-      (nhds ((3 : ℝ)/2 - 0)) := by
-    apply Filter.Tendsto.sub tendsto_const_nhds
-    rw [div_tendsto_iff_tendsto_div tendsto_const_nhds]
-    · sorry -- 1/(k-1) → 0 requires Filter.Tendsto + arithmetic
-    · norm_num
-  simpa using this
+  -- Step 1: (k : ℝ) - 1 → ∞
+  have h_sub : Filter.Tendsto (fun k : ℕ => (k : ℝ) - 1) Filter.atTop Filter.atTop := by
+    apply Filter.tendsto_atTop_atTop.mpr
+    intro b
+    exact ⟨Nat.ceil (b + 2), fun k hk => by
+      have : b + 2 ≤ (k : ℝ) := le_trans (Nat.le_ceil _) (by exact_mod_cast hk)
+      linarith⟩
+  -- Step 2: 1/((k:ℝ) - 1) → 0  have h_inv : Filter.Tendsto (fun k : ℕ => 1/((k : ℝ) - 1)) Filter.atTop (nhds 0) := by
+    simp_rw [one_div]
+    exact tendsto_inv_atTop_zero.comp h_sub
+  -- Step 3: 3/2 - 1/((k:ℝ)-1) → 3/2 - 0 = 3/2
+  have h := Filter.Tendsto.sub (tendsto_const_nhds (x := (3 : ℝ)/2)) h_inv
+  simp only [sub_zero] at h
+  exact h
 
 /-! ## Part VI: The OQ-01 in Context -/
 
