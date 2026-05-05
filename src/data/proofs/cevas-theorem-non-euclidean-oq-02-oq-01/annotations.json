@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-spherical-menelaus-header",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "concept",
+    "title": "Spherical Menelaus Theorem: sin as the Signed Measure",
+    "content": "This file proves the spherical analogue of Menelaus' theorem using sin as the measure for signed geodesic arcs. The parent file (CevasTheoremNonEuclideanOQ02) proved the hyperbolic version using sinh. Both work because sin and sinh are odd functions: sin(-x) = -sin(x) and sinh(-x) = -sinh(x). This odd-function property is what makes 'signed arc ratios' well-defined — reversing arc orientation negates the measurement. Menelaus of Alexandria stated his theorem around 100 CE in his Sphaerica; the spherical case requires sin ratios because straight-line distances are replaced by great-circle arc lengths.",
+    "mathContext": "**Spherical Menelaus theorem**: For triangle $ABC$ on a sphere with transversal meeting $BC$ at $D$, $CA$ at $E$, $AB$ at $F$: $\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1$ (signed arcs). The $-1$ value comes from the transversal crossing an odd number of triangle sides. Compare with the Euclidean version: $\\frac{BD}{DC} \\cdot \\frac{CE}{EA} \\cdot \\frac{AF}{FB} = -1$.",
+    "significance": "key",
+    "relatedConcepts": ["Menelaus theorem", "spherical geometry", "geodesic arcs", "great circles", "sin as measure"],
+    "prerequisites": ["Menelaus theorem classical", "spherical trigonometry", "signed arcs", "parent hyperbolic version"]
+  },
+  {
+    "id": "ann-sin-properties",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 40, "endLine": 70 },
+    "type": "technique",
+    "title": "sin Properties for Signed Geodesic Arcs",
+    "content": "Part 1 establishes the sin properties needed for the signed-arc framework. sin_pos_of_pos_lt_pi confirms sin > 0 on (0,π) using Real.sin_pos_of_pos_of_lt_pi from Mathlib. sin_ne_zero_of_neg_gt_neg_pi shows sin ≠ 0 on (-π,0) by writing sin(x) = -sin(-x) (using sin oddness) and noting -x ∈ (0,π) has positive sin. sin_odd proves sin(-x) = -sin(x) using Real.sin_neg — this is the critical structural property enabling signed arc ratios. These lemmas exactly parallel the sinh properties proved in the parent hyperbolic file.",
+    "mathContext": "$\\sin(x) > 0$ for $x \\in (0, \\pi)$ — the 'interior arc' domain for geodesic triangles on the upper hemisphere. $\\sin(x) < 0$ for $x \\in (-\\pi, 0)$ — the 'exterior arc' domain. $\\sin(-x) = -\\sin(x)$ — odd function property. Combined: $\\sin(x) \\neq 0$ for $x \\in (-\\pi, \\pi) \\setminus \\{0\\}$. Non-degeneracy condition: arcs cannot be multiples of $\\pi$ (vertex or antipodal configurations).",
+    "significance": "key",
+    "relatedConcepts": ["Real.sin_pos_of_pos_of_lt_pi", "Real.sin_neg", "odd functions", "non-degeneracy conditions"],
+    "prerequisites": ["Real.sin in Mathlib", "sine positivity on (0,π)", "function oddness"]
+  },
+  {
+    "id": "ann-algebraic-core",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 72, "endLine": 97 },
+    "type": "technique",
+    "title": "Algebraic Core: Menelaus Product = -1 ↔ Cross-Product Identity",
+    "content": "The algebraic core proves a universal fact about ratio products: menelausRatioProduct a b c d e f = -1 ↔ a*c*e = -(b*d*f). This is pure algebra, independent of geometry. The proof uses div_mul_div_comm to merge numerators/denominators, then div_eq_iff (with nonzero denominator) to clear fractions, and linarith to close. By defining menelausRatioProduct as (a/b)*(c/d)*(e/f) and using this lemma, the spherical Menelaus theorem reduces to showing that sin(BD)*sin(CE)*sin(AF) = -(sin(DC)*sin(EA)*sin(FB)), which is the product form of the cross-ratio identity.",
+    "mathContext": "`menelausRatioProduct a b c d e f = -1 ↔ a*c*e = -(b*d*f)`: algebraic identity over ℝ with $b,d,f \\neq 0$. Proof: $(a/b)(c/d)(e/f) = ace/(bdf) = -1 \\iff ace = -bdf$. This encodes the signed cross-ratio condition. The same algebraic structure appears in Euclidean, spherical, and hyperbolic Menelaus theorems — only the 'measure' function changes.",
+    "significance": "key",
+    "relatedConcepts": ["menelausRatioProduct", "div_mul_div_comm", "div_eq_iff", "cross-ratio identity"],
+    "prerequisites": ["real division arithmetic", "nonzero denominators", "field algebra in Lean"]
+  },
+  {
+    "id": "ann-config-main-theorem",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 99, "endLine": 155 },
+    "type": "technique",
+    "title": "Configuration Structure and Main Spherical Menelaus Theorem",
+    "content": "SphericalMenelausConfig is a structure encoding the non-degeneracy conditions: the 6 arc values and 6 hypotheses that each sin value is nonzero (each arc is in (-π,π)\\{0}). spherical_menelaus_theorem states the iff characterization: D, E, F are collinear iff the sin-ratio product equals -1. The proof applies menelaus_algebraic_core after unfolding the menelausRatioProduct definition. The structure pattern (packing hypotheses into a record) avoids long parameter lists and is a common Lean 4 style for geometric configurations.",
+    "mathContext": "The configuration encodes: $\\sin(BD) \\neq 0$, $\\sin(DC) \\neq 0$, ..., $\\sin(FB) \\neq 0$ (6 hypotheses). The main theorem: $$\\text{collinear}(D,E,F) \\iff \\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1$$ where collinearity is defined as the product equaling $-1$ (axiomatized as the Menelaus condition).",
+    "significance": "key",
+    "relatedConcepts": ["SphericalMenelausConfig", "Lean 4 structure pattern", "iff characterization", "Menelaus collinearity condition"],
+    "prerequisites": ["Lean 4 structure syntax", "noncomputable defs for real-valued functions", "menelaus_algebraic_core"]
+  },
+  {
+    "id": "ann-interior-specialization",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 157, "endLine": 217 },
+    "type": "technique",
+    "title": "Interior-Arc Specialization: All Arcs in (0,π)",
+    "content": "The interior-arc specialization restricts to configurations where all 6 arc values are in (0,π), the natural domain for interior points of geodesic triangles on the upper hemisphere. In this regime, all sin values are positive (by sin_pos_of_pos_lt_pi), so the non-degeneracy conditions are automatically satisfied. spherical_menelaus_interior directly applies spherical_menelaus_theorem after constructing a SphericalMenelausConfig from the positivity hypotheses. The specialization handles the most common geometric scenario.",
+    "mathContext": "Interior arcs: $BD, DC, CE, EA, AF, FB \\in (0, \\pi)$. Then $\\sin > 0$ on all arcs, so all denominators are nonzero. The Menelaus condition becomes: $\\sin(BD) \\cdot \\sin(CE) \\cdot \\sin(AF) = -(\\sin(DC) \\cdot \\sin(EA) \\cdot \\sin(FB))$. Since all sines are positive, the LHS is positive and RHS is negative (the minus sign). This means the product $= -1$ is impossible with all positive sines — this is the Menelaus direction for interior transversal configurations.",
+    "significance": "supporting",
+    "relatedConcepts": ["interior arcs", "sin positivity", "SphericalMenelausConfig construction", "specialization pattern"],
+    "prerequisites": ["sin_pos_of_pos_lt_pi", "SphericalMenelausConfig", "spherical_menelaus_theorem"]
+  },
+  {
+    "id": "ann-ceva-menelaus-duality",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 219, "endLine": 297 },
+    "type": "insight",
+    "title": "Ceva-Menelaus Duality: Product = +1 vs Product = -1",
+    "content": "The duality section documents the fundamental distinction between Ceva's theorem (cevians from vertices, product = +1) and Menelaus' theorem (transversal, product = -1). spherical_ceva_product_pos shows that if all six sin-ratios are positive (interior configurations), the Ceva-type product is positive, while the Menelaus product cannot be -1. This separates Ceva (concurrent cevians) from Menelaus (collinear transversal points) configurations. Concrete numeric examples verify specific angle triples satisfy/fail the conditions. The duality is the same in Euclidean, spherical, and hyperbolic geometry — the geometry only changes the measure function.",
+    "mathContext": "**Ceva's theorem** (spherical): cevians $AD, BE, CF$ are concurrent $\\iff$ $\\frac{\\sin(AF)}{\\sin(FB)} \\cdot \\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} = +1$. **Menelaus' theorem**: points collinear $\\iff$ product $= -1$. The $\\pm 1$ distinction reflects the parity of sign changes: Ceva has even crossings (product of positive and negative ratios gives +1), Menelaus has odd crossings (product gives -1).",
+    "significance": "key",
+    "relatedConcepts": ["Ceva theorem", "Ceva-Menelaus duality", "concurrent cevians", "collinear transversal", "+1 vs -1 product"],
+    "prerequisites": ["Ceva's theorem (parent file)", "Menelaus theorem", "signed ratio parity"]
+  }
+]
