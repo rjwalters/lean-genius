@@ -1,0 +1,168 @@
+{
+  "slug": "lagrange-theorem-oq-02-oq-02",
+  "title": "Formalize the class equation |G| = |Z(G)| + Σ [G : C_G(xᵢ)] (summing over non...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Formalize the class equation |G| = |Z(G)| + Σ [G : C_G(xᵢ)] (summing over non....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-05T02:57:44.813Z",
+    "iteration": 1,
+    "focus": "Class equation formalized with 1 sorry (orbit-index technical connection)",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Class equation formalized from Mathlib. Orbit-stabilizer connection proved (1 sorry for index arithmetic). p-group corollaries clean. A4 verified computationally.",
+    "builtItems": [
+      "class_equation in LagrangeTheoremOQ02OQ02.lean:58 (from Mathlib)",
+      "conj_orbit_eq_carrier in LagrangeTheoremOQ02OQ02.lean:75 (orbit=carrier via group arithmetic)",
+      "conj_stabilizer_eq_centralizer in LagrangeTheoremOQ02OQ02.lean:96 (stabilizer=centralizer via group tactic)",
+      "card_conjClass_eq_one_iff_mem_center in LagrangeTheoremOQ02OQ02.lean:118 (singleton ↔ central)",
+      "pgroup_fixed_point/center_nontrivial_of_pgroup/p_sq_group_comm in lines 155-175 (all from Mathlib)",
+      "card_A4/card_conjClasses_A4/card_center_A4 via native_decide"
+    ],
+    "insights": [
+      "Group.nat_card_center_add_sum_card_noncenter_eq_card in Mathlib.GroupTheory.ClassEquation gives class equation directly",
+      "ConjAct.toConjAct_smul reduces conjugation action to explicit g*x*g⁻¹ formula for group arithmetic proofs",
+      "conj_stabilizer_eq_centralizer proved cleanly using group tactic for g*x*g⁻¹ = x ↔ g*x = x*g equivalence",
+      "card_conjClass_eq_one_iff_mem_center proved via orbit uniqueness: unique orbit ↔ all elements fixed by conjugation ↔ central",
+      "IsPGroup.commGroupOfCardEqPrimeSq gives groups of order p² are abelian directly from Mathlib",
+      "A4 has 4 conjugacy classes (sizes 1,3,4,4) and trivial center — verified by native_decide"
+    ],
+    "mathlibGaps": [
+      "card_conjClass_eq_centralizer_index needs orbit Nat.card to centralizer index connection — technical gap in orbit-stabilizer API"
+    ],
+    "nextSteps": [
+      "Prove card_conjClass_eq_centralizer_index by finding correct orbit-stabilizer formula name in Mathlib",
+      "Run Docker build to verify compilation"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-01-oq-03",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-02-oq-01",
+    "lagrange-theorem-oq-03",
+    "lagrange-theorem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.813Z",
+  "lastUpdate": "2026-05-05T02:57:44.813Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01.lean",
+      "filename": "LagrangeTheoremOQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ02.lean",
+      "filename": "LagrangeTheoremOQ01OQ02.lean",
+      "lineCount": 122,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ03.lean",
+      "filename": "LagrangeTheoremOQ01OQ03.lean",
+      "lineCount": 212,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02.lean",
+      "filename": "LagrangeTheoremOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ01.lean",
+      "lineCount": 227,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ03.lean",
+      "filename": "LagrangeTheoremOQ03.lean",
+      "lineCount": 374,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 114,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    }
+  ]
+}

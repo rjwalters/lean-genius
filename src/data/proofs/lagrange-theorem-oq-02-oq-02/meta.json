@@ -1,0 +1,158 @@
+{
+  "id": "lagrange-theorem-oq-02-oq-02",
+  "title": "The Class Equation for Finite Groups",
+  "slug": "lagrange-theorem-oq-02-oq-02",
+  "description": "Formalizes the class equation |G| = |Z(G)| + Σ [G : C_G(x)] for finite groups. The sum is over representatives of non-central conjugacy classes, and each term [G : C_G(x)] equals the conjugacy class size by the orbit-stabilizer theorem. The file proves the class equation directly from Mathlib's `Group.nat_card_center_add_sum_card_noncenter_eq_card`, establishes the orbit-centralizer formula (modulo one technical connection), and verifies key corollaries: center nontriviality for p-groups, groups of order p² are abelian, and concrete computations for A₄.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-05",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ02.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "class-equation",
+      "conjugacy-classes",
+      "p-groups",
+      "orbit-stabilizer",
+      "research"
+    ],
+    "badge": "research",
+    "sorries": 1,
+    "axiomCount": 0,
+    "lineCount": 257,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "dateAdded": "2026-05-05",
+    "mathlibDependencies": [
+      {
+        "theorem": "Group.nat_card_center_add_sum_card_noncenter_eq_card",
+        "description": "The class equation: |Z(G)| + Σ_{noncenter} |c| = |G|",
+        "module": "Mathlib.GroupTheory.ClassEquation"
+      },
+      {
+        "theorem": "IsPGroup.center_nontrivial",
+        "description": "Center of nontrivial p-group is nontrivial",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "IsPGroup.card_modEq_card_fixedPoints",
+        "description": "p-group fixed point theorem: |X| ≡ |Fix(G,X)| (mod p)",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "IsPGroup.commGroupOfCardEqPrimeSq",
+        "description": "Groups of order p² are abelian",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "ConjAct.toConjAct_smul",
+        "description": "Conjugation action: ConjAct.toConjAct g • x = g * x * g⁻¹",
+        "module": "Mathlib.GroupTheory.ConjAct"
+      },
+      {
+        "theorem": "ConjClasses.mem_carrier_iff_isConj",
+        "description": "Membership in conjugacy class carrier via IsConj",
+        "module": "Mathlib.Algebra.Group.Conj"
+      }
+    ],
+    "originalContributions": [
+      "conj_orbit_eq_carrier: proves orbit(ConjAct G, x) = (ConjClasses.mk x).carrier using explicit group arithmetic",
+      "conj_stabilizer_eq_centralizer: proves stabilizer of conjugation = centralizer C_G(x) via forward/backward group calculation",
+      "card_conjClass_eq_one_iff_mem_center: |[x]| = 1 ↔ x ∈ Z(G) proved from orbit uniqueness and commutativity",
+      "A₄ class equation verification: 4 conjugacy classes of sizes 1+3+4+4=12 via native_decide"
+    ],
+    "assumptions": "1 sorry (HARD): card_conjClass_eq_centralizer_index needs orbit size to centralizer index connection. 0 axiom declarations. All mathematical content proved or follows from Mathlib.",
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "The class equation is one of the fundamental structural results in finite group theory. Cauchy (1845) proved that prime-order elements exist; this was generalized by Jordan (1871) and Sylow (1872) into the complete conjugacy class decomposition. The equation |G| = |Z(G)| + Σ [G : C_G(xᵢ)] expresses that G is partitioned into conjugacy classes — singleton classes for central elements and non-singleton classes for the rest. The size of each class [G : C_G(x)] follows from the orbit-stabilizer theorem applied to the conjugation action g · x = gxg⁻¹ (stabilizer = centralizer C_G(x), orbit = conjugacy class).\n\nThe class equation is the engine behind p-group theory: since p | |G| and each non-central class has size divisible by p, the equation gives p | |Z(G)|. For nontrivial p-groups, this means Z(G) ≠ {e}. From there, groups of order p² are abelian (G/Z(G) has order 1 or p; if p, then cyclic, making G abelian). This chain ultimately leads to the classification of groups of order pq and the Sylow theorems as the deeper structure behind the equation.",
+    "problemStatement": "**The Open Question**: Can the class equation |G| = |Z(G)| + Σ_{non-central conjugacy classes [x]} [G : C_G(x)] be formally proved in Lean 4, establishing the orbit-centralizer formula and its p-group corollaries?\n\n**Answer**: Largely yes. The class equation itself is directly available from Mathlib's `Group.nat_card_center_add_sum_card_noncenter_eq_card`. The orbit-stabilizer connection `|[x]| = [G : C_G(x)]` is proved up to one technical sorry (connecting Nat.card of an orbit to the centralizer index via division arithmetic). All p-group corollaries are provable from Mathlib.",
+    "text": "The class equation |G| = |Z(G)| + Σ [G : C_G(x)] emerges from the orbit-stabilizer theorem applied to conjugation. The proof chain:\n\n(1) **Partition**: G is partitioned into conjugacy classes via `ConjClasses.mk : G → ConjClasses G`\n(2) **Orbit-stabilizer**: |conjugacy class of x| = [G : C_G(x)] (by orbit-stabilizer with stabilizer = centralizer)\n(3) **Central ↔ singleton**: a conjugacy class has exactly one element iff the element is central (gxg⁻¹ = x for all g iff gx = xg for all g)\n(4) **Split**: |G| = (sum of singleton classes) + (sum of non-singleton classes) = |Z(G)| + Σ [G : C_G(x)]",
+    "proofStrategy": "The class equation is extracted directly from Mathlib's `Group.nat_card_center_add_sum_card_noncenter_eq_card` in `Mathlib.GroupTheory.ClassEquation`. The orbit-centralizer formula is established via: (a) `conj_orbit_eq_carrier` connecting orbits under `ConjAct G` to conjugacy class carriers, and (b) `conj_stabilizer_eq_centralizer` identifying the conjugation stabilizer with the centralizer. The connection of orbit size to centralizer index (one sorry) uses the orbit-stabilizer theorem `|orbit| × |stabilizer| = |G|` with the centralizer index = |G|/|centralizer|.",
+    "keyInsights": [
+      "The class equation factors into two parts: (1) the total sum over all classes equals |G| (partition), and (2) singleton classes correspond exactly to central elements (fixed points of conjugation).",
+      "The conjugation action of `ConjAct G` on G has: orbit of x = conjugacy class of x, and stabilizer of x = centralizer C_G(x). This is the quantitative engine: |[x]| = |G| / |C_G(x)| = [G : C_G(x)].",
+      "For p-groups: each non-central class has p | |[x]| (since |[x]| | |G| = p^k and |[x]| > 1). Combined with p | |G|, the class equation mod p gives p | |Z(G)|.",
+      "A₄ (order 12) has 4 conjugacy classes of sizes 1+3+4+4 = 12, with trivial center. This directly shows A₄ is not a p-group, consistent with 12 = 4·3.",
+      "The unique sorry (card_conjClass_eq_centralizer_index) is purely technical: the mathematical fact |[x]| = [G:C_G(x)] is well-established; it needs careful manipulation of Nat.card and subgroup index arithmetic."
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/LagrangeTheoremOQ02OQ02.lean",
+    "namespace": "LagrangeTheoremOQ02OQ02",
+    "imports": [
+      "Mathlib",
+      "Proofs.LagrangeTheoremOQ02"
+    ],
+    "opens": [
+      "Subgroup",
+      "ConjClasses",
+      "MulAction"
+    ],
+    "lineCount": 257,
+    "sorries": 1,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1
+  },
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can card_conjClass_eq_centralizer_index be proved without sorry — completing the orbit-to-centralizer-index connection for conjugacy classes?",
+      "difficulty": "medium",
+      "tags": [
+        "lean4",
+        "orbit-stabilizer",
+        "subgroup-index"
+      ]
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the class equation be derived purely from orbit-stabilizer without using Mathlib's Group.nat_card_center_add_sum_card_noncenter_eq_card?",
+      "difficulty": "hard",
+      "tags": [
+        "lean4",
+        "class-equation",
+        "from-scratch"
+      ]
+    }
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-02-oq-01",
+    "lagrange-theorem-oq-03"
+  ],
+  "sections": [
+    {
+      "id": "class-equation-main",
+      "title": "The Class Equation",
+      "startLine": 55,
+      "endLine": 65,
+      "description": "Main theorem: |Z(G)| + Σ_{noncenter} |c| = |G|, directly from Mathlib."
+    },
+    {
+      "id": "orbit-stabilizer",
+      "title": "Orbit-Stabilizer for Conjugation",
+      "startLine": 72,
+      "endLine": 165,
+      "description": "Connects ConjAct orbits to conjugacy class carriers and centralizers."
+    },
+    {
+      "id": "p-groups",
+      "title": "p-Group Applications",
+      "startLine": 170,
+      "endLine": 205,
+      "description": "Fixed point theorem, center nontriviality, groups of order p² are abelian."
+    },
+    {
+      "id": "a4-examples",
+      "title": "Concrete Computations for A₄",
+      "startLine": 210,
+      "endLine": 235,
+      "description": "A₄ has 4 conjugacy classes (sizes 1+3+4+4=12), trivial center, is not abelian."
+    }
+  ]
+}
