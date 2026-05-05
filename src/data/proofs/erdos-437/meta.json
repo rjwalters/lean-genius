@@ -65,7 +65,8 @@
     "axiomCount": 4,
     "lineCount": 290,
     "assumptions": "4 axioms: L_little_o_x, erdos_437, L_lower_bound, L_upper_bound. 1 sorry remains.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #437**\n\nThis problem asks about the multiplicative structure of increasing sequences. Given a sequence a₁ < a₂ < ... < aₖ ≤ x, we form partial products a₁, a₁a₂, a₁a₂a₃, etc. The question: how many can be perfect squares?\n\n**Key History:**\n- Erdős-Graham [ErGr80]: Original problem, noted L(x) = o(x) is 'trivial' via Siegel\n- Bui-Pratt-Zaharescu [BPZ24]: Proved the affirmative answer using hyperelliptic curves\n- Tao (blog post): Established precise asymptotic bounds\n\n**Mathematical Setting:**\n- Related to problems about integral points on algebraic curves\n- Connection to Siegel's theorem on elliptic curves\n- Involves analysis of squarefree parts and multiplicative structure",
