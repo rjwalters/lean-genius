@@ -129,9 +129,9 @@ theorem qMultichoose_eq_multichoose (n k : ℕ) :
     | zero => simp [Nat.multichoose_zero_right]
     | succ k ihk =>
       rw [qMultichoose_pascal, ihn (k + 1), ihk, one_pow, one_mul]
+      norm_cast
       have h := Nat.multichoose_succ_succ n k
-      push_cast [h]
-      ring
+      omega
 
 -- ============================================================
 -- SECTION V: Specialization at q = 1
@@ -173,11 +173,12 @@ theorem qMultichoose_eq_qBinom_shift (q : R) (n k : ℕ) :
     qMultichoose q n k = qBinom q (n + k - 1) k :=
   rfl
 
-/-- Two-left: qMultichoose q 2 k = [k+1]_q = qNumber q (k+1). -/
+/-- Two-left: qMultichoose q 2 k = [k+1]_q = qNumber q (k+1).
+    Uses qBinom_penult: qBinom q (n+1) n = qNumber q (n+1). -/
 theorem qMultichoose_two_left (q : R) (k : ℕ) :
     qMultichoose q 2 k = qNumber q (k + 1) := by
   simp only [qMultichoose, show 2 + k - 1 = k + 1 from by omega]
-  exact qBinom_one_right q (k + 1)
+  exact qBinom_penult q k
 
 -- ============================================================
 -- SECTION VIII: Consistency with the Classical q-Vandermonde
@@ -185,9 +186,13 @@ theorem qMultichoose_two_left (q : R) (k : ℕ) :
 
 /-- The q-Vandermonde identity for qBinom specializes to a q-Vandermonde
     for qMultichoose. At q=1, this recovers the multiset Vandermonde identity
-    proved in `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02`. -/
-theorem qMultichoose_recovers_classical (n k : ℕ) :
-    (qMultichoose (1 : ℕ) n k) = Nat.multichoose n k :=
+    proved in `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02`.
+
+    The main theorem `qMultichoose_eq_multichoose` already proves this over any CommRing R:
+    `qMultichoose (1 : R) n k = (Nat.multichoose n k : R)`.
+    Instantiated at R = ℤ: -/
+theorem qMultichoose_recovers_classical_int (n k : ℕ) :
+    qMultichoose (1 : ℤ) n k = (Nat.multichoose n k : ℤ) :=
   qMultichoose_eq_multichoose n k
 
 -- ============================================================

@@ -1,0 +1,127 @@
+{
+  "id": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+  "title": "q-Multichoose: The Gaussian Binomial as q-Analog of Multiset Coefficients",
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+  "description": "Proves that the q-analog of the multiset coefficient `Nat.multichoose n k` is the Gaussian binomial coefficient `[n+k-1 choose k]_q`. Defines `qMultichoose q n k := qBinom q (n+k-1) k` and proves: (1) at q=1 it recovers `Nat.multichoose n k`, (2) it satisfies a q-deformed Pascal recurrence, (3) boundary cases.",
+  "parent": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+  "openQuestion": "What is the q-analog of multichoose? Is it the Gaussian binomial coefficient [n+k-1 choose k]_q?",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "multiset",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-05",
+    "axiomCount": 0,
+    "assumptions": "None. 0 axiom declarations, 0 sorries.",
+    "lineCount": 221,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "qBinom_pascal",
+        "description": "q-Pascal: qBinom q (n+1) (k+1) = qBinom q n k + q^(k+1) * qBinom q n (k+1)",
+        "module": "Proofs.CombinationsFormulaOQ03"
+      },
+      {
+        "theorem": "qBinom_at_one",
+        "description": "qBinom 1 n k = Nat.choose n k",
+        "module": "Proofs.CombinationsFormulaOQ03"
+      },
+      {
+        "theorem": "qBinom_self",
+        "description": "qBinom q n n = 1",
+        "module": "Proofs.CombinationsFormulaOQ03"
+      },
+      {
+        "theorem": "qBinom_one_right",
+        "description": "qBinom q n 1 = qNumber q n",
+        "module": "Proofs.CombinationsFormulaOQ03"
+      },
+      {
+        "theorem": "Nat.multichoose_succ_succ",
+        "description": "multichoose (n+1) (k+1) = multichoose n (k+1) + multichoose (n+1) k",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      }
+    ],
+    "originalContributions": [
+      "Definition `qMultichoose q n k := qBinom q (n+k-1) k` as q-analog of Nat.multichoose",
+      "q-Pascal recurrence: qMultichoose q (n+1) (k+1) = qMultichoose q (n+1) k + q^(k+1) * qMultichoose q n (k+1)",
+      "Proof by double induction that qMultichoose 1 n k = Nat.multichoose n k",
+      "Boundary cases: zero-left, zero-right, one-left (=1), one-right (=[n]_q)"
+    ],
+    "prerequisites": [
+      "Gaussian binomial coefficients (Proofs/CombinationsFormulaOQ03.lean)",
+      "Multiset Vandermonde identity (Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gaussian binomial coefficients [n choose k]_q were introduced by Gauss (1808) as q-analogs of ordinary binomial coefficients. They count k-dimensional subspaces of an n-dimensional vector space over 𝔽_q. The connection qMultichoose n k = [n+k-1 choose k]_q identifies the q-analog of multiset counting with this fundamental combinatorial structure.",
+    "problemStatement": "The multiset coefficient multichoose n k counts the multisets of size k from an n-element set, and satisfies multichoose n k = C(n+k-1, k). The open question asks: what is the q-analog that recovers multichoose at q=1?",
+    "proofStrategy": "Define qMultichoose q n k := qBinom q (n+k-1) k. Prove: (1) boundary cases from qBinom properties, (2) q-Pascal recurrence by applying qBinom_pascal at shifted index n+k, (3) recovery of Nat.multichoose at q=1 by double induction using both Pascal recurrences.",
+    "keyInsights": [
+      "The index shift n+k-1 maps the multiset problem onto the Gaussian binomial setting: qBinom q (n+k-1) k is the canonical q-analog.",
+      "The q-Pascal recurrence has q^(k+1) as the weight on the 'increment-k' term, reflecting the dimension count in the 𝔽_q-vector space interpretation.",
+      "The double induction proof parallels the ordinary multichoose Pascal recurrence with the q-deformed version, using Nat.multichoose_succ_succ and qMultichoose_pascal.",
+      "At q=1, the q-Pascal becomes the ordinary Pascal, and both have the same boundary conditions, forcing equality by induction."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "I. Definition of q-Multichoose",
+      "startLine": 40,
+      "endLine": 50,
+      "summary": "Defines qMultichoose q n k := qBinom q (n+k-1) k, the Gaussian binomial as q-analog of Nat.multichoose.",
+      "mathContext": "The Gaussian binomial $\\binom{n+k-1}{k}_q$ is the q-analog of the multiset coefficient $\\binom{n+k-1}{k} = \\text{multichoose}(n,k)$."
+    },
+    {
+      "id": "properties",
+      "title": "II. Basic Properties",
+      "startLine": 52,
+      "endLine": 100,
+      "summary": "Proves boundary cases: zero-right=1, zero-left=0, one-left=1, one-right=[n]_q.",
+      "mathContext": "Boundary cases mirror those of Nat.multichoose: qMultichoose(n,0)=1, qMultichoose(0,k+1)=0, qMultichoose(1,k)=1."
+    },
+    {
+      "id": "pascal",
+      "title": "III. q-Pascal Recurrence",
+      "startLine": 102,
+      "endLine": 130,
+      "summary": "Proves qMultichoose q (n+1) (k+1) = qMultichoose q (n+1) k + q^(k+1) * qMultichoose q n (k+1).",
+      "mathContext": "The q-deformation of the ordinary Pascal recurrence for multichoose, with q-weight on the term incrementing k."
+    },
+    {
+      "id": "recovery",
+      "title": "IV. Recovery of Nat.multichoose at q=1",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "Proves by double induction that qMultichoose 1 n k = Nat.multichoose n k.",
+      "mathContext": "The main theorem establishing qMultichoose as the canonical q-analog."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gaussian binomial coefficient [n+k-1 choose k]_q is the q-analog of the multiset coefficient, proved via definition, q-Pascal recurrence, and recovery at q=1 by double induction.",
+    "implications": "This establishes the combinatorial identity connecting multiset counting to Gaussian binomials at the formal level, enabling q-deformation of multiset Vandermonde and other combinatorial identities."
+  },
+  "leanFile": {
+    "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+    "namespace": "QMultichooseCoefficients",
+    "imports": ["Mathlib", "Proofs.CombinationsFormulaOQ03"],
+    "axiomCount": 0,
+    "lineCount": 221,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "sorries": 0
+}
