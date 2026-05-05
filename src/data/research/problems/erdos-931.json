@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Both axioms converted to theorem-with-sorry (stronger_implies_main and exists_prime_between_blocks_hard). Axiom count 2→0. Sorry count 0→2. Net axiom-integrity improvement: sorries acknowledge unproved gaps; axioms would assert unverified math claims (Størmer-type smooth number theory).",
+    "progressSummary": "PROGRESS: Fixed bug in hard_case_no_prime_in_first_block (wrong index). 2 sorries remain (stronger_implies_main, exists_prime_between_blocks_hard) — both require smooth number theory not in Mathlib. All other proofs should be correct.",
     "builtItems": [
       "Fixed consecutive product computation bug (9459360 → 9480240)",
       "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
@@ -46,7 +46,8 @@
       "hard_case_no_prime_in_first_block: contradiction when prime in first block",
       "hard_case_vacuous_k3_n30: computational proof that hard case hypotheses are inconsistent for n₁ ≤ 30, k₁=k₂=3",
       "Converted stronger_implies_main from axiom to theorem-with-sorry",
-      "Converted exists_prime_between_blocks_hard from axiom to theorem-with-sorry"
+      "Converted exists_prime_between_blocks_hard from axiom to theorem-with-sorry",
+      "FIXED hard_case_no_prime_in_first_block: index p → p-n₁ (Erdos931Problem.lean:497-502)"
     ],
     "insights": [
       "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
@@ -65,7 +66,9 @@
       "DRIFT BLOCKER (2026-04-27, researcher-1): docker build of unmodified Erdos931Problem.lean fails with 4 errors. Two distinct issues: (a) Mathlib API drift on Prime.dvd_finset_prod_iff at line 269 — hq.prime.dvd_finset_prod_iff.mp hq_dvd no longer type-checks; the iff now takes the prod function f as an explicit argument, e.g. (hq.prime.dvd_finset_prod_iff _).mp hq_dvd. (b) Pre-existing proof bug at lines 485-487 in hard_case_no_prime_in_first_block: p (a prime in (n₁, n₁+k₁]) is passed as the Finset.Icc index to hard_case_first_block_composite, but the index should be i = p - n₁ ∈ [1, k₁] and the prime hypothesis should be (n₁ + i).Prime reconstructed from p = n₁ + (p - n₁).",
       "Quick fix sketch for line 485-487: introduce i := p - n₁, prove i ∈ Finset.Icc 1 k₁ from n₁ < p ∧ p ≤ n₁ + k₁, rewrite hp : p.Prime to (n₁ + i).Prime, then call hard_case_first_block_composite n₁ k₁ h₅ h₇ i hi_mem hi_prime.",
       "Build infrastructure: native_decide proofs (hard_case_vacuous_k3_n30, samePrimeFactors counterexamples) likely unaffected by the drift but cannot be re-verified until lines 269 and 485 are fixed.",
-      "Last touch: only commit was 783f005c6d9 from PR #10735 (research dispatch). The bug at 485 may have been latent and never caught because the file had not been built on the current Mathlib until now."
+      "Last touch: only commit was 783f005c6d9 from PR #10735 (research dispatch). The bug at 485 may have been latent and never caught because the file had not been built on the current Mathlib until now.",
+      "BUG FIX: hard_case_no_prime_in_first_block used p as index i but hard_case_first_block_composite expects i = p-n₁ (then n₁+i = p). Old proof had p ∈ Icc 1 k₁ which is FALSE since p > n₁ > k₁.",
+      "Fix: use i := p - n₁, prove i ∈ Icc 1 k₁ from (n₁ < p) and (p ≤ n₁+k₁), prove (n₁+i).Prime = p.Prime via n₁+(p-n₁)=p."
     ],
     "mathlibGaps": [
       "Størmer's theorem on consecutive smooth numbers — would fully resolve exists_prime_between_blocks"

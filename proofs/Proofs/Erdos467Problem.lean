@@ -238,6 +238,33 @@ theorem mertens_product :
   ⟨1, one_pos, fun _ _ => ⟨1, fun x hx => Nat.cast_pos.mpr (by omega)⟩⟩
 
 /-
+## Necessary Conditions for Dual Covering
+-/
+
+/-- The zero assignment cannot achieve dual covering for x ≥ 2:
+    n = 1 is never covered by any zero-class prime. -/
+theorem zero_assign_no_dual_cover (x : ℕ) (hx : x ≥ 2) (part : PrimePartition x) :
+    ¬ IsDualCovering x (zeroAssignment x) part := by
+  intro hdual
+  have h1 : (1 : ℕ) < x := by omega
+  obtain ⟨q, hq, _hle, _, hmod⟩ := (hdual 1 h1).2
+  have h0 : 1 % q = 0 := by simpa [zeroAssignment] using hmod
+  exact one_not_covered_by_zero q hq h0
+
+/-- In any dual covering, A must contain a prime covering n = 1 and
+    B must contain a prime covering n = 1: the assignment must be 1-compatible
+    on at least one prime from each side. -/
+theorem dual_cover_needs_unit_class (x : ℕ) (hx : x ≥ 2) (assign : ResidueAssignment x)
+    (part : PrimePartition x) (hdual : IsDualCovering x assign part) :
+    (∃ p : ℕ, ∃ hp : p.Prime, ∃ hle : p ≤ x,
+      part.inA p hp hle = true ∧ assign p hp hle % p = 1 % p) ∧
+    (∃ q : ℕ, ∃ hq : q.Prime, ∃ hle : q ≤ x,
+      part.inA q hq hle = false ∧ assign q hq hle % q = 1 % q) := by
+  have h1 : (1 : ℕ) < x := by omega
+  obtain ⟨⟨p, hp, hle, hinA, hmodA⟩, ⟨q, hq, hleq, hinB, hmodB⟩⟩ := hdual 1 h1
+  exact ⟨⟨p, hp, hle, hinA, hmodA.symm⟩, ⟨q, hq, hleq, hinB, hmodB.symm⟩⟩
+
+/-
 ## Problem Summary
 -/
 

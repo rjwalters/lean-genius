@@ -495,9 +495,12 @@ theorem hard_case_no_prime_in_first_block (n₁ k₁ : ℕ)
     (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁)
     (p : ℕ) (hp : p.Prime) (hlo : n₁ < p) (hhi : p ≤ n₁ + k₁) :
     False := by
-  have hp_in : p ∈ Finset.Icc 1 k₁ := by
+  have hi : (p - n₁) ∈ Finset.Icc 1 k₁ := by
     rw [Finset.mem_Icc]; constructor <;> omega
-  exact hard_case_first_block_composite n₁ k₁ h₅ h₇ p hp_in hp
+  have hprime : (n₁ + (p - n₁)).Prime := by
+    have heq : n₁ + (p - n₁) = p := by omega
+    rwa [heq]
+  exact hard_case_first_block_composite n₁ k₁ h₅ h₇ (p - n₁) hi hprime
 
 /-- Consequently, the next prime after n₁ must exceed n₁+k₁.
     Combined with Bertrand (next prime ≤ 2n₁), the next prime lies in
