@@ -1,0 +1,164 @@
+{
+  "slug": "lagrange-theorem-oq-01-oq-02",
+  "title": "Prove that A\u2084 has no subgroup of order 6 (the standard counterexample to the ...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Prove that A\u2084 has no subgroup of order 6 (the standard counterexample to the ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-05T02:57:44.812Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 121-line proof, 0 sorries, 0 axioms. A4 no-subgroup-order-6 proved by native_decide enumeration.",
+    "builtItems": [
+      "A4_no_subgroup_order6_finset: native_decide over all Finsets of A4 (line 55)",
+      "A4_no_subgroup_order6: Subgroup lift via Fintype.card_subtype (line 66)",
+      "A4_card, A4_no_element_order6, A4_three_order2_elements, A4_eight_order3_elements: basic facts (lines 36-50)",
+      "A4_no_index2_subgroup: corollary about index-2 (line 79)",
+      "lagrange_converse_fails: explicit witness 6|12 but no order-6 subgroup (line 88)"
+    ],
+    "insights": [
+      "A4 has 12 elements: 1 identity, 3 double-transpositions (order 2), 8 three-cycles (order 3)",
+      "native_decide over all 2^12 = 4096 Finsets of A4 proves no 6-element subset satisfies subgroup axioms",
+      "Fintype.card_subtype connects Fintype.card H to (Finset.univ.filter (\u00b7 \u2208 H)).card for the Subgroup lift",
+      "All elements of A4 have order 1, 2, or 3 -- rules out Z6 subgroup entirely",
+      "Mathematical argument: conjugacy classes have sizes 1,3,4,4; no subset containing 1 sums to 6"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Classify all subgroups of A4 (lattice: {e}, 3xZ2, 4xZ3, V4, A4)",
+      "Prove A4 is solvable but has no order-6 Hall subgroup"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-01-oq-03",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-02-oq-01",
+    "lagrange-theorem-oq-03",
+    "lagrange-theorem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.811Z",
+  "lastUpdate": "2026-05-05T02:57:44.811Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01.lean",
+      "filename": "LagrangeTheoremOQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ02.lean",
+      "filename": "LagrangeTheoremOQ01OQ02.lean",
+      "lineCount": 122,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ03.lean",
+      "filename": "LagrangeTheoremOQ01OQ03.lean",
+      "lineCount": 212,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02.lean",
+      "filename": "LagrangeTheoremOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ01.lean",
+      "lineCount": 227,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ03.lean",
+      "filename": "LagrangeTheoremOQ03.lean",
+      "lineCount": 374,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 114,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    }
+  ]
+}
