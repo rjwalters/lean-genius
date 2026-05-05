@@ -1,8 +1,8 @@
 {
   "id": "erdos-207",
-  "title": "Erd\u0151s Problem #207: High-Girth Steiner Triple Systems",
+  "title": "Erdős Problem #207: High-Girth Steiner Triple Systems",
   "slug": "erdos-207",
-  "description": "For g\u22652 and large admissible n, do STS(n) with girth \u2265g exist? YES (Kwan-Sah-Sawhney-Simkin 2022).",
+  "description": "For g≥2 and large admissible n, do STS(n) with girth ≥g exist? YES (Kwan-Sah-Sawhney-Simkin 2022).",
   "meta": {
     "author": "Kwan-Sah-Sawhney-Simkin (2022 proof)",
     "sourceUrl": "https://erdosproblems.com/207",
@@ -45,7 +45,7 @@
       "Hypergraph3 structure: 3-uniform hypergraph",
       "edgeContainsPair, IsSteinerTripleSystem definitions",
       "vertexSpan, HasGirthAtLeast definitions",
-      "IsAdmissible definition: n \u2261 1,3 (mod 6)",
+      "IsAdmissible definition: n ≡ 1,3 (mod 6)",
       "kirkman_theorem axiom: STS existence condition",
       "erdos207Conjecture definition",
       "kwan_sah_sawhney_simkin_2022 axiom: main solution",
@@ -60,14 +60,14 @@
     "definitionCount": 12
   },
   "overview": {
-    "historicalContext": "**Steiner Triple Systems and High Girth**\n\nA Steiner triple system STS$(n)$ is a collection of 3-element subsets (triples) of an $n$-set such that every pair of elements appears in exactly one triple. These fundamental structures were first studied by **Thomas Kirkman** in 1847, who proved STS$(n)$ exists iff $n \\equiv 1, 3 \\pmod{6}$, predating **Jakob Steiner**'s 1853 formulation.\n\n**The Girth Question**\n\nErd\u0151s posed this problem in 1976, asking whether STS with arbitrarily high girth exist for all large admissible orders. The girth condition (any $j$ edges span $\\geq j+3$ vertices) prevents 'tight' configurations. The special case $g = 3$ (Pasch-free STS) was resolved earlier by **Grannell, Griggs, and Whitehead** (2000) and independently by others.\n\n**The Resolution (2022)**\n\n**Matthew Kwan, Ashwin Sah, Mehtaab Sawhney, and Michael Simkin** (arXiv:2201.04554) resolved this completely using a random greedy construction. Their proof combines the **R\u00f6dl nibble method** with a novel **spread measure** to control the girth property throughout the construction process, employing concentration inequalities from probabilistic combinatorics.\n\n**The Kirkman Schoolgirl Problem**\n\nThe formalization also includes the 1850 Kirkman schoolgirl problem\u2014the first question in design theory\u2014asking for a resolvable STS$(15)$ where 15 girls walk in groups of 3 for 7 days without repeating companions.",
+    "historicalContext": "**Steiner Triple Systems and High Girth**\n\nA Steiner triple system STS$(n)$ is a collection of 3-element subsets (triples) of an $n$-set such that every pair of elements appears in exactly one triple. These fundamental structures were first studied by **Thomas Kirkman** in 1847, who proved STS$(n)$ exists iff $n \\equiv 1, 3 \\pmod{6}$, predating **Jakob Steiner**'s 1853 formulation.\n\n**The Girth Question**\n\nErdős posed this problem in 1976, asking whether STS with arbitrarily high girth exist for all large admissible orders. The girth condition (any $j$ edges span $\\geq j+3$ vertices) prevents 'tight' configurations. The special case $g = 3$ (Pasch-free STS) was resolved earlier by **Grannell, Griggs, and Whitehead** (2000) and independently by others.\n\n**The Resolution (2022)**\n\n**Matthew Kwan, Ashwin Sah, Mehtaab Sawhney, and Michael Simkin** (arXiv:2201.04554) resolved this completely using a random greedy construction. Their proof combines the **Rödl nibble method** with a novel **spread measure** to control the girth property throughout the construction process, employing concentration inequalities from probabilistic combinatorics.\n\n**The Kirkman Schoolgirl Problem**\n\nThe formalization also includes the 1850 Kirkman schoolgirl problem—the first question in design theory—asking for a resolvable STS$(15)$ where 15 girls walk in groups of 3 for 7 days without repeating companions.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nFor any $g \\geq 2$, if $n$ is sufficiently large and $n \\equiv 1, 3 \\pmod{6}$, does there exist a 3-uniform hypergraph on $n$ vertices such that:\n1. Every pair of vertices is contained in exactly one edge (Steiner triple system)\n2. For any $2 \\leq j \\leq g$, any collection of $j$ edges contains at least $j+3$ vertices\n\n**Answer: YES**\n\nKwan, Sah, Sawhney, and Simkin (2022) proved that high-girth Steiner triple systems exist for all admissible orders.",
-    "text": "For g\u22652 and large admissible n, do STS(n) with girth \u2265g exist? YES (Kwan-Sah-Sawhney-Simkin 2022).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraphs:** Define `Hypergraph3 V` as a structure with edges $\\in \\text{Finset}(\\text{Finset}\\,V)$ satisfying $|e| = 3$.\n\n2. **STS Property:** Formalize `IsSteinerTripleSystem` via $\\forall a \\neq b, \\exists! e \\in H.\\text{edges}: a \\in e \\wedge b \\in e$.\n\n3. **Girth:** Define `HasGirthAtLeast` requiring $|S| \\leq g \\implies |\\bigcup S| \\geq |S| + 3$.\n\n4. **Admissibility:** Define `IsAdmissible` for $n \\bmod 6 \\in \\{1, 3\\}$.\n\n5. **Main Result:** Axiomatize Kirkman's theorem and the KSSS theorem.\n\n6. **Special Cases:** Define Pasch configurations ($|S| = 4, |\\bigcup S| = 6$) and anti-Pasch STS.\n\n7. **Related:** Include resolvable STS and the Kirkman schoolgirl problem.\n\n**Why Axiomatization?** The KSSS proof uses probabilistic combinatorics (R\u00f6dl nibble, concentration inequalities, spread measure) far beyond current Mathlib.",
+    "text": "For g≥2 and large admissible n, do STS(n) with girth ≥g exist? YES (Kwan-Sah-Sawhney-Simkin 2022).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraphs:** Define `Hypergraph3 V` as a structure with edges $\\in \\text{Finset}(\\text{Finset}\\,V)$ satisfying $|e| = 3$.\n\n2. **STS Property:** Formalize `IsSteinerTripleSystem` via $\\forall a \\neq b, \\exists! e \\in H.\\text{edges}: a \\in e \\wedge b \\in e$.\n\n3. **Girth:** Define `HasGirthAtLeast` requiring $|S| \\leq g \\implies |\\bigcup S| \\geq |S| + 3$.\n\n4. **Admissibility:** Define `IsAdmissible` for $n \\bmod 6 \\in \\{1, 3\\}$.\n\n5. **Main Result:** Axiomatize Kirkman's theorem and the KSSS theorem.\n\n6. **Special Cases:** Define Pasch configurations ($|S| = 4, |\\bigcup S| = 6$) and anti-Pasch STS.\n\n7. **Related:** Include resolvable STS and the Kirkman schoolgirl problem.\n\n**Why Axiomatization?** The KSSS proof uses probabilistic combinatorics (Rödl nibble, concentration inequalities, spread measure) far beyond current Mathlib.",
     "keyInsights": [
       "**Kirkman's Condition:** STS$(n)$ exists iff $n \\equiv 1, 3 \\pmod{6}$. This 1847 result is the necessary foundation for the girth question.",
       "**Why $j+3$?** Two edges in an STS share at most 1 vertex (by unique pair coverage), so 2 edges span $\\geq 5 = 2+3$ vertices. The girth condition generalizes this to $j$ edges.",
-      "**Pasch Configuration:** The minimal obstruction to girth 3 \u2014 four triples $\\{abc, ade, bdf, cef\\}$ on exactly 6 vertices, forming the smallest 'tight' hypergraph cycle.",
+      "**Pasch Configuration:** The minimal obstruction to girth 3 — four triples $\\{abc, ade, bdf, cef\\}$ on exactly 6 vertices, forming the smallest 'tight' hypergraph cycle.",
       "**Random Greedy Construction:** The KSSS proof shows that a careful random greedy process achieves arbitrary girth with positive probability, despite the global nature of the constraint.",
       "**Spread Measure Innovation:** The key technical tool in KSSS measures how uniformly distributed a partial STS is, preventing concentration that would create forbidden configurations."
     ],
@@ -111,7 +111,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erd\u0151s Conjecture",
+      "title": "The Erdős Conjecture",
       "summary": "Formalizes erdos207Conjecture: $\\forall g \\geq 2, \\exists N: \\forall n \\geq N$, IsAdmissible$(n) \\implies \\exists$ STS$(n)$ with girth $\\geq g$.",
       "startLine": 132,
       "endLine": 144,
@@ -136,10 +136,10 @@
     {
       "id": "techniques",
       "title": "Proof Techniques",
-      "summary": "Documents the random greedy construction, R\u00f6dl nibble method, and spread measure technique used in the KSSS proof, formalized as descriptive comments.",
+      "summary": "Documents the random greedy construction, Rödl nibble method, and spread measure technique used in the KSSS proof, formalized as descriptive comments.",
       "startLine": 198,
       "endLine": 219,
-      "mathContext": "Verified: Documents the random greedy construction, R\u00f6dl nibble method, and spread measure technique used in the KSSS proof, formalized as descriptive comments."
+      "mathContext": "Verified: Documents the random greedy construction, Rödl nibble method, and spread measure technique used in the KSSS proof, formalized as descriptive comments."
     },
     {
       "id": "related",
@@ -159,8 +159,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #207 asked whether high-girth Steiner triple systems exist for all sufficiently large admissible orders. Kwan, Sah, Sawhney, and Simkin (2022) proved YES using a random greedy construction with spread measure analysis. The formalization captures the full problem structure: 3-uniform hypergraphs, the STS property, the girth condition, Kirkman's 1847 existence theorem, and the 2022 resolution, plus special cases (Pasch configurations) and related problems (resolvable STS, Kirkman schoolgirl problem).",
-    "implications": "**Theoretical Significance**: **Implications in Design Theory**\n\n1. **Arbitrary Girth:** Any forbidden configuration can be avoided in large STS, settling a fundamental question about the structure of Steiner systems.\n\n2. **Random Methods Work:** Even for highly structured combinatorial objects like STS, probabilistic constructions achieve optimal results.\n\n**3. Spread Measure Technique:** A new tool in probabilistic combinatorics applicable to other design construction problems.\n\n4. **Hypergraph Regularity:** Connects to Szemer\u00e9di-type regularity for hypergraphs and the broader program of understanding quasirandom designs.\n\n5. **Coding Theory:** High-girth STS relate to error-correcting codes with specific minimum distance properties.",
+    "summary": "Erdős Problem #207 asked whether high-girth Steiner triple systems exist for all sufficiently large admissible orders. Kwan, Sah, Sawhney, and Simkin (2022) proved YES using a random greedy construction with spread measure analysis. The formalization captures the full problem structure: 3-uniform hypergraphs, the STS property, the girth condition, Kirkman's 1847 existence theorem, and the 2022 resolution, plus special cases (Pasch configurations) and related problems (resolvable STS, Kirkman schoolgirl problem).",
+    "implications": "**Theoretical Significance**: **Implications in Design Theory**\n\n1. **Arbitrary Girth:** Any forbidden configuration can be avoided in large STS, settling a fundamental question about the structure of Steiner systems.\n\n2. **Random Methods Work:** Even for highly structured combinatorial objects like STS, probabilistic constructions achieve optimal results.\n\n**3. Spread Measure Technique:** A new tool in probabilistic combinatorics applicable to other design construction problems.\n\n4. **Hypergraph Regularity:** Connects to Szemerédi-type regularity for hypergraphs and the broader program of understanding quasirandom designs.\n\n5. **Coding Theory:** High-girth STS relate to error-correcting codes with specific minimum distance properties.",
     "openQuestions": [
       "Can explicit (deterministic) constructions achieve high-girth STS, or is randomness inherent?",
       "What is the optimal threshold $N(g)$ as a function of girth $g$?",
@@ -194,17 +194,17 @@
     {
       "targetId": "erdos-722",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, design-theory, solved, steiner-systems"
+      "description": "Related Erdős problem sharing themes: combinatorics, design-theory, solved, steiner-systems"
     },
     {
       "targetId": "erdos-1076",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: hypergraphs, solved, steiner-systems"
+      "description": "Related Erdős problem sharing themes: hypergraphs, solved, steiner-systems"
     },
     {
       "targetId": "erdos-780",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, hypergraphs, solved"
+      "description": "Related Erdős problem sharing themes: combinatorics, hypergraphs, solved"
     }
   ],
   "references": [

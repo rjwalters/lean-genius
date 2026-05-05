@@ -1,10 +1,10 @@
 {
   "id": "erdos-934",
-  "title": "Erd\u0151s Problem #934: Edge Distance in Bounded-Degree Graphs",
+  "title": "Erdős Problem #934: Edge Distance in Bounded-Degree Graphs",
   "slug": "erdos-934",
-  "description": "Let h_t(d) be minimal such that every graph with h_t(d) edges and max degree \u2264 d contains two edges at distance \u2265 t. Solved for t=1,2; partial for t=3; general bounds known.",
+  "description": "Let h_t(d) be minimal such that every graph with h_t(d) edges and max degree ≤ d contains two edges at distance ≥ t. Solved for t=1,2; partial for t=3; general bounds known.",
   "meta": {
-    "author": "Erd\u0151s-Ne\u0161et\u0159il",
+    "author": "Erdős-Nešetřil",
     "sourceUrl": "https://erdosproblems.com/934",
     "date": "1988",
     "status": "axiomatized",
@@ -39,18 +39,18 @@
     "originalContributions": [
       "Edge structure definition for simple graphs",
       "edgeDist definition: minimum distance between edge endpoints",
-      "AreTSeparated definition: edges at distance \u2265 t",
+      "AreTSeparated definition: edges at distance ≥ t",
       "maxDegree and numEdges definitions",
       "HasTSeparatedEdges definition: graph contains t-separated edges",
       "h(t,d) definition: minimum edges forcing t-separated edges",
       "h_1_exact axiom: h_1(d) = d + 1",
-      "cgtt_1990 axiom: h_2(d) = \u230a5d\u00b2/4\u230b + 1",
+      "cgtt_1990 axiom: h_2(d) = ⌊5d²/4⌋ + 1",
       "h_3_3 axiom: h_3(3) = 23",
       "H3Conjecture, H3EqualityCondition definitions: conjectured formula for h_3",
-      "improved_upper_bound axiom: h_t(d) \u2264 (3/2)d^t + 1 (Cambie et al. 2022)",
-      "AsymptoticConjecture definition: (1\u00b1o(1))d^t bounds",
+      "improved_upper_bound axiom: h_t(d) ≤ (3/2)d^t + 1 (Cambie et al. 2022)",
+      "AsymptoticConjecture definition: (1±o(1))d^t bounds",
       "h_1_upper_bound, h_1_lower_bound theorems: bounds derived from h_1_exact axiom",
-      "two_separated_is_2K2 theorem: 2-separated edges form induced 2K\u2082",
+      "two_separated_is_2K2 theorem: 2-separated edges form induced 2K₂",
       "erdos_nesetril_conjecture_proved theorem: cites cgtt_1990",
       "h_mono_d, h_mono_t, h_polynomial_growth theorems: monotonicity and growth (sorries)",
       "erdos_nice_formulas, erdos_934, erdos_934_summary: combining results"
@@ -62,16 +62,16 @@
     "definitionCount": 9
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #934** was posed by Erd\u0151s and Ne\u0161et\u0159il, studying edge separation in bounded-degree graphs.\n\n**Historical Development:**\n- **1983 (Bermond-Bond-Paoli-Peyrat):** Conjectured h_2(d) \u2264 5d\u00b2/4 + 1, with equality for even d.\n- **1988 (Erd\u0151s):** Wrote 'This problem seems interesting only if there is a nice expression for h_t(d).'\n- **1990 (Chung-Gy\u00e1rf\u00e1s-Tuza-Trotter):** Proved h_2(d) = \u230a5d\u00b2/4\u230b + 1 exactly.\n- **2022 (Cambie et al.):** Proved h_3(3) = 23, conjectured h_3(d) \u2264 d\u00b3-d\u00b2+d+2, and established general bounds.\n\nThe problem connects to 2K\u2082-free graphs and line graph diameter problems.",
+    "historicalContext": "**Erdős Problem #934** was posed by Erdős and Nešetřil, studying edge separation in bounded-degree graphs.\n\n**Historical Development:**\n- **1983 (Bermond-Bond-Paoli-Peyrat):** Conjectured h_2(d) ≤ 5d²/4 + 1, with equality for even d.\n- **1988 (Erdős):** Wrote 'This problem seems interesting only if there is a nice expression for h_t(d).'\n- **1990 (Chung-Gyárfás-Tuza-Trotter):** Proved h_2(d) = ⌊5d²/4⌋ + 1 exactly.\n- **2022 (Cambie et al.):** Proved h_3(3) = 23, conjectured h_3(d) ≤ d³-d²+d+2, and established general bounds.\n\nThe problem connects to 2K₂-free graphs and line graph diameter problems.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet $h_t(d)$ be minimal such that every graph $G$ with $h_t(d)$ edges and maximum degree $\\leq d$ contains two edges whose shortest path between them has length $\\geq t$.\n\nEstimate $h_t(d)$.\n\n**Known Results:**\n- $h_1(d) = d + 1$ (trivial)\n- $h_2(d) = \\lfloor 5d^2/4 \\rfloor + 1$ (CGTT 1990)\n- $h_3(3) = 23$ (Cambie et al. 2022)\n- General: $(1-o(1))d^t \\leq h_t(d) \\leq (3/2)d^t + 1$\n\n**Open:** Exact formula for $h_t(d)$ when $t \\geq 3$.",
-    "text": "Let h_t(d) be minimal such that every graph with h_t(d) edges and max degree \u2264 d contains two edges at distance \u2265 t. Solved for t=1,2; partial for t=3; general bounds known.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Distance:** Define distance between edges as minimum endpoint distance.\n\n2. **h_t(d) Function:** Define as minimum edges forcing t-separated edges.\n\n3. **Special Cases:** Axiomatize solved cases h_1(d), h_2(d), h_3(3).\n\n4. **General Bounds:** State upper bound (3/2)d^t + 1 and lower bounds.\n\n5. **Connections:** Link to 2K\u2082-free graphs and line graph diameter.",
+    "text": "Let h_t(d) be minimal such that every graph with h_t(d) edges and max degree ≤ d contains two edges at distance ≥ t. Solved for t=1,2; partial for t=3; general bounds known.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Distance:** Define distance between edges as minimum endpoint distance.\n\n2. **h_t(d) Function:** Define as minimum edges forcing t-separated edges.\n\n3. **Special Cases:** Axiomatize solved cases h_1(d), h_2(d), h_3(3).\n\n4. **General Bounds:** State upper bound (3/2)d^t + 1 and lower bounds.\n\n5. **Connections:** Link to 2K₂-free graphs and line graph diameter.",
     "keyInsights": [
       "**Edge Distance:** The minimum distance between endpoints of two edges determines their separation.",
-      "**2K\u2082-Free Graphs:** Two edges at distance \u2265 2 form an induced matching (2K\u2082).",
+      "**2K₂-Free Graphs:** Two edges at distance ≥ 2 form an induced matching (2K₂).",
       "**Star Graph:** A star has d edges but no 1-separated edges, achieving h_1(d) - 1.",
-      "**h_2 Formula:** The exact formula 5d\u00b2/4 + 1 was a major achievement (CGTT 1990).",
-      "**h_3 Conjecture:** Expected to be d\u00b3 - d\u00b2 + d + 2 with equality at d = p^k + 1.",
+      "**h_2 Formula:** The exact formula 5d²/4 + 1 was a major achievement (CGTT 1990).",
+      "**h_3 Conjecture:** Expected to be d³ - d² + d + 2 with equality at d = p^k + 1.",
       "**Polynomial Growth:** h_t(d) grows like d^t with leading coefficient approaching 1."
     ],
     "prerequisites": [
@@ -107,10 +107,10 @@
     {
       "id": "h2-case",
       "title": "The h_2(d) Case",
-      "summary": "Connection to 2K\u2082-free graphs and CGTT theorem",
+      "summary": "Connection to 2K₂-free graphs and CGTT theorem",
       "startLine": 105,
       "endLine": 128,
-      "mathContext": "Verified: Connection to 2K\u2082-free graphs and CGTT theorem"
+      "mathContext": "Verified: Connection to 2K₂-free graphs and CGTT theorem"
     },
     {
       "id": "h3-case",
@@ -162,12 +162,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #934 asks to estimate h_t(d), the minimum edges in a max-degree-d graph forcing two t-separated edges. The problem is solved for t=1 (h_1(d)=d+1) and t=2 (h_2(d)=\u230a5d\u00b2/4\u230b+1). For t=3, specific values like h_3(3)=23 are known, with a conjectured formula. General bounds show h_t(d) = \u0398(d^t) with coefficient approaching 1.",
-    "implications": "**Theoretical Significance**: **Implications for Graph Theory**\n\n1. **2K\u2082-Free Graphs:** The h_2 case completely characterizes extremal 2K\u2082-free bounded-degree graphs.\n\n**2. Line Graph Theory:** Connects to diameter problems in line graphs.\n\n3. **Projective Planes:** Extremal constructions relate to finite geometry.\n\n4. **Ramsey-Type Results:** Forces structure (separated edges) from size constraints.",
+    "summary": "Erdős Problem #934 asks to estimate h_t(d), the minimum edges in a max-degree-d graph forcing two t-separated edges. The problem is solved for t=1 (h_1(d)=d+1) and t=2 (h_2(d)=⌊5d²/4⌋+1). For t=3, specific values like h_3(3)=23 are known, with a conjectured formula. General bounds show h_t(d) = Θ(d^t) with coefficient approaching 1.",
+    "implications": "**Theoretical Significance**: **Implications for Graph Theory**\n\n1. **2K₂-Free Graphs:** The h_2 case completely characterizes extremal 2K₂-free bounded-degree graphs.\n\n**2. Line Graph Theory:** Connects to diameter problems in line graphs.\n\n3. **Projective Planes:** Extremal constructions relate to finite geometry.\n\n4. **Ramsey-Type Results:** Forces structure (separated edges) from size constraints.",
     "openQuestions": [
       "What is the exact formula for h_3(d)?",
-      "Is h_3(d) = d\u00b3 - d\u00b2 + d + 2 for d = p^k + 1?",
-      "What is the exact leading coefficient of h_t(d)/d^t as d \u2192 \u221e?",
+      "Is h_3(d) = d³ - d² + d + 2 for d = p^k + 1?",
+      "What is the exact leading coefficient of h_t(d)/d^t as d → ∞?",
       "Is there a nice closed form for general h_t(d)?",
       "What are the extremal graphs for h_t(d)?"
     ]
@@ -197,17 +197,17 @@
     {
       "targetId": "erdos-1012",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, graph-theory"
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory"
     },
     {
       "targetId": "erdos-1017",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, graph-theory"
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory"
     },
     {
       "targetId": "erdos-1018",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, graph-theory"
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory"
     }
   ],
   "sorries": 8

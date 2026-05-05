@@ -1,10 +1,10 @@
 {
   "id": "erdos-895",
-  "title": "Erd\u0151s Problem #895: Independent Additive Triples",
+  "title": "Erdős Problem #895: Independent Additive Triples",
   "slug": "erdos-895",
-  "description": "In a triangle-free graph on {1,...,n}, must there exist independent vertices a, b, a+b? Yes, for n \u2265 18! Solved by Ben Barber via SAT verification.",
+  "description": "In a triangle-free graph on {1,...,n}, must there exist independent vertices a, b, a+b? Yes, for n ≥ 18! Solved by Ben Barber via SAT verification.",
   "meta": {
-    "author": "Erd\u0151s-Hajnal, solved by Barber",
+    "author": "Erdős-Hajnal, solved by Barber",
     "sourceUrl": "https://erdosproblems.com/895",
     "date": "1995",
     "status": "formalized",
@@ -53,16 +53,16 @@
     "definitionCount": 14
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #895: Independent Additive Triples in Triangle-Free Graphs**\n\nThis problem sits at the beautiful intersection of graph theory and additive combinatorics. **Paul Erd\u0151s and Andr\u00e1s Hajnal** posed it in 1995: if $G$ is a triangle-free graph on the integers $\\{1,\\ldots,n\\}$, must there exist vertices $a$, $b$, $a+b$ forming an independent set?\n\n**Historical Background:**\n- **Frank Ramsey (1930)**: proved $R(3,3) = 6$ \u2014 any 2-coloring of $K_6$ has a monochromatic triangle, establishing the fundamental bound $\\alpha(G) \\geq 3$ for triangle-free $G$ on $n \\geq 6$ vertices\n- **Issai Schur (1916)**: proved that any $k$-coloring of $\\{1,\\ldots,n\\}$ for $n > S(k)$ (the Schur number) contains a monochromatic triple $(a,b,a+b)$; Problem #895 asks about the intersection of these two structures\n- **Ben Barber (2015)**: settled the Erd\u0151s-Hajnal question using SAT solver verification, finding the threshold is exactly $n = 18$ \u2014 remarkably small for such a threshold result\n- **Schur numbers**: $S(2)=4$, $S(3)=13$, $S(4)=44$, $S(5)=160$ (Heule 2017, an 800-core, 14.8 TB SAT proof)\n\n**The Answer:** YES for $n \\geq 18$. The threshold 18 is sharp: a SAT-found triangle-free graph on $\\{1,\\ldots,17\\}$ has no independent additive triple.\n\n**Open generalization (Hajnal):** Does every large triangle-free graph contain an independent **Hindman set** (all finite sums of some base set)? This remains unsolved as of 2026.",
-    "problemStatement": "Let G be a triangle-free graph with vertex set {1, 2, ..., n}.\n\n**Question:** For sufficiently large n, must there exist vertices a, b, and a+b that form an independent set (no edges between them)?\n\n**Answer:** YES, for all n \u2265 18 (Barber)\n\nThe threshold n = 18 is sharp: there exists a triangle-free graph on {1,...,17} with no independent additive triple.",
-    "text": "In a triangle-free graph on {1,...,n}, must there exist independent vertices a, b, a+b? Yes, for n \u2265 18! Solved by Ben Barber via SAT verification.",
-    "proofStrategy": "The formalization:\n\n1. Defines `GraphOnInterval n` as SimpleGraph on Fin n\n2. Defines `IsTriangleFree` and `IsIndependentTriple`\n3. Defines `IsAdditiveTriple a b c` requiring a + b = c\n4. States `barber_theorem`: the result holds for n \u2265 18\n5. States `counterexample_17`: threshold is sharp\n6. Connects to Ramsey theory and Schur numbers\n7. States Hajnal's open generalization about Hindman sets",
+    "historicalContext": "**Erdős Problem #895: Independent Additive Triples in Triangle-Free Graphs**\n\nThis problem sits at the beautiful intersection of graph theory and additive combinatorics. **Paul Erdős and András Hajnal** posed it in 1995: if $G$ is a triangle-free graph on the integers $\\{1,\\ldots,n\\}$, must there exist vertices $a$, $b$, $a+b$ forming an independent set?\n\n**Historical Background:**\n- **Frank Ramsey (1930)**: proved $R(3,3) = 6$ — any 2-coloring of $K_6$ has a monochromatic triangle, establishing the fundamental bound $\\alpha(G) \\geq 3$ for triangle-free $G$ on $n \\geq 6$ vertices\n- **Issai Schur (1916)**: proved that any $k$-coloring of $\\{1,\\ldots,n\\}$ for $n > S(k)$ (the Schur number) contains a monochromatic triple $(a,b,a+b)$; Problem #895 asks about the intersection of these two structures\n- **Ben Barber (2015)**: settled the Erdős-Hajnal question using SAT solver verification, finding the threshold is exactly $n = 18$ — remarkably small for such a threshold result\n- **Schur numbers**: $S(2)=4$, $S(3)=13$, $S(4)=44$, $S(5)=160$ (Heule 2017, an 800-core, 14.8 TB SAT proof)\n\n**The Answer:** YES for $n \\geq 18$. The threshold 18 is sharp: a SAT-found triangle-free graph on $\\{1,\\ldots,17\\}$ has no independent additive triple.\n\n**Open generalization (Hajnal):** Does every large triangle-free graph contain an independent **Hindman set** (all finite sums of some base set)? This remains unsolved as of 2026.",
+    "problemStatement": "Let G be a triangle-free graph with vertex set {1, 2, ..., n}.\n\n**Question:** For sufficiently large n, must there exist vertices a, b, and a+b that form an independent set (no edges between them)?\n\n**Answer:** YES, for all n ≥ 18 (Barber)\n\nThe threshold n = 18 is sharp: there exists a triangle-free graph on {1,...,17} with no independent additive triple.",
+    "text": "In a triangle-free graph on {1,...,n}, must there exist independent vertices a, b, a+b? Yes, for n ≥ 18! Solved by Ben Barber via SAT verification.",
+    "proofStrategy": "The formalization:\n\n1. Defines `GraphOnInterval n` as SimpleGraph on Fin n\n2. Defines `IsTriangleFree` and `IsIndependentTriple`\n3. Defines `IsAdditiveTriple a b c` requiring a + b = c\n4. States `barber_theorem`: the result holds for n ≥ 18\n5. States `counterexample_17`: threshold is sharp\n6. Connects to Ramsey theory and Schur numbers\n7. States Hajnal's open generalization about Hindman sets",
     "keyInsights": [
-      "**Graph-Arithmetic Interplay is the Core:** Triangle-free graphs (via $R(3,3)=6$) force $\\alpha(G) \\geq \\sqrt{n}$, providing an independent set large enough to contain Schur-type arithmetic structure \u2014 the key is that these two constraints (graph and arithmetic) reinforce rather than conflict",
+      "**Graph-Arithmetic Interplay is the Core:** Triangle-free graphs (via $R(3,3)=6$) force $\\alpha(G) \\geq \\sqrt{n}$, providing an independent set large enough to contain Schur-type arithmetic structure — the key is that these two constraints (graph and arithmetic) reinforce rather than conflict",
       "**Remarkably Small Threshold:** The threshold $n = 18$ is surprisingly small for a combinatorial Ramsey-type result; comparable threshold results (like Schur numbers $S(4) = 44$ for 4-colorings) are much larger, suggesting the triangle-free constraint is very powerful",
-      "**SAT Verification as Mathematics:** Barber's proof (2015) via SAT solver is a legitimate mathematical proof \u2014 the UNSAT certificate for the negation is a checkable proof object, not just a numerical claim; this exemplifies the growing role of computational methods in combinatorics",
+      "**SAT Verification as Mathematics:** Barber's proof (2015) via SAT solver is a legitimate mathematical proof — the UNSAT certificate for the negation is a checkable proof object, not just a numerical claim; this exemplifies the growing role of computational methods in combinatorics",
       "**Schur Number Connection:** The Schur number $S(2) = 4$ says any 2-coloring of $\\{1,2,3,4,5\\}$ has a monochromatic triple; Problem #895 replaces 'same color' with 'triangle-free neighborhood', showing graph structure can substitute for coloring constraints",
-      "**Hajnal's Gap is Deep:** The jump from 'one Schur triple' (Erd\u0151s #895, proved) to 'infinite Hindman structure' (Hajnal's conjecture, open) mirrors the gap between Schur's theorem (1916) and Hindman's theorem (1974) \u2014 decades apart in difficulty even in the pure combinatorial setting"
+      "**Hajnal's Gap is Deep:** The jump from 'one Schur triple' (Erdős #895, proved) to 'infinite Hindman structure' (Hajnal's conjecture, open) mirrors the gap between Schur's theorem (1916) and Hindman's theorem (1974) — decades apart in difficulty even in the pure combinatorial setting"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -91,10 +91,10 @@
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "summary": "Statement of Erd\u0151s Problem #895",
+      "summary": "Statement of Erdős Problem #895",
       "startLine": 62,
       "endLine": 72,
-      "mathContext": "Mathematical content: Statement of Erd\u0151s Problem #895"
+      "mathContext": "Mathematical content: Statement of Erdős Problem #895"
     },
     {
       "id": "barber",
@@ -138,13 +138,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #895 asks whether triangle-free graphs on {1,...,n} must contain independent additive triples a, b, a+b. The answer is YES for n \u2265 18, verified computationally by Ben Barber. Our formalization captures the main theorem, the sharp threshold, connections to Ramsey theory and Schur numbers, and Hajnal's open generalization.",
+    "summary": "Erdős Problem #895 asks whether triangle-free graphs on {1,...,n} must contain independent additive triples a, b, a+b. The answer is YES for n ≥ 18, verified computationally by Ben Barber. Our formalization captures the main theorem, the sharp threshold, connections to Ramsey theory and Schur numbers, and Hajnal's open generalization.",
     "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Ramsey Theory:** Triangle-free graphs and independence numbers\n2. **Additive Combinatorics:** Schur's theorem and sum-free sets\n**3. Hindman's Theorem:** Finite sums in partition regular structures\n4. **Computational Methods:** SAT solver verification of combinatorial conjectures\n5. **Arithmetic Ramsey Theory:** Combining graph and number-theoretic constraints.",
     "openQuestions": [
       "Prove Hajnal's generalization: do large triangle-free graphs always contain an independent Hindman set (all finite sums of a finite base)?",
-      "Find an explicit combinatorial or algebraic proof of Barber's theorem that doesn't require SAT verification \u2014 is there a human-understandable argument?",
+      "Find an explicit combinatorial or algebraic proof of Barber's theorem that doesn't require SAT verification — is there a human-understandable argument?",
       "What is the structure of the extremal counterexample for $n = 17$? Is it unique up to isomorphism, or are there multiple non-isomorphic triangle-free graphs on 17 vertices with no independent additive triple?",
-      "Can the result be extended to other additive patterns beyond Schur triples \u2014 e.g., arithmetic progressions $(a, a+d, a+2d)$ instead of $(a, b, a+b)$?"
+      "Can the result be extended to other additive patterns beyond Schur triples — e.g., arithmetic progressions $(a, a+d, a+2d)$ instead of $(a, b, a+b)$?"
     ]
   },
   "leanFile": {
@@ -170,17 +170,17 @@
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-1029",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-1030",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
     }
   ],
   "sorries": 7

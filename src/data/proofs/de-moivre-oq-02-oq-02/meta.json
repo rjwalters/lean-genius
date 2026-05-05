@@ -47,8 +47,14 @@
     "definitionCount": 2
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial", "Polynomial.Chebyshev", "Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Polynomial.Chebyshev",
+      "Real"
+    ],
     "namespace": "DeMoivreOQ02OQ02",
     "lineCount": 182,
     "axiomCount": 0,

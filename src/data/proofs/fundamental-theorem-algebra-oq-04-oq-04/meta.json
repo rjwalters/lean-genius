@@ -1,0 +1,183 @@
+{
+  "id": "fundamental-theorem-algebra-oq-04-oq-04",
+  "title": "p-adic Algebraic Closure: [ℚ̄_p : ℚ_p] = ∞",
+  "slug": "fundamental-theorem-algebra-oq-04-oq-04",
+  "description": "Proves the p-adic contrast to the real case: while [ℂ:ℝ] = 2 (parent entry), the algebraic closure of ℚ_p has infinite degree over ℚ_p. The key vehicle is the polynomial X^n - p, which is irreducible over ℚ_p for every n ≥ 1 (Newton polygon argument, axiomatized), so ℚ_p has field extensions of all degrees. The degree-n statement is machine-checked: AdjoinRoot(X^n - p) has ℚ_p-dimension exactly n.",
+  "meta": {
+    "author": "Lean Genius Research Agent",
+    "date": "2026-05-05",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean",
+    "tags": [
+      "number-theory",
+      "p-adic-numbers",
+      "algebraic-closure",
+      "field-extensions",
+      "newton-polygon",
+      "eisenstein-criterion"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "Two axioms: (1) Xn_sub_p_irred_Qp — X^n - p is irreducible over ℚ_p (Newton polygon: single segment slope -1/n, gcd(1,n)=1; equivalently Eisenstein at the maximal ideal of ℤ_p). (2) padic_alg_closure_infinite_dim — the algebraic closure of ℚ_p is not finite-dimensional over ℚ_p (follows from unbounded extension degrees, but connecting to Module.Finite on AlgebraicClosure requires additional infrastructure).",
+    "lineCount": 215,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "originalContributions": [
+      "Xn_sub_p_irred_Z: X^n - p irreducible over ℤ (standalone Eisenstein proof, independent of parent)",
+      "Xn_sub_p_irred_Q: X^n - p irreducible over ℚ (via NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime)",
+      "natDegree_Xn_sub_p: natDegree(X^n - C p over ℚ_p) = n (proved from polynomial degree lemmas)",
+      "padic_root_extension_finrank: AdjoinRoot(X^n - p) has ℚ_p-dimension n (proved via AdjoinRoot.powerBasis)",
+      "padic_quadratic/cubic/quartic_extension: concrete cases n=2,3,4 (proved)",
+      "real_padic_closure_contrast: contrast theorem [ℂ:ℝ]=2 AND ¬Module.Finite(ℚ_p, AlgClosure)",
+      "degree_contrast_summary: four-part conjunction of proved and axiomatized results"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.finrank_real_complex",
+        "description": "[ℂ:ℝ] = 2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein irreducibility criterion over a comm ring with prime ideal",
+        "module": "Mathlib.RingTheory.Polynomial.Eisenstein.Basic"
+      },
+      {
+        "theorem": "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss's lemma: primitive ℤ[X] irreducibility lifts to ℚ[X]",
+        "module": "Mathlib.RingTheory.Polynomial.Gauss"
+      },
+      {
+        "theorem": "AdjoinRoot.powerBasis",
+        "description": "Power basis for AdjoinRoot of nonzero polynomial",
+        "module": "Mathlib.RingTheory.AdjoinRoot"
+      },
+      {
+        "theorem": "AdjoinRoot.powerBasis_dim",
+        "description": "Dimension of AdjoinRoot power basis = natDegree of polynomial",
+        "module": "Mathlib.RingTheory.AdjoinRoot"
+      },
+      {
+        "theorem": "Polynomial.natDegree_sub_eq_left_of_natDegree_lt",
+        "description": "natDegree(f - g) = natDegree(f) when natDegree(g) < natDegree(f)",
+        "module": "Mathlib.RingTheory.Polynomial.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-05",
+    "sourceUrl": "https://en.wikipedia.org/wiki/P-adic_number#Algebraic_closure",
+    "relatedProblems": [
+      {
+        "id": "fundamental-theorem-algebra-oq-04",
+        "relationship": "contrasts with parent: while [ℂ:ℝ] = 2 (finite), [ℚ̄_p:ℚ_p] = ∞ (infinite)"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The real numbers are exceptional among fields: they need only one quadratic extension (ℂ = ℝ(i)) to become algebraically closed. Hensel's p-adic numbers (1897), the completions of ℚ at prime p, behave very differently. The algebraic closure ℚ̄_p requires extensions of all degrees.\n\nThis follows from Hensel's lemma (1897): if f ∈ ℤ_p[X] and f has a simple root modulo p, then it has a root in ℤ_p. But X^n - p has no root modulo p (its Newton polygon has slope -1/n ≠ 0), so X^n - p is irreducible over ℚ_p — giving extensions of degree n for all n.\n\nThe contrast between [ℂ:ℝ] = 2 and [ℚ̄_p:ℚ_p] = ∞ is a fundamental distinction between real and p-adic completions of ℚ. It is captured algebraically by the Artin-Schreier theorem: ℝ is real-closed (one quadratic extension suffices), while ℚ_p is not real-closed (it needs infinitely many extensions).",
+    "problemStatement": "**Open Question (OQ-04 from FundamentalTheoremAlgebraOQ04)**: Formalize the p-adic contrast — [ℚ̄_p : ℚ_p] = ∞ and the completion ℂ_p is algebraically closed by Krasner's lemma — showing that 'one extension suffices' is special to real-closed fields.\n\n**Partial answer here**: [ℚ_p(p^{1/n}) : ℚ_p] = n for all n (machine-checked), so ℚ_p has extensions of every degree. The conclusion [ℚ̄_p : ℚ_p] = ∞ is axiomatized (non-finiteness follows directly but requires AlgebraicClosure infrastructure).",
+    "text": "Formalization contrasting the algebraic closures of ℝ and ℚ_p. While the parent proves [ℂ:ℝ] = 2, this entry proves ℚ_p has field extensions of every degree n (AdjoinRoot(X^n - p) has dimension n, machine-checked), then axiomatizes the corollary [ℚ̄_p:ℚ_p] = ∞. The p-adic irreducibility X^n - p over ℚ_p is also axiomatized (Newton polygon argument — see mathematical sketch in the Lean file).",
+    "proofStrategy": "Two independent components:\n\n**1. Degree-n extensions (proved)**: The polynomial f = X^n - p has natDegree n over ℚ_p. The `AdjoinRoot.powerBasis` construction gives a ℚ_p-basis of AdjoinRoot(f) of size natDegree(f) = n. Combined with the axiom that f is irreducible (giving AdjoinRoot(f) a field structure), this yields [AdjoinRoot(f):ℚ_p] = n.\n\n**2. Irreducibility over ℚ_p (axiom)**: X^n - p satisfies the Eisenstein criterion over ℤ_p at the maximal ideal (p). Since ℤ_p is a DVR, Gauss's lemma applies: irreducibility over ℤ_p implies irreducibility over ℚ_p = Frac(ℤ_p). The Newton polygon formulation: single segment from (0,1) to (n,0) with slope -1/n, gcd(1,n)=1 implies irreducibility. Both arguments are mathematically sound but require bridging PadicInt to Mathlib's DVR infrastructure.",
+    "keyInsights": [
+      "**Exceptional position of ℝ**: The Artin-Schreier theorem characterizes real-closed fields as exactly those whose algebraic closure is a degree-2 extension. ℝ is the prototypical real-closed field; ℚ_p is not real-closed (it lacks a square root of -1 for p ≡ 3 mod 4, and even when it doesn't, extensions of all degrees exist via ramified extensions).",
+      "**Newton polygon argument**: For X^n - p over ℚ_p, the Newton polygon has a single segment with slope -1/n. When gcd(1,n) = 1 (always true), a single-slope Newton polygon implies the polynomial is irreducible — this is a fundamental result in p-adic analysis.",
+      "**AdjoinRoot finrank**: The key machine-checked result is Module.finrank ℚ_[p] (AdjoinRoot(X^n - C p)) = n, proved using the PowerBasis construction. This is a general algebraic fact about adjoin-root algebras that doesn't require the irreducibility axiom — just that the polynomial is nonzero.",
+      "**Two axioms, different strengths**: Xn_sub_p_irred_Qp (irreducibility) implies padic_alg_closure_infinite_dim (infinite dimension) but not conversely. We axiomatize both because the second requires AlgebraicClosure infrastructure beyond what's proved."
+    ],
+    "prerequisites": [
+      "Field extensions and vector space dimension ([K:F] = dim_F K)",
+      "p-adic numbers ℚ_p and p-adic integers ℤ_p (DVR structure)",
+      "Eisenstein criterion and Gauss's lemma for polynomials",
+      "Newton polygons for p-adic irreducibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "real-reference",
+      "title": "Part I: Real Case — [ℂ:ℝ] = 2 (Reference)",
+      "startLine": 45,
+      "endLine": 56,
+      "summary": "References the parent result: [ℂ:ℝ] = 2 and ℂ is the unique algebraic closure of ℝ.",
+      "mathContext": "$[\\mathbb{C}:\\mathbb{R}] = 2$ via Mathlib's `Complex.finrank_real_complex`. Starting point for the contrast."
+    },
+    {
+      "id": "rational-irred",
+      "title": "Part II: X^n - p Irreducible over ℚ",
+      "startLine": 57,
+      "endLine": 100,
+      "summary": "Proves X^n - p irreducible over ℤ (Eisenstein at prime ideal (p)) and over ℚ (Gauss's lemma via NthRootIrrationalOQ01).",
+      "mathContext": "Eisenstein criterion at $(p) \\subset \\mathbb{Z}$: leading coeff $= 1 \\not\\in (p)$, all non-leading coefficients $\\in (p)$, constant term $-p \\in (p) \\setminus (p^2)$. Gauss: primitive + irreducible over $\\mathbb{Z}$ implies irreducible over $\\mathbb{Q}$."
+    },
+    {
+      "id": "padic-axiom",
+      "title": "Part III: Newton Polygon Axiom",
+      "startLine": 102,
+      "endLine": 127,
+      "summary": "Axiom: X^n - p is irreducible over ℚ_p (Newton polygon, single segment slope -1/n).",
+      "mathContext": "Newton polygon of $X^n - p$ at $p$: single segment from $(0, v_p(p)) = (0,1)$ to $(n, 0)$ with slope $-1/n$. Since $\\gcd(1,n)=1$, the Ore-Hensel theorem gives irreducibility."
+    },
+    {
+      "id": "degree-n-extensions",
+      "title": "Part IV: Degree-n Extensions of ℚ_p",
+      "startLine": 129,
+      "endLine": 165,
+      "summary": "Proves natDegree(X^n - C p over ℚ_p) = n and Module.finrank ℚ_[p] (AdjoinRoot(X^n - p)) = n via AdjoinRoot.powerBasis.",
+      "mathContext": "$[\\mathbb{Q}_p(p^{1/n}):\\mathbb{Q}_p] = n$: the power basis of $\\mathrm{AdjoinRoot}(X^n-p)$ has size $= \\mathrm{natDegree}(X^n-p) = n$."
+    },
+    {
+      "id": "infinite-closure",
+      "title": "Part V: [ℚ̄_p : ℚ_p] = ∞",
+      "startLine": 167,
+      "endLine": 185,
+      "summary": "Axiom: AlgebraicClosure(ℚ_p) is not finite-dimensional over ℚ_p. Proved contrast theorem.",
+      "mathContext": "Unbounded extensions (degree $n$ for all $n$) imply $[\\overline{\\mathbb{Q}_p}:\\mathbb{Q}_p] = \\infty$. The Lean formulation uses $\\neg\\,\\mathrm{Module.Finite}$."
+    },
+    {
+      "id": "contrast-summary",
+      "title": "Part VI: Contrast and Summary",
+      "startLine": 186,
+      "endLine": 215,
+      "summary": "Contrast theorem (finrank ℝ ℂ = 2 AND ¬Module.Finite ℚ_[p] (AlgClosure ℚ_[p])), explicit examples n=2,3,4, and summary conjunction.",
+      "mathContext": "The real/p-adic dichotomy in one theorem: real algebraic closure is degree 2; p-adic algebraic closure is infinite-dimensional."
+    }
+  ],
+  "openQuestions": [
+    "Can the Newton polygon argument (Xn_sub_p_irred_Qp axiom) be formally proved using Mathlib's PadicInt as a DVR and the DVR Gauss lemma?",
+    "Formalize Krasner's lemma: if α is separable algebraic over ℚ_p and |α - β|_p is small enough, then ℚ_p(α) = ℚ_p(β) — giving the completion ℂ_p = (ℚ̄_p)^∧ is algebraically closed",
+    "Compare with the function-field case: for F_q((t)), the algebraic closure also has infinite degree, and the Puiseux series give extensions X^n - t"
+  ],
+  "leanFile": {
+    "filePath": "Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.NthRootIrrationalOQ01"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "PadicAlgClosureContrast",
+    "lineCount": 215,
+    "axiomCount": 2,
+    "sorryCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "key": "Se79",
+      "citation": "Serre, J.-P., Local Fields, Springer GTM 67 (1979). The standard reference for p-adic fields, DVRs, and extensions.",
+      "type": "book"
+    },
+    {
+      "key": "Ne99",
+      "citation": "Neukirch, J., Algebraic Number Theory, Springer GMW 322 (1999), Ch. II §6: completions and p-adic fields.",
+      "type": "book"
+    },
+    {
+      "key": "Go03",
+      "citation": "Gouvêa, F.Q., p-adic Numbers: An Introduction, 2nd ed., Springer Universitext (2003), Ch. 3: extensions of p-adic fields.",
+      "type": "book"
+    }
+  ]
+}

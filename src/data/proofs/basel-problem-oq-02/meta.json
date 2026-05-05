@@ -2,9 +2,9 @@
   "id": "basel-problem-oq-02",
   "title": "Are All Odd Zeta Values Transcendental?",
   "slug": "basel-problem-oq-02",
-  "description": "Formalizes the open question: are all odd zeta values \u03b6(2k+1) transcendental? Proves even zeta transcendence (\u03b6(2), \u03b6(4)) from Lindemann axiom, axiomatizes Ap\u00e9ry's theorem (\u03b6(3) irrational), and establishes structural implications: transcendence conjecture \u27f9 irrationality conjecture \u27f9 known results.",
+  "description": "Formalizes the open question: are all odd zeta values ζ(2k+1) transcendental? Proves even zeta transcendence (ζ(2), ζ(4)) from Lindemann axiom, axiomatizes Apéry's theorem (ζ(3) irrational), and establishes structural implications: transcendence conjecture ⟹ irrationality conjecture ⟹ known results.",
   "meta": {
-    "author": "Open (Lindemann 1882, Ap\u00e9ry 1978, Rivoal 2000, Zudilin 2001, Fischler\u2013Sprang\u2013Zudilin 2019)",
+    "author": "Open (Lindemann 1882, Apéry 1978, Rivoal 2000, Zudilin 2001, Fischler–Sprang–Zudilin 2019)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Riemann_zeta_function",
     "date": "2000",
     "status": "axiomatized",
@@ -23,12 +23,12 @@
     "mathlibDependencies": [
       {
         "theorem": "hasSum_zeta_two",
-        "description": "\u03b6(2) = \u03c0\u00b2/6 (Basel problem)",
+        "description": "ζ(2) = π²/6 (Basel problem)",
         "module": "Mathlib.NumberTheory.ZetaValues"
       },
       {
         "theorem": "hasSum_zeta_four",
-        "description": "\u03b6(4) = \u03c0\u2074/90",
+        "description": "ζ(4) = π⁴/90",
         "module": "Mathlib.NumberTheory.ZetaValues"
       },
       {
@@ -45,30 +45,30 @@
     "originalContributions": [
       "Proved zetaValue_two_transcendental and zetaValue_four_transcendental from Lindemann axiom (sorry-free)",
       "Proved transcendental_pow_of_transcendental: x transcendental implies x^n transcendental",
-      "Proved structural implications: transcendence \u27f9 irrationality \u27f9 Ap\u00e9ry",
-      "Proved even_odd_hierarchy connecting \u03b6(2) transcendence with \u03b6(3) irrationality",
-      "Axiomatized Rivoal (infinitely many odd \u03b6 irrational) and Zudilin (one of \u03b6(5,7,9,11) irrational)",
+      "Proved structural implications: transcendence ⟹ irrationality ⟹ Apéry",
+      "Proved even_odd_hierarchy connecting ζ(2) transcendence with ζ(3) irrationality",
+      "Axiomatized Rivoal (infinitely many odd ζ irrational) and Zudilin (one of ζ(5,7,9,11) irrational)",
       "Proved conjecture_implies_all_known: transcendence conjecture recovers all known results (sorry-free)"
     ],
     "dateAdded": "2026-03-24",
     "axiomCount": 5,
     "lineCount": 348,
-    "assumptions": "5 axiom(s): Lindemann (\u03c0 transcendental), Ap\u00e9ry (\u03b6(3) irrational), Rivoal (infinitely many odd \u03b6 irrational), Zudilin (one of \u03b6(5,7,9,11) irrational), Fischler-Sprang-Zudilin 2019 (quantitative: \u2265(1-\u03b5)\u00b7log(s)/(1+log 2) irrational odd \u03b6 values among first s). Even-zeta transcendence (\u03b6(2), \u03b6(4)) fully proved from Lindemann axiom. Structural implications proved sorry-free. 0 sorries.",
+    "assumptions": "5 axiom(s): Lindemann (π transcendental), Apéry (ζ(3) irrational), Rivoal (infinitely many odd ζ irrational), Zudilin (one of ζ(5,7,9,11) irrational), Fischler-Sprang-Zudilin 2019 (quantitative: ≥(1-ε)·log(s)/(1+log 2) irrational odd ζ values among first s). Even-zeta transcendence (ζ(2), ζ(4)) fully proved from Lindemann axiom. Structural implications proved sorry-free. 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 20,
     "definitionCount": 6
   },
   "overview": {
-    "historicalContext": "The even zeta values \u03b6(2k) = rational \u00d7 \u03c0^(2k) have been fully understood since Euler (1734) and Lindemann (1882): they are all transcendental. The odd zeta values \u03b6(2k+1) remain deeply mysterious. Not a single one has been proved transcendental. Even the weaker question of irrationality is largely open: Ap\u00e9ry (1978) proved \u03b6(3) irrational in a tour de force, Rivoal (2000) showed infinitely many odd \u03b6 are irrational, and Zudilin (2001) pinpointed \u03b6(5,7,9,11) as containing at least one irrational. But beyond these partial results, specific odd zeta values remain out of reach.",
-    "problemStatement": "**Open Conjecture**: For all k \u2265 1, \u03b6(2k+1) is transcendental over \u211a.\n\nNot a single odd zeta value is known to be transcendental. Even \u03b6(3) \u2014 the only specific odd zeta value known to be irrational \u2014 has unknown transcendence status.\n\n**Known hierarchy**:\n- Transcendence conjecture \u27f9 Irrationality conjecture\n- Irrationality conjecture \u27f9 Ap\u00e9ry theorem\n- Irrationality conjecture \u27f9 Rivoal theorem\n- Irrationality conjecture \u27f9 Zudilin theorem",
-    "text": "A 331-line formalization of the arithmetic landscape of odd zeta values. Defines zetaValue(s) = \u2211 1/n^s and proves the closed forms \u03b6(2) = \u03c0\u00b2/6 and \u03b6(4) = \u03c0\u2074/90 from Mathlib. Four deep results are axiomatized: Lindemann (\u03c0 transcendental), Ap\u00e9ry (\u03b6(3) irrational), Rivoal (infinitely many odd \u03b6 irrational), and Zudilin (one of \u03b6(5,7,9,11) irrational). Proves even-zeta transcendence (\u03b6(2) and \u03b6(4)) from the Lindemann axiom. The full implication chain \u2014 transcendence conjecture \u27f9 irrationality conjecture \u27f9 Rivoal + Zudilin + Ap\u00e9ry \u2014 is proved sorry-free.",
-    "proofStrategy": "The formalization proceeds in layers:\n\n**Layer 1 (Mathlib)**: Closed forms \u03b6(2) = \u03c0\u00b2/6, \u03b6(4) = \u03c0\u2074/90 from hasSum_zeta_two/four.\n\n**Layer 2 (Axioms)**: Two deep results not in Mathlib \u2014 Lindemann (\u03c0 transcendental), Ap\u00e9ry (\u03b6(3) irrational).\n\n**Layer 3 (Proved)**: Even-zeta transcendence: \u03b6(2) and \u03b6(4) proved transcendental from Lindemann axiom via transcendental_pow_of_transcendental.\n\n**Layer 4 (Conjectures)**: The transcendence and irrationality conjectures for odd zeta values as Prop definitions.\n\n**Layer 5 (Structure)**: Proved implications: transcendence \u27f9 irrationality (via Transcendental.irrational), conjecture specializes to Ap\u00e9ry (k=1).",
+    "historicalContext": "The even zeta values ζ(2k) = rational × π^(2k) have been fully understood since Euler (1734) and Lindemann (1882): they are all transcendental. The odd zeta values ζ(2k+1) remain deeply mysterious. Not a single one has been proved transcendental. Even the weaker question of irrationality is largely open: Apéry (1978) proved ζ(3) irrational in a tour de force, Rivoal (2000) showed infinitely many odd ζ are irrational, and Zudilin (2001) pinpointed ζ(5,7,9,11) as containing at least one irrational. But beyond these partial results, specific odd zeta values remain out of reach.",
+    "problemStatement": "**Open Conjecture**: For all k ≥ 1, ζ(2k+1) is transcendental over ℚ.\n\nNot a single odd zeta value is known to be transcendental. Even ζ(3) — the only specific odd zeta value known to be irrational — has unknown transcendence status.\n\n**Known hierarchy**:\n- Transcendence conjecture ⟹ Irrationality conjecture\n- Irrationality conjecture ⟹ Apéry theorem\n- Irrationality conjecture ⟹ Rivoal theorem\n- Irrationality conjecture ⟹ Zudilin theorem",
+    "text": "A 331-line formalization of the arithmetic landscape of odd zeta values. Defines zetaValue(s) = ∑ 1/n^s and proves the closed forms ζ(2) = π²/6 and ζ(4) = π⁴/90 from Mathlib. Four deep results are axiomatized: Lindemann (π transcendental), Apéry (ζ(3) irrational), Rivoal (infinitely many odd ζ irrational), and Zudilin (one of ζ(5,7,9,11) irrational). Proves even-zeta transcendence (ζ(2) and ζ(4)) from the Lindemann axiom. The full implication chain — transcendence conjecture ⟹ irrationality conjecture ⟹ Rivoal + Zudilin + Apéry — is proved sorry-free.",
+    "proofStrategy": "The formalization proceeds in layers:\n\n**Layer 1 (Mathlib)**: Closed forms ζ(2) = π²/6, ζ(4) = π⁴/90 from hasSum_zeta_two/four.\n\n**Layer 2 (Axioms)**: Two deep results not in Mathlib — Lindemann (π transcendental), Apéry (ζ(3) irrational).\n\n**Layer 3 (Proved)**: Even-zeta transcendence: ζ(2) and ζ(4) proved transcendental from Lindemann axiom via transcendental_pow_of_transcendental.\n\n**Layer 4 (Conjectures)**: The transcendence and irrationality conjectures for odd zeta values as Prop definitions.\n\n**Layer 5 (Structure)**: Proved implications: transcendence ⟹ irrationality (via Transcendental.irrational), conjecture specializes to Apéry (k=1).",
     "keyInsights": [
       "The even/odd divide in zeta values is one of the starkest in number theory: complete understanding vs near-total mystery",
-      "Rivoal's theorem is best formalized using Set.Infinite rather than quantified Finset bounds \u2014 cleaner and more compositional",
-      "The full implication chain (transcendence \u2192 irrationality \u2192 all known results) is provable without sorry",
-      "Even-zeta transcendence needs: if \u03c0 is transcendental, then \u03c0^n/q is transcendental for n \u2265 1, q \u2208 \u211a\u00d7. This requires Mathlib's algebraic closure infrastructure.",
-      "Zudilin's 4-way disjunction (one of \u03b6(5,7,9,11) irrational) is the tightest known finite explicit bound \u2014 improving it to a 3-way or 2-way disjunction remains open and would require fundamentally new ideas in Pad\u00e9 approximation"
+      "Rivoal's theorem is best formalized using Set.Infinite rather than quantified Finset bounds — cleaner and more compositional",
+      "The full implication chain (transcendence → irrationality → all known results) is provable without sorry",
+      "Even-zeta transcendence needs: if π is transcendental, then π^n/q is transcendental for n ≥ 1, q ∈ ℚ×. This requires Mathlib's algebraic closure infrastructure.",
+      "Zudilin's 4-way disjunction (one of ζ(5,7,9,11) irrational) is the tightest known finite explicit bound — improving it to a 3-way or 2-way disjunction remains open and would require fundamentally new ideas in Padé approximation"
     ],
     "prerequisites": [
       "Number theory (transcendence, irrationality, algebraic numbers)",
@@ -82,7 +82,7 @@
       "title": "Zeta Values at Natural Numbers",
       "startLine": 30,
       "endLine": 36,
-      "summary": "Definition of zetaValue(s) = \u2211 1/n^s as a tsum over \u2115.",
+      "summary": "Definition of zetaValue(s) = ∑ 1/n^s as a tsum over ℕ.",
       "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s}$ for $s > 1$. Defined via `tsum` (topological sum) in Lean, converging absolutely for $s \\geq 2$. Euler computed $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ where $B_{2k}$ are Bernoulli numbers."
     },
     {
@@ -90,16 +90,16 @@
       "title": "Known Even Zeta Values",
       "startLine": 38,
       "endLine": 46,
-      "summary": "\u03b6(2) = \u03c0\u00b2/6 and \u03b6(4) = \u03c0\u2074/90 proved directly from Mathlib.",
-      "mathContext": "$\\zeta(2) = \\pi^2/6$ (Basel problem, Euler 1734) and $\\zeta(4) = \\pi^4/90$. Both are instances of Euler's general formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k}/(2(2k)!)$. The closed forms involve $\\pi^{2k}$, making even zeta values transcendental \u2014 in stark contrast to odd zeta values where no closed form is known."
+      "summary": "ζ(2) = π²/6 and ζ(4) = π⁴/90 proved directly from Mathlib.",
+      "mathContext": "$\\zeta(2) = \\pi^2/6$ (Basel problem, Euler 1734) and $\\zeta(4) = \\pi^4/90$. Both are instances of Euler's general formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k}/(2(2k)!)$. The closed forms involve $\\pi^{2k}$, making even zeta values transcendental — in stark contrast to odd zeta values where no closed form is known."
     },
     {
       "id": "deep-axioms",
       "title": "Deep Axioms",
       "startLine": 48,
       "endLine": 59,
-      "summary": "Lindemann's theorem (\u03c0 transcendental) and Ap\u00e9ry's theorem (\u03b6(3) irrational) axiomatized.",
-      "mathContext": "Two deep axioms: (1) $\\pi \\notin \\overline{\\mathbb{Q}}$ (Lindemann 1882) and (2) $\\zeta(3) \\notin \\mathbb{Q}$ (Ap\u00e9ry 1978). Lindemann proved $e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$; since $e^{i\\pi} = -1$, this forces $\\pi$ transcendental. Ap\u00e9ry's proof used rapidly convergent series for $\\zeta(3)$ with carefully constructed rational approximations."
+      "summary": "Lindemann's theorem (π transcendental) and Apéry's theorem (ζ(3) irrational) axiomatized.",
+      "mathContext": "Two deep axioms: (1) $\\pi \\notin \\overline{\\mathbb{Q}}$ (Lindemann 1882) and (2) $\\zeta(3) \\notin \\mathbb{Q}$ (Apéry 1978). Lindemann proved $e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$; since $e^{i\\pi} = -1$, this forces $\\pi$ transcendental. Apéry's proof used rapidly convergent series for $\\zeta(3)$ with carefully constructed rational approximations."
     },
     {
       "id": "conjectures",
@@ -114,8 +114,8 @@
       "title": "Basic Structural Relationships",
       "startLine": 77,
       "endLine": 96,
-      "summary": "Transcendence \u27f9 irrationality, conjecture specializes to Ap\u00e9ry and \u03b6(3)\u2227\u03b6(5).",
-      "mathContext": "The logical chain: $\\alpha \\notin \\overline{\\mathbb{Q}} \\Rightarrow \\alpha \\notin \\mathbb{Q}$ (transcendence implies irrationality). Specializing the conjecture: $\\forall k \\geq 1,\\, \\zeta(2k+1) \\notin \\mathbb{Q}$ implies both Ap\u00e9ry's result ($\\zeta(3) \\notin \\mathbb{Q}$) and the conjecture that $\\zeta(5) \\notin \\mathbb{Q}$ \u2014 each as an individual corollary."
+      "summary": "Transcendence ⟹ irrationality, conjecture specializes to Apéry and ζ(3)∧ζ(5).",
+      "mathContext": "The logical chain: $\\alpha \\notin \\overline{\\mathbb{Q}} \\Rightarrow \\alpha \\notin \\mathbb{Q}$ (transcendence implies irrationality). Specializing the conjecture: $\\forall k \\geq 1,\\, \\zeta(2k+1) \\notin \\mathbb{Q}$ implies both Apéry's result ($\\zeta(3) \\notin \\mathbb{Q}$) and the conjecture that $\\zeta(5) \\notin \\mathbb{Q}$ — each as an individual corollary."
     },
     {
       "id": "even-odd-contrast",
@@ -123,14 +123,14 @@
       "startLine": 98,
       "endLine": 107,
       "summary": "Definition of the rational multiple property for even zeta values.",
-      "mathContext": "Even zeta values satisfy $\\zeta(2k) = r_k \\cdot \\pi^{2k}$ with $r_k \\in \\mathbb{Q}^\\times$ (e.g., $r_1 = 1/6$, $r_2 = 1/90$). Odd zeta values have NO known analogous representation \u2014 this even/odd dichotomy is one of the deepest mysteries in analytic number theory."
+      "mathContext": "Even zeta values satisfy $\\zeta(2k) = r_k \\cdot \\pi^{2k}$ with $r_k \\in \\mathbb{Q}^\\times$ (e.g., $r_1 = 1/6$, $r_2 = 1/90$). Odd zeta values have NO known analogous representation — this even/odd dichotomy is one of the deepest mysteries in analytic number theory."
     },
     {
       "id": "even-transcendence",
       "title": "Even Zeta Transcendence",
       "startLine": 109,
       "endLine": 128,
-      "summary": "\u03b6(2) and \u03b6(4) transcendence theorems, fully proved from Lindemann axiom via transcendental_pow_of_transcendental.",
+      "summary": "ζ(2) and ζ(4) transcendence theorems, fully proved from Lindemann axiom via transcendental_pow_of_transcendental.",
       "mathContext": "$\\pi \\notin \\overline{\\mathbb{Q}} \\Rightarrow \\pi^2 \\notin \\overline{\\mathbb{Q}} \\Rightarrow \\pi^2/6 \\notin \\overline{\\mathbb{Q}}$, i.e., $\\zeta(2)$ is transcendental. Similarly for $\\zeta(4) = \\pi^4/90$. The chain uses: (1) $\\alpha$ transcendental $\\Rightarrow \\alpha^n$ transcendental for $n \\geq 1$, (2) nonzero rational times transcendental is transcendental."
     },
     {
@@ -138,8 +138,8 @@
       "title": "Deep Results on Odd Zeta Irrationality",
       "startLine": 221,
       "endLine": 237,
-      "summary": "Axiomatizes Rivoal's theorem (infinitely many odd \u03b6 irrational, Set.Infinite formulation) and Zudilin's theorem (one of \u03b6(5,7,9,11) irrational, 4-way disjunction).",
-      "mathContext": "Rivoal (2000): the set $\\{k \\geq 1 : \\zeta(2k+1) \\notin \\mathbb{Q}\\}$ is infinite \u2014 proved via very-well-poised hypergeometric series. Zudilin (2001): $\\zeta(5) \\notin \\mathbb{Q} \\lor \\zeta(7) \\notin \\mathbb{Q} \\lor \\zeta(9) \\notin \\mathbb{Q} \\lor \\zeta(11) \\notin \\mathbb{Q}$ \u2014 refined from Ball-Rivoal. Both axiomatized (deep results not in Mathlib)."
+      "summary": "Axiomatizes Rivoal's theorem (infinitely many odd ζ irrational, Set.Infinite formulation) and Zudilin's theorem (one of ζ(5,7,9,11) irrational, 4-way disjunction).",
+      "mathContext": "Rivoal (2000): the set $\\{k \\geq 1 : \\zeta(2k+1) \\notin \\mathbb{Q}\\}$ is infinite — proved via very-well-poised hypergeometric series. Zudilin (2001): $\\zeta(5) \\notin \\mathbb{Q} \\lor \\zeta(7) \\notin \\mathbb{Q} \\lor \\zeta(9) \\notin \\mathbb{Q} \\lor \\zeta(11) \\notin \\mathbb{Q}$ — refined from Ball-Rivoal. Both axiomatized (deep results not in Mathlib)."
     },
     {
       "id": "irrationality-landscape",
@@ -147,7 +147,7 @@
       "startLine": 239,
       "endLine": 277,
       "summary": "Proved sorry-free: irrationality conjecture implies Rivoal and Zudilin; transcendence conjecture recovers all known results as corollaries.",
-      "mathContext": "The implication landscape: $\\forall k,\\, \\zeta(2k+1) \\notin \\mathbb{Q}$ implies Rivoal's 'infinitely many irrational' and Zudilin's 'one of $\\{\\zeta(5),\\zeta(7),\\zeta(9),\\zeta(11)\\}$ irrational'. The stronger transcendence conjecture $\\forall k,\\, \\zeta(2k+1) \\notin \\overline{\\mathbb{Q}}$ recovers ALL known results as corollaries \u2014 a strong consistency check."
+      "mathContext": "The implication landscape: $\\forall k,\\, \\zeta(2k+1) \\notin \\mathbb{Q}$ implies Rivoal's 'infinitely many irrational' and Zudilin's 'one of $\\{\\zeta(5),\\zeta(7),\\zeta(9),\\zeta(11)\\}$ irrational'. The stronger transcendence conjecture $\\forall k,\\, \\zeta(2k+1) \\notin \\overline{\\mathbb{Q}}$ recovers ALL known results as corollaries — a strong consistency check."
     },
     {
       "id": "odd-conjectures",
@@ -175,12 +175,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization maps the frontier of odd zeta value arithmetic. Four deep axioms (Lindemann, Ap\u00e9ry, Rivoal, Zudilin) anchor the formalization, with even-zeta transcendence (\u03b6(2), \u03b6(4)) fully proved from the Lindemann axiom. The full implication chain \u2014 transcendence conjecture \u27f9 irrationality conjecture \u27f9 Rivoal + Zudilin + Ap\u00e9ry \u2014 is proved sorry-free. 0 sorries remain.",
-    "implications": "**If the transcendence conjecture were proved**: All known partial results follow as corollaries. More importantly, the techniques would likely revolutionize analytic number theory \u2014 current methods (hypergeometric series, Pad\u00e9 approximants) cannot even prove irrationality of \u03b6(5) individually.\n\n**For formalization**: The even-zeta transcendence proofs await Mathlib's algebraic number theory infrastructure \u2014 specifically, that rational multiples of transcendental powers remain transcendental. Once Lindemann-Weierstrass enters Mathlib, pi_transcendental can be upgraded from axiom to theorem.",
+    "summary": "This formalization maps the frontier of odd zeta value arithmetic. Four deep axioms (Lindemann, Apéry, Rivoal, Zudilin) anchor the formalization, with even-zeta transcendence (ζ(2), ζ(4)) fully proved from the Lindemann axiom. The full implication chain — transcendence conjecture ⟹ irrationality conjecture ⟹ Rivoal + Zudilin + Apéry — is proved sorry-free. 0 sorries remain.",
+    "implications": "**If the transcendence conjecture were proved**: All known partial results follow as corollaries. More importantly, the techniques would likely revolutionize analytic number theory — current methods (hypergeometric series, Padé approximants) cannot even prove irrationality of ζ(5) individually.\n\n**For formalization**: The even-zeta transcendence proofs await Mathlib's algebraic number theory infrastructure — specifically, that rational multiples of transcendental powers remain transcendental. Once Lindemann-Weierstrass enters Mathlib, pi_transcendental can be upgraded from axiom to theorem.",
     "openQuestions": [
-      "Is \u03b6(3) transcendental? (The most accessible individual case)",
+      "Is ζ(3) transcendental? (The most accessible individual case)",
       "Is any specific odd zeta value transcendental?",
-      "Are \u03b6(3), \u03b6(5), \u03b6(7), ... algebraically independent over \u211a?",
+      "Are ζ(3), ζ(5), ζ(7), ... algebraically independent over ℚ?",
       "Can the Ball-Rivoal method be refined to prove individual irrationality results?"
     ]
   },
@@ -188,44 +188,44 @@
     {
       "targetId": "basel-problem",
       "relationship": "extends",
-      "description": "Parent entry proving \u03b6(2) = \u03c0\u00b2/6 \u2014 this file explores the transcendence landscape of all zeta values at positive integers"
+      "description": "Parent entry proving ζ(2) = π²/6 — this file explores the transcendence landscape of all zeta values at positive integers"
     },
     {
       "targetId": "basel-problem-oq-01",
       "relationship": "related",
-      "description": "Sibling open question focusing specifically on \u03b6(5) irrationality; this entry takes the broader view of ALL odd zeta values"
+      "description": "Sibling open question focusing specifically on ζ(5) irrationality; this entry takes the broader view of ALL odd zeta values"
     },
     {
       "targetId": "e-transcendental",
       "relationship": "related",
-      "description": "Both concern transcendence of fundamental constants \u2014 e's transcendence is proved while odd zeta transcendence remains open"
+      "description": "Both concern transcendence of fundamental constants — e's transcendence is proved while odd zeta transcendence remains open"
     },
     {
       "targetId": "pi-transcendental",
       "relationship": "uses",
-      "description": "Lindemann's theorem (\u03c0 transcendental) is axiomatized here as the key ingredient for even-zeta transcendence"
+      "description": "Lindemann's theorem (π transcendental) is axiomatized here as the key ingredient for even-zeta transcendence"
     },
     {
       "targetId": "sqrt2-irrational",
       "relationship": "related",
-      "description": "Irrationality of \u221a2 is the classical prototype for irrationality proofs \u2014 Ap\u00e9ry's proof of \u03b6(3) irrationality uses a far more sophisticated descendant of the same diophantine approximation tradition"
+      "description": "Irrationality of √2 is the classical prototype for irrationality proofs — Apéry's proof of ζ(3) irrationality uses a far more sophisticated descendant of the same diophantine approximation tradition"
     }
   ],
   "mainTheorems": [
     {
       "name": "zetaValue_two_transcendental",
       "type": "core",
-      "description": "\u03b6(2) = \u03c0\u00b2/6 is transcendental, proved from the Lindemann axiom (\u03c0 transcendental) via transcendental_pow_of_transcendental \u2014 the first machine-verified even-zeta transcendence result."
+      "description": "ζ(2) = π²/6 is transcendental, proved from the Lindemann axiom (π transcendental) via transcendental_pow_of_transcendental — the first machine-verified even-zeta transcendence result."
     },
     {
       "name": "transcendental_pow_of_transcendental",
       "type": "core",
-      "description": "If x is transcendental then x^n is transcendental for n \u2265 1, providing the algebraic backbone for deriving \u03b6(2) and \u03b6(4) transcendence from \u03c0 transcendence."
+      "description": "If x is transcendental then x^n is transcendental for n ≥ 1, providing the algebraic backbone for deriving ζ(2) and ζ(4) transcendence from π transcendence."
     },
     {
       "name": "even_odd_hierarchy",
       "type": "supporting",
-      "description": "Structural implication chain connecting \u03b6(2) transcendence with the irrationality conjecture for odd zeta values, showing the transcendence conjecture implies all known partial results as corollaries."
+      "description": "Structural implication chain connecting ζ(2) transcendence with the irrationality conjecture for odd zeta values, showing the transcendence conjecture implies all known partial results as corollaries."
     }
   ],
   "leanFile": {
@@ -258,38 +258,38 @@
   "references": [
     {
       "authors": "Lindemann, Ferdinand",
-      "title": "\u00dcber die Zahl \u03c0",
+      "title": "Über die Zahl π",
       "year": "1882",
       "venue": "Mathematische Annalen, vol. 20, pp. 213-225",
-      "note": "Proved \u03c0 is transcendental ($e^\\alpha$ transcendental for nonzero algebraic $\\alpha$), establishing the key axiom used here for even-zeta transcendence"
+      "note": "Proved π is transcendental ($e^\\alpha$ transcendental for nonzero algebraic $\\alpha$), establishing the key axiom used here for even-zeta transcendence"
     },
     {
-      "authors": "Ap\u00e9ry, Roger",
-      "title": "Irrationalit\u00e9 de \u03b6(2) et \u03b6(3)",
+      "authors": "Apéry, Roger",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
       "year": "1979",
-      "venue": "Ast\u00e9risque, vol. 61, pp. 11-13",
-      "note": "Proved the irrationality of $\\zeta(3)$ using rapidly convergent series and clever recurrences \u2014 the only odd zeta value whose irrationality is known individually. The proof stunned the mathematical community and remains the gold standard for Diophantine approximation to zeta values"
+      "venue": "Astérisque, vol. 61, pp. 11-13",
+      "note": "Proved the irrationality of $\\zeta(3)$ using rapidly convergent series and clever recurrences — the only odd zeta value whose irrationality is known individually. The proof stunned the mathematical community and remains the gold standard for Diophantine approximation to zeta values"
     },
     {
       "authors": "Rivoal, Tanguy",
-      "title": "La fonction z\u00eata de Riemann prend une infinit\u00e9 de valeurs irrationnelles aux entiers impairs",
+      "title": "La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs",
       "year": "2000",
-      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, vol. 331(4), pp. 267-270",
-      "note": "Proved that infinitely many odd zeta values $\\zeta(2k+1)$ are irrational \u2014 a breakthrough that went beyond Ap\u00e9ry's single result for $\\zeta(3)$"
+      "venue": "Comptes Rendus de l'Académie des Sciences, vol. 331(4), pp. 267-270",
+      "note": "Proved that infinitely many odd zeta values $\\zeta(2k+1)$ are irrational — a breakthrough that went beyond Apéry's single result for $\\zeta(3)$"
     },
     {
       "authors": "Zudilin, Wadim",
-      "title": "One of the numbers \u03b6(5), \u03b6(7), \u03b6(9), \u03b6(11) is irrational",
+      "title": "One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
       "year": "2001",
       "venue": "Russian Mathematical Surveys, vol. 56(4), pp. 774-776",
       "note": "Sharpened Rivoal's result to a finite explicit disjunction: at least one of four specific odd zeta values is irrational. The tightest known explicit bound on which odd zeta values are irrational"
     },
     {
-      "authors": "Fischler, St\u00e9phane; Sprang, Johannes; Zudilin, Wadim",
+      "authors": "Fischler, Stéphane; Sprang, Johannes; Zudilin, Wadim",
       "title": "Many odd zeta values are irrational",
       "year": "2019",
       "venue": "Compositio Mathematica, vol. 155(5), pp. 938-952",
-      "note": "Proved that among $\\zeta(3), \\zeta(5), \\ldots, \\zeta(s)$, at least $(1-\\varepsilon)\\frac{\\log s}{1+\\log 2}$ are irrational \u2014 the current state of the art, dramatically extending Rivoal's qualitative result"
+      "note": "Proved that among $\\zeta(3), \\zeta(5), \\ldots, \\zeta(s)$, at least $(1-\\varepsilon)\\frac{\\log s}{1+\\log 2}$ are irrational — the current state of the art, dramatically extending Rivoal's qualitative result"
     }
   ],
   "sorries": 0

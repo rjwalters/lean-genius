@@ -1,10 +1,10 @@
 {
   "id": "erdos-1049",
-  "title": "Erd\u0151s Problem #1049: Irrationality of Divisor Sums",
+  "title": "Erdős Problem #1049: Irrationality of Divisor Sums",
   "slug": "erdos-1049",
-  "description": "For rational t > 1, is \u2211_{n\u22651} 1/(t^n - 1) = \u2211_{n\u22651} \u03c4(n)/t^n irrational? OPEN: Erd\u0151s proved YES for integer t \u2265 2. Chowla's conjecture for all rationals unresolved.",
+  "description": "For rational t > 1, is ∑_{n≥1} 1/(t^n - 1) = ∑_{n≥1} τ(n)/t^n irrational? OPEN: Erdős proved YES for integer t ≥ 2. Chowla's conjecture for all rationals unresolved.",
   "meta": {
-    "author": "Erd\u0151s (1948), Chowla (conjecture)",
+    "author": "Erdős (1948), Chowla (conjecture)",
     "sourceUrl": "https://erdosproblems.com/1049",
     "date": "1948",
     "status": "axiomatized",
@@ -51,12 +51,12 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of divisor function \u03c4(n) via Nat.divisors.card",
-      "Definition of the series S(t) = \u2211 1/(t^n - 1) and D(t) = \u2211 \u03c4(n)/t^n",
+      "Formal definition of divisor function τ(n) via Nat.divisors.card",
+      "Definition of the series S(t) = ∑ 1/(t^n - 1) and D(t) = ∑ τ(n)/t^n",
       "Statement of the classical identity S(t) = D(t) via double-sum interchange",
-      "Axiomatization of Erd\u0151s's 1948 irrationality result for integer t >= 2",
+      "Axiomatization of Erdős's 1948 irrationality result for integer t >= 2",
       "Formal definition of Chowla's conjecture for all rational t > 1",
-      "Definition of Erd\u0151s-Borwein constant S(2) and proof of its irrationality",
+      "Definition of Erdős-Borwein constant S(2) and proof of its irrationality",
       "TranscendentalConjecture and AlgebraicIndependenceConjecture statements",
       "Lambert series formulation with isLambertSeries and S_as_lambert",
       "Asymptotic bounds 1/(t-1) <= S(t) <= t/(t-1)^2"
@@ -66,12 +66,12 @@
       "erdos-1050"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axiom declarations: erdos_integer_irrational (Erd\u0151s 1948 irrationality for integer t \u2265 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607). The first is Erd\u0151s's published result; the second is computationally verified. 4 former placeholder axioms (chowla_conjecture_open, lambert_arithmetic_property, partial_rational_results, linear_independence_partial) were eliminated by proving them as theorems.",
+    "assumptions": "2 axiom declarations: erdos_integer_irrational (Erdős 1948 irrationality for integer t ≥ 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607). The first is Erdős's published result; the second is computationally verified. 4 former placeholder axioms (chowla_conjecture_open, lambert_arithmetic_property, partial_rational_results, linear_independence_partial) were eliminated by proving them as theorems.",
     "prerequisites": [
       "Analytic number theory: divisor function and Lambert series",
       "Irrationality and transcendence theory",
       "Infinite series convergence (tsum)",
-      "p-adic analysis (for understanding Erd\u0151s's proof technique)"
+      "p-adic analysis (for understanding Erdős's proof technique)"
     ],
     "lineCount": 329,
     "theoremCount": 23,
@@ -80,7 +80,7 @@
   "overview": {
     "historicalContext": "The study of arithmetic properties of the series S(t) = sum 1/(t^n - 1) originates in classical analytic number theory. The series naturally arises as a Lambert series with constant coefficients, connecting it to the divisor function tau(n) via the identity S(t) = sum tau(n)/t^n. In 1948, Paul Erdos published 'On arithmetical properties of Lambert series' in the Journal of the Indian Mathematical Society, proving that S(t) is irrational whenever t is an integer >= 2. His proof used careful analysis of the p-adic structure of partial sums. Sarvadaman Chowla conjectured that the irrationality should hold for all rational t > 1, not just integers. This conjecture remains open and connects to broader questions about Lambert series, transcendence theory, and the Erdos-Borwein constant E = S(2) ~ 1.606695. The problem appears as #1049 in the Erdos problems collection and is closely related to #1048 (Lambert series generalizations) and #1050 (related irrationality questions).",
     "problemStatement": "For a rational number t > 1, is the sum S(t) = sum_{n>=1} 1/(t^n - 1) irrational? By the classical identity, this equals sum_{n>=1} tau(n)/t^n where tau(n) counts the divisors of n. Status: OPEN. Partial result: Erdos (1948) proved S(t) is irrational for integer t >= 2. Chowla conjectured the result holds for all rational t > 1.",
-    "text": "For rational t > 1, is \u2211_{n\u22651} 1/(t^n - 1) = \u2211_{n\u22651} \u03c4(n)/t^n irrational? OPEN: Erd\u0151s proved YES for integer t \u2265 2. Chowla's conjecture for all rationals unresolved.",
+    "text": "For rational t > 1, is ∑_{n≥1} 1/(t^n - 1) = ∑_{n≥1} τ(n)/t^n irrational? OPEN: Erdős proved YES for integer t ≥ 2. Chowla's conjecture for all rationals unresolved.",
     "proofStrategy": "The formalization defines the divisor function tau(n) = |{d : d | n}| using Mathlib's Nat.divisors.card and proves basic properties (tau(1)=1, multiplicativity). The series S(t) and the divisor series D(t) are defined as tsum over natural numbers. The classical identity S(t) = D(t) is stated with a proof outline via double-sum interchange: sum tau(n)/t^n = sum_{d,m} 1/t^{dm} = sum_d 1/(t^d - 1). Erdos's irrationality result for integer t >= 2 is axiomatized, with derived corollaries S(2) and S(3) irrational. Chowla's conjecture is formally stated, and stronger conjectures about transcendentality and algebraic independence are formulated. The connection to Lambert series is made explicit.",
     "keyInsights": [
       "The identity sum 1/(t^n-1) = sum tau(n)/t^n follows from interchanging a double sum: each 1/(t^d-1) = sum_m 1/t^{dm}, and grouping by n=dm collects tau(n) terms",
@@ -94,7 +94,7 @@
       "Analytic number theory: divisor function and Lambert series",
       "Irrationality and transcendence theory",
       "Infinite series convergence (tsum)",
-      "p-adic analysis (for understanding Erd\u0151s's proof technique)"
+      "p-adic analysis (for understanding Erdős's proof technique)"
     ]
   },
   "sections": [
@@ -124,11 +124,11 @@
     },
     {
       "id": "erdos-result",
-      "title": "Part IV: Erd\u0151s's Result for Integers",
+      "title": "Part IV: Erdős's Result for Integers",
       "summary": "Axiomatizes erdos_integer_irrational: S(t) is Irrational for integer t >= 2 (Erdos 1948). Defines S_at_2 and proves S_at_2_irrational as a corollary by applying the axiom with t=2 and norm_num. States S_at_2_first_terms expanding the series as 1 + 1/3 + 1/7 + 1/15 + remainder.",
       "startLine": 114,
       "endLine": 135,
-      "mathContext": "Erd\u0151s (1948): $\\forall t \\in \\mathbb{Z},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$. Corollary: $S(2) = \\sum 1/(2^n - 1) \\approx 1.606695 \\notin \\mathbb{Q}$."
+      "mathContext": "Erdős (1948): $\\forall t \\in \\mathbb{Z},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$. Corollary: $S(2) = \\sum 1/(2^n - 1) \\approx 1.606695 \\notin \\mathbb{Q}$."
     },
     {
       "id": "chowla",
@@ -144,7 +144,7 @@
       "summary": "Axiomatizes S_at_2_approx bounding S(2) between 1.606 and 1.607. Defines erdosBorweinConstant := S_at_2. Defines S_at_3 and proves S_at_3_irrational. States asymptotic behavior: S_tendsto_infinity (S(t) -> +inf as t -> 1+) and S_tendsto_zero (S(t) -> 0 as t -> +inf).",
       "startLine": 153,
       "endLine": 179,
-      "mathContext": "$E = S(2) \\approx 1.606695$ (Erd\u0151s-Borwein constant). $S(t) \\to +\\infty$ as $t \\to 1^+$ and $S(t) \\to 0$ as $t \\to +\\infty$."
+      "mathContext": "$E = S(2) \\approx 1.606695$ (Erdős-Borwein constant). $S(t) \\to +\\infty$ as $t \\to 1^+$ and $S(t) \\to 0$ as $t \\to +\\infty$."
     },
     {
       "id": "algebraic",
@@ -176,12 +176,12 @@
       "summary": "States erdos_1049_partial and erdos_1049 as the main theorem: for integer t >= 2, S(t) is irrational. Defines erdos_1049_answer and erdos_1049_status as String descriptions of the problem's open status. The full Chowla conjecture for non-integer rationals remains unresolved.",
       "startLine": 240,
       "endLine": 280,
-      "mathContext": "Main result: $\\forall t \\in \\mathbb{Z},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$ (Erd\u0151s 1948). Full conjecture for $t \\in \\mathbb{Q}_{>1}$ remains open."
+      "mathContext": "Main result: $\\forall t \\in \\mathbb{Z},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$ (Erdős 1948). Full conjecture for $t \\in \\mathbb{Q}_{>1}$ remains open."
     }
   ],
   "conclusion": {
     "summary": "Erdos Problem #1049 asks whether S(t) = sum 1/(t^n - 1) is irrational for rational t > 1. The classical identity S(t) = sum tau(n)/t^n connects this to the divisor function. Erdos (1948) proved irrationality for integer t >= 2 using p-adic analysis of partial sums. Chowla's conjecture extending this to all rational t > 1 remains open. The formalization axiomatizes Erdos's result, states both Chowla's conjecture and stronger transcendentality conjectures, and connects the series to Lambert series theory.",
-    "implications": "**Analytic Number Theory**: The problem sits at the intersection of analytic number theory, irrationality theory, and Lambert series. Erd\u0151s's 1948 techniques pioneered the use of p-adic methods for irrationality proofs of naturally-arising series. The identity $S(t) = \\sum \\tau(n)/t^n$ connects the series to the Dirichlet series $\\sum \\tau(n)/n^s = \\zeta(s)^2$, placing it within the broader theory of multiplicative arithmetic functions and the Riemann zeta function.\n\n**Lambert Series Framework**: $S(t)$ is the simplest Lambert series $L(q) = \\sum a_n q^n/(1-q^n)$ with $a_n \\equiv 1$, $q = 1/t$. Lambert series with other arithmetic coefficients encode Euler's totient ($a_n = \\varphi(n)$), M\u00f6bius function ($a_n = \\mu(n)$), and Liouville's function ($a_n = \\lambda(n)$). Understanding the irrationality of $S(t)$ is a first step toward understanding the arithmetic nature of this entire family.\n\n**Algorithmic Connections**: The Erd\u0151s-Borwein constant $E = S(2) \\approx 1.606695$ appears unexpectedly in the analysis of algorithms: Knuth (1998) showed it governs the average-case complexity of mergesort via the binary representation of integers. This connection between number-theoretic irrationality and computational complexity is an instance of the broader phenomenon where analytic constants from pure mathematics arise as exact answers to algorithmic questions.\n\n**Transcendence Program**: The transcendental conjecture (that $S(t)$ is transcendental for algebraic $t > 1$) connects to Siegel's program on values of $E$-functions and $G$-functions at algebraic points. Borwein (1991) generalized Erd\u0151s's result to $\\sum 1/(q^n + r)$, but the full transcendence question remains out of reach of current methods.\n\n**Open Problem Status**: Resolution of Chowla's conjecture would require new techniques beyond Erd\u0151s's p-adic approach, which relies on the denominator structure of partial sums being multiplicatively well-behaved \u2014 a property that breaks down for non-integer $t$. The problem remains one of the accessible yet unsolved questions in the Erd\u0151s collection.",
+    "implications": "**Analytic Number Theory**: The problem sits at the intersection of analytic number theory, irrationality theory, and Lambert series. Erdős's 1948 techniques pioneered the use of p-adic methods for irrationality proofs of naturally-arising series. The identity $S(t) = \\sum \\tau(n)/t^n$ connects the series to the Dirichlet series $\\sum \\tau(n)/n^s = \\zeta(s)^2$, placing it within the broader theory of multiplicative arithmetic functions and the Riemann zeta function.\n\n**Lambert Series Framework**: $S(t)$ is the simplest Lambert series $L(q) = \\sum a_n q^n/(1-q^n)$ with $a_n \\equiv 1$, $q = 1/t$. Lambert series with other arithmetic coefficients encode Euler's totient ($a_n = \\varphi(n)$), Möbius function ($a_n = \\mu(n)$), and Liouville's function ($a_n = \\lambda(n)$). Understanding the irrationality of $S(t)$ is a first step toward understanding the arithmetic nature of this entire family.\n\n**Algorithmic Connections**: The Erdős-Borwein constant $E = S(2) \\approx 1.606695$ appears unexpectedly in the analysis of algorithms: Knuth (1998) showed it governs the average-case complexity of mergesort via the binary representation of integers. This connection between number-theoretic irrationality and computational complexity is an instance of the broader phenomenon where analytic constants from pure mathematics arise as exact answers to algorithmic questions.\n\n**Transcendence Program**: The transcendental conjecture (that $S(t)$ is transcendental for algebraic $t > 1$) connects to Siegel's program on values of $E$-functions and $G$-functions at algebraic points. Borwein (1991) generalized Erdős's result to $\\sum 1/(q^n + r)$, but the full transcendence question remains out of reach of current methods.\n\n**Open Problem Status**: Resolution of Chowla's conjecture would require new techniques beyond Erdős's p-adic approach, which relies on the denominator structure of partial sums being multiplicatively well-behaved — a property that breaks down for non-integer $t$. The problem remains one of the accessible yet unsolved questions in the Erdős collection.",
     "openQuestions": [
       "Is S(t) irrational for all rational t > 1? (Chowla's conjecture, the central open question)",
       "Is S(t) transcendental for algebraic t > 1? (strictly stronger than Chowla's conjecture)",
@@ -193,12 +193,12 @@
     {
       "targetId": "e-transcendental",
       "relationship": "thematic",
-      "description": "Both problems concern the transcendence of naturally-arising constants: $e$ was proved transcendental by Hermite (1873) and the Erd\u0151s-Borwein constant $S(2)$ is conjectured transcendental. Both connect irrationality to deeper arithmetic properties of analytic functions."
+      "description": "Both problems concern the transcendence of naturally-arising constants: $e$ was proved transcendental by Hermite (1873) and the Erdős-Borwein constant $S(2)$ is conjectured transcendental. Both connect irrationality to deeper arithmetic properties of analytic functions."
     },
     {
       "targetId": "sqrt2-irrational",
       "relationship": "thematic",
-      "description": "The irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans) and Erd\u0151s's 1948 result are foundational irrationality theorems. Both use contradiction arguments, but $\\sqrt{2}$ is algebraic while $S(2)$ is conjectured transcendental \u2014 illustrating the spectrum from algebraic to transcendental irrationality."
+      "description": "The irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans) and Erdős's 1948 result are foundational irrationality theorems. Both use contradiction arguments, but $\\sqrt{2}$ is algebraic while $S(2)$ is conjectured transcendental — illustrating the spectrum from algebraic to transcendental irrationality."
     },
     {
       "targetId": "euler-totient",
@@ -213,17 +213,17 @@
     {
       "targetId": "erdos-1003",
       "relationship": "sibling",
-      "description": "Erd\u0151s Problem #1003 is another number-theoretic problem from the Erd\u0151s collection involving divisibility and arithmetic properties of integer sequences, sharing techniques from analytic number theory with Problem #1049."
+      "description": "Erdős Problem #1003 is another number-theoretic problem from the Erdős collection involving divisibility and arithmetic properties of integer sequences, sharing techniques from analytic number theory with Problem #1049."
     },
     {
       "targetId": "erdos-1051",
       "relationship": "sibling",
-      "description": "Erd\u0151s Problem #1051 sits in the same cluster of problems concerning arithmetic properties of series and sums, closely neighboring #1049 in the Erd\u0151s problem list and likely sharing thematic techniques."
+      "description": "Erdős Problem #1051 sits in the same cluster of problems concerning arithmetic properties of series and sums, closely neighboring #1049 in the Erdős problem list and likely sharing thematic techniques."
     }
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "On arithmetical properties of Lambert series",
       "year": "1948",
       "venue": "Journal of the Indian Mathematical Society",
@@ -233,14 +233,14 @@
       "authors": "Borwein, Peter B.",
       "title": "On the irrationality of $\\sum (1/(q^n + r))$",
       "year": "1991",
-      "venue": "Journal of Number Theory, 37(3):253\u2013259",
-      "note": "Generalizes Erd\u0151s's 1948 irrationality result to a broader family of Lambert-type series $\\sum 1/(q^n + r)$, providing the most general known irrationality result in this direction and motivating Chowla's conjecture."
+      "venue": "Journal of Number Theory, 37(3):253–259",
+      "note": "Generalizes Erdős's 1948 irrationality result to a broader family of Lambert-type series $\\sum 1/(q^n + r)$, providing the most general known irrationality result in this direction and motivating Chowla's conjecture."
     },
     {
-      "authors": "Erd\u0151s, Paul; Borwein, Peter B.",
+      "authors": "Erdős, Paul; Borwein, Peter B.",
       "title": "On the irrationality of certain Lambert series",
       "year": "1993",
-      "venue": "Journal f\u00fcr die reine und angewandte Mathematik (Crelle's Journal), 445:197\u2013220",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), 445:197–220",
       "note": "Collaborative paper extending the irrationality program for Lambert series with varying coefficients. Establishes that many Lambert series with integer coefficients are irrational, greatly broadening the scope beyond $S(t)$."
     },
     {
@@ -248,23 +248,23 @@
       "title": "The Art of Computer Programming, Volume 2: Seminumerical Algorithms",
       "year": "1998",
       "venue": "Addison-Wesley",
-      "note": "Section 5.2.4 connects the Erd\u0151s-Borwein constant $S(2) \\approx 1.6067$ to the average-case analysis of mergesort, providing an unexpected combinatorial interpretation of the number-theoretic series."
+      "note": "Section 5.2.4 connects the Erdős-Borwein constant $S(2) \\approx 1.6067$ to the average-case analysis of mergesort, providing an unexpected combinatorial interpretation of the number-theoretic series."
     },
     {
-      "authors": "Amou, Masaaki; V\u00e4\u00e4n\u00e4nen, Keijo",
+      "authors": "Amou, Masaaki; Väänänen, Keijo",
       "title": "Arithmetic-geometric mean and related inequalities for p-adic Lambert series",
       "year": "2006",
-      "venue": "Acta Arithmetica, 123(4):309\u2013326",
+      "venue": "Acta Arithmetica, 123(4):309–326",
       "note": "Investigates p-adic properties of Lambert series including $S(t)$, providing quantitative irrationality measures and partial progress toward Chowla's conjecture for certain non-integer rationals."
     },
     {
       "key": "Er48",
-      "citation": "Erd\u0151s, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
+      "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
       "type": "paper"
     },
     {
       "key": "Er88c",
-      "citation": "Erd\u0151s, P. (1988). Problems and results on number theoretic properties of consecutive integers and related questions, p. 102.",
+      "citation": "Erdős, P. (1988). Problems and results on number theoretic properties of consecutive integers and related questions, p. 102.",
       "type": "paper"
     }
   ],

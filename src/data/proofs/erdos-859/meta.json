@@ -1,10 +1,10 @@
 {
   "id": "erdos-859",
-  "title": "Erd\u0151s #859: Density of Divisor Sum Representations",
+  "title": "Erdős #859: Density of Divisor Sum Representations",
   "slug": "erdos-859",
-  "description": "Let d\u209c be the density of n where t is a sum of distinct divisors. Is d\u209c ~ c\u2081/(log t)^c\u2082? Known: 1/(log t)^c\u2083 < d\u209c < 1/(log t)^c\u2084 (Erd\u0151s 1970).",
+  "description": "Let dₜ be the density of n where t is a sum of distinct divisors. Is dₜ ~ c₁/(log t)^c₂? Known: 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ (Erdős 1970).",
   "meta": {
-    "author": "Erd\u0151s (1970)",
+    "author": "Erdős (1970)",
     "sourceUrl": "https://erdosproblems.com/859",
     "date": "1970",
     "status": "axiomatized",
@@ -42,11 +42,11 @@
     "originalContributions": [
       "Formalization of DivisorSumSet as a subset-sum characterization of divisor representations",
       "Natural density definitions via Filter.Tendsto and the atTop filter",
-      "Concrete examples: d\u2080 = 1 (trivial), d\u2081 = 1 (1 divides all), d\u2082 = 1/2 (first nontrivial case)",
-      "Erd\u0151s's 1970 existence, positivity, and log-power bounds as axioms",
+      "Concrete examples: d₀ = 1 (trivial), d₁ = 1 (1 divides all), d₂ = 1/2 (first nontrivial case)",
+      "Erdős's 1970 existence, positivity, and log-power bounds as axioms",
       "Connection to practical numbers (Srinivasan 1948, Margenstern 1991)",
       "Subset sum perspective bridging number theory and combinatorics",
-      "Divisor function properties (\u03c3, \u03c4) and multiplicative structure"
+      "Divisor function properties (σ, τ) and multiplicative structure"
     ],
     "axiomCount": 3,
     "lineCount": 348,
@@ -55,17 +55,17 @@
     "definitionCount": 9
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #859 originates from Erd\u0151s's 1970 paper 'Some extremal problems in combinatorial number theory', where he systematically studied the density of integers n for which a given target t can be represented as a sum of distinct divisors. The study of divisor subset sums has roots going back to the ancient concept of perfect numbers (\u03c3(n) = 2n) and the work of Srinivasan (1948) on practical numbers\u2014integers n where every k \u2264 \u03c3(n) is representable.\n\nErd\u0151s proved three foundational results: (1) the density d\u209c exists for all t, using the multiplicative structure of divisors to establish convergence; (2) d\u209c > 0 for all t > 0, showing that a positive fraction of integers can always represent t; (3) there exist constants c\u2083, c\u2084 > 0 such that 1/(log t)^c\u2083 < d\u209c < 1/(log t)^c\u2084, pinning the decay rate to a power of log t.\n\nThe connection to practical numbers was deepened by Margenstern (1991), who proved practical numbers have positive density, and Saias (1997), who established the asymptotic P(x) ~ cx/log x (analogous to the prime number theorem). Since practical n contribute to D\u209c for all t \u2264 \u03c3(n), practical number density provides a natural lower bound framework.\n\nThe open question\u2014whether d\u209c has a precise asymptotic c\u2081/(log t)^c\u2082\u2014asks for the exact exponent of decay, going beyond Erd\u0151s's bracket of c\u2083 < exponent < c\u2084. This remains one of the outstanding problems in combinatorial number theory, connecting divisor structure to analytic density in a way that resists known techniques.",
-    "problemStatement": "Let t \u2265 1 and let d\u209c be the density of integers n \u2208 \u2115 for which t can be represented as a sum of distinct divisors of n.\n\n**Question**: Do there exist constants c\u2081, c\u2082 > 0 such that\n$$ d_t \\sim \\frac{c_1}{(\\log t)^{c_2}} $$\nas t \u2192 \u221e?\n\n**Status**: OPEN\n\n**Known (Erd\u0151s 1970)**: 1/(log t)^c\u2083 < d\u209c < 1/(log t)^c\u2084 for some c\u2083, c\u2084 > 0",
-    "text": "Let d\u209c be the density of n where t is a sum of distinct divisors. Is d\u209c ~ c\u2081/(log t)^c\u2082? Known: 1/(log t)^c\u2083 < d\u209c < 1/(log t)^c\u2084 (Erd\u0151s 1970).",
-    "proofStrategy": "The formalization proceeds in twelve structured parts:\n\n1. **DivisorSumSet t**: Defined as {n : \u2203 s \u2286 divisors(n), t = \u03a3\u1d62\u2208s i}, the core set whose density we study\n2. **Natural density**: Formalized via Filter.Tendsto, expressing lim\u2099\u2192\u221e #{k \u2264 N : k \u2208 S}/N = d\n3. **Base cases**: d\u2080 = 1 (empty sum), d\u2081 = 1 (1 divides all), d\u2082 = 1/2 (iff 2 | n)\u2014establishing the pattern\n4. **Erd\u0151s's axioms**: The three 1970 results (existence, positivity, log-power bounds) as axioms, since the proofs require deep analytic number theory beyond current Mathlib\n5. **The open question**: Formalized using Mathlib's IsEquivalent (~[atTop]) for asymptotic equivalence\n6. **Arithmetic infrastructure**: \u03c3(n), \u03c4(n), subset counting, and multiplicative structure theorems\n7. **Practical numbers**: IsPractical n defined as \u2200 k \u2264 \u03c3(n), n \u2208 DivisorSumSet k, with density axiom\n8. **Subset sum bridge**: Explicit equivalence between DivisorSumSet membership and SubsetSumExists\n9. **Growth bounds**: Average order of \u03c3(n) and typical size bounds constraining eligible n for large t\n10. **Summary theorem**: Packaging all three Erd\u0151s results via refine and direct axiom application",
+    "historicalContext": "Erdős Problem #859 originates from Erdős's 1970 paper 'Some extremal problems in combinatorial number theory', where he systematically studied the density of integers n for which a given target t can be represented as a sum of distinct divisors. The study of divisor subset sums has roots going back to the ancient concept of perfect numbers (σ(n) = 2n) and the work of Srinivasan (1948) on practical numbers—integers n where every k ≤ σ(n) is representable.\n\nErdős proved three foundational results: (1) the density dₜ exists for all t, using the multiplicative structure of divisors to establish convergence; (2) dₜ > 0 for all t > 0, showing that a positive fraction of integers can always represent t; (3) there exist constants c₃, c₄ > 0 such that 1/(log t)^c₃ < dₜ < 1/(log t)^c₄, pinning the decay rate to a power of log t.\n\nThe connection to practical numbers was deepened by Margenstern (1991), who proved practical numbers have positive density, and Saias (1997), who established the asymptotic P(x) ~ cx/log x (analogous to the prime number theorem). Since practical n contribute to Dₜ for all t ≤ σ(n), practical number density provides a natural lower bound framework.\n\nThe open question—whether dₜ has a precise asymptotic c₁/(log t)^c₂—asks for the exact exponent of decay, going beyond Erdős's bracket of c₃ < exponent < c₄. This remains one of the outstanding problems in combinatorial number theory, connecting divisor structure to analytic density in a way that resists known techniques.",
+    "problemStatement": "Let t ≥ 1 and let dₜ be the density of integers n ∈ ℕ for which t can be represented as a sum of distinct divisors of n.\n\n**Question**: Do there exist constants c₁, c₂ > 0 such that\n$$ d_t \\sim \\frac{c_1}{(\\log t)^{c_2}} $$\nas t → ∞?\n\n**Status**: OPEN\n\n**Known (Erdős 1970)**: 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ for some c₃, c₄ > 0",
+    "text": "Let dₜ be the density of n where t is a sum of distinct divisors. Is dₜ ~ c₁/(log t)^c₂? Known: 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ (Erdős 1970).",
+    "proofStrategy": "The formalization proceeds in twelve structured parts:\n\n1. **DivisorSumSet t**: Defined as {n : ∃ s ⊆ divisors(n), t = Σᵢ∈s i}, the core set whose density we study\n2. **Natural density**: Formalized via Filter.Tendsto, expressing limₙ→∞ #{k ≤ N : k ∈ S}/N = d\n3. **Base cases**: d₀ = 1 (empty sum), d₁ = 1 (1 divides all), d₂ = 1/2 (iff 2 | n)—establishing the pattern\n4. **Erdős's axioms**: The three 1970 results (existence, positivity, log-power bounds) as axioms, since the proofs require deep analytic number theory beyond current Mathlib\n5. **The open question**: Formalized using Mathlib's IsEquivalent (~[atTop]) for asymptotic equivalence\n6. **Arithmetic infrastructure**: σ(n), τ(n), subset counting, and multiplicative structure theorems\n7. **Practical numbers**: IsPractical n defined as ∀ k ≤ σ(n), n ∈ DivisorSumSet k, with density axiom\n8. **Subset sum bridge**: Explicit equivalence between DivisorSumSet membership and SubsetSumExists\n9. **Growth bounds**: Average order of σ(n) and typical size bounds constraining eligible n for large t\n10. **Summary theorem**: Packaging all three Erdős results via refine and direct axiom application",
     "keyInsights": [
-      "**Multiplicative factorization drives density existence**: For coprime m, n, the divisor set div(mn) \u2245 div(m) \u00d7 div(n), so the density computation factors over prime powers. This multiplicative structure\u2014analogous to Euler products in analytic number theory\u2014is what makes d\u209c exist despite the combinatorial complexity of subset sums.",
-      "**The log-power decay rate reflects divisor arithmetic**: The bounds 1/(log t)^c\u2083 < d\u209c < 1/(log t)^c\u2084 arise because representing t requires n with \u03c3(n) \u2265 t, and the density of such n decays as a power of log t. The gap between c\u2083 and c\u2084 encodes our ignorance about the fine structure of divisor subset sums.",
-      "**Practical numbers provide a universal lower bound**: Since practical n satisfies n \u2208 D\u209c for ALL t \u2264 \u03c3(n), the density of practical numbers with \u03c3(n) \u2265 t gives a lower bound on d\u209c. Saias's asymptotic P(x) ~ cx/log x makes this quantitative.",
-      "**Binary representation makes powers of 2 especially tractable**: For n = 2^a, the divisors {1, 2, 4, ..., 2^a} represent every t \u2208 [0, 2^(a+1)-1] via binary. This makes 2-smooth numbers the simplest class contributing to many D\u209c, and explains why the problem is harder for primes p \u2265 3.",
+      "**Multiplicative factorization drives density existence**: For coprime m, n, the divisor set div(mn) ≅ div(m) × div(n), so the density computation factors over prime powers. This multiplicative structure—analogous to Euler products in analytic number theory—is what makes dₜ exist despite the combinatorial complexity of subset sums.",
+      "**The log-power decay rate reflects divisor arithmetic**: The bounds 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ arise because representing t requires n with σ(n) ≥ t, and the density of such n decays as a power of log t. The gap between c₃ and c₄ encodes our ignorance about the fine structure of divisor subset sums.",
+      "**Practical numbers provide a universal lower bound**: Since practical n satisfies n ∈ Dₜ for ALL t ≤ σ(n), the density of practical numbers with σ(n) ≥ t gives a lower bound on dₜ. Saias's asymptotic P(x) ~ cx/log x makes this quantitative.",
+      "**Binary representation makes powers of 2 especially tractable**: For n = 2^a, the divisors {1, 2, 4, ..., 2^a} represent every t ∈ [0, 2^(a+1)-1] via binary. This makes 2-smooth numbers the simplest class contributing to many Dₜ, and explains why the problem is harder for primes p ≥ 3.",
       "**The subset sum NP-completeness is irrelevant here**: While SubsetSumExists is NP-complete for arbitrary sets, divisor sets have multiplicative structure enabling polynomial-time analysis. The 'hardness' of Problem #859 is analytic (determining the exact density), not computational.",
-      "**Density 0 examples show the question is deep**: Some natural number-theoretic sets (like primes) have density 0 despite being infinite. That d\u209c > 0 for all t > 0 is already surprising\u2014it says representing any target t is never 'rare' among integers, even for very large t."
+      "**Density 0 examples show the question is deep**: Some natural number-theoretic sets (like primes) have density 0 despite being infinite. That dₜ > 0 for all t > 0 is already surprising—it says representing any target t is never 'rare' among integers, even for very large t."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -95,91 +95,91 @@
       "title": "Basic Examples",
       "startLine": 82,
       "endLine": 164,
-      "summary": "Establishes d\u2080 = 1 (empty sum works for all n), d\u2081 = 1 (1 divides every positive n), and d\u2082 = 1/2 (iff 2 | n). The t = 2 case has a sorry requiring subset analysis.",
-      "mathContext": "Mathematical content: Establishes d\u2080 = 1 (empty sum works for all n), d\u2081 = 1 (1 divides every positive n), and d\u2082 = 1/2 (iff 2 | n). The t = 2 case has a sorry requiring subset analysis."
+      "summary": "Establishes d₀ = 1 (empty sum works for all n), d₁ = 1 (1 divides every positive n), and d₂ = 1/2 (iff 2 | n). The t = 2 case has a sorry requiring subset analysis.",
+      "mathContext": "Mathematical content: Establishes d₀ = 1 (empty sum works for all n), d₁ = 1 (1 divides every positive n), and d₂ = 1/2 (iff 2 | n). The t = 2 case has a sorry requiring subset analysis."
     },
     {
       "id": "erdos-bounds",
-      "title": "Erd\u0151s's Bounds (1970)",
+      "title": "Erdős's Bounds (1970)",
       "startLine": 165,
       "endLine": 192,
-      "summary": "Three axioms encoding Erd\u0151s's 1970 results: density existence for all t, positivity for t > 0, and the log-power bounds (log t)^{-c\u2083} < d\u209c < (log t)^{-c\u2084}. These are axiomatized because the proofs require deep analytic methods.",
-      "mathContext": "Three axioms encoding Erd\u0151s's 1970 results: density existence for all t, positivity for t > 0, and the log-power bounds (log t)^{-c\u2083} < d\u209c < (log t)^{-c\u2084}. These are axiomatized because the proofs require deep analytic methods."
+      "summary": "Three axioms encoding Erdős's 1970 results: density existence for all t, positivity for t > 0, and the log-power bounds (log t)^{-c₃} < dₜ < (log t)^{-c₄}. These are axiomatized because the proofs require deep analytic methods.",
+      "mathContext": "Three axioms encoding Erdős's 1970 results: density existence for all t, positivity for t > 0, and the log-power bounds (log t)^{-c₃} < dₜ < (log t)^{-c₄}. These are axiomatized because the proofs require deep analytic methods."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 193,
       "endLine": 208,
-      "summary": "Formalizes Erd\u0151s Problem #859 as a Prop: existence of c\u2081, c\u2082 > 0 such that d\u209c ~[atTop] c\u2081/(log t)^c\u2082, using Mathlib's asymptotic equivalence. Status: OPEN.",
-      "mathContext": "Mathematical content: Formalizes Erd\u0151s Problem #859 as a Prop: existence of c\u2081, c\u2082 > 0 such that d\u209c ~[atTop] c\u2081/(log t)^c\u2082, using Mathlib's asymptotic equivalence. Status: OPEN."
+      "summary": "Formalizes Erdős Problem #859 as a Prop: existence of c₁, c₂ > 0 such that dₜ ~[atTop] c₁/(log t)^c₂, using Mathlib's asymptotic equivalence. Status: OPEN.",
+      "mathContext": "Mathematical content: Formalizes Erdős Problem #859 as a Prop: existence of c₁, c₂ > 0 such that dₜ ~[atTop] c₁/(log t)^c₂, using Mathlib's asymptotic equivalence. Status: OPEN."
     },
     {
       "id": "divisor-functions",
       "title": "The Divisor Function",
       "startLine": 209,
       "endLine": 224,
-      "summary": "Defines \u03c3(n) = \u03a3_{d|n} d and \u03c4(n) = #{d | n}, then proves the powerset of divisors(n) has cardinality 2^\u03c4(n), bounding the number of possible subset sums.",
-      "mathContext": "Defines \u03c3(n) = $\\sum$_{d|n} d and \u03c4(n) = #{d | n}, then proves the powerset of divisors(n) has cardinality $2^{\u03c4}$(n), bounding the number of possible subset sums."
+      "summary": "Defines σ(n) = Σ_{d|n} d and τ(n) = #{d | n}, then proves the powerset of divisors(n) has cardinality 2^τ(n), bounding the number of possible subset sums.",
+      "mathContext": "Defines σ(n) = $\\sum$_{d|n} d and τ(n) = #{d | n}, then proves the powerset of divisors(n) has cardinality $2^{τ}$(n), bounding the number of possible subset sums."
     },
     {
       "id": "multiplicative",
       "title": "Multiplicative Structure",
       "startLine": 225,
       "endLine": 240,
-      "summary": "Shows \u03c4(mn) = \u03c4(m)\u00b7\u03c4(n) for coprime m, n (sorry), and characterizes divisors of prime powers p^a as the geometric set {1, p, ..., p^a} (sorry). These structural results underpin the density analysis.",
-      "mathContext": "Mathematical content: Shows \u03c4(mn) = \u03c4(m)\u00b7\u03c4(n) for coprime m, n (sorry), and characterizes divisors of prime powers p^a as the geometric set {1, p, ..., p^a} (sorry). These structural results underpin the density analysis."
+      "summary": "Shows τ(mn) = τ(m)·τ(n) for coprime m, n (sorry), and characterizes divisors of prime powers p^a as the geometric set {1, p, ..., p^a} (sorry). These structural results underpin the density analysis.",
+      "mathContext": "Mathematical content: Shows τ(mn) = τ(m)·τ(n) for coprime m, n (sorry), and characterizes divisors of prime powers p^a as the geometric set {1, p, ..., p^a} (sorry). These structural results underpin the density analysis."
     },
     {
       "id": "comparisons",
       "title": "Density Comparisons",
       "startLine": 241,
       "endLine": 257,
-      "summary": "Proves d\u209c < 1 for large t (sorry) and d_{2t} \u2264 d\u209c (sorry), establishing that density decreases as the target grows. Both require \u03c3(n)-based arguments.",
-      "mathContext": "Proves d\u209c < 1 for large t (sorry) and d_{2t} $\\leq$ d\u209c (sorry), establishing that density decreases as the target grows. Both require \u03c3(n)-based arguments."
+      "summary": "Proves dₜ < 1 for large t (sorry) and d_{2t} ≤ dₜ (sorry), establishing that density decreases as the target grows. Both require σ(n)-based arguments.",
+      "mathContext": "Proves dₜ < 1 for large t (sorry) and d_{2t} $\\leq$ dₜ (sorry), establishing that density decreases as the target grows. Both require σ(n)-based arguments."
     },
     {
       "id": "practical",
       "title": "Practical Numbers",
       "startLine": 258,
       "endLine": 271,
-      "summary": "Defines practical numbers (n where every k \u2264 \u03c3(n) is a divisor subset sum), gives examples (sorry), and axiomatizes Margenstern's 1991 result that practical numbers have positive density.",
-      "mathContext": "Defines practical numbers (n where every k $\\leq$ \u03c3(n) is a divisor subset sum), gives examples (sorry), and axiomatizes Margenstern's 1991 result that practical numbers have positive density."
+      "summary": "Defines practical numbers (n where every k ≤ σ(n) is a divisor subset sum), gives examples (sorry), and axiomatizes Margenstern's 1991 result that practical numbers have positive density.",
+      "mathContext": "Defines practical numbers (n where every k $\\leq$ σ(n) is a divisor subset sum), gives examples (sorry), and axiomatizes Margenstern's 1991 result that practical numbers have positive density."
     },
     {
       "id": "subset-sum",
       "title": "Subset Sum Problem",
       "startLine": 272,
       "endLine": 284,
-      "summary": "Introduces SubsetSumExists and proves the bridge theorem: n \u2208 DivisorSumSet t \u2194 SubsetSumExists(divisors(n), t), connecting the number-theoretic and combinatorial viewpoints.",
-      "mathContext": "Verified: Introduces SubsetSumExists and proves the bridge theorem: n \u2208 DivisorSumSet t \u2194 SubsetSumExists(divisors(n), t), connecting the number-theoretic and combinatorial viewpoints."
+      "summary": "Introduces SubsetSumExists and proves the bridge theorem: n ∈ DivisorSumSet t ↔ SubsetSumExists(divisors(n), t), connecting the number-theoretic and combinatorial viewpoints.",
+      "mathContext": "Verified: Introduces SubsetSumExists and proves the bridge theorem: n ∈ DivisorSumSet t ↔ SubsetSumExists(divisors(n), t), connecting the number-theoretic and combinatorial viewpoints."
     },
     {
       "id": "sigma-growth",
-      "title": "Growth of \u03c3(n)",
+      "title": "Growth of σ(n)",
       "startLine": 285,
       "endLine": 289,
-      "summary": "Axiomatizes two classical results: the average order \u03a3_{n\u2264N} \u03c3(n) ~ (\u03c0\u00b2/12)N\u00b2 (Dirichlet's hyperbola method), and the typical bound \u03c3(n) < n\u00b7(log n)\u00b2 for most n (Gronwall's theorem).",
-      "mathContext": "Axiomatizes two classical results: the average order $\\sum$_{n$\\leq$N} \u03c3(n) ~ (\u03c0\u00b2/12)N\u00b2 (Dirichlet's hyperbola method), and the typical bound \u03c3(n) < n\u00b7($\\log n$)\u00b2 for most n (Gronwall's theorem)."
+      "summary": "Axiomatizes two classical results: the average order Σ_{n≤N} σ(n) ~ (π²/12)N² (Dirichlet's hyperbola method), and the typical bound σ(n) < n·(log n)² for most n (Gronwall's theorem).",
+      "mathContext": "Axiomatizes two classical results: the average order $\\sum$_{n$\\leq$N} σ(n) ~ (π²/12)N² (Dirichlet's hyperbola method), and the typical bound σ(n) < n·($\\log n$)² for most n (Gronwall's theorem)."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 290,
       "endLine": 348,
-      "summary": "Combines all three Erd\u0151s axioms into a single summary theorem using refine and direct application, packaging the known results about d\u209c in one statement.",
-      "mathContext": "Verified: Combines all three Erd\u0151s axioms into a single summary theorem using refine and direct application, packaging the known results about d\u209c in one statement."
+      "summary": "Combines all three Erdős axioms into a single summary theorem using refine and direct application, packaging the known results about dₜ in one statement.",
+      "mathContext": "Verified: Combines all three Erdős axioms into a single summary theorem using refine and direct application, packaging the known results about dₜ in one statement."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #859 on the density of divisor sum representations. The twelve-part structure builds from the core DivisorSumSet definition through natural density formalization, concrete examples, Erd\u0151s's 1970 bounds (axiomatized), the open asymptotic question, arithmetic infrastructure, practical number connections, and growth bounds. The 7 sorries include concrete computations (d\u2082 = 1/2), structural results (coprime divisor factorization, prime power characterization), and density behavior (monotonicity, eventual boundedness).",
-    "implications": "**Theoretical Significance**: The problem connects three mathematical domains: (1) **number theory** via divisor structure and multiplicative functions, (2) **combinatorics** via the subset sum problem and its special structure for divisor sets, and (3) **analysis** via natural density, asymptotic equivalence, and the Filter framework in Lean.\n\nThe formalization demonstrates how Lean's axiom system can cleanly separate known results (Erd\u0151s 1970) from open questions, providing a precise framework for future work. If the asymptotic d\u209c ~ c\u2081/(log t)^c\u2082 is established, it would reveal the exact interplay between divisor multiplicativity and subset sum combinatorics.",
+    "summary": "This formalization captures Erdős Problem #859 on the density of divisor sum representations. The twelve-part structure builds from the core DivisorSumSet definition through natural density formalization, concrete examples, Erdős's 1970 bounds (axiomatized), the open asymptotic question, arithmetic infrastructure, practical number connections, and growth bounds. The 7 sorries include concrete computations (d₂ = 1/2), structural results (coprime divisor factorization, prime power characterization), and density behavior (monotonicity, eventual boundedness).",
+    "implications": "**Theoretical Significance**: The problem connects three mathematical domains: (1) **number theory** via divisor structure and multiplicative functions, (2) **combinatorics** via the subset sum problem and its special structure for divisor sets, and (3) **analysis** via natural density, asymptotic equivalence, and the Filter framework in Lean.\n\nThe formalization demonstrates how Lean's axiom system can cleanly separate known results (Erdős 1970) from open questions, providing a precise framework for future work. If the asymptotic dₜ ~ c₁/(log t)^c₂ is established, it would reveal the exact interplay between divisor multiplicativity and subset sum combinatorics.",
     "openQuestions": [
-      "Does d\u209c ~ c\u2081/(log t)^c\u2082 for some constants c\u2081, c\u2082 > 0? (The central open question)",
-      "What are the optimal constants c\u2083, c\u2084 in Erd\u0151s's 1970 bounds? Can the gap be narrowed?",
-      "How does d\u209c depend on the arithmetic structure of t (e.g., prime vs highly composite t)?",
-      "Is there a second-order asymptotic: d\u209c = c\u2081/(log t)^c\u2082 \u00b7 (1 + f(t)) with f(t) \u2192 0?",
-      "What is the relationship between d\u209c and the density of practical numbers with \u03c3(n) \u2265 t?"
+      "Does dₜ ~ c₁/(log t)^c₂ for some constants c₁, c₂ > 0? (The central open question)",
+      "What are the optimal constants c₃, c₄ in Erdős's 1970 bounds? Can the gap be narrowed?",
+      "How does dₜ depend on the arithmetic structure of t (e.g., prime vs highly composite t)?",
+      "Is there a second-order asymptotic: dₜ = c₁/(log t)^c₂ · (1 + f(t)) with f(t) → 0?",
+      "What is the relationship between dₜ and the density of practical numbers with σ(n) ≥ t?"
     ]
   },
   "leanFile": {
@@ -214,17 +214,17 @@
     {
       "targetId": "erdos-1054",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotics, density, divisors, number-theory"
+      "description": "Related Erdős problem sharing themes: asymptotics, density, divisors, number-theory"
     },
     {
       "targetId": "erdos-144",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: density, divisors, number-theory"
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
     },
     {
       "targetId": "erdos-449",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: density, divisors, number-theory"
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
     }
   ],
   "sorries": 3

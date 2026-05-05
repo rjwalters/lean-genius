@@ -1,10 +1,10 @@
 {
   "id": "erdos-860",
-  "title": "Erd\u0151s Problem #860: Prime Covering Intervals",
+  "title": "Erdős Problem #860: Prime Covering Intervals",
   "slug": "erdos-860",
-  "description": "Estimate h(n), the minimum interval length such that any interval contains distinct multiples of the first \u03c0(n) primes. OPEN: Known bounds are (3-o(1))n < h(n) \u226a n^(3/2)/(log n)^(1/2), but exact asymptotics unknown.",
+  "description": "Estimate h(n), the minimum interval length such that any interval contains distinct multiples of the first π(n) primes. OPEN: Known bounds are (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2), but exact asymptotics unknown.",
   "meta": {
-    "author": "Erd\u0151s, Pomerance, Selfridge, Ruzsa",
+    "author": "Erdős, Pomerance, Selfridge, Ruzsa",
     "sourceUrl": "https://erdosproblems.com/860",
     "date": "1980",
     "status": "axiomatized",
@@ -29,7 +29,7 @@
     "mathlibDependencies": [
       {
         "theorem": "PrimeCounting",
-        "description": "Prime counting function \u03c0(n)",
+        "description": "Prime counting function π(n)",
         "module": "Mathlib.NumberTheory.PrimeCounting"
       },
       {
@@ -48,12 +48,12 @@
       "AdmitsCovering: existential wrapper for prime covering existence",
       "h: minimum interval length via Nat.find for universal covering",
       "h_universal / h_minimal: axiomatized defining properties of h(n)",
-      "erdos_selfridge_lower_bound: (3-o(1))n lower bound via \u03b5-N formulation",
-      "ruzsa_growth: h(n)/n \u2192 \u221e via Filter.Tendsto atTop atTop",
+      "erdos_selfridge_lower_bound: (3-o(1))n lower bound via ε-N formulation",
+      "ruzsa_growth: h(n)/n → ∞ via Filter.Tendsto atTop atTop",
       "erdos_pomerance_upper_bound: n^(3/2)/(log n)^(1/2) upper bound",
-      "linear_lower_bound: derived quantitative h(n) \u2265 2.9n (partial proof)",
-      "subquadratic_upper_bound: h(n) = o(n\u00b2) via IsLittleO (partial proof)",
-      "erdos_860: main theorem combining Ruzsa + Erd\u0151s-Pomerance (fully proved)"
+      "linear_lower_bound: derived quantitative h(n) ≥ 2.9n (partial proof)",
+      "subquadratic_upper_bound: h(n) = o(n²) via IsLittleO (partial proof)",
+      "erdos_860: main theorem combining Ruzsa + Erdős-Pomerance (fully proved)"
     ],
     "axiomCount": 5,
     "lineCount": 205,
@@ -62,15 +62,15 @@
     "definitionCount": 6
   },
   "overview": {
-    "historicalContext": "Erd\u0151s and Pomerance posed this problem in 1980 in their paper on matching natural numbers with distinct multiples. Given the first $\\pi(n)$ primes $p_1 < p_2 < \\cdots < p_{\\pi(n)}$, the function $h(n)$ measures the minimum interval length guaranteeing that any interval $(m, m+h(n)]$ contains distinct integers $a_1, \\ldots, a_{\\pi(n)}$ with $p_i \\mid a_i$. This is a covering-by-multiples problem that connects prime distribution to combinatorial matching theory. Erd\u0151s and Selfridge established the linear lower bound $h(n) > (3-o(1))n$ by analyzing worst-case intervals where large primes (near $n$) have sparse multiples. Ruzsa strengthened this to $h(n)/n \\to \\infty$, showing superlinear growth via the Chinese Remainder Theorem \u2014 by constructing starting points $m$ where small primes 'block' many interval elements, forcing longer intervals. For the upper bound, Erd\u0151s and Pomerance proved $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ using a greedy assignment strategy. The problem appears as B32 in Guy's 'Unsolved Problems in Number Theory.' The gap between superlinear and $n^{3/2}$ remains one of the most natural open questions about the interaction between prime structure and combinatorial covering.",
+    "historicalContext": "Erdős and Pomerance posed this problem in 1980 in their paper on matching natural numbers with distinct multiples. Given the first $\\pi(n)$ primes $p_1 < p_2 < \\cdots < p_{\\pi(n)}$, the function $h(n)$ measures the minimum interval length guaranteeing that any interval $(m, m+h(n)]$ contains distinct integers $a_1, \\ldots, a_{\\pi(n)}$ with $p_i \\mid a_i$. This is a covering-by-multiples problem that connects prime distribution to combinatorial matching theory. Erdős and Selfridge established the linear lower bound $h(n) > (3-o(1))n$ by analyzing worst-case intervals where large primes (near $n$) have sparse multiples. Ruzsa strengthened this to $h(n)/n \\to \\infty$, showing superlinear growth via the Chinese Remainder Theorem — by constructing starting points $m$ where small primes 'block' many interval elements, forcing longer intervals. For the upper bound, Erdős and Pomerance proved $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ using a greedy assignment strategy. The problem appears as B32 in Guy's 'Unsolved Problems in Number Theory.' The gap between superlinear and $n^{3/2}$ remains one of the most natural open questions about the interaction between prime structure and combinatorial covering.",
     "problemStatement": "Let $h(n)$ be the minimum $L$ such that for any $m \\geq 1$, the interval $(m, m+L]$ contains distinct integers $a_1, \\ldots, a_{\\pi(n)}$ with $p_i \\mid a_i$ for each $i$.\n\nEstimate $h(n)$.\n\nKnown: $(3-o(1))n < h(n) \\ll n^{3/2}/(\\log n)^{1/2}$ and $h(n)/n \\to \\infty$.\n\nOpen: Determine the exact asymptotic growth rate.",
-    "text": "Estimate h(n), the minimum interval length such that any interval contains distinct multiples of the first \u03c0(n) primes. OPEN: Known bounds are (3-o(1))n < h(n) \u226a n^(3/2)/(log n)^(1/2), but exact asymptotics unknown.",
-    "proofStrategy": "The formalization captures: (1) The `PrimeCovering` structure encoding assignments with interval containment, distinctness, and divisibility. (2) `AdmitsCovering` as an existential wrapper. (3) The function $h(n)$ via `Nat.find` with $n^2$ as a witness. (4) Universality and minimality axioms characterizing $h(n)$. (5) The Erd\u0151s-Selfridge lower bound via $\\varepsilon$-$N$ formulation. (6) Ruzsa's superlinearity via `Tendsto atTop atTop`. (7) The Erd\u0151s-Pomerance upper bound via `\u2200\u1da0 in atTop`. (8) Derived bounds: linear lower ($c = 2.9$, partial) and subquadratic upper ($o(n^2)$, partial). (9) The main theorem `erdos_860` combining Ruzsa and Erd\u0151s-Pomerance (fully proved). (10) The bipartite matching reformulation via Hall's theorem (in comments).",
+    "text": "Estimate h(n), the minimum interval length such that any interval contains distinct multiples of the first π(n) primes. OPEN: Known bounds are (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2), but exact asymptotics unknown.",
+    "proofStrategy": "The formalization captures: (1) The `PrimeCovering` structure encoding assignments with interval containment, distinctness, and divisibility. (2) `AdmitsCovering` as an existential wrapper. (3) The function $h(n)$ via `Nat.find` with $n^2$ as a witness. (4) Universality and minimality axioms characterizing $h(n)$. (5) The Erdős-Selfridge lower bound via $\\varepsilon$-$N$ formulation. (6) Ruzsa's superlinearity via `Tendsto atTop atTop`. (7) The Erdős-Pomerance upper bound via `∀ᶠ in atTop`. (8) Derived bounds: linear lower ($c = 2.9$, partial) and subquadratic upper ($o(n^2)$, partial). (9) The main theorem `erdos_860` combining Ruzsa and Erdős-Pomerance (fully proved). (10) The bipartite matching reformulation via Hall's theorem (in comments).",
     "keyInsights": [
       "**Covering as matching**: The problem is equivalent to finding a perfect matching in a bipartite graph with primes on one side and interval elements on the other, connected by divisibility. Hall's theorem characterizes when such matchings exist: $|N(S) \\cap (m, m+L]| \\geq |S|$ for all prime subsets $S$.",
-      "**The constant 3 in the lower bound**: The Erd\u0151s-Selfridge bound $h(n) > (3-o(1))n$ arises because primes $p \\sim n$ have consecutive multiples $kp, (k+1)p$ spaced $\\sim n$ apart. To cover $\\pi(n) \\sim n/\\log n$ primes each needing a multiple in the interval, and accounting for collisions (different primes sharing multiples), at least $\\sim 3n$ room is needed.",
+      "**The constant 3 in the lower bound**: The Erdős-Selfridge bound $h(n) > (3-o(1))n$ arises because primes $p \\sim n$ have consecutive multiples $kp, (k+1)p$ spaced $\\sim n$ apart. To cover $\\pi(n) \\sim n/\\log n$ primes each needing a multiple in the interval, and accounting for collisions (different primes sharing multiples), at least $\\sim 3n$ room is needed.",
       "**Superlinearity via CRT**: Ruzsa proved $h(n)/n \\to \\infty$ by constructing bad starting points using the Chinese Remainder Theorem. For any target length $cn$, one can find $m$ where the first few primes 'consume' most interval positions via their multiples, leaving insufficient room for larger primes.",
-      "**The $n^{3/2}$ upper bound**: The Erd\u0151s-Pomerance bound balances two competing effects. Each prime $p_i$ has $\\sim L/p_i$ multiples in an interval of length $L$. For the greedy algorithm to succeed, we need $L$ large enough that total 'available slots' exceed the number of primes, even after accounting for overlaps. This gives $L \\sim n^{3/2}/(\\log n)^{1/2}$.",
+      "**The $n^{3/2}$ upper bound**: The Erdős-Pomerance bound balances two competing effects. Each prime $p_i$ has $\\sim L/p_i$ multiples in an interval of length $L$. For the greedy algorithm to succeed, we need $L$ large enough that total 'available slots' exceed the number of primes, even after accounting for overlaps. This gives $L \\sim n^{3/2}/(\\log n)^{1/2}$.",
       "**The mysterious gap**: Is $h(n) = \\Theta(n^\\alpha)$ for some $1 < \\alpha < 3/2$? Or perhaps $h(n) = n \\cdot (\\log n)^\\beta$? The gap between superlinear and $n^{3/2}$ is enormous, and neither bound seems close to tight."
     ],
     "prerequisites": [
@@ -97,22 +97,22 @@
     },
     {
       "id": "bounds",
-      "title": "Known Bounds: Erd\u0151s-Selfridge, Ruzsa, Erd\u0151s-Pomerance",
-      "summary": "Axiomatizes three key results: (1) Erd\u0151s-Selfridge: $h(n) > (3-\\varepsilon)n$ for large $n$. (2) Ruzsa: $h(n)/n \\to \\infty$ (superlinear). (3) Erd\u0151s-Pomerance: $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ (subquadratic upper bound).",
+      "title": "Known Bounds: Erdős-Selfridge, Ruzsa, Erdős-Pomerance",
+      "summary": "Axiomatizes three key results: (1) Erdős-Selfridge: $h(n) > (3-\\varepsilon)n$ for large $n$. (2) Ruzsa: $h(n)/n \\to \\infty$ (superlinear). (3) Erdős-Pomerance: $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ (subquadratic upper bound).",
       "startLine": 85,
       "endLine": 110
     },
     {
       "id": "gap",
       "title": "The Gap Between Bounds",
-      "summary": "Derives quantitative consequences: $h(n) \\geq 2.9n$ (partial proof from Erd\u0151s-Selfridge with $\\varepsilon = 0.1$) and $h(n) = o(n^2)$ (partial proof from Erd\u0151s-Pomerance). States the open question: is $h(n) = \\Theta(n^\\alpha)$?",
+      "summary": "Derives quantitative consequences: $h(n) \\geq 2.9n$ (partial proof from Erdős-Selfridge with $\\varepsilon = 0.1$) and $h(n) = o(n^2)$ (partial proof from Erdős-Pomerance). States the open question: is $h(n) = \\Theta(n^\\alpha)$?",
       "startLine": 111,
       "endLine": 138
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
-      "summary": "Notes connections to Erd\u0151s Problem #375 (related covering question), Guy's Problem B32, and the greedy algorithm approach for constructing coverings.",
+      "summary": "Notes connections to Erdős Problem #375 (related covering question), Guy's Problem B32, and the greedy algorithm approach for constructing coverings.",
       "startLine": 139,
       "endLine": 157
     },
@@ -126,17 +126,17 @@
     {
       "id": "summary",
       "title": "Main Result and Summary",
-      "summary": "The theorem `erdos_860` combines Ruzsa's superlinearity and Erd\u0151s-Pomerance's upper bound (fully proved from axioms). Includes `erdos_860_answer` and `erdos_860_status` string constants.",
+      "summary": "The theorem `erdos_860` combines Ruzsa's superlinearity and Erdős-Pomerance's upper bound (fully proved from axioms). Includes `erdos_860_answer` and `erdos_860_status` string constants.",
       "startLine": 173,
       "endLine": 205
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #860 remains OPEN. The function $h(n)$ \u2014 the minimum interval length for covering the first $\\pi(n)$ primes with distinct multiples \u2014 satisfies $(3-o(1))n < h(n) \\ll n^{3/2}/(\\log n)^{1/2}$, and Ruzsa proved $h(n)/n \\to \\infty$. The formalization captures all known bounds as axioms, derives consequences (linear lower, subquadratic upper), proves the main conjunction, and includes the bipartite matching reformulation.",
-    "implications": "**Theoretical Significance**: This problem connects prime distribution (spacing of multiples), combinatorial matching theory (Hall's theorem on bipartite graphs), and asymptotic analysis.\n\nThe greedy algorithm analysis that gives the upper bound relates to online matching problems in computer science. Understanding $h(n)$ would illuminate how the multiplicative structure of integers constrains combinatorial covering \u2014 a theme connecting to smooth number estimates, sieve methods, and the Dickman function.",
+    "summary": "Erdős Problem #860 remains OPEN. The function $h(n)$ — the minimum interval length for covering the first $\\pi(n)$ primes with distinct multiples — satisfies $(3-o(1))n < h(n) \\ll n^{3/2}/(\\log n)^{1/2}$, and Ruzsa proved $h(n)/n \\to \\infty$. The formalization captures all known bounds as axioms, derives consequences (linear lower, subquadratic upper), proves the main conjunction, and includes the bipartite matching reformulation.",
+    "implications": "**Theoretical Significance**: This problem connects prime distribution (spacing of multiples), combinatorial matching theory (Hall's theorem on bipartite graphs), and asymptotic analysis.\n\nThe greedy algorithm analysis that gives the upper bound relates to online matching problems in computer science. Understanding $h(n)$ would illuminate how the multiplicative structure of integers constrains combinatorial covering — a theme connecting to smooth number estimates, sieve methods, and the Dickman function.",
     "openQuestions": [
       "What is the exact growth rate of $h(n)$? Is $h(n) = \\Theta(n^\\alpha)$ for some $1 < \\alpha < 3/2$?",
-      "Can the Erd\u0151s-Pomerance upper bound $n^{3/2}/(\\log n)^{1/2}$ be improved? Can the exponent $3/2$ be reduced?",
+      "Can the Erdős-Pomerance upper bound $n^{3/2}/(\\log n)^{1/2}$ be improved? Can the exponent $3/2$ be reduced?",
       "Does $h(n)$ grow like $n \\cdot (\\log n)^\\beta$ for some $\\beta > 0$, or is it genuinely polynomial with exponent $> 1$?",
       "What is the role of smooth numbers in the lower bound? Can Ruzsa's CRT argument be quantified to give $h(n) \\geq n \\cdot (\\log n)^c$ for specific $c$?",
       "How does the analogous problem behave for primes in arithmetic progressions or for primes restricted to specific residue classes?"
@@ -167,7 +167,7 @@
   "references": [
     {
       "key": "ErPo80",
-      "citation": "Erd\u0151s, P. and Pomerance, C., Matching the natural numbers up to n with distinct multiples of another interval, Indigationes Math. (1980), 147-151.",
+      "citation": "Erdős, P. and Pomerance, C., Matching the natural numbers up to n with distinct multiples of another interval, Indigationes Math. (1980), 147-151.",
       "type": "paper"
     },
     {
@@ -180,17 +180,17 @@
     {
       "targetId": "erdos-1065",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, prime-numbers"
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
     },
     {
       "targetId": "erdos-1072",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, prime-numbers"
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
     },
     {
       "targetId": "erdos-386",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, prime-numbers"
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
     }
   ],
   "sorries": 3

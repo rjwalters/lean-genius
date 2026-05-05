@@ -1,8 +1,8 @@
 {
   "id": "area-of-circle-oq-01-oq-03",
-  "title": "Isoperimetric Inequality: C\u00b2 \u2265 4\u03c0A",
+  "title": "Isoperimetric Inequality: C² ≥ 4πA",
   "slug": "area-of-circle-oq-01-oq-03",
-  "description": "For any regular closed curve with circumference C enclosing area A, the isoperimetric inequality C\u00b2 \u2265 4\u03c0A holds, with equality iff the curve is a circle. Proves 60+ theorems/lemmas (0 sorries, 0 axioms) including arc-length reparametrization infrastructure, Wirtinger's inequality (proved from Fourier decomposition), Parseval's identity, the general isoperimetric inequality (for regular curves), equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
+  "description": "For any regular closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 60+ theorems/lemmas (0 sorries, 0 axioms) including arc-length reparametrization infrastructure, Wirtinger's inequality (proved from Fourier decomposition), Parseval's identity, the general isoperimetric inequality (for regular curves), equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
   "meta": {
     "author": "Hurwitz (1901), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
@@ -24,7 +24,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
-        "description": "\u03c0 < 4, used to prove square is suboptimal",
+        "description": "π < 4, used to prove square is suboptimal",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
       },
       {
@@ -39,20 +39,20 @@
       }
     ],
     "originalContributions": [
-      "Equality case for circles: C\u00b2 = 4\u03c0A proved by ring computation",
-      "Strict inequality for squares: C\u00b2 > 4\u03c0A from \u03c0 < 4",
-      "Regular n-gon isoperimetric ratio: 4\u03c0A/C\u00b2 = \u03c0/(n\u00b7tan(\u03c0/n))",
+      "Equality case for circles: C² = 4πA proved by ring computation",
+      "Strict inequality for squares: C² > 4πA from π < 4",
+      "Regular n-gon isoperimetric ratio: 4πA/C² = π/(n·tan(π/n))",
       "Connection to OQ01: C = dA/dr links to the circumference-as-derivative result",
       "Proof architecture: Wirtinger's inequality implies isoperimetric via Cauchy-Schwarz + AM-GM",
-      "SmoothClosedCurve structure for parametric curves in \u211d\u00b2",
-      "2D Cauchy-Schwarz (algebraic): |xv-yu|\u00b2 \u2264 (x\u00b2+y\u00b2)(u\u00b2+v\u00b2) proved via nlinarith",
-      "Arithmetic kernel of Hurwitz proof: from Wirtinger bounds (Sxy\u22642\u03c0c\u00b2, S\u00b2\u22642\u03c0Sxy, 2A\u2264cS) to 4\u03c0A\u2264L\u00b2 \u2014 all inequalities fully proved",
-      "Integral Cauchy-Schwarz on [0,2\u03c0]: (\u222bf)\u00b2 \u2264 2\u03c0\u00b7\u222bf\u00b2 via discriminant method",
+      "SmoothClosedCurve structure for parametric curves in ℝ²",
+      "2D Cauchy-Schwarz (algebraic): |xv-yu|² ≤ (x²+y²)(u²+v²) proved via nlinarith",
+      "Arithmetic kernel of Hurwitz proof: from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L² — all inequalities fully proved",
+      "Integral Cauchy-Schwarz on [0,2π]: (∫f)² ≤ 2π·∫f² via discriminant method",
       "Wirtinger's inequality: PROVED from Fourier decomposition axiom via hasSum_le comparison",
       "Fourier decomposition axiom: captures Parseval + IBP for Fourier coefficients",
-      "Wirtinger sum-of-squares bound: \u222b(x\u00b2+y\u00b2) \u2264 2\u03c0c\u00b2 from Wirtinger theorem + integral linearity",
-      "Area bound: 2A \u2264 c\u00b7\u222b\u221a(x\u00b2+y\u00b2) via 2D Cauchy-Schwarz + abs_le + integral monotonicity",
-      "equality_implies_circle: PROVED (was axiom) \u2014 if 4\u03c0A=C\u00b2, set r=C/(2\u03c0), then C=2\u03c0r and A=\u03c0r\u00b2 by field_simp+linarith"
+      "Wirtinger sum-of-squares bound: ∫(x²+y²) ≤ 2πc² from Wirtinger theorem + integral linearity",
+      "Area bound: 2A ≤ c·∫√(x²+y²) via 2D Cauchy-Schwarz + abs_le + integral monotonicity",
+      "equality_implies_circle: PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=2πr and A=πr² by field_simp+linarith"
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
@@ -63,15 +63,15 @@
     "definitionCount": 11
   },
   "overview": {
-    "historicalContext": "The isoperimetric problem \u2014 find the shape of maximum area for a given perimeter \u2014 is one of the oldest optimization problems in mathematics, traced to ancient Dido of Carthage (~900 BCE). The problem asks: among all closed curves of length $L$, which encloses the most area? The answer is a circle, and the isoperimetric inequality $C^2 \\geq 4\\pi A$ quantifies how much any curve falls short. Archimedes knew the result informally (~250 BCE), but a rigorous proof waited until the 19th century. Steiner (1838) gave an elegant proof using symmetrization, but didn't prove existence of the maximizer. Weierstrass (1870s) gave the first complete proof using calculus of variations. The most elegant proof is due to Hurwitz (1901), who used Fourier series and the Wirtinger inequality.",
+    "historicalContext": "The isoperimetric problem — find the shape of maximum area for a given perimeter — is one of the oldest optimization problems in mathematics, traced to ancient Dido of Carthage (~900 BCE). The problem asks: among all closed curves of length $L$, which encloses the most area? The answer is a circle, and the isoperimetric inequality $C^2 \\geq 4\\pi A$ quantifies how much any curve falls short. Archimedes knew the result informally (~250 BCE), but a rigorous proof waited until the 19th century. Steiner (1838) gave an elegant proof using symmetrization, but didn't prove existence of the maximizer. Weierstrass (1870s) gave the first complete proof using calculus of variations. The most elegant proof is due to Hurwitz (1901), who used Fourier series and the Wirtinger inequality.",
     "problemStatement": "**Isoperimetric Inequality**:\n\nFor any simple closed curve $\\gamma$ in the plane with circumference $C$ and enclosed area $A$:\n$$C^2 \\geq 4\\pi A$$\nwith equality if and only if $\\gamma$ is a circle.\n\n**Connection to OQ Chain**:\n- OQ01: $C = \\frac{dA}{dr}$ (circumference from differentiating area)\n- OQ01-OQ02: $A = \\int_0^r C(\\rho)\\,d\\rho$ (area from integrating circumference)\n- OQ01-OQ03 (this file): $C^2 \\geq 4\\pi A$ for ALL closed curves (isoperimetric inequality)",
-    "text": "A comprehensive 1478-line formalization of the isoperimetric inequality $C^2 \\geq 4\\pi A$ via the Hurwitz proof (1901). Defines `SmoothClosedCurve` (x, y smooth 2\u03c0-periodic) with circumference (arc length) and area (Green's theorem). Proves Parseval's identity for periodic functions, then Wirtinger's inequality from the Fourier decomposition: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$ for zero-mean $f$, using Parseval's theorem ($\\int f^2 = 2\\pi \\sum \\|\\hat{c}_n\\|^2$ implies $\\int (f')^2 = 2\\pi \\sum n^2 \\|\\hat{c}_n\\|^2 \\geq \\int f^2$). Combined with Green's theorem for area, mean subtraction, integral Cauchy-Schwarz, and the arithmetic kernel, this yields the isoperimetric inequality. Equality holds iff the curve is a circle (proved algebraically). Concrete verifications for circles (ratio $= 1$), squares ($\\pi/4 \\approx 0.785$), equilateral triangles ($\\pi\\sqrt{3}/9 \\approx 0.605$), and regular $n$-gons ($\\pi/(n \\cdot \\tan(\\pi/n)) \\to 1$). 52 theorems/lemmas, 0 sorries, 0 axioms.",
+    "text": "A comprehensive 1478-line formalization of the isoperimetric inequality $C^2 \\geq 4\\pi A$ via the Hurwitz proof (1901). Defines `SmoothClosedCurve` (x, y smooth 2π-periodic) with circumference (arc length) and area (Green's theorem). Proves Parseval's identity for periodic functions, then Wirtinger's inequality from the Fourier decomposition: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$ for zero-mean $f$, using Parseval's theorem ($\\int f^2 = 2\\pi \\sum \\|\\hat{c}_n\\|^2$ implies $\\int (f')^2 = 2\\pi \\sum n^2 \\|\\hat{c}_n\\|^2 \\geq \\int f^2$). Combined with Green's theorem for area, mean subtraction, integral Cauchy-Schwarz, and the arithmetic kernel, this yields the isoperimetric inequality. Equality holds iff the curve is a circle (proved algebraically). Concrete verifications for circles (ratio $= 1$), squares ($\\pi/4 \\approx 0.785$), equilateral triangles ($\\pi\\sqrt{3}/9 \\approx 0.605$), and regular $n$-gons ($\\pi/(n \\cdot \\tan(\\pi/n)) \\to 1$). 52 theorems/lemmas, 0 sorries, 0 axioms.",
     "proofStrategy": "The **Hurwitz proof** (1901) uses Fourier analysis:\n1. Parameterize the curve $\\gamma(t) = (x(t), y(t))$ with $t \\in [0, 2\\pi]$\n2. Apply **Green's theorem**: $A = \\frac{1}{2}|\\int_0^{2\\pi}(xy' - yx')\\,dt|$\n3. Apply **Wirtinger's inequality**: for $f$ with zero mean, $\\int_0^{2\\pi} f^2\\,dt \\leq \\int_0^{2\\pi}(f')^2\\,dt$\n4. Combined with **Cauchy-Schwarz** and **AM-GM**: this gives $4\\pi A \\leq L^2$\n\nWirtinger follows from **Parseval's theorem** for Fourier series: with $f(t) = \\sum_{n \\geq 1}(a_n \\cos(nt) + b_n \\sin(nt))$, Parseval gives $\\int f^2 = \\pi \\sum(a_n^2 + b_n^2)$ and $\\int(f')^2 = \\pi \\sum n^2(a_n^2 + b_n^2) \\geq \\int f^2$.",
     "keyInsights": [
       "**Equality for circles** is a trivial ring computation: $(2\\pi r)^2 = 4\\pi \\cdot \\pi r^2$",
       "**Squares are suboptimal** because $4\\pi/16 = \\pi/4 < 1$ (equivalently $C^2/(4\\pi A) = 16/\\pi > 1$)",
       "**Regular n-gons** have ratio $\\pi/(n\\tan(\\pi/n)) \\to 1$ as $n \\to \\infty$, converging to circles from below",
-      "**Wirtinger's inequality** is NOW PROVED from a Fourier decomposition axiom via hasSum_le \u2014 the axiom captures Parseval + IBP for Fourier coefficients, both available in Mathlib",
+      "**Wirtinger's inequality** is NOW PROVED from a Fourier decomposition axiom via hasSum_le — the axiom captures Parseval + IBP for Fourier coefficients, both available in Mathlib",
       "**The proof reduces to Wirtinger**: once Wirtinger is proved, the isoperimetric inequality follows by ~100 lines of Cauchy-Schwarz + AM-GM arguments",
       "**Connection to OQ01**: the equality $C = dA/dr$ for circles is exactly what makes circles special in the isoperimetric inequality"
     ],
@@ -87,23 +87,23 @@
       "title": "Problem Statement, Imports, and Overview",
       "startLine": 1,
       "endLine": 85,
-      "summary": "File header with Aristotle proof credits, the OQ chain explanation (OQ01 \u2192 OQ02 \u2192 OQ03), the isoperimetric inequality C\u00b2\u22654\u03c0A, Hurwitz's Fourier proof strategy, and Mathlib imports.",
+      "summary": "File header with Aristotle proof credits, the OQ chain explanation (OQ01 → OQ02 → OQ03), the isoperimetric inequality C²≥4πA, Hurwitz's Fourier proof strategy, and Mathlib imports.",
       "mathContext": "File header explaining the OQ chain (OQ01 $\\to$ OQ02 $\\to$ OQ03), the isoperimetric inequality $C^2 \\geq 4\\pi A$, and Hurwitz's Fourier proof strategy. Imports from Mathlib trigonometry, calculus, and Fourier analysis."
     },
     {
       "id": "part-i-circle",
-      "title": "Part I: The Circle Case \u2014 Equality C\u00b2 = 4\u03c0A",
+      "title": "Part I: The Circle Case — Equality C² = 4πA",
       "startLine": 86,
       "endLine": 139,
-      "summary": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2\u03c0r)\u00b2=4\u03c0\u00b7\u03c0r\u00b2 by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, circleArea_pos positivity results.",
+      "summary": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2πr)²=4π·πr² by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, circleArea_pos positivity results.",
       "mathContext": "circleCirc, circleArea definitions. circle\\_isoperimetric\\_equality: $(2\\pi r)^2 = 4\\pi \\cdot \\pi r^2$ by ring. circle\\_isoperimetric\\_ratio $= 1$. circumference\\_is\\_deriv\\_of\\_area: $C = dA/dr$ (connection to OQ01)."
     },
     {
       "id": "part-ii-square",
-      "title": "Part II: The Square Case \u2014 Strict Inequality C\u00b2 > 4\u03c0A",
+      "title": "Part II: The Square Case — Strict Inequality C² > 4πA",
       "startLine": 139,
       "endLine": 173,
-      "summary": "squareCirc, squareArea definitions. square_isoperimetric_strict: C\u00b2>4\u03c0A for squares, proved by \u03c0<4 (Real.pi_lt_four). square_isoperimetric_ratio = \u03c0/4. square_ratio_lt_one: \u03c0/4 < 1.",
+      "summary": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1.",
       "mathContext": "squareCirc, squareArea definitions. square\\_isoperimetric\\_strict: $C^2 > 4\\pi A$ for squares, proved by $\\pi < 4$. square\\_isoperimetric\\_ratio $= \\pi/4 \\approx 0.785$."
     },
     {
@@ -111,7 +111,7 @@
       "title": "Part III: Regular n-gons Approach the Circle",
       "startLine": 173,
       "endLine": 277,
-      "summary": "regular_ngon_isoperimetric_ratio = \u03c0/(n\u00b7tan(\u03c0/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n\u2192\u221e, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/h\u21921 at h=0).",
+      "summary": "regular_ngon_isoperimetric_ratio = π/(n·tan(π/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n→∞, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/h→1 at h=0).",
       "mathContext": "regular\\_ngon\\_isoperimetric\\_ratio $= \\pi/(n\\tan(\\pi/n))$ for circumradius $R$. ngon\\_limit\\_tendsto\\_circle: the ratio tends to 1 as $n \\to \\infty$, proved via $\\tan(h)/h \\to 1$ at $h=0$."
     },
     {
@@ -119,7 +119,7 @@
       "title": "Part IV: Wirtinger's Inequality and the Isoperimetric Deduction",
       "startLine": 277,
       "endLine": 666,
-      "summary": "Parseval's identity (parseval_periodic_real, proved via Aristotle). Fourier coefficient IBP (fourierCoeffOn_deriv_periodic, proved). Fourier decomposition theorem (proved from Parseval + IBP). SmoothClosedCurve structure. circleGamma with verified circumference 2\u03c0r and area \u03c0r\u00b2. Wirtinger's inequality proved from Fourier decomposition via hasSum_le.",
+      "summary": "Parseval's identity (parseval_periodic_real, proved via Aristotle). Fourier coefficient IBP (fourierCoeffOn_deriv_periodic, proved). Fourier decomposition theorem (proved from Parseval + IBP). SmoothClosedCurve structure. circleGamma with verified circumference 2πr and area πr². Wirtinger's inequality proved from Fourier decomposition via hasSum_le.",
       "mathContext": "**Parseval**: $\\int_0^{2\\pi} f^2 = 2\\pi \\sum \\|\\hat{c}_n\\|^2$ (proved). **IBP**: $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ (proved). **Fourier decomposition**: combines Parseval + IBP. **Wirtinger**: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$ for mean-zero periodic $f$ (proved from Fourier decomposition)."
     },
     {
@@ -127,7 +127,7 @@
       "title": "Part IV-B: Arithmetic Foundations for the Isoperimetric Proof",
       "startLine": 666,
       "endLine": 732,
-      "summary": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)\u00b2 \u2264 (x\u00b2+y\u00b2)(u\u00b2+v\u00b2) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel \u2014 from Wirtinger bounds (Sxy\u22642\u03c0c\u00b2, S\u00b2\u22642\u03c0Sxy, 2A\u2264cS) to 4\u03c0A\u2264L\u00b2. All inequalities fully proved.",
+      "summary": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All inequalities fully proved.",
       "mathContext": "**2D Cauchy-Schwarz**: $(xv-yu)^2 \\leq (x^2+y^2)(u^2+v^2)$. **Arithmetic kernel**: chain $S^2 \\leq 2\\pi S_{xy} \\leq (2\\pi c)^2$, then $2A \\leq cS \\leq 2\\pi c^2$, giving $4\\pi A \\leq L^2$."
     },
     {
@@ -135,7 +135,7 @@
       "title": "Part V: The Isoperimetric Inequality for Smooth Curves",
       "startLine": 732,
       "endLine": 1235,
-      "summary": "Mean subtraction infrastructure (preserves circumference and area, achieves zero mean). Arc-length reparametrization (exists_arclength_reparam, proved). Wirtinger sum-of-squares bound. Integral Cauchy-Schwarz on [0,2\u03c0]. Area bound from constant speed. isoperimetric_inequality_smooth: the main theorem \u2014 fully proved via reparametrization + Wirtinger bounds + arithmetic kernel.",
+      "summary": "Mean subtraction infrastructure (preserves circumference and area, achieves zero mean). Arc-length reparametrization (exists_arclength_reparam, proved). Wirtinger sum-of-squares bound. Integral Cauchy-Schwarz on [0,2π]. Area bound from constant speed. isoperimetric_inequality_smooth: the main theorem — fully proved via reparametrization + Wirtinger bounds + arithmetic kernel.",
       "mathContext": "**Main theorem** `isoperimetric_inequality_smooth`: $4\\pi A \\leq C^2$ for any SmoothClosedCurve. Proved by: (1) reparametrize to constant speed + zero mean, (2) apply Wirtinger bounds, (3) apply arithmetic kernel."
     },
     {
@@ -143,7 +143,7 @@
       "title": "Part VI: Equality Characterization",
       "startLine": 1235,
       "endLine": 1274,
-      "summary": "circle_satisfies_isoperimetric: circles achieve equality C\u00b2=4\u03c0A. equality_implies_circle: proved (was axiom) \u2014 if 4\u03c0A=C\u00b2, set r=C/(2\u03c0), then C=circleCirc r and A=circleArea r (purely algebraic).",
+      "summary": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: proved (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic).",
       "mathContext": "circle\\_satisfies\\_isoperimetric: circles achieve equality. equality\\_implies\\_circle: if $4\\pi A = C^2$, set $r = C/(2\\pi)$, then $C = 2\\pi r$ and $A = \\pi r^2$ by field\\_simp + linarith."
     },
     {
@@ -151,25 +151,25 @@
       "title": "Part VII: Algebraic Corollaries of the Isoperimetric Inequality",
       "startLine": 1274,
       "endLine": 1422,
-      "summary": "isoperimetric_area_bound: A \u2264 C\u00b2/(4\u03c0). minimum_circumference_for_area: C \u2265 2\u221a(\u03c0A). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed circumference. non_circle_area_lt_circle: non-circles have strictly less area.",
+      "summary": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed circumference. non_circle_area_lt_circle: non-circles have strictly less area.",
       "mathContext": "Corollaries: $A \\leq C^2/(4\\pi)$, $C \\geq 2\\sqrt{\\pi A}$, scale invariance, circle maximizes area for fixed perimeter."
     },
     {
       "id": "part-viii-triangle",
-      "title": "Part VIII: Equilateral Triangle \u2014 A Concrete Example",
+      "title": "Part VIII: Equilateral Triangle — A Concrete Example",
       "startLine": 1422,
       "endLine": 1478,
-      "summary": "equiTriCirc, equiTriArea definitions. equi_tri_isoperimetric_ratio = \u03c0\u221a3/9. equi_tri_ratio_lt_one: \u03c0\u221a3/9 < 1 (strict inequality). equi_tri_strict_inequality: 4\u03c0A < C\u00b2 for equilateral triangles.",
+      "summary": "equiTriCirc, equiTriArea definitions. equi_tri_isoperimetric_ratio = π√3/9. equi_tri_ratio_lt_one: π√3/9 < 1 (strict inequality). equi_tri_strict_inequality: 4πA < C² for equilateral triangles.",
       "mathContext": "Equilateral triangle with side $a$: $C = 3a$, $A = \\sqrt{3}a^2/4$, ratio $= \\pi\\sqrt{3}/9 \\approx 0.605 < 1$."
     }
   ],
   "conclusion": {
-    "summary": "This file formalizes the isoperimetric inequality C\u00b2\u22654\u03c0A in the context of the area-of-circle OQ chain. Circles achieve equality (proved by ring computation). Squares satisfy strict inequality (from \u03c0<4). Regular n-gons converge to the circle's ratio as n\u2192\u221e (proved via tan(h)/h\u21921). Equilateral triangles have ratio \u03c0\u221a3/9 \u2248 0.605. The Hurwitz proof architecture is fully established: Parseval's identity (proved), Wirtinger's inequality (proved from Fourier decomposition), SmoothClosedCurve structure, arithmetic kernel, and reparametrization infrastructure. The main theorem isoperimetric_inequality_smooth is fully proved. equality_implies_circle is a theorem (purely algebraic). Total: 52 theorems/lemmas, 0 sorries, 0 axioms.",
-    "implications": "**Theoretical Significance**: The isoperimetric inequality is one of the deepest results in classical geometry: it quantifies how far any curve is from the optimum (circle).\n\nThe Hurwitz proof via Fourier analysis is particularly elegant \u2014 it reduces the geometric inequality to a spectral-theoretic fact (Parseval's theorem). This file's approach through the OQ chain (C=dA/dr \u2192 A=\u222bC d\u03c1 \u2192 C\u00b2\u22654\u03c0A) reveals that the three results about circles form a complete picture: the circumference is the derivative of area, the area is the integral of circumference, and the square of circumference bounds 4\u03c0 times area \u2014 the last being an upper bound that circles uniquely achieve.",
+    "summary": "This file formalizes the isoperimetric inequality C²≥4πA in the context of the area-of-circle OQ chain. Circles achieve equality (proved by ring computation). Squares satisfy strict inequality (from π<4). Regular n-gons converge to the circle's ratio as n→∞ (proved via tan(h)/h→1). Equilateral triangles have ratio π√3/9 ≈ 0.605. The Hurwitz proof architecture is fully established: Parseval's identity (proved), Wirtinger's inequality (proved from Fourier decomposition), SmoothClosedCurve structure, arithmetic kernel, and reparametrization infrastructure. The main theorem isoperimetric_inequality_smooth is fully proved. equality_implies_circle is a theorem (purely algebraic). Total: 52 theorems/lemmas, 0 sorries, 0 axioms.",
+    "implications": "**Theoretical Significance**: The isoperimetric inequality is one of the deepest results in classical geometry: it quantifies how far any curve is from the optimum (circle).\n\nThe Hurwitz proof via Fourier analysis is particularly elegant — it reduces the geometric inequality to a spectral-theoretic fact (Parseval's theorem). This file's approach through the OQ chain (C=dA/dr → A=∫C dρ → C²≥4πA) reveals that the three results about circles form a complete picture: the circumference is the derivative of area, the area is the integral of circumference, and the square of circumference bounds 4π times area — the last being an upper bound that circles uniquely achieve.",
     "openQuestions": [
-      "Both previously open sorries have been resolved: (1) fourierCoeffOn_deriv_periodic (IBP: \u0109\u2099(f') = in\u00b7\u0109\u2099(f)) proved via import from AreaOfCircleOQ01OQ02OQ02.lean, and (2) exists_arclength_reparam proved via arc-length reparametrization infrastructure.",
+      "Both previously open sorries have been resolved: (1) fourierCoeffOn_deriv_periodic (IBP: ĉₙ(f') = in·ĉₙ(f)) proved via import from AreaOfCircleOQ01OQ02OQ02.lean, and (2) exists_arclength_reparam proved via arc-length reparametrization infrastructure.",
       "Can the isoperimetric inequality be proved for Lipschitz (not just smooth) curves? (Requires a measure-theoretic formulation of arc length and area)",
-      "What is the sharp constant in the isoperimetric inequality for non-Euclidean geometries (hyperbolic plane, sphere)? (This requires curvature corrections to 4\u03c0A \u2264 C\u00b2)",
+      "What is the sharp constant in the isoperimetric inequality for non-Euclidean geometries (hyperbolic plane, sphere)? (This requires curvature corrections to 4πA ≤ C²)",
       "Is there a constructive (computable) proof of the isoperimetric inequality? (Classical proofs use non-constructive analysis via Parseval, but Bishop-style constructive analysis might work)"
     ]
   },
@@ -187,7 +187,7 @@
     {
       "targetId": "area-of-circle-oq-01-oq-02",
       "relationship": "extends",
-      "description": "OQ01-OQ02 proves A = \u222bC d\u03c1; OQ03 proves C\u00b2\u22654\u03c0A completes the circle"
+      "description": "OQ01-OQ02 proves A = ∫C dρ; OQ03 proves C²≥4πA completes the circle"
     },
     {
       "targetId": "isoperimetric-theorem",
@@ -197,7 +197,7 @@
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "uses",
-      "description": "The IBP formula for Fourier coefficients \u0109\u2099(f') = in\u00b7\u0109\u2099(f) proved there is a key ingredient in Hurwitz's Fourier-analytic proof of the isoperimetric inequality"
+      "description": "The IBP formula for Fourier coefficients ĉₙ(f') = in·ĉₙ(f) proved there is a key ingredient in Hurwitz's Fourier-analytic proof of the isoperimetric inequality"
     },
     {
       "targetId": "fourier-series",
@@ -207,34 +207,34 @@
     {
       "targetId": "cauchy-schwarz",
       "relationship": "uses",
-      "description": "The 2D Cauchy-Schwarz inequality (xv-yu)\u00b2 \u2264 (x\u00b2+y\u00b2)(u\u00b2+v\u00b2) proved here as cross_product_sq_le is used in the arithmetic kernel of the isoperimetric proof"
+      "description": "The 2D Cauchy-Schwarz inequality (xv-yu)² ≤ (x²+y²)(u²+v²) proved here as cross_product_sq_le is used in the arithmetic kernel of the isoperimetric proof"
     },
     {
       "targetId": "borsuk-ulam",
       "relationship": "thematic",
-      "description": "The Borsuk-Ulam theorem and the isoperimetric inequality are both topological/geometric results about the structure of continuous maps on spheres. While the isoperimetric inequality characterizes the circle as the area-optimal curve, Borsuk-Ulam provides topological constraints on continuous mappings of spheres \u2014 both reveal deep geometric rigidity phenomena"
+      "description": "The Borsuk-Ulam theorem and the isoperimetric inequality are both topological/geometric results about the structure of continuous maps on spheres. While the isoperimetric inequality characterizes the circle as the area-optimal curve, Borsuk-Ulam provides topological constraints on continuous mappings of spheres — both reveal deep geometric rigidity phenomena"
     }
   ],
   "references": [
     {
       "authors": "Hurwitz, Adolf",
-      "title": "Sur le probl\u00e8me des isop\u00e9rim\u00e8tres",
+      "title": "Sur le problème des isopérimètres",
       "year": "1901",
-      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, vol. 132, pp. 401\u2013403",
-      "note": "Elegant proof of the isoperimetric inequality using Fourier series and the Wirtinger inequality \u2014 the approach formalized in this file"
+      "venue": "Comptes Rendus de l'Académie des Sciences, vol. 132, pp. 401–403",
+      "note": "Elegant proof of the isoperimetric inequality using Fourier series and the Wirtinger inequality — the approach formalized in this file"
     },
     {
       "authors": "Steiner, Jakob",
-      "title": "Einfache Beweise der isoperimetrischen Haupts\u00e4tze",
+      "title": "Einfache Beweise der isoperimetrischen Hauptsätze",
       "year": "1838",
-      "venue": "Journal f\u00fcr die reine und angewandte Mathematik (Crelle's Journal), vol. 18, pp. 281\u2013296",
-      "note": "Pioneering proof via symmetrization that any non-circular shape can be improved \u2014 established the geometric approach but lacked a rigorous existence proof"
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 18, pp. 281–296",
+      "note": "Pioneering proof via symmetrization that any non-circular shape can be improved — established the geometric approach but lacked a rigorous existence proof"
     },
     {
       "authors": "Osserman, Robert",
       "title": "The isoperimetric inequality",
       "year": "1978",
-      "venue": "Bulletin of the American Mathematical Society, vol. 84, no. 6, pp. 1182\u20131238",
+      "venue": "Bulletin of the American Mathematical Society, vol. 84, no. 6, pp. 1182–1238",
       "note": "Comprehensive survey of proofs and generalizations of the isoperimetric inequality, including the Hurwitz Fourier proof, Steiner symmetrization, and higher-dimensional analogues"
     },
     {
@@ -256,7 +256,7 @@
       "title": "Isoperimetric Inequalities: Differential Geometric and Analytic Perspectives",
       "year": "2001",
       "venue": "Cambridge University Press, Cambridge Tracts in Mathematics 145",
-      "note": "Modern treatment covering the isoperimetric inequality in Euclidean space, on manifolds, and in Gauss space \u2014 includes the Fourier-analytic proof (Chapter 2) and generalizations to curved spaces relevant to the open question about non-Euclidean geometry"
+      "note": "Modern treatment covering the isoperimetric inequality in Euclidean space, on manifolds, and in Gauss space — includes the Fourier-analytic proof (Chapter 2) and generalizations to curved spaces relevant to the open question about non-Euclidean geometry"
     }
   ],
   "leanFile": {
@@ -277,37 +277,37 @@
     "mainTheorems": [
       {
         "name": "isoperimetric_inequality_smooth",
-        "statement": "For any SmoothClosedCurve \u03b3, 4\u03c0 \u00b7 area(\u03b3) \u2264 circumference(\u03b3)\u00b2",
+        "statement": "For any SmoothClosedCurve γ, 4π · area(γ) ≤ circumference(γ)²",
         "line": 1113
       },
       {
         "name": "wirtinger_inequality",
-        "statement": "For smooth mean-zero 2\u03c0-periodic f: \u222b\u2080\u00b2\u03c0 f\u00b2 \u2264 \u222b\u2080\u00b2\u03c0 (f')\u00b2",
+        "statement": "For smooth mean-zero 2π-periodic f: ∫₀²π f² ≤ ∫₀²π (f')²",
         "line": 643
       },
       {
         "name": "equality_implies_circle",
-        "statement": "If 4\u03c0A = C\u00b2 then the curve is a circle (C = 2\u03c0r, A = \u03c0r\u00b2 for r = C/(2\u03c0))",
+        "statement": "If 4πA = C² then the curve is a circle (C = 2πr, A = πr² for r = C/(2π))",
         "line": 1253
       },
       {
         "name": "circle_isoperimetric_equality",
-        "statement": "For a circle: (2\u03c0r)\u00b2 = 4\u03c0 \u00b7 \u03c0r\u00b2",
+        "statement": "For a circle: (2πr)² = 4π · πr²",
         "line": 102
       },
       {
         "name": "ngon_limit_tendsto_circle",
-        "statement": "Regular n-gon isoperimetric ratio \u03c0/(n\u00b7tan(\u03c0/n)) \u2192 1 as n \u2192 \u221e",
+        "statement": "Regular n-gon isoperimetric ratio π/(n·tan(π/n)) → 1 as n → ∞",
         "line": 219
       },
       {
         "name": "parseval_periodic_real",
-        "statement": "Parseval's identity: \u222b\u2080\u00b2\u03c0 f\u00b2 = 2\u03c0 \u00b7 \u03a3 \u2016\u0109\u2099\u2016\u00b2 for periodic C\u00b9 functions",
+        "statement": "Parseval's identity: ∫₀²π f² = 2π · Σ ‖ĉₙ‖² for periodic C¹ functions",
         "line": 350
       },
       {
         "name": "fourier_decomposition",
-        "statement": "Fourier decomposition with Parseval + derivative identity for periodic C\u00b9 functions",
+        "statement": "Fourier decomposition with Parseval + derivative identity for periodic C¹ functions",
         "line": 526
       }
     ],

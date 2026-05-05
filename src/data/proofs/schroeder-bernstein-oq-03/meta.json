@@ -2,7 +2,7 @@
   "id": "schroeder-bernstein-oq-03",
   "title": "Myhill's Isomorphism Theorem",
   "slug": "schroeder-bernstein-oq-03",
-  "description": "Myhill's Isomorphism Theorem (1955): two subsets of \u2115 are one-one equivalent (there exist computable injective reductions both ways) if and only if there is a computable bijection (permutation of \u2115) mapping one to the other. This is the computable analogue of Schr\u00f6der-Bernstein: classical CBS gives any bijection from two injections; Myhill's theorem gives a computable bijection from two computable injections.",
+  "description": "Myhill's Isomorphism Theorem (1955): two subsets of ℕ are one-one equivalent (there exist computable injective reductions both ways) if and only if there is a computable bijection (permutation of ℕ) mapping one to the other. This is the computable analogue of Schröder-Bernstein: classical CBS gives any bijection from two injections; Myhill's theorem gives a computable bijection from two computable injections.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "",
@@ -23,12 +23,12 @@
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
-        "description": "One-one reducibility: p \u2264\u2081 q via computable injective function",
+        "description": "One-one reducibility: p ≤₁ q via computable injective function",
         "module": "Mathlib.Computability.Reduce"
       },
       {
         "theorem": "OneOneEquiv",
-        "description": "One-one equivalence: p \u2261\u2081 q means p \u2264\u2081 q and q \u2264\u2081 p",
+        "description": "One-one equivalence: p ≡₁ q means p ≤₁ q and q ≤₁ p",
         "module": "Mathlib.Computability.Reduce"
       },
       {
@@ -38,7 +38,7 @@
       },
       {
         "theorem": "Partrec.rfind",
-        "description": "Partial recursive unbounded search (Nat.rfind is Partrec\u2082-computable)",
+        "description": "Partial recursive unbounded search (Nat.rfind is Partrec₂-computable)",
         "module": "Mathlib.Computability.Partrec"
       }
     ],
@@ -47,7 +47,7 @@
       "Clean proof of the easy direction: computable bijection implies one-one equivalence",
       "Infrastructure for partial inverse via Nat.rfind (computable preimage search)",
       "Proof that computable isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
-      "Forward orbit definition: (g\u2218f)^k(n) for the back-and-forth construction"
+      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction"
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
@@ -56,16 +56,16 @@
     "definitionCount": 4
   },
   "overview": {
-    "historicalContext": "John Myhill (1923\u20131987) published his isomorphism theorem in 1955 as part of developing the theory of creative sets and degrees of unsolvability. The theorem arose from the study of one-one reducibility ($\\leq_1$), a refinement of many-one reducibility where the reduction function must be injective. Myhill's key insight was that $p \\equiv_1 q$ \u2014 equivalence under mutual one-one reducibility \u2014 is precisely captured by the existence of a computable permutation mapping $p$ to $q$. This is the effective analogue of the classical Cantor-Schr\u00f6der-Bernstein theorem: just as two classical injections yield a classical bijection, two computable injections yield a computable bijection. The back-and-forth proof technique Myhill used is a simplified version of what would become the priority method \u2014 the same back-and-forth orbit analysis Friedberg and Muchnik would generalize in 1956 to solve Post's problem (the existence of incomparable Turing degrees). Rogers' *Theory of Recursive Functions and Effective Computability* (MIT Press, 1967, \u00a77.4, Theorem VII) gave the classical treatment, and Soare's *Turing Computability* (Springer, 2016, Chapter 3) is the modern reference. Formalizing this theorem in Lean 4 requires Mathlib's `Partrec` and `Computable` typeclasses, which were introduced to handle the boundary between total and partial recursive functions.",
+    "historicalContext": "John Myhill (1923–1987) published his isomorphism theorem in 1955 as part of developing the theory of creative sets and degrees of unsolvability. The theorem arose from the study of one-one reducibility ($\\leq_1$), a refinement of many-one reducibility where the reduction function must be injective. Myhill's key insight was that $p \\equiv_1 q$ — equivalence under mutual one-one reducibility — is precisely captured by the existence of a computable permutation mapping $p$ to $q$. This is the effective analogue of the classical Cantor-Schröder-Bernstein theorem: just as two classical injections yield a classical bijection, two computable injections yield a computable bijection. The back-and-forth proof technique Myhill used is a simplified version of what would become the priority method — the same back-and-forth orbit analysis Friedberg and Muchnik would generalize in 1956 to solve Post's problem (the existence of incomparable Turing degrees). Rogers' *Theory of Recursive Functions and Effective Computability* (MIT Press, 1967, §7.4, Theorem VII) gave the classical treatment, and Soare's *Turing Computability* (Springer, 2016, Chapter 3) is the modern reference. Formalizing this theorem in Lean 4 requires Mathlib's `Partrec` and `Computable` typeclasses, which were introduced to handle the boundary between total and partial recursive functions.",
     "problemStatement": "For predicates $p, q : \\mathbb{N} \\to \\text{Prop}$, define one-one reducibility $p \\leq_1 q$ if there exists a computable injective $f : \\mathbb{N} \\to \\mathbb{N}$ such that $\\forall n,\\, p(n) \\leftrightarrow q(f(n))$. Define one-one equivalence $p \\equiv_1 q$ if $p \\leq_1 q$ and $q \\leq_1 p$. **Myhill's theorem**: $p \\equiv_1 q$ if and only if there exists a computable permutation $e : \\mathbb{N} \\simeq \\mathbb{N}$ (with both $e$ and $e^{-1}$ computable) such that $\\forall n,\\, p(n) \\leftrightarrow q(e(n))$.",
     "proofStrategy": "Two directions. **Easy direction** ($\\Leftarrow$, fully proved): Given computable bijection $e$, use $e$ to witness $p \\leq_1 q$ (injective, computable, maps $p$ to $q$) and $e^{-1}$ to witness $q \\leq_1 p$. This requires only that $e^{-1}$ is also computable, which holds by hypothesis. **Hard direction** ($\\Rightarrow$, sorry'd): Given computable injections $f: p \\leq_1 q$ and $g: q \\leq_1 p$, classify each $n \\in \\mathbb{N}$ by its backward orbit under alternating $g^{-1}, f^{-1}$: Type A (chain terminates outside $\\text{range}(g)$) uses $\\sigma(n) := f(n)$; Type B (terminates outside $\\text{range}(f)$) uses $g^{-1}(n)$; Type C (infinite orbit) uses $f(n)$. This constructs a total computable bijection. Computability uses `Partrec.rfind` for partial inverses. The formalization provides all infrastructure (partial inverse, orbit definition, `isGFree` predicate) for the hard direction.",
     "keyInsights": [
-      "Myhill's theorem is the computability-theoretic analogue of Cantor-Schr\u00f6der-Bernstein: two computable injections yield a computable bijection \u2014 lifting a classical set-theoretic fact into the effective (algorithmic) realm",
-      "One-one reducibility ($\\leq_1$) is strictly finer than many-one reducibility ($\\leq_m$): $f$ must be injective. Myhill's theorem characterizes the $\\equiv_1$ equivalence classes as exactly the computable isomorphism classes \u2014 a deep structural result about the fine structure of degrees",
+      "Myhill's theorem is the computability-theoretic analogue of Cantor-Schröder-Bernstein: two computable injections yield a computable bijection — lifting a classical set-theoretic fact into the effective (algorithmic) realm",
+      "One-one reducibility ($\\leq_1$) is strictly finer than many-one reducibility ($\\leq_m$): $f$ must be injective. Myhill's theorem characterizes the $\\equiv_1$ equivalence classes as exactly the computable isomorphism classes — a deep structural result about the fine structure of degrees",
       "The partial inverse $g^{-1}(m) = \\mu n[g(n) = m]$ (computable via `Nat.rfind`) is the key technical tool: it lets the back-and-forth construction 'step backward' along $g$, and its partial recursiveness (not total computability) is precisely why the construction requires `Partrec` rather than `Computable`",
       "The back-and-forth orbit classification (Type A/B/C) is a finite-priority precursor to the Friedberg-Muchnik priority method (1956). Understanding Myhill's construction is the natural stepping-stone to formalizing infinite-injury priority arguments",
-      "Lean 4's `Equiv.Computable` captures exactly the right notion: a computable permutation requires both $e$ and $e^{-1}$ to be computable \u2014 this is non-trivial since a computable bijection can have a non-computable inverse in general (though not for permutations of $\\mathbb{N}$ with decidable range)",
-      "The corollaries (reflexivity via identity, symmetry via inverse, transitivity via composition) show that computable isomorphism is a genuine equivalence relation on predicates \u2014 paving the way for quotient structures over the one-one degrees"
+      "Lean 4's `Equiv.Computable` captures exactly the right notion: a computable permutation requires both $e$ and $e^{-1}$ to be computable — this is non-trivial since a computable bijection can have a non-computable inverse in general (though not for permutations of $\\mathbb{N}$ with decidable range)",
+      "The corollaries (reflexivity via identity, symmetry via inverse, transitivity via composition) show that computable isomorphism is a genuine equivalence relation on predicates — paving the way for quotient structures over the one-one degrees"
     ]
   },
   "sections": [
@@ -79,39 +79,39 @@
     },
     {
       "id": "setup",
-      "title": "Section 1: Setup \u2014 Corresponds Predicate",
+      "title": "Section 1: Setup — Corresponds Predicate",
       "startLine": 64,
       "endLine": 70,
-      "summary": "Defines the Corresponds predicate: p Corresponds e q means \u2200 n, p n \u2194 q (e n). This captures that a permutation e maps p to q setwise.",
+      "summary": "Defines the Corresponds predicate: p Corresponds e q means ∀ n, p n ↔ q (e n). This captures that a permutation e maps p to q setwise.",
       "mathContext": "Corresponds $(p, e, q) \\equiv \\forall n, p(n) \\leftrightarrow q(e(n))$. Abstracting this as a named predicate simplifies theorem statements and allows rewriting. It expresses that $e$ is a 'computable isomorphism' between the characteristic functions $p$ and $q$."
     },
     {
       "id": "easy-direction",
-      "title": "Section 2: Easy Direction (Computable Bijection \u2192 OneOneEquiv)",
+      "title": "Section 2: Easy Direction (Computable Bijection → OneOneEquiv)",
       "startLine": 73,
       "endLine": 94,
-      "summary": "Proves the easy direction: a computable bijection e with Corresponds p e q implies OneOneEquiv p q. Uses e for p \u2264\u2081 q and e.symm for q \u2264\u2081 p. Also proves a variant with explicit Computable hypotheses.",
+      "summary": "Proves the easy direction: a computable bijection e with Corresponds p e q implies OneOneEquiv p q. Uses e for p ≤₁ q and e.symm for q ≤₁ p. Also proves a variant with explicit Computable hypotheses.",
       "mathContext": "Given $e : \\mathbb{N} \\simeq \\mathbb{N}$ with $e.\\text{Computable}$ (both $e$ and $e^{-1}$ computable) and $\\forall n, p(n) \\leftrightarrow q(e(n))$: use $(e, \\text{injective}, \\text{computable})$ to witness $p \\leq_1 q$; use $(e^{-1}, \\text{injective}, \\text{computable})$ and the identity $q(m) \\leftrightarrow p(e^{-1}(m))$ (from $e(e^{-1}(m)) = m$) to witness $q \\leq_1 p$."
     },
     {
       "id": "partial-inverse",
-      "title": "Section 3: Infrastructure \u2014 Partial Inverses and Orbits",
+      "title": "Section 3: Infrastructure — Partial Inverses and Orbits",
       "startLine": 97,
       "endLine": 134,
-      "summary": "Defines the partial inverse g\u207b\u00b9(m) = Nat.rfind(n \u21a6 g(n) = m) and states three key lemmas: partial inverse is Partrec (sorry'd), recovers the input under injection (sorry'd), and is defined on elements in range(g) (sorry'd). Also defines the forward orbit (g\u2218f)^k(n) and the isGFree predicate for orbit classification.",
+      "summary": "Defines the partial inverse g⁻¹(m) = Nat.rfind(n ↦ g(n) = m) and states three key lemmas: partial inverse is Partrec (sorry'd), recovers the input under injection (sorry'd), and is defined on elements in range(g) (sorry'd). Also defines the forward orbit (g∘f)^k(n) and the isGFree predicate for orbit classification.",
       "mathContext": "$g^{-1}(m) := \\mu n[g(n) = m]$ (partial recursive unbounded search). By `Partrec.rfind`, since $(m, n) \\mapsto \\text{decide}(g(n) = m)$ is computable (as $g$ is computable), $g^{-1}$ is partial recursive. For injective $g$: $n \\in g^{-1}(m) \\Rightarrow g(n) = m$. Forward orbit: $\\text{fwdOrbit}(f, g, n, k) = (g \\circ f)^k(n)$. isGFree: $n$ is not in $\\text{range}(g)$."
     },
     {
       "id": "myhill-main",
-      "title": "Section 4\u20135: Myhill's Isomorphism Theorem",
+      "title": "Section 4–5: Myhill's Isomorphism Theorem",
       "startLine": 136,
       "endLine": 183,
-      "summary": "States and partially proves Myhill's theorem. The easy direction (\u2190) follows immediately from myhill_easy. The hard direction (\u2192) has a sorry covering the back-and-forth priority construction: classify orbits, define \u03c3 using f or g\u207b\u00b9 according to orbit type, prove \u03c3 is total, bijective, computable, and maps p to q.",
+      "summary": "States and partially proves Myhill's theorem. The easy direction (←) follows immediately from myhill_easy. The hard direction (→) has a sorry covering the back-and-forth priority construction: classify orbits, define σ using f or g⁻¹ according to orbit type, prove σ is total, bijective, computable, and maps p to q.",
       "mathContext": "Hard direction plan: given $f: p \\leq_1 q$ and $g: q \\leq_1 p$, for each $n$ trace backward: $n \\leftarrow g^{-1}(n) \\leftarrow f^{-1}(g^{-1}(n)) \\leftarrow \\cdots$. Type A (terminates not in range($g$)): $\\sigma(n) := f(n)$. Type B (terminates not in range($f$)): $\\sigma(n) := g^{-1}(n)$. Type C (infinite): $\\sigma(n) := f(n)$. Each stage terminates by injectivity; the construction is computable by `partialInverse_partrec`."
     },
     {
       "id": "corollaries",
-      "title": "Sections 6\u20137: Corollaries \u2014 Equivalence Relation",
+      "title": "Sections 6–7: Corollaries — Equivalence Relation",
       "startLine": 186,
       "endLine": 234,
       "summary": "Proves that computable isomorphism is an equivalence relation: reflexivity (identity permutation), symmetry (inverse permutation), transitivity (composition). Also exposes the two directions of Myhill's theorem as standalone lemmas and packages all three properties as an Equivalence instance.",
@@ -122,7 +122,7 @@
       "title": "Section 8: Key Special Cases",
       "startLine": 238,
       "endLine": 257,
-      "summary": "Proves that \u2205 and \u2115 (the empty and universal predicates) are fixed points of computable isomorphism: any computable permutation maps \u2205 to \u2205 and \u2115 to \u2115. These are the extreme cases in the one-one degree hierarchy.",
+      "summary": "Proves that ∅ and ℕ (the empty and universal predicates) are fixed points of computable isomorphism: any computable permutation maps ∅ to ∅ and ℕ to ℕ. These are the extreme cases in the one-one degree hierarchy.",
       "mathContext": "For the empty predicate $p = \\bot$: if $e$ maps $\\bot$ to $q$ (meaning $\\bot(n) \\leftrightarrow q(e(n))$), then $q(m) = \\bot$ for all $m$ (surjectivity of $e$). Dually for $p = \\top$. These facts follow from surjectivity of $e$ as a bijection."
     }
   ],
@@ -130,21 +130,21 @@
     {
       "targetId": "schroeder-bernstein",
       "relationship": "extends",
-      "description": "Parent proof: classical Cantor-Schr\u00f6der-Bernstein theorem \u2014 Myhill's theorem is its computable analogue"
+      "description": "Parent proof: classical Cantor-Schröder-Bernstein theorem — Myhill's theorem is its computable analogue"
     },
     {
       "targetId": "schroeder-bernstein-oq-02",
       "relationship": "related",
-      "description": "Knaster-Tarski proof of CBS \u2014 an alternative classical proof approach to the parent theorem"
+      "description": "Knaster-Tarski proof of CBS — an alternative classical proof approach to the parent theorem"
     },
     {
       "targetId": "schroeder-bernstein-oq-04",
       "relationship": "related",
-      "description": "Constructive CBS for finite types \u2014 another effective analogue in a different setting"
+      "description": "Constructive CBS for finite types — another effective analogue in a different setting"
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the easy direction of Myhill's 1955 Isomorphism Theorem and the full equivalence-relation structure of computable isomorphism. The hard direction \u2014 constructing a computable bijection from two computable injections via the back-and-forth priority argument \u2014 has 4 sorries covering the partial inverse computability proof and the main construction. All infrastructure (partial inverses via `Nat.rfind`, forward orbits, `isGFree` predicate) is in place for completing the hard direction.",
+    "summary": "This formalization proves the easy direction of Myhill's 1955 Isomorphism Theorem and the full equivalence-relation structure of computable isomorphism. The hard direction — constructing a computable bijection from two computable injections via the back-and-forth priority argument — has 4 sorries covering the partial inverse computability proof and the main construction. All infrastructure (partial inverses via `Nat.rfind`, forward orbits, `isGFree` predicate) is in place for completing the hard direction.",
     "implications": "Myhill's theorem is a cornerstone of classical recursion theory: it shows that the one-one degrees have a finer structure than many-one degrees, and that 'computable isomorphism' is the right equivalence relation on decidable sets. Formalizing it in Lean 4 validates that Mathlib's computability library (`Partrec`, `Computable`, `OneOneReducible`) is expressive enough for serious recursion theory. The equivalence-relation proof has immediate applications: it enables quotient constructions over the one-one degrees, and the computable isomorphism type forms the basis for studying creative sets, simple sets, and other index-set hierarchies in effective mathematics.",
     "openQuestions": [
       "Can the hard direction be completed by formalizing the back-and-forth priority construction in Lean 4, using `Partrec` throughout and avoiding the oracle-computation machinery of Turing reducibility?",
@@ -157,9 +157,9 @@
       "authors": "Myhill, J.",
       "title": "Creative sets",
       "year": 1955,
-      "journal": "Zeitschrift f\u00fcr mathematische Logik und Grundlagen der Mathematik",
+      "journal": "Zeitschrift für mathematische Logik und Grundlagen der Mathematik",
       "volume": "1",
-      "pages": "97\u2013108",
+      "pages": "97–108",
       "note": "Original paper introducing Myhill's isomorphism theorem"
     },
     {
@@ -167,14 +167,14 @@
       "title": "Theory of Recursive Functions and Effective Computability",
       "year": 1967,
       "publisher": "MIT Press",
-      "note": "Chapter 7, \u00a77.4, Theorem VII \u2014 classical treatment"
+      "note": "Chapter 7, §7.4, Theorem VII — classical treatment"
     },
     {
       "authors": "Soare, R.",
       "title": "Turing Computability: Theory and Applications",
       "year": 2016,
       "publisher": "Springer",
-      "note": "Chapter 3 \u2014 modern treatment"
+      "note": "Chapter 3 — modern treatment"
     }
   ],
   "sorries": 4,
@@ -185,23 +185,23 @@
       "name": "myhill_easy",
       "statement": "A computable bijection e with Corresponds p e q implies OneOneEquiv p q",
       "status": "proved",
-      "description": "Easy direction of Myhill's theorem: computable permutation \u2192 one-one equivalence"
+      "description": "Easy direction of Myhill's theorem: computable permutation → one-one equivalence"
     },
     {
       "name": "one_one_equiv_of_computable_perm",
-      "statement": "Computable e and e.symm with \u2200 n, p n \u2194 q (e n) implies OneOneEquiv p q",
+      "statement": "Computable e and e.symm with ∀ n, p n ↔ q (e n) implies OneOneEquiv p q",
       "status": "proved",
       "description": "Variant of myhill_easy with explicit computability hypotheses"
     },
     {
       "name": "myhill_isomorphism",
-      "statement": "OneOneEquiv p q \u2194 \u2203 e : \u2115 \u2243 \u2115, e.Computable \u2227 \u2200 n, p n \u2194 q (e n)",
+      "statement": "OneOneEquiv p q ↔ ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n)",
       "status": "partial",
       "description": "Full Myhill theorem: easy direction proved, hard direction sorry'd"
     },
     {
       "name": "myhill_self",
-      "statement": "\u2203 e : \u2115 \u2243 \u2115, e.Computable \u2227 \u2200 n, p n \u2194 p (e n)",
+      "statement": "∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ p (e n)",
       "status": "proved",
       "description": "Reflexivity: identity permutation witnesses computable self-isomorphism"
     },
@@ -215,7 +215,7 @@
       "name": "myhill_trans",
       "statement": "Computable isomorphism is transitive (composition is computable)",
       "status": "proved",
-      "description": "Transitivity via e\u2081.trans e\u2082"
+      "description": "Transitivity via e₁.trans e₂"
     },
     {
       "name": "computable_iso_is_equivalence",

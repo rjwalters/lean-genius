@@ -1,10 +1,10 @@
 {
   "id": "erdos-230",
-  "title": "Erd\u0151s Problem #230: Ultraflat Polynomials on the Unit Circle",
+  "title": "Erdős Problem #230: Ultraflat Polynomials on the Unit Circle",
   "slug": "erdos-230",
-  "description": "For unimodular polynomials P(z) = \u03a3 a_k z^k with |a_k| = 1, does max_{|z|=1} |P(z)| \u2265 (1+c)\u221an for some c > 0? ANSWER: NO. Kahane (1980) constructed 'ultraflat' polynomials achieving (1+o(1))\u221an.",
+  "description": "For unimodular polynomials P(z) = Σ a_k z^k with |a_k| = 1, does max_{|z|=1} |P(z)| ≥ (1+c)√n for some c > 0? ANSWER: NO. Kahane (1980) constructed 'ultraflat' polynomials achieving (1+o(1))√n.",
   "meta": {
-    "author": "Erd\u0151s-Newman (conjecture), Kahane (disproof, 1980), Bombieri-Bourgain (2009)",
+    "author": "Erdős-Newman (conjecture), Kahane (disproof, 1980), Bombieri-Bourgain (2009)",
     "sourceUrl": "https://erdosproblems.com/230",
     "date": "1980",
     "status": "axiomatized",
@@ -55,7 +55,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The False Erd\u0151s-Newman Conjecture",
+      "title": "The False Erdős-Newman Conjecture",
       "summary": "Defines the conjecture $\\exists c > 0, \\forall P \\in \\mathcal{U}_n : \\|P\\|_\\infty \\geq (1+c)\\sqrt{n}$ and states its negation. The proof of falsity relies on Kahane's ultraflat construction.",
       "startLine": 97,
       "endLine": 120,
@@ -64,18 +64,18 @@
     {
       "id": "kahane",
       "title": "Kahane's Ultraflat Polynomials (1980)",
-      "summary": "Defines $\\varepsilon$-ultraflatness: $(1-\\varepsilon)\\sqrt{n} \\leq |P(z)| \\leq (1+\\varepsilon)\\sqrt{n}$ for all $|z|=1$. States Kahane's existence theorem and derives the disproof of the Erd\u0151s-Newman conjecture.",
+      "summary": "Defines $\\varepsilon$-ultraflatness: $(1-\\varepsilon)\\sqrt{n} \\leq |P(z)| \\leq (1+\\varepsilon)\\sqrt{n}$ for all $|z|=1$. States Kahane's existence theorem and derives the disproof of the Erdős-Newman conjecture.",
       "startLine": 121,
       "endLine": 156,
-      "mathContext": "Defines $\\varepsilon$-ultraflatness: $(1-\\varepsilon)\\sqrt{n} \\leq |P(z)| \\leq (1+\\varepsilon)\\sqrt{n}$ for all $|z|=1$. States Kahane's existence theorem and derives the disproof of the Erd\u0151s-Newman conjecture."
+      "mathContext": "Defines $\\varepsilon$-ultraflatness: $(1-\\varepsilon)\\sqrt{n} \\leq |P(z)| \\leq (1+\\varepsilon)\\sqrt{n}$ for all $|z|=1$. States Kahane's existence theorem and derives the disproof of the Erdős-Newman conjecture."
     },
     {
       "id": "korner",
-      "title": "K\u00f6rner's Construction (1980)",
-      "summary": "K\u00f6rner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior.",
+      "title": "Körner's Construction (1980)",
+      "summary": "Körner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior.",
       "startLine": 158,
       "endLine": 165,
-      "mathContext": "Bound: K\u00f6rner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior."
+      "mathContext": "Bound: Körner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior."
     },
     {
       "id": "bombieri-bourgain",
@@ -88,10 +88,10 @@
     {
       "id": "rudin-shapiro",
       "title": "Rudin-Shapiro Polynomials",
-      "summary": "Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum \u2014 not ultraflat. Connected to the Littlewood variant (Problem #228).",
+      "summary": "Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum — not ultraflat. Connected to the Littlewood variant (Problem #228).",
       "startLine": 183,
       "endLine": 190,
-      "mathContext": "Mathematical content: Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum \u2014 not ultraflat. Connected to the Littlewood variant (Problem #228)."
+      "mathContext": "Mathematical content: Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum — not ultraflat. Connected to the Littlewood variant (Problem #228)."
     },
     {
       "id": "summary",
@@ -103,16 +103,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "Paul Erd\u0151s and Donald J. Newman conjectured in 1957 (refined in 1961) that for unimodular polynomials P(z) with |a_k| = 1, the sup norm on the unit circle must satisfy \u2016P\u2016_\u221e \u2265 (1+c)\u221an for some universal constant c > 0. The conjecture appeared as Problem 4.31 in Halberstam and Roth's 'Sequences' (1974). In a surprising 1980 development, Jean-Pierre Kahane disproved this by constructing 'ultraflat' polynomials where |P(z)| = (1+o(1))\u221an uniformly on the unit circle, using a deep probabilistic method. That same year, Thomas W. K\u00f6rner independently showed bounded oscillation ratios were possible. The quantitative theory was dramatically advanced in 2009 when Enrico Bombieri and Jean Bourgain improved the error to O(n^{7/18} (log n)^{O(1)}), using techniques from analytic number theory and exponential sum estimates. The classical Rudin-Shapiro polynomials (Walter Rudin, 1959; Harold S. Shapiro, 1951) provided early deterministic constructions with \u2016P\u2016_\u221e \u2264 2\u221an, but only for the \u00b11 coefficient case and without lower bound control.",
+    "historicalContext": "Paul Erdős and Donald J. Newman conjectured in 1957 (refined in 1961) that for unimodular polynomials P(z) with |a_k| = 1, the sup norm on the unit circle must satisfy ‖P‖_∞ ≥ (1+c)√n for some universal constant c > 0. The conjecture appeared as Problem 4.31 in Halberstam and Roth's 'Sequences' (1974). In a surprising 1980 development, Jean-Pierre Kahane disproved this by constructing 'ultraflat' polynomials where |P(z)| = (1+o(1))√n uniformly on the unit circle, using a deep probabilistic method. That same year, Thomas W. Körner independently showed bounded oscillation ratios were possible. The quantitative theory was dramatically advanced in 2009 when Enrico Bombieri and Jean Bourgain improved the error to O(n^{7/18} (log n)^{O(1)}), using techniques from analytic number theory and exponential sum estimates. The classical Rudin-Shapiro polynomials (Walter Rudin, 1959; Harold S. Shapiro, 1951) provided early deterministic constructions with ‖P‖_∞ ≤ 2√n, but only for the ±1 coefficient case and without lower bound control.",
     "problemStatement": "Let $P(z) = \\sum_{k=1}^{n} a_k z^k$ with $|a_k| = 1$ for all $k$. Does there exist $c > 0$ such that $\\max_{|z|=1} |P(z)| \\geq (1+c)\\sqrt{n}$ for all $n \\geq 2$? **Answer: NO** (Kahane 1980).",
-    "text": "For unimodular polynomials P(z) = \u03a3 a_k z^k with |a_k| = 1, does max_{|z|=1} |P(z)| \u2265 (1+c)\u221an for some c > 0? ANSWER: NO. Kahane (1980) constructed 'ultraflat' polynomials achieving (1+o(1))\u221an.",
-    "proofStrategy": "The formalization captures the complete arc from conjecture to disproof: (1) defines unimodular polynomials and their evaluation, (2) proves the Parseval lower bound \u2016P\u2016_\u221e \u2265 \u221an, (3) states the false Erd\u0151s-Newman conjecture, (4) defines \u03b5-ultraflatness and states Kahane's existence theorem, (5) derives the disproof, (6) records subsequent improvements by K\u00f6rner, Bombieri-Bourgain, and the classical Rudin-Shapiro construction.",
+    "text": "For unimodular polynomials P(z) = Σ a_k z^k with |a_k| = 1, does max_{|z|=1} |P(z)| ≥ (1+c)√n for some c > 0? ANSWER: NO. Kahane (1980) constructed 'ultraflat' polynomials achieving (1+o(1))√n.",
+    "proofStrategy": "The formalization captures the complete arc from conjecture to disproof: (1) defines unimodular polynomials and their evaluation, (2) proves the Parseval lower bound ‖P‖_∞ ≥ √n, (3) states the false Erdős-Newman conjecture, (4) defines ε-ultraflatness and states Kahane's existence theorem, (5) derives the disproof, (6) records subsequent improvements by Körner, Bombieri-Bourgain, and the classical Rudin-Shapiro construction.",
     "keyInsights": [
-      "**Parseval baseline is tight**: The trivial bound $\\|P\\|_\\infty \\geq \\sqrt{n}$ from Parseval's identity ($\\|P\\|_2 = \\sqrt{n}$ exactly) cannot be improved by any multiplicative constant \u2014 Kahane's ultraflat polynomials achieve $(1+o(1))\\sqrt{n}$",
+      "**Parseval baseline is tight**: The trivial bound $\\|P\\|_\\infty \\geq \\sqrt{n}$ from Parseval's identity ($\\|P\\|_2 = \\sqrt{n}$ exactly) cannot be improved by any multiplicative constant — Kahane's ultraflat polynomials achieve $(1+o(1))\\sqrt{n}$",
       "**Probabilistic existence**: Kahane's proof is non-constructive, using the probabilistic method on random phase sequences $a_k = e^{i\\theta_k}$. No explicit ultraflat family is known, making the result existential in a deep sense",
       "**Error exponent gap**: Bombieri-Bourgain achieved error $O(n^{7/18})$ where $7/18 \\approx 0.389$, but whether $O(1)$ error is possible (perfectly flat up to a constant) remains a major open problem in harmonic analysis",
-      "**Littlewood vs. unimodular**: For $\\pm 1$ coefficients (Littlewood polynomials, Problem #228), the flatness question is significantly harder \u2014 the analog of Kahane's theorem is unresolved and may have a different answer",
-      "**Perfect flatness is impossible**: A polynomial with $|P(z)| = \\sqrt{n}$ on all of $S^1$ would have to be a monomial, so some oscillation is unavoidable \u2014 the question is only about its magnitude"
+      "**Littlewood vs. unimodular**: For $\\pm 1$ coefficients (Littlewood polynomials, Problem #228), the flatness question is significantly harder — the analog of Kahane's theorem is unresolved and may have a different answer",
+      "**Perfect flatness is impossible**: A polynomial with $|P(z)| = \\sqrt{n}$ on all of $S^1$ would have to be a monomial, so some oscillation is unavoidable — the question is only about its magnitude"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -120,13 +120,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erd\u0151s Problem #230 is fully solved (disproved). Kahane's 1980 construction of ultraflat polynomials shows the Parseval lower bound \u2016P\u2016_\u221e \u2265 \u221an is asymptotically tight: the infimum of \u2016P\u2016_\u221e/\u221an over unimodular polynomials converges to 1. The Lean formalization captures the complete story from Parseval's identity through the false conjecture to Kahane's disproof and the Bombieri-Bourgain quantitative improvement.",
-    "implications": "**Theoretical Significance**: Ultraflat polynomials reveal that unimodular coefficients permit surprising uniformity on the unit circle, challenging the intuition that random-phase polynomials should have large peaks.\n\nThe quantitative theory connects harmonic analysis to exponential sum techniques from analytic number theory. The Littlewood polynomial variant (\u00b11 coefficients) remains open and may require fundamentally different methods.",
+    "summary": "Erdős Problem #230 is fully solved (disproved). Kahane's 1980 construction of ultraflat polynomials shows the Parseval lower bound ‖P‖_∞ ≥ √n is asymptotically tight: the infimum of ‖P‖_∞/√n over unimodular polynomials converges to 1. The Lean formalization captures the complete story from Parseval's identity through the false conjecture to Kahane's disproof and the Bombieri-Bourgain quantitative improvement.",
+    "implications": "**Theoretical Significance**: Ultraflat polynomials reveal that unimodular coefficients permit surprising uniformity on the unit circle, challenging the intuition that random-phase polynomials should have large peaks.\n\nThe quantitative theory connects harmonic analysis to exponential sum techniques from analytic number theory. The Littlewood polynomial variant (±1 coefficients) remains open and may require fundamentally different methods.",
     "openQuestions": [
-      "Can the error in ultraflat polynomials be reduced to O(1)? (Is |P(z)| = \u221an + O(1) achievable?)",
-      "What is the optimal error exponent \u2014 can 7/18 be improved?",
+      "Can the error in ultraflat polynomials be reduced to O(1)? (Is |P(z)| = √n + O(1) achievable?)",
+      "What is the optimal error exponent — can 7/18 be improved?",
       "Do explicit (non-probabilistic) ultraflat polynomial families exist?",
-      "For Littlewood polynomials (\u00b11 coefficients), can min_{|z|=1} |P(z)| / \u221an \u2192 1? (The harder variant, Problem #228)"
+      "For Littlewood polynomials (±1 coefficients), can min_{|z|=1} |P(z)| / √n → 1? (The harder variant, Problem #228)"
     ]
   },
   "leanFile": {
@@ -154,11 +154,11 @@
     ]
   },
   "references": [
-    "Erd\u0151s\u2013Newman (1957/1961): Original conjecture on unimodular polynomial sup norms",
+    "Erdős–Newman (1957/1961): Original conjecture on unimodular polynomial sup norms",
     "Halberstam (1974): Problem 4.31 in Sequences, vol. 1",
-    "Kahane (1980): Sur les polyn\u00f4mes \u00e0 coefficients unimodulaires, Bull. London Math. Soc.",
-    "K\u00f6rner (1980): On a polynomial of Byrnes, Bull. London Math. Soc.",
-    "Bombieri\u2013Bourgain (2009): A remark on Bohr's inequality, Int. Math. Res. Not.",
+    "Kahane (1980): Sur les polynômes à coefficients unimodulaires, Bull. London Math. Soc.",
+    "Körner (1980): On a polynomial of Byrnes, Bull. London Math. Soc.",
+    "Bombieri–Bourgain (2009): A remark on Bohr's inequality, Int. Math. Res. Not.",
     "Rudin (1959): Some theorems on Fourier coefficients, Proc. AMS",
     "Shapiro (1951): Extremal problems for polynomials and power series, MIT thesis",
     "https://erdosproblems.com/230"
@@ -167,17 +167,17 @@
     {
       "targetId": "erdos-1150",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: analysis, harmonic-analysis, polynomials"
+      "description": "Related Erdős problem sharing themes: analysis, harmonic-analysis, polynomials"
     },
     {
       "targetId": "erdos-1048",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: analysis, polynomials"
+      "description": "Related Erdős problem sharing themes: analysis, polynomials"
     },
     {
       "targetId": "erdos-1114",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: analysis, polynomials"
+      "description": "Related Erdős problem sharing themes: analysis, polynomials"
     }
   ],
   "sorries": 3

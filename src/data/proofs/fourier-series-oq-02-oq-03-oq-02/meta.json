@@ -74,7 +74,7 @@
       "The sharp constant K(f) = sup_n |c_n| * e^{2*pi*delta*|n|/T} equals the strip boundary norm when the boundary is a natural boundary",
       "The Paley-Wiener characterization is a complete equivalence: strip analyticity <=> exponential Fourier decay, with the strip width determined by the decay rate",
       "The Poisson kernel P_r(x) = sum r^|n| e^{inx} achieves exact exponential decay with strip width -T*ln(r)/(2*pi)",
-      "The Lean formalization uses `Complex.abs_exp_ofReal_mul_I` and custom contour-shifting arguments since Mathlib lacks a direct Paley-Wiener API \u2014 the proof must build the analytic machinery from scratch using `HasSum` and `Complex.differentiableAt`"
+      "The Lean formalization uses `Complex.abs_exp_ofReal_mul_I` and custom contour-shifting arguments since Mathlib lacks a direct Paley-Wiener API — the proof must build the analytic machinery from scratch using `HasSum` and `Complex.differentiableAt`"
     ],
     "prerequisites": [
       "Complex contour integration",

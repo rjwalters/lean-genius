@@ -235,21 +235,27 @@
   ],
   "references": [
     {
-      "authors": ["Georg Cantor"],
+      "authors": [
+        "Georg Cantor"
+      ],
       "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
       "year": "1874",
       "venue": "Journal für die reine und angewandte Mathematik, vol. 77, pp. 258–262",
       "note": "Establishes countability of algebraic numbers and uncountability of ℝ. This entry adds the exact cardinality 𝔠 for the transcendental complement."
     },
     {
-      "authors": ["The Mathlib Community"],
+      "authors": [
+        "The Mathlib Community"
+      ],
       "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
       "note": "Provides Cardinal.add_eq_self, Cardinal.mk_union_le, Cardinal.mk_real, le_aleph0_iff_set_countable, and Cardinal.aleph0_lt_continuum used here."
     },
     {
-      "authors": ["Thomas Jech"],
+      "authors": [
+        "Thomas Jech"
+      ],
       "title": "Set Theory",
       "year": "2003",
       "venue": "Springer Monographs in Mathematics, 3rd edition",
@@ -268,7 +274,11 @@
       "Proofs.AlgebraicNumbersCountable",
       "Proofs.AlgebraicNumbersCountableOQ02"
     ],
-    "opens": ["Cardinal", "AlgebraicNumbersCountable", "AlgebraicNumbersCountableOQ02"],
+    "opens": [
+      "Cardinal",
+      "AlgebraicNumbersCountable",
+      "AlgebraicNumbersCountableOQ02"
+    ],
     "namespace": "AlgebraicNumbersCountableOQ02OQ03",
     "lineCount": 193,
     "axiomCount": 0,

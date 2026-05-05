@@ -21,7 +21,7 @@
       "multiProjectionFiber_pairwise_disjoint: fibers over distinct targets are disjoint",
       "multiStaysPositive_eq_biUnion: positive intersection = union of fibers over positive targets",
       "ENNReal.div_eq_div_of_mul_eq: ratio cancellation for uniform fiber counts",
-      "ncard_biUnion_eq_of_uniform: ncard of uniform-fiber disjoint union = k \u00d7 count (proved via Set.ncard_biUnion + Finset.sum_const)",
+      "ncard_biUnion_eq_of_uniform: ncard of uniform-fiber disjoint union = k × count (proved via Set.ncard_biUnion + Finset.sum_const)",
       "uniformOn_fiber_transfer': complete fiber-counting proof via ENNReal.div_eq_div_iff cross-multiplication"
     ],
     "dateAdded": "2026-04-12",
@@ -32,15 +32,15 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "The ballot problem originates with Joseph Bertrand (1887), who asked for the probability that a winning candidate leads throughout the count. The classical formula $(a-b)/(a+b)$ was proved elegantly by D\u00e9sir\u00e9 Andr\u00e9 using the reflection principle. The multi-candidate generalization asks: when one candidate faces $m-1$ opponents, does the same formula apply? The answer is yes, because only the total opponent vote count matters, not its distribution among opponents. The parent file (BallotProblemOQ01OQ02) established this reduction via a projection-and-fiber argument, proving that all fibers have equal cardinality through an explicit fiberSwap bijection. However, a gap remained: translating the combinatorial fact $|\\text{fiber}(t_1)| = |\\text{fiber}(t_2)|$ into the measure-theoretic statement $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$. This file provides that bridge, using Set.ncard_biUnion for the cardinality decomposition and ENNReal.div_eq_div_iff for the ratio cancellation.",
+    "historicalContext": "The ballot problem originates with Joseph Bertrand (1887), who asked for the probability that a winning candidate leads throughout the count. The classical formula $(a-b)/(a+b)$ was proved elegantly by Désiré André using the reflection principle. The multi-candidate generalization asks: when one candidate faces $m-1$ opponents, does the same formula apply? The answer is yes, because only the total opponent vote count matters, not its distribution among opponents. The parent file (BallotProblemOQ01OQ02) established this reduction via a projection-and-fiber argument, proving that all fibers have equal cardinality through an explicit fiberSwap bijection. However, a gap remained: translating the combinatorial fact $|\\text{fiber}(t_1)| = |\\text{fiber}(t_2)|$ into the measure-theoretic statement $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$. This file provides that bridge, using Set.ncard_biUnion for the cardinality decomposition and ENNReal.div_eq_div_iff for the ratio cancellation.",
     "problemStatement": "Prove uniformOn_fiber_transfer: the uniformOn probability of multiStaysPositive over multiCountedSequence equals the uniformOn probability of staysPositive over countedSequence.",
     "proofStrategy": "Decompose multiCountedSequence as a disjoint union of fibers over countedSequence targets. Since all fibers have equal ncard k (by fiber_card_uniform), both the numerator and denominator of the uniformOn fraction are k times the corresponding classical values. The k cancels, giving equality.",
     "keyInsights": [
       "The partition lemma (multiCountedSequence_eq_biUnion) establishes the fiber decomposition via the projection map, using project_multi_to_counted from the parent file.",
-      "Disjointness of fibers follows immediately from the fact that projection is a function: two sequences projecting to different targets cannot be in the same fiber. The proof is just 3 lines \u2014 a satisfying example of how the right abstraction makes a proof trivial.",
+      "Disjointness of fibers follows immediately from the fact that projection is a function: two sequences projecting to different targets cannot be in the same fiber. The proof is just 3 lines — a satisfying example of how the right abstraction makes a proof trivial.",
       "The stays-positive intersection decomposes cleanly because multiStaysPositive = project^{-1}(staysPositive), so intersecting with a fiber over t gives a non-empty result iff t is in staysPositive. This is the numerator counterpart to the denominator decomposition.",
       "The ENNReal ratio cancellation (k*c)/(k*d) = c/d requires k > 0, which holds because each fiber is non-empty (surjectivity was established in the parent file via the fiberSwap bijection).",
-      "Key insight for the final assembly: ProbabilityTheory.uniformOn unfolds via simp only [ProbabilityTheory.uniformOn] to \u2191(S \u2229 P).ncard / \u2191S.ncard in ENNReal. This enables ENNReal.div_eq_div_iff to reduce the goal to cross-multiplication, which is then closed by ring after substituting the ncard equations.",
+      "Key insight for the final assembly: ProbabilityTheory.uniformOn unfolds via simp only [ProbabilityTheory.uniformOn] to ↑(S ∩ P).ncard / ↑S.ncard in ENNReal. This enables ENNReal.div_eq_div_iff to reduce the goal to cross-multiplication, which is then closed by ring after substituting the ncard equations.",
       "The proof architecture cleanly separates three concerns: (1) combinatorial structure (partition + disjointness), (2) cardinality arithmetic (ncard of uniform disjoint unions via Set.ncard_biUnion), and (3) measure-theoretic translation (ENNReal cross-multiplication via div_eq_div_iff)."
     ]
   },
@@ -82,7 +82,7 @@
       "title": "Part IV: Main Theorem",
       "startLine": 129,
       "endLine": 229,
-      "summary": "uniformOn_fiber_transfer': complete 70-line proof. Establishes ncard(MCS) = k*ncard(CS) and ncard(MCS\u2229MSP) = k*ncard(CS\u2229SP) via ncard_biUnion_eq_of_uniform, then uses ENNReal.div_eq_div_iff cross-multiplication to cancel k and close the goal.",
+      "summary": "uniformOn_fiber_transfer': complete 70-line proof. Establishes ncard(MCS) = k*ncard(CS) and ncard(MCS∩MSP) = k*ncard(CS∩SP) via ncard_biUnion_eq_of_uniform, then uses ENNReal.div_eq_div_iff cross-multiplication to cancel k and close the goal.",
       "mathContext": "The uniform probability over multi-candidate sequences equals the classical ballot probability: $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$. Proved by showing both fractions equal $\\frac{k \\cdot |\\text{CS} \\cap \\text{SP}|}{k \\cdot |\\text{CS}|}$ for the same fiber size $k > 0$."
     },
     {
@@ -103,7 +103,7 @@
     {
       "targetId": "ballot-problem",
       "relationship": "extends",
-      "description": "Root of the ballot theorem chain \u2014 the classical 2-candidate Bertrand ballot problem with formula (a-b)/(a+b)"
+      "description": "Root of the ballot theorem chain — the classical 2-candidate Bertrand ballot problem with formula (a-b)/(a+b)"
     },
     {
       "targetId": "ballot-problem-oq-01",

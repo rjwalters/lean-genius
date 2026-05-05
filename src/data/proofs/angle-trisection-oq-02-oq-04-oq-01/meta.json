@@ -48,10 +48,10 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 364,
-    "assumptions": "2 sorries: galois_two_group_implies_tower (~500 lines, Galois correspondence glue) and tower_implies_galois_two_group (~300 lines, splitting field degree). Newly proved this session: sqrt2_constructible_tower (concrete witness \u211a\u27ee\u221a2\u27ef is a height-1 quadratic tower containing \u221a2; uses Sqrt2Minpoly.adjoin_sqrt_two_finrank + finrank tower formula). Companion Aristotle file now sorry-free (delegates to main).",
+    "assumptions": "2 sorries: galois_two_group_implies_tower (~500 lines, Galois correspondence glue) and tower_implies_galois_two_group (~300 lines, splitting field degree). Newly proved this session: sqrt2_constructible_tower (concrete witness ℚ⟮√2⟯ is a height-1 quadratic tower containing √2; uses Sqrt2Minpoly.adjoin_sqrt_two_finrank + finrank tower formula). Companion Aristotle file now sorry-free (delegates to main).",
     "originalContributions": [
       "Proper inductive definition of QuadraticTower replacing the alias TowerCriterion = DegreeCriterion",
-      "Statement and proof structure of Tower \u2194 Galois 2-group equivalence",
+      "Statement and proof structure of Tower ↔ Galois 2-group equivalence",
       "Feasibility analysis identifying exactly which Mathlib API connections are missing",
       "Proof that tower degree = 2^n by structural induction (modulo finrank multiplicativity)",
       "Key 2-group lemmas: existence of index-2 subgroups, trivial characterization"
@@ -60,13 +60,13 @@
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "Wantzel (1837) proved that a number is constructible by compass and straightedge iff it lies in a tower of quadratic extensions over \u211a, finally resolving the ancient Greek impossibility questions (angle trisection, cube duplication, circle squaring). Galois theory, developed by Galois (1832) and systematized in the 19th century, recharacterizes this: constructibility is equivalent to the Galois group of the minimal polynomial being a 2-group (a group of order 2^n). The equivalence of these two formulations \u2014 quadratic tower criterion \u2194 Galois 2-group criterion \u2014 is a fundamental result connecting classical constructibility with modern algebraic structure theory. Remarkably, Galois was killed in a duel at age 20 in 1832 before his work was published; it took 14 years for Liouville to recognize its importance.",
+    "historicalContext": "Wantzel (1837) proved that a number is constructible by compass and straightedge iff it lies in a tower of quadratic extensions over ℚ, finally resolving the ancient Greek impossibility questions (angle trisection, cube duplication, circle squaring). Galois theory, developed by Galois (1832) and systematized in the 19th century, recharacterizes this: constructibility is equivalent to the Galois group of the minimal polynomial being a 2-group (a group of order 2^n). The equivalence of these two formulations — quadratic tower criterion ↔ Galois 2-group criterion — is a fundamental result connecting classical constructibility with modern algebraic structure theory. Remarkably, Galois was killed in a duel at age 20 in 1832 before his work was published; it took 14 years for Liouville to recognize its importance.",
     "problemStatement": "Can the equivalence between the quadratic tower criterion and the Galois 2-group criterion for constructibility be proved using Mathlib's Galois correspondence?",
-    "text": "Formalizes the Tower \u2194 Galois 2-group equivalence for constructibility with a proper inductive tower definition",
-    "proofStrategy": "Define QuadraticTower inductively (base: \u22a5, step: extend by degree 2). For Tower \u2192 Galois: show the splitting field degree is a power of 2. For Galois \u2192 Tower: use index-2 subgroups (which exist in non-trivial 2-groups) and the Galois correspondence to peel off quadratic extensions.",
+    "text": "Formalizes the Tower ↔ Galois 2-group equivalence for constructibility with a proper inductive tower definition",
+    "proofStrategy": "Define QuadraticTower inductively (base: ⊥, step: extend by degree 2). For Tower → Galois: show the splitting field degree is a power of 2. For Galois → Tower: use index-2 subgroups (which exist in non-trivial 2-groups) and the Galois correspondence to peel off quadratic extensions.",
     "keyInsights": [
-      "The previous TowerCriterion = DegreeCriterion alias was mathematically incorrect \u2014 a proper inductive definition is needed",
-      "The hard direction (Galois \u2192 Tower) reduces to: every non-trivial 2-group has a subgroup of index 2",
+      "The previous TowerCriterion = DegreeCriterion alias was mathematically incorrect — a proper inductive definition is needed",
+      "The hard direction (Galois → Tower) reduces to: every non-trivial 2-group has a subgroup of index 2",
       "The main bottleneck for a full Lean proof is API glue between Polynomial.Gal and IntermediateField, not missing theory",
       "Both IsPGroup.isSolvable and IsPGroup.to_subgroup are directly available from Mathlib",
       "The inductive QuadraticTower definition is essential: the naive alias TowerCriterion = DegreeCriterion would conflate two different equivalences (tower structure vs degree condition), obscuring the structural reason why 2-groups and quadratic towers are equivalent"
@@ -85,11 +85,11 @@
       "startLine": 42,
       "endLine": 72,
       "summary": "Inductive definition of QuadraticTower and ConstructibleViaTower, replacing the previous alias.",
-      "mathContext": "A quadratic tower is defined inductively: base case is \u22a5 (= F), inductive step extends by a degree-2 extension. This captures the geometric notion of compass-and-straightedge construction steps."
+      "mathContext": "A quadratic tower is defined inductively: base case is ⊥ (= F), inductive step extends by a degree-2 extension. This captures the geometric notion of compass-and-straightedge construction steps."
     },
     {
       "id": "tower-degree",
-      "title": "Tower \u2192 Degree 2^n",
+      "title": "Tower → Degree 2^n",
       "startLine": 77,
       "endLine": 100,
       "summary": "Proof that a quadratic tower of height n has total degree 2^n, and that tower constructibility implies the degree criterion.",
@@ -108,16 +108,16 @@
       "title": "Galois Correspondence Connection",
       "startLine": 150,
       "endLine": 195,
-      "summary": "Statement of the core theorem: Galois 2-group \u2192 quadratic tower, with detailed proof sketch.",
+      "summary": "Statement of the core theorem: Galois 2-group → quadratic tower, with detailed proof sketch.",
       "mathContext": "The proof iteratively extracts index-2 subgroups from the Galois group, using the Galois correspondence to convert each to a degree-2 field extension step."
     },
     {
       "id": "full-equivalence",
-      "title": "The Full Tower \u2194 Galois Equivalence",
+      "title": "The Full Tower ↔ Galois Equivalence",
       "startLine": 200,
       "endLine": 215,
       "summary": "Statement of the complete equivalence combining both directions.",
-      "mathContext": "This is the Wantzel-Galois characterization of constructibility: \u03b1 is constructible \u2194 Gal(minpoly \u211a \u03b1) is a 2-group."
+      "mathContext": "This is the Wantzel-Galois characterization of constructibility: α is constructible ↔ Gal(minpoly ℚ α) is a 2-group."
     },
     {
       "id": "feasibility",
@@ -125,14 +125,14 @@
       "startLine": 220,
       "endLine": 265,
       "summary": "Detailed analysis of what Mathlib provides and what API glue is missing for a complete proof.",
-      "mathContext": "Identifies 4 specific gaps: Polynomial.Gal \u2194 IntermediateField bridge, index-2 subgroup existence, index-degree relation, and iterative tower construction. Estimates ~500-800 lines of Lean 4."
+      "mathContext": "Identifies 4 specific gaps: Polynomial.Gal ↔ IntermediateField bridge, index-2 subgroup existence, index-degree relation, and iterative tower construction. Estimates ~500-800 lines of Lean 4."
     }
   ],
   "crossReferences": [
     {
       "targetId": "angle-trisection-oq-02-oq-04",
       "relationship": "answers-question",
-      "description": "Answers OQ-01: 'Can the Tower \u2194 Galois equivalence be proved using Mathlib's Galois correspondence?'"
+      "description": "Answers OQ-01: 'Can the Tower ↔ Galois equivalence be proved using Mathlib's Galois correspondence?'"
     },
     {
       "targetId": "angle-trisection-oq-02",
@@ -147,11 +147,11 @@
     {
       "targetId": "angle-trisection-cos-20-gal",
       "relationship": "related",
-      "description": "Galois Group of cos(20\u00b0) (order 3): the concrete non-2-group Galois group that proves 60\u00b0 cannot be trisected; this proof provides the abstract framework that makes that concrete obstruction rigorous"
+      "description": "Galois Group of cos(20°) (order 3): the concrete non-2-group Galois group that proves 60° cannot be trisected; this proof provides the abstract framework that makes that concrete obstruction rigorous"
     }
   ],
   "conclusion": {
-    "summary": "The Tower \u2194 Galois equivalence CAN be proved using Mathlib's Galois correspondence, but requires ~500-800 lines of API glue. The main bottleneck is connecting Polynomial.Gal to IntermediateField.fixingSubgroup, not missing mathematical theory.",
+    "summary": "The Tower ↔ Galois equivalence CAN be proved using Mathlib's Galois correspondence, but requires ~500-800 lines of API glue. The main bottleneck is connecting Polynomial.Gal to IntermediateField.fixingSubgroup, not missing mathematical theory.",
     "implications": "A complete proof would be a valuable Mathlib contribution, bridging the gap between polynomial Galois groups and field extension Galois groups in the library.",
     "openQuestions": [
       "Can the API glue between Polynomial.Gal and IntermediateField be contributed to Mathlib?",
@@ -188,20 +188,20 @@
     {
       "name": "tower_iff_galois_two_group",
       "type": "core",
-      "description": "The full Tower \u2194 Galois 2-group equivalence for constructibility",
-      "leanType": "(\u03b1 : \u211d) \u2192 (h\u03b1 : IsIntegral \u211a \u03b1) \u2192 ConstructibleViaTower \u03b1 \u2194 IsPGroup 2 (minpoly \u211a \u03b1).Gal"
+      "description": "The full Tower ↔ Galois 2-group equivalence for constructibility",
+      "leanType": "(α : ℝ) → (hα : IsIntegral ℚ α) → ConstructibleViaTower α ↔ IsPGroup 2 (minpoly ℚ α).Gal"
     },
     {
       "name": "quadratic_tower_degree",
       "type": "core",
       "description": "A quadratic tower of height n has degree 2^n",
-      "leanType": "(K : IntermediateField \u211a \u211d) \u2192 (n : \u2115) \u2192 QuadraticTower \u211a \u211d K n \u2192 FiniteDimensional \u211a K \u2227 Module.finrank \u211a K = 2 ^ n"
+      "leanType": "(K : IntermediateField ℚ ℝ) → (n : ℕ) → QuadraticTower ℚ ℝ K n → FiniteDimensional ℚ K ∧ Module.finrank ℚ K = 2 ^ n"
     },
     {
       "name": "exists_index_two_subgroup",
       "type": "supporting",
       "description": "Every non-trivial finite 2-group has a subgroup of index 2",
-      "leanType": "{G : Type*} \u2192 [Group G] \u2192 [Fintype G] \u2192 IsPGroup 2 G \u2192 Fintype.card G > 1 \u2192 \u2203 H : Subgroup G, H.index = 2"
+      "leanType": "{G : Type*} → [Group G] → [Fintype G] → IsPGroup 2 G → Fintype.card G > 1 → ∃ H : Subgroup G, H.index = 2"
     }
   ],
   "sorries": 2

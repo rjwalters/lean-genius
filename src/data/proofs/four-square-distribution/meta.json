@@ -96,7 +96,11 @@
       "Mathlib.Data.Finset.Card",
       "Mathlib.Tactic"
     ],
-    "opens": ["Finset", "Nat", "List"],
+    "opens": [
+      "Finset",
+      "Nat",
+      "List"
+    ],
     "namespace": "FourSquareDistribution",
     "lineCount": 400,
     "axiomCount": 0,

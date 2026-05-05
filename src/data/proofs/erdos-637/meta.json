@@ -1,10 +1,10 @@
 {
   "id": "erdos-637",
-  "title": "Erd\u0151s #637: Distinct Degrees in Induced Subgraphs",
+  "title": "Erdős #637: Distinct Degrees in Induced Subgraphs",
   "slug": "erdos-637",
-  "description": "If G on n vertices has no clique/independent set on \u226b log n vertices, then G contains an induced subgraph with \u226b \u221an distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to \u226b n^{2/3} degrees.",
+  "description": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
   "meta": {
-    "author": "Paul Erd\u0151s, Faudree, S\u00f3s, Bukh, Sudakov, Jenssen, Keevash, Long, Yepremyan",
+    "author": "Paul Erdős, Faudree, Sós, Bukh, Sudakov, Jenssen, Keevash, Long, Yepremyan",
     "sourceUrl": "https://erdosproblems.com/637",
     "date": "2007-2020",
     "status": "axiomatized",
@@ -26,23 +26,23 @@
       "Degree sequences and regular graphs",
       "Ramsey theory (Ramsey numbers, clique and independence numbers)",
       "Induced subgraphs and vertex subsets",
-      "Probabilistic method and random graph models (Erd\u0151s-R\u00e9nyi G(n, 1/2))"
+      "Probabilistic method and random graph models (Erdős-Rényi G(n, 1/2))"
     ],
     "lineCount": 243,
-    "assumptions": "2 axioms: ramsey_lower_bound (Ramsey number lower bound R(k,k) \u2265 2^(k/2)), vertex_bound_from_ramsey (vertex count bounded by R(k+1,k+1)). 10 sorries remain.",
+    "assumptions": "2 axioms: ramsey_lower_bound (Ramsey number lower bound R(k,k) ≥ 2^(k/2)), vertex_bound_from_ramsey (vertex count bounded by R(k+1,k+1)). 10 sorries remain.",
     "mathlib_version": "4.26.0",
     "theoremCount": 11,
     "definitionCount": 16
   },
   "overview": {
-    "historicalContext": "Erd\u0151s, Faudree, and S\u00f3s conjectured that graphs with small Ramsey numbers (no large cliques or independent sets) must have induced subgraphs with many distinct degrees. This connects degree diversity to Ramsey-theoretic properties. Ramsey graphs \u2014 graphs whose clique number and independence number are both O(log n) \u2014 were studied intensively following the development of the probabilistic method; the Erd\u0151s-R\u00e9nyi random graph G(n,1/2) is the canonical example. Faudree and Schelp made important contributions to degree sequence problems throughout the 1980s and 1990s. Bukh and Sudakov's 2007 resolution used a combination of probabilistic arguments and spectral techniques, while the subsequent 2020 improvement by Jenssen, Keevash, Long, and Yepremyan to n^{2/3} distinct degrees exploited more refined structural properties of Ramsey graphs.",
-    "problemStatement": "If G on n vertices has \u03c9(G), \u03b1(G) = O(log n), then G contains an induced subgraph on \u226b n vertices with \u226b \u221an distinct degrees. Bukh-Sudakov (2007) proved this. JKLY (2020) improved to \u226b n^{2/3} degrees without vertex count restriction.",
-    "text": "If G on n vertices has no clique/independent set on \u226b log n vertices, then G contains an induced subgraph with \u226b \u221an distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to \u226b n^{2/3} degrees.",
+    "historicalContext": "Erdős, Faudree, and Sós conjectured that graphs with small Ramsey numbers (no large cliques or independent sets) must have induced subgraphs with many distinct degrees. This connects degree diversity to Ramsey-theoretic properties. Ramsey graphs — graphs whose clique number and independence number are both O(log n) — were studied intensively following the development of the probabilistic method; the Erdős-Rényi random graph G(n,1/2) is the canonical example. Faudree and Schelp made important contributions to degree sequence problems throughout the 1980s and 1990s. Bukh and Sudakov's 2007 resolution used a combination of probabilistic arguments and spectral techniques, while the subsequent 2020 improvement by Jenssen, Keevash, Long, and Yepremyan to n^{2/3} distinct degrees exploited more refined structural properties of Ramsey graphs.",
+    "problemStatement": "If G on n vertices has ω(G), α(G) = O(log n), then G contains an induced subgraph on ≫ n vertices with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this. JKLY (2020) improved to ≫ n^{2/3} degrees without vertex count restriction.",
+    "text": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
     "proofStrategy": "We formalize vertex degrees, distinct degree counts, Ramsey graph properties, induced subgraphs, the original conjecture, the Bukh-Sudakov solution, the JKLY strengthening, optimality considerations, and connections to Ramsey theory.",
     "keyInsights": [
-      "Ramsey graphs: \u03c9(G), \u03b1(G) = O(log n)",
-      "Bukh-Sudakov (2007): \u226b \u221an distinct degrees in induced subgraph",
-      "JKLY (2020): \u226b n^{2/3} distinct degrees (no vertex restriction)",
+      "Ramsey graphs: ω(G), α(G) = O(log n)",
+      "Bukh-Sudakov (2007): ≫ √n distinct degrees in induced subgraph",
+      "JKLY (2020): ≫ n^{2/3} distinct degrees (no vertex restriction)",
       "Exponent 2/3 believed optimal",
       "Random G(n, 1/2) is typically a Ramsey graph"
     ],
@@ -51,7 +51,7 @@
       "Degree sequences and regular graphs",
       "Ramsey theory (Ramsey numbers, clique and independence numbers)",
       "Induced subgraphs and vertex subsets",
-      "Probabilistic method and random graph models (Erd\u0151s-R\u00e9nyi G(n, 1/2))"
+      "Probabilistic method and random graph models (Erdős-Rényi G(n, 1/2))"
     ]
   },
   "sections": [
@@ -69,7 +69,7 @@
       "summary": "Small clique and independence numbers",
       "startLine": 53,
       "endLine": 68,
-      "mathContext": "A graph $G$ on $n$ vertices is a *Ramsey graph* if $\\omega(G), \\alpha(G) = O(\\log n)$. Formally, `HasSmallRamsey G C` requires $\\omega(G) \\leq C \\log n$ and $\\alpha(G) \\leq C \\log n$. By the Erd\u0151s-Szekeres bound $R(s,t) \\leq \\binom{s+t-2}{s-1}$, every $n$-vertex graph has $\\omega(G) \\cdot \\alpha(G) \\geq \\log_2 n$, so Ramsey graphs are those achieving near-optimal balance."
+      "mathContext": "A graph $G$ on $n$ vertices is a *Ramsey graph* if $\\omega(G), \\alpha(G) = O(\\log n)$. Formally, `HasSmallRamsey G C` requires $\\omega(G) \\leq C \\log n$ and $\\alpha(G) \\leq C \\log n$. By the Erdős-Szekeres bound $R(s,t) \\leq \\binom{s+t-2}{s-1}$, every $n$-vertex graph has $\\omega(G) \\cdot \\alpha(G) \\geq \\log_2 n$, so Ramsey graphs are those achieving near-optimal balance."
     },
     {
       "id": "induced",
@@ -82,10 +82,10 @@
     {
       "id": "original",
       "title": "Original Conjecture",
-      "summary": "Erd\u0151s-Faudree-S\u00f3s statement",
+      "summary": "Erdős-Faudree-Sós statement",
       "startLine": 85,
       "endLine": 98,
-      "mathContext": "The conjecture of Erd\u0151s, Faudree, and S\u00f3s: $\\exists c_1, c_2 > 0$ such that every Ramsey graph $G$ on $n$ vertices contains an induced subgraph on $\\geq c_1 n$ vertices with $\\geq c_2 \\sqrt{n}$ distinct degrees. The $\\sqrt{n}$ threshold is motivated by the pigeonhole principle: $n$ vertices have degrees in $\\{0, \\ldots, n-1\\}$, but Ramsey constraints force degree diversity in induced subgraphs."
+      "mathContext": "The conjecture of Erdős, Faudree, and Sós: $\\exists c_1, c_2 > 0$ such that every Ramsey graph $G$ on $n$ vertices contains an induced subgraph on $\\geq c_1 n$ vertices with $\\geq c_2 \\sqrt{n}$ distinct degrees. The $\\sqrt{n}$ threshold is motivated by the pigeonhole principle: $n$ vertices have degrees in $\\{0, \\ldots, n-1\\}$, but Ramsey constraints force degree diversity in induced subgraphs."
     },
     {
       "id": "bukh-sudakov",
@@ -93,7 +93,7 @@
       "summary": "First proof of the conjecture",
       "startLine": 99,
       "endLine": 113,
-      "mathContext": "Bukh and Sudakov (2007) proved the Erd\u0151s-Faudree-S\u00f3s conjecture: every Ramsey graph on $n$ vertices has an induced subgraph on $\\geq n/2$ vertices with $\\geq \\sqrt{n}/10$ distinct degrees. Their proof used a combination of probabilistic arguments and spectral techniques to analyze the degree structure of Ramsey graphs."
+      "mathContext": "Bukh and Sudakov (2007) proved the Erdős-Faudree-Sós conjecture: every Ramsey graph on $n$ vertices has an induced subgraph on $\\geq n/2$ vertices with $\\geq \\sqrt{n}/10$ distinct degrees. Their proof used a combination of probabilistic arguments and spectral techniques to analyze the degree structure of Ramsey graphs."
     },
     {
       "id": "jkly",
@@ -117,7 +117,7 @@
       "summary": "Regular graphs and degree diversity",
       "startLine": 153,
       "endLine": 173,
-      "mathContext": "A $k$-regular graph has exactly 1 distinct degree. `ramsey_not_too_regular` shows Ramsey graphs on $\\geq 100$ vertices have $\\geq 2$ distinct degrees \u2014 they cannot be too homogeneous. The degree sequence $\\{\\deg(v)\\}_{v \\in V}$ is the fundamental invariant connecting graph structure to the problem: Ramsey constraints force the degree sequence to spread out across induced subgraphs."
+      "mathContext": "A $k$-regular graph has exactly 1 distinct degree. `ramsey_not_too_regular` shows Ramsey graphs on $\\geq 100$ vertices have $\\geq 2$ distinct degrees — they cannot be too homogeneous. The degree sequence $\\{\\deg(v)\\}_{v \\in V}$ is the fundamental invariant connecting graph structure to the problem: Ramsey constraints force the degree sequence to spread out across induced subgraphs."
     },
     {
       "id": "random-graphs",
@@ -132,7 +132,7 @@
       "summary": "Links to Ramsey numbers",
       "startLine": 191,
       "endLine": 203,
-      "mathContext": "The classical probabilistic lower bound $R(k,k) \\geq 2^{k/2}$ (Erd\u0151s, 1947) implies that Ramsey graphs on $n$ vertices exist with $\\omega, \\alpha \\leq 2\\log_2 n$. The bound $n \\leq R(\\omega+1, \\alpha+1)$ constrains how large a Ramsey graph can be given its clique and independence numbers, connecting the degree diversity problem to diagonal Ramsey numbers."
+      "mathContext": "The classical probabilistic lower bound $R(k,k) \\geq 2^{k/2}$ (Erdős, 1947) implies that Ramsey graphs on $n$ vertices exist with $\\omega, \\alpha \\leq 2\\log_2 n$. The bound $n \\leq R(\\omega+1, \\alpha+1)$ constrains how large a Ramsey graph can be given its clique and independence numbers, connecting the degree diversity problem to diagonal Ramsey numbers."
     },
     {
       "id": "algorithmic",
@@ -140,7 +140,7 @@
       "summary": "Finding large induced subgraphs",
       "startLine": 204,
       "endLine": 215,
-      "mathContext": "`FindLargeInduced G` asserts the existence of $S \\subseteq V$ with $|S| \\geq n/2$ and $|\\{\\deg_{G[S]}(v)\\}| \\geq \\lfloor\\sqrt{n}\\rfloor$. The algorithmic question is whether such $S$ can be found in polynomial time \u2014 the existential proofs of Bukh-Sudakov and JKLY are non-constructive (relying on the probabilistic method), but greedy algorithms can often find near-optimal subsets."
+      "mathContext": "`FindLargeInduced G` asserts the existence of $S \\subseteq V$ with $|S| \\geq n/2$ and $|\\{\\deg_{G[S]}(v)\\}| \\geq \\lfloor\\sqrt{n}\\rfloor$. The algorithmic question is whether such $S$ can be found in polynomial time — the existential proofs of Bukh-Sudakov and JKLY are non-constructive (relying on the probabilistic method), but greedy algorithms can often find near-optimal subsets."
     },
     {
       "id": "summary",
@@ -152,7 +152,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #637 on distinct degrees in induced subgraphs of Ramsey graphs. The problem was solved by Bukh-Sudakov (2007) and strengthened by JKLY (2020).",
+    "summary": "This formalization captures Erdős Problem #637 on distinct degrees in induced subgraphs of Ramsey graphs. The problem was solved by Bukh-Sudakov (2007) and strengthened by JKLY (2020).",
     "implications": "The results reveal a fundamental connection between Ramsey-theoretic properties (absence of large cliques/independent sets) and degree diversity in graphs.",
     "openQuestions": [
       "Is the exponent 2/3 optimal?",
@@ -166,26 +166,26 @@
       "title": "Induced subgraphs of Ramsey graphs with many distinct degrees",
       "year": "2007",
       "venue": "J. Combin. Theory Ser. B 97(4), pp. 612-619",
-      "note": "Proved \u226b \u221an distinct degrees in induced subgraphs of Ramsey graphs"
+      "note": "Proved ≫ √n distinct degrees in induced subgraphs of Ramsey graphs"
     },
     {
       "authors": "Jenssen, Matthew; Keevash, Peter; Long, Eoin; Yepremyan, Liana",
       "title": "Distinct degrees in induced subgraphs",
       "year": "2020",
       "venue": "Proc. Amer. Math. Soc. 148, pp. 3835-3846",
-      "note": "Strengthened to \u226b n^{2/3} degrees, nearly matching the conjectured optimum"
+      "note": "Strengthened to ≫ n^{2/3} degrees, nearly matching the conjectured optimum"
     }
   ],
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "uses",
-      "description": "The problem concerns graphs with no large cliques or independent sets \u2014 precisely the regime where Ramsey theory applies"
+      "description": "The problem concerns graphs with no large cliques or independent sets — precisely the regime where Ramsey theory applies"
     },
     {
       "targetId": "erdos-544",
       "relationship": "related",
-      "description": "Both are Ramsey-type graph theory problems. Problem #544 concerns monochromatic substructure under colorings, while #637 studies a related Ramsey property \u2014 both probe the quantitative aspects of Ramsey theory beyond the classical existence theorems"
+      "description": "Both are Ramsey-type graph theory problems. Problem #544 concerns monochromatic substructure under colorings, while #637 studies a related Ramsey property — both probe the quantitative aspects of Ramsey theory beyond the classical existence theorems"
     }
   ],
   "leanFile": {

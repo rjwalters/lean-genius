@@ -1,10 +1,10 @@
 {
   "id": "erdos-632",
-  "title": "Erd\u0151s Problem #632: The (a,b)-Choosability Scaling Conjecture",
+  "title": "Erdős Problem #632: The (a,b)-Choosability Scaling Conjecture",
   "slug": "erdos-632",
-  "description": "If G is (a,b)-choosable, is G also (am,bm)-choosable for all m \u2265 1? DISPROVED by Dvo\u0159\u00e1k-Hu-Sereni (2019) - fails for (4,1) to (8,2).",
+  "description": "If G is (a,b)-choosable, is G also (am,bm)-choosable for all m ≥ 1? DISPROVED by Dvořák-Hu-Sereni (2019) - fails for (4,1) to (8,2).",
   "meta": {
-    "author": "Erd\u0151s-Rubin-Taylor (1980 conjecture), Dvo\u0159\u00e1k-Hu-Sereni (2019 disproof)",
+    "author": "Erdős-Rubin-Taylor (1980 conjecture), Dvořák-Hu-Sereni (2019 disproof)",
     "sourceUrl": "https://erdosproblems.com/632",
     "date": "2019",
     "status": "axiomatized",
@@ -43,8 +43,8 @@
     "originalContributions": [
       "Formal definition of (a,b)-choosability",
       "Definition of color assignments and valid selections",
-      "Statement of the Erd\u0151s-Rubin-Taylor conjecture",
-      "Axiomatization of the Dvo\u0159\u00e1k-Hu-Sereni counterexample",
+      "Statement of the Erdős-Rubin-Taylor conjecture",
+      "Axiomatization of the Dvořák-Hu-Sereni counterexample",
       "Connection to list chromatic number (a,1 case)",
       "Positive results for special graph classes",
       "Related choosability theorems (Ohba, Galvin)"
@@ -57,16 +57,16 @@
     "definitionCount": 15
   },
   "overview": {
-    "historicalContext": "**List Coloring and the Scaling Question**\n\nList coloring was introduced by Vizing (1976) and independently by Erd\u0151s, Rubin, and Taylor (1979/1980). Unlike ordinary vertex coloring where all vertices share the same color palette, list coloring assigns each vertex its own list of available colors \u2014 a more realistic model for scheduling and resource allocation problems.\n\nThe concept of $(a,b)$-choosability generalizes list coloring: given lists of size $a$ at each vertex, one must select $b$ colors from each list such that adjacent vertices receive disjoint color sets. The $b = 1$ case recovers the classical list chromatic number $\\chi_L(G)$.\n\n**The Conjecture**: In their foundational 1980 paper, Erd\u0151s, Rubin, and Taylor conjectured that choosability scales multiplicatively: if $G$ is $(a,b)$-choosable, then $G$ is $(am, bm)$-choosable for all $m \\geq 1$. This would be a clean structural property connecting choosability at different scales.\n\n**The Disproof**: Nearly 40 years later, Dvo\u0159\u00e1k, Hu, and Sereni (2019) constructed an explicit counterexample: a graph with over 100 vertices that is $(4,1)$-choosable (i.e., $\\chi_L(G) \\leq 4$) but NOT $(8,2)$-choosable. This showed the conjecture fails at the very first non-trivial step ($m = 2$), revealing that integer choosability is fundamentally more rigid than its fractional counterpart.\n\n**Contrast with Fractional**: Alon, Tuza, and Voigt (1997) had shown that *fractional* choosability does scale, making the integer failure all the more surprising. The ratio $a/b$ is preserved under scaling in $\\mathbb{Q}$ but not in the integer lattice.",
-    "problemStatement": "**Problem Statement**\n\nConjecture (Erd\u0151s\u2013Rubin\u2013Taylor, 1980): If $G$ is $(a,b)$-choosable, then $G$ is $(am, bm)$-choosable for every integer $m \\geq 1$.\n\n**Answer**: NO (DISPROVED)\n\nDvo\u0159\u00e1k\u2013Hu\u2013Sereni (2019) showed this fails for $(a,b) = (4,1)$ and $m = 2$: there exists a graph $G$ with $\\chi_L(G) \\leq 4$ that is not $(8,2)$-choosable.",
-    "text": "If G is (a,b)-choosable, is G also (am,bm)-choosable for all m \u2265 1? DISPROVED by Dvo\u0159\u00e1k-Hu-Sereni (2019) - fails for (4,1) to (8,2).",
-    "proofStrategy": "**The Formalization Strategy**\n\nThe formalization follows a **logical chain** from definitions to disproof:\n\n1. **Color infrastructure**: Defines color assignments ($V \\to \\text{Finset}(\\text{Fin}\\, a)$), valid selections (subset of size $b$), and disjointness (adjacent vertices get non-overlapping colors)\n2. **Central definition**: $(a,b)$-choosability as $\\forall L,\\, \\exists S$ \u2014 a game-theoretic universal-existential statement\n3. **List chromatic number**: The $b = 1$ case as $\\chi_L(G) = \\min\\{a : \\text{IsChoosable}\\, G\\, a\\, 1\\}$\n4. **Monotonicity properties**: Increasing $a$ or decreasing $b$ preserves choosability\n5. **The conjecture**: Stated as a Lean proposition, then specialized to $m = 2$ and further to $(4,1) \\to (8,2)$\n6. **Counterexample**: The DHS result is axiomatized, then the chain $(4,1) \\not\\to (8,2) \\implies \\neg\\text{ERT}_{m=2} \\implies \\neg\\text{ERT}$ is proved formally\n7. **Positive context**: Fractional scaling, complete graphs, bipartite graphs, and planar graphs all satisfy the conjecture \u2014 isolating what makes the general case fail",
+    "historicalContext": "**List Coloring and the Scaling Question**\n\nList coloring was introduced by Vizing (1976) and independently by Erdős, Rubin, and Taylor (1979/1980). Unlike ordinary vertex coloring where all vertices share the same color palette, list coloring assigns each vertex its own list of available colors — a more realistic model for scheduling and resource allocation problems.\n\nThe concept of $(a,b)$-choosability generalizes list coloring: given lists of size $a$ at each vertex, one must select $b$ colors from each list such that adjacent vertices receive disjoint color sets. The $b = 1$ case recovers the classical list chromatic number $\\chi_L(G)$.\n\n**The Conjecture**: In their foundational 1980 paper, Erdős, Rubin, and Taylor conjectured that choosability scales multiplicatively: if $G$ is $(a,b)$-choosable, then $G$ is $(am, bm)$-choosable for all $m \\geq 1$. This would be a clean structural property connecting choosability at different scales.\n\n**The Disproof**: Nearly 40 years later, Dvořák, Hu, and Sereni (2019) constructed an explicit counterexample: a graph with over 100 vertices that is $(4,1)$-choosable (i.e., $\\chi_L(G) \\leq 4$) but NOT $(8,2)$-choosable. This showed the conjecture fails at the very first non-trivial step ($m = 2$), revealing that integer choosability is fundamentally more rigid than its fractional counterpart.\n\n**Contrast with Fractional**: Alon, Tuza, and Voigt (1997) had shown that *fractional* choosability does scale, making the integer failure all the more surprising. The ratio $a/b$ is preserved under scaling in $\\mathbb{Q}$ but not in the integer lattice.",
+    "problemStatement": "**Problem Statement**\n\nConjecture (Erdős–Rubin–Taylor, 1980): If $G$ is $(a,b)$-choosable, then $G$ is $(am, bm)$-choosable for every integer $m \\geq 1$.\n\n**Answer**: NO (DISPROVED)\n\nDvořák–Hu–Sereni (2019) showed this fails for $(a,b) = (4,1)$ and $m = 2$: there exists a graph $G$ with $\\chi_L(G) \\leq 4$ that is not $(8,2)$-choosable.",
+    "text": "If G is (a,b)-choosable, is G also (am,bm)-choosable for all m ≥ 1? DISPROVED by Dvořák-Hu-Sereni (2019) - fails for (4,1) to (8,2).",
+    "proofStrategy": "**The Formalization Strategy**\n\nThe formalization follows a **logical chain** from definitions to disproof:\n\n1. **Color infrastructure**: Defines color assignments ($V \\to \\text{Finset}(\\text{Fin}\\, a)$), valid selections (subset of size $b$), and disjointness (adjacent vertices get non-overlapping colors)\n2. **Central definition**: $(a,b)$-choosability as $\\forall L,\\, \\exists S$ — a game-theoretic universal-existential statement\n3. **List chromatic number**: The $b = 1$ case as $\\chi_L(G) = \\min\\{a : \\text{IsChoosable}\\, G\\, a\\, 1\\}$\n4. **Monotonicity properties**: Increasing $a$ or decreasing $b$ preserves choosability\n5. **The conjecture**: Stated as a Lean proposition, then specialized to $m = 2$ and further to $(4,1) \\to (8,2)$\n6. **Counterexample**: The DHS result is axiomatized, then the chain $(4,1) \\not\\to (8,2) \\implies \\neg\\text{ERT}_{m=2} \\implies \\neg\\text{ERT}$ is proved formally\n7. **Positive context**: Fractional scaling, complete graphs, bipartite graphs, and planar graphs all satisfy the conjecture — isolating what makes the general case fail",
     "keyInsights": [
-      "**$(a,b)$-choosability is a $\\forall\\exists$ game**: the adversary picks color lists (universal), the player picks selections (existential) \u2014 this game-theoretic structure makes scaling non-trivial because doubling both parameters changes the game fundamentally",
+      "**$(a,b)$-choosability is a $\\forall\\exists$ game**: the adversary picks color lists (universal), the player picks selections (existential) — this game-theoretic structure makes scaling non-trivial because doubling both parameters changes the game fundamentally",
       "**The failure at $m = 2$ is sharp**: the conjecture fails at the very first non-trivial scaling step, showing the obstruction is not a large-$m$ phenomenon but inherent to the passage from $(a,b)$ to $(2a,2b)$",
       "**Fractional vs. integer gap**: fractional choosability $\\chi_f^l(G) \\leq a/b$ trivially implies $\\chi_f^l(G) \\leq am/(bm)$ since $a/b = am/(bm)$, but the integer version fails because selecting $2b$ colors from $2a$ is not equivalent to two independent selections of $b$ from $a$",
       "**Kneser-type construction**: the DHS counterexample uses techniques from topological combinatorics, specifically Kneser-type graph structures where the interplay between list sizes and selection sizes creates combinatorial obstructions",
-      "**Structural dichotomy**: the conjecture holds for complete, bipartite, and planar graphs \u2014 classes with strong structural constraints \u2014 suggesting the counterexample exploits the flexibility of general graphs to create pathological list assignments"
+      "**Structural dichotomy**: the conjecture holds for complete, bipartite, and planar graphs — classes with strong structural constraints — suggesting the counterexample exploits the flexibility of general graphs to create pathological list assignments"
     ],
     "prerequisites": [
       "Graph theory fundamentals",
@@ -116,7 +116,7 @@
     },
     {
       "id": "ert-conjecture",
-      "title": "The Erd\u0151s\u2013Rubin\u2013Taylor Conjecture",
+      "title": "The Erdős–Rubin–Taylor Conjecture",
       "summary": "States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere).",
       "startLine": 126,
       "endLine": 154,
@@ -132,7 +132,7 @@
     },
     {
       "id": "dhs-counterexample",
-      "title": "The Dvo\u0159\u00e1k\u2013Hu\u2013Sereni Counterexample",
+      "title": "The Dvořák–Hu–Sereni Counterexample",
       "summary": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that blocks all valid 2-selections.",
       "startLine": 174,
       "endLine": 199,
@@ -149,15 +149,15 @@
     {
       "id": "positive",
       "title": "Positive Results for Special Classes",
-      "summary": "Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon\u2013Tuza\u2013Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints).",
+      "summary": "Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints).",
       "startLine": 227,
       "endLine": 260,
-      "mathContext": "Axiomatized: Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon\u2013Tuza\u2013Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints)."
+      "mathContext": "Axiomatized: Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints)."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #632 conjectured that $(a,b)$-choosability implies $(am, bm)$-choosability for all $m \\geq 1$. The formalization captures the complete disproof: Dvo\u0159\u00e1k\u2013Hu\u2013Sereni (2019) constructed a graph that is $(4,1)$-choosable but not $(8,2)$-choosable, and the formal chain from this counterexample to $\\neg\\text{ERT\\_Conjecture}$ is fully verified.",
-    "implications": "1. **Integer vs. Fractional Choosability**: The fractional version $\\chi_f^l(G) \\leq a/b \\implies \\chi_f^l(G) \\leq am/(bm)$ holds trivially, but the integer version fails \u2014 this is a fundamental integrality gap in list coloring theory\n\n**2. Game-Theoretic Rigidity**: The $\\forall\\exists$ structure of choosability means that doubling both parameters changes the adversary's power and the player's strategy space non-uniformly, creating new obstructions\n\n3. **Structural Graph Classes**: The conjecture holds for complete, bipartite, and planar graphs, suggesting a classification of graph families by their choosability scaling behavior\n\n4. **Topological Methods in Combinatorics**: The DHS counterexample uses Kneser-type constructions, connecting list coloring theory to topological combinatorics and Borsuk\u2013Ulam-style arguments.",
+    "summary": "Erdős Problem #632 conjectured that $(a,b)$-choosability implies $(am, bm)$-choosability for all $m \\geq 1$. The formalization captures the complete disproof: Dvořák–Hu–Sereni (2019) constructed a graph that is $(4,1)$-choosable but not $(8,2)$-choosable, and the formal chain from this counterexample to $\\neg\\text{ERT\\_Conjecture}$ is fully verified.",
+    "implications": "1. **Integer vs. Fractional Choosability**: The fractional version $\\chi_f^l(G) \\leq a/b \\implies \\chi_f^l(G) \\leq am/(bm)$ holds trivially, but the integer version fails — this is a fundamental integrality gap in list coloring theory\n\n**2. Game-Theoretic Rigidity**: The $\\forall\\exists$ structure of choosability means that doubling both parameters changes the adversary's power and the player's strategy space non-uniformly, creating new obstructions\n\n3. **Structural Graph Classes**: The conjecture holds for complete, bipartite, and planar graphs, suggesting a classification of graph families by their choosability scaling behavior\n\n4. **Topological Methods in Combinatorics**: The DHS counterexample uses Kneser-type constructions, connecting list coloring theory to topological combinatorics and Borsuk–Ulam-style arguments.",
     "openQuestions": [
       "What is the smallest graph (by vertex count) that is $(4,1)$-choosable but not $(8,2)$-choosable? The DHS construction has $n > 100$ vertices",
       "Which graph classes satisfy the ERT conjecture? Complete and bipartite are known; what about outerplanar, bounded treewidth, or perfect graphs?",
@@ -187,27 +187,27 @@
   "references": [
     {
       "key": "DHS2019",
-      "citation": "Dvo\u0159\u00e1k, Z., Hu, X., and Sereni, J.-S. 'A 4-choosable graph that is not (8:2)-choosable.' Advances in Combinatorics (2019). Constructs a graph with >100 vertices that is (4,1)-choosable but not (8,2)-choosable, using Kneser-type techniques.",
+      "citation": "Dvořák, Z., Hu, X., and Sereni, J.-S. 'A 4-choosable graph that is not (8:2)-choosable.' Advances in Combinatorics (2019). Constructs a graph with >100 vertices that is (4,1)-choosable but not (8,2)-choosable, using Kneser-type techniques.",
       "type": "paper"
     },
     {
       "key": "ERT1980",
-      "citation": "Erd\u0151s, P., Rubin, A. L., and Taylor, H. 'Choosability in graphs.' Proc. West Coast Conf. on Combinatorics, Graph Theory and Computing, Congressus Numerantium 26, 125\u2013157 (1979/1980). Introduced list coloring and the scaling conjecture.",
+      "citation": "Erdős, P., Rubin, A. L., and Taylor, H. 'Choosability in graphs.' Proc. West Coast Conf. on Combinatorics, Graph Theory and Computing, Congressus Numerantium 26, 125–157 (1979/1980). Introduced list coloring and the scaling conjecture.",
       "type": "paper"
     },
     {
       "key": "ATV1997",
-      "citation": "Alon, N., Tuza, Z., and Voigt, M. 'Choosability and fractional chromatic numbers.' Discrete Mathematics 165/166, 31\u201338 (1997). Proved that fractional choosability does scale.",
+      "citation": "Alon, N., Tuza, Z., and Voigt, M. 'Choosability and fractional chromatic numbers.' Discrete Mathematics 165/166, 31–38 (1997). Proved that fractional choosability does scale.",
       "type": "paper"
     },
     {
       "key": "Ohba2002",
-      "citation": "Ohba, K. 'On chromatic-choosable graphs.' Journal of Graph Theory 40(2), 130\u2013135 (2002). Conjectured \u03c7_L(G) = \u03c7(G) when |V| \u2264 2\u03c7(G) + 1, proved by Noel-Reed-Wu in 2015.",
+      "citation": "Ohba, K. 'On chromatic-choosable graphs.' Journal of Graph Theory 40(2), 130–135 (2002). Conjectured χ_L(G) = χ(G) when |V| ≤ 2χ(G) + 1, proved by Noel-Reed-Wu in 2015.",
       "type": "paper"
     },
     {
       "key": "Galvin1995",
-      "citation": "Galvin, F. 'The list chromatic index of a bipartite multigraph.' Journal of Combinatorial Theory, Series B 63(1), 153\u2013158 (1995). List edge-coloring of bipartite graphs.",
+      "citation": "Galvin, F. 'The list chromatic index of a bipartite multigraph.' Journal of Combinatorial Theory, Series B 63(1), 153–158 (1995). List edge-coloring of bipartite graphs.",
       "type": "paper"
     }
   ],
@@ -215,17 +215,17 @@
     {
       "targetId": "erdos-110",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: counterexample, disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: counterexample, disproved, graph-theory"
     },
     {
       "targetId": "erdos-631",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: choosability, graph-theory, list-coloring"
+      "description": "Related Erdős problem sharing themes: choosability, graph-theory, list-coloring"
     },
     {
       "targetId": "erdos-641",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: counterexample, disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: counterexample, disproved, graph-theory"
     }
   ],
   "sorries": 5

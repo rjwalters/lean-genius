@@ -1,10 +1,10 @@
 {
   "id": "erdos-35",
-  "title": "Erd\u0151s #35: Schnirelmann Density and Additive Bases",
+  "title": "Erdős #35: Schnirelmann Density and Additive Bases",
   "slug": "erdos-35",
-  "description": "If B is an additive basis of order k, does d_s(A+B) \u2265 \u03b1 + \u03b1(1-\u03b1)/k hold for all A? Solved affirmatively via Pl\u00fcnnecke's stronger inequality d_s(A+B) \u2265 \u03b1^{1-1/k}.",
+  "description": "If B is an additive basis of order k, does d_s(A+B) ≥ α + α(1-α)/k hold for all A? Solved affirmatively via Plünnecke's stronger inequality d_s(A+B) ≥ α^{1-1/k}.",
   "meta": {
-    "author": "Helmut Pl\u00fcnnecke",
+    "author": "Helmut Plünnecke",
     "sourceUrl": "https://erdosproblems.com/35",
     "date": "1970",
     "status": "axiomatized",
@@ -31,21 +31,21 @@
       "Goldbach conjecture and related results",
       "Sieve methods in number theory"
     ],
-    "assumptions": "2 axioms: (1) plunnecke_inequality \u2014 Pl\u00fcnnecke's 1970 theorem for Schnirelmann density (Pl\u00fcnnecke-Ruzsa graph theory not in Mathlib); (2) goldbach_conjecture \u2014 Goldbach's conjecture (every even n \u2265 4 = p+q, open problem, verified for n \u2264 4\u00d710^18). The main theorem erdos_35 depends only on plunnecke_inequality.",
+    "assumptions": "2 axioms: (1) plunnecke_inequality — Plünnecke's 1970 theorem for Schnirelmann density (Plünnecke-Ruzsa graph theory not in Mathlib); (2) goldbach_conjecture — Goldbach's conjecture (every even n ≥ 4 = p+q, open problem, verified for n ≤ 4×10^18). The main theorem erdos_35 depends only on plunnecke_inequality.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 9
   },
   "overview": {
-    "historicalContext": "Schnirelmann introduced his density notion in 1930 and proved that the primes form an additive basis \u2014 every sufficiently large integer is a bounded sum of primes. His density d_s(A) = inf_{N\u22651} A(N)/N is more restrictive than natural density because it uses the true infimum rather than a limit, making it well-suited for additive combinatorics where worst-case control is essential.\n\nErd\u0151s posed Problem #35 in 1956 [Er56], conjecturing that if B is an additive basis of order k with 0 \u2208 B, then d_s(A+B) \u2265 \u03b1 + \u03b1(1-\u03b1)/k where \u03b1 = d_s(A). He had already proved a weaker version with 2k in the denominator in 1936 [Er36c], which was the first quantitative result connecting basis order to density increment. The factor-of-2 gap between Erd\u0151s's partial result and his conjecture remained open for over three decades.\n\nPl\u00fcnnecke's 1970 paper [Pl70] resolved the problem by proving the strictly stronger inequality d_s(A+B) \u2265 \u03b1^{1-1/k}. His proof used a novel graph-theoretic framework \u2014 directed layered graphs with vertex magnification properties \u2014 that was later simplified and popularized by Ruzsa in 1989. The power bound \u03b1^{1-1/k} dominates the conjectured bound \u03b1 + \u03b1(1-\u03b1)/k on all of [0,1], as can be verified by the concavity of x^p for p \u2208 (0,1).\n\nThe Pl\u00fcnnecke\u2013Ruzsa inequality has since become one of the cornerstones of additive combinatorics, with far-reaching applications to sumset estimates, Freiman's theorem, and the polynomial Freiman\u2013Ruzsa conjecture (recently resolved by Gowers, Green, Manners, and Tao in 2023). Erd\u0151s Problem #35 thus served as a catalyst for a major line of research in modern combinatorial number theory.",
-    "problemStatement": "Let B \u2286 \u2115 be an additive basis of order k with 0 \u2208 B. Is it true that for every A \u2286 \u2115, d_s(A+B) \u2265 \u03b1 + \u03b1(1-\u03b1)/k where \u03b1 = d_s(A) is the Schnirelmann density?",
-    "text": "If B is an additive basis of order k, does d_s(A+B) \u2265 \u03b1 + \u03b1(1-\u03b1)/k hold for all A? Solved affirmatively via Pl\u00fcnnecke's stronger inequality d_s(A+B) \u2265 \u03b1^{1-1/k}.",
-    "proofStrategy": "The formalization defines Schnirelmann density via the counting function A(N) = |A \u2229 {1,...,N}| and the infimum d_s(A) = inf_{N\u22651} A(N)/N. Additive bases are defined through iterated sumsets: B is a basis of order k if every natural number lies in some m-fold sumset of B with m \u2264 k. The proof chains three results: (1) Pl\u00fcnnecke's inequality d_s(A+B) \u2265 \u03b1^{1-1/k}, (2) the calculus lemma \u03b1^{1-1/k} \u2265 \u03b1 + \u03b1(1-\u03b1)/k for \u03b1 \u2208 [0,1], and (3) linarith to combine them. The logical structure compiles in Lean modulo 2 sorries: plunnecke_inequality (the deep graph-theoretic result) and primes_basis_conditional (Goldbach-dependent).",
+    "historicalContext": "Schnirelmann introduced his density notion in 1930 and proved that the primes form an additive basis — every sufficiently large integer is a bounded sum of primes. His density d_s(A) = inf_{N≥1} A(N)/N is more restrictive than natural density because it uses the true infimum rather than a limit, making it well-suited for additive combinatorics where worst-case control is essential.\n\nErdős posed Problem #35 in 1956 [Er56], conjecturing that if B is an additive basis of order k with 0 ∈ B, then d_s(A+B) ≥ α + α(1-α)/k where α = d_s(A). He had already proved a weaker version with 2k in the denominator in 1936 [Er36c], which was the first quantitative result connecting basis order to density increment. The factor-of-2 gap between Erdős's partial result and his conjecture remained open for over three decades.\n\nPlünnecke's 1970 paper [Pl70] resolved the problem by proving the strictly stronger inequality d_s(A+B) ≥ α^{1-1/k}. His proof used a novel graph-theoretic framework — directed layered graphs with vertex magnification properties — that was later simplified and popularized by Ruzsa in 1989. The power bound α^{1-1/k} dominates the conjectured bound α + α(1-α)/k on all of [0,1], as can be verified by the concavity of x^p for p ∈ (0,1).\n\nThe Plünnecke–Ruzsa inequality has since become one of the cornerstones of additive combinatorics, with far-reaching applications to sumset estimates, Freiman's theorem, and the polynomial Freiman–Ruzsa conjecture (recently resolved by Gowers, Green, Manners, and Tao in 2023). Erdős Problem #35 thus served as a catalyst for a major line of research in modern combinatorial number theory.",
+    "problemStatement": "Let B ⊆ ℕ be an additive basis of order k with 0 ∈ B. Is it true that for every A ⊆ ℕ, d_s(A+B) ≥ α + α(1-α)/k where α = d_s(A) is the Schnirelmann density?",
+    "text": "If B is an additive basis of order k, does d_s(A+B) ≥ α + α(1-α)/k hold for all A? Solved affirmatively via Plünnecke's stronger inequality d_s(A+B) ≥ α^{1-1/k}.",
+    "proofStrategy": "The formalization defines Schnirelmann density via the counting function A(N) = |A ∩ {1,...,N}| and the infimum d_s(A) = inf_{N≥1} A(N)/N. Additive bases are defined through iterated sumsets: B is a basis of order k if every natural number lies in some m-fold sumset of B with m ≤ k. The proof chains three results: (1) Plünnecke's inequality d_s(A+B) ≥ α^{1-1/k}, (2) the calculus lemma α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1], and (3) linarith to combine them. The logical structure compiles in Lean modulo 2 sorries: plunnecke_inequality (the deep graph-theoretic result) and primes_basis_conditional (Goldbach-dependent).",
     "keyInsights": [
-      "Schnirelmann density d_s(A) = inf_{N\u22651} A(N)/N uses the true infimum, making it more restrictive than natural density but ideal for additive combinatorics where worst-case behavior matters",
-      "Erd\u0151s (1936) proved d_s(A+B) \u2265 \u03b1 + \u03b1(1-\u03b1)/(2k), the first quantitative link between basis order and density increment, but with a factor-of-2 gap from the conjecture",
-      "Pl\u00fcnnecke (1970) proved the strictly stronger d_s(A+B) \u2265 \u03b1^{1-1/k} using directed layered graphs, which Ruzsa later simplified with his celebrated covering lemma",
-      "The bridge lemma \u03b1^{1-1/k} \u2265 \u03b1 + \u03b1(1-\u03b1)/k follows from concavity of x^p for p \u2208 (0,1): the function f(\u03b1) = \u03b1^{1-1/k} - \u03b1 - \u03b1(1-\u03b1)/k satisfies f(0) = f(1) = 0 and f is concave, so f \u2265 0",
+      "Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N uses the true infimum, making it more restrictive than natural density but ideal for additive combinatorics where worst-case behavior matters",
+      "Erdős (1936) proved d_s(A+B) ≥ α + α(1-α)/(2k), the first quantitative link between basis order and density increment, but with a factor-of-2 gap from the conjecture",
+      "Plünnecke (1970) proved the strictly stronger d_s(A+B) ≥ α^{1-1/k} using directed layered graphs, which Ruzsa later simplified with his celebrated covering lemma",
+      "The bridge lemma α^{1-1/k} ≥ α + α(1-α)/k follows from concavity of x^p for p ∈ (0,1): the function f(α) = α^{1-1/k} - α - α(1-α)/k satisfies f(0) = f(1) = 0 and f is concave, so f ≥ 0",
       "The Lean proof of erdos_35 compiles by chaining plunnecke_inequality and power_bound_implies_erdos via linarith, demonstrating the clean logical structure even with sorry-gaps in the deep lemmas"
     ],
     "prerequisites": [
@@ -59,75 +59,75 @@
     {
       "id": "schnirelmann",
       "title": "Schnirelmann Density",
-      "summary": "Defines the counting function A(N) = |A \u2229 {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N\u22651} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity.",
+      "summary": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity.",
       "startLine": 37,
       "endLine": 53,
-      "mathContext": "Defines the counting function A(N) = |A \u2229 {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N\u22651} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity."
+      "mathContext": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity."
     },
     {
       "id": "additive-basis",
       "title": "Additive Bases",
-      "summary": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m \u2264 k). Also defines exact order requiring minimality.",
+      "summary": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m ≤ k). Also defines exact order requiring minimality.",
       "startLine": 54,
       "endLine": 77,
-      "mathContext": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m \u2264 k). Also defines exact order requiring minimality."
+      "mathContext": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m ≤ k). Also defines exact order requiring minimality."
     },
     {
       "id": "basic-props",
       "title": "Basic Properties",
-      "summary": "Proves d_s(A) \u2265 0 (fully proved via iInf_nonneg), d_s(A) \u2264 1 (proved via ciInf_le_of_le + native_decide), the density ratio at N=1 for 1 \u2208 A (proved via native_decide), and monotonicity d_s(A) \u2264 d_s(A+B) when 0 \u2208 B (proved via ciInf_mono + subset argument). All four results are fully proved with no sorries.",
+      "summary": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg), d_s(A) ≤ 1 (proved via ciInf_le_of_le + native_decide), the density ratio at N=1 for 1 ∈ A (proved via native_decide), and monotonicity d_s(A) ≤ d_s(A+B) when 0 ∈ B (proved via ciInf_mono + subset argument). All four results are fully proved with no sorries.",
       "startLine": 78,
       "endLine": 112,
-      "mathContext": "Proves d_s(A) \u2265 0 (fully proved via iInf_nonneg), d_s(A) \u2264 1 (proved via ciInf_le_of_le + native_decide), the density ratio at N=1 for 1 \u2208 A (proved via native_decide), and monotonicity d_s(A) \u2264 d_s(A+B) when 0 \u2208 B (proved via ciInf_mono + subset argument). All four results are fully proved with no sorries."
+      "mathContext": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg), d_s(A) ≤ 1 (proved via ciInf_le_of_le + native_decide), the density ratio at N=1 for 1 ∈ A (proved via native_decide), and monotonicity d_s(A) ≤ d_s(A+B) when 0 ∈ B (proved via ciInf_mono + subset argument). All four results are fully proved with no sorries."
     },
     {
       "id": "erdos-1936",
-      "title": "Erd\u0151s 1936 Result",
-      "summary": "Proves Erd\u0151s's original 1936 partial result: d_s(A+B) \u2265 \u03b1 + \u03b1(1-\u03b1)/(2k). Derived directly from erdos_35 (the stronger Pl\u00fcnnecke bound) since \u03b1(1-\u03b1)/(2k) \u2264 \u03b1(1-\u03b1)/k. Fully proved with no sorry.",
+      "title": "Erdős 1936 Result",
+      "summary": "Proves Erdős's original 1936 partial result: d_s(A+B) ≥ α + α(1-α)/(2k). Derived directly from erdos_35 (the stronger Plünnecke bound) since α(1-α)/(2k) ≤ α(1-α)/k. Fully proved with no sorry.",
       "startLine": 113,
       "endLine": 123,
-      "mathContext": "Proves Erd\u0151s's original 1936 partial result: d_s(A+B) $\\geq$ \u03b1 + \u03b1(1-\u03b1)/(2k). Derived directly from erdos_35 (the stronger Pl\u00fcnnecke bound) since \u03b1(1-\u03b1)/(2k) \u2264 \u03b1(1-\u03b1)/k. Fully proved with no sorry."
+      "mathContext": "Proves Erdős's original 1936 partial result: d_s(A+B) $\\geq$ α + α(1-α)/(2k). Derived directly from erdos_35 (the stronger Plünnecke bound) since α(1-α)/(2k) ≤ α(1-α)/k. Fully proved with no sorry."
     },
     {
       "id": "plunnecke",
-      "title": "Pl\u00fcnnecke's Inequality",
-      "summary": "States plunnecke_inequality as an AXIOM: d_s(A+B) \u2265 \u03b1^{1-1/k} (Pl\u00fcnnecke's 1970 theorem, blocked by missing Pl\u00fcnnecke-Ruzsa infrastructure for Schnirelmann density). Fully proves power_bound_implies_erdos: \u03b1^{1-1/k} \u2265 \u03b1 + \u03b1(1-\u03b1)/k via log bounds and Real.rpow_add. The calculus lemma is completely formalized.",
+      "title": "Plünnecke's Inequality",
+      "summary": "States plunnecke_inequality as an AXIOM: d_s(A+B) ≥ α^{1-1/k} (Plünnecke's 1970 theorem, blocked by missing Plünnecke-Ruzsa infrastructure for Schnirelmann density). Fully proves power_bound_implies_erdos: α^{1-1/k} ≥ α + α(1-α)/k via log bounds and Real.rpow_add. The calculus lemma is completely formalized.",
       "startLine": 124,
       "endLine": 143,
-      "mathContext": "States plunnecke_inequality: d_s(A+B) $\\geq$ \u03b1^{1-1/k} (1 sorry \u2014 the deep graph-theoretic result). Fully proves power_bound_implies_erdos: \u03b1^{1-1/k} $\\geq$ \u03b1 + \u03b1(1-\u03b1)/k via log bounds and Real.rpow_add. The calculus lemma is completely formalized."
+      "mathContext": "States plunnecke_inequality: d_s(A+B) $\\geq$ α^{1-1/k} (1 sorry — the deep graph-theoretic result). Fully proves power_bound_implies_erdos: α^{1-1/k} $\\geq$ α + α(1-α)/k via log bounds and Real.rpow_add. The calculus lemma is completely formalized."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "summary": "The complete proof of Erd\u0151s Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstrating the clean logical structure.",
+      "summary": "The complete proof of Erdős Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstrating the clean logical structure.",
       "startLine": 144,
       "endLine": 160,
-      "mathContext": "The complete proof of Erd\u0151s Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstrating the clean logical structure."
+      "mathContext": "The complete proof of Erdős Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstrating the clean logical structure."
     },
     {
       "id": "basis-order-one",
       "title": "Basis of Order 1",
-      "summary": "Proves that a basis of order 1 containing 0 must be all of \u2115. Uses interval_cases on the at-most-1 bound to show every n \u2208 B. This is a fully proved result with no sorries.",
+      "summary": "Proves that a basis of order 1 containing 0 must be all of ℕ. Uses interval_cases on the at-most-1 bound to show every n ∈ B. This is a fully proved result with no sorries.",
       "startLine": 164,
       "endLine": 176,
-      "mathContext": "Proves that a basis of order 1 containing 0 must be all of $\\mathbb{N}$. Uses interval_cases on the at-most-1 bound to show every n \u2208 B. This is a fully proved result with no sorries."
+      "mathContext": "Proves that a basis of order 1 containing 0 must be all of $\\mathbb{N}$. Uses interval_cases on the at-most-1 bound to show every n ∈ B. This is a fully proved result with no sorries."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "Defines squares = {n\u00b2 : n \u2208 \u2115} and primesWithOne = {1} \u222a {p : p prime}. Fully proves squares_basis_order_4 via Nat.sum_four_squares (Lagrange). Adds goldbach_conjecture as an explicit AXIOM. Fully proves primes_basis_conditional from goldbach_conjecture: case split on parity \u2014 even n\u22654 uses Goldbach directly (m=2), odd primes use m=1, odd composites n+4 use 1+(n+3) where n+3 is even and Goldbach gives m=3.",
+      "summary": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. Fully proves squares_basis_order_4 via Nat.sum_four_squares (Lagrange). Adds goldbach_conjecture as an explicit AXIOM. Fully proves primes_basis_conditional from goldbach_conjecture: case split on parity — even n≥4 uses Goldbach directly (m=2), odd primes use m=1, odd composites n+4 use 1+(n+3) where n+3 is even and Goldbach gives m=3.",
       "startLine": 177,
       "endLine": 225,
-      "mathContext": "Defines squares = {n\u00b2 : n \u2208 \u2115} and primesWithOne = {1} \u222a {p : p prime}. Fully proves squares_basis_order_4 via Nat.sum_four_squares (Lagrange). States primes_basis_conditional (1 sorry \u2014 requires Goldbach/Vinogradov). Only primes_basis_conditional remains unproved."
+      "mathContext": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. Fully proves squares_basis_order_4 via Nat.sum_four_squares (Lagrange). States primes_basis_conditional (1 sorry — requires Goldbach/Vinogradov). Only primes_basis_conditional remains unproved."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures the complete logical structure of Erd\u0151s Problem #35, from Schnirelmann density definitions through Pl\u00fcnnecke's inequality to the final result. All sorries have been eliminated: plunnecke_inequality is stated as an explicit axiom (Pl\u00fcnnecke's 1970 theorem, blocked by ~2000 lines of Pl\u00fcnnecke-Ruzsa infrastructure), and primes_basis_conditional is proved from an explicit goldbach_conjecture axiom via parity case analysis. The formalization now has 0 sorries and 2 named axioms.",
-    "implications": "**Theoretical Significance**: Pl\u00fcnnecke's inequality has become a fundamental tool in additive combinatorics.\n\nThe Pl\u00fcnnecke\u2013Ruzsa framework provides quantitative control over sumset growth and underpins results from Freiman's theorem to the polynomial Freiman\u2013Ruzsa conjecture. This formalization demonstrates how a single deep inequality resolves Erd\u0151s's conjecture through clean algebraic chaining.",
+    "summary": "The formalization captures the complete logical structure of Erdős Problem #35, from Schnirelmann density definitions through Plünnecke's inequality to the final result. All sorries have been eliminated: plunnecke_inequality is stated as an explicit axiom (Plünnecke's 1970 theorem, blocked by ~2000 lines of Plünnecke-Ruzsa infrastructure), and primes_basis_conditional is proved from an explicit goldbach_conjecture axiom via parity case analysis. The formalization now has 0 sorries and 2 named axioms.",
+    "implications": "**Theoretical Significance**: Plünnecke's inequality has become a fundamental tool in additive combinatorics.\n\nThe Plünnecke–Ruzsa framework provides quantitative control over sumset growth and underpins results from Freiman's theorem to the polynomial Freiman–Ruzsa conjecture. This formalization demonstrates how a single deep inequality resolves Erdős's conjecture through clean algebraic chaining.",
     "openQuestions": [
-      "Can the Pl\u00fcnnecke bound \u03b1^{1-1/k} be improved for specific classes of bases?",
-      "What is the optimal density increment for squares (k=4): is \u03b1 + \u03b1(1-\u03b1)/4 tight?",
-      "Can plunnecke_inequality be proved once Mathlib adds Schnirelmann density infrastructure (bridging from Finset Pl\u00fcnnecke-Ruzsa to Set \u2115 density)?"
+      "Can the Plünnecke bound α^{1-1/k} be improved for specific classes of bases?",
+      "What is the optimal density increment for squares (k=4): is α + α(1-α)/4 tight?",
+      "Can plunnecke_inequality be proved once Mathlib adds Schnirelmann density infrastructure (bridging from Finset Plünnecke-Ruzsa to Set ℕ density)?"
     ]
   },
   "leanFile": {
@@ -156,7 +156,7 @@
     {
       "targetId": "erdos-28",
       "relationship": "related",
-      "description": "Problem #28 (Erd\u0151s-Tur\u00e1n on bases) and Problem #35 both concern additive bases. Schnirelmann density provides the foundation: positive Schnirelmann density implies basis, but Problem #28 asks about the representation function"
+      "description": "Problem #28 (Erdős-Turán on bases) and Problem #35 both concern additive bases. Schnirelmann density provides the foundation: positive Schnirelmann density implies basis, but Problem #28 asks about the representation function"
     },
     {
       "targetId": "erdos-29",
@@ -172,9 +172,9 @@
   "references": [
     {
       "authors": "Schnirelmann, Lev G.",
-      "title": "\u00dcber additive Eigenschaften von Zahlen",
+      "title": "Über additive Eigenschaften von Zahlen",
       "year": "1933",
-      "venue": "Mathematische Annalen, vol. 107, pp. 649\u2013690",
+      "venue": "Mathematische Annalen, vol. 107, pp. 649–690",
       "note": "Foundational paper proving positive Schnirelmann density implies additive basis property"
     },
     {

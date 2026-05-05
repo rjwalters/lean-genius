@@ -124,21 +124,29 @@
   },
   "references": [
     {
-      "authors": ["G. H. Hardy", "J. E. Littlewood", "G. Pólya"],
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press",
       "note": "Seminal reference establishing the theory of power means; proves the complete monotone chain M_r(a,b) for r ∈ ℝ and the general AM-GM inequality."
     },
     {
-      "authors": ["A.-L. Cauchy"],
+      "authors": [
+        "A.-L. Cauchy"
+      ],
       "title": "Cours d'Analyse de l'École Royale Polytechnique",
       "year": "1821",
       "venue": "École Polytechnique",
       "note": "First algebraic proof of the AM-GM inequality; also contains the Cauchy-Schwarz inequality in its original form."
     },
     {
-      "authors": ["J. M. Steele"],
+      "authors": [
+        "J. M. Steele"
+      ],
       "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
       "year": "2004",
       "venue": "Cambridge University Press",
@@ -153,8 +161,12 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
     "namespace": "PowerMeanAuto",
     "lineCount": 187,
     "axiomCount": 0,

@@ -1,10 +1,10 @@
 {
   "id": "erdos-623",
-  "title": "Erd\u0151s #623: Independence for Functions on Finite Subsets",
+  "title": "Erdős #623: Independence for Functions on Finite Subsets",
   "slug": "erdos-623",
-  "description": "Let X have cardinality \u2135_\u03c9 and f: Finset(X) \u2192 X satisfy f(A) \u2209 A. Must there exist an infinite independent set Y \u2286 X where f(B) \u2209 Y for all finite B \u2286 Y? OPEN - possibly undecidable.",
+  "description": "Let X have cardinality ℵ_ω and f: Finset(X) → X satisfy f(A) ∉ A. Must there exist an infinite independent set Y ⊆ X where f(B) ∉ Y for all finite B ⊆ Y? OPEN - possibly undecidable.",
   "meta": {
-    "author": "Erd\u0151s-Hajnal (1958)",
+    "author": "Erdős-Hajnal (1958)",
     "sourceUrl": "https://erdosproblems.com/623",
     "date": "1958",
     "status": "axiomatized",
@@ -42,10 +42,10 @@
     ],
     "originalContributions": [
       "Definition of free functions (IsFreeFunction) and independent sets (IsIndependent) in Lean 4",
-      "Formal statement of the Erd\u0151s-Hajnal negative result for cardinals below \u2135_\u03c9",
+      "Formal statement of the Erdős-Hajnal negative result for cardinals below ℵ_ω",
       "Formalization of the main conjecture as erdos_623_conjecture",
       "Proof that finite case is trivial via Set.toFinite",
-      "Proof that countable case reduces to Erd\u0151s-Hajnal via aleph_n_lt_omega 0",
+      "Proof that countable case reduces to Erdős-Hajnal via aleph_n_lt_omega 0",
       "Chromatic and Ramsey interpretations of the independence property",
       "Uncountable and weak variants of the conjecture",
       "Proof of aleph_omega_is_limit using Cardinal.isLimit_aleph"
@@ -57,16 +57,16 @@
     "definitionCount": 10
   },
   "overview": {
-    "historicalContext": "Erd\u0151s and Hajnal introduced this problem in their landmark 1958 paper on partition relations for cardinal numbers, which laid the foundations of infinitary combinatorics. The central question asks whether every 'free' function $f: [X]^{<\\omega} \\to X$ on a set of cardinality $\\aleph_\\omega$ must admit an infinite independent set.\n\nThe Erd\u0151s-Hajnal theorem (1958) provides a complete negative answer for all cardinals below $\\aleph_\\omega$: for each $\\aleph_n$ with $n < \\omega$, one can construct a free function with no infinite independent set. The construction uses transfinite induction along the ordinal $\\omega_n$, building a 'defeating' function level by level. This makes $\\aleph_\\omega$ the precise threshold where the question transitions from resolved to open.\n\nThe significance of $\\aleph_\\omega$ lies in its being the first singular cardinal\u2014its cofinality is $\\omega$ (countable), yet its cardinality is uncountable. Saharon Shelah's PCF theory (1978\u20131994) revealed deep structural properties of singular cardinals, showing that products $\\prod_{n<\\omega} \\aleph_n$ can be analyzed through 'possible cofinalities.' Silver's theorem (1974) showed that if GCH holds below a singular cardinal of uncountable cofinality, it holds at that cardinal too\u2014but $\\aleph_\\omega$ has countable cofinality, so Silver's theorem does not apply.\n\nIn 1999, Erd\u0151s himself suggested this problem is 'perhaps undecidable,' meaning its truth might depend on set-theoretic axioms beyond ZFC. This connects to the broader phenomenon that combinatorial problems at singular cardinals\u2014including Shelah's celebrated work on the singular cardinals hypothesis\u2014often exhibit independence from standard axioms. The Proper Forcing Axiom (PFA) and large cardinal hypotheses could potentially determine the answer.",
-    "problemStatement": "Let $X$ be a set of cardinality $\\aleph_\\omega$ and $f$ be a function from the finite subsets of $X$ to $X$ such that $f(A) \\notin A$ for all $A$.\n\n**Question**: Must there exist an infinite $Y \\subseteq X$ that is **independent**\u2014that is, for all finite $B \\subset Y$, we have $f(B) \\notin Y$?\n\n**Status**: OPEN (possibly undecidable)\n\n**Known**: For $|X| < \\aleph_\\omega$, the answer is NO (Erd\u0151s-Hajnal 1958)",
-    "text": "Let X have cardinality \u2135_\u03c9 and f: Finset(X) \u2192 X satisfy f(A) \u2209 A. Must there exist an infinite independent set Y \u2286 X where f(B) \u2209 Y for all finite B \u2286 Y? OPEN - possibly undecidable.",
-    "proofStrategy": "We formalize the key concepts: free functions ($f(A) \\notin A$), independent sets ($f(B) \\notin Y$ for finite $B \\subseteq Y$), and the cardinal $\\aleph_\\omega$ using Mathlib's `Cardinal.aleph` and `Ordinal.cof`.\n\nThe Erd\u0151s-Hajnal negative result for $|X| < \\aleph_\\omega$ is axiomatized since it requires complex transfinite constructions along $\\omega_n$. The main conjecture is stated as a definition (`erdos_623_conjecture`) since it remains open. The formalization includes the dichotomy (positive or negative), the chromatic interpretation, and both strengthened (uncountable $Y$) and weakened (existential) variants.",
+    "historicalContext": "Erdős and Hajnal introduced this problem in their landmark 1958 paper on partition relations for cardinal numbers, which laid the foundations of infinitary combinatorics. The central question asks whether every 'free' function $f: [X]^{<\\omega} \\to X$ on a set of cardinality $\\aleph_\\omega$ must admit an infinite independent set.\n\nThe Erdős-Hajnal theorem (1958) provides a complete negative answer for all cardinals below $\\aleph_\\omega$: for each $\\aleph_n$ with $n < \\omega$, one can construct a free function with no infinite independent set. The construction uses transfinite induction along the ordinal $\\omega_n$, building a 'defeating' function level by level. This makes $\\aleph_\\omega$ the precise threshold where the question transitions from resolved to open.\n\nThe significance of $\\aleph_\\omega$ lies in its being the first singular cardinal—its cofinality is $\\omega$ (countable), yet its cardinality is uncountable. Saharon Shelah's PCF theory (1978–1994) revealed deep structural properties of singular cardinals, showing that products $\\prod_{n<\\omega} \\aleph_n$ can be analyzed through 'possible cofinalities.' Silver's theorem (1974) showed that if GCH holds below a singular cardinal of uncountable cofinality, it holds at that cardinal too—but $\\aleph_\\omega$ has countable cofinality, so Silver's theorem does not apply.\n\nIn 1999, Erdős himself suggested this problem is 'perhaps undecidable,' meaning its truth might depend on set-theoretic axioms beyond ZFC. This connects to the broader phenomenon that combinatorial problems at singular cardinals—including Shelah's celebrated work on the singular cardinals hypothesis—often exhibit independence from standard axioms. The Proper Forcing Axiom (PFA) and large cardinal hypotheses could potentially determine the answer.",
+    "problemStatement": "Let $X$ be a set of cardinality $\\aleph_\\omega$ and $f$ be a function from the finite subsets of $X$ to $X$ such that $f(A) \\notin A$ for all $A$.\n\n**Question**: Must there exist an infinite $Y \\subseteq X$ that is **independent**—that is, for all finite $B \\subset Y$, we have $f(B) \\notin Y$?\n\n**Status**: OPEN (possibly undecidable)\n\n**Known**: For $|X| < \\aleph_\\omega$, the answer is NO (Erdős-Hajnal 1958)",
+    "text": "Let X have cardinality ℵ_ω and f: Finset(X) → X satisfy f(A) ∉ A. Must there exist an infinite independent set Y ⊆ X where f(B) ∉ Y for all finite B ⊆ Y? OPEN - possibly undecidable.",
+    "proofStrategy": "We formalize the key concepts: free functions ($f(A) \\notin A$), independent sets ($f(B) \\notin Y$ for finite $B \\subseteq Y$), and the cardinal $\\aleph_\\omega$ using Mathlib's `Cardinal.aleph` and `Ordinal.cof`.\n\nThe Erdős-Hajnal negative result for $|X| < \\aleph_\\omega$ is axiomatized since it requires complex transfinite constructions along $\\omega_n$. The main conjecture is stated as a definition (`erdos_623_conjecture`) since it remains open. The formalization includes the dichotomy (positive or negative), the chromatic interpretation, and both strengthened (uncountable $Y$) and weakened (existential) variants.",
     "keyInsights": [
       "**Free function**: $f: [X]^{<\\omega} \\to X$ where $f(A) \\notin A$ always. The function 'escapes' its input, formalized as `IsFreeFunction` using Lean's `Finset` type.",
-      "**Independent set**: $Y \\subseteq X$ where $f(B) \\notin Y$ for all finite $B \\subseteq Y$. Formalized as `IsIndependent` with the coercion `\u2191B \u2286 Y` bridging `Finset` and `Set`.",
-      "**$\\aleph_\\omega$ is singular**: Its cofinality is $\\omega$ (countable), making it the first singular cardinal. This is why the Erd\u0151s-Hajnal construction for $\\aleph_n$ cannot simply be 'taken to the limit.'",
-      "**Erd\u0151s-Hajnal threshold**: For $|X| = \\aleph_n$ ($n < \\omega$), counterexamples exist via transfinite induction on $\\omega_n$. At $\\aleph_\\omega = \\sup_n \\aleph_n$, the induction breaks down.",
-      "**Potential ZFC-independence**: Like the singular cardinals hypothesis and Shelah's PCF conjectures, this problem at $\\aleph_\\omega$ may be sensitive to axioms beyond ZFC\u2014possibly determined by PFA or large cardinals."
+      "**Independent set**: $Y \\subseteq X$ where $f(B) \\notin Y$ for all finite $B \\subseteq Y$. Formalized as `IsIndependent` with the coercion `↑B ⊆ Y` bridging `Finset` and `Set`.",
+      "**$\\aleph_\\omega$ is singular**: Its cofinality is $\\omega$ (countable), making it the first singular cardinal. This is why the Erdős-Hajnal construction for $\\aleph_n$ cannot simply be 'taken to the limit.'",
+      "**Erdős-Hajnal threshold**: For $|X| = \\aleph_n$ ($n < \\omega$), counterexamples exist via transfinite induction on $\\omega_n$. At $\\aleph_\\omega = \\sup_n \\aleph_n$, the induction breaks down.",
+      "**Potential ZFC-independence**: Like the singular cardinals hypothesis and Shelah's PCF conjectures, this problem at $\\aleph_\\omega$ may be sensitive to axioms beyond ZFC—possibly determined by PFA or large cardinals."
     ],
     "prerequisites": [
       "Infinite combinatorics: partition calculus, Ramsey theory for uncountable sets",
@@ -81,7 +81,7 @@
       "title": "Module Header",
       "startLine": 1,
       "endLine": 26,
-      "summary": "Problem statement (Erd\u0151s-Hajnal 1958): for $|X| = \\aleph_\\omega$ and $f : [X]^{<\\omega} \\to X$ with $f(A) \\notin A$, must there exist infinite independent $Y \\subseteq X$? Below $\\aleph_\\omega$: NO (Erd\u0151s-Hajnal). Erd\u0151s suggested possibly undecidable (1999).",
+      "summary": "Problem statement (Erdős-Hajnal 1958): for $|X| = \\aleph_\\omega$ and $f : [X]^{<\\omega} \\to X$ with $f(A) \\notin A$, must there exist infinite independent $Y \\subseteq X$? Below $\\aleph_\\omega$: NO (Erdős-Hajnal). Erdős suggested possibly undecidable (1999).",
       "mathContext": "$f : [X]^{<\\omega} \\to X$ is free if $f(A) \\notin A$ for all finite $A \\subseteq X$. $Y \\subseteq X$ is independent if $f(B) \\notin Y$ for all finite $B \\subseteq Y$. The threshold $\\aleph_\\omega$ (the first singular cardinal, $\\aleph_\\omega = \\sup_n \\aleph_n$, $\\mathrm{cof}(\\aleph_\\omega) = \\omega$) is critical."
     },
     {
@@ -118,11 +118,11 @@
     },
     {
       "id": "erdos-hajnal",
-      "title": "Erd\u0151s-Hajnal Negative Result",
-      "summary": "Axiomatizes the Erd\u0151s-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexample_at_aleph_n`.",
+      "title": "Erdős-Hajnal Negative Result",
+      "summary": "Axiomatizes the Erdős-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexample_at_aleph_n`.",
       "startLine": 102,
       "endLine": 120,
-      "mathContext": "Axiomatizes the Erd\u0151s-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexample_at_aleph_n`."
+      "mathContext": "Axiomatizes the Erdős-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexample_at_aleph_n`."
     },
     {
       "id": "main-problem",
@@ -135,7 +135,7 @@
     {
       "id": "undecidability",
       "title": "Potential Undecidability",
-      "summary": "Discusses Erd\u0151s's 1999 suggestion of ZFC-independence. Proves `cofinality_aleph_omega : $\\mathrm{cof}(\\aleph_\\omega) = \\omega$` using `Cardinal.cof_aleph`, establishing the singular nature that drives independence phenomena.",
+      "summary": "Discusses Erdős's 1999 suggestion of ZFC-independence. Proves `cofinality_aleph_omega : $\\mathrm{cof}(\\aleph_\\omega) = \\omega$` using `Cardinal.cof_aleph`, establishing the singular nature that drives independence phenomena.",
       "startLine": 148,
       "endLine": 163,
       "mathContext": "Proves `cofinality_aleph_omega : $\\mathrm{cof}(\\aleph_\\omega) = \\omega$` using `Cardinal.cof_aleph`, establishing the singular nature that drives independence phenomena."
@@ -151,10 +151,10 @@
     {
       "id": "finite-cases",
       "title": "Finite and Countable Cases",
-      "summary": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erd\u0151s-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$.",
+      "summary": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erdős-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$.",
       "startLine": 175,
       "endLine": 191,
-      "mathContext": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erd\u0151s-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$."
+      "mathContext": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erdős-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$."
     },
     {
       "id": "gap",
@@ -174,12 +174,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #623, an OPEN problem about independence for free functions on finite subsets at cardinality $\\aleph_\\omega$. The Erd\u0151s-Hajnal theorem (1958) proves the answer is NO for all cardinals $\\aleph_n$ with $n < \\omega$, making $\\aleph_\\omega$ the exact threshold. Erd\u0151s himself suggested in 1999 that this problem might be independent of ZFC, connecting it to the broader landscape of singular cardinal combinatorics and Shelah's PCF theory.",
+    "summary": "This formalization captures Erdős Problem #623, an OPEN problem about independence for free functions on finite subsets at cardinality $\\aleph_\\omega$. The Erdős-Hajnal theorem (1958) proves the answer is NO for all cardinals $\\aleph_n$ with $n < \\omega$, making $\\aleph_\\omega$ the exact threshold. Erdős himself suggested in 1999 that this problem might be independent of ZFC, connecting it to the broader landscape of singular cardinal combinatorics and Shelah's PCF theory.",
     "implications": "**Theoretical Significance**: This problem sits at a deep nexus of combinatorics and set-theoretic independence.\n\nThe singular cardinal $\\aleph_\\omega$ occupies a unique position where PCF-theoretic phenomena, forcing axioms, and large cardinal hypotheses all interact. Resolution could illuminate whether combinatorial properties at singular cardinals are determined by ZFC or require additional axioms, with implications for the singular cardinals hypothesis and the study of cardinal arithmetic beyond the continuum.",
     "openQuestions": [
-      "Does every free function on $\\aleph_\\omega$ admit an infinite independent set, or can the Erd\u0151s-Hajnal construction be extended through the singularity?",
+      "Does every free function on $\\aleph_\\omega$ admit an infinite independent set, or can the Erdős-Hajnal construction be extended through the singularity?",
       "Is the answer independent of ZFC? Could PFA (Proper Forcing Axiom) or Martin's Maximum decide it?",
-      "What role does Shelah's PCF theory play\u2014can $\\mathrm{pcf}(\\{\\aleph_n : n < \\omega\\})$ constrain which free functions exist?",
+      "What role does Shelah's PCF theory play—can $\\mathrm{pcf}(\\{\\aleph_n : n < \\omega\\})$ constrain which free functions exist?",
       "For the uncountable strengthening: if an infinite independent set exists, must it have cardinality $\\aleph_1$ or larger?"
     ]
   },
@@ -210,17 +210,17 @@
     {
       "targetId": "erdos-501",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, independence, set-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, independence, set-theory"
     },
     {
       "targetId": "erdos-603",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: cardinals, combinatorics, set-theory"
+      "description": "Related Erdős problem sharing themes: cardinals, combinatorics, set-theory"
     },
     {
       "targetId": "erdos-739",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: cardinals, independence, set-theory"
+      "description": "Related Erdős problem sharing themes: cardinals, independence, set-theory"
     }
   ],
   "sorries": 5
