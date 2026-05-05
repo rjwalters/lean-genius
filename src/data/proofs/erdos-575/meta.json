@@ -24,7 +24,7 @@
     "lineCount": 89,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős and Simonovits posed this problem in 1982 as part of their systematic investigation of extremal functions for graph families. The question sits at the crossroads of two regimes in extremal graph theory. For non-bipartite forbidden graphs, the Erdős–Stone–Simonovits theorem (1966) determines ex(n; H) up to the o(n²) error, and the answer depends only on the chromatic number χ(H). But when the forbidden family contains a bipartite graph, the extremal function drops to o(n²) and the precise order of growth depends on the fine structure of the forbidden graph — a much harder problem. Simonovits had earlier (1966) shown that for a single forbidden bipartite graph the extremal function exhibits polynomial growth n^{1+c} for some c < 1, but determining this exponent remains open in most cases. Problem #575 asks whether, for families, the analysis reduces to a single bipartite member: a powerful structural simplification if true. The conjecture has been verified for families of complete bipartite graphs and certain degenerate families, but the general case remains open after four decades.",
@@ -103,7 +103,7 @@
     "namespace": null,
     "lineCount": 89,
     "axiomCount": 0,
-    "theoremCount": 1,
+    "theoremCount": 0,
     "definitionCount": 3,
     "path": "Proofs/Erdos575Problem.lean",
     "sorries": 0

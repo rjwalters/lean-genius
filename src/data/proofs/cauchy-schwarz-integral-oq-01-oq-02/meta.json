@@ -65,7 +65,7 @@
     "lineCount": 600,
     "assumptions": "2 axiom(s): hadamard_three_lines, riesz_thorin. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 29
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "**Riesz-Thorin Interpolation (1927/1948)**\n\nMarcel Riesz proved the first interpolation theorem for bilinear forms in 1927. Olof Thorin simplified and extended the proof in 1948 using the Hadamard three-lines lemma from complex analysis.\n\nThe theorem states: if a linear operator T is bounded from $L^{p_0}$ to $L^{q_0}$ with norm $M_0$, and from $L^{p_1}$ to $L^{q_1}$ with norm $M_1$, then for any $\\theta \\in [0,1]$, T is bounded from $L^{p_\\theta}$ to $L^{q_\\theta}$ with norm $\\leq M_0^{1-\\theta} \\cdot M_1^\\theta$, where the interpolated exponents satisfy $1/p_\\theta = (1-\\theta)/p_0 + \\theta/p_1$.\n\n**Connection to Hölder**: Hölder's inequality provides the endpoint estimates (the $M_0$ and $M_1$ bounds), while the three-lines lemma provides the interpolation between endpoints.",
@@ -205,7 +205,7 @@
     "namespace": "RieszThorinInterpolation",
     "lineCount": 600,
     "axiomCount": 2,
-    "theoremCount": 29,
+    "theoremCount": 28,
     "definitionCount": 7,
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",
     "sorries": 0
