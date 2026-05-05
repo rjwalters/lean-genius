@@ -61,6 +61,13 @@
       "Nat.Prime.sq_add_sq in Mathlib requires [Fact p.Prime] as a typeclass instance, following Mathlib's convention of using Fact for global primality hypotheses. This is why the backward direction of fermat_two_square uses haveI : Fact p.Prime := ⟨hp⟩.",
       "The integer form (fermat_two_square_int) reduces to the ℕ form via natAbs: a² = (a.natAbs)² for any integer a (using Int.natAbs_sq). This symmetry — that sign doesn't matter for squares — reflects the fact that the sum-of-squares question is purely about positive values.",
       "The result split_prime_sum_sq makes the connection explicit: if a Gaussian integer z has norm.natAbs = p (prime) and is not a unit, then its real and imaginary parts give p = z.re.natAbs² + z.im.natAbs². This is the core of the Gaussian integer proof of Fermat's theorem."
+    ],
+    "prerequisites": [
+      "Modular arithmetic and ZMod in Mathlib",
+      "Gaussian integers ℤ[i] (from parent BezoutIdentityOQ02OQ01OQ02OQ02)",
+      "Prime factorization and prime criteria",
+      "Fact typeclass convention in Mathlib",
+      "fin_cases and decide tactics for finite exhaustive checks"
     ]
   },
   "sections": [
@@ -116,19 +123,24 @@
   },
   "crossReferences": [
     {
-      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+      "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
       "relationship": "extends",
-      "description": "Parent: Gaussian integers as Euclidean domain and prime classification. This file proves the Fermat two-square corollary."
+      "description": "Parent: Gaussian integers as Euclidean domain and inert prime classification. This file proves the Fermat two-square corollary using the same ZMod 4 technique."
     },
     {
-      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+      "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
       "relationship": "related",
-      "description": "Sibling: ℤ[√-2] as Euclidean domain — another imaginary quadratic ring with analogous prime classification"
+      "description": "Sibling: ℤ[√-2] as Euclidean domain — another imaginary quadratic ring with analogous prime classification via ZMod 8"
     },
     {
-      "targetId": "elementary-quadratic-reciprocity",
+      "proofId": "elementary-quadratic-reciprocity",
       "relationship": "related",
-      "description": "Quadratic reciprocity determines when -1 is a square mod p, connecting to which primes split in ℤ[i]"
+      "description": "Quadratic reciprocity determines when -1 is a square mod p (Legendre symbol), directly connecting to which primes split in ℤ[i] and hence which are sums of two squares"
+    },
+    {
+      "proofId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Direct formalization of Fermat's two-square theorem; this entry proves it as a corollary of the Gaussian integer framework"
     }
   ],
   "sorries": 0,

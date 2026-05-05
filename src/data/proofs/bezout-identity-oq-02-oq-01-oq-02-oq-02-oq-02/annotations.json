@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-fermat-header",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Fermat's Two-Square Theorem: History and Proof Architecture",
+    "content": "Fermat stated in 1640 that a prime p is a sum of two integer squares iff p = 2 or p ≡ 1 (mod 4) — but never published a proof. Euler gave the first complete proof in 1747. The Lean proof here uses two independent approaches: a decidable mod-4 obstruction (Euler's idea, mechanized via fin_cases) and Mathlib's Nat.Prime.sq_add_sq (which internally uses Gaussian integer factorization, Gauss's 1832 proof). The Gaussian integer connection from the parent file BezoutIdentityOQ02OQ01OQ02OQ02 makes this entry a natural extension: inert primes (p ≡ 3 mod 4, prime in ℤ[i]) and non-sum-of-squares primes are the same class.",
+    "mathContext": "**Statement**: For prime $p$: $\\exists\\, a,b \\in \\mathbb{N},\\; a^2+b^2=p \\iff p=2 \\text{ or } p \\equiv 1 \\pmod{4}$. **Obstruction**: squares in $\\mathbb{Z}/4\\mathbb{Z}$ are $\\{0,1\\}$, so $a^2+b^2 \\pmod 4 \\in \\{0,1,2\\}$, never 3. **Existence**: `Nat.Prime.sq_add_sq` for $p \\equiv 1 \\pmod 4$ (Gaussian integer theory internally).",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's theorem on sums of two squares", "Gaussian integers", "modular arithmetic", "inert primes"],
+    "prerequisites": ["prime number theory", "modular arithmetic", "Gaussian integers from parent file"]
+  },
+  {
+    "id": "ann-mod4-obstruction",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 36, "endLine": 72 },
+    "type": "technique",
+    "title": "ZMod 4 Decidability: The Mod-4 Obstruction by Exhaustive Check",
+    "content": "The impossibility direction is proved by exhaustive ZMod 4 computation. sq_mod4_cases proves that every square in ZMod 4 is 0 or 1 by fin_cases over all 4 elements. sum_sq_ne_three combines this: for all 16 pairs (a,b) in (ZMod 4)², a²+b² ≠ 3, proved by `fin_cases a <;> fin_cases b <;> decide`. The main theorem not_sum_sq_of_mod4_eq_three then casts the equation a²+b²=p into ZMod 4 using congr_arg Nat.cast, shows (p : ZMod 4) = 3 via ZMod.natCast_eq_natCast_iff, and derives contradiction. This is the same ZMod 4 technique used in the parent proof for inert_prime — both impossibility results have structurally identical proofs.",
+    "mathContext": "In $\\mathbb{Z}/4\\mathbb{Z}$: $\\{0^2, 1^2, 2^2, 3^2\\} = \\{0, 1, 0, 1\\}$. Sum of two squares $\\in \\{0, 1, 2\\}$ (exhausted over 16 pairs). If $a^2+b^2=p$ with $p \\equiv 3 \\pmod 4$, cast to $\\mathbb{Z}/4\\mathbb{Z}$: $a^2+b^2 \\equiv 3$, contradiction. The cast uses: $\\text{cast}(a^2+b^2) = \\text{cast}(a)^2 + \\text{cast}(b)^2 = \\text{cast}(p)$, then `ZMod.natCast_eq_natCast_iff` gives $\\text{cast}(p) = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod", "fin_cases tactic", "decide tactic", "modular arithmetic", "quadratic residues mod 4"],
+    "prerequisites": ["ZMod in Mathlib", "fin_cases/decide tactics", "Nat.cast ring homomorphism"]
+  },
+  {
+    "id": "ann-fermat-main-forward",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 74, "endLine": 96 },
+    "type": "technique",
+    "title": "Main Theorem Forward Direction: Sum of Squares Forces Mod-4 Condition",
+    "content": "The forward direction uses by_contra + push_neg to assume p ≠ 2 and p % 4 ≠ 1. Since p is prime and p ≠ 2, it is odd: p % 2 ≠ 0 is proved via Nat.dvd_of_mod_eq_zero + hp.eq_one_or_self_of_dvd 2. An odd prime has p % 4 ∈ {1, 3}; since p % 4 ≠ 1, omega concludes p % 4 = 3. Then not_sum_sq_of_mod4_eq_three hp hmod h gives the contradiction. The omega tactic handles all the arithmetic on p % 4 cleanly with no manual case analysis needed.",
+    "mathContext": "**Forward**: assume $\\exists a,b: a^2+b^2=p$; want $p=2$ or $p\\%4=1$. By contrapositive: assume $p\\neq 2$ and $p\\%4 \\neq 1$. Since $p$ prime and $p\\neq 2$: $p$ is odd. Since $p$ is odd: $p\\%4 \\in \\{1,3\\}$. Since $p\\%4 \\neq 1$: $p\\%4 = 3$ (by `omega`). Then `not_sum_sq_of_mod4_eq_three` gives $\\neg\\exists a,b: a^2+b^2=p$, contradicting the assumption.",
+    "significance": "key",
+    "relatedConcepts": ["by_contra", "push_neg", "omega tactic", "odd prime arithmetic", "hp.eq_one_or_self_of_dvd"],
+    "prerequisites": ["prime number theory", "omega tactic for Nat arithmetic"]
+  },
+  {
+    "id": "ann-fermat-main-backward",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 96, "endLine": 119 },
+    "type": "technique",
+    "title": "Backward Direction: Fact Typeclass Convention and sq_add_sq",
+    "content": "The backward direction splits on p = 2 vs p ≡ 1 (mod 4). For p = 2: exhibit ⟨1, 1, by norm_num⟩. For p ≡ 1: apply Nat.Prime.sq_add_sq with p % 4 ≠ 3 (from p % 4 = 1 by omega). Crucially, Nat.Prime.sq_add_sq requires [Fact p.Prime] as a typeclass instance — the Mathlib idiom for global primality. This needs `haveI : Fact p.Prime := ⟨hp⟩` before the application. The integer form fermat_two_square_int reduces to ℕ form: use Int.natAbs_sq which gives (a.natAbs : ℤ)² = a², so integer and natural squares coincide for sums.",
+    "mathContext": "`Nat.Prime.sq_add_sq {p : ℕ} [hp : Fact p.Prime] (h : p % 4 ≠ 3) : ∃ a b : ℕ, a^2 + b^2 = p`. The `Fact` typeclass bundles the primality proof into an instance, required by many Mathlib functions. `Int.natAbs_sq : (n.natAbs : ℤ)^2 = n^2` — squares are insensitive to sign, connecting integer and natural number forms.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Prime.sq_add_sq", "Fact typeclass in Mathlib", "haveI tactic", "Int.natAbs_sq"],
+    "prerequisites": ["Mathlib Fact typeclass pattern", "Int.natAbs", "Gaussian integers (internal to Mathlib)"]
+  },
+  {
+    "id": "ann-concrete-examples",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 121, "endLine": 140 },
+    "type": "context",
+    "title": "Concrete Examples: norm_num for Positive Cases, decide for Negative",
+    "content": "Part 3 gives machine-checked examples. Positive cases (primes ≡ 1 mod 4 and p=2): 2=1²+1², 5=1²+2², 13=2²+3², 17=1²+4², 29=2²+5², all verified by norm_num. Negative cases (primes ≡ 3 mod 4): 3, 7, 11 are not sums of two squares, each proved by not_sum_sq_of_mod4_eq_three with primality and p%4=3 verified by decide. The pattern 'norm_num for existence, decide for primality' is characteristic of concrete number-theoretic verifications in Lean 4.",
+    "mathContext": "Primes $p \\equiv 1 \\pmod 4$: $5=1^2+2^2$, $13=2^2+3^2$, $17=1^2+4^2$, $29=2^2+5^2$, $37=1^2+6^2$, $\\ldots$ Primes $p \\equiv 3 \\pmod 4$: $3, 7, 11, 19, 23, \\ldots$ By Dirichlet's theorem, each class has density $1/2$ among primes. The `decide` tactic verifies `(3 : ℕ).Prime` and `3 % 4 = 3` by kernel computation.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_num tactic", "decide tactic", "Dirichlet's theorem on primes"],
+    "prerequisites": ["norm_num and decide in Lean 4", "prime testing"]
+  },
+  {
+    "id": "ann-gaussian-connection",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 142, "endLine": 176 },
+    "type": "insight",
+    "title": "Gaussian Integer Connection: Inert Primes Equal Non-Sum-of-Squares Primes",
+    "content": "Part 4 proves that the two characterizations of 'inert primes' coincide. inert_prime_not_sum_sq bundles: (1) p ≡ 3 mod 4 is prime in ℤ[i] (inert_prime from parent), (2) p is not a sum of two squares (not_sum_sq_of_mod4_eq_three). Both use the same ZMod 4 obstruction. split_prime_sum_sq goes the other way: if z ∈ ℤ[i] has norm.natAbs = p (prime) and z is not a unit, then z.re²+z.im²=p — proved using GaussianIntEuclidean.gaussian_norm_formula (z.re²+z.im² = z.norm) followed by casting to ℕ via Int.natAbs_sq.",
+    "mathContext": "Gaussian norm: $N(a+bi) = a^2+b^2 \\in \\mathbb{Z}$. If $z \\in \\mathbb{Z}[i]$ with $N(z) = p$ prime and $z$ non-unit, then $z.re^2 + z.im^2 = p$. **Equivalences**: $p$ splits in $\\mathbb{Z}[i]$ ($\\exists\\pi: p=\\pi\\bar\\pi$) $\\iff$ $p=2$ or $p\\equiv 1\\pmod 4$ $\\iff$ $p = a^2+b^2$. $p$ inert in $\\mathbb{Z}[i]$ $\\iff$ $p\\equiv 3\\pmod 4$ $\\iff$ $p \\neq a^2+b^2$. These are EXACTLY the same conditions.",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian integers ℤ[i]", "prime splitting", "inert primes", "GaussianIntEuclidean.gaussian_norm_formula", "Gaussian norm"],
+    "prerequisites": ["Gaussian integers from parent BezoutIdentityOQ02OQ01OQ02OQ02", "prime splitting in number rings"]
+  }
+]
