@@ -73,7 +73,7 @@
     "axiomCount": 0,
     "lineCount": 390,
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "In buffons-needle-oq-01 (Buffon's Noodle), the smooth curve case of the Buffon-Barbier theorem was left as an open question, formalized as an axiom. The question was: can the axiom `buffon_noodle_smooth_eq` be derived from Mathlib's arc length theory?\n\nThis file answers YES. The key insight is the **angular average identity**:\n  ∫_0^π |a sin θ + b cos θ| dθ = 2√(a² + b²)\n\nThis is the fundamental reason why the crossing probability depends only on arc length and not on the shape of the curve. For any direction (a, b) representing the tangent vector γ'(t), the integral of |crossings contribution| over all angles θ gives exactly 2‖γ'(t)‖. Integrating over t gives 2L/(πd).\n\nThe proof uses Complex.arg to find the rotation angle φ such that a sin θ + b cos θ = √(a²+b²) · sin(θ + φ), then applies the rotation-invariant identity ∫_0^π |sin(θ + c)| dθ = 2.",
@@ -198,7 +198,7 @@
     "namespace": "BuffonsNeedleOQ01OQ01",
     "lineCount": 390,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 2,
     "path": "Proofs/BuffonsNeedleOQ01OQ01.lean",
     "sorries": 0
