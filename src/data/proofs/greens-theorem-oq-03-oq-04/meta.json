@@ -1,66 +1,123 @@
 {
   "id": "greens-theorem-oq-03-oq-04",
   "title": "Green's Theorem via Stokes: TypeI Regions as Manifolds with Boundary",
-  "parentId": "greens-theorem-oq-03",
-  "status": "axiomatized",
-  "badge": "axiom",
-  "summary": "Derives Green's theorem for rectangular regions from Mathlib's divergence theorem, and shows how the OQ-03 TypeI region proof connects to the Stokes theorem framework.",
-  "sorries": 0,
-  "axiomCount": 1,
-  "theoremCount": 5,
-  "lineCount": 250,
-  "leanFile": {
-    "path": "proofs/Proofs/GreensTheoremOQ03OQ04.lean",
+  "slug": "greens-theorem-oq-03-oq-04",
+  "description": "Derives Green's theorem for rectangular regions from Mathlib's 2D divergence theorem via the substitution F=(Q,-P), and connects the TypeI region proof (OQ-03) to the Stokes theorem framework. Documents the gap: Mathlib v4.26.0 has the rectangular divergence theorem but lacks Stokes for curved-boundary domains.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-05",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/GreensTheoremOQ03OQ04.lean",
+    "tags": ["green-theorem", "stokes", "divergence-theorem", "typeI-region", "analysis", "measure-theory"],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-05",
+    "axiomCount": 1,
+    "lineCount": 250,
     "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "stokes_for_curved_domains_not_in_mathlib_4_26: Mathlib v4.26.0 lacks Stokes theorem for manifolds with piecewise-smooth curved boundaries. (Documented as a True axiom — a Mathlib gap, not a mathematical assumption.)",
+    "originalContributions": [
+      "Proves Green's theorem for rectangles from Mathlib's integral2_divergence_prod_of_hasFDerivWithinAt_off_countable via F=(Q,-P) substitution",
+      "Shows the 4-side boundary decomposition matches counterclockwise ∮(P dx+Q dy) via ring",
+      "Connects OQ-03 FTC proof to Stokes framework: greens_theorem_typeI_via_stokes delegates to OQ-03's greens_theorem_typeI",
+      "Documents Mathlib v4.26.0 gap: rectangular divergence theorem present, curved-boundary Stokes absent"
+    ],
+    "proofStrategy": "Apply MeasureTheory.integral2_divergence_prod_of_hasFDerivWithinAt_off_countable with f=Q, g=-P to derive Green's theorem for rectangles. Show boundary decomposition equals counterclockwise line integral (by ring). For general TypeI regions, delegate to OQ-03's greens_theorem_typeI axiom. Document the curved-domain Stokes gap."
+  },
+  "overview": {
+    "historicalContext": "Green's theorem was stated by George Green in 1828 and published in 'An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism.' It connects a double integral over a region to a line integral around its boundary, and is one of the fundamental results of vector calculus. The theorem was later recognized as a special case of the general Stokes' theorem on differential forms — specifically, Stokes applied to the 1-form ω = P dx + Q dy on a 2D manifold with boundary gives exactly Green's theorem. This entry explores this connection, showing how Mathlib's 2D divergence theorem (itself a form of Stokes) directly yields Green's theorem for rectangles, while the FTC-based OQ-03 proof handles the general TypeI case where curved-boundary Stokes is not yet in Mathlib.",
+    "problemStatement": "**OQ-04 (from greens-theorem-oq-03)**: Can Mathlib's divergence theorem be used to derive Green's theorem for TypeI regions as a corollary of Stokes' theorem? For the **rectangular case**: given a C¹ vector field $(P, Q)$ on $[a_1, b_1] \\times [a_2, b_2]$, apply Mathlib's `integral2_divergence_prod_of_hasFDerivWithinAt_off_countable` with $F = (Q, -P)$ to obtain $$\\iint_{D} \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$$",
+    "proofStrategy": "The key insight: for $F = (Q, -P)$, $\\text{div}(F) = \\partial Q/\\partial x - \\partial P/\\partial y$ (the Green's theorem integrand), and the divergence theorem boundary output $(F_1 \\text{ top/bottom}) + (F_2 \\text{ right/left})$ matches the counterclockwise line integral $\\oint P\\,dx + Q\\,dy$. The Lean proof chain: (1) apply Mathlib's divergence theorem theorem with F=(Q,-P), (2) identify the boundary output as ∮ P dx+Q dy by ring, (3) for TypeI regions, delegate to OQ-03's greens_theorem_typeI.",
+    "keyInsights": [
+      "The substitution $F = (Q, -P)$ transforms the divergence theorem $\\iint \\text{div}(F) = \\oint F \\cdot n\\,ds$ into Green's theorem $\\iint (\\partial Q/\\partial x - \\partial P/\\partial y) = \\oint P\\,dx + Q\\,dy$ — the connection is purely algebraic",
+      "Mathlib's `integral2_divergence_prod_of_hasFDerivWithinAt_off_countable` is the key Mathlib ingredient: it gives the divergence theorem for arbitrary rectangles (possibly with a countable exceptional set where differentiability can fail)",
+      "The boundary decomposition proof is trivial (`ring`) because the Lean Mathlib divergence theorem produces exactly the 4-side expression that IS the counterclockwise line integral",
+      "The general TypeI case (curved boundaries) does NOT need a curved-boundary Stokes theorem — the OQ-03 FTC approach handles it directly, so the Mathlib gap only matters if one wants a unified differential-forms proof",
+      "The axiom `stokes_for_curved_domains_not_in_mathlib_4_26 : True` is a documentation device — it records a Mathlib gap, not a mathematical hypothesis. The entry has 0 sorries and 1 documentation axiom."
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/GreensTheoremOQ03OQ04.lean",
+    "imports": ["Mathlib", "Proofs.GreensTheoremOQ03"],
+    "opens": ["MeasureTheory", "intervalIntegral", "GreensTheoremOQ03"],
+    "namespace": "GreensTheoremOQ03OQ04",
+    "lineCount": 250,
     "axiomCount": 1,
     "sorries": 0,
-    "lineCount": 250,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "theoremCount": 5
   },
-  "assumptions": [
-    "stokes_for_curved_domains_not_in_mathlib_4_26: Mathlib v4.26.0 lacks Stokes theorem for manifolds with piecewise-smooth curved boundaries"
+  "parentId": "greens-theorem-oq-03",
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Will Mathlib eventually add a general Stokes theorem for 2D domains with piecewise-smooth curved boundaries, enabling a unified differential-forms proof of Green's theorem?",
+      "difficulty": "medium",
+      "status": "open"
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the Green's theorem for TypeI regions be extended to multiply-connected domains (with holes), using Stokes' theorem for manifolds with multiple boundary components?",
+      "difficulty": "hard",
+      "status": "open"
+    }
   ],
-  "openQuestions": [],
-  "tags": ["green-theorem", "stokes", "divergence-theorem", "typeI-region", "analysis", "measure-theory"],
-  "mathContext": {
-    "overview": "Green's theorem (∬(∂Q/∂x - ∂P/∂y)dA = ∮(P dx + Q dy)) admits two proof strategies: (1) FTC-based decomposition into TypeI/II regions (OQ-03), and (2) Stokes' theorem for manifolds with boundary. This entry shows that Mathlib's divergence theorem (`integral2_divergence_prod_of_hasFDerivWithinAt_off_countable`) gives the rectangular case via the substitution F=(Q,-P), confirming consistency between the two approaches.",
-    "keyInsights": [
-      "Applying Mathlib's 2D divergence theorem with F=(Q,-P) directly yields Green's theorem for rectangles",
-      "The boundary integral ∮(P dx+Q dy) decomposes as P-contributions + Q-contributions matching Mathlib's boundary output",
-      "TypeI region Green's theorem (OQ-03) is equivalent to Stokes' theorem on manifolds with boundary",
-      "Mathlib v4.26.0 has rectangular divergence theorem but lacks curved-boundary Stokes — this gap explains the OQ-03 FTC approach"
-    ],
-    "mathBackground": "The divergence theorem and Stokes' theorem are equivalent for 2D vector fields. Mathlib's `MeasureTheory.integral2_divergence_prod_of_hasFDerivWithinAt_off_countable` implements the divergence theorem for arbitrary rectangles, which is sufficient for the OQ-04 connection. Full differential-forms Stokes (needed for curved boundaries) is not yet in Mathlib v4.26.0.",
-    "conclusion": "YES — Mathlib's divergence theorem proves Green's theorem for rectangles. The general TypeI case uses OQ-03's FTC approach (bypassing the missing curved-boundary Stokes). The two strategies are mathematically equivalent; Mathlib currently supports the rectangular special case."
+  "conclusion": {
+    "summary": "For rectangular regions, Green's theorem follows directly from Mathlib's divergence theorem via the algebraic substitution F=(Q,-P), with the boundary identity proved by ring. For general TypeI regions, the OQ-03 FTC approach handles curved boundaries without needing the missing Stokes theorem for curved domains. The documentation axiom records the Mathlib gap.",
+    "implications": "This entry clarifies the relationship between three equivalent approaches to Green's theorem: (1) FTC-based direct proof (OQ-03), (2) divergence theorem specialization (this entry), and (3) general Stokes on manifolds with boundary. All three are mathematically equivalent; their Lean formalizability depends on which Mathlib theorems are available. For the rectangular case, Mathlib already has everything needed; for general smooth boundaries, the differential-forms approach is a future milestone.",
+    "openQuestions": [
+      "When Mathlib adds the general Stokes theorem for smooth manifolds with boundary, can Green's theorem for TypeI regions be re-derived with 0 axioms?",
+      "Can the same substitution F=(Q,-P) be used in higher dimensions to connect the divergence theorem with exterior derivative / Stokes in n dimensions?",
+      "Is there a way to formalize Green's theorem for domains with self-intersecting or fractal boundaries using measure-theoretic Stokes?"
+    ]
   },
-  "proofStrategy": "Apply `MeasureTheory.integral2_divergence_prod_of_hasFDerivWithinAt_off_countable` with f=Q, g=-P to derive Green's theorem for rectangles. Show boundary decomposition equals counterclockwise line integral. For general TypeI regions, delegate to OQ-03's `greens_theorem_typeI` axiom. Document the gap: Stokes for curved boundaries is not in Mathlib v4.26.0.",
-  "originalContributions": [
-    "Proves Green's theorem for rectangles directly from Mathlib's divergence theorem via F=(Q,-P) substitution",
-    "Shows the 4-side boundary decomposition matches counterclockwise ∮(P dx+Q dy)",
-    "Connects OQ-03 FTC proof to Stokes framework via `greens_theorem_typeI_via_stokes`",
-    "Documents Mathlib v4.26.0 gap: rectangular divergence present, curved-boundary Stokes absent"
+  "crossReferences": [
+    {
+      "id": "greens-theorem-oq-03",
+      "title": "Green's Theorem for TypeI Regions via FTC",
+      "relationship": "parent"
+    },
+    {
+      "id": "greens-theorem",
+      "title": "Green's Theorem",
+      "relationship": "ancestor"
+    }
   ],
   "sections": [
     {
-      "title": "Rectangles via Divergence Theorem",
-      "description": "Green's theorem for rectangles proved from Mathlib's integral2_divergence_prod_of_hasFDerivWithinAt_off_countable with the substitution F=(Q,-P).",
-      "theorems": ["greens_theorem_rect_via_stokes"]
+      "title": "Green's Theorem for Rectangles via Divergence Theorem",
+      "startLine": 63,
+      "endLine": 102,
+      "summary": "greens_theorem_rect_via_stokes: proves Green's theorem for [a₁,b₁]×[a₂,b₂] by applying Mathlib's integral2_divergence_prod_of_hasFDerivWithinAt_off_countable with F=(Q,-P). Needs ContinuousOn for P and Q, HasFDerivAt on interior minus countable exceptional set, and integrability of ∂Q/∂x - ∂P/∂y.",
+      "mathContext": "$$\\int_{a_1}^{b_1}\\int_{a_2}^{b_2} \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dy\\,dx = \\text{boundary integral}$$ via Mathlib with $F = (Q, -P)$ so $\\text{div}(F) = \\partial Q/\\partial x - \\partial P/\\partial y$."
     },
     {
-      "title": "Boundary Decomposition",
-      "description": "Shows the divergence theorem's boundary output equals the line integral ∮(P dx+Q dy) around the rectangle.",
-      "theorems": ["boundary_integral_decomposition", "boundary_eq_line_integral_parts"]
+      "title": "Boundary Integral Decomposition",
+      "startLine": 111,
+      "endLine": 135,
+      "summary": "boundary_integral_decomposition and boundary_eq_line_integral_parts: proves the Mathlib divergence theorem output equals ∮(P dx+Q dy) as a sum of 4 oriented segments. Both proofs are by ring and simp.",
+      "mathContext": "The 4-segment counterclockwise boundary: $\\int_{a_1}^{b_1} P(x,a_2)\\,dx$ (bottom) $+ \\int_{a_2}^{b_2} Q(b_1,y)\\,dy$ (right) $- \\int_{a_1}^{b_1} P(x,b_2)\\,dx$ (top, reversed) $- \\int_{a_2}^{b_2} Q(a_1,y)\\,dy$ (left, reversed)."
     },
     {
-      "title": "Consistency with OQ-03",
-      "description": "Confirms that Stokes/divergence and OQ-03's FTC approach give identical results for rectangular TypeI regions.",
-      "theorems": ["rect_greens_consistent_with_typeI"]
+      "title": "Consistency with OQ-03 TypeI Approach",
+      "startLine": 149,
+      "endLine": 164,
+      "summary": "rect_greens_consistent_with_typeI: proves the OQ-03 boundary sign convention for P matches the Stokes boundary term. The P-contribution in OQ-03 (top minus bottom) equals -((-P)(x,d) - (-P)(x,c)), consistent with Stokes' outward normal convention.",
+      "mathContext": "$-(\\int_a^b [P(x,d) - P(x,c)]\\,dx) = \\int_a^b [P(x,c) - P(x,d)]\\,dx$, confirming the sign conventions agree."
     },
     {
-      "title": "General TypeI Regions",
-      "description": "Shows TypeI Green's theorem is equivalent to Stokes on manifolds with boundary; documents Mathlib v4.26.0 gap.",
-      "theorems": ["greens_theorem_typeI_via_stokes"],
-      "axioms": ["stokes_for_curved_domains_not_in_mathlib_4_26"]
+      "title": "General TypeI via OQ-03 Axiom",
+      "startLine": 179,
+      "endLine": 204,
+      "summary": "greens_theorem_typeI_via_stokes: delegates to OQ-03's greens_theorem_typeI, repackaging it as a Stokes statement. The documentation axiom stokes_for_curved_domains_not_in_mathlib_4_26 : True records the Mathlib v4.26.0 gap.",
+      "mathContext": "For TypeI region $D = \\{(x,y) : a \\leq x \\leq b,\\, f(x) \\leq y \\leq g(x)\\}$ with curved boundary, full differential-forms Stokes is needed: $\\int_D d\\omega = \\int_{\\partial D} \\omega$ for $\\omega = P\\,dx + Q\\,dy$. This requires Stokes for 2D manifolds with piecewise-smooth boundary, absent from Mathlib v4.26.0."
+    },
+    {
+      "title": "Summary Table",
+      "startLine": 227,
+      "endLine": 250,
+      "summary": "Documentation section listing all 5 theorems with their proof methods and the answer to OQ-04: YES for rectangles via Mathlib's divergence theorem; general TypeI handled via OQ-03's FTC approach."
     }
   ]
 }
