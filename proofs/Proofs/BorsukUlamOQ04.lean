@@ -342,7 +342,7 @@ def antipodalZ2Covering (n : ℕ) : GCovering (ZMod 2) where
   act_proj g x := by
     fin_cases g
     · simp [if_pos rfl]
-    · simp only [show (1 : ZMod 2) ≠ 0 from one_ne_zero, ite_false]
+    · rw [if_neg (show (1 : ZMod 2) ≠ 0 from one_ne_zero)]
       exact projMap_neg n x
 
 /-- In any ZMod 2 covering, acting twice by the generator (1 : ZMod 2) is the identity.
@@ -368,7 +368,8 @@ def GCovering.toCoveringType_Z2 (C : GCovering (ZMod 2)) : CoveringType where
 /-- The deck transformation of the ZMod 2 antipodal covering is negation. -/
 theorem antipodalZ2Covering_deck_is_neg (n : ℕ) (x : EuclideanSpace ℝ (Fin (n + 1))) :
     (antipodalZ2Covering n).act 1 x = -x := by
-  simp only [antipodalZ2Covering, show (1 : ZMod 2) ≠ 0 from one_ne_zero, ite_false]
+  show (if (1 : ZMod 2) = 0 then x else -x) = -x
+  simp [one_ne_zero]
 
 /-- The ZMod 2 GCovering framework recovers the classical antipodal deck:
     the deck transformation in the ZMod 2 covering is exactly negation,
@@ -406,8 +407,8 @@ theorem odd_gives_GEquivariant {n m : ℕ}
   commutes x := (descendOdd_comm f hf x).symm
   equivariant g x := by
     fin_cases g
-    · simp only [antipodalZ2Covering, if_pos rfl]
-    · simp only [antipodalZ2Covering, show (1 : ZMod 2) ≠ 0 from one_ne_zero, ite_false]
+    · simp only [(antipodalZ2Covering n).act_zero, (antipodalZ2Covering m).act_zero]
+    · rw [antipodalZ2Covering_deck_is_neg n x, antipodalZ2Covering_deck_is_neg m (f x)]
       exact hf x
 
 /-- The GEquivariantMap from an odd map reduces to the classical EquivariantMap.
