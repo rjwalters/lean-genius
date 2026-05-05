@@ -1,0 +1,156 @@
+{
+  "slug": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+  "title": "Can gal_order_eq_totient_div2_general be proved using IsCyclotomicExtension",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can gal_order_eq_totient_div2_general be proved using IsCyclotomicExtension.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-04T17:47:35.841Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: natDegree theorem PROVED (sorry-free). Gal card theorem has 1 documented sorry. Gallery entry created. Docker build in progress.",
+    "builtItems": [
+      "cos_pi_minpoly_natDegree: natDegree(minpoly ℚ (cos(π/n))) = φ(2n)/2 — SORRY-FREE",
+      "cos_pi_extension_degree: ∃ K ⊆ ℝ with cos(π/n) ∈ K, [K:ℚ] = φ(2n)/2 — SORRY-FREE",
+      "cos_pi_gal_card: |Gal(minpoly ℚ (cos(π/n)))| = φ(2n)/2 — 1 sorry",
+      "Consistency checks for n=5,7,9 verified via general formula"
+    ],
+    "insights": [
+      "cos(π/n) = cos(2π/(2n)) is the central reduction connecting the two families",
+      "minpoly_alphaCos_natDegree from OQ02OQ03OQ01 with m=2n gives degree = φ(2n)/2 directly",
+      "IsCyclotomicExtension IS sufficient to prove the general formula — answered YES",
+      "The sorry is on normality of ℚ(cos(π/n))/ℚ — estimated 80 lines to eliminate"
+    ],
+    "mathlibGaps": [
+      "Need: normality of fixed field of normal subgroup → IsGalois — should be in Mathlib already",
+      "Need: IsNormal → minpoly splits over fixed field — via Polynomial.splits_of_isNormal"
+    ],
+    "nextSteps": [
+      "Eliminate sorry: prove conjSubgroup(2n) is normal in Gal(CyclotomicField(2n)) using abelian group theory",
+      "Eliminate sorry: derive IsGalois ℚ (maxRealSubfield (2n)) from normality",
+      "Use Polynomial.splits_of_isGalois or similar to show minpoly splits"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-cos-20-gal",
+    "angle-trisection-cos-20-gal-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "angle-trisection-cos-20-gal-oq-03",
+    "angle-trisection-cos-20-gal-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T17:47:35.841Z",
+  "lastUpdate": "2026-05-04T17:47:35.841Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/AngleTrisectionCos20Gal.lean",
+      "filename": "AngleTrisectionCos20Gal.lean",
+      "lineCount": 475,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20Gal.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ01.lean",
+      "lineCount": 417,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ01.lean",
+      "lineCount": 183,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02.lean",
+      "lineCount": 440,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
+      "lineCount": 230,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
+      "filename": "AngleTrisectionCos20GalOQ03.lean",
+      "lineCount": 435,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ03.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ03OQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ03OQ01.lean",
+      "lineCount": 463,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ03OQ01.lean"
+    }
+  ]
+}
