@@ -117,5 +117,26 @@
     "lagrange-theorem-oq-02",
     "lagrange-theorem-oq-05",
     "burnside-counting"
+  ],
+  "conclusion": {
+    "summary": "This entry provides a fully machine-checked proof of Burnside's counting lemma that makes the double-counting argument structurally explicit in Lean 4. The sigma type bijection (g,x,g•x=x) ↦ (x,g,g•x=x) — with `rfl` as both inverses — witnesses the fundamental symmetry between fixed-point counting and stabilizer counting. Combined with the orbit-stabilizer theorem, this yields Burnside's formula Σ_g|Fix(g)| = |X/G|·|G| with 0 sorries and 0 axioms.",
+    "implications": "The explicit double-counting bijection transforms what is usually an informal argument ('count pairs both ways') into a machine-verifiable definitional isomorphism. This pattern — making counting arguments explicit via sigma type equivalences — is a general technique for formalizing combinatorial identities in Lean 4. The proof also establishes the logical chain Lagrange → Orbit-Stabilizer → Burnside in a single theorem, showing how the algebraic divisibility theorem (|H| ∣ |G|) grounds the combinatorial counting formula.",
+    "openQuestions": [
+      "Can the orbit partition sum Σ_x|Stab(x)| = |X/G|·|G| be proved in Lean 4 purely from the orbit-stabilizer theorem without using Mathlib's Burnside lemma as an intermediate step?",
+      "Does the double-counting bijection sigma_fixedBy_equiv_sigma_stabilizer generalize to monoid actions (where stabilizers are not necessarily subgroups)?",
+      "Can the Burnside formula be used in Lean 4 to give a machine-verified proof of Pólya's enumeration theorem, which counts equivalence classes of colorings under group symmetry?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "lagrange-theorem-oq-02",
+      "title": "Lagrange's Theorem: Orbit-Stabilizer Consequences",
+      "relationship": "Parent entry that provides the orbit-stabilizer theorem used in Part III. The double-counting bijection in this entry is the key new content beyond what OQ-02 provides."
+    },
+    {
+      "id": "lagrange-theorem",
+      "title": "Lagrange's Theorem",
+      "relationship": "Grandparent entry. The chain Lagrange → Orbit-Stabilizer → Burnside is formalized in lagrange_orbitstab_burnside_chain, with Lagrange's theorem as the base."
+    }
   ]
 }
