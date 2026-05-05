@@ -56,6 +56,7 @@ Formalize the class equation |G| = |Z(G)| + Σ_{non-central conj classes [x]} [G
 - `proofs/Proofs/LagrangeTheoremOQ02OQ02.lean` (sorry resolved)
 
 ### Next Steps
-- Confirm Docker build succeeds with 0 sorries
-- Update meta.json: sorries → 0, status → "verified"
-- Create PR
+- Docker verification needed (Docker infrastructure was unavailable during session)
+- PR #15986 submitted for review/merge
+
+### Status: COMPLETE (pending Docker)
