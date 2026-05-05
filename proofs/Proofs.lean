@@ -2231,6 +2231,7 @@ import Proofs.GreensTheoremOQ01
 import Proofs.GreensTheoremOQ01OQ01
 import Proofs.GreensTheoremOQ02
 import Proofs.GreensTheoremOQ03
+import Proofs.GreensTheoremOQ03OQ04
 import Proofs.GreensTheoremOQ04
 import Proofs.HadamardThreeLines
 import Proofs.HaltingProblem
