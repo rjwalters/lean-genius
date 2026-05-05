@@ -82,14 +82,10 @@ private lemma char_ZMod_ne_two (hodd : p ≠ 2) : ringChar (ZMod p) ≠ 2 := by
 -- ============================================================================
 
 /-- quadCharC is a quadratic multiplicative character: values in {0, 1, -1} ⊆ ℂ. -/
-theorem quadCharC_isQuadratic : (quadCharC p).IsQuadratic := by
-  intro a
-  have h := quadraticChar_isQuadratic (ZMod p) a
-  simp only [quadCharC, MulChar.ringHomComp, MulChar.coe_comp, Int.castRingHom_apply]
-  rcases h with h | h | h
-  · left; exact_mod_cast h
-  · right; left; exact_mod_cast h
-  · right; right; exact_mod_cast h
+theorem quadCharC_isQuadratic : (quadCharC p).IsQuadratic :=
+  -- The quadratic property lifts through ring homomorphisms:
+  -- if χ a ∈ {0,1,-1} and f is a ring hom then (f ∘ χ) a = f(χ a) ∈ {0,1,-1}
+  (quadraticChar_isQuadratic (ZMod p)).comp (Int.castRingHom ℂ)
 
 /-- quadCharC is not the trivial character (for odd prime p).
     This uses quadraticChar_ne_one (valid since char(ZMod p) = p ≠ 2)
@@ -99,14 +95,25 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
     quadraticChar_ne_one (char_ZMod_ne_two p hodd)
   intro heq
   apply hqc_ne
+  -- quadCharC p = quadraticChar.ringHomComp f, and f = Int.cast is injective
+  -- If quadCharC p = 1, then f ∘ quadraticChar = 1, so quadraticChar = 1 by injectivity
   ext a
-  -- From heq : quadCharC p = 1, extract the pointwise equality
-  have ha := MulChar.ext_iff.mp heq a
-  simp only [quadCharC, MulChar.ringHomComp, MulChar.coe_comp, Int.castRingHom_apply,
-             MulChar.one_apply] at ha
-  -- ha : (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) a) = (1 : MulChar (ZMod p) ℂ) a
-  -- Since Int.cast is injective and values are in {0, 1, -1}:
-  exact_mod_cast ha
+  have ha := congr_fun (congr_arg MulChar.toFun heq) a
+  -- ha : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a
+  -- i.e., Int.cast (quadraticChar (ZMod p) a) = (1 : MulChar (ZMod p) ℂ) a
+  have happ : quadCharC p a = (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) a) := rfl
+  rw [happ] at ha
+  -- ha : Int.cast (quadraticChar (ZMod p) a) = (1 : MulChar (ZMod p) ℂ) a
+  -- (1 : MulChar (ZMod p) ℂ) a = if IsUnit a then 1 else 0 = Int.cast ((1 : MulChar (ZMod p) ℤ) a)
+  have h1 : (1 : MulChar (ZMod p) ℤ) a = if IsUnit a then 1 else 0 := by
+    simp [MulChar.one_apply]
+  have h1C : (1 : MulChar (ZMod p) ℂ) a = if IsUnit a then 1 else 0 := by
+    simp [MulChar.one_apply]
+  rw [h1]
+  apply Int.cast_injective
+  simp only [Int.cast_ite, Int.cast_one, Int.cast_zero]
+  rw [← h1C]
+  exact ha
 
 -- ============================================================================
 -- The Main Theorem
@@ -126,30 +133,36 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
 theorem gauss_sum_sq_in_complex (hodd : p ≠ 2) :
     gaussSum (quadCharC p) (ZMod.stdAddChar (N := p)) ^ 2 =
     (-1 : ℂ) ^ (p / 2) * (p : ℂ) := by
-  -- Set up NeZero instance (prime p ≥ 2 > 0, so p ≠ 0)
-  haveI hNeZero : NeZero p := ⟨hp.out.ne_zero⟩
+  -- Set up NeZero instance (prime p is positive, so p ≠ 0)
+  haveI hNeZero : NeZero p := ⟨Nat.pos_iff_ne_zero.mp hp.out.pos⟩
   -- ψ is primitive
   have hψ : (ZMod.stdAddChar (N := p)).IsPrimitive := ZMod.isPrimitive_stdAddChar
   -- χ is nontrivial and quadratic
   have hχ_ne : quadCharC p ≠ 1 := quadCharC_ne_one p hodd
   have hχ_q : (quadCharC p).IsQuadratic := quadCharC_isQuadratic p
-  -- Apply the main Mathlib theorem: τ² = χ(-1) · |ZMod p|
+  -- Apply Mathlib's gaussSum_sq: τ² = χ(-1) · |ZMod p|
   rw [gaussSum_sq hχ_ne hχ_q hψ]
-  -- Simplify: |ZMod p| = p
+  -- Cardinality: |ZMod p| = p as ℂ
   have hcard : (Fintype.card (ZMod p) : ℂ) = (p : ℂ) := by
     exact_mod_cast ZMod.card p
   rw [hcard]
-  -- Compute χ(-1) = (-1)^(p/2)
-  -- Step 1: Unfold quadCharC at -1
-  have hχ_neg_one : (quadCharC p) (-1 : ZMod p) =
-      (Int.castRingHom ℂ) (quadraticChar (ZMod p) (-1 : ZMod p)) := by
-    simp [quadCharC, MulChar.ringHomComp]
-  rw [hχ_neg_one]
-  -- Step 2: quadraticChar (ZMod p) (-1) = legendreSym p (-1) [by definition]
-  have hleg : quadraticChar (ZMod p) ((-1 : ZMod p)) = legendreSym p (-1 : ℤ) := by
-    simp [legendreSym]
+  -- Suffices to show quadCharC p (-1) = (-1)^(p/2)
+  suffices h_eval : quadCharC p (-1 : ZMod p) = (-1 : ℂ) ^ (p / 2) by
+    rw [h_eval]
+  -- Step 1: quadCharC p a = Int.cast (quadraticChar (ZMod p) a) by definition
+  have happ : quadCharC p (-1 : ZMod p) =
+      (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) (-1 : ZMod p)) := rfl
+  rw [happ]
+  -- Step 2: quadraticChar (ZMod p) (-1) = legendreSym p (-1)
+  -- legendreSym p a is defined as quadraticChar (ZMod p) (↑a), so this reduces to
+  -- showing that (-1 : ZMod p) = ((-1 : ℤ) : ZMod p), which is true by ring.
+  have hleg : quadraticChar (ZMod p) (-1 : ZMod p) = legendreSym p (-1 : ℤ) := by
+    unfold legendreSym
+    congr 1
+    push_cast
+    ring
   rw [hleg]
-  -- Step 3: legendreSym p (-1) = χ₄ ↑p [first supplementary law]
+  -- Step 3: legendreSym p (-1) = χ₄ ↑p  [first supplementary law]
   rw [legendreSym.at_neg_one hodd]
   -- Step 4: χ₄ ↑p = (-1)^(p/2) for odd prime p
   have hodd_mod : p % 2 = 1 := by
@@ -159,9 +172,8 @@ theorem gauss_sum_sq_in_complex (hodd : p ≠ 2) :
       · exact hodd h.symm
     omega
   rw [χ₄_eq_neg_one_pow hodd_mod]
-  -- Int.cast commutes with (-1)^n
-  push_cast
-  ring
+  -- Int.cast commutes with (-1)^n: push_cast handles this
+  push_cast; ring
 
 /-- **Existential form** (corrected `gauss_sum_sq` from parent proof):
     For odd prime p, there exists τ : ℂ with τ² = (-1)^(p/2) · p.
