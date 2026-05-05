@@ -14,11 +14,11 @@
             "jacobiSym"
         ],
         "namespace": "KroneckerSymbol",
-        "lineCount": 242,
-        "axiomCount": 1,
-        "sorries": 0,
+        "lineCount": 388,
+        "axiomCount": 0,
+        "sorries": 2,
         "definitionCount": 1,
-        "theoremCount": 19
+        "theoremCount": 28
     },
     "mainTheorems": [
         {
@@ -63,9 +63,9 @@
             "research"
         ],
         "badge": "axiom",
-        "axiomCount": 1,
-        "sorries": 0,
-        "assumptions": "kronecker_qr_fundamental: The generalized Kronecker QR with sign correction: (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K for coprime fundamental discriminants, where ε=-1 if both D₁<0 and D₂<0, else ε=1. Proved for positive odd discriminants via Jacobi QR. The sign correction for both-negative is confirmed numerically ((-7/3)=-(-3/7)). Full proof requires Artin reciprocity or genus theory.",
+        "axiomCount": 0,
+        "sorries": 2,
+        "assumptions": "2 sorry stubs remaining: (1) Type 1 × Type 2 case — D₁ ≡ 1 (mod 4) odd, D₂ = 4m₂ even: reduction via J(D₁, 4|m₂|) = J(D₁, |m₂|) requires J(a, 2) analysis; (2) Type 2 × Type 1 case — symmetric. Type 1 × Type 1 (both odd) fully proved via Jacobi QR with sign analysis. Type 2 × Type 2 proved impossible (gcd ≥ 4). Remaining cases reducible to J(a, 2) computation.",
         "mathlibDependencies": [
             {
                 "theorem": "jacobiSym.quadratic_reciprocity_one_mod_four",
@@ -88,10 +88,14 @@
             "kronecker_symm_pos_one_mod_four: proved Kronecker QR for D₁ ≡ 1 (mod 4) using kronecker_eq_jacobi + Jacobi QR",
             "kronecker_symm_both_one_mod_four: symmetry when both discriminants ≡ 1 (mod 4)",
             "kronecker_sign_three_mod_four: sign flip when both ≡ 3 (mod 4) from Jacobi QR",
-            "kronecker_qr_fundamental: axiom for the general case (negative/even discriminants)",
+            "kronecker_qr_fundamental: theorem proved for all Type 1×Type 1 cases (both negative sign flip, mixed sign equality) via Jacobi QR; 2 sorry stubs for Type 1×Type 2 cases",
             "Numerical verifications: (5/3)=(3/5)=-1, (5/7)=(7/5), (3/7)=-(7/3), etc.",
             "kronecker_neg7_neg3_vals: numerical verification that (-7/3)=-1 and (-3/7)=1, confirming the both-negative sign flip via native_decide",
-            "kronecker_neg7_neg3_sign: (-7/3)_K = -(-3/7)_K, demonstrating that the original unconditional equality axiom was false"
+            "kronecker_neg7_neg3_sign: (-7/3)_K = -(-3/7)_K, demonstrating that the original unconditional equality axiom was false",
+            "jacobi_neg_one_one_mod4 / jacobi_neg_one_three_mod4: helper lemmas evaluating J(-1, n) = 1 or -1 based on n mod 4",
+            "jacobi_neg_factor: local helper factoring J(-D, n) = J(-1, n) * J(|D|, n) for negative D",
+            "natAbs_mod4_neg/pos: lemmas connecting D % 4 = 1 to D.natAbs % 4 ∈ {1,3} based on sign",
+            "Type 2×Type 2 impossibility: exfalso proof that gcd(4m₁, 4m₂) ≥ 4 ≠ 1 for coprime requirement"
         ],
         "proofStrategy": "For positive D₁ ≡ 1 (mod 4): reduce kronecker to jacobiSym via kronecker_eq_jacobi, then apply jacobiSym.quadratic_reciprocity_one_mod_four. For both ≡ 3 (mod 4): same reduction, apply quadratic_reciprocity_three_mod_four (gives sign flip). General case axiomatized: requires Artin reciprocity for quadratic extensions (equivalent to χ_D₁(D₂) = χ_D₂(D₁) for primitive characters mod |D|).",
         "openQuestions": [
@@ -99,8 +103,8 @@
             "Is Artin reciprocity for quadratic extensions available in Mathlib? That would allow removing the kronecker_qr_fundamental axiom entirely.",
             "Can the Kronecker symbol (D/·) be formalized as a Dirichlet character of conductor |D| in Lean? This would connect the QR law to the theory of L-functions."
         ],
-        "lineCount": 242,
-        "theoremCount": 19,
+        "lineCount": 388,
+        "theoremCount": 28,
         "definitionCount": 1
     },
     "sections": [
@@ -196,5 +200,5 @@
             "description": "Grandparent: Zolotarev QR proof; both use the Jacobi symbol as the algebraic backbone"
         }
     ],
-    "sorries": 0
+    "sorries": 2
 }

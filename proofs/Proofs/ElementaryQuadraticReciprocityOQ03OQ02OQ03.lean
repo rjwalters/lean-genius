@@ -123,8 +123,66 @@ theorem kronecker_sign_three_mod_four
   exact jacobiSym.quadratic_reciprocity_three_mod_four hD₁ hD₂
 
 -- ============================================================
--- Part III: General Kronecker QR — Axiom
+-- Part III: General Kronecker QR — Proved for Type 1 × Type 1
 -- ============================================================
+
+-- Helper: J(-1 : ℤ) n = 1 when n % 4 = 1
+private lemma jacobi_neg_one_one_mod4 {n : ℕ} (hn4 : n % 4 = 1) (hn_pos : 0 < n) :
+    jacobiSym (-1 : ℤ) n = 1 := by
+  have hodd : Odd n := ⟨n / 2, by omega⟩
+  rw [jacobiSym.at_neg_one hodd]
+  rw [ZMod.χ₄_eq_neg_one_pow (Nat.odd_iff.mp ⟨n / 2, by omega⟩)]
+  have hkeven : n / 2 = 2 * (n / 4) := by omega
+  rw [hkeven, pow_mul]; norm_num
+
+-- Helper: J(-1 : ℤ) n = -1 when n % 4 = 3
+private lemma jacobi_neg_one_three_mod4 {n : ℕ} (hn4 : n % 4 = 3) (hn_pos : 0 < n) :
+    jacobiSym (-1 : ℤ) n = -1 := by
+  have hodd : Odd n := ⟨n / 2, by omega⟩
+  rw [jacobiSym.at_neg_one hodd]
+  rw [ZMod.χ₄_eq_neg_one_pow (Nat.odd_iff.mp ⟨n / 2, by omega⟩)]
+  have hkodd : n / 2 = 2 * (n / 4) + 1 := by omega
+  rw [hkodd, pow_add, pow_mul, pow_one]; norm_num
+
+-- Helper: D < 0 → D = -(↑D.natAbs : ℤ)
+private lemma neg_eq_neg_natAbs {D : ℤ} (hD : D < 0) : D = -(↑D.natAbs : ℤ) := by
+  rcases Int.natAbs_eq D with h | h
+  · linarith [Int.natCast_nonneg D.natAbs]
+  · linarith
+
+-- Helper: D % 4 = 1 and D < 0 → D.natAbs % 4 = 3
+private lemma natAbs_mod4_neg {D : ℤ} (hmod : D % 4 = 1) (hneg : D < 0) :
+    D.natAbs % 4 = 3 := by
+  have hDeq : D = -(↑D.natAbs : ℤ) := neg_eq_neg_natAbs hneg
+  have h : (↑D.natAbs : ℤ) % 4 = 3 := by rw [hDeq] at hmod; omega
+  exact_mod_cast h
+
+-- Helper: D % 4 = 1 and D > 0 → D.natAbs % 4 = 1
+private lemma natAbs_mod4_pos {D : ℤ} (hmod : D % 4 = 1) (hpos : 0 < D) :
+    D.natAbs % 4 = 1 := by
+  have h : (↑D.natAbs : ℤ) % 4 = 1 := by
+    rcases Int.natAbs_eq D with heq | heq
+    · rw [heq]; exact hmod
+    · exfalso; linarith [Int.natCast_nonneg D.natAbs]
+  exact_mod_cast h
+
+-- Helper: D % 4 = 1 → D.natAbs > 0
+private lemma type1_natAbs_pos {D : ℤ} (hmod : D % 4 = 1) : 0 < D.natAbs := by
+  simp only [Nat.pos_iff_ne_zero, ne_eq, Int.natAbs_eq_zero]; omega
+
+-- Helper: D % 4 = 1 → D.natAbs % 2 = 1
+private lemma type1_natAbs_odd {D : ℤ} (hmod : D % 4 = 1) : D.natAbs % 2 = 1 := by
+  rcases Int.natAbs_eq D with h | h
+  · have : (↑D.natAbs : ℤ) % 2 = 1 := by rw [h]; omega
+    exact_mod_cast this
+  · have : (↑D.natAbs : ℤ) % 2 = 1 := by rw [h]; omega
+    exact_mod_cast this
+
+-- Helper: D > 0 → D = ↑D.natAbs
+private lemma eq_natAbs_of_pos {D : ℤ} (hpos : 0 < D) : D = ↑D.natAbs := by
+  rcases Int.natAbs_eq D with h | h
+  · exact h.symm
+  · exfalso; linarith [Int.natCast_nonneg D.natAbs]
 
 /-- **Generalized Quadratic Reciprocity for Fundamental Discriminants**
 
@@ -135,28 +193,116 @@ theorem kronecker_sign_three_mod_four
 
     where ε(D₁,D₂) = -1 if both D₁ < 0 and D₂ < 0, else ε = 1.
 
-    Examples confirming the sign flip:
-      (-7/3)_K = -1  and  (-3/7)_K = 1  →  (-7/3) = -(-3/7) [verified by native_decide]
-      (-4/3)_K = -1  and  (-3/4)_K = 1  →  (-4/3) = -(-3/4)
+    **Proof (Type 1 × Type 1)**: When both D₁ ≡ D₂ ≡ 1 (mod 4) (odd fundamental
+    discriminants), the proof proceeds via Jacobi symbol analysis:
+    1. Both D₁.natAbs and D₂.natAbs are odd, so kronecker = jacobiSym.
+    2. For D < 0 with D ≡ 1 (mod 4): |D| ≡ 3 (mod 4).
+    3. J(-|D|, n) = J(-1, n) · J(|D|, n). J(-1, n) = -1 iff n ≡ 3 (mod 4).
+    4. The sign correction arises: two J(-1, ·) = -1 factors and one sign flip from
+       Jacobi QR (both ≡ 3 mod 4) combine to give the ε = -1 factor when both negative.
 
-    The sign correction arises from the Dirichlet character interpretation: χ_D is an
-    ODD character when D < 0 (χ_D(-1) = -1). For D₂ < 0:
-      χ_{D₁}(D₂) = χ_{D₁}(-1) · χ_{D₁}(|D₂|) = -χ_{D₁}(|D₂|)  when D₁ < 0
-    So for both D₁, D₂ < 0:  χ_{D₁}(D₂) = χ_{D₂}(D₁)  gives the sign flip.
-
-    This covers the cases not handled by the proved theorems above:
-    - Mixed-sign: one of D₁, D₂ negative (equality holds)
-    - Even discriminants: 4 | D (equality holds when at most one is negative)
-    - Both negative: sign flip
-
-    Proof requires genus theory or class field theory (Artin reciprocity). -/
-axiom kronecker_qr_fundamental (D₁ D₂ : ℤ)
+    **Status**: Type 1 × Type 1 (odd discriminants) fully proved. Type 1 × Type 2
+    (one even discriminant, like D = ±4, ±8) uses sorry — requires J(a, 2) analysis.
+    Type 2 × Type 2 is impossible since gcd ≥ 4. -/
+theorem kronecker_qr_fundamental (D₁ D₂ : ℤ)
     (h₁ : IsFundamentalDiscriminant D₁)
     (h₂ : IsFundamentalDiscriminant D₂)
     (hcop : Int.gcd D₁.natAbs D₂.natAbs = 1) :
     kronecker D₁ D₂.natAbs =
       if D₁ < 0 ∧ D₂ < 0 then -(kronecker D₂ D₁.natAbs)
-      else kronecker D₂ D₁.natAbs
+      else kronecker D₂ D₁.natAbs := by
+  rcases h₁ with ⟨hmod1, _⟩ | ⟨hmod0_1, m₁, hD₁_eq, -, -⟩ <;>
+  rcases h₂ with ⟨hmod2, _⟩ | ⟨hmod0_2, m₂, hD₂_eq, -, -⟩
+  · -- ================================================================
+    -- TYPE 1 × TYPE 1: both D₁ ≡ D₂ ≡ 1 (mod 4), squarefree, odd.
+    -- Proof: factor negative discriminants as (-1)·|D|, use J(-1, n) evaluation,
+    -- and apply Jacobi QR on the positive absolute-value parts.
+    -- ================================================================
+    have h1_pos : 0 < D₁.natAbs := type1_natAbs_pos hmod1
+    have h2_pos : 0 < D₂.natAbs := type1_natAbs_pos hmod2
+    have h1_odd : D₁.natAbs % 2 = 1 := type1_natAbs_odd hmod1
+    have h2_odd : D₂.natAbs % 2 = 1 := type1_natAbs_odd hmod2
+    rw [kronecker_eq_jacobi D₁ D₂.natAbs h2_pos h2_odd,
+        kronecker_eq_jacobi D₂ D₁.natAbs h1_pos h1_odd]
+    -- Helper: J(D, n) when D < 0 (factors out J(-1, n))
+    have jacobi_neg_factor : ∀ (D : ℤ) (n : ℕ) (hn : n % 4 = 1 ∨ n % 4 = 3) (hpos : 0 < n)
+        (hDneg : D < 0), jacobiSym D n =
+          (if n % 4 = 3 then (-1 : ℤ) else 1) * jacobiSym (↑D.natAbs : ℤ) n := by
+      intro D n hn hpos hDneg
+      conv_lhs =>
+        rw [neg_eq_neg_natAbs hDneg, show -(↑D.natAbs : ℤ) = (-1 : ℤ) * ↑D.natAbs from by ring]
+      rw [jacobiSym.mul_left]
+      rcases hn with h3 | h3
+      · rw [jacobi_neg_one_one_mod4 h3 hpos, if_neg (show ¬(n % 4 = 3) from by omega)]; ring
+      · rw [jacobi_neg_one_three_mod4 h3 hpos, if_pos h3]; ring
+    by_cases hneg1 : D₁ < 0 <;> by_cases hneg2 : D₂ < 0
+    · -- *** BOTH NEGATIVE: ε = -1 (sign flip) ***
+      -- |D₁| ≡ |D₂| ≡ 3 (mod 4) since D ≡ 1 (mod 4) and D < 0
+      simp only [if_pos ⟨hneg1, hneg2⟩]
+      have h1_3 : D₁.natAbs % 4 = 3 := natAbs_mod4_neg hmod1 hneg1
+      have h2_3 : D₂.natAbs % 4 = 3 := natAbs_mod4_neg hmod2 hneg2
+      -- LHS: J(D₁, |D₂|) = J(-1, |D₂|) · J(|D₁|, |D₂|) = (-1) · J(|D₁|, |D₂|)
+      have hlhs : jacobiSym D₁ D₂.natAbs = (-1 : ℤ) * jacobiSym (↑D₁.natAbs : ℤ) D₂.natAbs := by
+        rw [jacobi_neg_factor D₁ D₂.natAbs (Or.inr h2_3) h2_pos hneg1, if_pos h2_3]
+      -- RHS: J(D₂, |D₁|) = J(-1, |D₁|) · J(|D₂|, |D₁|) = (-1) · J(|D₂|, |D₁|)
+      have hrhs : jacobiSym D₂ D₁.natAbs = (-1 : ℤ) * jacobiSym (↑D₂.natAbs : ℤ) D₁.natAbs := by
+        rw [jacobi_neg_factor D₂ D₁.natAbs (Or.inr h1_3) h1_pos hneg2, if_pos h1_3]
+      -- J(|D₁|, |D₂|) = -J(|D₂|, |D₁|) by Jacobi QR (both ≡ 3 mod 4)
+      rw [hlhs, hrhs, jacobiSym.quadratic_reciprocity_three_mod_four h1_3 h2_3]
+      ring
+    · -- D₁ < 0, D₂ ≥ 0 → ε = 1 (no sign flip)
+      simp only [if_neg (by tauto)]
+      have hpos2 : 0 < D₂ := by omega
+      have h2_1 : D₂.natAbs % 4 = 1 := natAbs_mod4_pos hmod2 hpos2
+      -- LHS: J(D₁, D₂.natAbs) = J(-1, D₂.natAbs) · J(|D₁|, D₂.natAbs) = J(|D₁|, D₂.natAbs)
+      have hlhs : jacobiSym D₁ D₂.natAbs = jacobiSym (↑D₁.natAbs : ℤ) D₂.natAbs := by
+        rw [jacobi_neg_factor D₁ D₂.natAbs (Or.inl h2_1) h2_pos hneg1, if_neg (by omega)]; ring
+      -- J(|D₁|, D₂.natAbs) = J(D₂.natAbs, |D₁|) by QR (D₂.natAbs ≡ 1 mod 4)
+      rw [hlhs, ← jacobiSym.quadratic_reciprocity_one_mod_four h2_1 (Nat.odd_iff.mpr h1_odd)]
+      -- RHS: J(D₂, D₁.natAbs) = J(↑D₂.natAbs, D₁.natAbs) since D₂ > 0
+      conv_rhs => rw [eq_natAbs_of_pos hpos2]
+    · -- D₁ ≥ 0, D₂ < 0 → ε = 1 (no sign flip)
+      simp only [if_neg (by tauto)]
+      have hpos1 : 0 < D₁ := by omega
+      have h1_1 : D₁.natAbs % 4 = 1 := natAbs_mod4_pos hmod1 hpos1
+      -- LHS: J(D₁, D₂.natAbs) = J(↑D₁.natAbs, D₂.natAbs) since D₁ > 0
+      conv_lhs => rw [eq_natAbs_of_pos hpos1]
+      -- J(↑D₁.natAbs, D₂.natAbs) = J(↑D₂.natAbs, D₁.natAbs) by QR (D₁.natAbs ≡ 1 mod 4)
+      rw [jacobiSym.quadratic_reciprocity_one_mod_four h1_1 (Nat.odd_iff.mpr h2_odd)]
+      -- RHS: J(D₂, D₁.natAbs) = J(|D₂|, D₁.natAbs) since J(-1, D₁.natAbs) = 1
+      have hrhs : jacobiSym D₂ D₁.natAbs = jacobiSym (↑D₂.natAbs : ℤ) D₁.natAbs := by
+        rw [jacobi_neg_factor D₂ D₁.natAbs (Or.inl h1_1) h1_pos hneg2, if_neg (by omega)]; ring
+      rw [hrhs]
+    · -- BOTH NON-NEGATIVE → ε = 1 (D₁ ≡ 1 mod 4, D₂ ≡ 1 mod 4, both positive)
+      simp only [if_neg (by tauto)]
+      have hpos1 : 0 < D₁ := by omega
+      have hpos2 : 0 < D₂ := by omega
+      have h1_1 : D₁.natAbs % 4 = 1 := natAbs_mod4_pos hmod1 hpos1
+      conv_lhs => rw [eq_natAbs_of_pos hpos1]
+      conv_rhs => rw [eq_natAbs_of_pos hpos2]
+      exact jacobiSym.quadratic_reciprocity_one_mod_four h1_1 (Nat.odd_iff.mpr h2_odd)
+  · -- TYPE 1 × TYPE 2: D₁ odd, D₂ = 4·m₂ (even)
+    -- Sorry: requires J(a, 2) analysis beyond current Jacobi lemmas
+    -- Mathematical argument: J(D₁, 4|m₂|) = J(D₁, 4)·J(D₁, |m₂|) = J(D₁, |m₂|)
+    -- (since J(D₁, 4) = J(D₁, 2)² = 1 for odd D₁) and similarly for the other side.
+    -- The sign correction follows from the same J(-1, ·) analysis as Type 1 × Type 1
+    -- applied to D₁ and the odd part of m₂.
+    sorry
+  · -- TYPE 2 × TYPE 1: D₁ = 4·m₁ (even), D₂ odd — symmetric to Type 1 × Type 2
+    sorry
+  · -- TYPE 2 × TYPE 2: IMPOSSIBLE — gcd(4m₁, 4m₂) ≥ 4 contradicts hcop = 1
+    exfalso
+    have h4_1 : (4 : ℕ) ∣ D₁.natAbs := by
+      rw [hD₁_eq, Int.natAbs_mul, show (4 : ℤ).natAbs = 4 from rfl]
+      exact dvd_mul_right 4 m₁.natAbs
+    have h4_2 : (4 : ℕ) ∣ D₂.natAbs := by
+      rw [hD₂_eq, Int.natAbs_mul, show (4 : ℤ).natAbs = 4 from rfl]
+      exact dvd_mul_right 4 m₂.natAbs
+    have h4gcd : (4 : ℕ) ∣ Nat.gcd D₁.natAbs D₂.natAbs := Nat.dvd_gcd h4_1 h4_2
+    have : Int.gcd D₁.natAbs D₂.natAbs = Nat.gcd D₁.natAbs D₂.natAbs := rfl
+    rw [this] at hcop
+    rw [hcop] at h4gcd
+    exact absurd h4gcd (by norm_num)
 
 -- ============================================================
 -- Part IV: Numerical Verifications
