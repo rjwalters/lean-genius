@@ -1,1 +1,158 @@
-[]
+[
+  {
+    "id": "dedekind-open-question",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-03",
+    "range": { "startLine": 4, "endLine": 53 },
+    "type": "context",
+    "title": "Open Question: Does Unique Factorization Generalize to Dedekind Domains?",
+    "content": "The parent file (BezoutIdentityOQ02OQ01OQ02) showed that every Euclidean domain is a UFD via the chain EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid. The question is: does unique factorization extend to the wider class of Dedekind domains? The answer is yes — but only at the level of ideals, not elements. A Dedekind domain need not have unique element factorization (ℤ[√-5] famously fails), but every nonzero proper ideal factors uniquely into prime ideals. This is the Ideal Fundamental Theorem of Arithmetic, encoded in Mathlib's IsDedekindDomain theory.",
+    "mathContext": "The ideal FTA: in a Dedekind domain $D$, every nonzero proper ideal $I \\trianglelefteq D$ factors uniquely as $I = \\mathfrak{p}_1^{e_1} \\cdots \\mathfrak{p}_k^{e_k}$ where $\\mathfrak{p}_i$ are distinct nonzero prime ideals. For $D = \\mathbb{Z}$, this recovers the classical FTA for integers. For $D = \\mathbb{Z}[\\sqrt{-5}]$: $(6) = (2,1+\\sqrt{-5})^2 \\cdot (3,1+\\sqrt{-5}) \\cdot (3,1-\\sqrt{-5})$ — a unique ideal factorization corresponding to the two element factorizations $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dedekind domains",
+      "ideal unique factorization",
+      "Krull dimension",
+      "class field theory",
+      "algebraic integers"
+    ],
+    "prerequisites": [
+      "UFD and PID hierarchy",
+      "ring theory fundamentals",
+      "algebraic number theory"
+    ]
+  },
+  {
+    "id": "dedekind-instances",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-03",
+    "range": { "startLine": 55, "endLine": 78 },
+    "type": "technique",
+    "title": "Dedekind Domain Instances via Typeclass Inference",
+    "content": "Three results establish the Dedekind domain hierarchy in Lean. Two examples (ℤ and k[x]) follow from Mathlib typeclass inference — Lean's instance system automatically derives IsDedekindDomain from the EuclideanDomain → PID → Dedekind chain. The theorem pid_is_dedekind makes this implication explicit in universe-polymorphic form. The theorem prime_ideal_is_maximal directly applies IsDedekindDomain.dimensionLtOne — the formal encoding of 'Krull dimension ≤ 1'.",
+    "mathContext": "The ring-theoretic hierarchy: EuclideanDomain $\\Rightarrow$ PID $\\Rightarrow$ DedekindDomain $\\Rightarrow$ IntegralDomain. Concretely: $\\mathbb{Z}$ is Euclidean (division algorithm) $\\Rightarrow$ PID (every ideal is principal) $\\Rightarrow$ Dedekind. The polynomial ring $k[x]$ over a field $k$ is similarly Euclidean $\\Rightarrow$ PID $\\Rightarrow$ Dedekind. The Krull dimension condition $\\dim D \\leq 1$ forces every nonzero prime ideal to be maximal, giving a strong structural constraint on the ideal lattice.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "typeclass inference",
+      "IsDedekindDomain",
+      "PID hierarchy",
+      "Krull dimension",
+      "prime vs maximal ideals"
+    ],
+    "prerequisites": [
+      "IsDedekindDomain typeclass",
+      "IsPrincipalIdealRing",
+      "Lean 4 typeclass inference"
+    ]
+  },
+  {
+    "id": "norm-theory",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-03",
+    "range": { "startLine": 80, "endLine": 107 },
+    "type": "definition",
+    "title": "Norm Theory and Dual Factorizations of 6",
+    "content": "The norm N(a+b√-5) = a²+5b² is the central computational tool. Three key theorems: norm_formula gives the explicit formula, norm_nonneg shows N ≥ 0 via positivity, norm_mul_eq establishes multiplicativity N(z·w) = N(z)·N(w). Four decide-verified computations give N(2)=4, N(3)=9, N(1+√-5)=6, N(1-√-5)=6. The theorem two_factorizations_of_6 proves 2·3 = (1+√-5)(1-√-5) by decide, establishing the dual factorization concretely.",
+    "mathContext": "The norm $N: \\mathbb{Z}[\\sqrt{d}] \\to \\mathbb{Z}$ sends $a+b\\sqrt{d} \\mapsto a^2 - db^2$. For $d=-5$: $N(a+b\\sqrt{-5}) = a^2+5b^2 \\geq 0$. Multiplicativity $N(\\alpha\\beta) = N(\\alpha)N(\\beta)$ follows since $N(\\alpha) = |\\alpha|^2$ for $\\alpha \\in \\mathbb{C}$. The norms $4, 6, 9$ satisfy $4 \\cdot 9 = 36 = 6 \\cdot 6$, reflecting both factorizations of $(36) = N(2)N(3) = N(1+\\sqrt{-5})N(1-\\sqrt{-5})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zsqrtd norm",
+      "multiplicative norm",
+      "decide tactic",
+      "algebraic conjugate",
+      "norm-Euclidean domain"
+    ],
+    "prerequisites": [
+      "Zsqrtd ring structure",
+      "ring norm definition",
+      "positivity tactic"
+    ]
+  },
+  {
+    "id": "norm-gap",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-03",
+    "range": { "startLine": 109, "endLine": 147 },
+    "type": "technique",
+    "title": "Critical Norm Gap: N=2 and N=3 Are Unrepresentable",
+    "content": "Two private lemmas prove that a²+5b² ≠ 2 and a²+5b² ≠ 3 for any integers a, b. The proof pattern is identical: show b=0 first (if b≠0 then 5b²≥5 contradicts the target), use nlinarith to bound a∈{-1,0,1}, then apply interval_cases to exhaust all cases. These lemmas are the critical gap that forces any factorization of 2 to be trivial. The four star/mul lemmas provide Zsqrtd.ext components for the unit characterization.",
+    "mathContext": "The norm form $a^2 + 5b^2$ is positive definite with discriminant $\\Delta = -20$. By the theory of binary quadratic forms, 2 and 3 are not represented because 2 is not a quadratic residue mod 5 (since $1^2 \\equiv 1, 2^2 \\equiv 4, 3^2 \\equiv 4, 4^2 \\equiv 1 \\pmod 5$, missing 2 and 3). Equivalently, in $\\mathbb{F}_5$, the equation $a^2 = -5b^2+2$ has no solution with $b \\neq 0$, and $a^2 = 2$ has no solution with $b=0$. This is the arithmetic obstruction that prevents $\\mathbb{Z}[\\sqrt{-5}]$ from being a UFD.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary quadratic forms",
+      "interval_cases tactic",
+      "nlinarith",
+      "quadratic residues mod 5",
+      "positive definite forms"
+    ],
+    "prerequisites": [
+      "norm formula",
+      "Lean 4 interval_cases",
+      "nlinarith tactic"
+    ]
+  },
+  {
+    "id": "unit-characterization",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-03",
+    "range": { "startLine": 149, "endLine": 180 },
+    "type": "insight",
+    "title": "Units via Norm: IsUnit ↔ N=1",
+    "content": "The unit characterization isUnit_iff_norm_one proves z is a unit iff N(z)=1. Forward direction: if z is a unit with inverse w, then N(z)·N(w) = N(z·w) = N(1) = 1; since both norms are nonneg integers, both must equal 1. Backward direction: if N(z)=1, then z·conj(z) = ⟨N(z),0⟩ = 1, making conj(z) the explicit inverse (via Zsqrtd.ext). The theorem two_not_unit follows immediately from N(2)=4≠1.",
+    "mathContext": "For $d < 0$, the units of $\\mathbb{Z}[\\sqrt{d}]$ are exactly those with norm 1. For $d=-5$: $a^2+5b^2=1$ forces $b=0, a=\\pm 1$, so the unit group is $\\{\\pm 1\\}$. The conjugate inverse $z^{-1} = \\bar{z}/N(z)$ is the standard construction. Contrast: $\\mathbb{Z}[i]$ has units $\\{\\pm 1, \\pm i\\}$ from $a^2+b^2=1$, and $\\mathbb{Z}[\\omega]$ (Eisenstein integers) has units $\\{\\pm 1, \\pm \\omega, \\pm \\omega^2\\}$ of order 6. The simplicity of $\\{\\pm 1\\}$ for $\\mathbb{Z}[\\sqrt{-5}]$ is what allows the sharp norm argument.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit group of rings",
+      "Zsqrtd conjugate",
+      "norm multiplicativity",
+      "Gaussian integers",
+      "Eisenstein integers"
+    ],
+    "prerequisites": [
+      "isUnit definition",
+      "Zsqrtd.star conjugate",
+      "norm_mul_eq"
+    ]
+  },
+  {
+    "id": "irred-not-prime",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-03",
+    "range": { "startLine": 182, "endLine": 231 },
+    "type": "insight",
+    "title": "The Key Divergence: 2 is Irreducible but Not Prime",
+    "content": "two_irreducible: if 2 = a·b, then N(a)·N(b) = 4 with both ≥ 1, so N(a) ∈ {1,2,3,4}. Cases N=2 and N=3 are impossible (norm gap), so N(a)=1 (a unit) or N(a)=4, N(b)=1 (b unit) — two_irreducible. two_not_prime: 2 divides (1+√-5)(1-√-5) = 6, but if 2 | (1+√-5) then N(1+√-5) = N(2)·N(k) = 4·N(k) gives 6 = 4·N(k) — no integer solution. Both factors resist divisibility by 2.",
+    "mathContext": "In any domain: prime $\\Rightarrow$ irreducible, but the converse requires UFD. The norm divisibility criterion: $\\alpha \\nmid \\beta$ iff $N(\\alpha) \\nmid N(\\beta)$ (since $\\beta = \\alpha k$ implies $N(\\beta) = N(\\alpha)N(k)$). Here $N(2) = 4$ and $N(1\\pm\\sqrt{-5}) = 6$: since $4 \\nmid 6$, we get $2 \\nmid (1\\pm\\sqrt{-5})$. Combined with $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5}) = 6 = 2 \\cdot 3$, this witnesses 2's failure of the prime divisibility property $p \\mid ab \\Rightarrow p \\mid a \\text{ or } p \\mid b$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irreducible vs prime distinction",
+      "Irreducible definition",
+      "Prime definition",
+      "norm divisibility criterion",
+      "dvd_or_dvd for primes"
+    ],
+    "prerequisites": [
+      "isUnit_iff_norm_one",
+      "norm_ne_two/three",
+      "norm_two = 4",
+      "norm_one_plus = 6"
+    ]
+  },
+  {
+    "id": "non-ufd-conclusion",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-03",
+    "range": { "startLine": 233, "endLine": 265 },
+    "type": "insight",
+    "title": "Non-UFD Certificate and Domain Hierarchy",
+    "content": "zsqrtneg5_not_ufd: assumes UFD, applies UniqueFactorizationMonoid.irreducible_iff_prime to derive Prime 2 from two_irreducible — contradicting two_not_prime. The hierarchy theorem shows PIDs are simultaneously Dedekind and UFDs. The bundle zsqrtneg5_witness packages all three key facts as a complete machine-checked certificate: Irreducible 2, ¬Prime 2, and the dual factorization 2·3 = (1+√-5)(1-√-5). This triple constitutes definitive proof that ℤ[√-5] is Dedekind but not a UFD.",
+    "mathContext": "The fundamental equivalence: Dedekind domain is a UFD $\\Leftrightarrow$ it is a PID. Since $\\mathbb{Z}[\\sqrt{-5}]$ is Dedekind but not UFD, it is not PID. The ideal class group $\\text{Cl}(\\mathbb{Z}[\\sqrt{-5}]) \\cong \\mathbb{Z}/2\\mathbb{Z}$ has order 2: the non-principal ideal $\\mathfrak{p} = (2, 1+\\sqrt{-5})$ satisfies $\\mathfrak{p}^2 = (2)$ (principal), so $[\\mathfrak{p}]$ has exact order 2. The class number $h(-20) = 2$ is the arithmetic invariant measuring the obstruction to unique element factorization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "UniqueFactorizationMonoid.irreducible_iff_prime",
+      "ideal class group",
+      "class number h(-20)=2",
+      "Dedekind UFD equivalence",
+      "PID characterization"
+    ],
+    "prerequisites": [
+      "two_irreducible",
+      "two_not_prime",
+      "UniqueFactorizationMonoid",
+      "IsDedekindDomain"
+    ]
+  }
+]
