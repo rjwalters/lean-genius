@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-oq04-header",
+    "proofId": "greens-theorem-oq-03-oq-04",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "OQ-04: Can Stokes' Theorem Derive Green's Theorem for TypeI Regions?",
+    "content": "OQ-04 arises from OQ-03's open question: since Green's theorem is a special case of Stokes' theorem, can Mathlib's existing Stokes machinery (implemented as the divergence theorem for rectangles) directly yield Green's theorem? The answer is YES for rectangular regions — Mathlib's `integral2_divergence_prod_of_hasFDerivWithinAt_off_countable` gives Green's theorem for rectangles via the algebraic substitution F=(Q,-P). For general TypeI regions with curved boundaries, Mathlib v4.26.0 lacks the necessary Stokes theorem for smooth manifolds with boundary, so the OQ-03 FTC approach remains the right path. The file imports `Proofs.GreensTheoremOQ03` to access the `TypeIRegion` structure and `greens_theorem_typeI` axiom.",
+    "mathContext": "Green's theorem as Stokes: $\\oint_{\\partial D}(P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$ is the Stokes theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$ applied to $\\omega = P\\,dx + Q\\,dy$ and $d\\omega = (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dx \\wedge dy$. For $F=(Q,-P)$: $\\text{div}(F) = \\partial Q/\\partial x - \\partial P/\\partial y$ and $\\oint F \\cdot n\\,ds = \\oint P\\,dx + Q\\,dy$.",
+    "significance": "key",
+    "relatedConcepts": ["Stokes theorem", "Green's theorem", "divergence theorem", "TypeIRegion", "greens-theorem-oq-03"],
+    "prerequisites": ["Green's theorem", "Stokes theorem on manifolds", "TypeI regions from OQ-03", "Mathlib measure theory"]
+  },
+  {
     "id": "ann-stokes-setup",
     "proofId": "greens-theorem-oq-03-oq-04",
     "range": { "startLine": 63, "endLine": 102 },
@@ -46,5 +58,17 @@
     "significance": "key",
     "relatedConcepts": ["Stokes theorem on manifolds", "differential forms", "Mathlib roadmap", "exterior derivative"],
     "prerequisites": ["differential geometry", "manifolds with boundary", "differential forms"]
+  },
+  {
+    "id": "ann-stokes-green-abstract",
+    "proofId": "greens-theorem-oq-03-oq-04",
+    "range": { "startLine": 205, "endLine": 250 },
+    "type": "insight",
+    "title": "Abstract Equivalence: Divergence Theorem IS Stokes' Theorem",
+    "content": "The summary section documents that Mathlib's `integral2_divergence_prod_of_hasFDerivWithinAt_off_countable` is not merely analogous to Stokes' theorem — it IS Stokes' theorem for the special case of a rectangular 2D manifold. The identification: ω = P dx + Q dy (a 1-form on ℝ²), dω = (∂Q/∂x − ∂P/∂y) dx∧dy (the exterior derivative), M = rectangular region [a₁,b₁]×[a₂,b₂], ∂M = counterclockwise boundary. This means OQ-03's FTC proof and this divergence-theorem proof are two formalizations of the same mathematical theorem, differing only in which Mathlib tools they invoke. The rectangle is the paradigm case where all three approaches (FTC, divergence theorem, Stokes) are simultaneously available.",
+    "mathContext": "Abstract Stokes: $\\int_M d\\omega = \\int_{\\partial M} \\omega$ with $\\omega = P\\,dx + Q\\,dy$, $d\\omega = (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dx \\wedge dy$. Instantiated to rectangle: $\\iint_{[a_1,b_1]\\times[a_2,b_2]} (\\partial Q/\\partial x - \\partial P/\\partial y) = \\oint_{\\text{rect}} P\\,dx + Q\\,dy$. The **three equivalent proofs**: (1) FTC iterated integration (OQ-01, OQ-03), (2) divergence theorem substitution (this entry), (3) general Stokes on manifolds with boundary (future Mathlib).",
+    "significance": "key",
+    "relatedConcepts": ["exterior derivative", "differential forms", "Stokes theorem", "divergence theorem", "Fundamental Theorem of Calculus"],
+    "prerequisites": ["exterior algebra", "differential geometry", "Stokes theorem on manifolds", "Green's theorem classical proof"]
   }
 ]
