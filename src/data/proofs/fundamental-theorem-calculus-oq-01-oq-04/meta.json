@@ -10,8 +10,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 253,
-    "theoremCount": 7,
+    "lineCount": 311,
+    "theoremCount": 8,
     "assumptions": "None. All theorems hold for arbitrary NormedAddCommGroup E with no axioms beyond Mathlib's standard library.",
     "tags": [
       "analysis",
@@ -63,28 +63,6 @@
       }
     ],
     "proofStrategy": "The proof of normed_ac_implies_bv mirrors the real-valued case (FundamentalTheoremCalculusLebesgueOQ01) exactly. The key substitution: the ℝ identity |x-y| = dist x y becomes the normed-space identity ‖x-y‖ = dist x y = (edist x y by ofReal). This allows the same partition argument: (1) choose n = ⌈(b-a)/δ⌉+1 pieces, (2) each piece has eVariationOn ≤ 1 by AC with ε=1, (3) inductively combine n pieces to get eVariationOn[a,b] ≤ n < ⊤.",
-    "sections": [
-      {
-        "title": "Definition",
-        "description": "AbsolutelyContinuousOnNormed: replace |f(b)-f(a)| with ‖f(b)-f(a)‖ in the ε-δ condition"
-      },
-      {
-        "title": "Basic Examples",
-        "description": "Constant functions are normed-AC; Lipschitz functions are normed-AC with δ=ε/(K+1)"
-      },
-      {
-        "title": "Equivalence at E=ℝ",
-        "description": "AbsolutelyContinuousOnNormed is equivalent to AbsolutelyContinuousOn when E=ℝ (norm = absolute value)"
-      },
-      {
-        "title": "Subinterval Restriction",
-        "description": "Normed-AC on [a,b] implies normed-AC on any subinterval [c,d]"
-      },
-      {
-        "title": "Main Theorem: AC → BV",
-        "description": "Every normed-AC function f : ℝ → E has bounded variation on [a,b]: eVariationOn f [a,b] < ⊤"
-      }
-    ],
     "dateAdded": "2026-05-05",
     "mathlib_version": "4.26.0",
     "parentEntry": "fundamental-theorem-calculus-oq-01",
@@ -103,12 +81,49 @@
       "The real-valued AC is exactly the E=ℝ special case: |x-y| = ‖x-y‖ on ℝ"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-definition",
+      "title": "Definition",
+      "startLine": 51,
+      "endLine": 74,
+      "summary": "AbsolutelyContinuousOnNormed: replace |f(b)-f(a)| with ‖f(b)-f(a)‖ in the ε-δ condition, generalizing real-valued AC to functions f : ℝ → E for any NormedAddCommGroup E."
+    },
+    {
+      "id": "sec-basic-examples",
+      "title": "Basic Examples",
+      "startLine": 70,
+      "endLine": 109,
+      "summary": "Constant functions are normed-AC (trivially); Lipschitz functions are normed-AC with δ = ε/(K+1), proved using the Lipschitz bound ‖f(b)-f(a)‖ ≤ K|b-a|."
+    },
+    {
+      "id": "sec-equivalence",
+      "title": "Equivalence at E=ℝ",
+      "startLine": 105,
+      "endLine": 151,
+      "summary": "AbsolutelyContinuousOnNormed is equivalent to AbsolutelyContinuousOn when E=ℝ, since the norm on ℝ equals the absolute value. Also proves restriction to subintervals preserves normed-AC."
+    },
+    {
+      "id": "sec-helpers",
+      "title": "Private Helpers",
+      "startLine": 152,
+      "endLine": 257,
+      "summary": "Private helper lemmas for the main theorem: edist on ℝ equals ENNReal.ofReal|x-y|; short-interval variation ≤ 1 from AC; and an inductive splitting lemma proving eVariationOn ≤ n over n equal intervals."
+    },
+    {
+      "id": "sec-main-theorem",
+      "title": "Main Theorem: AC → BV",
+      "startLine": 244,
+      "endLine": 311,
+      "summary": "Every normed-AC function f : ℝ → E has bounded variation on [a,b]: eVariationOn f [a,b] < ⊤. The partition argument chooses n = ⌈(b-a)/δ⌉+1 pieces, bounds each by 1, and combines inductively."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 253,
-    "theoremCount": 7,
+    "lineCount": 311,
+    "theoremCount": 8,
     "defCount": 1
   }
 }
