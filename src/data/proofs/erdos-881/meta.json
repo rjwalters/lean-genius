@@ -57,7 +57,7 @@
     "axiomCount": 1,
     "lineCount": 243,
     "assumptions": "1 axiom: erdos_881 (the open conjecture). Reduced from 2 by proving squares_basis_order_4 from Mathlib's Nat.sum_four_squares. Also fixed definition to use Multiset (was incorrectly using Finset, which disallows repeated elements needed for additive bases).",
-    "theoremCount": 8
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #881: Minimal Additive Bases**\n\nThis problem was posed by Erdős in 1998 [Er98] and explores the fine structure of additive bases.\n\n**Background:**\n- An additive basis of order k is a set A ⊂ ℕ such that every sufficiently large natural number can be written as a sum of at most k elements from A\n- The classical example is Lagrange's four-square theorem: every positive integer is a sum of four squares\n- Waring's problem generalizes this: k-th powers form a basis of order g(k)\n\n**The Question:**\nFor a minimal basis (one where no infinite subset can be removed without increasing the order), does there always exist an infinite subset whose removal increases the order by exactly 1?\n\n**Status:** This problem remains OPEN with no known progress toward resolution.",
@@ -169,7 +169,7 @@
     "namespace": "Erdos881",
     "lineCount": 243,
     "axiomCount": 1,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 6,
     "path": "Proofs/Erdos881Problem.lean",
     "sorries": 0

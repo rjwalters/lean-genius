@@ -41,7 +41,7 @@
     ],
     "assumptions": "1 axiom declaration: prime_divides_central_iff (Kummer's carry characterization: p | C(2n,n) iff some base-p digit of n is ≥ ⌈p/2⌉). Proved: choose_dvd_lcm (C(N,k) divides lcm(1,...,N+1), via Nat.factorization_choose_le_log), upper_bound_trivial (least non-divisor ≤ 2n+1, by contradiction using choose_dvd_lcm), two_divides_central (Pascal+symmetry), bertrand_central (Bertrand+dvd_choose_add), central_binom_lower (binomial sum+max term). Note: choose_dvd_lcm and upper_bound_trivial are NOT axioms — both are fully proved theorems in the file.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 23
+    "theoremCount": 24
   },
   "overview": {
     "historicalContext": "Erdős, Graham, Ruzsa, and Straus (1975) studied the divisibility properties of central binomial coefficients $\\binom{2n}{n}$ and observed that the least integer not dividing $\\binom{2n}{n}$ is typically $\\exp((\\log n)^{1/2+o(1)})$. This observation connects deeply to Kummer's theorem (1852), which states that $v_p(\\binom{m+n}{m})$ equals the number of carries in base-$p$ addition of $m$ and $n$. For $\\binom{2n}{n}$, the carries arise when doubling $n$ in base $p$, which happens precisely when some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$. The heuristic is that a random $n$ has each base-$p$ digit independently uniform, so the probability of no carry (and hence $p \\nmid \\binom{2n}{n}$) is approximately $(1/2)^{\\log n/\\log p}$, which transitions from negligible to significant when $\\log p \\approx (\\log n)^{1/2}$. The sequence of least non-divisors appears as OEIS A006197.",

@@ -22,7 +22,7 @@
     "lineCount": 203,
     "assumptions": "None. All theorems fully proved. pow2_coprime_odd proved via Nat.Coprime.pow_left and Nat.coprime_two_right. pow2_not_coprime_pow2 proved via dvd_pow_self and Nat.dvd_gcd. All concrete examples verified by decide/norm_num.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18,
+    "theoremCount": 19,
     "dateAdded": "2026-05-03"
   },
   "overview": {
@@ -105,7 +105,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 18
+    "theoremCount": 19
   },
   "sorries": 0
 }

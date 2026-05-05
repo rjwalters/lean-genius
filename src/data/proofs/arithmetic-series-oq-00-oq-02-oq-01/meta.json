@@ -24,7 +24,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
     "lineCount": 139,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 1,
     "originalContributions": [
       "nicWeight: definition of the unique rational weight w(k) = k³/(2k-1)",
@@ -98,7 +98,10 @@
   "leanFile": {
     "path": "Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean",
     "namespace": "ArithmeticSeriesOQ00OQ02OQ01",
-    "imports": ["Mathlib", "Proofs.ArithmeticSeriesOQ00"],
+    "imports": [
+      "Mathlib",
+      "Proofs.ArithmeticSeriesOQ00"
+    ],
     "axiomCount": 0,
     "lineCount": 139,
     "theoremCount": 8,

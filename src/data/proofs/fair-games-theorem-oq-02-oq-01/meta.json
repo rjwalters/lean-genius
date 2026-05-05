@@ -22,16 +22,16 @@
     "axiomCount": 0,
     "assumptions": "None. Delegates to FairGamesTheoremOQ03.lean (which is fully verified) and Mathlib's martingale library.",
     "lineCount": 291,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 0,
     "originalContributions": [
       "doob_optional_stopping_theorem: clean standalone statement of the bounded OST",
-      "doob_ost_submartingale: submartingale inequality version (E[f_\u03c4] \u2264 E[f_\u03c3])",
-      "doob_ost_two_stopping_times: two stopping times version (E[f_\u03c4] = E[f_\u03c3])",
+      "doob_ost_submartingale: submartingale inequality version (E[f_τ] ≤ E[f_σ])",
+      "doob_ost_two_stopping_times: two stopping times version (E[f_τ] = E[f_σ])",
       "doob_martingale_convergence: Doob's martingale convergence theorem (a.s.)",
       "no_profitable_stopping_strategy: no bounded strategy increases expected wealth",
       "submartingale_iff_ost: submartingale iff stopped expectations are monotone",
-      "doob_maximal_inequality: \u03bbP(max \u2265 \u03bb) \u2264 E[X_N] for non-negative submartingales",
+      "doob_maximal_inequality: λP(max ≥ λ) ≤ E[X_N] for non-negative submartingales",
       "martingale_expected_value_constant: E[X_n] = E[X_0] (time invariance)",
       "fundamental_theorem_fair_games: no bounded strategy changes expected outcome",
       "all_strategies_equal_implies_submartingale: converse characterization"
@@ -40,14 +40,14 @@
   "overview": {
     "historicalContext": "Joseph Doob proved the Optional Stopping Theorem in his seminal 1953 book 'Stochastic Processes' (Chapter VII). The theorem formalizes the intuition that in a fair game (martingale), no clever strategy for choosing when to stop can improve expected outcomes. This mathematical principle underlies: the efficient market hypothesis in finance, the impossibility of guaranteed profit systems in casino gambling, the risk-neutral pricing formula in options theory, and the no-arbitrage condition in modern financial mathematics.\n\nThe OST was the centerpiece of Doob's martingale theory, which transformed probability theory in the 1950s. The theorem connects three fundamental ideas: filtrations (information revealed over time), stopping times (decision rules based on available information), and martingales (fair processes). Together they provide the mathematical framework for 'rational decision-making under uncertainty' that is foundational to modern probability and mathematical finance.",
     "problemStatement": "Can Doob's Optional Stopping Theorem be fully formalized in Lean 4 using Mathlib's probability library? Does Mathlib have sufficient infrastructure for filtered probability spaces, stopping times, and martingale integrals?",
-    "text": "**Answer**: Yes. Mathlib's probability library (Mathlib.Probability.Martingale) provides complete infrastructure for the Optional Stopping Theorem. This file gives a comprehensive formalization:\n\n**Three forms of the OST:**\n1. **Bounded OST**: For martingale {X\u2099} and stopping time \u03c4 \u2264 N: E[X_\u03c4] = E[X_0]. Proved via submartingale/supermartingale sandwich using Mathlib's `Submartingale.expected_stoppedValue_mono`.\n\n2. **Submartingale OST**: For submartingale {X\u2099} and \u03c4 \u2264 \u03c3 \u2264 N: E[X_\u03c4] \u2264 E[X_\u03c3]. This is the key monotonicity result.\n\n3. **Two Stopping Times**: For martingale {X\u2099} and \u03c4 \u2264 \u03c3 \u2264 N: E[X_\u03c4] = E[X_\u03c3]. Any two bounded strategies have the same expected outcome.\n\n**Convergence**: Doob's convergence theorem \u2014 uniformly integrable martingales converge almost surely to a limit. Uses Mathlib's `Martingale.ae_tendsto_limitProcess`.\n\n**Characterization**: Submartingale iff stopped expectations are monotone. This iff characterization (Mathlib's `submartingale_iff_expected_stoppedValue_mono`) is fundamental: it connects the 'local' martingale condition to the 'global' optimal stopping property.\n\n**Maximal inequality**: Doob's inequality \u03bbP(max \u2265 \u03bb) \u2264 E[X_N], used in proving convergence and concentration bounds.",
+    "text": "**Answer**: Yes. Mathlib's probability library (Mathlib.Probability.Martingale) provides complete infrastructure for the Optional Stopping Theorem. This file gives a comprehensive formalization:\n\n**Three forms of the OST:**\n1. **Bounded OST**: For martingale {Xₙ} and stopping time τ ≤ N: E[X_τ] = E[X_0]. Proved via submartingale/supermartingale sandwich using Mathlib's `Submartingale.expected_stoppedValue_mono`.\n\n2. **Submartingale OST**: For submartingale {Xₙ} and τ ≤ σ ≤ N: E[X_τ] ≤ E[X_σ]. This is the key monotonicity result.\n\n3. **Two Stopping Times**: For martingale {Xₙ} and τ ≤ σ ≤ N: E[X_τ] = E[X_σ]. Any two bounded strategies have the same expected outcome.\n\n**Convergence**: Doob's convergence theorem — uniformly integrable martingales converge almost surely to a limit. Uses Mathlib's `Martingale.ae_tendsto_limitProcess`.\n\n**Characterization**: Submartingale iff stopped expectations are monotone. This iff characterization (Mathlib's `submartingale_iff_expected_stoppedValue_mono`) is fundamental: it connects the 'local' martingale condition to the 'global' optimal stopping property.\n\n**Maximal inequality**: Doob's inequality λP(max ≥ λ) ≤ E[X_N], used in proving convergence and concentration bounds.",
     "proofStrategy": "All theorems delegate to either FairGamesTheoremOQ03.lean (which proves the key applications from Mathlib's core) or directly to Mathlib lemmas. The file serves as a clean, gallery-oriented wrapper that exposes the OST in its canonical forms with comprehensive documentation.",
     "keyInsights": [
       "Mathlib's martingale library (Mathlib.Probability.Martingale.OptionalStopping) provides all necessary infrastructure: Filtration, IsStoppingTime, stoppedValue, Martingale/Submartingale typeclasses.",
-      "The key Mathlib theorem is Submartingale.expected_stoppedValue_mono: E[f_\u03c4] \u2264 E[f_\u03c3] for \u03c4 \u2264 \u03c3 \u2264 N. The martingale OST follows by applying this to f and -f.",
+      "The key Mathlib theorem is Submartingale.expected_stoppedValue_mono: E[f_τ] ≤ E[f_σ] for τ ≤ σ ≤ N. The martingale OST follows by applying this to f and -f.",
       "The submartingale iff characterization (submartingale_iff_expected_stoppedValue_mono) gives a clean two-sided statement connecting local and global properties.",
-      "Mathlib 4.26 uses \u03c4 : \u03a9 \u2192 \u2115\u221e for stopping times (not \u03c4 : \u03a9 \u2192 \u2115). The \u2115\u221e type handles possibly-infinite stopping times correctly.",
-      "The convergence theorem (ae_tendsto_limitProcess) requires uniform integrability rather than just L\u00b9-boundedness \u2014 a key refinement over the naive statement.",
+      "Mathlib 4.26 uses τ : Ω → ℕ∞ for stopping times (not τ : Ω → ℕ). The ℕ∞ type handles possibly-infinite stopping times correctly.",
+      "The convergence theorem (ae_tendsto_limitProcess) requires uniform integrability rather than just L¹-boundedness — a key refinement over the naive statement.",
       "The proof that 'no profitable stopping strategy exists' is immediate: it's just the bounded OST restated for emphasis. The mathematical content is entirely in Mathlib's lemmas."
     ],
     "prerequisites": [
@@ -60,20 +60,22 @@
   },
   "conclusion": {
     "summary": "Doob's Optional Stopping Theorem fully formalized: 3 forms of OST, martingale convergence, submartingale characterization, maximal inequality, and fundamental no-strategy theorem. All 10 theorems proved with 0 sorries, 0 axioms. Mathlib 4.26's probability library is fully sufficient for the complete OST formalization.",
-    "implications": "This file closes the open question from FairGamesTheoremOQ02: Mathlib's martingale library is indeed sufficient for a complete OST formalization. The infrastructure \u2014 filtrations, stopping times, stoppedValue, submartingale_iff_expected_stoppedValue_mono \u2014 covers all standard forms of the theorem. The convergence theorem and maximal inequality are also available, making Mathlib ready for advanced martingale-based probability theory.",
+    "implications": "This file closes the open question from FairGamesTheoremOQ02: Mathlib's martingale library is indeed sufficient for a complete OST formalization. The infrastructure — filtrations, stopping times, stoppedValue, submartingale_iff_expected_stoppedValue_mono — covers all standard forms of the theorem. The convergence theorem and maximal inequality are also available, making Mathlib ready for advanced martingale-based probability theory.",
     "openQuestions": [
-      "Wald's identity: If X_n = \u2211_{i\u2264n} Y_i with E[Y_i] = \u03bc and E[\u03c4] < \u221e, then E[X_\u03c4] = \u03bc E[\u03c4]. Can this be proved using Mathlib's integration tools?",
-      "Azuma-Hoeffding inequality: For a martingale with bounded differences |X_n - X_{n-1}| \u2264 c_n, P(X_\u03c4 - X_0 \u2265 t) \u2264 exp(-2t\u00b2/\u2211c_n\u00b2). Not yet in Mathlib \u2014 can it be built from the existing infrastructure?",
-      "Martingale Central Limit Theorem: Under appropriate conditions, (X_n - X_0)/\u221an \u2192 N(0,\u03c3\u00b2) in distribution. Formalize the conditions and proof using Mathlib's CLT infrastructure.",
+      "Wald's identity: If X_n = ∑_{i≤n} Y_i with E[Y_i] = μ and E[τ] < ∞, then E[X_τ] = μ E[τ]. Can this be proved using Mathlib's integration tools?",
+      "Azuma-Hoeffding inequality: For a martingale with bounded differences |X_n - X_{n-1}| ≤ c_n, P(X_τ - X_0 ≥ t) ≤ exp(-2t²/∑c_n²). Not yet in Mathlib — can it be built from the existing infrastructure?",
+      "Martingale Central Limit Theorem: Under appropriate conditions, (X_n - X_0)/√n → N(0,σ²) in distribution. Formalize the conditions and proof using Mathlib's CLT infrastructure.",
       "Doob's h-transform: Given a harmonic function h > 0, the process h(X_n)/h(X_0) is a martingale. Formalize this conditioning technique for Markov chains."
     ]
   },
   "leanFile": {
     "namespace": "FairGamesOQ02OQ01",
-    "imports": ["Proofs.FairGamesTheoremOQ03"],
+    "imports": [
+      "Proofs.FairGamesTheoremOQ03"
+    ],
     "lineCount": 291,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/FairGamesTheoremOQ02OQ01.lean",
     "sorries": 0
@@ -105,10 +107,10 @@
     },
     {
       "id": "sec-ost-three-forms",
-      "title": "Part I: OST \u2014 Three Forms",
+      "title": "Part I: OST — Three Forms",
       "startLine": 48,
       "endLine": 118,
-      "summary": "Three canonical forms: (1) doob_optional_stopping_theorem \u2014 bounded OST, E[X_\u03c4] = E[X_0]; (2) doob_ost_submartingale \u2014 submartingale inequality E[f_\u03c4] \u2264 E[f_\u03c3]; (3) doob_ost_two_stopping_times \u2014 two stopping times E[f_\u03c4] = E[f_\u03c3]."
+      "summary": "Three canonical forms: (1) doob_optional_stopping_theorem — bounded OST, E[X_τ] = E[X_0]; (2) doob_ost_submartingale — submartingale inequality E[f_τ] ≤ E[f_σ]; (3) doob_ost_two_stopping_times — two stopping times E[f_τ] = E[f_σ]."
     },
     {
       "id": "sec-convergence",
@@ -122,21 +124,21 @@
       "title": "Part III: No Profitable Strategy",
       "startLine": 150,
       "endLine": 169,
-      "summary": "no_profitable_stopping_strategy: restates OST as the economic principle \u2014 no bounded stopping strategy increases expected wealth in a fair game."
+      "summary": "no_profitable_stopping_strategy: restates OST as the economic principle — no bounded stopping strategy increases expected wealth in a fair game."
     },
     {
       "id": "sec-characterization",
       "title": "Part IV: Submartingale Characterization",
       "startLine": 170,
       "endLine": 204,
-      "summary": "submartingale_iff_ost: submartingale iff E[f_\u03c4] \u2264 E[f_\u03c3] for all bounded \u03c4 \u2264 \u03c3. The iff version of the OST via Mathlib's submartingale_iff_expected_stoppedValue_mono."
+      "summary": "submartingale_iff_ost: submartingale iff E[f_τ] ≤ E[f_σ] for all bounded τ ≤ σ. The iff version of the OST via Mathlib's submartingale_iff_expected_stoppedValue_mono."
     },
     {
       "id": "sec-maximal",
       "title": "Part V: Doob's Maximal Inequality",
       "startLine": 205,
       "endLine": 225,
-      "summary": "doob_maximal_inequality: \u03bbP(max_{n\u2264N} X_n \u2265 \u03bb) \u2264 E[X_N] for non-negative submartingales. Delegates to OQ03's conversion from Mathlib's NNReal form."
+      "summary": "doob_maximal_inequality: λP(max_{n≤N} X_n ≥ λ) ≤ E[X_N] for non-negative submartingales. Delegates to OQ03's conversion from Mathlib's NNReal form."
     },
     {
       "id": "sec-summary",

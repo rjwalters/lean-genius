@@ -1,600 +1,600 @@
 {
-    "id": "abel-ruffini-oq-04-oq-01",
-    "title": "Concrete Abel-Ruffini: Gal(x⁵ - 4x + 2) ≅ S₅ and Unsolvability by Radicals",
-    "slug": "abel-ruffini-oq-04-oq-01",
-    "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved axiom-free via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
-    "meta": {
-        "author": "Abel (1824), Galois (1832)",
-        "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
-        "date": "1824",
-        "status": "verified",
-        "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01.lean",
-        "tags": [
-            "algebra",
-            "group-theory",
-            "galois-theory",
-            "solvability",
-            "symmetric-group",
-            "eisenstein-criterion",
-            "wiedijk-100"
-        ],
-        "badge": "mathlib",
-        "sorries": 0,
-        "axiomCount": 0,
-        "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory.",
-        "wiedijkNumber": 16,
-        "dateAdded": "2026-03-25",
-        "mathlibDependencies": [
-            {
-                "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
-                "description": "Eisenstein's irreducibility criterion",
-                "module": "Mathlib.RingTheory.EisensteinCriterion"
-            },
-            {
-                "theorem": "Polynomial.Gal.galActionHom_injective",
-                "description": "Galois group embeds into Perm(rootSet)",
-                "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
-            },
-            {
-                "theorem": "Polynomial.Gal.prime_degree_dvd_card",
-                "description": "Prime degree divides Galois group order",
-                "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
-            },
-            {
-                "theorem": "solvableByRad.isSolvable'",
-                "description": "Solvable by radicals implies solvable Galois group",
-                "module": "Mathlib.FieldTheory.AbelRuffini"
-            },
-            {
-                "theorem": "Equiv.Perm.not_solvable",
-                "description": "Perm(α) not solvable for |α| ≥ 5",
-                "module": "Mathlib.GroupTheory.Solvable"
-            },
-            {
-                "theorem": "Matrix.det_vandermonde",
-                "description": "Vandermonde determinant equals product of differences",
-                "module": "Mathlib.LinearAlgebra.Vandermonde"
-            },
-            {
-                "theorem": "alternatingGroup.isSimpleGroup_five",
-                "description": "A₅ is a simple group",
-                "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
-            }
-        ],
-        "originalContributions": [
-            "Complete proof chain from Eisenstein irreducibility through galActionHom bijectivity to unsolvability by radicals for a specific polynomial x⁵ - 4x + 2",
-            "S₅ realizability theorem: first concrete realization of S₅ as a Galois group over ℚ in the gallery",
-            "Connects existing Abel-Ruffini proof chain (OQ-04) to a concrete witness, addressing the open question about formalizing the generic quintic Galois group"
-        ],
-        "prerequisites": [
-            "Galois theory (splitting fields, Galois groups, radical extensions)",
-            "Eisenstein's irreducibility criterion",
-            "Solvable groups and the derived series"
-        ],
-        "mathlib_version": "4.26.0",
-        "lineCount": 1498,
-        "relatedProblems": [
-            {
-                "id": "abel-ruffini-oq-04",
-                "relationship": "Extends: provides the concrete polynomial witness for the proof chain documented in OQ-04"
-            },
-            {
-                "id": "abel-ruffini",
-                "relationship": "Extends: uses the Galois bridge from the base theorem to conclude unsolvability"
-            },
-            {
-                "id": "inverse-galois",
-                "relationship": "Contributes: realizes S₅ as a Galois group over ℚ"
-            },
-            {
-                "id": "inverse-galois-oq-06",
-                "relationship": "Complementary: the sister computation realizing A₅ as a Galois group over ℚ, using the same Eisenstein + Sylow toolkit"
-            },
-            {
-                "id": "abel-ruffini-oq-04-oq-02",
-                "relationship": "Complementary: proves S₂, S₃, S₄ ARE solvable — the positive half of the solvability boundary that this entry's S₅ non-solvability defines"
-            },
-            {
-                "id": "abel-ruffini-oq-04-oq-03",
-                "relationship": "Foundational: formalizes Galois's full solvability criterion, of which this entry uses the forward direction (solvable by radicals ⇒ solvable Galois group)"
-            }
-        ],
-        "theoremCount": 36
-    },
-    "crossReferences": [
-        {
-            "targetId": "abel-ruffini-oq-04",
-            "relationship": "extends",
-            "description": "Provides the concrete polynomial witness for Step 5 of the proof chain: Gal(x⁵-4x+2/ℚ) ≅ S₅"
-        },
-        {
-            "targetId": "abel-ruffini",
-            "relationship": "extends",
-            "description": "Uses the Galois bridge (solvable by radicals ⇒ solvable Galois group) to conclude unsolvability"
-        },
-        {
-            "targetId": "inverse-galois",
-            "relationship": "contributes",
-            "description": "Realizes S₅ as Gal(x⁵-4x+2/ℚ), complementing S₃ and F₂₀ realizations in the gallery"
-        },
-        {
-            "targetId": "inverse-galois-oq-01",
-            "relationship": "related",
-            "description": "Proves the complete solvability characterization $S_n$ solvable iff $n \\leq 4$, which is the group-theoretic foundation for the non-solvability of $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$"
-        },
-        {
-            "targetId": "general-quartic",
-            "relationship": "complementary",
-            "description": "Ferrari's quartic formula succeeds because $S_4$ is solvable — this entry shows $x^5 - 4x + 2$ fails because $S_5$ is not, illustrating the sharp degree-5 boundary"
-        },
-        {
-            "targetId": "solution-of-cubic",
-            "relationship": "complementary",
-            "description": "Cardano's cubic formula succeeds because $S_3$ is solvable — the positive counterpart to this entry's quintic impossibility"
-        },
-        {
-            "targetId": "fundamental-theorem-algebra",
-            "relationship": "complementary",
-            "description": "FTA guarantees the roots of $x^5-4x+2$ exist in $\\mathbb{C}$; this entry shows those roots cannot be named using radical expressions"
-        },
-        {
-            "targetId": "descartes-rule-of-signs",
-            "relationship": "foundational",
-            "description": "Descartes' rule bounds real root counts by sign changes in coefficients — the same sign-change analysis used in this proof to locate 3 real roots of $x^5 - 4x + 2$, establishing that complex conjugation swaps the 2 non-real roots and thus acts as a transposition in the Galois group"
-        },
-        {
-            "targetId": "solution-of-cubic-oq-03-oq-01",
-            "relationship": "foundational",
-            "description": "Formalizes the discriminant $\\Delta = -4p^3 - 27q^2$ for the depressed cubic and the criterion $\\text{Gal}(f) \\subseteq A_n \\iff \\Delta(f)$ is a perfect square in $F$. The discriminant machinery is the linchpin of this entry's $|\\text{Gal}|=120$ proof: the Vandermonde product identity $\\Delta^2 = \\text{disc}(p)$ and the computed value $\\Delta^2 = -212144 < 0$ together force $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\not\\subseteq A_5$, which eliminates order 60 and is essential to the Sylow elimination cascade. Both entries develop discriminant theory in service of the concrete Abel-Ruffini proof chain."
-        },
-        {
-            "targetId": "sylow-theorems",
-            "relationship": "foundational",
-            "description": "Sylow's theorems are the primary tool for the case elimination in Part V: unique Sylow subgroups force cyclic structure (ruling out order 15), and Sylow counting constrains subgroup existence (ruling out order 30). The Sylow $p$-subgroup machinery directly enables the elimination of candidate Galois group orders"
-        },
-        {
-            "targetId": "lagrange-theorem",
-            "relationship": "foundational",
-            "description": "Lagrange's theorem ($|H|$ divides $|G|$ for $H \\leq G$) underpins the entire order-elimination strategy: $5 \\mid |\\text{Gal}|$ (orbit-stabilizer for transitive action on 5 roots), $|\\text{Gal}| \\mid 120$ (embedding into $S_5$ via `galActionHom`), and the Sylow elimination argument that narrows candidate orders to $\\{15, 30, 60, 120\\}$"
-        },
-        {
-            "targetId": "nth-root-irrational",
-            "relationship": "foundational",
-            "description": "The irrationality of $n$th roots is the base case for radical extensions: each step in a radical tower $K \\to K(\\sqrt[n]{a})$ extends the field because $a^{1/n} \\notin K$. This entry's impossibility result shows that iterating such extensions from $\\mathbb{Q}$ can never reach the roots of $x^5 - 4x + 2$"
-        },
-        {
-            "targetId": "vietas-formulas",
-            "relationship": "foundational",
-            "description": "Vieta's formulas express the coefficients of $x^5 - 4x + 2$ as elementary symmetric functions of its roots — this is why the Galois group permutes roots while preserving coefficients, and why the `galActionHom` maps $\\text{Gal}$ into $\\text{Perm}(\\text{rootSet})$"
-        },
-        {
-            "targetId": "angle-trisection",
-            "relationship": "related",
-            "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini (this entry's concrete instance) shows $x^5-4x+2$ is unsolvable by radicals because $\\text{Gal} \\cong S_5$ is non-solvable, while angle trisection shows the general angle cannot be trisected by compass and straightedge because the minimal polynomial of $\\cos(20°)$ has degree 3 over the constructible field extension. Both reduce geometric/algebraic impossibility to group-theoretic obstructions"
-        },
-        {
-            "targetId": "kummer-theorem",
-            "relationship": "foundational",
-            "description": "Kummer theory provides the mechanism underlying the Galois bridge used in `roots_not_solvable_by_rad`: each radical extraction $K \\to K(\\sqrt[n]{a})$ creates a Kummer extension with cyclic Galois group. The impossibility arises because $S_5$ cannot be decomposed into such cyclic layers — exactly what the contrapositive of `solvableByRad.isSolvable'` captures"
-        },
-        {
-            "targetId": "inverse-galois-oq-06",
-            "relationship": "complementary",
-            "description": "The sister computation to this entry's $S_5$ realization: while this entry proves $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$ via Eisenstein at $p=2$ and Sylow elimination, `inverse-galois-oq-06` proves $A_5 \\cong \\text{Gal}(x^5-5x^4+10x^3-10x^2+25x-5/\\mathbb{Q})$ via Eisenstein at $p=5$ and Sylow theory. Together they realize the two non-solvable groups that appear in $S_5$'s composition series as Galois groups of explicit quintics over $\\mathbb{Q}$. Both entries invoke `not_solvable_by_rad_of_not_solvable_gal` to conclude unsolvability by radicals."
-        },
-        {
-            "targetId": "abel-ruffini-oq-04-oq-02",
-            "relationship": "complementary",
-            "description": "Proves the positive half of the solvability boundary: $S_2, S_3, S_4$ ARE solvable, with the bidirectional theorem $S_n$ solvable $\\iff n \\leq 4$. This entry proves $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$ implies unsolvability; `abel-ruffini-oq-04-oq-02` proves that every polynomial of degree $\\leq 4$ with Galois group $\\leq S_4$ IS solvable, completing the sharp degree-4/5 boundary. The `derived_series_solvable_of_solvable` path through $S_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$ directly contrasts with the stalled derived series $S_5 \\supset A_5 \\supset A_5$."
-        },
-        {
-            "targetId": "abel-ruffini-oq-04-oq-03",
-            "relationship": "foundational",
-            "description": "Galois's solvability criterion: a root is solvable by radicals if and only if its Galois group is solvable. This entry uses only the forward direction (`solvableByRad.isSolvable'`: solvable by radicals $\\Rightarrow$ solvable Galois group) as a contrapositive; `abel-ruffini-oq-04-oq-03` formalizes the full Galois correspondence including the reverse direction (solvable Galois group $\\Rightarrow$ solvable by radicals, relying on Kummer theory). Together they give the complete biconditional that elevates Abel-Ruffini from a computational fact about $x^5-4x+2$ to a structural theorem about quintics generally."
-        },
-        {
-            "targetId": "abel-ruffini-galois-extensions",
-            "relationship": "foundational",
-            "description": "Houses the extended solvability classification and non-commutativity witnesses used implicitly throughout this proof: $S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$, $A_5$ simple, and non-commutativity witnesses for $S_3, S_4, S_5, A_4, A_5$. This entry's `s5_not_solvable` relies on `Equiv.Perm.not_solvable`, whose proof in turn rests on $A_5$'s simplicity — the same infrastructure that `abel-ruffini-galois-extensions` develops systematically with 57 theorems. The `solvable_of_surjective` transfer that propagates non-solvability from $S_5$ to $\\text{Gal}(p/\\mathbb{Q})$ also mirrors the solvability transfer lemmas proved there."
-        },
-        {
-            "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
-            "relationship": "related",
-            "description": "Finite Groups of Order $< 60$ Are Solvable: this entry establishes that $|A_5| = 60$ is the precise solvability threshold by proving all groups of order $< 60$ (hence all proper subgroups of $A_5$) are solvable. Complementary to the case $|\\text{Gal}| = 60$ elimination here: if $|\\text{Gal}|$ were 60, the Galois image would be $A_5$ itself — but this entry proves $\\text{Gal} \\not\\subseteq A_5$ via the odd-permutation discriminant argument, so the 60-threshold result is not needed. Together these two entries bracket the non-solvability threshold from both sides."
-        }
+  "id": "abel-ruffini-oq-04-oq-01",
+  "title": "Concrete Abel-Ruffini: Gal(x⁵ - 4x + 2) ≅ S₅ and Unsolvability by Radicals",
+  "slug": "abel-ruffini-oq-04-oq-01",
+  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved axiom-free via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
+  "meta": {
+    "author": "Abel (1824), Galois (1832)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
+    "date": "1824",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "galois-theory",
+      "solvability",
+      "symmetric-group",
+      "eisenstein-criterion",
+      "wiedijk-100"
     ],
-    "overview": {
-        "historicalContext": "The Abel-Ruffini theorem has a dramatic history. Ruffini (1799) gave the first incomplete proof that the general quintic is unsolvable by radicals, but his argument had gaps in the treatment of permutation groups. Abel (1824) provided the first rigorous proof, showing no universal radical formula exists for degree 5 or higher. Galois (1832, published posthumously after his death in a duel at age 20) gave the definitive framework: a polynomial is solvable by radicals if and only if its Galois group is solvable. Since $S_5$ is not solvable (because $A_5$ is simple and non-abelian), any polynomial with Galois group $S_5$ has unsolvable roots.\n\nThe polynomial $x^5 - 4x + 2$ is a standard textbook example appearing in Dummit-Foote, Artin, and Lang, chosen because Eisenstein's criterion gives easy irreducibility and derivative analysis shows exactly 3 real roots. Eisenstein's criterion itself was published by Gotthold Eisenstein in 1850 in Crelle's Journal — the same journal that published Abel's refined proof in 1826. Eisenstein, who died of tuberculosis at age 29 (like Abel at 26), provided what Gauss called the simplest and most elegant irreducibility test. The criterion that $p$ divides all non-leading coefficients but $p^2$ does not divide the constant term remains the most frequently used irreducibility tool in textbooks.\n\nThe classical textbook approach to computing the Galois group of a specific quintic uses Dedekind's theorem (1882) — the cycle type of the Frobenius automorphism matches the mod-$p$ factorization — to establish divisibility conditions on $|\\text{Gal}|$. This formalization takes a different route: it establishes $\\text{Gal} \\not\\subset A_5$ via the Vandermonde discriminant ($\\Delta^2 = -212144 < 0$, so the Fundamental Theorem of Galois Theory forces an odd permutation), obtains a transposition via complex conjugation (embedding the splitting field into $\\mathbb{C}$ via `IsAlgClosed.lift` and composing with `starRingEnd`), and then eliminates non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$ via Sylow theory. This approach avoids all mod-$p$ arithmetic and works purely within algebraic and group-theoretic methods.\n\nThis formalization bridges abstract impossibility to a concrete witness: these five specific complex numbers cannot be written using radicals.",
-        "problemStatement": "Prove that the polynomial $x^5 - 4x + 2$ has Galois group $S_5$ over $\\mathbb{Q}$, and conclude that its roots cannot be expressed using radicals.",
-        "text": "This file completes the Abel-Ruffini proof chain by providing a concrete polynomial whose roots are provably unsolvable by radicals. The polynomial x⁵ - 4x + 2 is shown irreducible via Eisenstein's criterion at p=2, and its Galois group is identified as S₅ via the galActionHom bijectivity argument. Since S₅ is not solvable, Galois's theorem implies the roots cannot be expressed by radicals.",
-        "proofStrategy": "The proof has four main stages:\n\n**1. Irreducibility** (Part II): Eisenstein's criterion at the prime ideal $(2) \\subset \\mathbb{Z}$ shows $x^5 - 4x + 2$ is irreducible over $\\mathbb{Z}$: all non-leading coefficients $(0, 0, 0, -4, 2)$ are divisible by 2, the constant term 2 is not divisible by 4, and the leading coefficient 1 is coprime to 2. Gauss's lemma (monic $\\Rightarrow$ primitive) transfers irreducibility from $\\mathbb{Z}[X]$ to $\\mathbb{Q}[X]$.\n\n**2. Galois group identification** (Parts III-VI): The `galActionHom` embeds $\\text{Gal}$ into $\\text{Perm}(\\text{rootSet}) \\cong S_5$ (injective by Mathlib). Establishing $|\\text{Gal}| = 120$ proceeds by elimination: (a) $5 \\mid |\\text{Gal}|$ by orbit-stabilizer (irreducible of prime degree gives transitive action), (b) $\\text{Gal} \\not\\subset A_5$ via the discriminant sign argument: the Vandermonde product $\\Delta$ satisfies $\\Delta^2 = \\text{disc}(p) = -212144 < 0$ (proved from the derivative product identity), so by FTGT if all Galois automorphisms were even then $\\Delta \\in \\mathbb{Q}$, contradicting $\\Delta^2 < 0$; thus `gal_has_odd_perm` establishes a transposition in the Galois image, (c) $3 \\mid |\\text{Gal}|$ by eliminating non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$ via Sylow theory: a transposition cannot normalize the unique Sylow 5-subgroup in groups of these orders, (d) Sylow theory eliminates orders 15 (unique $P_3, P_5$ force cyclic, impossible in $S_5$) and 30 ($A_5$ simplicity), (e) order 60 eliminated because $\\text{Gal} \\not\\subset A_5$ by step (b). Only $|\\text{Gal}| = 120$ remains. Bijectivity of `galActionHom` follows by the pigeonhole principle.\n\n**3. Non-solvability transfer** (Part VII): $S_5$ is not solvable (Mathlib's `Equiv.Perm.not_solvable`, since $A_5$ is simple). The isomorphism $\\text{Gal} \\cong S_5$ transfers non-solvability via `solvable_of_surjective`.\n\n**4. Abel-Ruffini conclusion** (Part VIII): By contrapositive of Galois's theorem (`solvableByRad.isSolvable'`), non-solvable Galois group implies roots are not expressible by radicals.",
-        "keyInsights": [
-            "**Eisenstein at p = 2 is elegant**: Coefficients $(1, 0, 0, 0, -4, 2)$ satisfy Eisenstein at $(2)$: non-leading coefficients all divisible by 2, constant term 2 not divisible by 4, leading coefficient coprime to 2. This is the simplest irreducibility argument for a specific quintic.",
-            "**3 real roots give a transposition**: Sign analysis at $f(-2) < 0 < f(-1)$, $f(0) > 0 > f(1)$, $f(1) < 0 < f(2)$ locates 3 real roots. Since $f'(x) = 5x^4 - 4$ has only 2 real critical points, there are exactly 3 real and 2 complex conjugate roots. Complex conjugation acts as a transposition on the 5 roots.",
-            "**Transposition + p-cycle generates $S_p$**: Conjugate the transposition $(i\\;j)$ by powers of the $p$-cycle $(1\\;2\\;\\cdots\\;p)$ to generate all adjacent transpositions $(k\\;k+1)$, which generate $S_p$. This classical result is the group-theoretic bridge from real root analysis to the full symmetric group.",
-            "**Pigeonhole for bijectivity**: With $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ and the injective galActionHom, bijectivity follows from the pigeonhole principle. This avoids constructing an explicit inverse.",
-            "**Concrete witness matters**: Abel's original theorem proves existence of unsolvable quintics abstractly. This formalization gives a specific polynomial $x^5 - 4x + 2$ whose five roots provably resist all radical expressions, making the impossibility tangible.",
-            "**Sylow elimination as case analysis**: The proof that $|\\text{Gal}| = 120$ is a remarkable case analysis. From $5 \\mid |G|$, $3 \\mid |G|$, and $|G| \\mid 120$, the candidates are $\\{15, 30, 60, 120\\}$. Sylow theory eliminates 15 (unique $P_5$ and $P_3$ would force a cyclic subgroup of order 15, but $S_5$ has none). The simplicity of $A_5$ eliminates 30 (an index-4 subgroup gives $S_5 \\to S_4$, impossible). The odd permutation from discriminant analysis eliminates 60 ($A_5$ is the unique order-60 subgroup, but the Galois image is not contained in $A_5$). Only 120 remains.",
-            "**Complex conjugation as the key to eliminating Dedekind's theorem**: The proof constructs a Galois automorphism from complex conjugation: embed the splitting field $SF \\hookrightarrow \\mathbb{C}$ via `IsAlgClosed.lift`, compose with `starRingEnd \\mathbb{C}` (complex conjugation), then restrict via `restrictNormal` to get $\\sigma \\in \\text{Gal}(p/\\mathbb{Q})$. Since $\\Delta^2 = \\text{disc}(p) = -212144 < 0$, the FTGT forces $\\sigma$ to have odd sign — giving a transposition without needing Dedekind's theorem or mod-$p$ factorization at all. This single construction replaces both the Dedekind axiom and the original real-root-count argument.",
-            "**Sylow elimination as a universal strategy for $3 \\mid |\\text{Gal}|$**: Rather than using Dedekind's theorem (mod-$p$ factorization), the proof establishes $3 \\mid |\\text{Gal}|$ purely from the transposition: candidate orders not divisible by 3 are $\\{5, 10, 20, 40\\}$, and each is eliminated by showing a transposition cannot coexist with the unique normal Sylow 5-subgroup at that order. For orders 10, 20, 40: the transposition from `gal_has_odd_perm` would have to normalize the unique Sylow 5-subgroup, but `native_decide` verifies no transposition in $S_5$ normalizes any 5-cycle. For order 5: any order-5 subgroup of $S_5$ consists entirely of even permutations, contradicting the transposition. This approach is more elementary than Dedekind and avoids all mod-$p$ arithmetic.",
-            "**Why $x^5 - 4x + 2$ rather than $x^5 - x - 1$ or $x^5 + x + 1$**: The polynomial choice trades off three competing constraints. Eisenstein irreducibility forces a prime $p$ dividing all non-leading coefficients but with $p^2 \\nmid$ constant term — the simplest such pattern is $p=2$ with constant term $\\pm 2$ and one nonzero linear coefficient divisible by 2. Three real roots (for the complex-conjugation transposition) requires the discriminant to be negative — the value $\\Delta^2 = -212144 = -2^4 \\cdot 13259$ is small enough that the derivative-product calculation $p(5/8) = -13259/32768$ keeps the arithmetic tractable. Finally, the constant term $+2$ rather than $-2$ (yielding the famous Trinks polynomials with Galois group $D_5$ or $F_{20}$) ensures a transitive action with all 5 roots in distinct orbits, forcing the Galois image to be primitive and hence (by O'Nan-Scott) maximal in $S_5$. Dummit-Foote's choice optimizes Eisenstein simplicity, real-root sign-change visibility, and discriminant computability simultaneously.",
-            "**Bring-Jerrard form as the natural domain**: The polynomial $x^5 - 4x + 2$ is already in *Bring-Jerrard normal form* $x^5 + px + q$ (i.e., the coefficients of $x^4, x^3, x^2$ all vanish). Tschirnhaus (1683) and Bring (1786) showed every quintic can be transformed to this normal form by a polynomial substitution of degree at most 4 — Hermite (1858) used this to express quintic roots via elliptic modular functions. The choice of $p = -4, q = 2$ here is no accident: among Bring-Jerrard quintics with small integer coefficients, this is one of the simplest with a clear non-square discriminant ($\\text{disc} = -212144$) and 3 real roots. Other classical witnesses in the same form include $x^5 - x - 1$ (discriminant $2869 = 19 \\cdot 151$, also non-square, $\\text{Gal} \\cong S_5$) and $x^5 - 6x + 3$ (Eisenstein at $p = 3$). The Bring-Jerrard form is the algebraic 'minimal model' for the quintic — once a quintic is reduced to it, the discriminant computation becomes the simple expression $\\text{disc}(x^5 + px + q) = 256 p^5 + 3125 q^4$ (sometimes written with a sign convention; for our $p=-4, q=2$: $256 \\cdot (-4)^5 + 3125 \\cdot 2^4 = -262144 + 50000 = -212144$, matching the value computed in `vandermondeProduct_sq_val`).",
-            "**Stauduhar's algorithm and computational Galois theory**: The case-elimination structure of this proof mirrors Stauduhar's algorithm (1973), the standard method for computing Galois groups of polynomials over $\\mathbb{Q}$ in computer algebra systems (PARI/GP, Magma, Sage, GAP). Stauduhar starts from the lattice of transitive subgroups of $S_n$ (for $n=5$, there are exactly 5: $S_5, A_5, F_{20}, D_5, C_5$) and uses *resolvent polynomials* — polynomials whose Galois group fixes a chosen subgroup — to descend through the lattice from $S_n$ downward. At each step, one checks whether a particular resolvent has rational roots (yes $\\Rightarrow$ Galois group is contained in the corresponding subgroup; no $\\Rightarrow$ stop). The discriminant is the resolvent for $A_n$ (the discriminant being a square iff $\\text{Gal} \\subseteq A_n$). The proof here essentially implements the first Stauduhar test by hand: $\\sqrt{\\text{disc}(p)} \\notin \\mathbb{Q}$ (because $\\text{disc}(p) = -212144 < 0$) eliminates $A_5$. The Sylow elimination of orders 10, 20, 40 then implicitly handles the resolvents for $D_5, F_{20}, C_5$ — all proper transitive subgroups of $S_5$. A future formalization could extract these as explicit resolvent computations and connect to a general Stauduhar tactic in Mathlib."
-        ],
-        "prerequisites": [
-            "Abstract algebra (groups, solvable groups, symmetric groups)",
-            "Galois theory (field extensions, Galois groups, splitting fields)",
-            "Polynomial algebra (irreducibility criteria, Eisenstein criterion)",
-            "Sylow theory (Sylow subgroup existence, uniqueness, and counting)"
-        ],
-        "relatedConcepts": [
-            "Galois group",
-            "solvability by radicals",
-            "S5",
-            "Eisenstein criterion",
-            "Vandermonde determinant",
-            "Wiedijk theorem 16",
-            "discriminant sign",
-            "Sylow theory"
-        ]
-    },
-    "sections": [
-        {
-            "id": "header",
-            "title": "Problem Overview, Proof Chain, and Pre-Classical Computational Lemmas",
-            "startLine": 1,
-            "endLine": 98,
-            "summary": "Documents the complete Abel-Ruffini proof chain and motivation for choosing $x^5 - 4x + 2$. Lists all 5 steps from $A_5$ simplicity to unsolvability by radicals. Lines 63-91: three computational lemmas proved by `native_decide` that must appear before `open scoped Classical` for decidability — `perm_fin5_order5_order3_not_commute` (used in Sylow order-15 elimination), `perm_fin5_order_dvd5_sign_one` (elements of order dividing 5 in $S_5$ are even), and `transposition_not_normalizing_5cycle` (used in Sylow elimination of orders 10, 20, 40). All three feed into the main proof.",
-            "mathContext": "Proof chain: (1) $A_5$ simple, (2) $S_n$ not solvable for $n \\geq 5$, (3) solvable by radicals $\\Rightarrow$ solvable Gal, (4) $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, (5) roots not expressible by radicals.",
-            "relatedConcepts": [
-                "Abel-Ruffini theorem",
-                "Galois theory",
-                "native_decide",
-                "solvability by radicals",
-                "proof chain"
-            ]
-        },
-        {
-            "id": "polynomial",
-            "title": "Part I: The Polynomial p = X⁵ - 4X + 2",
-            "startLine": 99,
-            "endLine": 108,
-            "summary": "Defines $p = X^5 - 4X + 2$ over $\\mathbb{Q}$ and its $\\mathbb{Z}[X]$ version `p_int` for Eisenstein criterion application.",
-            "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$, $p_{\\text{int}} = x^5 - 4x + 2 \\in \\mathbb{Z}[X]$.",
-            "relatedConcepts": [
-                "Bring-Jerrard form",
-                "Eisenstein criterion",
-                "Polynomial.C",
-                "rational polynomial",
-                "integer polynomial"
-            ]
-        },
-        {
-            "id": "irreducibility",
-            "title": "Part II: Irreducibility via Eisenstein at p = 2",
-            "startLine": 109,
-            "endLine": 183,
-            "summary": "Proves $p$ is irreducible over $\\mathbb{Q}$. First proves irreducibility over $\\mathbb{Z}$ using Eisenstein's criterion at the prime ideal $(2)$, then transfers to $\\mathbb{Q}$ via Gauss's lemma (monic $\\Rightarrow$ primitive).",
-            "mathContext": "Eisenstein at $(2) \\subset \\mathbb{Z}$: $2 \\nmid 1$, $2 \\mid 0, 0, 0, -4, 2$, $4 \\nmid 2$. Therefore $p$ is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma.",
-            "relatedConcepts": [
-                "Eisenstein criterion",
-                "Gauss's lemma",
-                "prime ideal",
-                "p_int_monic",
-                "irreducible_of_eisenstein_criterion"
-            ]
-        },
-        {
-            "id": "structure",
-            "title": "Part III: Basic Structural Properties",
-            "startLine": 184,
-            "endLine": 207,
-            "summary": "Proves $\\deg(p) = 5$, $p$ is monic, $p$ is separable (char 0), and $|\\text{rootSet}(p)| = 5$.",
-            "mathContext": "$\\deg(p) = 5$, $p$ monic and separable. In the splitting field: $|\\{\\alpha : p(\\alpha) = 0\\}| = 5$.",
-            "relatedConcepts": [
-                "separable polynomial",
-                "splitting field",
-                "rootSet",
-                "compute_degree!",
-                "characteristic zero"
-            ]
-        },
-        {
-            "id": "galois-structure",
-            "title": "Part IV: Galois Group Structure",
-            "startLine": 208,
-            "endLine": 231,
-            "summary": "Proves $5 \\mid |\\text{Gal}|$ (prime degree gives transitive action, orbit-stabilizer) and $|\\text{Gal}| \\mid 120$ (galActionHom embeds $\\text{Gal}$ into $S_5$). Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
-            "mathContext": "$5 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 5! = 120$. Possible orders: $\\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
-            "relatedConcepts": [
-                "galActionHom",
-                "orbit-stabilizer theorem",
-                "Lagrange's theorem",
-                "transitive group action",
-                "prime_degree_dvd_card"
-            ]
-        },
-        {
-            "id": "gal-order",
-            "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
-            "startLine": 232,
-            "endLine": 1377,
-            "summary": "The largest section (~1150 lines): proves $|\\text{Gal}| = 120$ via systematic case elimination. (a) Lines 232-264: polynomial evaluations showing 3 sign changes (sign change comment motivates complex conjugation argument). (b) Lines 265-293: `c5` 5-cycle definition and Part V(c) Galois infrastructure header. (c) Lines 306-336: `galToPerm5` injection from $\\text{Gal}$ to $S_5$, injectivity, and `galSign`. (d) Lines 337-507: Sylow elimination of orders 15 and 30 (`no_subgroup_order_15`, `a5_card`, `no_subgroup_order_30`). (e) Lines 508-806: Vandermonde machinery, discriminant computation ($\\Delta^2 = -212144$), and `gal_has_odd_perm`. (e2) Lines 807-1244: complex conjugation gives transposition (`sfEmb`, `conjGalAut`, `gal_has_transposition`), Sylow elimination of non-3-divisible orders (`gal_card_ne_20`, `gal_card_ne_10`, `gal_card_ne_40`), `three_dvd_gal_card`. (f) Lines 1246-1377: case elimination (`gal_card_ne_15`, `gal_card_ne_30`, `gal_card_ne_60`) and `gal_card_eq_120`. Fully proved with 0 axioms.",
-            "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). All steps fully proved.",
-            "relatedConcepts": [
-                "Vandermonde determinant",
-                "complex conjugation",
-                "Sylow elimination",
-                "discriminant sign",
-                "gal_card_eq_120"
-            ]
-        },
-        {
-            "id": "gal-iso",
-            "title": "Part VI: Gal(p/ℚ) ≅ S₅",
-            "startLine": 1378,
-            "endLine": 1412,
-            "summary": "Proves `gal_iso_s5`: $\\text{Gal} \\cong S_5$ via galActionHom bijectivity. Injective (Mathlib's `galActionHom_injective`) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ from `gal_card_eq_120`. Bijectivity via `Fintype.bijective_iff_injective_and_card`. Transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`.",
-            "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$.",
-            "relatedConcepts": [
-                "galActionHom",
-                "MulEquiv.ofBijective",
-                "pigeonhole principle",
-                "Equiv.permCongr",
-                "Fintype.bijective_iff_injective_and_card"
-            ]
-        },
-        {
-            "id": "not-solvable",
-            "title": "Part VII: Non-Solvability",
-            "startLine": 1413,
-            "endLine": 1431,
-            "summary": "`s5_not_solvable`: $S_5$ not solvable via `Equiv.Perm.not_solvable` with $5 \\leq |\\text{Fin}\\;5|$. `gal_not_solvable`: transfers non-solvability from $S_5$ to $\\text{Gal}$ via the surjective `MulEquiv` from Part VI using `solvable_of_surjective`.",
-            "mathContext": "$S_5$ not solvable (derived series stalls at $A_5$). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable.",
-            "relatedConcepts": [
-                "derived series",
-                "A5 simplicity",
-                "solvable_of_surjective",
-                "Equiv.Perm.not_solvable",
-                "group surjection"
-            ]
-        },
-        {
-            "id": "abel-ruffini-conclusion",
-            "title": "Part VIII: Abel-Ruffini Conclusion",
-            "startLine": 1432,
-            "endLine": 1466,
-            "summary": "Main theorem `roots_not_solvable_by_rad`: for any root $\\alpha$ of $x^5 - 4x + 2$, $\\alpha \\notin \\text{solvableByRad}(\\mathbb{Q})$. Proof: assume $\\alpha$ solvable by radicals; by `solvableByRad.isSolvable'` with `p_irreducible` and `hroot`, $\\text{Gal}(p)$ is solvable — contradicting `gal_not_solvable`.",
-            "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$.",
-            "relatedConcepts": [
-                "solvableByRad.isSolvable'",
-                "contrapositive",
-                "radical extension",
-                "IsSolvableByRad",
-                "Galois bridge"
-            ]
-        },
-        {
-            "id": "three-dvd-proved",
-            "title": "Part V(e2): three_dvd_gal_card (Eliminating Non-3-Divisible Orders)",
-            "startLine": 1210,
-            "endLine": 1244,
-            "summary": "Proves `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$ by eliminating all non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$. Order 5 eliminated by sign argument (order-5 permutations in $S_5$ are even). Order 20 eliminated by `gal_card_ne_20` (F₂₀ has no transpositions but Gal does). Orders 10 and 40 eliminated via Sylow theory. All cases fully proved.",
-            "mathContext": "$|\\text{Gal}| \\in \\{5,10,15,20,30,40,60,120\\}$. Not 5 (sign), not 10, 20, 40 (Sylow/transposition arguments). Remaining: $\\{15,30,60,120\\}$ — all divisible by 3.",
-            "relatedConcepts": [
-                "Sylow theory",
-                "transposition normalization",
-                "native_decide",
-                "non-3-divisible order elimination"
-            ]
-        },
-        {
-            "id": "vandermonde-infrastructure",
-            "title": "Part V(e)+(e2): Vandermonde, Complex Conjugation, and Discriminant Infrastructure",
-            "startLine": 508,
-            "endLine": 1244,
-            "summary": "Root enumeration (`rootEnum_p`), Vandermonde product $\\Delta = \\det(V(\\text{roots}))$, Galois permutation of roots, Vandermonde permutation identity ($\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$), and `gal_has_odd_perm` proved via the discriminant sign argument ($\\text{disc}(p) < 0$ implies $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has odd sign).",
-            "mathContext": "$\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$. $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$. If all signs $+1$, $\\Delta \\in \\mathbb{Q}$ but $\\Delta^2 < 0$ — contradiction.",
-            "relatedConcepts": [
-                "Vandermonde determinant",
-                "Matrix.det_permute",
-                "root enumeration",
-                "galToPerm5",
-                "derivative product identity"
-            ]
-        },
-        {
-            "id": "gal-card-120",
-            "title": "Part V(f): |Gal(p/ℚ)| = 120 (Case Elimination)",
-            "startLine": 1246,
-            "endLine": 1377,
-            "summary": "Proves `gal_card_eq_120`: $|\\text{Gal}| = 120$ by combining $15 \\mid |\\text{Gal}|$ (from `five_dvd_gal_card` and `three_dvd_gal_card`) with elimination of orders 15 (Sylow), 30 ($A_5$ simplicity), and 60 (odd permutation). Only 120 remains.",
-            "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$.",
-            "relatedConcepts": [
-                "case elimination",
-                "divisibility chain",
-                "Sylow theory",
-                "discriminant sign",
-                "galois group order"
-            ]
-        },
-        {
-            "id": "realizability",
-            "title": "Part IX: $S_5$ Realizability and Verification",
-            "startLine": 1467,
-            "endLine": 1498,
-            "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Lines 1485-1498: `#check` verification of all 9 key theorems.",
-            "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$.",
-            "relatedConcepts": [
-                "inverse Galois problem",
-                "splitting field",
-                "IsGalois",
-                "FiniteDimensional",
-                "s5_realizable"
-            ]
-        }
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory.",
+    "wiedijkNumber": 16,
+    "dateAdded": "2026-03-25",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein's irreducibility criterion",
+        "module": "Mathlib.RingTheory.EisensteinCriterion"
+      },
+      {
+        "theorem": "Polynomial.Gal.galActionHom_injective",
+        "description": "Galois group embeds into Perm(rootSet)",
+        "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      },
+      {
+        "theorem": "Polynomial.Gal.prime_degree_dvd_card",
+        "description": "Prime degree divides Galois group order",
+        "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      },
+      {
+        "theorem": "solvableByRad.isSolvable'",
+        "description": "Solvable by radicals implies solvable Galois group",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "Perm(α) not solvable for |α| ≥ 5",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "Matrix.det_vandermonde",
+        "description": "Vandermonde determinant equals product of differences",
+        "module": "Mathlib.LinearAlgebra.Vandermonde"
+      },
+      {
+        "theorem": "alternatingGroup.isSimpleGroup_five",
+        "description": "A₅ is a simple group",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
+      }
     ],
-    "conclusion": {
-        "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$) to the unsolvability conclusion via Galois's theorem. Fully verified with 0 sorries and 0 axioms. The key result $|\\text{Gal}| = 120$ is proved without axioms via three techniques: (1) the Vandermonde product computation proves $\\Delta^2 = -212144$ from the derivative product identity, (2) complex conjugation (`IsAlgClosed.lift` + `starRingEnd`) proves the Galois group contains an odd permutation, and (3) Sylow elimination rules out all candidate orders except 120 — orders $\\{5,10,20,40\\}$ excluded because a transposition cannot normalize the unique Sylow 5-subgroup, orders 15 and 30 by Sylow counting and $A_5$ simplicity, and order 60 because $\\text{Gal} \\not\\subset A_5$.",
-        "implications": "1. **Wiedijk Top-100 (#16)**: This formalization completes Wiedijk theorem #16 (Abel-Ruffini impossibility) with a fully machine-checked proof at the hardest end of the spectrum — a concrete witness rather than an abstract existence statement. The Wiedijk list includes many theorems whose formalizations remain incomplete or axiom-heavy; this entry achieves the gold standard of 0 axioms and 0 sorries for a non-trivial result in algebraic number theory.\n\n2. **Concrete witnesses vs. abstract impossibility**: Abel's original 1824 proof shows no *general* radical formula exists for degree ≥ 5. This formalization goes further: these five specific complex numbers $\\alpha_1, \\ldots, \\alpha_5$ satisfying $x^5 - 4x + 2 = 0$ provably cannot be individually expressed using $+, -, \\times, \\div, \\sqrt[n]{\\cdot}$ starting from $\\mathbb{Q}$. The concreteness transforms an impossibility result into a positive fact about specific numbers.\n\n3. **Discriminant as Galois group algorithm**: The proof's core technique — computing $\\Delta^2 = \\text{disc}(p) = -212144 < 0$ to force $\\text{Gal} \\not\\subseteq A_5$ — is an instance of the discriminant criterion: $\\text{Gal}(f/K) \\subseteq A_n \\iff \\Delta(f) \\in K$. This criterion is the foundation of algorithmic Galois group computation in CAS systems (GAP, Magma, PARI/GP). The negative discriminant sign immediately tells practitioners that Galois group must contain an odd permutation, reducing the full $S_5$ identification to 4 Sylow eliminations.\n\n4. **$S_5$ realizability and the inverse Galois problem**: The `s5_realizable` theorem proves $S_5 \\cong \\text{Gal}(K/\\mathbb{Q})$ for $K = $ splitting field of $x^5-4x+2$, contributing to the Inverse Galois Problem (IGP): which groups appear as Galois groups over $\\mathbb{Q}$? For $S_n$, realizability over $\\mathbb{Q}$ follows from the Hilbert irreducibility theorem — this entry provides a constructive witness for $S_5$, complementing gallery entries for $S_3$ (cubic discriminant) and $F_{20}$ (cyclotomic fields).\n\n5. **Proof technique innovation**: Replacing Dedekind's theorem with complex conjugation (`IsAlgClosed.lift` + `starRingEnd`) is a methodological contribution. Dedekind's theorem (the cycle type of Frobenius at $p$ divides that of $\\text{Gal}$ as a permutation) is the classical textbook approach, but requires mod-$p$ factorization and depends on Dedekind's criterion for discriminants. The complex conjugation approach is self-contained, works over $\\mathbb{Q}$ without any prime reduction, and directly yields the odd permutation needed for $\\text{Gal} \\not\\subseteq A_5$.",
-        "openQuestions": [
-            "What is the simplest quintic with Galois group $S_5$ in terms of coefficient size? $x^5 - x - 1$ is a valid witness — its discriminant is $2869 = 19 \\cdot 151$ (not a square in $\\mathbb{Q}$, so $\\text{Gal} \\not\\subseteq A_5$), it is irreducible (no rational roots by rational root theorem, and a degree-5 polynomial irreducible iff it has no rational roots and no quadratic factor — checkable by computer algebra), and sign analysis shows 3 real roots, giving $\\text{Gal} \\cong S_5$ by the same argument used here. The discriminant formula for Bring-Jerrard $x^5 + px + q$ is $256p^5 + 3125q^4$, which for $(p,q)=(-1,-1)$ gives $-256 + 3125 = 2869$. The advantage of $x^5 - 4x + 2$ over $x^5 - x - 1$ is that the former satisfies Eisenstein at $p = 2$ for trivially mechanical irreducibility, while the latter requires more work",
-            "Can this approach be generalized to realize other transitive subgroups of $S_5$ (e.g., $A_5$, $D_5$, $F_{20}$) as Galois groups of specific quintics?",
-            "Can the repetitive Sylow arguments for `gal_card_ne_10`, `gal_card_ne_20`, and `gal_card_ne_40` be factored into a single generic lemma? All three follow the same pattern: a transposition cannot normalize the unique Sylow 5-subgroup.",
-            "Can Mathlib's growing theory of polynomial Galois groups eventually compute $|\\text{Gal}|$ for specific polynomials via a unified tactic, avoiding the manual case-elimination approach used here?",
-            "The file documents the Key Group Theory Lemma (a transitive subgroup of $S_p$ containing a transposition is $S_p$) in a comment block, and defines the `c5` 5-cycle supporting it, but the formal proof of this classical result is not included. The current proof avoids it via Sylow elimination. Should this classical lemma be formalized for pedagogical completeness?"
-        ]
+    "originalContributions": [
+      "Complete proof chain from Eisenstein irreducibility through galActionHom bijectivity to unsolvability by radicals for a specific polynomial x⁵ - 4x + 2",
+      "S₅ realizability theorem: first concrete realization of S₅ as a Galois group over ℚ in the gallery",
+      "Connects existing Abel-Ruffini proof chain (OQ-04) to a concrete witness, addressing the open question about formalizing the generic quintic Galois group"
+    ],
+    "prerequisites": [
+      "Galois theory (splitting fields, Galois groups, radical extensions)",
+      "Eisenstein's irreducibility criterion",
+      "Solvable groups and the derived series"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 1498,
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-oq-04",
+        "relationship": "Extends: provides the concrete polynomial witness for the proof chain documented in OQ-04"
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "Extends: uses the Galois bridge from the base theorem to conclude unsolvability"
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "Contributes: realizes S₅ as a Galois group over ℚ"
+      },
+      {
+        "id": "inverse-galois-oq-06",
+        "relationship": "Complementary: the sister computation realizing A₅ as a Galois group over ℚ, using the same Eisenstein + Sylow toolkit"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02",
+        "relationship": "Complementary: proves S₂, S₃, S₄ ARE solvable — the positive half of the solvability boundary that this entry's S₅ non-solvability defines"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-03",
+        "relationship": "Foundational: formalizes Galois's full solvability criterion, of which this entry uses the forward direction (solvable by radicals ⇒ solvable Galois group)"
+      }
+    ],
+    "theoremCount": 64
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "extends",
+      "description": "Provides the concrete polynomial witness for Step 5 of the proof chain: Gal(x⁵-4x+2/ℚ) ≅ S₅"
     },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "Uses the Galois bridge (solvable by radicals ⇒ solvable Galois group) to conclude unsolvability"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "contributes",
+      "description": "Realizes S₅ as Gal(x⁵-4x+2/ℚ), complementing S₃ and F₂₀ realizations in the gallery"
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "related",
+      "description": "Proves the complete solvability characterization $S_n$ solvable iff $n \\leq 4$, which is the group-theoretic foundation for the non-solvability of $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula succeeds because $S_4$ is solvable — this entry shows $x^5 - 4x + 2$ fails because $S_5$ is not, illustrating the sharp degree-5 boundary"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula succeeds because $S_3$ is solvable — the positive counterpart to this entry's quintic impossibility"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees the roots of $x^5-4x+2$ exist in $\\mathbb{C}$; this entry shows those roots cannot be named using radical expressions"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "foundational",
+      "description": "Descartes' rule bounds real root counts by sign changes in coefficients — the same sign-change analysis used in this proof to locate 3 real roots of $x^5 - 4x + 2$, establishing that complex conjugation swaps the 2 non-real roots and thus acts as a transposition in the Galois group"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-01",
+      "relationship": "foundational",
+      "description": "Formalizes the discriminant $\\Delta = -4p^3 - 27q^2$ for the depressed cubic and the criterion $\\text{Gal}(f) \\subseteq A_n \\iff \\Delta(f)$ is a perfect square in $F$. The discriminant machinery is the linchpin of this entry's $|\\text{Gal}|=120$ proof: the Vandermonde product identity $\\Delta^2 = \\text{disc}(p)$ and the computed value $\\Delta^2 = -212144 < 0$ together force $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\not\\subseteq A_5$, which eliminates order 60 and is essential to the Sylow elimination cascade. Both entries develop discriminant theory in service of the concrete Abel-Ruffini proof chain."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems are the primary tool for the case elimination in Part V: unique Sylow subgroups force cyclic structure (ruling out order 15), and Sylow counting constrains subgroup existence (ruling out order 30). The Sylow $p$-subgroup machinery directly enables the elimination of candidate Galois group orders"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem ($|H|$ divides $|G|$ for $H \\leq G$) underpins the entire order-elimination strategy: $5 \\mid |\\text{Gal}|$ (orbit-stabilizer for transitive action on 5 roots), $|\\text{Gal}| \\mid 120$ (embedding into $S_5$ via `galActionHom`), and the Sylow elimination argument that narrows candidate orders to $\\{15, 30, 60, 120\\}$"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $n$th roots is the base case for radical extensions: each step in a radical tower $K \\to K(\\sqrt[n]{a})$ extends the field because $a^{1/n} \\notin K$. This entry's impossibility result shows that iterating such extensions from $\\mathbb{Q}$ can never reach the roots of $x^5 - 4x + 2$"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express the coefficients of $x^5 - 4x + 2$ as elementary symmetric functions of its roots — this is why the Galois group permutes roots while preserving coefficients, and why the `galActionHom` maps $\\text{Gal}$ into $\\text{Perm}(\\text{rootSet})$"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini (this entry's concrete instance) shows $x^5-4x+2$ is unsolvable by radicals because $\\text{Gal} \\cong S_5$ is non-solvable, while angle trisection shows the general angle cannot be trisected by compass and straightedge because the minimal polynomial of $\\cos(20°)$ has degree 3 over the constructible field extension. Both reduce geometric/algebraic impossibility to group-theoretic obstructions"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer theory provides the mechanism underlying the Galois bridge used in `roots_not_solvable_by_rad`: each radical extraction $K \\to K(\\sqrt[n]{a})$ creates a Kummer extension with cyclic Galois group. The impossibility arises because $S_5$ cannot be decomposed into such cyclic layers — exactly what the contrapositive of `solvableByRad.isSolvable'` captures"
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "The sister computation to this entry's $S_5$ realization: while this entry proves $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$ via Eisenstein at $p=2$ and Sylow elimination, `inverse-galois-oq-06` proves $A_5 \\cong \\text{Gal}(x^5-5x^4+10x^3-10x^2+25x-5/\\mathbb{Q})$ via Eisenstein at $p=5$ and Sylow theory. Together they realize the two non-solvable groups that appear in $S_5$'s composition series as Galois groups of explicit quintics over $\\mathbb{Q}$. Both entries invoke `not_solvable_by_rad_of_not_solvable_gal` to conclude unsolvability by radicals."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "complementary",
+      "description": "Proves the positive half of the solvability boundary: $S_2, S_3, S_4$ ARE solvable, with the bidirectional theorem $S_n$ solvable $\\iff n \\leq 4$. This entry proves $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$ implies unsolvability; `abel-ruffini-oq-04-oq-02` proves that every polynomial of degree $\\leq 4$ with Galois group $\\leq S_4$ IS solvable, completing the sharp degree-4/5 boundary. The `derived_series_solvable_of_solvable` path through $S_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$ directly contrasts with the stalled derived series $S_5 \\supset A_5 \\supset A_5$."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "foundational",
+      "description": "Galois's solvability criterion: a root is solvable by radicals if and only if its Galois group is solvable. This entry uses only the forward direction (`solvableByRad.isSolvable'`: solvable by radicals $\\Rightarrow$ solvable Galois group) as a contrapositive; `abel-ruffini-oq-04-oq-03` formalizes the full Galois correspondence including the reverse direction (solvable Galois group $\\Rightarrow$ solvable by radicals, relying on Kummer theory). Together they give the complete biconditional that elevates Abel-Ruffini from a computational fact about $x^5-4x+2$ to a structural theorem about quintics generally."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "foundational",
+      "description": "Houses the extended solvability classification and non-commutativity witnesses used implicitly throughout this proof: $S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$, $A_5$ simple, and non-commutativity witnesses for $S_3, S_4, S_5, A_4, A_5$. This entry's `s5_not_solvable` relies on `Equiv.Perm.not_solvable`, whose proof in turn rests on $A_5$'s simplicity — the same infrastructure that `abel-ruffini-galois-extensions` develops systematically with 57 theorems. The `solvable_of_surjective` transfer that propagates non-solvability from $S_5$ to $\\text{Gal}(p/\\mathbb{Q})$ also mirrors the solvability transfer lemmas proved there."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Finite Groups of Order $< 60$ Are Solvable: this entry establishes that $|A_5| = 60$ is the precise solvability threshold by proving all groups of order $< 60$ (hence all proper subgroups of $A_5$) are solvable. Complementary to the case $|\\text{Gal}| = 60$ elimination here: if $|\\text{Gal}|$ were 60, the Galois image would be $A_5$ itself — but this entry proves $\\text{Gal} \\not\\subseteq A_5$ via the odd-permutation discriminant argument, so the 60-threshold result is not needed. Together these two entries bracket the non-solvability threshold from both sides."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Abel-Ruffini theorem has a dramatic history. Ruffini (1799) gave the first incomplete proof that the general quintic is unsolvable by radicals, but his argument had gaps in the treatment of permutation groups. Abel (1824) provided the first rigorous proof, showing no universal radical formula exists for degree 5 or higher. Galois (1832, published posthumously after his death in a duel at age 20) gave the definitive framework: a polynomial is solvable by radicals if and only if its Galois group is solvable. Since $S_5$ is not solvable (because $A_5$ is simple and non-abelian), any polynomial with Galois group $S_5$ has unsolvable roots.\n\nThe polynomial $x^5 - 4x + 2$ is a standard textbook example appearing in Dummit-Foote, Artin, and Lang, chosen because Eisenstein's criterion gives easy irreducibility and derivative analysis shows exactly 3 real roots. Eisenstein's criterion itself was published by Gotthold Eisenstein in 1850 in Crelle's Journal — the same journal that published Abel's refined proof in 1826. Eisenstein, who died of tuberculosis at age 29 (like Abel at 26), provided what Gauss called the simplest and most elegant irreducibility test. The criterion that $p$ divides all non-leading coefficients but $p^2$ does not divide the constant term remains the most frequently used irreducibility tool in textbooks.\n\nThe classical textbook approach to computing the Galois group of a specific quintic uses Dedekind's theorem (1882) — the cycle type of the Frobenius automorphism matches the mod-$p$ factorization — to establish divisibility conditions on $|\\text{Gal}|$. This formalization takes a different route: it establishes $\\text{Gal} \\not\\subset A_5$ via the Vandermonde discriminant ($\\Delta^2 = -212144 < 0$, so the Fundamental Theorem of Galois Theory forces an odd permutation), obtains a transposition via complex conjugation (embedding the splitting field into $\\mathbb{C}$ via `IsAlgClosed.lift` and composing with `starRingEnd`), and then eliminates non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$ via Sylow theory. This approach avoids all mod-$p$ arithmetic and works purely within algebraic and group-theoretic methods.\n\nThis formalization bridges abstract impossibility to a concrete witness: these five specific complex numbers cannot be written using radicals.",
+    "problemStatement": "Prove that the polynomial $x^5 - 4x + 2$ has Galois group $S_5$ over $\\mathbb{Q}$, and conclude that its roots cannot be expressed using radicals.",
+    "text": "This file completes the Abel-Ruffini proof chain by providing a concrete polynomial whose roots are provably unsolvable by radicals. The polynomial x⁵ - 4x + 2 is shown irreducible via Eisenstein's criterion at p=2, and its Galois group is identified as S₅ via the galActionHom bijectivity argument. Since S₅ is not solvable, Galois's theorem implies the roots cannot be expressed by radicals.",
+    "proofStrategy": "The proof has four main stages:\n\n**1. Irreducibility** (Part II): Eisenstein's criterion at the prime ideal $(2) \\subset \\mathbb{Z}$ shows $x^5 - 4x + 2$ is irreducible over $\\mathbb{Z}$: all non-leading coefficients $(0, 0, 0, -4, 2)$ are divisible by 2, the constant term 2 is not divisible by 4, and the leading coefficient 1 is coprime to 2. Gauss's lemma (monic $\\Rightarrow$ primitive) transfers irreducibility from $\\mathbb{Z}[X]$ to $\\mathbb{Q}[X]$.\n\n**2. Galois group identification** (Parts III-VI): The `galActionHom` embeds $\\text{Gal}$ into $\\text{Perm}(\\text{rootSet}) \\cong S_5$ (injective by Mathlib). Establishing $|\\text{Gal}| = 120$ proceeds by elimination: (a) $5 \\mid |\\text{Gal}|$ by orbit-stabilizer (irreducible of prime degree gives transitive action), (b) $\\text{Gal} \\not\\subset A_5$ via the discriminant sign argument: the Vandermonde product $\\Delta$ satisfies $\\Delta^2 = \\text{disc}(p) = -212144 < 0$ (proved from the derivative product identity), so by FTGT if all Galois automorphisms were even then $\\Delta \\in \\mathbb{Q}$, contradicting $\\Delta^2 < 0$; thus `gal_has_odd_perm` establishes a transposition in the Galois image, (c) $3 \\mid |\\text{Gal}|$ by eliminating non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$ via Sylow theory: a transposition cannot normalize the unique Sylow 5-subgroup in groups of these orders, (d) Sylow theory eliminates orders 15 (unique $P_3, P_5$ force cyclic, impossible in $S_5$) and 30 ($A_5$ simplicity), (e) order 60 eliminated because $\\text{Gal} \\not\\subset A_5$ by step (b). Only $|\\text{Gal}| = 120$ remains. Bijectivity of `galActionHom` follows by the pigeonhole principle.\n\n**3. Non-solvability transfer** (Part VII): $S_5$ is not solvable (Mathlib's `Equiv.Perm.not_solvable`, since $A_5$ is simple). The isomorphism $\\text{Gal} \\cong S_5$ transfers non-solvability via `solvable_of_surjective`.\n\n**4. Abel-Ruffini conclusion** (Part VIII): By contrapositive of Galois's theorem (`solvableByRad.isSolvable'`), non-solvable Galois group implies roots are not expressible by radicals.",
+    "keyInsights": [
+      "**Eisenstein at p = 2 is elegant**: Coefficients $(1, 0, 0, 0, -4, 2)$ satisfy Eisenstein at $(2)$: non-leading coefficients all divisible by 2, constant term 2 not divisible by 4, leading coefficient coprime to 2. This is the simplest irreducibility argument for a specific quintic.",
+      "**3 real roots give a transposition**: Sign analysis at $f(-2) < 0 < f(-1)$, $f(0) > 0 > f(1)$, $f(1) < 0 < f(2)$ locates 3 real roots. Since $f'(x) = 5x^4 - 4$ has only 2 real critical points, there are exactly 3 real and 2 complex conjugate roots. Complex conjugation acts as a transposition on the 5 roots.",
+      "**Transposition + p-cycle generates $S_p$**: Conjugate the transposition $(i\\;j)$ by powers of the $p$-cycle $(1\\;2\\;\\cdots\\;p)$ to generate all adjacent transpositions $(k\\;k+1)$, which generate $S_p$. This classical result is the group-theoretic bridge from real root analysis to the full symmetric group.",
+      "**Pigeonhole for bijectivity**: With $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ and the injective galActionHom, bijectivity follows from the pigeonhole principle. This avoids constructing an explicit inverse.",
+      "**Concrete witness matters**: Abel's original theorem proves existence of unsolvable quintics abstractly. This formalization gives a specific polynomial $x^5 - 4x + 2$ whose five roots provably resist all radical expressions, making the impossibility tangible.",
+      "**Sylow elimination as case analysis**: The proof that $|\\text{Gal}| = 120$ is a remarkable case analysis. From $5 \\mid |G|$, $3 \\mid |G|$, and $|G| \\mid 120$, the candidates are $\\{15, 30, 60, 120\\}$. Sylow theory eliminates 15 (unique $P_5$ and $P_3$ would force a cyclic subgroup of order 15, but $S_5$ has none). The simplicity of $A_5$ eliminates 30 (an index-4 subgroup gives $S_5 \\to S_4$, impossible). The odd permutation from discriminant analysis eliminates 60 ($A_5$ is the unique order-60 subgroup, but the Galois image is not contained in $A_5$). Only 120 remains.",
+      "**Complex conjugation as the key to eliminating Dedekind's theorem**: The proof constructs a Galois automorphism from complex conjugation: embed the splitting field $SF \\hookrightarrow \\mathbb{C}$ via `IsAlgClosed.lift`, compose with `starRingEnd \\mathbb{C}` (complex conjugation), then restrict via `restrictNormal` to get $\\sigma \\in \\text{Gal}(p/\\mathbb{Q})$. Since $\\Delta^2 = \\text{disc}(p) = -212144 < 0$, the FTGT forces $\\sigma$ to have odd sign — giving a transposition without needing Dedekind's theorem or mod-$p$ factorization at all. This single construction replaces both the Dedekind axiom and the original real-root-count argument.",
+      "**Sylow elimination as a universal strategy for $3 \\mid |\\text{Gal}|$**: Rather than using Dedekind's theorem (mod-$p$ factorization), the proof establishes $3 \\mid |\\text{Gal}|$ purely from the transposition: candidate orders not divisible by 3 are $\\{5, 10, 20, 40\\}$, and each is eliminated by showing a transposition cannot coexist with the unique normal Sylow 5-subgroup at that order. For orders 10, 20, 40: the transposition from `gal_has_odd_perm` would have to normalize the unique Sylow 5-subgroup, but `native_decide` verifies no transposition in $S_5$ normalizes any 5-cycle. For order 5: any order-5 subgroup of $S_5$ consists entirely of even permutations, contradicting the transposition. This approach is more elementary than Dedekind and avoids all mod-$p$ arithmetic.",
+      "**Why $x^5 - 4x + 2$ rather than $x^5 - x - 1$ or $x^5 + x + 1$**: The polynomial choice trades off three competing constraints. Eisenstein irreducibility forces a prime $p$ dividing all non-leading coefficients but with $p^2 \\nmid$ constant term — the simplest such pattern is $p=2$ with constant term $\\pm 2$ and one nonzero linear coefficient divisible by 2. Three real roots (for the complex-conjugation transposition) requires the discriminant to be negative — the value $\\Delta^2 = -212144 = -2^4 \\cdot 13259$ is small enough that the derivative-product calculation $p(5/8) = -13259/32768$ keeps the arithmetic tractable. Finally, the constant term $+2$ rather than $-2$ (yielding the famous Trinks polynomials with Galois group $D_5$ or $F_{20}$) ensures a transitive action with all 5 roots in distinct orbits, forcing the Galois image to be primitive and hence (by O'Nan-Scott) maximal in $S_5$. Dummit-Foote's choice optimizes Eisenstein simplicity, real-root sign-change visibility, and discriminant computability simultaneously.",
+      "**Bring-Jerrard form as the natural domain**: The polynomial $x^5 - 4x + 2$ is already in *Bring-Jerrard normal form* $x^5 + px + q$ (i.e., the coefficients of $x^4, x^3, x^2$ all vanish). Tschirnhaus (1683) and Bring (1786) showed every quintic can be transformed to this normal form by a polynomial substitution of degree at most 4 — Hermite (1858) used this to express quintic roots via elliptic modular functions. The choice of $p = -4, q = 2$ here is no accident: among Bring-Jerrard quintics with small integer coefficients, this is one of the simplest with a clear non-square discriminant ($\\text{disc} = -212144$) and 3 real roots. Other classical witnesses in the same form include $x^5 - x - 1$ (discriminant $2869 = 19 \\cdot 151$, also non-square, $\\text{Gal} \\cong S_5$) and $x^5 - 6x + 3$ (Eisenstein at $p = 3$). The Bring-Jerrard form is the algebraic 'minimal model' for the quintic — once a quintic is reduced to it, the discriminant computation becomes the simple expression $\\text{disc}(x^5 + px + q) = 256 p^5 + 3125 q^4$ (sometimes written with a sign convention; for our $p=-4, q=2$: $256 \\cdot (-4)^5 + 3125 \\cdot 2^4 = -262144 + 50000 = -212144$, matching the value computed in `vandermondeProduct_sq_val`).",
+      "**Stauduhar's algorithm and computational Galois theory**: The case-elimination structure of this proof mirrors Stauduhar's algorithm (1973), the standard method for computing Galois groups of polynomials over $\\mathbb{Q}$ in computer algebra systems (PARI/GP, Magma, Sage, GAP). Stauduhar starts from the lattice of transitive subgroups of $S_n$ (for $n=5$, there are exactly 5: $S_5, A_5, F_{20}, D_5, C_5$) and uses *resolvent polynomials* — polynomials whose Galois group fixes a chosen subgroup — to descend through the lattice from $S_n$ downward. At each step, one checks whether a particular resolvent has rational roots (yes $\\Rightarrow$ Galois group is contained in the corresponding subgroup; no $\\Rightarrow$ stop). The discriminant is the resolvent for $A_n$ (the discriminant being a square iff $\\text{Gal} \\subseteq A_n$). The proof here essentially implements the first Stauduhar test by hand: $\\sqrt{\\text{disc}(p)} \\notin \\mathbb{Q}$ (because $\\text{disc}(p) = -212144 < 0$) eliminates $A_5$. The Sylow elimination of orders 10, 20, 40 then implicitly handles the resolvents for $D_5, F_{20}, C_5$ — all proper transitive subgroups of $S_5$. A future formalization could extract these as explicit resolvent computations and connect to a general Stauduhar tactic in Mathlib."
+    ],
+    "prerequisites": [
+      "Abstract algebra (groups, solvable groups, symmetric groups)",
+      "Galois theory (field extensions, Galois groups, splitting fields)",
+      "Polynomial algebra (irreducibility criteria, Eisenstein criterion)",
+      "Sylow theory (Sylow subgroup existence, uniqueness, and counting)"
+    ],
+    "relatedConcepts": [
+      "Galois group",
+      "solvability by radicals",
+      "S5",
+      "Eisenstein criterion",
+      "Vandermonde determinant",
+      "Wiedijk theorem 16",
+      "discriminant sign",
+      "Sylow theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview, Proof Chain, and Pre-Classical Computational Lemmas",
+      "startLine": 1,
+      "endLine": 98,
+      "summary": "Documents the complete Abel-Ruffini proof chain and motivation for choosing $x^5 - 4x + 2$. Lists all 5 steps from $A_5$ simplicity to unsolvability by radicals. Lines 63-91: three computational lemmas proved by `native_decide` that must appear before `open scoped Classical` for decidability — `perm_fin5_order5_order3_not_commute` (used in Sylow order-15 elimination), `perm_fin5_order_dvd5_sign_one` (elements of order dividing 5 in $S_5$ are even), and `transposition_not_normalizing_5cycle` (used in Sylow elimination of orders 10, 20, 40). All three feed into the main proof.",
+      "mathContext": "Proof chain: (1) $A_5$ simple, (2) $S_n$ not solvable for $n \\geq 5$, (3) solvable by radicals $\\Rightarrow$ solvable Gal, (4) $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, (5) roots not expressible by radicals.",
+      "relatedConcepts": [
+        "Abel-Ruffini theorem",
+        "Galois theory",
+        "native_decide",
+        "solvability by radicals",
+        "proof chain"
+      ]
+    },
+    {
+      "id": "polynomial",
+      "title": "Part I: The Polynomial p = X⁵ - 4X + 2",
+      "startLine": 99,
+      "endLine": 108,
+      "summary": "Defines $p = X^5 - 4X + 2$ over $\\mathbb{Q}$ and its $\\mathbb{Z}[X]$ version `p_int` for Eisenstein criterion application.",
+      "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$, $p_{\\text{int}} = x^5 - 4x + 2 \\in \\mathbb{Z}[X]$.",
+      "relatedConcepts": [
+        "Bring-Jerrard form",
+        "Eisenstein criterion",
+        "Polynomial.C",
+        "rational polynomial",
+        "integer polynomial"
+      ]
+    },
+    {
+      "id": "irreducibility",
+      "title": "Part II: Irreducibility via Eisenstein at p = 2",
+      "startLine": 109,
+      "endLine": 183,
+      "summary": "Proves $p$ is irreducible over $\\mathbb{Q}$. First proves irreducibility over $\\mathbb{Z}$ using Eisenstein's criterion at the prime ideal $(2)$, then transfers to $\\mathbb{Q}$ via Gauss's lemma (monic $\\Rightarrow$ primitive).",
+      "mathContext": "Eisenstein at $(2) \\subset \\mathbb{Z}$: $2 \\nmid 1$, $2 \\mid 0, 0, 0, -4, 2$, $4 \\nmid 2$. Therefore $p$ is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma.",
+      "relatedConcepts": [
+        "Eisenstein criterion",
+        "Gauss's lemma",
+        "prime ideal",
+        "p_int_monic",
+        "irreducible_of_eisenstein_criterion"
+      ]
+    },
+    {
+      "id": "structure",
+      "title": "Part III: Basic Structural Properties",
+      "startLine": 184,
+      "endLine": 207,
+      "summary": "Proves $\\deg(p) = 5$, $p$ is monic, $p$ is separable (char 0), and $|\\text{rootSet}(p)| = 5$.",
+      "mathContext": "$\\deg(p) = 5$, $p$ monic and separable. In the splitting field: $|\\{\\alpha : p(\\alpha) = 0\\}| = 5$.",
+      "relatedConcepts": [
+        "separable polynomial",
+        "splitting field",
+        "rootSet",
+        "compute_degree!",
+        "characteristic zero"
+      ]
+    },
+    {
+      "id": "galois-structure",
+      "title": "Part IV: Galois Group Structure",
+      "startLine": 208,
+      "endLine": 231,
+      "summary": "Proves $5 \\mid |\\text{Gal}|$ (prime degree gives transitive action, orbit-stabilizer) and $|\\text{Gal}| \\mid 120$ (galActionHom embeds $\\text{Gal}$ into $S_5$). Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
+      "mathContext": "$5 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 5! = 120$. Possible orders: $\\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
+      "relatedConcepts": [
+        "galActionHom",
+        "orbit-stabilizer theorem",
+        "Lagrange's theorem",
+        "transitive group action",
+        "prime_degree_dvd_card"
+      ]
+    },
+    {
+      "id": "gal-order",
+      "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
+      "startLine": 232,
+      "endLine": 1377,
+      "summary": "The largest section (~1150 lines): proves $|\\text{Gal}| = 120$ via systematic case elimination. (a) Lines 232-264: polynomial evaluations showing 3 sign changes (sign change comment motivates complex conjugation argument). (b) Lines 265-293: `c5` 5-cycle definition and Part V(c) Galois infrastructure header. (c) Lines 306-336: `galToPerm5` injection from $\\text{Gal}$ to $S_5$, injectivity, and `galSign`. (d) Lines 337-507: Sylow elimination of orders 15 and 30 (`no_subgroup_order_15`, `a5_card`, `no_subgroup_order_30`). (e) Lines 508-806: Vandermonde machinery, discriminant computation ($\\Delta^2 = -212144$), and `gal_has_odd_perm`. (e2) Lines 807-1244: complex conjugation gives transposition (`sfEmb`, `conjGalAut`, `gal_has_transposition`), Sylow elimination of non-3-divisible orders (`gal_card_ne_20`, `gal_card_ne_10`, `gal_card_ne_40`), `three_dvd_gal_card`. (f) Lines 1246-1377: case elimination (`gal_card_ne_15`, `gal_card_ne_30`, `gal_card_ne_60`) and `gal_card_eq_120`. Fully proved with 0 axioms.",
+      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). All steps fully proved.",
+      "relatedConcepts": [
+        "Vandermonde determinant",
+        "complex conjugation",
+        "Sylow elimination",
+        "discriminant sign",
+        "gal_card_eq_120"
+      ]
+    },
+    {
+      "id": "gal-iso",
+      "title": "Part VI: Gal(p/ℚ) ≅ S₅",
+      "startLine": 1378,
+      "endLine": 1412,
+      "summary": "Proves `gal_iso_s5`: $\\text{Gal} \\cong S_5$ via galActionHom bijectivity. Injective (Mathlib's `galActionHom_injective`) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ from `gal_card_eq_120`. Bijectivity via `Fintype.bijective_iff_injective_and_card`. Transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`.",
+      "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$.",
+      "relatedConcepts": [
+        "galActionHom",
+        "MulEquiv.ofBijective",
+        "pigeonhole principle",
+        "Equiv.permCongr",
+        "Fintype.bijective_iff_injective_and_card"
+      ]
+    },
+    {
+      "id": "not-solvable",
+      "title": "Part VII: Non-Solvability",
+      "startLine": 1413,
+      "endLine": 1431,
+      "summary": "`s5_not_solvable`: $S_5$ not solvable via `Equiv.Perm.not_solvable` with $5 \\leq |\\text{Fin}\\;5|$. `gal_not_solvable`: transfers non-solvability from $S_5$ to $\\text{Gal}$ via the surjective `MulEquiv` from Part VI using `solvable_of_surjective`.",
+      "mathContext": "$S_5$ not solvable (derived series stalls at $A_5$). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable.",
+      "relatedConcepts": [
+        "derived series",
+        "A5 simplicity",
+        "solvable_of_surjective",
+        "Equiv.Perm.not_solvable",
+        "group surjection"
+      ]
+    },
+    {
+      "id": "abel-ruffini-conclusion",
+      "title": "Part VIII: Abel-Ruffini Conclusion",
+      "startLine": 1432,
+      "endLine": 1466,
+      "summary": "Main theorem `roots_not_solvable_by_rad`: for any root $\\alpha$ of $x^5 - 4x + 2$, $\\alpha \\notin \\text{solvableByRad}(\\mathbb{Q})$. Proof: assume $\\alpha$ solvable by radicals; by `solvableByRad.isSolvable'` with `p_irreducible` and `hroot`, $\\text{Gal}(p)$ is solvable — contradicting `gal_not_solvable`.",
+      "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$.",
+      "relatedConcepts": [
+        "solvableByRad.isSolvable'",
+        "contrapositive",
+        "radical extension",
+        "IsSolvableByRad",
+        "Galois bridge"
+      ]
+    },
+    {
+      "id": "three-dvd-proved",
+      "title": "Part V(e2): three_dvd_gal_card (Eliminating Non-3-Divisible Orders)",
+      "startLine": 1210,
+      "endLine": 1244,
+      "summary": "Proves `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$ by eliminating all non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$. Order 5 eliminated by sign argument (order-5 permutations in $S_5$ are even). Order 20 eliminated by `gal_card_ne_20` (F₂₀ has no transpositions but Gal does). Orders 10 and 40 eliminated via Sylow theory. All cases fully proved.",
+      "mathContext": "$|\\text{Gal}| \\in \\{5,10,15,20,30,40,60,120\\}$. Not 5 (sign), not 10, 20, 40 (Sylow/transposition arguments). Remaining: $\\{15,30,60,120\\}$ — all divisible by 3.",
+      "relatedConcepts": [
+        "Sylow theory",
+        "transposition normalization",
+        "native_decide",
+        "non-3-divisible order elimination"
+      ]
+    },
+    {
+      "id": "vandermonde-infrastructure",
+      "title": "Part V(e)+(e2): Vandermonde, Complex Conjugation, and Discriminant Infrastructure",
+      "startLine": 508,
+      "endLine": 1244,
+      "summary": "Root enumeration (`rootEnum_p`), Vandermonde product $\\Delta = \\det(V(\\text{roots}))$, Galois permutation of roots, Vandermonde permutation identity ($\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$), and `gal_has_odd_perm` proved via the discriminant sign argument ($\\text{disc}(p) < 0$ implies $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has odd sign).",
+      "mathContext": "$\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$. $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$. If all signs $+1$, $\\Delta \\in \\mathbb{Q}$ but $\\Delta^2 < 0$ — contradiction.",
+      "relatedConcepts": [
+        "Vandermonde determinant",
+        "Matrix.det_permute",
+        "root enumeration",
+        "galToPerm5",
+        "derivative product identity"
+      ]
+    },
+    {
+      "id": "gal-card-120",
+      "title": "Part V(f): |Gal(p/ℚ)| = 120 (Case Elimination)",
+      "startLine": 1246,
+      "endLine": 1377,
+      "summary": "Proves `gal_card_eq_120`: $|\\text{Gal}| = 120$ by combining $15 \\mid |\\text{Gal}|$ (from `five_dvd_gal_card` and `three_dvd_gal_card`) with elimination of orders 15 (Sylow), 30 ($A_5$ simplicity), and 60 (odd permutation). Only 120 remains.",
+      "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$.",
+      "relatedConcepts": [
+        "case elimination",
+        "divisibility chain",
+        "Sylow theory",
+        "discriminant sign",
+        "galois group order"
+      ]
+    },
+    {
+      "id": "realizability",
+      "title": "Part IX: $S_5$ Realizability and Verification",
+      "startLine": 1467,
+      "endLine": 1498,
+      "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Lines 1485-1498: `#check` verification of all 9 key theorems.",
+      "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$.",
+      "relatedConcepts": [
+        "inverse Galois problem",
+        "splitting field",
+        "IsGalois",
+        "FiniteDimensional",
+        "s5_realizable"
+      ]
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$) to the unsolvability conclusion via Galois's theorem. Fully verified with 0 sorries and 0 axioms. The key result $|\\text{Gal}| = 120$ is proved without axioms via three techniques: (1) the Vandermonde product computation proves $\\Delta^2 = -212144$ from the derivative product identity, (2) complex conjugation (`IsAlgClosed.lift` + `starRingEnd`) proves the Galois group contains an odd permutation, and (3) Sylow elimination rules out all candidate orders except 120 — orders $\\{5,10,20,40\\}$ excluded because a transposition cannot normalize the unique Sylow 5-subgroup, orders 15 and 30 by Sylow counting and $A_5$ simplicity, and order 60 because $\\text{Gal} \\not\\subset A_5$.",
+    "implications": "1. **Wiedijk Top-100 (#16)**: This formalization completes Wiedijk theorem #16 (Abel-Ruffini impossibility) with a fully machine-checked proof at the hardest end of the spectrum — a concrete witness rather than an abstract existence statement. The Wiedijk list includes many theorems whose formalizations remain incomplete or axiom-heavy; this entry achieves the gold standard of 0 axioms and 0 sorries for a non-trivial result in algebraic number theory.\n\n2. **Concrete witnesses vs. abstract impossibility**: Abel's original 1824 proof shows no *general* radical formula exists for degree ≥ 5. This formalization goes further: these five specific complex numbers $\\alpha_1, \\ldots, \\alpha_5$ satisfying $x^5 - 4x + 2 = 0$ provably cannot be individually expressed using $+, -, \\times, \\div, \\sqrt[n]{\\cdot}$ starting from $\\mathbb{Q}$. The concreteness transforms an impossibility result into a positive fact about specific numbers.\n\n3. **Discriminant as Galois group algorithm**: The proof's core technique — computing $\\Delta^2 = \\text{disc}(p) = -212144 < 0$ to force $\\text{Gal} \\not\\subseteq A_5$ — is an instance of the discriminant criterion: $\\text{Gal}(f/K) \\subseteq A_n \\iff \\Delta(f) \\in K$. This criterion is the foundation of algorithmic Galois group computation in CAS systems (GAP, Magma, PARI/GP). The negative discriminant sign immediately tells practitioners that Galois group must contain an odd permutation, reducing the full $S_5$ identification to 4 Sylow eliminations.\n\n4. **$S_5$ realizability and the inverse Galois problem**: The `s5_realizable` theorem proves $S_5 \\cong \\text{Gal}(K/\\mathbb{Q})$ for $K = $ splitting field of $x^5-4x+2$, contributing to the Inverse Galois Problem (IGP): which groups appear as Galois groups over $\\mathbb{Q}$? For $S_n$, realizability over $\\mathbb{Q}$ follows from the Hilbert irreducibility theorem — this entry provides a constructive witness for $S_5$, complementing gallery entries for $S_3$ (cubic discriminant) and $F_{20}$ (cyclotomic fields).\n\n5. **Proof technique innovation**: Replacing Dedekind's theorem with complex conjugation (`IsAlgClosed.lift` + `starRingEnd`) is a methodological contribution. Dedekind's theorem (the cycle type of Frobenius at $p$ divides that of $\\text{Gal}$ as a permutation) is the classical textbook approach, but requires mod-$p$ factorization and depends on Dedekind's criterion for discriminants. The complex conjugation approach is self-contained, works over $\\mathbb{Q}$ without any prime reduction, and directly yields the odd permutation needed for $\\text{Gal} \\not\\subseteq A_5$.",
+    "openQuestions": [
+      "What is the simplest quintic with Galois group $S_5$ in terms of coefficient size? $x^5 - x - 1$ is a valid witness — its discriminant is $2869 = 19 \\cdot 151$ (not a square in $\\mathbb{Q}$, so $\\text{Gal} \\not\\subseteq A_5$), it is irreducible (no rational roots by rational root theorem, and a degree-5 polynomial irreducible iff it has no rational roots and no quadratic factor — checkable by computer algebra), and sign analysis shows 3 real roots, giving $\\text{Gal} \\cong S_5$ by the same argument used here. The discriminant formula for Bring-Jerrard $x^5 + px + q$ is $256p^5 + 3125q^4$, which for $(p,q)=(-1,-1)$ gives $-256 + 3125 = 2869$. The advantage of $x^5 - 4x + 2$ over $x^5 - x - 1$ is that the former satisfies Eisenstein at $p = 2$ for trivially mechanical irreducibility, while the latter requires more work",
+      "Can this approach be generalized to realize other transitive subgroups of $S_5$ (e.g., $A_5$, $D_5$, $F_{20}$) as Galois groups of specific quintics?",
+      "Can the repetitive Sylow arguments for `gal_card_ne_10`, `gal_card_ne_20`, and `gal_card_ne_40` be factored into a single generic lemma? All three follow the same pattern: a transposition cannot normalize the unique Sylow 5-subgroup.",
+      "Can Mathlib's growing theory of polynomial Galois groups eventually compute $|\\text{Gal}|$ for specific polynomials via a unified tactic, avoiding the manual case-elimination approach used here?",
+      "The file documents the Key Group Theory Lemma (a transitive subgroup of $S_p$ containing a transposition is $S_p$) in a comment block, and defines the `c5` 5-cycle supporting it, but the formal proof of this classical result is not included. The current proof avoids it via Sylow elimination. Should this classical lemma be formalized for pedagogical completeness?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "gal_eq_S5",
+      "type": "core",
+      "description": "The Galois group of x⁵ - 4x + 2 over ℚ is isomorphic to S₅, proved by eliminating all candidate orders except 120 via Sylow theory and discriminant analysis — the heart of the Abel-Ruffini concrete instance."
+    },
+    {
+      "name": "roots_not_solvable_by_rad",
+      "type": "core",
+      "description": "The roots of x⁵ - 4x + 2 cannot be expressed by radicals, concluded by the Galois bridge: solvableByRad.isSolvable' gives solvable Galois group ⟹ solvable by radicals, but Gal ≅ S₅ is not solvable."
+    },
+    {
+      "name": "p_irreducible",
+      "type": "supporting",
+      "description": "x⁵ - 4x + 2 is irreducible over ℚ, proved by Eisenstein's criterion at p = 2: all non-leading coefficients divisible by 2, constant term not divisible by 4."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "AbelRuffiniOQ04OQ01",
+    "lineCount": 1498,
+    "axiomCount": 0,
+    "theoremCount": 64,
+    "definitionCount": 7,
     "mainTheorems": [
-        {
-            "name": "gal_eq_S5",
-            "type": "core",
-            "description": "The Galois group of x⁵ - 4x + 2 over ℚ is isomorphic to S₅, proved by eliminating all candidate orders except 120 via Sylow theory and discriminant analysis — the heart of the Abel-Ruffini concrete instance."
-        },
-        {
-            "name": "roots_not_solvable_by_rad",
-            "type": "core",
-            "description": "The roots of x⁵ - 4x + 2 cannot be expressed by radicals, concluded by the Galois bridge: solvableByRad.isSolvable' gives solvable Galois group ⟹ solvable by radicals, but Gal ≅ S₅ is not solvable."
-        },
-        {
-            "name": "p_irreducible",
-            "type": "supporting",
-            "description": "x⁵ - 4x + 2 is irreducible over ℚ, proved by Eisenstein's criterion at p = 2: all non-leading coefficients divisible by 2, constant term not divisible by 4."
-        }
+      {
+        "name": "p_irreducible",
+        "type": "proved",
+        "description": "x^5 - 4x + 2 is irreducible over Q (Eisenstein at p=2)"
+      },
+      {
+        "name": "closure_cycle_swap_eq_top",
+        "type": "proved",
+        "description": "5-cycle + transposition generates all of S_5"
+      },
+      {
+        "name": "no_subgroup_order_15",
+        "type": "proved",
+        "description": "No subgroup of S_5 has order 15 (Sylow theory)"
+      },
+      {
+        "name": "no_subgroup_order_30",
+        "type": "proved",
+        "description": "No subgroup of S_5 has order 30 (A_5 simplicity)"
+      },
+      {
+        "name": "three_dvd_gal_card",
+        "type": "proved",
+        "description": "3 divides |Gal(p)| (proved by eliminating non-3-divisible orders 5, 10, 20, 40)"
+      },
+      {
+        "name": "gal_has_odd_perm",
+        "type": "proved",
+        "description": "Galois group contains an odd permutation (proved via discriminant sign and Vandermonde identity)"
+      },
+      {
+        "name": "gal_card_eq_120",
+        "type": "proved",
+        "description": "|Gal(x^5-4x+2/Q)| = 120 (fully proved via Sylow elimination of all other candidate orders)"
+      },
+      {
+        "name": "gal_iso_s5",
+        "type": "proved",
+        "description": "Gal(x^5-4x+2/Q) isomorphic to S_5 via galActionHom bijectivity"
+      },
+      {
+        "name": "roots_not_solvable_by_rad",
+        "type": "proved",
+        "description": "Roots of x^5-4x+2 cannot be expressed by radicals (contrapositive of Galois bridge)"
+      },
+      {
+        "name": "s5_realizable",
+        "type": "proved",
+        "description": "S_5 is realizable as a Galois group over Q"
+      }
     ],
-    "leanFile": {
-        "imports": [
-            "Mathlib"
-        ],
-        "opens": [
-            "Polynomial"
-        ],
-        "namespace": "AbelRuffiniOQ04OQ01",
-        "lineCount": 1498,
-        "axiomCount": 0,
-        "theoremCount": 64,
-        "definitionCount": 7,
-        "mainTheorems": [
-            {
-                "name": "p_irreducible",
-                "type": "proved",
-                "description": "x^5 - 4x + 2 is irreducible over Q (Eisenstein at p=2)"
-            },
-            {
-                "name": "closure_cycle_swap_eq_top",
-                "type": "proved",
-                "description": "5-cycle + transposition generates all of S_5"
-            },
-            {
-                "name": "no_subgroup_order_15",
-                "type": "proved",
-                "description": "No subgroup of S_5 has order 15 (Sylow theory)"
-            },
-            {
-                "name": "no_subgroup_order_30",
-                "type": "proved",
-                "description": "No subgroup of S_5 has order 30 (A_5 simplicity)"
-            },
-            {
-                "name": "three_dvd_gal_card",
-                "type": "proved",
-                "description": "3 divides |Gal(p)| (proved by eliminating non-3-divisible orders 5, 10, 20, 40)"
-            },
-            {
-                "name": "gal_has_odd_perm",
-                "type": "proved",
-                "description": "Galois group contains an odd permutation (proved via discriminant sign and Vandermonde identity)"
-            },
-            {
-                "name": "gal_card_eq_120",
-                "type": "proved",
-                "description": "|Gal(x^5-4x+2/Q)| = 120 (fully proved via Sylow elimination of all other candidate orders)"
-            },
-            {
-                "name": "gal_iso_s5",
-                "type": "proved",
-                "description": "Gal(x^5-4x+2/Q) isomorphic to S_5 via galActionHom bijectivity"
-            },
-            {
-                "name": "roots_not_solvable_by_rad",
-                "type": "proved",
-                "description": "Roots of x^5-4x+2 cannot be expressed by radicals (contrapositive of Galois bridge)"
-            },
-            {
-                "name": "s5_realizable",
-                "type": "proved",
-                "description": "S_5 is realizable as a Galois group over Q"
-            }
-        ],
-        "sorries": 0,
-        "path": "Proofs/AbelRuffiniOQ04OQ01.lean"
+    "sorries": 0,
+    "path": "Proofs/AbelRuffiniOQ04OQ01.lean"
+  },
+  "references": [
+    {
+      "key": "Ru99",
+      "citation": "Ruffini, P., Teoria generale delle equazioni in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto, Bologna (1799). The first (incomplete) proof of the unsolvability of the general quintic; the gap concerned permutation group theory not yet developed.",
+      "type": "book"
     },
-    "references": [
-        {
-            "key": "Ru99",
-            "citation": "Ruffini, P., Teoria generale delle equazioni in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto, Bologna (1799). The first (incomplete) proof of the unsolvability of the general quintic; the gap concerned permutation group theory not yet developed.",
-            "type": "book"
-        },
-        {
-            "key": "Ab24",
-            "citation": "Abel, N.H., Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré (1824).",
-            "type": "paper"
-        },
-        {
-            "key": "Ga32",
-            "citation": "Galois, É., Mémoire sur les conditions de résolubilité des équations par radicaux (1832).",
-            "type": "paper"
-        },
-        {
-            "key": "Hi92",
-            "citation": "Hilbert, D., Über die Irreducibilität ganzer rationaler Functionen mit ganzzahligen Coefficienten, Journal für die reine und angewandte Mathematik 110 (1892), pp. 104-129. Hilbert's irreducibility theorem, foundational for the inverse Galois problem: $S_n$ and $A_n$ are realizable as Galois groups over $\\mathbb{Q}$.",
-            "type": "paper"
-        },
-        {
-            "key": "Ed84",
-            "citation": "Edwards, H.M., Galois Theory, Springer GTM 101 (1984). Faithful exposition of Galois's original 1832 memoir, including the historical development of the radical-solvability criterion and the role of the discriminant in Galois group computations.",
-            "type": "book"
-        },
-        {
-            "key": "Ar42",
-            "citation": "Artin, E., Galois Theory, Notre Dame Mathematical Lectures 2 (1942).",
-            "type": "book"
-        },
-        {
-            "key": "DF04",
-            "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004). Section 14.6: example of x^5-4x+2 with Galois group S_5.",
-            "type": "book"
-        },
-        {
-            "key": "La02",
-            "citation": "Lang, S., Algebra, 3rd ed., Springer GTM 211 (2002). Chapter VI: Galois theory, with standard examples of quintics with Galois group S_5.",
-            "type": "book"
-        },
-        {
-            "key": "St15",
-            "citation": "Stewart, I., Galois Theory, 4th ed., Chapman & Hall/CRC (2015). Chapters 22-23: explicit Galois group computations for specific polynomials.",
-            "type": "book"
-        },
-        {
-            "key": "Ei50",
-            "citation": "Eisenstein, G., Über die Irreductibilität und einige andere Eigenschaften der Gleichung..., Journal für die reine und angewandte Mathematik 39 (1850), pp. 160-179. The irreducibility criterion used to prove x^5-4x+2 is irreducible.",
-            "type": "paper"
-        },
-        {
-            "key": "St73",
-            "citation": "Stauduhar, R.P., The determination of Galois groups, Mathematics of Computation 27(124) (1973), pp. 981-996. Foundational algorithm for computing Galois groups of polynomials over Q via resolvent polynomials and the lattice of transitive subgroups; standard method in PARI/GP, Magma, and Sage.",
-            "type": "paper"
-        },
-        {
-            "key": "Br86",
-            "citation": "Bring, E.S., Meletemata quaedam mathematica circa transformationem aequationum algebraicarum, Promotionschrift, Lund (1786). Introduced the Tschirnhaus transformation that reduces every quintic to the form x^5 + px + q (Bring-Jerrard normal form), foundational for the Hermite-Klein elliptic-modular solution of the quintic.",
-            "type": "paper"
-        },
-        {
-            "key": "He58",
-            "citation": "Hermite, C., Sur la résolution de l'équation du cinquième degré, Comptes Rendus de l'Académie des Sciences 46 (1858), pp. 508-515. Solved the general quintic in Bring-Jerrard form using elliptic modular functions, complementing Abel-Ruffini: while no radical formula exists, transcendental closed-form solutions do.",
-            "type": "paper"
-        }
-    ],
-    "sorries": 0
+    {
+      "key": "Ab24",
+      "citation": "Abel, N.H., Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré (1824).",
+      "type": "paper"
+    },
+    {
+      "key": "Ga32",
+      "citation": "Galois, É., Mémoire sur les conditions de résolubilité des équations par radicaux (1832).",
+      "type": "paper"
+    },
+    {
+      "key": "Hi92",
+      "citation": "Hilbert, D., Über die Irreducibilität ganzer rationaler Functionen mit ganzzahligen Coefficienten, Journal für die reine und angewandte Mathematik 110 (1892), pp. 104-129. Hilbert's irreducibility theorem, foundational for the inverse Galois problem: $S_n$ and $A_n$ are realizable as Galois groups over $\\mathbb{Q}$.",
+      "type": "paper"
+    },
+    {
+      "key": "Ed84",
+      "citation": "Edwards, H.M., Galois Theory, Springer GTM 101 (1984). Faithful exposition of Galois's original 1832 memoir, including the historical development of the radical-solvability criterion and the role of the discriminant in Galois group computations.",
+      "type": "book"
+    },
+    {
+      "key": "Ar42",
+      "citation": "Artin, E., Galois Theory, Notre Dame Mathematical Lectures 2 (1942).",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004). Section 14.6: example of x^5-4x+2 with Galois group S_5.",
+      "type": "book"
+    },
+    {
+      "key": "La02",
+      "citation": "Lang, S., Algebra, 3rd ed., Springer GTM 211 (2002). Chapter VI: Galois theory, with standard examples of quintics with Galois group S_5.",
+      "type": "book"
+    },
+    {
+      "key": "St15",
+      "citation": "Stewart, I., Galois Theory, 4th ed., Chapman & Hall/CRC (2015). Chapters 22-23: explicit Galois group computations for specific polynomials.",
+      "type": "book"
+    },
+    {
+      "key": "Ei50",
+      "citation": "Eisenstein, G., Über die Irreductibilität und einige andere Eigenschaften der Gleichung..., Journal für die reine und angewandte Mathematik 39 (1850), pp. 160-179. The irreducibility criterion used to prove x^5-4x+2 is irreducible.",
+      "type": "paper"
+    },
+    {
+      "key": "St73",
+      "citation": "Stauduhar, R.P., The determination of Galois groups, Mathematics of Computation 27(124) (1973), pp. 981-996. Foundational algorithm for computing Galois groups of polynomials over Q via resolvent polynomials and the lattice of transitive subgroups; standard method in PARI/GP, Magma, and Sage.",
+      "type": "paper"
+    },
+    {
+      "key": "Br86",
+      "citation": "Bring, E.S., Meletemata quaedam mathematica circa transformationem aequationum algebraicarum, Promotionschrift, Lund (1786). Introduced the Tschirnhaus transformation that reduces every quintic to the form x^5 + px + q (Bring-Jerrard normal form), foundational for the Hermite-Klein elliptic-modular solution of the quintic.",
+      "type": "paper"
+    },
+    {
+      "key": "He58",
+      "citation": "Hermite, C., Sur la résolution de l'équation du cinquième degré, Comptes Rendus de l'Académie des Sciences 46 (1858), pp. 508-515. Solved the general quintic in Bring-Jerrard form using elliptic modular functions, complementing Abel-Ruffini: while no radical formula exists, transcendental closed-form solutions do.",
+      "type": "paper"
+    }
+  ],
+  "sorries": 0
 }

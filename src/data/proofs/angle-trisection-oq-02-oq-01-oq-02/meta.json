@@ -18,7 +18,7 @@
     "badge": "wip",
     "sorries": 2,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "lineCount": 265,
     "mathlibDependencies": [
       {
@@ -41,15 +41,15 @@
   "parent": "angle-trisection-oq-02-oq-01",
   "openQuestion": "Can the Wantzel-Galois constructibility criterion be proved or applied using Mathlib's Galois theory infrastructure?",
   "overview": {
-    "historicalContext": "The impossibility of angle trisection, cube doubling, and certain polygon constructions by compass and straightedge are among the most celebrated results in mathematics, with origins in ancient Greece. The problem of trisecting an arbitrary angle was listed among the three classical construction problems alongside squaring the circle and doubling the cube. While specific angles can be trisected, Wantzel proved in 1837 that a general compass-and-straightedge construction for trisection is impossible. His proof introduced the key criterion: an algebraic number $\\alpha$ is constructible if and only if the degree $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2. Since $\\cos(20\u00b0)$ satisfies the irreducible cubic $8x^3 - 6x - 1 = 0$ (from the triple angle formula), its degree is 3, which is not a power of 2. The full Galois-theoretic characterization \u2014 constructibility iff the Galois group is a 2-group \u2014 connects to deeper algebraic structure and is stated here as the Wantzel-Galois theorem.",
-    "problemStatement": "Formalize the Wantzel degree criterion for compass-and-straightedge constructibility using Mathlib's Galois theory infrastructure. Apply it to prove the impossibility of angle trisection ($\\cos(20\u00b0)$ has degree 3), cube doubling ($\\sqrt[3]{2}$ has degree 3), and regular 7-gon construction ($\\cos(2\\pi/7)$ has degree 3).",
+    "historicalContext": "The impossibility of angle trisection, cube doubling, and certain polygon constructions by compass and straightedge are among the most celebrated results in mathematics, with origins in ancient Greece. The problem of trisecting an arbitrary angle was listed among the three classical construction problems alongside squaring the circle and doubling the cube. While specific angles can be trisected, Wantzel proved in 1837 that a general compass-and-straightedge construction for trisection is impossible. His proof introduced the key criterion: an algebraic number $\\alpha$ is constructible if and only if the degree $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2. Since $\\cos(20°)$ satisfies the irreducible cubic $8x^3 - 6x - 1 = 0$ (from the triple angle formula), its degree is 3, which is not a power of 2. The full Galois-theoretic characterization — constructibility iff the Galois group is a 2-group — connects to deeper algebraic structure and is stated here as the Wantzel-Galois theorem.",
+    "problemStatement": "Formalize the Wantzel degree criterion for compass-and-straightedge constructibility using Mathlib's Galois theory infrastructure. Apply it to prove the impossibility of angle trisection ($\\cos(20°)$ has degree 3), cube doubling ($\\sqrt[3]{2}$ has degree 3), and regular 7-gon construction ($\\cos(2\\pi/7)$ has degree 3).",
     "proofStrategy": "The formalization proceeds in layers: (1) define constructible numbers inductively as elements reachable by towers of quadratic extensions; (2) define the degree-power-of-two predicate; (3) state the bridge theorem (bad degree implies non-constructibility); (4) verify specific minimal polynomials ($x^3 - 2$ and $8x^3 - 6x - 1$) have degree 3, which is not $2^k$; (5) derive the three classical impossibilities; (6) state the full Wantzel-Galois characterization via 2-groups.",
     "keyInsights": [
-      "All three classical impossibilities (angle trisection, cube doubling, regular 7-gon) reduce to the same arithmetic fact: $3 \\neq 2^k$ for any $k \\in \\mathbb{N}$ \u2014 this single `interval_cases` proof eliminates all three",
-      "The constructible numbers form a field closed under square roots, formalized as an inductive type with rational and sqrt_ext constructors \u2014 this directly encodes that each compass step introduces at most one square root",
+      "All three classical impossibilities (angle trisection, cube doubling, regular 7-gon) reduce to the same arithmetic fact: $3 \\neq 2^k$ for any $k \\in \\mathbb{N}$ — this single `interval_cases` proof eliminates all three",
+      "The constructible numbers form a field closed under square roots, formalized as an inductive type with rational and sqrt_ext constructors — this directly encodes that each compass step introduces at most one square root",
       "The tower law `Module.finrank_mul_finrank` from Mathlib handles the multiplicativity of degrees, the key algebraic fact connecting individual quadratic steps to the total degree",
       "The gap between the degree criterion (necessary) and the Galois criterion (necessary and sufficient) is significant: degree being a power of 2 is necessary but not sufficient, while the Galois group being a 2-group gives the full characterization",
-      "The five remaining sorries identify a clear development path: Eisenstein for irreducibility, degree computation for the cos(20\u00b0) polynomial, and the deep bridge connecting the inductive constructibility definition to the tower degree"
+      "The five remaining sorries identify a clear development path: Eisenstein for irreducibility, degree computation for the cos(20°) polynomial, and the deep bridge connecting the inductive constructibility definition to the tower degree"
     ]
   },
   "sections": [
@@ -79,7 +79,7 @@
       "title": "Specific Non-Constructibility Results",
       "startLine": 121,
       "endLine": 151,
-      "summary": "Verifies x^3 - 2 has degree 3 and 3 \u2260 2^k (via interval_cases). Same for 8x^3 - 6x - 1 (the cos(20\u00b0) polynomial). Irreducibility of x^3 - 2 is sorry'd (needs Eisenstein)."
+      "summary": "Verifies x^3 - 2 has degree 3 and 3 ≠ 2^k (via interval_cases). Same for 8x^3 - 6x - 1 (the cos(20°) polynomial). Irreducibility of x^3 - 2 is sorry'd (needs Eisenstein)."
     },
     {
       "id": "three-impossibilities",
@@ -93,11 +93,11 @@
       "title": "Galois Characterization and Summary",
       "startLine": 179,
       "endLine": 234,
-      "summary": "Defines IsTwoGroup (group order is 2^k) and states the full Wantzel-Galois theorem: \u03b1 constructible iff Gal(minpoly(\u211a,\u03b1)) is a 2-group. Summary of proved results and remaining sorries."
+      "summary": "Defines IsTwoGroup (group order is 2^k) and states the full Wantzel-Galois theorem: α constructible iff Gal(minpoly(ℚ,α)) is a 2-group. Summary of proved results and remaining sorries."
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides the Wantzel degree criterion framework in Lean 4 and applies it to prove the three classical geometric impossibility results \u2014 angle trisection, cube doubling, and regular 7-gon construction \u2014 all via the single arithmetic fact that 3 is not a power of 2. The full Galois-theoretic characterization (constructibility iff 2-group Galois group) is stated for future development. Five sorries remain, identifying a clear path for completion.",
+    "summary": "This formalization provides the Wantzel degree criterion framework in Lean 4 and applies it to prove the three classical geometric impossibility results — angle trisection, cube doubling, and regular 7-gon construction — all via the single arithmetic fact that 3 is not a power of 2. The full Galois-theoretic characterization (constructibility iff 2-group Galois group) is stated for future development. Five sorries remain, identifying a clear path for completion.",
     "implications": "The formalization demonstrates how Mathlib's Galois theory infrastructure (IntermediateField, Module.finrank, Polynomial.Gal) can be leveraged for classical impossibility proofs. Completing the five sorries would give the first fully machine-verified proof of the classical construction impossibilities in Lean 4. The Wantzel-Galois theorem, once proved, would also yield constructibility of the regular 17-gon (since 17 is a Fermat prime) and settle constructibility for all regular polygons.",
     "openQuestions": [
       "Can the bridge theorem (not_constructible_of_bad_degree) be proved by connecting the inductive IsConstructible definition to Mathlib's IntermediateField tower machinery?",
