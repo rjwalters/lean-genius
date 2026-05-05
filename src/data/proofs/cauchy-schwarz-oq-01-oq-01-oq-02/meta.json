@@ -1,190 +1,190 @@
 {
-  "id": "cauchy-schwarz-oq-01-oq-01-oq-02",
-  "title": "Robertson's Uncertainty Inequality from Cauchy-Schwarz",
-  "slug": "cauchy-schwarz-oq-01-oq-01-oq-02",
-  "description": "Derives the Heisenberg uncertainty principle for symmetric operators on complex inner product spaces via Robertson's inequality (1929): ΔA(ψ)·ΔB(ψ) ≥ (1/2)|⟨ψ|[A,B]|ψ⟩|. Follows directly from applying Cauchy-Schwarz to the centered vectors Aψ − ⟨A⟩ψ and Bψ − ⟨B⟩ψ.",
-  "meta": {
-    "author": "Lean Genius",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Uncertainty_principle#Robertson%E2%80%93Schr%C3%B6dinger_uncertainty_relations",
-    "date": "1929",
-    "status": "verified",
-    "tags": [
-      "analysis",
-      "inner-product-spaces",
-      "functional-analysis",
-      "quantum-mechanics",
-      "cauchy-schwarz",
-      "operators",
-      "research"
-    ],
-    "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ01OQ02.lean",
-    "badge": "original",
-    "sorries": 0,
-    "dateAdded": "2026-05-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "lineCount": 148,
-    "theoremCount": 6,
-    "definitionCount": 3,
-    "mathlibDependencies": [
-      {
-        "theorem": "norm_inner_le_norm",
-        "description": "Cauchy-Schwarz inequality: ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖",
-        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
-      },
-      {
-        "theorem": "inner_conj_symm",
-        "description": "Conjugate symmetry: star⟪x,y⟫ = ⟪y,x⟫",
-        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
-      },
-      {
-        "theorem": "RCLike.norm_conj",
-        "description": "Complex conjugation preserves norm: ‖star z‖ = ‖z‖",
-        "module": "Mathlib.Analysis.RCLike.Basic"
-      },
-      {
-        "theorem": "LinearMap.IsSymmetric",
-        "description": "Self-adjoint operators: ⟪Ax,y⟫ = ⟪x,Ay⟫",
-        "module": "Mathlib.Analysis.InnerProductSpace.Symmetric"
-      },
-      {
-        "theorem": "inner_self_eq_norm_sq_to_K",
-        "description": "Self-inner product: ⟪ψ,ψ⟫ = ‖ψ‖² as a scalar",
-        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
-      }
-    ],
-    "originalContributions": [
-      "expVal: definition of quantum expectation value ⟪ψ,Aψ⟫_ℂ for linear operators",
-      "expVal_im_zero: symmetric operators have real expectation values (imaginary part = 0)",
-      "expVal_self_conj: expectation value equals its complex conjugate for symmetric A",
-      "stdDev: standard deviation ‖Aψ − ⟨A⟩ψ‖ of operator A in state ψ",
-      "commutatorEV: commutator expectation value ⟪ψ,[A,B]ψ⟫_ℂ",
-      "centered_antisymmetric_eq_commutator: the antisymmetric part of ⟪Aψ−⟨A⟩ψ, Bψ−⟨B⟩ψ⟫ equals the commutator expectation value",
-      "robertson_inequality: ΔA·ΔB ≥ (1/2)|⟨ψ|[A,B]|ψ⟩| for symmetric operators",
-      "heisenberg_constant_commutator: ΔA·ΔB ≥ |c|/2 when [A,B] = c·id"
-    ],
-    "mathlib_version": "4.26.0"
-  },
-  "overview": {
-    "historicalContext": "**Robertson's Uncertainty Principle (1929)**\n\nThe Heisenberg uncertainty principle (1927) originally stated that position and momentum cannot be simultaneously determined with arbitrary precision. Werner Heisenberg derived it using wave packet arguments, but the precise mathematical formulation was given by Howard Percy Robertson in 1929.\n\nRobertson showed that for *any* two symmetric (self-adjoint) operators A and B on a Hilbert space, and any unit state vector ψ:\n$$\\Delta A(\\psi) \\cdot \\Delta B(\\psi) \\geq \\frac{1}{2} |\\langle \\psi | [A, B] | \\psi \\rangle|$$\nwhere $\\Delta A(\\psi) = \\|A\\psi - \\langle A \\rangle_\\psi \\psi\\|$ is the standard deviation, and $[A,B] = AB - BA$ is the commutator.\n\nThe standard Heisenberg relation $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is the special case where $[\\hat{x}, \\hat{p}] = i\\hbar \\cdot \\text{id}$, giving $|\\langle \\psi | i\\hbar | \\psi \\rangle| = \\hbar$ for unit states.\n\nThe proof is a direct application of the Cauchy-Schwarz inequality to the centered vectors $u = A\\psi - \\langle A \\rangle \\psi$ and $v = B\\psi - \\langle B \\rangle \\psi$, making this a beautiful illustration of how a general analytical inequality gives rise to a foundational result in quantum physics.",
-    "problemStatement": "**Robertson's Uncertainty Inequality**\n\nFor symmetric operators A, B on a complex inner product space E, and any unit vector ψ ∈ E (‖ψ‖ = 1):\n$$\\Delta A(\\psi) \\cdot \\Delta B(\\psi) \\geq \\frac{1}{2} |\\langle \\psi, (AB - BA)\\psi \\rangle|$$\nwhere $\\Delta A(\\psi) = \\|A\\psi - \\langle\\psi, A\\psi\\rangle \\cdot \\psi\\|$.\n\nSpecial case: if [A,B] = c·id for constant c ∈ ℂ, then ΔA·ΔB ≥ |c|/2.",
-    "text": "The Heisenberg uncertainty principle, in its abstract Robertson form, follows from Cauchy-Schwarz applied to centered vectors from symmetric operators on a complex Hilbert space.",
-    "proofStrategy": "1. **CS antisymmetric bound** (Part I): For any u,v ∈ E, (1/2)|⟪u,v⟫ − ⟪v,u⟫| ≤ ‖u‖·‖v‖. Proof: ‖z − star(z)‖ ≤ 2‖z‖ + RCLike.norm_conj + norm_inner_le_norm.\n2. **Real expectation values** (Part II): expVal A ψ = ⟪ψ,Aψ⟫ is real for symmetric A. Proof: star(⟪ψ,Aψ⟫) = ⟪Aψ,ψ⟫ = ⟪ψ,Aψ⟫ by IsSymmetric.\n3. **Commutator identity** (Part III): For centered u = Aψ − ⟨A⟩ψ and v = Bψ − ⟨B⟩ψ, ⟪u,v⟫ − ⟪v,u⟫ = commutatorEV A B ψ = ⟪ψ,(AB−BA)ψ⟫. Proof: expand, use real expectation values to cancel cross terms, use ⟪ψ,ψ⟫ = 1.\n4. **Assemble** (Part IV): stdDev A · stdDev B = ‖u‖·‖v‖ ≥ (1/2)|⟪u,v⟫ − ⟪v,u⟫| = (1/2)|commutatorEV A B ψ|.\n5. **Special case** (Part V): [A,B] = c·id → commutatorEV = c·⟪ψ,ψ⟫ = c → ΔA·ΔB ≥ |c|/2.",
-    "keyInsights": [
-      "**The antisymmetric inner product is the quantum-mechanical key**: ⟪u,v⟫ − ⟪v,u⟫ = 2i·Im⟪u,v⟫ is purely imaginary, and its magnitude is bounded by 2‖u‖·‖v‖ via CS + triangle inequality.",
-      "**Expectation values of symmetric operators are real**: ⟨A⟩ = ⟪ψ,Aψ⟫ satisfies star(⟨A⟩) = ⟨A⟩ because star⟪ψ,Aψ⟫ = ⟪Aψ,ψ⟫ = ⟪ψ,Aψ⟫ by symmetry. This is why cross terms cancel.",
-      "**The commutator identity is purely algebraic**: After expanding ⟪Aψ−⟨A⟩ψ, Bψ−⟨B⟩ψ⟫ − ⟪Bψ−⟨B⟩ψ, Aψ−⟨A⟩ψ⟫, the ⟨A⟩·⟨B⟩ terms cancel and the remaining terms reduce to ⟪ψ,ABψ⟫ − ⟪ψ,BAψ⟫.",
-      "**Unit state normalization**: The requirement ‖ψ‖ = 1 is used when simplifying ⟪ψ,ψ⟫ = 1 in the cross-term cancellation. For non-unit states, the inequality scales as ‖ψ‖².",
-      "**The Heisenberg relation is [x̂,p̂] = iħ special case**: Setting A = x̂, B = p̂, c = iħ gives |c| = ħ, so ΔxΔp ≥ ħ/2 — the standard Heisenberg bound."
-    ],
-    "prerequisites": [
-      "Complex inner product spaces",
-      "Linear operators",
-      "Cauchy-Schwarz inequality",
-      "Quantum mechanics (for motivation)"
-    ]
-  },
-  "sections": [
-    {
-      "id": "antisymmetric-bound",
-      "title": "Part I: CS Antisymmetric Bound",
-      "summary": "Proves (1/2)|⟪u,v⟫ − ⟪v,u⟫| ≤ ‖u‖·‖v‖ via triangle inequality and norm_inner_le_norm. Private helper norm_sub_conj_le shows ‖z − star(z)‖ ≤ 2‖z‖; main theorem cs_antisymmetric_bound composes with CS.",
-      "startLine": 22,
-      "endLine": 43,
-      "mathContext": "The antisymmetric part $z - \\overline{z}$ has $\\|z - \\overline{z}\\| \\leq 2\\|z\\|$ by triangle inequality + $\\|\\overline{z}\\| = \\|z\\|$. Applied to $z = \\langle u,v\\rangle$: $\\frac{1}{2}\\|\\langle u,v\\rangle - \\langle v,u\\rangle\\| \\leq \\|\\langle u,v\\rangle\\| \\leq \\|u\\|\\cdot\\|v\\|$ (Cauchy-Schwarz)."
+    "id": "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "title": "Robertson's Uncertainty Inequality from Cauchy-Schwarz",
+    "slug": "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "description": "Derives the Heisenberg uncertainty principle for symmetric operators on complex inner product spaces via Robertson's inequality (1929): ΔA(ψ)·ΔB(ψ) ≥ (1/2)|⟨ψ|[A,B]|ψ⟩|. Follows directly from applying Cauchy-Schwarz to the centered vectors Aψ − ⟨A⟩ψ and Bψ − ⟨B⟩ψ.",
+    "meta": {
+        "author": "Lean Genius",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Uncertainty_principle#Robertson%E2%80%93Schr%C3%B6dinger_uncertainty_relations",
+        "date": "1929",
+        "status": "verified",
+        "tags": [
+            "analysis",
+            "inner-product-spaces",
+            "functional-analysis",
+            "quantum-mechanics",
+            "cauchy-schwarz",
+            "operators",
+            "research"
+        ],
+        "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ01OQ02.lean",
+        "badge": "original",
+        "sorries": 0,
+        "dateAdded": "2026-05-04",
+        "axiomCount": 0,
+        "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+        "lineCount": 148,
+        "theoremCount": 6,
+        "definitionCount": 3,
+        "mathlibDependencies": [
+            {
+                "theorem": "norm_inner_le_norm",
+                "description": "Cauchy-Schwarz inequality: ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖",
+                "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+            },
+            {
+                "theorem": "inner_conj_symm",
+                "description": "Conjugate symmetry: star⟪x,y⟫ = ⟪y,x⟫",
+                "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+            },
+            {
+                "theorem": "RCLike.norm_conj",
+                "description": "Complex conjugation preserves norm: ‖star z‖ = ‖z‖",
+                "module": "Mathlib.Analysis.RCLike.Basic"
+            },
+            {
+                "theorem": "LinearMap.IsSymmetric",
+                "description": "Self-adjoint operators: ⟪Ax,y⟫ = ⟪x,Ay⟫",
+                "module": "Mathlib.Analysis.InnerProductSpace.Symmetric"
+            },
+            {
+                "theorem": "inner_self_eq_norm_sq_to_K",
+                "description": "Self-inner product: ⟪ψ,ψ⟫ = ‖ψ‖² as a scalar",
+                "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+            }
+        ],
+        "originalContributions": [
+            "expVal: definition of quantum expectation value ⟪ψ,Aψ⟫_ℂ for linear operators",
+            "expVal_im_zero: symmetric operators have real expectation values (imaginary part = 0)",
+            "expVal_self_conj: expectation value equals its complex conjugate for symmetric A",
+            "stdDev: standard deviation ‖Aψ − ⟨A⟩ψ‖ of operator A in state ψ",
+            "commutatorEV: commutator expectation value ⟪ψ,[A,B]ψ⟫_ℂ",
+            "centered_antisymmetric_eq_commutator: the antisymmetric part of ⟪Aψ−⟨A⟩ψ, Bψ−⟨B⟩ψ⟫ equals the commutator expectation value",
+            "robertson_inequality: ΔA·ΔB ≥ (1/2)|⟨ψ|[A,B]|ψ⟩| for symmetric operators",
+            "heisenberg_constant_commutator: ΔA·ΔB ≥ |c|/2 when [A,B] = c·id"
+        ],
+        "mathlib_version": "4.26.0"
     },
-    {
-      "id": "symmetric-operators",
-      "title": "Part II: Symmetric Operators and Real Expectation Values",
-      "summary": "Defines expVal A ψ = ⟪ψ,Aψ⟫_ℂ. Proves expVal_im_zero (im part = 0 for symmetric A) and expVal_self_conj (expectation value = its conjugate, i.e., expVal is real).",
-      "startLine": 44,
-      "endLine": 66,
-      "mathContext": "By `A.IsSymmetric`: $\\overline{\\langle\\psi, A\\psi\\rangle} = \\langle A\\psi,\\psi\\rangle = \\langle\\psi,A\\psi\\rangle$. This forces $\\text{Im}(\\langle A\\rangle) = 0$, making expectation values real-valued — essential for the cross-term cancellation in Part III."
+    "overview": {
+        "historicalContext": "**Robertson's Uncertainty Principle (1929)**\n\nThe Heisenberg uncertainty principle (1927) originally stated that position and momentum cannot be simultaneously determined with arbitrary precision. Werner Heisenberg derived it using wave packet arguments, but the precise mathematical formulation was given by Howard Percy Robertson in 1929.\n\nRobertson showed that for *any* two symmetric (self-adjoint) operators A and B on a Hilbert space, and any unit state vector ψ:\n$$\\Delta A(\\psi) \\cdot \\Delta B(\\psi) \\geq \\frac{1}{2} |\\langle \\psi | [A, B] | \\psi \\rangle|$$\nwhere $\\Delta A(\\psi) = \\|A\\psi - \\langle A \\rangle_\\psi \\psi\\|$ is the standard deviation, and $[A,B] = AB - BA$ is the commutator.\n\nThe standard Heisenberg relation $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is the special case where $[\\hat{x}, \\hat{p}] = i\\hbar \\cdot \\text{id}$, giving $|\\langle \\psi | i\\hbar | \\psi \\rangle| = \\hbar$ for unit states.\n\nThe proof is a direct application of the Cauchy-Schwarz inequality to the centered vectors $u = A\\psi - \\langle A \\rangle \\psi$ and $v = B\\psi - \\langle B \\rangle \\psi$, making this a beautiful illustration of how a general analytical inequality gives rise to a foundational result in quantum physics.",
+        "problemStatement": "**Robertson's Uncertainty Inequality**\n\nFor symmetric operators A, B on a complex inner product space E, and any unit vector ψ ∈ E (‖ψ‖ = 1):\n$$\\Delta A(\\psi) \\cdot \\Delta B(\\psi) \\geq \\frac{1}{2} |\\langle \\psi, (AB - BA)\\psi \\rangle|$$\nwhere $\\Delta A(\\psi) = \\|A\\psi - \\langle\\psi, A\\psi\\rangle \\cdot \\psi\\|$.\n\nSpecial case: if [A,B] = c·id for constant c ∈ ℂ, then ΔA·ΔB ≥ |c|/2.",
+        "text": "The Heisenberg uncertainty principle, in its abstract Robertson form, follows from Cauchy-Schwarz applied to centered vectors from symmetric operators on a complex Hilbert space.",
+        "proofStrategy": "1. **CS antisymmetric bound** (Part I): For any u,v ∈ E, (1/2)|⟪u,v⟫ − ⟪v,u⟫| ≤ ‖u‖·‖v‖. Proof: ‖z − star(z)‖ ≤ 2‖z‖ + RCLike.norm_conj + norm_inner_le_norm.\n2. **Real expectation values** (Part II): expVal A ψ = ⟪ψ,Aψ⟫ is real for symmetric A. Proof: star(⟪ψ,Aψ⟫) = ⟪Aψ,ψ⟫ = ⟪ψ,Aψ⟫ by IsSymmetric.\n3. **Commutator identity** (Part III): For centered u = Aψ − ⟨A⟩ψ and v = Bψ − ⟨B⟩ψ, ⟪u,v⟫ − ⟪v,u⟫ = commutatorEV A B ψ = ⟪ψ,(AB−BA)ψ⟫. Proof: expand, use real expectation values to cancel cross terms, use ⟪ψ,ψ⟫ = 1.\n4. **Assemble** (Part IV): stdDev A · stdDev B = ‖u‖·‖v‖ ≥ (1/2)|⟪u,v⟫ − ⟪v,u⟫| = (1/2)|commutatorEV A B ψ|.\n5. **Special case** (Part V): [A,B] = c·id → commutatorEV = c·⟪ψ,ψ⟫ = c → ΔA·ΔB ≥ |c|/2.",
+        "keyInsights": [
+            "**The antisymmetric inner product is the quantum-mechanical key**: ⟪u,v⟫ − ⟪v,u⟫ = 2i·Im⟪u,v⟫ is purely imaginary, and its magnitude is bounded by 2‖u‖·‖v‖ via CS + triangle inequality.",
+            "**Expectation values of symmetric operators are real**: ⟨A⟩ = ⟪ψ,Aψ⟫ satisfies star(⟨A⟩) = ⟨A⟩ because star⟪ψ,Aψ⟫ = ⟪Aψ,ψ⟫ = ⟪ψ,Aψ⟫ by symmetry. This is why cross terms cancel.",
+            "**The commutator identity is purely algebraic**: After expanding ⟪Aψ−⟨A⟩ψ, Bψ−⟨B⟩ψ⟫ − ⟪Bψ−⟨B⟩ψ, Aψ−⟨A⟩ψ⟫, the ⟨A⟩·⟨B⟩ terms cancel and the remaining terms reduce to ⟪ψ,ABψ⟫ − ⟪ψ,BAψ⟫.",
+            "**Unit state normalization**: The requirement ‖ψ‖ = 1 is used when simplifying ⟪ψ,ψ⟫ = 1 in the cross-term cancellation. For non-unit states, the inequality scales as ‖ψ‖².",
+            "**The Heisenberg relation is [x̂,p̂] = iħ special case**: Setting A = x̂, B = p̂, c = iħ gives |c| = ħ, so ΔxΔp ≥ ħ/2 — the standard Heisenberg bound."
+        ],
+        "prerequisites": [
+            "Complex inner product spaces",
+            "Linear operators",
+            "Cauchy-Schwarz inequality",
+            "Quantum mechanics (for motivation)"
+        ]
     },
-    {
-      "id": "commutator-identity",
-      "title": "Part III: Commutator Identity via inner_centered_eq",
-      "summary": "Defines commutatorEV A B ψ = ⟪ψ,(AB−BA)ψ⟫ and stdDev A ψ = ‖Aψ − ⟨A⟩ψ‖. Proves centered_antisymmetric_eq_commutator: for centered u = Aψ − ⟨A⟩ψ and v = Bψ − ⟨B⟩ψ, ⟪u,v⟫ − ⟪v,u⟫ equals commutatorEV A B ψ.",
-      "startLine": 67,
-      "endLine": 110,
-      "mathContext": "Private helper `inner_centered_eq` expands $\\langle Xψ - c\\psi, Yψ - d\\psi\\rangle = \\langle\\psi, X(Yψ)\\rangle - c \\cdot d$ using `A.IsSymmetric`, $\\langle\\psi,\\psi\\rangle=1$, and reality of $c = \\langle A\\rangle$. Then $\\langle u,v\\rangle - \\langle v,u\\rangle = (\\langle\\psi,ABψ\\rangle - cd) - (\\langle\\psi,BAψ\\rangle - cd) = \\langle\\psi,(AB-BA)\\psi\\rangle$."
-    },
-    {
-      "id": "robertson",
-      "title": "Part IV: Robertson's Inequality",
-      "summary": "Proves robertson_inequality: stdDev A ψ · stdDev B ψ ≥ (1/2)‖commutatorEV A B ψ‖. Directly composes Part I (cs_antisymmetric_bound on centered u,v) with Part III (antisymmetric part = commutator EV) via linarith.",
-      "startLine": 111,
-      "endLine": 129,
-      "mathContext": "$\\Delta A \\cdot \\Delta B = \\|u\\|\\cdot\\|v\\| \\geq \\frac{1}{2}|\\langle u,v\\rangle - \\langle v,u\\rangle| = \\frac{1}{2}|\\text{commutatorEV}(A,B,\\psi)|$. Assembly: `cs_antisymmetric_bound` + `centered_antisymmetric_eq_commutator` + `linarith`."
-    },
-    {
-      "id": "heisenberg",
-      "title": "Part V: Heisenberg for Constant Commutator",
-      "summary": "Proves heisenberg_constant_commutator: if [A,B] = c·id, then ΔA·ΔB ≥ |c|/2. Simplifies commutatorEV A B ψ = ⟪ψ,c·ψ⟫ = c·1 = c using hψ: ‖ψ‖=1, then applies robertson_inequality.",
-      "startLine": 130,
-      "endLine": 148,
-      "mathContext": "When $A(B\\psi) - B(A\\psi) = c\\psi$ for all $\\psi$: $\\text{commutatorEV}(A,B,\\psi) = \\langle\\psi, c\\psi\\rangle = c\\cdot\\langle\\psi,\\psi\\rangle = c\\cdot 1 = c$. So Robertson gives $\\Delta A \\cdot \\Delta B \\geq |c|/2$. Setting $c = i\\hbar$ for $[\\hat{x},\\hat{p}] = i\\hbar$: $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$."
-    }
-  ],
-  "conclusion": {
-    "summary": "Robertson's uncertainty inequality is proved with 0 sorries and 0 axioms, answering affirmatively: yes, the Heisenberg uncertainty principle can be derived from Cauchy-Schwarz in Lean 4.",
-    "implications": "This formalization bridges abstract functional analysis and quantum physics in Lean 4. The Heisenberg uncertainty principle emerges as a pure consequence of linear algebra (Cauchy-Schwarz) and the definition of symmetric operators — no physics axioms required. The general Robertson form covers all physical observables simultaneously.",
-    "openQuestions": [
-      "Can the Schrödinger uncertainty relation (tighter form including covariance) be formalized in Lean 4?",
-      "Can the AKLT spin chain ground state be characterized via these uncertainty bounds?"
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.InnerProductSpace.Basic",
-      "Mathlib.Analysis.InnerProductSpace.Symmetric",
-      "Mathlib.Analysis.RCLike.Basic",
-      "Mathlib.Tactic"
+    "sections": [
+        {
+            "id": "antisymmetric-bound",
+            "title": "Part I: CS Antisymmetric Bound",
+            "summary": "Proves (1/2)|⟪u,v⟫ − ⟪v,u⟫| ≤ ‖u‖·‖v‖ via triangle inequality and norm_inner_le_norm. Private helper norm_sub_conj_le shows ‖z − star(z)‖ ≤ 2‖z‖; main theorem cs_antisymmetric_bound composes with CS.",
+            "startLine": 22,
+            "endLine": 43,
+            "mathContext": "The antisymmetric part $z - \\overline{z}$ has $\\|z - \\overline{z}\\| \\leq 2\\|z\\|$ by triangle inequality + $\\|\\overline{z}\\| = \\|z\\|$. Applied to $z = \\langle u,v\\rangle$: $\\frac{1}{2}\\|\\langle u,v\\rangle - \\langle v,u\\rangle\\| \\leq \\|\\langle u,v\\rangle\\| \\leq \\|u\\|\\cdot\\|v\\|$ (Cauchy-Schwarz)."
+        },
+        {
+            "id": "symmetric-operators",
+            "title": "Part II: Symmetric Operators and Real Expectation Values",
+            "summary": "Defines expVal A ψ = ⟪ψ,Aψ⟫_ℂ. Proves expVal_im_zero (im part = 0 for symmetric A) and expVal_self_conj (expectation value = its conjugate, i.e., expVal is real).",
+            "startLine": 44,
+            "endLine": 66,
+            "mathContext": "By `A.IsSymmetric`: $\\overline{\\langle\\psi, A\\psi\\rangle} = \\langle A\\psi,\\psi\\rangle = \\langle\\psi,A\\psi\\rangle$. This forces $\\text{Im}(\\langle A\\rangle) = 0$, making expectation values real-valued — essential for the cross-term cancellation in Part III."
+        },
+        {
+            "id": "commutator-identity",
+            "title": "Part III: Commutator Identity via inner_centered_eq",
+            "summary": "Defines commutatorEV A B ψ = ⟪ψ,(AB−BA)ψ⟫ and stdDev A ψ = ‖Aψ − ⟨A⟩ψ‖. Proves centered_antisymmetric_eq_commutator: for centered u = Aψ − ⟨A⟩ψ and v = Bψ − ⟨B⟩ψ, ⟪u,v⟫ − ⟪v,u⟫ equals commutatorEV A B ψ.",
+            "startLine": 67,
+            "endLine": 110,
+            "mathContext": "Private helper `inner_centered_eq` expands $\\langle Xψ - c\\psi, Yψ - d\\psi\\rangle = \\langle\\psi, X(Yψ)\\rangle - c \\cdot d$ using `A.IsSymmetric`, $\\langle\\psi,\\psi\\rangle=1$, and reality of $c = \\langle A\\rangle$. Then $\\langle u,v\\rangle - \\langle v,u\\rangle = (\\langle\\psi,ABψ\\rangle - cd) - (\\langle\\psi,BAψ\\rangle - cd) = \\langle\\psi,(AB-BA)\\psi\\rangle$."
+        },
+        {
+            "id": "robertson",
+            "title": "Part IV: Robertson's Inequality",
+            "summary": "Proves robertson_inequality: stdDev A ψ · stdDev B ψ ≥ (1/2)‖commutatorEV A B ψ‖. Directly composes Part I (cs_antisymmetric_bound on centered u,v) with Part III (antisymmetric part = commutator EV) via linarith.",
+            "startLine": 111,
+            "endLine": 129,
+            "mathContext": "$\\Delta A \\cdot \\Delta B = \\|u\\|\\cdot\\|v\\| \\geq \\frac{1}{2}|\\langle u,v\\rangle - \\langle v,u\\rangle| = \\frac{1}{2}|\\text{commutatorEV}(A,B,\\psi)|$. Assembly: `cs_antisymmetric_bound` + `centered_antisymmetric_eq_commutator` + `linarith`."
+        },
+        {
+            "id": "heisenberg",
+            "title": "Part V: Heisenberg for Constant Commutator",
+            "summary": "Proves heisenberg_constant_commutator: if [A,B] = c·id, then ΔA·ΔB ≥ |c|/2. Simplifies commutatorEV A B ψ = ⟪ψ,c·ψ⟫ = c·1 = c using hψ: ‖ψ‖=1, then applies robertson_inequality.",
+            "startLine": 130,
+            "endLine": 148,
+            "mathContext": "When $A(B\\psi) - B(A\\psi) = c\\psi$ for all $\\psi$: $\\text{commutatorEV}(A,B,\\psi) = \\langle\\psi, c\\psi\\rangle = c\\cdot\\langle\\psi,\\psi\\rangle = c\\cdot 1 = c$. So Robertson gives $\\Delta A \\cdot \\Delta B \\geq |c|/2$. Setting $c = i\\hbar$ for $[\\hat{x},\\hat{p}] = i\\hbar$: $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$."
+        }
     ],
-    "opens": [
-      "InnerProductSpace",
-      "Complex"
+    "conclusion": {
+        "summary": "Robertson's uncertainty inequality is proved with 0 sorries and 0 axioms, answering affirmatively: yes, the Heisenberg uncertainty principle can be derived from Cauchy-Schwarz in Lean 4.",
+        "implications": "This formalization bridges abstract functional analysis and quantum physics in Lean 4. The Heisenberg uncertainty principle emerges as a pure consequence of linear algebra (Cauchy-Schwarz) and the definition of symmetric operators — no physics axioms required. The general Robertson form covers all physical observables simultaneously.",
+        "openQuestions": [
+            "Can the Schrödinger uncertainty relation (tighter form including covariance) be formalized in Lean 4?",
+            "Can the AKLT spin chain ground state be characterized via these uncertainty bounds?"
+        ]
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib.Analysis.InnerProductSpace.Basic",
+            "Mathlib.Analysis.InnerProductSpace.Symmetric",
+            "Mathlib.Analysis.RCLike.Basic",
+            "Mathlib.Tactic"
+        ],
+        "opens": [
+            "InnerProductSpace",
+            "Complex"
+        ],
+        "namespace": "CauchySchwarzOQ01OQ01OQ02",
+        "lineCount": 148,
+        "axiomCount": 0,
+        "theoremCount": 8,
+        "definitionCount": 3,
+        "path": "Proofs/CauchySchwarzOQ01OQ01OQ02.lean",
+        "sorries": 0
+    },
+    "references": [
+        {
+            "authors": "H. P. Robertson",
+            "title": "The Uncertainty Principle",
+            "year": "1929",
+            "venue": "Physical Review 34(1):163–164",
+            "note": "Original derivation of the general uncertainty inequality from Cauchy-Schwarz"
+        },
+        {
+            "authors": "W. Heisenberg",
+            "title": "Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik",
+            "year": "1927",
+            "venue": "Zeitschrift für Physik 43(3-4):172–198",
+            "note": "Original Heisenberg uncertainty paper"
+        }
     ],
-    "namespace": "CauchySchwarzOQ01OQ01OQ02",
-    "lineCount": 148,
-    "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 3,
-    "path": "Proofs/CauchySchwarzOQ01OQ01OQ02.lean",
+    "crossReferences": [
+        {
+            "targetId": "cauchy-schwarz-oq-01-oq-01",
+            "relationship": "extends",
+            "description": "Parent: Cauchy-Schwarz equality characterization. This entry applies CS to derive Robertson's inequality."
+        },
+        {
+            "targetId": "cauchy-schwarz",
+            "relationship": "uses",
+            "description": "The core CS inequality ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖ is the key analytic input."
+        },
+        {
+            "targetId": "cauchy-schwarz-oq-01-oq-01-oq-01",
+            "relationship": "sibling",
+            "description": "Sibling OQ: Gram-Schmidt orthogonalization from CS equality. Both explore consequences of Cauchy-Schwarz for linear operators."
+        }
+    ],
     "sorries": 0
-  },
-  "references": [
-    {
-      "authors": "H. P. Robertson",
-      "title": "The Uncertainty Principle",
-      "year": "1929",
-      "venue": "Physical Review 34(1):163–164",
-      "note": "Original derivation of the general uncertainty inequality from Cauchy-Schwarz"
-    },
-    {
-      "authors": "W. Heisenberg",
-      "title": "Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik",
-      "year": "1927",
-      "venue": "Zeitschrift für Physik 43(3-4):172–198",
-      "note": "Original Heisenberg uncertainty paper"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "cauchy-schwarz-oq-01-oq-01",
-      "relationship": "extends",
-      "description": "Parent: Cauchy-Schwarz equality characterization. This entry applies CS to derive Robertson's inequality."
-    },
-    {
-      "targetId": "cauchy-schwarz",
-      "relationship": "uses",
-      "description": "The core CS inequality ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖ is the key analytic input."
-    },
-    {
-      "targetId": "cauchy-schwarz-oq-01-oq-01-oq-01",
-      "relationship": "sibling",
-      "description": "Sibling OQ: Gram-Schmidt orthogonalization from CS equality. Both explore consequences of Cauchy-Schwarz for linear operators."
-    }
-  ],
-  "sorries": 0
 }

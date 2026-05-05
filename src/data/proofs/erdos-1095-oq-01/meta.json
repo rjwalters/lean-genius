@@ -1,215 +1,215 @@
 {
-  "id": "erdos-1095-oq-01",
-  "title": "Erdős #1095 OQ01: Asymptotics of g(k) — Smooth Binomial Coefficients",
-  "slug": "erdos-1095-oq-01",
-  "description": "Is log g(k) ~ c·k/log k, where g(k) is the smallest n > k+1 with all prime factors of C(n,k) exceeding k?",
-  "meta": {
-    "author": "Erdős",
-    "sourceUrl": "https://erdosproblems.com/1095",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos1095OQ01Problem.lean",
-    "tags": [
-      "erdos",
-      "number-theory",
-      "binomial-coefficients",
-      "prime-factors",
-      "smooth-numbers",
-      "asymptotics"
+    "id": "erdos-1095-oq-01",
+    "title": "Erdős #1095 OQ01: Asymptotics of g(k) — Smooth Binomial Coefficients",
+    "slug": "erdos-1095-oq-01",
+    "description": "Is log g(k) ~ c·k/log k, where g(k) is the smallest n > k+1 with all prime factors of C(n,k) exceeding k?",
+    "meta": {
+        "author": "Erdős",
+        "sourceUrl": "https://erdosproblems.com/1095",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/Erdos1095OQ01Problem.lean",
+        "tags": [
+            "erdos",
+            "number-theory",
+            "binomial-coefficients",
+            "prime-factors",
+            "smooth-numbers",
+            "asymptotics"
+        ],
+        "badge": "wip",
+        "sorries": 0,
+        "erdosNumber": 1095,
+        "erdosUrl": "https://erdosproblems.com/1095",
+        "erdosProblemStatus": "open",
+        "axiomCount": 0,
+        "lineCount": 475,
+        "theoremCount": 21,
+        "assumptions": "0 axioms, 0 sorries. gFunc_exists proved constructively via Kummer's theorem (carry-free base-p arithmetic). gFunc defined via Nat.find; gFunc_gt, gFunc_spec, gFunc_minimal proved as theorems. Concrete values g(1)=3, g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=62 all verified. Open conjecture; supporting lemmas fully verified."
+    },
+    "overview": {
+        "historicalContext": "The function $g(k)$ — the smallest $n > k+1$ such that every prime factor of $\\binom{n}{k}$ exceeds $k$ — was introduced by Ecklund, Erdős, and Selfridge in their 1974 paper on smooth binomial coefficients. They established the initial bounds $k^{1+c} < g(k) \\leq \\exp((1+o(1))k)$, showing that $g(k)$ grows faster than any polynomial but no faster than exponential.\n\nThe lower bound was substantially improved by Konyagin, who proved $g(k) \\gg \\exp(c(\\log k)^2)$ using estimates on smooth numbers (integers whose prime factors are all below a given bound). The key insight is that $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$, and avoiding all primes $\\leq k$ requires $n$ to be chosen so that the prime factorization of the numerator $n(n-1)\\cdots(n-k+1)$ has no small prime factors surviving the cancellation with $k!$.\n\nErdős, Lacampagne, and Selfridge conjectured that $\\log g(k) \\sim c \\cdot k / \\log k$ for some positive constant $c$, which would place $g(k)$ at a precise intermediate growth rate between polynomial and exponential. Computational evidence by Sorenson, Sorenson, and Webster supports this conjecture, but it remains open. The problem connects to smooth number theory, sieve methods, and the distribution of prime factors in products of consecutive integers.",
+        "problemStatement": "Let g(k) > k+1 be the smallest n such that all prime factors of C(n,k) exceed k. Is log g(k) ~ c·k/log k for some constant c > 0?",
+        "text": "Is log g(k) asymptotically equivalent to c·k/log k for some constant c?",
+        "proofStrategy": "The formalization axiomatizes $g(k)$ with four declarations: the function itself (`gFunc`), the bound $g(k) > k+1$ (`gFunc_gt`), the specification that all prime factors of $\\binom{g(k)}{k}$ exceed $k$ (`gFunc_spec`), and minimality (`gFunc_minimal`). From these, 11 theorems are proved:\n\n1. **Structural lemmas** (Part 3): `AllPrimesExceed` holds for 1 (vacuously), is inherited by divisors (transitivity of divisibility), is monotone in $k$ (strengthening threshold), and has a negation lemma for exhibiting witnesses.\n\n2. **Parity constraint** (Part 4): For $k \\geq 2$, $\\binom{g(k)}{k}$ must be odd, since $2 \\leq k$ and $2$ is prime. By Kummer's theorem, this means no carries in binary addition of $k$ and $g(k)-k$.\n\n3. **Concrete computations** (Part 5): $g(1) = 3$ ($\\binom{3}{1} = 3$, prime), $g(2) = 6$ ($\\binom{6}{2} = 15 = 3 \\times 5$). Verified by `decide`.\n\n4. **Growth bound** (Part 6): $g(k) \\geq k+2$ from the axiom.\n\n5. **Open statement** (Part 7): The weakened conjecture $\\exists c > 0,\\; g(k) > k^c$ is formally stated; the full asymptotic conjecture requires `Filter.Tendsto` and is described informally.",
+        "keyInsights": [
+            "**AllPrimesExceed predicate**: The core notion — all prime factors of m exceed k — is clean to formalize",
+            "**Even binomial coefficients**: For k ≥ 2, g(k) must produce odd C(n,k), severely constraining possible n",
+            "**Growth rate**: The conjecture places g(k) between polynomial and exponential growth",
+            "**Kummer's theorem connection**: C(n,k) is odd iff there are no carries in binary addition of k and n-k",
+            "**Wide gap between known bounds**: The gap between the best lower bound $\\exp(c(\\log k)^2)$ (Konyagin) and the conjectured $\\exp(c \\cdot k/\\log k)$ is enormous — the exponent differs by a factor of $k/(\\log k)^3$. Closing this gap is a major open problem in analytic number theory",
+            "**Bertrand's postulate inversion**: Erdős' 1932 proof of Bertrand's postulate showed that $\\binom{2n}{n}$ always has prime factors in $(n, 2n]$; the $g(k)$ problem inverts this by asking when binomial coefficients *avoid* all primes $\\leq k$ — a much rarer phenomenon"
+        ],
+        "prerequisites": [
+            "Number theory basics",
+            "Prime factorization",
+            "Binomial coefficients"
+        ]
+    },
+    "sections": [
+        {
+            "id": "header",
+            "title": "Module Header and Imports",
+            "startLine": 1,
+            "endLine": 28,
+            "summary": "Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic).",
+            "mathContext": "Bound: Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic)."
+        },
+        {
+            "id": "core-definitions",
+            "title": "Part 1: Core Definitions",
+            "startLine": 30,
+            "endLine": 38,
+            "summary": "`AllPrimesExceed m k`: all prime factors of $m$ exceed $k$. Defines the $k$-smooth-free predicate central to the problem.",
+            "mathContext": "Formal definition: `AllPrimesExceed m k`: all prime factors of $m$ exceed $k$. Defines the $k$-smooth-free predicate central to the problem."
+        },
+        {
+            "id": "gfunc-axiomatization",
+            "title": "Part 2: g(k) Axiomatization",
+            "startLine": 40,
+            "endLine": 56,
+            "summary": "Four axiom declarations: `gFunc : ℕ → ℕ`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality).",
+            "mathContext": "Four axiom declarations: `gFunc : $\\mathbb{N}$ $\\to$ $\\mathbb{N}$`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality)."
+        },
+        {
+            "id": "basic-lemmas",
+            "title": "Part 3: Basic Lemmas about AllPrimesExceed",
+            "startLine": 58,
+            "endLine": 82,
+            "summary": "Four structural lemmas: `allPrimesExceed_one` (vacuous for 1), `allPrimesExceed_of_dvd` (inherited by divisors), `allPrimesExceed_mono` (monotone in $k$), `not_allPrimesExceed_of_prime_dvd` (negation witness).",
+            "mathContext": "Four structural lemmas: `allPrimesExceed_one` (vacuous for 1), `allPrimesExceed_of_dvd` (inherited by divisors), `allPrimesExceed_mono` (monotone in $k$), `not_allPrimesExceed_of_prime_dvd` (negation witness)."
+        },
+        {
+            "id": "even-binomials",
+            "title": "Part 4: Even Binomial Coefficients",
+            "startLine": 84,
+            "endLine": 99,
+            "summary": "`choose_eq_zero_of_lt` ($\\binom{n}{k} = 0$ when $k > n$) and `choose_odd_of_allPrimesExceed` (for $k \\geq 2$, $\\binom{n}{k}$ at $g(k)$ must be odd since $2 \\leq k$).",
+            "mathContext": "Mathematical content: `choose_eq_zero_of_lt` ($\\binom{n}{k} = 0$ when $k > n$) and `choose_odd_of_allPrimesExceed` (for $k \\geq 2$, $\\binom{n}{k}$ at $g(k)$ must be odd since $2 \\leq k$)."
+        },
+        {
+            "id": "concrete-computations",
+            "title": "Part 5: Concrete Computations",
+            "startLine": 101,
+            "endLine": 116,
+            "summary": "Verified by `decide`: $\\binom{3}{1} = 3$, $\\binom{6}{2} = 15$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$. These confirm $g(1) = 3$ and $g(2) = 6$.",
+            "mathContext": "Mathematical content: Verified by `decide`: $\\binom{3}{1} = 3$, $\\binom{6}{2} = 15$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$. These confirm $g(1) = 3$ and $g(2) = 6$."
+        },
+        {
+            "id": "g5-computation",
+            "title": "Part 5c: Computing g(5) = 23",
+            "startLine": 216,
+            "endLine": 243,
+            "summary": "`gFunc_five`: $g(5) = 23$, proved by showing $\\binom{23}{5} = 33649 = 7 \\cdot 11 \\cdot 19 \\cdot 23$ has no prime $\\leq 5$, and eliminating $n = 7, \\ldots, 22$ via `interval_cases`.",
+            "mathContext": "Mathematical content: $g(5) = 23$ via exhaustive check: $\\binom{n}{5}$ is even for most $n \\in [7,22]$, and divisible by 3 for the odd cases ($n = 7, 13, 15, 21$)."
+        },
+        {
+            "id": "g6-computation",
+            "title": "Part 5d: Computing g(6) = 62",
+            "startLine": 245,
+            "endLine": 272,
+            "summary": "`gFunc_six`: $g(6) = 62$, proved by showing $\\binom{62}{6} = 61474519 = 19 \\cdot 29 \\cdot 31 \\cdot 59 \\cdot 61$ has no prime $\\leq 6$, and eliminating $n = 8, \\ldots, 61$ via `interval_cases`.",
+            "mathContext": "Mathematical content: $g(6) = 62$ via exhaustive check of 54 candidate values. Every $\\binom{n}{6}$ for $n \\in [8,61]$ has a prime factor in $\\{2, 3, 5\\}$."
+        },
+        {
+            "id": "structural-properties",
+            "title": "Part 6: Structural Properties of g(k)",
+            "startLine": 274,
+            "endLine": 283,
+            "summary": "`gFunc_ge_k_plus_two`: $g(k) \\geq k+2$ from the axiom $g(k) > k+1$, via `omega`. The weakest formal lower bound on $g$.",
+            "mathContext": "Axiomatized: `gFunc_ge_k_plus_two`: $g(k) \\geq k+2$ from the axiom $g(k) > k+1$, via `omega`. The weakest formal lower bound on $g$."
+        },
+        {
+            "id": "problem-statement",
+            "title": "Part 7: Problem Statement (Open)",
+            "startLine": 288,
+            "endLine": 318,
+            "summary": "The open conjecture (informally: $\\log g(k) \\sim c \\cdot k/\\log k$) and its weakened formal version `ErdosProblem1095OQ01`: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$ (super-polynomial growth).",
+            "mathContext": "Mathematical content: The open conjecture (informally: $\\log g(k) \\sim c \\cdot k/\\log k$) and its weakened formal version `ErdosProblem1095OQ01`: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$ (super-polynomial growth)."
+        }
     ],
-    "badge": "wip",
-    "sorries": 0,
-    "erdosNumber": 1095,
-    "erdosUrl": "https://erdosproblems.com/1095",
-    "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "lineCount": 475,
-    "theoremCount": 21,
-    "assumptions": "0 axioms, 0 sorries. gFunc_exists proved constructively via Kummer's theorem (carry-free base-p arithmetic). gFunc defined via Nat.find; gFunc_gt, gFunc_spec, gFunc_minimal proved as theorems. Concrete values g(1)=3, g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=62 all verified. Open conjecture; supporting lemmas fully verified."
-  },
-  "overview": {
-    "historicalContext": "The function $g(k)$ — the smallest $n > k+1$ such that every prime factor of $\\binom{n}{k}$ exceeds $k$ — was introduced by Ecklund, Erdős, and Selfridge in their 1974 paper on smooth binomial coefficients. They established the initial bounds $k^{1+c} < g(k) \\leq \\exp((1+o(1))k)$, showing that $g(k)$ grows faster than any polynomial but no faster than exponential.\n\nThe lower bound was substantially improved by Konyagin, who proved $g(k) \\gg \\exp(c(\\log k)^2)$ using estimates on smooth numbers (integers whose prime factors are all below a given bound). The key insight is that $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$, and avoiding all primes $\\leq k$ requires $n$ to be chosen so that the prime factorization of the numerator $n(n-1)\\cdots(n-k+1)$ has no small prime factors surviving the cancellation with $k!$.\n\nErdős, Lacampagne, and Selfridge conjectured that $\\log g(k) \\sim c \\cdot k / \\log k$ for some positive constant $c$, which would place $g(k)$ at a precise intermediate growth rate between polynomial and exponential. Computational evidence by Sorenson, Sorenson, and Webster supports this conjecture, but it remains open. The problem connects to smooth number theory, sieve methods, and the distribution of prime factors in products of consecutive integers.",
-    "problemStatement": "Let g(k) > k+1 be the smallest n such that all prime factors of C(n,k) exceed k. Is log g(k) ~ c·k/log k for some constant c > 0?",
-    "text": "Is log g(k) asymptotically equivalent to c·k/log k for some constant c?",
-    "proofStrategy": "The formalization axiomatizes $g(k)$ with four declarations: the function itself (`gFunc`), the bound $g(k) > k+1$ (`gFunc_gt`), the specification that all prime factors of $\\binom{g(k)}{k}$ exceed $k$ (`gFunc_spec`), and minimality (`gFunc_minimal`). From these, 11 theorems are proved:\n\n1. **Structural lemmas** (Part 3): `AllPrimesExceed` holds for 1 (vacuously), is inherited by divisors (transitivity of divisibility), is monotone in $k$ (strengthening threshold), and has a negation lemma for exhibiting witnesses.\n\n2. **Parity constraint** (Part 4): For $k \\geq 2$, $\\binom{g(k)}{k}$ must be odd, since $2 \\leq k$ and $2$ is prime. By Kummer's theorem, this means no carries in binary addition of $k$ and $g(k)-k$.\n\n3. **Concrete computations** (Part 5): $g(1) = 3$ ($\\binom{3}{1} = 3$, prime), $g(2) = 6$ ($\\binom{6}{2} = 15 = 3 \\times 5$). Verified by `decide`.\n\n4. **Growth bound** (Part 6): $g(k) \\geq k+2$ from the axiom.\n\n5. **Open statement** (Part 7): The weakened conjecture $\\exists c > 0,\\; g(k) > k^c$ is formally stated; the full asymptotic conjecture requires `Filter.Tendsto` and is described informally.",
-    "keyInsights": [
-      "**AllPrimesExceed predicate**: The core notion — all prime factors of m exceed k — is clean to formalize",
-      "**Even binomial coefficients**: For k ≥ 2, g(k) must produce odd C(n,k), severely constraining possible n",
-      "**Growth rate**: The conjecture places g(k) between polynomial and exponential growth",
-      "**Kummer's theorem connection**: C(n,k) is odd iff there are no carries in binary addition of k and n-k",
-      "**Wide gap between known bounds**: The gap between the best lower bound $\\exp(c(\\log k)^2)$ (Konyagin) and the conjectured $\\exp(c \\cdot k/\\log k)$ is enormous — the exponent differs by a factor of $k/(\\log k)^3$. Closing this gap is a major open problem in analytic number theory",
-      "**Bertrand's postulate inversion**: Erdős' 1932 proof of Bertrand's postulate showed that $\\binom{2n}{n}$ always has prime factors in $(n, 2n]$; the $g(k)$ problem inverts this by asking when binomial coefficients *avoid* all primes $\\leq k$ — a much rarer phenomenon"
+    "conclusion": {
+        "summary": "This formalization establishes the framework for Erdős problem #1095 OQ01 about the growth rate of g(k). We prove structural lemmas about the AllPrimesExceed predicate and connect it to parity of binomial coefficients.",
+        "implications": "A resolution would precisely characterize how rare it is for large binomial coefficients to avoid all small prime factors. The answer has implications for smooth number theory: since $\\binom{n}{k} = \\prod_{i=1}^{k} \\frac{n-k+i}{i}$, understanding when this product avoids small primes connects to the distribution of smooth numbers among products of consecutive integers. The function $g(k)$ also relates to Grimm's conjecture (that if $n+1, n+2, \\ldots, n+k$ are all composite, they can be assigned distinct prime divisors) and to the Erdős-Selfridge conjecture on the largest prime factor of products of consecutive integers.",
+        "openQuestions": [
+            "Is log g(k) ~ c·k/log k for some constant c > 0?",
+            "What is the exact value of c if it exists?",
+            "Does g(k) < lcm(1,...,k) for large k?"
+        ]
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib.Data.Nat.Choose.Basic",
+            "Mathlib.Data.Nat.Prime.Basic",
+            "Mathlib.Tactic",
+            "Proofs.KummerTheoremOQ03"
+        ],
+        "opens": [
+            "Nat"
+        ],
+        "namespace": "Erdos1095OQ01",
+        "lineCount": 475,
+        "axiomCount": 0,
+        "theoremCount": 37,
+        "definitionCount": 4,
+        "path": "Proofs/Erdos1095OQ01Problem.lean",
+        "sorries": 0
+    },
+    "crossReferences": [
+        {
+            "targetId": "erdos-1095",
+            "relationship": "parent",
+            "description": "Open question derived from Erdős #1095 on g(k)"
+        },
+        {
+            "targetId": "kummer-theorem",
+            "relationship": "foundational",
+            "description": "Kummer's theorem characterizes $\\nu_p(\\binom{n}{k})$ as the number of carries when adding $k$ and $n-k$ in base $p$. This directly constrains which $n$ satisfy AllPrimesExceed: $\\binom{n}{k}$ is odd iff there are no carries in binary addition of $k$ and $n-k$"
+        },
+        {
+            "targetId": "binomial-theorem",
+            "relationship": "foundational",
+            "description": "Provides the algebraic framework for binomial coefficients $\\binom{n}{k}$ central to this problem"
+        },
+        {
+            "targetId": "bertrands-postulate",
+            "relationship": "related",
+            "description": "Bertrand's postulate guarantees primes in $(k, 2k]$, relevant to understanding the prime factorization of $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ — primes in $(k, n]$ divide the numerator but not $k!$"
+        },
+        {
+            "targetId": "infinitude-primes",
+            "relationship": "foundational",
+            "description": "The infinitude of primes ensures that for any $k$, there exist primes exceeding $k$ that could divide $\\binom{n}{k}$, making the AllPrimesExceed condition achievable"
+        }
     ],
-    "prerequisites": [
-      "Number theory basics",
-      "Prime factorization",
-      "Binomial coefficients"
-    ]
-  },
-  "sections": [
-    {
-      "id": "header",
-      "title": "Module Header and Imports",
-      "startLine": 1,
-      "endLine": 28,
-      "summary": "Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic).",
-      "mathContext": "Bound: Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic)."
-    },
-    {
-      "id": "core-definitions",
-      "title": "Part 1: Core Definitions",
-      "startLine": 30,
-      "endLine": 38,
-      "summary": "`AllPrimesExceed m k`: all prime factors of $m$ exceed $k$. Defines the $k$-smooth-free predicate central to the problem.",
-      "mathContext": "Formal definition: `AllPrimesExceed m k`: all prime factors of $m$ exceed $k$. Defines the $k$-smooth-free predicate central to the problem."
-    },
-    {
-      "id": "gfunc-axiomatization",
-      "title": "Part 2: g(k) Axiomatization",
-      "startLine": 40,
-      "endLine": 56,
-      "summary": "Four axiom declarations: `gFunc : ℕ → ℕ`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality).",
-      "mathContext": "Four axiom declarations: `gFunc : $\\mathbb{N}$ $\\to$ $\\mathbb{N}$`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality)."
-    },
-    {
-      "id": "basic-lemmas",
-      "title": "Part 3: Basic Lemmas about AllPrimesExceed",
-      "startLine": 58,
-      "endLine": 82,
-      "summary": "Four structural lemmas: `allPrimesExceed_one` (vacuous for 1), `allPrimesExceed_of_dvd` (inherited by divisors), `allPrimesExceed_mono` (monotone in $k$), `not_allPrimesExceed_of_prime_dvd` (negation witness).",
-      "mathContext": "Four structural lemmas: `allPrimesExceed_one` (vacuous for 1), `allPrimesExceed_of_dvd` (inherited by divisors), `allPrimesExceed_mono` (monotone in $k$), `not_allPrimesExceed_of_prime_dvd` (negation witness)."
-    },
-    {
-      "id": "even-binomials",
-      "title": "Part 4: Even Binomial Coefficients",
-      "startLine": 84,
-      "endLine": 99,
-      "summary": "`choose_eq_zero_of_lt` ($\\binom{n}{k} = 0$ when $k > n$) and `choose_odd_of_allPrimesExceed` (for $k \\geq 2$, $\\binom{n}{k}$ at $g(k)$ must be odd since $2 \\leq k$).",
-      "mathContext": "Mathematical content: `choose_eq_zero_of_lt` ($\\binom{n}{k} = 0$ when $k > n$) and `choose_odd_of_allPrimesExceed` (for $k \\geq 2$, $\\binom{n}{k}$ at $g(k)$ must be odd since $2 \\leq k$)."
-    },
-    {
-      "id": "concrete-computations",
-      "title": "Part 5: Concrete Computations",
-      "startLine": 101,
-      "endLine": 116,
-      "summary": "Verified by `decide`: $\\binom{3}{1} = 3$, $\\binom{6}{2} = 15$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$. These confirm $g(1) = 3$ and $g(2) = 6$.",
-      "mathContext": "Mathematical content: Verified by `decide`: $\\binom{3}{1} = 3$, $\\binom{6}{2} = 15$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$. These confirm $g(1) = 3$ and $g(2) = 6$."
-    },
-    {
-      "id": "g5-computation",
-      "title": "Part 5c: Computing g(5) = 23",
-      "startLine": 216,
-      "endLine": 243,
-      "summary": "`gFunc_five`: $g(5) = 23$, proved by showing $\\binom{23}{5} = 33649 = 7 \\cdot 11 \\cdot 19 \\cdot 23$ has no prime $\\leq 5$, and eliminating $n = 7, \\ldots, 22$ via `interval_cases`.",
-      "mathContext": "Mathematical content: $g(5) = 23$ via exhaustive check: $\\binom{n}{5}$ is even for most $n \\in [7,22]$, and divisible by 3 for the odd cases ($n = 7, 13, 15, 21$)."
-    },
-    {
-      "id": "g6-computation",
-      "title": "Part 5d: Computing g(6) = 62",
-      "startLine": 245,
-      "endLine": 272,
-      "summary": "`gFunc_six`: $g(6) = 62$, proved by showing $\\binom{62}{6} = 61474519 = 19 \\cdot 29 \\cdot 31 \\cdot 59 \\cdot 61$ has no prime $\\leq 6$, and eliminating $n = 8, \\ldots, 61$ via `interval_cases`.",
-      "mathContext": "Mathematical content: $g(6) = 62$ via exhaustive check of 54 candidate values. Every $\\binom{n}{6}$ for $n \\in [8,61]$ has a prime factor in $\\{2, 3, 5\\}$."
-    },
-    {
-      "id": "structural-properties",
-      "title": "Part 6: Structural Properties of g(k)",
-      "startLine": 274,
-      "endLine": 283,
-      "summary": "`gFunc_ge_k_plus_two`: $g(k) \\geq k+2$ from the axiom $g(k) > k+1$, via `omega`. The weakest formal lower bound on $g$.",
-      "mathContext": "Axiomatized: `gFunc_ge_k_plus_two`: $g(k) \\geq k+2$ from the axiom $g(k) > k+1$, via `omega`. The weakest formal lower bound on $g$."
-    },
-    {
-      "id": "problem-statement",
-      "title": "Part 7: Problem Statement (Open)",
-      "startLine": 288,
-      "endLine": 318,
-      "summary": "The open conjecture (informally: $\\log g(k) \\sim c \\cdot k/\\log k$) and its weakened formal version `ErdosProblem1095OQ01`: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$ (super-polynomial growth).",
-      "mathContext": "Mathematical content: The open conjecture (informally: $\\log g(k) \\sim c \\cdot k/\\log k$) and its weakened formal version `ErdosProblem1095OQ01`: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$ (super-polynomial growth)."
-    }
-  ],
-  "conclusion": {
-    "summary": "This formalization establishes the framework for Erdős problem #1095 OQ01 about the growth rate of g(k). We prove structural lemmas about the AllPrimesExceed predicate and connect it to parity of binomial coefficients.",
-    "implications": "A resolution would precisely characterize how rare it is for large binomial coefficients to avoid all small prime factors. The answer has implications for smooth number theory: since $\\binom{n}{k} = \\prod_{i=1}^{k} \\frac{n-k+i}{i}$, understanding when this product avoids small primes connects to the distribution of smooth numbers among products of consecutive integers. The function $g(k)$ also relates to Grimm's conjecture (that if $n+1, n+2, \\ldots, n+k$ are all composite, they can be assigned distinct prime divisors) and to the Erdős-Selfridge conjecture on the largest prime factor of products of consecutive integers.",
-    "openQuestions": [
-      "Is log g(k) ~ c·k/log k for some constant c > 0?",
-      "What is the exact value of c if it exists?",
-      "Does g(k) < lcm(1,...,k) for large k?"
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Tactic",
-      "Proofs.KummerTheoremOQ03"
+    "references": [
+        {
+            "authors": "Ecklund, Earl F.; Erdős, Paul; Selfridge, John L.",
+            "title": "A new function associated with the prime factors of $\\binom{n}{k}$",
+            "year": "1974",
+            "venue": "Mathematics of Computation, vol. 28, no. 125, pp. 647–649",
+            "note": "Introduced g(k) and established the initial bounds k^{1+c} < g(k) ≤ exp((1+o(1))k)"
+        },
+        {
+            "authors": "Konyagin, Sergei V.",
+            "title": "On the number of solutions of an equation with a prime divisor",
+            "year": "1999",
+            "venue": "Izvestiya: Mathematics",
+            "note": "Improved the lower bound to g(k) ≫ exp(c(log k)²) using smooth number estimates"
+        },
+        {
+            "authors": "Erdős, Paul; Lacampagne, C. B.; Selfridge, John L.",
+            "title": "Estimates of the least prime factor of a binomial coefficient",
+            "year": "1993",
+            "venue": "Mathematics of Computation, vol. 61, no. 203, pp. 215–224",
+            "note": "Conjectured log g(k) ~ c·k/log k and established refined bounds on the least prime factor of binomial coefficients"
+        },
+        {
+            "authors": "Sorenson, Jonathan; Sorenson, Jared; Webster, Jonathan",
+            "title": "Computing the first instances of the Erdős-Selfridge function",
+            "year": "2013",
+            "venue": "arXiv preprint",
+            "note": "Computed g(k) for small k values, providing heuristic evidence for the conjecture log g(k) ~ c·k/log k"
+        }
     ],
-    "opens": [
-      "Nat"
-    ],
-    "namespace": "Erdos1095OQ01",
-    "lineCount": 475,
-    "axiomCount": 0,
-    "theoremCount": 21,
-    "definitionCount": 4,
-    "path": "Proofs/Erdos1095OQ01Problem.lean",
     "sorries": 0
-  },
-  "crossReferences": [
-    {
-      "targetId": "erdos-1095",
-      "relationship": "parent",
-      "description": "Open question derived from Erdős #1095 on g(k)"
-    },
-    {
-      "targetId": "kummer-theorem",
-      "relationship": "foundational",
-      "description": "Kummer's theorem characterizes $\\nu_p(\\binom{n}{k})$ as the number of carries when adding $k$ and $n-k$ in base $p$. This directly constrains which $n$ satisfy AllPrimesExceed: $\\binom{n}{k}$ is odd iff there are no carries in binary addition of $k$ and $n-k$"
-    },
-    {
-      "targetId": "binomial-theorem",
-      "relationship": "foundational",
-      "description": "Provides the algebraic framework for binomial coefficients $\\binom{n}{k}$ central to this problem"
-    },
-    {
-      "targetId": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees primes in $(k, 2k]$, relevant to understanding the prime factorization of $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ — primes in $(k, n]$ divide the numerator but not $k!$"
-    },
-    {
-      "targetId": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes ensures that for any $k$, there exist primes exceeding $k$ that could divide $\\binom{n}{k}$, making the AllPrimesExceed condition achievable"
-    }
-  ],
-  "references": [
-    {
-      "authors": "Ecklund, Earl F.; Erdős, Paul; Selfridge, John L.",
-      "title": "A new function associated with the prime factors of $\\binom{n}{k}$",
-      "year": "1974",
-      "venue": "Mathematics of Computation, vol. 28, no. 125, pp. 647–649",
-      "note": "Introduced g(k) and established the initial bounds k^{1+c} < g(k) ≤ exp((1+o(1))k)"
-    },
-    {
-      "authors": "Konyagin, Sergei V.",
-      "title": "On the number of solutions of an equation with a prime divisor",
-      "year": "1999",
-      "venue": "Izvestiya: Mathematics",
-      "note": "Improved the lower bound to g(k) ≫ exp(c(log k)²) using smooth number estimates"
-    },
-    {
-      "authors": "Erdős, Paul; Lacampagne, C. B.; Selfridge, John L.",
-      "title": "Estimates of the least prime factor of a binomial coefficient",
-      "year": "1993",
-      "venue": "Mathematics of Computation, vol. 61, no. 203, pp. 215–224",
-      "note": "Conjectured log g(k) ~ c·k/log k and established refined bounds on the least prime factor of binomial coefficients"
-    },
-    {
-      "authors": "Sorenson, Jonathan; Sorenson, Jared; Webster, Jonathan",
-      "title": "Computing the first instances of the Erdős-Selfridge function",
-      "year": "2013",
-      "venue": "arXiv preprint",
-      "note": "Computed g(k) for small k values, providing heuristic evidence for the conjecture log g(k) ~ c·k/log k"
-    }
-  ],
-  "sorries": 0
 }
