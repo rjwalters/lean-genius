@@ -14693,6 +14693,24 @@
       "issues": [
         "lineCount mismatch: claims 253, actual 311; theoremCount mismatch: claims 7, actual 8 (real_ac_implies_normed_ac undercounted) \u2014 fixed in PR #15948"
       ]
+    },
+    "greens-theorem-oq-03-oq-04": {
+      "auditCount": 4,
+      "lastAudited": "2026-05-05T04:08:48Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "dissection-of-cubes-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-05T03:54:53Z",
+      "result": "clean",
+      "issues": []
+    },
+    "lagrange-theorem-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-05T03:56:40Z",
+      "result": "clean",
+      "issues": []
     }
   },
   "erdos-1097-oq-01": {
