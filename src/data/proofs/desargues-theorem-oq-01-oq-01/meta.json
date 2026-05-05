@@ -1,158 +1,158 @@
 {
-  "id": "desargues-theorem-oq-01-oq-01",
-  "title": "Non-Desarguesian Planes: The Moulton Plane Counterexample",
-  "slug": "desargues-theorem-oq-01-oq-01",
-  "description": "Formalizes the Moulton plane (1902) — a non-Desarguesian affine plane over ℝ — and provides an explicit rational-coordinate counterexample showing that Desargues's theorem fails. Two triangles are in perspective from a point yet their corresponding-side intersections are not Moulton-collinear.",
-  "meta": {
-    "author": "F. R. Moulton (1902); Lean formalization here",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Moulton_plane",
-    "date": "1902",
-    "status": "verified",
-    "proofRepoPath": "Proofs/DesarguesTheoremOQ01OQ01.lean",
-    "tags": [
-      "projective-geometry",
-      "non-desarguesian",
-      "moulton-plane",
-      "affine-geometry",
-      "counterexample",
-      "triangles",
-      "perspective",
-      "collinearity",
-      "research"
+    "id": "desargues-theorem-oq-01-oq-01",
+    "title": "Non-Desarguesian Planes: The Moulton Plane Counterexample",
+    "slug": "desargues-theorem-oq-01-oq-01",
+    "description": "Formalizes the Moulton plane (1902) — a non-Desarguesian affine plane over ℝ — and provides an explicit rational-coordinate counterexample showing that Desargues's theorem fails. Two triangles are in perspective from a point yet their corresponding-side intersections are not Moulton-collinear.",
+    "meta": {
+        "author": "F. R. Moulton (1902); Lean formalization here",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Moulton_plane",
+        "date": "1902",
+        "status": "verified",
+        "proofRepoPath": "Proofs/DesarguesTheoremOQ01OQ01.lean",
+        "tags": [
+            "projective-geometry",
+            "non-desarguesian",
+            "moulton-plane",
+            "affine-geometry",
+            "counterexample",
+            "triangles",
+            "perspective",
+            "collinearity",
+            "research"
+        ],
+        "badge": "original",
+        "sorries": 0,
+        "axiomCount": 0,
+        "lineCount": 297,
+        "theoremCount": 30,
+        "definitionCount": 12,
+        "mathlibDependencies": [
+            {
+                "theorem": "Classical.propDecidable",
+                "description": "Enables if-then-else on Prop for the piecewise Moulton line definition",
+                "module": "Mathlib.Data.Real.Basic"
+            },
+            {
+                "theorem": "norm_num / linarith",
+                "description": "Arithmetic verification of all incidence conditions and the non-collinearity contradiction",
+                "module": "Mathlib.Tactic"
+            }
+        ],
+        "originalContributions": [
+            "onMoultonLine: Piecewise definition of Moulton lines (slope halved on positive half-plane for m > 0)",
+            "MoultonCollinear: Three-point collinearity in the Moulton affine plane",
+            "collinear_OAA', collinear_OBB', collinear_OCC': Explicit perspectivity of the counterexample triangles from O = (0,0)",
+            "desargues_fails: ¬ MoultonCollinear P Q R — formal proof that the intersection points are not Moulton-collinear",
+            "moulton_counterexample: Full Desargues-counterexample certificate with all incidence data verified"
+        ],
+        "dateAdded": "2026-05-03",
+        "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+        "mathlib_version": "4.26.0"
+    },
+    "overview": {
+        "historicalContext": "Desargues's theorem was proved in 1639 and holds in all projective spaces of dimension ≥ 3. For projective planes (2-dimensional), however, the theorem is not a consequence of the projective plane axioms alone. In 1902, Forest Ray Moulton constructed the first simple counterexample: a modified affine plane over ℝ where lines with positive slope are 'bent' at the y-axis (the right half-plane portion has slope halved). This plane satisfies all affine plane axioms but fails Desargues. It established that Desargues's theorem characterises precisely the planes that can be coordinatised by a skew field (division ring).",
+        "problemStatement": "Can we formalize non-Desarguesian projective planes in Lean to show when Desargues's theorem fails? Desargues's theorem asserts: if triangles $ABC$ and $A'B'C'$ are in perspective from a point (i.e., lines $OAA'$, $OBB'$, $OCC'$ are concurrent at $O$), then the corresponding-side intersections $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. The Moulton plane (1902) satisfies all affine plane axioms but violates Desargues: `desargues_fails : ¬ MoultonCollinear P_pt Q_pt R_pt`.",
+        "proofStrategy": "1. **Definition**: `onMoultonLine m b P` is a piecewise predicate — ordinary line for m ≤ 0, bent line (slope m left, m/2 right) for m > 0. `MoultonCollinear` quantifies over all Moulton lines.\n2. **Perspectivity**: Three direct incidence checks (each by norm_num) establish OAA', OBB', OCC' Moulton-collinear.\n3. **Non-collinearity**: Proof by contradiction. Case m ≤ 0: slope PQ = 2/11 > 0, immediate linarith. Case m > 0: P and R equations determine m = 16/61 and b = 821/61 uniquely; plugging into R's equation gives 725/61 ≠ 671/61, contradiction by linarith.",
+        "keyInsights": [
+            "The bending rule (slope halved on x>0 for m>0) is the minimal perturbation to standard Euclidean lines that breaks Desargues while preserving all affine plane axioms — Moulton's 1902 insight was that the bend must be exactly this piecewise form",
+            "P and R are ordinary: sides AB, A'B', CA, C'A' all have negative slope, so they are unmodified Moulton lines — P and R are computed by ordinary linear algebra, and the bending is only visible when testing collinearity of P, Q, R",
+            "The contradiction is purely algebraic: assuming Moulton collinearity of P=(-17,9), Q=(27,17), R=(-6,11) forces m=16/61 (from P and Q equations) and m=2/11 (from P and R equations) simultaneously — 16/61 ≠ 2/11 gives the numeric contradiction closed by linarith",
+            "P, Q, R ARE Euclidean-collinear (slope 2/11), confirming classical Desargues holds in ℝ² — only the Moulton plane's piecewise bent lines reveal the failure",
+            "Characterisation: Desargues's theorem holds in a projective plane iff the plane is coordinatizable by a skew field (division ring) — the Moulton plane's bent coordinatization is not associative, blocking this coordinatization"
+        ]
+    },
+    "sections": [
+        {
+            "id": "moulton-line-definition",
+            "title": "Moulton Line Definition and Helpers",
+            "startLine": 44,
+            "endLine": 88,
+            "summary": "Defines onMoultonLine (piecewise: m≤0 → ordinary y=mx+b; m>0, x≤0 → same; m>0, x>0 → y=(m/2)x+b) and MoultonCollinear (vertical or on a shared Moulton line). Six helper lemmas provide convenient constructors and extractors for each case."
+        },
+        {
+            "id": "counterexample-points",
+            "title": "Counterexample Data Points",
+            "startLine": 90,
+            "endLine": 101,
+            "summary": "Defines O=(0,0), triangles ABC and A'B'C' (A'=2A, B'=3B, C'=4C as scalar multiples from O), and intersection points P=(-17,9), Q=(27,17), R=(-6,11). All private defs with rational coordinates."
+        },
+        {
+            "id": "perspectivity",
+            "title": "Part III: Perspectivity from O",
+            "startLine": 103,
+            "endLine": 129,
+            "summary": "Proves MoultonCollinear O A A', O B B', O C C': slope -3/2 for OAA' (ordinary); left-slope 2/3 for OBB' (bent, O at boundary, B/B' on right half); vertical x=0 for OCC'."
+        },
+        {
+            "id": "intersection-points",
+            "title": "Part IV: Intersection Points",
+            "startLine": 131,
+            "endLine": 210,
+            "summary": "18 lemmas: P on AB (slope -2/5) and A'B' (slope -3/13); Q on BC (left-slope 4/3) and B'C' (left-slope 14/9), both at x=27>0 using onML_pos_right; R on CA (slope -2) and C'A' (slope -5/2). All ordinary lines for P,R; bent lines for Q."
+        },
+        {
+            "id": "desargues-fails",
+            "title": "Part V: Desargues Fails — ¬ MoultonCollinear P Q R",
+            "startLine": 226,
+            "endLine": 261,
+            "summary": "desargues_fails : ¬ MoultonCollinear P Q R. Three-case contradiction: vertical (x distinct); m≤0 (forces m=2/11>0 by linarith); m>0 (P,R on left, Q on right: linear_combination gives m=2/11 and m=16/61 simultaneously, contradiction by linarith)."
+        },
+        {
+            "id": "full-counterexample",
+            "title": "Part VI: Full Desargues Counterexample Certificate",
+            "startLine": 263,
+            "endLine": 296,
+            "summary": "moulton_counterexample packages 21-component conjunction: 3 perspectivity facts + 18 incidence facts (P/Q/R on respective side pairs) + desargues_fails. Term-mode proof via anonymous constructor ⟨...⟩."
+        }
     ],
-    "badge": "original",
-    "sorries": 0,
-    "axiomCount": 0,
-    "lineCount": 297,
-    "theoremCount": 30,
-    "definitionCount": 12,
-    "mathlibDependencies": [
-      {
-        "theorem": "Classical.propDecidable",
-        "description": "Enables if-then-else on Prop for the piecewise Moulton line definition",
-        "module": "Mathlib.Data.Real.Basic"
-      },
-      {
-        "theorem": "norm_num / linarith",
-        "description": "Arithmetic verification of all incidence conditions and the non-collinearity contradiction",
-        "module": "Mathlib.Tactic"
-      }
+    "conclusion": {
+        "summary": "The Moulton plane provides a fully formalized, axiom-free counterexample to Desargues's theorem in an affine plane over ℝ. The explicit rational-coordinate construction (Moulton, 1902) proves that Desargues is NOT derivable from the affine plane axioms alone — it requires that the coordinatizing structure be a field or division ring. The formalization uses only Mathlib real arithmetic (norm_num, linarith, linear_combination) — no topology, continuity, or algebraic geometry.",
+        "implications": "The failure of Desargues's theorem characterises non-Desarguesian planes — those not coordinatizable by a skew field. Moulton's 1902 counterexample was historically surprising: most known plane geometries satisfied Desargues, and it had been assumed to follow from the affine axioms. Combined with desargues-theorem-oq-01 (which proves Desargues over any commutative ring via homogeneous coordinates), this entry provides the complete picture: Desargues holds in coordinate planes over fields, and fails in planes with weaker coordinatization. The Lean 4 proof at the 300-line scale demonstrates that such combinatorial-geometric counterexamples are tractable with modern tactic automation.",
+        "openQuestions": [
+            "Can the Moulton plane be extended to a full projective plane (with a line at infinity) and Desargues's failure proved in the projective completion?",
+            "Can the smallest finite non-Desarguesian projective plane (order 9, the Hall plane) be formalized in Lean? Finite non-Desarguesian planes require nearfield coordinatization.",
+            "Can the converse be formalized: Desargues holds iff the plane is coordinatizable by a skew field (Veblen-Young theorem)? This would require formalizing the Hilbert-Moufang loop construction."
+        ]
+    },
+    "crossReferences": [
+        {
+            "proofId": "desargues-theorem",
+            "relationship": "parent — original Desargues theorem formalization using ℝ³ homogeneous coordinates"
+        },
+        {
+            "proofId": "desargues-theorem-oq-01",
+            "relationship": "sibling — algebraic proof over any commutative ring K (proves Desargues where this entry shows it fails)"
+        },
+        {
+            "proofId": "desargues-theorem-oq-02",
+            "relationship": "sibling — duality of Desargues's theorem"
+        }
     ],
-    "originalContributions": [
-      "onMoultonLine: Piecewise definition of Moulton lines (slope halved on positive half-plane for m > 0)",
-      "MoultonCollinear: Three-point collinearity in the Moulton affine plane",
-      "collinear_OAA', collinear_OBB', collinear_OCC': Explicit perspectivity of the counterexample triangles from O = (0,0)",
-      "desargues_fails: ¬ MoultonCollinear P Q R — formal proof that the intersection points are not Moulton-collinear",
-      "moulton_counterexample: Full Desargues-counterexample certificate with all incidence data verified"
+    "references": [
+        {
+            "type": "paper",
+            "title": "A Simple Non-Desarguesian Plane Geometry",
+            "author": "Forest Ray Moulton",
+            "year": 1902,
+            "journal": "Transactions of the American Mathematical Society",
+            "volume": 3,
+            "pages": "192-195"
+        },
+        {
+            "type": "book",
+            "title": "Projective Planes",
+            "author": "Hughes and Piper",
+            "year": 1973
+        }
     ],
-    "dateAdded": "2026-05-03",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
-  },
-  "overview": {
-    "historicalContext": "Desargues's theorem was proved in 1639 and holds in all projective spaces of dimension ≥ 3. For projective planes (2-dimensional), however, the theorem is not a consequence of the projective plane axioms alone. In 1902, Forest Ray Moulton constructed the first simple counterexample: a modified affine plane over ℝ where lines with positive slope are 'bent' at the y-axis (the right half-plane portion has slope halved). This plane satisfies all affine plane axioms but fails Desargues. It established that Desargues's theorem characterises precisely the planes that can be coordinatised by a skew field (division ring).",
-    "problemStatement": "Can we formalize non-Desarguesian projective planes in Lean to show when Desargues's theorem fails? Desargues's theorem asserts: if triangles $ABC$ and $A'B'C'$ are in perspective from a point (i.e., lines $OAA'$, $OBB'$, $OCC'$ are concurrent at $O$), then the corresponding-side intersections $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. The Moulton plane (1902) satisfies all affine plane axioms but violates Desargues: `desargues_fails : ¬ MoultonCollinear P_pt Q_pt R_pt`.",
-    "proofStrategy": "1. **Definition**: `onMoultonLine m b P` is a piecewise predicate — ordinary line for m ≤ 0, bent line (slope m left, m/2 right) for m > 0. `MoultonCollinear` quantifies over all Moulton lines.\n2. **Perspectivity**: Three direct incidence checks (each by norm_num) establish OAA', OBB', OCC' Moulton-collinear.\n3. **Non-collinearity**: Proof by contradiction. Case m ≤ 0: slope PQ = 2/11 > 0, immediate linarith. Case m > 0: P and R equations determine m = 16/61 and b = 821/61 uniquely; plugging into R's equation gives 725/61 ≠ 671/61, contradiction by linarith.",
-    "keyInsights": [
-      "The bending rule (slope halved on x>0 for m>0) is the minimal perturbation to standard Euclidean lines that breaks Desargues while preserving all affine plane axioms — Moulton's 1902 insight was that the bend must be exactly this piecewise form",
-      "P and R are ordinary: sides AB, A'B', CA, C'A' all have negative slope, so they are unmodified Moulton lines — P and R are computed by ordinary linear algebra, and the bending is only visible when testing collinearity of P, Q, R",
-      "The contradiction is purely algebraic: assuming Moulton collinearity of P=(-17,9), Q=(27,17), R=(-6,11) forces m=16/61 (from P and Q equations) and m=2/11 (from P and R equations) simultaneously — 16/61 ≠ 2/11 gives the numeric contradiction closed by linarith",
-      "P, Q, R ARE Euclidean-collinear (slope 2/11), confirming classical Desargues holds in ℝ² — only the Moulton plane's piecewise bent lines reveal the failure",
-      "Characterisation: Desargues's theorem holds in a projective plane iff the plane is coordinatizable by a skew field (division ring) — the Moulton plane's bent coordinatization is not associative, blocking this coordinatization"
-    ]
-  },
-  "sections": [
-    {
-      "id": "moulton-line-definition",
-      "title": "Moulton Line Definition and Helpers",
-      "startLine": 44,
-      "endLine": 88,
-      "summary": "Defines onMoultonLine (piecewise: m≤0 → ordinary y=mx+b; m>0, x≤0 → same; m>0, x>0 → y=(m/2)x+b) and MoultonCollinear (vertical or on a shared Moulton line). Six helper lemmas provide convenient constructors and extractors for each case."
+    "leanFile": {
+        "namespace": "MoultonPlane",
+        "lineCount": 297,
+        "axiomCount": 0,
+        "theoremCount": 30,
+        "definitionCount": 2,
+        "path": "Proofs/DesarguesTheoremOQ01OQ01.lean",
+        "sorries": 0
     },
-    {
-      "id": "counterexample-points",
-      "title": "Counterexample Data Points",
-      "startLine": 90,
-      "endLine": 101,
-      "summary": "Defines O=(0,0), triangles ABC and A'B'C' (A'=2A, B'=3B, C'=4C as scalar multiples from O), and intersection points P=(-17,9), Q=(27,17), R=(-6,11). All private defs with rational coordinates."
-    },
-    {
-      "id": "perspectivity",
-      "title": "Part III: Perspectivity from O",
-      "startLine": 103,
-      "endLine": 129,
-      "summary": "Proves MoultonCollinear O A A', O B B', O C C': slope -3/2 for OAA' (ordinary); left-slope 2/3 for OBB' (bent, O at boundary, B/B' on right half); vertical x=0 for OCC'."
-    },
-    {
-      "id": "intersection-points",
-      "title": "Part IV: Intersection Points",
-      "startLine": 131,
-      "endLine": 210,
-      "summary": "18 lemmas: P on AB (slope -2/5) and A'B' (slope -3/13); Q on BC (left-slope 4/3) and B'C' (left-slope 14/9), both at x=27>0 using onML_pos_right; R on CA (slope -2) and C'A' (slope -5/2). All ordinary lines for P,R; bent lines for Q."
-    },
-    {
-      "id": "desargues-fails",
-      "title": "Part V: Desargues Fails — ¬ MoultonCollinear P Q R",
-      "startLine": 226,
-      "endLine": 261,
-      "summary": "desargues_fails : ¬ MoultonCollinear P Q R. Three-case contradiction: vertical (x distinct); m≤0 (forces m=2/11>0 by linarith); m>0 (P,R on left, Q on right: linear_combination gives m=2/11 and m=16/61 simultaneously, contradiction by linarith)."
-    },
-    {
-      "id": "full-counterexample",
-      "title": "Part VI: Full Desargues Counterexample Certificate",
-      "startLine": 263,
-      "endLine": 296,
-      "summary": "moulton_counterexample packages 21-component conjunction: 3 perspectivity facts + 18 incidence facts (P/Q/R on respective side pairs) + desargues_fails. Term-mode proof via anonymous constructor ⟨...⟩."
-    }
-  ],
-  "conclusion": {
-    "summary": "The Moulton plane provides a fully formalized, axiom-free counterexample to Desargues's theorem in an affine plane over ℝ. The explicit rational-coordinate construction (Moulton, 1902) proves that Desargues is NOT derivable from the affine plane axioms alone — it requires that the coordinatizing structure be a field or division ring. The formalization uses only Mathlib real arithmetic (norm_num, linarith, linear_combination) — no topology, continuity, or algebraic geometry.",
-    "implications": "The failure of Desargues's theorem characterises non-Desarguesian planes — those not coordinatizable by a skew field. Moulton's 1902 counterexample was historically surprising: most known plane geometries satisfied Desargues, and it had been assumed to follow from the affine axioms. Combined with desargues-theorem-oq-01 (which proves Desargues over any commutative ring via homogeneous coordinates), this entry provides the complete picture: Desargues holds in coordinate planes over fields, and fails in planes with weaker coordinatization. The Lean 4 proof at the 300-line scale demonstrates that such combinatorial-geometric counterexamples are tractable with modern tactic automation.",
-    "openQuestions": [
-      "Can the Moulton plane be extended to a full projective plane (with a line at infinity) and Desargues's failure proved in the projective completion?",
-      "Can the smallest finite non-Desarguesian projective plane (order 9, the Hall plane) be formalized in Lean? Finite non-Desarguesian planes require nearfield coordinatization.",
-      "Can the converse be formalized: Desargues holds iff the plane is coordinatizable by a skew field (Veblen-Young theorem)? This would require formalizing the Hilbert-Moufang loop construction."
-    ]
-  },
-  "crossReferences": [
-    {
-      "proofId": "desargues-theorem",
-      "relationship": "parent — original Desargues theorem formalization using ℝ³ homogeneous coordinates"
-    },
-    {
-      "proofId": "desargues-theorem-oq-01",
-      "relationship": "sibling — algebraic proof over any commutative ring K (proves Desargues where this entry shows it fails)"
-    },
-    {
-      "proofId": "desargues-theorem-oq-02",
-      "relationship": "sibling — duality of Desargues's theorem"
-    }
-  ],
-  "references": [
-    {
-      "type": "paper",
-      "title": "A Simple Non-Desarguesian Plane Geometry",
-      "author": "Forest Ray Moulton",
-      "year": 1902,
-      "journal": "Transactions of the American Mathematical Society",
-      "volume": 3,
-      "pages": "192-195"
-    },
-    {
-      "type": "book",
-      "title": "Projective Planes",
-      "author": "Hughes and Piper",
-      "year": 1973
-    }
-  ],
-  "leanFile": {
-    "namespace": "MoultonPlane",
-    "lineCount": 297,
-    "axiomCount": 0,
-    "theoremCount": 29,
-    "definitionCount": 2,
-    "path": "Proofs/DesarguesTheoremOQ01OQ01.lean",
     "sorries": 0
-  },
-  "sorries": 0
 }

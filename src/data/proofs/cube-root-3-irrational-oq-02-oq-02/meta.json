@@ -1,123 +1,123 @@
 {
-  "id": "cube-root-3-irrational-oq-02-oq-02",
-  "title": "Linear Independence of {1, \u221b3, (\u221b3)\u00b2} over \u211a",
-  "slug": "cube-root-3-irrational-oq-02-oq-02",
-  "description": "Proves {1, \u221b3, (\u221b3)\u00b2} is linearly independent over \u211a via a minimal polynomial degree argument: any \u211a-linear combination aeval \u03b1 p = 0 forces the degree-\u22642 polynomial p to be divisible by minpoly \u211a \u03b1 (degree 3), hence p = 0 and all coefficients vanish.",
-  "meta": {
-    "author": "Formalized in Lean 4 with Mathlib",
-    "date": "2026-05-04",
-    "status": "verified",
-    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02OQ02.lean",
-    "tags": [
-      "linear-independence",
-      "field-extensions",
-      "minimal-polynomial",
-      "algebraic-numbers",
-      "cube-roots",
-      "eisenstein"
+    "id": "cube-root-3-irrational-oq-02-oq-02",
+    "title": "Linear Independence of {1, ∛3, (∛3)²} over ℚ",
+    "slug": "cube-root-3-irrational-oq-02-oq-02",
+    "description": "Proves {1, ∛3, (∛3)²} is linearly independent over ℚ via a minimal polynomial degree argument: any ℚ-linear combination aeval α p = 0 forces the degree-≤2 polynomial p to be divisible by minpoly ℚ α (degree 3), hence p = 0 and all coefficients vanish.",
+    "meta": {
+        "author": "Formalized in Lean 4 with Mathlib",
+        "date": "2026-05-04",
+        "status": "verified",
+        "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02OQ02.lean",
+        "tags": [
+            "linear-independence",
+            "field-extensions",
+            "minimal-polynomial",
+            "algebraic-numbers",
+            "cube-roots",
+            "eisenstein"
+        ],
+        "badge": "original",
+        "sorries": 0,
+        "dateAdded": "2026-05-04",
+        "axiomCount": 0,
+        "assumptions": "None — fully verified. Depends on CubeRoot2IrrationalOQ03 for minpoly_nthRoot_natDegree.",
+        "lineCount": 104,
+        "theoremCount": 2,
+        "definitionCount": 0,
+        "originalContributions": [
+            "cbrt3_powers_linearIndependent: {α^0, α^1, α^2} linearly independent over ℚ via minpoly divisibility",
+            "one_cbrt3_cbrt3_sq_linearIndependent: explicit form using ![1, α, α²]"
+        ]
+    },
+    "overview": {
+        "historicalContext": "Linear independence of {1, ∛3, (∛3)²} over ℚ is a classical consequence of algebraic number theory. It expresses that ∛3 has degree exactly 3 over ℚ — meaning ∛3 satisfies no polynomial equation over ℚ of degree less than 3. This was known in principle from Galois theory (Eisenstein, 1850s), though the explicit linear independence statement became a standard exercise once field extension theory was systematized by Dedekind and Kronecker in the latter half of the 19th century.",
+        "problemStatement": "**Open Question OQ-02 from cube-root-3-irrational-oq-02:**\n\nThe parent entry proves ∛3 is irrational via Eisenstein's irreducibility criterion: X³-3 is irreducible over ℚ, so it has no rational roots. The natural follow-up: can we prove the stronger statement that {1, ∛3, (∛3)²} is linearly independent over ℚ?\n\n**This file answers yes.** The key is that linear independence of {α^0, α^1, α^2} is equivalent to: the only ℚ-polynomial of degree ≤ 2 with α as a root is the zero polynomial. This follows immediately from minpoly ℚ α having degree 3.",
+        "proofStrategy": "**Core argument** (by contradiction):\n\nSuppose Σᵢ cᵢ · αⁱ = 0 for c₀, c₁, c₂ : ℚ. Define p = C(c₀) + C(c₁)X + C(c₂)X² ∈ ℚ[X]. Then:\n\n1. **aeval α p = 0** (by unfolding the polynomial evaluation).\n2. **minpoly ℚ α ∣ p** (by `minpoly.dvd`, since aeval α p = 0).\n3. **natDegree(minpoly ℚ α) = 3** (from `minpoly_nthRoot_natDegree 3 3 3`, Eisenstein at p=3).\n4. **natDegree(p) ≤ 2** (p has terms at positions 0, 1, 2 only).\n5. If p ≠ 0: `natDegree_le_of_dvd` gives 3 = natDegree(minpoly) ≤ natDegree(p) ≤ 2. Contradiction.\n6. So p = 0, hence c₀ = coeff(p, 0) = 0, c₁ = coeff(p, 1) = 0, c₂ = coeff(p, 2) = 0.",
+        "keyInsights": [
+            "The minpoly divisibility `minpoly.dvd ℚ α h` converts the evaluation condition aeval α p = 0 into the algebraic divisibility condition minpoly ℚ α | p",
+            "The degree bound natDegree(p) ≤ 2 uses natDegree_add_le + natDegree_mul_le + natDegree_C = 0 + natDegree_X_pow = n iteratively",
+            "natDegree_le_of_dvd gives the critical inequality: if q | p and p ≠ 0 then natDegree q ≤ natDegree p",
+            "The coefficient extraction coeff(p, i) = cᵢ is verified by fin_cases + simp: the polynomial C(c₀) + C(c₁)X + C(c₂)X² has exactly cᵢ at position i for i ∈ {0,1,2}",
+            "Fintype.linearIndependent_iff reformulates the goal as: ∀ c : Fin 3 → ℚ, (Σ cᵢ • αⁱ = 0) → (∀ i, cᵢ = 0), cleanly separating construction from extraction"
+        ],
+        "prerequisites": [
+            "CubeRoot2IrrationalOQ03.lean: minpoly_nthRoot_natDegree (Eisenstein → degree = n)",
+            "Mathlib: minpoly.dvd, natDegree_le_of_dvd, Fintype.linearIndependent_iff",
+            "Polynomial natDegree bounds: natDegree_add_le, natDegree_mul_le, natDegree_C, natDegree_X_pow"
+        ]
+    },
+    "sections": [
+        {
+            "id": "sec-setup",
+            "title": "Setup and Helper Lemma",
+            "startLine": 38,
+            "endLine": 48,
+            "summary": "Defines α = (3:ℝ)^(1/3) and establishes α_minpoly_deg: natDegree(minpoly ℚ α) = 3, as a one-line application of minpoly_nthRoot_natDegree 3 3 3 from CubeRoot2IrrationalOQ03.",
+            "mathContext": "The Eisenstein conditions for n=3, m=3, p=3: 2 ≤ 3 (by norm_num), Prime 3 (by norm_num), 3|3 (by norm_num), ¬9|3 (by norm_num), 0<3 (by norm_num). All five conditions hold, giving minpoly ℚ α = X³-3 of degree 3."
+        },
+        {
+            "id": "sec-main-proof",
+            "title": "Main Theorem: Linear Independence",
+            "startLine": 50,
+            "endLine": 86,
+            "summary": "cbrt3_powers_linearIndependent proves LinearIndependent ℚ (fun i : Fin 3 => α^i). Uses Fintype.linearIndependent_iff, builds polynomial p from coefficients c, shows aeval α p = 0 via ring, deduces minpoly ℚ α | p, proves p = 0 by degree comparison (3 > 2), extracts cᵢ = 0 via coefficient computation.",
+            "mathContext": "Key chain: aeval α p = 0 (ring) → minpoly ℚ α | p (minpoly.dvd) → natDeg(minpoly) ≤ natDeg(p) if p≠0 (natDegree_le_of_dvd) → 3 ≤ 2 (contradiction). Coefficient extraction: coeff(C(c₀) + C(c₁)X + C(c₂)X², i) = cᵢ by polynomial arithmetic."
+        },
+        {
+            "id": "sec-explicit",
+            "title": "Explicit Form: ![1, α, α²]",
+            "startLine": 88,
+            "endLine": 96,
+            "summary": "one_cbrt3_cbrt3_sq_linearIndependent gives the same result for the explicit vector ![1, α, α²] : Fin 3 → ℝ. Proved by convert + fin_cases + simp from the main theorem.",
+            "mathContext": "![1, α, α²] i = α^(i:ℕ) for i ∈ {0,1,2}: at i=0, α^0=1; at i=1, α^1=α; at i=2, α^2. The convert step rewrites the goal using this equality."
+        }
     ],
-    "badge": "original",
-    "sorries": 0,
-    "dateAdded": "2026-05-04",
-    "axiomCount": 0,
-    "assumptions": "None \u2014 fully verified. Depends on CubeRoot2IrrationalOQ03 for minpoly_nthRoot_natDegree.",
-    "lineCount": 104,
-    "theoremCount": 2,
-    "definitionCount": 0,
-    "originalContributions": [
-      "cbrt3_powers_linearIndependent: {\u03b1^0, \u03b1^1, \u03b1^2} linearly independent over \u211a via minpoly divisibility",
-      "one_cbrt3_cbrt3_sq_linearIndependent: explicit form using ![1, \u03b1, \u03b1\u00b2]"
-    ]
-  },
-  "overview": {
-    "historicalContext": "Linear independence of {1, \u221b3, (\u221b3)\u00b2} over \u211a is a classical consequence of algebraic number theory. It expresses that \u221b3 has degree exactly 3 over \u211a \u2014 meaning \u221b3 satisfies no polynomial equation over \u211a of degree less than 3. This was known in principle from Galois theory (Eisenstein, 1850s), though the explicit linear independence statement became a standard exercise once field extension theory was systematized by Dedekind and Kronecker in the latter half of the 19th century.",
-    "problemStatement": "**Open Question OQ-02 from cube-root-3-irrational-oq-02:**\n\nThe parent entry proves \u221b3 is irrational via Eisenstein's irreducibility criterion: X\u00b3-3 is irreducible over \u211a, so it has no rational roots. The natural follow-up: can we prove the stronger statement that {1, \u221b3, (\u221b3)\u00b2} is linearly independent over \u211a?\n\n**This file answers yes.** The key is that linear independence of {\u03b1^0, \u03b1^1, \u03b1^2} is equivalent to: the only \u211a-polynomial of degree \u2264 2 with \u03b1 as a root is the zero polynomial. This follows immediately from minpoly \u211a \u03b1 having degree 3.",
-    "proofStrategy": "**Core argument** (by contradiction):\n\nSuppose \u03a3\u1d62 c\u1d62 \u00b7 \u03b1\u2071 = 0 for c\u2080, c\u2081, c\u2082 : \u211a. Define p = C(c\u2080) + C(c\u2081)X + C(c\u2082)X\u00b2 \u2208 \u211a[X]. Then:\n\n1. **aeval \u03b1 p = 0** (by unfolding the polynomial evaluation).\n2. **minpoly \u211a \u03b1 \u2223 p** (by `minpoly.dvd`, since aeval \u03b1 p = 0).\n3. **natDegree(minpoly \u211a \u03b1) = 3** (from `minpoly_nthRoot_natDegree 3 3 3`, Eisenstein at p=3).\n4. **natDegree(p) \u2264 2** (p has terms at positions 0, 1, 2 only).\n5. If p \u2260 0: `natDegree_le_of_dvd` gives 3 = natDegree(minpoly) \u2264 natDegree(p) \u2264 2. Contradiction.\n6. So p = 0, hence c\u2080 = coeff(p, 0) = 0, c\u2081 = coeff(p, 1) = 0, c\u2082 = coeff(p, 2) = 0.",
-    "keyInsights": [
-      "The minpoly divisibility `minpoly.dvd \u211a \u03b1 h` converts the evaluation condition aeval \u03b1 p = 0 into the algebraic divisibility condition minpoly \u211a \u03b1 | p",
-      "The degree bound natDegree(p) \u2264 2 uses natDegree_add_le + natDegree_mul_le + natDegree_C = 0 + natDegree_X_pow = n iteratively",
-      "natDegree_le_of_dvd gives the critical inequality: if q | p and p \u2260 0 then natDegree q \u2264 natDegree p",
-      "The coefficient extraction coeff(p, i) = c\u1d62 is verified by fin_cases + simp: the polynomial C(c\u2080) + C(c\u2081)X + C(c\u2082)X\u00b2 has exactly c\u1d62 at position i for i \u2208 {0,1,2}",
-      "Fintype.linearIndependent_iff reformulates the goal as: \u2200 c : Fin 3 \u2192 \u211a, (\u03a3 c\u1d62 \u2022 \u03b1\u2071 = 0) \u2192 (\u2200 i, c\u1d62 = 0), cleanly separating construction from extraction"
+    "crossReferences": [
+        {
+            "targetId": "cube-root-3-irrational-oq-02",
+            "relationship": "extends",
+            "description": "Parent proof via Eisenstein. This file uses minpoly_nthRoot_natDegree from CubeRoot2IrrationalOQ03 (which the parent also depends on) to get deg(minpoly ℚ α) = 3."
+        },
+        {
+            "targetId": "cube-root-3-irrational-oq-02-oq-01",
+            "relationship": "related",
+            "description": "Sibling entry proving [ℚ(∛3):ℚ] = 3 via adjoin_nthRoot_finrank. Linear independence of {1, α, α²} is a consequence of this degree-3 extension, but this file proves it directly without invoking the full field extension machinery."
+        },
+        {
+            "targetId": "cube-root-2-irrational-oq-03",
+            "relationship": "depends",
+            "description": "Source of minpoly_nthRoot_natDegree, the key lemma giving natDegree(minpoly ℚ α) = 3."
+        }
     ],
-    "prerequisites": [
-      "CubeRoot2IrrationalOQ03.lean: minpoly_nthRoot_natDegree (Eisenstein \u2192 degree = n)",
-      "Mathlib: minpoly.dvd, natDegree_le_of_dvd, Fintype.linearIndependent_iff",
-      "Polynomial natDegree bounds: natDegree_add_le, natDegree_mul_le, natDegree_C, natDegree_X_pow"
-    ]
-  },
-  "sections": [
-    {
-      "id": "sec-setup",
-      "title": "Setup and Helper Lemma",
-      "startLine": 38,
-      "endLine": 48,
-      "summary": "Defines \u03b1 = (3:\u211d)^(1/3) and establishes \u03b1_minpoly_deg: natDegree(minpoly \u211a \u03b1) = 3, as a one-line application of minpoly_nthRoot_natDegree 3 3 3 from CubeRoot2IrrationalOQ03.",
-      "mathContext": "The Eisenstein conditions for n=3, m=3, p=3: 2 \u2264 3 (by norm_num), Prime 3 (by norm_num), 3|3 (by norm_num), \u00ac9|3 (by norm_num), 0<3 (by norm_num). All five conditions hold, giving minpoly \u211a \u03b1 = X\u00b3-3 of degree 3."
+    "conclusion": {
+        "summary": "{1, ∛3, (∛3)²} is ℚ-linearly independent via minpoly divisibility. 2 theorems, 0 sorries, 0 axioms.",
+        "implications": "**Stronger than irrationality**: ∛3 ∉ ℚ says the degree-1 polynomial X - ∛3 has no ℚ coefficients. Linear independence says no nonzero degree-≤2 polynomial over ℚ has ∛3 as a root. This is equivalent to minpoly ℚ (∛3) having degree exactly 3.\n\n**Basis for the degree-3 extension**: Together with (∛3)³ = 3 ∈ ℚ, linear independence shows {1, ∛3, (∛3)²} spans ℚ(∛3) over ℚ. So {1, ∛3, (∛3)²} is a ℚ-basis for ℚ(∛3), giving an alternative proof of [ℚ(∛3):ℚ] = 3.\n\n**Generalizes**: The same minpoly divisibility argument works for any α with natDegree(minpoly ℚ α) = n: the set {1, α, ..., α^(n-1)} is ℚ-linearly independent.",
+        "openQuestions": [
+            "Can the same argument prove {1, ∛m, (∛m)²} is linearly independent for any m with a squarefree prime factor? (Yes: minpoly_nthRoot_natDegree from CubeRoot2IrrationalOQ03 gives the same degree-3 bound.)",
+            "Is {1, α, ..., α^(n-1)} linearly independent whenever natDegree(minpoly ℚ α) = n? (Yes, by the same argument — this is essentially the definition of having degree-n minimal polynomial.)"
+        ]
     },
-    {
-      "id": "sec-main-proof",
-      "title": "Main Theorem: Linear Independence",
-      "startLine": 50,
-      "endLine": 86,
-      "summary": "cbrt3_powers_linearIndependent proves LinearIndependent \u211a (fun i : Fin 3 => \u03b1^i). Uses Fintype.linearIndependent_iff, builds polynomial p from coefficients c, shows aeval \u03b1 p = 0 via ring, deduces minpoly \u211a \u03b1 | p, proves p = 0 by degree comparison (3 > 2), extracts c\u1d62 = 0 via coefficient computation.",
-      "mathContext": "Key chain: aeval \u03b1 p = 0 (ring) \u2192 minpoly \u211a \u03b1 | p (minpoly.dvd) \u2192 natDeg(minpoly) \u2264 natDeg(p) if p\u22600 (natDegree_le_of_dvd) \u2192 3 \u2264 2 (contradiction). Coefficient extraction: coeff(C(c\u2080) + C(c\u2081)X + C(c\u2082)X\u00b2, i) = c\u1d62 by polynomial arithmetic."
+    "leanFile": {
+        "lineCount": 104,
+        "path": "Proofs/CubeRoot3IrrationalOQ02OQ02.lean",
+        "axiomCount": 0,
+        "sorries": 0,
+        "definitionCount": 0,
+        "theoremCount": 3
     },
-    {
-      "id": "sec-explicit",
-      "title": "Explicit Form: ![1, \u03b1, \u03b1\u00b2]",
-      "startLine": 88,
-      "endLine": 96,
-      "summary": "one_cbrt3_cbrt3_sq_linearIndependent gives the same result for the explicit vector ![1, \u03b1, \u03b1\u00b2] : Fin 3 \u2192 \u211d. Proved by convert + fin_cases + simp from the main theorem.",
-      "mathContext": "![1, \u03b1, \u03b1\u00b2] i = \u03b1^(i:\u2115) for i \u2208 {0,1,2}: at i=0, \u03b1^0=1; at i=1, \u03b1^1=\u03b1; at i=2, \u03b1^2. The convert step rewrites the goal using this equality."
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "cube-root-3-irrational-oq-02",
-      "relationship": "extends",
-      "description": "Parent proof via Eisenstein. This file uses minpoly_nthRoot_natDegree from CubeRoot2IrrationalOQ03 (which the parent also depends on) to get deg(minpoly \u211a \u03b1) = 3."
-    },
-    {
-      "targetId": "cube-root-3-irrational-oq-02-oq-01",
-      "relationship": "related",
-      "description": "Sibling entry proving [\u211a(\u221b3):\u211a] = 3 via adjoin_nthRoot_finrank. Linear independence of {1, \u03b1, \u03b1\u00b2} is a consequence of this degree-3 extension, but this file proves it directly without invoking the full field extension machinery."
-    },
-    {
-      "targetId": "cube-root-2-irrational-oq-03",
-      "relationship": "depends",
-      "description": "Source of minpoly_nthRoot_natDegree, the key lemma giving natDegree(minpoly \u211a \u03b1) = 3."
-    }
-  ],
-  "conclusion": {
-    "summary": "{1, \u221b3, (\u221b3)\u00b2} is \u211a-linearly independent via minpoly divisibility. 2 theorems, 0 sorries, 0 axioms.",
-    "implications": "**Stronger than irrationality**: \u221b3 \u2209 \u211a says the degree-1 polynomial X - \u221b3 has no \u211a coefficients. Linear independence says no nonzero degree-\u22642 polynomial over \u211a has \u221b3 as a root. This is equivalent to minpoly \u211a (\u221b3) having degree exactly 3.\n\n**Basis for the degree-3 extension**: Together with (\u221b3)\u00b3 = 3 \u2208 \u211a, linear independence shows {1, \u221b3, (\u221b3)\u00b2} spans \u211a(\u221b3) over \u211a. So {1, \u221b3, (\u221b3)\u00b2} is a \u211a-basis for \u211a(\u221b3), giving an alternative proof of [\u211a(\u221b3):\u211a] = 3.\n\n**Generalizes**: The same minpoly divisibility argument works for any \u03b1 with natDegree(minpoly \u211a \u03b1) = n: the set {1, \u03b1, ..., \u03b1^(n-1)} is \u211a-linearly independent.",
-    "openQuestions": [
-      "Can the same argument prove {1, \u221bm, (\u221bm)\u00b2} is linearly independent for any m with a squarefree prime factor? (Yes: minpoly_nthRoot_natDegree from CubeRoot2IrrationalOQ03 gives the same degree-3 bound.)",
-      "Is {1, \u03b1, ..., \u03b1^(n-1)} linearly independent whenever natDegree(minpoly \u211a \u03b1) = n? (Yes, by the same argument \u2014 this is essentially the definition of having degree-n minimal polynomial.)"
-    ]
-  },
-  "leanFile": {
-    "lineCount": 104,
-    "path": "Proofs/CubeRoot3IrrationalOQ02OQ02.lean",
-    "axiomCount": 0,
-    "sorries": 0,
-    "definitionCount": 0,
-    "theoremCount": 2
-  },
-  "references": [
-    {
-      "authors": "Mathlib Contributors",
-      "title": "Polynomial.minpoly.dvd",
-      "year": "2024",
-      "note": "Mathlib lemma: if aeval x p = 0 then minpoly K x | p"
-    },
-    {
-      "authors": "Mathlib Contributors",
-      "title": "Polynomial.natDegree_le_of_dvd",
-      "year": "2024",
-      "note": "If p | q and q \u2260 0 then natDegree p \u2264 natDegree q"
-    }
-  ],
-  "sorries": []
+    "references": [
+        {
+            "authors": "Mathlib Contributors",
+            "title": "Polynomial.minpoly.dvd",
+            "year": "2024",
+            "note": "Mathlib lemma: if aeval x p = 0 then minpoly K x | p"
+        },
+        {
+            "authors": "Mathlib Contributors",
+            "title": "Polynomial.natDegree_le_of_dvd",
+            "year": "2024",
+            "note": "If p | q and q ≠ 0 then natDegree p ≤ natDegree q"
+        }
+    ],
+    "sorries": []
 }

@@ -1,154 +1,154 @@
 {
-  "id": "konigsberg-oq-01-oq-02",
-  "title": "Eulerian Paths in Directed Graphs",
-  "slug": "konigsberg-oq-01-oq-02",
-  "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg) and necessity direction (Eulerian circuit → balanced) are proved from first principles. 12 theorems proved, 2 axioms (Hierholzer sufficiency and path characterization).",
-  "meta": {
-    "author": "Lean Genius",
-    "date": "2026-05-03",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/KonigsbergOQ01OQ02.lean",
-    "tags": [
-      "graph-theory",
-      "eulerian-paths",
-      "directed-graphs",
-      "konigsberg",
-      "combinatorics",
-      "degree-sequences"
+    "id": "konigsberg-oq-01-oq-02",
+    "title": "Eulerian Paths in Directed Graphs",
+    "slug": "konigsberg-oq-01-oq-02",
+    "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg) and necessity direction (Eulerian circuit → balanced) are proved from first principles. 12 theorems proved, 2 axioms (Hierholzer sufficiency and path characterization).",
+    "meta": {
+        "author": "Lean Genius",
+        "date": "2026-05-03",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/KonigsbergOQ01OQ02.lean",
+        "tags": [
+            "graph-theory",
+            "eulerian-paths",
+            "directed-graphs",
+            "konigsberg",
+            "combinatorics",
+            "degree-sequences"
+        ],
+        "badge": "axiom",
+        "sorries": 6,
+        "dateAdded": "2026-05-03",
+        "axiomCount": 2,
+        "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, necessity, concrete examples, consequences) are proved from first principles.",
+        "lineCount": 848,
+        "theoremCount": 12,
+        "definitionCount": 8,
+        "originalContributions": [
+            "sum_outDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.1=v}| = |E| by double-counting via Finset.sum_comm + Finset.sum_ite_eq'",
+            "sum_inDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.2=v}| = |E| by same double-counting argument",
+            "closed_walk_balance: private lemma — for a closed walk [v0,...,vn] with v0=vn, source-count at any vertex v equals target-count, via circular shift bijection i ↦ (i=0 ? n-1 : i-1)",
+            "walk_source_eq_outDegree / walk_target_eq_inDegree: private lemmas — the walk position bijection identifies source-counts and target-counts with outDegree and inDegree respectively",
+            "eulerian_circuit_implies_balanced: proved — necessity direction of Eulerian theorem, combining handshaking and walk bijection arguments",
+            "directedTriangle_balanced: the directed 3-cycle is Eulerian-balanced, verified by native_decide",
+            "directedPath_path_degrees: the directed path 0→1→2 satisfies Eulerian path degree conditions, verified by native_decide/case analysis",
+            "eulerian_balanced_sum_zero / eulerian_balanced_implies_degree_balance: structural consequences proved from main theorem"
+        ]
+    },
+    "overview": {
+        "historicalContext": "Euler's 1736 paper 'Solutio problematis ad geometriam situs pertinentis' on the Königsberg bridges introduced graph theory and proved the necessity direction of the Eulerian theorem for undirected graphs: an Eulerian circuit exists only if every vertex has even degree. The directed analogue emerged naturally: in a directed graph (digraph), an Eulerian circuit requires that each vertex has equal in-degree and out-degree — one outgoing edge consumed for each incoming edge at every visit. **Hierholzer's algorithm** (1873) proved sufficiency constructively: start any closed walk; if edges remain, splice in subcircuits at the first repeated vertex. The algorithm runs in O(|E|) and directly applies to directed graphs with the same degree balance condition.\n\nThe theory gained surprising new depth with **de Bruijn sequences** (Nicolaas de Bruijn, 1946). A de Bruijn sequence of order n over alphabet Σ is a cyclic sequence in which every length-n string over Σ appears exactly once. De Bruijn (and independently Good, 1946) observed that such sequences correspond to **Eulerian circuits in de Bruijn graphs**: vertices are length-(n-1) words, edges are length-n words, with the edge $(w_1\\ldots w_{n-1})\\to(w_2\\ldots w_n)$ representing the word $w_1\\ldots w_n$. The de Bruijn graph is regular (each vertex has in-degree = out-degree = |Σ|), so Eulerian circuits always exist, proving de Bruijn sequences always exist and giving an efficient construction via Hierholzer's algorithm.\n\nThe **BEST theorem** (van Aardenne-Ehrenfest and de Bruijn 1951; Smith and Tutte 1941–1948) counts Eulerian circuits in directed graphs: the number of distinct Eulerian circuits starting at vertex $w$ is $t_w(G) \\times \\prod_{v} (\\text{outDeg}(v)-1)!$, where $t_w(G)$ is the number of arborescences (spanning directed trees rooted at $w$). This remarkable formula connects Eulerian counting to the Matrix-Tree theorem.\n\nIn computational biology, **Eulerian path algorithms on de Bruijn graphs** became the basis for next-generation sequencing assembly. Pevzner, Tang, and Waterman (2001) introduced the EULER assembler: decompose a genome into overlapping k-mers, construct the de Bruijn graph, and find an Eulerian path. The genome is the sequence spelled by the Eulerian path — a dramatic application of 18th-century graph theory to 21st-century genomics.",
+        "problemStatement": "Extend the Eulerian circuit characterization (from undirected graphs) to directed graphs: characterize when a directed graph has an Eulerian circuit or path in terms of in-degrees and out-degrees.",
+        "text": "For a weakly connected directed graph G: (1) G has an Eulerian circuit iff every vertex v satisfies inDeg(v) = outDeg(v). (2) G has an Eulerian path from s to t (s≠t) iff outDeg(s)=inDeg(s)+1, inDeg(t)=outDeg(t)+1, and all other vertices v have inDeg(v)=outDeg(v).",
+        "proofStrategy": "Define DiGraph V as a Finset of directed edges with no self-loops. Define outDegree and inDegree by filtering edges. Prove the directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg) from first principles via double-counting: swap ∑_v and ∑_e using Finset.sum_comm, then apply Finset.sum_ite_eq'. Prove necessity (HasEulerianCircuit → IsEulerianBalanced) via a walk-position bijection argument: use the unique-coverage property to biject edges with walk positions, then show source-count = target-count using the closed walk property (walk[0] = walk[n] implies a circular shift bijection). Axiomatize the remaining directions (Hierholzer sufficiency, path characterization). Verify concrete examples (directed triangle, directed path) by native_decide.",
+        "keyInsights": [
+            "The directed handshaking lemma is proved by Finset.sum_comm: ∑_v |{e : e.1=v}| = ∑_e ∑_v [e.1=v] = ∑_e 1 = |E|. No Finset.card_biUnion needed.",
+            "Necessity requires a bijection between G.edges and walk positions. The key insight is to strengthen HasEulerianCircuit with ∃! (unique position per edge) and an hsteps condition (every walk step is an edge), enabling use of ExistsUnique.unique for injectivity.",
+            "The closed walk balance is proved by a bijection i ↦ (i=0 ? n-1 : i-1) from source positions {i < n : walk[i] = v} to target positions {i < n : walk[i+1] = v}, using the closed walk condition walk[0] = walk[n].",
+            "The directed triangle A→B→C→A is the canonical Eulerian circuit example: all three vertices have in-degree = out-degree = 1, verified by native_decide over Fin 3.",
+            "For the Eulerian path characterization, the source s has one more outgoing edge than incoming (to start the path), and the sink t has one more incoming edge than outgoing (to end the path). All intermediate vertices are balanced.",
+            "Weak connectivity (underlying undirected graph is connected) is the correct connectivity notion for directed Eulerian theory — strong connectivity is not required for the equivalence.",
+            "De Bruijn sequence connection: the de Bruijn graph B(n, Σ) is a digraph on length-(n-1) strings where each vertex has in-degree = out-degree = |Σ|. The directed Eulerian theorem guarantees Eulerian circuits exist in any such balanced weakly-connected digraph, proving de Bruijn sequences of every order exist over every alphabet — and Hierholzer's algorithm constructs them in O(|Σ|^n) time.",
+            "BEST theorem: the number of Eulerian circuits starting at vertex w in a directed Eulerian graph equals t_w(G) × ∏_v (outDeg(v)-1)!, where t_w(G) is the number of arborescences (spanning in-trees) rooted at w. This connects Eulerian circuit counting to the Matrix-Tree theorem (Kirchhoff 1847) — a deep result in algebraic graph theory.",
+            "Flow conservation interpretation: the directed handshaking equality ∑ outDeg = ∑ inDeg is equivalent to Kirchhoff's current law (KCL) in electrical networks and conservation of flow in network flow problems. An Eulerian graph (every vertex balanced) is one where a unit of 'flow' entering each vertex also leaves — the combinatorial version of a conservative vector field."
+        ],
+        "prerequisites": [
+            "Eulerian circuits and paths in undirected graphs (konigsberg-oq-01)",
+            "Directed graph degree sequences: in-degree, out-degree",
+            "Handshaking lemma for directed graphs: ∑ outDeg = |E| = ∑ inDeg"
+        ]
+    },
+    "sections": [
+        {
+            "id": "definitions",
+            "title": "Directed Graph Basics",
+            "startLine": 50,
+            "endLine": 70,
+            "summary": "Defines DiGraph V (edges: Finset (V×V), noSelfLoops), outDegree, inDegree, IsBalanced, IsEulerianBalanced.",
+            "mathContext": "$\\text{outDeg}(v) = |\\{e \\in E : e.1 = v\\}|$. $\\text{inDeg}(v) = |\\{e \\in E : e.2 = v\\}|$. $\\text{IsBalanced}(v)$: $\\text{inDeg}(v) = \\text{outDeg}(v)$."
+        },
+        {
+            "id": "handshaking",
+            "title": "Directed Handshaking Lemma (Proved)",
+            "startLine": 77,
+            "endLine": 105,
+            "summary": "Proves sum_outDegree_eq_edgeCount and sum_inDegree_eq_edgeCount from first principles via double-counting (swap ∑_v ∑_e with ∑_e ∑_v). Derives sum_outDegree_eq_sum_inDegree by transitivity.",
+            "mathContext": "$\\sum_{v} \\text{outDeg}(v) = |E| = \\sum_{v} \\text{inDeg}(v)$. Proof: $\\sum_v |\\{e: e.1=v\\}| = \\sum_v \\sum_{e \\in E} [e.1=v] = \\sum_{e \\in E} 1 = |E|$."
+        },
+        {
+            "id": "necessity",
+            "title": "Necessity: Eulerian Circuit Implies Balanced (Proved)",
+            "startLine": 112,
+            "endLine": 311,
+            "summary": "Defines HasEulerianCircuit with unique coverage (∃!) and step constraint. Three helper lemmas establish the bijection between walk positions and edges. Main theorem eulerian_circuit_implies_balanced proved: outDeg = source-count = target-count = inDeg, where middle equality uses the closed walk.",
+            "mathContext": "If $G$ has an Eulerian circuit with walk $[v_0,...,v_n]$ ($v_0 = v_n$), then $|\\{i < n : v_i = w\\}| = |\\{i < n : v_{i+1} = w\\}|$ for all $w$ (bijection: $i \\mapsto i-1 \\pmod{n}$). Combined with the edge-position bijection: $\\text{outDeg}(w) = \\text{inDeg}(w)$."
+        },
+        {
+            "id": "characterization",
+            "title": "Directed Eulerian Theorem and Path Characterization",
+            "startLine": 314,
+            "endLine": 341,
+            "summary": "Defines IsWeaklyConnected and HasEulerianPath. Axiomatizes directed_eulerian_iff (Hierholzer) and directed_euler_path_iff.",
+            "mathContext": "$G$ has an Eulerian circuit $\\iff$ $\\text{IsEulerianBalanced}(G)$ (weak connectivity required). $G$ has Eulerian path $s \\to t$ $\\iff$ $\\text{outDeg}(s) = \\text{inDeg}(s)+1$, $\\text{inDeg}(t) = \\text{outDeg}(t)+1$, and all others balanced."
+        },
+        {
+            "id": "examples",
+            "title": "Concrete Examples",
+            "startLine": 348,
+            "endLine": 371,
+            "summary": "Defines directedTriangle (Fin 3, edges {(0,1),(1,2),(2,0)}) and directedPath (Fin 3, edges {(0,1),(1,2)}). Proves balance properties by native_decide.",
+            "mathContext": "Directed 3-cycle: all vertices balanced ($\\text{in} = \\text{out} = 1$). Directed path $0 \\to 1 \\to 2$: $\\text{outDeg}(0) = 1 = \\text{inDeg}(0)+1$, $\\text{inDeg}(2) = 1 = \\text{outDeg}(2)+1$, vertex 1 balanced."
+        },
+        {
+            "id": "consequences",
+            "title": "Consequences",
+            "startLine": 373,
+            "endLine": 389,
+            "summary": "Proves eulerian_balanced_sum_zero and eulerian_balanced_implies_degree_balance from the main theorem.",
+            "mathContext": "Eulerian circuit $\\Rightarrow$ $\\sum_v \\text{outDeg}(v) = \\sum_v \\text{inDeg}(v)$ (as integers). Eulerian circuit $\\Rightarrow$ $\\text{inDeg}(v) = \\text{outDeg}(v)$ for all $v$."
+        },
+        {
+            "id": "hierholzer-infrastructure",
+            "title": "Hierholzer Infrastructure: Greedy Trail and Circuit Existence",
+            "startLine": 390,
+            "endLine": 848,
+            "summary": "Develops the mathematical infrastructure for Hierholzer's directed Eulerian algorithm in 6 steps. (1) Open-walk counting: for an open walk u→w (u≠w), target-count(w) = source-count(w)+1. (2) maxTrail: a greedy trail following outgoing edges, terminating since |E| decreases by 1 per step. (3) maxTrail_closed: in a balanced digraph, the greedy trail is always a closed circuit. (4) circuit_exists: every non-empty balanced digraph contains a directed circuit. (5) remove_circuit_balanced (sorry): removing a circuit preserves balance. (6) euler_path_implies_degree_balance (sorry): Eulerian path implies asymmetric degree conditions at start/end. Steps 1–4 are proved; steps 5–6 are sorry'd pending Finset sdiff API work.",
+            "mathContext": "Key theorem: $G$ balanced + $G.edges \\neq \\emptyset$ $\\Rightarrow$ $\\exists$ directed circuit in $G$. Proof: run greedy trail from any vertex $v$ with an outgoing edge; by balance, the trail closes (proof by contradiction using open-walk counting). Removing the circuit preserves balance (each vertex appears equally often as trail source and target)."
+        }
     ],
-    "badge": "axiom",
-    "sorries": 6,
-    "dateAdded": "2026-05-03",
-    "axiomCount": 2,
-    "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, necessity, concrete examples, consequences) are proved from first principles.",
-    "lineCount": 848,
-    "theoremCount": 12,
-    "definitionCount": 8,
-    "originalContributions": [
-      "sum_outDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.1=v}| = |E| by double-counting via Finset.sum_comm + Finset.sum_ite_eq'",
-      "sum_inDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.2=v}| = |E| by same double-counting argument",
-      "closed_walk_balance: private lemma — for a closed walk [v0,...,vn] with v0=vn, source-count at any vertex v equals target-count, via circular shift bijection i ↦ (i=0 ? n-1 : i-1)",
-      "walk_source_eq_outDegree / walk_target_eq_inDegree: private lemmas — the walk position bijection identifies source-counts and target-counts with outDegree and inDegree respectively",
-      "eulerian_circuit_implies_balanced: proved — necessity direction of Eulerian theorem, combining handshaking and walk bijection arguments",
-      "directedTriangle_balanced: the directed 3-cycle is Eulerian-balanced, verified by native_decide",
-      "directedPath_path_degrees: the directed path 0→1→2 satisfies Eulerian path degree conditions, verified by native_decide/case analysis",
-      "eulerian_balanced_sum_zero / eulerian_balanced_implies_degree_balance: structural consequences proved from main theorem"
-    ]
-  },
-  "overview": {
-    "historicalContext": "Euler's 1736 paper 'Solutio problematis ad geometriam situs pertinentis' on the Königsberg bridges introduced graph theory and proved the necessity direction of the Eulerian theorem for undirected graphs: an Eulerian circuit exists only if every vertex has even degree. The directed analogue emerged naturally: in a directed graph (digraph), an Eulerian circuit requires that each vertex has equal in-degree and out-degree — one outgoing edge consumed for each incoming edge at every visit. **Hierholzer's algorithm** (1873) proved sufficiency constructively: start any closed walk; if edges remain, splice in subcircuits at the first repeated vertex. The algorithm runs in O(|E|) and directly applies to directed graphs with the same degree balance condition.\n\nThe theory gained surprising new depth with **de Bruijn sequences** (Nicolaas de Bruijn, 1946). A de Bruijn sequence of order n over alphabet Σ is a cyclic sequence in which every length-n string over Σ appears exactly once. De Bruijn (and independently Good, 1946) observed that such sequences correspond to **Eulerian circuits in de Bruijn graphs**: vertices are length-(n-1) words, edges are length-n words, with the edge $(w_1\\ldots w_{n-1})\\to(w_2\\ldots w_n)$ representing the word $w_1\\ldots w_n$. The de Bruijn graph is regular (each vertex has in-degree = out-degree = |Σ|), so Eulerian circuits always exist, proving de Bruijn sequences always exist and giving an efficient construction via Hierholzer's algorithm.\n\nThe **BEST theorem** (van Aardenne-Ehrenfest and de Bruijn 1951; Smith and Tutte 1941–1948) counts Eulerian circuits in directed graphs: the number of distinct Eulerian circuits starting at vertex $w$ is $t_w(G) \\times \\prod_{v} (\\text{outDeg}(v)-1)!$, where $t_w(G)$ is the number of arborescences (spanning directed trees rooted at $w$). This remarkable formula connects Eulerian counting to the Matrix-Tree theorem.\n\nIn computational biology, **Eulerian path algorithms on de Bruijn graphs** became the basis for next-generation sequencing assembly. Pevzner, Tang, and Waterman (2001) introduced the EULER assembler: decompose a genome into overlapping k-mers, construct the de Bruijn graph, and find an Eulerian path. The genome is the sequence spelled by the Eulerian path — a dramatic application of 18th-century graph theory to 21st-century genomics.",
-    "problemStatement": "Extend the Eulerian circuit characterization (from undirected graphs) to directed graphs: characterize when a directed graph has an Eulerian circuit or path in terms of in-degrees and out-degrees.",
-    "text": "For a weakly connected directed graph G: (1) G has an Eulerian circuit iff every vertex v satisfies inDeg(v) = outDeg(v). (2) G has an Eulerian path from s to t (s≠t) iff outDeg(s)=inDeg(s)+1, inDeg(t)=outDeg(t)+1, and all other vertices v have inDeg(v)=outDeg(v).",
-    "proofStrategy": "Define DiGraph V as a Finset of directed edges with no self-loops. Define outDegree and inDegree by filtering edges. Prove the directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg) from first principles via double-counting: swap ∑_v and ∑_e using Finset.sum_comm, then apply Finset.sum_ite_eq'. Prove necessity (HasEulerianCircuit → IsEulerianBalanced) via a walk-position bijection argument: use the unique-coverage property to biject edges with walk positions, then show source-count = target-count using the closed walk property (walk[0] = walk[n] implies a circular shift bijection). Axiomatize the remaining directions (Hierholzer sufficiency, path characterization). Verify concrete examples (directed triangle, directed path) by native_decide.",
-    "keyInsights": [
-      "The directed handshaking lemma is proved by Finset.sum_comm: ∑_v |{e : e.1=v}| = ∑_e ∑_v [e.1=v] = ∑_e 1 = |E|. No Finset.card_biUnion needed.",
-      "Necessity requires a bijection between G.edges and walk positions. The key insight is to strengthen HasEulerianCircuit with ∃! (unique position per edge) and an hsteps condition (every walk step is an edge), enabling use of ExistsUnique.unique for injectivity.",
-      "The closed walk balance is proved by a bijection i ↦ (i=0 ? n-1 : i-1) from source positions {i < n : walk[i] = v} to target positions {i < n : walk[i+1] = v}, using the closed walk condition walk[0] = walk[n].",
-      "The directed triangle A→B→C→A is the canonical Eulerian circuit example: all three vertices have in-degree = out-degree = 1, verified by native_decide over Fin 3.",
-      "For the Eulerian path characterization, the source s has one more outgoing edge than incoming (to start the path), and the sink t has one more incoming edge than outgoing (to end the path). All intermediate vertices are balanced.",
-      "Weak connectivity (underlying undirected graph is connected) is the correct connectivity notion for directed Eulerian theory — strong connectivity is not required for the equivalence.",
-      "De Bruijn sequence connection: the de Bruijn graph B(n, Σ) is a digraph on length-(n-1) strings where each vertex has in-degree = out-degree = |Σ|. The directed Eulerian theorem guarantees Eulerian circuits exist in any such balanced weakly-connected digraph, proving de Bruijn sequences of every order exist over every alphabet — and Hierholzer's algorithm constructs them in O(|Σ|^n) time.",
-      "BEST theorem: the number of Eulerian circuits starting at vertex w in a directed Eulerian graph equals t_w(G) × ∏_v (outDeg(v)-1)!, where t_w(G) is the number of arborescences (spanning in-trees) rooted at w. This connects Eulerian circuit counting to the Matrix-Tree theorem (Kirchhoff 1847) — a deep result in algebraic graph theory.",
-      "Flow conservation interpretation: the directed handshaking equality ∑ outDeg = ∑ inDeg is equivalent to Kirchhoff's current law (KCL) in electrical networks and conservation of flow in network flow problems. An Eulerian graph (every vertex balanced) is one where a unit of 'flow' entering each vertex also leaves — the combinatorial version of a conservative vector field."
+    "conclusion": {
+        "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 6 sorries (Hierholzer infrastructure helpers deferred), 848 lines.",
+        "implications": "The directed Eulerian theorem underpins de Bruijn sequence construction (a de Bruijn graph is Eulerian), DNA fragment assembly algorithms, and Eulerian circuit algorithms in network flow. The degree-balance characterization is also the basis for Hierholzer's O(|E|) directed Eulerian circuit algorithm.",
+        "openQuestions": [
+            "Formalize Hierholzer's algorithm for constructing directed Eulerian circuits (eliminate directed_eulerian_iff axiom)",
+            "Prove directed_euler_path_iff: Eulerian path from s to t iff degree conditions hold at s, t and all others balanced",
+            "Count Eulerian circuits via the BEST theorem: t_w(G) · ∏_v (outDeg(v)-1)! where t_w(G) is the number of arborescences rooted at w"
+        ]
+    },
+    "leanFile": {
+        "namespace": "KonigsbergOQ01OQ02",
+        "lineCount": 848,
+        "axiomCount": 2,
+        "theoremCount": 25,
+        "definitionCount": 10,
+        "path": "Proofs/KonigsbergOQ01OQ02.lean",
+        "sorries": 6
+    },
+    "crossReferences": [
+        {
+            "targetId": "konigsberg-oq-01",
+            "relationship": "parent",
+            "description": "Eulerian Circuits in Concrete Graph Families — the undirected Eulerian theory that this file extends to the directed setting."
+        },
+        {
+            "targetId": "konigsberg-oq-02",
+            "relationship": "sibling",
+            "description": "Directed Euler Paths: In-Degree/Out-Degree Characterization — related directed graph Eulerian theory."
+        },
+        {
+            "targetId": "konigsberg",
+            "relationship": "ancestor",
+            "description": "Original Königsberg bridges problem — Euler 1736; the undirected Eulerian theorem whose directed analogue is formalized here."
+        }
     ],
-    "prerequisites": [
-      "Eulerian circuits and paths in undirected graphs (konigsberg-oq-01)",
-      "Directed graph degree sequences: in-degree, out-degree",
-      "Handshaking lemma for directed graphs: ∑ outDeg = |E| = ∑ inDeg"
-    ]
-  },
-  "sections": [
-    {
-      "id": "definitions",
-      "title": "Directed Graph Basics",
-      "startLine": 50,
-      "endLine": 70,
-      "summary": "Defines DiGraph V (edges: Finset (V×V), noSelfLoops), outDegree, inDegree, IsBalanced, IsEulerianBalanced.",
-      "mathContext": "$\\text{outDeg}(v) = |\\{e \\in E : e.1 = v\\}|$. $\\text{inDeg}(v) = |\\{e \\in E : e.2 = v\\}|$. $\\text{IsBalanced}(v)$: $\\text{inDeg}(v) = \\text{outDeg}(v)$."
-    },
-    {
-      "id": "handshaking",
-      "title": "Directed Handshaking Lemma (Proved)",
-      "startLine": 77,
-      "endLine": 105,
-      "summary": "Proves sum_outDegree_eq_edgeCount and sum_inDegree_eq_edgeCount from first principles via double-counting (swap ∑_v ∑_e with ∑_e ∑_v). Derives sum_outDegree_eq_sum_inDegree by transitivity.",
-      "mathContext": "$\\sum_{v} \\text{outDeg}(v) = |E| = \\sum_{v} \\text{inDeg}(v)$. Proof: $\\sum_v |\\{e: e.1=v\\}| = \\sum_v \\sum_{e \\in E} [e.1=v] = \\sum_{e \\in E} 1 = |E|$."
-    },
-    {
-      "id": "necessity",
-      "title": "Necessity: Eulerian Circuit Implies Balanced (Proved)",
-      "startLine": 112,
-      "endLine": 311,
-      "summary": "Defines HasEulerianCircuit with unique coverage (∃!) and step constraint. Three helper lemmas establish the bijection between walk positions and edges. Main theorem eulerian_circuit_implies_balanced proved: outDeg = source-count = target-count = inDeg, where middle equality uses the closed walk.",
-      "mathContext": "If $G$ has an Eulerian circuit with walk $[v_0,...,v_n]$ ($v_0 = v_n$), then $|\\{i < n : v_i = w\\}| = |\\{i < n : v_{i+1} = w\\}|$ for all $w$ (bijection: $i \\mapsto i-1 \\pmod{n}$). Combined with the edge-position bijection: $\\text{outDeg}(w) = \\text{inDeg}(w)$."
-    },
-    {
-      "id": "characterization",
-      "title": "Directed Eulerian Theorem and Path Characterization",
-      "startLine": 314,
-      "endLine": 341,
-      "summary": "Defines IsWeaklyConnected and HasEulerianPath. Axiomatizes directed_eulerian_iff (Hierholzer) and directed_euler_path_iff.",
-      "mathContext": "$G$ has an Eulerian circuit $\\iff$ $\\text{IsEulerianBalanced}(G)$ (weak connectivity required). $G$ has Eulerian path $s \\to t$ $\\iff$ $\\text{outDeg}(s) = \\text{inDeg}(s)+1$, $\\text{inDeg}(t) = \\text{outDeg}(t)+1$, and all others balanced."
-    },
-    {
-      "id": "examples",
-      "title": "Concrete Examples",
-      "startLine": 348,
-      "endLine": 371,
-      "summary": "Defines directedTriangle (Fin 3, edges {(0,1),(1,2),(2,0)}) and directedPath (Fin 3, edges {(0,1),(1,2)}). Proves balance properties by native_decide.",
-      "mathContext": "Directed 3-cycle: all vertices balanced ($\\text{in} = \\text{out} = 1$). Directed path $0 \\to 1 \\to 2$: $\\text{outDeg}(0) = 1 = \\text{inDeg}(0)+1$, $\\text{inDeg}(2) = 1 = \\text{outDeg}(2)+1$, vertex 1 balanced."
-    },
-    {
-      "id": "consequences",
-      "title": "Consequences",
-      "startLine": 373,
-      "endLine": 389,
-      "summary": "Proves eulerian_balanced_sum_zero and eulerian_balanced_implies_degree_balance from the main theorem.",
-      "mathContext": "Eulerian circuit $\\Rightarrow$ $\\sum_v \\text{outDeg}(v) = \\sum_v \\text{inDeg}(v)$ (as integers). Eulerian circuit $\\Rightarrow$ $\\text{inDeg}(v) = \\text{outDeg}(v)$ for all $v$."
-    },
-    {
-      "id": "hierholzer-infrastructure",
-      "title": "Hierholzer Infrastructure: Greedy Trail and Circuit Existence",
-      "startLine": 390,
-      "endLine": 848,
-      "summary": "Develops the mathematical infrastructure for Hierholzer's directed Eulerian algorithm in 6 steps. (1) Open-walk counting: for an open walk u→w (u≠w), target-count(w) = source-count(w)+1. (2) maxTrail: a greedy trail following outgoing edges, terminating since |E| decreases by 1 per step. (3) maxTrail_closed: in a balanced digraph, the greedy trail is always a closed circuit. (4) circuit_exists: every non-empty balanced digraph contains a directed circuit. (5) remove_circuit_balanced (sorry): removing a circuit preserves balance. (6) euler_path_implies_degree_balance (sorry): Eulerian path implies asymmetric degree conditions at start/end. Steps 1–4 are proved; steps 5–6 are sorry'd pending Finset sdiff API work.",
-      "mathContext": "Key theorem: $G$ balanced + $G.edges \\neq \\emptyset$ $\\Rightarrow$ $\\exists$ directed circuit in $G$. Proof: run greedy trail from any vertex $v$ with an outgoing edge; by balance, the trail closes (proof by contradiction using open-walk counting). Removing the circuit preserves balance (each vertex appears equally often as trail source and target)."
-    }
-  ],
-  "conclusion": {
-    "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 6 sorries (Hierholzer infrastructure helpers deferred), 848 lines.",
-    "implications": "The directed Eulerian theorem underpins de Bruijn sequence construction (a de Bruijn graph is Eulerian), DNA fragment assembly algorithms, and Eulerian circuit algorithms in network flow. The degree-balance characterization is also the basis for Hierholzer's O(|E|) directed Eulerian circuit algorithm.",
-    "openQuestions": [
-      "Formalize Hierholzer's algorithm for constructing directed Eulerian circuits (eliminate directed_eulerian_iff axiom)",
-      "Prove directed_euler_path_iff: Eulerian path from s to t iff degree conditions hold at s, t and all others balanced",
-      "Count Eulerian circuits via the BEST theorem: t_w(G) · ∏_v (outDeg(v)-1)! where t_w(G) is the number of arborescences rooted at w"
-    ]
-  },
-  "leanFile": {
-    "namespace": "KonigsbergOQ01OQ02",
-    "lineCount": 848,
-    "axiomCount": 2,
-    "theoremCount": 12,
-    "definitionCount": 10,
-    "path": "Proofs/KonigsbergOQ01OQ02.lean",
     "sorries": 6
-  },
-  "crossReferences": [
-    {
-      "targetId": "konigsberg-oq-01",
-      "relationship": "parent",
-      "description": "Eulerian Circuits in Concrete Graph Families — the undirected Eulerian theory that this file extends to the directed setting."
-    },
-    {
-      "targetId": "konigsberg-oq-02",
-      "relationship": "sibling",
-      "description": "Directed Euler Paths: In-Degree/Out-Degree Characterization — related directed graph Eulerian theory."
-    },
-    {
-      "targetId": "konigsberg",
-      "relationship": "ancestor",
-      "description": "Original Königsberg bridges problem — Euler 1736; the undirected Eulerian theorem whose directed analogue is formalized here."
-    }
-  ],
-  "sorries": 6
 }
