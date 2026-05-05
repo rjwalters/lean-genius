@@ -8,6 +8,7 @@ import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.Topology.MetricSpace.Holder
 import Mathlib.Tactic
 import Proofs.FourierSeriesOQ02Incomplete01
+import Proofs.FourierSeriesOQ02OQ04
 
 /-
 # Fourier Coefficient Decay Under Hölder Continuity (OQ-02)
@@ -369,13 +370,21 @@ PART VI: OPTIMALITY
 
     NOTE: The original incorrect axiom claimed "∀ᶠ n in cofinite" which is FALSE.
     Weierstrass-type witnesses have ĉ_n = 0 for non-lacunary n, so most coefficients
-    are 0 and the cofinite condition fails. The correct statement is sequential. -/
-axiom holder_decay_is_optimal_seq :
+    are 0 and the cofinite condition fails. The correct statement is sequential.
+
+    PROOF: Uses the Weierstrass lacunary series f(x) = ∑_k r^k • fourier(2^k)(x)
+    with r = 2^{-α}. Proved in FourierSeriesOQ02OQ04.lean:
+    - Convergence: ∑ r^k < ∞ (geometric series)
+    - Fourier coefficients: ĉ_{2^k}(f) = r^k = (2^k)^{-α} via Fourier orthogonality
+    - Hölder continuity: split-sum argument (Lipschitz for k < p₀, trivial for k ≥ p₀)
+      where p₀ = Nat.log 2 ⌈T/d⌉ and d = dist x y -/
+theorem holder_decay_is_optimal_seq :
     ∀ (α : ℝ), 0 < α → α < 1 →
     ∃ (C : ℝ≥0) (f : AddCircle T → ℂ), IsHolderOnCircle C α.toNNReal f ∧
       ∃ (c : ℝ), 0 < c ∧
       ∃ (ns : ℕ → ℤ), StrictMono (fun k => (ns k).natAbs) ∧
-        ∀ k, c / |(ns k : ℝ)| ^ α ≤ ‖fourierCoeff f (ns k)‖
+        ∀ k, c / |(ns k : ℝ)| ^ α ≤ ‖fourierCoeff f (ns k)‖ :=
+  WeierstrassOptimality.holder_decay_is_optimal_seq_proof
 
 /-- **Partial Converse (Corrected: β > α+1)**: If ‖ĉ_n‖ = O(|n|^{-β}) with β > α + 1,
     then f is α-Hölder.

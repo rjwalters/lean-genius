@@ -15,15 +15,16 @@
       "Mathlib.MeasureTheory.Group.Integral",
       "Mathlib.Topology.MetricSpace.Holder",
       "Mathlib.Tactic",
-      "Proofs.FourierSeriesOQ02Incomplete01"
+      "Proofs.FourierSeriesOQ02Incomplete01",
+      "Proofs.FourierSeriesOQ02OQ04"
     ],
     "opens": [
       "MeasureTheory",
       "scoped"
     ],
     "namespace": "FourierHolderDecay",
-    "lineCount": 486,
-    "axiomCount": 1,
+    "lineCount": 495,
+    "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
     "theoremCount": 18
@@ -32,7 +33,7 @@
     "author": "Classical (Bernstein, Zygmund)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Rate_of_convergence",
     "date": "1912",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/FourierSeriesOQ02.lean",
     "tags": [
       "analysis",
@@ -42,7 +43,7 @@
       "coefficient-decay",
       "open-question"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
@@ -98,10 +99,14 @@
       "fourierCoeff_difference_formula: difference formula for coefficients",
       "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
     ],
-    "axiomCount": 1,
-    "lineCount": 486,
-    "assumptions": "1 axiom (holder_decay_is_optimal_seq: Weierstrass sequential optimality, corrected from incorrect cofinite version). The decay_implies_regularity theorem has been fully proved via FourierDecayInfra.",
-    "theoremCount": 18
+    "axiomCount": 0,
+    "lineCount": 495,
+    "assumptions": "0 axioms — fully proved via Weierstrass lacunary series construction in FourierSeriesOQ02OQ04.lean.",
+    "theoremCount": 18,
+    "additionalFiles": [
+      "Proofs/FourierSeriesOQ02Incomplete01.lean",
+      "Proofs/FourierSeriesOQ02OQ04.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",
