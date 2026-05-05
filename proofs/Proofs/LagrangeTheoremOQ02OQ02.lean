@@ -126,10 +126,15 @@ theorem conj_stabilizer_eq_centralizer (x : G) :
 theorem card_conjClass_eq_centralizer_index [Fintype G] (x : G) :
     Nat.card (ConjClasses.mk x).carrier = (centralizer {x}).index := by
   rw [← conj_orbit_eq_carrier]
-  -- orbit-stabilizer: Nat.card orbit * Nat.card stabilizer = Nat.card G
-  -- with stabilizer (via toConjAct) = centralizer {x}
-  -- so Nat.card orbit = centralizer index
-  sorry -- HARD: finalize via Nat.card orbit-stabilizer and index arithmetic
+  -- Step 1: orbit card = stabilizer index (orbit-stabilizer theorem)
+  have horb : Nat.card (MulAction.orbit (ConjAct G) x) =
+      (MulAction.stabilizer (ConjAct G) x).index := by
+    rw [Subgroup.index_eq_card]
+    exact Nat.card_congr (MulAction.orbitEquivQuotientStabilizer (ConjAct G) x)
+  -- Step 2: stabilizer index = centralizer index via ConjAct.toConjAct isomorphism
+  rw [horb, ← conj_stabilizer_eq_centralizer]
+  exact (Subgroup.index_comap_of_surjective _
+    (ConjAct.toConjAct (G := G)).surjective).symm
 
 /-- A conjugacy class is a singleton iff the element is central. -/
 theorem card_conjClass_eq_one_iff_mem_center [Fintype G] (x : G) :
@@ -240,7 +245,7 @@ end A4
   | `class_equation_symm` | \|G\| = \|Z(G)\| + Σ_{noncenter} \|c\| | Proved |
   | `conj_orbit_eq_carrier` | orbit (ConjAct G) x = conjugacy class carrier | Proved |
   | `conj_stabilizer_eq_centralizer` | stabilizer of conjugation = centralizer | Proved |
-  | `card_conjClass_eq_centralizer_index` | \|[x]\| = [G : C\_G(x)] | 1 sorry (HARD) |
+  | `card_conjClass_eq_centralizer_index` | \|[x]\| = [G : C\_G(x)] | Proved (index\_comap\_of\_surjective) |
   | `card_conjClass_eq_one_iff_mem_center` | \|[x]\| = 1 ↔ x ∈ Z(G) | Proved |
   | `pgroup_fixed_point` | \|X\| ≡ \|Fix(G,X)\| (mod p) | Proved (Mathlib) |
   | `center_nontrivial_of_pgroup` | Z(nontrivial p-group) ≠ \{1\} | Proved (Mathlib) |
@@ -250,7 +255,7 @@ end A4
   | `card_center_A4` | \|Z(A₄)\| = 1 | native\_decide |
   | `A4_not_comm` | A₄ is not abelian | decide |
 
-  **Sorries**: 1 (HARD: orbit-to-index connection for card_conjClass_eq_centralizer_index)
+  **Sorries**: 0
   **Axioms**: 0
 -/
 
