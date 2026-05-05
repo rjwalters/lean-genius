@@ -1,0 +1,180 @@
+{
+  "slug": "lebesgue-measure-oq-01-oq-03",
+  "title": "Can the result be extended to show that the indicator of any Borel set with m...",
+  "phase": "COMPLETED",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Can the result be extended to show that the indicator of any Borel set with m....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T07:32:10.537Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full proof in LebesgueMeasureOQ01OQ03.lean. 15 theorems, 0 sorries, 0 axioms. PR pending.",
+    "builtItems": [
+      "indicator_ae_zero_of_null - μ(S)=0 implies 𝟙_S = 0 a.e. (core lemma)",
+      "integral_indicator_of_null - ∫ 𝟙_S dμ = 0 for any null set S (main theorem, any measure space)",
+      "integral_indicator_of_null_on_set - ∫_T 𝟙_S dμ = 0 for null S, any region T",
+      "integral_mul_indicator_of_null - ∫_T f·𝟙_S dμ = 0 for null S, arbitrary integrand f",
+      "integral_on_null_set - ∫_S f dμ = 0 for null S, any f (via restrict_zero_set)",
+      "integral_indicator_countable - countable sets in ℝ are null sets",
+      "integral_indicator_singleton - single points {a} have zero indicator integral",
+      "integral_indicator_rationals - Dirichlet function result (OQ-01) as special case",
+      "measure_iUnion_null_of_null - countable union of null sets is a null set",
+      "integral_indicator_iUnion_null - union of null sets has zero indicator integral",
+      "integral_congr_ae_null_change - changing function on null set preserves integral"
+    ],
+    "insights": [
+      "compl_mem_ae_iff is the key bridge: μ(S)=0 iff S^c ∈ μ.ae, giving ∀ᵐ x, x ∉ S",
+      "The proof works in any measure space, not just ℝ with Lebesgue measure - no MeasurableSet needed for forward direction",
+      "Measure.restrict_zero_set (Restrict.lean:237) and integral_zero_measure (Bochner/Basic.lean:1011) handle the general-integrand case",
+      "integral_eq_zero_of_ae and ae_restrict_of_ae compose cleanly for restricted integrals"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "measure-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "lebesgue-measure",
+    "lebesgue-measure-oq-01",
+    "lebesgue-measure-oq-01-oq-01",
+    "lebesgue-measure-oq-01-oq-03",
+    "lebesgue-measure-oq-02",
+    "lebesgue-measure-oq-03",
+    "lebesgue-measure-oq-03-oq-01",
+    "lebesgue-measure-oq-06"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T07:32:10.537Z",
+  "lastUpdate": "2026-05-03T07:32:10.537Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/LebesgueMeasure.lean",
+      "filename": "LebesgueMeasure.lean",
+      "lineCount": 418,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasure.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01.lean",
+      "filename": "LebesgueMeasureOQ01.lean",
+      "lineCount": 198,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01.lean",
+      "filename": "LebesgueMeasureOQ01OQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ03.lean",
+      "filename": "LebesgueMeasureOQ01OQ03.lean",
+      "lineCount": 245,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ02.lean",
+      "filename": "LebesgueMeasureOQ02.lean",
+      "lineCount": 225,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03.lean",
+      "filename": "LebesgueMeasureOQ03.lean",
+      "lineCount": 137,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03OQ01.lean",
+      "filename": "LebesgueMeasureOQ03OQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06.lean",
+      "filename": "LebesgueMeasureOQ06.lean",
+      "lineCount": 1518,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06Aristotle.lean",
+      "filename": "LebesgueMeasureOQ06Aristotle.lean",
+      "lineCount": 76,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06Aristotle.lean"
+    }
+  ]
+}

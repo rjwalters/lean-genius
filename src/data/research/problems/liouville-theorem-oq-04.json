@@ -1,7 +1,7 @@
 {
   "slug": "liouville-theorem-oq-04",
   "title": "Liouville's Theorem: p-adic and Function Field Extensions",
-  "phase": "ACT",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,29 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 9 (2026-05-03) proved polyCoeffL1_pos and irred_no_rational_roots (2 of 4 helper sorries). Session 8 converted axiom to theorem. Remaining 2 sorries: padicNorm_poly_eval_lb (HARD) and cofactor_uniform_bound (needs Taylor in Q_p).",
+    "progressSummary": "PROGRESS: Session 8 (2026-05-03, researcher-7): fixed IsPadicLiouville definition (strict positivity), converted axiom to sorry-theorem (0 axioms now, 1 sorry), updated main theorem. Structural proof outline complete; sorry requires norm compatibility + polynomial bounds in ℚ_[p].",
     "builtItems": [
       "Fixed IsPadicLiouville in LiouvilleTheoremOQ04.lean:213 (added 2 ≤ max r.natAbs s.natAbs)",
       "Proved padic_algebraic_not_liouville in LiouvilleTheoremOQ04.lean:261 (0 sorries): exists_pow_lt_of_lt_one + div_lt_div_right + one_div_le_one_div_of_le",
-      "polyCoeffL1 def + polyCoeffL1_pos lemma (sorry): LiouvilleTheoremOQ04.lean:233-242",
-      "padicNorm_poly_eval_lb (sorry): clearing-denominator lower bound, LiouvilleTheoremOQ04.lean:243-251",
-      "irred_no_rational_roots (sorry): irreducible degree≥2 implies no rational roots, LiouvilleTheoremOQ04.lean:252-258",
-      "cofactor_uniform_bound (sorry): Taylor factorization upper bound ‖f(r/s)‖≤M·‖α-r/s‖, LiouvilleTheoremOQ04.lean:260-268",
-      "polyCoeffL1_pos in LiouvilleTheoremOQ04.lean:241 — L1 coefficient norm > 0 for nonzero f ∈ ℤ[X] (Session 9)",
-      "irred_no_rational_roots in LiouvilleTheoremOQ04.lean:255 — irreducible degree≥2 poly has no rational roots (Session 9, factor theorem + degree argument)"
+      "Session 8: IsPadicLiouville fixed with strict positivity condition 0 < ‖β - r/s‖",
+      "Session 8: padic_liouville_estimate converted from axiom to theorem with sorry (0 axioms now)",
+      "Session 8: padic_algebraic_not_liouville updated to use 2d exponent and extract hne from positivity"
     ],
     "insights": [
       "The weak IsPadicLiouville definition (without H≥2) cannot prove padic_algebraic_not_liouville — when H=1, bound 1/H^n=1 gives no useful constraint.",
       "Fix mirrors Mathlib Liouville definition: require 2 ≤ max(r.natAbs, s.natAbs), forcing H→∞ so 1/H^n→0 eventually beats any positive lower bound C.",
-      "Session 8 (2026-05-03): Converted padic_liouville_estimate from axiom to theorem by decomposing into 4 helper sorries: polyCoeffL1_pos, padicNorm_poly_eval_lb, irred_no_rational_roots, cofactor_uniform_bound. Axiom count: 1→0. Sorry count: 0→4. Net improvement: sorries replaceable, axioms are permanent.",
-      "Bug fix: original axiom false for degree-1 polynomials — added hf_irred and hf_deg≥2 constraints to padic_liouville_estimate and padic_algebraic_not_liouville.",
-      "polyCoeffL1_pos: use Finset.sum_pos with support_nonempty.mpr and Int.natAbs_pos.mpr.",
-      "irred_no_rational_roots: factor theorem + natDegree_map_eq_of_injective + natDegree_mul + not_isUnit_of_degree_pos + Irreducible.isUnit_or_isUnit."
+      "IsPadicLiouville definition was missing 0 < ‖β - r/s‖ (strict positivity) — without it, all rationals are trivially Liouville (take r/s = β giving ‖β - r/s‖ = 0), making the main theorem false for rational algebraic numbers. Fixed in Session 8.",
+      "padic_liouville_estimate is FALSE as originally stated (for rational α): taking r/s = α gives ‖α - r/s‖ = 0 < C/H^d, contradicting C > 0. Fix: add hne hypothesis (α ≠ r/s) to the theorem, which is guaranteed by the IsPadicLiouville strict positivity.",
+      "The exponent can be 2d instead of d using the simple cofactor bound: ‖g(r/s)‖_p ≤ M_g * H^(d-1) (non-Archimedean + ‖r/s‖_p ≤ H), giving ‖α - r/s‖ ≥ C_f/(M_g * H^(2d-1)). The tight bound d uses an ultrametric case split."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove padicNorm_poly_eval_lb: norm compatibility ‖(q : Q_p)‖ = padicNorm p q + clearing-denominator |s^d·f(r/s)| ≤ polyCoeffL1(f)·H^d.",
-      "Prove cofactor_uniform_bound: polynomial division f(x) = (x-α)·g(x) over Q_p + uniform norm bound on g(r/s)."
+      "Prove norm compatibility: ‖algebraMap ℚ ℚ_[p] x‖ = padicNorm p x — should be in Mathlib",
+      "Prove uniform polynomial evaluation bound: ∃ C_f, ∀ r s (s≠0, f(r/s)≠0), padicNorm p (f(r/s)) ≥ C_f/H^d — uses Archimedean Complement Lemma from Part I",
+      "Prove cofactor bound: if f.map alg = (X - C α) * g, then ‖g.eval (r/s)‖ ≤ M_g * H^(d-1) where M_g depends only on g-coefficients",
+      "Complete padic_liouville_estimate: combine polynomial bound + cofactor bound via Polynomial.dvd_iff_isRoot"
     ]
   },
   "tags": [
@@ -89,11 +87,11 @@
     {
       "path": "Proofs/LiouvilleTheoremOQ04.lean",
       "filename": "LiouvilleTheoremOQ04.lean",
-      "lineCount": 529,
-      "theoremCount": 20,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 7,
+      "lineCount": 432,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ04.lean"
     }
