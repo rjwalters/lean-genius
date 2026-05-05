@@ -23,7 +23,7 @@
         "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, necessity, concrete examples, consequences) are proved from first principles.",
         "lineCount": 848,
         "theoremCount": 12,
-        "definitionCount": 8,
+        "definitionCount": 13,
         "originalContributions": [
             "sum_outDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.1=v}| = |E| by double-counting via Finset.sum_comm + Finset.sum_ite_eq'",
             "sum_inDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.2=v}| = |E| by same double-counting argument",
@@ -129,7 +129,7 @@
         "lineCount": 848,
         "axiomCount": 2,
         "theoremCount": 25,
-        "definitionCount": 10,
+        "definitionCount": 13,
         "path": "Proofs/KonigsbergOQ01OQ02.lean",
         "sorries": 6
     },

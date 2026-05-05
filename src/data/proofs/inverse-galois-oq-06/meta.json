@@ -23,7 +23,7 @@
     "assumptions": "1 axiom: three_dvd_gal_card — 3 divides |Gal(q/ℚ)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups.",
     "lineCount": 2067,
     "theoremCount": 85,
-    "definitionCount": 7,
+    "definitionCount": 12,
     "originalContributions": [
       "q: the polynomial x⁵-5x⁴+10x³-10x²+25x-5 (translate of x⁵+20x+16)",
       "q_eisenstein: q satisfies Eisenstein's criterion at p=5 (PROVED, hence irreducible over ℚ)",
@@ -88,7 +88,7 @@
     "lineCount": 2067,
     "axiomCount": 1,
     "theoremCount": 85,
-    "definitionCount": 8,
+    "definitionCount": 12,
     "path": "Proofs/InverseGaloisA5.lean",
     "sorries": 0
   },

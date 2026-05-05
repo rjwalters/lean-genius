@@ -38,7 +38,7 @@
     "axiomCount": 1,
     "lineCount": 519,
     "theoremCount": 15,
-    "definitionCount": 8
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Nash's original 1950 proof of equilibrium existence occupies only a paragraph in his 2-page PNAS paper. The key idea: define a continuous map on the product of mixed strategy simplices whose fixed points are Nash equilibria. Each player shifts weight toward pure strategies that offer improvement over their current mixed strategy. The normalization ensures the result is a valid mixed strategy. Brouwer's fixed point theorem guarantees a fixed point, and the algebra of the fixed-point equation implies all players are in equilibrium. Nash later gave a Kakutani-based proof in his 1951 Annals paper, but the Brouwer version is more direct and avoids upper hemicontinuity.",
