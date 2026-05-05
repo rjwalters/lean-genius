@@ -1,0 +1,141 @@
+{
+  "slug": "law-of-cosines-oq-01-oq-04",
+  "title": "Prove the small-angle limit rigorously using Taylor remainder bounds",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Prove the small-angle limit rigorously using Taylor remainder bounds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-05T02:57:44.814Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 206-line proof, 0 sorries, 0 axioms. Small-angle limit proved via double-angle identity + sinc limit.",
+    "builtItems": [
+      "tendsto_sin_div_zero: sin(h)/h → 1 at line 36",
+      "tendsto_sin_mul_div: sin(tx)/t → x at line 44",
+      "tendsto_cos_mul: cos(tx) → 1 at line 57",
+      "tendsto_one_sub_cos_div_sq: (1-cos(tx))/t² → x²/2 at line 66",
+      "small_angle_limit (main theorem) at line 128",
+      "spherical_to_euclidean_limit at line 168",
+      "euclidean_is_leading_order at line 180"
+    ],
+    "insights": [
+      "1 - cos(tx) = 2sin²(tx/2) (double-angle) converts cosine limit to sinc squared",
+      "sin(u)/u → 1 follows from HasDerivAt sin 1 0 + hasDerivAt_iff_tendsto_slope",
+      "d/dt[sin(tx)]|₀ = x via HasDerivAt.sin chain rule gives sin(tx)/t → x",
+      "Limit decomposes: (1-cosα·cosβ-sinα·sinβ·cosC)/t² = (1-cosα)/t² + cosα·(1-cosβ)/t² - cosC·sinα/t·sinβ/t",
+      "nhdsWithin composition via tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within handles t·x/2 → 0 with t·x/2 ≠ 0"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-01",
+    "law-of-cosines-oq-01-oq-05",
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-03-oq-02",
+    "law-of-cosines-oq-04",
+    "law-of-cosines-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.814Z",
+  "lastUpdate": "2026-05-05T02:57:44.814Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawOfCosines.lean",
+      "filename": "LawOfCosines.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03.lean",
+      "filename": "LawOfCosinesOQ03.lean",
+      "lineCount": 193,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03OQ02.lean",
+      "filename": "LawOfCosinesOQ03OQ02.lean",
+      "lineCount": 265,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04.lean",
+      "filename": "LawOfCosinesOQ04.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04OQ02.lean",
+      "filename": "LawOfCosinesOQ04OQ02.lean",
+      "lineCount": 174,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ05.lean",
+      "filename": "LawOfCosinesOQ05.lean",
+      "lineCount": 694,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ05.lean"
+    }
+  ]
+}

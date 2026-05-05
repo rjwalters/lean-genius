@@ -1,0 +1,94 @@
+{
+  "id": "law-of-cosines-oq-01-oq-04",
+  "title": "Small-Angle Limit: Spherical to Euclidean Law of Cosines",
+  "slug": "law-of-cosines-oq-01-oq-04",
+  "description": "Proves rigorously that the spherical law of cosines reduces to the planar law of cosines in the small-angle limit. For fixed α, β, cosC, the limit as t → 0 of (1 - cos(tα)cos(tβ) - sin(tα)sin(tβ)cosC)/t² equals (α² + β² - 2αβcosC)/2. Proof uses the double-angle identity 1 - cos(tx) = 2sin²(tx/2) and the sinc limit sin(u)/u → 1 derived from HasDerivAt of sin at 0.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-05",
+    "status": "verified",
+    "badge": "verified",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ01OQ04.lean",
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "spherical-geometry",
+      "limits",
+      "taylor-bounds",
+      "sinc",
+      "research"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 206,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-05",
+    "mathlibDependencies": [
+      {
+        "theorem": "HasDerivAt.sin",
+        "description": "Chain rule for HasDerivAt applied to sin: gives d/dt sin(t·x)|₀ = x",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "hasDerivAt_iff_tendsto_slope",
+        "description": "HasDerivAt characterization as slope limit: f'(a) = lim (f(x)-f(a))/(x-a)",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Basic"
+      },
+      {
+        "theorem": "Real.cos_two_mul",
+        "description": "Double angle formula: cos(2x) = cos²x - sin²x, giving 1 - cos(x) = 2sin²(x/2)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within",
+        "description": "Restricts a nhds tendsto to nhdsWithin with membership preservation",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/LawOfCosinesOQ01OQ04.lean",
+    "lineCount": 206,
+    "theoremCount": 7,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorryCount": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ04.lean"
+  },
+  "overview": "The spherical law of cosines states cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) for a triangle on the unit sphere. A natural question is whether this reduces to the Euclidean law c² = a² + b² - 2ab·cos(C) as the triangle shrinks. This proof answers yes, rigorously: as sides a = tα, b = tβ with t → 0, the spherical formula normalized by t² converges exactly to (α² + β² - 2αβcosC)/2.",
+  "sections": [
+    {
+      "title": "Key Identity",
+      "content": "The proof pivots on the double-angle formula 1 - cos(tx) = 2sin²(tx/2). This converts the cosine limit into a squared sinc limit (sin(u)/u)² → 1."
+    },
+    {
+      "title": "Sinc Limit via HasDerivAt",
+      "content": "The limit sin(h)/h → 1 as h → 0 follows from HasDerivAt sin 1 0 (since sin'(0) = cos(0) = 1) combined with hasDerivAt_iff_tendsto_slope. For sin(tx)/t → x: the chain rule gives d/dt[sin(tx)]|₀ = x, giving the general linear sinc limit."
+    },
+    {
+      "title": "Algebraic Decomposition",
+      "content": "The main expression decomposes as (1-cosα)/t² + cosα·(1-cosβ)/t² - cosC·(sinα/t)·(sinβ/t). Each factor has a known limit: α²/2, 1, β²/2, α, β respectively. Limit arithmetic gives the result."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "law-of-cosines-oq-01-oq-04-oq-01",
+      "question": "Can the rate of convergence be quantified? Specifically, what is the leading-order correction term O(t⁴) and can it be computed explicitly in Lean?",
+      "difficulty": "medium"
+    },
+    {
+      "id": "law-of-cosines-oq-01-oq-04-oq-02",
+      "question": "Does a uniform small-angle limit hold for the spherical excess (excess of angle sum over π), connecting to the Gauss-Bonnet theorem?",
+      "difficulty": "hard"
+    }
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-01",
+    "law-of-cosines-oq-01-oq-01",
+    "law-of-cosines-oq-01-oq-02",
+    "law-of-cosines-oq-05"
+  ]
+}
