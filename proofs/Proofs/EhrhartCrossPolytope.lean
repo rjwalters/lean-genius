@@ -317,23 +317,210 @@ def crossBall (d n : ℕ) : Finset (Fin d → Fin (2 * n + 1)) :=
   Finset.univ.filter fun x =>
     ∑ i, (if (x i).val ≤ n then n - (x i).val else (x i).val - n) ≤ n
 
+-- Generalized ball with budget m in the ambient Fin (2*n+1) space.
+-- crossBall d n = innerBall d n n.
+private def innerBall (d n m : ℕ) : Finset (Fin d → Fin (2 * n + 1)) :=
+  Finset.univ.filter fun x =>
+    ∑ i, (if (x i).val ≤ n then n - (x i).val else (x i).val - n) ≤ m
+
+private lemma crossBall_eq_innerBall (d n : ℕ) : crossBall d n = innerBall d n n := rfl
+
+-- Individual coordinate distance bound follows from sum bound.
+private lemma innerBall_coord_le {d n m : ℕ} {x : Fin d → Fin (2 * n + 1)}
+    (hx : x ∈ innerBall d n m) (i : Fin d) :
+    (if (x i).val ≤ n then n - (x i).val else (x i).val - n) ≤ m :=
+  le_trans (Finset.single_le_sum (fun j _ => Nat.zero_le _) (Finset.mem_univ i))
+    ((Finset.mem_filter.mp hx).2)
+
+-- Shift bijection: innerBall d n m ≃ crossBall d m when m ≤ n.
+-- Map: x ↦ (fun i => x(i) - (n-m)), inverse: y ↦ (fun i => y(i) + (n-m)).
+private lemma innerBall_card_eq {d n m : ℕ} (hm : m ≤ n) :
+    (innerBall d n m).card = (crossBall d m).card := by
+  apply Finset.card_bij
+    (fun (x : Fin d → Fin (2 * n + 1)) hx i =>
+      ⟨(x i).val - (n - m), by
+        have hb := innerBall_coord_le hx i
+        split_ifs at hb with h <;> omega⟩)
+  · intro x hx
+    simp only [crossBall, Finset.mem_filter, Finset.mem_univ, true_and]
+    have hmem := (Finset.mem_filter.mp hx).2
+    have hterm : ∀ i : Fin d,
+        (if ((x i).val - (n - m)) ≤ m then m - ((x i).val - (n - m))
+         else ((x i).val - (n - m)) - m) =
+        (if (x i).val ≤ n then n - (x i).val else (x i).val - n) := by
+      intro i; have hb := innerBall_coord_le hx i; split_ifs with h1 h2 <;> omega
+    calc ∑ i, (if ((x i).val - (n - m)) ≤ m then m - ((x i).val - (n - m))
+                else ((x i).val - (n - m)) - m)
+        = ∑ i, (if (x i).val ≤ n then n - (x i).val else (x i).val - n) :=
+          Finset.sum_congr rfl (fun i _ => hterm i)
+      _ ≤ m := hmem
+  · intro x₁ hx₁ x₂ hx₂ heq
+    funext i; apply Fin.ext
+    have heqi := congr_fun heq i
+    simp only [Fin.mk.injEq] at heqi
+    have hb₁ := innerBall_coord_le hx₁ i
+    have hb₂ := innerBall_coord_le hx₂ i
+    split_ifs at hb₁ hb₂ with h1 h2 <;> omega
+  · intro y hy
+    refine ⟨fun i => ⟨(y i).val + (n - m), by have := (y i).isLt; omega⟩, ?_, ?_⟩
+    · simp only [innerBall, Finset.mem_filter, Finset.mem_univ, true_and]
+      have hmem := (Finset.mem_filter.mp hy).2
+      have hterm : ∀ i : Fin d,
+          (if ((y i).val + (n - m)) ≤ n then n - ((y i).val + (n - m))
+           else ((y i).val + (n - m)) - n) =
+          (if (y i).val ≤ m then m - (y i).val else (y i).val - m) := by
+        intro i
+        have hb := le_trans (Finset.single_le_sum (fun j _ => Nat.zero_le _)
+          (Finset.mem_univ i)) hmem
+        split_ifs with h1 h2 <;> omega
+      calc ∑ i, (if ((y i).val + (n - m)) ≤ n then n - ((y i).val + (n - m))
+                  else ((y i).val + (n - m)) - n)
+          = ∑ i, (if (y i).val ≤ m then m - (y i).val else (y i).val - m) :=
+            Finset.sum_congr rfl (fun i _ => hterm i)
+        _ ≤ m := hmem
+    · funext i; apply Fin.ext; omega
+
+-- Symmetric sum over Fin(2m+1): midpoint value plus twice range sum.
+private lemma sym_fin_sum (f : ℕ → ℕ) (m : ℕ) :
+    ∑ k : Fin (2 * m + 1), (if k.val ≤ m then f k.val else f (2 * m - k.val)) =
+    f m + 2 * ∑ k ∈ Finset.range m, f k := by
+  rw [Finset.sum_fin_eq_sum_range]
+  have hsplit : Finset.range (2 * m + 1) =
+      Finset.range m ∪ {m} ∪ Finset.Ico (m + 1) (2 * m + 1) := by
+    ext k; simp [Finset.mem_range, Finset.mem_Ico]; omega
+  have hdisj1 : Disjoint (Finset.range m) ({m} : Finset ℕ) := by
+    simp [Finset.disjoint_left, Finset.mem_range]
+  have hdisj2 : Disjoint (Finset.range m ∪ {m}) (Finset.Ico (m + 1) (2 * m + 1)) := by
+    simp [Finset.disjoint_left, Finset.mem_range, Finset.mem_Ico]; omega
+  rw [hsplit, Finset.sum_union hdisj2, Finset.sum_union hdisj1]
+  have hleft : ∑ k ∈ Finset.range m, (if k ≤ m then f k else f (2 * m - k)) =
+      ∑ k ∈ Finset.range m, f k :=
+    Finset.sum_congr rfl fun k hk => by simp [Nat.le_of_lt (Finset.mem_range.mp hk)]
+  have hmid : ∑ k ∈ ({m} : Finset ℕ), (if k ≤ m then f k else f (2 * m - k)) = f m := by simp
+  have hright : ∑ k ∈ Finset.Ico (m + 1) (2 * m + 1), (if k ≤ m then f k else f (2 * m - k)) =
+      ∑ k ∈ Finset.range m, f k := by
+    have heq : ∑ k ∈ Finset.Ico (m + 1) (2 * m + 1), (if k ≤ m then f k else f (2 * m - k)) =
+        ∑ k ∈ Finset.Ico (m + 1) (2 * m + 1), f (2 * m - k) :=
+      Finset.sum_congr rfl fun k hk => by
+        simp [show ¬k ≤ m from by simp [Finset.mem_Ico] at hk; omega]
+    rw [heq]
+    apply Finset.sum_nbij (fun k => 2 * m - k)
+    · intro k hk; simp [Finset.mem_range, Finset.mem_Ico] at hk ⊢; omega
+    · intro k₁ _ k₂ _ h; omega
+    · intro k hk
+      exact ⟨2 * m - k, by simp [Finset.mem_Ico, Finset.mem_range] at hk ⊢; omega, by omega⟩
+    · intro k hk; congr 1; simp [Finset.mem_range] at hk; omega
+  rw [hleft, hmid, hright]; ring
+
 /-- **Main geometric theorem**: the cross-polytope lattice count equals crossEhrhart d n.
 
-    Proof sketch (induction on d):
-    - Base d=0: crossBall 0 n = {∅}, card = 1 = crossEhrhart 0 n. ✓
-    - Step: crossBall (d+1) n decomposes by last coordinate j ∈ {0,...,2n}.
-      For each j, the fiber is crossBall d (n - |j - n|).
-      Summing: card = Σ_{j=0}^{2n} crossBall d (n - |j-n|).card
-             = crossBall d n + 2·Σ_{m=0}^{n-1} crossBall d m   [pair j↔(2n-j)]
-      By IH and crossEhrhart_succ_d: = crossEhrhart d n + 2·Σ crossEhrhart d m
-             = crossEhrhart (d+1) n.
-    The Finset slicing argument is standard but lengthy. -/
+    Proof: induction on d. The inductive step uses innerBall fiber decomposition:
+    slice by last coordinate j, apply IH to each fiber (size = crossEhrhart d (n-|j-n|)),
+    then sum via sym_fin_sum and crossEhrhart_succ_d. -/
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
   induction d with
   | zero =>
-    -- crossBall 0 n = singleton {empty function}, card = 1 = crossEhrhart 0 n
     simp [crossBall, crossEhrhart]
-  | succ d ih => sorry
+  | succ d ih =>
+    rw [crossBall_eq_innerBall]
+    -- Generalize to all budgets m ≤ n to enable induction on the fiber sizes.
+    suffices h : ∀ m ≤ n, (innerBall (d + 1) n m).card = crossEhrhart (d + 1) m from h n le_rfl
+    intro m hm
+    -- Partition by last coordinate.
+    have hdecomp : innerBall (d + 1) n m =
+        Finset.biUnion Finset.univ
+          (fun j : Fin (2 * n + 1) =>
+            (innerBall (d + 1) n m).filter (fun x => x (Fin.last d) = j)) := by
+      ext x; simp
+    rw [hdecomp, Finset.card_biUnion (by
+      intro j _ k _ hjk
+      simp only [Finset.disjoint_left, Finset.mem_filter]
+      intro x ⟨_, hxj⟩ ⟨_, hxk⟩; exact hjk (hxj ▸ hxk))]
+    -- Compute fiber sizes: biject via Fin.init (drop last coord).
+    have hfiber : ∀ j : Fin (2 * n + 1),
+        ((innerBall (d + 1) n m).filter (fun x => x (Fin.last d) = j)).card =
+        if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
+        then (innerBall d n (m - (if j.val ≤ n then n - j.val else j.val - n))).card
+        else 0 := by
+      intro j
+      split_ifs with hj
+      · apply Finset.card_bij (fun x _ => Fin.init x)
+        · intro x hx
+          simp only [innerBall, Finset.mem_filter, Finset.mem_univ, true_and,
+                     Fin.init, Function.comp] at hx ⊢
+          obtain ⟨hsum, hlast⟩ := hx
+          rw [Fin.sum_univ_castSucc] at hsum
+          have hdist : (if (x (Fin.last d)).val ≤ n then n - (x (Fin.last d)).val
+                        else (x (Fin.last d)).val - n) =
+                       (if j.val ≤ n then n - j.val else j.val - n) := by rw [hlast]
+          omega
+        · intro x₁ hx₁ x₂ hx₂ heq
+          simp only [Finset.mem_filter] at hx₁ hx₂
+          funext i
+          refine Fin.lastCases ?_ ?_ i
+          · rw [hx₁.2, hx₂.2]
+          · exact fun k => congr_fun heq k
+        · intro y hy
+          refine ⟨Fin.snoc y j, ?_, ?_⟩
+          · simp only [Finset.mem_filter, innerBall, Finset.mem_univ, true_and]
+            rw [Fin.sum_univ_castSucc]
+            simp only [Fin.snoc_castSucc, Fin.snoc_last]
+            have hmem := (Finset.mem_filter.mp hy).2
+            omega
+          · simp [Fin.init_snoc]
+      · rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+        intro x hx
+        simp only [Finset.mem_filter, innerBall, Finset.mem_univ, true_and] at hx
+        obtain ⟨hsum, hlast⟩ := hx
+        rw [Fin.sum_univ_castSucc] at hsum
+        have hdist : (if (x (Fin.last d)).val ≤ n then n - (x (Fin.last d)).val
+                      else (x (Fin.last d)).val - n) =
+                     (if j.val ≤ n then n - j.val else j.val - n) := by rw [hlast]
+        push_neg at hj; omega
+    -- Apply fiber formula.
+    simp_rw [hfiber]
+    -- Convert innerBall sizes to crossEhrhart via innerBall_card_eq and ih.
+    simp_rw [show ∀ j : Fin (2 * n + 1),
+               (if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
+                then (innerBall d n (m - (if j.val ≤ n then n - j.val else j.val - n))).card
+                else 0) =
+               (if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
+                then crossEhrhart d (m - (if j.val ≤ n then n - j.val else j.val - n))
+                else 0) from fun j => by
+             split_ifs with hj
+             · rw [innerBall_card_eq ((Nat.sub_le m _).trans hm), ih]
+             · rfl]
+    -- Reindex: biject sum over Fin(2n+1) (with zeros outside support) with Fin(2m+1).
+    rw [show ∑ j : Fin (2 * n + 1),
+              (if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
+               then crossEhrhart d (m - (if j.val ≤ n then n - j.val else j.val - n))
+               else 0) =
+            ∑ k : Fin (2 * m + 1),
+              (if k.val ≤ m then crossEhrhart d k.val else crossEhrhart d (2 * m - k.val))
+        from ?_]
+    · rw [sym_fin_sum, ← crossEhrhart_succ_d]
+    · -- Reduce to filtered sum, then biject via k ↦ ⟨k+(n-m), _⟩.
+      rw [← Finset.sum_filter]
+      apply Finset.sum_nbij (fun k : Fin (2 * m + 1) => ⟨k.val + (n - m), by
+            have := k.isLt; omega⟩)
+      · intro k _
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+        have hk := k.isLt; split_ifs with h <;> omega
+      · intro k₁ _ k₂ _ h; apply Fin.ext; simp only [Fin.mk.injEq] at h; omega
+      · intro j hj
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+        refine ⟨⟨j.val - (n - m), by
+            have := j.isLt; split_ifs at hj with h <;> omega⟩, Finset.mem_univ _, ?_⟩
+        apply Fin.ext; simp only [Fin.mk.injEq]
+        split_ifs at hj with h <;> omega
+      · intro k _
+        have hk := k.isLt
+        have hdist_eq : m - (if k.val + (n - m) ≤ n then n - (k.val + (n - m))
+                              else k.val + (n - m) - n) =
+                        if k.val ≤ m then k.val else 2 * m - k.val := by
+          split_ifs with h1 h2 <;> omega
+        simp only [hdist_eq]
+        split_ifs <;> rfl
 
 -- ============================================================
 -- PART IX: Summary and Exports
