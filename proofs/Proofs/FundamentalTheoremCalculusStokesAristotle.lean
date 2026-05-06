@@ -56,9 +56,13 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
   simp only [extDeriv1_2D, extDeriv0_2D]
   rw [sub_eq_zero]
   -- Differentiability: f is C¹, fderiv ℝ f is C¹ (f is C²)
-  have hDiff : Differentiable ℝ f := hf.differentiable (by norm_num)
-  have hFDiff : Differentiable ℝ (fderiv ℝ f) :=
-    (hf.fderiv_right (by norm_num)).differentiable (by norm_num)
+  -- Explicit ℕ∞ type annotations prevent metavar issues in side conditions
+  have hDiff : Differentiable ℝ f :=
+    hf.differentiable (show (1 : ℕ∞) ≤ 2 by norm_num)
+  have hFDiff : Differentiable ℝ (fderiv ℝ f) := by
+    have h : ContDiff ℝ 1 (fderiv ℝ f) :=
+      hf.fderiv_right (show (1 : ℕ∞) + 1 ≤ 2 by norm_num)
+    exact h.differentiable le_rfl
   -- y-partial at (x, p.2): deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1)
   have hDY : ∀ x, deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1) := fun x =>
     ((hDiff (x, p.2)).hasFDerivAt.comp_hasDerivAt p.2
