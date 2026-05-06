@@ -49,6 +49,11 @@
         "theorem": "Int.floor",
         "description": "Floor function ⌊x⌋ for defining the fractional part frac(x) = x − ⌊x⌋",
         "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "div_le_div_right, div_lt_iff",
+        "description": "Ordered field division lemmas for density bound proofs",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
       }
     ],
     "originalContributions": [
@@ -73,12 +78,14 @@
       "density_additive_parts_nonneg: PROVED — non-negativity for additive pairs",
       "density_additive_full: PROVED — full density when d(A)+d(B)=1",
       "countingFn_empty/mono/mono_N: PROVED — counting function properties",
-      "Sumset_singleton: PROVED — sumset of singletons is a singleton"
+      "Sumset_singleton: PROVED — sumset of singletons is a singleton",
+      "density_univ_one: d(ℕ) = 1 (whole set has density 1)",
+      "density_finite_zero: d(A) = 0 for any finite A ⊆ ℕ"
     ],
     "axiomCount": 3,
-    "lineCount": 319,
+    "lineCount": 363,
     "assumptions": "3 axioms: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture (OPEN). See Lean source for complete statements.",
-    "theoremCount": 31,
+    "theoremCount": 35,
     "definitionCount": 8
   },
   "sections": [
@@ -189,9 +196,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 319,
+    "lineCount": 363,
     "axiomCount": 3,
-    "theoremCount": 31,
+    "theoremCount": 35,
     "definitionCount": 8,
     "path": "Proofs/Erdos335Problem.lean",
     "sorries": 0

@@ -18,12 +18,13 @@ d(A + B) = d(A) + d(B).
 -/
 
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Irrational
+import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Set.Finite.Lattice
 import Mathlib.Topology.Basic
 import Mathlib.Topology.Order.Basic
+import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Tactic
 
 open Set Filter
@@ -317,3 +318,46 @@ theorem density_additive_complement_bound (A B : Set ℕ) (h : DensityAdditive A
 theorem density_double_sumset (A : Set ℕ) (h : DensityAdditive A A) :
     asympDensity (Sumset A A) = 2 * asympDensity A := by
   rw [h.2.2.2]; ring
+
+/- ## Concrete Density Computations -/
+
+/-- Counting function for the whole set ℕ equals N. -/
+private lemma countingFn_univ_eq (N : ℕ) : countingFn Set.univ N = N := by
+  unfold countingFn
+  rw [Set.univ_inter, Set.ncard_Icc]
+  omega
+
+/-- The whole set ℕ has asymptotic density 1:
+    every element of {1,...,N} is in ℕ, so the ratio is N/N = 1. -/
+theorem density_univ_one : DensityExists Set.univ ∧ asympDensity Set.univ = 1 := by
+  have htend : Filter.Tendsto (fun N => (countingFn Set.univ N : ℝ) / N) atTop (nhds 1) :=
+    Filter.Tendsto.congr' tendsto_const_nhds
+      (by filter_upwards [Filter.eventually_ne_atTop 0] with N hN
+          rw [countingFn_univ_eq, div_self (Nat.cast_ne_zero.mpr hN)])
+  exact ⟨⟨1, htend⟩, htend.limUnder_eq⟩
+
+/-- The counting function for a finite set A is bounded by its cardinality. -/
+private lemma countingFn_le_ncard (A : Set ℕ) (hA : A.Finite) (N : ℕ) :
+    countingFn A N ≤ Set.ncard A :=
+  Set.ncard_le_ncard Set.inter_subset_left hA
+
+/-- Any finite subset of ℕ has asymptotic density 0.
+    Since countingFn A N ≤ |A| is bounded, the ratio |A|/N → 0. -/
+theorem density_finite_zero (A : Set ℕ) (hA : A.Finite) :
+    DensityExists A ∧ asympDensity A = 0 := by
+  have htend : Filter.Tendsto (fun N => (countingFn A N : ℝ) / N) atTop (nhds 0) := by
+    rw [Metric.tendsto_atTop]
+    intro ε hε
+    refine ⟨⌈(Set.ncard A : ℝ) / ε⌉₊ + 1, fun N hN => ?_⟩
+    have hN_pos : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
+    rw [Real.dist_eq, sub_zero, abs_of_nonneg (div_nonneg (Nat.cast_nonneg _) hN_pos.le)]
+    have hNA : (countingFn A N : ℝ) ≤ Set.ncard A := by
+      exact_mod_cast countingFn_le_ncard A hA N
+    have hN_big : (Set.ncard A : ℝ) / ε < N := by
+      have h2 : (⌈(Set.ncard A : ℝ) / ε⌉₊ : ℝ) < N :=
+        by exact_mod_cast Nat.lt_of_succ_le hN
+      linarith [Nat.le_ceil ((Set.ncard A : ℝ) / ε)]
+    calc (countingFn A N : ℝ) / N
+        ≤ (Set.ncard A : ℝ) / N := (div_le_div_right hN_pos).mpr hNA
+      _ < ε := by rwa [div_lt_iff hN_pos, mul_comm, ← div_lt_iff hε]
+  exact ⟨⟨0, htend⟩, htend.limUnder_eq⟩
