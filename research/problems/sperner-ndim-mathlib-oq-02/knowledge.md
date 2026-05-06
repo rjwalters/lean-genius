@@ -461,3 +461,13 @@ exact Fintype.card_fin k.val
 2. **Gallery status**: main file stays at 1 axiom (correct); n=0,1 proved independently
 3. **Estimated remaining**: 300-400 lines for n≥2 general case
 
+
+## Session 2026-05-07 (Session 9 continued) — Build confirmed
+
+**Build**: `SpernerFreudenthalSimplex.lean` compiles with `LEAN_SKIP_CACHE=true` (exit code 0).
+Key fix: made file self-contained (`import Mathlib` only, no cross-project imports).
+Concurrent Docker build cache contention was causing builds #2-#4 failures.
+
+- `sperner_panchromatic_zero` (n=0): ✓ compiled
+- `sperner_panchromatic_one` (n=1): ✓ compiled
+
