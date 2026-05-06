@@ -13245,9 +13245,9 @@
       "notes": "Re-audited 2026-05-04: 0 sorries, 0 axioms, 18 theorems confirmed (includes 3 private lemmas). Metadata consistent. Empty issues array was auditor artifact."
     },
     "stirling-formula-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T03:58:24Z",
+      "lastAudited": "2026-05-06T20:04:46Z",
       "result": "clean"
     },
     "stirling-formula-oq-02": {
@@ -14928,6 +14928,60 @@
     "cauchy-schwarz-oq-02-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-06T18:57:39Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "ehrhart-cube-proven-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:03:51Z",
+      "result": "clean",
+      "issues": []
+    },
+    "greens-theorem-oq-01-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:04:46Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chinese-remainder-constructive-oq-04-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:08:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "frobenius-number-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:08:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "hilbert-15-oq-02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:08:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "law-of-cosines-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:08:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cramers-rule-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:08:28Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "law-of-cosines-oq-01-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:08:28Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "newton-inductive-step-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T20:08:28Z",
       "result": "issues-found",
       "issues": []
     }
