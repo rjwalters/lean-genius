@@ -25,7 +25,7 @@ to just L¹ integrability on the open rectangle Ioo a b × Ioo c d?
   5. integrable_Icc_iff_Ioo: explicit equivalence iff
   6. greens_fubini_open_rectangle: application to Green's theorem
 - Created gallery entry: src/data/proofs/greens-theorem-oq-01-oq-01-oq-03/
-- Note: PR #16071 has a stub version (30 lines); this PR has the full implementation
+- Created PR #16077 (complete implementation); closed stub PR #16071
 
 ### Key Findings
 - Icc and Ioo intervals agree for Lebesgue measure: boundary {a,b} is null
