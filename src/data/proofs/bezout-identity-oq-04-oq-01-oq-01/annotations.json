@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-pid-generalization",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Why Generalize from ℤ to PIDs: Three Key Changes",
+    "content": "The header comment identifies exactly what changes when lifting from ℤ to an arbitrary PID:\n\n1. **IsUnimodular (det = ±1) → IsUnimodularPID (IsUnit det)**: Over ℤ, the only units are ±1. Over a general ring like k[X] (polynomials), the units are the nonzero scalars. Over ℤ[i] (Gaussian integers), units are {1, -1, i, -i}. The abstract `IsUnit` typeclass covers all cases.\n\n2. **Int.gcd → GCDMonoid.gcd**: Mathlib's `Int.gcd : ℤ → ℤ → ℕ` returns a natural number and requires `Int.coe_gcd` to coerce. `GCDMonoid.gcd : R → R → R` stays in the ring and has a cleaner API (`dvd_gcd`, `gcd_dvd_left`, etc.).\n\n3. **±1 case split → unit.inv_val**: The backward direction of the ℤ proof splits on u = 1 or u = -1. Over an abstract ring, there's no such finite enumeration of units. The `Units.inv_val` field — `uval.inv * uval = 1` — replaces all cases with a single algebraic fact.\n\nThe imports reflect this: `PrincipalIdealDomain`, `GCDMonoid.Basic`, `Matrix.*` for the linear algebra, and standard tactics.",
+    "mathContext": "PIDs include: $\\mathbb{Z}$, $k[X]$ (polynomials over a field $k$), $\\mathbb{Z}[i]$ (Gaussian integers), any Euclidean domain (ℤ, $k[X]$, $\\mathbb{Z}[i]$ all are Euclidean). The key PID property: every ideal is principal $(a) = \\{ra : r \\in R\\}$, guaranteeing existence and uniqueness of GCD up to units.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Principal Ideal Domain",
+      "GCDMonoid abstraction",
+      "IsUnit typeclass",
+      "Units and unit.inv_val",
+      "Smith Normal Form over ℤ (BezoutIdentityOQ04OQ01)"
+    ],
+    "prerequisites": [
+      "ring theory: PIDs, UFDs, Euclidean domains",
+      "abstract GCD (not Int.gcd)",
+      "unit elements of a commutative ring"
+    ]
+  },
+  {
+    "id": "ann-unimodular",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-01",
+    "range": { "startLine": 36, "endLine": 58 },
+    "type": "concept",
+    "title": "IsUnimodularPID: From det = ±1 to IsUnit det",
+    "content": "Three theorems for IsUnimodularPID:\n\n1. **isUnimodularPID_one**: The identity matrix is unimodular — its determinant is 1, which is always a unit. Proof: `simp [IsUnimodularPID, det_one]`.\n\n2. **IsUnimodularPID.mul**: Product of unimodular matrices is unimodular — det(MN) = det(M)·det(N) is a product of units. Proof: `simp [IsUnimodularPID, det_mul]; exact hM.mul hN`. The `IsUnit.mul` combines two IsUnit hypotheses.\n\n3. **isUnimodularPID_int_iff**: Over ℤ, IsUnit↔{±1} via `Int.isUnit_iff`. This is the 'specialization' theorem — the abstract notion restricts to the concrete one.\n\nThe `GL_n(R) = {M | IsUnit det(M)}` connection: by Cramer's rule, M is invertible over R iff det(M) is a unit. So IsUnimodularPID is exactly the condition for M to have a two-sided inverse in the matrix ring — i.e., M ∈ GL_n(R).\n\nOver a field, every nonzero matrix is in GL_n (field units are all nonzero elements). Over ℤ, only ±1. Over k[X], units are scalar multiples.",
+    "mathContext": "Over commutative ring $R$: $M \\in GL_n(R) \\Leftrightarrow \\det(M) \\in R^\\times$ (Cramer's rule: $M^{-1} = \\det(M)^{-1} \\cdot \\mathrm{adj}(M)$).\n\n$R^\\times$ instances: $\\mathbb{Z}^\\times = \\{\\pm 1\\}$; $(k[X])^\\times = k^\\times$ (nonzero constants); $(\\mathbb{Z}[i])^\\times = \\{1, -1, i, -i\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "GL_n(R) — general linear group over a ring",
+      "det_mul (Mathlib: det(MN) = det(M)·det(N))",
+      "IsUnit and IsUnit.mul",
+      "Int.isUnit_iff (units of ℤ)",
+      "Cramer's rule for matrix inverses"
+    ],
+    "prerequisites": [
+      "matrix determinant",
+      "units of a commutative ring",
+      "GL_n over ℤ and over fields"
+    ]
+  },
+  {
+    "id": "ann-snf-structure",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-01",
+    "range": { "startLine": 59, "endLine": 82 },
+    "type": "technique",
+    "title": "SmithNormalFormPID: Parameterizing the Decomposition over R",
+    "content": "The `SmithNormalFormPID R m n` structure bundles all the data of the Smith Normal Form:\n- `U : Matrix (Fin m) (Fin m) R` — left unimodular factor\n- `D : Matrix (Fin m) (Fin n) R` — diagonal with invariant factors\n- `V : Matrix (Fin n) (Fin n) R` — right unimodular factor\n- `hU`, `hV` — IsUnimodularPID proofs\n- `hD_diag` — off-diagonal entries are 0\n- `hD_div` — divisibility chain d₁|d₂|...|dₖ\n\nTwo derived definitions:\n- `isDecompOf snf A` asserts `A = U * D * V`\n- `invariantFactor snf k` extracts D[k,k] (the k-th diagonal entry), returning 0 for out-of-range k\n\nThe structure is identical to BezoutIdentityOQ04OQ01 except: parameterized by `R` (not just `ℤ`), and `IsUnimodularPID` replaces the concrete det ∈ {±1} condition.\n\nThe divisibility chain in `hD_div` uses a careful Lean encoding: it quantifies over `k : ℕ` with bounds `k + 1 < min m n` and provides the Fin bounds as explicit parameters `hm, hn, hm', hn'`.",
+    "mathContext": "SNF decomposition: $A = U D V$ with $U \\in GL_m(R)$, $V \\in GL_n(R)$, $D = \\mathrm{diag}(d_1, \\ldots, d_r, 0, \\ldots)$ and $d_1 \\mid d_2 \\mid \\cdots \\mid d_r$ (invariant factors). The $d_i$ are determined up to units and encode the structure of $\\mathrm{coker}(A : R^n \\to R^m)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "invariant factor theorem",
+      "structure theorem for modules over PIDs",
+      "isDecompOf",
+      "invariantFactor extraction",
+      "divisibility chain d₁|d₂|...|dₖ"
+    ],
+    "prerequisites": [
+      "matrix product over rings",
+      "diagonal matrices",
+      "Finset bounds (Fin m, Fin n)",
+      "divisibility in rings"
+    ]
+  },
+  {
+    "id": "ann-gcd-forward",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 120 },
+    "type": "technique",
+    "title": "Main Theorem Setup: Extracting Entry Equations from A = U·D·V",
+    "content": "The theorem `snf_1x2_invariant_factor_pid` is the mathematical core. The first half of the proof extracts the entry-level equations from the matrix equation `A = U·D·V`.\n\n**Setup**: Set `u = U[0,0]`, `d = D[0,0]`, `v00 = V[0,0]`, `v01 = V[0,1]`, `v10 = V[1,0]`, `v11 = V[1,1]`. The `set` tactic introduces local names for these values.\n\n**Claim: a = u·d·v00** (from [A = U·D·V][0,0]):\n- Expand the matrix product: (U·D·V)[0,0] = Σ_i Σ_j U[0,i]·D[i,j]·V[j,0]\n- For 1×2 case: U is 1×1, D is 1×2. The only term surviving is U[0,0]·D[0,0]·V[0,0] (since D[0,1] = 0 by hD_diag)\n- The `simp` with `Fin.sum_univ_one/two`, `Matrix.cons_val`, `Matrix.mul_apply` reduces to this.\n- `linear_combination h` closes the goal.\n\n**Claim: b = u·d·v01** (from [A = U·D·V][0,1]): analogously.\n\n**Part 1 (d | gcd)**: From `a = u·d·v00` and `b = u·d·v01`, we get d | a and d | b with witnesses u·v00 and u·v01. Then `dvd_gcd` gives d | gcd(a,b).",
+    "mathContext": "From $A = UDV$ with $A = [[a, b]]$, $U = [[u]]$, $D = [[d, 0]]$, $V = \\begin{pmatrix}v_{00} & v_{01} \\\\ v_{10} & v_{11}\\end{pmatrix}$:\n$$a = u \\cdot d \\cdot v_{00}, \\quad b = u \\cdot d \\cdot v_{01}$$\nSo $d \\mid a$ (witness $u \\cdot v_{00}$) and $d \\mid b$ (witness $u \\cdot v_{01}$), hence $d \\mid \\gcd(a,b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix multiplication expansion",
+      "Fin.sum_univ_one/two (Mathlib)",
+      "dvd_gcd (if d|a and d|b then d|gcd(a,b))",
+      "linear_combination tactic",
+      "simp with Matrix.mul_apply"
+    ],
+    "prerequisites": [
+      "matrix multiplication for small matrices",
+      "GCDMonoid.dvd_gcd",
+      "Fin.sum_univ_two simplification in simp"
+    ]
+  },
+  {
+    "id": "ann-unit-cancellation",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-01",
+    "range": { "startLine": 121, "endLine": 148 },
+    "type": "insight",
+    "title": "The Key Innovation: unit.inv_val Replaces the ±1 Case Split",
+    "content": "The backward direction (gcd | d) is where this proof differs fundamentally from the ℤ case. The innovation:\n\n**Key identity**: `a*v11 - b*v10 = u*d*(v00*v11 - v01*v10)` — proved by substituting `a = u*d*v00` and `b = u*d*v01` and using `ring`.\n\n**gcd divides LHS**: Since gcd|a and gcd|b, we get gcd | (a*v11 - b*v10) by `dvd_sub`.\n\n**u*(v00*v11 - v01*v10) is a unit**: `u = U[0,0]` is a unit (from IsUnimodularPID of U), and `v00*v11 - v01*v10 = det(V)` is a unit (from IsUnimodularPID of V). Their product is a unit by `hU_unit.mul hV_unit`.\n\n**The inv_val trick**: Get the Units representative `uval : Rˣ` with `↑uval = u*(v00*v11 - v01*v10)`. Then `uval.inv_val : uval.inv * ↑uval = 1`.\n\n**Cancellation**: From `↑uval * d = gcd * w` (via the divisibility chain), compute:\n```\nd = uval.inv * (↑uval * d)\n  = uval.inv * (gcd * w)\n  = gcd * (uval.inv * w)\n```\nThe first equality uses inv_val to get `uval.inv * ↑uval = 1`, then `1 * d = d`. This single abstract argument replaces the 4 concrete cases (u = ±1, det(V) = ±1) from the ℤ proof.",
+    "mathContext": "Abstract unit cancellation: if $\\alpha \\in R^\\times$ and $\\alpha \\cdot d = c \\cdot w$ (for some $w$), then $d = \\alpha^{-1}(\\alpha d) = \\alpha^{-1}(cw) = c(\\alpha^{-1} w)$, so $c \\mid d$.\n\nIn Lean: `uval.inv_val : uval.inv * ↑uval = 1`, used as:\n```lean\ncalc d = uval.inv * (↑uval * d) := by rw [← mul_assoc, hinv, one_mul]\n      _ = GCDMonoid.gcd a b * (uval.inv * w) := by rw [hw]; ring\n```",
+    "significance": "key",
+    "relatedConcepts": [
+      "Units.inv_val — the abstract unit inverse identity",
+      "IsUnit.mul — product of units is a unit",
+      "dvd_sub — divisibility is closed under subtraction",
+      "Units.val — coercion from Rˣ to R",
+      "calc block with mul_assoc and one_mul"
+    ],
+    "prerequisites": [
+      "Units typeclass in Lean 4 (Rˣ, Units.val, Units.inv)",
+      "Units.inv_val field",
+      "abstract unit theory vs concrete ±1 cases",
+      "ring lemmas: mul_assoc, one_mul"
+    ]
+  },
+  {
+    "id": "ann-bezout-pid",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-01",
+    "range": { "startLine": 149, "endLine": 165 },
+    "type": "concept",
+    "title": "Bezout in GCDMonoid and k[X] as PID",
+    "content": "The final section provides the two directions of Bezout's identity and the canonical PID instance.\n\n**bezout_pid_forward** (any GCDMonoid): If ax+by=c, then gcd(a,b)|c. The proof is pure divisibility algebra:\n- gcd|a → gcd|ax (dvd_mul_of_dvd_left)\n- gcd|b → gcd|by (dvd_mul_of_dvd_left)\n- gcd|(ax+by) = c (dvd_add)\n\nThis holds in any GCDMonoid (no PID needed) — a GCDMonoid provides gcd_dvd_left and gcd_dvd_right, which suffice.\n\n**bezout_int_backward** (ℤ only): Uses `Int.gcdA` and `Int.gcdB` (the Bezout coefficients over ℤ satisfying `a * gcdA a b + b * gcdB a b = Int.gcd a b`). The proof multiplies through by k (the quotient c = k*gcd) and reassociates.\n\n**k[X] is a PID**: `instance {k : Type*} [Field k] : IsPrincipalIdealRing (Polynomial k) := inferInstance`. This instance is in Mathlib (Euclidean domains are PIDs, and k[X] is Euclidean via polynomial division). The single line makes the entire SNF theory available for polynomial rings over fields.\n\nThis means rational canonical form and Frobenius normal form — classical results of linear algebra — follow from the PID SNF theory instantiated at R = k[X].",
+    "mathContext": "Bezout's identity: $\\gcd(a,b) \\mid c \\Leftrightarrow \\exists x, y \\in R: ax + by = c$ (holds in Bezout domains ⊇ PIDs ⊋ Euclidean domains).\n\nFor $R = k[X]$: the SNF of a matrix $A \\in M_{m \\times n}(k[X])$ gives the rational canonical form — columns of $A$ generate a submodule of $k[X]^m$, and SNF exhibits the module structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dvd_add (Mathlib divisibility)",
+      "Int.gcdA / Int.gcdB (Bezout coefficients over ℤ)",
+      "IsPrincipalIdealRing instance for k[X]",
+      "rational canonical form",
+      "Euclidean domains as PIDs"
+    ],
+    "prerequisites": [
+      "Bezout identity",
+      "GCDMonoid divisibility API",
+      "Int.gcdA, Int.gcdB (Mathlib)",
+      "polynomial rings as Euclidean domains"
+    ]
+  }
+]

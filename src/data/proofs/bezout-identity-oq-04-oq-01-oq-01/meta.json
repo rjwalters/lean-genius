@@ -65,7 +65,8 @@
       "**The unit abstraction**: Over ℤ, units are ±1 and the proof splits into 4 cases. Over a general PID, IsUnit gives an abstract inverse element uval.inv satisfying uval.inv * uval = 1 (the `inv_val` field). This single fact replaces all 4 cases.",
       "**GCDMonoid is the right abstraction**: The theorem only needs GCDMonoid (gcd, dvd_gcd, gcd_dvd_left/right), not IsPrincipalIdealRing. This is a strict generalization.",
       "**Associated elements**: d and (↑uval)*d are associated (differ by unit uval). The divisibility claim gcd|d follows from gcd|(↑uval)*d by cancelling the unit.",
-      "**k[X] instance**: By Mathlib inference, polynomial rings over fields are PIDs, giving the entire SNF theory for k[X] — which yields rational canonical forms and Frobenius normal forms for linear maps."
+      "**k[X] instance**: By Mathlib inference, polynomial rings over fields are PIDs, giving the entire SNF theory for k[X] — which yields rational canonical forms and Frobenius normal forms for linear maps.",
+      "**Module structure theorem**: The SNF axioms imply the structure theorem for finitely generated modules over PIDs: every such module M decomposes as R/d₁ ⊕ ... ⊕ R/dₖ ⊕ Rˡ with d₁|d₂|...|dₖ. For R = ℤ, this gives the fundamental theorem of finitely generated abelian groups (ℤ/n₁ ⊕ ... ⊕ ℤ/nₖ ⊕ ℤˡ). For R = k[X], it gives the rational canonical form for linear maps T: V → V."
     ],
     "prerequisites": [
       "Principal Ideal Domains and their properties",
@@ -108,20 +109,23 @@
       "mathContext": "The forward direction is purely algebraic and holds in any GCDMonoid. The backward direction requires Bezout coefficients (the existence of which is equivalent to the Bezout domain property, holding in any PID). Over ℤ, Int.gcdA and Int.gcdB provide these coefficients explicitly."
     }
   ],
-  "openQuestions": [
+  "conclusion": {
+    "summary": "The formalization lifts Smith Normal Form theory from ℤ to arbitrary Principal Ideal Domains. The key machine-checked result `snf_1x2_invariant_factor_pid` proves that the 1×2 invariant factor is associated to gcd(a,b) in any GCDMonoid, using a single abstract unit cancellation argument (unit.inv_val) that replaces the ℤ-specific ±1 case split. The two remaining axioms (SNF existence and solvability) reflect the genuine mathematical gap between ring-theoretic and matrix-theoretic formulations in Mathlib.",
+    "implications": "This generalization has two levels of impact. Mathematically, the PID SNF theory subsumes the ℤ case and gives access to: rational canonical form for linear maps (R = k[X]), Smith Normal Form for Gaussian integer matrices (R = ℤ[i]), and the structure theorem for finitely generated modules over PIDs (direct generalization of the classification of finite abelian groups). For Lean formalization, this demonstrates the value of abstracting from concrete types to typeclasses: the same proof works for all PIDs simultaneously, and instances like `IsPrincipalIdealRing (Polynomial k)` are inferred automatically by Mathlib. The `unit.inv_val` technique is a reusable pattern for any proof that replaces a finite case split on units with abstract unit inversion.",
+    "openQuestions": [
+      "Prove snf_pid_exists by bridging Mathlib's Submodule.smithNormalForm (module-theoretic, in LinearAlgebra.FreeModule.PID) to the matrix-theoretic SmithNormalFormPID structure here",
+      "Derive the structure theorem for finitely generated R-modules from snf_pid_exists + snf_pid_solvability: M ≅ R/d₁ ⊕ ... ⊕ R/dₖ ⊕ Rˡ with d₁|d₂|...|dₖ",
+      "Formalize rational canonical form for k[X]: the SNF of the matrix (tI - A) ∈ M_n(k[X]) gives the rational canonical form of the linear map A : k^n → k^n"
+    ]
+  },
+  "crossReferences": [
     {
-      "id": "oq-01",
-      "title": "Prove snf_pid_exists from Mathlib's FreeModule.PID",
-      "description": "Mathlib has Submodule.smithNormalForm in LinearAlgebra.FreeModule.PID. Can this be used to prove snf_pid_exists, eliminating the axiom? The challenge is translating between the module-theoretic Mathlib formulation and the matrix-theoretic formulation here.",
-      "difficulty": "hard",
-      "tags": ["axiom-elimination", "mathlib-integration"]
+      "id": "bezout-identity-oq-04-oq-01",
+      "relationship": "parent: Smith Normal Form theory over ℤ — this entry lifts to arbitrary PIDs"
     },
     {
-      "id": "oq-02",
-      "title": "Structure theorem for finitely generated modules over PIDs",
-      "description": "snf_pid_solvability implies that the cokernel ℤⁿ/Aℤᵐ decomposes as R/d₁ ⊕ ... ⊕ R/dₖ ⊕ Rˡ. Can this structure theorem be derived formally from snf_pid_exists + snf_pid_solvability?",
-      "difficulty": "hard",
-      "tags": ["module-theory", "structure-theorem", "finitely-generated-modules"]
+      "id": "bezout-identity",
+      "relationship": "root: Bezout's identity — the foundational result formalized in the main entry"
     }
   ]
 }
