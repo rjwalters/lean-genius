@@ -443,16 +443,18 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
         then (innerBall d n (m - (if j.val ≤ n then n - j.val else j.val - n))).card
         else 0 := by
       intro j
-      split_ifs with hj
-      · apply Finset.card_bij (fun x _ => Fin.init x)
+      -- Use by_cases: nested if in condition would cause split_ifs to generate 4 goals.
+      by_cases hdist : (if j.val ≤ n then n - j.val else j.val - n) ≤ m
+      · simp only [if_pos hdist]
+        apply Finset.card_bij (fun x _ => Fin.init x)
         · intro x hx
           simp only [innerBall, Finset.mem_filter, Finset.mem_univ, true_and,
                      Fin.init, Function.comp] at hx ⊢
           obtain ⟨hsum, hlast⟩ := hx
           rw [Fin.sum_univ_castSucc] at hsum
-          have hdist : (if (x (Fin.last d)).val ≤ n then n - (x (Fin.last d)).val
-                        else (x (Fin.last d)).val - n) =
-                       (if j.val ≤ n then n - j.val else j.val - n) := by rw [hlast]
+          have hdist_eq : (if (x (Fin.last d)).val ≤ n then n - (x (Fin.last d)).val
+                           else (x (Fin.last d)).val - n) =
+                          (if j.val ≤ n then n - j.val else j.val - n) := by rw [hlast]
           omega
         · intro x₁ hx₁ x₂ hx₂ heq
           simp only [Finset.mem_filter] at hx₁ hx₂
@@ -468,15 +470,16 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
             have hmem := (Finset.mem_filter.mp hy).2
             omega
           · simp [Fin.init_snoc]
-      · rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+      · simp only [if_neg hdist]
+        rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
         intro x hx
         simp only [Finset.mem_filter, innerBall, Finset.mem_univ, true_and] at hx
         obtain ⟨hsum, hlast⟩ := hx
         rw [Fin.sum_univ_castSucc] at hsum
-        have hdist : (if (x (Fin.last d)).val ≤ n then n - (x (Fin.last d)).val
-                      else (x (Fin.last d)).val - n) =
-                     (if j.val ≤ n then n - j.val else j.val - n) := by rw [hlast]
-        push_neg at hj; omega
+        have hdist_eq : (if (x (Fin.last d)).val ≤ n then n - (x (Fin.last d)).val
+                         else (x (Fin.last d)).val - n) =
+                        (if j.val ≤ n then n - j.val else j.val - n) := by rw [hlast]
+        push_neg at hdist; omega
     -- Express fiber-card sum = crossEhrhart sym sum, then apply sym_fin_sum.
     rw [show ∑ j : Fin (2 * n + 1),
               ((innerBall (d + 1) n m).filter (fun x => x (Fin.last d) = j)).card =
@@ -506,31 +509,40 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
       -- Use sum_bij' (dependent bijection): forward map k↦⟨k+(n-m)⟩ is total in Fin(2m+1);
       -- inverse map j↦⟨j-(n-m)⟩ uses filter membership to prove the Fin(2m+1) bound.
       rw [← Finset.sum_filter]
-      -- Use sum_bij (dependent 4-arg form): forward map k↦⟨k+(n-m)⟩ from Fin(2m+1) to filter.
-      -- The bound is total (no membership needed since k.val+(n-m) ≤ n+m ≤ 2n < 2n+1).
-      refine Finset.sum_bij (fun (k : Fin (2 * m + 1)) _ => ⟨k.val + (n - m), by
-            have := k.isLt; omega⟩) ?_ ?_ ?_ ?_
-      · -- hi: image lands in filter
+      -- sum_bij: maps FROM filter (source s) TO Fin(2m+1) (target t).
+      -- After symm, goal is Fin-sum = filter-sum. Map i : filter → Fin(2m+1).
+      symm
+      refine Finset.sum_bij
+        (fun (j : Fin (2 * n + 1)) hj => ⟨j.val - (n - m), by
+            simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+            have := j.isLt; have := hm; split_ifs at hj with h <;> omega⟩) ?_ ?_ ?_ ?_
+      · -- hi: image lands in Finset.univ (trivially)
+        intro j _; exact Finset.mem_univ _
+      · -- injectivity: j₁.val - (n-m) = j₂.val - (n-m) → j₁ = j₂ (using filter bounds)
+        intro j₁ hj₁ _ j₂ hj₂ _ h
+        apply Fin.ext; simp only [Fin.mk.injEq] at h
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj₁ hj₂
+        have := hm
+        split_ifs at hj₁ hj₂ with h1 h2 <;> omega
+      · -- surjectivity: preimage of k is ⟨k.val+(n-m),_⟩ ∈ filter
         intro k _
-        simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-        have hk := k.isLt; split_ifs with h <;> omega
-      · -- injectivity
-        intro k₁ _ k₂ _ h
-        apply Fin.ext; simp only [Fin.mk.injEq] at h; omega
-      · -- surjectivity: inverse map j↦⟨j-(n-m)⟩ uses filter membership for bound
+        refine ⟨⟨k.val + (n - m), by have := k.isLt; have := hm; omega⟩, ?_, ?_⟩
+        · simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+          have hk := k.isLt; have := hm; split_ifs with h <;> omega
+        · apply Fin.ext; simp only [Fin.mk.injEq]; omega
+      · -- function equality: g(i j) = f j where g = sym_fin function, f = crossEhrhart
         intro j hj
         simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
-        refine ⟨⟨j.val - (n - m), by have := j.isLt; split_ifs at hj with h <;> omega⟩,
-                Finset.mem_univ _, ?_⟩
-        apply Fin.ext; simp only [Fin.mk.injEq]; split_ifs at hj with h <;> omega
-      · -- function equality: f(i k) = g k
-        intro k _
-        have hk := k.isLt
-        have hdist_eq : m - (if k.val + (n - m) ≤ n then n - (k.val + (n - m))
-                              else k.val + (n - m) - n) =
-                        if k.val ≤ m then k.val else 2 * m - k.val := by
-          split_ifs with h1 h2 <;> omega
-        simp only [hdist_eq]; split_ifs <;> rfl
+        -- goal: (if (j.val-(n-m)) ≤ m then cE d (j.val-(n-m)) else cE d (2m-(j.val-(n-m)))) = cE d (m-dist j)
+        rcases le_or_lt j.val n with hjn | hjn
+        · -- j.val ≤ n: dist j = n-j.val ≤ m, j.val-(n-m) ≤ m
+          have hd : n - j.val ≤ m := by simp only [if_pos hjn] at hj; exact hj
+          rw [if_pos (by omega : j.val - (n - m) ≤ m)]
+          congr 1; omega
+        · -- j.val > n: dist j = j.val-n ≤ m, j.val-(n-m) > m
+          have hd : j.val - n ≤ m := by simp only [if_neg (by omega : ¬j.val ≤ n)] at hj; exact hj
+          rw [if_neg (by omega : ¬(j.val - (n - m) ≤ m))]
+          congr 1; omega
 
 -- ============================================================
 -- PART IX: Summary and Exports
