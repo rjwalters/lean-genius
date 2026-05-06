@@ -1,0 +1,39 @@
+{
+  "annotations": [
+    {
+      "id": "hurwitz-def",
+      "type": "definition",
+      "title": "HurwitzQuat Structure",
+      "content": "A Hurwitz quaternion is stored as four integers (n₀,n₁,n₂,n₃) all having equal parity (all even = Lipschitz, all odd = half-integer). The actual quaternion value is (n₀+n₁i+n₂j+n₃k)/2.",
+      "location": "HurwitzQuat"
+    },
+    {
+      "id": "omega-unit",
+      "type": "theorem",
+      "title": "ω is a Hurwitz Unit",
+      "content": "The element ω = ½(1+i+j+k), stored as (1,1,1,1), has norm N(ω) = (1+1+1+1)/4 = 1. Being a unit means it's invertible in H, which is crucial for the Euclidean property.",
+      "location": "hurwitzOmega_normSq"
+    },
+    {
+      "id": "parity-divisibility",
+      "type": "lemma",
+      "title": "Norm Divisibility",
+      "content": "The equal-parity condition ensures n₀²+n₁²+n₂²+n₃² ≡ 0 mod 4. For even coordinates: each nᵢ²≡0 mod 4. For odd coordinates: each nᵢ²≡1 mod 4, and 1+1+1+1=4≡0 mod 4.",
+      "location": "HurwitzQuat.normSq4_dvd4"
+    },
+    {
+      "id": "euclidean-axiom",
+      "type": "axiom",
+      "title": "Hurwitz Euclidean Property",
+      "content": "The key axiom: for any a and nonzero b in H, there exist q,r in H with a=b·q+r and N(r)<N(b). Proof requires showing H has covering radius < 1: every rational quaternion is within distance 1 of some Hurwitz integer.",
+      "location": "hurwitz_euclidean"
+    },
+    {
+      "id": "lipschitz-embedding",
+      "type": "theorem",
+      "title": "Lipschitz → Hurwitz Embedding",
+      "content": "Every Lipschitz quaternion a+bi+cj+dk embeds into H via (n₀,n₁,n₂,n₃)=(2a,2b,2c,2d). The norm is preserved: N(embed(q))=N(q). This shows H properly extends the Lipschitz integers.",
+      "location": "lipschitzToHurwitz_normSq"
+    }
+  ]
+}

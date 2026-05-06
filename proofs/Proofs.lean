@@ -2153,6 +2153,7 @@ import Proofs.FairGamesTheoremOQ03
 import Proofs.FairGamesTheoremOQ03Aristotle
 import Proofs.FermatTwoSquares
 import Proofs.FermatTwoSquaresOQ01
+import Proofs.FermatTwoSquaresOQ01OQ03
 import Proofs.FermatsLastTheorem
 import Proofs.FermatsLastTheoremOQ03
 import Proofs.FeuerbachsTheorem
