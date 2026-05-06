@@ -84,7 +84,7 @@ theorem HurwitzQuat.normSq4_dvd4 (q : HurwitzQuat) : 4 ∣ q.normSq4 := by
     obtain ⟨b, hb⟩ := Int.dvd_of_emod_eq_zero h₁
     obtain ⟨c, hc⟩ := Int.dvd_of_emod_eq_zero h₂
     obtain ⟨d, hd⟩ := Int.dvd_of_emod_eq_zero h₃
-    exact ⟨a^2 + b^2 + c^2 + d^2, by subst ha; subst hb; subst hc; subst hd; ring⟩
+    exact ⟨a^2 + b^2 + c^2 + d^2, by rw [ha, hb, hc, hd]; ring⟩
   · -- Half-integer case: all nᵢ ≡ 1 mod 2, each nᵢ² ≡ 1 mod 4, sum ≡ 0 mod 4
     have h₁ : q.n₁ % 2 = 1 := h01 ▸ h
     have h₂ : q.n₂ % 2 = 1 := h12 ▸ h₁
@@ -94,7 +94,7 @@ theorem HurwitzQuat.normSq4_dvd4 (q : HurwitzQuat) : 4 ∣ q.normSq4 := by
     obtain ⟨c, hc⟩ : ∃ k : ℤ, q.n₂ = 2 * k + 1 := ⟨q.n₂ / 2, by omega⟩
     obtain ⟨d, hd⟩ : ∃ k : ℤ, q.n₃ = 2 * k + 1 := ⟨q.n₃ / 2, by omega⟩
     exact ⟨a^2 + a + b^2 + b + c^2 + c + d^2 + d + 1,
-      by subst ha; subst hb; subst hc; subst hd; ring⟩
+      by rw [ha, hb, hc, hd]; ring⟩
 
 /-- The integer norm N(q) = normSq4(q) / 4 ∈ ℤ. -/
 def HurwitzQuat.normSq (q : HurwitzQuat) : ℤ :=
@@ -245,13 +245,11 @@ theorem hurwitz_lipschitz_to_four_squares
   refine ⟨a, b, c, d, ?_⟩
   have heq : q.normSq4 = 4 * (a^2 + b^2 + c^2 + d^2) := by
     simp only [HurwitzQuat.normSq4]
-    subst ha; subst hb; subst hc; subst hd; ring
+    rw [ha, hb, hc, hd]; ring
   have hspec := q.normSq_spec
   rw [heq] at hspec
-  have : q.normSq = a^2 + b^2 + c^2 + d^2 := by
-    have : (q.normSq * 4 : ℤ) = 4 * (a^2 + b^2 + c^2 + d^2) := hspec
-    linarith
-  exact_mod_cast hnorm ▸ this
+  have hq : q.normSq = a^2 + b^2 + c^2 + d^2 := by linarith
+  exact hq.symm.trans hnorm
 
 -- ============================================================================
 -- Part VII: Lagrange's Four Squares via Hurwitz
