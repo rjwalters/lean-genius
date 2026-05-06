@@ -1,0 +1,71 @@
+{
+  "source": "lean-genius-research",
+  "version": "1.0",
+  "proofId": "sperner-ndim-mathlib",
+  "annotations": [
+    {
+      "id": "ann-001",
+      "type": "definition",
+      "line": 55,
+      "title": "Abstract Cell Complex",
+      "body": "CellComplex V d is an abstract structure with simplices, each having d+1 vertices from type V. The adjacency map K.adj s k gives the neighboring simplex across facet k, or none for boundary facets. Key axioms: adjacency is symmetric (adj_symm), adjacent simplices share the same d-vertex face (adj_vertices), and distinct simplices are truly distinct (adj_ne).",
+      "tags": ["definition", "cell-complex", "adjacency"]
+    },
+    {
+      "id": "ann-002",
+      "type": "definition",
+      "line": 78,
+      "title": "Fully Colored Cell (IsFC)",
+      "body": "A simplex s is fully colored if the coloring c : V → Fin(d+1) is surjective when restricted to the vertices of s. This is the panchromatic condition: all d+1 colors appear among the d+1 vertices.",
+      "tags": ["definition", "fully-colored", "surjective"]
+    },
+    {
+      "id": "ann-003",
+      "type": "definition",
+      "line": 83,
+      "title": "Door Predicate (isDoorAt)",
+      "body": "Facet (s, k) is a door if removing vertex k leaves all colors {0,...,d-1} covered by the remaining d vertices. Equivalently, the restriction of c to the facet opposite k is surjective onto Fin d. This is the key concept linking coloring to the parity count.",
+      "tags": ["definition", "door", "facet"]
+    },
+    {
+      "id": "ann-004",
+      "type": "theorem",
+      "line": 101,
+      "title": "FPF Involution Parity",
+      "body": "A fixed-point-free involution on a finite set implies the set has even cardinality. Proved by strong induction: remove the pair {x, f(x)}, apply IH to the remaining set. This is the structural engine driving all parity arguments in the proof.",
+      "tags": ["theorem", "involution", "parity", "key-lemma"]
+    },
+    {
+      "id": "ann-005",
+      "type": "theorem",
+      "line": 263,
+      "title": "Abstract Door Parity",
+      "body": "For a coloring f : Fin(d+1) → Fin(d+1), the number of doors (positions k such that the remaining d values cover all of Fin d) is odd iff f is surjective. The key case analysis: if f is surjective (bijective), exactly 1 door at the unique position mapped to color d. If f is non-surjective, either 0 or 2 doors depending on whether color d is hit.",
+      "tags": ["theorem", "door-parity", "surjectivity", "key-lemma"]
+    },
+    {
+      "id": "ann-006",
+      "type": "theorem",
+      "line": 368,
+      "title": "Interior Doors Are Even",
+      "body": "Interior doors (those with K.adj ≠ none) come in pairs. The adjacency map is a fixed-point-free involution on interior doors: adj_symm ensures it's an involution, door_transfer ensures doors transfer across adjacency, and adj_ne ensures no self-adjacency. The even_card_fpf_invol theorem then gives the parity result.",
+      "tags": ["theorem", "interior-doors", "involution", "key-step"]
+    },
+    {
+      "id": "ann-007",
+      "type": "theorem",
+      "line": 473,
+      "title": "Sperner Parity Theorem",
+      "body": "FC count ≡ boundary doors (mod 2). Proof: sum per-simplex door counts; by abstract_door_parity, FC simplex contributes 1 (mod 2) and non-FC contributes 0. Total door count = FC count + even (interior doors). The mod-2 sum is preserved through the chain: FC sum → door sum → interior + boundary doors → boundary doors.",
+      "tags": ["theorem", "parity", "main-theorem-component"]
+    },
+    {
+      "id": "ann-008",
+      "type": "theorem",
+      "line": 508,
+      "title": "Sperner's Lemma",
+      "body": "Main result: if the number of boundary doors is odd, a fully-colored cell exists. Follows immediately from sperner_parity: odd boundary doors → odd FC count → positive FC count → nonempty FC cells.",
+      "tags": ["theorem", "main-result", "existence"]
+    }
+  ]
+}

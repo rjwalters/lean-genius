@@ -1,0 +1,69 @@
+{
+  "id": "sperner-ndim-mathlib",
+  "title": "Sperner's Lemma via Abstract Cell Complex",
+  "slug": "sperner-ndim-mathlib",
+  "description": "Proves Sperner's lemma for any abstract cell complex satisfying adjacency axioms, using the door-counting parity argument. An abstract cell complex consists of simplices with adjacency data: each interior facet pairs with exactly one neighboring facet, and boundary facets have no pair. The coloring surjectivity (fully-colored cell) condition is equivalent to the parity of doors in each simplex, giving the main theorem: odd boundary doors implies existence of a fully-colored cell.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerNDimMathlib.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "parity",
+      "abstract-cell-complex",
+      "mathlib-contribution",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 521,
+    "assumptions": "No axioms or sorries. All results proved from Mathlib.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "CellComplex: abstract cell complex type with adjacency symmetry, vertex-sharing, and injectivity axioms",
+      "even_card_fpf_invol: fixed-point-free involution on a finite set has even cardinality",
+      "abstract_door_parity: door count parity equals surjectivity for d+1 → d+1 colorings",
+      "interior_doors_even: interior doors pair via adjacency involution",
+      "sperner_parity: FC count ≡ boundary doors (mod 2)",
+      "sperner: Sperner's lemma for abstract cell complexes"
+    ],
+    "theoremCount": 13,
+    "definitionCount": 4
+  },
+  "leanFile": {
+    "path": "Proofs/SpernerNDimMathlib.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 521,
+    "theoremCount": 13,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (1928) states that any Sperner coloring of a triangulated simplex contains a fully-colored face. The door-counting proof was formalized by Knuth and others; the abstract formulation for arbitrary cell complexes generalizes both the combinatorial (triangulation) and topological (barycentric subdivision) settings. This abstract version is the natural candidate for a Mathlib contribution, since it subsumes all concrete instances.",
+    "problemStatement": "Let K be an abstract cell complex with d+1 vertex colors. A cell is fully colored (FC) if all d+1 colors appear among its vertices. A facet (s,k) is a door if the d remaining vertices (excluding position k) carry all colors in {0,...,d-1}. Boundary facets have no adjacent simplex (K.adj s k = none).\n\nProve: if the number of boundary doors is odd, then K contains a fully-colored cell.",
+    "text": "Proves Sperner's lemma via the abstract door-counting parity argument, working for any abstract cell complex satisfying the adjacency axioms.",
+    "proofStrategy": "1. Per-simplex door parity: the number of doors in simplex s is odd iff s is fully colored (abstract_door_parity, proved combinatorially). 2. Interior doors pair up: the adjacency map pairs each interior door with its neighbor, giving even total (interior_doors_even, proved via fixed-point-free involution). 3. Sperner parity: summing door counts over all simplices and reducing mod 2 gives FC count ≡ boundary doors (mod 2). 4. Main theorem: odd boundary doors → odd FC count → ∃ FC cell.",
+    "keyInsights": [
+      "The abstract cell complex structure encapsulates all properties needed: adjacency symmetry (adj_symm), shared vertices across adjacent facets (adj_vertices), and simplex distinctness (adj_ne). No specific triangulation is assumed.",
+      "The door-counting proof's key combinatorial fact (abstract_door_parity) reduces to: a surjective coloring f : Fin(d+1) → Fin(d+1) contributes exactly 1 door (the unique position mapped to color d), while a non-surjective coloring contributes 0 or 2 doors.",
+      "The involution parity lemma (even_card_fpf_invol) is proved by strong induction, removing a pair {x, f(x)} at each step. This is the structural core of the door-counting argument.",
+      "Interior doors pair via the adjMap involution: adj_symm ensures that if (s,k) is adjacent to (s',k'), then (s',k') is adjacent back to (s,k), giving a fixed-point-free involution. Door-at-k iff door-at-k' follows from the shared-vertex hypothesis (adj_vertices).",
+      "The parity arithmetic chain links per-simplex counts to the global result: FC cells appear exactly where the per-simplex parity is odd, and interior door pairing cancels interior contributions mod 2."
+    ],
+    "prerequisites": [
+      "Finset parity and cardinality lemmas (Mathlib.Data.Finset.Card)",
+      "Fixed-point-free involution theory",
+      "Surjectivity characterization for Fin(d+1) → Fin(d+1)",
+      "ZMod 2 arithmetic"
+    ],
+    "openQuestions": [
+      "Can this abstract formulation be instantiated to prove the standard Sperner lemma on triangulated n-simplices?",
+      "Does the abstract cell complex structure generalize to CW-complexes or polyhedral complexes in Mathlib?"
+    ]
+  }
+}
