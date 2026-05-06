@@ -1,1 +1,118 @@
-[]
+[
+  {
+    "id": "ann-proof-blueprint",
+    "proofId": "laws-of-large-numbers-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "Proof Blueprint: SLLN Necessity by Contradiction",
+    "content": "The module docstring spells out the complete proof strategy before any Lean code appears — a testament to how carefully Aristotle planned this formalization.\n\nThe argument is a classic proof by contradiction in six logical steps:\n\n1. **Cesàro**: If sample mean → c a.s., then Xₙ/n → 0 a.s. (division by n collapses any bounded sequence to 0, and the growth of the denominator dominates).\n\n2. **Layer cake**: If E[|X₀|] = ∞, then Σₙ P(|X₀| > n) = ∞. This is the key reformulation: infinite first moment is equivalent to a divergent series of tail probabilities.\n\n3. **i.i.d. transfer**: Identical distribution means Σₙ P(|Xₙ| > n) = Σₙ P(|X₀| > n) = ∞.\n\n4. **Borel-Cantelli second lemma** (pairwise independence version): A divergent sum of measures of pairwise-independent events forces the limsup event (events happening infinitely often) to have probability 1.\n\n5. **Contradiction**: Step 4 gives |Xₙ| > n for infinitely many n, a.s. Step 1 gives |Xₙ| ≤ n for all large n, a.s. These are incompatible.\n\nThe remarkable feature of this proof: it only needs **pairwise** independence (not full mutual independence), and it uses the **variance-Chebyshev** approach for BC2 rather than the classical BC2 which requires full independence. The Etemadi (1981) proof pioneered this approach, reducing the independence assumption to the minimum needed.",
+    "mathContext": "Proof by contradiction: assume $E[|X_0|] = \\infty$ and SLLN holds.\n\nSteps:\n1. Cesàro: $\\frac{1}{n}\\sum_{i<n} X_i \\to c$ a.s. $\\Rightarrow$ $\\frac{X_n}{n} \\to 0$ a.s.\n2. Layer cake: $E[|X_0|] = \\sum_{n=0}^\\infty P(|X_0| > n) = \\infty$\n3. i.i.d.: $\\sum_n P(|X_n| > n) = \\infty$\n4. BC2 (pairwise): $P(|X_n| > n \\text{ i.o.}) = 1$\n5. Steps 1 and 4 contradict each other.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cesàro mean",
+      "layer cake formula",
+      "Borel-Cantelli second lemma",
+      "pairwise independence",
+      "almost sure convergence"
+    ],
+    "prerequisites": [
+      "law of large numbers",
+      "Borel-Cantelli lemmas",
+      "almost sure convergence",
+      "tail probability series"
+    ]
+  },
+  {
+    "id": "ann-imports-setup",
+    "proofId": "laws-of-large-numbers-oq-01-oq-01",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "concept",
+    "title": "Imports, Namespace, and Probability Space Setup",
+    "content": "The main file imports only the Aristotle companion `LawsOfLargeNumbersOQ01Aristotle`, which itself imports all of Mathlib. The companion provides all the key infrastructure: the layer cake theorem, the Cesàro lemma, the BC2 variant, and the assembled `slln_necessity_statement`.\n\nThe `open` declarations bring the Lean names into scope without qualification:\n- `MeasureTheory`: for `Integrable`, `Measure`, `MeasurableSpace`\n- `ProbabilityTheory`: for `IndepFun`, `IdentDistrib`\n- `Filter`: for `Tendsto`, `atTop`, `limsup`\n- `ENNReal`: for extended non-negative reals (probabilities as ENNReal values)\n\nThe `variable` declaration sets up the probability space: `Ω` is the sample space (a type with a σ-algebra), `μ` is the probability measure, and `[IsProbabilityMeasure μ]` guarantees `μ(Ω) = 1`. This is the standard Mathlib pattern for probability spaces.\n\n**Why IsProbabilityMeasure matters**: The conclusion `P(|Xₙ| > n i.o.) = 1` requires `μ` to be a probability measure — otherwise the Borel-Cantelli BC2 gives `μ(limsup) = μ(Ω)`, not 1.",
+    "mathContext": "Probability space: $(\\Omega, \\mathcal{F}, \\mu)$ where $\\mu(\\Omega) = 1$ (i.e., `IsProbabilityMeasure μ`).\n\nRandom variables $X_i : \\Omega \\to \\mathbb{R}$ are measurable functions. Pairwise independence: $X_i, X_j$ are independent for all $i \\neq j$. Identical distribution: $X_i^*\\mu = X_0^*\\mu$ for all $i$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probability measure",
+      "IsProbabilityMeasure",
+      "MeasurableSpace",
+      "IndepFun",
+      "IdentDistrib"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "probability space",
+      "random variables as measurable functions",
+      "Lean 4 typeclass system"
+    ]
+  },
+  {
+    "id": "ann-theorem-signature",
+    "proofId": "laws-of-large-numbers-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 71 },
+    "type": "concept",
+    "title": "Theorem Signature: Hypotheses for SLLN Necessity",
+    "content": "The theorem `slln_necessity` encodes the full strength of the SLLN necessity result. Its signature reveals the minimal hypotheses needed:\n\n**Hypotheses**:\n- `hmeas`: Each X i is a measurable function Ω → ℝ (i.e., a random variable)\n- `hindep`: Pairwise independence: `IndepFun (X i) (X j) μ` for all i ≠ j. Note: this is **weaker** than full mutual independence (Pairwise vs. ∀-finite-sets). The Etemadi approach requires only this.\n- `hident`: Identical distribution: `IdentDistrib (X i) (X 0) μ μ` for all i. The pushforward measures all agree: `μ ∘ X i⁻¹ = μ ∘ X 0⁻¹`.\n- `hslln`: The SLLN holds: there exists c ∈ ℝ such that (1/n) Σᵢ<ₙ X i ω → c for μ-a.e. ω. The `∃ (c : ℝ), ∀ᵐ ω ∂μ, Tendsto ...` quantifier structure is precisely the a.s. convergence formulation.\n\n**Conclusion**: `Integrable (X 0) μ`, which in Mathlib means `∫ ‖X 0 ω‖ dμ < ∞`, i.e., E[|X₀|] < ∞.\n\n**Lean's `Tendsto` formulation**: The a.s. convergence is written as a `Filter.Tendsto` (n-th partial average → nhds c as n → atTop). The `∀ᵐ ω ∂μ` quantifier says 'for μ-almost every ω'. The `•` is scalar multiplication (since Lean needs to handle the ℝ-module structure explicitly for `ℝ ×ₛ ℝ`).",
+    "mathContext": "Full statement:\n$$\\forall \\omega \\in \\Omega\\text{ a.s.},\\; \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega) \\xrightarrow{n\\to\\infty} c \\implies \\int |X_0| \\, d\\mu < \\infty$$\n\nIn Lean: `Integrable (X 0) μ` $\\iff$ `HasFiniteIntegral (X 0) μ` $\\iff$ $\\int \\|X_0\\| \\, d\\mu < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Integrable (Mathlib)",
+      "IndepFun",
+      "IdentDistrib",
+      "Filter.Tendsto",
+      "∀ᵐ (almost everywhere)",
+      "pairwise vs mutual independence"
+    ],
+    "prerequisites": [
+      "Bochner integration",
+      "almost sure convergence",
+      "pairwise independence definition",
+      "Lean 4 filter topology"
+    ]
+  },
+  {
+    "id": "ann-delegation",
+    "proofId": "laws-of-large-numbers-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "technique",
+    "title": "Proof Body: Delegation to Aristotle Companion",
+    "content": "The proof body is a single line — a delegation to `LawsOfLargeNumbersOQ01.slln_necessity_statement`, which lives in the Aristotle companion file `LawsOfLargeNumbersOQ01Aristotle.lean`.\n\nThis 'thin wrapper' architecture is common in this gallery: the main gallery file states the theorem in the gallery's namespace and presentation style, while the actual proof machinery lives in a companion file (either an Aristotle-generated file or a handwritten infrastructure file). The companion is referenced via `meta.additionalFiles`.\n\nThe Aristotle companion file (723 lines) contains 10 intermediate lemmas building toward `slln_necessity_statement`:\n1. `measurableSet_tail_event`: measurability of {ω | X i ω ∈ A i}\n2. `identDistrib_meas_norm_gt`: IdentDistrib transfers tail probabilities\n3. `tsum_prob_norm_gt_iid_eq`: Σₙ P(|Xₙ|>n) = Σₙ P(|X₀|>n) for i.i.d.\n4. `tsum_prob_norm_gt_lt_top_of_integrable`: E[|X|]<∞ → Σ P(|X|>n) < ∞ (layer cake ←)\n5. `integrable_of_tsum_prob_norm_gt_lt_top`: layer cake →\n6. `tsum_prob_norm_gt_eq_top_of_not_integrable`: ¬Integrable → Σ P(|X|>n) = ∞ (layer cake ↔ complete)\n7. `tendsto_zero_div_of_tendsto_sum_div`: Cesàro lemma\n8. `indepSet_of_indepFun_pairwise`: IndepFun → IndepSet\n9. `variance_sum_indicator_le`: Var(Σ 1ₛₙ) ≤ E[Σ 1ₛₙ] under pairwise independence\n10. `borel_cantelli_of_pairwise_independent`: BC2 via variance-Chebyshev",
+    "mathContext": "The proof chain: `slln_necessity` $\\xrightarrow{\\text{thin wrapper}}$ `slln_necessity_statement` $\\xleftarrow{\\text{proof}}$ Lemmas 1-10.\n\nThe critical bridge: `Var\\left(\\sum_{n<N} \\mathbf{1}_{s_n}\\right) \\leq E\\left[\\sum_{n<N} \\mathbf{1}_{s_n}\\right]$ under pairwise independence (Lemma 9), which then powers the Chebyshev argument in Lemma 10.",
+    "significance": "key",
+    "relatedConcepts": [
+      "slln_necessity_statement",
+      "LawsOfLargeNumbersOQ01Aristotle",
+      "Aristotle proof search",
+      "thin wrapper architecture",
+      "borel_cantelli_of_pairwise_independent"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace and import system",
+      "Aristotle proof search tool",
+      "variance-Chebyshev method"
+    ]
+  },
+  {
+    "id": "ann-bc2-pairwise",
+    "proofId": "laws-of-large-numbers-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 73 },
+    "type": "insight",
+    "title": "Mathematical Insight: BC2 Under Pairwise Independence",
+    "content": "The most mathematically significant aspect of this proof is that the Borel-Cantelli second lemma is proved under **pairwise** independence, not full mutual independence.\n\n**Classical BC2** requires full mutual independence: if Σ P(Aₙ) = ∞ and the events Aₙ are mutually independent, then P(Aₙ i.o.) = 1. This is used in most introductory probability textbooks.\n\n**Pairwise BC2** (proved here): The same conclusion holds if the events are only pairwise independent, i.e., P(Aᵢ ∩ Aⱼ) = P(Aᵢ)P(Aⱼ) for all i ≠ j. The proof uses the **variance-Chebyshev method**:\n- Let Sₙ = Σᵢ<ₙ 1_{Aᵢ} (partial count of occurrences).\n- Pairwise independence gives: Var(Sₙ) = Σᵢ<ₙ Var(1_{Aᵢ}) ≤ Σᵢ<ₙ E[1_{Aᵢ}] = E[Sₙ]\n- So Var(Sₙ)/E[Sₙ]² ≤ 1/E[Sₙ] → 0 as n → ∞ (since E[Sₙ] → ∞ by Σ P(Aₙ) = ∞)\n- By Chebyshev: P(Sₙ ≤ E[Sₙ]/2) → 0, meaning Sₙ → ∞ a.s.\n- Sₙ → ∞ a.s. implies Aₙ occurs infinitely often a.s.\n\nThis weaker assumption is exactly what we have: `IndepFun (X i) (X j) μ` for pairwise-independent i.i.d. random variables. The Etemadi (1981) SLLN proof worked out that pairwise independence is sufficient for the whole SLLN argument, making this the minimal sufficient independence condition.",
+    "mathContext": "Pairwise independence implies: $P(A_i \\cap A_j) = P(A_i)P(A_j)$ for all $i \\neq j$.\n\nVariance bound:\n$$\\mathrm{Var}\\left(\\sum_{n<N} \\mathbf{1}_{A_n}\\right) = \\sum_{n<N} \\mathrm{Var}(\\mathbf{1}_{A_n}) \\leq \\sum_{n<N} P(A_n) = E\\left[\\sum_{n<N} \\mathbf{1}_{A_n}\\right]$$\n\nSo $\\mathrm{Var}(S_N)/E[S_N]^2 \\leq 1/E[S_N] \\to 0$, giving $S_N \\to \\infty$ a.s. by Chebyshev.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borel-Cantelli second lemma",
+      "pairwise independence",
+      "variance-Chebyshev method",
+      "Etemadi (1981)",
+      "indicator random variables",
+      "almost sure divergence"
+    ],
+    "prerequisites": [
+      "Borel-Cantelli lemmas",
+      "pairwise vs mutual independence",
+      "Chebyshev's inequality",
+      "variance of indicator variables"
+    ]
+  }
+]
