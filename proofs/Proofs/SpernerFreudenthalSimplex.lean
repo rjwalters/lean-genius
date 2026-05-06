@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: RJ Walters
 -/
 import Mathlib
-import Proofs.SpernerNDimMathlibOQ02
 
 /-!
 # Concrete Cases of sperner_panchromatic
@@ -29,20 +28,14 @@ Concretely (corners A=(2,0,0), B=(0,2,0), C=(0,0,2), midpoints D=(1,1,0),
 E=(1,0,1), F=(0,1,1)):
 - FreudCell gives 6 cells: ADF, AEF, BDE, BFE, CED, CFD
 - The centroid (2/3,2/3,2/3) lies in BOTH triangle ADF AND triangle BDE
-  (verified: (1/3)A + 0·D + (2/3)F = centroid ✓, and (1/3)B + 0·D + (2/3)E = centroid ✓)
 - Center triangle DEF is entirely MISSING
 - Euler characteristic: V(6) - E(12) + F(6) = 0 ≠ 1 (annulus, not disk)
 
-The standard N=2 Sperner triangulation has N²=4 triangles:
-  ADE, BDF, CEF, DEF — with the inverted center triangle DEF.
-None of these appear in FreudCell for n=2, N=2.
-
 ## Correct Approach for n≥2
 
-Use `AbstractSimplicialData` from `SpernerSimplicialInstance.lean` (all
-proved, 0 sorries) with the CORRECT standard Sperner triangulation.
+Use `AbstractSimplicialData` from `SpernerSimplicialInstance.lean` (0 sorries)
+with the CORRECT standard Sperner triangulation (N^n simplices).
 Missing piece: define correct `topSimplices` and prove `pseudomanifold`.
-Estimated: 300-400 additional lines.
 
 ## Tags
 
@@ -53,16 +46,83 @@ set_option linter.unusedVariables false
 set_option linter.unusedSimpArgs false
 set_option maxHeartbeats 800000
 
-namespace SpernerBrouwer
+namespace SpernerFreudSimp
 
 open Finset BigOperators
+
+-- ============================================================
+-- Simplex definitions (self-contained, no import from OQ02)
+-- ============================================================
+
+variable {n : ℕ}
+
+def InSimplex (v : Fin (n + 1) → ℝ) : Prop :=
+  (∀ i, 0 ≤ v i) ∧ ∑ i : Fin (n + 1), v i = 1
+
+noncomputable def supp (v : Fin (n + 1) → ℝ) : Finset (Fin (n + 1)) :=
+  Finset.univ.filter (fun i => 0 < v i)
+
+lemma mem_supp_iff {v : Fin (n + 1) → ℝ} {i : Fin (n + 1)} :
+    i ∈ supp v ↔ 0 < v i := by simp [supp]
+
+lemma supp_le {v : Fin (n + 1) → ℝ} {i : Fin (n + 1)}
+    (hi : i ∉ supp v) (hpos : ∀ j, 0 ≤ v j) : v i = 0 :=
+  le_antisymm (not_lt.mp (by rwa [mem_supp_iff] at hi)) (hpos i)
+
+lemma supp_nonempty {v : Fin (n + 1) → ℝ} (hv : InSimplex v) : (supp v).Nonempty := by
+  by_contra h
+  have hzero : ∀ i : Fin (n + 1), v i = 0 :=
+    fun i => supp_le (fun hi => h ⟨i, hi⟩) hv.1
+  linarith [hv.2, Finset.sum_eq_zero (fun i _ => hzero i)]
+
+noncomputable def colorSet (v fv : Fin (n + 1) → ℝ) : Finset (Fin (n + 1)) :=
+  (supp v).filter (fun i => fv i ≤ v i)
+
+lemma mem_colorSet_iff {v fv : Fin (n + 1) → ℝ} {i : Fin (n + 1)} :
+    i ∈ colorSet v fv ↔ i ∈ supp v ∧ fv i ≤ v i := by
+  simp [colorSet, Finset.mem_filter]
+
+private lemma exists_le_of_simplex_map {v fv : Fin (n + 1) → ℝ}
+    (hv : InSimplex v) (hfv : InSimplex fv) : ∃ i ∈ supp v, fv i ≤ v i := by
+  by_contra h
+  push_neg at h
+  have hle : ∀ i : Fin (n + 1), v i ≤ fv i := by
+    intro i
+    by_cases hi : i ∈ supp v
+    · exact (h i hi).le
+    · rw [supp_le hi hv.1]; exact hfv.1 i
+  have hlt : ∑ i : Fin (n + 1), v i < ∑ i : Fin (n + 1), fv i :=
+    Finset.sum_lt_sum (fun i _ => hle i)
+      ⟨(supp_nonempty hv).choose, Finset.mem_univ _, h _ (supp_nonempty hv).choose_spec⟩
+  linarith [hv.2, hfv.2]
+
+lemma colorSet_nonempty {v fv : Fin (n + 1) → ℝ}
+    (hv : InSimplex v) (hfv : InSimplex fv) : (colorSet v fv).Nonempty := by
+  obtain ⟨i, hi_supp, hi_le⟩ := exists_le_of_simplex_map hv hfv
+  exact ⟨i, mem_colorSet_iff.mpr ⟨hi_supp, hi_le⟩⟩
+
+noncomputable def spernerColor (v fv : Fin (n + 1) → ℝ)
+    (hv : InSimplex v) (hfv : InSimplex fv) : Fin (n + 1) :=
+  (colorSet v fv).min' (colorSet_nonempty hv hfv)
+
+lemma spernerColor_le {v fv : Fin (n + 1) → ℝ}
+    (hv : InSimplex v) (hfv : InSimplex fv) :
+    fv (spernerColor v fv hv hfv) ≤ v (spernerColor v fv hv hfv) :=
+  (mem_colorSet_iff.mp (Finset.min'_mem _ _)).2
+
+lemma spernerColor_ne_of_zero {v fv : Fin (n + 1) → ℝ}
+    (hv : InSimplex v) (hfv : InSimplex fv) {j : Fin (n + 1)} (hj : v j = 0) :
+    spernerColor v fv hv hfv ≠ j := by
+  intro heq
+  have hmem := (mem_colorSet_iff.mp (Finset.min'_mem _ _)).1
+  rw [heq, mem_supp_iff] at hmem
+  linarith [hmem, hj.le]
 
 -- ============================================================
 -- SECTION I: n=0 case (trivial)
 -- ============================================================
 
-/-- `sperner_panchromatic` for n=0: Δ⁰ is a single point.
-    The unique point (1,) serves as all witnesses; diameter bound is 0/N = 0. -/
+/-- `sperner_panchromatic` for n=0: Δ⁰ is a single point. -/
 theorem sperner_panchromatic_zero (N : ℕ) (hN : 0 < N)
     (f : (Fin 1 → ℝ) → Fin 1 → ℝ)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
@@ -75,27 +135,18 @@ theorem sperner_panchromatic_zero (N : ℕ) (hN : 0 < N)
   refine ⟨fun _ _ => 1,
           fun _ => ⟨fun _ => le_refl _, by simp [Fin.sum_univ_one]⟩,
           fun i => ?_, fun i j l => ?_⟩
-  · -- f(pt) 0 ≤ pt 0 = 1: InSimplex forces f(pt) 0 = 1
-    fin_cases i
+  · fin_cases i
     have hfsum : f (fun _ => (1 : ℝ)) 0 = 1 := by
       have := hfpt.2; simp [Fin.sum_univ_one] at this; exact this
     simp [hfsum]
-  · -- Diameter 0/N = 0 ≤ |1-1| = 0
-    fin_cases i <;> fin_cases j <;> fin_cases l <;> simp
+  · fin_cases i <;> fin_cases j <;> fin_cases l <;> simp
 
 -- ============================================================
 -- SECTION II: n=1 case (discrete IVT)
 -- ============================================================
 
-/-- `sperner_panchromatic` for n=1: proved via discrete IVT on the grid of Δ¹.
-
-**Proof sketch**: The N-th grid triangulation of Δ¹ has vertices
-  g(k) = (k/N, (N-k)/N) for k = 0,...,N.
-The Sperner coloring assigns color 0 (resp. 1) to g(k) when f(g(k))₀ ≤ k/N
-(resp. f(g(k))₁ ≤ (N-k)/N) is the "first" satisfied inequality.
-Since supp(g(0)) = {1}, we get c(0) = 1. Since supp(g(N)) = {0}, we get c(N) = 0.
-Let K = last index with c(K) = 1. Then c(K+1) = 0. The pair (g(K+1), g(K))
-is panchromatic with diameter 1/N = n/N. -/
+/-- `sperner_panchromatic` for n=1: proved via discrete IVT.
+Grid g(k) = (k/N, (N-k)/N). K = last k with color 1. Witnesses: (g(K+1), g(K)). -/
 theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     (f : (Fin 2 → ℝ) → Fin 2 → ℝ)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
@@ -105,10 +156,8 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
         (∀ (i j : Fin 2) (l : Fin 2), |v i l - v j l| ≤ (1 : ℝ) / N) := by
   have hNr : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
   have hNrpos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
-  -- Grid points on Δ¹: g k = (k/N, (N-k)/N)
   let g : Fin (N + 1) → Fin 2 → ℝ := fun k i =>
     if i.val = 0 then (k.val : ℝ) / N else ((N - k.val : ℕ) : ℝ) / N
-  -- g k is in the 1-simplex Δ¹
   have hg : ∀ k : Fin (N + 1), InSimplex (g k) := fun k => by
     have hkle : k.val ≤ N := Nat.lt_succ_iff.mp k.isLt
     constructor
@@ -120,10 +169,8 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
                  show ¬(1 : Nat) = 0 from by omega, if_false]
       rw [div_add_div_same, div_self hNr]; push_cast; omega
   have hfg : ∀ k : Fin (N + 1), InSimplex (f (g k)) := fun k => hf_map _ (hg k)
-  -- Sperner coloring on the grid
   let c : Fin (N + 1) → Fin 2 := fun k =>
     spernerColor (g k) (f (g k)) (hg k) (hfg k)
-  -- c(0) = 1: g(0)₀ = 0/N = 0, so spernerColor ≠ 0, so = 1
   have hc0 : c ⟨0, Nat.succ_pos N⟩ = 1 := by
     have hg0 : g ⟨0, Nat.succ_pos N⟩ (0 : Fin 2) = 0 := by
       simp [g, show (0 : Fin 2).val = 0 from rfl]
@@ -132,7 +179,6 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     exact Fin.ext (by
       have : (c ⟨0, Nat.succ_pos N⟩).val ≠ 0 := fun h => hne (Fin.ext h)
       have := (c ⟨0, Nat.succ_pos N⟩).isLt; omega)
-  -- c(N) = 0: g(N)₁ = 0/N = 0, so spernerColor ≠ 1, so = 0
   have hcN : c ⟨N, Nat.lt_succ_self N⟩ = 0 := by
     have hgN : g ⟨N, Nat.lt_succ_self N⟩ (1 : Fin 2) = 0 := by
       simp [g, show (1 : Fin 2).val = 1 from rfl,
@@ -142,13 +188,11 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     exact Fin.ext (by
       have : (c ⟨N, Nat.lt_succ_self N⟩).val ≠ 1 := fun h => hne (Fin.ext h)
       have := (c ⟨N, Nat.lt_succ_self N⟩).isLt; omega)
-  -- Find K = last grid point with color 1 (discrete IVT: c goes 1...1,0...0)
   let S : Finset (Fin (N + 1)) := univ.filter (fun k => c k = 1)
   have hS_ne : S.Nonempty :=
     ⟨⟨0, Nat.succ_pos N⟩, mem_filter.mpr ⟨mem_univ _, hc0⟩⟩
   let K : Fin (N + 1) := S.max' hS_ne
   have hcK : c K = 1 := (mem_filter.mp (S.max'_mem hS_ne)).2
-  -- K < N: if K = N then c(K) = 1 and c(N) = 0 give contradiction
   have hK_lt_N : K.val < N := by
     by_contra h; push_neg at h
     have hKN : K = ⟨N, Nat.lt_succ_self N⟩ :=
@@ -156,27 +200,22 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     have hcK' : c ⟨N, Nat.lt_succ_self N⟩ = 1 := hKN ▸ hcK
     rw [hcK'] at hcN
     exact absurd hcN (by decide)
-  -- K+1 is a valid grid index, and c(K+1) = 0
   let K1 : Fin (N + 1) := ⟨K.val + 1, by omega⟩
   have hcK1 : c K1 = 0 := by
-    -- K+1 ∉ S since K is the max
     have hK1_not_S : K1 ∉ S := fun hmem =>
       absurd (Finset.le_max' S K1 hmem) (by simp [K1, Fin.le_iff_val_le_val]; omega)
     exact Fin.ext (by
       have : (c K1).val ≠ 1 :=
         fun h => hK1_not_S (mem_filter.mpr ⟨mem_univ _, Fin.ext h⟩)
       have := (c K1).isLt; omega)
-  -- Extract color inequalities: c K = 1 → f(gK)₁ ≤ gK₁; c K1 = 0 → f(gK1)₀ ≤ gK1₀
   have hle_K : f (g K) (1 : Fin 2) ≤ g K (1 : Fin 2) := by
     have h := spernerColor_le (hg K) (hfg K)
-    -- spernerColor (g K) ... = c K (definitional) and c K = 1
     rw [show spernerColor (g K) (f (g K)) (hg K) (hfg K) = c K from rfl, hcK] at h
     exact h
   have hle_K1 : f (g K1) (0 : Fin 2) ≤ g K1 (0 : Fin 2) := by
     have h := spernerColor_le (hg K1) (hfg K1)
     rw [show spernerColor (g K1) (f (g K1)) (hg K1) (hfg K1) = c K1 from rfl, hcK1] at h
     exact h
-  -- Key grid difference: consecutive vertices differ by 1/N in each coordinate
   have hg0_diff : g K1 (0 : Fin 2) - g K (0 : Fin 2) = 1 / N := by
     simp only [g, K1, show (0 : Fin 2).val = 0 from rfl, if_true]
     push_cast; field_simp; ring
@@ -186,54 +225,25 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     have h1 : ((N - K.val : ℕ) : ℝ) = (N : ℝ) - K.val := by push_cast; omega
     have h2 : ((N - (K.val + 1) : ℕ) : ℝ) = (N : ℝ) - K.val - 1 := by push_cast; omega
     rw [h1, h2]; field_simp; ring
-  -- Diameter bounds for all cases
   have habs_pos : (0 : ℝ) < 1 / N := by positivity
   have hdiam : ∀ (l : Fin 2), |g K1 l - g K l| ≤ 1 / N := by
     intro l; fin_cases l
     · rw [hg0_diff, abs_of_pos habs_pos]
     · have : g K1 (1 : Fin 2) - g K (1 : Fin 2) = -(1 / N) := by linarith [hg1_diff]
       rw [this, abs_neg, abs_of_pos habs_pos]
-  -- Construct witnesses: v 0 = g K1 (color 0), v 1 = g K (color 1)
   refine ⟨fun i => if i.val = 0 then g K1 else g K, ?_, ?_, ?_⟩
-  · -- InSimplex for each witness
-    intro i; fin_cases i <;> simp [hg]
-  · -- Color conditions
-    intro i; fin_cases i
+  · intro i; fin_cases i <;> simp [hg]
+  · intro i; fin_cases i
     · simpa using hle_K1
     · simpa using hle_K
-  · -- Diameter: |v i l - v j l| ≤ 1/N
-    intro i j l
+  · intro i j l
     fin_cases i <;> fin_cases j <;>
       simp only [show (0 : Fin 2).val = 0 from rfl, if_true,
                  show (1 : Fin 2).val = 1 from rfl,
                  show ¬(1 : Nat) = 0 from by omega, if_false]
-    -- i = j = 0: same vector, difference is 0
-    · simp [div_nonneg (by norm_num : (0:ℝ) ≤ 1) (le_of_lt hNrpos)]
-    -- i = 0, j = 1: |g K1 l - g K l| ≤ 1/N
+    · simp [le_of_lt habs_pos]
     · exact hdiam l
-    -- i = 1, j = 0: |g K l - g K1 l| = |g K1 l - g K l| ≤ 1/N
     · rw [abs_sub_comm]; exact hdiam l
-    -- i = j = 1: same vector, difference is 0
-    · simp [div_nonneg (by norm_num : (0:ℝ) ≤ 1) (le_of_lt hNrpos)]
+    · simp [le_of_lt habs_pos]
 
--- ============================================================
--- SECTION III: Path forward for n≥2
--- ============================================================
-
-/-!
-### What Remains for General n
-
-For n≥2, `sperner_panchromatic` requires a correct n-dimensional
-triangulation of N·Δⁿ. The correct standard Sperner triangulation
-has N^n simplices (e.g., N² for n=2, including the inverted center triangle).
-
-Implementation path via `AbstractSimplicialData` (SpernerSimplicialInstance.lean):
-1. Define `topSimplices` as the correct set of n-simplices
-2. Prove `card_eq` (n+1 vertices per simplex)
-3. Prove `pseudomanifold` (≤2 containers per codim-1 face)
-4. `AbstractSimplicialData.toTriangulation` gives full CellComplex automatically
-5. Prove `boundary_doors_odd` by induction (using the bijection with (n-1)-dim case)
-6. Apply `Triangulation.sperner` + real coordinate extraction
--/
-
-end SpernerBrouwer
+end SpernerFreudSimp
