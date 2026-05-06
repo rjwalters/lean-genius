@@ -14735,11 +14735,11 @@
       "issues": []
     },
     "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-06T08:16:22Z",
+      "lastAudited": "2026-05-06T08:50:13Z",
       "result": "issues-found",
-      "notes": "Sorry mismatch on origin/main (claims 0, actual 1; status verified but file has 1 sorry at line 126). In-flight fix PRs already open: #16080 (audit), #16081 (mechanic) — both meta sync; #16028 (research) attempts to remove the sorry but is conflicting. No new issue/PR filed."
+      "notes": "Reverse mismatch on origin/main (claims 1, actual 0). #16052 eliminated last sorry after #16080/#16081 set meta to 1. Two open meta-sync PRs are MERGEABLE: #16094 (mechanic, badge=verified) and #16101 (audit, badge=original). Both correctly sync to 0 sorries. Awaiting deployer merge — no new PR filed."
     },
     "lagrange-theorem-oq-01-oq-01": {
       "auditCount": 2,
