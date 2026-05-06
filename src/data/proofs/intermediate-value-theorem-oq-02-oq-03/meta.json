@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "assumptions": "None. Constructive core (Parts I-V) uses no classical axioms. Endpoint convergence (Part VI) uses Classical.choice via Mathlib's tendsto_atTop_ciSup (completeness of \u211d). Root theorem (Part VII) uses Continuous.tendsto.",
     "lineCount": 308,
-    "theoremCount": 14,
+    "theoremCount": 13,
     "definitionCount": 3,
     "originalContributions": [
       "paramBisect: computable (non-noncomputable) bisection parameterized by explicit choice oracle",
@@ -84,7 +84,7 @@
   ],
   "leanFile": {
     "path": "Proofs/IntermediateValueTheoremOQ02OQ03.lean",
-    "theoremCount": 14,
+    "theoremCount": 13,
     "definitionCount": 3,
     "axiomCount": 0,
     "lineCount": 308,
