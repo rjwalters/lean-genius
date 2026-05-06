@@ -72,8 +72,7 @@ theorem stirlingPartial_two (n : ℕ) (hn : n ≠ 0) :
     stirlingPartial 2 n = 1 + 1 / (12 * (n : ℝ)) := by
   simp [stirlingPartial, Finset.sum_range_succ, Finset.sum_range_one,
     stirlingCoeff_zero, stirlingCoeff_one]
-  have : (n : ℝ) ^ 1 = n := pow_one _
-  rw [this]; ring
+  ring
 
 -- ═══════════════════════════════════════════════════
 -- Part IIIa: Log Inequality Lemmas
@@ -106,20 +105,20 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
         have := (hasDerivAt_pow 3 t).div_const 3
         convert this using 1; ring
       have h := ((hasDerivAt_id t).sub h2).add h3
-      convert h using 1; ring
+      convert h using 1
     -- Derivative of log part: 1/(1+t)
     have hlog : HasDerivAt (fun t => Real.log (1 + t)) (1 + t)⁻¹ t := by
-      have h := (Real.hasDerivAt_log h1t).comp t
-                  ((hasDerivAt_const t 1).add (hasDerivAt_id t))
-      simp only [Function.comp, mul_one] at h
-      exact h
+      have h1 : HasDerivAt (fun t => 1 + t) 1 t := (hasDerivAt_id t).const_add 1
+      have h2 := (Real.hasDerivAt_log h1t).comp t h1
+      simp only [mul_one] at h2
+      exact h2
     -- Combined derivative: t³/(1+t)
     have hg : HasDerivAt g (1 - t + t ^ 2 - (1 + t)⁻¹) t := hpoly.sub hlog
     convert hg using 1
     field_simp
     ring
   -- Monotonicity of g on [0, ∞): g'(t) = t³/(1+t) ≥ 0
-  have hmono : MonotonOn g (Set.Ici 0) := by
+  have hmono : MonotoneOn g (Set.Ici 0) := by
     apply monotoneOn_of_deriv_nonneg (convex_Ici 0)
     · -- Continuity of g = polynomial - log on [0, ∞)
       show ContinuousOn (fun t : ℝ => t - t ^ 2 / 2 + t ^ 3 / 3 -
@@ -130,6 +129,10 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
         exact ne_of_gt (by linarith [Set.mem_Ici.mp ht])
+    · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
+      intro t ht
+      rw [interior_Ici] at ht
+      exact (hderiv t ht).differentiableAt.differentiableWithinAt
     · intro t ht
       rw [interior_Ici] at ht
       have hd : deriv g t = t ^ 3 / (1 + t) := (hderiv t ht).deriv
@@ -157,10 +160,10 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
     intro t ht
     have h1t : (1 : ℝ) + t ≠ 0 := by linarith
     have hlog : HasDerivAt (fun t => Real.log (1 + t)) (1 + t)⁻¹ t := by
-      have h := (Real.hasDerivAt_log h1t).comp t
-                  ((hasDerivAt_const t 1).add (hasDerivAt_id t))
-      simp only [Function.comp, mul_one] at h
-      exact h
+      have h1 : HasDerivAt (fun t => 1 + t) 1 t := (hasDerivAt_id t).const_add 1
+      have h2 := (Real.hasDerivAt_log h1t).comp t h1
+      simp only [mul_one] at h2
+      exact h2
     -- Derivative of 4-term polynomial: 1 - t + t² - t³
     have hpoly : HasDerivAt (fun t => t - t ^ 2 / 2 + t ^ 3 / 3 - t ^ 4 / 4)
                              (1 - t + t ^ 2 - t ^ 3) t := by
@@ -171,12 +174,12 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
       have h4 : HasDerivAt (fun t => t ^ 4 / 4) (t ^ 3) t := by
         have := (hasDerivAt_pow 4 t).div_const 4; convert this using 1; ring
       have h := (((hasDerivAt_id t).sub h2).add h3).sub h4
-      convert h using 1; ring
+      convert h using 1
     have hf : HasDerivAt f ((1 + t)⁻¹ - (1 - t + t ^ 2 - t ^ 3)) t := hlog.sub hpoly
     convert hf using 1
     field_simp
     ring
-  have hmono : MonotonOn f (Set.Ici 0) := by
+  have hmono : MonotoneOn f (Set.Ici 0) := by
     apply monotoneOn_of_deriv_nonneg (convex_Ici 0)
     · -- Continuity of f = log(1+t) - polynomial on [0, ∞)
       show ContinuousOn (fun t : ℝ => Real.log (1 + t) -
@@ -188,6 +191,10 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
       · exact (((continuous_id.sub ((continuous_id.pow 2).div_const 2)).add
                  ((continuous_id.pow 3).div_const 3)).sub
                  ((continuous_id.pow 4).div_const 4)).continuousOn
+    · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
+      intro t ht
+      rw [interior_Ici] at ht
+      exact (hderiv t ht).differentiableAt.differentiableWithinAt
     · intro t ht
       rw [interior_Ici] at ht
       have hd : deriv f t = t ^ 4 / (1 + t) := (hderiv t ht).deriv
