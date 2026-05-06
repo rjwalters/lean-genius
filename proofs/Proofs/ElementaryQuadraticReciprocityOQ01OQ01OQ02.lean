@@ -169,10 +169,10 @@ theorem gauss_qr_pathway_complete (χ : MulChar (ZMod p) (ZMod q)) (hχ₁ : χ 
 -- Part V: Concrete Frobenius Verifications
 -- ============================================================================
 
-private instance : Fact (Nat.Prime 3) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 5) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 7) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 11) := ⟨by decide⟩
+private instance factPrime3 : Fact (Nat.Prime 3) := ⟨by decide⟩
+private instance factPrime5 : Fact (Nat.Prime 5) := ⟨by decide⟩
+private instance factPrime7 : Fact (Nat.Prime 7) := ⟨by decide⟩
+private instance factPrime11 : Fact (Nat.Prime 11) := ⟨by decide⟩
 
 /-- **Concrete example**: p = 5, q = 3.
     In any field of characteristic 3, the Frobenius step holds for the

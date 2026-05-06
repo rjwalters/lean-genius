@@ -176,10 +176,10 @@ theorem gauss_sum_sq_neg_case (hodd : p ≠ 2) (h : p % 4 = 3) :
 -- Concrete Instances
 -- ============================================================================
 
-private instance : Fact (Nat.Prime 3) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 5) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 7) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 13) := ⟨by decide⟩
+private instance factPrime3gsq : Fact (Nat.Prime 3) := ⟨by decide⟩
+private instance factPrime5gsq : Fact (Nat.Prime 5) := ⟨by decide⟩
+private instance factPrime7gsq : Fact (Nat.Prime 7) := ⟨by decide⟩
+private instance factPrime13gsq : Fact (Nat.Prime 13) := ⟨by decide⟩
 
 /-- p = 3 (≡ 3 mod 4): τ² = -3. -/
 example : ∃ τ : ℂ, τ ^ 2 = (-1 : ℂ) ^ (3 / 2) * (3 : ℂ) :=

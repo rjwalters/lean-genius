@@ -69,13 +69,13 @@ theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
   · -- case 0: both sides are 0 (a is non-unit)
     rw [hv] at ha; simp only [map_zero] at ha
     split_ifs at ha with hu
-    · exact absurd ha one_ne_zero  -- 0 = 1 is false
+    · exact absurd ha.symm one_ne_zero  -- ha : (0:ZMod q)=1, ha.symm : 1=0, one_ne_zero : 1≠0
     · simp [hv, hu, MulChar.one_apply]
   · -- case 1: both sides are 1 (a is unit and QR)
     rw [hv] at ha; simp only [map_one] at ha
     split_ifs at ha with hu
     · simp [hv, hu, MulChar.one_apply]
-    · exact absurd ha.symm one_ne_zero  -- 0 = 1 is false
+    · exact absurd ha one_ne_zero  -- ha : (1:ZMod q)=0, one_ne_zero : 1≠0
   · -- case -1: impossible since (-1 : ZMod q) ≠ 0, 1 for q odd prime
     rw [hv] at ha; simp only [map_neg_one] at ha
     exfalso
@@ -88,7 +88,6 @@ theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
       rw [show (2 : ZMod q) = ((2 : ℕ) : ZMod q) from by norm_cast] at h2
       rw [ZMod.natCast_eq_zero_iff_dvd] at h2
       have hq_le : q ≤ 2 := Nat.le_of_dvd (by norm_num) h2
-      have hq_ge : 3 ≤ q := Nat.lt_of_le_of_ne hq.out.two_le (Ne.symm hq2)
       omega
     · -- ha : (-1 : ZMod q) = 0, contradiction since q prime ≥ 2
       have h1 : (1 : ZMod q) = 0 := by
@@ -208,11 +207,11 @@ theorem step4_character_identity (χ : MulChar (ZMod p) (ZMod q))
 -- Part VII: Concrete Verifications
 -- ============================================================================
 
-private instance : Fact (Nat.Prime 3) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 5) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 7) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 11) := ⟨by decide⟩
-private instance : Fact (Nat.Prime 13) := ⟨by decide⟩
+private instance factPrime3asm : Fact (Nat.Prime 3) := ⟨by decide⟩
+private instance factPrime5asm : Fact (Nat.Prime 5) := ⟨by decide⟩
+private instance factPrime7asm : Fact (Nat.Prime 7) := ⟨by decide⟩
+private instance factPrime11asm : Fact (Nat.Prime 11) := ⟨by decide⟩
+private instance factPrime13asm : Fact (Nat.Prime 13) := ⟨by decide⟩
 
 /-- p=3, q=5: (3/5)·(5/3) = 1. ✓ -/
 example : legendreSym 5 3 * legendreSym 3 5 = (-1) ^ (5 / 2 * (3 / 2)) := by native_decide
