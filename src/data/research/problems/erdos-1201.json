@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1201",
-  "title": "Erdős #1201",
+  "title": "Erd\u0151s #1201",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "",
-    "plain": "Is it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erdős wrote he could prove this for $\\epsilon=1/2$.### Formal Statement",
+    "plain": "Is it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erd\u0151s wrote he could prove this for $\\epsilon=1/2$.### Formal Statement",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,23 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: PR #15109 merged. Gallery entry: 14 theorems, 1 axiom (ε=1/2 partial result), 0 sorries. Formalization covers gpf, consecutiveProduct, upperDensity, gpfConsecutive_mono, gpfConsecutive_large_of_prime_dvd.",
+    "progressSummary": "COMPLETE: PR #15109 merged. Gallery entry: 14 theorems, 1 axiom (\u03b5=1/2 partial result), 0 sorries. Formalization covers gpf, consecutiveProduct, upperDensity, gpfConsecutive_mono, gpfConsecutive_large_of_prime_dvd.",
     "builtItems": [
       "greatestPrimeFactor: gpf via Nat.primeFactors.max' (Proofs/Erdos1201Problem.lean)",
-      "consecutiveProduct: ∏ i ∈ range(k+1), (n+i) (Proofs/Erdos1201Problem.lean)",
-      "gpfConsecutive_mono: P(n,k) ≤ P(n,k+1) — monotone in window length",
+      "consecutiveProduct: \u220f i \u2208 range(k+1), (n+i) (Proofs/Erdos1201Problem.lean)",
+      "gpfConsecutive_mono: P(n,k) \u2264 P(n,k+1) \u2014 monotone in window length",
       "gpfConsecutive_large_of_prime_dvd: prime witness criterion",
-      "erdos_1201_half_case: ε=1/2 axiom (ε=1/2 partial result by Erdős)"
+      "erdos_1201_half_case: \u03b5=1/2 axiom (\u03b5=1/2 partial result by Erd\u0151s)"
     ],
     "insights": [
-      "B-smooth number theory connects naturally: n is B-smooth iff gpf(n) ≤ B",
-      "Bertrand's postulate gives a concrete lower bound: for n≥2, there's a prime in (n,2n] dividing the n-step product, so gpf(consecProd n n) > n",
+      "B-smooth number theory connects naturally: n is B-smooth iff gpf(n) \u2264 B",
+      "Bertrand's postulate gives a concrete lower bound: for n\u22652, there's a prime in (n,2n] dividing the n-step product, so gpf(consecProd n n) > n",
       "The full conjecture requires analytic number theory (smooth number asymptotics); no elementary proof known",
       "Natural density requires careful measure-theoretic formalization; Filter.limsup works for upper density"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erdős wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
+    "markdown": "# Erd\u0151s #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erd\u0151s wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
   "tags": [
     "erdos"
