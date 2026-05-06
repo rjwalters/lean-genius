@@ -148,13 +148,14 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     ⟨⟨0, Nat.succ_pos N⟩, mem_filter.mpr ⟨mem_univ _, hc0⟩⟩
   let K : Fin (N + 1) := S.max' hS_ne
   have hcK : c K = 1 := (mem_filter.mp (S.max'_mem hS_ne)).2
-  -- K < N: if K = N then c(K) = c(N) = 0 contradicts c(K) = 1
+  -- K < N: if K = N then c(K) = 1 and c(N) = 0 give contradiction
   have hK_lt_N : K.val < N := by
     by_contra h; push_neg at h
     have hKN : K = ⟨N, Nat.lt_succ_self N⟩ :=
       Fin.ext (Nat.le_antisymm (Nat.lt_succ_iff.mp K.isLt) h)
-    rw [hKN] at hcK
-    exact absurd hcK (hcN ▸ by decide)
+    have hcK' : c ⟨N, Nat.lt_succ_self N⟩ = 1 := hKN ▸ hcK
+    rw [hcK'] at hcN
+    exact absurd hcN (by decide)
   -- K+1 is a valid grid index, and c(K+1) = 0
   let K1 : Fin (N + 1) := ⟨K.val + 1, by omega⟩
   have hcK1 : c K1 = 0 := by
