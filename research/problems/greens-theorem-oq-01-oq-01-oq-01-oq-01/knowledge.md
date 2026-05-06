@@ -118,3 +118,43 @@ proves the building blocks to eliminate that axiom.
 1. Prove continuity of G(p) using continuous_of_dominated_interval induction (1 sorry)
 2. Prove main theorem case σ(0)≠0 using perm_tail + generalized swap(0,k) (1 sorry)
 3. For swap(0,k): prove by induction on k using swap(0,k) = swap(k-1,k)∘swap(0,k-1)∘swap(k-1,k)
+
+---
+
+## Session 2026-05-06 (Session 3) — Main Theorem Structure via swap_induction_on
+
+**Mode**: REVISIT (in-progress problem)
+**Outcome**: significant progress — sorries reduced from 2 to 1
+
+### What I Did
+
+- Added `continuous_param` general lemma (induction on n, DCT with compact bound)
+- Filled `hcont` sorry in `integrable_swap_pair` using `continuous_param`
+- Added `iter_integral_swap_zero`: integral identity for swap(0,k) by k.val induction
+  (k=0 trivial, k=1 swap_outer_two, k≥2 = 1 sorry)
+- Added `iter_integral_swap_any`: integral identity for any swap(x,y)
+  (perm_tail for x,y≠0; iter_integral_swap_zero for x=0/y=0)
+- Proved main theorem via `Equiv.Perm.swap_induction_on` compositionality
+
+### Key Findings
+
+- **swap_induction_on**: Every permutation = product of swaps. P(swap*τ) from P(τ)
+  by: apply P(τ) to get (a∘τ, b∘τ, f∘τ.symm), then apply P(swap) to new bounds.
+  The composed permutation function chains correctly: f(v∘swap.symm∘τ.symm) = f(v∘(swap*τ).symm)
+
+- **Mathlib API confirmed**: continuousAt_of_dominated_interval (local bound via compact K),
+  exists_compact_mem_nhds (LocallyCompactSpace), IsCompact.bddAbove, Continuous.finCons,
+  swap_mul_swap_mul_swap: swap(y,z)*swap(x,y)*swap(y,z) = swap(z,x)
+
+- **Remaining sorry**: iter_integral_swap_zero k≥2: chain 3 applications via
+  swap_mul_swap_mul_swap: swap(k₀,k)*swap(0,k₀)*swap(k₀,k) = swap(0,k)
+
+### Files Modified
+
+- `proofs/Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean` (471 lines, 1 sorry)
+
+### Next Steps
+
+1. Prove `iter_integral_swap_zero` k≥2: chain IH(k₀) + perm_tail(swap(k₀,k)) + IH(k₀)
+   with careful Fin type matching to match swap_mul_swap_mul_swap output
+2. Once resolved, run Docker build to verify compilation
