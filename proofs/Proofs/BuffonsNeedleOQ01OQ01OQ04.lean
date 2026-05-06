@@ -419,19 +419,150 @@ theorem cauchyCrofton_ratio (n : ℕ) (hn : 2 ≤ n) :
              mul_comm (cauchyCroftonConst (n + 1)) (cauchyCroftonConst (n + 2)),
              pi_pos]
 
+/-- The recurrence: c_{n+2} = c_n · (n/(n+1)) for n ≥ 2.
+    Derived from cauchyCrofton_ratio by canceling c_n > 0. -/
+private lemma cauchyCrofton_recurrence (n : ℕ) (hn : 2 ≤ n) :
+    cauchyCroftonConst (n + 2) = cauchyCroftonConst n * ((n : ℝ) / ((n : ℝ) + 1)) := by
+  have hratio := cauchyCrofton_ratio n hn
+  have hpos : 0 < cauchyCroftonConst n := cauchyCroftonConst_pos n (by omega)
+  apply mul_left_cancel₀ hpos.ne'
+  calc cauchyCroftonConst n * cauchyCroftonConst (n + 2)
+      = cauchyCroftonConst (n + 2) * cauchyCroftonConst n := by ring
+    _ = cauchyCroftonConst n ^ 2 * ((n : ℝ) / ((n : ℝ) + 1)) := hratio
+    _ = cauchyCroftonConst n * (cauchyCroftonConst n * ((n : ℝ) / ((n : ℝ) + 1))) := by ring
+
+/-- Even subsequence: c_{2(k+1)}² ≤ (2/π)²/(k+1) for all k ≥ 0.
+    Inductive step uses 4(k+1)(k+2) ≤ (2k+3)², which gives one slack unit. -/
+private lemma cauchyCrofton_even_sq_bound (k : ℕ) :
+    cauchyCroftonConst (2 * (k + 1)) ^ 2 ≤ (2 / π) ^ 2 / ((k : ℝ) + 1) := by
+  induction k with
+  | zero => simp [cauchyCrofton_two]
+  | succ k ih =>
+    have heq : 2 * (k + 1 + 1) = 2 * (k + 1) + 2 := by ring
+    rw [heq, cauchyCrofton_recurrence (2 * (k + 1)) (by omega), mul_pow]
+    have hk1 : (0 : ℝ) < (k : ℝ) + 1 := by positivity
+    have hk2 : (0 : ℝ) < (k : ℝ) + 2 := by positivity
+    have h2k3 : (0 : ℝ) < 2 * (k : ℝ) + 3 := by positivity
+    -- Key polynomial: 4(k+1)(k+2) ≤ (2k+3)²
+    have hkey : 4 * ((k : ℝ) + 1) * ((k : ℝ) + 2) ≤ (2 * (k : ℝ) + 3) ^ 2 := by nlinarith
+    calc cauchyCroftonConst (2 * (k + 1)) ^ 2 *
+          ((↑(2 * (k + 1)) / (↑(2 * (k + 1)) + 1)) ^ 2)
+        ≤ ((2 / π) ^ 2 / ((k : ℝ) + 1)) *
+          ((↑(2 * (k + 1)) / (↑(2 * (k + 1)) + 1)) ^ 2) :=
+          mul_le_mul_of_nonneg_right ih (by positivity)
+      _ = (2 / π) ^ 2 * ((2 * (k : ℝ) + 2) ^ 2 /
+            (((k : ℝ) + 1) * (2 * (k : ℝ) + 3) ^ 2)) := by push_cast; ring
+      _ ≤ (2 / π) ^ 2 / ((k : ℝ) + 2) := by
+          rw [← mul_div_assoc,
+              div_le_div_iff (by positivity : (0:ℝ) < ((k:ℝ)+1)*((2*(k:ℝ)+3)^2)) hk2]
+          have h2pi : (0 : ℝ) ≤ (2 / π) ^ 2 := by positivity
+          nlinarith [mul_le_mul_of_nonneg_left
+                       (mul_le_mul_of_nonneg_right hkey (le_of_lt hk1)) h2pi]
+
+/-- Odd subsequence: c_{2k+3}² ≤ (1/4)·2/(k+2) for all k ≥ 0.
+    Uses the same recurrence with n = 2k+3 and the key inequality
+    (2k+3)²(k+3) ≤ (2k+4)²(k+2). -/
+private lemma cauchyCrofton_odd_sq_bound (k : ℕ) :
+    cauchyCroftonConst (2 * k + 3) ^ 2 ≤ (1 / 2 : ℝ) ^ 2 * 2 / ((k : ℝ) + 2) := by
+  induction k with
+  | zero => norm_num [cauchyCrofton_three]
+  | succ k ih =>
+    have heq : 2 * (k + 1) + 3 = (2 * k + 3) + 2 := by ring
+    rw [heq, cauchyCrofton_recurrence (2 * k + 3) (by omega), mul_pow]
+    have hk2 : (0 : ℝ) < (k : ℝ) + 2 := by positivity
+    have hk3 : (0 : ℝ) < (k : ℝ) + 3 := by positivity
+    -- Key polynomial: (2k+3)²(k+3) ≤ (2k+4)²(k+2), i.e., 3k+5 ≥ 0
+    have hkey : (2 * (k : ℝ) + 3) ^ 2 * ((k : ℝ) + 3) ≤
+                (2 * (k : ℝ) + 4) ^ 2 * ((k : ℝ) + 2) := by nlinarith
+    calc cauchyCroftonConst (2 * k + 3) ^ 2 *
+          ((↑(2 * k + 3) / (↑(2 * k + 3) + 1)) ^ 2)
+        ≤ ((1 / 2 : ℝ) ^ 2 * 2 / ((k : ℝ) + 2)) *
+          ((↑(2 * k + 3) / (↑(2 * k + 3) + 1)) ^ 2) :=
+          mul_le_mul_of_nonneg_right ih (by positivity)
+      _ = (1 / 2 : ℝ) ^ 2 * 2 * ((2 * (k : ℝ) + 3) ^ 2 /
+            (((k : ℝ) + 2) * (2 * (k : ℝ) + 4) ^ 2)) := by push_cast; ring
+      _ ≤ (1 / 2 : ℝ) ^ 2 * 2 / ((k : ℝ) + 3) := by
+          rw [← mul_div_assoc,
+              div_le_div_iff (by positivity : (0:ℝ) < ((k:ℝ)+2)*((2*(k:ℝ)+4)^2)) hk3]
+          have h12 : (0 : ℝ) ≤ (1/2:ℝ)^2 * 2 := by norm_num
+          nlinarith [mul_le_mul_of_nonneg_left hkey h12]
+
 /-- The Cauchy-Crofton constant decays to zero: c_n → 0 as n → ∞.
 
-    Proof strategy (using cauchyCrofton_product):
-    1. c_n · c_{n+1} = 2/(n·π) → 0
-    2. c_{n+2}/c_n = n/(n+1) (two-step ratio)
-    3. Even subsequence: c_{2k} ≤ c_2/√k (via ∏ 2j/(2j+1) ≤ 1/√k, since 2j/(2j+1) ≤ √(j/(j+1)))
-    4. Odd subsequence: similar bound
-    5. Squeeze both subsequences to 0
-
-    The bound 2j/(2j+1) ≤ √(j/(j+1)) follows from (2j)^2(j+1) ≤ (2j+1)^2·j,
-    which telescopes to give ∏ ≤ √(1/k). -/
+    Proof: even terms c_{2(k+1)} ≤ 2/(π√(k+1)) → 0 and odd terms
+    c_{2k+3} ≤ (1/√2)/√(k+2) → 0, giving c_n < ε for all n past an
+    explicit threshold. -/
 theorem cauchyCroftonConst_tendsto_zero :
     Filter.Tendsto cauchyCroftonConst Filter.atTop (nhds 0) := by
-  sorry
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  -- Threshold: both even bound (needs m > 4/(π²ε²)) and odd bound (needs m > 1/(2ε²))
+  -- are satisfied once m > 2/ε² (since π²>2 → 4/π² < 2, and 1/2 < 2)
+  use 2 * (Nat.ceil (2 / ε ^ 2) + 1) + 2
+  intro n hn
+  rw [Real.dist_eq, sub_zero, abs_of_pos (cauchyCroftonConst_pos n (by omega))]
+  rcases Nat.even_or_odd n with ⟨m, hm⟩ | ⟨m, hm⟩
+  · -- n = 2m, m ≥ ceil(2/ε²) + 1
+    have hm_ge : Nat.ceil (2 / ε ^ 2) + 1 ≤ m := by omega
+    have hm_pos : (0 : ℝ) < (m : ℝ) := Nat.cast_pos.mpr (by omega)
+    -- c_{2m}² ≤ (2/π)²/m
+    have heven : cauchyCroftonConst (2 * m) ^ 2 ≤ (2 / π) ^ 2 / (m : ℝ) := by
+      have h := cauchyCrofton_even_sq_bound (m - 1)
+      have hnat : m - 1 + 1 = m := by omega
+      rw [hnat] at h
+      have hcast : ((m - 1 : ℕ) : ℝ) + 1 = (m : ℝ) :=
+        by exact_mod_cast (show m - 1 + 1 = m by omega)
+      rw [hcast] at h; exact h
+    subst hm; simp only [← two_mul]
+    -- (2/π)²/m < ε² because m > 2/ε² implies m*ε² > 2, and 4 < π²*m*ε² since π > 3
+    have hbound : (2 / π) ^ 2 / (m : ℝ) < ε ^ 2 := by
+      have hceil := Nat.le_ceil (2 / ε ^ 2)
+      have hm_gt : (2 : ℝ) / ε ^ 2 < (m : ℝ) :=
+        calc 2 / ε ^ 2 ≤ ↑(Nat.ceil (2 / ε ^ 2)) := hceil
+          _ < ↑(Nat.ceil (2 / ε ^ 2) + 1) := by exact_mod_cast Nat.lt_succ_self _
+          _ ≤ (m : ℝ) := by exact_mod_cast hm_ge
+      have h_mε2 : (2 : ℝ) < (m : ℝ) * ε ^ 2 := by
+        have hmul := mul_lt_mul_of_pos_right hm_gt (sq_pos_of_pos hε)
+        have h2 : (2 : ℝ) / ε ^ 2 * ε ^ 2 = 2 := by field_simp
+        rw [h2] at hmul; exact hmul
+      rw [show (2/π:ℝ)^2/(m:ℝ) = 4/(π^2*(m:ℝ)) from by ring,
+          div_lt_iff (by positivity)]
+      nlinarith [mul_lt_mul_of_pos_left h_mε2 (show (0:ℝ) < π^2 from by positivity),
+                 pi_gt_three]
+    have hcn_sq : cauchyCroftonConst (2 * m) ^ 2 < ε ^ 2 := lt_of_le_of_lt heven hbound
+    have hcn_pos : 0 < cauchyCroftonConst (2 * m) := cauchyCroftonConst_pos _ (by omega)
+    have h_sqrt := Real.sqrt_lt_sqrt (sq_nonneg (cauchyCroftonConst (2 * m))) hcn_sq
+    rwa [Real.sqrt_sq hcn_pos.le, Real.sqrt_sq hε.le] at h_sqrt
+  · -- n = 2m + 1, m ≥ ceil(2/ε²) + 1
+    have hm_ge : Nat.ceil (2 / ε ^ 2) + 1 ≤ m := by omega
+    have hm1 : 1 ≤ m := by omega
+    subst hm
+    -- Use k = m-1 in odd bound: c_{2(m-1)+3}² = c_{2m+1}² ≤ (1/2)²·2/(m+1)
+    have hodd' : cauchyCroftonConst (2 * m + 1) ^ 2 ≤ (1 / 2 : ℝ) ^ 2 * 2 / ((m : ℝ) + 1) := by
+      have h := cauchyCrofton_odd_sq_bound (m - 1)
+      have hnat : 2 * (m - 1) + 3 = 2 * m + 1 := by omega
+      rw [hnat] at h
+      have hcast : ((m - 1 : ℕ) : ℝ) + 2 = (m : ℝ) + 1 :=
+        by exact_mod_cast (show m - 1 + 2 = m + 1 by omega)
+      rw [hcast] at h; exact h
+    -- (1/2)²·2/(m+1) = 1/(2(m+1)) < ε² because m > 2/ε² implies m*ε² > 2
+    have hbound2 : (1 / 2 : ℝ) ^ 2 * 2 / ((m : ℝ) + 1) < ε ^ 2 := by
+      have hceil := Nat.le_ceil (2 / ε ^ 2)
+      have hm_gt : (2 : ℝ) / ε ^ 2 < (m : ℝ) :=
+        calc 2 / ε ^ 2 ≤ ↑(Nat.ceil (2 / ε ^ 2)) := hceil
+          _ < ↑(Nat.ceil (2 / ε ^ 2) + 1) := by exact_mod_cast Nat.lt_succ_self _
+          _ ≤ (m : ℝ) := by exact_mod_cast hm_ge
+      have h_mε2 : (2 : ℝ) < (m : ℝ) * ε ^ 2 := by
+        have hmul := mul_lt_mul_of_pos_right hm_gt (sq_pos_of_pos hε)
+        have h2 : (2 : ℝ) / ε ^ 2 * ε ^ 2 = 2 := by field_simp
+        rw [h2] at hmul; exact hmul
+      rw [show (1/2:ℝ)^2*2/((m:ℝ)+1) = 1/(2*((m:ℝ)+1)) from by ring,
+          div_lt_iff (by positivity)]
+      nlinarith [sq_pos_of_pos hε, h_mε2]
+    have hcn_sq : cauchyCroftonConst (2 * m + 1) ^ 2 < ε ^ 2 :=
+      lt_of_le_of_lt hodd' hbound2
+    have hcn_pos : 0 < cauchyCroftonConst (2 * m + 1) := cauchyCroftonConst_pos _ (by omega)
+    have h_sqrt := Real.sqrt_lt_sqrt (sq_nonneg (cauchyCroftonConst (2 * m + 1))) hcn_sq
+    rwa [Real.sqrt_sq hcn_pos.le, Real.sqrt_sq hε.le] at h_sqrt
 
 end CauchyCrofton
