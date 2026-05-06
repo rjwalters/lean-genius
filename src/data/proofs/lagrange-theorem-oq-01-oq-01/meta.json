@@ -1,7 +1,7 @@
 {
   "id": "lagrange-theorem-oq-01-oq-01",
   "title": "pq-Groups: Classification of Groups of Order pq via Sylow Theory",
-  "slug": "lagrange-theorem-oq-01-oq-01",
+  "id": "lagrange-theorem-oq-01-oq-01",
   "description": "Formal proof classifying all finite groups of order pq (p < q distinct primes): the Sylow q-subgroup is always unique and normal; when p ∤ (q-1) the group is cyclic; when p | (q-1) two groups exist.",
   "meta": {
     "author": "Lean Genius",
@@ -41,7 +41,8 @@
       "The Sylow q-subgroup Q is ALWAYS normal in a pq-group (p < q primes): since n_q | p and n_q ≡ 1 (mod q), and p < q forces n_q = 1 — no case analysis on p | (q-1) is needed for this step",
       "The decisive condition is whether p | (q-1): this determines if Aut(ℤ/q) = (ℤ/q)× has an element of order p, which is exactly the condition for a nontrivial semidirect product ℤ/q ⋊ ℤ/p to exist",
       "The cyclic proof uses the commutator trick: for g ∈ P and h ∈ Q both normal, the commutator [g,h] ∈ P ∩ Q = {1} (by coprime-order intersection), so g and h commute; then orderOf(gh) = p·q by Commute.orderOf_mul_eq_mul_orderOf_of_coprime",
-      "The theorem pq_unique_when_coprime states a universal result over all groups: a single Lean theorem covers infinitely many orders (15, 35, 77, 143, ...) where the only group of that order is cyclic"
+      "The theorem pq_unique_when_coprime states a universal result over all groups: a single Lean theorem covers infinitely many orders (15, 35, 77, 143, ...) where the only group of that order is cyclic",
+      "The proof architecture delegates all heavy lifting to SylowTheoremOQ01's SylowPQ namespace: this file re-exposes results in the Lagrange OQ context, creating a clean two-layer design where classification theorems (SylowPQ) are separate from presentation theorems (this file)"
     ],
     "prerequisites": [
       "Mathlib.GroupTheory.Sylow",
@@ -105,22 +106,22 @@
   },
   "crossReferences": [
     {
-      "slug": "lagrange-theorem-oq-01",
+      "id": "lagrange-theorem-oq-01",
       "relationship": "answers",
       "description": "This entry directly answers OQ-01-OQ-01 from the Sylow Theorems entry: 'Use Sylow theory to classify groups of order pq'"
     },
     {
-      "slug": "sylow-theorem-oq-01",
+      "id": "sylow-theorem-oq-01",
       "relationship": "uses",
       "description": "Imports and re-exposes the complete classification proof from SylowTheoremOQ01 (namespace SylowPQ), which contains all the detailed Lean proofs"
     },
     {
-      "slug": "lagrange-theorem-oq-01-oq-02",
+      "id": "lagrange-theorem-oq-01-oq-02",
       "relationship": "related",
       "description": "The A₄ counterexample (no subgroup of order 6) is the motivating example for studying pq-groups: A₄ has order 12 = 2² × 3, not pq, but the S₃ example (order 6 = 2 × 3) shows pq-groups can be non-abelian"
     },
     {
-      "slug": "lagrange-theorem-oq-01-oq-03",
+      "id": "lagrange-theorem-oq-01-oq-03",
       "relationship": "related",
       "description": "Hall's theorem generalizes the pq-classification: for solvable groups with Hall divisors, Hall subgroups exist. The pq case is a special instance with d = p or d = q"
     }
