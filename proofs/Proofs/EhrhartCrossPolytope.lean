@@ -68,14 +68,15 @@ theorem crossEhrhart_d0 (n : ℕ) : crossEhrhart 0 n = 1 := by
     C(0,k) = 0 for k ≥ 1, so only the k=0 term survives. -/
 theorem crossEhrhart_n0 (d : ℕ) : crossEhrhart d 0 = 1 := by
   simp only [crossEhrhart]
-  rw [Finset.sum_eq_single 0]
-  · simp
-  · intro k _ hk
-    rcases k with _ | k
-    · exact absurd rfl hk
-    · simp [Nat.zero_choose]
-  · intro h
-    exact absurd (Finset.mem_range.mpr (Nat.succ_pos d)) h
+  have hkey : ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose 0 k =
+      2 ^ 0 * Nat.choose d 0 * Nat.choose 0 0 :=
+    Finset.sum_eq_single 0
+      (fun k _ hk => by
+        rcases k with _ | k
+        · exact absurd rfl hk
+        · simp [Nat.choose_eq_zero_of_lt (Nat.succ_pos k)])
+      (fun h => absurd (Finset.mem_range.mpr (Nat.succ_pos d)) h)
+  rw [hkey]; simp
 
 /-- B_1 = [-1,1]: dilation n gives {-n,...,n}, so 2n+1 lattice points. -/
 theorem crossEhrhart_d1 (n : ℕ) : crossEhrhart 1 n = 2 * n + 1 := by
