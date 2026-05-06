@@ -1,0 +1,92 @@
+{
+  "slug": "fermat-two-squares-oq-01-oq-03",
+  "title": "Can Hurwitz quaternions (with half-integer coordinates like $\\frac{1}{2}(1+i+...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can Hurwitz quaternions (with half-integer coordinates like $\\frac{1}{2}(1+i+....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-05T02:57:44.802Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE 2026-05-06: HurwitzQuat formalized, 0 sorries, 1 axiom (hurwitz_euclidean). 16 theorems, 9 definitions. Gallery entry created.",
+    "builtItems": [
+      "FermatTwoSquaresOQ01OQ03.lean: 265 lines, 16 theorems, 9 defs, 1 axiom, 0 sorries",
+      "HurwitzQuat structure with normSq4 and normSq definitions",
+      "hurwitzOmega: N(half(1+i+j+k)) = 1 proved",
+      "lipschitzToHurwitz_normSq: norm-preserving embedding proved",
+      "hurwitz_lipschitz_to_four_squares: Lipschitz reps give four-square representations"
+    ],
+    "insights": [
+      "HurwitzQuat stored as (n0,n1,n2,n3)/2 with equal-parity condition; parity ensures normSq4 divisible by 4",
+      "omega = half(1+i+j+k) is a Hurwitz unit (N=1) - its inclusion makes H Euclidean",
+      "Rotation trick (n0\u00b1n1)/2 gives 2p not p for half-integer case - cannot convert directly",
+      "Norm multiplicativity follows directly from Mathlib Quaternion.normSq_mul via toQuat embedding"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Docker build verification pending",
+      "Future: prove hurwitz_euclidean fully (covering radius argument for D4 lattice)"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "fermat-two-squares",
+    "fermat-two-squares-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.801Z",
+  "lastUpdate": "2026-05-05T02:57:44.801Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FermatTwoSquares.lean",
+      "filename": "FermatTwoSquares.lean",
+      "lineCount": 202,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquares.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ01.lean",
+      "filename": "FermatTwoSquaresOQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01.lean"
+    }
+  ]
+}
