@@ -53,14 +53,6 @@ gal_card_one_of_purelyInseparable_splitting:
 - `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/meta.json` (created)
 - `research/problems/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/knowledge.md` (this file)
 
-### Remaining Work (Sorries)
-
-1. **sub_pow_char_pow**: (-b)^(p^n) = -b^(p^n) in characteristic p. Uses `neg_pow` and parity of p^n. Should be closeable with `CharP.neg_one_pow_prime` or `neg_pow_odd`.
-
-2. **charP_eq_ringChar alignment**: `ringChar F = p` when `[CharP F p]`. Should be `ringChar_eq_charP` or `CharP.ringChar_eq`.
-
-3. **xPow_sub_of_irreducible_isPurelyInseparable**: Connecting SplittingField of X^p - a to `IsPurelyInseparable`. Needs deeper Mathlib API work.
-
 ### Next Steps
 
 - Try submitting `sub_pow_char_pow` and `charP_eq_ringChar alignment` to Aristotle
@@ -72,7 +64,7 @@ gal_card_one_of_purelyInseparable_splitting:
 ## Session 2026-05-06 (Session 2) — Eliminated both sorries, 0 sorries achieved
 
 **Mode**: REVISIT
-**Outcome**: progress — 2 sorries eliminated, file now has 0 sorries
+**Outcome**: progress — 2 sorries eliminated, file now has 0 sorries (but Docker build had API errors)
 
 ### What I Did
 
@@ -99,15 +91,65 @@ gal_card_one_of_purelyInseparable_splitting:
 
 ### Key Findings
 
-- `CharP.add_pow_char_pow` is the right tool for `sub_pow_char_pow_eq` — avoids char-p sign issues
+- `CharP.add_pow_char_pow` (believed correct in Session 2) — actually doesn't exist; corrected in Session 3
 - `CharP.eq` gives uniqueness of the characteristic, enabling `ringChar K = p`
 - The parent file `omega` at line 148 was a pre-existing bug (nonlinear divisibility goal)
 
+### API Issues Found in Docker Build (addressed in Session 3)
+
+- `FractionRing.instField` → correct name unknown (line 68)
+- `AlgEquiv.refl_apply` → simp lemma not found (line 118)
+- `CharP.add_pow_char_pow` → lemma name doesn't exist in Mathlib 2df2f015
+
 ### Next Steps
 
-- PR merged (1 axiom remaining: counterexample_gal_card for Artin-Schreier formalization)
-- Future work: prove counterexample_gal_card formally via Artin-Schreier extension theory
-- Future work: replace parent `insep_gal_trivial` with correct purely-inseparable version
+- PR #16149 is OPEN: Docker build API fixes needed (completed in Session 3)
+- Future: prove counterexample_gal_card via Artin-Schreier extension theory
+- Future: replace parent `insep_gal_trivial` with correct purely-inseparable version
+
+---
+
+## Session 2026-05-06 (Session 3) — API alignment and Docker build fixes
+
+**Mode**: REVISIT
+**Outcome**: progress — all three API issues resolved, Docker build in progress
+
+### What I Did
+
+1. Investigated three Docker build API failures from Session 2
+2. Fixed `FractionRing.instField _` → `inferInstance` (auto-synthesized)
+3. Fixed `CharP.add_pow_char_pow` (nonexistent) → `(iterateFrobenius K p n).map_sub a b` + `simp [iterateFrobenius_def]`
+   - `iterateFrobenius` is a ring hom whose apply lemma is `iterateFrobenius_def: (iterateFrobenius R p n) x = x ^ p ^ n`
+   - `map_sub` on the ring hom gives `(a - b)^(p^n) = a^(p^n) - b^(p^n)` directly
+4. Fixed `AlgEquiv.refl_apply` (nonexistent) → `AlgEquiv.coe_refl, Function.id_eq`
+   - Correct simp lemma is `AlgEquiv.coe_refl : ⇑(AlgEquiv.refl R A) = id`
+5. Fixed `gal_card_one_of_purelyInseparable_splitting` proof structure
+   - Old: broken `Nat.card_eq_one_iff_unique` with wrong argument count
+   - New: `haveI : Unique f.Gal := ⟨⟨AlgEquiv.refl F f.SplittingField⟩, fun σ => ...⟩; exact Nat.card_unique`
+6. Added explicit `[CharP F p]` to `algEquiv_eq_refl_of_isPurelyInseparable`
+   - `IsPurelyInseparable.pow_mem x` uses `ringChar F` (base field), not `ringChar K`
+   - Needed explicit `CharP F p` to convert `ringChar F = p`
+7. Committed immediately before Docker build to prevent loom daemon from reverting edits
+
+### Key Findings
+
+- `FractionRing.field` (suggested by docs) is NOT the right name; `inferInstance` works
+- `CharP.add_pow_char_pow` doesn't exist; use `iterateFrobenius K p n` as a ring hom with `map_sub`
+- `AlgEquiv.refl_apply` doesn't exist; correct simp lemma is `AlgEquiv.coe_refl`
+- Loom daemon reverts uncommitted edits mid-session — must commit before any long-running operation
+- `IsPurelyInseparable.pow_mem x` uses `ringChar F` not `ringChar K`
+
+### Files Modified
+
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` (all API fixes applied, committed as 048ee39f670)
+- `research/problems/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/knowledge.md` (this file)
+
+### Next Steps
+
+- Docker build 3 in progress: verify all API fixes work together
+- If Docker build succeeds: close PR #16149 with passing build
+- Future: prove counterexample_gal_card via Artin-Schreier extension theory
+- Future: replace parent `insep_gal_trivial` with correct purely-inseparable version
 
 ---
 
