@@ -56,7 +56,7 @@
       "startLine": 81,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chebotarev Density Axiom",
     "content": "The central axiom: for a Galois extension L/ℚ with group G (witnessed by hG : Nonempty (G ≃* (L ≃ₐ[ℚ] L))) and conjugacy class C (verified by hC_conj : ∀ g ∈ C, ∀ h, h * g * h⁻¹ ∈ C), there exists a prime predicate frobIn with PrimeDensity frobIn (|C|/|G|). The axiom is stated existentially (∃ frobIn : ℕ → Prop, ∃ _ : DecidablePred frobIn, ...) to avoid formalizing the Frobenius element itself — which would require the full theory of prime ideal splitting in Dedekind domains.",
     "mathContext": "Requires: (1) Dedekind domain theory for $\\mathcal{O}_L$ and its prime ideals above rational primes $p$, (2) the Frobenius element $\\text{Frob}_p \\in G$ for unramified $p$ — well-defined up to conjugacy by the decomposition group structure, (3) L-functions $L(s, \\chi)$ for characters $\\chi$ of $G$ and their analytic continuation to $\\Re(s) \\geq 1$, (4) Chebotarev's equidistribution argument via Dirichlet series.",
@@ -184,7 +184,7 @@
       "startLine": 262,
       "endLine": 307
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Chebotarev Density Fractions: norm_num Verification",
     "content": "Seven norm_num theorems verify the Chebotarev density arithmetic. For S₅: the 7 density fractions (24/120=1/5, 30/120=1/4, 20/120=1/6, 15/120=1/8, 20/120=1/6, 10/120=1/12, 1/120=1/120) and their sum = 1 confirm that these fractions partition all primes. For A₅: the 5 density fractions (12/60=1/5 twice, 20/60=1/3, 15/60=1/4, 1/60) and their sum = 1 confirm the A₅ partition. The degree-5 irreducibility density table (4/5, 2/5, 2/5, 1/5 for ℤ/5ℤ, D₅, A₅, S₅ respectively) gives the practical statistical test. The inequality theorems 1/120 ≠ 1/60 and 1/5 ≠ 4/5 formally certify that S₅ vs A₅ and S₅ vs ℤ/5ℤ are distinguishable by density alone.",
     "mathContext": "The Chebotarev density fractions for $S_5$: $\\frac{24}{120} = \\frac{1}{5}$, $\\frac{30}{120} = \\frac{1}{4}$, $\\frac{20}{120} = \\frac{1}{6}$, $\\frac{15}{120} = \\frac{1}{8}$, $\\frac{10}{120} = \\frac{1}{12}$, $\\frac{1}{120}$. These sum to 1: $\\frac{24+30+20+15+20+10+1}{120} = \\frac{120}{120} = 1$. Similarly for $A_5$: $\\frac{12+12+20+15+1}{60} = \\frac{60}{60} = 1$.",
