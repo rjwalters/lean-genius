@@ -2,7 +2,7 @@
   "id": "sperner-ndim-mathlib-oq-02",
   "title": "Brouwer's Fixed-Point Theorem via Sperner's Lemma",
   "slug": "sperner-ndim-mathlib-oq-02",
-  "description": "Answers OQ-02 from sperner-ndim-mathlib: prove Brouwer's fixed-point theorem for the standard n-simplex using Sperner's lemma. The key combinatorial step — that the Sperner coloring derived from any continuous self-map is well-defined and satisfies the boundary condition — is fully proved. The combinatorial-topological bridge (grid triangulation + Sperner application + compactness convergence) is axiomatized with detailed justification.",
+  "description": "Answers OQ-02 from sperner-ndim-mathlib: prove Brouwer's fixed-point theorem for the standard n-simplex using Sperner's lemma. The Sperner coloring well-definedness and boundary condition are fully proved. The compactness convergence step (Δⁿ compact → convergent subsequence → exact fixed point) is proved via IsCompact.tendsto_subseq + squeeze. Only the grid triangulation application of Sperner remains axiomatized.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
@@ -19,9 +19,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
-    "lineCount": 254,
-    "assumptions": "Two axioms: (1) sperner_near_fixed_point — for each N, the Nth grid triangulation of Δⁿ with the Sperner coloring yields a near-fixed-point with error ≤ (n+1)/(N+1); (2) fixed_point_from_approx — a sequence of approximate fixed points in the compact simplex converges to an exact fixed point. Both follow from abstract Sperner's lemma (proved in SpernerNDimMathlib.lean) plus compactness of Δⁿ.",
+    "axiomCount": 1,
+    "lineCount": 299,
+    "assumptions": "One axiom: sperner_near_fixed_point — for each N, the Nth grid triangulation of Δⁿ with the Sperner coloring (proved to satisfy the boundary condition) yields a near-fixed-point with error ≤ (n+1)/(N+1). The compactness convergence step (fixed_point_from_approx) is now fully proved using IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -34,17 +34,18 @@
       "spernerColor_in_supp: coloring lies in support (proved from colorSet ⊆ supp)",
       "spernerColor_ne_of_zero: Sperner boundary condition — c(v) ≠ j if v j = 0 (proved)",
       "spernerColorMap_boundary: boundary condition for the full coloring map (proved)",
-      "brouwer_fixed_point_simplex: Brouwer's fixed-point theorem for Δⁿ (proved from 2 axioms)"
+      "brouwer_fixed_point_simplex: Brouwer's fixed-point theorem for Δⁿ (proved from 1 axiom)",
+      "fixed_point_from_approx: compactness argument proved via IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique"
     ],
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 5
   },
   "leanFile": {
     "path": "Proofs/SpernerNDimMathlibOQ02.lean",
     "sorries": 0,
-    "axiomCount": 2,
-    "lineCount": 254,
-    "theoremCount": 12,
+    "axiomCount": 1,
+    "lineCount": 299,
+    "theoremCount": 13,
     "definitionCount": 5,
     "isAristotle": false,
     "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimMathlibOQ02.lean"
@@ -83,8 +84,13 @@
       "lean_ref": "spernerColor"
     },
     {
-      "title": "From Sperner to Brouwer (axiomatized with justification)",
-      "content": "sperner_near_fixed_point (axiom): the Nth grid triangulation of Δⁿ with the proved Sperner coloring yields a near-fixed-point with error ≤ (n+1)/(N+1). Follows from abstract Sperner (SpernerNDimMathlib) + boundary condition (spernerColor_ne_of_zero) + grid CellComplex construction. fixed_point_from_approx (axiom): compactness of Δⁿ + continuity of f converts approximate fixed points to an exact one. The main theorem brouwer_fixed_point_simplex combines these two axioms.",
+      "title": "Compactness → Fixed Point (proved)",
+      "content": "fixed_point_from_approx is now a fully proved theorem (no axiom). Proof: (1) The simplex is compact — it's a closed subset of [0,1]^(n+1), proved via isCompact_univ_pi + isClosed_iInter + isClosed_eq. (2) IsCompact.tendsto_subseq extracts a convergent subsequence x_{φ(k)} → x*. (3) By continuity, f(x_{φ(k)}) → f(x*). (4) By squeeze_zero_norm with bound (n+1)/(φ(k)+1) → 0 (since φ(k) ≥ k), f(x_{φ(k)}) - x_{φ(k)} → 0, so f(x_{φ(k)}) → x*. (5) By tendsto_nhds_unique, f(x*) = x*.",
+      "lean_ref": "fixed_point_from_approx"
+    },
+    {
+      "title": "Grid Triangulation → Near-Fixed-Point (axiom)",
+      "content": "sperner_near_fixed_point (1 remaining axiom): the Nth grid triangulation of Δⁿ with the proved Sperner coloring (spernerColorMap_boundary) yields a near-fixed-point with error ≤ (n+1)/(N+1). Follows from abstract Sperner (SpernerNDimMathlib) + boundary condition + grid CellComplex construction. The main theorem brouwer_fixed_point_simplex now depends on only this one axiom.",
       "lean_ref": "brouwer_fixed_point_simplex"
     }
   ],

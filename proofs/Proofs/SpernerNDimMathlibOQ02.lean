@@ -26,10 +26,10 @@ condition (`c(v) ∈ supp(v)`, so if `vⱼ = 0` then `c(v) ≠ j`).
 each subdivision has a fully-colored simplex, yielding a near-fixed-point `x ∈ Δⁿ`
 with `|f(x)ᵢ - xᵢ| ≤ (n+1)/(N+1)` for all `i`.
 
-**Step 3 (axiom)**: By compactness of `Δⁿ`, the sequence of near-fixed-points has a
+**Step 3 (proved here)**: By compactness of `Δⁿ`, the sequence of near-fixed-points has a
 convergent subsequence. By continuity of `f`, the limit is an exact fixed point.
 
-## Axiom justification
+## Axiom justification (1 remaining)
 
 `sperner_near_fixed_point`: Follows from (a) the Nth grid triangulation of `Δⁿ`
   (vertices `{(a₀/N,...,aₙ/N) : Σaᵢ=N, aᵢ ∈ ℕ}`, simplices from ordered chains),
@@ -37,11 +37,6 @@ convergent subsequence. By continuity of `f`, the limit is an exact fixed point.
   (c) abstract Sperner's lemma (`SpernerAbstract.sperner` in SpernerNDimMathlib.lean).
   The grid CellComplex instance is structurally identical to `SpernerGrid.lean` but with
   a fixed adjacency that correctly handles cross-miss neighbors.
-
-`fixed_point_from_approx`: Standard compactness-continuity argument.
-  `Δⁿ` is compact (`Matrix.stdSimplex` in Mathlib), `f` is uniformly continuous on it.
-  The sequence of approximate fixed points has a convergent subsequence (Bolzano-Weierstrass),
-  and continuity passes the limit through to give `f(x*) = x*`.
 
 ## Main results
 
@@ -52,7 +47,7 @@ convergent subsequence. By continuity of `f`, the limit is an exact fixed point.
 * `SpernerBrouwer.spernerColor_le`: the coloring index satisfies `f(v)ᵢ ≤ vᵢ`
 * `SpernerBrouwer.spernerColor_ne_of_zero`: face boundary condition
 * `SpernerBrouwer.sperner_near_fixed_point`: near-fixed-point from Sperner (axiom)
-* `SpernerBrouwer.fixed_point_from_approx`: exact fixed point from approximations (axiom)
+* `SpernerBrouwer.fixed_point_from_approx`: exact fixed point from approximations (proved)
 * `SpernerBrouwer.brouwer_fixed_point_simplex`: **Brouwer's theorem for `Δⁿ`**
 
 ## Tags
@@ -172,19 +167,16 @@ theorem spernerColor_ne_of_zero {v fv : Fin (n + 1) → ℝ}
   intro heq
   have hmem := spernerColor_in_supp hv hfv
   rw [heq, mem_supp_iff] at hmem
-  -- hmem : 0 < v j, hj : v j = 0 → contradiction
   linarith [hmem]
 
-/-- The Sperner coloring map: assigns each `v ∈ Δⁿ` a color in `Fin (n+1)`.
-    Takes the membership proof as an argument for definitional unfolding. -/
+/-- The Sperner coloring map: assigns each `v ∈ Δⁿ` a color in `Fin (n+1)`. -/
 noncomputable def spernerColorMap
     (f : (Fin (n + 1) → ℝ) → Fin (n + 1) → ℝ)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v))
     (v : Fin (n + 1) → ℝ) (hv : InSimplex v) : Fin (n + 1) :=
   spernerColor v (f v) hv (hf_map v hv)
 
-/-- The coloring map satisfies the Sperner boundary condition: on any face `F_j = {v : v j = 0}`,
-    the color is never `j`. This follows directly from `spernerColor_ne_of_zero`. -/
+/-- The coloring map satisfies the Sperner boundary condition. -/
 theorem spernerColorMap_boundary
     (f : (Fin (n + 1) → ℝ) → Fin (n + 1) → ℝ)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v))
@@ -194,55 +186,108 @@ theorem spernerColorMap_boundary
   spernerColor_ne_of_zero hv (hf_map v hv) hvj
 
 -- ============================================================
--- SECTION IV: From Sperner to Brouwer (Axiomatized Steps)
+-- SECTION IV: From Sperner to Brouwer
 -- ============================================================
 
-/-- **Axiom (Grid Sperner → Near-Fixed-Point)**: For each `N ≥ 1`, the Nth grid
-    triangulation of `Δⁿ` with the Sperner coloring derived from `f` yields a near-fixed-point.
-
-    Specifically, there exists `x ∈ Δⁿ` with `|f(x)ᵢ - xᵢ| ≤ (n+1)/(N+1)` for all `i`.
+/-- **Axiom (Grid Sperner → Near-Fixed-Point)**: For each `N`, the Nth grid
+    triangulation of `Δⁿ` with the Sperner coloring derived from `f` yields a near-fixed-point
+    with `|f(x)ᵢ - xᵢ| ≤ (n+1)/(N+1)` for all `i`.
 
     **Justification**: Partition `Δⁿ` into small simplices with vertices
       `{(a₀/N,...,aₙ/N) : aᵢ ∈ ℕ, Σaᵢ = N}` (the Nth grid triangulation).
     Apply the Sperner coloring `c(v) = spernerColorMap f hf_map v hv`.
     By `spernerColorMap_boundary`, this satisfies the Sperner boundary condition.
     By abstract Sperner's lemma (`SpernerAbstract.sperner` in SpernerNDimMathlib.lean),
-    a fully-colored simplex exists. Its `n+1` vertices span a set of diameter ≤ (n+1)/N,
-    and the coloring condition gives `f(vᵢ)ᵢ ≤ (vᵢ)ᵢ` for each color `i`. Taking the
-    centroid `x` of the simplex gives the near-fixed-point bound. -/
+    a fully-colored simplex exists with near-fixed-point bound (n+1)/(N+1). -/
 axiom sperner_near_fixed_point (n N : ℕ)
     (f : (Fin (n + 1) → ℝ) → Fin (n + 1) → ℝ)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
     ∃ x : Fin (n + 1) → ℝ, InSimplex x ∧
       ∀ i : Fin (n + 1), |f x i - x i| ≤ (n + 1 : ℝ) / (N + 1)
 
-/-- **Axiom (Compactness → Fixed Point)**: Given approximate fixed points with error → 0,
+/-- **Theorem (Compactness → Fixed Point)**: Given approximate fixed points with error → 0,
     there exists an exact fixed point.
 
-    **Justification**: `Δⁿ` is compact (closed bounded subset of `ℝⁿ⁺¹`), so by
-    sequential compactness, the sequence `(xₙ)` has a convergent subsequence `xₙₖ → x*`.
-    Since `f` is continuous, `f(xₙₖ) → f(x*)`. Since `|f(xₙₖ)ᵢ - (xₙₖ)ᵢ| ≤ (n+1)/(N+1) → 0`,
-    passing to the limit gives `f(x*)ᵢ = (x*)ᵢ` for all `i`, i.e., `f(x*) = x*`.
-    Since `Δⁿ` is closed, `x* ∈ Δⁿ`. -/
-axiom fixed_point_from_approx {n : ℕ}
+    **Proof**: The simplex `Δⁿ` is compact (closed subset of `[0,1]^(n+1)`). The sequence
+    of approximate fixed points has a convergent subsequence `xφ(k) → x*` by sequential
+    compactness (`IsCompact.tendsto_subseq`). By continuity of `f`, `f(xφ(k)) → f(x*)`.
+    Also `f(xφ(k)) → x*` because `|f(xφ(k))ᵢ - xφ(k)ᵢ| ≤ (n+1)/(φ(k)+1) → 0` (squeeze).
+    By uniqueness of limits (`tendsto_nhds_unique`), `f(x*) = x*`. -/
+theorem fixed_point_from_approx {n : ℕ}
     (f : (Fin (n + 1) → ℝ) → Fin (n + 1) → ℝ)
     (hf_cont : Continuous f)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v))
     (happrox : ∀ N : ℕ, ∃ x : Fin (n + 1) → ℝ,
         InSimplex x ∧ ∀ i : Fin (n + 1), |f x i - x i| ≤ (n + 1 : ℝ) / (N + 1)) :
-    ∃ x : Fin (n + 1) → ℝ, InSimplex x ∧ f x = x
+    ∃ x : Fin (n + 1) → ℝ, InSimplex x ∧ f x = x := by
+  -- Step 1: The simplex Δⁿ is compact
+  have hS_compact : IsCompact {v : Fin (n + 1) → ℝ | InSimplex v} := by
+    apply IsCompact.of_isClosed_subset (isCompact_univ_pi (fun _ => isCompact_Icc))
+    · -- Closed: ⋂ᵢ{v | 0 ≤ vᵢ} ∩ {v | Σvᵢ = 1}
+      have heq : {v : Fin (n + 1) → ℝ | InSimplex v} =
+          (⋂ i, {v | (0 : ℝ) ≤ v i}) ∩ {v | ∑ i : Fin (n + 1), v i = 1} := by
+        ext v; simp [InSimplex, Set.mem_iInter]
+      rw [heq]
+      exact (isClosed_iInter fun i =>
+        isClosed_le continuous_const (continuous_apply i)).inter
+        (isClosed_eq (continuous_finset_sum _ fun i _ => continuous_apply i) continuous_const)
+    · -- Subset of [0,1]^(n+1): vᵢ ≥ 0 and vᵢ ≤ Σvⱼ = 1
+      intro v ⟨hnn, hsum⟩
+      simp only [Set.mem_pi, Set.mem_univ, Set.mem_Icc, forall_const]
+      exact fun i => ⟨hnn i,
+        (Finset.single_le_sum (fun j _ => hnn j) (Finset.mem_univ i)).trans hsum.le⟩
+  -- Step 2: Approximate fixed point sequence u N = (happrox N).choose
+  let u : ℕ → Fin (n + 1) → ℝ := fun N => (happrox N).choose
+  have hu_mem : ∀ N, u N ∈ {v : Fin (n + 1) → ℝ | InSimplex v} :=
+    fun N => (happrox N).choose_spec.1
+  have hu_bound : ∀ N i, |f (u N) i - u N i| ≤ (n + 1 : ℝ) / ((N : ℝ) + 1) :=
+    fun N i => (happrox N).choose_spec.2 i
+  -- Step 3: Sequential compactness → convergent subsequence u ∘ φ → x
+  obtain ⟨x, hx_mem, φ, hφ_mono, hφ_conv⟩ := hS_compact.tendsto_subseq hu_mem
+  refine ⟨x, hx_mem, ?_⟩
+  -- Step 4a: f(u(φk)) → f(x) by continuity
+  have hfconv : Filter.Tendsto (fun k => f (u (φ k))) Filter.atTop (nhds (f x)) :=
+    (hf_cont.tendsto x).comp hφ_conv
+  -- Step 4b: f(u(φk)) → x via squeeze (|f - id| bounded by (n+1)/(φk+1) → 0)
+  have hfconv2 : Filter.Tendsto (fun k => f (u (φ k))) Filter.atTop (nhds x) := by
+    -- (φk + 1) → ∞ since φ strictly monotone implies φk ≥ k
+    have h_phi_atTop : Filter.Tendsto (fun k : ℕ => (φ k : ℝ) + 1)
+        Filter.atTop Filter.atTop := by
+      apply Filter.tendsto_atTop_atTop.mpr
+      intro b
+      exact ⟨⌈b⌉₊, fun k hk => by
+        have hkphi : (k : ℝ) ≤ φ k := by exact_mod_cast hφ_mono.id_le k
+        linarith [Nat.le_ceil b, show (⌈b⌉₊ : ℝ) ≤ k from by exact_mod_cast hk]⟩
+    -- (n+1)/(φk+1) → 0 since denominator → ∞
+    have h_bound_zero : Filter.Tendsto (fun k => (n + 1 : ℝ) / ((φ k : ℝ) + 1))
+        Filter.atTop (nhds 0) :=
+      tendsto_const_nhds.div_atTop h_phi_atTop
+    -- f(u(φk)) - u(φk) → 0 coordinatewise by squeeze
+    have h_diff_zero : Filter.Tendsto (fun k => f (u (φ k)) - u (φ k))
+        Filter.atTop (nhds 0) := by
+      rw [tendsto_pi_nhds]
+      intro i
+      simp only [Pi.sub_apply, Pi.zero_apply]
+      exact squeeze_zero_norm
+        (fun k => by rw [Real.norm_eq_abs]; exact hu_bound (φ k) i)
+        h_bound_zero
+    -- u(φk) + (f(u(φk)) - u(φk)) = f(u(φk)) → x + 0 = x
+    have hsum := hφ_conv.add h_diff_zero
+    rw [add_zero] at hsum
+    exact hsum.congr' (by
+      filter_upwards with k
+      funext i
+      simp only [Function.comp, Pi.add_apply, Pi.sub_apply]
+      ring)
+  -- Step 5: Uniqueness of limits gives f(x) = x
+  exact tendsto_nhds_unique hfconv hfconv2
 
 -- ============================================================
 -- SECTION V: Main Theorem
 -- ============================================================
 
 /-- **Brouwer's Fixed-Point Theorem for the standard simplex** (via Sperner's lemma):
-    Every continuous self-map of `Δⁿ` has a fixed point.
-
-    **Proof**:
-    1. For each `N`, `sperner_near_fixed_point` (using the Sperner coloring and abstract
-       Sperner lemma) gives `xₙ ∈ Δⁿ` with `|f(xₙ)ᵢ - (xₙ)ᵢ| ≤ (n+1)/(N+1)`.
-    2. `fixed_point_from_approx` extracts an exact fixed point by compactness. -/
+    Every continuous self-map of `Δⁿ` has a fixed point. -/
 theorem brouwer_fixed_point_simplex {n : ℕ}
     (f : (Fin (n + 1) → ℝ) → Fin (n + 1) → ℝ)
     (hf_cont : Continuous f)
