@@ -65,12 +65,13 @@
       "exists_dvd_in_ap: Helper lemma — ZMod witness for divisibility in APs",
       "ap_difference_primorial: PROVED (was false axiom) — primorial divisibility with corrected hypothesis",
       "prime_ap_3, prime_ap_5, prime_ap_6: PROVED via native_decide — concrete prime AP examples",
-      "pnt_green_tao_bracket: PROVED — combines prime_ap_pnt_upper and Green-Tao to bracket longestPrimeAP between ω(1) and (1+ε)·log N"
+      "pnt_green_tao_bracket: PROVED — combines prime_ap_pnt_upper and Green-Tao to bracket longestPrimeAP between ω(1) and (1+ε)·log N",
+      "prime_ap_7: 7-term prime AP {7, 157, 307, 457, 607, 757, 907} with d=150"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 3,
-    "theoremCount": 7,
-    "lineCount": 179,
+    "theoremCount": 8,
+    "lineCount": 187,
     "assumptions": "3 axioms: prime_ap_pnt_upper (PNT upper bound), green_tao (Green-Tao 2008), erdos_200 (open conjecture). 0 sorries.",
     "mathlib_version": "4.26.0",
     "definitionCount": 3
@@ -172,9 +173,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 179,
+    "lineCount": 187,
     "axiomCount": 3,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 3,
     "path": "Proofs/Erdos200Problem.lean",
     "sorries": 0
