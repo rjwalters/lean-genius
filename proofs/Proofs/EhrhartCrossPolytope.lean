@@ -495,33 +495,42 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
              else 0) := by
         apply Finset.sum_congr rfl; intro j _
         rw [hfiber j]
-        split_ifs with hj
-        · rw [innerBall_card_eq ((Nat.sub_le m _).trans hm)]
+        -- Use by_cases on the combined condition to avoid split_ifs generating 4 goals.
+        by_cases hdist : (if j.val ≤ n then n - j.val else j.val - n) ≤ m
+        · simp only [if_pos hdist]
+          rw [innerBall_card_eq ((Nat.sub_le m _).trans hm)]
           exact ih _
-        · rfl
+        · simp only [if_neg hdist]
       rw [hstep1]
-      -- Step 2: biject Fin(2n+1) sum (zeros outside support) with Fin(2m+1) sym sum.
+      -- Step 2: biject filter(2n+1) with Fin(2m+1) via sum_bij'.
+      -- Use sum_bij' (dependent bijection): forward map k↦⟨k+(n-m)⟩ is total in Fin(2m+1);
+      -- inverse map j↦⟨j-(n-m)⟩ uses filter membership to prove the Fin(2m+1) bound.
       rw [← Finset.sum_filter]
-      apply Finset.sum_nbij (fun k : Fin (2 * m + 1) => ⟨k.val + (n - m), by
-            have := k.isLt; omega⟩)
-      · intro k _
+      -- Use sum_bij (dependent 4-arg form): forward map k↦⟨k+(n-m)⟩ from Fin(2m+1) to filter.
+      -- The bound is total (no membership needed since k.val+(n-m) ≤ n+m ≤ 2n < 2n+1).
+      refine Finset.sum_bij (fun (k : Fin (2 * m + 1)) _ => ⟨k.val + (n - m), by
+            have := k.isLt; omega⟩) ?_ ?_ ?_ ?_
+      · -- hi: image lands in filter
+        intro k _
         simp only [Finset.mem_filter, Finset.mem_univ, true_and]
         have hk := k.isLt; split_ifs with h <;> omega
-      · intro k₁ _ k₂ _ h; apply Fin.ext; simp only [Fin.mk.injEq] at h; omega
-      · intro j hj
+      · -- injectivity
+        intro k₁ _ k₂ _ h
+        apply Fin.ext; simp only [Fin.mk.injEq] at h; omega
+      · -- surjectivity: inverse map j↦⟨j-(n-m)⟩ uses filter membership for bound
+        intro j hj
         simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
-        refine ⟨⟨j.val - (n - m), by
-            have := j.isLt; split_ifs at hj with h <;> omega⟩, Finset.mem_univ _, ?_⟩
-        apply Fin.ext; simp only [Fin.mk.injEq]
-        split_ifs at hj with h <;> omega
-      · intro k _
+        refine ⟨⟨j.val - (n - m), by have := j.isLt; split_ifs at hj with h <;> omega⟩,
+                Finset.mem_univ _, ?_⟩
+        apply Fin.ext; simp only [Fin.mk.injEq]; split_ifs at hj with h <;> omega
+      · -- function equality: f(i k) = g k
+        intro k _
         have hk := k.isLt
         have hdist_eq : m - (if k.val + (n - m) ≤ n then n - (k.val + (n - m))
                               else k.val + (n - m) - n) =
                         if k.val ≤ m then k.val else 2 * m - k.val := by
           split_ifs with h1 h2 <;> omega
-        simp only [hdist_eq]
-        split_ifs <;> rfl
+        simp only [hdist_eq]; split_ifs <;> rfl
 
 -- ============================================================
 -- PART IX: Summary and Exports
