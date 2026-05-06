@@ -1,0 +1,123 @@
+{
+  "id": "laws-of-large-numbers-oq-04-oq-03",
+  "title": "Glivenko-Cantelli Integration Axioms: Indicator Integrability and CDF Identity",
+  "slug": "laws-of-large-numbers-oq-04-oq-03",
+  "description": "Proves two integration facts left axiomatic in the Glivenko-Cantelli formalization: (1) threshold indicators 1_{Xᵢ ≤ x} are integrable on probability spaces, and (2) E[1_{X₀ ≤ x}] = F(x). Both follow from Mathlib's bounded-measurable integrability and integral-indicator API. This reduces the Glivenko-Cantelli axiom count from 3 to 1, with only the finite bracketing uniformity step remaining axiomatic.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
+    "tags": [
+      "probability",
+      "measure-theory",
+      "law-of-large-numbers",
+      "glivenko-cantelli",
+      "integration",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 128,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Integrable.mono'",
+        "description": "Bounded measurable functions on finite measure spaces are integrable",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.integral_indicator",
+        "description": "Converts indicator integral to set integral: ∫ s.indicator f = ∫ in s, f",
+        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
+      },
+      {
+        "theorem": "MeasureTheory.integral_const",
+        "description": "Constant integral: ∫ _, c ∂μ = (μ univ).toReal • c",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.restrict_apply",
+        "description": "Restricted measure: (μ.restrict s) t = μ (t ∩ s) for measurable t",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      }
+    ],
+    "originalContributions": [
+      "thresholdIndicator_integrable_proved: threshold indicators 1_{X₀ ≤ x} are integrable — proved via Integrable.mono' since the indicator is bounded by 1",
+      "integral_thresholdIndicator_eq_cdf_proved: E[1_{X₀ ≤ x}] = F(x) — proved via integral_indicator + integral_const + preimage identification",
+      "empiricalCDF_pointwise_convergence_no_axiom: pointwise SLLN for empirical CDF with no integration axioms",
+      "Reduction of Glivenko-Cantelli axiom count from 3 to 1: only glivenko_cantelli_uniform remains"
+    ],
+    "assumptions": "0 sorries. 0 axiom declarations. Two integration axioms from LawsOfLargeNumbersOQ04 are now fully machine-checked."
+  },
+  "overview": {
+    "historicalContext": "The Glivenko-Cantelli theorem (1933) — the uniform law of large numbers — states that the empirical CDF Fₙ(x) = |{i ≤ n : Xᵢ ≤ x}|/n converges to the true CDF F(x) uniformly in x, almost surely. This is a fundamental result in statistics and is the basis for Kolmogorov-Smirnov tests.\n\nThe key steps in the proof are: (1) for each fixed x, apply the SLLN to get Fₙ(x) → F(x) a.s. (pointwise convergence); and (2) upgrade to uniform convergence via a finite bracketing argument using continuity points of F.\n\nStep (1) requires two integration facts: that 1_{Xᵢ ≤ x} is integrable (so SLLN applies) and that its expectation equals F(x) (so the SLLN limit is identified). These are mathematically obvious but require careful Mathlib API navigation to formalize.\n\nStep (2) — the bracketing uniformity — is the genuinely hard part and requires finite covering of ℝ by continuity points of F with controlled jump sizes, infrastructure not yet available in Mathlib 4.26.",
+    "problemStatement": "**The Open Question (OQ-03 of Glivenko-Cantelli)**: Can the two integration axioms in the Glivenko-Cantelli formalization be proved from Mathlib?\n\n**Axiom 1** (`thresholdIndicator_integrable`): For measurable X and any x ∈ ℝ, the indicator function ω ↦ 1_{X₀(ω) ≤ x} is integrable on a probability space.\n\n**Axiom 2** (`integral_thresholdIndicator_eq_cdf`): The integral of the indicator equals the CDF: E[1_{X₀ ≤ x}] = (μ{ω | X₀(ω) ≤ x}).toReal = F(x).\n\n**Answer**: Yes. Both follow directly from Mathlib integration API. The axiom count is reduced from 3 to 1.",
+    "text": "Two integration facts left axiomatic in the Glivenko-Cantelli formalization are proved here:\n\n**Axiom 1 → Theorem**: The threshold indicator 1_{X₀ ≤ x} takes values 0 or 1, so its absolute value is bounded by 1. Since the constant function 1 is integrable on any probability space (IsProbabilityMeasure gives IsFiniteMeasure), `Integrable.mono'` gives integrability.\n\n**Axiom 2 → Theorem**: The integral chain is:\n  ∫ ω, 1_{X₀(ω) ≤ x} dμ\n  = ∫ ω, (X₀ ⁻¹' Iic x).indicator(ω) dμ    [by preimage rewrite]\n  = ∫ ω in X₀ ⁻¹' Iic x, 1 dμ               [by integral_indicator]\n  = (μ (X₀ ⁻¹' Iic x)).toReal                 [by integral_const + restrict_apply]\n  = (μ {ω | X₀(ω) ≤ x}).toReal = F(x)         [by definition of preimage and trueCDF]",
+    "proofStrategy": "**Axiom 1 (integrability)**: Apply `Integrable.mono'` with bound function g = 1 (integrable on probability spaces via `integrable_const`). The AEMeasurable hypothesis follows from measurability of X₀ composed with the Borel indicator of Iic x. The bound |indicator ω| ≤ 1 is proved by case-splitting on whether X₀(ω) ≤ x.\n\n**Axiom 2 (integral = CDF)**: Three-step chain using Mathlib integration API:\n1. `thresholdIndicator_eq_preimage_indicator_fun`: pointwise equality 1_{X₀ ≤ x}(ω) = (X₀ ⁻¹' Iic x).indicator(ω)\n2. `integral_indicator`: converts indicator integral to set integral on the preimage set\n3. `integral_const` + `Measure.restrict_apply` + `Set.univ_inter`: evaluates ∫ in s, 1 ∂μ = (μ s).toReal",
+    "keyInsights": [
+      "The indicator 1_{X₀ ≤ x} = (X₀ ⁻¹' Iic x).indicator — the preimage factorization — is the key rewrite that unlocks `integral_indicator`.",
+      "Integrable.mono' is the correct lemma for bounded measurable functions: it needs a dominating integrable function (here: the constant 1) and an AEMeasurable bound.",
+      "integral_const for restricted measures: ∫ _ in s, c ∂μ = (μ.restrict s Set.univ).toReal • c, and Measure.restrict_apply MeasurableSet.univ gives (μ.restrict s) Set.univ = μ s.",
+      "The preimage identification X₀ ⁻¹' Iic x = {ω | X₀ ω ≤ x} connects the integral computation to the trueCDF definition by definitional equality of sets.",
+      "The one remaining axiom (glivenko_cantelli_uniform) corresponds to a qualitatively harder problem: choosing CDF continuity points with controlled mass per interval requires a measurability + density argument not yet in Mathlib."
+    ]
+  },
+  "sections": [
+    {
+      "title": "Integrability of Threshold Indicators",
+      "content": "The threshold indicator ω ↦ 1_{X₀(ω) ≤ x} takes values 0 or 1, so its norm is bounded by 1. On a probability space, the constant function 1 is integrable. By `Integrable.mono'`, any AEMeasurable function dominated by an integrable function is itself integrable. The AEMeasurability follows from composing the measurable function X₀ with the Borel-measurable indicator of Iic x.",
+      "lean_names": ["thresholdIndicator_integrable_proved"]
+    },
+    {
+      "title": "Integral of Indicator Equals CDF",
+      "content": "The key algebraic identity: the indicator function 1_{X₀(ω) ≤ x} evaluated at ω equals the preimage indicator (X₀ ⁻¹' Iic x).indicator evaluated at ω. This allows `integral_indicator` to convert the integral to a set integral on the preimage. Then `integral_const` evaluates the constant-1 integral over a set as the measure of the set.",
+      "lean_names": ["integral_thresholdIndicator_eq_cdf_proved", "thresholdIndicator_eq_preimage_indicator_fun"]
+    },
+    {
+      "title": "Axiom-Free Pointwise Convergence",
+      "content": "Combining the two proved lemmas with the existing SLLN infrastructure, the pointwise convergence theorem for the empirical CDF holds without any integration axioms. Only the uniform convergence step (glivenko_cantelli_uniform) remains axiomatic.",
+      "lean_names": ["empiricalCDF_pointwise_convergence_no_axiom"]
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
+    "namespace": "GlivenkoCantelli",
+    "imports": [
+      "Proofs.LawsOfLargeNumbersOQ04",
+      "Mathlib.MeasureTheory.Integral.SetIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Set"
+    ],
+    "lineCount": 128,
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "id": "laws-of-large-numbers-oq-04",
+      "relation": "parent",
+      "description": "Glivenko-Cantelli theorem (parent formalization with 3 axioms)"
+    },
+    {
+      "id": "laws-of-large-numbers-oq-01-oq-01",
+      "relation": "sibling",
+      "description": "SLLN necessity — another integration-based result in the LLN family"
+    },
+    {
+      "id": "laws-of-large-numbers",
+      "relation": "ancestor",
+      "description": "Laws of large numbers (root entry)"
+    }
+  ]
+}
