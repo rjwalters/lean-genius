@@ -1,0 +1,141 @@
+{
+  "id": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+  "title": "Cyclic Vector Theorem: Factorization Bridge via Multiset UFD",
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+  "description": "Proves that the polynomial factorization bridge for the cyclic vector theorem can be proved without Finset as a primitive. Every monic polynomial of positive degree over a field factors into coprime monic irreducible prime powers — using UniqueFactorizationMonoid on K[X] and a recursive multiset-to-Finset conversion. Answers the open question from cayley-hamilton-cyclic-vector-all-fields: YES, the factorization bridge requires no deep Finset infrastructure.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+    "additionalFiles": [
+      "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean"
+    ],
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomial",
+      "cyclic-vector",
+      "cayley-hamilton",
+      "ufd",
+      "factorization",
+      "primary-decomposition",
+      "research",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 268,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "assumptions": "No axioms or sorries. All proofs use Mathlib's UniqueFactorizationMonoid, Polynomial, and Matrix APIs.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "monic_irreducible_multiset_factorization: factors any monic polynomial into a multiset of monic irreducibles via UniqueFactorizationMonoid.exists_prime_factors",
+      "finset_factorization_from_multiset: recursive induction converts a multiset of irreducibles into a Fin k-indexed family of distinct irreducibles with exponents",
+      "monic_factored_form: the complete factorization bridge — monic poly → coprime monic prime powers indexed by Fin k",
+      "nonderogatory_has_cyclic_vector: main theorem — over ANY field K, every nonderogatory matrix has a cyclic vector (uses primary decomposition from WIP04)",
+      "nonderogatory_has_cyclic_vector_finite: corollary — holds over finite fields F_q with q ≤ n where union avoidance fails"
+    ],
+    "historicalContext": "A matrix M is nonderogatory if its minimal polynomial equals its characteristic polynomial. The cyclic vector theorem states that every nonderogatory matrix has a cyclic vector — a vector v such that {v, Mv, ..., M^(n-1)v} is a basis. Over infinite fields, the classical proof avoids finitely many hyperplanes. Over finite fields (where avoidance may fail), the proof requires a different approach. This formalization uses primary decomposition to give a single proof valid over all fields.",
+    "proofStrategy": "1. Factor minpoly K M = ∏ p_i^{e_i} using monic_factored_form (via UFD on K[X] + recursive Finset-indexed grouping). 2. Apply WIP04's primary decomposition theorem (nonderogatory_general_has_cyclic_vector): for each primary component p_i^{e_i}, find a primary vector v_i in ker(p_i^{e_i}(M)) \\ ker(p_i^{e_i-1}(M)). 3. CRT combination: v = Σ v_i is cyclic — any annihilator is divisible by each p_i^{e_i} via Bezout projections."
+  },
+  "overview": {
+    "problemStatement": "**Open question from cayley-hamilton-cyclic-vector-all-fields**: Can the polynomial factorization bridge — every monic polynomial of positive degree factors into coprime monic irreducible prime powers — be proved without Finset as a foundational primitive?\n\nMore precisely: can one prove\n$$\\mu = \\prod_{i=1}^k p_i^{e_i}$$\nwhere the $p_i$ are distinct monic irreducibles, the $e_i > 0$, and the factors are pairwise coprime, using only the UFD structure of $K[X]$ and multiset induction?",
+    "historicalContext": "The cyclic vector theorem is a fundamental result in linear algebra: a matrix is nonderogatory (minimal poly = char poly) if and only if it has a cyclic vector. Over infinite fields, the classical proof selects a vector outside finitely many hyperplanes. Over finite fields (q ≤ n), such avoidance may fail — the proof requires a deeper algebraic argument. The primary decomposition approach, going back to the rational canonical form theory, provides a unified proof. The key technical challenge is producing the factorization of the minimal polynomial in a form suitable for Lean's type system.",
+    "keyInsights": [
+      "The UFD structure of K[X] (via UniqueFactorizationMonoid.exists_prime_factors) gives a multiset factorization. Converting this to a Finset-indexed family with grouped exponents requires a careful induction on the multiset.",
+      "The recursive induction in finset_factorization_from_multiset groups repeated irreducibles by incrementing their exponent, using decidable equality on K[X] (by_cases h : ∃ i, p' i = p).",
+      "The factorization bridge is proved entirely without explicitly invoking Finset's API at the mathematical level — Finset only appears as the index type Fin k for the output family.",
+      "The primary decomposition theorem (from WIP04) then takes the factored minpoly and constructs a cyclic vector, using Bezout's identity in K[X] to separate the primary components.",
+      "The finite field case is a free corollary: the proof never invokes |K| > n, working instead with the annihilator structure directly."
+    ],
+    "proofStrategy": "Step 1 (monic_irreducible_multiset_factorization): Use UniqueFactorizationMonoid.exists_prime_factors to factor μ into a multiset of irreducibles. Normalize to monic by multiplying by C(leadingCoeff)⁻¹.\n\nStep 2 (finset_factorization_from_multiset): Induct on the multiset. Base: empty — contradiction (f ≠ 0). Singleton: k=1, p=[p], e=[1]. Inductive: if the new irreducible matches p_i in the existing family, increment e_i; otherwise append it with exponent 1.\n\nStep 3 (monic_factored_form): Compose steps 1 and 2. Add coprimality via coprime_pow_of_coprime_irreducible.\n\nStep 4 (nonderogatory_has_cyclic_vector): Factor minpoly K M, then apply the primary decomposition theorem from WIP04.",
+    "prerequisites": [
+      "UniqueFactorizationMonoid.exists_prime_factors: K[X] is a UFD, so any nonzero polynomial factors into irreducibles",
+      "Polynomial.Monic.ne_zero: monic polynomials are nonzero",
+      "IsCoprime.pow: coprimality is preserved under powers",
+      "Matrix.isIntegral: matrices are integral elements (minpoly is well-defined)",
+      "Matrix.charpoly_natDegree_eq_dim: natDegree(charpoly M) = n",
+      "GeneralCyclicVector.nonderogatory_general_has_cyclic_vector: primary decomposition theorem (WIP04)"
+    ],
+    "openQuestions": [
+      "Can the factorization bridge be further simplified using Polynomial.roots and splitting fields to avoid the multiset induction entirely?",
+      "Does the primary decomposition approach extend to modules over arbitrary commutative Noetherian rings (not just fields), giving a module-theoretic cyclic vector theorem?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04"
+    ],
+    "namespace": "CayleyHamiltonCyclicVectorAllFields",
+    "lineCount": 268,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "sections": [
+    {
+      "id": "sec-definitions",
+      "title": "Definitions",
+      "startLine": 59,
+      "endLine": 70,
+      "summary": "IsCyclicVector: v is cyclic for M if no nonzero polynomial of degree < n annihilates both. IsNonderogatory: minpoly = charpoly.",
+      "mathContext": "A vector v ∈ Kⁿ is cyclic for M if {v, Mv, ..., M^(n-1)v} spans Kⁿ. Equivalently, the only polynomial of degree < n annihilating v is the zero polynomial. These are delegated to GeneralCyclicVector's definitions from WIP04."
+    },
+    {
+      "id": "sec-factorization",
+      "title": "Polynomial Factorization Bridge",
+      "startLine": 73,
+      "endLine": 170,
+      "summary": "Proves monic_factored_form: every monic polynomial of positive degree factors into coprime monic irreducible prime powers. Key lemmas: monic_irreducible_multiset_factorization (UFD multiset factor), finset_factorization_from_multiset (recursive Fin-indexed grouping), coprime_of_distinct_monic_irreducible, coprime_pow_of_coprime_irreducible.",
+      "mathContext": "The factorization exists because K[X] is a UFD. The challenge is converting the abstract multiset of irreducibles into a Fin k-indexed family with distinct elements and grouped exponents — this uses decidable equality on K[X] and induction on the multiset."
+    },
+    {
+      "id": "sec-main-theorem",
+      "title": "Main Theorem and Corollaries",
+      "startLine": 189,
+      "endLine": 268,
+      "summary": "nonderogatory_has_cyclic_vector: main theorem over ANY field (including finite). nonderogatory_has_cyclic_vector_finite: corollary for finite fields. cyclic_iff_not_killed_below_degree: characterization via degree bound.",
+      "mathContext": "The main proof: factor minpoly K M via monic_factored_form, then apply WIP04's primary decomposition to get the cyclic vector. The finite field corollary is immediate since the proof never invokes |K| > n. The characterization corollary unwraps the definition of IsCyclicVector."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+      "relationship": "extends",
+      "description": "Imports the primary decomposition theorem (nonderogatory_general_has_cyclic_vector) from WIP04, which proves the cyclic vector exists given a factored minpoly."
+    },
+    {
+      "proofId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem: every matrix satisfies its characteristic polynomial. The nonderogatory condition used here (minpoly = charpoly) is closely related."
+    }
+  ],
+  "conclusion": {
+    "summary": "The factorization bridge is fully proved without deep Finset infrastructure. The proof uses UniqueFactorizationMonoid on K[X] and a recursive multiset-to-Fin induction. The main theorem nonderogatory_has_cyclic_vector holds over any field — including finite fields where |K| ≤ n — because the primary decomposition approach bypasses the union-avoidance argument used in classical infinite-field proofs.",
+    "implications": "This completes the cyclic vector theorem in Lean with 0 sorries and 0 axioms. The approach demonstrates that polynomial factorization over a UFD can be formalized at a relatively low cost (~50 lines for the bridge) using multiset induction and decidable equality. The technique is reusable for other proofs requiring distinct-irreducible decompositions.",
+    "openQuestions": [
+      "Can the cyclic vector theorem be extended to the non-nonderogatory case (existence of a generating set of cyclic vectors matching the invariant factor structure)?",
+      "Is there a Mathlib formalization of the rational canonical form that could simplify this proof further?"
+    ]
+  },
+  "references": [
+    {
+      "title": "Gantmacher, Theory of Matrices, Vol. 1 (1959)",
+      "url": "",
+      "description": "Classical source for cyclic vector and nonderogatory matrix theory"
+    },
+    {
+      "title": "UniqueFactorizationMonoid in Mathlib",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/UniqueFactorizationDomain.html",
+      "description": "UFD structure of polynomial rings used for factorization"
+    }
+  ]
+}
