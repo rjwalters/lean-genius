@@ -138,7 +138,7 @@ theorem qr_gauss_sums_identity (χ : MulChar (ZMod p) (ZMod q)) (hχ₁ : χ ≠
     χ (Fintype.card (ZMod q)) := by
   apply Char.card_pow_card hχ₁ hχ₂
   · rw [ZMod.ringChar_zmod_n, ZMod.ringChar_zmod_n]
-    exact_mod_cast fun h => hpq h.symm
+    exact_mod_cast hpq.symm
   · rw [ZMod.ringChar_zmod_n]
     exact_mod_cast hq2
 
@@ -163,11 +163,16 @@ theorem gauss_qr_pathway_complete (χ : MulChar (ZMod p) (ZMod q)) (hχ₁ : χ 
     ∃ (result : (ZMod q)),
     result = χ (Fintype.card (ZMod q)) ∧
     result = (χ (-1) * Fintype.card (ZMod p)) ^ (Fintype.card (ZMod q) / 2) :=
-  ⟨_, (qr_gauss_sums_identity χ hχ₁ hχ₂ hpq hq2).symm, rfl⟩
+  ⟨_, qr_gauss_sums_identity χ hχ₁ hχ₂ hpq hq2, rfl⟩
 
 -- ============================================================================
 -- Part V: Concrete Frobenius Verifications
 -- ============================================================================
+
+private instance : Fact (Nat.Prime 3) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 5) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 7) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 11) := ⟨by decide⟩
 
 /-- **Concrete example**: p = 5, q = 3.
     In any field of characteristic 3, the Frobenius step holds for the

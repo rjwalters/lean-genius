@@ -208,11 +208,11 @@ theorem step4_character_identity (χ : MulChar (ZMod p) (ZMod q))
 -- Part VII: Concrete Verifications
 -- ============================================================================
 
-instance : Fact (Nat.Prime 3) := ⟨by decide⟩
-instance : Fact (Nat.Prime 5) := ⟨by decide⟩
-instance : Fact (Nat.Prime 7) := ⟨by decide⟩
-instance : Fact (Nat.Prime 11) := ⟨by decide⟩
-instance : Fact (Nat.Prime 13) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 3) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 5) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 7) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 11) := ⟨by decide⟩
+private instance : Fact (Nat.Prime 13) := ⟨by decide⟩
 
 /-- p=3, q=5: (3/5)·(5/3) = 1. ✓ -/
 example : legendreSym 5 3 * legendreSym 3 5 = (-1) ^ (5 / 2 * (3 / 2)) := by native_decide
