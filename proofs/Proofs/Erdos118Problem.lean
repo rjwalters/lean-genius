@@ -72,65 +72,61 @@ theorem erdos_118_disproved : ¬ ErdosHajnalConjecture := by
   have h5 := h counterexampleOrd counter_partition_3 5 (by norm_num)
   exact counter_not_partition_5 h5
 
-/- ## Positive Direction: Monotonicity Failure -/
-
-/-- The partition threshold: for a given ordinal α, the largest k such that
-    α → (α, k)² holds. -/
-axiom partitionThreshold (α : Ordinal.{0}) : ℕ
+/- ## Positive Direction: Monotonicity -/
 
 /-- If α → (α, k)² holds, then α → (α, j)² holds for all j ≤ k.
-    The partition relation is monotone decreasing in k.
-
-    Proof: Given a blue k-clique, any j-element initial segment (j ≤ k)
-    is also a blue clique. A red set of order type α passes through unchanged. -/
+    Monotonicity: the partition relation is decreasing in k. -/
 theorem partition_monotone_down (α : Ordinal.{0}) (k j : ℕ) (hjk : j ≤ k)
     (hk : IsPartitionOrd α k) : IsPartitionOrd α j := by
   intro f
   rcases hk f with ⟨φ, hφ_mono, hφ_bound, hφ_red⟩ | ⟨ψ, hψ_mono, hψ_bound, hψ_blue⟩
   · left; exact ⟨φ, hφ_mono, hφ_bound, hφ_red⟩
-  · -- Restrict the blue k-clique ψ : Fin k → Ordinal to a j-element initial segment
-    right
+  · right
     let embed : Fin j → Fin k := fun i => ⟨i.val, Nat.lt_of_lt_of_le i.isLt hjk⟩
     have hemb : StrictMono embed := fun _ _ h => h
     exact ⟨ψ ∘ embed, hψ_mono.comp hemb, fun i => hψ_bound _,
            fun a b hab => hψ_blue _ _ (hemb hab)⟩
 
-/-- The threshold captures the exact boundary: the partition property holds
-    at the threshold and fails one step above. -/
-axiom threshold_exact (α : Ordinal.{0}) :
-    IsPartitionOrd α (partitionThreshold α) ∧
-    ¬ IsPartitionOrd α (partitionThreshold α + 1)
+/-- Contrapositive: if ¬ IsPartitionOrd α j, then ¬ IsPartitionOrd α k for k ≥ j. -/
+theorem partition_monotone_up_neg (α : Ordinal.{0}) (j k : ℕ) (hjk : j ≤ k)
+    (hj : ¬ IsPartitionOrd α j) : ¬ IsPartitionOrd α k :=
+  fun hk => hj (partition_monotone_down α k j hjk hk)
+
+/-- If the partition property holds at k but fails at m > k, there exists
+    an exact transition point t ∈ [k, m) where it holds at t but fails at t+1.
+    Proof: strong induction on m. -/
+theorem partition_transition_exists (α : Ordinal.{0}) (k m : ℕ)
+    (hk : IsPartitionOrd α k) (hm : ¬ IsPartitionOrd α m) (hkm : k < m) :
+    ∃ t, k ≤ t ∧ t < m ∧ IsPartitionOrd α t ∧ ¬ IsPartitionOrd α (t + 1) := by
+  revert k
+  induction m using Nat.strong_rec_on with
+  | _ m ih =>
+    intro k hk hm hkm
+    by_cases hm1 : IsPartitionOrd α (m - 1)
+    · -- Transition at t = m-1: holds at m-1, fails at (m-1)+1 = m
+      refine ⟨m - 1, by omega, by omega, hm1, ?_⟩
+      rwa [Nat.sub_add_cancel (by omega)]
+    · -- Fails already at m-1; recurse after finding k < m-1
+      have hkm1 : k < m - 1 := by
+        by_contra h; push_neg at h
+        exact hm1 (partition_monotone_down α k (m - 1) h hk)
+      obtain ⟨t, ht1, ht2, ht3, ht4⟩ :=
+        ih (m - 1) (Nat.sub_lt (by omega) one_pos) k hk hm1 hkm1
+      exact ⟨t, ht1, by omega, ht3, ht4⟩
 
 /- ## Known Thresholds -/
 
-/-- For ω^(ω²), the threshold is between 3 and 4 (inclusive).
-    We know triangles work but K_5 fails.
-    PROVED from threshold_exact, partition_monotone_down, and counterexample axioms. -/
+/-- For ω^(ω²), the partition threshold is in {3, 4}: there exists t ∈ [3, 4]
+    such that IsPartitionOrd t and ¬ IsPartitionOrd (t+1).
+    Proved from the two deep counterexample axioms via partition_transition_exists. -/
 theorem omega_omega2_threshold :
-    3 ≤ partitionThreshold counterexampleOrd ∧
-    partitionThreshold counterexampleOrd ≤ 4 := by
-  constructor
-  · -- Lower bound: threshold ≥ 3
-    -- If threshold ≤ 2, then threshold+1 ≤ 3, and by monotonicity from
-    -- counter_partition_3, IsPartitionOrd counterexampleOrd (threshold+1).
-    -- But threshold_exact says ¬ IsPartitionOrd α (threshold+1). Contradiction.
-    by_contra h
-    push_neg at h -- h : partitionThreshold counterexampleOrd < 3
-    have ht := (threshold_exact counterexampleOrd).2
-    have hle : partitionThreshold counterexampleOrd + 1 ≤ 3 := by omega
-    have h3 := partition_monotone_down counterexampleOrd 3
-      (partitionThreshold counterexampleOrd + 1) hle counter_partition_3
-    exact ht h3
-  · -- Upper bound: threshold ≤ 4
-    -- If threshold ≥ 5, then by threshold_exact, IsPartitionOrd α threshold.
-    -- By monotonicity with j=5 ≤ threshold: IsPartitionOrd α 5.
-    -- But counter_not_partition_5. Contradiction.
-    by_contra h
-    push_neg at h -- h : 5 ≤ partitionThreshold counterexampleOrd
-    have ht := (threshold_exact counterexampleOrd).1
-    have h5 := partition_monotone_down counterexampleOrd
-      (partitionThreshold counterexampleOrd) 5 h ht
-    exact counter_not_partition_5 h5
+    ∃ t : ℕ, 3 ≤ t ∧ t ≤ 4 ∧
+    IsPartitionOrd counterexampleOrd t ∧
+    ¬ IsPartitionOrd counterexampleOrd (t + 1) := by
+  obtain ⟨t, ht1, ht2, ht3, ht4⟩ :=
+    partition_transition_exists counterexampleOrd 3 5
+      counter_partition_3 counter_not_partition_5 (by omega)
+  exact ⟨t, by omega, by omega, ht3, ht4⟩
 
 /- ## Relation to Problem #592 -/
 
