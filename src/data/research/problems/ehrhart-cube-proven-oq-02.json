@@ -1,0 +1,90 @@
+{
+  "slug": "ehrhart-cube-proven-oq-02",
+  "title": "Ehrhart Polynomials Without General Existence Theorem",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Ehrhart Polynomials Without General Existence Theorem.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-06T13:49:03.933Z",
+    "iteration": 1,
+    "focus": "Algebraic proofs done. Finset slicing for crossBall_card remaining.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Algebraic proof complete (expand+hockey-stick). 1 sorry for Finset slicing.",
+    "builtItems": [
+      "EhrhartCrossPolytope.lean: 331 lines, 12 theorems, 1 sorry (crossBall_card Finset slicing)",
+      "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:117",
+      "sum_shift_hockey: sum interchange via hockey-stick at EhrhartCrossPolytope.lean:130",
+      "crossEhrhart_expand: Pascal split expansion at EhrhartCrossPolytope.lean:147",
+      "crossEhrhart_succ_d: geometric recursion at EhrhartCrossPolytope.lean:214",
+      "crossEhrhart_is_poly: polynomial identification at EhrhartCrossPolytope.lean:232",
+      "crossBall: Finset model of cross-polytope lattice at EhrhartCrossPolytope.lean:280",
+      "crossBall_card d=0: base case proved, inductive step sorry at EhrhartCrossPolytope.lean:289"
+    ],
+    "insights": [
+      "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split",
+      "sum_choose_range: hockey-stick \u03a3_{m<n} C(m,k) = C(n,k+1) proved by induction",
+      "Key identity: 1 + 2*\u03a3_k 2^k C(d,k+1) C(n,k+1) = \u03a3_k 2^k C(d,k) C(n,k) (by sum_range_succ)",
+      "crossEhrhart_succ_d follows in 1 line: expand + sum_shift_hockey",
+      "The formula is a degree-d polynomial in n (proved via falling factorial construction)",
+      "Geometric recursion reflects slicing B_{d+1} along last coordinate: x_{d+1}=0 gives L(B_d,n), x_{d+1}=\u00b1j gives 2*L(B_d,n-j)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove crossBall_card inductive step via Finset.card_biUnion and slicing by last coordinate",
+      "Run Docker build to verify all algebraic proofs compile without errors",
+      "Investigate Delannoy number connection: \u03a3 2^k C(d,k) C(n,k) = D(min(d,n), max(d,n))?",
+      "Consider proving crossEhrhart_d3 formula 3*L(B_3,n) = 4n^3 + 6n^2 + 8n + 3"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "lattice-points",
+    "ehrhart"
+  ],
+  "relatedProofs": [
+    "ehrhart-cube-proven"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T13:49:03.933Z",
+  "lastUpdate": "2026-05-06T13:49:03.933Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/EhrhartCubeProven.lean",
+      "filename": "EhrhartCubeProven.lean",
+      "lineCount": 297,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProven.lean"
+    }
+  ]
+}
