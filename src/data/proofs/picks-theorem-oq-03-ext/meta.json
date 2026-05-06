@@ -31,7 +31,7 @@
     ],
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
-    "definitionCount": 4
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Ehrhart published his polynomial theory from 1962 to 1977, but the richer structure of h*-vectors was developed later. Richard Stanley (1980) proved that all h*-coefficients are non-negative integers — a deep combinatorial result equivalent to the existence of a regular unimodular triangulation. Takayuki Hibi (1991) characterized reflexive polytopes by h*-palindromy: P is reflexive (dual P° is a lattice polytope with origin in interior) iff h*(P) is palindromic (h*_i = h*_{d-i}). The Ehrhart-Macdonald reciprocity theorem (Macdonald 1971) L*(n) = (-1)^d · L(-n) connects the interior lattice polynomial L* to L at negative integers — a non-obvious algebraic identity. The polynomial interpolation uniqueness principle — that L(P, 0), L(P, 1), ..., L(P, d) determine L(P, n) for all n — was implicit in Ehrhart's original work and follows from the Vandermonde determinant being nonzero at distinct nodes. The simplex Ehrhart L(Δ_d, n) = C(n+d, d) satisfies Pascal-type recurrences exactly like binomial coefficients, reflecting the combinatorial isomorphism between lattice points and multisets.",
@@ -105,7 +105,7 @@
     "lineCount": 288,
     "axiomCount": 0,
     "theoremCount": 30,
-    "definitionCount": 4,
+    "definitionCount": 8,
     "path": "Proofs/PicksTheoremOQ03Ext.lean",
     "sorries": 0
   },

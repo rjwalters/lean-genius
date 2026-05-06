@@ -60,7 +60,7 @@
     "lineCount": 255,
     "assumptions": "1 axiom: freud_density. 0 sorries.",
     "theoremCount": 14,
-    "definitionCount": 6
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's work on additive restrictions in integer sequences, closely related to his broader program on sum-free sets and primitive sets. A 'primitive' set has no element dividing another; here the condition is additive: no term equals the sum of a contiguous block of earlier terms. Erdős posed two questions: whether such sequences must grow super-linearly ($\\limsup a_n/n = \\infty$) and whether their logarithmic density must vanish. He also conjectured the upper density is at most $1/2$, but Freud disproved this by constructing a valid sequence with upper density $19/36 \\approx 0.528$, exploiting the fact that only contiguous block sums (not arbitrary subset sums) are forbidden. The problem connects to Problems #359 (sum-free sets) and #867 in Erdős's catalog. Both growth-rate questions remain open, making this one of the more delicate problems in additive combinatorial number theory. The formalization is notable for including seven fully proved structural theorems about valid sequences, alongside the single axiomatized deep result (Freud's $19/36$ construction).",
@@ -151,7 +151,7 @@
     "lineCount": 255,
     "axiomCount": 1,
     "theoremCount": 14,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "path": "Proofs/Erdos839Problem.lean",
     "sorries": 0
   },

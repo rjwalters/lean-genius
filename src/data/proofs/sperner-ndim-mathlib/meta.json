@@ -33,7 +33,7 @@
       "sperner: Sperner's lemma for abstract cell complexes"
     ],
     "theoremCount": 13,
-    "definitionCount": 4
+    "definitionCount": 3
   },
   "leanFile": {
     "path": "Proofs/SpernerNDimMathlib.lean",
@@ -41,7 +41,7 @@
     "axiomCount": 0,
     "lineCount": 521,
     "theoremCount": 13,
-    "definitionCount": 4
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Sperner's lemma (1928) states that any Sperner coloring of a triangulated simplex contains a fully-colored face. The door-counting proof was formalized by Knuth and others; the abstract formulation for arbitrary cell complexes generalizes both the combinatorial (triangulation) and topological (barycentric subdivision) settings. This abstract version is the natural candidate for a Mathlib contribution, since it subsumes all concrete instances.",
