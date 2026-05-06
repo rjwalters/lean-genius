@@ -23,11 +23,11 @@
     "relatedProblems": [
       592
     ],
-    "axiomCount": 4,
-    "lineCount": 143,
-    "assumptions": "4 axioms: counter_partition_3 (Schipperus), counter_not_partition_5 (Larson), partitionThreshold, threshold_exact. ordPartition now properly defined. partition_monotone_down proved from definition (blue clique restriction). omega_omega2_threshold proved from threshold_exact + monotonicity + counterexamples. relation_to_592 proved directly from counterexamples.",
+    "axiomCount": 2,
+    "lineCount": 139,
+    "assumptions": "2 axioms: counter_partition_3 (Schipperus — ω^(ω²) → (ω^(ω²),3)²) and counter_not_partition_5 (Larson — ω^(ω²) ↛ (ω^(ω²),5)²). Previously axiomatized partitionThreshold and threshold_exact were eliminated by PR #16227: partition_transition_exists proved via strong induction, omega_omega2_threshold derived from the transition theorem.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4,
+    "theoremCount": 6,
     "definitionCount": 4
   },
   "sections": [
@@ -104,9 +104,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 143,
-    "axiomCount": 4,
-    "theoremCount": 4,
+    "lineCount": 139,
+    "axiomCount": 2,
+    "theoremCount": 6,
     "definitionCount": 4,
     "path": "Proofs/Erdos118Problem.lean",
     "sorries": 0
