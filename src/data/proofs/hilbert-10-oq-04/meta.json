@@ -85,14 +85,14 @@
       "id": "axioms",
       "title": "Axioms from Literature",
       "startLine": 144,
-      "endLine": 195,
+      "endLine": 200,
       "summary": "mrdp_finite_var, jones_matiyasevich_bound, nine_var_h10_undecidable, linear_bezout_n, jones_universal_poly.",
       "mathContext": "These axioms represent classical results: MRDP (1970), Jones-Matiyasevich 9-variable bound (1982), and the corresponding undecidability. linear_bezout_n is the general Bézout theorem for n-variable linear equations."
     },
     {
       "id": "consequences",
       "title": "Consequences and Summary",
-      "startLine": 197,
+      "startLine": 202,
       "endLine": 250,
       "summary": "ten_var_h10_undecidable (monotonicity), eleven_var_h10_undecidable, complexity_gap_summary, and open questions documentation.",
       "mathContext": "By H10_undecidable_monotone applied to nine_var_h10_undecidable, both 10- and 11-variable H10 are undecidable. The complexity_gap_summary assembles the main boundary result."
