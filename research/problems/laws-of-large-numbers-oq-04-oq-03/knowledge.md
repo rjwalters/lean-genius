@@ -5,7 +5,7 @@ formalization (LawsOfLargeNumbersOQ04.lean):
   1. `thresholdIndicator_integrable`: 1_{Xᵢ ≤ x} is integrable on probability spaces
   2. `integral_thresholdIndicator_eq_cdf`: E[1_{X₀ ≤ x}] = F(x)
 
-**Status**: COMPLETE — PR #XXXX, 0 sorries, 0 axioms
+**Status**: COMPLETE — PR #16099, 0 sorries, 0 axioms
 
 ---
 
