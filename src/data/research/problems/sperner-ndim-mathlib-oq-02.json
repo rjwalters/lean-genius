@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 axiom remaining (sperner_near_fixed_point). Proof path identified: canonical Freudenthal SpernerTriangulation + inductive boundary_doors_odd. Estimated ~400 lines of Lean. PR #16235 open.",
+    "progressSummary": "BLOCKED on FreudSimplex full-permutation triangulation (~400 lines); detailed implementation plan documented in knowledge.md Session 4",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -51,17 +51,25 @@
       "SpernerGrid.lean boundary_doors_odd is FALSE for d=1 due to double-counting of simplices with different miss directions",
       "Correct approach: SpernerNDim.sperner_ndim with canonical Freudenthal GridSimplex=(base,\u03c3:Perm(Fin(n+1)))",
       "Inductive boundary_doors_odd: boundary doors on face d \u2194 FC (n-1)-simplices on restriction to face d",
-      "KKM and Schauder alternatives require same or greater effort; n-dim KKM not in Mathlib"
+      "KKM and Schauder alternatives require same or greater effort; n-dim KKM not in Mathlib",
+      "Mathlib4 has NO topological Brouwer theorem (confirmed May 2026)",
+      "Old FSimplex (constant-miss) type fails boundary_face for face k < d: base[k] may be nonzero",
+      "Correct FreudSimplex needs \u03c3 : Perm(Fin(d+1)) where \u03c3(d) is the miss direction",
+      "FreudSimplex vertex k: u_k[\u03c3(j)] = base[\u03c3(j)] + (j<k ? 1:0) for j<d; u_k[\u03c3(d)] = base[\u03c3(d)]-k",
+      "boundary_doors_odd induction: boundary doors of d-triag biject with FC simplices of (d-1)-triag",
+      "Vertex labeling critical: K.vertices S (Fin.last d) must be the vertex on geometric face d"
     ],
     "mathlibGaps": [
       "Grid triangulation of \u0394\u207f as a CellComplex (needed for sperner_near_fixed_point axiom \u2014 significant work ~200 lines)",
-      "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
+      "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)",
+      "Mathlib has no topological Brouwer theorem (only lattice-theoretic Brouwer)"
     ],
     "nextSteps": [
-      "Build canonical SpernerTriangulation: GridSimplex = (base, \u03c3: Equiv.Perm (Fin(n+1))) with adj = local transposition",
-      "Prove adj_symm/adj_vertices/adj_ne/boundary_face/adj_unique_facet for grid (hard: ~200 lines)",
-      "Prove boundary_doors_odd by induction via restriction to face d (~200 lines)",
-      "Connect to sperner_near_fixed_point via SpernerNDim.sperner_ndim + near-fixed-point extraction"
+      "Session 5: Build FreudSimplex d N = (base:Fin(d+1)\u2192\u2115, \u03c3:Perm(Fin(d+1))) with \u03a3base=N, base[\u03c3(d)]\u2265d",
+      "Prove vertices_injective, adj_ne, boundary_face for FreudSimplex (~80 lines)",
+      "Prove adj_symm, adj_vertices, adj_unique_facet (~150 lines)",
+      "Prove boundary_doors_odd by induction using restriction map FreudSimplex d \u2192 (d-1) (~150 lines)",
+      "Connect FreudSimplex to sperner_near_fixed_point via SpernerNDim.sperner_ndim"
     ]
   },
   "tags": [

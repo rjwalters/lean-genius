@@ -3,7 +3,7 @@
 **Pool ID**: sperner-ndim-mathlib-oq-02  
 **Status**: in-progress  
 **Phase**: ACT
-**Progress**: axiomCount 2→1 (fixed_point_from_approx proved, sperner_near_fixed_point remains)
+**Progress**: axiomCount 2→1 (fixed_point_from_approx proved); sperner_near_fixed_point requires FreudSimplex triangulation (~400 lines, boundary_doors_odd is the core)
 
 ## Summary
 
@@ -121,3 +121,66 @@ The existence of a fixed point then follows from Sperner's lemma + compactness.
    - Prove adj_symm, adj_vertices, adj_ne, boundary_face, adj_unique_facet
 2. Prove `boundary_doors_odd` by induction via restriction to face d
 3. Connect to `sperner_near_fixed_point` via `SpernerNDim.sperner_ndim`
+
+## Session 2026-05-06 (Session 4) — Deep analysis of triangulation barrier
+
+**Mode**: REVISIT (continuing Session 3 analysis)
+**Outcome**: no code progress — confirmed concrete implementation plan, ruled out shortcuts
+
+### What I Did
+
+- Verified Mathlib4 (from /Users/rwalters/GitHub/mathlib4) has NO topological Brouwer theorem
+  (only order-theoretic Brouwer for lattices, not fixed points for compact convex sets)
+- Confirmed the old FSimplex (constant miss = Fin.last d) approach from git eaab632 is broken:
+  boundary_face axiom fails for face k < d because base[k] may be > 0
+- Analyzed the correct FreudSimplex formulation with σ : Equiv.Perm (Fin(d+1))
+- Confirmed boundary_doors_odd proof requires induction: boundaries of d-triangulation =
+  FC simplices of (d-1)-triangulation, proved by applying sperner_ndim inductively
+- Ruled out IVT shortcut (only gives one coordinate correct, not all simultaneously for n≥2)
+- Confirmed no shortcut exists: full Freudenthal triangulation is required
+
+### Key Findings
+
+- **Mathlib has no Brouwer**: confirmed by searching /Users/rwalters/GitHub/mathlib4 — no
+  topological fixed-point theorem for compact convex sets exists in current Mathlib
+- **FSimplex constant-miss is broken**: old approach (countPerm, constant miss = Fin.last d)
+  fails boundary_face for face k < d. The miss direction must encode which geometric face
+  each simplex is "opposite" to, not be fixed globally
+- **Correct FreudSimplex type**: `(base : Fin(d+1) → ℕ, σ : Equiv.Perm (Fin(d+1)))` where
+  Σ base_i = N, base[σ(d)] ≥ d (miss direction has enough mass). Vertex k formula:
+  - u_k[σ(j)] = base[σ(j)] + (1 if j < k else 0) for j < d (steps in non-miss directions)
+  - u_k[σ(d)] = base[σ(d)] - k (miss direction decreases by 1 per step)
+  - Σ u_k = N ✓ (sum preserved since each step adds e_{σ(j)} - e_{σ(d)})
+- **Correct adjacency**: for face position k (removing vertex k from (base, σ)):
+  - Middle faces (0 < k < d): swap σ(k-1) and σ(k) → (base, σ') where σ' transposes k-1 and k
+  - Face 0 (remove vertex 0): base' = base + e_{σ(0)} - e_{σ(d)}, σ' = σ with σ(0) moved to end
+  - Face d (remove vertex d): none if base[σ(d)] = d (boundary); otherwise modify base
+  - The key: σ(d) = "miss direction", and changing the face changes which direction is missed
+- **boundary_doors_odd induction**: boundary doors at (Fin.last d) of FreudSimplex d N
+  biject with FC simplices of FreudSimplex (d-1) N restricted to "face σ(d)". By induction
+  (sperner_ndim applied to d-1), FC count is odd → boundary doors are odd
+- **Vertex labeling for boundary_doors**: must place vertex d = Fin.last d at the "largest"
+  position (i.e., K.vertices S (Fin.last d) = vertex on the geometric boundary face d).
+  Then isDoorAt condition checks that the remaining d vertices have all colors 0..d-1
+
+### Files Modified
+
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+
+### Next Steps
+
+1. **Build FreudSimplex with correct full-permutation type** (Session 5):
+   - `FreudSimplex d N = (base : Fin(d+1) → ℕ, σ : Perm(Fin(d+1)))` with Σbase=N, base[σ(d)]≥d
+   - Vertex k formula: u_k[σ(j)] = base[σ(j)] + (j<k ? 1 : 0) for j<d; u_k[σ(d)] = base[σ(d)]-k
+   - Convert u_k to Vertex d N: vertex.coords[j'] = u_k[Fin.castSucc j']
+2. **Prove easy SpernerTriangulation axioms**:
+   - vertices_injective: vertices at different k differ in exactly one coordinate
+   - adj_ne: adjacent simplices differ (since adj swaps permutation elements, changing a vertex)
+   - boundary_face: adj S (Fin.last d) = none ↔ base[σ(d)] = d; then all non-d vertices
+     have their σ(d)-th coordinate = 0, so they're on face σ(d)
+3. **Prove hard axioms** (adj_symm, adj_vertices, adj_unique_facet): ~150 lines
+4. **Prove boundary_doors_odd by induction**: ~150 lines; the key is showing the restriction map
+   FreudSimplex d N → FreudSimplex (d-1) N (by removing the σ(d) direction) is a bijection
+   between boundary doors of d-triangulation and FC simplices of (d-1)-triangulation
+5. **Connect to sperner_near_fixed_point**: after boundary_doors_odd, apply sperner_ndim,
+   convert FC simplex to near-fixed-point using continuity + mesh size bound
