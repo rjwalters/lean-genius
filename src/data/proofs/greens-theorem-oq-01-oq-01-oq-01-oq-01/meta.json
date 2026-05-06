@@ -119,5 +119,6 @@
     "summary": "Partially eliminates axiom iteratedIntervalIntegral_order_independent. The swap(0,1) case and n=2 case are fully proved. Three sorries remain for: integrability of parameterized inner integral, inner permutation reduction, and the general permutation decomposition.",
     "significance": "Each sorry has a clear mathematical fix: (1) continuity of parameterized iterated integrals by induction, (2) IH + integral_congr, (3) Equiv.Perm.induction_on'. The mathematical structure is complete.",
     "limitations": "3 sorries remain. The full axiom elimination requires resolving these, at which point greens-theorem-oq-01-oq-01-oq-01 would have axiomCount=0."
-  }
+  },
+  "sorries": 3
 }
