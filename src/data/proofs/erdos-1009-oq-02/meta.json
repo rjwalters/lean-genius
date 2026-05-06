@@ -26,7 +26,7 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-04-02",
     "mathlib_version": "4.26.0",
-    "lineCount": 267,
+    "lineCount": 320,
     "axiomCount": 0,
     "assumptions": "Main open question stated as Prop (not asserted true). All supporting theorems fully proved: 0 sorries, 0 axioms. Core Turán bound (turanK4_extremal) uses Mathlib's CliqueFree.card_edgeFinset_le. Open conjecture; supporting lemmas fully verified.",
     "mathlibDependencies": [
@@ -54,7 +54,7 @@
       "Extremal combinatorics",
       "Lean 4 and Mathlib"
     ],
-    "theoremCount": 17,
+    "theoremCount": 18,
     "definitionCount": 9
   },
   "crossReferences": [
@@ -119,11 +119,11 @@
     },
     {
       "id": "comparison",
-      "title": "K₃ vs K₄ Comparison",
+      "title": "K₃ vs K₄ Comparison and Edge Properties",
       "startLine": 226,
-      "endLine": 240,
-      "summary": "turanK3_le_turanK4: K₄ threshold ≥ K₃ threshold. clique4_has_triangle: every K₄ contains a K₃ (take any 3 vertices).",
-      "mathContext": "$\\lfloor n^2/4 \\rfloor \\leq \\lfloor n^2/3 \\rfloor$ since $1/4 < 1/3$. And $K_4 \\supset K_3$: any 3 vertices of a $K_4$ form a triangle."
+      "endLine": 320,
+      "summary": "turanK3_le_turanK4: K₄ threshold ≥ K₃ threshold. clique4_has_triangle: every K₄ contains a K₃. Clique4.edges_subset_edgeFinset, Clique4.edges_nonempty, Clique4.edges_card = 6: formal properties of the K₄ 6-element edge set.",
+      "mathContext": "$\\lfloor n^2/4 \\rfloor \\leq \\lfloor n^2/3 \\rfloor$ since $1/4 < 1/3$. And $K_4 \\supset K_3$: any 3 vertices of a $K_4$ form a triangle. $|E(K_4)| = \\binom{4}{2} = 6$."
     }
   ],
   "conclusion": {
@@ -156,10 +156,10 @@
   ],
   "leanFile": {
     "path": "Proofs/Erdos1009OQ02Problem.lean",
-    "lineCount": 267,
+    "lineCount": 320,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 17,
+    "theoremCount": 18,
     "definitionCount": 9
   },
   "sorries": 0
