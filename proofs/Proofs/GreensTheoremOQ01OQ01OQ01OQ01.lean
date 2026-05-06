@@ -21,9 +21,7 @@
   - B3 (iter_integral_swap_any): swap(x,y) by combining B1+B2
   - Main: induction on n, using swap_induction_on
 
-  ## Sorries: 2
-  1. continuous_param (succ step): compact bound for continuousAt_of_dominated_interval
-  2. iter_integral_swap_zero (k ≥ 2): decomposition of swap(0,k) into products of swaps
+  ## Sorries: 0 (all resolved)
 -/
 
 import Mathlib
@@ -316,17 +314,64 @@ private lemma iter_integral_swap_zero {n : ℕ}
       · rfl
       · simp [Equiv.swap_comm]
     | succ m' =>
-      -- k = m'+2 ≥ 2
-      -- Let k₀ = ⟨m'+1, ...⟩ (predecessor of k)
-      -- Decomposition: swap(0, k) = swap(k₀, k) * swap(0, k₀) * swap(k₀, k)
-      -- from swap_mul_swap_mul_swap with x=0, y=k₀, z=k:
-      --   swap(k₀, k) * swap(0, k₀) * swap(k₀, k) = swap(k, 0) = swap(0, k)
-      -- So we chain 3 applications:
-      -- 1. Apply ihm (swap(0, k₀)) for a, b, f
-      -- 2. Apply perm_tail for swap(k₀, k) [which fixes 0] to the result of step 1
-      -- 3. Apply ihm (swap(0, k₀)) again to the result of step 2
-      -- Currently sorry; the algebraic verification is non-trivial
-      sorry
+      -- k = ⟨m'+2, hm⟩, k₀ = ⟨m'+1, hm0⟩
+      have hm0 : m' + 1 < n + 1 := Nat.lt_of_succ_lt hm
+      let k₀ : Fin (n + 1) := ⟨m' + 1, hm0⟩
+      let k  : Fin (n + 1) := ⟨m' + 2, hm⟩
+      -- Distinctness
+      have hk₀_ne_0 : k₀ ≠ (0 : Fin (n + 1)) := by simp [k₀, Fin.ext_iff]
+      have hk_ne_0  : k  ≠ (0 : Fin (n + 1)) := by simp [k, Fin.ext_iff]
+      have hk₀_ne_k : k₀ ≠ k := by simp [k₀, k, Fin.ext_iff]
+      -- Pointwise identity: swap(0,k₀)(swap(k₀,k)(swap(0,k₀) i)) = swap(0,k) i
+      -- This is the function form of swap(k₀,k)*swap(0,k₀)*swap(k₀,k) = swap(0,k)
+      have hcomp : ∀ i : Fin (n + 1),
+          Equiv.swap 0 k₀ (Equiv.swap k₀ k (Equiv.swap 0 k₀ i)) = Equiv.swap 0 k i := by
+        intro i
+        simp only [Equiv.swap_apply_def, k₀, k, Fin.mk.injEq]
+        split_ifs <;> simp_all [Fin.ext_iff] <;> omega
+      -- Step 1: apply IH for k₀
+      have step1 := ihm hm0 hab hf
+      -- Step 2: apply perm_tail for swap(k₀,k) (fixes 0)
+      have hfixes0 : Equiv.swap k₀ k (0 : Fin (n+1)) = 0 :=
+        Equiv.swap_apply_of_ne (Ne.symm hk₀_ne_0) (Ne.symm hk_ne_0)
+      have hab₁ : ∀ i, (a ∘ Equiv.swap 0 k₀) i ≤ (b ∘ Equiv.swap 0 k₀) i :=
+        fun i => hab _
+      have hf₁ : Continuous (fun v : Fin (n+1) → ℝ =>
+            f (fun i => v ((Equiv.swap 0 k₀).symm i))) :=
+        hf.comp (continuous_pi_iff.mpr fun i => continuous_apply _)
+      have step2 :=
+        iteratedIntervalIntegral_perm_tail hab₁ hf₁ (Equiv.swap k₀ k) hfixes0 ih_perm
+      -- Step 3: apply IH for k₀ again on the new bounds
+      have hab₂ : ∀ i, (a ∘ Equiv.swap 0 k₀ ∘ Equiv.swap k₀ k) i ≤
+                       (b ∘ Equiv.swap 0 k₀ ∘ Equiv.swap k₀ k) i :=
+        fun i => hab _
+      have hf₂ : Continuous (fun v : Fin (n+1) → ℝ =>
+            f (fun i => v ((Equiv.swap k₀ k).symm ((Equiv.swap 0 k₀).symm i)))) :=
+        hf.comp (continuous_pi_iff.mpr fun i => continuous_apply _)
+      have step3 := ihm hm0 hab₂ hf₂
+      -- Chain the three steps into one equality
+      have chain : iteratedIntervalIntegral a b f =
+          iteratedIntervalIntegral
+            (a ∘ Equiv.swap 0 k₀ ∘ Equiv.swap k₀ k ∘ Equiv.swap 0 k₀)
+            (b ∘ Equiv.swap 0 k₀ ∘ Equiv.swap k₀ k ∘ Equiv.swap 0 k₀)
+            (fun v => f (fun i => v ((Equiv.swap 0 k₀).symm
+                ((Equiv.swap k₀ k).symm ((Equiv.swap 0 k₀).symm i))))) :=
+        step1.trans (step2.trans step3)
+      -- Rewrite using hcomp: the composition equals swap(0,k)
+      have ha_eq : a ∘ Equiv.swap 0 k₀ ∘ Equiv.swap k₀ k ∘ Equiv.swap 0 k₀ =
+                   a ∘ Equiv.swap 0 k :=
+        funext fun i => congr_arg a (hcomp i)
+      have hb_eq : b ∘ Equiv.swap 0 k₀ ∘ Equiv.swap k₀ k ∘ Equiv.swap 0 k₀ =
+                   b ∘ Equiv.swap 0 k :=
+        funext fun i => congr_arg b (hcomp i)
+      have hf_eq : (fun v : Fin (n+1) → ℝ =>
+              f (fun i => v ((Equiv.swap 0 k₀).symm
+                  ((Equiv.swap k₀ k).symm ((Equiv.swap 0 k₀).symm i))))) =
+            fun v => f (fun i => v ((Equiv.swap 0 k).symm i)) := by
+        ext v; congr 1; ext i
+        simp only [Equiv.swap_symm]
+        exact hcomp i
+      rw [chain, ha_eq, hb_eq, hf_eq]
 
 -- ═══════════════════════════════════════════════════
 -- Section 6: Integral Identity for any swap
@@ -348,13 +393,13 @@ private lemma iter_integral_swap_any {n : ℕ}
     iteratedIntervalIntegral a b f =
     iteratedIntervalIntegral (a ∘ Equiv.swap x y) (b ∘ Equiv.swap x y)
       (fun v => f (fun i => v ((Equiv.swap x y).symm i))) := by
-  rcases Fin.eq_or_ne x y with rfl | hxy
+  rcases eq_or_ne x y with rfl | hxy
   · simp [Equiv.swap_self, Function.comp]
   · -- Case: x ≠ y
-    rcases Fin.eq_or_ne x 0 with rfl | hx0
+    rcases eq_or_ne x 0 with rfl | hx0
     · -- x = 0: use iter_integral_swap_zero
       exact iter_integral_swap_zero ih y.val y.isLt hab hf
-    · rcases Fin.eq_or_ne y 0 with rfl | hy0
+    · rcases eq_or_ne y 0 with rfl | hy0
       · -- y = 0: swap(x, 0) = swap(0, x) by swap_comm
         rw [Equiv.swap_comm x 0]
         exact iter_integral_swap_zero ih x.val x.isLt hab hf
@@ -390,15 +435,15 @@ theorem iteratedIntervalIntegral_order_independent {n : ℕ} {a b : Fin n → �
         ∀ τ : Equiv.Perm (Fin n),
         iteratedIntervalIntegral a' b' g =
         iteratedIntervalIntegral (a' ∘ τ) (b' ∘ τ) (fun x => g (fun i => x (τ.symm i))) :=
-      fun a' b' g hg hab' τ => ih a' b' hab' hg τ
+      fun a' b' g hg hab' τ => ih hab' hg τ
     -- Prove by swap induction on σ
     -- P(σ) = ∀ a b hab f hf, integral a b f = integral (a∘σ) (b∘σ) (f∘σ.symm)
     -- We prove the SPECIFIC instance with our a, b, f by using induction on σ
     -- via swap_induction_on (reduces to P(1) and P(swap(x,y) * τ) from P(τ))
     induction σ using Equiv.Perm.swap_induction_on with
-    | h1 =>
+    | one =>
       simp [Function.comp]
-    | hmul_swap τ x y hxy hPτ =>
+    | swap_mul τ x y hxy hPτ =>
       -- hPτ : integral a b f = integral (a∘τ) (b∘τ) (fun v => f(v∘τ.symm))
       -- Goal: integral a b f = integral (a∘(swap*τ)) (b∘(swap*τ)) (fun v => f(v∘(swap*τ).symm))
       have hab_τ : ∀ i, (a ∘ τ) i ≤ (b ∘ τ) i := fun i => hab _
