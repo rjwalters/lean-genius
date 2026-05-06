@@ -182,7 +182,10 @@ theorem disk_area_matches_parent (r : ℝ) :
     HasDerivAt CircumferenceViaDifferentiation.areaFn
                (CircumferenceViaDifferentiation.circumferenceFn r) r := by
   have h := disk_area_deriv_eq_circumference r
-  rw [← nBallVolumeFn_two_eq_areaFn] at h
+  -- Upgrade pointwise equality to function equality
+  have hfn : nBallVolumeFn 2 = CircumferenceViaDifferentiation.areaFn :=
+    funext nBallVolumeFn_two_eq_areaFn
+  rw [hfn] at h
   convert h using 1
   unfold CircumferenceViaDifferentiation.circumferenceFn; ring
 
@@ -221,12 +224,14 @@ example (r : ℝ) : nBallVolumeFn 2 r = Real.pi * r ^ 2 := by
 
 -- n=3: volume function is (4π/3)r³
 example (r : ℝ) : nBallVolumeFn 3 r = (4 * Real.pi / 3) * r ^ 3 := by
-  unfold nBallVolumeFn; rw [unitBallVolume_three]; ring
+  unfold nBallVolumeFn; rw [unitBallVolume_three]
 
 -- Derivative at r=1 for n=2 is 2π
 example : deriv (nBallVolumeFn 2) 1 = 2 * Real.pi := by
-  rw [deriv_nBallVolume, nSphereSurfaceConst_two]
-  unfold nSphereSurfaceFn; norm_num
+  rw [deriv_nBallVolume]
+  unfold nSphereSurfaceFn
+  rw [nSphereSurfaceConst_two]
+  norm_num
 
 -- Surface area constants
 example : nSphereSurfaceConst 2 = 2 * Real.pi := nSphereSurfaceConst_two
