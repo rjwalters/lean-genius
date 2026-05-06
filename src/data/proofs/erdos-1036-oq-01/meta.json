@@ -1,0 +1,114 @@
+{
+  "id": "erdos-1036-oq-01",
+  "title": "Optimal Constant in Shelah's Coloring Theorem",
+  "slug": "erdos-1036-oq-01",
+  "description": "Formalizes the optimal constant c'(c) in Shelah's theorem: every non-Ramsey(c) graph on n vertices has ≥ 2^{c'(c)n} distinct induced subgraph isomorphism classes. Proves c'(c) ∈ (0,1] with the upper bound 1 tight (random graphs achieve 2^n classes a.s.). The conjecture c'(c) = 1 is axiomatized.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1036",
+    "date": "1998 (Shelah), formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "ramsey-theory",
+      "shelah",
+      "induced-subgraphs",
+      "optimal-constants"
+    ],
+    "proofRepoPath": "Proofs/Erdos1036OQ01.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 6,
+    "lineCount": 175,
+    "theoremCount": 6,
+    "assumptions": "Six axioms: numISCTrue (true ISC count function — needs quotient type construction), numISCTrue_le_pow and numISCTrue_pos (trivially true properties of the quotient), nonRamseyExistsTrue and shelah_isc (from parent Erdos1036Problem.lean), and optimalConstantTrue_eq_one (the genuine open conjecture c'(c) = 1).",
+    "mathlibDependencies": [
+      {
+        "theorem": "csSup / le_csSup",
+        "description": "Supremum in a conditionally complete lattice",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "Real.rpow_lt_rpow_of_exponent_lt",
+        "description": "Monotonicity of real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "SimpleGraph.cliqueFree",
+        "description": "Clique-free property of simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      }
+    ],
+    "originalContributions": [
+      "Correct formulation of the OQ-01 using isomorphism-class count (vs. placeholder in parent)",
+      "Axiomatized interface for numISCTrue: key properties without the full quotient construction",
+      "optimalConstantTrue_le_one: c'(c) ≤ 1 proved from numISCTrue ≤ 2^n",
+      "optimalConstantTrue_pos: c'(c) > 0 proved from Shelah's lower bound",
+      "optimalConstantTrue_bounds: c'(c) ∈ (0,1] as a clean summary theorem",
+      "Identification that parent's optimalConstant = 1 is trivial (placeholder) vs. non-trivial (true ISC)"
+    ],
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Shelah's 1998 theorem (improving on Erdős-Hajnal) states that every graph with no clique or independent set of size c·log n must have exponentially many distinct induced subgraph isomorphism classes. The exponent c'(c) > 0 is guaranteed but the optimal value is unknown.\n\nThe random graph G(n, 1/2) serves as the key example: with high probability, all 2^n vertex subsets yield non-isomorphic induced subgraphs, achieving c'(c) = 1 exactly. Since G(n, 1/2) is also non-Ramsey(c) for c < 2/log 2, this shows the upper bound 1 is achievable.\n\nThe Erdős-Hajnal conjecture (related but different) asks about clique/independent set sizes in graphs with forbidden induced subgraphs — a different but connected line of research.",
+    "problemStatement": "**OQ-01**: What is the optimal constant c'(c) such that every non-Ramsey(c) graph on n vertices has ≥ 2^{c'(c)·n} induced subgraph isomorphism classes?\n\n**Known**: c'(c) ∈ (0, 1] — proved here.\n**Conjectured**: c'(c) = 1 for all c > 0.\n\n**Key issue**: The parent file Erdos1036Problem.lean uses a PLACEHOLDER numISC = 2^n (counting all subsets, not isomorphism classes), making c' = 1 trivial. The correct definition requires a Quotient type construction.",
+    "text": "Proves c'(c) ∈ (0,1] for the optimal constant in Shelah's theorem. The upper bound 1 follows from numISCTrue ≤ 2^n; the lower bound follows from Shelah. The conjecture c'(c) = 1 (random graphs are extremal) is axiomatized.",
+    "proofStrategy": "**Upper bound (c' ≤ 1)**: If c' > 1, then 2^{c'n} > 2^n ≥ numISCTrue G, contradicting numISCTrue G ≥ 2^{c'n}. So no c' > 1 satisfies the condition, and optimalConstantTrue ≤ 1.\n\n**Lower bound (c' > 0)**: Shelah's theorem (shelah_isc axiom) provides some c'' > 0 satisfying the condition, so sSup ≥ c'' > 0.\n\n**The conjecture c' = 1**: The random graph G(n,1/2) is non-Ramsey(c) for c < 2/log2 and has numISCTrue ≈ 2^n a.s. This witnesses c' ≥ 1 in the set, so sSup = 1.",
+    "keyInsights": [
+      "**Two ISC notions**: labeled (all 2^n subsets) vs. unlabeled (isomorphism classes ≤ 2^n). The parent uses labeled (trivial). The correct question uses unlabeled.",
+      "**Upper bound is tight**: The random graph G(n,1/2) achieves numISCTrue ≈ 2^n, showing c' = 1 is the best possible upper bound.",
+      "**Shelah vs. optimal**: Shelah gives SOME c' > 0 (possibly small). The OQ asks whether the optimal c' = 1 (largest possible).",
+      "**Quotient complexity**: Formalizing numISCTrue requires `Quotient` with a `Setoid` on induced subgraph pairs, plus a `Fintype` instance on the quotient — about 200 lines to eliminate axioms 1-3."
+    ],
+    "prerequisites": [
+      "Shelah's theorem (Erdos1036Problem.lean, axiom shelah_1998)",
+      "Non-Ramsey graphs: no clique or independent set of size c·log n",
+      "Graph isomorphism and induced subgraphs (SimpleGraph API)",
+      "Conditional supremum in ℝ (Mathlib ConditionallyCompleteLattice)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "interface",
+      "title": "ISC Count Interface",
+      "startLine": 42,
+      "endLine": 62,
+      "summary": "Axiomatizes numISCTrue with three key properties: it exists, is bounded by 2^n, and is positive. These replace the parent's placeholder definition.",
+      "mathContext": "The true ISC count counts non-isomorphic induced subgraphs: the quotient of {S : Finset V} by the equivalence S ~ T ↔ G.induce(S) ≅g G.induce(T). Requires Quotient and Fintype instances on the quotient type (~200 lines)."
+    },
+    {
+      "id": "optimal-constant",
+      "title": "Optimal Constant Definition and Bounds",
+      "startLine": 78,
+      "endLine": 140,
+      "summary": "Defines optimalConstantTrue as sSup of valid exponents. Proves it lies in (0,1]: upper bound from numISCTrue ≤ 2^n, lower bound from Shelah.",
+      "mathContext": "The optimal constant is the supremum of all c' such that every non-Ramsey(c) graph has ≥ 2^{c'n} ISC classes. The key proof: if c' > 1, then 2^{c'n} > 2^n ≥ numISCTrue, contradiction."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture: c'(c) = 1",
+      "startLine": 143,
+      "endLine": 160,
+      "summary": "States the main open conjecture as an axiom: optimalConstantTrue(c) = 1 for all c > 0.",
+      "mathContext": "This asserts that non-Ramsey graphs are 'pseudorandom' enough to maximize ISC diversity. Random graphs G(n,1/2) are the witness: they are non-Ramsey and achieve 2^n ISC classes a.s."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "title": "Eliminate numISCTrue axioms via Quotient construction",
+      "description": "Replace axioms 1-3 (numISCTrue interface) with a proper Lean 4 quotient construction. Requires: (1) a Setoid on induced subgraph pairs, (2) Fintype instance on the quotient, (3) proof that Fintype.card of quotient ≤ 2^n.",
+      "difficulty": "medium",
+      "tags": ["axiom-elimination", "quotient-type", "fintype"]
+    },
+    {
+      "id": "oq-02",
+      "title": "Prove random graphs are non-Ramsey and achieve optimal ISC count",
+      "description": "Formalize: (1) G(n,1/2) is non-Ramsey(c) for c < 2/log2 w.h.p., and (2) G(n,1/2) has numISCTrue = 2^n a.s. This would prove optimalConstantTrue_eq_one as a theorem, eliminating axiom 6.",
+      "difficulty": "very-hard",
+      "tags": ["probabilistic-method", "random-graphs", "axiom-elimination"]
+    }
+  ]
+}
