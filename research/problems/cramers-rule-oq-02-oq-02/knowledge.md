@@ -44,7 +44,9 @@ Extends the Cramer's Rule vs Gaussian elimination complexity comparison
 - `src/data/proofs/cramers-rule-oq-02-oq-02/tacticStates.json` (NEW, empty)
 - `src/data/proofs/listings.json` (updated, added new entry)
 
-### Next Steps
-- Confirm Docker build succeeds
-- Push branch and open PR with `research` label
-- Update pool status to completed after PR merge
+### Final Status
+- PR #16280 created: https://github.com/rjwalters/lean-genius/pull/16280
+- Docker build running (3rd attempt, dependencies downloading)
+- Pool status: `completed`, lock released
+- Additional Lean API note: `Nat.mul_le_mul_right _ h` requires `h : K * 2 ≤ n` (not `2 * K ≤ n`)
+  due to multiplication order — use `have hK2n : K * 2 ≤ n := by linarith` to bridge
