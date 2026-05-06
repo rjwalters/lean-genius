@@ -160,14 +160,65 @@ def IsSumFree (S : Finset ℕ) : Prop :=
   ∀ a b : ℕ, a ∈ S → b ∈ S → a + b ∉ S
 
 /-- The Schur number S(k) is the largest n such that {1,...,n} can be
-    k-colored with no monochromatic Schur triple -/
+    k-colored with no monochromatic Schur triple (a, b, a+b with a,b ≥ 1) -/
 noncomputable def schurNumber (k : ℕ) : ℕ :=
-  sSup {n : ℕ | ∃ c : ℕ → Fin k, ∀ a b : ℕ, a ≤ n → b ≤ n → a + b ≤ n →
+  sSup {n : ℕ | ∃ c : ℕ → Fin k, ∀ a b : ℕ, 1 ≤ a → 1 ≤ b → a ≤ n → b ≤ n → a + b ≤ n →
     ¬(c a = c b ∧ c b = c (a + b))}
 
-/-- S(2) = 4: {1,2,3,4} can be 2-colored without monochromatic Schur triple -/
+/-- There exists a valid 2-coloring of {1,...,4}: coloring 1→0, 2→1, 3→1, 4→0
+    avoids all monochromatic Schur triples (1,1,2), (1,2,3), (1,3,4), (2,2,4). -/
+private lemma schur_4_colorable :
+    ∃ f : Fin 5 → Fin 2, ∀ a b c : Fin 5,
+    1 ≤ a.val → 1 ≤ b.val → c.val = a.val + b.val →
+    ¬(f a = f b ∧ f b = f c) := by
+  native_decide
+
+/-- Every 2-coloring of {1,...,5} contains a monochromatic Schur triple.
+    Verified by native_decide over all 2^6 = 64 colorings. -/
+private lemma schur_5_forced :
+    ∀ f : Fin 6 → Fin 2, ∃ a b c : Fin 6,
+    1 ≤ a.val ∧ 1 ≤ b.val ∧ c.val = a.val + b.val ∧
+    f a = f b ∧ f b = f c := by
+  native_decide
+
+/-- S(2) = 4: {1,2,3,4} can be 2-colored without monochromatic Schur triple,
+    but every 2-coloring of {1,...,5} contains one. -/
 theorem schur_2 : schurNumber 2 = 4 := by
-  sorry
+  unfold schurNumber
+  let S := {n : ℕ | ∃ c : ℕ → Fin 2, ∀ a b : ℕ, 1 ≤ a → 1 ≤ b →
+    a ≤ n → b ≤ n → a + b ≤ n → ¬(c a = c b ∧ c b = c (a + b))}
+  show sSup S = 4
+  -- 4 ∈ S: lift the Fin 5 coloring from schur_4_colorable
+  have hmem4 : 4 ∈ S := by
+    obtain ⟨f, hf⟩ := schur_4_colorable
+    refine ⟨fun n => if h : n < 5 then f ⟨n, h⟩ else ⟨0, by norm_num⟩, ?_⟩
+    intro a b ha1 hb1 ha4 hb4 hab4
+    intro ⟨h1, h2⟩
+    have ha5 : a < 5 := by omega
+    have hb5 : b < 5 := by omega
+    have hab5 : a + b < 5 := by omega
+    rw [dif_pos ha5, dif_pos hb5] at h1
+    rw [dif_pos hb5, dif_pos hab5] at h2
+    exact hf ⟨a, ha5⟩ ⟨b, hb5⟩ ⟨a + b, hab5⟩ ha1 hb1 rfl ⟨h1, h2⟩
+  -- 5 ∉ S: any supposed coloring yields a mono triple from schur_5_forced
+  have hS5 : 5 ∉ S := by
+    intro ⟨col, hcol⟩
+    obtain ⟨a, b, cs, ha1, hb1, hcs_eq, hf1, hf2⟩ :=
+      schur_5_forced (fun i => col i.val)
+    exact hcol a.val b.val (by omega) (by omega)
+      (Nat.lt_succ_iff.mp a.isLt) (Nat.lt_succ_iff.mp b.isLt)
+      (hcs_eq ▸ Nat.lt_succ_iff.mp cs.isLt)
+      ⟨hf1, hf2.trans (congr_arg col hcs_eq)⟩
+  -- Every n ≥ 5 fails (restrict any supposed coloring to positions ≤ 5)
+  have hSle4 : ∀ m ∈ S, m ≤ 4 := fun m hm => by
+    by_contra hlt
+    push_neg at hlt
+    obtain ⟨col, hcol⟩ := hm
+    exact hS5 ⟨col, fun a b ha1 hb1 ha5 hb5 hab5 =>
+      hcol a b ha1 hb1 (by omega) (by omega) (by omega)⟩
+  exact le_antisymm
+    (csSup_le ⟨4, hmem4⟩ hSle4)
+    (le_csSup ⟨4, hSle4⟩ hmem4)
 
 /-- Erdős 895 implies a Schur-like result for graph colorings:
     Every 2-coloring of {1,...,n} either has a same-colored additive pair (a,b with a+b in range)
