@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1155",
-  "title": "Erdős #1155",
+  "title": "Erd\u0151s #1155",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,27 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 6 axioms (all deep/necessary). All theorems proved. Both main and OQ files build cleanly on Lean 4.26.0. No further proof progress possible.",
+    "progressSummary": "COMPLETE: 0 sorries across all files. 5 axioms in main, 0 in OQ01/OQ01OQ01/OQ01OQ06 (inherit from main), 3 in OQ01OQ07 (kClique), 1 in OQ02 (Tur\u00e1n bound). 9 total axiom declarations. All deep/necessary. No further proof progress possible.",
     "builtItems": [
       "Proved triangleFree_iff_cliqueFree3 (Erdos1155Problem.lean)",
       "Proved complete_has_triangles (Erdos1155Problem.lean)",
-      "Proved grable_upper_bound from BFL (axiom→theorem, Erdos1155Problem.lean)",
+      "Proved grable_upper_bound from BFL (axiom\u2192theorem, Erdos1155Problem.lean)",
       "Proved trivial_upper_bound from Mantel axiom (Erdos1155Problem.lean)",
       "Eliminated 5 duplicate axioms from Erdos1155OQ01.lean via import",
       "Removed redundant triangle definitions (IsTriangle\", IsTriangleFree, duplicated theorems)"
     ],
     "insights": [
-      "Grable bound is provable from BFL (exponent arithmetic: 3/2+ε where ε=1/4+δ gives 7/4+δ)",
+      "Grable bound is provable from BFL (exponent arithmetic: 3/2+\u03b5 where \u03b5=1/4+\u03b4 gives 7/4+\u03b4)",
       "triangleFree_iff_cliqueFree3 proved via Finset.card_eq_three decomposition",
       "complete_has_triangles proved by explicit construction of vertices 0,1,2 in Fin n",
       "Mantel axiom replaced with direct bound on triangleRemovalEdges (simpler, more usable)",
       "OQ01 had 5 duplicate axiom declarations from parent file (import was missing)",
-      "All 5 OQ01 axioms eliminated by importing Erdos1155Problem.lean: 11 total → 6 total",
-      "File is fully mature: 6 axioms are all deep results (triangleRemovalEdges function, nonneg/complete bounds, BFL upper/lower, Mantel bound). No axiom elimination possible."
+      "All 5 OQ01 axioms eliminated by importing Erdos1155Problem.lean: 11 total \u2192 6 total",
+      "File is fully mature: 6 axioms are all deep results (triangleRemovalEdges function, nonneg/complete bounds, BFL upper/lower, Mantel bound). No axiom elimination possible.",
+      "Research JSON leanFiles all had lineCount +1 over actual (systematic off-by-one). Fixed all 6 entries. Gallery meta.json was already correct."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1155 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1155 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -78,7 +79,7 @@
     {
       "path": "Proofs/Erdos1155OQ01.lean",
       "filename": "Erdos1155OQ01.lean",
-      "lineCount": 412,
+      "lineCount": 411,
       "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 3,
@@ -89,7 +90,7 @@
     {
       "path": "Proofs/Erdos1155OQ01OQ01.lean",
       "filename": "Erdos1155OQ01OQ01.lean",
-      "lineCount": 297,
+      "lineCount": 296,
       "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 2,
@@ -100,7 +101,7 @@
     {
       "path": "Proofs/Erdos1155OQ01OQ06.lean",
       "filename": "Erdos1155OQ01OQ06.lean",
-      "lineCount": 11,
+      "lineCount": 10,
       "theoremCount": 0,
       "axiomCount": 0,
       "defCount": 0,
@@ -111,7 +112,7 @@
     {
       "path": "Proofs/Erdos1155OQ01OQ07.lean",
       "filename": "Erdos1155OQ01OQ07.lean",
-      "lineCount": 356,
+      "lineCount": 355,
       "theoremCount": 21,
       "axiomCount": 3,
       "defCount": 6,
@@ -122,7 +123,7 @@
     {
       "path": "Proofs/Erdos1155OQ02.lean",
       "filename": "Erdos1155OQ02.lean",
-      "lineCount": 315,
+      "lineCount": 314,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 1,
@@ -133,7 +134,7 @@
     {
       "path": "Proofs/Erdos1155Problem.lean",
       "filename": "Erdos1155Problem.lean",
-      "lineCount": 231,
+      "lineCount": 230,
       "theoremCount": 8,
       "axiomCount": 5,
       "defCount": 3,
