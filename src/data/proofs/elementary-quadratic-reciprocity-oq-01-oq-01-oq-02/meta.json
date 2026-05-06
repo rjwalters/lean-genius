@@ -1,0 +1,113 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+  "title": "Frobenius Step: τ^q = χ(q)·τ in the Gauss Sum QR Proof",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+  "description": "Formalizes Step 3 of the Gauss sum proof of Quadratic Reciprocity: the Frobenius step τ^q = χ(q)·τ, which holds in any field of characteristic q. The proof uses Mathlib’s `MulChar.IsQuadratic.gaussSum_frob`, which implements the freshman’s dream argument in characteristic q. Combined with the Gauss sum squared identity τ² = χ(-1)·p (OQ01OQ01OQ01), this yields the QR identity (χ(-1)·p)^{(q-1)/2} = χ(q), from which the Law of Quadratic Reciprocity follows via Euler’s criterion. Closes the gap explicitly cited as ‘future work’ in OQ01OQ01OQ01.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "gauss-sums",
+      "frobenius",
+      "legendre-symbol",
+      "additive-characters",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 216,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "MulChar.IsQuadratic.gaussSum_frob",
+        "description": "For quadratic χ in char-q ring: (gaussSum χ ψ)^q = χ(q)·gaussSum χ ψ",
+        "module": "Mathlib.NumberTheory.GaussSum"
+      },
+      {
+        "theorem": "Char.card_pow_char_pow",
+        "description": "(χ(-1)·|R|)^(q^n/2) = χ(q^n) given τ²=χ(-1)·|R|",
+        "module": "Mathlib.NumberTheory.GaussSum"
+      },
+      {
+        "theorem": "Char.card_pow_card",
+        "description": "Full QR identity: (χ(-1)·|F|)^(|F’|/2) = χ(|F’|) in finite fields",
+        "module": "Mathlib.NumberTheory.GaussSum"
+      },
+      {
+        "theorem": "ZMod.isUnit_prime_iff_not_dvd",
+        "description": "IsUnit (p : ZMod n) ↔ ¬p ∣ n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "frobenius_step: τ^q = χ(q)·τ in any char-q field (Step 3 of the QR Gauss pathway)",
+      "qr_via_frobenius: (χ(-1)·p)^{(q-1)/2} = χ(q) via card_pow_char_pow",
+      "qr_gauss_sums_identity: Full QR identity in ZMod q via Char.card_pow_card",
+      "gauss_qr_pathway_complete: Existential form combining all four steps"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Frobenius Step Setup",
+      "content": "Establishes q_isUnit_in_ZMod_p: for distinct primes p ≠ q, the element q in ZMod p is invertible. Uses ZMod.isUnit_prime_iff_not_dvd: IsUnit(q : ZMod p) ↔ ¬q ∣ p. Since p is prime, q ∣ p implies q = 1 or q = p, both contradicting our assumptions.",
+      "leanRef": "ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean:59-68"
+    },
+    {
+      "title": "The Frobenius Step (Main Theorem)",
+      "content": "Proves frobenius_step: in a field F of characteristic q, (gaussSum χ ψ)^q = χ(q) · gaussSum χ ψ for any quadratic χ and additive ψ. The argument: Frobenius endomorphism in char q gives (Σ χ(a)ψ(a))^q = Σ χ(a)^q ψ(a)^q = Σ χ(a)ψ(qa); reparametrizing b = qa yields χ(q)·τ. Lean proof is one line: MulChar.IsQuadratic.gaussSum_frob.",
+      "leanRef": "ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean:83-87"
+    },
+    {
+      "title": "Combining Steps 2 and 3",
+      "content": "Proves qr_via_frobenius: given τ² = χ(-1)·p (Step 2), derive (χ(-1)·p)^{(q-1)/2} = χ(q) in F. The derivation: τ^q = τ · (τ²)^{(q-1)/2} = τ · (χ(-1)·p)^{(q-1)/2}. Equating with Frobenius step and dividing by τ ≠ 0 gives the identity. Uses Mathlib’s Char.card_pow_char_pow.",
+      "leanRef": "ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean:106-113"
+    },
+    {
+      "title": "Full QR Identity in ZMod q",
+      "content": "Proves qr_gauss_sums_identity: for distinct odd primes p ≠ q and nontrivial quadratic χ : ZMod p → ZMod q, we have (χ(-1) · p)^{(q-1)/2} = χ(q). By Euler’s criterion: p^{(q-1)/2} ≡ (p/q) (mod q) and χ(-1) = (-1/p). So this gives (-1)^{((p-1)/2)·((q-1)/2)} · (p/q) = (q/p), i.e., the Law of Quadratic Reciprocity.",
+      "leanRef": "ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean:132-141"
+    }
+  ],
+  "overview": {
+    "summary": "Formalizes the Frobenius step τ^q = χ(q)·τ (Step 3 of the Gauss sum QR pathway) and connects it to the full Law of Quadratic Reciprocity. Completes the step explicitly cited as future work in OQ01OQ01OQ01.",
+    "difficulty": "intermediate",
+    "prerequisites": [
+      "Multiplicative characters (MulChar)",
+      "Additive characters (AddChar)",
+      "Frobenius endomorphism in characteristic p",
+      "Gauss sum squared identity (OQ01OQ01OQ01)"
+    ]
+  },
+  "conclusion": {
+    "summary": "YES — the Frobenius step τ^q = χ(q)·τ is fully formalized in Lean 4. Mathlib’s gaussSum_frob directly proves the step, and Char.card_pow_card derives the full QR identity. Together with OQ01OQ01OQ01 (τ² = χ(-1)·p), all four steps of the Gauss sum QR pathway are now formalized.",
+    "openQuestions": [
+      "Can the four steps be assembled into a single self-contained Lean proof of QR?",
+      "Can this approach extend to higher-power reciprocity (cubic, quartic) using Jacobi sums?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "elementary-quadratic-reciprocity-oq-01-oq-01",
+      "relationship": "parent — outlines the full four-step Gauss sum pathway for QR"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+      "relationship": "sibling — proves Step 2 (τ² = χ(-1)·p) which this file's qr_via_frobenius assumes"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "root — the Eisenstein lattice-point proof of QR"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
+      "relationship": "sibling — extends to higher-power reciprocity using Jacobi sums"
+    }
+  ]
+}
