@@ -63,7 +63,7 @@
     "lineCount": 328,
     "assumptions": "3 axioms: no_4AP_in_squares (Euler), question1_implies_question2 (Ramsey-type), cilleruelo_granville (conditional). BombieriLangConjecture converted to opaque Prop (not an axiom). squares_contain_3AP proved by explicit construction {1,25,49}.",
     "theoremCount": 10,
-    "definitionCount": 17
+    "definitionCount": 18
   },
   "overview": {
     "historicalContext": "This problem was posed by Brown, Erdős, and Freedman in [BEF90]. It connects classical results about arithmetic progressions in squares with modern questions in additive combinatorics.\n\nThe classical result that squares contain no 4-term APs (related to Fermat's Last Theorem for n=4) motivates asking about weaker structures. Quasi-progressions relax the exact gap requirement to bounded gaps.\n\nSolymosi (2007) conjectured that even combinatorial cubes don't appear in unbounded sizes. Cilleruelo and Granville (2007) showed this would follow from the Bombieri-Lang conjecture in algebraic geometry.",
@@ -188,7 +188,7 @@
     "lineCount": 328,
     "axiomCount": 3,
     "theoremCount": 10,
-    "definitionCount": 17,
+    "definitionCount": 18,
     "path": "Proofs/Erdos782Problem.lean",
     "sorries": 0
   },

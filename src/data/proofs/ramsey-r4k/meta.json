@@ -48,7 +48,7 @@
       "Finset operations in Lean 4",
       "Pigeonhole principle"
     ],
-    "definitionCount": 5
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Ramsey theory began with Frank Plumpton Ramsey's 1930 paper 'On a Problem of Formal Logic', which proved that for any $r, s$, there exists a minimum $n = R(r,s)$ such that every 2-coloring of the edges of the complete graph $K_n$ contains a monochromatic red $K_r$ or blue $K_s$. The bound Ramsey gave was doubly exponential. Erdős and Szekeres (1935) improved this to the central Pascal-based bound:\n$$R(r,s) \\leq \\binom{r+s-2}{r-1}$$\nwhich is the bound formalized here. For $r = 4$, this gives $R(4,k) \\leq \\binom{k+2}{3} = O(k^3)$.\n\nThe off-diagonal Ramsey numbers $R(4,k)$ are among the most studied special cases. Exact values include: $R(4,3) = 9$ (Chung 1973), $R(4,4) = 18$ (Chung, Grinstead 1983 — proving $R(4,4) > 17$ was the hard part), $R(4,5) = 25$ (McKay, Radziszowski 1995), $R(4,6) = 36$ (determined rigorously by 2012 through a combination of computational and theoretical work). The formalized binomial bounds (10, 20, 35, 56, 84) are overestimates — the gap widens with $k$.\n\nThe best known asymptotic upper bound is $R(4,k) = O(k^3/\\log^2 k)$, proved by Ajtai, Komlós, and Szemerédi (1980) using a probabilistic deletion argument (a forerunner of the 'Lovász local lemma' method). The best known lower bound is $R(4,k) = \\Omega(k^{5/2}/\\log^2 k)$, proved by Bohman and Keevash (2013) using the 'triangle-free process'. The gap between these bounds remains open and is a major problem in combinatorics.\n\nThis formalization captures the classical structural framework: the Erdős-Szekeres upper bound via Pascal recursion, concrete values for $k = 3$ to $10$, and the cubic growth rate $R(4,k) \\leq (k+2)^3$. The probabilistic lower bound framework (Part VIII) sets up the first-moment method infrastructure for future lower bound work.",
@@ -184,7 +184,7 @@
     "lineCount": 587,
     "axiomCount": 0,
     "theoremCount": 30,
-    "definitionCount": 5,
+    "definitionCount": 4,
     "mainTheorems": [
       {
         "name": "ramsey_recursion",

@@ -27,7 +27,7 @@
     "lineCount": 401,
     "assumptions": "No remaining sorries. All theorems fully proved: max_ge_avg, greedyContrib_ge_half, conditional_expectation_method, card_filter_mem, card_filter_mem_nmem, sum_cutWeight_eq, exists_good_partition'.",
     "theoremCount": 15,
-    "definitionCount": 4
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The Max-Cut problem — partitioning a graph's vertices to maximize the weight of crossing edges — is one of Karp's 21 NP-complete problems (1972). Erdős (1965) showed via the probabilistic method that a random partition cuts at least half the total edge weight in expectation, giving a non-constructive $1/2$-approximation. Sahni and Gonzalez (1976) provided the first explicit polynomial-time algorithm achieving this bound via a simple greedy strategy. Spencer (1987) later systematized this as the \"method of conditional expectations\": given a probabilistic proof that some random object has a desired property on average, one can process the random choices one at a time, always picking the option that keeps the conditional expectation favorable. For MaxCut, this reduces to the greedy rule: put each vertex on the side opposite to where it has more edge weight. The $1/2$-approximation stood as the best known until Goemans and Williamson (1995) achieved their celebrated $0.878$-approximation via semidefinite programming. Under the Unique Games Conjecture (Khot 2002), this SDP bound is optimal.",
@@ -152,7 +152,7 @@
     "lineCount": 401,
     "axiomCount": 0,
     "theoremCount": 15,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "path": "Proofs/RandomizedMaxcutOQ04.lean",
     "sorries": 0
   },
