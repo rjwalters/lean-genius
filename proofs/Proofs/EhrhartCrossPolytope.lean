@@ -277,10 +277,10 @@ private lemma fallBinomPoly_natDegree_le (k : ℕ) :
     (fallBinomPoly k).natDegree ≤ k := by
   unfold fallBinomPoly
   apply le_trans (Polynomial.natDegree_smul_le _ _)
-  calc (∏ i ∈ Finset.range k, (Polynomial.X - Polynomial.C (i : ℚ))).natDegree
-      ≤ ∑ i ∈ Finset.range k, (Polynomial.X - Polynomial.C (i : ℚ)).natDegree :=
-          Polynomial.natDegree_prod_le
-    _ = k := by simp [Polynomial.natDegree_X_sub_C, Finset.sum_const, Finset.card_range]
+  apply le_trans Polynomial.natDegree_prod_le
+  apply le_trans (Finset.sum_le_sum
+    (fun i _ => le_of_eq (Polynomial.natDegree_X_sub_C (i : ℚ))))
+  simp [Finset.sum_const, Finset.card_range]
 
 /-- **The formula is a polynomial of degree ≤ d in n** (over ℚ).
 
