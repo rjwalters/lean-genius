@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-05-04T17:47:35.844Z",
     "iteration": 1,
-    "focus": "PR #16112 open: gallery entry + Lean file builds clean",
+    "focus": "Supporting lemmas proved; Hajnal conjecture is open",
     "blockers": [],
-    "nextAction": "Merge PR #16112 and submit indep_from_bounded_deg to Aristotle",
+    "nextAction": "Investigate triangleFree_independence_bound or Hajnal conjecture approaches",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,28 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PR #16112 merged-pending. Gallery entry created (axiomatized, 1 axiom). Erdos895OQ01Problem.lean builds successfully (7743 jobs, 1 expected HARD sorry for greedy algorithm).",
+    "progressSummary": "PROGRESS: Proved 3 Aristotle lemmas (triangleFree_neighbor_disjoint, triangleFree_degree_sum_bound, mantel_theorem). Aristotle file now 0 sorries. Main file barber_theorem blocked (SAT-based).",
     "builtItems": [
       "Erdos895ProblemAristotle.lean:67 triangleFree_neighbor_disjoint \u2014 0 sorries",
       "Erdos895ProblemAristotle.lean:80 triangleFree_degree_sum_bound \u2014 0 sorries",
-      "Erdos895ProblemAristotle.lean:100 mantel_theorem \u2014 0 sorries",
-      "Erdos895OQ01Problem.lean: 6 hindmanSet structural lemmas (sorry-free)",
-      "Erdos895OQ01Problem.lean: hajnal_k2_gives_additive_triple \u2014 reduces k=2 Hajnal to independent additive triple",
-      "Erdos895OQ01Problem.lean: triangleFree_independence_bound \u2014 \u03b1(G)\u2265\u221an with 1 HARD sorry for greedy case",
-      "src/data/proofs/erdos-895-oq-01/meta.json \u2014 gallery entry created (status: axiomatized, 1 axiom)"
+      "Erdos895ProblemAristotle.lean:100 mantel_theorem \u2014 0 sorries"
     ],
     "insights": [
       "triangleFree_neighbor_disjoint proved: adjacent vertices in triangle-free graph have disjoint neighborhoods, via Finset.disjoint_left + G.symm",
       "triangleFree_degree_sum_bound proved: deg(u)+deg(v) \u2264 n for adjacent u,v, via card_union_of_disjoint + Finset.subset_univ + card_fin",
-      "mantel_theorem proved in Aristotle file: IsTriangleFree \u2192 CliqueFree 3 \u2192 CliqueFree.card_edgeFinset_le gives n\u00b2/4 edge bound; mirrors proof pattern in Erdos895Problem.lean",
-      "hajnal_k2_gives_additive_triple proved: if Hajnal base {a,b} has a+b < n, then a,b,a+b form independent additive triple; key reduction showing k=2 Hajnal \u2192 Erd\u0151s-Barber",
-      "triangleFree_indep_high_deg proved: if any vertex has deg \u2265 \u221an, its neighborhood is independent of size \u2265 \u221an (Case 1 of \u03b1(G)\u2265\u221an bound)"
+      "mantel_theorem proved in Aristotle file: IsTriangleFree \u2192 CliqueFree 3 \u2192 CliqueFree.card_edgeFinset_le gives n\u00b2/4 edge bound; mirrors proof pattern in Erdos895Problem.lean"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Close greedy sorry in indep_from_bounded_deg via Aristotle submission",
-      "Submit PR for new gallery entry + Erdos895OQ01Problem.lean",
-      "Check if PR #16105 is merged before deciding whether to close erdos895_implies_schur_variant"
+      "Main barber_theorem and counterexample_17 require SAT-based proof \u2014 blocked without external tool",
+      "triangleFree_independence_bound (\u221an independent set) could be proved via Ramsey/greedy but requires significant Mathlib API work",
+      "Hajnal conjecture (Hindman sets in triangle-free graphs) remains open \u2014 no known Lean formalization path"
     ]
   },
   "tags": [

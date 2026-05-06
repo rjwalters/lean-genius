@@ -146,14 +146,100 @@ theorem triangleFree_indep_high_deg {n : ℕ} (G : GraphOnInterval n) [Decidable
     rw [SimpleGraph.mem_neighborFinset] at ha hb
     exact triangleFree_nbhd_independent G hG v a b ha hb⟩
 
-/-- Greedy lower bound: if all vertices have degree ≤ Δ, then α(G) ≥ ⌈n/(Δ+1)⌉.
-    Proof: pick vertex v₁, add to S, remove N[v₁] (≤ Δ+1 vertices), repeat.
-    HARD sorry: requires well-founded induction on the remaining vertex set. -/
+/-- Auxiliary: greedy independent set for a sub-Finset, inducting on cardinality. -/
+private lemma greedy_indep_of_bounded_deg {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
+    (Δ : ℕ) (candidates : Finset (Fin n))
+    (hΔ : ∀ v : Fin n, (G.neighborFinset v ∩ candidates).card ≤ Δ) :
+    ∃ S : Finset (Fin n), S ⊆ candidates ∧ candidates.card ≤ S.card * (Δ + 1) ∧
+      ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
+  suffices ∀ k : ℕ, ∀ cands : Finset (Fin n), cands.card ≤ k →
+      (∀ v : Fin n, (G.neighborFinset v ∩ cands).card ≤ Δ) →
+      ∃ S : Finset (Fin n), S ⊆ cands ∧ cands.card ≤ S.card * (Δ + 1) ∧
+        ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b from
+    this candidates.card candidates le_rfl hΔ
+  intro k
+  induction k with
+  | zero =>
+    intro cands hcard _
+    have hempty : cands = ∅ := Finset.card_eq_zero.mp (Nat.le_zero.mp hcard)
+    exact ⟨∅, Finset.empty_subset _, by simp [hempty],
+      fun a b ha _ _ _ => absurd ha (Finset.not_mem_empty a)⟩
+  | succ k ih =>
+    intro cands hcard hΔ'
+    rcases cands.eq_empty_or_nonempty with rfl | ⟨v, hv⟩
+    · exact ⟨∅, Finset.Subset.refl _, by simp,
+        fun a b ha _ _ _ => absurd ha (Finset.not_mem_empty a)⟩
+    · -- Greedily pick v; let removed = N[v] ∩ cands, cands' = cands \ removed
+      let removed := insert v (G.neighborFinset v ∩ cands)
+      let cands' := cands \ removed
+      -- removed ⊆ cands (v ∈ cands; G.neighborFinset v ∩ cands ⊆ cands)
+      have hremoved_sub : removed ⊆ cands :=
+        Finset.insert_subset_iff.mpr ⟨hv, Finset.inter_subset_right⟩
+      -- cands'.card + removed.card = cands.card
+      have hcard_eq : cands'.card + removed.card = cands.card := by
+        -- Finset.card_sdiff : (s \ t).card = s.card - (t ∩ s).card (no subset hypothesis)
+        have h1 : cands'.card = cands.card - (removed ∩ cands).card := Finset.card_sdiff
+        have h2 : removed ∩ cands = removed := Finset.inter_eq_left.mpr hremoved_sub
+        have h3 : removed.card ≤ cands.card := Finset.card_le_card hremoved_sub
+        rw [h2] at h1; omega
+      -- removed.card ≥ 1 (contains v) so cands'.card ≤ k
+      have hremoved_pos : 1 ≤ removed.card :=
+        Finset.card_pos.mpr ⟨v, Finset.mem_insert_self v _⟩
+      have hcands'_le : cands'.card ≤ k := by omega
+      -- |removed| ≤ Δ + 1 (v plus at most Δ neighbors in cands)
+      have hremoved_card : removed.card ≤ Δ + 1 :=
+        (Finset.card_insert_le v _).trans (Nat.add_le_add_right (hΔ' v) 1)
+      -- Degree bound restricts to cands' (cands' ⊆ cands)
+      have hΔ'' : ∀ u : Fin n, (G.neighborFinset u ∩ cands').card ≤ Δ :=
+        fun u => (Finset.card_le_card (fun x hx =>
+          Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hx).1,
+            Finset.sdiff_subset (Finset.mem_inter.mp hx).2⟩)).trans (hΔ' u)
+      obtain ⟨S', hS'_sub, hS'_size, hS'_indep⟩ := ih cands' hcands'_le hΔ''
+      -- v ∉ S' (S' ⊆ cands', v ∉ cands' since v ∈ removed)
+      have hv_not_S' : v ∉ S' :=
+        fun h => (Finset.mem_sdiff.mp (hS'_sub h)).2 (Finset.mem_insert_self v _)
+      refine ⟨insert v S', ?_, ?_, ?_⟩
+      · -- insert v S' ⊆ cands
+        intro x hx
+        rcases Finset.mem_insert.mp hx with rfl | hx'
+        · exact hv
+        · exact Finset.sdiff_subset (hS'_sub hx')
+      · -- cands.card ≤ (S'.card + 1) * (Δ + 1)
+        rw [Finset.card_insert_of_notMem hv_not_S', add_mul, one_mul]
+        linarith [hS'_size, hremoved_card]
+      · -- independence of insert v S'
+        intro a b ha hb hab hAdj
+        rcases Finset.mem_insert.mp ha with rfl | ha'
+        · rcases Finset.mem_insert.mp hb with rfl | hb'
+          · exact hab rfl
+          · -- a = v, b ∈ S' ⊆ cands'; show b ∉ removed via ¬(G.Adj v b)
+            have hb_mem := hS'_sub hb'
+            have hb_not_rem : b ∉ removed := (Finset.mem_sdiff.mp hb_mem).2
+            apply hb_not_rem
+            apply Finset.mem_insert.mpr; right
+            apply Finset.mem_inter.mpr
+            exact ⟨by rwa [SimpleGraph.mem_neighborFinset], (Finset.mem_sdiff.mp hb_mem).1⟩
+        · rcases Finset.mem_insert.mp hb with rfl | hb'
+          · -- b = v, a ∈ S' ⊆ cands'; show a ∉ removed via ¬(G.Adj v a)
+            have ha_mem := hS'_sub ha'
+            have ha_not_rem : a ∉ removed := (Finset.mem_sdiff.mp ha_mem).2
+            apply ha_not_rem
+            apply Finset.mem_insert.mpr; right
+            apply Finset.mem_inter.mpr
+            exact ⟨by rw [SimpleGraph.mem_neighborFinset]; exact G.symm hAdj,
+                   (Finset.mem_sdiff.mp ha_mem).1⟩
+          · exact hS'_indep a b ha' hb' hab hAdj
+
+/-- Greedy lower bound: if all vertex degrees ≤ Δ, then α(G) ≥ ⌈n/(Δ+1)⌉. -/
 private theorem indep_from_bounded_deg {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
     (Δ : ℕ) (hΔ : ∀ v : Fin n, (G.neighborFinset v).card ≤ Δ) :
     ∃ S : Finset (Fin n), n ≤ S.card * (Δ + 1) ∧
       ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
-  sorry  -- HARD: greedy independent set by induction on remaining vertex set
+  have hΔ' : ∀ v : Fin n, (G.neighborFinset v ∩ Finset.univ).card ≤ Δ := by
+    intro v; rw [Finset.inter_univ]; exact hΔ v
+  obtain ⟨S, _, hS_size, hS_indep⟩ := greedy_indep_of_bounded_deg G Δ Finset.univ hΔ'
+  simp only [Finset.card_univ, Fintype.card_fin] at hS_size
+  exact ⟨S, hS_size, hS_indep⟩
 
 /-- Every triangle-free graph on n vertices has an independent set of size ≥ √n.
     Proof:
