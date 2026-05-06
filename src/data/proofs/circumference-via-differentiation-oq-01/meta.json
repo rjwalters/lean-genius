@@ -1,0 +1,126 @@
+{
+  "id": "circumference-via-differentiation-oq-01",
+  "title": "n-Dimensional Surface Area via Differentiation of Volume",
+  "slug": "circumference-via-differentiation-oq-01",
+  "description": "The n-ball volume V_n(r) = ω_n·rⁿ has derivative n·ω_n·r^(n-1) = S_{n-1}(r), the surface area of the (n-1)-sphere. This generalizes C = dA/dr from 2D to all dimensions. Special cases: n=2 gives circumference 2πr, n=3 gives sphere surface 4πr². The surface constant n·ω_n equals 2π^(n/2)/Γ(n/2) via the Gamma recursion Γ(n/2+1) = (n/2)·Γ(n/2). 16 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CircumferenceViaDifferentiationOQ01.lean",
+    "tags": [
+      "geometry",
+      "calculus",
+      "n-dimensional",
+      "surface-area",
+      "gamma-function",
+      "differentiation",
+      "verified"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 240,
+    "theoremCount": 16,
+    "definitionCount": 4,
+    "assumptions": "None. All theorems proved from Mathlib's power rule, Gamma_add_one, and unitBallVolume infrastructure.",
+    "mathlibDependencies": [
+      {
+        "theorem": "hasDerivAt_pow",
+        "description": "Power rule: d/dr(rⁿ) = n·r^(n-1)",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Pow"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "Gamma recursion: Γ(x+1) = x·Γ(x) for x ≠ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_pos_of_pos",
+        "description": "Gamma is positive on positive reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      }
+    ],
+    "originalContributions": [
+      "General derivative theorem: d/dr(ω_n·rⁿ) = n·ω_n·r^(n-1) for all n, r",
+      "Gamma recursion proof of the surface area formula: n·ω_n = 2π^(n/2)/Γ(n/2)",
+      "Verification of n=2 (circumference 2πr) and n=3 (sphere surface 4πr²)",
+      "Direct connection to parent CircumferenceViaDifferentiation: nBallVolumeFn 2 = areaFn"
+    ],
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The relationship between n-ball volume and (n-1)-sphere surface area is a beautiful consequence of the scaling law V_n(r) = ω_n·rⁿ. When a ball grows by dr, the added shell has thickness dr and area S_{n-1}(r), giving dV = S_{n-1}(r)·dr. This generalizes the 2D result C = dA/dr (Archimedes) and the 3D result 4πr² = d(4πr³/3)/dr to all dimensions. The explicit formula involves the Gamma function via ω_n = π^(n/2)/Γ(n/2+1), and the surface area constant n·ω_n = 2π^(n/2)/Γ(n/2) follows from the Gamma recursion.",
+    "problemStatement": "For the n-ball volume function $V_n(r) = \\omega_n \\cdot r^n$ where $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ is the unit ball volume, prove:\n$$\\frac{d}{dr}V_n(r) = n \\cdot \\omega_n \\cdot r^{n-1} = S_{n-1}(r)$$\nwhere $S_{n-1}(r) = \\frac{2\\pi^{n/2}}{\\Gamma(n/2)} \\cdot r^{n-1}$ is the (n-1)-sphere surface area.",
+    "proofStrategy": "The core is the **power rule**: `hasDerivAt_pow n r` gives `HasDerivAt (fun x => x^n) (n·r^(n-1)) r`. Scaling by the constant ω_n via `HasDerivAt.const_mul` gives the volume derivative. The formula n·ω_n = 2π^(n/2)/Γ(n/2) follows from `Gamma_add_one`: Γ(n/2+1) = (n/2)·Γ(n/2), so n·(π^(n/2)/Γ(n/2+1)) = n·(π^(n/2)/((n/2)·Γ(n/2))) = 2π^(n/2)/Γ(n/2). Specific cases (n=2,3) use `unitBallVolume_two` and `unitBallVolume_three` from AreaOfCircleOQ02.",
+    "keyInsights": [
+      "**Power rule is the engine**: The entire proof reduces to `hasDerivAt_pow n r`. All the geometry is encoded in the constant ω_n — differentiation is pure calculus.",
+      "**Gamma recursion connects volume and surface**: The identity Γ(x+1) = x·Γ(x) is the key to showing n·ω_n = 2π^(n/2)/Γ(n/2). Without it, the surface area formula would appear unrelated to the volume formula.",
+      "**Uniform framework across dimensions**: The same three definitions (nBallVolumeFn, nSphereSurfaceConst, nSphereSurfaceFn) work for all n. The n=1 case gives the 2-point boundary, n=2 gives the circumference, n=3 gives the sphere surface.",
+      "**Parent theorem is a special case**: disk_area_matches_parent shows that CircumferenceViaDifferentiation.area_hasDerivAt follows from the general theorem for n=2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-main-deriv",
+      "title": "Main Derivative Theorem",
+      "startLine": 50,
+      "endLine": 80,
+      "summary": "`nBallVolumeFn_hasDerivAt`: The n-ball volume V_n(r) = ω_n·rⁿ has derivative n·ω_n·r^(n-1) at every r. Uses `hasDerivAt_pow` + `const_mul` + ring.",
+      "mathContext": "HasDerivAt (nBallVolumeFn n) (nSphereSurfaceFn n r) r, proved by combining the power rule with scalar multiplication."
+    },
+    {
+      "id": "section-gamma",
+      "title": "Gamma Recursion for Surface Area",
+      "startLine": 82,
+      "endLine": 104,
+      "summary": "`nSphereSurfaceConst_eq_gamma`: For n ≥ 1, the surface constant n·ω_n = 2π^(n/2)/Γ(n/2). Uses `Gamma_add_one` and `field_simp`.",
+      "mathContext": "The Gamma recursion Γ(x+1) = x·Γ(x) allows cancellation: n / Γ(n/2+1) = n / ((n/2)·Γ(n/2)) = 2/Γ(n/2)."
+    },
+    {
+      "id": "section-special",
+      "title": "Special Cases (n=1,2,3)",
+      "startLine": 106,
+      "endLine": 145,
+      "summary": "Surface constants: n=1 gives 2 (two points), n=2 gives 2π (circumference), n=3 gives 4π (sphere surface). Verified using unitBallVolume_one/two/three.",
+      "mathContext": "nSphereSurfaceConst 1 = 2, nSphereSurfaceConst 2 = 2π, nSphereSurfaceConst 3 = 4π."
+    },
+    {
+      "id": "section-connection",
+      "title": "Connection to Parent Theorem",
+      "startLine": 147,
+      "endLine": 175,
+      "summary": "`nBallVolumeFn_two_eq_areaFn` and `disk_area_matches_parent` show that the n=2 case recovers the parent file's circumference derivation.",
+      "mathContext": "nBallVolumeFn 2 = CircumferenceViaDifferentiation.areaFn, so the parent theorem is a special case."
+    }
+  ],
+  "openQuestions": [],
+  "crossReferences": [
+    {
+      "id": "circumference-via-differentiation",
+      "relationship": "parent",
+      "description": "2D case: C = dA/dr — the special case n=2 that motivated this generalization"
+    },
+    {
+      "id": "area-of-circle-oq-02",
+      "relationship": "dependency",
+      "description": "Provides unitBallVolume n = π^(n/2)/Γ(n/2+1) and special values"
+    },
+    {
+      "id": "area-of-circle-oq-02-oq-01",
+      "relationship": "dependency",
+      "description": "Proves nball_volume_scaling_theorem connecting to Euclidean measure"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/CircumferenceViaDifferentiationOQ01.lean",
+    "filename": "CircumferenceViaDifferentiationOQ01.lean",
+    "lineCount": 240,
+    "theoremCount": 16,
+    "axiomCount": 0,
+    "definitionCount": 4,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01.lean"
+  }
+}
