@@ -77,7 +77,9 @@ theorem longest_prime_ap_unbounded :
   exact ⟨N, le_csSup ⟨N + 1, fun k ⟨a, d, hd, _, hle⟩ => by
     rcases k with _ | k
     · omega
-    · have := hle k (by omega); omega⟩ hN⟩
+    · have hbound := hle k (by omega)
+      have hkd := Nat.le_mul_of_pos_right k hd
+      omega⟩ hN⟩
 
 /- ## Main Conjecture -/
 
@@ -111,6 +113,12 @@ theorem prime_ap_6 : IsPrimeAP 6 157 :=
   ⟨7, 30, by omega, fun i hi => by interval_cases i <;> native_decide,
    fun i hi => by interval_cases i <;> omega⟩
 
+/-- The AP {7, 157, 307, 457, 607, 757, 907} has length 7 with d=150.
+    Note d=150 = 2·3·5² = 2·3·5·5. -/
+theorem prime_ap_7 : IsPrimeAP 7 907 :=
+  ⟨7, 150, by omega, fun i hi => by interval_cases i <;> native_decide,
+   fun i hi => by interval_cases i <;> omega⟩
+
 /- Green–Tao–Maynard: quantitative bounds on the least N containing
     a prime AP of length k. The best bounds give
     N(k) ≤ exp(exp(exp(ck))). -/
@@ -129,11 +137,11 @@ AP is Θ(log N), not o(log N). This makes the problem particularly delicate. -/
 private lemma exists_dvd_in_ap (a d p : ℕ) (hp : p.Prime) (hnd : ¬p ∣ d) :
     ∃ i, i < p ∧ p ∣ (a + i * d) := by
   haveI : Fact p.Prime := ⟨hp⟩
-  haveI : NeZero p := hp.neZero
+  haveI : NeZero p := ⟨Nat.pos_iff_ne_zero.mp hp.pos⟩
   have hd_ne : (d : ZMod p) ≠ 0 := fun h =>
-    hnd ((ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mp h)
+    hnd ((ZMod.natCast_eq_zero_iff _ _).mp h)
   refine ⟨(-(a : ZMod p) * (d : ZMod p)⁻¹).val, ZMod.val_lt _, ?_⟩
-  rw [← ZMod.natCast_zmod_eq_zero_iff_dvd]
+  rw [← ZMod.natCast_eq_zero_iff]
   push_cast
   rw [ZMod.natCast_zmod_val, mul_assoc, inv_mul_cancel₀ hd_ne, mul_one, add_neg_cancel]
 
@@ -147,7 +155,7 @@ private lemma exists_dvd_in_ap (a d p : ℕ) (hp : p.Prime) (hnd : ¬p ∣ d) :
     by p. Being prime forces it to equal p, but it exceeds k ≥ p — contradiction.
 
     So d ≥ k# (primorial of k), which grows as e^{(1+o(1))k}. -/
-theorem ap_difference_primorial (k : ℕ) (hk : k ≥ 3) :
+theorem ap_difference_primorial (k : ℕ) (_hk : k ≥ 3) :
   ∀ a d : ℕ, (∀ i : ℕ, i < k → (a + i * d).Prime) → d > 0 →
     (∀ i : ℕ, i < k → a + i * d > k) →
     ∀ p : ℕ, p.Prime → p ≤ k → p ∣ d := by
