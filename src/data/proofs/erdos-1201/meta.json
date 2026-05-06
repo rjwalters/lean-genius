@@ -26,7 +26,7 @@
     "lineCount": 1651,
     "mathlib_version": "4.26.0",
     "theoremCount": 116,
-    "definitionCount": 7
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) → ∞ as n → ∞, but its distribution among products of consecutive integers is much subtler. The ε=1/2 case was established by Erdős himself: there exist arbitrarily long windows of consecutive integers containing a prime exceeding √n. This connects to the Sylvester-Schur theorem (1892), which implies P(n,k) ≥ n+k when k < n — a stronger statement than Bertrand's postulate. The full conjecture — that large prime factors dominate for almost all starting points n, for any threshold n^(1-ε) — remains open and is believed to require new tools from analytic number theory, likely Dickman's ρ-function for smooth number counts in intervals.",
@@ -209,7 +209,7 @@
     "lineCount": 1651,
     "axiomCount": 1,
     "theoremCount": 116,
-    "definitionCount": 7,
+    "definitionCount": 8,
     "path": "Proofs/Erdos1201Problem.lean",
     "sorries": 0
   },
