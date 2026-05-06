@@ -1,0 +1,71 @@
+{
+  "id": "sperner-ndim-mathlib-oq-01",
+  "title": "Concrete CellComplex Instances for Sperner's Lemma: The Freudenthal Bridge",
+  "slug": "sperner-ndim-mathlib-oq-01",
+  "description": "Answers OQ-01 from sperner-ndim-mathlib: which concrete structures instantiate the abstract CellComplex to recover n-dimensional Sperner's lemma? Two instances are provided: (1) a bridge theorem showing every SpernerTriangulation is a CellComplex, making the abstract Sperner theorem subsume the concrete one; and (2) the Freudenthal triangulation of [0,1]^n as an explicit CellComplex with permutation-list simplices and prefix-set vertices.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SpernerNDimMathlibOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "freudenthal-triangulation",
+      "abstract-cell-complex",
+      "bridge-theorem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 4,
+    "lineCount": 241,
+    "assumptions": "Four axioms: (1) FreudSimplex n is Fintype (bijects with Equiv.Perm (Fin n)); (2) swapAdj preserves Nodup; (3) prefix sets unchanged at index ≠ k after adjacent swap; (4) adjacent swap produces a different list. All are provable by ~40-line element-level list arguments.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "toAbstractCellComplex: bridge from SpernerTriangulation to CellComplex (fully proved, 0 axioms)",
+      "sperner_from_triangulation: the abstract sperner theorem applies to every SpernerTriangulation",
+      "boundary_doors_agree: for Sperner colorings, abstract and concrete boundary conditions coincide",
+      "FreudSimplex: the type of nodup lists of Fin n with length n (permutations)",
+      "swapAdj: adjacent transposition (swap positions k-1 and k) with involution lemma proved",
+      "freudenthalCellComplex: concrete CellComplex (Finset (Fin n)) n for the Freudenthal triangulation",
+      "freudenthal_sperner: Sperner's lemma for the Freudenthal complex (proved from axioms)"
+    ],
+    "theoremCount": 8,
+    "definitionCount": 5
+  },
+  "leanFile": {
+    "path": "Proofs/SpernerNDimMathlibOQ01.lean",
+    "sorries": 0,
+    "axiomCount": 4,
+    "lineCount": 241,
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimMathlibOQ01.lean"
+  },
+  "overview": {
+    "historicalContext": "The abstract CellComplex framework (SpernerNDimMathlib.lean) was designed to capture the door-counting parity argument for Sperner's lemma in maximal generality. The concrete triangulation in SpernerNDim.lean uses a SpernerTriangulation structure with additional boundary axioms. This file bridges the two: every SpernerTriangulation is a CellComplex, so the abstract parity theorem automatically covers all concrete triangulations. The Freudenthal triangulation, proved pseudomanifold by SpernerNDimOQ01.lean, provides the second concrete instance.",
+    "mathematicalSignificance": "The bridge theorem shows that SpernerAbstract.CellComplex captures the essential structure of any triangulation satisfying Sperner's boundary conditions. The Freudenthal instance demonstrates that the abstract framework applies to the n-cube triangulation (permutation-indexed simplices with prefix-set vertices), complementing the grid triangulation already in SpernerNDim.lean.",
+    "proofTechnique": "Part I: structural projection (forget extra fields). Part II: adjacent transposition involution (swapAdj_invol) plus prefix-set cardinality injectivity for vertices. The four axioms reduce to element-level list arguments about how List.set operations interact with List.Nodup and (l.take k).toFinset.",
+    "openQuestions": [
+      "Can swapAdj_nodup, swapAdj_prefixSet_eq, and swapAdj_ne_self be proved without axioms using Mathlib's List.Perm infrastructure?",
+      "Does the Freudenthal CellComplex with the cardinality coloring (c(S) = |S|) give an odd boundary-door count for some natural boundary condition?"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Part I: SpernerTriangulation → CellComplex Bridge",
+      "content": "Every SpernerTriangulation d N gives a CellComplex (Vertex d N) d by projecting away the two boundary-specific axioms (adj_unique_facet, boundary_face). The IsFC and isDoorAt predicates are definitionally equal across the bridge, so sperner_from_triangulation follows immediately from SpernerAbstract.sperner. For Sperner colorings, boundary_doors_agree shows both boundary conditions coincide.",
+      "lean_ref": "toAbstractCellComplex"
+    },
+    {
+      "title": "Part II: Freudenthal CellComplex",
+      "content": "Simplices are nodup lists of Fin n of length n (permutations). Vertex k of permutation σ is the prefix set (σ.take k).toFinset, which has cardinality exactly k. This cardinality property makes the vertex map injective (prefixSet_inj). Adjacency: interior facets (0 < k < n) pair with the permutation obtained by swapping positions k-1 and k; swapAdj_invol proves this is an involution (adj_symm). Boundary facets (k = 0 or k = n) return none.",
+      "lean_ref": "freudenthalCellComplex"
+    }
+  ],
+  "annotations": []
+}
