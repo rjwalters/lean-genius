@@ -136,8 +136,9 @@ theorem qr_asymptotically_better (K : ℕ) :
   have h_sq : n ^ 2 < n ! := factorial_gt_sq hn4
   -- K·(2n³) = (K·2)·n³ ≤ n·n³ (since 2K ≤ n)
   have step1 : K * (2 * n ^ 3) ≤ n * n ^ 3 := by
+    have hK2n : K * 2 ≤ n := by linarith
     calc K * (2 * n ^ 3) = K * 2 * n ^ 3 := by ring
-      _ ≤ n * n ^ 3 := Nat.mul_le_mul_right _ hn2K
+      _ ≤ n * n ^ 3 := Nat.mul_le_mul_right _ hK2n
   -- n·n³ = n²·n² < n²·n!
   have step2 : n * n ^ 3 < n ^ 2 * n ! := by
     have h_n2_pos : 0 < n ^ 2 := by positivity
