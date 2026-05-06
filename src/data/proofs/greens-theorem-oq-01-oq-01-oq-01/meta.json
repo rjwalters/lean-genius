@@ -1,0 +1,170 @@
+{
+  "id": "greens-theorem-oq-01-oq-01-oq-01",
+  "title": "N-Dimensional Iterated Interval Integrals",
+  "slug": "greens-theorem-oq-01-oq-01-oq-01",
+  "description": "Generalizes the 2D Fubini bridge to 3D (fully proved) and n-D (axiomatized), showing all orderings of iterated interval integrals are equal for continuous functions on compact boxes.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fubini%27s_theorem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "fubini",
+      "integration",
+      "iterated-integrals",
+      "n-dimensional"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: iteratedIntervalIntegral_order_independent (general n-D order independence). The 2D case (recovered from parent) and 3D case (triple_fubini_of_continuous, triple_fubini_yxz_eq_xyz) are fully proved. Only the general Fin-n inductive step is axiomatized, capturing that adjacent transpositions generate all permutations.",
+    "dateAdded": "2026-05-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.integral_integral_swap",
+        "description": "Fubini for Lebesgue integrals on product spaces",
+        "module": "Mathlib.MeasureTheory.Integral.Prod"
+      },
+      {
+        "theorem": "Integrable.integral_prod_right",
+        "description": "Integrability of parameterized integrals — key for avoiding separate measurability lemmas",
+        "module": "Mathlib.MeasureTheory.Function.L1Space"
+      },
+      {
+        "theorem": "ContinuousOn.integrableOn_compact",
+        "description": "Continuous functions are integrable on compact sets",
+        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
+      }
+    ],
+    "originalContributions": [
+      "Triple Fubini theorem (3D): ∫ z ∫ y ∫ x f = ∫ x ∫ y ∫ z f for continuous f (fully proved, 0 sorries)",
+      "Key technique: Integrable.integral_prod_right avoids separate measurability lemmas for parameter integrals",
+      "Inductive definition of n-fold iterated interval integral over Fin-n indexed hyperrectangles",
+      "2D swap corollary recovered in the Fin-n framework",
+      "General n-D order independence axiomatized with proof strategy documented"
+    ],
+    "lineCount": 351,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The question of when iterated integrals can be exchanged goes back to Fubini (1907) and Tonelli (1909). For n-dimensional iterated integrals, the order independence follows by applying 2D transpositions iteratively — since any permutation decomposes into adjacent transpositions. In Lean 4/Mathlib, the 2D case is accessible via MeasureTheory.integral_integral_swap, but extending this to 3D and n-D requires careful handling of parameterized integrals. The key insight discovered here is that Integrable.integral_prod_right provides integrability of the 'inner' integral as a function of the 'outer' variables, avoiding the need for separate measurability lemmas that were originally the bottleneck.",
+    "problemStatement": "Can the 2D Fubini bridge (GreensTheoremOQ01OQ01) be generalized to n-dimensional iterated interval integrals over hypercubes, showing that all integration orderings are equal for continuous functions?",
+    "text": "Proves that for continuous f on [a,b]×[c,d]×[e,f'], all orderings of the triple iterated integral are equal. Defines the n-fold iterated integral inductively via Fin n → ℝ and axiomatizes general order independence.",
+    "proofStrategy": "3D proof: (1) For each fixed outer variable, swap the inner two via 2D Fubini. (2) Swap the outer two directly using integral_integral_swap on set integrals, with integrability from Integrable.integral_prod_right applied to the 3D box integrable function. (3) Repeat in the other direction. n-D: Define iteratedIntervalIntegral inductively, prove 2D and 3D cases, axiomatize the general swap.",
+    "keyInsights": [
+      "Integrable.integral_prod_right is the key tool: if G : (ℝ×ℝ)×ℝ → ℝ is integrable on the 3D product measure, then (p : ℝ×ℝ) ↦ ∫ y, G(p,y) is integrable on the 2D product — avoiding separate measurability lemmas",
+      "The 3D swap uses integral_integral_swap directly on set integrals (after simp_rw with integral_of_le), with the parameterized integrand (x,z) ↦ ∫ y, f x y z whose integrability follows from Integrable.integral_prod_right",
+      "The n-D iterated integral over Fin n → ℝ has natural recursive structure: peel off the first dimension, recurse on Fin.tail. This makes 2D and 3D cases special instances.",
+      "The general n-D order independence reduces to showing any permutation of Fin n can be implemented by composing 2D swaps — a group-theoretic fact that holds for all symmetric groups",
+      "Icc vs Ioc: the integrability from compactness naturally uses Icc measures, while integral_integral_swap needs Ioc; the transfer uses Measure.restrict_mono Ioc_subset_Icc_self"
+    ],
+    "prerequisites": [
+      "Lebesgue integration: Bochner integral, product measures, Integrable.integral_prod_right",
+      "Interval integrals: integral_of_le converting ∫ in a..b to set integral on Ioc",
+      "Compactness: isCompact_Icc.prod, ContinuousOn.integrableOn_compact",
+      "Fin n types: Fin.cons, Fin.tail, Fin.elim0 for Fin-indexed functions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "integrability-infra",
+      "title": "Section 1: Integrability Infrastructure",
+      "startLine": 47,
+      "endLine": 112,
+      "summary": "Three private lemmas establish integrability for the Fubini proof. integrable_2d_of_continuous recovers the parent pattern. integrable_3d_reordered shows G((z,x),y) = f(x,y,z) is integrable on the 3D box (key for the (x,z) swap). integrable_3d_natural shows G((x,y),z) = f(x,y,z) is integrable (key for the (y,x) swap). All use ContinuousOn.integrableOn_compact + Measure.restrict_prod_eq_prod_restrict.",
+      "mathContext": "For continuous $f : \\mathbb{R}^3 \\to \\mathbb{R}$, any rearrangement of coordinates is still continuous, hence integrable on compact boxes. The measure transfer `Measure.restrict_prod_eq_prod_restrict` converts between `volume.restrict (A \\times B)` and `(volume.restrict A).prod (volume.restrict B)`."
+    },
+    {
+      "id": "triple-fubini",
+      "title": "Section 2: Triple Fubini for Continuous Functions",
+      "startLine": 114,
+      "endLine": 213,
+      "summary": "Proves triple_fubini_of_continuous (3-step proof: swap inner xy, swap outer xz via integral_integral_swap, swap inner yz) and triple_fubini_yxz_eq_xyz (swap outer yx directly). Both use Integrable.integral_prod_right to avoid separate measurability lemmas. 0 sorries.",
+      "mathContext": "For $f : \\mathbb{R} \\to \\mathbb{R} \\to \\mathbb{R} \\to \\mathbb{R}$ continuous and $a \\leq b$, $c \\leq d$, $e \\leq f'$: $$\\int_e^{f'} \\int_c^d \\int_a^b f(x,y,z)\\,dx\\,dy\\,dz = \\int_a^b \\int_c^d \\int_e^{f'} f(x,y,z)\\,dz\\,dy\\,dx$$ The key step applies `MeasureTheory.integral_integral_swap` with the parameterized integrand $(x,z) \\mapsto \\int_c^d f(x,y,z)\\,dy$, whose integrability follows from `Integrable.integral_prod_right` applied to the 3D-integrable rearrangement $((z,x),y) \\mapsto f(x,y,z)$."
+    },
+    {
+      "id": "all-orderings",
+      "title": "Section 3: All Key Orderings Are Equal",
+      "startLine": 214,
+      "endLine": 235,
+      "summary": "triple_fubini_all_equal combines the two swap theorems: all three 'outer-variable' orderings (z-first, z-first-then-x-first, y-first) equal the canonical (x,y,z) ordering. Proved directly from the two swap theorems and the parent 2D Fubini.",
+      "mathContext": "Any ordering reachable by a sequence of 2D transpositions equals the canonical ordering. For 3 variables, all 6 permutations are generated by the adjacent transpositions (xy) and (yz)."
+    },
+    {
+      "id": "fin-n-integral",
+      "title": "Sections 4-5: N-Dimensional Iterated Integral",
+      "startLine": 237,
+      "endLine": 351,
+      "summary": "Defines iteratedIntervalIntegral : (Fin n → ℝ) → (Fin n → ℝ) → ((Fin n → ℝ) → ℝ) → ℝ by induction. Proves n=1 and n=2 special cases. iteratedIntervalIntegral_two_swap recovers 2D Fubini in the Fin framework. iteratedIntervalIntegral_order_independent axiomatizes general n-D order independence with documented proof strategy.",
+      "mathContext": "The n-fold iterated integral over $[a_0,b_0] \\times \\cdots \\times [a_{n-1},b_{n-1}]$ is defined by: $$I_n(a,b,f) = \\int_{a_0}^{b_0} I_{n-1}(\\text{Fin.tail}(a), \\text{Fin.tail}(b), x' \\mapsto f(\\text{Fin.cons}(x_0, x')))\\,dx_0$$ General order independence follows from the fact that $S_n$ is generated by adjacent transpositions, and each adjacent transposition is an instance of 2D Fubini."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "greens-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Generalizes the 2D Fubini bridge to 3D and n-D"
+    },
+    {
+      "targetId": "greens-theorem-oq-01",
+      "relationship": "related",
+      "description": "Green's theorem is the original application; this generalizes to higher dimensions"
+    },
+    {
+      "targetId": "greens-theorem-oq-01-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Companion: Ioo integrability suffices for the 2D Fubini swap"
+    }
+  ],
+  "conclusion": {
+    "summary": "YES: the 2D Fubini bridge generalizes to 3D with a fully proved result (0 sorries), and to n-D with the recursive definition of iteratedIntervalIntegral and the general order independence axiomatized. The key technique — Integrable.integral_prod_right — avoids separate measurability lemmas that were the original bottleneck.",
+    "implications": "For continuous functions on compact boxes, iterated interval integrals are order-independent in any dimension. The 3D case is immediately applicable to physics (triple integrals in vector calculus). The Fin-n framework provides a foundation for formalizing multivariable integration theorems.",
+    "openQuestions": [
+      "Can iteratedIntervalIntegral_order_independent be proved by induction using Integrable.integral_prod_right at each step, closing the remaining axiom?",
+      "Can Mathlib's Marginal API (lmarginal_union) be used to give a cleaner proof of the n-D case?",
+      "Does the proof extend to non-continuous (merely integrable) functions using appropriate DCT hypotheses?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GreensTheoremOQ01OQ01"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "GreensTheoremOQ01OQ01OQ01",
+    "lineCount": 351,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/GreensTheoremOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Fubini, Guido",
+      "title": "Sugli integrali multipli",
+      "year": "1907",
+      "venue": "Atti della Reale Accademia dei Lincei, Rendiconti 16:608-614",
+      "note": "Proved that double integrals of absolutely integrable functions can be computed as iterated integrals in either order"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Real and Complex Analysis",
+      "year": "1987",
+      "venue": "McGraw-Hill, 3rd edition",
+      "note": "Theorem 8.8: Fubini and Tonelli theorems; Chapter 8 treatment of product measures"
+    }
+  ],
+  "sorries": 0
+}
