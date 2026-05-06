@@ -602,7 +602,7 @@ lemma doubleColoring_avoids {n k : ℕ} (c : EdgeColoring n k)
   by_cases hi : i.val < n <;>
   by_cases hj : j.val < n <;>
   by_cases hl : l.val < n <;>
-  simp only [doubleColoring, dif_pos, dif_neg, *] at hcij hcjl hcil
+  simp [doubleColoring, *] at hcij hcjl hcil
   -- (T,T,T): all first half — triangle in c
   · apply hc; exact ⟨c (⟨i.val,hi⟩, ⟨j.val,hj⟩), ⟨i.val,hi⟩, ⟨j.val,hj⟩, ⟨l.val,hl⟩,
       fun h => hij (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
