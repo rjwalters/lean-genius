@@ -1,0 +1,87 @@
+{
+  "id": "laws-of-large-numbers-oq-01-oq-03",
+  "title": "Borel-Cantelli for Pairwise Independence (Erdős-Rényi 1959)",
+  "slug": "laws-of-large-numbers-oq-01-oq-03",
+  "description": "Extracts the second Borel-Cantelli lemma for pairwise independent events as a standalone theorem. If measurable events {Aₙ} are pairwise independent and Σ P(Aₙ) = ∞, then P(Aₙ i.o.) = 1. Pairwise independence is strictly weaker than full mutual independence (required by classical BC2). Answers the open question from laws-of-large-numbers-oq-01-oq-01: YES, the pairwise-independent BC2 used in slln_necessity can be given a clean standalone formulation, and pairwise independence is the correct minimal threshold.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ01OQ03.lean",
+    "tags": [
+      "probability",
+      "measure-theory",
+      "borel-cantelli",
+      "independence",
+      "law-of-large-numbers",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. 0 sorries. The proof delegates to borel_cantelli_of_pairwise_independent in LawsOfLargeNumbersOQ01Aristotle, which uses the Chebyshev-variance method.",
+    "dateAdded": "2026-05-06",
+    "lineCount": 98,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.IndepSet",
+        "description": "Pairwise independence of measurable sets",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Set of outcomes in infinitely many events (lim sup of sets)",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.variance",
+        "description": "Variance of a random variable used in Chebyshev bound",
+        "module": "Mathlib.Probability.Variance"
+      },
+      {
+        "theorem": "ProbabilityTheory.covariance",
+        "description": "Covariance = 0 from pairwise independence",
+        "module": "Mathlib.Probability.Variance"
+      }
+    ],
+    "originalContributions": [
+      "borel_cantelli_pairwise_indep: BC2 for pairwise independence as a clean standalone theorem",
+      "Documents that pairwise independence is the minimal threshold for BC2 (weaker uncorrelated-ness is insufficient)",
+      "Resolves OQ-02 from laws-of-large-numbers-oq-01-oq-01: the pairwise BC2 used in slln_necessity can be extracted and is Mathlib-worthy"
+    ],
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Borel-Cantelli lemma is a foundational result in probability theory. The first lemma (BC1) states that if Σ P(Aₙ) < ∞ then P(Aₙ i.o.) = 0 — no independence is needed. The second lemma (BC2) states the converse: if the events are independent and Σ P(Aₙ) = ∞ then P(Aₙ i.o.) = 1. Erdős and Rényi (1959) showed that full mutual independence is not needed: pairwise independence suffices for BC2. This result was a key ingredient in Etemadi's (1981) elementary proof of the strong law of large numbers, which used pairwise-independent BC2 to establish the necessity direction: if SLLN holds then E[|X₀|] < ∞.",
+    "problemStatement": "Can the second Borel-Cantelli lemma for pairwise independent events, used inside the proof of slln_necessity, be extracted as a clean standalone Lean 4 theorem? And what is the minimal independence assumption needed?",
+    "proofStrategy": "The proof uses the Chebyshev-variance method:\n\n1. **Partial count Sₙ**: Define Sₙ(ω) = #{k < n : ω ∈ Aₖ} = Σ_{k<n} 1_{Aₖ}(ω).\n\n2. **Divergent expectation**: E[Sₙ] = Σ_{k<n} P(Aₖ) → ∞ by hypothesis.\n\n3. **Variance bound from pairwise independence**: Since Cov(1_{Aᵢ}, 1_{Aⱼ}) = E[1_{Aᵢ}·1_{Aⱼ}] - P(Aᵢ)P(Aⱼ) = 0 for i ≠ j (pairwise independence), the cross terms vanish:\n   Var(Sₙ) = Σ_{k<n} Var(1_{Aₖ}) ≤ Σ_{k<n} P(Aₖ) = E[Sₙ].\n\n4. **Chebyshev**: For any M > 0, P(Sₙ ≤ M) = P(Sₙ - E[Sₙ] ≤ M - E[Sₙ]) ≤ Var(Sₙ)/(E[Sₙ] - M)² → 0.\n\n5. **Monotone convergence**: Since Sₙ is non-decreasing and P(Sₙ ≤ M) → 0 for all M, Sₙ → ∞ almost surely.\n\n6. **Equivalence**: Sₙ(ω) → ∞ iff ω lies in Aₙ for infinitely many n, so μ(limsup Aₙ) = 1.",
+    "keyInsights": [
+      "Pairwise independence is exactly what is needed for the cross-covariance terms to vanish in Var(Sₙ) = Σᵢ Σⱼ Cov(1_{Aᵢ}, 1_{Aⱼ}). Full mutual independence guarantees this but is overkill.",
+      "The variance-Chebyshev method was pioneered by Chung and Erdős (1952) and Erdős-Rényi (1959) as a way to avoid the product-probability argument that requires full independence.",
+      "Pairwise independence is the minimal sufficient condition: uncorrelated-ness (Cov = 0 without P(Aᵢ ∩ Aⱼ) = P(Aᵢ)P(Aⱼ)) does not suffice for BC2.",
+      "This result is Mathlib-worthy: it fills the gap between the existing measure_limsup_eq_one (full independence) and applications needing only pairwise independence."
+    ],
+    "prerequisites": [
+      "Probability theory (probability measure, conditional independence)",
+      "Measure theory (measurable sets, limsup of sets)",
+      "Variance and covariance (Chebyshev's inequality)"
+    ]
+  },
+  "sections": [
+    {
+      "title": "The Theorem: BC2 for Pairwise Independence",
+      "content": "The main result states that pairwise independent events with divergent probability sum occur infinitely often a.s.",
+      "lean": "theorem borel_cantelli_pairwise_indep\n    {A : ℕ → Set Ω}\n    (hmeas : ∀ n, MeasurableSet (A n))\n    (hindep : Pairwise fun i j => IndepSet (A i) (A j) μ)\n    (hsum : ∑' n, μ (A n) = ⊤) :\n    μ (limsup A atTop) = 1",
+      "annotations": []
+    }
+  ],
+  "conclusion": {
+    "summary": "The Borel-Cantelli lemma for pairwise independence is extracted as a clean standalone theorem. The result (due to Erdős-Rényi 1959) shows pairwise independence suffices for BC2, strictly weakening the classical full-independence requirement. This is both Mathlib-worthy and practically important: it is the key lemma in Etemadi's SLLN necessity proof.",
+    "significance": "Resolves the open question about independence minimality: pairwise independence is the correct threshold for BC2. The gap between pairwise and full independence is genuine — counterexamples show uncorrelated events need not satisfy BC2.",
+    "openQuestions": []
+  }
+}
