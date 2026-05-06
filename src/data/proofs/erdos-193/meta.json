@@ -25,7 +25,7 @@
     "assumptions": "1 axiom: gerver_ramsey_2d (Gerver-Ramsey 2D theorem, published result). Proved: erdos193_rank_le_2 (reduction to 2D via projection + Gerver-Ramsey), plus 17 other theorems including collinearity properties, dimension-1 case, singleton/parallel step sets, and dimension reduction framework.",
     "mathlib_version": "4.26.0",
     "theoremCount": 19,
-    "definitionCount": 10
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Joseph Gerver and L. Thomas Ramsey posed this problem in 1979 while studying self-avoiding walks on integer lattices with bounded step sets. They proved that in $\\mathbb{Z}^2$, every infinite injective $S$-walk must contain three collinear points, using a pigeonhole argument on the finitely many directions determined by the step set. The argument exploits the fact that in two dimensions, finitely many step directions constrain visited points to finitely many slopes from the origin, forcing three points to lie on a common line. Erdős recorded the problem and highlighted the open three-dimensional case, where the vastly larger direction space ($S^2$ vs. $S^1$) prevents the same pigeonhole approach. The problem connects to broader questions about unavoidable geometric patterns in discrete walks, a theme running through Erdős's work on combinatorial geometry from the 1970s onward. The 3D case has resisted all approaches for over 40 years and remains one of the most accessible yet stubbornly open problems in lattice combinatorics.",
@@ -164,7 +164,7 @@
     "lineCount": 403,
     "axiomCount": 1,
     "theoremCount": 19,
-    "definitionCount": 10,
+    "definitionCount": 11,
     "path": "Proofs/Erdos193Problem.lean",
     "sorries": 0
   },
