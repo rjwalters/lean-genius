@@ -1,0 +1,209 @@
+{
+  "slug": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+  "title": "Axiom Elimination for iteratedIntervalIntegral_order_independent",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "The parent proof `greens-theorem-oq-01-oq-01-oq-01` (N-Dimensional Fubini for Iterated",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-06T14:27:30+03:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Lean file created (333 lines, 3 sorries). swap01_cons_eq and swap_outer_two proved. Full 2D case proved. 3 sorries remain for integrability, inner permutation, and general induction.",
+    "builtItems": [
+      "swap01_cons_eq: Fin arithmetic computation proving f(cons x\u2081 (cons x\u2080 rest) \u2218 swap 0 1) = f(cons x\u2080 (cons x\u2081 rest))",
+      "swap_outer_two: Fubini swap of positions 0 and 1 for continuous f in any n+2 dimensions",
+      "order_independent_2d: Full order independence for n=2 (all of Perm(Fin 2))",
+      "order_independent_3d_swap01: 3D case for swap(0,1)",
+      "GreensTheoremOQ01OQ01OQ01OQ01.lean (333 lines, 3 sorries)"
+    ],
+    "insights": [
+      "Core computation is pure Fin arithmetic: swap01_cons_eq handles the positions 0, 1, k+2 cases separately via Fin.cases.",
+      "Proof structure: expand both LHS and RHS to a common double integral G(x\u2080,x\u2081) over inner variables, then apply integral_integral_swap (Fubini).",
+      "The G function (iterated integral over remaining variables) is identical on both sides after the swap01 computation - the key invariant.",
+      "Two building blocks suffice: (1) swap positions 0 and 1 (Fubini), (2) permute inner variables (IH inside outer integral). Any permutation decomposes into these.",
+      "Perm(Fin 2) = {id, swap 0 1} case is fully handled by splitting on where \u03c3 sends 0."
+    ],
+    "mathlibGaps": [
+      "Continuity of iteratedIntervalIntegral as function of outer parameter (needed for integrable_swap_pair)",
+      "Equiv.Perm.induction_on_swap_adjacent (for decomposing permutations into adjacent swaps)"
+    ],
+    "nextSteps": [
+      "Prove continuity of parameterized iterated integral by induction using intervalIntegral.continuous_of_dominated",
+      "Prove iteratedIntervalIntegral_perm_tail using integral_congr + IH on Fin.tail permutation",
+      "Prove main theorem using Equiv.Perm.induction_on + swap_outer_two compositionality",
+      "Submit integrable_swap_pair sorry to Aristotle after proof outline is complete"
+    ],
+    "markdown": "# Knowledge Base: greens-theorem-oq-01-oq-01-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "analysis",
+    "measure-theory",
+    "interval-integrals",
+    "axiom-elimination",
+    "fubini"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-02",
+    "greens-theorem-oq-01-oq-01-oq-03",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-02-oq-04",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-03-oq-04",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T11:50:53.695Z",
+  "lastUpdate": "2026-05-06T11:50:53.722Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 276,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 232,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02OQ04.lean",
+      "filename": "GreensTheoremOQ02OQ04.lean",
+      "lineCount": 260,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03OQ04.lean",
+      "filename": "GreensTheoremOQ03OQ04.lean",
+      "lineCount": 251,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}
