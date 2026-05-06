@@ -3,7 +3,7 @@ import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/SpernerNDimMathlibOQ01.lean?raw'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
