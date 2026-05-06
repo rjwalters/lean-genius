@@ -18,8 +18,9 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 190,
+    "lineCount": 187,
     "theoremCount": 17,
+    "definitionCount": 1,
     "assumptions": "3 axioms: (1) ramseyR4k_classical_upper \u2014 classical binomial bound R(4,k) \u2264 C(k+2,3), proved in parent file; (2) aks_r4k_upper \u2014 AKS probabilistic deletion bound R(4,k) \u2264 C\u00b7k\u00b3/(log k)\u00b2, requires triangle-free process; (3) mv_r4k_lower \u2014 Mattheus-Verstra\u00ebte algebraic geometry bound R(4,k) \u2265 c\u00b7k\u00b3/(log k)\u2074, requires Hermitian varieties over F_q.",
     "mathlibDependencies": [
       {
@@ -151,7 +152,8 @@
   "leanFile": {
     "axiomCount": 3,
     "theoremCount": 17,
-    "lineCount": 190,
+    "definitionCount": 1,
+    "lineCount": 187,
     "sorries": 0
   }
 }
