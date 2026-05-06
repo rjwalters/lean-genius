@@ -15,7 +15,7 @@
       "ramsey-theory",
       "open"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/750",
     "erdosUrl": "https://erdosproblems.com/750",
@@ -41,16 +41,14 @@
       "HasInfiniteChromatic: no finite proper coloring exists",
       "maxIndSetSize: maximum independent set in induced subgraph",
       "AlmostBipartite: f-deviation from bipartite independence",
-      "erdos_750_conjecture: full conjecture for any f → ∞",
-      "erdos_hajnal_1967 and erdos_hajnal_szemeredi_1982: known results",
-      "sqrt_case and log_case: specific open sublinear instances",
-      "problem_75_connection and bipartite_benchmark: structural context"
+      "erdos_750 (axiom): full conjecture for any f → ∞",
+      "bipartite_benchmark: bipartite graphs on m vertices have independence ≥ ⌊m/2⌋"
     ],
-    "axiomCount": 0,
-    "lineCount": 110,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "axiomCount": 1,
+    "lineCount": 117,
+    "assumptions": "1 axiom: erdos_750 (the main conjecture — for any f(m) → ∞, there exists an infinite-chromatic f-almost-bipartite graph). Known results (Erdős–Hajnal 1967, Erdős–Hajnal–Szemerédi 1982) and open sublinear cases are documented as comments.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2,
+    "theoremCount": 1,
     "definitionCount": 3
   },
   "overview": {
@@ -139,9 +137,9 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 110,
-    "axiomCount": 0,
-    "theoremCount": 2,
+    "lineCount": 117,
+    "axiomCount": 1,
+    "theoremCount": 1,
     "definitionCount": 3,
     "path": "Proofs/Erdos750Problem.lean",
     "sorries": 0
