@@ -4,18 +4,23 @@
   "title": "Hurwitz Quaternions and the Four Squares Theorem",
   "description": "Formalizes the Hurwitz quaternion ring H and demonstrates how its Euclidean domain structure provides the algebraic foundation for Lagrange's four squares theorem. The key element ω = ½(1+i+j+k) has norm 1 (a unit), filling the gap left by Lipschitz integers and enabling canonical factorization.",
   "parent": "fermat-two-squares-oq-01",
-  "status": "axiomatized",
-  "badge": "axiom",
-  "axiomCount": 1,
-  "assumptions": [
-    "hurwitz_euclidean: For any Hurwitz quaternions a and nonzero b, there exist q, r ∈ H with a = b·q + r and N(r) < N(b). This Euclidean property requires algebraic topology (covering radius argument) to prove fully."
-  ],
-  "sorries": 0,
+  "meta": {
+    "status": "axiomatized",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
+    "tags": ["number-theory", "quaternions", "four-squares", "euclidean-domain"],
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 357,
+    "theoremCount": 15,
+    "definitionCount": 9,
+    "assumptions": "hurwitz_euclidean: For any Hurwitz quaternions a and nonzero b, there exist q, r ∈ H with a = b·q + r and N(r) < N(b). This Euclidean property requires algebraic topology (covering radius argument) to prove fully."
+  },
   "leanFile": {
     "path": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
     "filename": "FermatTwoSquaresOQ01OQ03.lean",
-    "lineCount": 265,
-    "theoremCount": 16,
+    "lineCount": 357,
+    "theoremCount": 15,
     "axiomCount": 1,
     "definitionCount": 9,
     "sorries": 0
