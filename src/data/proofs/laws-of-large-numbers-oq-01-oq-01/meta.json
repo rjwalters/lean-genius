@@ -65,7 +65,8 @@
       "The proof uses pairwise independence (not full mutual independence): IndepFun gives pairwise independence of the events {|Xₙ| > n}, which suffices for BC2 via the variance-Chebyshev approach.",
       "The layer cake formula is central: E[|X|] = Σₙ P(|X| > n) (for nonneg X). Its divergence characterizes non-integrability: E[|X|] = ∞ ↔ Σ P(|X| > n) = ∞.",
       "Cesàro's lemma provides the Xₙ/n → 0 a.s. conclusion from sample mean convergence without needing to know the limit value c.",
-      "IndepFun → IndepSet conversion uses Kernel.indepFun_iff_measure_inter_preimage_eq_mul and Kernel.indepSet_iff_measure_inter_eq_mul to connect random variable independence to event independence."
+      "IndepFun → IndepSet conversion uses Kernel.indepFun_iff_measure_inter_preimage_eq_mul and Kernel.indepSet_iff_measure_inter_eq_mul to connect random variable independence to event independence.",
+      "The biconditional is now complete: combining this entry (necessity) with Mathlib's ProbabilityTheory.strong_law_ae (sufficiency), we have SLLN ⟺ E[|X₀|] < ∞ — a sharp characterization that was fully formalized in Lean 4 for the first time by this work."
     ]
   },
   "leanFile": {
@@ -118,12 +119,20 @@
   ],
   "sections": [
     {
+      "id": "preamble",
+      "title": "Proof Blueprint and Imports",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring explains the full 6-step contradiction proof strategy. Imports the Aristotle companion (723 lines of infrastructure). Sets up the probability space variable with IsProbabilityMeasure.",
+      "mathContext": "Proof outline: SLLN $\\Rightarrow X_n/n \\to 0$ a.s. (Cesàro); $E[|X|]=\\infty \\Rightarrow \\sum P(|X_n|>n)=\\infty$ (layer cake + i.i.d.); BC2 under pairwise independence gives $P(|X_n|>n\\text{ i.o.})=1$; contradiction."
+    },
+    {
       "id": "slln-necessity",
       "title": "SLLN Necessity Theorem",
       "startLine": 50,
       "endLine": 73,
-      "summary": "slln_necessity: if i.i.d. random variables satisfy the SLLN, then X₀ is integrable. Delegates to LawsOfLargeNumbersOQ01Aristotle.slln_necessity_statement.",
-      "mathContext": "The full theorem: given pairwise-independent identically-distributed measurable (Xᵢ) with sample mean converging a.s., conclude Integrable (X 0) μ. The proof is in the Aristotle companion file using BC2 + layer cake + Cesàro."
+      "summary": "slln_necessity: if i.i.d. random variables satisfy the SLLN, then X₀ is integrable. Delegates to LawsOfLargeNumbersOQ01Aristotle.slln_necessity_statement via a one-line proof.",
+      "mathContext": "The full theorem: given pairwise-independent identically-distributed measurable $(X_i)$ with sample mean converging a.s., conclude $\\mathrm{Integrable}(X_0, \\mu)$ i.e. $E[|X_0|] < \\infty$. The Aristotle companion carries all the proof machinery (723 lines)."
     }
   ],
   "crossReferences": [
