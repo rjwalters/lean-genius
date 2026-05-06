@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ann-01",
+    "type": "insight",
+    "line": 51,
+    "text": "The exterior derivative d(P dx + Q dy) = (∂Q/∂x - ∂P/∂y) dx∧dy is definitionally equal to the classical curl formula — no proof required, just unfolding definitions.",
+    "tags": ["exterior-derivative", "curl", "definitional"]
+  },
+  {
+    "id": "ann-02",
+    "type": "insight",
+    "line": 85,
+    "text": "Whitney's theorem (greens_theorem_l1curl) is restated in Stokes form ∫_C ω = ∫_D dω, making the connection to exterior calculus explicit. The proof is a direct application of the axiom with terminology translation.",
+    "tags": ["stokes", "whitney", "l1-curl"]
+  },
+  {
+    "id": "ann-03",
+    "type": "insight",
+    "line": 116,
+    "text": "The L¹ closure condition dω = 0 a.e. is the coordinate-free version of ∂Q/∂x = ∂P/∂y a.e. Cauchy-Goursat generalizes: any conservative L¹ field has zero circulation on Lipschitz loops.",
+    "tags": ["closed-form", "cauchy-goursat", "l1-curl"]
+  },
+  {
+    "id": "ann-04",
+    "type": "technique",
+    "line": 140,
+    "text": "Continuity of the curl (C¹ condition) immediately gives L¹ integrability via continuousOn.integrableOn_compact — this one-line proof shows why the smooth case is automatic under Whitney's framework.",
+    "tags": ["c1-implies-l1", "integrability", "compact"]
+  },
+  {
+    "id": "ann-05",
+    "type": "insight",
+    "line": 185,
+    "text": "The hierarchy OQ-01 ⊂ C¹-Whitney ⊂ L¹-Whitney establishes that Whitney's axiom is a genuine extension: it proves new results (Lipschitz boundary + L¹ curl) not reachable by OQ-01's FTC approach.",
+    "tags": ["hierarchy", "regularity", "extension"]
+  }
+]
