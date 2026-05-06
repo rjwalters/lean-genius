@@ -285,7 +285,52 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [Decid
     (hG : IsTriangleFree G) (hdense : G.edgeFinset.card ≥ n^2 / 5) :
     ∃ S : Finset (Fin n), S.card ≥ n / 3 ∧
       ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
-  sorry
+  -- Strategy: find max-degree vertex v; its neighborhood is independent (triangle-free),
+  -- and deg(v) ≥ 2*|E|/n ≥ 2*(n²/5)/n ≥ n/3.
+  by_cases hn : n = 0
+  · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (Finset.not_mem_empty _)⟩
+  have hpos : 0 < n := Nat.pos_of_ne_zero hn
+  -- Get the max-degree vertex
+  have hne : (Finset.univ : Finset (Fin n)).Nonempty := ⟨⟨0, hpos⟩, Finset.mem_univ _⟩
+  obtain ⟨v, -, hv_max⟩ := Finset.exists_max_image Finset.univ G.degree hne
+  -- Handshake: Σ deg = 2|E|
+  have hsum : ∑ w : Fin n, G.degree w = 2 * G.edgeFinset.card :=
+    SimpleGraph.sum_degrees_eq_twice_card_edges G
+  -- Max degree ≥ average: n * deg(v) ≥ Σ deg = 2|E| ≥ 2*(n²/5)
+  have hbound : ∑ w : Fin n, G.degree w ≤ n * G.degree v := by
+    calc ∑ w : Fin n, G.degree w
+        ≤ ∑ _w : Fin n, G.degree v :=
+          Finset.sum_le_sum (fun w _ => hv_max w (Finset.mem_univ w))
+      _ = n * G.degree v := by
+          simp [Finset.sum_const, Finset.card_fin, smul_eq_mul]
+  have hbig : n * G.degree v ≥ 2 * (n ^ 2 / 5) := by
+    have h2E : 2 * G.edgeFinset.card ≤ n * G.degree v := hsum ▸ hbound
+    linarith [Nat.mul_le_mul_left 2 hdense]
+  -- Key arithmetic: n/3 ≤ deg(v) follows from n * deg(v) ≥ 2*(n²/5) ≥ n*(n/3)
+  have hdeg : G.degree v ≥ n / 3 := by
+    -- Use: n*(n/3) ≤ 2*(n²/5) ≤ n*deg(v); cancel n to get n/3 ≤ deg(v)
+    apply Nat.le_of_mul_le_mul_left _ hpos
+    -- Goal: n/3 * n ≤ G.degree v * n  (after rw of mul_comm)
+    rw [mul_comm (n / 3) n, mul_comm (G.degree v) n]
+    have hfloor3 : n / 3 * 3 ≤ n := Nat.div_mul_le_self n 3
+    have hmod5 : n ^ 2 ≤ n ^ 2 / 5 * 5 + 4 := by omega
+    by_cases hn5 : n < 5
+    · -- Small n: use hbig (n*G.degree v ≥ 2*(n²/5)) directly with omega
+      interval_cases n <;> omega
+    · -- n ≥ 5: use chain (n/3)*n*15 ≤ 5n² ≤ 6n²-24 ≤ 30*(n²/5) ≤ n*deg(v)*15
+      push_neg at hn5
+      -- h1: (n/3)*n*3 ≤ n² from (n/3)*3 ≤ n multiplied by n
+      have h1 : n / 3 * n * 3 ≤ n ^ 2 := by nlinarith [Nat.zero_le n]
+      -- h2: 6*n² ≤ 30*(n²/5)+24 from n² ≤ 5*(n²/5)+4 multiplied by 6
+      have h2 : n ^ 2 * 6 ≤ 2 * (n ^ 2 / 5) * 15 + 24 := by nlinarith
+      -- For n≥5: n²≥25>24, so 5n²+24 ≤ 6n², closing the chain
+      nlinarith
+  -- N(v) is an independent set of size ≥ deg(v) ≥ n/3
+  refine ⟨G.neighborFinset v, ?_, ?_⟩
+  · rwa [SimpleGraph.card_neighborFinset_eq_degree]
+  · intro a b ha hb _ hadj
+    simp only [SimpleGraph.mem_neighborFinset] at ha hb
+    exact hG v a b ⟨ha, hadj, hb⟩
 
 /- ## Computational Verification -/
 
