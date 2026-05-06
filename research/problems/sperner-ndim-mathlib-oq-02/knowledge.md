@@ -82,3 +82,42 @@ The existence of a fixed point then follows from Sperner's lemma + compactness.
    - Fix `boundary_doors_odd` in SpernerGrid.lean (known false for d=1, needs redesign)
    - Build a correct grid CellComplex and plug into SpernerAbstract.sperner
    - Very hard: requires fundamental redesign of GridSimplex/gridAdj
+
+## Session 2026-05-06 (Session 3) — Axiom elimination assessment
+
+**Mode**: REVISIT (continuing to work on last axiom)
+**Outcome**: no code progress — fundamental barrier confirmed and documented
+
+### What I Did
+
+- Audited all related Lean files: SpernerGrid.lean (1782 lines), SpernerNDim.lean (669 lines),
+  SpernerFreudenthal.lean (359 lines), SpernerNDimOQ03.lean (452 lines, uses undefined FSimplex)
+- Confirmed `boundary_doors_odd` is FALSE for SpernerGrid.lean (d=1, double-counting)
+- Assessed KKM approach: n-dim KKM not in Mathlib; equivalent effort required
+- Assessed Schauder: available in gallery but not the intended proof strategy (OQ-02 = Sperner route)
+- Assessed IVT for n=1: gives exact fixed point for Δ¹ but doesn't extend to arbitrary n
+- Identified correct proof structure: induction on n using `SpernerNDim.SpernerTriangulation`
+
+### Key Findings
+
+- **Correct proof path**: Use `SpernerNDim.sperner_ndim` with a canonical Freudenthal grid triangulation
+- **Inductive structure**: boundary doors on face d ↔ FC (n-1)-simplices on restriction to face d;
+  base case n=0 trivial, inductive step reduces dimension by 1
+- **Design requirement**: Canonical simplex representation — `GridSimplex n N = (base, σ)` where
+  `σ : Equiv.Perm (Fin(n+1))` gives the step order, avoiding SpernerGrid's double-counting issue
+- **Effort estimate**: ~400 lines for correct triangulation + adjacency proofs + restriction map
+- **SpernerNDimOQ03.lean** uses `FSimplex` and `countPerm` that no longer exist in SpernerNDim.lean;
+  that file likely doesn't compile (possibly stale gallery entry)
+
+### Files Modified
+
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md` (updated with correct blocker description)
+
+### Next Steps
+
+1. Build canonical `SpernerTriangulation n N` for Freudenthal grid:
+   - `GridSimplex n N` = `(base : Fin(n+1) → ℕ, σ : Equiv.Perm (Fin(n+1)))` with Σ base = N
+   - `gridAdj`: swap adjacent steps (local transposition) for adjacency
+   - Prove adj_symm, adj_vertices, adj_ne, boundary_face, adj_unique_facet
+2. Prove `boundary_doors_odd` by induction via restriction to face d
+3. Connect to `sperner_near_fixed_point` via `SpernerNDim.sperner_ndim`
