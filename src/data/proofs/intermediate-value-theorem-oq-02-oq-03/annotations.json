@@ -79,7 +79,7 @@
     "title": "Width Converges to Zero",
     "content": "paramBisect_width_tendsto_zero proves that the interval widths tend to 0 as n → ∞ for any choice sequence. The proof rewrites width as (b-a)·(1/2)^n pointwise (avoiding a simp loop between div/inv), then applies tendsto_pow_atTop_nhds_zero_of_lt_one since |1/2| < 1. This step requires no classical axioms beyond those implicit in ℝ's topology.",
     "mathContext": "$\\lim_{n \\to \\infty} \\left(\\text{width at step } n\\right) = \\lim_{n \\to \\infty} \\frac{b-a}{2^n} = 0$",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "geometric sequence convergence",
       "tendsto",
