@@ -80,7 +80,7 @@ theorem crossEhrhart_n0 (d : ℕ) : crossEhrhart d 0 = 1 := by
 
 /-- B_1 = [-1,1]: dilation n gives {-n,...,n}, so 2n+1 lattice points. -/
 theorem crossEhrhart_d1 (n : ℕ) : crossEhrhart 1 n = 2 * n + 1 := by
-  simp [crossEhrhart, sum_range_succ, Nat.choose_one_right]
+  simp [crossEhrhart, sum_range_succ, Nat.choose_one_right]; ring
 
 -- Spot checks (concrete verification, proved by computation)
 example : crossEhrhart 1 3 = 7 := by native_decide
@@ -97,7 +97,8 @@ theorem crossEhrhart_pos (d n : ℕ) : 1 ≤ crossEhrhart d n := by
   simp only [crossEhrhart]
   calc 1 = 2 ^ 0 * Nat.choose d 0 * Nat.choose n 0 := by simp
     _ ≤ ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n k :=
-        single_le_sum (fun k _ => Nat.zero_le _) (mem_range.mpr (Nat.succ_pos d))
+        Finset.single_le_sum (fun k _ => Nat.zero_le (2^k * Nat.choose d k * Nat.choose n k))
+          (Finset.mem_range.mpr (Nat.succ_pos d))
 
 /-- Monotone in the dilation parameter: more dilation, more lattice points. -/
 theorem crossEhrhart_mono (d n : ℕ) : crossEhrhart d n ≤ crossEhrhart d (n + 1) := by
@@ -105,7 +106,7 @@ theorem crossEhrhart_mono (d n : ℕ) : crossEhrhart d n ≤ crossEhrhart d (n +
   apply Finset.sum_le_sum
   intro k _
   gcongr
-  exact Nat.choose_le_choose k (Nat.le_succ n)
+  exact Nat.choose_le_choose k (by omega)
 
 -- ============================================================
 -- PART IV: Hockey-Stick Identity
@@ -121,7 +122,7 @@ lemma sum_choose_range (n k : ℕ) :
   | zero => simp
   | succ n ih =>
     rw [sum_range_succ, ih]
-    exact (Nat.choose_succ_succ n k).symm
+    linarith [Nat.choose_succ_succ n k]
 
 /-- **Sum interchange**: converts Σ_k 2^k·C(d,k)·C(n,k+1) to Σ_{m<n} Σ_k 2^k·C(d,k)·C(m,k).
 
@@ -153,11 +154,9 @@ theorem crossEhrhart_expand (d n : ℕ) :
     crossEhrhart (d + 1) n = crossEhrhart d n +
     2 * ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) := by
   simp only [crossEhrhart]
-  -- Extract k=0 from LHS: sum over range(d+2) = 1 + sum over range(d+1) shifted by 1
-  rw [show ∑ k ∈ range (d + 1 + 1), 2 ^ k * Nat.choose (d + 1) k * Nat.choose n k =
-      (2 ^ 0 * Nat.choose (d + 1) 0 * Nat.choose n 0) +
-      ∑ k ∈ range (d + 1), 2 ^ (k + 1) * Nat.choose (d + 1) (k + 1) * Nat.choose n (k + 1)
-      from by rw [sum_range_succ' (f := fun k => 2^k * Nat.choose (d+1) k * Nat.choose n k)]]
+  -- Extract k=0 from LHS: ∑_{k<d+2} f(k) = f(0) + ∑_{k<d+1} f(k+1)
+  rw [sum_range_succ' (f := fun k => 2^k * Nat.choose (d+1) k * Nat.choose n k)]
+  -- f(0) = 2^0 * C(d+1,0) * C(n,0) = 1
   simp only [pow_zero, one_mul, Nat.choose_zero_right]
   -- Apply Pascal: C(d+1,k+1) = C(d,k) + C(d,k+1)
   rw [show ∑ k ∈ range (d + 1), 2 ^ (k + 1) * Nat.choose (d + 1) (k + 1) * Nat.choose n (k + 1) =
@@ -188,9 +187,10 @@ theorem crossEhrhart_expand (d n : ℕ) :
             rw [sum_range_succ]
             simp [Nat.choose_eq_zero_of_lt (Nat.lt_succ_self d)]]
     rw [Finset.mul_sum]
-    congr 1
-    apply Finset.sum_congr rfl
-    intro k _; ring
+    have heq : ∑ k ∈ range d, 2 ^ (k + 1) * Nat.choose d (k + 1) * Nat.choose n (k + 1) =
+        ∑ k ∈ range d, 2 * (2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1)) := by
+      apply Finset.sum_congr rfl; intro k _; ring
+    linarith [heq]
   linarith [key]
 
 -- ============================================================
