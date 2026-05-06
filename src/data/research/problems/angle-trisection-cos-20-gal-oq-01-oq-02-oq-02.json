@@ -29,27 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: natDegree theorem PROVED (sorry-free). Gal card theorem has 1 documented sorry. Gallery entry created. Docker build in progress.",
+    "progressSummary": "PROGRESS: natDegree theorem PROVED (sorry-free). Galois theorem: proof strategy fully worked out — conjSubgroup normality via IsMulCommutative → IsGalois (maxRealSubfield) → IsGalois.splits → IsSplittingField.lift → finrank bound. API names need verification.",
     "builtItems": [
       "cos_pi_minpoly_natDegree: natDegree(minpoly ℚ (cos(π/n))) = φ(2n)/2 — SORRY-FREE",
       "cos_pi_extension_degree: ∃ K ⊆ ℝ with cos(π/n) ∈ K, [K:ℚ] = φ(2n)/2 — SORRY-FREE",
       "cos_pi_gal_card: |Gal(minpoly ℚ (cos(π/n)))| = φ(2n)/2 — 1 sorry",
-      "Consistency checks for n=5,7,9 verified via general formula"
+      "Consistency checks for n=5,7,9 verified via general formula",
+      "cos_pi_splitting_finrank: finrank ℚ SplittingField = φ(2n)/2 — SORRY-FREE via IsGalois(maxRealSubfield)+IsSplittingField.lift"
     ],
     "insights": [
       "cos(π/n) = cos(2π/(2n)) is the central reduction connecting the two families",
       "minpoly_alphaCos_natDegree from OQ02OQ03OQ01 with m=2n gives degree = φ(2n)/2 directly",
       "IsCyclotomicExtension IS sufficient to prove the general formula — answered YES",
-      "The sorry is on normality of ℚ(cos(π/n))/ℚ — estimated 80 lines to eliminate"
+      "The sorry is on normality of ℚ(cos(π/n))/ℚ — estimated 80 lines to eliminate",
+      "conjSubgroup(2n) is normal via aep.injective (mul_comm) — 3-line proof mirroring InverseGalois.lean:994",
+      "inferInstance gives IsGalois ℚ (maxRealSubfield (2n)) once H.Normal established — no explicit theorem needed",
+      "Proof strategy for splitting field finrank: (1) IsCyclotomicExtension.isMulCommutative {m} ℚ → IsMulCommutative on Gal group; (2) every subgroup is normal in comm group → conjSubgroup m is normal; (3) inferInstance gives IsGalois ℚ (fixedField conjSubgroup m) = maxRealSubfield m; (4) minpoly_alphaCos_eq_minpoly_cos + IsGalois.splits → minpoly ℚ c splits in maxRealSubfield; (5) IsSplittingField.lift → AlgHom SplittingField → maxRealSubfield; (6) injective AlgHom → finrank SplittingField ≤ finrank maxRealSubfield = φ(2n)/2; (7) natDegree_le_finrank_SplittingField gives lower bound"
     ],
     "mathlibGaps": [
       "Need: normality of fixed field of normal subgroup → IsGalois — should be in Mathlib already",
       "Need: IsNormal → minpoly splits over fixed field — via Polynomial.splits_of_isNormal"
     ],
     "nextSteps": [
-      "Eliminate sorry: prove conjSubgroup(2n) is normal in Gal(CyclotomicField(2n)) using abelian group theory",
-      "Eliminate sorry: derive IsGalois ℚ (maxRealSubfield (2n)) from normality",
-      "Use Polynomial.splits_of_isGalois or similar to show minpoly splits"
+      "Verify API names: IsMulCommutative.mul_comm, IsGalois.splits, LinearMap.finrank_le_finrank_of_injective, Polynomial.natDegree_le_finrank_SplittingField",
+      "Submit sorry to Aristotle with proof strategy documented",
+      "Check if inferInstance works for IsGalois ℚ (fixedField H) when H.Normal holds"
     ]
   },
   "tags": [

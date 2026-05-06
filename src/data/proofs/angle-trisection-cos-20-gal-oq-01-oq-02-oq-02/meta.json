@@ -6,7 +6,7 @@
   "meta": {
     "author": "researcher-1",
     "date": "2026-05-05",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
     "tags": [
       "galois-theory",
@@ -19,15 +19,15 @@
       "chebyshev",
       "general-formula"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 232,
-    "assumptions": "1 sorry on: finrank ℚ (SplittingField (minpoly ℚ (cos(π/n)))) = φ(2n)/2. This step requires formalizing that ℚ(cos(π/n)) is Galois over ℚ (fixed field of a normal subgroup of an abelian Galois group), hence minpoly splits completely over it. The degree theorem natDegree = φ(2n)/2 is fully proved with 0 sorries.",
+    "lineCount": 305,
+    "assumptions": "0 sorries. 0 axiom declarations. All theorems fully machine-checked. cos_pi_splitting_finrank proved via: (1) IsGalois ℚ (maxRealSubfield (2n)) from conjSubgroup normality (abelian Galois group via autEquivPow) + inferInstance; (2) upper bound via IsNormal.splits + IsSplittingField.lift; (3) lower bound via minpoly.eq_of_irreducible_of_monic on root in SplittingField.",
     "mathlib_version": "4.26.0",
     "historicalContext": "The formula |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2 connects classical angle trisection impossibility to cyclotomic field theory. Individual cases n=5 (|Gal|=2), n=7 (|Gal|=3), n=9 (|Gal|=3) were proved in earlier gallery entries. This file provides the general proof using IsCyclotomicExtension, answering the open question from AngleTrisectionCos20GalOQ01OQ02.",
-    "proofStrategy": "The key observation is cos(π/n) = cos(2π/(2n)). This reduces the problem to the cos(2π/m) family handled by AngleTrisectionOQ02OQ03OQ01 (which formalizes the (m)-th cyclotomic field machinery). Applying that infrastructure with m = 2n gives: natDegree(minpoly(cos(π/n))) = φ(2n)/2. The full Galois order = degree requires additionally showing the splitting field has degree φ(2n)/2, which follows from normality of ℚ(cos(π/n))/ℚ (conjSubgroup is normal in the abelian Galois group).",
-    "theoremCount": 12,
+    "proofStrategy": "Step 1: cos(π/n) = cos(2π/(2n)) arithmetic identity. Step 2: Apply AngleTrisectionOQ02OQ03OQ01.minpoly_alphaCos_natDegree with m = 2n for degree = φ(2n)/2. Step 3: finrank SplittingField = φ(2n)/2 via two bounds: upper from IsGalois (autEquivPow commutativity → conjSubgroup Normal → inferInstance IsGalois → IsNormal.splits → IsSplittingField.lift → finrank ≤ φ(2n)/2) and lower from adjoin(root) with minpoly.eq_of_irreducible_of_monic (φ(2n)/2 = finrank ℚ(root) ≤ finrank SplittingField).",
+    "theoremCount": 11,
     "definitionCount": 0
   },
   "overview": {
@@ -54,14 +54,14 @@
       "Proofs.AngleTrisectionCos20GalOQ01OQ02"
     ],
     "namespace": "AngleTrisectionCos20GalOQ01OQ02OQ02",
-    "lineCount": 232,
+    "lineCount": 305,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1,
+  "sorries": 0,
   "sections": [
     {
       "id": "sec-cosine-identity",
