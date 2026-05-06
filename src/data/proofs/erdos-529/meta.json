@@ -96,7 +96,7 @@
       "erdos_529_summary theorem: combines established results",
       "erdos_529 theorem: combines Hara-Slade + sub-ballistic + Question 2"
     ],
-    "axiomCount": 7,
+    "axiomCount": 5,
     "lineCount": 306,
     "assumptions": "7 axioms: endToEndDistance (end-to-end distance function), expectedEndDistance (expected distance function), tendsTo (convergence predicate), haraSlade_five_dim (5D self-avoiding walk result), duminilCopin_subBallistic (sub-ballistic diffusivity), conjecture_implies_question1, question2_high_dim. 0 sorries.",
     "theoremCount": 6,
@@ -217,7 +217,7 @@
     ],
     "namespace": "Erdos529",
     "lineCount": 306,
-    "axiomCount": 7,
+    "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 5,
     "path": "Proofs/Erdos529Problem.lean",
