@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-001",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 60 },
+    "type": "technique",
+    "title": "Right-B-Linear Maps are Left Multiplication — One-Line Core",
+    "content": "rightBLinear_is_leftMul proves the algebraic core: if φ(b·c) = φ(b)·c for all b,c, then φ(b) = φ(1)·b for all b. The proof is a single line: φ(b) = φ(1·b) = φ(1)·b. The second lemma rightBLinear_symm_is_leftMul applies the same reasoning to the inverse: it shows φ⁻¹(c) = φ⁻¹(1)·c by proving φ⁻¹ also satisfies the right-multiplication property (via φ.injective to pull through φ), then invoking the first lemma.",
+    "mathContext": "A map $\\varphi: B \\to B$ is a right $B$-module map if $\\varphi(bc) = \\varphi(b) \\cdot c$ for all $b,c \\in B$. Setting $b=1$: $\\varphi(c) = \\varphi(1 \\cdot c) = \\varphi(1) \\cdot c$. In ring-theoretic terms: the endomorphism ring of $B$ as a right $B$-module is $B$ itself (acting by left multiplication). This is the right-module analogue of Schur's lemma: all endomorphisms of the regular module $B_B$ are given by left multiplication by elements of $B$.",
+    "significance": "key",
+    "relatedConcepts": ["right module map", "left multiplication", "Schur's lemma", "regular module"],
+    "prerequisites": ["ring theory", "module theory", "linear maps", "bimodule structure"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 93 },
+    "type": "technique",
+    "title": "Unit Extraction — Two-Sided Inverse Without Finite-Dimensionality",
+    "content": "isUnit_of_rightBLinear_equiv proves that u = φ(1) is a unit in B, given that φ : B ≃ₗ[K] B satisfies φ(b) = u·b. The proof sets v = φ⁻¹(1) and proves both u·v = 1 (from φ(v) = u·v and φ(φ⁻¹(1)) = 1) and v·u = 1 (from φ⁻¹(u) = v·u and φ⁻¹(φ(1)) = 1). No finite-dimensionality is needed — bijectivity of φ alone gives both equations. The unit is then constructed explicitly as ⟨⟨u, v, huv, hvu⟩, rfl⟩.",
+    "mathContext": "The key observation: if $\\varphi: B \\xrightarrow{\\sim} B$ (bijective linear map) satisfies $\\varphi(b) = u \\cdot b$, then $u$ is a unit. Set $v = \\varphi^{-1}(1)$. Then: $u \\cdot v = \\varphi(v) = \\varphi(\\varphi^{-1}(1)) = 1$ (from $\\varphi \\circ \\varphi^{-1} = \\mathrm{id}$). And $v \\cdot u = \\varphi^{-1}(u) = \\varphi^{-1}(\\varphi(1)) = 1$ (from $\\varphi^{-1} \\circ \\varphi = \\mathrm{id}$). Both equalities use ONLY the bijectivity of $\\varphi$, not the dimension of $B$.",
+    "significance": "key",
+    "relatedConcepts": ["unit in ring", "two-sided inverse", "bijective linear map", "invertible element"],
+    "prerequisites": ["ring theory", "units in rings", "bijective maps", "inverse maps"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 95, "endLine": 142 },
+    "type": "context",
+    "title": "Module Isomorphism Axiom — Wedderburn-Artin + Isotypic",
+    "content": "The axiom skolemNoether_module_iso states: given f, g : A →ₐ[K] B (with A simple, B central simple), there exists a K-linear equivalence φ : B ≃ₗ[K] B satisfying (a) φ(f(a)·b) = g(a)·φ(b) (A-module intertwining) and (b) φ(b·c) = φ(b)·c (right B-linearity). The extensive docstring explains why this is equivalent to showing the two A-module structures B_f and B_g are isomorphic: by Wedderburn-Artin B ≅ Mₙ(D), by IsIsotypic all A-modules over simple A are isotypic, so B_f ≅ B_g as A-modules, and the centrality of K in B forces the isomorphism to be right-B-linear.",
+    "mathContext": "The module isomorphism step: via $f$, $B$ is a left $A$-module $B_f$ with $a \\cdot b = f(a) \\cdot b$; via $g$, another module $B_g$ with $a \\cdot b = g(a) \\cdot b$. By Wedderburn-Artin ($B \\cong M_n(D)$, simple Artinian) and isotypicity (IsSimpleRing.isIsotypic: all $A$-modules of the same dimension are isomorphic since $A$ is simple), $B_f \\cong B_g$ as $A$-modules. This gives an $A$-module map $\\varphi: B \\to B$. Centrality of $K$ in $B$ (Algebra.IsCentral) shows $\\varphi$ commutes with right $B$-multiplication: $(A,B)$-bimodule structure forces $\\varphi(b \\cdot c) = \\varphi(b) \\cdot c$.",
+    "significance": "key",
+    "relatedConcepts": ["Wedderburn-Artin theorem", "isotypic decomposition", "central simple algebra", "bimodule map", "Skolem-Noether theorem"],
+    "prerequisites": ["Wedderburn-Artin theorem", "simple rings", "isotypic modules", "Brauer group", "central simple algebras"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 152, "endLine": 187 },
+    "type": "insight",
+    "title": "Main Theorem — Conjugation Formula from Module Intertwining",
+    "content": "skolemNoether_general assembles the pieces: (1) get φ from the axiom; (2) φ(b) = φ(1)·b (rightBLinear_is_leftMul); (3) u = φ(1) is a unit (isUnit_of_rightBLinear_equiv); (4) from the intertwining hmod with b=1: φ(f(a)) = g(a)·φ(1); (5) from left-mul formula: φ(f(a)) = φ(1)·f(a); (6) combining: φ(1)·f(a) = g(a)·φ(1), i.e., u·f(a) = g(a)·u; (7) therefore f(a) = u⁻¹·g(a)·u. The final calc block uses Units.inv_mul and ring to assemble the conjugation equation.",
+    "mathContext": "The conjugation formula derivation: from the axiom intertwining property ($\\varphi(f(a) \\cdot b) = g(a) \\cdot \\varphi(b)$, setting $b=1$): $$\\varphi(f(a)) = g(a) \\cdot \\varphi(1) = g(a) \\cdot u.$$ From the left-multiplication formula: $\\varphi(f(a)) = \\varphi(1) \\cdot f(a) = u \\cdot f(a).$ Hence $u \\cdot f(a) = g(a) \\cdot u$, so $f(a) = u^{-1} g(a) u$ where $u^{-1}$ is the two-sided inverse given by `isUnit_of_rightBLinear_equiv`. The proof requires only the axiom + the two proved lemmas.",
+    "significance": "key",
+    "relatedConcepts": ["Skolem-Noether theorem", "conjugation by unit", "algebra homomorphisms", "CSA automorphisms"],
+    "prerequisites": ["Skolem-Noether module isomorphism", "right-B-linear maps", "unit extraction", "conjugation in rings"]
+  },
+  {
+    "id": "ann-005",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 191, "endLine": 218 },
+    "type": "context",
+    "title": "Corollaries — Inner Automorphisms and Symmetry of Conjugation",
+    "content": "aut_is_inner is the classical form: every K-automorphism of a CSA is inner, derived by applying skolemNoether_general with f = σ.toAlgHom and g = AlgHom.id. conjugate_iff_same_image proves the symmetry: f = u⁻¹·g·u iff g = u·f·u⁻¹ — two homomorphisms are conjugate in both directions. The proof uses Units.mul_inv and Units.inv_mul with ring to convert between the two conjugation directions.",
+    "mathContext": "The classical Skolem-Noether for automorphisms: $\\mathrm{Aut}_K(B) = \\mathrm{Inn}(B)$ — every $K$-algebra automorphism of a central simple $K$-algebra $B$ is inner (conjugation by a unit). This implies: the outer automorphism group $\\mathrm{Out}_K(B) = \\mathrm{Aut}_K(B)/\\mathrm{Inn}(B)$ is trivial for CSAs. More precisely, $\\mathrm{Aut}_K(B) \\cong B^\\times / K^\\times$ (quotient by scalar units). The Brauer group consequence: all forms of $\\mathrm{GL}_n$ over $K$ are inner forms (classified by $H^1(K, \\mathrm{PGL}_n)$), and Skolem-Noether shows these correspond to CSAs of degree $n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["inner automorphisms", "outer automorphisms", "Brauer group", "central simple algebra automorphisms", "PGLn"],
+    "prerequisites": ["Skolem-Noether theorem", "inner automorphisms", "conjugation symmetry", "Galois cohomology (context)"]
+  }
+]
