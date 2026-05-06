@@ -241,18 +241,71 @@ example : crossEhrhart 3 4 = 129 := by native_decide
 -- PART VII: Ehrhart Polynomial Identification
 -- ============================================================
 
+/-- Falling binomial coefficient polynomial: evaluates to C(n, k) at every n : ℕ. -/
+private noncomputable def fallBinomPoly (k : ℕ) : Polynomial ℚ :=
+  (1 / Nat.factorial k : ℚ) • ∏ i ∈ Finset.range k, (Polynomial.X - Polynomial.C (i : ℚ))
+
+/-- For k ≤ n, the product ∏_{i<k} (n - i : ℚ) equals descFactorial n k. -/
+private lemma prod_range_sub_eq_descFact (n : ℕ) :
+    ∀ k : ℕ, k ≤ n → ∏ i ∈ Finset.range k, ((n : ℚ) - (i : ℚ)) = (n.descFactorial k : ℚ) := by
+  intro k
+  induction k with
+  | zero => simp [Nat.descFactorial]
+  | succ k ihk =>
+    intro h
+    have hk : k ≤ n := Nat.le_of_succ_le h
+    rw [Finset.prod_range_succ, ihk hk, Nat.descFactorial_succ, Nat.cast_mul, Nat.cast_sub hk]
+    ring
+
+/-- fallBinomPoly k evaluates to C(n, k) at every natural number n. -/
+private lemma fallBinomPoly_eval (n k : ℕ) :
+    (fallBinomPoly k).eval (n : ℚ) = (Nat.choose n k : ℚ) := by
+  simp only [fallBinomPoly, Polynomial.eval_smul, Polynomial.eval_prod,
+             Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, smul_eq_mul]
+  rcases le_or_lt k n with hkn | hnk
+  · rw [prod_range_sub_eq_descFact n k hkn, Nat.descFactorial_eq_factorial_mul_choose]
+    have hfact : (Nat.factorial k : ℚ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero k
+    push_cast
+    field_simp [hfact]
+  · have hn_mem : n ∈ Finset.range k := Finset.mem_range.mpr hnk
+    have hzero : ∏ i ∈ Finset.range k, ((n : ℚ) - (i : ℚ)) = 0 :=
+      Finset.prod_eq_zero hn_mem (by ring)
+    rw [hzero, mul_zero, Nat.choose_eq_zero_of_lt hnk, Nat.cast_zero]
+
+/-- fallBinomPoly k has degree ≤ k. -/
+private lemma fallBinomPoly_natDegree_le (k : ℕ) :
+    (fallBinomPoly k).natDegree ≤ k := by
+  unfold fallBinomPoly
+  apply le_trans (Polynomial.natDegree_smul_le _ _)
+  calc (∏ i ∈ Finset.range k, (Polynomial.X - Polynomial.C (i : ℚ))).natDegree
+      ≤ ∑ i ∈ Finset.range k, (Polynomial.X - Polynomial.C (i : ℚ)).natDegree :=
+          Polynomial.natDegree_prod_le
+    _ = k := by simp [Polynomial.natDegree_X_sub_C, Finset.sum_const, Finset.card_range]
+
 /-- **The formula is a polynomial of degree ≤ d in n** (over ℚ).
 
-    Each term 2^k · C(d,k) · C(n,k) is a polynomial of degree k in n,
-    with C(n,k) = n(n-1)···(n-k+1)/k! a polynomial of degree k.
-    So the sum is a polynomial of degree d. -/
+    Explicit polynomial: Σ_{k≤d} (2^k·C(d,k)/k!) · X·(X-1)···(X-k+1)
+    Each factor C(n,k) = X·(X-1)···(X-k+1)/k! is a polynomial of degree k,
+    so the sum has degree exactly d. -/
 theorem crossEhrhart_is_poly (d : ℕ) :
     ∃ (P : Polynomial ℚ), P.natDegree ≤ d ∧
     ∀ n : ℕ, P.eval (n : ℚ) = (crossEhrhart d n : ℚ) := by
-  -- Each term 2^k · C(d,k) · C(n,k) is degree k (since C(n,k) = n↓k/k! is degree k).
-  -- The polynomial P = Σ_{k≤d} (2^k·C(d,k)/k!) · X·(X-1)···(X-k+1).
-  -- Full construction omitted; see crossEhrhart_succ_d for the key recursion.
-  sorry
+  use ∑ k ∈ Finset.range (d + 1),
+        Polynomial.C (2 ^ k * Nat.choose d k : ℚ) * fallBinomPoly k
+  refine ⟨?_, ?_⟩
+  · apply Polynomial.natDegree_sum_le_of_forall_le
+    intro k hk
+    have hkd : k ≤ d := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+    apply le_trans Polynomial.natDegree_mul_le
+    apply le_trans (Nat.add_le_add
+        (le_of_eq (Polynomial.natDegree_C _)) (fallBinomPoly_natDegree_le k))
+    omega
+  · intro n
+    simp only [crossEhrhart, Polynomial.eval_finset_sum, Polynomial.eval_mul,
+              Polynomial.eval_C, fallBinomPoly_eval]
+    push_cast
+    apply Finset.sum_congr rfl
+    intro k _; ring
 
 -- ============================================================
 -- PART VIII: Connection to Lattice Points
