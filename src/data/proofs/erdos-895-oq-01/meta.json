@@ -47,19 +47,19 @@
       "Axiomatization of Hajnal's conjecture as an open problem",
       "Proof that Hajnal k=2 base {a,b} with a+b < n yields an independent additive triple",
       "Proved Case 1 of \u03b1(G) \u2265 \u221an bound: high-degree vertex N(v) is independent",
-      "Proof structure for \u03b1(G) \u2265 \u221an via case split (1 HARD sorry for greedy algorithm)"
+      "Full proof of \u03b1(G) \u2265 \u221an via two-case greedy argument: Case 1 (high-degree vertex N(v)), Case 2 (greedy induction on candidate set cardinality)"
     ],
-    "assumptions": "1 axiom: hajnal_conjecture (Hajnal's open conjecture, unsolved as of 2026). 1 sorry: greedy independent set construction (HARD, to be proved by induction).",
+    "assumptions": "1 axiom: hajnal_conjecture (Hajnal's open conjecture, unsolved as of 2026). 0 sorries: all structural lemmas and the greedy independence bound are fully proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
-    "definitionCount": 6,
-    "lineCount": 265
+    "theoremCount": 9,
+    "definitionCount": 4,
+    "lineCount": 272
   },
   "overview": {
     "historicalContext": "**Hajnal's Generalization of Erd\u0151s Problem #895**\n\nThe parent problem, Erd\u0151s #895, was solved by Ben Barber (2015) using SAT verification: every triangle-free graph on $\\{1,\\ldots,n\\}$ for $n \\geq 18$ contains three mutually non-adjacent vertices $a$, $b$, $a+b$. This is the $k=2$ base case of a more ambitious conjecture by Andr\u00e1s Hajnal.\n\nHajnal asks: does every sufficiently large triangle-free graph contain an **independent Hindman set** \u2014 a base $B = \\{a_1, \\ldots, a_k\\}$ with $k \\geq 2$ such that ALL finite nonempty sub-sums of $B$ form a mutually non-adjacent set in the graph?\n\nThe $k=2$ case gives FS($\\{a,b\\}$) = $\\{a, b, a+b\\}$, which is exactly Barber's result. The challenge for $k \\geq 3$ is that sums can grow (possibly exceeding $n$) while graph independence must be maintained for all sub-sums simultaneously.\n\n**Connection to Hindman's Theorem (1974):** Hindman proved that for any finite coloring of $\\mathbb{N}$, there exists an infinite Hindman set that is monochromatic. Hajnal's conjecture replaces 'monochromatic' with 'graph-independent' and works in the finite setting \u2014 a fundamentally different kind of constraint.",
     "problemStatement": "Let $G$ be a triangle-free graph with vertex set $\\{1, 2, \\ldots, n\\}$.\n\n**Conjecture (Hajnal):** For sufficiently large $n$, there exists a base $B \\subseteq \\{1,\\ldots,n\\}$ with $|B| \\geq 2$ such that the finite sums set FS$(B) = \\{\\sum_{i \\in T} a_i \\mid T \\subseteq B, T \\neq \\emptyset\\}$ forms an independent set in $G$.\n\n**Special case $k=2$:** FS($\\{a,b\\}$) = $\\{a, b, a+b\\}$ \u2014 proved by Barber for $n \\geq 18$.\n\n**Status:** OPEN for base size $k \\geq 3$. No counterexample or proof is known.",
     "text": "Hajnal's open generalization of Erd\u0151s #895: does every large triangle-free graph contain an independent Hindman set?",
-    "proofStrategy": "This file:\n1. Defines `hindmanSet base` as all finite nonempty sub-sums of `base`\n2. Proves structural properties of hindmanSet (monotonicity, pair lemmas)\n3. States `hajnalConjecture` and axiomatizes it (OPEN)\n4. Proves `hajnal_k2_gives_additive_triple`: k=2 Hajnal base \u2192 independent additive triple\n5. Proves `triangleFree_independence_bound` (\u03b1 \u2265 \u221an) with one HARD sorry for the greedy case",
+    "proofStrategy": "This file:\n1. Defines `hindmanSet base` as all finite nonempty sub-sums of `base`\n2. Proves structural properties of hindmanSet (monotonicity, pair lemmas)\n3. States `hajnalConjecture` and axiomatizes it (OPEN)\n4. Proves `hajnal_k2_gives_additive_triple`: k=2 Hajnal base \u2192 independent additive triple\n5. Proves `triangleFree_independence_bound` (\u03b1 \u2265 \u221an) via two-case greedy argument (0 sorries)",
     "keyInsights": [
       "**Hierarchy of Hindman strength:** Hajnal's conjecture strictly generalizes Erd\u0151s #895 \u2014 the k=2 base case IS the Barber theorem. Each additional base element adds exponentially more sum-independence requirements.",
       "**hindmanSet monotonicity:** Larger bases produce larger sum sets. This allows reducing from a full Hajnal base to a 2-element sub-base to recover the Erd\u0151s-Barber structure.",
@@ -102,10 +102,10 @@
     {
       "id": "independence-bound",
       "title": "Independence Number Bound",
-      "summary": "Every triangle-free graph has \u03b1(G) \u2265 \u221an",
-      "startLine": 175,
-      "endLine": 198,
-      "mathContext": "Case 1 (proved): high-degree vertex N(v) independent; Case 2 (1 HARD sorry): greedy algorithm"
+      "summary": "Every triangle-free graph has \u03b1(G) \u2265 \u221an. Proved via two-case greedy argument: Case 1 (high-degree vertex, N(v) is independent), Case 2 (all degrees < \u221an, greedy induction gives \u03b1 \u2265 n/\u221an = \u221an).",
+      "startLine": 131,
+      "endLine": 271,
+      "mathContext": "Case 1: \u2203v with deg(v) \u2265 \u221an \u2192 N(v) is independent with |N(v)| \u2265 \u221an. Case 2: all degrees < \u221an \u2192 greedy_indep_of_bounded_deg (proved by induction on candidate set) gives |S|\u00b7\u221an \u2265 n \u2192 |S| \u2265 \u221an."
     }
   ],
   "openQuestions": [
@@ -118,17 +118,20 @@
     },
     {
       "id": "greedy-independence",
-      "title": "Greedy independence number bound",
-      "question": "Can the HARD sorry in indep_from_bounded_deg be closed? Prove \u03b1(G) \u2265 n/(\u0394+1) for max-degree-\u0394 graphs by induction on vertex count.",
-      "difficulty": "hard",
-      "notes": "Standard textbook result; requires well-founded induction on the vertex removal greedy algorithm."
+      "title": "Sharper greedy independence bound",
+      "question": "Can the independence bound \u03b1(G) \u2265 \u221an be sharpened to \u03b1(G) \u2265 n/\u0394 when the maximum degree \u0394 is much smaller than \u221an?",
+      "difficulty": "medium",
+      "notes": "The greedy argument gives \u03b1 \u2265 n/(\u0394+1) for any bounded-degree graph (already proved). For triangle-free G with max degree \u0394 << \u221an, this beats \u221an."
     }
   ],
   "leanFile": {
     "path": "Proofs/Erdos895OQ01Problem.lean",
-    "lineCount": 265,
-    "theoremCount": 12,
-    "definitionCount": 6,
+    "namespace": "Erdos895OQ01Problem",
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "SimpleGraph"],
+    "lineCount": 272,
+    "theoremCount": 9,
+    "definitionCount": 4,
     "axiomCount": 1,
     "sorries": 0,
     "isAristotle": false,

@@ -29,22 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 Aristotle lemmas (triangleFree_neighbor_disjoint, triangleFree_degree_sum_bound, mantel_theorem). Aristotle file now 0 sorries. Main file barber_theorem blocked (SAT-based).",
+    "progressSummary": "COMPLETE: 0 sorries, 1 axiom (hajnal_conjecture). Gallery entry created. Proved α(G) ≥ √n for triangle-free G via greedy algorithm.",
     "builtItems": [
-      "Erdos895ProblemAristotle.lean:67 triangleFree_neighbor_disjoint \u2014 0 sorries",
-      "Erdos895ProblemAristotle.lean:80 triangleFree_degree_sum_bound \u2014 0 sorries",
-      "Erdos895ProblemAristotle.lean:100 mantel_theorem \u2014 0 sorries"
+      "Erdos895ProblemAristotle.lean:67 triangleFree_neighbor_disjoint — 0 sorries",
+      "Erdos895ProblemAristotle.lean:80 triangleFree_degree_sum_bound — 0 sorries",
+      "Erdos895ProblemAristotle.lean:100 mantel_theorem — 0 sorries",
+      "Gallery entry src/data/proofs/erdos-895-oq-01/ (meta.json, index.ts, annotations.json)"
     ],
     "insights": [
       "triangleFree_neighbor_disjoint proved: adjacent vertices in triangle-free graph have disjoint neighborhoods, via Finset.disjoint_left + G.symm",
-      "triangleFree_degree_sum_bound proved: deg(u)+deg(v) \u2264 n for adjacent u,v, via card_union_of_disjoint + Finset.subset_univ + card_fin",
-      "mantel_theorem proved in Aristotle file: IsTriangleFree \u2192 CliqueFree 3 \u2192 CliqueFree.card_edgeFinset_le gives n\u00b2/4 edge bound; mirrors proof pattern in Erdos895Problem.lean"
+      "triangleFree_degree_sum_bound proved: deg(u)+deg(v) ≤ n for adjacent u,v, via card_union_of_disjoint + Finset.subset_univ + card_fin",
+      "mantel_theorem proved in Aristotle file: IsTriangleFree → CliqueFree 3 → CliqueFree.card_edgeFinset_le gives n²/4 edge bound; mirrors proof pattern in Erdos895Problem.lean"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Main barber_theorem and counterexample_17 require SAT-based proof \u2014 blocked without external tool",
-      "triangleFree_independence_bound (\u221an independent set) could be proved via Ramsey/greedy but requires significant Mathlib API work",
-      "Hajnal conjecture (Hindman sets in triangle-free graphs) remains open \u2014 no known Lean formalization path"
+      "Main barber_theorem and counterexample_17 require SAT-based proof — blocked without external tool",
+      "triangleFree_independence_bound (√n independent set) could be proved via Ramsey/greedy but requires significant Mathlib API work",
+      "Hajnal conjecture (Hindman sets in triangle-free graphs) remains open — no known Lean formalization path"
     ]
   },
   "tags": [
