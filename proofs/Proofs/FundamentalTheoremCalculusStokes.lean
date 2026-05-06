@@ -204,13 +204,36 @@ noncomputable def extDeriv1_2D (ω : OneForm2D) : ℝ × ℝ → ℝ :=
     well-defined. -/
 theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ × ℝ) :
     extDeriv1_2D (extDeriv0_2D f) p = 0 := by
-  -- d₁(d₀(f)) at p = ∂/∂x(∂f/∂y) - ∂/∂y(∂f/∂x)
-  -- = ∂²f/∂x∂y - ∂²f/∂y∂x = 0 by Clairaut
-  -- This follows from ContDiff.isSymmetric_iteratedFDeriv applied to the
-  -- second Fréchet derivative, evaluating the symmetric bilinear form at
-  -- (e₁, e₂) vs (e₂, e₁). The bridge from iteratedFDeriv to concrete
-  -- partial deriv expressions requires unfolding the Mathlib API.
-  sorry
+  simp only [extDeriv1_2D, extDeriv0_2D]
+  rw [sub_eq_zero]
+  -- Differentiability: f is C¹, fderiv ℝ f is C¹ (since f is C²)
+  have hDiff : Differentiable ℝ f := hf.differentiable (by norm_num)
+  have hFDiff : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (by norm_num)).differentiable (by norm_num)
+  -- Express y-partial as fderiv evaluation
+  have hDY : ∀ x, deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1) := fun x =>
+    ((hDiff (x, p.2)).hasFDerivAt.comp_hasDerivAt p.2
+      ((hasDerivAt_const p.2 x).prod (hasDerivAt_id p.2)) rfl).deriv
+  -- Express x-partial as fderiv evaluation
+  have hDX : ∀ y, deriv (fun x => f (x, y)) p.1 = fderiv ℝ f (p.1, y) (1, 0) := fun y =>
+    ((hDiff (p.1, y)).hasFDerivAt.comp_hasDerivAt p.1
+      ((hasDerivAt_id p.1).prod (hasDerivAt_const p.1 y)) rfl).deriv
+  simp_rw [hDY, hDX]
+  -- Second mixed partial ∂/∂x[fderiv ℝ f (x, p.2) (0, 1)] at p.1
+  have hDer2XY : HasDerivAt (fun x => fderiv ℝ f (x, p.2) (0, 1))
+      (fderiv ℝ (fderiv ℝ f) p (1, 0) (0, 1)) p.1 :=
+    ((hFDiff p).hasFDerivAt.comp_hasDerivAt p.1
+      ((hasDerivAt_id p.1).prod (hasDerivAt_const p.1 p.2))
+      (Prod.mk.eta p)).clm_apply (0, 1)
+  -- Second mixed partial ∂/∂y[fderiv ℝ f (p.1, y) (1, 0)] at p.2
+  have hDer2YX : HasDerivAt (fun y => fderiv ℝ f (p.1, y) (1, 0))
+      (fderiv ℝ (fderiv ℝ f) p (0, 1) (1, 0)) p.2 :=
+    ((hFDiff p).hasFDerivAt.comp_hasDerivAt p.2
+      ((hasDerivAt_const p.2 p.1).prod (hasDerivAt_id p.2))
+      (Prod.mk.eta p)).clm_apply (1, 0)
+  rw [hDer2XY.deriv, hDer2YX.deriv]
+  -- Symmetry of the second Fréchet derivative: Clairaut/Schwarz theorem
+  exact hf.contDiffAt.isSymmSndFDerivAt (1, 0) (0, 1)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VI: Green's Theorem as Stokes in 2D
