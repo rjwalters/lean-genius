@@ -184,3 +184,42 @@ The existence of a fixed point then follows from Sperner's lemma + compactness.
    between boundary doors of d-triangulation and FC simplices of (d-1)-triangulation
 5. **Connect to sperner_near_fixed_point**: after boundary_doors_odd, apply sperner_ndim,
    convert FC simplex to near-fixed-point using continuity + mesh size bound
+
+## Session 2026-05-06 (Session 5) — Restructure: sperner_panchromatic + brouwer_from_panchromatic
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: significant progress — restructured proof with cleaner axiom and new proved theorem
+
+### What I Did
+
+- Identified root cause of boundary_face incompatibility: for d≥2, no Freudenthal triangulation can have all non-k vertices simultaneously on face k (required by SpernerNDim.SpernerTriangulation.boundary_face). Session 4's state.md already documented this.
+- Identified that sperner_near_fixed_point required Lipschitz continuity (not in hypothesis) to extract near-fixed-point bounds from panchromatic simplex — making it equivalent in difficulty to Brouwer itself.
+- Redesigned proof: replaced near-fixed-point intermediary with direct limit of panchromatic tuples.
+- Wrote and proved brouwer_from_panchromatic (0 sorries, 1 axiom sperner_panchromatic).
+- Docker build confirmed: ✔ Built Proofs.SpernerNDimMathlibOQ02
+
+### Key Findings
+
+- **boundary_face incompatibility confirmed**: SpernerNDim.SpernerTriangulation requires adj s k = none → ∀ j≠k, onFace (vertex j) k. For Freudenthal, the non-k vertices span different coordinate values — only one vertex can be "on face k", never all d. This blocks SpernerNDim.sperner_ndim entirely.
+- **sperner_near_fixed_point requires Lipschitz**: the near-fixed-point bound (n+1)/(N+1) per coordinate simultaneously requires Lipschitz continuity of f to extract from a panchromatic simplex — which is not in the hypothesis.
+- **Correct approach — panchromatic tuples**: axiom sperner_panchromatic just states f(vᵢ)ᵢ ≤ (vᵢ)ᵢ (one-sided, per i) and diameter bound — exactly what CellComplex.sperner gives directly.
+- **brouwer_from_panchromatic proof works via ge_of_tendsto**: limit of f(v_{φk,i})ᵢ ≤ v_{φk,i}ᵢ gives f(x*)ᵢ ≤ x*ᵢ. Sum of 1=1 forces all equalities.
+- **CellComplex (not SpernerTriangulation)**: Mathlib's CellComplex from SpernerMathlib4.lean has only adj_symm, adj_vertex, adj_ne — no boundary_face required. This is the right target for the Freudenthal grid.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimMathlibOQ02.lean` (299→341 lines, axiom changed from sperner_near_fixed_point to sperner_panchromatic, fixed_point_from_approx replaced by brouwer_from_panchromatic)
+- `src/data/proofs/sperner-ndim-mathlib-oq-02/meta.json` (lineCount, assumptions, sections updated)
+
+### Next Steps
+
+1. Build CellComplex for Freudenthal grid triangulation (~80 lines):
+   - Type: `FreudSimplex d N = { base : Fin d → ℕ, σ : Perm(Fin d) }` with fixed miss = Fin.last d
+   - Vertex k: coords[j] = base[j] + (if σ⁻¹(j).val < k.val then 1 else 0)
+   - adj: swap σ positions for middle faces, shift for face 0, extend for face d
+   - Prove adj_symm, adj_vertex, adj_ne (no boundary_face needed!)
+2. Prove boundary_doors_odd by induction (~200 lines):
+   - Base: d=0 trivial (1 simplex, 1 boundary door)
+   - Inductive: boundary doors at face d = FC simplices of (d-1) triangulation (bijection)
+   - Apply CellComplex.sperner for (d-1) recursively
+3. Instantiate sperner_panchromatic from CellComplex.sperner + FreudSimplex

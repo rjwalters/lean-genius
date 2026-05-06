@@ -2,7 +2,7 @@
   "id": "sperner-ndim-mathlib-oq-02",
   "title": "Brouwer's Fixed-Point Theorem via Sperner's Lemma",
   "slug": "sperner-ndim-mathlib-oq-02",
-  "description": "Answers OQ-02 from sperner-ndim-mathlib: prove Brouwer's fixed-point theorem for the standard n-simplex using Sperner's lemma. The Sperner coloring well-definedness and boundary condition are fully proved. The compactness convergence step (Δⁿ compact → convergent subsequence → exact fixed point) is proved via IsCompact.tendsto_subseq + squeeze. Only the grid triangulation application of Sperner remains axiomatized.",
+  "description": "Answers OQ-02 from sperner-ndim-mathlib: prove Brouwer's fixed-point theorem for the standard n-simplex using Sperner's lemma. The Sperner coloring well-definedness and boundary condition are fully proved. The fixed-point step is proved via panchromatic-tuple convergence: all n+1 vertices converge to x* (by diameter bound), limits of f(v_i)_i <= v_i_i give f(x*)_i <= x*_i, and the sum forces equality. One axiom remains: sperner_panchromatic.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
@@ -20,8 +20,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 299,
-    "assumptions": "One axiom: sperner_near_fixed_point — for each N, the Nth grid triangulation of Δⁿ with the Sperner coloring (proved to satisfy the boundary condition) yields a near-fixed-point with error ≤ (n+1)/(N+1). The compactness convergence step (fixed_point_from_approx) is now fully proved using IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique.",
+    "lineCount": 341,
+    "assumptions": "One axiom: sperner_panchromatic — for each N>0, the Nth Freudenthal grid triangulation of Δⁿ with the Sperner coloring yields n+1 simplex vertices v₀,...,vₙ with f(vᵢ)ᵢ ≤ (vᵢ)ᵢ and diameter ≤ n/N. All other steps — Sperner coloring well-definedness, boundary condition, compactness convergence via panchromatic tuples — are fully proved with 0 sorries.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -35,7 +35,7 @@
       "spernerColor_ne_of_zero: Sperner boundary condition — c(v) ≠ j if v j = 0 (proved)",
       "spernerColorMap_boundary: boundary condition for the full coloring map (proved)",
       "brouwer_fixed_point_simplex: Brouwer's fixed-point theorem for Δⁿ (proved from 1 axiom)",
-      "fixed_point_from_approx: compactness argument proved via IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique"
+      "brouwer_from_panchromatic: exact fixed point from panchromatic tuples — all n+1 vertices converge to x* by diameter bound, limit of f(v_i)_i <= v_i_i gives f(x*)_i <= x*_i, sum forces equality"
     ],
     "theoremCount": 13,
     "definitionCount": 5
@@ -44,7 +44,7 @@
     "path": "Proofs/SpernerNDimMathlibOQ02.lean",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 299,
+    "lineCount": 341,
     "theoremCount": 13,
     "definitionCount": 5,
     "isAristotle": false,
@@ -84,13 +84,13 @@
       "lean_ref": "spernerColor"
     },
     {
-      "title": "Compactness → Fixed Point (proved)",
-      "content": "fixed_point_from_approx is now a fully proved theorem (no axiom). Proof: (1) The simplex is compact — it's a closed subset of [0,1]^(n+1), proved via isCompact_univ_pi + isClosed_iInter + isClosed_eq. (2) IsCompact.tendsto_subseq extracts a convergent subsequence x_{φ(k)} → x*. (3) By continuity, f(x_{φ(k)}) → f(x*). (4) By squeeze_zero_norm with bound (n+1)/(φ(k)+1) → 0 (since φ(k) ≥ k), f(x_{φ(k)}) - x_{φ(k)} → 0, so f(x_{φ(k)}) → x*. (5) By tendsto_nhds_unique, f(x*) = x*.",
-      "lean_ref": "fixed_point_from_approx"
+      "title": "Panchromatic Tuples → Fixed Point (proved)",
+      "content": "brouwer_from_panchromatic is a fully proved theorem. Given panchromatic tuples — n+1 simplex vertices v₀,...,vₙ with f(vᵢ)ᵢ ≤ (vᵢ)ᵢ and diameter ≤ n/N — it produces an exact fixed point. Proof: (1) The simplex is compact via isCompact_univ_pi + isClosed_iInter. (2) First-component sequence u_N = v_{N,0} has a convergent subsequence u_{φk} → x* by IsCompact.tendsto_subseq. (3) All n+1 components v_{φk,i} → x*: by triangle inequality and diameter bound |v_{φk,i} - v_{φk,0}| ≤ n/(φk+1) → 0, both terms go to zero via squeeze_zero_norm. (4) From f(v_{φk,i})ᵢ ≤ v_{φk,i}ᵢ, taking limits via ge_of_tendsto: f(x*)ᵢ ≤ x*ᵢ for each i. (5) Since Σ f(x*)ᵢ = 1 = Σ x*ᵢ, all inequalities are equalities: f(x*) = x* by Finset.sum_lt_sum contradiction.",
+      "lean_ref": "brouwer_from_panchromatic"
     },
     {
-      "title": "Grid Triangulation → Near-Fixed-Point (axiom)",
-      "content": "sperner_near_fixed_point (1 remaining axiom): the Nth grid triangulation of Δⁿ with the proved Sperner coloring (spernerColorMap_boundary) yields a near-fixed-point with error ≤ (n+1)/(N+1). Follows from abstract Sperner (SpernerNDimMathlib) + boundary condition + grid CellComplex construction. The main theorem brouwer_fixed_point_simplex now depends on only this one axiom.",
+      "title": "Grid Triangulation → Panchromatic Tuple (axiom)",
+      "content": "sperner_panchromatic (1 remaining axiom): for each N>0, the Nth Freudenthal grid triangulation of Δⁿ with the proved Sperner coloring yields n+1 vertices v₀,...,vₙ ∈ Δⁿ with f(vᵢ)ᵢ ≤ (vᵢ)ᵢ (color-i property) and diameter ≤ n/N. This is directly what CellComplex.sperner produces from the grid triangulation — no Lipschitz continuity needed. Proof sketch: (a) Freudenthal triangulation gives valid CellComplex (adj_symm, adj_vertex, adj_ne proved ~80 lines), (b) boundary door count is odd by induction on n (~200 lines), (c) apply CellComplex.sperner to get panchromatic simplex.",
       "lean_ref": "brouwer_fixed_point_simplex"
     }
   ],
