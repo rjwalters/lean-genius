@@ -81,28 +81,11 @@ theorem crossEhrhart_n0 (d : ℕ) : crossEhrhart d 0 = 1 := by
 theorem crossEhrhart_d1 (n : ℕ) : crossEhrhart 1 n = 2 * n + 1 := by
   simp [crossEhrhart, sum_range_succ, Nat.choose_one_right]
 
-/-- B_2 = diamond (square at 45°): L(B_2,n) = 2n²+2n+1.
-    Proved by induction using the recursion:
-    L(B_2, n+1) = L(B_2, n) + L(B_1, n+1) + L(B_1, n) = L(B_2,n) + (2n+3) + (2n+1). -/
-theorem crossEhrhart_d2 (n : ℕ) : crossEhrhart 2 n = 2 * n ^ 2 + 2 * n + 1 := by
-  induction n with
-  | zero => simp [crossEhrhart_n0]
-  | succ n ih =>
-    have hrec : crossEhrhart 2 (n + 1) =
-        crossEhrhart 2 n + crossEhrhart 1 (n + 1) + crossEhrhart 1 n := by
-      rw [crossEhrhart_succ_d 1 (n + 1), crossEhrhart_succ_d 1 n, sum_range_succ]
-      ring
-    rw [hrec, ih, crossEhrhart_d1, crossEhrhart_d1]; ring
-
--- Spot checks (concrete verification)
+-- Spot checks (concrete verification, proved by computation)
 example : crossEhrhart 1 3 = 7 := by native_decide
-example : crossEhrhart 2 1 = 5 := by native_decide   -- ◆ diamond: center + 4 axis points
+example : crossEhrhart 2 1 = 5 := by native_decide
 example : crossEhrhart 2 2 = 13 := by native_decide
-example : crossEhrhart 2 3 = 25 := by native_decide
-example : crossEhrhart 3 1 = 7 := by native_decide   -- octahedron: center + 6 vertices
-example : crossEhrhart 3 2 = 25 := by native_decide
-example : crossEhrhart 3 3 = 63 := by native_decide
-example : crossEhrhart 3 4 = 129 := by native_decide
+example : crossEhrhart 3 1 = 7 := by native_decide
 
 -- ============================================================
 -- PART III: Structural Properties
@@ -222,7 +205,36 @@ theorem crossEhrhart_expand (d n : ℕ) :
 theorem crossEhrhart_succ_d (d n : ℕ) :
     crossEhrhart (d + 1) n =
     crossEhrhart d n + 2 * ∑ m ∈ range n, crossEhrhart d m := by
-  rw [crossEhrhart_expand, sum_shift_hockey]
+  rw [crossEhrhart_expand]
+  have hshift : ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) =
+      ∑ m ∈ range n, crossEhrhart d m := by
+    rw [sum_shift_hockey]
+    apply Finset.sum_congr rfl
+    intro m _
+    simp [crossEhrhart]
+  linarith [hshift]
+
+-- ============================================================
+-- PART VIb: Low-Dimensional Formulas (proved using recursion)
+-- ============================================================
+
+/-- B_2 = diamond (square at 45°): L(B_2,n) = 2n²+2n+1.
+    Proved by induction: each step adds L(B_1,n+1) + L(B_1,n) = (2n+3)+(2n+1) = 4n+4. -/
+theorem crossEhrhart_d2 (n : ℕ) : crossEhrhart 2 n = 2 * n ^ 2 + 2 * n + 1 := by
+  induction n with
+  | zero => simp [crossEhrhart_n0]
+  | succ n ih =>
+    have hrec : crossEhrhart 2 (n + 1) =
+        crossEhrhart 2 n + crossEhrhart 1 (n + 1) + crossEhrhart 1 n := by
+      rw [crossEhrhart_succ_d 1 (n + 1), crossEhrhart_succ_d 1 n, sum_range_succ]
+      ring
+    rw [hrec, ih, crossEhrhart_d1, crossEhrhart_d1]; ring
+
+-- More spot checks (rely on crossEhrhart_succ_d being proved)
+example : crossEhrhart 2 3 = 25 := by native_decide
+example : crossEhrhart 3 2 = 25 := by native_decide
+example : crossEhrhart 3 3 = 63 := by native_decide
+example : crossEhrhart 3 4 = 129 := by native_decide
 
 -- ============================================================
 -- PART VII: Ehrhart Polynomial Identification
