@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-gauss-intro",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "Gauss's Approach to Quadratic Reciprocity",
+    "content": "Carl Friedrich Gauss (1777–1855) gave **eight distinct proofs** of the Law of Quadratic Reciprocity over his lifetime — a testament to the theorem's depth and his fascination with it. Among them, his **Gauss sum proof** (third proof, 1808) is the most analytically powerful and far-reaching.\n\nThe strategy has four steps: (1) define the Gauss sum τ = Σ_{a=0}^{p-1} (a/p)·e^{2πia/p} in ℂ; (2) prove τ² = χ(-1)·p (**this file handles step 2**); (3) prove τ^q ≡ (p/q)·τ (mod q) via the Frobenius endomorphism; (4) compare two formulas for τ^q to derive QR. The analytic work is concentrated in step 2 — once it is established, steps 3 and 4 are essentially algebraic.\n\nThis approach eventually influenced the development of algebraic number theory, Hecke Grössencharacters, and Tate's thesis. The **complex plane is essential**: no analogous integer identity holds since ±p is never a perfect square for prime p > 2.",
+    "mathContext": "$\\tau = \\sum_{a=0}^{p-1} \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p}, \\quad \\tau^2 = \\chi(-1) \\cdot p$",
+    "significance": "key",
+    "relatedConcepts": ["Quadratic Reciprocity", "Gauss sum", "Legendre symbol", "Frobenius endomorphism", "analytic number theory"],
+    "prerequisites": ["complex exponentials", "Legendre symbol", "multiplicative characters"]
+  },
+  {
+    "id": "ann-quad-char-def",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 70 },
+    "type": "definition",
+    "title": "The Legendre Symbol as a ℂ-Valued Multiplicative Character",
+    "content": "`quadCharC` is the **Legendre symbol promoted to a ℂ-valued multiplicative character** via `Int.castRingHom`. The standard Mathlib `quadraticChar` takes values in ℤ; Mathlib's `gaussSum_sq` requires a `MulChar (ZMod p) ℂ`, so this bridging definition is an essential step.\n\nThe construction uses `ringHomComp`: it first applies `quadraticChar` (ℤ-valued), then applies `Int.cast : ℤ → ℂ`. This composition **automatically inherits multiplicativity** — a key advantage of the `MulChar` abstraction, which tracks this property in the type. The companion lemma `quadCharC_isQuadratic` confirms that χ(a)² ∈ {0, 1} for all a, which is the defining property of a quadratic character.",
+    "mathContext": "$\\chi = \\text{quadCharC}: (\\mathbb{Z}/p\\mathbb{Z}) \\to \\mathbb{C}, \\quad \\chi(a) = \\text{Int.cast}\\!\\left(\\left(\\frac{a}{p}\\right)_{\\mathbb{Z}}\\right) \\in \\{-1,\\, 0,\\, 1\\}$",
+    "significance": "key",
+    "relatedConcepts": ["MulChar", "Legendre symbol", "ring homomorphism", "quadratic character", "ZMod"],
+    "prerequisites": ["multiplicative characters (MulChar)", "Int.castRingHom", "quadraticChar in Mathlib"]
+  },
+  {
+    "id": "ann-nontriviality",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 88 },
+    "type": "technique",
+    "title": "Nontriviality via Int.cast Injectivity",
+    "content": "Proving `quadCharC ≠ 1` requires care because quadCharC takes values in ℂ while the underlying `quadraticChar` takes values in ℤ. A naive appeal to `quadraticChar_ne_one` does not directly transfer across the cast.\n\nThe argument proceeds by **contrapositive via injectivity**: assume `quadCharC = 1`, meaning `Int.cast (quadraticChar a) = 1` for all a. Since `Int.cast : ℤ → ℂ` is **injective** (ℂ has characteristic 0), this forces `quadraticChar a = 1` for all a, i.e., `quadraticChar = 1`. But `quadraticChar_ne_one` (a Mathlib theorem) rules this out for an odd prime p. The injectivity step is the key bridge between the ℤ-valued and ℂ-valued worlds.",
+    "mathContext": "quadCharC $= 1 \\Rightarrow$ Int.cast$(\\chi_{\\mathbb{Z}}(a)) = 1$ for all $a \\Rightarrow \\chi_{\\mathbb{Z}} = 1$ (by injectivity) $\\Rightarrow$ contradiction",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.cast injectivity", "MulChar nontriviality", "characteristic zero", "quadraticChar_ne_one"],
+    "prerequisites": ["Int.cast : ℤ → ℂ", "characteristic zero fields", "quadraticChar_ne_one (Mathlib)"]
+  },
+  {
+    "id": "ann-classical-gauss-sum",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 97 },
+    "type": "definition",
+    "title": "Assembling the Classical Gauss Sum",
+    "content": "`classicalGaussSum` assembles the two ingredients: the **multiplicative character** `quadCharC` (Legendre symbol in ℂ) and the **additive character** `ZMod.stdAddChar` (which maps a ↦ exp(2πia/p)). Mathlib's bilinear `gaussSum` combines them as Σ_{a} χ(a)·ψ(a).\n\nThe key fact consumed in the main theorem is `ZMod.isPrimitive_stdAddChar`: the standard additive character of ZMod p is **primitive** — it does not factor through any proper subgroup. This is a non-trivial result from the theory of exponential sums; it is what prevents the Gauss sum from vanishing due to character orthogonality, and it is a required hypothesis of `gaussSum_sq`.",
+    "mathContext": "$\\tau_p = \\text{classicalGaussSum}(p) = \\sum_{a \\in \\mathbb{Z}/p\\mathbb{Z}} \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p} \\in \\mathbb{C}$",
+    "significance": "key",
+    "relatedConcepts": ["gaussSum (Mathlib)", "additive characters", "ZMod.stdAddChar", "primitive character", "ZMod.isPrimitive_stdAddChar"],
+    "prerequisites": ["AddChar (Mathlib)", "ZMod.stdAddChar", "primitive additive characters"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 141 },
+    "type": "technique",
+    "title": "Three-Step Proof of τ² = χ(-1)·p",
+    "content": "The main theorem `gauss_sum_squared` follows a clean **three-step chain** through Mathlib:\n\n**Step 1** — `gaussSum_sq` (Mathlib.NumberTheory.GaussSum): for a nontrivial quadratic character χ and a primitive additive character ψ over a finite abelian group G, `(gaussSum χ ψ)² = χ(-1) · |G|`. Both nontriviality (established above via Int.cast injectivity) and primitivity (ZMod.isPrimitive_stdAddChar) are required.\n\n**Step 2** — `ZMod.card`: the cardinality of ZMod p as a Fintype is p, converting |G| to the prime integer.\n\n**Step 3** — `legendreSym.at_neg_one` + `χ₄_eq_neg_one_pow`: the first supplementary law evaluates χ(-1) = (-1)^(p/2), connecting the abstract character value to a concrete sign formula. This step encodes the theorem that -1 is a QR mod p iff p ≡ 1 (mod 4).",
+    "mathContext": "$\\tau^2 = \\chi(-1) \\cdot |\\mathbb{Z}/p\\mathbb{Z}| = \\chi(-1) \\cdot p = (-1)^{\\lfloor p/2 \\rfloor} \\cdot p$",
+    "significance": "key",
+    "relatedConcepts": ["gaussSum_sq", "ZMod.card", "legendreSym.at_neg_one", "χ₄_eq_neg_one_pow", "first supplementary law"],
+    "prerequisites": ["gaussSum_sq (Mathlib)", "ZMod.card", "legendreSym.at_neg_one", "first supplementary law of QR"]
+  },
+  {
+    "id": "ann-sign-corollaries",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 143, "endLine": 173 },
+    "type": "insight",
+    "title": "Sign of τ² Depends Only on p mod 4",
+    "content": "The corollaries split `gauss_sum_squared` into two cases based on the residue of p modulo 4. This is not merely a computational detail — it reflects the deep theorem that **-1 is a quadratic residue mod p if and only if p ≡ 1 (mod 4)**.\n\n- If p ≡ 1 (mod 4): then p/2 is even, so (-1)^(p/2) = 1, and τ² = **p** (positive integer).\n- If p ≡ 3 (mod 4): then p/2 is odd, so (-1)^(p/2) = -1, and τ² = **-p** (negative integer).\n\nThe **existential form** `gauss_sum_squared_exists` provides the explicit complex witness needed to fulfill the axiom in the parent entry `ElementaryQuadraticReciprocityOQ01OQ01`. This exemplifies a key formalization pattern: **axiomatize first to unblock dependent results, then prove later once the infrastructure is in place**.",
+    "mathContext": "$\\tau^2 = \\begin{cases} p & \\text{if } p \\equiv 1 \\pmod{4} \\\\ -p & \\text{if } p \\equiv 3 \\pmod{4} \\end{cases}$",
+    "significance": "supporting",
+    "relatedConcepts": ["first supplementary law", "quadratic residue", "Even.neg_one_pow", "Odd.neg_one_pow", "axiom elimination"],
+    "prerequisites": ["p mod 4 arithmetic", "Even/Odd.neg_one_pow (Mathlib)", "quadratic residue criterion for -1"]
+  },
+  {
+    "id": "ann-concrete-instances",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 175, "endLine": 212 },
+    "type": "context",
+    "title": "Verification for Small Primes",
+    "content": "The concrete instances for p = 3, 5, 7, 13 serve as **existential sanity checks** for the abstract theorem. They assert the existence of a complex number τ with τ² = ±p, not a specific value of τ.\n\nThe actual Gauss sums for small primes are: τ(3) = e^{2πi/3} - e^{4πi/3} ≈ i√3 (so τ² = -3); τ(5) = 2cos(2π/5) - 2cos(4π/5) = √5 (so τ² = 5); τ(7) ≈ i√7 (so τ² = -7); τ(13) = √13 (so τ² = 13). These values illustrate the general pattern: τ ∈ {±√p, ±i√p} depending on p mod 4, and τ² is always a **rational integer** despite τ itself being a transcendental complex number.\n\nThe closing summary table confirms **7 theorems proved with 0 sorries and 0 axioms**, fully discharging the goal stated in the opening docstring.",
+    "mathContext": "$\\tau(3) = e^{2\\pi i/3} - e^{4\\pi i/3}, \\quad \\tau(5) = 2\\cos(2\\pi/5) - 2\\cos(4\\pi/5) = \\sqrt{5}$",
+    "significance": "context",
+    "relatedConcepts": ["concrete verification", "Gauss sum values", "existential witnesses", "small prime examples"],
+    "prerequisites": ["complex exponentials", "QR mod small primes"]
+  }
+]
