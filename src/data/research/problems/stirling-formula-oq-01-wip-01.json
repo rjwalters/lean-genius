@@ -29,12 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: Proved log_one_plus_le_cubic and log_one_plus_ge_quartic. Step formula sorry remains. Full proof strategy identified.",
+    "progressSummary": "IN-PROGRESS: PR #16354 open. Proved log_one_plus_le_cubic and log_one_plus_ge_quartic (derivative monotonicity). Step bounds conditional on step_formula sorry. Build pending.",
     "builtItems": [
       "log_one_plus_le_cubic theorem in StirlingExpansion.lean (proved)",
       "log_one_plus_ge_quartic theorem in StirlingExpansion.lean (proved)",
       "stirling_step_upper: d_k <= 1/(12k^2)+1/(6k^3) (proved given step formula)",
-      "stirling_step_lower: 1/(12k^2)-1/(12k^3)-1/(8k^4) <= d_k (proved given step formula)"
+      "stirling_step_lower: 1/(12k^2)-1/(12k^3)-1/(8k^4) <= d_k (proved given step formula)",
+      "PR #16354 open: log bounds + step bounds + DifferentiableOn fix"
     ],
     "insights": [
       "d_k = (k+1/2)*log(1+1/k) - 1 is the exact step formula; proved via stirlingSeq definition",
