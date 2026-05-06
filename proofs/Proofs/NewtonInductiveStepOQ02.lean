@@ -192,15 +192,9 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
             h_delta_km1 h_delta_k
         -- h3: ekm1 = 0 → ek = 0 → ekm2 * ekp1 = 0
         intro hb0 hc0
-        -- From hb0 (ekm1 = 0) and nonneg: esymm xs (p+2) = 0 (zero-tail)
-        have hek_zero : ek = 0 := by
-          have : ek ^ 2 ≥ 0 := sq_nonneg _
-          have := h_delta_k
-          rw [hb0, zero_mul] at this
-          exact le_antisymm (by linarith [sq_nonneg ek]) (sq_nonneg ek) |>.symm
-          -- Actually: ek ^ 2 ≥ ekm1 * ekp1 = 0 * ekp1 = 0,
-          -- but we need ek = 0 from ekm1 = 0. Use zero_tail.
-          sorry
+        -- From hb0 (ekm1 = 0): esymm xs (p+2) = ek = 0 by zero_tail
+        have hek_zero : ek = 0 :=
+          esymm_zero_tail xs hxs' (by omega : 1 ≤ p + 1) hb0
         -- From ekm1 = 0 and j = p+1 ≥ 1: esymm xs (p+2) = 0 by zero_tail
         -- Then ekp1 = esymm xs (p+3) = 0 by zero_tail applied again
         have hekp1_zero : ekp1 = 0 :=
@@ -303,15 +297,14 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       -- IH at k=1 for xs (if n ≥ 2): C(n,2)*E_1² ≥ n²*E_2
       have h_IH_k1 : (Nat.choose n 2 : ℝ) * E1 ^ 2 ≥ (n : ℝ) ^ 2 * E2 := by
         rcases le_or_lt 2 n with hm | hm
-        · have h := ih 1 le_rfl (by omega) hxs'
+        · -- IH for xs at k=1: C(n,0)*C(n,2)*E1^2 ≥ C(n,1)^2*(esymm xs 0)*E2
+          have h := ih 1 le_rfl (by omega) hxs'
           simp only [show (1:ℕ) - 1 = 0 from rfl, show (1:ℕ) + 1 = 2 from rfl,
-                     Nat.choose_zero_right, Nat.cast_one, one_mul, esymm_zero,
-                     show (1:ℕ) = 0+1 from rfl, esymm_cons_succ, esymm_zero, mul_one,
-                     show (2:ℕ) = 1+1 from rfl, esymm_cons_succ] at h
-          -- h: C(n,0)*C(n,2)*(E_1)^2 ≥ C(n,1)^2 * 1 * (E_2 + x * E_1)???
-          -- Actually ih is for (x :: xs) ... wait, ih is for xs!
-          -- Let me redo this
-          sorry
+                     Nat.choose_zero_right, Nat.cast_one, one_mul,
+                     esymm_zero, mul_one] at h
+          -- h: C(n,2) * E1^2 ≥ C(n,1)^2 * E2; convert C(n,1) = n
+          have hc1 : (Nat.choose n 1 : ℝ) = n := by exact_mod_cast Nat.choose_one_right n
+          rw [hc1] at h; exact h
         · -- n ≤ 1: E2 = 0
           have : E2 = 0 := esymm_eq_zero_of_gt xs 2 (by omega)
           rw [this, mul_zero]; positivity
