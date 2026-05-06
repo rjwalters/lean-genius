@@ -5,5 +5,5 @@ import sourceRaw from '../../../../proofs/Proofs/LawOfCosinesOQ01OQ01.lean?raw'
 const meta = metaJson as unknown as { id: string; title: string; slug: string; description: string; meta: ProofMeta; sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion; crossReferences?: CrossReference[] }
 export const lawOfCosinesOQ01OQ01Proof: Proof = { id: meta.id, title: meta.title, slug: meta.slug, description: meta.description, meta: meta.meta, sections: meta.sections ?? [], source: sourceRaw, overview: meta.overview, conclusion: meta.conclusion, crossReferences: meta.crossReferences }
 export const lawOfCosinesOQ01OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const lawOfCosinesOQ01OQ01Data: ProofData = { proof: lawOfCosinesOQ01OQ01Proof, annotations: lawOfCosinesOQ01OQ01Annotations, tacticStates: [] }
+export const lawOfCosinesOQ01OQ01Data: ProofData = { proof: lawOfCosinesOQ01OQ01Proof, annotations: lawOfCosinesOQ01OQ01Annotations }
 export default lawOfCosinesOQ01OQ01Data
