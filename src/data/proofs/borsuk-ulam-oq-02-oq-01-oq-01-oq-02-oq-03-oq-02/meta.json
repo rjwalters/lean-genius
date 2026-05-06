@@ -147,5 +147,6 @@
     "summary": "The CRT compatibility buDim(n,d) = sup_{prime p|n} buDim(p,d) holds for ALL n ≥ 2 (proved), not just squarefree numbers. For squarefree n = p₁·…·pₖ with distinct primes, this gives buDim(n,d) = max(buDim(pᵢ,d)). The proof uses 0 new axioms beyond the base framework (buDim, buDim_mono, buDim_le_formula). The squarefree generalization to k primes is proved by induction on the Finset of prime factors.",
     "implications": "The CRT compatibility was previously established case-by-case (semiprime n=pq in OQ03, then proved from formula in OQ03-OQ01). This entry shows the result is not special to 2-prime products: it holds for any composite n and follows directly from the formula axiom. The key structural insight is that buDimFormula is *defined* as the sup over prime factors, so the CRT property is literally built into the formula.",
     "openQuestions": []
-  }
+  },
+  "sorries": 0
 }
