@@ -140,9 +140,9 @@ theorem large_representable {a b : ℕ} (hab : Nat.Coprime a b)
     (ha : 1 ≤ a) (hb : 1 ≤ b) (n : ℕ) (hn : (a - 1) * (b - 1) ≤ n) :
     Representable a b n := by
   -- Trivial cases
-  rcases Nat.eq_or_gt_of_le ha with rfl | ha2
+  rcases ha.eq_or_lt with rfl | ha2
   · exact ⟨n, 0, by ring⟩
-  rcases Nat.eq_or_gt_of_le hb with rfl | hb2
+  rcases hb.eq_or_lt with rfl | hb2
   · exact ⟨0, n, by ring⟩
   -- Now a ≥ 2, b ≥ 2
   have ha_pos : 0 < a := by omega
@@ -190,19 +190,13 @@ theorem frobenius_not_representable {a b : ℕ} (hab : Nat.Coprime a b)
   -- a*b ≥ a + b since (a-1)*(b-1) ≥ 1
   have hab_ge : a + b ≤ a * b := by nlinarith
   -- Rewrite: a*b = a*(x+1) + b*(y+1)
-  have key : a * b = a * (x + 1) + b * (y + 1) := by omega
-  -- a | b*(y+1): since a | a*b and a | a*(x+1), a | their difference
-  have h_dvd_by : a ∣ b * (y + 1) := by
-    have h1 : a ∣ a * b - a * (x + 1) :=
-      Nat.dvd_sub' (dvd_mul_right a b) (dvd_mul_right a (x + 1))
-    rwa [show a * b - a * (x + 1) = b * (y + 1) from by omega] at h1
+  have key : a * b = a * (x + 1) + b * (y + 1) := by nlinarith
+  -- a | b*(y+1): factor as a*(b-(x+1)) using key
+  have h_dvd_by : a ∣ b * (y + 1) := ⟨b - (x + 1), by nlinarith⟩
   -- By coprimality: a | (y + 1)
   have h_dvd_y1 : a ∣ (y + 1) := hab.dvd_of_dvd_mul_left h_dvd_by
-  -- b | a*(x+1): since b | a*b and b | b*(y+1), b | their difference
-  have h_dvd_ax : b ∣ a * (x + 1) := by
-    have h1 : b ∣ a * b - b * (y + 1) :=
-      Nat.dvd_sub' (dvd_mul_left b a) (dvd_mul_right b (y + 1))
-    rwa [show a * b - b * (y + 1) = a * (x + 1) from by omega] at h1
+  -- b | a*(x+1): factor as b*(a-(y+1)) using key
+  have h_dvd_ax : b ∣ a * (x + 1) := ⟨a - (y + 1), by nlinarith⟩
   -- By coprimality: b | (x + 1)
   have h_dvd_x1 : b ∣ (x + 1) := hab.symm.dvd_of_dvd_mul_left h_dvd_ax
   -- y + 1 ≥ a and x + 1 ≥ b
