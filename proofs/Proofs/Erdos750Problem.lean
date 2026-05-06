@@ -46,25 +46,32 @@ def AlmostBipartite {V : Type*} [DecidableEq V]
   ∀ S : Finset V, S.card ≥ m₀ →
     maxIndSetSize G S ≥ S.card / 2 - f S.card
 
-/- ## The Main Conjecture -/
+/- ## The Main Conjecture (OPEN) -/
 
-/-- **Erdős Problem #750**: For any f : ℕ → ℕ with f(m) → ∞, there exists
-    an infinite-chromatic f-almost-bipartite graph. -/
+/-- **Erdős Problem #750** (OPEN): For any f : ℕ → ℕ with f(m) → ∞, there exists
+    an infinite-chromatic graph G (on some vertex set) such that every m-vertex
+    induced subgraph has an independent set of size ≥ m/2 − f(m) for all m ≥ m₀. -/
+axiom erdos_750 :
+    ∀ f : ℕ → ℕ,
+    Filter.Tendsto (fun m => (f m : ℝ)) Filter.atTop Filter.atTop →
+    ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V) (m₀ : ℕ),
+      HasInfiniteChromatic G ∧ AlmostBipartite G f m₀
+
 /- ## Known Results -/
 
-/-- **Erdős–Hajnal (1967)**: for c > 1/4 there is an infinite-chromatic
-    graph with independent sets ≥ (1/2 − c)m in every m-vertex subgraph. -/
-/-- **Erdős–Hajnal–Szemerédi (1982)**: extends the 1967 result to all ε > 0.
-    Resolves Problem #750 for linear deviation functions f(m) = εm. -/
+/- Erdős–Hajnal (1967): for c > 1/4 there is an infinite-chromatic
+   graph with independent sets ≥ (1/2 − c)m in every m-vertex subgraph. -/
+/- Erdős–Hajnal–Szemerédi (1982): extends the 1967 result to all ε > 0.
+   Resolves Problem #750 for linear deviation functions f(m) = εm. -/
+
 /- ## Open Cases -/
 
-/-- **Open: Square Root Case** — Is there an infinite-chromatic graph where
-    every m-vertex subgraph has an independent set of size ≥ m/2 − √m? -/
-/-- **Open: Logarithmic Case** — with deviation C · log₂ m. -/
-/- ## Connections and Observations -/
+/- Open: Square Root Case — Is there an infinite-chromatic graph where
+   every m-vertex subgraph has an independent set of size ≥ m/2 − √m? -/
+/- Open: Logarithmic Case — with deviation C · log₂ m. -/
 
-/-- **Problem #75 Connection**: asks for χ(G) = ℵ₁ with independent sets
-    > n^{1−ε}. Stronger than #750; shares the local-vs-global theme. -/
+/- ## Auxiliary -/
+
 /-- In Fin 2, the only nonzero element is 1. -/
 private theorem fin2_ne_zero_eq_one : ∀ (i : Fin 2), i ≠ 0 → i = 1 := by decide
 
