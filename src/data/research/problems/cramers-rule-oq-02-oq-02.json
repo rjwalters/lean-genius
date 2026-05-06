@@ -1,0 +1,199 @@
+{
+  "slug": "cramers-rule-oq-02-oq-02",
+  "title": "Cramer's Rule vs LU/QR: Algorithm Complexity Comparison",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the comparison be extended to other algorithms (LU decomposition, QR factorization)?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-06T14:45:58.511Z",
+    "iteration": 1,
+    "focus": "Lean file written, Docker build running",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "IN-PROGRESS 2026-05-06: CramersRuleOQ02OQ02.lean written with 12 theorems, 0 sorries, 0 axioms. Proves LU and QR both beat Cramer (LU for n>=1, QR for n>=3). Docker build running.",
+    "builtItems": [
+      "CramersRuleOQ02OQ02.lean:50 - luMuls definition (n^3)",
+      "CramersRuleOQ02OQ02.lean:53 - qrMuls definition (2*n^3)",
+      "CramersRuleOQ02OQ02.lean:56 - luMuls_eq_gaussMuls theorem",
+      "CramersRuleOQ02OQ02.lean:61 - gaussMuls_le_qrMuls theorem",
+      "CramersRuleOQ02OQ02.lean:80 - lu_beats_cramer theorem (n >= 4)",
+      "CramersRuleOQ02OQ02.lean:85 - lu_beats_cramer_all theorem (n >= 1)",
+      "CramersRuleOQ02OQ02.lean:91 - two_n_cube_lt_sq_factorial private lemma",
+      "CramersRuleOQ02OQ02.lean:107 - qr_beats_cramer theorem (n >= 4)",
+      "CramersRuleOQ02OQ02.lean:115 - qr_beats_cramer_from_3 theorem (n >= 3)",
+      "CramersRuleOQ02OQ02.lean:121 - qr_asymptotically_better theorem",
+      "CramersRuleOQ02OQ02.lean:144 - three_way_comparison theorem",
+      "CramersRuleOQ02OQ02.lean:152 - all_cubic_asymptotically_beat_cramer theorem"
+    ],
+    "insights": [
+      "LU decomposition (O(n^3/3)) and Gaussian elimination have the same leading complexity - luMuls = gaussMuls",
+      "QR factorization (O(4n^3/3)) is at most 2x Gaussian - qrMuls = 2*gaussMuls",
+      "QR beats Cramer only for n >= 3: at n=1, tie (both 2); at n=2, QR=16 > Cramer=12",
+      "Key lemma: 2n^3 < n^2*n! for n>=4 via 2n^3 < n^4 = n^2*n^2 < n^2*n!",
+      "All O(n^3) algorithms asymptotically beat Cramer by any constant factor K"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Verify Docker build succeeds",
+      "Create gallery listing entry",
+      "Open PR with research label"
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "algorithms",
+    "extension",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-01-oq-02",
+    "cramers-rule-oq-01-oq-02-oq-01",
+    "cramers-rule-oq-01-oq-03",
+    "cramers-rule-oq-01-oq-04",
+    "cramers-rule-oq-02",
+    "cramers-rule-oq-03",
+    "cramers-rule-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T14:45:58.511Z",
+  "lastUpdate": "2026-05-06T14:45:58.511Z",
+  "significance": 4,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CramersRule.lean",
+      "filename": "CramersRule.lean",
+      "lineCount": 162,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRule.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01.lean",
+      "filename": "CramersRuleOQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02.lean",
+      "filename": "CramersRuleOQ01OQ02.lean",
+      "lineCount": 463,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02OQ01.lean",
+      "filename": "CramersRuleOQ01OQ02OQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ03.lean",
+      "filename": "CramersRuleOQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ04.lean",
+      "filename": "CramersRuleOQ01OQ04.lean",
+      "lineCount": 328,
+      "theoremCount": 17,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ02.lean",
+      "filename": "CramersRuleOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ03.lean",
+      "filename": "CramersRuleOQ03.lean",
+      "lineCount": 176,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ03OQ03.lean",
+      "filename": "CramersRuleOQ03OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04.lean",
+      "filename": "CramersRuleOQ04.lean",
+      "lineCount": 176,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04.lean"
+    }
+  ]
+}
