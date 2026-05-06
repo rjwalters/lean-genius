@@ -110,9 +110,9 @@ lemma sub_pow_char_pow_eq {K : Type*} [CommRing K] {p : ℕ} [CharP K p] [hp : F
     - σ(x) = x since K has no nonzero nilpotents -/
 theorem algEquiv_eq_refl_of_isPurelyInseparable {F K : Type*} [Field F] [Field K]
     [Algebra F K] {p : ℕ} [CharP F p] [CharP K p] [hp : Fact p.Prime]
-    [IsPurelyInseparable F K] (σ : K ≃ₐ[F] K) : σ = AlgEquiv.refl F K := by
+    [IsPurelyInseparable F K] (σ : K ≃ₐ[F] K) : σ = AlgEquiv.refl := by
   ext x
-  simp only [AlgEquiv.coe_refl, Function.id_eq]
+  simp only [AlgEquiv.refl_apply]
   -- Get n with x^(ringChar F)^n in the image of algebraMap F K
   obtain ⟨n, hn⟩ := IsPurelyInseparable.pow_mem (F := F) x
   -- Convert ringChar F to p using characteristic uniqueness
@@ -139,7 +139,7 @@ theorem gal_card_one_of_purelyInseparable_splitting {F : Type*} [Field F]
     [hcharK : CharP f.SplittingField p] :
     Nat.card f.Gal = 1 := by
   haveI : Unique f.Gal :=
-    ⟨⟨AlgEquiv.refl F f.SplittingField⟩, fun σ => algEquiv_eq_refl_of_isPurelyInseparable σ⟩
+    ⟨⟨AlgEquiv.refl⟩, fun σ => algEquiv_eq_refl_of_isPurelyInseparable σ⟩
   exact Nat.card_unique
 
 -- ============================================================================
@@ -162,10 +162,8 @@ theorem insep_gal_trivial_refuted :
     rw [Polynomial.Separable, f_derivative_zero, isCoprime_zero_right] at h_sep
     -- h_sep : IsUnit f_target; if unit then natDegree = 0, but f_target has degree 4
     rw [Polynomial.isUnit_iff] at h_sep
-    obtain ⟨u, hu⟩ := h_sep
-    have h1 : f_target.natDegree = 0 := by
-      have := congr_arg Polynomial.natDegree hu.symm
-      rwa [Polynomial.natDegree_C] at this
+    obtain ⟨u, -, hCu⟩ := h_sep
+    have h1 : f_target.natDegree = 0 := by rw [← hCu, Polynomial.natDegree_C]
     have h2 : f_target.natDegree = 4 := by
       simp only [f_target]; compute_degree!
     omega
