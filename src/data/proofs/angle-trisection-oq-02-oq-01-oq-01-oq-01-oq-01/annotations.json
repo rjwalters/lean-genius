@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-counterexample-setup",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 90 },
+    "type": "definition",
+    "title": "The Counterexample: F₂(a), f = X⁴+X²+a",
+    "content": "The base field is F₂(a) = FractionRing(F₂[X]) — the rational function field over F₂ with formal variable a (represented as the image of X in the fraction field). f_target = X⁴+X²+a (the inseparable irreducible polynomial) and g_factor = X²+X+a (the Artin-Schreier factor). Key lemmas: f_is_g_composed_sq (f = g∘X²) and f_derivative_zero (f' = 0 in char 2, proving inseparability).",
+    "mathContext": "In characteristic 2: $f'(X) = 4X^3 + 2X = 0$, so $f$ is inseparable. The factoring structure $f(X) = g(X^2)$ where $g(X) = X^2 + X + a$ (Artin-Schreier polynomial) shows $f$ splits via the square root of a root of $g$. Since $g$ is irreducible over $\\mathbb{F}_2(a)$ (Artin-Schreier: $a \\neq t^2 + t$ for any $t \\in \\mathbb{F}_2(a)$), the splitting field $\\mathbb{F}_2(a)(\\alpha^{1/2})$ has non-trivial automorphism $\\alpha^{1/2} \\mapsto \\alpha^{1/2} + 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Artin-Schreier polynomial", "characteristic 2", "inseparable polynomial", "fraction field"],
+    "prerequisites": ["characteristic p fields", "Artin-Schreier theory", "inseparability (derivative = 0)", "fraction rings"]
+  },
+  {
+    "id": "ann-frobenius-key-lemma",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 112 },
+    "type": "technique",
+    "title": "Char-p Frobenius: (σ(x)−x)^(p^n) = 0",
+    "content": "The key technical lemma sub_pow_char_pow_eq: in a characteristic-p ring, (a − b)^(p^n) = a^(p^n) − b^(p^n). This is the additive Frobenius endomorphism: the map x ↦ x^p is a ring homomorphism in char p. The proof uses CharP.add_pow_char_pow repeatedly. This lemma is the algebraic engine of the purely-inseparable Galois triviality proof.",
+    "mathContext": "In characteristic $p$: $(a - b)^p = a^p - b^p$ (since all binomial coefficients $\\binom{p}{k}$ for $0 < k < p$ are divisible by $p$). By induction: $(a-b)^{p^n} = a^{p^n} - b^{p^n}$. Applied to $\\sigma(x) - x$: $(\\sigma(x) - x)^{p^n} = \\sigma(x)^{p^n} - x^{p^n}$. If $x^{p^n} \\in F$ (purely inseparable condition), then $\\sigma(x^{p^n}) = x^{p^n}$ (since $\\sigma$ fixes $F$), so $(\\sigma(x) - x)^{p^n} = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius endomorphism", "characteristic p", "binomial theorem in char p", "nilpotent elements"],
+    "prerequisites": ["characteristic p rings", "Frobenius endomorphism", "binomial coefficients mod p"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 114, "endLine": 158 },
+    "type": "technique",
+    "title": "Purely Inseparable Extension → Trivial Galois Group",
+    "content": "algEquiv_eq_refl_of_isPurelyInseparable: every F-algebra automorphism of a purely inseparable extension K/F is the identity. Proof: for any σ : K ≃ₐ[F] K and x ∈ K, get n with x^(p^n) ∈ F (IsPurelyInseparable.pow_mem). Then σ(x)^(p^n) = x^(p^n) (σ fixes F), so (σ(x)−x)^(p^n) = 0 (Frobenius lemma). Fields have no nonzero nilpotents, so σ(x) = x. Since x is arbitrary, σ = id.",
+    "mathContext": "The purely inseparable condition: $K/F$ is purely inseparable iff for every $x \\in K$, there exists $n$ with $x^{p^n} \\in F$. For an $F$-automorphism $\\sigma$: $\\sigma(x)^{p^n} = \\sigma(x^{p^n}) = x^{p^n}$ (since $\\sigma$ is an $F$-algebra map and $x^{p^n} \\in F$). By the Frobenius lemma: $(\\sigma(x) - x)^{p^n} = 0$. Since $K$ is a field (no nilpotents), $\\sigma(x) - x = 0$. Then `AlgEquiv.ext` gives $\\sigma = \\text{id}$.",
+    "significance": "key",
+    "relatedConcepts": ["purely inseparable extension", "algebra automorphism", "nilpotents in fields", "AlgEquiv"],
+    "prerequisites": ["purely inseparable extensions (IsPurelyInseparable)", "AlgEquiv.ext", "field: no nilpotents", "Frobenius lemma"]
+  },
+  {
+    "id": "ann-gal-card-corollary",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 143, "endLine": 162 },
+    "type": "insight",
+    "title": "Corollary: |Gal(f)| = 1 for Purely Inseparable Splitting Field",
+    "content": "gal_card_one_of_purelyInseparable_splitting: if f.SplittingField is a purely inseparable extension of F, then Nat.card f.Gal = 1. Follows from algEquiv_eq_refl_of_isPurelyInseparable: every element of Gal(f) is the identity, so |Gal(f)| = 1. The counterexample_gal_card axiom provides the concrete Gal cardinality for the char-2 counterexample (|Gal(f_target)| = 2), which is used to formally refute the original insep_gal_trivial claim.",
+    "mathContext": "The Galois group $\\text{Gal}(f/F)$ consists of $F$-algebra automorphisms of the splitting field. If the splitting field is purely inseparable over $F$, then every automorphism is the identity (proved above), so $|\\text{Gal}(f)| = 1$. The formal refutation: `counterexample_gal_card` axiomatizes $|\\text{Gal}(f_{\\text{target}})| = 2$, contradicting the claimed $|\\text{Gal}(f)| = 1$ for all inseparable irreducible $f$.",
+    "significance": "key",
+    "relatedConcepts": ["Galois group cardinality", "purely inseparable splitting field", "counterexample", "formal refutation"],
+    "prerequisites": ["Galois group definition", "gal_card_one_of_purelyInseparable_splitting", "counterexample_gal_card axiom"]
+  },
+  {
+    "id": "ann-insep-vs-purely-insep",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 62 },
+    "type": "insight",
+    "title": "Inseparable ≠ Purely Inseparable Splitting Field",
+    "content": "The core conceptual contribution: being inseparable (f'=0) is a weaker condition than having a purely inseparable splitting field. An inseparable polynomial f = g(X^p) with g separable irreducible has splitting field ≅ g.SplittingField, which is separable. The Galois group is Gal(g), which is trivial only when deg(g) = 1. The original axiom confused 'f is inseparable' with 'the splitting field extension is purely inseparable' — two very different conditions.",
+    "mathContext": "Inseparability spectrum: (1) **Separable**: $f$ has distinct roots — Galois theory works normally. (2) **Inseparable**: $f' = 0$ — equivalently $f = g(X^p)$ for some $g$ without $p$-th power factors; $\\text{Gal}(f) \\cong \\text{Gal}(g_{\\text{sep}})$. (3) **Purely inseparable splitting**: $f(X) = c(X-r)^{p^e}$ for a single root $r$ — trivial Galois group. These are strictly nested: (3) $\\subsetneq$ (2) $\\subsetneq$ (1)$^c$. The counterexample lives in (2) but not (3).",
+    "significance": "key",
+    "relatedConcepts": ["separability", "purely inseparable", "inseparable polynomial", "Galois group of inseparable polynomial"],
+    "prerequisites": ["Galois theory", "separable vs inseparable polynomials", "purely inseparable field extensions"]
+  }
+]
