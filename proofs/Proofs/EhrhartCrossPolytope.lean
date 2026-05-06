@@ -106,7 +106,7 @@ theorem crossEhrhart_mono (d n : ℕ) : crossEhrhart d n ≤ crossEhrhart d (n +
   apply Finset.sum_le_sum
   intro k _
   gcongr
-  exact Nat.choose_le_choose k (by omega)
+  omega
 
 -- ============================================================
 -- PART IV: Hockey-Stick Identity
