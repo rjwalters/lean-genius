@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "NEAR-COMPLETE: 2A (gaussian_prime_classification + tsuchimura), 0S, 18T. gaussian_prime_classification has concrete proof path documented. Backward direction is cleanly tractable with Mathlib API; forward direction needs more infrastructure.",
+    "progressSummary": "NEAR-COMPLETE: 1A (tsuchimura only, appropriate), 0S, 18T. gaussian_prime_classification proved as theorem from Mathlib in PR #16004. Only tsuchimura (Tsuchimura 2005 computational verification) remains as axiom \u2014 appropriate to axiomatize.",
     "builtItems": [
       "PROVED jordan_rabung from tsuchimura (axiom\u2192theorem)",
       "PROVED gethner_et_al from tsuchimura (axiom\u2192theorem)",
@@ -40,7 +40,12 @@
       "Removed: duplicate canEscapeMoat_mono, no_walk_up_to_sqrt26",
       "primes_mod_4_connection: axiom\u2192theorem via factorial argument (~25 lines)",
       "gaussian_prime_theorem: axiom\u2192def (unused axiom converted to Prop statement, 2A\u21921A)",
-      "criticalMoatWidth: cleaned existence proof to use not_canEscapeMoat_le_27"
+      "criticalMoatWidth: cleaned existence proof to use not_canEscapeMoat_le_27",
+      "gaussian_prime_classification: theorem proved from Mathlib (was axiom) - PR #16004",
+      "norm_natAbs_ne_three_mod_four: private helper lemma (ZMod 4 decide)",
+      "prime_dvd_rat_prime: private helper (List induction on primeFactorsList)",
+      "gauss_prime_of_prime_norm: private helper (norm multiplicativity)",
+      "gauss_prime_of_inert: private helper (dvd_prime_pow + mod 4)"
     ],
     "insights": [
       "jordan_rabung and gethner_et_al are weaker results than tsuchimura \u2014 proved as consequences (6A\u21924A)",
@@ -62,18 +67,18 @@
       "Proof skeleton: case-split on Prime z direction: (a) z.norm=2 \u2192 use natAbs_norm_eq + decide; (b) z.norm=p\u00b2 with p\u22613 mod 4 \u2192 derive z associates \u2191p via Zsqrtd.norm_eq_mul_conj, then GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime; (c) z.norm=p with p\u22611 mod 4 \u2192 use Nat.Prime.sq_add_sq + irreducible_iff_prime in Euclidean domain.",
       "Reverse direction (norm-classification \u21d2 prime): each case uses Zsqrtd.norm_mul to verify minimality / no proper divisor. Norm 2 case: 1+i is the only norm-2 Gaussian integer up to units; computational. Norm p case: any factorization gives z=z\u2081z\u2082 with norm(z\u2081)\u00b7norm(z\u2082)=p, forcing one factor a unit.",
       "Metadata bug discovered: prior session updated progressSummary to 1A but the file still has 2 axiom declarations (lines 81, 160). Fixed in this session.",
-      "Backward direction of gaussian_prime_classification is cleaner: norm classification \u2192 prime. Key: norm p (prime) \u2192 irreducible (any factorization has a unit factor), and in \u2124[i] irreducible = prime.",
-      "Core lemma needed: if z.norm = p is a nat prime, then Prime z. Proof: z = a*b \u2192 z.norm = a.norm * b.norm = p (prime) \u2192 one norm is 1 \u2192 that factor is a unit. Uses Zsqrtd.norm_mul and GaussianInt.isUnit_iff.",
-      "Inert case (norm = p\u00b2): z is associate to \u2191p in \u2124[i]. Use GaussianInt.prime_of_nat_prime_of_mod_four_eq_three (or prime_iff_mod_four_eq_three_of_nat_prime) to show \u2191p is prime.",
-      "Norm-2 case: z.re.natAbs^2 + z.im.natAbs^2 = 2 forces (re, im) \u2208 {\u00b11, \u00b11}. Each associate to 1+i. Show Prime \u27e81,1\u27e9 by: norm = 2 (prime in \u2115) + norm multiplicativity \u2192 irreducible.",
-      "Exact Mathlib API: Zsqrtd.norm_mul for multiplicativity, GaussianInt.isUnit_iff for unit criterion, irreducible_iff_prime in UFD."
+      "gaussian_prime_classification proved as theorem: axiom\u2192theorem reduces axiomCount 2\u21921",
+      "Key structure: prime_dvd_rat_prime via List induction on primeFactorsList",
+      "Backward direction: gauss_prime_of_prime_norm (norm=p) + gauss_prime_of_inert (norm=p\u00b2, p\u22613 mod 4)",
+      "Forward direction: inert case uses prime_iff_mod_four_eq_three_of_nat_prime; split/norm2 uses Fermat sq_add_sq + norm_eq_of_associated",
+      "ZMod 4 decide proves no a\u00b2+b\u00b2\u22613 mod 4, eliminating (p,p) factorization case",
+      "Fermat theorem (Nat.Prime.sq_add_sq) factorizes \u2191p = \u27e8a,b\u27e9*\u27e8a,-b\u27e9 for p\u22611 mod 4",
+      "p=2 case handled uniformly via Fermat (2=1\u00b2+1\u00b2) giving norm z = 2 = IsNorm2Prime"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove: theorem gaussianInt_prime_of_prime_norm (z : GaussianInt) (h : Nat.Prime z.norm) : Prime z \u2014 covers norm-2 and split cases",
-      "Prove inert case separately: z.norm = p^2 (p\u22613 mod 4) \u2192 exists associated \u2191p, use GaussianInt.prime_of_nat_prime",
-      "Prove forward direction: Prime z \u2192 z.norm is prime or prime^2 \u2014 harder, may need Zsqrtd.squarefree_or_prime or similar",
-      "Replace axiom gaussian_prime_classification with theorem using the above"
+      "Verify PR #16004 builds with Docker (gaussian_prime_classification proof needs CI check)",
+      "If proof compiles: update meta.json axiomCount from 2 to 1, status remains axiomatized (tsuchimura still axiom)"
     ],
     "markdown": "# Erd\u0151s #952 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]\n\n\n\nThe Gaussian moat problem. This is not actually a problem of Erd\\H{o}s, but has been erroneously attributed to him in the past. In \\cite{Er77c} Erd\\H{o}s recalls: 'The conjecture was told me by Motzkin at the Pasadena number theory meeting 1963 November and it was apparently raised by Basil Gordon and Motzkin. I naturally liked it very much and told it right away to many people, naturally attributing it to Motzkin, but this was later forgotten. Thus the problem is returned to its rightful owners.'\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #951\n- Problem #953\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -98,7 +103,7 @@
     {
       "path": "Proofs/Erdos952Problem.lean",
       "filename": "Erdos952Problem.lean",
-      "lineCount": 359,
+      "lineCount": 360,
       "theoremCount": 18,
       "axiomCount": 2,
       "defCount": 18,
