@@ -138,20 +138,21 @@ theorem empiricalCDF_pointwise_convergence_no_axiom
 -- Axiom Status Summary
 -- ============================================================================
 
-/-- Summary: the Glivenko-Cantelli axiom count has been reduced from 3 to 1.
+/-
+Summary: the Glivenko-Cantelli axiom count has been reduced from 3 to 1.
 
-    - ✓ `thresholdIndicator_integrable` → proved as `thresholdIndicator_integrable_proved`
-    - ✓ `integral_thresholdIndicator_eq_cdf` → proved as `integral_thresholdIndicator_eq_cdf_proved`
-    - ✗ `glivenko_cantelli_uniform` → remains axiomatic (finite bracketing argument,
-          not yet in Mathlib 4.26)
+  - ✓ `thresholdIndicator_integrable` → proved as `thresholdIndicator_integrable_proved`
+  - ✓ `integral_thresholdIndicator_eq_cdf` → proved as `integral_thresholdIndicator_eq_cdf_proved`
+  - ✗ `glivenko_cantelli_uniform` → remains axiomatic (finite bracketing argument,
+        not yet in Mathlib 4.26)
 
-    The one remaining axiom is mathematically genuine: the uniformity step requires
-    choosing finitely many continuity points of F with controlled jump sizes, then
-    applying finite intersection of pointwise convergence events. This requires
-    infrastructure for CDF continuity points that Mathlib 4.26 does not yet provide.
+The one remaining axiom is mathematically genuine: the uniformity step requires
+choosing finitely many continuity points of F with controlled jump sizes, then
+applying finite intersection of pointwise convergence events. This requires
+infrastructure for CDF continuity points that Mathlib 4.26 does not yet provide.
 
-    The pointwise convergence theorem (`empiricalCDF_pointwise_convergence_no_axiom`)
-    is now fully proved from Mathlib without any integration axioms. -/
-theorem axiom_status_reduction : True := trivial
+The pointwise convergence theorem (`empiricalCDF_pointwise_convergence_no_axiom`)
+is now fully proved from Mathlib without any integration axioms.
+-/
 
 end GlivenkoCantelli
