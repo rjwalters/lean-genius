@@ -1,0 +1,68 @@
+{
+  "id": "law-of-cosines-oq-01-oq-01",
+  "title": "Dual Spherical Law of Cosines",
+  "slug": "law-of-cosines-oq-01-oq-01",
+  "description": "Proves the dual spherical law of cosines: for a non-degenerate spherical triangle with arc-length sides a, b, c and dihedral angles A, B, C, we have cos(C) = −cos(A)·cos(B) + sin(A)·sin(B)·cos(c). This is the polar dual of the standard spherical law of cosines, exchanging the roles of sides and angles via the polar triangle construction.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "spherical-geometry",
+      "law-of-cosines",
+      "dihedral-angles",
+      "gram-determinant",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 334,
+    "assumptions": "No axioms or sorries. All results proved from Mathlib inner product space theory.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "angleAtA, angleAtB: dihedral angles at vertices via arccos of normalized inner product of perpendicular projections",
+      "gramDet: Gram determinant 1 − cos²a − cos²b − cos²c + 2cos(a)cos(b)cos(c) proved nonneg via Cauchy-Schwarz",
+      "sinA_sq_gramDet: sin²(A)·sin²(b)·sin²(c) = gramDet by double-angle identity and the cosine formula",
+      "sinAB_product: sin(A)·sin(B)·sin(a)·sin(b)·sin²(c) = gramDet via nonneg square-root extraction",
+      "dual_spherical_law_of_cosines: cos(C) = −cos(A)cos(B) + sin(A)sin(B)cos(c) via polynomial identity after clearing denominators"
+    ],
+    "theoremCount": 22,
+    "definitionCount": 3
+  },
+  "leanFile": {
+    "path": "Proofs/LawOfCosinesOQ01OQ01.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 334,
+    "theoremCount": 22,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The dual spherical law of cosines, cos(C) = −cos(A)·cos(B) + sin(A)·sin(B)·cos(c), is obtained from the standard law cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C) by applying the polar triangle construction: replace each side by π minus the opposite angle and vice versa. The duality was known to Euler and appears in Todhunter's 1886 treatise as a direct consequence of the polar triangle, but the direct algebraic proof via the Gram determinant avoids the polar construction and works at the level of unit vectors in ℝ³.",
+    "problemStatement": "For a spherical triangle on S² with arc-length sides a, b, c and dihedral angles A, B, C (with all side sines positive), prove:\n\n$$\\cos C = -\\cos A \\cdot \\cos B + \\sin A \\cdot \\sin B \\cdot \\cos c$$\n\nwhere A = angleAtA and B = angleAtB are the dihedral angles at vertices A and B, defined as arccos of the normalized inner product of the perpendicular projections of adjacent vertex vectors.",
+    "text": "Proves the dual spherical law of cosines by a direct algebraic route via the Gram determinant, circumventing the polar triangle construction.",
+    "proofStrategy": "1. Define dihedral angles A, B at vertices as arccos of normalized inner products of perpendicular projections. 2. Prove cos(A)·sin(b)·sin(c) = cos(a) − cos(b)·cos(c) (and analogously for B, C) from the inner product decomposition lemma in SphericalLawOfCosines. 3. Define gramDet = 1 − cos²a − cos²b − cos²c + 2cos(a)cos(b)cos(c) and prove it is nonneg via the Cauchy-Schwarz inequality on perpendicular projections. 4. Show sin²(A)·sin²(b)·sin²(c) = gramDet by combining the sin²+cos²=1 identity with the cosine formula. 5. Deduce sin(A)·sin(B)·sin(a)·sin(b)·sin²(c) = gramDet: the product squares to gramDet² (from step 4) and is nonneg, so equals gramDet by nonneg square-root extraction. 6. Multiply both sides of the target equation by sin(a)·sin(b)·sin²(c) and use the polynomial identity (verified by `ring`) to complete the proof.",
+    "keyInsights": [
+      "The Gram determinant gramDet = 1 − cos²a − cos²b − cos²c + 2cos(a)cos(b)cos(c) equals ‖prj(B,A)‖²·‖prj(C,A)‖² − ⟨prj(B,A),prj(C,A)⟩², which is nonneg by Cauchy-Schwarz. This is the key positivity result underlying both the standard and dual laws.",
+      "The identity sin²(A)·sin²(b)·sin²(c) = gramDet follows from sin²+cos²=1 applied to angle A, then substituting the cosine formula. This connects the angular sine to the Gram determinant.",
+      "The product sin(A)·sin(B)·sin(a)·sin(b)·sin²(c) = gramDet is extracted from sin²(A)·sin²(b)·sin²(c) = gramDet and sin²(B)·sin²(a)·sin²(c) = gramDet by showing the product squares to gramDet² and using nonnegativity to take the square root.",
+      "The dual law is equivalent to a polynomial identity after multiplying through by sin(a)·sin(b)·sin²(c). With all five cosine/product formulas in hand, this identity reduces to 0=0 by `ring`, making the algebraic verification automatic.",
+      "Dihedral angles at A and B are defined via perpendicular projection: the angle between the planes A-B and A-C at edge A is arccos(⟨prj(B,A), prj(C,A)⟩ / (‖prj(B,A)‖·‖prj(C,A)‖)). The nondegenerate condition (positive sine of all sides) ensures the projections are nonzero."
+    ],
+    "prerequisites": [
+      "Spherical law of cosines: cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C) (Proofs/SphericalLawOfCosines.lean)",
+      "Inner product decomposition: ⟨u, v⟩ = ⟨u, n⟩⟨v, n⟩ + ⟨prj⊥(u,n), prj⊥(v,n)⟩ for unit normal n",
+      "Cauchy-Schwarz inequality: |⟨u, v⟩| ≤ ‖u‖·‖v‖",
+      "sin²θ + cos²θ = 1 (Pythagorean identity)",
+      "arccos properties: arccos is in [0, π] and cos(arccos(x)) = x for x ∈ [−1,1]"
+    ],
+    "openQuestions": [
+      "Can the Gram determinant argument be generalized to prove the full sine rule sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c)?",
+      "Does the dual law remain true for degenerate triangles (sides of measure 0 or π)?"
+    ]
+  }
+}
