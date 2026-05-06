@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ann-axiom-1-proof",
+    "proofId": "laws-of-large-numbers-oq-04-oq-03",
+    "range": { "startLine": 37, "endLine": 55 },
+    "type": "technique",
+    "title": "Integrability via Integrable.mono'",
+    "content": "The standard Lean 4 pattern for proving integrability of bounded measurable functions: find a dominating integrable function, prove AEMeasurability of the target, and bound the norm pointwise.\n\nHere the dominating function is the constant 1 (integrable on any probability space via `integrable_const`). The indicator 1_{X₀ ≤ x} has norm ≤ 1 (it takes values 0 or 1), proved by splitting on whether X₀(ω) ≤ x. AEMeasurability follows from composing Measurable (X 0) with the Borel-measurable indicator.",
+    "mathContext": "$\\|\\mathbf{1}_{X_0(\\omega) \\leq x}\\| \\leq 1$ for all $\\omega$ and $\\int_\\Omega 1 \\, d\\mu < \\infty$ when $\\mu$ is a probability measure. Therefore $\\mathbf{1}_{X_0 \\leq x}$ is integrable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bounded measurable functions",
+      "integrable_const",
+      "Integrable.mono'",
+      "AEMeasurable"
+    ]
+  },
+  {
+    "id": "ann-preimage-rewrite",
+    "proofId": "laws-of-large-numbers-oq-04-oq-03",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "technique",
+    "title": "Preimage Indicator Factorization",
+    "content": "The key algebraic step: the indicator function 1_{X₀ ≤ x}(ω) = (X₀ ⁻¹' Iic x).indicator(ω). This converts the indicator of a set in the range space (Iic x ⊆ ℝ) to an indicator of a set in the domain space (X₀ ⁻¹' Iic x ⊆ Ω). Only after this conversion can `integral_indicator` be applied, since that lemma requires the indicator to be of a subset of the integration domain.",
+    "mathContext": "$\\mathbf{1}_{X_0(\\omega) \\leq x} = \\mathbf{1}_{X_0(\\omega) \\in (-\\infty, x]} = \\mathbf{1}_{\\omega \\in X_0^{-1}((-\\infty, x])}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.preimage",
+      "Set.indicator",
+      "integral_indicator",
+      "Set.mem_preimage"
+    ]
+  },
+  {
+    "id": "ann-integral-chain",
+    "proofId": "laws-of-large-numbers-oq-04-oq-03",
+    "range": { "startLine": 70, "endLine": 105 },
+    "type": "proof-step",
+    "title": "Three-Step Integration Chain for CDF Identity",
+    "content": "The proof of the CDF identity chains three Mathlib lemmas:\n\n1. **integral_indicator**: converts ∫ (X₀ ⁻¹' Iic x).indicator(ω) dμ to ∫ in X₀ ⁻¹' Iic x, 1 dμ. Requires MeasurableSet of the integration domain, which follows from Measurable (X 0) applied to the Borel set Iic x.\n\n2. **integral_const**: evaluates ∫ _, 1 ∂(μ.restrict s) as ((μ.restrict s) Set.univ).toReal • 1.\n\n3. **Measure.restrict_apply** + **Set.univ_inter**: computes (μ.restrict s) Set.univ = μ (Set.univ ∩ s) = μ s.",
+    "mathContext": "\\begin{align*}\n\\int_\\Omega \\mathbf{1}_{X_0(\\omega) \\leq x} \\, d\\mu &= \\int_\\Omega \\mathbf{1}_{X_0^{-1}((-\\infty,x])}(\\omega) \\, d\\mu \\\\\n&= \\int_{X_0^{-1}((-\\infty,x])} 1 \\, d\\mu \\\\\n&= \\mu(X_0^{-1}((-\\infty, x])) \\\\\n&= \\mu(\\{\\omega : X_0(\\omega) \\leq x\\}) = F(x)\n\\end{align*}",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral_indicator",
+      "integral_const",
+      "Measure.restrict_apply",
+      "trueCDF"
+    ]
+  },
+  {
+    "id": "ann-remaining-axiom",
+    "proofId": "laws-of-large-numbers-oq-04-oq-03",
+    "range": { "startLine": 110, "endLine": 128 },
+    "type": "context",
+    "title": "The One Remaining Axiom: Uniform Bracketing",
+    "content": "After this entry, only one axiom remains in the Glivenko-Cantelli formalization: `glivenko_cantelli_uniform`, the step that upgrades pointwise to uniform convergence.\n\nThis step requires: for any ε > 0, find continuity points q₁,...,qₖ of F such that (a) each interval [qⱼ, qⱼ₊₁) has F-mass < ε, and (b) for any x between grid points, |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε by monotonicity of both Fₙ and F.\n\nThis requires: (1) existence of CDF continuity points with controlled density, (2) monotonicity of Fₙ and F, and (3) finite intersection of pointwise convergence events. Steps (2) and (3) are available in Mathlib. Step (1) — the density of continuity points with controlled jump sizes — is the missing piece in Mathlib 4.26.",
+    "mathContext": "For the uniform bound: for $\\varepsilon > 0$, choose continuity points $q_1 < \\cdots < q_k$ of $F$ with $F(q_{j+1}) - F(q_j^-) < \\varepsilon$. For any $x$, find $j$ with $q_j \\leq x < q_{j+1}$. By monotonicity of $F_n$ and $F$:\n$$|F_n(x) - F(x)| \\leq |F_n(q_{j+1}) - F(q_{j+1})| + \\varepsilon$$\nand the right side is bounded by $\\max_j |F_n(q_j) - F(q_j)| + \\varepsilon \\to \\varepsilon$ a.s.",
+    "significance": "context",
+    "relatedConcepts": [
+      "glivenko_cantelli_uniform",
+      "CDF continuity points",
+      "uniform convergence",
+      "bracketing argument"
+    ]
+  }
+]
