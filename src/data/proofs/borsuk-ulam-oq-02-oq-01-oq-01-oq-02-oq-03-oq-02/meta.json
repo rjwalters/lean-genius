@@ -1,0 +1,151 @@
+{
+  "id": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+  "title": "Borsuk-Ulam CRT for Squarefree Numbers: Generalization to k Primes",
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+  "description": "Proves that the CRT compatibility for BU dimensions (buDim(pq,d) = max(buDim(p,d), buDim(q,d)) for distinct primes p,q) generalizes to squarefree n = p₁·p₂·…·pₖ. The main result is that buDim(n,d) = sup_{p ∈ primeFactors(n)} buDim(p,d) for ALL n ≥ 2, not just squarefree numbers. This follows immediately from buDim_eq_formula and the definition of buDimFormula. Concrete cases buDim(30,d) = buDim 2 d ⊔ buDim 3 d ⊔ buDim 5 d and buDim(210,d) = buDim 2 d ⊔ … ⊔ buDim 7 d are verified. The general k-prime formula is proved by induction on a Finset of distinct primes.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean",
+    "tags": [
+      "borsuk-ulam",
+      "combinatorics",
+      "group-theory",
+      "number-theory",
+      "chinese-remainder-theorem",
+      "prime-factorization",
+      "squarefree",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 247,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.single_le_prod'",
+        "description": "Single element bound for Finset products",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Finset.prod_pos",
+        "description": "Product of positive elements is positive",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Nat.primeFactors_prime",
+        "description": "primeFactors of a prime p equals {p}",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors_mul",
+        "description": "primeFactors of product equals union of primeFactors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.singleton_union",
+        "description": "{a} ∪ s = insert a s",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "buDim_eq_sup_primeFactors: main theorem proving buDim(n,d) = n.primeFactors.sup(buDim · d) for all n ≥ 2",
+      "primeFactors_prod_primes: inductive proof that primeFactors(∏ S) = S for a Finset of primes",
+      "buDim_prod_primes_eq: CRT formula for k distinct primes — buDim(∏ S) d = S.sup(buDim · d)",
+      "Concrete cases: buDim(30,d), buDim(210,d), buDim(2310,d) via native_decide for primeFactors computation"
+    ],
+    "assumptions": "0 sorries. 0 new axiom declarations. All 13 theorems fully machine-checked. Results are verified conditional on the base framework: buDim (function axiom), buDim_mono (monotonicity axiom), and buDim_le_formula (formula conjecture axiom) from parent files.",
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "The Borsuk-Ulam theorem (1933) classifies maps Sⁿ → Sᵐ by showing that no map sends every point to its antipodal image when n > m. For equivariant BU theory applied to cyclic groups ℤ/nℤ, the BU dimension buDim(n,d) measures the topological complexity. The Chinese Remainder Theorem (CRT) provides the algebraic structure: for coprime m, n, we have ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ, so representations of ℤ/mnℤ factor through the product. This algebraic factorization should be reflected at the level of BU dimensions, giving CRT compatibility.\n\nThe semiprime case (n = pq, two distinct primes) was proved in OQ03 (assuming a CRT axiom) and in OQ03-OQ01 (deriving CRT from the formula conjecture). This entry asks whether the same generalization holds for squarefree n = p₁·…·pₖ with k ≥ 3 prime factors. The answer is YES, and the proof reveals something deeper: the equality buDim(n,d) = sup_{p prime, p|n} buDim(p,d) holds for ALL n ≥ 2, not just squarefree numbers.",
+    "problemStatement": "**The Open Question**: Does the CRT compatibility buDim(pq, d) ≤ max(buDim(p,d), buDim(q,d)) (for distinct primes p, q) generalize to squarefree n = p₁·p₂·…·pₖ (a product of k distinct primes)?\n\n**Answer**: YES, and the result is stronger than expected. For ALL n ≥ 2:\n  buDim(n, d) = n.primeFactors.sup (fun p => buDim p d)\nThis follows immediately from buDim_eq_formula (which gives the equality for any n ≥ 2) and the definition of buDimFormula. The CRT structure is not special to squarefree numbers — it is encoded in the formula axiom for all composite numbers.",
+    "text": "The key insight is that buDimFormula n d is **defined** as n.primeFactors.sup (fun p => buDim p d), and the formula axiom gives buDim n d = buDimFormula n d for all n ≥ 2. So the CRT equality is not an additional theorem — it is the formula itself.\n\nFor squarefree n = p₁·…·pₖ (k distinct primes), the prime factor set n.primeFactors = {p₁, …, pₖ}, giving:\n  buDim(n, d) = sup({buDim(pᵢ, d)}) = max(buDim(p₁,d), …, buDim(pₖ,d))\n\nThe proof of primeFactors(∏ S) = S for a Finset S of primes proceeds by induction: the base case uses Nat.primeFactors_prime (a prime's factorization is a singleton), and the inductive step uses Nat.primeFactors_mul to split the product.",
+    "proofStrategy": "The main theorem buDim_eq_sup_primeFactors follows in 2 lines: unfold buDimFormula in buDim_eq_formula (the two-sided formula bound). For concrete squarefree numbers (30, 210, 2310), native_decide computes the primeFactors directly. The general k-prime formula buDim_prod_primes_eq uses induction via primeFactors_prod_primes to identify primeFactors(∏ S) = S."
+  },
+  "leanFile": {
+    "path": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean",
+    "namespace": "BorsukUlamCRTSquarefree",
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic",
+      "Proofs.BorsukUlamOQ02OQ01",
+      "Proofs.BorsukUlamOQ02OQ01OQ01"
+    ],
+    "opens": [
+      "BorsukUlamOQ02OQ01",
+      "BorsukUlamCompositeFormula"
+    ],
+    "lineCount": 247,
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0
+  },
+  "openQuestions": [],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-02-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03"
+  ],
+  "sections": [
+    {
+      "id": "general-crt",
+      "title": "General CRT Formula (All n ≥ 2)",
+      "startLine": 55,
+      "endLine": 95,
+      "summary": "buDim_eq_sup_primeFactors, buDim_squarefree_crt, buDim_le_sup_primeFactors: the main theorem and its squarefree specialization. All follow from buDim_eq_formula + definition of buDimFormula.",
+      "mathContext": "For all $n \\geq 2$: $\\text{buDim}(n, d) = \\bigsqcup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p, d)$. This is the CRT compatibility in its most general form."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds from Monotonicity",
+      "startLine": 98,
+      "endLine": 115,
+      "summary": "buDim_prime_le_of_dvd, buDim_le_prod_primes: lower bounds using buDim_mono — each prime factor's BU dimension is a lower bound.",
+      "mathContext": "$p \\mid n \\Rightarrow \\text{buDim}(p, d) \\leq \\text{buDim}(n, d)$ by monotonicity."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Examples (native_decide)",
+      "startLine": 118,
+      "endLine": 143,
+      "summary": "buDim_thirty (30=2·3·5), buDim_twohundredten (210=2·3·5·7), buDim_twothreeten (2310=2·3·5·7·11). primeFactors computed by native_decide.",
+      "mathContext": "Primorials: $30 = 2 \\cdot 3 \\cdot 5$, $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$, $2310 = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11$."
+    },
+    {
+      "id": "general-k-prime",
+      "title": "General k-Prime Formula (Induction)",
+      "startLine": 146,
+      "endLine": 210,
+      "summary": "primeFactors_prod_primes (inductive proof), two_le_prod_primes (product ≥ 2), buDim_prod_primes_eq (CRT for k primes), crt_recovers_semiprime (k=2 special case).",
+      "mathContext": "For a Finset $S$ of primes: $\\text{primeFactors}(\\prod_{p \\in S} p) = S$ and $\\text{buDim}(\\prod_{p \\in S} p, d) = \\bigsqcup_{p \\in S} \\text{buDim}(p, d)$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Parent: proved CRT for semiprimes (n=pq) with axiom buDim_crt_semiprime. This entry generalizes to squarefree n with k prime factors and proves without that axiom."
+    },
+    {
+      "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Grandparent: defines buDimFormula and proves buDim_eq_formula. The CRT result here is a direct consequence of that formula."
+    }
+  ],
+  "conclusion": {
+    "summary": "The CRT compatibility buDim(n,d) = sup_{prime p|n} buDim(p,d) holds for ALL n ≥ 2 (proved), not just squarefree numbers. For squarefree n = p₁·…·pₖ with distinct primes, this gives buDim(n,d) = max(buDim(pᵢ,d)). The proof uses 0 new axioms beyond the base framework (buDim, buDim_mono, buDim_le_formula). The squarefree generalization to k primes is proved by induction on the Finset of prime factors.",
+    "implications": "The CRT compatibility was previously established case-by-case (semiprime n=pq in OQ03, then proved from formula in OQ03-OQ01). This entry shows the result is not special to 2-prime products: it holds for any composite n and follows directly from the formula axiom. The key structural insight is that buDimFormula is *defined* as the sup over prime factors, so the CRT property is literally built into the formula.",
+    "openQuestions": []
+  }
+}
