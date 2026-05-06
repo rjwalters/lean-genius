@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-05-06T13:49:03.933Z",
     "iteration": 1,
-    "focus": "Algebraic proofs done. Finset slicing for crossBall_card remaining.",
+    "focus": "PR #16339 pending Docker build. Algebraic core proved (expand, succ_d, hockey-stick).",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,31 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Algebraic proof complete (expand+hockey-stick). 1 sorry for Finset slicing.",
+    "progressSummary": "PROGRESS (2026-05-06): algebraic proof framework complete. crossEhrhart_expand (Pascal) + crossEhrhart_succ_d (geometric recursion) + sum_choose_range (hockey-stick) all proved. PR #16339 pending build.",
     "builtItems": [
-      "EhrhartCrossPolytope.lean: 331 lines, 12 theorems, 1 sorry (crossBall_card Finset slicing)",
-      "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:117",
-      "sum_shift_hockey: sum interchange via hockey-stick at EhrhartCrossPolytope.lean:130",
-      "crossEhrhart_expand: Pascal split expansion at EhrhartCrossPolytope.lean:147",
-      "crossEhrhart_succ_d: geometric recursion at EhrhartCrossPolytope.lean:214",
-      "crossEhrhart_is_poly: polynomial identification at EhrhartCrossPolytope.lean:232",
-      "crossBall: Finset model of cross-polytope lattice at EhrhartCrossPolytope.lean:280",
-      "crossBall_card d=0: base case proved, inductive step sorry at EhrhartCrossPolytope.lean:289"
+      "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:131",
+      "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:143",
+      "crossEhrhart_expand: Pascal split at EhrhartCrossPolytope.lean:155",
+      "crossEhrhart_succ_d: geometric recursion at EhrhartCrossPolytope.lean:205",
+      "crossEhrhart_d0/d1/n0: base cases at EhrhartCrossPolytope.lean:64-83",
+      "crossEhrhart_pos/mono: structural properties",
+      "crossEhrhart_d2: proved via induction using recursion (after succ_d)",
+      "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:257"
     ],
     "insights": [
-      "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split",
-      "sum_choose_range: hockey-stick \u03a3_{m<n} C(m,k) = C(n,k+1) proved by induction",
-      "Key identity: 1 + 2*\u03a3_k 2^k C(d,k+1) C(n,k+1) = \u03a3_k 2^k C(d,k) C(n,k) (by sum_range_succ)",
-      "crossEhrhart_succ_d follows in 1 line: expand + sum_shift_hockey",
-      "The formula is a degree-d polynomial in n (proved via falling factorial construction)",
-      "Geometric recursion reflects slicing B_{d+1} along last coordinate: x_{d+1}=0 gives L(B_d,n), x_{d+1}=\u00b1j gives 2*L(B_d,n-j)"
+      "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split of C(d+1,k+1) and key identity 1+2*\u03a3 C(d,k+1)C(n,k+1) = \u03a3 C(d,k)C(n,k)",
+      "sum_choose_range (hockey-stick): \u03a3_{m<n} C(m,k) = C(n,k+1) proved by induction with Pascal step",
+      "sum_shift_hockey: \u03a3_k f(k)*C(n,k+1) = \u03a3_{m<n} \u03a3_k f(k)*C(m,k) via \u2190 sum_choose_range + Finset.sum_comm",
+      "crossEhrhart_succ_d: one-step from expand + hshift; proved via linarith after sum_shift_hockey",
+      "Key identity in proof: \u03a3 2^k C(d,k) C(n,k) = 1 + 2*\u03a3 2^k C(d,k+1) C(n,k+1) \u2014 proved by extracting k=0 via sum_range_succ then dropping d+1 term (C(d,d+1)=0)",
+      "Lean 4.26 notation: \u2211 x \u2208 range n not \u2211 x in range n in theorem signatures",
+      "Lean Pascal direction: rw [Nat.choose_succ_succ] not \u2190 to go C(d+1,k+1) \u2192 C(d,k)+C(d,k+1)",
+      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "No lemma for eval of falling factorial at \u2115 values (needed for crossEhrhart_is_poly)"
+    ],
     "nextSteps": [
-      "Prove crossBall_card inductive step via Finset.card_biUnion and slicing by last coordinate",
-      "Run Docker build to verify all algebraic proofs compile without errors",
-      "Investigate Delannoy number connection: \u03a3 2^k C(d,k) C(n,k) = D(min(d,n), max(d,n))?",
-      "Consider proving crossEhrhart_d3 formula 3*L(B_3,n) = 4n^3 + 6n^2 + 8n + 3"
+      "If Docker build fails: debug crossEhrhart_expand proof (sum distribute step)",
+      "Prove crossEhrhart_is_poly without sorry using Nat.descFactorial or falling factorial",
+      "Prove crossBall_card d=0 using Fintype.card (Fin 0 \u2192 \u03b2) = 1",
+      "Prove crossBall_card inductive step via Finset.card_biUnion slicing"
     ]
   },
   "tags": [
