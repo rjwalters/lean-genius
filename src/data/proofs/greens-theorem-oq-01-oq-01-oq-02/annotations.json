@@ -1,0 +1,147 @@
+[
+  {
+    "id": "ann-intervalIntegral_swap_of_le-signature",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "intervalIntegral_swap_of_le: Ordered Fubini for Interval Integrals",
+    "content": "The ordered case: when a ≤ b and c ≤ d, iterated interval integrals commute. The integrability hypothesis uses the product of Icc-restricted Lebesgue measures, which is the natural form produced by integrability lemmas for functions on closed rectangles. This is the workhorse theorem from which all other formulations are derived.",
+    "mathContext": "For $f : \\mathbb{R} \\times \\mathbb{R} \\to \\mathbb{R}$ measurable and integrable on $[a,b] \\times [c,d]$ (product of Icc-restricted measures): $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fubini's theorem",
+      "iterated integrals",
+      "product measure",
+      "intervalIntegral",
+      "Icc product"
+    ],
+    "prerequisites": [
+      "Mathlib intervalIntegral API",
+      "Integrable predicate",
+      "Measure.prod"
+    ]
+  },
+  {
+    "id": "ann-ioc-icc-bridge",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 69,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "The Ioc/Icc Bridge: Key Technical Step",
+    "content": "The proof of the ordered case pivots on converting interval integrals to set integrals via `integral_of_le` (giving Ioc = half-open intervals), then transferring integrability from the larger Icc product to the smaller Ioc product via `Measure.restrict_mono`. This two-step bridge is why `intervalIntegral_swap` cannot be derived trivially from `integral_integral_swap`: the former uses Icc hypotheses, the latter requires Ioc product measures.",
+    "mathContext": "`integral_of_le` gives $\\int_a^b f\\,dx = \\int_{(a,b]} f\\,d\\mu$ (Ioc). `Measure.restrict_mono Ioc_subset_Icc_self` transfers integrability: $f$ integrable on $[a,b] \\times [c,d] \\implies$ integrable on $(a,b] \\times (c,d]$ (dropping boundary sets of measure zero).",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral_of_le",
+      "Ioc vs Icc",
+      "Measure.restrict_mono",
+      "Ioc_subset_Icc_self"
+    ],
+    "prerequisites": [
+      "Ioc and Icc notation",
+      "measure restriction",
+      "boundary sets have measure zero"
+    ]
+  },
+  {
+    "id": "ann-general-case-strategy",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 99,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "General Case: Sign-Convention Reduction",
+    "content": "The general `intervalIntegral_swap` handles all orderings of a,b and c,d by case-splitting into 4 subcases based on `le_or_lt a b` and `le_or_lt c d`. For reversed limits (b < a), the key identity is `integral_symm`: ∫ x in a..b = -∫ x in b..a. This sign flip, combined with `integral_neg`, allows any case to be reduced to the ordered case by flipping one or both pairs of limits. The integrability hypothesis uses `uIcc` (unordered closed interval) to cover all orderings without case-splitting the hypothesis.",
+    "mathContext": "For any $a, b \\in \\mathbb{R}$: $\\int_a^b = -\\int_b^a$ (oriented integral). `uIcc a b = Set.uIcc a b = Icc (min a b) (max a b)` is the unordered version. Case 4 (both reversed) produces $(-1)^2 = 1$ net sign change, reducing to the ordered case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral_symm",
+      "integral_neg",
+      "uIcc",
+      "sign convention",
+      "oriented integrals"
+    ],
+    "prerequisites": [
+      "signed interval integrals",
+      "uIcc definition",
+      "Mathlib intervalIntegral sign convention"
+    ]
+  },
+  {
+    "id": "ann-continuous-version",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 175,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Continuous Version: No Extra Hypotheses",
+    "content": "For continuous f, both measurability (`hf.measurable`) and integrability are automatic. Integrability follows from: `isCompact_uIcc.prod isCompact_uIcc` gives compactness of the rectangle, `hf.continuousOn.integrableOn_compact` gives integrability on compact sets, and `Measure.restrict_prod_eq_prod_restrict` converts the product-of-restrictions form required by `intervalIntegral_swap`. This is the cleanest and most practically useful formulation.",
+    "mathContext": "For $f \\in C^0(\\mathbb{R}^2)$: $f|_{\\overline{ab} \\times \\overline{cd}}$ is integrable by compactness (where $\\overline{ab}$ = `uIcc a b`). Lean: `hf.continuousOn.integrableOn_compact (isCompact_uIcc.prod isCompact_uIcc)` + `Measure.restrict_prod_eq_prod_restrict` gives the product measure integrability form.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ContinuousOn.integrableOn_compact",
+      "isCompact_uIcc",
+      "Measure.restrict_prod_eq_prod_restrict",
+      "uIcc product"
+    ],
+    "prerequisites": [
+      "Compact sets in metric spaces",
+      "Integrability from continuity",
+      "Product measure theory"
+    ]
+  },
+  {
+    "id": "ann-greens-application",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 189,
+      "endLine": 194
+    },
+    "type": "theorem",
+    "title": "Application: Fubini for Green's Theorem",
+    "content": "The theorem `greens_fubini_for_continuous_dPdy` directly eliminates the Fubini hypothesis that appears in Green's theorem for rectangles. When ∂P/∂y (or ∂Q/∂x) is continuous—the standard assumption in Green's theorem—the integration order swap is automatic. This closes the gap identified in greens-theorem-oq-01-oq-01: no special hypothesis is needed for the Fubini step.",
+    "mathContext": "In Green's theorem: $\\iint_R \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA = \\int_c^d \\int_a^b \\frac{\\partial P}{\\partial y}\\,dx\\,dy$. The Fubini swap $\\int_c^d \\int_a^b = \\int_a^b \\int_c^d$ is needed to match the form computed from FTC. This theorem provides exactly that swap when $\\partial P/\\partial y$ is continuous.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Green's theorem",
+      "partial derivatives",
+      "Fubini hypothesis",
+      "rectangle integrals"
+    ],
+    "prerequisites": [
+      "Green's theorem formalization (OQ01)",
+      "Fundamental theorem of calculus",
+      "Continuity of partial derivatives"
+    ]
+  },
+  {
+    "id": "ann-mathlib-gap",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 196,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Mathlib Gap: intervalIntegral_swap Absent",
+    "content": "As of mathlib4 rev 2df2f015, Mathlib contains `integral_integral_swap` (Fubini for Lebesgue integrals on product spaces) but no standalone `intervalIntegral_swap`. Every application that needs Fubini for interval integrals must reimplement the Ioc/Icc bridge. This file documents the gap and proposes a Mathlib contribution target: `MeasureTheory.intervalIntegral.swap` in `Mathlib.MeasureTheory.Integral.IntervalIntegral`.",
+    "mathContext": "Mathlib search confirms: `intervalIntegral_swap`, `intervalIntegral.integral_fubini`, `intervalIntegral.swap` are all absent. The gap exists because `integral_integral_swap` operates on abstract product measures while `intervalIntegral` uses signed conventions with Ioc/Icc conversion.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MeasureTheory.integral_integral_swap",
+      "Mathlib contribution",
+      "intervalIntegral API",
+      "Mathlib gap analysis"
+    ],
+    "prerequisites": [
+      "Mathlib Fubini theorem",
+      "intervalIntegral module structure"
+    ]
+  }
+]
