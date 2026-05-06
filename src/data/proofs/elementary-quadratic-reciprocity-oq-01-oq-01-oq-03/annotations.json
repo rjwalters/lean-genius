@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-gauss-jacobi-identity",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
+    "range": { "startLine": 55, "endLine": 110 },
+    "type": "technique",
+    "title": "The Gauss-Jacobi Product Identity",
+    "content": "jacobiSum_gaussSum_relation: g(χ)·g(ψ) = J(χ,ψ)·g(χψ) for χψ ≠ 1, where g(χ) = Σ_{t∈F} χ(t)·ζ^t is the Gauss sum and J(χ,ψ) = Σ_{a+b=1} χ(a)·ψ(b) is the Jacobi sum. This identity is the key algebraic tool: it allows Gauss sums to be multiplied via Jacobi sums, enabling computation of Gauss sum norms without expanding the product directly.",
+    "mathContext": "The **Gauss-Jacobi identity**: $g(\\chi)g(\\psi) = J(\\chi,\\psi)g(\\chi\\psi)$ for $\\chi\\psi \\neq 1$. Proof by direct expansion: $g(\\chi)g(\\psi) = \\sum_a \\chi(a)\\zeta^a \\sum_b \\psi(b)\\zeta^b = \\sum_{s \\neq 0} \\zeta^s \\sum_{a+b=s} \\chi(a)\\psi(b) = \\sum_{s \\neq 0} \\chi(s)\\psi(s)\\zeta^s J(\\chi,\\psi) = J(\\chi,\\psi)g(\\chi\\psi)$ (substituting $a = su$, $b = s(1-u)$). Formalized via `JacobiSum.jacobiSum_mul_jacobiSum_inv`.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss sum", "Jacobi sum", "multiplicative character", "product identity"],
+    "prerequisites": ["multiplicative characters", "Gauss sums", "Jacobi sums", "MulChar in Mathlib"]
+  },
+  {
+    "id": "ann-algebraic-norm",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
+    "range": { "startLine": 109, "endLine": 155 },
+    "type": "technique",
+    "title": "Algebraic Norm: |J(χ,ψ)|² = p",
+    "content": "jacobiSum_algebraic_norm: for non-trivial χ, ψ with χψ ≠ 1, the algebraic norm of J(χ,ψ) equals the field characteristic p. The proof uses J(χ,ψ)·J(χ̄,ψ̄) = p (from taking the product of g(χ)g(ψ) and its conjugate, then using |g(χ)|² = p for nontrivial characters). jacobiSum_prime_field_norm specializes to prime fields 𝔽_p using ZMod.ringChar_zmod_n.",
+    "mathContext": "For nontrivial $\\chi, \\psi$ with $\\chi\\psi \\neq 1$ over $\\mathbb{F}_p$: $J(\\chi,\\psi)\\overline{J(\\chi,\\psi)} = J(\\chi,\\psi)J(\\bar{\\chi},\\bar{\\psi}) = p$. This follows from $|g(\\chi)|^2 = p$ (Gauss sum norm, proved using $\\sum_t \\chi(t)\\overline{\\chi(t)} = |\\mathbb{F}_p|-1 = p-1$) combined with the Gauss-Jacobi identity. The norm $p$ is the key constraint on Jacobi sum values, analogous to how $|g(\\chi)|^2 = p$ constrains Gauss sums.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic norm", "Jacobi sum norm", "Gauss sum norm", "prime field", "p-adic valuation"],
+    "prerequisites": ["Gauss sum norm", "Gauss-Jacobi identity", "multiplicative characters over prime fields"]
+  },
+  {
+    "id": "ann-cubic-quartic",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
+    "range": { "startLine": 143, "endLine": 200 },
+    "type": "insight",
+    "title": "Cubic and Quartic Reciprocity via Jacobi Sums",
+    "content": "cubic_jacobi_algebraic_norm: for χ³ = 1 (order-3 character), J(χ,χ)² has algebraic norm p. quartic_jacobi_algebraic_norm: for χ⁴ = 1 (order-4 character), J(χ,χ)² ≡ p (mod (1+i)). These are stepping stones toward the full reciprocity laws: cubic reciprocity says that p is a cube modulo q iff q is a cube modulo p, provable via Jacobi sums in ℤ[ω] (Eisenstein integers). Quartic reciprocity works in ℤ[i] (Gaussian integers).",
+    "mathContext": "**Cubic reciprocity**: $p \\equiv 1 \\pmod 3$ allows cubic characters on $\\mathbb{F}_p$. The Jacobi sum $J(\\chi_3, \\chi_3) \\in \\mathbb{Z}[\\omega]$ (cube root of unity) satisfies $|J|^2 = p$ and $J \\equiv 1 \\pmod{(1-\\omega)^2}$. The cubic reciprocity law then follows from the algebraic properties of $J$ in the Eisenstein integers. **Quartic reciprocity**: similarly uses $J(\\chi_4, \\chi_4) \\in \\mathbb{Z}[i]$ with $|J|^2 = p$ and congruence conditions modulo powers of $(1+i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cubic reciprocity", "quartic reciprocity", "Eisenstein integers", "Gaussian integers", "higher power residue symbols"],
+    "prerequisites": ["quadratic reciprocity proof via Gauss sums", "algebraic integers", "Eisenstein integers", "Gaussian integers"]
+  },
+  {
+    "id": "ann-quadratic-recovery",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
+    "range": { "startLine": 191, "endLine": 245 },
+    "type": "insight",
+    "title": "Recovering Quadratic Reciprocity: The Special Case",
+    "content": "quadratic_jacobi_is_sign: for quadratic characters (χ² = 1), J(χ,χ) = χ(-1). This means the quadratic Jacobi sum is just the sign ±1 — a much simpler value than the general case. cubic_vs_quadratic_contrast: shows that for cubic characters, J(χ,χ) is a genuine algebraic integer in ℤ[ω] of norm p — fundamentally more complex than the quadratic case. This is why higher reciprocity laws require algebraic number theory while quadratic reciprocity admits elementary proofs.",
+    "mathContext": "For a quadratic character $\\chi$ (i.e., $\\chi^2 = 1$, so $\\chi = \\chi^{-1}$): $J(\\chi,\\chi) = \\sum_{a+b=1} \\chi(a)\\chi(b) = \\chi(\\text{something}) = \\chi(-1) = \\pm 1$. The simplicity of $J(\\chi,\\chi) \\in \\{\\pm 1\\}$ is why quadratic reciprocity can be proved without algebraic numbers. For cubic $\\chi$ ($\\chi^3 = 1$, $\\chi \\neq 1$): $J(\\chi,\\chi) \\in \\mathbb{Z}[\\omega]$, $|J|^2 = p$, and the full reciprocity law requires working in the Eisenstein ring $\\mathbb{Z}[e^{2\\pi i/3}]$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic Jacobi sum", "sign character", "elementary vs algebraic proof", "higher reciprocity laws"],
+    "prerequisites": ["quadratic characters", "Jacobi sum specialization", "algebraic number theory motivation"]
+  },
+  {
+    "id": "ann-mathlib-dependency",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "context",
+    "title": "Building on Mathlib's JacobiSum.Basic",
+    "content": "The proof is organized as a wrapper around Mathlib's JacobiSum.Basic module. The fundamental identity jacobiSum_mul_jacobiSum_inv is provided by Mathlib; this entry specializes it to prime fields, derives norm formulas, and proves the cubic/quartic cases. The key contribution is making the connection from abstract characters to concrete arithmetic (cubic and quartic residue symbols) explicit in Lean 4.",
+    "mathContext": "Mathlib provides `JacobiSum.jacobiSum_mul_jacobiSum_inv`: $J(\\chi, \\psi) \\cdot J(\\bar{\\chi}, \\bar{\\psi}) = \\bar{\\chi}(-1) \\cdot |F|$ for nontrivial $\\chi, \\psi$ with $\\chi\\psi \\neq 1$. This entry applies this to: (1) prime fields $\\mathbb{F}_p$ via `ZMod.ringChar_zmod_n`; (2) cubic characters $\\chi_3$ (order 3) to get $|J(\\chi_3,\\chi_3)|^2 = p$ in $\\mathbb{Z}[\\omega]$; (3) quartic characters $\\chi_4$ (order 4) to get the analogous norm in $\\mathbb{Z}[i]$.",
+    "significance": "context",
+    "relatedConcepts": ["JacobiSum.Basic", "Mathlib dependencies", "ZMod", "MulChar"],
+    "prerequisites": ["Mathlib.NumberTheory.JacobiSum.Basic", "multiplicative characters in Mathlib", "ZMod module"]
+  }
+]
