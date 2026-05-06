@@ -16,7 +16,7 @@
       "parseval",
       "verified"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 161,
@@ -46,10 +46,7 @@
       }
     ],
     "originalContributions": [
-      "Bessel's inequality for infinite orthonormal systems in real Hilbert spaces",
-      "Summability of the Bessel series with monotone convergence",
-      "Parseval's identity derived from HilbertBasis.tsum_inner_mul_inner via real symmetry",
-      "General RCLike version (norm-squared form) via @inner directly"
+      "Parseval's identity derived from HilbertBasis.tsum_inner_mul_inner via real symmetry (⟪x,bᵢ⟫ = ⟪bᵢ,x⟫ converts the complex Parseval identity to the real norm-squared form)"
     ],
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0"
