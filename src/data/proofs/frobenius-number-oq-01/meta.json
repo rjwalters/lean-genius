@@ -2,7 +2,7 @@
   "id": "frobenius-number-oq-01",
   "title": "Frobenius Number: Count of Non-Representable Integers = (a-1)(b-1)/2",
   "slug": "frobenius-number-oq-01",
-  "description": "For coprime positive integers a, b ≥ 2, exactly (a-1)(b-1)/2 positive integers in {1,...,g(a,b)} cannot be represented as non-negative linear combinations of a and b. Proved via the Frobenius Symmetry (OQ-02): the involution k ↦ g-k bijects non-representable numbers in {1,...,g-1} onto representable numbers in {1,...,g-1}, giving equal counts. With g non-representable and 0 representable, the total is (g-1)/2 + 1 = (g+1)/2 = (a-1)(b-1)/2. 6 theorems, 0 sorries, 0 axioms.",
+  "description": "For coprime positive integers a, b ≥ 2, exactly (a-1)(b-1)/2 positive integers in {1,...,g(a,b)} cannot be represented as non-negative linear combinations of a and b. Proved via the Frobenius Symmetry (OQ-02): the involution k ↦ g-k bijects non-representable numbers in {1,...,g-1} onto representable numbers in {1,...,g-1}, giving equal counts. With g non-representable and 0 representable, the total is (g-1)/2 + 1 = (g+1)/2 = (a-1)(b-1)/2. 3 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -18,7 +18,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 159,
-    "theoremCount": 6,
+    "theoremCount": 3,
     "definitionCount": 0,
     "assumptions": "None. All theorems proved from first principles using Mathlib's Finset.card_bij and the Frobenius Symmetry result (OQ-02).",
     "mathlibDependencies": [
@@ -96,7 +96,7 @@
     "path": "Proofs/FrobeniusNumberOQ01.lean",
     "filename": "FrobeniusNumberOQ01.lean",
     "lineCount": 159,
-    "theoremCount": 6,
+    "theoremCount": 3,
     "axiomCount": 0,
     "definitionCount": 0,
     "sorries": 0,
