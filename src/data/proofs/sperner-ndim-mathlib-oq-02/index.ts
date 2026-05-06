@@ -1,7 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/SpernerNDimMathlibOQ01.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/SpernerNDimMathlibOQ02.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -15,7 +15,7 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-export const spernerNdimMathlibOq01Proof: Proof = {
+export const spernerNdimMathlibOq02Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -28,11 +28,11 @@ export const spernerNdimMathlibOq01Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const spernerNdimMathlibOq01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const spernerNdimMathlibOq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const spernerNdimMathlibOq01Data: ProofData = {
-  proof: spernerNdimMathlibOq01Proof,
-  annotations: spernerNdimMathlibOq01Annotations,
+export const spernerNdimMathlibOq02Data: ProofData = {
+  proof: spernerNdimMathlibOq02Proof,
+  annotations: spernerNdimMathlibOq02Annotations,
 }
 
-export default spernerNdimMathlibOq01Data
+export default spernerNdimMathlibOq02Data
