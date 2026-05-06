@@ -128,7 +128,7 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
                  ((continuous_id.pow 3).div_const 3))).continuousOn
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici] at ht
+        simp only [Set.mem_Ici, Function.id_def] at ht ⊢
         exact ne_of_gt (by linarith)
     · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
       intro t ht
@@ -190,7 +190,7 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
       apply ContinuousOn.sub
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici] at ht
+        simp only [Set.mem_Ici, Function.id_def] at ht ⊢
         exact ne_of_gt (by linarith)
       · exact (((continuous_id.sub ((continuous_id.pow 2).div_const 2)).add
                  ((continuous_id.pow 3).div_const 3)).sub
@@ -233,10 +233,59 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
 private lemma stirling_step_formula (k : ℕ) (hk : 1 ≤ k) :
     Real.log (stirlingSeq k) - Real.log (stirlingSeq (k + 1)) =
     ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / (k : ℝ)) - 1 := by
-  -- Derivation: expand log(stirlingSeq n) = log(n!) - (1/2)log(2n) - n(log n - 1),
-  -- telescope, and simplify using log((k+1)/k) = log(1 + 1/k).
-  -- This is a pure algebraic computation from the stirlingSeq definition.
-  sorry -- HARD: requires unfolding stirlingSeq + careful log/sqrt arithmetic
+  have hk_pos : (0 : ℝ) < k := Nat.cast_pos.mpr (by omega)
+  have hk1_pos : (0 : ℝ) < (k : ℝ) + 1 := by positivity
+  have h2k_pos : (0 : ℝ) < 2 * (k : ℝ) := by positivity
+  have h2k1_pos : (0 : ℝ) < 2 * ((k : ℝ) + 1) := by positivity
+  have hexp_pos : (0 : ℝ) < Real.exp 1 := Real.exp_pos 1
+  -- Expand log(stirlingSeq k) = log(k!) - (1/2)*log(2k) - k*(log(k) - 1)
+  have expand_k : Real.log (stirlingSeq k) =
+      Real.log k.factorial - Real.log (2 * k) / 2 - k * (Real.log k - 1) := by
+    unfold stirlingSeq; push_cast
+    have hpow_pos : (0 : ℝ) < ((k : ℝ) / Real.exp 1) ^ k :=
+      pow_pos (div_pos hk_pos hexp_pos) k
+    have hsqrt_pos : (0 : ℝ) < Real.sqrt (2 * k) := Real.sqrt_pos.mpr h2k_pos
+    rw [Real.log_div (Nat.cast_pos.mpr k.factorial_pos).ne' (mul_pos hsqrt_pos hpow_pos).ne']
+    rw [Real.log_mul hsqrt_pos.ne' hpow_pos.ne']
+    rw [Real.log_sqrt h2k_pos.le]
+    rw [Real.log_pow, Real.log_div hk_pos.ne' hexp_pos.ne', Real.log_exp]
+    ring
+  -- Expand log(stirlingSeq(k+1)) = log((k+1)!) - (1/2)*log(2(k+1)) - (k+1)*(log(k+1) - 1)
+  have expand_k1 : Real.log (stirlingSeq (k + 1)) =
+      Real.log (k + 1).factorial - Real.log (2 * ((k : ℝ) + 1)) / 2 -
+      ((k : ℝ) + 1) * (Real.log ((k : ℝ) + 1) - 1) := by
+    unfold stirlingSeq; push_cast
+    have hpow_pos : (0 : ℝ) < (((k : ℝ) + 1) / Real.exp 1) ^ (k + 1) :=
+      pow_pos (div_pos hk1_pos hexp_pos) (k + 1)
+    have hsqrt_pos : (0 : ℝ) < Real.sqrt (2 * ((k : ℝ) + 1)) := Real.sqrt_pos.mpr h2k1_pos
+    rw [Real.log_div (Nat.cast_pos.mpr (k + 1).factorial_pos).ne'
+        (mul_pos hsqrt_pos hpow_pos).ne']
+    rw [Real.log_mul hsqrt_pos.ne' hpow_pos.ne']
+    rw [Real.log_sqrt h2k1_pos.le]
+    rw [Real.log_pow, Real.log_div hk1_pos.ne' hexp_pos.ne', Real.log_exp]
+    push_cast
+    ring
+  rw [expand_k, expand_k1]
+  -- Expand log((k+1)!) = log(k+1) + log(k!) using (k+1)! = (k+1) * k!
+  have hfact_exp : Real.log ↑(k + 1).factorial = Real.log ((k : ℝ) + 1) + Real.log ↑k.factorial := by
+    rw [show (k + 1).factorial = (k + 1) * k.factorial from Nat.factorial_succ k]
+    push_cast
+    exact Real.log_mul hk1_pos.ne' (Nat.cast_pos.mpr k.factorial_pos).ne'
+  rw [hfact_exp]
+  -- log(2*(k+1)) - log(2*k) = log(k+1) - log(k)
+  have hlog_ratio : Real.log (2 * ((k : ℝ) + 1)) - Real.log (2 * k) =
+      Real.log ((k : ℝ) + 1) - Real.log k := by
+    rw [show 2 * ((k : ℝ) + 1) = 2 * k * (((k : ℝ) + 1) / k) from by
+      field_simp [hk_pos.ne']]
+    rw [Real.log_mul (by positivity) (div_pos hk1_pos hk_pos).ne']
+    rw [Real.log_div hk1_pos.ne' hk_pos.ne']
+    ring
+  -- log(1 + 1/k) = log(k+1) - log(k)
+  have hlog_1k : Real.log (1 + 1 / (k : ℝ)) = Real.log ((k : ℝ) + 1) - Real.log k := by
+    rw [show 1 + 1 / (k : ℝ) = ((k : ℝ) + 1) / k from by field_simp [hk_pos.ne']]
+    exact Real.log_div hk1_pos.ne' hk_pos.ne'
+  -- Now conclude by linear algebra: all terms reduce to (k+1/2)*(log(k+1)-log k) - 1
+  linear_combination (1 / 2 : ℝ) * hlog_ratio - ((k : ℝ) + 1 / 2) * hlog_1k
 
 /-- Upper bound: d_k ≤ 1/(12k²) + 1/(6k³) for k ≥ 1.
 
