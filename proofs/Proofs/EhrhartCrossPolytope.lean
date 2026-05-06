@@ -277,9 +277,8 @@ def crossBall (d n : ℕ) : Finset (Fin d → Fin (2 * n + 1)) :=
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
   induction d with
   | zero =>
-    -- B_0 = {0}; cross ball is the single empty function; count = 1 = crossEhrhart 0 n
-    rw [crossEhrhart_d0]
-    simp [crossBall]
+    -- crossBall 0 n = singleton {empty function}, card = 1 = crossEhrhart 0 n
+    simp [crossBall, crossEhrhart]
   | succ d ih => sorry
 
 -- ============================================================
