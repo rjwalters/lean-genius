@@ -382,11 +382,54 @@ theorem cauchyCrofton_le_one_dim2 : cauchyCroftonConst 2 ≤ 1 := by
   rw [div_le_one pi_pos]
   linarith [pi_gt_three]
 
+/-- Product formula: c_n · c_{n+1} = 2/(n·π) for n ≥ 2.
+    Proof: direct cancellation using the sphere area recurrence σ(n) = 2π/(n-1)·σ(n-2). -/
+theorem cauchyCrofton_product (n : ℕ) (hn : 2 ≤ n) :
+    cauchyCroftonConst n * cauchyCroftonConst (n + 1) = 2 / ((n : ℝ) * π) := by
+  unfold cauchyCroftonConst
+  simp only [show n + 1 - 2 = n - 1 from by omega, show n + 1 - 1 = n from by omega]
+  have hpi : (0 : ℝ) < π := pi_pos
+  have hσn2 : 0 < sphereArea (n - 2) := sphereArea_pos _
+  have hσn1 : 0 < sphereArea (n - 1) := sphereArea_pos _
+  have hn1 : (0 : ℝ) < (n : ℝ) - 1 := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : 0 < n)
+  -- Use recurrence: σ(n) = 2π/(n-1) · σ(n-2)
+  have hrec := sphereArea_recurrence n hn
+  -- After substituting hrec, the σ(n-2) factors cancel
+  rw [hrec]
+  field_simp [hpi.ne', hn_pos.ne', hn1.ne', hσn2.ne', hσn1.ne']
+  ring
+
+/-- The two-step ratio: c_{n+2}/c_n = n/(n+1) for n ≥ 2.
+    Proof: divide the product formulas for (n,n+1) and (n+1,n+2). -/
+theorem cauchyCrofton_ratio (n : ℕ) (hn : 2 ≤ n) :
+    cauchyCroftonConst (n + 2) * cauchyCroftonConst n = cauchyCroftonConst n ^ 2 * ((n : ℝ) / (n + 1)) := by
+  have h1 := cauchyCrofton_product n hn
+  have h2 := cauchyCrofton_product (n + 1) (by omega)
+  simp only [show n + 1 + 1 = n + 2 from rfl] at h2
+  have hcn1_pos : 0 < cauchyCroftonConst (n + 1) := cauchyCroftonConst_pos _ (by omega)
+  have hpi : π ≠ 0 := pi_ne_zero
+  have hn_pos : (0 : ℝ) < n := by exact_mod_cast (Nat.pos_of_ne_zero (by omega))
+  have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by positivity
+  -- h1: c_n * c_{n+1} = 2/(n*π), h2: c_{n+1} * c_{n+2} = 2/((n+1)*π)
+  -- Goal: c_{n+2} * c_n = c_n^2 * (n/(n+1))
+  -- Equivalently: c_{n+2} * c_{n+1} / (c_n * c_{n+1}) = n/(n+1)
+  nlinarith [h1, h2, hcn1_pos, hn_pos, hn1_pos, mul_pos hcn1_pos hn_pos,
+             mul_comm (cauchyCroftonConst n) (cauchyCroftonConst (n + 1)),
+             mul_comm (cauchyCroftonConst (n + 1)) (cauchyCroftonConst (n + 2)),
+             pi_pos]
+
 /-- The Cauchy-Crofton constant decays to zero: c_n → 0 as n → ∞.
 
-    Proof sketch: c_n · c_{n+1} = 2/(n·π) (by cancellation via the sphere area recurrence),
-    so c_n^2 ≤ c_{n-1}·c_n = 2/((n-1)·π) for all n ≥ 3 (using c_{n-1} ≥ c_n),
-    hence c_n ≤ √(2/((n-1)·π)) → 0. -/
+    Proof strategy (using cauchyCrofton_product):
+    1. c_n · c_{n+1} = 2/(n·π) → 0
+    2. c_{n+2}/c_n = n/(n+1) (two-step ratio)
+    3. Even subsequence: c_{2k} ≤ c_2/√k (via ∏ 2j/(2j+1) ≤ 1/√k, since 2j/(2j+1) ≤ √(j/(j+1)))
+    4. Odd subsequence: similar bound
+    5. Squeeze both subsequences to 0
+
+    The bound 2j/(2j+1) ≤ √(j/(j+1)) follows from (2j)^2(j+1) ≤ (2j+1)^2·j,
+    which telescopes to give ∏ ≤ √(1/k). -/
 theorem cauchyCroftonConst_tendsto_zero :
     Filter.Tendsto cauchyCroftonConst Filter.atTop (nhds 0) := by
   sorry
