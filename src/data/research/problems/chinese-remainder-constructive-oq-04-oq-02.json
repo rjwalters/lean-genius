@@ -1,0 +1,153 @@
+{
+  "slug": "chinese-remainder-constructive-oq-04-oq-02",
+  "title": "Unifying List-Based CRT with Ring-Theoretic CRT",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: What is the relationship between this list-based CRT and Mathlib's ring-theoretic CRT (`ZMod.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-06T14:45:58.508Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE 2026-05-06: Bridge theorem connecting CRTList.Satisfies with ZMod.chineseRemainder proved. 12 theorems, 0 sorries, 0 axioms. PR pending.",
+    "builtItems": [
+      "satisfies_pair_iff: CRTList.Satisfies unpacks to two modular congruences",
+      "chineseRemainder_natCast: ring iso applied to ↑x gives ((↑x : ZMod m), (↑x : ZMod n))",
+      "satisfies_pair_iff_chineseRemainder: main bridge theorem OQ04 ↔ ZMod.chineseRemainder",
+      "chineseRemainder_symm_val_lt: ZMod.val of preimage lies in [0, m*n)",
+      "chineseRemainder_symm_satisfies: ring-theoretic preimage satisfies congruence system",
+      "crt_min_eq_chineseRemainder_val: canonical solution equals ZMod.val of preimage"
+    ],
+    "insights": [
+      "map_natCast is the one-line bridge: ring homs commute with ℕ casts, so chineseRemainder h (↑x) = (↑x,↑x) componentwise",
+      "ZMod.natCast_eq_natCast_iff directly connects ZMod equality to Nat.ModEq",
+      "ZMod.natCast_zmod_val + RingEquiv.apply_symm_apply close the canonical solution direction",
+      "uniqueness (crt_list_minimal_unique) forces the canonical ℕ-representative to equal ZMod.val of ring iso preimage"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Extend bridge to k-fold case connecting CRTProd (BezoutOQ03OQ01OQ01) with CRTList.Satisfies"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "ring-theory",
+    "connection",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "chinese-remainder-constructive",
+    "chinese-remainder-constructive-oq-03",
+    "chinese-remainder-constructive-oq-03-oq-03",
+    "chinese-remainder-constructive-oq-04",
+    "chinese-remainder-constructive-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T14:45:58.508Z",
+  "lastUpdate": "2026-05-06T14:45:58.508Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderConstructive.lean",
+      "filename": "ChineseRemainderConstructive.lean",
+      "lineCount": 417,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructive.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03.lean",
+      "lineCount": 323,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03OQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03OQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04.lean",
+      "lineCount": 157,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ02.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ03.lean",
+      "lineCount": 100,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ04.lean",
+      "lineCount": 123,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ04.lean"
+    }
+  ]
+}

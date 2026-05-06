@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ann-crt-bridge-overview",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Two Languages for the Same Theorem",
+    "content": "This file translates between two formal languages for the Chinese Remainder Theorem. The list-based language (parent OQ-04) says: 'there exists x : ℕ satisfying x ≡ aᵢ [MOD mᵢ] for all i.' The ring-theoretic language (Mathlib's ZMod) says: 'the ring isomorphism ZMod(m·n) ≃+* ZMod m × ZMod n sends x to the pair (a mod m, b mod n).' Both express the same mathematical content but differ in how they represent the solution and the congruence conditions.",
+    "mathContext": "The list-based approach: $\\text{Satisfies}(x, [(a,m),(b,n)]) \\Leftrightarrow x \\equiv a \\pmod{m} \\land x \\equiv b \\pmod{n}$. The ring-theoretic approach: $\\phi(\\bar{x}) = (\\bar{a}, \\bar{b})$ where $\\phi : \\mathbb{Z}/mn\\mathbb{Z} \\xrightarrow{\\sim} \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "ZMod.chineseRemainder",
+      "modular arithmetic",
+      "ring isomorphism",
+      "NatCast"
+    ]
+  },
+  {
+    "id": "ann-map-natcast-key",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    },
+    "type": "technique",
+    "title": "map_natCast: The One-Line Bridge",
+    "content": "The entire connection between the two CRT formulations flows from a single fact: `map_natCast f n : f ↑n = ↑n`. For a ring hom f : R →+* S, applying f to the nat cast in R gives the nat cast in S. Applied to ZMod.chineseRemainder, this says the iso commutes with ℕ embeddings. Since product NatCast is defined componentwise ((n : α × β) = ((n : α), (n : β))), the ring iso applied to ↑x immediately gives ((↑x, ↑x)), decomposing into the two residues.",
+    "mathContext": "For $f : R \\to S$ a ring homomorphism: $f(\\iota_R(n)) = \\iota_S(n)$ where $\\iota$ denotes the canonical $\\mathbb{N} \\to R$ ring map. Here $R = \\mathbb{Z}/mn\\mathbb{Z}$, $S = \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$, and the product cast is $\\iota_S(n) = (\\iota_{\\mathbb{Z}/m}(n), \\iota_{\\mathbb{Z}/n}(n))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring homomorphism",
+      "NatCast",
+      "map_natCast",
+      "ZMod.chineseRemainder"
+    ]
+  },
+  {
+    "id": "ann-bridge-theorem",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "satisfies_pair_iff_chineseRemainder: The Main Bridge",
+    "content": "This is the central theorem of the file. After establishing chineseRemainder_natCast (the ring iso applied to ↑x gives (↑x,↑x)), the bridge reduces to a pure algebra fact: (↑x : ZMod m) = (↑a : ZMod m) iff x ≡ a [MOD m], which is ZMod.natCast_eq_natCast_iff. The proof is two rewrites and a simp — the mathematical substance is entirely captured by the preparatory lemmas.",
+    "mathContext": "$\\text{Satisfies}(x, [(a,m),(b,n)]) \\Leftrightarrow \\phi(\\bar{x}) = (\\bar{a},\\bar{b})$ where $\\phi$ is the CRT isomorphism. Proof: $\\phi(\\bar{x}) = (\\bar{x}^{(m)}, \\bar{x}^{(n)})$ by map_natCast, and $(\\bar{x}^{(m)} = \\bar{a}^{(m)}) \\Leftrightarrow (x \\equiv a \\pmod m)$ by ZMod.natCast_eq_natCast_iff.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod.natCast_eq_natCast_iff",
+      "Nat.ModEq",
+      "ring isomorphism",
+      "Chinese Remainder Theorem"
+    ]
+  },
+  {
+    "id": "ann-canonical-bridge",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 101,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "crt_min_eq_chineseRemainder_val: Canonical Representatives Agree",
+    "content": "This theorem completes the unification at the level of canonical representatives. The list-based OQ-04-OQ-04 defines the canonical solution as the unique x < M satisfying all congruences. The ring-theoretic definition is ZMod.val of the preimage under the ring iso. These must agree by uniqueness: both satisfy the congruence system and lie in [0, M), so crt_list_minimal_unique forces equality.",
+    "mathContext": "The minimal CRT representative and the ZMod.val preimage both live in $\\{0,\\ldots,M-1\\}$ and satisfy the same system of congruences. By the uniqueness theorem for minimal solutions, they must be equal. This identifies the two 'canonical forms': the constructive ℕ-representative and the algebraic ZMod.val.",
+    "significance": "key",
+    "relatedConcepts": [
+      "crt_list_minimal_unique",
+      "ZMod.val",
+      "canonical representative",
+      "uniqueness"
+    ]
+  }
+]
