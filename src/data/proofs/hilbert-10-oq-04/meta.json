@@ -1,0 +1,133 @@
+{
+  "id": "hilbert-10-oq-04",
+  "title": "Hilbert's 10th Problem OQ-04: Simplest Undecidable Diophantine Equation",
+  "slug": "hilbert-10-oq-04",
+  "description": "Formalizes the complexity boundaries for undecidable Diophantine equations. Proves: (1) 0-variable equations are trivially decidable; (2) 1-variable linear equations are decidable by divisibility (ax=b ↔ a|b); (3) undecidability is monotone in variable count. Axiomatizes the Jones-Matiyasevich upper bound (9 variables suffice) and the 9-variable undecidability result. Documents the open gap: minimum variables for undecidability is between 3 and 9.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/Hilbert10OQ04.lean",
+    "tags": [
+      "hilbert-10",
+      "diophantine-equations",
+      "decidability",
+      "mrdp-theorem",
+      "computability",
+      "research"
+    ],
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 250,
+    "theoremCount": 10,
+    "definitionCount": 7,
+    "dateAdded": "2026-05-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fin.elim0",
+        "description": "Elimination principle for empty Fin type",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Nat.not_lt_zero",
+        "description": "Zero is a lower bound for naturals",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "zero_var_decidable: 0-variable H10 is decidable via constant check",
+      "linear_one_var: ax = b ↔ a ∣ b — the divisibility criterion for 1-variable linear equations",
+      "H10_undecidable_monotone: undecidability is monotone in variable count (embedding argument)",
+      "complexity_gap_summary: documents the boundary between degree-1 decidability and 9-variable undecidability"
+    ],
+    "assumptions": "5 axioms: mrdp_finite_var (MRDP theorem, variable-bounded form), jones_matiyasevich_bound (9 variables suffice, Jones 1982), nine_var_h10_undecidable (9-variable H10 is undecidable), linear_bezout_n (multi-variable Bézout, Euclid), jones_universal_poly (existence of 9-variable degree-4 universal polynomial).",
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 10th problem (1900) asked for an algorithm to decide whether any given Diophantine equation has integer solutions. The negative answer (MRDP theorem, 1970) was proved by Davis, Putnam, Robinson, and Matiyasevich. After undecidability was established, attention turned to the minimal complexity of undecidable instances: how few variables, and how low a degree, are needed for undecidability?",
+    "problemStatement": "**The Open Question**: What is the simplest (fewest variables, lowest degree) Diophantine equation whose integer solvability is algorithmically undecidable?\n\nKnown bounds:\n- Lower: degree ≥ 2 (degree-1 equations are decidable by Bézout/GCD)\n- Lower: at least 3 variables needed\n- Upper: degree ≤ 4, ≤ 9 variables suffice (Jones 1982)\n\nThe exact minimum remains open.",
+    "proofStrategy": "The file takes a survey approach: proving the decidable cases (0 variables, 1-variable linear) and axiomatizing the undecidable cases (MRDP, Jones-Matiyasevich bound). The key proved result is H10_undecidable_monotone: undecidability propagates upward in variable count via a variable-extension embedding.",
+    "keyInsights": [
+      "Degree-1 equations are decidable: ax = b has a solution iff a divides b (classical Bézout). This gives a hard lower bound: undecidability requires degree ≥ 2.",
+      "9 variables suffice for universality (Jones 1982): every r.e. set can be encoded by a 9-variable Diophantine equation. Combined with MRDP undecidability, this gives 9 as an upper bound on the variable count needed.",
+      "Undecidability is monotone: if k-variable H10 is undecidable, then (k+1)-variable H10 is also undecidable, by embedding k-variable equations as (k+1)-variable ones (ignoring the extra variable).",
+      "The complexity gap: the undecidability threshold lies somewhere between degree 2 and degree 4, and between 3 and 9 variables. The exact bounds are unknown as of 2026."
+    ],
+    "text": "The question of 'simplest undecidable Diophantine equation' breaks into two sub-questions about degree and variable count.\n\n**Variable count**: The 9-variable Jones (1982) result is the current best upper bound. Lower bounds come from algorithmic results for small variable counts (1-variable polynomial equations are decidable for bounded degree; 2-variable quadratic equations are often decidable by special methods).\n\n**Degree**: Linear equations (degree 1) are decidable by Bézout's theorem. The degree-4 upper bound comes from Matiyasevich's encoding of Fibonacci numbers (and hence exponential growth) as degree-4 Diophantine conditions.\n\n**Simultaneous optimization**: Jones (1982) showed that degree 4 and 9 variables can be achieved simultaneously — a single degree-4 polynomial in 9 unknowns is universal for all r.e. sets."
+  },
+  "sections": [
+    {
+      "id": "variable-bounded-def",
+      "title": "Variable-Bounded Diophantine Equations",
+      "startLine": 52,
+      "endLine": 71,
+      "summary": "Defines DiophantineN n (equations in exactly n integer variables), hasSolutionN, H10_n_decidable, H10_n_undecidable.",
+      "mathContext": "For each n, DiophantineN n = (Fin n → Int) → Int models n-variable polynomials. The decision problem H10_n asks for an algorithm that correctly decides solvability for all P : DiophantineN n."
+    },
+    {
+      "id": "linear-forms",
+      "title": "Linear Forms (Degree 1)",
+      "startLine": 73,
+      "endLine": 86,
+      "summary": "LinearForm n structure (coefficients + constant), LinearForm.eval, hasLinearSolution.",
+      "mathContext": "A linear form a₁x₁ + ... + aₙxₙ + c = 0 is the degree-1 case. The decidability of all such equations is Bézout's theorem (axiomatized as linear_bezout_n)."
+    },
+    {
+      "id": "decidable-cases",
+      "title": "Proved Decidable Cases",
+      "startLine": 88,
+      "endLine": 142,
+      "summary": "Proves 0-variable decidability, 1-variable linear decidability (ax=b ↔ a|b), special cases, and H10_undecidable_monotone.",
+      "mathContext": "zero_var_decidable: 0-variable H10 checks a constant = 0. linear_one_var: ax = b has a solution iff a divides b (classical Bézout in 1 variable). H10_undecidable_monotone: an embedding Fin n → Fin (n+1) via castSucc shows undecidability propagates upward."
+    },
+    {
+      "id": "axioms",
+      "title": "Axioms from Literature",
+      "startLine": 144,
+      "endLine": 195,
+      "summary": "mrdp_finite_var, jones_matiyasevich_bound, nine_var_h10_undecidable, linear_bezout_n, jones_universal_poly.",
+      "mathContext": "These axioms represent classical results: MRDP (1970), Jones-Matiyasevich 9-variable bound (1982), and the corresponding undecidability. linear_bezout_n is the general Bézout theorem for n-variable linear equations."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Summary",
+      "startLine": 197,
+      "endLine": 250,
+      "summary": "ten_var_h10_undecidable (monotonicity), eleven_var_h10_undecidable, complexity_gap_summary, and open questions documentation.",
+      "mathContext": "By H10_undecidable_monotone applied to nine_var_h10_undecidable, both 10- and 11-variable H10 are undecidable. The complexity_gap_summary assembles the main boundary result."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "What is the minimum number of variables for an undecidable Diophantine problem?",
+      "status": "open",
+      "notes": "Known: at least 3, at most 9 (Jones 1982). Whether 3, 4, 5, 6, 7, or 8 variables are sufficient is unknown."
+    },
+    {
+      "id": "oq-02",
+      "question": "What is the minimum degree for undecidability?",
+      "status": "open",
+      "notes": "Degree ≤ 1 is decidable (proved). Degree 4 with 9 variables is undecidable. Whether degree 2 or 3 suffices for undecidability is unknown."
+    },
+    {
+      "id": "oq-03",
+      "question": "Can the Bézout axiom (linear_bezout_n) be proved in Lean 4 using Mathlib?",
+      "status": "feasible",
+      "notes": "Mathlib has Int.gcd and the extended Euclidean algorithm. A formal proof of the n-variable Bézout identity using Mathlib.Data.Int.GCD is feasible (~100 lines)."
+    }
+  ],
+  "crossRefs": [
+    {
+      "id": "hilbert-10",
+      "relationship": "parent",
+      "description": "Proves H10 undecidability via halting problem reduction (MRDP axiom). This file asks about the minimal complexity."
+    },
+    {
+      "id": "hilbert-10-oq-01",
+      "relationship": "sibling",
+      "description": "Addresses H10 over the rationals (open problem). Related question about decidability thresholds."
+    }
+  ]
+}
