@@ -2,5 +2,33 @@
   "version": "1.0",
   "last_updated": "",
   "description": "Cross-problem technique index tracking which proof techniques have been tried on which problems",
-  "techniques": []
+  "techniques": [
+    {
+      "name": "Gauss Sum Assembly",
+      "used_in_problems": [
+        "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02"
+      ],
+      "outcome": "success",
+      "date": "2026-05-07",
+      "description": "Assembled four-step Gauss sum QR proof using Legendre character as MulChar (ZMod p) (ZMod q)"
+    },
+    {
+      "name": "MulChar IsQuadratic Case Analysis",
+      "used_in_problems": [
+        "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02"
+      ],
+      "outcome": "success",
+      "date": "2026-05-07",
+      "description": "Prove nontriviality by rcases on IsQuadratic values {0,1,-1} and eliminating -1 case via q!=2"
+    },
+    {
+      "name": "Euler Criterion via legendreSym.eq_pow",
+      "used_in_problems": [
+        "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02"
+      ],
+      "outcome": "success",
+      "date": "2026-05-07",
+      "description": "legendreSym.eq_pow converts p^(q/2) = legendreSym q p in ZMod q after push_cast"
+    }
+  ]
 }
