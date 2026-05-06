@@ -37,6 +37,26 @@ open Real SphericalLawOfCosines
 
 set_option maxHeartbeats 800000
 
+-- Extend SphericalTriangle with dihedral angles at A and B.
+-- Placed in SphericalLawOfCosines so dot notation t.angleA / t.angleB works.
+namespace SphericalLawOfCosines
+
+/-- The dihedral angle at vertex A of a spherical triangle. -/
+noncomputable def SphericalTriangle.angleA (t : SphericalTriangle) : ℝ :=
+  let pB := projectPerp t.B t.A
+  let pC := projectPerp t.C t.A
+  if ‖pB‖ = 0 ∨ ‖pC‖ = 0 then 0
+  else Real.arccos ((@inner ℝ Vec3 _ pB pC) / (‖pB‖ * ‖pC‖))
+
+/-- The dihedral angle at vertex B of a spherical triangle. -/
+noncomputable def SphericalTriangle.angleB (t : SphericalTriangle) : ℝ :=
+  let pA := projectPerp t.A t.B
+  let pC := projectPerp t.C t.B
+  if ‖pA‖ = 0 ∨ ‖pC‖ = 0 then 0
+  else Real.arccos ((@inner ℝ Vec3 _ pA pC) / (‖pA‖ * ‖pC‖))
+
+end SphericalLawOfCosines
+
 namespace LawOfCosinesOQ01OQ02
 
 -- ============================================================================
@@ -50,39 +70,36 @@ lemma proj_inner_eq (t : SphericalTriangle) :
     @inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A) =
     Real.cos t.sideA - Real.cos t.sideB * Real.cos t.sideC := by
   have h := spherical_law_of_cosines_algebraic t.B t.C t.A t.hB t.hC t.hA
-  rw [cos_sideA, cos_sideB, cos_sideC]
+  rw [← cos_sideA, real_inner_comm t.B t.A, ← cos_sideC,
+      real_inner_comm t.C t.A, ← cos_sideB] at h
   linarith
 
 /-- ‖projectPerp B A‖ = sin(sideC) = sin(arcLength A B). -/
 lemma norm_proj_BA (t : SphericalTriangle) :
-    ‖projectPerp t.B t.A‖ = Real.sin t.sideC := by
-  rw [← arcLength_comm t.A t.B]
-  exact norm_projectPerp_eq_sin t.B t.A t.hB t.hA
+    ‖projectPerp t.B t.A‖ = Real.sin t.sideC :=
+  (norm_projectPerp_eq_sin t.B t.A t.hB t.hA).trans (congr_arg Real.sin (arcLength_comm t.B t.A))
 
 /-- ‖projectPerp C A‖ = sin(sideB) = sin(arcLength A C). -/
 lemma norm_proj_CA (t : SphericalTriangle) :
-    ‖projectPerp t.C t.A‖ = Real.sin t.sideB := by
-  rw [← arcLength_comm t.A t.C]
-  exact norm_projectPerp_eq_sin t.C t.A t.hC t.hA
+    ‖projectPerp t.C t.A‖ = Real.sin t.sideB :=
+  (norm_projectPerp_eq_sin t.C t.A t.hC t.hA).trans (congr_arg Real.sin (arcLength_comm t.C t.A))
 
 /-- ‖projectPerp A B‖ = sin(sideC) = sin(arcLength B A). -/
 lemma norm_proj_AB (t : SphericalTriangle) :
-    ‖projectPerp t.A t.B‖ = Real.sin t.sideC := by
-  rw [← arcLength_comm t.B t.A]
-  exact norm_projectPerp_eq_sin t.A t.B t.hA t.hB
+    ‖projectPerp t.A t.B‖ = Real.sin t.sideC :=
+  norm_projectPerp_eq_sin t.A t.B t.hA t.hB
 
 /-- ‖projectPerp C B‖ = sin(sideA) = sin(arcLength B C). -/
 lemma norm_proj_CB (t : SphericalTriangle) :
-    ‖projectPerp t.C t.B‖ = Real.sin t.sideA := by
-  rw [← arcLength_comm t.B t.C]
-  exact norm_projectPerp_eq_sin t.C t.B t.hC t.hB
+    ‖projectPerp t.C t.B‖ = Real.sin t.sideA :=
+  (norm_projectPerp_eq_sin t.C t.B t.hC t.hB).trans (congr_arg Real.sin (arcLength_comm t.C t.B))
 
 /-- Inner product of projections of A, C onto plane ⊥ to B equals cos(b)-cos(a)cos(c). -/
 lemma proj_inner_eq_B (t : SphericalTriangle) :
     @inner ℝ Vec3 _ (projectPerp t.A t.B) (projectPerp t.C t.B) =
     Real.cos t.sideB - Real.cos t.sideA * Real.cos t.sideC := by
   have h := spherical_law_of_cosines_algebraic t.A t.C t.B t.hA t.hC t.hB
-  rw [cos_sideA, cos_sideB, cos_sideC]
+  rw [← cos_sideB, ← cos_sideC, real_inner_comm t.C t.B, ← cos_sideA] at h
   linarith
 
 -- ============================================================================
@@ -118,20 +135,6 @@ lemma gramDet_nonneg (t : SphericalTriangle) : 0 ≤ gramDet t := by
 -- Part III: Dihedral Angles
 -- ============================================================================
 
-/-- The dihedral angle at vertex A of a spherical triangle. -/
-noncomputable def SphericalTriangle.angleA (t : SphericalTriangle) : ℝ :=
-  let pB := projectPerp t.B t.A
-  let pC := projectPerp t.C t.A
-  if ‖pB‖ = 0 ∨ ‖pC‖ = 0 then 0
-  else Real.arccos ((@inner ℝ Vec3 _ pB pC) / (‖pB‖ * ‖pC‖))
-
-/-- The dihedral angle at vertex B of a spherical triangle. -/
-noncomputable def SphericalTriangle.angleB (t : SphericalTriangle) : ℝ :=
-  let pA := projectPerp t.A t.B
-  let pC := projectPerp t.C t.B
-  if ‖pA‖ = 0 ∨ ‖pC‖ = 0 then 0
-  else Real.arccos ((@inner ℝ Vec3 _ pA pC) / (‖pA‖ * ‖pC‖))
-
 /-- sin(angleA) ≥ 0 since angleA ∈ [0, π]. -/
 lemma sin_angleA_nonneg (t : SphericalTriangle) : 0 ≤ Real.sin t.angleA := by
   simp only [SphericalTriangle.angleA]
@@ -164,7 +167,7 @@ private lemma arg_angleA_bounds (t : SphericalTriangle)
   rw [norm_proj_BA, norm_proj_CA] at h_cs
   rw [abs_le] at h_cs
   constructor
-  · rw [le_div_iff h_prod]; linarith [h_cs.1]
+  · rw [le_div_iff₀ h_prod]; linarith [h_cs.1]
   · rw [div_le_one h_prod]; linarith [h_cs.2]
 
 /-- cos(angleA) = (cos(a) - cos(b)cos(c)) / (sin(b)sin(c)) when sin(b), sin(c) > 0. -/
@@ -195,7 +198,7 @@ private lemma arg_angleB_bounds (t : SphericalTriangle)
   rw [norm_proj_AB, norm_proj_CB] at h_cs
   rw [abs_le] at h_cs
   constructor
-  · rw [le_div_iff h_prod]; linarith [h_cs.1]
+  · rw [le_div_iff₀ h_prod]; linarith [h_cs.1]
   · rw [div_le_one h_prod]; linarith [h_cs.2]
 
 /-- cos(angleB) = (cos(b) - cos(a)cos(c)) / (sin(a)sin(c)) when sin(a), sin(c) > 0. -/
@@ -372,7 +375,8 @@ lemma sinA_pos_of_gramDet_pos (t : SphericalTriangle)
   have hbc_pos : 0 < Real.sin t.sideB ^ 2 * Real.sin t.sideC ^ 2 :=
     mul_pos (sq_pos_of_pos hb) (sq_pos_of_pos hc)
   have hA_sq_pos : 0 < Real.sin t.angleA ^ 2 := by
-    rw [h]; exact div_pos hG hbc_pos
+    have key : 0 < Real.sin t.angleA ^ 2 * (Real.sin t.sideB ^ 2 * Real.sin t.sideC ^ 2) := h ▸ hG
+    exact (mul_pos_iff.mp key).elim (fun hh => hh.1) (fun hh => absurd hbc_pos (not_lt.mpr hh.2.le))
   exact Real.sqrt_pos.mpr hA_sq_pos |>.trans_le (by nlinarith [Real.sqrt_sq (sin_angleA_nonneg t)])
 
 /-- Equilateral triangles (a = b = c) have equal angles (A = B = C). -/
