@@ -227,7 +227,7 @@ private lemma pigeonhole_five_two (f : Fin 5 → Fin 2) :
     ∃ (color : Fin 2) (i j k : Fin 5), i ≠ j ∧ j ≠ k ∧ i ≠ k ∧
       f i = color ∧ f j = color ∧ f k = color := by
   have h_pig : (Finset.univ : Finset (Fin 2)).card * 2 < (Finset.univ : Finset (Fin 5)).card := by
-    simp [Finset.card_fin]
+    simp
   obtain ⟨color, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to
     (s := Finset.univ) (t := Finset.univ) (f := f) (fun _ _ => Finset.mem_univ _) h_pig
   have h3 : 3 ≤ (Finset.univ.filter (f · = color)).card := by omega
@@ -236,11 +236,14 @@ private lemma pigeonhole_five_two (f : Fin 5 → Fin 2) :
   refine ⟨color, (iso ⟨0, by omega⟩).val, (iso ⟨1, by omega⟩).val, (iso ⟨2, by omega⟩).val,
     ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro h
-    exact absurd (congrArg Fin.val (iso.injective (Subtype.val_injective h))) (by omega)
+    have key : (0 : ℕ) = 1 := congrArg Fin.val (iso.injective (Subtype.val_injective h))
+    omega
   · intro h
-    exact absurd (congrArg Fin.val (iso.injective (Subtype.val_injective h))) (by omega)
+    have key : (1 : ℕ) = 2 := congrArg Fin.val (iso.injective (Subtype.val_injective h))
+    omega
   · intro h
-    exact absurd (congrArg Fin.val (iso.injective (Subtype.val_injective h))) (by omega)
+    have key : (0 : ℕ) = 2 := congrArg Fin.val (iso.injective (Subtype.val_injective h))
+    omega
   · exact (Finset.mem_filter.mp (hTsub (iso ⟨0, by omega⟩).prop)).2
   · exact (Finset.mem_filter.mp (hTsub (iso ⟨1, by omega⟩).prop)).2
   · exact (Finset.mem_filter.mp (hTsub (iso ⟨2, by omega⟩).prop)).2
@@ -282,10 +285,10 @@ private lemma no_three_distinct_lt3 {m : ℕ} (hm : m < 3) (i j l : Fin m)
       simp only [Fin.mk.injEq]; omega
     rcases this with rfl | rfl | rfl <;> contradiction
 
+set_option maxHeartbeats 800000 in
 /-- R(3;2) = 6 is the classical Ramsey number R(3,3).
     Proof: Upper bound by pigeonhole (vertex with 5 edges → 3 same color → forced triangle).
     Lower bound: exhibit triangle-free 2-colorings for K₃, K₄, K₅. -/
-set_option maxHeartbeats 800000 in
 theorem R3k_two : R3k 2 = 6 := by
   unfold R3k
   rw [dif_pos (show (2 : ℕ) ≥ 1 from by omega)]
@@ -329,21 +332,27 @@ theorem R3k_two : R3k 2 = 6 := by
       have hsym₃ : IsSymmetric c₃ := by
         intro i j; simp only [c₃]; fin_cases i <;> fin_cases j <;> simp
       obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₃ hsym₃
-      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₃]
+      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;>
+        first | exact absurd rfl hij | exact absurd rfl hjl | exact absurd rfl hil |
+                (simp only [c₃, Fin.mk.injEq, ne_eq] at hcij hcjl hcil; omega)
     · let c₄ : EdgeColoring 4 2 := fun p =>
         if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) ∨
            (p.1.val = 2 ∧ p.2.val = 3) ∨ (p.1.val = 3 ∧ p.2.val = 2) then 0 else 1
       have hsym₄ : IsSymmetric c₄ := by
         intro i j; simp only [c₄]; fin_cases i <;> fin_cases j <;> simp
       obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₄ hsym₄
-      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₄]
+      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;>
+        first | exact absurd rfl hij | exact absurd rfl hjl | exact absurd rfl hil |
+                (simp only [c₄, Fin.mk.injEq, ne_eq] at hcij hcjl hcil; omega)
     · let c₅ : EdgeColoring 5 2 := fun p =>
         let d := (p.1.val + 5 - p.2.val) % 5
         if d = 1 ∨ d = 4 then 0 else 1
       have hsym₅ : IsSymmetric c₅ := by
         intro i j; simp only [c₅]; fin_cases i <;> fin_cases j <;> simp
       obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₅ hsym₅
-      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₅]
+      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;>
+        first | exact absurd rfl hij | exact absurd rfl hjl | exact absurd rfl hil |
+                (simp only [c₅, Fin.mk.injEq, ne_eq] at hcij hcjl hcil; omega)
 
 /-- Monotonicity: more colors requires more vertices to force a monochromatic triangle.
     Proof: embed a k₁-coloring into a k₂-coloring via Fin.castLE; any monochromatic
@@ -608,8 +617,8 @@ lemma doubleColoring_avoids {n k : ℕ} (c : EdgeColoring n k)
       fun h => hij (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
       fun h => hjl (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
       fun h => hil (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
-      rfl, Fin.castLE_injective _ (hcjl.trans hcij.symm),
-      Fin.castLE_injective _ (hcil.trans hcij.symm)⟩
+      rfl, Fin.ext (congrArg Fin.val (hcjl.trans hcij.symm)),
+      Fin.ext (congrArg Fin.val (hcil.trans hcij.symm))⟩
   -- (T,T,F): i,j first, l second — i,j edge is within-first (castLE), others cross (last k)
   · exact absurd (hcij.trans hcil.symm) (castLE_ne_last _)
   -- (T,F,T): i,l first, j second — i,l edge is within-first, others cross
@@ -628,8 +637,8 @@ lemma doubleColoring_avoids {n k : ℕ} (c : EdgeColoring n k)
       fun h => hij (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
       fun h => hjl (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
       fun h => hil (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
-      rfl, Fin.castLE_injective _ (hcjl.trans hcij.symm),
-      Fin.castLE_injective _ (hcil.trans hcij.symm)⟩
+      rfl, Fin.ext (congrArg Fin.val (hcjl.trans hcij.symm)),
+      Fin.ext (congrArg Fin.val (hcil.trans hcij.symm))⟩
 
 /-- R3k k satisfies both the forcing property and the minimality property. -/
 private lemma R3k_min_spec (k : ℕ) (hk : k ≥ 1) :
