@@ -110,7 +110,7 @@ def erdos_1173 : Prop :=
 -- PART 4: Context - The Hajnal Free Set Theorem
 -- ============================================================
 
-/-- The Hajnal free set theorem (background): For a regular cardinal κ and
+/- The Hajnal free set theorem (background): For a regular cardinal κ and
     a set mapping f on κ⁺ with |f(α)| < κ for all α, there exists a free
     set of cardinality κ⁺.
 
@@ -166,7 +166,7 @@ theorem overlap_bounded_by_aleph_n (f : SetMapping omega_omega_succ)
 -- PART 6: Related Results
 -- ============================================================
 
-/-- The Erdős-Hajnal set mapping theorem for ℵ₁: any set mapping
+/- The Erdős-Hajnal set mapping theorem for ℵ₁: any set mapping
     f : ω₁ → [ω₁]^{≤ℵ₀} has a free set of size ℵ₁. This is the
     countable case that motivated Problem #1173. -/
 /-- A weaker form: under GCH with the almost disjoint condition,

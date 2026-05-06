@@ -1,38 +1,38 @@
 {
   "slug": "erdos-1173",
-  "title": "Erdős #1173: Free Sets for Set Mappings under GCH",
+  "title": "Erd\u0151s #1173: Free Sets for Set Mappings under GCH",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Assume GCH. Let f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\le \\aleph_\\omega} be a set mapping such that |f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega for all \\alpha \\ne \\beta. Does there exist a free set of cardinality \\aleph_{\\omega+1}? (A set S is free if \\alpha \\notin f(\\beta) for all distinct \\alpha,\\beta \\in S.)",
-    "plain": "Under the Generalized Continuum Hypothesis, suppose every ordinal below ω_{ω+1} is assigned a set of size at most ℵ_ω, and any two of these sets share strictly fewer than ℵ_ω elements. Must there exist a 'free' set of size ℵ_{ω+1} — that is, a set S in which no element of S belongs to the assigned set of any other element of S?",
+    "plain": "Under the Generalized Continuum Hypothesis, suppose every ordinal below \u03c9_{\u03c9+1} is assigned a set of size at most \u2135_\u03c9, and any two of these sets share strictly fewer than \u2135_\u03c9 elements. Must there exist a 'free' set of size \u2135_{\u03c9+1} \u2014 that is, a set S in which no element of S belongs to the assigned set of any other element of S?",
     "whyMatters": [
-      "Open Erdős–Hajnal problem in infinitary combinatorics / set theory (Erdős & Hajnal; Komjáth Ko25b Problem 35; Vaughan Va99 7.88)",
-      "Tests whether the Hajnal free set theorem (regular case) extends to a singular cardinal (ℵ_ω) under a weaker pairwise almost-disjoint intersection hypothesis",
-      "Singular cardinals lack the regularity used in standard free-set arguments; resolution would inform PCF theory and the structure of [κ]^{<κ} for singular κ"
+      "Open Erd\u0151s\u2013Hajnal problem in infinitary combinatorics / set theory (Erd\u0151s & Hajnal; Komj\u00e1th Ko25b Problem 35; Vaughan Va99 7.88)",
+      "Tests whether the Hajnal free set theorem (regular case) extends to a singular cardinal (\u2135_\u03c9) under a weaker pairwise almost-disjoint intersection hypothesis",
+      "Singular cardinals lack the regularity used in standard free-set arguments; resolution would inform PCF theory and the structure of [\u03ba]^{<\u03ba} for singular \u03ba"
     ]
   },
   "knownResults": {
     "proven": [
-      "Hajnal free set theorem (regular case): for regular κ and f : κ⁺ → [κ⁺]^{<κ}, there is a free set of size κ⁺",
-      "Under GCH, ℵ_ω is a strong limit cardinal (gch_aleph_omega_strong_limit, formalized)",
-      "Almost-disjoint overlap is bounded by some ℵ_n for n < ω (overlap_bounded_by_aleph_n, formalized)",
-      "Basic cardinal arithmetic: ℵ_ω < ℵ_{ω+1} and 2^{ℵ_ω} = ℵ_{ω+1} under GCH (formalized)"
+      "Hajnal free set theorem (regular case): for regular \u03ba and f : \u03ba\u207a \u2192 [\u03ba\u207a]^{<\u03ba}, there is a free set of size \u03ba\u207a",
+      "Under GCH, \u2135_\u03c9 is a strong limit cardinal (gch_aleph_omega_strong_limit, formalized)",
+      "Almost-disjoint overlap is bounded by some \u2135_n for n < \u03c9 (overlap_bounded_by_aleph_n, formalized)",
+      "Basic cardinal arithmetic: \u2135_\u03c9 < \u2135_{\u03c9+1} and 2^{\u2135_\u03c9} = \u2135_{\u03c9+1} under GCH (formalized)"
     ],
     "open": [
-      "The full conjecture: existence of a free set of cardinality ℵ_{ω+1}",
-      "Weak form (erdos_1173_weak): existence of a free set of cardinality ℵ_ω"
+      "The full conjecture: existence of a free set of cardinality \u2135_{\u03c9+1}",
+      "Weak form (erdos_1173_weak): existence of a free set of cardinality \u2135_\u03c9"
     ],
-    "goal": "Either construct a free set of cardinality ℵ_{ω+1} from the GCH + bounded image + almost-disjoint hypotheses, or construct (relatively consistent) a counterexample mapping where no such free set exists."
+    "goal": "Either construct a free set of cardinality \u2135_{\u03c9+1} from the GCH + bounded image + almost-disjoint hypotheses, or construct (relatively consistent) a counterexample mapping where no such free set exists."
   },
   "currentState": {
     "phase": "OBSERVE",
     "iteration": 2,
     "focus": "Problem stated and infrastructure formalized; main conjecture remains OPEN",
     "blockers": [
-      "Main conjecture is an open Erdős–Hajnal problem; resolution requires research-level set theory beyond automated formalization"
+      "Main conjecture is an open Erd\u0151s\u2013Hajnal problem; resolution requires research-level set theory beyond automated formalization"
     ],
     "nextAction": "Survey literature for partial results on singular set mappings (Ko25b Problem 35, Va99 7.88) before any formal proof attempt",
     "attemptCounts": {
@@ -42,24 +42,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: Metadata correctness fix \u2014 orphaned doc comments converted to block comments, phantom originalContributions removed, lineCount corrected.",
     "builtItems": [
       "aleph_omega_lt_succ: proved",
-      "gch_power: proved (GCH → 2^ℵ_ω = ℵ_{ω+1})",
-      "free_set_empty/singleton/subset: proved"
+      "gch_power: proved (GCH \u2192 2^\u2135_\u03c9 = \u2135_{\u03c9+1})",
+      "free_set_empty/singleton/subset: proved",
+      "Fixed orphaned doc comments in Erdos1173Problem.lean (lines 113, 169)",
+      "Corrected meta.json originalContributions (removed 2 phantom entries)",
+      "Fixed lineCount discrepancy in meta.json"
     ],
     "insights": [
       "All 4 axioms are deep set-theoretic results about singular cardinals",
       "hajnal_free_set_theorem is a named result in infinitary combinatorics",
       "gch_aleph_omega_strong_limit is a consequence of GCH",
-      "Problem concerns ℵ_ω which is singular — makes set theory harder",
+      "Problem concerns \u2135_\u03c9 which is singular \u2014 makes set theory harder",
       "Proved aleph_omega_lt_succ and gch_power: basic cardinal arithmetic",
       "Proved free_set_empty, free_set_singleton, free_set_subset: basic set mapping properties",
-      "All 4 axioms are genuinely deep (Hajnal theorem, GCH consequences) — no eliminations possible"
+      "All 4 axioms are genuinely deep (Hajnal theorem, GCH consequences) \u2014 no eliminations possible",
+      "Lean file had two orphaned doc comments (/-- without following declaration): lines 113-119 (Hajnal theorem context) and lines 169-171 (Erdos-Hajnal aleph1 context). Fixed by converting to block comments /- ... -/.",
+      "meta.json originalContributions incorrectly listed hajnal_free_set_theorem and erdos_hajnal_aleph1 as Lean identifiers \u2014 these were only block comments. Removed from list in meta.json fix.",
+      "meta.json lineCount was 217; actual file is 218 lines. Fixed both meta.lineCount and leanFile.lineCount."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1173 — Free Sets for Set Mappings under GCH\n\n## Problem\n\nUnder GCH, given f : ω_{ω+1} → [ω_{ω+1}]^{≤ℵ_ω} with |f(α) ∩ f(β)| < ℵ_ω for α ≠ β, must there exist a free set of cardinality ℵ_{ω+1}? (S free ⇔ α ∉ f(β) for distinct α, β ∈ S.)\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Lean Formalization\n\n`proofs/Proofs/Erdos1173Problem.lean` — 0 axioms, 0 sorries.\nDefines the conjecture and supporting machinery; proves basic\ncardinal arithmetic and trivial free-set lemmas. Main conjecture\nis a `def : Prop` (statement only).\n\n## References\n\n- Erdős & Hajnal, original problem\n- Komjáth (Ko25b) Problem 35\n- Vaughan (Va99) 7.88\n"
+    "markdown": "# Erd\u0151s #1173 \u2014 Free Sets for Set Mappings under GCH\n\n## Problem\n\nUnder GCH, given f : \u03c9_{\u03c9+1} \u2192 [\u03c9_{\u03c9+1}]^{\u2264\u2135_\u03c9} with |f(\u03b1) \u2229 f(\u03b2)| < \u2135_\u03c9 for \u03b1 \u2260 \u03b2, must there exist a free set of cardinality \u2135_{\u03c9+1}? (S free \u21d4 \u03b1 \u2209 f(\u03b2) for distinct \u03b1, \u03b2 \u2208 S.)\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Lean Formalization\n\n`proofs/Proofs/Erdos1173Problem.lean` \u2014 0 axioms, 0 sorries.\nDefines the conjecture and supporting machinery; proves basic\ncardinal arithmetic and trivial free-set lemmas. Main conjecture\nis a `def : Prop` (statement only).\n\n## References\n\n- Erd\u0151s & Hajnal, original problem\n- Komj\u00e1th (Ko25b) Problem 35\n- Vaughan (Va99) 7.88\n"
   },
   "tags": [
     "erdos"
@@ -72,16 +78,16 @@
   ],
   "references": {
     "papers": [
-      "Erdős, P. & Hajnal, A. — original problem on set mappings and free sets",
-      "Komjáth, P. (Ko25b), Problem 35",
+      "Erd\u0151s, P. & Hajnal, A. \u2014 original problem on set mappings and free sets",
+      "Komj\u00e1th, P. (Ko25b), Problem 35",
       "Vaughan, J. (Va99), 7.88"
     ],
     "urls": [
       "https://www.erdosproblems.com/1173"
     ],
     "mathlib": [
-      "Mathlib.SetTheory.Cardinal.Basic — Cardinal.aleph, aleph_lt",
-      "Mathlib.SetTheory.Cardinal.Ordinal — aleph_limit, isSuccLimit_omega0"
+      "Mathlib.SetTheory.Cardinal.Basic \u2014 Cardinal.aleph, aleph_lt",
+      "Mathlib.SetTheory.Cardinal.Ordinal \u2014 aleph_limit, isSuccLimit_omega0"
     ]
   },
   "started": "2026-01-15T17:01:06.708Z",

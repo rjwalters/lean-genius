@@ -48,10 +48,8 @@
       "IsFreeSet",
       "HasFreeSetOfCard",
       "erdos_1173",
-      "hajnal_free_set_theorem",
       "gch_aleph_omega_strong_limit",
       "overlap_bounded_by_aleph_n",
-      "erdos_hajnal_aleph1",
       "erdos_1173_weak",
       "aleph_omega_lt_succ",
       "gch_power",
@@ -60,7 +58,7 @@
       "free_set_subset"
     ],
     "axiomCount": 0,
-    "lineCount": 217,
+    "lineCount": 218,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "theoremCount": 7
   },
@@ -68,11 +66,11 @@
     "historicalContext": "Erdős Problem #1173, posed by Erdős and Hajnal, is a fundamental open problem in infinitary combinatorics and set theory. It asks whether the Hajnal free set theorem can be extended from regular cardinals to the singular cardinal $\\aleph_\\omega$. The Hajnal free set theorem (1961) states that for a regular cardinal $\\kappa$ and a set mapping $f : \\kappa^+ \\to [\\kappa^+]^{<\\kappa}$, there exists a free set of cardinality $\\kappa^+$. For singular cardinals, the situation is fundamentally different: $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, so the cofinality is countable, and pcf (possible cofinalities) theory — developed by Saharon Shelah in the 1990s — shows that cardinal arithmetic at singular cardinals exhibits unexpected rigidity. Problem #1173 replaces the pointwise size bound $|f(\\alpha)| < \\kappa$ with the weaker almost-disjoint intersection condition $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ for distinct $\\alpha, \\beta$. Under GCH, the question becomes whether this weaker condition still guarantees a free set of full cardinality $\\aleph_{\\omega+1}$. The problem appears in Komjáth and Totik [Ko25b, Problem 35] and Vaughan [Va99, 7.88].",
     "problemStatement": "Assuming GCH, let $f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega}$ be a set mapping with $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ for all $\\alpha \\neq \\beta$. Does there exist a free set of cardinality $\\aleph_{\\omega+1}$?",
     "text": "Does there exist a free set of cardinality ℵ_{ω+1}?",
-    "proofStrategy": "The formalization defines cardinal constants $\\aleph_\\omega$ and $\\aleph_{\\omega+1}$ using Mathlib's `Cardinal.aleph`, then introduces `SetMapping`, `BoundedImageSize`, `AlmostDisjoint`, `IsFreeSet`, and `HasFreeSetOfCard` as the core vocabulary. The main conjecture `erdos_1173` is a proposition combining GCH, bounded image size, and almost-disjointness. The Hajnal free set theorem for regular $\\kappa$ is axiomatized as context. Two observations under GCH are axiomatized: that $\\aleph_\\omega$ is a strong limit, and that almost-disjoint overlaps are bounded by some $\\aleph_n$. The Erdős–Hajnal theorem for $\\aleph_1$ and a weak form of the conjecture (free set of size $\\aleph_\\omega$ rather than $\\aleph_{\\omega+1}$) are also formalized.",
+    "proofStrategy": "The formalization defines cardinal constants $\\aleph_\\omega$ and $\\aleph_{\\omega+1}$ using Mathlib's `Cardinal.aleph`, then introduces `SetMapping`, `BoundedImageSize`, `AlmostDisjoint`, `IsFreeSet`, and `HasFreeSetOfCard` as the core vocabulary. The main conjecture `erdos_1173` is a `def : Prop` (statement only — not proved). Two observations under GCH are proved as theorems: `gch_aleph_omega_strong_limit` (that $\\aleph_\\omega$ is a strong limit) and `overlap_bounded_by_aleph_n` (that almost-disjoint overlaps are bounded by some $\\aleph_n$). Background context (Hajnal's free set theorem for regular $\\kappa$, and the Erdős–Hajnal theorem for $\\aleph_1$) is documented in block comments. A weak form of the conjecture (`erdos_1173_weak`, free set of size $\\aleph_\\omega$) is also defined as a `def : Prop`.",
     "keyInsights": [
       "**Singular vs. regular distinction**: The Hajnal free set theorem works for regular $\\kappa$, but $\\aleph_\\omega$ is singular with $\\mathrm{cf}(\\aleph_\\omega) = \\omega$. The almost-disjoint condition is a natural weakening that accounts for the singular cofinality",
       "**GCH makes $\\aleph_\\omega$ a strong limit**: Under GCH, $2^{\\aleph_n} = \\aleph_{n+1} < \\aleph_\\omega$ for all $n$, so $\\aleph_\\omega$ is a strong limit cardinal. This is crucial because it constrains the combinatorial structure of subsets of $\\omega_{\\omega+1}$",
-      "**Overlap bounded by $\\aleph_n$**: Since $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, the condition $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ implies the overlap is bounded by some $\\aleph_n$ for $n < \\omega$. This cofinality argument is formalized as an axiom",
+      "**Overlap bounded by $\\aleph_n$**: Since $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, the condition $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ implies the overlap is bounded by some $\\aleph_n$ for $n < \\omega$. This cofinality argument is proved as `overlap_bounded_by_aleph_n` using `aleph_limit` and `ciSup_le`",
       "**Weak form as stepping stone**: The weak conjecture asks only for a free set of size $\\aleph_\\omega$ (rather than $\\aleph_{\\omega+1}$), providing a natural intermediate target",
       "**The $\\aleph_1$ case is known**: The Erdős–Hajnal theorem guarantees free sets of size $\\aleph_1$ for set mappings on $\\omega_1$ with countably bounded images, serving as the motivating base case for Problem #1173"
     ],
@@ -173,7 +171,7 @@
       "Ordinal"
     ],
     "namespace": "Erdos1173",
-    "lineCount": 217,
+    "lineCount": 218,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 11,
