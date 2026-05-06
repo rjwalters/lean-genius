@@ -17,11 +17,11 @@
       "degree-sequences"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 4,
     "dateAdded": "2026-05-03",
     "axiomCount": 2,
     "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, necessity, concrete examples, consequences) are proved from first principles.",
-    "lineCount": 848,
+    "lineCount": 958,
     "theoremCount": 25,
     "definitionCount": 13,
     "originalContributions": [
@@ -126,12 +126,12 @@
   },
   "leanFile": {
     "namespace": "KonigsbergOQ01OQ02",
-    "lineCount": 848,
+    "lineCount": 958,
     "axiomCount": 2,
     "theoremCount": 25,
     "definitionCount": 13,
     "path": "Proofs/KonigsbergOQ01OQ02.lean",
-    "sorries": 6
+    "sorries": 4
   },
   "crossReferences": [
     {
@@ -150,5 +150,5 @@
       "description": "Original Königsberg bridges problem — Euler 1736; the undirected Eulerian theorem whose directed analogue is formalized here."
     }
   ],
-  "sorries": 6
+  "sorries": 4
 }
