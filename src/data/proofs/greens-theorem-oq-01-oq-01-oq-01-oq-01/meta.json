@@ -2,12 +2,12 @@
   "id": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
   "title": "Axiom Elimination: iteratedIntervalIntegral_order_independent",
   "slug": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
-  "description": "Eliminates the axiom iteratedIntervalIntegral_order_independent from the parent proof by establishing the primitive Fubini swap for positions 0 and 1, and setting up the inductive framework for the general n-dimensional case.",
+  "description": "Proves iteratedIntervalIntegral_order_independent from first principles: for continuous f on a compact n-dimensional box, any permutation of integration variables preserves the iterated interval integral. Eliminates the axiom from the parent proof using Fubini's theorem and permutation decomposition.",
   "meta": {
     "author": "Researcher-6 (2026)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fubini%27s_theorem",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
     "tags": [
       "analysis",
@@ -18,16 +18,16 @@
       "axiom-elimination",
       "greens-theorem"
     ],
-    "badge": "formalized",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 sorries remaining in this file. `integrable_swap_pair` is proved (continuity of parameterized integrals + compact box). The main theorem `iteratedIntervalIntegral_order_independent` is proved via swap_induction_on (PR #16323), and the swap decomposition for k ≥ 2 in `iter_integral_swap_zero` is proved (PR #16359). This file imports `Proofs.GreensTheoremOQ01OQ01OQ01`, which still declares `iteratedIntervalIntegral_order_independent` as an axiom (now redundant, since this file proves the same statement).",
+    "assumptions": "None. 0 sorries, 0 axiom declarations. All theorems follow from Mathlib's Fubini theorem (MeasureTheory.integral_integral_swap) and standard measure theory. The parent module Proofs.GreensTheoremOQ01OQ01OQ01 still declares iteratedIntervalIntegral_order_independent as an axiom, but that declaration is not used by any theorem in this file — all results here are proved independently.",
     "dateAdded": "2026-05-06",
     "openQuestions": [
       {
         "id": "oq-01",
         "question": "Can integrable_swap_pair be proved using Mathlib's continuity of parameterized integrals?",
-        "status": "open"
+        "status": "resolved"
       }
     ],
     "mathlibDependencies": [
@@ -111,14 +111,14 @@
     }
   ],
   "overview": {
-    "summary": "This entry proves the primitive building blocks for eliminating the axiom iteratedIntervalIntegral_order_independent from the parent n-dimensional Fubini proof. The key achievement is the Fin arithmetic computation (swap01_cons_eq) and the Fubini swap primitive (swap_outer_two), which together prove full order independence for the 2D case and the swap(0,1) case in any dimension.",
+    "summary": "This entry fully eliminates the axiom iteratedIntervalIntegral_order_independent from the parent n-dimensional Fubini proof. The main theorem is proved for all dimensions and all permutations via Equiv.Perm.swap_induction_on: any permutation decomposes into transpositions, and each transposition is handled by a Fubini argument. The proof is complete with 0 sorries and 0 axioms.",
     "mathematicalContext": "Order independence of iterated integrals is a fundamental consequence of Fubini's theorem. For continuous functions on compact boxes, any permutation of the integration order yields the same result. The proof reduces to: (1) the swap of adjacent positions uses integral_integral_swap, and (2) any permutation decomposes into adjacent swaps by bubble sort.",
     "proofStrategy": "Induction on n with two building blocks: swap_outer_two (Fubini for positions 0,1) and inner permutation reduction (IH applied inside outer integral). Any permutation σ decomposes as (move σ⁻¹(0) to position 0) ∘ (inner permutation fixing position 0), and each step uses one of the two building blocks."
   },
   "conclusion": {
-    "summary": "Eliminates axiom iteratedIntervalIntegral_order_independent. The main theorem iteratedIntervalIntegral_order_independent is proved via swap_induction_on (PR #16323), and the swap decomposition for k ≥ 2 in iter_integral_swap_zero is proved (PR #16359). This file has 0 sorries and 0 axioms.",
-    "significance": "The main theorem structure is complete and the combinatorial verification that swap(0,k) = swap(k₀,k) ∘ swap(0,k₀) ∘ swap(k₀,k) for k ≥ 2 is proved.",
-    "limitations": "0 sorries remain in this file. The parent module `Proofs.GreensTheoremOQ01OQ01OQ01` still declares `iteratedIntervalIntegral_order_independent` as an axiom; that declaration is now redundant given this file's proof of the same statement, and a follow-up should remove it from the parent."
+    "summary": "Fully proves iteratedIntervalIntegral_order_independent (0 sorries, 0 axioms): the iterated interval integral of a continuous function is independent of the order of integration, for all dimensions and all permutations.",
+    "significance": "Eliminates an axiom from the n-dimensional Fubini chain. The proof constructs a complete Lean 4 formalization of order-independence from Fubini's theorem, with the key combinatorial ingredient being the decomposition of permutations into transpositions via swap_induction_on.",
+    "limitations": "The parent module Proofs.GreensTheoremOQ01OQ01OQ01 still declares iteratedIntervalIntegral_order_independent as an axiom. That declaration is mathematically redundant given this file's proof. Removing it from the parent would require either restructuring the parent or introducing a shared Core file."
   },
   "sorries": 0
 }
