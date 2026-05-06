@@ -1,0 +1,241 @@
+{
+  "id": "cramers-rule-oq-02-oq-02",
+  "title": "Complexity Analysis: LU Decomposition and QR Factorization vs Cramer's Rule",
+  "slug": "cramers-rule-oq-02-oq-02",
+  "description": "A formal proof that LU decomposition (O(n³)) and QR factorization (O(n³)) both vastly outperform Cramer's rule ((n+1)·n·n! multiplications), extending the Gaussian elimination comparison to the full family of cubic-time linear system solvers. All O(n³) algorithms beat Cramer by any multiplicative factor for large n.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule#Efficiency",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ02OQ02.lean",
+    "tags": [
+      "computational-complexity",
+      "linear-algebra",
+      "algorithms",
+      "lu-decomposition",
+      "qr-factorization",
+      "cramer",
+      "factorial-growth",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial_pos",
+        "description": "Positivity of factorials: 0 < n!",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.mul_lt_mul_of_pos_right",
+        "description": "Strict multiplication monotonicity from the right",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "Nat.mul_lt_mul_of_pos_left",
+        "description": "Strict multiplication monotonicity from the left",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "Nat.mul_le_mul_right",
+        "description": "Non-strict multiplication monotonicity",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "Formal complexity model for LU decomposition: luMuls n = n³ (same as Gaussian in our model)",
+      "Formal complexity model for QR factorization (Householder): qrMuls n = 2n³",
+      "Proof that LU beats Cramer for all n ≥ 1 by reduction to the Gaussian result",
+      "Proof that QR beats Cramer for all n ≥ 3 (small case n=3 by native_decide)",
+      "Asymptotic superiority: for any K, QR is eventually K-times more efficient than Cramer",
+      "Three-way comparison: luMuls = gaussMuls ≤ qrMuls < cramersRuleMuls for n ≥ 4",
+      "Key lemma: 2n³ < n²·n! for n ≥ 4 via the chain 2n³ < n·n³ = n²·n² < n²·n!"
+    ],
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 187,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 12,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Extending the Complexity Comparison**\n\nThe parent gallery entry (cramers-rule-oq-02) formally proved that Gaussian elimination (O(n³)) is asymptotically faster than Cramer's rule (O(n·n!)) for solving n×n linear systems. A natural follow-up question: does this extend to other standard algorithms?\n\n**LU Decomposition and QR Factorization**\n\nModern numerical linear algebra uses two dominant algorithm families:\n- **LU decomposition** (with partial pivoting): ≈ n³/3 multiplications, as in Gaussian elimination — they produce the same factored form. In our complexity model, luMuls n = gaussMuls n = n³.\n- **QR factorization** (Householder reflections): ≈ 4n³/3 multiplications. In our model, qrMuls n = 2·gaussMuls n = 2n³.\n\nBoth are O(n³) and form an equivalence class, in stark contrast to Cramer's O(n·n!). This entry formalizes that all members of the cubic family beat Cramer super-polynomially.\n\n**The Threshold for QR**\n\nOne subtle point: since QR is twice as expensive as Gaussian in our model, the crossover is slightly delayed. QR (2n³) beats Cramer only for n ≥ 3 (at n=2: QR=16 > Cramer=12). This threshold analysis is formally verified.",
+    "problemStatement": "**The Research Question**\n\nCan the complexity comparison to Cramer's rule be extended to LU decomposition and QR factorization?\n\n**Answer: YES — all O(n³) algorithms dominate Cramer's O(n·n!)**\n\nUsing the complexity models:\n- LU decomposition: `luMuls n = n³` (= gaussMuls n)\n- QR factorization: `qrMuls n = 2n³` (= 2 × gaussMuls n)\n- Cramer's rule: `cramersRuleMuls n = (n+1) × n × n!`\n\nWe prove:\n1. LU beats Cramer for all n ≥ 1 (immediate reduction to Gaussian result)\n2. QR beats Cramer for all n ≥ 3 (n=3 by native_decide, n≥4 by key lemma)\n3. For any K: ∃N, ∀n≥N, K × qrMuls n < cramersRuleMuls n",
+    "text": "A formal proof extending the Gaussian vs Cramer comparison to LU decomposition and QR factorization, showing all O(n³) algorithms beat Cramer's rule by any multiplicative factor for large n.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Inherit from Parent**: Import `Proofs.CramersRuleOQ02` to reuse `gaussMuls`, `cramersRuleMuls`, `gauss_beats_cramer`, and `cramer_asymptotically_worse`.\n2. **New Complexity Definitions**: Define `luMuls n = n³` and `qrMuls n = 2n³`.\n3. **LU Results**: Since `luMuls = gaussMuls`, LU theorems reduce immediately to the parent's Gaussian results.\n4. **Key QR Lemma**: Prove `2n³ < n²·n!` for n ≥ 4 by the chain: `2n³ < n·n³ = n²·n² < n²·n!` using `Nat.mul_lt_mul_of_pos_right` and `Nat.mul_lt_mul_of_pos_left`.\n5. **QR Threshold**: Handle n=3 by `native_decide`, then combine with the key lemma for n≥4.\n6. **Asymptotic**: Extend the K-factor argument: K·(2n³) ≤ n·n³ (when 2K ≤ n), then chain to n²·n²<n²·n! ≤ cramersRuleMuls.",
+    "keyInsights": [
+      "**LU Equivalence**: In our complexity model, LU decomposition and Gaussian elimination are identical (both n³). The luMuls theorems reduce immediately to the parent file's Gaussian proofs via `rfl`.",
+      "**QR Penalty**: QR factorization costs 2×Gaussian in our model, shifting the crossover with Cramer from n≥4 to n≥3. The n=3 case requires native_decide since 2·27=54 < 72 = cramersRuleMuls(3) but falls below the algebraic threshold.",
+      "**Key Lemma Chain**: The core of QR vs Cramer is 2n³ < n²·n! for n≥4. The proof chain: 2n³ < n·n³ (multiply by n³>0 since 2<n), n·n³ = n²·n² (algebra), n²·n² < n²·n! (multiply by n²>0 using factorial_gt_sq).",
+      "**Asymptotic Generalization**: The K-factor proof for QR chooses N=max(4,2K). For n≥2K, K·2n³ = 2Kn³ ≤ n·n³, completing the reduction to the factorial growth argument.",
+      "**All O(n³) Algorithms Form a Class**: The three-way comparison theorem packages the complete picture: luMuls = gaussMuls ≤ qrMuls < cramersRuleMuls (for n≥4), confirming that the cubic-time algorithms are interchangeable for asymptotic purposes."
+    ],
+    "prerequisites": [
+      "Linear algebra (Gaussian elimination, LU decomposition, QR factorization)",
+      "Computational complexity (operation counts, asymptotic notation)",
+      "Combinatorics (factorial growth, n! vs polynomial bounds)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports `Mathlib.Data.Nat.Factorial.Basic`, `Mathlib.Tactic`, and `Proofs.CramersRuleOQ02`. The parent import brings in `gaussMuls`, `cramersRuleMuls`, `gauss_beats_cramer`, `cramer_asymptotically_worse`, and `cramersRuleMuls_eq`.",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "The namespace `CramersComplexityLUQR` extends `CramersComplexity` (from the parent file) with `luMuls` and `qrMuls` complexity models."
+    },
+    {
+      "id": "complexity-models",
+      "title": "Complexity Models for LU and QR",
+      "summary": "Defines `luMuls n = n³` (LU decomposition: ≈n³/3 flops, modeled conservatively as n³) and `qrMuls n = 2n³` (QR Householder: ≈4n³/3 flops, modeled as 2n³). Proves their relationships: luMuls = gaussMuls (rfl), gaussMuls ≤ qrMuls, qrMuls ≤ 2·gaussMuls.",
+      "startLine": 50,
+      "endLine": 72,
+      "mathContext": "Two new complexity functions: $\\text{luMuls}(n) = n^3 = \\text{gaussMuls}(n)$ and $\\text{qrMuls}(n) = 2n^3$. In the O(n³) complexity class: LU = Gaussian ≤ QR ≤ 2·LU."
+    },
+    {
+      "id": "lu-vs-cramer",
+      "title": "LU Decomposition vs Cramer's Rule",
+      "summary": "Proves lu_beats_cramer (n≥4) and lu_beats_cramer_all (n≥1) by reducing to the parent's gauss_beats_cramer since luMuls = gaussMuls. The n<4 cases (n=1,2,3) are verified by interval_cases with native_decide.",
+      "startLine": 74,
+      "endLine": 84,
+      "mathContext": "Since $\\text{luMuls}(n) = \\text{gaussMuls}(n) = n^3$, all LU vs Cramer comparisons reduce directly to the Gaussian vs Cramer results proved in `CramersRuleOQ02.lean`."
+    },
+    {
+      "id": "qr-key-lemma",
+      "title": "Key Lemma: 2n³ < n²·n! for n ≥ 4",
+      "summary": "Proves two_n_cube_lt_sq_factorial: for n≥4, 2n³ < n²·n!. Chain: (1) 2n³ < n·n³ since 2<n and n³>0 (mul_lt_mul_of_pos_right), (2) n·n³ = n²·n² (ring), (3) n²·n² < n²·n! since n²<n! (factorial_gt_sq) and n²>0 (mul_lt_mul_of_pos_left).",
+      "startLine": 88,
+      "endLine": 104,
+      "mathContext": "The key inequality: $2n^3 < n^2 \\cdot n!$ for $n \\geq 4$. Proof: $2n^3 < n \\cdot n^3$ (since $2 < n$), $n \\cdot n^3 = n^2 \\cdot n^2 < n^2 \\cdot n!$ (since $n^2 < n!$ for $n \\geq 4$)."
+    },
+    {
+      "id": "qr-vs-cramer",
+      "title": "QR Factorization vs Cramer's Rule",
+      "summary": "Proves qr_beats_cramer (n≥4) using two_n_cube_lt_sq_factorial and the bound n²·n! ≤ (n+1)·n·n!. Proves qr_beats_cramer_from_3 (n≥3) by adding the n=3 base case via native_decide (2·27=54 < 72=cramersRuleMuls(3)).",
+      "startLine": 106,
+      "endLine": 123,
+      "mathContext": "For $n \\geq 3$: $\\text{qrMuls}(n) = 2n^3 < \\text{cramersRuleMuls}(n) = (n+1) \\cdot n \\cdot n!$. The $n = 3$ case: $2 \\cdot 27 = 54 < 72 = 4 \\cdot 3 \\cdot 6$."
+    },
+    {
+      "id": "qr-asymptotic",
+      "title": "Asymptotic Superiority of QR over Cramer",
+      "summary": "Proves qr_asymptotically_better: for any K, ∃N=max(4,2K), ∀n≥N, K·qrMuls n < cramersRuleMuls n. Chain: K·(2n³) ≤ n·n³ (since 2K≤n), n·n³=n²·n² < n²·n! ≤ (n+1)·n·n!.",
+      "startLine": 125,
+      "endLine": 150,
+      "mathContext": "For any $K$, choosing $N = \\max(4, 2K)$ ensures $K \\cdot 2n^3 \\leq n \\cdot n^3 = n^2 \\cdot n^2 < n^2 \\cdot n! \\leq (n+1) \\cdot n \\cdot n!$."
+    },
+    {
+      "id": "summary-theorems",
+      "title": "Three-Way Comparison and Summary",
+      "summary": "three_way_comparison: for n≥4, luMuls n = gaussMuls n ∧ gaussMuls n ≤ qrMuls n ∧ qrMuls n < cramersRuleMuls n. all_cubic_asymptotically_beat_cramer: for any K, all three O(n³) algorithms eventually K-dominate Cramer. lu_qr_vs_cramer_summary: complete conjunction packaging all main results.",
+      "startLine": 152,
+      "endLine": 187,
+      "mathContext": "The complete hierarchy: $n^3 = \\text{luMuls}(n) = \\text{gaussMuls}(n) \\leq \\text{qrMuls}(n) = 2n^3 \\ll \\text{cramersRuleMuls}(n) = (n+1) \\cdot n \\cdot n!$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization answers affirmatively: **yes**, the complexity comparison extends to LU decomposition and QR factorization. Both O(n³) algorithms beat Cramer's rule super-polynomially. The proof is complete with 0 sorries and 0 axioms, establishing exact comparisons and asymptotic bounds for the entire cubic algorithm family.",
+    "implications": "**Implications**\n\n1. **Algorithm Family Formalization**: Establishes that the Gaussian complexity result is robust across the entire O(n³) family, not a special property of one algorithm.\n2. **QR Threshold**: Formally verifies the subtle threshold difference: QR beats Cramer starting at n=3 (not n=4 like Gaussian), due to the 2× constant factor.\n3. **Unified Asymptotic**: All three cubic algorithms (Gaussian, LU, QR) are eventually K-times better than Cramer for any K — the constant factor differences within O(n³) are irrelevant at the asymptotic level.\n4. **Practical Justification**: Provides machine-checked support for the textbook claim that all standard direct solvers are vastly preferable to Cramer's rule for n > 3.",
+    "openQuestions": [
+      "Can the QR complexity model be tightened from 2n³ to 4n³/3 (the exact Householder count)?",
+      "Can iterative methods (Conjugate Gradient, GMRES) be compared similarly for specific matrix classes?",
+      "Is there a Lean 4 formalization of the actual QR algorithm with its exact operation count?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "cramers-rule-oq-02",
+      "relationship": "Parent: this proof extends the Gaussian vs Cramer comparison to LU and QR."
+    },
+    {
+      "id": "cramers-rule",
+      "relationship": "Root formalization of Cramer's Rule itself."
+    },
+    {
+      "id": "cramers-rule-oq-01-oq-02-oq-01",
+      "relationship": "Sibling: quasideterminant Schur complement recurrence for Cramer's rule."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lu_beats_cramer_all",
+      "type": "core",
+      "description": "LU decomposition (n³ multiplications) is strictly faster than Cramer's rule for all n ≥ 1, proved by reducing to gauss_beats_cramer with small cases n=1,2,3 verified by native_decide."
+    },
+    {
+      "name": "qr_beats_cramer_from_3",
+      "type": "core",
+      "description": "QR factorization (2n³ multiplications) is strictly faster than Cramer's rule for all n ≥ 3. The n=3 case is checked by native_decide; n≥4 follows from the key lemma 2n³ < n²·n!."
+    },
+    {
+      "name": "qr_asymptotically_better",
+      "type": "core",
+      "description": "For any constant K, there exists N such that for all n ≥ N, K·(2n³) < cramersRuleMuls n. Choosing N = max(4, 2K) suffices."
+    },
+    {
+      "name": "two_n_cube_lt_sq_factorial",
+      "type": "supporting",
+      "description": "2n³ < n²·n! for n ≥ 4, the key QR-specific lemma analogous to factorial_gt_sq in the parent file."
+    },
+    {
+      "name": "three_way_comparison",
+      "type": "summary",
+      "description": "For n ≥ 4: luMuls n = gaussMuls n ≤ qrMuls n < cramersRuleMuls n, packaging the full O(n³) vs O(n·n!) comparison."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Tactic",
+      "Proofs.CramersRuleOQ02"
+    ],
+    "opens": [
+      "Nat",
+      "CramersComplexity"
+    ],
+    "namespace": "CramersComplexityLUQR",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/CramersRuleOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "G. H. Golub, C. F. Van Loan",
+      "title": "Matrix Computations (4th ed.)",
+      "year": "2013",
+      "venue": "Johns Hopkins University Press",
+      "note": "Standard reference for LU and QR complexity analysis"
+    },
+    {
+      "authors": "L. N. Trefethen, D. Bau III",
+      "title": "Numerical Linear Algebra",
+      "year": "1997",
+      "venue": "SIAM",
+      "note": "QR factorization via Householder reflections: ≈4n³/3 flops"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-02",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it from Gaussian to the full O(n³) algorithm family"
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Root Cramer's rule formalization"
+    },
+    {
+      "targetId": "cramers-rule-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling: quasideterminant theory for Cramer's rule"
+    }
+  ],
+  "sorries": 0
+}
