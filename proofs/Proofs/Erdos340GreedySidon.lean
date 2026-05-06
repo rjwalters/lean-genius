@@ -488,7 +488,7 @@ could provide insights into its growth rate. -/
 def greedySidonDiffSet : Set ℤ :=
   {d : ℤ | ∃ a b : ℕ, a ∈ Set.range greedySidon ∧ b ∈ Set.range greedySidon ∧ d = a - b}
 
-/-- **Axiom**: 22 is in the difference set: 204 - 182 = 22.
+/- **Note**: 22 is in the difference set: 204 - 182 = 22.
 
 From OEIS A005282 (Mian-Chowla sequence):
 - greedySidon 13 = 182
@@ -497,7 +497,7 @@ From OEIS A005282 (Mian-Chowla sequence):
 
 This could be proved by adding axioms for greedySidon_13 and greedySidon_14. -/
 
-/-- **Axiom**: 33 is in the difference set (value uncertain).
+/- **Note**: 33 is in the difference set (value uncertain).
 
 This requires computing more of the greedy Sidon sequence to verify.
 The statement "↔ True" is a placeholder indicating the question is open. -/
