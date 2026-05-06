@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-05-04T17:47:35.844Z",
     "iteration": 1,
-    "focus": "Supporting lemmas proved; Hajnal conjecture is open",
+    "focus": "PR #16112 open: gallery entry + Lean file builds clean",
     "blockers": [],
-    "nextAction": "Investigate triangleFree_independence_bound or Hajnal conjecture approaches",
+    "nextAction": "Merge PR #16112 and submit indep_from_bounded_deg to Aristotle",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created gallery entry for erdos-895-oq-01 (axiomatized). Added Erdos895OQ01Problem.lean with hindmanSet lemmas + hajnal_k2_gives_additive_triple + \u03b1(G)\u2265\u221an proof structure (1 HARD greedy sorry remains)",
+    "progressSummary": "PROGRESS: PR #16112 merged-pending. Gallery entry created (axiomatized, 1 axiom). Erdos895OQ01Problem.lean builds successfully (7743 jobs, 1 expected HARD sorry for greedy algorithm).",
     "builtItems": [
       "Erdos895ProblemAristotle.lean:67 triangleFree_neighbor_disjoint \u2014 0 sorries",
       "Erdos895ProblemAristotle.lean:80 triangleFree_degree_sum_bound \u2014 0 sorries",
