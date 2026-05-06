@@ -118,9 +118,17 @@
       "id": "main-theorem",
       "title": "General Skolem-Noether Theorem",
       "startLine": 143,
-      "endLine": 190,
-      "summary": "skolemNoether_general: any two K-algebra homomorphisms f, g : A →ₐ[K] B are conjugate by a unit u ∈ Bˣ. Also proves aut_is_inner (automorphisms of CSA are inner) and conjugate_iff_same_image.",
+      "endLine": 187,
+      "summary": "skolemNoether_general: any two K-algebra homomorphisms f, g : A →ₐ[K] B are conjugate by a unit u ∈ Bˣ.",
       "mathContext": "From the module isomorphism φ: φ(f(a)·b) = g(a)·φ(b) and φ(b·c) = φ(b)·c. Setting b=1: φ(f(a)) = g(a)·φ(1). From left-mul formula: φ(f(a)) = φ(1)·f(a). So φ(1)·f(a) = g(a)·φ(1). With u=φ(1): u·f(a)=g(a)·u, hence f(a)=u⁻¹·g(a)·u."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: Inner Automorphisms and Conjugacy",
+      "startLine": 189,
+      "endLine": 218,
+      "summary": "aut_is_inner: every K-algebra automorphism of a finite-dimensional CSA is inner (specialization A=B of skolemNoether_general). conjugate_iff_same_image: the conjugation relation between AlgHoms is symmetric (u-conjugation on one side ↔ u⁻¹-conjugation on the other).",
+      "mathContext": "Setting A=B and g=id in Skolem-Noether yields Aut_K(B) = Inn(B) — every K-algebra automorphism of a CSA is conjugation by a unit. The conjugacy relation is symmetric: f = u⁻¹·g·u iff g = u·f·u⁻¹, which is just the inverse-unit substitution."
     }
   ],
   "conclusion": {
