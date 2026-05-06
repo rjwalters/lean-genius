@@ -39,7 +39,7 @@
       "Application: eliminates hFubini hypothesis from Green's theorem (OQ-01)",
       "Sufficient condition: C¹ vector fields always satisfy Fubini for Green's theorem"
     ],
-    "lineCount": 149,
+    "lineCount": 154,
     "theoremCount": 4,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
@@ -100,7 +100,7 @@
       "id": "summary",
       "title": "Summary and C¹ Corollary",
       "startLine": 121,
-      "endLine": 149,
+      "endLine": 154,
       "summary": "greens_fubini_for_C1 wraps the Fubini exchange for C¹ vector fields in Green's theorem. Summary comment confirms all sorries resolved and the hFubini hypothesis is eliminated.",
       "mathContext": "For $C^1$ vector fields $(P,Q)$ on $[a,b] \\times [c,d]$: the integration order swap $\\int_c^d \\int_a^b \\frac{\\partial P}{\\partial y}\\,dx\\,dy = \\int_a^b \\int_c^d \\frac{\\partial P}{\\partial y}\\,dy\\,dx$ holds automatically."
     }
@@ -138,7 +138,7 @@
       "Topology"
     ],
     "namespace": "GreensTheoremOQ01OQ01",
-    "lineCount": 149,
+    "lineCount": 154,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,
