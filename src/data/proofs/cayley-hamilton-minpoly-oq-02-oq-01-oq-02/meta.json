@@ -1,0 +1,105 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+  "title": "Characterizing Minpoly Invariance Under Non-Injective Algebra Maps",
+  "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+  "description": "Proves the exact characterization of when a K-algebra homomorphism preserves the minimal polynomial of an element, even when the map is NOT injective. The key theorem: minpoly K (f a) = minpoly K a ↔ Polynomial.aeval a (minpoly K (f a)) = 0. This generalizes Mathlib's minpoly.algHom_eq (which requires injectivity) to a complete characterization. Proof uses mutual divisibility (minpoly.dvd + universal divisibility) and equality of associated monic polynomials.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "algebra-homomorphisms",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 168,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.dvd",
+        "description": "If aeval x p = 0 then minpoly K x divides p",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "minpoly.aeval_algHom",
+        "description": "For any algebra map f and element x: aeval (f x) (minpoly K x) = 0",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "associated_of_dvd_dvd",
+        "description": "In a CancelMonoidWithZero: mutual divisibility implies associated",
+        "module": "Mathlib.Algebra.Associated.Basic"
+      },
+      {
+        "theorem": "Polynomial.eq_of_monic_of_associated",
+        "description": "Two monic polynomials that are associated are equal",
+        "module": "Mathlib.Algebra.Polynomial.Monic"
+      },
+      {
+        "theorem": "minpoly.algHom_eq",
+        "description": "For injective f: minpoly K (f x) = minpoly K x",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 168,
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "text": "Proves the exact characterization of minpoly invariance under non-injective K-algebra maps: minpoly K (f a) = minpoly K a iff aeval a (minpoly K (f a)) = 0. The universal direction (minpoly(f a) divides minpoly(a)) holds always; equality requires the mutual divisibility which is equivalent to the testable aeval criterion.",
+    "historicalContext": "The minimal polynomial theory for algebra homomorphisms was developed alongside the Cayley-Hamilton theorem. Mathlib's minpoly.algHom_eq (requiring injectivity) covers the classical case. The non-injective case provides the exact threshold condition.",
+    "problemStatement": "Open Question (OQ-02-OQ-01-OQ-02): Can we characterize exactly when minpoly is invariant under non-injective K-algebra homomorphisms?\n\nAnswer: YES. minpoly K (f a) = minpoly K a iff Polynomial.aeval a (minpoly K (f a)) = 0.",
+    "proofStrategy": "The key is mutual divisibility of monic polynomials:\n1. Always: minpoly(f a) | minpoly(a) [from minpoly.aeval_algHom + minpoly.dvd]\n2. If additionally: minpoly(a) | minpoly(f a) [from aeval a = 0 + minpoly.dvd]\n3. Both monic → equal [associated_of_dvd_dvd + eq_of_monic_of_associated]",
+    "keyInsights": [
+      "The characterization aeval a (minpoly K (f a)) = 0 is completely testable and reduces to checking whether a single polynomial evaluation vanishes.",
+      "Non-injective maps can only shrink the minimal polynomial degree (never increase it), so the characterization asks whether the degree stays at its maximum possible value.",
+      "The injective case (minpoly.algHom_eq) is a special case: for injective f, the criterion automatically holds because f maps the vanishing ideal of a injectively.",
+      "Failure mode: the zero map sends f(a) = 0 for all a, so minpoly K (0) = X and aeval a X = a ≠ 0 for nonzero a. The characterization correctly predicts that minpoly is NOT preserved.",
+      "The proof uses only Mathlib's minpoly.dvd, minpoly.aeval_algHom, associated_of_dvd_dvd, and eq_of_monic_of_associated — all available in Mathlib without additional infrastructure."
+    ],
+    "prerequisites": [
+      "Minimal polynomial theory (minpoly in Mathlib)",
+      "K-algebra homomorphisms (AlgHom)",
+      "Associated elements in polynomial rings",
+      "Monic polynomials"
+    ]
+  },
+  "knownResults": [
+    "minpoly_dvd_algHom: minpoly K (f a) divides minpoly K a for any algebra map f",
+    "minpoly_eq_iff_aeval_zero: the complete characterization (main theorem)",
+    "minpoly_eq_iff_isRoot: equivalent form using IsRoot predicate",
+    "minpoly_ne_iff_not_aeval_zero: the failure mode characterization",
+    "minpoly_natDegree_le: degree inequality (non-injective maps can only shrink minpoly)"
+  ],
+  "sections": [
+    {
+      "title": "Universal Divisibility",
+      "content": "Proves that minpoly K (f a) always divides minpoly K a for any algebra map f, using minpoly.aeval_algHom and minpoly.dvd."
+    },
+    {
+      "title": "The Exact Characterization",
+      "content": "Main theorem: minpoly K (f a) = minpoly K a ↔ aeval a (minpoly K (f a)) = 0. Proved via mutual divisibility and equality of associated monic polynomials."
+    },
+    {
+      "title": "Connection to the Injective Case",
+      "content": "Shows that minpoly.algHom_eq (requiring injectivity) is a special case: injective f always satisfies the criterion aeval a (minpoly K (f a)) = 0."
+    },
+    {
+      "title": "Degree Consequences",
+      "content": "Derives that non-injective maps can only decrease the minpoly degree, never increase it."
+    }
+  ]
+}
