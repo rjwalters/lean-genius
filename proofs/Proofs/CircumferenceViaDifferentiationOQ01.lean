@@ -165,7 +165,7 @@ theorem ball_volume_deriv_eq_sphere_surface (r : ℝ) :
     HasDerivAt (nBallVolumeFn 3) (4 * π * r ^ 2) r := by
   have h := nBallVolumeFn_hasDerivAt 3 r
   convert h using 1
-  unfold nSphereSurfaceFn; rw [nSphereSurfaceConst_three]; norm_num
+  unfold nSphereSurfaceFn; rw [nSphereSurfaceConst_three]
 
 -- ============================================================
 -- Part 5: Connection to Parent (CircumferenceViaDifferentiation)
@@ -187,7 +187,7 @@ theorem disk_area_matches_parent (r : ℝ) :
     funext nBallVolumeFn_two_eq_areaFn
   rw [hfn] at h
   convert h using 1
-  unfold CircumferenceViaDifferentiation.circumferenceFn; ring
+  unfold CircumferenceViaDifferentiation.circumferenceFn
 
 -- ============================================================
 -- Part 6: Volume and Surface Properties
@@ -231,7 +231,7 @@ example : deriv (nBallVolumeFn 2) 1 = 2 * Real.pi := by
   rw [deriv_nBallVolume]
   unfold nSphereSurfaceFn
   rw [nSphereSurfaceConst_two]
-  norm_num
+  norm_num [pow_succ, pow_zero]
 
 -- Surface area constants
 example : nSphereSurfaceConst 2 = 2 * Real.pi := nSphereSurfaceConst_two
