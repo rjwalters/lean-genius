@@ -570,6 +570,7 @@ import Proofs.ETranscendentalOQ01OQ01
 import Proofs.ETranscendentalOQ02
 import Proofs.ETranscendentalOQ03
 import Proofs.EhrhartCubeProven
+import Proofs.EhrhartSimplexProven
 import Proofs.EhrhartPolynomialOQ03
 import Proofs.EhrhartPolynomials
 import Proofs.EhrhartSimplexProven
@@ -2199,6 +2200,8 @@ import Proofs.FriendshipTheoremOQ01
 import Proofs.FriendshipTheoremOQ02
 import Proofs.FriendshipTheoremOQ03
 import Proofs.FrobeniusNumber
+import Proofs.FrobeniusNumberOQ01
+import Proofs.FrobeniusNumberOQ02
 import Proofs.FundamentalArithmetic
 import Proofs.FundamentalArithmeticOQ01
 import Proofs.FundamentalArithmeticOQ02

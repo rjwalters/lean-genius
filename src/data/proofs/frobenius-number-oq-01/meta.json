@@ -1,0 +1,106 @@
+{
+  "id": "frobenius-number-oq-01",
+  "title": "Frobenius Number: Count of Non-Representable Integers = (a-1)(b-1)/2",
+  "slug": "frobenius-number-oq-01",
+  "description": "For coprime positive integers a, b ≥ 2, exactly (a-1)(b-1)/2 positive integers in {1,...,g(a,b)} cannot be represented as non-negative linear combinations of a and b. Proved via the Frobenius Symmetry (OQ-02): the involution k ↦ g-k bijects non-representable numbers in {1,...,g-1} onto representable numbers in {1,...,g-1}, giving equal counts. With g non-representable and 0 representable, the total is (g-1)/2 + 1 = (g+1)/2 = (a-1)(b-1)/2. 6 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FrobeniusNumberOQ01.lean",
+    "tags": [
+      "number-theory",
+      "frobenius",
+      "coin-problem",
+      "combinatorics",
+      "verified"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 159,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "assumptions": "None. All theorems proved from first principles using Mathlib's Finset.card_bij and the Frobenius Symmetry result (OQ-02).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_bij",
+        "description": "Cardinality equality via bijection — the core tool for the symmetry argument",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.filter_card_add_filter_neg_card_eq_card",
+        "description": "Partition identity for Finset filters",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "First-principles proof that the count of non-representable numbers equals (a-1)(b-1)/2",
+      "Bijection argument: k ↦ g-k sends nonRep∩{1,...,g-1} onto Rep∩{1,...,g-1}",
+      "Elementary parity argument: (a-1)(b-1) is always even for coprime a,b ≥ 2 (case split on which of a,b is even)",
+      "Corollary of OQ-02 symmetry: count = (g+1)/2 = (a-1)(b-1)/2"
+    ],
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Frobenius problem (also known as the Chicken McNugget theorem or coin problem) for two coprime integers a, b asks for the largest integer that cannot be represented as a non-negative linear combination. J.J. Sylvester (1884) proved this is ab - a - b. A companion result, due to Sylvester and later attributed to various sources, states that exactly (a-1)(b-1)/2 positive integers are non-representable. This formula has a clean combinatorial proof via the symmetry of the Frobenius set.",
+    "problemStatement": "For coprime positive integers a, b ≥ 2 with Frobenius number g(a,b) = ab-a-b:\n$$|\\{k \\in \\{1, \\ldots, g(a,b)\\} : k \\text{ is not representable}\\}| = \\frac{(a-1)(b-1)}{2}$$\nwhere k is representable if k = ax + by for some x, y ∈ ℕ.",
+    "proofStrategy": "The key insight is the **Frobenius symmetry** (proved in OQ-02): for 0 < k < g(a,b), k is representable iff g(a,b)-k is NOT representable. This means the map k ↦ g-k bijects non-representable numbers in {1,...,g-1} onto representable numbers in {1,...,g-1}. So |nonRep ∩ {1,...,g-1}| = |Rep ∩ {1,...,g-1}|, and their sum equals g-1 (since they partition {1,...,g-1}). Each has cardinality (g-1)/2. Adding g itself (non-representable) gives total = (g-1)/2 + 1 = (g+1)/2 = (a-1)(b-1)/2, since g+1 = (a-1)(b-1).",
+    "keyInsights": [
+      "**Frobenius symmetry as the organizing principle**: The involution k ↦ g-k on {0,...,g} perfectly separates representable from non-representable numbers. This is the mathematical heart of the proof — the symmetry theorem (OQ-02) does all the heavy lifting.",
+      "**Parity is always even**: (a-1)(b-1) is always even for coprime a, b ≥ 2. If a is even, then b is odd (coprime), so b-1 is even and the product is even. If a is odd, then a-1 is even and the product is even. This ensures (a-1)(b-1)/2 is always an integer.",
+      "**Finset.card_bij as the bijection tool**: In Lean 4, the symmetry bijection is formalized using Finset.card_bij with the map k ↦ g-k. The well-definedness, injectivity, and surjectivity all follow from the Frobenius symmetry biconditional.",
+      "**The Frobenius number satisfies g+1 = (a-1)(b-1)**: This algebraic identity (ab-a-b+1 = (a-1)(b-1)) directly connects the count formula (g+1)/2 with the product formula (a-1)(b-1)/2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-bijection",
+      "title": "Symmetry Bijection",
+      "startLine": 36,
+      "endLine": 68,
+      "summary": "`card_nonrep_eq_rep`: Proves |nonRep∩{1,...,g-1}| = |Rep∩{1,...,g-1}| via Finset.card_bij with map k ↦ g-k. Uses frobenius_symmetry (OQ-02) for well-definedness and surjectivity.",
+      "mathContext": "The bijection k ↦ g-k: if ¬Rep(k), by_contra gives Rep(g-k) from OQ-02. If Rep(m), then (OQ-02).mp gives ¬Rep(g-m)."
+    },
+    {
+      "id": "section-parity",
+      "title": "Parity Lemma",
+      "startLine": 71,
+      "endLine": 84,
+      "summary": "`prod_pred_even`: Shows 2 ∣ (a-1)(b-1) for coprime a,b ≥ 2. Case split on parity of a: if a even, b odd (coprime), so b-1 even; if a odd, a-1 even.",
+      "mathContext": "Uses Nat.dvd_gcd to show two even coprime numbers are impossible (would give 2 ∣ gcd = 1)."
+    },
+    {
+      "id": "section-count",
+      "title": "Main Count Theorem",
+      "startLine": 87,
+      "endLine": 145,
+      "summary": "`frobenius_count`: Proves the main result. Splits {1,...,g} = {1,...,g-1} ∪ {g}, uses card_nonrep_eq_rep + partition to get 2*|nonRep{1,...,g-1}| = g-1, then concludes count = (a-1)(b-1)/2.",
+      "mathContext": "Key algebraic facts: g+1 = (a-1)(b-1) and (a-1)(b-1) = 2*q for some q, giving count = q = (a-1)(b-1)/2."
+    }
+  ],
+  "openQuestions": [],
+  "crossReferences": [
+    {
+      "id": "frobenius-number",
+      "relationship": "parent",
+      "description": "Frobenius Number main proof (Sylvester's theorem)"
+    },
+    {
+      "id": "frobenius-number-oq-02",
+      "relationship": "dependency",
+      "description": "Frobenius Symmetry: Rep(k) ↔ ¬Rep(g-k) — the key lemma"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/FrobeniusNumberOQ01.lean",
+    "filename": "FrobeniusNumberOQ01.lean",
+    "lineCount": 159,
+    "theoremCount": 6,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01.lean"
+  }
+}
