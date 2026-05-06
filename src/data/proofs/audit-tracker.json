@@ -9405,9 +9405,9 @@
     },
     "erdos-750": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:04:40Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-05-06T16:12:21Z",
+      "result": "issues-found"
     },
     "erdos-751": {
       "agentId": "auditor-cycle-20-batch",
@@ -14877,36 +14877,6 @@
     },
     "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01": {
       "auditCount": 1,
-      "lastAudited": "2026-05-06T15:10:28Z",
-      "result": "clean",
-      "issues": []
-    },
-    "sperner-ndim-mathlib-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T14:46:33Z",
-      "result": "issues-found",
-      "issues": []
-    },
-    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T14:36:05Z",
-      "result": "issues-found",
-      "issues": []
-    },
-    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T14:30:35Z",
-      "result": "clean",
-      "issues": []
-    },
-    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T14:08:46Z",
-      "result": "issues-found",
-      "issues": []
-    },
-    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01": {
-      "auditCount": 1,
       "lastAudited": "2026-05-06T14:09:57Z",
       "result": "clean",
       "issues": []
@@ -14917,16 +14887,16 @@
       "result": "issues-found",
       "issues": []
     },
-    "sperner-ndim-mathlib-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T14:25:00Z",
-      "result": "clean",
-      "issues": []
-    },
     "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-06T13:42:38Z",
       "result": "issues-fixed",
+      "issues": []
+    },
+    "sperner-ndim-mathlib-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T14:25:00Z",
+      "result": "clean",
       "issues": []
     }
   },
