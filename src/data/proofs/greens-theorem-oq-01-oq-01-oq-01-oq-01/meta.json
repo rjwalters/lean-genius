@@ -19,9 +19,9 @@
       "greens-theorem"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "assumptions": "3 sorries remain: (1) integrability of parameterized inner integral (follows from continuity + compact box), (2) inner permutation reduction (follows from IH + integral_congr), (3) general permutation via Equiv.Perm.induction_on' decomposition.",
+    "assumptions": "2 sorries remain: (1) integrability of parameterized inner integral (follows from continuity + compact box), (2) general permutation via Equiv.Perm.induction_on' decomposition. The inner permutation reduction (iteratedIntervalIntegral_perm_tail) was proved in PR #16292.",
     "dateAdded": "2026-05-06",
     "openQuestions": [
       {
@@ -59,7 +59,7 @@
       "Inductive proof structure: decomposition into inner-permutation + adjacent-swap building blocks",
       "Eliminates the axiom iteratedIntervalIntegral_order_independent from greens-theorem-oq-01-oq-01-oq-01"
     ],
-    "lineCount": 333,
+    "lineCount": 341,
     "theoremCount": 7,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
@@ -77,12 +77,12 @@
       "Topology"
     ],
     "namespace": "GreensTheoremOQ01OQ01OQ01OQ01",
-    "lineCount": 333,
+    "lineCount": 341,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   },
   "sections": [
     {
@@ -116,9 +116,9 @@
     "proofStrategy": "Induction on n with two building blocks: swap_outer_two (Fubini for positions 0,1) and inner permutation reduction (IH applied inside outer integral). Any permutation σ decomposes as (move σ⁻¹(0) to position 0) ∘ (inner permutation fixing position 0), and each step uses one of the two building blocks."
   },
   "conclusion": {
-    "summary": "Partially eliminates axiom iteratedIntervalIntegral_order_independent. The swap(0,1) case and n=2 case are fully proved. Three sorries remain for: integrability of parameterized inner integral, inner permutation reduction, and the general permutation decomposition.",
-    "significance": "Each sorry has a clear mathematical fix: (1) continuity of parameterized iterated integrals by induction, (2) IH + integral_congr, (3) Equiv.Perm.induction_on'. The mathematical structure is complete.",
-    "limitations": "3 sorries remain. The full axiom elimination requires resolving these, at which point greens-theorem-oq-01-oq-01-oq-01 would have axiomCount=0."
+    "summary": "Partially eliminates axiom iteratedIntervalIntegral_order_independent. The swap(0,1) case, n=2 case, and inner permutation reduction (perm_tail) are fully proved. Two sorries remain for: integrability of parameterized inner integral, and the general permutation decomposition.",
+    "significance": "Each remaining sorry has a clear mathematical fix: (1) continuity of parameterized iterated integrals by induction, (2) Equiv.Perm.induction_on'. The mathematical structure is complete.",
+    "limitations": "2 sorries remain. The full axiom elimination requires resolving these, at which point greens-theorem-oq-01-oq-01-oq-01 would have axiomCount=0."
   },
-  "sorries": 3
+  "sorries": 2
 }
