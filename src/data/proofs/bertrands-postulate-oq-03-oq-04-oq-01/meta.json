@@ -88,6 +88,13 @@
       "**BHP as base case**: Baker-Harman-Pintz (0.525) is used not as the main result but as a finite base case (covering small x below the asymptotic threshold). This is the correct architectural role for BHP in this conditional result.",
       "**Existence vs density dichotomy**: The density gap theorem (existence_is_weaker_than_density) shows that even with Cramér's conjecture, we cannot prove ShortIntervalPNT(ε) for ε < 1 — the equidistribution of primes in short intervals requires additional conjectures (e.g., about zeta zeros).",
       "**The bridge axiom defers index arithmetic**: Converting from nth-prime to interval formulation is mathematically straightforward but technically involves Nat.nth/Nat.count. Deferring this to an axiom keeps the main proof clean while honestly flagging the formalization gap."
+    ],
+    "prerequisites": [
+      "Prime number theorem (π(x) ~ x/log x)",
+      "Bertrand's postulate (parent: prime in [n, 2n])",
+      "Baker-Harman-Pintz theorem (ε = 0.525, proved in grandparent)",
+      "Asymptotic notation: little-o, Landau O",
+      "Real.rpow and Real.log in Mathlib"
     ]
   },
   "sections": [
