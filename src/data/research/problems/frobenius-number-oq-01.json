@@ -1,0 +1,101 @@
+{
+  "slug": "frobenius-number-oq-01",
+  "title": "[Problem Title]",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-06T16:07:08+03:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE 2026-05-06: 6 theorems, 0 sorries, 0 axioms, 159 lines. PR pending.",
+    "builtItems": [
+      "card_nonrep_eq_rep: Finset.card_bij for |nonRep{1,...,g-1}| = |Rep{1,...,g-1}|",
+      "prod_pred_even: 2 | (a-1)(b-1) for coprime a,b>=2",
+      "frobenius_count: main theorem count = (a-1)(b-1)/2",
+      "FrobeniusNumberOQ02.lean: Frobenius Symmetry Rep(n) iff notRep(g-n), 0 sorries"
+    ],
+    "insights": [
+      "Rep(k) iff not Rep(g-k) for 0<k<g (OQ-02 symmetry) is the organizing principle for the count proof",
+      "(a-1)(b-1) is always even for coprime a,b>=2: case split on parity of a",
+      "Finset.card_bij with map k \u2192 g-k cleanly formalizes the symmetry bijection",
+      "(g+1)/2 = (a-1)(b-1)/2 from the identity g+1 = (a-1)(b-1)",
+      "Fixed Mathlib API drift in FrobeniusNumber.lean: Nat.eq_or_gt_of_le \u2192 eq_or_lt, Nat.dvd_sub \u2192 direct witness"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: frobenius-number-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "frobenius-number"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T16:07:08+03:00",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FrobeniusNumber.lean",
+      "filename": "FrobeniusNumber.lean",
+      "lineCount": 313,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumber.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ01.lean",
+      "filename": "FrobeniusNumberOQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ02.lean",
+      "filename": "FrobeniusNumberOQ02.lean",
+      "lineCount": 102,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ02.lean"
+    }
+  ]
+}
