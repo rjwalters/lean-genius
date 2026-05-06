@@ -3,7 +3,7 @@
 **Pool ID**: sperner-ndim-mathlib-oq-02  
 **Status**: in-progress  
 **Phase**: ACT
-**Progress**: axiomCount 2→1 (fixed_point_from_approx proved); sperner_near_fixed_point requires FreudSimplex triangulation (~400 lines, boundary_doors_odd is the core)
+**Progress**: axiomCount 2→1 (fixed_point_from_approx proved); sperner_panchromatic requires FreudSimplex CellComplex (adjacency formulas now fully derived, boundary_doors_odd proof strategy identified)
 
 ## Summary
 
@@ -223,3 +223,64 @@ The existence of a fixed point then follows from Sperner's lemma + compactness.
    - Inductive: boundary doors at face d = FC simplices of (d-1) triangulation (bijection)
    - Apply CellComplex.sperner for (d-1) recursively
 3. Instantiate sperner_panchromatic from CellComplex.sperner + FreudSimplex
+
+## Session 2026-05-06 (Session 6) — Complete FreudSimplex adjacency derivation
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: significant insight — complete adjacency formulas derived, proof strategy for boundary_doors_odd identified, companion file written
+
+### What I Did
+
+- Derived complete adjacency formulas for FreudSimplex CellComplex (all 3 cases)
+- Identified the correct `leftRotPerm`/`rightRotPerm` helpers for face-0/face-n adjacency
+- Proved that adj_symm and adj_ne hold (conceptually, via base-change and swap-involution arguments)
+- Identified why boundary_doors_odd works: face-n boundary doors are NOT IsDoor (Sperner condition)
+- Written companion file `SpernerFreudenthalSimplex.lean` with proof structure and sorry'd hard parts
+- Key finding: boundary_doors_odd reduces to n-1 dimensional case by bijection
+
+### Key Mathematical Findings
+
+- **Correct adjacency for FreudCell(n,N)**:
+  - Face k ∈ {1,...,n-1}: `adj (base,σ) k = some ((base, σ∘swap(k-1,k)), k)` — always valid
+  - Face 0: `adj (base,σ) 0 = some ((base+e_{σ(0)}-e_{miss}, leftRot(σ)), Fin.last n)` when base[miss]>n; none when base[miss]=n
+  - Face n: `adj (base,σ) n = some ((base-e_{σ(n-1)}+e_{miss}, rightRot(σ)), 0)` when base[σ(n-1)]≥1; none when base[σ(n-1)]=0
+
+- **adj_symm**: face-0 and face-n are mutually inverse (leftRot∘rightRot=id), middle faces are involutions (swap²=id). ✓ provable.
+
+- **adj_ne**: face-0 changes base at σ(0); face-n changes base at σ(n-1); middle changes σ. All give s≠s'. ✓ provable.
+
+- **boundary_doors_odd strategy**:
+  1. Boundary faces: face-0 (adj=none ↔ base[miss]=n) and face-n (adj=none ↔ base[σ(n-1)]=0)
+  2. Face-n boundary doors are NOT IsDoor: kept vertices {v₀,...,v_{n-1}} all have σ(n-1)-th coord = 0 (since base[σ(n-1)]=0 means v_j[σ(n-1)]=base[σ(n-1)]+1 = 1 only for j>0, but v_0[σ(n-1)]=base[σ(n-1)]+0=0). Wait actually: v_j[σ(n-1)] = base[σ(n-1)] + 1_{σ^{-1}(σ(n-1))<j} = 0+1_{(n-1)<j} so v_{n-1}[σ(n-1)]=0, v_j[σ(n-1)]=0 for j<n-1, and the Sperner condition says c(v) ≠ σ(n-1) when v[σ(n-1)]=0. So no vertex can have color σ(n-1), so IsDoor (which requires all colors 0..n-1 to appear) fails if σ(n-1) ∈ {0,...,n-1}.
+  3. Face-0 boundary doors (base[miss]=n) biject with FC cells of the (n-1)-dim FreudSimplex restricted to face `miss` (where coord[miss]=0). The bijection: drop the miss coordinate from vertices {v_1,...,v_n}.
+  4. By induction, (n-1)-dim FC count is odd. So face-0 boundary door count is odd. ✓
+
+- **Diameter bound**: |vertCoord k₁ i - vertCoord k₂ i| ≤ n (miss coord: |k₁-k₂| ≤ n; non-miss: ≤1). So real diameter ≤ n/N. ✓ proved.
+
+- **Fintype FreudCell n N**: bounded subtype of (Fin(n+1)→Fin(N+1)) × Perm(Fin(n+1)), hence finite. Requires embedding proof (~20 lines). ✓ provable.
+
+### Files Modified
+
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (new companion file, proof structure, 6 sorries)
+
+### Remaining Sorries in Companion File
+
+1. `FreudCell.fintype`: subtype of finite type — HARD, ~20 lines
+2. `perm_preimage_lt_card`: cardinality argument — HARD, ~15 lines
+3. `FreudCell.vertCoord_sum`: algebraic sum — HARD, ~25 lines
+4. `freudAdj_symm` (face 0/n cases): case analysis — HARD, ~40 lines
+5. `freudAdj_vertex`: shared face correctness — HARD, ~50 lines
+6. `freudBoundaryDoorsOdd`: inductive Sperner parity — OPEN (core mathematical content, ~150 lines)
+
+### Next Steps
+
+1. **Complete `freudAdj_symm`**: The leftRot/rightRot pair is mutually inverse. Key: leftRotPerm ∘ rightRotPerm applied to σ gives σ back. And base roundtrips. ~40 lines.
+2. **Complete `freudAdj_vertex`**: Verify the shared vertices formula explicitly. For middle faces: v'_j = v_j for j≠k (proved). For face 0/n: follows from construction. ~50 lines.
+3. **Prove `freudBoundaryDoorsOdd` by induction**:
+   - Base n=0: 1 boundary face, coloring trivially gives IsDoor, count = 1 (odd) ✓
+   - Inductive: face-n doors not IsDoor (proved above); face-0 doors = FC(n-1) cells by bijection; IH gives odd count. ~150 lines.
+4. **Connect companion to main file**: Import `SpernerFreudenthalSimplex` and replace `axiom sperner_panchromatic` with `theorem sperner_panchromatic := SpernerBrouwer.freud_sperner_panchromatic`. ~5 lines.
+5. **Run Docker build** to confirm 0 sorries, 0 axioms.
+
+**Estimated effort for full completion**: 2-3 more sessions (~280 lines of Lean).
