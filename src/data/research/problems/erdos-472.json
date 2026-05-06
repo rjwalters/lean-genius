@@ -1,6 +1,6 @@
 {
   "slug": "erdos-472",
-  "title": "Erdős #472",
+  "title": "Erd\u0151s #472",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T04:11:10.513Z",
-    "iteration": 2,
-    "focus": "Fixed build issues: deprecated List.Sorted → List.Pairwise, incorrect theorem hypothesis, import consolidation",
+    "iteration": 3,
+    "focus": "Proved parity-based gap refinements: 5 new theorems on step sizes and structure",
     "blockers": [],
-    "nextAction": "File now compiles cleanly. Only 1 irreducible axiom remains (open conjecture).",
+    "nextAction": "Consider: prime gap distribution theorems (when are both f(n)+2 and f(n)+4 composite?), or attempt to prove sequence density lower bound",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -29,22 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 23→30 theorems. Added twin/cousin prime stepping structure: f(0)=3, f(1)=5 always in candidate lists; twin prime step (f(n)+2 prime → exact advance by 2); cousin prime upper bound (f(n)+4 prime → advance ≤ 4). 0 sorries, 1 axiom.",
+    "progressSummary": "PROGRESS: 30\u219235 theorems. Added parity-based step analysis: f(n)+3 always composite, gap\u22654 when no twin prime, exact cousin prime step, self-candidate upper bound. 0 sorries, 1 axiom.",
     "builtItems": [
       "Fixed seed_two_gives_even: added missing Odd p hypothesis (theorem was false for even p)",
       "Replaced deprecated List.Sorted with List.Pairwise (3 occurrences)",
       "Consolidated imports to import Mathlib",
-      "ulam_seq_ge_three: all terms ≥ 3 when seed primes ≥ 3 (induction + monotonicity)",
+      "ulam_seq_ge_three: all terms \u2265 3 when seed primes \u2265 3 (induction + monotonicity)",
       "ulam_seq_ne_two: no term = 2, corollary of ge_three",
-      "ulam_seq_odd: all terms odd (prime ≥ 3 → odd, via even/odd dichotomy)",
-      "ulam35_seed_ge_three: {3,5} seed satisfies ≥ 3 condition (by decide)",
+      "ulam_seq_odd: all terms odd (prime \u2265 3 \u2192 odd, via even/odd dichotomy)",
+      "ulam35_seed_ge_three: {3,5} seed satisfies \u2265 3 condition (by decide)",
       "ulam35_f0_eq_three: f(0) = 3 in any {3,5} Ulam sequence (Erdos472Problem.lean:268)",
       "ulam35_f1_eq_five: f(1) = 5 in any {3,5} Ulam sequence (Erdos472Problem.lean:274)",
-      "ulam35_gap_ge_two: f(n+1) ≥ f(n)+2 always (eliminates f(n)=2 case) (Erdos472Problem.lean:281)",
+      "ulam35_gap_ge_two: f(n+1) \u2265 f(n)+2 always (eliminates f(n)=2 case) (Erdos472Problem.lean:281)",
       "ulam35_three_in_ofFn: 3 always in candidate list at step n (Erdos472Problem.lean:288)",
-      "ulam35_five_in_ofFn: 5 in candidate list for n ≥ 1 (Erdos472Problem.lean:294)",
-      "ulam35_twin_prime_step: f(n)+2 prime → f(n+1) = f(n)+2 (Erdos472Problem.lean:301)",
-      "ulam35_cousin_prime_upper: f(n)+4 prime → f(n+1) ≤ f(n)+4 (Erdos472Problem.lean:316)"
+      "ulam35_five_in_ofFn: 5 in candidate list for n \u2265 1 (Erdos472Problem.lean:294)",
+      "ulam35_twin_prime_step: f(n)+2 prime \u2192 f(n+1) = f(n)+2 (Erdos472Problem.lean:301)",
+      "ulam35_cousin_prime_upper: f(n)+4 prime \u2192 f(n+1) \u2264 f(n)+4 (Erdos472Problem.lean:316)",
+      "ulam35_f_plus_3_not_prime: f(n)+3 is never prime (parity argument)",
+      "ulam35_no_candidate_f_plus_3: f(n)+3 is never a valid IsCandidateNext",
+      "ulam35_gap_ge_four_no_twin: no twin prime \u2192 gap \u2265 4",
+      "ulam35_cousin_prime_exact: exact cousin prime step = f(n)+4",
+      "ulam35_self_candidate_upper: self-candidate gives upper bound 2f(n)-1"
     ],
     "insights": [
       "File is well-developed: 19 theorems including computational verification of 8 terms",
@@ -53,20 +58,23 @@
       "Computational step function (ulamNextCandidate, ulamStep, ulamExtend) enables native_decide verification",
       "List.Sorted deprecated in current Mathlib in favor of List.Pairwise",
       "seed_two_gives_even was incorrectly stated for all p >= 3 - only true for odd p",
-      "General structural bound: for seeds with all primes ≥ 3, strict monotonicity gives f(n) ≥ 3 for all n",
-      "Oddness preserved: since 2 is the only even prime and all terms are ≥ 3, all terms are odd — this means the parity argument in odd_candidate_from_odd applies to every step",
-      "Both seed elements 3 and 5 always appear in subsequent candidate lists — this is the key structural observation enabling exact stepping",
-      "Twin prime step: whenever f(n) and f(n)+2 are both prime, the sequence advances by exactly 2. This is the tightest possible step (gap bound says ≥ 2).",
-      "Cousin prime bound: f(n)+4 is always a candidate when prime (via 5 in seq), so f(n+1) ≤ f(n)+4 in that case. Combining: if either f(n)+2 or f(n)+4 is prime, f(n+1) ≤ f(n)+4.",
-      "The twin prime conjecture implies the {3,5} Ulam sequence contains infinitely many twin prime steps — but this is weaker than proving the sequence is infinite."
+      "General structural bound: for seeds with all primes \u2265 3, strict monotonicity gives f(n) \u2265 3 for all n",
+      "Oddness preserved: since 2 is the only even prime and all terms are \u2265 3, all terms are odd \u2014 this means the parity argument in odd_candidate_from_odd applies to every step",
+      "Both seed elements 3 and 5 always appear in subsequent candidate lists \u2014 this is the key structural observation enabling exact stepping",
+      "Twin prime step: whenever f(n) and f(n)+2 are both prime, the sequence advances by exactly 2. This is the tightest possible step (gap bound says \u2265 2).",
+      "Cousin prime bound: f(n)+4 is always a candidate when prime (via 5 in seq), so f(n+1) \u2264 f(n)+4 in that case. Combining: if either f(n)+2 or f(n)+4 is prime, f(n+1) \u2264 f(n)+4.",
+      "The twin prime conjecture implies the {3,5} Ulam sequence contains infinitely many twin prime steps \u2014 but this is weaker than proving the sequence is infinite.",
+      "f(n)+3 is always composite in the {3,5} Ulam sequence: f(n) is odd \u2192 f(n)+3 = odd+odd = even, and even \u2265 6 is not prime.",
+      "Gap refinement: if f(n)+2 is not prime, then f(n+1) \u2265 f(n)+4. Proof: f(n+1) \u2260 f(n)+2 (not prime) and f(n+1) \u2260 f(n)+3 (composite by parity).",
+      "Self-candidate bound: 2f(n)-1 is always a candidate (f(n) in its own list), so f(n+1) \u2264 2f(n)-1 when prime."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove: if f(n)+2 is NOT prime, then f(n+1) ≥ f(n)+4 (complement of twin prime step)",
+      "Prove: if f(n)+2 is NOT prime, then f(n+1) \u2265 f(n)+4 (complement of twin prime step)",
       "Formalize: f(n+1) = f(n)+4 when f(n)+2 composite and f(n)+4 prime (cousin prime exact step)",
-      "Upper bound from full sequence: f(n+1) ≤ f(n) + f(n) - 1 = 2f(n) - 1 when 2f(n)-1 is prime"
+      "Upper bound from full sequence: f(n+1) \u2264 f(n) + f(n) - 1 = 2f(n) - 1 when 2f(n)-1 is prime"
     ],
-    "markdown": "# Erdős #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erd\u0151s #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"

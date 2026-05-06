@@ -325,3 +325,66 @@ theorem ulam35_cousin_prime_upper (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSee
     refine ⟨h_cousin, 5, ulam35_five_in_ofFn f hf n hn, ?_⟩; omega
   by_contra hlt; push_neg at hlt
   exact hmin (f n + 4) hlt hcand
+
+/- ## Step gap refinements -/
+
+/-- f(n)+3 is never prime in a {3,5} Ulam sequence: since f(n) is odd, f(n)+3 is even
+    and greater than 2, hence composite. -/
+theorem ulam35_f_plus_3_not_prime (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f) (n : ℕ) :
+    ¬(f n + 3).Prime := by
+  have hodd := ulam_seq_odd ulamSeed35 f hf (by decide) (by decide) n
+  have hge := ulam_seq_ge_three ulamSeed35 f hf (by decide) (by decide) n
+  obtain ⟨k, hk⟩ := hodd
+  intro hprime
+  have h2dvd : 2 ∣ f n + 3 := ⟨k + 2, by omega⟩
+  have := hprime.eq_one_or_self_of_dvd 2 h2dvd
+  omega
+
+/-- The value f(n)+3 is never a valid candidate next prime in any {3,5} Ulam sequence:
+    IsCandidateNext requires primality, but f(n)+3 is always even (hence composite). -/
+theorem ulam35_no_candidate_f_plus_3 (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f) (n : ℕ) :
+    ¬IsCandidateNext (List.ofFn (fun i : Fin (n + 1) => f i)) (f n) (f n + 3) := by
+  intro ⟨hprime, _⟩
+  exact ulam35_f_plus_3_not_prime f hf n hprime
+
+/-- If f(n)+2 is not prime (no twin prime at f(n)) and n ≥ 1, then f(n+1) ≥ f(n)+4.
+    Proof: f(n+1) ≥ f(n)+2 (gap bound); f(n+2) ≠ f(n)+2 since f(n)+2 is composite;
+    f(n+1) ≠ f(n)+3 since f(n)+3 is even (hence not prime). So f(n+1) ≥ f(n)+4. -/
+theorem ulam35_gap_ge_four_no_twin (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f)
+    (n : ℕ) (hn : 1 ≤ n) (h_no_twin : ¬(f n + 2).Prime) :
+    f n + 4 ≤ f (n + 1) := by
+  have hgap := ulam35_gap_ge_two f hf n
+  have hpn1 := hf.2.1 (n + 1)
+  have hne2 : f (n + 1) ≠ f n + 2 := by
+    intro h; rw [h] at hpn1; exact h_no_twin hpn1
+  have hne3 : f (n + 1) ≠ f n + 3 := by
+    intro h; rw [h] at hpn1
+    exact ulam35_f_plus_3_not_prime f hf n hpn1
+  omega
+
+/-- Cousin prime exact step: if f(n)+2 is not prime and f(n)+4 is prime (n ≥ 1), then
+    f(n+1) = f(n)+4. Combines the lower bound (gap_ge_four_no_twin) with the upper
+    bound (cousin_prime_upper). -/
+theorem ulam35_cousin_prime_exact (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f)
+    (n : ℕ) (hn : 1 ≤ n) (h_no_twin : ¬(f n + 2).Prime) (h_cousin : (f n + 4).Prime) :
+    f (n + 1) = f n + 4 :=
+  Nat.le_antisymm (ulam35_cousin_prime_upper f hf n hn h_cousin)
+    (ulam35_gap_ge_four_no_twin f hf n hn h_no_twin)
+
+/-- Self-candidate upper bound: if 2·f(n) - 1 is prime (n ≥ 1), then f(n+1) ≤ 2·f(n) - 1.
+    Proof: f(n) is always in its own candidate list (as the n-th element), so
+    f(n) + f(n) - 1 = 2·f(n) - 1 is a candidate when prime. Minimality gives the bound. -/
+theorem ulam35_self_candidate_upper (f : ℕ → ℕ) (hf : IsUlamPrimeSeq ulamSeed35 f)
+    (n : ℕ) (hn : 1 ≤ n) (h_self : (2 * f n - 1).Prime) :
+    f (n + 1) ≤ 2 * f n - 1 := by
+  have hlen : ulamSeed35.length - 1 ≤ n := by norm_num [ulamSeed35]; omega
+  obtain ⟨_, hmin⟩ := hf.2.2.2 n hlen
+  have hge3 := ulam_seq_ge_three ulamSeed35 f hf (by decide) (by decide) n
+  have hself_cand : IsCandidateNext (List.ofFn (fun i : Fin (n + 1) => f i)) (f n) (2 * f n - 1) := by
+    refine ⟨h_self, f n, ?_, ?_⟩
+    · rw [List.mem_ofFn]
+      exact ⟨⟨n, Nat.lt_succ_self n⟩, rfl⟩
+    · omega
+  by_contra hlt
+  push_neg at hlt
+  exact hmin (2 * f n - 1) hlt hself_cand
