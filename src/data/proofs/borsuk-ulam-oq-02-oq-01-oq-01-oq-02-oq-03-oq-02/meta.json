@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-06",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean",
     "tags": [
       "borsuk-ulam",
@@ -18,9 +18,9 @@
       "squarefree",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 5,
     "lineCount": 247,
     "theoremCount": 13,
     "definitionCount": 0,
@@ -58,7 +58,7 @@
       "buDim_prod_primes_eq: CRT formula for k distinct primes — buDim(∏ S) d = S.sup(buDim · d)",
       "Concrete cases: buDim(30,d), buDim(210,d), buDim(2310,d) via native_decide for primeFactors computation"
     ],
-    "assumptions": "0 sorries. 0 new axiom declarations. All 13 theorems fully machine-checked. Results are verified conditional on the base framework: buDim (function axiom), buDim_mono (monotonicity axiom), and buDim_le_formula (formula conjecture axiom) from parent files.",
+    "assumptions": "0 sorries. 0 new axiom declarations in this file. All 13 theorems fully machine-checked relative to 5 imported axioms from parent files: buDim (function axiom), buDim_two, buDim_prime, buDim_mono (monotonicity axiom) from BorsukUlamOQ02OQ01, and buDim_le_formula (formula conjecture axiom) from BorsukUlamOQ02OQ01OQ01.",
     "additionalFiles": []
   },
   "overview": {
