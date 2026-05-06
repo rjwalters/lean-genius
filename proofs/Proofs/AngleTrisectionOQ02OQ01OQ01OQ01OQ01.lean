@@ -50,7 +50,7 @@
 
   Axioms: 1 (counterexample_gal_card)
   Sorries: 2 (IsPurelyInseparable API; char-p sign identity)
-  Theorems: 7
+  Theorems: 6
 -/
 
 import Mathlib
