@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-setup",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "Setup: Four-Step Gauss Sum QR Pathway",
+    "content": "The header establishes where this file fits in the Gauss sum QR proof:\n- Step 1: Define τ = gaussSum χ ψ\n- Step 2: τ² = χ(-1)·p [proved in OQ01OQ01OQ01.lean]\n- Step 3: τ^q = χ(q)·τ [THIS FILE]\n- Step 4: Comparing τ^q two ways gives QR\n\nThe imports are specific: `GaussSum`, `LegendreSymbol.Basic`, `QuadraticChar.Basic`. The `variable {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]` makes p, q implicit primes threaded through all instances.",
+    "mathContext": "$\\tau = \\mathrm{gaussSum}(\\chi, \\psi) = \\sum_{a \\in \\mathbb{Z}/p\\mathbb{Z}} \\chi(a)\\psi(a)$, where $\\chi$ is quadratic (Legendre symbol) and $\\psi$ additive.",
+    "significance": "context",
+    "relatedConcepts": ["Gauss sum definition", "four-step QR proof", "Fact typeclass", "MulChar and AddChar"],
+    "prerequisites": ["Gauss sum", "Legendre symbol", "multiplicative and additive characters"]
+  },
+  {
+    "id": "ann-q-unit",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 53, "endLine": 68 },
+    "type": "technique",
+    "title": "Auxiliary: Invertibility of q mod p",
+    "content": "The private lemma `q_isUnit_in_ZMod_p` establishes IsUnit(q : ZMod p) for distinct primes p ≠ q.\n\nProof: `ZMod.isUnit_prime_iff_not_dvd` gives IsUnit(q : ZMod p) ↔ ¬(q ∣ p). Since p is prime, q ∣ p implies q = 1 or q = p — both contradicted by `hq.out.one_lt` and `hpq`.",
+    "mathContext": "$\\gcd(p, q) = 1$ for distinct primes, so $q \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod.isUnit_prime_iff_not_dvd", "prime divisibility", "units in ZMod p"],
+    "prerequisites": ["prime numbers", "units in ZMod n"]
+  },
+  {
+    "id": "ann-frobenius",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 69, "endLine": 95 },
+    "type": "key",
+    "title": "The Frobenius Step: τ^q = χ(q)·τ",
+    "content": "The central theorem — one line: `hχ.gaussSum_frob q (q_isUnit_in_ZMod_p hpq) ψ`.\n\nMathematical content:\n1. **Freshman's dream**: (Σ χ(a)ψ(a))^q = Σ (χ(a)ψ(a))^q = Σ χ(a)^q ψ(a)^q (ring hom in char q)\n2. **χ^q = χ**: χ(a) ∈ {0,±1}, and (-1)^q = -1 in char q, so χ(a)^q = χ(a)\n3. **ψ(a)^q = ψ(qa)**: additive character identity\n4. **Reparametrize**: Σ_a χ(a)ψ(qa) = χ(q)·Σ_b χ(b)ψ(b) (substitute b=qa, bijection since q is a unit)\n\nResult: τ^q = χ(q)·τ.",
+    "mathContext": "$\\tau^q = \\sum_a \\chi(a)^q \\psi(a)^q \\underbrace{=}_{\\chi^q=\\chi} \\sum_a \\chi(a)\\psi(qa) \\underbrace{=}_{b=qa} \\chi(q)\\sum_b \\chi(b)\\psi(b) = \\chi(q)\\cdot\\tau.$",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius endomorphism", "MulChar.IsQuadratic.gaussSum_frob", "freshman's dream", "reparametrization bijection"],
+    "prerequisites": ["Frobenius endomorphism in char p", "quadratic characters", "additive characters"]
+  },
+  {
+    "id": "ann-combining",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 96, "endLine": 125 },
+    "type": "technique",
+    "title": "Combining Steps 2 and 3: Key QR Identity",
+    "content": "Theorem `qr_via_frobenius` takes the hypothesis `hτ_sq : gaussSum χ ψ ^ 2 = χ (-1) * Fintype.card (ZMod p)` (Step 2) and derives (χ(-1)·p)^{(q-1)/2} = χ(q).\n\nArgument:\n- τ^q = τ·(τ²)^{(q-1)/2} = τ·(χ(-1)·p)^{(q-1)/2} (exponent arithmetic + hypothesis)\n- τ^q = χ(q)·τ (Frobenius step)\n- Equating: (χ(-1)·p)^{(q-1)/2} = χ(q)\n\nLean uses `Char.card_pow_char_pow`. The `simpa [pow_one]` handles the n=1 special case.",
+    "mathContext": "$\\tau^q = \\tau \\cdot (\\tau^2)^{(q-1)/2} = \\tau \\cdot (\\chi(-1)\\cdot p)^{(q-1)/2}$; with $\\tau^q = \\chi(q)\\cdot\\tau$: $(\\chi(-1)\\cdot p)^{(q-1)/2} = \\chi(q)$.",
+    "significance": "key",
+    "relatedConcepts": ["Char.card_pow_char_pow", "Fintype.card ZMod p", "exponent arithmetic"],
+    "prerequisites": ["Gauss sum squared identity", "exponent arithmetic", "Fintype.card"]
+  },
+  {
+    "id": "ann-qr-identity",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 126, "endLine": 155 },
+    "type": "insight",
+    "title": "QR Identity in ZMod q: Encoding QR via Euler's Criterion",
+    "content": "The main theorem `qr_gauss_sums_identity`: for distinct odd primes p ≠ q and nontrivial quadratic χ,\n\n    (χ(-1) · Fintype.card (ZMod p))^(Fintype.card (ZMod q) / 2) = χ(Fintype.card (ZMod q))\n\nUsing Fintype.card (ZMod n) = n, this reads (χ(-1)·p)^{(q-1)/2} = χ(q) in ZMod q.\n\n**This is QR**: Euler's criterion gives a^{(q-1)/2} ≡ (a/q) mod q. With χ(-1) = (-1/p) = (-1)^{(p-1)/2} and p^{(q-1)/2} ≡ (p/q): the left side is (-1/p)·(p/q); the right is (q/p). So (p/q)(q/p) = (-1)^{((p-1)/2)·((q-1)/2)} — QR.\n\nProved via `Char.card_pow_card` with `rw [ZMod.ringChar_zmod_n]` to handle coercions.",
+    "mathContext": "QR: $(p/q)(q/p) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$.\n\nEquivalently: $(\\chi(-1)\\cdot p)^{(q-1)/2} = \\chi(q)$ in $\\mathbb{Z}/q\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["Char.card_pow_card", "Euler's criterion", "Legendre symbol", "ZMod.ringChar_zmod_n", "quadratic reciprocity"],
+    "prerequisites": ["Euler's criterion", "Legendre symbol", "QR statement"]
+  },
+  {
+    "id": "ann-pathway",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 156, "endLine": 175 },
+    "type": "insight",
+    "title": "Part IV-V: Complete Pathway and Concrete Verifications",
+    "content": "**gauss_qr_pathway_complete**: Existential summary ∃ result = χ(q) = (χ(-1)·p)^{(q-1)/2}. The `⟨_, symm, rfl⟩` proof documents the connection.\n\n**Three concrete examples**:\n- (p=5,q=3): In char 3, (gaussSum χ₅ ψ)³ = χ₅(3)·(gaussSum χ₅ ψ)\n- (p=7,q=5): In char 5, similar\n- (p=11,q=7): QR identity (χ₁₁(-1)·11)³ = χ₁₁(7) in ZMod 7\n\nAll proved by `frobenius_step/qr_gauss_sums_identity χ ... (by norm_num)`.\n\nThe docstring for p=11,q=7 computes: 11 ≡ 4 mod 7 → (11/7)=1; (-1/11)=-1 (since 11≡3 mod 4); QR: (11/7)(7/11) = (-1)^{5·3} = -1 ✓.",
+    "mathContext": "QR for small primes: $(3/5)(5/3) = 1 = (-1)^{1\\cdot 1}$; $(5/7)(7/5) = 1 = (-1)^{3\\cdot 2}$; $(7/11)(11/7) = -1 = (-1)^{5\\cdot 3}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete QR verifications", "norm_num for prime bounds", "existential witness"],
+    "prerequisites": ["QR for small primes", "Legendre symbol values"]
+  }
+]
