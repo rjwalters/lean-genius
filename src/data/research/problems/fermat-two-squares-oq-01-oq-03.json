@@ -40,7 +40,7 @@
     "insights": [
       "HurwitzQuat stored as (n0,n1,n2,n3)/2 with equal-parity condition; parity ensures normSq4 divisible by 4",
       "omega = half(1+i+j+k) is a Hurwitz unit (N=1) - its inclusion makes H Euclidean",
-      "Rotation trick (n0\u00b1n1)/2 gives 2p not p for half-integer case - cannot convert directly",
+      "Rotation trick (n0±n1)/2 gives 2p not p for half-integer case - cannot convert directly",
       "Norm multiplicativity follows directly from Mathlib Quaternion.normSq_mul via toQuat embedding"
     ],
     "mathlibGaps": [],
@@ -54,7 +54,8 @@
   ],
   "relatedProofs": [
     "fermat-two-squares",
-    "fermat-two-squares-oq-01"
+    "fermat-two-squares-oq-01",
+    "fermat-two-squares-oq-01-oq-03"
   ],
   "references": {
     "papers": [],
@@ -87,6 +88,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
+      "filename": "FermatTwoSquaresOQ01OQ03.lean",
+      "lineCount": 358,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01OQ03.lean"
     }
   ]
 }

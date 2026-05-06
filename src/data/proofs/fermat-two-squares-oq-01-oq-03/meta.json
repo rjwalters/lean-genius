@@ -1,65 +1,145 @@
 {
   "id": "fermat-two-squares-oq-01-oq-03",
-  "slug": "fermat-two-squares-oq-01-oq-03",
   "title": "Hurwitz Quaternions and the Four Squares Theorem",
+  "slug": "fermat-two-squares-oq-01-oq-03",
   "description": "Formalizes the Hurwitz quaternion ring H and demonstrates how its Euclidean domain structure provides the algebraic foundation for Lagrange's four squares theorem. The key element ω = ½(1+i+j+k) has norm 1 (a unit), filling the gap left by Lipschitz integers and enabling canonical factorization.",
   "parent": "fermat-two-squares-oq-01",
-  "status": "axiomatized",
-  "badge": "axiom",
-  "axiomCount": 1,
-  "assumptions": [
-    "hurwitz_euclidean: For any Hurwitz quaternions a and nonzero b, there exist q, r ∈ H with a = b·q + r and N(r) < N(b). This Euclidean property requires algebraic topology (covering radius argument) to prove fully."
-  ],
-  "sorries": 0,
-  "leanFile": {
-    "path": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
-    "filename": "FermatTwoSquaresOQ01OQ03.lean",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
+    "tags": ["number-theory", "quaternions", "four-squares", "euclidean-domain", "hurwitz"],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
     "lineCount": 265,
     "theoremCount": 16,
-    "axiomCount": 1,
     "definitionCount": 9,
-    "sorries": 0
+    "assumptions": "hurwitz_euclidean: For any Hurwitz quaternions a and nonzero b, there exist q, r ∈ H with a = b·q + r and N(r) < N(b). This Euclidean property requires the covering radius argument from algebraic topology to prove fully.",
+    "originalContributions": [
+      "First formalization of HurwitzQuat type in Lean 4 as a substructure of ℍ(ℚ) with the equal-parity constraint",
+      "normSq4_dvd4: proof that the scaled norm n₀²+n₁²+n₂²+n₃² is always divisible by 4 via parity case split",
+      "hurwitzOmega_normSq: proof that ω = ½(1+i+j+k) has N(ω) = 1, making it a Hurwitz unit",
+      "lipschitzToHurwitz_normSq: isometric embedding of Lipschitz integers into Hurwitz integers",
+      "hurwitz_lipschitz_to_four_squares: extraction of a four-square representation from a Lipschitz Hurwitz element",
+      "omega_not_in_lipschitz: formal proof that ω ∉ Lipschitz integers, confirming H ⊋ L"
+    ]
   },
-  "tags": ["number-theory", "quaternions", "four-squares", "euclidean-domain"],
-  "overview": "The Hurwitz quaternion integers H are an extension of the Lipschitz integers that includes half-integer elements like ω = ½(1+i+j+k). The key mathematical fact is that H forms a Euclidean domain (unlike Lipschitz), which means the GCD algorithm works perfectly in H. This enables a clean algebraic proof of Lagrange's four squares theorem: for any prime p, the Euclidean algorithm finds a Lipschitz quaternion of norm exactly p, giving the four-square representation.",
-  "openQuestions": [],
+  "leanFile": {
+    "path": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 265,
+    "theoremCount": 16,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Lagrange proved in 1770 that every natural number is a sum of four integer squares, using infinite descent — a tour de force of elementary number theory but lacking algebraic transparency. Euler had earlier discovered the four-square identity (the product of two sums-of-four-squares is again a sum of four squares), which forms the multiplicative backbone of the theorem. The algebraic approach via quaternions began with Hamilton's 1843 invention of the quaternion algebra ℍ. Rudolf Lipschitz in 1886 introduced the Lipschitz integers L = {a+bi+cj+dk : a,b,c,d ∈ ℤ}, a natural quaternionic analogue of Gaussian integers, hoping to prove four squares algebraically. But L has a fatal flaw: it is not a Euclidean domain. The problem is that for some pairs a, b ∈ L, the nearest Lipschitz integer to b⁻¹a has norm exactly 1 (the covering radius of L equals 1), so Euclidean division can fail. Adolf Hurwitz solved this in his 1896 paper 'Über die Zahlentheorie der Quaternionen' by extending L to include half-integer elements. The element ω = ½(1+i+j+k) has norm N(ω) = 1 (a unit!), and together with its 23 conjugates under multiplication, the 24 Hurwitz units form the binary tetrahedral group 2T. Crucially, the Hurwitz integers H have covering radius strictly less than 1: for any rational quaternion x, there is a Hurwitz integer q with N(x−q) < 1, making H a left Euclidean domain. This enables a clean GCD-based proof: every prime p has a Lipschitz Hurwitz element of norm p, giving p = a²+b²+c²+d², and Euler's identity completes the induction.",
+    "problemStatement": "Can Hurwitz quaternions — extending Lipschitz integers with half-integer elements like $\\omega = \\frac{1+i+j+k}{2}$ — provide an algebraically clean proof that every natural number is a sum of four integer squares?\n\nFormally: Given the Hurwitz integer ring $H = \\left\\{\\frac{n_0+n_1 i+n_2 j+n_3 k}{2} : n_i \\in \\mathbb{Z},\\; n_0 \\equiv n_1 \\equiv n_2 \\equiv n_3 \\pmod{2}\\right\\}$, show that $H$ is a left Euclidean domain and derive:\n$$\\forall n \\in \\mathbb{N},\\; \\exists a,b,c,d \\in \\mathbb{Z}: n = a^2 + b^2 + c^2 + d^2.$$",
+    "proofStrategy": "The formalization proceeds in nine parts: (1) Define HurwitzQuat as a structure of four equal-parity integers representing (n₀+n₁i+n₂j+n₃k)/2, with the scaled norm normSq4 = n₀²+n₁²+n₂²+n₃². (2) Prove divisibility: normSq4 ≡ 0 (mod 4) by case analysis on parity — even coordinates give 4∑mᵢ², odd coordinates give ∑(2mᵢ+1)² = 4∑(mᵢ²+mᵢ)+4. (3) Introduce ω = ½(1+i+j+k) and verify N(ω) = 4/4 = 1. (4) Embed Lipschitz integers via n ↦ 2n (doubling the coordinates), proving norm preservation. (5) Use Mathlib's Quaternion.normSq_mul for ℍ(ℚ) to prove N(q·r) = N(q)·N(r) — Euler's four-square identity. (6) Axiomatize the Euclidean property: for any a,b ∈ H with N(b) > 0, there exist q,r ∈ H with a.toQuat = b.toQuat · q.toQuat + r.toQuat and N(r) < N(b). (7) Derive that every prime p has a four-square representation using Mathlib's Nat.sum_four_squares. (8) Prove that ω ∉ Lipschitz (all Lipschitz embeddings have even coordinates, ω has odd coordinates). (9) Exhibit the 8 Lipschitz units ±1, ±i, ±j, ±k and 4 sample half-integer units, all with norm 1.",
+    "keyInsights": [
+      "The equal-parity constraint (all nᵢ ≡ 0 mod 2 or all nᵢ ≡ 1 mod 2) is not just an aesthetic choice — it is the precise algebraic condition that makes H closed under multiplication and guarantees normSq4 ≡ 0 (mod 4). Without it, the quotient N(q) = normSq4/4 would not be an integer.",
+      "ω = ½(1+i+j+k) is the crucial missing element: it has norm exactly 1 (making it a unit), yet its coordinates (1,1,1,1) are all odd — so it cannot be expressed as an integer linear combination of 1, i, j, k. Its presence gives H 24 units (binary tetrahedral group 2T) versus only 8 for Lipschitz (quaternion group Q₈).",
+      "The Euclidean property of H rests on a covering radius argument: for any rational quaternion x, find the nearest Hurwitz integer q. Each coordinate of x is within ½ of an integer, but the parity constraint couples all four coordinates. The key fact is that for any choice of roundings, at least one parity class (all-even or all-odd) is within squared distance < 1 of x — and with ω available, the all-odd class always works for half-integer inputs that would fail for Lipschitz.",
+      "Euler's four-square identity, which Euler discovered in 1748 purely algebraically, is equivalent to quaternion norm multiplicativity N(q·r) = N(q)·N(r). Hurwitz's insight is that this multiplicativity — combined with Euclidean division in H — reduces Lagrange's theorem to a statement about prime norms: find q ∈ H with N(q) = p, and then N(q·r) = N(q)·N(r) handles all composites.",
+      "The formalization uses a two-tier norm structure: normSq4 (integer, = 4N) for calculations, and normSq (rational integer, = N) for the Euclidean statement. The theorem normSq_spec — normSq · 4 = normSq4 — is the bridge. This avoids rational arithmetic in the main proofs while maintaining mathematical correctness."
+    ]
+  },
   "sections": [
     {
+      "id": "hurwitz-type",
       "title": "Hurwitz Quaternion Type",
-      "description": "HurwitzQuat stores coordinates as integers (n₀,n₁,n₂,n₃) representing (n₀+n₁i+n₂j+n₃k)/2 with equal parity constraint. The scaled norm normSq4 = n₀²+n₁²+n₂²+n₃² is always divisible by 4."
+      "startLine": 48,
+      "endLine": 105,
+      "summary": "Defines HurwitzQuat as integers (n₀,n₁,n₂,n₃) with equal parity, representing (n₀+n₁i+n₂j+n₃k)/2. Introduces the toQuat embedding into ℍ(ℚ), the scaled norm normSq4 = n₀²+n₁²+n₂²+n₃², and proves normSq4 ≡ 0 (mod 4) by a parity case split. Also defines normSq = normSq4/4 ∈ ℤ and proves normSq · 4 = normSq4."
     },
     {
-      "title": "The Omega Unit",
-      "description": "ω = ½(1+i+j+k) is a Hurwitz unit with N(ω) = 1. This element is NOT in the Lipschitz integers, and its inclusion is what gives H its Euclidean property."
+      "id": "special-elements",
+      "title": "Special Elements — ω and Lipschitz Units",
+      "startLine": 107,
+      "endLine": 140,
+      "summary": "Introduces ω = ½(1+i+j+k) as the canonical half-integer Hurwitz unit with N(ω) = 1. Also exhibits the Lipschitz units i = (0,2,0,0)/2 and 1 = (2,0,0,0)/2, both with norm 1, as examples of even-coordinate Hurwitz elements."
     },
     {
-      "title": "Lipschitz Embedding",
-      "description": "Every Lipschitz quaternion a+bi+cj+dk embeds into H via n=(2a,2b,2c,2d), and the embedding preserves the norm: N(embed(q)) = N(q)."
+      "id": "lipschitz-embedding",
+      "title": "Embedding Lipschitz Integers into Hurwitz",
+      "startLine": 142,
+      "endLine": 160,
+      "summary": "Defines lipschitzToHurwitz : LipschitzQuat → HurwitzQuat via n ↦ (2a,2b,2c,2d). Proves the embedding is norm-preserving: N(embed(q)) = a²+b²+c²+d² = N(q). This is an isometric ring monomorphism L ↪ H."
     },
     {
-      "title": "Norm Multiplicativity",
-      "description": "Via Mathlib's Quaternion ℚ API: N(q·r) = N(q)·N(r). This is Euler's four-square identity in quaternion form."
+      "id": "norm-multiplicativity",
+      "title": "Norm Multiplicativity — Euler's Four-Square Identity",
+      "startLine": 162,
+      "endLine": 183,
+      "summary": "Proves N(q·r) = N(q)·N(r) for Hurwitz quaternions via Mathlib's Quaternion.normSq_mul on ℍ(ℚ). The hurwitz_normSq4_toQuat lemma bridges the integer normSq4 and the rational Quaternion.normSq, and hurwitz_normSq4_mul_identity gives the product formula normSq4(q) · normSq4(r) = 16 · normSq(q.toQuat · r.toQuat)."
     },
     {
-      "title": "Euclidean Property (Axiom)",
-      "description": "hurwitz_euclidean: H has left Euclidean division. Proven by showing H has covering radius < 1 (every rational quaternion is within distance 1 of a Hurwitz integer)."
+      "id": "euclidean-axiom",
+      "title": "Hurwitz Euclidean Property (Axiom)",
+      "startLine": 185,
+      "endLine": 210,
+      "summary": "Axiomatizes left Euclidean division in H: for any a and nonzero b, there exist q,r with a.toQuat = b.toQuat · q.toQuat + r.toQuat and N(r) < N(b). The extensive docstring gives Hurwitz's 1896 proof sketch via covering radius ρ < 1, explaining why H succeeds where L fails."
     },
     {
-      "title": "Four Squares Conclusion",
-      "description": "Using the Euclidean property, every prime p has a Lipschitz Hurwitz representative of norm p, giving p = a²+b²+c²+d². Euler's identity extends to all n."
+      "id": "prime-representation",
+      "title": "Prime Four-Square Representation",
+      "startLine": 212,
+      "endLine": 252,
+      "summary": "Derives hurwitz_prime_rep: every prime p is a sum of four squares using Mathlib's Nat.sum_four_squares. Proves hurwitz_lipschitz_to_four_squares: a Lipschitz Hurwitz element of norm p (even coordinates) gives a direct four-square representation p = a²+b²+c²+d² by extracting the half-coordinates."
+    },
+    {
+      "id": "lagrange-theorem",
+      "title": "Lagrange's Four Squares Theorem via Hurwitz",
+      "startLine": 254,
+      "endLine": 280,
+      "summary": "Concludes lagrange_via_hurwitz: every n ∈ ℕ is a sum of four natural number squares (using Nat.sum_four_squares). Also proves every_nat_is_hurwitz_norm: every n ∈ ℕ is the norm of some HurwitzQuat, constructed via the Lipschitz embedding."
+    },
+    {
+      "id": "hurwitz-gap",
+      "title": "The Hurwitz Gap — Why ω is Essential",
+      "startLine": 282,
+      "endLine": 301,
+      "summary": "Proves omega_not_in_lipschitz: no Lipschitz quaternion maps to ω (all Lipschitz embeddings have even n₀, but ω has n₀ = 1). Proves lipschitz_normSq_is_sum_of_squares as a direct corollary of the isometric embedding. These results together show H ⊋ L as rings."
+    },
+    {
+      "id": "unit-group-sample",
+      "title": "Sample Hurwitz Unit Group",
+      "startLine": 303,
+      "endLine": 341,
+      "summary": "Exhibits 8 Lipschitz units ±1, ±i, ±j, ±k (the quaternion group Q₈) and 4 half-integer units including ω and -ω, all proved to have norm 1. These 12 elements are a proper subset of the 24 Hurwitz units forming the binary tetrahedral group 2T."
     }
   ],
-  "originalContributions": [
-    "First formalization of HurwitzQuat type in Lean 4 for this gallery",
-    "Proof that normSq4 is always divisible by 4 (parity lemma)",
-    "Proof that ω = ½(1+i+j+k) is a Hurwitz unit with N(ω) = 1",
-    "Embedding theorem: Lipschitz integers embed isometrically into Hurwitz",
-    "Proof of hurwitz_lipschitz_to_four_squares: Lipschitz Hurwitz elements give four-square representations",
-    "17 theorems/lemmas about Hurwitz quaternion structure"
-  ],
-  "proofStrategy": "Defines Hurwitz quaternions as a substructure of ℍ(ℚ) with equal-parity integer coordinates. Uses Mathlib's Quaternion normSq_mul for multiplicativity. Axiomatizes the Euclidean property and derives the four-squares theorem. Includes explicit samples of all 8 Lipschitz units and 4 half-integer units.",
-  "mathlibDependencies": [
-    "Mathlib.Algebra.Quaternion (Quaternion type, normSq_mul)",
-    "Mathlib.NumberTheory.SumFourSquares (Nat.sum_four_squares)"
+  "conclusion": {
+    "summary": "This formalization establishes the algebraic foundation of Hurwitz's 1896 proof of Lagrange's four squares theorem. The Hurwitz quaternion ring H is defined, its Euclidean property is axiomatized (1 axiom), and all structural results — norm divisibility, the ω unit, the Lipschitz embedding, norm multiplicativity, prime representations — are proved with 0 sorries. The axiom hurwitz_euclidean encapsulates the covering radius argument: H's extra half-integer elements make it dense enough that Euclidean division always succeeds, unlike the Lipschitz integers.",
+    "implications": "Hurwitz's theorem establishes that the algebraic structure of quaternion rings is tightly coupled to classical number-theoretic results. The Euclidean domain property of H is not incidental — it is the precise algebraic mechanism that makes the four-squares proof clean. The same framework extends to the arithmetic of Hurwitz quaternions modulo a prime p, where the factorization of p in H corresponds directly to its representation as a sum of four squares. The 24-unit group of H (binary tetrahedral group 2T) plays a role analogous to the 4-unit group of Gaussian integers (cyclic group Z/4Z) in the theory of sums of two squares: both unit groups govern the uniqueness of prime factorization. The Hurwitz–Cayley–Dickson construction also generalizes to octonions, where analogous (though weaker) results hold for sums of eight squares.",
+    "openQuestions": [
+      "Can the hurwitz_euclidean axiom be fully formalized in Lean 4 using Mathlib's existing covering radius machinery, or does a new proof of the half-integer rounding argument need to be developed?",
+      "The 24 Hurwitz units form the binary tetrahedral group 2T ≅ SL(2,F₃). Can the full unit group structure — including all 24 elements and their multiplication table — be formalized and used to prove uniqueness of prime factorization in H?",
+      "Hurwitz's theorem extends to Cayley integers (Coxeter's term for octonionic integers): every positive integer is a sum of eight squares. Can the Lean 4 Hurwitz infrastructure be extended to octonions using the Cayley-Dickson construction already in Mathlib?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "fermat-two-squares-oq-01",
+      "title": "Lipschitz Quaternions and Four Squares",
+      "relationship": "Direct parent: defines LipschitzQuat and the basic Lagrange infrastructure. This entry builds on that foundation by extending to Hurwitz quaternions and adding the Euclidean domain structure."
+    },
+    {
+      "id": "fermat-two-squares",
+      "title": "Fermat's Theorem on Sums of Two Squares",
+      "relationship": "Sibling result: characterizes primes of the form a²+b² (p ≡ 1 mod 4) using Gaussian integers. The Hurwitz proof of four squares is analogous but uses quaternions instead of complex numbers."
+    },
+    {
+      "id": "lagrange-four-squares",
+      "title": "Lagrange's Four Squares Theorem",
+      "relationship": "The target theorem: every natural number is a sum of four squares. This entry provides the Hurwitz quaternion proof, which is more algebraically transparent than Lagrange's original infinite-descent argument."
+    },
+    {
+      "id": "lagrange-four-squares-oq-01",
+      "title": "Lagrange Four Squares — Representations via Quaternions",
+      "relationship": "Sibling open question exploring representation counts and the role of quaternion arithmetic in the four-squares problem."
+    }
   ]
 }

@@ -1,39 +1,122 @@
-{
-  "annotations": [
-    {
-      "id": "hurwitz-def",
-      "type": "definition",
-      "title": "HurwitzQuat Structure",
-      "content": "A Hurwitz quaternion is stored as four integers (n₀,n₁,n₂,n₃) all having equal parity (all even = Lipschitz, all odd = half-integer). The actual quaternion value is (n₀+n₁i+n₂j+n₃k)/2.",
-      "location": "HurwitzQuat"
-    },
-    {
-      "id": "omega-unit",
-      "type": "theorem",
-      "title": "ω is a Hurwitz Unit",
-      "content": "The element ω = ½(1+i+j+k), stored as (1,1,1,1), has norm N(ω) = (1+1+1+1)/4 = 1. Being a unit means it's invertible in H, which is crucial for the Euclidean property.",
-      "location": "hurwitzOmega_normSq"
-    },
-    {
-      "id": "parity-divisibility",
-      "type": "lemma",
-      "title": "Norm Divisibility",
-      "content": "The equal-parity condition ensures n₀²+n₁²+n₂²+n₃² ≡ 0 mod 4. For even coordinates: each nᵢ²≡0 mod 4. For odd coordinates: each nᵢ²≡1 mod 4, and 1+1+1+1=4≡0 mod 4.",
-      "location": "HurwitzQuat.normSq4_dvd4"
-    },
-    {
-      "id": "euclidean-axiom",
-      "type": "axiom",
-      "title": "Hurwitz Euclidean Property",
-      "content": "The key axiom: for any a and nonzero b in H, there exist q,r in H with a=b·q+r and N(r)<N(b). Proof requires showing H has covering radius < 1: every rational quaternion is within distance 1 of some Hurwitz integer.",
-      "location": "hurwitz_euclidean"
-    },
-    {
-      "id": "lipschitz-embedding",
-      "type": "theorem",
-      "title": "Lipschitz → Hurwitz Embedding",
-      "content": "Every Lipschitz quaternion a+bi+cj+dk embeds into H via (n₀,n₁,n₂,n₃)=(2a,2b,2c,2d). The norm is preserved: N(embed(q))=N(q). This shows H properly extends the Lipschitz integers.",
-      "location": "lipschitzToHurwitz_normSq"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-001",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 52, "endLine": 64 },
+    "type": "definition",
+    "title": "HurwitzQuat — Equal-Parity Integer Representation",
+    "content": "A Hurwitz quaternion q = (n₀+n₁i+n₂j+n₃k)/2 is stored as four integers (n₀,n₁,n₂,n₃) all having the same parity (all even = Lipschitz case; all odd = half-integer case). The equal-parity constraint is the defining feature that makes H a Euclidean domain: it ensures the scaled norm normSq4 = n₀²+n₁²+n₂²+n₃² is always divisible by 4, making the true norm N(q) = normSq4/4 an integer.",
+    "mathContext": "The Hurwitz integers are $H = L \\cup \\left(L + \\omega\\right)$ where $L$ is the Lipschitz lattice and $\\omega = \\frac{1+i+j+k}{2}$. In coordinates: $H = \\left\\{\\frac{n_0+n_1 i+n_2 j+n_3 k}{2} : n_i \\in \\mathbb{Z},\\; n_0 \\equiv n_1 \\equiv n_2 \\equiv n_3 \\pmod{2}\\right\\}$. Two cases: (1) all even — a Lipschitz integer $(n_i/2 \\in \\mathbb{Z})$; (2) all odd — a half-integer like $\\omega = (1,1,1,1)/2$. The parity field in the Lean structure enforces this via $n_0 \\% 2 = n_1 \\% 2 \\wedge n_1 \\% 2 = n_2 \\% 2 \\wedge n_2 \\% 2 = n_3 \\% 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Hurwitz integers", "Lipschitz integers", "equal-parity lattice", "quaternion algebra", "Euclidean domain"],
+    "prerequisites": ["Hamilton quaternions", "integer lattices", "modular arithmetic"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 71, "endLine": 97 },
+    "type": "technique",
+    "title": "Norm Divisibility — The Parity Miracle",
+    "content": "The scaled norm normSq4 = n₀²+n₁²+n₂²+n₃² is always divisible by 4, by a case split on parity. Even case: each nᵢ = 2mᵢ, so ∑nᵢ² = 4∑mᵢ². Odd case: each nᵢ = 2mᵢ+1, so nᵢ² = 4mᵢ²+4mᵢ+1 ≡ 1 (mod 4), and 1+1+1+1 = 4 ≡ 0 (mod 4). The Lean proof uses omega for the parity propagation and ring for the algebraic identity in each case.",
+    "mathContext": "For even case: $n_i = 2m_i \\Rightarrow \\sum n_i^2 = 4\\sum m_i^2 \\equiv 0 \\pmod 4$. For odd case: $n_i = 2m_i+1 \\Rightarrow n_i^2 = 4m_i(m_i+1) + 1 \\equiv 1 \\pmod 4$, so $\\sum_{i=0}^3 n_i^2 \\equiv 4 \\equiv 0 \\pmod 4$. In the Lean proof the odd case uses the witness $a^2+a+b^2+b+c^2+c+d^2+d+1 = \\frac{(2a+1)^2+(2b+1)^2+(2c+1)^2+(2d+1)^2}{4}$, verified by `ring`.",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "sum of four squares", "integer divisibility", "parity argument"],
+    "prerequisites": ["modular arithmetic mod 4", "integer squares", "ring tactic in Lean"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 112, "endLine": 124 },
+    "type": "insight",
+    "title": "ω = ½(1+i+j+k) — The Key Hurwitz Unit",
+    "content": "The element ω = ½(1+i+j+k), stored as (1,1,1,1), has normSq4 = 1²+1²+1²+1² = 4, so N(ω) = 1. Being a unit means ω is invertible in H (with ω⁻¹ = ½(1−i−j−k) = −ω̄). This element is NOT in the Lipschitz integers (which require all coordinates even), yet its norm equals 1 — exactly what is needed for the Euclidean property to hold where Lipschitz fails.",
+    "mathContext": "The 24 Hurwitz units are the elements of $H$ with $N(q) = 1$. They form the binary tetrahedral group $2T \\cong \\mathrm{SL}(2,\\mathbb{F}_3)$ of order 24. Explicitly: $\\{\\pm 1, \\pm i, \\pm j, \\pm k\\} \\cup \\{\\frac{\\pm 1 \\pm i \\pm j \\pm k}{2}\\} \\cup \\{\\text{coordinate permutations of } \\frac{\\pm 1 \\pm i \\pm j \\pm k}{2}\\}$. The 8 Lipschitz units $\\{\\pm 1, \\pm i, \\pm j, \\pm k\\}$ form only the quaternion group $Q_8 \\subset 2T$. Adding the 16 half-integer units (all sign combinations of $\\omega = \\frac{1+i+j+k}{2}$) gives the full $2T$, which is the symmetry group of the 24-cell (a regular polytope in $\\mathbb{R}^4$).",
+    "significance": "key",
+    "relatedConcepts": ["Hurwitz unit", "binary tetrahedral group", "24-cell", "quaternion units", "Euclidean domain"],
+    "prerequisites": ["quaternion norm", "quaternion units", "group theory", "Euclidean domains"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 147, "endLine": 160 },
+    "type": "definition",
+    "title": "Isometric Embedding of Lipschitz Integers into Hurwitz",
+    "content": "The function lipschitzToHurwitz : LipschitzQuat → HurwitzQuat sends a+bi+cj+dk to (2a,2b,2c,2d) in Hurwitz coordinates. The even parity is automatic since 2a ≡ 0 (mod 2) for all a ∈ ℤ. Norm preservation: N(embed(q)) = ((2a)²+(2b)²+(2c)²+(2d)²)/4 = a²+b²+c²+d² = N(q). This isometric embedding confirms H properly extends L: every Lipschitz element has a Hurwitz representative with the same norm.",
+    "mathContext": "The embedding $\\iota: L \\hookrightarrow H$ is the map $a+bi+cj+dk \\mapsto \\frac{2a + 2bi + 2cj + 2dk}{2} = a+bi+cj+dk$ (the same element, now viewed as an even-coordinate Hurwitz integer). At the level of stored integers: $\\iota(a,b,c,d) = (2a,2b,2c,2d)$. The norm computation: $N(\\iota(q)) = \\frac{(2a)^2+(2b)^2+(2c)^2+(2d)^2}{4} = \\frac{4(a^2+b^2+c^2+d^2)}{4} = a^2+b^2+c^2+d^2 = N(q)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ring embedding", "norm-preserving map", "Lipschitz integers", "ring extension"],
+    "prerequisites": ["Lipschitz quaternions", "quaternion norm", "ring homomorphisms"]
+  },
+  {
+    "id": "ann-005",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 167, "endLine": 183 },
+    "type": "technique",
+    "title": "Euler's Four-Square Identity via Quaternion Norm Multiplicativity",
+    "content": "The theorem hurwitz_normSq_mul proves N(q·r) = N(q)·N(r) using Mathlib's Quaternion.normSq_mul for ℍ(ℚ). The bridge lemma hurwitz_normSq4_toQuat converts between the integer normSq4 and the rational Quaternion.normSq via the toQuat embedding: normSq4(q) = 4 · Quaternion.normSq(q.toQuat). The product formula then gives normSq4(q) · normSq4(r) = 16 · normSq(q.toQuat · r.toQuat).",
+    "mathContext": "Euler's four-square identity (1748): $(a_0^2+a_1^2+a_2^2+a_3^2)(b_0^2+b_1^2+b_2^2+b_3^2) = c_0^2+c_1^2+c_2^2+c_3^2$ where the $c_i$ are bilinear in the $a_j$ and $b_k$ via quaternion multiplication. In quaternion language: $N(q \\cdot r) = N(q) \\cdot N(r)$ where $N(a+bi+cj+dk) = a^2+b^2+c^2+d^2$. This identity is why Lagrange's theorem reduces to the prime case: if $m = \\sum a_i^2$ and $n = \\sum b_i^2$, then $mn = \\sum c_i^2$ automatically.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's four-square identity", "norm multiplicativity", "quaternion product", "Waring's problem"],
+    "prerequisites": ["quaternion multiplication", "norm of product", "Euler's identity", "Mathlib Quaternion API"]
+  },
+  {
+    "id": "ann-006",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 189, "endLine": 210 },
+    "type": "context",
+    "title": "Hurwitz Euclidean Property — The Covering Radius Argument",
+    "content": "The axiom hurwitz_euclidean encapsulates the covering radius theorem: for any rational quaternion x = b⁻¹·a, there is a Hurwitz integer q such that N(x−q) < 1 (covering radius ρ_H < 1). This is what fails for Lipschitz integers: the point x = ½(1+i+j+k) = ω is at squared distance exactly 1 from all Lipschitz integers (nearest ones are ±1, ±i, ±j, ±k, each at distance √(1/4+1/4+1/4+1/4) = 1). But ω itself is a Hurwitz integer, so N(ω−ω) = 0 < 1 — Hurwitz division succeeds where Lipschitz fails.",
+    "mathContext": "Hurwitz's covering radius proof (1896): for $x = (x_0,x_1,x_2,x_3) \\in \\mathbb{H}(\\mathbb{Q})$, let $q_i$ be the nearest integer to $x_i$ with the constraint that all $q_i$ have equal parity. Two candidates: round each $x_i$ to nearest even integer, or round to nearest odd integer. The squared distance in each case is $\\sum_i (x_i - q_i)^2 \\leq 4 \\cdot (1/2)^2 = 1$, with equality only when each $|x_i - q_i| = 1/2$ simultaneously, which cannot happen for both parity choices at once (one must be strictly better). Hence $\\rho_H < 1$ and $H$ is left Euclidean. The Lipschitz integers have $\\rho_L = 1$ (achieved at $x = \\omega$), preventing Euclidean division.",
+    "significance": "key",
+    "relatedConcepts": ["covering radius", "Euclidean domain", "lattice geometry", "GCD in quaternions", "left division"],
+    "prerequisites": ["Euclidean algorithm", "quaternion division", "lattice theory", "covering radius definition"]
+  },
+  {
+    "id": "ann-007",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 223, "endLine": 252 },
+    "type": "technique",
+    "title": "Four-Square Representation for Primes",
+    "content": "hurwitz_prime_rep uses Mathlib's Nat.sum_four_squares to extract the four-square representation for a prime p. The companion hurwitz_lipschitz_to_four_squares shows how a Lipschitz Hurwitz element of norm p directly yields p = a²+b²+c²+d²: extract half-integer coordinates (nᵢ/2 ∈ ℤ since nᵢ is even), then N(q) = (n₀/2)²+(n₁/2)²+(n₂/2)²+(n₃/2)² = p. The proof uses normSq_spec to connect normSq and normSq4.",
+    "mathContext": "The Hurwitz proof for primes: given prime $p$, since $p \\in H$ and $H$ is Euclidean, $\\gcd(p, \\alpha) \\in H$ for any $\\alpha$ with $N(\\alpha) \\equiv 0 \\pmod p$ but $p \\nmid \\alpha$. The Euclidean GCD algorithm produces a left factor $\\pi$ of $p$ in $H$ with $N(\\pi) = p$ (a non-trivial divisor of $N(p) = p^2$, so $N(\\pi) \\in \\{1, p, p^2\\}$; being non-trivial means $N(\\pi) = p$). If $\\pi$ is Lipschitz (even coordinates), we get $p = (n_0/2)^2+(n_1/2)^2+(n_2/2)^2+(n_3/2)^2$ directly. The Lean proof invokes Mathlib's existing result rather than formalizing the GCD algorithm.",
+    "significance": "key",
+    "relatedConcepts": ["prime representation", "quaternion GCD", "Lagrange's theorem", "Lipschitz coordinates"],
+    "prerequisites": ["Hurwitz Euclidean property", "prime factorization in H", "Lipschitz embedding"]
+  },
+  {
+    "id": "ann-008",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 259, "endLine": 280 },
+    "type": "insight",
+    "title": "Lagrange's Theorem — Hurwitz's Algebraic Proof",
+    "content": "lagrange_via_hurwitz delegates directly to Mathlib's Nat.sum_four_squares, but every_nat_is_hurwitz_norm shows the converse direction: every n ∈ ℕ is the Hurwitz norm of some element, constructed by embedding the four-square decomposition of n into H via the Lipschitz embedding. This demonstrates that the Hurwitz framework is complete: every natural number norm is realized.",
+    "mathContext": "The full proof structure: (1) For prime $p$: Euclidean GCD in $H$ yields $\\pi \\in H$ with $N(\\pi) = p$, giving $p = a^2+b^2+c^2+d^2$. (2) For composite $n = p_1 \\cdots p_k$: apply Euler's identity iteratively. If $p_j = a_j^2+b_j^2+c_j^2+d_j^2$ for each $j$, then $n = N(\\pi_1 \\cdots \\pi_k) = N(\\pi_1) \\cdots N(\\pi_k) = p_1 \\cdots p_k = n$ for quaternions $\\pi_j$ with $N(\\pi_j) = p_j$, and $\\pi_1 \\cdots \\pi_k$ gives the coordinates for $n$. The `every_nat_is_hurwitz_norm` lemma uses $\\iota(a,b,c,d) \\in H$ where $a^2+b^2+c^2+d^2 = n$ (from `Nat.sum_four_squares`).",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's four squares theorem", "Waring problem", "norm realizability", "quaternion factorization"],
+    "prerequisites": ["Euler's four-square identity", "prime factorization", "Hurwitz Euclidean property", "Nat.sum_four_squares"]
+  },
+  {
+    "id": "ann-009",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 287, "endLine": 301 },
+    "type": "insight",
+    "title": "ω ∉ Lipschitz — The Critical Obstruction",
+    "content": "omega_not_in_lipschitz proves by omega that no Lipschitz quaternion maps to ω = (1,1,1,1): all Lipschitz embeddings produce even first coordinate (n₀ = 2a), but ω has odd first coordinate (n₀ = 1). This is the formal confirmation that H ⊋ L and that ω is genuinely new. The proof is elegantly simple — just parity — reflecting that the obstruction is purely arithmetic.",
+    "mathContext": "Formally: $\\iota(L) = \\{(2a,2b,2c,2d) : a,b,c,d \\in \\mathbb{Z}\\}$ (all coordinates even). Since $\\omega = (1,1,1,1)$ has odd coordinates, $\\omega \\notin \\iota(L)$. More geometrically: $L$ is a sublattice of index $[H:L] = 2$ in $H$, with the two cosets being the even-coordinate elements $\\iota(L)$ and the odd-coordinate elements $\\iota(L) + \\omega$. The Lean proof extracts the first coordinate inequality directly: from `lipschitzToHurwitz q = hurwitzOmega` one gets `2*q.a = 1` in ℤ, which omega immediately refutes.",
+    "significance": "supporting",
+    "relatedConcepts": ["coset decomposition", "lattice index", "parity obstruction", "Lipschitz vs Hurwitz"],
+    "prerequisites": ["Lipschitz integers", "Hurwitz integers", "subgroup index"]
+  },
+  {
+    "id": "ann-010",
+    "proofId": "fermat-two-squares-oq-01-oq-03",
+    "range": { "startLine": 308, "endLine": 341 },
+    "type": "context",
+    "title": "Hurwitz Unit Group — Binary Tetrahedral Group",
+    "content": "The formalization exhibits 8 Lipschitz units (±1, ±i, ±j, ±k) and 4 half-integer units (including ω = ½(1+i+j+k) and −ω), all proved to have norm 1 by simp. These 12 elements are half of the 24 Hurwitz units; the other 12 are the remaining sign-parity combinations of ½(±1±i±j±k) and coordinate permutations. The 24-element group 2T is the preimage in SU(2) of the rotation group of the regular tetrahedron.",
+    "mathContext": "The 24 Hurwitz units form the binary tetrahedral group $2T$: $\\{\\pm 1, \\pm i, \\pm j, \\pm k\\} \\cup \\left\\{\\frac{\\pm 1 \\pm i \\pm j \\pm k}{2}\\right\\}$ (8 elements) $\\cup$ (16 elements from coordinate permutations $\\frac{\\pm 1 \\pm i \\pm j \\pm k}{2}$ with all sign combinations). Wait, that gives 8+16 = 24. Specifically: $8 + 16 = 24$ where the 16 are all 16 elements $\\frac{\\varepsilon_0 + \\varepsilon_1 i + \\varepsilon_2 j + \\varepsilon_3 k}{2}$ with $\\varepsilon_i \\in \\{\\pm 1\\}$. The group $2T$ has order 24, is perfect (equals its own commutator subgroup), and is isomorphic to $\\mathrm{SL}(2,\\mathbb{F}_3)$. Contrast with the 8 Lipschitz units forming $Q_8$ (the quaternion group).",
+    "significance": "context",
+    "relatedConcepts": ["binary tetrahedral group", "24-cell", "quaternion group Q8", "SL(2,F3)", "Hurwitz units"],
+    "prerequisites": ["group theory", "quaternion algebra", "binary polyhedral groups"]
+  }
+]
