@@ -418,7 +418,7 @@ private lemma sym_fin_sum (f : ℕ → ℕ) (m : ℕ) :
     slice by last coordinate j, apply IH to each fiber (size = crossEhrhart d (n-|j-n|)),
     then sum via sym_fin_sum and crossEhrhart_succ_d. -/
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
-  induction d with
+  induction d generalizing n with
   | zero =>
     simp [crossBall, crossEhrhart]
   | succ d ih =>
@@ -477,29 +477,30 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
                       else (x (Fin.last d)).val - n) =
                      (if j.val ≤ n then n - j.val else j.val - n) := by rw [hlast]
         push_neg at hj; omega
-    -- Apply fiber formula.
-    simp_rw [hfiber]
-    -- Convert innerBall sizes to crossEhrhart via innerBall_card_eq and ih.
-    simp_rw [show ∀ j : Fin (2 * n + 1),
-               (if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
-                then (innerBall d n (m - (if j.val ≤ n then n - j.val else j.val - n))).card
-                else 0) =
-               (if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
-                then crossEhrhart d (m - (if j.val ≤ n then n - j.val else j.val - n))
-                else 0) from fun j => by
-             split_ifs with hj
-             · rw [innerBall_card_eq ((Nat.sub_le m _).trans hm), ih]
-             · rfl]
-    -- Reindex: biject sum over Fin(2n+1) (with zeros outside support) with Fin(2m+1).
+    -- Express fiber-card sum = crossEhrhart sym sum, then apply sym_fin_sum.
     rw [show ∑ j : Fin (2 * n + 1),
-              (if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
-               then crossEhrhart d (m - (if j.val ≤ n then n - j.val else j.val - n))
-               else 0) =
+              ((innerBall (d + 1) n m).filter (fun x => x (Fin.last d) = j)).card =
             ∑ k : Fin (2 * m + 1),
               (if k.val ≤ m then crossEhrhart d k.val else crossEhrhart d (2 * m - k.val))
         from ?_]
     · rw [sym_fin_sum, ← crossEhrhart_succ_d]
-    · -- Reduce to filtered sum, then biject via k ↦ ⟨k+(n-m), _⟩.
+    · -- Prove the sum reindexing in two steps.
+      -- Step 1: convert fiber cards to crossEhrhart via hfiber + innerBall_card_eq + ih.
+      have hstep1 :
+          ∑ j : Fin (2 * n + 1),
+            ((innerBall (d + 1) n m).filter (fun x => x (Fin.last d) = j)).card =
+          ∑ j : Fin (2 * n + 1),
+            (if (if j.val ≤ n then n - j.val else j.val - n) ≤ m
+             then crossEhrhart d (m - (if j.val ≤ n then n - j.val else j.val - n))
+             else 0) := by
+        apply Finset.sum_congr rfl; intro j _
+        rw [hfiber j]
+        split_ifs with hj
+        · rw [innerBall_card_eq ((Nat.sub_le m _).trans hm)]
+          exact ih _
+        · rfl
+      rw [hstep1]
+      -- Step 2: biject Fin(2n+1) sum (zeros outside support) with Fin(2m+1) sym sum.
       rw [← Finset.sum_filter]
       apply Finset.sum_nbij (fun k : Fin (2 * m + 1) => ⟨k.val + (n - m), by
             have := k.isLt; omega⟩)
