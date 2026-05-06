@@ -46,40 +46,55 @@
   },
   "sections": [
     {
-      "title": "Main Theorem",
-      "content": "The LGV Lemma: `niTupleCount = det(pathMatrix)` for well-formed configurations.",
-      "theorems": [
-        "lgv_determinant_formula",
-        "lgv_det_nonneg"
-      ]
+      "id": "lgv-core",
+      "title": "Part I: The Core LGV Theorem",
+      "startLine": 40,
+      "endLine": 63,
+      "summary": "lgv_determinant_formula re-exports the r×r LGV lemma from BallotProblemOQ03OQ02. lgv_det_nonneg proves that for well-formed configurations, the determinant of the path matrix is non-negative.",
+      "mathContext": "For a well-formed LGV configuration with $r$ sources and $r$ targets, $\\det(M) = $ `niTupleCount`, where $M_{ij} = C(m + b_j - a_i, m)$ counts lattice paths from source $a_i$ to target $b_j$."
     },
     {
-      "title": "1×1 Case",
-      "content": "The 1×1 determinant is simply the path count C(m + b - a, m).",
-      "theorems": [
-        "lgv_one_by_one"
-      ]
+      "id": "lgv-one-by-one",
+      "title": "Part II: The 1×1 Case",
+      "startLine": 61,
+      "endLine": 83,
+      "summary": "lgvConfig1 defines a 1×1 LGV configuration. lgvConfig1_wellFormed proves well-formedness. lgv_one_by_one shows the 1×1 determinant equals C(m + b - a, m) — just the path count between one source and one target.",
+      "mathContext": "For a single source $a$ and target $b$ with $a \\leq b$: $\\det(M) = M_{11} = C(m + b - a, m)$, the number of lattice paths from $(0, a)$ to $(m, b)$."
     },
     {
-      "title": "2×2 Concrete Examples",
-      "content": "For m=2, det=6 paths; for m=3, det=50 paths. Both verified by computation.",
-      "theorems": [
-        "lgv_2x2_det_ex1",
-        "lgv_2x2_ni_count_ex1",
-        "lgv_2x2_det_ex2",
-        "lgv_2x2_ni_count_ex2"
-      ]
+      "id": "lgv-2x2-config",
+      "title": "Part III: 2×2 Configuration",
+      "startLine": 84,
+      "endLine": 117,
+      "summary": "lgvConfig2 defines the standard 2×2 LGV configuration with sources a, a+1 and targets b, b+1 (requiring a+1 ≤ b). lgvConfig2_wellFormed establishes the ordering condition for well-formedness.",
+      "mathContext": "Standard 2×2 configuration: sources $\\{a, a+1\\}$, targets $\\{b, b+1\\}$ with $a + 1 \\leq b$. Path matrix: $M = \\begin{pmatrix} C(m+b-a,m) & C(m+b+1-a,m) \\\\ C(m+b-a-1,m) & C(m+b-a,m) \\end{pmatrix}$."
     },
     {
-      "title": "Non-Negativity and Well-Formedness",
-      "content": "The determinant is always non-negative (it counts path tuples). Well-formedness is essential.",
-      "theorems": [
-        "lgv_2x2_det_nonneg",
-        "lgv_2x2_not_wellFormed_when_b_zero",
-        "lgv_det_is_natural"
-      ]
+      "id": "lgv-examples",
+      "title": "Part IV: Concrete 2×2 Examples",
+      "startLine": 118,
+      "endLine": 158,
+      "summary": "Two concrete examples: (1) m=2, sources=[0,1], targets=[2,3]: det=6, matching 6 non-intersecting path pairs. (2) m=3, sources=[0,1], targets=[3,4]: det=50, matching 50 non-intersecting path pairs. Both verified by native_decide.",
+      "mathContext": "Example 1: $M = \\begin{pmatrix} 6 & 10 \\\\ 3 & 6 \\end{pmatrix}$, $\\det = 36 - 30 = 6$. Example 2: $M = \\begin{pmatrix} 20 & 35 \\\\ 10 & 20 \\end{pmatrix}$, $\\det = 400 - 350 = 50$."
+    },
+    {
+      "id": "lgv-nonneg-wellformed",
+      "title": "Part V: Non-negativity, Well-formedness, and Natural Number Property",
+      "startLine": 160,
+      "endLine": 189,
+      "summary": "lgv_2x2_det_nonneg proves non-negativity for all 2×2 valid configurations. lgv_2x2_not_wellFormed_when_b_zero shows that b=0 violates well-formedness. lgv_det_is_natural proves the determinant is always a natural number (cast to Int).",
+      "mathContext": "Non-negativity: $\\det(M) \\geq 0$ since it counts non-intersecting path tuples. Well-formedness requires strictly ordered source and target positions. The natural number cast: $\\det(M) \\in \\mathbb{Z}$ but the count $\\in \\mathbb{N}$, so $\\det(M)$ can be cast to $\\mathbb{N}$."
     }
   ],
+  "conclusion": {
+    "summary": "The LGV Lemma is formalized for general r×r matrices and concretely verified for the 1×1 and 2×2 cases with explicit determinant computations. The formalization demonstrates that Lean 4's linear algebra infrastructure (Mathlib's matrix determinant) can be combined with combinatorial path counting to verify the fundamental connection between determinants and non-intersecting lattice paths.",
+    "implications": "The LGV Lemma is a unifying tool in enumerative combinatorics, producing at once the Lindström nonintersecting path formula, the Gessel-Viennot theorem for plane partitions, the Cauchy-Binet formula, and the Karlin-McGregor theorem for non-intersecting Brownian motions. The formal proof via sign-reversing involution (in BallotProblemOQ03OQ02) provides a machine-verified instance of the involution principle — one of the core proof techniques in bijective combinatorics. The concrete examples (det=6 and det=50) make the abstract theorem computationally tangible.",
+    "openQuestions": [
+      "Can the LGV Lemma be applied to prove the MacMahon formula for plane partitions in a bounded box (det of binomial matrices = product formula)?",
+      "Can the Gessel-Viennot sign-reversing involution be generalized to prove the Cauchy-Binet determinant identity within Mathlib?",
+      "Can the LGV formalism be extended to weighted paths (weighted matrix entries) for q-analogues of binomial determinants?"
+    ]
+  },
   "crossReferences": [
     {
       "id": "combinations-formula-oq-01",
