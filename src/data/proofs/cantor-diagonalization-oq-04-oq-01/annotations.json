@@ -1,0 +1,33 @@
+{
+  "proofId": "cantor-diagonalization-oq-04-oq-01",
+  "annotations": [
+    {
+      "id": "setoid-generalization",
+      "type": "insight",
+      "title": "Setoid as CCC Proxy",
+      "content": "Setoids model the CCC (cartesian closed category) situation at the type level. In a CCC, equality is replaced by isomorphism; setoid equivalence ≈ plays this role within Lean's type theory. The retraction condition decode(encode(f)) = f weakened to decode(encode(f))(y) ≈ f(y) captures the spirit of 'equality up to coherent isomorphism'.",
+      "location": "CodesEndomorphismsSetoid"
+    },
+    {
+      "id": "diagonal-unchanged",
+      "type": "technique",
+      "title": "Diagonal Construction Unchanged",
+      "content": "The core proof technique — the diagonal g(y) = f(decode(y)(y)) — works identically in the setoid setting. Only the retraction step uses setoid equivalence instead of exact equality. This robustness explains why Lawvere's theorem holds in such generality.",
+      "location": "lawvere_fixpoint_setoid"
+    },
+    {
+      "id": "f-not-morphism",
+      "type": "insight",
+      "title": "f Need Not Be a Setoid Morphism",
+      "content": "Unlike many generalization attempts, we do NOT require f to preserve the setoid equivalence (f need not satisfy: a ≈ b → f(a) ≈ f(b)). The fixed point exists for arbitrary functions f : Y → Y. This is stronger than one might expect.",
+      "location": "lawvere_fixpoint_setoid"
+    },
+    {
+      "id": "discrete-recovery",
+      "type": "technique",
+      "title": "Recovery via Discrete Setoid",
+      "content": "The discrete setoid (a ≈ b ↔ a = b) is the finest setoid. Under it, the setoid retraction condition collapses to exact equality, recovering the parent theorem (CantorDiagonalizationOQ04). This proves the new theorem is a genuine generalization.",
+      "location": "typeToSetoidCoding"
+    }
+  ]
+}

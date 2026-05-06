@@ -1,0 +1,82 @@
+{
+  "id": "cantor-diagonalization-oq-04-oq-01",
+  "slug": "cantor-diagonalization-oq-04-oq-01",
+  "title": "Lawvere Fixed-Point Theorem: Setoid Generalization",
+  "description": "Lawvere's fixed-point theorem generalized from exact Type equality to Setoid equivalence relations. If the endomorphisms of Y can be named up to setoid equivalence (a section-retraction pair with setoid-level retract), then every function f : Y → Y has a setoid fixed point — an element p with f(p) ≈ p. The discrete setoid recovers the original Type version exactly.",
+  "badge": "original",
+  "overview": "The parent proof (CantorDiagonalizationOQ04) proves Lawvere's fixed-point theorem in the Type category using exact equality. This open question asks whether the retraction version can be formalized beyond the Type category — specifically in a general topos or CCC setting in Lean. This proof answers affirmatively by generalizing to Setoids, which model the CCC structure at the type level: the discrete setoid (a ≈ b ↔ a = b) recovers the Type version, while richer setoids capture quotient-type analogues. The diagonal construction g(y) = f(decode(y)(y)) works unchanged, with the retraction condition relaxed from exact equality to setoid equivalence. Notably, f need not be a setoid morphism — the fixed point exists for arbitrary functions.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Data.Setoid.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CantorDiagonalizationOQ04OQ01",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/CantorDiagonalizationOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ04OQ01.lean",
+    "tags": [
+      "set-theory",
+      "logic",
+      "category-theory",
+      "lawvere",
+      "cantor",
+      "diagonal-argument",
+      "fixed-point",
+      "setoid",
+      "generalization"
+    ],
+    "axiomCount": 0,
+    "badge": "original"
+  },
+  "conclusion": "If a type Y with setoid equivalence ≈ codes its own endomorphisms up to ≈ (via encode/decode with decode(encode(f))(y) ≈ f(y)), then for every function f : Y → Y there exists p : Y with f(p) ≈ p. The Type version (exact equality) is the special case of the discrete setoid. Bool and ℕ-mod-2 cannot code their endomorphisms, witnessing the theorem's nontriviality.",
+  "sections": [
+    {
+      "title": "Coded Endomorphisms for Setoids",
+      "content": "The CodesEndomorphismsSetoid structure requires encode : (Y → Y) → Y and decode : Y → (Y → Y) with the setoid-level retraction decode(encode(g))(y) ≈ g(y) for all g, y. This is strictly weaker than the Type-level retract decode(encode(g)) = g."
+    },
+    {
+      "title": "Main Theorem: Setoid Fixed Point",
+      "content": "The diagonal construction g(y) = f(decode(y)(y)) is encoded as y₀ = encode(g). The retract gives decode(y₀)(y₀) ≈ g(y₀) = f(decode(y₀)(y₀)), so p = decode(y₀)(y₀) satisfies p ≈ f(p), and by symmetry f(p) ≈ p."
+    },
+    {
+      "title": "Generalization and Recovery",
+      "content": "The discrete setoid (a ≈ b ↔ a = b) converts any Type-level coding into a setoid coding, and the setoid fixed point becomes an exact fixed point. The setoid version thus strictly generalizes the parent theorem while remaining within Lean's type theory."
+    },
+    {
+      "title": "Impossibility Witnesses",
+      "content": "Bool cannot code its endomorphisms (Bool.not is fixed-point free). ℕ cannot code its endomorphisms up to the parity setoid (n ↦ n+1 shifts parity). The Cantor diagonal theorem holds: no function Y → (Y → Prop) is point-surjective."
+    }
+  ],
+  "openQuestions": [
+    {
+      "question": "Can the setoid version be lifted to a proof using Mathlib's CartesianClosed typeclass, working in any CCC with a terminal object?",
+      "difficulty": "hard",
+      "notes": "Requires categorical machinery: ihom, evaluation morphisms, global elements as morphisms from terminal. The setoid proof provides the mathematical content; the challenge is expressing it in Mathlib's category theory framework."
+    },
+    {
+      "question": "Which setoids Y admit a CodesEndomorphismsSetoid structure? Is there a characterization in terms of cardinality or algebraic structure of Y/≈?",
+      "difficulty": "research",
+      "notes": "For Type equality (discrete setoid), the question reduces to Lawvere's original. For non-trivial setoids, the retract condition is weaker, so more types might admit coding."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "cantor-diagonalization-oq-04",
+      "relationship": "Parent proof (Type-level retraction version, special case of this result)"
+    },
+    {
+      "id": "cantor-diagonalization-oq-03",
+      "relationship": "Sibling: surjection version of Lawvere's FPT"
+    }
+  ]
+}
