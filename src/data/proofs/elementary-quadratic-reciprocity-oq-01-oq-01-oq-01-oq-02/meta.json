@@ -1,0 +1,147 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+  "title": "Complete Assembly: Four-Step Gauss Sum Proof of QR",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+  "description": "Assembles the complete four-step Gauss sum proof of Quadratic Reciprocity into a single Lean 4 file. The assembly uses the Legendre quadratic character χ = (quadraticChar ZMod p).ringHomComp (Int.castRingHom ZMod q) to connect the character identity from Step 4 to the classical QR product formula legendreSym p q · legendreSym q p = (-1)^((p/2)·(q/2)). Steps 2 (τ²=χ(-1)p, from OQ01OQ01OQ01) and 3 (τ^q=χ(q)τ, from OQ01OQ01OQ02) are imported and cited explicitly. The key new result is gauss_sum_zmod_qr, which derives the QR identity in ZMod q by applying Euler's criterion to interpret p^((q-1)/2) as the Legendre symbol (p/q).",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-07",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "gauss-sums",
+      "legendre-symbol",
+      "frobenius",
+      "euler-criterion",
+      "assembly",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 255,
+    "theoremCount": 14,
+    "definitionCount": 1,
+    "dateAdded": "2026-05-07",
+    "mathlibDependencies": [
+      {
+        "theorem": "Char.card_pow_card",
+        "description": "Full QR identity: (χ(-1)·|F|)^(|F'|/2) = χ(|F'|) in finite fields",
+        "module": "Mathlib.NumberTheory.GaussSum"
+      },
+      {
+        "theorem": "legendreSym.quadratic_reciprocity",
+        "description": "QR product formula: legendreSym p q * legendreSym q p = (-1)^(p/2*(q/2))",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "legendreSym.at_neg_one",
+        "description": "First supplementary law: legendreSym p (-1) = χ₄ p",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "legendreSym.eq_pow",
+        "description": "Euler's criterion: (legendreSym p a : ZMod p) = (a : ZMod p)^(p/2)",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "quadraticChar_ne_one",
+        "description": "The quadratic character is nontrivial for odd prime p",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticChar.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff_dvd",
+        "description": "n-cast to ZMod m is zero iff m divides n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "parentProofs": [
+      "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+      "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02"
+    ],
+    "originalContributions": [
+      "legendreCharQ: the Legendre symbol as MulChar (ZMod p) (ZMod q) via Int.cast composition",
+      "legendreCharQ_ne_one: nontriviality using q≠2 to exclude the -1 evaluation case",
+      "legendreCharQ_neg_one: first supplement χ(-1) = (-1)^(p/2) in ZMod q",
+      "legendreCharQ_eval_q: character evaluation χ(q) = legendreSym p q in ZMod q",
+      "gauss_sum_char_identity: Step 4 (qr_gauss_sums_identity) with the Legendre character",
+      "gauss_sum_zmod_qr: QR in ZMod q form via Euler criterion for p^(q/2)",
+      "gauss_sum_qr_assembled: complete four-step assembly giving legendreSym QR formula"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 29,
+      "description": "Documents the four-step Gauss sum proof structure and imports from OQ01OQ01OQ01, OQ01OQ01OQ02."
+    },
+    {
+      "id": "character_def",
+      "title": "The Legendre Character as MulChar (ZMod p) (ZMod q)",
+      "startLine": 30,
+      "endLine": 104,
+      "description": "Defines legendreCharQ via ringHomComp and proves it is quadratic and nontrivial."
+    },
+    {
+      "id": "evaluations",
+      "title": "Character Evaluations",
+      "startLine": 105,
+      "endLine": 130,
+      "description": "Proves χ(-1) = (-1)^(p/2) and χ(q) = legendreSym p q in ZMod q."
+    },
+    {
+      "id": "character_identity",
+      "title": "Step 4: Character Identity in ZMod q",
+      "startLine": 131,
+      "endLine": 143,
+      "description": "Applies qr_gauss_sums_identity with legendreCharQ to get the assembled Step 4."
+    },
+    {
+      "id": "zmod_qr",
+      "title": "QR in ZMod q Form",
+      "startLine": 144,
+      "endLine": 168,
+      "description": "Derives the ZMod q version of QR using Euler's criterion for p^(q/2)."
+    },
+    {
+      "id": "main_theorem",
+      "title": "Main Assembly Theorem",
+      "startLine": 169,
+      "endLine": 185,
+      "description": "States and proves gauss_sum_qr_assembled = legendreSym p q * legendreSym q p = (-1)^(p/2*(q/2))."
+    },
+    {
+      "id": "steps",
+      "title": "Explicit Four-Step Citations",
+      "startLine": 186,
+      "endLine": 215,
+      "description": "Provides explicit theorem wrappers for each of the four Gauss sum proof steps."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Verifications",
+      "startLine": 216,
+      "endLine": 255,
+      "description": "Verifies QR for specific prime pairs (3,5), (3,7), (5,7), (11,13) via native_decide."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the gauss_sum_zmod_qr theorem be used to prove QR independently of legendreSym.quadratic_reciprocity (i.e., lifting from ZMod q to ℤ directly)?",
+      "difficulty": "hard",
+      "status": "open"
+    }
+  ],
+  "relatedProofs": [
+    "elementary-quadratic-reciprocity",
+    "elementary-quadratic-reciprocity-oq-01",
+    "elementary-quadratic-reciprocity-oq-01-oq-01",
+    "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+    "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02"
+  ]
+}
