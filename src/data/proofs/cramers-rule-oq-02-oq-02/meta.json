@@ -1,0 +1,133 @@
+{
+  "id": "cramers-rule-oq-02-oq-02",
+  "title": "LU Decomposition and QR Factorization vs Cramer's Rule",
+  "slug": "cramers-rule-oq-02-oq-02",
+  "description": "Extends the Gaussian vs Cramer complexity comparison to LU decomposition and QR factorization. LU (n³ model) beats Cramer for all n ≥ 1; QR (2n³ model) beats Cramer for n ≥ 3. The gap grows super-polynomially: for any constant K, all O(n³) algorithms are eventually K-times more efficient than Cramer's O(n·n!).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/LU_decomposition#Complexity",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ02OQ02.lean",
+    "tags": [
+      "computational-complexity",
+      "linear-algebra",
+      "algorithms",
+      "lu-decomposition",
+      "qr-factorization",
+      "gaussian-elimination",
+      "cramer",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial_pos",
+        "description": "Positivity of factorials: 0 < n!",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.mul_lt_mul_of_pos_right",
+        "description": "Strict multiplication monotonicity on the right",
+        "module": "Mathlib.Data.Nat.Order.Basic"
+      },
+      {
+        "theorem": "Nat.mul_lt_mul_of_pos_left",
+        "description": "Strict multiplication monotonicity on the left",
+        "module": "Mathlib.Data.Nat.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "LU complexity model: luMuls n = n³ (same O-class as Gaussian elimination)",
+      "QR complexity model: qrMuls n = 2n³ (conservative upper bound, same O-class)",
+      "lu_beats_cramer: LU (n³) < Cramer ((n+1)·n·n!) for all n ≥ 1",
+      "qr_beats_cramer_from_3: QR (2n³) < Cramer ((n+1)·n·n!) for n ≥ 3 (at n=1: tie; at n=2: QR worse)",
+      "Key lemma: 2n³ < n²·n! for n ≥ 4, proved via 2n³ < n⁴ = n²·n² < n²·n!",
+      "Asymptotic result: for any K, QR is eventually K-times more efficient than Cramer",
+      "Three-way comparison: Gaussian ≤ QR ≤ 2·Gaussian < Cramer (for n ≥ 4)",
+      "Formal confirmation: all cubic solvers belong to the same algorithmic class"
+    ]
+  },
+  "openQuestions": [],
+  "proofStrategy": "Extends CramersRuleOQ02.lean by defining LU and QR complexity models and proving each beats Cramer. The key new lemma (two_n_cube_lt_sq_factorial) shows 2n³ < n²·n! via the chain 2n³ < n⁴ = n²·n² < n²·n! (using factorial_gt_sq from the parent). The asymptotic result uses the threshold n ≥ max(4, 2K) to ensure K·2 ≤ n.",
+  "mainTheorems": [
+    {
+      "name": "luMuls_eq_gaussMuls",
+      "type": "core",
+      "description": "LU decomposition has the same leading complexity as Gaussian elimination in our model: luMuls n = gaussMuls n = n³."
+    },
+    {
+      "name": "qr_beats_cramer",
+      "type": "core",
+      "description": "QR factorization (2n³ multiplications) is strictly faster than Cramer's rule ((n+1)·n·n!) for n ≥ 4, proved via the chain 2n³ < n²·n! ≤ (n+1)·n·n!."
+    },
+    {
+      "name": "qr_asymptotically_better",
+      "type": "core",
+      "description": "For any constant K, QR factorization is eventually K-times more efficient than Cramer's rule: ∃N, ∀n≥N, K·2n³ < (n+1)·n·n!."
+    },
+    {
+      "name": "three_way_comparison",
+      "type": "core",
+      "description": "For n ≥ 4: luMuls n = gaussMuls n ≤ qrMuls n < cramersRuleMuls n — all O(n³) algorithms outperform Cramer's O(n·n!)."
+    },
+    {
+      "name": "lu_qr_vs_cramer_summary",
+      "type": "summary",
+      "description": "Comprehensive summary: LU/QR models, both beat Cramer for n ≥ 4, and both beat Cramer asymptotically by any multiplicative constant."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Tactic",
+      "Proofs.CramersRuleOQ02"
+    ],
+    "opens": [
+      "Nat",
+      "CramersComplexity"
+    ],
+    "namespace": "CramersComplexityLUQR",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/CramersRuleOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "G. H. Golub, C. F. Van Loan",
+      "title": "Matrix Computations (4th edition)",
+      "year": "2013",
+      "venue": "Johns Hopkins University Press",
+      "note": "Standard reference for O(n³/3) LU and O(4n³/3) QR complexity estimates"
+    },
+    {
+      "authors": "L. N. Trefethen, D. Bau",
+      "title": "Numerical Linear Algebra",
+      "year": "1997",
+      "venue": "SIAM",
+      "note": "Detailed analysis of Householder QR factorization complexity"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-02",
+      "relationship": "extends",
+      "description": "Parent complexity comparison: Gaussian elimination vs Cramer's rule. This entry adds LU and QR to the comparison."
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "The original Cramer's rule formalization whose complexity is analyzed here."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ~ √(2πn)·(n/e)^n gives the asymptotic growth rate that makes Cramer's rule impractical."
+    }
+  ],
+  "sorries": 0
+}
