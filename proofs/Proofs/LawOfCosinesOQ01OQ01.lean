@@ -131,7 +131,7 @@ private theorem abs_inner_div_le (u v : Vec3) :
   by_cases h : ‖u‖ * ‖v‖ = 0
   · simp [h]
   · rw [abs_div, abs_of_nonneg (mul_nonneg (norm_nonneg _) (norm_nonneg _))]
-    exact div_le_one_of_le (abs_real_inner_le_norm u v) (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+    exact div_le_one_of_le₀ (abs_real_inner_le_norm u v) (mul_nonneg (norm_nonneg _) (norm_nonneg _))
 
 theorem cos_A_mul (t : SphericalTriangle)
     (hb : 0 < Real.sin t.sideB) (hc : 0 < Real.sin t.sideC) :
