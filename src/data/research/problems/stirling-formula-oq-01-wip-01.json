@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: PR #16354 open. Proved log_one_plus_le_cubic and log_one_plus_ge_quartic (derivative monotonicity). Step bounds conditional on step_formula sorry. Build pending.",
+    "progressSummary": "PROGRESS: PR #16354 - log_one_plus_le_cubic and log_one_plus_ge_quartic PROVED (derivative monotonicity). Build verified. 2 sorries remaining: stirling_step_formula (algebraic, Aristotle candidate) + stirling_first_correction.",
     "builtItems": [
       "log_one_plus_le_cubic theorem in StirlingExpansion.lean (proved)",
       "log_one_plus_ge_quartic theorem in StirlingExpansion.lean (proved)",
@@ -41,7 +41,11 @@
       "d_k = (k+1/2)*log(1+1/k) - 1 is the exact step formula; proved via stirlingSeq definition",
       "log bounds via derivative monotonicity: f(0)=0, f prime = t^n/(1+t) >= 0 on [0,inf)",
       "Correct lower bound for d_k: 1/(12k^2) - 1/(12k^3) - 1/(8k^4)",
-      "Main theorem follows from: step_formula + log_bounds + integral_comparison(sum 1/k^2) + exp_approximation"
+      "Main theorem follows from: step_formula + log_bounds + integral_comparison(sum 1/k^2) + exp_approximation",
+      "(by linarith : 0 < 1+t).ne prime is the correct Lean 4 idiom for 1+t!=0 from 0<=t",
+      "monotoneOn_of_deriv_nonneg takes 4 args: Convex + ContinuousOn + DifferentiableOn + deriv>=0",
+      "Build from worktree (not main repo) to avoid daemon file resets during 25-min build cycles",
+      "simp Set.mem_Ici/Ioi needed to convert membership predicates for linarith/positivity"
     ],
     "mathlibGaps": [
       "stirling_step_formula: needs log/sqrt algebraic manipulation (field_simp + ring fails with sqrt)",
