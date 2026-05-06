@@ -57,7 +57,7 @@
     "axiomCount": 1,
     "lineCount": 243,
     "assumptions": "1 axiom: erdos_881 (the open conjecture). Reduced from 2 by proving squares_basis_order_4 from Mathlib's Nat.sum_four_squares. Also fixed definition to use Multiset (was incorrectly using Finset, which disallows repeated elements needed for additive bases).",
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 6
   },
   "overview": {
@@ -170,7 +170,7 @@
     "namespace": "Erdos881",
     "lineCount": 243,
     "axiomCount": 1,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 6,
     "path": "Proofs/Erdos881Problem.lean",
     "sorries": 0
