@@ -95,7 +95,12 @@ theorem power_mean_eq_iff_all_eq_pos
   have hB_pos : 0 < B := power_sum_pos s w z hw hw' hz
   have hA_nn : (0 : ℝ) ≤ A := le_of_lt hA_pos
   have hB_nn : (0 : ℝ) ≤ B := le_of_lt hB_pos
-  have htr_gt1 : 1 < t / r := by rwa [lt_div_iff hr, one_mul]
+  have htr_gt1 : 1 < t / r := by
+    have h_r_ne : r ≠ 0 := ne_of_gt hr
+    have h_inv : 0 < r⁻¹ := inv_pos.mpr hr
+    calc (1 : ℝ) = r * r⁻¹ := (mul_inv_cancel₀ h_r_ne).symm
+      _ < t * r⁻¹ := mul_lt_mul_of_pos_right hrt h_inv
+      _ = t / r := (div_eq_mul_inv t r).symm
   -- Membership in [0,∞) for zᵢʳ (needed for strict Jensen)
   have hmem : ∀ i ∈ s, z i ^ r ∈ Set.Ici (0 : ℝ) :=
     fun i hi => Set.mem_Ici.mpr (rpow_nonneg (le_of_lt (hz i hi)) r)
