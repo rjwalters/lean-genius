@@ -22,7 +22,7 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 0,
+    "sorries": 1,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "1 open sorry: gnwProb_key (GNW 1979 probabilistic exchange argument for ≥2 corners). Axiom-free; all axiom declarations are 0.",
@@ -215,5 +215,5 @@
       "mathContext": "$h(\\mu,i,j) = h(\\mu^\\top,j,i)$ (arm↔leg under transpose). For N-row shapes: hook walk identity $\\sum_c \\text{hookProd}(\\mu)/\\text{hookProd}(\\mu\\setminus c) = \\sum_i a_i$ is a polynomial identity in $a_1,\\ldots,a_N$, verifiable by `ring` after computing each hook length as a linear combination of $a_i$."
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
