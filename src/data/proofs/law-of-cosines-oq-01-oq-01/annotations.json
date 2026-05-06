@@ -1,103 +1,146 @@
-{
-  "source": "lean-genius-research",
-  "version": "1.0",
-  "proofId": "law-of-cosines-oq-01-oq-01",
-  "annotations": [
-    {
-      "id": "ann-001",
-      "type": "definition",
-      "line": 42,
-      "title": "Dihedral Angle at Vertex A",
-      "body": "The dihedral angle A at vertex V_A is defined as arccos of the normalized inner product of the perpendicular projections of V_B and V_C onto the plane perpendicular to V_A. When either projection has zero norm (degenerate triangle), the angle defaults to 0.",
-      "tags": ["definition", "dihedral-angle", "perpendicular-projection"]
-    },
-    {
-      "id": "ann-002",
-      "type": "definition",
-      "line": 48,
-      "title": "Dihedral Angle at Vertex B",
-      "body": "The dihedral angle B at vertex V_B is defined analogously to angleAtA, using perpendicular projections of V_A and V_C onto the plane perpendicular to V_B.",
-      "tags": ["definition", "dihedral-angle"]
-    },
-    {
-      "id": "ann-003",
-      "type": "theorem",
-      "line": 58,
-      "title": "Inner Product of Perpendicular Projections at A",
-      "body": "⟨prj(B,A), prj(C,A)⟩ = cos(a) − cos(b)·cos(c). This is the key cosine formula relating the inner product of projections at vertex A to the side cosines. It follows directly from the inner_decomposition lemma in SphericalLawOfCosines, which states ⟨u,v⟩ = ⟨u,n⟩⟨v,n⟩ + ⟨prj(u,n), prj(v,n)⟩.",
-      "tags": ["theorem", "inner-product", "cosine-formula"]
-    },
-    {
-      "id": "ann-004",
-      "type": "theorem",
-      "line": 86,
-      "title": "Norm of Projection: ‖prj(B,A)‖ = sin(c)",
-      "body": "The perpendicular projection of V_B onto the plane ⊥ V_A has norm sin(c), where c is the arc-length from A to B. This uses norm_projectPerp_eq_sin from SphericalLawOfCosines together with the symmetry of arc length (arcLength is commutative).",
-      "tags": ["theorem", "norm", "sine", "projection"]
-    },
-    {
-      "id": "ann-005",
-      "type": "definition",
-      "line": 108,
-      "title": "Gram Determinant",
-      "body": "gramDet(t) = 1 − cos²a − cos²b − cos²c + 2cos(a)cos(b)cos(c). This is the 3×3 Gram determinant of the unit vectors V_A, V_B, V_C forming the spherical triangle. It equals (det[V_A V_B V_C])², measuring the signed volume squared of the parallelepiped they span.",
-      "tags": ["definition", "gram-determinant", "volume"]
-    },
-    {
-      "id": "ann-006",
-      "type": "theorem",
-      "line": 112,
-      "title": "Gram Determinant is Nonneg",
-      "body": "gramDet t ≥ 0. Proof: gramDet = ‖prj(B,A)‖²·‖prj(C,A)‖² − ⟨prj(B,A),prj(C,A)⟩², which is nonneg by the Cauchy-Schwarz inequality (|⟨u,v⟩| ≤ ‖u‖·‖v‖). This is the spherical analogue of saying the triple product is real.",
-      "tags": ["theorem", "cauchy-schwarz", "nonnegativity"]
-    },
-    {
-      "id": "ann-007",
-      "type": "theorem",
-      "line": 136,
-      "title": "Cosine Formula: cos(A)·sin(b)·sin(c) = cos(a) − cos(b)·cos(c)",
-      "body": "Assumes sin(b) > 0 and sin(c) > 0 (nondegenerate triangle). The formula is derived by: (1) showing the projections are nonzero (since their norms are sin(c) and sin(b)), (2) unfolding arccos, (3) applying inner_proj_A, norm_B_wrt_A, norm_C_wrt_A, and field_simp to clear the denominators.",
-      "tags": ["theorem", "cosine-formula", "angle-side-relation"]
-    },
-    {
-      "id": "ann-008",
-      "type": "theorem",
-      "line": 170,
-      "title": "sin²(A)·sin²(b)·sin²(c) = gramDet",
-      "body": "Uses sin²(A) = 1 − cos²(A) (Pythagorean identity), then substitutes cos(A)·sin(b)·sin(c) = cos(a)−cos(b)cos(c) from cos_A_mul, and simplifies the resulting polynomial to gramDet using nlinarith and sin_sq identities.",
-      "tags": ["theorem", "sine-squared", "gram-determinant"]
-    },
-    {
-      "id": "ann-009",
-      "type": "theorem",
-      "line": 221,
-      "title": "Key Product Identity: sin(A)·sin(B)·sin(a)·sin(b)·sin²(c) = gramDet",
-      "body": "This is the most technically delicate step. Strategy: (1) Show the product squared equals gramDet² (by factoring and using sinA_sq_gramDet and sinB_sq_gramDet). (2) Factor the difference-of-squares: (product − gramDet)(product + gramDet) = product² − gramDet² = 0. (3) Since the product is nonneg and gramDet is nonneg, both factors must be nonneg, so product − gramDet = 0.",
-      "tags": ["theorem", "nonneg-square-root", "gram-determinant", "key-step"]
-    },
-    {
-      "id": "ann-010",
-      "type": "theorem",
-      "line": 274,
-      "title": "Main Theorem: Dual Spherical Law of Cosines",
-      "body": "cos(C) = −cos(A)·cos(B) + sin(A)·sin(B)·cos(c). The proof multiplies both sides by sin(a)·sin(b)·sin²(c) (nonzero by nondegeneracy) and reduces to a polynomial identity. With h_cA, h_cB, h_cC (the three cosine formulas), h_pΔ (the product identity), and sin²+cos²=1, the identity follows by `ring` after algebraic expansion.",
-      "tags": ["theorem", "main-result", "dual-law", "polynomial-identity"]
-    },
-    {
-      "id": "ann-011",
-      "type": "example",
-      "line": 317,
-      "title": "Right-Angle Verification",
-      "body": "For angles A = B = C = π/2 (right angles), the dual law gives 0 = −0·0 + 1·1·0 = 0. This is the degenerate case of the 90-90-90 spherical triangle (an octant of the sphere), where all three angles and all three sides are π/2.",
-      "tags": ["example", "right-angle", "verification"]
-    },
-    {
-      "id": "ann-012",
-      "type": "example",
-      "line": 329,
-      "title": "Equilateral 90-90-90 Verification",
-      "body": "A second verification for the all-right-angle triangle. cos(arccos(0)) = 0 by Real.cos_arccos (since |0| ≤ 1), and the identity reduces to 0 = 0 by simp.",
-      "tags": ["example", "verification"]
-    }
-  ]
-}
+[
+  {
+    "id": "ann-001",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "Dihedral Angle at Vertex A",
+    "content": "The dihedral angle A at vertex V_A is defined as arccos of the normalized inner product of the perpendicular projections of V_B and V_C onto the plane perpendicular to V_A. When either projection has zero norm (degenerate triangle), the angle defaults to 0.",
+    "mathContext": "The dihedral angle at $A$ is the angle between the half-planes $\\{A,B\\}$ and $\\{A,C\\}$ along the edge $A$. For unit vectors $v_A, v_B, v_C \\in S^2$: $A = \\arccos\\left(\\frac{\\langle \\text{prj}_{v_A}^\\perp(v_B),\\, \\text{prj}_{v_A}^\\perp(v_C) \\rangle}{\\|\\text{prj}_{v_A}^\\perp(v_B)\\| \\cdot \\|\\text{prj}_{v_A}^\\perp(v_C)\\|}\\right)$, where $\\text{prj}_n^\\perp(u) = u - \\langle u,n\\rangle n$ is the perpendicular projection onto the plane $n^\\perp$.",
+    "significance": "key",
+    "relatedConcepts": ["dihedral angle", "perpendicular projection", "arccos", "spherical triangle"],
+    "prerequisites": ["inner product spaces", "perpendicular projection", "arccos definition"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 48, "endLine": 52 },
+    "type": "definition",
+    "title": "Dihedral Angle at Vertex B",
+    "content": "The dihedral angle B at vertex V_B is defined analogously to angleAtA, using perpendicular projections of V_A and V_C onto the plane perpendicular to V_B. The two definitions are symmetric but not literally equal — they use different reference vertices.",
+    "mathContext": "Symmetrically: $B = \\arccos\\left(\\frac{\\langle \\text{prj}_{v_B}^\\perp(v_A),\\, \\text{prj}_{v_B}^\\perp(v_C) \\rangle}{\\|\\text{prj}_{v_B}^\\perp(v_A)\\| \\cdot \\|\\text{prj}_{v_B}^\\perp(v_C)\\|}\\right)$. Note that the role of $v_A$ as base vertex in angleAtA is now played by $v_B$. The Lean proof uses the existing `SphericalTriangle.angleC` for the third angle (C is built into the structure), so only A and B need explicit `noncomputable def`.",
+    "significance": "supporting",
+    "relatedConcepts": ["dihedral angle", "perpendicular projection", "spherical triangle"],
+    "prerequisites": ["inner product spaces", "perpendicular projection"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "technique",
+    "title": "Inner Product of Perpendicular Projections at A",
+    "content": "The key identity: ⟨prj(B,A), prj(C,A)⟩ = cos(a) − cos(b)·cos(c). This is derived from the inner_decomposition lemma in SphericalLawOfCosines: ⟨u,v⟩ = ⟨u,n⟩⟨v,n⟩ + ⟨prj(u,n), prj(v,n)⟩ for a unit vector n. Setting u=V_B, v=V_C, n=V_A gives ⟨V_B,V_C⟩ = ⟨V_B,V_A⟩⟨V_C,V_A⟩ + ⟨prj(B,A),prj(C,A)⟩, i.e., cos(a) = cos(c)·cos(b) + ⟨prj(B,A),prj(C,A)⟩.",
+    "mathContext": "The inner product decomposition is the key algebraic identity linking perpendicular projections to arc-length cosines. For unit vectors with $\\langle v_A, v_B \\rangle = \\cos(c)$, $\\langle v_A, v_C \\rangle = \\cos(b)$, $\\langle v_B, v_C \\rangle = \\cos(a)$: $$\\langle \\text{prj}_{v_A}^\\perp(v_B),\\, \\text{prj}_{v_A}^\\perp(v_C) \\rangle = \\langle v_B, v_C \\rangle - \\langle v_B, v_A \\rangle\\langle v_C, v_A \\rangle = \\cos a - \\cos b \\cos c.$$",
+    "significance": "key",
+    "relatedConcepts": ["inner product decomposition", "spherical law of cosines", "perpendicular projection"],
+    "prerequisites": ["inner product spaces", "spherical law of cosines", "perpendicular projection lemma"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 86, "endLine": 103 },
+    "type": "technique",
+    "title": "Norms of Projections Equal Sines of Sides",
+    "content": "‖prj(B,A)‖ = sin(c) where c = arcLength(A,B). This is the geometric fact that the perpendicular projection of a unit sphere point onto the equatorial plane of another point has norm equal to the sine of the angular separation. Uses norm_projectPerp_eq_sin from SphericalLawOfCosines, plus arcLength commutativity for the off-diagonal cases.",
+    "mathContext": "For unit vectors $v_A, v_B \\in S^2$ with angular separation $c = \\arccos(\\langle v_A, v_B \\rangle)$: $$\\|\\text{prj}_{v_A}^\\perp(v_B)\\| = \\|v_B - \\langle v_B, v_A\\rangle v_A\\| = \\sqrt{1 - \\cos^2 c} = \\sin c.$$ The formula $\\sqrt{1-\\cos^2\\theta} = \\sin\\theta$ uses $\\sin\\theta \\geq 0$ for $\\theta \\in [0,\\pi]$ (arc lengths are in $[0,\\pi]$).",
+    "significance": "supporting",
+    "relatedConcepts": ["perpendicular projection", "arc length", "sine function", "unit sphere"],
+    "prerequisites": ["unit sphere geometry", "perpendicular projection", "sine formula for unit vectors"]
+  },
+  {
+    "id": "ann-005",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 108, "endLine": 111 },
+    "type": "definition",
+    "title": "Gram Determinant",
+    "content": "gramDet(t) = 1 − cos²a − cos²b − cos²c + 2cos(a)cos(b)cos(c). This is the 3×3 Gram determinant det(G) where G_{ij} = ⟨V_i, V_j⟩. It equals (det[V_A V_B V_C])², the squared volume of the parallelepiped spanned by the three unit vectors, or equivalently the squared area of the spherical triangle (up to a constant).",
+    "mathContext": "The Gram determinant of three vectors $u, v, w \\in \\mathbb{R}^3$: $$\\det\\begin{pmatrix} \\langle u,u\\rangle & \\langle u,v\\rangle & \\langle u,w\\rangle \\\\ \\langle v,u\\rangle & \\langle v,v\\rangle & \\langle v,w\\rangle \\\\ \\langle w,u\\rangle & \\langle w,v\\rangle & \\langle w,w\\rangle \\end{pmatrix} = \\det(G) \\geq 0$$ for unit vectors equals $1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c$. Geometrically, $\\sqrt{\\det G} = |\\det[u,v,w]| = $ volume of parallelepiped $= $ (area of base) × height.",
+    "significance": "key",
+    "relatedConcepts": ["Gram determinant", "Cauchy-Schwarz inequality", "volume form", "spherical area"],
+    "prerequisites": ["linear algebra", "determinants", "inner product spaces", "Gram matrices"]
+  },
+  {
+    "id": "ann-006",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 112, "endLine": 124 },
+    "type": "technique",
+    "title": "Gram Determinant is Nonneg via Cauchy-Schwarz",
+    "content": "gramDet t ≥ 0. The proof rewrites gramDet as ‖prj(B,A)‖²·‖prj(C,A)‖² − ⟨prj(B,A),prj(C,A)⟩², which is nonneg by Cauchy-Schwarz: |⟨u,v⟩| ≤ ‖u‖·‖v‖ implies ⟨u,v⟩² ≤ ‖u‖²·‖v‖². This connects the abstract Gram determinant to the concrete Cauchy-Schwarz inequality on perpendicular projections.",
+    "mathContext": "The key rewriting: $\\det G = \\|\\text{prj}_{v_A}^\\perp(v_B)\\|^2 \\cdot \\|\\text{prj}_{v_A}^\\perp(v_C)\\|^2 - \\langle \\text{prj}_{v_A}^\\perp(v_B), \\text{prj}_{v_A}^\\perp(v_C)\\rangle^2 \\geq 0$ by Cauchy-Schwarz. This follows from the projection norms ($\\sin b$, $\\sin c$) and inner products ($\\cos a - \\cos b\\cos c$) established in Parts II-III. The Lean proof uses `nlinarith` with the Cauchy-Schwarz bound as a hypothesis.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "Gram determinant", "nonnegativity", "perpendicular projection"],
+    "prerequisites": ["Cauchy-Schwarz inequality", "inner product spaces", "algebraic manipulation"]
+  },
+  {
+    "id": "ann-007",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 136, "endLine": 144 },
+    "type": "technique",
+    "title": "Cosine Formula: cos(A)·sin(b)·sin(c) = cos(a) − cos(b)·cos(c)",
+    "content": "The angle-side cosine relation: cos(A)·sin(b)·sin(c) = cos(a) − cos(b)·cos(c). Assumes sin(b) > 0 and sin(c) > 0 to ensure projections are nonzero (so the arccos definition applies). The proof unfolds the arccos, applies the inner product formula, norm formulas, and field_simp to clear denominators. This is the key link between the angular and side variables.",
+    "mathContext": "From the definition $\\cos A = \\frac{\\langle \\text{prj}(v_B,v_A), \\text{prj}(v_C,v_A)\\rangle}{\\|\\text{prj}(v_B,v_A)\\| \\cdot \\|\\text{prj}(v_C,v_A)\\|}$, using $\\langle \\text{prj}(B,A), \\text{prj}(C,A)\\rangle = \\cos a - \\cos b\\cos c$ and $\\|\\text{prj}(B,A)\\| = \\sin c$, $\\|\\text{prj}(C,A)\\| = \\sin b$: $$\\cos A = \\frac{\\cos a - \\cos b\\cos c}{\\sin b\\sin c} \\implies \\cos A \\cdot \\sin b \\cdot \\sin c = \\cos a - \\cos b\\cos c.$$",
+    "significance": "key",
+    "relatedConcepts": ["cosine formula", "dihedral angle", "spherical law of cosines", "angle-side relation"],
+    "prerequisites": ["arccos definition", "inner product formulas", "perpendicular projection norms"]
+  },
+  {
+    "id": "ann-008",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 170, "endLine": 191 },
+    "type": "technique",
+    "title": "Sine Squared Identity: sin²(A)·sin²(b)·sin²(c) = gramDet",
+    "content": "Uses sin²(A) = 1 − cos²(A), then substitutes cos(A)·sin(b)·sin(c) = cos(a)−cos(b)cos(c) from cos_A_mul. The result simplifies to gramDet via the Pythagorean identity sin²b·sin²c = (1-cos²b)(1-cos²c). This connects the angular sine (via the dihedral angle A) to the purely side-based Gram determinant.",
+    "mathContext": "$$\\sin^2 A \\cdot \\sin^2 b \\cdot \\sin^2 c = (1 - \\cos^2 A)\\sin^2 b\\sin^2 c = \\sin^2 b\\sin^2 c - (\\cos A\\sin b\\sin c)^2$$ $$= \\sin^2 b\\sin^2 c - (\\cos a - \\cos b\\cos c)^2.$$ Expanding: $(1-\\cos^2 b)(1-\\cos^2 c) - (\\cos a - \\cos b\\cos c)^2 = 1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c = \\text{gramDet}$. The Lean proof uses `linear_combination` to establish the first step, then `nlinarith` with `sin_sq` hypotheses.",
+    "significance": "key",
+    "relatedConcepts": ["Pythagorean identity", "Gram determinant", "sine function", "algebraic identity"],
+    "prerequisites": ["Pythagorean identity", "cosine formula", "algebraic manipulation"]
+  },
+  {
+    "id": "ann-009",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 221, "endLine": 255 },
+    "type": "technique",
+    "title": "Key Product Identity via Nonnegativity",
+    "content": "The most technically delicate step: sin(A)·sin(B)·sin(a)·sin(b)·sin²(c) = gramDet. Strategy: (1) Show the product squared equals gramDet² by factoring into the two sine-squared identities; (2) Difference of squares: (product−gramDet)(product+gramDet) = 0; (3) Since the product is nonneg (all sines are nonneg) and gramDet is nonneg, the only possibility is product = gramDet. The nonneg square root extraction is done without sqrt — purely by algebraic nonnegativity.",
+    "mathContext": "The crux is extracting a nonneg square root without using $\\sqrt{\\cdot}$: if $x^2 = y^2$ and $x \\geq 0$ and $y \\geq 0$, then $x = y$. Proof: $(x-y)(x+y) = 0$, so $x = y$ or $x = -y$; since both are nonneg, $x = y$. In Lean: `rcases mul_eq_zero.mp h_fac with h | h; linarith; linarith [h_nn, h_Δnn]`. The nonnegativity of $\\sin A$ and $\\sin B$ is established in Part VII (angles are arccos values in $[0,\\pi]$, so their sines are nonneg).",
+    "significance": "key",
+    "relatedConcepts": ["nonneg square root", "difference of squares", "product identity", "Gram determinant"],
+    "prerequisites": ["nonnegativity of trigonometric functions", "algebraic manipulation", "difference of squares"]
+  },
+  {
+    "id": "ann-010",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 274, "endLine": 311 },
+    "type": "technique",
+    "title": "Main Theorem via Polynomial Identity",
+    "content": "cos(C) = −cos(A)·cos(B) + sin(A)·sin(B)·cos(c). The proof multiplies both sides by sin(a)·sin(b)·sin²(c) (nonzero by nondegeneracy) and reduces to a polynomial identity. With h_cA, h_cB, h_cC (the three cosine formulas), h_pΔ (the product identity), and sin²+cos²=1, the identity is verified by `ring`. The denominator clearing avoids all division in Lean and reduces verification to pure ring arithmetic.",
+    "mathContext": "After clearing denominators by $\\sin a \\sin b \\sin^2 c \\neq 0$, the goal becomes: $(\\cos C - (-\\cos A\\cos B + \\sin A\\sin B\\cos c)) \\cdot \\sin a\\sin b\\sin^2 c = 0$. Expanding and substituting the five identities ($h_{cA}, h_{cB}, h_{cC}, h_{p\\Delta}, h_{sc2}$): $(\\cos c - \\cos a\\cos b)\\sin^2 c + (\\cos a - \\cos b\\cos c)(\\cos b - \\cos a\\cos c) - \\cos c \\cdot \\Delta^2 = 0$. This is a polynomial identity in $\\{\\cos a, \\cos b, \\cos c\\}$ verifiable by `ring`.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial identity", "ring tactic", "dual spherical law", "denominator clearing"],
+    "prerequisites": ["cosine formulas", "product identity", "ring tactic in Lean 4"]
+  },
+  {
+    "id": "ann-011",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 317, "endLine": 324 },
+    "type": "context",
+    "title": "Verification: Right-Angle Triangle",
+    "content": "For a spherical triangle with all dihedral angles A = B = C = π/2 (the 90-90-90 triangle — one octant of the sphere), the dual law gives cos(π/2) = −cos(π/2)·cos(π/2) + sin(π/2)·sin(π/2)·cos(π/2), i.e., 0 = 0 + 1·1·0 = 0. This verifies the formula for the most symmetric spherical triangle.",
+    "mathContext": "For the 90-90-90 spherical triangle: sides $a = b = c = \\pi/2$, angles $A = B = C = \\pi/2$. The dual law: $\\cos(\\pi/2) = -\\cos(\\pi/2)\\cos(\\pi/2) + \\sin(\\pi/2)\\sin(\\pi/2)\\cos(\\pi/2)$, i.e., $0 = -0 + 1 = 0$... wait — $\\cos(\\pi/2) = 0$, so RHS = $-0\\cdot 0 + 1\\cdot 1\\cdot 0 = 0 = $ LHS. The Lean proof uses `simp [Real.cos_arccos]` since $\\cos(\\arccos(0)) = 0$.",
+    "significance": "context",
+    "relatedConcepts": ["spherical triangle", "right-angle triangle", "verification", "arccos"],
+    "prerequisites": ["cos(π/2) = 0", "sin(π/2) = 1", "arccos definition"]
+  },
+  {
+    "id": "ann-012",
+    "proofId": "law-of-cosines-oq-01-oq-01",
+    "range": { "startLine": 329, "endLine": 334 },
+    "type": "context",
+    "title": "Verification: Equilateral 90-90-90 Triangle",
+    "content": "A second verification for the same 90-90-90 triangle in a slightly different form, using sin²(π/2) = 1 explicitly. Both verifications confirm that the formula is consistent with this extreme case. The comment explains why a general equilateral spherical triangle is not used (its angles would not be π/2).",
+    "mathContext": "The second form of the 90-90-90 verification: $\\cos(\\arccos 0) = -\\cos(\\arccos 0)^2 + \\sin^2(\\arccos 0)\\cdot \\cos(\\arccos 0)$. Since $\\cos(\\arccos 0) = 0$: $0 = -0 + \\sin^2(\\arccos(0))\\cdot 0 = 0$. The annotation `Real.cos_arccos (by norm_num : |(0:ℝ)| ≤ 1)` verifies that $|0| \\leq 1$, which is needed since $\\arccos$ is only defined on $[-1,1]$.",
+    "significance": "context",
+    "relatedConcepts": ["equilateral spherical triangle", "verification", "simp lemmas"],
+    "prerequisites": ["cos(arccos(0)) = 0", "simp tactic"]
+  }
+]
