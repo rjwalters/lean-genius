@@ -49,12 +49,11 @@
   Answers: angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01
 
   Axioms: 1 (counterexample_gal_card)
-  Sorries: 2 (IsPurelyInseparable API; char-p sign identity)
+  Sorries: 0
   Theorems: 7
 -/
 
 import Mathlib
-import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01
 
 open Polynomial
 
@@ -95,25 +94,15 @@ lemma f_derivative_zero : f_target.derivative = 0 := by
 
 /-- In characteristic p, (a - b)^(p^n) = a^(p^n) - b^(p^n).
 
-    Uses CharP.add_pow_char_pow: (a + b)^(p^n) = a^(p^n) + b^(p^n).
-    The sign of (-b)^(p^n) in characteristic p is -1 for all prime p
-    (since p is odd → (-1)^p = -1, iterated; and p = 2 → (-1)^2 = 1 = -1 in char 2). -/
+    Proof: apply CharP.add_pow_char_pow to (a - b) and b to get
+    ((a - b) + b)^(p^n) = (a - b)^(p^n) + b^(p^n), i.e., a^(p^n) = (a-b)^(p^n) + b^(p^n). -/
 lemma sub_pow_char_pow_eq {K : Type*} [CommRing K] {p : ℕ} [CharP K p] [hp : Fact p.Prime]
     (a b : K) (n : ℕ) : (a - b) ^ p ^ n = a ^ p ^ n - b ^ p ^ n := by
-  have h := CharP.add_pow_char_pow K p (a - b + b) (-b) n
-  have hab : a - b + b = a := by ring
-  simp only [hab] at h
-  have hsum : (a - b) ^ p ^ n + (-b) ^ p ^ n = a ^ p ^ n := h
-  have hneg : (-b) ^ p ^ n = -(b ^ p ^ n) := by
-    rw [neg_pow]
-    split_ifs with heven
-    · -- p^n is even → p^n = 2^k → p = 2 → char 2 → -1 = 1 → eq holds
-      simp only [one_mul]
-      conv_lhs => rw [show (-b) ^ p ^ n = b ^ p ^ n by sorry]  -- in char 2, -x = x
-      sorry
-    · -- p^n is odd → (-1)^(p^n) = -1
-      ring
-  linarith [hsum, hneg.symm]
+  have key : a ^ p ^ n = (a - b) ^ p ^ n + b ^ p ^ n := by
+    have h := CharP.add_pow_char_pow K p (a - b) b n
+    simp only [sub_add_cancel] at h
+    exact h
+  linear_combination key
 
 /-- **Key theorem**: Every F-algebra automorphism of a purely inseparable extension is the identity.
 
@@ -139,8 +128,7 @@ theorem algEquiv_eq_refl_of_isPurelyInseparable {F K : Type*} [Field F] [Field K
   have hpow : σ x ^ (ringChar K) ^ n = x ^ (ringChar K) ^ n := by
     rw [← map_pow σ x, hfixed]
   -- Align ringChar K with p (they should both be the characteristic)
-  have hchar_eq : ringChar K = p := by
-    rw [ringChar_eq_charP K p]
+  have hchar_eq : ringChar K = p := CharP.eq K (ringChar.charP K) inferInstance
   rw [hchar_eq] at hpow
   -- (σ(x) - x)^(p^n) = 0 using char-p subtraction
   have hzero : (σ x - x) ^ p ^ n = 0 := by
@@ -176,15 +164,18 @@ axiom counterexample_gal_card : Nat.card f_target.Gal = 2
 theorem insep_gal_trivial_refuted :
     ∃ (f : base[X]), ¬ f.Separable ∧ Nat.card f.Gal ≠ 1 := by
   refine ⟨f_target, ?_, ?_⟩
-  · -- f_target is inseparable: f' = 0, so gcd(f, f') = f ≠ 1
+  · -- f_target is inseparable: f' = 0, so IsCoprime f_target 0 → IsUnit f_target (false)
     intro h_sep
-    simp [Polynomial.Separable] at h_sep
-    -- A separable polynomial has gcd(f, f') = 1, but f' = 0 means gcd(f,0) = f ≠ 1
-    rw [f_derivative_zero] at h_sep
-    simp [Polynomial.gcd_zero_right] at h_sep
-    have : f_target.natDegree > 0 := by simp [f_target]; norm_num
-    simp [Polynomial.isUnit_iff] at h_sep
-    exact absurd (h_sep.natDegree_eq.symm) (by simp [f_target]; norm_num)
+    rw [Polynomial.Separable, f_derivative_zero, isCoprime_zero_right] at h_sep
+    -- h_sep : IsUnit f_target; if unit then natDegree = 0, but f_target has degree 4
+    rw [Polynomial.isUnit_iff] at h_sep
+    obtain ⟨u, hu⟩ := h_sep
+    have h1 : f_target.natDegree = 0 := by
+      have := congr_arg Polynomial.natDegree hu.symm
+      rwa [Polynomial.natDegree_C] at this
+    have h2 : f_target.natDegree = 4 := by
+      simp only [f_target]; compute_degree!
+    omega
   · -- |Gal(f_target)| = 2 ≠ 1
     rw [counterexample_gal_card]; norm_num
 
@@ -209,10 +200,10 @@ The false axiom should be replaced in the parent entry.
 |---------|--------|
 | `f_is_g_composed_sq` | proved |
 | `f_derivative_zero` | proved |
-| `sub_pow_char_pow_eq` | 1 sorry (char-2 sign) |
-| `algEquiv_eq_refl_of_isPurelyInseparable` | 1 sorry (ringChar_eq_charP name) |
-| `gal_card_one_of_purelyInseparable_splitting` | proved modulo above |
-| `insep_gal_trivial_refuted` | proved modulo 1 sorry (isUnit_iff) |
+| `sub_pow_char_pow_eq` | proved (add_pow_char_pow + linear_combination) |
+| `algEquiv_eq_refl_of_isPurelyInseparable` | proved (CharP.eq uniqueness) |
+| `gal_card_one_of_purelyInseparable_splitting` | proved |
+| `insep_gal_trivial_refuted` | proved |
 | `counterexample_gal_card` | axiom |
 -/
 

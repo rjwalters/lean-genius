@@ -19,7 +19,7 @@
       "counterexample"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "dateAdded": "2026-05-06",
     "mathlibDependencies": [
       {
@@ -45,8 +45,8 @@
       "Key proof: (σ(x) - x)^(p^n) = 0 in field implies σ(x) = x via char-p Frobenius + no nilpotents"
     ],
     "axiomCount": 1,
-    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample). The main theorem algEquiv_eq_refl_of_isPurelyInseparable has 2 sorries pending Mathlib API alignment for char-p power identities.",
-    "lineCount": 278,
+    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending full Artin-Schreier formalization). All other theorems are fully proved.",
+    "lineCount": 208,
     "theoremCount": 7,
     "definitionCount": 4
   },
@@ -54,8 +54,8 @@
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 4,
-    "lineCount": 278,
-    "sorries": 2
+    "lineCount": 208,
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "The parent entry `angle-trisection-oq-02-oq-01-oq-01-oq-01` axiomatized `insep_gal_trivial`: for inseparable irreducible polynomials over characteristic-p fields, the Galois group has cardinality 1. This axiom was stated as a 'documented counterexample to natDegree | |Gal|' with a comment that a full proof requires 'building the function field F_p(t), proving irreducibility via Eisenstein's criterion, and computing the automorphism group of a purely inseparable extension.' This entry shows the axiom is mathematically incorrect in its general form.",
@@ -98,10 +98,10 @@
     "summary": "The axiom insep_gal_trivial is mathematically incorrect. The correct theorem requires the splitting field to be purely inseparable, not just the polynomial to be inseparable.",
     "implications": "The parent entry's axiom should be replaced with the weaker (and correct) claim for purely inseparable polynomials only (f = X^(p^e) - c type). The general inseparable case has |Gal(f)| = |Gal(g)| where g is the separable part of f.",
     "openQuestions": [
-      "Can the 2 remaining sorries be eliminated using Mathlib's CharP.add_pow_char_pow and ringChar_eq_charP?",
+      "Can counterexample_gal_card be proved formally using Artin-Schreier extension theory in Mathlib?",
       "Can xPow_sub_of_irreducible_isPurelyInseparable be proved directly from Mathlib's SplittingField API?",
       "Does Mathlib have a direct theorem Subsingleton (K ≃ₐ[F] K) when IsPurelyInseparable F K?"
     ]
   },
-  "sorries": 2
+  "sorries": 0
 }

@@ -69,6 +69,48 @@ gal_card_one_of_purelyInseparable_splitting:
 
 ---
 
+## Session 2026-05-06 (Session 2) — Eliminated both sorries, 0 sorries achieved
+
+**Mode**: REVISIT
+**Outcome**: progress — 2 sorries eliminated, file now has 0 sorries
+
+### What I Did
+
+1. Rewrote `sub_pow_char_pow_eq` using cleaner approach:
+   - Apply `CharP.add_pow_char_pow K p (a-b) b n` to get `a^(p^n) = (a-b)^(p^n) + b^(p^n)`
+   - Close with `linear_combination` (avoids messy `neg_pow` case split)
+   - Key insight: work with addition `(a-b) + b = a`, not subtraction directly
+
+2. Fixed `ringChar_eq_charP` sorry in `algEquiv_eq_refl_of_isPurelyInseparable`:
+   - Correct Mathlib API: `CharP.eq K (ringChar.charP K) inferInstance : ringChar K = p`
+   - `CharP.eq` gives uniqueness of characteristic (both CharP K (ringChar K) and CharP K p)
+
+3. Fixed pre-existing omega bug in parent file `AngleTrisectionOQ02OQ01OQ01OQ01.lean`:
+   - `omega` can't prove `False` from nonlinear `1 = f.natDegree * k` with `f.natDegree ≥ 2`
+   - Fix: `exact absurd (Nat.le_of_dvd (by norm_num) hdvd) (by omega)`
+
+### Files Modified
+
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` (updated: 208 lines, 0 sorries)
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01.lean` (omega fix at line 148)
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/meta.json` (sorries: 2→0)
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/index.ts` (created)
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/annotations.json` (created)
+
+### Key Findings
+
+- `CharP.add_pow_char_pow` is the right tool for `sub_pow_char_pow_eq` — avoids char-p sign issues
+- `CharP.eq` gives uniqueness of the characteristic, enabling `ringChar K = p`
+- The parent file `omega` at line 148 was a pre-existing bug (nonlinear divisibility goal)
+
+### Next Steps
+
+- PR merged (1 axiom remaining: counterexample_gal_card for Artin-Schreier formalization)
+- Future work: prove counterexample_gal_card formally via Artin-Schreier extension theory
+- Future work: replace parent `insep_gal_trivial` with correct purely-inseparable version
+
+---
+
 ## Dead Ends
 
 - **"Inseparable irreducible → trivial Galois"**: The obvious approach is FALSE. The case f = g(X^p) with deg(g) ≥ 2 gives counterexample.
