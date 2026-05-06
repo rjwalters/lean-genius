@@ -65,14 +65,14 @@ theorem hindmanSet_pair_left (a b : ℕ) : a ∈ hindmanSet ({a, b} : Finset ℕ
   hindmanSet_mem_self a _ (Finset.mem_insert_self a _)
 
 /-- Right element of a 2-element base is in its hindmanSet -/
-theorem hindmanSet_pair_right (a b : ℕ) (hab : a ≠ b) : b ∈ hindmanSet ({a, b} : Finset ℕ) :=
+theorem hindmanSet_pair_right (a b : ℕ) : b ∈ hindmanSet ({a, b} : Finset ℕ) :=
   hindmanSet_mem_self b _ (by simp)
 
 /-- The sum a+b is in hindmanSet({a,b}) for distinct a ≠ b -/
 theorem hindmanSet_pair_sum (a b : ℕ) (hab : a ≠ b) :
     a + b ∈ hindmanSet ({a, b} : Finset ℕ) :=
   ⟨({a, b} : Finset ℕ),
-   le_refl _,
+   fun _ h => h,
    ⟨a, Finset.mem_insert_self a _⟩,
    by rw [Finset.sum_pair hab]; rfl⟩
 
@@ -115,7 +115,7 @@ theorem hajnal_k2_gives_additive_triple {n : ℕ} (G : GraphOnInterval n)
   -- Each of a, b, d has its .val in the hindmanSet
   have ha_in : a.val ∈ hindmanSet ({a.val, b.val} : Finset ℕ) := hindmanSet_pair_left _ _
   have hb_in : b.val ∈ hindmanSet ({a.val, b.val} : Finset ℕ) :=
-    hindmanSet_pair_right _ _ hab_val
+    hindmanSet_pair_right _ _
   have hd_in : d.val ∈ hindmanSet ({a.val, b.val} : Finset ℕ) := by
     show a.val + b.val ∈ hindmanSet ({a.val, b.val} : Finset ℕ)
     exact hindmanSet_pair_sum _ _ hab_val
