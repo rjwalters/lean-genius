@@ -341,12 +341,15 @@ private lemma t1_unique_base {b c : ℕ × ℕ} {u v : ℕ × ℕ} (huv : u ≠ 
              Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb hc
   obtain ⟨hub, hvb⟩ := hb
   obtain ⟨huc, hvc⟩ := hc
+  -- Case bash: each of u,v is one of the 3 vertices in t1 b and t1 c.
+  -- In each case either u=v (contradiction with huv) or b=c follows from omega.
   rcases hub with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
     rcases hvb with ⟨h3, h4⟩ | ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
     rcases huc with ⟨h5, h6⟩ | ⟨h5, h6⟩ | ⟨h5, h6⟩ <;>
     rcases hvc with ⟨h7, h8⟩ | ⟨h7, h8⟩ | ⟨h7, h8⟩ <;>
-    simp_all (config := { decide := false }) [Prod.ext_iff] <;>
-    omega
+    first
+    | exact absurd (Prod.ext_iff.mpr ⟨by omega, by omega⟩) huv
+    | exact Prod.ext_iff.mpr ⟨by omega, by omega⟩
 
 private lemma t2_unique_base {b c : ℕ × ℕ} {u v : ℕ × ℕ} (huv : u ≠ v)
     (hb : {u, v} ⊆ t2 b) (hc : {u, v} ⊆ t2 c) : b = c := by
@@ -358,8 +361,9 @@ private lemma t2_unique_base {b c : ℕ × ℕ} {u v : ℕ × ℕ} (huv : u ≠ 
     rcases hvb with ⟨h3, h4⟩ | ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
     rcases huc with ⟨h5, h6⟩ | ⟨h5, h6⟩ | ⟨h5, h6⟩ <;>
     rcases hvc with ⟨h7, h8⟩ | ⟨h7, h8⟩ | ⟨h7, h8⟩ <;>
-    simp_all (config := { decide := false }) [Prod.ext_iff] <;>
-    omega
+    first
+    | exact absurd (Prod.ext_iff.mpr ⟨by omega, by omega⟩) huv
+    | exact Prod.ext_iff.mpr ⟨by omega, by omega⟩
 
 private lemma t1_filter_le_one (N : ℕ) (u v : ℕ × ℕ) (huv : u ≠ v) :
     (((t1Bases N).image t1).filter (fun s => ({u, v} : Finset _) ⊆ s)).card ≤ 1 := by
