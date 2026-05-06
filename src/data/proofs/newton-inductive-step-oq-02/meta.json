@@ -1,0 +1,65 @@
+{
+  "id": "newton-inductive-step-oq-02",
+  "title": "Newton's Inequality: Normalized (Cleared-Denominator) Inductive Proof",
+  "slug": "newton-inductive-step-oq-02",
+  "description": "Completes the inductive proof of Newton's inequality in cleared-denominator form: C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1} for nonneg reals. Also proves ultra-log-concavity of binomial coefficients (C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)²) and the unnormalized Newton inequality (e_k² ≥ e_{k-1}·e_{k+1}). The k=1 and boundary k=n cases both reduce to a quadratic-nonneg argument via the key identity 2·C(n+1,k) = n·(n+1) from Pascal's rule.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_inequalities",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NewtonInductiveStepOQ02.lean",
+    "tags": [
+      "algebra",
+      "symmetric-polynomials",
+      "inequalities",
+      "log-concavity",
+      "newton",
+      "binomial-coefficients",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_succ_right_eq",
+        "description": "Absorption identity: C(n,k)*(n-k) = C(n,k+1)*(k+1)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "Symmetry of binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Ultra-log-concavity of binomial coefficients: C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)²",
+      "Unnormalized Newton inequality: e_k² ≥ e_{k-1}·e_{k+1} for nonneg reals",
+      "Cleared-denominator Newton inequality: C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1}",
+      "Key identity: 2·C(n+1,p+1) = n·(n+1) via Pascal's rule for boundary case",
+      "Quadratic-nonneg reduction: both k=1 and k=n cases via linear_combination ring identity"
+    ],
+    "proofStrategy": "Induction on list length. Two boundary cases: k=1 (quadratic in new element x with discriminant from 2·C(n,2)=n·(n-1)) and k=n (quadratic via 2·C(n+1,n-1)=n·(n+1)). Interior cases: esymm_cross_condition plus newton_cleared_denom_inductive_step from AmgmInequalityOQ02OQ02.",
+    "axiomCount": 1,
+    "assumptions": [
+      "newton_cleared_denom_inductive_step: degree-6 polynomial nonnegativity in 9 variables (interior inductive step)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.NewtonInductiveStepOQ01",
+      "Proofs.AmgmInequalityOQ02OQ02"
+    ],
+    "opens": ["List", "Nat"],
+    "namespace": "NewtonInductiveStepOQ02",
+    "lineCount": 584,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/NewtonInductiveStepOQ02.lean",
+    "sorries": 0
+  },
+  "openQuestions": null
+}
