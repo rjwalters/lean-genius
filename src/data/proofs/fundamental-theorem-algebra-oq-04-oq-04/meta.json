@@ -21,7 +21,7 @@
     "axiomCount": 2,
     "assumptions": "Two axioms: (1) Xn_sub_p_irred_Qp — X^n - p is irreducible over ℚ_p (Newton polygon: single segment slope -1/n, gcd(1,n)=1; equivalently Eisenstein at the maximal ideal of ℤ_p). (2) padic_alg_closure_infinite_dim — the algebraic closure of ℚ_p is not finite-dimensional over ℚ_p (follows from unbounded extension degrees, but connecting to Module.Finite on AlgebraicClosure requires additional infrastructure).",
     "lineCount": 214,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 0,
     "originalContributions": [
       "Xn_sub_p_irred_Z: X^n - p irreducible over ℤ (standalone Eisenstein proof, independent of parent)",
@@ -182,7 +182,7 @@
     "namespace": "PadicAlgClosureContrast",
     "lineCount": 214,
     "axiomCount": 2,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 0,
     "sorries": 0
   },
