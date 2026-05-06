@@ -1,0 +1,150 @@
+{
+  "id": "laws-of-large-numbers-oq-01-oq-01",
+  "title": "SLLN Necessity: Proving the Converse of Kolmogorov's Strong Law",
+  "slug": "laws-of-large-numbers-oq-01-oq-01",
+  "description": "Proves the converse (necessity) direction of Kolmogorov's SLLN characterization: if i.i.d. random variables satisfy the strong law (sample mean converges a.s.), then they must have finite first moment E[|X|] < ∞. The proof uses contradiction via the Borel-Cantelli second lemma (adapted for pairwise independence via a variance-Chebyshev argument) combined with the layer cake formula and Cesàro's lemma. This completes the biconditional: SLLN holds ⟺ E[|X₀|] < ∞.",
+  "meta": {
+    "author": "Lean Genius Research (Aristotle)",
+    "date": "2026-05-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "measure-theory",
+      "law-of-large-numbers",
+      "borel-cantelli",
+      "convergence",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 74,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "dateAdded": "2026-05-05",
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.IndepFun",
+        "description": "Pairwise independence of random variables",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "ProbabilityTheory.IdentDistrib",
+        "description": "Identical distribution (i.i.d.) condition",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Integrable",
+        "description": "Integrability = finite first moment E[|X|] < ∞",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limsup of events, used in Borel-Cantelli: {|Xₙ| > n i.o.}",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "slln_necessity: if SLLN holds a.s. then X₀ is integrable — fully proved via Aristotle's Borel-Cantelli + layer cake argument",
+      "tsum_prob_norm_gt_eq_top_of_not_integrable: E[|X|]=∞ ↔ Σ P(|X|>n)=∞ (layer cake)",
+      "borel_cantelli_of_pairwise_independent: BC2 under pairwise independence via variance-Chebyshev bound",
+      "tendsto_zero_div_of_tendsto_sum_div: Cesàro lemma — sample mean converging implies Xₙ/n → 0"
+    ],
+    "assumptions": "0 sorries. 0 axiom declarations. Fully machine-checked proof of SLLN necessity.",
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Kolmogorov's Strong Law of Large Numbers (1930) is one of the cornerstone results in probability theory: for i.i.d. integrable random variables, the sample mean converges almost surely to the expectation. Etemadi (1981) gave a proof requiring only pairwise independence. The converse — that almost sure convergence of sample means implies finite first moment — is a classical result often stated without proof in textbooks. It provides a sharp characterization: the SLLN holds if and only if E[|X|] < ∞. This entry formalizes the necessity direction using the second Borel-Cantelli lemma adapted for pairwise independence, completing Kolmogorov's biconditional characterization in Lean 4.",
+    "problemStatement": "**The Open Question**: Can the converse direction (slln_necessity) of Kolmogorov's SLLN characterization — that SLLN convergence forces finite first moment — be formally proved in Lean 4 using only Mathlib infrastructure?\n\n**Answer**: Yes. The proof proceeds by contradiction: assume E[|X₀|] = ∞. By the layer cake formula, Σ P(|Xₙ| > n) = ∞. By the second Borel-Cantelli lemma (pairwise independence suffices), P(|Xₙ| > n i.o.) = 1. But SLLN implies Xₙ/n → 0 a.s. via Cesàro, so |Xₙ| ≤ n for all large n a.s. — contradiction. The full proof is carried out by Aristotle in LawsOfLargeNumbersOQ01Aristotle.lean.",
+    "text": "The necessity direction of Kolmogorov's SLLN states: if i.i.d. random variables X₁, X₂, ... satisfy (1/n)·Σᵢ₌₁ⁿ Xᵢ → c a.s. for some c ∈ ℝ, then E[|X₀|] < ∞.\n\nProof by contradiction:\n1. **Cesàro**: sample mean → c a.s. implies Xₙ/n → 0 a.s.\n2. **Layer cake**: E[|X₀|] = ∞ implies Σₙ P(|X₀| > n) = ∞\n3. **i.i.d.**: Σₙ P(|Xₙ| > n) = ∞ (same distribution)\n4. **BC2**: pairwise independence + divergent sum → P(|Xₙ| > n i.o.) = 1\n5. **Contradiction**: Xₙ/n → 0 a.s. means |Xₙ| ≤ n eventually a.s.",
+    "proofStrategy": "Contradiction: assume ¬Integrable (X 0) μ. The layer cake formula (Σ P(‖X₀‖ > n) = ∞) combined with identical distribution gives Σ P(‖Xₙ‖ > n) = ∞. The second Borel-Cantelli lemma under pairwise independence (via `borel_cantelli_of_pairwise_independent`) then gives μ(limsup {|Xₙ| > n}) = 1. Meanwhile, the SLLN hypothesis implies Xₙ/n → 0 a.s. via Cesàro (`tendsto_zero_div_of_tendsto_sum_div`), giving |Xₙ| ≤ n for all large n almost surely. These two conclusions contradict each other.",
+    "keyInsights": [
+      "The proof uses pairwise independence (not full mutual independence): IndepFun gives pairwise independence of the events {|Xₙ| > n}, which suffices for BC2 via the variance-Chebyshev approach.",
+      "The layer cake formula is central: E[|X|] = Σₙ P(|X| > n) (for nonneg X). Its divergence characterizes non-integrability: E[|X|] = ∞ ↔ Σ P(|X| > n) = ∞.",
+      "Cesàro's lemma provides the Xₙ/n → 0 a.s. conclusion from sample mean convergence without needing to know the limit value c.",
+      "IndepFun → IndepSet conversion uses Kernel.indepFun_iff_measure_inter_preimage_eq_mul and Kernel.indepSet_iff_measure_inter_eq_mul to connect random variable independence to event independence."
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
+    "namespace": "LawsOfLargeNumbersOQ01OQ01",
+    "imports": [
+      "Proofs.LawsOfLargeNumbersOQ01Aristotle"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Filter",
+      "ENNReal"
+    ],
+    "lineCount": 74,
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0
+  },
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the necessity direction be extended to the L^p SLLN: if (1/n)·Σᵢ Xᵢ → c in L^p norm, does E[|X|^p] < ∞ follow?",
+      "difficulty": "medium",
+      "tags": [
+        "lean4",
+        "lp-spaces",
+        "slln",
+        "necessity"
+      ]
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the Borel-Cantelli lemma for pairwise independence be extracted as a standalone Mathlib-worthy theorem, and what is the minimal independence assumption needed?",
+      "difficulty": "medium",
+      "tags": [
+        "lean4",
+        "borel-cantelli",
+        "independence",
+        "mathlib"
+      ]
+    }
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers",
+    "laws-of-large-numbers-oq-01",
+    "laws-of-large-numbers-oq-02",
+    "laws-of-large-numbers-oq-03"
+  ],
+  "sections": [
+    {
+      "id": "slln-necessity",
+      "title": "SLLN Necessity Theorem",
+      "startLine": 50,
+      "endLine": 73,
+      "summary": "slln_necessity: if i.i.d. random variables satisfy the SLLN, then X₀ is integrable. Delegates to LawsOfLargeNumbersOQ01Aristotle.slln_necessity_statement.",
+      "mathContext": "The full theorem: given pairwise-independent identically-distributed measurable (Xᵢ) with sample mean converging a.s., conclude Integrable (X 0) μ. The proof is in the Aristotle companion file using BC2 + layer cake + Cesàro."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "laws-of-large-numbers-oq-01",
+      "relationship": "extends",
+      "description": "Parent: axiom slln_necessity there is replaced by a genuine theorem here. This entry supplies the missing converse direction."
+    },
+    {
+      "proofId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "Base LLN. The characterization SLLN ⟺ E[|X|] < ∞ is now complete."
+    }
+  ],
+  "conclusion": {
+    "summary": "The converse direction of Kolmogorov's SLLN is formalized with 0 sorries and 0 axioms. The proof uses BC2 under pairwise independence + the layer cake formula + Cesàro's lemma, all carried out by Aristotle in LawsOfLargeNumbersOQ01Aristotle.lean.",
+    "implications": "Together with the sufficiency direction (ProbabilityTheory.strong_law_ae in Mathlib), this completes the biconditional characterization of the SLLN: (1/n)·Σ Xᵢ → E[X₀] a.s. if and only if E[|X₀|] < ∞. This is one of the sharpest results in classical probability theory, and its Lean 4 formalization demonstrates that Mathlib's measure-theoretic infrastructure is mature enough to formalize the second Borel-Cantelli lemma under pairwise independence.",
+    "openQuestions": [
+      "Can the BC2 pairwise-independence lemma be contributed to Mathlib directly?",
+      "Does the necessity direction extend to L^p convergence (p > 1)?",
+      "Can the layer cake formula be strengthened to give sharp estimates on convergence rates?"
+    ]
+  }
+}
