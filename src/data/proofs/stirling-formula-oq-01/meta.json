@@ -17,9 +17,9 @@
       "bernoulli-numbers"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 1 sorry (stirling_first_correction: requires Euler-Maclaurin or telescoping series analysis). The second sorry (stirling_two_term_expansion) is now proved from the first via ratio identity.",
+    "assumptions": "0 axioms, 2 sorries: (1) stirling_step_formula (private, pure algebraic computation from stirlingSeq def); (2) stirling_first_correction (depends on step formula + sum bounds). New in this session: proved log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_upper, stirling_step_lower.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -38,10 +38,14 @@
       "stirlingPartial: truncated Stirling expansion at k terms",
       "Statement of first correction: stirlingSeq(n)/\u221a\u03c0 = 1 + 1/(12n) + O(1/n\u00b2)",
       "Path to axiom elimination: first correction implies stirling_error_bound_ge_2",
-      "error_bound_from_correction: structured proof reducing axiom to first correction"
+      "error_bound_from_correction: structured proof reducing axiom to first correction",
+      "log_one_plus_le_cubic: proved log(1+x) \u2264 x-x\u00b2/2+x\u00b3/3 for x>0 (derivative monotonicity)",
+      "log_one_plus_ge_quartic: proved x-x\u00b2/2+x\u00b3/3-x\u2074/4 \u2264 log(1+x) for x>0 (derivative monotonicity)",
+      "stirling_step_upper: d_k \u2264 1/(12k\u00b2)+1/(6k\u00b3) (conditional on step formula)",
+      "stirling_step_lower: 1/(12k\u00b2)-1/(12k\u00b3)-1/(8k\u2074) \u2264 d_k (conditional on step formula)"
     ],
-    "lineCount": 207,
-    "theoremCount": 8,
+    "lineCount": 388,
+    "theoremCount": 10,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
   },
