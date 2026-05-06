@@ -1,6 +1,6 @@
 {
   "slug": "erdos-952",
-  "title": "Erdős #952",
+  "title": "Erd\u0151s #952",
   "phase": "DONE",
   "status": "completed",
   "tier": "B",
@@ -29,46 +29,53 @@
     }
   },
   "knowledge": {
-    "progressSummary": "NEAR-COMPLETE: 2A (gaussian_prime_classification + tsuchimura), 0S, 18T. Both remaining axioms are appropriate for an OPEN problem: tsuchimura is genuinely deep (computational verification, Tsuchimura 2005); gaussian_prime_classification is tractable from Mathlib (~50-100 lines) but requires careful API matching. Prior progressSummary undercounted axioms (1A claimed, 2A actual).",
+    "progressSummary": "NEAR-COMPLETE: 2A (gaussian_prime_classification + tsuchimura), 0S, 18T. gaussian_prime_classification has concrete proof path documented. Backward direction is cleanly tractable with Mathlib API; forward direction needs more infrastructure.",
     "builtItems": [
-      "PROVED jordan_rabung from tsuchimura (axiom→theorem)",
-      "PROVED gethner_et_al from tsuchimura (axiom→theorem)",
+      "PROVED jordan_rabung from tsuchimura (axiom\u2192theorem)",
+      "PROVED gethner_et_al from tsuchimura (axiom\u2192theorem)",
       "canEscapeMoat_mono: monotonicity of moat escape (larger step => easier)",
-      "no_walk_up_to_sqrt26: blocks all step sizes ≤27 via Tsuchimura + mono",
+      "no_walk_up_to_sqrt26: blocks all step sizes \u226427 via Tsuchimura + mono",
       "exists_nat_prime_dvd: strong induction helper (Gaussian prime divides some rational prime)",
       "classification_forward: complete proof (was axiom, now theorem ~115 lines)",
       "Removed: duplicate canEscapeMoat_mono, no_walk_up_to_sqrt26",
-      "primes_mod_4_connection: axiom→theorem via factorial argument (~25 lines)",
-      "gaussian_prime_theorem: axiom→def (unused axiom converted to Prop statement, 2A→1A)",
+      "primes_mod_4_connection: axiom\u2192theorem via factorial argument (~25 lines)",
+      "gaussian_prime_theorem: axiom\u2192def (unused axiom converted to Prop statement, 2A\u21921A)",
       "criticalMoatWidth: cleaned existence proof to use not_canEscapeMoat_le_27"
     ],
     "insights": [
-      "jordan_rabung and gethner_et_al are weaker results than tsuchimura — proved as consequences (6A→4A)",
+      "jordan_rabung and gethner_et_al are weaker results than tsuchimura \u2014 proved as consequences (6A\u21924A)",
       "Remaining 4 axioms: gaussian_prime_classification (deep), tsuchimura (computational), gaussian_prime_theorem (analytic NT), primes_mod_4_connection (structural)",
       "4 remaining axioms all appropriate: gaussian_prime_classification (could use Mathlib GaussianInt.prime_iff), tsuchimura (computational), gaussian_prime_theorem (analytic), primes_mod_4_connection (structural)",
       "splitPrime def sorry: Fermat two-square theorem in Mathlib (Nat.Prime.sq_add_sq or similar), but exact API name uncertain",
       "canEscapeMoat_mono subsumes jordan_rabung and gethner_et_al proofs (they are special cases)",
       "gaussian_prime_classification might be provable from Mathlib GaussianInt API but would need careful definitional matching",
-      "classification_forward PROVED: axiom→theorem via strong induction + Associated + mod 4 characterization",
-      "Key technique: z*star(z)=norm(z), so z|norm(z). By induction z|↑p for some rational prime p. Then norm(z)|p², giving norm=p or p²",
-      "For norm=p²: z~↑p (associated), so ↑p prime in ℤ[i], hence p≡3 mod 4 by GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime",
-      "For norm=p: sum-of-squares mod 4 argument (same as prime_of_inert) shows p≡1 mod 4",
+      "classification_forward PROVED: axiom\u2192theorem via strong induction + Associated + mod 4 characterization",
+      "Key technique: z*star(z)=norm(z), so z|norm(z). By induction z|\u2191p for some rational prime p. Then norm(z)|p\u00b2, giving norm=p or p\u00b2",
+      "For norm=p\u00b2: z~\u2191p (associated), so \u2191p prime in \u2124[i], hence p\u22613 mod 4 by GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime",
+      "For norm=p: sum-of-squares mod 4 argument (same as prime_of_inert) shows p\u22611 mod 4",
       "Removed duplicate canEscapeMoat_mono and no_walk_up_to_sqrt26 definitions",
       "primes_mod_4_connection proved: the consequent (arbitrarily long prime-free windows) holds unconditionally via factorial construction, making the conditional implication trivially true",
       "Key technique: for j in [2, k], j divides k!, so j divides k!+j, making k!+j composite",
-      "gaussian_prime_theorem was unused by any theorem — safe to convert from axiom to def without loss",
-      "Only remaining axiom (tsuchimura) is genuinely deep: computational verification of moat for step ≤ √26, not provable without significant infrastructure",
-      "MATHLIB API for gaussian_prime_classification proof: Mathlib.NumberTheory.Zsqrtd.QuadraticReciprocity has GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime (covers inert case fully), Mathlib.NumberTheory.SumTwoSquares has Nat.Prime.sq_add_sq (Fermat 2-square for p≡1 mod 4) and GaussianInt.sq_add_sq_of_nat_prime_of_not_irreducible.",
-      "Proof skeleton: case-split on Prime z direction: (a) z.norm=2 → use natAbs_norm_eq + decide; (b) z.norm=p² with p≡3 mod 4 → derive z associates ↑p via Zsqrtd.norm_eq_mul_conj, then GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime; (c) z.norm=p with p≡1 mod 4 → use Nat.Prime.sq_add_sq + irreducible_iff_prime in Euclidean domain.",
-      "Reverse direction (norm-classification ⇒ prime): each case uses Zsqrtd.norm_mul to verify minimality / no proper divisor. Norm 2 case: 1+i is the only norm-2 Gaussian integer up to units; computational. Norm p case: any factorization gives z=z₁z₂ with norm(z₁)·norm(z₂)=p, forcing one factor a unit.",
-      "Metadata bug discovered: prior session updated progressSummary to 1A but the file still has 2 axiom declarations (lines 81, 160). Fixed in this session."
+      "gaussian_prime_theorem was unused by any theorem \u2014 safe to convert from axiom to def without loss",
+      "Only remaining axiom (tsuchimura) is genuinely deep: computational verification of moat for step \u2264 \u221a26, not provable without significant infrastructure",
+      "MATHLIB API for gaussian_prime_classification proof: Mathlib.NumberTheory.Zsqrtd.QuadraticReciprocity has GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime (covers inert case fully), Mathlib.NumberTheory.SumTwoSquares has Nat.Prime.sq_add_sq (Fermat 2-square for p\u22611 mod 4) and GaussianInt.sq_add_sq_of_nat_prime_of_not_irreducible.",
+      "Proof skeleton: case-split on Prime z direction: (a) z.norm=2 \u2192 use natAbs_norm_eq + decide; (b) z.norm=p\u00b2 with p\u22613 mod 4 \u2192 derive z associates \u2191p via Zsqrtd.norm_eq_mul_conj, then GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime; (c) z.norm=p with p\u22611 mod 4 \u2192 use Nat.Prime.sq_add_sq + irreducible_iff_prime in Euclidean domain.",
+      "Reverse direction (norm-classification \u21d2 prime): each case uses Zsqrtd.norm_mul to verify minimality / no proper divisor. Norm 2 case: 1+i is the only norm-2 Gaussian integer up to units; computational. Norm p case: any factorization gives z=z\u2081z\u2082 with norm(z\u2081)\u00b7norm(z\u2082)=p, forcing one factor a unit.",
+      "Metadata bug discovered: prior session updated progressSummary to 1A but the file still has 2 axiom declarations (lines 81, 160). Fixed in this session.",
+      "Backward direction of gaussian_prime_classification is cleaner: norm classification \u2192 prime. Key: norm p (prime) \u2192 irreducible (any factorization has a unit factor), and in \u2124[i] irreducible = prime.",
+      "Core lemma needed: if z.norm = p is a nat prime, then Prime z. Proof: z = a*b \u2192 z.norm = a.norm * b.norm = p (prime) \u2192 one norm is 1 \u2192 that factor is a unit. Uses Zsqrtd.norm_mul and GaussianInt.isUnit_iff.",
+      "Inert case (norm = p\u00b2): z is associate to \u2191p in \u2124[i]. Use GaussianInt.prime_of_nat_prime_of_mod_four_eq_three (or prime_iff_mod_four_eq_three_of_nat_prime) to show \u2191p is prime.",
+      "Norm-2 case: z.re.natAbs^2 + z.im.natAbs^2 = 2 forces (re, im) \u2208 {\u00b11, \u00b11}. Each associate to 1+i. Show Prime \u27e81,1\u27e9 by: norm = 2 (prime in \u2115) + norm multiplicativity \u2192 irreducible.",
+      "Exact Mathlib API: Zsqrtd.norm_mul for multiplicativity, GaussianInt.isUnit_iff for unit criterion, irreducible_iff_prime in UFD."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Attempt gaussian_prime_classification proof using documented Mathlib API references (~60 lines estimated). Forward direction is the hard part; reverse is mostly computational.",
-      "If gaussian_prime_classification is proved, only tsuchimura remains — and that axiom is appropriate (computational verification published in 2005, formalizing it requires substantial Lean infrastructure for moat enumeration)."
+      "Prove: theorem gaussianInt_prime_of_prime_norm (z : GaussianInt) (h : Nat.Prime z.norm) : Prime z \u2014 covers norm-2 and split cases",
+      "Prove inert case separately: z.norm = p^2 (p\u22613 mod 4) \u2192 exists associated \u2191p, use GaussianInt.prime_of_nat_prime",
+      "Prove forward direction: Prime z \u2192 z.norm is prime or prime^2 \u2014 harder, may need Zsqrtd.squarefree_or_prime or similar",
+      "Replace axiom gaussian_prime_classification with theorem using the above"
     ],
-    "markdown": "# Erdős #952 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]\n\n\n\nThe Gaussian moat problem. This is not actually a problem of Erd\\H{o}s, but has been erroneously attributed to him in the past. In \\cite{Er77c} Erd\\H{o}s recalls: 'The conjecture was told me by Motzkin at the Pasadena number theory meeting 1963 November and it was apparently raised by Basil Gordon and Motzkin. I naturally liked it very much and told it right away to many people, naturally attributing it to Motzkin, but this was later forgotten. Thus the problem is returned to its rightful owners.'\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #951\n- Problem #953\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #952 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]\n\n\n\nThe Gaussian moat problem. This is not actually a problem of Erd\\H{o}s, but has been erroneously attributed to him in the past. In \\cite{Er77c} Erd\\H{o}s recalls: 'The conjecture was told me by Motzkin at the Pasadena number theory meeting 1963 November and it was apparently raised by Basil Gordon and Motzkin. I naturally liked it very much and told it right away to many people, naturally attributing it to Motzkin, but this was later forgotten. Thus the problem is returned to its rightful owners.'\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #951\n- Problem #953\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -91,7 +98,7 @@
     {
       "path": "Proofs/Erdos952Problem.lean",
       "filename": "Erdos952Problem.lean",
-      "lineCount": 360,
+      "lineCount": 359,
       "theoremCount": 18,
       "axiomCount": 2,
       "defCount": 18,
