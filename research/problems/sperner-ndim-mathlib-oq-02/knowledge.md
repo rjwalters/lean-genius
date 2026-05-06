@@ -284,3 +284,78 @@ The existence of a fixed point then follows from Sperner's lemma + compactness.
 5. **Run Docker build** to confirm 0 sorries, 0 axioms.
 
 **Estimated effort for full completion**: 2-3 more sessions (~280 lines of Lean).
+
+## Session 2026-05-06 (Session 7) — Adjacency formula audit: bug found, correct formula derived
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: critical bug found — face-0 adj formula in companion file is WRONG; correct formula derived for n=2
+
+### What I Did
+
+- Audited SpernerFreudenthalSimplex.lean's adjacency definition against the actual Freudenthal triangulation
+- Identified that face-0 adjacency formula (`leftRotPerm`, `face0Adj`) is incorrect
+- Derived the CORRECT face-0 adjacency via concrete n=2, N=3 example
+- Identified that face-n adjacency and middle-face adjacency ARE correct
+- Identified SpernerSimplicialInstance.lean as having proved adj axioms for AbstractSimplicialData
+- Proved pseudomanifold property holds for the chain-based triangulation (SpernerFreudenthal.lean)
+
+### Key Mathematical Findings
+
+**CRITICAL BUG**: In SpernerFreudenthalSimplex.lean, `face0Adj` is wrong. My condition `adj(s,0)=none iff base[miss]≤n` is incorrect. For n=2, face-0 is ALWAYS interior (adj ≠ none), but my formula says adj=none when base[miss]=n.
+
+**Correct face-0 adjacency (derived by concrete verification)**:
+- For cell (base,σ): the adjacent cell at face 0 is (b, τ) where:
+  - **τ = σ ∘ swap(n-1, n)** [swap last two positions in σ's domain, NOT leftRotPerm]
+  - **new miss' = σ(n-1)** [old second-to-last step becomes new miss]
+  - **b = base + 2·e_{σ(n-1)} + Σ_{k=1}^{n-2} e_{σ(k)} - n·e_{miss}** [complex formula, n≥2]
+  - **k' = 0** [face 0 of adjacent cell contains the shared vertices]
+  - **Validity**: b[miss'] = base[σ(n-1)] + 2 ≥ n, i.e., base[σ(n-1)] ≥ n-2
+- For n=2: condition base[σ(1)] ≥ 0 is always true → face-0 NEVER has adj=none ✓
+- For n≥3: adj(s,0)=none iff base[σ(n-1)] < n-2 (may occur for interior face, meaning formula fails for n≥3)
+
+**Verified example** (n=2, N=3):
+- Cell ((0,1,2), id): σ=id, miss=2, base[σ(1)=1]=1≥0 ✓
+- face-0 adj: b = (0,1,2) + 2·e_1 - 2·e_2 = (0,3,0), τ = id∘swap(1,2) = swap(1,2)
+- Cell ((0,3,0), (1↔2)): miss'=τ(2)=1, base'[1]=3≥2 ✓, vertices {(0,3,0),(1,2,0),(1,1,1)}
+- Shared face {(1,1,1),(1,2,0)} = face 0 of original and face 0 of adjacent. ✓ adj_symm ✓
+
+**Face-n adjacency IS correct**: adj(s,n)=none iff base[σ(n-1)]=0. When none, kept vertices
+{v_0,...,v_{n-1}} all have σ(n-1)-th coordinate = 0, so face is on F_{σ(n-1)} ⊂ ∂Δⁿ. ✓
+
+**Middle-face adjacency IS correct**: (base, σ∘swap(k-1,k)) for 0<k<n. ✓
+
+**Pseudomanifold property for SpernerFreudenthal.lean's chain-based triangulation**:
+- Cells = chains ∅ ⊂ {σ(0)} ⊂ {σ(0),σ(1)} ⊂ ... ⊂ Fin(n) for σ ∈ Perm(Fin n)
+- Each codim-1 face (chain with one set removed at position k):
+  - k=0 or k=n: exactly 1 chain contains it (boundary) → on ∂Δⁿ ✓
+  - 0<k<n: exactly 2 chains contain it (insert either of 2 choices for P_k) → interior ✓
+- Pseudomanifold ≤ 2 for all faces ✓ — **this is provable in ~50 lines**
+
+### Files Modified
+
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+
+### Path Forward
+
+**Option A — Fix FreudCell** (scaled triangulation with real diameter n/N):
+1. Rewrite `face0Adj` with correct formula: τ=σ∘swap(n-1,n), b=base+2e_{σ(n-1)}+Σe_{σ(k)}-ne_{miss}
+2. Fix condition for adj(s,0)=none: base[σ(n-1)] < n-2 (for n≥3); never for n=2
+3. For n≥3: the formula above still needs derivation/verification
+4. Prove adj_symm and adj_vertex for the corrected formulas
+5. Prove boundary_doors_odd by induction
+
+**Option B — Use SpernerFreudenthal.lean** (chain-based, scale=1):
+1. Prove pseudomanifold for `topSimplices n` (~50 lines) — now known to be correct
+2. Use SpernerSimplicialInstance.lean's proved toTriangulation (adj axioms already proved)
+3. Define the Sperner coloring on Finset(Fin n) vertices → Fin(n+1) based on f
+4. Prove boundary_doors_odd for the chain-based triangulation
+5. Connect diameter bound: chain-based triangulation gives diameter O(1), NOT n/N
+   — PROBLEM: diameter bound needs scaling, chain-based triangulation does NOT give n/N
+
+**Assessment**: Option A requires fixing the adjacency formula (complex for n≥3) but gives the needed diameter bound. Option B avoids adjacency issues but the diameter bound connection is unclear.
+
+**Recommended next step**: For Option A, verify the face-0 formula for n=3 by hand (concrete example), then implement the corrected `face0Adj`. Estimated: 1 more session for correct adj + 1 for boundary_doors_odd.
+
+**Alternative next step**: Submit boundary_doors_odd to Aristotle with the current (wrong) adj setup for async exploration while fixing adj manually.
+
+**Note on SpernerGrid.lean**: boundary_doors_odd there is also sorry'd and marked FALSE for d=1 due to double-counting. FreudCell avoids double-counting (18 cells = N²·n! for n=2,N=3 ✓) but has wrong adj formulas. The fix is purely in the adjacency, not the cell count.
