@@ -128,8 +128,8 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
                  ((continuous_id.pow 3).div_const 3))).continuousOn
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici] at ht
-        exact ne_of_gt (by linarith)
+        have ht' : (0 : ℝ) ≤ t := Set.mem_Ici.mp ht
+        exact (show (0 : ℝ) < 1 + t by linarith).ne'
     · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
       intro t ht
       rw [interior_Ici] at ht
@@ -190,8 +190,8 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
       apply ContinuousOn.sub
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici] at ht
-        exact ne_of_gt (by linarith)
+        have ht' : (0 : ℝ) ≤ t := Set.mem_Ici.mp ht
+        exact (show (0 : ℝ) < 1 + t by linarith).ne'
       · exact (((continuous_id.sub ((continuous_id.pow 2).div_const 2)).add
                  ((continuous_id.pow 3).div_const 3)).sub
                  ((continuous_id.pow 4).div_const 4)).continuousOn
