@@ -96,10 +96,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization reveals that Lawvere's categorical fixed-point theorem, Kleene's domain-theoretic fixed-point theorem, and the Y combinator of \u03bb-calculus are three incarnations of the same self-referential principle. The Kleene chain construction is fully proved with the least-fixed-point property. The Y combinator is shown to be definitionally equal to Lawvere's diagonal construction. The one remaining sorry connects the Lawvere and Kleene constructions in the general lattice setting.",
+    "summary": "This formalization reveals that Lawvere's categorical fixed-point theorem, Kleene's domain-theoretic fixed-point theorem, and the Y combinator of \u03bb-calculus are three incarnations of the same self-referential principle. The Kleene chain construction is fully proved with the least-fixed-point property. The Y combinator is shown to be definitionally equal to Lawvere's diagonal construction. The Lawvere\u2013Kleene connection is captured by `lawvere_is_least_when_eq_kleene`: when the Lawvere and Kleene fixed points coincide, the Lawvere fixed point inherits the least-fixed-point property. The unconditional coincidence (without assuming they are equal) remains an open mathematical question, not a Lean gap.",
     "implications": "The unification of these three perspectives \u2014 categorical (Lawvere), order-theoretic (Kleene/Scott), and type-theoretic (Y combinator) \u2014 provides a foundation for formalizing denotational semantics in Lean 4. The insight that self-application and diagonalization are the same operation connects Cantor's theorem, G\u00f6del's incompleteness, recursive function theory, and domain theory into a single framework.",
     "openQuestions": [
-      "Can the remaining sorry (Lawvere-Kleene coincidence in general lattices) be proved by showing the Lawvere construction is \u03c9-continuous when the retraction maps are continuous?",
+      "Can the unconditional Lawvere\u2013Kleene coincidence (in general lattices, without assuming `lawvereFixpoint = kleeneFix`) be proved by showing the Lawvere construction is \u03c9-continuous when the retraction maps are continuous?",
       "Can Scott's D\u221e construction (the inverse limit D_0 \u2190 D_1 \u2190 ... where D_{n+1} = [D_n \u2192 D_n]) be formalized in Lean 4 with Mathlib's category theory?",
       "Can the connection to G\u00f6del's incompleteness theorem be made formal \u2014 using Lawvere's theorem to derive the diagonal lemma?"
     ]
