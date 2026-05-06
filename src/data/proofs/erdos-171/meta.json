@@ -84,7 +84,7 @@
     ],
     "assumptions": "2 axioms: isbell_coloring (7-coloring of plane exists via hexagonal tiling), de_grey_graph (de Grey's 2018 finite graph non-4-colorable). moser_spindle PROVED with explicit Q(√3,√11) coordinates + native_decide. 0 sorries.",
     "theoremCount": 16,
-    "definitionCount": 4
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The **Hadwiger-Nelson problem** asks for the chromatic number χ(ℝ²) of the unit distance graph: the minimum number of colors needed to color the plane so no two points at distance 1 share a color.\n\n**Historical Timeline**:\n- **1950**: Edward Nelson proved χ ≥ 4 using a 7-vertex graph (later called the Moser spindle)\n- **1950**: John Isbell proved χ ≤ 7 using a hexagonal tiling\n- **1950-2018**: No progress on the bounds for 68 years!\n- **2018**: Aubrey de Grey proved χ ≥ 5, finding a unit distance graph with ~1581 vertices that requires 5 colors\n\n**The de Grey Breakthrough**: After nearly 70 years with no improvement, de Grey used computer-aided construction to find a graph embedding where 4 colors are insufficient. This was later optimized to 553 vertices by Exoo and Ismailescu.\n\n**Current State**: 5 ≤ χ(ℝ²) ≤ 7. The exact value remains unknown.",
@@ -202,7 +202,7 @@
     "lineCount": 303,
     "axiomCount": 2,
     "theoremCount": 16,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "path": "Proofs/Erdos171Problem.lean",
     "sorries": 0
   },
