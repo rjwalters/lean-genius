@@ -18,6 +18,21 @@ namespace StirlingExpansion
 
 open Stirling Real Filter
 
+/-- The Stirling step formula: log(stirlingSeq k) - log(stirlingSeq(k+1)) = (k+1/2)*log(1+1/k) - 1.
+
+    Proof sketch: unfold stirlingSeq(n) = n!/(sqrt(2n)*(n/e)^n) and compute:
+      log(stirlingSeq k / stirlingSeq(k+1))
+      = (k+1/2)*log((k+1)/k) - 1
+      = (k+1/2)*log(1+1/k) - 1
+
+    Uses: Real.log_div, Real.log_mul, Real.log_pow, Real.log_sqrt, Real.log_exp,
+          Nat.factorial_succ
+-/
+theorem stirling_step_formula (k : ℕ) (hk : 1 ≤ k) :
+    Real.log (stirlingSeq k) - Real.log (stirlingSeq (k + 1)) =
+    ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / (k : ℝ)) - 1 := by
+  sorry
+
 /-- Stirling's First Correction:
     stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²). -/
 theorem stirling_first_correction :
