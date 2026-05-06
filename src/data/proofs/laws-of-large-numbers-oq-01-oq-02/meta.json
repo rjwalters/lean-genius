@@ -24,6 +24,7 @@
     "sorries": 0,
     "axiomCount": 3,
     "theoremCount": 10,
+    "definitionCount": 2,
     "lineCount": 344,
     "mathlibDependencies": [
       {
@@ -62,6 +63,32 @@
     "dateAdded": "2026-05-06",
     "assumptions": "3 axioms: marcinkiewicz_zygmund_slln (truncation argument, Feller Vol.II Thm IX.4.1), pareto_in_lr_iff (improper integral computation), stable_clt_attraction (characteristic function/stable law theory). All other results proved from Mathlib + these axioms.",
     "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.StrongLaw",
+      "Mathlib.Probability.Moments.Variance",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Probability.Notation",
+      "Mathlib.MeasureTheory.Function.ConvergenceInMeasure",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic",
+      "Proofs.LawsOfLargeNumbersOQ01"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Filter",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "LawsOfLargeNumbersOQ01OQ02",
+    "lineCount": 344,
+    "axiomCount": 3,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "path": "Proofs/LawsOfLargeNumbersOQ01OQ02.lean",
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "The question of how fast sample means converge has been central to probability theory for over a century. Kolmogorov's 1933 Strong Law of Large Numbers guarantees almost sure convergence for integrable random variables, but gives no rate. For finite-variance distributions, the Berry-Esseen theorem (1941–1942) quantifies the Gaussian CLT rate as O(1/√n). The gap for heavy-tailed distributions — where variance is infinite — was filled by Józef Marcinkiewicz and Antoni Zygmund in their 1937 paper 'Sur les fonctions indépendantes' (On Independent Functions): if E[|X|^r] < ∞ for r ∈ (1,2), then deviations scale as o(n^{1/r}). The corresponding limiting distributions — α-stable laws — were characterized by Paul Lévy in the 1920s–1930s, and the full generalized CLT (domain of attraction theory) was developed by Gnedenko and Kolmogorov in their 1954 monograph 'Limit Distributions for Sums of Independent Random Variables'. The Pareto distribution, introduced by Vilfredo Pareto in 1897 to model income inequality, became the canonical example of the heavy-tail regime: its tail index α ∈ (1,2) places it exactly in the M-Z zone, with finite mean but infinite variance.",
