@@ -13815,6 +13815,14 @@
       "result": "clean",
       "issues": []
     },
+    "ehrhart-cube-proven-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T15:58:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "lineCount drift 158->208, theoremCount drift 14->12 (fixed in this PR)"
+      ]
+    },
     "erdos-1006-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-05-03T04:44:08Z",

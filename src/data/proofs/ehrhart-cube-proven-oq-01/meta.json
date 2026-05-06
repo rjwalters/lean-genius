@@ -6,8 +6,8 @@
   "leanFile": {
     "path": "Proofs/EhrhartSimplexProven.lean",
     "filename": "EhrhartSimplexProven.lean",
-    "lineCount": 158,
-    "theoremCount": 14,
+    "lineCount": 208,
+    "theoremCount": 12,
     "definitionCount": 0,
     "sorries": 0,
     "axiomCount": 0
@@ -29,7 +29,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 158,
+    "lineCount": 208,
     "assumptions": "No axioms or sorries. All results proved from Mathlib multiset cardinality theory.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
@@ -41,7 +41,7 @@
       "simplex_monotone: count is increasing in n, proved via Nat.choose_le_choose",
       "Dimensional specializations: 0D (trivial), 1D (segment = cube), 2D (triangular numbers C(n+2,2)), 3D (tetrahedral numbers C(n+3,3))"
     ],
-    "theoremCount": 14,
+    "theoremCount": 12,
     "definitionCount": 0
   },
   "overview": {
