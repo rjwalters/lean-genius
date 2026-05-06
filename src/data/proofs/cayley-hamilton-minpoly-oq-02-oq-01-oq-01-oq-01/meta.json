@@ -1,0 +1,167 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
+  "title": "Skolem-Noether for Central Simple Algebras: General Case",
+  "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
+  "description": "Formalizes the general Skolem-Noether theorem: any two K-algebra homomorphisms from a finite-dimensional simple K-algebra A into a central simple K-algebra B are conjugate by a unit of B. Extends the matrix-algebra case (SkolemNoetherMatrixAut.lean) to arbitrary CSAs. The proof architecture isolates the key step (module isomorphism via Wedderburn-Artin + isotypic decomposition) as 1 axiom, with all surrounding algebraic lemmas fully proved. 0 sorries, 1 axiom.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SkolemNoetherCSA.lean",
+    "tags": [
+      "abstract-algebra",
+      "central-simple-algebra",
+      "galois-theory",
+      "skolem-noether",
+      "brauer-group",
+      "wedderburn-artin",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: skolemNoether_module_iso — the two A-module structures on B (via f and g) admit a right-B-linear K-linear bijection intertwining f-multiplication and g-multiplication. This is the key step requiring Wedderburn-Artin + IsIsotypic. All other algebraic lemmas (right-B-linear = left-mult, unit extraction, conjugation formula) are fully proved. Mathlib v4.26 has all ingredients to prove the axiom; estimated 200-300 additional lines.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsSimpleRing.exists_ringEquiv_matrix_divisionRing",
+        "description": "Wedderburn-Artin: simple Artinian ring ≅ Mₙ(D) for a division ring D",
+        "module": "Mathlib.RingTheory.SimpleModule.WedderburnArtin"
+      },
+      {
+        "theorem": "IsSimpleRing.isIsotypic",
+        "description": "All modules over a simple Artinian ring are isotypic (unique simple module type)",
+        "module": "Mathlib.RingTheory.SimpleModule.Isotypic"
+      },
+      {
+        "theorem": "Algebra.IsCentral",
+        "description": "Central algebra predicate: center of D equals image of K",
+        "module": "Mathlib.Algebra.Central.Defs"
+      },
+      {
+        "theorem": "CSA",
+        "description": "Central simple algebra structure: central + simple + finite-dimensional",
+        "module": "Mathlib.Algebra.BrauerGroup.Defs"
+      },
+      {
+        "theorem": "BrauerGroup",
+        "description": "Brauer group: equivalence classes of CSAs under Morita equivalence",
+        "module": "Mathlib.Algebra.BrauerGroup.Defs"
+      }
+    ],
+    "originalContributions": [
+      "rightBLinear_is_leftMul: any right-B-linear K-linear map φ : B → B satisfies φ(b) = φ(1)·b (proved)",
+      "rightBLinear_symm_is_leftMul: inverse of right-B-linear equiv also satisfies the left-mul formula (proved)",
+      "isUnit_of_rightBLinear_equiv: if φ : B ≃ₗ[K] B satisfies φ(b) = u·b, then u is a unit (proved via both sides: u·v=1, v·u=1 from φ∘φ⁻¹=id)",
+      "skolemNoether_general: main theorem — any two AlgHom f,g : A →ₐ[K] B are conjugate by a unit (proved from the axiom)",
+      "aut_is_inner: every CSA automorphism is inner (special case A = B)",
+      "conjugate_iff_same_image: symmetry of the conjugation relation",
+      "Infrastructure audit: identified 5 Mathlib v4.26 building blocks sufficient to prove the axiom"
+    ],
+    "lineCount": 240,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Skolem-Noether theorem, proved independently by Thoralf Skolem (1927) and Emmy Noether (1929), is a cornerstone of the theory of central simple algebras (CSAs). It generalizes the observation that all matrix algebra automorphisms are inner (conjugation by an invertible matrix) to arbitrary CSAs.\n\nThe general theorem: if A is a simple K-algebra and B is a central simple K-algebra, then any two K-algebra homomorphisms f, g : A → B differ by an inner automorphism of B. In the automorphism case (f = g = id, A = B), this says Aut_K(B) = Inn(B) — every automorphism is conjugation by some unit.\n\nThis result has deep structural consequences:\n- **Brauer group**: CSAs that are Morita-equivalent form a group under ⊗, with Skolem-Noether providing the key tool for showing well-definedness\n- **Galois theory**: The Skolem-Noether theorem underlies the construction of crossed products and the connection to Galois cohomology H²(Gal(L/K), L×) ≅ Br(L/K)\n- **Representation theory**: Schur's lemma + Skolem-Noether shows the automorphism group of a central division algebra is purely inner\n\nThe matrix algebra case (B = Mₙ(K)) was formalized in SkolemNoetherMatrixAut.lean using an elementary approach. This entry extends to arbitrary CSAs, identifying the key module-theoretic step.",
+    "problemStatement": "**Theorem (Skolem-Noether, general)**:\nLet K be a field, A a finite-dimensional simple K-algebra, and B a finite-dimensional central simple K-algebra. For any two K-algebra homomorphisms f, g : A →ₐ[K] B, there exists a unit u ∈ Bˣ such that:\n$$f(a) = u^{-1} g(a) u \\quad \\text{for all } a \\in A$$\n\nIn particular (A = B, f = automorphism, g = identity):\n**Every K-algebra automorphism of a finite-dimensional CSA is inner.**",
+    "text": "This file formalizes the general Skolem-Noether theorem for central simple algebras, extending the matrix-algebra case to arbitrary CSAs. The proof architecture isolates the hard module-theoretic step as a single axiom, proving all surrounding algebra rigorously.",
+    "proofStrategy": "The proof has four stages:\n\n**Stage 1 (proved)**: Right-B-linear maps are left multiplication.\nAny K-linear φ : B → B satisfying φ(b·c) = φ(b)·c must satisfy φ(b) = φ(1)·b. This is immediate: φ(b) = φ(1·b) = φ(1)·b.\n\n**Stage 2 (proved)**: Unit extraction.\nIf φ : B ≃ₗ[K] B satisfies φ(b) = u·b (where u = φ(1)), then u is a unit. Set v = φ⁻¹(1). Then u·v = φ(v) = φ(φ⁻¹(1)) = 1 and v·u = φ⁻¹(u) = φ⁻¹(φ(1)) = 1. Both sides give 1, so u is a unit.\n\n**Stage 3 (axiom)**: Module isomorphism.\nThe two A-module structures on B (a·b = f(a)·b and a·b = g(a)·b) are isomorphic via a right-B-linear K-linear bijection. This uses:\n- Wedderburn-Artin: B ≅ Mₙ(D) (simple Artinian)\n- IsIsotypic: unique simple A-module type forces B_f ≅ B_g\n- Bimodule extension: A-iso extends to (A,B)-iso using centrality\n\n**Stage 4 (proved)**: Conjugation formula.\nFrom the module isomorphism φ: φ(f(a)) = g(a)·φ(1) (intertwining) and φ(f(a)) = φ(1)·f(a) (Stage 1). So φ(1)·f(a) = g(a)·φ(1), i.e., u·f(a) = g(a)·u, giving f(a) = u⁻¹·g(a)·u.",
+    "keyInsights": [
+      "The key insight is that right-B-linear maps on B are exactly left multiplications: φ(b) = φ(1)·b. This 1-line proof is the algebraic heart of the theorem.",
+      "Unit extraction from a bijective linear map uses the fact that φ and φ⁻¹ are inverses: both u·v = 1 (from φ ∘ φ⁻¹ = id) and v·u = 1 (from φ⁻¹ ∘ φ = id) hold, giving a genuine two-sided unit without any finite-dimensionality assumption.",
+      "The axiom (module isomorphism) is exactly the content of Wedderburn-Artin + isotypic decomposition. Mathlib v4.26 has all required components: IsSimpleRing.exists_ringEquiv_matrix_divisionRing and IsSimpleRing.isIsotypic.",
+      "The proof architecture separates the easy algebra (Stages 1,2,4) from the hard module theory (Stage 3), making the logical structure transparent.",
+      "The matrix case SkolemNoetherMatrixAut.lean is the special case n=1, D=K, A=B=Mₙ(K). The general case B≅Mₙ(D) reduces to that case when combined with Wedderburn-Artin."
+    ],
+    "prerequisites": [
+      "SkolemNoetherMatrixAut.lean: matrix algebra Skolem-Noether (special case)",
+      "Central simple algebras: Algebra.IsCentral, IsSimpleRing, FiniteDimensional",
+      "Wedderburn-Artin theorem: IsSimpleRing.exists_ringEquiv_matrix_divisionRing",
+      "Isotypic modules: IsSimpleRing.isIsotypic",
+      "Brauer group: BrauerGroup, IsBrauerEquivalent, CSA structure"
+    ],
+    "openQuestions": [
+      "Can the axiom skolemNoether_module_iso be proved using Mathlib's Wedderburn-Artin and IsIsotypic? (Estimated ~200-300 lines)",
+      "Can the Brauer group multiplication (via tensor product of CSAs) be formalized, building on Skolem-Noether?",
+      "Does Mathlib have the full Skolem-Noether theorem for arbitrary simple subalgebras S ⊂ B (not just A = B)?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "right-linear-maps",
+      "title": "Right-B-Linear Maps are Left Multiplication",
+      "startLine": 40,
+      "endLine": 65,
+      "summary": "rightBLinear_is_leftMul and rightBLinear_symm_is_leftMul: φ(b) = φ(1)·b for any right-B-linear K-linear map, and likewise for its inverse.",
+      "mathContext": "A K-linear map φ : B → B satisfying φ(bc) = φ(b)c for all b,c ∈ B is called a right B-module map. Setting b=1: φ(c) = φ(1)·c. This is the key algebraic lemma."
+    },
+    {
+      "id": "unit-extraction",
+      "title": "Unit Extraction from Right-B-Linear Equivalence",
+      "startLine": 67,
+      "endLine": 95,
+      "summary": "isUnit_of_rightBLinear_equiv: If φ : B ≃ₗ[K] B satisfies φ(b)=u·b, then u is a unit. Proof: v=φ⁻¹(1), u·v=1 from φ(φ⁻¹(1))=1, v·u=1 from φ⁻¹(φ(1))=1.",
+      "mathContext": "No finite-dimensionality needed! The bijectivity of φ directly gives both sides of the unit equation via the identity φ ∘ φ⁻¹ = id and φ⁻¹ ∘ φ = id."
+    },
+    {
+      "id": "module-axiom",
+      "title": "Core Axiom: Module Isomorphism (Wedderburn + Isotypic)",
+      "startLine": 98,
+      "endLine": 140,
+      "summary": "axiom skolemNoether_module_iso: the two A-module structures on B (via f and g) are isomorphic via a right-B-linear K-linear bijection. Proof sketch provided; gap = 200-300 lines using Mathlib's Wedderburn-Artin and IsIsotypic.",
+      "mathContext": "Via f, B is an A-module with action a·b = f(a)·b. Via g, another A-module with a·b = g(a)·b. Since A is simple and B is Artinian, both B_f and B_g are semisimple A-modules of the same K-dimension, hence isomorphic. The isomorphism extends to a (left-A, right-B)-bimodule map using centrality."
+    },
+    {
+      "id": "main-theorem",
+      "title": "General Skolem-Noether Theorem",
+      "startLine": 143,
+      "endLine": 190,
+      "summary": "skolemNoether_general: any two K-algebra homomorphisms f, g : A →ₐ[K] B are conjugate by a unit u ∈ Bˣ. Also proves aut_is_inner (automorphisms of CSA are inner) and conjugate_iff_same_image.",
+      "mathContext": "From the module isomorphism φ: φ(f(a)·b) = g(a)·φ(b) and φ(b·c) = φ(b)·c. Setting b=1: φ(f(a)) = g(a)·φ(1). From left-mul formula: φ(f(a)) = φ(1)·f(a). So φ(1)·f(a) = g(a)·φ(1). With u=φ(1): u·f(a)=g(a)·u, hence f(a)=u⁻¹·g(a)·u."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the general Skolem-Noether theorem for CSAs with 1 axiom (the module isomorphism step) and 7 proved theorems. All algebraic lemmas surrounding the module isomorphism are fully verified. The axiom is precisely the Wedderburn-Artin + isotypic decomposition step, which Mathlib v4.26 is positioned to prove.",
+    "implications": "Skolem-Noether is the key tool for: (1) showing the Brauer group is well-defined under tensor product, (2) connecting Galois cohomology H²(Gal, L×) to the Brauer group, (3) proving all inner automorphisms form a normal subgroup of Aut_K(B) with quotient related to the center. This formalization makes the proof structure transparent and identifies the exact Mathlib gap.",
+    "openQuestions": [
+      "Can the axiom skolemNoether_module_iso be proved using Mathlib's Wedderburn-Artin and IsIsotypic? (Estimated ~200-300 lines)",
+      "Can the Brauer group multiplication (via tensor product of CSAs) be formalized, building on Skolem-Noether?",
+      "Does Mathlib have the full Skolem-Noether theorem for arbitrary simple subalgebras S ⊂ B (not just A = B)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: Skolem-Noether for matrix algebras Mₙ(K). This file extends to arbitrary central simple algebras."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: minimal polynomial preservation under algebra equivalences — the seed of the Skolem-Noether chain."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "foundational",
+      "description": "Cayley-Hamilton provides the polynomial integrality that underlies the minimal polynomial machinery."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SkolemNoetherMatrixAut"
+    ],
+    "opens": [],
+    "namespace": "SkolemNoetherCSA",
+    "lineCount": 240,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/SkolemNoetherCSA.lean"
+  }
+}
