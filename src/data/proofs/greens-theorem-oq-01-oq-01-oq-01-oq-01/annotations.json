@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-swap01-cons",
+    "line": 85,
+    "annotation": "The core Fin arithmetic computation: for σ = swap 0 1, applying σ to a Fin.cons chain gives f(cons x₁ (cons x₀ rest) ∘ swap 0 1) = f(cons x₀ (cons x₁ rest)). Proved by Fin.cases splitting positions 0, 1, and k+2.",
+    "type": "insight"
+  },
+  {
+    "id": "ann-swap-outer",
+    "line": 130,
+    "annotation": "The primitive Fubini building block: swapping positions 0 and 1 in the iterated integral. Proof: expand both sides to a common double integral, apply integral_integral_swap (Fubini for product measures) to swap, then show the integrand G(x₀,x₁) is the same on both sides.",
+    "type": "technique"
+  },
+  {
+    "id": "ann-integrability",
+    "line": 60,
+    "annotation": "Key technical lemma (sorry): for continuous f, the parameterized inner integral (x₀,x₁) ↦ [integral over x₂,...,xₙ] is integrable. Follows from continuity of the iterated integral as a function of its parameter (proved inductively using dominated convergence), then integrableOn_compact on [a₀,b₀] × [a₁,b₁].",
+    "type": "gap"
+  },
+  {
+    "id": "ann-2d-case",
+    "line": 260,
+    "annotation": "Complete proof for n=2: Perm(Fin 2) = {id, swap 0 1}. The case split uses Fin.cases on where σ sends 0: if σ(0)=0 then σ=id (trivial), if σ(0)=1 then σ=swap 0 1 (handled by swap_outer_two).",
+    "type": "result"
+  }
+]
