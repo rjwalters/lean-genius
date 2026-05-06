@@ -19,7 +19,7 @@
       "greens-theorem"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
     "assumptions": "3 sorries remain: (1) integrability of parameterized inner integral (follows from continuity + compact box), (2) inner permutation reduction (follows from IH + integral_congr), (3) general permutation via Equiv.Perm.induction_on' decomposition.",
     "dateAdded": "2026-05-06",
@@ -59,7 +59,7 @@
       "Inductive proof structure: decomposition into inner-permutation + adjacent-swap building blocks",
       "Eliminates the axiom iteratedIntervalIntegral_order_independent from greens-theorem-oq-01-oq-01-oq-01"
     ],
-    "lineCount": 333,
+    "lineCount": 341,
     "theoremCount": 7,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
@@ -77,12 +77,12 @@
       "Topology"
     ],
     "namespace": "GreensTheoremOQ01OQ01OQ01OQ01",
-    "lineCount": 333,
+    "lineCount": 341,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   },
   "sections": [
     {
@@ -120,5 +120,5 @@
     "significance": "Each sorry has a clear mathematical fix: (1) continuity of parameterized iterated integrals by induction, (2) IH + integral_congr, (3) Equiv.Perm.induction_on'. The mathematical structure is complete.",
     "limitations": "3 sorries remain. The full axiom elimination requires resolving these, at which point greens-theorem-oq-01-oq-01-oq-01 would have axiomCount=0."
   },
-  "sorries": 3
+  "sorries": 2
 }
