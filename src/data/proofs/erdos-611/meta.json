@@ -56,7 +56,8 @@
     "lineCount": 245,
     "assumptions": "5 axiom(s) and 13 sorries. See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "Erd\u0151s Problem #611 refines Problem #610 by asking how large clique sizes constrain the clique transversal number \u03c4(G). Erd\u0151s, Gallai, and Tuza (1992) proved the key inequality: if every maximal clique has \u2265 k vertices, then \u03c4 \u2264 n - \u221a(kn). For linear clique size k = cn, this gives \u03c4 \u2264 (1-\u221ac)n, answering Question 1 affirmatively. The deeper Question 2 asks for the threshold function k_c(n) \u2014 the minimum clique size forcing \u03c4 < (1-c)n. The lower bound k_c(n) \u2265 n^{c'/log log n} comes from probabilistic constructions (random graphs with controlled clique sizes). Bollob\u00e1s and Erd\u0151s found the exact threshold for the extreme case \u03c4 = 1: if all cliques have \u2265 n + 3 - 2\u221an vertices, a single vertex hits every clique. This threshold is optimal \u2014 the constant 3 is exact, with extremal graphs showing \u03c4 = 2 just below the threshold. The problem connects clique structure to hypergraph transversal theory and the probabilistic method.",

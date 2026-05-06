@@ -29,7 +29,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős problem #1054 was posed by Paul Erdős as part of his extensive catalog of problems on additive and multiplicative properties of integers. The function f(n) — the minimal m whose k smallest divisors (where k = τ(m)) sum to n — is tied to the rich theory of highly composite numbers. Highly composite numbers were introduced by Ramanujan in 1915 as numbers with more divisors than any smaller positive integer; they form the natural 'fertile' values where partial divisor sums are large. Superabundant numbers, characterized by Alaoglu and Erdős in 1944, maximize the abundancy index σ(m)/m among all integers up to m; Gronwall's theorem (1913) shows lim sup σ(n)/(n log log n) = e^γ ≈ 1.781. OQ-01 asks whether f(n)/n → 0 for almost all n. This file proves f(σ(m)) ≤ m, which combined with Gronwall's theorem shows f(n) = o(n) along the σ-subsequence of superabundant numbers. The full OQ-01 (density 1 result) remains open.",

@@ -61,7 +61,8 @@
     "axiomCount": 2,
     "lineCount": 200,
     "assumptions": "2 axioms: tao_elementary_proof, van_doorn_sharp_bound. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #440 originated from a problem in the American Mathematical Monthly. It asks about the growth of a counting function A(x) that measures how many consecutive pairs in an infinite sequence have small least common multiple. Erdős and Szemerédi solved it completely in their 1980 paper published in Mat. Lapok.\n\nThe key insight is that the natural numbers form the extremal sequence: for A = ℕ, consecutive integers n and n+1 are always coprime, so lcm(n, n+1) = n(n+1). This gives A(x) ≈ √x, and the liminf of A(x)/√x equals 1. Erdős and Szemerédi proved that no sequence can consistently exceed this — liminf A(x)/√x ≤ 1 for every sequence.\n\nTerence Tao later provided an elegant elementary proof of the O(√x) bound using a GCD decomposition argument. Wouter van Doorn established the sharp constant: A(x) ≤ (c + o(1))√x where c = Σ_{n≥1} 1/(√n(n+1)) ≈ 1.86, confirming and refining the Erdős-Szemerédi result.",

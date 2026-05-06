@@ -66,7 +66,8 @@
     "axiomCount": 2,
     "lineCount": 333,
     "assumptions": "2 axioms: graham_selfridge, hunter_observation. Structure fields are object definitions, not assumptions.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 15
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1090: Monochromatic Collinear Points**\n\nThis problem is a Ramsey-type question in Euclidean geometry: given a 2-coloring of a finite point set, must there exist monochromatic collinear points?\n\n**Key History:**\n- Erdős (1975): Posed the problem in [Er75f] \"On some problems of elementary and combinatorial geometry\"\n- Graham-Selfridge: Proved the k=3 case with an explicit construction\n- Hunter: Observed that generic projections of [k]ⁿ work via Hales-Jewett\n\n**Mathematical Setting:**\nThe Hales-Jewett theorem (1963) guarantees monochromatic combinatorial lines in [k]ⁿ for sufficiently large n. A generic (algebraically independent) projection to ℝ² preserves the collinear structure, solving the problem for all k. The solution exemplifies the transfer principle: combinatorial Ramsey results in high-dimensional grids project to geometric Ramsey results in the plane.",

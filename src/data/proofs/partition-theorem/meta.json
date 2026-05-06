@@ -47,7 +47,8 @@
     "lineCount": 281,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Euler discovered this theorem around 1748 while developing his groundbreaking theory of generating functions for integer partitions. Working in the tradition of Leibniz's formal power series, Euler showed that the generating function for partitions into distinct parts, ∏(1+xᵏ), equals the generating function for partitions into odd parts, ∏1/(1-x^{2k+1}), by the algebraic identity 1+xᵏ = (1-x^{2k})/(1-xᵏ).\n\nThe theorem is one of the earliest results in partition theory and appears in Euler's 'Introductio in analysin infinitorum' (1748). It sparked centuries of work: Glaisher (1883) found a direct bijective proof using binary representation of multiplicities; Ramanujan (1919) discovered his famous congruences p(5n+4) ≡ 0 (mod 5), p(7n+5) ≡ 0 (mod 7), and p(11n+6) ≡ 0 (mod 11) while studying partition functions; Hardy and Ramanujan (1918) developed the circle method to find the asymptotic formula for p(n).\n\nThe theorem is #45 on Wiedijk's list of '100 Theorems' that benchmark formal verification systems. The Lean formalization uses Mathlib's archive proof, which implements Euler's generating function approach within the formal power series framework. Notably, this is a FULLY PROVED result with no axioms — the proof chain from Mathlib is complete.",

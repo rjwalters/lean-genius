@@ -63,7 +63,8 @@
     ],
     "lineCount": 294,
     "assumptions": "1 axiom(s) and 3 sorry(s). See the Lean source for details.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset is small, how large must the product set be? Solymosi's 2009 paper resolved this completely. The sum-product conjecture (1983) was proved in quantitative forms by Elekes (1997) using the Szemerédi-Trotter incidence theorem, and by Solymosi and others achieving exponent 4/3. The conditional question asks whether small additive structure forces large multiplicative structure, refining the unconditional sum-product estimates.",

@@ -30,7 +30,8 @@
         "relationship": "Parent problem: sum-divides-product avoidance"
       }
     ],
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 4
   },
   "overview": {
     "text": "A formalization studying the structure of sum-divides-product pairs: ordered pairs (a,b) of positive integers with (a+b) | ab. Uses the GCD characterization from Erdős #327 to give an explicit parametrization: every such pair has the form (m(a'+b')a', m(a'+b')b') where gcd(a',b')=1 and m ≥ 1. Proves this construction works, verifies 5 concrete examples and 2 non-examples, proves (3,6) is the smallest sum-dvd-prod pair with a < b, defines pair-counting functions, and states the density conjecture: the count in {1,...,N} grows as Θ(N log N).",

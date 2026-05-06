@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 169,
     "assumptions": "2 axioms: upper_bound_refined, lower_bound_max. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and András Sárközy in the 1990s, combining two classical themes in combinatorial number theory: subset sums and divisibility avoidance. Given $A \\subseteq \\{1,\\ldots,n\\}$, the question asks for the maximum $|A|$ such that the $2^{|A|}-1$ non-empty subset sums form an antichain in the divisibility order $(\\mathbb{N}, \\mid)$.\n\nThe naive greedy algorithm, selecting elements one by one to avoid creating divisibility pairs among sums, achieves only $|A| \\geq (1-o(1))\\log_3 n$. Erdős and Sárközy conjectured that $\\log_2 n$ should be the right order. This was first confirmed by Csaba Sándor using the elegant construction $A = \\{2^i + m \\cdot 2^m : 0 \\leq i < m\\}$, which exploits the binary representation structure to prevent divisibility.\n\nThe definitive result came in the 1999 paper by Erdős, Vsevolod Lev, Gérard Rauzy, Sándor, and Sárközy, who proved that the construction $A = \\{2^{m-1}, 2^{m-1}+1, \\ldots, 2^m - 1\\}$ achieves $|A| > \\log_2 n - 1$ and has all subset sums distinct. This connection to the distinct subset sums problem (Erdős Problem #1) immediately yields the upper bound $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2(\\log n) + O(1)$, via the Dubroff-Fox-Xu (2021) bound. The Erdős-Moser conjecture, that $|A| \\leq \\log_2 n + O(1)$ for distinct subset sums, would close the remaining gap for Problem #882 as well.",

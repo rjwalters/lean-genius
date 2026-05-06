@@ -84,7 +84,8 @@
     "axiomCount": 3,
     "lineCount": 378,
     "assumptions": "3 axiom(s) (Cambie's bounds + asymptotic conjecture), 0 sorries. See the Lean source for details.",
-    "theoremCount": 41
+    "theoremCount": 41,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "The greatest prime factor function $P(n)$ has been studied since the earliest days of analytic number theory. Ramanujan (1915) investigated $P(n)$ in connection with highly composite numbers, and Karl Dickman (1930) established the foundational result on the distribution of $P(n)$: the proportion of integers $n \\le x$ with $P(n) \\le x^{1/u}$ tends to the Dickman function $\\rho(u)$. Nicolaas de Bruijn (1951) refined Dickman's estimates with his celebrated asymptotic for the smooth number counting function $\\Psi(x, y) = |\\{n \\le x : P(n) \\le y\\}|$, which satisfies $\\Psi(x, y) \\sim x \\cdot \\rho(\\log x / \\log y)$. These estimates were further sharpened by Hildebrand and Tenenbaum (1986).\n\nErdős posed Problem #648 as a combinatorial question about $P(n)$: given $n$, how long can an increasing sequence $a_1 < a_2 < \\cdots < a_t < n$ be if the greatest prime factors must strictly decrease: $P(a_1) > P(a_2) > \\cdots > P(a_t)$? The tension between increasing values and decreasing GPF creates a delicate optimization problem at the interface of combinatorics and analytic number theory.\n\nStijn Cambie resolved the problem in 2025, proving $g(n) \\asymp (n/\\log n)^{1/2}$, with the constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$ satisfying $2 \\le c \\le 2\\sqrt{2}$. The lower bound uses an explicit construction leveraging smooth numbers (numbers with bounded GPF), while the upper bound employs counting arguments via de Bruijn's $\\Psi$-function estimates. The exact value of $c$ remains an open question.",

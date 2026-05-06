@@ -37,7 +37,8 @@
     ],
     "lineCount": 227,
     "theoremCount": 13,
-    "defCount": 5
+    "defCount": 5,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős collaborated with Szüsz and Turán on this approximation density problem in 1958. The original 1D question asks: for how many α ∈ (0,1) is there a rational p/q with N ≤ q ≤ cN and |α - p/q| < A/q²? The measure S(N,A,c) of such α was studied, and Erdős–Szüsz–Turán conjectured the formula 12A·log(c)/π² in the 'disjoint regime' where approximation boxes don't overlap (A < 1/2). This was confirmed by Kesten and Sós (1966). The formula 12A·log(c)/π² = 2A·log(c)/(π²/6) = 2A·log(c)/ζ(2) elegantly involves the Riemann zeta function at 2. The natural higher-dimensional generalization — simultaneous approximation of α ∈ [0,1]^d — was studied in the spirit of Dirichlet's theorem and Minkowski's theorem on simultaneous approximation. The extension to d dimensions involves Jordan's d-th totient function J_d, which generalizes Euler's φ and was introduced by Camille Jordan in 1870. The Dirichlet series identity Σ J_d(q)/q^s = ζ(s)/ζ(s+d), together with a Mertens-type partial sum estimate, gives the d-dimensional limit formula. The appearance of ζ(d+1) — and in particular Apéry's constant ζ(3) for d=2 — connects this elementary approximation problem to deep transcendence theory.",

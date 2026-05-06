@@ -61,7 +61,8 @@
       "Finite tree definitions (paths, stars, caterpillars)"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Gyárfás conjectured in 1975 that for every tree $T$, there exists $f(T)$ such that every graph with chromatic number $\\geq f(T)$ contains $T$ as an induced subgraph. Problem 738, popularized by Erdős, focuses on the triangle-free case: if $G$ is triangle-free with $\\chi(G) = \\infty$, must $G$ contain every finite tree as an induced subgraph? This is stronger than the general conjecture because triangle-freeness constrains the graph's local structure to be tree-like (no short cycles), making induced tree copies more plausible. Kierstead and Penrice (1994) proved the conjecture for trees of radius $\\leq 2$, Scott (1997) extended it to caterpillars (trees where all vertices are within distance 1 of a central path), and Chudnovsky, Scott, and Seymour (2020) made progress on subdivisions. The problem connects to the broader theory of $\\chi$-bounded graph classes initiated by Gyárfás.",

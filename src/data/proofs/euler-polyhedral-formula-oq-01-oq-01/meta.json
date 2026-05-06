@@ -50,7 +50,8 @@
     "lineCount": 507,
     "assumptions": "4 axioms: planar_hereditary, kempe_chain_separation, five_color_axiom, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25
+    "theoremCount": 25,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The **Five Color Theorem** states that every planar graph can be properly colored with at most 5 colors. It was first stated (as part of an attempt at the Four Color Theorem) by Alfred Kempe in 1879, who introduced the **Kempe chain** recoloring technique. Percy Heawood found the flaw in Kempe's four-color proof in 1890 but showed the five-color version was correct.\n\nThe Kempe chain argument proceeds by induction on vertices:\n1. Every planar graph has a vertex of degree ≤ 5 (from E ≤ 3V - 6)\n2. Remove it; color the rest by induction\n3. If degree ≤ 4: at most 4 colors used by neighbors, pick the 5th\n4. If degree = 5: K₅ is non-planar, so two neighbors are non-adjacent. Use a Kempe chain swap to reduce distinct neighbor colors to ≤ 4\n\nThis formalization proves all the combinatorial ingredients (color swap correctness, K₅ non-planarity, color counting) and axiomatizes only the planarity-specific infrastructure that Mathlib currently lacks (vertex deletion, Kempe chain separation).",

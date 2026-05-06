@@ -54,7 +54,8 @@
     "axiomCount": 4,
     "lineCount": 163,
     "assumptions": "4 axioms: danzer_counterexample, fishburn_reeds_example, fishburn_reeds_minimal, no_bound_without_convexity. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős originally conjectured (1946) that every convex polygon has a vertex with no other 3 vertices equidistant from it. Danzer disproved this with a 9-point counterexample where every vertex has exactly 3 vertices equidistant from it.\n\nThe problem was then raised for k = 4: does every convex polygon have a vertex with no other 4 vertices equidistant? This remains open.\n\nFishburn and Reeds (1992) found an even stronger example: a convex 20-gon where every vertex has 3 vertices at UNIT distance (not just equidistant at varying radii). They also proved 20 is minimal for this property.",

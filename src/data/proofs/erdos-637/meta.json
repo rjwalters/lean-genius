@@ -31,7 +31,8 @@
     "lineCount": 243,
     "assumptions": "2 axioms: ramsey_lower_bound (Ramsey number lower bound R(k,k) \u2265 2^(k/2)), vertex_bound_from_ramsey (vertex count bounded by R(k+1,k+1)). 10 sorries remain.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 16
   },
   "overview": {
     "historicalContext": "Erd\u0151s, Faudree, and S\u00f3s conjectured that graphs with small Ramsey numbers (no large cliques or independent sets) must have induced subgraphs with many distinct degrees. This connects degree diversity to Ramsey-theoretic properties. Ramsey graphs \u2014 graphs whose clique number and independence number are both O(log n) \u2014 were studied intensively following the development of the probabilistic method; the Erd\u0151s-R\u00e9nyi random graph G(n,1/2) is the canonical example. Faudree and Schelp made important contributions to degree sequence problems throughout the 1980s and 1990s. Bukh and Sudakov's 2007 resolution used a combination of probabilistic arguments and spectral techniques, while the subsequent 2020 improvement by Jenssen, Keevash, Long, and Yepremyan to n^{2/3} distinct degrees exploited more refined structural properties of Ramsey graphs.",

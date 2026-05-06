@@ -48,7 +48,8 @@
     "dateAdded": "2026-04-03",
     "axiomCount": 1,
     "lineCount": 328,
-    "theoremCount": 29
+    "theoremCount": 29,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "DissectionOfCubesOQ01 established that every nonempty cube dissection has at least 2 colliding cubes (collidingCubes.card ≥ 2). This OQ sub-question asks whether the lower bound of 2 is tight: can a cube dissection actually achieve exactly 2 colliding cubes?\n\nThis formalization answers YES within our mathematical model, where the covering constraint is a placeholder (covers_unit_cube : True). The geometric question — whether an actual tiling of the unit cube can have exactly one repeated size — remains open.",

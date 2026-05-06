@@ -63,7 +63,8 @@
     "lineCount": 328,
     "assumptions": "1 axiom: weighted_erdos_szekeres (deep: Tidor-Wang-Yang 2016). lis_lds_bound now proved from Erdős-Szekeres via sSup contradiction. erdos_szekeres proved from Mathlib (Theorems100.erdos_szekeres via Finset.orderEmbOfFin bridge).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "**The Monotonic Subsequence Sum Problem**\n\nErdős (1971) posed this optimization problem: given a sequence of distinct real numbers, what is the maximum sum achievable by a monotonic subsequence?\n\n**Timeline:**\n- **1935**: Erdős-Szekeres prove every sequence of n²+1 elements has a monotonic subsequence of length n+1\n- **1957**: Hanani shows every sequence decomposes into ≤ (√2+o(1))√n monotonic parts, giving c ≥ 1/√2\n- **1995**: Steele surveys variations on the Erdős-Szekeres theme, highlighting open weighted versions\n- **2016**: Tidor-Wang-Yang prove the weighted version, showing c = 1; Cambie independently conjectures and proves the upper bound c ≤ 1\n- **2017**: Wagner gives an independent proof via tournament theory\n\nThe problem sits at the intersection of extremal combinatorics and optimization. The classical Erdős-Szekeres theorem guarantees long monotonic subsequences; Erdős's question asks the deeper 'weighted' version: not just how many elements, but how much total value can a monotonic subsequence capture? The answer c = 1 is remarkably clean.",

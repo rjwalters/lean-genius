@@ -63,7 +63,8 @@
     "axiomCount": 2,
     "lineCount": 241,
     "assumptions": "2 axioms: beker_theorem (Béker — Erdős-Graham conjecture holds), konieczny_theorem (Konieczny — permutation conjecture holds). 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős Problem #356 originates from the Erdős-Graham collaboration on combinatorial number theory [ErGr80]. The question asks whether carefully chosen strictly increasing sequences can achieve quadratically many distinct consecutive subsums — far more than the trivial sequence {1, 2, ..., n}, which achieves only O(n) distinct values due to arithmetic structure causing sum collisions.\n\nThe problem connects to broader themes in additive combinatorics: how does the structure of a set affect the richness of its sumset? The trivial sequence fails because arithmetic progressions produce highly regular sums with many coincidences. Breaking this regularity is the key to achieving quadratic growth.\n\nKonieczny (2015) first showed that permutations of {1,...,n} can achieve cn² distinct consecutive sums, solving a related variant. Beker (2023) then settled the original problem, proving that strictly increasing sequences bounded by n can also achieve cn² distinct sums. This resolved the problem in the affirmative.",

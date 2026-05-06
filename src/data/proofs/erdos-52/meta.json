@@ -29,7 +29,8 @@
     ],
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The sum-product conjecture originated in a landmark 1983 paper by Paul Erdős and Endre Szemerédi, \"A combinatorial theorem in group theory,\" where they proved the first super-linear bound $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ with $c = 1/31$ using the Szemerédi–Trotter incidence theorem. The conjecture itself — that the exponent should be $2-\\varepsilon$ for any $\\varepsilon > 0$ — reflects a deep philosophical insight: addition and multiplication are fundamentally incompatible operations on finite sets. An arithmetic progression $\\{1,2,\\ldots,n\\}$ has small sumset ($|A+A| = 2n-1$) but large product set, while a geometric progression $\\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has small product set but large sumset. The conjecture says these are essentially the only ways to have a small sum-product quantity. The exponent has been improved through a remarkable sequence of breakthroughs: Nathanson–Ford ($c = 1/15$), Elekes (1997, exponent $5/4$ via an elegant geometric argument), Solymosi (2009, exponent $4/3$ using multiplicative energy), Konyagin–Shkredov (2016), Rudnev–Stevens (2022), and Bloom (2025, exponent $1270/951 \\approx 1.335$). Erdős offered a $250 prize for its resolution. The conjecture has deep connections to the Kakeya problem, the discretized ring conjecture of Bourgain, and the finite field analog proved by Bourgain–Katz–Tao (2004). Related gallery entries: erdos-53, erdos-808, erdos-818.",

@@ -70,7 +70,8 @@
     "axiomCount": 3,
     "lineCount": 397,
     "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details.",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "**Erdos Problem #671**\n\nThis is a deep problem in approximation theory about the relationship between the Lebesgue function and Lagrange interpolation convergence.\n\n**Key History:**\n- 1931: Bernstein proves lambda_n(x) diverges at some point for any interpolation scheme\n- 1980: Erdos and Vertesi prove that for any points, some continuous f has |L^n f(x)| -> infinity a.e.\n- Present: Questions 1 and 2 remain open with $250 prize\n\n**Mathematical Context:**\nThe Lebesgue function lambda_n(x) = sum |p_i^n(x)| controls interpolation error: the error is bounded by (1 + Lambda_n) times the best polynomial approximation. When Lambda_n grows, uniform convergence fails. The questions ask whether *pointwise* convergence can still occur when lambda_n diverges.",

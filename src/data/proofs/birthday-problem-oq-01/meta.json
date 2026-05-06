@@ -33,7 +33,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The birthday problem was first analyzed by von Mises in the 1930s and popularized by the observation that in a group of 23 people, the probability of at least one shared birthday exceeds 50%. The expected-value formulation studied here — how many shared pairs do we *expect* — provides a different and often more useful quantity for applications like hash collision analysis and cryptography. By linearity of expectation, E[shared pairs] = C(n,2)/d, a formula whose simplicity belies the probabilistic subtlety: the pair indicators are highly correlated (three people can form three overlapping pairs), yet linearity bypasses all correlation arguments. The threshold n=28 for E[X]>1 with d=365 is 22% larger than the classic n=23 threshold, reflecting that the expected value exceeds 1 before the probability of any collision exceeds e^{-1} ≈ 37% (Poisson approximation). In cryptography, the birthday bound says that collisions in a hash function with 2^k outputs become likely after about 2^{k/2} evaluations — this file's formulation captures that 'likely' quantitatively via the expected count.",

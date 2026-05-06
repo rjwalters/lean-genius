@@ -71,7 +71,8 @@
     "axiomCount": 2,
     "lineCount": 594,
     "assumptions": "2 axiom(s): erdos_1167_conjecture (OPEN), erdos_rado_theorem. The infinite Ramsey theorem (previously axiomatized) is now FULLY PROVED by induction on r using Ramsey's diagonal argument.",
-    "theoremCount": 19
+    "theoremCount": 19,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The partition calculus was founded by Erdős and Rado in their landmark 1956 paper 'A partition calculus in set theory', which systematized the study of Ramsey-type properties for infinite sets. The central achievement was the Erdős-Rado theorem: (2^κ)⁺ → (κ⁺)²_κ for infinite κ, establishing that exponentially larger cardinals satisfy partition relations at the next level. This 'stepping-up' lemma — going from exponent r to r+1 — became a core technique.\n\nProblem #1167 asks the reverse question: can partition properties be 'stepped down' from exponent r+1 to r? Specifically, if 2^λ → (κ_α + 1)^{r+1}_{α<γ} holds, does λ → (κ_α)^r_{α<γ} follow? The '+1' in the hypothesis accounts for the possibility of finite targets, where κ+1 > κ (for infinite κ, κ+1 = κ by cardinal absorption). This question was posed by Erdős, Hajnal, and Rado in their foundational work, reflecting their deep interest in understanding the exact relationship between partition relations at different exponents.\n\nThe problem remains open nearly 70 years later. While the stepping-up direction is well understood, stepping down is fundamentally harder because it requires extracting structure from colorings of smaller subsets — a process that generally loses information. The problem is catalogued as [Va99, 7.79] in Vaughan's survey and connects to the broader program of understanding the partition calculus hierarchy, including problems #1169 and #1171 on ordinal partition relations.",

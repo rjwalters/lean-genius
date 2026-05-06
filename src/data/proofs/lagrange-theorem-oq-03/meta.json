@@ -63,7 +63,8 @@
     "axiomCount": 2,
     "lineCount": 373,
     "assumptions": "2 axiom(s): hall_existence, hall_conjugacy. See Lean source for complete statements.",
-    "theoremCount": 27
+    "theoremCount": 27,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Joseph-Louis Lagrange (1771) proved that the order of a subgroup divides the order of the group, a cornerstone of finite group theory. The natural converse — does every divisor of $|G|$ yield a subgroup? — fails dramatically: the alternating group $A_4$ (order 12) has no subgroup of order 6, despite $6 \\mid 12$. Philip Hall (1928) discovered the precise obstruction: the divisor must be coprime to its cofactor. His theorem states that in a finite solvable group, every such 'Hall divisor' yields a subgroup, and all subgroups of a given Hall order are conjugate. This simultaneously generalizes Sylow's theorems (1872) from prime-power to coprime factorizations. The Schur-Zassenhaus theorem (Schur 1904, Zassenhaus 1937) handles the special case where the subgroup is normal, without requiring solvability. Hall's theorem remains one of the deepest results in finite group theory, with its proof requiring induction on group order via the derived series. The connection to solvability is essential: $A_5$ (the smallest non-solvable group, order 60) fails to have Hall subgroups of certain orders.",

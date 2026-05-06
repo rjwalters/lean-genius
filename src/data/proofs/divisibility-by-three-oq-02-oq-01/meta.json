@@ -46,7 +46,8 @@
     "axiomCount": 0,
     "lineCount": 65,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Repunits R(k) = 111...1 (k ones) have been studied since the 19th century. The name 'repunit' was coined by Samuel Yates in 1966 (short for 'repeated unit'). The classical question of which integers divide some repunit is settled by: d ∣ R(k) for some k if and only if gcd(d,10)=1, i.e., d shares no factor with 2 or 5. The more refined question — for a fixed d, which k satisfy d ∣ R(k) — is governed by the multiplicative order of 10 modulo d, a fact connected to the period of the decimal expansion of 1/d. DivisibilityByThreeOQ02.lean proved the simpler direction (d ∣ R(k) ↔ d ∣ 10^k-1 when gcd(d,9)=1) and listed concrete cases. This file proves the complete biconditional, answering the open question from that file.",

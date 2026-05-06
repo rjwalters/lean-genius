@@ -54,7 +54,8 @@
     "lineCount": 153,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Otto Hölder proved his inequality for finite sums in 1889, generalizing Cauchy's inequality (1821) and Schwarz's integral version (1885) from the p = q = 2 case to arbitrary conjugate exponents satisfying 1/p + 1/q = 1. William Henry Young (1912) provided the pointwise foundation: ab ≤ a^p/p + b^q/q follows from the concavity of logarithm via the weighted AM-GM inequality. Hermann Minkowski (1896) used Hölder's inequality in a bootstrap argument to prove the Lp triangle inequality ‖f + g‖_p ≤ ‖f‖_p + ‖g‖_p, completing the Banach space structure of Lp.\n\nThe formalization uses Mathlib 4.26+, where the `snorm` API was renamed to `eLpNorm` (extended Lp norm). This renaming reflects the conceptual shift: `eLpNorm` computes the Lp seminorm as an extended non-negative real, handling the p = 0 and p = ∞ cases uniformly. The underlying mathematical content — Hölder, Cauchy-Schwarz, Minkowski — is unchanged, but the formalization serves as a demonstration that the modern API is complete and coherent.\n\nThe proof chain Young → Hölder → Cauchy-Schwarz → Minkowski recapitulates the historical development: each inequality is logically derived from the previous one. The dual derivation of Minkowski — both from the general eLpNorm_add_le and from Cauchy-Schwarz via the norm-squared identity — illustrates the two canonical proof strategies for the Lp triangle inequality.",

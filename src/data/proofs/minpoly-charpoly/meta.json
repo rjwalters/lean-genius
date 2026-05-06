@@ -34,7 +34,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The characteristic polynomial det(λI − M) was central to Cauchy's eigenvalue work (1829) and formalized by Weierstrass (1858) in the context of bilinear forms. The Cayley-Hamilton theorem — every matrix satisfies its own characteristic polynomial — was announced by Cayley for 2×2 and 3×3 cases in 1858 and by Hamilton for quaternions the same year; the full n×n proof was given by Frobenius (1878) using invariant factors and the rational canonical form. The minimal polynomial emerged from Frobenius's invariant factor theory: m_M is the largest invariant factor of (λI − M), equivalently the GCD of all (n−1)×(n−1) minors of (λI − M) divided by the GCD of all entries. The fundamental theorem minpoly | charpoly follows from Cayley-Hamilton (charpoly annihilates M) and the universal property of minpoly (it divides any annihilating polynomial). The minimal polynomial governs the primary decomposition of K^n as a K[X]-module and determines the Jordan structure: M is diagonalizable over K iff minpoly has no repeated roots; M has a cyclic vector iff minpoly = charpoly. This file provides the foundational infrastructure for Jordan normal form theory in Lean 4.",

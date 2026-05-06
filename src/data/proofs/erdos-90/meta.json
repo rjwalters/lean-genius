@@ -66,7 +66,8 @@
     "lineCount": 65,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős posed Problem 90 in 1946, making it one of the oldest open problems in combinatorial geometry. The unit distance problem asks: given $n$ points in $\\mathbb{R}^2$, what is the maximum number $u(n)$ of pairs at Euclidean distance exactly 1? Erdős himself showed the trivial bound $u(n) \\leq \\binom{n}{2}$ and constructed lattice examples achieving $u(n) \\geq n^{1+c/\\log\\log n}$ for a constant $c > 0$, exploiting the number-theoretic fact that $\\lfloor\\sqrt{n}\\rfloor \\times \\lfloor\\sqrt{n}\\rfloor$ integer lattice points have many representations as sums of two squares. In 1984, Spencer, Szemerédi, and Trotter proved $u(n) = O(n^{4/3})$ using the celebrated Szemerédi–Trotter incidence theorem, which bounds the number of incidences between $n$ points and $m$ lines (or circles). This $n^{4/3}$ bound has stood for over 40 years. In 2005, Valtr constructed a non-Euclidean metric on $\\mathbb{R}^2$ achieving $\\Theta(n^{4/3})$ unit distances, proving that any improvement must exploit specific properties of the Euclidean metric. Erdős offered $\\$500$ for the full resolution and $\\$250$–$300$ for even the weaker form $u(n) = n^{1+o(1)}$. The problem connects to the Erdős distinct distances problem (solved by Guth–Katz in 2015 using algebraic methods), but the unit distance conjecture remains stubbornly open.",

@@ -49,7 +49,8 @@
     "axiomCount": 2,
     "lineCount": 243,
     "assumptions": "2 axioms: lower_bound_quarter (lower bound of 1/4 on density), pham_zakharov_upper_bound_2024 (Pham-Zakharov 2024 upper bound). 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #186 concerns non-averaging sets, a concept originally formulated by Ernst Straus. A subset A of {1,...,N} is called non-averaging if no element of A is the arithmetic mean of two other distinct elements in A. The central question asks for F(N), the maximum size of such a set.\n\nThe problem has a rich history spanning decades of work. Erdős and Sárközy established the first non-trivial upper bound of (N log N)^{1/2} in 1990. On the lower side, Bosznay proved in 1989 that non-averaging sets of size at least N^{1/4} exist, using a number-theoretic construction. For over 30 years, a significant gap remained between the N^{1/4} lower bound and the (N log N)^{1/2} upper bound.\n\nThe breakthrough came in 2023 when Conlon, Fox, and Pham improved the upper bound to N^{1/4} * (log N)^c, bringing the exponent close to the lower bound. Shortly after, Pham and Zakharov (2024) established the sharp upper bound F(N) << N^{1/4+o(1)}, essentially resolving the problem. The exponent 1/4 is now established as the correct order of growth, though the precise sub-polynomial correction factor remains an open question.",

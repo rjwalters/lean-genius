@@ -57,7 +57,8 @@
     "lineCount": 276,
     "assumptions": "0 axioms, 0 sorries. CRT construction derived from Mathlib's Int.gcd_eq_gcd_ab (Bézout's identity) and IsCoprime.mul_dvd.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The **Chinese Remainder Theorem** (CRT) is one of the oldest results in number theory, originating in the **Sunzi Suanjing** (孫子算經, 'The Mathematical Classic of Sun Zi'), a Chinese mathematical treatise from the 3rd–5th century CE. The classic problem: *'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'* The answer is 23 (unique mod 105 = 3 × 5 × 7).\n\nThe deep connection to **Bézout's identity** was understood much later. When gcd(m, n) = 1, Bézout's identity gives integers u, v with mu + nv = 1. This is precisely what's needed to 'switch on' one residue while 'switching off' the other: the term a·nv has nv ≡ 1 (mod m) so it contributes a (mod m) while vanishing (mod n), and symmetrically for b·mu.\n\nIn Lean 4, this connection is crystallized beautifully: **IsCoprime** is literally the type `∃ u v, u * m + v * n = 1`, which is Bézout's identity with gcd = 1. The CRT proof becomes a direct application of this algebraic witness.",

@@ -55,7 +55,8 @@
       }
     ],
     "dateAdded": "2026-04-12",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "In 1889, Hermann Minkowski published a short note proving that the ideal class group of any algebraic number field is finite — a result that had been conjectured but not proved by Dedekind. His proof used a brilliant geometric argument: he embedded the number field K into Euclidean space via all its Archimedean embeddings, then applied his convex body theorem (also from 1889) to the resulting lattice.\n\nThe key insight was that an ideal I ⊆ 𝒪_K becomes a lattice in ℝⁿ (n = [K:ℚ]) under the Minkowski embedding σ : K → ℝ^{r₁} × ℂ^{r₂} ≅ ℝⁿ, and one can construct a centrally symmetric convex body whose lattice points correspond to elements of controlled norm. The bound M(K) = (4/π)^{r₂} · (n!/nⁿ) · √|disc(K)| emerged from optimizing over convex body shapes.\n\nThis was revolutionary: it transformed an algebraic question (finiteness of Cl(K)) into a geometric one, launching the field of *Geometry of Numbers* as a systematic discipline. Minkowski developed these ideas into his 1896 book *Geometrie der Zahlen*.\n\nThe Minkowski bound has been central to algebraic number theory ever since. For 'small' number fields (low degree, small discriminant), one can compute M(K) explicitly and check all ideals of norm ≤ M(K), giving a decision procedure for whether 𝒪_K is a PID (class number 1). For example, for K = ℚ(√-163), M(K) ≈ 5.3, so one only needs to check ideals of norm 1, 2, 3, 4, 5 to verify h(ℚ(√-163)) = 1.",

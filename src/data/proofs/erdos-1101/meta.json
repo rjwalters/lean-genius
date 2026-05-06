@@ -56,7 +56,8 @@
     "axiomCount": 0,
     "lineCount": 123,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "This problem connects sieve theory with questions about the growth rates of multiplicative sequences. Given a sequence u = {u₁ < u₂ < ...} of pairwise coprime integers with Σ1/uᵢ < ∞, consider the integers A = {a₁ < a₂ < ...} not divisible by any uᵢ.\n\nThe 'density' of A is given by ∏(1 - 1/uᵢ), and sieve theory shows that gaps between consecutive elements of A are at least (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹. Erdős called u 'good' if the gaps are also bounded ABOVE by (1+ε)·tₓ·∏(1-1/uᵢ)⁻¹.\n\nErdős proved that SOME good sequence exists (using all primes), but the question of which growth rates are achievable remains open. He conjectured that polynomial growth is impossible but sub-exponential growth is achievable.",

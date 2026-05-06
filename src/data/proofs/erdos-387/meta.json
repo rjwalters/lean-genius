@@ -48,7 +48,8 @@
     "axiomCount": 1,
     "lineCount": 103,
     "assumptions": "1 axiom: erdos_387_conjecture. See Lean source for the complete statement.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Erdős Problem #387 concerns divisibility properties of binomial coefficients. The question asks whether there is a universal constant c > 0 such that C(n,k) always has a divisor 'close to n'—specifically in the interval (cn, n].\n\nErdős originally conjectured the stronger statement that C(n,k) must have a divisor in (n-k, n]. This was disproved by Andrzej Schinzel in 1958, who found the counterexample n = 99215, k = 15. None of the 15 integers from 99201 to 99215 divide C(99215, 15).\n\nThe weaker question—whether some fixed constant c works—remains open. Guy's 'Unsolved Problems in Number Theory' (2004) discusses this as problems B33-B34, noting that Erdős conjectured it holds for any c < 1 when n is sufficiently large.",

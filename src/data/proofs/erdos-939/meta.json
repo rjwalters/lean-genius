@@ -45,7 +45,8 @@
     "axiomCount": 1,
     "lineCount": 213,
     "assumptions": "1 axiom: cambie_r5_example. 0 sorries.",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "An integer n is **r-powerful** (or r-full) if whenever a prime p divides n, we have p^r also divides n. For example, 8 = 2³ is 3-powerful since its only prime factor 2 appears with exponent 3.\n\nErdős posed a fascinating question about sums of r-powerful numbers: for r ≥ 4, can r-2 coprime r-powerful numbers sum to another r-powerful number? This connects to Euler's 1769 conjecture that k-1 k-th powers cannot sum to a k-th power.\n\nThe Euler conjecture was dramatically disproved in 1967 when Lander and Parkin found 27^5 + 84^5 + 110^5 + 133^5 = 144^5 by computer search. Since perfect k-th powers are trivially k-powerful, this inspired investigation of the more general r-powerful case.\n\nCambie found explicit examples for r = 5, 7, and 8, but whether such solutions exist for all r ≥ 4 remains open.",

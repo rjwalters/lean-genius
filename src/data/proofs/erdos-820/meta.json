@@ -63,7 +63,8 @@
     "axiomCount": 3,
     "lineCount": 284,
     "assumptions": "3 axiom(s) and 6 sorries. See the Lean source for details.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "**The GCD Problem for Exponential Sequences**\n\nThis problem originates from Erdős's 1974 paper \"Remarks on some problems in number theory\" in Mathematica Balkanica. The core question studies when powers of different bases minus one are coprime.\n\n**The Function H(n)**\n\nDefine H(n) as the smallest l such that there exists k < l with gcd(k^n - 1, l^n - 1) = 1. This measures how \"rare\" coprimality is among these exponential expressions.\n\n**Computed Values**\n\nFor small n: H(1)=3, H(2)=3, H(3)=3, H(4)=6, H(5)=3, H(6)=18, H(7)=3, H(8)=6, H(9)=3, H(10)=12. The value H(n)=3 occurs frequently, corresponding to gcd(2^n-1, 3^n-1)=1.\n\n**Progress**\n\n1. **Erdős (1974):** Proved H(n) > exp(n^{c/(log log n)²}) for infinitely many n\n2. **van Doorn:** Improved to H(n) > exp(n^{c/log log n}) infinitely often\n3. **OEIS A263647:** Catalogues n where gcd(2^n-1, 3^n-1)=1\n\nThe main conjectures remain OPEN.",

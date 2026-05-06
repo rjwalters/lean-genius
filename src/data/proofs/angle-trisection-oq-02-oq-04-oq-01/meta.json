@@ -56,7 +56,8 @@
       "Proof that tower degree = 2^n by structural induction (modulo finrank multiplicativity)",
       "Key 2-group lemmas: existence of index-2 subgroups, trivial characterization"
     ],
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Wantzel (1837) proved that a number is constructible by compass and straightedge iff it lies in a tower of quadratic extensions over \u211a, finally resolving the ancient Greek impossibility questions (angle trisection, cube duplication, circle squaring). Galois theory, developed by Galois (1832) and systematized in the 19th century, recharacterizes this: constructibility is equivalent to the Galois group of the minimal polynomial being a 2-group (a group of order 2^n). The equivalence of these two formulations \u2014 quadratic tower criterion \u2194 Galois 2-group criterion \u2014 is a fundamental result connecting classical constructibility with modern algebraic structure theory. Remarkably, Galois was killed in a duel at age 20 in 1832 before his work was published; it took 14 years for Liouville to recognize its importance.",

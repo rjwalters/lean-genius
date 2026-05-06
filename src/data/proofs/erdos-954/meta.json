@@ -58,7 +58,8 @@
     "lineCount": 219,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in his 1977 paper (Er77c, p.71), studying a greedy additive sequence construction due to Rosen. The sequence $0 = a_0 < a_1 < a_2 < \\cdots$ is built by choosing $a_{k+1}$ as the smallest integer $n$ where the cumulative representation count $R_k(n) = |\\{(i,j) : i \\leq j,\\, j \\geq 1,\\, a_i + a_j \\leq n\\}|$ drops below $n$. This greedy rule creates a sequence that is as dense as possible while keeping the representation count under control. The construction mirrors the philosophy behind Sidon (B$_2$) sets, where all pairwise sums must be distinct, but relaxes the uniqueness condition to a cumulative density condition. While B$_2$ sets have density $\\sim \\sqrt{x}$, the Rosen sequence aims for density $\\sim x$. Erdős and Rosen could not prove even the weak conjecture that $R(x) = (1+o(1))x$, let alone the strong conjecture with $x^{1/4+o(1)}$ error. The exponent $1/4$ comes from analogy with optimal B$_2$ error terms. The sequence begins $(0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45, \\ldots)$ and appears as OEIS A390642. The formalization is notable for combining computable verification (11 terms via `native_decide`) with 5 genuinely proved structural theorems and 0 sorries.",

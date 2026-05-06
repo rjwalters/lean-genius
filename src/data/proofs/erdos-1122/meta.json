@@ -67,7 +67,8 @@
     "axiomCount": 3,
     "lineCount": 208,
     "assumptions": "3 axioms: erdos_empty_defect, erdos_vanishing_increments, mangerel_2022. 0 sorries.",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1946 work on additive functions. An additive function f satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. The canonical example is f(n) = c·log(n). Erdős proved that if f is strictly increasing (no defects), or if increments f(n+1) - f(n) → 0, then f must be logarithmic. The conjecture asks whether merely having sparse defects (o(X) of them up to X) suffices. Mangerel made significant progress in 2022, proving the result when defects are O(X/(log X)^{2+c}) with bounded prime values.",

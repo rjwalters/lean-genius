@@ -75,7 +75,8 @@
     "lineCount": 92,
     "assumptions": "2 axioms: erdos_saranyi_lower_bound, erdos_upper_bound_conjecture. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős and Sarányi posed this problem in 1959, establishing the lower bound f(m) ≥ c√m using a pigeonhole argument. The question asks: given a set A of m integers in {1,...,N}, how many integers in any interval of length 2N must be divisible by some element of A?\n\nThe lower bound proof counts the total number of (divisor, multiple) pairs and uses the constraint that each integer has a bounded number of divisors to extract √m distinct covered integers. The matching upper bound — that f(m) ≤ C√m for some constant C — remains open, making this one of the longer-standing open problems in multiplicative number theory.\n\nThe problem connects to several areas: sieve theory (counting integers with prescribed divisibility), extremal combinatorics (finding worst-case sets), and multiplicative number theory (distribution of multiples in intervals). The √m threshold appears naturally from the harmonic sum structure of divisor counts.",

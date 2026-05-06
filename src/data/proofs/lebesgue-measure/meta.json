@@ -58,7 +58,8 @@
     "lineCount": 417,
     "assumptions": "0 axioms, 0 sorries. Note: 2 theorems prove True as application stubs (dominated convergence and Fubini iteration placeholders). All substantive results are fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 20
+    "theoremCount": 20,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Henri Lebesgue (1875-1941) introduced his measure and integral in his 1902 doctoral thesis *Intégrale, longueur, aire*, submitted at the Sorbonne under Émile Borel's influence. The work resolved fundamental limitations of Bernhard Riemann's 1854 integral, which could not handle limits of integrable functions or highly discontinuous functions like Dirichlet's indicator of the rationals. Lebesgue's key innovation was to partition the *range* of a function rather than its domain, enabling integration of a vastly larger class of functions. Constantin Carathéodory (1914) later provided an elegant alternative construction via outer measures and his measurability criterion, which is the approach used in Mathlib. Giuseppe Vitali's 1905 construction of a non-measurable set showed that not every subset of $\\mathbb{R}$ can be assigned a measure, demonstrating the necessity of restricting to a $\\sigma$-algebra. The Lebesgue integral's powerful limit theorems — monotone convergence (Beppo Levi, 1906) and dominated convergence (Lebesgue, 1910) — became indispensable tools, forming the foundation of Andrey Kolmogorov's axiomatization of probability theory (1933) and the $L^p$ spaces central to Stefan Banach's functional analysis.",

@@ -48,7 +48,8 @@
       "Fano's inequality (ShannonChannelCodingOQ03.lean)",
       "Mutual information and data processing inequality"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' introduced both the channel coding theorem (achievability) and its converse in a single landmark paper. The converse — that no code can achieve reliable communication above capacity — is arguably the more fundamental result: it establishes capacity C as a hard upper limit, not merely an achievable benchmark. Shannon's original proof of the converse used a combinatorial counting argument; the modern form using Fano's inequality became standard through the work of Feinstein (1954) and Wolf/Fano in the 1950s.\n\nRobert Fano (1952) proved the inequality that bears his name: for any random variables W (input) and Ŵ (estimate), H(W|Ŵ) ≤ H_b(P_e) + P_e·log(M-1), where H_b is the binary entropy. Combined with Shannon's chain rule H(W) = I(W;Y^n) + H(W|Y^n), this yields a clean algebraic bound. The 'strong converse' — that P_e → 1 as n → ∞ for any rate R > C, not just P_e bounded away from 0 — was proved by Wolfowitz (1957) and requires a more refined argument. This formalization proves the weaker (but classical) asymptotic converse, with an explicit quantitative threshold N = ⌈2/(R-C)⌉.",

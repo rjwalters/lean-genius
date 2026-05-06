@@ -28,7 +28,8 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
       }
     ],
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$ has a remarkable history spanning three centuries. Abraham de Moivre (1733) first implicitly encountered it while deriving normal approximations to binomial coefficients. Euler (1729) computed related integrals involving $e^{-x^2}$ in the context of the gamma function. Laplace (1774) gave the celebrated polar-coordinate proof — arguably the most elegant computation in all of analysis — which shows that π appears because squaring the integral reveals a hidden circle. Gauss studied the integral extensively in his work on the error function (1809) while developing least-squares estimation; he connected it to the normal distribution for measurement errors. By the late 19th century, the integral had found its way into statistical mechanics (Maxwell–Boltzmann distribution), and in the 20th century into quantum field theory (Gaussian path integrals). The result is entry #49 on Mizar's list of 100 theorems important to formalize, and appears implicitly in Mathlib's probability theory infrastructure.",

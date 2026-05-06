@@ -33,7 +33,8 @@
     ],
     "date": "2026-04-13",
     "dateAdded": "2026-04-13",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 5
   },
   "overview": {
     "text": "Connects the Lovász Local Lemma and Moser-Tardos resampling algorithm to the good-set problem from Erdős #1027. For n-uniform families, each set generates a bad event (B misses A or A ⊆ B) with probability 2/2^n. When nm + 1 ≤ 2^{n-3}, the LLL guarantees all bad events can be simultaneously avoided, and the MT algorithm finds a good set in expected ≤ 1 resampling step.",

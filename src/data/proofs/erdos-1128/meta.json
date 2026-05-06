@@ -58,7 +58,8 @@
     "axiomCount": 4,
     "lineCount": 166,
     "assumptions": "4 axioms: A, B, C, prikry_mills_disproof. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Hajnal as part of their extensive program in infinite combinatorics and partition calculus. It asks whether the cardinal Ramsey property ℵ₁³ → (ℵ₀)³₂ holds: must every 2-coloring of the product of three sets of cardinality ℵ₁ contain a countably infinite monochromatic sub-cube?\n\nPrikry and Mills disproved the conjecture in 1978 by constructing a 2-coloring of ω₁ × ω₁ × ω₁ such that no countably infinite monochromatic cube exists. Their proof exploits the ordinal structure of ω₁ to encode enough information that any ℵ₀-cube must contain both colors. The result was never formally published but was preserved through Todorčević's systematic study of partition relations [To94] and later by Komjáth in the Erdős-Hajnal Problem List [Ko25b].\n\nThe problem illustrates a striking contrast between finite and infinite Ramsey theory. In the finite case, analogous results hold by classical Ramsey theory. But at the level of uncountable cardinals, the combinatorial landscape changes fundamentally — the gap between ℵ₀ and ℵ₁ allows constructions that defeat all countable sub-structures.",

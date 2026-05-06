@@ -30,7 +30,8 @@
     ],
     "assumptions": "1 axiom: erdos_63_theorem. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Peter Mihók and Paul Erdős during the period 1993-1997, building on earlier work connecting chromatic number to cycle structure. Penman first observed that the result holds when the chromatic number is uncountable, using the Erdős-Hajnal theorem (which gives arbitrarily large $K_{m,m}$ subgraphs, each containing all even cycles up to $2m$). The countable case was much harder and remained open for over two decades. The breakthrough came from Hong Liu and Richard Montgomery in 2020, who proved a key result connecting high chromatic number to high minimum degree subgraphs: every graph with $\\chi > k$ contains a subgraph with $\\delta > k/2$. Combined with the de Bruijn-Erdős compactness theorem (1951) and the Bondy-Simonovits theorem on even cycles in dense graphs, this resolved the full problem. Liu and Montgomery's result was part of their broader work on Mader's conjecture about clique subdivisions in $C_4$-free graphs.",

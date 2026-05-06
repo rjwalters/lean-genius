@@ -53,7 +53,8 @@
     "axiomCount": 1,
     "lineCount": 174,
     "assumptions": "1 axiom: baumgartner_3AP_free. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the 1970s, asking whether avoiding 3-term arithmetic progressions forces the complement to contain infinite progressions. The question connects to Ramsey theory and van der Waerden's theorem, which guarantees arbitrarily long APs in finite colorings of ℕ.\n\nBaumgartner (1975) provided a surprising negative answer using the axiom of choice. His construction uses a Hamel basis for ℝ over ℚ to partition the reals into two sets, neither containing an infinite AP.\n\nThis result highlights the fundamental difference between finite and infinite combinatorics, and the essential role of the axiom of choice in such constructions.",

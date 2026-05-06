@@ -51,7 +51,8 @@
       "Fano's inequality and the channel coding converse"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Shannon's noisy channel coding theorem is arguably the most important result in information theory and one of the great theorems of 20th-century mathematics. Published in 1948, it answered a question that engineers had struggled with since the invention of the telegraph: is it possible to communicate reliably over a noisy channel, and if so, at what rate?\n\nBefore Shannon, the prevailing belief was that reducing error probability required reducing the communication rate to zero. Shannon's shocking result was that reliable communication is possible at any positive rate below the channel capacity C = max I(X;Y), and impossible above it. The channel capacity is a single number that completely characterizes the communication capability of a noisy channel.\n\nThe achievability proof uses random coding: choose a codebook at random and show that the average error probability over all codebooks is small. This is a probabilistic method argument -- one of the earliest and most influential. The converse uses Fano's inequality, which bounds the conditional entropy H(X|Y) in terms of the error probability, showing that rates above capacity force large errors.\n\nThe theorem launched the fields of coding theory and telecommunications engineering, leading to error-correcting codes (turbo codes, LDPC codes, polar codes) that approach channel capacity in practice.",

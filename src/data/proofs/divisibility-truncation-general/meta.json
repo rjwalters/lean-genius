@@ -49,7 +49,8 @@
     "axiomCount": 0,
     "lineCount": 255,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Divisibility rules have been studied since antiquity. The rules for 3 and 9 (sum of digits), 11 (alternating sum), 7 and 13 (truncation methods) are classical results. The **truncation method** or **osculator method** is attributed to various 19th-century mathematicians including Kummer (1852) and Zuckerman (1948). The key insight is that for any integer $d$ coprime to 10, there exists a multiplicative inverse of 10 mod $d$, the **osculator**, connecting $d$-divisibility of $n$ to a simpler expression in $\\lfloor n/10 \\rfloor$ and $n \\bmod 10$. This single algebraic principle unifies dozens of seemingly ad-hoc pencil-and-paper tests into one parametric theorem, formalized in Lean 4 with `IsCoprime` and `linear_combination`.",

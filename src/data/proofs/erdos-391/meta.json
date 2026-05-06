@@ -61,7 +61,8 @@
     "axiomCount": 5,
     "lineCount": 227,
     "assumptions": "5 axioms: easy_upper_bound, limit_is_one_over_e, second_order_correction, upper_bound_explicit, lower_bound_explicit. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #391 asks about the most balanced way to write n! as a product of exactly n positive integers. Define t(n) as the maximum over all such factorizations of the minimum factor. The central question is: what is the asymptotic behavior of t(n)/n? It is easy to show that lim sup t(n)/n ≤ 1/e using Stirling's approximation, and Erdős asked whether the limit equals 1/e and whether a second-order correction of the form c/log(n) exists.\n\nThe problem has a remarkable history. Erdős, Selfridge, and Straus claimed to have proved lim t(n)/n = 1/e, and Straus was tasked with writing up the proof. However, Straus died suddenly and no trace of his notes was ever found. Erdős and Selfridge could never reconstruct the proof, so the result reverted to conjecture status. The problem also appears as B22 in Guy's \"Unsolved Problems in Number Theory\" and was studied by Guy and Selfridge (1998), who made explicit conjectures about upper and lower bounds.\n\nIn 2025, Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, and Ventullo resolved both questions completely. They proved t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}), where c₀ ≈ 0.3044 is an explicit constant. They also verified Guy-Selfridge conjectures: t(n) ≤ n/e for all n except 1, 2, and 4, and t(n) ≥ n/3 for n ≥ 43632, with 43632 being the optimal threshold.",

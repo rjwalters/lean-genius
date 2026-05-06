@@ -61,7 +61,8 @@
         "description": "Product formula: qBinom q n k * qFactorial q k * qFactorial q (n-k) = qFactorial q n",
         "module": "Proofs.CombinationsFormulaOQ03"
       }
-    ]
+    ],
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The **q-multinomial coefficient** is a polynomial in q that reduces to the classical multinomial coefficient when q=1. These q-analogs arise naturally in the theory of **quantum groups** (where q is a deformation parameter), in counting subspaces of finite vector spaces over F_q (where q is a prime power), and in the combinatorics of **basic hypergeometric series**.\n\nThe q-analog program — replacing integers by q-integers [n]_q = (q^n - 1)/(q - 1), factorials by q-factorials, and binomial coefficients by Gaussian binomial coefficients — was developed systematically by **F.H. Jackson** in the early 20th century, with deep roots in the work of **Gauss** on Gaussian binomial coefficients (which count subspaces of finite vector spaces).\n\nThe q-multinomial coefficient $\\binom{n}{k_1, k_2, \\ldots, k_m}_q$ satisfies:\n$$\\binom{n}{k_1, k_2, \\ldots, k_m}_q = \\binom{n}{k_1}_q \\binom{n-k_1}{k_2}_q \\cdots = \\prod_{i} \\binom{\\sum_{j \\geq i} k_j}{k_i}_q$$\n\nAt q=1 this reduces to $\\frac{n!}{k_1! k_2! \\cdots k_m!}$. For prime power q it counts the number of flags of subspaces of dimensions $k_1, k_2, \\ldots, k_m$ in $\\mathbb{F}_q^n$.",

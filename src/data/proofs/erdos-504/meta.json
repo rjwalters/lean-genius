@@ -43,7 +43,8 @@
     "lineCount": 217,
     "assumptions": "5 axioms: maxAngleInSet (maximum angle function), sendov_upper, sendov_lower, erdos_szekeres_conjecture_false, isConvexPosition. No sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem, also known as **Blumenthal's Problem**, asks for the largest angle $\\alpha$ guaranteed to appear among three points in any $n$-point planar set. The question originates from Leonard Blumenthal's work on metric geometry in the 1930s and was popularized by Erdős.\n\nThe first significant progress came from George Szekeres in 1941, who established initial bounds on $\\alpha_n$. In their influential 1960 paper, Erdős and Szekeres proved the elegant formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2, showing that regular $2^n$-gons are optimal. They conjectured that this formula $\\alpha_N = \\pi(1 - 1/n)$ held for all $N$ with $2^{n-1} < N \\le 2^n$.\n\nBlagovest Sendov dramatically disproved this conjecture in 1992, showing that for $N$ in the lower part of each range $(2^{n-1}, 2^{n-1} + 2^{n-3}]$, the correct formula is $\\alpha_N = \\pi(1 - 1/(2n-1))$. Sendov completed the full determination of $\\alpha_N$ for all $N$ in his 1993 paper \"On the theorem of Erdős–Szekeres\" (Rendiconti del Circolo Matematico di Palermo), revealing a remarkable dependence on the binary representation of $N$: the formula changes at the threshold $5 \\cdot 2^{n-3}$, connecting discrete geometry to number-theoretic structure.",

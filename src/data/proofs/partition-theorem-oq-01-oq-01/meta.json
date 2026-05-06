@@ -28,7 +28,8 @@
         "relationship": "Parent: Rogers-Ramanujan identities (axiomatized)"
       }
     ],
-    "theoremCount": 19
+    "theoremCount": 19,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Rogers-Ramanujan identities were first proved by L. J. Rogers in 1894 in an overlooked paper on continued fractions. Ramanujan rediscovered them independently around 1913 and communicated them to Hardy, who was unable to prove them until he found Rogers' forgotten work. MacMahon famously verified the first identity by hand for $n \\leq 89$, a heroic computation that took months of tabulation in his 1916 treatise on combinatory analysis. This formalization follows MacMahon's spirit of computational verification but leverages Lean 4's `native_decide` tactic to check both identities exhaustively for $n = 0, 1, \\ldots, 8$ in seconds rather than months. Such computational checks serve a dual purpose in formalization: they confirm that the definitions in the parent file faithfully encode the classical partition sets, and they provide concrete evidence for the axiomatized general identities.",

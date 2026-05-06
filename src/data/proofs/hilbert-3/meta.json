@@ -62,7 +62,8 @@
     "lineCount": 514,
     "assumptions": "5 axioms: dehn_invariance_axiom, tetrahedron_angle_not_rational_pi, sydler_theorem, bolyai_gerwien_theorem, cube_tetrahedron_different_dehn. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Hilbert's 3rd Problem was posed at the Second International Congress of Mathematicians in Paris on August 8, 1900. Hilbert asked whether Euclid's theory of volumes for polyhedra — which relied on an infinite process (Cavalieri's principle or exhaustion) — could be replaced by purely finitary dissection arguments, as was possible in 2D via the Bolyai-Gerwien theorem (1833).\n\nMax Dehn (1878–1952), Hilbert's own doctoral student, solved the problem in the same year — making it the first of Hilbert's 23 problems to be completely resolved. Dehn introduced a new algebraic invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$ that is preserved under scissors congruence but distinguishes the cube from the regular tetrahedron. The key insight: the dihedral angle of a cube ($\\pi/2$) is a rational multiple of $\\pi$, while the tetrahedron's angle ($\\arccos(1/3)$) is not — a fact that follows from Niven's theorem on rational values of trigonometric functions.\n\nThe story continued: in 1965, Jean-Pierre Sydler proved the converse — volume and Dehn invariant completely classify scissors congruence in $\\mathbb{R}^3$. In the 1980s, Dupont and Sah discovered deep connections between the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ and algebraic K-theory ($K_3(\\mathbb{C})$), linking elementary geometry to modern abstract algebra. In dimensions $\\geq 4$, the classification remains open.",

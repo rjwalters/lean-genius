@@ -78,7 +78,8 @@
     ],
     "axiomCount": 1,
     "assumptions": "1 axiom: erdos_1181 (main open conjecture, Erdős 1979, remains open). 0 sorries. Properties of q(n,k) proved constructively from Mathlib.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1181** appears in Erdős [Er79d, p.78] and asks for an upper bound on q(n, log n), the least prime not dividing a product of consecutive integers. The trivial upper bound q(n, log n) ≤ (1+o(1))(log n)² follows from the primorial argument combined with the Prime Number Theorem. The conjecture asks whether the constant can be improved from (1+o(1)) to (1-c) for some fixed c > 0.\n\nThis is the companion upper bound question to Erdős Problem #457, which asks about lower bounds. Together they aim to pin down the growth rate of q(n, log n) between Ω(log n) and O((log n)²). Probabilistic heuristics described by Tao in the context of Problem #457 suggest a much stronger bound of q(n, log n) ≪ (log log n / log log log n) · log n.",

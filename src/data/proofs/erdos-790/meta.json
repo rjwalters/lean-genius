@@ -53,7 +53,8 @@
     "axiomCount": 5,
     "lineCount": 129,
     "assumptions": "5 axioms: l, cks_lower_bound, cks_upper_bound, question1_affirmative, question2_answered. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #790 concerns the extremal function l(n) for sum-free subsequences. The problem appeared in Erdős's 1965 survey \"Extremal problems in number theory,\" where he claimed to have a complicated proof that l(n) = o(n) but by 1973 reported \"difficulties in reconstructing\" it. This is one of the rare cases where Erdős lost track of one of his own proofs.\n\nThe definitive work was done by Choi, Komlós, and Szemerédi in their 1975 Trans. Amer. Math. Soc. paper \"On sum-free subsequences.\" They proved both the best known lower bound l(n) ≥ c√(n log n / log log n) and the upper bound l(n) ≤ Cn/log n. This confirmed l(n) = o(n) rigorously and answered Erdős's main questions, but left a large gap between the bounds.\n\nThe notion of \"sum-free\" here is weaker than the classical definition: rather than forbidding a + b = c, it forbids a₁ = a₂ + ⋯ + aᵣ for any r ≥ 2 distinct elements. This weaker condition means more sets qualify as sum-free. Choi, Komlós, and Szemerédi conjectured l(n) ≥ n^{1-o(1)}, suggesting l(n) is nearly linear. This conjecture remains open and represents the central question.",

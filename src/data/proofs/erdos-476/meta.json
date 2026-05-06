@@ -57,7 +57,8 @@
     "axiomCount": 1,
     "lineCount": 384,
     "assumptions": "1 axiom: erdos_heilbronn_bound (the Erdős-Heilbronn bound). All other results (AP_restrictedSumset, AP_achieves_bound, card_two_case, etc.) are fully proved theorems. 0 sorries.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #476: The Erdős-Heilbronn Conjecture**\n\nThis classic conjecture in additive combinatorics concerns restricted sumsets in finite fields.\n\n**Key History:**\n- Erdős-Heilbronn (1964): Conjectured the bound |A +̂ A| ≥ min(2|A| - 3, p)\n- da Silva-Hamidoune (1994): Proved using exterior algebra (Grassmann derivatives)\n- Alon-Nathanson-Ruzsa (1995): Alternative proof via polynomial method\n\n**Mathematical Setting:**\nThe restricted sumset A +̂ A contains only sums a + b where a ≠ b, excluding diagonal elements 2a. This seemingly small change from ordinary sumsets leads to deep mathematics.",

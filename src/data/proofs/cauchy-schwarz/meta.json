@@ -92,7 +92,8 @@
     "axiomCount": 0,
     "lineCount": 231,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**Origins and Multiple Discoverers**\n\nThe Cauchy-Schwarz inequality has been independently discovered at least three times. **Augustin-Louis Cauchy** first proved the discrete (finite sum) version in his 1821 *Cours d'Analyse*, establishing $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ for real sequences. **Viktor Bunyakovsky** extended this to integrals in 1859, proving $\\left(\\int fg\\right)^2 \\leq \\int f^2 \\int g^2$. **Hermann Amandus Schwarz** independently proved the integral version in 1885 for the specific context of surface area minimization.\n\n**Modern Significance**\n\nThe inequality is arguably the single most important inequality in mathematics. It underpins the triangle inequality in normed spaces, the definition of angle between vectors, the Pearson correlation coefficient in statistics, the Heisenberg uncertainty principle in quantum mechanics, and concentration inequalities in probability theory. It appears as #78 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.\n\n**The Quadratic Argument**\n\nThe standard modern proof considers $0 \\leq \\|u - tv\\|^2 = \\|u\\|^2 - 2t\\langle u,v\\rangle + t^2\\|v\\|^2$ as a quadratic in $t$, whose non-negative discriminant yields $\\langle u,v\\rangle^2 \\leq \\|u\\|^2\\|v\\|^2$. The elementary two-variable proof uses the **Lagrange identity**: $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2 \\geq 0$.",

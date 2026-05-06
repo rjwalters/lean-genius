@@ -52,7 +52,8 @@
     "lineCount": 434,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Tucker's lemma (1946) is the discrete combinatorial analogue of the Borsuk-Ulam theorem, one of the fundamental results of algebraic topology. Albert Tucker, a Princeton mathematician best known for the Karush-Kuhn-Tucker conditions in optimization, proved that any antipodal labeling of a triangulated sphere must contain a complementary edge — two adjacent vertices whose labels sum to zero. The graph-theoretic path-following proof, popularized by Matousek's influential textbook 'Using the Borsuk-Ulam Theorem' (2003), reveals the constructive content of Tucker's lemma: one can actually follow a path through the triangulation to find the complementary edge algorithmically. This constructive approach connects Tucker's lemma to the broader family of path-following algorithms in combinatorial topology, including Sperner's lemma (for fixed-point theorems) and the Lemke-Howson algorithm (for Nash equilibria). The equivalence between Tucker's lemma and Borsuk-Ulam was established by several authors, making the combinatorial version a powerful tool for proving topological results without homotopy theory.",

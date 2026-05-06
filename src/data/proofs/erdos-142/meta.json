@@ -31,7 +31,8 @@
     "lineCount": 54,
     "theoremCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #142 is one of the most celebrated open problems in combinatorics, carrying Erdős's largest prize ($10,000) for a problem in the field. The story begins with van der Waerden's theorem (1927) guaranteeing monochromatic $k$-APs in any finite coloring of the integers, and Erdős and Turán's 1936 conjecture that $r_k(N) = o(N)$. Roth (1953) proved the $k = 3$ case using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$, introducing the circle method to combinatorics. Szemerédi's celebrated theorem (1975) settled the general case via a monumental combinatorial argument and the Szemerédi regularity lemma, earning him the Abel Prize. The quantitative frontier advanced through Furstenberg's ergodic proof (1977), Gowers's introduction of uniformity norms (2001), and a remarkable succession of improvements for $k = 3$: Heath-Brown–Szemerédi, Bourgain, Sanders, Bloom, Bloom–Sisask. The 2023 breakthrough by Kelley and Meka — proving $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$ — was the first sub-polynomial density decay, yet the gap from Behrend's 1946 lower bound $N \\cdot \\exp(-C\\sqrt{\\log N})$ remains vast, illustrating how far we are from an asymptotic formula.",

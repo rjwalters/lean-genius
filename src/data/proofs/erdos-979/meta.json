@@ -55,7 +55,8 @@
     "axiomCount": 3,
     "lineCount": 154,
     "assumptions": "3 axioms: example_8_eq_2sq_2sq, example_50, example_24_eq_cubes. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "This problem sits at the intersection of additive number theory and the distribution of primes. It asks whether, for each k >= 2, there exist integers n that can be represented as the sum of k many k-th powers of primes in arbitrarily many ways.\n\nErdős proved the case k=2 in his 1937 paper 'On the Sum and Difference of Squares of Primes' in the Journal of the London Mathematical Society. The proof uses the Hardy-Littlewood circle method combined with estimates for primes in arithmetic progressions. He also reportedly proved the k=3 case, though this proof appears to be unpublished.\n\nThe problem remains open for k >= 4. The difficulty increases with k because there are fewer k-th powers of primes below any given bound. The expected number of representations involves the singular series from the circle method, which becomes harder to analyze for larger k.",

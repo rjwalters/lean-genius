@@ -56,7 +56,8 @@
     "axiomCount": 3,
     "lineCount": 285,
     "assumptions": "3 axioms: cyclicOrder (cyclic vertex ordering), furedi_bound, edelsbrunner_hajnal_construction. No sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős and Moser conjectured that a convex n-gon has O(n) unit distance pairs. Despite progress from O(n log n) bounds (Füredi 1990, Aggarwal 2015), the conjecture remains open. The Edelsbrunner-Hajnal (1991) lower bound of 2n - 7 suggests the Erdős-Fishburn conjecture of exactly 2n may be tight. The unit distance problem for general point sets (Erdős Problem #89, 1946) asks for the maximum number of unit distance pairs among n points in the plane, with best known bounds Ω(n^{1+c/log log n}) and O(n^{4/3}). The convex restriction dramatically simplifies the problem: in a convex polygon, each distance can appear at most twice on each side, giving much sharper bounds.",

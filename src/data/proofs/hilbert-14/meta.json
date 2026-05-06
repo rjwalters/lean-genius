@@ -48,7 +48,8 @@
     "lineCount": 364,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Hilbert's fourteenth problem arose from 19th century invariant theory, which sought to describe polynomial functions unchanged by group transformations. In 1890, Hilbert revolutionized the field by proving that finitely many invariants always suffice for classical groups like GL_n and SL_n, using his new Basis Theorem.\n\nIn 1900, Hilbert posed the general question: Is the ring of invariants always finitely generated? This remained open for nearly 60 years.\n\n**Timeline:**\n- 1890: Hilbert proves finiteness for classical invariant theory\n- 1900: Hilbert poses the general problem\n- 1959: Nagata constructs a counterexample\n- 1965: Mumford proves finiteness for reductive groups (char 0)\n- 1975: Haboush extends to all characteristics",

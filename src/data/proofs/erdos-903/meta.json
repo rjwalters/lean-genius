@@ -57,7 +57,8 @@
     "axiomCount": 5,
     "lineCount": 211,
     "assumptions": "5 axioms: de_bruijn_erdos, projective_plane_design, efsw_1985, gap_theorem, fisher_inequality. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem was a conjecture of Erdős and Sós about block designs. A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block — equivalently, a pairwise balanced design (PBD).\n\nThe classic projective plane construction shows t = n is achievable when n = p² + p + 1 for prime power p. The de Bruijn-Erdős theorem (1948) established that t ≥ n for any block design, using a double-counting argument with Cauchy-Schwarz applied to the replication numbers r_x.\n\nErdős and Sós conjectured that there is a 'gap': if t > n, then t ≥ n + p. This was proved by Erdős, Fowler, Sós, and Wilson (1985) in the Proceedings of the London Mathematical Society, who further showed that unless the design comes from a projective plane with one line 'broken up' into singletons, we have t ≥ n + cp where c ≈ 1.148.\n\nThe problem connects to fundamental questions in finite geometry: the prime power conjecture (projective planes exist iff the order is a prime power), the Bruck-Ryser non-existence theorem, and the classification of near-minimal designs.",

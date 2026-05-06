@@ -48,7 +48,8 @@
     "parentProof": "erdos-114",
     "openQuestionType": "extension",
     "openQuestionOf": "erdos-114",
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "**The Race to Pin Down Tao's Threshold**\n\nErdős Problem #114 asks: for a monic polynomial p(z) of degree n, what is the maximum arc length of the lemniscate {z : |p(z)| = 1}? The conjecture is that zⁿ - 1 is the unique maximizer (up to rotation). In 2025, Terence Tao proved this for all sufficiently large n, but his proof — using probabilistic and absorbing methods from additive combinatorics — yields a non-explicit threshold N₀.\n\nThe question is whether N₀ can be made explicit. If N₀ turns out to be small (say ≤ 100), computational verification of the remaining cases would resolve the full conjecture. The Fryntov-Nazarov bound f(n) ≤ 2n + O(n^{7/8}) suggests the extremal value is close to 2n, lending optimism that the threshold might be manageable.",

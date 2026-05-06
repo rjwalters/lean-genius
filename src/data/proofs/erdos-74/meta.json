@@ -58,7 +58,8 @@
     "axiomCount": 0,
     "lineCount": 273,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem explores the tension between global complexity (chromatic number) and local structure (almost-bipartiteness). A bipartite graph has chromatic number ≤ 2, so to have infinite chromatic number, a graph must have non-bipartite subgraphs.\n\nErdős, Hajnal, and Szemerédi asked: can we have infinite chromatic number while keeping subgraphs 'almost' bipartite—requiring only few edge deletions to become bipartite?\n\nRödl (1982) proved this is possible when f(n) = εn (linear in n), but the question remains open for slower-growing f like √n. Surprisingly, the problem FAILS if we require uncountable chromatic number (≥ ℵ₁), revealing set-theoretic subtleties.",

@@ -56,7 +56,8 @@
     "axiomCount": 3,
     "lineCount": 110,
     "assumptions": "3 axioms: lower_bound_asymptotic (f(n) ≥ (1-o(1))√n), furedi_seress_1994 (Füredi-Seress 1994 — f(n) ≤ (2/√3+o(1))√n ≈ 1.1547√n), original_question_false (disproof: f(n)/√n is bounded). 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #133** was posed by Erdős and Pach concerning the structure of triangle-free graphs with diameter 2.\n\n**Historical Development:**\n- **Erdős-Pach (original):** Posed the question of whether f(n)/√n → ∞, where f(n) is the minimum guaranteed maximum degree in triangle-free diameter-2 graphs on n vertices.\n- **1984 (Hanson-Seyffarth):** Proved f(n) ≤ (√2 + o(1))√n using Cayley graphs on ℤ/nℤ with complete sum-free generating sets, giving the first O(√n) upper bound.\n- **1994 (Füredi-Seress):** Improved to f(n) ≤ (2/√3 + o(1))√n ≈ 1.1547√n, the current best known upper bound.\n- **Alon:** Gave a simple proof that f(n) ≪ √(n log n) using triangle-free graphs with small independence number.\n- **Simonovits:** Earlier construction using Kneser-like graphs gave f(n) ≤ n^0.7182.\n\nThe problem was **DISPROVED**: f(n)/√n does NOT tend to infinity. Instead, f(n) = Θ(√n), and Alon conjectures f(n) ~ √n exactly.",

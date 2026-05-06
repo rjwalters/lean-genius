@@ -36,7 +36,8 @@
       "Brahmagupta-Fibonacci identity from norm multiplicativity",
       "Product rule for Pythagorean triples via Gaussian multiplication"
     ],
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Pythagorean triples have been known since antiquity. The Babylonian tablet Plimpton 322 (~1800 BC) lists 15 pairs of Pythagorean triples, suggesting a systematic method for generating them. Pythagoras himself (or his school, ~500 BC) knew the formula $(2k+1, 2k^2+2k, 2k^2+2k+1)$ for $k \\geq 1$. Plato (~400 BC) found a different family. The *complete* parametric formula $(m^2-n^2, 2mn, m^2+n^2)$ covering all primitive triples appears in Diophantus's *Arithmetica* (c. 250 CE, Book III) and was known to Euclid in an earlier form.\n\nBrahmagupta (628 CE), in his *Brahmasphutasiddhanta*, proved what we now call the Brahmagupta–Fibonacci identity: $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$. This shows sums of two squares are closed under multiplication — a key structural fact. Fibonacci rediscovered it in his 1225 *Liber Quadratorum*, discussing when numbers are sums of two squares.\n\nThe deep algebraic reason behind all of this was identified by Gauss (1801, *Disquisitiones Arithmeticae*) and developed throughout the 19th century: the Gaussian integers $\\mathbb{Z}[i]$ form a Euclidean domain (hence a unique factorization domain, UFD). The norm $N(a+bi) = a^2+b^2$ is *multiplicative* because it is the norm map of the field extension $\\mathbb{Q}(i)/\\mathbb{Q}$. The parametric formula is simply the squaring map $z \\mapsto z^2$ applied to $z = m+ni$; the Pythagorean triple arises because $|z^2|^2 = |z|^4$.",

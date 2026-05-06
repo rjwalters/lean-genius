@@ -25,7 +25,8 @@
     "assumptions": "4 axioms: (1) optAPBound — the optimal AP bound function f(d) itself, declared as an axiom because computing the infimum over all 2-colorings is not constructive; (2) optAPBound_unbounded — van der Waerden's theorem implication that f(d) → ∞ (∀ k, ∃ d, k ≤ optAPBound d); (3) beck_upper_bound — Beck's 1980 result f(d) = O(log d) (∃ C D₀, ∀ d ≥ D₀, optAPBound d ≤ C·(log₂ d + 1)); (4) erdos_187_conjecture — the open question f(d) = Θ(log d) stated as an axiom (∃ c D₀, ∀ d ≥ D₀, c·log₂ d ≤ optAPBound d).",
     "lineCount": 59,
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The problem of finding long monochromatic arithmetic progressions (APs) in 2-colorings of the integers has its roots in van der Waerden's 1927 theorem, which guarantees that any finite coloring of ℤ contains arbitrarily long monochromatic APs. Van der Waerden's original proof was non-constructive and gave tower-type bounds; Shelah (1988) later gave a primitive-recursive proof, but the quantitative bounds remain astronomical. Cohen and Erdős sharpened the question by fixing the common difference d: what is f(d), the maximum AP length that every 2-coloring must contain with difference d for infinitely many d? Erdős noted that the irrational rotation coloring χ(n) = ⌊√2 · n⌋ mod 2 limits monochromatic AP lengths, illustrating that Diophantine approximation governs the extremal colorings. The landmark result of Beck (1980) used discrepancy-theoretic methods to show f(d) ≤ (1+o(1))log₂ d — a striking logarithmic upper bound from probabilistic combinatorics. As of 2025, no lower bound beyond f(d) → ∞ (from van der Waerden) is known, making the gap between O(log d) and ω(1) the central open difficulty.",

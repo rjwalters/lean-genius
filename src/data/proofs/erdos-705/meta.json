@@ -55,7 +55,8 @@
     "axiomCount": 3,
     "lineCount": 361,
     "assumptions": "3 axioms: moser_spindle_exists, odonnell_graph_exists, wormald_graph_exists. These are concrete geometric construction claims not provable from Mathlib. chromaticNumber and girth use Mathlib definitions.",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #705 was posed by Erdős in 1981 (p. 27 of the source). It asks whether forbidding short cycles in unit distance graphs forces the chromatic number down to at most 3. This sits at the intersection of graph theory and combinatorial geometry, closely related to the famous Hadwiger-Nelson problem about the chromatic number of the plane.\n\nThe key constructions are: the Moser spindle (1961, 7 vertices, girth 3, χ = 4), O'Donnell's graph (1994, 56 vertices, girth 4, χ = 4), Chilakamarri's graph (1995, 47 vertices, girth 4, χ = 4), and Wormald's graph (1979, 6448 vertices, girth 5, χ = 4). These show that avoiding short cycles up to length 4 does not force 3-colorability. The frontier is girth 6: no 4-chromatic unit distance graph with girth ≥ 6 is known.\n\nA crucial contrast: for abstract graphs (without geometric constraints), Erdős proved in 1959 that graphs with arbitrarily large girth AND chromatic number exist, using the probabilistic method. But unit distance graphs are constrained by Euclidean geometry. Problem #705 asks whether this geometric constraint eventually forces χ ≤ 3 when short cycles are excluded.",

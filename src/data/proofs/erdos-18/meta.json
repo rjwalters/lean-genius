@@ -78,7 +78,8 @@
       "Analytic number theory (growth rates of arithmetic functions)"
     ],
     "assumptions": "Fully verified. 0 axioms, 0 sorries. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Practical numbers were introduced by Srinivasan in 1948. The name reflects their 'practical' use: if m is practical, any weight k < m can be measured using denominations 1, d_2, d_3, ... where each d_i divides m. Stewart (1954) and Sierpinski (1955) independently characterized practical numbers via prime factorization: m is practical iff m=1 or m=2^a * p_2^{a_2} * ... * p_k^{a_k} where each prime p_i <= sigma(m/p_i^{a_i})+1.\n\nErdos studied practical numbers extensively, proving their density is 0 and showing h(n!) < n. Vose (1985) improved this for special numbers, showing infinitely many m have h(m) = O(sqrt(log m)). The main conjecture asks whether h(n!) can be subpolynomial in n.",

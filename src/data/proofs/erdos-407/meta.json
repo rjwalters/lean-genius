@@ -50,7 +50,8 @@
     "axiomCount": 3,
     "lineCount": 219,
     "assumptions": "3 axioms: egst_1988, tijdeman_wang_1988, bajpai_bennett_2024_all. 0 sorries.",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #407** asks whether the function w(n), counting representations of n as 2^a + 3^b + 2^c·3^d, is uniformly bounded.\n\n**Historical Development:**\n- **Newman (original):** Conjectured w(n) is bounded.\n- **Evertse-Győry-Stewart-Tijdeman (1988):** Proved the conjecture using S-unit equation theory.\n- **Tijdeman-Wang (1988):** Showed w(n) ≤ 4 for sufficiently large n.\n- **Bajpai-Bennett (2024):** Made bounds fully effective: w(n) ≤ 4 for n ≥ 131082, and w(n) ≤ 9 for all n.\n\nThe maximum w(n) = 9 occurs at n = 299.",

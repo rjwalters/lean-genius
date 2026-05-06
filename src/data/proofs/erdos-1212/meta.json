@@ -26,7 +26,8 @@
     "erdosPrizeValue": "$50",
     "axiomCount": 1,
     "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "This problem lives at the intersection of combinatorial graph theory and the distribution of prime and composite numbers. The vertex set—coprime pairs $(x,y) \\in \\mathbb{N}^2$ with $\\gcd(x,y)=1$—is the set of 'visible lattice points' from the origin, a classical object with density $6/\\pi^2 \\approx 60.8\\%$ in $\\mathbb{N}^2$ by Euler product methods. The adjacency rule (differ in one coordinate by $\\pm 1$) mirrors the Farey graph and Stern-Brocot tree, where neighboring fractions $p/q$ and $r/s$ satisfy $|ps - qr| = 1$ (equivalent to coprimality of the numerators and denominators in adjacent steps).\n\nErdős's question asks whether one can thread an infinite path through this graph while (a) staying away from the 'boundary' $\\min(x,y) = 1$ (i.e., avoiding the axes), and (b) ensuring that every visited pair has at least one composite coordinate. The boundary condition excludes the spines $(1, n)$ and $(n, 1)$ where $\\gcd = 1$ trivially. The composite condition is a Ramsey-type requirement: can we avoid visiting 'all-prime' pairs $(p, q)$ indefinitely? Since the density of composites grows to $1$ and Dirichlet's theorem guarantees infinitely many primes in any arithmetic progression, the answer is YES: arithmetic progressions can be used to construct explicit infinite paths where each step stays in coprime territory and hits at least one composite coordinate.\n\nThe problem is classified as solved (prize $\\$50$), with the positive resolution relying on the density of composites and explicit path constructions via arithmetic progressions or CRT arguments. The Lean formalization is a placeholder stub pending number-theoretic infrastructure.",

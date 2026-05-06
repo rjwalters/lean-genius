@@ -37,7 +37,8 @@
     ],
     "assumptions": "1 axiom: terms_tend_to_zero (terms n/p_n → 0, consequence of PNT). See Lean source for complete statement.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #15 asks whether the alternating series $\\sum_{n=1}^{\\infty} (-1)^n \\cdot n/p_n$ converges, where $p_n$ is the $n$-th prime. The Prime Number Theorem (Hadamard, de la Vallée-Poussin, 1896) gives $p_n \\sim n \\ln n$, so the terms $n/p_n \\sim 1/\\ln n \\to 0$ — a necessary condition. However, the Alternating Series Test (Leibniz criterion) requires monotone decrease of $|a_n| = n/p_n$, which fails near twin primes: at $(11, 13)$ we have $5/11 < 6/13$. The deep difficulty is that convergence depends on the precise cancellation pattern, which is governed by the irregular distribution of prime gaps. Terence Tao proved conditional convergence in 2023, assuming the Hardy–Littlewood prime $k$-tuples conjecture — one of the deepest unsolved problems in number theory. Related Erdős conjectures concern alternating sums involving prime gaps: $\\sum (-1)^n / g_n$ was proved to diverge via Zhang's 2014 breakthrough on bounded gaps ($\\liminf g_n \\le 246$), while $\\sum (-1)^n / (n \\cdot g_n)$ remains open. The problem cannot be resolved by finite computation, as the tail behavior is entirely determined by the infinite structure of the primes.",

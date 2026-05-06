@@ -50,7 +50,8 @@
     "axiomCount": 0,
     "lineCount": 168,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "A set A of positive integers is called **dissociated** (or a B-sequence) if all its subset sums are distinct. This means for any two different subsets X ≠ Y of A, we have ΣX ≠ ΣY. This concept is fundamental in additive combinatorics.\n\nErdős Problem #350 asks: if A ⊂ ℕ is a finite dissociated set, what can we say about Σ_{n∈A} 1/n?\n\nRyavec proved that this sum is always strictly less than 2, though he never formally published the proof. Benkoski and Erdős reproduced Ryavec's proof in their 1974 paper \"On weird and pseudoperfect numbers\" (Math. Comp.).\n\nIn 1977, Hanson, Steele, and Stenger generalized this result, proving that for all s > 0: Σ_{n∈A} 1/n^s < 1/(1-2^{-s}). When s = 1, this recovers Ryavec's bound since 1/(1-1/2) = 2.",

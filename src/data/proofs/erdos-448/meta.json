@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 307,
     "assumptions": "2 axioms: tauPlus_le_tau (τ⁺(n) ≤ τ(n) for n ≥ 1), fordAlpha_approx (Ford constant 0.086 < α < 0.087). 1 sorry.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #448: Divisors in Dyadic Intervals**\n\nThis problem asks about the distribution of divisors across dyadic intervals [2^k, 2^(k+1)). The key question is whether divisors of most integers cluster into relatively few such intervals.\n\n**Historical Development:**\n- **Erdős (original problem)**: Asked if τ⁺(n) < ε·τ(n) for almost all n\n- **Erdős-Tenenbaum (1981)**: DISPROVED the conjecture, showing exceptions have positive upper density ≍ ε^(1-o(1))\n- **Hall-Tenenbaum (1988)**: Refined to upper density ≪ ε·log(2/ε) and proved τ⁺(n)/τ(n) has a distribution function\n- **Ford (2008)**: Found the precise asymptotic for Στ⁺(n)\n\n**Key Insight:**\nThe conjecture failed because divisors don't concentrate as much as expected. For many integers, divisors spread fairly evenly across dyadic intervals, keeping τ⁺(n) comparable to τ(n).",

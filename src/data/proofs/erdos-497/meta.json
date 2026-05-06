@@ -52,7 +52,8 @@
     "axiomCount": 0,
     "lineCount": 51,
     "theoremCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsAntichain, antichainCount, ErdosProblem497 (as Prop). Kleitman's theorem is stated as a def/Prop — not an axiom and not proved as a theorem."
+    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsAntichain, antichainCount, ErdosProblem497 (as Prop). Kleitman's theorem is stated as a def/Prop — not an axiom and not proved as a theorem.",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Counting antichains in the power set of [n] is one of the oldest problems in combinatorics, going back to Dedekind (1897) who first studied monotone Boolean functions — equivalent to counting antichains. The sequence D(0) = 2, D(1) = 3, D(2) = 6, D(3) = 20, D(4) = 168, D(5) = 7581, ... (OEIS A000372) grows extremely rapidly, and computing even a single new term is a major computational feat. Pashkov and Shmulevich computed D(9) = 7,828,354 in 2023, a landmark calculation.\n\nSperner's theorem (1928) provides the key structural insight: the largest antichain in P([n]) has size C(n, ⌊n/2⌋), achieved by the middle layer. This immediately gives the trivial upper bound D(n) ≤ 2^{C(n, ⌊n/2⌋)}, since every antichain is a subset of all possible antichains and the middle layer dominates.\n\nKleitman (1969) proved the remarkable result that this trivial bound is essentially tight: log₂ D(n) = (1 + o(1)) · C(n, ⌊n/2⌋). His proof uses a correlation inequality showing that 'most' antichains concentrate near the middle layers. This resolved Erdős's question about the logarithmic order of D(n), though the exact second-order term remains unknown.",

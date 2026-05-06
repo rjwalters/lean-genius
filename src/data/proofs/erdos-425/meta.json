@@ -53,7 +53,8 @@
     "axiomCount": 2,
     "lineCount": 264,
     "assumptions": "2 axioms: erdos_bounds, alexander_construction. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős introduced this problem in his 1968 paper \"On some applications of graph theory to number theoretic problems\" [Er68], where he established both upper and lower bounds for $F(n)$, the maximum size of a multiplicative Sidon subset of $\\{1,\\ldots,n\\}$. The bounds take the form $\\pi(n) + c_i n^{3/4}(\\log n)^{-3/2}$, showing that the prime counting function $\\pi(n)$ is the dominant term.\n\nThe problem was further discussed in Erdős (1973, 1977) and in the influential monograph of Erdős and Graham [ErGr80], where the real-number version was proposed: for $A \\subset [1,x]$ with $|ab - cd| \\ge 1$ for all distinct pairs, Erdős conjectured $\\max |A| = o(x)$. This conjecture was **disproved by Alexander** (reported in [ErGr80]), who showed that linear-sized sets $|A| \\ge cx$ are achievable using an exponential lifting of additive Sidon sets.\n\nThe connection between multiplicative and additive Sidon sets is central: taking logarithms converts products to sums, so $\\log(ab) = \\log a + \\log b$. Classical additive Sidon sets ($B_2$ sequences) have been studied since the 1930s by Sidon, Erdős, and Turán, with the maximum size being $(1 + o(1))\\sqrt{n}$ (Lindström 1969). Whether the error term can be reduced to $O(n^\\varepsilon)$ is Erdős Problem #30, one of his most famous open questions (\\$1000 prize).",

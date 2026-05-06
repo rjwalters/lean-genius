@@ -22,7 +22,8 @@
     "assumptions": "1 axiom (exists_good_partition): the probabilistic method step asserting that since E[cut weight] = W/2, some partition achieves cut weight ≥ W/2. Axiomatized because the full probability-space formalization is not yet in Mathlib. 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The MaxCut problem — partition the vertices of a graph to maximize the number of edges crossing the cut — is NP-hard (Garey-Johnson, 1976) and was one of Karp's 21 NP-complete problems. The randomized 1/2-approximation is folklore: assign each vertex to side $S$ or $\\overline{S}$ independently with probability $1/2$; by linearity of expectation, $\\mathbb{E}[\\text{cut}] = |E|/2 \\geq \\text{OPT}/2$ (since OPT $\\leq |E|$). For weighted graphs, the same argument gives $\\mathbb{E}[\\text{cut weight}] = W/2$ where $W$ is the total edge weight. The landmark 1995 paper by Goemans and Williamson introduced semidefinite programming (SDP) relaxation followed by random hyperplane rounding, achieving the approximation ratio $\\alpha_{GW} = \\min_{0 \\leq \\theta \\leq \\pi} \\frac{2(1-\\cos\\theta)}{\\pi\\theta} \\approx 0.87856$. Under the Unique Games Conjecture (Khot, 2002), $\\alpha_{GW}$ is the optimal polynomial-time approximation ratio for MaxCut — this was proved by Khot-Kindler-Mossel-O'Donnell (2007).",

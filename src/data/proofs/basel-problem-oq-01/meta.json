@@ -62,7 +62,8 @@
     "lineCount": 244,
     "assumptions": "3 axioms: apery_theorem (ζ(3) is irrational, Apéry 1979), rivoal_theorem (infinitely many odd zeta values are irrational, Rivoal 2000), zudilin_theorem (at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational, Zudilin 2001). 1 sorry: zeta_five_irrational (genuinely open as of 2026).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The Basel Problem (∑ 1/n² = π²/6) was solved by Euler in 1734. The odd zeta values ζ(3), ζ(5), ζ(7), ... are far more mysterious. In 1978, Roger Apéry stunned the mathematical community by proving ζ(3) is irrational — a result now called Apéry's theorem. His proof used a remarkable accelerated convergence series and was initially met with skepticism before being verified.\n\nFor ζ(5), the situation remains completely open. Apéry's technique does not directly generalize: no analogous rapidly-converging rational series is known for ζ(5). In 2000, Rivoal proved that infinitely many odd zeta values are irrational (at least (log n)/2 of ζ(3), ζ(5), ..., ζ(2n+1)), and in 2001 Zudilin strengthened this to show at least one of ζ(5), ζ(7), ζ(9), ζ(11) must be irrational. But ζ(5) individually remains untouched.",

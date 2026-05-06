@@ -68,7 +68,8 @@
       "CH implications: only ℵ₀ and 𝔠 among infinite cardinals ≤ 𝔠",
       "Axiomatized Gödel-Cohen independence result"
     ],
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "When Cantor proved in 1874 that $\\mathbb{Q}$ is countable and $\\mathbb{R}$ is not, he immediately asked: is there a set $S$ with $|\\mathbb{Q}| < |S| < |\\mathbb{R}|$? He conjectured not — this became the Continuum Hypothesis (CH), and Hilbert listed it as his first problem in 1900. The resolution took decades: Gödel (1940) showed CH is consistent with ZFC by constructing the model $V = L$ (the constructible universe), and Cohen (1963) showed $\\neg$CH is also consistent by inventing the forcing technique. This earned Cohen the Fields Medal in 1966 and established CH as the paradigmatic example of an independent statement. The proof here formalizes the key cardinality facts in Lean 4 and axiomatizes the independence result.",

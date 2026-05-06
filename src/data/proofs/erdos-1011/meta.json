@@ -27,7 +27,8 @@
     "lineCount": 168,
     "assumptions": "5 axioms: turan_theorem, erdos_gallai_theorem, simonovits_asymptotic, davies_illingworth_lower, hhkp_upper. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős Problem #1011 connects three fundamental graph invariants: edge count, chromatic number, and triangle existence. The threshold function f_r(n) gives the minimum number of edges such that every n-vertex graph with at least f_r(n) edges and chromatic number ≥ r must contain a triangle. Turán's theorem (1941) solved the case r=2: f_2(n) = ⌊n²/4⌋ + 1.\n\nErdős and Gallai (1962) determined f_3(n) = ⌊(n-1)²/4⌋ + 2, and Simonovits established the general asymptotic form f_r(n) = n²/4 - g(r)·n/2 + O(1) in his PhD thesis. Here g(r) measures how far triangle-free graphs with chromatic number ≥ r can be from bipartite. The problem thus reduces to understanding g(r).\n\nRecent progress has narrowed the bounds significantly. Davies and Illingworth (2022) proved g(r) ≥ (1/2 - o(1))r² log r using χ-Ramsey techniques, while Hefty, Horn, King, and Pfender (2025) showed g(r) ≤ (2 + o(1))r² log r, building on advances in off-diagonal Ramsey numbers R(3,k). The factor-of-4 gap between these bounds remains open. Ren, Wang, Wang, and Yang (2024) recently determined the exact value f_4(n) for n ≥ 150.",

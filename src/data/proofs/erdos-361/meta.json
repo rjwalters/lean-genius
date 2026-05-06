@@ -60,7 +60,8 @@
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
     "lineCount": 140,
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem on page 59 of their influential 1980 monograph [ErGr80] on combinatorial number theory. The question asks a natural extremal question: how large can a subset of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ be if it must avoid representing $n$ as a subset sum? The problem has two aspects—determining the growth rate and understanding whether the answer depends on $n$ in an irregular (non-monotone) fashion.\n\nThe conjectured growth rate is $\\Theta(\\sqrt{n})$, which emerges from a heuristic argument: a random $k$-element subset of $\\{1,\\ldots,cn\\}$ produces $\\binom{k}{j}$ subset sums for each size $j$, and when $k \\approx \\sqrt{n}$ the total number of achievable sums ($\\approx 2^k$) becomes comparable to $n$, making it difficult to avoid any particular target. Below $\\sqrt{n}$ elements, avoidance is easy; above $\\sqrt{n}$, the subset sum space saturates.\n\nThe irregularity question is more subtle—it asks whether the arithmetic structure of $n$ (its factorization, residues, representation properties) causes the maximum non-representing subset size to fluctuate non-monotonically. This connects to the erratic behavior of arithmetic functions and is reminiscent of similar irregularity phenomena in partition theory.\n\nThe problem sits at the intersection of additive combinatorics and computational complexity: the subset sum problem is NP-complete, so exact computation of $\\max |A|$ for specific $(c, n)$ is computationally hard, and theoretical bounds require combinatorial rather than algorithmic methods.\n\n**Status**: OPEN — Both the growth rate and irregularity questions are unresolved.",

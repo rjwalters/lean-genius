@@ -67,7 +67,8 @@
     "axiomCount": 2,
     "lineCount": 316,
     "assumptions": "2 axioms: erdos_purdy_lower_bound, erdos_purdy_upper_bound. 1 sorry.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "**Erdos Problem #1087**\n\nThis problem was posed by Paul Erdos and George Purdy in their 1971 paper \"Some extremal problems in geometry\" (J. Combinatorial Theory Ser. A, 246-252). It belongs to the rich tradition of combinatorial geometry problems that Erdos pioneered.\n\n**The Setting:**\nGiven n points in the plane, consider all C(n,4) = n(n-1)(n-2)(n-3)/24 subsets of 4 points (quadruples). A quadruple is called \"degenerate\" if at least two of its 6 pairwise distances are equal. Let f(n) be the maximum number of degenerate quadruples over all n-point configurations.\n\n**Historical Progress:**\nErdos and Purdy proved bounds n^3 log n << f(n) << n^{7/2} in 1971. The problem asks whether the upper bound can be improved to n^{3+o(1)}, which would nearly match the lower bound. This remains open as of 2025, representing a gap in our understanding of distance geometry.",

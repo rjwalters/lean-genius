@@ -58,7 +58,8 @@
       "Commutative ring axioms"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Newton's identities, first published in *Arithmetica Universalis* (1707), connect power sums pₖ = Σxᵢᵏ to elementary symmetric polynomials eₖ. While the case-by-case identities (for 2, 3, 4 variables) were formalized in VietasFormulasOQ03.lean using the `ring` tactic, this file takes the fundamentally different approach of deriving the general identity for arbitrary n from Mathlib's abstract combinatorial proof.\n\nThe key mathematical insight is that Newton's identities are a property of the ring of symmetric functions Λ, not of any particular number of variables. Mathlib formalizes this at the level of MvPolynomial using Zeilberger's sign-reversing involution proof, and we recover concrete identities by evaluating at specific points via the aeval homomorphism.",

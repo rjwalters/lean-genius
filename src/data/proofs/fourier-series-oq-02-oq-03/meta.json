@@ -29,7 +29,8 @@
       "Hölder continuity",
       "Fourier coefficient decay (OQ-02)"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The Fourier coefficient decay bounds for smooth and Hölder functions are classical results in harmonic analysis. For C^k functions, the bound |ĉ_n| = O(1/|n|^k) was known to Fourier himself (1822) and made rigorous in the 19th century. The Hölder case |ĉ_n| = O(1/|n|^α) was established in the early 20th century and appears in standard texts (Zygmund 'Trigonometric Series', 1959; Katznelson 'An Introduction to Harmonic Analysis', 1968). The sharp constant 1/2 in the bound arises naturally from the half-period translation trick (also called the symmetrization method): writing 2ĉ_n = ∫(f(x) - f(x+T/(2n)))e_{-n}(x)dx exploits the identity e_{-n}(x+T/(2n)) = -e_{-n}(x). The sharpness of 1/2 is a classical result: sawtooth-type functions (piecewise linear on the circle) saturate the Hölder bound |f(x)-f(y)| ≈ C|x-y|^α at every pair of points, making the half-period difference maximally large relative to the Hölder seminorm.",

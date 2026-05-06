@@ -67,7 +67,8 @@
     ],
     "lineCount": 1104,
     "assumptions": "2 axioms: density_hales_jewett_k3, meshulam_upper_bound. 0 sorries.",
-    "theoremCount": 73
+    "theoremCount": 73,
+    "definitionCount": 30
   },
   "overview": {
     "historicalContext": "Cap sets — subsets of $\\{0,1,2\\}^n$ with no three collinear points (i.e., no $x,y,z$ with $x+z=2y$ in $\\mathbb{F}_3^n$) — arose from the study of arithmetic progressions in finite geometry. Leo Moser posed the problem and constructed cap sets of size $\\Omega(3^n/\\sqrt{n})$ using coordinate-sum restrictions. Hillel Furstenberg and Yitzhak Katznelson (1991) proved the density Hales-Jewett theorem using ergodic theory, implying $f_3(n) = o(3^n)$. Roy Meshulam (1995) gave the first quantitative bound $f_3(n) \\leq 3^n/n$ using Fourier-analytic methods. The breakthrough came in 2016 when Jordan Ellenberg and Dion Gijswijt, building on Croot-Lev-Pach's polynomial method, proved $f_3(n) \\leq c^n$ with $c = 3 \\cdot (207 + 33\\sqrt{33})^{1/3}/8 \\approx 2.756$. This resolved a central problem in additive combinatorics and had immediate implications for the sunflower conjecture and other problems.",

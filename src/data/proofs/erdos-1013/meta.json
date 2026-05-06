@@ -25,7 +25,8 @@
     "lineCount": 201,
     "assumptions": "1 axiom: mycielski_construction. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Jan Mycielski's foundational 1955 paper 'Sur le coloriage des graphes' proved that triangle-free graphs of arbitrarily high chromatic number exist, via his celebrated inductive construction. This raised the quantitative question: how many vertices are needed? Graver and Yackel (1968) gave the first quantitative lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion. The connection to Ramsey theory proved decisive: Shearer's 1983 entropy-based bound on $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ implies $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$, since triangle-free graphs on $n$ vertices must have large independent sets. The upper bound $h_3(k) \\leq (1+o(1))k^2 \\log k$ comes from explicit algebraic constructions. The exact constant $c$ in $h_3(k) \\sim c \\cdot k^2 \\log k$, known to lie in $[1/2, 1]$, remains one of the central open questions in extremal graph theory. Erdos also asked the weaker question of whether $h_3(k+1)/h_3(k) \\to 1$. The problem is closely related to Problem #1104 (the dual function $f(n)$, the maximum chromatic number of a triangle-free graph on $n$ vertices) and Problem #920 (the $K_r$-free generalization $h_r(k)$).",

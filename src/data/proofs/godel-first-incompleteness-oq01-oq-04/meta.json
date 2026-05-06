@@ -58,7 +58,8 @@
         "relationship": "ancestor",
         "note": "Original vacuous formalization; OQ-01 and OQ-04 provide non-vacuous versions"
       }
-    ]
+    ],
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The Diagonal Lemma (also called the Fixed-Point Lemma or Self-Reference Lemma) is the key engine behind Gödel's 1931 incompleteness theorems, Tarski's undefinability theorem, and many other results in mathematical logic. It was implicit in Gödel's original paper and made explicit by later authors including Carnap and Smullyan.\n\nThe lemma states: for any formula φ(x) with one free variable, there is a sentence σ such that the formal system F proves σ ↔ φ(⌈σ⌉). In other words, σ 'says about itself' that it has property φ. Applied to φ(x) = ¬Prov(x) ('x is not provable'), the Diagonal Lemma yields the Gödel sentence G: 'G is not provable'.\n\nThis file formalizes the Diagonal Lemma in its meta-level form and shows it is the single combinatorial principle from which G's self-reference property flows.",

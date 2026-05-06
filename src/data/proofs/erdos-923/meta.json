@@ -49,7 +49,8 @@
     "axiomCount": 2,
     "lineCount": 230,
     "assumptions": "2 axioms: rodl_1977, rodl_bound. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Jan Mycielski stunned graph theorists in 1955 by constructing triangle-free graphs with arbitrarily high chromatic number. The Mycielski construction $M_k$ satisfies $\\chi(M_k) = k$ while being completely triangle-free, shattering the intuition that high chromatic number requires dense local structure like triangles.\n\nPaul Erdős posed Problem #923 in 1969 [Er69b]: if a graph has VERY high chromatic number, must it contain a triangle-free subgraph with moderately high chromatic number? This asks a deeper structural question: whether the chromatic complexity of a graph must 'spread' beyond its triangles.\n\nVojtěch Rödl proved YES in a remarkably concise one-page paper in *Proc. Amer. Math. Soc.* **64** (1977), 370--371. The proof uses Ramsey-theoretic edge partitioning: color the edges of the high-chromatic graph based on their triangle participation, then apply Ramsey's theorem to extract a monochromatic triangle-free subgraph retaining high $\\chi$. The threshold $f(k)$ is necessarily a tower of 2s of height $\\sim k$, reflecting the iterated application of Ramsey bounds. This tower growth connects to broader phenomena in combinatorics where Ramsey-theoretic arguments inherently produce tower-type quantitative bounds (cf. Hales-Jewett, Szemerédi regularity lemma).\n\nThe result was later generalized by Rödl himself to $H$-free subgraphs for any bipartite $H$, connecting to Problem #108 (the general girth-chromatic question) and the Erdős-Hajnal conjecture on structured subgraphs in high-chromatic graphs.",

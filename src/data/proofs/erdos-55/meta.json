@@ -25,7 +25,8 @@
     "lineCount": 181,
     "assumptions": "2 axioms: cfp_upper_bound, cfp_lower_bound. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #55 sits at the intersection of Ramsey theory and additive number theory. Burr and Erdős introduced the concept of Ramsey r-complete sets in their 1985 paper 'On a Ramsey-type problem in additive number theory' (J. Combin. Theory Ser. A). For r=2, they proved c(log N)² ≤ |A ∩ [1,N]| ≤ C(log N)³, leaving a logarithmic gap between the lower and upper bounds. Burr also showed that the k-th powers are Ramsey r-complete for all r,k ≥ 1, providing natural examples but with polynomial (not logarithmic) growth. The problem carried a $250 Erdős prize and remained open for 36 years. In 2021, David Conlon, Jacob Fox, and Huy Tung Pham completely resolved the problem in their paper 'Subset sums, completeness and colorings' (Advances in Mathematics, 2021), proving that the optimal growth rate for r-Ramsey complete sets is Θ(r(log N)²). Their construction uses carefully chosen subsets of powers of 2, while the lower bound extends the Burr-Erdős probabilistic coloring technique to r colors. The linear dependence on r is sharp, revealing the precise cost of additional colors.",

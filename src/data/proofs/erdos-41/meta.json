@@ -50,7 +50,8 @@
     "axiomCount": 2,
     "lineCount": 164,
     "assumptions": "2 axioms: erdos_b2_theorem, chen_even_h_theorem. 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #41 asks about the density of B_h sequences - sets where all h-element subset sums are distinct. The h=2 case corresponds to classical Sidon sets, studied extensively in additive combinatorics.\n\nErdős proved the h=2 case: if A is an infinite Sidon set, then liminf |A ∩ {1,...,N}| / √N = 0. This means Sidon sets must be sparse infinitely often at the √N scale.\n\nThe problem generalizes to all h ≥ 2: is liminf |A ∩ {1,...,N}| / N^(1/h) = 0 for infinite B_h sets? Nash (1989) proved this for h=4 using Fourier-analytic methods, and Chen (1996) extended it to all even h.\n\nThe h=3 case (triple sums) remains OPEN with a $500 prize. Odd h ≥ 3 resists the Fourier techniques that work for even h.",

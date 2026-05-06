@@ -62,7 +62,8 @@
       "Squeeze theorem for limits",
       "Composition of limits"
     ],
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The volume ω_n = π^(n/2)/Γ(n/2+1) of the unit n-ball is a classical object in geometry. The fact that ω_n → 0 is surprising to many: as dimension increases, the unit ball concentrates all its volume near the equator and the total volume shrinks to 0. This is a key insight in the 'curse of dimensionality' in high-dimensional geometry.\n\nThe proof is most natural via the recurrence ω_{n+2} = (2π/(n+2))·ω_n, which shows that for large n, each step multiplies by a factor < 1, causing exponential decay. The cleanest formalization splits even and odd subsequences.",

@@ -62,7 +62,8 @@
     "lineCount": 176,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**The eLpNorm API: Mathlib's Standard Interface for Lp Spaces**\n\nMathlib's Lp space infrastructure has two levels. The lower level uses the extended Lebesgue integral (`∫⁻`) and nnnorm directly: `∫⁻ a, ‖f a‖₊^p ∂μ`. The upper level uses `eLpNorm f p μ`, which packages these integrals into the standard Lp seminorm API.\n\n`Memℒp f p μ` — the predicate for \"f belongs to Lp\" — is defined as `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`. All of Mathlib's Lp space theory (completeness, duality, interpolation) is stated in terms of `eLpNorm`, not raw lintegrals.\n\nThis file lifts Hölder's inequality from the lintegral level (proved in OQ-03) to the eLpNorm level, making it directly applicable to Lp space membership arguments. The bridge lemma `eLpNorm_ofReal_eq` connects the two levels via `eLpNorm_eq_lintegral_rpow_enorm`.\n\nOtto Hölder's 1889 inequality has been formalized in Lean 4 at increasing levels of abstraction: first for real functions (OQ-01), then for any NormedField at the lintegral level (OQ-03), and now at the eLpNorm API level (OQ-03-OQ-01) — the form that makes it immediately usable in Lp space arguments.",

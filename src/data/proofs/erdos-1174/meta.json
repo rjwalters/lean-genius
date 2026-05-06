@@ -56,7 +56,8 @@
     "axiomCount": 0,
     "lineCount": 232,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős Problem #1174 was posed by Erdős and Hajnal and sits at the intersection of Ramsey theory and set theory. The classical Ramsey theorem guarantees that any 2-coloring of the complete graph K_ω yields a monochromatic infinite clique. Problem 1174 asks what happens when we restrict the host graph—forbidding K₄ or K_{ℵ₁}—while allowing countably many colors rather than just two.\n\nThe problem has two parts: (a) asks for a K₄-free graph where every countable coloring forces a monochromatic triangle, and (b) asks for a K_{ℵ₁}-free graph where every countable coloring forces a monochromatic K_{ℵ₀}. The Nešetřil-Rödl theorem shows that for any fixed finite number k of colors, there exist K₄-free graphs with the partition property G → (3)²_k. The challenge in part (a) is extending this from finitely many to countably many colors simultaneously.\n\nShelah showed that graphs satisfying either property can consistently exist in certain models of ZFC. This means ZFC cannot disprove their existence, but whether ZFC can prove their existence remains open. The problem thus has a set-theoretic independence flavor, connecting combinatorial Ramsey theory with forcing and consistency results.",

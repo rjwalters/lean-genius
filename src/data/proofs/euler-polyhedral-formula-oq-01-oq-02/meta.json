@@ -19,7 +19,8 @@
     "lineCount": 141,
     "assumptions": "None. Survey file with basic colorability results from Mathlib.",
     "theoremCount": 6,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The Four Color Problem was posed by Francis Guthrie in 1852 and stated publicly by his brother Frederick to Augustus De Morgan. Alfred Kempe published a 'proof' in 1879 that convinced the mathematical community for a decade, until Percy Heawood found a gap in 1890 — a famous cautionary tale about complex proofs. Heawood salvaged the five-color theorem from Kempe's argument. The problem stood for another 86 years until Appel and Haken (1977) gave the first proof, relying on an IBM 360 to check 1936 unavoidable configurations — the first major theorem proved with substantial computer assistance, sparking philosophical debate about the nature of proof. Robertson, Sanders, Seymour, and Thomas (1997) gave a cleaner proof using only 633 configurations. Georges Gonthier formalized the 4CT in Coq (2005) using the SSReflect proof assistant extension, producing approximately 60,000 lines of verified mathematics. This survey assesses the feasibility of re-formalizing the 4CT in Lean 4, identifying that planar graph infrastructure — currently missing from Mathlib — is the primary obstacle.",

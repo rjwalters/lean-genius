@@ -59,7 +59,8 @@
         "note": "Original pedagogical scaffold with vacuous Provable definition"
       }
     ],
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Gödel's Second Incompleteness Theorem was announced in his landmark 1931 paper 'On Formally Undecidable Propositions of Principia Mathematica and Related Systems'. While the First Incompleteness Theorem showed that consistent systems cannot decide all statements, the Second Incompleteness Theorem struck at the heart of Hilbert's Program.\n\nDavid Hilbert (1920s) sought a finitary, complete, and consistent foundation for all of mathematics. He envisioned proving the consistency of classical mathematics from within itself using only finitistic methods. Gödel's Second Incompleteness Theorem showed this is impossible: any consistent formal system satisfying weak representability conditions cannot prove its own consistency.\n\nThe first rigorous proof of Second Incompleteness was given by Hilbert and Bernays in 1939, using what are now called the Hilbert-Bernays-Löb (HBL) derivability conditions D1, D2, D3. Löb's 1955 theorem generalized this: F ⊢ (□A → A) iff F ⊢ A. This is the definitive result in provability logic.\n\nThe implications were profound:\n- Peano Arithmetic (PA) cannot prove Con(PA), though we believe PA is consistent.\n- ZFC cannot prove Con(ZFC). Our confidence in ZFC rests on informal reasoning, not formal proof.\n- The consistency of any system of mathematical interest can only be established in a strictly stronger system.",

@@ -24,7 +24,8 @@
     "assumptions": "3 axioms: (1) crocker_theorem — infinitely many odd integers not in RepSet 2, a proven 1971 result axiomatized here; (2) gallagher_density_approach — Gallagher 1975, proven via large sieve, axiomatized; (3) erdos_graham_conjecture — the main open conjecture that no finite k covers all large integers.",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #10 asks whether there is a finite k such that every sufficiently large integer can be written as a prime plus at most k powers of 2. This 'sufficiently large' variant (OQ-01) is weaker than the full question (all n ≥ 2) but still believed false. Gallagher (1975) proved the density of representable integers approaches 1 as k grows — the best unconditional result. Crocker (1971) proved infinitely many odd integers cannot be expressed as a prime plus ≤2 powers of 2, ruling out k=2. Granville and Soundararajan (1998) conjectured k=3 for odd and k=4 for even integers, which would settle OQ-01 affirmatively.",

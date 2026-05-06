@@ -53,7 +53,8 @@
     "axiomCount": 5,
     "lineCount": 219,
     "assumptions": "5 axioms: f_le_F, H_lower_bound, H_upper_bound, H_limsup_infinite, H_liminf_finite. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős introduced these 'unconventional number theoretic functions' in 1984. Unlike typical additive functions, f(n) is defined by summing prime powers p^ℓ where ℓ depends on n (not just on the prime power dividing n). This creates unusual asymptotic behavior.\n\nThe function f(n)/n 'almost behaves as a conventional additive function' but exhibits the remarkable property of having no mean value: the limsup of (1/x)∑_{n<x} f(n)/n is infinite while the liminf is finite. This is very unusual in analytic number theory.\n\nErdős proved partial results: max_{n≤x} f(n) ~ x log x / log log x holds along some sequence of x → ∞, and established bounds x log⁴ x ≪ H(x) ≪ x log³ x (where log^k denotes k-fold iterated logarithm). The full asymptotic for all x remains open.",

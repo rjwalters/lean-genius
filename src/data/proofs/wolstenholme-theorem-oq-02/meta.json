@@ -59,7 +59,8 @@
       "Modular arithmetic and prime residue classes",
       "Computational number theory and native_decide"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Joseph Wolstenholme proved in 1862 that $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for all primes $p \\geq 5$, strengthening an earlier result of Charles Babbage (1819) who had established the mod $p^2$ version. A prime satisfying the even stronger congruence modulo $p^4$ is called a **Wolstenholme prime**, a concept introduced and studied by Richard McIntosh.\n\nMcIntosh discovered the first Wolstenholme prime, $p = 16843$, in 1995 through systematic computation of Bernoulli numbers — specifically by checking which primes satisfy $p \\mid B_{p-3}$, an equivalent characterization. The second, $p = 2124679$, was found by McIntosh and E. L. Roettger in 2007 using a refined search algorithm. Their exhaustive computation up to $10^9$ confirmed these are the only two below that bound.\n\nThe mod 4 pattern is tantalizing: $16843 \\equiv 3 \\pmod{4}$ and $2124679 \\equiv 3 \\pmod{4}$. Finer analysis reveals $16843 \\equiv 3 \\pmod{8}$ and $2124679 \\equiv 7 \\pmod{8}$ (different mod 8 classes), yet both share $p \\equiv 7 \\pmod{12}$. Whether there exists a Wolstenholme prime $p \\equiv 1 \\pmod{4}$ remains open, with no theoretical obstruction known in either direction. The question connects to irregular prime theory (via $p \\mid B_{p-3}$) and to the broader study of arithmetic properties of exceptional primes (Wieferich, Wall-Sun-Sun, Fibonacci-Wieferich).",

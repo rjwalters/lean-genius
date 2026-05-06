@@ -99,7 +99,8 @@
     "lineCount": 543,
     "assumptions": "2 axioms: (1) newton_log_concavity \u2014 for non-negative inputs, the normalized elementary symmetric sequence is log-concave: (e\u2096/C(n,k))\u00b2 \u2265 (e\u2096\u208b\u2081/C(n,k-1))\u00b7(e\u2096\u208a\u2081/C(n,k+1)). Classical result proved by polarization + induction (Hardy-Littlewood-P\u00f3lya \u00a72.22), not yet in Mathlib. (2) maclaurin_step \u2014 M\u2096 \u2265 M\u2096\u208a\u2081 where M\u2096 = (e\u2096/C(n,k))^(1/k). Follows from newton_log_concavity + monotonicity of t^(1/k). Note: the k=1 case of Newton's inequality (newton_k1) is proved without axioms. 0 sorries remain.(s) remain.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 26
+    "theoremCount": 26,
+    "definitionCount": 3
   },
   "crossReferences": [
     {

@@ -25,7 +25,8 @@
     "lineCount": 187,
     "assumptions": "3 axiom(s): mann_growth_bound, freiman_growth_theorem, powers_of_two_zero_density. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "This problem explores how sumsets grow relative to the original set for sparse sequences. Erdos observed that for sets A with zero density (meaning |A cap {1,...,N}| = o(N)), the sumset A+A grows faster than A itself.\n\nErdos noted it is 'easy to see' that the growth ratio is at least 2, citing Mann's 1960 work on sumset densities. However, he conjectured the sharp bound is 3, which was proved by G.A. Freiman in his foundational 1973 monograph 'Foundations of a structural theory of set addition.'\n\nFreiman's work on this problem was part of his broader development of additive combinatorics, including what is now called Freiman's theorem on sets with small doubling constants.",

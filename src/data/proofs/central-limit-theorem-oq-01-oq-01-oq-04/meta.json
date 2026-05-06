@@ -35,7 +35,8 @@
       "gaussian_in_own_doa: Gaussian is in its own operator domain of attraction",
       "scalar_exponent_ge_half: corollary of eigenvalue bound — scalar exponent c ≥ 1/2"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The classical Central Limit Theorem states that normalized sums of i.i.d. finite-variance random variables converge to a Gaussian. Gnedenko and Kolmogorov (1954) characterized the full domain of attraction using slowly varying functions and tail regularity — this is formalized in the parent entry (OQ-01-OQ-01). The next natural generalization is to random vectors in ℝ^d: instead of scalar normalization by n^{1/α}, we normalize by a d×d matrix A_n. The limit laws, called **operator-stable distributions**, were classified by Hudson and Mason (1982). The complete domain of attraction theory for operator-stable laws was established by Meerschaert and Scheffler (1993, 2001). This entry formalizes the key definitions and axiomatizes the main theorems, with the Gaussian N(0,Σ) fully proved as the principal example.",

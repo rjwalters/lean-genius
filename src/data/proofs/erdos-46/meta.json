@@ -59,7 +59,8 @@
     "axiomCount": 0,
     "lineCount": 84,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**Egyptian fractions** — representations $n = \\sum 1/a_i$ with distinct denominators — date to ancient Egypt (Rhind Papyrus, c. 1650 BCE). Erdős posed this problem in the 1970s, asking whether every finite partition of $\\mathbb{N}$ contains a monochromatic Egyptian fraction representation of 1. This connects two major areas: **Ramsey theory** (partition regularity of combinatorial structures) and **additive number theory** (representations by unit fractions). **Croot** (2003) proved the conjecture affirmatively using the **density Hales–Jewett theorem** — a powerful Ramsey-theoretic tool. His proof shows that among integers in $[N, 2N]$, the number of Egyptian fraction representations of 1 is large enough that pigeonhole forces monochromaticity. The Erdős–Graham generalization to arbitrary positive rationals follows from Croot's stronger infinitely-many-disjoint-solutions result.",

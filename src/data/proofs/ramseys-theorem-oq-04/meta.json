@@ -51,7 +51,8 @@
         "module": "Mathlib.Data.Finset.Card"
       }
     ],
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Frank Plumpton Ramsey proved his theorem in 1930 in 'On a Problem of Formal Logic', originally to establish a decision procedure for a fragment of predicate logic. The combinatorial content — that any 2-coloring of the edges of K_N contains a monochromatic K_n for N large enough — became one of the founding results of combinatorics.\n\nCrucially, Ramsey's original 1930 paper actually proved the general k-uniform hypergraph version, not just the graph (k=2) case. The k=2 case became more famous because it was later rediscovered and popularized, but Ramsey's theorem is inherently about k-element subsets.\n\nErdős and Rado in 1952 ('Combinatorial theorems on classifications of subsets of a given set') gave tight bounds on hypergraph Ramsey numbers, showing they grow as towers of exponentials: R(3;2) grows as a tower of height 3, R(4;2) as height 4, etc. This 'tower-of-exponentials' phenomenon makes hypergraph Ramsey numbers much harder to compute than graph Ramsey numbers.\n\nThe stepping-up lemma — R(k+1, r, n) ≤ R(k, r, R(k+1, r, n-1)) + 1 — is the key inductive tool that converts k-uniform bounds to (k+1)-uniform bounds by fixing a vertex v and using the induced k-coloring on pairs with v.",

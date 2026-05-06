@@ -51,7 +51,8 @@
         "relationship": "Both concern geometric packing/covering problems from Erdős's combinatorial geometry collection"
       }
     ],
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős Problem #1121 asks whether a 'connected' configuration of circles in the plane can always be covered by a single circle whose radius equals the sum of all individual radii. Here 'connected' means no line disjoint from all circles can separate them into two non-empty groups.\n\nGoodman and Goodman proved this conjecture in 1945, published in the American Mathematical Monthly. Their proof uses geometric arguments about convex hulls and the configuration of circle centers. The result is tight — the covering radius cannot in general be reduced below the sum of radii.\n\nThe Goodman-Goodman theorem naturally generalizes to higher dimensions: balls in ℝⁿ with no separating hyperplane can be covered by a ball of radius equal to the sum of radii. This was noted in their original paper.",

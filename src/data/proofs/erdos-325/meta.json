@@ -50,7 +50,8 @@
     "axiomCount": 0,
     "lineCount": 126,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #325 concerns the density of integers that can be written as sums of three k-th powers. This is a natural extension of the classical Waring problem, which asks how many k-th powers are needed to represent ALL integers.\n\nFor sums of TWO k-th powers, Mahler and Erdős proved in 1938 that the count f_{k,2}(x) of such integers up to x satisfies f_{k,2}(x) ≫ x^{2/k}. The expected density for j terms is x^{j/k} (heuristically, there are about x^{1/k} k-th powers up to x, so about x^{j/k} ways to sum j of them).\n\nFor THREE k-th powers, the conjecture f_{k,3}(x) ≫ x^{3/k} remains open. The best known result for k=3 (cubes) is due to Wooley (2015): f_{3,3}(x) ≫ x^{0.917}, which falls short of the conjectured x^1.",

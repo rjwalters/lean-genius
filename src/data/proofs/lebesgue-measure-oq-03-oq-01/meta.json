@@ -30,7 +30,8 @@
       "Small balls: μ(B(y, r)) = 0 for r ≤ 1/3, any center y (proved)",
       "Parametric: μ(B(0, δ)) = 0 for any 0 < δ < √2/2 with μ(B(0, 1+δ)) < ∞ (proved)"
     ],
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The impossibility of constructing a translation-invariant, $\\sigma$-finite measure on infinite-dimensional spaces was recognized as a fundamental obstacle in functional analysis by the mid-20th century. Norbert Wiener's construction of Brownian motion (1923) implicitly required measures on function spaces, but Wiener measure is not translation-invariant — shifting a Brownian path changes its law. Leonard Gross's 1967 paper 'Abstract Wiener Spaces' gave the definitive framework: Gaussian measures live naturally on the Banach completion of a Hilbert space, not on the Hilbert space itself. The impossibility proof in this formalization — using orthonormal separation to pack infinitely many equal-measure disjoint balls into a bounded region — is the standard argument appearing in textbooks by Reed-Simon, Brezis, and others. It demonstrates a fundamental dichotomy: $\\mathbb{R}^n$ admits Lebesgue measure because finite-dimensional balls have finite packing density, but infinite-dimensional spaces do not.",

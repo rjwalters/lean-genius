@@ -52,7 +52,8 @@
     "axiomCount": 2,
     "lineCount": 83,
     "assumptions": "2 axioms: de_mathan_pollington, peres_schlag. See Lean source for complete statements.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #464 sits at the crossroads of Diophantine approximation and combinatorial number theory. The question concerns lacunary sequences—sequences $A = \\{n_1 < n_2 < \\cdots\\}$ satisfying $n_{k+1} \\geq (1+\\varepsilon)n_k$ for some $\\varepsilon > 0$—which grow at least exponentially.\n\nThe classical Weyl equidistribution theorem (1916) guarantees that for almost every $\\theta$, the sequence $\\{\\theta n_k\\}$ is equidistributed modulo 1. Erdős asked the reverse: for a lacunary sequence, must there exist irrational $\\theta$ where the fractional parts $\\|\\theta n_k\\|$ are NOT dense?\n\nAndrew Pollington (University of Texas, born 1951) proved this in 1979, and Bernard de Mathan (Université de Bordeaux, 1935–2013) independently proved it in 1980. Both showed that for any lacunary $A$, there exists $\\theta$ with $\\inf_k \\|\\theta n_k\\| > 0$, with a quantitative bound of order $\\varepsilon^4/\\log(1/\\varepsilon)$.\n\nSubsequent improvements came from Katznelson (2001) who connected the problem to chromatic numbers of Cayley graphs on $\\mathbb{Z}$, Akhunzhanov-Moshchevitin (2004), and Dubickas (2006). The current best bound is due to Yuval Peres and Wilhelm Schlag (2010), who achieved $\\varepsilon/\\log(1/\\varepsilon)$ using a refined probabilistic pigeonhole argument. The conjectured optimal bound is $\\Theta(\\varepsilon)$ (without the log factor), which remains open.",

@@ -56,7 +56,8 @@
     "dateAdded": "2026-04-04",
     "lineCount": 296,
     "assumptions": "0 axioms, 0 sorries. All 18 theorems fully proved from Mathlib arithmetic lemmas.",
-    "theoremCount": 19
+    "theoremCount": 19,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**Ceva's theorem** (Giovanni Ceva, 1678) provides a necessary and sufficient condition for three cevians of a triangle to be concurrent. The theorem is naturally stated using weight parameters (α, β) that encode where cevian points lie on triangle sides.\n\nA **cevian** is a line segment from a vertex of a triangle to the opposite side. If D lies on BC, E on CA, and F on AB, then cevians AD, BE, CF are concurrent iff:\n$$\\frac{BD}{DC} \\cdot \\frac{CE}{EA} \\cdot \\frac{AF}{FB} = 1$$\n\nIn the weighted formulation, D = (α·B + β·C)/(α+β) lies on BC with ratio BD:DC = β:α. The **open question** asks: what is the geometric interpretation of these weight parameters?",

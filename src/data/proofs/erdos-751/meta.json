@@ -54,7 +54,8 @@
     "axiomCount": 5,
     "lineCount": 235,
     "assumptions": "5 axioms: chromaticNumber, girth, cycleLengths, four_chromatic_minDeg, bondy_vince_theorem. 2 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**Erdos Problem #751: Cycle Lengths in Graphs**\n\nThis problem explores the structure of cycles in graphs with chromatic constraints.\n\n**Key History:**\n- Erdos posed the question about cycle length gaps in 4-chromatic graphs\n- Bondy and Vince (1998): Proved the key result about minimum degree 3\n- The result is tight: K_4 has cycles of lengths 3 and 4 (gap = 1)\n\n**Mathematical Setting:**\n- Chromatic number chi(G) = minimum colors for proper vertex coloring\n- Girth = length of shortest cycle\n- Minimum degree delta(G) = smallest vertex degree\n\n**Key Connection:**\nChromatic number and minimum degree are related: chi(G) >= delta(G)/(delta(G)-1) + 1 implies chi(G) = 4 needs delta(G) >= 3.",

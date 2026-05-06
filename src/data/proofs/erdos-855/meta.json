@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 172,
     "assumptions": "2 axioms: hensley_richards_incompatibility, straus_also_incompatible. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The Second Hardy-Littlewood Conjecture asserts that π(x+y) ≤ π(x) + π(y) for all sufficiently large x and y, where π denotes the prime counting function. Erdős described it as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood.' The conjecture suggests that the interval [1, x+y] can never contain more primes than the intervals [1, x] and [1, y] combined.\n\nThe major development came in 1973 when Hensley and Richards proved that this conjecture is incompatible with the prime k-tuples conjecture, which asserts that any admissible pattern of primes occurs infinitely often. Their proof showed that admissible tuples can be denser than the primes themselves: for large k, there exist admissible k-tuples in [0,k) with more than π(k) elements. If k-tuples holds, placing these dense tuples at the right position would violate π(x+y) ≤ π(x) + π(y).\n\nSince most number theorists believe the k-tuples conjecture is true (it is supported by extensive numerical evidence and heuristic arguments), the Second Hardy-Littlewood Conjecture is considered likely false. However, no explicit counterexample has been found despite extensive computation. Montgomery and Vaughan proved the unconditional bound π(x+y) ≤ π(x) + 2y/log(y), which is weaker but does not require any unproved hypothesis.",

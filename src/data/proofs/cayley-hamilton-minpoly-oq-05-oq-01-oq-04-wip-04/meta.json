@@ -66,7 +66,8 @@
         "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
       }
     ],
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The cyclic vector theorem for nonderogatory matrices (minpoly = charpoly) is classical, dating to Frobenius's rational canonical form (1879). The standard proof routes through the structure theorem for finitely generated modules over a principal ideal domain: K^n decomposes as a direct sum of cyclic K[X]-modules K[X]/(d_1) ⊕ … ⊕ K[X]/(d_r), and the nonderogatory hypothesis forces r = 1. As of Mathlib 4.26, this PID structure theorem has not been formalized. WIP01 sidestepped the gap with a single axiom (`nonderogatory_similar_to_companion`) capturing rational canonical form. This file (WIP04) eliminates that axiom by avoiding the structure theorem entirely: instead of decomposing K^n as a direct sum of submodules and tracking dimensions, it constructs explicit primary vectors via Bezout/CRT projections and deduces cyclicity from polynomial divisibility alone.",

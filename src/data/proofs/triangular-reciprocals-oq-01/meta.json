@@ -27,7 +27,8 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified.",
     "lineCount": 111,
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Figurate (polygonal) numbers were among the first objects studied in Greek mathematics. The Pythagoreans (6th century BC) associated geometric shapes with numbers, placing dots in triangular, square, and pentagonal arrangements. Triangular numbers $T_n = n(n+1)/2 = 1, 3, 6, 10, 15, \\ldots$ are the sums of the first $n$ positive integers. Nicomachus of Gerasa (~100 AD) gave the first systematic treatment of figurate numbers in his Introduction to Arithmetic. The sum of reciprocals of triangular numbers telescopes beautifully: $\\sum_{n=1}^\\infty 1/T_n = 2$, a result known since the 17th century. The convergence of $\\sum 1/n^2$ — the Basel problem — was posed by Pietro Mengoli (1650) and solved by Euler (1734), who computed the exact value $\\pi^2/6$. This proof extends the triangular-reciprocals gallery entry by formalizing the k-gonal generalization and proving that all figurate reciprocal sums converge by comparison with $1/n^2$.",

@@ -28,7 +28,8 @@
       "Covariance result: Cov(Xi,Xj) = -n*pi*pj",
       "Feasibility analysis for Mathlib contribution (~200-300 lines)"
     ],
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The multinomial distribution was introduced by Jakob Bernoulli in his posthumous Ars Conjectandi (1713) as a natural generalization of the binomial to multiple outcomes. Pierre-Simon Laplace further developed its theory in Théorie analytique des probabilités (1812), deriving the multinomial theorem and using it to analyze games of chance with more than two outcomes. In the 20th century, the multinomial became central to categorical data analysis, information theory (Shannon entropy for discrete distributions), and maximum likelihood estimation for categorical models. The multinomial theorem — the key algebraic identity $(p_1+\\cdots+p_k)^n = \\sum \\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i}$ — simultaneously serves as both the probability normalization proof and a combinatorial identity, making it the elegant bridge between combinatorics and probability theory in this formalization.",

@@ -22,7 +22,8 @@
     "lineCount": 265,
     "assumptions": "No axioms, no sorries. All 9 theorems fully proved. Key technique: degree_lt_wf minimality + Euclidean division (modByMonic) to establish existence and divisibility of vector minimal polynomial.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The generalized (vector) minimal polynomial μ_{M,v} arises naturally in Krylov subspace methods. For a matrix M and starting vector v, the Krylov sequence {v, Mv, M²v, ...} generates the cyclic K[X]-submodule ⟨v⟩, and μ_{M,v} is the generator of its annihilator in K[X]. This concept was made practical by Wiedemann (1986) who showed that for sparse matrices over finite fields, a single Krylov sequence suffices to compute solutions to Mx = b — the key being that μ_{M,v} divides μ_M, so the sequence terminates in ≤ deg(μ_M) ≤ n steps.",

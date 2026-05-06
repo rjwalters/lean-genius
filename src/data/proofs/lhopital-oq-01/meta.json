@@ -55,7 +55,8 @@
     "lineCount": 142,
     "assumptions": "0 sorries, 0 axioms. Fully machine-verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "L'Hôpital's rule was published in the first calculus textbook, *Analyse des Infiniment Petits* (1696) by Guillaume de l'Hôpital, though the rule was actually discovered by Johann Bernoulli, who communicated it privately. The rule states: if $f(a) = g(a) = 0$ (or both approach $\\pm\\infty$) and $f'(x)/g'(x) \\to L$ as $x \\to a$, then $f(x)/g(x) \\to L$. Students and practitioners often wonder whether the rule can be applied in reverse — if we know $f/g \\to L$, can we conclude anything about $f'/g'$? The answer is emphatically NO. The canonical counterexample — $f(x) = x + \\sin x$, $g(x) = x$ — appears in Rudin's *Principles of Mathematical Analysis* (§5.13), Apostol's *Calculus*, and most standard real analysis textbooks. It is pedagogically important because it prevents the common error of 'running L'Hôpital backwards'. This Lean 4 formalization (169 lines, 0 axioms) is the first machine-verified proof of this counterexample, extending the parent `LHopital.lean` (Wiedijk list entry #64). The proof technique — squeeze theorem for $\\sin(x)/x \\to 0$, and the two-subsequence argument for non-convergence of $1 + \\cos(x)$ — is classical and appears in virtually all real analysis courses.",

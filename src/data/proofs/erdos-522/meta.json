@@ -49,7 +49,8 @@
     "axiomCount": 1,
     "lineCount": 276,
     "assumptions": "1 axiom: KacPolynomialData.isRademacher. 0 sorries.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Random polynomials with independently identically distributed coefficients are called **Kac polynomials** after Mark Kac's pioneering 1943 paper. When the coefficients are ±1 with equal probability, they are called **Rademacher polynomials** or **Littlewood polynomials** (the latter also includes 0 as a possible coefficient).\n\nErdős and Offord (1956) proved a foundational result: random degree-n polynomials with ±1 coefficients have approximately (2/π) log n real roots on average. This was one of the first precise results in the theory of random polynomials.\n\nProblem #522 asks about roots in the complex unit disk {z : |z| ≤ 1}. The natural conjecture is that about half the roots should lie inside the disk, with R_n/(n/2) → 1 as n → ∞. The question is whether this convergence holds almost surely (for almost all sequences of random polynomials) or only in probability.\n\nYakir (2021) proved convergence in probability: lim P(|R_n - n/2| ≥ n^{9/10}) = 0. This confirms that 'most' random polynomials have about n/2 roots in the unit disk, but the stronger almost sure statement remains open.",

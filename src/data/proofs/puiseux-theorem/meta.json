@@ -54,7 +54,8 @@
     "lineCount": 471,
     "assumptions": "No axiom declarations. 5 True-stub theorems that prove trivial True placeholders instead of actual mathematical content: puiseux_theorem, puiseux_is_algebraic_closure, newton_puiseux_terminates, square_root_puiseux, cusp_parameterization.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Newton discovered the algorithm for computing fractional power series roots of polynomials in 1676. Puiseux gave the first rigorous proof in 1850 that these series provide the algebraic closure of the Laurent series field, establishing that allowing fractional exponents suffices to solve all polynomial equations over formal power series (in characteristic 0). The study of algebraic curves via local parametrization goes back to Newton who introduced the Newton polygon method to compute the branches of an algebraic curve at a singular point. The formal algebraic closure result was refined in the 20th century by Hironaka and others in connection with resolution of singularities, and the characteristic-0 hypothesis is essential: in characteristic p, the Artin-Schreier phenomenon means p-th power extensions cannot be captured by Puiseux series.",

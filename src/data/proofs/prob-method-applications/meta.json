@@ -78,7 +78,8 @@
     "lineCount": 53,
     "assumptions": "0 axioms, 0 sorries. Five theorems proved with trivial or near-trivial proofs (existential witnesses, positivity). High-girth-high-chromatic existence result (Erdős 1959) remains as a comment pending probabilistic graph formalization. Classified axiomatized: main probabilistic existence results are not yet formalized.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The probabilistic method, developed by Paul Erdos from 1947 onward, transformed combinatorics by providing non-constructive existence proofs for objects that seemed impossibly difficult to construct explicitly. This applications module brings together the four core techniques -- first moment, alteration, second moment, and the Lovasz Local Lemma -- and demonstrates them on classical problems.\n\nThe applications span the major areas of probabilistic combinatorics: Ramsey theory (lower bounds on R(k,k) and off-diagonal Ramsey numbers), graph coloring (upper bounds on chromatic number from maximum degree), hypergraph coloring (Property B and its extensions), and extremal graph theory (independent set bounds in various graph families).\n\nThese results collectively demonstrate why the probabilistic method became one of the most important tools in 20th-century mathematics. Many of the bounds proved here remained the best known for decades, and some still are. The unity of the approach is striking: the same handful of probabilistic principles yield the strongest known results across diverse combinatorial domains.",

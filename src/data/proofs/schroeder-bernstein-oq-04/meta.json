@@ -53,7 +53,8 @@
     "lineCount": 314,
     "mathlib_version": "4.26.0",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The Schroeder-Bernstein theorem (1887-1898), independently proved by Dedekind, Schroeder, and Bernstein, states that mutual injections imply a bijection. The classical proof requires excluded middle to classify elements into orbit types (A, B, or C), making it inherently non-constructive.\n\nThis raises a natural question: for which classes of sets can we avoid excluded middle? For finite types, the answer is yes — chains terminate by pigeonhole, making orbit classification decidable. This was known folklore but rarely formalized.\n\nIn Lean 4/Mathlib, the standard CBS proof (`Function.Embedding.schroeder_bernstein`) is `noncomputable` because it uses `Classical.choice` for orbit classification. Our proof demonstrates that for `Fintype` types, the classification is fully computable.",

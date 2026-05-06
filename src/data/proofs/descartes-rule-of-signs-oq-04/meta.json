@@ -66,7 +66,8 @@
     "lineCount": 495,
     "assumptions": "None — fully verified with 0 axioms and 0 sorries",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22
+    "theoremCount": 22,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "René Descartes stated his rule of signs in *La Géométrie* (1637), the appendix to the *Discours de la méthode* that founded analytic geometry. The rule bounds the number of positive real roots of a polynomial by the number of sign changes in its coefficient sequence. Descartes gave no proof — he stated the result as evident. The first rigorous proof was given by Carl Friedrich Gauss (1828) using Rolle's theorem: between consecutive roots of $p$, the derivative $p'$ has a root, so the number of roots of $p$ is bounded by the number of sign changes in the coefficients of $p'$, which equals the number of sign changes of $p$ minus 1.\n\nSandy Grabiner published a remarkable alternative proof in the *American Mathematical Monthly* (1999), showing the rule can be proved without Rolle's theorem or any calculus beyond the Intermediate Value Theorem. The key insight is purely algebraic: when a polynomial $p(x)$ is factored as $p(x) = (x - r)q(x)$ with $r > 0$, the sign variation count of $p$'s coefficients exceeds that of $q$'s by at least 1. This enables a clean induction on the number of positive roots. Grabiner's approach is more elementary and constructive than the Rolle-based proof, making it particularly suitable for formalization in Lean 4.",

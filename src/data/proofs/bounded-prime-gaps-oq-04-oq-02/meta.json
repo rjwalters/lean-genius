@@ -38,7 +38,8 @@
       "bv_from_minimal_additions (proved): BV follows from the 6 additions",
       "MinimalAddition inductive type with estimatedLines, tractability, prPriority",
       "gaussSumUnlocks, largeSieveUnlocks, vaughanIdentityUnlocks: impact lists"
-    ]
+    ],
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "The Bombieri-Vinogradov theorem (1965, independently proved by E. Bombieri and A. I. Vinogradov) is the central quantitative result on primes in arithmetic progressions. It states that primes are well-distributed in APs for almost all moduli q ≤ √x: the total error in ψ(x;q,a) summed over q ≤ √x is O(x/(log x)^A) for any fixed A. This is essentially as strong as the Generalized Riemann Hypothesis for many applications, and it is the key ingredient in the Maynard-Tao bounded prime gaps proof.\n\nAs of Mathlib v4.26.0, the infrastructure for Dirichlet characters, L-functions, and the von Mangoldt function exists, but none of the deep analytic tools (Gauss sum bounds, sieve inequalities, zero-density estimates) are formalized. This file answers the question: what is the minimal set of additions needed?",

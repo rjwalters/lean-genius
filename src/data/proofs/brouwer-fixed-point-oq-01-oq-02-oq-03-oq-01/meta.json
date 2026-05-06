@@ -69,7 +69,8 @@
     ],
     "dateAdded": "2026-05-03",
     "lineCount": 214,
-    "assumptions": "1 axiom: no_retraction_axiom (from BrouwerFixedPoint.lean — the Brouwer no-retraction theorem, which requires algebraic topology/degree theory). This file proves retraction_construction as a theorem, reducing the axiom count from 2→1 in the BFP import chain."
+    "assumptions": "1 axiom: no_retraction_axiom (from BrouwerFixedPoint.lean — the Brouwer no-retraction theorem, which requires algebraic topology/degree theory). This file proves retraction_construction as a theorem, reducing the axiom count from 2→1 in the BFP import chain.",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Brouwer's Fixed Point Theorem (1911) has several standard proof routes. The elementary route uses the No-Retraction Theorem and a geometric ray construction: given a continuous self-map f: Bⁿ→Bⁿ with no fixed point, define the retraction r(x) as the intersection of the ray from f(x) through x with the sphere Sⁿ⁻¹. This construction appears in every topology textbook (Munkres, Hatcher, etc.) but its explicit formalization requires solving a quadratic equation and proving continuous dependence of the root.\n\nBrouwerFixedPoint.lean (the parent gallery entry) axiomatizes this construction as `retraction_construction`: it states the existence of the retraction without proving it. This gallery entry eliminates that axiom by carrying out the explicit computation.",

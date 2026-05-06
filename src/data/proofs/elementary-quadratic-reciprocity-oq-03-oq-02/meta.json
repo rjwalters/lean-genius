@@ -23,7 +23,8 @@
     "lineCount": 223,
     "dateAdded": "2026-03-28",
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Carl Friedrich Gauss introduced the Legendre symbol and proved quadratic reciprocity by 1801. Carl Gustav Jacob Jacobi generalized it in 1837 to composite odd moduli, producing the Jacobi symbol. The remaining gap — even moduli, zero, and negative integers — was closed by Leopold Kronecker in 1885, who defined (a/2), (a/-1), and (a/0) via case analysis, then extended multiplicatively to produce a completely multiplicative symbol defined on all of ℤ×ℤ. The Kronecker symbol is now the canonical quadratic character in analytic number theory: for a fundamental discriminant D of a quadratic field ℚ(√D), the map n ↦ (D/n) is a primitive Dirichlet character that encodes splitting behavior of primes in ℚ(√D) via class field theory. It appears in the functional equations of Dedekind zeta functions, in the genus theory of binary quadratic forms, in the theory of modular forms and theta series, and in Hecke's treatment of L-functions attached to quadratic fields. Hardy and Wright (Chapter 6) provide the classical treatment; the modern algebraic context is developed by Neukirch in Algebraic Number Theory.",

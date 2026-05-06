@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 254,
     "assumptions": "2 axioms: crmaric_kovac_2025 (Crmarić-Kovač 2025 main theorem), hansen_transcendental (Hansen constant is transcendental over ℚ). 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #270** was posed by Erdős and Graham concerning the rationality of certain series involving products. The series Σ 1/((n+1)(n+2)⋯(n+f(n))) where f(n) → ∞ was conjectured to always be irrational.\n\n**Key Historical Developments:**\n- **1975 (Hansen):** Showed that for f(n) = n, the sum equals 1/3 + 2π/3^(5/2), which is transcendental (not just irrational).\n- **1980 (Erdős-Graham):** Formally posed the conjecture, writing \"the answer is almost surely in the affirmative if f(n) is assumed to be nondecreasing.\"\n- **2025 (Crmarić-Kovač):** Completely disproved the conjecture! They showed that for ANY positive real α, there exists f with the sum equal to α.\n\nThe disproof is striking: the conjecture asked if the sum is ALWAYS irrational, but in fact it can be ANY positive real number - rational, irrational, or transcendental.",

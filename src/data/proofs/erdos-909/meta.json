@@ -57,7 +57,8 @@
     "axiomCount": 3,
     "lineCount": 125,
     "assumptions": "3 axioms: coveringDimension, rational_hilbert_example, anderson_keisler_theorem. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Covering dimension (Lebesgue dimension) is a fundamental topological invariant: dim(X) ≤ n means every finite open cover of X admits a refinement of order at most n+1. For well-behaved spaces, the product inequality dim(X × Y) ≤ dim(X) + dim(Y) holds with equality — for example, dim([0,1]^n) = n and dim([0,1]^n × [0,1]^m) = n+m. Erdős asked whether this equality can fail, and Anderson and Keisler (1967) gave the definitive answer: for every n ≥ 1, there exist separable metric spaces S_n with dim(S_n) = n and dim(S_n × S_n) = n, the most extreme possible violation. For n = 1, the classical example is ℓ²(ℚ) — rational points in Hilbert space — a countable dense totally disconnected subset of ℓ² with covering dimension 1 whose square also has dimension 1. This was known earlier through work of Erdős and Sierpiński. The general construction uses techniques from descriptive set theory (absolute Borel sets, decomposition theorems) to select subsets of n-dimensional spaces whose open covers interact efficiently in the product.",

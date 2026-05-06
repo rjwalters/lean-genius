@@ -70,7 +70,8 @@
     "lineCount": 215,
     "theoremCount": 10,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The limit $\\lim_{n \\to \\infty} (1 + x/n)^n = e^x$ is one of the most fundamental results in analysis, connecting discrete compound growth to continuous exponential growth. **Leonhard Euler** explored this limit extensively in *Introductio in analysin infinitorum* (1748), where he defined $e$ as the value of $(1+1/n)^n$ as $n \\to \\infty$. The idea that compound interest converges to exponential growth was known earlier to **Jacob Bernoulli** (1683), who studied the problem of continuous compounding. The rigorous proof requires the derivative of the logarithm at 1 — that $\\log(1+h)/h \\to 1$ as $h \\to 0$ — combined with the continuity of the exponential function. This result is surprisingly absent from Mathlib v4.26.0 despite being a standard textbook theorem, making it a natural contribution target.",

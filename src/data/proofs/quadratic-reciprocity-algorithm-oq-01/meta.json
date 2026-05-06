@@ -51,7 +51,8 @@
         "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
       }
     ],
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Law of Quadratic Reciprocity, first proved by Gauss in 1796 (published in Disquisitiones Arithmeticae, 1801), is often called the 'golden theorem' of number theory. Gauss himself gave six proofs. The law states that for distinct odd primes $p, q$: $(p/q)(q/p) = (-1)^{(p-1)/2 \\cdot (q-1)/2}$. Combined with the two supplementary laws ($(-1/p) = (-1)^{(p-1)/2}$ and $(2/p) = (-1)^{(p^2-1)/8}$), this yields a GCD-like algorithm for computing Legendre and Jacobi symbols. The algorithm mirrors the Euclidean algorithm: at each step, either extract a factor of 2 (applying the second supplementary law), or swap numerator and denominator (applying reciprocity), reducing the first argument. Jacobi extended the symbol to composite odd moduli in 1837, and the resulting Jacobi symbol computation is used in primality testing (Solovay-Strassen test) and cryptographic applications. This formalization answers the open question from the parent proof: can the full computation be implemented as a verified recursive function with a termination proof in Lean 4?",

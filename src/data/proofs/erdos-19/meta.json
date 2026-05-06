@@ -63,7 +63,8 @@
       "Absorbing method (for the 2021 proof)"
     ],
     "assumptions": "4 axioms: chromaticNumber, kang_kelly_kuhn_methuku_osthus, efl_conjecture_resolved, chromaticIndex. Structure fields are object definitions, not assumptions.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The Erdős-Faber-Lovász Conjecture arose from a conversation at a party in Boulder, Colorado in September 1972. Three prominent mathematicians — Paul Erdős, Vance Faber, and László Lovász — conjectured that any edge-disjoint union of n copies of the complete graph K_n can be properly colored with just n colors. Erdős offered a $500 prize for a proof or disproof.\n\nThe conjecture resisted proof for decades despite its simple statement. Hindman verified it for n < 10 by exhaustive analysis. The first major breakthrough came in 1992, when Jeff Kahn proved χ(G) ≤ (1 + o(1))n — the chromatic number is asymptotically n. Kahn won Erdős's $100 consolation prize for this result, and his explicit bound was χ(G) ≤ n + n^{1-1/51}.\n\nThe full resolution came in 2021 when Kang, Kelly, Kühn, Methuku, and Osthus proved the conjecture for all sufficiently large n using the absorbing method. This powerful technique — also used to resolve the Ringel conjecture around the same time — works by finding a small absorbing structure, greedily coloring most vertices, then using absorption to handle the remainder. Combined with Hindman's small cases, the conjecture is now fully resolved.",

@@ -41,7 +41,8 @@
     "lineCount": 399,
     "assumptions": "4 axioms: kolmogorov_arnold_theorem, no_radical_solution_septic, vitushkin_smooth_obstruction, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "In 1900, Hilbert asked whether the roots of the general degree-7 polynomial equation could be expressed using continuous functions of only two variables. The Bring-Jerrard form reduces the septic to three essential parameters, so Hilbert conjectured that functions of three variables are genuinely necessary.\n\nThe answer came as a complete surprise: Kolmogorov (1956) and Arnold (1957) proved that not only can the septic be solved with two-variable functions, but ANY continuous function of n variables can be expressed using only ONE-variable functions!\n\nThis stunning result completely disproved Hilbert's conjecture. However, for smooth (differentiable) functions, Vitushkin showed that Hilbert's intuition was correct - some smooth functions genuinely require more variables.",

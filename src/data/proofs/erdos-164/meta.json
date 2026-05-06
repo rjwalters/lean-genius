@@ -54,7 +54,8 @@
     "axiomCount": 4,
     "lineCount": 153,
     "assumptions": "4 axioms: erdos_convergence, primes_sum_value, lichtman_theorem, and 1 more. See Lean source for complete statements.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős proved in 1935 that for any primitive set A ⊆ ℕ (where no element divides another), the sum Σ_{n ∈ A} 1/(n log n) converges. This was a foundational result in the study of primitive sets, establishing that they are \"thin\" in a precise analytic sense.\n\nIn 1976, Erdős conjectured that this sum is maximized when A is the set of all prime numbers, with the prime sum Σ_p 1/(p log p) ≈ 1.6366. He repeated this conjecture in 1986. The intuition is that primes are the \"atoms\" of multiplicative number theory — they form the most natural primitive set.\n\nJared Lichtman proved the conjecture in 2023 (arXiv:2202.02384), showing not only that the primes maximize the sum but that they are the unique maximizer. The proof uses a delicate comparison argument exploiting the multiplicative structure of the integers. This resolved one of the most natural questions about primitive sets that had remained open for nearly 50 years.",

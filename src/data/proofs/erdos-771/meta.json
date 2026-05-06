@@ -81,7 +81,8 @@
     "axiomCount": 2,
     "lineCount": 244,
     "assumptions": "2 axioms: erdos_graham_lower_bound, alon_freiman_upper_bound. 7 sorries.",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 16
   },
   "overview": {
     "historicalContext": "**Erdos Problem #771: Subsets Avoiding a Given Sum**\n\n**The Problem:**\nGiven n, what is the largest set S subset {1,...,n} such that for ANY prescribed target m, no nonempty subset of S sums to m? The function f(n) measures this worst-case avoidance capacity. Erdos and Graham conjectured f(n) = (1/2+o(1))n/log n.\n\n**The Lower Bound (Erdos-Graham):**\nFor any target m, take S = {multiples of p in [n]} where p is the smallest prime not dividing m. Every subset sum of S is divisible by p, but m is not, so S avoids m. The size |S| = floor(n/p). By the prime number theorem, the smallest prime not dividing m is at most (2+o(1))log m, giving |S| >= (1/2+o(1))n/log n. Bertrand's postulate guarantees such a prime exists.\n\n**The Upper Bound (Alon-Freiman, 1988):**\nThe clever target: choose m = lcm{1,...,s} where s is maximal with m small enough. By PNT, lcm{1,...,s} ~ e^s. Any set S larger than (1/2+o(1))n/log n must contain a nonempty subset summing to some multiple of each integer in {1,...,s}, which forces a subset sum equal to m.\n\n**Resolution:**\nThe conjecture is TRUE: f(n) = (1/2+o(1))n/log n. The constant 1/2 comes from the prime number theorem: the density of primes near x is 1/log x, so the smallest prime not dividing any given m is about 2 log m.\n\n**The Lean formalization** has 7 sorries (characterization of f, prime multiples properties, special cases, leading constant convergence, and the final epsilon-delta bridge). The structural framework is complete with the key axioms for the lower and upper bounds.",

@@ -40,7 +40,8 @@
     "lineCount": 386,
     "assumptions": "4 axioms: computeMonodromy (monodromy computation function), plemelj_theorem_irreducible, bolibrukh_counterexample, realization_criterion. No sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Hilbert's 21st Problem (1900) asks whether a Fuchsian system of linear ODEs always exists with prescribed singular points and monodromy group. The question has roots in Riemann's 1857 investigation of hypergeometric equations and Schwarz's 1873 work on monodromy groups of the hypergeometric equation.\n\nJosip Plemelj claimed a complete positive solution in 1908, and his work was widely accepted for over 80 years. However, in 1989, Andrey Bolibrukh stunned the mathematical community by discovering counterexamples: reducible monodromy representations with 4 singular points and dimension 3 that cannot be realized by any Fuchsian system. The problem thus has a nuanced resolution: YES for irreducible representations (Plemelj), NO in general (Bolibrukh). The full characterization involves the Deligne-Malgrange category and conditions on associated vector bundle splitting types.",

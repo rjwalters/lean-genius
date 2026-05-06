@@ -49,7 +49,8 @@
       "Euclidean domain structure (Mathlib)",
       "GCD and divisibility in commutative rings"
     ],
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Bézout's identity (1764) states that for integers a, b, there exist integers x, y with ax + by = gcd(a, b). Named after Étienne Bézout, who proved it in *Théorie générale des équations algébriques* (1764), though special cases were known to Bachet de Méziriac (1624) and Euler. The question of which algebraic structures support this identity requires understanding the ring-theoretic hierarchy: UniqueFactorizationDomains (UFDs), EuclideanDomains, and Bézout domains. The striking counterexample ℤ[X] — a UFD where gcd(2, X) = 1 yet 1 ∉ {2f + Xg | f,g ∈ ℤ[X]} — shows UFDs are insufficient: the extended Euclidean algorithm requires EuclideanDomain structure. This Lean 4 formalization (139 lines, 0 axioms) proves the complete equivalence ∃ x y, ax+by=c ↔ gcd(a,b)|c for any Euclidean domain.",

@@ -72,7 +72,8 @@
     ],
     "lineCount": 242,
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Dvoretzky posed this problem in 1956, asking for a characterization of when random arcs on a circle provide complete coverage. Kahane (1959) showed a_n = (1+c)/n covers with probability 1. Erdős (unpublished) proved a_n = 1/n is the critical case: it covers, but a_n = (1-c)/n fails. Shepp (1972) gave the complete answer via the elegant criterion Σ exp(S_n)/n² = ∞, where S_n is the partial sum of arc lengths. The random coverage problem connects to the Poisson process on the circle and to Borel-Cantelli type arguments; the logarithmic threshold a_n ~ 1/n is a one-dimensional analogue of the threshold for covering a d-dimensional cube, where a_n ~ (d log n)/n is required, as proved by Flajolet, Grabner, Kirschenhofer, and Prodinger in 1993.",
@@ -176,5 +177,6 @@
       "description": "Related Erdős problem sharing themes: number-neighbor"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "definitionCount": 4
 }

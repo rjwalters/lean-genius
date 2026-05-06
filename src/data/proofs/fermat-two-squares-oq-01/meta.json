@@ -44,7 +44,8 @@
     "dateAdded": "2026-03-19",
     "lineCount": 254,
     "assumptions": "0 axioms, 0 sorries. Core results (Lagrange four-squares theorem, Fermat two-squares theorem) from Mathlib; original work is the sum-of-two-squares infrastructure.",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The four-squares problem has ancient roots. Diophantus of Alexandria (c. 250 CE) observed that certain integers require four squares, and Bachet de Meziriac conjectured in 1621 that four squares always suffice. Fermat claimed a proof around 1636 but never published one. Euler worked on the problem for over 40 years, proving the crucial four-square identity in 1748 (which shows sums of four squares are closed under multiplication) but could not complete the descent argument for primes.\n\nIt was Joseph-Louis Lagrange who finally proved the theorem in 1770, combining Euler's identity with a clever descent: for each prime $p$, one first finds $m$ with $0 < m < p$ and $mp$ a sum of four squares (using quadratic residues), then descends on $m$ until $m = 1$. This argument was simplified by Euler himself in 1773.\n\nThe deeper algebraic structure was not understood until Hamilton's discovery of quaternions in 1843. Euler's identity is precisely the statement $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for quaternion integers. Hurwitz (1896) later showed that the Hurwitz quaternions (allowing half-integer components) form a Euclidean domain, giving a cleaner proof. The Frobenius theorem (1877) — that the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$, $\\mathbb{C}$, and $\\mathbb{H}$ — explains why product identities exist for 1, 2, and 4 squares but not 3.",

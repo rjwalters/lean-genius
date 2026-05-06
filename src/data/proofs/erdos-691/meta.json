@@ -25,7 +25,8 @@
     "lineCount": 173,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "The study of sets of multiples dates to the 1930s with Davenport and Erdős, who proved that every set of multiples has a natural density (the Davenport-Erdős theorem). Felix Behrend investigated when this density equals 1, leading to the concept of 'Behrend sequences'. For pairwise coprime sets A (with all elements > 1), the classical result states that A is Behrend iff Σ 1/a = ∞. This follows from inclusion-exclusion: the density of integers not divisible by any of a₁,...,aₖ is exactly ∏(1 - 1/aᵢ) when the aᵢ are coprime, and this product vanishes iff the reciprocal sum diverges. Erdős asked for a general characterization without the coprimality assumption—a much harder problem since inclusion-exclusion becomes non-multiplicative when elements share common factors. Tenenbaum (1996) found a sharp threshold for lacunary block sequences: with block widths η_k = (k+1)^{-β} and geometrically growing positions, the sequence is Behrend iff β < log 2 ≈ 0.693. This unexpected threshold (not at β = 1 where Σ η_k diverges) reveals that the Behrend property depends on subtle interactions between block positions and widths. The general characterization remains one of the central open problems in multiplicative number theory.",

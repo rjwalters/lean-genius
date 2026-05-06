@@ -30,7 +30,8 @@
         "relationship": "Proves the budan_upper_bound_axiom from OQ-02"
       }
     ],
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The Budan-Fourier theorem (1807/1820) predates and generalizes Descartes' Rule. François Budan de Boislaurent (1807) and Joseph Fourier (1820) independently proved that the number of real roots of a polynomial p in a half-open interval (a,b] is bounded by V_p(a) - V_p(b), where V_p(x) counts sign variations in the sequence (p(x), p'(x), p''(x), ..., p^(n)(x)). Descartes' Rule is the special case a=0, b=∞ for polynomials with non-negative coefficients. The theorem was central to 19th-century root isolation algorithms and remains the foundation of modern computer algebra systems' polynomial root isolation routines (e.g., Vincent's theorem, Uspensky's algorithm, the VCA/VAS algorithms). A complete Lean formalization requires connecting the Budan-Fourier sign-variation infrastructure from OQ-02 with Rolle's theorem and strong induction — an estimated 240-410 lines of work.",

@@ -54,7 +54,8 @@
     ],
     "assumptions": "0 axioms, 0 sorries. All q-analog definitions built from scratch. Cyclotomic factorization of q-numbers from Mathlib; all else original.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 21
+    "theoremCount": 21,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Gauss introduced q-binomial coefficients (Gaussian binomial coefficients) in 1808 while studying the number of subspaces of a vector space over a finite field. The q-binomial [n choose k]_q is a polynomial in q that counts k-dimensional subspaces of F_q^n, and specializes to the ordinary C(n,k) at q = 1.\n\nKummer's theorem (1852) states that v_p(C(n,k)) equals the number of carries when adding k and (n-k) in base p. The q-analog lifts this from integers to polynomials: the q-binomial factors as a product of cyclotomic polynomials, with exponents given by carry counts in ALL bases d >= 2, not just prime bases. This was studied by Konvalinka and Pak (2007) among others.",

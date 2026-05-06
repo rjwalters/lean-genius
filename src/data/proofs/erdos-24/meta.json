@@ -57,7 +57,8 @@
       "Regularity method"
     ],
     "assumptions": "4 axioms: balancedBlowupC5_triangleFree, balancedBlowupC5_count, grzesik_hatami_theorem, countCycles. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #24, proposed in 1984, asks for the maximum number of 5-cycles (pentagons) in a triangle-free graph. The problem remained open for nearly three decades.\n\nEarly progress came from Győri, who proved an upper bound of 1.03n^5, later improved by Füredi. The breakthrough came in 2012 when Grzesik and independently Hatami, Hladký, Král, Norine, and Razborov proved the sharp bound using Razborov's flag algebras method.\n\nThe extremal graph is the balanced blow-up of C5: partition 5n vertices into 5 groups of n each, and connect groups according to the pentagon pattern. This construction achieves exactly n^5 copies of C5.\n\nErdős also asked a more general question: for odd r >= 5, if a graph on rn vertices has girth r (smallest odd cycle has length r), is the number of r-cycles at most n^r? This remains open for r > 5.",

@@ -22,7 +22,8 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries. All theorems (heat kernel positivity, decay, Wilson loop area law, SU(2) string tension, partition function bounds) are proved from definitions using Mathlib tactics.",
     "lineCount": 308,
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Yang-Mills theory was introduced by Chen-Ning Yang and Robert Mills in 1954 as a non-abelian generalization of Maxwell's electromagnetism, using SU(2) gauge symmetry to model the nuclear force. The theory became the foundation of the Standard Model, but its quantization remained poorly understood for decades. In two spacetime dimensions, Alexander Migdal (1975) discovered that Yang-Mills theory is exactly solvable via a recursion relation on the lattice: the partition function decomposes into a product of heat kernels, one per plaquette, with each kernel a sum over irreducible representations weighted by $e^{-C_2 g^2 A}$. Edward Witten (1991) gave an elegant continuum treatment using the heat equation on the gauge group, showing that the 2D theory is a topological field theory in disguise — its observables depend only on the area enclosed by loops, not their shape. Ambar Sengupta (1997) provided rigorous mathematical foundations for Yang-Mills theory on compact surfaces. The four-dimensional version remains the central unsolved problem of mathematical physics: the Clay Mathematics Institute's Millennium Prize (2000) asks to prove that 4D Yang-Mills theory has a positive mass gap, with a prize of $1,000,000 for a solution.",

@@ -26,7 +26,8 @@
     "assumptions": "5 axioms: extremalHypergraph, ruzsa_szemeredi_theorem, ex63_upper_bound, ex63_lower_bound, roth_r3. Structure fields are object definitions, not assumptions.",
     "lineCount": 237,
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Brown, Erdős, and Sós in 1973 as part of their systematic study of extremal hypergraph problems. The (6,3)-problem sits within the broader Brown-Erdős-Sós conjecture (1973), which posits that f^(3)(n; k+3, k) = o(n²) for all k ≥ 3 — that is, k hyperedges spanning at most k+3 vertices must occur subquadratically often. The k=3 case (asking about 3 edges on 6 vertices) became known as the (6,3)-problem and was the first non-trivial case to be resolved.\n\nImre Ruzsa and Endre Szemerédi solved it in 1978 using Szemerédi's regularity lemma (published 1975), which partitions a graph's vertices into roughly equal parts with controlled edge densities between them. Their key tool was the Triangle Removal Lemma: a graph with few triangles (o(n³)) can be made triangle-free by removing few edges (o(n²)). Applying this to a cleverly constructed auxiliary graph gives the subquadratic bound. The tightness is established by Behrend's 1946 construction of large 3-AP-free sets, which Ruzsa translated into large (6,3)-free hypergraphs. The full Brown-Erdős-Sós conjecture was finally proved by Delcourt and Postle in 2024 using absorption methods.",

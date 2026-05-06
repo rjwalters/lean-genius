@@ -51,7 +51,8 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The power mean inequality — that $M_r(z,w)$ is monotone increasing in $r$ — traces to Cauchy's 1821 proof of the AM-GM case ($r = 1$ vs $r = 0$) in the *Cours d'analyse*. The full generalization to arbitrary exponents $r$ was established by Schur (1923) and popularized in Hardy, Littlewood, and Pólya's *Inequalities* (1934, Theorem 16). The classical proof uses Jensen's inequality for the convex function $x \\mapsto x^{s/r}$ when $r$ and $s$ have the same sign, but this approach breaks down when $r < 0 < s$ because the function changes convexity across zero. The limiting case $M_0 = \\text{GM}$ requires L'Hôpital's rule (proved in OQ-02). This file closes the crossing-zero gap using a direct AM-GM argument that avoids convexity entirely, instead reducing to the single universal inequality $\\text{GM}^r \\le \\sum w_i z_i^r$.",

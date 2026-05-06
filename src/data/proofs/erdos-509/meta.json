@@ -62,7 +62,8 @@
     "axiomCount": 2,
     "lineCount": 199,
     "assumptions": "2 axioms: cartan_bound (Cartan bound on polynomial level set), pommerenke_bound (Pommerenke bound). 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #509: Covering Polynomial Sublevel Sets with Discs**\n\nThis problem, posed by Erdős in 1961, asks about the geometric efficiency of covering the sublevel set {z ∈ ℂ : |f(z)| ≤ 1} of a monic polynomial f(z) with closed discs whose radii sum to at most 2. The question sits at the intersection of complex analysis, potential theory, and geometric covering theory.\n\n**Historical Development:**\n- **1928:** Henri Cartan proved the first general bound: total radius 2e ≈ 5.44 always suffices, using potential-theoretic methods related to his work on holomorphic function systems.\n- **1959:** Pommerenke showed that when the sublevel set is connected, the bound 2 is achievable, solving the problem for this special case.\n- **1961:** Pommerenke improved the general bound to 2.59, getting closer to the conjectured optimum.\n- **1974:** Halász further studied the problem and its connections to polynomial root distribution.\n\n**Current Status:**\nThe conjecture that 2 always suffices remains OPEN. The polynomial z² − 1, whose sublevel set has two components centered at ±1 each requiring radius 1, shows that 2 is sometimes necessary. Closing the gap between 2 and 2.59 is a major challenge in geometric function theory.",

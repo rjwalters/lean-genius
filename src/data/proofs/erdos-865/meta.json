@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 171,
     "assumptions": "2 axioms: threshold (f_k(N) threshold function definition), erdos_865_summary (5/8 lower bound and CES upper bound results). 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #865 asks about the minimum density required to guarantee three elements whose pairwise sums all belong to the set. Specifically: if A ⊆ {1,...,N} has at least (5/8)N + C elements, must there exist distinct a, b, c ∈ A with a+b, a+c, b+c ∈ A?\n\nThe problem originates from Choi, Erdős, and Szemerédi (1975), who proved the upper bound f_k(N) ≤ (2/3 - ε_k)N for all k ≥ 3. Erdős and Sós later conjectured the exact threshold f_k(N) ~ (1/2)(1 + Σ 1/4^r)N, which for k=3 gives the 5/8 threshold. Famously, Erdős forgot about the 1975 paper when posing the problem again.\n\nThe construction [N/8, N/4] ∪ [N/2, N] shows that 5/8 is optimal: it has size approximately 5N/8 but contains no pairwise sum triple, because cross sums between the two intervals fall in the gap (N/4, N/2) which is excluded. The sharp 5/8 threshold remains unproven as of 2025.",

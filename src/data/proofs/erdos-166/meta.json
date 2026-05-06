@@ -73,7 +73,8 @@
     "lineCount": 269,
     "assumptions": "2 axioms: aks_upper_bound, mattheus_verstraete. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős offered $250 for proving that $R(4,k)$ grows like $k^3$ up to polylogarithmic factors. Spencer (1977) gave the first non-trivial lower bound $R(4,k) \\geq c(k \\log k)^{5/2}$ using the probabilistic method with dependent random choices. Ajtai, Komlós, and Szemerédi (1980) established the complementary upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ using a greedy algorithm, confirming that $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ for some $\\alpha$. For 43 years, closing this gap—improving the lower bound exponent from $5/2$ on $(k\\log k)$ to cubic in $k$—resisted all probabilistic approaches. The breakthrough came in 2023 when Sam Mattheus and Jacques Verstraete proved $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry: $K_4$-free graphs built from incidence structures of classical polar spaces over $\\mathbb{F}_q$. This earned them the $250 Erdős prize and demonstrated that algebraic methods can succeed where probabilistic ones plateau.",

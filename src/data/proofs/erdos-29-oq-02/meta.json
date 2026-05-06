@@ -44,7 +44,8 @@
       "Finset cardinality"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #29 asks for explicit economical additive bases — sets A ⊆ ℕ with A+A = ℕ and minimal density. The lower bound |A ∩ [0,N]| ≥ √(N+1) (equivalently |A ∩ [0,N]|² ≥ N+1) is elementary but foundational: it shows that any additive basis must have at least Ω(√N) elements in [0,N]. The matching upper bound — bases achieving density O(√N) — is provided by Sidon sets (B₂ sequences), first constructed by Sidon and later by Erdős and Turán (1941) in the context of their work on additive bases. The Erdős–Turán conjecture (a major open problem) asks whether every additive basis has bounded representation function, which would sharpen these density bounds. This gallery entry was motivated by an Aristotle proof search that discovered a counterexample to the original formalization: the set A = {0,1} ∪ {n ≥ 3} is a basis with |A ∩ [1,2]| = 1 < √2. The fix was shifting from the interval [1,N] to [0,N], correctly accounting for 0 as a basis element.",

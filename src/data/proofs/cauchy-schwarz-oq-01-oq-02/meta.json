@@ -54,7 +54,8 @@
     "lineCount": 262,
     "assumptions": "No axioms. All results proved from Mathlib's inner product space API.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Jørgen Pedersen Gram (1883) introduced the orthogonalization procedure in his study of least-squares approximations to real functions, publishing in Crelle's Journal (*J. reine angew. Math.*). Erhard Schmidt (1907) independently rediscovered and generalized the method in his foundational work on integral equations (*Math. Ann.*), extending it to infinite-dimensional function spaces. The process converts any linearly independent set into an orthogonal set by iteratively subtracting projections, and it became a cornerstone of functional analysis and numerical linear algebra.\n\nThe connection to Cauchy-Schwarz is fundamental: the projection coefficient $\\langle v, u \\rangle / \\langle v, v \\rangle$ is bounded in absolute value by $\\|u\\|/\\|v\\|$, which is precisely the Cauchy-Schwarz inequality divided by $\\|v\\|^2$. This bound ensures numerical stability — the projection never amplifies norms. In practice, the classical Gram-Schmidt algorithm suffers from floating-point error accumulation, leading Åke Björck (1967) and others to develop the modified Gram-Schmidt variant with better numerical properties. Both variants rely on the same Cauchy-Schwarz projection bound at their core.",

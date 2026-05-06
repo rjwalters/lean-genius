@@ -72,7 +72,8 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib primitives and verified by native_decide for concrete cases.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The detection probability of casting out nines has been understood informally since the method's widespread adoption: if you make a single-digit transcription error, casting out nines catches it unless the error happens to be a multiple of 9. For base 10, the only undetectable single-digit substitution is swapping 0 and 9 (or vice versa), giving a detection rate of 8/9 ≈ 89%. This quantitative analysis generalizes: for any base b and modulus d = b−1, the detection rate is (d−1)/d.\n\nThis formalization makes the counting argument fully rigorous. The key insight is that detection depends only on the perturbation residue mod d (not the digit position), because b^k ≡ 1 (mod d). Among the d possible perturbation magnitudes {1, ..., d}, exactly one (d itself) is divisible by d and escapes detection.",

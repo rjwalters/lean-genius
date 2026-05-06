@@ -71,7 +71,8 @@
     "axiomCount": 3,
     "lineCount": 181,
     "assumptions": "3 axioms: dirac_erdos_theorem (Dirac-Erdős — f(n,k,l) ≤ n²/4+1 when l > ex(k)), f_nondecreasing (f is non-decreasing in l for fixed k and n), turanDensityExists (Turán density limit exists for any graph H). 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "**Erdős Problem #766: Extremal Numbers and Graph Density**\n\nThis problem from Erdős's 1964 paper [Er64c] lies at the heart of extremal graph theory, the study of how graph structure constrains edge density.\n\n**Historical Background:**\n- **Turán (1941):** Foundational theorem determining ex(n;K_r) exactly\n- **Dirac & Erdős:** Independently proved the bipartite threshold result\n- **Kővári-Sós-Turán (1954):** ex(n;K_{s,t}) = O(n^{2-1/s}) for complete bipartite\n\n**The Central Question:**\nThe function f(n;k,l) takes the MINIMUM Turán number over all graphs with fixed vertex and edge counts. This inverts the usual question: instead of asking \"how many edges can we have avoiding one specific graph?\", we ask \"over all graphs with these parameters, which is easiest to avoid?\"\n\n**Significance:**\nUnderstanding f reveals how the \"shape\" of a forbidden graph (not just its size) affects extremal numbers. The transition at l = k²/4 marks where graphs must contain odd cycles, fundamentally changing their extremal behavior.",

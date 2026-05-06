@@ -68,7 +68,8 @@
     "axiomCount": 3,
     "lineCount": 230,
     "assumptions": "3 axioms: regularity_lower_bound, above_threshold_linear, below_threshold_subpolynomial. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**Erdos Problem #80**\n\nThis problem concerns 'books' in graphs - edges that are shared by many triangles.\n\n**Key History:**\n- Erdos & Rothschild: Posed the original problem about book size in dense triangle-saturated graphs\n- Alon-Trotter: Proved f_c(n) << n^{1/2} for c < 1/4\n- Edwards, Khadziivanov-Nikiforov (1979): Proved f_c(n) >= n/6 for c > 1/4\n- Fox-Loh (2012): Disproved Erdos's polynomial growth conjecture\n\n**The Phase Transition:**\nA remarkable threshold occurs at c = 1/4:\n- Above 1/4: Linear books guaranteed\n- Below 1/4: Only subpolynomial growth known",

@@ -58,7 +58,8 @@
     "axiomCount": 3,
     "lineCount": 182,
     "assumptions": "3 axioms: erdos_1946_o1 (Erdős 1946 — additive f with o(1) differences implies f = c·log), wirsing_theorem (Wirsing 1970 — bounded differences imply f = c·log + O(1)), wirsing_constant_unique (uniqueness of the Wirsing constant). 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős Problem #491 asks whether additive arithmetic functions with bounded consecutive differences must be essentially logarithmic. An additive function f: ℕ → ℝ satisfies f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. The natural logarithm is the prototypical example. Erdős posed the question: if |f(n+1) - f(n)| < c for some constant c, must f(n) = c'·log(n) + O(1)?\n\nErdős himself proved two weaker results in 1946 that hinted at the answer. First, if f(n+1) - f(n) = o(1) (differences tend to zero), then f(n) = c·log(n) exactly — no O(1) error is needed. Second, if f is monotone (f(n+1) ≥ f(n) for all n), then again f(n) = c·log(n) with c ≥ 0. These results showed that mild regularity conditions on additive functions force logarithmic behavior.\n\nWirsing (1970) resolved the full conjecture affirmatively. Under the weaker hypothesis of merely bounded differences (not tending to zero), f(n) = c'·log(n) + O(1) where the O(1) error cannot generally be removed. The result demonstrates that the logarithm is essentially the unique additive function with bounded consecutive differences, up to scaling and bounded perturbation. This connects to the broader theme in analytic number theory that additive functions are determined by their values on prime powers.",

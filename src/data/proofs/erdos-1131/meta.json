@@ -27,7 +27,8 @@
     "theoremCount": 31,
     "lineCount": 1076,
     "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 0 sorries — all supporting lemmas fully proved: chebyshev_interp, chebyshev_sq_expansion, dct_offdiag, integral_cos_substitution, integral_chebyshev_sq, chebyshev_integral_trace.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem has roots in Fejér's 1932 work on optimal interpolation. Fejér proved that the zeros of the Legendre polynomial P_n minimize the maximum of the Lebesgue function Λ_n(x) = Σ|l_k(x)| over [-1,1]. Erdős naturally asked whether Legendre nodes also minimize the L² integral I = ∫Σ|l_k(x)|² dx. Szabados (1966, Acta Math. Acad. Sci. Hungar.) disproved this for n > 3, showing that slightly perturbed nodes give a smaller integral. Erdős then conjectured min I = 2 - (1+o(1))/n. The best bounds are due to Erdős, Szabados, Varma, and Vértesi (1994, Studia Sci. Math. Hungar.): they proved 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1). The upper bound comes from Legendre nodes (I = 2 - 2/(2n-1) for P_n zeros), while the lower bound uses the partition of unity and Cauchy-Schwarz. Turetskii (1940) initiated the study of Lebesgue constants for specific node systems, and Kilgore-de Boor-Pinkus (1978) proved the existence of optimal L∞ interpolation nodes — the L² analog remains open.",

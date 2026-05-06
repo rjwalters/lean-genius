@@ -68,7 +68,8 @@
     ],
     "lineCount": 232,
     "assumptions": "2 axioms: cochromaticNumber, aks_theorem. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erdős and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound √(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques. Their proof exploits the fact that any graph on n vertices contains a homogeneous set (clique or independent set) of size Ω(log n) by Ramsey's theorem; iterating this extraction yields a cochromatic coloring of size O(n / log n), and applying this to subgraphs of a graph with chromatic number m gives a subgraph with cochromatic number Ω(m / log m). The tightness comes from the complete graph K_m, which has ζ(K_m) = 1 but requires m colors for a proper coloring.",

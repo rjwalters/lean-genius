@@ -44,7 +44,8 @@
     "lineCount": 789,
     "assumptions": "No axioms. Fully verified — all sorries eliminated including the generalized counting formula via binomial coefficient identities.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 57
+    "theoremCount": 57,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "The classical Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes ($p > q$), the probability that A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the **reflection principle** (1887), mapping unfavorable sequences to their reflections across the axis. W.A. Whitworth independently discovered the result using a direct combinatorial argument. In 1947, Aryeh Dvoretzky and Theodore Motzkin proved the **Cycle Lemma** in the *Proceedings of the National Academy of Sciences*, which gives a far more general and elegant proof: for any integer sequence with positive sum $S$ and length $n$, exactly $S$ of its $n$ cyclic rotations have all positive prefix sums. This immediately implies the ballot theorem and its $k$-fold generalization. The cycle lemma has since found applications in lattice path enumeration, queueing theory, and the analysis of random trees (Raney's theorem).",

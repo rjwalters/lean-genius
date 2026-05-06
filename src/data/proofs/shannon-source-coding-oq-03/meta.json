@@ -54,7 +54,8 @@
             "Product of marginal probabilities (i.i.d. model)",
             "Fintype.prod_sum (bigoperators sum-product exchange)"
         ],
-        "mathlib_version": "4.26.0"
+        "mathlib_version": "4.26.0",
+        "definitionCount": 7
     },
     "overview": {
         "historicalContext": "The Asymptotic Equipartition Property (AEP) is the information-theoretic analogue of the Law of Large Numbers. Shannon (1948) observed informally that for i.i.d. sources, -1/n log P(X₁,...,Xₙ) → H(X) in probability, concentrating probability mass on roughly 2^(nH) 'typical' sequences. McMillan (1953) gave the first rigorous proof (showing convergence almost surely), and Breiman (1957) extended it to ergodic sources. The finitary version via Chebyshev's inequality provides explicit concentration rates.",

@@ -65,7 +65,8 @@
     "axiomCount": 3,
     "lineCount": 367,
     "assumptions": "3 axiom(s), 0 sorries remain.(s). isometry2D_surjective (Mazur-Ulam consequence: isometries of R^2 are surjective), h (counting function), h_pos (existence of optimal configs for n>=2).",
-    "theoremCount": 23
+    "theoremCount": 23,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Erdős Problem #103, first appearing in his 1994 collection \"Some of my favourite unsolved problems,\" asks whether h(n) → ∞, where h(n) counts the number of incongruent sets of n points in ℝ² that minimize diameter subject to pairwise distances ≥ 1. The problem connects to the classical theory of optimal point configurations studied by Fejes Tóth (1953) and to modern questions about the structure of extremal packings. The parent formalization contained a subtle logical error: it claimed that \"h unbounded\" and \"h tends to infinity\" are equivalent, but this requires monotonicity of h, which is itself an interesting open structural question about how the space of optimal configurations evolves as the number of points increases.",

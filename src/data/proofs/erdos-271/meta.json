@@ -58,7 +58,8 @@
     "axiomCount": 3,
     "lineCount": 336,
     "assumptions": "3 axioms: a1_characterization (characterization of A₁ sequences), odlyzko_stanley_dichotomy_conjecture (Odlyzko-Stanley dichotomy conjecture), van_doorn_sothanaphan_explicit (van Doorn-Sothanaphan explicit construction). 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "Stanley sequences arise from one of the most natural constructions in additive combinatorics: starting with two seeds $0$ and $n$, greedily adjoin the smallest integer that introduces no three-term arithmetic progression. The resulting sequence $A(n)$ is the lexicographically earliest AP-free sequence starting with $0, n$.\n\nThe study of these sequences began with Odlyzko and Stanley (1978), who completely characterized $A(1)$: its elements are exactly the integers with no digit 2 in base 3 (equivalently, sums of distinct powers of 3). They also characterized $A(3^k)$ and $A(2 \\cdot 3^k)$, and made the bold conjecture that every Stanley sequence has one of exactly two growth rates: either $a_k \\sim k^{\\log_2 3} \\approx k^{1.585}$ (the 'nice' rate achieved by $A(1)$) or $a_k \\sim k^2/\\log k$ (a 'generic' rate).\n\nLindhurst (1990) provided extensive computational evidence that $A(4)$ (OEIS A005487) exhibits the slower $k^2/\\log k$ growth, making it the prototypical 'generic' sequence. However, no proof exists for any specific $n$ having this growth rate.\n\nOn the upper bound side, Moy (2011) proved $a_k \\le (1/2 + \\varepsilon)k^2$ for large $k$, confirming that growth is at most quadratic. Van Doorn and Sothanaphan sharpened this to the fully explicit $a_k \\le (k-1)(k+2)/2 + n$ for all $k \\ge 0$. The general problem — determining the growth rate for arbitrary $n$ — remains open.",

@@ -58,7 +58,8 @@
     "axiomCount": 3,
     "lineCount": 425,
     "assumptions": "3 axiom(s): erdos_nathanson_1989, erdos_nathanson_positive, larsen_construction_blocking. See Lean source for complete statements.",
-    "theoremCount": 25
+    "theoremCount": 25,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Nathanson in 1988 and concerns partitioning additive bases. An additive basis of order 2 is a set A such that A + A covers all sufficiently large integers. The representation function r_A(n) counts how many ways n can be written as a + b with a, b ∈ A.\n\nErdős and Nathanson (1989) showed that for any fixed threshold t, there exists a basis A with r_A(n) ≥ t for all large n that cannot be partitioned into two disjoint bases. They also proved that partition IS possible when r_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48.\n\nThe problem asked about the intermediate case: if r_A(n) → ∞ (growing without bound, but possibly slower than log n), can A always be partitioned? Daniel Larsen (2026) showed the answer is NO, disproving the conjecture using an AI-assisted proof with Claude Opus 4.5.",

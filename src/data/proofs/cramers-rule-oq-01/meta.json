@@ -60,7 +60,8 @@
     "axiomCount": 0,
     "lineCount": 282,
     "assumptions": "0 axioms, 0 sorries. Core adjugate identity and Cayley-Hamilton connection derived from Mathlib's adjugate_mul, charmatrix_det_eq_charpoly, and matPolyEquiv.",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**The Unified Algebraic Identity**\n\nBoth Cramer's Rule and the Cayley-Hamilton theorem rest on the same algebraic foundation: the adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$. **Cayley** (1858) developed systematic matrix algebra in a paper that encompasses both results. The adjugate matrix — whose entries are signed minors (cofactors) — simultaneously provides explicit solution formulas for linear systems (Cramer's Rule) and the mechanism for proving that matrices annihilate their own characteristic polynomials (Cayley-Hamilton).\n\n**The Connection**\n\nThe classical proof of Cayley-Hamilton applies Cramer's adjugate identity to the \"characteristic matrix\" $\\lambda I - M$ (which has polynomial entries). The determinant of $\\lambda I - M$ is exactly $\\text{charpoly}(M)(\\lambda)$. Applying the adjugate identity and then evaluating at $\\lambda = M$ yields the zero matrix — which is Cayley-Hamilton.\n\n**The Formalization**\n\nThis formalization makes the connection explicit and checkable in Lean 4. It demonstrates that the research question \"Can Cayley-Hamilton be derived from Cramer's Rule?\" has the answer **YES** — and the proof is clean and self-contained.",

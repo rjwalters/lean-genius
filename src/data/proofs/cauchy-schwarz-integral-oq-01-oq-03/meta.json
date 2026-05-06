@@ -62,7 +62,8 @@
     "lineCount": 209,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**From Cauchy (1821) to NormedField Abstractions (2026)**\n\nThe Cauchy-Schwarz inequality has a layered history. Augustin-Louis Cauchy (1821) proved the discrete version for finite sums: $|\\sum a_i b_i|^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. Viktor Bunyakovsky (1859) extended it to integrals of real-valued functions. Hermann Amandus Schwarz (1888) gave the inner-product-space formulation. Otto Hölder (1889) then generalized the integral inequality to arbitrary conjugate exponents $p$ and $q$ with $1/p + 1/q = 1$, subsuming Cauchy-Schwarz as the special case $p = q = 2$.\n\nFriesz Riesz (1910) built the $L^p$ space framework, and by the mid-20th century the Hölder inequality was known to hold for complex-valued functions via the complex modulus $|\\cdot|$ satisfying $|fg| = |f|\\cdot|g|$. In fact, this multiplicativity — not the specific field structure of ℂ — is the only algebraic property the proof needs.\n\nThe abstract notion of a **valued field** (a field with a multiplicative norm) appears throughout algebraic number theory: ℝ and ℂ are archimedean valuations, while p-adic fields $\\mathbb{Q}_p$ are non-archimedean examples. All satisfy $\\|xy\\| = \\|x\\|\\cdot\\|y\\|$.\n\nThis Lean 4 formalization crystallizes that insight: `holder_normedField_lintegral` is parameterized over any `NormedField 𝕜` and its proof is structurally identical to the real case — just with `nnnorm_mul` playing the role of $|fg| = |f||g|$. The complex and real cases are trivial corollaries.",

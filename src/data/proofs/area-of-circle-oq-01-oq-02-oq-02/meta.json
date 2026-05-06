@@ -62,7 +62,8 @@
     "lineCount": 82,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 0
   },
   "overview": {
     "summary": "Proves the integration by parts formula for Fourier coefficients of periodic functions: ĉₙ(f') = i·n·ĉₙ(f) for 2π-periodic C¹ functions f and n ≠ 0. The proof lifts real functions to complex via ofRealCLM, applies Mathlib's fourierCoeffOn_of_hasDerivAt, and uses periodicity f(2π) = f(0) to eliminate the boundary term.",

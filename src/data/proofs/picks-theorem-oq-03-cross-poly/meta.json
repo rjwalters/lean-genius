@@ -30,7 +30,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The cross-polytope β_d is the convex hull of ±e₁, ..., ±e_d in ℝ^d, equivalently the unit ball in the ℓ¹ norm. For d=1 it is a segment, d=2 a square (rotated 45°), d=3 a regular octahedron. Ehrhart theory (1962) computes the number of integer lattice points L(t) in the t-th dilate tβ_d; L(t) is always a polynomial in t. The cross-polytope is a reflexive polytope (the unique interior lattice point is the origin), which makes its h*-vector palindromic. The beautiful identity h*(z) = (1+z)^d connects cross-polytopes to the binomial theorem.",

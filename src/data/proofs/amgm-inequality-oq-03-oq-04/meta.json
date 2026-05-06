@@ -69,7 +69,8 @@
       "Power means and AM-GM inequality (analysis)",
       "Real logarithm and exponential functions (Mathlib)"
     ],
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Rényi entropy H_α(p) was introduced by Alfréd Rényi in 1961 as a generalization of Shannon entropy. The weighted power mean M_r was studied by Hardy, Littlewood, and Pólya (1934), who proved it is increasing in r. These two monotonicity results appear in different literature streams — information theory and classical analysis — and are rarely unified.\n\nThe key connection is that when a probability distribution p is used as both weights and values in the power mean, we get the 'self-power mean' M_r(p,p). The identity H_α(p) = −log(M_{α−1}(p,p)) then shows the two monotonicity results are literally the same inequality expressed in different notation.\n\nThis file formalizes this unification: the biconditional M_r(p,p) increasing in r ↔ H_α(p) decreasing in α.",

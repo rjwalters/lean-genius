@@ -56,7 +56,8 @@
     "axiomCount": 2,
     "lineCount": 259,
     "assumptions": "2 axioms: brownRodl_theorem, erdos303_true. See Lean source for complete statements.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "This problem combines Ramsey theory with the arithmetic of unit fractions. The equation 1/a = 1/b + 1/c, also known as the 'Egyptian fraction equation' (since Egyptians preferred writing fractions as sums of unit fractions), has been studied since antiquity.\n\nErdős asked whether any finite colouring of the integers must contain three integers of the same colour satisfying this equation. This is a Ramsey-theoretic question: no matter how you partition the integers into finitely many classes, some class contains a 'pattern' (here, a unit fraction triple).\n\nBrown and Rödl proved the affirmative answer in 1991 using Ramsey-theoretic techniques. The related density version (Erdős #302) asks whether sets of positive density contain such solutions.",

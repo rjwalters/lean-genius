@@ -53,7 +53,8 @@
     "axiomCount": 4,
     "lineCount": 138,
     "assumptions": "4 axioms: g, ruzsa_2005_upper_bound, sanders_2021_lower_bound, beker_2025_lower_bound. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The Erdős-Moser sum-free set problem asks: given any n-element set A of integers, how large a subset B can we guarantee to find such that no sum b₁ + b₂ of distinct elements of B lies in A? Choi (1971) observed that without loss of generality we can take A ⊆ ℤ, and proved the first polynomial upper bound g(n) ≪ n^{2/5+o(1)}.\n\nThe lower bound story begins with Klarner's greedy argument giving g(n) ≫ log n. Sanders (2021) made a breakthrough by proving g(n) ≫ (log n)^{1+c} for some c > 0, using bounds on k-configurations — subsets where all pairwise sums remain in A. Beker (2025) refined this to the specific exponent 1 + 1/68. On the upper side, Ruzsa (2005) dramatically improved Choi's bound to g(n) ≪ exp(√(log n)).\n\nThe gap between the polylogarithmic lower bound and subpolynomial upper bound remains enormous. Determining the true order of g(n) is one of the major open problems in additive combinatorics. The function grows faster than any power of log n but slower than any power of n.",

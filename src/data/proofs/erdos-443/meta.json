@@ -53,7 +53,8 @@
     "axiomCount": 2,
     "lineCount": 181,
     "assumptions": "2 axioms: subpolynomial_bound (common product count is subpolynomial for all ε>0), arbitrarily_large_intersection (intersection can be arbitrarily large: for any s, ∃m,n with commonProductCount(m,n)=s). 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "This problem originates from the 1980 Erdős-Graham monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.88). For integers $m, n \\ge 1$, the product set $A_m = \\{k(m-k) : 1 \\le k \\le m/2\\}$ consists of products of complementary parts summing to $m$. The identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ reveals these as shifted square complements, connecting the problem to differences of squares and quadratic Diophantine equations.\n\nErdős and Graham asked two questions: whether $|A_m \\cap B_n|$ can be arbitrarily large, and whether it is always bounded by $(mn)^{o(1)}$. The affirmative answer to both creates an interesting tension: the intersection can achieve any finite size, yet it must grow slower than any polynomial.\n\nThe problem remained open for 45 years until Hegyvári resolved it in 2025, proving $|A_m \\cap B_n| \\le m^{O(1/\\log\\log m)}$ for $m > n$. The key insight is that common products correspond to divisors of the integer $m^2 - n^2$ (via the completed-square reformulation), and the divisor function satisfies $d(N) \\le N^{O(1/\\log\\log N)}$ by Wigert's 1907 theorem. Hegyvári's proof combines this observation with sieve-theoretic arguments exploiting divisibility constraints from the equation $k(m-k) = l(n-l)$. Cambie independently obtained similar results.",

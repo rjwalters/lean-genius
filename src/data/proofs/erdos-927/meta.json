@@ -26,7 +26,8 @@
     "lineCount": 253,
     "assumptions": "2 axioms: spencer_theorem, conjecture_disproved. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Moon and Moser (1965, Israel J. Math.) initiated the study of $g(n)$, the maximum number of distinct clique sizes in a graph on $n$ vertices. They proved $n - \\log_2 n - 2\\log\\log n < g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using Ramsey-theoretic arguments for the upper bound and explicit constructions for the lower bound. Erdős (1966, Israel J. Math.) sharpened the lower bound to $g(n) > n - \\log_2 n - \\log^*(n) - O(1)$ using the iterated logarithm $\\log^*$ — the number of times $\\log_2$ must be applied to reach below 1 — and conjectured this was tight: $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$. Spencer (1971, Israel J. Math.) disproved the conjecture by showing $g(n) > n - \\log_2 n - O(1)$, eliminating the $\\log^*$ term entirely. Spencer's probabilistic construction showed that for large $n$, one can build graphs achieving $n - \\lfloor \\log_2 n \\rfloor - C$ distinct clique sizes for a universal constant $C$. The correct asymptotic is therefore $g(n) = n - \\log_2 n - \\Theta(1)$. The problem connects to Ramsey theory (the upper bound on $g(n)$ relates to unavoidable gaps in clique spectra) and extremal graph theory.",

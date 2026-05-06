@@ -29,7 +29,8 @@
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       }
     ],
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "The original 8×8 result is from Donald Knuth's 29th Annual Christmas Lecture (December 2025), where he proved that every closed knight's tour on the standard chessboard has at least 4 oblique (>90°) turns, with exactly one tour achieving this minimum. The original proof relied heavily on computational enumeration (native_decide) for the 8×8 board. This generalization shows the lower bound holds for all n×n boards with n ≥ 5, using a purely algebraic argument. Oblique turns (turns greater than 90°) arise when the knight changes direction by more than a right angle, and their count is a geometric invariant of the tour structure independent of symmetry.",

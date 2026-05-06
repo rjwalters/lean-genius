@@ -26,7 +26,8 @@
     "lineCount": 227,
     "assumptions": "4 axioms: erdos_lower_bound, erdos_upper_bound, phelps_rodl_lower, phelps_rodl_upper. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "A 3-uniform hypergraph is linear if any two distinct edges share at most one vertex; equivalently, it is a partial Steiner triple system. Erdős asked about the minimum size of an independent set (containing no complete edge) guaranteed in such hypergraphs. Specifically, if f(n) denotes the minimum over all 3-uniform linear hypergraphs on n vertices of the independence number, what is the growth rate of f(n)?\n\nErdős established the initial bounds n^{1/2} ≪ f(n) ≪ n^{2/3}. The lower bound comes from the probabilistic method: include each vertex independently with probability p, then the expected number of vertices minus destroyed edges is pn - mp³, which upon optimization gives the bound. The upper bound uses explicit constructions of dense linear hypergraphs with small independent sets.\n\nPhelps and Rödl (1986) closed the gap by proving f(n) ≍ (n log n)^{1/2}. The logarithmic factor, invisible to the polynomial bounds, arises from a careful analysis of the edge density constraints imposed by linearity. Their result shows that the independence number grows strictly faster than n^{1/2} but slower than any n^{1/2+ε}, with the precise correction being √(log n).",

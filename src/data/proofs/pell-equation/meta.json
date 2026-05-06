@@ -46,7 +46,8 @@
     "lineCount": 298,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**Pell's Equation: A 2000-Year Journey**\n\nDespite its name, John Pell (1611-1685) contributed virtually nothing to this equation. The misattribution is due to Euler, who confused Pell with Lord Brouncker.\n\n**Ancient Origins:**\n- **Brahmagupta** (598-668 CE) discovered the *samasa* (composition) law: if $(x_1,y_1)$ and $(x_2,y_2)$ solve $x^2 - Dy^2 = 1$, then so does $(x_1 x_2 + D y_1 y_2,\\, x_1 y_2 + x_2 y_1)$. This is exactly the group operation on solutions.\n- **Bhaskara II** (1114-1185) developed the *chakravala* method, an algorithm that computes fundamental solutions efficiently. He solved $x^2 - 61y^2 = 1$ finding $x = 1766319049$.\n\n**European Revival:**\n- **Fermat** (1657) challenged English mathematicians to solve $x^2 - 61y^2 = 1$, knowing the solution was enormous. Brouncker and Wallis found it independently.\n- **Euler** (1732-1770s) studied the equation extensively and connected it to continued fractions.\n- **Lagrange** (1766-1769) gave the first rigorous existence proof using continued fraction expansions of $\\sqrt{D}$, showing the periodic structure guarantees a solution.\n\n**Modern Significance:**\nPell's equation is central to algebraic number theory: solutions correspond to units in the ring $\\mathbb{Z}[\\sqrt{D}]$, and the fundamental solution corresponds to the fundamental unit. Dirichlet's unit theorem generalizes this to all number fields. The equation also appears in lattice-based cryptography (NTRU) and Diophantine approximation.\n\n**Wiedijk's 100 Theorems:** This is entry #39 in Freek Wiedijk's list of 100 greatest theorems formalized in proof assistants.",

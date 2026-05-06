@@ -27,7 +27,8 @@
       "Carry term bound: \u230a2n/p^i\u230b - 2\u230an/p^i\u230b \u2264 1 (proved)",
       "Fixed primeCounting' \u2192 primeCounting bug in central binom bound"
     ],
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Chebyshev (1852) used the factorization of C(2n,n) to bound the prime counting function \u03c0(x), predating the Prime Number Theorem by 44 years. His motivation was to prove Bertrand's postulate (stated by Bertrand in 1845): that for every n > 1 there exists a prime p with n < p \u2264 2n. The key observation \u2014 that each prime p contributes at most p^{\u230alog_p(2n)\u230b} \u2264 2n to C(2n,n) \u2014 was clarified by Kummer's 1852 theorem, which interprets v_p(C(2n,n)) as the number of carries in the base-p addition of n + n. Combining C(2n,n) \u2264 (2n)^{\u03c0(2n)} with 4^n \u2264 (2n+1)\u00b7C(2n,n) gives \u03c0(2n) \u2265 n\u00b7log(4)/log(2n) \u2014 achievable without any analytic machinery. Erd\u0151s (1932) later gave an elegant proof of Bertrand's postulate refining the same bound.",

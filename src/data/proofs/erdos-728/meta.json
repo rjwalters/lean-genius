@@ -53,7 +53,8 @@
     "axiomCount": 2,
     "lineCount": 246,
     "assumptions": "2 axioms: erdos_1968_bound, erdos_728_resolution. 1 sorry.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdos Problem #728**\n\nThis problem was posed by Erdos, Graham, Ruzsa, and Straus in their 1975 paper [EGRS75, p.91]. It refines a classical 1968 result of Erdos.\n\n**Historical Background:**\n- Erdos (1968) proved that if a! * b! | n!, then a + b <= n + O(log n)\n- This shows the divisibility condition strongly constrains a + b\n- The 1975 question asks: can we ACHIEVE divisibility at this upper limit?\n\n**Resolution:**\nThe problem was solved by Barreto and ChatGPT-5.2, who showed infinitely many solutions exist using the construction b = n/2, a = n/2 + O(log n).\n\n**Status:** SOLVED (proved in Lean)",

@@ -48,7 +48,8 @@
     "lineCount": 245,
     "assumptions": "0 axioms, 0 sorries. All 19 definitions and theorems fully proved from Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**The k=3 Birthday Problem**\n\nThe classical birthday problem asks: how many people to get a 50% chance of a shared birthday? The answer is 23. The k=3 generalization asks: how many for a 50% chance that 3+ people share a birthday? The answer is 88.\n\nDiaconis & Mosteller (1989) studied these generalizations systematically. The key insight is the extension-counting technique: adding one person to a valid assignment, the number of valid days is d minus the number of 'full' days (those already at capacity k-1).",

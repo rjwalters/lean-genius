@@ -42,7 +42,8 @@
     "lineCount": 154,
     "assumptions": "1 axiom: logarithmic_bound (the minimum Lebesgue constant Υ satisfies Υ ≤ (2/π)log(n)+O(1) for some universal constant, resolving Erdős's conjecture). ErdosProblem1130 proved from this axiom (0 sorries).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1947, motivated by understanding the quality of polynomial interpolation on $[-1,1]$. The Lebesgue function $\\Lambda(x) = \\sum_k |l_k(x)|$ measures worst-case error amplification: if $f$ is approximated by its Lagrange interpolant $p$, then $|f(x) - p(x)| \\le (1 + \\Lambda(x)) \\cdot E_n(f)$ where $E_n(f)$ is the best polynomial approximation error (Chebyshev's theorem). The classical Lebesgue constant $\\Lambda_n = \\max_x \\Lambda(x)$ grows as $(2/\\pi) \\log n + O(1)$ for Chebyshev nodes $x_k = \\cos((2k-1)\\pi/2n)$, and Erdős knew this was optimal among all node choices. His Problem 1130 asks about a more refined quantity: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\Lambda(x)$, the 'best subinterval's worst case.' Erdős proved $\\Upsilon < \\sqrt{n}$ — far from optimal. Bernstein had conjectured a logarithmic bound. De Boor and Pinkus (1978) resolved the problem completely: $\\Upsilon \\le (2/\\pi) \\log n + O(1)$ with the optimal node configuration characterized by an equioscillation property — the maximum of $\\Lambda$ is equal on every subinterval. This parallels the Chebyshev equioscillation theorem in minimax approximation.",

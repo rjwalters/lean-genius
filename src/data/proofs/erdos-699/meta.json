@@ -57,7 +57,8 @@
     "axiomCount": 1,
     "lineCount": 219,
     "assumptions": "1 axiom(s). No sorries.",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "This problem combines prime factorization with binomial coefficient theory. The Sylvester-Schur theorem (proved independently by Sylvester in 1892 and Schur in 1929) established that for 1 ≤ i ≤ n/2, there exists a prime p > i dividing C(n,i). This is a non-trivial result about the prime structure of binomial coefficients.\n\nErdős and Szekeres (1978) asked the natural extension: for two binomial coefficients C(n,i) and C(n,j), does their GCD contain a 'large' prime p ≥ i? This is harder because while each coefficient has a large prime factor, those factors might be different.\n\nThe problem is marked as 'falsifiable' because a single counterexample—three integers (n, i, j) with no prime p ≥ i dividing gcd(C(n,i), C(n,j))—would disprove it. Finding such a counterexample, or proving none exists, remains open.",

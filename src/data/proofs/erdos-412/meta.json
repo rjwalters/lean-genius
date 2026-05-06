@@ -68,7 +68,8 @@
     "axiomCount": 0,
     "lineCount": 213,
     "assumptions": "None. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #412**\n\nThis problem was communicated to Erdős by **A. van Wijngaarden**, a Dutch mathematician at the Mathematisch Centrum (now CWI) in Amsterdam, in the 1950s. It appeared in Erdős's 1979 paper *Some unconventional problems in number theory* and in the Erdős-Graham monograph (1980).\n\n**Historical Development:**\n- **Van Wijngaarden (1950s):** Posed the question of whether all iterated $\\sigma$-sequences eventually merge.\n- **Selfridge:** Provided numerical evidence suggesting the answer is **NO** — that there exist pairs whose sequences never meet.\n- **Erdős & Graham (1980):** Wrote \"it seems unlikely that anything can be proved about this in the near future.\"\n\n**Mathematical Context:**\nThe problem has a **Collatz-like flavor**: it asks about the global structure of orbits under iteration of an arithmetic function. Unlike the Collatz problem where sequences can oscillate, $\\sigma$-sequences are strictly increasing ($\\sigma(n) > n$ for $n \\ge 2$), which eliminates cycles but makes the merging question equally intractable. The problem belongs to a family of questions about arithmetic function dynamics:\n- **Problem #413:** Barriers for the $\\omega$-function (number of prime factors)\n- **Problem #414:** Merging orbits of $h(n) = n + \\tau(n)$\n\nThe $\\sigma$ function is one of the most studied arithmetic functions, with deep connections to perfect numbers ($\\sigma(n) = 2n$), amicable pairs, and the Riemann hypothesis (via the bound $\\sigma(n) < e^\\gamma n \\log \\log n$ for sufficiently large $n$).",

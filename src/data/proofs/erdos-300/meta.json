@@ -61,7 +61,8 @@
     "axiomCount": 4,
     "lineCount": 265,
     "assumptions": "4 axioms: croot_theorem, erdos_300_lower_bound, liu_sawhney_theorem, liu_sawhney_upper. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph \"Old and New Problems and Results in Combinatorial Number Theory.\" Given a set A ⊆ {1,...,N}, they defined A to be unit sum-free if no subset of A has reciprocals summing to exactly 1. They asked for the maximum size A(N) of such a set, and conjectured that A(N) = (1 + o(1))N, meaning that asymptotically almost all integers could be included.\n\nThe first major breakthrough came from Ernest Croot in 2003, who disproved the Erdős-Graham conjecture by showing that A(N) < cN for some constant c strictly less than 1. Croot's proof used deep density arguments involving coloring techniques and the structure of Egyptian fraction representations. This established that a positive-density fraction of integers must always be excluded from any unit sum-free set, but the exact density remained unknown for another two decades.\n\nThe problem was finally resolved by Jingbo Liu and Mehtaab Sawhney in 2024, who proved A(N) = (1 - 1/e + o(1))N. This remarkable result shows that the \"trivial\" lower bound — obtained by simply excluding integers n ≤ e — is asymptotically optimal. The constant 1 - 1/e ≈ 0.632 connects this combinatorial problem to the exponential function through the harmonic series and optimal exclusion patterns. The proof uses sophisticated probabilistic combinatorics techniques.",

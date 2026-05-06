@@ -57,7 +57,8 @@
     "axiomCount": 4,
     "lineCount": 234,
     "assumptions": "4 axioms: shader_theorem, equilateral_not_monochromatic_strip, erdos_173_conjecture, and 1 more. See Lean source for complete statements.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "This problem belongs to Euclidean Ramsey theory, a field initiated by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in the 1970s. The classical Ramsey theorem guarantees monochromatic cliques in edge-colored complete graphs; Euclidean Ramsey theory asks which geometric configurations must appear monochromatically in finite colorings of $\\mathbb{R}^d$. Erdős posed Problem #173 [Er75f, Er83c] asking whether all but at most one triangle shape must have a monochromatic congruent copy in any 2-coloring of $\\mathbb{R}^2$. Shader's 1976 breakthrough [Sh76] proved all right triangles are Ramsey using geometric constructions that exploit orthogonal reflections. The equilateral triangle is the natural candidate exception: a simple strip coloring demonstrates that specific equilateral triangles cannot be placed monochromatically. Kříž (1991) later developed permutation group methods for Euclidean Ramsey problems, and Frankl–Rödl (1990) established deep connections to partition regularity. The problem remains open and is central to the field.",

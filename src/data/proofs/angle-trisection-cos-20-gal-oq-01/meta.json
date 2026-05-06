@@ -51,7 +51,8 @@
         "module": "Mathlib.FieldTheory.Galois.Basic"
       }
     ],
-    "theoremCount": 32
+    "theoremCount": 32,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Galois group computation for cos(π/7) is a classical exercise in algebraic number theory, first implicit in Gauss's 1801 *Disquisitiones Arithmeticae* where he characterized constructible regular polygons. The regular heptagon (7-gon) is not constructible by straightedge and compass because [ℚ(cos(2π/7)):ℚ] = 3, which is not a power of 2 — precisely the fact this proof establishes. The minimal polynomial 8X³−4X²−4X+1 arises from the 14th cyclotomic field: cos(π/7) = (ζ₁₄ + ζ₁₄⁻¹)/2 where ζ₁₄ = e^{2πi/14}, and the maximal real subfield ℚ(ζ₁₄)⁺ = ℚ(cos(π/7)) has degree φ(14)/2 = 3 over ℚ. The three roots cos(π/7), cos(3π/7), cos(5π/7) form a single Galois orbit under the automorphism α ↦ 1−2α² (corresponding to ζ₁₄ ↦ ζ₁₄⁵), giving the cyclic Galois group ℤ/3ℤ. This computation is a key example in the theory of totally real abelian extensions.",

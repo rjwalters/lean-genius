@@ -20,7 +20,8 @@
     "lineCount": 138,
     "assumptions": "Uses Mathlib's Cauchy-Schwarz inequality (inner_mul_le_norm_mul_sq) as the foundation of the derivation chain.",
     "theoremCount": 7,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "problemStatement": "Can the Heisenberg uncertainty principle $\\sigma_x \\cdot \\sigma_p \\geq \\hbar/2$ be derived from the complex Cauchy-Schwarz inequality $|\\langle f, g \\rangle|^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$?",

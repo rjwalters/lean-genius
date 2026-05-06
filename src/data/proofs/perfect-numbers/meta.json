@@ -54,7 +54,8 @@
     "lineCount": 202,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Perfect Number Theorem spans over 2000 years of mathematical history:\n\n- **Euclid (300 BCE)**: In Elements Book IX, Proposition 36, Euclid proved that if 2^p - 1 is prime, then 2^(p-1)(2^p - 1) is perfect. This gave a recipe for generating perfect numbers from Mersenne primes.\n\n- **Marin Mersenne (1644)**: Compiled a list of primes p for which 2^p - 1 is prime. These 'Mersenne primes' are now named after him, though his list contained errors.\n\n- **Leonhard Euler (1747)**: Proved the converse - every EVEN perfect number must have Euclid's form. This completed the characterization of even perfect numbers.\n\n- **Present Day**: Whether odd perfect numbers exist remains one of the oldest unsolved problems in mathematics. If one exists, it must be astronomically large (> 10^1500) with very specific structural constraints.\n\nThe connection between perfect numbers and Mersenne primes means that discovering new Mersenne primes (via projects like GIMPS) yields new perfect numbers.",

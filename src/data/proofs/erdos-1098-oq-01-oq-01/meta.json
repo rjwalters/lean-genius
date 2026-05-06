@@ -33,7 +33,8 @@
     ],
     "lineCount": 205,
     "theoremCount": 8,
-    "defCount": 3
+    "defCount": 3,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Abdollahi, Akbari, and Maimani (2006) studied the non-commuting graph $\\Gamma(G)$ systematically, classifying groups by clique number: $\\omega = 0$ iff $G$ abelian; $\\omega = 1$ is impossible (a single vertex has no edges); $\\omega = 2$ iff $G/Z(G) \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (the 'AC-groups'). The case $\\omega = 3$ is more complex: it includes $S_3$, $A_4$, $D_8$ (dihedral order 8), and products $Z \\times S_3$ for abelian $Z$. The classification requires both establishing when a 3-clique is possible (index $\\geq 4$ is necessary) and showing that no 4-clique exists.\n\nNeumann's 1976 theorem provides the backdrop: $\\omega(\\Gamma(G)) < \\infty$ iff $[G:Z(G)] < \\infty$. This means finite clique number is exactly the condition for $G$ to be 'bounded' — the center has finite index. For the $\\omega = 3$ classification, the sharp result is: $\\omega = 3$ iff $[G:Z(G)] \\in \\{4, 5, 6\\}$ and $G/Z(G)$ is isomorphic to $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/2$, $S_3$, $\\mathbb{Z}/5$, or $D_{10}$ (in appropriate cases).",

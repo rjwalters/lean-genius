@@ -67,7 +67,8 @@
     "axiomCount": 3,
     "lineCount": 195,
     "assumptions": "3 axioms: costa_pellegrini_2020, hicks_ollis_schmitt_2019, bedert_kravitz_2024. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Graham's Rearrangement Conjecture (Erdős Problem #475) is a central open problem in additive combinatorics over finite fields. Ronald Graham (1935–2020), one of the most prolific discrete mathematicians of the 20th century and a close collaborator of Erdős, proved the base case: the full non-zero set $\\mathbb{F}_p \\setminus \\{0\\}$ always admits a valid ordering. Brian Alspach later generalized the conjecture to arbitrary finite abelian groups.\n\nThe first major extension came from Costa and Pellegrini (2020, Archiv der Mathematik) who verified the conjecture for all sets of size $t \\leq 12$ via exhaustive computation combined with theoretical reductions. Hicks, Ollis, and Schmitt (2019, J. Combin. Des.) handled the complementary regime $t \\geq p - 3$ using the polynomial method and structural properties of near-complete subsets.\n\nA breakthrough for intermediate sizes came from Michael Kravitz (2024), who proved the conjecture for $t \\leq \\log p / \\log \\log p$ using character sum techniques. Will Sawin independently observed the same bound on MathOverflow. However, all these methods hit the so-called 'rectification barrier'—a fundamental limitation of Freiman-type inverse theorems that caps progress at $\\log p / \\log \\log p$.\n\nThe most dramatic advance is due to Bedert and Kravitz (2024), who developed entirely new techniques circumventing the rectification barrier, pushing the verified range to $t \\leq \\exp((\\log p)^{1/4})$. Despite this remarkable progress, the general conjecture for arbitrary $t$ remains open, with the gap between $\\exp((\\log p)^{1/4})$ and $p - 3$ still unresolved.",

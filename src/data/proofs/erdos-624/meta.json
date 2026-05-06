@@ -60,7 +60,8 @@
     "lineCount": 219,
     "assumptions": "5 axioms: erdos_hajnal_upper_bound, erdos_624_open, weaker_conjecture_open, and 2 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal (1968) introduced the covering number H(n) in their study of functions on power sets. Given a finite set X of size n, they defined H(n) as the minimum H such that some function f: P(X) → X has the property that {f(A) : A ⊆ Y} = X for every Y ⊆ X with |Y| ≥ H. They proved log₂(n) ≤ H(n) < log₂(n) + (3+o(1))·log₂(log₂(n)) using counting arguments and probabilistic constructions. Noga Alon later proved deep structural results: (1) for any f, some Y of size k has |subsetImage f Y| < (1-c)·2^k (no perfect coverage), and (2) there exist f achieving |subsetImage f Y| > 2^k/4 for all Y (good functions exist). Together these show covering functions are inherently imperfect but can be quite good. The main conjecture that H(n) - log₂(n) → ∞ — and even the weaker statement H(2^k) ≥ k+1 — remain open, making this one of the oldest unsolved problems in combinatorial set theory.",

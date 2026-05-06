@@ -65,7 +65,8 @@
         "module": "Mathlib.FieldTheory.Galois.Basic"
       }
     ],
-    "theoremCount": 28
+    "theoremCount": 28,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The minimal polynomial of cos(2π/5) = cos(72°) is 4X²+2X−1, derived from the 5th cyclotomic polynomial Φ₅(X) = X⁴+X³+X²+X+1: substituting X = e^{2πi/5} and taking real parts gives cos(2π/5) + cos(4π/5) = −1/2 and cos(2π/5)·cos(4π/5) = −1/4 (Vieta's formulas on the degree-2 real subpolynomial). Clearing denominators yields 4α²+2α−1=0.\n\nThe constructibility of the regular pentagon is ancient: Euclid's *Elements* Book IV gives an explicit ruler-and-compass construction (Proposition 11). But WHY it is constructible — and what distinguishes the pentagon from the heptagon — was first explained algebraically by Carl Friedrich Gauss in 1801. In *Disquisitiones Arithmeticae* §365–366, Gauss proved the extraordinary result that the regular 17-gon (heptadecagon) is constructible by ruler and compass, after 2,000 years of apparent impossibility. His general criterion: a regular n-gon is constructible if and only if n = 2^a · p₁ · p₂ · ··· · pₖ where each pᵢ is a distinct Fermat prime (of the form 2^{2^m}+1). For n = p prime: the p-gon is constructible iff p = 2^{2^m}+1 is a Fermat prime. The regular pentagon (p=5=2^{2^1}+1) is constructible; the regular heptagon (p=7, not a Fermat prime) is not.\n\nThe impossibility of angle trisection was settled by Pierre Wantzel in 1837: to trisect a general angle of 60°, one would need cos(20°) to be constructible, but [ℚ(cos(20°)):ℚ] = 3 (not a power of 2), so it is impossible. Wantzel's proof used the same degree criterion that Gauss had employed positively. This formalization establishes the degree-2 base case: |Gal(4X²+2X−1/ℚ)| = 2 confirms [ℚ(cos(72°)):ℚ] = 2 = 2¹, making the regular pentagon constructible — the algebraic explanation of Euclid's 2,300-year-old construction.",

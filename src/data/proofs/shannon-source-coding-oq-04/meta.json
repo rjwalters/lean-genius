@@ -73,7 +73,8 @@
       "Pigeonhole principle"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The method of types was developed by Csisz\u00e1r and K\u00f6rner in their 1981 book 'Information Theory: Coding Theorems for Discrete Memoryless Systems'. While Shannon's original 1948 proof of the source coding theorem used probabilistic arguments (the law of large numbers / AEP), the method of types provides a purely combinatorial alternative that gives sharper finite-blocklength bounds and extends naturally to channel coding and large deviations. The key insight is the type class cardinality bound |T_f| \u2264 exp(n\u00b7H(f/n)), tight by Stirling's approximation: log C(n; f\u2081,...,f_k)/n \u2192 H(p). This underpins large deviation theory in statistics (Sanov's theorem) and is now standard in information-theoretic security proofs (channel resolvability, secrecy capacity).",

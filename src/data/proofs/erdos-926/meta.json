@@ -24,7 +24,8 @@
     "lineCount": 235,
     "assumptions": "None. 3 theorems fully verified with 0 axioms and 0 sorries (numerical examples via native_decide). Main result (ex(n; H_k) ≪ n^(3/2)) documented as a comment; full formalization requires probabilistic method not in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #926 in his 1971 paper 'Some unsolved problems in graph theory and combinatorial analysis,' asking whether the Turán number of a specific graph $H_k$ satisfies $\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$. He claimed a proof for $k = 3$ in that paper. The graph $H_k$ has a central vertex $x$ adjacent to $k$ vertices $y_i$, plus $\\binom{k}{2}$ witness vertices $z_{ij}$ each adjacent to exactly $y_i$ and $y_j$. Füredi (1991, Combinatorica) proved the general case: $\\mathrm{ex}(n; H_k) \\ll (kn)^{3/2}$ using probabilistic methods and dependent random choice — a technique pioneered for embedding sparse forbidden subgraphs. Alon, Krivelevich, and Sudakov (2003, Combin. Probab. Comput.) refined this to $\\mathrm{ex}(n; H_k) \\ll k \\cdot n^{3/2}$, saving a factor of $\\sqrt{k}$. The lower bound $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$ is immediate from $C_4 \\subseteq H_k$ (for $k \\geq 3$) and the Kővári-Sós-Turán theorem (1954). The problem connects to the broader 2-degenerate conjecture (Erdős Problem 146), since all $z_{ij}$ vertices have degree 2.",

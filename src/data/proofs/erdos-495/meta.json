@@ -59,7 +59,8 @@
     "axiomCount": 2,
     "lineCount": 178,
     "assumptions": "2 axioms: littlewood_rational_case, ekl_countable_exceptions. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The Littlewood conjecture, posed around 1930 by John Edensor Littlewood, is one of the most famous open problems in Diophantine approximation. It asks whether every pair of real numbers can be simultaneously well-approximated by rationals in a multiplicative sense: for all α, β ∈ ℝ, is lim inf n·‖nα‖·‖nβ‖ = 0?\n\nThe conjecture sits at the intersection of number theory, dynamical systems, and ergodic theory. Early progress came from Cassels and Swinnerton-Dyer (1955), who proved it for pairs of numbers in the same cubic number field. The problem was featured in Erdős's collection as Problem #495, referenced in [Er61].\n\nThe most dramatic breakthrough was by Einsiedler, Katok, and Lindenstrauss (2006), who proved that the set of counterexamples — if any exist — has Hausdorff dimension zero. Their proof, using the classification of invariant measures for diagonal actions on SL(3,ℝ)/SL(3,ℤ), earned Elon Lindenstrauss the 2010 Fields Medal. Despite this, the conjecture remains fully open: no single pair of algebraically independent reals has been verified.",

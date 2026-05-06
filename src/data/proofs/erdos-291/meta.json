@@ -54,7 +54,8 @@
     "axiomCount": 2,
     "lineCount": 932,
     "assumptions": "2 axioms: wolstenholme_theorem, divisibility_characterization. See Lean source for complete statements.",
-    "theoremCount": 84
+    "theoremCount": 84,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The harmonic numbers $H_n = 1 + 1/2 + \\cdots + 1/n$ have been studied since antiquity, but their divisibility properties remain mysterious. Writing $H_n = a_n/L_n$ where $L_n = \\text{lcm}(1, \\ldots, n)$, Erdős asked whether $\\gcd(a_n, L_n)$ takes both values 1 and $> 1$ infinitely often.\n\nThe key tool is Wolstenholme's theorem (1862): for primes $p \\ge 5$, $p^2$ divides the numerator of $H_{p-1}$. This classical result, combined with a characterization linking $p \\mid \\gcd(a_n, L_n)$ to the leading base-$p$ digit of $n$, makes Part 2 trivial: numbers of the form $(p-1) \\cdot p^k$ always have leading digit $p-1$ in base $p$.\n\nPart 1 is far harder. Shiu (2016) gave a heuristic argument predicting $\\sim x/\\log x$ values of $n \\le x$ with $\\gcd = 1$, based on treating the divisibility conditions for different primes as approximately independent and applying Mertens' theorem. Wu and Yan (2022) proved conditionally — assuming Schanuel's conjecture (which implies $\\mathbb{Q}$-linear independence of $\\{1/\\log p\\}$ for distinct primes $p$) — that the set of $n$ with $\\gcd > 1$ has density 1. But even this does not settle Part 1, as a set of density 0 can still be infinite.\n\nNotably, this formalization actually proves Steinerberger's criterion (rather than axiomatizing it), derives Part 2 from it constructively, and provides extensive computational verification including GCD values for $n \\le 10$.",

@@ -36,7 +36,8 @@
     "lineCount": 293,
     "assumptions": "None. Fully verified: 0 axioms, 0 sorries. The open conjecture (Erdos686Conjecture) is stated as a Prop definition, not axiomatized. All supporting infrastructure is proved. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 23
+    "theoremCount": 23,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős Problem #686 appears in [Er79d] and was further discussed in the influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham (1980). The question explores the surprising representational power of products of consecutive integers — structures intimately connected to factorials, binomial coefficients, and the Gamma function. Products of $k$ consecutive integers satisfy $\\prod_{i=1}^k (n+i) = (n+k)!/n! = k! \\binom{n+k}{k}$, linking this problem to deep divisibility theory of binomial coefficients. The related Problem #677 asks the simpler question of which integers are products of consecutive integers (no ratio). Bertrand's postulate (Chebyshev, 1850) guarantees a prime in $(n, 2n)$, which constrains which integers can appear as such products. The ratio formulation in #686 is strictly more general, as demonstrated by the `product_implies_ratio` reduction in the formalization.",

@@ -36,7 +36,8 @@
     ],
     "lineCount": 712,
     "theoremCount": 26,
-    "defCount": 3
+    "defCount": 3,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The arc-length reparametrization is a fundamental tool in differential geometry, in use since the 19th century. For smooth regular curves, the arc-length parameter ('unit speed') makes curvature calculations and variational arguments dramatically simpler. Adolf Hurwitz's 1901 proof of the isoperimetric inequality — that among all closed curves of given length L, the circle encloses maximum area A with $L^2 \\ge 4\\pi A$ — uses arc-length reparametrization as its first step: by normalizing to constant speed $c = L/(2\\pi)$, the Fourier coefficients of the curve become orthogonal, and Parseval's equality directly yields the Wirtinger inequality $\\|f'\\|^2 \\ge \\|f\\|^2$, which is equivalent to the isoperimetric inequality. The existence of the reparametrization relies on the inverse function theorem: since $s'(t) = \\text{speed}(t) > 0$ for regular curves, the arc-length function $s : \\mathbb{R} \\to \\mathbb{R}$ is a $C^1$ diffeomorphism with a $C^1$ inverse $\\sigma = s^{-1}$. The classical treatment appears in do Carmo's *Differential Geometry of Curves and Surfaces* (1976), §1-7. The periodic integral shift lemma $\\int_t^{t+T} f = \\int_0^T f$ — proved here from Mathlib primitives rather than axiomatized — is the same identity underlying the Poisson summation formula and the periodization technique in harmonic analysis.",

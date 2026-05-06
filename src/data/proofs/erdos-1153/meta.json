@@ -56,7 +56,8 @@
     "axiomCount": 1,
     "lineCount": 169,
     "assumptions": "1 axiom: erdos_1153 (the logarithmic lower bound, proved by Bernstein/Erdős).",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The Lebesgue constant measures the worst-case error amplification in polynomial interpolation. Sergei Bernstein (1931) proved the first quantitative lower bound: for any choice of $n$ interpolation nodes in $[-1,1]$, the maximum of the Lebesgue function $\\lambda(x) = \\sum_k |l_k(x)|$ must grow at least logarithmically in $n$. Erdős (1961) sharpened this to the tight form $\\Lambda_n > (2/\\pi) \\log n - O(1)$ for the full interval $[-1,1]$, establishing the sharp constant $2/\\pi$.\n\nThis lower bound is achieved by the roots of the Chebyshev polynomials of the first kind, $x_k = \\cos\\left(\\frac{2k-1}{2n}\\pi\\right)$, which give $\\Lambda_n < (2/\\pi) \\log n + O(1)$. The contrast with equally-spaced nodes is dramatic: for equidistant nodes, the Lebesgue constant grows exponentially ($\\Lambda_n \\sim 2^n / (e \\cdot n \\log n)$), leading to the Runge phenomenon where interpolation of smooth functions (like $f(x) = 1/(1+25x^2)$) diverges despite the function being analytic.\n\nProblem #1153 asks whether the $(2/\\pi) \\log n$ lower bound persists on arbitrary proper subintervals $[a,b] \\subsetneq [-1,1]$, which was answered affirmatively. This universality shows the logarithmic growth is a local phenomenon intrinsic to Lagrange interpolation in any interval, not a global effect.",

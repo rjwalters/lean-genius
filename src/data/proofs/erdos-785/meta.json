@@ -55,7 +55,8 @@
     "axiomCount": 2,
     "lineCount": 199,
     "assumptions": "2 axioms: danzer_1964_existence, sarkozy_szemeredi_1994. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Exact Additive Complements: Minimal Density Pairs**\n\nThe study of additive complements concerns pairs of sets A, B such that A + B covers all sufficiently large integers. The counting function A(x) = |A ∩ [1,x]| measures how dense each set is.\n\n**Danzer's Existence Theorem (1964)**\n\nLudwig Danzer proved that 'exact' additive complements exist: pairs where A(x)B(x) ~ x. This was surprising because Hanani had earlier conjectured they don't exist. The condition A(x)B(x) ~ x means these sets are as sparse as possible while still covering all large integers.\n\n**Sárközy-Szemerédi Solution (1994)**\n\nAndrás Sárközy and Endre Szemerédi answered Erdős and Danzer's question affirmatively: for exact additive complements, A(x)B(x) - x must tend to infinity. The proof uses careful analysis of the representation function r(n) and variance estimates.\n\n**Ruzsa's Refinement (2017)**\n\nImre Ruzsa showed that while A(x)B(x) - x → ∞ is necessary, the growth can be arbitrarily slow. For any w(x) → ∞, there exist exact complements with A(x)B(x) - x < w(x) infinitely often.",

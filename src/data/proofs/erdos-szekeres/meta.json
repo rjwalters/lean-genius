@@ -45,7 +45,8 @@
     "assumptions": "2 axiom declarations: erdos_szekeres_existence_axiom (monotone subsequence exists), erdos_szekeres_tight_axiom (bound (r-1)(s-1)+1 is tight)",
     "lineCount": 280,
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Paul Erdős and George Szekeres proved this theorem in 1935 in their paper \"A combinatorial problem in geometry.\" It was one of Erdős's first major results, published when he was just 22 years old. The theorem arose from the Happy Ending Problem about convex polygons and has since become a cornerstone of combinatorics and Ramsey theory. The elegant pigeonhole proof gives an exact tight bound. Dilworth's theorem (1950) generalized it: in any finite partially ordered set, the minimum number of chains covering it equals the maximum antichain size; the Erdős-Szekeres theorem is the linear order special case. The result is also a foundational instance of the general Ramsey principle that any large enough structure must contain order.",

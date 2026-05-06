@@ -35,7 +35,8 @@
       "Proof: c* ∈ (0, 1] (positivity and boundedness)",
       "Stronger gap axiom: f(n) ≤ n-4 for n ≥ 4"
     ],
-    "theoremCount": 20
+    "theoremCount": 20,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #105 asks about the maximum number of obstacles n-k that can block all 'rich lines' (lines through 2+ points of a given n-point set). The threshold function f(n) is the maximum k for which the positive result (some rich line avoids all obstacles) always holds. Beck (1983) and Szemerédi-Trotter (1983) independently proved a lower bound f(n) ≥ cn. Xichuan (2024) disproved the Erdős-Purdy conjecture with n-3 obstacles, showing f(n) ≤ n-4 for large n. Together these establish f(n) = Θ(n), resolving the OQ-02 question.",

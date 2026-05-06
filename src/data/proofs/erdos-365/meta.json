@@ -69,7 +69,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős asked Mahler whether infinitely many consecutive powerful pairs exist. Mahler immediately answered yes, observing that solutions to the Pell equation x² - 8y² = 1 yield pairs (8y², 8y² + 1) where both terms are powerful. The fundamental solution (3, 1) gives the pair (8, 9). Erdős then posed the deeper question: must all such pairs arise from Pell equations? Equivalently, must either n or n+1 be a perfect square?\n\nGolomb (1970) answered this decisively: NO. He exhibited the counterexample 12167 = 23³ and 12168 = 2³·3²·13², both powerful with neither being a perfect square. Walker (1976) went further, showing that the generalized Pell equation 343x² = 27y² + 1 has infinitely many solutions, each producing a consecutive powerful pair where neither element is a square. This demonstrated that non-Pell counterexamples are not isolated curiosities but form infinite families.\n\nThe second part of the problem — whether the counting function P(x) = |{n ≤ x : n and n+1 both powerful}| satisfies P(x) = O((log x)^C) — remains open. Since most known pairs come from Pell-type equations, whose solution counts grow polylogarithmically, the bound is widely expected to hold. The problem connects to fundamental questions about the distribution of powerful numbers and the structure of Diophantine equations.",

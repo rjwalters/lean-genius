@@ -62,7 +62,8 @@
     "axiomCount": 5,
     "lineCount": 142,
     "assumptions": "5 axioms: isConvexSubset, f, erdos_lower_bound, erdos_upper_bound, f_superpolynomial. Structure fields are object definitions, not assumptions.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #838, posed by Erdős and Hammer, concerns counting convex subsets of point sets in general position. Given n points in the plane with no three collinear, how many distinct convex polygons can they determine?\n\nThe function f(n) is defined as the MINIMUM number of convex subsets over all n-point configurations. In his 1978 paper 'Some more problems on elementary geometry' (Austral. Math. Soc. Gaz.), Erdős established that f(n) grows like n^{Θ(log n)}, a 'quasi-polynomial' rate faster than any polynomial but slower than any exponential.\n\nThe main question asks whether the normalized quantity (log f(n))/(log n)² converges to a constant c as n → ∞, and if so, what is c?",

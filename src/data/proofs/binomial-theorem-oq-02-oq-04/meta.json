@@ -58,7 +58,8 @@
         "description": "Mathlib's multinomial theorem (proved via noncommutative version)",
         "module": "Mathlib.Data.Nat.Choose.Multinomial"
       }
-    ]
+    ],
+    "definitionCount": 0
   },
   "overview": {
     "text": "Answers the open question: YES, the multinomial theorem has a direct Lean proof by induction on the cardinality of the index finset, explicitly using the binomial theorem at each inductive step.",

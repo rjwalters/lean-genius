@@ -61,7 +61,8 @@
     "axiomCount": 3,
     "lineCount": 215,
     "assumptions": "3 axioms: hegyvari_hennecart_plagne_1, hegyvari_hennecart_plagne_2, squares_basis_of_order_4. See Lean source for complete statements.",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "**Erdős Problem #339: Additive Bases and Distinct Sums**\n\nThis problem explores the relationship between additive bases and 'restricted' representations using distinct elements.\n\n**Key History:**\n- Erdős-Graham (1980): Posed both conjectures in their monograph\n- Hegyvári-Hennecart-Plagne (2003): Proved both conjectures in J. Reine Angew. Math.\n\n**Mathematical Setting:**\nA set A ⊆ ℕ is a basis of order r if every large integer is a sum of r elements from A. The question is whether the 'restricted' sums (using r DISTINCT elements) also cover a positive fraction of integers.",

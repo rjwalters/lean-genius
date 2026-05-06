@@ -68,7 +68,8 @@
     "axiomCount": 3,
     "lineCount": 246,
     "assumptions": "3 axioms: erdos_dushnik_miller (EDM 1941: λ→(λ,ω)² for infinite λ), todorcevic_negative (1989: ω₁↛(ω₁,ω+2)² under b=ω₁), pfa_positive (PFA: ω₁→(ω₁,α)² for countable α). OrdPartitionRel is now a proper definition and partition_mono_target is proved from it.",
-    "theoremCount": 19
+    "theoremCount": 19,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Erdős Problem #1172 originates from the Erdős-Hajnal partition calculus program, a systematic study of ordinal partition relations launched by Paul Erdős and András Hajnal in the 1960s. The specific questions appear as problem 7.87 in Väänänen's 1999 survey (Va99), attributed to Erdős and Hajnal.\n\nThe partition calculus grew out of Ramsey's theorem (1930) and its infinitary extensions by Erdős and Rado (1956). The Erdős-Dushnik-Miller theorem (1941) established the foundational result λ → (λ, ω)² for all infinite λ. By the 1960s, Erdős and Hajnal had developed a comprehensive program to determine which ordinal partition relations hold under various set-theoretic hypotheses.\n\nA key turning point came with Todorcevic's work in 1989, which revealed that many partition relations at ω₁ are independent of ZFC. Under the Proper Forcing Axiom (PFA), ω₁ → (ω₁, α)² holds for all countable α, while under b = ω₁, the relation ω₁ → (ω₁, ω + 2)² fails. This independence phenomenon makes the questions at ω₂ and ω₃ particularly subtle, as GCH or CH may be needed to resolve them.\n\nThe four questions in Problem 1172 probe the boundary between what is provable under GCH/CH and what remains open, involving delicate interactions between ordinal arithmetic, cofinality, and coloring arguments.",

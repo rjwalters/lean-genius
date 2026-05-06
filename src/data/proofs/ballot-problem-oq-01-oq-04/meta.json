@@ -67,7 +67,8 @@
     "lineCount": 73,
     "assumptions": "0 axioms, 0 sorries. The previously stated axiom chung_feller_uniform is now a theorem re-exporting ChungFellerBijection.chung_feller_uniform' from BallotProblemOQ01OQ04OQ01.lean. The full proof spans three files: BallotProblemOQ01OQ04Core.lean (definitions and cycle-lemma bridge), BallotProblemOQ01OQ04OQ01.lean (explicit bijection), and BallotProblemOQ01OQ04.lean (gallery face).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**The Chung-Feller Theorem (1949)**\n\nChung and Feller proved that among the $\\binom{2n}{n}$ lattice paths from $(0,0)$ to $(2n,0)$ with steps $\\pm 1$, exactly $C_n = \\binom{2n}{n}/(n+1)$ paths have exactly $k$ upsteps above the $x$-axis, for each $k \\in \\{0, 1, \\ldots, n\\}$. The result is remarkable because the count is independent of $k$.\n\nThe most elegant proof uses the Dvoretzky-Motzkin cycle lemma (1947): prepend $+1$ to a balanced path to get a sequence of length $2n+1$ with sum $1$. The cycle lemma guarantees exactly $1$ of the $2n+1$ cyclic rotations has all partial sums positive. This creates a bijection that partitions paths uniformly across the $n+1$ types.",

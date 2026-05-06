@@ -60,7 +60,8 @@
     "axiomCount": 6,
     "lineCount": 231,
     "assumptions": "6 axioms: f_lower_bound, f_upper_bound, f_prime, f_minimal_case, infinitely_many_minimal, infinitely_many_maximal. 0 sorries.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #459: Smooth Number Gaps**\n\nThis problem from Erdős-Graham (1980) asks to estimate f(u), where f(u) is the largest v such that no integer in (u, v) is 'smooth' with respect to u (i.e., composed only of primes dividing u).\n\n**Key History:**\n- Erdős-Graham (1980): Original problem in 'Old and new problems and results in combinatorial number theory'\n- Cambie (recent): Comprehensive observations settling the main questions\n- OEIS A289280: Sequence of f(n) values\n\n**Mathematical Setting:**\nA number m is 'smooth' with respect to n if all prime factors of m divide n. The function f(u) captures the gap until the next such smooth number after u.",

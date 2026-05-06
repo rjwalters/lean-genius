@@ -53,7 +53,8 @@
     "axiomCount": 0,
     "lineCount": 107,
     "assumptions": "None. 0 axioms, 0 sorries. Core results (Euler product and ζ(2) = π²/6) are from Mathlib.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Euler made two groundbreaking discoveries about infinite series in the 1730s. In 1734, he solved the Basel Problem (posed by Pietro Mengoli in 1644 and unsolved for ~90 years): ∑_{n=1}^∞ 1/n² = π²/6. His proof used the infinite product factorization of sin(πx)/πx, a technique that was later made rigorous by Weierstrass. The Basel result connected the sum of reciprocal squares — a purely arithmetic object — to π, which was deeply surprising to contemporaries.\n\nIn 1737, Euler discovered the product representation ζ(s) = ∏_p (1-p⁻ˢ)⁻¹, where the product runs over all prime numbers. The key insight was to expand each factor as a geometric series: (1-p⁻ˢ)⁻¹ = 1 + p⁻ˢ + p⁻²ˢ + ..., then observe that multiplying over all primes generates exactly the terms n⁻ˢ for all natural numbers n, by the fundamental theorem of arithmetic (unique prime factorization).\n\nCombining these two results at s=2 gives ∏_p (1-p⁻²)⁻¹ = π²/6, connecting the distribution of primes to π. The reciprocal ∏_p (1-1/p²) = 6/π² ≈ 0.6079 has a beautiful probabilistic interpretation (Cesàro 1881): it equals the probability that two randomly chosen positive integers are coprime. This formalization captures all three equivalent forms (tprod, HasProd, Tendsto) of this identity using Mathlib's `riemannZeta_eulerProduct` family and `riemannZeta_two`.",

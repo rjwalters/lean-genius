@@ -81,7 +81,8 @@
     "axiomCount": 2,
     "lineCount": 445,
     "assumptions": "2 axioms: hajnal_ch (Hajnal's theorem under CH), baumgartner_ma (Baumgartner's theorem under MA). MartinsAxiom now a concrete def (CCC/dense sets/generic filters). erdos_rado_partition removed (was unused).",
-    "theoremCount": 22
+    "theoremCount": 22,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #1171 belongs to the rich tradition of ordinal partition calculus, initiated by Erdős and Rado in the 1950s. The classical Ramsey theorem handles finite colorings of finite sets; its infinite generalization — the partition calculus — asks which ordinals α satisfy α → (β₀, β₁, …)²_r for given targets. The foundational Erdős-Rado theorem (1956) established (2^κ)⁺ → (κ⁺ + 1)²_κ, but partition relations for specific ordinals like ω₁² proved far more delicate.\n\nProblem #1171 generalizes Problem #1169 (ω₁² → (ω₁², 3)²) by allowing multiple colors. The tradeoff is that the primary color's target weakens from ω₁² to ω₁·ω, while non-primary colors need only produce a triangle (clique of size 3). This formulation was motivated by the observation that under CH, Hajnal's theorem trivially resolves the problem via a color-merging argument, but the ZFC status for all finite k remains unknown. Baumgartner [Ba89b] proved the k=1 case under Martin's Axiom (MA), which is strictly weaker than CH, using techniques specific to ω₁·ω that do not obviously extend to higher k.\n\nThe problem sits at the intersection of set-theoretic independence and combinatorics: the partition relation ω₁² → (ω₁², 3)² is known to be independent of ZFC (Todorčević showed it can fail under certain set-theoretic assumptions), but Problem #1171's weaker target ω₁·ω might allow a ZFC proof. The gap between what CH gives and what ZFC can prove remains one of the central open questions in infinite Ramsey theory, catalogued as [Va99, 7.84] in Vaughan's survey.",

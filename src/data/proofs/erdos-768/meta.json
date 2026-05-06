@@ -59,7 +59,8 @@
     "lineCount": 280,
     "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős Problem #768 concerns a natural subset $A$ of the positive integers defined by a divisibility-congruence condition: $n \\in A$ if for every prime $p \\mid n$, there exists a divisor $d > 1$ of $n$ with $d \\equiv 1 \\pmod{p}$. This 'witness divisor' property connects to the structure of the divisor lattice and has deep roots in group theory.\n\nThe set $A$ arises naturally from Sylow theory in finite group theory. If $G$ is a non-cyclic simple group of order $n$, then for each prime $p \\mid n$, the number of Sylow $p$-subgroups $n_p > 1$ satisfies $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid n$. This means $n \\in A$, so $|A \\cap [1,N]|$ bounds the number of possible orders of non-cyclic simple groups up to $N$. The Classification of Finite Simple Groups shows this bound is far from tight, but the density of $A$ is independently interesting.\n\nErdős proved two-sided bounds on the density: $\\exp(-c_1 \\sqrt{\\log N} \\cdot \\log \\log N) \\leq |A \\cap [1,N]|/N \\leq \\exp(-(1+o(1))\\sqrt{\\log N \\cdot \\log \\log N})$. The forms of these bounds differ slightly (the lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$, the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$), leaving open whether a single asymptotic form $\\exp(-(c+o(1))f(N))$ captures the truth. OEIS A352287 lists elements of $A$: 1, 6, 12, 56, 60, ...",

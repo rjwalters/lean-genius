@@ -56,7 +56,8 @@
       "fd2_upper_bound axiom: F₂(n) ≤ O(n^(1/2)) via integer grid construction",
       "erdos_1208 theorem: main result derived from fd2_lower_bound"
     ],
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "This problem is part of Erdős's influential program on distinct distances in Euclidean space. In 1946, Erdős conjectured that any $n$ points in the plane determine at least $\\Omega(n/\\sqrt{\\log n})$ distinct distances—this was finally proved by Guth and Katz in 2015 ($\\Omega(n/\\log n)$). Problem #1208 is a Ramsey-type refinement: not just 'how many distinct distances exist among all pairs' but 'how large a subset can we find where every pair has a distinct distance?' A set where all pairwise distances are different is called a 'distance-Sidon set' or a 'set in general position with respect to distances.' Erdős regularly asked about the maximum size of such a subset in any $n$-point set. The answer $F_d(n)$ is known to satisfy $n^{\\Omega(1)} \\leq F_d(n) \\leq o(n)$ for $d \\geq 2$, with the exact exponent depending on dimension.",

@@ -69,7 +69,8 @@
     "lineCount": 224,
     "assumptions": "10 axioms: incidenceSignature, incidence_at_least_two, incidence_at_most_n, incidence_pair_constraint, F, F_two, F_three, szemeredi_trotter_incidence, sz_trotter_upper_bound, f_lower_bound. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The Szemerédi-Trotter theorem (1983) is one of the most influential results in combinatorial geometry. Endre Szemerédi and William T. Trotter proved that the number of incidences between $n$ points and $m$ lines in $\\mathbb{R}^2$ is at most $O((nm)^{2/3} + n + m)$, resolving a conjecture of Erdős. This bound is tight, achieved by grid configurations.\n\nProblem #607 applies the Szemerédi-Trotter machinery to a counting problem: given $n$ points $P \\subset \\mathbb{R}^2$, the 'incidence signature' $A = \\{|\\ell \\cap P| : \\ell \\text{ determined by } P\\}$ records how many points lie on each line. Let $F(n)$ count the number of distinct achievable signatures. Erdős asked whether $F(n) \\leq \\exp(O(\\sqrt{n}))$ and noted this would be optimal. Szemerédi and Trotter confirmed the upper bound using their incidence theorem.\n\nThe $\\sqrt{n}$ growth connects to the Hardy-Ramanujan partition asymptotic $p(n) \\sim \\frac{1}{4n\\sqrt{3}} \\exp(\\pi\\sqrt{2n/3})$: signatures correspond to constrained integer partitions of $\\binom{n}{2}$ into parts $\\binom{k_i}{2}$, and the partition count grows as $\\exp(\\Theta(\\sqrt{n}))$. This problem carried a \\$250 prize.",

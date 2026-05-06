@@ -75,7 +75,8 @@
     "axiomCount": 3,
     "lineCount": 314,
     "assumptions": "3 axioms: reed_bound, reed_theorem, reed_bound_zero. 0 sorries. All previously sorry'd theorems (trivial_case, bipartite_deficiency_zero, strict_implies_bipartite, K3_violates_strict) are now fully proved.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**Origins: Independence and Bipartiteness**\n\nThe connection between independence number and bipartiteness is classical: a graph $G$ is bipartite if and only if $\\alpha(G[S]) \\ge |S|/2$ for every induced subgraph $G[S]$. This follows from the odd cycle characterization — an odd cycle $C_{2m+1}$ has $\\alpha = m < (2m+1)/2$, so any non-bipartite graph violates the condition.\n\n**Erdős's Question**\n\nErdős asked a natural structural question: if we relax the condition to $\\alpha(G[S]) \\ge (|S| - k)/2$ for some fixed $k \\ge 0$, must $G$ still be 'close to bipartite'? Specifically, can $G$ be made bipartite by removing at most $f(k)$ vertices, where $f(k)$ depends only on $k$ and not on $|V(G)|$? The power of this question lies in the quantifier structure — a fixed finite bound controlling an arbitrarily large graph.\n\n**Reed's Solution (1999)**\n\nBruce Reed proved the affirmative answer in his paper 'Mangoes and Blueberries' (Combinatorica 1999). The proof uses the Erdős-Pósa theorem for odd cycles: the $k$-independence condition bounds the number of vertex-disjoint odd cycles in $G$, and bounded packing implies a bounded transversal (a set of vertices hitting all odd cycles). Reed's bound is $f(k) \\le 2^k$, but the optimal growth rate remains unknown.\n\n**Significance**\n\nThe result is a prototype for structural graph theory results showing that 'approximate' satisfaction of a property (bipartiteness) forces 'approximate' structure (few exceptional vertices). This paradigm appears throughout the Graph Minors Project of Robertson and Seymour.",

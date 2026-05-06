@@ -37,7 +37,8 @@
     "axiomCount": 2,
     "lineCount": 308,
     "assumptions": "2 axioms: corrales_schoof (Corrales-Rodánez–Schoof 1997, proved via Kummer theory), zsygmondy (Zsygmondy 1892, classical result on primitive prime divisors).",
-    "theoremCount": 26
+    "theoremCount": 26,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "In 1988, at a number theory conference in Banff, Erdős posed the following problem: Let x, y ≥ 1 be integers such that for all n ≥ 1, the set of primes dividing x^n - 1 equals the set of primes dividing y^n - 1. Must x = y? This is the 'support problem' — asking whether the prime-support sequence of an exponential sequence x^n - 1 uniquely determines the base x.\n\nThe problem was resolved affirmatively by Corrales-Rodánez and Schoof in their 1997 paper 'Support problem and its elliptic analogue' (Journal of Number Theory 64(2), 276–290). Their proof used Kummer theory and Galois cohomology to show that equality of support sequences forces x = y. They also proved an elliptic analogue: for elliptic curves E/ℚ, the x-coordinate denominators of nP and nQ having equal prime supports for all n implies P = ±Q.\n\nThe key structural insight underlying the theorem is that the prime support of x^n - 1 encodes the multiplicative order of x modulo every prime p not dividing x. Specifically, p | x^n - 1 iff orderOf(x mod p) | n. So equality of support for all n forces orderOf(x mod p) = orderOf(y mod p) for every prime p coprime to xy. This is a very strong constraint that (by Kummer theory) forces x = y.",

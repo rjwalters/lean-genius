@@ -24,7 +24,8 @@
     "lineCount": 322,
     "assumptions": "None. All 5 former axioms fully proved: multiplesSet_density_exists (Davenport's density via periodicity), constant_2_optimal (optimality via Archimedean choice), singleton count formula (bijection), monotonicity, subset monotonicity. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1961, asking whether the density of multiples of a finite set satisfies a doubling inequality. The 1961 formulation contained a likely typographic error (writing $a \\nmid n$ instead of $a \\mid n$), corrected in a 1966 paper. The problem sits within the classical theory of sequences of multiples, initiated by Davenport's 1933 theorem that the natural density of the set of multiples of any sequence exists (extending Schnirelmann density ideas). Besicovitch (1935) showed that for infinite sets, the asymptotic density of multiples need not exist, making the finite-set case fundamentally different. The optimality claim — that the constant 2 cannot be improved — connects to the behavior of the floor function $\\lfloor N/a \\rfloor$ near the transition points $N = 2a - 1$ and $N = 2a$, where the density ratio jumps discontinuously. Halberstam and Roth's 1966 monograph 'Sequences' provides the definitive treatment of this circle of ideas, placing Erdős's question in the context of additive and multiplicative number theory.",

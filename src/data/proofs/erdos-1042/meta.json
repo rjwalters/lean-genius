@@ -50,7 +50,8 @@
     "axiomCount": 3,
     "lineCount": 132,
     "assumptions": "3 axioms: transfiniteDiameter (transfinite diameter — axiomatized, requires Chebyshev constant machinery), ghosh_ramachandran_small_diameter (Ghosh-Ramachandran: if 0 < d < 1, lemniscate has ≤ (1-c)n components), ghosh_ramachandran_diameter_one_examples (Ghosh-Ramachandran: ∃ sets with diameter 1 and n lemniscate components infinitely often). 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős, Herzog, and Piranian posed this problem in their 1958 paper on metric properties of polynomials. A polynomial lemniscate is the sublevel set {z : |f(z)| < 1} of a polynomial f, and the question concerns how many connected components it can have when the roots are constrained to lie in a closed set F ⊆ ℂ. The transfinite diameter (logarithmic capacity) of F controls the answer.\n\nThe 1958 paper showed that for the unit disc (transfinite diameter 1), the lemniscate of f(z) = zⁿ + 1 has exactly n connected components — one small disc around each nth root of -1. This left open whether sets with smaller transfinite diameter must have fewer components, and whether the answer depends on diameter alone.\n\nThe problem remained open for over 65 years until Ghosh and Ramachandran (2024) gave a complete solution. They proved that for transfinite diameter d < 1, components are bounded by (1-c)n for some c > 0 depending on F. For d ≤ 1/4 with F connected, only one component is possible. Crucially, they showed the answer cannot depend on transfinite diameter alone: the disc of radius 1/2 and the interval [-1,1] both have transfinite diameter 1/2, but behave completely differently.",

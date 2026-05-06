@@ -49,7 +49,8 @@
     "lineCount": 179,
     "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.add_choose_eq and standard combinatorial identities.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Vandermonde's identity was published by Alexandre-Théophile Vandermonde in 1772 in his 'Mémoire sur des irrationnelles de différents ordres avec une application au cercle.' The identity expresses C(m+n,r) as a convolution of C(m,k) and C(n,r-k), with the combinatorial interpretation of choosing r items from two disjoint groups of sizes m and n. The identity was known implicitly to earlier mathematicians: it appears in the work of Zhu Shijie (1303) and was used by Waring (1764). The modern proof via coefficient extraction from (1+x)^m · (1+x)^n = (1+x)^{m+n} connects it directly to the binomial theorem. Special cases have enormous reach: Pascal's rule (n=1) is the inductive definition of binomial coefficients; self-convolution Σ C(n,k)² = C(2n,n) counts lattice paths and appears in the asymptotics of the central binomial coefficient (C(2n,n) ~ 4^n/√(πn) via Stirling); the q-Vandermonde identity (Gaussian binomial coefficients) generalizes to vector spaces over finite fields. In modern combinatorics, Vandermonde is the foundational identity of the convolution algebra of binomial coefficient sequences.",

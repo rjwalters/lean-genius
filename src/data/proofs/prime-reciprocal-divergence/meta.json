@@ -42,7 +42,8 @@
     "lineCount": 164,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Leonhard Euler proved in 1737 that $\\sum_p 1/p$ diverges, using his celebrated product formula $\\prod_p (1 - 1/p)^{-1} = \\sum_n 1/n$: taking logarithms of both sides, the left side yields $\\sum_p 1/p$ plus convergent correction terms, while the right side diverges. This was a dramatic strengthening of Euclid's infinitude of primes (~300 BCE). Franz Mertens sharpened Euler's result in 1874, proving $\\sum_{p \\leq n} 1/p = \\ln(\\ln(n)) + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. Paul Erdős later gave an elegant elementary proof using smooth number estimates, appearing in Aigner and Ziegler's \"Proofs from THE BOOK.\" The result connects to the Riemann zeta function via the prime zeta function $P(s) = \\sum_p p^{-s}$, convergent for $\\text{Re}(s) > 1$, and to the Prime Number Theorem through the relationship between $\\sum_{p \\leq n} 1/p$ and $\\pi(n) \\sim n/\\ln(n)$.",

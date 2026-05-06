@@ -75,7 +75,8 @@
     ],
     "assumptions": "1 axiom: bedert_theorem. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős and Sárközy studied sets A ⊆ {1,...,N} avoiding the divisibility relation a | (b+c) with a < min(b,c). They observed that the interval (2N/3, N] ∩ ℕ is divisibility-free and has size approximately N/3, and conjectured this is optimal: every divisibility-free set has |A| ≤ N/3 + O(1).\n\nThe problem sat open for decades until Benjamin Bedert solved it in 2023, earning Erdős's $100 prize. Bedert's proof confirmed the tight bound, showing the upper third construction cannot be significantly improved. The solution required careful analysis of divisibility constraints and additive structure.\n\nThe problem connects to several areas: sum-free sets (the upper third is also sum-free since a + b > 4N/3 > N ≥ c), extremal combinatorics, and the theory of restricted arithmetic structures. The natural generalization to r-element sums — asking whether |A| ≤ N/(r+1) + O(1) when no a divides b₁ + ··· + bᵣ with a < min(bᵢ) — remains open for r ≥ 3.",

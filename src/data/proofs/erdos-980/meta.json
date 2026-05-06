@@ -25,7 +25,8 @@
     "lineCount": 276,
     "assumptions": "4 axioms: c_2_positive, c_k_positive, erdos_1961_quadratic, elliott_1967_general. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of k-th power nonresidues among primes. Erdős posed the question in 1961 and proved the quadratic case (k=2) himself, establishing that the sum of least quadratic nonresidues grows like c₂ · x/log x where c₂ = Σ p_j/2^j ≈ 3.67. The general case for all k ≥ 2 was resolved by P.D.T.A. Elliott in 1967. Power residues have been studied since Legendre introduced the Legendre symbol in 1798 to formulate quadratic reciprocity; the distribution of least nonresidues mod primes connects to character sum estimates via the Polya-Vinogradov inequality. Under the Generalized Riemann Hypothesis, the least k-th power nonresidue mod p is O(p^{1/(2k) + ε}), but Elliott established the unconditional asymptotic for the sum over primes.",

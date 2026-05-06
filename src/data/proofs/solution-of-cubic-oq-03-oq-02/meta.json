@@ -31,7 +31,8 @@
       "Complex numbers and cube roots",
       "Discriminant of polynomial equations"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The casus irreducibilis (Latin: 'irreducible case') was first encountered by Gerolamo Cardano (1501–1576) when publishing his cubic formula in *Ars Magna* (1545). Scipione del Ferro had discovered the depressed cubic solution earlier (~1510), and Cardano generalized it, but both found that when Δ > 0 — three distinct real roots — the formula produced square roots of negative numbers. Cardano dismissed these as 'sophistic' but couldn't avoid them.\n\nRafael Bombelli (1526–1572) made the decisive step in his *Algebra* (1572): he defined rules for arithmetic with 'plus of minus' and 'minus of minus' quantities (our i and −i), showed the formula produces a valid answer by treating them algebraically, and verified by direct substitution. This is the birth of complex arithmetic.\n\nFor two centuries, mathematicians debated whether passing through complex numbers was merely computational convenience or a genuine necessity. Pierre Wantzel (1814–1848) settled this definitively in 1843 using Galois theory: the splitting field of a casus irreducibilis cubic over ℚ has Galois group S₃ (or A₃), and the real number field has no radical tower reaching all three roots. Any algebraic expression for the roots in real radicals must fail for at least one root.\n\nThis formalization proves the first half — that Cardano's formula is genuinely complex when Δ > 0 — and states Wantzel's impossibility theorem as an axiom awaiting formal Galois theory infrastructure in Lean 4.",

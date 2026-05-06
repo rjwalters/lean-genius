@@ -61,7 +61,8 @@
     "axiomCount": 3,
     "lineCount": 325,
     "assumptions": "3 axiom(s): trivial_lower_bound, green_upper_bound, precise_asymptotic. See the Lean source for details.",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Peter Cameron and Paul Erdős conjectured that the number $f(n)$ of sum-free subsets of $\\{1, \\ldots, n\\}$ satisfies $f(n) = 2^{(1+o(1))n/2}$, meaning the trivial lower bound from the upper half construction is essentially tight. The lower bound $f(n) \\ge 2^{\\lfloor n/2 \\rfloor}$ is elementary: any subset of $\\{\\lceil n/2 \\rceil, \\ldots, n\\}$ is sum-free since all pairwise sums exceed $n$. The conjecture was resolved independently by Ben Green (2004, Bull. London Math. Soc.) and Alexander Sapozhenko (2003, Dokl. Akad. Nauk). Green's proof introduced a proto-container argument: he showed that sum-free subsets are 'almost contained' in structured templates — either subsets of the upper half or subsets of odd numbers — and bounded the template count. This structural insight anticipated the Balogh-Morris-Samotij / Saxton-Thomason hypergraph container method (2015), one of the most powerful tools in modern combinatorics. More precisely, $f(n) \\sim c_n \\cdot 2^{n/2}$ where $c_n$ depends on the parity of $n$, reflecting the two dominant sum-free families (upper half for even $n$, odd numbers for odd $n$). The problem connects to Schur numbers in Ramsey theory and to the broader program of counting combinatorial structures avoiding prescribed patterns.",

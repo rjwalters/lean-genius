@@ -64,7 +64,8 @@
     "axiomCount": 3,
     "lineCount": 316,
     "assumptions": "3 axioms: pair_count_necessary, alon_lower_bound, question_2_solved. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1981, connecting it to his broader interest in combinatorial design theory. A pairwise balanced block design (PBD) on $\\{1,\\ldots,n\\}$ partitions all $\\binom{n}{2}$ pairs into blocks, with each pair appearing in exactly one block. The block sizes form a non-decreasing sequence $X_1 \\le \\cdots \\le X_m$, and a sequence is 'block-compatible' if it can be realized by some PBD.\n\nErdős asked two questions: (Q1) characterize which sequences are block-compatible, and (Q2) estimate the count $B(n)$ of block-compatible sequences. He proved the upper bound $B(n) \\le \\exp(O(\\sqrt{n} \\log n))$ using a counting argument over integer partitions of $\\binom{n}{2}$ into triangular numbers $\\binom{k}{2}$.\n\nAlon resolved Q2 by proving the matching lower bound $B(n) \\ge 2^{(1/2 + o(1))\\sqrt{n} \\log n}$. His construction uses probabilistic methods to show that many distinct PBDs can be built by independently choosing block structures in different regions of $[n]$. This establishes $\\log B(n) = \\Theta(\\sqrt{n} \\log n)$.\n\nQ1 remains open. The pair-counting condition $\\sum \\binom{X_i}{2} = \\binom{n}{2}$ is necessary but not sufficient: some sequences satisfy the arithmetic constraint but cannot be realized geometrically due to intersection constraints between blocks (related to the Fisher inequality and the Bruck-Ryser-Chowla theorem). Finding a complete characterization is believed to be computationally hard.",

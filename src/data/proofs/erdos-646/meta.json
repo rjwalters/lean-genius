@@ -71,7 +71,8 @@
     "lineCount": 350,
     "assumptions": "2 axioms: berend_existence (Berend — for any set S of primes, infinitely many n have all even p-adic valuations for p in S), berend_bounded_gaps (bounded gaps between such n). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #646**\n\nThis problem asks about the parity of prime exponents in factorial factorizations.\n\n**Key History:**\n- Erdős & Graham (1980, p. 77, *Old and New Problems and Results in Combinatorial Number Theory*): Original problem statement\n- Berend (1997): Proved the affirmative answer with a stronger bounded-gaps result\n\n**Mathematical Setting:**\nThe p-adic valuation $v_p(n!)$ counts how many times prime $p$ divides $n!$. Legendre's formula gives $v_p(n!) = \\sum_{j \\geq 1} \\lfloor n/p^j \\rfloor$. The beautiful digit-sum identity $v_p(n!) = (n - s_p(n))/(p-1)$ (where $s_p(n)$ is the base-$p$ digit sum) reduces the parity question to properties of digit representations. For a single prime, the parity of $v_p(n!)$ is quasi-periodic with density $\\approx 1/2$. The challenge for multiple primes is showing these quasi-periodic patterns are not anti-correlated — that simultaneous even valuations occur infinitely often. Berend's proof uses the Chinese Remainder Theorem to decompose the multi-prime problem into independent single-prime problems, leveraging the digit-sum formula and equidistribution of digit patterns.",

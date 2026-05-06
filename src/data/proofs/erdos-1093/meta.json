@@ -23,7 +23,8 @@
     "lineCount": 257,
     "assumptions": "1 axiom: els_upper_bound (ELS 1993 upper bound theorem). Former many_deficiency_one_examples axiom eliminated by 16 individually verified native_decide examples spanning k=3..28. Section VIII adds 5 additional verified examples (including all known deficiency-2 pairs). Section IX proves finitely_many_for_fixed_k as a zero-sorry corollary of the ELS axiom.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 44
+    "theoremCount": 44,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős, Lacampagne, and Selfridge developed this problem across two papers (1988, 1993) and first presented it at the 1986 West Coast Number Theory conference. The question arose from their broader investigation into the prime factorization of binomial coefficients, specifically when $\\binom{n}{k}$ has no 'small' prime factors (all primes dividing it exceed $k$). Under this condition, the falling factorial $n(n-1)\\cdots(n-k+1)$ has a delicate balance: the small prime factors must cancel exactly with $k!$, and the 'deficiency' measures excess smoothness. The ELS upper bound $n \\ll 2^k \\sqrt{k}$ (1993) constrains the search space but leaves both parts of the conjecture open. The problem connects to Dickman's function ($\\Psi(x, y)$ counting $y$-smooth numbers up to $x$), Kummer's theorem (1852) on carries in base-$p$ addition characterizing $v_p(\\binom{n}{k})$, and the broader Erdős program on arithmetic properties of binomial coefficients. The record deficiency of 9 for $\\binom{284}{28}$ has stood since the original investigation, and computational searches have found at least 58 deficiency-1 examples for $n \\leq 10^5$.",

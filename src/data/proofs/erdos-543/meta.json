@@ -67,7 +67,8 @@
     "axiomCount": 2,
     "lineCount": 173,
     "assumptions": "2 axioms: f, chatgpt_tang_disproof. 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Rényi introduced this question in 1965 while developing probabilistic methods in group theory. They proved that f(N) ≤ log₂ N + O(log log N), where f(N) is the minimal random subset size needed to span an abelian group of size N via subset sums with probability at least 1/2. Erdős asked whether the O(log log N) term could be improved to o(log log N), but believed the answer was no.\n\nIn 1978, Erdős and Hall showed that the bound cannot even be improved to o(log log log N), providing evidence that the log log N term is inherent. This intermediate result foreshadowed the full resolution.\n\nThe conjecture was ultimately disproved by ChatGPT and Tang, who confirmed Erdős's prediction: the O(log log N) term in the Erdős-Rényi bound is optimal and cannot be improved to o(log log N). For sufficiently large primes p, a random subset of F_p of the prescribed size fails to generate all elements under subset sums. This resolves the problem in the negative.",

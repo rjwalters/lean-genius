@@ -48,7 +48,8 @@
     "axiomCount": 1,
     "lineCount": 142,
     "assumptions": "1 axiom: erdos_hajnal_rodl_theorem. See Lean source for the complete statement.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Hajnal in the 1960s, connecting two fundamental graph parameters: chromatic number and girth. The chromatic number measures global coloring complexity, while girth measures local sparsity (absence of short cycles).\n\nThe question asks whether high chromatic number forces the existence of subgraphs that are simultaneously highly chromatic AND locally sparse (large girth). This is surprising because high-girth graphs resemble trees locally, and trees are trivially 2-colorable.\n\nVojtěch Rödl proved the r=4 case in 1977, showing that graphs with sufficiently high chromatic number must contain triangle-free subgraphs of arbitrarily high chromatic number. This connected to the classical Mycielski construction of triangle-free graphs with high chromatic number, but went further by showing such subgraphs exist inside ANY sufficiently chromatic graph.",

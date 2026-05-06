@@ -46,7 +46,8 @@
     "proofRepoPath": "Proofs/Hilbert9Reciprocity.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 259,
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "In his 1900 address, Hilbert posed 23 problems to guide 20th-century mathematics. The ninth problem asked: 'For any given number field, to find the most general reciprocity law which governs the behavior of the n-th power residue symbol.'\n\nThe path to the answer:\n- **Gauss (1796)**: Proved quadratic reciprocity, the n=2 case\n- **Eisenstein, Jacobi (1840s)**: Cubic and quartic reciprocity\n- **Hilbert (1897)**: First general reciprocity law for cyclotomic fields\n- **Takagi (1920)**: Developed class field theory\n- **Artin (1927)**: Proved the definitive general reciprocity law\n\nArtin's theorem shows that all reciprocity laws arise from the structure of Galois groups of abelian extensions, unified through the Artin symbol.",

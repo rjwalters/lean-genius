@@ -24,7 +24,8 @@
     "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
     "lineCount": 105,
     "mathlib_version": "4.26.0",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "The study of divisor sums is among the oldest themes in number theory. Perfect numbers ($\\sigma(n) = 2n$) appear in Euclid's *Elements* (c. 300 BCE), and the classification of numbers as abundant ($\\sigma(n) > 2n$) or deficient ($\\sigma(n) < 2n$) goes back to Nicomachus (c. 100 CE). The subset-sum structure of divisors was formalized much later: Sierpiński introduced semiperfect numbers in 1965, and Benkoski coined the term *weird* in 1972 for abundant numbers that resist expressing $n$ as a subset sum of their proper divisors.\n\nBenkoski and Erdős (1974) systematically studied weird numbers and established basic properties: the smallest weird number is 70, weird numbers have positive density among the integers (a result proved by Erdős himself), and all known weird numbers are even. Erdős asked (Problem #825) whether sufficiently high abundancy $\\sigma(n)/n$ forces semiperfectness — offering a \\$25 prize. The heuristic reasoning is that high abundancy means many large proper divisors, making the subset-sum problem easier to solve.\n\nThe problem connects intimately to Erdős Problem #470 on odd weird numbers: no odd weird number is known up to $10^{21}$ (Melfi, 2015), and their non-existence would immediately imply the abundancy bound with $C = 3$. The relationship between these two problems illustrates how open questions in number theory form interconnected webs rather than isolated puzzles.\n\nComputational searches have found all weird numbers up to $10^6$ (sequence A006037 in the OEIS), and the density of weird numbers among the integers appears to be approximately 0.0067, though the exact asymptotic density remains unknown.",

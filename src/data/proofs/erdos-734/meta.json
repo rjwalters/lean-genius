@@ -61,7 +61,8 @@
     "axiomCount": 2,
     "lineCount": 206,
     "assumptions": "2 axioms: deBruijn_erdos, projective_plane_exists. 0 sorries.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #734 in his 1981 paper 'On the combinatorial problems which I would most like to see solved.' He asked whether, for all large n, there exists a non-trivial pairwise balanced block design (PBD) on n points where every block size t appears in at most O(n^{1/2}) blocks. Erdős wrote that this would 'probably not be very difficult to prove' but admitted he had been unsuccessful.\n\nThe foundational result for this problem is the de Bruijn-Erdős theorem (1948), which states that any non-trivial PBD on n points has at least n blocks. By a pigeonhole argument, since block sizes range from 2 to n, at least one size must appear with frequency proportional to √n. The question is whether ALL sizes can be kept at this threshold simultaneously.\n\nClassical constructions like projective and affine planes fail the frequency condition because they have uniform block size — all blocks are the same size, concentrating frequency in a single value. No construction achieving the O(√n) bound for all sizes is known, and the problem remains open. It connects to broader questions in combinatorial design theory about how block sizes can be distributed in balanced structures.",

@@ -60,7 +60,8 @@
     "assumptions": [
       "gao_hamidoune_wang: Graham's conjecture holds for all moduli n (Gao-Hamidoune-Wang 2010)"
     ],
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Zero-sum problems form a central topic in additive combinatorics. The study asks: given a sequence of elements from an abelian group, when must there exist a subsequence summing to zero?\n\nGraham posed a structural question: if we impose that ALL nonempty zero-sum subsets have the SAME cardinality r, what does this constrain about the sequence? His conjecture was that such rigid structure forces the sequence to use at most 2 distinct residues.\n\nErdős and Szemerédi (1976) proved this for sufficiently large primes. The full result came from Gao, Hamidoune, and Wang (2010), who proved it for ALL moduli n, not just primes.\n\nThis connects to the Erdős-Ginzburg-Ziv theorem (1961), which guarantees that among 2n-1 integers, some n have sum divisible by n.",

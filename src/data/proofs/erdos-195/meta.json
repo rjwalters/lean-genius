@@ -51,7 +51,8 @@
     "axiomCount": 3,
     "lineCount": 149,
     "assumptions": "3 axioms (geneson_2019, adenwalla_2022, trivial_lower_bound) and 0 sorries. Upper and lower bounds are axiomatized as they encode results from the literature.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #195: Monotone Arithmetic Progressions in Permutations**\n\nPosed by Erdős and Graham around 1979-1980, this problem asks about unavoidable patterns in permutations of the integers. A monotone arithmetic progression (MAP) is a sequence a, a+d, a+2d, ..., a+(k-1)d that appears in increasing order of position in the permutation.\n\n**Progress:** The problem saw no significant progress for decades until Geneson (2019) proved k ≤ 5 by constructing a permutation of ℤ that avoids 6-term MAPs. Adenwalla (2022) improved this to k ≤ 4. The lower bound k ≥ 3 (every permutation has a 3-term MAP) is believed true but non-trivial.\n\n**Current State:** The exact value of k satisfies 3 ≤ k ≤ 4. Determining whether k = 3 or k = 4 remains the central open question. This connects to Ramsey-type phenomena: which patterns are unavoidable in combinatorial structures?",

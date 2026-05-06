@@ -78,7 +78,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus* of the French Academy of Sciences, and solved by Désiré André in the very next issue of the same journal. It asks: in an election where candidate A receives $p$ votes and candidate B receives $q$ votes (with $p > q$), what is the probability that A is ahead of B throughout the entire counting process?\n\nThe answer is the elegant formula $(p-q)/(p+q)$. André's proof introduced the **reflection principle** — a bijective argument that pairs each 'bad' vote sequence (where A falls behind or ties) with a reflected path. The reflection principle has since become one of the most powerful tools in enumerative combinatorics, applied to Catalan numbers, random walks, queueing theory, and financial mathematics.\n\nThe problem has a rich genealogy: it was studied independently by Émile Barbier (1887), rediscovered by Aeppli (1924), and generalized by Takács (1962) and others. William Feller popularized it in his classic textbook *An Introduction to Probability Theory and Its Applications* (1968), where it appears as a gateway to the theory of random walks and fluctuation theory.\n\nThe result appears as Theorem #30 in Wiedijk's Formalizing 100 Theorems list, and was formalized in Mathlib by Sébastien Gouëzel.",

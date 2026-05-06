@@ -49,7 +49,8 @@
       "KL divergence non-negativity and Gibbs inequality"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The binary symmetric channel (BSC) is the simplest non-trivial noisy channel model and serves as the canonical example for Shannon's channel coding theorem. Shannon showed that the capacity of BSC(p) -- the crossover probability -- equals 1 - h(p) bits (or log 2 - h(p) nats), where h(p) is the binary entropy function. This result demonstrates that reliable communication is possible even over noisy channels, as long as the data rate stays below C.\n\nThe capacity-achieving input distribution for BSC is uniform (Bernoulli 1/2), which follows from the symmetric structure of the channel. The key insight is that BSC is doubly stochastic: both row sums and column sums of the transition matrix equal 1. This means uniform input produces uniform output, maximizing the output entropy H(Y) = log 2.\n\nThe random coding argument, also due to Shannon, shows that randomly chosen codebooks achieve rates below capacity with high probability. The existence of a good deterministic codebook then follows by the probabilistic method -- if the expected error is small, at least one specific codebook must have small error.",

@@ -45,7 +45,8 @@
     "axiomCount": 2,
     "lineCount": 192,
     "assumptions": "2 axioms: wang_theorem (Erdős-Faudree conjecture on k disjoint 4-cycles), four_cycle_base_case (base case: 4-vertex graph with min degree ≥ 2 contains a 4-cycle). 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős and Faudree conjectured in 1985 that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles (quadrilaterals). This conjecture belongs to a rich family of 'cycle partition' problems in extremal graph theory, with roots in Dirac's theorem (1952) that δ(G) ≥ n/2 implies Hamiltonicity. The Corrádi-Hajnal theorem (1963) established the triangle case: 3k vertices with δ(G) ≥ 2k contain k vertex-disjoint triangles. El-Zahar (1984) proposed the general conjecture for mixed cycle lengths. The Erdős-Faudree conjecture is notable because the degree threshold 2k = n/2 exactly matches the Dirac threshold — unlike the Corrádi-Hajnal case where 2k on 3k vertices gives δ ≥ 2n/3 (above Dirac). After 25 years open, Hong Wang completely resolved the conjecture in a 45-page proof published in Graphs and Combinatorics (2010). Wang's approach analyzes minimal counterexamples, studying the neighborhood structure of high-degree vertices and using greedy cycle extraction with careful bookkeeping to derive contradictions. The degree bound 2k is sharp: there exist counterexample graphs with δ = 2k - 1.",

@@ -54,7 +54,8 @@
     "lineCount": 290,
     "assumptions": "4 axioms: split_is_chordal, extremal_construction_exists, erdos_ordman_zalcstein, peo_gives_clique_partition. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "A chordal graph is one with no induced cycles of length greater than 3, equivalently every cycle of length 4 or more has a chord. These graphs arise naturally in sparse matrix computations, database theory, and phylogenetics. Erdős, Ordman, and Zalcstein asked in 1993 how efficiently the edges of a chordal graph on n vertices can be partitioned into cliques, conjecturing that n²/6 + O(n) cliques always suffice.\n\nThe lower bound comes from an explicit extremal construction: take K_{n/3} and 2n/3 isolated vertices, connecting every K_{n/3} vertex to every isolated vertex. This split graph requires approximately n²/6 cliques because the bipartite edges between the clique and independent set cannot be efficiently grouped. Erdős, Ordman, and Zalcstein proved the upper bound that (1/4 - ε)n² cliques always suffice for some small ε > 0. Chen, Erdős, and Ordman (1994) improved this to 3n²/16 + O(n) for the special case of split graphs.\n\nThe gap between the upper bound coefficient 1/4 and the conjectured coefficient 1/6 (a factor of approximately 1.5) remains open. Chordal graphs are characterized by having a perfect elimination ordering (Dirac 1961, Fulkerson-Gross 1965), which gives a polynomial-time recognition algorithm and a greedy clique partition that is a 2-approximation, but the optimal coefficient for clique partitions remains unknown.",

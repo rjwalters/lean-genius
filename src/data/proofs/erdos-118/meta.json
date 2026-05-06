@@ -27,7 +27,8 @@
     "lineCount": 143,
     "assumptions": "4 axioms: counter_partition_3 (Schipperus), counter_not_partition_5 (Larson), partitionThreshold, threshold_exact. ordPartition now properly defined. partition_monotone_down proved from definition (blue clique restriction). omega_omega2_threshold proved from threshold_exact + monotonicity + counterexamples. relation_to_592 proved directly from counterexamples.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "sections": [
     {

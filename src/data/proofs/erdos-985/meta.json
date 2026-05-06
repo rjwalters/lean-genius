@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 225,
     "assumptions": "2 axioms: heath_brown_theorem, erdos_985_conjecture. 1 sorry (in artin_implies_erdos_985, awaiting Linnik-type quantitative step).",
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #985: Prime Primitive Roots**\n\nThis problem asks whether every odd prime p admits a prime primitive root less than itself.\n\n**Key History:**\n- Artin (1927): Conjectured that any non-square integer is a primitive root for infinitely many primes\n- Hooley (1967): Proved Artin's conjecture assuming the Generalized Riemann Hypothesis\n- Heath-Brown (1986): Proved unconditionally that at least one of 2, 3, or 5 is a primitive root for infinitely many primes\n\n**Mathematical Setting:**\nA primitive root modulo p is an integer g whose multiplicative order equals p - 1. This means g generates the entire multiplicative group (ℤ/pℤ)×. Erdős's question asks specifically for PRIME primitive roots, a natural but difficult restriction.",

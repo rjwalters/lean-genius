@@ -24,7 +24,8 @@
     "lineCount": 73,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the 1930s, observing that the primes $\\{2, 3, 5, 7, 11, \\ldots\\}$ naturally form a set with strictly increasing totient values since $\\varphi(p) = p - 1$ for primes. He conjectured that primes are asymptotically optimal: no subset of $\\{1, \\ldots, N\\}$ with increasing totient values can be much larger than $\\pi(N)$. Pomerance (1979) obtained the first non-trivial bounds using sieve methods, showing $|A| \\leq c \\cdot \\pi(N)$ for some constant $c > 1$. Ford (1998) improved the constant using his work on the anatomy of integers and the distribution of $\\varphi$-values. The problem was fully resolved by Terence Tao in 2023, who proved $|A| \\leq (1 + O((\\log\\log x)^5 / \\log x)) \\pi(x)$, confirming Erdős's conjecture with an explicit error term. Tao's proof combines multiplicative number theory, the Selberg sieve, and a careful analysis of the distribution of totient values among smooth numbers. The result exemplifies the extremal role of primes in number-theoretic optimization problems.",

@@ -59,7 +59,8 @@
     "lineCount": 268,
     "theoremCount": 15,
     "assumptions": "0 axioms, 0 sorries. All 15 theorems fully proved using Mathlib.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The study of query complexity for fixed point problems lies at the intersection of computational complexity theory, numerical analysis, and optimization. **Banach (1922)** proved his contraction mapping theorem in his doctoral thesis at the University of Lwów, showing that contractions on complete metric spaces converge geometrically with rate L^n — a result he used to prove existence and uniqueness for certain integral equations. **Newton (1669)** described his iterative method for root-finding in *De Analysi*; **Kantorovich (1948)** gave the first rigorous convergence analysis, proving quadratic convergence under explicit smoothness conditions now called the Kantorovich conditions.\n\nThe **query complexity** perspective emerged from theoretical computer science: rather than asking how many arithmetic operations are needed, we ask how many function evaluations (oracle queries) are required. **Chen and Deng (2009)** studied query complexity for Brouwer fixed-point computation, showing that the general 2D problem is PPAD-complete even for very short programs. For 1D problems, the picture is clean: the information-theoretic lower bound shows Ω(log(1/ε)) queries are always necessary, and binary search achieves this exactly.\n\nThe hierarchy Contraction ⊊ Lipschitz ⊊ Continuous corresponds to progressively richer oracle information: contractions provide **rate information** (L < 1 means each query narrows the search geometrically), while smooth contractions provide **curvature information** (enabling Newton's O(log log(1/ε)) quadratic convergence).",

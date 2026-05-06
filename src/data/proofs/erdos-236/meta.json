@@ -54,7 +54,8 @@
     "axiomCount": 0,
     "lineCount": 175,
     "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "This problem connects two fundamental themes in Erdős's work: the representation of integers as sums involving primes, and the asymptotic growth of counting functions. The question emerged from his 1950 paper on representing integers as 2^k + p, where he showed that infinitely many n cannot be written in this form. Problem #236 asks about the opposite extreme: how many ways can a given n be represented? Erdős's lower bound f(n) ≫ log log n infinitely often shows that representations can be surprisingly abundant. The related conjecture that only 7 numbers have ALL residues n - 2^k prime (the 'all-prime' property) has been verified to 2^44 by Mientka-Weitzenkamp.",

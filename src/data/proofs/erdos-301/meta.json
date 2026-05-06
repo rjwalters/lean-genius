@@ -24,7 +24,8 @@
     "lineCount": 158,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Egyptian Fractions and Avoidance**\n\nEgyptian fractions — representations of rationals as sums of distinct unit fractions — date to the Rhind Papyrus (c. 1650 BCE). Erdős posed Problem 301 as a natural extremal question: how large can a subset of {1,...,N} be while avoiding all Egyptian fraction decompositions among its elements?\n\nThe trivial lower bound f(N) >= N/2 comes from the interval (N/2, N], whose elements have reciprocals too small to decompose within the set. Van Doorn improved the upper bound to (25/28 + o(1))N using divisibility patterns: identities like 1/(2a) = 1/(3a) + 1/(6a) force elements in arithmetic progressions to participate in decompositions.\n\nThe problem connects to **Erdős Problem 302** (Egyptian fraction representations) and **Problem 327** (sum-divides-product), forming a cluster of questions about the additive structure of unit fractions. Graham (2013) surveyed Erdős's extensive work on Egyptian fractions at the Erdős Centennial conference. Croot (2003) studied related coloring problems for unit fractions, establishing connections to the Hales-Jewett theorem.",

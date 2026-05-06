@@ -64,7 +64,8 @@
     "axiomCount": 0,
     "lineCount": 580,
     "assumptions": "No axioms, 0 sorries. The main open conjecture (g₃(n) ≫ 3ⁿ) is stated as a def, not proved. Proved: g_k(n) ≥ n and g_3(n) ≤ 3ⁿ.",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "This problem combines two fundamental concepts in additive combinatorics: subset sums and arithmetic progression avoidance. The subset sum set ⟨A⟩ of a finite set A is the collection of all possible sums formed by selecting subsets of A. This structure appears throughout number theory and combinatorics.\n\nErdős and Sárközy studied the function g_k(n): the minimal N such that {1,...,N} contains some n-element set A whose subset sums avoid non-trivial k-term arithmetic progressions. They proved that g₃(n) ≫ 3ⁿ/n^{O(1)}, establishing exponential growth up to polynomial factors.\n\nThe main conjecture asks whether the polynomial factor is necessary: is g₃(n) truly ≫ 3ⁿ? This remains open and connects to deep questions about the structure of subset sum sets and Szemerédi-type theorems.",

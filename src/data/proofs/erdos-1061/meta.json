@@ -59,7 +59,8 @@
     "axiomCount": 0,
     "lineCount": 380,
     "assumptions": "No axioms. 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted \u2014 the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences.",
-    "theoremCount": 48
+    "theoremCount": 48,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "**Erdos Problem #1061**\n\nThis problem appears as Problem B15 in Richard Guy's celebrated collection \"Unsolved Problems in Number Theory\" (2004 edition), attributed to Erdos.\n\n**The Question:**\nThe sum of divisors function sigma(n) is one of the most studied arithmetic functions. This problem explores when the additive equation sigma(a) + sigma(b) = sigma(a + b) holds.\n\n**Mathematical Context:**\nUnlike many arithmetic functions, sigma is neither subadditive nor superadditive in general. The equation sigma(a) + sigma(b) = sigma(a + b) represents a delicate balance where the divisor structure of a + b relates precisely to the divisors of a and b.\n\n**Current Status:**\nThis problem remains OPEN. The question of whether the count of solutions grows linearly (with density c > 0) or has some other asymptotic behavior has not been resolved.",

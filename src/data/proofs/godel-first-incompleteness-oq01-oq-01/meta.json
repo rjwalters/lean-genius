@@ -61,7 +61,8 @@
         "note": "Pedagogical scaffold using Provable := fun _ => False"
       }
     ],
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Gödel's 1931 incompleteness theorem used ω-consistency as a hypothesis: if the system proves ∃n P(n), then the system is not ω-consistent if it also proves ¬P(n̄) for every specific n. Many logicians felt this was an 'unnatural' or overly strong assumption. J. Barkley Rosser (1936) addressed this by constructing a different self-referential sentence that makes the unprovability argument work under plain consistency alone.\n\nRosser's modification is now the standard form of the First Incompleteness Theorem. Every modern statement of Gödel's theorem uses 'consistent' rather than 'ω-consistent' — Rosser's improvement is invisible in the standard formulation but is mathematically essential.",

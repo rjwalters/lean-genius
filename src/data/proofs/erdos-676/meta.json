@@ -57,7 +57,8 @@
     "axiomCount": 1,
     "lineCount": 225,
     "assumptions": "1 axiom: density_one. 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in 1979 [Er79], [Er79d]. The question asks whether every sufficiently large integer can be written as ap^2 + b where p is prime, a >= 1, and 0 <= b < p.\n\nThe sieve of Eratosthenes shows that 'almost all' integers have this representation, and the Brun-Selberg sieve gives that exceptions in [1,x] are at most x/(log x)^c for some c > 0.\n\nErdos himself believed it 'rather unlikely' that all large integers would satisfy this condition. Selfridge and Wagstaff's computer searches (without the prime restriction) suggested infinitely many exceptions even in the general case.\n\nRelated questions include the behavior of the minimal coefficient c_n and whether c_n < n^{o(1)}.",

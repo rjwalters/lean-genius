@@ -54,7 +54,8 @@
       "Basic combinatorics (subset counting, cardinality bounds)",
       "Natural number arithmetic (powers of 2, inequalities)"
     ],
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős called this 'perhaps my first serious problem,' posing it in 1931 at age 18. A set $A \\subseteq \\{1, \\ldots, N\\}$ has distinct subset sums if the map $S \\mapsto \\sum_{a \\in S} a$ is injective on subsets of $A$. The powers of 2, $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$, trivially satisfy this with $N = 2^{n-1}$, and Erdős conjectured this is essentially optimal: $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$. He offered \\$500 for a proof or disproof. The basic lower bound $N \\geq 2^{n-1}$ was known early via a counting/pigeonhole argument. Conway and Guy (1968) constructed sets with $N < 0.22002 \\cdot 2^n$, showing the constant $c$ (if it exists) is at most $0.22$. Lunnon (1988) computed optimal sets for small $n$. The best lower bound is due to Dubroff, Fox, and Xu (2021): $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$, which still has a $1/\\sqrt{n}$ gap from the conjectured $c \\cdot 2^n$. The problem connects to Sidon sets ($B_2$ sequences), uniquely decodable codes in information theory, and the knapsack problem in computational complexity.",

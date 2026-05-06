@@ -56,7 +56,8 @@
     "axiomCount": 2,
     "lineCount": 255,
     "assumptions": "2 axioms: tao_counterexample, tao_construction. 0 sorries.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős Problem #442 appeared in Erdős and Graham's 'Old and New Problems and Results in Combinatorial Number Theory' (1980, p.88). The problem asks about the relationship between density of a set and the behavior of pairwise LCMs.\n\nThe question sat open for 44 years until Terence Tao resolved it in July 2024 with his paper 'Dense sets of natural numbers with unusually large least common multiples' (arXiv:2407.04226).\n\nTao not only answered the question negatively but also determined the exact threshold: sets growing faster than exp(C√(log log x)·log log log x) for any constant C DO have divergent normalized LCM sums, while at exactly this growth rate, the normalized LCM sum can remain bounded.",

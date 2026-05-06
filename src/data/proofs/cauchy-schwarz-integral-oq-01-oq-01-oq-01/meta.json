@@ -60,7 +60,8 @@
     "lineCount": 183,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Cauchy first stated the finite sum inequality $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ in his 1821 Cours d'analyse. Schwarz extended it to integrals in 1885, and Bunyakovsky independently proved the integral form in 1859. Young's inequality (1912) arose from the study of conjugate exponents in $L^p$ spaces and became a key tool in functional analysis and PDE theory. Titu's lemma, popularized by Romanian mathematician Titu Andreescu for olympiad use, is actually a special case of Cauchy-Schwarz dating to Engel. Nesbitt's inequality appeared as Problem 15114 in the 1903 Educational Times. Together, these inequalities form the core toolkit of both competition mathematics and analysis — Cauchy-Schwarz alone appears in virtually every branch of mathematics from inner product spaces to probability theory to quantum mechanics.",

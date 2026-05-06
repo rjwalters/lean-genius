@@ -43,7 +43,8 @@
       "**T_{-1} = X**: The base case P(-1) requires T_{-1} = X, which itself needs a mini induction via T_add_two at -1: T(1) = 2X·T(0) - T(-1) gives X = 2X·1 - T(-1), so T(-1) = X.",
       "**No sin θ = 0 case analysis**: Converting to the trig form via polynomial evaluation avoids the singularity sin θ = 0 that would arise from U_real_cos directly.",
       "**two_X_U powers all three cases**: The helper lemma $2X \\cdot U_k = U_{k+1} + U_{k-1}$ (a rearrangement of the U recurrence) is applied exactly twice per induction step — once at index $m+n$ and once at $n-m$ (or their shifted versions). This precise re-use is what makes `linear_combination` close all three cases automatically."
-    ]
+    ],
+    "definitionCount": 2
   },
   "leanFile": {
     "imports": ["Mathlib"],

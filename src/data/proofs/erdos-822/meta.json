@@ -50,7 +50,8 @@
     "axiomCount": 1,
     "lineCount": 114,
     "assumptions": "1 axiom: nPlusTotientValues_hasPosDensity. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem 822 asks about the density of integers that can be written in the form n + φ(n), where φ is Euler's totient function. This question, posed by Erdős in 1974, connects to deep problems in analytic number theory about the distribution of values of multiplicative functions.\n\nThe totient function φ(n) counts the positive integers up to n that are relatively prime to n. For example, φ(6) = 2 since only 1 and 5 are coprime to 6. The function n + φ(n) combines n with its totient, and the question is whether \"enough\" integers can be represented this way.\n\nThis was resolved in 2024 by Gabdullin, Iudelevich, and Luca, who proved that the set {n + φ(n) : n ∈ ℕ} indeed has positive lower density. They also extended this result to other arithmetic functions including σ (sum of divisors), τ (divisor count), and ω (number of distinct prime factors).",

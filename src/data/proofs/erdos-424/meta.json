@@ -52,7 +52,8 @@
     "axiomCount": 0,
     "lineCount": 151,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1977 about a simple yet mysterious iterative construction. Starting from the seed set $\\{2, 3\\}$, one iteratively appends all products $a_i \\cdot a_j - 1$ for distinct elements $a_i, a_j$ already in the set. The first few elements are $2, 3, 5, 9, 14, 17, 26, \\ldots$ (OEIS A005244). Despite the simplicity of the rule, the density properties of the resulting set are unknown.\n\nThe problem appears as E31 in Richard Guy's *Unsolved Problems in Number Theory* and as Problem 63 on Ben Green's list of open problems. It is a beautiful example of how elementary iterative constructions can produce sets whose density is extremely difficult to analyze.\n\nThe mod 3 obstruction—no element of the generated set is congruent to 1 modulo 3—provides an immediate upper bound of $2/3$ on the density. This follows by induction: the seeds $2 \\equiv 2$ and $3 \\equiv 0$ are not $\\equiv 1 \\pmod{3}$, and if $a, b \\not\\equiv 1 \\pmod{3}$ then $ab - 1 \\not\\equiv 1 \\pmod{3}$ (since $ab \\not\\equiv 2 \\pmod{3}$). But whether the density is positive at all remains open.\n\nThe problem sits in the broader context of understanding multiplicatively generated sequences. Unlike additive generation (where sumset results like Freiman's theorem provide density information), multiplicative generation is much less well understood. The operation $(x, y) \\mapsto xy - 1$ mixes multiplication and subtraction in a way that makes standard analytic techniques difficult to apply.\n\n**Status**: OPEN — Whether the generated set has positive density is unknown.",

@@ -20,7 +20,8 @@
     "lineCount": 222,
     "assumptions": "None. All results proved from Mathlib's multinomial theorem.",
     "theoremCount": 11,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The multinomial distribution emerged from the development of classical probability theory in the 17th–18th centuries, generalizing the binomial distribution (which Jacob Bernoulli formalized in his 1713 Ars Conjectandi) to k ≥ 2 outcome categories. The moment-generating function (MGF), introduced by Laplace in the early 19th century, provides a compact analytic encoding of all moments: the n-th moment of a distribution equals the n-th derivative of the MGF at 0. For the multinomial, the MGF has the closed form (∑ p_i · exp(t_i))^n. That this formula follows directly from the multinomial theorem — the algebraic identity (∑ x_i)^n = ∑_{|k|=n} multinomial(n,k) · ∏ x_i^k_i — reveals a deep structural connection between combinatorial algebra and probability theory, showing that normalization and moment generation are both instances of the same algebraic expansion.",

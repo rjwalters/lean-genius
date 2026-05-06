@@ -48,7 +48,8 @@
     "axiomCount": 2,
     "lineCount": 122,
     "assumptions": "2 axioms: erdos_397_disproved, somani_identity. 0 sorries.",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #397 concerns the central binomial coefficients C(2n, n) = (2n)!/(n!)², which appear throughout combinatorics, probability, and analysis. Erdős asked whether there are only finitely many 'coincidences' where products of distinct central binomial coefficients can be equal.\n\nThe problem remained open for decades until January 2026, when Neel Somani, using ChatGPT as an assistant, discovered an infinite family of solutions. For any a ≥ 2, setting c = 8a² + 8a + 1 yields the identity:\nC(a)·C(2a+2)·C(c) = C(a+1)·C(2a)·C(c+1)\n\nThis remarkable discovery shows that Erdős's intuition about finiteness was wrong—there are infinitely many such 'coincidences' in a beautifully parametrized family.",

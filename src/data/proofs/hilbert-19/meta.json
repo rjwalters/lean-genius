@@ -48,7 +48,8 @@
     "lineCount": 338,
     "assumptions": "6 axioms: deGiorgiNashMoser_holder_regularity, schauder_estimates, hilbert19_analytic_regularity, caccioppoli_inequality, deGiorgi_oscillation_decay, minimal_surface_singularities_exist. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "In 1900, David Hilbert posed 23 problems to guide 20th-century mathematics. The nineteenth problem asked whether solutions of 'regular' variational problems are necessarily analytic (infinitely differentiable with convergent Taylor series).\n\nThis question lies at the heart of PDE theory: if we minimize a well-behaved functional, how smooth is the minimizer?\n\n**Key Contributors:**\n- **Bernstein (1904)**: Solved the 2D case\n- **Schauder (1934)**: Developed Holder estimates for bootstrapping\n- **De Giorgi (1957)**: Revolutionary proof for general dimensions\n- **Nash (1958)**: Independent proof (parabolic case)\n- **Moser (1960)**: Simplified proofs using Harnack inequality\n\nThe resolution established modern elliptic regularity theory.",

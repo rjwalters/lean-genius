@@ -28,7 +28,8 @@
     "originalContributions": [
       "erdos677_large_m: general bound — for any k, if m+k > consecutiveProduct(n,k) then M(m,k)≠M(n,k)",
       "erdos677_k3_large_m: k=3 corollary of the large-m bound, axiom-free"
-    ]
+    ],
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős posed this problem about the distinctness of lcm of consecutive integer blocks. The Thue-Siegel theorem implies finiteness for fixed k. Erdős knew only two cross-parameter examples: lcm(5,6,7) = lcm(14,15) = 210 and lcm(4,5,6,7) = lcm(20,21) = 420. A stronger conjecture asserts that consecutive products can rarely share the same prime factor set. The LCM of k consecutive integers equals k! times a binomial coefficient, and the prime factorization structure is deeply connected to Sylvester-Schur theory; the analogous problem for products (rather than LCMs) of consecutive integers relates to Catalan-type Diophantine equations and was studied by Stormer and others in the early 20th century.",

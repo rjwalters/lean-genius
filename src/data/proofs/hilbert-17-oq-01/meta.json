@@ -45,7 +45,8 @@
       "Finset summation and Fin types",
       "Basic real number inequalities"
     ],
-    "theoremCount": 18
+    "theoremCount": 18,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Hilbert's 17th problem (1900) asked whether every nonneg polynomial can be expressed as a sum of squares of rational functions. Hilbert himself (1888) proved that not every nonneg polynomial is a sum of polynomial squares: the Motzkin polynomial M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is nonneg but not polynomial-SOS. Artin resolved the problem (1927): every PSD polynomial over a real closed field is a sum of squares of rational functions. The quantitative question — how many rational squares are needed — was settled by Pfister (1967): any PSD polynomial in n variables is a sum of at most 2^n squares of rational functions, and this bound is tight (Cassels-Ellison-Pfister 1971 showed no bound smaller than 2^n works for general n-variate polynomials). The bound 2^n comes from Pfister forms: n-fold tensor products of the identity (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)² (Brahmagupta-Fibonacci). This identity itself goes back to Brahmagupta (628 CE) in the context of Pell equations and was rediscovered by Fibonacci (1225). The algebraic structure behind it is norm multiplicativity of Gaussian integers: |z₁z₂|² = |z₁|²|z₂|², where |a+bi|² = a²+b². The extension to 4 squares uses quaternion norms (Euler's 4-square identity, 1748), and to 8 squares uses octonions (Cayley-Dickson), explaining why 2^n is exactly the right bound.",

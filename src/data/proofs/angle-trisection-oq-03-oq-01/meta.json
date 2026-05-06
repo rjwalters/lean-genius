@@ -87,7 +87,8 @@
       "AngleTrisectionOQ03 (decidable_totientIsPow2 instance)",
       "AngleTrisectionOQ02OQ03 (gauss_wantzel_theorem, TotientIsPow2, IsConstructibleNgon)",
       "AngleTrisection (IsConstructible definition)"
-    ]
+    ],
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The question of which regular polygons are constructible by compass and straightedge was resolved by Gauss (1796) and Wantzel (1837): a regular n-gon is constructible iff Euler's totient φ(n) is a power of 2. While the decidability of this check was formalized in OQ03 (via `Decidable` typeclass instances), that formalization operated at the level of mathematical propositions (Prop). This file bridges the gap to computation: it implements an actual Bool-valued program, proves it correct, and uses it to enumerate constructible polygons.\n\nThe known Fermat primes are 3, 5, 17, 257, and 65537. It is unknown whether there are more. The 65537-gon was explicitly constructed by Hermes (1894) in a 200-page manuscript. Lean's `native_decide` tactic can verify that 65537 is a constructible polygon in seconds.",

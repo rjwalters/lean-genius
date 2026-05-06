@@ -25,7 +25,8 @@
     "lineCount": 253,
     "assumptions": "6 axiom(s) and 8 sorries(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8
+    "theoremCount": 8,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erd\u0151s posed this problem about arithmetic progression supersaturation: if a set of N integers has 'too many' k-term arithmetic progressions, must it contain a longer \u2113-term AP? The function F_k(N, \u2113), the minimum threshold for this forcing, captures a quantitative supersaturation phenomenon. This is a refinement of Szemer\u00e9di's theorem (1975), which says dense sets must contain long APs \u2014 supersaturation asks how many short APs are needed, rather than just density.\n\nFox and Pohoata resolved both of Erd\u0151s's questions in their 2020 paper. They proved F_k(N, \u2113) \u2264 N\u00b2/(log log N)^{C_\u2113} for constants C_\u2113 > 0 depending on \u2113. This shows F_k(N, \u2113) = N^{2-o(1)}, confirming that F\u2083(N, 4) = o(N\u00b2) (Question 1) and that the limiting exponent lim log F\u2083(N, \u2113)/log N = 2 (Question 2). Their approach connects the AP count in a set to its additive structure, using the inverse theorem for the Gowers norms.\n\nLeng, Sah, and Sawhney (2024) significantly improved the bound to F_k(N, \u2113) \u2264 N\u00b2/exp((log log N)^{c_\u2113}), using their breakthrough improvements to Szemer\u00e9di's theorem. The exp factor grows much faster than any polynomial of log log N, substantially tightening the gap between the N^{1.99} lower bound (from Behrend-type constructions) and the N^{2-o(1)} upper bound. The exact growth rate of F_k(N, \u2113) remains an active area of research.",

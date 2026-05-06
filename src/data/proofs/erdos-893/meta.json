@@ -80,7 +80,8 @@
         "sorryCount": 0,
         "isAristotle": false
       }
-    ]
+    ],
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in 1998 ([Er98]), noting that $f(n) = \\sum_{k=1}^n \\tau(2^k - 1)$ likely has no simple asymptotic formula due to the erratic growth of divisor counts of Mersenne numbers. The function $\\tau(2^k - 1)$ is small ($= 2$) when $2^k - 1$ is a Mersenne prime but can be large when $2^k - 1$ is highly composite. As of 2024, 51 Mersenne primes are known, but their distribution remains mysterious, making the growth of $f$ hard to predict. Kovac and Luca (2025, arXiv:2506.04883) proved $\\limsup f(2n)/f(n) = \\infty$, building on a heuristic by Cambie, but the full divergence $\\lim f(2n)/f(n) = \\infty$ remains open. The problem connects the divisor function (multiplicative number theory) to the arithmetic of Mersenne numbers (exponential number theory), a rare and deep interface.",

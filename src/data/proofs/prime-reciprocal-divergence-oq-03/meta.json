@@ -50,7 +50,8 @@
     "lineCount": 388,
     "assumptions": "0 axioms. 0 sorries. Fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erd\u0151s's 1938 paper '\u00dcber die Reihe \u03a31/p' (On the series \u03a31/p) introduced a purely combinatorial proof that the sum of reciprocals of primes diverges. Euler had proved this in 1737 using his product formula for \u03b6(s) and analysis. Erd\u0151s's contribution was to show the result \u2014 and even the infinitude of primes \u2014 follows from simple counting: the squarefree decomposition k = b\u00b2\u00b7a shows that N-smooth numbers up to n number at most \u221an \u00b7 2^{\u03c0(N)}. If all primes were \u2264 N, then [1..n] would be entirely smooth, but \u221an \u00b7 2^{\u03c0(N)} < n for large n \u2014 contradiction. The proof exemplified Erd\u0151s's 'BOOK proof' philosophy: find the most elegant, elementary argument. The squarefree decomposition it uses was known since Gauss; the smooth number counting bound prefigures the theory of friable numbers (\u03a8(x, y)) central to modern analytic number theory and integer factorization algorithms (quadratic sieve, ECM).",

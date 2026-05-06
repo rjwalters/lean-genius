@@ -28,7 +28,8 @@
     ],
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "B₃ sets emerged from the study of Sidon sets (B₂ sets), initiated by Simon Sidon in the 1930s and developed by Erdős and Turán (1941). The natural generalization to B₃ sets—where all ordered triple sums are distinct—was studied by R.C. Bose and S. Chowla. In their landmark 1962 paper 'Theorems in the additive theory of numbers,' Bose and Chowla constructed explicit B₃ sets of size $(1+o(1))N^{1/3}$ using the multiplicative structure of finite fields $\\mathbb{F}_{p^3}$, specifically exploiting the injectivity of the cubing map. This algebraic construction parallels Singer's (1938) perfect difference set method for Sidon sets. The upper bound remained at the trivial $O(N^{1/3})$ for decades until Ben Green's 2001 breakthrough 'The number of squares and $B_h[g]$ sets,' which refined the constant to $(7/2)^{1/3} \\approx 1.519$ using additive energy techniques. The persistent gap between the constants 1 and 1.519 represents one of the central open problems in additive combinatorics. The problem carries a $100 prize from Erdős and appears as Problem C11 in Guy's 'Unsolved Problems in Number Theory.' It is closely related to questions in coding theory, where B₃ sets correspond to certain error-correcting codes.",

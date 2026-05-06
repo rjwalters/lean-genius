@@ -67,7 +67,8 @@
     "axiomCount": 1,
     "lineCount": 322,
     "assumptions": "1 axiom: erdos_1137 (the main open conjecture, ratio → 0). All other results fully proved: maxGap_tendsto_atTop proved via factorial composites + Galois connection (Nat.nth/Nat.count), erdosRatio_le_one proved from Finset.sup properties, maxGap_mono proved via Finset.sup_mono. 0 sorries remain.",
-    "theoremCount": 23
+    "theoremCount": 23,
+    "definitionCount": 3
   },
   "leanFile": {
     "path": "Proofs/Erdos1137Problem.lean",

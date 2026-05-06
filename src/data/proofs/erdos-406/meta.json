@@ -58,7 +58,8 @@
     "axiomCount": 1,
     "lineCount": 272,
     "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms.",
-    "theoremCount": 17
+    "theoremCount": 17,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem asks about the intersection of powers of 2 and numbers expressible with only digits 0 and 1 in base 3 (equivalently, sums of distinct powers of 3). Only three examples are known: $1 = 2^0$, $4 = 2^2 = 1 + 3$, and $256 = 2^8 = 1 + 3 + 9 + 243$. The problem connects multiplication (powers of 2) with additive structure (base-3 representations) and is notoriously difficult, sitting at the frontier of S-unit equations and multiplicative independence.\n\nThe underlying difficulty is the fundamental tension between the multiplicative structure of $2^k$ and the additive structure of base-3 representations. Since $\\log_3 2$ is irrational (by the fundamental theorem of arithmetic), the sequence $2^k \\bmod 3^m$ behaves quasi-randomly as $k$ grows. Heuristically, the 'probability' that a random $n$-digit ternary number uses only digits $\\{0,1\\}$ is $(2/3)^n$, and $2^k$ has about $k \\log_3 2 \\approx 0.631k$ ternary digits, so the expected count of solutions is $\\sum_k (2/3)^{0.631k}$, which converges — strongly predicting finitely many solutions.\n\nSaye (2022) provided overwhelming computational evidence by checking all $2^n$ for $n \\leq 5.9 \\times 10^{21}$ using an efficient incremental base-3 digit extraction algorithm that avoids computing the full number. The problem connects to the S-unit equation theorem of Evertse, Schlickewei, and Schmidt, and to the ABC conjecture: a sufficiently effective ABC would force $2^k$ to eventually use all three ternary digits.",

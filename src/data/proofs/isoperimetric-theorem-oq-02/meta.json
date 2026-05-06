@@ -47,7 +47,8 @@
     "axiomCount": 0,
     "lineCount": 136,
     "assumptions": "0 axioms, 0 sorries — fully verified.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The discrete isoperimetric problem asks: among finite subsets of a lattice with a fixed number of points, which have the smallest vertex boundary? The 1D case on ℤ is elementary—integer intervals are optimal—but it is the base case for two celebrated deep results. In 1966, Loomis Harper solved the hypercube problem, showing that among subsets of {0,1}^n of size k, initial segments of the simplicial ordering (binary codewords ordered by last 1-bit) minimize the edge boundary; his proof introduced the 'pushing' compression technique. In 1991, Béla Bollobás and Imre Leader extended isoperimetric methods to ℤ^d, proving that 'cubes' (products of intervals) minimize the boundary in d dimensions for appropriately defined notions of size and boundary. The 1D result on ℤ was known to Bollobás informally as folklore; its value is as an accessible, precisely verifiable foundation. Formalizing it in Lean 4 requires only Finset.min'/max' reasoning and linarith, making it an ideal entry point for the formalization program aiming at Harper's theorem and Bollobás–Leader compression.",

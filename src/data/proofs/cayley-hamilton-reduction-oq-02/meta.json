@@ -59,7 +59,8 @@
     "lineCount": 160,
     "assumptions": "0 axioms, 0 sorries. Core divisibility and reduction results derived from Mathlib's minpoly.dvd, Matrix.aeval_self_charpoly (Cayley-Hamilton), and minpoly.aeval. Original contributions include the reduction comparison theorem and scalar matrix derogatory example.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10
+    "theoremCount": 10,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The minimal polynomial of a linear operator was introduced by Frobenius in the 1870s as the monic polynomial of smallest degree annihilating the operator. Its relationship to the characteristic polynomial is one of the central structural results in linear algebra. The Cayley–Hamilton theorem (1858) shows the characteristic polynomial annihilates the matrix; by the defining property of the minimal polynomial, this immediately yields the divisibility relation $\\mu_M \\mid \\chi_M$.\n\nThe concept of non-derogatory matrices — those where $\\deg(\\mu_M) = \\deg(\\chi_M)$ — is important in rational canonical form theory. A matrix is non-derogatory if and only if its rational canonical form has a single companion block, equivalently if its centralizer consists only of polynomials in $M$. Companion matrices, introduced by Frobenius, are the canonical examples: the companion matrix of a monic polynomial $p$ has $p$ as both its minimal and characteristic polynomial.\n\nThe computational perspective on polynomial reduction modulo $\\mu_M$ vs $\\chi_M$ connects to efficient matrix function evaluation. When a matrix is derogatory ($\\deg(\\mu_M) < n$), reducing modulo the minimal polynomial gives shorter polynomial representations, which matters for numerical computation and symbolic algebra.",

@@ -54,7 +54,8 @@
     "axiomCount": 0,
     "lineCount": 182,
     "theoremCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "This problem concerns gaps between consecutive squarefree numbers (integers not divisible by any perfect square > 1). The sequence 1, 2, 3, 5, 6, 7, 10, 11, ... has density 6/π² ≈ 0.608 in the natural numbers, so 'typical' gaps are small.\n\nErdős posed two questions about how large gaps can be. The first asks whether gaps are always subpolynomial: s_{n+1} - sₙ ≪ sₙ^ε for any ε > 0. The second asks for a precise bound: s_{n+1} - sₙ ≤ (1 + o(1)) · (π²/6) · log(sₙ)/log(log(sₙ)).\n\nErdős himself (1951) proved this second bound would be optimal if true - infinitely many gaps achieve it as a lower bound. The best unconditional upper bound has improved from s_n^{1/5+o(1)} (Filaseta-Trifonov 1992) to s_n^{1/5-c} (Pandey 2024). Granville (1998) showed the first question follows from the ABC conjecture.",

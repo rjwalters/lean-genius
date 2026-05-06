@@ -55,7 +55,8 @@
     "axiomCount": 5,
     "lineCount": 226,
     "assumptions": "5 axioms: threshold_squares, threshold_cubes, threshold_fourth, threshold_fifth, powerSeq_complete. 0 sorries. Note: powerSeq_2/3/4/5_complete are proved theorems derived from the threshold axioms.",
-    "theoremCount": 14
+    "theoremCount": 14,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The notion of **complete sequences** — sets whose subset sums eventually cover all integers — was systematically studied by Erdős and Graham in their 1980 monograph. The **completeness threshold** $T(A)$ (defined here as the least $m$ such that all $n \\ge m$ lie in $P(A)$, equivalently one more than the largest non-representable integer) measures the onset of full representability. For the sequence of positive integers, $T(\\{n\\}) = 1$ trivially (binary representation). For squares, Sprague (1948) showed completeness, and the largest non-representable integer is 128 — equivalently $T(n^2) = 129$. Hilbert's resolution of **Waring's problem** (1909) guarantees that $k$-th power sequences are complete for all $k$, but the threshold $T(n^k)$ measures representability by **distinct** $k$-th powers, a finer and harder question. The corresponding values $T(n^3) = 12759$, $T(n^4) = 5134241$, $T(n^5) = 67898772$ (with largest non-representable integers $12758, 5134240, 67898771$, OEIS A001661) were determined by exhaustive computation. Despite the rapid growth, Erdős and Graham conjectured that the sequence $T(n^k)$ is **not eventually monotone** — that threshold reversals $T(n^k) > T(n^{k+1})$ occur infinitely often, perhaps at $k = 2^t$ for large $t$.",

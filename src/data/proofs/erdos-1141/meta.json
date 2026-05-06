@@ -63,7 +63,8 @@
     "axiomCount": 1,
     "lineCount": 210,
     "assumptions": "1 axiom (finiteness theorem by Alexeev-Putterman-Sawhney-Sellke-Valiant 2026, arXiv:2604.06609; proved via Pollack's theorem but not yet formalized in Mathlib). All structural results are fully proved.",
-    "theoremCount": 35
+    "theoremCount": 35,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), providing a density bound consistent with finiteness. The problem was **SOLVED in 2026** by Alexeev, Putterman, Sawhney, Sellke, and Valiant (arXiv:2604.06609), who proved that for each fixed a ≥ 1, only finitely many n satisfy the analogous property for n - ak². Their proof is a short deduction from Pollack's 2017 theorem on small prime quadratic residues; the result is ineffective (no explicit bound on the largest good n) due to Siegel's theorem.",

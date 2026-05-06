@@ -55,7 +55,8 @@
     "lineCount": 348,
     "assumptions": "5 axiom(s): Lindemann (\u03c0 transcendental), Ap\u00e9ry (\u03b6(3) irrational), Rivoal (infinitely many odd \u03b6 irrational), Zudilin (one of \u03b6(5,7,9,11) irrational), Fischler-Sprang-Zudilin 2019 (quantitative: \u2265(1-\u03b5)\u00b7log(s)/(1+log 2) irrational odd \u03b6 values among first s). Even-zeta transcendence (\u03b6(2), \u03b6(4)) fully proved from Lindemann axiom. Structural implications proved sorry-free. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 20
+    "theoremCount": 20,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The even zeta values \u03b6(2k) = rational \u00d7 \u03c0^(2k) have been fully understood since Euler (1734) and Lindemann (1882): they are all transcendental. The odd zeta values \u03b6(2k+1) remain deeply mysterious. Not a single one has been proved transcendental. Even the weaker question of irrationality is largely open: Ap\u00e9ry (1978) proved \u03b6(3) irrational in a tour de force, Rivoal (2000) showed infinitely many odd \u03b6 are irrational, and Zudilin (2001) pinpointed \u03b6(5,7,9,11) as containing at least one irrational. But beyond these partial results, specific odd zeta values remain out of reach.",

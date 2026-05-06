@@ -55,7 +55,8 @@
     "lineCount": 236,
     "assumptions": "0 axiom(s) and 8 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "This problem concerns the geometry of triangle dissections — partitioning a triangle into congruent triangular pieces. Every triangle can be dissected into n² congruent copies by subdividing each side into n equal segments and connecting corresponding points, forming an n × n grid of congruent sub-triangles.\n\nThe question is: are there triangles where n² is the ONLY achievable dissection count? Alexander Soifer investigated this systematically in his book 'How Does One Cut a Triangle?' (2009). He showed that the triangle with sides √2, √3, √4 has this 'square-only' property — it cannot be dissected into any non-square number of congruent triangles. The key constraint comes from the irrational side lengths: any tiling must respect algebraic relationships between the sides, and the only way to achieve area compatibility with matching angles forces the count to be a perfect square.\n\nSoifer's analysis connects to the concept of 'integral independence' of angles: if the three angles α, β, γ of a triangle satisfy no non-trivial integer linear relation (beyond α + β + γ = π), then dissection constraints force square-only counts. Equilateral triangles (angles π/3, π/3, π/3 — integrally dependent via α = β = γ) can be dissected into 3 pieces, and right isosceles triangles (π/4, π/4, π/2 — integrally dependent via α = β, γ = 2α) can be dissected into 2 pieces.\n\nThe complete classification of square-only triangles remains OPEN with a $25 Erdős prize. The conjecture is that integral independence of angles is the precise characterization.",

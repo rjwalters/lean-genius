@@ -77,7 +77,8 @@
     "lineCount": 290,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 26
+    "theoremCount": 26,
+    "definitionCount": 3
   },
   "overview": {
     "summary": "Generalizes the 2D result A(r) = ∫₀ʳ C(ρ) dρ to n dimensions, proving V_n(r) = ∫₀ʳ S_n(ρ) dρ where S_n(ρ) = n·ω_n·ρ^(n-1) is the sphere surface area. The proof exploits the polynomial structure V_n(r) = ω_n·r^n: differentiation gives the surface area (power rule), and the Fundamental Theorem of Calculus recovers the volume as an integral. Rich consequences include shell volumes, scaling laws, and the surface-to-volume ratio n/r.",

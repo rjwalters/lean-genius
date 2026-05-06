@@ -57,7 +57,8 @@
     "axiomCount": 2,
     "lineCount": 181,
     "assumptions": "2 axioms: gsw_limit_exists, better_construction. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem concerns the maximum size of subsets avoiding 'ternary' arithmetic progressions of the form {n, 2n, 3n}. Graham, Spencer, and Witsenhausen (1977) proved the limit lim F(N)/N exists and gave a formula involving 3-smooth numbers.\n\nThe 3-smooth numbers are numbers of the form 2^a · 3^b: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...\n\nThe limit formula is L = (1/3) · Σ_{k ∈ K} 1/d_k where d_1 < d_2 < ... are the 3-smooth numbers and K is determined by a greedy algorithm.\n\nEberhard computed the numerical value as approximately 0.5564. Erdős asked whether this limit is irrational—this remains open.",

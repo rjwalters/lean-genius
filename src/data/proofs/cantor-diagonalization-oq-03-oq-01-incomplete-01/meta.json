@@ -35,7 +35,8 @@
     ],
     "lineCount": 240,
     "theoremCount": 6,
-    "defCount": 3
+    "defCount": 3,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Lawvere's 1969 paper proves a fixed-point theorem in any cartesian closed category (CCC): if e : A → B^A is a point-surjection, every endomorphism B → B has a fixed point. This unifies Cantor's theorem (B = Ω = subobject classifier, f = negation), Russell's paradox, the halting problem, and Gödel's first incompleteness theorem. The categorical formulation is strictly more general than the type-theoretic one: it applies in any topos, not just the category of types. The formalization challenge in Lean is that full topos machinery is not yet in Mathlib, requiring an abstract intermediate layer.",

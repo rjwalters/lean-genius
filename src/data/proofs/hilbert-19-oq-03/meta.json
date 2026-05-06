@@ -65,7 +65,8 @@
     "axiomCount": 4,
     "lineCount": 454,
     "assumptions": "4 axioms (Evans-Krylov theorem, Schauder estimates, comparison principle, ABP estimate). No sorries.",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Hilbert's 19th problem (1900) asked whether minimizers of variational integrals are always analytic. De Giorgi (1957) and Nash (1958) independently resolved this for divergence-form (quasilinear) equations by proving Holder continuity of weak solutions. The natural extension to fully nonlinear equations $F(D^2 u) = 0$ required entirely new techniques: the classical energy methods fail because the equation cannot be written in divergence form. Alexandrov (1960s) introduced the ABP maximum principle using contact sets and convex envelopes. Krylov and Safonov (1980) proved the Harnack inequality for nondivergence-form equations, establishing $C^\\alpha$ regularity without convexity. The breakthrough came in 1982 when Evans and Krylov independently proved $C^{2,\\alpha}$ regularity for convex (or concave) uniformly elliptic $F$, using the Ishii-Lions method and Krylov-Safonov theory. Caffarelli and Cabre (1995) systematized the theory in their monograph. Nadirashvili and Vladut (2008) showed that convexity is essential: they constructed non-convex uniformly elliptic operators in dimension $\\geq 5$ with solutions failing $C^{1,1}$ regularity. Crandall and Lions (1983) introduced viscosity solutions as the correct weak solution framework for fully nonlinear PDEs.",

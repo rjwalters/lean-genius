@@ -56,7 +56,8 @@
     "lineCount": 327,
     "theoremCount": 10,
     "assumptions": "0 axioms. 0 sorries. Fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #485 concerns the function f(k) = min{termCount(P²) : termCount(P) = k}, asking whether f(k) → ∞ as k → ∞. The problem was motivated by the observation that squaring a polynomial can exhibit dramatic cancellation — for instance, (1 + x + ... + x^{n-1})² has 2n-1 terms, but more exotic cancellation patterns are possible.\n\nSchinzel (1987) first proved f(k) → ∞ using the theory of algebraic numbers and the Mahler measure — a powerful but non-elementary tool from transcendence theory. Schinzel and Zannier (2009) refined this to f(k) ≫ log k using Weil height theory, connecting the problem to arithmetic geometry. Their proof fundamentally relies on the algebraic structure of polynomial roots, leaving open the question of whether a purely combinatorial proof exists.\n\nThe combinatorial approach formalized here connects f(k) to the Minkowski sumset |A + A| where A = supp(P). The Cauchy-Davenport theorem guarantees |A + A| ≥ 2|A| - 1 for subsets of ℤ, so the combinatorial lower bound would follow if coefficient cancellation does not reduce the support too much. This 'cancellation barrier' is the central obstacle: unlike the nonneg-coefficient case (where no cancellation occurs and the sumset bound applies directly), general polynomials can have convolution sums that vanish. The problem sits at the intersection of additive combinatorics (Freiman-Ruzsa, Plünnecke-Ruzsa) and algebraic number theory (height functions, Mahler measure).",

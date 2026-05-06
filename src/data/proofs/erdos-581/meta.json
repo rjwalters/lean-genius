@@ -56,7 +56,8 @@
     "axiomCount": 3,
     "lineCount": 261,
     "assumptions": "3 axioms: f, alon_upper_bound, alon_lower_bound. 0 sorries.",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #581 asks: how many edges can we guarantee in a bipartite subgraph of any triangle-free graph with m edges? The function f(m) denotes the maximum k such that every triangle-free graph with m edges contains a bipartite subgraph with at least k edges. It is trivial that any graph with m edges has a bipartite subgraph with at least m/2 edges (by a random 2-coloring argument), so the real question is whether triangle-freeness provides an additional advantage.\n\nAlon (1996) resolved this problem completely, proving that f(m) = m/2 + Θ(m^{4/5}). Specifically, there exist constants c₁, c₂ > 0 such that m/2 + c₁·m^{4/5} ≤ f(m) ≤ m/2 + c₂·m^{4/5}. The lower bound uses probabilistic and algebraic methods to show that triangle-free graphs must have large bipartite subgraphs. The upper bound constructs specific triangle-free graphs where the maximum bipartite subgraph is bounded.\n\nThe result connects to classical extremal graph theory: Mantel's theorem (1907) shows triangle-free graphs on n vertices have at most n²/4 edges, and the Kővári-Sós-Turán theorem provides structural constraints. The 4/5 exponent arises from the interplay between these structural properties and probabilistic decomposition arguments. Alon's paper 'Bipartite subgraphs' in Combinatorica 16 (1996): 301-311 provides the full details.",

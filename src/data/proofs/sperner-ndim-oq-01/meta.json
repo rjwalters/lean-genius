@@ -33,7 +33,8 @@
     ],
     "lineCount": 220,
     "theoremCount": 8,
-    "defCount": 1
+    "defCount": 1,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Hans Freudenthal introduced his triangulation of the n-cube [0,1]^n in 1942, motivated by the desire to give an elementary proof of the Brouwer fixed-point theorem via Sperner's lemma. The key property of the Freudenthal triangulation is its regularity: the n-cube is divided into n! simplices, one per permutation σ of {0,...,n-1}, and the simplices tile without gaps or overlaps. The vertex at level k of simplex σ is the set {σ(0),...,σ(k-1)}, placing the simplex vertices at the lattice points of the n-cube. Sperner's lemma states that any labeling of the vertices of a triangulation satisfying the boundary condition must have at least one 'rainbow' simplex (receiving all n+1 distinct labels). The proof of Sperner's lemma uses a door-counting argument: assign a 'door' (shared (n-1)-facet) to each simplex, and count pairs (simplex, door) where the simplex contains the door. The adjacency theorem — that each interior door belongs to exactly 2 simplices — is the key input to the parity argument that shows the count of rainbow simplices is odd (hence ≥ 1). The present Lean formalization gives the first formal proof of the Freudenthal Adjacency Theorem with 0 axioms and 0 sorries, providing the foundation for a complete mechanized proof of n-dimensional Sperner's lemma.",

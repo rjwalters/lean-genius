@@ -26,7 +26,8 @@
     "lineCount": 211,
     "assumptions": "4 axioms: erdos_szekeres_upper, spencer_lower_bound, R_3, R_4. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Ramsey theory, initiated by Ramsey (1930) and developed by Erdős and Szekeres (1935), studies the emergence of order in large structures. The diagonal Ramsey number R(k) is the minimum n such that every 2-coloring of the edges of K_n contains a monochromatic K_k. The Erdős-Szekeres theorem gives the upper bound R(k) ≤ C(2k-2, k-1) ≈ 4^k/√(πk), proved by a simple induction on the recurrence R(s,t) ≤ R(s-1,t) + R(s,t-1).\n\nThe lower bound R(k) ≥ c·k·2^{k/2} was one of the first applications of the probabilistic method, which Erdős pioneered. A random 2-coloring of K_n has expected number of monochromatic k-cliques roughly C(n,k)·2^{1-C(k,2)}, which is less than 1 when n ≈ k·2^{k/2}. Spencer (1975) refined this using the Lovász Local Lemma to improve the constant to √2/e ≈ 0.52.\n\nProblem #1029, posed by Erdős in 1993, asks whether R(k)/(k·2^{k/2}) → ∞, i.e., whether the probabilistic lower bound is far from tight. The enormous gap between the lower bound base √2 and upper bound base 4 suggests the answer is yes, but no proof exists. Erdős offered $100 for a proof and $1000 for a disproof, reflecting his belief that the conjecture is true but that a disproof would be more surprising and valuable.",

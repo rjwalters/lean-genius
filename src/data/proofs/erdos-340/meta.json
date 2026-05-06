@@ -26,7 +26,8 @@
     "assumptions": "7 axioms: greedy_sidon_values (first 11 OEIS A005282 terms), greedy_sidon_strict_mono (StrictMono), greedy_sidon_is_sidon (Sidon invariant at every prefix), greedy_sidon_lower_bound (Ω(N^{1/3}) growth), erdos_turan_upper_bound (O(√N + N^{1/4}) upper bound), greedy_sidon_growth_conjecture (open: Ω(N^{1/2-ε}) for all ε>0), greedy_sidon_diffset_pos_density (open: A-A has positive upper density).",
     "lineCount": 101,
     "theoremCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The Mian-Chowla sequence was introduced independently by Abdul Majid Mian and S.D. Chowla in 1944 as the natural greedy construction for Sidon sets. Erdős and Graham asked about its growth rate in their 1980 monograph, noting the striking gap between the known $\\Omega(N^{1/3})$ lower bound and the theoretical $O(\\sqrt{N})$ upper bound for any Sidon set. The problem is a fundamental test case for whether greedy algorithms in additive combinatorics can achieve near-optimal density. In many combinatorial settings (graph colouring, independent sets), greedy constructions are provably suboptimal by polynomial factors. But numerical evidence for the Mian-Chowla sequence is remarkably encouraging: computations up to $N \\approx 10^{15}$ show $|A \\cap [1,N]| \\approx N^{0.497...}$, extremely close to $\\sqrt{N}$. The $N^{1/3}$ lower bound comes from a simple forbidden-sum counting argument: each of the $O(k^2)$ existing pairwise sums blocks at most one future candidate per step, so the $k$-th element is at most $O(k^3)$. Improving this to $N^{1/3+\\delta}$ for any $\\delta > 0$ would be significant. The separate question about the density of the difference set $A - A$ connects to the theory of return times and recurrence in additive number theory.",

@@ -22,7 +22,8 @@
     "lineCount": 206,
     "assumptions": "0 axiom declarations and 0 sorries, but 3 of 9 theorems (easton_consistency, easton_full_characterization, easton_iff_characterization) prove the trivial conclusion `True` instead of their intended forcing-direction content. These True-stubs are semantically equivalent to assumed axioms: the existence of an Easton-realizing forcing extension is asserted at the meta level but not formalized, since class forcing is not available in Mathlib. The 6 fully proved theorems (E1–E3 necessary conditions, the SatisfiesEastonConditions certificate, and the cofinality exclusion 2^{ℵ_α} ≠ ℵ_{α+ω}) are machine-checked.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Easton's theorem (1970) is one of the deepest results in set-theoretic cardinal arithmetic. It completely characterizes which functions F : Reg → Card can be the continuum function κ ↦ 2^κ restricted to regular cardinals. The necessary conditions (E1)–(E3) were known before Easton; the revolutionary content is the consistency of ANY function satisfying them, proved via class product forcing (Easton forcing). The problem generalizes König's theorem (1905) and Cantor's theorem to give the first complete picture of the continuum function's behavior.",

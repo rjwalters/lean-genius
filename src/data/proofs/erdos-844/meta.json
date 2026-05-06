@@ -59,7 +59,8 @@
     "axiomCount": 2,
     "lineCount": 175,
     "assumptions": "2 axioms: optimal_set_has_property (optimal set has non-squarefree products for all N≥1), weisenberg_proof (Weisenberg's bound: optimal set is maximum among sets with non-squarefree products). 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #844: Non-Squarefree Products**\n\nThis problem appears in Erdős-Sárközy [Er92b, p.239] and concerns extremal sets with multiplicative constraints.\n\n**Key History:**\n- **Erdős-Sárközy (1992):** Posed the original problem\n- **Weisenberg:** First proof using Chvátal's intersecting families result\n- **Alexeev-Mixon-Sawin [AMS25]:** Independent alternative proof\n\n**The Connection:**\nThe problem reduces to finding the largest 'intersecting family' of squarefree numbers - subsets where any two elements share a prime factor. Chvátal's 1974 result on intersecting hypergraph families provides the answer.",

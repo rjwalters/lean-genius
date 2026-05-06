@@ -54,7 +54,8 @@
     "axiomCount": 0,
     "lineCount": 558,
     "assumptions": "No remaining assumptions — fully verified.",
-    "theoremCount": 24
+    "theoremCount": 24,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Ernesto Cesàro (1885) first explicitly stated that the probability that two randomly chosen positive integers are coprime equals 6/π² = 1/ζ(2) ≈ 0.6079. The result connects three branches of mathematics: combinatorics (coprimality, Möbius function), analysis (convergent series, Basel problem), and probability (natural density).\n\nThe mathematical insight is elegant: for each prime p, the probability that p divides both m and n is 1/p², so the probability that p does NOT divide their gcd is (1 - 1/p²). By the Chinese Remainder Theorem, coprimality with respect to different primes is independent, so the probability that gcd(m,n)=1 is ∏_p (1 - 1/p²) = 1/ζ(2) = 6/π².\n\nThis connects to the Basel problem (Euler, 1734): ∑_{n=1}^∞ 1/n² = π²/6, making the density the reciprocal 6/π². The Möbius function μ(n) provides the formal proof tool: the identity 1_{n=1} = Σ_{d|n} μ(d) converts coprimality detection into a finite sum, enabling the counting argument.\n\nThe result was generalized in the 20th century: Bergelson and Richter (2017) showed that for non-integer α > 0, the density of {n : gcd(n, ⌊n^α⌋) = 1} is also 6/π² (Erdős #1149 in our gallery).",

@@ -39,7 +39,8 @@
     "lineCount": 179,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "François Viète (1540-1603) was a French mathematician who introduced *In artem analyticem isagoge* (1591), the first systematic use of letters for both unknowns and known quantities — founding symbolic algebra as we know it. His formulas relating polynomial coefficients to symmetric functions of roots were published posthumously in *De aequationum recognitione et emendatione tractatus duo* (1615).\n\nThe formulas had profound consequences. Isaac Newton (1643-1727) extended them to **Newton's identities** (1666), expressing power sums Σrᵢᵏ recursively in terms of the elementary symmetric polynomials. Galois (1811-1832) recognized that the polynomial's Galois group *permutes the roots* while preserving all its coefficients — precisely because coefficients are symmetric functions of roots — making Vieta's formulas the conceptual foundation of Galois theory and ultimately the Abel-Ruffini theorem (no radical solution for degree ≥ 5).",

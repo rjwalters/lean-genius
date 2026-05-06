@@ -77,7 +77,8 @@
     "lineCount": 1074,
     "assumptions": "1 axiom: descartes_parity. See Lean source for the complete statement. 0 sorries remain.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 48
+    "theoremCount": 48,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "René Descartes stated his rule in 'La Géométrie' (1637): the number of positive real roots of a polynomial is at most the number of sign changes in the coefficient sequence, and the difference is even. The statement was casual — Descartes only sketched it and later work revealed subtleties.\n\nGauss gave a rigorous proof in 1826 using the Fundamental Theorem of Algebra. The key insight: complex roots come in conjugate pairs, and tracking how each root (real positive, real negative, complex pair) affects the sign variation count gives the parity result.\n\nFourier (1820) and Sturm (1829) gave related but distinct theorems. Sturm's sequence directly counts exact roots; Descartes gives an upper bound plus parity.\n\nThe rule is Wiedijk's 100 Theorems #100 — among the most important mathematical results to formalize. Mathlib 4.26.0 formalizes the UPPER BOUND using `Polynomial.signVariations` and `roots_countP_pos_le_signVariations`. The PARITY RESULT (difference is even) is not yet in Mathlib.",

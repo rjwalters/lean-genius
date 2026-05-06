@@ -55,7 +55,8 @@
     "axiomCount": 2,
     "assumptions": "2 axioms: erdos_808_false, ars_positive_bound. 0 sorries.",
     "lineCount": 211,
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "This problem generalizes the famous Erdős-Szemerédi sum-product conjecture to graph-restricted settings. Alon, Ruzsa, and Solymosi (2020) showed the natural generalization fails, but proved a weaker positive bound. The classical Erdős-Szemerédi sum-product conjecture (1983) asserts that for any finite set A of real numbers, max(|A+A|, |A·A|) ≥ |A|^{2−ε}, capturing the heuristic that a set cannot simultaneously have small sumset and small product set. The graph-restricted variant, proposed by Erdős and Szemerédi, asks whether restricting sums and products to edges of a dense graph preserves this expansion. The ARS (2020) counterexample, using sets with strong multiplicative structure and a carefully chosen bipartite graph, showed that graph sparsity can be exploited to defeat expansion, settling the conjecture negatively.",

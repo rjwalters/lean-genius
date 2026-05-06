@@ -48,7 +48,8 @@
     "lineCount": 223,
     "mathlib_version": "4.26.0",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The Knaster-Tarski fixed point theorem (1928/1955) states that every monotone endomorphism of a complete lattice has a least fixed point. Tarski observed that the Schroeder-Bernstein theorem is a direct consequence: given injections f : α → β and g : β → α, the operator T(S) = α \\ g(β \\ f(S)) on the power set lattice P(α) is monotone, and its fixed point yields the bijection.\n\nThis connection was noted by Knaster and Tarski but is less well-known than the orbit decomposition proof. It reveals CBS as an instance of a fundamental lattice-theoretic principle, connecting cardinal arithmetic to order theory.\n\nThe proof is conceptually the simplest: no orbit classification, no induction, just one application of the fixed point theorem.",

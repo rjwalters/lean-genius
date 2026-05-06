@@ -58,7 +58,8 @@
     "axiomCount": 3,
     "lineCount": 299,
     "assumptions": "3 axioms: graham_axis_aligned_true (main result), density_hales_jewett (Furstenberg-Katznelson 1991), small_case_2x2 (2×2 base case). 0 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #658: Squares in Dense Grid Subsets**\n\nThis problem, attributed to Graham, asks a natural geometric question: if you have enough points in an N×N grid, must some four of them form the vertices of a square?\n\n**Key History:**\n- Graham: Posed the problem for axis-aligned squares\n- Erdős [Er97e]: Included in his list of favorite unsolved problems (ambiguous about axis-alignment)\n- Furstenberg-Katznelson (1991): Proved qualitatively via the density Hales-Jewett theorem\n- Solymosi (2004): Gave the first quantitative proof with explicit bounds\n\n**Mathematical Setting:**\nThe problem connects discrete geometry with additive combinatorics. The proof uses the density Hales-Jewett theorem, one of the deepest results in the field, showing that dense sets in high-dimensional spaces must contain combinatorial structures.",

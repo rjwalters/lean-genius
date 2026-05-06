@@ -62,7 +62,8 @@
     "axiomCount": 2,
     "lineCount": 352,
     "assumptions": "2 axiom(s): erdos_1054_almost_all (open conjecture), tao_counterexample_1054 (Tao's result). All theorems fully proved.",
-    "theoremCount": 24
+    "theoremCount": 24,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #1054 concerns the function f(n): the minimal m such that n appears as a partial sum of the divisors of m (sorted ascending). Erdős asked three questions:\n\n1. Is f(n) = o(n) for all n? (DISPROVED by Tao)\n2. Is f(n) = o(n) for almost all n? (OPEN)\n3. Is limsup f(n)/n = ∞? (OPEN)\n\nTerry Tao's disproof of Part I showed that the density of {n : f(n) ≤ δn} is at most O(δ²), so many values of n have f(n) ≈ n. But this is consistent with f(n)/n → 0 for 'most' n.\n\nThe key tool for the 'almost all' version is the sigma bound: since σ(m) is always a partial divisor sum of m, we have f(σ(m)) ≤ m. When σ(m)/m → ∞ (which happens for superabundant numbers via Gronwall's theorem), f(σ(m))/σ(m) → 0.",

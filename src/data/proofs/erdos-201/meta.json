@@ -23,7 +23,8 @@
     "lineCount": 351,
     "assumptions": "1 axiom: g3_5_eq. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 21
+    "theoremCount": 21,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Riddell (1969) first investigated the function $G_k(N)$ — the guaranteed size of a $k$-AP-free subset in any $N$-element integer set. The natural comparison with $R_k(N)$ (the maximum AP-free subset of $\\{1, \\ldots, N\\}$, studied by Roth and later Szemerédi) reveals a subtle gap: $\\{1, \\ldots, N\\}$ is not always the worst case for AP avoidance. Komlós, Sulyok, and Szemerédi (1975) proved the fundamental result that $R_k(N) \\asymp G_k(N)$, showing the two functions have the same order of magnitude. Erdős then asked the sharper question: does the ratio $R_3(N)/G_3(N)$ tend to 1? This connects to the broader program of understanding how the structure of the ambient set affects AP density, a theme central to Szemerédi's theorem (1975) and the subsequent work of Gowers, Green–Tao, and Kelley–Meka on quantitative bounds for $R_3(N)$.",

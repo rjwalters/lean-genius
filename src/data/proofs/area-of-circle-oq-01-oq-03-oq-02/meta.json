@@ -53,7 +53,8 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
-    "dateAdded": "2026-05-03"
+    "dateAdded": "2026-05-03",
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Hurwitz (1901) proved the isoperimetric inequality for smooth curves using Fourier series. The Wirtinger inequality is the key analytical ingredient: for a zero-mean 2π-periodic smooth function f, ∫₀²π f² ≤ ∫₀²π (f')². The natural regularity level for the isoperimetric inequality is Lipschitz (or even rectifiable) curves, since these include all piecewise-smooth curves (polygons, convex bodies). For Lipschitz curves, Rademacher's theorem guarantees differentiability a.e., so the arc-length and Green's theorem formulas remain valid as Lebesgue integrals. The Wirtinger inequality extends to W^{1,2}(S¹) and hence to all Lipschitz functions. Maz'ya (1985) and Federer (1969) contain the foundational measure-theoretic machinery for this generalization.",

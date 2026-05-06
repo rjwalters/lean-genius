@@ -55,7 +55,8 @@
       }
     ],
     "dateAdded": "2026-04-03",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Johann Faulhaber (1580–1635), a German mathematician, published remarkably general formulas for sums of powers in his 1631 work *Academia Algebrae*. He gave explicit formulas for ∑_{k=1}^n k^p up to p=17, working in terms of what we now call Bernoulli numbers (though he did not identify them as such). He observed that the formula for even powers could be expressed in terms of the triangular number T(n) = n(n+1)/2.\n\nJacob Bernoulli recognized the general pattern in his posthumous *Ars Conjectandi* (1713), introducing the numbers B_0, B_1, B_2, ... and writing a unified formula:\n$$\\sum_{k=1}^{n} k^p = \\frac{1}{p+1} \\sum_{i=0}^{p} \\binom{p+1}{i} B'_i \\cdot n^{p+1-i}$$\nThis formula connects power sums to combinatorics (binomial coefficients) and number theory (Bernoulli numbers), making it one of the most beautiful formulas in classical mathematics.\n\nBernoulli numbers arise ubiquitously in mathematics: in the Taylor series of trigonometric functions (tan x = ∑ B_{2n} x^{2n-1}), in the Riemann zeta function (ζ(-n) = -B_{n+1}/(n+1)), in Euler-Maclaurin summation formulas, and in algebraic topology (Hirzebruch's signature theorem). The 2n-th Bernoulli number appears in the formula for the number of exotic spheres in dimension 4n-1.",

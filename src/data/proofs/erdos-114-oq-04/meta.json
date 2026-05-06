@@ -42,7 +42,8 @@
     "lineCount": 177,
     "assumptions": "1 axiom: danchenko_bound (placeholder for Cauchy integral estimate, proves True). Core lemniscate set theory is axiom-free.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Lemniscate curves — level sets $\\{z \\in \\mathbb{C} : |p(z)| = r\\}$ of complex polynomials — were studied classically by Jacob Bernoulli (1694), who described the figure-eight curve $|z^2 - 1| = 1$. In their 1958 paper 'Metric properties of polynomials' (J. d'Analyse Math. 6), Erdős, Herzog, and Piranian studied the arc length of the unit lemniscate $\\{z : |p(z)| = 1\\}$ for monic degree-$n$ polynomials, asking whether $z^n - 1$ maximizes this arc length. Danchenko proved in 1967 that the arc length of $\\{|p(z)| = 1\\}$ is at most $2\\pi n$ for any monic degree-$n$ polynomial, providing an upper bound. The exact maximum and the conjecture that $z^n - 1$ is extremal remain open. This open question assesses what fraction of the Lean formalization of Erdős #114 can use Mathlib's existing complex analysis infrastructure versus requiring new axioms.",

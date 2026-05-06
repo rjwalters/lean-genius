@@ -73,7 +73,8 @@
     "axiomCount": 1,
     "lineCount": 221,
     "assumptions": "1 axiom: liu_montgomery_powers_of_two. 3 sorries.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 17
   },
   "overview": {
     "historicalContext": "**The Quest for Unavoidable Cycle Lengths**\n\nErdős posed this $100 problem asking whether there exists a 'sparse' set A ⊂ ℕ (density 0) such that any sufficiently dense graph must contain a cycle with length in A. This connects extremal graph theory to number-theoretic properties of cycle length sets.\n\n**Key Historical Developments:**\n\n- **1977**: Bollobás proved the result for infinite arithmetic progressions containing even numbers\n- **2005**: Verstraëte gave a non-constructive existence proof for such a set A\n- **2020**: Liu and Montgomery proved the surprising result that A can be the powers of 2, directly contradicting Erdős's stated belief\n\n**Why Erdős Was Wrong**: Erdős was 'almost certain' that powers of 2 would not work, expecting that forcing specific cycle lengths would require average degree growing with graph size. Liu and Montgomery showed a constant threshold suffices.",

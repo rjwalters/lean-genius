@@ -61,7 +61,8 @@
     "axiomCount": 4,
     "lineCount": 188,
     "assumptions": "4 axioms: maxPowerSum, erdos_unit_disk_construction, l_erdos_1992_bounds, turan_lower_bound. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Erdős Problem #973 is part of Turán's power sum method, one of the most important tools in analytic number theory. The question asks whether, for sequences z_i with z₁ = 1 and |z_i| ≥ 1, the maximum of |∑ z_i^k| over 2 ≤ k ≤ n+1 can decay exponentially as C^{-n} for some universal C > 1. Hayman listed this as Problem 7.3 in his 1974 collection, attributing it to Erdős.\n\nThe answer depends critically on the modulus constraint. Erdős himself showed that for |z_i| ≤ 1 (the unit disk), such sequences exist with C ≈ 1.32. L. Erdős (1992) refined the picture for unit circle sequences (|z_i| = 1), proving tight bounds (1.746)^{-n} < M₂ < (1.745)^{-n} where M₂ is the optimal maximum power sum. For the original question with |z_i| ≥ 1, Turán's Theorem 6.1 gives a lower bound of (2e)^{-(1+o(1))n}, but the precise answer remains open.\n\nTurán's power sum method connects to Dirichlet polynomials, L-function zero-free regions, and equidistribution theory. The problem illustrates how the geometry of the constraint set (disk, circle, or exterior) fundamentally changes the extremal behavior of power sums.",

@@ -62,7 +62,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Georg Cantor published the diagonal argument in 1891 in *Über eine elementare Frage der Mannigfaltigkeitslehre*, though he had already proven the uncountability of the reals in 1874 using a nested-intervals argument. The 1891 proof was revolutionary in its simplicity and generality: it works not just for $\\mathbb{R}$ but for any set $S$ versus $S \\to \\{0,1\\}$ (the power set), immediately giving $|S| < |2^S|$ for all sets $S$.\n\nCantor's work was the most controversial mathematics of its era. Leopold Kronecker called him a 'corrupter of youth'; Henri Poincaré considered set theory a 'disease' from which mathematics would eventually recover. But David Hilbert declared: 'No one shall expel us from the paradise that Cantor has created.' Cantor suffered repeated nervous breakdowns, possibly exacerbated by the opposition, and spent his final years in a sanatorium (died 1918).\n\nThe diagonal argument's influence is incalculable. Richard's paradox (1905) and Berry's paradox use diagonal-like constructions. Kurt Gödel used a self-referential diagonal construction in his incompleteness theorems (1931): the sentence 'this sentence is unprovable' diagonalizes over all proofs. Alan Turing (1936) used a diagonal argument to prove the undecidability of the halting problem: the machine that asks 'does this machine halt on itself?' diagonalizes over all Turing machines. Paul Cohen's forcing (1963), which proved the independence of the continuum hypothesis, also relies on diagonal arguments. The technique is arguably the single most important proof method in mathematical logic.",

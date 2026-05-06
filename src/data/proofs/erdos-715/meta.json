@@ -84,7 +84,8 @@
     "axiomCount": 0,
     "lineCount": 209,
     "assumptions": "No axioms. 15 sorries remain in the formalization.",
-    "theoremCount": 13
+    "theoremCount": 13,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "This problem was posed by Berge and Sauer at the 6th Hungarian Combinatorial Colloquium (1976). It asks whether regular graphs of sufficient degree must contain regular subgraphs of smaller degree. Tashkinov (1982) gave the definitive answer: every 4-regular graph contains a 3-regular subgraph. This was strengthened by Alon, Friedland, and Kalai (1984), who showed that every 4-regular graph plus a single edge already contains a 3-regular subgraph, immediately implying the result for all r \u2265 5.\n\nThe threshold r = 4 is sharp: K\u2084 is 3-regular but has no proper 3-regular subgraph (removing any edge drops some degree below 3). The Petersen graph (10 vertices, 3-regular) is another minimal example. The general question \u2014 for which (r, k) pairs does every r-regular graph contain a k-regular subgraph? \u2014 remains an active research area for k \u2265 4.",

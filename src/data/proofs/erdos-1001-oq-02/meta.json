@@ -69,7 +69,8 @@
     ],
     "lineCount": 315,
     "theoremCount": 5,
-    "defCount": 5
+    "defCount": 5,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**From Existence to Rate: A 1958-1966 Open Question**\n\nIn 1958, Erdős, Szüsz, and Turán proved the EST formula: in the 'EST regime' (0 < A < c/(1+c²)), the proportion S(N,A,c) of reals in [0,1] approximable within A/y² by some fraction x/y with y ∈ [N,cN] converges to f(A,c) = 12A log(c)/π². Their proof used the counting formula S(N,A,c) = 2A · ∑_{y} φ(y)/y² + O(A/N) combined with Euler's product formula φ(y)/y = ∑_{d|y} μ(d)/d and the Basel sum ∑ 1/n² = π²/6.\n\nKesten and Sós (1966) extended this to all valid (A,c), not just the EST regime, using more sophisticated methods. Their existence proof, however, was qualitative — it did not give the rate of convergence as an explicit function of N.\n\nThe rate question OQ-02 was natural given the EST formula: since S(N,A,c) ≈ f(A,c) + error, what is the order of the error? The answer, O(A log N/N), follows from the quantitative form of Mertens' theorem (1874): ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N). Combined with Abel summation, this gives the O(log N/N) error in the totient sum, and hence the rate for S(N,A,c).\n\nThe Mathlib gap identified in the formalization: Mertens' theorem with explicit error bounds is not available in Mathlib 4.x, requiring 3 axioms to state the quantitative content. The qualitative version (S converges to f) may be provable from Mathlib's arithmetic function theory, but the quantitative rate is deeper.",

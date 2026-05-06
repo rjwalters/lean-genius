@@ -25,7 +25,8 @@
     "mathlib_version": "4.26.0",
     "lineCount": 2469,
     "sorries": 0,
-    "theoremCount": 111
+    "theoremCount": 111,
+    "definitionCount": 46
   },
   "overview": {
     "historicalContext": "The knight's tour problem has fascinated mathematicians for over 1200 years, with the earliest known reference from the 9th century. Euler studied it in 1759, constructing explicit tours by hand and introducing the technique of dividing the board into regions. Schwenk (1991) completely characterized which rectangular boards admit closed knight's tours. In his 29th Annual Christmas Lecture (December 2025), Donald Knuth revealed a new structural property: the minimum number of oblique turns in any closed tour, and the remarkable uniqueness of the tour achieving this minimum. Knuth's analysis uses techniques from graph theory and combinatorial optimization to certify optimality, extending the classical enumeration results of de Bruijn and others.",

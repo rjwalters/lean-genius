@@ -44,7 +44,8 @@
     "axiomCount": 1,
     "lineCount": 133,
     "assumptions": "1 axiom: erdos_248. See Lean source for the complete statement.",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #248 was posed by Erdős and Graham in their 1980 monograph 'Old and new problems and results in combinatorial number theory.' They asked whether there exist infinitely many integers n such that the prime omega function ω(n+k) grows at most linearly in k for all k >= 1.\n\nErdős and Graham famously wrote about this problem: 'we just know too little about sieves to be able to handle such a question' - referring to the collective knowledge of mathematics at the time. The problem remained open for 45 years.\n\nIn December 2025, Terence Tao and Joni Teräväinen resolved this problem affirmatively in their paper 'Quantitative correlations and some problems on prime factors of consecutive integers' (arXiv:2512.01739). They proved that there exists an absolute constant C > 0 such that for infinitely many n, ω(n+k) <= C*k for all k >= 1.",

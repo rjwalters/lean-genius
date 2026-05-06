@@ -34,7 +34,8 @@
       "scarf_approx_fixed_point: n-dimensional Scarf algorithm (axiom)",
       "bisection_complexity: Error bound 2/n → 0 proved",
       "constructive_content_summary: Main theorem combining all results (PROVED)"
-    ]
+    ],
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The question of whether Kakutani's fixed point theorem has constructive content was resolved by Herbert Scarf in 1967. While Brouwer's theorem and its generalizations (Kakutani, Schauder, Fan-Glicksberg) are classically non-constructive existence results, Scarf showed that the proof can be made algorithmic via Sperner's lemma on simplicial subdivisions. His pivoting algorithm finds ε-approximate fixed points in finitely many steps, with complexity O(n^2/ε^n). This established fixed point theory as a foundation for computational economics and game theory, leading to the development of computable general equilibrium models.",

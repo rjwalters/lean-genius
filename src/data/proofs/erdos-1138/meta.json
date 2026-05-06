@@ -72,7 +72,8 @@
     "axiomCount": 0,
     "lineCount": 227,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 21
+    "theoremCount": 21,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #1138 sits at the intersection of two of the deepest themes in analytic number theory: the distribution of primes in short intervals and the structure of maximal prime gaps. The prime number theorem, proved independently by Hadamard and de la Vallée Poussin in 1896, establishes that $\\pi(x) \\sim x/\\log x$, but understanding $\\pi(x+h) - \\pi(x)$ for short intervals $h = o(x)$ is far harder. Huxley (1972) showed unconditionally that the asymptotic $\\pi(x+h) - \\pi(x) \\sim h/\\log x$ holds for $h > x^{7/12}$, while under the Riemann Hypothesis one can take $h > x^{1/2+\\varepsilon}$.\n\nMeanwhile, the maximal prime gap $d(x) = \\max_{p_n < x}(p_{n+1} - p_n)$ is conjectured by Cramér (1936) to satisfy $d(x) \\sim (\\log x)^2$, based on a probabilistic model of the primes. The best unconditional result, due to Baker–Harman–Pintz (2001), gives a prime in every interval $[x, x + x^{0.525}]$, but this is enormously larger than $(\\log x)^2$. Erdős's question asks whether the prime counting function still behaves asymptotically correctly in intervals of length $Cd(x)$ — intervals potentially as short as $C(\\log x)^2$ — centered around arbitrary points $y \\in (x/2, x)$. This would require a dramatic strengthening of all known short-interval results.\n\nThe problem reflects Erdős's characteristic approach of posing questions that connect disparate areas: here, the combinatorial structure of prime gaps meets the analytic machinery of the prime number theorem.",

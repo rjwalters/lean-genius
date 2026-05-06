@@ -62,7 +62,8 @@
       "Basic number theory: GCD, LCM, modular arithmetic"
     ],
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Peter Gustav Lejeune Dirichlet (1805-1859) proved this theorem in 1842, establishing the foundation of Diophantine approximation. The result shows that every real number can be well-approximated by rationals, with quality inversely proportional to the denominator. The proof introduced the 'pigeonhole principle' (Schubfachprinzip) to number theory.\n\nThe theorem was later refined by Hurwitz (1891), who showed the optimal constant is 1/√5, achieved by the golden ratio φ = (1+√5)/2. The connection to the Chinese Remainder Theorem arises through lattice geometry: CRT solvability corresponds to lattice coset membership, and Dirichlet-style counting arguments on lattice points yield approximation results.\n\nThe Stern-Brocot tree (Stern 1858, Brocot 1861) provides the algorithmic structure for generating best rational approximations, with the mediant operation as its fundamental building block. This connects to continued fractions, which give the sequence of best approximations to any real number.",

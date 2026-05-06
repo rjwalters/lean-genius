@@ -56,7 +56,8 @@
       "Ceiling function properties"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "In 1948, Claude Shannon's 'A Mathematical Theory of Communication' established that the entropy $H(X)$ is the fundamental limit of lossless compression, but his proof was existential — showing optimal codes exist without constructing them. Shannon and Robert Fano developed a top-down coding scheme (Shannon-Fano coding) that was near-optimal but not guaranteed to minimize average code length. In 1951, Fano assigned his MIT information theory class the problem of finding a provably optimal binary code. David Huffman, then a graduate student, was about to give up and take the final exam instead when he discovered an elegant bottom-up construction: recursively merge the two least probable symbols, assigning them sibling leaves in a binary tree. Huffman's 1952 paper proved this greedy algorithm produces optimal prefix-free codes, solving the problem Fano himself could not. Leon Kraft had independently characterized valid prefix-free code lengths via the inequality $\\sum 2^{-l_i} \\le 1$ in his 1949 MIT thesis, and Brockway McMillan (1956) extended this to all uniquely decodable codes. Together, these results form the combinatorial and information-theoretic foundations of data compression.",

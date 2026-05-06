@@ -38,7 +38,8 @@
     "axiomCount": 0,
     "lineCount": 120,
     "assumptions": "None. Core results derived from Mathlib's Multiset.card_powerset and Multiset.card_powersetCard (0 axioms, 0 sorries).",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The multiset (or *bag*) is a fundamental data structure generalizing sets by allowing repeated elements, formalized in computer science by Knuth (1981) and in mathematics dating back to Boole and De Morgan. The powerset counting formula $|\\mathcal{P}(S)| = 2^n$ for sets extends to multisets: Sylvester (1867) and later Cayley studied the enumeration of multiset submultisets in the context of symmetric functions and formal power series. For a multiset with $n$ total elements (counted with multiplicity), the number of submultisets is $2^n$ — not the product formula $\\prod(m_i + 1)$ for *distinct* submultisets. This distinction (counting with vs. without multiplicity) is subtle and important for generating function arguments. The multiset powerset is fundamental to the theory of formal power series: $\\sum_{k \\geq 0} |\\text{powersetCard}(k, s)| x^k = (1+x)^n$ is the generating function for submultiset counts, which specializes to the standard binomial theorem.",

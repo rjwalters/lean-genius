@@ -30,7 +30,8 @@
     "lineCount": 182,
     "assumptions": "0 sorries. All proofs are complete. Uses Mathlib's catalan_succ' and catalan_eq_centralBinom_div as infrastructure.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11
+    "theoremCount": 11,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Catalan numbers Cₙ = C(2n,n)/(n+1) were studied by Eugène Catalan (1838) in the context of polygon triangulations and non-crossing partitions. The convolution recurrence Cₙ₊₁ = ∑Cₖ·Cₙ₋ₖ appears throughout combinatorics: it encodes the recursive decomposition of Dyck paths, ballot sequences, full binary trees, and triangulated polygons. The ballot problem (Bertrand 1887) connects ballot sequences to Catalan numbers: voting sequences where one candidate always leads are counted by Catalan numbers. The recurrence then admits a ballot-theoretic interpretation: a ballot sequence of length 2(n+1) decomposes at its first return to minimum margin, giving a product of two shorter ballot sequences.",

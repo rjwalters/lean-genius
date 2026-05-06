@@ -38,7 +38,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős (1979) asked: do there exist a prime $p$ and $k$ disjoint intervals of consecutive integers $I_1, \\ldots, I_k$ such that $\\prod_{n \\in I_j} n \\equiv 1 \\pmod{p}$ for all $j$? Makowski (1983) found the first multi-interval solution: for $k=3$ with $p=17$, the intervals $[2,6)$, $[6,12)$, $[12,16)$ all have products $\\equiv 1 \\pmod{17}$.\n\nThe connection to Wilson's theorem is key: $(p-1)! \\equiv -1 \\pmod{p}$, so the product of all integers from 1 to $p-1$ is $\\equiv -1$, not $1$. Solutions require carefully chosen sub-intervals that \"balance\" to give product $\\equiv 1$. The boundary points $b_0 < b_1 < \\cdots < b_k$ define the intervals $[b_{i-1}, b_i)$, and the condition $\\prod_{n=b_{i-1}}^{b_i-1} n \\equiv 1 \\pmod{p}$ is equivalent to consecutive factorials being congruent: $b_{i-1}!/\\gcd \\equiv b_i!/\\gcd$.\n\nThis OQ-01 file extends the known solutions: Erdős's original $k=2$ with $p=11$, Makowski's $k=3$ with $p=17$, and new solutions $k=4$ (p=23), $k=5$ (p=71), $k=6$ (p=71).",

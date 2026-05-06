@@ -66,7 +66,8 @@
     ],
     "assumptions": "Three axioms: (1) PNT asymptotic p_n/(n·ln n) → 1, (2) Dusart upper bound p_n ≤ n(ln n + ln ln n) for n ≥ 6, (3) Dusart lower bound p_n ≥ n(ln n + ln ln n - 1) for n ≥ 6. These would follow from PNT with explicit error terms, which requires Chebyshev function analysis not available in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The exponential bound $p_n \\leq 2^{n+1}$, proved from Bertrand's postulate in the parent file, is elementary but far from optimal. In 1941, Barkley Rosser proved the first explicit sub-exponential bound: $p_n \\leq n(\\ln n + \\ln\\ln n)$ for $n \\geq 6$, using the Prime Number Theorem with explicit error estimates.\n\nPierre Dusart refined these bounds in 1999 and 2010, establishing the matching lower bound $p_n \\geq n(\\ln n + \\ln\\ln n - 1)$ for $n \\geq 6$. Together, these pin down the $n$-th prime within a window of width exactly $n$. The bounds are tight enough for most applications in analytic and combinatorial number theory.\n\nThe derivation from PNT requires the explicit form $\\theta(x) = x + O(x/\\exp(c\\sqrt{\\ln x}))$ for the Chebyshev function, combined with partial summation. This analytic machinery is not yet available in Mathlib.",

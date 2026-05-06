@@ -63,7 +63,8 @@
     "axiomCount": 4,
     "lineCount": 194,
     "assumptions": "4 axioms: R, curtiss_theorem, erdos_unit_fractions, kovac_theorem. 0 sorries.",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #206, posed by Erdős and Graham in 1980, concerns Egyptian fractions - sums of distinct unit fractions like 1/2 + 1/3 + 1/7. For a real x > 0, let R_n(x) be the best underapproximation using n distinct unit fractions. The 'greedy' algorithm adds the largest possible unit fraction at each step.\n\nErdős asked: for almost all x, do the best underapproximations eventually become greedy? The question had a long positive history: Curtiss (1922) proved it for x = 1, Erdős himself (1950) showed it for all unit fractions x = 1/m, and recent work by Nathanson (2023) and Chu (2023) extended it to broader classes of rationals.\n\nKovač (2024) provided the definitive and surprising answer: NO. The set of eventually greedy numbers has Lebesgue measure ZERO. This is 'as false as possible' - almost all real numbers are NOT eventually greedy. Remarkably, despite this measure-theoretic result, no explicit example of a non-greedy number has been constructed.",

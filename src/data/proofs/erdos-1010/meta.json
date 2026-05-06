@@ -55,7 +55,8 @@
     "lineCount": 93,
     "assumptions": "2 axioms: rademacher_triangle_count (base case: 1 extra edge forces ⌊n/2⌋ triangles), erdos_1010_supersaturation (main theorem: t extra edges force t·⌊n/2⌋ triangles). turán_triangle_existence and erdos_1010_tight proved directly.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 0
+    "theoremCount": 0,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "This problem extends the classical **Turán theorem** (1941), which established that a triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges, achieved uniquely by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Turán proved this theorem while working in a labor camp during World War II, reportedly inspired by the practical problem of minimizing connections between work groups.\n\n**Rademacher** (unpublished, c. 1940s, attributed by Erdős) proved the first supersaturation result: exceeding this threshold by one edge forces at least $\\lfloor n/2 \\rfloor$ triangles. Erdős [Er62d, 1962] generalized this to $t < cn$ for a constant $c > 0$ and conjectured the full result for all $t < \\lfloor n/2 \\rfloor$ — this became Problem #1010.\n\nThe conjecture was proved independently by **Lovász and Simonovits** (1976), who developed the influential **stability method** for extremal graph theory, and by **Nikiforov and Khadzhiivanov** (1981). The stability method shows that graphs close to the Turán bound must structurally resemble the Turán graph — a principle since extended to Szemerédi's regularity lemma and the removal lemma. Razborov (2010) later used **flag algebra** methods to determine the exact minimum triangle density for all edge densities, resolving the complete supersaturation question.",

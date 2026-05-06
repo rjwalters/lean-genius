@@ -24,7 +24,8 @@
     "lineCount": 78,
     "assumptions": "1 axiom: smallest_witness (smallest witness function — axiomatized). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed Problem #396 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' asking about the divisibility of central binomial coefficients $\\binom{2n}{n}$ by descending factorial products. The question is motivated by the classical fact that $n+1$ always divides $\\binom{2n}{n}$ (giving the Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$), but $n$ itself rarely divides $\\binom{2n}{n}$. The problem asks how far 'downward' from $n$ one can push simultaneous divisibility.\n\nCarl Pomerance made the most significant progress in 2014. He showed that for any fixed $k$, each individual factor $(n-k)$ divides $\\binom{2n}{n}$ for infinitely many $n$, but the set of such $n$ has upper density less than $1/3$. In contrast, the ascending product $(n+1)(n+2)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with asymptotic density 1 — a striking asymmetry between descending and ascending factorials. The key difficulty lies in the $p$-adic structure: by Kummer's theorem, $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n$ to $n$ in base $p$, and simultaneous divisibility by $n(n-1)\\cdots(n-k)$ places correlated constraints across multiple primes.\n\nThe OEIS sequence A375077 catalogues the smallest witness $n$ for each $k$. The problem remains open: even the existence of a single $n$ for each $k$ is unproved, let alone the natural strengthening that infinitely many witnesses exist.",

@@ -26,7 +26,8 @@
     "lineCount": 270,
     "assumptions": "1 axiom: ErdosProblem846 (the main open conjecture of Erdős–Nešetřil–Rödl). All 16 theorems fully proved including: converse direction (weaklyNonTrilinear_implies_eps), finite case (finite_weaklyNonTrilinear, erdos846_finite), ε bounds (isEpsNonTrilinear_eps_le_one, isEpsNonTrilinear_empty_of_eps_gt_one), collinearity symmetry, and pigeonhole principle.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős, Nešetřil, and Rödl** posed this problem in [Er92b], asking whether a density condition on non-collinearity implies a structural decomposition. The question belongs to the broader programme of **density-to-structure implications** in combinatorics: when does a quantitative property (every large piece has a proportional substructure) force a qualitative partition (the whole set splits into finitely many well-structured pieces)? Analogous questions appear throughout Ramsey theory—for instance, Szemerédi's regularity lemma converts density conditions on graphs into structural partitions. In the geometric setting, **Sylvester–Gallai** (1893/1944) showed that any finite set of points not all collinear determines a line through exactly two points, constraining the collinearity hypergraph. The Hales–Jewett density theorem and the density Hales–Jewett theorem provide further parallels. Problem 846 is closely related to Erdős Problems 774 and 847, which concern similar density-vs-structure questions for collinearity in the plane. The problem remains **open** as of 2026.",

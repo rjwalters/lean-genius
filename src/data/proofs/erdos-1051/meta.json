@@ -24,7 +24,8 @@
     "lineCount": 232,
     "assumptions": "0 axioms. series_converges is now a proved theorem: for strictly increasing positive integer sequences, summability follows by comparison with Σ 1/((n+1)(n+2)), bounded by the convergent p-series Σ 1/n².",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9
+    "theoremCount": 9,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p.64), as part of a broader investigation into when series with integer terms produce irrational sums. The growth condition $\\liminf a_n^{1/2^n} > 1$ captures sequences growing at least doubly exponentially—a natural threshold since slower-growing sequences can yield rational sums (e.g., arithmetic progressions give telescoping sums). Erdős made partial progress in a 1988 paper, proving irrationality for sequences satisfying the stronger condition $a_{n+1} \\geq C \\cdot a_n^2$. The proof technique uses rapid convergence of partial sums to derive contradictions from the assumption of rationality, building on methods going back to Liouville's 1844 construction of transcendental numbers. The gap between this quadratic recurrence condition and the general $\\liminf$ condition remains the central open challenge. The problem connects to the Erdős–Graham program of understanding irrationality of series involving integer sequences, and to classical work on Sylvester–Fibonacci expansions and Egyptian fraction representations by Kellogg (1921) and Curtiss (1922).",

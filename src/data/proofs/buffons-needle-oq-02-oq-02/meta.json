@@ -65,7 +65,8 @@
     "lineCount": 376,
     "assumptions": "2 axiom: smooth3D_buffon_eq (the expected crossing count formula for smooth 3D curves). No sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15
+    "theoremCount": 15,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Buffon's 1777 needle problem and Barbier's 1860 noodle extension show that the expected crossing count depends only on arc length, not shape. The 3D version replaces parallel lines with parallel planes. BuffonsNeedleOQ02.lean proved the 3D formula E = L/(2d) for polygonal paths using the sphere average E_{S²}[|cos φ|] = 1/2. This file extends the result to smooth C¹ curves via the approximation argument: inscribed polygonal paths converge in arc length, so expected crossings converge by continuity.",

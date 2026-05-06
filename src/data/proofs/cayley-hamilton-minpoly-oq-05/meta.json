@@ -88,7 +88,8 @@
     "lineCount": 232,
     "assumptions": "0 axioms, 0 sorries. Built on Mathlib's minimal polynomial infrastructure (minpoly.monic, minpoly.aeval, minpoly.dvd, minpoly.irreducible).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 23
+    "theoremCount": 23,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The minimal polynomial of an algebraic element x in a K-algebra A generates the kernel of the evaluation map K[X] → A. Polynomial arithmetic modulo the minimal polynomial captures all algebraic relations satisfied by x. In a tower K ⊂ L ⊂ A, the minimal polynomial over L divides the base change of the one over K, so the degree can only decrease with larger base fields. The theory of minimal polynomials was central to Cayley and Hamilton's work on matrices in the 1850s-1860s; the Cayley-Hamilton theorem states that a matrix satisfies its own characteristic polynomial, and the minimal polynomial divides it. These results were generalized to abstract algebras by Noether and Artin in the 1920s-1930s, and the universal characterization via the kernel of the evaluation map is fundamental to modern commutative algebra.",

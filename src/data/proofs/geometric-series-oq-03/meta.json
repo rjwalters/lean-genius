@@ -65,7 +65,8 @@
     "lineCount": 215,
     "theoremCount": 15,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Euler's 1737 discovery that the Dirichlet series $\\sum_{n=1}^\\infty n^{-s}$ equals an infinite product over primes is one of the most striking identities in mathematics. Euler wrote:\n$$1 + \\frac{1}{2^s} + \\frac{1}{3^s} + \\frac{1}{4^s} + \\cdots = \\prod_{p\\text{ prime}} \\frac{1}{1-p^{-s}}$$\nHis argument: expand each factor as a geometric series $\\frac{1}{1-p^{-s}} = 1 + p^{-s} + p^{-2s} + \\cdots$, then use the fundamental theorem of arithmetic (unique prime factorization) to see that every term $n^{-s}$ appears exactly once in the formal product. This was a heuristic argument; the rigorous proof requires showing absolute convergence for $\\text{Re}(s) > 1$.\n\nRiemann (1859) extended Euler's formula to complex $s$ and used it as the starting point for his investigation of the distribution of primes, leading to the Riemann hypothesis. The non-vanishing of $\\zeta(s)$ on $\\text{Re}(s) = 1$ (proved by Hadamard and de la Vallée Poussin in 1896) implies the Prime Number Theorem: $\\pi(x) \\sim x/\\log x$.",

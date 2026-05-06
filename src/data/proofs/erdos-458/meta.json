@@ -25,7 +25,8 @@
     "lineCount": 156,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 12,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #458** originates in Erdős and Graham's study of LCM growth between consecutive primes. The LCM function $\\text{lcm}(1, \\ldots, n)$ is deeply connected to prime distribution: $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) \\sim n$ by Chebyshev's theorem (and PNT). The conjecture asks whether the multiplicative growth factor from $p_k$ to $p_{k+1}$ is at most $p_k$.\n\nErdős and Graham described this as **'almost certainly true'** but noted that any proof would require controlling prime gaps at a level close to **Legendre's conjecture** (that there is always a prime between $n^2$ and $(n+1)^2$). The key obstacle: primes $q$ with $p_k < q^2 < p_{k+1}$ contribute factors that must be carefully bounded. The problem remains **open** as of 2025.",

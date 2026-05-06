@@ -26,7 +26,8 @@
     "lineCount": 185,
     "assumptions": "4 axioms: cassels_theorem, powers_of_2_growth, powers_of_2_irrationality, powers_of_2_representation. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "**Erdős Problem #254** was posed by Paul Erdős in 1961, connecting additive combinatorics with Diophantine approximation. Given $A \\subseteq \\mathbb{N}$ with (1) unbounded growth in dyadic intervals: $|A \\cap [x, 2x]| \\to \\infty$, and (2) an irrationality condition: $\\sum_{n \\in A} \\|\\theta n\\| = \\infty$ for all $\\theta \\in (0,1)$, Erdős conjectured every sufficiently large integer is a sum of distinct elements of $A$.\n\nJ.W.S. Cassels proved a related result in his 1960 paper 'On the representation of integers as the sums of distinct summands taken from a fixed set' (Acta Sci. Math. Szeged, 111-124). Cassels's theorem replaces condition (1) with the stronger logarithmic growth $|A \\cap [x, 2x]|/\\log\\log x \\to \\infty$ and uses the weaker $L^2$ condition $\\sum \\|\\theta n\\|^2 = \\infty$. His proof employs Fourier analysis on the circle $\\mathbb{R}/\\mathbb{Z}$, using the exponential sum $\\sum_{n \\in A} e^{2\\pi i \\theta n}$ to control the number of representations.\n\nThe problem in its original form remains **open**. The gap between Erdős's weak conditions and Cassels's stronger ones is the central challenge: Erdős requires no growth rate at all, only unboundedness, which is too weak for Cassels's Fourier-analytic approach to apply directly.",

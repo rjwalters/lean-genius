@@ -45,7 +45,8 @@
     "axiomCount": 3,
     "lineCount": 207,
     "assumptions": "3 axioms: R, erdos_hajnal_rado_upper, erdos_hajnal_rado_lower. 1 sorry.",
-    "theoremCount": 6
+    "theoremCount": 6,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "This problem sits at the heart of hypergraph Ramsey theory, a generalization of classical Ramsey theory to k-uniform hypergraphs (where edges connect exactly k vertices rather than 2). For graphs (k = 2), Erdős and Szekeres (1935) showed that Ramsey numbers grow exponentially: roughly 2^{n/2} < R(n) < 4^n.\n\nFor 3-uniform hypergraphs (edges are triples), growth is dramatically faster. Erdős, Hajnal, and Rado proved in 1965 that 2^{cn²} < R₃(n) < 2^{2^n}. The lower bound is singly exponential in n², while the upper bound is a tower of exponentials of height 2.\n\nThe central question (Problem #564) asks whether the lower bound can be improved to match the tower height of the upper bound. If true, it would show that hypergraph Ramsey numbers are fundamentally 'tower-type' — requiring iterated exponentiation to describe. Erdős offered $500 for a resolution.",

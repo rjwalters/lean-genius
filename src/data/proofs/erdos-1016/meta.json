@@ -25,7 +25,8 @@
     "lineCount": 158,
     "assumptions": "0 axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). The mathematical results (Bondy, Griffin, GKW) are correct but require a proper SimpleGraph-based model to formalize.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 7,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The study of pancyclic graphs began with J.A. Bondy's 1971 paper 'Pancyclic graphs I', where he proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite. Bondy also conjectured the precise edge threshold for pancyclicity, including the bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n)$ (lower) and $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ (upper), but did not publish proofs. The lower bound was first rigorously proved by Griffin in 2013 using a doubling argument: each extra edge beyond a Hamiltonian cycle can at most double the range of achievable cycle lengths. George, Khodkar, and Wallis (2016) proved the upper bound via hierarchical constructions, confirming Bondy's prediction. The gap between bounds is only $\\log^* n + O(1)$ — one of the tightest gaps in extremal graph theory. Erdos believed the upper bound gives the truth but could not prove even the weaker statement $h(n) - \\log_2 n \\to \\infty$, calling this 'embarrassing'. The iterated logarithm $\\log^* n$, which for all practical purposes is at most 5, appears naturally in the recursive construction.",

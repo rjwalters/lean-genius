@@ -48,7 +48,8 @@
     "axiomCount": 1,
     "lineCount": 158,
     "assumptions": "1 axiom: propertyQ_achievable. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem 1102 was posed in 1981 and concerns the interplay between sequences and squarefree numbers. A number is squarefree if no prime square divides it—equivalently, all prime exponents in its factorization are 0 or 1.\n\nErdős defined two properties based on squarefree translates:\n- **Property P:** For every n ≥ 1, only finitely many elements a ∈ A have n + a squarefree\n- **Property Q:** Infinitely many n have n + a squarefree for all a < n in A\n\nThe density of squarefree numbers is 6/π² ≈ 0.608 (this equals 1/ζ(2)), and this constant plays a central role in the resolution.\n\nvan Doorn and Tao (2025) provided complete answers to Erdős's questions about growth rates, using techniques from analytic number theory and the distribution of squarefree numbers.",

@@ -25,7 +25,8 @@
     "axiomCount": 4,
     "lineCount": 237,
     "assumptions": "4 axioms: discrepancyF, discrepancyF_mono_alpha, discrepancy_lower, discrepancy_upper. 0 sorries.",
-    "theoremCount": 4
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem around 1990, asking for the precise asymptotic of F(n, α) — the largest k such that some 2-colouring of K_n has every induced subgraph on at least k vertices α-balanced (each colour appears on more than α fraction of edges). The problem sits at the intersection of Ramsey theory and discrepancy theory.\n\nThe probabilistic method readily establishes that F(n, α) = Θ(log n) for each fixed 0 < α ≤ 1/2: a random 2-colouring of K_n is α-balanced on all sets of size ≤ c₁ log n with positive probability (via Chernoff bounds and a union bound over subsets), while a Ramsey-type counting argument shows any colouring must have an imbalanced induced subgraph of size ≤ c₂ log n.\n\nThe conjecture goes beyond these order-of-magnitude bounds to assert that the ratio F(n, α)/log n converges to a definite limit c_α. Determining this constant as a function of α would give a precise quantitative understanding of how balanced large 2-colourings can be. The case α = 1/2 is extremal (requiring near-equal colour distribution) and is related to Problems #161, #163, and #617 on balanced colourings. The formalization at 237 lines covers the full structure; all supporting lemmas are proved and only the four-axiom skeleton encodes the open conjecture.",

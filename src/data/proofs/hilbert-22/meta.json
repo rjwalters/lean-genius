@@ -48,7 +48,8 @@
     "lineCount": 305,
     "assumptions": "Structure-encoded assumptions: isDiscrete : True in FuchsianGroup and HyperbolicDomain structures (proper discontinuity condition); def RiemannSurface.IsSimplyConnected : Prop := True (topological connectivity placeholder). The uniformization theorem itself remains in comments. Per CLAUDE.md: structure fields with True are counted as structure-encoded assumptions.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5
+    "theoremCount": 5,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "In 1900, Hilbert's twenty-second problem asked for the uniformization of analytic relations by automorphic functions. This was motivated by the success of elliptic functions in parametrizing elliptic curves.\n\nThe complete answer came in 1907, when both Paul Koebe and Henri Poincare independently proved the Uniformization Theorem. This theorem is one of the deepest results in complex analysis, connecting:\n\n- **Riemann surfaces** (complex geometry)\n- **Automorphic functions** (symmetry and groups)\n- **Hyperbolic geometry** (negative curvature)\n- **Algebraic geometry** (curves and moduli)\n\nThe theorem states that every simply connected Riemann surface is conformally equivalent to exactly one of three model spaces: the Riemann sphere, the complex plane, or the unit disk.",

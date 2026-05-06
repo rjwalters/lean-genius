@@ -62,7 +62,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 38
+    "theoremCount": 38,
+    "definitionCount": 35
   },
   "overview": {
     "historicalContext": "The nine-point circle was discovered independently by Charles-Julien Brianchon and Jean-Victor Poncelet in 1821 and by Karl Wilhelm Feuerbach in 1822. Feuerbach's key contribution, proved in his 1822 treatise *Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks*, was that this circle is tangent to the inscribed circle and all three excircles of the triangle. The tangency point with the incircle is now called the Feuerbach point, and the theorem itself is #29 on Wiedijk's list of 100 greatest theorems.\n\nThe nine-point circle was further studied by Leonhard Euler (who established the Euler line through circumcenter, centroid, and orthocenter) and named by Olry Terquem in 1842 after proving it passes through all nine special points. The relationship N = (O + H)/2 connecting the nine-point center to the Euler line was established by Feuerbach and generalized by later mathematicians.\n\nThis module provides the complete definitional infrastructure using explicit coordinate geometry in R^2. The approach trades the elegance of synthetic proofs for computational verifiability: every step is a polynomial identity verified by field_simp + ring. The 3-4-5 right triangle serves as a numerical sanity check, confirming that all formulas are consistent and Feuerbach tangency holds (|NI| = |R/2 - r|).",

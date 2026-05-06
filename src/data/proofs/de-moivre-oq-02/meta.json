@@ -67,7 +67,8 @@
     "axiomCount": 0,
     "lineCount": 157,
     "assumptions": "0 axioms, 0 sorries. All identities proved for cos θ values via Mathlib's T_real_cos (the general polynomial identities follow by density but are not formalized). Clean original derivations of product-to-sum, parity, and root formulas.",
-    "theoremCount": 16
+    "theoremCount": 16,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**Beyond the Basic Identity**\n\nThe OQ-01 extension established the fundamental connection: $T_n(\\cos\\theta) = \\cos(n\\theta)$. This OQ-02 extension explores the rich algebraic structure that follows from this identity.\n\n**Composition Monoid**\n\nSince $T_m(T_n(\\cos\\theta)) = T_m(\\cos(n\\theta)) = \\cos(mn\\theta) = T_{mn}(\\cos\\theta)$, the Chebyshev polynomials form a commutative monoid under function composition. This is a remarkable algebraic structure: $T_m \\circ T_n = T_{mn}$, with $T_1$ as the identity element.\n\n**Product-to-Sum**\n\nThe identity $2T_m(x)T_n(x) = T_{m+n}(x) + T_{m-n}(x)$ is the polynomial analog of the trigonometric product-to-sum formula $2\\cos(A)\\cos(B) = \\cos(A+B) + \\cos(A-B)$. This identity is central to Chebyshev spectral methods in numerical analysis.\n\n**Parity and Roots**\n\nThe parity relation $T_n(-x) = (-1)^nT_n(x)$ shows that even-index Chebyshev polynomials are even functions and odd-index ones are odd. The roots $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$ are the Chebyshev nodes, optimal for polynomial interpolation.",

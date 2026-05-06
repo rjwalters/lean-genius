@@ -57,7 +57,8 @@
     "axiomCount": 1,
     "lineCount": 230,
     "assumptions": "1 axiom: aharoni_berger_theorem. 0 sorries.",
-    "theoremCount": 2
+    "theoremCount": 2,
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "**Menger's Classical Theorem (1927)**\n\nKarl Menger proved in 1927 that for finite graphs, the maximum number of vertex-disjoint paths between two sets equals the minimum size of a separating set. This is one of the foundational results in graph theory, closely related to max-flow min-cut theorems.\n\n**Erdős Extends to Infinite Graphs (1981)**\n\nErdős asked whether Menger's theorem extends to infinite graphs. The natural formulation is: for disjoint independent sets A, B in any graph G, does there exist a family P of vertex-disjoint A-B paths and a set S containing exactly one vertex from each path, such that S separates A from B? For finite graphs, this is exactly Menger's theorem. For infinite graphs, it was a major open problem.\n\n**The Aharoni-Berger Breakthrough (2009)**\n\nRon Aharoni and Eli Berger proved the infinite case in their landmark paper 'Menger's theorem for infinite graphs' published in Inventiones Mathematicae. The proof uses sophisticated techniques from infinite matroid theory, marking a major advance in infinite combinatorics. The paper resolved a conjecture that had been open for almost 30 years.",

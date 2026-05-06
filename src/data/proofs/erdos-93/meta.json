@@ -61,7 +61,8 @@
     "axiomCount": 3,
     "lineCount": 146,
     "assumptions": "3 axioms: InConvexPosition, altman_theorem, fishburn_implies_stronger. See Lean source for complete statements.",
-    "theoremCount": 1
+    "theoremCount": 1,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #93 concerns the minimum number of distinct pairwise distances among n points in convex position in the plane. This is one of Erdős's classic problems in discrete geometry, part of a broader program studying how geometric constraints force distance diversity.\n\nAltman proved in 1963 that the vertices of a convex n-gon determine at least ⌊n/2⌋ distinct distances. The bound is tight: the regular n-gon achieves exactly ⌊n/2⌋ distinct distances, since the distance from any vertex to the k-th vertex is 2R sin(kπ/n), giving ⌊n/2⌋ distinct values.\n\nThe result spawned several open variants. Problem #982 asks whether some single vertex must see ⌊n/2⌋ distinct distances (strictly stronger). Fishburn conjectured that Σ R(x) ≥ C(n,2), which would imply the stronger variant by averaging. Szemerédi's Problem #1082 asks whether the same bound holds under the weaker condition of no three collinear points.",

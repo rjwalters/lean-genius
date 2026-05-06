@@ -29,7 +29,8 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #1054 was posed by Paul Erdős and asks: define $f(n)$ as the smallest positive integer $m$ such that $n$ equals a partial sum of the $k$ smallest divisors of $m$ for some $k \\geq 1$. Which $n$ are representable (i.e., f(n) exists), and how fast does f(n) grow? Erdős observed that $f(n) \\leq n$ trivially (since $m = n$ has $1$ as a divisor), and asked whether $f(n) = o(n)$ unconditionally (Part I), whether $f(n) = o(n)$ for almost all $n$ (Part II), or whether $\\limsup f(n)/n = \\infty$ (Part III). Terry Tao settled Part I negatively by showing the density of $n$ with $f(n) \\leq \\delta n$ is $O(\\delta^2)$ — a positive density of integers require large witnesses. Parts II and III remain open.\n\nThis sub-entry (OQ-02) exploits the arithmetic of **prime products**: for $m = qp$ with distinct primes $q < p$, the divisors are exactly $\\{1, q, p, qp\\}$ (four divisors, uniquely ordered $1 < q < p < qp$). The third partial sum $1+q+p$ is representable with witness $m = qp$. Combined with Goldbach's conjecture (every even $n \\geq 4$ is a sum of two primes), this gives a conditional proof that all odd $n \\geq 7$ are representable — one of the most structured connections between Erdős's divisor problem and classical additive prime theory.",
