@@ -86,20 +86,65 @@
   ],
   "sections": [
     {
+      "id": "universal-divisibility",
       "title": "Universal Divisibility",
-      "content": "Proves that minpoly K (f a) always divides minpoly K a for any algebra map f, using minpoly.aeval_algHom and minpoly.dvd."
+      "startLine": 41,
+      "endLine": 52,
+      "summary": "Proves minpoly K (f a) always divides minpoly K a for any K-algebra map f, using minpoly.aeval_algHom (f maps minpoly zeros to zeros) and minpoly.dvd (universal divisibility property)."
     },
     {
+      "id": "exact-characterization",
       "title": "The Exact Characterization",
-      "content": "Main theorem: minpoly K (f a) = minpoly K a ↔ aeval a (minpoly K (f a)) = 0. Proved via mutual divisibility and equality of associated monic polynomials."
+      "startLine": 53,
+      "endLine": 101,
+      "summary": "Main theorem and equivalent forms: minpoly K (f a) = minpoly K a ↔ aeval a (minpoly K (f a)) = 0. Also states the IsRoot equivalent and the failure mode (negation). Proved via mutual divisibility and eq_of_monic_of_associated."
     },
     {
+      "id": "injective-case",
       "title": "Connection to the Injective Case",
-      "content": "Shows that minpoly.algHom_eq (requiring injectivity) is a special case: injective f always satisfies the criterion aeval a (minpoly K (f a)) = 0."
+      "startLine": 102,
+      "endLine": 124,
+      "summary": "Shows minpoly.algHom_eq (Mathlib's injective case) is a special case: injective f always satisfies the aeval criterion. Also shows the logical equivalence between the injective implication and the criterion."
     },
     {
-      "title": "Degree Consequences",
-      "content": "Derives that non-injective maps can only decrease the minpoly degree, never increase it."
+      "id": "degree-consequences",
+      "title": "Degree Consequence",
+      "startLine": 126,
+      "endLine": 144,
+      "summary": "Proves natDegree(minpoly(f a)) ≤ natDegree(minpoly(a)) via natDegree_le_of_dvd applied to universal divisibility. Equality holds iff minpolies are equal."
+    },
+    {
+      "id": "complete-picture",
+      "title": "Complete Picture",
+      "startLine": 145,
+      "endLine": 171,
+      "summary": "Summary theorem consolidating the three properties: universal divisibility, degree inequality, and the iff characterization. Documents the zero-map failure example explicitly in the docstring."
+    }
+  ],
+  "conclusion": {
+    "summary": "This proof provides the definitive characterization of minpoly invariance under non-injective K-algebra homomorphisms: minpoly K (f a) = minpoly K a iff Polynomial.aeval a (minpoly K (f a)) = 0. The result is fully verified in Lean 4 with 0 axioms and 0 sorries, relying only on Mathlib's minpoly.dvd, minpoly.aeval_algHom, associated_of_dvd_dvd, and eq_of_monic_of_associated.",
+    "implications": "The characterization is practically useful: instead of requiring f to be injective, one only needs to check a single polynomial evaluation. This has applications in field extension theory (when can a map between field extensions preserve algebraic relations?), matrix theory (when does a linear map preserve the minimal polynomial of an operator?), and module theory (when does a module homomorphism preserve the annihilator polynomial?). The proof also clarifies why injectivity is sufficient but not necessary: injective maps automatically satisfy the criterion, but the criterion is strictly weaker.",
+    "openQuestions": [
+      "Can the characterization be extended to non-integral elements, using some notion of approximate or formal minimal polynomial?",
+      "What is the algebraic structure of the set of algebra maps f for which a fixed element a has its minpoly preserved — is it closed under composition?",
+      "Does the characterization generalize to commutative rings (rather than fields K) for the coefficient domain?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "title": "Minimal Polynomial Generalization to K-Algebras",
+      "relationship": "Parent open question: proves minpoly invariance for INJECTIVE algebra maps. This entry answers the follow-up: what happens for non-injective maps?"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "title": "Cayley-Hamilton and Minimal Polynomial",
+      "relationship": "Foundation: establishes the core Cayley-Hamilton theorem and minimal polynomial theory this entry builds upon."
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02",
+      "title": "Cayley-Hamilton Minpoly (OQ-02)",
+      "relationship": "Grandparent open question in the minimal polynomial line of inquiry."
     }
   ]
 }

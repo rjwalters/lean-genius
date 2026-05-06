@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-setup",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 37, "endLine": 40 },
+    "type": "context",
+    "title": "Abstract K-Algebra Setting",
+    "content": "The proof works in full generality: K is any field, A and B are any K-algebras (rings with a K-action), and f : A →ₐ[K] B is any K-algebra homomorphism. The key variable declarations use type-class inference for [Field K], [Ring A], [Algebra K A], etc. No commutativity, no finite-dimensionality, no other constraints are needed for the main theorem.",
+    "mathContext": "A **K-algebra** is a ring $A$ equipped with a ring map $K \\to Z(A)$ (where $Z(A)$ is the center). A **K-algebra homomorphism** $f: A \\to_{K\\text{-alg}} B$ is a ring map that commutes with the $K$-actions: $f(k \\cdot a) = k \\cdot f(a)$. In Lean 4: `f : A →ₐ[K] B` is the type of such maps, with `AlgHom.commutes` as the key property.",
+    "significance": "context",
+    "relatedConcepts": ["K-algebra", "algebra homomorphism", "AlgHom", "Field"],
+    "prerequisites": ["ring theory", "algebra over a field", "Lean 4 type classes"]
+  },
+  {
+    "id": "ann-universal-dvd",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 45, "endLine": 52 },
+    "type": "technique",
+    "title": "Universal Divisibility: minpoly(f a) ∣ minpoly(a)",
+    "content": "The one-liner proof: minpoly.aeval_algHom gives f(minpoly(a)(a)) = minpoly(a)(f(a)) = 0, so by the universal property of minimal polynomials (minpoly.dvd: if p(x)=0 then minpoly(x) ∣ p), we get minpoly(f(a)) ∣ minpoly(a). This holds for ANY algebra map — no injectivity required.",
+    "mathContext": "The minimal polynomial satisfies a **universal divisibility property**: $\\text{minpoly}(K, x)$ is the monic polynomial of minimal degree annihilating $x$, and it divides any annihilating polynomial. Formally: $p(x) = 0 \\Rightarrow \\text{minpoly}(K,x) \\mid p$. Combined with `minpoly.aeval_algHom`: $f(\\text{minpoly}(K,a)(a)) = \\text{minpoly}(K,a)(f(a)) = 0$ (algebra maps preserve polynomial evaluations), this gives $\\text{minpoly}(K,f(a)) \\mid \\text{minpoly}(K,a)$.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "universal property", "polynomial divisibility", "algebra maps preserve polynomial evaluation"],
+    "prerequisites": ["minimal polynomial definition", "polynomial evaluation in algebras", "minpoly.dvd lemma"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 57, "endLine": 85 },
+    "type": "technique",
+    "title": "Main Theorem: Iff Characterization via Mutual Divisibility",
+    "content": "The core proof. The ⟹ direction is trivial: if minpoly(f a) = minpoly(a), then aeval a (minpoly(f a)) = aeval a (minpoly(a)) = 0 by the defining property. The ⟸ direction: given aeval a (minpoly(f a)) = 0, apply minpoly.dvd to get minpoly(a) ∣ minpoly(f a). Combined with universal divisibility (always holds), mutual divisibility gives equality of monic polynomials via associated_of_dvd_dvd + eq_of_monic_of_associated.",
+    "mathContext": "The iff proof is a **mutual divisibility argument** for monic polynomials: in a UFD (polynomial ring over a field), if $p$ and $q$ are monic and $p \\mid q$ and $q \\mid p$, then $p = q$. This uses the chain: mutual divisibility $\\Rightarrow$ associated (via `associated_of_dvd_dvd`) $\\Rightarrow$ equal monic polynomials (via `eq_of_monic_of_associated`). The `IsIntegral` hypotheses ensure minpoly is well-defined (not 0 or 1).",
+    "significance": "key",
+    "relatedConcepts": ["mutual divisibility", "associated elements", "monic polynomials", "minimal polynomial iff criterion"],
+    "prerequisites": ["minimal polynomial universal property", "polynomial ring UFD structure", "monic polynomial uniqueness"]
+  },
+  {
+    "id": "ann-isroot-form",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 86, "endLine": 100 },
+    "type": "insight",
+    "title": "Equivalent Forms: IsRoot and Failure Mode",
+    "content": "Two reformulations of the main theorem: (1) IsRoot form: minpoly(f a) = minpoly(a) iff a is a root of minpoly(f a) — since IsRoot.{x} p ↔ p.aeval x = 0. (2) Failure mode: the negation characterizes when f 'collapses' an algebraic relation. The zero map is the canonical example: f(a) = 0, minpoly(0) = X, aeval a X = a ≠ 0 for nonzero a.",
+    "mathContext": "The `IsRoot` version uses `Polynomial.IsRoot.{x} p ↔ p.eval x = 0`, which for algebras via `aeval` becomes `p.aeval x = 0`. The failure mode (`≠`) follows directly from `Iff.ne` applied to the main iff. The zero-map example: for the zero map $f \\equiv 0$, $f(a) = 0$, so $\\text{minpoly}(K, f(a)) = \\text{minpoly}(K, 0) = X$ (since $0 \\in K$ satisfies $X \\cdot 0 = 0$). Then $\\text{aeval}_a(X) = a$, which is 0 iff $a = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsRoot", "polynomial roots", "zero map", "failure mode"],
+    "prerequisites": ["IsRoot definition", "aeval and eval equivalence", "minpoly of zero"]
+  },
+  {
+    "id": "ann-injective-case",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 106, "endLine": 124 },
+    "type": "insight",
+    "title": "Why Injectivity Is Sufficient (But Not Necessary)",
+    "content": "For injective f, the criterion is always satisfied: minpoly.algHom_eq gives minpoly(f a) = minpoly(a) for injective f, so aeval a (minpoly(f a)) = aeval a (minpoly(a)) = 0. The proof directly invokes Mathlib's minpoly.algHom_eq and rw. This shows the injective case from the parent entry OQ02OQ01 is a special case. But the iff characterization is strictly weaker: many non-injective maps also satisfy the criterion.",
+    "mathContext": "Mathlib's `minpoly.algHom_eq` (OQ02OQ01 parent): for injective $f: A \\to_{K\\text{-alg}} B$, $\\text{minpoly}(K, f(a)) = \\text{minpoly}(K, a)$. This entry shows this is equivalent to: the criterion $\\text{aeval}_a(\\text{minpoly}(K, f(a))) = 0$ holds whenever $f$ is injective. The criterion is a **necessary and sufficient** condition for the equality, making it strictly weaker than injectivity as a sufficient condition.",
+    "significance": "supporting",
+    "relatedConcepts": ["injective algebra maps", "minpoly.algHom_eq", "sufficient condition", "non-injective maps"],
+    "prerequisites": ["minpoly.algHom_eq", "injective functions", "algebra homomorphisms"]
+  },
+  {
+    "id": "ann-degree-bound",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 130, "endLine": 144 },
+    "type": "technique",
+    "title": "Degree Monotonicity: Non-Injective Maps Only Shrink Minpoly",
+    "content": "Since minpoly(f a) ∣ minpoly(a), the degree of minpoly(f a) is at most the degree of minpoly(a). The proof handles the degenerate case minpoly(f a) = 0 separately (gives 0 ≤ anything), then uses natDegree_le_of_dvd for the general case. The result formalizes the intuition: non-injective maps can only 'simplify' algebraic relations, never introduce new ones.",
+    "mathContext": "For monic polynomials in $K[X]$: $p \\mid q$ implies $\\deg p \\leq \\deg q$ (for $q \\neq 0$). Applied to $\\text{minpoly}(K, f(a)) \\mid \\text{minpoly}(K, a)$: $\\deg(\\text{minpoly}(K, f(a))) \\leq \\deg(\\text{minpoly}(K, a))$. Equality holds iff the polynomials are equal (since both are monic). The case `minpoly K (f a) = 0` should not occur for integral elements, but Lean's `rcases eq_or_ne` handles it via `simp [h]` (degree of 0 polynomial = 0 ≤ anything).",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial degree", "natDegree_le_of_dvd", "degree monotonicity", "minimal polynomial degree"],
+    "prerequisites": ["polynomial degree theory", "natDegree_le_of_dvd", "minpoly.ne_zero"]
+  },
+  {
+    "id": "ann-complete-picture",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 149, "endLine": 169 },
+    "type": "insight",
+    "title": "The Complete Characterization as a Single Theorem",
+    "content": "The summary theorem complete_characterization is definitionally equal to minpoly_eq_iff_aeval_zero — it's just a re-export for documentation purposes, showing all three properties in one place. The docstring contains the canonical zero-map example, making the failure mode explicit: for f ≡ 0, f(a) = 0, minpoly(0) = X, aeval a X = a. The criterion fails iff a ≠ 0, as expected.",
+    "mathContext": "The complete picture for integral elements $a \\in A$ and any $f: A \\to_{K\\text{-alg}} B$: \\begin{enumerate} \\item $\\text{minpoly}(K, f(a)) \\mid \\text{minpoly}(K, a)$ (always) \\item $\\deg(\\text{minpoly}(K, f(a))) \\leq \\deg(\\text{minpoly}(K, a))$ (always) \\item $\\text{minpoly}(K, f(a)) = \\text{minpoly}(K, a) \\iff \\text{aeval}_a(\\text{minpoly}(K, f(a))) = 0$ (iff) \\end{enumerate} The iff condition is the exact threshold between the two extremes: identity of polynomials vs. strict decrease in degree.",
+    "significance": "key",
+    "relatedConcepts": ["complete characterization", "minimal polynomial invariance", "algebraic criterion", "zero map example"],
+    "prerequisites": ["all previous lemmas in this file", "minpoly theory"]
+  }
+]
