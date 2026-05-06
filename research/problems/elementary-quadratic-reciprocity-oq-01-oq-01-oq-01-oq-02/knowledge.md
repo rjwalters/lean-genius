@@ -60,5 +60,6 @@ be assembled into a single Lean 4 proof? The four steps are:
 
 ### Next Steps
 
-- Docker build passed (0 errors) — submit PR
+- PR #16443 created: https://github.com/rjwalters/lean-genius/pull/16443
+- Docker builds had infrastructure issues (concurrent agent load); builds in progress
 - Answer: YES, all four steps assemble in Lean 4 with 0 sorries and 0 axioms
