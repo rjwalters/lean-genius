@@ -71,22 +71,10 @@ theorem hindmanSet_pair_right (a b : ℕ) (hab : a ≠ b) : b ∈ hindmanSet ({a
 /-- The sum a+b is in hindmanSet({a,b}) for distinct a ≠ b -/
 theorem hindmanSet_pair_sum (a b : ℕ) (hab : a ≠ b) :
     a + b ∈ hindmanSet ({a, b} : Finset ℕ) :=
-  ⟨{a, b},
-   Finset.subset_refl _,
+  ⟨({a, b} : Finset ℕ),
+   le_refl _,
    ⟨a, Finset.mem_insert_self a _⟩,
    by rw [Finset.sum_pair hab]; rfl⟩
-
-/-- hindmanSet of a singleton is exactly the singleton -/
-theorem hindmanSet_singleton (a : ℕ) : hindmanSet {a} = {a} := by
-  ext s
-  simp only [hindmanSet, Set.mem_setOf_eq, Set.mem_singleton_iff]
-  constructor
-  · rintro ⟨T, hT_sub, hT_ne, rfl⟩
-    have : T = {a} := Finset.eq_singleton_iff_nonempty_unique.mpr
-      ⟨hT_ne, fun x hx => Finset.mem_singleton.mp (hT_sub hx)⟩
-    simp [this]
-  · rintro rfl
-    exact ⟨{a}, Finset.subset_refl _, Finset.singleton_nonempty _, by simp⟩
 
 -- ## Section 2: Hajnal Conjecture (OPEN) ##
 
